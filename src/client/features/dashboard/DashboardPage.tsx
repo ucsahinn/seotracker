@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { sort } from "remeda";
+import { AuditFreshnessCard } from "./AuditFreshnessCard";
 import { DashboardOnboarding } from "./DashboardOnboarding";
 import {
   AuditHealthCard,
@@ -91,13 +92,15 @@ export function DashboardPage({ projectId }: { projectId: string }) {
   return (
     <div className="px-4 py-4 pb-24 md:px-6 md:py-6 md:pb-8">
       <div className="mx-auto flex max-w-5xl flex-col gap-5">
-        <h1 className="text-2xl font-semibold">Dashboard</h1>
+        <h1 className="text-2xl font-semibold">Panel</h1>
 
         <DashboardOnboarding
           key={projectId}
           projectId={projectId}
           activation={activation}
         />
+
+        <AuditFreshnessCard projectId={projectId} />
 
         {/* Every card is half width on large screens (only the checklist spans).
           Cards with data render before setup pitches and empty states. */}

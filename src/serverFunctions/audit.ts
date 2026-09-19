@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { waitUntil } from "cloudflare:workers";
 import { requireOrgPermission } from "@/server/auth/org-gate";
 import { AuditService } from "@/server/features/audit/services/AuditService";
+import { getAuditFreshness } from "@/server/features/audit/services/auditFreshness";
 import { captureServerEvent } from "@/server/lib/observability";
 import { requireProjectContext } from "@/serverFunctions/middleware";
 import {
@@ -80,3 +81,15 @@ export const deleteAudit = createServerFn({ method: "POST" })
     await AuditService.remove(data.auditId, context.projectId);
     return { success: true };
   });
+
+/**
+ * Whether this project's audit has gone stale, and what changed since the one
+ * before it. Read by the dashboard; starting the crawl stays the operator's
+ * call.
+ */
+export const getAuditFreshnessForProject = createServerFn({ method: "POST" })
+  .middleware(requireProjectContext)
+  .validator(getAuditHistorySchema)
+  .handler(({ context }) =>
+    getAuditFreshness({ projectId: context.projectId }),
+  );
