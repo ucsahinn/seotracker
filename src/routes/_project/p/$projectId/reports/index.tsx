@@ -62,7 +62,7 @@ function ReportsPage() {
             <span className="text-sm">
               {getStandardErrorMessage(
                 reportsQuery.error,
-                "Failed to load reports",
+                "Raporlar yüklenemedi",
               )}
             </span>
           </div>

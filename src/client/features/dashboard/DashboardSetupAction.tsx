@@ -68,8 +68,8 @@ export function DashboardSetupAction({
                   ? "https://localhost:3001"
                   : window.location.origin,
               )}
-              label="Copy setup prompt"
-              successMessage="Setup prompt copied"
+              label="Kurulum istemini kopyala"
+              successMessage="Kurulum istemi kopyalandı"
               onCopy={() =>
                 captureClientEvent("onboarding:setup_prompt_copy", {
                   source: "dashboard",
@@ -130,8 +130,8 @@ export function DashboardSetupAction({
             </pre>
             <CopyButton
               value={projectPrompt}
-              label="Copy project prompt"
-              successMessage="Project prompt copied"
+              label="Proje istemini kopyala"
+              successMessage="Proje istemi kopyalandı"
             />
           </div>
         </details>
@@ -170,7 +170,7 @@ function WebsiteForm({
           queryKey: ["projectAccess", project.id],
         }),
       ]);
-      toast.success("Website saved");
+      toast.success("Site kaydedildi");
       onComplete();
     },
     onError: (error) =>

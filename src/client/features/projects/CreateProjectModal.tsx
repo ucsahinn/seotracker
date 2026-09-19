@@ -38,7 +38,7 @@ export function CreateProjectModal({ onClose }: { onClose: () => void }) {
         queryKey: ["dashboardActivation"],
       });
       onClose();
-      toast.success("Project created");
+      toast.success("Proje oluşturuldu");
       // Continue setup through the new project’s dashboard.
       void navigate({
         to: "/p/$projectId",

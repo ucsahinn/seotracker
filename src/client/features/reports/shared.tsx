@@ -39,7 +39,7 @@ export function useDeleteReport(projectId: string, onDeleted?: () => void) {
         project_id: projectId,
         report_id: reportId,
       });
-      toast.success("Report deleted");
+      toast.success("Rapor silindi");
       void queryClient.invalidateQueries({
         queryKey: reportsQueryKey(projectId),
       });

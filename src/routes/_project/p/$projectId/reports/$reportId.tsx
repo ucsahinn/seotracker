@@ -128,7 +128,7 @@ function ReportDetailPage() {
                 ? "This report does not exist or you do not have access to it."
                 : getStandardErrorMessage(
                     reportQuery.error,
-                    "Failed to load the report",
+                    "Rapor yüklenemedi",
                   )}
             </span>
           </div>
@@ -223,7 +223,7 @@ function ReportDetailPage() {
               Export
             </button>
             <PortalMenu
-              ariaLabel="Report actions"
+              ariaLabel="Rapor işlemleri"
               triggerClassName="btn btn-ghost btn-sm btn-square"
               triggerContent={<MoreHorizontal className="size-4" />}
               menuClassName="w-52"

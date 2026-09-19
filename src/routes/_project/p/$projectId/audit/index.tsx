@@ -281,7 +281,7 @@ function ProgressCard({
               <Loader2 className="size-4 animate-spin text-primary" />
               {isLighthousePhase
                 ? "Running Lighthouse checks"
-                : "Crawling pages"}
+                : "Sayfalar taranıyor"}
             </h2>
             <span className="badge badge-ghost badge-sm">{phaseLabel}</span>
           </div>

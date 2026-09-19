@@ -307,7 +307,7 @@ export function StrikingDistanceTable({
       setRowSelection({});
     },
     onError: (error) => {
-      toast.error(getStandardErrorMessage(error, "Could not save keywords"));
+      toast.error(getStandardErrorMessage(error, "Kelimeler kaydedilemedi"));
     },
   });
 

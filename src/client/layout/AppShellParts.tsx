@@ -15,7 +15,7 @@ export function MobileSidebarDrawer({
     <div className="fixed inset-0 z-50 md:hidden">
       <button
         type="button"
-        aria-label="Close sidebar"
+        aria-label="Kenar çubuğunu kapat"
         className="absolute inset-0 bg-black/45"
         onClick={onClose}
       />

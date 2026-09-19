@@ -164,7 +164,7 @@ function SavedKeywordsPage() {
       );
     },
     onError: (error) => {
-      setRemoveError(getStandardErrorMessage(error, "Remove failed."));
+      setRemoveError(getStandardErrorMessage(error, "Kaldırma başarısız."));
     },
   });
 
@@ -191,7 +191,7 @@ function SavedKeywordsPage() {
       );
     },
     onError: (error) => {
-      toast.error(getStandardErrorMessage(error, "Could not update tags"));
+      toast.error(getStandardErrorMessage(error, "Etiketler güncellenemedi"));
     },
   });
 

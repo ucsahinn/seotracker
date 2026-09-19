@@ -56,14 +56,12 @@ function ReportTemplatesPage() {
         project_id: projectId,
         template_id: templateId,
       });
-      toast.success("Template deleted");
+      toast.success("Şablon silindi");
       setPendingDelete(null);
       invalidate();
     },
     onError: (error: Error) => {
-      toast.error(
-        getStandardErrorMessage(error, "Failed to delete the template"),
-      );
+      toast.error(getStandardErrorMessage(error, "Şablon silinemedi"));
     },
   });
 
@@ -106,7 +104,7 @@ function ReportTemplatesPage() {
             <span className="text-sm">
               {getStandardErrorMessage(
                 templatesQuery.error,
-                "Failed to load templates",
+                "Şablonlar yüklenemedi",
               )}
             </span>
           </div>
@@ -134,8 +132,8 @@ function ReportTemplatesPage() {
       {pendingDelete ? (
         <ConfirmDeleteModal
           title={`Delete \u201c${pendingDelete.name}\u201d?`}
-          detail="Reports already written from it are not affected."
-          confirmLabel="Delete template"
+          detail="Bu şablondan üretilmiş raporlar etkilenmez."
+          confirmLabel="Şablonu sil"
           isPending={deleteMutation.isPending}
           onClose={() => setPendingDelete(null)}
           onConfirm={() => deleteMutation.mutate(pendingDelete.id)}

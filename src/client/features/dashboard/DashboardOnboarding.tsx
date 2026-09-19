@@ -63,7 +63,7 @@ export function DashboardOnboarding({
 
   return (
     <section
-      aria-label="Onboarding checklist"
+      aria-label="Kurulum listesi"
       className="overflow-hidden rounded-xl border border-base-300 bg-base-100"
     >
       <header className="border-b border-base-300 px-5 py-5 sm:px-6">
@@ -127,7 +127,7 @@ export function DashboardOnboarding({
                     >
                       {item.id === "project"
                         ? "I only need one project"
-                        : "Skip for now"}
+                        : "Şimdilik geç"}
                     </button>
                   </div>
                 </div>

@@ -77,7 +77,7 @@ function ProjectsPage() {
                       ) : null}
                     </span>
                     <span className="truncate text-xs text-base-content/50">
-                      {project.domain ?? "No domain set"}
+                      {project.domain ?? "Site belirlenmemiş"}
                     </span>
                   </span>
                   <ChevronRight className="size-4 shrink-0 text-base-content/40" />
@@ -111,10 +111,10 @@ function ArchivedProjects() {
     onSuccess: async () => {
       // Prefix match invalidates both the active and archived lists.
       await queryClient.invalidateQueries({ queryKey: ["projects"] });
-      toast.success("Project restored");
+      toast.success("Proje geri alındı");
     },
     onError: (error) =>
-      toast.error(getStandardErrorMessage(error, "Failed to restore project")),
+      toast.error(getStandardErrorMessage(error, "Proje geri alınamadı")),
   });
 
   if (archived.length === 0) return null;
@@ -133,7 +133,7 @@ function ArchivedProjects() {
                 {project.name}
               </span>
               <span className="truncate text-xs text-base-content/50">
-                {project.domain ?? "No domain set"}
+                {project.domain ?? "Site belirlenmemiş"}
               </span>
             </span>
             <button

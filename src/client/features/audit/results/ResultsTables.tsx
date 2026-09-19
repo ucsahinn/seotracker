@@ -251,7 +251,7 @@ export function ExportDropdown({
       buttonClassName="btn btn-sm btn-ghost gap-1"
       menuClassName="dropdown-content z-10 menu p-2 shadow-lg bg-base-100 border border-base-300 rounded-box w-52"
       actions={[
-        { label: "Export to Sheets", onClick: () => onExport("sheets") },
+        { label: "Sheets'e aktar", onClick: () => onExport("sheets") },
         { label: "CSV", onClick: () => onExport("csv") },
         { label: "JSON", onClick: () => onExport("json") },
       ]}

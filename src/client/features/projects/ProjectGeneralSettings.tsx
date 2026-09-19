@@ -150,7 +150,7 @@ function DangerSection({
     onSuccess: async () => {
       if (getLastProjectId() === project.id) clearLastProjectId();
       await queryClient.invalidateQueries({ queryKey: ["projects"] });
-      toast.success("Project archived");
+      toast.success("Proje arşivlendi");
       // Re-resolve to a remaining project via the landing redirect.
       void navigate({ to: "/" });
     },

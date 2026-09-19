@@ -53,7 +53,7 @@ function IndexRedirect() {
       return (
         <div className="flex items-center justify-center h-full p-4">
           <UnauthenticatedErrorCard
-            message="Please sign in to access this workspace."
+            message="Bu çalışma alanına erişmek için oturum açın."
             onRetry={() => {
               void refetch();
             }}
@@ -80,7 +80,7 @@ function IndexRedirect() {
           <p className="text-error text-center">
             {getStandardErrorMessage(
               error,
-              "An unexpected error occurred. Please check server logs.",
+              "Beklenmeyen bir hata oluştu. Sunucu günlüklerine bakın.",
             )}
           </p>
         </div>

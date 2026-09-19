@@ -286,7 +286,7 @@ export function SearchPerformancePage({ projectId }: { projectId: string }) {
                         setRange(event.target.value);
                       }
                     }}
-                    aria-label="Date range"
+                    aria-label="Tarih aralığı"
                   >
                     {RANGE_OPTIONS.map((option) => (
                       <option key={option.value} value={option.value}>
@@ -298,7 +298,7 @@ export function SearchPerformancePage({ projectId }: { projectId: string }) {
                     buttonClassName="btn btn-ghost btn-sm gap-1"
                     actions={[
                       {
-                        label: "Export to Sheets",
+                        label: "Sheets'e aktar",
                         icon: <Sheet className="size-4" />,
                         onClick: () => void handleExport("sheets"),
                       },

@@ -88,7 +88,7 @@ function MobileTopBar({
       <button
         type="button"
         className="btn btn-square btn-ghost btn-sm"
-        aria-label="Toggle sidebar"
+        aria-label="Kenar çubuğunu aç/kapat"
         aria-expanded={drawerOpen}
         onClick={onOpenDrawer}
       >

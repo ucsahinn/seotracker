@@ -50,7 +50,7 @@ export function SavedKeywordsBulkActionBar({
                   onClick: onCopy,
                 },
                 {
-                  label: "Export to Sheets",
+                  label: "Sheets'e aktar",
                   icon: <Sheet className="size-4" />,
                   onClick: onExportSheets,
                 },
