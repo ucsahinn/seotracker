@@ -214,10 +214,15 @@ export class AuditScratchpad extends DurableObject {
       }
     }
     for (const found of input.discovered) {
-      // OR IGNORE: already-seen URLs (crawled, leased, or pending) keep
-      // their existing row — this is the global dedup.
+      // Already-seen URLs keep their row — this is the global dedup — but
+      // depth is still filled in or lowered. Sitemap seeding inserts every
+      // URL with depth NULL before the crawl starts, and this used to be
+      // INSERT OR IGNORE, so on any site with a complete sitemap every page
+      // kept depth NULL and the deep-page check could never fire. NULL now
+      // means only what it should: not reachable by a link at all.
       this.ctx.storage.sql.exec(
-        `INSERT OR IGNORE INTO frontier (url, depth, source, in_sitemap) VALUES (?, ?, 'link', 0)`,
+        `INSERT INTO frontier (url, depth, source, in_sitemap) VALUES (?, ?, 'link', 0)
+         ON CONFLICT(url) DO UPDATE SET depth = MIN(COALESCE(depth, excluded.depth), excluded.depth)`,
         found.url,
         found.depth,
       );

@@ -48,7 +48,11 @@ export function CannibalizationTable({ projectId }: { projectId: string }) {
       <EmptyState
         icon={CheckCircle2}
         title="Çakışma bulunamadı"
-        description={`İncelenen ${formatNumber(data?.queriesAnalyzed ?? 0)} sorgunun hiçbirinde iki sayfanız birbiriyle yarışmıyor.`}
+        description={
+          data?.truncated
+            ? `İncelenen ${formatNumber(data.queriesAnalyzed)} sorguda çakışma yok. Ancak Search Console satır sınırına takıldık, yani bakamadığımız sorgular kaldı.`
+            : `İncelenen ${formatNumber(data?.queriesAnalyzed ?? 0)} sorgunun hiçbirinde iki sayfanız birbiriyle yarışmıyor.`
+        }
       />
     );
   }
@@ -61,9 +65,17 @@ export function CannibalizationTable({ projectId }: { projectId: string }) {
         <span className="font-medium text-base-content">
           {formatNumber(data.splitImpressions)} gösterim
         </span>{" "}
-        Google&apos;ın tercih ettiği sayfa dışında kalıyor. Genelde doğru çözüm
-        sayfaları birleştirmek ya da birinden diğerine canonical vermektir.
+        Google&apos;ın tercih ettiği sayfa dışında kalıyor. Önce hangi sayfayı
+        hedeflediğinize karar verin ve iç bağlantıları ona yöneltin; sayfalar
+        gerçekten aynı soruyu yanıtlıyorsa birleştirin.
       </p>
+
+      {data.truncated ? (
+        <p className="text-xs text-base-content/55">
+          Search Console tek seferde sınırlı satır döndürür ve bu sınıra
+          takıldık. Listede olmayan çakışmalar olabilir.
+        </p>
+      ) : null}
 
       <div className="overflow-hidden rounded-box border border-base-300">
         {data.rows.map((row) => (

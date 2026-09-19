@@ -64,6 +64,8 @@ export interface PageAnalysis {
   metaDescription: string;
   canonical: string | null;
   robotsMeta: string | null;
+  /** Bot-specific directive; Google prefers it over the generic one. */
+  googlebotMeta: string | null;
   ogTitle: string | null;
   ogDescription: string | null;
   ogImage: string | null;
@@ -122,6 +124,8 @@ export interface CrawledPageResult {
   metaDescription: string;
   canonicalUrl: string | null;
   robotsMeta: string | null;
+  /** Bot-specific directive; Google prefers it over the generic one. */
+  googlebotMeta: string | null;
   xRobotsTag: string | null;
   headerCanonicalUrl: string | null;
   ogTitle: string | null;

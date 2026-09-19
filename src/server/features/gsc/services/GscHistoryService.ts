@@ -1,4 +1,6 @@
 import { GscHistoryRepository } from "@/server/features/gsc/repositories/GscHistoryRepository";
+import type { GscDailyRow } from "@/server/features/gsc/repositories/GscHistoryRepository";
+import { GSC_MAX_ROW_LIMIT } from "@/server/features/gsc/searchAnalytics";
 import { GscService } from "@/server/features/gsc/services/GscService";
 import { isExpectedGrantFailure } from "@/server/features/gsc/services/GscService";
 
@@ -18,11 +20,26 @@ import { isExpectedGrantFailure } from "@/server/features/gsc/services/GscServic
 const DATA_LAG_DAYS = 3;
 /** Google's own retention limit, and therefore the furthest a backfill reaches. */
 const MAX_HISTORY_DAYS = 480;
-/** Days per request. Each one is a separate API call, so keep the count sane. */
+/** Days per chunk. Each chunk is one or more API calls. */
 const CHUNK_DAYS = 30;
-/** Top queries kept per day. Google's own default page size. */
-const ROWS_PER_DAY = 250;
-/** Requests per catch-up, so opening the page cannot stall for minutes. */
+/**
+ * Rows per request, and how many requests a chunk may take.
+ *
+ * This used to be a single `rowLimit: 250` for the whole 30-day chunk, under
+ * the belief that it was 250 per day. It is not: with `dimensions:
+ * ["date","query"]` a row is one (date, query) pair, so 250 rows covered
+ * roughly eight query-days out of thirty. Worse, Search Console sorts by
+ * clicks descending, so what survived was the best day of the best queries --
+ * the archive systematically kept the peaks and discarded the decline it
+ * exists to reveal.
+ *
+ * The request is paginated instead. `GSC_MAX_ROW_LIMIT` is the wrapper's cap
+ * per response, and the page budget bounds a chunk so one catch-up cannot
+ * stall the page for minutes on a large site.
+ */
+const ROWS_PER_REQUEST = GSC_MAX_ROW_LIMIT;
+const MAX_REQUESTS_PER_CHUNK = 12;
+/** Chunks per catch-up, so opening the page cannot stall for minutes. */
 const MAX_CHUNKS_PER_RUN = 4;
 
 function isoDate(date: Date): string {
@@ -66,8 +83,63 @@ type BackfillOutcome = {
   lastDate: string | null;
   /** True when the archive still has older or newer days left to fetch. */
   hasMore: boolean;
+  /**
+   * Chunks where the page budget ran out before Google ran out of rows, so
+   * those days hold the top queries rather than all of them. Reported rather
+   * than hidden: an archive that quietly drops rows is worse than one that
+   * admits it.
+   */
+  truncatedChunks: number;
   error: string | null;
 };
+
+/**
+ * Every query-day Google has for one date range, paged until it runs out.
+ *
+ * `truncated` means the page budget ran out first, so the range holds the top
+ * queries rather than all of them - reported rather than hidden.
+ */
+async function fetchRange(
+  projectId: string,
+  startDate: string,
+  endDate: string,
+): Promise<{ rows: GscDailyRow[]; truncated: boolean }> {
+  const rows: GscDailyRow[] = [];
+
+  for (let page = 0; page < MAX_REQUESTS_PER_CHUNK; page += 1) {
+    const performance = await GscService.getPerformance({
+      projectId,
+      // The date dimension is what makes this an archive rather than a
+      // snapshot: without it Google returns one aggregate for the range.
+      dimensions: ["date", "query"],
+      startDate,
+      endDate,
+      rowLimit: ROWS_PER_REQUEST,
+      startRow: page * ROWS_PER_REQUEST,
+      dataState: "final",
+    });
+
+    for (const row of performance.rows) {
+      const [date, query] = row.keys ?? [];
+      if (!date || !query) continue;
+      rows.push({
+        date,
+        query,
+        clicks: row.clicks,
+        impressions: row.impressions,
+        ctr: row.ctr,
+        position: row.position,
+      });
+    }
+
+    // A short page means Google has no more rows for this range.
+    if (performance.rows.length < ROWS_PER_REQUEST) {
+      return { rows, truncated: false };
+    }
+  }
+
+  return { rows, truncated: true };
+}
 
 /**
  * Fetch the days this project is missing, bounded so one call stays quick.
@@ -88,6 +160,7 @@ async function backfill(input: {
     earliestDate: state?.earliestDate ?? null,
     lastDate: state?.lastDate ?? null,
     hasMore: false,
+    truncatedChunks: 0,
     error: null,
   };
 
@@ -100,34 +173,15 @@ async function backfill(input: {
     const rangeEnd = chunkEnd > endDate ? endDate : chunkEnd;
 
     try {
-      const performance = await GscService.getPerformance({
-        projectId: input.projectId,
-        // The date dimension is what makes this an archive rather than a
-        // snapshot: without it Google returns one aggregate for the range.
-        dimensions: ["date", "query"],
-        startDate: cursor,
-        endDate: rangeEnd,
-        rowLimit: ROWS_PER_DAY,
-        dataState: "final",
-      });
-
-      const rows = performance.rows.flatMap((row) => {
-        const [date, query] = row.keys ?? [];
-        if (!date || !query) return [];
-        return [
-          {
-            date,
-            query,
-            clicks: row.clicks,
-            impressions: row.impressions,
-            ctr: row.ctr,
-            position: row.position,
-          },
-        ];
-      });
+      const { rows, truncated } = await fetchRange(
+        input.projectId,
+        cursor,
+        rangeEnd,
+      );
 
       await GscHistoryRepository.upsertDailyRows(input.projectId, rows);
 
+      if (truncated) outcome.truncatedChunks += 1;
       outcome.rowsWritten += rows.length;
       outcome.daysFetched += new Set(rows.map((row) => row.date)).size;
       outcome.earliestDate =

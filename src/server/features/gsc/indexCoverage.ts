@@ -17,6 +17,14 @@ export type CoverageRow = {
   url: string;
   verdict: string | null;
   coverageState: string | null;
+  /**
+   * The machine-readable reasons. `coverageState` is a free-form sentence
+   * Google localises and may reword; these are stable enums, so anything that
+   * has to branch on a reason branches on these.
+   */
+  robotsTxtState: string | null;
+  indexingState: string | null;
+  pageFetchState: string | null;
   lastCrawlTime: string | null;
   googleCanonical: string | null;
   userCanonical: string | null;
@@ -32,6 +40,7 @@ export type IndexCoverage = {
   rows: CoverageRow[];
   checked: number;
   indexed: number;
+  /** Google looked and said no: excluded, or an error on its side. */
   notIndexed: number;
   /** Crawled pages never inspected, or last inspected too long ago. */
   pending: number;
@@ -45,6 +54,9 @@ export function blankRow(url: string): CoverageRow {
     url,
     verdict: null,
     coverageState: null,
+    robotsTxtState: null,
+    indexingState: null,
+    pageFetchState: null,
     lastCrawlTime: null,
     googleCanonical: null,
     userCanonical: null,
@@ -54,6 +66,25 @@ export function blankRow(url: string): CoverageRow {
     error: null,
     checkedAt: null,
   };
+}
+
+/**
+ * Compare two URLs the way Google treats them. A declared `https://x/a/` and a
+ * chosen `https://x/a` are the same page, and reporting that as a mismatch
+ * would bury the real ones.
+ */
+function normalizeUrl(value: string): string {
+  try {
+    const url = new URL(value);
+    const path = url.pathname.replace(/\/+$/, "");
+    return `${url.protocol}//${url.host}${path}${url.search}`;
+  } catch {
+    return value.replace(/\/+$/, "");
+  }
+}
+
+function sameUrl(a: string, b: string): boolean {
+  return normalizeUrl(a) === normalizeUrl(b);
 }
 
 function isStale(checkedAt: string | null, now: Date): boolean {
@@ -81,22 +112,33 @@ export function summarizeCoverage(
   let lastCheckedAt: string | null = null;
 
   for (const row of rows) {
-    // An errored check is not an answer, so it stays in the queue.
-    if (!row.checkedAt || row.error) {
+    // An errored check is not an answer, so it stays in the queue. Neither is
+    // VERDICT_UNSPECIFIED, which is Google declining to say: counting that as
+    // "not indexed" would invent a negative Google never gave.
+    const answered =
+      row.checkedAt &&
+      !row.error &&
+      row.verdict &&
+      row.verdict !== "VERDICT_UNSPECIFIED";
+    if (!answered) {
       pending += 1;
       continue;
     }
-    if (!lastCheckedAt || row.checkedAt > lastCheckedAt) {
+    if (!lastCheckedAt || row.checkedAt! > lastCheckedAt) {
       lastCheckedAt = row.checkedAt;
     }
-    // "PASS" is Google's word for "this URL is on Google".
+    // "PASS" is Google's word for "this URL is on Google". NEUTRAL is
+    // "excluded" and FAIL is "error"; both mean it is not there.
     if (row.verdict === "PASS") indexed += 1;
     else notIndexed += 1;
 
+    // The costly case is the one where the page declared no canonical at all
+    // and Google picked a different URL anyway. Comparing only when the page
+    // declared one skipped exactly that case, so an undeclared canonical is
+    // compared against the URL itself.
     if (
       row.googleCanonical &&
-      row.userCanonical &&
-      row.googleCanonical !== row.userCanonical
+      !sameUrl(row.googleCanonical, row.userCanonical ?? row.url)
     ) {
       canonicalMismatches += 1;
     }

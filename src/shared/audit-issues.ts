@@ -55,7 +55,7 @@ export const AUDIT_ISSUE_TYPES = {
     severity: "critical",
     title: "Kırık iç bağlantı",
     explanation:
-      "Bu sayfa, hata döndüren (4xx/5xx) bir iç adrese bağlantı veriyor. Kırık bağlantılar tarama bütçesini harcar, bağlantı değerini kaybettirir ve ziyaretçiyi çıkmaza sokar. En yaygın ve en çok zarar veren teknik SEO sorunlarından biridir.",
+      "Bu sayfa, hata döndüren (4xx/5xx) bir iç adrese bağlantı veriyor. Kırık bağlantılar tarama bütçesini harcar ve ziyaretçiyi çıkmaza sokar.",
     howToFix:
       "Bağlantıyı doğru ve çalışan adrese güncelleyin ya da kaldırın. Hedef taşındıysa yönlendirmeye güvenmek yerine doğrudan yeni adrese bağlanın.",
   },
@@ -95,7 +95,7 @@ export const AUDIT_ISSUE_TYPES = {
     severity: "warning",
     title: "Yinelenen sayfa içeriği",
     explanation:
-      "İki ya da daha fazla adres birebir aynı görünür metni sunuyor. Arama motoru bir sürümü dizine alıp diğerlerini yok sayar ve sıralama sinyalleri yinelenenler arasında bölünür.",
+      "İki ya da daha fazla adres birebir aynı görünür metni sunuyor. Arama motoru bir sürümü seçip dizine alır, ve seçtiği sizin istediğiniz olmayabilir. Yinelenen içerik bir ceza değildir.",
     howToFix:
       "Yinelenenleri birleştirin: asıl adresi seçin, diğerlerinden ona rel=canonical verin ve mümkünse 301 ile yönlendirin. Sık görülen nedenler: sonda eğik çizgi farkı, adres parametreleri, http/https veya www farkı.",
   },
@@ -116,10 +116,10 @@ export const AUDIT_ISSUE_TYPES = {
       "Sayfanın ana konusunu belirten, başlık etiketiyle tutarlı tek bir H1 ekleyin.",
   },
   "multiple-h1": {
-    severity: "warning",
+    severity: "info",
     title: "Birden çok H1 başlığı",
     explanation:
-      "Sayfada birden fazla H1 var. Bu, ana konu sinyalini zayıflatır ve genelde bir şablon hatasına işaret eder (logo ile manşetin ikisinin de H1 olması gibi).",
+      "Sayfada birden fazla H1 var. Bu tek başına bir hata değildir; Google birden çok H1’i sorunsuz işler. Ancak çoğu zaman bir şablon hatasının işaretidir (logo ile manşetin ikisinin de H1 olması gibi), o yüzden bakmaya değer.",
     howToFix:
       "Ana başlık için tek bir H1 bırakın, diğerlerini H2/H3 yapın. Logo gibi başlık olmayan öğeleri başlık etiketinden çıkarın.",
   },
@@ -127,7 +127,7 @@ export const AUDIT_ISSUE_TYPES = {
     severity: "warning",
     title: "Yönlendirme zinciri",
     explanation:
-      "Son sayfaya ulaşmak için arka arkaya iki veya daha fazla yönlendirme gerekiyor. Her adım gecikme ekler, bağlantı değeri kaybettirir ve tarama bütçesi harcar; uzun zincirler hiç takip edilmeyebilir.",
+      "Son sayfaya ulaşmak için arka arkaya iki veya daha fazla yönlendirme gerekiyor. Her adım gecikme ekler ve tarama bütçesi harcar; çok uzun zincirler (10 adımdan fazla) hiç takip edilmez.",
     howToFix:
       "İlk adresi ve ona veren iç bağlantıları doğrudan son hedefe yöneltin; en çok tek yönlendirme kalsın.",
   },
@@ -148,12 +148,12 @@ export const AUDIT_ISSUE_TYPES = {
       "Tek bir asıl adres seçin ve yalnız bir yerde bildirin (genelde HTML head). Diğer bildirimi kaldırın ya da aynı adrese getirin.",
   },
   "thin-content": {
-    severity: "warning",
-    title: "İnce içerik",
+    severity: "info",
+    title: "Sayfada neredeyse hiç metin yok",
     explanation:
-      "Sayfada çok az görünür metin var. İnce sayfalar nadiren sıralanır, site genelindeki kalite değerlendirmesini aşağı çekebilir ve site istemci tarafında oluşturuluyorsa içeriğin tarayıcıya hiç görünmediğine işaret edebilir.",
+      "Bu adreste çok az görünür metin bulundu. Genelde bunun anlamı, içeriğin JavaScript ile geldiği ve sunucudan gelen HTML'de yer almadığıdır. Kelime sayısı bir kalite ölçüsü değildir: kısa olması sorun değil, boş olması sorundur.",
     howToFix:
-      "Sayfayı gerçekten faydalı içerikle genişletin, noindex yapın ya da daha güçlü bir sayfayla birleştirin. İçerik varsa ama JavaScript ile geliyorsa sunucu tarafında oluşturulduğundan emin olun.",
+      'Sayfayı tarayıcıda açıp metnin göründüğünü, sonra "kaynağı görüntüle" ile aynı metnin HTML\'de de olduğunu doğrulayın. Yoksa sunucu tarafında oluşturun. Sayfa gerçekten boşsa noindex yapın ya da daha güçlü bir sayfayla birleştirin.',
   },
   "images-missing-alt": {
     severity: "warning",
@@ -167,15 +167,15 @@ export const AUDIT_ISSUE_TYPES = {
     severity: "warning",
     title: "Yetim sayfa",
     explanation:
-      "Taranan hiçbir sayfa bu adrese bağlantı vermiyor; yalnız site haritasından bulunabiliyor. İç bağlantısı olmayan sayfalar az taranır, bağlantı değeri almaz ve kullanıcı gezinerek onlara ulaşamaz.",
+      "Taranan hiçbir sayfa bu adrese bağlantı vermiyor. İç bağlantısı olmayan sayfalar daha seyrek taranır ve kullanıcı gezinerek onlara ulaşamaz.",
     howToFix:
       "Bu sayfaya ilgili sayfalardan bağlantı verin (menü, ilgili içerik, kategori sayfaları). Dizine girmemesi gerekiyorsa site haritasından çıkarın.",
   },
   "no-outgoing-links": {
-    severity: "warning",
-    title: "Sayfada hiç dış bağlantı yok",
+    severity: "info",
+    title: "Sayfadan hiç bağlantı çıkmıyor",
     explanation:
-      "Sayfada hiç bağlantı yok, yani bir çıkmaz sokak. Sayfaya akan bağlantı değeri orada kalır, tarayıcının gidecek yeri olmaz ve kullanıcı geri düğmesine uzanır.",
+      "Sayfadan hiçbir yere bağlantı çıkmıyor, yani bir çıkmaz sokak. Tarayıcının buradan gidecek yeri olmaz ve kullanıcı geri düğmesine uzanır.",
     howToFix:
       "İlgili sayfalara, üst kategoriye ya da ana sayfaya bağlantı ekleyin. Menü JavaScript ile oluşuyorsa sunucudan gelen HTML'de de bulunduğundan emin olun.",
   },
@@ -215,7 +215,7 @@ export const AUDIT_ISSUE_TYPES = {
     severity: "info",
     title: "Başlık seviyeleri atlanmış",
     explanation:
-      "Başlık sıralaması seviye atlıyor (H2'den sonra doğrudan H4 gibi). Bu, erişilebilirlik araçları ve içerik ayrıştırma için belge yapısını zayıflatır.",
+      "Başlık sıralaması seviye atlıyor (H2'den sonra doğrudan H4 gibi). Bu, erişilebilirlik araçları ve içerik ayrıştırma için belge yapısını zayıflatabilir. Menü ve altbilgi başlıkları da bu sıralamaya karıştığı için yanlış alarm olabilir.",
     howToFix:
       "Başlık seviyelerini atlamadan birer birer inecek şekilde düzeltin (H1 → H2 → H3).",
   },
@@ -223,7 +223,7 @@ export const AUDIT_ISSUE_TYPES = {
     severity: "info",
     title: "Sunucu yanıtı yavaş",
     explanation:
-      "HTML yanıtı 1,5 saniyeden uzun sürdü. İlk bayta kadar geçen sürenin yavaşlığı sonraki tüm performans ölçümlerini aşağı çeker ve büyük sitelerde tarama hızını düşürür.",
+      "HTML yanıtı 600 milisaniyeden uzun sürdü; Lighthouse de bu eşiği kullanır. İlk bayta kadar geçen sürenin yavaşlığı sonraki tüm performans ölçümlerini aşağı çeker ve büyük sitelerde tarama hızını düşürür. Bu süre denetimi çalıştıran makineden ölçülür, ziyaretçinizin bağlantısından değil.",
     howToFix:
       "Bu adres için sunucu ve veritabanı süresine, bir de önbelleğe bakın. Önbelleklenmiş ya da statik üretilmiş HTML sunmak genelde sorunu çözer.",
   },
@@ -247,7 +247,7 @@ export const AUDIT_ISSUE_TYPES = {
     severity: "info",
     title: "Sayfa site yapısında çok derinde",
     explanation:
-      "Sayfa, ana sayfadan 5 veya daha fazla tık uzakta. Derin sayfalar daha seyrek taranır ve daha az bağlantı değeri alır.",
+      "Sayfa, ana sayfadan 5 veya daha fazla tık uzakta. Derin sayfalar daha seyrek taranır ve kullanıcının onları bulması zorlaşır.",
     howToFix:
       "Üst seviyedeki sayfalardan (kategori sayfaları, menü, toplayıcı sayfalar) bu sayfaya bağlantı ekleyerek yolu kısaltın.",
   },

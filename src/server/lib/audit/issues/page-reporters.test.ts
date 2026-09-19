@@ -26,6 +26,7 @@ function makePage(overrides: Partial<CrawledPageResult>): CrawledPageResult {
       "A reasonable meta description that says something useful about the page.",
     canonicalUrl: null,
     robotsMeta: null,
+    googlebotMeta: null,
     xRobotsTag: null,
     headerCanonicalUrl: null,
     ogTitle: null,
@@ -180,13 +181,22 @@ describe("runPageReporters", () => {
     ).not.toContain("canonicalized-page");
   });
 
-  it("flags thin content only on indexable pages", () => {
-    expect(issueTypes(makePage({ wordCount: 50 }))).toContain("thin-content");
+  it("flags an all-but-empty page, only when it is indexable", () => {
+    expect(issueTypes(makePage({ wordCount: 12 }))).toContain("thin-content");
     expect(
       issueTypes(
-        makePage({ wordCount: 50, isIndexable: false, robotsMeta: "noindex" }),
+        makePage({ wordCount: 12, isIndexable: false, robotsMeta: "noindex" }),
       ),
     ).not.toContain("thin-content");
+  });
+
+  // A short page is not a defect. The check exists to catch a page whose body
+  // arrived empty, which on most templates means the content never rendered
+  // server-side - and nav plus footer already clear the old 150-word bar.
+  it("leaves a merely short page alone", () => {
+    expect(issueTypes(makePage({ wordCount: 90 }))).not.toContain(
+      "thin-content",
+    );
   });
 
   it("flags slow responses and deep pages", () => {

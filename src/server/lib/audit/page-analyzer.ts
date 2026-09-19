@@ -61,6 +61,9 @@ export function analyzeHtml(
   let metaDescription: string | null = null;
   let canonical: string | null = null;
   let robotsMeta: string | null = null;
+  /* Google honours a bot-specific directive over the generic one, so a page
+     can be noindexed by `<meta name="googlebot">` alone. */
+  let googlebotMeta: string | null = null;
   let ogTitle: string | null = null;
   let ogDescription: string | null = null;
   let ogImage: string | null = null;
@@ -87,10 +90,15 @@ export function analyzeHtml(
 
   const handleMetaTag = (attribs: Record<string, string>) => {
     const content = attribs["content"];
-    if (attribs["name"] === "description") {
+    // htmlparser2 lowercases attribute *names*, not their values, so
+    // `<meta name="Robots">` would otherwise be dropped silently.
+    const name = attribs["name"]?.trim().toLowerCase();
+    if (name === "description") {
       metaDescription ??= content?.trim() ?? "";
-    } else if (attribs["name"] === "robots") {
+    } else if (name === "robots") {
       robotsMeta ??= content ?? null;
+    } else if (name === "googlebot") {
+      googlebotMeta ??= content ?? null;
     } else if (attribs["property"] === "og:title") {
       ogTitle ??= content ?? null;
     } else if (attribs["property"] === "og:description") {
@@ -246,6 +254,7 @@ export function analyzeHtml(
     metaDescription: metaDescription ?? "",
     canonical,
     robotsMeta,
+    googlebotMeta,
     ogTitle,
     ogDescription,
     ogImage,

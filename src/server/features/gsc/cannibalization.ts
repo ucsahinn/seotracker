@@ -2,22 +2,38 @@ import { sort } from "remeda";
 import type { GscSearchAnalyticsRow } from "@/server/lib/gscClient";
 
 /**
- * Queries where your own pages compete with each other.
+ * Queries where more than one of your pages shows up.
  *
- * Google usually shows one result per site for a query. When several of your
- * pages chase the same one, the signal splits: each page collects part of the
- * links and relevance that one of them needed to rank, and the site places
- * lower than any single page would have. The fix is editorial - merge, or
- * point one at the other - but you cannot fix what you cannot see, and
- * Search Console does not show it. The data does: ask for query and page
- * together, then look for the queries with more than one page under them.
+ * Search Console reports queries and pages as two separate lists, so a query
+ * answered by four of your pages looks exactly like one answered by a single
+ * page. Asking for both dimensions at once and grouping is what surfaces it.
+ *
+ * What this does and does not prove: it proves several of your pages appeared
+ * for one query over the period. It does not prove they appeared at the same
+ * time, because a query whose ranking page Google swapped mid-period produces
+ * the same shape. And the common "signal dilution" story - that the pages
+ * split each other's link value - is not something Google describes; what
+ * actually happens is that Google picks a page you did not intend, or keeps
+ * changing its pick. That matters for the fix: merging two pages that serve
+ * different intents makes things worse. Decide which page you meant, point
+ * internal links at it, and only merge when they genuinely answer the same
+ * question.
  */
 
-/** Below this a query is noise, and every site has thousands of those. */
-const MIN_QUERY_IMPRESSIONS = 10;
+/**
+ * Noise floors, set for a 28-day window.
+ *
+ * These started far lower and flagged almost anything: at 10 query
+ * impressions a 5% share is under one impression, so the only real gate was
+ * "3 impressions", and a query seen ten times with a 7/3 split - one
+ * impression every three days on the second page - was reported as
+ * competition. On a small site that noise was the whole table.
+ */
+const MIN_QUERY_IMPRESSIONS = 100;
 /** A page has to be a real contender, not a stray impression. */
-const MIN_PAGE_IMPRESSIONS = 3;
-const MIN_PAGE_SHARE = 0.05;
+const MIN_PAGE_IMPRESSIONS = 10;
+/** And it has to hold a real share, not a sliver. */
+const MIN_PAGE_SHARE = 0.2;
 
 type CompetingPage = {
   page: string;
@@ -30,13 +46,19 @@ export type CannibalizedQuery = {
   query: string;
   clicks: number;
   impressions: number;
-  /** Best position any of the pages reached. */
+  /** The best *average* position among the pages. Google reports no best. */
   bestPosition: number;
-  /** The page Google favours, by clicks then position. */
+  /** The page Google favours, by clicks, then impressions, then position. */
   primary: CompetingPage;
   /** The others chasing the same query, worst offender first. */
   competitors: CompetingPage[];
-  /** Share of the query's impressions that did not go to the primary page. */
+  /**
+   * Approximate share of the query's impressions that did not go to the
+   * primary page. Approximate because the denominator sums per-page
+   * impressions, and when two of your pages appear in one result set that is
+   * two page-impressions for one query-impression - which is exactly the case
+   * being measured, so it runs slightly high.
+   */
   splitShare: number;
 };
 
@@ -46,12 +68,31 @@ export type CannibalizationReport = {
   queriesAnalyzed: number;
   /** Impressions sitting on non-primary pages across every affected query. */
   splitImpressions: number;
+  /**
+   * Google returned a full page of rows, so there are more it did not send.
+   * It sorts by clicks descending and cannibalisation lives in the low-click
+   * tail, so a truncated answer is the one most likely to be missing things.
+   * Reported rather than hidden: "no conflicts" and "we did not look at all
+   * of it" must not read the same.
+   */
+  truncated: boolean;
   startDate: string;
   endDate: string;
 };
 
+/**
+ * Which page Google actually favours.
+ *
+ * Clicks first, then impressions, then position. Impressions is the key that
+ * was missing: at positions 8 to 20 almost nothing has clicks, so the tie fell
+ * to average position - and that average covers only the impressions where the
+ * page appeared. A page seen once at position 3 beat a page seen four hundred
+ * times at position 9, and the UI then told the operator to merge the working
+ * page into the outlier.
+ */
 function betterThan(a: CompetingPage, b: CompetingPage): boolean {
   if (a.clicks !== b.clicks) return a.clicks > b.clicks;
+  if (a.impressions !== b.impressions) return a.impressions > b.impressions;
   return a.position < b.position;
 }
 

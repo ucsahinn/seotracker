@@ -197,7 +197,7 @@ function TotalCard({
     // Same shape as the dashboard's MetricTile: these are the same four
     // numbers, so they should not look like two different components.
     <div className="flex min-w-0 flex-col gap-1.5 px-5 py-4">
-      <p className="truncate text-xs font-medium uppercase tracking-wider text-base-content/45">
+      <p className="truncate text-xs font-medium uppercase tracking-wider text-[var(--text-subtle)]">
         {label}
       </p>
       <div className="flex items-baseline gap-2">

@@ -1,6 +1,6 @@
 import { and, eq, inArray } from "drizzle-orm";
 import { db } from "@/db";
-import { auditPages, gscUrlInspections } from "@/db/schema";
+import { auditPages, audits, gscUrlInspections } from "@/db/schema";
 import {
   DAILY_QUOTA,
   selectDueUrls,
@@ -22,12 +22,27 @@ import { GscService } from "@/server/features/gsc/services/GscService";
  * The decisions live in `../indexCoverage`; this module is the I/O around them.
  */
 
-/** Only pages worth asking Google about: ones it could actually have indexed. */
-async function indexableUrlsForAudit(auditId: string): Promise<string[]> {
+/**
+ * Only pages worth asking Google about: ones it could actually have indexed.
+ *
+ * Joined through `audits` so the audit has to belong to the project. Without
+ * that join an audit id from another project would resolve here, and its URLs
+ * would then be inspected against *this* project's Search Console property and
+ * stored under this project's key. `audit_pages` carries no project column, so
+ * the join is the only way to scope it - which is how every other audit query
+ * in this codebase does it.
+ */
+async function indexableUrlsForAudit(
+  auditId: string,
+  projectId: string,
+): Promise<string[]> {
   const rows = await db
     .select({ url: auditPages.url, indexable: auditPages.isIndexable })
     .from(auditPages)
-    .where(eq(auditPages.auditId, auditId));
+    .innerJoin(audits, eq(audits.id, auditPages.auditId))
+    .where(
+      and(eq(auditPages.auditId, auditId), eq(audits.projectId, projectId)),
+    );
   return rows.filter((row) => row.indexable).map((row) => row.url);
 }
 
@@ -52,6 +67,9 @@ async function storedFor(
         url: row.url,
         verdict: row.verdict,
         coverageState: row.coverageState,
+        robotsTxtState: row.robotsTxtState,
+        indexingState: row.indexingState,
+        pageFetchState: row.pageFetchState,
         lastCrawlTime: row.lastCrawlTime,
         googleCanonical: row.googleCanonical,
         userCanonical: row.userCanonical,
@@ -70,7 +88,7 @@ export async function getIndexCoverage(input: {
   projectId: string;
   auditId: string;
 }): Promise<IndexCoverage> {
-  const urls = await indexableUrlsForAudit(input.auditId);
+  const urls = await indexableUrlsForAudit(input.auditId, input.projectId);
   return summarizeCoverage(urls, await storedFor(input.projectId, urls));
 }
 
@@ -85,7 +103,7 @@ export async function refreshIndexCoverage(input: {
   now?: Date;
 }): Promise<{ inspected: number; remaining: number; quotaPerDay: number }> {
   const now = input.now ?? new Date();
-  const urls = await indexableUrlsForAudit(input.auditId);
+  const urls = await indexableUrlsForAudit(input.auditId, input.projectId);
   const stored = await storedFor(input.projectId, urls);
   const { batch, remaining } = selectDueUrls(urls, stored, now);
 
@@ -96,6 +114,11 @@ export async function refreshIndexCoverage(input: {
   const { results } = await GscService.inspectUrls({
     projectId: input.projectId,
     urls: batch,
+    // Google localises coverageState, so asking for Turkish means the sentence
+    // explaining a refusal arrives in the UI's language. The local map in
+    // shared/gsc-coverage-states.ts stays as the fallback for the English
+    // phrases already stored, and for anything Google has not translated.
+    languageCode: "tr",
   });
   const checkedAt = now.toISOString();
 

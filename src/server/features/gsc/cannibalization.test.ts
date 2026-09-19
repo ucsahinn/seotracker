@@ -76,6 +76,35 @@ describe("findCannibalizedQueries", () => {
     expect(result.rows[0]?.primary.page).toBe("/earns-more");
   });
 
+  // The tie-break used to jump straight from clicks to position, and position
+  // is an average over only the impressions where a page appeared. A page seen
+  // once near the top beat a page seen hundreds of times.
+  it("prefers the page Google showed more often over one it showed once high", () => {
+    const result = findCannibalizedQueries([
+      row("bot", "/seen-once-high", 400, 0, 3),
+      row("bot", "/seen-often", 400, 0, 9),
+    ]);
+
+    expect(result.rows[0]?.primary.page).toBe("/seen-once-high");
+
+    const withImpressions = findCannibalizedQueries([
+      row("bot", "/seen-once-high", 250, 0, 3),
+      row("bot", "/seen-often", 550, 0, 9),
+    ]);
+
+    expect(withImpressions.rows[0]?.primary.page).toBe("/seen-often");
+  });
+
+  // A page holding a sliver of a query is not competing with anything.
+  it("ignores a page below the share floor even when it clears the count", () => {
+    const result = findCannibalizedQueries([
+      row("ayakkabı", "/a", 900, 40),
+      row("ayakkabı", "/sliver", 40),
+    ]);
+
+    expect(result.rows).toEqual([]);
+  });
+
   it("falls back to position when neither page has a click", () => {
     const result = findCannibalizedQueries([
       row("bot", "/lower", 400, 0, 12),

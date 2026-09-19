@@ -27,11 +27,11 @@ export function MetricTile({
 }) {
   return (
     <div className="flex min-w-0 flex-col gap-1.5 px-5 py-4">
-      <p className="truncate text-xs font-medium uppercase tracking-wider text-base-content/45">
+      <p className="truncate text-xs font-medium uppercase tracking-wider text-[var(--text-subtle)]">
         {label}
       </p>
       {value === null ? (
-        <p className="text-2xl font-semibold text-base-content/25">--</p>
+        <p className="text-2xl font-semibold text-[var(--text-subtle)]">--</p>
       ) : (
         <div className="flex items-baseline gap-2">
           <p className="truncate text-2xl font-semibold tracking-tight">
@@ -42,7 +42,9 @@ export function MetricTile({
       )}
       {/* Not truncated: a hint is usually the one link that makes the tile
           useful, and half a link is worse than a second line. */}
-      {hint ? <p className="text-xs text-base-content/45">{hint}</p> : null}
+      {hint ? (
+        <p className="text-xs text-[var(--text-subtle)]">{hint}</p>
+      ) : null}
     </div>
   );
 }

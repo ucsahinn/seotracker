@@ -28,8 +28,16 @@ const TITLE_MAX_CHARS = 60;
 const TITLE_MIN_CHARS = 10;
 const META_DESCRIPTION_MAX_CHARS = 160;
 const META_DESCRIPTION_MIN_CHARS = 70;
-const THIN_CONTENT_WORDS = 150;
-const SLOW_RESPONSE_MS = 1500;
+/* 150 was an SEO-tool convention with no Google basis, and `wordCount` counts
+   every text node in the body: nav, sidebar, cookie banner, footer. On most
+   templates that chrome alone clears 150, so the check never fired on the
+   genuinely empty pages it exists to catch, and fired on short minimal ones
+   instead. 50 is low enough that only a page with essentially no body text
+   trips it - which is the thing this number can actually prove. */
+const THIN_CONTENT_WORDS = 50;
+/* Matches Lighthouse's own server-response-time audit, which this tool also
+   shows. At 1500 a page could pass here and fail there in the same report. */
+const SLOW_RESPONSE_MS = 600;
 const DEEP_PAGE_DEPTH = 5;
 
 function hasHeadingLevelSkip(headingOrder: number[]): boolean {

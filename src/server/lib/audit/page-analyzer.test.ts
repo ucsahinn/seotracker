@@ -18,6 +18,8 @@ function analyzeHtmlWithCheerio(html: string, pageUrl: string): PageAnalysis {
     $('meta[name="description"]').first().attr("content")?.trim() ?? "";
   const canonical = $('link[rel="canonical"]').first().attr("href") ?? null;
   const robotsMeta = $('meta[name="robots"]').first().attr("content") ?? null;
+  const googlebotMeta =
+    $('meta[name="googlebot"]').first().attr("content") ?? null;
   const ogTitle =
     $('meta[property="og:title"]').first().attr("content") ?? null;
   const ogDescription =
@@ -93,6 +95,7 @@ function analyzeHtmlWithCheerio(html: string, pageUrl: string): PageAnalysis {
     metaDescription,
     canonical,
     robotsMeta,
+    googlebotMeta,
     ogTitle,
     ogDescription,
     ogImage,

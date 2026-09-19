@@ -21,6 +21,7 @@ function page(
     metaDescription: "",
     canonicalUrl: null,
     robotsMeta: null,
+    googlebotMeta: null,
     xRobotsTag: null,
     headerCanonicalUrl: null,
     ogTitle: null,

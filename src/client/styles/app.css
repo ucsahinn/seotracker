@@ -43,12 +43,13 @@
   --shadow-float:
     0 2px 4px oklch(25% 0.02 265 / 0.05), 0 8px 24px oklch(25% 0.02 265 / 0.08);
 
-  /* Charts read these so a graph never hardcodes a colour again. */
-  --chart-line: var(--color-primary);
-  --chart-grid: oklch(0% 0 0 / 0.07);
-  --chart-axis: oklch(45% 0.01 265 / 0.75);
-  --chart-fill-from: 0.16;
-  --chart-fill-to: 0.01;
+  /* Muted text. The alpha that reads well on a dark surface is far too weak
+     on a light one, because of the +0.05 floor in the contrast formula, so
+     these are set per theme rather than reusing one opacity ladder. */
+  --text-muted: oklch(23% 0.012 265 / 0.78);
+  --text-subtle: oklch(23% 0.012 265 / 0.62);
+  /* A control's perimeter has to be visible; a panel's does not. */
+  --control-border: oklch(0% 0 0 / 0.42);
 }
 
 html[data-theme="seotracker-dark"] {
@@ -57,10 +58,9 @@ html[data-theme="seotracker-dark"] {
   --shadow-raise: 0 1px 2px oklch(0% 0 0 / 0.4), 0 2px 6px oklch(0% 0 0 / 0.3);
   --shadow-float:
     0 2px 4px oklch(0% 0 0 / 0.4), 0 8px 24px oklch(0% 0 0 / 0.45);
-  --chart-grid: oklch(100% 0 0 / 0.08);
-  --chart-axis: oklch(80% 0.01 265 / 0.6);
-  --chart-fill-from: 0.2;
-  --chart-fill-to: 0.02;
+  --text-muted: oklch(93% 0.004 265 / 0.62);
+  --text-subtle: oklch(93% 0.004 265 / 0.48);
+  --control-border: oklch(100% 0 0 / 0.34);
 }
 
 @plugin "daisyui" {
@@ -81,17 +81,20 @@ html[data-theme="seotracker-dark"] {
   --color-primary: oklch(54% 0.17 256);
   --color-primary-content: oklch(100% 0 0);
   --color-secondary: oklch(55% 0.15 145);
-  --color-secondary-content: oklch(100% 0 0);
+  /* Dark ink, not white: white on these mid-lightness fills lands between
+     2.7:1 and 4.0:1, and the amber one cannot carry white text at any usable
+     lightness. Error and primary are dark enough to keep white. */
+  --color-secondary-content: oklch(26% 0.06 145);
   --color-accent: oklch(54% 0.17 256);
   --color-accent-content: oklch(100% 0 0);
   --color-neutral: oklch(22% 0.01 265);
   --color-neutral-content: oklch(99% 0 0);
   --color-info: oklch(62% 0.13 240);
-  --color-info-content: oklch(100% 0 0);
+  --color-info-content: oklch(24% 0.06 240);
   --color-success: oklch(58% 0.14 155);
-  --color-success-content: oklch(100% 0 0);
+  --color-success-content: oklch(24% 0.06 155);
   --color-warning: oklch(70% 0.14 70);
-  --color-warning-content: oklch(100% 0 0);
+  --color-warning-content: oklch(28% 0.06 70);
   --color-error: oklch(58% 0.19 25);
   --color-error-content: oklch(100% 0 0);
   --radius-selector: 0.5rem;
@@ -156,11 +159,15 @@ select {
 }
 
 /* Global input focus styling - use primary color instead of default ring */
+/* The tint and border are reinforcement, not a replacement for the ring. This
+   rule used to also set `outline: none`, and because the global focus rule
+   below is wrapped in `:where()` (zero specificity) that won it: selects got a
+   visible ring and the text fields beside them got none. Keyboard users lost
+   the ring on exactly the controls they type into. */
 .input:focus,
 .input:focus-visible,
 .textarea:focus,
 .textarea:focus-visible {
-  outline: none;
   border-color: var(--color-primary);
   background-color: color-mix(in oklab, var(--color-primary) 10%, transparent);
 }
@@ -175,25 +182,11 @@ select {
   }
 }
 
-/* Override DaisyUI dock's fixed positioning to use flex layout instead */
-/* This allows the TabBar to work correctly with Safari's browser toolbar */
-.dock {
-  position: relative;
-  bottom: auto;
-  left: auto;
-  right: auto;
-  border-top: none;
-  height: 4rem;
-  padding-bottom: 0;
-}
-
 /* Touch device optimizations */
 @media (pointer: coarse) {
-  html {
-    touch-action: none;
-  }
+  html,
   body {
-    touch-action: pan-x pan-y;
+    overscroll-behavior: none;
   }
 }
 
@@ -478,4 +471,42 @@ h3 {
    one rule thins every icon in the app. */
 svg[class*="lucide"] {
   stroke-width: 1.75px;
+}
+
+/* daisyUI grows every <p> inside a card body, so a card's own body text pushes
+   card-actions to the bottom. The selector is a descendant one, so it also
+   reaches paragraphs nested in unrelated flex columns further down and
+   stretches them to absorb the leftover height - which silently knocked the
+   numbers in a metric row onto three different baselines. Scope it back to the
+   direct children it was written for. */
+.card-body :where(p) {
+  flex-grow: 0;
+}
+.card-body > :where(p) {
+  flex-grow: 1;
+}
+
+/* Controls need a perimeter people can see. The hairline is right for a panel,
+   which also has a shadow and a background change to separate it, but an input
+   is base-100 on base-100 and the border is the only thing saying "type here". */
+.input,
+.select,
+.textarea {
+  border-color: var(--control-border);
+}
+html[data-theme="seotracker"]
+  .btn:not(
+    .btn-primary,
+    .btn-error,
+    .btn-neutral,
+    .btn-ghost,
+    .btn-outline,
+    .btn-soft
+  ) {
+  --btn-border: var(--control-border);
+}
+
+/* Table headers are the most repeated text in the app. */
+.table thead th {
+  color: var(--text-subtle);
 }

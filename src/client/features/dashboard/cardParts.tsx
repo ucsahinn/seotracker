@@ -23,7 +23,7 @@ export function CardShell({
       <div className="border-t border-base-300 p-5">
         {children}
         {stamp ? (
-          <p className="mt-4 text-[11px] text-base-content/45">{stamp}</p>
+          <p className="mt-4 text-[11px] text-[var(--text-subtle)]">{stamp}</p>
         ) : null}
       </div>
     </div>
@@ -60,7 +60,7 @@ export function Stat({
     tone === "success" ? "text-success" : tone === "error" ? "text-error" : "";
   return (
     <div>
-      <p className="text-xs font-medium uppercase tracking-wider text-base-content/45">
+      <p className="text-xs font-medium uppercase tracking-wider text-[var(--text-subtle)]">
         {label}
       </p>
       <p className={`text-2xl font-semibold tabular-nums ${toneClass}`}>

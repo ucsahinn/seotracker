@@ -1,3 +1,4 @@
+import { coverageStateLabel } from "@/shared/gsc-coverage-states";
 import { sort } from "remeda";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ExternalLink, Loader2, RefreshCw, SearchCheck } from "lucide-react";
@@ -267,9 +268,11 @@ function VerdictBadge({
       className="badge badge-sm border-warning/30 bg-warning/10 text-warning"
       // Google's own sentence explains why, and it is more precise than
       // anything we could paraphrase.
+      // Google's own wording, kept as the tooltip so the exact phrase is
+      // still searchable when someone goes looking in Search Console.
       title={coverageState ?? undefined}
     >
-      {coverageState ?? "Dizinde değil"}
+      {coverageStateLabel(coverageState) ?? "Dizinde değil"}
     </span>
   );
 }

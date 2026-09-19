@@ -3,7 +3,7 @@ import { db } from "@/db";
 import { executeInBatches, runBatch } from "@/db/runBatch";
 import { gscArchiveState, gscQueryDaily } from "@/db/schema";
 
-type GscDailyRow = {
+export type GscDailyRow = {
   date: string;
   query: string;
   clicks: number;

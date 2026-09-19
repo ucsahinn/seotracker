@@ -100,7 +100,7 @@ export function Sidebar({ projectId, onNavigate, onClose }: SidebarProps) {
       <nav className="min-h-0 flex-1 overflow-y-auto px-2 py-2">
         {navGroups.map((group) => (
           <div key={group.label} className="mb-1">
-            <div className="px-3 pb-1 pt-3 text-xs font-semibold uppercase tracking-wider text-base-content/40">
+            <div className="px-3 pb-1 pt-3 text-xs font-semibold uppercase tracking-wider text-[var(--text-subtle)]">
               {group.label}
             </div>
             {group.items.map((item) => {

@@ -173,11 +173,21 @@ export async function crawlPage(
     // not just when an audit actually crawls.
     const { analyzeHtml } = await import("@/server/lib/audit/page-analyzer");
     const analysis = analyzeHtml(body, url, statusCode, responseTimeMs);
-    const robotsDirectives = [analysis.robotsMeta, xRobotsTag]
-      .filter(Boolean)
-      .join(",")
-      .toLowerCase();
-    const isIndexable = !robotsDirectives.includes("noindex");
+    /* A token set, not a substring search. `includes("noindex")` missed
+       `content="none"`, which Google documents as `noindex, nofollow`, and it
+       would match any future directive that merely contains the word. The
+       googlebot-specific tag counts too: Google prefers it over the generic
+       one, so a page can be noindexed by that alone. */
+    const robotsDirectives = new Set(
+      [analysis.robotsMeta, analysis.googlebotMeta, xRobotsTag]
+        .filter(Boolean)
+        .join(",")
+        .toLowerCase()
+        .split(/[,\s]+/)
+        .filter(Boolean),
+    );
+    const isIndexable =
+      !robotsDirectives.has("noindex") && !robotsDirectives.has("none");
     const headingCount = (level: number) =>
       analysis.headingOrder.filter((h) => h === level).length;
 
@@ -196,6 +206,7 @@ export async function crawlPage(
         ? (normalizeUrl(analysis.canonical, url) ?? analysis.canonical)
         : null,
       robotsMeta: analysis.robotsMeta,
+      googlebotMeta: analysis.googlebotMeta,
       xRobotsTag,
       headerCanonicalUrl,
       ogTitle: analysis.ogTitle,
@@ -304,6 +315,7 @@ function emptyPageResult(input: {
     metaDescription: "",
     canonicalUrl: null,
     robotsMeta: null,
+    googlebotMeta: null,
     xRobotsTag: input.xRobotsTag,
     headerCanonicalUrl: input.headerCanonicalUrl,
     ogTitle: null,
