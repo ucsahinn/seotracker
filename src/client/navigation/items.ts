@@ -12,7 +12,7 @@ import { GoogleGlyphMuted } from "@/client/features/gsc/GoogleGlyph";
 const projectNavItems = [
   {
     to: "/p/$projectId" as const,
-    label: "Dashboard",
+    label: "Panel",
     icon: LayoutDashboard,
     // Without exact matching, the index path is a prefix of every project
     // route and the Dashboard item would render active everywhere.
@@ -20,27 +20,27 @@ const projectNavItems = [
   },
   {
     to: "/p/$projectId/saved" as const,
-    label: "Saved Keywords",
+    label: "Kayıtlı Kelimeler",
     icon: Bookmark,
   },
   {
     to: "/p/$projectId/search-performance" as const,
-    label: "GSC Insights",
+    label: "Arama Performansı",
     icon: GoogleGlyphMuted,
   },
   {
     to: "/p/$projectId/audit" as const,
-    label: "Site Audit",
+    label: "Site Denetimi",
     icon: ClipboardCheck,
   },
   {
     to: "/p/$projectId/reports" as const,
-    label: "Reports",
+    label: "Raporlar",
     icon: FileText,
   },
   {
     to: "/p/$projectId/context" as const,
-    label: "Context",
+    label: "Proje Bilgisi",
     icon: Brain,
   },
 ] as const;
@@ -49,14 +49,14 @@ const projectNavItems = [
 // is selected, and on its own (connectNavGroup) when none is.
 const aiNavItem = linkOptions({
   to: "/ai" as const,
-  label: "Agent setup",
+  label: "Ajan kurulumu",
   icon: Bot,
 });
 
 // Shown only when no project is selected; with a project, Agent setup lives in
 // the "AI" group below.
 export const connectNavGroup = {
-  label: "AI",
+  label: "Yapay Zeka",
   items: [aiNavItem],
 };
 
@@ -79,11 +79,11 @@ export function getProjectNavGroups(projectId: string) {
 
   return [
     {
-      label: "Overview",
+      label: "Genel",
       items: [byPath("/p/$projectId")],
     },
     {
-      label: "My Site",
+      label: "Sitem",
       items: [
         byPath("/p/$projectId/search-performance"),
         byPath("/p/$projectId/saved"),
@@ -91,7 +91,7 @@ export function getProjectNavGroups(projectId: string) {
       ],
     },
     {
-      label: "AI",
+      label: "Yapay Zeka",
       items: [
         byPath("/p/$projectId/reports"),
         byPath("/p/$projectId/context"),

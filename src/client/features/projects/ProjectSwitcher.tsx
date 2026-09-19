@@ -362,7 +362,7 @@ export function ProjectSwitcher({
                 }}
               >
                 <Plus className="size-4" />
-                New project
+                Yeni proje
               </button>
             </li>
             <li>

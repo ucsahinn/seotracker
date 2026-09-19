@@ -39,7 +39,7 @@ function ReportsPage() {
       <div className="mx-auto max-w-5xl space-y-4">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <h1 className="text-2xl font-semibold">Reports</h1>
+            <h1 className="text-2xl font-semibold">Raporlar</h1>
             <p className="text-sm text-base-content/70">
               HTML reports your agents saved to this project.
             </p>

@@ -16,10 +16,10 @@ export function SavedKeywordsHeader({
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
       <div>
-        <h1 className="text-2xl font-semibold">Saved Keywords</h1>
+        <h1 className="text-2xl font-semibold">Kayıtlı Kelimeler</h1>
         <p className="text-sm text-base-content/70">
-          Keep an eye on the queries that matter, organize them with tags, and
-          revisit when you&apos;re ready to act.
+          Önemsediğiniz sorguları bir arada tutun, etiketleyin ve harekete
+          geçmeye hazır olduğunuzda geri dönün.
         </p>
       </div>
 

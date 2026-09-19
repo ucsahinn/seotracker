@@ -55,28 +55,28 @@ export function buildDimensionColumns(
     }),
     dimensionHelper.accessor("clicks", {
       header: ({ column }) => (
-        <SortableHeader column={column} label="Clicks" align="right" />
+        <SortableHeader column={column} label="Tıklama" align="right" />
       ),
       cell: ({ getValue }) => formatCount(getValue()),
       meta: rightAligned,
     }),
     dimensionHelper.accessor("impressions", {
       header: ({ column }) => (
-        <SortableHeader column={column} label="Impressions" align="right" />
+        <SortableHeader column={column} label="Gösterim" align="right" />
       ),
       cell: ({ getValue }) => formatCount(getValue()),
       meta: rightAligned,
     }),
     dimensionHelper.accessor("ctr", {
       header: ({ column }) => (
-        <SortableHeader column={column} label="CTR" align="right" />
+        <SortableHeader column={column} label="TO" align="right" />
       ),
       cell: ({ getValue }) => formatCtr(getValue()),
       meta: rightAligned,
     }),
     dimensionHelper.accessor("position", {
       header: ({ column }) => (
-        <SortableHeader column={column} label="Position" align="right" />
+        <SortableHeader column={column} label="Sıra" align="right" />
       ),
       cell: ({ getValue }) => formatPosition(getValue()),
       meta: rightAligned,
@@ -124,21 +124,21 @@ export function buildStrikingColumns(
     }),
     strikingHelper.accessor("impressions", {
       header: ({ column }) => (
-        <SortableHeader column={column} label="Impressions" align="right" />
+        <SortableHeader column={column} label="Gösterim" align="right" />
       ),
       cell: ({ getValue }) => formatCount(getValue()),
       meta: rightAligned,
     }),
     strikingHelper.accessor("clicks", {
       header: ({ column }) => (
-        <SortableHeader column={column} label="Clicks" align="right" />
+        <SortableHeader column={column} label="Tıklama" align="right" />
       ),
       cell: ({ getValue }) => formatCount(getValue()),
       meta: rightAligned,
     }),
     strikingHelper.accessor("position", {
       header: ({ column }) => (
-        <SortableHeader column={column} label="Position" align="right" />
+        <SortableHeader column={column} label="Sıra" align="right" />
       ),
       cell: ({ getValue }) => formatPosition(getValue()),
       meta: rightAligned,

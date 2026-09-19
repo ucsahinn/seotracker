@@ -231,17 +231,17 @@ export function SearchPerformancePage({ projectId }: { projectId: string }) {
                   <TabButton
                     active={tab === "striking"}
                     onClick={() => setTab("striking")}
-                    label={`Striking distance (${report.strikingDistance.length})`}
+                    label={`Eşiğe yakın (${report.strikingDistance.length})`}
                   />
                   <TabButton
                     active={tab === "queries"}
                     onClick={() => setTab("queries")}
-                    label="Queries"
+                    label="Sorgular"
                   />
                   <TabButton
                     active={tab === "pages"}
                     onClick={() => setTab("pages")}
-                    label="Pages"
+                    label="Sayfalar"
                   />
                 </div>
                 <div className="flex flex-wrap items-center gap-2">

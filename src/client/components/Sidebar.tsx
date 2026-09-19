@@ -83,7 +83,7 @@ export function Sidebar({ projectId, onNavigate, onClose }: SidebarProps) {
             type="button"
             onClick={onClose}
             className="btn btn-ghost btn-sm btn-circle"
-            aria-label="Close sidebar"
+            aria-label="Kenar çubuğunu kapat"
           >
             <X className="h-5 w-5" />
           </button>
@@ -137,7 +137,7 @@ function SidebarFooter({ onNavigate }: { onNavigate?: () => void }) {
     <div className="shrink-0 border-t border-base-300 px-2 py-2 pb-safe">
       <SidebarNavLink
         icon={CircleHelp}
-        label="Help & Community"
+        label="Yardım"
         onNavigate={onNavigate}
         linkProps={{ to: "/support" }}
       />
@@ -148,7 +148,7 @@ function SidebarFooter({ onNavigate }: { onNavigate?: () => void }) {
             type="button"
             tabIndex={0}
             className={`${navItemClass} w-full`}
-            aria-label="Open account menu"
+            aria-label="Hesap menüsünü aç"
           >
             <User className="h-4 w-4 shrink-0" />
             <span className="truncate" data-ph-mask>
@@ -162,7 +162,7 @@ function SidebarFooter({ onNavigate }: { onNavigate?: () => void }) {
             <li>
               <Link to="/settings" onClick={closeMenu}>
                 <Settings className="h-4 w-4" />
-                Settings
+                Ayarlar
               </Link>
             </li>
             <ThemePreferenceMenuItems />
@@ -171,7 +171,7 @@ function SidebarFooter({ onNavigate }: { onNavigate?: () => void }) {
       ) : (
         <SidebarNavLink
           icon={Settings}
-          label="Settings"
+          label="Ayarlar"
           onNavigate={onNavigate}
           linkProps={{ to: "/settings" }}
         />

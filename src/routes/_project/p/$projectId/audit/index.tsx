@@ -139,7 +139,7 @@ function AuditDetail({
           </button>
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
             <h1 className="text-2xl font-semibold">
-              {status ? extractHostname(status.startUrl) : "Site Audit"}
+              {status ? extractHostname(status.startUrl) : "Site Denetimi"}
             </h1>
             {status?.status !== "running" && status && (
               <StatusBadge status={status.status} />

@@ -36,7 +36,7 @@ function ProjectsPage() {
       <div className="mx-auto w-full max-w-2xl space-y-6">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">Projects</h1>
+            <h1 className="text-2xl font-bold tracking-tight">Projeler</h1>
             <p className="mt-1 text-sm text-base-content/60">
               Each project has its own Search Console, rank tracking, and
               audits.
@@ -48,7 +48,7 @@ function ProjectsPage() {
             onClick={() => setCreating(true)}
           >
             <Plus className="size-4" />
-            New project
+            Yeni proje
           </button>
         </div>
 

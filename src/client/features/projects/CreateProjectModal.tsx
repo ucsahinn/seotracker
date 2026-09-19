@@ -69,7 +69,7 @@ export function CreateProjectModal({ onClose }: { onClose: () => void }) {
     >
       <form onSubmit={handleSubmit} className="space-y-4">
         <h2 id="create-project-title" className="text-lg font-semibold">
-          New project
+          Yeni proje
         </h2>
 
         <label className="flex flex-col gap-1.5 text-sm">
@@ -126,7 +126,7 @@ export function CreateProjectModal({ onClose }: { onClose: () => void }) {
             className="btn btn-primary btn-sm"
             disabled={isPending}
           >
-            Create project
+            Proje oluştur
           </button>
         </div>
       </form>

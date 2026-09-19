@@ -117,7 +117,8 @@ function LaunchOptions({
         </launchForm.Field>
       </div>
       <p className="text-xs text-base-content/50">
-        Enter any value from {MIN_PAGES} to {maxPagesLimit.toLocaleString()}.
+        {MIN_PAGES} ile {maxPagesLimit.toLocaleString()} arasında bir değer
+        girin.
       </p>
     </div>
   );

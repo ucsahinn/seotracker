@@ -12,9 +12,9 @@ const THEME_OPTIONS: {
   label: string;
   icon: typeof Sun;
 }[] = [
-  { value: "system", label: "System", icon: Monitor },
-  { value: "light", label: "Light", icon: Sun },
-  { value: "dark", label: "Dark", icon: Moon },
+  { value: "system", label: "Sistem", icon: Monitor },
+  { value: "light", label: "Açık", icon: Sun },
+  { value: "dark", label: "Koyu", icon: Moon },
 ];
 
 function PersonalSettings() {
@@ -23,12 +23,12 @@ function PersonalSettings() {
   return (
     <div className="space-y-10">
       <section className="space-y-3">
-        <h2 className="text-sm font-medium text-base-content/50">Appearance</h2>
+        <h2 className="text-sm font-medium text-base-content/50">Görünüm</h2>
         <div className="flex items-center justify-between gap-6">
-          <span className="text-sm">Theme</span>
+          <span className="text-sm">Tema</span>
           <div
             role="radiogroup"
-            aria-label="Theme preference"
+            aria-label="Tema tercihi"
             className="flex gap-0.5 rounded-lg bg-base-200 p-0.5"
           >
             {THEME_OPTIONS.map((option) => {
@@ -58,9 +58,9 @@ function PersonalSettings() {
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-sm font-medium text-base-content/50">About</h2>
+        <h2 className="text-sm font-medium text-base-content/50">Hakkında</h2>
         <div className="flex items-center justify-between gap-6">
-          <span className="text-sm">Version</span>
+          <span className="text-sm">Sürüm</span>
           <span className="font-mono text-sm text-base-content/60">
             v{version}
           </span>

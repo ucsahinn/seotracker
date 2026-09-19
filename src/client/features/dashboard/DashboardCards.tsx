@@ -56,7 +56,7 @@ export function GscCard({
 
   return (
     <CardShell
-      title="Search performance"
+      title="Arama performansı"
       stamp="Google Search Console · last 28 days"
       action={
         <Link

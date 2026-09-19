@@ -45,7 +45,7 @@ function strikingExportTable(report: Report): ExportTable {
   const stamp = `${report.range.startDate}-to-${report.range.endDate}`;
   return {
     filename: `search-performance-striking-distance-${stamp}.csv`,
-    headers: ["Query", "Page", "Impressions", "Clicks", "Position"],
+    headers: ["Sorgu", "Sayfa", "Gösterim", "Tıklama", "Sıra"],
     rows: report.strikingDistance.map((row) => [
       row.query,
       row.page,
@@ -64,13 +64,7 @@ function dimensionExportTable(
   const isPage = dimension === "page";
   return {
     filename: `search-performance-${isPage ? "pages" : "queries"}-${stamp}.csv`,
-    headers: [
-      isPage ? "Page" : "Query",
-      "Clicks",
-      "Impressions",
-      "CTR",
-      "Position",
-    ],
+    headers: [isPage ? "Sayfa" : "Sorgu", "Tıklama", "Gösterim", "TO", "Sıra"],
     rows: rows.map((row) => [
       row.key,
       row.clicks,
@@ -156,29 +150,29 @@ function positionDelta(current: number, previous: number): Delta {
 
 export function TotalsCards({ report }: { report: Report }) {
   const { totals, prevTotals, range } = report;
-  const deltaTitle = `vs ${range.prevStartDate} to ${range.prevEndDate}`;
+  const deltaTitle = `${range.prevStartDate} - ${range.prevEndDate} dönemine göre`;
   return (
     <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
       <TotalCard
-        label="Clicks"
+        label="Tıklama"
         value={formatCount(totals.clicks)}
         delta={percentDelta(totals.clicks, prevTotals.clicks)}
         deltaTitle={deltaTitle}
       />
       <TotalCard
-        label="Impressions"
+        label="Gösterim"
         value={formatCount(totals.impressions)}
         delta={percentDelta(totals.impressions, prevTotals.impressions)}
         deltaTitle={deltaTitle}
       />
       <TotalCard
-        label="CTR"
+        label="TO"
         value={formatCtr(totals.ctr)}
         delta={percentDelta(totals.ctr, prevTotals.ctr)}
         deltaTitle={deltaTitle}
       />
       <TotalCard
-        label="Avg position"
+        label="Ort. sıra"
         value={formatPosition(totals.position)}
         delta={positionDelta(totals.position, prevTotals.position)}
         deltaTitle={deltaTitle}

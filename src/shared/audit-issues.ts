@@ -4,6 +4,9 @@
  * Shared between the server (issue engine, MCP tools) and the client
  * (issues UI, CSV export). Each issue row in `audit_issues` references one
  * of these types by id.
+ *
+ * The ids stay in English because they are stored in the database and read by
+ * agents; the prose is what the operator reads, so it is Turkish.
  */
 
 export type IssueSeverity = "critical" | "warning" | "info";
@@ -18,235 +21,235 @@ interface AuditIssueDescriptor {
 export const AUDIT_ISSUE_TYPES = {
   "blocked-page": {
     severity: "critical",
-    title: "Crawler was blocked",
+    title: "Tarayıcı engellendi",
     explanation:
-      "The site returned a bot challenge or access denial (e.g. a Cloudflare challenge or a 403) instead of the page. We report this honestly rather than pretending the page is broken — but it means this page could not be audited, and other crawlers like search engines may face similar friction.",
+      "Sayfa yerine bir bot doğrulaması ya da erişim reddi döndü (Cloudflare doğrulaması veya 403 gibi). Bu sayfa denetlenemedi. Arama motorlarının tarayıcıları da benzer bir engelle karşılaşıyor olabilir.",
     howToFix:
-      'If you own this site, allowlist the "seotracker-audit" user agent in your WAF/bot-protection settings (on Cloudflare: a WAF custom rule that skips bot protection when the user agent contains "seotracker-audit"; on some free tiers you may need to relax bot protection). Then re-run the audit.',
+      'Site sizinse "seotracker-audit" kullanıcı aracısını güvenlik duvarı veya bot koruması ayarlarınızda izin listesine ekleyin (Cloudflare\'de: kullanıcı aracısı "seotracker-audit" içerdiğinde bot korumasını atlayan bir WAF kuralı). Sonra denetimi yeniden çalıştırın.',
   },
   "rate-limited-page": {
     severity: "warning",
-    title: "Rate limited (429)",
+    title: "İstek sınırına takıldı (429)",
     explanation:
-      "The server answered 429 Too Many Requests, so this page could not be audited. The crawler waits before retrying when the site's cooldown fits within the audit time limit.",
+      "Sunucu 429 Too Many Requests döndürdü, bu yüzden sayfa denetlenemedi. Sitenin bekleme süresi denetim süresine sığıyorsa tarayıcı bekleyip yeniden dener.",
     howToFix:
-      'Raise the rate limit for crawlers, or allowlist the "seotracker-audit" user agent in your rate-limiting rules (on Cloudflare: a rate-limiting rule exception matching that user agent). Then re-run the audit. Re-running with fewer pages also helps if the limit is strict.',
+      'Tarayıcılar için istek sınırını yükseltin ya da "seotracker-audit" kullanıcı aracısını sınır kurallarınızın dışında bırakın. Sonra denetimi yeniden çalıştırın. Sınır çok katıysa daha az sayfayla çalıştırmak da işe yarar.',
   },
   "crawl-rate-limited": {
     severity: "warning",
-    title: "Crawl stopped early: rate limit",
+    title: "Tarama erken durdu: istek sınırı",
     explanation:
-      "The site asked the crawler to wait longer than the audit time limit allowed. We stopped requesting pages. This report is incomplete; URLs we did not fetch are not recorded as broken or rate limited.",
+      "Site, tarayıcıdan denetim süresinden daha uzun beklemesini istedi. Sayfa istemeyi bıraktık. Bu rapor eksiktir; çekemediğimiz adresler kırık ya da sınırlanmış olarak kaydedilmedi.",
     howToFix:
-      "Re-run the audit after the site's rate limit resets, or ask the site owner to allow the seotracker-audit crawler.",
+      "Sitenin istek sınırı sıfırlandıktan sonra denetimi yeniden çalıştırın, ya da site sahibinden seotracker-audit tarayıcısına izin vermesini isteyin.",
   },
   "server-error": {
     severity: "critical",
-    title: "Server error (5xx)",
+    title: "Sunucu hatası (5xx)",
     explanation:
-      "The page returned a 5xx server error. Search engines that repeatedly see server errors will crawl the site less and may drop the page from the index.",
+      "Sayfa 5xx sunucu hatası döndürdü. Sürekli sunucu hatası gören arama motorları siteyi daha seyrek tarar ve sayfayı dizinden düşürebilir.",
     howToFix:
-      "Check the server logs for this URL and fix the underlying error. If the page is gone, return a 404/410 or redirect it to a relevant page instead of erroring.",
+      "Bu adres için sunucu günlüklerine bakıp asıl hatayı giderin. Sayfa kaldırıldıysa hata yerine 404/410 döndürün veya ilgili bir sayfaya yönlendirin.",
   },
   "broken-internal-link": {
     severity: "critical",
-    title: "Broken internal link",
+    title: "Kırık iç bağlantı",
     explanation:
-      "This page links to an internal URL that returns an error status (4xx/5xx). Broken links waste crawl budget, leak link equity, and frustrate users — they are among the most common and most damaging technical SEO issues.",
+      "Bu sayfa, hata döndüren (4xx/5xx) bir iç adrese bağlantı veriyor. Kırık bağlantılar tarama bütçesini harcar, bağlantı değerini kaybettirir ve ziyaretçiyi çıkmaza sokar. En yaygın ve en çok zarar veren teknik SEO sorunlarından biridir.",
     howToFix:
-      "Update the link to point at the correct live URL, or remove it. If the target was moved, prefer linking directly to the new URL rather than relying on a redirect.",
+      "Bağlantıyı doğru ve çalışan adrese güncelleyin ya da kaldırın. Hedef taşındıysa yönlendirmeye güvenmek yerine doğrudan yeni adrese bağlanın.",
   },
   "missing-title": {
     severity: "critical",
-    title: "Missing title tag",
+    title: "Başlık etiketi yok",
     explanation:
-      "The page has no <title>. The title is the strongest on-page relevance signal and the headline shown in search results; without it search engines generate one themselves, usually badly.",
+      "Sayfanın <title> etiketi yok. Başlık, sayfanın konusunu anlatan en güçlü sinyal ve arama sonuçlarında görünen manşettir. Yoksa arama motoru kendi üretir, genelde kötü bir şekilde.",
     howToFix:
-      "Add a unique, descriptive <title> of roughly 50–60 characters that includes the page's primary topic.",
+      "Sayfanın ana konusunu içeren, yaklaşık 50-60 karakterlik benzersiz ve açıklayıcı bir <title> ekleyin.",
   },
   "broken-page": {
     severity: "warning",
-    title: "Page returns an error (4xx)",
+    title: "Sayfa hata döndürüyor (4xx)",
     explanation:
-      "This crawled URL returned a client error (e.g. 404). If it is referenced from your sitemap or other pages, crawlers keep wasting requests on it.",
+      "Taranan bu adres bir istemci hatası döndürdü (404 gibi). Site haritanızda veya başka sayfalarda geçiyorsa tarayıcılar boşuna istek yapmaya devam eder.",
     howToFix:
-      "If the page should exist, restore it. If it is intentionally gone, remove it from the sitemap and internal links, and consider a 301 redirect to the closest live page.",
+      "Sayfa var olmalıysa geri getirin. Bilerek kaldırıldıysa site haritasından ve iç bağlantılardan çıkarın, en yakın çalışan sayfaya 301 yönlendirmesi düşünün.",
   },
   "duplicate-title": {
     severity: "warning",
-    title: "Duplicate title",
+    title: "Yinelenen başlık",
     explanation:
-      "Multiple pages share the same title tag. Search engines use titles to differentiate pages; duplicates make pages compete with each other and depress click-through rates.",
+      "Birden çok sayfa aynı başlık etiketini paylaşıyor. Arama motorları sayfaları başlıklarıyla ayırt eder; yinelenen başlıklar sayfaları birbiriyle yarıştırır ve tıklama oranını düşürür.",
     howToFix:
-      "Write a unique title for each page describing its specific content. For templated pages, include the distinguishing attribute (name, category, location) in the template.",
+      "Her sayfaya kendi içeriğini anlatan benzersiz bir başlık yazın. Şablondan üretilen sayfalarda ayırt edici özelliği (ad, kategori, konum) şablona ekleyin.",
   },
   "duplicate-meta-description": {
     severity: "warning",
-    title: "Duplicate meta description",
+    title: "Yinelenen meta açıklama",
     explanation:
-      "Multiple pages share the same meta description, so search results show identical snippets and users cannot tell the pages apart.",
+      "Birden çok sayfa aynı meta açıklamayı paylaşıyor, bu yüzden arama sonuçlarında aynı özet görünüyor ve kullanıcı sayfaları ayırt edemiyor.",
     howToFix:
-      "Write a unique meta description per page, or remove the duplicated one entirely — search engines will generate a snippet from page content, which beats a wrong duplicate.",
+      "Her sayfaya kendi meta açıklamasını yazın ya da yineleneni tamamen kaldırın. Arama motorunun sayfa içeriğinden ürettiği özet, yanlış bir yinelenenden iyidir.",
   },
   "duplicate-content": {
     severity: "warning",
-    title: "Duplicate page content",
+    title: "Yinelenen sayfa içeriği",
     explanation:
-      "Two or more URLs serve byte-identical visible text. Search engines pick one version to index and ignore the rest, and ranking signals get split across the duplicates.",
+      "İki ya da daha fazla adres birebir aynı görünür metni sunuyor. Arama motoru bir sürümü dizine alıp diğerlerini yok sayar ve sıralama sinyalleri yinelenenler arasında bölünür.",
     howToFix:
-      "Consolidate duplicates: pick the canonical URL, add rel=canonical from the others, and 301-redirect duplicate URLs where possible (common causes: trailing-slash variants, URL parameters, http/https or www variants).",
+      "Yinelenenleri birleştirin: asıl adresi seçin, diğerlerinden ona rel=canonical verin ve mümkünse 301 ile yönlendirin. Sık görülen nedenler: sonda eğik çizgi farkı, adres parametreleri, http/https veya www farkı.",
   },
   "missing-meta-description": {
     severity: "warning",
-    title: "Missing meta description",
+    title: "Meta açıklama yok",
     explanation:
-      "The page has no meta description. Search engines will assemble a snippet from page text, which is often less compelling and hurts click-through rate.",
+      "Sayfanın meta açıklaması yok. Arama motoru özeti sayfa metninden derler; bu genelde daha az çekici olur ve tıklama oranını düşürür.",
     howToFix:
-      "Add a meta description of roughly 70–160 characters that summarizes the page and gives a reason to click.",
+      "Sayfayı özetleyen ve tıklamak için bir sebep veren, yaklaşık 70-160 karakterlik bir meta açıklama ekleyin.",
   },
   "missing-h1": {
     severity: "warning",
-    title: "Missing H1 heading",
+    title: "H1 başlığı yok",
     explanation:
-      "The page has no H1. The H1 tells users and search engines what the page is about; pages without one tend to have weaker topical clarity.",
+      "Sayfada H1 yok. H1, sayfanın ne hakkında olduğunu hem kullanıcıya hem arama motoruna söyler; H1'i olmayan sayfaların konu netliği zayıf kalır.",
     howToFix:
-      "Add a single H1 that states the page's main topic, consistent with the title tag.",
+      "Sayfanın ana konusunu belirten, başlık etiketiyle tutarlı tek bir H1 ekleyin.",
   },
   "multiple-h1": {
     severity: "warning",
-    title: "Multiple H1 headings",
+    title: "Birden çok H1 başlığı",
     explanation:
-      "The page has more than one H1, which dilutes the main-topic signal and usually indicates a templating mistake (e.g. a logo and a headline both marked up as H1).",
+      "Sayfada birden fazla H1 var. Bu, ana konu sinyalini zayıflatır ve genelde bir şablon hatasına işaret eder (logo ile manşetin ikisinin de H1 olması gibi).",
     howToFix:
-      "Keep one H1 for the page's main heading and demote the others to H2/H3 (or unstyled elements for non-headings like logos).",
+      "Ana başlık için tek bir H1 bırakın, diğerlerini H2/H3 yapın. Logo gibi başlık olmayan öğeleri başlık etiketinden çıkarın.",
   },
   "redirect-chain": {
     severity: "warning",
-    title: "Redirect chain",
+    title: "Yönlendirme zinciri",
     explanation:
-      "Reaching the final page requires two or more consecutive redirects. Each hop adds latency, leaks link equity, and burns crawl budget; long chains may not be followed at all.",
+      "Son sayfaya ulaşmak için arka arkaya iki veya daha fazla yönlendirme gerekiyor. Her adım gecikme ekler, bağlantı değeri kaybettirir ve tarama bütçesi harcar; uzun zincirler hiç takip edilmeyebilir.",
     howToFix:
-      "Point the first URL (and any internal links) directly at the final destination so there is at most one redirect.",
+      "İlk adresi ve ona veren iç bağlantıları doğrudan son hedefe yöneltin; en çok tek yönlendirme kalsın.",
   },
   "redirect-loop": {
     severity: "warning",
-    title: "Redirect loop",
+    title: "Yönlendirme döngüsü",
     explanation:
-      "This redirect eventually points back to itself, so the URL never resolves. Browsers and crawlers give up with an error.",
+      "Bu yönlendirme dönüp dolaşıp kendine geliyor, yani adres hiç açılmıyor. Tarayıcılar ve arama motorları hata vererek vazgeçer.",
     howToFix:
-      "Trace the redirect rules for this URL and break the cycle so the chain terminates at a real 200 page.",
+      "Bu adresin yönlendirme kurallarını izleyip döngüyü kırın; zincir gerçek bir 200 sayfada bitmeli.",
   },
   "canonical-conflict": {
     severity: "warning",
-    title: "Conflicting canonical signals",
+    title: "Çelişen canonical sinyalleri",
     explanation:
-      "The page declares different canonical URLs in its HTML <link rel=canonical> and its HTTP Link header. When signals conflict, search engines ignore both and choose their own canonical.",
+      "Sayfa, HTML içindeki <link rel=canonical> ile HTTP Link başlığında farklı asıl adresler bildiriyor. Sinyaller çeliştiğinde arama motoru ikisini de yok sayıp kendi seçimini yapar.",
     howToFix:
-      "Pick one canonical URL and declare it in exactly one place (HTML head is the most common); remove or align the other declaration.",
+      "Tek bir asıl adres seçin ve yalnız bir yerde bildirin (genelde HTML head). Diğer bildirimi kaldırın ya da aynı adrese getirin.",
   },
   "thin-content": {
     severity: "warning",
-    title: "Thin content",
+    title: "İnce içerik",
     explanation:
-      "The page has very little visible text. Thin pages rarely rank, can drag down sitewide quality assessments, and (if the site renders client-side) may indicate content invisible to plain-HTML crawlers.",
+      "Sayfada çok az görünür metin var. İnce sayfalar nadiren sıralanır, site genelindeki kalite değerlendirmesini aşağı çekebilir ve site istemci tarafında oluşturuluyorsa içeriğin tarayıcıya hiç görünmediğine işaret edebilir.",
     howToFix:
-      "Either expand the page with genuinely useful content, noindex it, or consolidate it into a stronger page. If the content exists but is rendered by JavaScript, ensure it is server-rendered or pre-rendered.",
+      "Sayfayı gerçekten faydalı içerikle genişletin, noindex yapın ya da daha güçlü bir sayfayla birleştirin. İçerik varsa ama JavaScript ile geliyorsa sunucu tarafında oluşturulduğundan emin olun.",
   },
   "images-missing-alt": {
     severity: "warning",
-    title: "Images missing alt text",
+    title: "Alt metni olmayan görseller",
     explanation:
-      "One or more images on the page lack alt attributes. Alt text is an accessibility requirement and the main way search engines understand images.",
+      "Sayfadaki bir veya daha fazla görselin alt niteliği yok. Alt metni hem erişilebilirlik gereğidir hem de arama motorunun görseli anlamasının başlıca yoludur.",
     howToFix:
-      'Add descriptive alt text to meaningful images; use an empty alt (alt="") only for purely decorative ones.',
+      'Anlam taşıyan görsellere açıklayıcı alt metni yazın; yalnız süs amaçlı olanlarda boş alt (alt="") kullanın.',
   },
   "orphan-page": {
     severity: "warning",
-    title: "Orphan page",
+    title: "Yetim sayfa",
     explanation:
-      "No crawled page links to this URL — it was only discoverable via the sitemap. Pages without internal links receive little crawl attention and no internal link equity, and users can't find them by browsing.",
+      "Taranan hiçbir sayfa bu adrese bağlantı vermiyor; yalnız site haritasından bulunabiliyor. İç bağlantısı olmayan sayfalar az taranır, bağlantı değeri almaz ve kullanıcı gezinerek onlara ulaşamaz.",
     howToFix:
-      "Link to this page from relevant pages (navigation, related content, hub pages), or remove it from the sitemap if it shouldn't be indexed.",
+      "Bu sayfaya ilgili sayfalardan bağlantı verin (menü, ilgili içerik, kategori sayfaları). Dizine girmemesi gerekiyorsa site haritasından çıkarın.",
   },
   "no-outgoing-links": {
     severity: "warning",
-    title: "Page has no outgoing links",
+    title: "Sayfada hiç dış bağlantı yok",
     explanation:
-      "The page contains no links at all — a dead end. Link equity that flows into it stops there, crawlers have nowhere to go next, and users have to reach for the back button.",
+      "Sayfada hiç bağlantı yok, yani bir çıkmaz sokak. Sayfaya akan bağlantı değeri orada kalır, tarayıcının gidecek yeri olmaz ve kullanıcı geri düğmesine uzanır.",
     howToFix:
-      "Add links to related pages, the parent category, or the homepage. If the page's navigation is rendered by JavaScript, make sure it also exists in the server-rendered HTML.",
+      "İlgili sayfalara, üst kategoriye ya da ana sayfaya bağlantı ekleyin. Menü JavaScript ile oluşuyorsa sunucudan gelen HTML'de de bulunduğundan emin olun.",
   },
   "title-too-long": {
     severity: "info",
-    title: "Title too long",
+    title: "Başlık çok uzun",
     explanation:
-      "The title exceeds ~60 characters, so search results will truncate it and the ending may be cut off mid-phrase.",
+      "Başlık yaklaşık 60 karakteri aşıyor, bu yüzden arama sonuçlarında kesilecek ve sonu yarıda kalabilecek.",
     howToFix:
-      "Shorten the title to roughly 50–60 characters, front-loading the most important words.",
+      "Başlığı yaklaşık 50-60 karaktere indirin ve en önemli kelimeleri başa alın.",
   },
   "title-too-short": {
     severity: "info",
-    title: "Title too short",
+    title: "Başlık çok kısa",
     explanation:
-      "The title is under ~10 characters, which is usually too generic to describe the page or attract clicks.",
+      "Başlık yaklaşık 10 karakterin altında. Bu kadar kısa bir başlık sayfayı anlatmak ya da tıklama çekmek için genelde fazla genel kalır.",
     howToFix:
-      "Expand the title into a descriptive phrase (roughly 30–60 characters) that states what the page offers.",
+      "Başlığı, sayfanın ne sunduğunu söyleyen açıklayıcı bir ifadeye genişletin (yaklaşık 30-60 karakter).",
   },
   "meta-description-too-long": {
     severity: "info",
-    title: "Meta description too long",
+    title: "Meta açıklama çok uzun",
     explanation:
-      "The meta description exceeds ~160 characters, so search engines will truncate the snippet.",
+      "Meta açıklama yaklaşık 160 karakteri aşıyor, bu yüzden arama motoru özeti kesecek.",
     howToFix:
-      "Trim the description to roughly 70–160 characters while keeping the core message and call to action.",
+      "Ana mesajı ve tıklama çağrısını koruyarak açıklamayı yaklaşık 70-160 karaktere indirin.",
   },
   "meta-description-too-short": {
     severity: "info",
-    title: "Meta description too short",
+    title: "Meta açıklama çok kısa",
     explanation:
-      "The meta description is under ~70 characters. Short descriptions waste the snippet space search results give you, and search engines often ignore them in favor of text pulled from the page.",
+      "Meta açıklama yaklaşık 70 karakterin altında. Kısa açıklamalar arama sonucunun size verdiği alanı boşa harcar ve arama motorları çoğu zaman bunları yok sayıp sayfadan metin çeker.",
     howToFix:
-      "Expand the description to roughly 70–160 characters that summarize the page and give a reason to click.",
+      "Açıklamayı, sayfayı özetleyen ve tıklamak için sebep veren yaklaşık 70-160 karaktere genişletin.",
   },
   "heading-order-skip": {
     severity: "info",
-    title: "Heading levels skip",
+    title: "Başlık seviyeleri atlanmış",
     explanation:
-      "The heading hierarchy skips levels (e.g. an H4 directly after an H2). This weakens document structure for accessibility tools and content parsing.",
+      "Başlık sıralaması seviye atlıyor (H2'den sonra doğrudan H4 gibi). Bu, erişilebilirlik araçları ve içerik ayrıştırma için belge yapısını zayıflatır.",
     howToFix:
-      "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping.",
+      "Başlık seviyelerini atlamadan birer birer inecek şekilde düzeltin (H1 → H2 → H3).",
   },
   "slow-response": {
     severity: "info",
-    title: "Slow server response",
+    title: "Sunucu yanıtı yavaş",
     explanation:
-      "The HTML response took over 1.5 seconds. Slow time-to-first-byte drags down every downstream performance metric and reduces crawl rate on large sites.",
+      "HTML yanıtı 1,5 saniyeden uzun sürdü. İlk bayta kadar geçen sürenin yavaşlığı sonraki tüm performans ölçümlerini aşağı çeker ve büyük sitelerde tarama hızını düşürür.",
     howToFix:
-      "Investigate server/database time and caching for this route; serving cached or statically generated HTML usually fixes it.",
+      "Bu adres için sunucu ve veritabanı süresine, bir de önbelleğe bakın. Önbelleklenmiş ya da statik üretilmiş HTML sunmak genelde sorunu çözer.",
   },
   "noindex-page": {
     severity: "info",
-    title: "Page is noindex",
+    title: "Sayfa noindex",
     explanation:
-      "The page asks search engines not to index it (via robots meta tag or X-Robots-Tag header). That's often intentional — this is a heads-up, not an error.",
+      "Sayfa, arama motorlarından kendisini dizine almamalarını istiyor (robots meta etiketi veya X-Robots-Tag başlığı ile). Bu çoğu zaman bilinçlidir; bu bir hata değil, bilgi notudur.",
     howToFix:
-      "If this page should rank, remove the noindex directive. If it's intentional (admin, thank-you, filter pages), no action is needed.",
+      "Bu sayfanın sıralanması gerekiyorsa noindex yönergesini kaldırın. Bilinçliyse (yönetim, teşekkür, filtre sayfaları) yapılacak bir şey yok.",
   },
   "canonicalized-page": {
     severity: "info",
-    title: "Canonicalized to another URL",
+    title: "Başka bir adrese canonical verilmiş",
     explanation:
-      "The page declares a different URL as its canonical, telling search engines to index that URL instead. Fine when intentional (parameter pages, syndication) — a problem if this page was meant to rank.",
+      "Sayfa asıl adres olarak başka bir adresi bildiriyor, yani arama motoruna onun yerine o adresi dizine almasını söylüyor. Bilinçliyse sorun değil (parametreli sayfalar, yeniden yayın); ama bu sayfa sıralanacaksa sorundur.",
     howToFix:
-      "If this page should rank on its own, set its canonical to itself. Otherwise no action is needed.",
+      "Bu sayfa kendi başına sıralanacaksa canonical değerini kendisine çevirin. Aksi hâlde yapılacak bir şey yok.",
   },
   "deep-page": {
     severity: "info",
-    title: "Page is deep in the site structure",
+    title: "Sayfa site yapısında çok derinde",
     explanation:
-      "The page is 5+ clicks from the homepage. Deep pages get crawled less often and receive less link equity.",
+      "Sayfa, ana sayfadan 5 veya daha fazla tık uzakta. Derin sayfalar daha seyrek taranır ve daha az bağlantı değeri alır.",
     howToFix:
-      "Add links from higher-level pages (hubs, category pages, navigation) to flatten the path to this page.",
+      "Üst seviyedeki sayfalardan (kategori sayfaları, menü, toplayıcı sayfalar) bu sayfaya bağlantı ekleyerek yolu kısaltın.",
   },
 } as const satisfies Record<string, AuditIssueDescriptor>;
 
