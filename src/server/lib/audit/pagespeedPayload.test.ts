@@ -17,7 +17,7 @@ function response(overrides: Record<string, unknown> = {}) {
       lighthouseVersion: "12.2.0",
       categories: {
         performance: {
-          score: 0.91,
+          score: 0.91 as number | null,
           auditRefs: [{ id: "server-response-time" }],
         },
       },
@@ -52,9 +52,7 @@ describe("parsePageSpeedPayload", () => {
 
   it("refuses a report with no category scores at all", () => {
     const body = response();
-    body.lighthouseResult.categories = {
-      performance: { score: null as never, auditRefs: [] },
-    };
+    body.lighthouseResult.categories.performance.score = null;
 
     expect(() => parsePageSpeedPayload(body, INPUT)).toThrow(
       /no category scores/,
