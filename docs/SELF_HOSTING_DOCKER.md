@@ -38,13 +38,17 @@ derler ve 1-2 dakika sürer; ilerlemeyi `docker compose logs -f` ile izleyin.
 docker compose up -d --force-recreate seotracker
 ```
 
-## Kendi imajınızı derleme
+## İmaj nereden geliyor
 
-Depodaki kodu değiştirdiyseniz:
+Hiçbir yerden indirilmiyor. Bu çatalın yayınlanmış bir imajı yok; ilk
+`docker compose up -d` komutu imajı bu depodan (`Dockerfile.selfhost`) derler ve
+`seotracker:local` adıyla saklar. İlk derleme birkaç dakika sürer, sonrakiler
+saniyeler.
+
+Depodaki kodu değiştirdiyseniz yeniden derletin:
 
 ```sh
-docker build -f Dockerfile.selfhost -t seotracker:local .
-SEOTRACKER_IMAGE=seotracker:local docker compose up -d
+docker compose up -d --build
 ```
 
 ## Sık kullanılan komutlar

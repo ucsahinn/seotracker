@@ -1,6 +1,12 @@
 services:
   seotracker:
-    image: ${SEOTRACKER_IMAGE:-ghcr.io/ucsahinn/seotracker:latest}
+    # Nothing is published for this fork -- it is yours alone, so Compose
+    # builds it from this repository the first time you run `up` and reuses
+    # that image afterwards. After changing the source: `up -d --build`.
+    image: ${SEOTRACKER_IMAGE:-seotracker:local}
+    build:
+      context: .
+      dockerfile: Dockerfile.selfhost
     restart: unless-stopped
     # Forward EVERY .env value into the container. The explicit `environment:`
     # list below still wins for the values it names — without this, any .env
