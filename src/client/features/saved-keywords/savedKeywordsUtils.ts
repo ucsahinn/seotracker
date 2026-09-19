@@ -1,11 +1,15 @@
 import type { CsvValue } from "@/client/lib/csv";
-import { KEYWORD_RESEARCH_HEADERS } from "@/client/features/keywords/state/keywordControllerActions";
 import type { SavedKeywordRow } from "@/types/keywords";
 import type { GetSavedKeywordsInput } from "@/types/schemas/keywords";
 
 export const SAVED_KEYWORD_PAGE_SIZES = [50, 100, 250] as const;
 export const SAVED_KEYWORD_EXPORT_HEADERS = [
-  ...KEYWORD_RESEARCH_HEADERS,
+  "Keyword",
+  "Volume",
+  "CPC",
+  "Competition",
+  "Score",
+  "Intent",
   "Tags",
   "Fetched At",
 ];

@@ -72,7 +72,14 @@ beforeAll(async () => {
 
 afterAll(() => {
   client.close();
-  rmSync(directory, { recursive: true });
+  // Best-effort: Windows can still hold the SQLite file handle after close, and
+  // an EPERM here would fail the whole suite over cleanup. The directory sits
+  // under the OS temp root, which the system reclaims anyway.
+  try {
+    rmSync(directory, { recursive: true, force: true, maxRetries: 5 });
+  } catch {
+    // Leave it to the OS.
+  }
 });
 beforeEach(async () => {
   await client.executeMultiple(

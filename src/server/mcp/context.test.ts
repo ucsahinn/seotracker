@@ -11,7 +11,7 @@ const applicationContext = {
   userId: "user_123",
   userEmail: "alice@example.com",
   organizationId: "org_123",
-  baseUrl: "https://open-seo.test",
+  baseUrl: "https://seotracker.test",
 };
 
 describe("OpenSEO tool auth context", () => {

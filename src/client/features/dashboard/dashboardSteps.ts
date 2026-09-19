@@ -22,12 +22,6 @@ export const setupSteps: {
     icon: FolderPlus,
   },
   {
-    id: "competitor",
-    label: "Explore a competitor",
-    detail: "Find topics and links worth learning from.",
-    icon: Search,
-  },
-  {
     id: "mcp",
     label: "Connect your AI agent",
     detail: "Use OpenSEO inside Claude or your favorite agent.",
@@ -39,12 +33,6 @@ export const setupSteps: {
     detail: "Bring your real clicks and queries into view.",
     icon: Search,
   },
-  {
-    id: "team",
-    label: "Invite a teammate",
-    detail: "Share the work, or keep things solo for now.",
-    icon: Users,
-  },
 ];
 
 export function getStepStatus(
@@ -54,12 +42,10 @@ export function getStepStatus(
   const completed: Record<DashboardSetupStep, boolean> = {
     domain: activation.domain !== null,
     project: activation.hasMultipleProjects,
-    competitor: activation.competitorClickedAt !== null,
     mcp:
       activation.mcp.authorizedAt !== null ||
       activation.mcp.firstToolCallAt !== null,
     gsc: activation.gsc.connected,
-    team: activation.hasTeammate,
   };
   if (completed[step]) return "done";
   // Preserve previous MCP dismissals without treating them as authorization.

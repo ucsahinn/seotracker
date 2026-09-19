@@ -23,37 +23,8 @@ export const getDashboardOverview = createServerFn({ method: "POST" })
   .middleware(requireProjectContext)
   .validator(dashboardProjectInputSchema)
   .handler(({ context }) =>
-    DashboardService.getOverview({
-      projectId: context.projectId,
-      domain: context.project.domain,
-    }),
+    DashboardService.getOverview({ projectId: context.projectId }),
   );
-
-// Visit-triggered: the client calls this when the overview reports a missing
-// or stale backlink snapshot. Metered against org credits at most once per
-// project per day (the service re-checks freshness server-side).
-export const refreshDashboardBacklinkSnapshot = createServerFn({
-  method: "POST",
-})
-  .middleware(requireProjectContext)
-  .validator(dashboardProjectInputSchema)
-  .handler(({ context }) =>
-    DashboardService.ensureBacklinkSnapshot({
-      projectId: context.projectId,
-      domain: context.project.domain,
-      billingCustomer: context,
-    }),
-  );
-
-export const markDashboardCompetitorClicked = createServerFn({
-  method: "POST",
-})
-  .middleware(requireProjectContext)
-  .validator(dashboardProjectInputSchema)
-  .handler(async ({ context }) => {
-    await ActivationRepository.markCompetitorStepClicked(context.projectId);
-    return { ok: true as const };
-  });
 
 // Hides only the optional GA4 pitch on this project's dashboard. The
 // integration remains available in Project Settings and a later connection

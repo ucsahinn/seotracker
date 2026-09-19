@@ -14,8 +14,7 @@ import { GoogleOAuthSetupWarning } from "@/client/features/integrations/GoogleOA
 import { IntegrationConnectionCard } from "@/client/features/integrations/IntegrationConnectionCard";
 import { GoogleAnalyticsLogo } from "@/client/features/integrations/GoogleProductLogos";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
-import { captureClientEvent } from "@/client/lib/posthog";
-import { isHostedClientAuthMode } from "@/lib/auth-mode";
+import { captureClientEvent } from "@/client/lib/observability";
 import {
   disconnectGa4,
   listGa4Properties,
@@ -34,7 +33,7 @@ export function GoogleAnalyticsConnectionCard({
   dismissing?: boolean;
   heading?: React.ReactNode;
 }) {
-  const hosted = isHostedClientAuthMode();
+  const hosted = false;
   const queryClient = useQueryClient();
   const { picking, setPicking, linkAccount, linking } = useGooglePickerResume(
     "ga4",

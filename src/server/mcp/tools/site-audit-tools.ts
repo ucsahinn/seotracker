@@ -3,7 +3,7 @@ import { z } from "zod";
 import { AuditRepository } from "@/server/features/audit/repositories/AuditRepository";
 import { AuditService } from "@/server/features/audit/services/AuditService";
 import { AppError } from "@/server/lib/errors";
-import { captureServerEvent } from "@/server/lib/posthog";
+import { captureServerEvent } from "@/server/lib/observability";
 import {
   AUDIT_ISSUE_TYPES,
   getIssueDescriptor,
@@ -91,17 +91,15 @@ export const runSiteAuditTool = {
     // many-minute wait, which chat agents handle badly. The app UI passes its
     // own explicit lighthouseStrategy, so this default only governs agents.
     const lighthouseStrategy = (args.runLighthouse ?? false) ? "auto" : "none";
-    const limitTier = await AuditService.resolveAuditLimitTier(context.billing);
     let auditId: string;
     try {
       ({ auditId } = await AuditService.startAudit({
         actorUserId: context.auth.userId,
-        billingCustomer: context.billing,
+        organizationId: context.auth.organizationId,
         projectId: args.projectId,
         startUrl: args.url,
         maxPages: args.maxPages,
         lighthouseStrategy,
-        limitTier,
       }));
     } catch (error) {
       // Expected refusals become readable answers instead of protocol errors:

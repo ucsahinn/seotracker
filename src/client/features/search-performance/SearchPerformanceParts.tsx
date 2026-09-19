@@ -29,12 +29,12 @@ import {
 } from "@/client/lib/csv";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import { exportTableToSheets } from "@/client/lib/exportToSheets";
-import { captureClientEvent } from "@/client/lib/posthog";
+import { captureClientEvent } from "@/client/lib/observability";
 import {
   SEARCH_PERFORMANCE_PAGE_SIZES,
   type SearchPerformanceTableDimension,
 } from "@/types/schemas/search-performance";
-import { saveKeywords } from "@/serverFunctions/keywords";
+import { saveKeywords } from "@/serverFunctions/savedKeywords";
 
 export type Tab = "striking" | "queries" | "pages";
 export type ExportTarget = "csv" | "sheets";

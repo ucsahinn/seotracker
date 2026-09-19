@@ -1,7 +1,7 @@
 import { detectUrlTemplate, canonicalUrlKey } from "./url-utils";
-import type { BillingCustomerContext } from "@/server/billing/subscription";
-import { createDataforseoClient } from "@/server/lib/dataforseo";
-import type { LighthouseResult, LighthouseStrategy } from "./types";
+import { fetchPageSpeedReport, PageSpeedError } from "./pagespeed";
+import { isLighthouseRuntimeError } from "./pagespeedPayload";
+import type { LighthouseMode, LighthouseResult, LighthouseStrategy } from "./types";
 import { putTextToR2 } from "@/server/lib/r2";
 
 interface LighthouseSamplePage {
@@ -26,7 +26,7 @@ type LighthouseFetchResult = {
 export function failedLighthouseFetch(
   url: string,
   pageId: string,
-  strategy: "mobile" | "desktop",
+  strategy: LighthouseStrategy,
   errorMessage: string,
 ): LighthouseFetchResult {
   return {
@@ -51,12 +51,10 @@ export function failedLighthouseFetch(
 export async function fetchLighthouseResult(
   url: string,
   pageId: string,
-  strategy: "mobile" | "desktop",
-  billingCustomer: BillingCustomerContext,
+  strategy: LighthouseStrategy,
 ): Promise<LighthouseFetchResult> {
-  const dataforseo = createDataforseoClient(billingCustomer);
   try {
-    const data = await dataforseo.lighthouse.live({ url, strategy });
+    const data = await fetchPageSpeedReport({ url, strategy });
 
     return {
       result: {
@@ -75,13 +73,16 @@ export async function fetchLighthouseResult(
       payloadJson: JSON.stringify(data),
     };
   } catch (error) {
+    // A transient failure (network, quota, 5xx) goes back to the Workflow so the
+    // step retries. Everything else becomes a failed row: the crawl results are
+    // the bulk of an audit's value and must still land.
+    if (error instanceof PageSpeedError && error.retryable) throw error;
+
     const failed = error instanceof Error ? error : new Error(String(error));
-    // Lighthouse runtime errors (ERRORED_DOCUMENT_REQUEST, NOT_HTML, NO_FCP) mean the
-    // tenant's page didn't load for the provider's Chrome. The failure is already
-    // surfaced on the audit row, so there is nothing for us to act on.
-    const log = failed.message.includes(
-      "Lighthouse encountered an error with the following code",
-    )
+    // A Lighthouse runtime error means the page itself didn't load for Google's
+    // Chrome. It's already surfaced on the audit row, so there's nothing to act
+    // on here.
+    const log = isLighthouseRuntimeError(failed.message)
       ? console.warn
       : console.error;
     log(`Lighthouse failed for ${url} (${strategy}): ${failed.message}`);
@@ -115,16 +116,16 @@ export async function storeLighthouseResult(input: {
 export function selectLighthouseSample(
   pages: LighthouseSamplePage[],
   startUrl: string,
-  strategy: LighthouseStrategy,
+  mode: LighthouseMode,
 ): string[] {
-  if (strategy === "none") return [];
+  if (mode === "none") return [];
 
   // Only consider pages that loaded successfully
   const validPages = pages.filter(
     (p) => p.statusCode >= 200 && p.statusCode < 300,
   );
 
-  // strategy === "auto": homepage + 1 per URL pattern, capped at 10
+  // mode === "auto": homepage + 1 per URL pattern, capped at 10
   const selected = new Set<string>();
 
   // Always include the start URL / homepage. Prefer an exact canonical match

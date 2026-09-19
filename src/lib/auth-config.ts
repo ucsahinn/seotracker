@@ -5,13 +5,7 @@ import { orgAccessControl, orgRoles } from "@/lib/org-permissions";
 import { GA4_OAUTH_PROVIDER_ID, GA4_OAUTH_SCOPES } from "@/shared/ga4";
 import { GSC_OAUTH_PROVIDER_ID, GSC_OAUTH_SCOPES } from "@/shared/gsc";
 
-type OrganizationOptions = NonNullable<Parameters<typeof organization>[0]>;
-
-const INVITATION_EXPIRES_IN_SECONDS = 60 * 60 * 24 * 7;
-
-export function createBaseAuthConfig(options?: {
-  organization?: Pick<OrganizationOptions, "organizationHooks">;
-}) {
+export function createBaseAuthConfig() {
   return {
     ...baseAuthOptions,
     advanced: {
@@ -44,28 +38,14 @@ export function createBaseAuthConfig(options?: {
       },
     },
     plugins: [
-      // Block user-initiated org creation: each org is its own Autumn customer
-      // with its own onboarding-plan credit grant, so an authenticated user
-      // hitting POST /api/auth/organization/create could mint unlimited fresh
-      // grants. The app gives every user exactly one workspace, created
-      // server-side at signup via `auth.api.createOrganization({ body: { userId }})`
-      // — that's a "system action" (no session + userId in body) which better-auth
-      // exempts from this flag, so the bootstrap keeps working.
+      // The workspace every project hangs off. Nobody signs up here, so the
+      // single organization is created server-side for the resolved user; the
+      // plugin is kept for its tables and membership lookups.
       organization({
         allowUserToCreateOrganization: false,
         ac: orgAccessControl,
         roles: orgRoles,
-        // No self-serve delete: it would cascade projects/members/activation
-        // state, strand the org's Autumn customer, and (with the signup
-        // bootstrap re-minting a fresh org + free grant on next login) act as
-        // a credit-farming loop. Deletion stays a support action.
         disableOrganizationDeletion: true,
-        invitationExpiresIn: INVITATION_EXPIRES_IN_SECONDS,
-        // DB-backed bound on outstanding pending invitations per org — the
-        // only rate control that actually holds on Workers (in-memory rate
-        // limiting is per-isolate).
-        invitationLimit: 20,
-        ...options?.organization,
       }),
       genericOAuth({
         config: [

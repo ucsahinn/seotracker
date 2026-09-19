@@ -1,5 +1,5 @@
 import { ArrowDown, ArrowUp } from "lucide-react";
-import { HeaderHelpLabel } from "@/client/features/keywords/components";
+import { HeaderHelpLabel } from "@/client/features/saved-keywords/components";
 
 type SortableColumn = {
   getIsSorted: () => false | "asc" | "desc";

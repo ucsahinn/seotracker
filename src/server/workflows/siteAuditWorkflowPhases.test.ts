@@ -50,7 +50,7 @@ vi.mock("@/server/lib/audit/discovery", () => ({
 vi.mock("@/server/lib/audit/issues/multipage", () => ({
   runMultipageChecks: vi.fn(),
 }));
-vi.mock("@/server/lib/posthog", () => ({ captureServerEvent: vi.fn() }));
+vi.mock("@/server/lib/observability", () => ({ captureServerEvent: vi.fn() }));
 vi.mock("@/server/workflows/siteAuditWorkflowCrawl", () => ({
   runCrawlPhase: vi.fn(),
 }));
@@ -61,11 +61,7 @@ import { runLighthousePhase } from "@/server/workflows/siteAuditWorkflowPhases";
 const PHASE_PARAMS = {
   auditId: "audit-1",
   workflowInstanceId: "workflow-1",
-  billingCustomer: {
-    userId: "user-1",
-    userEmail: "test@example.com",
-    organizationId: "org-1",
-  },
+  actorUserId: "user-1",
   projectId: "project-1",
   startUrl: "https://example.com/",
   config: { maxPages: 50, lighthouseStrategy: "auto" as const },
@@ -95,7 +91,7 @@ describe("runLighthousePhase", () => {
     updateAuditProgressMock.mockResolvedValue(undefined);
   });
 
-  it("does not replay paid calls when persistence retries", async () => {
+  it("retries persistence without re-running a completed fetch step", async () => {
     let persistenceAttempts = 0;
     let fetchRetryLimit: number | undefined;
     let persistenceRetryLimit: number | undefined;
@@ -137,7 +133,7 @@ describe("runLighthousePhase", () => {
     expect(storeLighthouseResultMock).toHaveBeenCalledTimes(4);
     expect(insertLighthouseResultsMock).toHaveBeenCalledTimes(2);
     expect(persistenceAttempts).toBe(2);
-    expect(fetchRetryLimit).toBe(0);
+    expect(fetchRetryLimit).toBe(2);
     expect(persistenceRetryLimit).toBe(3);
     expect(updateAuditProgressMock).toHaveBeenLastCalledWith(
       "audit-1",

@@ -10,18 +10,17 @@ import {
   type WorkflowStep,
 } from "cloudflare:workers";
 import { withPgClient } from "@/db";
-import type { BillingCustomerContext } from "@/server/billing/subscription";
 import { AuditRepository } from "@/server/features/audit/repositories/AuditRepository";
 import { classifyAuditError } from "@/server/lib/audit/audit-errors";
 import type { AuditConfig } from "@/server/lib/audit/types";
-import { captureServerError, captureServerEvent } from "@/server/lib/posthog";
+import { captureServerError, captureServerEvent } from "@/server/lib/observability";
 import { runAuditPhases } from "@/server/workflows/siteAuditWorkflowPhases";
 import { pgStep } from "@/server/workflows/pgStep";
 import { DB_STEP } from "@/server/workflows/auditStepConfigs";
 
 interface AuditParams {
   auditId: string;
-  billingCustomer: BillingCustomerContext;
+  actorUserId: string;
   projectId: string;
   startUrl: string;
   config: AuditConfig;
@@ -39,7 +38,7 @@ export class SiteAuditWorkflow extends WorkflowEntrypoint<Env, AuditParams> {
     event: WorkflowEvent<AuditParams>,
     step: WorkflowStep,
   ) {
-    const { auditId, billingCustomer, projectId, startUrl, config } =
+    const { auditId, actorUserId, projectId, startUrl, config } =
       event.payload;
 
     try {
@@ -64,7 +63,7 @@ export class SiteAuditWorkflow extends WorkflowEntrypoint<Env, AuditParams> {
       await runAuditPhases(step, {
         auditId,
         workflowInstanceId: event.instanceId,
-        billingCustomer,
+        actorUserId,
         projectId,
         startUrl,
         config,
@@ -86,10 +85,9 @@ export class SiteAuditWorkflow extends WorkflowEntrypoint<Env, AuditParams> {
           {
             source: "site_audit_workflow",
             audit_id: auditId,
-            organization_id: billingCustomer.organizationId,
             project_id: projectId,
           },
-          billingCustomer.userId,
+          actorUserId,
         );
       }
       const errorInfo = classifyAuditError(error);
@@ -105,9 +103,8 @@ export class SiteAuditWorkflow extends WorkflowEntrypoint<Env, AuditParams> {
         });
 
         await captureServerEvent({
-          distinctId: billingCustomer.userId,
+          distinctId: actorUserId,
           event: "site_audit:complete",
-          organizationId: billingCustomer.organizationId,
           properties: {
             project_id: projectId,
             status: "failed",

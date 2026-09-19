@@ -1,19 +1,19 @@
 import {
   deleteSavedKeywordTag,
   getSavedKeywords,
-  getSerpAnalysis,
   removeSavedKeywords,
-  research,
   saveKeywords,
   exportSavedKeywords,
   updateSavedKeywordTag,
   updateSavedKeywordTags,
-  refreshSavedKeywordMetrics,
 } from "@/server/features/keywords/services/research";
 
+/**
+ * Saved keywords: the list a user builds from their own Search Console data.
+ * Keyword discovery itself came from a paid third-party API and is gone; what
+ * remains is storage, tagging and export.
+ */
 export const KeywordResearchService = {
-  research,
-  getSerpAnalysis,
   saveKeywords,
   getSavedKeywords,
   exportSavedKeywords,
@@ -21,5 +21,4 @@ export const KeywordResearchService = {
   updateSavedKeywordTag,
   deleteSavedKeywordTag,
   removeSavedKeywords,
-  refreshSavedKeywordMetrics,
 } as const;

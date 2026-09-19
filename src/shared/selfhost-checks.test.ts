@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
 import {
-  isTelemetryOptOutValue,
   looksLikeDataForSeoKey,
   validateTeamDomain,
 } from "./selfhost-checks";
@@ -57,22 +56,3 @@ describe("looksLikeDataForSeoKey", () => {
   });
 });
 
-describe("isTelemetryOptOutValue", () => {
-  it("treats unset and empty as opted in", () => {
-    expect(isTelemetryOptOutValue(undefined)).toBe(false);
-    expect(isTelemetryOptOutValue(null)).toBe(false);
-    expect(isTelemetryOptOutValue("")).toBe(false);
-  });
-
-  it('treats "1" and "true" as opted out', () => {
-    expect(isTelemetryOptOutValue("1")).toBe(true);
-    expect(isTelemetryOptOutValue("true")).toBe(true);
-  });
-
-  it('treats explicit "0"/"false"/"no"/"off" as opted in', () => {
-    expect(isTelemetryOptOutValue("0")).toBe(false);
-    expect(isTelemetryOptOutValue("false")).toBe(false);
-    expect(isTelemetryOptOutValue("no")).toBe(false);
-    expect(isTelemetryOptOutValue("OFF")).toBe(false);
-  });
-});

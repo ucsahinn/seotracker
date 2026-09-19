@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { ReportTemplateService } from "@/server/features/reports/services/ReportTemplateService";
-import { captureServerEvent } from "@/server/lib/posthog";
+import { captureServerEvent } from "@/server/lib/observability";
 import { DEFAULT_CLIENT_LABEL } from "@/server/mcp/client-label";
 import { buildProjectMeta } from "@/server/mcp/context";
 import { mcpResponse, truncatePreview } from "@/server/mcp/formatters";

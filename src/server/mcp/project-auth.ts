@@ -1,7 +1,7 @@
 import { AuthRepository } from "@/server/auth/repositories/AuthRepository";
 import { ProjectService } from "@/server/features/projects/services/ProjectService";
 import { AppError } from "@/server/lib/errors";
-import { buildBillingCustomer, type ToolContext } from "@/server/mcp/context";
+import { type ToolContext } from "@/server/mcp/context";
 
 type ProjectScopedArgs = {
   projectId: string;
@@ -40,7 +40,6 @@ async function requireProjectAccess(
     return {
       auth: projectAuth,
       baseUrl,
-      billing: buildBillingCustomer(projectAuth, projectId),
       project: resolved.project,
     };
   }
@@ -59,7 +58,6 @@ async function requireProjectAccess(
   return {
     auth,
     baseUrl,
-    billing: buildBillingCustomer(auth, projectId),
     // The row is already fetched for the auth gate; exposing it lets tools
     // fall back to the project's default market without another query.
     project,

@@ -1,5 +1,4 @@
 import type { WorkflowStep } from "cloudflare:workers";
-import type { BillingCustomerContext } from "@/server/billing/subscription";
 import { discoverUrls, parseRobotsTxt } from "@/server/lib/audit/discovery";
 import {
   failedLighthouseFetch,
@@ -19,7 +18,7 @@ import { AuditProgressKV } from "@/server/lib/audit/progress-kv";
 import { runMultipageChecks } from "@/server/lib/audit/issues/multipage";
 import type { DetectedIssue } from "@/server/lib/audit/issues/page-reporters";
 import type { AuditConfig } from "@/server/lib/audit/types";
-import { captureServerEvent } from "@/server/lib/posthog";
+import { captureServerEvent } from "@/server/lib/observability";
 import {
   runCrawlPhase,
   type CrawlPhaseResult,
@@ -45,7 +44,7 @@ const SEED_RPC_BATCH = 2_000;
 type AuditPhasesParams = {
   auditId: string;
   workflowInstanceId: string;
-  billingCustomer: BillingCustomerContext;
+  actorUserId: string;
   projectId: string;
   startUrl: string;
   config: AuditConfig;
@@ -58,7 +57,7 @@ export async function runAuditPhases(
   const {
     auditId,
     workflowInstanceId,
-    billingCustomer,
+    actorUserId,
     projectId,
     startUrl,
     config,
@@ -88,7 +87,7 @@ export async function runAuditPhases(
   await runLighthousePhase(step, {
     auditId,
     workflowInstanceId,
-    billingCustomer,
+    actorUserId,
     projectId,
     startUrl,
     config,
@@ -97,7 +96,7 @@ export async function runAuditPhases(
     step,
     auditId,
     workflowInstanceId,
-    billingCustomer,
+    actorUserId,
     projectId,
     startUrl,
     config,
@@ -168,7 +167,7 @@ async function runDiscoveryPhase(
 type LighthousePhaseParams = {
   auditId: string;
   workflowInstanceId: string;
-  billingCustomer: BillingCustomerContext;
+  actorUserId: string;
   projectId: string;
   startUrl: string;
   config: AuditConfig;
@@ -181,7 +180,7 @@ export async function runLighthousePhase(
   const {
     auditId,
     workflowInstanceId,
-    billingCustomer,
+    actorUserId,
     projectId,
     startUrl,
     config,
@@ -222,8 +221,8 @@ export async function runLighthousePhase(
           LIGHTHOUSE_FETCH_STEP,
           () =>
             Promise.all([
-              fetchLighthouseResult(url, pageId, "mobile", billingCustomer),
-              fetchLighthouseResult(url, pageId, "desktop", billingCustomer),
+              fetchLighthouseResult(url, pageId, "mobile"),
+              fetchLighthouseResult(url, pageId, "desktop"),
             ]),
         ),
       ),
@@ -314,7 +313,7 @@ async function finalizeAudit(args: {
   step: WorkflowStep;
   auditId: string;
   workflowInstanceId: string;
-  billingCustomer: BillingCustomerContext;
+  actorUserId: string;
   projectId: string;
   startUrl: string;
   config: AuditConfig;
@@ -324,7 +323,7 @@ async function finalizeAudit(args: {
     step,
     auditId,
     workflowInstanceId,
-    billingCustomer,
+    actorUserId,
     projectId,
     startUrl,
     config,
@@ -375,9 +374,8 @@ async function finalizeAudit(args: {
       pagesTotal: crawl.pagesCrawled,
     });
     await captureServerEvent({
-      distinctId: billingCustomer.userId,
+      distinctId: actorUserId,
       event: "site_audit:complete",
-      organizationId: billingCustomer.organizationId,
       properties: {
         project_id: projectId,
         status: "completed",

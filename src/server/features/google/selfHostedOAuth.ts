@@ -6,7 +6,7 @@ import { z } from "zod";
 import { db } from "@/db";
 import { account } from "@/db/schema";
 import { getAuth } from "@/lib/auth";
-import { getAuthMode, isHostedAuthMode } from "@/lib/auth-mode";
+import { getAuthMode } from "@/lib/auth-mode";
 import { resolveCloudflareAccessContext } from "@/middleware/ensure-user/cloudflareAccess";
 import { resolveLocalNoAuthContext } from "@/middleware/ensure-user/delegated";
 import { AppError } from "@/server/lib/errors";
@@ -384,9 +384,6 @@ export async function handleSelfHostedGoogleOAuthCallbackRequest(
 ) {
   try {
     const authMode = getAuthMode(env.AUTH_MODE);
-    if (isHostedAuthMode(authMode)) {
-      return new Response("Not found", { status: 404 });
-    }
     const context =
       authMode === "local_noauth"
         ? await resolveLocalNoAuthContext()

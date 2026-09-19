@@ -1,12 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-const { link, hosted, selfHosted } = vi.hoisted(() => ({
-  link: vi.fn(),
-  hosted: vi.fn(() => true),
+const { selfHosted } = vi.hoisted(() => ({
   selfHosted: vi.fn(),
 }));
-vi.mock("@/lib/auth-client", () => ({ authClient: { oauth2: { link } } }));
-vi.mock("@/lib/auth-mode", () => ({ isHostedClientAuthMode: hosted }));
 vi.mock("@/serverFunctions/gsc", () => ({
   startSelfHostedGscLink: selfHosted,
 }));
@@ -24,14 +20,14 @@ import { startGoogleLink, useGoogleLinkPending } from "./startGoogleLink";
 
 beforeEach(() => {
   vi.useFakeTimers();
-  hosted.mockReturnValue(true);
   vi.stubGlobal("window", {
     location: {
       origin: "https://app.example.com",
-      href: "https://app.example.com/p/1",
+      href: "",
     },
   });
 });
+
 afterEach(() => {
   vi.runAllTimers();
   vi.useRealTimers();
@@ -40,8 +36,8 @@ afterEach(() => {
 
 describe("Google authorization loading", () => {
   it("stays pending during a slow request and after the redirect URL is assigned", async () => {
-    let finish!: (value: { data: { url: string } }) => void;
-    link.mockImplementationOnce(
+    let finish!: (value: { url: string }) => void;
+    selfHosted.mockImplementationOnce(
       () =>
         new Promise((resolve) => {
           finish = resolve;
@@ -52,8 +48,8 @@ describe("Google authorization loading", () => {
     await vi.advanceTimersByTimeAsync(30_000);
     expect(useGoogleLinkPending()).toBe(true);
     expect(await startGoogleLink("ga4", "/p/1")).toBe(false);
-    expect(link).toHaveBeenCalledTimes(1);
-    finish({ data: { url: "https://accounts.google.com/authorize" } });
+    expect(selfHosted).toHaveBeenCalledTimes(1);
+    finish({ url: "https://accounts.google.com/authorize" });
     expect(await request).toBe(true);
     expect(window.location.href).toBe("https://accounts.google.com/authorize");
     expect(useGoogleLinkPending()).toBe(true);
@@ -64,40 +60,20 @@ describe("Google authorization loading", () => {
     expect(useGoogleLinkPending()).toBe(false);
   });
 
-  it.each(["rejected", "missing-url", "network-error"])(
+  it.each(["missing-url", "network-error"])(
     "clears loading after %s and allows retry",
     async (failure) => {
       if (failure === "network-error")
-        link.mockRejectedValueOnce(new Error("Network unavailable"));
-      else
-        link.mockResolvedValueOnce(
-          failure === "rejected"
-            ? { error: { message: "Request failed" } }
-            : { data: {} },
-        );
+        selfHosted.mockRejectedValueOnce(new Error("Network unavailable"));
+      else selfHosted.mockResolvedValueOnce({});
+
       expect(await startGoogleLink("gsc", "/p/1")).toBe(false);
       expect(useGoogleLinkPending()).toBe(false);
-      link.mockResolvedValueOnce({
-        data: { url: "https://accounts.google.com/authorize" },
+      selfHosted.mockResolvedValueOnce({
+        url: "https://accounts.google.com/authorize",
       });
       expect(await startGoogleLink("gsc", "/p/1")).toBe(true);
       expect(useGoogleLinkPending()).toBe(true);
     },
   );
-
-  it("uses the same pending state for self-hosted authorization", async () => {
-    hosted.mockReturnValue(false);
-    let finish!: (value: { url: string }) => void;
-    selfHosted.mockImplementationOnce(
-      () =>
-        new Promise((resolve) => {
-          finish = resolve;
-        }),
-    );
-    const request = startGoogleLink("ga4", "/p/1");
-    expect(useGoogleLinkPending()).toBe(true);
-    finish({ url: "https://accounts.google.com/authorize" });
-    expect(await request).toBe(true);
-    expect(useGoogleLinkPending()).toBe(true);
-  });
 });

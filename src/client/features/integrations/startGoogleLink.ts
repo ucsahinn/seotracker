@@ -2,8 +2,6 @@ import { toast } from "sonner";
 import { useSyncExternalStore } from "react";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import { GOOGLE_LINK_ERROR_PARAM } from "@/client/features/integrations/googleLinkError";
-import { authClient } from "@/lib/auth-client";
-import { isHostedClientAuthMode } from "@/lib/auth-mode";
 import { startSelfHostedGa4Link } from "@/serverFunctions/ga4";
 import { startSelfHostedGscLink } from "@/serverFunctions/gsc";
 import { GA4_OAUTH_PROVIDER_ID } from "@/shared/ga4";
@@ -72,22 +70,7 @@ export async function startGoogleLink(
   let redirecting = false;
   try {
     const config = googleProviders[provider];
-    let url: string | undefined;
-    if (!isHostedClientAuthMode()) {
-      const res = await config.startSelfHosted({ data: { callbackURL } });
-      url = res.url;
-    } else {
-      const res = await authClient.oauth2.link({
-        providerId: config.providerId,
-        callbackURL,
-        errorCallbackURL: withGoogleLinkErrorParam(callbackURL, provider),
-      });
-      if (res.error) {
-        toast.error(res.error.message ?? "Could not start Google sign-in");
-        return false;
-      }
-      url = res.data?.url;
-    }
+    const { url } = await config.startSelfHosted({ data: { callbackURL } });
     if (!url) return false;
 
     redirecting = true;

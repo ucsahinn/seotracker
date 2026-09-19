@@ -50,7 +50,7 @@ describe("withMcpProjectAuth", () => {
     );
   });
 
-  it("passes auth, baseUrl, billing, and project context to the wrapped handler", async () => {
+  it("passes auth, baseUrl, and project context to the wrapped handler", async () => {
     const { withMcpProjectAuth } = await import("@/server/mcp/project-auth");
     const handler = vi.fn().mockReturnValue("ok");
 
@@ -69,13 +69,7 @@ describe("withMcpProjectAuth", () => {
           clientId: "client_123",
           scopes: ["mcp"],
         },
-        baseUrl: "https://open-seo.test",
-        billing: {
-          userId: "user_123",
-          userEmail: "alice@example.com",
-          organizationId: "org_123",
-          projectId: "project_123",
-        },
+        baseUrl: "https://seotracker.test",
         project: {
           id: "project_123",
           name: "Test",
@@ -145,7 +139,6 @@ describe("withMcpProjectAuth with a user-scoped credential", () => {
         args: { projectId: string },
         context: {
           auth: { organizationId: string; role: string };
-          billing: { organizationId: string };
         },
       ) => string
     >(() => "ok");
@@ -160,7 +153,6 @@ describe("withMcpProjectAuth with a user-scoped credential", () => {
     const [, context] = handler.mock.calls[0];
     expect(context.auth.organizationId).toBe("org_other");
     expect(context.auth.role).toBe("admin");
-    expect(context.billing.organizationId).toBe("org_other");
     // Written back so instrumentation credits the project's org.
     expect(userContext.auth.organizationId).toBe("org_other");
     expect(userContext.auth.role).toBe("admin");

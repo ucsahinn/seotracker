@@ -6,7 +6,7 @@ import type {
   UpdateProjectInput,
 } from "@/types/schemas/projects";
 import { ProjectRepository } from "@/server/features/projects/repositories/ProjectRepository";
-import { normalizeBacklinksTarget } from "@/server/lib/dataforseoBacklinksTarget";
+import { normalizeDomainInput } from "@/server/lib/domainUtils";
 import { AppError } from "@/server/lib/errors";
 import { assertLanguageForLocation } from "@/server/lib/market";
 import { getLanguageCode } from "@/shared/keyword-locations";
@@ -93,7 +93,7 @@ export async function listProjectsEnsuringOne(organizationId: string) {
 function normalizeProjectDomain(domain: string | undefined) {
   if (domain === undefined) return undefined;
   try {
-    return normalizeBacklinksTarget(domain, { scope: "domain" }).apiTarget;
+    return normalizeDomainInput(domain);
   } catch {
     throw new AppError(
       "VALIDATION_ERROR",

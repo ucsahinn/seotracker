@@ -1,41 +1,18 @@
 import { describe, expect, it } from "vitest";
-import { backlinksSearchSchema } from "@/types/schemas/backlinks";
-import { domainSearchSchema } from "@/types/schemas/domain";
+import { booleanSearchParamSchema } from "@/types/schemas/search-params";
 
-describe("search param boolean parsing", () => {
-  it("parses backlinks search params with target and tab", () => {
-    const parsed = backlinksSearchSchema.parse({
-      target: "example.com",
-      tab: "domains",
-    });
-
-    expect(parsed).toEqual({
-      target: "example.com",
-      tab: "domains",
-    });
+describe("booleanSearchParamSchema", () => {
+  // The router hands a cold load the raw string and an in-app navigation the
+  // already-parsed boolean, so both have to land on the same value.
+  it("accepts both the string and the boolean form", () => {
+    expect(booleanSearchParamSchema.parse("true")).toBe(true);
+    expect(booleanSearchParamSchema.parse("false")).toBe(false);
+    expect(booleanSearchParamSchema.parse(true)).toBe(true);
+    expect(booleanSearchParamSchema.parse(false)).toBe(false);
   });
 
-  it("parses explicit false values for domain search params", () => {
-    const parsed = domainSearchSchema.parse({
-      subdomains: "false",
-    });
-
-    expect(parsed).toEqual({
-      subdomains: false,
-    });
-  });
-
-  it("drops invalid optional domain pagination params", () => {
-    const parsed = domainSearchSchema.parse({
-      page: "0",
-      size: "25",
-      loc: "not-a-location",
-    });
-
-    expect(parsed).toEqual({
-      page: undefined,
-      size: undefined,
-      loc: undefined,
-    });
+  it("rejects anything else", () => {
+    expect(booleanSearchParamSchema.safeParse("yes").success).toBe(false);
+    expect(booleanSearchParamSchema.safeParse(1).success).toBe(false);
   });
 });

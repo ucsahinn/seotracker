@@ -1,15 +1,22 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-const createDataforseoClientMock = vi.hoisted(() => vi.fn());
+const fetchPageSpeedReportMock = vi.hoisted(() => vi.fn());
 
-vi.mock("@/server/lib/dataforseo", () => ({
-  createDataforseoClient: createDataforseoClientMock,
-}));
+vi.mock("./pagespeed", async () => {
+  const actual = await vi.importActual<typeof import("./pagespeed")>(
+    "./pagespeed",
+  );
+  return {
+    ...actual,
+    fetchPageSpeedReport: fetchPageSpeedReportMock,
+  };
+});
 
 vi.mock("@/server/lib/r2", () => ({
   putTextToR2: vi.fn(),
 }));
 
+import { PageSpeedError } from "./pagespeed";
 import { fetchLighthouseResult, selectLighthouseSample } from "./lighthouse";
 
 afterEach(() => {
@@ -68,42 +75,33 @@ describe("selectLighthouseSample", () => {
 });
 
 describe("fetchLighthouseResult", () => {
-  const billingCustomer = {
-    userId: "user-1",
-    userEmail: "test@example.com",
-    organizationId: "org-1",
-  };
+  it("rethrows a retryable provider failure so the workflow step retries", async () => {
+    fetchPageSpeedReportMock.mockRejectedValue(
+      new PageSpeedError("quota exceeded", { status: 429, retryable: true }),
+    );
 
-  it("does not retry an ambiguous generic failure", async () => {
-    const live = vi
-      .fn()
-      .mockRejectedValueOnce(new Error("temporary failure"))
-      .mockResolvedValueOnce({
-        scores: {
-          performance: 90,
-          accessibility: 91,
-          "best-practices": 92,
-          seo: 93,
-        },
-        metrics: {
-          largestContentfulPaint: { numericValue: 1000 },
-          cumulativeLayoutShift: { numericValue: 0.01 },
-          interactionToNextPaint: { numericValue: 100 },
-          serverResponseTime: { numericValue: 200 },
-        },
-      });
-    createDataforseoClientMock.mockReturnValue({
-      lighthouse: { live },
-    });
+    await expect(
+      fetchLighthouseResult("https://example.com/", "page-1", "desktop"),
+    ).rejects.toThrow("quota exceeded");
+  });
+
+  it("records a non-retryable failure on the row instead of throwing", async () => {
+    fetchPageSpeedReportMock.mockRejectedValue(
+      new PageSpeedError("Lighthouse returned error: NO_FCP", {
+        status: 500,
+        retryable: false,
+      }),
+    );
 
     const fetched = await fetchLighthouseResult(
       "https://example.com/",
       "page-1",
       "desktop",
-      billingCustomer,
     );
 
-    expect(live).toHaveBeenCalledOnce();
-    expect(fetched.result.errorMessage).toBe("temporary failure");
+    expect(fetched.result.errorMessage).toBe(
+      "Lighthouse returned error: NO_FCP",
+    );
+    expect(fetched.payloadJson).toBeNull();
   });
 });

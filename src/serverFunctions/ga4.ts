@@ -14,8 +14,7 @@ import {
 } from "@/server/features/google/selfHostedOAuth";
 import { hasOrgPermission } from "@/lib/org-permissions";
 import { requireOrgPermission } from "@/server/auth/org-gate";
-import { isHostedServerAuthMode } from "@/server/lib/runtime-env";
-import { captureServerEvent } from "@/server/lib/posthog";
+import { captureServerEvent } from "@/server/lib/observability";
 import { getPublicOrigin } from "@/server/mcp/public-origin";
 import {
   requireAuthenticatedContext,
@@ -35,18 +34,17 @@ export const getGa4Connection = createServerFn({ method: "POST" })
   .middleware(requireProjectContext)
   .validator(projectScopedSchema)
   .handler(async ({ context }) => {
-    const [connection, currentUserHasGrant, hosted, ga4Configured] =
+    const [connection, currentUserHasGrant, ga4Configured] =
       await Promise.all([
         Ga4Service.getConnection(context.projectId),
         Ga4Service.userHasGrant(context.userId),
-        isHostedServerAuthMode(),
         hasSelfHostedGoogleOAuthConfig(),
       ]);
     return {
       connected: Boolean(connection),
       canManage: hasOrgPermission(context.role, { integration: ["manage"] }),
       currentUserHasGrant,
-      googleOAuthConfigured: hosted || ga4Configured,
+      googleOAuthConfigured: ga4Configured,
       propertyId: connection?.propertyId ?? null,
       propertyDisplayName: connection?.propertyDisplayName ?? null,
       propertyTimeZone: connection?.propertyTimeZone ?? null,

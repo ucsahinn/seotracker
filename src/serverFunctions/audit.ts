@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { waitUntil } from "cloudflare:workers";
 import { requireOrgPermission } from "@/server/auth/org-gate";
 import { AuditService } from "@/server/features/audit/services/AuditService";
-import { captureServerEvent } from "@/server/lib/posthog";
+import { captureServerEvent } from "@/server/lib/observability";
 import { requireProjectContext } from "@/serverFunctions/middleware";
 import {
   deleteAuditSchema,
@@ -17,16 +17,13 @@ export const startAudit = createServerFn({ method: "POST" })
   .middleware(requireProjectContext)
   .validator(startAuditSchema)
   .handler(async ({ data, context }) => {
-    const limitTier = await AuditService.resolveAuditLimitTier(context);
-
     const result = await AuditService.startAudit({
       actorUserId: context.userId,
-      billingCustomer: context,
+      organizationId: context.organizationId,
       projectId: context.projectId,
       startUrl: data.startUrl,
       maxPages: data.maxPages,
       lighthouseStrategy: data.lighthouseStrategy,
-      limitTier,
     });
 
     waitUntil(
@@ -38,7 +35,6 @@ export const startAudit = createServerFn({ method: "POST" })
           project_id: context.projectId,
           max_pages: data.maxPages ?? 50,
           run_lighthouse: data.lighthouseStrategy !== "none",
-          plan_tier: limitTier,
         },
       }),
     );

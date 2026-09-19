@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useForm } from "@tanstack/react-form";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { getAgentSetupPrompt } from "@/client/features/ai-mcp/agentSetupPrompt";
@@ -9,17 +9,13 @@ import { SearchConsoleConnectionCard } from "@/client/features/gsc/SearchConsole
 import { CreateProjectModal } from "@/client/features/projects/CreateProjectModal";
 import { ProjectMarketFields } from "@/client/features/projects/ProjectMarketFields";
 import type { ProjectSummary } from "@/client/features/projects/types";
-import { InviteTeammateModal } from "@/client/features/team/InviteTeammateModal";
-import { organizationContextQueryOptions } from "@/client/features/team/organizationQueries";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
-import { captureClientEvent } from "@/client/lib/posthog";
-import { hasOrgPermission } from "@/lib/org-permissions";
+import { captureClientEvent } from "@/client/lib/observability";
 import { getProjects, setProjectWebsite } from "@/serverFunctions/projects";
-import { markDashboardCompetitorClicked } from "@/serverFunctions/dashboard";
 import type { DashboardSetupStep } from "@/types/schemas/dashboard";
-import { parseResearchTarget } from "@/shared/researchScope";
+import { normalizeDomainCandidate } from "@/client/lib/domain-input";
 
-const projectPrompt = `Use OpenSEO to set up a separate project for each website below. List my existing projects first and reuse matches so you don’t create duplicates. Set the country and language for each site, and ask me about anything missing.
+const projectPrompt = `Use seotracker to set up a separate project for each website below. List my existing projects first and reuse matches so you don’t create duplicates. Set the country and language for each site, and ask me about anything missing.
 
 Replace this list with my websites:
 - Project name — website — country — language`;
@@ -34,26 +30,13 @@ export function DashboardSetupAction({
   onComplete: () => void;
 }) {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
-  const org = useQuery(organizationContextQueryOptions());
   const projects = useQuery({
     queryKey: ["projects"],
     queryFn: () => getProjects(),
     enabled: step === "domain",
   });
   const project = projects.data?.find((item) => item.id === projectId);
-  const competitor = useMutation({
-    mutationFn: () => markDashboardCompetitorClicked({ data: { projectId } }),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ["dashboardActivation", projectId],
-      });
-      onComplete();
-      void navigate({ to: "/p/$projectId/domain", params: { projectId } });
-    },
-    onError: (error) => toast.error(getStandardErrorMessage(error)),
-  });
   if (step === "domain")
     return project ? (
       <WebsiteForm project={project} onComplete={onComplete} />
@@ -105,44 +88,6 @@ export function DashboardSetupAction({
           Manual setup instructions
         </a>
       </div>
-    );
-  if (step === "competitor")
-    return (
-      <div className="space-y-4">
-        <p className="text-sm leading-relaxed text-base-content/65">
-          Explore a competitor’s domain to discover the topics they rank for and
-          the websites linking to them.
-        </p>
-        <button
-          type="button"
-          className="btn btn-primary btn-sm"
-          disabled={competitor.isPending}
-          onClick={() => competitor.mutate()}
-        >
-          Open domain lookup
-        </button>
-      </div>
-    );
-
-  const canManage =
-    org.data &&
-    hasOrgPermission(
-      org.data.role,
-      step === "project"
-        ? { project: ["create"] }
-        : step === "team"
-          ? { invitation: ["create"] }
-          : { integration: ["manage"] },
-    );
-  if (!canManage)
-    return (
-      <p className="text-sm text-base-content/65">
-        {org.isPending
-          ? "Checking workspace permissions…"
-          : org.isError
-            ? getStandardErrorMessage(org.error)
-            : "Ask a workspace owner or admin to help with this step."}
-      </p>
     );
   if (step === "gsc")
     return (
@@ -196,34 +141,7 @@ export function DashboardSetupAction({
         )}
       </div>
     );
-  return (
-    <div className="space-y-4">
-      <p className="text-sm leading-relaxed text-base-content/65">
-        Bring a teammate into your workspace to share projects, research, and
-        results.
-      </p>
-      <button
-        type="button"
-        className="btn btn-primary btn-sm"
-        onClick={() => setShowModal(true)}
-      >
-        Invite a teammate
-      </button>
-      {showModal && (
-        <InviteTeammateModal
-          onClose={() => setShowModal(false)}
-          onInvited={() => {
-            void queryClient.invalidateQueries({
-              queryKey: ["organization-team"],
-            });
-            void queryClient.invalidateQueries({
-              queryKey: ["dashboardActivation"],
-            });
-          }}
-        />
-      )}
-    </div>
-  );
+  return null;
 }
 
 function WebsiteForm({
@@ -292,7 +210,7 @@ function WebsiteForm({
         name="domain"
         validators={{
           onChange: ({ value }) => {
-            const parsed = parseResearchTarget(value);
+            const parsed = normalizeDomainCandidate(value);
             return parsed.ok ? undefined : parsed.message;
           },
         }}

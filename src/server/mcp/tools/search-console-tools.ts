@@ -8,7 +8,6 @@ import { formatMcpTable, type McpTableColumn } from "@/server/mcp/table";
 import { projectIdSchema } from "@/server/mcp/schemas";
 import { buildDashboardUrl } from "@/server/mcp/urls";
 import { hasSelfHostedGoogleOAuthConfig } from "@/server/features/google/oauth-config";
-import { isHostedServerAuthMode } from "@/server/lib/runtime-env";
 import { GscService } from "@/server/features/gsc/services/GscService";
 import {
   GSC_DATE_RANGES,
@@ -71,14 +70,10 @@ async function missingSelfHostedGoogleClientResponse(
   context: ProjectAuthContext,
   projectId: string,
 ) {
-  const [hosted, configured] = await Promise.all([
-    isHostedServerAuthMode(),
-    hasSelfHostedGoogleOAuthConfig(),
-  ]);
-  if (hosted || configured) return null;
+  if (await hasSelfHostedGoogleOAuthConfig()) return null;
 
   return mcpResponse({
-    text: `This self-hosted OpenSEO deployment is not configured for Search Console yet. Set GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, and BETTER_AUTH_SECRET, then reconnect Search Console from the project's settings page. Setup docs: ${GSC_SELF_HOSTED_SETUP_DOCS_URL}`,
+    text: `This seotracker instance is not configured for Search Console yet. Set GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, and BETTER_AUTH_SECRET, then reconnect Search Console from the project's settings page. Setup docs: ${GSC_SELF_HOSTED_SETUP_DOCS_URL}`,
     meta: buildProjectMeta(context, projectId),
     structuredContent: {
       ok: false,

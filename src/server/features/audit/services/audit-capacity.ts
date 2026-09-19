@@ -1,56 +1,29 @@
-import type { LighthouseStrategy } from "@/server/lib/audit/types";
+import type { LighthouseMode } from "@/server/lib/audit/types";
 import {
   DEFAULT_AUDIT_PAGES,
-  FREE_MAX_AUDIT_PAGES,
+  MAX_AUDIT_PAGES,
   MIN_AUDIT_PAGES,
-  PAID_MAX_AUDIT_PAGES,
 } from "@/shared/audit-limits";
 
-export type AuditLimitTier = "free" | "paid" | "self_hosted";
-
-// The crawler runs on our Workers compute and isn't credit-metered, so these
-// per-tier bounds are the abuse control: free accounts cost nothing to create,
-// so they get small audits, a modest burst of concurrent runs, and a modest
-// total budget — the cumulative cap bounds total work, concurrency only bounds
-// the rate. Paid gets bounds sized for real sites rather than abuse (a payment
-// method on file is the deterrent). The cumulative bound is a hosted commercial
-// policy, while the per-audit page limit is also a technical Workflow/database
-// ceiling.
-export const AUDIT_LIMITS: Record<
-  AuditLimitTier,
-  {
-    maxPagesPerAudit: number;
-    maxCapacityUnits: number;
-    maxRunningAudits: number;
-  }
-> = {
-  free: {
-    maxPagesPerAudit: FREE_MAX_AUDIT_PAGES,
-    maxCapacityUnits: 2_000,
-    maxRunningAudits: 5,
-  },
-  paid: {
-    maxPagesPerAudit: PAID_MAX_AUDIT_PAGES,
-    maxCapacityUnits: 100_000,
-    maxRunningAudits: Number.POSITIVE_INFINITY,
-  },
-  self_hosted: {
-    maxPagesPerAudit: PAID_MAX_AUDIT_PAGES,
-    maxCapacityUnits: Number.POSITIVE_INFINITY,
-    maxRunningAudits: Number.POSITIVE_INFINITY,
-  },
+// A self-hosted install crawls its own sites on its own compute, so there is no
+// abuse budget to enforce — only the technical ceiling the Workflow and the
+// database can carry per audit.
+export const AUDIT_LIMITS = {
+  maxPagesPerAudit: MAX_AUDIT_PAGES,
+  maxCapacityUnits: Number.POSITIVE_INFINITY,
+  maxRunningAudits: Number.POSITIVE_INFINITY,
 };
 
 export function clampAuditMaxPages(maxPages?: number) {
   return Math.min(
     Math.max(maxPages ?? DEFAULT_AUDIT_PAGES, MIN_AUDIT_PAGES),
-    PAID_MAX_AUDIT_PAGES,
+    MAX_AUDIT_PAGES,
   );
 }
 
 export function getEstimatedAuditCapacity(input: {
   maxPages?: number;
-  lighthouseStrategy?: LighthouseStrategy;
+  lighthouseStrategy?: LighthouseMode;
 }) {
   const pagesTotal = clampAuditMaxPages(input.maxPages);
   const lighthouseStrategy = input.lighthouseStrategy ?? "auto";

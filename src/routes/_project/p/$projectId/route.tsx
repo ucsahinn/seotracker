@@ -7,15 +7,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { setLastProjectId } from "@/client/lib/active-project";
-import { useHostedAuthRouteGuard } from "@/client/features/auth/useHostedAuthRouteGuard";
-import { FreePlanBanner } from "@/client/features/billing/FreePlanBanner";
-import { useOnboardingRedirect } from "@/client/features/onboarding/useOnboardingRedirect";
-import { getErrorCode } from "@/client/lib/error-messages";
 import { AuthenticatedAppLayout } from "@/client/layout/AppShell";
-import {
-  getCurrentAuthRedirectFromHref,
-  getSignInSearch,
-} from "@/lib/auth-redirect";
 import { getProjectAccess } from "@/serverFunctions/projects";
 
 export const Route = createFileRoute("/_project/p/$projectId")({
@@ -44,24 +36,12 @@ function useProjectAccessRedirect(projectId: string) {
   const error = access.error;
   useEffect(() => {
     if (!error) return;
-    if (getErrorCode(error) === "UNAUTHENTICATED") {
-      void navigate({
-        to: "/sign-in",
-        search: getSignInSearch(
-          getCurrentAuthRedirectFromHref(window.location.href),
-        ),
-        replace: true,
-      });
-      return;
-    }
     void navigate({ to: "/", replace: true });
   }, [error, navigate]);
 }
 
 function ProjectLayout() {
   const { projectId } = Route.useParams();
-  const authGate = useHostedAuthRouteGuard();
-  useOnboardingRedirect();
   useProjectAccessRedirect(projectId);
 
   // Remember this as the last-visited project for the landing redirect.
@@ -80,15 +60,8 @@ function ProjectLayout() {
     setLastProjectId(projectId);
   }, [projectId, isSettingsPage]);
 
-  if (!authGate.canRenderAuthenticatedContent) {
-    return null;
-  }
-
   return (
-    <AuthenticatedAppLayout
-      projectId={projectId}
-      banner={authGate.isHostedMode ? <FreePlanBanner /> : undefined}
-    >
+    <AuthenticatedAppLayout projectId={projectId}>
       <Outlet />
     </AuthenticatedAppLayout>
   );

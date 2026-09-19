@@ -22,11 +22,15 @@ export const CRAWL_CHUNK_STEP: WorkflowStepConfig = {
 };
 
 /**
- * One Lighthouse URL (mobile + desktop). DataForSEO charges these calls, so a
- * Workflow replay must never issue them again after the step starts.
+ * One Lighthouse URL (mobile + desktop) against PageSpeed Insights. The calls
+ * are free and idempotent, so a replay is harmless — unlike the billed provider
+ * this replaced, which forced retries to zero. Cold runs and quota rejections
+ * are both transient; three attempts at 30s/60s ride them out without hammering
+ * the per-minute quota. The timeout is per attempt, covering two parallel
+ * 120-second requests.
  */
 export const LIGHTHOUSE_FETCH_STEP: WorkflowStepConfig = {
-  retries: { limit: 0, delay: "1 second" },
+  retries: { limit: 2, delay: "30 seconds", backoff: "exponential" },
   timeout: "5 minutes",
 };
 

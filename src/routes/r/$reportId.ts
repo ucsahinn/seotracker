@@ -1,6 +1,5 @@
 import { env } from "cloudflare:workers";
 import { createFileRoute } from "@tanstack/react-router";
-import { isHostedAuthMode } from "@/lib/auth-mode";
 import { resolveUserContextFromHeaders } from "@/middleware/ensure-user/resolve";
 import { ProjectRepository } from "@/server/features/projects/repositories/ProjectRepository";
 import { ReportRepository } from "@/server/features/reports/repositories/ReportRepository";
@@ -32,19 +31,7 @@ async function handleReportRequest(
     // config or session-store failure must not masquerade as "you are logged
     // out", and the self-hosted modes have no sign-in page to complete.
     if (asAppError(error)?.code !== "UNAUTHENTICATED") throw error;
-    if (!isHostedAuthMode(env.AUTH_MODE)) {
-      return textResponse("Sign in to read this report.", 401);
-    }
-    // The most likely real entry: someone opening a report link in a browser
-    // whose session expired.
-    const target = `/r/${encodeURIComponent(reportId)}`;
-    return new Response(null, {
-      status: 302,
-      headers: {
-        Location: `/sign-in?redirect=${encodeURIComponent(target)}`,
-        "Cache-Control": "private, no-store",
-      },
-    });
+    return textResponse("Sign in to read this report.", 401);
   }
 
   // Reads go through the repository rather than ReportService: the service's

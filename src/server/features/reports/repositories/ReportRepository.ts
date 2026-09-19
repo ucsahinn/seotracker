@@ -186,55 +186,9 @@ async function updateReportContent(params: {
 // scope it: `/s/<token>` arrives with a token and nothing else. The token is
 // the authorization, so the row is joined to its project for the organization
 // id (telemetry grouping) and the archived flag the public page renders.
-async function getSharedReportByToken(token: string): Promise<{
-  id: string;
-  projectId: string;
-  organizationId: string;
-  title: string;
-  summary: string;
-  skill: string | null;
-  updatedAt: string;
-  archived: boolean;
-} | null> {
-  const [row] = await db
-    .select({
-      id: reports.id,
-      projectId: reports.projectId,
-      organizationId: projects.organizationId,
-      title: reports.title,
-      summary: reports.summary,
-      skill: reports.skill,
-      updatedAt: reports.updatedAt,
-      archivedAt: projects.archivedAt,
-    })
-    .from(reports)
-    .innerJoin(projects, eq(projects.id, reports.projectId))
-    .where(eq(reports.shareToken, token))
-    .limit(1);
-  if (!row) return null;
-  const { archivedAt, ...report } = row;
-  return { ...report, archived: archivedAt !== null };
-}
-
 // Share state only, so minting or revoking a link never touches `updated_at` —
 // the app shows "Updated" as when the content last changed, and sharing is not
 // a content change.
-async function setShareToken(
-  projectId: string,
-  reportId: string,
-  // The service mints both halves, so the token it hands back to the caller
-  // and the stamp stored with it come from one clock.
-  share: { shareToken: string; sharedAt: string } | null,
-): Promise<void> {
-  await db
-    .update(reports)
-    .set({
-      shareToken: share?.shareToken ?? null,
-      sharedAt: share?.sharedAt ?? null,
-    })
-    .where(and(eq(reports.id, reportId), eq(reports.projectId, projectId)));
-}
-
 /** True when a row was deleted; false when the id is not in this project. */
 async function deleteReport(
   projectId: string,
@@ -253,8 +207,6 @@ export const ReportRepository = {
   getReportProjectId,
   getReportHtml,
   getReportWithHtml,
-  getSharedReportByToken,
-  setShareToken,
   findReportByTitle,
   countReports,
   sumReportBytesForOrganization,

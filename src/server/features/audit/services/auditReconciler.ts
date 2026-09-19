@@ -20,7 +20,7 @@ import {
   classifyAuditError,
   type AuditErrorInfo,
 } from "@/server/lib/audit/audit-errors";
-import { captureServerEvent } from "@/server/lib/posthog";
+import { captureServerEvent } from "@/server/lib/observability";
 
 /**
  * Don't declare an instance "lost" until the audit is comfortably older than

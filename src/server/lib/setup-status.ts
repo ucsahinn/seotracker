@@ -77,13 +77,3 @@ export async function getSelfHostSetupStatus(options?: {
 
   return { version, authMode: getAuthMode(env.AUTH_MODE), checks };
 }
-
-// Compact "which checks are unhealthy" list for telemetry: check keys with
-// their status, no free-text details (details can name env vars; keep events
-// to enumerable values only).
-export async function getSetupIssueSummary(): Promise<string[]> {
-  const status = await getSelfHostSetupStatus({ skipDatabaseCheck: true });
-  return Object.entries(status.checks)
-    .filter(([, check]) => check.status !== "ok")
-    .map(([key, check]) => `${key}:${check.status}`);
-}

@@ -3,10 +3,9 @@ import type { CallToolResult } from "@modelcontextprotocol/server";
 import type { z } from "zod";
 import { asAppError } from "@/server/lib/errors";
 import { recordExternalMcpToolCall } from "@/server/features/activation/mcpActivation";
-import { captureServerError, captureServerEvent } from "@/server/lib/posthog";
+import { captureServerError, captureServerEvent } from "@/server/lib/observability";
 import { shouldCaptureAppErrorCode } from "@/shared/error-codes";
 import { type ToolContext } from "@/server/mcp/context";
-import { incrementSelfHostMcpToolCallCount } from "@/server/lib/self-host-telemetry";
 
 type ToolHandler<TArgs> = (
   args: TArgs,
@@ -24,12 +23,7 @@ function formatValidationIssues(error: z.ZodError) {
     .slice(0, 500);
 }
 
-/**
- * Usage analytics for every MCP tool invocation. `clientId` distinguishes
- * external MCP clients (OAuth) from the in-app agent (first-party auth, null
- * clientId); self-hosted installs never report because captureServerEvent is
- * gated to hosted mode.
- */
+/** Per-call outcome hook. Local-only; see server/lib/observability.ts. */
 function captureMcpToolCall(
   toolName: string,
   context: ToolContext,
@@ -42,8 +36,6 @@ function captureMcpToolCall(
     quotaRemaining?: number;
   },
 ) {
-  waitUntil(incrementSelfHostMcpToolCallCount());
-
   const auth = context.auth;
   waitUntil(
     captureServerEvent({
@@ -67,13 +59,13 @@ function captureMcpToolCall(
 }
 
 /**
- * Wraps an MCP tool handler so failures reach PostHog. Unlike TanStack server
+ * Wraps an MCP tool handler so failures are logged. Unlike TanStack server
  * functions (covered by errorHandlingMiddleware), the MCP route has no error
- * middleware, so tool failures are otherwise invisible in error reporting.
+ * middleware, so tool failures are otherwise invisible.
  *
  * This captures two classes of failure:
- *  - Exceptions thrown by the handler (DataForSEO outages, auth failures, …),
- *    gated by shouldCaptureAppErrorCode to keep expected errors out of PostHog.
+ *  - Exceptions thrown by the handler (provider outages, auth failures, …),
+ *    gated by shouldCaptureAppErrorCode to keep expected errors out of the log.
  *  - Output-schema validation failures. The SDK validates structuredContent
  *    against the output schema *after* the handler returns and converts a
  *    failure into a -32602 JSON-RPC error it never rethrows, so we re-run the

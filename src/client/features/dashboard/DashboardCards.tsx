@@ -21,7 +21,6 @@ import {
 } from "@/client/features/dashboard/cardParts";
 import type {
   DashboardAuditSummary,
-  DashboardBacklinkSummary,
 } from "@/server/features/dashboard/services/DashboardService";
 
 // Plain string-keyed view of the registry: issue types from the DB are not
@@ -204,90 +203,3 @@ export function AuditHealthCard({
   );
 }
 
-export function BacklinkPulseCard({
-  projectId,
-  backlinks,
-  refreshing,
-}: {
-  projectId: string;
-  backlinks: DashboardBacklinkSummary | null;
-  refreshing: boolean;
-}) {
-  if (!backlinks && refreshing) {
-    return (
-      <CardShell title="Backlink pulse" stamp="Taking your first snapshot…">
-        <div className="grid grid-cols-2 gap-3" aria-busy>
-          {Array.from({ length: 4 }, (_, i) => (
-            <div key={i} className="skeleton h-20" />
-          ))}
-        </div>
-      </CardShell>
-    );
-  }
-
-  if (!backlinks) {
-    return (
-      <CardShell title="Backlink pulse">
-        <p className="text-sm text-base-content/60">
-          We&rsquo;ll snapshot who links to your domain — nothing to set up.
-        </p>
-      </CardShell>
-    );
-  }
-
-  return (
-    <CardShell
-      title="Backlink pulse"
-      stamp={`Backlinks · snapshot ${formatDay(backlinks.capturedAt)}${
-        refreshing ? " · refreshing…" : ""
-      }`}
-      action={
-        <Link
-          to="/p/$projectId/backlinks"
-          params={{ projectId }}
-          search={{ target: backlinks.domain, scope: "domain" }}
-          className={moreDetailsClass}
-        >
-          More details
-        </Link>
-      }
-    >
-      <div className="grid grid-cols-2 gap-3">
-        <Stat
-          label="Ref. domains"
-          value={
-            backlinks.referringDomains === null
-              ? "—"
-              : backlinks.referringDomains.toLocaleString()
-          }
-        />
-        <Stat
-          label="Backlinks"
-          value={
-            backlinks.backlinks === null
-              ? "—"
-              : backlinks.backlinks.toLocaleString()
-          }
-        />
-        <Stat
-          label="New links"
-          value={`▲ ${newLost(backlinks.newBacklinks)}`}
-          tone={
-            backlinks.newBacklinks && backlinks.newBacklinks > 0
-              ? "success"
-              : undefined
-          }
-        />
-        <Stat
-          label="Lost links"
-          value={`▼ ${newLost(backlinks.lostBacklinks)}`}
-          tone={
-            backlinks.lostBacklinks && backlinks.lostBacklinks > 0
-              ? "error"
-              : undefined
-          }
-        />
-      </div>
-    </CardShell>
-  );
-}

@@ -8,7 +8,7 @@ import { setLastProjectId } from "@/client/lib/active-project";
 import {
   DEFAULT_LOCATION_CODE,
   getLanguageCode,
-} from "@/client/features/keywords/locations";
+} from "@/shared/keyword-locations";
 import { ProjectMarketFields } from "@/client/features/projects/ProjectMarketFields";
 import { createProject } from "@/serverFunctions/projects";
 

@@ -4,9 +4,8 @@ import { GoogleConnectedState } from "@/client/features/integrations/GoogleConne
 import { useGooglePickerResume } from "@/client/features/integrations/useGooglePickerResume";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { isHostedClientAuthMode } from "@/lib/auth-mode";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
-import { captureClientEvent } from "@/client/lib/posthog";
+import { captureClientEvent } from "@/client/lib/observability";
 import { GoogleProjectEmptyState } from "@/client/features/integrations/GoogleProjectEmptyState";
 import { GoogleLinkErrorAlert } from "@/client/features/integrations/GoogleLinkErrorAlert";
 import { IntegrationConnectionCard } from "@/client/features/integrations/IntegrationConnectionCard";
@@ -27,7 +26,7 @@ export function SearchConsoleConnectionCard({
   projectId: string;
   returnTo?: string;
 }) {
-  const hosted = isHostedClientAuthMode();
+  const hosted = false;
   const queryClient = useQueryClient();
   const { picking, setPicking, linkAccount, linking } = useGooglePickerResume(
     "gsc",

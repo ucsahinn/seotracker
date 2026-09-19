@@ -56,7 +56,10 @@ const storedLighthouseIssueSchema = z.object({
 
 export const storedLighthousePayloadSchema = z.object({
   version: z.literal(2),
-  source: z.literal("dataforseo-lighthouse"),
+  // "dataforseo-lighthouse" is legacy: rows written before this install moved to
+  // Google's PageSpeed Insights. Never written any more, only read — dropping it
+  // would make every older audit's issues page render empty.
+  source: z.enum(["pagespeed-insights", "dataforseo-lighthouse"]),
   hasIssueDetails: z.boolean(),
   metadata: z.object({
     requestedUrl: z.string(),
@@ -64,8 +67,6 @@ export const storedLighthousePayloadSchema = z.object({
     strategy: z.enum(["mobile", "desktop"]),
     fetchedAt: z.string(),
     lighthouseVersion: z.string().nullable(),
-    taskId: z.string().nullable(),
-    cost: z.number().nullable(),
   }),
   scores: z.object({
     performance: z.number().nullable(),

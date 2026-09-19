@@ -3,8 +3,6 @@ import { Loader2 } from "lucide-react";
 import { MIN_PAGES } from "@/client/features/audit/launch/types";
 import type { useLaunchController } from "@/client/features/audit/launch/useLaunchController";
 import { getFieldError, getFormError } from "@/client/lib/forms";
-import { PAID_MAX_AUDIT_PAGES } from "@/shared/audit-limits";
-import { SUBSCRIBE_ROUTE } from "@/shared/billing";
 
 type Props = {
   launchForm: ReturnType<typeof useLaunchController>["launchForm"];
@@ -91,7 +89,6 @@ function LaunchOptions({
   commitMaxPagesInput,
   maxPagesLimit,
 }: Props) {
-  const isFreeLimited = maxPagesLimit < PAID_MAX_AUDIT_PAGES;
 
   return (
     <div className="rounded-lg border border-base-300 bg-base-200/20 p-3 space-y-2">
@@ -123,19 +120,6 @@ function LaunchOptions({
       </div>
       <p className="text-xs text-base-content/50">
         Enter any value from {MIN_PAGES} to {maxPagesLimit.toLocaleString()}.
-        {isFreeLimited ? (
-          <>
-            {" "}
-            <Link
-              to={SUBSCRIBE_ROUTE}
-              search={{ upgrade: true }}
-              className="link link-primary"
-            >
-              Upgrade
-            </Link>{" "}
-            to crawl up to {PAID_MAX_AUDIT_PAGES.toLocaleString()} pages.
-          </>
-        ) : null}
       </p>
     </div>
   );

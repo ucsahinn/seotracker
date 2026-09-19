@@ -6,8 +6,7 @@ import {
   getErrorCode,
   getStandardErrorMessage,
 } from "@/client/lib/error-messages";
-import { AuthConfigErrorCard } from "@/client/components/AuthConfigErrorCard";
-import { captureClientError } from "@/client/lib/posthog";
+import { captureClientError } from "@/client/lib/observability";
 import { UnauthenticatedErrorCard } from "@/client/components/UnauthenticatedErrorCard";
 
 export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
@@ -35,21 +34,8 @@ export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
     });
   }, [error, errorCode, pathname]);
 
-  const showAuthConfigHelp = errorCode === "AUTH_CONFIG_MISSING";
-  const showSignInHelp = errorCode === "UNAUTHENTICATED";
-
-  if (showAuthConfigHelp) {
-    return (
-      <div className="min-w-0 flex-1 p-4 flex items-center justify-center">
-        <AuthConfigErrorCard
-          message={message}
-          onRetry={() => {
-            void router.invalidate();
-          }}
-        />
-      </div>
-    );
-  }
+  const showSignInHelp =
+    errorCode === "UNAUTHENTICATED" || errorCode === "AUTH_CONFIG_MISSING";
 
   if (showSignInHelp) {
     return (

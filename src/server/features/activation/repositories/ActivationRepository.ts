@@ -137,32 +137,9 @@ async function setStepDismissed(
 }
 
 // Return only the milestone, never member or invitee details to the dashboard.
-async function hasTeammate(organizationId: string) {
-  const [members, pending] = await Promise.all([
-    db
-      .select({ id: member.id })
-      .from(member)
-      .where(eq(member.organizationId, organizationId))
-      .limit(2),
-    db
-      .select({ id: invitation.id })
-      .from(invitation)
-      .where(
-        and(
-          eq(invitation.organizationId, organizationId),
-          eq(invitation.status, "pending"),
-          gt(invitation.expiresAt, new Date()),
-        ),
-      )
-      .limit(1),
-  ]);
-  return members.length > 1 || pending.length > 0;
-}
-
 export const ActivationRepository = {
   getDismissedSteps,
   setStepDismissed,
-  hasTeammate,
   getOrganizationActivation,
   getProjectActivation,
   recordFirstMcpAuthorized,

@@ -5,7 +5,7 @@ import { z } from "zod";
 import { Modal } from "@/client/components/Modal";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import { getFieldError } from "@/client/lib/forms";
-import { captureClientEvent } from "@/client/lib/posthog";
+import { captureClientEvent } from "@/client/lib/observability";
 import { saveReportTemplate } from "@/serverFunctions/reportTemplates";
 import type { ReportTemplate } from "@/types/schemas/report-templates";
 

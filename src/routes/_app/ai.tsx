@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { ArrowUpRight, ShieldAlert } from "lucide-react";
 import { getAuthMode } from "@/lib/auth-mode";
-import { captureClientEvent } from "@/client/lib/posthog";
+import { captureClientEvent } from "@/client/lib/observability";
 import {
   agentUpdatePrompt,
   getAgentSetupPrompt,

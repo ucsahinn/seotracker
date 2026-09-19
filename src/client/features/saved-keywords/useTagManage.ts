@@ -5,7 +5,7 @@ import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import {
   deleteSavedKeywordTag,
   updateSavedKeywordTag,
-} from "@/serverFunctions/keywords";
+} from "@/serverFunctions/savedKeywords";
 import type { TagColorKey } from "@/shared/tag-colors";
 
 export function useTagManage(projectId: string) {

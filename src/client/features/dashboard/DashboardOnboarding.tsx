@@ -2,9 +2,8 @@ import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Check, ChevronRight, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
-import { isHostedClientAuthMode } from "@/lib/auth-mode";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
-import { captureClientEvent } from "@/client/lib/posthog";
+import { captureClientEvent } from "@/client/lib/observability";
 import { getGoogleLinkError } from "@/client/features/integrations/googleLinkError";
 import { setDashboardStepDismissed } from "@/serverFunctions/dashboard";
 import type { DashboardActivation } from "@/server/features/dashboard/services/DashboardService";
@@ -49,9 +48,7 @@ export function DashboardOnboarding({
         ),
       ),
   });
-  const steps = setupSteps.filter(
-    (step) => step.id !== "team" || isHostedClientAuthMode(),
-  );
+  const steps = setupSteps;
   const remaining = steps.filter(
     (step) => getStepStatus(activation, step.id) === "todo",
   );

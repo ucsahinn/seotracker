@@ -95,12 +95,13 @@ export function ProjectSwitcher({
     // the location's full param set, so params can't tell layers apart.
     const stayable = findLast(
       router.state.matches,
-      (match) =>
+      (match: { fullPath: string }) =>
         match.fullPath.includes("$projectId") &&
         match.fullPath
           .split("/")
           .every(
-            (segment) => !segment.startsWith("$") || segment === "$projectId",
+            (segment: string) =>
+              !segment.startsWith("$") || segment === "$projectId",
           ),
     );
     // Navigating by href keeps typed-route generics out of a dynamic target

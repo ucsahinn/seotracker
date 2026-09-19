@@ -1,12 +1,14 @@
 import { describe, expect, it } from "vitest";
-import { normalizeDomainInput } from "@/server/lib/domainUtils";
-import { isValidDomainHost } from "@/shared/researchScope";
+import {
+  isValidDomainHost,
+  normalizeDomainInput,
+} from "@/server/lib/domainUtils";
 
 describe("isValidDomainHost", () => {
   it("accepts real registrable domains", () => {
     expect(isValidDomainHost("example.com")).toBe(true);
     expect(isValidDomainHost("sub.example.co.uk")).toBe(true);
-    expect(isValidDomainHost("openseo.so")).toBe(true);
+    expect(isValidDomainHost("seotracker.dev")).toBe(true);
   });
 
   it("rejects fake TLDs, IPs, and bare hosts", () => {
@@ -26,7 +28,7 @@ describe("normalizeDomainInput", () => {
     );
   });
 
-  it("rejects a fake TLD before it can reach DataForSEO", () => {
+  it("rejects a fake TLD before it can be saved", () => {
     expect(() => normalizeDomainInput("victorgomez.por", false)).toThrowError(
       /valid domain/i,
     );

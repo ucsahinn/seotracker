@@ -1,9 +1,7 @@
 import { ReportRepository } from "@/server/features/reports/repositories/ReportRepository";
-import { sharesEnabled } from "@/server/features/reports/shareAccess";
 import { AppError } from "@/server/lib/errors";
-import { captureServerEvent } from "@/server/lib/posthog";
+import { captureServerEvent } from "@/server/lib/observability";
 import { formatCount } from "@/shared/format";
-import { mintShareToken } from "@/shared/report-share";
 import {
   REPORT_MAX_BYTES_PER_ORG,
   REPORT_MAX_HTML_BYTES,
@@ -232,74 +230,6 @@ export async function deleteReport(
   if (!deleted) throw notFound(reportId);
 }
 
-type ShareParams = {
-  projectId: string;
-  reportId: string;
-  /** From the authenticated context — the telemetry identity, nothing else. */
-  userId: string;
-  organizationId: string;
-};
-
-/**
- * Mints the public link, or returns the existing one. Idempotent on purpose:
- * the modal's toggle can be flipped twice by a double click or a retried
- * mutation, and a second mint would silently break the link the user just
- * copied.
- */
-async function shareReport(params: ShareParams): Promise<ReportMetadata> {
-  // Refused here rather than only hidden in the UI: the server is the trust
-  // boundary. A token minted on a self-hosted deployment is a link that
-  // silently does nothing, and the user would have copied it believing otherwise.
-  if (!(await sharesEnabled())) {
-    throw new AppError(
-      "VALIDATION_ERROR",
-      "Sharing is only available on hosted OpenSEO.",
-    );
-  }
-
-  const report = await getReport(params.projectId, params.reportId);
-  if (report.shareToken) return report;
-
-  const shareToken = mintShareToken();
-  const sharedAt = new Date().toISOString();
-  await ReportRepository.setShareToken(params.projectId, params.reportId, {
-    shareToken,
-    sharedAt,
-  });
-  await captureServerEvent({
-    distinctId: params.userId,
-    event: "report:shared",
-    organizationId: params.organizationId,
-    properties: {
-      project_id: params.projectId,
-      report_id: params.reportId,
-      skill: report.skill,
-      source: "app",
-    },
-  });
-  return { ...report, shareToken, sharedAt };
-}
-
-/** Revokes the link by nulling the token. A second call is a no-op. */
-async function unshareReport(params: ShareParams): Promise<ReportMetadata> {
-  const report = await getReport(params.projectId, params.reportId);
-  if (!report.shareToken) return report;
-
-  await ReportRepository.setShareToken(params.projectId, params.reportId, null);
-  await captureServerEvent({
-    distinctId: params.userId,
-    event: "report:unshared",
-    organizationId: params.organizationId,
-    properties: {
-      project_id: params.projectId,
-      report_id: params.reportId,
-      skill: report.skill,
-      source: "app",
-    },
-  });
-  return { ...report, shareToken: null, sharedAt: null };
-}
-
 // Shared by the reads and the delete, where `reportId` is a required argument —
 // so no "omit reportId" hint here; that one belongs to save_report, which has
 // its own message above.
@@ -316,6 +246,4 @@ export const ReportService = {
   getReport,
   getReportWithHtml,
   deleteReport,
-  shareReport,
-  unshareReport,
 } as const;

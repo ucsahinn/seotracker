@@ -10,9 +10,8 @@ import {
 } from "@/server/features/google/selfHostedOAuth";
 import { hasOrgPermission } from "@/lib/org-permissions";
 import { requireOrgPermission } from "@/server/auth/org-gate";
-import { captureServerEvent } from "@/server/lib/posthog";
+import { captureServerEvent } from "@/server/lib/observability";
 import { getPublicOrigin } from "@/server/mcp/public-origin";
-import { isHostedServerAuthMode } from "@/server/lib/runtime-env";
 import {
   requireAuthenticatedContext,
   requireProjectContext,
@@ -40,18 +39,17 @@ export const getGscConnection = createServerFn({ method: "POST" })
   .middleware(requireProjectContext)
   .validator(projectScopedSchema)
   .handler(async ({ context }) => {
-    const [connection, currentUserHasGrant, hosted, gscConfigured] =
+    const [connection, currentUserHasGrant, gscConfigured] =
       await Promise.all([
         GscService.getConnection(context.projectId),
         GscService.userHasGrant(context.userId),
-        isHostedServerAuthMode(),
         hasSelfHostedGoogleOAuthConfig(),
       ]);
     return {
       connected: Boolean(connection),
       canManage: hasOrgPermission(context.role, { integration: ["manage"] }),
       currentUserHasGrant,
-      googleOAuthConfigured: hosted || gscConfigured,
+      googleOAuthConfigured: gscConfigured,
       siteUrl: connection?.siteUrl ?? null,
       connectedByEmail: connection?.connectedAccountEmail ?? null,
       connectedAt: connection?.createdAt ?? null,

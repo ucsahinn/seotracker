@@ -1,4 +1,4 @@
-import { captureClientEvent } from "@/client/lib/posthog";
+import { captureClientEvent } from "@/client/lib/observability";
 
 /**
  * Marker appended to the errorCallbackURL so a failed Google link redirect can

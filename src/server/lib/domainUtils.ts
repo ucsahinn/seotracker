@@ -1,37 +1,29 @@
-import { getDomain } from "tldts";
+import { getDomain, parse as parseTld } from "tldts";
 import { AppError } from "@/server/lib/errors";
-import {
-  isValidDomainHost,
-  parseResearchTarget,
-  type ResearchScope,
-  type ResearchTarget,
-} from "@/shared/researchScope";
 
-export function parseResearchTargetOrThrow(
-  input: string,
-  scope?: ResearchScope,
-): ResearchTarget {
-  const parsed = parseResearchTarget(input, scope);
-  if (!parsed.ok) {
-    throw new AppError("VALIDATION_ERROR", parsed.message);
-  }
-  return parsed.target;
+/**
+ * True when `host` resolves to a real registrable domain per the public-suffix
+ * list, rejecting IP literals, bare labels like "localhost" and invented TLDs
+ * like "example.por" before they are ever saved.
+ */
+export function isValidDomainHost(host: string): boolean {
+  const parsed = parseTld(host, { allowPrivateDomains: true });
+  return (
+    !parsed.isIp &&
+    !!parsed.publicSuffix &&
+    (parsed.isIcann === true || parsed.isPrivate === true)
+  );
 }
 
-export function toRelativePath(url: string | null | undefined): string | null {
-  if (!url) return null;
-
-  try {
-    const parsed = new URL(url);
-    return `${parsed.pathname}${parsed.search}` || "/";
-  } catch {
-    return null;
-  }
-}
-
+/**
+ * Validates and canonicalizes a domain the user typed: lowercase bare host with
+ * the protocol, any path and a leading `www.` stripped. With
+ * `includeSubdomains` the full host is kept; otherwise it collapses to the
+ * registrable domain, so `blog.acme.com` and `acme.com` are one project.
+ */
 export function normalizeDomainInput(
   input: string,
-  includeSubdomains: boolean,
+  includeSubdomains = false,
 ): string {
   const trimmed = input.trim().toLowerCase();
   if (!trimmed) {
@@ -49,13 +41,7 @@ export function normalizeDomainInput(
     throw new AppError("VALIDATION_ERROR", "Domain is invalid");
   }
 
-  if (!host) {
-    throw new AppError("VALIDATION_ERROR", "Domain is invalid");
-  }
-
-  // Reject fake TLDs / non-registrable hosts (e.g. "example.por") before they
-  // reach DataForSEO and come back as an opaque "Invalid Field: 'target'".
-  if (!isValidDomainHost(host)) {
+  if (!host || !isValidDomainHost(host)) {
     throw new AppError(
       "VALIDATION_ERROR",
       "Enter a valid domain like example.com",

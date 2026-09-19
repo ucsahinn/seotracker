@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { TAG_COLOR_KEYS } from "@/shared/tag-colors";
-import { booleanSearchParamSchema } from "@/types/schemas/domain";
+import { booleanSearchParamSchema } from "@/types/schemas/search-params";
 
 const savedKeywordTagSchema = z.string().trim().min(1).max(64);
 const tagColorSchema = z.enum(TAG_COLOR_KEYS);

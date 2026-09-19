@@ -5,7 +5,7 @@ import {
 import type { EnsuredUserContext } from "@/middleware/ensure-user/types";
 import { AppError } from "@/server/lib/errors";
 
-// Server-side org-role gate for app resources (billing/project/integration).
+// Server-side org-role gate for app resources (project/integration).
 // Zero-I/O: the role was already resolved from the member row by ensure-user.
 export function requireOrgPermission(
   context: Pick<EnsuredUserContext, "role">,

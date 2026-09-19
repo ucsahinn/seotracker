@@ -21,9 +21,7 @@ const fresh: DashboardActivation = {
   ga4: { connected: false, propertyDisplayName: null, cardDismissedAt: null },
   gsc: { connected: false, siteUrl: null },
   mcp: { authorizedAt: null, firstToolCallAt: null, cardDismissedAt: null },
-  competitorClickedAt: null,
   hasMultipleProjects: false,
-  hasTeammate: false,
   dismissedSteps: [],
 };
 

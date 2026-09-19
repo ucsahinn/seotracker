@@ -145,21 +145,19 @@ describe("handleReportRequest", () => {
     expect(mocks.getReportHtml).not.toHaveBeenCalled();
   });
 
-  it("bounces an unauthenticated viewer to sign-in", async () => {
+  // There is no sign-in page to send anyone to: the reader is authenticated by
+  // the deployment, not by the app.
+  it("answers an unauthenticated viewer with 401", async () => {
     mocks.resolveUserContextFromHeaders.mockRejectedValue(
       new Error("UNAUTHENTICATED"),
     );
 
     const response = await handleReportRequest("report-1", request());
 
-    expect(response.status).toBe(302);
-    expect(response.headers.get("location")).toBe(
-      "/sign-in?redirect=%2Fr%2Freport-1",
-    );
+    expect(response.status).toBe(401);
   });
 
-  // A session-store or config failure must not read as "you are logged out" and
-  // send the reader round a sign-in loop that cannot fix it.
+  // A session-store or config failure must not read as "you are logged out".
   it("lets a non-auth failure escape instead of bouncing to sign-in", async () => {
     mocks.resolveUserContextFromHeaders.mockRejectedValue(
       new Error("AUTH_CONFIG_MISSING"),

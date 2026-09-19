@@ -35,13 +35,12 @@ import { useSavedKeywordsExport } from "@/client/features/saved-keywords/useSave
 import { useSavedKeywordsFilters } from "@/client/features/saved-keywords/useSavedKeywordsFilters";
 import { useTagManage } from "@/client/features/saved-keywords/useTagManage";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
-import { captureClientEvent } from "@/client/lib/posthog";
+import { captureClientEvent } from "@/client/lib/observability";
 import {
   getSavedKeywords,
-  refreshSavedKeywordMetrics,
   removeSavedKeywords,
   updateSavedKeywordTags,
-} from "@/serverFunctions/keywords";
+} from "@/serverFunctions/savedKeywords";
 import type { SavedKeywordTag } from "@/types/keywords";
 
 export const Route = createFileRoute("/_project/p/$projectId/saved")({
@@ -196,20 +195,6 @@ function SavedKeywordsPage() {
     },
   });
 
-  const refreshMetricsMutation = useMutation({
-    mutationFn: () => refreshSavedKeywordMetrics({ data: { projectId } }),
-    onSuccess: (result) => {
-      void invalidateSavedKeywords();
-      toast.success(
-        `Updated stats for ${result.updated} keyword${result.updated !== 1 ? "s" : ""}`,
-      );
-    },
-    onError: (error) => {
-      toast.error(
-        getStandardErrorMessage(error, "Could not update keyword stats."),
-      );
-    },
-  });
 
   const tagManage = useTagManage(projectId);
   const exporter = useSavedKeywordsExport({
@@ -246,10 +231,8 @@ function SavedKeywordsPage() {
         <SavedKeywordsHeader
           totalCount={totalCount}
           exporting={exporter.exporting}
-          metricsRefreshing={refreshMetricsMutation.isPending}
           onExportCsv={() => void exporter.exportFilteredCsv()}
           onExportSheets={() => void exporter.exportFilteredSheets()}
-          onRefreshMetrics={() => refreshMetricsMutation.mutate()}
         />
 
         <div className="overflow-hidden rounded-lg border border-base-300 bg-base-100">

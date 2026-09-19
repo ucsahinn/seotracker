@@ -9,27 +9,19 @@ services:
     # `cp .env.example .env` creates it.
     env_file:
       - .env
-    # Anonymous usage heartbeat controls: docs/SELF_HOSTING_DOCKER.md#telemetry
     environment:
       # Required for local Docker self-hosting: exposes Compose env vars to cloudflare:workers bindings.
       - CLOUDFLARE_INCLUDE_PROCESS_ENV=true
       - PORT=${PORT:-3001}
       - ALLOWED_HOST=${ALLOWED_HOST:-}
       - AUTH_MODE=local_noauth
-      - OPENSEO_TELEMETRY_DISABLED=${OPENSEO_TELEMETRY_DISABLED:-}
-      - DO_NOT_TRACK=${DO_NOT_TRACK:-}
-      - DATAFORSEO_API_KEY=${DATAFORSEO_API_KEY}
-      # Optional: AI features (the SAM agent). Without this the setup
-      # gate in the app asks for the key, but nothing here would forward it.
-      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY:-}
-      # Optional: Google Search Console. See
-      # docs/SELF_HOSTING_GOOGLE_SEARCH_CONSOLE.md
+      # Google Search Console + Analytics. Both integrations share one OAuth
+      # client. See docs/SELF_HOSTING_GOOGLE_SEARCH_CONSOLE.md
       - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID:-}
       - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET:-}
+      # Encrypts the stored Google OAuth tokens at rest. Must be >= 32 chars or
+      # Search Console stays disabled.
       - BETTER_AUTH_SECRET=${BETTER_AUTH_SECRET:-}
-      # Optional: AI features (SAM, the in-app SEO agent)
-      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY:-}
-      - OPENROUTER_MODEL=${OPENROUTER_MODEL:-}
       - VITE_SHOW_DEVTOOLS=false
     ports:
       - "127.0.0.1:${PORT:-3001}:${PORT:-3001}"

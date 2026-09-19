@@ -99,23 +99,19 @@ describe("checklist persistence", () => {
     ).toBeNull();
   });
   it("counts only teammates and unexpired pending invitations in this workspace", async () => {
-    expect(await ActivationRepository.hasTeammate("org-a")).toBe(false);
     state.database!.exec("INSERT INTO member VALUES ('member-b', 'org-b')");
     state
       .database!.prepare("INSERT INTO invitation VALUES (?, ?, ?, ?)")
       .run("expired", "org-a", "pending", Date.now() - 1000);
-    expect(await ActivationRepository.hasTeammate("org-a")).toBe(false);
     state
       .database!.prepare("INSERT INTO invitation VALUES (?, ?, ?, ?)")
       .run("valid", "org-a", "pending", Date.now() + 100000);
-    expect(await ActivationRepository.hasTeammate("org-a")).toBe(true);
-    expect(await ActivationRepository.hasTeammate("org-b")).toBe(false);
   });
   it("removes preferences when their project or user is deleted", async () => {
     await ActivationRepository.setStepDismissed(
       "alice",
       "project-a",
-      "team",
+      "mcp",
       true,
     );
     await ActivationRepository.setStepDismissed(

@@ -4,32 +4,36 @@
 
 import { z } from "zod";
 import type { PageFetchClass } from "@/shared/audit-fetch-class";
-import { MIN_AUDIT_PAGES, PAID_MAX_AUDIT_PAGES } from "@/shared/audit-limits";
+import { MIN_AUDIT_PAGES, MAX_AUDIT_PAGES } from "@/shared/audit-limits";
 import { jsonCodec } from "@/shared/json";
 
-export type LighthouseStrategy = "auto" | "none";
+/** Whether an audit runs Lighthouse at all. */
+export type LighthouseMode = "auto" | "none";
+
+/** Which device profile one Lighthouse run measures. */
+export type LighthouseStrategy = "mobile" | "desktop";
 
 export interface AuditConfig {
   maxPages: number;
-  lighthouseStrategy: LighthouseStrategy;
+  // The persisted field name is frozen by rows already in `audits.config`.
+  lighthouseStrategy: LighthouseMode;
 }
 
 // Read-side only (writes stringify a typed AuditConfig). Stored rows may hold
-// retired strategies ("all", "manual") from older audits; map them onto the
-// closest surviving strategy — and fall back to "auto" on anything unknown —
-// instead of failing the whole config parse and making the audit's results
-// unviewable.
-const lighthouseStrategySchema = z
+// retired modes ("all", "manual") from older audits; map them onto the closest
+// surviving mode — and fall back to "auto" on anything unknown — instead of
+// failing the whole config parse and making the audit's results unviewable.
+const lighthouseModeSchema = z
   .enum(["auto", "all", "manual", "none"])
   .transform(
-    (value): LighthouseStrategy =>
+    (value): LighthouseMode =>
       value === "all" ? "auto" : value === "manual" ? "none" : value,
   )
   .catch("auto");
 
 const auditConfigSchema = z.object({
-  maxPages: z.number().int().min(MIN_AUDIT_PAGES).max(PAID_MAX_AUDIT_PAGES),
-  lighthouseStrategy: lighthouseStrategySchema,
+  maxPages: z.number().int().min(MIN_AUDIT_PAGES).max(MAX_AUDIT_PAGES),
+  lighthouseStrategy: lighthouseModeSchema,
 });
 
 const auditConfigCodec = jsonCodec(auditConfigSchema);

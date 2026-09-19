@@ -4,13 +4,7 @@ import {
   Brain,
   ClipboardCheck,
   FileText,
-  Globe,
   LayoutDashboard,
-  Link2,
-  MessageSquare,
-  Search,
-  Sparkles,
-  TrendingUp,
 } from "lucide-react";
 import { linkOptions } from "@tanstack/react-router";
 import { GoogleGlyphMuted } from "@/client/features/gsc/GoogleGlyph";
@@ -25,19 +19,9 @@ const projectNavItems = [
     activeOptions: { exact: true, includeSearch: false },
   },
   {
-    to: "/p/$projectId/keywords" as const,
-    label: "Keyword Research",
-    icon: Search,
-  },
-  {
     to: "/p/$projectId/saved" as const,
     label: "Saved Keywords",
     icon: Bookmark,
-  },
-  {
-    to: "/p/$projectId/rank-tracking" as const,
-    label: "Rank Tracking",
-    icon: TrendingUp,
   },
   {
     to: "/p/$projectId/search-performance" as const,
@@ -45,29 +29,9 @@ const projectNavItems = [
     icon: GoogleGlyphMuted,
   },
   {
-    to: "/p/$projectId/domain" as const,
-    label: "Domain Overview",
-    icon: Globe,
-  },
-  {
-    to: "/p/$projectId/backlinks" as const,
-    label: "Backlinks",
-    icon: Link2,
-  },
-  {
     to: "/p/$projectId/audit" as const,
     label: "Site Audit",
     icon: ClipboardCheck,
-  },
-  {
-    to: "/p/$projectId/brand-lookup" as const,
-    label: "Brand Lookup",
-    icon: Sparkles,
-  },
-  {
-    to: "/p/$projectId/prompt-explorer" as const,
-    label: "Prompt Explorer",
-    icon: MessageSquare,
   },
   {
     to: "/p/$projectId/reports" as const,
@@ -106,8 +70,8 @@ function getProjectNavItems(projectId: string) {
   );
 }
 
-// Grouped by scope: "My Site" is the project's own domain (tracked data),
-// "Research" is point-at-anything lookup tools.
+// Grouped by scope: "My Site" is this project's own domain — every data source
+// here is free and tied to a site you verified yourself.
 export function getProjectNavGroups(projectId: string) {
   const all = getProjectNavItems(projectId);
   const byPath = (path: (typeof projectNavItems)[number]["to"]) =>
@@ -119,20 +83,9 @@ export function getProjectNavGroups(projectId: string) {
       items: [byPath("/p/$projectId")],
     },
     {
-      label: "Research",
-      items: [
-        byPath("/p/$projectId/keywords"),
-        byPath("/p/$projectId/domain"),
-        byPath("/p/$projectId/backlinks"),
-        byPath("/p/$projectId/brand-lookup"),
-        byPath("/p/$projectId/prompt-explorer"),
-      ],
-    },
-    {
       label: "My Site",
       items: [
         byPath("/p/$projectId/search-performance"),
-        byPath("/p/$projectId/rank-tracking"),
         byPath("/p/$projectId/saved"),
         byPath("/p/$projectId/audit"),
       ],
@@ -147,7 +100,3 @@ export function getProjectNavGroups(projectId: string) {
     },
   ];
 }
-
-export const dataforseoHelpLinkOptions = linkOptions({
-  to: "/help/dataforseo-api-key",
-});

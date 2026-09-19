@@ -25,7 +25,7 @@ describe("runSelfhostPreflight", () => {
 
     expect(result.failed).toBe(true);
     expect(itemFor(result, "AUTH_MODE")?.message).toContain(
-      "cloudflare_access, local_noauth, hosted",
+      "cloudflare_access, local_noauth",
     );
   });
 
@@ -72,18 +72,6 @@ describe("runSelfhostPreflight", () => {
     expect(itemFor(result, "Search Console")?.message).toContain("32");
   });
 
-  it("fails hosted mode listing every missing variable", () => {
-    const result = runSelfhostPreflight({
-      AUTH_MODE: "hosted",
-      BETTER_AUTH_SECRET: "x".repeat(40),
-    });
-
-    expect(result.failed).toBe(true);
-    const item = itemFor(result, "AUTH_MODE");
-    expect(item?.message).toContain("BETTER_AUTH_URL");
-    expect(item?.message).toContain("GOOGLE_CLIENT_ID");
-    expect(item?.message).not.toContain("BETTER_AUTH_SECRET,");
-  });
 
   it("mentions ALLOWED_HOST when unset", () => {
     const result = runSelfhostPreflight({ AUTH_MODE: "local_noauth" });

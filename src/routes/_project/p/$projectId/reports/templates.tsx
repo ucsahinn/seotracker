@@ -8,7 +8,7 @@ import { ReportTemplateForm } from "@/client/features/reports/ReportTemplateForm
 import { ReportTemplatesList } from "@/client/features/reports/ReportTemplatesList";
 import { reportsQueryKey } from "@/client/features/reports/shared";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
-import { captureClientEvent } from "@/client/lib/posthog";
+import { captureClientEvent } from "@/client/lib/observability";
 import {
   deleteReportTemplate,
   listReportTemplates,

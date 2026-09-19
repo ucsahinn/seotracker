@@ -10,9 +10,7 @@ import {
   getErrorCode,
   getStandardErrorMessage,
 } from "@/client/lib/error-messages";
-import { AuthConfigErrorCard } from "@/client/components/AuthConfigErrorCard";
 import { UnauthenticatedErrorCard } from "@/client/components/UnauthenticatedErrorCard";
-import { SUBSCRIBE_ROUTE } from "@/shared/billing";
 
 export const Route = createFileRoute("/_app/")({
   component: IndexRedirect,
@@ -45,38 +43,17 @@ function IndexRedirect() {
     });
   }, [data, navigate]);
 
-  useEffect(() => {
-    if (getErrorCode(error) !== "PAYMENT_REQUIRED") {
-      return;
-    }
-
-    void navigate({ href: SUBSCRIBE_ROUTE });
-  }, [error, navigate]);
-
   if (isError) {
     const errorCode = getErrorCode(error);
 
-    if (errorCode === "AUTH_CONFIG_MISSING") {
-      return (
-        <div className="flex items-center justify-center h-full p-4">
-          <AuthConfigErrorCard
-            message={getStandardErrorMessage(
-              error,
-              "An unexpected error occurred. Please check server logs.",
-            )}
-            onRetry={() => {
-              void refetch();
-            }}
-          />
-        </div>
-      );
-    }
-
-    if (errorCode === "UNAUTHENTICATED") {
+    if (
+      errorCode === "AUTH_CONFIG_MISSING" ||
+      errorCode === "UNAUTHENTICATED"
+    ) {
       return (
         <div className="flex items-center justify-center h-full p-4">
           <UnauthenticatedErrorCard
-            message="Please sign in to access your OpenSEO organization."
+            message="Please sign in to access this workspace."
             onRetry={() => {
               void refetch();
             }}

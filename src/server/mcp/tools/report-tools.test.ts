@@ -33,7 +33,7 @@ vi.mock(
   "@/server/features/reports/repositories/ReportTemplateRepository",
   () => ({ ReportTemplateRepository: mocks }),
 );
-vi.mock("@/server/lib/posthog", () => ({
+vi.mock("@/server/lib/observability", () => ({
   captureServerEvent: mocks.captureServerEvent,
 }));
 
@@ -90,7 +90,7 @@ describe("save_report", () => {
     const saved = result.structuredContent;
     expect(saved.created).toBe(true);
     expect(saved.url).toBe(
-      `https://open-seo.test/p/${projectId}/reports/${saved.reportId}`,
+      `https://seotracker.test/p/${projectId}/reports/${saved.reportId}`,
     );
     expect(textContent(result)).toContain(saved.url);
     expect(mocks.captureServerEvent).toHaveBeenCalledWith(

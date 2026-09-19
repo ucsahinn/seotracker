@@ -6,7 +6,7 @@ import {
 } from "@/client/lib/clipboard";
 import type { CsvValue } from "@/client/lib/csv";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
-import { captureClientEvent } from "@/client/lib/posthog";
+import { captureClientEvent } from "@/client/lib/observability";
 
 type ModalState = { isOpen: false } | { isOpen: true; rowCount: number };
 

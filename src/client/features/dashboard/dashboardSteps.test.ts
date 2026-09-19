@@ -7,21 +7,17 @@ const fresh: DashboardActivation = {
   ga4: { connected: false, propertyDisplayName: null, cardDismissedAt: null },
   gsc: { connected: false, siteUrl: null },
   mcp: { authorizedAt: null, firstToolCallAt: null, cardDismissedAt: null },
-  competitorClickedAt: null,
   hasMultipleProjects: false,
-  hasTeammate: false,
   dismissedSteps: [],
 };
 
 describe("dashboard checklist", () => {
-  it("starts with the website and has no SAM chat step", () => {
+  it("starts with the website and lists only free-data steps", () => {
     expect(setupSteps.map((step) => step.id)).toEqual([
       "domain",
       "project",
-      "competitor",
       "mcp",
       "gsc",
-      "team",
     ]);
     expect(
       setupSteps.every((step) => getStepStatus(fresh, step.id) === "todo"),
@@ -43,8 +39,6 @@ describe("dashboard checklist", () => {
       ...fresh,
       domain: "example.com",
       hasMultipleProjects: true,
-      hasTeammate: true,
-      competitorClickedAt: "2026-09-05",
       gsc: { connected: true, siteUrl: "sc-domain:example.com" },
       mcp: { ...fresh.mcp, firstToolCallAt: "2026-09-05" },
       dismissedSteps: setupSteps.map((step) => step.id),
@@ -55,6 +49,5 @@ describe("dashboard checklist", () => {
   });
   it("makes disconnected and no-longer-completed steps available again", () => {
     expect(getStepStatus(fresh, "gsc")).toBe("todo");
-    expect(getStepStatus(fresh, "team")).toBe("todo");
   });
 });

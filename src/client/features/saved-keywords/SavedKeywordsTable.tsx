@@ -14,8 +14,8 @@ import {
   useSelectionAnchor,
 } from "@/client/components/table/AppDataTable";
 import { SortableHeader } from "@/client/components/table/SortableHeader";
-import { DifficultyBadge } from "@/client/features/domain/components/DifficultyBadge";
-import { IntentBadge } from "@/client/features/keywords/components";
+import { DifficultyBadge } from "@/client/features/saved-keywords/components";
+import { IntentBadge } from "@/client/features/saved-keywords/components";
 import type { KeywordIntent, SavedKeywordRow } from "@/types/keywords";
 import { TagChip } from "./TagChip";
 import {

@@ -1,11 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Monitor, Moon, Sun } from "lucide-react";
-import { useState } from "react";
-import { toast } from "sonner";
-import { ApiKeySettings } from "@/client/features/settings/ApiKeySettings";
 import { type ThemePreference, useThemePreference } from "@/client/lib/theme";
-import { authClient, useSession } from "@/lib/auth-client";
-import { isHostedClientAuthMode } from "@/lib/auth-mode";
 import { version } from "../../../../package.json";
 
 export const Route = createFileRoute("/_app/settings/")({
@@ -23,30 +18,7 @@ const THEME_OPTIONS: {
 ];
 
 function PersonalSettings() {
-  const isHosted = isHostedClientAuthMode();
   const { themePreference, setThemePreference } = useThemePreference();
-  const { data: session, isPending: isSessionPending } = useSession();
-  const [isSaving, setIsSaving] = useState(false);
-
-  const analyticsEnabled = session?.user?.analyticsOptedOut !== true;
-
-  async function updateAnalyticsPreference(enabled: boolean) {
-    setIsSaving(true);
-    try {
-      const result = await authClient.updateUser({
-        analyticsOptedOut: !enabled,
-      });
-      if (result.error) {
-        toast.error("We couldn't update your analytics setting.");
-      } else {
-        toast.success(enabled ? "Analytics enabled" : "Analytics disabled");
-      }
-    } catch {
-      toast.error("We couldn't update your analytics setting.");
-    } finally {
-      setIsSaving(false);
-    }
-  }
 
   return (
     <div className="space-y-10">
@@ -85,45 +57,15 @@ function PersonalSettings() {
         </div>
       </section>
 
-      {isHosted ? (
-        <>
-          <ApiKeySettings />
-
-          <section className="space-y-3">
-            <h2 className="text-sm font-medium text-base-content/50">
-              Analytics
-            </h2>
-            <div className="flex items-start justify-between gap-6">
-              <div>
-                <p className="text-sm">Help improve OpenSEO</p>
-                <p className="mt-1 text-sm text-base-content/60">
-                  Share analytics and usage data.
-                </p>
-              </div>
-              <input
-                type="checkbox"
-                className="toggle toggle-primary"
-                checked={analyticsEnabled}
-                disabled={isSessionPending || isSaving || !session?.user}
-                onChange={(event) => {
-                  void updateAnalyticsPreference(event.currentTarget.checked);
-                }}
-                aria-label="Enable product analytics"
-              />
-            </div>
-          </section>
-        </>
-      ) : (
-        <section className="space-y-3">
-          <h2 className="text-sm font-medium text-base-content/50">About</h2>
-          <div className="flex items-center justify-between gap-6">
-            <span className="text-sm">Version</span>
-            <span className="font-mono text-sm text-base-content/60">
-              v{version}
-            </span>
-          </div>
-        </section>
-      )}
+      <section className="space-y-3">
+        <h2 className="text-sm font-medium text-base-content/50">About</h2>
+        <div className="flex items-center justify-between gap-6">
+          <span className="text-sm">Version</span>
+          <span className="font-mono text-sm text-base-content/60">
+            v{version}
+          </span>
+        </div>
+      </section>
     </div>
   );
 }

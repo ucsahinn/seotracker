@@ -7,10 +7,8 @@ export const dashboardProjectInputSchema = z.object({
 export const dashboardSetupStepSchema = z.enum([
   "domain",
   "project",
-  "competitor",
   "mcp",
   "gsc",
-  "team",
 ]);
 export type DashboardSetupStep = z.infer<typeof dashboardSetupStepSchema>;
 export const dashboardStepDismissalSchema = dashboardProjectInputSchema.extend({

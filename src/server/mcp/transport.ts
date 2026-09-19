@@ -7,21 +7,15 @@ import {
   originValidationResponse,
   WebStandardStreamableHTTPServerTransport,
 } from "@modelcontextprotocol/server";
-import { getHostedBaseUrl } from "@/lib/auth";
-import { MCP_SCOPE } from "@/lib/oauth-resource";
 import { resolveCloudflareAccessContext } from "@/middleware/ensure-user/cloudflareAccess";
 import { resolveLocalNoAuthContext } from "@/middleware/ensure-user/delegated";
 import {
   createWorkersOAuthMcpProps,
-  hostedWorkersOAuthMcpPropsSchema,
-  MCP_AUTH_CONTEXT_PROP,
   MCP_ROUTE,
   type McpProps,
 } from "@/server/mcp/context";
 import { getPublicOrigin } from "@/server/mcp/public-origin";
-import { createOpenSeoMcpServer } from "@/server/mcp/server";
-import { AuthRepository } from "@/server/auth/repositories/AuthRepository";
-import { resolveExistingActiveHostedOrganization } from "@/server/auth/default-hosted-organization";
+import { createMcpServer } from "@/server/mcp/server";
 
 // Mirrors the agents SDK's DEFAULT_CORS_OPTIONS so legacy responses carry the
 // same CORS surface as the modern handler's.
@@ -33,9 +27,6 @@ const MCP_CORS_HEADERS = {
   "Access-Control-Expose-Headers": "mcp-session-id",
   "Access-Control-Max-Age": "86400",
 } as const;
-
-const SURFMIND_CHROME_EXTENSION_HOSTNAME = "pghallcbnfabbgfijhbcldaapmgidnaa";
-const SURFMIND_CHROME_EXTENSION_ORIGIN = `chrome-extension://${SURFMIND_CHROME_EXTENSION_HOSTNAME}`;
 
 function withMcpCors(response: Response) {
   const headers = new Headers(response.headers);
@@ -98,8 +89,8 @@ async function handleLegacyJsonRequest(request: Request, props: McpProps) {
   // buffers the response and lets the finally below tear everything down
   // before the request completes. JSON mode silently drops server-to-client
   // requests (sampling/elicitation) and would hang the buffered response —
-  // no OpenSEO tool issues them.
-  const server = createOpenSeoMcpServer(props);
+  // no tool here issues them.
+  const server = createMcpServer(props);
   const transport = new WebStandardStreamableHTTPServerTransport({
     sessionIdGenerator: undefined,
     enableJsonResponse: true,
@@ -116,17 +107,13 @@ async function handleLegacyJsonRequest(request: Request, props: McpProps) {
   }
 }
 
-// Hosted applies exact-origin validation before passing the corresponding
-// hostname allowlist to the SDK as defense in depth. Self-hosted leaves the
-// option unset so the handler's localhost-class default applies — an allowlist
-// derived from the request's own Host would accept a DNS-rebinding page
-// trivially. Non-browser MCP clients send no Origin and are unaffected either
-// way.
-function createRequestHandler(
-  props: McpProps,
-  allowedOriginHostnames?: string[],
-) {
-  const modernHandler = createMcpHandler(() => createOpenSeoMcpServer(props), {
+// No origin allowlist is passed, so the handler's localhost-class default
+// applies. An allowlist derived from the request's own Host would accept a
+// DNS-rebinding page trivially. Non-browser MCP clients send no Origin and are
+// unaffected either way.
+function createRequestHandler(props: McpProps) {
+  const allowedOriginHostnames: string[] | undefined = undefined;
+  const modernHandler = createMcpHandler(() => createMcpServer(props), {
     route: MCP_ROUTE,
     allowedOriginHostnames,
     legacy: "reject",
@@ -157,81 +144,7 @@ function createRequestHandler(
 // Hosted credentials (OAuth grants and API keys) are user-scoped: the
 // organizationId they carry is only the fallback context for tools with no
 // project argument, so keep it while the membership holds, else rebind to the
-// user's current active org. Null only when they belong to no org at all.
-async function resolveRequestOrganization(
-  userId: string,
-  organizationId: string,
-) {
-  const membership = await AuthRepository.getMembership(userId, organizationId);
-  if (membership) return { organizationId, role: membership.role };
-  return resolveExistingActiveHostedOrganization(userId);
-}
-
-export async function handleAuthenticatedOpenSeoMcpRequest(
-  request: Request,
-  props: unknown,
-  env: unknown,
-  ctx: ExecutionContext,
-): Promise<Response> {
-  const result = hostedWorkersOAuthMcpPropsSchema.safeParse(props);
-  if (!result.success) {
-    return new Response("MCP auth context required", { status: 403 });
-  }
-  if (!result.data[MCP_AUTH_CONTEXT_PROP].scopes.includes(MCP_SCOPE)) {
-    return new Response("MCP scope required", { status: 403 });
-  }
-
-  const hostedUrl = new URL(getHostedBaseUrl());
-  const origin = request.headers.get("Origin");
-  if (
-    origin &&
-    origin !== hostedUrl.origin &&
-    origin !== SURFMIND_CHROME_EXTENSION_ORIGIN
-  ) {
-    return withMcpCors(new Response("Invalid Origin", { status: 403 }));
-  }
-
-  // Tokens snapshot organizationId at consent and refresh copies it verbatim,
-  // so the grant can outlive the membership (member removed, org changed).
-  // Re-resolve per request; 401 invalid_token only once the user belongs to
-  // no organization, pushing compliant clients back through OAuth.
-  const authContext = result.data[MCP_AUTH_CONTEXT_PROP];
-  const organization = await resolveRequestOrganization(
-    authContext.userId,
-    authContext.organizationId,
-  );
-  if (!organization) {
-    return new Response("Organization access revoked", {
-      status: 401,
-      headers: { "WWW-Authenticate": 'Bearer error="invalid_token"' },
-    });
-  }
-
-  // The handler would fall back to the provider-populated ctx.props on its
-  // own; passing authContext explicitly hands it the schema-validated copy
-  // (with the per-request role stamped in — roles are never baked into
-  // tokens) and keeps this path symmetrical with self-hosted, which has no
-  // ctx.props. orgScope is stamped here rather than read from the token so
-  // grants minted before it existed are user-scoped too: project-scoped tools
-  // authorize per call via membership in the project's org, so one
-  // authorization follows the user across every organization they belong to.
-  const requestProps = createWorkersOAuthMcpProps({
-    ...authContext,
-    organizationId: organization.organizationId,
-    role: organization.role,
-    orgScope: "user",
-    // The only per-request client signal that reaches a tools/call: initialize's
-    // clientInfo is long gone by then and this transport never populates
-    // ServerContext.http.req. Display only (report attribution).
-    userAgent: request.headers.get("user-agent") ?? undefined,
-  });
-  return createRequestHandler(requestProps, [
-    hostedUrl.hostname,
-    SURFMIND_CHROME_EXTENSION_HOSTNAME,
-  ])(request, env, ctx);
-}
-
-export async function handleSelfHostedOpenSeoMcpRequest(
+export async function handleSelfHostedMcpRequest(
   request: Request,
   authMode: "cloudflare_access" | "local_noauth",
   env: unknown,

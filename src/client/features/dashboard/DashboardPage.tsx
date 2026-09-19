@@ -1,24 +1,18 @@
-import { useEffect, useRef } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { sort } from "remeda";
 import { DashboardOnboarding } from "./DashboardOnboarding";
 import {
   AuditHealthCard,
-  BacklinkPulseCard,
   GscCard,
 } from "@/client/features/dashboard/DashboardCards";
 import { Ga4Card } from "@/client/features/dashboard/Ga4Card";
-import { WorkspaceMergeBanner } from "@/client/features/dashboard/WorkspaceMergeBanner";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import {
   getDashboardActivation,
   getDashboardOverview,
-  refreshDashboardBacklinkSnapshot,
 } from "@/serverFunctions/dashboard";
 
 export function DashboardPage({ projectId }: { projectId: string }) {
-  const queryClient = useQueryClient();
-
   const activationQuery = useQuery({
     queryKey: ["dashboardActivation", projectId],
     queryFn: () => getDashboardActivation({ data: { projectId } }),
@@ -30,27 +24,6 @@ export function DashboardPage({ projectId }: { projectId: string }) {
 
   const activation = activationQuery.data;
   const overview = overviewQuery.data;
-
-  // Visit-triggered backlink snapshot: fire once per page view when the
-  // overview reports a missing or stale snapshot for a project with a domain.
-  // The server re-checks freshness, so a stray double-fire costs nothing.
-  const refreshMutation = useMutation({
-    mutationFn: () => refreshDashboardBacklinkSnapshot({ data: { projectId } }),
-    onSuccess: () =>
-      void queryClient.invalidateQueries({
-        queryKey: ["dashboardOverview", projectId],
-      }),
-  });
-  const refreshFiredRef = useRef(false);
-  const needsSnapshot =
-    activation?.domain != null &&
-    overview !== undefined &&
-    (overview.backlinks === null || overview.backlinks.stale);
-  useEffect(() => {
-    if (!needsSnapshot || refreshFiredRef.current) return;
-    refreshFiredRef.current = true;
-    refreshMutation.mutate();
-  }, [needsSnapshot, refreshMutation]);
 
   if (activationQuery.isError) {
     return (
@@ -81,7 +54,6 @@ export function DashboardPage({ projectId }: { projectId: string }) {
     );
   }
 
-  const showBacklinks = activation.domain !== null;
   const gscConnected = activation.gsc.connected;
   const ga4Connected = activation.ga4.connected;
 
@@ -114,29 +86,12 @@ export function DashboardPage({ projectId }: { projectId: string }) {
         />
       ),
     },
-    ...(showBacklinks
-      ? [
-          {
-            key: "backlinks",
-            hasData: overview?.backlinks != null || refreshMutation.isPending,
-            node: (
-              <BacklinkPulseCard
-                projectId={projectId}
-                backlinks={overview?.backlinks ?? null}
-                refreshing={refreshMutation.isPending}
-              />
-            ),
-          },
-        ]
-      : []),
   ];
 
   return (
     <div className="px-4 py-4 pb-24 md:px-6 md:py-6 md:pb-8">
       <div className="mx-auto flex max-w-5xl flex-col gap-5">
         <h1 className="text-2xl font-semibold">Dashboard</h1>
-
-        <WorkspaceMergeBanner />
 
         <DashboardOnboarding
           key={projectId}

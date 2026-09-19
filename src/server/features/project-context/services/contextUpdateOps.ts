@@ -1,4 +1,4 @@
-import { normalizeBacklinksTarget } from "@/server/lib/dataforseoBacklinksTarget";
+import { normalizeDomainInput } from "@/server/lib/domainUtils";
 import { AppError } from "@/server/lib/errors";
 import {
   CUSTOM_SECTION_KEY_PREFIX,
@@ -160,9 +160,7 @@ export function resolveContextUpdates(
         update.addCompetitors.map((competitor) => ({
           // Same canonicalization as the project's own domain, so the same
           // competitor entered as a URL, with www, or in caps is one row.
-          domain: normalizeBacklinksTarget(competitor.domain, {
-            scope: "domain",
-          }).apiTarget,
+          domain: normalizeDomainInput(competitor.domain),
           name: competitor.name ?? null,
           notes: competitor.notes ?? null,
         })),
@@ -183,7 +181,7 @@ export function resolveContextUpdates(
     if ("removeCompetitors" in update) {
       const removed = update.removeCompetitors.map(
         (domain) =>
-          normalizeBacklinksTarget(domain, { scope: "domain" }).apiTarget,
+          normalizeDomainInput(domain),
       );
       resolved.push({ kind: "deleteCompetitors", domains: removed });
       for (const domain of removed) domains.delete(domain);

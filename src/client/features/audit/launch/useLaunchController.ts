@@ -39,14 +39,12 @@ function getLaunchValidationErrors(
 
 export function useLaunchController({
   projectId,
-  isFreePlan,
   onAuditStarted,
 }: {
   projectId: string;
-  isFreePlan: boolean;
   onAuditStarted: (auditId: string) => void;
 }) {
-  const maxPagesLimit = getMaxPagesLimit(isFreePlan);
+  const maxPagesLimit = getMaxPagesLimit();
   const historyQuery = useQuery({
     queryKey: ["audit-history", projectId],
     queryFn: () => getAuditHistory({ data: { projectId } }),

@@ -1,62 +1,32 @@
 import { env } from "cloudflare:workers";
-import {
-  customerHasManagedAccess,
-  customerHasPaidPlan,
-  getOrCreateOrganizationCustomer,
-  type BillingCustomerContext,
-} from "@/server/billing/subscription";
 import { AuditRepository } from "@/server/features/audit/repositories/AuditRepository";
 import {
   AUDIT_LIMITS,
   clampAuditMaxPages,
   getEstimatedAuditCapacity,
-  type AuditLimitTier,
 } from "@/server/features/audit/services/audit-capacity";
 import { AppError } from "@/server/lib/errors";
 import { AuditProgressKV } from "@/server/lib/audit/progress-kv";
 import {
   parseAuditConfig,
   type AuditConfig,
-  type LighthouseStrategy,
+  type LighthouseMode,
 } from "@/server/lib/audit/types";
 import {
   normalizeAndValidateStartUrl,
   resolveStartUrlRedirects,
 } from "@/server/lib/audit/url-policy";
 import { reconcileRunningAudit } from "@/server/features/audit/services/auditReconciler";
-import { isHostedServerAuthMode } from "@/server/lib/runtime-env";
-
-// Plan-tier limits are the abuse bound in hosted mode: free accounts get small
-// audits with a bounded burst, paid keeps the full limits, and customers with
-// no Autumn product at all are turned away. Self-hosted isn't gated.
-async function resolveAuditLimitTier(
-  customer: BillingCustomerContext,
-): Promise<AuditLimitTier> {
-  if (!(await isHostedServerAuthMode())) return "self_hosted";
-  // An org minted outside a billing path (better-auth hooks, MCP auth) has no
-  // Autumn customer yet, and `check` 404s instead of reporting no access — a
-  // brand-new MCP user's first audit failed with a raw billing error.
-  await getOrCreateOrganizationCustomer(customer);
-  const [hasManagedAccess, hasPaidPlan] = await Promise.all([
-    customerHasManagedAccess(customer.organizationId),
-    customerHasPaidPlan(customer.organizationId),
-  ]);
-  if (!hasManagedAccess) {
-    throw new AppError("PAYMENT_REQUIRED", "Subscribe to run site audits");
-  }
-  return hasPaidPlan ? "paid" : "free";
-}
 
 async function startAudit(input: {
   actorUserId: string;
-  billingCustomer: BillingCustomerContext;
+  organizationId: string;
   projectId: string;
   startUrl: string;
   maxPages?: number;
-  lighthouseStrategy?: LighthouseStrategy;
-  limitTier: AuditLimitTier;
+  lighthouseStrategy?: LighthouseMode;
 }) {
-  const limits = AUDIT_LIMITS[input.limitTier];
+  const limits = AUDIT_LIMITS;
   const maxPages = clampAuditMaxPages(input.maxPages);
   if (maxPages > limits.maxPagesPerAudit) {
     throw new AppError("AUDIT_PAGE_LIMIT_EXCEEDED");
@@ -97,7 +67,7 @@ async function startAudit(input: {
     // abort — the user just retries. Usage counts per ORGANIZATION, not per
     // user: the free ceiling is the org's, so N members don't multiply it.
     const usage = await AuditRepository.getAuditUsageForOrganization(
-      input.billingCustomer.organizationId,
+      input.organizationId,
     );
     if (usage.runningCount > limits.maxRunningAudits) {
       throw new AppError("AUDIT_ALREADY_RUNNING");
@@ -110,12 +80,7 @@ async function startAudit(input: {
       id: auditId,
       params: {
         auditId,
-        billingCustomer: {
-          userId: input.billingCustomer.userId,
-          userEmail: input.billingCustomer.userEmail,
-          organizationId: input.billingCustomer.organizationId,
-          projectId: input.billingCustomer.projectId,
-        },
+        actorUserId: input.actorUserId,
         projectId: input.projectId,
         startUrl,
         config,
@@ -277,7 +242,6 @@ async function remove(auditId: string, projectId: string) {
 }
 
 export const AuditService = {
-  resolveAuditLimitTier,
   startAudit,
   getStatus,
   getCrawlProgress,

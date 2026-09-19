@@ -5,7 +5,6 @@ import { makeToolContext } from "./tool-test-support";
 
 const mocks = vi.hoisted(() => ({
   getProjectForOrganization: vi.fn(),
-  isHostedServerAuthMode: vi.fn(),
   hasSelfHostedGoogleOAuthConfig: vi.fn(),
   GscService: {
     getPerformance: vi.fn(),
@@ -14,9 +13,6 @@ const mocks = vi.hoisted(() => ({
 }));
 
 vi.mock("cloudflare:workers", () => ({ env: {} }));
-vi.mock("@/server/lib/runtime-env", () => ({
-  isHostedServerAuthMode: mocks.isHostedServerAuthMode,
-}));
 vi.mock("@/server/features/google/oauth-config", () => ({
   hasSelfHostedGoogleOAuthConfig: mocks.hasSelfHostedGoogleOAuthConfig,
 }));
@@ -45,8 +41,7 @@ describe("search console MCP tools", () => {
       locationCode: 2840,
       languageCode: "en",
     });
-    mocks.isHostedServerAuthMode.mockResolvedValue(true);
-    mocks.hasSelfHostedGoogleOAuthConfig.mockResolvedValue(false);
+    mocks.hasSelfHostedGoogleOAuthConfig.mockResolvedValue(true);
   });
 
   it("returns performance rows on success and passes filters through", async () => {
@@ -234,8 +229,7 @@ describe("search console MCP tools", () => {
     expect(mocks.GscService.getPerformance).not.toHaveBeenCalled();
   });
 
-  it("returns a setup message in self-hosted mode without a Google client", async () => {
-    mocks.isHostedServerAuthMode.mockResolvedValue(false);
+  it("returns a setup message without a Google client configured", async () => {
     mocks.hasSelfHostedGoogleOAuthConfig.mockResolvedValue(false);
     const { getSearchConsolePerformanceTool } = searchConsoleTools;
 
@@ -250,8 +244,7 @@ describe("search console MCP tools", () => {
     expect(mocks.GscService.getPerformance).not.toHaveBeenCalled();
   });
 
-  it("allows performance queries in self-hosted mode with a Google client", async () => {
-    mocks.isHostedServerAuthMode.mockResolvedValue(false);
+  it("allows performance queries with a Google client configured", async () => {
     mocks.hasSelfHostedGoogleOAuthConfig.mockResolvedValue(true);
     mocks.GscService.getPerformance.mockResolvedValue({
       siteUrl: "https://example.com/",
@@ -337,8 +330,7 @@ describe("search console MCP tools", () => {
     });
   });
 
-  it("returns a setup message for inspect_urls in self-hosted mode without a Google client", async () => {
-    mocks.isHostedServerAuthMode.mockResolvedValue(false);
+  it("returns a setup message for inspect_urls without a Google client configured", async () => {
     mocks.hasSelfHostedGoogleOAuthConfig.mockResolvedValue(false);
     const { inspectUrlsTool } = searchConsoleTools;
 

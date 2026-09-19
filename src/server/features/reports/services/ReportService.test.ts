@@ -1,5 +1,4 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { isHostedServerAuthMode } from "@/server/lib/runtime-env";
 import { formatCount } from "@/shared/format";
 import {
   REPORT_MAX_BYTES_PER_ORG,
@@ -21,16 +20,12 @@ const mocks = vi.hoisted(() => ({
   insertReport: vi.fn(),
   updateReportContent: vi.fn(),
   deleteReport: vi.fn(),
-  setShareToken: vi.fn(),
 }));
 
 vi.mock("@/server/features/reports/repositories/ReportRepository", () => ({
   ReportRepository: mocks,
 }));
-vi.mock("@/server/lib/posthog", () => ({ captureServerEvent: vi.fn() }));
-vi.mock("@/server/lib/runtime-env", () => ({
-  isHostedServerAuthMode: vi.fn(),
-}));
+vi.mock("@/server/lib/observability", () => ({ captureServerEvent: vi.fn() }));
 
 const html = "<!doctype html><html><body>Hi</body></html>";
 
@@ -207,77 +202,3 @@ describe("reads and deletes", () => {
   });
 });
 
-describe("sharing", () => {
-  const share = () =>
-    ReportService.shareReport({
-      projectId: "project_1",
-      reportId: "report_1",
-      userId: "user_1",
-      organizationId: "org_1",
-    });
-
-  beforeEach(() => {
-    vi.mocked(isHostedServerAuthMode).mockResolvedValue(true);
-    mocks.getReport.mockResolvedValue(storedReport);
-  });
-
-  it("mints, revokes and re-mints a different token", async () => {
-    const first = await share();
-
-    expect(first.shareToken).toMatch(/^[A-Za-z0-9_-]{32}$/);
-    expect(mocks.setShareToken).toHaveBeenCalledWith("project_1", "report_1", {
-      shareToken: first.shareToken,
-      sharedAt: first.sharedAt,
-    });
-
-    mocks.getReport.mockResolvedValue({
-      ...storedReport,
-      shareToken: first.shareToken,
-      sharedAt: first.sharedAt,
-    });
-    await expect(
-      ReportService.unshareReport({
-        projectId: "project_1",
-        reportId: "report_1",
-        userId: "user_1",
-        organizationId: "org_1",
-      }),
-    ).resolves.toMatchObject({ shareToken: null, sharedAt: null });
-    expect(mocks.setShareToken).toHaveBeenLastCalledWith(
-      "project_1",
-      "report_1",
-      null,
-    );
-
-    mocks.getReport.mockResolvedValue(storedReport);
-    const second = await share();
-    expect(second.shareToken).not.toBe(first.shareToken);
-  });
-
-  // A double-clicked toggle must not invalidate the link the user just copied.
-  it("returns the existing token instead of minting a second one", async () => {
-    mocks.getReport.mockResolvedValue({
-      ...storedReport,
-      shareToken: "a".repeat(32),
-      sharedAt: "2026-09-10T10:00:00.000Z",
-    });
-
-    await expect(share()).resolves.toMatchObject({
-      shareToken: "a".repeat(32),
-      sharedAt: "2026-09-10T10:00:00.000Z",
-    });
-    expect(mocks.setShareToken).not.toHaveBeenCalled();
-  });
-
-  // A self-hosted deployment cannot serve the link, so a minted token would be
-  // a link that silently does nothing. Refused before the report is even read.
-  it("refuses to mint when the deployment is not hosted", async () => {
-    vi.mocked(isHostedServerAuthMode).mockResolvedValue(false);
-
-    await expect(share()).rejects.toThrow(
-      "Sharing is only available on hosted OpenSEO.",
-    );
-    expect(mocks.setShareToken).not.toHaveBeenCalled();
-    expect(mocks.getReport).not.toHaveBeenCalled();
-  });
-});

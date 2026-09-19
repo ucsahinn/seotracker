@@ -2,7 +2,7 @@ import { LocationSelect } from "@/client/components/LocationSelect";
 import {
   getLanguageCode,
   getLanguageOptions,
-} from "@/client/features/keywords/locations";
+} from "@/shared/keyword-locations";
 import type { ProjectMarket } from "@/client/features/projects/types";
 
 /**

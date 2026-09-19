@@ -11,18 +11,6 @@ import {
 } from "@/server/mcp/context";
 import { objectSchema } from "@/server/mcp/output-schemas";
 import { instrumentMcpToolHandler } from "@/server/mcp/instrumentation";
-import { getBacklinksOverviewTool } from "@/server/mcp/tools/get-backlinks-overview";
-import { getBacklinksProfileTool } from "@/server/mcp/tools/get-backlinks-profile";
-import { getDomainKeywordSuggestionsTool } from "@/server/mcp/tools/get-domain-keyword-suggestions";
-import { getDomainOverviewTool } from "@/server/mcp/tools/get-domain-overview";
-import { addRankTrackingKeywordsTool } from "@/server/mcp/tools/add-rank-tracking-keywords";
-import { createRankTrackerTool } from "@/server/mcp/tools/create-rank-tracker";
-import { estimateRankTrackerCostTool } from "@/server/mcp/tools/estimate-rank-tracker-cost";
-import { getRankTrackerTool } from "@/server/mcp/tools/get-rank-tracker";
-import { removeRankTrackingKeywordsTool } from "@/server/mcp/tools/remove-rank-tracking-keywords";
-import { runRankTrackerTool } from "@/server/mcp/tools/run-rank-tracker";
-import { searchSerpLocationsTool } from "@/server/mcp/tools/search-serp-locations";
-import { getSerpResultsTool } from "@/server/mcp/tools/get-serp-results";
 import {
   getGoogleAnalyticsAudienceBreakdownTool,
   getGoogleAnalyticsEcommercePerformanceTool,
@@ -43,21 +31,6 @@ import {
 } from "@/server/mcp/tools/project-context";
 import { listSavedKeywordsTool } from "@/server/mcp/tools/list-saved-keywords";
 import {
-  findSerpCompetitorsTool,
-  getGoogleBusinessQuestionsTool,
-  getKeywordMetricsTool,
-  getLocalSerpResultsTool,
-  getRankedKeywordsTool,
-  searchLocalBusinessesTool,
-} from "@/server/mcp/tools/dataforseo-research-tools";
-import {
-  getBusinessProfileTool,
-  getBusinessReviewsTool,
-  getBusinessUpdatesTool,
-  getLocalRankGridTool,
-  listBusinessCategoriesTool,
-} from "@/server/mcp/tools/local-seo-tools";
-import {
   getReportTool,
   listReportsTool,
   saveReportTool,
@@ -66,7 +39,6 @@ import {
   listReportTemplatesTool,
   saveReportTemplateTool,
 } from "@/server/mcp/tools/report-template-tools";
-import { researchKeywordsTool } from "@/server/mcp/tools/research-keywords";
 import { saveKeywordsTool } from "@/server/mcp/tools/save-keywords";
 import {
   getSearchConsolePerformanceTool,
@@ -91,7 +63,7 @@ type ToolArgs<Input extends ToolSchema> = Input extends z.ZodType
     ? z.infer<z.ZodObject<Input>>
     : never;
 
-type OpenSeoToolDefinition<Input extends ToolSchema> = {
+type McpToolDefinition<Input extends ToolSchema> = {
   name: string;
   config: {
     title?: string;
@@ -106,9 +78,9 @@ type OpenSeoToolDefinition<Input extends ToolSchema> = {
   ) => CallToolResult | Promise<CallToolResult>;
 };
 
-function registerOpenSeoTool<Input extends ToolSchema>(
+function registerMcpTool<Input extends ToolSchema>(
   server: McpServer,
-  tool: OpenSeoToolDefinition<Input>,
+  tool: McpToolDefinition<Input>,
   authProps: McpProps,
 ) {
   const outputSchema = objectSchema(tool.config.outputSchema);
@@ -135,22 +107,14 @@ function registerOpenSeoTool<Input extends ToolSchema>(
   );
 }
 
-export function createOpenSeoMcpServer(authProps: McpProps) {
+export function createMcpServer(authProps: McpProps) {
   const server = new McpServer(
     {
-      name: "OpenSEO MCP",
-      title: "OpenSEO",
-      version: "0.0.12",
+      name: "seotracker MCP",
+      title: "seotracker",
+      version: "1.0.0",
       description:
-        "SEO research tools for AI agents: keyword research and metrics, SERP and local SERP results, domain and backlink analysis, rank tracking, and Google Search Console performance.",
-      websiteUrl: "https://openseo.so",
-      icons: [
-        {
-          src: "https://openseo.so/android-chrome-512x512.png",
-          mimeType: "image/png",
-          sizes: ["512x512"],
-        },
-      ],
+        "SEO tools for AI agents, all free-data: Google Search Console performance and URL inspection, Google Analytics reporting, site audits from a built-in crawler, saved keywords, project memory and reports.",
     },
     {
       // The tool list is fixed per request and no list_changed notification
@@ -159,13 +123,13 @@ export function createOpenSeoMcpServer(authProps: McpProps) {
       // Without the pre-declaration, registerTool defaults it to true.
       capabilities: { tools: { listChanged: false } },
       instructions:
-        "OpenSEO research tools use credits. Proceed with normal focused research, but ask the user for confirmation before planned batches over 2,000 credits.",
+        "Every tool here reads free data the user already owns: their own Search Console and Analytics properties, and a crawler that runs locally. There is no per-call cost and no quota to ration, so research as thoroughly as the question deserves.",
     },
   );
 
   const register = <Input extends ToolSchema>(
-    tool: OpenSeoToolDefinition<Input>,
-  ) => registerOpenSeoTool(server, tool, authProps);
+    tool: McpToolDefinition<Input>,
+  ) => registerMcpTool(server, tool, authProps);
 
   register(whoamiTool);
   register(listProjectsTool);
@@ -173,31 +137,7 @@ export function createOpenSeoMcpServer(authProps: McpProps) {
   register(getProjectContextTool);
   register(updateProjectContextTool);
   register(listSavedKeywordsTool);
-  register(researchKeywordsTool);
   register(saveKeywordsTool);
-  register(getDomainOverviewTool);
-  register(getDomainKeywordSuggestionsTool);
-  register(getBacklinksOverviewTool);
-  register(getBacklinksProfileTool);
-  register(getSerpResultsTool);
-  register(searchSerpLocationsTool);
-  register(createRankTrackerTool);
-  register(getRankTrackerTool);
-  register(addRankTrackingKeywordsTool);
-  register(removeRankTrackingKeywordsTool);
-  register(estimateRankTrackerCostTool);
-  register(runRankTrackerTool);
-  register(getRankedKeywordsTool);
-  register(findSerpCompetitorsTool);
-  register(searchLocalBusinessesTool);
-  register(getLocalSerpResultsTool);
-  register(getGoogleBusinessQuestionsTool);
-  register(getBusinessProfileTool);
-  register(getBusinessReviewsTool);
-  register(getBusinessUpdatesTool);
-  register(listBusinessCategoriesTool);
-  register(getLocalRankGridTool);
-  register(getKeywordMetricsTool);
   register(getSearchConsolePerformanceTool);
   register(inspectUrlsTool);
   register(getGoogleAnalyticsOrganicLandingPagesTool);
