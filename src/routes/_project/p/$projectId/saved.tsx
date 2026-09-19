@@ -226,7 +226,7 @@ function SavedKeywordsPage() {
 
   return (
     <div className="overflow-auto px-4 py-4 pb-24 md:px-6 md:py-6 md:pb-8">
-      <div className="mx-auto max-w-6xl space-y-4">
+      <div className="mx-auto max-w-(--container-page) space-y-4">
         <SavedKeywordsHeader
           totalCount={totalCount}
           exporting={exporter.exporting}
@@ -234,7 +234,7 @@ function SavedKeywordsPage() {
           onExportSheets={() => void exporter.exportFilteredSheets()}
         />
 
-        <div className="overflow-hidden rounded-lg border border-base-300 bg-base-100">
+        <div className="overflow-hidden rounded-box border border-base-300 bg-base-100">
           <SavedKeywordsFilters
             filtersForm={filters.filtersForm}
             activeFilterCount={filters.activeFilterCount}

@@ -22,8 +22,8 @@ export function TableBulkActionBar({
       : "flex justify-center";
   const toolbarClass =
     placement === "fixed"
-      ? "pointer-events-auto flex items-stretch overflow-visible rounded-xl border border-base-content/15 bg-base-300/85 shadow-2xl backdrop-blur"
-      : "flex items-stretch overflow-visible rounded-xl border border-base-content/15 bg-base-200";
+      ? "pointer-events-auto flex items-stretch overflow-visible rounded-box border border-base-content/15 bg-base-300/85 shadow-2xl backdrop-blur"
+      : "flex items-stretch overflow-visible rounded-box border border-base-content/15 bg-base-200";
 
   return (
     <div className={wrapperClass}>
@@ -103,7 +103,7 @@ export function TableBulkExportMenu({
         ) : (
           <Download className="size-3.5" />
         )}
-        Export
+        Dışa aktar
         <ChevronDown className="size-3 opacity-60" />
       </button>
       <ul
@@ -146,7 +146,7 @@ export function TableExportMenu({
     <div className="dropdown dropdown-end">
       <div tabIndex={0} role="button" className={buttonClassName}>
         <Download className="size-4" />
-        Export
+        Dışa aktar
         <ChevronDown className="size-3 opacity-60" />
       </div>
       <ul tabIndex={0} className={menuClassName}>

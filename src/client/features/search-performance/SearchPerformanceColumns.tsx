@@ -19,7 +19,7 @@ export type SearchPerformanceTableRow = Extract<
 type DimensionRow = SearchPerformanceTableRow;
 type StrikingRow = Report["strikingDistance"][number];
 
-const numberFormat = new Intl.NumberFormat("en-US");
+const numberFormat = new Intl.NumberFormat("tr-TR");
 
 export function formatCount(value: number): string {
   return numberFormat.format(Math.round(value));

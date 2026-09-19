@@ -1,3 +1,4 @@
+import { formatNumber } from "@/client/lib/format";
 import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import { SAVED_KEYWORD_PAGE_SIZES } from "./savedKeywordsUtils";
 
@@ -26,8 +27,7 @@ export function SavedKeywordsPagination({
     <div className="flex flex-col gap-3 border-t border-base-300 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
       <div className="flex items-center gap-2 text-sm tabular-nums text-base-content/70">
         <span>
-          {start.toLocaleString()}-{end.toLocaleString()} of{" "}
-          {totalCount.toLocaleString()}
+          {formatNumber(start)}-{formatNumber(end)} / {formatNumber(totalCount)}
         </span>
         {isLoading ? <Loader2 className="size-3.5 animate-spin" /> : null}
       </div>
@@ -50,7 +50,7 @@ export function SavedKeywordsPagination({
         </label>
         <div className="flex items-center gap-2">
           <span className="whitespace-nowrap text-sm tabular-nums text-base-content/70">
-            Page {page.toLocaleString()} of {totalPages.toLocaleString()}
+            Sayfa {formatNumber(page)} / {formatNumber(totalPages)}
           </span>
           <div className="flex items-center gap-1">
             <button

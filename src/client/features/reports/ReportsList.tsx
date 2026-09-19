@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Trash2 } from "lucide-react";
 import { PortalMenu } from "@/client/components/PortalMenu";
 import { formatCreatedBy } from "@/client/features/reports/shared";
-import { formatRelativeTime } from "@/client/lib/relative-time";
+import { formatRelativeTime } from "@/client/lib/format";
 import type { ReportListItem } from "@/serverFunctions/reports";
 import { REPORT_APP_LIST_LIMIT } from "@/types/schemas/reports";
 
@@ -18,8 +18,8 @@ export function ReportsList({
   if (reports.length === 0) {
     return (
       <p className="rounded-lg border border-dashed border-base-300 px-4 py-6 text-sm text-base-content/60">
-        No reports yet. Run an seotracker skill such as seo-audit from Claude
-        Code or Codex and the report will appear here.
+        Henüz rapor yok. Claude Code ya da Codex üzerinden seo-audit gibi bir
+        seotracker becerisi çalıştırın; rapor burada görünecek.
       </p>
     );
   }
@@ -30,10 +30,10 @@ export function ReportsList({
         <table className="table table-sm">
           <thead>
             <tr>
-              <th>Title</th>
+              <th>Başlık</th>
               <th>Oluşturan</th>
-              <th>Type</th>
-              <th>Updated</th>
+              <th>Tür</th>
+              <th>Güncellenme</th>
               <th></th>
             </tr>
           </thead>
@@ -62,7 +62,7 @@ export function ReportsList({
                   {formatRelativeTime(report.updatedAt)}
                 </td>
                 <td className="w-10 text-right">
-                  <PortalMenu ariaLabel={`Actions for ${report.title}`}>
+                  <PortalMenu ariaLabel={`${report.title} için işlemler`}>
                     {(close) => (
                       <li>
                         <button
@@ -73,7 +73,7 @@ export function ReportsList({
                           }}
                         >
                           <Trash2 className="size-3.5" />
-                          Delete
+                          Sil
                         </button>
                       </li>
                     )}
@@ -86,7 +86,7 @@ export function ReportsList({
       </div>
       {reports.length === REPORT_APP_LIST_LIMIT ? (
         <p className="text-xs text-base-content/60">
-          Showing the {REPORT_APP_LIST_LIMIT} most recent reports.
+          En son {REPORT_APP_LIST_LIMIT} rapor gösteriliyor.
         </p>
       ) : null}
     </div>

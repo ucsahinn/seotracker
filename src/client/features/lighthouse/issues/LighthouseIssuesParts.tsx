@@ -8,6 +8,7 @@ import {
   TriangleAlert,
 } from "lucide-react";
 import { PortalMenu } from "@/client/components/PortalMenu";
+import { formatDateTime } from "@/client/lib/format";
 import type {
   CategoryTab,
   ExportPayload,
@@ -48,7 +49,7 @@ export function LighthouseIssuesHeader({
         </button>
         <span className="text-xs text-base-content/60">
           {scannedAt
-            ? `${new Date(scannedAt).toLocaleString("tr-TR")} tarihinde tarandı`
+            ? `${formatDateTime(scannedAt)} tarihinde tarandı`
             : "Sorunlar okunuyor…"}
         </span>
       </div>
@@ -89,7 +90,7 @@ export function LighthouseIssuesHeader({
 export function LighthouseIssuesToolbar({
   category,
   categoryCounts,
-  selectedCategoryLabel,
+  categoryPhrase,
   isBusy,
   visibleIssues,
   allIssues,
@@ -101,7 +102,7 @@ export function LighthouseIssuesToolbar({
 }: {
   category: CategoryTab;
   categoryCounts: Record<CategoryTab, number>;
-  selectedCategoryLabel: string;
+  categoryPhrase: { subject: string; object: string };
   isBusy: boolean;
   visibleIssues: LighthouseIssue[];
   allIssues: LighthouseIssue[];
@@ -117,8 +118,6 @@ export function LighthouseIssuesToolbar({
   const exportCurrentCategory: ExportPayload =
     category === "all" ? { mode: "issues" } : { mode: "category", category };
 
-  const categoryLabelLower = selectedCategoryLabel.toLowerCase();
-
   return (
     <div className="sticky top-0 z-[2] -mx-2 px-2 py-2 bg-base-100/95 backdrop-blur-sm border-b border-base-300/60">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -129,7 +128,7 @@ export function LighthouseIssuesToolbar({
         />
         <ExportMenu
           allIssues={allIssues}
-          categoryLabelLower={categoryLabelLower}
+          categoryPhrase={categoryPhrase}
           exportCurrentCategory={exportCurrentCategory}
           isBusy={isBusy}
           onCopy={onCopy}
@@ -176,7 +175,7 @@ function CategoryTabs({
 
 function ExportMenu({
   allIssues,
-  categoryLabelLower,
+  categoryPhrase,
   exportCurrentCategory,
   isBusy,
   onCopy,
@@ -186,7 +185,7 @@ function ExportMenu({
   visibleIssues,
 }: {
   allIssues: LighthouseIssue[];
-  categoryLabelLower: string;
+  categoryPhrase: { subject: string; object: string };
   exportCurrentCategory: ExportPayload;
   isBusy: boolean;
   onCopy: (data: ExportPayload, toastMessage: string) => void;
@@ -200,12 +199,12 @@ function ExportMenu({
 }) {
   return (
     <PortalMenu
-      ariaLabel="Export Lighthouse issues"
+      ariaLabel="Lighthouse sorunlarını dışa aktar"
       triggerClassName="btn btn-sm gap-1"
       triggerContent={
         <>
           <Download className="size-4" />
-          Export
+          Dışa aktar
           <ChevronDown className="size-3 opacity-60" />
         </>
       }
@@ -214,7 +213,7 @@ function ExportMenu({
       {(close) => (
         <>
           <li className="menu-title">
-            <span>Export to Sheets</span>
+            <span>Sheets&apos;e aktar</span>
           </li>
           <li>
             <button
@@ -225,7 +224,7 @@ function ExportMenu({
               }}
             >
               <Sheet className="size-4" />
-              Open in Sheets — {categoryLabelLower}
+              Sheets&apos;te aç — {categoryPhrase.subject}
             </button>
           </li>
           <li>
@@ -237,11 +236,11 @@ function ExportMenu({
               }}
             >
               <Sheet className="size-4" />
-              Open in Sheets — all actionable
+              Sheets&apos;te aç — işlem gerektiren tüm sorunlar
             </button>
           </li>
           <li className="menu-title">
-            <span>Copy</span>
+            <span>Kopyala</span>
           </li>
           <li>
             <button
@@ -250,12 +249,12 @@ function ExportMenu({
                 close();
                 onCopy(
                   exportCurrentCategory,
-                  `Copied ${categoryLabelLower} issues`,
+                  `${categoryPhrase.subject} kopyalandı`,
                 );
               }}
             >
               <Copy className="size-4" />
-              Copy {categoryLabelLower} issues
+              {categoryPhrase.object} kopyala
             </button>
           </li>
           <li>
@@ -263,11 +262,14 @@ function ExportMenu({
               disabled={isBusy}
               onClick={() => {
                 close();
-                onCopy({ mode: "issues" }, "Copied all actionable issues");
+                onCopy(
+                  { mode: "issues" },
+                  "İşlem gerektiren tüm sorunlar kopyalandı",
+                );
               }}
             >
               <Copy className="size-4" />
-              Copy all actionable issues
+              İşlem gerektiren tüm sorunları kopyala
             </button>
           </li>
           <li>
@@ -275,15 +277,18 @@ function ExportMenu({
               disabled={isBusy}
               onClick={() => {
                 close();
-                onCopy({ mode: "full" }, "Copied saved Lighthouse payload");
+                onCopy(
+                  { mode: "full" },
+                  "Kayıtlı Lighthouse verisi kopyalandı",
+                );
               }}
             >
               <Copy className="size-4" />
-              Copy saved Lighthouse payload
+              Kayıtlı Lighthouse verisini kopyala
             </button>
           </li>
           <li className="menu-title">
-            <span>Download JSON</span>
+            <span>JSON indir</span>
           </li>
           <li>
             <button
@@ -293,7 +298,7 @@ function ExportMenu({
                 onExport(exportCurrentCategory);
               }}
             >
-              Download {categoryLabelLower} issues
+              {categoryPhrase.object} indir
             </button>
           </li>
           <li>
@@ -304,7 +309,7 @@ function ExportMenu({
                 onExport({ mode: "issues" });
               }}
             >
-              Download all actionable issues
+              İşlem gerektiren tüm sorunları indir
             </button>
           </li>
           <li>
@@ -315,11 +320,11 @@ function ExportMenu({
                 onExport({ mode: "full" });
               }}
             >
-              Download saved Lighthouse payload
+              Kayıtlı Lighthouse verisini indir
             </button>
           </li>
           <li className="menu-title">
-            <span>Download CSV</span>
+            <span>CSV indir</span>
           </li>
           <li>
             <button
@@ -329,7 +334,7 @@ function ExportMenu({
                 onExportCsv(visibleIssues, "current");
               }}
             >
-              Download {categoryLabelLower} issues
+              {categoryPhrase.object} indir
             </button>
           </li>
           <li>
@@ -340,7 +345,7 @@ function ExportMenu({
                 onExportCsv(allIssues, "all");
               }}
             >
-              Download all actionable issues
+              İşlem gerektiren tüm sorunları indir
             </button>
           </li>
         </>
@@ -359,12 +364,12 @@ export function LighthouseIssueList({
   emptyMessage?: string;
 }) {
   if (isLoading) {
-    return <p className="text-sm text-base-content/60">Loading issues...</p>;
+    return <p className="text-sm text-base-content/60">Sorunlar yükleniyor…</p>;
   }
   if (!issues.length) {
     return (
       <p className="text-sm text-base-content/60">
-        {emptyMessage ?? "No actionable issues for this category."}
+        {emptyMessage ?? "Bu kategoride işlem gerektiren sorun yok."}
       </p>
     );
   }
@@ -381,13 +386,11 @@ export function LighthouseIssueList({
       <thead>
         <tr className="text-xs text-base-content/50 uppercase tracking-wide border-b border-base-300">
           <th />
-          <th className="font-medium">Severity</th>
-          <th className="font-medium">Issue</th>
-          <th className="font-medium hidden sm:table-cell">Category</th>
-          <th className="font-medium hidden md:table-cell text-right">
-            Impact
-          </th>
-          <th className="font-medium text-right">Score</th>
+          <th className="font-medium">Önem</th>
+          <th className="font-medium">Sorun</th>
+          <th className="font-medium hidden sm:table-cell">Kategori</th>
+          <th className="font-medium hidden md:table-cell text-right">Etki</th>
+          <th className="font-medium text-right">Puan</th>
         </tr>
       </thead>
       <tbody className="divide-y divide-base-300/60">

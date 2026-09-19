@@ -21,10 +21,10 @@ export const PROJECT_CONTEXT_SECTION_LABELS: Record<
   ProjectContextSectionKey,
   string
 > = {
-  business_overview: "Business overview",
-  current_goal: "Current goal",
-  positioning: "Positioning",
-  writing_preferences: "Writing preferences",
+  business_overview: "İşin özeti",
+  current_goal: "Şu anki hedef",
+  positioning: "Konumlandırma",
+  writing_preferences: "Yazım tercihleri",
 };
 
 /** Cap on every prose section, enforced by the service and hinted in the UI. */

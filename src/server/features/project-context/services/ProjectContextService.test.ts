@@ -332,8 +332,8 @@ describe("project context service", () => {
       reportTemplates: [],
     });
 
-    expect(markdown).toContain("## Business overview\n\nWe sell paint.");
-    expect(markdown).toContain("## Current goal\n\n_Empty_");
+    expect(markdown).toContain("## İşin özeti\n\nWe sell paint.");
+    expect(markdown).toContain("## Şu anki hedef\n\n_Empty_");
     expect(markdown).toContain(
       "Missing sections: current_goal, positioning, writing_preferences",
     );

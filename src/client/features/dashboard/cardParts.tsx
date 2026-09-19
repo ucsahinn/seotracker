@@ -1,7 +1,8 @@
-// Shared building blocks for the dashboard cards. Same visual language as
-// the GSC IntegrationCard (rounded-xl, shadow-sm, header row + divider) so
-// the embedded SearchConsoleConnectionCard doesn't read as a different
-// design system.
+// Shared building blocks for the dashboard cards. Same visual language as the
+// GSC IntegrationCard (rounded-box, hairline, raise shadow) so the embedded
+// SearchConsoleConnectionCard doesn't read as a different design system.
+export { formatDay } from "@/client/lib/format";
+
 export function CardShell({
   title,
   stamp,
@@ -14,9 +15,9 @@ export function CardShell({
   children: React.ReactNode;
 }) {
   return (
-    <div className="overflow-hidden rounded-xl border border-base-300 bg-base-100 shadow-sm">
-      <div className="flex items-center justify-between gap-4 px-5 py-4">
-        <h2 className="text-base font-semibold leading-tight">{title}</h2>
+    <div className="overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-[var(--shadow-raise)]">
+      <div className="flex items-center justify-between gap-4 px-5 py-3.5">
+        <h2 className="text-sm font-semibold leading-tight">{title}</h2>
         {action}
       </div>
       <div className="border-t border-base-300 p-5">
@@ -59,7 +60,7 @@ export function Stat({
     tone === "success" ? "text-success" : tone === "error" ? "text-error" : "";
   return (
     <div>
-      <p className="text-xs uppercase tracking-wide text-base-content/60">
+      <p className="text-xs font-medium uppercase tracking-wider text-base-content/45">
         {label}
       </p>
       <p className={`text-2xl font-semibold tabular-nums ${toneClass}`}>
@@ -90,18 +91,3 @@ export function PercentDelta({
 }
 
 export const moreDetailsClass = "btn btn-ghost btn-xs";
-
-export function formatDay(timestamp: string): string {
-  const ms = Date.parse(
-    // SQLite's current_timestamp default has no timezone marker; treat it as
-    // UTC rather than letting the browser parse it as local time.
-    /^\d{4}-\d{2}-\d{2} /.test(timestamp)
-      ? `${timestamp.replace(" ", "T")}Z`
-      : timestamp,
-  );
-  if (Number.isNaN(ms)) return timestamp;
-  return new Date(ms).toLocaleDateString(undefined, {
-    month: "short",
-    day: "numeric",
-  });
-}

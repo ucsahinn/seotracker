@@ -51,9 +51,7 @@ export function useDeleteReport(projectId: string, onDeleted?: () => void) {
       onDeleted?.();
     },
     onError: (error: Error) => {
-      toast.error(
-        getStandardErrorMessage(error, "Failed to delete the report"),
-      );
+      toast.error(getStandardErrorMessage(error, "Rapor silinemedi"));
     },
   });
 }
@@ -72,8 +70,8 @@ export function DeleteReportModal({
 }) {
   return (
     <ConfirmDeleteModal
-      title={`Delete \u201c${title}\u201d?`}
-      detail="This cannot be undone."
+      title={`\u201c${title}\u201d silinsin mi?`}
+      detail="Bu geri al\u0131namaz."
       confirmLabel="Raporu sil"
       isPending={isPending}
       onClose={onClose}

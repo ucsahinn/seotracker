@@ -166,7 +166,7 @@ export function GooglePropertyPicker({
                 </p>
               ) : error ? (
                 <div role="alert" className="p-3 text-sm">
-                  <p className="text-error">Couldn't load properties.</p>
+                  <p className="text-error">Kaynaklar yüklenemedi.</p>
                   <button
                     type="button"
                     className="btn btn-ghost btn-sm mt-1"
@@ -217,7 +217,7 @@ export function GooglePropertyPicker({
                       ) : account.unavailable ? (
                         <div className="flex flex-wrap items-center justify-between gap-2 px-2 pb-2 text-sm">
                           <span className="text-base-content/60">
-                            Couldn't load properties
+                            Kaynaklar yüklenemedi
                           </span>
                           <button
                             type="button"

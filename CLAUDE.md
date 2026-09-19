@@ -25,6 +25,39 @@ not coming back. Build on what Search Console already knows.
 - Prefer idiomatic TanStack Query, Router, and Form patterns for server state, routing, and submitted forms.
 - Specs under `specs/` are design records: what a feature does, how it works, the alternatives considered and why they lost.
 
+## Interface
+
+The whole visual language lives in `src/client/styles/app.css`. Seventy-one
+files use daisyUI class names, so the theme tokens and the component overrides
+at the bottom of that file restyle every screen at once. Change them there
+before you change a component.
+
+- **Surfaces** carry a trace of chroma. No pure black, no pure white.
+- **Separation is a hairline** (`var(--hairline)`), never a mid-grey 1px box.
+  Depth comes from `var(--shadow-raise)`, tinted toward the surface.
+- **One radius scale**: `rounded-box` for panels, `rounded-field` for controls,
+  `rounded-full` for pills. Mixing them on one screen is a bug.
+- **One accent**, reserved for links, focus rings and active state. The primary
+  button is near-black, because a blue one competes with the amber and red
+  severity chips beside it.
+- **Two page widths**, chosen by what the screen holds, not by which file it
+  is in: `max-w-(--container-page)` for tables, charts and dashboards;
+  `max-w-3xl` for forms and prose. `PageShell` in
+  `src/client/components/PageShell.tsx` applies both.
+- **Numbers are tabular** everywhere (set on `body`), so columns do not wobble
+  as values change.
+- Every visible number, date and time goes through `src/client/lib/format.ts`,
+  which is pinned to `tr-TR`. Do not call `toLocaleString` at a call site and
+  do not add a second formatting module.
+- Empty, loading and error states are part of the screen, not an afterthought.
+  Reach for `EmptyState` and for skeletons shaped like the content that is
+  coming, not a spinner.
+
+The UI is Turkish. MCP tool descriptions and code comments stay English: agents
+read the former, and the latter are for whoever edits the file. `<html lang="tr">`
+is load-bearing - CSS `text-transform: uppercase` follows it, and without it
+"Bilgi" uppercases to "BILGI".
+
 ## Testing
 
 - Don't add tests just for the sake of it. A test exists to enforce core behavior or a hard-to-spot edge case that could actually occur.

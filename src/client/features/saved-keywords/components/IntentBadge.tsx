@@ -11,19 +11,19 @@ const COLORS: Record<KeywordIntent, string> = {
 };
 
 const SHORT_LABELS: Record<KeywordIntent, string> = {
-  informational: "Info",
-  commercial: "Comm",
-  transactional: "Trans",
-  navigational: "Nav",
+  informational: "Bilgi",
+  commercial: "Ticari",
+  transactional: "İşlem",
+  navigational: "Yön",
   unknown: "?",
 };
 
 const INTENT_LABELS: Record<KeywordIntent, string> = {
-  informational: "Informational",
-  commercial: "Commercial",
-  transactional: "Transactional",
-  navigational: "Navigational",
-  unknown: "Unknown",
+  informational: "Bilgi amaçlı",
+  commercial: "Ticari araştırma",
+  transactional: "İşlem odaklı",
+  navigational: "Yönlendirici",
+  unknown: "Bilinmiyor",
 };
 
 const DESCRIPTIONS: Record<
@@ -33,27 +33,27 @@ const DESCRIPTIONS: Record<
   informational: {
     label: INTENT_LABELS.informational,
     description:
-      "The searcher wants information or answers. Use this for educational content, guides, and comparison-light explainers.",
+      "Arayan kişi bilgi ya da cevap arıyor. Eğitici içerikler, rehberler ve sade açıklayıcı yazılar için uygun.",
   },
   commercial: {
     label: INTENT_LABELS.commercial,
     description:
-      "The searcher is researching options before a purchase. Treat this as buying intent for comparisons, alternatives, and product-led pages.",
+      "Arayan kişi satın almadan önce seçenekleri inceliyor. Karşılaştırma, alternatif ve ürün odaklı sayfalar için satın alma niyeti sayın.",
   },
   transactional: {
     label: INTENT_LABELS.transactional,
     description:
-      "The searcher is ready to complete an action, often a purchase. Prioritize clear offers, pricing, trials, or conversion paths.",
+      "Arayan kişi bir eylemi, çoğunlukla satın almayı tamamlamaya hazır. Net teklifleri, fiyatları, denemeleri ve dönüşüm yollarını öne çıkarın.",
   },
   navigational: {
     label: INTENT_LABELS.navigational,
     description:
-      "The searcher is looking for a specific site, brand, or page. These queries usually reward matching the expected destination.",
+      "Arayan kişi belirli bir siteyi, markayı ya da sayfayı arıyor. Bu aramalar genellikle beklenen hedefe birebir karşılık gelmeyi ödüllendirir.",
   },
   unknown: {
     label: INTENT_LABELS.unknown,
     description:
-      "Intent was not available for this keyword, so avoid making content strategy decisions from this badge alone.",
+      "Bu kelime için arama amacı bilinmiyor; içerik kararlarınızı yalnızca bu rozete bakarak vermeyin.",
   },
 };
 
@@ -66,7 +66,7 @@ export function IntentBadge({ intent }: { intent: KeywordIntent }) {
       ref={tooltip.triggerRef}
       className={`inline-flex h-6 min-w-11 cursor-help items-center justify-center rounded-full border px-2 text-xs font-semibold leading-none ${COLORS[intent]}`}
       tabIndex={0}
-      aria-label={`${details.label} search intent`}
+      aria-label={`${details.label} arama amacı`}
       aria-describedby={tooltip.isOpen ? tooltip.tooltipId : undefined}
       onMouseEnter={tooltip.open}
       onMouseLeave={tooltip.close}

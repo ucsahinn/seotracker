@@ -8,6 +8,19 @@ import {
 } from "@/shared/tag-colors";
 import type { SavedKeywordTagSummary } from "@/types/keywords";
 
+// The palette keys are English identifiers; screen readers should hear the
+// colour, not the token.
+const COLOR_LABELS: Record<TagColorKey, string> = {
+  slate: "Gri",
+  rose: "Pembe",
+  amber: "Turuncu",
+  lime: "Fıstık yeşili",
+  emerald: "Yeşil",
+  sky: "Mavi",
+  violet: "Mor",
+  fuchsia: "Fuşya",
+};
+
 export function ManageTagRow({
   tag,
   isBusy,
@@ -32,7 +45,7 @@ export function ManageTagRow({
     <div className="space-y-2 border-y border-base-300 bg-base-200/40 px-3 py-2.5">
       <div className="space-y-1">
         <label className="text-[11px] font-semibold uppercase tracking-wide text-base-content/55">
-          Rename
+          Yeniden adlandır
         </label>
         <div className="flex items-center gap-1.5">
           <Pencil className="size-3 opacity-50" />
@@ -46,14 +59,14 @@ export function ManageTagRow({
 
       <div className="space-y-1">
         <label className="text-[11px] font-semibold uppercase tracking-wide text-base-content/55">
-          Color
+          Renk
         </label>
         <div className="flex flex-wrap items-center gap-1.5">
           {TAG_COLOR_KEYS.map((key) => (
             <button
               key={key}
               type="button"
-              aria-label={key}
+              aria-label={COLOR_LABELS[key]}
               className={`size-5 rounded-full transition ${tagSwatchClass(key)} ${
                 color === key
                   ? "ring-2 ring-offset-2 ring-offset-base-200 ring-base-content/40"
@@ -73,7 +86,7 @@ export function ManageTagRow({
           disabled={isBusy}
         >
           <Trash2 className="size-3" />
-          Delete
+          Sil
         </button>
         <div className="flex items-center gap-1.5">
           <button
@@ -81,7 +94,7 @@ export function ManageTagRow({
             className="rounded px-2 py-1 text-xs text-base-content/70 hover:bg-base-300"
             onClick={onCancel}
           >
-            Cancel
+            Vazgeç
           </button>
           <button
             type="button"
@@ -94,7 +107,7 @@ export function ManageTagRow({
               })
             }
           >
-            Save
+            Kaydet
           </button>
         </div>
       </div>

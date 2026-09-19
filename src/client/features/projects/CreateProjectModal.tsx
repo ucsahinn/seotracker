@@ -46,7 +46,7 @@ export function CreateProjectModal({ onClose }: { onClose: () => void }) {
       });
     },
     onError: (error) =>
-      toast.error(getStandardErrorMessage(error, "Failed to create project")),
+      toast.error(getStandardErrorMessage(error, "Proje oluşturulamadı")),
   });
 
   const isPending = createMutation.isPending;
@@ -55,7 +55,7 @@ export function CreateProjectModal({ onClose }: { onClose: () => void }) {
     event.preventDefault();
     if (isPending) return;
     if (!name.trim()) {
-      toast.error("Project name is required");
+      toast.error("Proje adı gerekli");
       return;
     }
     createMutation.mutate();
@@ -73,7 +73,7 @@ export function CreateProjectModal({ onClose }: { onClose: () => void }) {
         </h2>
 
         <label className="flex flex-col gap-1.5 text-sm">
-          <span className="font-medium">Name</span>
+          <span className="font-medium">Ad</span>
           <input
             type="text"
             value={name}
@@ -87,7 +87,8 @@ export function CreateProjectModal({ onClose }: { onClose: () => void }) {
 
         <label className="flex flex-col gap-1.5 text-sm">
           <span className="font-medium">
-            Domain <span className="text-base-content/50">(optional)</span>
+            Alan adı{" "}
+            <span className="text-base-content/50">(isteğe bağlı)</span>
           </span>
           <input
             type="text"
@@ -98,17 +99,16 @@ export function CreateProjectModal({ onClose }: { onClose: () => void }) {
             className="input input-bordered w-full"
           />
           <span className="text-xs text-base-content/50">
-            You can connect Search Console and set up rank tracking after
-            creating the project.
+            Projeyi oluşturduktan sonra Search Console&apos;u bağlayıp sıralama
+            takibini kurabilirsiniz.
           </span>
         </label>
 
         <div className="flex flex-col gap-1.5">
           <ProjectMarketFields value={market} onChange={setMarket} />
           <span className="text-xs text-base-content/50">
-            Keyword, SERP, and domain data uses this country and language unless
-            a call asks for a different one. Change it later in project
-            settings.
+            Kaydettiğiniz anahtar kelimeler bu ülke ve dile göre saklanır.
+            Sonradan proje ayarlarından değiştirebilirsiniz.
           </span>
         </div>
 
@@ -119,7 +119,7 @@ export function CreateProjectModal({ onClose }: { onClose: () => void }) {
             onClick={onClose}
             disabled={isPending}
           >
-            Cancel
+            Vazgeç
           </button>
           <button
             type="submit"

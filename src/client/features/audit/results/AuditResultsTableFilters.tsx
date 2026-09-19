@@ -1,3 +1,4 @@
+import { formatNumber } from "@/client/lib/format";
 import { RotateCcw, SlidersHorizontal } from "lucide-react";
 import type { ReactNode } from "react";
 import type {
@@ -174,7 +175,7 @@ export function TableFilterToggle({
         ) : null}
       </button>
       <span className="text-sm tabular-nums text-base-content/60">
-        {resultCount.toLocaleString()} of {totalCount.toLocaleString()}
+        {formatNumber(resultCount)} / {formatNumber(totalCount)}
       </span>
     </div>
   );

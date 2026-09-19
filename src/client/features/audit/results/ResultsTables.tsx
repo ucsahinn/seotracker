@@ -141,7 +141,8 @@ function buildPerformanceColumns({
       cell: ({ row }) => {
         const isFailed = isLighthouseFailure(row.original);
         const failureMessage =
-          row.original.errorMessage ?? "Lighthouse returned no category scores";
+          row.original.errorMessage ??
+          "Hız ölçümü hiçbir kategori puanı döndürmedi";
         return isFailed ? (
           <span
             className="badge badge-error badge-outline text-xs"

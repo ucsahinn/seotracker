@@ -57,7 +57,7 @@ export function AuditHistorySection({
                   <td>{audit.pagesTotal || audit.pagesCrawled}</td>
                   <td>
                     {audit.ranLighthouse ? (
-                      <span className="badge badge-ghost badge-xs">Yes</span>
+                      <span className="badge badge-ghost badge-xs">Evet</span>
                     ) : null}
                   </td>
                   <td>

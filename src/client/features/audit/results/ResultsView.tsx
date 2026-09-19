@@ -50,9 +50,7 @@ export function ResultsView({
   return (
     <>
       {blockedCount > 0 && (
-        <CrawlWarning
-          headline={`We were blocked on ${blockedCount} ${blockedCount === 1 ? "page" : "pages"}.`}
-        >
+        <CrawlWarning headline={`${blockedCount} sayfada engellendik.`}>
           The site's bot protection challenged our crawler, so those pages
           couldn't be audited. We don't have a workaround for this yet. Desktop
           crawlers run from your own machine and usually get past it: try{" "}
@@ -82,7 +80,7 @@ export function ResultsView({
           headline={
             crawlStopped
               ? "Tarama, sitenin istek sınırı yüzünden erken durdu."
-              : `The site rate limited us on ${rateLimitedCount} ${rateLimitedCount === 1 ? "page" : "pages"}.`
+              : `Site ${rateLimitedCount} sayfada istek sınırı uyguladı.`
           }
         >
           {crawlStopped
@@ -227,8 +225,8 @@ function ResultsHeader({
   onExport: (format: "csv" | "json" | "sheets") => void;
 }) {
   const tabs: Array<{ tab: ResultsTab; label: string }> = [
-    { tab: "issues", label: `Issues (${issueCount})` },
-    { tab: "pages", label: `Pages (${pageCount})` },
+    { tab: "issues", label: `Sorunlar (${issueCount})` },
+    { tab: "pages", label: `Sayfalar (${pageCount})` },
     ...(hasPerformanceTab
       ? [
           {

@@ -12,7 +12,7 @@ export function LaunchView({ projectId, onAuditStarted }: LaunchViewProps) {
 
   return (
     <div className="px-4 py-4 md:px-6 md:py-6 pb-24 md:pb-8 overflow-auto">
-      <div className="mx-auto max-w-5xl space-y-4">
+      <div className="mx-auto max-w-(--container-page) space-y-4">
         <h1 className="text-2xl font-semibold">Site Denetimi</h1>
 
         <LaunchFormCard

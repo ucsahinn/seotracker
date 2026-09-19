@@ -97,11 +97,11 @@ export function SavedKeywordsBulkTagsModal({
       <div className="space-y-4">
         <div>
           <h3 id="bulk-tags-title" className="text-lg font-semibold">
-            Update tags
+            Etiketleri güncelle
           </h3>
           <p className="text-sm text-base-content/65">
-            Apply or remove tags across {selectedCount} selected keyword
-            {selectedCount !== 1 ? "s" : ""}.
+            Seçili {selectedCount} kelimeye etiket ekleyin ya da bunlardan
+            etiket kaldırın.
           </p>
         </div>
 
@@ -180,7 +180,7 @@ export function SavedKeywordsBulkTagsModal({
                   className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-base-200"
                 >
                   <Plus className="size-3.5 text-primary" />
-                  <span className="text-base-content/70">Create</span>
+                  <span className="text-base-content/70">Oluştur</span>
                   <span className="font-medium">
                     &ldquo;{trimmedQuery}&rdquo;
                   </span>
@@ -190,8 +190,8 @@ export function SavedKeywordsBulkTagsModal({
               {filteredAvailable.length === 0 && !showCreate ? (
                 <div className="px-3 py-6 text-center text-xs text-base-content/55">
                   {availableTags.length === 0
-                    ? "No tags yet. Type a name above to create one."
-                    : "No tags match that search."}
+                    ? "Henüz etiket yok. Yukarıya bir ad yazıp oluşturun."
+                    : "Bu aramaya uyan etiket yok."}
                 </div>
               ) : null}
 
@@ -230,7 +230,7 @@ export function SavedKeywordsBulkTagsModal({
           <div className="space-y-2">
             {selectedRowTags.length === 0 ? (
               <div className="rounded-md border border-base-300 bg-base-200/40 px-3 py-6 text-center text-xs text-base-content/55">
-                The selected keywords don&apos;t have any tags to remove.
+                Seçili kelimelerde kaldırılacak etiket yok.
               </div>
             ) : (
               <div className="flex flex-wrap gap-1.5 rounded-md border border-base-300 p-3">
@@ -244,7 +244,9 @@ export function SavedKeywordsBulkTagsModal({
                       onClick={() => handleToggleRemove(tag)}
                       selected={checked}
                       trailing={checked ? <Check className="size-3" /> : null}
-                      title={checked ? "Will be removed" : "Click to remove"}
+                      title={
+                        checked ? "Kaldırılacak" : "Kaldırmak için tıklayın"
+                      }
                     />
                   );
                 })}
@@ -252,8 +254,7 @@ export function SavedKeywordsBulkTagsModal({
             )}
             {removeIds.length > 0 ? (
               <p className="text-xs text-base-content/55">
-                {removeIds.length} tag{removeIds.length !== 1 ? "s" : ""} will
-                be detached from the selected keywords.
+                Seçili kelimelerden {removeIds.length} etiket kaldırılacak.
               </p>
             ) : null}
           </div>
@@ -265,7 +266,7 @@ export function SavedKeywordsBulkTagsModal({
             className="rounded-md px-3 py-1.5 text-sm text-base-content/70 hover:bg-base-200"
             onClick={onClose}
           >
-            Cancel
+            Vazgeç
           </button>
           <button
             type="button"
@@ -279,7 +280,7 @@ export function SavedKeywordsBulkTagsModal({
             }
           >
             {isPending ? <Loader2 className="size-3.5 animate-spin" /> : null}
-            Apply
+            Uygula
           </button>
         </div>
       </div>

@@ -53,7 +53,7 @@ export function DashboardSetupAction({
           Paste this prompt into your agent to automatically configure
           seotracker for you.
         </p>
-        <div className="flex flex-col gap-4 rounded-lg border border-base-300 bg-base-200/25 p-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-4 rounded-box border border-base-300 bg-base-200/25 p-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-sm font-medium">seotracker plugin</p>
             <p className="mt-1 text-xs text-base-content/60">

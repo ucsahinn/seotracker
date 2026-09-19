@@ -53,11 +53,13 @@ function ProjectsPage() {
         </div>
 
         {projectsQuery.isLoading ? (
-          <div className="flex justify-center py-10">
-            <span className="loading loading-spinner loading-md" />
+          <div className="space-y-2" aria-busy>
+            {Array.from({ length: 4 }, (_, index) => (
+              <div key={index} className="skeleton h-14" />
+            ))}
           </div>
         ) : (
-          <ul className="divide-y divide-base-300 overflow-hidden rounded-lg border border-base-300">
+          <ul className="divide-y divide-base-300 overflow-hidden rounded-box border border-base-300">
             {projects.map((project) => (
               <li key={project.id}>
                 <Link
@@ -121,8 +123,8 @@ function ArchivedProjects() {
 
   return (
     <section className="space-y-3">
-      <h2 className="text-sm font-medium text-base-content/50">Archived</h2>
-      <ul className="divide-y divide-base-300 overflow-hidden rounded-lg border border-base-300">
+      <h2 className="text-sm font-medium text-base-content/50">Arşivlendi</h2>
+      <ul className="divide-y divide-base-300 overflow-hidden rounded-box border border-base-300">
         {archived.map((project) => (
           <li
             key={project.id}

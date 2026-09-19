@@ -25,6 +25,10 @@
     // Tailwindcss used via @tailwindcss/vite plugin
     "tailwindcss",
     "daisyui",
+    // Self-hosted fonts, pulled in by @import from src/client/styles/app.css,
+    // which knip does not parse.
+    "@fontsource-variable/geist",
+    "@fontsource-variable/geist-mono",
     // `cloudflare:workers` is a runtime-provided module, not a package.
     "cloudflare",
   ],

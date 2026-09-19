@@ -24,7 +24,7 @@ export function AuditFreshnessCard({ projectId }: { projectId: string }) {
   if (!data.isStale && !hasChanges) return null;
 
   return (
-    <div className="space-y-3 rounded-xl border border-base-300 bg-base-100 p-4 sm:p-5">
+    <div className="space-y-3 rounded-box border border-base-300 bg-base-100 p-4 shadow-[var(--shadow-raise)] sm:p-5">
       {data.isStale ? (
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2 text-sm">

@@ -17,7 +17,7 @@ export function SearchPerformanceLoadingState() {
         ))}
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-base-300 bg-base-100">
+      <div className="overflow-hidden rounded-box border border-base-300 bg-base-100">
         <div className="flex flex-col gap-3 border-b border-base-300 px-4 py-3 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex items-center gap-4">
             <div className="skeleton h-8 w-40" />

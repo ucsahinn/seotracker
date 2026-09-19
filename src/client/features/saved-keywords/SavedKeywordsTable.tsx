@@ -1,3 +1,4 @@
+import { EmptyState } from "@/client/components/EmptyState";
 import {
   createColumnHelper,
   type ColumnDef,
@@ -14,14 +15,10 @@ import {
   useSelectionAnchor,
 } from "@/client/components/table/AppDataTable";
 import { SortableHeader } from "@/client/components/table/SortableHeader";
-import { DifficultyBadge } from "@/client/features/saved-keywords/components";
 import { IntentBadge } from "@/client/features/saved-keywords/components";
 import type { KeywordIntent, SavedKeywordRow } from "@/types/keywords";
 import { TagChip } from "./TagChip";
-import {
-  formatSavedKeywordDate,
-  formatSavedKeywordNumber,
-} from "./savedKeywordsUtils";
+import { formatSavedKeywordDate } from "./savedKeywordsUtils";
 
 const columnHelper = createColumnHelper<SavedKeywordRow>();
 
@@ -54,44 +51,12 @@ export function SavedKeywordsTable({
           <span className="font-medium">{getValue()}</span>
         ),
       }),
-      columnHelper.accessor("searchVolume", {
-        header: ({ column }) => (
-          <SortableHeader column={column} label="Hacim" />
-        ),
-        cell: ({ getValue }) => formatSavedKeywordNumber(getValue()),
-      }),
-      columnHelper.accessor("cpc", {
-        header: ({ column }) => <SortableHeader column={column} label="CPC" />,
-        cell: ({ getValue }) => {
-          const value = getValue();
-          return value == null ? "-" : `$${value.toFixed(2)}`;
-        },
-      }),
-      columnHelper.accessor("competition", {
-        header: ({ column }) => (
-          <SortableHeader
-            column={column}
-            label="Rekabet"
-            helpText="Paid-search competition from Google Ads (0-1): higher means more advertisers bidding."
-          />
-        ),
-        cell: ({ getValue }) => {
-          const value = getValue();
-          return value == null ? "-" : value.toFixed(2);
-        },
-      }),
-      columnHelper.accessor("keywordDifficulty", {
-        header: ({ column }) => (
-          <SortableHeader
-            column={column}
-            label="Zorluk"
-            helpText="Organic ranking difficulty (0-100): higher means harder to reach Google's top 10."
-          />
-        ),
-        cell: ({ getValue }) => <DifficultyBadge value={getValue()} />,
-      }),
+      // Search volume, CPC, ad competition and keyword difficulty were bought
+      // from DataForSEO. That data is gone, so every one of those columns
+      // rendered a dash on every row: four columns of nothing, pushing the
+      // useful ones off the side of the table.
       columnHelper.accessor("intent", {
-        header: () => "Intent",
+        header: () => "Amaç",
         cell: ({ getValue }) => (
           <IntentBadge intent={normalizeIntent(getValue())} />
         ),
@@ -99,7 +64,7 @@ export function SavedKeywordsTable({
       }),
       columnHelper.display({
         id: "tags",
-        header: () => "Tags",
+        header: () => "Etiketler",
         cell: ({ row }) => <TagList tags={row.original.tags} />,
         enableSorting: false,
         meta: { cellClassName: "min-w-40 max-w-64" },
@@ -191,13 +156,18 @@ function SavedKeywordsEmptyState({
   hasActiveFilters: boolean;
 }) {
   return (
-    <div className="py-12 text-center text-sm text-base-content/55">
-      <Search className="mx-auto mb-2 size-8 opacity-40" />
-      <p>
-        {hasActiveFilters
-          ? "No saved keywords match the current filters."
-          : "No saved keywords yet. Use the Keyword Research page to find and save keywords."}
-      </p>
-    </div>
+    <EmptyState
+      icon={Search}
+      title={
+        hasActiveFilters
+          ? "Bu filtrelere uyan kelime yok"
+          : "Henüz kayıtlı kelime yok"
+      }
+      description={
+        hasActiveFilters
+          ? "Filtreleri gevşetin ya da temizleyin."
+          : "Arama Performansı sayfasındaki sorgularınızı kaydederek buraya ekleyin."
+      }
+    />
   );
 }

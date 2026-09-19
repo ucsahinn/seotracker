@@ -1,4 +1,4 @@
-import { formatRelativeTime } from "@/client/lib/relative-time";
+import { formatRelativeTime } from "@/client/lib/format";
 import { useState, type ReactNode } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Trash2 } from "lucide-react";
@@ -36,10 +36,12 @@ export function useContextUpdate(projectId: string) {
     onMutate: () => queryClient.cancelQueries({ queryKey }),
     onSuccess: (context) => {
       queryClient.setQueryData(queryKey, context);
-      toast.success("Project context updated");
+      toast.success("Proje bilgisi güncellendi");
     },
     onError: (error) =>
-      toast.error(getStandardErrorMessage(error, "Couldn't save your changes")),
+      toast.error(
+        getStandardErrorMessage(error, "Değişiklikleriniz kaydedilemedi"),
+      ),
     // The page instantiates this mutation per section, so two concurrent
     // patches can settle out of order and the slower (earlier-snapshotted)
     // response can land in the cache last; a settle-time refetch converges
@@ -49,17 +51,18 @@ export function useContextUpdate(projectId: string) {
 }
 
 const AUTHOR_LABELS: Record<ContextAuthor, string> = {
-  user: "you",
-  sam: "SAM",
-  mcp: "your AI client",
+  user: "siz",
+  // A legacy value: the in-app agent is gone, but old rows still carry it.
+  sam: "ajan",
+  mcp: "yapay zeka istemciniz",
 };
 
 export function Provenance({ by, at }: { by: ContextAuthor; at?: string }) {
   return (
     <span className="text-xs text-base-content/40">
       {at
-        ? `Updated by ${AUTHOR_LABELS[by]} · ${formatRelativeTime(at)}`
-        : `Added by ${AUTHOR_LABELS[by]}`}
+        ? `${AUTHOR_LABELS[by]} güncelledi · ${formatRelativeTime(at)}`
+        : `${AUTHOR_LABELS[by]} ekledi`}
     </span>
   );
 }
@@ -128,14 +131,14 @@ export function ConfirmDeleteButton({
             onConfirm();
           }}
         >
-          Remove
+          Kaldır
         </button>
         <button
           type="button"
           className="btn btn-ghost btn-xs"
           onClick={() => setConfirming(false)}
         >
-          Cancel
+          Vazgeç
         </button>
       </>
     );
@@ -171,14 +174,14 @@ export function FormActions({
         onClick={onCancel}
         disabled={pending}
       >
-        Cancel
+        Vazgeç
       </button>
       <button
         type="submit"
         className="btn btn-primary btn-xs"
         disabled={disabled || pending}
       >
-        Save
+        Kaydet
       </button>
     </div>
   );

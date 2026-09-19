@@ -93,7 +93,7 @@ export function SavedKeywordsTagFilter({
         onClick={() => setOpen((v) => !v)}
       >
         <TagIcon className="size-3.5 opacity-70" />
-        <span className="font-medium">Tags</span>
+        <span className="font-medium">Etiketler</span>
         {hasSelection ? (
           <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-[11px] font-semibold text-primary-content">
             {selectedTags.length}
@@ -120,7 +120,7 @@ export function SavedKeywordsTagFilter({
             className="text-xs text-base-content/60 underline-offset-2 hover:text-base-content hover:underline"
             onClick={onClearSelection}
           >
-            Clear
+            Temizle
           </button>
         </div>
       ) : null}
@@ -209,8 +209,8 @@ function TagFilterPopover({
         {filteredTags.length === 0 ? (
           <div className="px-3 py-6 text-center text-xs text-base-content/55">
             {availableTags.length === 0
-              ? "No tags yet. Add tags from a selection of keywords."
-              : "No tags match that search."}
+              ? "Henüz etiket yok. Kelimeleri seçip etiket ekleyin."
+              : "Bu aramaya uyan etiket yok."}
           </div>
         ) : null}
 
@@ -232,14 +232,14 @@ function TagFilterPopover({
       {selectedTagIds.length > 0 ? (
         <div className="flex items-center justify-between border-t border-base-300 px-2 py-1.5 text-xs">
           <span className="text-base-content/55">
-            {selectedTagIds.length} selected
+            {selectedTagIds.length} seçili
           </span>
           <button
             type="button"
             className="rounded px-2 py-1 text-base-content/70 hover:bg-base-200"
             onClick={onClearSelection}
           >
-            Clear all
+            Tümünü temizle
           </button>
         </div>
       ) : null}
@@ -298,7 +298,7 @@ function TagFilterRow({
             isManaging ? "bg-base-300 text-base-content" : ""
           }`}
           onClick={() => onStartManaging(isManaging ? null : tag.id)}
-          aria-label={`Manage ${tag.name}`}
+          aria-label={`${tag.name} etiketini yönet`}
         >
           <MoreHorizontal className="size-3.5" />
         </button>

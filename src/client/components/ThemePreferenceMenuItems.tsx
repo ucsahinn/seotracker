@@ -17,7 +17,7 @@ export function ThemePreferenceMenuItems() {
   return (
     <>
       <li className="menu-title pt-2">
-        <span>Theme</span>
+        <span>Tema</span>
       </li>
 
       <li>

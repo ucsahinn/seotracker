@@ -1,6 +1,5 @@
 import { Minus, Plus, RotateCcw, X } from "lucide-react";
 import { useState, type KeyboardEvent } from "react";
-import type { SavedKeywordsFilterValues } from "./savedKeywordsFilterTypes";
 import type { SavedKeywordsFilterForm } from "./useSavedKeywordsFilters";
 
 export function SavedKeywordsFilterPanel({
@@ -19,7 +18,7 @@ export function SavedKeywordsFilterPanel({
           <p className="text-sm font-semibold">Sonuçları daralt</p>
           {activeFilterCount > 0 ? (
             <span className="badge badge-xs badge-primary border-0 text-primary-content">
-              {activeFilterCount} active
+              {activeFilterCount} etkin
             </span>
           ) : null}
         </div>
@@ -30,7 +29,7 @@ export function SavedKeywordsFilterPanel({
           disabled={activeFilterCount === 0}
         >
           <RotateCcw className="size-3" />
-          Clear all
+          Tümünü temizle
         </button>
       </div>
 
@@ -51,31 +50,9 @@ export function SavedKeywordsFilterPanel({
         />
       </div>
 
-      <div className="grid grid-cols-1 gap-2 lg:grid-cols-3">
-        <FilterRangeInputs
-          form={form}
-          title="Arama hacmi"
-          minName="minVol"
-          maxName="maxVol"
-          min={0}
-        />
-        <FilterRangeInputs
-          form={form}
-          title="CPC (USD)"
-          minName="minCpc"
-          maxName="maxCpc"
-          step="0.01"
-          min={0}
-        />
-        <FilterRangeInputs
-          form={form}
-          title="Zorluk"
-          minName="minKd"
-          maxName="maxKd"
-          min={0}
-          max={100}
-        />
-      </div>
+      {/* Search volume, CPC and keyword difficulty were bought data. The
+          columns they filtered are gone, so a range filter over them could
+          only ever return nothing. */}
     </div>
   );
 }
@@ -174,7 +151,7 @@ function TermsTokenInput({
                   <button
                     type="button"
                     className="opacity-70 hover:opacity-100"
-                    aria-label={`Remove ${term}`}
+                    aria-label={`${term} terimini kaldır`}
                     onClick={() =>
                       commit(terms.filter((existing) => existing !== term))
                     }
@@ -196,87 +173,5 @@ function TermsTokenInput({
         }}
       </form.Field>
     </div>
-  );
-}
-
-type RangeFieldName = Extract<
-  keyof SavedKeywordsFilterValues,
-  "minVol" | "maxVol" | "minCpc" | "maxCpc" | "minKd" | "maxKd"
->;
-
-function FilterRangeInputs({
-  form,
-  title,
-  minName,
-  maxName,
-  step,
-  min,
-  max,
-}: {
-  form: SavedKeywordsFilterForm;
-  title: string;
-  minName: Extract<RangeFieldName, "minVol" | "minCpc" | "minKd">;
-  maxName: Extract<RangeFieldName, "maxVol" | "maxCpc" | "maxKd">;
-  step?: string;
-  min?: number;
-  max?: number;
-}) {
-  return (
-    <div className="space-y-2 rounded-lg border border-base-300 bg-base-100 p-2.5">
-      <p className="text-[11px] font-semibold uppercase tracking-wide text-base-content/60">
-        {title}
-      </p>
-      <div className="grid grid-cols-2 gap-2">
-        <CompactRangeInput
-          form={form}
-          name={minName}
-          placeholder="Min"
-          step={step}
-          min={min}
-          max={max}
-        />
-        <CompactRangeInput
-          form={form}
-          name={maxName}
-          placeholder="Max"
-          step={step}
-          min={min}
-          max={max}
-        />
-      </div>
-    </div>
-  );
-}
-
-function CompactRangeInput({
-  form,
-  name,
-  placeholder,
-  step,
-  min,
-  max,
-}: {
-  form: SavedKeywordsFilterForm;
-  name: RangeFieldName;
-  placeholder: string;
-  step?: string;
-  min?: number;
-  max?: number;
-}) {
-  return (
-    <form.Field name={name}>
-      {(field) => (
-        <input
-          className="input input-bordered input-xs bg-base-100"
-          placeholder={placeholder}
-          type="number"
-          step={step}
-          min={min}
-          max={max}
-          value={field.state.value}
-          onChange={(event) => field.handleChange(event.target.value)}
-        />
-      )}
-    </form.Field>
   );
 }

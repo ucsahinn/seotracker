@@ -18,10 +18,10 @@ import {
 } from "./shared";
 
 const ROLE_LABELS: Record<KeyPageRole, string> = {
-  hub: "Hub page",
-  spoke: "Supporting page",
-  money: "Money page",
-  other: "Other",
+  hub: "Merkez sayfa",
+  spoke: "Destek sayfası",
+  money: "Dönüşüm sayfası",
+  other: "Diğer",
 };
 
 export function KeyPagesSection({
@@ -66,8 +66,8 @@ export function KeyPagesSection({
   return (
     <section className="space-y-3">
       <SectionHeader
-        title="Key pages"
-        hint="A shortlist of the pages that carry the site — not an inventory."
+        title="Önemli sayfalar"
+        hint="Siteyi taşıyan sayfaların kısa listesi — tam bir envanter değil."
         action={
           <button
             type="button"
@@ -75,7 +75,7 @@ export function KeyPagesSection({
             onClick={() => setAdding(true)}
           >
             <Plus className="size-3.5" />
-            Add page
+            Sayfa ekle
           </button>
         }
       />
@@ -93,8 +93,8 @@ export function KeyPagesSection({
       {keyPages.length === 0 ? (
         adding ? null : (
           <EmptyState>
-            No key pages yet. Add the handful that has to rank, or let an agent
-            propose them from your last site audit.
+            Henüz önemli sayfa yok. Sıralamada olması gereken birkaç sayfayı
+            ekleyin, ya da bir ajan son site denetiminizden bunları önersin.
           </EmptyState>
         )
       ) : (
@@ -125,7 +125,7 @@ export function KeyPagesSection({
                   </div>
                   {page.topic ? (
                     <p className="text-sm text-base-content/70">
-                      Target: {page.topic}
+                      Hedef: {page.topic}
                     </p>
                   ) : null}
                   {page.notes ? (
@@ -137,13 +137,13 @@ export function KeyPagesSection({
                   <button
                     type="button"
                     className="btn btn-ghost btn-xs"
-                    aria-label={`Edit ${page.url}`}
+                    aria-label={`${page.url} sayfasını düzenle`}
                     onClick={() => setEditingId(page.id)}
                   >
                     <Pencil className="size-3.5" />
                   </button>
                   <ConfirmDeleteButton
-                    label={`Remove ${page.url}`}
+                    label={`${page.url} sayfasını kaldır`}
                     pending={update.isPending}
                     onConfirm={() =>
                       update.mutate([{ removeKeyPages: [page.url] }])
@@ -201,7 +201,7 @@ function KeyPageForm({
         placeholder="example.com/pricing"
         maxLength={2048}
         className="input input-bordered input-sm w-full"
-        aria-label="Page URL"
+        aria-label="Sayfa adresi"
       />
       <div className="grid gap-2 sm:grid-cols-2">
         <select
@@ -215,7 +215,7 @@ function KeyPageForm({
             })
           }
           className="select select-bordered select-sm w-full"
-          aria-label="Page role"
+          aria-label="Sayfa rolü"
         >
           {KEY_PAGE_ROLES.map((role) => (
             <option key={role} value={role}>
@@ -229,20 +229,20 @@ function KeyPageForm({
           onChange={(event) =>
             setDraft({ ...draft, topic: event.target.value })
           }
-          placeholder="Target topic (optional)"
+          placeholder="Hedef konu (isteğe bağlı)"
           maxLength={200}
           className="input input-bordered input-sm w-full"
-          aria-label="Target topic"
+          aria-label="Hedef konu"
         />
       </div>
       <input
         type="text"
         value={draft.notes}
         onChange={(event) => setDraft({ ...draft, notes: event.target.value })}
-        placeholder="Notes (optional)"
+        placeholder="Notlar (isteğe bağlı)"
         maxLength={500}
         className="input input-bordered input-sm w-full"
-        aria-label="Page notes"
+        aria-label="Sayfa notları"
       />
       <FormActions
         pending={pending}

@@ -37,7 +37,7 @@ export function SavedKeywordsHeader({
             ) : (
               <Download className="size-4" />
             )}
-            Export
+            Dışa aktar
             <ChevronDown className="size-3 opacity-60" />
           </button>
           <ul
@@ -52,13 +52,13 @@ export function SavedKeywordsHeader({
                 disabled={disabled}
               >
                 <Sheet className="size-4" />
-                Export to Sheets
+                Sheets&apos;e aktar
               </button>
             </li>
             <li>
               <button type="button" onClick={onExportCsv} disabled={disabled}>
                 <FileDown className="size-4" />
-                Export CSV
+                CSV indir
               </button>
             </li>
           </ul>

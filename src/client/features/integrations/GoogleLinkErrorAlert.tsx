@@ -49,7 +49,7 @@ export function GoogleLinkErrorAlert({
       </div>
       <button
         type="button"
-        aria-label="Dismiss"
+        aria-label="Kapat"
         className="btn btn-ghost btn-xs shrink-0 px-1.5"
         onClick={() => {
           setDismissed(true);

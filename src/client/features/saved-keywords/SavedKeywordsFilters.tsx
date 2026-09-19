@@ -46,7 +46,7 @@ export function SavedKeywordsFilters({
           title="Tablo filtrelerini aç/kapat"
         >
           <SlidersHorizontal className="size-3.5" />
-          Filters
+          Filtreler
           {activeFilterCount > 0 ? (
             <span className="badge badge-xs badge-primary border-0 text-primary-content">
               {activeFilterCount}

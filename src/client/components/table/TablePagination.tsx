@@ -1,3 +1,4 @@
+import { formatNumber } from "@/client/lib/format";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 type Props = {
@@ -18,11 +19,11 @@ function formatRange(
 ) {
   const start = (page - 1) * pageSize + 1;
   if (totalCount == null) {
-    return `${start.toLocaleString()}–${(start + pageSize - 1).toLocaleString()}`;
+    return `${formatNumber(start)}–${formatNumber(start + pageSize - 1)}`;
   }
   if (totalCount === 0) return "0";
   const end = Math.min(totalCount, start + pageSize - 1);
-  return `${start.toLocaleString()}–${end.toLocaleString()} of ${totalCount.toLocaleString()}`;
+  return `${formatNumber(start)}–${formatNumber(end)} / ${formatNumber(totalCount)}`;
 }
 
 export function TablePagination({
@@ -67,8 +68,8 @@ export function TablePagination({
 
         <div className="flex items-center gap-2">
           <span className="whitespace-nowrap text-sm tabular-nums text-base-content/70">
-            Page {page.toLocaleString()}
-            {totalPages != null ? ` of ${totalPages.toLocaleString()}` : ""}
+            Sayfa {formatNumber(page)}
+            {totalPages != null ? ` / ${formatNumber(totalPages)}` : ""}
           </span>
           <div className="flex items-center gap-1">
             <button

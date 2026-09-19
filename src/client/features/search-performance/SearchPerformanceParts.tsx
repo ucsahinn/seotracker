@@ -1,3 +1,4 @@
+import { MetricRow } from "@/client/components/MetricTile";
 import { useMemo, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Copy, Loader2, Save } from "lucide-react";
@@ -152,7 +153,7 @@ export function TotalsCards({ report }: { report: Report }) {
   const { totals, prevTotals, range } = report;
   const deltaTitle = `${range.prevStartDate} - ${range.prevEndDate} dönemine göre`;
   return (
-    <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+    <MetricRow>
       <TotalCard
         label="Tıklama"
         value={formatCount(totals.clicks)}
@@ -166,18 +167,18 @@ export function TotalsCards({ report }: { report: Report }) {
         deltaTitle={deltaTitle}
       />
       <TotalCard
-        label="TO"
+        label="Tıklama oranı"
         value={formatCtr(totals.ctr)}
         delta={percentDelta(totals.ctr, prevTotals.ctr)}
         deltaTitle={deltaTitle}
       />
       <TotalCard
-        label="Ort. sıra"
+        label="Ortalama sıra"
         value={formatPosition(totals.position)}
         delta={positionDelta(totals.position, prevTotals.position)}
         deltaTitle={deltaTitle}
       />
-    </div>
+    </MetricRow>
   );
 }
 
@@ -193,15 +194,19 @@ function TotalCard({
   deltaTitle: string;
 }) {
   return (
-    <div className="rounded-lg border border-base-300 bg-base-100 p-4">
-      <div className="text-xs uppercase tracking-wide text-base-content/60">
+    // Same shape as the dashboard's MetricTile: these are the same four
+    // numbers, so they should not look like two different components.
+    <div className="flex min-w-0 flex-col gap-1.5 px-5 py-4">
+      <p className="truncate text-xs font-medium uppercase tracking-wider text-base-content/45">
         {label}
-      </div>
-      <div className="mt-1 flex items-baseline gap-2">
-        <span className="text-2xl font-semibold">{value}</span>
+      </p>
+      <div className="flex items-baseline gap-2">
+        <span className="truncate text-2xl font-semibold tracking-tight">
+          {value}
+        </span>
         {delta ? (
           <span
-            className={`text-xs ${delta.improved ? "text-success" : "text-error"}`}
+            className={`text-xs font-medium ${delta.improved ? "text-success" : "text-error"}`}
             title={deltaTitle}
           >
             {delta.text}
@@ -286,7 +291,7 @@ export function StrikingDistanceTable({
         `Copied ${selectedQueries.length} ${selectedQueries.length === 1 ? "keyword" : "keywords"}`,
       );
     } catch {
-      toast.error("Couldn't copy to clipboard");
+      toast.error("Panoya kopyalanamadı");
     }
   };
 

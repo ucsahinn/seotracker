@@ -96,9 +96,15 @@ function AuditDetail({
   });
 
   if (statusQuery.isLoading) {
+    // Shaped like the audit that is coming - header, three stats, the results
+    // panel - so the page does not jump when it arrives.
     return (
-      <div className="flex items-center justify-center py-20">
-        <span className="loading loading-spinner loading-lg" />
+      <div className="px-4 py-5 md:px-8 md:py-7" aria-busy>
+        <div className="mx-auto flex max-w-(--container-page) flex-col gap-6">
+          <div className="skeleton h-9 w-64" />
+          <div className="skeleton h-[104px]" />
+          <div className="skeleton h-80" />
+        </div>
       </div>
     );
   }
@@ -132,10 +138,10 @@ function AuditDetail({
 
   return (
     <div className="px-4 py-4 md:px-6 md:py-6 pb-24 md:pb-8 overflow-auto">
-      <div className="mx-auto max-w-5xl space-y-4">
+      <div className="mx-auto max-w-(--container-page) space-y-4">
         <div className="space-y-1">
           <button className="btn btn-ghost btn-sm px-0" onClick={onBack}>
-            &larr; All audits
+            &larr; Tüm denetimler
           </button>
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
             <h1 className="text-2xl font-semibold">
@@ -147,7 +153,7 @@ function AuditDetail({
           </div>
           {status && (
             <p className="text-sm text-base-content/60">
-              Site audit &middot; Started {formatStartedAt(status.startedAt)}
+              Site denetimi &middot; {formatStartedAt(status.startedAt)}
             </p>
           )}
         </div>
@@ -167,7 +173,7 @@ function AuditDetail({
             <AlertCircle className="size-5" />
             <div className="space-y-1">
               <p className="font-medium">
-                Site audit couldn't fully crawl this website.
+                Denetim bu siteyi tamamen tarayamadı.
               </p>
               <p>
                 Sorry! This site's bot protection blocked our crawler. We don't

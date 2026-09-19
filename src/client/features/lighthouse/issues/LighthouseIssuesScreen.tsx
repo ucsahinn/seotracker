@@ -9,7 +9,7 @@ import { downloadFile } from "@/client/lib/download";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import { exportTableToSheets } from "@/client/lib/exportToSheets";
 import type { CategoryTab, ExportPayload, LighthouseIssue } from "./types";
-import { categoryLabel, issuesToCsv, issuesToTable } from "./utils";
+import { categoryIssuePhrase, issuesToCsv, issuesToTable } from "./utils";
 import {
   LighthouseIssueList,
   LighthouseIssuesHeader,
@@ -57,11 +57,11 @@ export function LighthouseIssuesScreen(props: LighthouseIssuesScreenProps) {
   const {
     allIssues,
     categoryCounts,
+    categoryPhrase,
     runCopy,
     runExport,
     runExportCsv,
     runExportSheets,
-    selectedCategoryLabel,
     severityCounts,
     visibleIssues,
   } = useLighthouseIssuesActions({
@@ -72,17 +72,17 @@ export function LighthouseIssuesScreen(props: LighthouseIssuesScreenProps) {
 
   const issuesErrorMessage = getStandardErrorMessage(
     issuesQuery.error,
-    "Failed to load Lighthouse issues.",
+    "Lighthouse sorunları yüklenemedi.",
   );
   const showsLegacyPayloadNotice =
     issuesQuery.data != null && !issuesQuery.data.hasIssueDetails;
   const emptyMessage = showsLegacyPayloadNotice
-    ? "This audit was saved without issue-level Lighthouse details. Re-run the audit to populate this screen."
+    ? "Bu denetim, Lighthouse sorun ayrıntıları olmadan kaydedilmiş. Bu ekranı doldurmak için denetimi yeniden çalıştırın."
     : undefined;
 
   return (
     <div className="px-4 py-3 md:px-6 md:py-4 pb-24 md:pb-8 overflow-auto">
-      <div className="mx-auto max-w-5xl space-y-4">
+      <div className="mx-auto max-w-(--container-page) space-y-4">
         <LighthouseIssuesHeader
           backLabel={backLabel}
           onBack={onBack}
@@ -107,9 +107,9 @@ export function LighthouseIssuesScreen(props: LighthouseIssuesScreenProps) {
               <div className="alert alert-warning">
                 <TriangleAlert className="size-4" />
                 <span>
-                  This Lighthouse run was stored before issue details were
-                  preserved. Re-run the audit to see category counts and issue
-                  cards.
+                  Bu Lighthouse çalışması, sorun ayrıntıları saklanmaya
+                  başlamadan önce kaydedilmiş. Kategori sayılarını ve sorun
+                  kartlarını görmek için denetimi yeniden çalıştırın.
                 </span>
               </div>
             ) : null}
@@ -117,7 +117,7 @@ export function LighthouseIssuesScreen(props: LighthouseIssuesScreenProps) {
             <LighthouseIssuesToolbar
               category={category}
               categoryCounts={categoryCounts}
-              selectedCategoryLabel={selectedCategoryLabel}
+              categoryPhrase={categoryPhrase}
               isBusy={exportMutation.isPending}
               visibleIssues={visibleIssues}
               allIssues={allIssues}
@@ -160,7 +160,7 @@ function useLighthouseIssuesActions({
     category === "all"
       ? allIssues
       : allIssues.filter((issue) => issue.category === category);
-  const selectedCategoryLabel = categoryLabel(category);
+  const categoryPhrase = categoryIssuePhrase(category);
   const categoryCounts = getCategoryCounts(allIssues);
   const severityCounts = getSeverityCounts(visibleIssues);
 
@@ -168,10 +168,10 @@ function useLighthouseIssuesActions({
     try {
       const exported = await exportMutation.mutateAsync(data);
       downloadFile(exported.content, exported.filename, "application/json");
-      toast.success("Download started");
+      toast.success("İndirme başladı");
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : "Failed to export payload";
+        error instanceof Error ? error.message : "Veri dışa aktarılamadı";
       toast.error(message);
     }
   };
@@ -182,7 +182,7 @@ function useLighthouseIssuesActions({
   ) => {
     const filename = `lighthouse-${variant}-${category}-issues.csv`;
     downloadFile(issuesToCsv(rows), filename, "text/csv");
-    toast.success("CSV download started");
+    toast.success("CSV indirmesi başladı");
   };
 
   const runExportSheets = (
@@ -204,7 +204,7 @@ function useLighthouseIssuesActions({
       toast.success(toastMessage);
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : "Failed to copy payload";
+        error instanceof Error ? error.message : "Veri kopyalanamadı";
       toast.error(message);
     }
   };
@@ -212,11 +212,11 @@ function useLighthouseIssuesActions({
   return {
     allIssues,
     categoryCounts,
+    categoryPhrase,
     runCopy,
     runExport,
     runExportCsv,
     runExportSheets,
-    selectedCategoryLabel,
     severityCounts,
     visibleIssues,
   };

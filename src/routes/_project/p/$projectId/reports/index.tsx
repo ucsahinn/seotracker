@@ -36,7 +36,7 @@ function ReportsPage() {
 
   return (
     <div className="overflow-auto px-4 py-4 pb-24 md:px-6 md:py-6 md:pb-8">
-      <div className="mx-auto max-w-5xl space-y-4">
+      <div className="mx-auto max-w-(--container-page) space-y-4">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
             <h1 className="text-2xl font-semibold">Raporlar</h1>
@@ -54,8 +54,10 @@ function ReportsPage() {
         </div>
 
         {reportsQuery.isPending ? (
-          <div className="flex justify-center py-10">
-            <span className="loading loading-spinner loading-md" />
+          <div className="space-y-2" aria-busy>
+            {Array.from({ length: 4 }, (_, index) => (
+              <div key={index} className="skeleton h-14" />
+            ))}
           </div>
         ) : reportsQuery.isError ? (
           <div className="alert alert-error">

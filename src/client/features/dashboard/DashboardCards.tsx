@@ -76,7 +76,7 @@ export function GscCard({
         </div>
       ) : reportQuery.isError ? (
         <p className="text-sm text-base-content/60">
-          Couldn&rsquo;t load Search Console data. Try again shortly.
+          Search Console verisi yüklenemedi. Birazdan tekrar deneyin.
         </p>
       ) : report?.connected ? (
         <div className="grid grid-cols-2 gap-3">
@@ -184,14 +184,13 @@ export function AuditHealthCard({
                 </span>
               </span>
               <span className="shrink-0 tabular-nums text-base-content/60">
-                {issue.count} {issue.count === 1 ? "page" : "pages"}
+                {issue.count} sayfa
               </span>
             </li>
           ))}
           {audit.totalIssueTypes > audit.topIssues.length ? (
             <li className="text-xs text-base-content/50">
-              + {audit.totalIssueTypes - audit.topIssues.length} more issue
-              {audit.totalIssueTypes - audit.topIssues.length === 1 ? "" : "s"}
+              + {audit.totalIssueTypes - audit.topIssues.length} sorun daha
             </li>
           ) : null}
         </ul>

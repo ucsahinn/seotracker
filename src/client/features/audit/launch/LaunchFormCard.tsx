@@ -91,7 +91,7 @@ function LaunchOptions({
   return (
     <div className="rounded-lg border border-base-300 bg-base-200/20 p-3 space-y-2">
       <label className="text-xs font-medium uppercase tracking-wide text-base-content/60">
-        Crawl limit
+        Tarama sınırı
       </label>
       <div className="flex items-center gap-2">
         <span className="text-sm text-base-content/70">En çok sayfa</span>
@@ -140,9 +140,9 @@ function LighthouseOptions({ launchForm }: Pick<Props, "launchForm">) {
         </launchForm.Field>
         <span
           className="text-sm font-medium text-base-content/80"
-          title="Lighthouse measures the performance of your pages and identifies issues."
+          title="Sayfalarınızın hızını ölçer ve performans sorunlarını raporlar."
         >
-          Include Lighthouse
+          Hız ölçümünü dahil et
         </span>
       </label>
 

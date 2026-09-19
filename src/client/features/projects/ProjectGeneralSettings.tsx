@@ -61,10 +61,10 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
       }),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["projects"] });
-      toast.success("Project updated");
+      toast.success("Proje güncellendi");
     },
     onError: (error) =>
-      toast.error(getStandardErrorMessage(error, "Failed to update project")),
+      toast.error(getStandardErrorMessage(error, "Proje güncellenemedi")),
   });
 
   const isDirty =
@@ -77,7 +77,7 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
     event.preventDefault();
     if (updateMutation.isPending) return;
     if (!name.trim()) {
-      toast.error("Project name is required");
+      toast.error("Proje adı gerekli");
       return;
     }
     updateMutation.mutate();
@@ -85,10 +85,10 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
 
   return (
     <section className="space-y-3">
-      <h2 className="text-sm font-medium text-base-content/50">General</h2>
+      <h2 className="text-sm font-medium text-base-content/50">Genel</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <label className="flex flex-col gap-1.5 text-sm">
-          <span className="font-medium">Name</span>
+          <span className="font-medium">Ad</span>
           <input
             type="text"
             value={name}
@@ -100,7 +100,8 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
 
         <label className="flex flex-col gap-1.5 text-sm">
           <span className="font-medium">
-            Domain <span className="text-base-content/50">(optional)</span>
+            Alan adı{" "}
+            <span className="text-base-content/50">(isteğe bağlı)</span>
           </span>
           <input
             type="text"
@@ -115,8 +116,7 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
         <div className="flex flex-col gap-1.5">
           <ProjectMarketFields value={market} onChange={setMarket} />
           <span className="text-xs text-base-content/50">
-            Keyword, SERP, and domain data uses this country and language unless
-            a call asks for a different one.
+            Kaydettiğiniz anahtar kelimeler bu ülke ve dile göre saklanır.
           </span>
         </div>
 
@@ -126,7 +126,7 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
             className="btn btn-primary btn-sm"
             disabled={updateMutation.isPending || !isDirty}
           >
-            Save changes
+            Değişiklikleri kaydet
           </button>
         </div>
       </form>
@@ -155,24 +155,24 @@ function DangerSection({
       void navigate({ to: "/" });
     },
     onError: (error) =>
-      toast.error(getStandardErrorMessage(error, "Failed to archive project")),
+      toast.error(getStandardErrorMessage(error, "Proje arşivlenemedi")),
   });
 
   return (
     <section className="space-y-3 border-t border-base-300 pt-8">
       <h2 className="text-sm font-medium text-base-content/50">
-        Archive project
+        Projeyi arşivle
       </h2>
 
       {confirming ? (
         <div className="space-y-3">
           <p className="text-sm text-base-content/70">
-            Archiving{" "}
             <span className="font-medium text-base-content">
               {project.name}
             </span>{" "}
-            removes it from your workspace and stops its scheduled rank
-            tracking. You can restore it later from the Projects page.
+            projesini arşivlerseniz çalışma alanınızdan kaldırılır ve
+            zamanlanmış sıralama takibi durur. Daha sonra Projeler sayfasından
+            geri alabilirsiniz.
           </p>
           <div className="flex gap-2">
             <button
@@ -181,7 +181,7 @@ function DangerSection({
               onClick={() => archiveMutation.mutate()}
               disabled={archiveMutation.isPending}
             >
-              Yes, archive project
+              Evet, projeyi arşivle
             </button>
             <button
               type="button"
@@ -189,7 +189,7 @@ function DangerSection({
               onClick={() => setConfirming(false)}
               disabled={archiveMutation.isPending}
             >
-              Cancel
+              Vazgeç
             </button>
           </div>
         </div>
@@ -197,8 +197,8 @@ function DangerSection({
         <div className="flex items-center justify-between gap-4">
           <p className="text-sm text-base-content/60">
             {canArchive
-              ? "Archive this project to remove it from your organization."
-              : "You can't archive your only project."}
+              ? "Bu projeyi arşivleyerek çalışma alanınızdan kaldırabilirsiniz."
+              : "Tek projenizi arşivleyemezsiniz."}
           </p>
           <button
             type="button"
@@ -206,7 +206,7 @@ function DangerSection({
             onClick={() => setConfirming(true)}
             disabled={!canArchive}
           >
-            Archive project
+            Projeyi arşivle
           </button>
         </div>
       )}

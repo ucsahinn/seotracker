@@ -40,9 +40,9 @@ export function useTagManage(projectId: string) {
         },
       });
       await invalidate();
-      toast.success("Tag updated");
+      toast.success("Etiket güncellendi");
     } catch (error) {
-      toast.error(getStandardErrorMessage(error, "Could not update tag"));
+      toast.error(getStandardErrorMessage(error, "Etiket güncellenemedi"));
     } finally {
       markBusy(input.tagId, false);
     }
@@ -53,13 +53,13 @@ export function useTagManage(projectId: string) {
     try {
       await deleteSavedKeywordTag({ data: { projectId, tagId } });
       await invalidate();
-      toast.success("Tag deleted");
+      toast.success("Etiket silindi");
       return true;
     } catch (error) {
       toast.error(
         getStandardErrorMessage(
           error,
-          "Could not delete tag. Detach it from all keywords and try again.",
+          "Etiket silinemedi. Önce tüm kelimelerden kaldırıp tekrar deneyin.",
         ),
       );
       return false;

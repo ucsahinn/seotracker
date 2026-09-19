@@ -225,7 +225,7 @@ export function ProjectSwitcher({
         <button
           ref={triggerRef}
           type="button"
-          aria-label="Switch project"
+          aria-label="Proje değiştir"
           aria-expanded={open}
           aria-haspopup="listbox"
           onClick={() => (open ? closePanel() : openPanel())}
@@ -234,7 +234,7 @@ export function ProjectSwitcher({
         >
           <span className="flex min-w-0 flex-col">
             <span className="truncate text-sm font-medium text-base-content">
-              {activeProject?.name ?? "Select project"}
+              {activeProject?.name ?? "Proje seçin"}
             </span>
             {activeProject?.domain ? (
               <span className="truncate text-xs font-normal text-base-content/50">
@@ -248,8 +248,8 @@ export function ProjectSwitcher({
           <Link
             to="/p/$projectId/settings"
             params={{ projectId: activeProject.id }}
-            aria-label="Project settings"
-            title="Project settings"
+            aria-label="Proje ayarları"
+            title="Proje ayarları"
             onClick={() => {
               closePanel();
               onCloseDrawer?.();
@@ -271,8 +271,8 @@ export function ProjectSwitcher({
                   ref={searchInputRef}
                   type="text"
                   value={query}
-                  placeholder="Find project…"
-                  aria-label="Filter projects"
+                  placeholder="Proje ara…"
+                  aria-label="Projeleri filtrele"
                   aria-controls="project-switcher-listbox"
                   aria-activedescendant={
                     filteredProjects[highlightIndex]
@@ -298,7 +298,7 @@ export function ProjectSwitcher({
               ref={listRef}
               id="project-switcher-listbox"
               role="listbox"
-              aria-label="Projects"
+              aria-label="Projeler"
               className="menu max-h-[min(60vh,21rem)] w-full flex-nowrap overflow-y-auto p-2"
             >
               {filteredProjects.map((project, index) => {
@@ -338,7 +338,7 @@ export function ProjectSwitcher({
               {filteredProjects.length === 0 ? (
                 <li className="menu-disabled">
                   <span className="text-base-content/50">
-                    No projects match “{query.trim()}”
+                    “{query.trim()}” ile eşleşen proje yok
                   </span>
                 </li>
               ) : null}
@@ -374,7 +374,7 @@ export function ProjectSwitcher({
                 }}
               >
                 <FolderCog className="size-4" />
-                Manage projects
+                Projeleri yönet
               </Link>
             </li>
           </ul>

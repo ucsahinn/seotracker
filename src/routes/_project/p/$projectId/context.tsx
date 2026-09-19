@@ -19,7 +19,7 @@ function ProjectContextRoute() {
     <div className="h-full overflow-auto bg-base-100">
       <div className="mx-auto w-full max-w-2xl space-y-8 p-4 py-8 pb-24 sm:p-6 md:py-12 md:pb-12">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Context</h1>
+          <h1 className="text-2xl font-semibold">Proje bilgisi</h1>
           <p className="text-sm text-base-content/60">{project?.name ?? " "}</p>
         </div>
 

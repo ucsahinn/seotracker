@@ -93,7 +93,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
     import.meta.env.DEV && import.meta.env.VITE_SHOW_DEVTOOLS !== "false";
 
   return (
-    <html suppressHydrationWarning translate="no">
+    // lang="tr" is not decoration: CSS text-transform: uppercase follows the
+    // document language, and without it every uppercased label with a dotless
+    // i comes out wrong ("BILGI" instead of "BİLGİ").
+    <html lang="tr" suppressHydrationWarning translate="no">
       <head>
         <script
           dangerouslySetInnerHTML={{ __html: themePreferenceInitScript }}

@@ -1,6 +1,6 @@
 import { Pencil, Trash2 } from "lucide-react";
 import { PortalMenu } from "@/client/components/PortalMenu";
-import { formatRelativeTime } from "@/client/lib/relative-time";
+import { formatRelativeTime } from "@/client/lib/format";
 import type { ReportTemplate } from "@/types/schemas/report-templates";
 
 export function ReportTemplatesList({
@@ -15,8 +15,9 @@ export function ReportTemplatesList({
   if (templates.length === 0) {
     return (
       <p className="rounded-lg border border-dashed border-base-300 px-4 py-6 text-sm text-base-content/60">
-        No templates yet. A template is a reusable brief for a kind of report:
-        who it is for, which sections it has, how it sounds.
+        Henüz şablon yok. Şablon, bir rapor türü için yeniden kullanılabilir bir
+        tariftir: kime yazıldığı, hangi bölümlerden oluştuğu, nasıl bir dil
+        kullandığı.
       </p>
     );
   }
@@ -26,9 +27,9 @@ export function ReportTemplatesList({
       <table className="table table-sm">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Updated</th>
+            <th>Ad</th>
+            <th>Açıklama</th>
+            <th>Güncellenme</th>
             <th></th>
           </tr>
         </thead>
@@ -43,7 +44,7 @@ export function ReportTemplatesList({
                 {formatRelativeTime(template.updatedAt)}
               </td>
               <td className="w-10 text-right">
-                <PortalMenu ariaLabel={`Actions for ${template.name}`}>
+                <PortalMenu ariaLabel={`${template.name} için işlemler`}>
                   {(close) => (
                     <>
                       <li>
@@ -54,7 +55,7 @@ export function ReportTemplatesList({
                           }}
                         >
                           <Pencil className="size-3.5" />
-                          Edit
+                          Düzenle
                         </button>
                       </li>
                       <li>
@@ -66,7 +67,7 @@ export function ReportTemplatesList({
                           }}
                         >
                           <Trash2 className="size-3.5" />
-                          Delete
+                          Sil
                         </button>
                       </li>
                     </>

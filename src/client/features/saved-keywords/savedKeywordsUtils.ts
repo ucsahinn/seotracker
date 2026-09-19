@@ -1,17 +1,18 @@
+import { formatDate } from "@/client/lib/format";
 import type { CsvValue } from "@/client/lib/csv";
 import type { SavedKeywordRow } from "@/types/keywords";
 import type { GetSavedKeywordsInput } from "@/types/schemas/keywords";
 
 export const SAVED_KEYWORD_PAGE_SIZES = [50, 100, 250] as const;
 export const SAVED_KEYWORD_EXPORT_HEADERS = [
-  "Keyword",
-  "Volume",
+  "Kelime",
+  "Hacim",
   "CPC",
-  "Competition",
-  "Score",
-  "Intent",
-  "Tags",
-  "Fetched At",
+  "Rekabet",
+  "Zorluk",
+  "Amaç",
+  "Etiketler",
+  "Son alınma",
 ];
 
 export function savedKeywordExportRow(row: SavedKeywordRow): CsvValue[] {
@@ -43,12 +44,7 @@ export function toSavedKeywordSort(
   return "createdAt";
 }
 
-export function formatSavedKeywordNumber(value: number | null | undefined) {
-  if (value == null) return "-";
-  return new Intl.NumberFormat().format(value);
-}
-
 export function formatSavedKeywordDate(value: string | null | undefined) {
   if (!value) return "-";
-  return new Date(value).toLocaleDateString();
+  return formatDate(value);
 }

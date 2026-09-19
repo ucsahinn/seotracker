@@ -149,9 +149,7 @@ export function GoogleAnalyticsConnectionCard({
           </div>
         ) : connectionUnavailable ? (
           <div role="alert" className="space-y-3 text-sm">
-            <p className="text-error">
-              Couldn't check this project's connection.
-            </p>
+            <p className="text-error">Bu projenin bağlantısı denetlenemedi.</p>
             <button
               type="button"
               className="btn btn-ghost btn-sm"
@@ -266,7 +264,7 @@ function DismissButton({
       onClick={onClick}
       disabled={disabled}
     >
-      Dismiss
+      Gizle
     </button>
   );
 }

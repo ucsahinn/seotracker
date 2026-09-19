@@ -1,17 +1,66 @@
 @import "tailwindcss";
 
+/* Geist: a grotesk drawn for product UI, with real tabular numerals. Self-hosted
+   from npm so the container needs no network and nothing leaks to a font CDN. */
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/geist-mono";
+
 @theme {
-  --container-8xl: 88rem;
+  --font-sans:
+    "Geist Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, "SF Mono", monospace;
+
+  /* One container width for every page. The app used nine different max-widths,
+     so the same content jumped between 672px and 1280px as you moved around. */
+  --container-page: 84rem;
 }
 
+/* -------------------------------------------------------------------------
+   Design tokens
+
+   Three rules hold this together, and breaking one of them is what made the
+   old screens look unfinished:
+
+   1. Surfaces carry a trace of chroma, never pure black or white. Flat
+      achromatic greys read as "unstyled" next to anything that is not.
+   2. Separation comes from hairlines and light, tinted shadows - not from the
+      1px mid-grey box that daisyUI draws by default.
+   3. One radius scale, one accent. The accent is reserved for links, focus and
+      active state; the primary button is near-black, because on a page full of
+      amber and red severity chips a blue button is just one more colour.
+   ------------------------------------------------------------------------- */
+
 :root {
-  --trend-grid-color: oklch(56% 0.01 255 / 0.28);
-  --trend-axis-color: oklch(42% 0.01 255 / 0.85);
-  --trend-fill-start-opacity: 0.32;
-  --trend-fill-end-opacity: 0.05;
-  --trend-tooltip-bg: oklch(99% 0.005 255 / 0.96);
-  --trend-tooltip-border: oklch(84% 0.01 255 / 0.7);
-  --trend-tooltip-shadow: oklch(0% 0 0 / 0.1);
+  /* Hairlines. Alpha over the surface rather than a fixed grey, so they stay
+     correct on both the page and the raised panel. */
+  --hairline: oklch(0% 0 0 / 0.08);
+  --hairline-strong: oklch(0% 0 0 / 0.13);
+
+  /* Diffused and tinted toward the surface hue. No black drop shadows. */
+  --shadow-raise:
+    0 1px 2px oklch(25% 0.02 265 / 0.05), 0 2px 6px oklch(25% 0.02 265 / 0.04);
+  --shadow-float:
+    0 2px 4px oklch(25% 0.02 265 / 0.05), 0 8px 24px oklch(25% 0.02 265 / 0.08);
+
+  /* Charts read these so a graph never hardcodes a colour again. */
+  --chart-line: var(--color-primary);
+  --chart-grid: oklch(0% 0 0 / 0.07);
+  --chart-axis: oklch(45% 0.01 265 / 0.75);
+  --chart-fill-from: 0.16;
+  --chart-fill-to: 0.01;
+}
+
+html[data-theme="seotracker-dark"] {
+  --hairline: oklch(100% 0 0 / 0.09);
+  --hairline-strong: oklch(100% 0 0 / 0.15);
+  --shadow-raise: 0 1px 2px oklch(0% 0 0 / 0.4), 0 2px 6px oklch(0% 0 0 / 0.3);
+  --shadow-float:
+    0 2px 4px oklch(0% 0 0 / 0.4), 0 8px 24px oklch(0% 0 0 / 0.45);
+  --chart-grid: oklch(100% 0 0 / 0.08);
+  --chart-axis: oklch(80% 0.01 265 / 0.6);
+  --chart-fill-from: 0.2;
+  --chart-fill-to: 0.02;
 }
 
 @plugin "daisyui" {
@@ -25,29 +74,29 @@
   default: true;
   prefersdark: false;
   color-scheme: light;
-  --color-base-100: oklch(100% 0 0);
-  --color-base-200: oklch(97% 0 0);
-  --color-base-300: oklch(92% 0 0);
-  --color-base-content: oklch(20% 0 0);
-  --color-primary: oklch(50% 0.12 262);
+  --color-base-100: oklch(99.5% 0.0015 265);
+  --color-base-200: oklch(97.2% 0.003 265);
+  --color-base-300: oklch(92.6% 0.004 265);
+  --color-base-content: oklch(23% 0.012 265);
+  --color-primary: oklch(54% 0.17 256);
   --color-primary-content: oklch(100% 0 0);
   --color-secondary: oklch(55% 0.15 145);
   --color-secondary-content: oklch(100% 0 0);
-  --color-accent: oklch(50% 0.12 262);
+  --color-accent: oklch(54% 0.17 256);
   --color-accent-content: oklch(100% 0 0);
-  --color-neutral: oklch(25% 0 0);
-  --color-neutral-content: oklch(100% 0 0);
-  --color-info: oklch(70% 0.15 230);
+  --color-neutral: oklch(22% 0.01 265);
+  --color-neutral-content: oklch(99% 0 0);
+  --color-info: oklch(62% 0.13 240);
   --color-info-content: oklch(100% 0 0);
-  --color-success: oklch(65% 0.18 145);
+  --color-success: oklch(58% 0.14 155);
   --color-success-content: oklch(100% 0 0);
-  --color-warning: oklch(80% 0.15 80);
+  --color-warning: oklch(70% 0.14 70);
   --color-warning-content: oklch(100% 0 0);
-  --color-error: oklch(65% 0.2 25);
+  --color-error: oklch(58% 0.19 25);
   --color-error-content: oklch(100% 0 0);
   --radius-selector: 0.5rem;
   --radius-field: 0.5rem;
-  --radius-box: 0.75rem;
+  --radius-box: 0.875rem;
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
   --border: 1px;
@@ -60,29 +109,29 @@
   name: "seotracker-dark";
   prefersdark: true;
   color-scheme: dark;
-  --color-base-100: oklch(18% 0 0);
-  --color-base-200: oklch(12% 0 0);
-  --color-base-300: oklch(27% 0 0);
-  --color-base-content: oklch(92% 0 0);
-  --color-primary: oklch(66% 0.12 262);
-  --color-primary-content: oklch(100% 0 0);
-  --color-secondary: oklch(60% 0.15 145);
-  --color-secondary-content: oklch(100% 0 0);
-  --color-accent: oklch(66% 0.12 262);
-  --color-accent-content: oklch(100% 0 0);
-  --color-neutral: oklch(85% 0 0);
-  --color-neutral-content: oklch(20% 0 0);
-  --color-info: oklch(70% 0.15 230);
-  --color-info-content: oklch(100% 0 0);
-  --color-success: oklch(65% 0.18 145);
-  --color-success-content: oklch(100% 0 0);
-  --color-warning: oklch(80% 0.15 80);
-  --color-warning-content: oklch(100% 0 0);
-  --color-error: oklch(65% 0.2 25);
-  --color-error-content: oklch(100% 0 0);
+  --color-base-100: oklch(17.5% 0.005 265);
+  --color-base-200: oklch(13.2% 0.005 265);
+  --color-base-300: oklch(25.5% 0.007 265);
+  --color-base-content: oklch(93% 0.004 265);
+  --color-primary: oklch(70% 0.15 256);
+  --color-primary-content: oklch(16% 0.01 265);
+  --color-secondary: oklch(65% 0.14 155);
+  --color-secondary-content: oklch(16% 0.01 265);
+  --color-accent: oklch(70% 0.15 256);
+  --color-accent-content: oklch(16% 0.01 265);
+  --color-neutral: oklch(93% 0.004 265);
+  --color-neutral-content: oklch(16% 0.01 265);
+  --color-info: oklch(70% 0.12 240);
+  --color-info-content: oklch(16% 0.01 265);
+  --color-success: oklch(70% 0.14 155);
+  --color-success-content: oklch(16% 0.01 265);
+  --color-warning: oklch(78% 0.13 70);
+  --color-warning-content: oklch(16% 0.01 265);
+  --color-error: oklch(68% 0.17 25);
+  --color-error-content: oklch(16% 0.01 265);
   --radius-selector: 0.5rem;
   --radius-field: 0.5rem;
-  --radius-box: 0.75rem;
+  --radius-box: 0.875rem;
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
   --border: 1px;
@@ -187,25 +236,38 @@ html[data-theme="seotracker"]
   --tab-border-color: var(--color-primary);
 }
 
-/* Custom alert styling with darker borders and transparent background */
+/* Alerts were a 40%-opacity slab of colour, which shouted louder than the data
+   it sat next to. A tinted wash with a matching hairline says the same thing;
+   the icon and the heading carry the severity. */
 .alert {
-  @apply flex gap-3 rounded-lg border p-4 text-base-content/70;
+  @apply flex gap-3 rounded-box border p-4 text-base-content/75;
+  align-items: flex-start;
 }
 
 .alert-warning {
-  @apply border-warning/70 bg-warning/40 text-base-content/90;
+  @apply border-warning/30 bg-warning/10 text-base-content/85;
 }
-
 .alert-info {
-  @apply border-info/70 bg-info/40 text-base-content/90;
+  @apply border-info/30 bg-info/10 text-base-content/85;
 }
-
 .alert-success {
-  @apply border-success/70 bg-success/40 text-base-content/90;
+  @apply border-success/30 bg-success/10 text-base-content/85;
+}
+.alert-error {
+  @apply border-error/30 bg-error/10 text-base-content/85;
 }
 
-.alert-error {
-  @apply border-error/70 bg-error/40 text-base-content/90;
+.alert-warning > svg:first-child {
+  @apply text-warning;
+}
+.alert-info > svg:first-child {
+  @apply text-info;
+}
+.alert-success > svg:first-child {
+  @apply text-success;
+}
+.alert-error > svg:first-child {
+  @apply text-error;
 }
 
 /* Tag chip colors — muted background + readable text in both themes.
@@ -276,97 +338,144 @@ html[data-theme="seotracker-dark"] .tag-chip-fuchsia {
   color: #f5d0fe;
 }
 
-/* Keyword difficulty score badges — muted/transparent style to match tag chips */
-.score-badge {
-  @apply ring-1 ring-inset;
-}
-
-.score-tier-na {
-  background-color: color-mix(in oklab, #94a3b8 12%, transparent);
-  color: #475569;
-  --tw-ring-color: color-mix(in oklab, #94a3b8 28%, transparent);
-}
-
-.score-tier-1 {
-  background-color: color-mix(in oklab, #10b981 15%, transparent);
-  color: #065f46;
-  --tw-ring-color: color-mix(in oklab, #10b981 30%, transparent);
-}
-
-.score-tier-2 {
-  background-color: color-mix(in oklab, #84cc16 15%, transparent);
-  color: #3f6212;
-  --tw-ring-color: color-mix(in oklab, #84cc16 30%, transparent);
-}
-
-.score-tier-3 {
-  background-color: color-mix(in oklab, #eab308 16%, transparent);
-  color: #854d0e;
-  --tw-ring-color: color-mix(in oklab, #eab308 32%, transparent);
-}
-
-.score-tier-4 {
-  background-color: color-mix(in oklab, #f97316 16%, transparent);
-  color: #9a3412;
-  --tw-ring-color: color-mix(in oklab, #f97316 32%, transparent);
-}
-
-.score-tier-5 {
-  background-color: color-mix(in oklab, #ef4444 15%, transparent);
-  color: #991b1b;
-  --tw-ring-color: color-mix(in oklab, #ef4444 30%, transparent);
-}
-
-.score-tier-6 {
-  background-color: color-mix(in oklab, #b91c1c 18%, transparent);
-  color: #7f1d1d;
-  --tw-ring-color: color-mix(in oklab, #b91c1c 32%, transparent);
-}
-
-html[data-theme="seotracker-dark"] .score-tier-na {
-  color: #cbd5e1;
-}
-html[data-theme="seotracker-dark"] .score-tier-1 {
-  color: #6ee7b7;
-}
-html[data-theme="seotracker-dark"] .score-tier-2 {
-  color: #bef264;
-}
-html[data-theme="seotracker-dark"] .score-tier-3 {
-  color: #fde047;
-}
-html[data-theme="seotracker-dark"] .score-tier-4 {
-  color: #fdba74;
-}
-html[data-theme="seotracker-dark"] .score-tier-5 {
-  color: #fca5a5;
-}
-html[data-theme="seotracker-dark"] .score-tier-6 {
-  color: #fda4af;
-}
-
-html[data-theme="seotracker-dark"] {
-  --trend-grid-color: oklch(78% 0.01 255 / 0.22);
-  --trend-axis-color: oklch(84% 0.01 255 / 0.62);
-  --trend-fill-start-opacity: 0.24;
-  --trend-fill-end-opacity: 0.03;
-  --trend-tooltip-bg: oklch(21% 0.01 255 / 0.95);
-  --trend-tooltip-border: oklch(40% 0.01 255 / 0.65);
-  --trend-tooltip-shadow: oklch(0% 0 0 / 0.35);
-}
-
 html[data-theme="seotracker-dark"] .alert-warning {
-  @apply border-warning/60 bg-warning/20;
+  @apply border-warning/25 bg-warning/[0.08];
 }
-
 html[data-theme="seotracker-dark"] .alert-info {
-  @apply border-info/60 bg-info/20;
+  @apply border-info/25 bg-info/[0.08];
 }
-
 html[data-theme="seotracker-dark"] .alert-success {
-  @apply border-success/60 bg-success/20;
+  @apply border-success/25 bg-success/[0.08];
+}
+html[data-theme="seotracker-dark"] .alert-error {
+  @apply border-error/25 bg-error/[0.08];
 }
 
-html[data-theme="seotracker-dark"] .alert-error {
-  @apply border-error/60 bg-error/20;
+/* -------------------------------------------------------------------------
+   Component refinements
+
+   These sit on top of daisyUI rather than replacing it. Seventy-one files use
+   daisyUI class names; restyling them here changes every screen at once and
+   cannot break behaviour, which rewriting seventy-one files could.
+   ------------------------------------------------------------------------- */
+
+body {
+  font-family: var(--font-sans);
+  /* Geist's default figures are proportional. Numbers in a dashboard sit in
+     columns, so they have to be the same width or the column visibly wobbles
+     as values change. */
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.006em;
+}
+
+/* Headings tighten as they grow; at 24px the default tracking looks loose. */
+h1,
+h2,
+h3 {
+  letter-spacing: -0.021em;
+}
+
+/* Separation by hairline. base-300 is also the hover fill, so it stays as it
+   is; these rules only change what a border looks like. */
+.border-base-300 {
+  border-color: var(--hairline);
+}
+.divide-base-300 > * + * {
+  border-color: var(--hairline);
+}
+
+/* The panel the whole app sits in. */
+.card,
+.modal-box {
+  border-color: var(--hairline);
+  box-shadow: var(--shadow-raise);
+}
+
+/* The primary button is the one thing on a page that must be unambiguous.
+   A blue one competes with the amber and red severity chips beside it, so it
+   is near-black instead, the way a console's confirm button usually is. */
+.btn-primary {
+  --btn-color: var(--color-neutral);
+  --btn-fg: var(--color-neutral-content);
+  --btn-border: transparent;
+  box-shadow: var(--shadow-raise);
+}
+
+/* Physical press. Cheap, and the only motion most of these screens need. */
+.btn {
+  transition:
+    background-color 140ms cubic-bezier(0.32, 0.72, 0, 1),
+    border-color 140ms cubic-bezier(0.32, 0.72, 0, 1),
+    transform 90ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+.btn:active:not(:disabled) {
+  transform: scale(0.985);
+}
+
+/* A visible focus ring, on the accent, everywhere. Keyboard users were getting
+   daisyUI's default outline on some controls and nothing on others. */
+:where(
+  a,
+  button,
+  [role="button"],
+  input,
+  select,
+  textarea,
+  summary,
+  [tabindex]
+):focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-field);
+}
+
+/* Inputs read as fields, not as boxes: hairline at rest, accent on focus. */
+.input,
+.select,
+.textarea {
+  border-color: var(--hairline-strong);
+  transition:
+    border-color 140ms cubic-bezier(0.32, 0.72, 0, 1),
+    background-color 140ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* Table headers: small, quiet, and separated by a line rather than a fill. */
+.table thead th {
+  @apply text-[11px] font-medium uppercase tracking-wider text-base-content/45;
+  border-bottom-color: var(--hairline);
+}
+.table :where(tbody tr) {
+  border-bottom-color: var(--hairline);
+}
+.table :where(tbody tr:last-child) {
+  border-bottom-color: transparent;
+}
+
+/* Badges are labels, not buttons. Flatten them. */
+.badge {
+  @apply font-medium;
+  border-color: var(--hairline-strong);
+}
+
+/* A skeleton should suggest the shape that is coming, and should not pulse
+   hard enough to be the most animated thing on the screen. */
+.skeleton {
+  background: color-mix(in oklab, var(--color-base-content) 7%, transparent);
+  border-radius: var(--radius-field);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+  }
+  .btn:active:not(:disabled) {
+    transform: none;
+  }
+}
+
+/* Lucide draws at stroke-width 2, which reads as heavy next to Geist and
+   makes a 16px icon look like a button. CSS wins over the SVG attribute, so
+   one rule thins every icon in the app. */
+svg[class*="lucide"] {
+  stroke-width: 1.75px;
 }

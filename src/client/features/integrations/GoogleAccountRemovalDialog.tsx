@@ -87,7 +87,7 @@ export function GoogleAccountRemovalDialog({
           </p>
         ) : impact.isError ? (
           <div role="alert" className="text-sm">
-            <p className="text-error">Couldn't check connected projects.</p>
+            <p className="text-error">Bağlı projeler denetlenemedi.</p>
             <button
               type="button"
               className="btn btn-ghost btn-sm"
@@ -128,7 +128,7 @@ export function GoogleAccountRemovalDialog({
             }
             onClick={() => removal.mutate()}
           >
-            {removal.isPending ? "Removing…" : "Remove account"}
+            {removal.isPending ? "Kaldırılıyor…" : "Hesabı kaldır"}
           </button>
         </div>
       </div>

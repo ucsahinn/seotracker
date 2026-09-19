@@ -54,8 +54,8 @@ export function CompetitorsSection({
   return (
     <section className="space-y-3">
       <SectionHeader
-        title="Competitors"
-        hint="The sites you measure yourself against."
+        title="Rakipler"
+        hint="Kendinizi kıyasladığınız siteler."
         action={
           <button
             type="button"
@@ -63,7 +63,7 @@ export function CompetitorsSection({
             onClick={() => setAdding(true)}
           >
             <Plus className="size-3.5" />
-            Add competitor
+            Rakip ekle
           </button>
         }
       />
@@ -81,8 +81,8 @@ export function CompetitorsSection({
       {competitors.length === 0 ? (
         adding ? null : (
           <EmptyState>
-            No competitors yet. Add the sites you compete with, or ask SAM to
-            find them from your rankings and save them here.
+            Henüz rakip yok. Rekabet ettiğiniz siteleri ekleyin, ya da
+            bağladığınız ajandan bunları bulup buraya kaydetmesini isteyin.
           </EmptyState>
         )
       ) : (
@@ -127,13 +127,13 @@ export function CompetitorsSection({
                   <button
                     type="button"
                     className="btn btn-ghost btn-xs"
-                    aria-label={`Edit ${competitor.domain}`}
+                    aria-label={`${competitor.domain} rakibini düzenle`}
                     onClick={() => setEditingId(competitor.id)}
                   >
                     <Pencil className="size-3.5" />
                   </button>
                   <ConfirmDeleteButton
-                    label={`Remove ${competitor.domain}`}
+                    label={`${competitor.domain} rakibini kaldır`}
                     pending={update.isPending}
                     onConfirm={() =>
                       update.mutate([
@@ -190,26 +190,26 @@ function CompetitorForm({
           placeholder="competitor.com"
           maxLength={255}
           className="input input-bordered input-sm w-full"
-          aria-label="Competitor domain"
+          aria-label="Rakip alan adı"
         />
         <input
           type="text"
           value={draft.name}
           onChange={(event) => setDraft({ ...draft, name: event.target.value })}
-          placeholder="Name (optional)"
+          placeholder="Ad (isteğe bağlı)"
           maxLength={120}
           className="input input-bordered input-sm w-full"
-          aria-label="Competitor name"
+          aria-label="Rakip adı"
         />
       </div>
       <input
         type="text"
         value={draft.notes}
         onChange={(event) => setDraft({ ...draft, notes: event.target.value })}
-        placeholder="Why they matter — e.g. wins every comparison keyword (optional)"
+        placeholder="Neden önemliler — örn. her karşılaştırma aramasında önde (isteğe bağlı)"
         maxLength={500}
         className="input input-bordered input-sm w-full"
-        aria-label="Competitor notes"
+        aria-label="Rakip notları"
       />
       <FormActions
         pending={pending}

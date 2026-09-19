@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Pencil } from "lucide-react";
+import { formatDate } from "@/client/lib/format";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import { getProjectContext } from "@/serverFunctions/projectContext";
 import {
@@ -25,21 +26,22 @@ import {
 } from "./shared";
 
 const SECTION_HINTS: Record<ProjectContextSectionKey, string> = {
-  business_overview: "What you sell, who buys it, and where.",
-  current_goal: "What you're pushing for right now, and by when.",
-  positioning: "Why someone picks you over the alternatives.",
-  writing_preferences: "Voice, words to avoid, topics that are off-limits.",
+  business_overview: "Ne satıyorsunuz, kim alıyor, nerede.",
+  current_goal: "Şu anda neyin peşindesiniz ve ne zamana kadar.",
+  positioning: "Biri neden alternatifler yerine sizi seçsin.",
+  writing_preferences:
+    "Üslup, kullanılmayacak kelimeler, girilmeyecek konular.",
 };
 
 const SECTION_PLACEHOLDERS: Record<ProjectContextSectionKey, string> = {
   business_overview:
-    "e.g. Booking software for independent restaurants in the US and Canada. Buyers are owner-operators, not marketers.",
+    "örn. Bağımsız restoranlar için rezervasyon yazılımı. Alıcılar pazarlamacı değil, işletme sahipleri.",
   current_goal:
-    "e.g. Double organic signups by Q4. Comparison pages are the current bet.",
+    "örn. Dördüncü çeyreğe kadar organik kayıtları ikiye katlamak. Karşılaştırma sayfaları şu anki bahis.",
   positioning:
-    "e.g. The only booking tool that sets up in an afternoon. Cheaper than the incumbents, simpler than the DIY stack.",
+    "örn. Bir öğleden sonrada kurulan tek rezervasyon aracı. Yerleşiklerden ucuz, kendin-yap yığınından basit.",
   writing_preferences:
-    "e.g. Plain and direct, no hype. Never say 'seamless' or 'game-changing'. Don't write about competitor pricing.",
+    "örn. Sade ve doğrudan, abartı yok. 'Kusursuz' ya da 'devrim niteliğinde' yazma. Rakip fiyatlarına girme.",
 };
 
 export function ProjectContextPage({ projectId }: { projectId: string }) {
@@ -47,7 +49,7 @@ export function ProjectContextPage({ projectId }: { projectId: string }) {
     queryKey: projectContextQueryKey(projectId),
     queryFn: () => getProjectContext({ data: { projectId } }),
     // This page exists to inspect what agents just wrote; the app-wide
-    // 5-minute staleTime would show pre-SAM-turn memory as current.
+    // 5-minute staleTime would show memory from before their turn as current.
     staleTime: 0,
   });
 
@@ -65,7 +67,7 @@ export function ProjectContextPage({ projectId }: { projectId: string }) {
         <span className="text-sm">
           {getStandardErrorMessage(
             contextQuery.error,
-            "Failed to load project context",
+            "Proje bilgisi yüklenemedi",
           )}
         </span>
       </div>
@@ -79,9 +81,9 @@ export function ProjectContextPage({ projectId }: { projectId: string }) {
     // draft, open form, or edit state can carry over to another project.
     <div key={projectId} className="space-y-8">
       <p className="text-sm text-base-content/70">
-        What SAM, Claude Code, and any connected MCP client know about this
-        project. They read it before they work and write back what they learn,
-        so correct anything that looks wrong.
+        Claude Code ve bağladığınız diğer MCP istemcilerinin bu proje hakkında
+        bildikleri. Çalışmaya başlamadan önce burayı okur, öğrendiklerini geri
+        yazarlar; yanlış görünen bir şey varsa düzeltin.
       </p>
 
       <ProseSections
@@ -119,7 +121,7 @@ function ProseSections({
   const update = useContextUpdate(projectId);
   const stored = new Map(sections.map((section) => [section.key, section]));
   // Only the fields the user actually touched are pinned locally; the rest
-  // render straight from the query, so a write from SAM shows up on refetch.
+  // render straight from the query, so an agent's write shows up on refetch.
   const [drafts, setDrafts] = React.useState<Record<string, string>>({});
 
   const draftOf = (key: ProjectContextSectionKey) =>
@@ -162,8 +164,9 @@ function ProseSections({
     <form onSubmit={handleSubmit} className="space-y-5">
       {missingSections.length === PROJECT_CONTEXT_SECTION_KEYS.length ? (
         <EmptyState>
-          Nothing written down yet. Fill in what you can — or ask SAM to draft
-          it from your site and confirm what it got right.
+          Henüz hiçbir şey yazılmamış. Elinizden geldiğince doldurun, ya da
+          bağladığınız ajandan sitenizden bir taslak çıkarmasını isteyip
+          doğruluğunu onaylayın.
         </EmptyState>
       ) : null}
 
@@ -181,7 +184,7 @@ function ProseSections({
               {section ? (
                 <Provenance by={section.updatedBy} at={section.updatedAt} />
               ) : (
-                <span className="text-xs text-base-content/40">Empty</span>
+                <span className="text-xs text-base-content/40">Boş</span>
               )}
             </div>
             <p className="text-xs text-base-content/50">{SECTION_HINTS[key]}</p>
@@ -216,7 +219,7 @@ function ProseSections({
           className="btn btn-primary btn-sm"
           disabled={update.isPending || changed.length === 0}
         >
-          Save changes
+          Değişiklikleri kaydet
         </button>
       </div>
     </form>
@@ -236,14 +239,14 @@ function CustomSections({
   return (
     <section className="space-y-3">
       <SectionHeader
-        title="Custom sections"
-        hint="Anything an agent wrote down that didn't fit the sections above."
+        title="Özel bölümler"
+        hint="Bir ajanın not aldığı, yukarıdaki bölümlere sığmayan her şey."
       />
 
       {customSections.length === 0 ? (
         <EmptyState>
-          Nothing here yet. Agents add a section when they learn something
-          important that has nowhere else to live.
+          Burada henüz bir şey yok. Ajanlar başka yere sığmayan önemli bir şey
+          öğrendiklerinde buraya bir bölüm ekler.
         </EmptyState>
       ) : (
         <div className="space-y-3">
@@ -277,13 +280,13 @@ function CustomSections({
                     <button
                       type="button"
                       className="btn btn-ghost btn-xs"
-                      aria-label={`Edit ${custom.title ?? custom.slug}`}
+                      aria-label={`${custom.title ?? custom.slug} bölümünü düzenle`}
                       onClick={() => setEditingSlug(custom.slug)}
                     >
                       <Pencil className="size-3.5" />
                     </button>
                     <ConfirmDeleteButton
-                      label={`Delete ${custom.title ?? custom.slug}`}
+                      label={`${custom.title ?? custom.slug} bölümünü sil`}
                       pending={update.isPending}
                       onConfirm={() =>
                         update.mutate([{ deleteCustomSection: custom.slug }])
@@ -333,7 +336,7 @@ function CustomSectionForm({
         placeholder={custom.slug}
         maxLength={120}
         className="input input-bordered input-sm w-full"
-        aria-label="Section title"
+        aria-label="Bölüm başlığı"
       />
       <textarea
         value={content}
@@ -341,7 +344,7 @@ function CustomSectionForm({
         rows={5}
         maxLength={PROSE_MAX_CHARS}
         className="textarea textarea-bordered w-full text-sm"
-        aria-label="Section content"
+        aria-label="Bölüm içeriği"
       />
       <FormActions
         pending={pending}
@@ -364,13 +367,14 @@ function ResearchLog({
   return (
     <section className="space-y-3">
       <SectionHeader
-        title="Research log"
-        hint="What's already been looked up, so nobody buys the same data twice."
+        title="Araştırma günlüğü"
+        hint="Neye bakıldığının kaydı, aynı araştırmanın iki kez yapılmaması için."
       />
 
       {researchLog.length === 0 ? (
         <EmptyState>
-          Nothing logged yet. Agents record paid research here as they run it.
+          Henüz kayıt yok. Bağladığınız ajan bir araştırma yaptıkça buraya
+          yazar.
         </EmptyState>
       ) : (
         <ul className={listClass}>
@@ -382,13 +386,13 @@ function ResearchLog({
               <div className="min-w-0 space-y-0.5">
                 <p className="text-sm text-base-content/80">{entry.summary}</p>
                 <div className="flex flex-wrap items-baseline gap-x-2 text-xs text-base-content/40">
-                  <span>{entry.entryDate}</span>
+                  <span>{formatDate(entry.entryDate)}</span>
                   <Provenance by={entry.createdBy} />
                 </div>
               </div>
               <RowActions>
                 <ConfirmDeleteButton
-                  label={`Delete log entry from ${entry.entryDate}`}
+                  label={`${formatDate(entry.entryDate)} tarihli kaydı sil`}
                   pending={update.isPending}
                   onConfirm={() =>
                     update.mutate([{ removeResearchLog: [entry.id] }])

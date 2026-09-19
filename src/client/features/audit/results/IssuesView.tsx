@@ -25,9 +25,9 @@ const SEVERITY_RULE: Record<IssueSeverity, string> = {
 };
 
 const SEVERITY_LABEL: Record<IssueSeverity, string> = {
-  critical: "Critical",
-  warning: "Warning",
-  info: "Info",
+  critical: "Kritik",
+  warning: "Uyarı",
+  info: "Bilgi",
 };
 
 interface IssueGroup {
@@ -168,7 +168,7 @@ function IssueRow({ group }: { group: IssueGroup }) {
           {group.title}
         </span>
         <span className="text-xs tabular-nums text-base-content/50 shrink-0">
-          {group.issues.length} {group.issues.length === 1 ? "page" : "pages"}
+          {group.issues.length} sayfa
         </span>
         <ChevronRight
           className={`size-4 shrink-0 text-base-content/40 transition-transform ${

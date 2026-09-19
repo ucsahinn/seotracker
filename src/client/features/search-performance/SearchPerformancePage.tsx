@@ -184,19 +184,19 @@ export function SearchPerformancePage({ projectId }: { projectId: string }) {
       });
       exportDimensionRows(dimension, data.rows, report.range, target);
     } catch (error) {
-      toast.error(getStandardErrorMessage(error, "Export failed"));
+      toast.error(getStandardErrorMessage(error, "Dışa aktarma başarısız"));
     }
   };
 
   return (
     <div className="px-4 py-4 pb-24 overflow-auto md:px-6 md:py-6 md:pb-8">
-      <div className="mx-auto max-w-7xl space-y-4">
+      <div className="mx-auto max-w-(--container-page) space-y-4">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <h1 className="text-2xl font-semibold">Search Performance</h1>
+            <h1 className="text-2xl font-semibold">Arama performansı</h1>
             <p className="text-sm text-base-content/70">
-              See your site&apos;s clicks, impressions, CTR, and position from
-              Google Search Console.
+              Google Search Console&apos;dan gelen tıklama, gösterim, tıklama
+              oranı ve ortalama sıra.
             </p>
           </div>
           {report?.connected ? (
@@ -205,7 +205,7 @@ export function SearchPerformancePage({ projectId }: { projectId: string }) {
               params={{ projectId }}
               className="link link-hover shrink-0 self-start text-sm font-medium text-base-content/60 transition-colors hover:text-base-content sm:mt-1"
             >
-              Change property
+              Kaynağı değiştir
             </Link>
           ) : null}
         </div>
@@ -225,7 +225,7 @@ export function SearchPerformancePage({ projectId }: { projectId: string }) {
         ) : (
           <>
             <TotalsCards report={report} />
-            <div className="overflow-hidden rounded-xl border border-base-300 bg-base-100">
+            <div className="overflow-hidden rounded-box border border-base-300 bg-base-100">
               <div className="flex flex-col gap-3 border-b border-base-300 px-4 py-3 lg:flex-row lg:items-center lg:justify-between">
                 <div role="tablist" className="tabs tabs-border w-fit">
                   <TabButton
@@ -256,7 +256,7 @@ export function SearchPerformancePage({ projectId }: { projectId: string }) {
                         isDevice(event.target.value) ? event.target.value : ALL,
                       );
                     }}
-                    aria-label="Device filter"
+                    aria-label="Cihaz filtresi"
                   >
                     <option value={ALL}>Tüm cihazlar</option>
                     {DEVICE_OPTIONS.map((option) => (
@@ -269,7 +269,7 @@ export function SearchPerformancePage({ projectId }: { projectId: string }) {
                     className="select select-bordered select-sm w-36"
                     value={country}
                     onChange={(event) => setCountry(event.target.value)}
-                    aria-label="Country filter"
+                    aria-label="Ülke filtresi"
                   >
                     <option value={ALL}>Tüm ülkeler</option>
                     {report.countries.map((row) => (

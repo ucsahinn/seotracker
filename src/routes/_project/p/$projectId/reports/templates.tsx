@@ -67,7 +67,7 @@ function ReportTemplatesPage() {
 
   return (
     <div className="overflow-auto px-4 py-4 pb-24 md:px-6 md:py-6 md:pb-8">
-      <div className="mx-auto max-w-5xl space-y-4">
+      <div className="mx-auto max-w-(--container-page) space-y-4">
         <Link
           to="/p/$projectId/reports"
           params={{ projectId }}

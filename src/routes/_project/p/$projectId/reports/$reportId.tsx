@@ -19,7 +19,7 @@ import {
   reportQueryKey,
   useDeleteReport,
 } from "@/client/features/reports/shared";
-import { formatRelativeTime } from "@/client/lib/relative-time";
+import { formatRelativeTime } from "@/client/lib/format";
 import {
   getErrorCode,
   getStandardErrorMessage,
