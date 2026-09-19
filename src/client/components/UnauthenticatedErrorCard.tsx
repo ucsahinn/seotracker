@@ -8,18 +8,18 @@ export function UnauthenticatedErrorCard({
   onRetry,
 }: UnauthenticatedErrorCardProps) {
   return (
-    <div className="card w-full max-w-md bg-base-100 border border-base-300 shadow-xl">
+    <div className="card w-full max-w-md border border-base-300 bg-base-100 shadow-[var(--shadow-float)]">
       <div className="card-body gap-4">
         <h2 className="card-title">Kimlik doğrulaması gerekli</h2>
         <p className="text-sm text-base-content/70">{message}</p>
         <p className="text-sm text-base-content/70">
-          This deployment uses external authentication. Refresh your access
-          session, then try again.
+          Bu kurulum dış bir kimlik doğrulama katmanı kullanıyor. Oturumunuzu
+          tazeleyip tekrar deneyin.
         </p>
         {onRetry ? (
           <div className="card-actions justify-end">
             <button className="btn btn-primary btn-sm" onClick={onRetry}>
-              Try Again
+              Yeniden dene
             </button>
           </div>
         ) : null}

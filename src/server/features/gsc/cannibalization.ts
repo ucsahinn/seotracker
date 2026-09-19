@@ -53,11 +53,10 @@ export type CannibalizedQuery = {
   /** The others chasing the same query, worst offender first. */
   competitors: CompetingPage[];
   /**
-   * Approximate share of the query's impressions that did not go to the
-   * primary page. Approximate because the denominator sums per-page
-   * impressions, and when two of your pages appear in one result set that is
-   * two page-impressions for one query-impression - which is exactly the case
-   * being measured, so it runs slightly high.
+   * Share of the competing pages' impressions that did not go to the primary
+   * one. Approximate: when two of your pages appear in a single result set
+   * that is two page-impressions for one query-impression, which is exactly
+   * the case being measured, so the denominator runs slightly high.
    */
   splitShare: number;
 };
@@ -146,7 +145,15 @@ export function findCannibalizedQueries(
       (a, b) => b.impressions - a.impressions,
     );
 
-    const split = competitors.reduce((sum, page) => sum + page.impressions, 0);
+    // Numerator and denominator have to cover the same set. `split` sums the
+    // contenders minus the primary, so the denominator is the contenders too
+    // - using the all-pages total counted impressions from pages that were
+    // filtered out as noise and understated every share.
+    const contended = contenders.reduce(
+      (sum, page) => sum + page.impressions,
+      0,
+    );
+    const split = contended - primary.impressions;
     splitImpressions += split;
 
     found.push({
@@ -156,7 +163,7 @@ export function findCannibalizedQueries(
       bestPosition: Math.min(...contenders.map((page) => page.position)),
       primary,
       competitors,
-      splitShare: split / impressions,
+      splitShare: split / contended,
     });
   }
 

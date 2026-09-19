@@ -109,7 +109,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             <>
               {children}
               <ExportToSheetsModal />
-              <Toaster position="bottom-right" mobileOffset={{ bottom: 100 }} />
+              <Toaster position="bottom-right" />
               {showDevtools ? (
                 <TanStackDevtools
                   config={{ position: "bottom-right" }}

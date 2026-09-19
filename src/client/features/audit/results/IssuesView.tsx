@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { ChevronRight } from "lucide-react";
 import { sort } from "remeda";
+import { formatNumber } from "@/client/lib/format";
 import {
   getIssueDescriptor,
   ISSUE_SEVERITY_ORDER,
@@ -96,8 +97,9 @@ export function IssuesView({ issues }: { issues: AuditIssueRow[] }) {
       <div className="py-10 text-center text-muted">
         <p className="font-medium">Bu denetimde kayıtlı sorun yok.</p>
         <p className="text-sm mt-1">
-          Either the site is in great shape, or this audit ran before issue
-          checks existed — run a new audit to get the full report.
+          Site gerçekten iyi durumda olabilir ya da bu denetim, sorun
+          kontrolleri eklenmeden önce çalıştırılmış olabilir. Tam raporu görmek
+          için yeni bir denetim başlatın.
         </p>
       </div>
     );
@@ -222,7 +224,8 @@ function AffectedUrlList({ issues }: { issues: AuditIssueRow[] }) {
       ))}
       {remaining > 0 && (
         <div className="px-3 py-2 text-xs text-muted">
-          …and {remaining} more — export the issues CSV for the full list.
+          …ve {formatNumber(remaining)} tane daha. Tam liste için sorunları CSV
+          olarak dışa aktarın.
         </div>
       )}
     </div>

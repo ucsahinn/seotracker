@@ -140,7 +140,7 @@ export function GooglePropertyPicker({
             id={panelId}
             role="region"
             aria-label="Google kaynakları"
-            className="mt-2 overflow-hidden rounded-lg border border-base-300 bg-base-100 shadow-sm"
+            className="mt-2 overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-sm"
             onKeyDown={(event) => handlePropertyKeyDown(event, close)}
           >
             <label className="flex items-center gap-2 border-b border-base-300 px-3.5 py-3">

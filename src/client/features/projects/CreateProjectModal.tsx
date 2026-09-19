@@ -98,8 +98,8 @@ export function CreateProjectModal({ onClose }: { onClose: () => void }) {
             className="input input-bordered w-full"
           />
           <span className="text-xs text-muted">
-            Projeyi oluşturduktan sonra Search Console&apos;u bağlayıp sıralama
-            takibini kurabilirsiniz.
+            Projeyi oluşturduktan sonra Search Console&apos;u bağlayın; arama ve
+            sıralama verileri oradan gelir.
           </span>
         </label>
 

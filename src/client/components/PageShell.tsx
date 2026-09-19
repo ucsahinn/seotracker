@@ -26,9 +26,8 @@ export function PageShell({
   children: React.ReactNode;
 }) {
   return (
-    // pb-24 on small screens clears the mobile tab bar; the outer scroll
-    // container belongs to the app shell, not to this.
-    <div className="px-4 py-5 pb-24 md:px-8 md:py-7 md:pb-10">
+    // The outer scroll container belongs to the app shell, not to this.
+    <div className="px-4 py-5 pb-10 md:px-8 md:py-7">
       <div className={`mx-auto flex flex-col gap-6 ${WIDTH_CLASS[width]}`}>
         {children}
       </div>

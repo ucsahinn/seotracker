@@ -19,7 +19,7 @@ import {
   reportQueryKey,
   useDeleteReport,
 } from "@/client/features/reports/shared";
-import { formatRelativeTime } from "@/client/lib/format";
+import { formatDateTime, formatRelativeTime } from "@/client/lib/format";
 import {
   getErrorCode,
   getStandardErrorMessage,
@@ -125,7 +125,7 @@ function ReportDetailPage() {
               {/* A deleted report and another project's report are the
                   same answer on purpose, so ids cannot be probed. */}
               {getErrorCode(reportQuery.error) === "NOT_FOUND"
-                ? "This report does not exist or you do not have access to it."
+                ? "Bu rapor yok ya da bu rapora erişiminiz yok."
                 : getStandardErrorMessage(
                     reportQuery.error,
                     "Rapor yüklenemedi",
@@ -137,7 +137,7 @@ function ReportDetailPage() {
             params={{ projectId }}
             className="btn btn-ghost btn-sm"
           >
-            &larr; Back to reports
+            &larr; Raporlara dön
           </Link>
         </div>
       </div>
@@ -166,7 +166,7 @@ function ReportDetailPage() {
             onClick={() => setExpanded(false)}
           >
             <Minimize2 className="size-4" />
-            Exit
+            Çık
           </button>
         </div>
         <div className="min-h-0 flex-1 p-2">
@@ -189,7 +189,7 @@ function ReportDetailPage() {
           className="inline-flex items-center gap-1 text-sm text-muted transition-colors hover:text-base-content"
         >
           <ChevronLeft className="size-4" />
-          Reports
+          Raporlar
         </Link>
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="min-w-0">
@@ -200,14 +200,14 @@ function ReportDetailPage() {
                 <dd>{formatCreatedBy(report)}</dd>
               </div>
               <div className="flex items-baseline gap-1.5">
-                <dt className="text-muted">Type</dt>
+                <dt className="text-muted">Tür</dt>
                 {/* As in the list's Type column: the template name when the
                     report followed one, else the skill, else an em dash. */}
                 <dd>{report.templateName ?? report.skill ?? "—"}</dd>
               </div>
               <div className="flex items-baseline gap-1.5">
-                <dt className="text-muted">Updated</dt>
-                <dd title={new Date(report.updatedAt).toLocaleString()}>
+                <dt className="text-muted">Güncellenme</dt>
+                <dd title={formatDateTime(report.updatedAt)}>
                   {formatRelativeTime(report.updatedAt)}
                 </dd>
               </div>
@@ -220,7 +220,7 @@ function ReportDetailPage() {
               onClick={exportPdf}
             >
               <FileDown className="size-4" />
-              Export
+              Dışa aktar
             </button>
             <PortalMenu
               ariaLabel="Rapor işlemleri"
@@ -238,7 +238,7 @@ function ReportDetailPage() {
                       }}
                     >
                       <Maximize2 className="size-4" />
-                      Full screen
+                      Tam ekran
                     </button>
                   </li>
                   <li>
@@ -249,7 +249,7 @@ function ReportDetailPage() {
                       onClick={close}
                     >
                       <ExternalLink className="size-4" />
-                      Open in new tab
+                      Yeni sekmede aç
                     </a>
                   </li>
                   <li role="separator" className="mx-1 my-1 h-px bg-base-300" />
@@ -262,7 +262,7 @@ function ReportDetailPage() {
                       }}
                     >
                       <Trash2 className="size-4" />
-                      Delete
+                      Sil
                     </button>
                   </li>
                 </>

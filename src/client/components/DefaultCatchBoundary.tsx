@@ -60,11 +60,11 @@ export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
           }}
           className="btn btn-primary btn-sm"
         >
-          Try Again
+          Yeniden dene
         </button>
         {isRoot ? (
           <Link to="/" className="btn btn-sm">
-            Home
+            Ana sayfa
           </Link>
         ) : (
           <Link
@@ -75,7 +75,7 @@ export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
               window.history.back();
             }}
           >
-            Go Back
+            Geri dön
           </Link>
         )}
       </div>

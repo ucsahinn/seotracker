@@ -11,17 +11,30 @@ import { formatPercent } from "@/client/lib/format";
  * no direction is just another number. `value` accepts null for the first and
  * `delta` carries the second.
  */
+/**
+ * A change, either as a fraction to be formatted here or already worded.
+ * Search Performance computes its own deltas (a position delta is not a
+ * percentage), and before this it cloned the whole tile to say so.
+ */
+type MetricDelta =
+  | number
+  | { text: string; improved: boolean }
+  | null
+  | undefined;
+
 export function MetricTile({
   label,
   value,
   delta,
+  deltaTitle,
   hint,
   /** Lower is better, as with an average search position. */
   inverted = false,
 }: {
   label: string;
   value: string | null;
-  delta?: number | null;
+  delta?: MetricDelta;
+  deltaTitle?: string;
   hint?: React.ReactNode;
   inverted?: boolean;
 }) {
@@ -37,7 +50,7 @@ export function MetricTile({
           <p className="truncate text-2xl font-semibold tracking-tight">
             {value}
           </p>
-          <DeltaBadge value={delta} inverted={inverted} />
+          <DeltaBadge value={delta} inverted={inverted} title={deltaTitle} />
         </div>
       )}
       {/* Not truncated: a hint is usually the one link that makes the tile
@@ -50,26 +63,45 @@ export function MetricTile({
 function DeltaBadge({
   value,
   inverted,
+  title,
 }: {
-  value: number | null | undefined;
+  value: MetricDelta;
   inverted: boolean;
+  title?: string;
 }) {
-  // A change of nothing is not worth an arrow, and rounding hides the rest.
-  if (value == null || !Number.isFinite(value)) return null;
-  const rounded = Math.round(value * 1000) / 1000;
-  if (rounded === 0) return null;
+  if (value == null) return null;
 
-  const improved = inverted ? rounded < 0 : rounded > 0;
-  const Icon = rounded > 0 ? ArrowUpRight : ArrowDownRight;
+  // An arrow, not just a colour. Success and error sit at almost the same
+  // lightness, so under the common colour-vision deficiencies the tint alone
+  // says nothing about which direction a number moved.
+  const resolved =
+    typeof value === "number"
+      ? (() => {
+          if (!Number.isFinite(value)) return null;
+          const rounded = Math.round(value * 1000) / 1000;
+          if (rounded === 0) return null;
+          return {
+            text: formatPercent(Math.abs(rounded), 0),
+            improved: inverted ? rounded < 0 : rounded > 0,
+            up: rounded > 0,
+          };
+        })()
+      : { text: value.text, improved: value.improved, up: value.improved };
+  if (!resolved) return null;
+
+  const Icon = resolved.up ? ArrowUpRight : ArrowDownRight;
 
   return (
     <span
+      title={title}
       className={`flex items-center gap-0.5 text-xs font-medium ${
-        improved ? "text-success" : "text-error"
+        resolved.improved
+          ? "text-[var(--ink-success)]"
+          : "text-[var(--ink-error)]"
       }`}
     >
-      <Icon className="size-3.5" strokeWidth={2} aria-hidden />
-      {formatPercent(Math.abs(rounded), 0).replace("%", "")}%
+      <Icon className="size-3.5" aria-hidden />
+      {resolved.text}
     </span>
   );
 }

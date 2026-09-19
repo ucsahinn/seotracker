@@ -1,3 +1,4 @@
+import { PageShell } from "@/client/components/PageShell";
 import * as React from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -32,70 +33,66 @@ function ProjectsPage() {
   const projects = projectsQuery.data ?? [];
 
   return (
-    <div className="h-full overflow-auto bg-base-100 px-4 py-8 pb-24 md:px-6 md:py-12 md:pb-8">
-      <div className="mx-auto w-full max-w-2xl space-y-6">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight">Projeler</h1>
-            <p className="mt-1 text-sm text-muted">
-              Each project has its own Search Console, rank tracking, and
-              audits.
-            </p>
-          </div>
-          <button
-            type="button"
-            className="btn btn-primary btn-sm shrink-0"
-            onClick={() => setCreating(true)}
-          >
-            <Plus className="size-4" />
-            Yeni proje
-          </button>
+    <PageShell width="reading">
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-semibold">Projeler</h1>
+          <p className="mt-1 text-sm text-muted">
+            Her projenin kendi Search Console bağlantısı, arama performansı
+            verisi ve site denetimleri olur.
+          </p>
         </div>
-
-        {projectsQuery.isLoading ? (
-          <div className="space-y-2" aria-busy>
-            {Array.from({ length: 4 }, (_, index) => (
-              <div key={index} className="skeleton h-14" />
-            ))}
-          </div>
-        ) : (
-          <ul className="divide-y divide-base-300 overflow-hidden rounded-box border border-base-300">
-            {projects.map((project) => (
-              <li key={project.id}>
-                <Link
-                  to="/p/$projectId/settings"
-                  params={{ projectId: project.id }}
-                  className="flex items-center justify-between gap-3 p-3 transition-colors hover:bg-base-200/40"
-                >
-                  <span className="flex min-w-0 flex-col">
-                    <span className="flex items-center gap-2">
-                      <span className="truncate font-medium">
-                        {project.name}
-                      </span>
-                      {project.id === currentProjectId ? (
-                        <span className="shrink-0 rounded-full bg-base-300/70 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-muted">
-                          Current
-                        </span>
-                      ) : null}
-                    </span>
-                    <span className="truncate text-xs text-muted">
-                      {project.domain ?? "Site belirlenmemiş"}
-                    </span>
-                  </span>
-                  <ChevronRight className="size-4 shrink-0 text-muted" />
-                </Link>
-              </li>
-            ))}
-          </ul>
-        )}
-
-        <ArchivedProjects />
+        <button
+          type="button"
+          className="btn btn-primary btn-sm shrink-0"
+          onClick={() => setCreating(true)}
+        >
+          <Plus className="size-4" />
+          Yeni proje
+        </button>
       </div>
+
+      {projectsQuery.isLoading ? (
+        <div className="space-y-2" aria-busy>
+          {Array.from({ length: 4 }, (_, index) => (
+            <div key={index} className="skeleton h-14" />
+          ))}
+        </div>
+      ) : (
+        <ul className="divide-y divide-base-300 overflow-hidden rounded-box border border-base-300">
+          {projects.map((project) => (
+            <li key={project.id}>
+              <Link
+                to="/p/$projectId/settings"
+                params={{ projectId: project.id }}
+                className="flex items-center justify-between gap-3 p-3 transition-colors hover:bg-base-200/40"
+              >
+                <span className="flex min-w-0 flex-col">
+                  <span className="flex items-center gap-2">
+                    <span className="truncate font-medium">{project.name}</span>
+                    {project.id === currentProjectId ? (
+                      <span className="shrink-0 rounded-full bg-base-300/70 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-muted">
+                        Etkin
+                      </span>
+                    ) : null}
+                  </span>
+                  <span className="truncate text-xs text-muted">
+                    {project.domain ?? "Site belirlenmemiş"}
+                  </span>
+                </span>
+                <ChevronRight className="size-4 shrink-0 text-muted" />
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <ArchivedProjects />
 
       {creating ? (
         <CreateProjectModal onClose={() => setCreating(false)} />
       ) : null}
-    </div>
+    </PageShell>
   );
 }
 
@@ -131,7 +128,7 @@ function ArchivedProjects() {
             className="flex items-center justify-between gap-3 p-3"
           >
             <span className="flex min-w-0 flex-col">
-              <span className="truncate font-medium text-base-content/70">
+              <span className="truncate font-medium text-muted">
                 {project.name}
               </span>
               <span className="truncate text-xs text-muted">
@@ -144,7 +141,7 @@ function ArchivedProjects() {
               onClick={() => restoreMutation.mutate(project.id)}
               disabled={restoreMutation.isPending}
             >
-              Restore
+              Geri al
             </button>
           </li>
         ))}

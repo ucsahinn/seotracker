@@ -17,6 +17,7 @@ import {
   shouldValidateFieldOnChange,
 } from "@/client/lib/forms";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
+import { formatNumber } from "@/client/lib/format";
 
 function getLaunchValidationErrors(
   value: LaunchFormValues,
@@ -32,7 +33,7 @@ function getLaunchValidationErrors(
 
   return createFormValidationErrors({
     fields: {
-      url: "Please enter a URL.",
+      url: "Bir URL girin.",
     },
   });
 }
@@ -70,7 +71,7 @@ export function useLaunchController({
 
       if (effectiveMaxPages > 500) {
         const confirmed = window.confirm(
-          `You are about to crawl ${effectiveMaxPages.toLocaleString()} pages. This is okay, but it may take a while. Continue?`,
+          `${formatNumber(effectiveMaxPages)} sayfa taranacak. Bunda bir sakınca yok ama biraz zaman alabilir. Devam edilsin mi?`,
         );
         if (!confirmed) {
           return;
@@ -84,12 +85,12 @@ export function useLaunchController({
           maxPages: effectiveMaxPages,
           lighthouseStrategy: value.runLighthouse ? "auto" : "none",
         });
-        toast.success("Audit started!");
+        toast.success("Denetim başlatıldı");
         onAuditStarted(result.auditId);
       } catch (error) {
         formApi.setErrorMap({
           onSubmit: createFormValidationErrors({
-            form: getStandardErrorMessage(error, "Failed to start audit"),
+            form: getStandardErrorMessage(error, "Denetim başlatılamadı"),
           }),
         });
       }
@@ -126,7 +127,7 @@ function useLaunchMutations({
       deleteAudit({ data: { projectId, auditId } }),
     onSuccess: () => {
       void historyRefetch();
-      toast.success("Audit deleted");
+      toast.success("Denetim silindi");
     },
   });
 

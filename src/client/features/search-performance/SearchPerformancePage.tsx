@@ -1,3 +1,4 @@
+import { PageShell } from "@/client/components/PageShell";
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import {
@@ -118,7 +119,23 @@ function tableQueryOptions(
   });
 }
 
-export function SearchPerformancePage({ projectId }: { projectId: string }) {
+/** The tab values the route validates against. */
+export const SEARCH_PERFORMANCE_TABS = [
+  "striking",
+  "queries",
+  "pages",
+  "cannibalization",
+] as const;
+
+export function SearchPerformancePage({
+  projectId,
+  tab,
+  onTabChange: setTab,
+}: {
+  projectId: string;
+  tab: Tab;
+  onTabChange: (tab: Tab) => void;
+}) {
   const queryClient = useQueryClient();
   const [range, setRange] =
     useState<SearchPerformanceDateRange>("last_28_days");
@@ -126,7 +143,6 @@ export function SearchPerformancePage({ projectId }: { projectId: string }) {
     ALL,
   );
   const [country, setCountry] = useState<string>(ALL);
-  const [tab, setTab] = useState<Tab>("striking");
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState<number>(
     SEARCH_PERFORMANCE_DEFAULT_PAGE_SIZE,
@@ -190,177 +206,175 @@ export function SearchPerformancePage({ projectId }: { projectId: string }) {
   };
 
   return (
-    <div className="px-4 py-4 pb-24 overflow-auto md:px-6 md:py-6 md:pb-8">
-      <div className="mx-auto max-w-(--container-page) space-y-4">
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-          <div>
-            <h1 className="text-2xl font-semibold">Arama performansı</h1>
-            <p className="text-sm text-base-content/70">
-              Google Search Console&apos;dan gelen tıklama, gösterim, tıklama
-              oranı ve ortalama sıra.
-            </p>
-          </div>
-          {report?.connected ? (
-            <Link
-              to="/p/$projectId/settings/integrations"
-              params={{ projectId }}
-              className="link link-hover shrink-0 self-start text-sm font-medium text-muted transition-colors hover:text-base-content sm:mt-1"
-            >
-              Kaynağı değiştir
-            </Link>
-          ) : null}
+    <PageShell>
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-semibold">Arama performansı</h1>
+          <p className="text-sm text-base-content/70">
+            Google Search Console&apos;dan gelen tıklama, gösterim, tıklama
+            oranı ve ortalama sıra.
+          </p>
         </div>
+        {report?.connected ? (
+          <Link
+            to="/p/$projectId/settings/integrations"
+            params={{ projectId }}
+            className="link link-hover shrink-0 self-start text-sm font-medium text-muted transition-colors hover:text-base-content sm:mt-1"
+          >
+            Kaynağı değiştir
+          </Link>
+        ) : null}
+      </div>
 
-        {reportQuery.isPending ? (
-          <SearchPerformanceLoadingState />
-        ) : reportQuery.isError ? (
-          <div className="alert alert-error">
-            <span className="text-sm">
-              {getStandardErrorMessage(reportQuery.error)}
-            </span>
-          </div>
-        ) : !report?.connected ? (
-          <div className="max-w-2xl">
-            <SearchConsoleConnectionCard projectId={projectId} />
-          </div>
-        ) : (
-          <>
-            <TotalsCards report={report} />
-            <div className="overflow-hidden rounded-box border border-base-300 bg-base-100">
-              <div className="flex flex-col gap-3 border-b border-base-300 px-4 py-3 lg:flex-row lg:items-center lg:justify-between">
-                <div role="tablist" className="tabs tabs-border w-fit">
-                  <TabButton
-                    active={tab === "striking"}
-                    onClick={() => setTab("striking")}
-                    label={`Eşiğe yakın (${report.strikingDistance.length})`}
-                  />
-                  <TabButton
-                    active={tab === "queries"}
-                    onClick={() => setTab("queries")}
-                    label="Sorgular"
-                  />
-                  <TabButton
-                    active={tab === "pages"}
-                    onClick={() => setTab("pages")}
-                    label="Sayfalar"
-                  />
-                  <TabButton
-                    active={tab === "cannibalization"}
-                    onClick={() => setTab("cannibalization")}
-                    label="Çakışmalar"
-                  />
-                </div>
-                <div className="flex flex-wrap items-center gap-2">
-                  {reportQuery.isFetching && !reportQuery.isPending ? (
-                    <Loader2 className="size-4 animate-spin text-muted" />
-                  ) : null}
-                  <select
-                    className="select select-bordered select-sm w-36"
-                    value={device}
-                    onChange={(event) => {
-                      setDevice(
-                        isDevice(event.target.value) ? event.target.value : ALL,
-                      );
-                    }}
-                    aria-label="Cihaz filtresi"
-                  >
-                    <option value={ALL}>Tüm cihazlar</option>
-                    {DEVICE_OPTIONS.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                  <select
-                    className="select select-bordered select-sm w-36"
-                    value={country}
-                    onChange={(event) => setCountry(event.target.value)}
-                    aria-label="Ülke filtresi"
-                  >
-                    <option value={ALL}>Tüm ülkeler</option>
-                    {report.countries.map((row) => (
-                      <option key={row.key} value={row.key}>
-                        {row.key.toUpperCase()}
-                      </option>
-                    ))}
-                  </select>
-                  <select
-                    className="select select-bordered select-sm w-36"
-                    value={range}
-                    onChange={(event) => {
-                      if (isDateRange(event.target.value)) {
-                        setRange(event.target.value);
-                      }
-                    }}
-                    aria-label="Tarih aralığı"
-                  >
-                    {RANGE_OPTIONS.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                  <TableExportMenu
-                    buttonClassName="btn btn-ghost btn-sm gap-1"
-                    actions={[
-                      {
-                        label: "Sheets'e aktar",
-                        icon: <Sheet className="size-4" />,
-                        onClick: () => void handleExport("sheets"),
-                      },
-                      {
-                        label: "Download CSV",
-                        icon: <Download className="size-4" />,
-                        onClick: () => void handleExport("csv"),
-                      },
-                    ]}
-                  />
+      {reportQuery.isPending ? (
+        <SearchPerformanceLoadingState />
+      ) : reportQuery.isError ? (
+        <div className="alert alert-error">
+          <span className="text-sm">
+            {getStandardErrorMessage(reportQuery.error)}
+          </span>
+        </div>
+      ) : !report?.connected ? (
+        <div className="max-w-2xl">
+          <SearchConsoleConnectionCard projectId={projectId} />
+        </div>
+      ) : (
+        <>
+          <TotalsCards report={report} />
+          <div className="overflow-hidden rounded-box border border-base-300 bg-base-100">
+            <div className="flex flex-col gap-3 border-b border-base-300 px-4 py-3 lg:flex-row lg:items-center lg:justify-between">
+              <div role="tablist" className="tabs tabs-border w-fit">
+                <TabButton
+                  active={tab === "striking"}
+                  onClick={() => setTab("striking")}
+                  label={`Eşiğe yakın (${report.strikingDistance.length})`}
+                />
+                <TabButton
+                  active={tab === "queries"}
+                  onClick={() => setTab("queries")}
+                  label="Sorgular"
+                />
+                <TabButton
+                  active={tab === "pages"}
+                  onClick={() => setTab("pages")}
+                  label="Sayfalar"
+                />
+                <TabButton
+                  active={tab === "cannibalization"}
+                  onClick={() => setTab("cannibalization")}
+                  label="Çakışmalar"
+                />
+              </div>
+              <div className="flex flex-wrap items-center gap-2">
+                {reportQuery.isFetching && !reportQuery.isPending ? (
+                  <Loader2 className="size-4 animate-spin text-muted" />
+                ) : null}
+                <select
+                  className="select select-bordered select-sm w-36"
+                  value={device}
+                  onChange={(event) => {
+                    setDevice(
+                      isDevice(event.target.value) ? event.target.value : ALL,
+                    );
+                  }}
+                  aria-label="Cihaz filtresi"
+                >
+                  <option value={ALL}>Tüm cihazlar</option>
+                  {DEVICE_OPTIONS.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  className="select select-bordered select-sm w-36"
+                  value={country}
+                  onChange={(event) => setCountry(event.target.value)}
+                  aria-label="Ülke filtresi"
+                >
+                  <option value={ALL}>Tüm ülkeler</option>
+                  {report.countries.map((row) => (
+                    <option key={row.key} value={row.key}>
+                      {row.key.toUpperCase()}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  className="select select-bordered select-sm w-36"
+                  value={range}
+                  onChange={(event) => {
+                    if (isDateRange(event.target.value)) {
+                      setRange(event.target.value);
+                    }
+                  }}
+                  aria-label="Tarih aralığı"
+                >
+                  {RANGE_OPTIONS.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+                <TableExportMenu
+                  buttonClassName="btn btn-ghost btn-sm gap-1"
+                  actions={[
+                    {
+                      label: "Sheets'e aktar",
+                      icon: <Sheet className="size-4" />,
+                      onClick: () => void handleExport("sheets"),
+                    },
+                    {
+                      label: "Download CSV",
+                      icon: <Download className="size-4" />,
+                      onClick: () => void handleExport("csv"),
+                    },
+                  ]}
+                />
+              </div>
+            </div>
+
+            {tab === "striking" ? (
+              <StrikingDistanceTable
+                projectId={projectId}
+                rows={report.strikingDistance}
+              />
+            ) : tab === "cannibalization" ? (
+              <CannibalizationTable projectId={projectId} />
+            ) : tableQuery.isPending ? (
+              <div className="flex items-center gap-2 p-8 text-sm text-muted">
+                <Loader2 className="size-4 animate-spin" /> Yükleniyor…
+              </div>
+            ) : tableQuery.isError ? (
+              <div className="p-4">
+                <div className="alert alert-error">
+                  <span className="text-sm">
+                    {getStandardErrorMessage(tableQuery.error)}
+                  </span>
                 </div>
               </div>
-
-              {tab === "striking" ? (
-                <StrikingDistanceTable
-                  projectId={projectId}
-                  rows={report.strikingDistance}
-                />
-              ) : tab === "cannibalization" ? (
-                <CannibalizationTable projectId={projectId} />
-              ) : tableQuery.isPending ? (
-                <div className="flex items-center gap-2 p-8 text-sm text-muted">
-                  <Loader2 className="size-4 animate-spin" /> Yükleniyor…
-                </div>
-              ) : tableQuery.isError ? (
+            ) : (
+              <>
                 <div className="p-4">
-                  <div className="alert alert-error">
-                    <span className="text-sm">
-                      {getStandardErrorMessage(tableQuery.error)}
-                    </span>
-                  </div>
-                </div>
-              ) : (
-                <>
-                  <div className="p-4">
-                    <DimensionTable
-                      rows={tableRows}
-                      keyLabel={tab === "queries" ? "Sorgu" : "Sayfa"}
-                    />
-                  </div>
-                  <TablePagination
-                    page={page}
-                    pageSize={pageSize}
-                    pageSizes={SEARCH_PERFORMANCE_PAGE_SIZES}
-                    totalCount={null}
-                    hasNextPage={hasNextPage}
-                    isLoading={tableQuery.isFetching}
-                    onPageChange={setPage}
-                    onPageSizeChange={setPageSize}
+                  <DimensionTable
+                    rows={tableRows}
+                    keyLabel={tab === "queries" ? "Sorgu" : "Sayfa"}
                   />
-                </>
-              )}
-            </div>
-          </>
-        )}
-      </div>
-    </div>
+                </div>
+                <TablePagination
+                  page={page}
+                  pageSize={pageSize}
+                  pageSizes={SEARCH_PERFORMANCE_PAGE_SIZES}
+                  totalCount={null}
+                  hasNextPage={hasNextPage}
+                  isLoading={tableQuery.isFetching}
+                  onPageChange={setPage}
+                  onPageSizeChange={setPageSize}
+                />
+              </>
+            )}
+          </div>
+        </>
+      )}
+    </PageShell>
   );
 }

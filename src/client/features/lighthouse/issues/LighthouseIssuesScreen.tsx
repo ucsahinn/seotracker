@@ -1,3 +1,4 @@
+import { PageShell } from "@/client/components/PageShell";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AlertCircle, TriangleAlert } from "lucide-react";
 import { toast } from "sonner";
@@ -81,65 +82,63 @@ export function LighthouseIssuesScreen(props: LighthouseIssuesScreenProps) {
     : undefined;
 
   return (
-    <div className="px-4 py-3 md:px-6 md:py-4 pb-24 md:pb-8 overflow-auto">
-      <div className="mx-auto max-w-(--container-page) space-y-4">
-        <LighthouseIssuesHeader
-          backLabel={backLabel}
-          onBack={onBack}
-          scannedAt={issuesQuery.data?.createdAt}
-          finalUrl={issuesQuery.data?.finalUrl}
-          scores={issuesQuery.data?.scores}
-          metrics={issuesQuery.data?.metrics}
-          fieldData={issuesQuery.data?.fieldData}
-          severityCounts={severityCounts}
-        />
+    <PageShell>
+      <LighthouseIssuesHeader
+        backLabel={backLabel}
+        onBack={onBack}
+        scannedAt={issuesQuery.data?.createdAt}
+        finalUrl={issuesQuery.data?.finalUrl}
+        scores={issuesQuery.data?.scores}
+        metrics={issuesQuery.data?.metrics}
+        fieldData={issuesQuery.data?.fieldData}
+        severityCounts={severityCounts}
+      />
 
-        <div className="card bg-base-100 border border-base-300">
-          <div className="card-body gap-4">
-            {issuesQuery.isError ? (
-              <div className="alert alert-error">
-                <AlertCircle className="size-4" />
-                <span>{issuesErrorMessage}</span>
-              </div>
-            ) : null}
+      <div className="card bg-base-100 border border-base-300">
+        <div className="card-body gap-4">
+          {issuesQuery.isError ? (
+            <div className="alert alert-error">
+              <AlertCircle className="size-4" />
+              <span>{issuesErrorMessage}</span>
+            </div>
+          ) : null}
 
-            {showsLegacyPayloadNotice ? (
-              <div className="alert alert-warning">
-                <TriangleAlert className="size-4" />
-                <span>
-                  Bu Lighthouse çalışması, sorun ayrıntıları saklanmaya
-                  başlamadan önce kaydedilmiş. Kategori sayılarını ve sorun
-                  kartlarını görmek için denetimi yeniden çalıştırın.
-                </span>
-              </div>
-            ) : null}
+          {showsLegacyPayloadNotice ? (
+            <div className="alert alert-warning">
+              <TriangleAlert className="size-4" />
+              <span>
+                Bu Lighthouse çalışması, sorun ayrıntıları saklanmaya başlamadan
+                önce kaydedilmiş. Kategori sayılarını ve sorun kartlarını görmek
+                için denetimi yeniden çalıştırın.
+              </span>
+            </div>
+          ) : null}
 
-            <LighthouseIssuesToolbar
-              category={category}
-              categoryCounts={categoryCounts}
-              categoryPhrase={categoryPhrase}
-              isBusy={exportMutation.isPending}
-              visibleIssues={visibleIssues}
-              allIssues={allIssues}
-              onCategoryChange={onCategoryChange}
-              onCopy={(data, message) => {
-                void runCopy(data, message);
-              }}
-              onExport={(data) => {
-                void runExport(data);
-              }}
-              onExportCsv={runExportCsv}
-              onExportSheets={runExportSheets}
-            />
-            <LighthouseIssueList
-              issues={visibleIssues}
-              isLoading={issuesQuery.isLoading}
-              emptyMessage={emptyMessage}
-            />
-          </div>
+          <LighthouseIssuesToolbar
+            category={category}
+            categoryCounts={categoryCounts}
+            categoryPhrase={categoryPhrase}
+            isBusy={exportMutation.isPending}
+            visibleIssues={visibleIssues}
+            allIssues={allIssues}
+            onCategoryChange={onCategoryChange}
+            onCopy={(data, message) => {
+              void runCopy(data, message);
+            }}
+            onExport={(data) => {
+              void runExport(data);
+            }}
+            onExportCsv={runExportCsv}
+            onExportSheets={runExportSheets}
+          />
+          <LighthouseIssueList
+            issues={visibleIssues}
+            isLoading={issuesQuery.isLoading}
+            emptyMessage={emptyMessage}
+          />
         </div>
       </div>
-    </div>
+    </PageShell>
   );
 }
 

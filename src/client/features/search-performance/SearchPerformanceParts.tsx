@@ -1,4 +1,4 @@
-import { MetricRow } from "@/client/components/MetricTile";
+import { MetricRow, MetricTile } from "@/client/components/MetricTile";
 import { useMemo, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Copy, Loader2, Save } from "lucide-react";
@@ -154,66 +154,31 @@ export function TotalsCards({ report }: { report: Report }) {
   const deltaTitle = `${range.prevStartDate} - ${range.prevEndDate} dönemine göre`;
   return (
     <MetricRow>
-      <TotalCard
+      <MetricTile
         label="Tıklama"
         value={formatCount(totals.clicks)}
         delta={percentDelta(totals.clicks, prevTotals.clicks)}
         deltaTitle={deltaTitle}
       />
-      <TotalCard
+      <MetricTile
         label="Gösterim"
         value={formatCount(totals.impressions)}
         delta={percentDelta(totals.impressions, prevTotals.impressions)}
         deltaTitle={deltaTitle}
       />
-      <TotalCard
+      <MetricTile
         label="Tıklama oranı"
         value={formatCtr(totals.ctr)}
         delta={percentDelta(totals.ctr, prevTotals.ctr)}
         deltaTitle={deltaTitle}
       />
-      <TotalCard
+      <MetricTile
         label="Ortalama sıra"
         value={formatPosition(totals.position)}
         delta={positionDelta(totals.position, prevTotals.position)}
         deltaTitle={deltaTitle}
       />
     </MetricRow>
-  );
-}
-
-function TotalCard({
-  label,
-  value,
-  delta,
-  deltaTitle,
-}: {
-  label: string;
-  value: string;
-  delta: Delta;
-  deltaTitle: string;
-}) {
-  return (
-    // Same shape as the dashboard's MetricTile: these are the same four
-    // numbers, so they should not look like two different components.
-    <div className="flex min-w-0 flex-col gap-1.5 px-5 py-4">
-      <p className="truncate text-xs font-medium uppercase tracking-wider text-muted">
-        {label}
-      </p>
-      <div className="flex items-baseline gap-2">
-        <span className="truncate text-2xl font-semibold tracking-tight">
-          {value}
-        </span>
-        {delta ? (
-          <span
-            className={`text-xs font-medium ${delta.improved ? "text-success" : "text-error"}`}
-            title={deltaTitle}
-          >
-            {delta.text}
-          </span>
-        ) : null}
-      </div>
-    </div>
   );
 }
 

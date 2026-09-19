@@ -90,14 +90,14 @@ export function SectionHeader({
 /** Muted panel used when a list has nothing in it yet. */
 export function EmptyState({ children }: { children: ReactNode }) {
   return (
-    <p className="rounded-lg border border-dashed border-base-300 px-4 py-3 text-sm text-muted">
+    <p className="rounded-box border border-dashed border-base-300 px-4 py-3 text-sm text-muted">
       {children}
     </p>
   );
 }
 
 export const listClass =
-  "divide-y divide-base-300 overflow-hidden rounded-lg border border-base-300";
+  "divide-y divide-base-300 overflow-hidden rounded-box border border-base-300";
 
 /** Row actions and footer buttons shared by the inline competitor/page forms. */
 export function RowActions({ children }: { children: ReactNode }) {

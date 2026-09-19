@@ -1,3 +1,5 @@
+import { formatNumber } from "@/client/lib/format";
+import { PageShell } from "@/client/components/PageShell";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { AlertCircle, Loader2, TrendingDown, TrendingUp } from "lucide-react";
@@ -45,103 +47,110 @@ export function RankingsPage({ projectId }: { projectId: string }) {
   const rows = tracked.data?.rows ?? [];
 
   return (
-    <div className="h-full overflow-auto px-4 py-4 pb-24 md:px-6 md:py-6 md:pb-8">
-      <div className="mx-auto max-w-(--container-page) space-y-4">
-        <div className="flex flex-wrap items-end justify-between gap-3">
-          <div>
-            <h1 className="text-2xl font-semibold">Sıralama takibi</h1>
-            <p className="mt-1 text-sm text-base-content/70">
-              Google&apos;ın kendi ölçtüğü ortalama sıra. Arşiv yerelde
-              tutulduğu için 16 aylık Google sınırının ötesine geçebilir.
-            </p>
-          </div>
-          <div role="tablist" className="tabs tabs-border">
-            {WINDOWS.map((option) => (
-              <button
-                key={option.days}
-                type="button"
-                role="tab"
-                aria-selected={days === option.days}
-                className={`tab ${days === option.days ? "tab-active" : ""}`}
-                onClick={() => setDays(option.days)}
-              >
-                {option.label}
-              </button>
-            ))}
-          </div>
+    <PageShell>
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h1 className="text-2xl font-semibold">Sıralama takibi</h1>
+          <p className="mt-1 text-sm text-muted">
+            Google&apos;ın kendi ölçtüğü ortalama sıra. Arşiv yerelde tutulduğu
+            için 16 aylık Google sınırının ötesine geçebilir.
+          </p>
         </div>
-
-        <ArchiveStatus sync={sync} />
-
-        {tracked.isError ? (
-          <div className="alert alert-error">
-            <AlertCircle className="size-4" />
-            {getStandardErrorMessage(tracked.error)}
-          </div>
-        ) : null}
-
-        <div className="overflow-hidden rounded-lg border border-base-300 bg-base-100">
-          <table className="table table-sm">
-            <thead>
-              <tr>
-                <th>Sorgu</th>
-                <th className="text-right">Ort. sıra</th>
-                <th className="text-right">Gösterim</th>
-                <th className="text-right">Tıklama</th>
-                <th className="text-right">Gün</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.length === 0 && !tracked.isLoading ? (
-                <tr>
-                  <td
-                    colSpan={5}
-                    className="py-8 text-center text-sm text-muted"
-                  >
-                    {sync.data?.rowCount === 0
-                      ? "Arşiv henüz boş. Search Console bağlıysa bu sayfa açıldığında dolmaya başlar."
-                      : "Bu aralıkta kayıtlı sorgu yok."}
-                  </td>
-                </tr>
-              ) : null}
-              {rows.map((row) => (
-                <tr
-                  key={row.query}
-                  className={`cursor-pointer hover:bg-base-200/50 ${
-                    selected === row.query ? "bg-base-200/60" : ""
-                  }`}
-                  onClick={() =>
-                    setSelected(selected === row.query ? null : row.query)
-                  }
-                >
-                  <td className="max-w-md truncate">{row.query}</td>
-                  <td className="text-right tabular-nums">
-                    {row.position.toFixed(1)}
-                  </td>
-                  <td className="text-right tabular-nums">
-                    {row.impressions.toLocaleString("tr-TR")}
-                  </td>
-                  <td className="text-right tabular-nums">
-                    {row.clicks.toLocaleString("tr-TR")}
-                  </td>
-                  <td className="text-right tabular-nums text-muted">
-                    {row.days}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div role="tablist" className="tabs tabs-border">
+          {WINDOWS.map((option) => (
+            <button
+              key={option.days}
+              type="button"
+              role="tab"
+              aria-selected={days === option.days}
+              className={`tab ${days === option.days ? "tab-active" : ""}`}
+              onClick={() => setDays(option.days)}
+            >
+              {option.label}
+            </button>
+          ))}
         </div>
-
-        {selected ? (
-          <QueryHistoryCard
-            query={selected}
-            rows={history.data?.rows ?? []}
-            loading={history.isLoading}
-          />
-        ) : null}
       </div>
-    </div>
+
+      <ArchiveStatus sync={sync} />
+
+      {tracked.isError ? (
+        <div className="alert alert-error">
+          <AlertCircle className="size-4" />
+          {getStandardErrorMessage(tracked.error)}
+        </div>
+      ) : null}
+
+      <div className="overflow-hidden rounded-box border border-base-300 bg-base-100">
+        <table className="table table-sm">
+          <thead>
+            <tr>
+              <th>Sorgu</th>
+              <th className="text-right">Ort. sıra</th>
+              <th className="text-right">Gösterim</th>
+              <th className="text-right">Tıklama</th>
+              <th className="text-right">Gün</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.length === 0 && !tracked.isLoading ? (
+              <tr>
+                <td colSpan={5} className="py-8 text-center text-sm text-muted">
+                  {sync.data?.rowCount === 0
+                    ? "Arşiv henüz boş. Search Console bağlıysa bu sayfa açıldığında dolmaya başlar."
+                    : "Bu aralıkta kayıtlı sorgu yok."}
+                </td>
+              </tr>
+            ) : null}
+            {rows.map((row) => (
+              <tr
+                key={row.query}
+                className={
+                  selected === row.query ? "bg-base-200/60" : undefined
+                }
+              >
+                {/* A real button, not a click handler on the row. Opening a
+                      query's history is the whole point of this screen, and
+                      on a bare <tr> it was reachable with a mouse and nothing
+                      else. A button also picks up the app's focus ring. */}
+                <td className="max-w-md p-0">
+                  <button
+                    type="button"
+                    className="w-full truncate px-4 py-2 text-left transition-colors hover:bg-base-200/50"
+                    aria-expanded={selected === row.query}
+                    onClick={() =>
+                      setSelected(selected === row.query ? null : row.query)
+                    }
+                  >
+                    {row.query}
+                  </button>
+                </td>
+                <td className="text-right tabular-nums">
+                  {row.position.toFixed(1)}
+                </td>
+                <td className="text-right tabular-nums">
+                  {formatNumber(row.impressions)}
+                </td>
+                <td className="text-right tabular-nums">
+                  {formatNumber(row.clicks)}
+                </td>
+                <td className="text-right tabular-nums text-muted">
+                  {formatNumber(row.days)}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {selected ? (
+        <QueryHistoryCard
+          query={selected}
+          rows={history.data?.rows ?? []}
+          loading={history.isLoading}
+        />
+      ) : null}
+    </PageShell>
   );
 }
 
@@ -198,7 +207,7 @@ function ArchiveStatus({
   return (
     <p className="text-xs text-muted">
       Arşiv {data.earliestDate} – {data.lastDate} arasını kapsıyor,{" "}
-      {data.rowCount.toLocaleString("tr-TR")} satır.
+      {formatNumber(data.rowCount)} satır.
       {data.daysFetched > 0
         ? ` Bu açılışta ${data.daysFetched} gün eklendi.`
         : ""}

@@ -1,3 +1,4 @@
+import { PageShell } from "@/client/components/PageShell";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
@@ -35,47 +36,45 @@ function ReportsPage() {
   );
 
   return (
-    <div className="overflow-auto px-4 py-4 pb-24 md:px-6 md:py-6 md:pb-8">
-      <div className="mx-auto max-w-(--container-page) space-y-4">
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <div>
-            <h1 className="text-2xl font-semibold">Raporlar</h1>
-            <p className="text-sm text-base-content/70">
-              HTML reports your agents saved to this project.
-            </p>
-          </div>
-          <Link
-            to="/p/$projectId/reports/templates"
-            params={{ projectId }}
-            className="btn btn-ghost btn-sm"
-          >
-            Templates
-          </Link>
+    <PageShell>
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h1 className="text-2xl font-semibold">Raporlar</h1>
+          <p className="text-sm text-base-content/70">
+            HTML reports your agents saved to this project.
+          </p>
         </div>
-
-        {reportsQuery.isPending ? (
-          <div className="space-y-2" aria-busy>
-            {Array.from({ length: 4 }, (_, index) => (
-              <div key={index} className="skeleton h-14" />
-            ))}
-          </div>
-        ) : reportsQuery.isError ? (
-          <div className="alert alert-error">
-            <span className="text-sm">
-              {getStandardErrorMessage(
-                reportsQuery.error,
-                "Raporlar yüklenemedi",
-              )}
-            </span>
-          </div>
-        ) : (
-          <ReportsList
-            projectId={projectId}
-            reports={reportsQuery.data.reports}
-            onDelete={setPendingDelete}
-          />
-        )}
+        <Link
+          to="/p/$projectId/reports/templates"
+          params={{ projectId }}
+          className="btn btn-ghost btn-sm"
+        >
+          Templates
+        </Link>
       </div>
+
+      {reportsQuery.isPending ? (
+        <div className="space-y-2" aria-busy>
+          {Array.from({ length: 4 }, (_, index) => (
+            <div key={index} className="skeleton h-14" />
+          ))}
+        </div>
+      ) : reportsQuery.isError ? (
+        <div className="alert alert-error">
+          <span className="text-sm">
+            {getStandardErrorMessage(
+              reportsQuery.error,
+              "Raporlar yüklenemedi",
+            )}
+          </span>
+        </div>
+      ) : (
+        <ReportsList
+          projectId={projectId}
+          reports={reportsQuery.data.reports}
+          onDelete={setPendingDelete}
+        />
+      )}
 
       {pendingDelete ? (
         <DeleteReportModal
@@ -85,6 +84,6 @@ function ReportsPage() {
           onConfirm={() => deleteMutation.mutate(pendingDelete.id)}
         />
       ) : null}
-    </div>
+    </PageShell>
   );
 }

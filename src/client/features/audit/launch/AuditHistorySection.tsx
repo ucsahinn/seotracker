@@ -94,7 +94,7 @@ function HistoryActions({
         search={{ auditId, tab: "pages" }}
         className="btn btn-primary btn-xs"
       >
-        View
+        Görüntüle
       </Link>
       <PortalMenu ariaLabel="Denetim işlemleri">
         {(close) => (
@@ -107,7 +107,7 @@ function HistoryActions({
               }}
             >
               <Trash2 className="size-3.5" />
-              Delete audit
+              Denetimi sil
             </button>
           </li>
         )}

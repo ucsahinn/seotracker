@@ -1,6 +1,7 @@
 import { Loader2 } from "lucide-react";
 import { MIN_PAGES } from "@/client/features/audit/launch/types";
 import type { useLaunchController } from "@/client/features/audit/launch/useLaunchController";
+import { formatNumber } from "@/client/lib/format";
 import { getFieldError, getFormError } from "@/client/lib/forms";
 
 type Props = {
@@ -58,7 +59,7 @@ export function LaunchFormCard({
               >
                 {isSubmitting ? (
                   <>
-                    <Loader2 className="size-4 animate-spin" /> Starting...
+                    <Loader2 className="size-4 animate-spin" /> Başlatılıyor…
                   </>
                 ) : (
                   "Denetimi başlat"
@@ -117,8 +118,7 @@ function LaunchOptions({
         </launchForm.Field>
       </div>
       <p className="text-xs text-muted">
-        {MIN_PAGES} ile {maxPagesLimit.toLocaleString()} arasında bir değer
-        girin.
+        {MIN_PAGES} ile {formatNumber(maxPagesLimit)} arasında bir değer girin.
       </p>
     </div>
   );
@@ -153,8 +153,8 @@ function LighthouseOptions({ launchForm }: Pick<Props, "launchForm">) {
           runLighthouse ? (
             <div className="space-y-1">
               <p className="text-xs text-muted">
-                We choose a sample of 20 pages to audit, removing pages from
-                duplicate templates.
+                Aynı şablondan gelen sayfalar elenerek 20 sayfalık bir örneklem
+                ölçülür.
               </p>
             </div>
           ) : null

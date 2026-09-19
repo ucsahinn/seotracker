@@ -167,9 +167,8 @@ function DangerSection({
             <span className="font-medium text-base-content">
               {project.name}
             </span>{" "}
-            projesini arşivlerseniz çalışma alanınızdan kaldırılır ve
-            zamanlanmış sıralama takibi durur. Daha sonra Projeler sayfasından
-            geri alabilirsiniz.
+            projesini arşivlerseniz çalışma alanınızdan kaldırılır. Daha sonra
+            Projeler sayfasından geri alabilirsiniz.
           </p>
           <div className="flex gap-2">
             <button

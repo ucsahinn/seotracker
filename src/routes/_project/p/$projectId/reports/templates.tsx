@@ -1,3 +1,4 @@
+import { PageShell } from "@/client/components/PageShell";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
@@ -66,56 +67,54 @@ function ReportTemplatesPage() {
   });
 
   return (
-    <div className="overflow-auto px-4 py-4 pb-24 md:px-6 md:py-6 md:pb-8">
-      <div className="mx-auto max-w-(--container-page) space-y-4">
-        <Link
-          to="/p/$projectId/reports"
-          params={{ projectId }}
-          className="inline-flex items-center gap-1 text-sm text-muted transition-colors hover:text-base-content"
-        >
-          <ChevronLeft className="size-4" />
-          Reports
-        </Link>
+    <PageShell>
+      <Link
+        to="/p/$projectId/reports"
+        params={{ projectId }}
+        className="inline-flex items-center gap-1 text-sm text-muted transition-colors hover:text-base-content"
+      >
+        <ChevronLeft className="size-4" />
+        Reports
+      </Link>
 
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <div>
-            <h1 className="text-2xl font-semibold">Rapor şablonları</h1>
-            <p className="text-sm text-base-content/70">
-              Reusable briefs your agents follow when they write a report: who
-              it is for, which sections it has, and how it should sound.
-            </p>
-          </div>
-          <button
-            type="button"
-            className="btn btn-primary btn-sm gap-1.5"
-            onClick={() => setForm({})}
-          >
-            <Plus className="size-4" />
-            New template
-          </button>
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h1 className="text-2xl font-semibold">Rapor şablonları</h1>
+          <p className="text-sm text-base-content/70">
+            Reusable briefs your agents follow when they write a report: who it
+            is for, which sections it has, and how it should sound.
+          </p>
         </div>
-
-        {templatesQuery.isPending ? (
-          <div className="flex justify-center py-10">
-            <span className="loading loading-spinner loading-md" />
-          </div>
-        ) : templatesQuery.isError ? (
-          <div className="alert alert-error">
-            <span className="text-sm">
-              {getStandardErrorMessage(
-                templatesQuery.error,
-                "Şablonlar yüklenemedi",
-              )}
-            </span>
-          </div>
-        ) : (
-          <ReportTemplatesList
-            templates={templatesQuery.data.templates}
-            onEdit={(template) => setForm({ template })}
-            onDelete={setPendingDelete}
-          />
-        )}
+        <button
+          type="button"
+          className="btn btn-primary btn-sm gap-1.5"
+          onClick={() => setForm({})}
+        >
+          <Plus className="size-4" />
+          New template
+        </button>
       </div>
+
+      {templatesQuery.isPending ? (
+        <div className="flex justify-center py-10">
+          <span className="loading loading-spinner loading-md" />
+        </div>
+      ) : templatesQuery.isError ? (
+        <div className="alert alert-error">
+          <span className="text-sm">
+            {getStandardErrorMessage(
+              templatesQuery.error,
+              "Şablonlar yüklenemedi",
+            )}
+          </span>
+        </div>
+      ) : (
+        <ReportTemplatesList
+          templates={templatesQuery.data.templates}
+          onEdit={(template) => setForm({ template })}
+          onDelete={setPendingDelete}
+        />
+      )}
 
       {form ? (
         <ReportTemplateForm
@@ -139,6 +138,6 @@ function ReportTemplatesPage() {
           onConfirm={() => deleteMutation.mutate(pendingDelete.id)}
         />
       ) : null}
-    </div>
+    </PageShell>
   );
 }

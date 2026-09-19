@@ -17,7 +17,7 @@ export function ReportsList({
 }) {
   if (reports.length === 0) {
     return (
-      <p className="rounded-lg border border-dashed border-base-300 px-4 py-6 text-sm text-muted">
+      <p className="rounded-box border border-dashed border-base-300 px-4 py-6 text-sm text-muted">
         Henüz rapor yok. Claude Code ya da Codex üzerinden seo-audit gibi bir
         seotracker becerisi çalıştırın; rapor burada görünecek.
       </p>
