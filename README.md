@@ -14,12 +14,20 @@ kaldırır.
 - **Search Console performansı** — tıklama, gösterim, tıklama oranı ve ortalama
   sıra. "Eşiğe yakın" sekmesi, 5 ile 20 arasında sıradaki sorguları ayrı
   gösterir: en az emekle en çok kazanç oradadır.
+- **Sıralama takibi** — Google verinizi 16 ay sonra siliyor. Bu araç günlük
+  kayıtları yerelde tuttuğu için o sınırın ötesine geçer. Sıralama sayfası her
+  açılışta eksik günleri kendiliğinden tamamlar; zamanlanmış bir göreve gerek
+  yoktur.
 - **Site denetimi** — kendi tarayıcısıyla sitenizi gezer ve 28 ayrı teknik SEO
   sorununu raporlar: kırık bağlantı, eksik başlık, yinelenen içerik, yönlendirme
   zinciri, yetim sayfa ve diğerleri.
 - **Hız skorları** — denetim sırasında Google PageSpeed Insights ile örnek
-  sayfaların performans, erişilebilirlik ve SEO puanları.
+  sayfaların performans, erişilebilirlik ve SEO puanları. Laboratuvar
+  skorlarının yanında, sitenizi gerçekten ziyaret eden Chrome kullanıcılarından
+  gelen Çekirdek Web Verileri de gösterilir.
 - **Google Analytics 4** — organik trafik, açılış sayfaları, dönüşümler.
+- **Denetim karşılaştırması** — bir haftadır tarama yapılmadıysa panel hatırlatır
+  ve son iki denetimi karşılaştırıp yeni çıkan sorunları ayrı gösterir.
 - **Raporlar** — yapay zeka ajanının yazdığı, kendi kendine yeten HTML belgeler.
 - **MCP sunucusu** — Claude Code gibi ajanlar bu verinin tamamına 28 araç
   üzerinden erişir.
@@ -60,6 +68,17 @@ doğrulamanızı koyun.
 ## Geliştirme
 
 [`docs/LOCAL_DEVELOPMENT.md`](./docs/LOCAL_DEVELOPMENT.md).
+
+Çalışan bir kurulumu uçtan uca sınamak için:
+
+```sh
+pnpm run verify:local            # http://localhost:3001
+pnpm run verify:local http://127.0.0.1:3002
+```
+
+Betik sağlık ucunu, MCP araç listesini ve gerçek bir site denetimini sırayla
+kontrol eder. Birim testlerinin yakalayamadığı şeyleri yakalar: eksik bir göç,
+bozuk bir binding, açılmayan bir rota.
 
 ## Lisans
 

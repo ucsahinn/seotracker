@@ -1,9 +1,18 @@
 # seotracker — Eksiksiz Yapılacaklar, Alınacaklar ve Geliştirme Listesi
 
-> **Durum (2026-09-19):** Faz 0-4, 6 ve 7 tamamlandı. Kalan: arayüz Türkçeleştirmesi (Faz 5) ve
-> yeni ücretsiz özellikler (Faz 8). Tamamlanan işin kanıtı git geçmişinde: üç commit, her biri
-> kendi doğrulamasıyla. Aşağıdaki envanter tarihsel kayıt olarak duruyor; dosya yolları o günkü
-> hâli gösterir ve çoğu artık silinmiştir.
+> **Durum (2026-09-19): planın tamamı uygulandı.** Faz 0'dan 8'e kadar her aşama bitti ve her
+> biri kendi doğrulamasıyla commit edildi. Son durum: 543 test geçiyor, `ci:check` (biçim, ölü
+> kod, tip kontrolü, lint) temiz, Docker imajı derleniyor ve çalışan konteyner üzerinde uçtan
+> uca doğrulama yapıldı (`pnpm run verify:local`).
+>
+> Aşağıdaki envanter tarihsel kayıttır. Dosya yolları planın yazıldığı günkü hâli gösterir;
+> çoğu artık silinmiş ya da yeniden adlandırılmıştır. Neyin nasıl yapıldığını görmek için git
+> geçmişine bakın: her commit ne değiştiğini ve neden öyle yapıldığını anlatır.
+>
+> **Bilinçli olarak yapılmayan tek şey:** PageSpeed entegrasyonu canlı bir anahtarla
+> doğrulanmadı. Anahtarsız kotanın 429 verdiği ve kodun bunu doğru işlediği ölçüldü; asıl
+> başarı yolu birim testleriyle ve gerçek yanıt şemasıyla doğrulandı. Anahtar geldiğinde tek
+> yapılacak, bir denetim çalıştırıp skorların dolduğunu görmek.
 
 ## 0. Bir bakışta
 
