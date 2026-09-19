@@ -5,6 +5,7 @@ import {
   ClipboardCheck,
   FileText,
   LayoutDashboard,
+  TrendingUp,
 } from "lucide-react";
 import { linkOptions } from "@tanstack/react-router";
 import { GoogleGlyphMuted } from "@/client/features/gsc/GoogleGlyph";
@@ -17,6 +18,11 @@ const projectNavItems = [
     // Without exact matching, the index path is a prefix of every project
     // route and the Dashboard item would render active everywhere.
     activeOptions: { exact: true, includeSearch: false },
+  },
+  {
+    to: "/p/$projectId/rankings" as const,
+    label: "Sıralama Takibi",
+    icon: TrendingUp,
   },
   {
     to: "/p/$projectId/saved" as const,
@@ -86,6 +92,7 @@ export function getProjectNavGroups(projectId: string) {
       label: "Sitem",
       items: [
         byPath("/p/$projectId/search-performance"),
+        byPath("/p/$projectId/rankings"),
         byPath("/p/$projectId/saved"),
         byPath("/p/$projectId/audit"),
       ],

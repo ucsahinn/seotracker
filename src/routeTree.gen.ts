@@ -26,6 +26,7 @@ import { Route as ApiGa4OauthCallbackRouteImport } from './routes/api/ga4/oauth/
 import { Route as ProjectPProjectIdSettingsRouteImport } from './routes/_project/p/$projectId/settings'
 import { Route as ProjectPProjectIdSearchPerformanceRouteImport } from './routes/_project/p/$projectId/search-performance'
 import { Route as ProjectPProjectIdSavedRouteImport } from './routes/_project/p/$projectId/saved'
+import { Route as ProjectPProjectIdRankingsRouteImport } from './routes/_project/p/$projectId/rankings'
 import { Route as ProjectPProjectIdContextRouteImport } from './routes/_project/p/$projectId/context'
 import { Route as ProjectPProjectIdAuditRouteImport } from './routes/_project/p/$projectId/audit'
 import { Route as ProjectPProjectIdSettingsIndexRouteImport } from './routes/_project/p/$projectId/settings/index'
@@ -122,6 +123,12 @@ const ProjectPProjectIdSavedRoute = ProjectPProjectIdSavedRouteImport.update({
   path: '/saved',
   getParentRoute: () => ProjectPProjectIdRouteRoute,
 } as any)
+const ProjectPProjectIdRankingsRoute =
+  ProjectPProjectIdRankingsRouteImport.update({
+    id: '/rankings',
+    path: '/rankings',
+    getParentRoute: () => ProjectPProjectIdRouteRoute,
+  } as any)
 const ProjectPProjectIdContextRoute =
   ProjectPProjectIdContextRouteImport.update({
     id: '/context',
@@ -194,6 +201,7 @@ export interface FileRoutesByFullPath {
   '/settings/': typeof AppSettingsIndexRoute
   '/p/$projectId/audit': typeof ProjectPProjectIdAuditRouteWithChildren
   '/p/$projectId/context': typeof ProjectPProjectIdContextRoute
+  '/p/$projectId/rankings': typeof ProjectPProjectIdRankingsRoute
   '/p/$projectId/saved': typeof ProjectPProjectIdSavedRoute
   '/p/$projectId/search-performance': typeof ProjectPProjectIdSearchPerformanceRoute
   '/p/$projectId/settings': typeof ProjectPProjectIdSettingsRouteWithChildren
@@ -218,6 +226,7 @@ export interface FileRoutesByTo {
   '/r/$reportId': typeof RReportIdRoute
   '/settings': typeof AppSettingsIndexRoute
   '/p/$projectId/context': typeof ProjectPProjectIdContextRoute
+  '/p/$projectId/rankings': typeof ProjectPProjectIdRankingsRoute
   '/p/$projectId/saved': typeof ProjectPProjectIdSavedRoute
   '/p/$projectId/search-performance': typeof ProjectPProjectIdSearchPerformanceRoute
   '/api/ga4/oauth/callback': typeof ApiGa4OauthCallbackRoute
@@ -247,6 +256,7 @@ export interface FileRoutesById {
   '/_app/settings/': typeof AppSettingsIndexRoute
   '/_project/p/$projectId/audit': typeof ProjectPProjectIdAuditRouteWithChildren
   '/_project/p/$projectId/context': typeof ProjectPProjectIdContextRoute
+  '/_project/p/$projectId/rankings': typeof ProjectPProjectIdRankingsRoute
   '/_project/p/$projectId/saved': typeof ProjectPProjectIdSavedRoute
   '/_project/p/$projectId/search-performance': typeof ProjectPProjectIdSearchPerformanceRoute
   '/_project/p/$projectId/settings': typeof ProjectPProjectIdSettingsRouteWithChildren
@@ -276,6 +286,7 @@ export interface FileRouteTypes {
     | '/settings/'
     | '/p/$projectId/audit'
     | '/p/$projectId/context'
+    | '/p/$projectId/rankings'
     | '/p/$projectId/saved'
     | '/p/$projectId/search-performance'
     | '/p/$projectId/settings'
@@ -300,6 +311,7 @@ export interface FileRouteTypes {
     | '/r/$reportId'
     | '/settings'
     | '/p/$projectId/context'
+    | '/p/$projectId/rankings'
     | '/p/$projectId/saved'
     | '/p/$projectId/search-performance'
     | '/api/ga4/oauth/callback'
@@ -328,6 +340,7 @@ export interface FileRouteTypes {
     | '/_app/settings/'
     | '/_project/p/$projectId/audit'
     | '/_project/p/$projectId/context'
+    | '/_project/p/$projectId/rankings'
     | '/_project/p/$projectId/saved'
     | '/_project/p/$projectId/search-performance'
     | '/_project/p/$projectId/settings'
@@ -472,6 +485,13 @@ declare module '@tanstack/react-router' {
       path: '/saved'
       fullPath: '/p/$projectId/saved'
       preLoaderRoute: typeof ProjectPProjectIdSavedRouteImport
+      parentRoute: typeof ProjectPProjectIdRouteRoute
+    }
+    '/_project/p/$projectId/rankings': {
+      id: '/_project/p/$projectId/rankings'
+      path: '/rankings'
+      fullPath: '/p/$projectId/rankings'
+      preLoaderRoute: typeof ProjectPProjectIdRankingsRouteImport
       parentRoute: typeof ProjectPProjectIdRouteRoute
     }
     '/_project/p/$projectId/context': {
@@ -619,6 +639,7 @@ const ProjectPProjectIdSettingsRouteWithChildren =
 interface ProjectPProjectIdRouteRouteChildren {
   ProjectPProjectIdAuditRoute: typeof ProjectPProjectIdAuditRouteWithChildren
   ProjectPProjectIdContextRoute: typeof ProjectPProjectIdContextRoute
+  ProjectPProjectIdRankingsRoute: typeof ProjectPProjectIdRankingsRoute
   ProjectPProjectIdSavedRoute: typeof ProjectPProjectIdSavedRoute
   ProjectPProjectIdSearchPerformanceRoute: typeof ProjectPProjectIdSearchPerformanceRoute
   ProjectPProjectIdSettingsRoute: typeof ProjectPProjectIdSettingsRouteWithChildren
@@ -632,6 +653,7 @@ const ProjectPProjectIdRouteRouteChildren: ProjectPProjectIdRouteRouteChildren =
   {
     ProjectPProjectIdAuditRoute: ProjectPProjectIdAuditRouteWithChildren,
     ProjectPProjectIdContextRoute: ProjectPProjectIdContextRoute,
+    ProjectPProjectIdRankingsRoute: ProjectPProjectIdRankingsRoute,
     ProjectPProjectIdSavedRoute: ProjectPProjectIdSavedRoute,
     ProjectPProjectIdSearchPerformanceRoute:
       ProjectPProjectIdSearchPerformanceRoute,

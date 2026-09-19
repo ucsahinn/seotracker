@@ -337,6 +337,13 @@
       "when": 1789455135151,
       "tag": "0047_reports",
       "breakpoints": true
+    },
+    {
+      "idx": 48,
+      "version": "6",
+      "when": 1789821397483,
+      "tag": "0048_gsc_history",
+      "breakpoints": true
     }
   ]
 }
