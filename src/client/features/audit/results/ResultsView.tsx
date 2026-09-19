@@ -263,7 +263,9 @@ function ResultsHeader({
         })}
       </div>
 
-      <ExportDropdown onExport={onExport} />
+      {/* No export for index coverage yet, and falling through to the pages
+          export downloaded the wrong file without saying so. */}
+      {activeTab === "index" ? null : <ExportDropdown onExport={onExport} />}
     </div>
   );
 }
@@ -368,7 +370,7 @@ function StatsStrip({
     >
       {items.map((item) => (
         <div key={item.label} className="bg-base-100 px-4 py-3">
-          <p className="text-[11px] uppercase tracking-wider text-base-content/50">
+          <p className="text-[11px] font-medium uppercase tracking-wider text-muted">
             {item.label}
           </p>
           <p
@@ -377,7 +379,7 @@ function StatsStrip({
             {item.value}
           </p>
           {item.sub && (
-            <div className="text-xs text-base-content/60 mt-1">{item.sub}</div>
+            <div className="text-xs text-muted mt-1">{item.sub}</div>
           )}
         </div>
       ))}

@@ -1,6 +1,7 @@
 import { GscHistoryRepository } from "@/server/features/gsc/repositories/GscHistoryRepository";
 import type { GscDailyRow } from "@/server/features/gsc/repositories/GscHistoryRepository";
 import { GSC_MAX_ROW_LIMIT } from "@/server/features/gsc/searchAnalytics";
+import { GscNotConnectedError } from "@/server/lib/gscErrors";
 import { GscService } from "@/server/features/gsc/services/GscService";
 import { isExpectedGrantFailure } from "@/server/features/gsc/services/GscService";
 
@@ -83,6 +84,8 @@ type BackfillOutcome = {
   lastDate: string | null;
   /** True when the archive still has older or newer days left to fetch. */
   hasMore: boolean;
+  /** Setup is unfinished, which is not a sync failure and not worth an alert. */
+  notConnected: boolean;
   /**
    * Chunks where the page budget ran out before Google ran out of rows, so
    * those days hold the top queries rather than all of them. Reported rather
@@ -160,6 +163,7 @@ async function backfill(input: {
     earliestDate: state?.earliestDate ?? null,
     lastDate: state?.lastDate ?? null,
     hasMore: false,
+    notConnected: false,
     truncatedChunks: 0,
     error: null,
   };
@@ -196,12 +200,17 @@ async function backfill(input: {
       // A revoked grant or an API outage stops this run, but the days already
       // written stay. Recording the reason keeps the UI honest about why the
       // history is not growing.
-      outcome.error =
-        error instanceof Error
-          ? error.message
-          : "Search Console request failed";
-      if (isExpectedGrantFailure(error)) {
-        outcome.error = "Search Console connection needs to be renewed.";
+      //
+      // The reason is a phrase this app wrote, never the upstream message.
+      // This value is returned rather than thrown, so it bypasses the layer
+      // that strips error text - it used to print Google's raw English
+      // sentence straight into a Turkish page.
+      if (error instanceof GscNotConnectedError) {
+        outcome.notConnected = true;
+      } else if (isExpectedGrantFailure(error)) {
+        outcome.error = "Search Console bağlantısının yenilenmesi gerekiyor.";
+      } else {
+        outcome.error = "Search Console isteği başarısız oldu.";
       }
       break;
     }

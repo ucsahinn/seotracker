@@ -96,7 +96,7 @@ export function RankingsPage({ projectId }: { projectId: string }) {
                 <tr>
                   <td
                     colSpan={5}
-                    className="py-8 text-center text-sm text-base-content/60"
+                    className="py-8 text-center text-sm text-muted"
                   >
                     {sync.data?.rowCount === 0
                       ? "Arşiv henüz boş. Search Console bağlıysa bu sayfa açıldığında dolmaya başlar."
@@ -124,7 +124,7 @@ export function RankingsPage({ projectId }: { projectId: string }) {
                   <td className="text-right tabular-nums">
                     {row.clicks.toLocaleString("tr-TR")}
                   </td>
-                  <td className="text-right tabular-nums text-base-content/60">
+                  <td className="text-right tabular-nums text-muted">
                     {row.days}
                   </td>
                 </tr>
@@ -156,13 +156,14 @@ function ArchiveStatus({
       rowCount: number;
       daysFetched: number;
       hasMore: boolean;
+      notConnected: boolean;
       error: string | null;
     };
   };
 }) {
   if (sync.isLoading) {
     return (
-      <div className="flex items-center gap-2 text-sm text-base-content/60">
+      <div className="flex items-center gap-2 text-sm text-muted">
         <Loader2 className="size-4 animate-spin" />
         Arşiv güncelleniyor…
       </div>
@@ -171,6 +172,17 @@ function ArchiveStatus({
 
   const data = sync.data;
   if (!data) return null;
+
+  // Setup being unfinished is not a sync failure, so it gets a plain
+  // instruction rather than a warning alert.
+  if (data.notConnected) {
+    return (
+      <p className="text-sm text-muted">
+        Sıralama arşivi Search Console verisinden doldurulur. Bağladığınızda
+        geçmiş günler kendiliğinden birikmeye başlar.
+      </p>
+    );
+  }
 
   if (data.error) {
     return (
@@ -184,7 +196,7 @@ function ArchiveStatus({
   if (data.rowCount === 0) return null;
 
   return (
-    <p className="text-xs text-base-content/55">
+    <p className="text-xs text-muted">
       Arşiv {data.earliestDate} – {data.lastDate} arasını kapsıyor,{" "}
       {data.rowCount.toLocaleString("tr-TR")} satır.
       {data.daysFetched > 0
@@ -211,7 +223,7 @@ function QueryHistoryCard({
 }) {
   if (loading) {
     return (
-      <div className="flex items-center gap-2 rounded-lg border border-base-300 p-4 text-sm text-base-content/60">
+      <div className="flex items-center gap-2 rounded-lg border border-base-300 p-4 text-sm text-muted">
         <Loader2 className="size-4 animate-spin" />
         Geçmiş yükleniyor…
       </div>
@@ -220,7 +232,7 @@ function QueryHistoryCard({
 
   if (rows.length === 0) {
     return (
-      <div className="rounded-lg border border-base-300 p-4 text-sm text-base-content/60">
+      <div className="rounded-lg border border-base-300 p-4 text-sm text-muted">
         Bu sorgu için kayıtlı gün yok.
       </div>
     );
@@ -241,7 +253,7 @@ function QueryHistoryCard({
         <span
           className={`inline-flex items-center gap-1 text-sm font-semibold ${
             Math.abs(delta) < 0.1
-              ? "text-base-content/60"
+              ? "text-muted"
               : improved
                 ? "text-success"
                 : "text-error"
@@ -256,7 +268,7 @@ function QueryHistoryCard({
         </span>
       </div>
       <PositionSparkline rows={rows} />
-      <p className="text-xs text-base-content/55">
+      <p className="text-xs text-muted">
         {first.date} – {last.date} · {rows.length} gün kayıtlı
       </p>
     </div>
@@ -306,7 +318,7 @@ function PositionSparkline({
           strokeLinecap="round"
         />
       </svg>
-      <div className="flex justify-between text-xs text-base-content/45">
+      <div className="flex justify-between text-xs text-muted">
         <span>En iyi {best.toFixed(1)}</span>
         <span>En kötü {worst.toFixed(1)}</span>
       </div>

@@ -197,7 +197,7 @@ function TotalCard({
     // Same shape as the dashboard's MetricTile: these are the same four
     // numbers, so they should not look like two different components.
     <div className="flex min-w-0 flex-col gap-1.5 px-5 py-4">
-      <p className="truncate text-xs font-medium uppercase tracking-wider text-[var(--text-subtle)]">
+      <p className="truncate text-xs font-medium uppercase tracking-wider text-muted">
         {label}
       </p>
       <div className="flex items-baseline gap-2">
@@ -237,7 +237,7 @@ export function DimensionTable({
       className="table table-zebra table-sm"
       wrapperClassName="overflow-x-auto"
       empty={
-        <p className="p-6 text-sm text-base-content/60">
+        <p className="p-6 text-sm text-muted">
           No data for this period yet. Search Console data trails by a few days.
         </p>
       }
@@ -318,7 +318,7 @@ export function StrikingDistanceTable({
 
   if (rows.length === 0) {
     return (
-      <p className="p-6 text-sm text-base-content/60">
+      <p className="p-6 text-sm text-muted">
         No striking-distance queries in this period. These are queries ranking
         at positions 5 to 20, where an improvement is most likely to move
         traffic.
@@ -329,7 +329,7 @@ export function StrikingDistanceTable({
   return (
     <>
       <div className="p-4">
-        <p className="mb-3 text-sm text-base-content/60">
+        <p className="mb-3 text-sm text-muted">
           Queries ranking at positions 5 to 20, sorted by impressions. Improve
           the listed page to move them into the top results.
         </p>

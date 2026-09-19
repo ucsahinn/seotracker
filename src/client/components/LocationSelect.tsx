@@ -118,11 +118,11 @@ export function LocationSelect({
       {open ? (
         <div className="fixed z-30 mt-2 w-full max-w-56 rounded-box border border-base-300 bg-base-100 p-2 shadow-lg">
           <label className="flex items-center gap-2 rounded-lg border border-base-300 px-3 py-2 focus-within:border-primary">
-            <Search className="size-4 shrink-0 text-base-content/50" />
+            <Search className="size-4 shrink-0 text-muted" />
             <input
               ref={inputRef}
               type="text"
-              className="grow min-w-0 bg-transparent text-sm outline-none placeholder:text-base-content/40"
+              className="grow min-w-0 bg-transparent text-sm outline-none placeholder:text-muted"
               placeholder="Ülke ara"
               value={query}
               onChange={(event) => {
@@ -139,7 +139,7 @@ export function LocationSelect({
             className="menu mt-2 max-h-64 w-full flex-nowrap overflow-y-auto p-0"
           >
             {filtered.length === 0 ? (
-              <li className="w-full break-all px-3 py-2 text-sm text-base-content/50">
+              <li className="w-full break-all px-3 py-2 text-sm text-muted">
                 No countries match “{query.trim()}”
               </li>
             ) : (

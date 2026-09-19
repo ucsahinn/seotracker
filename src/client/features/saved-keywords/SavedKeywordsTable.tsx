@@ -74,7 +74,7 @@ export function SavedKeywordsTable({
           <SortableHeader column={column} label="Son alınma" />
         ),
         cell: ({ getValue }) => (
-          <span className="text-xs text-base-content/55">
+          <span className="text-xs text-muted">
             {formatSavedKeywordDate(getValue())}
           </span>
         ),

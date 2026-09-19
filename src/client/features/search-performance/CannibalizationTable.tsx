@@ -59,7 +59,7 @@ export function CannibalizationTable({ projectId }: { projectId: string }) {
 
   return (
     <div className="space-y-3 p-4">
-      <p className="text-sm text-base-content/60">
+      <p className="text-sm text-muted">
         {formatNumber(data.rows.length)} sorguda birden fazla sayfanız yarışıyor
         ve bu yüzden{" "}
         <span className="font-medium text-base-content">
@@ -71,7 +71,7 @@ export function CannibalizationTable({ projectId }: { projectId: string }) {
       </p>
 
       {data.truncated ? (
-        <p className="text-xs text-base-content/55">
+        <p className="text-xs text-muted">
           Search Console tek seferde sınırlı satır döndürür ve bu sınıra
           takıldık. Listede olmayan çakışmalar olabilir.
         </p>
@@ -103,7 +103,7 @@ function QueryRow({
         aria-expanded={open}
       >
         <ChevronRight
-          className={`size-4 shrink-0 text-base-content/40 transition-transform ${
+          className={`size-4 shrink-0 text-muted transition-transform ${
             open ? "rotate-90" : ""
           }`}
           aria-hidden
@@ -111,16 +111,14 @@ function QueryRow({
         <span className="min-w-0 flex-1 truncate text-sm font-medium">
           {row.query}
         </span>
-        <span className="shrink-0 text-xs text-base-content/55">
-          {competing} sayfa
-        </span>
+        <span className="shrink-0 text-xs text-muted">{competing} sayfa</span>
         <span
-          className="shrink-0 text-xs text-base-content/55"
+          className="shrink-0 text-xs text-muted"
           title="Google'ın tercih ettiği sayfa dışında kalan gösterim payı"
         >
           {formatPercent(row.splitShare, 0)} bölünme
         </span>
-        <span className="w-20 shrink-0 text-right text-xs text-base-content/55">
+        <span className="w-20 shrink-0 text-right text-xs text-muted">
           {formatNumber(row.impressions)} gösterim
         </span>
       </button>
@@ -165,7 +163,7 @@ function PageRow({
           </span>
           {primary ? (
             <span
-              className="badge badge-sm shrink-0 border-success/30 bg-success/10 text-success"
+              className="badge badge-sm shrink-0 border-success/30 bg-success/10 text-[var(--ink-success)]"
               title="Google bu sorguda en çok bu sayfayı gösteriyor"
             >
               Tercih edilen

@@ -71,7 +71,7 @@ function ReportTemplatesPage() {
         <Link
           to="/p/$projectId/reports"
           params={{ projectId }}
-          className="inline-flex items-center gap-1 text-sm text-base-content/60 transition-colors hover:text-base-content"
+          className="inline-flex items-center gap-1 text-sm text-muted transition-colors hover:text-base-content"
         >
           <ChevronLeft className="size-4" />
           Reports

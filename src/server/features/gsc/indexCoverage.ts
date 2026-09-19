@@ -87,14 +87,30 @@ function sameUrl(a: string, b: string): boolean {
   return normalizeUrl(a) === normalizeUrl(b);
 }
 
-function isStale(checkedAt: string | null, now: Date): boolean {
-  if (!checkedAt) return true;
-  // SQLite's CURRENT_TIMESTAMP carries no zone marker; treat that shape as UTC.
-  const ms = Date.parse(
-    /^\d{4}-\d{2}-\d{2} /.test(checkedAt)
-      ? `${checkedAt.replace(" ", "T")}Z`
-      : checkedAt,
+/** SQLite's CURRENT_TIMESTAMP carries no zone marker; treat that shape as UTC. */
+function parseStamp(value: string | null): number {
+  if (!value) return Number.NaN;
+  return Date.parse(
+    /^\d{4}-\d{2}-\d{2} /.test(value) ? `${value.replace(" ", "T")}Z` : value,
   );
+}
+
+/**
+ * Is this row due for another ask?
+ *
+ * `error` is part of the answer, not a detail. An errored inspection counts as
+ * pending in `summarizeCoverage`, so if it did not also count as due the two
+ * would disagree: the tile would say one page is waiting, the button would
+ * find nothing to do, and the row would sit there for a fortnight while the
+ * UI insisted it was queued.
+ */
+function isStale(
+  checkedAt: string | null,
+  error: string | null,
+  now: Date,
+): boolean {
+  if (error) return true;
+  const ms = parseStamp(checkedAt);
   if (Number.isNaN(ms)) return true;
   return now.getTime() - ms > STALE_AFTER_DAYS * 86_400_000;
 }
@@ -124,7 +140,13 @@ export function summarizeCoverage(
       pending += 1;
       continue;
     }
-    if (!lastCheckedAt || row.checkedAt! > lastCheckedAt) {
+    // Parsed, not compared as strings. Two formats live in this column: the
+    // SQLite default "2026-09-19 22:30:00" and the ISO form a refresh writes.
+    // A space sorts before "T", so the later of the two could read as older.
+    if (
+      !lastCheckedAt ||
+      parseStamp(row.checkedAt) > parseStamp(lastCheckedAt)
+    ) {
       lastCheckedAt = row.checkedAt;
     }
     // "PASS" is Google's word for "this URL is on Google". NEUTRAL is
@@ -161,9 +183,10 @@ export function selectDueUrls(
   stored: Map<string, CoverageRow>,
   now: Date,
 ): { batch: string[]; remaining: number } {
-  const due = urls.filter((url) =>
-    isStale(stored.get(url)?.checkedAt ?? null, now),
-  );
+  const due = urls.filter((url) => {
+    const row = stored.get(url);
+    return isStale(row?.checkedAt ?? null, row?.error ?? null, now);
+  });
   return {
     batch: due.slice(0, MAX_PER_RUN),
     remaining: Math.max(due.length - MAX_PER_RUN, 0),

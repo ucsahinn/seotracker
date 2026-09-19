@@ -85,7 +85,7 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
 
   return (
     <section className="space-y-3">
-      <h2 className="text-sm font-medium text-base-content/50">Genel</h2>
+      <h2 className="text-sm font-medium text-muted">Genel</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <label className="flex flex-col gap-1.5 text-sm">
           <span className="font-medium">Ad</span>
@@ -100,8 +100,7 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
 
         <label className="flex flex-col gap-1.5 text-sm">
           <span className="font-medium">
-            Alan adı{" "}
-            <span className="text-base-content/50">(isteğe bağlı)</span>
+            Alan adı <span className="text-muted">(isteğe bağlı)</span>
           </span>
           <input
             type="text"
@@ -115,7 +114,7 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
 
         <div className="flex flex-col gap-1.5">
           <ProjectMarketFields value={market} onChange={setMarket} />
-          <span className="text-xs text-base-content/50">
+          <span className="text-xs text-muted">
             Kaydettiğiniz anahtar kelimeler bu ülke ve dile göre saklanır.
           </span>
         </div>
@@ -160,9 +159,7 @@ function DangerSection({
 
   return (
     <section className="space-y-3 border-t border-base-300 pt-8">
-      <h2 className="text-sm font-medium text-base-content/50">
-        Projeyi arşivle
-      </h2>
+      <h2 className="text-sm font-medium text-muted">Projeyi arşivle</h2>
 
       {confirming ? (
         <div className="space-y-3">
@@ -195,7 +192,7 @@ function DangerSection({
         </div>
       ) : (
         <div className="flex items-center justify-between gap-4">
-          <p className="text-sm text-base-content/60">
+          <p className="text-sm text-muted">
             {canArchive
               ? "Bu projeyi arşivleyerek çalışma alanınızdan kaldırabilirsiniz."
               : "Tek projenizi arşivleyemezsiniz."}

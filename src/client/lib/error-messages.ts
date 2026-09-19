@@ -1,35 +1,31 @@
+import { formatNumber } from "@/client/lib/format";
 import { MAX_AUDIT_PAGES } from "@/shared/audit-limits";
 import { isErrorCode, type ErrorCode } from "@/shared/error-codes";
 
 const STANDARD_MESSAGES: Record<ErrorCode, string> = {
-  UNAUTHENTICATED: "Please sign in and try again.",
+  UNAUTHENTICATED: "Lütfen oturum açıp tekrar deneyin.",
   AUTH_CONFIG_MISSING:
-    "seotracker auth is not configured. Follow the README setup steps for Cloudflare Access.",
-  PAYMENT_REQUIRED:
-    "An active hosted subscription is required before you can use seotracker.",
-  INSUFFICIENT_CREDITS:
-    "You've run out of credits. Add more credits or upgrade your plan to continue.",
-  FORBIDDEN: "You do not have access to this resource.",
-  NOT_FOUND: "The requested resource was not found.",
+    "Kimlik doğrulama yapılandırılmamış. Kurulum adımları için docs/SELF_HOSTING_DOCKER.md dosyasına bakın.",
+  PAYMENT_REQUIRED: "Bu özellik bu kurulumda kullanılamıyor.",
+  INSUFFICIENT_CREDITS: "Bu özellik bu kurulumda kullanılamıyor.",
+  FORBIDDEN: "Bu kaynağa erişiminiz yok.",
+  NOT_FOUND: "İstenen kayıt bulunamadı.",
   AUDIT_CAPACITY_REACHED:
-    "You've reached audit capacity for your account. Delete old audits from your projects to start a new one.",
-  AUDIT_PAGE_LIMIT_EXCEEDED: `Audits are limited to ${MAX_AUDIT_PAGES.toLocaleString()} pages.`,
+    "Denetim kapasitesi doldu. Yeni bir denetim başlatmak için eski denetimleri silin.",
+  AUDIT_PAGE_LIMIT_EXCEEDED: `Bir denetim en çok ${formatNumber(MAX_AUDIT_PAGES)} sayfa tarayabilir.`,
   AUDIT_ALREADY_RUNNING:
-    "You've reached the limit of audits running at once. Wait for one to finish or delete it before starting another.",
-  VALIDATION_ERROR: "Please check your input and try again.",
-  CRAWL_TARGET_BLOCKED: "This crawl target is blocked by security policy.",
-  BACKLINKS_BILLING_ISSUE:
-    "The connected DataForSEO account has a billing or balance issue.",
-  AI_SEARCH_BILLING_ISSUE:
-    "The connected DataForSEO account has a billing or balance issue.",
-  DATAFORSEO_AUTH_FAILED:
-    "DataForSEO rejected the API key. Check that DATAFORSEO_API_KEY is the base64 of your DataForSEO login:password.",
-  RATE_LIMITED: "Too many requests. Please wait and try again.",
+    "Aynı anda çalışabilecek denetim sayısına ulaştınız. Birinin bitmesini bekleyin ya da silin.",
+  VALIDATION_ERROR: "Girdiğiniz bilgileri kontrol edip tekrar deneyin.",
+  CRAWL_TARGET_BLOCKED: "Bu adres güvenlik politikası gereği taranamaz.",
+  BACKLINKS_BILLING_ISSUE: "Bu özellik bu kurulumda kullanılamıyor.",
+  AI_SEARCH_BILLING_ISSUE: "Bu özellik bu kurulumda kullanılamıyor.",
+  DATAFORSEO_AUTH_FAILED: "Bu özellik bu kurulumda kullanılamıyor.",
+  RATE_LIMITED: "Çok fazla istek gönderildi. Biraz bekleyip tekrar deneyin.",
   UPSTREAM_UNAVAILABLE:
-    "The data provider is temporarily unavailable. Please retry in a moment.",
-  CONFLICT: "This request conflicts with existing data.",
+    "Veri kaynağı şu an yanıt vermiyor. Birazdan tekrar deneyin.",
+  CONFLICT: "Bu istek mevcut kayıtlarla çakışıyor.",
   INTERNAL_ERROR:
-    "An unexpected error occurred. Please check server logs and try again.",
+    "Beklenmeyen bir hata oluştu. Konteyner günlüğüne bakıp tekrar deneyin.",
 };
 
 // Setup errors cross the wire as "CODE: detail" (see toClientError) so the

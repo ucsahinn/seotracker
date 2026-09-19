@@ -37,7 +37,7 @@ function ProjectsPage() {
         <div className="flex items-start justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold tracking-tight">Projeler</h1>
-            <p className="mt-1 text-sm text-base-content/60">
+            <p className="mt-1 text-sm text-muted">
               Each project has its own Search Console, rank tracking, and
               audits.
             </p>
@@ -73,16 +73,16 @@ function ProjectsPage() {
                         {project.name}
                       </span>
                       {project.id === currentProjectId ? (
-                        <span className="shrink-0 rounded-full bg-base-300/70 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-base-content/60">
+                        <span className="shrink-0 rounded-full bg-base-300/70 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-muted">
                           Current
                         </span>
                       ) : null}
                     </span>
-                    <span className="truncate text-xs text-base-content/50">
+                    <span className="truncate text-xs text-muted">
                       {project.domain ?? "Site belirlenmemiş"}
                     </span>
                   </span>
-                  <ChevronRight className="size-4 shrink-0 text-base-content/40" />
+                  <ChevronRight className="size-4 shrink-0 text-muted" />
                 </Link>
               </li>
             ))}
@@ -123,7 +123,7 @@ function ArchivedProjects() {
 
   return (
     <section className="space-y-3">
-      <h2 className="text-sm font-medium text-base-content/50">Arşivlendi</h2>
+      <h2 className="text-sm font-medium text-muted">Arşivlendi</h2>
       <ul className="divide-y divide-base-300 overflow-hidden rounded-box border border-base-300">
         {archived.map((project) => (
           <li
@@ -134,7 +134,7 @@ function ArchivedProjects() {
               <span className="truncate font-medium text-base-content/70">
                 {project.name}
               </span>
-              <span className="truncate text-xs text-base-content/50">
+              <span className="truncate text-xs text-muted">
                 {project.domain ?? "Site belirlenmemiş"}
               </span>
             </span>

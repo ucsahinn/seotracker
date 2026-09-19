@@ -85,11 +85,11 @@ function IssueDeltaList({
 }) {
   return (
     <div className="space-y-2">
-      <h3 className="text-xs font-semibold uppercase tracking-wide text-base-content/50">
+      <h3 className="text-xs font-semibold uppercase tracking-wide text-muted">
         {title}
       </h3>
       {items.length === 0 ? (
-        <p className="text-sm text-base-content/50">{emptyLabel}</p>
+        <p className="text-sm text-muted">{emptyLabel}</p>
       ) : (
         <ul className="space-y-1.5">
           {items.slice(0, 4).map((item) => (

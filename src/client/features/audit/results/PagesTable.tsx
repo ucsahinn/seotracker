@@ -81,7 +81,7 @@ function hasAnalyzedContent(row: PageRow): boolean {
   return row.fetchClass === "ok" && !isRedirect(row);
 }
 
-const EmptyCell = () => <span className="text-xs text-base-content/40">-</span>;
+const EmptyCell = () => <span className="text-xs text-muted">-</span>;
 
 function buildPagesColumns({
   canonicalHost,
@@ -120,7 +120,7 @@ function buildPagesColumns({
         if (isRedirect(row.original)) {
           const target = row.original.redirectUrl;
           return (
-            <span className="text-xs text-base-content/60">
+            <span className="text-xs text-muted">
               → {target ? displayPath(target, canonicalHost) : "redirect"}
             </span>
           );

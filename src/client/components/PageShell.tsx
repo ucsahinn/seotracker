@@ -61,7 +61,7 @@ export function PageHeader({
             {title}
           </h1>
           {description ? (
-            <p className="text-sm text-[var(--text-muted)]">{description}</p>
+            <p className="text-sm text-muted">{description}</p>
           ) : null}
         </div>
         {actions ? (

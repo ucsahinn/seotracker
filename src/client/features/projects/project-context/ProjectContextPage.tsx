@@ -184,10 +184,10 @@ function ProseSections({
               {section ? (
                 <Provenance by={section.updatedBy} at={section.updatedAt} />
               ) : (
-                <span className="text-xs text-base-content/40">Boş</span>
+                <span className="text-xs text-muted">Boş</span>
               )}
             </div>
-            <p className="text-xs text-base-content/50">{SECTION_HINTS[key]}</p>
+            <p className="text-xs text-muted">{SECTION_HINTS[key]}</p>
             <textarea
               id={`context-${key}`}
               value={draftOf(key)}
@@ -385,7 +385,7 @@ function ResearchLog({
             >
               <div className="min-w-0 space-y-0.5">
                 <p className="text-sm text-base-content/80">{entry.summary}</p>
-                <div className="flex flex-wrap items-baseline gap-x-2 text-xs text-base-content/40">
+                <div className="flex flex-wrap items-baseline gap-x-2 text-xs text-muted">
                   <span>{formatDate(entry.entryDate)}</span>
                   <Provenance by={entry.createdBy} />
                 </div>

@@ -28,7 +28,7 @@ export function LighthouseIssueRow({ issue }: { issue: LighthouseIssue }) {
         <td className="py-3 pl-4 pr-2">
           {hasDetails ? (
             <ChevronRight
-              className={`size-3.5 text-base-content/40 transition-transform ${open ? "rotate-90" : ""}`}
+              className={`size-3.5 text-muted transition-transform ${open ? "rotate-90" : ""}`}
             />
           ) : null}
         </td>
@@ -44,20 +44,18 @@ export function LighthouseIssueRow({ issue }: { issue: LighthouseIssue }) {
           <div>
             <p className="font-medium text-sm leading-snug">{issue.title}</p>
             {issue.displayValue ? (
-              <p className="text-xs text-base-content/50 mt-0.5">
-                {issue.displayValue}
-              </p>
+              <p className="text-xs text-muted mt-0.5">{issue.displayValue}</p>
             ) : null}
           </div>
         </td>
         <td className="py-3 pr-3 hidden sm:table-cell">
-          <span className="text-xs text-base-content/50">
+          <span className="text-xs text-muted">
             {categoryLabel(issue.category)}
           </span>
         </td>
         <td className="py-3 pr-3 hidden md:table-cell text-right">
           {issue.impactMs != null || issue.impactBytes != null ? (
-            <span className="text-xs tabular-nums text-base-content/50">
+            <span className="text-xs tabular-nums text-muted">
               {issue.impactMs ? formatMs(issue.impactMs) : null}
               {issue.impactMs && issue.impactBytes ? " / " : null}
               {issue.impactBytes ? formatBytes(issue.impactBytes) : null}
@@ -66,7 +64,7 @@ export function LighthouseIssueRow({ issue }: { issue: LighthouseIssue }) {
         </td>
         <td className="py-3 pr-4 text-right">
           {issue.score != null ? (
-            <span className="text-xs tabular-nums text-base-content/50">
+            <span className="text-xs tabular-nums text-muted">
               {issue.score}
             </span>
           ) : null}
@@ -83,7 +81,7 @@ export function LighthouseIssueRow({ issue }: { issue: LighthouseIssue }) {
               ) : null}
               {issue.items.length > 0 ? (
                 <details className="text-sm">
-                  <summary className="cursor-pointer font-medium text-base-content/60 text-xs">
+                  <summary className="cursor-pointer font-medium text-muted text-xs">
                     Etkilenen öğeler ({issue.items.length})
                   </summary>
                   <div className="mt-2 space-y-1.5">
@@ -158,10 +156,10 @@ function renderInlineMarkdown(markdown: string): ReactNode {
 
 function severityBadgeClass(severity: "critical" | "warning" | "info") {
   if (severity === "critical") {
-    return "border-error/30 bg-error/10 text-error/80";
+    return "border-error/30 bg-error/10 text-[var(--ink-error)]";
   }
   if (severity === "warning") {
-    return "border-warning/35 bg-warning/10 text-warning/80";
+    return "border-warning/35 bg-warning/10 text-[var(--ink-warning)]";
   }
   return "border-info/30 bg-info/10 text-info/80";
 }

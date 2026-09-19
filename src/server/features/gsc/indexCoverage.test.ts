@@ -86,6 +86,32 @@ describe("summarizeCoverage", () => {
   });
 });
 
+// The two functions have to agree on what "waiting" means. When they did not,
+// the tile said one page was pending, the button found nothing to do, and the
+// row sat there for a fortnight while the UI insisted it was queued.
+describe("summarizeCoverage and selectDueUrls agree on what is pending", () => {
+  it("treats an errored row as both pending and due, however fresh it is", () => {
+    const urls = ["https://a.test/"];
+    const store = storeOf(
+      checked("https://a.test/", {
+        error: "quota",
+        checkedAt: "2026-06-30 11:59:00",
+      }),
+    );
+
+    expect(summarizeCoverage(urls, store).pending).toBe(1);
+    expect(selectDueUrls(urls, store, NOW).batch).toEqual(["https://a.test/"]);
+  });
+
+  it("treats an answered row as neither", () => {
+    const urls = ["https://a.test/"];
+    const store = storeOf(checked("https://a.test/"));
+
+    expect(summarizeCoverage(urls, store).pending).toBe(0);
+    expect(selectDueUrls(urls, store, NOW).batch).toEqual([]);
+  });
+});
+
 describe("selectDueUrls", () => {
   it("asks about nothing when every page was checked recently", () => {
     const result = selectDueUrls(

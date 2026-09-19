@@ -1,3 +1,4 @@
+import { getErrorCode } from "@/client/lib/error-messages";
 import { formatDateTime } from "@/client/lib/format";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useCallback } from "react";
@@ -77,6 +78,12 @@ function AuditDetail({
   const statusQuery = useQuery({
     queryKey: ["audit-status", projectId, auditId],
     queryFn: () => getAuditStatus({ data: { projectId, auditId } }),
+    // A missing audit is a settled answer, not a blip. Retrying it three
+    // times with backoff left the pane blank for about seven seconds before
+    // the "this audit is gone" message appeared, because between attempts the
+    // query is neither loading nor errored.
+    retry: (failureCount, error) =>
+      getErrorCode(error) === "NOT_FOUND" ? false : failureCount < 3,
     refetchInterval: (query) => {
       const data = query.state.data;
       return data?.status === "running" ? 3000 : false;
@@ -153,7 +160,7 @@ function AuditDetail({
             )}
           </div>
           {status && (
-            <p className="text-sm text-base-content/60">
+            <p className="text-sm text-muted">
               Site denetimi &middot; {formatStartedAt(status.startedAt)}
             </p>
           )}
@@ -312,7 +319,7 @@ function ProgressCard({
                 {status.pagesCrawled} / {status.pagesTotal} sayfa
               </span>
             )}
-            <span className="text-base-content/60">{progress}%</span>
+            <span className="text-muted">{progress}%</span>
           </div>
         </div>
       </div>
@@ -323,7 +330,7 @@ function ProgressCard({
             <h3 className="text-sm font-medium text-base-content/70">
               Taranan sayfalar ({crawledUrls.length})
             </h3>
-            <p className="text-xs text-base-content/50">
+            <p className="text-xs text-muted">
               Güncellendi{" "}
               {formatDateTime(new Date(crawledUrls[0].crawledAt).toISOString())}
             </p>
@@ -374,7 +381,7 @@ function ProgressRow({
       <div className="flex items-center gap-3 shrink-0">
         {entry.title && (
           <span
-            className="text-xs text-base-content/40 truncate max-w-[260px] hidden md:block"
+            className="text-xs text-muted truncate max-w-[260px] hidden md:block"
             title={entry.title}
           >
             {entry.title}

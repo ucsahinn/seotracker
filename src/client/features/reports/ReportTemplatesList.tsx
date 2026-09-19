@@ -14,7 +14,7 @@ export function ReportTemplatesList({
 }) {
   if (templates.length === 0) {
     return (
-      <p className="rounded-lg border border-dashed border-base-300 px-4 py-6 text-sm text-base-content/60">
+      <p className="rounded-lg border border-dashed border-base-300 px-4 py-6 text-sm text-muted">
         Henüz şablon yok. Şablon, bir rapor türü için yeniden kullanılabilir bir
         tariftir: kime yazıldığı, hangi bölümlerden oluştuğu, nasıl bir dil
         kullandığı.

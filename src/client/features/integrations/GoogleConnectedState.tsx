@@ -26,12 +26,12 @@ export function GoogleConnectedState({
           {property || detail}
         </p>
         {detail ? (
-          <p className="mt-1 text-xs text-base-content/50">
+          <p className="mt-1 text-xs text-muted">
             ID {detail.replace(/^properties\//, "")}
           </p>
         ) : null}
         {email ? (
-          <p className="mt-1 break-all text-sm text-base-content/60">{email}</p>
+          <p className="mt-1 break-all text-sm text-muted">{email}</p>
         ) : null}
       </div>
       {canManage || canManageAccounts ? (

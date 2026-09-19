@@ -47,7 +47,7 @@ export function LighthouseIssuesHeader({
         <button className="btn btn-ghost btn-sm px-2" onClick={onBack}>
           &larr; {backLabel} sayfasına dön
         </button>
-        <span className="text-xs text-base-content/60">
+        <span className="text-xs text-muted">
           {scannedAt
             ? `${formatDateTime(scannedAt)} tarihinde tarandı`
             : "Sorunlar okunuyor…"}
@@ -68,11 +68,11 @@ export function LighthouseIssuesHeader({
             fieldData={fieldData}
           />
           <div className="flex flex-wrap gap-2 text-xs">
-            <span className="badge border border-error/30 bg-error/10 text-error/80 gap-1">
+            <span className="badge border border-error/30 bg-error/10 text-[var(--ink-error)] gap-1">
               <FileWarning className="size-3" />
               Kritik {severityCounts.critical}
             </span>
-            <span className="badge border border-warning/30 bg-warning/10 text-warning/80 gap-1">
+            <span className="badge border border-warning/30 bg-warning/10 text-[var(--ink-warning)] gap-1">
               <TriangleAlert className="size-3" />
               Uyarı {severityCounts.warning}
             </span>
@@ -159,7 +159,7 @@ function CategoryTabs({
           className={`pb-2 border-b-2 text-sm font-medium transition-colors ${
             category === tab
               ? "border-primary text-base-content"
-              : "border-transparent text-base-content/60 hover:text-base-content"
+              : "border-transparent text-muted hover:text-base-content"
           }`}
           onClick={() => onCategoryChange(tab)}
         >
@@ -364,11 +364,11 @@ export function LighthouseIssueList({
   emptyMessage?: string;
 }) {
   if (isLoading) {
-    return <p className="text-sm text-base-content/60">Sorunlar yükleniyor…</p>;
+    return <p className="text-sm text-muted">Sorunlar yükleniyor…</p>;
   }
   if (!issues.length) {
     return (
-      <p className="text-sm text-base-content/60">
+      <p className="text-sm text-muted">
         {emptyMessage ?? "Bu kategoride işlem gerektiren sorun yok."}
       </p>
     );
@@ -384,7 +384,7 @@ export function LighthouseIssueList({
         <col className="w-14" />
       </colgroup>
       <thead>
-        <tr className="text-xs text-base-content/50 uppercase tracking-wide border-b border-base-300">
+        <tr className="text-xs text-muted uppercase tracking-wide border-b border-base-300">
           <th />
           <th className="font-medium">Önem</th>
           <th className="font-medium">Sorun</th>

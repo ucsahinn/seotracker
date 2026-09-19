@@ -128,12 +128,12 @@ export function GooglePropertyPicker({
               {selected?.name ?? "Bir kaynak seçin…"}
             </span>
             {selectedAccount ? (
-              <span className="mt-0.5 block truncate text-xs text-base-content/50">
+              <span className="mt-0.5 block truncate text-xs text-muted">
                 {accountLabel(selectedAccount)}
               </span>
             ) : null}
           </span>
-          <ChevronDown className="size-4 shrink-0 text-base-content/50" />
+          <ChevronDown className="size-4 shrink-0 text-muted" />
         </button>
         {open ? (
           <div
@@ -144,7 +144,7 @@ export function GooglePropertyPicker({
             onKeyDown={(event) => handlePropertyKeyDown(event, close)}
           >
             <label className="flex items-center gap-2 border-b border-base-300 px-3.5 py-3">
-              <Search className="size-4 shrink-0 text-base-content/40" />
+              <Search className="size-4 shrink-0 text-muted" />
               <input
                 autoFocus
                 type="search"
@@ -159,7 +159,7 @@ export function GooglePropertyPicker({
               {loading ? (
                 <p
                   role="status"
-                  className="flex items-center gap-2 p-3 text-sm text-base-content/60"
+                  className="flex items-center gap-2 p-3 text-sm text-muted"
                 >
                   <span className="loading loading-spinner loading-xs" />
                   Loading properties…
@@ -184,7 +184,7 @@ export function GooglePropertyPicker({
                       role="group"
                       aria-label={accountLabel(account)}
                     >
-                      <div className="flex items-center justify-between gap-2 px-2 py-2 text-xs font-medium text-base-content/55">
+                      <div className="flex items-center justify-between gap-2 px-2 py-2 text-xs font-medium text-muted">
                         <span className="min-w-0 break-all">
                           {accountLabel(account)}
                         </span>
@@ -200,9 +200,7 @@ export function GooglePropertyPicker({
                       </div>
                       {account.requiresReconnect ? (
                         <div className="flex flex-wrap items-center justify-between gap-2 px-2 pb-2 text-sm">
-                          <span className="text-base-content/60">
-                            Connection expired
-                          </span>
+                          <span className="text-muted">Connection expired</span>
                           <button
                             type="button"
                             className="btn btn-ghost btn-xs"
@@ -216,7 +214,7 @@ export function GooglePropertyPicker({
                         </div>
                       ) : account.unavailable ? (
                         <div className="flex flex-wrap items-center justify-between gap-2 px-2 pb-2 text-sm">
-                          <span className="text-base-content/60">
+                          <span className="text-muted">
                             Kaynaklar yüklenemedi
                           </span>
                           <button
@@ -228,7 +226,7 @@ export function GooglePropertyPicker({
                           </button>
                         </div>
                       ) : account.properties.length === 0 ? (
-                        <p className="px-2 pb-3 text-sm text-base-content/50">
+                        <p className="px-2 pb-3 text-sm text-muted">
                           No properties available
                         </p>
                       ) : (
@@ -259,7 +257,7 @@ export function GooglePropertyPicker({
                                   {property.name}
                                 </span>
                                 {property.detail ? (
-                                  <span className="mt-0.5 block text-xs text-base-content/50">
+                                  <span className="mt-0.5 block text-xs text-muted">
                                     {property.detail}
                                   </span>
                                 ) : null}
@@ -279,7 +277,7 @@ export function GooglePropertyPicker({
                     </div>
                   ))}
                   {filtered.length === 0 ? (
-                    <p className="p-3 text-sm text-base-content/50">
+                    <p className="p-3 text-sm text-muted">
                       {query
                         ? "Eşleşen kaynak veya hesap yok"
                         : "Kaynakları bulmak için bir Google hesabı ekleyin."}

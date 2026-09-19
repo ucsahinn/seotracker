@@ -249,7 +249,7 @@ export function SearchConsoleConnectionCard({
         </p>
       ) : null}
       {connectionQuery.isSuccess && !selfHostedNeedsSetup && !canManage ? (
-        <p className="mt-3 text-sm text-base-content/60">
+        <p className="mt-3 text-sm text-muted">
           Ask an organization owner or admin to change this project's
           connection.
         </p>

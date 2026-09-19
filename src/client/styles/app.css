@@ -14,6 +14,12 @@
   /* One container width for every page. The app used nine different max-widths,
      so the same content jumped between 672px and 1280px as you moved around. */
   --container-page: 84rem;
+
+  /* Registered as colours so call sites read `text-muted`, not a var() in
+     brackets. The indirection is deliberate: these point at --text-* below,
+     which are redefined per theme, so the utility follows the theme. */
+  --color-muted: var(--text-muted);
+  --color-subtle: var(--text-subtle);
 }
 
 /* -------------------------------------------------------------------------
@@ -50,6 +56,15 @@
   --text-subtle: oklch(23% 0.012 265 / 0.62);
   /* A control's perimeter has to be visible; a panel's does not. */
   --control-border: oklch(0% 0 0 / 0.42);
+
+  /* Ink for a tinted chip. Painting the fill colour as the text on a 10% wash
+     of itself lands around 2.5:1 in light mode - the severity chips were the
+     least legible text on the screen. These are the same hues, darkened until
+     they carry. */
+  --ink-success: oklch(40% 0.11 155);
+  --ink-warning: oklch(42% 0.1 70);
+  --ink-error: oklch(44% 0.16 25);
+  --ink-info: oklch(42% 0.11 240);
 }
 
 html[data-theme="seotracker-dark"] {
@@ -59,8 +74,12 @@ html[data-theme="seotracker-dark"] {
   --shadow-float:
     0 2px 4px oklch(0% 0 0 / 0.4), 0 8px 24px oklch(0% 0 0 / 0.45);
   --text-muted: oklch(93% 0.004 265 / 0.62);
-  --text-subtle: oklch(93% 0.004 265 / 0.48);
+  --text-subtle: oklch(93% 0.004 265 / 0.56);
   --control-border: oklch(100% 0 0 / 0.34);
+  --ink-success: oklch(80% 0.13 155);
+  --ink-warning: oklch(85% 0.12 70);
+  --ink-error: oklch(78% 0.15 25);
+  --ink-info: oklch(80% 0.11 240);
 }
 
 @plugin "daisyui" {

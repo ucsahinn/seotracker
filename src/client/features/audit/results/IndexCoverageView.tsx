@@ -39,6 +39,12 @@ export function IndexCoverageView({
     mutationFn: () =>
       refreshAuditIndexCoverage({ data: { projectId, auditId } }),
     onSuccess: async (result) => {
+      if (result.status === "needs_gsc") {
+        toast.error(
+          "Search Console bağlı değil. Google'a sormadan önce bağlamanız gerekiyor.",
+        );
+        return;
+      }
       await queryClient.invalidateQueries({ queryKey });
       if (result.inspected === 0) {
         toast.success("Tüm sayfalar güncel, sorulacak bir şey yok.");
@@ -121,7 +127,7 @@ export function IndexCoverageView({
       </MetricRow>
 
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="text-sm text-base-content/60">
+        <p className="text-sm text-muted">
           Google URL Inspection API günde 2000 adres sorgulamanıza izin verir.
           Her tıklamada en eski 25 sayfa sorulur.
         </p>
@@ -210,7 +216,7 @@ function CoverageTable({
                     <span className="text-base-content/35">-</span>
                   )}
                 </td>
-                <td className="whitespace-nowrap text-base-content/60">
+                <td className="whitespace-nowrap text-muted">
                   {row.lastCrawlTime ? formatDateTime(row.lastCrawlTime) : "-"}
                 </td>
                 <td>
@@ -254,18 +260,18 @@ function VerdictBadge({
     );
   }
   if (!checkedAt) {
-    return <span className="text-xs text-base-content/45">Sorulmadı</span>;
+    return <span className="text-xs text-muted">Sorulmadı</span>;
   }
   if (verdict === "PASS") {
     return (
-      <span className="badge badge-sm border-success/30 bg-success/10 text-success">
+      <span className="badge badge-sm border-success/30 bg-success/10 text-[var(--ink-success)]">
         Google&apos;da
       </span>
     );
   }
   return (
     <span
-      className="badge badge-sm border-warning/30 bg-warning/10 text-warning"
+      className="badge badge-sm border-warning/30 bg-warning/10 text-[var(--ink-warning)]"
       // Google's own sentence explains why, and it is more precise than
       // anything we could paraphrase.
       // Google's own wording, kept as the tooltip so the exact phrase is

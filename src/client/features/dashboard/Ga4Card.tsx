@@ -56,9 +56,7 @@ function SessionsTooltip({
   if (!active || !payload?.length) return null;
   return (
     <div className="rounded-md border border-base-300 bg-base-100 px-3 py-2 shadow-sm">
-      <p className="text-xs text-base-content/60">
-        {label ? formatTrendDay(label) : ""}
-      </p>
+      <p className="text-xs text-muted">{label ? formatTrendDay(label) : ""}</p>
       <p className="text-sm font-medium tabular-nums">
         {formatCount(payload[0].value)} sessions
       </p>
@@ -112,14 +110,14 @@ export function Ga4Card({
           <div className="skeleton h-24" />
         </div>
       ) : reportQuery.isError ? (
-        <p className="text-sm text-base-content/60">
+        <p className="text-sm text-muted">
           Couldn&rsquo;t load Google Analytics data. Try again shortly.
         </p>
       ) : report?.connected ? (
         // Covers null (no report row) and 0: a zero-session period would
         // otherwise render an all-zero flatline chart in an empty box.
         !report.totals.sessions ? (
-          <p className="text-sm text-base-content/60">
+          <p className="text-sm text-muted">
             Son 28 günde organik arama trafiği kaydedilmemiş.
           </p>
         ) : (

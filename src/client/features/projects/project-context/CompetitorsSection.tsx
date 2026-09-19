@@ -108,7 +108,7 @@ export function CompetitorsSection({
                       {competitor.domain}
                     </span>
                     {competitor.name ? (
-                      <span className="truncate text-xs text-base-content/60">
+                      <span className="truncate text-xs text-muted">
                         {competitor.name}
                       </span>
                     ) : null}

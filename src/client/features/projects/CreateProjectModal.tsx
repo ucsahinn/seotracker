@@ -87,8 +87,7 @@ export function CreateProjectModal({ onClose }: { onClose: () => void }) {
 
         <label className="flex flex-col gap-1.5 text-sm">
           <span className="font-medium">
-            Alan adı{" "}
-            <span className="text-base-content/50">(isteğe bağlı)</span>
+            Alan adı <span className="text-muted">(isteğe bağlı)</span>
           </span>
           <input
             type="text"
@@ -98,7 +97,7 @@ export function CreateProjectModal({ onClose }: { onClose: () => void }) {
             maxLength={255}
             className="input input-bordered w-full"
           />
-          <span className="text-xs text-base-content/50">
+          <span className="text-xs text-muted">
             Projeyi oluşturduktan sonra Search Console&apos;u bağlayıp sıralama
             takibini kurabilirsiniz.
           </span>
@@ -106,7 +105,7 @@ export function CreateProjectModal({ onClose }: { onClose: () => void }) {
 
         <div className="flex flex-col gap-1.5">
           <ProjectMarketFields value={market} onChange={setMarket} />
-          <span className="text-xs text-base-content/50">
+          <span className="text-xs text-muted">
             Kaydettiğiniz anahtar kelimeler bu ülke ve dile göre saklanır.
             Sonradan proje ayarlarından değiştirebilirsiniz.
           </span>

@@ -47,10 +47,10 @@ function ConnectionStatusPill({
       className={[
         "inline-flex shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium",
         connected
-          ? "border-success/30 bg-success/10 text-success"
+          ? "border-success/30 bg-success/10 text-[var(--ink-success)]"
           : setupRequired
-            ? "border-warning/30 bg-warning/10 text-warning"
-            : "border-base-300 bg-base-200 text-base-content/60",
+            ? "border-warning/30 bg-warning/10 text-[var(--ink-warning)]"
+            : "border-base-300 bg-base-200 text-muted",
       ].join(" ")}
     >
       <span

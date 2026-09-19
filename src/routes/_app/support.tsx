@@ -13,7 +13,7 @@ function SupportPage() {
     <div className="h-full overflow-auto bg-base-100 px-4 py-8 pb-24 md:px-6 md:py-12 md:pb-8">
       <div className="mx-auto max-w-xl space-y-6">
         <div>
-          <p className="text-sm font-medium text-base-content/40">Yardım</p>
+          <p className="text-sm font-medium text-muted">Yardım</p>
           <h1 className="mt-1 text-2xl font-bold tracking-tight">
             Nereye bakmalı
           </h1>
@@ -59,7 +59,7 @@ function SupportPage() {
             Bu çatal GitHub'da
             <ExternalLink className="size-3.5" />
           </a>
-          <p className="text-xs text-base-content/50">
+          <p className="text-xs text-muted">
             Şu depodan türetildi:{" "}
             <a
               href={UPSTREAM_URL}

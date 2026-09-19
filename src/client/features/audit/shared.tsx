@@ -32,7 +32,7 @@ export function StatusBadge({ status }: { status: string }) {
 
   if (status === "completed") {
     return (
-      <span className="badge badge-outline badge-sm gap-1 text-success/80 border-success/30 bg-success/5">
+      <span className="badge badge-sm gap-1 border-success/30 bg-success/10 text-[var(--ink-success)]">
         <CheckCircle className="size-3" /> Bitti
       </span>
     );
@@ -58,7 +58,7 @@ export function HttpStatusBadge({ code }: { code: number | null }) {
 
 export function LighthouseScoreBadge({ score }: { score: number | null }) {
   if (score == null) {
-    return <span className="text-xs text-base-content/40">-</span>;
+    return <span className="text-xs text-muted">-</span>;
   }
   const color =
     score >= 90 ? "text-success" : score >= 50 ? "text-warning" : "text-error";

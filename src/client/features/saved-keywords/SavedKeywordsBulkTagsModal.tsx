@@ -168,7 +168,7 @@ export function SavedKeywordsBulkTagsModal({
                   }
                 }}
                 placeholder="Ara ya da oluştur…"
-                className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-base-content/40"
+                className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted"
               />
             </label>
 
@@ -188,7 +188,7 @@ export function SavedKeywordsBulkTagsModal({
               ) : null}
 
               {filteredAvailable.length === 0 && !showCreate ? (
-                <div className="px-3 py-6 text-center text-xs text-base-content/55">
+                <div className="px-3 py-6 text-center text-xs text-muted">
                   {availableTags.length === 0
                     ? "Henüz etiket yok. Yukarıya bir ad yazıp oluşturun."
                     : "Bu aramaya uyan etiket yok."}
@@ -218,7 +218,7 @@ export function SavedKeywordsBulkTagsModal({
                       className={`size-2 shrink-0 rounded-full ${tagDotClass(color)}`}
                     />
                     <span className="flex-1 truncate text-sm">{tag.name}</span>
-                    <span className="text-[11px] tabular-nums text-base-content/45">
+                    <span className="text-[11px] tabular-nums text-muted">
                       {tag.keywordCount}
                     </span>
                   </button>
@@ -229,7 +229,7 @@ export function SavedKeywordsBulkTagsModal({
         ) : (
           <div className="space-y-2">
             {selectedRowTags.length === 0 ? (
-              <div className="rounded-md border border-base-300 bg-base-200/40 px-3 py-6 text-center text-xs text-base-content/55">
+              <div className="rounded-md border border-base-300 bg-base-200/40 px-3 py-6 text-center text-xs text-muted">
                 Seçili kelimelerde kaldırılacak etiket yok.
               </div>
             ) : (
@@ -253,7 +253,7 @@ export function SavedKeywordsBulkTagsModal({
               </div>
             )}
             {removeIds.length > 0 ? (
-              <p className="text-xs text-base-content/55">
+              <p className="text-xs text-muted">
                 Seçili kelimelerden {removeIds.length} etiket kaldırılacak.
               </p>
             ) : null}

@@ -70,9 +70,7 @@ export function GoogleOAuthClientSection() {
 
   return (
     <section className="space-y-3">
-      <h2 className="text-sm font-medium text-base-content/50">
-        Google bağlantısı
-      </h2>
+      <h2 className="text-sm font-medium text-muted">Google bağlantısı</h2>
 
       <p className="text-sm text-base-content/70">
         Search Console ve Analytics, kendi Google Cloud projenizden aldığınız

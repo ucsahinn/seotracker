@@ -56,7 +56,7 @@ export function DashboardSetupAction({
         <div className="flex flex-col gap-4 rounded-box border border-base-300 bg-base-200/25 p-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-sm font-medium">seotracker plugin</p>
-            <p className="mt-1 text-xs text-base-content/60">
+            <p className="mt-1 text-xs text-muted">
               MCP connection + SEO skills
             </p>
           </div>
@@ -82,7 +82,7 @@ export function DashboardSetupAction({
           href="https://localhost:3001/docs/mcp"
           target="_blank"
           rel="noreferrer"
-          className="inline-block text-xs text-base-content/60 underline decoration-base-content/25 underline-offset-4 hover:text-base-content"
+          className="inline-block text-xs text-muted underline decoration-base-content/25 underline-offset-4 hover:text-base-content"
         >
           Manual setup instructions
         </a>

@@ -17,7 +17,7 @@ export function ReportsList({
 }) {
   if (reports.length === 0) {
     return (
-      <p className="rounded-lg border border-dashed border-base-300 px-4 py-6 text-sm text-base-content/60">
+      <p className="rounded-lg border border-dashed border-base-300 px-4 py-6 text-sm text-muted">
         Henüz rapor yok. Claude Code ya da Codex üzerinden seo-audit gibi bir
         seotracker becerisi çalıştırın; rapor burada görünecek.
       </p>
@@ -85,7 +85,7 @@ export function ReportsList({
         </table>
       </div>
       {reports.length === REPORT_APP_LIST_LIMIT ? (
-        <p className="text-xs text-base-content/60">
+        <p className="text-xs text-muted">
           En son {REPORT_APP_LIST_LIMIT} rapor gösteriliyor.
         </p>
       ) : null}

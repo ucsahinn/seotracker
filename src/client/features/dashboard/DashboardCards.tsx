@@ -75,7 +75,7 @@ export function GscCard({
           ))}
         </div>
       ) : reportQuery.isError ? (
-        <p className="text-sm text-base-content/60">
+        <p className="text-sm text-muted">
           Search Console verisi yüklenemedi. Birazdan tekrar deneyin.
         </p>
       ) : report?.connected ? (
@@ -183,13 +183,13 @@ export function AuditHealthCard({
                   {issueTitles[issue.issueType] ?? issue.issueType}
                 </span>
               </span>
-              <span className="shrink-0 tabular-nums text-base-content/60">
+              <span className="shrink-0 tabular-nums text-muted">
                 {issue.count} sayfa
               </span>
             </li>
           ))}
           {audit.totalIssueTypes > audit.topIssues.length ? (
-            <li className="text-xs text-base-content/50">
+            <li className="text-xs text-muted">
               + {audit.totalIssueTypes - audit.topIssues.length} sorun daha
             </li>
           ) : null}

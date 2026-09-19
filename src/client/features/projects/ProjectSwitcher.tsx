@@ -237,12 +237,12 @@ export function ProjectSwitcher({
               {activeProject?.name ?? "Proje seçin"}
             </span>
             {activeProject?.domain ? (
-              <span className="truncate text-xs font-normal text-base-content/50">
+              <span className="truncate text-xs font-normal text-muted">
                 {activeProject.domain}
               </span>
             ) : null}
           </span>
-          <ChevronsUpDown className="size-3.5 shrink-0 text-base-content/40" />
+          <ChevronsUpDown className="size-3.5 shrink-0 text-muted" />
         </button>
         {activeProject ? (
           <Link
@@ -254,7 +254,7 @@ export function ProjectSwitcher({
               closePanel();
               onCloseDrawer?.();
             }}
-            className="flex shrink-0 items-center justify-center rounded-r-lg border-l border-base-300 px-2.5 text-base-content/60 transition-colors hover:bg-base-200 hover:text-base-content"
+            className="flex shrink-0 items-center justify-center rounded-r-lg border-l border-base-300 px-2.5 text-muted transition-colors hover:bg-base-200 hover:text-base-content"
           >
             <Settings className="size-4" />
           </Link>
@@ -266,7 +266,7 @@ export function ProjectSwitcher({
           {showSearch ? (
             <div className="border-b border-base-300 p-2">
               <label className="input input-sm w-full">
-                <Search className="size-3.5 shrink-0 text-base-content/40" />
+                <Search className="size-3.5 shrink-0 text-muted" />
                 <input
                   ref={searchInputRef}
                   type="text"
@@ -323,7 +323,7 @@ export function ProjectSwitcher({
                       <span className="flex min-w-0 flex-1 flex-col">
                         <span className="truncate">{project.name}</span>
                         {project.domain ? (
-                          <span className="truncate text-xs text-base-content/50">
+                          <span className="truncate text-xs text-muted">
                             {project.domain}
                           </span>
                         ) : null}
@@ -337,7 +337,7 @@ export function ProjectSwitcher({
               })}
               {filteredProjects.length === 0 ? (
                 <li className="menu-disabled">
-                  <span className="text-base-content/50">
+                  <span className="text-muted">
                     “{query.trim()}” ile eşleşen proje yok
                   </span>
                 </li>

@@ -111,7 +111,7 @@ function TermsTokenInput({
         >
           <Icon className="size-2.5" />
         </span>
-        <p className="text-[11px] font-semibold uppercase tracking-wide text-base-content/60">
+        <p className="text-[11px] font-semibold uppercase tracking-wide text-muted">
           {label}
         </p>
       </div>
@@ -166,7 +166,7 @@ function TermsTokenInput({
                 onKeyDown={handleKeyDown}
                 onBlur={addFromDraft}
                 placeholder={terms.length === 0 ? placeholder : ""}
-                className="min-w-[6rem] flex-1 bg-transparent text-xs outline-none placeholder:text-base-content/40"
+                className="min-w-[6rem] flex-1 bg-transparent text-xs outline-none placeholder:text-muted"
               />
             </div>
           );

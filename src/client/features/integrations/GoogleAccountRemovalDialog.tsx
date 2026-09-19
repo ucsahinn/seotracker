@@ -82,7 +82,7 @@ export function GoogleAccountRemovalDialog({
           reconnect it anytime.
         </p>
         {impact.isPending ? (
-          <p role="status" className="text-sm text-base-content/60">
+          <p role="status" className="text-sm text-muted">
             Checking connected projects…
           </p>
         ) : impact.isError ? (
@@ -102,9 +102,7 @@ export function GoogleAccountRemovalDialog({
             project{impact.data.projectCount === 1 ? "" : "s"}.
           </p>
         ) : (
-          <p className="text-sm text-base-content/60">
-            No projects will be affected.
-          </p>
+          <p className="text-sm text-muted">No projects will be affected.</p>
         )}
         {removal.isError ? (
           <p role="alert" className="text-sm text-error">

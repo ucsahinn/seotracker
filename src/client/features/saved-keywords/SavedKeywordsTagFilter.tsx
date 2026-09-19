@@ -117,7 +117,7 @@ export function SavedKeywordsTagFilter({
           ))}
           <button
             type="button"
-            className="text-xs text-base-content/60 underline-offset-2 hover:text-base-content hover:underline"
+            className="text-xs text-muted underline-offset-2 hover:text-base-content hover:underline"
             onClick={onClearSelection}
           >
             Temizle
@@ -191,12 +191,12 @@ function TagFilterPopover({
             value={query}
             onChange={(event) => onQueryChange(event.target.value)}
             placeholder="Etiket ara…"
-            className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-base-content/40"
+            className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted"
           />
           {query ? (
             <button
               type="button"
-              className="text-base-content/40 hover:text-base-content"
+              className="text-muted hover:text-base-content"
               onClick={() => onQueryChange("")}
             >
               <X className="size-3.5" />
@@ -207,7 +207,7 @@ function TagFilterPopover({
 
       <div className="max-h-72 overflow-y-auto py-1">
         {filteredTags.length === 0 ? (
-          <div className="px-3 py-6 text-center text-xs text-base-content/55">
+          <div className="px-3 py-6 text-center text-xs text-muted">
             {availableTags.length === 0
               ? "Henüz etiket yok. Kelimeleri seçip etiket ekleyin."
               : "Bu aramaya uyan etiket yok."}
@@ -231,9 +231,7 @@ function TagFilterPopover({
 
       {selectedTagIds.length > 0 ? (
         <div className="flex items-center justify-between border-t border-base-300 px-2 py-1.5 text-xs">
-          <span className="text-base-content/55">
-            {selectedTagIds.length} seçili
-          </span>
+          <span className="text-muted">{selectedTagIds.length} seçili</span>
           <button
             type="button"
             className="rounded px-2 py-1 text-base-content/70 hover:bg-base-200"
@@ -288,13 +286,13 @@ function TagFilterRow({
             className={`size-2 shrink-0 rounded-full ${tagDotClass(color)}`}
           />
           <span className="min-w-0 flex-1 truncate text-sm">{tag.name}</span>
-          <span className="shrink-0 text-[11px] tabular-nums text-base-content/45">
+          <span className="shrink-0 text-[11px] tabular-nums text-muted">
             {tag.keywordCount}
           </span>
         </button>
         <button
           type="button"
-          className={`rounded p-1 text-base-content/45 hover:bg-base-300 hover:text-base-content ${
+          className={`rounded p-1 text-muted hover:bg-base-300 hover:text-base-content ${
             isManaging ? "bg-base-300 text-base-content" : ""
           }`}
           onClick={() => onStartManaging(isManaging ? null : tag.id)}

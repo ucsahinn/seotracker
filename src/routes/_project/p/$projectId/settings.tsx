@@ -26,7 +26,7 @@ function ProjectSettingsLayout() {
         <div className="space-y-4">
           <Link
             to="/projects"
-            className="inline-flex items-center gap-1 text-sm text-base-content/60 transition-colors hover:text-base-content"
+            className="inline-flex items-center gap-1 text-sm text-muted transition-colors hover:text-base-content"
           >
             <ChevronLeft className="size-4" />
             Projects
@@ -35,9 +35,7 @@ function ProjectSettingsLayout() {
             <h1 className="text-2xl font-bold tracking-tight">
               Project settings
             </h1>
-            <p className="text-sm text-base-content/60">
-              {project?.name ?? " "}
-            </p>
+            <p className="text-sm text-muted">{project?.name ?? " "}</p>
           </div>
           <div role="tablist" className="tabs tabs-border">
             {tabs.map((tab) => (

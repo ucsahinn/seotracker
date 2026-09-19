@@ -29,15 +29,13 @@ export function EmptyState({
       }`}
     >
       {Icon ? (
-        <div className="mb-1 flex size-10 items-center justify-center rounded-full bg-base-200 text-base-content/40">
+        <div className="mb-1 flex size-10 items-center justify-center rounded-full bg-base-200 text-muted">
           <Icon className="size-5" strokeWidth={1.5} aria-hidden />
         </div>
       ) : null}
       <p className="text-sm font-medium text-base-content/80">{title}</p>
       {description ? (
-        <p className="max-w-sm text-sm text-[var(--text-muted)]">
-          {description}
-        </p>
+        <p className="max-w-sm text-sm text-muted">{description}</p>
       ) : null}
       {action ? <div className="mt-1">{action}</div> : null}
     </div>

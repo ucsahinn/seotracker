@@ -44,7 +44,7 @@ export function ManageTagRow({
   return (
     <div className="space-y-2 border-y border-base-300 bg-base-200/40 px-3 py-2.5">
       <div className="space-y-1">
-        <label className="text-[11px] font-semibold uppercase tracking-wide text-base-content/55">
+        <label className="text-[11px] font-semibold uppercase tracking-wide text-muted">
           Yeniden adlandır
         </label>
         <div className="flex items-center gap-1.5">
@@ -58,7 +58,7 @@ export function ManageTagRow({
       </div>
 
       <div className="space-y-1">
-        <label className="text-[11px] font-semibold uppercase tracking-wide text-base-content/55">
+        <label className="text-[11px] font-semibold uppercase tracking-wide text-muted">
           Renk
         </label>
         <div className="flex flex-wrap items-center gap-1.5">

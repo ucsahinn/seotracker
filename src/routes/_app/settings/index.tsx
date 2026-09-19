@@ -24,7 +24,7 @@ function PersonalSettings() {
   return (
     <div className="space-y-10">
       <section className="space-y-3">
-        <h2 className="text-sm font-medium text-base-content/50">Görünüm</h2>
+        <h2 className="text-sm font-medium text-muted">Görünüm</h2>
         <div className="flex items-center justify-between gap-6">
           <span className="text-sm">Tema</span>
           <div
@@ -46,7 +46,7 @@ function PersonalSettings() {
                   className={`flex cursor-pointer items-center justify-center rounded-md px-3 py-1.5 transition-colors ${
                     isActive
                       ? "bg-base-100 text-base-content shadow-sm"
-                      : "text-base-content/50 hover:text-base-content/80"
+                      : "text-muted hover:text-base-content/80"
                   }`}
                   onClick={() => setThemePreference(option.value)}
                 >
@@ -61,12 +61,10 @@ function PersonalSettings() {
       <GoogleOAuthClientSection />
 
       <section className="space-y-3">
-        <h2 className="text-sm font-medium text-base-content/50">Hakkında</h2>
+        <h2 className="text-sm font-medium text-muted">Hakkında</h2>
         <div className="flex items-center justify-between gap-6">
           <span className="text-sm">Sürüm</span>
-          <span className="font-mono text-sm text-base-content/60">
-            v{version}
-          </span>
+          <span className="font-mono text-sm text-muted">v{version}</span>
         </div>
       </section>
     </div>

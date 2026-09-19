@@ -186,7 +186,7 @@ function ReportDetailPage() {
         <Link
           to="/p/$projectId/reports"
           params={{ projectId }}
-          className="inline-flex items-center gap-1 text-sm text-base-content/60 transition-colors hover:text-base-content"
+          className="inline-flex items-center gap-1 text-sm text-muted transition-colors hover:text-base-content"
         >
           <ChevronLeft className="size-4" />
           Reports
@@ -196,17 +196,17 @@ function ReportDetailPage() {
             <h1 className="text-2xl font-semibold">{report.title}</h1>
             <dl className="mt-1.5 flex flex-wrap items-baseline gap-x-6 gap-y-1 text-sm">
               <div className="flex items-baseline gap-1.5">
-                <dt className="text-base-content/50">Oluşturan</dt>
+                <dt className="text-muted">Oluşturan</dt>
                 <dd>{formatCreatedBy(report)}</dd>
               </div>
               <div className="flex items-baseline gap-1.5">
-                <dt className="text-base-content/50">Type</dt>
+                <dt className="text-muted">Type</dt>
                 {/* As in the list's Type column: the template name when the
                     report followed one, else the skill, else an em dash. */}
                 <dd>{report.templateName ?? report.skill ?? "—"}</dd>
               </div>
               <div className="flex items-baseline gap-1.5">
-                <dt className="text-base-content/50">Updated</dt>
+                <dt className="text-muted">Updated</dt>
                 <dd title={new Date(report.updatedAt).toLocaleString()}>
                   {formatRelativeTime(report.updatedAt)}
                 </dd>

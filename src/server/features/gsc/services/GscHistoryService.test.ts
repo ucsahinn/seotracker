@@ -150,10 +150,15 @@ describe("backfill", () => {
     });
 
     expect(outcome.daysFetched).toBe(1);
-    expect(outcome.error).toBe("Search Console is unavailable");
+    // The app's own phrase, not Google's. This value is returned rather than
+    // thrown, so it never passes the layer that strips upstream text, and it
+    // used to print an English API sentence into a Turkish page.
+    expect(outcome.error).toBe("Search Console isteği başarısız oldu.");
     // Still recorded, so the UI can explain why the history stopped growing.
     expect(mocks.markRun).toHaveBeenCalledWith(
-      expect.objectContaining({ error: "Search Console is unavailable" }),
+      expect.objectContaining({
+        error: "Search Console isteği başarısız oldu.",
+      }),
     );
   });
 
@@ -166,6 +171,6 @@ describe("backfill", () => {
       today: TODAY,
     });
 
-    expect(outcome.error).toMatch(/renewed/);
+    expect(outcome.error).toMatch(/yenilenmesi/);
   });
 });

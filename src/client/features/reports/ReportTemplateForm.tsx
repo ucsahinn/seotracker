@@ -184,7 +184,7 @@ function Labelled({
     <label className="block space-y-1.5">
       <span className="block text-sm font-medium">{label}</span>
       {children}
-      {hint ? <p className="text-xs text-base-content/60">{hint}</p> : null}
+      {hint ? <p className="text-xs text-muted">{hint}</p> : null}
       {error ? <p className="text-sm text-error">{error}</p> : null}
     </label>
   );

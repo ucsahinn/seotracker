@@ -105,7 +105,7 @@ export function DashboardOnboarding({
                 </span>
               )}
               <ChevronRight
-                className={`size-4 shrink-0 text-base-content/60 transition-transform ${active ? "rotate-90" : ""}`}
+                className={`size-4 shrink-0 text-muted transition-transform ${active ? "rotate-90" : ""}`}
               />
             </button>
             <div id={`setup-${item.id}`} hidden={!active}>
@@ -119,7 +119,7 @@ export function DashboardOnboarding({
                   <div className="border-t border-base-300 pt-3">
                     <button
                       type="button"
-                      className="btn btn-ghost btn-sm text-base-content/60"
+                      className="btn btn-ghost btn-sm text-muted"
                       disabled={dismiss.isPending}
                       onClick={() =>
                         dismiss.mutate({ step: item.id, dismissed: true })
@@ -170,7 +170,7 @@ export function DashboardOnboarding({
           <summary className="flex cursor-pointer list-none items-center gap-2 px-5 py-4 text-sm sm:px-6 [&::-webkit-details-marker]:hidden">
             <Check className="size-4 text-success" />
             {completed.length} completed
-            <ChevronRight className="ml-auto size-4 text-base-content/60 transition-transform group-open:rotate-90" />
+            <ChevronRight className="ml-auto size-4 text-muted transition-transform group-open:rotate-90" />
           </summary>
           <ul className="space-y-3 px-5 pb-5 sm:px-6">
             {completed.map((item) => (

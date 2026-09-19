@@ -93,7 +93,7 @@ export function IssuesView({ issues }: { issues: AuditIssueRow[] }) {
 
   if (issues.length === 0) {
     return (
-      <div className="py-10 text-center text-base-content/60">
+      <div className="py-10 text-center text-muted">
         <p className="font-medium">Bu denetimde kayıtlı sorun yok.</p>
         <p className="text-sm mt-1">
           Either the site is in great shape, or this audit ran before issue
@@ -128,10 +128,10 @@ function IssueSection({
         <span
           className={`size-1.5 rounded-full ${SEVERITY_DOT[section.severity]}`}
         />
-        <span className="text-[11px] font-semibold uppercase tracking-wider text-base-content/60">
+        <span className="text-[11px] font-semibold uppercase tracking-wider text-muted">
           {SEVERITY_LABEL[section.severity]}
         </span>
-        <span className="text-[11px] tabular-nums text-base-content/40">
+        <span className="text-[11px] tabular-nums text-muted">
           {issueCount}
         </span>
       </div>
@@ -167,11 +167,11 @@ function IssueRow({ group }: { group: IssueGroup }) {
         <span className="text-sm font-medium flex-1 min-w-0 truncate">
           {group.title}
         </span>
-        <span className="text-xs tabular-nums text-base-content/50 shrink-0">
+        <span className="text-xs tabular-nums text-muted shrink-0">
           {group.issues.length} sayfa
         </span>
         <ChevronRight
-          className={`size-4 shrink-0 text-base-content/40 transition-transform ${
+          className={`size-4 shrink-0 text-muted transition-transform ${
             open ? "rotate-90" : ""
           }`}
         />
@@ -221,7 +221,7 @@ function AffectedUrlList({ issues }: { issues: AuditIssueRow[] }) {
         </div>
       ))}
       {remaining > 0 && (
-        <div className="px-3 py-2 text-xs text-base-content/50">
+        <div className="px-3 py-2 text-xs text-muted">
           …and {remaining} more — export the issues CSV for the full list.
         </div>
       )}
@@ -259,7 +259,7 @@ function IssueDetails({ detailsJson }: { detailsJson: string | null }) {
   if (entries.length === 0) return null;
 
   return (
-    <span className="text-xs text-base-content/50 truncate">
+    <span className="text-xs text-muted truncate">
       {entries
         .map(([key, value]) => {
           const rendered = Array.isArray(value)

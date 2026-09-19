@@ -39,9 +39,15 @@ export function OpportunitiesPage({ projectId }: { projectId: string }) {
           <div className="skeleton h-96" />
         </div>
       ) : query.isError ? (
-        <NotReady projectId={projectId} error={query.error} />
+        <div className="alert alert-error">
+          <span className="text-sm">
+            {getStandardErrorMessage(query.error)}
+          </span>
+        </div>
+      ) : query.data.status === "ok" ? (
+        <Report data={query.data.report} />
       ) : (
-        <Report data={query.data} />
+        <NotReady projectId={projectId} missing={query.data.status} />
       )}
     </PageShell>
   );
@@ -49,12 +55,18 @@ export function OpportunitiesPage({ projectId }: { projectId: string }) {
 
 /**
  * This screen needs both Search Console and Analytics, so "not connected" is
- * the expected first state rather than a failure. Say which one is missing
- * and link to it instead of printing an API error.
+ * the expected first state rather than a failure. The server says which one is
+ * missing; this used to guess by matching the error text, which never worked
+ * because the message reaching the client is a generic one.
  */
-function NotReady({ projectId, error }: { projectId: string; error: unknown }) {
-  const message = getStandardErrorMessage(error);
-  const needsGa4 = /analytics/i.test(message);
+function NotReady({
+  projectId,
+  missing,
+}: {
+  projectId: string;
+  missing: "needs_ga4" | "needs_gsc";
+}) {
+  const needsGa4 = missing === "needs_ga4";
 
   return (
     <div className="rounded-box border border-base-300 bg-base-100">
@@ -80,11 +92,12 @@ function NotReady({ projectId, error }: { projectId: string; error: unknown }) {
   );
 }
 
-function Report({
-  data,
-}: {
-  data: Awaited<ReturnType<typeof getSearchOpportunities>>;
-}) {
+type OpportunityReport = Extract<
+  Awaited<ReturnType<typeof getSearchOpportunities>>,
+  { status: "ok" }
+>["report"];
+
+function Report({ data }: { data: OpportunityReport }) {
   if (data.rows.length === 0) {
     return (
       <div className="rounded-box border border-base-300 bg-base-100">
@@ -163,7 +176,7 @@ function Report({
                   </td>
                   <td className="text-right">{formatNumber(row.clicks)}</td>
                   <td className="text-right">{formatPercent(row.ctr)}</td>
-                  <td className="text-right text-base-content/60">
+                  <td className="text-right text-muted">
                     {row.ga4 ? formatNumber(row.ga4.sessions) : "-"}
                   </td>
                 </tr>
@@ -173,7 +186,7 @@ function Report({
         </div>
       </div>
 
-      <p className="text-xs text-base-content/45">
+      <p className="text-xs text-muted">
         Puan = talep (%50) + iş değeri (%30) + erişilebilirlik (%20).
         Analytics&apos;te eşleşmeyen sayfalar listede kalır ama puanlanmaz.
       </p>
@@ -191,7 +204,7 @@ function ScoreBadge({ score }: { score: number | null | undefined }) {
     <span
       className={`badge badge-sm tabular-nums ${
         strong
-          ? "border-success/30 bg-success/10 text-success"
+          ? "border-success/30 bg-success/10 text-[var(--ink-success)]"
           : "border-base-300 bg-base-200 text-base-content/70"
       }`}
     >

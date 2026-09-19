@@ -32,13 +32,13 @@ export function TableBulkActionBar({
           <button
             type="button"
             aria-label="Seçimi temizle"
-            className="-ml-1 rounded p-1 text-base-content/55 hover:bg-base-content/10 hover:text-base-content"
+            className="-ml-1 rounded p-1 text-muted hover:bg-base-content/10 hover:text-base-content"
             onClick={onClear}
           >
             <X className="size-3.5" />
           </button>
           <span className="font-medium tabular-nums">{selectedCount}</span>
-          <span className="text-base-content/60">{selectedLabel}</span>
+          <span className="text-muted">{selectedLabel}</span>
         </div>
         {actions}
       </div>

@@ -204,7 +204,7 @@ export function SearchPerformancePage({ projectId }: { projectId: string }) {
             <Link
               to="/p/$projectId/settings/integrations"
               params={{ projectId }}
-              className="link link-hover shrink-0 self-start text-sm font-medium text-base-content/60 transition-colors hover:text-base-content sm:mt-1"
+              className="link link-hover shrink-0 self-start text-sm font-medium text-muted transition-colors hover:text-base-content sm:mt-1"
             >
               Kaynağı değiştir
             </Link>
@@ -252,7 +252,7 @@ export function SearchPerformancePage({ projectId }: { projectId: string }) {
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
                   {reportQuery.isFetching && !reportQuery.isPending ? (
-                    <Loader2 className="size-4 animate-spin text-base-content/40" />
+                    <Loader2 className="size-4 animate-spin text-muted" />
                   ) : null}
                   <select
                     className="select select-bordered select-sm w-36"
@@ -326,7 +326,7 @@ export function SearchPerformancePage({ projectId }: { projectId: string }) {
               ) : tab === "cannibalization" ? (
                 <CannibalizationTable projectId={projectId} />
               ) : tableQuery.isPending ? (
-                <div className="flex items-center gap-2 p-8 text-sm text-base-content/60">
+                <div className="flex items-center gap-2 p-8 text-sm text-muted">
                   <Loader2 className="size-4 animate-spin" /> Yükleniyor…
                 </div>
               ) : tableQuery.isError ? (

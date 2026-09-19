@@ -59,7 +59,7 @@ const AUTHOR_LABELS: Record<ContextAuthor, string> = {
 
 export function Provenance({ by, at }: { by: ContextAuthor; at?: string }) {
   return (
-    <span className="text-xs text-base-content/40">
+    <span className="text-xs text-muted">
       {at
         ? `${AUTHOR_LABELS[by]} güncelledi · ${formatRelativeTime(at)}`
         : `${AUTHOR_LABELS[by]} ekledi`}
@@ -79,8 +79,8 @@ export function SectionHeader({
   return (
     <div className="flex items-start justify-between gap-3">
       <div className="space-y-0.5">
-        <h2 className="text-sm font-medium text-base-content/50">{title}</h2>
-        {hint ? <p className="text-xs text-base-content/50">{hint}</p> : null}
+        <h2 className="text-sm font-medium text-muted">{title}</h2>
+        {hint ? <p className="text-xs text-muted">{hint}</p> : null}
       </div>
       {action}
     </div>
@@ -90,7 +90,7 @@ export function SectionHeader({
 /** Muted panel used when a list has nothing in it yet. */
 export function EmptyState({ children }: { children: ReactNode }) {
   return (
-    <p className="rounded-lg border border-dashed border-base-300 px-4 py-3 text-sm text-base-content/60">
+    <p className="rounded-lg border border-dashed border-base-300 px-4 py-3 text-sm text-muted">
       {children}
     </p>
   );

@@ -9,7 +9,7 @@ export function SavedKeywordsStatus({
   isFetching: boolean;
 }) {
   return (
-    <div className="flex items-center gap-2 px-1 text-xs text-base-content/60">
+    <div className="flex items-center gap-2 px-1 text-xs text-muted">
       <span>{formatNumber(totalCount)} kayıtlı kelime</span>
       {isFetching ? <Loader2 className="size-3 animate-spin" /> : null}
     </div>

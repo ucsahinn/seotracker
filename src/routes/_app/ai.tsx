@@ -88,7 +88,7 @@ function AiPage() {
             <div className="mt-6 space-y-5">
               <section className="rounded-box border border-base-300 p-5 sm:p-6">
                 <h2 className="text-base font-semibold">Ajanınızı kurun</h2>
-                <p className="mt-2 text-sm leading-relaxed text-base-content/60">
+                <p className="mt-2 text-sm leading-relaxed text-muted">
                   Kurulum istemini ajanınıza yapıştırın; seotracker&apos;ı
                   bağlayıp SEO becerilerini kuracak. Elle yapmanız gereken
                   adımlarda size yol gösterir.
@@ -97,13 +97,13 @@ function AiPage() {
                   {AGENTS.map(({ name, Icon }) => (
                     <li
                       key={name}
-                      className="flex items-center gap-1.5 text-xs text-base-content/60"
+                      className="flex items-center gap-1.5 text-xs text-muted"
                     >
                       <Icon className="size-4" />
                       {name}
                     </li>
                   ))}
-                  <li className="text-xs text-base-content/45">
+                  <li className="text-xs text-muted">
                     ya da herhangi bir MCP istemcisi
                   </li>
                 </ul>
@@ -116,7 +116,7 @@ function AiPage() {
                     onCopy={() => captureClientEvent("mcp:setup_prompt_copy")}
                   />
                 </div>
-                <p className="mt-5 border-t border-base-300 pt-4 text-sm leading-relaxed text-base-content/60">
+                <p className="mt-5 border-t border-base-300 pt-4 text-sm leading-relaxed text-muted">
                   Bağlandıktan sonra ajanınızdan <code>seo-coach</code>{" "}
                   becerisini kullanmasını isteyin; sıradaki adımı birlikte
                   seçersiniz.
@@ -127,7 +127,7 @@ function AiPage() {
                 <h2 className="text-base font-semibold">
                   Becerilerinizi güncelleyin
                 </h2>
-                <p className="mt-2 text-sm leading-relaxed text-base-content/60">
+                <p className="mt-2 text-sm leading-relaxed text-muted">
                   Zaten bağlı mı? Güncelleme istemini ajanınıza yapıştırın; en
                   güncel becerileri alırken bağlantı ayarlarınız ve kişisel
                   düzenlemeleriniz korunur.
@@ -154,7 +154,7 @@ function AiPage() {
               </div>
             ) : null}
 
-            <div className="mt-10 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-t border-base-300 pt-5 text-xs text-base-content/55">
+            <div className="mt-10 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-t border-base-300 pt-5 text-xs text-muted">
               <span>
                 Bu kurulumun MCP adresi:{" "}
                 <code className="font-mono text-base-content/80">{mcpUrl}</code>
@@ -168,7 +168,7 @@ function AiPage() {
           </>
         ) : (
           <section className="mt-6">
-            <p className="text-sm text-base-content/60">
+            <p className="text-sm text-muted">
               Kurulum istemi bunları kurar. Kısa bir yanıt yerine tam bir çıktı
               istediğinizde beceriyi adıyla çağırın.
             </p>
@@ -181,7 +181,7 @@ function AiPage() {
                   <span className="shrink-0 font-mono text-[13px] text-base-content sm:w-48">
                     /{name}
                   </span>
-                  <span className="text-base-content/60">{blurb}</span>
+                  <span className="text-muted">{blurb}</span>
                 </li>
               ))}
             </ul>

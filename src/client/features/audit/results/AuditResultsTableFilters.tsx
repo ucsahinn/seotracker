@@ -142,7 +142,7 @@ export function PerformanceFilterBar({
 }
 
 export function EmptyTableMessage({ label }: { label: string }) {
-  return <div className="py-6 text-center text-base-content/60">{label}</div>;
+  return <div className="py-6 text-center text-muted">{label}</div>;
 }
 
 export function TableFilterToggle({
@@ -174,7 +174,7 @@ export function TableFilterToggle({
           </span>
         ) : null}
       </button>
-      <span className="text-sm tabular-nums text-base-content/60">
+      <span className="text-sm tabular-nums text-muted">
         {formatNumber(resultCount)} / {formatNumber(totalCount)}
       </span>
     </div>
@@ -241,7 +241,7 @@ function TextFilter({
 }) {
   return (
     <label className="form-control gap-1.5">
-      <span className="text-[11px] font-semibold uppercase tracking-wide text-base-content/60">
+      <span className="text-[11px] font-semibold uppercase tracking-wide text-muted">
         {label}
       </span>
       <input
@@ -270,7 +270,7 @@ function RangeFilter({
 }) {
   return (
     <div className="space-y-2 rounded-lg border border-base-300 bg-base-100 p-2.5">
-      <p className="text-[11px] font-semibold uppercase tracking-wide text-base-content/60">
+      <p className="text-[11px] font-semibold uppercase tracking-wide text-muted">
         {label}
       </p>
       <div className="grid grid-cols-2 gap-2">
@@ -306,7 +306,7 @@ function SelectFilter<T extends string>({
 }) {
   return (
     <label className="form-control gap-1.5">
-      <span className="text-[11px] font-semibold uppercase tracking-wide text-base-content/60">
+      <span className="text-[11px] font-semibold uppercase tracking-wide text-muted">
         {label}
       </span>
       <select

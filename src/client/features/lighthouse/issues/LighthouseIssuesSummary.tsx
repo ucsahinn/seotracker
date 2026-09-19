@@ -40,7 +40,7 @@ export function LighthouseIssuesSummary({
               key={metric.label}
               className="flex items-baseline justify-between gap-2 py-1"
             >
-              <span className="text-xs text-base-content/50 uppercase tracking-wide">
+              <span className="text-xs text-muted uppercase tracking-wide">
                 {metric.label}
               </span>
               <span className="text-sm font-semibold tabular-nums text-base-content">
@@ -53,7 +53,7 @@ export function LighthouseIssuesSummary({
       {fieldItems.length > 0 ? (
         <div className="rounded-box border border-base-300 bg-base-200/25 px-4 py-3">
           <div className="flex items-baseline justify-between gap-2">
-            <span className="text-xs uppercase tracking-wide text-base-content/50">
+            <span className="text-xs uppercase tracking-wide text-muted">
               Gerçek kullanıcı verisi · son 28 gün
             </span>
             {fieldData?.overall ? (
@@ -64,7 +64,7 @@ export function LighthouseIssuesSummary({
               </span>
             ) : null}
           </div>
-          <p className="mt-1 text-xs leading-relaxed text-base-content/50">
+          <p className="mt-1 text-xs leading-relaxed text-muted">
             Yukarıdaki skorlar Google&apos;ın test makinesinde ölçüldü. Bunlar
             sitenizi gerçekten ziyaret eden Chrome kullanıcılarından geliyor.
           </p>
@@ -74,7 +74,7 @@ export function LighthouseIssuesSummary({
                 key={metric.label}
                 className="flex items-baseline justify-between gap-2 py-1"
               >
-                <span className="text-xs uppercase tracking-wide text-base-content/50">
+                <span className="text-xs uppercase tracking-wide text-muted">
                   {metric.label}
                 </span>
                 <span
@@ -153,7 +153,7 @@ function getFieldItems(fieldData?: LighthouseFieldData | null) {
 }
 
 function scoreColor(score: number | null) {
-  if (score == null) return "text-base-content/40";
+  if (score == null) return "text-muted";
   if (score >= 90) return "text-success";
   if (score >= 50) return "text-warning";
   return "text-error";
@@ -203,7 +203,7 @@ function ScoreGauge({ label, score }: { label: string; score: number | null }) {
           {score ?? "-"}
         </span>
       </div>
-      <span className="text-[11px] text-base-content/55 text-center leading-tight">
+      <span className="text-[11px] text-muted text-center leading-tight">
         {label}
       </span>
     </div>

@@ -90,7 +90,7 @@ function LaunchOptions({
 }: Props) {
   return (
     <div className="rounded-lg border border-base-300 bg-base-200/20 p-3 space-y-2">
-      <label className="text-xs font-medium uppercase tracking-wide text-base-content/60">
+      <label className="text-xs font-medium uppercase tracking-wide text-muted">
         Tarama sınırı
       </label>
       <div className="flex items-center gap-2">
@@ -116,7 +116,7 @@ function LaunchOptions({
           )}
         </launchForm.Field>
       </div>
-      <p className="text-xs text-base-content/50">
+      <p className="text-xs text-muted">
         {MIN_PAGES} ile {maxPagesLimit.toLocaleString()} arasında bir değer
         girin.
       </p>
@@ -152,7 +152,7 @@ function LighthouseOptions({ launchForm }: Pick<Props, "launchForm">) {
         {(runLighthouse) =>
           runLighthouse ? (
             <div className="space-y-1">
-              <p className="text-xs text-base-content/60">
+              <p className="text-xs text-muted">
                 We choose a sample of 20 pages to audit, removing pages from
                 duplicate templates.
               </p>
