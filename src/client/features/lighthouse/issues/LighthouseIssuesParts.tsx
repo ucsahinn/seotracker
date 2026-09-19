@@ -11,6 +11,7 @@ import { PortalMenu } from "@/client/components/PortalMenu";
 import type {
   CategoryTab,
   ExportPayload,
+  LighthouseFieldData,
   LighthouseIssue,
   LighthouseMetrics,
   LighthouseScores,
@@ -27,6 +28,7 @@ export function LighthouseIssuesHeader({
   finalUrl,
   scores,
   metrics,
+  fieldData,
   severityCounts,
 }: {
   backLabel: string;
@@ -35,42 +37,47 @@ export function LighthouseIssuesHeader({
   finalUrl?: string;
   scores?: LighthouseScores | null;
   metrics?: LighthouseMetrics | null;
+  fieldData?: LighthouseFieldData | null;
   severityCounts: { critical: number; warning: number; info: number };
 }) {
   return (
     <>
       <div className="flex items-center justify-between gap-3">
         <button className="btn btn-ghost btn-sm px-2" onClick={onBack}>
-          &larr; Back to {backLabel}
+          &larr; {backLabel} sayfasına dön
         </button>
         <span className="text-xs text-base-content/60">
           {scannedAt
-            ? `Scanned ${new Date(scannedAt).toLocaleString()}`
-            : "Reading latest issues..."}
+            ? `${new Date(scannedAt).toLocaleString("tr-TR")} tarihinde tarandı`
+            : "Sorunlar okunuyor…"}
         </span>
       </div>
 
       <div className="card bg-base-100 border border-base-300">
         <div className="card-body py-5 gap-4">
           <div className="space-y-1">
-            <h1 className="text-2xl font-semibold">Lighthouse Issues</h1>
+            <h1 className="text-2xl font-semibold">Lighthouse sorunları</h1>
             <p className="text-sm text-base-content/70 break-all">
-              {finalUrl ?? "Loading URL..."}
+              {finalUrl ?? "Adres yükleniyor…"}
             </p>
           </div>
-          <LighthouseIssuesSummary scores={scores} metrics={metrics} />
+          <LighthouseIssuesSummary
+            scores={scores}
+            metrics={metrics}
+            fieldData={fieldData}
+          />
           <div className="flex flex-wrap gap-2 text-xs">
             <span className="badge border border-error/30 bg-error/10 text-error/80 gap-1">
               <FileWarning className="size-3" />
-              Critical {severityCounts.critical}
+              Kritik {severityCounts.critical}
             </span>
             <span className="badge border border-warning/30 bg-warning/10 text-warning/80 gap-1">
               <TriangleAlert className="size-3" />
-              Warning {severityCounts.warning}
+              Uyarı {severityCounts.warning}
             </span>
             <span className="badge border border-info/30 bg-info/10 text-info/80 gap-1">
               <Info className="size-3" />
-              Info {severityCounts.info}
+              Bilgi {severityCounts.info}
             </span>
           </div>
         </div>

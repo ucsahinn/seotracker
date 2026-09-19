@@ -24,3 +24,6 @@ export type LighthouseScores = NonNullable<LighthouseIssuesResponse["scores"]>;
 export type LighthouseMetrics = NonNullable<
   LighthouseIssuesResponse["metrics"]
 >;
+export type LighthouseFieldData = NonNullable<
+  LighthouseIssuesResponse["fieldData"]
+>;

@@ -40,6 +40,26 @@ const storedLighthouseMetricsSchema = z.object({
   serverResponseTime: storedLighthouseMetricSchema,
 });
 
+/**
+ * One Core Web Vitals metric as real Chrome users experienced it over the last
+ * 28 days, not as the lab measured it. `percentile` is the 75th percentile;
+ * `category` is Google's own FAST / AVERAGE / SLOW bucket for it.
+ */
+const storedFieldMetricSchema = z.object({
+  percentile: z.number(),
+  category: z.string(),
+});
+
+const storedFieldDataSchema = z.object({
+  /** Google's overall verdict for the URL: FAST, AVERAGE or SLOW. */
+  overall: z.string().nullable(),
+  largestContentfulPaint: storedFieldMetricSchema.nullable(),
+  cumulativeLayoutShift: storedFieldMetricSchema.nullable(),
+  interactionToNextPaint: storedFieldMetricSchema.nullable(),
+  firstContentfulPaint: storedFieldMetricSchema.nullable(),
+  timeToFirstByte: storedFieldMetricSchema.nullable(),
+});
+
 const storedLighthouseIssueSchema = z.object({
   category: z.enum(LIGHTHOUSE_CATEGORIES),
   auditKey: z.string(),
@@ -75,8 +95,13 @@ export const storedLighthousePayloadSchema = z.object({
     seo: z.number().nullable(),
   }),
   metrics: storedLighthouseMetricsSchema,
+  // Absent on rows written before field data was collected, and on URLs Chrome
+  // has too little traffic to report on.
+  fieldData: storedFieldDataSchema.nullish(),
   issues: z.array(storedLighthouseIssueSchema),
 });
+
+export type StoredFieldData = z.infer<typeof storedFieldDataSchema>;
 
 type StoredLighthouseMetric = z.infer<typeof storedLighthouseMetricSchema>;
 type StoredLighthouseMetrics = z.infer<typeof storedLighthouseMetricsSchema>;

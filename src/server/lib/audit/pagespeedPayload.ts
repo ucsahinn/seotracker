@@ -8,6 +8,7 @@ import {
   type StoredLighthousePayload,
   storedLighthousePayloadSchema,
 } from "@/server/lib/lighthouseStoredPayload";
+import type { StoredFieldData } from "@/server/lib/lighthouseStoredPayload";
 import type { LighthouseStrategy } from "./types";
 
 /**
@@ -41,6 +42,7 @@ const lighthouseResultSchema = z.object({
 
 const fieldMetricSchema = z.object({
   percentile: z.number().optional(),
+  category: z.string().optional(),
 });
 
 const pagespeedResponseSchema = z.object({
@@ -51,6 +53,7 @@ const pagespeedResponseSchema = z.object({
       // Set when the URL itself has no field data and Google substituted
       // origin-wide numbers. Those describe the whole site, not this page.
       origin_fallback: z.boolean().optional(),
+      overall_category: z.string().optional(),
       metrics: z.record(z.string(), fieldMetricSchema.optional()).optional(),
     })
     .optional(),
@@ -96,25 +99,61 @@ export function isLighthouseRuntimeError(message: string): boolean {
   );
 }
 
+type LoadingExperience = z.infer<
+  typeof pagespeedResponseSchema
+>["loadingExperience"];
+
+function readFieldMetric(
+  loadingExperience: LoadingExperience,
+  key: string,
+): { percentile: number; category: string } | null {
+  const metric = loadingExperience?.metrics?.[key];
+  if (typeof metric?.percentile !== "number") return null;
+  return { percentile: metric.percentile, category: metric.category ?? "NONE" };
+}
+
 /**
- * Interaction to Next Paint is not part of the lab run: Lighthouse cannot
- * simulate a real interaction. PageSpeed returns it as field data collected
- * from real Chrome users, which is what the audit table's INP column shows.
+ * Core Web Vitals as real Chrome users experienced the page over the last 28
+ * days, which is a different question from what the lab run measured.
+ *
+ * Only read when the numbers belong to this URL. When Chrome has too little
+ * traffic for the page, PageSpeed substitutes origin-wide numbers and sets
+ * `origin_fallback` — reporting those as the page's own would show the site
+ * average on every long-tail URL.
  */
-function readFieldInp(
-  loadingExperience:
-    | z.infer<typeof pagespeedResponseSchema>["loadingExperience"]
-    | undefined,
-) {
+function readFieldData(
+  loadingExperience: LoadingExperience,
+): StoredFieldData | null {
   if (!loadingExperience || loadingExperience.origin_fallback) return null;
-  const percentile =
-    loadingExperience.metrics?.INTERACTION_TO_NEXT_PAINT?.percentile;
-  if (typeof percentile !== "number") return null;
-  return {
-    score: null,
-    displayValue: `${percentile} ms`,
-    numericValue: percentile,
+
+  const fieldData: StoredFieldData = {
+    overall: loadingExperience.overall_category ?? null,
+    largestContentfulPaint: readFieldMetric(
+      loadingExperience,
+      "LARGEST_CONTENTFUL_PAINT_MS",
+    ),
+    cumulativeLayoutShift: readFieldMetric(
+      loadingExperience,
+      "CUMULATIVE_LAYOUT_SHIFT_SCORE",
+    ),
+    interactionToNextPaint: readFieldMetric(
+      loadingExperience,
+      "INTERACTION_TO_NEXT_PAINT",
+    ),
+    firstContentfulPaint: readFieldMetric(
+      loadingExperience,
+      "FIRST_CONTENTFUL_PAINT_MS",
+    ),
+    timeToFirstByte: readFieldMetric(
+      loadingExperience,
+      "EXPERIMENTAL_TIME_TO_FIRST_BYTE",
+    ),
   };
+
+  const hasAnyMetric = Object.entries(fieldData).some(
+    ([key, value]) => key !== "overall" && value !== null,
+  );
+  return hasAnyMetric ? fieldData : null;
 }
 
 export function parsePageSpeedPayload(
@@ -150,7 +189,7 @@ export function parsePageSpeedPayload(
   const audits = result.audits ?? {};
   const issueReport = buildStoredLighthouseIssues({ audits, categories });
   const metrics = buildStoredLighthouseMetrics({ audits });
-  const fieldInp = readFieldInp(parsed.data.loadingExperience);
+  const fieldData = readFieldData(parsed.data.loadingExperience);
 
   const storedPayload: StoredLighthousePayload = {
     version: 2,
@@ -177,11 +216,20 @@ export function parsePageSpeedPayload(
     },
     metrics: {
       ...metrics,
+      // The lab run cannot simulate an interaction, so INP only exists as field
+      // data. Fall back to it so the results table's INP column is not always
+      // empty.
       interactionToNextPaint:
-        metrics.interactionToNextPaint.numericValue == null && fieldInp
-          ? fieldInp
+        metrics.interactionToNextPaint.numericValue == null &&
+        fieldData?.interactionToNextPaint
+          ? {
+              score: null,
+              displayValue: `${fieldData.interactionToNextPaint.percentile} ms`,
+              numericValue: fieldData.interactionToNextPaint.percentile,
+            }
           : metrics.interactionToNextPaint,
     },
+    fieldData,
     issues: issueReport.issues,
   };
 
