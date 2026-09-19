@@ -109,13 +109,13 @@ export function SavedKeywordsBulkTagsModal({
           <SegmentButton
             active={mode === "add"}
             onClick={() => setMode("add")}
-            label="Add tags"
+            label="Etiket ekle"
             count={addNames.length}
           />
           <SegmentButton
             active={mode === "remove"}
             onClick={() => setMode("remove")}
-            label="Remove tags"
+            label="Etiket kaldır"
             count={removeIds.length}
             disabled={selectedRowTags.length === 0}
           />
@@ -148,7 +148,7 @@ export function SavedKeywordsBulkTagsModal({
                         )
                       }
                       trailing={<X className="size-3 opacity-70" />}
-                      title="Remove from selection"
+                      title="Seçimden çıkar"
                     />
                   );
                 })}
@@ -167,7 +167,7 @@ export function SavedKeywordsBulkTagsModal({
                     handleCreate();
                   }
                 }}
-                placeholder="Search or create…"
+                placeholder="Ara ya da oluştur…"
                 className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-base-content/40"
               />
             </label>

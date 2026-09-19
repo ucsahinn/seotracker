@@ -163,7 +163,7 @@ export function SearchConsoleConnectionCard({
       {connectionQuery.isPending ? (
         <div
           role="status"
-          aria-label="Loading connection"
+          aria-label="Bağlantı yükleniyor"
           className="space-y-3 animate-pulse"
         >
           <div className="h-4 w-2/3 rounded bg-base-200" />

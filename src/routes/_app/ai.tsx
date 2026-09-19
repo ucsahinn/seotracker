@@ -19,18 +19,18 @@ import {
 // The public skills shipped under .agents/skills/. Everything that needed a
 // paid data provider went with the features behind it.
 const SKILLS = [
-  ["seo-coach", "Nerede durdugunuzu anlatir ve siradaki adimi secer."],
+  ["seo-coach", "Nerede durduğunuzu anlatır ve sıradaki adımı seçer."],
   [
     "seo-project-setup",
-    "Hedeflerinizi, rakiplerinizi ve onemli sayfalarinizi ortak bilgi olarak kaydeder.",
+    "Hedeflerinizi, rakiplerinizi ve önemli sayfalarınızı ortak bilgi olarak kaydeder.",
   ],
   [
     "seo-audit",
-    "Bu hafta yapilacak tek bir ise odaklanan, tek sayfalik site denetimi.",
+    "Bu hafta yapılacak tek bir işe odaklanan, tek sayfalık site denetimi.",
   ],
   [
     "seo-report",
-    "Yukaridakilerden birini Raporlar sayfaniza rapor olarak kaydeder.",
+    "Yukarıdakilerden birini Raporlar sayfanıza rapor olarak kaydeder.",
   ],
 ];
 const AGENTS = [
@@ -66,7 +66,7 @@ function AiPage() {
         <div role="tablist" className="tabs tabs-border mt-8 w-fit">
           {(
             [
-              ["setup", "Ajaninizi kurun"],
+              ["setup", "Ajanınızı kurun"],
               ["skills", "Beceriler"],
             ] as const
           ).map(([id, label]) => (
@@ -89,9 +89,9 @@ function AiPage() {
               <section className="rounded-xl border border-base-300 p-5 sm:p-6">
                 <h2 className="text-base font-semibold">Ajanınızı kurun</h2>
                 <p className="mt-2 text-sm leading-relaxed text-base-content/60">
-                  Kurulum istemini ajaniniza yapistirin; seotracker&apos;i
-                  baglayip SEO becerilerini kuracak. Elle yapmaniz gereken
-                  adimlarda size yol gosterir.
+                  Kurulum istemini ajanınıza yapıştırın; seotracker&apos;ı
+                  bağlayıp SEO becerilerini kuracak. Elle yapmanız gereken
+                  adımlarda size yol gösterir.
                 </p>
                 <ul className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
                   {AGENTS.map(({ name, Icon }) => (
@@ -112,14 +112,14 @@ function AiPage() {
                     primary
                     value={prompt}
                     label="Kurulum istemini kopyala"
-                    successMessage="Kurulum istemi kopyalandi"
+                    successMessage="Kurulum istemi kopyalandı"
                     onCopy={() => captureClientEvent("mcp:setup_prompt_copy")}
                   />
                 </div>
                 <p className="mt-5 border-t border-base-300 pt-4 text-sm leading-relaxed text-base-content/60">
-                  Baglandiktan sonra ajaninizdan <code>seo-coach</code>{" "}
-                  becerisini kullanmasini isteyin; siradaki adimi birlikte
-                  secersiniz.
+                  Bağlandıktan sonra ajanınızdan <code>seo-coach</code>{" "}
+                  becerisini kullanmasını isteyin; sıradaki adımı birlikte
+                  seçersiniz.
                 </p>
               </section>
 
@@ -128,16 +128,16 @@ function AiPage() {
                   Becerilerinizi güncelleyin
                 </h2>
                 <p className="mt-2 text-sm leading-relaxed text-base-content/60">
-                  Zaten bagli mi? Guncelleme istemini ajaniniza yapistirin; en
-                  guncel becerileri alirken baglanti ayarlariniz ve kisisel
-                  duzenlemeleriniz korunur.
+                  Zaten bağlı mı? Güncelleme istemini ajanınıza yapıştırın; en
+                  güncel becerileri alırken bağlantı ayarlarınız ve kişisel
+                  düzenlemeleriniz korunur.
                 </p>
                 <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3 [&>button]:h-11 [&>button]:gap-2 [&>button]:text-sm">
                   <CopyButton
                     primary
                     value={agentUpdatePrompt}
-                    label="Guncelleme istemini kopyala"
-                    successMessage="Guncelleme istemi kopyalandi"
+                    label="Güncelleme istemini kopyala"
+                    successMessage="Güncelleme istemi kopyalandı"
                     onCopy={() => captureClientEvent("mcp:update_prompt_copy")}
                   />
                 </div>
@@ -148,8 +148,8 @@ function AiPage() {
               <div className="alert alert-warning mt-8 text-sm" role="alert">
                 <ShieldAlert className="size-4 shrink-0" />
                 <span>
-                  Bu kurulum Cloudflare Access arkasinda. Access uygulamanizda
-                  Managed OAuth acilmadan MCP istemcileri baglanamaz.
+                  Bu kurulum Cloudflare Access arkasında. Access uygulamanızda
+                  Managed OAuth açılmadan MCP istemcileri bağlanamaz.
                 </span>
               </div>
             ) : null}
@@ -161,7 +161,7 @@ function AiPage() {
               </span>
               <CopyButton
                 value={mcpUrl}
-                successMessage="MCP adresi kopyalandi"
+                successMessage="MCP adresi kopyalandı"
                 onCopy={() => captureClientEvent("mcp:setup_url_copy")}
               />
             </div>
@@ -169,8 +169,8 @@ function AiPage() {
         ) : (
           <section className="mt-6">
             <p className="text-sm text-base-content/60">
-              Kurulum istemi bunlari kurar. Kisa bir yanit yerine tam bir cikti
-              istediginizde beceriyi adiyla cagirin.
+              Kurulum istemi bunları kurar. Kısa bir yanıt yerine tam bir çıktı
+              istediğinizde beceriyi adıyla çağırın.
             </p>
             <ul className="mt-5 space-y-3 text-sm sm:space-y-2">
               {SKILLS.map(([name, blurb]) => (

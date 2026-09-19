@@ -253,7 +253,7 @@ function WebsiteForm({
             className="btn btn-primary btn-sm"
             disabled={!canSubmit || isSubmitting || save.isPending}
           >
-            {save.isPending ? "Saving…" : "Save website"}
+            {save.isPending ? "Saving…" : "Siteyi kaydet"}
           </button>
         )}
       </form.Subscribe>

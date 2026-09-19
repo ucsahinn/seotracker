@@ -17,7 +17,7 @@ export function LaunchFormCard({
   return (
     <div className="card bg-base-100 border border-base-300">
       <div className="card-body gap-4">
-        <h2 className="card-title text-base">Start New Audit</h2>
+        <h2 className="card-title text-base">Yeni denetim başlat</h2>
 
         <form
           className="grid grid-cols-1 gap-3 lg:grid-cols-12 lg:items-center"
@@ -61,7 +61,7 @@ export function LaunchFormCard({
                     <Loader2 className="size-4 animate-spin" /> Starting...
                   </>
                 ) : (
-                  "Start Audit"
+                  "Denetimi başlat"
                 )}
               </button>
             )}

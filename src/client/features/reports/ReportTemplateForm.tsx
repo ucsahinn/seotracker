@@ -79,7 +79,7 @@ export function ReportTemplateForm({
   return (
     <Modal maxWidth="max-w-2xl" onClose={onClose} labelledBy="template-title">
       <h3 id="template-title" className="text-lg font-semibold">
-        {template ? "Edit template" : "New template"}
+        {template ? "Şablonu düzenle" : "Yeni şablon"}
       </h3>
 
       <form
@@ -127,7 +127,7 @@ export function ReportTemplateForm({
         <form.Field name="instructions">
           {(field) => (
             <Labelled
-              label="Instructions"
+              label="Yönerge"
               hint="Brand voice for the whole project lives in Context › Writing preferences."
               error={getFieldError(field.state.meta.errors)}
             >
@@ -163,7 +163,7 @@ export function ReportTemplateForm({
             {saveMutation.isPending ? (
               <Loader2 className="size-3 animate-spin" />
             ) : null}
-            {template ? "Save changes" : "Create template"}
+            {template ? "Değişiklikleri kaydet" : "Create template"}
           </button>
         </div>
       </form>

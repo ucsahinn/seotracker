@@ -74,7 +74,7 @@ export function DeleteReportModal({
     <ConfirmDeleteModal
       title={`Delete \u201c${title}\u201d?`}
       detail="This cannot be undone."
-      confirmLabel="Delete report"
+      confirmLabel="Raporu sil"
       isPending={isPending}
       onClose={onClose}
       onConfirm={onConfirm}

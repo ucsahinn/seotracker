@@ -31,7 +31,7 @@ export function AuditHistorySection({
   return (
     <div className="card bg-base-100 border border-base-300">
       <div className="card-body gap-3">
-        <h2 className="card-title text-base">Previous Audits</h2>
+        <h2 className="card-title text-base">Önceki denetimler</h2>
         <div className="overflow-x-auto">
           <table className="table table-sm">
             <thead>

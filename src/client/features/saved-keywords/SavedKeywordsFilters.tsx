@@ -43,7 +43,7 @@ export function SavedKeywordsFilters({
           type="button"
           className={`btn btn-ghost btn-sm gap-1.5 ${showFilters ? "btn-active" : ""}`}
           onClick={onToggleFilters}
-          title="Toggle table filters"
+          title="Tablo filtrelerini aç/kapat"
         >
           <SlidersHorizontal className="size-3.5" />
           Filters
