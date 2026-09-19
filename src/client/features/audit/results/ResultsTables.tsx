@@ -106,7 +106,7 @@ export function PerformanceTable({
         table={table}
         className="table table-sm"
         empty={
-          <EmptyTableMessage label="No performance results match these filters." />
+          <EmptyTableMessage label="Bu filtrelerle eşleşen performans sonucu yok." />
         }
       />
     </div>
@@ -130,14 +130,14 @@ function buildPerformanceColumns({
       meta: { cellClassName: "max-w-[180px] truncate" },
     }),
     performanceColumnHelper.accessor("strategy", {
-      header: ({ column }) => <SortableHeader column={column} label="Device" />,
+      header: ({ column }) => <SortableHeader column={column} label="Cihaz" />,
       cell: ({ getValue }) => (
         <span className="capitalize text-xs">{getValue()}</span>
       ),
     }),
     performanceColumnHelper.display({
       id: "status",
-      header: ({ column }) => <SortableHeader column={column} label="Status" />,
+      header: ({ column }) => <SortableHeader column={column} label="Durum" />,
       cell: ({ row }) => {
         const isFailed = isLighthouseFailure(row.original);
         const failureMessage =
@@ -223,7 +223,7 @@ function buildPerformanceColumns({
     }),
     performanceColumnHelper.display({
       id: "issues",
-      header: () => "Issues",
+      header: () => "Sorunlar",
       cell: ({ row }) =>
         row.original.r2Key && !isLighthouseFailure(row.original) ? (
           <Link

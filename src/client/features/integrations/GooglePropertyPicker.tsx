@@ -109,7 +109,7 @@ export function GooglePropertyPicker({
       ) : null}
       <div>
         <p className="mb-2 text-sm font-medium">
-          {readOnly ? "Manage Google accounts" : "Choose property"}
+          {readOnly ? "Google hesaplarını yönet" : "Kaynak seç"}
         </p>
         <button
           ref={trigger}
@@ -125,7 +125,7 @@ export function GooglePropertyPicker({
         >
           <span className="min-w-0">
             <span className="block truncate">
-              {selected?.name ?? "Select a property…"}
+              {selected?.name ?? "Bir kaynak seçin…"}
             </span>
             {selectedAccount ? (
               <span className="mt-0.5 block truncate text-xs text-base-content/50">
@@ -139,7 +139,7 @@ export function GooglePropertyPicker({
           <div
             id={panelId}
             role="region"
-            aria-label="Google properties"
+            aria-label="Google kaynakları"
             className="mt-2 overflow-hidden rounded-lg border border-base-300 bg-base-100 shadow-sm"
             onKeyDown={(event) => handlePropertyKeyDown(event, close)}
           >
@@ -148,8 +148,8 @@ export function GooglePropertyPicker({
               <input
                 autoFocus
                 type="search"
-                aria-label="Search properties or accounts"
-                placeholder="Search properties or accounts…"
+                aria-label="Kaynak veya hesap ara"
+                placeholder="Kaynak veya hesap ara…"
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
                 className="min-w-0 w-full bg-transparent text-sm outline-none"
@@ -281,8 +281,8 @@ export function GooglePropertyPicker({
                   {filtered.length === 0 ? (
                     <p className="p-3 text-sm text-base-content/50">
                       {query
-                        ? "No matching properties or accounts"
-                        : "Add a Google account to find properties."}
+                        ? "Eşleşen kaynak veya hesap yok"
+                        : "Kaynakları bulmak için bir Google hesabı ekleyin."}
                     </p>
                   ) : null}
                 </>
@@ -315,7 +315,7 @@ export function GooglePropertyPicker({
           onClick={onSave}
           disabled={!canSave || saving}
         >
-          {saving ? "Saving…" : "Save property"}
+          {saving ? "Kaydediliyor…" : "Kaynağı kaydet"}
         </button>
         {secondaryAction ? (
           <button

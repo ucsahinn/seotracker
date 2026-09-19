@@ -110,12 +110,12 @@ function buildPagesColumns({
       meta: { cellClassName: "max-w-[240px] truncate" },
     }),
     pageColumnHelper.accessor("statusCode", {
-      header: ({ column }) => <SortableHeader column={column} label="Status" />,
+      header: ({ column }) => <SortableHeader column={column} label="Durum" />,
       cell: ({ getValue }) => <HttpStatusBadge code={getValue()} />,
       sortingFn: nullableNumberSort,
     }),
     pageColumnHelper.accessor("title", {
-      header: ({ column }) => <SortableHeader column={column} label="Title" />,
+      header: ({ column }) => <SortableHeader column={column} label="Başlık" />,
       cell: ({ getValue, row }) => {
         if (isRedirect(row.original)) {
           const target = row.original.redirectUrl;
@@ -146,7 +146,7 @@ function buildPagesColumns({
         hasAnalyzedContent(row.original) ? getValue() : <EmptyCell />,
     }),
     pageColumnHelper.accessor("wordCount", {
-      header: ({ column }) => <SortableHeader column={column} label="Words" />,
+      header: ({ column }) => <SortableHeader column={column} label="Kelime" />,
       cell: ({ getValue, row }) =>
         hasAnalyzedContent(row.original) ? getValue() : <EmptyCell />,
     }),

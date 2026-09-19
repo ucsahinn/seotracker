@@ -36,10 +36,10 @@ export function AuditHistorySection({
           <table className="table table-sm">
             <thead>
               <tr>
-                <th>Date</th>
+                <th>Tarih</th>
                 <th>URL</th>
-                <th>Status</th>
-                <th>Pages</th>
+                <th>Durum</th>
+                <th>Sayfa</th>
                 <th>Lighthouse</th>
                 <th></th>
               </tr>

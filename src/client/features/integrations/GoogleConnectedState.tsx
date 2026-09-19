@@ -45,8 +45,8 @@ export function GoogleConnectedState({
             onClick={onChange}
           >
             {canManage
-              ? "Change property or account"
-              : "Manage Google accounts"}
+              ? "Kaynağı veya hesabı değiştir"
+              : "Google hesaplarını yönet"}
           </button>
           {canManage ? (
             <button
@@ -54,7 +54,7 @@ export function GoogleConnectedState({
               className="btn btn-ghost btn-sm text-error hover:bg-error/10"
               onClick={onDisconnect}
             >
-              {disconnecting ? "Disconnecting…" : "Disconnect project"}
+              {disconnecting ? "Bağlantı kesiliyor…" : "Projeden ayır"}
             </button>
           ) : null}
         </fieldset>

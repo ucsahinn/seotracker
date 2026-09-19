@@ -57,14 +57,14 @@ export function GscCard({
   return (
     <CardShell
       title="Arama performansı"
-      stamp="Google Search Console · last 28 days"
+      stamp="Google Search Console · son 28 gün"
       action={
         <Link
           to="/p/$projectId/search-performance"
           params={{ projectId }}
           className={moreDetailsClass}
         >
-          More details
+          Ayrıntılar
         </Link>
       }
     >
@@ -81,7 +81,7 @@ export function GscCard({
       ) : report?.connected ? (
         <div className="grid grid-cols-2 gap-3">
           <Stat
-            label="Clicks"
+            label="Tıklama"
             value={formatCount(report.totals.clicks)}
             sub={
               <PercentDelta
@@ -91,7 +91,7 @@ export function GscCard({
             }
           />
           <Stat
-            label="Impressions"
+            label="Gösterim"
             value={formatCount(report.totals.impressions)}
             sub={
               <PercentDelta
@@ -100,9 +100,9 @@ export function GscCard({
               />
             }
           />
-          <Stat label="CTR" value={formatCtr(report.totals.ctr)} />
+          <Stat label="TO" value={formatCtr(report.totals.ctr)} />
           <Stat
-            label="Avg position"
+            label="Ort. sıra"
             value={formatPosition(report.totals.position)}
           />
         </div>
@@ -120,16 +120,16 @@ export function AuditHealthCard({
 }) {
   if (!audit) {
     return (
-      <CardShell title="Site audit">
+      <CardShell title="Site denetimi">
         <EmptyCardBody
-          message="Crawl your site for broken links, missing tags and indexability problems."
+          message="Kırık bağlantılar, eksik etiketler ve dizine girme sorunları için sitenizi tarayın."
           cta={
             <Link
               to="/p/$projectId/audit"
               params={{ projectId }}
               className="btn btn-primary btn-sm"
             >
-              Run an audit
+              Denetim çalıştır
             </Link>
           }
         />
@@ -139,13 +139,13 @@ export function AuditHealthCard({
 
   return (
     <CardShell
-      title="Site audit"
-      stamp={`Site audit · ${
+      title="Site denetimi"
+      stamp={`Site denetimi · ${
         audit.status === "completed"
-          ? `crawled ${audit.pagesCrawled} pages · ${formatDay(audit.startedAt)}`
+          ? `${audit.pagesCrawled} sayfa tarandı · ${formatDay(audit.startedAt)}`
           : audit.status === "running"
-            ? "crawl in progress"
-            : "last crawl failed"
+            ? "tarama sürüyor"
+            : "son tarama başarısız"
       }`}
       action={
         <Link
@@ -153,14 +153,14 @@ export function AuditHealthCard({
           params={{ projectId }}
           className={moreDetailsClass}
         >
-          More details
+          Ayrıntılar
         </Link>
       }
     >
       {audit.topIssues.length === 0 ? (
         <div className="flex items-center gap-2 text-sm text-base-content/70">
           <Check className="size-4 text-success" />
-          No issues found — your site looks healthy.
+          Sorun bulunamadı, siteniz sağlıklı görünüyor.
         </div>
       ) : (
         <ul className="space-y-2">

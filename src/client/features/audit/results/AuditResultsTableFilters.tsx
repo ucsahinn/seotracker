@@ -20,13 +20,13 @@ export function PagesFilterBar({
     <FilterPanel activeFilterCount={activeFilterCount} onReset={onReset}>
       <div className="grid grid-cols-1 gap-3 lg:grid-cols-3">
         <TextFilter
-          label="Search"
+          label="Ara"
           value={filters.query}
           placeholder="URL, title, meta"
           onChange={(query) => onChange({ ...filters, query })}
         />
         <SelectFilter
-          label="Status"
+          label="Durum"
           value={filters.status}
           onChange={(status) => onChange({ ...filters, status })}
           options={[
@@ -50,7 +50,7 @@ export function PagesFilterBar({
       </div>
       <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
         <RangeFilter
-          label="Words"
+          label="Kelime"
           min={filters.minWords}
           max={filters.maxWords}
           onMinChange={(minWords) => onChange({ ...filters, minWords })}
@@ -87,13 +87,13 @@ export function PerformanceFilterBar({
     <FilterPanel activeFilterCount={activeFilterCount} onReset={onReset}>
       <div className="grid grid-cols-1 gap-3 lg:grid-cols-4">
         <TextFilter
-          label="Search"
+          label="Ara"
           value={filters.query}
           placeholder="URL"
           onChange={(query) => onChange({ ...filters, query })}
         />
         <SelectFilter
-          label="Device"
+          label="Cihaz"
           value={filters.device}
           onChange={(device) => onChange({ ...filters, device })}
           options={[
@@ -103,7 +103,7 @@ export function PerformanceFilterBar({
           ]}
         />
         <SelectFilter
-          label="Status"
+          label="Durum"
           value={filters.status}
           onChange={(status) => onChange({ ...filters, status })}
           options={[

@@ -89,8 +89,8 @@ export function Ga4Card({
 
   return (
     <CardShell
-      title="Organic traffic"
-      stamp="Google Analytics · last 28 days"
+      title="Organik trafik"
+      stamp="Google Analytics · son 28 gün"
       action={
         <Link
           to="/p/$projectId/settings"
@@ -120,13 +120,13 @@ export function Ga4Card({
         // otherwise render an all-zero flatline chart in an empty box.
         !report.totals.sessions ? (
           <p className="text-sm text-base-content/60">
-            No organic search traffic recorded in the last 28 days yet.
+            Son 28 günde organik arama trafiği kaydedilmemiş.
           </p>
         ) : (
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-3">
               <Stat
-                label="Sessions"
+                label="Oturum"
                 value={statValue(report.totals.sessions, formatCount)}
                 sub={statDelta(
                   report.totals.sessions,
@@ -134,7 +134,7 @@ export function Ga4Card({
                 )}
               />
               <Stat
-                label="Active users"
+                label="Etkin kullanıcı"
                 value={statValue(report.totals.activeUsers, formatCount)}
                 sub={statDelta(
                   report.totals.activeUsers,
@@ -142,11 +142,11 @@ export function Ga4Card({
                 )}
               />
               <Stat
-                label="Engagement rate"
+                label="Etkileşim oranı"
                 value={statValue(report.totals.engagementRate, formatCtr)}
               />
               <Stat
-                label="Key events"
+                label="Önemli olay"
                 value={statValue(report.totals.keyEvents, formatCount)}
                 sub={statDelta(
                   report.totals.keyEvents,

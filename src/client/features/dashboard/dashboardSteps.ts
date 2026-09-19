@@ -10,27 +10,27 @@ export const setupSteps: {
 }[] = [
   {
     id: "domain",
-    label: "Add your website",
-    detail: "Set the website and country for this project.",
+    label: "Sitenizi ekleyin",
+    detail: "Bu proje için siteyi ve ülkeyi belirleyin.",
     icon: Globe,
   },
   {
     id: "project",
-    label: "Working on multiple websites?",
-    detail:
-      "Create another project, or let your AI agent set up a list of sites.",
+    label: "Birden fazla siteniz mi var?",
+    detail: "Başka bir proje oluşturun, ya da siteleri ajanınıza kurdurun.",
     icon: FolderPlus,
   },
   {
     id: "mcp",
-    label: "Connect your AI agent",
-    detail: "Use seotracker inside Claude or your favorite agent.",
+    label: "Yapay zeka ajanınızı bağlayın",
+    detail:
+      "seotracker'ı Claude ya da tercih ettiğiniz ajanın içinden kullanın.",
     icon: Bot,
   },
   {
     id: "gsc",
-    label: "Connect Search Console",
-    detail: "Bring your real clicks and queries into view.",
+    label: "Search Console'u bağlayın",
+    detail: "Gerçek tıklamalarınızı ve sorgularınızı buraya getirin.",
     icon: Search,
   },
 ];

@@ -81,15 +81,16 @@ export function ResultsView({
         <CrawlWarning
           headline={
             crawlStopped
-              ? "The crawl stopped early because of the site’s rate limit."
+              ? "Tarama, sitenin istek sınırı yüzünden erken durdu."
               : `The site rate limited us on ${rateLimitedCount} ${rateLimitedCount === 1 ? "page" : "pages"}.`
           }
         >
           {crawlStopped
-            ? "The requested cooldown exceeded the audit time limit, so some URLs were left unvisited. This report is incomplete. "
-            : "Pages that returned 429 Too Many Requests could not be audited. "}
-          Re-run the audit after the rate limit resets, or ask the site owner to
-          allow the "seotracker-audit" crawler.
+            ? "İstenen bekleme süresi denetim süresini aştı, bazı adresler ziyaret edilmedi. Bu rapor eksiktir. "
+            : "429 Too Many Requests döndüren sayfalar denetlenemedi. "}
+          İstek sınırı sıfırlandıktan sonra denetimi yeniden çalıştırın, ya da
+          site sahibinden "seotracker-audit" tarayıcısına izin vermesini
+          isteyin.
         </CrawlWarning>
       )}
 
@@ -298,9 +299,9 @@ function StatsStrip({
   }, [issues]);
 
   const items: StatItem[] = [
-    { label: "Pages crawled", value: String(pagesCrawled) },
+    { label: "Taranan sayfa", value: String(pagesCrawled) },
     {
-      label: "Issues found",
+      label: "Bulunan sorun",
       value: String(issues.length),
       valueClass: issues.length === 0 ? "text-success" : "",
       sub: issues.length > 0 && (
@@ -314,14 +315,14 @@ function StatsStrip({
         </span>
       ),
     },
-    { label: "Avg response", value: `${averageResponseMs}ms` },
+    { label: "Ort. yanıt", value: `${averageResponseMs}ms` },
   ];
 
   if (totalLighthouse > 0) {
     items.push(
-      { label: "Lighthouse tests", value: String(totalLighthouse) },
+      { label: "Lighthouse testi", value: String(totalLighthouse) },
       {
-        label: "Avg Lighthouse perf",
+        label: "Ort. Lighthouse perf.",
         value:
           lighthouseSummary.avgPerformance == null
             ? "-"
@@ -329,7 +330,7 @@ function StatsStrip({
         valueClass: scoreClass(lighthouseSummary.avgPerformance),
       },
       {
-        label: "Avg Lighthouse SEO",
+        label: "Ort. Lighthouse SEO",
         value:
           lighthouseSummary.avgSeo == null
             ? "-"
@@ -337,7 +338,7 @@ function StatsStrip({
         valueClass: scoreClass(lighthouseSummary.avgSeo),
       },
       {
-        label: "Avg Lighthouse a11y",
+        label: "Ort. Lighthouse erişim",
         value:
           lighthouseSummary.avgAccessibility == null
             ? "-"
@@ -345,7 +346,7 @@ function StatsStrip({
         valueClass: scoreClass(lighthouseSummary.avgAccessibility),
       },
       {
-        label: "Lighthouse failures",
+        label: "Lighthouse hatası",
         value: String(lighthouseSummary.failed),
         valueClass:
           lighthouseSummary.failed > 0 ? "text-error" : "text-success",
