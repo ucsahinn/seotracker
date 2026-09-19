@@ -27,6 +27,7 @@ import { Route as ProjectPProjectIdSettingsRouteImport } from './routes/_project
 import { Route as ProjectPProjectIdSearchPerformanceRouteImport } from './routes/_project/p/$projectId/search-performance'
 import { Route as ProjectPProjectIdSavedRouteImport } from './routes/_project/p/$projectId/saved'
 import { Route as ProjectPProjectIdRankingsRouteImport } from './routes/_project/p/$projectId/rankings'
+import { Route as ProjectPProjectIdOpportunitiesRouteImport } from './routes/_project/p/$projectId/opportunities'
 import { Route as ProjectPProjectIdContextRouteImport } from './routes/_project/p/$projectId/context'
 import { Route as ProjectPProjectIdAuditRouteImport } from './routes/_project/p/$projectId/audit'
 import { Route as ProjectPProjectIdSettingsIndexRouteImport } from './routes/_project/p/$projectId/settings/index'
@@ -129,6 +130,12 @@ const ProjectPProjectIdRankingsRoute =
     path: '/rankings',
     getParentRoute: () => ProjectPProjectIdRouteRoute,
   } as any)
+const ProjectPProjectIdOpportunitiesRoute =
+  ProjectPProjectIdOpportunitiesRouteImport.update({
+    id: '/opportunities',
+    path: '/opportunities',
+    getParentRoute: () => ProjectPProjectIdRouteRoute,
+  } as any)
 const ProjectPProjectIdContextRoute =
   ProjectPProjectIdContextRouteImport.update({
     id: '/context',
@@ -201,6 +208,7 @@ export interface FileRoutesByFullPath {
   '/settings/': typeof AppSettingsIndexRoute
   '/p/$projectId/audit': typeof ProjectPProjectIdAuditRouteWithChildren
   '/p/$projectId/context': typeof ProjectPProjectIdContextRoute
+  '/p/$projectId/opportunities': typeof ProjectPProjectIdOpportunitiesRoute
   '/p/$projectId/rankings': typeof ProjectPProjectIdRankingsRoute
   '/p/$projectId/saved': typeof ProjectPProjectIdSavedRoute
   '/p/$projectId/search-performance': typeof ProjectPProjectIdSearchPerformanceRoute
@@ -226,6 +234,7 @@ export interface FileRoutesByTo {
   '/r/$reportId': typeof RReportIdRoute
   '/settings': typeof AppSettingsIndexRoute
   '/p/$projectId/context': typeof ProjectPProjectIdContextRoute
+  '/p/$projectId/opportunities': typeof ProjectPProjectIdOpportunitiesRoute
   '/p/$projectId/rankings': typeof ProjectPProjectIdRankingsRoute
   '/p/$projectId/saved': typeof ProjectPProjectIdSavedRoute
   '/p/$projectId/search-performance': typeof ProjectPProjectIdSearchPerformanceRoute
@@ -256,6 +265,7 @@ export interface FileRoutesById {
   '/_app/settings/': typeof AppSettingsIndexRoute
   '/_project/p/$projectId/audit': typeof ProjectPProjectIdAuditRouteWithChildren
   '/_project/p/$projectId/context': typeof ProjectPProjectIdContextRoute
+  '/_project/p/$projectId/opportunities': typeof ProjectPProjectIdOpportunitiesRoute
   '/_project/p/$projectId/rankings': typeof ProjectPProjectIdRankingsRoute
   '/_project/p/$projectId/saved': typeof ProjectPProjectIdSavedRoute
   '/_project/p/$projectId/search-performance': typeof ProjectPProjectIdSearchPerformanceRoute
@@ -286,6 +296,7 @@ export interface FileRouteTypes {
     | '/settings/'
     | '/p/$projectId/audit'
     | '/p/$projectId/context'
+    | '/p/$projectId/opportunities'
     | '/p/$projectId/rankings'
     | '/p/$projectId/saved'
     | '/p/$projectId/search-performance'
@@ -311,6 +322,7 @@ export interface FileRouteTypes {
     | '/r/$reportId'
     | '/settings'
     | '/p/$projectId/context'
+    | '/p/$projectId/opportunities'
     | '/p/$projectId/rankings'
     | '/p/$projectId/saved'
     | '/p/$projectId/search-performance'
@@ -340,6 +352,7 @@ export interface FileRouteTypes {
     | '/_app/settings/'
     | '/_project/p/$projectId/audit'
     | '/_project/p/$projectId/context'
+    | '/_project/p/$projectId/opportunities'
     | '/_project/p/$projectId/rankings'
     | '/_project/p/$projectId/saved'
     | '/_project/p/$projectId/search-performance'
@@ -494,6 +507,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectPProjectIdRankingsRouteImport
       parentRoute: typeof ProjectPProjectIdRouteRoute
     }
+    '/_project/p/$projectId/opportunities': {
+      id: '/_project/p/$projectId/opportunities'
+      path: '/opportunities'
+      fullPath: '/p/$projectId/opportunities'
+      preLoaderRoute: typeof ProjectPProjectIdOpportunitiesRouteImport
+      parentRoute: typeof ProjectPProjectIdRouteRoute
+    }
     '/_project/p/$projectId/context': {
       id: '/_project/p/$projectId/context'
       path: '/context'
@@ -639,6 +659,7 @@ const ProjectPProjectIdSettingsRouteWithChildren =
 interface ProjectPProjectIdRouteRouteChildren {
   ProjectPProjectIdAuditRoute: typeof ProjectPProjectIdAuditRouteWithChildren
   ProjectPProjectIdContextRoute: typeof ProjectPProjectIdContextRoute
+  ProjectPProjectIdOpportunitiesRoute: typeof ProjectPProjectIdOpportunitiesRoute
   ProjectPProjectIdRankingsRoute: typeof ProjectPProjectIdRankingsRoute
   ProjectPProjectIdSavedRoute: typeof ProjectPProjectIdSavedRoute
   ProjectPProjectIdSearchPerformanceRoute: typeof ProjectPProjectIdSearchPerformanceRoute
@@ -653,6 +674,7 @@ const ProjectPProjectIdRouteRouteChildren: ProjectPProjectIdRouteRouteChildren =
   {
     ProjectPProjectIdAuditRoute: ProjectPProjectIdAuditRouteWithChildren,
     ProjectPProjectIdContextRoute: ProjectPProjectIdContextRoute,
+    ProjectPProjectIdOpportunitiesRoute: ProjectPProjectIdOpportunitiesRoute,
     ProjectPProjectIdRankingsRoute: ProjectPProjectIdRankingsRoute,
     ProjectPProjectIdSavedRoute: ProjectPProjectIdSavedRoute,
     ProjectPProjectIdSearchPerformanceRoute:

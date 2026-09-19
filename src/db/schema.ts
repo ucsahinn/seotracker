@@ -10,3 +10,4 @@ export * from "./ga4.schema";
 export * from "./gsc.schema";
 export * from "./gsc-history.schema";
 export * from "./google-oauth.schema";
+export * from "./gsc-inspection.schema";

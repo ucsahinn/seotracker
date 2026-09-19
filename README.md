@@ -25,6 +25,16 @@ kaldırır.
   sayfaların performans, erişilebilirlik ve SEO puanları. Laboratuvar
   skorlarının yanında, sitenizi gerçekten ziyaret eden Chrome kullanıcılarından
   gelen Çekirdek Web Verileri de gösterilir.
+- **İndeksleme durumu** — Google'ın bu sayfaları gerçekten dizine alıp
+  almadığı, URL Inspection API'den. Tarayıcı bir sayfanın dizine
+  _girebileceğini_ söyler; bu, Google'ın ne yaptığını söyler. İkisi sandığınızdan
+  daha sık ayrışır ve her ayrışma boşa çalışan bir sayfadır.
+- **Çakışan sorgular** — aynı sorgu için kendi sayfalarınızın birbiriyle
+  yarıştığı yerler. Search Console bunu göstermez: sorguları ve sayfaları ayrı
+  listeler. İki boyutu birlikte isteyip gruplamak yeter.
+- **Fırsatlar** — 4. ile 20. sıra arasındaki sayfalar, talebe, iş değerine ve
+  ne kadar yakın olduklarına göre puanlanmış. Search Console hangi sayfanın
+  para kazandırdığını bilmez; Analytics ile birleştirince bilir.
 - **Google Analytics 4** — organik trafik, açılış sayfaları, dönüşümler.
 - **Denetim karşılaştırması** — bir haftadır tarama yapılmadıysa panel hatırlatır
   ve son iki denetimi karşılaştırıp yeni çıkan sorunları ayrı gösterir.

@@ -186,9 +186,7 @@ function SavedKeywordsPage() {
       setRowSelection({});
       setShowTagModal(false);
       void invalidateSavedKeywords();
-      toast.success(
-        `Updated tags for ${result.taggedCount} keyword${result.taggedCount !== 1 ? "s" : ""}`,
-      );
+      toast.success(`${result.taggedCount} kelimenin etiketleri güncellendi`);
     },
     onError: (error) => {
       toast.error(getStandardErrorMessage(error, "Etiketler güncellenemedi"));

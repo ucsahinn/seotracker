@@ -5,6 +5,7 @@ import {
   ClipboardCheck,
   FileText,
   LayoutDashboard,
+  Target,
   TrendingUp,
 } from "lucide-react";
 import { linkOptions } from "@tanstack/react-router";
@@ -23,6 +24,11 @@ const projectNavItems = [
     to: "/p/$projectId/rankings" as const,
     label: "Sıralama Takibi",
     icon: TrendingUp,
+  },
+  {
+    to: "/p/$projectId/opportunities" as const,
+    label: "Fırsatlar",
+    icon: Target,
   },
   {
     to: "/p/$projectId/saved" as const,
@@ -93,6 +99,7 @@ export function getProjectNavGroups(projectId: string) {
       items: [
         byPath("/p/$projectId/search-performance"),
         byPath("/p/$projectId/rankings"),
+        byPath("/p/$projectId/opportunities"),
         byPath("/p/$projectId/saved"),
         byPath("/p/$projectId/audit"),
       ],

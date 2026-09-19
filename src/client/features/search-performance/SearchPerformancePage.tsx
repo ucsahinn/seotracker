@@ -22,6 +22,7 @@ import {
   type ExportTarget,
   type Tab,
 } from "@/client/features/search-performance/SearchPerformanceParts";
+import { CannibalizationTable } from "@/client/features/search-performance/CannibalizationTable";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import {
   exportSearchPerformanceTable,
@@ -243,6 +244,11 @@ export function SearchPerformancePage({ projectId }: { projectId: string }) {
                     onClick={() => setTab("pages")}
                     label="Sayfalar"
                   />
+                  <TabButton
+                    active={tab === "cannibalization"}
+                    onClick={() => setTab("cannibalization")}
+                    label="Çakışmalar"
+                  />
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
                   {reportQuery.isFetching && !reportQuery.isPending ? (
@@ -317,9 +323,11 @@ export function SearchPerformancePage({ projectId }: { projectId: string }) {
                   projectId={projectId}
                   rows={report.strikingDistance}
                 />
+              ) : tab === "cannibalization" ? (
+                <CannibalizationTable projectId={projectId} />
               ) : tableQuery.isPending ? (
                 <div className="flex items-center gap-2 p-8 text-sm text-base-content/60">
-                  <Loader2 className="size-4 animate-spin" /> Loading…
+                  <Loader2 className="size-4 animate-spin" /> Yükleniyor…
                 </div>
               ) : tableQuery.isError ? (
                 <div className="p-4">
@@ -334,7 +342,7 @@ export function SearchPerformancePage({ projectId }: { projectId: string }) {
                   <div className="p-4">
                     <DimensionTable
                       rows={tableRows}
-                      keyLabel={tab === "queries" ? "Query" : "Page"}
+                      keyLabel={tab === "queries" ? "Sorgu" : "Sayfa"}
                     />
                   </div>
                   <TablePagination

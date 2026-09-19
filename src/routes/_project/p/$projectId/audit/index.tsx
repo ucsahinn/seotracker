@@ -1,3 +1,4 @@
+import { formatDateTime } from "@/client/lib/format";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useCallback } from "react";
 import { AlertCircle, Loader2 } from "lucide-react";
@@ -71,7 +72,7 @@ function AuditDetail({
   auditId: string;
   tab: string;
   onBack: () => void;
-  onTabChange: (tab: "issues" | "pages" | "performance") => void;
+  onTabChange: (tab: "issues" | "pages" | "performance" | "index") => void;
 }) {
   const statusQuery = useQuery({
     queryKey: ["audit-status", projectId, auditId],
@@ -260,14 +261,14 @@ function ProgressCard({
   const isLighthousePhase = status.currentPhase === "lighthouse";
   const phaseLabel =
     status.currentPhase === "discovery"
-      ? "Discovery"
+      ? "Keşif"
       : status.currentPhase === "crawling"
-        ? "Crawling"
+        ? "Taranıyor"
         : status.currentPhase === "lighthouse"
-          ? "Lighthouse"
+          ? "Hız ölçümü"
           : status.currentPhase === "finalizing"
-            ? "Finalizing"
-            : (status.currentPhase ?? "Running");
+            ? "Tamamlanıyor"
+            : (status.currentPhase ?? "Çalışıyor");
   const progress = isLighthousePhase ? lighthouseProgress : crawlProgress;
 
   const crawlProgressQuery = useQuery({
@@ -308,7 +309,7 @@ function ProgressCard({
               </span>
             ) : (
               <span>
-                {status.pagesCrawled} / {status.pagesTotal} pages
+                {status.pagesCrawled} / {status.pagesTotal} sayfa
               </span>
             )}
             <span className="text-base-content/60">{progress}%</span>
@@ -320,10 +321,11 @@ function ProgressCard({
         <div className="card bg-base-100 border border-base-300">
           <div className="card-body gap-2 p-4">
             <h3 className="text-sm font-medium text-base-content/70">
-              Crawled Pages ({crawledUrls.length})
+              Taranan sayfalar ({crawledUrls.length})
             </h3>
             <p className="text-xs text-base-content/50">
-              Updated {new Date(crawledUrls[0].crawledAt).toLocaleTimeString()}
+              Güncellendi{" "}
+              {formatDateTime(new Date(crawledUrls[0].crawledAt).toISOString())}
             </p>
             <div className="max-h-[400px] overflow-y-auto -mx-1">
               {crawledUrls.map((entry, i) => (

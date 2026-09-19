@@ -6,6 +6,7 @@ import {
   exportPerformance,
 } from "@/client/features/audit/results/export";
 import type { AuditResultsData } from "@/client/features/audit/results/types";
+import { IndexCoverageView } from "@/client/features/audit/results/IndexCoverageView";
 import { isLighthouseFailure } from "@/client/features/audit/results/AuditResultsTableFilterLogic";
 import {
   IssuesView,
@@ -17,7 +18,7 @@ import {
   PerformanceTable,
 } from "@/client/features/audit/results/ResultsTables";
 
-type ResultsTab = "issues" | "pages" | "performance";
+type ResultsTab = "issues" | "pages" | "performance" | "index";
 
 export function ResultsView({
   projectId,
@@ -122,6 +123,9 @@ export function ResultsView({
             }}
           />
 
+          {activeTab === "index" && (
+            <IndexCoverageView projectId={projectId} auditId={audit.id} />
+          )}
           {activeTab === "issues" && <IssuesView issues={issues} />}
           {activeTab === "pages" && (
             <PagesTable
@@ -227,6 +231,7 @@ function ResultsHeader({
   const tabs: Array<{ tab: ResultsTab; label: string }> = [
     { tab: "issues", label: `Sorunlar (${issueCount})` },
     { tab: "pages", label: `Sayfalar (${pageCount})` },
+    { tab: "index", label: "İndeksleme" },
     ...(hasPerformanceTab
       ? [
           {

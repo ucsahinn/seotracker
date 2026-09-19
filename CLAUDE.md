@@ -25,6 +25,18 @@ not coming back. Build on what Search Console already knows.
 - Prefer idiomatic TanStack Query, Router, and Form patterns for server state, routing, and submitted forms.
 - Specs under `specs/` are design records: what a feature does, how it works, the alternatives considered and why they lost.
 
+## Reaching what already exists
+
+Several capabilities were built, tested and wired to MCP without ever getting a
+screen, so only an agent could use them. Before building a feature, check
+whether the service is already there: `src/server/features/*/services/` against
+`src/serverFunctions/`. A service with no server function is a screen waiting
+to be written, not work waiting to be done.
+
+The Google quota-bearing calls are the exception to "fetch on render". URL
+Inspection allows 2000 URLs per property per day, so results are cached in
+`gsc_url_inspections` and refreshed only from an explicit button.
+
 ## Interface
 
 The whole visual language lives in `src/client/styles/app.css`. Seventy-one
