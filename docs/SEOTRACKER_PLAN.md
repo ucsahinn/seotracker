@@ -20,7 +20,7 @@
 | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Ne yapıyoruz**               | OpenSEO'yu fork edip ücretli veri gerektiren her şeyi söküyor, geriye kalan ücretsiz çekirdeği Türkçeleştirip kendi aracına çeviriyoruz                                                |
 | **Neden**                      | Yazılım ücretsiz ama rakip analizi verisi üçüncü taraf bir servisten satın alınıyor. Kendi sitelerin için gereken veri Google'dan zaten bedava geliyor                                 |
-| **Ne kalıyor**                 | Search Console, Google Analytics 4, teknik site denetimi (28 sorun türü), PageSpeed hız skorları, raporlar, Claude Code için 28 MCP aracı                                              |
+| **Ne kalıyor**                 | Search Console, Google Analytics 4, teknik site denetimi (29 sorun türü), PageSpeed hız skorları, raporlar, Claude Code için 28 MCP aracı                                              |
 | **Ne gidiyor**                 | Rakip analizi, anahtar kelime araştırması, backlink, yapay zeka arama görünürlüğü, ücretli sıralama takibi, faturalandırma, uygulama içi yapay zeka ajanı, telemetri, pazarlama sitesi |
 | **Sen ne yapacaksın**          | GitHub'da fork, bir Google Cloud projesi ve iki anahtar (§3). Hepsi ücretsiz, kart istemiyor                                                                                           |
 | **Kaç aşama**                  | 9 faz. Her fazın sonunda uygulama açılıyor ve doğrulama kapısından geçiyor (§7)                                                                                                        |
@@ -29,13 +29,13 @@
 ## 1. Bağlam
 
 - 2026-09-19: `github.com/every-app/open-seo` (OpenSEO, MIT lisansı, telif Ben Senescu)
-  `C:\Users\ulasc\Desktop\open-seo` altına klonlandı ve Docker Compose ile ayağa kaldırıldı
+  yerel bir dizine klonlandı ve Docker Compose ile ayağa kaldırıldı
   (`ghcr.io/every-app/open-seo:latest`, konteyner `open-seo-open-seo-1`, `http://localhost:3001`,
   `AUTH_MODE=local_noauth`). Sağlık ucu 200 döndü; DataForSEO anahtarı yok, uyarı veriyor.
 - OpenSEO'nun kendisi ücretsiz, ama rakip analizi / anahtar kelime hacmi / backlink / rank tracking
   verisi ücretli DataForSEO API'sinden geliyor (min. 50 USD yükleme). Kullanıcı bunu istemiyor.
 - Hedef: OpenSEO'yu fork edip yalnızca **ücretsiz veri kaynaklarıyla** çalışan kişisel bir araca
-  dönüştürmek. Adı **seotracker**. Kendi siteleri için (ör. siberdergi.net, vaultpilot.io) Search
+  dönüştürmek. Adı **seotracker**. Kendi siteleriniz için Search
   Console verisi, GA4 verisi, teknik site denetimi ve Claude Code'dan MCP ile erişim.
 
 ## 2. Korunan kararlar (kullanıcı onaylı, değiştirilmeyecek)

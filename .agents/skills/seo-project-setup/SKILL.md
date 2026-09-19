@@ -15,7 +15,7 @@ Be friendly, practical, and structured. Ask questions in small batches. Explain 
 
 ## Where the answers go
 
-Two project-context MCP tools do all the writing. Both are free — they spend no credits.
+Two project-context MCP tools do all the writing.
 
 - `get_project_context(projectId)`: everything already known about the project, plus a `missingSections` list.
 - `update_project_context(projectId, updates)`: a list of patch ops. The ones this skill uses:
@@ -23,7 +23,7 @@ Two project-context MCP tools do all the writing. Both are free — they spend n
   - `{ addCompetitors: [{ domain, name?, notes? }] }`
   - `{ addKeyPages: [{ url, role: "hub" | "spoke" | "money" | "other", topic?, notes? }] }`
   - `{ customSection: "<slug>", title?, content }` for anything that does not fit a typed section
-  - `{ appendResearchLog: { summary } }` when this session spends credits
+  - `{ appendResearchLog: { summary } }` when this session produced a finding other skills should not redo
 
 Write in batches as the interview progresses — do not hold every answer until the end. Sections are prose (~4,000 characters each), so a few tight paragraphs, not a transcript.
 
@@ -96,9 +96,9 @@ Write to `positioning`: audience, the problem, the differentiator, and any claim
 
 ### 6. Save competitors
 
-Turn the competitors and substitutes from step 5 into `addCompetitors` entries: one row per domain, with a short `notes` line on why they matter ("direct competitor, owns the comparison pages"). If the user is unsure who competes in search, `find_serp_competitors` on a handful of seed keywords will name them — confirm the list with the user before saving, and log the spend.
+Turn the competitors and substitutes from step 5 into `addCompetitors` entries: one row per domain, with a short `notes` line on why they matter ("direct competitor, owns the comparison pages"). If the user is unsure who competes in search, search the web for the terms they want to win and read who actually ranks; seotracker has no competitor database of its own. Confirm the list with the user before saving.
 
-Competitors saved here are reused by `competitive-landscape`, `competitor-analysis`, and `link-prospecting`.
+Competitors saved here are shared context: every skill reads them, and the user can edit them on the project's Context page.
 
 ### 7. Inventory key assets
 
@@ -107,9 +107,7 @@ Ask for or discover:
 - Sitemap or important URL list
 - Current blog/resources/content library
 - Product/category/feature pages
-- Existing keyword lists
-- Current rank trackers
-- Backlink or PR assets
+- Existing keyword lists (save the ones worth watching with `save_keywords`; `list_saved_keywords` shows what is already there)
 - Linkable assets such as studies, templates, tools, datasets, calculators, or original opinions
 
 Save the pages that actually matter with `addKeyPages` — money pages, topic hubs, and the linkable assets. This is a curated shortlist, not a site inventory: 10 to 30 URLs is normal. Give each one a `role` and, where known, the `topic` it targets.
@@ -118,7 +116,7 @@ Save the pages that actually matter with `addKeyPages` — money pages, topic hu
 
 GSC is the richest first-party signal: existing impressions, near-ranking terms, cannibalization, and pages that already have search demand.
 
-**Preferred (hosted): connect it natively.** On the project's Integrations page, connect Google Search Console and pull live data with `get_search_console_performance`. Once connected, the agent reads it directly in `keyword-research` and `keyword-clustering` — no manual files to maintain.
+**Preferred (hosted): connect it natively.** On the project's Integrations page, connect Google Search Console and pull live data with `get_search_console_performance`. Once connected, every skill reads it directly — no manual files to maintain — and two more reads unlock: `inspect_urls` for Google's own verdict on whether a page is indexed and which canonical it chose (2,000 URLs per property per day), and, once Google Analytics 4 is connected on the same page, `get_search_opportunities` for the pages already sitting in positions 4-20 scored by demand and business value.
 
 **Fallback (self-hosted, or if the user prefers files):** ask the user to export CSVs from Search Console into a local working folder (see step 9).
 
@@ -155,14 +153,13 @@ Do not create folders unless the user asks, and do not duplicate goals, position
 
 ### 10. Recommend first workflow
 
-After intake, recommend one next seotracker workflow:
+After intake, recommend one next step:
 
 - `seo-audit`: when the site already exists and the user wants to know what to fix or do first, especially if they are new to SEO
-- `keyword-research`: when the user needs ideas from seed topics
-- `keyword-clustering`: when they have keywords or GSC data to map to pages
-- `competitive-landscape`: when the market is unclear
-- `competitor-analysis`: when they know a competitor to study
-- `link-prospecting`: when they have a linkable asset or target page
+- `seo-coach`: when the user wants orientation, an explanation, or help choosing between options
+- `get_search_opportunities`: when Search Console and GA4 are both connected and they want the page closest to a win
+- `get_search_console_performance`: when they want to see what already ranks before deciding anything
+- `inspect_urls`: when they suspect key pages are missing from Google
 
 ## Output format
 
@@ -190,6 +187,6 @@ Tell the user they can read and edit everything saved here on the project's Cont
 - Keep setup lightweight. The user should feel oriented, not assigned homework.
 - Confirm facts with the user before writing them. Inferences from the site are fine to propose, but they get saved as agreed answers, not guesses.
 - Do not pretend a GSC CSV has been uploaded unless you can see it, and do not claim Search Console is connected unless `get_search_console_performance` confirms it (it returns a "not connected" message otherwise).
-- Keep project setup focused on setup and context unless the user asks for live research. If a step does spend credits, append a research log entry so other skills do not re-buy it.
+- Keep project setup focused on setup and context unless the user asks for live research. If a step does produce a finding, append a research log entry so other skills do not redo it.
 - If web search or scraping is used for positioning research, distinguish source evidence from inference.
 - Overwriting a section replaces it. When context already exists, merge the new answers into the existing prose instead of discarding it.

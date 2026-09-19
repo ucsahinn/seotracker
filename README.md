@@ -18,7 +18,7 @@ kaldırır.
   kayıtları yerelde tuttuğu için o sınırın ötesine geçer. Sıralama sayfası her
   açılışta eksik günleri kendiliğinden tamamlar; zamanlanmış bir göreve gerek
   yoktur.
-- **Site denetimi** — kendi tarayıcısıyla sitenizi gezer ve 28 ayrı teknik SEO
+- **Site denetimi** — kendi tarayıcısıyla sitenizi gezer ve 29 ayrı teknik SEO
   sorununu raporlar: kırık bağlantı, eksik başlık, yinelenen içerik, yönlendirme
   zinciri, yetim sayfa ve diğerleri.
 - **Hız skorları** — denetim sırasında Google PageSpeed Insights ile örnek

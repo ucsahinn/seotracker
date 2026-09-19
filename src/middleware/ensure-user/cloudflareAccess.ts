@@ -53,7 +53,7 @@ export async function resolveCloudflareAccessContext(
       .join(" and ");
     throw new AppError(
       "AUTH_CONFIG_MISSING",
-      `Missing Cloudflare Access configuration: set ${missing} on the deployment. See docs/SELF_HOSTING_CLOUDFLARE.md.`,
+      `Missing Cloudflare Access configuration: set ${missing} on the deployment. This install is built for AUTH_MODE=local_noauth; see docs/SELF_HOSTING_DOCKER.md.`,
     );
   }
 

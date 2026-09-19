@@ -4,7 +4,6 @@
 
 - Node.js 20+
 - [Corepack](https://nodejs.org/api/corepack.html) (bundled through Node.js 24; install it separately on Node.js 25+)
-- A DataForSEO account/API credentials
 
 ## Local Development Workflow
 
@@ -21,14 +20,21 @@ Verify that `pnpm --version` reports the version declared by the
 `packageManager` field in `package.json`. An older global pnpm may reject
 the repository's lockfile as incompatible.
 
-Configure `.env.local`:
+Configure `.env.local`. Nothing in it is required; create it only for one of
+these:
 
-1. `cp .env.example .env.local`
-2. Add `DATAFORSEO_API_KEY` as a base64-encoded `login:password` value:
+1. `AUTH_MODE=local_noauth` for normal local development.
+2. `PAGESPEED_API_KEY` for the speed phase of an audit. Everything else works
+   without it. See [`PAGESPEED_API_KEY.md`](./PAGESPEED_API_KEY.md).
+3. `PORT` if 3001 is taken.
 
-   `printf '%s' 'YOUR_LOGIN:YOUR_PASSWORD' | base64`
+> `.env.example` is still the upstream file and describes DataForSEO, hosted
+> auth and Postgres, none of which exist here. Ignore it; the list above is
+> what this fork reads.
 
-3. Set `AUTH_MODE=local_noauth` for normal local development.
+The Google OAuth client is not an environment variable: enter it in the app
+under **Ayarlar → Google bağlantısı**. See
+[`SELF_HOSTING_GOOGLE_SEARCH_CONSOLE.md`](./SELF_HOSTING_GOOGLE_SEARCH_CONSOLE.md).
 
 Run locally:
 
@@ -102,9 +108,9 @@ pnpm run db:migrate:local
 
 ## Postgres backend (optional)
 
-D1 (SQLite) is the default. To run against Postgres locally instead — the opt-in
-backend for installs that outgrow D1 — see
-[`LOCAL_POSTGRES.md`](./LOCAL_POSTGRES.md).
+D1 (SQLite) is the only backend. The Postgres option was removed with the
+rest of the multi-tenant surface, so there is no second dialect to keep in
+sync.
 
 ## Auth Modes
 

@@ -25,7 +25,9 @@ dist-sourcemaps/
 /build/
 /api/
 /server/build
-/public/build# Sentry Config File
+/public/build
+
+# Sentry Config File
 .env.sentry-build-plugin
 /test-results/
 /playwright-report/
@@ -44,3 +46,6 @@ dist-sourcemaps/
 
 # Alchemy local state + bundle artifacts (SaaS deploys)
 .alchemy/
+
+# Browser-automation output from local verification runs.
+.playwright-mcp/

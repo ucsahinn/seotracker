@@ -196,13 +196,13 @@ footer{max-width:660px;margin:64px 0 0;padding:26px 0 0;border-top:1px solid var
 
     <div class="tw">
       <table>
-        <thead><tr><th>Item</th><th class="n">Volume</th><th class="n">Difficulty</th></tr></thead>
-        <tbody><tr><td>example keyword</td><td class="n">1,300</td><td class="n">4</td></tr></tbody>
+        <thead><tr><th>Item</th><th class="n">Impressions</th><th class="n">Position</th></tr></thead>
+        <tbody><tr><td>example query</td><td class="n">1,300</td><td class="n">6.4</td></tr></tbody>
       </table>
     </div>
 
     <figure>
-      <div class="bars" role="img" aria-label="Monthly volume: alpha 1,300, beta 590">
+      <div class="bars" role="img" aria-label="Impressions: alpha 1,300, beta 590">
         <span class="label">alpha</span><span class="track"><span class="bar" style="width:100%"></span></span><span class="value">1,300</span>
         <span class="label">beta</span><span class="track"><span class="bar" style="width:45%"></span></span><span class="value">590</span>
       </div>
