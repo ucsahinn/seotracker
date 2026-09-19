@@ -3,7 +3,7 @@ name: seo-audit
 description: "Audit a website and deliver a one-page, plain-language SEO report anyone can act on, centered on a single do-this-week action."
 ---
 
-# OpenSEO SEO Audit
+# seotracker SEO Audit
 
 ## Goal
 
@@ -29,9 +29,9 @@ The project-context tools are free and shared with the app and other agents.
 
 Deliver through the `seo-report` skill, saving with `skill: "seo-audit"`. If that skill is not available, say so and stop before writing HTML.
 
-## OpenSEO MCP tools
+## seotracker MCP tools
 
-- `whoami`: confirm connection and remaining credits before spending anything. If OpenSEO is not connected, stop and ask the user to connect it.
+- `whoami`: confirm connection and remaining credits before spending anything. If seotracker is not connected, stop and ask the user to connect it.
 - `list_projects` / `create_project`: resolve the `projectId`.
 - `run_site_audit`: start the crawl (default page budget). Leave Lighthouse off (its default) — it adds several minutes and this report doesn't need it; pass `runLighthouse: true` only when the user asks for performance/Core Web Vitals depth. Then check `get_audit_status` (the crawl takes a minute or two — wait between checks rather than polling in a loop) and read `get_audit_issues`. Use `get_audit_pages` when per-page evidence helps.
 - `get_backlinks_overview`: backlink and referring-domain picture; usually the deciding data for the "one thing".
@@ -70,7 +70,7 @@ Sections in this order:
 4. **Where to focus first** (healthy sites only) — one sentence, then a table of 3 to 5 keywords with volume and difficulty and the page or post to make for each, plus a bar chart when the volumes are worth comparing. Omit the whole section when the site is down.
 5. **What's working now** — a short list.
 6. **What to do next** — an ordered list, the one thing first.
-7. **How this report was made** — opens with the skill link line from `seo-report`, pointing at `https://openseo.so/docs/skills/seo-audit` ("OpenSEO SEO Audit skill"), then what the tools reported and what you verified by hand.
+7. **How this report was made** — opens with the skill link line from `seo-report`, pointing at `https://localhost:3001/docs/skills/seo-audit` ("seotracker SEO Audit skill"), then what the tools reported and what you verified by hand.
 
 Use a note for anything you could not verify or where the site's goal makes a standard recommendation the wrong call.
 

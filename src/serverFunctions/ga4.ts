@@ -34,12 +34,11 @@ export const getGa4Connection = createServerFn({ method: "POST" })
   .middleware(requireProjectContext)
   .validator(projectScopedSchema)
   .handler(async ({ context }) => {
-    const [connection, currentUserHasGrant, ga4Configured] =
-      await Promise.all([
-        Ga4Service.getConnection(context.projectId),
-        Ga4Service.userHasGrant(context.userId),
-        hasSelfHostedGoogleOAuthConfig(),
-      ]);
+    const [connection, currentUserHasGrant, ga4Configured] = await Promise.all([
+      Ga4Service.getConnection(context.projectId),
+      Ga4Service.userHasGrant(context.userId),
+      hasSelfHostedGoogleOAuthConfig(),
+    ]);
     return {
       connected: Boolean(connection),
       canManage: hasOrgPermission(context.role, { integration: ["manage"] }),

@@ -14,7 +14,6 @@ import { env } from "cloudflare:workers";
 import { and, eq, lt } from "drizzle-orm";
 import { db } from "@/db";
 import { audits, projects } from "@/db/schema";
-import { getDatabaseProvider } from "@/db/provider";
 import { AuditRepository } from "@/server/features/audit/repositories/AuditRepository";
 import {
   classifyAuditError,
@@ -137,10 +136,9 @@ export async function reconcileStaleAudits() {
  */
 async function getStaleRunningAudits(cutoff: Date, limit: number) {
   const iso = cutoff.toISOString();
-  const startedBefore =
-    getDatabaseProvider() === "postgres"
-      ? iso
-      : iso.replace("T", " ").slice(0, 19);
+  // D1 stores timestamps in SQLite's "YYYY-MM-DD HH:MM:SS" form, so compare in
+  // the same shape (a same-day ISO cutoff would misorder against those rows).
+  const startedBefore = iso.replace("T", " ").slice(0, 19);
   // Oldest first: genuinely dead audits age past the cutoff and stay there,
   // while long-but-live crawls are the newest of the stale set — without a
   // deterministic order they could occupy the whole batch every sweep and

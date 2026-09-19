@@ -45,9 +45,9 @@ touch .logs/dev-server.log
 pnpm dev:agents
 ```
 
-`pnpm dev:agents` runs through [portless](https://github.com/vercel-labs/portless) at `http://open-seo.localhost:1355` by default.
+`pnpm dev:agents` runs through [portless](https://github.com/vercel-labs/portless) at `http://seotracker.localhost:1355` by default.
 
-When using a git worktree, [portless](https://github.com/vercel-labs/portless) prefixes the branch name, for example `http://feature-name.open-seo.localhost:1355`.
+When using a git worktree, [portless](https://github.com/vercel-labs/portless) prefixes the branch name, for example `http://feature-name.seotracker.localhost:1355`.
 
 ## Website and BadSEO
 

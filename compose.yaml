@@ -1,12 +1,11 @@
 services:
-  open-seo:
-    image: ${OPEN_SEO_IMAGE:-ghcr.io/every-app/open-seo:latest}
+  seotracker:
+    image: ${SEOTRACKER_IMAGE:-ghcr.io/ucsahinn/seotracker:latest}
     restart: unless-stopped
     # Forward EVERY .env value into the container. The explicit `environment:`
     # list below still wins for the values it names — without this, any .env
-    # value not listed there (e.g. OPENROUTER_API_KEY) silently never reached
-    # the app. Compose errors if .env is missing; the quickstart's
-    # `cp .env.example .env` creates it.
+    # value not listed there silently never reaches the app. Compose errors if
+    # .env is missing; the quickstart's `cp .env.example .env` creates it.
     env_file:
       - .env
     environment:
@@ -22,10 +21,13 @@ services:
       # Encrypts the stored Google OAuth tokens at rest. Must be >= 32 chars or
       # Search Console stays disabled.
       - BETTER_AUTH_SECRET=${BETTER_AUTH_SECRET:-}
+      # Google PageSpeed Insights, for the Lighthouse phase of a site audit.
+      # Optional: without it the API answers on a much smaller keyless quota.
+      - PAGESPEED_API_KEY=${PAGESPEED_API_KEY:-}
       - VITE_SHOW_DEVTOOLS=false
     ports:
       - "127.0.0.1:${PORT:-3001}:${PORT:-3001}"
     volumes:
-      - open_seo_data:/app/.wrangler
+      - seotracker_data:/app/.wrangler
 volumes:
-  open_seo_data:
+  seotracker_data:

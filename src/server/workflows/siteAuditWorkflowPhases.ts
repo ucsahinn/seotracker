@@ -23,7 +23,6 @@ import {
   runCrawlPhase,
   type CrawlPhaseResult,
 } from "@/server/workflows/siteAuditWorkflowCrawl";
-import { pgStep } from "@/server/workflows/pgStep";
 import {
   DB_STEP,
   DISCOVERY_STEP,
@@ -119,7 +118,7 @@ async function runDiscoveryPhase(
   // instead of the step return). A pre-refactor instance replayed under this
   // code must re-run discovery — resuming from the old cached {sitemapUrls}
   // shape would leave the scratchpad empty and finalize a zero-page audit.
-  return pgStep(step, "discover-urls-v2", DISCOVERY_STEP, async () => {
+  return step.do("discover-urls-v2", DISCOVERY_STEP, async () => {
     const result = await discoverUrls(origin, maxPages);
     const robots = parseRobotsTxt(origin, result.robotsText);
     const scratchpad = getAuditScratchpad(auditId);
@@ -177,14 +176,7 @@ export async function runLighthousePhase(
   step: WorkflowStep,
   params: LighthousePhaseParams,
 ) {
-  const {
-    auditId,
-    workflowInstanceId,
-    actorUserId,
-    projectId,
-    startUrl,
-    config,
-  } = params;
+  const { auditId, workflowInstanceId, projectId, startUrl, config } = params;
   if (config.lighthouseStrategy === "none") return;
 
   const lighthouseWork = await selectLighthousePages({
@@ -211,12 +203,11 @@ export async function runLighthousePhase(
     // Workflow retries disabled, a later R2/DB/progress failure cannot replay
     // DataForSEO. One URL groups its mobile + desktop checks into one compact
     // checkpoint. allSettled, not all: a rejected step must not orphan the
-    // sibling paid calls mid-flight — their checkpoints complete and persist
-    // below either way.
+    // sibling calls mid-flight — their checkpoints complete and persist below
+    // either way.
     const settled = await Promise.allSettled(
       chunk.map(({ url, pageId }, chunkOffset) =>
-        pgStep(
-          step,
+        step.do(
           `lighthouse-fetch-${chunkStart + chunkOffset + 1}`,
           LIGHTHOUSE_FETCH_STEP,
           () =>
@@ -244,8 +235,7 @@ export async function runLighthousePhase(
     const chunkIndex = Math.floor(chunkStart / LIGHTHOUSE_URL_CONCURRENCY) + 1;
     const priorCompleted = completedChecks;
     const priorFailed = failedChecks;
-    const counts = await pgStep(
-      step,
+    const counts = await step.do(
       `lighthouse-persist-chunk-${chunkIndex}`,
       LIGHTHOUSE_PERSIST_STEP,
       async () => {
@@ -283,7 +273,7 @@ async function selectLighthousePages(params: {
   strategy: AuditConfig["lighthouseStrategy"];
 }) {
   const { step, auditId, workflowInstanceId, startUrl, strategy } = params;
-  return pgStep(step, "select-lighthouse-sample", DB_STEP, async () => {
+  return step.do("select-lighthouse-sample", DB_STEP, async () => {
     // Crawled pages come from the DB — the crawl phase no longer holds a
     // whole-crawl page list in memory.
     const crawledPages = await AuditRepository.getPagesForAudit(auditId);
@@ -330,7 +320,7 @@ async function finalizeAudit(args: {
     crawl,
   } = args;
 
-  await pgStep(step, "multipage-checks", MULTIPAGE_CHECKS_STEP, async () => {
+  await step.do("multipage-checks", MULTIPAGE_CHECKS_STEP, async () => {
     await AuditRepository.updateAuditProgress(auditId, workflowInstanceId, {
       currentPhase: "finalizing",
     });
@@ -360,7 +350,7 @@ async function finalizeAudit(args: {
     return { issueCount: issues.length };
   });
 
-  await pgStep(step, "finalize", DB_STEP, async () => {
+  await step.do("finalize", DB_STEP, async () => {
     const blockedPages = await AuditRepository.countPagesByFetchClass(
       auditId,
       "blocked",

@@ -1,6 +1,5 @@
 import { z } from "zod";
 import { TAG_COLOR_KEYS } from "@/shared/tag-colors";
-import { booleanSearchParamSchema } from "@/types/schemas/search-params";
 
 const savedKeywordTagSchema = z.string().trim().min(1).max(64);
 const tagColorSchema = z.enum(TAG_COLOR_KEYS);
@@ -14,22 +13,6 @@ const savedKeywordSortFields = [
   "fetchedAt",
 ] as const;
 const sortDirs = ["asc", "desc"] as const;
-
-export const researchKeywordsSchema = z.object({
-  projectId: z.string().min(1),
-  keywords: z.array(z.string().min(1)).min(1).max(200),
-  locationCode: z.number().int().positive().optional(),
-  languageCode: z.string().min(2).max(8).optional(),
-  resultLimit: z
-    .union([z.literal(150), z.literal(300), z.literal(500)])
-    .default(150),
-  mode: z
-    .enum(["auto", "related", "suggestions", "ideas"])
-    .optional()
-    .default("auto"),
-  // Clickstream-refined volumes double the DataForSEO request cost; opt-in.
-  clickstream: z.boolean().optional().default(false),
-});
 
 export const savedKeywordMetricSchema = z.object({
   keyword: z.string().min(1),
@@ -134,18 +117,8 @@ export const deleteSavedKeywordTagSchema = z.object({
   tagId: z.string().min(1),
 });
 
-export const refreshSavedKeywordMetricsSchema = z.object({
-  projectId: z.string().min(1),
-});
-
-export type ResearchKeywordsInput = z.infer<typeof researchKeywordsSchema>;
 export type SaveKeywordsInput = z.infer<typeof saveKeywordsSchema>;
 type ResolvedMarket = { locationCode: number; languageCode: string };
-export type ResolvedResearchKeywordsInput = Omit<
-  ResearchKeywordsInput,
-  keyof ResolvedMarket
-> &
-  ResolvedMarket;
 export type ResolvedSaveKeywordsInput = Omit<
   SaveKeywordsInput,
   keyof ResolvedMarket
@@ -167,49 +140,3 @@ export type UpdateSavedKeywordTagInput = z.infer<
 export type DeleteSavedKeywordTagInput = z.infer<
   typeof deleteSavedKeywordTagSchema
 >;
-
-export type RefreshSavedKeywordMetricsInput = z.infer<
-  typeof refreshSavedKeywordMetricsSchema
->;
-export const serpAnalysisSchema = z.object({
-  projectId: z.string().min(1),
-  keyword: z.string().min(1),
-  locationCode: z.number().int().positive().optional(),
-  languageCode: z.string().min(2).max(8).optional(),
-  // Only the two depths the app offers: the default top-20 snapshot, and the
-  // full 100 the SERP panel buys when a user pages past the loaded results.
-  // Each 10 of depth is another crawled Google page (~2.5 credits).
-  depth: z.union([z.literal(20), z.literal(100)]).default(20),
-});
-
-/* ------------------------------------------------------------------ */
-/*  URL search params schema for /p/$projectId/keywords                */
-/* ------------------------------------------------------------------ */
-
-const keywordSortFields = [
-  "keyword",
-  "searchVolume",
-  "cpc",
-  "competition",
-  "keywordDifficulty",
-] as const;
-
-const keywordModes = ["auto", "related", "suggestions", "ideas"] as const;
-
-export const keywordsSearchSchema = z.object({
-  q: z.string().optional(),
-  loc: z.coerce.number().int().positive().optional(),
-  kLimit: z.union([z.literal(150), z.literal(300), z.literal(500)]).optional(),
-  mode: z.enum(keywordModes).optional(),
-  cs: booleanSearchParamSchema.optional(),
-  sort: z.enum(keywordSortFields).optional(),
-  order: z.enum(sortDirs).optional(),
-  minVol: z.string().optional(),
-  maxVol: z.string().optional(),
-  minCpc: z.string().optional(),
-  maxCpc: z.string().optional(),
-  minKd: z.string().optional(),
-  maxKd: z.string().optional(),
-  include: z.string().optional(),
-  exclude: z.string().optional(),
-});

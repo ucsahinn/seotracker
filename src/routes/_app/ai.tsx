@@ -16,8 +16,8 @@ import {
   OpenClawIcon,
 } from "@/client/features/ai-mcp/AgentIcons";
 
-const DOCS_URL = "https://openseo.so/docs/agent-setup";
-const COACH_DOCS_URL = "https://openseo.so/docs/skills/seo-coach";
+const DOCS_URL = "https://localhost:3001/docs/agent-setup";
+const COACH_DOCS_URL = "https://localhost:3001/docs/skills/seo-coach";
 const SKILLS = [
   ["seo-coach", "Explains where you stand and picks your next step."],
   [
@@ -54,7 +54,7 @@ export const Route = createFileRoute("/_app/ai")({
 function AiPage() {
   const origin =
     typeof window === "undefined"
-      ? "https://app.openseo.so"
+      ? "https://localhost:3001"
       : window.location.origin;
   const mcpUrl = `${origin}/mcp`;
   const prompt = getAgentSetupPrompt(origin);
@@ -65,7 +65,7 @@ function AiPage() {
       <div className="mx-auto max-w-2xl">
         <h1 className="text-2xl font-semibold tracking-tight">Agent setup</h1>
         <p className="mt-3 text-pretty text-sm leading-relaxed text-base-content/70">
-          The most powerful way to use OpenSEO is through the AI agent you
+          The most powerful way to use seotracker is through the AI agent you
           already use. Set it up once, then ask it anything.
         </p>
 
@@ -95,9 +95,9 @@ function AiPage() {
               <section className="rounded-xl border border-base-300 p-5 sm:p-6">
                 <h2 className="text-base font-semibold">Set up your agent</h2>
                 <p className="mt-2 text-sm leading-relaxed text-base-content/60">
-                  Paste the setup prompt into your agent to connect OpenSEO and
-                  install its SEO skills. It will guide you through any manual
-                  steps.
+                  Paste the setup prompt into your agent to connect seotracker
+                  and install its SEO skills. It will guide you through any
+                  manual steps.
                 </p>
                 <ul className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
                   {AGENTS.map(({ name, Icon }) => (
@@ -149,8 +149,8 @@ function AiPage() {
                 <h2 className="text-base font-semibold">Update your skills</h2>
                 <p className="mt-2 text-sm leading-relaxed text-base-content/60">
                   Already connected? Paste the update prompt into your agent to
-                  get the latest OpenSEO skills while preserving your connection
-                  settings and personal edits.
+                  get the latest seotracker skills while preserving your
+                  connection settings and personal edits.
                 </p>
                 <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3 [&>button]:h-11 [&>button]:gap-2 [&>button]:text-sm">
                   <CopyButton
@@ -181,7 +181,7 @@ function AiPage() {
                   connect until Managed OAuth is enabled on your Access
                   application.{" "}
                   <a
-                    href="https://openseo.so/docs/self-hosting/cloudflare#connect-the-mcp-server-through-cloudflare-access"
+                    href="https://localhost:3001/docs/self-hosting/cloudflare#connect-the-mcp-server-through-cloudflare-access"
                     target="_blank"
                     rel="noreferrer"
                     className="link font-medium"
@@ -217,7 +217,7 @@ function AiPage() {
                   className="flex flex-col gap-0.5 sm:flex-row sm:gap-3"
                 >
                   <a
-                    href={`https://openseo.so/docs/skills/${name}`}
+                    href={`https://localhost:3001/docs/skills/${name}`}
                     target="_blank"
                     rel="noreferrer"
                     className="shrink-0 font-mono text-[13px] text-base-content underline decoration-base-content/25 underline-offset-4 hover:decoration-base-content sm:w-48"

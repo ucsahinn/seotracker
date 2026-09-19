@@ -29,22 +29,15 @@ const startSelfHostedLinkSchema = z.object({
 // Account-level grant check (no project needed) for surfaces like onboarding
 // where the user hasn't picked a project yet. The OAuth grant is per-account;
 // binding a property to a project happens later in Integrations.
-export const getGscGrantStatus = createServerFn({ method: "GET" })
-  .middleware(requireAuthenticatedContext)
-  .handler(async ({ context }) => {
-    return { connected: await GscService.userHasGrant(context.userId) };
-  });
-
 export const getGscConnection = createServerFn({ method: "POST" })
   .middleware(requireProjectContext)
   .validator(projectScopedSchema)
   .handler(async ({ context }) => {
-    const [connection, currentUserHasGrant, gscConfigured] =
-      await Promise.all([
-        GscService.getConnection(context.projectId),
-        GscService.userHasGrant(context.userId),
-        hasSelfHostedGoogleOAuthConfig(),
-      ]);
+    const [connection, currentUserHasGrant, gscConfigured] = await Promise.all([
+      GscService.getConnection(context.projectId),
+      GscService.userHasGrant(context.userId),
+      hasSelfHostedGoogleOAuthConfig(),
+    ]);
     return {
       connected: Boolean(connection),
       canManage: hasOrgPermission(context.role, { integration: ["manage"] }),

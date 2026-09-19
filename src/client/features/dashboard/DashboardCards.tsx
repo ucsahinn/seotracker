@@ -15,13 +15,10 @@ import {
   EmptyCardBody,
   formatDay,
   moreDetailsClass,
-  newLost,
   PercentDelta,
   Stat,
 } from "@/client/features/dashboard/cardParts";
-import type {
-  DashboardAuditSummary,
-} from "@/server/features/dashboard/services/DashboardService";
+import type { DashboardAuditSummary } from "@/server/features/dashboard/services/DashboardService";
 
 // Plain string-keyed view of the registry: issue types from the DB are not
 // statically guaranteed to be registry keys.
@@ -202,4 +199,3 @@ export function AuditHealthCard({
     </CardShell>
   );
 }
-

@@ -1,1 +1,0 @@
-DROP TABLE "reddit_attributions" CASCADE;

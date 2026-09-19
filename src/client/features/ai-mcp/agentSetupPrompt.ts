@@ -1,4 +1,4 @@
-import installerSkill from "../../../../.agents/skills/setup-openseo/SKILL.md?raw";
+import installerSkill from "../../../../.agents/skills/setup-seotracker/SKILL.md?raw";
 import updatePrompt from "./agentUpdatePrompt.md?raw";
 
 export const agentUpdatePrompt = updatePrompt.trim();
@@ -8,5 +8,5 @@ export function getAgentSetupPrompt(origin: string) {
   const instructions = installerSkill
     .replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, "")
     .trim();
-  return instructions.replaceAll("https://app.openseo.so", origin);
+  return instructions.replaceAll("http://localhost:3001", origin);
 }

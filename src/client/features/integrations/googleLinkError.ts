@@ -5,7 +5,7 @@ import { captureClientEvent } from "@/client/lib/observability";
  * be told apart from any other `error` query param. Its value is the provider
  * key ("gsc" | "ga4").
  */
-export const GOOGLE_LINK_ERROR_PARAM = "google_link_error";
+const GOOGLE_LINK_ERROR_PARAM = "google_link_error";
 
 export type GoogleLinkProvider = "gsc" | "ga4";
 

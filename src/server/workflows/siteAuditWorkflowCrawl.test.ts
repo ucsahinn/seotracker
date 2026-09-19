@@ -10,7 +10,7 @@ const mocks = vi.hoisted(() => ({
   recordBatch: vi.fn(),
   releaseUrls: vi.fn<(urls: string[]) => Promise<void>>(),
   insertCrawledBatch: vi.fn(),
-  pgStep: vi.fn(),
+  stepDo: vi.fn(),
   sleepUntil: vi.fn(),
   getCrawlThrottle: vi.fn(),
   saveCrawlThrottle: vi.fn(),
@@ -30,7 +30,6 @@ vi.mock("@/server/features/audit/repositories/AuditRepository", () => ({
 vi.mock("@/server/lib/audit/progress-kv", () => ({
   AuditProgressKV: { pushCrawledUrls: vi.fn() },
 }));
-vi.mock("@/server/workflows/pgStep", () => ({ pgStep: mocks.pgStep }));
 vi.mock("@/server/lib/audit/ids", () => ({
   deterministicAuditRowId: async (_auditId: string, url: string) => url,
   sha256Hex: async () => "content-hash",
@@ -57,9 +56,7 @@ beforeEach(async () => {
   mocks.saveCrawlThrottle.mockImplementation(async (state) => {
     checkpoint = structuredClone(state);
   });
-  mocks.pgStep.mockImplementation((_step, _name, _config, fn: () => unknown) =>
-    fn(),
-  );
+  mocks.stepDo.mockImplementation((_name, _config, fn: () => unknown) => fn());
   mocks.sleepUntil.mockImplementation(async (_name, at: number) => {
     await new Promise((resolve) =>
       setTimeout(resolve, Math.max(0, at - Date.now())),
@@ -99,7 +96,7 @@ function crawl(maxPages = 100) {
   urls = Array.from({ length: maxPages }, (_, i) => `${ORIGIN}/${i}`);
   return runCrawlPhase(
     {
-      do: vi.fn(),
+      do: mocks.stepDo,
       sleep: vi.fn(),
       sleepUntil: mocks.sleepUntil,
       waitForEvent: vi.fn(),
@@ -200,8 +197,8 @@ describe("crawl pacing and cooldowns", () => {
 
   it("replays the same durable cooldown after a workflow restart", async () => {
     const cache = new Map<string, unknown>();
-    mocks.pgStep.mockImplementation(
-      async (_step, name: string, _config, fn: () => Promise<unknown>) => {
+    mocks.stepDo.mockImplementation(
+      async (name: string, _config, fn: () => Promise<unknown>) => {
         if (!cache.has(name)) cache.set(name, await fn());
         return cache.get(name);
       },
@@ -229,8 +226,8 @@ describe("crawl pacing and cooldowns", () => {
     mocks.releaseUrls.mockRejectedValueOnce(
       new Error("scratchpad unavailable"),
     );
-    mocks.pgStep.mockImplementation(
-      async (_step, _name, _config, fn: () => Promise<unknown>) => {
+    mocks.stepDo.mockImplementation(
+      async (_name, _config, fn: () => Promise<unknown>) => {
         try {
           return await fn();
         } catch {

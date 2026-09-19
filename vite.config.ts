@@ -19,17 +19,12 @@ export default defineConfig(({ mode }) => {
     env.ALLOWED_HOST,
     env.BETTER_AUTH_URL ? new URL(env.BETTER_AUTH_URL).hostname : undefined,
   ].filter((host): host is string => Boolean(host));
-  const emitSourcemaps = env.POSTHOG_SOURCEMAPS === "true";
 
   return {
-    envPrefix: [
-      "VITE_",
-      "AUTH_MODE",
-      "BYPASS_EMAIL_VERIFICATION",
-      "POSTHOG_PUBLIC_KEY",
-      "POSTHOG_HOST",
-      "TURNSTILE_SITE_KEY",
-    ],
+    // Inlined into the client bundle at build time. docker-entrypoint.sh
+    // fingerprints the same list to decide whether a rebuild is needed, so the
+    // two must stay in sync.
+    envPrefix: ["VITE_", "AUTH_MODE"],
     server: {
       allowedHosts,
       port,
@@ -38,10 +33,7 @@ export default defineConfig(({ mode }) => {
       allowedHosts,
       port,
     },
-    build: {
-      sourcemap: emitSourcemaps,
-      outDir: emitSourcemaps ? "dist-sourcemaps" : "dist",
-    },
+
     plugins: [
       leanWorkerBundle(),
       showDevtools
@@ -55,7 +47,7 @@ export default defineConfig(({ mode }) => {
       cloudflare({
         inspectorPort: false,
         viteEnvironment: { name: "ssr" },
-        // The site-audit aux worker builds to dist/open_seo_audit/ and runs
+        // The site-audit aux worker builds to dist/seotracker_audit/ and runs
         // beside the main worker in dev and preview, with the app's
         // cross-script SITE_AUDIT_WORKFLOW / AUDIT_SCRATCHPAD bindings
         // resolved against it.

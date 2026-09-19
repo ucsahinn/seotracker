@@ -1,23 +1,9 @@
 import { AppError } from "@/server/lib/errors";
 import {
   DEFAULT_LOCATION_CODE,
-  getKeywordDataProvider,
   getLanguageOptions,
   isLanguageServedForLocation,
 } from "@/shared/keyword-locations";
-
-/**
- * Guards Labs-backed tools (domain analytics) against locations we serve
- * from Google Ads keyword data only.
- */
-export function assertLabsLocationCode(locationCode: number | undefined) {
-  if (locationCode != null && getKeywordDataProvider(locationCode) !== "labs") {
-    throw new AppError(
-      "VALIDATION_ERROR",
-      "Domain analytics is not available for this country. Keyword research and rank tracking work; domain-level data is limited to DataForSEO Labs locations.",
-    );
-  }
-}
 
 /**
  * Guards Labs-backed callers against a language DataForSEO doesn't serve for

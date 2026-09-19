@@ -21,7 +21,7 @@
 
 /* Light theme */
 @plugin "daisyui/theme" {
-  name: "openseo";
+  name: "seotracker";
   default: true;
   prefersdark: false;
   color-scheme: light;
@@ -57,7 +57,7 @@
 
 /* Dark theme - auto-activates via prefers-color-scheme */
 @plugin "daisyui/theme" {
-  name: "openseo-dark";
+  name: "seotracker-dark";
   prefersdark: true;
   color-scheme: dark;
   --color-base-100: oklch(18% 0 0);
@@ -153,7 +153,7 @@ select {
    base-200, which is darker than the base-100 content panel in dark mode,
    so they read as sunken/disabled. Colored variants (primary, error, ...)
    set their own --btn-color and are excluded. */
-html[data-theme="openseo-dark"]
+html[data-theme="seotracker-dark"]
   .btn:not(
     .btn-primary,
     .btn-error,
@@ -168,7 +168,7 @@ html[data-theme="openseo-dark"]
 /* Light mode: the base-200 default button is nearly invisible on the
    base-100 content panel; use a white surface with a visible border,
    matching inputs/selects. */
-html[data-theme="openseo"]
+html[data-theme="seotracker"]
   .btn:not(
     .btn-primary,
     .btn-error,
@@ -251,28 +251,28 @@ html[data-theme="openseo"]
   --tw-ring-color: color-mix(in oklab, #d946ef 30%, transparent);
 }
 
-html[data-theme="openseo-dark"] .tag-chip-slate {
+html[data-theme="seotracker-dark"] .tag-chip-slate {
   color: #cbd5e1;
 }
-html[data-theme="openseo-dark"] .tag-chip-rose {
+html[data-theme="seotracker-dark"] .tag-chip-rose {
   color: #fda4af;
 }
-html[data-theme="openseo-dark"] .tag-chip-amber {
+html[data-theme="seotracker-dark"] .tag-chip-amber {
   color: #fcd34d;
 }
-html[data-theme="openseo-dark"] .tag-chip-lime {
+html[data-theme="seotracker-dark"] .tag-chip-lime {
   color: #d9f99d;
 }
-html[data-theme="openseo-dark"] .tag-chip-emerald {
+html[data-theme="seotracker-dark"] .tag-chip-emerald {
   color: #6ee7b7;
 }
-html[data-theme="openseo-dark"] .tag-chip-sky {
+html[data-theme="seotracker-dark"] .tag-chip-sky {
   color: #7dd3fc;
 }
-html[data-theme="openseo-dark"] .tag-chip-violet {
+html[data-theme="seotracker-dark"] .tag-chip-violet {
   color: #c4b5fd;
 }
-html[data-theme="openseo-dark"] .tag-chip-fuchsia {
+html[data-theme="seotracker-dark"] .tag-chip-fuchsia {
   color: #f5d0fe;
 }
 
@@ -323,29 +323,29 @@ html[data-theme="openseo-dark"] .tag-chip-fuchsia {
   --tw-ring-color: color-mix(in oklab, #b91c1c 32%, transparent);
 }
 
-html[data-theme="openseo-dark"] .score-tier-na {
+html[data-theme="seotracker-dark"] .score-tier-na {
   color: #cbd5e1;
 }
-html[data-theme="openseo-dark"] .score-tier-1 {
+html[data-theme="seotracker-dark"] .score-tier-1 {
   color: #6ee7b7;
 }
-html[data-theme="openseo-dark"] .score-tier-2 {
+html[data-theme="seotracker-dark"] .score-tier-2 {
   color: #bef264;
 }
-html[data-theme="openseo-dark"] .score-tier-3 {
+html[data-theme="seotracker-dark"] .score-tier-3 {
   color: #fde047;
 }
-html[data-theme="openseo-dark"] .score-tier-4 {
+html[data-theme="seotracker-dark"] .score-tier-4 {
   color: #fdba74;
 }
-html[data-theme="openseo-dark"] .score-tier-5 {
+html[data-theme="seotracker-dark"] .score-tier-5 {
   color: #fca5a5;
 }
-html[data-theme="openseo-dark"] .score-tier-6 {
+html[data-theme="seotracker-dark"] .score-tier-6 {
   color: #fda4af;
 }
 
-html[data-theme="openseo-dark"] {
+html[data-theme="seotracker-dark"] {
   --trend-grid-color: oklch(78% 0.01 255 / 0.22);
   --trend-axis-color: oklch(84% 0.01 255 / 0.62);
   --trend-fill-start-opacity: 0.24;
@@ -355,18 +355,18 @@ html[data-theme="openseo-dark"] {
   --trend-tooltip-shadow: oklch(0% 0 0 / 0.35);
 }
 
-html[data-theme="openseo-dark"] .alert-warning {
+html[data-theme="seotracker-dark"] .alert-warning {
   @apply border-warning/60 bg-warning/20;
 }
 
-html[data-theme="openseo-dark"] .alert-info {
+html[data-theme="seotracker-dark"] .alert-info {
   @apply border-info/60 bg-info/20;
 }
 
-html[data-theme="openseo-dark"] .alert-success {
+html[data-theme="seotracker-dark"] .alert-success {
   @apply border-success/60 bg-success/20;
 }
 
-html[data-theme="openseo-dark"] .alert-error {
+html[data-theme="seotracker-dark"] .alert-error {
   @apply border-error/60 bg-error/20;
 }

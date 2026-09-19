@@ -80,13 +80,6 @@ export const workersOAuthMcpPropsSchema = z.object({
 // The hosted /mcp route only ever sees provider-minted tokens, whose props
 // always carry the OAuth client identity — require it so scope enforcement
 // fails closed instead of silently degrading to first-party.
-export const hostedWorkersOAuthMcpPropsSchema = z.object({
-  [MCP_AUTH_CONTEXT_PROP]: applicationAuthContextSchema.extend({
-    clientId: z.string().min(1),
-    scopes: z.array(z.string()),
-  }),
-});
-
 export type McpProps = z.infer<typeof workersOAuthMcpPropsSchema>;
 
 export function createWorkersOAuthMcpProps(
@@ -127,7 +120,7 @@ export function createMcpToolContext(
   }
 
   // Scope enforcement happens once, at the hosted transport boundary
-  // (handleAuthenticatedOpenSeoMcpRequest); this only assembles identity.
+  // (handleAuthenticatedSeotrackerMcpRequest); this only assembles identity.
   const applicationAuth = result.data[MCP_AUTH_CONTEXT_PROP];
   const authInfo = context.http?.authInfo;
   const clientId = authInfo?.clientId ?? applicationAuth.clientId ?? null;

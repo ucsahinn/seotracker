@@ -127,9 +127,8 @@ export function createMcpServer(authProps: McpProps) {
     },
   );
 
-  const register = <Input extends ToolSchema>(
-    tool: McpToolDefinition<Input>,
-  ) => registerMcpTool(server, tool, authProps);
+  const register = <Input extends ToolSchema>(tool: McpToolDefinition<Input>) =>
+    registerMcpTool(server, tool, authProps);
 
   register(whoamiTool);
   register(listProjectsTool);

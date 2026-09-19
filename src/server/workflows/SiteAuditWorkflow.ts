@@ -9,13 +9,14 @@ import {
   type WorkflowEvent,
   type WorkflowStep,
 } from "cloudflare:workers";
-import { withPgClient } from "@/db";
 import { AuditRepository } from "@/server/features/audit/repositories/AuditRepository";
 import { classifyAuditError } from "@/server/lib/audit/audit-errors";
 import type { AuditConfig } from "@/server/lib/audit/types";
-import { captureServerError, captureServerEvent } from "@/server/lib/observability";
+import {
+  captureServerError,
+  captureServerEvent,
+} from "@/server/lib/observability";
 import { runAuditPhases } from "@/server/workflows/siteAuditWorkflowPhases";
-import { pgStep } from "@/server/workflows/pgStep";
 import { DB_STEP } from "@/server/workflows/auditStepConfigs";
 
 interface AuditParams {
@@ -31,21 +32,20 @@ export class SiteAuditWorkflow extends WorkflowEntrypoint<Env, AuditParams> {
     // Scope a per-request Postgres client for this workflow invocation (no-op in
     // D1 mode). The socket is reclaimed when the invocation ends, so there is
     // nothing to tear down here.
-    return withPgClient(() => this.runScoped(event, step));
+    return this.runScoped(event, step);
   }
 
   private async runScoped(
     event: WorkflowEvent<AuditParams>,
     step: WorkflowStep,
   ) {
-    const { auditId, actorUserId, projectId, startUrl, config } =
-      event.payload;
+    const { auditId, actorUserId, projectId, startUrl, config } = event.payload;
 
     try {
       // Inside a step so the D1 read is retried and replay-cached; a bare
       // read here would re-execute on every replay and a transient failure
       // would kill the instance before the catch below exists.
-      await pgStep(step, "validate-context", DB_STEP, async () => {
+      await step.do("validate-context", DB_STEP, async () => {
         const audit = await AuditRepository.getAuditForWorkflow(
           auditId,
           event.instanceId,
@@ -91,7 +91,7 @@ export class SiteAuditWorkflow extends WorkflowEntrypoint<Env, AuditParams> {
         );
       }
       const errorInfo = classifyAuditError(error);
-      await pgStep(step, "mark-failed", DB_STEP, async () => {
+      await step.do("mark-failed", DB_STEP, async () => {
         // Read the phase before failAudit stamps currentPhase = "failed".
         const runningAudit = await AuditRepository.getAuditForWorkflow(
           auditId,

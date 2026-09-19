@@ -5,7 +5,7 @@ const {
   fetchLighthouseResultMock,
   selectLighthouseSampleMock,
   storeLighthouseResultMock,
-  pgStepMock,
+  stepDoMock,
   getPagesForAuditMock,
   insertLighthouseResultsMock,
   updateAuditProgressMock,
@@ -13,7 +13,7 @@ const {
   fetchLighthouseResultMock: vi.fn(),
   selectLighthouseSampleMock: vi.fn(),
   storeLighthouseResultMock: vi.fn(),
-  pgStepMock: vi.fn(),
+  stepDoMock: vi.fn(),
   getPagesForAuditMock: vi.fn(),
   insertLighthouseResultsMock: vi.fn(),
   updateAuditProgressMock: vi.fn(),
@@ -54,7 +54,6 @@ vi.mock("@/server/lib/observability", () => ({ captureServerEvent: vi.fn() }));
 vi.mock("@/server/workflows/siteAuditWorkflowCrawl", () => ({
   runCrawlPhase: vi.fn(),
 }));
-vi.mock("@/server/workflows/pgStep", () => ({ pgStep: pgStepMock }));
 
 import { runLighthousePhase } from "@/server/workflows/siteAuditWorkflowPhases";
 
@@ -66,6 +65,18 @@ const PHASE_PARAMS = {
   startUrl: "https://example.com/",
   config: { maxPages: 50, lighthouseStrategy: "auto" as const },
 };
+
+// runLighthousePhase only ever calls `step.do`; the rest of the WorkflowStep
+// surface is never touched, so the stub supplies just that one method.
+function stepStub() {
+  const step: Parameters<typeof runLighthousePhase>[0] = {
+    do: stepDoMock,
+    sleep: vi.fn(),
+    sleepUntil: vi.fn(),
+    waitForEvent: vi.fn(),
+  };
+  return step;
+}
 
 describe("runLighthousePhase", () => {
   beforeEach(() => {
@@ -95,9 +106,8 @@ describe("runLighthousePhase", () => {
     let persistenceAttempts = 0;
     let fetchRetryLimit: number | undefined;
     let persistenceRetryLimit: number | undefined;
-    pgStepMock.mockImplementation(
+    stepDoMock.mockImplementation(
       async (
-        _step: unknown,
         name: string,
         config: { retries?: { limit?: number } },
         callback: () => Promise<unknown>,
@@ -125,9 +135,7 @@ describe("runLighthousePhase", () => {
       .mockRejectedValueOnce(new Error("progress unavailable"))
       .mockResolvedValueOnce(undefined);
 
-    // pgStep is mocked above, so the opaque WorkflowStep object is never read.
-    // oxlint-disable-next-line typescript-eslint/no-unsafe-type-assertion
-    await runLighthousePhase({} as never, PHASE_PARAMS);
+    await runLighthousePhase(stepStub(), PHASE_PARAMS);
 
     expect(fetchLighthouseResultMock).toHaveBeenCalledTimes(2);
     expect(storeLighthouseResultMock).toHaveBeenCalledTimes(4);
@@ -151,9 +159,8 @@ describe("runLighthousePhase", () => {
       "https://example.com/",
       "https://example.com/about",
     ]);
-    pgStepMock.mockImplementation(
+    stepDoMock.mockImplementation(
       async (
-        _step: unknown,
         name: string,
         _config: unknown,
         callback: () => Promise<unknown>,
@@ -165,9 +172,7 @@ describe("runLighthousePhase", () => {
       },
     );
 
-    // pgStep is mocked above, so the opaque WorkflowStep object is never read.
-    // oxlint-disable-next-line typescript-eslint/no-unsafe-type-assertion
-    await runLighthousePhase({} as never, PHASE_PARAMS);
+    await runLighthousePhase(stepStub(), PHASE_PARAMS);
 
     // Only the surviving URL's pair was fetched; the failed step's checks
     // still land as errorMessage rows in the same insert.

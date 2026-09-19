@@ -14,7 +14,7 @@ const applicationContext = {
   baseUrl: "https://seotracker.test",
 };
 
-describe("OpenSEO tool auth context", () => {
+describe("seotracker tool auth context", () => {
   it("stores only application-specific identity in Workers OAuth props", () => {
     const props = createWorkersOAuthMcpProps(applicationContext);
 

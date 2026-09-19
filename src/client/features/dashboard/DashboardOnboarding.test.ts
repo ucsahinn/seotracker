@@ -43,7 +43,7 @@ afterEach(() => vi.unstubAllGlobals());
 describe("dashboard onboarding visibility", () => {
   it("opens Search Console setup on the successful OAuth return URL", () => {
     vi.stubGlobal("window", {
-      location: new URL("https://app.openseo.so/p/project-a#connect-gsc"),
+      location: new URL("https://localhost:3001/p/project-a#connect-gsc"),
     });
     const markup = renderChecklist();
     expect(markup).toContain('aria-expanded="true" aria-controls="setup-gsc"');
@@ -52,7 +52,7 @@ describe("dashboard onboarding visibility", () => {
 
   it("keeps setup actions collapsed on an ordinary dashboard visit", () => {
     vi.stubGlobal("window", {
-      location: new URL("https://app.openseo.so/p/project-a"),
+      location: new URL("https://localhost:3001/p/project-a"),
     });
     const markup = renderChecklist();
     expect(markup).not.toContain("Connection setup");

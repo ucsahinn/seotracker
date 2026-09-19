@@ -18,8 +18,7 @@ const SHORT_LABELS: Record<KeywordIntent, string> = {
   unknown: "?",
 };
 
-/** Full intent labels, shared with the keyword filters so both stay in sync. */
-export const INTENT_LABELS: Record<KeywordIntent, string> = {
+const INTENT_LABELS: Record<KeywordIntent, string> = {
   informational: "Informational",
   commercial: "Commercial",
   transactional: "Transactional",

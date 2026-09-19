@@ -689,10 +689,6 @@ const LABS_LOCATION_CODES = new Set<number>(
   LABS_LOCATION_OPTIONS.map((option) => option.code),
 );
 
-export const LOCATIONS: Record<number, string> = Object.fromEntries(
-  LOCATION_OPTIONS.map((option) => [option.code, option.shortLabel]),
-);
-
 const LOCATION_LANGUAGE: Record<number, string> = Object.fromEntries(
   LOCATION_OPTIONS.map((option) => [option.code, option.languageCode]),
 );

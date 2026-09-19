@@ -52,8 +52,8 @@
       {
         "patterns": [
           {
-            "group": ["@/db/d1", "@/db/d1/*", "@/db/pg", "@/db/pg/*"],
-            "message": "Import the provider-aware `db` from \"@/db\", tables from \"@/db/schema\", and batched writes via \"@/db/runBatch\". Dialect-specific clients/schemas may only be imported by the seam files in src/db and src/lib/auth.ts, otherwise the code silently bypasses DATABASE_PROVIDER."
+            "group": ["@/db/d1", "@/db/d1/*"],
+            "message": "Import `db` from \"@/db\", tables from \"@/db/schema\", and batched writes via \"@/db/runBatch\". The raw D1 client belongs to the seam files in src/db and src/lib/auth.ts."
           }
         ]
       }

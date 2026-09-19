@@ -17,18 +17,3 @@ export function captureClientError(
 ): void {
   console.error("error:", error, context ?? {});
 }
-
-export function identifyAnalyticsUser(
-  _userId: string,
-  _properties?: Record<string, unknown>,
-): void {
-  // No analytics identity to establish.
-}
-
-export function resetAnalyticsUser(): void {
-  // No analytics identity to clear.
-}
-
-export function startAnalyticsCapture(): void {
-  // No capture to start.
-}

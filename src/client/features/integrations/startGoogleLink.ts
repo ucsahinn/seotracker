@@ -1,7 +1,6 @@
 import { toast } from "sonner";
 import { useSyncExternalStore } from "react";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
-import { GOOGLE_LINK_ERROR_PARAM } from "@/client/features/integrations/googleLinkError";
 import { startSelfHostedGa4Link } from "@/serverFunctions/ga4";
 import { startSelfHostedGscLink } from "@/serverFunctions/gsc";
 import { GA4_OAUTH_PROVIDER_ID } from "@/shared/ga4";
@@ -17,15 +16,6 @@ const googleProviders = {
     startSelfHosted: startSelfHostedGa4Link,
   },
 } as const;
-
-function withGoogleLinkErrorParam(
-  callbackURL: string,
-  provider: "gsc" | "ga4",
-): string {
-  const url = new URL(callbackURL, window.location.origin);
-  url.searchParams.set(GOOGLE_LINK_ERROR_PARAM, provider);
-  return url.toString();
-}
 
 // One link flow at a time: a double-click, or a second Connect click while the
 // redirect to Google is pending, would overwrite the single Better Auth state

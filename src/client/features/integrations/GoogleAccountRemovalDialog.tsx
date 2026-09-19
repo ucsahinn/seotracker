@@ -78,7 +78,7 @@ export function GoogleAccountRemovalDialog({
         </h3>
         <p className="break-all text-sm font-medium">{label}</p>
         <p className="text-sm text-base-content/70">
-          This removes the account’s {name} connection from OpenSEO. You can
+          This removes the account’s {name} connection from seotracker. You can
           reconnect it anytime.
         </p>
         {impact.isPending ? (

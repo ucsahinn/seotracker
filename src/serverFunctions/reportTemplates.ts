@@ -43,7 +43,7 @@ export const saveReportTemplate = createServerFn({ method: "POST" })
           description: data.description,
           instructions: data.instructions,
           // The client label for a template made in the app, not through MCP.
-          createdBy: "OpenSEO app",
+          createdBy: "seotracker app",
           createdByUserId: context.userId,
         });
       return { ok: true as const, templateId, created };

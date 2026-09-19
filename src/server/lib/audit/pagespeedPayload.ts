@@ -51,9 +51,7 @@ const pagespeedResponseSchema = z.object({
       // Set when the URL itself has no field data and Google substituted
       // origin-wide numbers. Those describe the whole site, not this page.
       origin_fallback: z.boolean().optional(),
-      metrics: z
-        .record(z.string(), fieldMetricSchema.optional())
-        .optional(),
+      metrics: z.record(z.string(), fieldMetricSchema.optional()).optional(),
     })
     .optional(),
 });

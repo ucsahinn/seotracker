@@ -1,7 +1,5 @@
-Update my installed OpenSEO skills using https://openseo.so/docs/agent-setup#update-your-skills.
+Update my installed seotracker skills from this repository's `.agents/skills/` directory.
 
-Identify this agent and how OpenSEO was installed. Use the matching plugin or skills installer, checking the installed client's help before running commands. Update only OpenSEO in its existing scope. Preserve my MCP endpoint, sign-in, and personal skill edits; ask before replacing conflicting edits. Avoid duplicate skills and do not install internal repository skills.
+Identify this agent and how the skills were installed. Update only the public seotracker skills (`seo-audit`, `seo-project-setup`, `seo-coach`, `seo-report`) in their existing scope, using this agent's own skill management flow. Preserve my MCP endpoint and any personal edits to those skills; ask before replacing a conflicting edit.
 
-If the skills were copied manually, compare them with https://github.com/every-app/open-seo/tree/main/plugins/openseo/skills and update the installed public skill folders, including their supporting files. For Grok Bot or another agent without a verified update command, use its supported skill management flow or give me the exact manual steps available in this version.
-
-Reload skills if supported. If I need to reload or start a new session, tell me what to do. Verify the updated skill files and that this agent can discover them; an active MCP connection alone does not prove the skills updated. Briefly tell me what changed and anything left to do. Do not run SEO research during the update.
+Do not install the internal repository skills (`setup-seotracker`, `verify-local-mcp`, `papercuts`), and do not create duplicates. If this agent has no skill update command, give me the exact manual steps for the version I am running.

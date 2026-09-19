@@ -1,15 +1,9 @@
-import { formatRelativeTime } from "@/client/lib/relative-time";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Copy, ExternalLink, X } from "lucide-react";
 import { toast } from "sonner";
 import { ConfirmDeleteModal } from "@/client/components/ConfirmDeleteModal";
-import { Modal } from "@/client/components/Modal";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import { captureClientEvent } from "@/client/lib/observability";
-import {
-  deleteReport,
-  type ReportListItem,
-} from "@/serverFunctions/reports";
+import { deleteReport, type ReportListItem } from "@/serverFunctions/reports";
 
 // Query keys for both reports pages. staleTime is 0 wherever these are used:
 // the pages exist to inspect what an agent just wrote, so the app-wide
@@ -87,4 +81,3 @@ export function DeleteReportModal({
     />
   );
 }
-

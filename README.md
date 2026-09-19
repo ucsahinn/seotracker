@@ -1,86 +1,67 @@
-# OpenSEO
+# seotracker
 
-> Open source alternative to Semrush and Ahrefs
+Kendi siteleriniz için, yalnızca ücretsiz veri kaynaklarıyla çalışan bir SEO
+aracı. Kendi bilgisayarınızda Docker ile çalışır, hiçbir yere veri göndermez ve
+hiçbir abonelik istemez.
 
-OpenSEO is an SEO tool for _the people_. If tools like Semrush or Ahrefs are too expensive or bloated, OpenSEO is a pay-as-you-go alternative that you actually control.
+[every-app/open-seo](https://github.com/every-app/open-seo) projesinden
+türetilmiştir. Özgün proje ücretli bir veri sağlayıcısına (DataForSEO) dayanıyor;
+bu çatal o bağımlılığın tamamını ve onunla gelen çok kullanıcılı altyapıyı
+kaldırır.
 
-> All-in-one SEO tool for you and your AI agent.
+## Ne yapar
 
-Connect with any agent like Claude Code, OpenClaw or Hermes. We have pre-built skills, but you can build your own to tailor OpenSEO to your needs.
+- **Search Console performansı** — tıklama, gösterim, tıklama oranı ve ortalama
+  sıra. "Eşiğe yakın" sekmesi, 5 ile 20 arasında sıradaki sorguları ayrı
+  gösterir: en az emekle en çok kazanç oradadır.
+- **Site denetimi** — kendi tarayıcısıyla sitenizi gezer ve 28 ayrı teknik SEO
+  sorununu raporlar: kırık bağlantı, eksik başlık, yinelenen içerik, yönlendirme
+  zinciri, yetim sayfa ve diğerleri.
+- **Hız skorları** — denetim sırasında Google PageSpeed Insights ile örnek
+  sayfaların performans, erişilebilirlik ve SEO puanları.
+- **Google Analytics 4** — organik trafik, açılış sayfaları, dönüşümler.
+- **Raporlar** — yapay zeka ajanının yazdığı, kendi kendine yeten HTML belgeler.
+- **MCP sunucusu** — Claude Code gibi ajanlar bu verinin tamamına 28 araç
+  üzerinden erişir.
 
-<img width="1385" height="794" alt="Image" src="https://github.com/user-attachments/assets/fd208249-44ea-4849-bb4b-5fc896aeab73" />
+## Ne yapmaz
 
-## Hosted Version
+Rakip analizi, anahtar kelime hacmi, backlink profili ve üçüncü taraf sıralama
+takibi yoktur. Bunların hepsi satın alınan veriye dayanıyordu.
 
-Try OpenSEO for free on our website. If you want to support the project, a hosted subscription is $10/month.
+## Kurulum
 
-[openseo.so](https://openseo.so)
-
-## Why use OpenSEO?
-
-- Best in class MCP and AI Skills.
-- Modern, simple UI.
-  - Focused workflows instead of a bloated, complex SEO suite.
-- No subscriptions.
-  - Bring your own DataForSEO API key and pay only for what you use.
-- Fork and vibe code your own custom tool.
-
-## Main SEO Workflows
-
-- Keyword research
-- Rank tracking
-- Competitor Insights
-- Backlinks
-- Site Audits
-- AI Visibility
-
-## OpenSEO MCP & Agent Skills
-
-OpenSEO exposes an MCP server so AI agents like Claude Code, OpenClaw, and Hermes can use your SEO data directly. Agent Skills are reusable workflows that guide your agent through SEO tasks using the MCP.
-
-- [Set up OpenSEO MCP](https://openseo.so/docs/mcp)
-- [Set up OpenSEO Agent Skills](https://openseo.so/docs/skills/setup)
-
-## Self-Hosting
-
-OpenSEO supports two self-hosting paths:
-
-- **Simple: Docker (Best for testing it out)** - For personal use on your own machine. See [`docs/SELF_HOSTING_DOCKER.md`](./docs/SELF_HOSTING_DOCKER.md).
-  - Unless you already are self-hosting other apps and are confident doing so, we recommend self-hosting with Cloudflare as opposed to Railway, Coolify or Dokploy.
-  - We plan to make it simpler to host on those platforms in the next few months.
-- **Recommended: Cloudflare** - For internet-facing self-hosting across multiple devices or with your team (works on the free plan). See [`docs/SELF_HOSTING_CLOUDFLARE.md`](./docs/SELF_HOSTING_CLOUDFLARE.md).
-
-Either way, you need a DataForSEO API key to get SEO data. See [`docs/DATAFORSEO_API_KEY.md`](./docs/DATAFORSEO_API_KEY.md).
-
-## Costs
-
-OpenSEO needs a [DataForSEO](https://dataforseo.com/?aff=255379) API key so that you can get SEO data. You pay them directly when self hosting.
-
-See [openseo.so/pricing](https://openseo.so/pricing)
-
-When you self host, your costs will be slightly lower than the estimates on our website. The way the hosted service makes money is by charging 28% extra for every request we make to DataForSEO.
-
-## Local Development
-
-See [`docs/LOCAL_DEVELOPMENT.md`](./docs/LOCAL_DEVELOPMENT.md).
-
-## Contributing
-
-Creating clear issues is the best way to contribute.
-
-Read more here: [`docs/CONTRIBUTING.md`](./docs/CONTRIBUTING.md)
-
-We have this skill: `/simple-issue-description` which helps.
+Gerekenler: Docker ve bir Google hesabı. Ayrıntılar için
+[`docs/SELF_HOSTING_DOCKER.md`](./docs/SELF_HOSTING_DOCKER.md).
 
 ```sh
-npx skills add every-app/open-seo --skill simple-issue-description
+cp .env.example .env
+docker compose up -d
 ```
 
-## Community
+Uygulama `http://localhost:3001` adresinde açılır. İlk açılışta konteyner içinde
+derleme yaptığı için birkaç dakika sürer.
 
-Join Discord to chat: [Discord](https://discord.gg/c9uGs3cFXr)
+Search Console ve Analytics bağlantısı için bir Google OAuth istemcisi
+gerekiyor; ikisi de aynı istemciyi kullanır. Adımlar
+[`docs/SELF_HOSTING_GOOGLE_SEARCH_CONSOLE.md`](./docs/SELF_HOSTING_GOOGLE_SEARCH_CONSOLE.md)
+ve [`docs/SELF_HOSTING_GOOGLE_ANALYTICS.md`](./docs/SELF_HOSTING_GOOGLE_ANALYTICS.md)
+dosyalarında.
 
-Follow along for updates:
+Hız skorları için ücretsiz bir PageSpeed Insights anahtarı önerilir:
+[`docs/PAGESPEED_API_KEY.md`](./docs/PAGESPEED_API_KEY.md).
 
-- Follow on X: https://x.com/bensenescu
-- Sign up for the mailing list on our website: [openseo.so](https://openseo.so)
+## Güvenlik
+
+Uygulama kimlik doğrulaması yapmaz (`AUTH_MODE=local_noauth`) ve yalnızca
+`127.0.0.1` üzerinden dinler. İnternete açacaksanız önüne kendi kimlik
+doğrulamanızı koyun.
+
+## Geliştirme
+
+[`docs/LOCAL_DEVELOPMENT.md`](./docs/LOCAL_DEVELOPMENT.md).
+
+## Lisans
+
+MIT. Telif hakkı özgün proje için Ben Senescu'ya aittir; lisans metni
+[`LICENSE`](./LICENSE) dosyasında korunmuştur.

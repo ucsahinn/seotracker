@@ -1,9 +1,7 @@
-import { and, eq, gt, sql } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { db } from "@/db";
 import {
   dashboardStepDismissals,
-  member,
-  invitation,
   organizationActivationState,
   projectActivationState,
 } from "@/db/schema";

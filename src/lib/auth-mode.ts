@@ -24,4 +24,3 @@ export function getAuthMode(value: string | null | undefined): AuthMode {
 
   return "cloudflare_access";
 }
-

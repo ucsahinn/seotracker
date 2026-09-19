@@ -29,7 +29,6 @@ export function DashboardSetupAction({
   projectId: string;
   onComplete: () => void;
 }) {
-  const queryClient = useQueryClient();
   const [showModal, setShowModal] = useState(false);
   const projects = useQuery({
     queryKey: ["projects"],
@@ -51,12 +50,12 @@ export function DashboardSetupAction({
     return (
       <div className="max-w-2xl space-y-4">
         <p className="text-sm leading-relaxed text-base-content/65">
-          Paste this prompt into your agent to automatically configure OpenSEO
-          for you.
+          Paste this prompt into your agent to automatically configure
+          seotracker for you.
         </p>
         <div className="flex flex-col gap-4 rounded-lg border border-base-300 bg-base-200/25 p-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="text-sm font-medium">OpenSEO plugin</p>
+            <p className="text-sm font-medium">seotracker plugin</p>
             <p className="mt-1 text-xs text-base-content/60">
               MCP connection + SEO skills
             </p>
@@ -66,7 +65,7 @@ export function DashboardSetupAction({
               primary
               value={getAgentSetupPrompt(
                 typeof window === "undefined"
-                  ? "https://app.openseo.so"
+                  ? "https://localhost:3001"
                   : window.location.origin,
               )}
               label="Copy setup prompt"
@@ -80,7 +79,7 @@ export function DashboardSetupAction({
           </div>
         </div>
         <a
-          href="https://openseo.so/docs/mcp"
+          href="https://localhost:3001/docs/mcp"
           target="_blank"
           rel="noreferrer"
           className="inline-block text-xs text-base-content/60 underline decoration-base-content/25 underline-offset-4 hover:text-base-content"

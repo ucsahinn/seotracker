@@ -5,7 +5,7 @@
   // Must live at the repo root: wrangler resolves .env.local / .dev.vars
   // relative to this file's directory, so a nested config would never see
   // local secrets.
-  "name": "open-seo-audit",
+  "name": "seotracker-audit",
   "main": "src/audit-worker.ts",
   // Only cross-script bindings from the app worker reach this worker.
   "workers_dev": false,
@@ -59,24 +59,14 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "open-seo",
+      "database_name": "seotracker",
       "database_id": "37bee90a-e1aa-404f-b01e-b0d1d479bda1",
       "migrations_dir": "drizzle",
     },
   ],
-  // Postgres scale path — same rules as wrangler.jsonc: only local Postgres
-  // dev reads this block. Uncomment together with the block in wrangler.jsonc
-  // per docs/LOCAL_POSTGRES.md.
-  // "hyperdrive": [
-  //   {
-  //     "binding": "HYPERDRIVE",
-  //     "id": "9d64ccfb559f44449ce52a143912f898",
-  //     "localConnectionString": "postgres://openseo:openseo@localhost:5433/openseo",
-  //   },
-  // ],
   "r2_buckets": [
     {
-      "bucket_name": "open-seo",
+      "bucket_name": "seotracker",
       "binding": "R2",
     },
   ],

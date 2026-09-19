@@ -1,10 +1,4 @@
-import {
-  ChevronDown,
-  Download,
-  FileDown,
-  Loader2,
-  Sheet,
-} from "lucide-react";
+import { ChevronDown, Download, FileDown, Loader2, Sheet } from "lucide-react";
 
 export function SavedKeywordsHeader({
   totalCount,

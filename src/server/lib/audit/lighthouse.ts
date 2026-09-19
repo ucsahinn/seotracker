@@ -1,7 +1,11 @@
 import { detectUrlTemplate, canonicalUrlKey } from "./url-utils";
 import { fetchPageSpeedReport, PageSpeedError } from "./pagespeed";
 import { isLighthouseRuntimeError } from "./pagespeedPayload";
-import type { LighthouseMode, LighthouseResult, LighthouseStrategy } from "./types";
+import type {
+  LighthouseMode,
+  LighthouseResult,
+  LighthouseStrategy,
+} from "./types";
 import { putTextToR2 } from "@/server/lib/r2";
 
 interface LighthouseSamplePage {

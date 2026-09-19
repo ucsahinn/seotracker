@@ -2,18 +2,15 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 const fetchPageSpeedReportMock = vi.hoisted(() => vi.fn());
 
-vi.mock("./pagespeed", async () => {
-  const actual = await vi.importActual<typeof import("./pagespeed")>(
-    "./pagespeed",
-  );
-  return {
-    ...actual,
-    fetchPageSpeedReport: fetchPageSpeedReportMock,
-  };
-});
-
 vi.mock("@/server/lib/r2", () => ({
   putTextToR2: vi.fn(),
+}));
+
+// Only the transport is stubbed; PageSpeedError stays real so the rethrow
+// branch is exercised against the class the code actually checks for.
+vi.mock("./pagespeed", async () => ({
+  ...(await vi.importActual("./pagespeed")),
+  fetchPageSpeedReport: fetchPageSpeedReportMock,
 }));
 
 import { PageSpeedError } from "./pagespeed";

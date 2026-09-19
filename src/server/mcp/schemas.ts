@@ -1,13 +1,11 @@
 import { z } from "zod";
 import { isSupportedLanguageCode } from "@/shared/keyword-locations";
 
-export const DEFAULT_LOCATION_CODE = 2840;
-
 export const projectIdSchema = z
   .string()
   .min(1)
   .describe(
-    "Required. The OpenSEO project ID to scope this call to. Get one from list_projects.",
+    "Required. The seotracker project ID to scope this call to. Get one from list_projects.",
   );
 
 export const locationCodeSchema = z

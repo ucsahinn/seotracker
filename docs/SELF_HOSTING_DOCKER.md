@@ -1,110 +1,80 @@
-# Docker Self-Hosting
+# Docker ile kurulum
 
-Run OpenSEO locally with Docker.
+seotracker'ı kendi bilgisayarınızda çalıştırmanın yolu budur.
 
-In Docker mode, OpenSEO uses `AUTH_MODE=local_noauth` (no auth checks, local admin user `admin@localhost`). Only expose it behind your own auth-protected reverse proxy, tunnel, or private network.
+Uygulama kimlik doğrulaması yapmaz (`AUTH_MODE=local_noauth`, tek yönetici
+`admin@localhost`) ve yalnızca `127.0.0.1` üzerinden dinler. İnternete açacaksanız
+önüne kendi kimlik doğrulamanızı, bir ters vekil sunucu ya da tünel koyun.
 
-The default `compose.yaml` uses the published GHCR image:
+## Gerekenler
 
-- `ghcr.io/every-app/open-seo:latest`
+- Docker Desktop, ya da Docker Engine ile Docker Compose
+- Bir Google hesabı (Search Console ve Analytics bağlantısı için)
 
-## Prerequisites
+## Hızlı başlangıç
 
-- Docker Desktop (or Docker Engine + Docker Compose)
-- A DataForSEO API key (see [`DATAFORSEO_API_KEY.md`](./DATAFORSEO_API_KEY.md))
-
-## Quickstart
-
-```bash
+```sh
 cp .env.example .env
-```
-
-Set `DATAFORSEO_API_KEY` in `.env` using the [DataForSEO setup guide](./DATAFORSEO_API_KEY.md), then start OpenSEO:
-
-```bash
 docker compose up -d
 ```
 
-Open `http://localhost:<PORT>` (default `3001`). The first start builds the app and may take 1-2 minutes; follow progress with `docker compose logs -f`.
+`http://localhost:3001` adresini açın. İlk başlatma uygulamayı konteyner içinde
+derler ve 1-2 dakika sürer; ilerlemeyi `docker compose logs -f` ile izleyin.
 
-Optional env values:
+## Ortam değişkenleri
 
-- `PORT` (defaults to `3001`)
-- `ALLOWED_HOST` (single reverse-proxy hostname to allow in Vite preview)
-- `AUTH_MODE=local_noauth` (already set in compose)
-- `OPEN_SEO_IMAGE` (defaults to `ghcr.io/every-app/open-seo:latest`)
-- `OPENROUTER_API_KEY` (required for AI features such as SAM; see [OpenRouter](https://openrouter.ai/settings/keys))
+| Değişken                                   | Ne için                                                                                                                                                         |
+| ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | Search Console ve Analytics bağlantısı. İkisi de aynı OAuth istemcisini kullanır. Bkz. `SELF_HOSTING_GOOGLE_SEARCH_CONSOLE.md`                                  |
+| `BETTER_AUTH_SECRET`                       | Saklanan Google token'larını diskte şifreler. **En az 32 karakter** olmalı, yoksa Search Console sessizce kapalı kalır. Üretmek için: `openssl rand -base64 32` |
+| `PAGESPEED_API_KEY`                        | Denetimdeki hız ölçümü. İsteğe bağlı ama önerilir. Bkz. `PAGESPEED_API_KEY.md`                                                                                  |
+| `PORT`                                     | Varsayılan `3001`                                                                                                                                               |
+| `ALLOWED_HOST`                             | Ters vekil sunucu arkasındaysanız dışarıdan görünen tek konak adı                                                                                               |
 
-If you are putting Docker behind a reverse proxy or a temporary tunnel, remember that Docker self-hosting runs with app auth disabled. Only expose it behind your own auth-protected reverse proxy, tunnel, or private network, and add the public hostname before restarting:
+`.env` dosyasını değiştirdiğinizde konteyner yeniden **oluşturulmalıdır**. Düz
+`up -d` değişikliği uygulamaz:
 
-```bash
-ALLOWED_HOST=yourdomain.com docker compose up -d
+```sh
+docker compose up -d --force-recreate seotracker
 ```
 
-You can also persist it in `.env`.
+## Kendi imajınızı derleme
 
-## Telemetry
+Depodaki kodu değiştirdiyseniz:
 
-OpenSEO collects anonymized telemetry for core usage events: heartbeats with aggregate counts (installs, users, projects, feature usage) tied to a random install ID, sent every 5 minutes during the first two hours after install, then at most once daily. Telemetry also includes failed setup check names and statuses, never values or error messages. No URLs, keywords, prompts, emails, or IP-derived location are collected, and idle installs send nothing.
-
-To disable it, set `OPENSEO_TELEMETRY_DISABLED=1` (or `DO_NOT_TRACK=1`) in `.env`, then run `docker compose up -d --force-recreate open-seo`.
-
-## Pin to a specific image tag
-
-Set `OPEN_SEO_IMAGE` in `.env` and restart:
-
-```bash
-OPEN_SEO_IMAGE=ghcr.io/every-app/open-seo:v1.2.3
-docker compose up -d
+```sh
+docker build -f Dockerfile.selfhost -t seotracker:local .
+SEOTRACKER_IMAGE=seotracker:local docker compose up -d
 ```
 
-## Build your own image locally
+## Sık kullanılan komutlar
 
-If you are testing local code changes, build and run a local tag:
-
-```bash
-docker build -f Dockerfile.selfhost -t open-seo:local .
-OPEN_SEO_IMAGE=open-seo:local docker compose up -d
+```sh
+docker compose logs -f     # canlı günlük
+docker compose ps          # durum ve sağlık
+docker compose down        # durdur
 ```
 
-## Common commands
+## Sağlık ve sorun giderme
 
-- Restart service after env changes:
+Açılış denetimi, yavaş adımlardan **önce** ortamı doğrular ve her kontrolü tek
+satır olarak yazar. Uygulama ayağa kalktıktan sonra `/api/health` aynı
+kontrolleri ve veritabanı durumunu döndürür; `docker compose ps` konteynerin
+sağlığını gösterir.
 
-```bash
-docker compose up -d open-seo
-```
+Compose'un hangi değerleri gördüğünü görmek için:
 
-- Pull latest published image and restart:
-
-```bash
-docker compose pull && docker compose up -d
-```
-
-- Stop:
-
-```bash
-docker compose down
-```
-
-## Health and troubleshooting
-
-Startup checks appear in `docker compose logs` before the build. Once running, `/api/health` reports configuration and database status, and `docker compose ps` reports container health.
-
-## Troubleshooting environment variables
-
-To confirm Docker Compose is using the expected environment variables:
-
-```bash
+```sh
 docker compose config
 ```
 
-Check that `AUTH_MODE=local_noauth`, and that `DATAFORSEO_API_KEY` is the base64
-encoded value of your DataForSEO email and API password in this format:
-`email:password`.
+## Veriler nerede duruyor
 
-If you changed `.env`, recreate the container so Compose reapplies it:
+Her şey `seotracker_data` adlı Docker biriminde, konteynerin `/app/.wrangler`
+dizininde: veritabanı, kaydedilmiş denetimler ve Lighthouse yükleri. Konteyneri
+silmek veriyi silmez; birimi silmek siler.
 
-```bash
-docker compose up -d --force-recreate open-seo
-```
+## Zamanlanmış görevler
+
+Docker modunda zamanlanmış görevler tetiklenmez. Denetimleri arayüzden
+başlatırsınız.

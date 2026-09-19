@@ -1,6 +1,6 @@
 {
-  "name": "OpenSEO",
-  "short_name": "OpenSEO",
+  "name": "seotracker",
+  "short_name": "seotracker",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",

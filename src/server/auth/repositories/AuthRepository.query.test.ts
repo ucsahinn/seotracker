@@ -27,7 +27,6 @@ beforeAll(async () => {
   // these mocks — the one sanctioned use of doMock + dynamic import.
   vi.doMock("@/db", () => ({ db: testDb }));
   vi.doMock("@/db/d1/client", () => ({ d1Db: testDb }));
-  vi.doMock("@/db/pg/client", () => ({ pgDb: null }));
 
   await client.executeMultiple(`
     CREATE TABLE organization (id TEXT PRIMARY KEY, name TEXT NOT NULL, slug TEXT, logo TEXT, created_at INTEGER, metadata TEXT);

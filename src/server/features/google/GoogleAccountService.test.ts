@@ -135,7 +135,7 @@ for (const provider of ["gsc", "ga4"] as const) {
     const table = provider === "gsc" ? "gsc_connections" : "ga4_connections";
     const input = { provider, accountId: "google-a", userId: "u1" };
 
-    it("deletes the authorization row so another OpenSEO user can claim the identity", async () => {
+    it("deletes the authorization row so another seotracker user can claim the identity", async () => {
       await grant(providerId);
       await mapping(provider, "p1");
       expect((await rows("account"))[0]?.user_id).toBe("u1");

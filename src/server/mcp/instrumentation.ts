@@ -3,7 +3,10 @@ import type { CallToolResult } from "@modelcontextprotocol/server";
 import type { z } from "zod";
 import { asAppError } from "@/server/lib/errors";
 import { recordExternalMcpToolCall } from "@/server/features/activation/mcpActivation";
-import { captureServerError, captureServerEvent } from "@/server/lib/observability";
+import {
+  captureServerError,
+  captureServerEvent,
+} from "@/server/lib/observability";
 import { shouldCaptureAppErrorCode } from "@/shared/error-codes";
 import { type ToolContext } from "@/server/mcp/context";
 

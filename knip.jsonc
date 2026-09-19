@@ -8,28 +8,24 @@
     "src/routes/**/*.tsx",
     // Drizzle config (plugin disabled due to cloudflare:workers import issues)
     "drizzle.config.ts",
-    "drizzle-pg.config.ts",
     // DB schema — exports consumed via `import * as schema` / drizzle()
     "src/db/index.ts",
     "src/db/schema.ts",
     "src/db/app.schema.ts",
     "src/db/better-auth-schema.ts",
-    "src/db/pg/schema.ts",
     // Standalone CLI/dev scripts, invoked via package.json scripts
     "scripts/**",
   ],
   // badseo/ is the standalone broken-SEO fixture worker (own deps/config),
   // so it isn't part of the app's module graph.
-  "project": [
-    "**/*.{js,mjs,ts,tsx}",
-    "!src/routeTree.gen.ts",
-    "!badseo/**",
-  ],
+  "project": ["**/*.{js,mjs,ts,tsx}", "!src/routeTree.gen.ts", "!badseo/**"],
   // Disable Drizzle plugin - it tries to load drizzle.config.ts which imports cloudflare:workers
   "drizzle": false,
   "ignoreDependencies": [
     // Tailwindcss used via @tailwindcss/vite plugin
     "tailwindcss",
     "daisyui",
+    // `cloudflare:workers` is a runtime-provided module, not a package.
+    "cloudflare",
   ],
 }

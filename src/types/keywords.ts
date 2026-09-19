@@ -11,16 +11,6 @@ export type MonthlySearch = {
   searchVolume: number;
 };
 
-export type KeywordResearchRow = {
-  keyword: string;
-  searchVolume: number | null;
-  trend: MonthlySearch[];
-  keywordDifficulty: number | null;
-  cpc: number | null;
-  competition: number | null;
-  intent: KeywordIntent;
-};
-
 export type SavedKeywordRow = {
   id: string;
   projectId: string;
@@ -48,18 +38,4 @@ export type SavedKeywordTag = {
 
 export type SavedKeywordTagSummary = SavedKeywordTag & {
   keywordCount: number;
-};
-
-export type SerpResultItem = {
-  rank: number;
-  title: string;
-  url: string;
-  domain: string;
-  description: string;
-  etv: number | null;
-  estimatedPaidTrafficCost: number | null;
-  referringDomains: number | null;
-  backlinks: number | null;
-  isNew: boolean;
-  rankChange: number | null;
 };

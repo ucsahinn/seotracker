@@ -28,9 +28,9 @@ function PrivacyPage() {
         <h2>Who operates this site</h2>
         <p>
           badseo.dev is operated by Every App, Inc. as a public test site for
-          OpenSEO. The site has no accounts, forms, purchases, or user-submitted
-          content. Privacy questions and requests can be sent to{" "}
-          <a href="mailto:ben@openseo.so">ben@openseo.so</a>.
+          seotracker. The site has no accounts, forms, purchases, or
+          user-submitted content. Privacy questions and requests can be sent to{" "}
+          <a href="mailto:ben@localhost:3001">ben@localhost:3001</a>.
         </p>
 
         <h2>Plausible Analytics</h2>
@@ -52,7 +52,7 @@ function PrivacyPage() {
         <h2>Google Analytics</h2>
         <p>
           Separately, with your permission, we use Google Analytics 4 to
-          understand traffic in the analytics product many OpenSEO users use.
+          understand traffic in the analytics product many seotracker users use.
           The Google tag does not load until you select <strong>Accept</strong>
           in the analytics banner.
         </p>

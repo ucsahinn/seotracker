@@ -1,4 +1,4 @@
-// Auxiliary worker "open-seo-audit": hosts the entire site-audit engine — the
+// Auxiliary worker "seotracker-audit": hosts the entire site-audit engine — the
 // SiteAuditWorkflow orchestrator (crawl, Lighthouse, finalize) and the
 // per-audit AuditScratchpad DO — so its memory spikes (multi-MB Lighthouse
 // payloads, in-flight HTML batches) land on a small-baseline isolate instead

@@ -179,9 +179,8 @@ export function resolveContextUpdates(
     }
 
     if ("removeCompetitors" in update) {
-      const removed = update.removeCompetitors.map(
-        (domain) =>
-          normalizeDomainInput(domain),
+      const removed = update.removeCompetitors.map((domain) =>
+        normalizeDomainInput(domain),
       );
       resolved.push({ kind: "deleteCompetitors", domains: removed });
       for (const domain of removed) domains.delete(domain);

@@ -27,7 +27,6 @@ vi.mock("@/server/features/activation/mcpActivation", () => ({
   recordExternalMcpToolCall: mocks.recordExternalMcpToolCall,
 }));
 
-
 const outputSchema = z.object({
   items: z.array(z.object({}).passthrough()),
 });
@@ -44,7 +43,7 @@ const authContext: ToolAuthContext = {
   orgScope: "pinned",
   clientId: "client-1",
   scopes: ["mcp"],
-  baseUrl: "https://app.openseo.so",
+  baseUrl: "https://localhost:3001",
 };
 
 const toolContext: ToolContext = { auth: authContext };

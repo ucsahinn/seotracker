@@ -46,21 +46,15 @@ async function getActivation(input: {
   organizationId: string;
   domain: string | null;
 }): Promise<DashboardActivation> {
-  const [
-    ga4,
-    gsc,
-    orgActivation,
-    projectActivation,
-    projectCount,
-    dismissed,
-  ] = await Promise.all([
-    Ga4ConnectionRepository.getByProjectId(input.projectId),
-    GscConnectionRepository.getByProjectId(input.projectId),
-    ActivationRepository.getOrganizationActivation(input.organizationId),
-    ActivationRepository.getProjectActivation(input.projectId),
-    ProjectRepository.countProjects(input.organizationId),
-    ActivationRepository.getDismissedSteps(input.userId, input.projectId),
-  ]);
+  const [ga4, gsc, orgActivation, projectActivation, projectCount, dismissed] =
+    await Promise.all([
+      Ga4ConnectionRepository.getByProjectId(input.projectId),
+      GscConnectionRepository.getByProjectId(input.projectId),
+      ActivationRepository.getOrganizationActivation(input.organizationId),
+      ActivationRepository.getProjectActivation(input.projectId),
+      ProjectRepository.countProjects(input.organizationId),
+      ActivationRepository.getDismissedSteps(input.userId, input.projectId),
+    ]);
 
   return {
     domain: input.domain,

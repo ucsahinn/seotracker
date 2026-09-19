@@ -72,7 +72,6 @@ export function AuthenticatedAppLayout({
         projectId={sidebarProjectId}
         onClose={() => setDrawerOpen(false)}
       />
-
     </div>
   );
 }

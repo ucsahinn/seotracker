@@ -81,4 +81,3 @@ export const removeSavedKeywords = createServerFn({
   .handler(async ({ data, context }) => {
     return KeywordResearchService.removeSavedKeywords(context.projectId, data);
   });
-

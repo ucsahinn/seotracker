@@ -51,7 +51,6 @@ function fetch(
     return handleSelfHostedMcpRequest(publicRequest, authMode, env, ctx);
   }
 
-
   return appFetch(request);
 }
 

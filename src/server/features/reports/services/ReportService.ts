@@ -1,6 +1,5 @@
 import { ReportRepository } from "@/server/features/reports/repositories/ReportRepository";
 import { AppError } from "@/server/lib/errors";
-import { captureServerEvent } from "@/server/lib/observability";
 import { formatCount } from "@/shared/format";
 import {
   REPORT_MAX_BYTES_PER_ORG,

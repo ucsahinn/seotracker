@@ -1,91 +1,75 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Check, Copy } from "lucide-react";
-import { useState } from "react";
-import { toast } from "sonner";
+import { ExternalLink } from "lucide-react";
 
-const SUPPORT_EMAIL = "ben@openseo.so";
-const DISCORD_URL = "https://discord.gg/c9uGs3cFXr";
-const GITHUB_URL = "https://github.com/every-app/open-seo";
+const GITHUB_URL = "https://github.com/ucsahinn/seotracker";
+const UPSTREAM_URL = "https://github.com/every-app/open-seo";
 
 export const Route = createFileRoute("/_app/support")({
   component: SupportPage,
 });
 
 function SupportPage() {
-  const [copied, setCopied] = useState(false);
-
-  const handleCopy = async () => {
-    await navigator.clipboard.writeText(SUPPORT_EMAIL);
-    toast.success("Email copied to clipboard");
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
   return (
     <div className="h-full overflow-auto bg-base-100 px-4 py-8 pb-24 md:px-6 md:py-12 md:pb-8">
-      <div className="mx-auto max-w-xl">
-        <p className="text-sm font-medium text-base-content/40">
-          Help & Community
-        </p>
-        <h1 className="mt-1 text-2xl font-bold tracking-tight">
-          We want to hear from you
-        </h1>
-        <p className="mt-2 text-sm text-base-content/60">
-          We want to talk to you! We're super open to feedback and want to learn
-          how you work so we can make OpenSEO better.
+      <div className="mx-auto max-w-xl space-y-6">
+        <div>
+          <p className="text-sm font-medium text-base-content/40">Help</p>
+          <h1 className="mt-1 text-2xl font-bold tracking-tight">
+            Where to look
+          </h1>
+        </div>
+
+        <p className="text-sm leading-relaxed text-base-content/70">
+          This instance runs on your own machine, so almost every problem shows
+          up in two places: the container log and the health endpoint.
         </p>
 
-        <div className="mt-8 space-y-3">
-          <div className="rounded-lg border border-base-300 px-5 py-4">
-            <p className="text-sm font-semibold">Email</p>
-            <p className="mt-1 text-sm text-base-content/60">
-              Send ideas, problems, questions, or feedback directly.
-            </p>
-            <button
-              type="button"
-              onClick={handleCopy}
-              className="mt-3 inline-flex items-center gap-2 rounded-md border border-base-300 bg-base-200/50 px-3 py-1.5 text-sm font-medium text-base-content transition-colors hover:bg-base-200"
+        <ul className="space-y-3 text-sm text-base-content/70">
+          <li>
+            <span className="font-medium text-base-content">Container log</span>{" "}
+            — <code className="text-xs">docker compose logs -f</code>. Startup
+            checks print here before the app serves anything.
+          </li>
+          <li>
+            <span className="font-medium text-base-content">
+              Health endpoint
+            </span>{" "}
+            —{" "}
+            <a href="/api/health" className="link link-primary">
+              /api/health
+            </a>{" "}
+            reports which integrations are configured and whether the database
+            answers.
+          </li>
+          <li>
+            <span className="font-medium text-base-content">Setup docs</span> —
+            the <code className="text-xs">docs/</code> directory in the
+            repository covers Docker, Search Console and Analytics setup.
+          </li>
+        </ul>
+
+        <div className="space-y-2 border-t border-base-300 pt-6">
+          <a
+            href={GITHUB_URL}
+            target="_blank"
+            rel="noreferrer"
+            className="link link-primary inline-flex items-center gap-1.5 text-sm"
+          >
+            This fork on GitHub
+            <ExternalLink className="size-3.5" />
+          </a>
+          <p className="text-xs text-base-content/50">
+            Forked from{" "}
+            <a
+              href={UPSTREAM_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="link"
             >
-              <span className="font-mono text-xs">{SUPPORT_EMAIL}</span>
-              {copied ? (
-                <Check className="size-3.5 text-success" />
-              ) : (
-                <Copy className="size-3.5 text-base-content/40" />
-              )}
-            </button>
-          </div>
-
-          <a
-            href={DISCORD_URL}
-            target="_blank"
-            rel="noreferrer"
-            className="block rounded-lg border border-base-300 px-5 py-4 transition-colors hover:border-base-content/20"
-          >
-            <p className="text-sm font-semibold">Discord</p>
-            <p className="mt-1 text-sm text-base-content/60">
-              Ask for help, share ideas and learn from the community.
-            </p>
-            <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-base-content">
-              Join the Discord
-              <span aria-hidden="true">&rarr;</span>
-            </span>
-          </a>
-
-          <a
-            href={`${GITHUB_URL}/issues`}
-            target="_blank"
-            rel="noreferrer"
-            className="block rounded-lg border border-base-300 px-5 py-4 transition-colors hover:border-base-content/20"
-          >
-            <p className="text-sm font-semibold">GitHub Issues</p>
-            <p className="mt-1 text-sm text-base-content/60">
-              Report bugs or request features on GitHub.
-            </p>
-            <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-base-content">
-              Open an issue
-              <span aria-hidden="true">&rarr;</span>
-            </span>
-          </a>
+              every-app/open-seo
+            </a>
+            , MIT licensed.
+          </p>
         </div>
       </div>
     </div>

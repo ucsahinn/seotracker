@@ -1,6 +1,5 @@
 import { AUTH_MODES } from "@/lib/auth-mode";
 import {
-  looksLikeDataForSeoKey,
   MIN_BETTER_AUTH_SECRET_LENGTH,
   validateTeamDomain,
 } from "@/shared/selfhost-checks";
@@ -14,7 +13,7 @@ type PreflightLevel = "ok" | "info" | "warn" | "fail";
 
 type PreflightItem = {
   // Stable identifier shared with /api/health's check map.
-  key: "auth" | "dataforseo" | "gsc" | "ai" | "runtime";
+  key: "auth" | "gsc" | "pagespeed" | "runtime";
   name: string;
   level: PreflightLevel;
   message: string;
@@ -58,26 +57,6 @@ function checkAuthMode(env: EnvRecord, items: PreflightItem[]): void {
     return;
   }
 
-  if (mode === "hosted") {
-    const missing = [
-      "BETTER_AUTH_URL",
-      "BETTER_AUTH_SECRET",
-      "GOOGLE_CLIENT_ID",
-      "GOOGLE_CLIENT_SECRET",
-    ].filter((name) => !get(env, name));
-    items.push(
-      missing.length
-        ? {
-            key: "auth",
-            name: "AUTH_MODE",
-            level: "fail",
-            message: `hosted mode requires ${missing.join(", ")}.`,
-          }
-        : { key: "auth", name: "AUTH_MODE", level: "ok", message: "hosted" },
-    );
-    return;
-  }
-
   // cloudflare_access (explicit or defaulted)
   const teamDomain = get(env, "TEAM_DOMAIN");
   const policyAud = get(env, "POLICY_AUD");
@@ -96,7 +75,7 @@ function checkAuthMode(env: EnvRecord, items: PreflightItem[]): void {
       key: "auth",
       name: "AUTH_MODE",
       level: "fail",
-      message: `${modeLabel} requires ${missing}. See docs/SELF_HOSTING_CLOUDFLARE.md — or set AUTH_MODE=local_noauth for a private, no-auth deployment.`,
+      message: `${modeLabel} requires ${missing} — or set AUTH_MODE=local_noauth for a private, no-auth deployment.`,
     });
     return;
   }
@@ -120,37 +99,26 @@ function checkAuthMode(env: EnvRecord, items: PreflightItem[]): void {
   });
 }
 
-function checkDataForSeo(env: EnvRecord, items: PreflightItem[]): void {
-  const key = get(env, "DATAFORSEO_API_KEY");
-
-  if (!key) {
-    items.push({
-      key: "dataforseo",
-      name: "DATAFORSEO_API_KEY",
-      level: "warn",
-      message:
-        "Not set — all SEO data features will be unavailable until it is. It is the base64 of your DataForSEO login:password (NOT the dashboard API key). See docs/DATAFORSEO_API_KEY.md.",
-    });
-    return;
-  }
-
-  if (!looksLikeDataForSeoKey(key)) {
-    items.push({
-      key: "dataforseo",
-      name: "DATAFORSEO_API_KEY",
-      level: "warn",
-      message:
-        "Set, but does not decode as base64 of login:password. If DataForSEO rejects it, encode your account email and API password: printf 'email:password' | base64.",
-    });
-    return;
-  }
-
-  items.push({
-    key: "dataforseo",
-    name: "DATAFORSEO_API_KEY",
-    level: "ok",
-    message: "Set",
-  });
+function checkPageSpeed(env: EnvRecord, items: PreflightItem[]): void {
+  // A PageSpeed key is an opaque string with no cheap shape to validate, so
+  // this only reports presence — a false "looks wrong" would be worse than
+  // saying nothing.
+  items.push(
+    get(env, "PAGESPEED_API_KEY")
+      ? {
+          key: "pagespeed",
+          name: "PAGESPEED_API_KEY",
+          level: "ok",
+          message: "Set",
+        }
+      : {
+          key: "pagespeed",
+          name: "PAGESPEED_API_KEY",
+          level: "warn",
+          message:
+            "Not set — the Lighthouse phase of a site audit falls back to Google's keyless quota and usually fails with 429. Crawling and every SEO check work without it. Free key: docs/PAGESPEED_API_KEY.md.",
+        },
+  );
 }
 
 function checkOptionalFeatures(env: EnvRecord, items: PreflightItem[]): void {
@@ -194,23 +162,6 @@ function checkOptionalFeatures(env: EnvRecord, items: PreflightItem[]): void {
         "Not configured (optional). See docs/SELF_HOSTING_GOOGLE_SEARCH_CONSOLE.md.",
     });
   }
-
-  items.push(
-    get(env, "OPENROUTER_API_KEY")
-      ? {
-          key: "ai",
-          name: "AI features",
-          level: "ok",
-          message: "OPENROUTER_API_KEY set",
-        }
-      : {
-          key: "ai",
-          name: "AI features",
-          level: "info",
-          message:
-            "OPENROUTER_API_KEY not set (optional) — SAM, the in-app SEO agent, is disabled.",
-        },
-  );
 }
 
 // Shared per-feature checks: the Docker preflight prints these at boot and
@@ -219,7 +170,7 @@ function checkOptionalFeatures(env: EnvRecord, items: PreflightItem[]): void {
 export function runSelfhostChecks(env: EnvRecord): PreflightItem[] {
   const items: PreflightItem[] = [];
   checkAuthMode(env, items);
-  checkDataForSeo(env, items);
+  checkPageSpeed(env, items);
   checkOptionalFeatures(env, items);
   return items;
 }
@@ -243,14 +194,6 @@ export function runSelfhostPreflight(env: EnvRecord): PreflightResult {
             'Not set — only localhost access will work. Behind a reverse proxy or tunnel, set ALLOWED_HOST=yourdomain.com or requests are blocked with Vite\'s "Blocked request" page.',
         },
   );
-
-  items.push({
-    key: "runtime",
-    name: "Scheduled checks",
-    level: "info",
-    message:
-      "Rank-tracking schedules do not run in Docker mode — trigger checks from the Rank Tracking page.",
-  });
 
   return { items, failed: items.some((item) => item.level === "fail") };
 }

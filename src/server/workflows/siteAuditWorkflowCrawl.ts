@@ -25,7 +25,6 @@ import {
   type CrawlThrottleState,
 } from "@/server/lib/audit/crawl-throttle";
 import { crawlPage } from "@/server/workflows/site-audit-workflow-helpers";
-import { pgStep } from "@/server/workflows/pgStep";
 import { CRAWL_CHUNK_STEP } from "@/server/workflows/auditStepConfigs";
 
 /**
@@ -117,8 +116,7 @@ export async function runCrawlPhase(
 
   while (pending > 0 && attemptedTotal < params.maxPages) {
     chunkNo += 1;
-    const result = await pgStep(
-      step,
+    const result = await step.do(
       `crawl-chunk-${chunkNo}`,
       CRAWL_CHUNK_STEP,
       () =>

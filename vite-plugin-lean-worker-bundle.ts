@@ -109,9 +109,9 @@ export function leanWorkerBundle(): Plugin {
     generateBundle(_options, bundle) {
       // Only the worker builds matter for isolate memory; the client bundle
       // never contains these packages (and the zod swap applies everywhere).
-      // "ssr" is the main worker; "open_seo_audit" is the site-audit aux
+      // "ssr" is the main worker; "seotracker_audit" is the site-audit aux
       // worker, which must stay lean for the same reason it exists.
-      if (!["ssr", "open_seo_audit"].includes(this.environment.name)) {
+      if (!["ssr", "seotracker_audit"].includes(this.environment.name)) {
         return;
       }
 
