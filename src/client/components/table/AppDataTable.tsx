@@ -73,7 +73,7 @@ export function makeSelectionColumn<TData>(
         className="checkbox checkbox-xs [--radius-selector:0.25rem]"
         checked={table.getIsAllRowsSelected()}
         onChange={table.getToggleAllRowsSelectedHandler()}
-        aria-label="Select all rows"
+        aria-label="Tüm satırları seç"
       />
     ),
     cell: ({ row, table }) => (
@@ -97,7 +97,7 @@ function SelectionCheckbox<TData>({
       type="checkbox"
       className="checkbox checkbox-xs [--radius-selector:0.25rem]"
       checked={row.getIsSelected()}
-      aria-label="Select row"
+      aria-label="Satırı seç"
       onClick={(event) => {
         event.stopPropagation();
         rangeHandledRef.current = applyShiftRangeSelection(

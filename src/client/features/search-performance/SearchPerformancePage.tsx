@@ -258,7 +258,7 @@ export function SearchPerformancePage({ projectId }: { projectId: string }) {
                     }}
                     aria-label="Device filter"
                   >
-                    <option value={ALL}>All devices</option>
+                    <option value={ALL}>Tüm cihazlar</option>
                     {DEVICE_OPTIONS.map((option) => (
                       <option key={option.value} value={option.value}>
                         {option.label}
@@ -271,7 +271,7 @@ export function SearchPerformancePage({ projectId }: { projectId: string }) {
                     onChange={(event) => setCountry(event.target.value)}
                     aria-label="Country filter"
                   >
-                    <option value={ALL}>All countries</option>
+                    <option value={ALL}>Tüm ülkeler</option>
                     {report.countries.map((row) => (
                       <option key={row.key} value={row.key}>
                         {row.key.toUpperCase()}

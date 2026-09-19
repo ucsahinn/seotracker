@@ -31,7 +31,7 @@ export function ReportsList({
           <thead>
             <tr>
               <th>Title</th>
-              <th>Created by</th>
+              <th>Oluşturan</th>
               <th>Type</th>
               <th>Updated</th>
               <th></th>

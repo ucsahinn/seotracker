@@ -94,7 +94,7 @@ function LaunchOptions({
         Crawl limit
       </label>
       <div className="flex items-center gap-2">
-        <span className="text-sm text-base-content/70">Max pages</span>
+        <span className="text-sm text-base-content/70">En çok sayfa</span>
         <launchForm.Field name="maxPagesInput">
           {(field) => (
             <input

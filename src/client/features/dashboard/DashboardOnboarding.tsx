@@ -67,7 +67,7 @@ export function DashboardOnboarding({
       className="overflow-hidden rounded-xl border border-base-300 bg-base-100"
     >
       <header className="border-b border-base-300 px-5 py-5 sm:px-6">
-        <h2 className="text-lg font-semibold">Set up your workspace</h2>
+        <h2 className="text-lg font-semibold">Çalışma alanınızı kurun</h2>
         <p className="mt-1 text-sm text-base-content/65">
           Add your website, connect your tools, and invite your team.
         </p>

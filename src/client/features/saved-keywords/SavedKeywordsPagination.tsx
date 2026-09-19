@@ -33,7 +33,7 @@ export function SavedKeywordsPagination({
       </div>
       <div className="flex items-center gap-6">
         <label className="flex items-center gap-2 text-sm text-base-content/70">
-          <span className="whitespace-nowrap">Rows per page</span>
+          <span className="whitespace-nowrap">Sayfa başına satır</span>
           <select
             className="select select-bordered select-sm w-20"
             value={pageSize}
@@ -58,7 +58,7 @@ export function SavedKeywordsPagination({
               className="btn btn-ghost btn-sm btn-square"
               disabled={page <= 1 || isLoading}
               onClick={() => onPageChange(page - 1)}
-              aria-label="Previous page"
+              aria-label="Önceki sayfa"
             >
               <ChevronLeft className="size-4" />
             </button>
@@ -67,7 +67,7 @@ export function SavedKeywordsPagination({
               className="btn btn-ghost btn-sm btn-square"
               disabled={page >= totalPages || isLoading}
               onClick={() => onPageChange(page + 1)}
-              aria-label="Next page"
+              aria-label="Sonraki sayfa"
             >
               <ChevronRight className="size-4" />
             </button>

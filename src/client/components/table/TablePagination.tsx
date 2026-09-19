@@ -51,7 +51,7 @@ export function TablePagination({
 
       <div className="flex items-center gap-6">
         <label className="flex items-center gap-2 text-sm text-base-content/70">
-          <span className="whitespace-nowrap">Rows per page</span>
+          <span className="whitespace-nowrap">Sayfa başına satır</span>
           <select
             className="select select-bordered select-sm w-20"
             value={pageSize}
@@ -73,7 +73,7 @@ export function TablePagination({
           <div className="flex items-center gap-1">
             <button
               type="button"
-              aria-label="Previous page"
+              aria-label="Önceki sayfa"
               className="btn btn-ghost btn-sm btn-square"
               disabled={!canGoPrev || isLoading}
               onClick={() => onPageChange(page - 1)}
@@ -82,7 +82,7 @@ export function TablePagination({
             </button>
             <button
               type="button"
-              aria-label="Next page"
+              aria-label="Sonraki sayfa"
               className="btn btn-ghost btn-sm btn-square"
               disabled={!canGoNext || isLoading}
               onClick={() => onPageChange(page + 1)}

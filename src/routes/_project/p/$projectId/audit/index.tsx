@@ -109,7 +109,7 @@ function AuditDetail({
         <div className="mx-auto max-w-3xl space-y-4">
           <div className="alert alert-error">
             <AlertCircle className="size-5" />
-            <span>We could not load this audit. It may have been deleted.</span>
+            <span>Bu denetim yüklenemedi. Silinmiş olabilir.</span>
           </div>
           <button className="btn btn-ghost btn-sm" onClick={onBack}>
             &larr; Back to audits

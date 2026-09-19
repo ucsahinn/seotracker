@@ -201,7 +201,7 @@ export function GoogleAnalyticsConnectionCard({
               onSave={() => selection && setPropertyMutation.mutate(selection)}
               saving={setPropertyMutation.isPending}
               secondaryAction={{
-                label: "Cancel",
+                label: "Vazgeç",
                 disabled: setPropertyMutation.isPending,
                 onClick: () => {
                   setPicking(false);

@@ -196,7 +196,7 @@ function ReportDetailPage() {
             <h1 className="text-2xl font-semibold">{report.title}</h1>
             <dl className="mt-1.5 flex flex-wrap items-baseline gap-x-6 gap-y-1 text-sm">
               <div className="flex items-baseline gap-1.5">
-                <dt className="text-base-content/50">Created by</dt>
+                <dt className="text-base-content/50">Oluşturan</dt>
                 <dd>{formatCreatedBy(report)}</dd>
               </div>
               <div className="flex items-baseline gap-1.5">

@@ -38,13 +38,13 @@ export function PagesFilterBar({
           ]}
         />
         <SelectFilter
-          label="Alt text"
+          label="Alt metni"
           value={filters.missingAlt}
           onChange={(missingAlt) => onChange({ ...filters, missingAlt })}
           options={[
             ["all", "All"],
-            ["yes", "Missing alt"],
-            ["no", "No missing alt"],
+            ["yes", "Alt metni yok"],
+            ["no", "Alt metni tam"],
           ]}
         />
       </div>
@@ -57,7 +57,7 @@ export function PagesFilterBar({
           onMaxChange={(maxWords) => onChange({ ...filters, maxWords })}
         />
         <RangeFilter
-          label="Speed ms"
+          label="Hız ms"
           min={filters.minResponseMs}
           max={filters.maxResponseMs}
           onMinChange={(minResponseMs) =>
@@ -162,7 +162,7 @@ export function TableFilterToggle({
       <button
         className={`btn btn-ghost btn-sm gap-1.5 ${showFilters ? "btn-active" : ""}`}
         onClick={onToggle}
-        title="Toggle filters"
+        title="Filtreleri aç/kapat"
         type="button"
       >
         <SlidersHorizontal className="size-3.5" />
@@ -203,7 +203,7 @@ function FilterPanel({
     <div className="space-y-3 border-b border-base-300 bg-gradient-to-b from-base-100 to-base-200/30 px-4 py-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2">
-          <p className="text-sm font-semibold">Refine results</p>
+          <p className="text-sm font-semibold">Sonuçları daralt</p>
           {activeFilterCount > 0 ? (
             <span className="badge badge-xs badge-primary border-0 text-primary-content">
               {activeFilterCount} active

@@ -5,7 +5,7 @@ import { toast } from "sonner";
 export function CopyButton({
   value,
   successMessage,
-  label = "Copy",
+  label = "Kopyala",
   iconOnly = false,
   primary = false,
   onCopy,
@@ -21,7 +21,7 @@ export function CopyButton({
 
   const handleCopy = async () => {
     if (typeof navigator === "undefined" || !navigator.clipboard?.writeText) {
-      toast.error("Clipboard not available");
+      toast.error("Pano kullanılamıyor");
       return;
     }
     try {
@@ -31,7 +31,7 @@ export function CopyButton({
       setTimeout(() => setCopied(false), 2000);
       onCopy?.();
     } catch {
-      toast.error("Could not copy to clipboard");
+      toast.error("Panoya kopyalanamadı");
     }
   };
 
@@ -67,7 +67,7 @@ export function CopyButton({
       ) : (
         <Copy className="size-3" />
       )}
-      {copied ? "Copied" : label}
+      {copied ? "Kopyalandı" : label}
     </button>
   );
 }

@@ -112,7 +112,7 @@ export function LocationSelect({
         aria-expanded={open}
         onClick={() => setOpen((prev) => !prev)}
       >
-        <span className="truncate">{selected?.label ?? "Select country"}</span>
+        <span className="truncate">{selected?.label ?? "Ülke seçin"}</span>
       </button>
 
       {open ? (
@@ -123,7 +123,7 @@ export function LocationSelect({
               ref={inputRef}
               type="text"
               className="grow min-w-0 bg-transparent text-sm outline-none placeholder:text-base-content/40"
-              placeholder="Search countries"
+              placeholder="Ülke ara"
               value={query}
               onChange={(event) => {
                 setQuery(event.target.value);

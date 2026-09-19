@@ -46,7 +46,7 @@ export function ExportToSheetsModal() {
           type="button"
           className="btn btn-ghost btn-xs btn-square"
           onClick={closeExportToSheetsModal}
-          aria-label="Close"
+          aria-label="Kapat"
         >
           <X className="size-4" />
         </button>

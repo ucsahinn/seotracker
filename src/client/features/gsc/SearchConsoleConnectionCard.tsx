@@ -216,7 +216,7 @@ export function SearchConsoleConnectionCard({
             onSave={() => selection && setSiteMutation.mutate(selection)}
             saving={setSiteMutation.isPending}
             secondaryAction={{
-              label: "Cancel",
+              label: "Vazgeç",
               disabled: setSiteMutation.isPending,
               onClick: () => {
                 setPicking(false);

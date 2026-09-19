@@ -23,7 +23,7 @@ export function ThemePreferenceMenuItems() {
       <li>
         <div
           role="radiogroup"
-          aria-label="Theme preference"
+          aria-label="Tema tercihi"
           className="flex gap-0.5 rounded-lg bg-base-200 p-0.5"
         >
           {THEME_OPTIONS.map((option) => {

@@ -19,7 +19,7 @@ export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
 
   const message = getStandardErrorMessage(
     error,
-    "Something went wrong. Please try again.",
+    "Bir şeyler ters gitti. Lütfen yeniden deneyin.",
   );
   const errorCode = getErrorCode(error);
 

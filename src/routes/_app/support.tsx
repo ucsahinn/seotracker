@@ -13,38 +13,39 @@ function SupportPage() {
     <div className="h-full overflow-auto bg-base-100 px-4 py-8 pb-24 md:px-6 md:py-12 md:pb-8">
       <div className="mx-auto max-w-xl space-y-6">
         <div>
-          <p className="text-sm font-medium text-base-content/40">Help</p>
+          <p className="text-sm font-medium text-base-content/40">Yardım</p>
           <h1 className="mt-1 text-2xl font-bold tracking-tight">
-            Where to look
+            Nereye bakmalı
           </h1>
         </div>
 
         <p className="text-sm leading-relaxed text-base-content/70">
-          This instance runs on your own machine, so almost every problem shows
-          up in two places: the container log and the health endpoint.
+          Bu kurulum kendi bilgisayarınızda çalışıyor, bu yüzden hemen her sorun
+          iki yerde görünür: konteyner günlüğü ve sağlık ucu.
         </p>
 
         <ul className="space-y-3 text-sm text-base-content/70">
           <li>
-            <span className="font-medium text-base-content">Container log</span>{" "}
-            — <code className="text-xs">docker compose logs -f</code>. Startup
-            checks print here before the app serves anything.
+            <span className="font-medium text-base-content">
+              Konteyner günlüğü
+            </span>{" "}
+            — <code className="text-xs">docker compose logs -f</code>. Açılış
+            denetimleri uygulama çalışmaya başlamadan önce buraya yazılır.
           </li>
           <li>
-            <span className="font-medium text-base-content">
-              Health endpoint
-            </span>{" "}
-            —{" "}
+            <span className="font-medium text-base-content">Sağlık ucu</span> —{" "}
             <a href="/api/health" className="link link-primary">
               /api/health
             </a>{" "}
-            reports which integrations are configured and whether the database
-            answers.
+            hangi entegrasyonların yapılandırıldığını ve veritabanının yanıt
+            verip vermediğini söyler.
           </li>
           <li>
-            <span className="font-medium text-base-content">Setup docs</span> —
-            the <code className="text-xs">docs/</code> directory in the
-            repository covers Docker, Search Console and Analytics setup.
+            <span className="font-medium text-base-content">
+              Kurulum belgeleri
+            </span>{" "}
+            — depodaki <code className="text-xs">docs/</code> dizini Docker,
+            Search Console ve Analytics kurulumunu anlatır.
           </li>
         </ul>
 
@@ -55,11 +56,11 @@ function SupportPage() {
             rel="noreferrer"
             className="link link-primary inline-flex items-center gap-1.5 text-sm"
           >
-            This fork on GitHub
+            Bu çatal GitHub'da
             <ExternalLink className="size-3.5" />
           </a>
           <p className="text-xs text-base-content/50">
-            Forked from{" "}
+            Şu depodan türetildi:{" "}
             <a
               href={UPSTREAM_URL}
               target="_blank"
@@ -68,7 +69,7 @@ function SupportPage() {
             >
               every-app/open-seo
             </a>
-            , MIT licensed.
+            , MIT lisanslı.
           </p>
         </div>
       </div>

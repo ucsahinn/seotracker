@@ -245,7 +245,7 @@ export function PagesTable({
       <AppDataTable
         table={table}
         className="table table-sm"
-        empty={<EmptyTableMessage label="No pages match these filters." />}
+        empty={<EmptyTableMessage label="Bu filtrelerle eşleşen sayfa yok." />}
       />
     </div>
   );
