@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Monitor, Moon, Sun } from "lucide-react";
+import { GoogleOAuthClientSection } from "@/client/features/settings/GoogleOAuthClientSection";
 import { type ThemePreference, useThemePreference } from "@/client/lib/theme";
 import { version } from "../../../../package.json";
 
@@ -56,6 +57,8 @@ function PersonalSettings() {
           </div>
         </div>
       </section>
+
+      <GoogleOAuthClientSection />
 
       <section className="space-y-3">
         <h2 className="text-sm font-medium text-base-content/50">Hakkında</h2>

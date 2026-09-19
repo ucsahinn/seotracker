@@ -7,6 +7,24 @@
 # rebuilds.
 set -e
 
+# The Google OAuth tokens are encrypted at rest, and this is that key. Nobody
+# should have to invent it: generate one on first boot and keep it in the data
+# volume, beside the database it protects. Setting BETTER_AUTH_SECRET yourself
+# still wins -- but then keep it, because changing the key makes every stored
+# token unreadable and Google has to be reconnected.
+INSTANCE_SECRET_FILE="/app/.wrangler/instance-secret"
+if [ -z "${BETTER_AUTH_SECRET:-}" ]; then
+  if [ ! -f "$INSTANCE_SECRET_FILE" ]; then
+    mkdir -p "$(dirname "$INSTANCE_SECRET_FILE")"
+    # 32 random bytes; base64 makes 44 characters, comfortably over the minimum.
+    head -c 32 /dev/urandom | base64 | tr -d '[:space:]' > "$INSTANCE_SECRET_FILE"
+    chmod 600 "$INSTANCE_SECRET_FILE"
+    echo "Generated an instance encryption key at $INSTANCE_SECRET_FILE."
+  fi
+  BETTER_AUTH_SECRET="$(cat "$INSTANCE_SECRET_FILE")"
+  export BETTER_AUTH_SECRET
+fi
+
 # The preflight validates env BEFORE the slow steps, so misconfiguration fails
 # in seconds with the exact fix instead of after a multi-minute build.
 pnpm exec tsx scripts/selfhost-preflight.ts

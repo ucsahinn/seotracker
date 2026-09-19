@@ -21,15 +21,27 @@ docker compose up -d
 `http://localhost:3001` adresini açın. İlk başlatma uygulamayı konteyner içinde
 derler ve 1-2 dakika sürer; ilerlemeyi `docker compose logs -f` ile izleyin.
 
+## Ayarlar arayüzde, `.env` isteğe bağlı
+
+Google bağlantısı için hiçbir ortam değişkeni gerekmez. Uygulamayı açın,
+**Ayarlar → Google bağlantısı** bölümüne Google Cloud Console'dan aldığınız
+istemci kimliğini ve gizli anahtarı yapıştırın. Gizli anahtar sunucuda
+şifrelenerek veritabanına yazılır; konteyneri yeniden oluşturmanız gerekmez.
+
+Token'ları şifreleyen anahtarı konteyner ilk açılışta kendisi üretir ve veri
+biriminde (`/app/.wrangler/instance-secret`) saklar. Siz bir şey yazmazsınız.
+
 ## Ortam değişkenleri
 
-| Değişken                                   | Ne için                                                                                                                                                         |
-| ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | Search Console ve Analytics bağlantısı. İkisi de aynı OAuth istemcisini kullanır. Bkz. `SELF_HOSTING_GOOGLE_SEARCH_CONSOLE.md`                                  |
-| `BETTER_AUTH_SECRET`                       | Saklanan Google token'larını diskte şifreler. **En az 32 karakter** olmalı, yoksa Search Console sessizce kapalı kalır. Üretmek için: `openssl rand -base64 32` |
-| `PAGESPEED_API_KEY`                        | Denetimdeki hız ölçümü. İsteğe bağlı ama önerilir. Bkz. `PAGESPEED_API_KEY.md`                                                                                  |
-| `PORT`                                     | Varsayılan `3001`                                                                                                                                               |
-| `ALLOWED_HOST`                             | Ters vekil sunucu arkasındaysanız dışarıdan görünen tek konak adı                                                                                               |
+Hepsi isteğe bağlıdır.
+
+| Değişken                                   | Ne için                                                                                                                                                                   |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `PAGESPEED_API_KEY`                        | Denetimdeki hız ölçümü. Önerilir. Bkz. `PAGESPEED_API_KEY.md`                                                                                                             |
+| `PORT`                                     | Varsayılan `3001`                                                                                                                                                         |
+| `ALLOWED_HOST`                             | Ters vekil sunucu arkasındaysanız dışarıdan görünen tek konak adı                                                                                                         |
+| `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | OAuth istemcisini arayüz yerine dışarıdan vermek isterseniz. Ayarlar'a kaydedilen değer bunları geçersiz kılar                                                            |
+| `BETTER_AUTH_SECRET`                       | Token şifreleme anahtarını kendiniz yönetmek isterseniz; **en az 32 karakter**. Verdiğinizde kalıcı olarak saklayın: anahtar değişirse kayıtlı Google bağlantısı okunamaz |
 
 `.env` dosyasını değiştirdiğinizde konteyner yeniden **oluşturulmalıdır**. Düz
 `up -d` değişikliği uygulamaz:

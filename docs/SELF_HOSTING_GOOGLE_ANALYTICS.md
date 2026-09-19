@@ -7,8 +7,7 @@ connection is optional and read-only.
 
 - A Google account with access to the GA4 property.
 - A Google Cloud project with OAuth credentials.
-- `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, and `BETTER_AUTH_SECRET` set on
-  the seotracker deployment.
+- A Google OAuth client entered under **Ayarlar → Google bağlantısı**.
 
 If Search Console is already connected, reuse the same Google Cloud project and
 OAuth client. GA4 still asks for a separate consent grant.
@@ -42,21 +41,14 @@ and add an authorized redirect URI matching the deployment origin plus
 Keep the existing `/api/gsc/oauth/callback` URI if Search Console uses the same
 client.
 
-## 4) Set environment variables
+## 4) Enter the client in Settings
 
-Set these values and restart seotracker:
+Paste the client ID and secret into **Ayarlar → Google bağlantısı** and save.
+Nothing restarts. If Search Console is already connected, this is already done —
+the two integrations share one OAuth client.
 
-| Variable               | Value                                                     |
-| ---------------------- | --------------------------------------------------------- |
-| `GOOGLE_CLIENT_ID`     | Web application client ID.                                |
-| `GOOGLE_CLIENT_SECRET` | Web application client secret.                            |
-| `BETTER_AUTH_SECRET`   | Random string of at least 32 characters for token crypto. |
-
-Generate the encryption secret with:
-
-```sh
-openssl rand -base64 32
-```
+See `SELF_HOSTING_GOOGLE_SEARCH_CONSOLE.md` for the environment-variable
+alternative and for how the encryption key is generated.
 
 ## 5) Connect a property
 

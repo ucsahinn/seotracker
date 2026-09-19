@@ -63,9 +63,9 @@ function connectGscUrl(baseUrl: string, projectId: string): string {
   return buildDashboardUrl(baseUrl, `/p/${projectId}/search-performance`);
 }
 
-/** Self-hosted GSC requires the operator to provide a Google OAuth client and
- *  BETTER_AUTH_SECRET. Hosted mode always has both; self-hosted tools return this
- *  setup nudge before attempting a token lookup when either is missing. */
+/** Search Console needs a Google OAuth client, entered on the settings page.
+ *  Tools return this nudge before attempting a token lookup when none is set,
+ *  so an agent gets a next step instead of an empty result. */
 async function missingSelfHostedGoogleClientResponse(
   context: ProjectAuthContext,
   projectId: string,
@@ -73,7 +73,7 @@ async function missingSelfHostedGoogleClientResponse(
   if (await hasSelfHostedGoogleOAuthConfig()) return null;
 
   return mcpResponse({
-    text: `This seotracker instance is not configured for Search Console yet. Set GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, and BETTER_AUTH_SECRET, then reconnect Search Console from the project's settings page. Setup docs: ${GSC_SELF_HOSTED_SETUP_DOCS_URL}`,
+    text: `This seotracker instance is not configured for Search Console yet. Open Settings in the app, enter a Google OAuth client id and secret, then connect Search Console from the project. Setup docs: ${GSC_SELF_HOSTED_SETUP_DOCS_URL}`,
     meta: buildProjectMeta(context, projectId),
     structuredContent: {
       ok: false,

@@ -4,6 +4,7 @@ import { db } from "@/db";
 import { projects } from "@/db/schema";
 import { getAuthMode } from "@/lib/auth-mode";
 import { runSelfhostChecks } from "@/lib/selfhost-preflight";
+import { getGoogleOAuthClientSource } from "@/server/features/google/oauth-config";
 import { getOptionalEnvValue } from "@/server/lib/runtime-env";
 
 // "error" blocks core functionality; "warn" degrades a feature.
@@ -73,6 +74,18 @@ export async function getSelfHostSetupStatus(options?: {
   checks.database = options?.skipDatabaseCheck
     ? { status: "ok" }
     : await checkDatabase();
+
+  // Unlike the boot preflight, this runs with a database, so it can see a
+  // client entered on the settings page and correct the env-only verdict.
+  if (
+    !options?.skipDatabaseCheck &&
+    (await getGoogleOAuthClientSource()) === "settings"
+  ) {
+    checks.gsc = {
+      status: "ok",
+      detail: "OAuth client configured in Settings.",
+    };
+  }
 
   return { version, authMode: getAuthMode(env.AUTH_MODE), checks };
 }

@@ -43,21 +43,22 @@ Gerekenler: Docker ve bir Google hesabı. Ayrıntılar için
 [`docs/SELF_HOSTING_DOCKER.md`](./docs/SELF_HOSTING_DOCKER.md).
 
 ```sh
-cp .env.example .env
 docker compose up -d
 ```
 
-Uygulama `http://localhost:3001` adresinde açılır. İlk açılışta konteyner içinde
-derleme yaptığı için birkaç dakika sürer.
+Başka bir şey gerekmez: imaj bu depodan derlenir, veritabanı ilk açılışta
+kurulur ve şifreleme anahtarı kendiliğinden üretilir. İlk açılış birkaç dakika
+sürer. Uygulama `http://localhost:3001` adresinde açılır.
 
-Search Console ve Analytics bağlantısı için bir Google OAuth istemcisi
-gerekiyor; ikisi de aynı istemciyi kullanır. Adımlar
+Search Console ve Analytics bağlantısı için kendi Google OAuth istemcinizi
+**Ayarlar → Google bağlantısı** bölümüne girin; ikisi de aynı istemciyi
+kullanır. İstemciyi nereden alacağınız
 [`docs/SELF_HOSTING_GOOGLE_SEARCH_CONSOLE.md`](./docs/SELF_HOSTING_GOOGLE_SEARCH_CONSOLE.md)
 ve [`docs/SELF_HOSTING_GOOGLE_ANALYTICS.md`](./docs/SELF_HOSTING_GOOGLE_ANALYTICS.md)
 dosyalarında.
 
-Hız skorları için ücretsiz bir PageSpeed Insights anahtarı önerilir:
-[`docs/PAGESPEED_API_KEY.md`](./docs/PAGESPEED_API_KEY.md).
+Hız skorları için ücretsiz bir PageSpeed Insights anahtarı önerilir; bu hâlâ bir
+ortam değişkeni: [`docs/PAGESPEED_API_KEY.md`](./docs/PAGESPEED_API_KEY.md).
 
 ## Güvenlik
 

@@ -121,47 +121,57 @@ function checkPageSpeed(env: EnvRecord, items: PreflightItem[]): void {
   );
 }
 
+// The OAuth client normally lives in the database, entered on the settings
+// page, and this check cannot see the database — it runs before the app does.
+// So it reports only on the environment path and on the instance key, and its
+// quietest answer ("enter it in Settings") is also the expected one.
 function checkOptionalFeatures(env: EnvRecord, items: PreflightItem[]): void {
   const clientId = get(env, "GOOGLE_CLIENT_ID");
   const clientSecret = get(env, "GOOGLE_CLIENT_SECRET");
   const betterAuthSecret = get(env, "BETTER_AUTH_SECRET");
 
-  if (clientId || clientSecret) {
-    if (!clientId || !clientSecret) {
-      items.push({
-        key: "gsc",
-        name: "Search Console",
-        level: "warn",
-        message:
-          "Only one of GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET is set — both are required.",
-      });
-    } else if (
-      !betterAuthSecret ||
-      betterAuthSecret.length < MIN_BETTER_AUTH_SECRET_LENGTH
-    ) {
-      items.push({
-        key: "gsc",
-        name: "Search Console",
-        level: "warn",
-        message: `Google credentials are set, but Search Console stays DISABLED until BETTER_AUTH_SECRET is at least ${MIN_BETTER_AUTH_SECRET_LENGTH} characters (it encrypts stored OAuth tokens).`,
-      });
-    } else {
-      items.push({
-        key: "gsc",
-        name: "Search Console",
-        level: "ok",
-        message: "Configured",
-      });
-    }
-  } else {
+  if (
+    !betterAuthSecret ||
+    betterAuthSecret.length < MIN_BETTER_AUTH_SECRET_LENGTH
+  ) {
     items.push({
       key: "gsc",
       name: "Search Console",
-      level: "info",
-      message:
-        "Not configured (optional). See docs/SELF_HOSTING_GOOGLE_SEARCH_CONSOLE.md.",
+      level: "warn",
+      message: `Search Console and Analytics stay DISABLED: the instance key that encrypts their tokens is missing or shorter than ${MIN_BETTER_AUTH_SECRET_LENGTH} characters. In Docker the container generates one at startup, so seeing this means BETTER_AUTH_SECRET was set by hand to something too short.`,
     });
+    return;
   }
+
+  if (clientId && clientSecret) {
+    items.push({
+      key: "gsc",
+      name: "Search Console",
+      level: "ok",
+      message:
+        "OAuth client supplied by the environment. A client saved in Settings would take precedence.",
+    });
+    return;
+  }
+
+  if (clientId || clientSecret) {
+    items.push({
+      key: "gsc",
+      name: "Search Console",
+      level: "warn",
+      message:
+        "Only one of GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET is set — both are required, or leave both unset and enter the client in Settings.",
+    });
+    return;
+  }
+
+  items.push({
+    key: "gsc",
+    name: "Search Console",
+    level: "info",
+    message:
+      "Enter your Google OAuth client in Settings to connect Search Console and Analytics. Setup: docs/SELF_HOSTING_GOOGLE_SEARCH_CONSOLE.md.",
+  });
 }
 
 // Shared per-feature checks: the Docker preflight prints these at boot and
