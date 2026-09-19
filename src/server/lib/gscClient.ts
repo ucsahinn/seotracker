@@ -58,7 +58,6 @@ export type UrlInspectionResult = {
     sitemap?: string[];
     referringUrls?: string[];
   };
-  mobileUsabilityResult?: { verdict?: string };
   richResultsResult?: { verdict?: string };
   inspectionResultLink?: string;
 };

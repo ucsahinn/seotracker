@@ -28,7 +28,6 @@ export type CoverageRow = {
   lastCrawlTime: string | null;
   googleCanonical: string | null;
   userCanonical: string | null;
-  mobileVerdict: string | null;
   richResultsVerdict: string | null;
   inspectionLink: string | null;
   error: string | null;
@@ -60,7 +59,6 @@ export function blankRow(url: string): CoverageRow {
     lastCrawlTime: null,
     googleCanonical: null,
     userCanonical: null,
-    mobileVerdict: null,
     richResultsVerdict: null,
     inspectionLink: null,
     error: null,

@@ -43,7 +43,7 @@ export function ThemePreferenceMenuItems() {
                   aria-label={option.label}
                   className={`flex flex-1 cursor-pointer items-center justify-center rounded-md px-2.5 py-1.5 transition-colors ${
                     isActive
-                      ? "bg-base-100 text-base-content shadow-sm"
+                      ? "bg-base-100 text-base-content shadow-[var(--shadow-raise)] ring-1 ring-[var(--control-border)]"
                       : "text-muted hover:text-base-content/80"
                   }`}
                   onClick={() => setThemePreference(option.value)}

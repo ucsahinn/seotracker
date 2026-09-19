@@ -33,7 +33,6 @@ export const gscUrlInspections = sqliteTable(
     googleCanonical: text("google_canonical"),
     /** The canonical you declared. A mismatch is worth knowing about. */
     userCanonical: text("user_canonical"),
-    mobileVerdict: text("mobile_verdict"),
     richResultsVerdict: text("rich_results_verdict"),
     inspectionLink: text("inspection_link"),
 
