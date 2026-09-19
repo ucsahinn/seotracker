@@ -53,6 +53,8 @@ Gerekenler: Docker ve bir Google hesabı. Ayrıntılar için
 [`docs/SELF_HOSTING_DOCKER.md`](./docs/SELF_HOSTING_DOCKER.md).
 
 ```sh
+git clone https://github.com/ucsahinn/seotracker.git
+cd seotracker
 docker compose up -d
 ```
 

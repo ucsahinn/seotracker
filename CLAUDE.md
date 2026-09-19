@@ -53,9 +53,22 @@ before you change a component.
   button is near-black, because a blue one competes with the amber and red
   severity chips beside it.
 - **Two page widths**, chosen by what the screen holds, not by which file it
-  is in: `max-w-(--container-page)` for tables, charts and dashboards;
-  `max-w-3xl` for forms and prose. `PageShell` in
-  `src/client/components/PageShell.tsx` applies both.
+  is in: wide for tables, charts and dashboards; reading width for forms and
+  prose. Every page goes through `PageShell`
+  (`src/client/components/PageShell.tsx`) - do not hand-roll a
+  `mx-auto max-w-*` wrapper, which is how the app ended up with five widths
+  and four paddings.
+- **Muted text is `text-muted` or `text-subtle`**, never a hand-picked
+  `text-base-content/NN`. The alpha that reads well on the dark surface is far
+  too weak on the light one, so the two tokens are defined per theme. A tinted
+  severity chip takes `--ink-success` / `--ink-warning` / `--ink-error`, not
+  the fill colour as its text; the fill on a 10% wash of itself lands near
+  2.5:1.
+- **A control's perimeter is `--control-border`**, not the panel hairline. An
+  input is base-100 on base-100, so the border is the only thing saying it is
+  a control.
+- **Direction is never colour alone.** Success and error sit at nearly the
+  same lightness, so a delta carries an arrow as well as a tint.
 - **Numbers are tabular** everywhere (set on `body`), so columns do not wobble
   as values change.
 - Every visible number, date and time goes through `src/client/lib/format.ts`,
