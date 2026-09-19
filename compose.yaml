@@ -4,10 +4,12 @@ services:
     restart: unless-stopped
     # Forward EVERY .env value into the container. The explicit `environment:`
     # list below still wins for the values it names — without this, any .env
-    # value not listed there silently never reaches the app. Compose errors if
-    # .env is missing; the quickstart's `cp .env.example .env` creates it.
+    # value not listed there would silently never reach the app. Optional, so a
+    # first run works before you have written one; every value it carries only
+    # enables a feature.
     env_file:
-      - .env
+      - path: .env
+        required: false
     environment:
       # Required for local Docker self-hosting: exposes Compose env vars to cloudflare:workers bindings.
       - CLOUDFLARE_INCLUDE_PROCESS_ENV=true

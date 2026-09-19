@@ -12,3 +12,5 @@ drizzle/
 drizzle-pg/
 planning/
 worker-configuration.d.ts
+# executed by /bin/sh in the container; prettier would rewrite it with CRLF
+docker-entrypoint.sh

@@ -12,13 +12,6 @@
       "enabled": true,
     },
   },
-  // Smart Placement relocates only the `fetch` handler (cron + Workflow runs
-  // stay at the edge) toward external subrequests — Postgres via Hyperdrive,
-  // SEO APIs — not D1/KV/R2 bindings, so it's a DB no-op on the D1 default.
-  // Must live here: a dashboard-only toggle is wiped by `wrangler deploy`.
-  "placement": {
-    "mode": "smart",
-  },
   "workflows": [
     // The site-audit engine lives in the seotracker-audit aux worker
     // (wrangler.audit.jsonc) — its memory spikes (multi-MB Lighthouse
@@ -31,30 +24,10 @@
       "class_name": "SiteAuditWorkflow",
       "script_name": "seotracker-audit",
     },
-    {
-      "name": "rank-check-workflow",
-      "binding": "RANK_CHECK_WORKFLOW",
-      "class_name": "RankCheckWorkflow",
-    },
   ],
-  // Durable Object backing the SAM in-app agent (Agents SDK AIChatAgent). One
-  // instance per chat session; messages persist in the DO's SQLite.
-  // SQLite-backed classes must be declared in `migrations` below for the
-  // wrangler/workerd surfaces (local dev, Docker self-host); Alchemy deploys
-  // derive SQLite backing on their own.
-  "durable_objects": {
-    "bindings": [
-      {
-        "name": "SAM_CHAT",
-        "class_name": "SamChatAgent",
-      },
-    ],
-  },
-  // The site-audit engine lives in the seotracker-audit aux worker
-  // (wrangler.audit.jsonc), including the scratchpad DO — the DO cannot be
-  // bound cross-script here (the Cloudflare API rejects deleting the class
-  // below while any binding still references its name). Cancel + GDPR
-  // erasure go through this service binding's AuditEngine entrypoint.
+  // Cancelling an audit reaches the aux worker's scratchpad through this
+  // service binding's AuditEngine entrypoint: the DO itself cannot be bound
+  // cross-script.
   "services": [
     {
       "binding": "AUDIT_ENGINE",
@@ -91,17 +64,18 @@
       "tag": "v5",
       "deleted_classes": ["OnboardingChatAgent"],
     },
+    // The in-app chat agent is gone with the rest of the paid-AI surface.
+    {
+      "tag": "v6",
+      "deleted_classes": ["SamChatAgent"],
+    },
   ],
   "triggers": {
-    // Every 5 min: rank checks + stale-audit reconcile. Daily: OAuth KV GC.
-    // Dispatched on controller.cron in src/server.ts `scheduled`.
-    "crons": ["*/5 * * * *", "17 3 * * *"],
+    // Every 5 min: reconcile audits whose workflow died without marking them
+    // failed. Dispatched in src/server.ts `scheduled`. Note that Docker/
+    // miniflare never fires this; it only runs on a Cloudflare deploy.
+    "crons": ["*/5 * * * *"],
   },
-  // This config serves local dev and Docker self-host only. All Cloudflare
-  // deployments — previews, prod, self-host — go through Alchemy
-  // (alchemy.run.ts), which provisions real resources per stage and never
-  // reads these ids.
-  //
   // The ids below are NOT dead config: miniflare derives its on-disk storage
   // filenames (.wrangler/state, a persistent volume in Docker self-hosts)
   // from an HMAC of `id`/`database_id`. Changing them orphans every existing

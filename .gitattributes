@@ -1,0 +1,6 @@
+# Windows checkouts turn LF into CRLF by default, and a CRLF shell script is a
+# script `sh` refuses to run ("set: Illegal option -"). Pin the files that are
+# executed as-is inside the Linux container.
+* text=auto
+*.sh text eol=lf
+Dockerfile* text eol=lf

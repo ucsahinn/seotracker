@@ -12,3 +12,8 @@ Dockerfile
 .env.*
 !.env.example
 .alchemy/
+# Not part of the running app. `.agents/` stays: the in-app agent setup prompt
+# is imported from the skill file at build time.
+badseo
+docs
+specs
