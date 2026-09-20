@@ -53,6 +53,14 @@ export type IndexCoverage = {
   /** Crawled pages Google has never given an answer for. */
   pending: number;
   /**
+   * Pages Google has been asked about at all, answer or not. Distinct from
+   * `checked`, which counts answers: a run where every inspection errored
+   * leaves `checked` at zero, and a screen keyed off that told the operator
+   * Google had never been asked while hiding the very rows carrying the
+   * error that explains why.
+   */
+  asked: number;
+  /**
    * How many the refresh button would actually ask about. Not the same as
    * `pending`: an answered page whose answer has aged out is due without
    * being pending, and the button has to key off this one or it sits
@@ -110,39 +118,42 @@ function parseStamp(value: string | null): number {
 }
 
 /**
- * Is this row due for another ask?
+ * How overdue this row is, as a multiple of its own re-ask window.
  *
- * `error` is part of the answer, not a detail. An errored inspection counts as
- * pending in `summarizeCoverage`, so if it did not also count as due the two
- * would disagree: the tile would say one page is waiting, the button would
- * find nothing to do, and the row would sit there for a fortnight while the
- * UI insisted it was queued.
+ * One number does two jobs that used to be two functions, because when they
+ * were separate they disagreed. Staleness is `overdue > 1`; priority is the
+ * same value sorted descending. A row can no longer be due without being
+ * ranked, or ranked without being due.
+ *
+ * Expressing it as a ratio rather than a band also stops one class of row
+ * starving another. Strict bands meant a site with more refused pages than a
+ * batch can hold never re-asked an indexed page at all, so a page that
+ * silently dropped out of the index was never noticed -- which is the one
+ * thing the 14-day window exists to catch. A 60-day-old PASS is 4.3 windows
+ * overdue and now outranks a 4-day-old refusal at 1.3.
  */
-function isStale(row: CoverageRow | undefined, now: Date): boolean {
-  if (!row || row.error) return true;
+function overdueRatio(row: CoverageRow | undefined, now: Date): number {
+  // Never asked: the only genuinely unknown answer, so nothing outranks it.
+  if (!row || !row.checkedAt) return Number.POSITIVE_INFINITY;
   const ms = parseStamp(row.checkedAt);
-  if (Number.isNaN(ms)) return true;
+  if (Number.isNaN(ms)) return Number.POSITIVE_INFINITY;
+  /*
+   * An error used to return "due" unconditionally, with no age at all. That
+   * looked like urgency and behaved like a livelock: 25 URLs outside the
+   * verified property error on every inspection, are due again instantly,
+   * sort to the front, and fill every batch forever -- burning 25 real
+   * inspections a click and never letting another URL through. A failed ask
+   * is worth repeating, but on the same clock as any other unresolved row.
+   */
   const days =
-    row.verdict === "PASS" ? STALE_AFTER_DAYS : STALE_AFTER_DAYS_UNRESOLVED;
-  return now.getTime() - ms > days * 86_400_000;
+    !row.error && row.verdict === "PASS"
+      ? STALE_AFTER_DAYS
+      : STALE_AFTER_DAYS_UNRESOLVED;
+  return (now.getTime() - ms) / (days * 86_400_000);
 }
 
-/**
- * Which question is worth the quota first.
- *
- * A batch is 25 URLs and a site is often hundreds, so on every run but the
- * last this order decides what the operator actually learns. Before it
- * existed the batch was whatever the crawler happened to enqueue first, which
- * meant a page Google had never seen could sit behind two hundred pages that
- * already answered PASS.
- *
- * Lower sorts first.
- */
-function askPriority(row: CoverageRow | undefined): number {
-  if (!row || !row.checkedAt) return 0; // never asked: the only unknown answer
-  if (row.error) return 1; // asked and got nothing back
-  if (row.verdict !== "PASS") return 2; // asked and Google said no
-  return 3; // asked and Google said yes
+function isStale(row: CoverageRow | undefined, now: Date): boolean {
+  return overdueRatio(row, now) > 1;
 }
 
 export function summarizeCoverage(
@@ -200,6 +211,7 @@ export function summarizeCoverage(
   return {
     rows,
     checked: rows.length - pending,
+    asked: rows.filter((row) => row.checkedAt).length,
     indexed,
     notIndexed,
     pending,
@@ -223,15 +235,16 @@ export function selectDueUrls(
   budget: number = MAX_PER_RUN,
 ): { batch: string[]; remaining: number } {
   const due = urls.filter((url) => isStale(stored.get(url), now));
-  // Stable within a priority band: equal rows keep crawl order, and the two
-  // bands that carry a timestamp are ordered oldest-answer-first.
+  // Most overdue first. Total and transitive -- every row maps to one finite
+  // or infinite number -- so the sort is well defined; ties keep crawl order.
+  // Compared, not subtracted: two never-asked rows are both Infinity, and
+  // Infinity - Infinity is NaN, which makes the comparator inconsistent and
+  // the resulting order implementation-defined.
   const ordered = sort(due, (a, b) => {
-    const byPriority = askPriority(stored.get(a)) - askPriority(stored.get(b));
-    if (byPriority !== 0) return byPriority;
-    const aAt = parseStamp(stored.get(a)?.checkedAt ?? null);
-    const bAt = parseStamp(stored.get(b)?.checkedAt ?? null);
-    if (Number.isNaN(aAt) || Number.isNaN(bAt)) return 0;
-    return aAt - bAt;
+    const left = overdueRatio(stored.get(a), now);
+    const right = overdueRatio(stored.get(b), now);
+    if (left === right) return 0;
+    return left > right ? -1 : 1;
   });
   const take = Math.max(Math.min(MAX_PER_RUN, budget), 0);
   return {

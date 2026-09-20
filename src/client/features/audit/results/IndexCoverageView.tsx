@@ -47,7 +47,19 @@ export function IndexCoverageView({
       }
       await queryClient.invalidateQueries({ queryKey });
       if (result.inspected === 0) {
-        toast.success("Tüm sayfalar güncel, sorulacak bir şey yok.");
+        /*
+         * Nothing was asked. The button is disabled while `due === 0`, so a
+         * click that reaches here almost always means the daily quota is
+         * gone, not that the work is done -- and this branch used to answer
+         * it with a green "everything is up to date" while pages waited.
+         */
+        if (result.quotaRemaining === 0) {
+          toast.error(
+            `Google'ın günlük 2000 adres sınırına ulaşıldı. ${formatNumber(result.remaining)} sayfa bekliyor; sınır birkaç saat içinde yenilenir.`,
+          );
+        } else {
+          toast.success("Tüm sayfalar güncel, sorulacak bir şey yok.");
+        }
         return;
       }
       const left =
@@ -92,7 +104,9 @@ export function IndexCoverageView({
     );
   }
 
-  const neverChecked = data.checked === 0;
+  // Asked, not answered. An audit where every inspection errored has
+  // `checked === 0` but plenty to show: the error strings live in the table.
+  const neverChecked = data.asked === 0;
 
   return (
     <div className="space-y-4">

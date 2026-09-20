@@ -90,7 +90,10 @@ describe("summarizeCoverage", () => {
 // the tile said one page was pending, the button found nothing to do, and the
 // row sat there for a fortnight while the UI insisted it was queued.
 describe("summarizeCoverage and selectDueUrls agree on what is pending", () => {
-  it("treats an errored row as both pending and due, however fresh it is", () => {
+  // An error is pending the moment it happens, because Google gave no answer.
+  // It is not *due* the moment it happens: retrying with no interval is how
+  // 25 permanently-failing URLs used to fill every batch forever.
+  it("treats a fresh error as pending but not yet due", () => {
     const urls = ["https://a.test/"];
     const store = storeOf(
       checked("https://a.test/", {
@@ -99,7 +102,19 @@ describe("summarizeCoverage and selectDueUrls agree on what is pending", () => {
       }),
     );
 
-    expect(summarizeCoverage(urls, store).pending).toBe(1);
+    expect(summarizeCoverage(urls, store, NOW).pending).toBe(1);
+    expect(selectDueUrls(urls, store, NOW).batch).toEqual([]);
+  });
+
+  it("re-asks an error once it has aged, on the unresolved clock", () => {
+    const urls = ["https://a.test/"];
+    const store = storeOf(
+      checked("https://a.test/", {
+        error: "quota",
+        checkedAt: "2026-06-26 12:00:00",
+      }),
+    );
+
     expect(selectDueUrls(urls, store, NOW).batch).toEqual(["https://a.test/"]);
   });
 
@@ -148,7 +163,7 @@ describe("selectDueUrls", () => {
   });
   // A batch is 25 and a site is often hundreds, so on every run but the last
   // this order is what the operator actually learns.
-  it("spends the batch on the most useful question first", () => {
+  it("spends the batch on the most overdue question first", () => {
     const urls = [
       "https://a.test/indexed",
       "https://a.test/refused",
@@ -156,19 +171,42 @@ describe("selectDueUrls", () => {
       "https://a.test/unasked",
     ];
     const store = storeOf(
+      // 60 days old against a 14-day window: 4.3 windows overdue.
       checked("https://a.test/indexed", { checkedAt: "2026-05-01 09:00:00" }),
+      // 60 days against 3: 20 windows overdue.
       checked("https://a.test/refused", {
         verdict: "NEUTRAL",
         checkedAt: "2026-05-01 09:00:00",
       }),
+      // A day old against 3: not overdue at all, so not in the batch.
       checked("https://a.test/errored", { error: "quota" }),
     );
 
     expect(selectDueUrls(urls, store, NOW).batch).toEqual([
       "https://a.test/unasked",
-      "https://a.test/errored",
       "https://a.test/refused",
       "https://a.test/indexed",
+    ]);
+  });
+
+  // Strict priority bands meant a site with more refusals than fit in a batch
+  // never re-asked an indexed page, so a page dropping out of the index went
+  // unnoticed indefinitely. Overdueness is a ratio precisely so it cannot.
+  it("lets a long-neglected indexed page outrank a freshly-due refusal", () => {
+    const urls = ["https://a.test/refused", "https://a.test/indexed"];
+    const store = storeOf(
+      // 4 days against 3: 1.3 windows overdue.
+      checked("https://a.test/refused", {
+        verdict: "NEUTRAL",
+        checkedAt: "2026-06-26 12:00:00",
+      }),
+      // 60 days against 14: 4.3 windows overdue.
+      checked("https://a.test/indexed", { checkedAt: "2026-05-01 12:00:00" }),
+    );
+
+    expect(selectDueUrls(urls, store, NOW).batch).toEqual([
+      "https://a.test/indexed",
+      "https://a.test/refused",
     ]);
   });
 
