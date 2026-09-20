@@ -69,7 +69,7 @@ Good starting points once I know the project:
 Example of a follow-up once context is loaded:
 
 ```text
-Where localhost:3001 stands:
+Where example.com stands:
 - **Technically healthy.** Two audits found zero critical issues. Nothing to fix under the hood.
 - **Ranks for your own turf.** Brand terms and "open source SEO tools" sit at the top.
 - **Closest win is a page you already have.** /pricing sits at position 6 on 1,085 impressions (times it showed up in Google) and gets one click.

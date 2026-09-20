@@ -73,7 +73,7 @@ Sections in this order:
 4. **Where to focus first** (healthy sites only) — one sentence, then a table of 3 to 5 near-ranking queries with impressions and average position and the page that should own each, plus a bar chart when the impression counts are worth comparing. Omit the whole section when the site is down or Search Console is not connected.
 5. **What's working now** — a short list.
 6. **What to do next** — an ordered list, the one thing first.
-7. **How this report was made** — opens with the skill link line from `seo-report`, pointing at `https://localhost:3001/docs/skills/seo-audit` ("seotracker SEO Audit skill"), then what the tools reported and what you verified by hand.
+7. **How this report was made** — opens with the skill link line from `seo-report`, pointing at `https://github.com/ucsahinn/seotracker/tree/main/.agents/skills/seo-audit` ("seotracker SEO Audit skill"), then what the tools reported and what you verified by hand.
 
 Use a note for anything you could not verify or where the site's goal makes a standard recommendation the wrong call.
 
