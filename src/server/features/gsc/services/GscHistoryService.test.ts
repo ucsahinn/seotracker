@@ -108,13 +108,18 @@ describe("backfill", () => {
     expect(requestAt(0).startDate).toBe("2026-06-17");
   });
 
-  it("makes no request when the archive is already current", async () => {
+  /*
+   * The state the service actually writes: `lastDate` equals the newest date
+   * Google has finalized. The previous version of this test used a `lastDate`
+   * four days past that, which `backfill` can never produce -- it asserted
+   * "no request when current" against a row that cannot exist, so it stayed
+   * green while the real behaviour was the opposite.
+   */
+  it("still re-reads the revision window when the archive is current", async () => {
     mocks.getArchiveState.mockResolvedValue({
       projectId: "p1",
       earliestDate: "2026-05-01",
-      // Past the resume point: the revision window this would re-fetch is
-      // already newer than the latest date Google has finalized.
-      lastDate: "2026-07-01",
+      lastDate: "2026-06-27",
       lastRunAt: null,
       lastError: null,
     });
@@ -124,8 +129,11 @@ describe("backfill", () => {
       today: TODAY,
     });
 
-    expect(mocks.getPerformance).not.toHaveBeenCalled();
-    expect(outcome.daysFetched).toBe(0);
+    expect(requestAt(0).startDate).toBe("2026-06-24");
+    // Re-read, not caught up: nothing here is newer than the archive already
+    // reaches, and the UI must not announce these as days added.
+    expect(outcome.newDays).toBe(0);
+    expect(outcome.hasMore).toBe(false);
   });
 
   // A page view must not stall for minutes on a first backfill, so the run is

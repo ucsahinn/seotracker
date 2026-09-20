@@ -23,9 +23,11 @@ function sinceDate(days: number): string {
 }
 
 /**
- * Catch the archive up and report where it stands. Called when the ranking page
- * opens: with nothing missing it makes no API request, so it is safe on every
- * view.
+ * Catch the archive up and report where it stands. Called when the ranking
+ * page opens, and a caught-up archive still costs one small request: the
+ * service rewinds into the window Search Console is still revising so the
+ * tail is not frozen at its first, partial reading. The client caches this
+ * for a minute, which is what keeps it safe on every view.
  */
 export const syncGscHistory = createServerFn({ method: "POST" })
   .middleware(requireProjectContext)

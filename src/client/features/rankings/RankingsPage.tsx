@@ -21,9 +21,10 @@ export function RankingsPage({ projectId }: { projectId: string }) {
   const [days, setDays] = useState<number>(90);
   const [selected, setSelected] = useState<string | null>(null);
 
-  // Catching the archive up is the page's first act: with nothing missing it
-  // makes no API call, and with a gap it fills what it can before the table
-  // reads. Kept fresh for a minute so switching windows does not re-sync.
+  // Catching the archive up is the page's first act: it fills any gap, and
+  // even when caught up it re-reads the days Search Console is still
+  // revising. Kept fresh for a minute so that costs one request per visit,
+  // not one per window switch.
   const sync = useQuery({
     queryKey: ["gscHistorySync", projectId],
     queryFn: () => syncGscHistory({ data: { projectId } }),
@@ -163,7 +164,7 @@ function ArchiveStatus({
       earliestDate: string | null;
       lastDate: string | null;
       rowCount: number;
-      daysFetched: number;
+      newDays: number;
       hasMore: boolean;
       notConnected: boolean;
       error: string | null;
@@ -208,10 +209,13 @@ function ArchiveStatus({
     <p className="text-xs text-muted">
       Arşiv {data.earliestDate} – {data.lastDate} arasını kapsıyor,{" "}
       {formatNumber(data.rowCount)} satır.
-      {data.daysFetched > 0
-        ? ` Bu açılışta ${data.daysFetched} gün eklendi.`
-        : ""}
-      {data.hasMore ? " Daha eski günler sonraki açılışta çekilecek." : ""}
+      {/* `newDays`, not the days written. A caught-up archive re-reads the
+          three days Search Console is still revising on every open, and
+          reporting that as days added claimed growth that never happened. */}
+      {data.newDays > 0 ? ` Bu açılışta ${data.newDays} gün eklendi.` : ""}
+      {/* The backfill walks oldest to newest, so what is left is the recent
+          end, not the old one. */}
+      {data.hasMore ? " Kalan günler sonraki açılışta tamamlanacak." : ""}
     </p>
   );
 }

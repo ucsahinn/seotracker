@@ -89,8 +89,16 @@ function resolveStart(lastDate: string | null, today: Date): string {
 }
 
 type BackfillOutcome = {
-  /** Days newly stored or refreshed by this run. */
+  /** Days written by this run, whether newly stored or refreshed in place. */
   daysFetched: number;
+  /**
+   * Of those, the ones the archive did not already reach. Reported apart
+   * from `daysFetched` because the two diverge on every call once the
+   * archive is caught up: the resume window is re-fetched every time, so
+   * `daysFetched` is 4 while nothing at all was added, and the UI was
+   * announcing that as "4 days added" on every page open.
+   */
+  newDays: number;
   rowsWritten: number;
   earliestDate: string | null;
   lastDate: string | null;
@@ -158,7 +166,16 @@ async function fetchRange(
 
 /**
  * Fetch the days this project is missing, bounded so one call stays quick.
- * Safe to call on every page view: with nothing to do it makes no API request.
+ *
+ * A caught-up archive still costs one request. `resolveStart` deliberately
+ * rewinds `DATA_LAG_DAYS` so the window Search Console is still revising is
+ * re-read, and `lastDate` can never exceed `endDate`, so the early return
+ * below is only reachable for a `today` that moved backwards. This used to
+ * claim it made no request when nothing was missing, which was false for
+ * every archive this code can actually produce.
+ *
+ * That is the intended trade: one small request per page view buys a tail
+ * that is not permanently frozen at its first, partial reading.
  */
 async function backfill(input: {
   projectId: string;
@@ -169,8 +186,10 @@ async function backfill(input: {
   const endDate = latestAvailableDate(today);
   let cursor = resolveStart(state?.lastDate ?? null, today);
 
+  const previousLastDate = state?.lastDate ?? null;
   const outcome: BackfillOutcome = {
     daysFetched: 0,
+    newDays: 0,
     rowsWritten: 0,
     earliestDate: state?.earliestDate ?? null,
     lastDate: state?.lastDate ?? null,
@@ -180,6 +199,7 @@ async function backfill(input: {
     error: null,
   };
 
+  // Only reachable if the clock went backwards, since `lastDate <= endDate`.
   if (cursor > endDate) return outcome;
 
   for (let chunk = 0; chunk < MAX_CHUNKS_PER_RUN; chunk += 1) {
@@ -199,7 +219,11 @@ async function backfill(input: {
 
       if (truncated) outcome.truncatedChunks += 1;
       outcome.rowsWritten += rows.length;
-      outcome.daysFetched += new Set(rows.map((row) => row.date)).size;
+      const dates = new Set(rows.map((row) => row.date));
+      outcome.daysFetched += dates.size;
+      outcome.newDays += [...dates].filter(
+        (date) => !previousLastDate || date > previousLastDate,
+      ).length;
       outcome.earliestDate =
         outcome.earliestDate && outcome.earliestDate < cursor
           ? outcome.earliestDate
