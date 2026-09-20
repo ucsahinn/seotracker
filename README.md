@@ -9,9 +9,10 @@ türetilmiştir. Özgün proje ücretli bir veri sağlayıcısına (DataForSEO) 
 bu çatal o bağımlılığın tamamını ve onunla gelen çok kullanıcılı altyapıyı
 kaldırır.
 
-> **Etiketler ve sürümler hakkında.** GitHub'ın çatallara devrettiği `v0.0.1`
-> – `v0.1.9` etiketleri bu depoda da görünür; hepsi özgün projeye aittir, bu
-> çatalın yayınları değildir. Buranın kendi sürüm dizisi `0.2.0` ile başlar.
+> **Sürümler hakkında.** GitHub çatallara özgün projenin etiketlerini
+> devreder; `v0.0.1` – `v0.1.9` bu depodan kaldırıldı, çünkü onlar
+> open-seo'nun yayınlarıydı, buranın değil. Bu çatalın kendi sürüm dizisi
+> `0.2.0` ile başlar.
 
 ## Ne yapar
 
