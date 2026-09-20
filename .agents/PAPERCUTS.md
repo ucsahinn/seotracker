@@ -13,7 +13,6 @@ data, or sensitive paths.
 - [ ] `2026-09-03T00:00:00Z` — `claude` — `pnpm ci:check` does not run `pnpm build`, so a route file that pulls `cloudflare:workers` into the client bundle passes every check and still breaks the build (hit on the dynamic-reports branch). Add a build step to `ci:check`, or document that `pnpm build` must be run separately before opening a PR.
 - [ ] `2026-09-11T00:13:05Z` — `codex` — The web-content review skill points to the removed `src/server/features/onboarding/seotracker-fact-sheet.md`; the reference now lives at `src/server/features/sam/seotracker-fact-sheet.md`. Update the skill's pointer so content reviews reach the current fact sheet.
 
-- [ ] `2026-09-20T11:30:00Z` — `claude` — A fresh `pnpm --dir badseo install --frozen-lockfile` prints `ERR_PNPM_IGNORED_BUILDS`, skips the esbuild, sharp and workerd build scripts, and writes an `allowBuilds:` block into the tracked `badseo/pnpm-workspace.yaml` whose three entries read `set this to true or false` — so the install also dirties the working tree. The dev server and audit harness both run fine without those build scripts. Commit the three decided values (or an empty `allowBuilds: {}`) so setting up the harness neither warns nor edits a tracked file.
 
 - `2026-09-05T23:52:53Z` — `codex` — After `pnpm build` ran alongside an active Vite dev server, browser navigation failed and server functions returned undefined. The server logged `Cannot read properties of undefined (reading 'map')` in `runInRunnerObject` / `loadEntries`. Restarting Vite restored the same dashboard without code changes. Stop and restart the dev server around production builds before browser QA; consider documenting or isolating the shared build/runtime state.
 
@@ -23,6 +22,8 @@ data, or sensitive paths.
 - `2026-07-19T02:55:56Z` — `claude` — Docs folders with an explicit Overview link need their index removed by the allowlist in `web/src/lib/source.ts`. Both current folders using that convention are covered as of 2026-09-05; revisit when adding another such section, rather than generalizing navigation now.
 
 ## Resolved
+
+- [x] `2026-09-20T11:30:00Z` — `claude` — A fresh `pnpm --dir badseo install --frozen-lockfile` printed `ERR_PNPM_IGNORED_BUILDS`, skipped the esbuild, sharp and workerd install scripts, and wrote an unanswered `allowBuilds:` block into the tracked `badseo/pnpm-workspace.yaml`, so setting up the audit harness both warned and dirtied the working tree. Resolved 2026-09-20: the three are committed as `false`, verified by running `pnpm --dir badseo run dev`, `pnpm --dir badseo run build` and the audit harness with no install scripts. Revisit only if a future dependency genuinely needs its postinstall.
 
 - [x] `2026-09-17T18:50:14Z` — `codex` — Fumadocs MDX 11 compiles `.md?raw` imports into components, so shared prompt imports pass type checking but crash docs rendering with `trim is not a function`. Resolved 2026-09-17: the web Vite config leaves `?raw` imports to Vite; browser-check shared Markdown prompts when changing this integration.
 

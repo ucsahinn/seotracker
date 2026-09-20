@@ -1,3 +1,11 @@
+# Decided rather than left to the interactive `pnpm approve-builds`, which a
+# fresh clone otherwise hits as a warning that also writes placeholders into
+# this tracked file. None of the three is needed here: the Vite dev server,
+# `vite build` and the audit harness all run without their install scripts.
+allowBuilds:
+  esbuild: false
+  sharp: false
+  workerd: false
 minimumReleaseAge: 11520
 minimumReleaseAgeExclude:
   - "@every-app/*"
