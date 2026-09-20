@@ -437,13 +437,22 @@ async function main() {
         : c.red(c.bold(`${failures}/${total} CHECKS FAILED`))),
   );
 
-  // Coverage: every audit issue type should be exercised by at least one page.
+  /*
+   * Coverage: every audit issue type a fixture *can* reach should be reached
+   * by one. `crawl-rate-limited` is not one of them -- the site-audit
+   * workflow raises it when the whole crawl gives up, and this harness runs
+   * the checks directly rather than the workflow, so no page can produce it.
+   * Listing it as "missing" forever invites a fixture that cannot work.
+   */
+  const WORKFLOW_ONLY: IssueId[] = ["crawl-rate-limited"];
   const exercised = new Set(allFixtures.flatMap((f) => f.expectedIssues));
-  const allTypes = Object.keys(AUDIT_ISSUE_TYPES) as IssueId[];
+  const allTypes = (Object.keys(AUDIT_ISSUE_TYPES) as IssueId[]).filter(
+    (id) => !WORKFLOW_ONLY.includes(id),
+  );
   const uncovered = allTypes.filter((id) => !exercised.has(id));
   console.log(
     c.dim(
-      `\nissue-type coverage: ${allTypes.length - uncovered.length}/${allTypes.length}` +
+      `\nissue-type coverage: ${allTypes.length - uncovered.length}/${allTypes.length} fixture-reachable` +
         (uncovered.length
           ? `  (missing: ${uncovered.join(", ")})`
           : "  ✓ all covered"),
