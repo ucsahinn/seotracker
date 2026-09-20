@@ -1,4 +1,4 @@
-import { and, eq, inArray } from "drizzle-orm";
+import { and, count, eq, gte, inArray } from "drizzle-orm";
 import { db } from "@/db";
 import { auditPages, audits, gscUrlInspections } from "@/db/schema";
 import {
@@ -82,13 +82,52 @@ async function storedFor(
   );
 }
 
+/**
+ * How much of the day's quota this project has already spent.
+ *
+ * A rolling 24 hours rather than a calendar day, because Google's quota day
+ * rolls over on its own clock and guessing the boundary wrong would let a run
+ * cross the line. Over any 24-hour window the count is at least as large as
+ * the count since the real midnight, so the budget it produces is the safe
+ * side of the truth.
+ *
+ * A URL re-inspected twice in the window counts once, since the row is
+ * overwritten. That makes this a floor, which is why it is spent against
+ * 2000 and not treated as an exact ledger.
+ */
+async function inspectionsInLastDay(
+  projectId: string,
+  now: Date,
+): Promise<number> {
+  // Every write in this module stores an ISO stamp, so a string comparison
+  // orders them correctly. The column's SQLite default is the other shape
+  // ("2026-09-19 22:30:00"), which would sort as older and be missed -- an
+  // undercount, which spends quota rather than losing it.
+  const since = new Date(now.getTime() - 86_400_000).toISOString();
+  const [row] = await db
+    .select({ value: count() })
+    .from(gscUrlInspections)
+    .where(
+      and(
+        eq(gscUrlInspections.projectId, projectId),
+        gte(gscUrlInspections.checkedAt, since),
+      ),
+    );
+  return row?.value ?? 0;
+}
+
 /** Reads what is already known. Never calls Google, so it is free to render. */
 export async function getIndexCoverage(input: {
   projectId: string;
   auditId: string;
+  now?: Date;
 }): Promise<IndexCoverage> {
   const urls = await indexableUrlsForAudit(input.auditId, input.projectId);
-  return summarizeCoverage(urls, await storedFor(input.projectId, urls));
+  return summarizeCoverage(
+    urls,
+    await storedFor(input.projectId, urls),
+    input.now ?? new Date(),
+  );
 }
 
 /**
@@ -100,14 +139,20 @@ export async function refreshIndexCoverage(input: {
   projectId: string;
   auditId: string;
   now?: Date;
-}): Promise<{ inspected: number; remaining: number; quotaPerDay: number }> {
+}): Promise<{
+  inspected: number;
+  remaining: number;
+  quotaRemaining: number;
+}> {
   const now = input.now ?? new Date();
   const urls = await indexableUrlsForAudit(input.auditId, input.projectId);
   const stored = await storedFor(input.projectId, urls);
-  const { batch, remaining } = selectDueUrls(urls, stored, now);
+  const spent = await inspectionsInLastDay(input.projectId, now);
+  const budget = Math.max(DAILY_QUOTA - spent, 0);
+  const { batch, remaining } = selectDueUrls(urls, stored, now, budget);
 
   if (batch.length === 0) {
-    return { inspected: 0, remaining: 0, quotaPerDay: DAILY_QUOTA };
+    return { inspected: 0, remaining, quotaRemaining: budget };
   }
 
   const { results } = await GscService.inspectUrls({
@@ -148,5 +193,9 @@ export async function refreshIndexCoverage(input: {
       });
   }
 
-  return { inspected: batch.length, remaining, quotaPerDay: DAILY_QUOTA };
+  return {
+    inspected: batch.length,
+    remaining,
+    quotaRemaining: Math.max(budget - batch.length, 0),
+  };
 }

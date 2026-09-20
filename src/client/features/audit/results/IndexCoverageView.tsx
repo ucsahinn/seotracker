@@ -50,11 +50,15 @@ export function IndexCoverageView({
         toast.success("Tüm sayfalar güncel, sorulacak bir şey yok.");
         return;
       }
-      toast.success(
-        result.remaining > 0
-          ? `${result.inspected} sayfa soruldu. ${result.remaining} sayfa kaldı.`
-          : `${result.inspected} sayfa soruldu.`,
-      );
+      const left =
+        result.remaining > 0 ? ` ${result.remaining} sayfa kaldı.` : "";
+      // The daily cap is worth naming only when it is close enough to stop
+      // the next run; otherwise it is a number nobody needs.
+      const quota =
+        result.quotaRemaining < 100
+          ? ` Bugünkü kotadan ${result.quotaRemaining} sorgu kaldı.`
+          : "";
+      toast.success(`${result.inspected} sayfa soruldu.${left}${quota}`);
     },
     onError: (error) => toast.error(getStandardErrorMessage(error)),
   });
@@ -117,7 +121,7 @@ export function IndexCoverageView({
         />
         <MetricTile
           label="Sorulmayı bekleyen"
-          value={formatNumber(data.pending)}
+          value={formatNumber(data.due)}
           hint={
             data.lastCheckedAt
               ? `Son kontrol ${formatDateTime(data.lastCheckedAt)}`
@@ -129,12 +133,16 @@ export function IndexCoverageView({
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm text-muted">
           Google URL Inspection API günde 2000 adres sorgulamanıza izin verir.
-          Her tıklamada en eski 25 sayfa sorulur.
+          Her tıklamada 25 sayfa sorulur: önce hiç sorulmayanlar, sonra
+          Google&apos;ın dizine almadıkları.
         </p>
         <button
           type="button"
           className="btn btn-primary btn-sm"
-          disabled={refresh.isPending || data.pending === 0}
+          /* `due`, not `pending`: a page Google already answered becomes
+             worth re-asking once the answer ages out, and keying off
+             `pending` left the button disabled while there was work. */
+          disabled={refresh.isPending || data.due === 0}
           onClick={() => refresh.mutate()}
         >
           {refresh.isPending ? (

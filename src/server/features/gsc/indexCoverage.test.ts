@@ -146,4 +146,62 @@ describe("selectDueUrls", () => {
     expect(result.batch).toHaveLength(25);
     expect(result.remaining).toBe(15);
   });
+  // A batch is 25 and a site is often hundreds, so on every run but the last
+  // this order is what the operator actually learns.
+  it("spends the batch on the most useful question first", () => {
+    const urls = [
+      "https://a.test/indexed",
+      "https://a.test/refused",
+      "https://a.test/errored",
+      "https://a.test/unasked",
+    ];
+    const store = storeOf(
+      checked("https://a.test/indexed", { checkedAt: "2026-05-01 09:00:00" }),
+      checked("https://a.test/refused", {
+        verdict: "NEUTRAL",
+        checkedAt: "2026-05-01 09:00:00",
+      }),
+      checked("https://a.test/errored", { error: "quota" }),
+    );
+
+    expect(selectDueUrls(urls, store, NOW).batch).toEqual([
+      "https://a.test/unasked",
+      "https://a.test/errored",
+      "https://a.test/refused",
+      "https://a.test/indexed",
+    ]);
+  });
+
+  // The page you are actively fixing is the one Google refused, and the point
+  // of re-asking is finding out that the fix landed.
+  it("re-asks a refusal sooner than it re-asks an indexed page", () => {
+    const fourDaysAgo = "2026-06-26 12:00:00";
+    const store = storeOf(
+      checked("https://a.test/indexed", { checkedAt: fourDaysAgo }),
+      checked("https://a.test/refused", {
+        verdict: "NEUTRAL",
+        checkedAt: fourDaysAgo,
+      }),
+    );
+
+    expect(
+      selectDueUrls(
+        ["https://a.test/indexed", "https://a.test/refused"],
+        store,
+        NOW,
+      ).batch,
+    ).toEqual(["https://a.test/refused"]);
+  });
+
+  it("trims a run to what is left of the day's quota", () => {
+    const urls = Array.from(
+      { length: 40 },
+      (_, index) => `https://a.test/${index}`,
+    );
+
+    const result = selectDueUrls(urls, new Map(), NOW, 4);
+
+    expect(result.batch).toHaveLength(4);
+    expect(result.remaining).toBe(36);
+  });
 });

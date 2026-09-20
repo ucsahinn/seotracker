@@ -6,12 +6,21 @@
  * are pure, so they live here and `GscIndexCoverageService` supplies the rows.
  */
 
+import { sort } from "remeda";
+
 /** Google allows 2000 inspections per property per day. */
 export const DAILY_QUOTA = 2000;
 /** One call is roughly a second, so a batch has to stay under a page load. */
 const MAX_PER_RUN = 25;
 /** Google re-crawls on its own schedule; a fresher check tells you nothing new. */
 const STALE_AFTER_DAYS = 14;
+/**
+ * Except when the last answer was a refusal. "Crawled - currently not
+ * indexed" is the page you are actively working on, and the whole value of
+ * re-asking is finding out that the work landed. Waiting a fortnight to learn
+ * that spends the quota on pages that were already fine.
+ */
+const STALE_AFTER_DAYS_UNRESOLVED = 3;
 
 export type CoverageRow = {
   url: string;
@@ -41,8 +50,15 @@ export type IndexCoverage = {
   indexed: number;
   /** Google looked and said no: excluded, or an error on its side. */
   notIndexed: number;
-  /** Crawled pages never inspected, or last inspected too long ago. */
+  /** Crawled pages Google has never given an answer for. */
   pending: number;
+  /**
+   * How many the refresh button would actually ask about. Not the same as
+   * `pending`: an answered page whose answer has aged out is due without
+   * being pending, and the button has to key off this one or it sits
+   * disabled while there is work to do.
+   */
+  due: number;
   /** Declared canonical differs from the one Google picked. */
   canonicalMismatches: number;
   lastCheckedAt: string | null;
@@ -102,20 +118,37 @@ function parseStamp(value: string | null): number {
  * find nothing to do, and the row would sit there for a fortnight while the
  * UI insisted it was queued.
  */
-function isStale(
-  checkedAt: string | null,
-  error: string | null,
-  now: Date,
-): boolean {
-  if (error) return true;
-  const ms = parseStamp(checkedAt);
+function isStale(row: CoverageRow | undefined, now: Date): boolean {
+  if (!row || row.error) return true;
+  const ms = parseStamp(row.checkedAt);
   if (Number.isNaN(ms)) return true;
-  return now.getTime() - ms > STALE_AFTER_DAYS * 86_400_000;
+  const days =
+    row.verdict === "PASS" ? STALE_AFTER_DAYS : STALE_AFTER_DAYS_UNRESOLVED;
+  return now.getTime() - ms > days * 86_400_000;
+}
+
+/**
+ * Which question is worth the quota first.
+ *
+ * A batch is 25 URLs and a site is often hundreds, so on every run but the
+ * last this order decides what the operator actually learns. Before it
+ * existed the batch was whatever the crawler happened to enqueue first, which
+ * meant a page Google had never seen could sit behind two hundred pages that
+ * already answered PASS.
+ *
+ * Lower sorts first.
+ */
+function askPriority(row: CoverageRow | undefined): number {
+  if (!row || !row.checkedAt) return 0; // never asked: the only unknown answer
+  if (row.error) return 1; // asked and got nothing back
+  if (row.verdict !== "PASS") return 2; // asked and Google said no
+  return 3; // asked and Google said yes
 }
 
 export function summarizeCoverage(
   urls: string[],
   stored: Map<string, CoverageRow>,
+  now: Date = new Date(),
 ): IndexCoverage {
   const rows = urls.map((url) => stored.get(url) ?? blankRow(url));
 
@@ -170,23 +203,39 @@ export function summarizeCoverage(
     indexed,
     notIndexed,
     pending,
+    due: rows.filter((row) => isStale(stored.get(row.url), now)).length,
     canonicalMismatches,
     lastCheckedAt,
   };
 }
 
-/** One batch of URLs worth asking about, plus how many are left after it. */
+/**
+ * One batch of URLs worth asking about, plus how many are left after it.
+ *
+ * `budget` is what is left of the day's quota. Google allows 2000 inspections
+ * per property per day and answers the 2001st with an error, so a run that
+ * would cross the line is trimmed rather than half-failed.
+ */
 export function selectDueUrls(
   urls: string[],
   stored: Map<string, CoverageRow>,
   now: Date,
+  budget: number = MAX_PER_RUN,
 ): { batch: string[]; remaining: number } {
-  const due = urls.filter((url) => {
-    const row = stored.get(url);
-    return isStale(row?.checkedAt ?? null, row?.error ?? null, now);
+  const due = urls.filter((url) => isStale(stored.get(url), now));
+  // Stable within a priority band: equal rows keep crawl order, and the two
+  // bands that carry a timestamp are ordered oldest-answer-first.
+  const ordered = sort(due, (a, b) => {
+    const byPriority = askPriority(stored.get(a)) - askPriority(stored.get(b));
+    if (byPriority !== 0) return byPriority;
+    const aAt = parseStamp(stored.get(a)?.checkedAt ?? null);
+    const bAt = parseStamp(stored.get(b)?.checkedAt ?? null);
+    if (Number.isNaN(aAt) || Number.isNaN(bAt)) return 0;
+    return aAt - bAt;
   });
+  const take = Math.max(Math.min(MAX_PER_RUN, budget), 0);
   return {
-    batch: due.slice(0, MAX_PER_RUN),
-    remaining: Math.max(due.length - MAX_PER_RUN, 0),
+    batch: ordered.slice(0, take),
+    remaining: Math.max(ordered.length - take, 0),
   };
 }
