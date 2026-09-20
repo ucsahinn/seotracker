@@ -123,7 +123,7 @@ export function createMcpServer(authProps: McpProps) {
       // Without the pre-declaration, registerTool defaults it to true.
       capabilities: { tools: { listChanged: false } },
       instructions:
-        "Every tool here reads free data the user already owns: their own Search Console and Analytics properties, and a crawler that runs locally. There is no per-call cost and no quota to ration, so research as thoroughly as the question deserves.",
+        "Every tool here reads free data the user already owns: their own Search Console and Analytics properties, and a crawler that runs locally. Nothing bills per call, so research as thoroughly as the question deserves. One exception worth knowing: inspect_urls spends Google's URL Inspection quota, which is 2000 addresses per property per day and shared with the app's own screens, so ask it about the URLs you actually need rather than sweeping a whole site.",
     },
   );
 

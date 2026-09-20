@@ -25,6 +25,18 @@ function getAuthenticatedContext(context: unknown): EnsuredUserContext {
   return result.data;
 }
 
+/*
+ * No CSRF middleware here on purpose. A security pass flagged the absence as
+ * a likely hole -- in `local_noauth` the operator's browser is an
+ * authenticated client, so any page they visit could in principle drive a
+ * write. Measured against the running container instead of assumed: a POST to
+ * `/_serverFn/<id>` answers 403 Forbidden for a cross-site `Origin`, for a
+ * simple content type that skips preflight (`text/plain`,
+ * `application/x-www-form-urlencoded`), and for a request carrying no
+ * `Origin` at all. Only a same-origin request reaches the handler. The
+ * framework enforces this and fails closed; adding our own check would be
+ * duplicate machinery.
+ */
 export const globalServerFunctionMiddleware = [
   errorHandlingMiddleware,
   ensureUserMiddleware,

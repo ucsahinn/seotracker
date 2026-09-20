@@ -21,7 +21,11 @@ services:
       - CLOUDFLARE_INCLUDE_PROCESS_ENV=true
       - PORT=${PORT:-3001}
       - ALLOWED_HOST=${ALLOWED_HOST:-}
-      - AUTH_MODE=local_noauth
+      # Overridable, because it was not: a literal here beats `env_file`, so an
+      # operator who read the README's warning and put AUTH_MODE=cloudflare_access
+      # in .env got no error, no warning and no authentication. The default is
+      # still local_noauth, which is right for a container bound to 127.0.0.1.
+      - AUTH_MODE=${AUTH_MODE:-local_noauth}
       # Google Search Console + Analytics. Both integrations share one OAuth
       # client. See docs/SELF_HOSTING_GOOGLE_SEARCH_CONSOLE.md
       - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID:-}
