@@ -14,12 +14,20 @@ Uygulama kimlik doğrulaması yapmaz (`AUTH_MODE=local_noauth`, tek yönetici
 ## Hızlı başlangıç
 
 ```sh
-cp .env.example .env
 docker compose up -d
 ```
 
+Hepsi bu. `.env` dosyası gerekmiyor: compose onu isteğe bağlı okur ve token
+şifreleme anahtarı ilk açılışta kendiliğinden üretilir.
+
+> **`.env.example`'ı kopyalamayın.** O dosya hâlâ upstream projeye ait ve
+> DataForSEO, Postgres, barındırılan kimlik doğrulama gibi bu çatalda var
+> olmayan şeyleri anlatıyor; içindeki `OPEN_SEO_IMAGE` değişkeni de artık
+> okunmuyor. Bu sayfadaki değişkenler, gerçekten okunanların tamamı.
+
 `http://localhost:3001` adresini açın. İlk başlatma uygulamayı konteyner içinde
-derler ve 1-2 dakika sürer; ilerlemeyi `docker compose logs -f` ile izleyin.
+derler ve birkaç dakika sürebilir (sağlık kontrolü 5 dakikaya kadar bekler);
+ilerlemeyi `docker compose logs -f` ile izleyin.
 
 ## Ayarlar arayüzde, `.env` isteğe bağlı
 
@@ -54,8 +62,15 @@ docker compose up -d --force-recreate seotracker
 
 Hiçbir yerden indirilmiyor. Bu çatalın yayınlanmış bir imajı yok; ilk
 `docker compose up -d` komutu imajı bu depodan (`Dockerfile.selfhost`) derler ve
-`seotracker:local` adıyla saklar. İlk derleme birkaç dakika sürer, sonrakiler
-saniyeler.
+`seotracker:local` adıyla saklar.
+
+Süreler konusunda net olmak gerekirse: uygulamanın kendi derlemesi imajda
+değil, konteyner ilk açıldığında yapılıyor ve sonucu konteynerin içinde
+tutuluyor. Bu yüzden **durdurup başlatmak** saniyeler sürer (derleme yeniden
+kullanılır), ama konteyneri **yeniden oluşturan** her komut -- `--build`,
+`--force-recreate`, `down` sonrası `up` -- derlemeyi sıfırdan yaptırır ve
+birkaç dakika sürer. Günlükte hangisinin olduğu yazar: "Reusing existing
+build" ya da "Building client + server".
 
 Depodaki kodu değiştirdiyseniz yeniden derletin:
 

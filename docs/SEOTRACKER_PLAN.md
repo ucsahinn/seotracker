@@ -1,5 +1,11 @@
 # seotracker — Eksiksiz Yapılacaklar, Alınacaklar ve Geliştirme Listesi
 
+> **ARŞİV — kurulum rehberi değildir.** Bu dosya, çatalın nasıl çıkarılacağını
+> anlatan bir iş emriydi ve yalnızca tarihsel kayıt olarak duruyor. İçindeki
+> dosya yolları, sayılar ve komutlar yazıldığı günün hâlini gösterir; çoğu
+> artık geçerli değil. Kurulum için `README.md` ve `docs/SELF_HOSTING_*.md`
+> dosyalarına bakın.
+
 > **Durum (2026-09-19): planın tamamı uygulandı.** Faz 0'dan 8'e kadar her aşama bitti ve her
 > biri kendi doğrulamasıyla commit edildi. Son durum: 543 test geçiyor, `ci:check` (biçim, ölü
 > kod, tip kontrolü, lint) temiz, Docker imajı derleniyor ve çalışan konteyner üzerinde uçtan

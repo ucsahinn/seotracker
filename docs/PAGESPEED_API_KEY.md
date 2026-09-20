@@ -39,6 +39,6 @@ hız satırları anahtarı işaret eden bir hata mesajıyla boş kalır.
 
 ## Anahtarsız çalıştırma
 
-Anahtar vermezseniz denetim yine çalışır ve 29 teknik SEO kontrolünün hepsini
+Anahtar vermezseniz denetim yine çalışır ve 36 teknik SEO kontrolünün hepsini
 üretir. Yalnız Lighthouse aşaması kota nedeniyle başarısız olur. Tek bir sayfayı
 denemek için yeterlidir.
