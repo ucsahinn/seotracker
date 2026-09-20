@@ -28,7 +28,7 @@ const inputSchema = {
   locationCode: locationCodeSchema
     .optional()
     .describe(
-      "Optional DataForSEO location code for the project's default market (e.g. 2840 = United States, 2504 = Morocco). Falls back to the organization default when omitted.",
+      "Optional numeric location code for the project's default market (e.g. 2840 = United States, 2504 = Morocco). Falls back to the organization default when omitted.",
     ),
   languageCode: languageCodeSchema
     .optional()
@@ -103,7 +103,7 @@ export const createProjectTool = {
   config: {
     title: "Create project",
     description:
-      "Create a new project in the user's organization. Uses no credits — does not call DataForSEO. Provide a name, and optionally a domain and default market (locationCode/languageCode; a languageCode requires a locationCode). Returns the created {id, name, domain, locationCode, languageCode, url}; pass the returned `id` as `projectId` to other seotracker tools. Call list_projects first to avoid creating a duplicate.",
+      "Create a new project in the user's organization. Provide a name, and optionally a domain and default market (locationCode/languageCode; a languageCode requires a locationCode). Returns the created {id, name, domain, locationCode, languageCode, url}; pass the returned `id` as `projectId` to other seotracker tools. Call list_projects first to avoid creating a duplicate.",
     inputSchema,
     outputSchema: {
       project: z
@@ -128,7 +128,6 @@ export const createProjectTool = {
     const { baseUrl, ...auth } = context.auth;
     const target = await resolveTargetOrganization(auth, args.organizationId);
     // Same as withMcpProjectAuth: instrumentation reads context.auth after
-    // the handler, so telemetry credits the target org.
     context.auth = { ...context.auth, ...target };
     // Same gate as the createProject server function — MCP and the dashboard
     // must agree on who can create projects. The role is the caller's role

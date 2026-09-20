@@ -13,7 +13,7 @@ export const locationCodeSchema = z
   .int()
   .positive()
   .describe(
-    "DataForSEO location code. Defaults to the project's default market (see list_projects; editable in project settings). See dataforseo.com/help-center/locations. Some countries (e.g. Iceland, 2352) are served from Google Ads data: keyword volume/CPC/trends work, but keyword difficulty, search intent, and domain analytics are unavailable.",
+    "Numeric location code for the project's default market (e.g. 2840 = United States). Defaults to the project's market; see list_projects, editable in project settings. It only labels the market a saved keyword belongs to - this build has no market data of its own.",
   );
 
 export const languageCodeSchema = z

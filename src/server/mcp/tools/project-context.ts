@@ -36,7 +36,7 @@ export const getProjectContextTool = {
   config: {
     title: "Get project context",
     description:
-      "Reads a project's shared memory: business overview, current goal, positioning, writing preferences, custom sections, competitors, key pages, and the recent research log. Uses no credits. Call this before SEO work to ground it in what the user already told seotracker, and check the research log before re-buying research. Sections listed as missing are the ones worth filling with update_project_context.",
+      "Reads a project's shared memory: business overview, current goal, positioning, writing preferences, custom sections, competitors, key pages, and the recent research log. Call this before SEO work to ground it in what the user already told seotracker, and check the research log so the same ground is not covered twice. Sections listed as missing are the ones worth filling with update_project_context.",
     inputSchema: getInputSchema,
     outputSchema: contextOutputSchema,
     annotations: {
@@ -85,7 +85,7 @@ function buildUpdateProjectContextTool(author: ContextAuthor) {
     config: {
       title: "Update project context",
       description:
-        "Writes to a project's shared memory so the app, SAM, and other agents see it. Uses no credits. Send a list of patch ops; sections are prose (~4,000 chars max), competitors and key pages are curated shortlists (100 max each), and appendResearchLog records what research was bought so nobody re-buys it. Confirm facts with the user before storing them.",
+        "Writes to a project's shared memory so the app and other agents see it. Send a list of patch ops; sections are prose (~4,000 chars max), competitors and key pages are curated shortlists (100 max each), and appendResearchLog records what has already been looked into so it is not repeated. Confirm facts with the user before storing them.",
       inputSchema: updateInputSchema,
       outputSchema: contextOutputSchema,
       annotations: {

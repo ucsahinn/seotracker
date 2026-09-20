@@ -23,7 +23,7 @@ const mcpMetaOutputSchema = z
   })
   .passthrough();
 
-// Tools that pass DataForSEO rows straight through to structuredContent hand the
+// Tools that pass provider rows straight through to structuredContent hand the
 // MCP SDK typed class instances (e.g. DataforseoLabsSerpCompetitorsLiveItem), not
 // plain objects. Zod 4's z.record() requires a plain-object prototype and rejects
 // class instances ("expected record, received <ClassName>"), which the SDK surfaces
