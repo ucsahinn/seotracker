@@ -10,8 +10,6 @@ data, or sensitive paths.
 
 ## Open
 
-- [ ] `2026-09-20T13:10:00Z` — `claude` — `analyzeHtml` opens an `<h1>` accumulator only when none is open and closes it on any `</h1>`, so `<h1>One<h1>Two</h1>` yields one fused heading `"OneTwo"` where a browser and Google see two. `h1Count` is then 1, `multiple-h1` never fires, and text after a nested `</h1>` is dropped. The cheerio reference in `page-analyzer.test.ts` has the same tolerance (both sit on non-tree-correcting htmlparser2), so the parity suite cannot see it. Fixing it means flushing the accumulator on any heading start _and_ teaching the reference the same rule — worth doing with a tree-correcting reference rather than by hand.
-
 - [ ] `2026-09-03T00:00:00Z` — `claude` — `pnpm ci:check` does not run `pnpm build`, so a route file that pulls `cloudflare:workers` into the client bundle passes every check and still breaks the build (hit on the dynamic-reports branch). Add a build step to `ci:check`, or document that `pnpm build` must be run separately before opening a PR.
 - [ ] `2026-09-11T00:13:05Z` — `codex` — The web-content review skill points to the removed `src/server/features/onboarding/seotracker-fact-sheet.md`; the reference now lives at `src/server/features/sam/seotracker-fact-sheet.md`. Update the skill's pointer so content reviews reach the current fact sheet.
 
@@ -23,6 +21,8 @@ data, or sensitive paths.
 - `2026-07-19T02:55:56Z` — `claude` — Docs folders with an explicit Overview link need their index removed by the allowlist in `web/src/lib/source.ts`. Both current folders using that convention are covered as of 2026-09-05; revisit when adding another such section, rather than generalizing navigation now.
 
 ## Resolved
+
+- [x] `2026-09-20T13:10:00Z` — `claude` — `analyzeHtml` fused `<h1>One<h1>Two</h1>` into a single heading, so `h1Count` read 1 where a browser and Google see 2 and `multiple-h1` never fired. The cheerio reference shared the tolerance, so the parity suite could not see it. Resolved 2026-09-20: a heading start tag now closes any open heading, as the `<a>` handling already did, and the reference drops descendant headings before reading text, so both sides reproduce the browser's split.
 
 - [x] `2026-09-20T11:30:00Z` — `claude` — A fresh `pnpm --dir badseo install --frozen-lockfile` printed `ERR_PNPM_IGNORED_BUILDS`, skipped the esbuild, sharp and workerd install scripts, and wrote an unanswered `allowBuilds:` block into the tracked `badseo/pnpm-workspace.yaml`, so setting up the audit harness both warned and dirtied the working tree. Resolved 2026-09-20: the three are committed as `false`, verified by running `pnpm --dir badseo run dev`, `pnpm --dir badseo run build` and the audit harness with no install scripts. Revisit only if a future dependency genuinely needs its postinstall.
 

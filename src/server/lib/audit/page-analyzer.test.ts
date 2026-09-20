@@ -37,6 +37,11 @@ function analyzeHtmlWithCheerio(html: string, pageUrl: string): PageAnalysis {
   const h1s: string[] = [];
   $("h1").each((_, heading) => {
     const clone = $(heading).clone();
+    // A nested heading belongs to itself, not to its parent: htmlparser2 does
+    // no tree correction, so `<h1>One<h1>Two</h1>` parses as an h1 inside an
+    // h1 where a browser sees two siblings. Dropping descendant headings
+    // reproduces the browser's split.
+    clone.find("h1, h2, h3, h4, h5, h6").remove();
     clone.find("img").each((_index, img) => {
       $(img).replaceWith($("<span>").text($(img).attr("alt") ?? ""));
     });
@@ -223,6 +228,19 @@ describe("analyzeHtml parity with the DOM reference", () => {
     );
 
     expect(analysis.h1s).toEqual(["Acme Store", ""]);
+  });
+
+  // A template that forgets a closing tag is the common way to get here, and
+  // the two headings have to stay two so multiple-h1 can fire.
+  it("splits a heading that another heading interrupts", () => {
+    const analysis = analyzeHtml(
+      `<body><h1>One<h1>Two</h1><p>body</p></body>`,
+      PAGE_URL,
+      200,
+      0,
+    );
+
+    expect(analysis.h1s).toEqual(["One", "Two"]);
   });
 
   it("matches heading order across nesting", () => {

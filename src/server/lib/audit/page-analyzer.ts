@@ -135,6 +135,12 @@ export function analyzeHtml(
     }
   };
 
+  const closeH1 = () => {
+    if (!openH1) return;
+    h1s.push(openH1.join("").replace(/\s+/g, " ").trim());
+    openH1 = null;
+  };
+
   const closeAnchor = () => {
     if (!openAnchor) return;
     const { href, rel, text } = openAnchor;
@@ -222,7 +228,14 @@ export function analyzeHtml(
         const headingLevel = HEADING_LEVELS[name];
         if (headingLevel !== undefined) {
           headingOrder.push(headingLevel);
-          if (headingLevel === 1 && openH1 === null) openH1 = [];
+          /* A heading start tag closes whatever heading is open, the way a
+             browser does and the way <a> is handled above. Without this,
+             `<h1>One<h1>Two</h1>` -- an unclosed heading, which is what a
+             template bug produces -- collected into one fused "OneTwo", so
+             h1Count read 1 where a browser and Google see 2 and multiple-h1
+             never fired. */
+          closeH1();
+          if (headingLevel === 1) openH1 = [];
         }
       },
       ontext(text) {
@@ -255,10 +268,7 @@ export function analyzeHtml(
         if (name === "head" && headDepth > 0) headDepth -= 1;
         if (name === "body" && bodyDepth > 0) bodyDepth -= 1;
         if (name === "a") closeAnchor();
-        if (name === "h1" && openH1) {
-          h1s.push(openH1.join("").replace(/\s+/g, " ").trim());
-          openH1 = null;
-        }
+        if (name === "h1") closeH1();
       },
     },
     // Defaults (non-XML mode): lowercased tag/attribute names, decoded
