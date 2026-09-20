@@ -92,7 +92,7 @@ describe("SearchOpportunityService", () => {
     mocks.runGa4Report.mockResolvedValue(ga4Result);
   });
 
-  it("normalizes URLs, scores joined candidates, and leaves unmatched pages unscored", async () => {
+  it("normalizes URLs and scores every candidate, matched or not", async () => {
     mocks.getPerformance.mockResolvedValue({
       siteUrl: "https://example.com/",
       request: {},
@@ -152,18 +152,25 @@ describe("SearchOpportunityService", () => {
       matchedRows: 2,
       unmatchedGscRows: 1,
     });
+    // A page with demand and no traffic is the opportunity, not a row to
+    // bury. /no-analytics has the most impressions of the three candidates
+    // and no GA4 row, so it takes the top demand percentile and the neutral
+    // middle for business value: 0.5*1 + 0.3*0.5 + 0.2*0.5 = 75. That ties
+    // the GA4-matched /High-Value (0.5*0.5 + 0.3*1 + 0.2*1), and impressions
+    // break the tie. Under the old scoring it had no score at all and sorted
+    // last, which is the bug this pins.
     expect(result.rows[0]).toMatchObject({
+      page: "https://example.com/no-analytics",
+      joinStatus: "gsc_only",
+      ga4: null,
+      score: 75,
+      scoreComponents: { demand: 1, businessValue: 0.5, reachability: 0.5 },
+    });
+    expect(result.rows[1]).toMatchObject({
       page: "https://EXAMPLE.com/High-Value/?ref=gsc",
       normalizedPage: "example.com/High-Value",
       joinStatus: "joined",
-      score: 100,
-    });
-    expect(
-      result.rows.find((row) => row.joinStatus === "gsc_only"),
-    ).toMatchObject({
-      ga4: null,
-      score: null,
-      scoreComponents: null,
+      score: 75,
     });
     expect(result.scoring.businessValueMetric).toBe("sessionKeyEventRate");
     expect(result.warnings).toContain("source_time_zones_differ");

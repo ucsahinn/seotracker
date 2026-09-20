@@ -207,23 +207,45 @@ async function getOpportunities(
   const engagementFallback =
     joined.length > 0 &&
     joined.every((candidate) => candidate.ga4.keyEvents === 0);
+
+  /*
+   * Every candidate is scored, not only the ones GA4 matched.
+   *
+   * A page appears in GA4's landing-page report only if it received organic
+   * sessions. Scoring `joined` alone therefore meant a page with forty
+   * thousand impressions at position 6 and no traffic got no score and sorted
+   * below pages with a tenth of its demand - which inverts the whole point of
+   * the screen, because demand without traffic is the opportunity.
+   *
+   * Demand and reachability need only Search Console, so they run over
+   * everything. Business value needs GA4, so an unmatched page takes the
+   * neutral middle rather than a zero it did not earn; `joinStatus` already
+   * tells the UI which rows those are.
+   */
   const demand = percentileRanks(
-    joined.map((candidate) => Math.log1p(candidate.impressions)),
+    candidates.map((candidate) => candidate.impressions),
   );
-  const businessValue = percentileRanks(
+  // Percentile ranking only reads order, so the old `log1p` here and the
+  // `20 - position` below changed nothing. Dropping them removes a knob that
+  // looked tunable and was not.
+  const reachability = percentileRanks(
+    candidates.map((candidate) => -candidate.position),
+  );
+  const joinedValue = percentileRanks(
     joined.map((candidate) =>
       engagementFallback
         ? candidate.ga4.engagementRate
         : candidate.ga4.sessionKeyEventRate,
     ),
   );
-  const reachability = percentileRanks(
-    joined.map((candidate) => 20 - candidate.position),
+  const valueByPage = new Map(
+    joined.map((candidate, index) => [candidate.page, joinedValue[index] ?? 0]),
   );
-  joined.forEach((candidate, index) => {
+
+  candidates.forEach((candidate, index) => {
     const components = {
       demand: roundComponent(demand[index] ?? 0),
-      businessValue: roundComponent(businessValue[index] ?? 0),
+      businessValue: roundComponent(valueByPage.get(candidate.page) ?? 0.5),
       reachability: roundComponent(reachability[index] ?? 0),
     };
     candidate.scoreComponents = components;
@@ -234,11 +256,11 @@ async function getOpportunities(
           0.2 * components.reachability),
     );
   });
-  candidates.sort((a, b) => {
-    if (a.score == null && b.score != null) return 1;
-    if (a.score != null && b.score == null) return -1;
-    return (b.score ?? 0) - (a.score ?? 0) || b.impressions - a.impressions;
-  });
+  // Every candidate now carries a score, so this is a plain ranking. The
+  // null-last branch stayed behind from when GA4-unmatched rows had none.
+  candidates.sort(
+    (a, b) => (b.score ?? 0) - (a.score ?? 0) || b.impressions - a.impressions,
+  );
 
   const matchedRows = joined.length;
   const unmatchedGscRows = candidates.length - matchedRows;
@@ -262,6 +284,13 @@ async function getOpportunities(
     scoring: {
       formula:
         "round(100 * (0.5 * demand + 0.3 * businessValue + 0.2 * reachability))",
+      // Percentile ranks are relative to this candidate set, so a weak site
+      // still produces a 95. The UI has to say "compared with your other
+      // pages", not treat it as an absolute verdict.
+      relativeToCandidateSet: true,
+      // Pages GA4 could not match take the neutral middle for business value
+      // rather than being excluded; joinStatus marks them.
+      unmatchedBusinessValue: 0.5,
       businessValueMetric: engagementFallback
         ? "engagementRate"
         : "sessionKeyEventRate",
