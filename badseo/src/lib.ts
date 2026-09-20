@@ -7,7 +7,6 @@
 // — not accidental noise from the layout.
 import { AUDIT_ISSUE_TYPES } from "../../src/shared/audit-issues";
 import type { Fixture, IssueId } from "./fixtures/types";
-import { PLAUSIBLE_INIT_SCRIPT, PLAUSIBLE_SCRIPT_SRC } from "./plausible";
 
 export function escapeHtml(input: string): string {
   return input
@@ -45,13 +44,11 @@ interface DocumentOptions {
 
 /** Build a complete HTML document string with exact <head> control. */
 export function renderDocument(opts: DocumentOptions): string {
-  const head: string[] = [
-    "<!-- Privacy-friendly analytics by Plausible -->",
-    `<script async src="${PLAUSIBLE_SCRIPT_SRC}"></script>`,
-    `<script>${PLAUSIBLE_INIT_SCRIPT}</script>`,
-    '<script defer src="/analytics.js"></script>',
-    '<meta charset="utf-8">',
-  ];
+  /* No analytics. The fixture site inherited upstream's Plausible property
+     and GA4 measurement id, which meant every local `pnpm --dir badseo run
+     dev` and every audit-harness run reported pageviews to someone else's
+     account -- from a fork whose README promises it sends data nowhere. */
+  const head: string[] = ['<meta charset="utf-8">'];
   head.push(
     '<meta name="viewport" content="width=device-width, initial-scale=1">',
   );
@@ -87,7 +84,7 @@ ${opts.bodyHtml}
 function navHtml(): string {
   return `<nav class="nav">
   <a class="brand" href="/">BADSEO</a>
-  <span class="nav-links"><a href="https://localhost:3001">seotracker</a><a href="https://github.com/ucsahinn/seotracker">GitHub</a></span>
+  <span class="nav-links"><a href="https://github.com/ucsahinn/seotracker">seotracker on GitHub</a></span>
 </nav>`;
 }
 
@@ -96,10 +93,8 @@ function footerHtml(): string {
   <a class="foot-brand" href="/">BADSEO</a>
   <span class="foot-links">
     <a href="/#issues">All issues</a>
-    <a href="https://github.com/ucsahinn/seotracker">GitHub</a>
-    <a href="https://localhost:3001">seotracker</a>
+    <a href="https://github.com/ucsahinn/seotracker">seotracker on GitHub</a>
     <a href="/privacy">Privacy</a>
-    <button class="footer-button" type="button" data-cookie-settings>Cookie settings</button>
   </span>
 </div></footer>`;
 }

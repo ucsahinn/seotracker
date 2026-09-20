@@ -8,111 +8,65 @@ export const Route = createFileRoute("/privacy")({
       {
         name: "description",
         content:
-          "How badseo.dev uses Plausible, Google Analytics, and Cloudflare and how visitors control analytics cookies.",
+          "BadSEO is a static test site for the seotracker audit crawler. It runs no analytics, sets no cookies, and collects nothing from visitors.",
       },
     ],
   }),
   component: PrivacyPage,
 });
 
+/*
+ * Rewritten from upstream's policy, which described Plausible, Google
+ * Analytics, a consent banner and Cloudflare hosting, and named another
+ * company as the operator. None of that is true of this fork: the analytics
+ * were removed along with the rest of the project's telemetry, and the site
+ * is served from whatever machine the operator runs it on.
+ */
 function PrivacyPage() {
   return (
     <SiteLayout>
       <main className="main">
         <h1>Privacy policy</h1>
         <p className="lede">
-          This policy explains the limited information processed when you visit
-          badseo.dev. Last updated July 10, 2026.
+          There is very little to say here, which is the point. Last updated
+          September 20, 2026.
         </p>
 
-        <h2>Who operates this site</h2>
+        <h2>What this site is</h2>
         <p>
-          badseo.dev is operated by Every App, Inc. as a public test site for
-          seotracker. The site has no accounts, forms, purchases, or
-          user-submitted content. Privacy questions and requests can be sent to{" "}
-          <a href="mailto:ben@localhost:3001">ben@localhost:3001</a>.
+          BadSEO is a collection of deliberately broken pages used to test the
+          seotracker site-audit crawler. Every page exists to trigger a specific
+          audit finding. It has no accounts, no forms, no purchases and no
+          user-submitted content, and nothing on it is intended for a human
+          audience beyond the person testing the crawler.
         </p>
 
-        <h2>Plausible Analytics</h2>
+        <h2>What it collects</h2>
         <p>
-          We use Plausible Analytics on every page to understand aggregate
-          traffic and which technical SEO examples people use. Plausible does
-          not set cookies or create a persistent identifier for you. It provides
-          aggregate measurements such as page views, referring sites, browser
-          and device categories, and country-level location.
+          Nothing. The site runs no analytics, loads no third-party scripts, and
+          sets no cookies. It stores nothing in your browser and sends nothing
+          anywhere. Earlier versions of this page described an analytics stack
+          and a consent banner; both were removed, and this page was rewritten
+          rather than left describing software that is no longer here.
         </p>
+
+        <h2>Who runs it</h2>
         <p>
-          Plausible is provided by Plausible Analytics OÜ. Learn more in the{" "}
-          <a href="https://plausible.io/data-policy">
-            Plausible Analytics data policy
+          Whoever started it. BadSEO is part of the seotracker repository and is
+          normally run on a developer&apos;s own machine alongside the audit
+          harness. If you are reading this on someone else&apos;s deployment,
+          the host of that deployment receives ordinary request information such
+          as your address and the page you asked for, because that is how the
+          web works, and this project has no say in what they keep.
+        </p>
+
+        <h2>Questions</h2>
+        <p>
+          Open an issue on the{" "}
+          <a href="https://github.com/ucsahinn/seotracker">
+            seotracker repository
           </a>
           .
-        </p>
-
-        <h2>Google Analytics</h2>
-        <p>
-          Separately, with your permission, we use Google Analytics 4 to
-          understand traffic in the analytics product many seotracker users use.
-          The Google tag does not load until you select <strong>Accept</strong>
-          in the analytics banner.
-        </p>
-        <p>
-          Google Analytics may process the page address and title, referring
-          page, interactions such as page views, scrolls, and outbound clicks,
-          browser and device information, approximate location derived from your
-          IP address, and randomly generated identifiers. It may set first-party
-          cookies including <code>_ga</code> and{" "}
-          <code>_ga_&lt;container-id&gt;</code> to distinguish visitors and
-          sessions.
-        </p>
-        <p>
-          If you reject analytics, no Google Analytics request is made. Your
-          choice is stored in your browser&apos;s local storage so the site can
-          remember it. You can change your choice at any time using{" "}
-          <strong>Cookie settings</strong> in the footer. Rejecting after a
-          previous acceptance disables analytics and removes accessible Google
-          Analytics cookies from this site. This choice controls Google
-          Analytics; the cookieless Plausible measurement described above
-          remains active.
-        </p>
-        <p>
-          Learn more about{" "}
-          <a href="https://policies.google.com/technologies/partner-sites">
-            how Google uses information from sites that use its services
-          </a>{" "}
-          and{" "}
-          <a href="https://policies.google.com/privacy">
-            Google&apos;s privacy practices
-          </a>
-          .
-        </p>
-
-        <h2>Cloudflare</h2>
-        <p>
-          Cloudflare hosts, delivers, and protects badseo.dev. It receives
-          ordinary request information such as your IP address, request headers,
-          requested URL, and time of access to provide the site, prevent abuse,
-          and diagnose failures. We do not create a separate visitor access-log
-          database. Learn more in{" "}
-          <a href="https://www.cloudflare.com/privacypolicy/">
-            Cloudflare&apos;s privacy policy
-          </a>
-          .
-        </p>
-
-        <h2>International processing and your rights</h2>
-        <p>
-          Google, Plausible, and Cloudflare may process information in the
-          United States, the European Economic Area, and other countries.
-          Depending on where you live, you may have rights to ask about, access,
-          correct, delete, restrict, or object to certain processing of your
-          information. Contact us to make a request. You may also complain to
-          the privacy or data-protection authority where you live.
-        </p>
-
-        <h2>Changes</h2>
-        <p>
-          We will update the date above when this policy changes materially.
         </p>
       </main>
     </SiteLayout>

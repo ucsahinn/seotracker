@@ -4,7 +4,6 @@ import {
   Outlet,
   Scripts,
 } from "@tanstack/react-router";
-import { PLAUSIBLE_INIT_SCRIPT, PLAUSIBLE_SCRIPT_SRC } from "../plausible";
 
 export const Route = createRootRoute({
   head: () => ({
@@ -28,10 +27,6 @@ export const Route = createRootRoute({
       },
       { rel: "stylesheet", href: "/styles.css" },
     ],
-    scripts: [
-      { async: true, src: PLAUSIBLE_SCRIPT_SRC },
-      { defer: true, src: "/analytics.js" },
-    ],
   }),
   component: RootComponent,
 });
@@ -41,7 +36,6 @@ function RootComponent() {
     <html lang="en">
       <head>
         <HeadContent />
-        <script dangerouslySetInnerHTML={{ __html: PLAUSIBLE_INIT_SCRIPT }} />
       </head>
       <body>
         <Outlet />
