@@ -10,9 +10,10 @@ data, or sensitive paths.
 
 ## Open
 
+- [ ] `2026-09-20T13:10:00Z` — `claude` — `analyzeHtml` opens an `<h1>` accumulator only when none is open and closes it on any `</h1>`, so `<h1>One<h1>Two</h1>` yields one fused heading `"OneTwo"` where a browser and Google see two. `h1Count` is then 1, `multiple-h1` never fires, and text after a nested `</h1>` is dropped. The cheerio reference in `page-analyzer.test.ts` has the same tolerance (both sit on non-tree-correcting htmlparser2), so the parity suite cannot see it. Fixing it means flushing the accumulator on any heading start _and_ teaching the reference the same rule — worth doing with a tree-correcting reference rather than by hand.
+
 - [ ] `2026-09-03T00:00:00Z` — `claude` — `pnpm ci:check` does not run `pnpm build`, so a route file that pulls `cloudflare:workers` into the client bundle passes every check and still breaks the build (hit on the dynamic-reports branch). Add a build step to `ci:check`, or document that `pnpm build` must be run separately before opening a PR.
 - [ ] `2026-09-11T00:13:05Z` — `codex` — The web-content review skill points to the removed `src/server/features/onboarding/seotracker-fact-sheet.md`; the reference now lives at `src/server/features/sam/seotracker-fact-sheet.md`. Update the skill's pointer so content reviews reach the current fact sheet.
-
 
 - `2026-09-05T23:52:53Z` — `codex` — After `pnpm build` ran alongside an active Vite dev server, browser navigation failed and server functions returned undefined. The server logged `Cannot read properties of undefined (reading 'map')` in `runInRunnerObject` / `loadEntries`. Restarting Vite restored the same dashboard without code changes. Stop and restart the dev server around production builds before browser QA; consider documenting or isolating the shared build/runtime state.
 
