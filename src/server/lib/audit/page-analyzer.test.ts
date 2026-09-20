@@ -40,7 +40,7 @@ function analyzeHtmlWithCheerio(html: string, pageUrl: string): PageAnalysis {
     clone.find("img").each((_index, img) => {
       $(img).replaceWith($("<span>").text($(img).attr("alt") ?? ""));
     });
-    h1s.push(clone.text().trim());
+    h1s.push(clone.text().replace(/\s+/g, " ").trim());
   });
 
   const headingOrder: number[] = [];

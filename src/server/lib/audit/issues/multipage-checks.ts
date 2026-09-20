@@ -4,6 +4,7 @@
  * orphans) live in multipage.ts.
  */
 import type { DetectedIssue } from "@/server/lib/audit/issues/page-reporters";
+import { canonicalUrlKey } from "@/server/lib/audit/url-utils";
 import type { HreflangAlternate } from "@/server/lib/audit/types";
 import type { PageFetchClass } from "@/shared/audit-fetch-class";
 
@@ -22,6 +23,14 @@ export interface SlimPage {
   isIndexable: boolean;
   canonicalUrl: string | null;
   headerCanonicalUrl: string | null;
+  /**
+   * The robots directives as written. `isIndexable` alone cannot support a
+   * claim that a page is noindexed: `emptyPageResult` sets it false for
+   * every non-HTML 200 as well, so a canonical pointing at a PDF was being
+   * reported as pointing at a noindexed page.
+   */
+  robotsMeta: string | null;
+  xRobotsTag: string | null;
   hreflangAlternates: HreflangAlternate[];
 }
 
@@ -134,6 +143,20 @@ export function findCanonicalTargetProblems(
     const status = target.statusCode;
     const details = { canonicalUrl: canonical, statusCode: status };
 
+    /*
+     * `blocked` and `rate_limited` describe what happened to this crawler,
+     * not what is wrong with the site. The audit already reports those on
+     * the target itself; repeating them one hop away as a verdict about the
+     * canonical would light up a site behind a WAF with failures that do not
+     * exist. An unjudgeable target is skipped, exactly as an uncrawled one is.
+     */
+    if (
+      target.fetchClass === "blocked" ||
+      target.fetchClass === "rate_limited"
+    ) {
+      continue;
+    }
+
     if (status !== null && status >= 300 && status < 400) {
       issues.push({
         issueType: "canonical-to-redirect",
@@ -148,7 +171,13 @@ export function findCanonicalTargetProblems(
         pageUrl: page.url,
         details: { ...details, fetchClass: target.fetchClass },
       });
-    } else if (!target.isIndexable) {
+    } else if (
+      !target.isIndexable &&
+      (target.robotsMeta !== null || target.xRobotsTag !== null)
+    ) {
+      // The directive has to be there in writing. A page noindexed only by
+      // `<meta name="googlebot">` is missed, because that one is not stored;
+      // a missed finding beats a critical invented against a PDF.
       issues.push({
         issueType: "canonical-to-noindex",
         pageId: page.id,
@@ -184,14 +213,23 @@ export function findHreflangReturnTagProblems(
 
   for (const page of pages) {
     if (!isOkHtmlPage(page)) continue;
+    const selfKey = canonicalUrlKey(page.url);
 
     for (const alternate of page.hreflangAlternates) {
       if (alternate.href === page.url) continue;
       const target = byUrl.get(alternate.href);
       if (!target || !isOkHtmlPage(target)) continue;
 
+      /*
+       * The return tag is matched on a folded key, not byte-for-byte. An
+       * hreflang block is usually generated from a base-URL constant that is
+       * not the one the crawl started from, so `https://www.site.com/en/`
+       * and `https://site.com/en` name the same page and a strict compare
+       * called a perfectly reciprocal cluster broken.
+       */
       const returns = target.hreflangAlternates.some(
-        (back) => back.href === page.url,
+        (back) =>
+          back.href === page.url || canonicalUrlKey(back.href) === selfKey,
       );
       if (returns) continue;
 

@@ -29,6 +29,8 @@ function makeSlimPage(overrides: Partial<SlimPage>): SlimPage {
     isIndexable: true,
     canonicalUrl: null,
     headerCanonicalUrl: null,
+    robotsMeta: null,
+    xRobotsTag: null,
     hreflangAlternates: [],
     ...overrides,
   };
@@ -186,12 +188,45 @@ describe("findCanonicalTargetProblems", () => {
   it("flags a canonical that points at a noindexed page", () => {
     const issues = findCanonicalTargetProblems([
       makeSlimPage(source),
-      makeSlimPage({ url: "https://example.com/b", isIndexable: false }),
+      makeSlimPage({
+        url: "https://example.com/b",
+        isIndexable: false,
+        robotsMeta: "noindex",
+      }),
     ]);
 
     expect(issues.map((issue) => issue.issueType)).toEqual([
       "canonical-to-noindex",
     ]);
+  });
+
+  /*
+   * `emptyPageResult` stores every non-HTML 200 with `isIndexable: false`,
+   * so reading that field alone turned a canonical pointing at a PDF into a
+   * critical claim that the target was noindexed. The directive has to be
+   * there in writing.
+   */
+  it("says nothing when the target is merely not HTML", () => {
+    expect(
+      findCanonicalTargetProblems([
+        makeSlimPage(source),
+        makeSlimPage({ url: "https://example.com/b", isIndexable: false }),
+      ]),
+    ).toEqual([]);
+  });
+
+  // blocked and rate_limited describe the crawler's trip, not the site.
+  it("says nothing when the crawl could not judge the target", () => {
+    expect(
+      findCanonicalTargetProblems([
+        makeSlimPage(source),
+        makeSlimPage({
+          url: "https://example.com/b",
+          statusCode: 403,
+          fetchClass: "blocked",
+        }),
+      ]),
+    ).toEqual([]);
   });
 
   // A canonical to another site, or to a URL outside the crawl's scope, is

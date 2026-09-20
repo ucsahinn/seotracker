@@ -244,10 +244,10 @@ export const AUDIT_ISSUE_TYPES = {
       "Bu sayfa kendi başına sıralanacaksa canonical değerini kendisine çevirin. Aksi hâlde yapılacak bir şey yok.",
   },
   "canonical-to-broken": {
-    severity: "critical",
+    severity: "warning",
     title: "Canonical çalışmayan bir adresi gösteriyor",
     explanation:
-      "Sayfa asıl adres olarak taramada hata veren bir adresi bildiriyor (404, 5xx veya erişilemeyen bir adres). Google bu yönergeyi yok sayar ve asıl adresi kendi seçer; seçtiği adres sizin istediğiniz olmayabilir.",
+      "Sayfa asıl adres olarak taramada hata veren bir adresi bildiriyor (404 veya 5xx). rel=canonical bir yönerge değil, güçlü bir sinyaldir; gösterdiği adres yayında değilse Google bu sinyali kullanamaz ve asıl adresi kendi seçer. Sonuç, hiç canonical vermemişsiniz gibi olur.",
     howToFix:
       "Canonical değerini çalışan bir adrese çevirin ya da hedef adresi yeniden yayına alın. Hedefin gerçekten kaldırıldığı durumda canonical sayfanın kendisini göstermelidir.",
   },
@@ -255,7 +255,7 @@ export const AUDIT_ISSUE_TYPES = {
     severity: "warning",
     title: "Canonical bir yönlendirmeyi gösteriyor",
     explanation:
-      "Sayfa asıl adres olarak yönlendirme (3xx) dönen bir adresi bildiriyor. Google yönlendirmeyi izler, ama araya giren her adım sinyali zayıflatır ve iki adres arasında hangisinin dizine gireceği belirsizleşir.",
+      "Sayfa asıl adres olarak yönlendirme (3xx) dönen bir adresi bildiriyor. Google yönlendirmeyi izler; üstelik yönlendirmenin kendisi hedefin asıl adres olduğunu söyleyen ayrı bir sinyaldir. Yani bu sayfa, Google'a zaten asıl olmadığı bildirilmiş bir adresi asıl diye gösteriyor.",
     howToFix:
       "Canonical değerini yönlendirmenin ulaştığı son adrese çevirin; böylece bildirdiğiniz adres ile yayınlanan adres aynı olur.",
   },
@@ -263,17 +263,25 @@ export const AUDIT_ISSUE_TYPES = {
     severity: "critical",
     title: "Canonical noindex bir sayfayı gösteriyor",
     explanation:
-      'Sayfa asıl adres olarak noindex işaretli bir sayfayı bildiriyor. İki yönerge birbirini götürür: bu sayfa "beni değil onu dizine al" derken hedef sayfa "beni dizine alma" diyor. Sonuçta ikisi de dizinden düşebilir.',
+      "Sayfa asıl adres olarak noindex işaretli bir sayfayı bildiriyor. İkisi eşit ağırlıkta değil: noindex kesin bir yönergedir ve hedef sayfanın arama sonuçlarında hiç görünmemesini sağlar, rel=canonical ise yalnızca bir sinyaldir. Yani bu sayfa, Google'ın asla gösteremeyeceği bir adresi asıl adres olarak öneriyor. Google da canonical seçimi için noindex kullanılmamasını öneriyor.",
     howToFix:
       "Ya hedef sayfadaki noindex yönergesini kaldırın ya da bu sayfanın canonical değerini kendisine çevirin.",
   },
+  "sitemap-canonicalized-page": {
+    severity: "info",
+    title: "Site haritasındaki sayfa başka adrese canonical veriyor",
+    explanation:
+      "Sayfa site haritasında listelenmiş, ama kendi içinde asıl adres olarak başka bir adresi bildiriyor. Google site haritasındaki adresleri asıl adres önerisi sayar, dolayısıyla aynı sayfa için iki farklı öneri göndermiş oluyorsunuz. Google bu iki öneriden birini seçer; bilinçli yaptıysanız sorun değil.",
+    howToFix:
+      "Site haritası yalnızca asıl adresleri listelemelidir: bu adresi haritadan çıkarın ya da canonical değerini sayfanın kendisine çevirin.",
+  },
   "sitemap-noindex-page": {
-    severity: "warning",
+    severity: "info",
     title: "Site haritasındaki sayfa noindex",
     explanation:
-      'Sayfa site haritasında listelenmiş ama noindex işaretli. Site haritası "bunu tara ve dizine al" demek, noindex ise tam tersi. Çelişen bu iki sinyal tarama bütçesini boşa harcar.',
+      "Sayfa site haritasında listelenmiş ama noindex işaretli. Site haritası dizine almayı garanti etmez; adres keşfine yarar ve listelediği adresleri asıl adres olarak önerir. Yani burada gösterilmeyecek bir sayfayı öneriyorsunuz. Bu çoğu zaman geçicidir: bir sayfayı yeni noindex yaptıysanız Google yönergeyi görebilmek için sayfayı yine de taramalıdır.",
     howToFix:
-      "Sayfa dizine girecekse noindex yönergesini kaldırın. Girmeyecekse sayfayı site haritasından çıkarın.",
+      "Sayfa dizine girecekse noindex yönergesini kaldırın. Kalıcı olarak girmeyecekse, Google yönergeyi gördükten sonra sayfayı site haritasından çıkarın.",
   },
   "hreflang-missing-x-default": {
     severity: "info",

@@ -142,9 +142,14 @@ export function runPageReporters(page: CrawledPageResult): DetectedIssue[] {
   if (effectiveCanonical && effectiveCanonical !== page.url) {
     report("canonicalized-page", { canonicalUrl: effectiveCanonical });
   }
-  // Two directives pointing opposite ways. The sitemap says crawl and index
-  // this; the page says do not index it. Whichever one is wrong, the crawl
-  // budget spent reconciling them is wasted.
+  /* Two canonical suggestions for one page: Google treats a sitemap entry as
+     a suggestion that the listed URL is the canonical, and this page names a
+     different one. Google's own list of canonicalization mistakes has this
+     on it. Often deliberate, hence info. */
+  if (page.inSitemap && effectiveCanonical && effectiveCanonical !== page.url) {
+    report("sitemap-canonicalized-page", { canonicalUrl: effectiveCanonical });
+  }
+  // The sitemap suggests this URL; the page asks not to be indexed at all.
   if (page.inSitemap && !page.isIndexable) {
     report("sitemap-noindex-page", {
       robotsMeta: page.robotsMeta,
@@ -153,11 +158,17 @@ export function runPageReporters(page: CrawledPageResult): DetectedIssue[] {
   }
 
   // Internationalization
-  /* Only meaningful once the page actually declares alternates: a
-     single-language site has no x-default to be missing. Google matches the
-     value case-insensitively, so the comparison does too. */
+  /* Only meaningful once the page declares an alternate that is not itself.
+     A single self-referencing `<link rel="alternate" hreflang="tr">` is what
+     several popular plugins emit on a monolingual site: correct markup, no
+     cluster, and nothing for an x-default to fall back to. Keying off
+     "declares any alternate" flagged every page on those sites. Google
+     matches the value case-insensitively, so the comparison does too. */
+  const foreignAlternates = page.hreflangAlternates.filter(
+    (alternate) => alternate.href !== page.url,
+  );
   if (
-    page.hreflangAlternates.length > 0 &&
+    foreignAlternates.length > 0 &&
     !page.hreflangAlternates.some(
       (alternate) => alternate.hreflang.trim().toLowerCase() === "x-default",
     )

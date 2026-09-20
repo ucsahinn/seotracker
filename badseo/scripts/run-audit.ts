@@ -40,7 +40,16 @@ import type { Fixture, IssueId } from "../src/fixtures/types";
 
 const BASE = (process.argv[2] ?? "http://localhost:8787").replace(/\/$/, "");
 const MAX_PAGES = 200;
-const CRAWL_BUDGET_MS = 10 * 60_000;
+/*
+ * A ceiling, not a target: the loop ends when the frontier empties, so a
+ * healthy run still finishes in a couple of minutes. It has to be this high
+ * because the site deliberately serves two always-429 fixtures, and every
+ * 429 doubles the crawler's global request interval up to MAX_INTERVAL_MS
+ * (30s). Once backoff is deep, the remaining pages arrive one every half
+ * minute, and a budget sized for the happy path silently drops whatever the
+ * clock catches -- which is what an earlier 90s value did.
+ */
+const CRAWL_BUDGET_MS = 30 * 60_000;
 const CONCURRENCY = 10;
 
 interface CrawlLink {
@@ -245,6 +254,8 @@ function toSlim(page: CrawledPageResult): SlimPage {
     isIndexable: page.isIndexable,
     canonicalUrl: page.canonicalUrl,
     headerCanonicalUrl: page.headerCanonicalUrl,
+    robotsMeta: page.robotsMeta,
+    xRobotsTag: page.xRobotsTag,
     hreflangAlternates: page.hreflangAlternates,
   };
 }

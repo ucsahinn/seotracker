@@ -58,6 +58,8 @@ export async function runMultipageChecks(input: {
       isIndexable: auditPages.isIndexable,
       canonicalUrl: auditPages.canonicalUrl,
       headerCanonicalUrl: auditPages.headerCanonicalUrl,
+      robotsMeta: auditPages.robotsMeta,
+      xRobotsTag: auditPages.xRobotsTag,
       hreflangTagsJson: auditPages.hreflangTagsJson,
     })
     .from(auditPages)

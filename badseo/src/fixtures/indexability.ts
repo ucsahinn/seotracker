@@ -82,7 +82,7 @@ const canonicalized: Fixture = {
   summary: "Names the homepage as its canonical, so it defers indexing to it.",
   lesson:
     "A canonical that points at another URL tells search engines to index that page instead. Fine on purpose, and a quiet way to lose rankings by mistake.",
-  expectedIssues: ["canonicalized-page"],
+  expectedIssues: ["canonicalized-page", "sitemap-canonicalized-page"],
   handler: (ctx) =>
     htmlResponse(
       renderPage({
@@ -117,7 +117,11 @@ const canonicalConflict: Fixture = {
   summary: "The HTML canonical and the HTTP Link-header canonical disagree.",
   lesson:
     "When two canonical tags point at different URLs, search engines trust neither and pick their own. Declare the canonical in one place.",
-  expectedIssues: ["canonical-conflict", "canonicalized-page"],
+  expectedIssues: [
+    "canonical-conflict",
+    "canonicalized-page",
+    "sitemap-canonicalized-page",
+  ],
   handler: (ctx) =>
     htmlResponse(
       renderPage({
@@ -157,7 +161,11 @@ const canonicalToBroken: Fixture = {
   summary: "Names a URL that returns 404 as its canonical.",
   lesson:
     "A canonical to a dead URL is a vote for a page that no longer exists. Search engines discard the directive and pick a canonical themselves.",
-  expectedIssues: ["canonicalized-page", "canonical-to-broken"],
+  expectedIssues: [
+    "canonicalized-page",
+    "sitemap-canonicalized-page",
+    "canonical-to-broken",
+  ],
   handler: (ctx) =>
     htmlResponse(
       renderPage({
@@ -192,7 +200,11 @@ const canonicalToRedirect: Fixture = {
   summary: "Names a URL that 301-redirects somewhere else as its canonical.",
   lesson:
     "Google follows the redirect, but the URL you declared and the URL that gets served are not the same. Point the canonical at the final address.",
-  expectedIssues: ["canonicalized-page", "canonical-to-redirect"],
+  expectedIssues: [
+    "canonicalized-page",
+    "sitemap-canonicalized-page",
+    "canonical-to-redirect",
+  ],
   handler: (ctx) =>
     htmlResponse(
       renderPage({
@@ -227,7 +239,11 @@ const canonicalToNoindex: Fixture = {
   summary: "Names a page that carries a robots noindex tag as its canonical.",
   lesson:
     "One page says index that one instead; the other says do not index me. The two directives cancel, and both URLs can fall out of the index.",
-  expectedIssues: ["canonicalized-page", "canonical-to-noindex"],
+  expectedIssues: [
+    "canonicalized-page",
+    "sitemap-canonicalized-page",
+    "canonical-to-noindex",
+  ],
   handler: (ctx) =>
     htmlResponse(
       renderPage({

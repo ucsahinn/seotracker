@@ -35,6 +35,14 @@ const MAX_ANCHOR_CHARS = 200;
  */
 const MAX_EXTRACTED_LINKS = 1_000;
 const MAX_EXTRACTED_IMAGES = 1_000;
+/*
+ * Capped for the same reason as links and images, and one more: every
+ * unreciprocated alternate becomes its own issue row, so an uncapped list on
+ * a large multilingual crawl turns one misconfigured language switcher into
+ * tens of thousands of rows in a table the results page reads unbounded.
+ * A real hreflang cluster is a handful of locales.
+ */
+const MAX_EXTRACTED_HREFLANGS = 50;
 
 interface OpenAnchor {
   href: string;
@@ -109,9 +117,17 @@ export function analyzeHtml(
   };
 
   const handleLinkTag = (attribs: Record<string, string>) => {
-    if (attribs["rel"] === "canonical") {
+    // htmlparser2 lowercases attribute names, not values, so `rel="Canonical"`
+    // and `rel=" alternate"` are both real markup that a strict compare drops
+    // silently. `handleMetaTag` already folds its value for the same reason.
+    const rel = attribs["rel"]?.trim().toLowerCase();
+    if (rel === "canonical") {
       canonical ??= attribs["href"] ?? null;
-    } else if (attribs["rel"] === "alternate" && attribs["hreflang"]) {
+    } else if (
+      rel === "alternate" &&
+      attribs["hreflang"] &&
+      hreflangAlternates.length < MAX_EXTRACTED_HREFLANGS
+    ) {
       hreflangAlternates.push({
         hreflang: attribs["hreflang"],
         href: attribs["href"] ?? "",
@@ -179,7 +195,9 @@ export function analyzeHtml(
                wordmark logo in the <h1> is the commonest shape of this, and
                reading text nodes alone reported missing-h1 on a page whose
                h1 was right there in the markup. */
-            if (openH1) openH1.push(attribs["alt"] ?? "");
+            // Spaced, not concatenated: `<h1><img alt="Acme">Store</h1>` is
+            // two words to a reader and was one, "AcmeStore", to this.
+            if (openH1) openH1.push(` ${attribs["alt"] ?? ""} `);
             break;
           case "script":
             if (attribs["type"] === "application/ld+json") {
@@ -238,7 +256,7 @@ export function analyzeHtml(
         if (name === "body" && bodyDepth > 0) bodyDepth -= 1;
         if (name === "a") closeAnchor();
         if (name === "h1" && openH1) {
-          h1s.push(openH1.join("").trim());
+          h1s.push(openH1.join("").replace(/\s+/g, " ").trim());
           openH1 = null;
         }
       },
