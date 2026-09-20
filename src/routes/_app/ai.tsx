@@ -158,6 +158,16 @@ function AiPage() {
               <span>
                 Bu kurulumun MCP adresi:{" "}
                 <code className="font-mono text-base-content/80">{mcpUrl}</code>
+                . Bu adres kimlik doğrulaması istemez; makinenizdeki başka bir
+                sürecin araçları çalıştırmasını engellemek isterseniz{" "}
+                <code className="font-mono text-base-content/80">
+                  MCP_TOKEN
+                </code>{" "}
+                ayarlayın ve istemciye{" "}
+                <code className="font-mono text-base-content/80">
+                  Authorization: Bearer …
+                </code>{" "}
+                başlığını ekletin.
               </span>
               <CopyButton
                 value={mcpUrl}

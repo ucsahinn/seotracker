@@ -43,13 +43,36 @@ biriminde (`/app/.wrangler/instance-secret`) saklar. Siz bir şey yazmazsınız.
 
 Hepsi isteğe bağlıdır.
 
-| Değişken                                   | Ne için                                                                                                                                                                   |
-| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `PAGESPEED_API_KEY`                        | Denetimdeki hız ölçümü. Önerilir. Bkz. `PAGESPEED_API_KEY.md`                                                                                                             |
-| `PORT`                                     | Varsayılan `3001`                                                                                                                                                         |
-| `ALLOWED_HOST`                             | Ters vekil sunucu arkasındaysanız dışarıdan görünen tek konak adı                                                                                                         |
-| `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | OAuth istemcisini arayüz yerine dışarıdan vermek isterseniz. Ayarlar'a kaydedilen değer bunları geçersiz kılar                                                            |
-| `BETTER_AUTH_SECRET`                       | Token şifreleme anahtarını kendiniz yönetmek isterseniz; **en az 32 karakter**. Verdiğinizde kalıcı olarak saklayın: anahtar değişirse kayıtlı Google bağlantısı okunamaz |
+| Değişken                                   | Ne için                                                                                                                                                                                                            |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `PAGESPEED_API_KEY`                        | Denetimdeki hız ölçümü. Önerilir. Bkz. `PAGESPEED_API_KEY.md`                                                                                                                                                      |
+| `PORT`                                     | Varsayılan `3001`                                                                                                                                                                                                  |
+| `ALLOWED_HOST`                             | Ters vekil sunucu arkasındaysanız dışarıdan görünen tek konak adı                                                                                                                                                  |
+| `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | OAuth istemcisini arayüz yerine dışarıdan vermek isterseniz. Ayarlar'a kaydedilen değer bunları geçersiz kılar                                                                                                     |
+| `BETTER_AUTH_SECRET`                       | Token şifreleme anahtarını kendiniz yönetmek isterseniz; **en az 32 karakter**. Verdiğinizde kalıcı olarak saklayın: anahtar değişirse kayıtlı Google bağlantısı okunamaz                                          |
+| `MCP_TOKEN`                                | `/mcp` için paylaşılan sır. Boş bırakılırsa uçnokta kimlik doğrulaması istemez — 127.0.0.1'e bağlı tek kullanıcılı bir kurulumda doğrusu budur. Ayarlarsanız istemci `Authorization: Bearer <token>` göndermelidir |
+| `AUTH_MODE`                                | `local_noauth` (varsayılan) ya da `cloudflare_access`. İkincisi `TEAM_DOMAIN` + `POLICY_AUD` ister                                                                                                                 |
+
+### `/mcp` kimlik doğrulaması
+
+Uygulama 127.0.0.1'e bağlanır ve MCP işleyicisi tarayıcıdan gelen çapraz-site
+isteklerini reddeder, yani varsayılan kurulumda uçnoktaya dışarıdan erişilemez.
+Kapsamadığı durum, **aynı makinedeki başka bir süreç**: yan bir konteyner ya da
+birinin buraya yönlendirdiği bir ajan, altısı yazan ve biri Google kotası
+harcayan 28 aracı çalıştırabilir. Bunu kapatmak isterseniz:
+
+```sh
+# .env dosyanıza
+MCP_TOKEN=$(openssl rand -hex 32)
+```
+
+Sonra istemcinizi başlığı gönderecek şekilde güncelleyin; Claude Code için:
+
+```sh
+claude mcp add --transport http --scope user seotracker http://localhost:3001/mcp   --header "Authorization: Bearer <token>"
+```
+
+Token'ı ayarlayıp istemciyi güncellemezseniz bağlantı 401 döner.
 
 `.env` dosyasını değiştirdiğinizde konteyner yeniden **oluşturulmalıdır**. Düz
 `up -d` değişikliği uygulamaz:

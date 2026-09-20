@@ -15,6 +15,8 @@ import {
   type McpProps,
 } from "@/server/mcp/context";
 import { getPublicOrigin } from "@/server/mcp/public-origin";
+import { getOptionalEnvValue } from "@/server/lib/runtime-env";
+import { isMcpRequestAuthorized } from "@/server/mcp/token-auth";
 import { createMcpServer } from "@/server/mcp/server";
 
 // Mirrors the agents SDK's DEFAULT_CORS_OPTIONS so legacy responses carry the
@@ -144,6 +146,38 @@ function createRequestHandler(props: McpProps) {
 // Hosted credentials (OAuth grants and API keys) are user-scoped: the
 // organizationId they carry is only the fallback context for tools with no
 // project argument, so keep it while the membership holds, else rebind to the
+/**
+ * 401 when `MCP_TOKEN` is set and the request does not carry it. The decision
+ * itself is in `token-auth.ts`; this is the I/O and the response shape.
+ */
+async function mcpTokenRejection(request: Request): Promise<Response | null> {
+  const expected = await getOptionalEnvValue("MCP_TOKEN");
+  if (isMcpRequestAuthorized(request.headers.get("authorization"), expected)) {
+    return null;
+  }
+
+  return withMcpCors(
+    new Response(
+      JSON.stringify({
+        jsonrpc: "2.0",
+        error: {
+          code: -32001,
+          message:
+            "Unauthorized. This server has MCP_TOKEN set; send it as `Authorization: Bearer <token>`.",
+        },
+        id: null,
+      }),
+      {
+        status: 401,
+        headers: {
+          "content-type": "application/json",
+          "www-authenticate": 'Bearer realm="seotracker"',
+        },
+      },
+    ),
+  );
+}
+
 export async function handleSelfHostedMcpRequest(
   request: Request,
   authMode: "cloudflare_access" | "local_noauth",
@@ -154,6 +188,9 @@ export async function handleSelfHostedMcpRequest(
   if (request.method === "OPTIONS") {
     return new Response(null, { headers: MCP_CORS_HEADERS });
   }
+
+  const unauthorized = await mcpTokenRejection(request);
+  if (unauthorized) return unauthorized;
 
   const identity =
     authMode === "local_noauth"

@@ -36,6 +36,10 @@ services:
       # Google PageSpeed Insights, for the Lighthouse phase of a site audit.
       # Optional: without it the API answers on a much smaller keyless quota.
       - PAGESPEED_API_KEY=${PAGESPEED_API_KEY:-}
+      # Optional shared secret for the /mcp endpoint. Unset by default, which
+      # is right for a container on 127.0.0.1 with one user. Set it when
+      # another process on this machine should not be able to drive the tools.
+      - MCP_TOKEN=${MCP_TOKEN:-}
       - VITE_SHOW_DEVTOOLS=false
     ports:
       - "127.0.0.1:${PORT:-3001}:${PORT:-3001}"
