@@ -1,9 +1,10 @@
 /**
- * Pure cross-page checks (no database access): duplicate grouping and
- * redirect chain/loop detection. The D1-backed checks (broken links,
+ * Pure cross-page checks (no database access): duplicate grouping, redirect
+ * chain/loop detection, canonical targets and hreflang return tags. The D1-backed checks (broken links,
  * orphans) live in multipage.ts.
  */
 import type { DetectedIssue } from "@/server/lib/audit/issues/page-reporters";
+import type { HreflangAlternate } from "@/server/lib/audit/types";
 import type { PageFetchClass } from "@/shared/audit-fetch-class";
 
 const DUPLICATE_GROUP_SAMPLE = 3;
@@ -21,6 +22,7 @@ export interface SlimPage {
   isIndexable: boolean;
   canonicalUrl: string | null;
   headerCanonicalUrl: string | null;
+  hreflangAlternates: HreflangAlternate[];
 }
 
 function isOkHtmlPage(page: SlimPage): boolean {
@@ -96,6 +98,118 @@ export function findDuplicates(pages: SlimPage[]): DetectedIssue[] {
     groupBy((page) => (page.wordCount > 0 ? page.contentHash : null)),
     "duplicate-content",
   );
+  return issues;
+}
+
+/**
+ * Where each page's declared canonical actually leads.
+ *
+ * A canonical is a vote, and the crawl already knows whether the URL it votes
+ * for works. Three ways that vote is wasted, in descending damage:
+ *
+ * - it points at a page the crawl could not fetch, so Google discards the
+ *   directive and picks a canonical itself;
+ * - it points at a noindexed page, so the two directives cancel and both
+ *   URLs can fall out of the index;
+ * - it points at a redirect, which Google follows but which leaves the
+ *   declared URL and the served URL disagreeing.
+ *
+ * Only pages the crawl actually visited can be judged. A canonical to an
+ * off-site or out-of-scope URL is silently skipped rather than guessed at.
+ */
+export function findCanonicalTargetProblems(
+  pages: SlimPage[],
+): DetectedIssue[] {
+  const byUrl = new Map(pages.map((page) => [page.url, page]));
+  const issues: DetectedIssue[] = [];
+
+  for (const page of pages) {
+    if (!isOkHtmlPage(page)) continue;
+    const canonical = page.canonicalUrl ?? page.headerCanonicalUrl;
+    if (!canonical || canonical === page.url) continue;
+
+    const target = byUrl.get(canonical);
+    if (!target) continue;
+
+    const status = target.statusCode;
+    const details = { canonicalUrl: canonical, statusCode: status };
+
+    if (status !== null && status >= 300 && status < 400) {
+      issues.push({
+        issueType: "canonical-to-redirect",
+        pageId: page.id,
+        pageUrl: page.url,
+        details: { ...details, redirectsTo: target.redirectUrl },
+      });
+    } else if (!isOkHtmlPage(target)) {
+      issues.push({
+        issueType: "canonical-to-broken",
+        pageId: page.id,
+        pageUrl: page.url,
+        details: { ...details, fetchClass: target.fetchClass },
+      });
+    } else if (!target.isIndexable) {
+      issues.push({
+        issueType: "canonical-to-noindex",
+        pageId: page.id,
+        pageUrl: page.url,
+        details,
+      });
+    }
+  }
+
+  return issues;
+}
+
+/**
+ * hreflang return tags.
+ *
+ * An hreflang set is a claim about a group of pages, and it is only valid if
+ * every page in the group makes it. When A says "the German version is B" but
+ * B never points back at A, Google discards the pairing: neither page gets
+ * the alternate treated as an alternate, and the cluster silently does
+ * nothing. This is the single most common hreflang mistake, and it is
+ * invisible in the source of either page on its own -- A looks complete, B
+ * looks complete, only the pair is broken.
+ *
+ * Only alternates the crawl actually visited can be judged. An alternate on
+ * another domain -- the normal shape of a country-domain setup -- is out of
+ * scope and is skipped rather than reported as missing.
+ */
+export function findHreflangReturnTagProblems(
+  pages: SlimPage[],
+): DetectedIssue[] {
+  const byUrl = new Map(pages.map((page) => [page.url, page]));
+  const issues: DetectedIssue[] = [];
+
+  for (const page of pages) {
+    if (!isOkHtmlPage(page)) continue;
+
+    for (const alternate of page.hreflangAlternates) {
+      if (alternate.href === page.url) continue;
+      const target = byUrl.get(alternate.href);
+      if (!target || !isOkHtmlPage(target)) continue;
+
+      const returns = target.hreflangAlternates.some(
+        (back) => back.href === page.url,
+      );
+      if (returns) continue;
+
+      issues.push({
+        issueType: "hreflang-no-return-tag",
+        pageId: page.id,
+        pageUrl: page.url,
+        // One issue per unreciprocated alternate, so a page declaring six
+        // languages can report the two that are actually broken.
+        dedupeKey: alternate.href,
+        details: {
+          alternateUrl: alternate.href,
+          hreflang: alternate.hreflang,
+        },
+      });
+    }
+  }
+
   return issues;
 }
 

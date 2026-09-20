@@ -12,7 +12,7 @@
  */
 import { Parser } from "htmlparser2";
 import { normalizeUrl, isSameOrigin } from "./url-utils";
-import type { PageAnalysis, PageLink } from "./types";
+import type { HreflangAlternate, PageAnalysis, PageLink } from "./types";
 
 const SKIPPED_LINK_PROTOCOLS = /^(javascript:|mailto:|tel:|#)/;
 /** Subtrees whose text is not visible content. */
@@ -68,7 +68,7 @@ export function analyzeHtml(
   let ogDescription: string | null = null;
   let ogImage: string | null = null;
   let hasStructuredData = false;
-  const hreflangTags: string[] = [];
+  const hreflangAlternates: HreflangAlternate[] = [];
 
   const h1s: string[] = [];
   const headingOrder: number[] = [];
@@ -112,7 +112,10 @@ export function analyzeHtml(
     if (attribs["rel"] === "canonical") {
       canonical ??= attribs["href"] ?? null;
     } else if (attribs["rel"] === "alternate" && attribs["hreflang"]) {
-      hreflangTags.push(attribs["hreflang"]);
+      hreflangAlternates.push({
+        hreflang: attribs["hreflang"],
+        href: attribs["href"] ?? "",
+      });
     }
   };
 
@@ -172,6 +175,11 @@ export function analyzeHtml(
                 alt: "alt" in attribs ? attribs["alt"] : null,
               });
             }
+            /* An image inside a heading carries the heading's words. A
+               wordmark logo in the <h1> is the commonest shape of this, and
+               reading text nodes alone reported missing-h1 on a page whose
+               h1 was right there in the markup. */
+            if (openH1) openH1.push(attribs["alt"] ?? "");
             break;
           case "script":
             if (attribs["type"] === "application/ld+json") {
@@ -265,6 +273,6 @@ export function analyzeHtml(
     images,
     links: Array.from(linksByTarget.values()),
     hasStructuredData,
-    hreflangTags,
+    hreflangAlternates,
   };
 }

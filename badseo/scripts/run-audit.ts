@@ -25,7 +25,9 @@ import {
 } from "../../src/server/lib/audit/url-utils";
 import { runPageReporters } from "../../src/server/lib/audit/issues/page-reporters";
 import {
+  findCanonicalTargetProblems,
   findDuplicates,
+  findHreflangReturnTagProblems,
   findRedirectChainsAndLoops,
   type SlimPage,
 } from "../../src/server/lib/audit/issues/multipage-checks";
@@ -38,6 +40,7 @@ import type { Fixture, IssueId } from "../src/fixtures/types";
 
 const BASE = (process.argv[2] ?? "http://localhost:8787").replace(/\/$/, "");
 const MAX_PAGES = 200;
+const CRAWL_BUDGET_MS = 10 * 60_000;
 const CONCURRENCY = 10;
 
 interface CrawlLink {
@@ -96,8 +99,13 @@ async function crawl(origin: string): Promise<{
 
   const pages: CrawledPageResult[] = [];
   const links: CrawlLink[] = [];
-  // One per crawl, as the production crawl chunk does.
-  const throttle = createCrawlThrottle(Date.now() + 90_000);
+  let dropped = 0;
+  /*
+   * Production crawls a chunk at a time and carries its frontier to the next
+   * chunk, so 90 seconds is a chunk's budget. The harness has one pass and
+   * has to reach every fixture in it, so the budget is the whole site's.
+   */
+  const throttle = createCrawlThrottle(Date.now() + CRAWL_BUDGET_MS);
 
   const enqueue = (url: string, depth: number | null) => {
     const n = normalizeUrl(url);
@@ -135,7 +143,13 @@ async function crawl(origin: string): Promise<{
 
     for (let i = 0; i < crawled.length; i++) {
       const page = crawled[i];
-      if (!page) continue;
+      if (!page) {
+        // The budget ran out mid-batch, or the fetch failed outright. Either
+        // way this page and anything only linked from it are now missing, so
+        // the crawl is not complete however empty the queues end up.
+        dropped += 1;
+        continue;
+      }
       const depth = batch[i].depth;
       pages.push(page);
 
@@ -154,7 +168,10 @@ async function crawl(origin: string): Promise<{
   }
 
   const completed =
-    !throttle.stopped && linkQueue.length === 0 && sitemapQueue.length === 0;
+    !throttle.stopped &&
+    dropped === 0 &&
+    linkQueue.length === 0 &&
+    sitemapQueue.length === 0;
   return { pages, links, completed };
 }
 
@@ -228,6 +245,7 @@ function toSlim(page: CrawledPageResult): SlimPage {
     isIndexable: page.isIndexable,
     canonicalUrl: page.canonicalUrl,
     headerCanonicalUrl: page.headerCanonicalUrl,
+    hreflangAlternates: page.hreflangAlternates,
   };
 }
 
@@ -268,6 +286,8 @@ async function main() {
   const slim = pages.map(toSlim);
   detected.push(...findDuplicates(slim));
   detected.push(...findRedirectChainsAndLoops(slim));
+  detected.push(...findCanonicalTargetProblems(slim));
+  detected.push(...findHreflangReturnTagProblems(slim));
   detected.push(...findBrokenInternalLinks(pages, links));
   if (completed) detected.push(...findOrphanPages(pages, links, startUrl));
 

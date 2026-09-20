@@ -239,7 +239,9 @@ describe("crawlPage", () => {
         },
       ],
       hasStructuredData: true,
-      hreflangTags: ["en"],
+      // The href is resolved against the page, like the canonical is: a
+      // return-tag check compares absolute URLs.
+      hreflangAlternates: [{ hreflang: "en", href: "https://example.com/en" }],
       isIndexable: false,
       crawlDepth: 2,
       inSitemap: true,

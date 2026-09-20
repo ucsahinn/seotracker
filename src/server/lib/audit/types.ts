@@ -45,6 +45,12 @@ export function parseAuditConfig(configRaw: string | null): AuditConfig | null {
 }
 
 /** One outgoing link edge, deduped by target URL within a page. */
+/** One `<link rel="alternate" hreflang="..">`, with its href resolved. */
+export interface HreflangAlternate {
+  hreflang: string;
+  href: string;
+}
+
 export interface PageLink {
   targetUrl: string;
   anchor: string | null;
@@ -71,6 +77,10 @@ export interface PageAnalysis {
   ogImage: string | null;
 
   // Headings
+  /**
+   * Each <h1>'s text, with any image's alt text folded in at the point the
+   * image sits. A heading that is a wordmark image still has words.
+   */
   h1s: string[];
   headingOrder: number[];
 
@@ -88,7 +98,12 @@ export interface PageAnalysis {
   hasStructuredData: boolean;
 
   // Hreflang
-  hreflangTags: string[];
+  /**
+   * The alternates this page declares, href and all. The href is needed as
+   * well as the language code, because whether a pairing is reciprocated is
+   * a question about URLs.
+   */
+  hreflangAlternates: HreflangAlternate[];
 }
 
 /** Lighthouse result for a single URL+strategy. */
@@ -163,7 +178,7 @@ export interface CrawledPageResult {
   images: Array<{ src: string | null; alt: string | null }>;
   links: PageLink[];
   hasStructuredData: boolean;
-  hreflangTags: string[];
+  hreflangAlternates: HreflangAlternate[];
   isIndexable: boolean;
   responseTimeMs: number;
   /** null = not reached via links (e.g. sitemap-seeded). */

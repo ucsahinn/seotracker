@@ -97,7 +97,13 @@ export const auditPages = sqliteTable(
     hasStructuredData: integer("has_structured_data", { mode: "boolean" })
       .notNull()
       .default(false),
-    // Hreflang
+    /**
+     * The page's `<link rel="alternate" hreflang>` set, as
+     * `[{ hreflang, href }]`. The column name predates the href: it held
+     * bare language codes until the return-tag check needed to know which
+     * URL each one pointed at. Rows written before that still hold the old
+     * shape, which the reader in `issues/multipage.ts` tolerates.
+     */
     hreflangTagsJson: text("hreflang_tags_json"),
     // Indexability
     isIndexable: integer("is_indexable", { mode: "boolean" })

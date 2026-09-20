@@ -243,6 +243,54 @@ export const AUDIT_ISSUE_TYPES = {
     howToFix:
       "Bu sayfa kendi başına sıralanacaksa canonical değerini kendisine çevirin. Aksi hâlde yapılacak bir şey yok.",
   },
+  "canonical-to-broken": {
+    severity: "critical",
+    title: "Canonical çalışmayan bir adresi gösteriyor",
+    explanation:
+      "Sayfa asıl adres olarak taramada hata veren bir adresi bildiriyor (404, 5xx veya erişilemeyen bir adres). Google bu yönergeyi yok sayar ve asıl adresi kendi seçer; seçtiği adres sizin istediğiniz olmayabilir.",
+    howToFix:
+      "Canonical değerini çalışan bir adrese çevirin ya da hedef adresi yeniden yayına alın. Hedefin gerçekten kaldırıldığı durumda canonical sayfanın kendisini göstermelidir.",
+  },
+  "canonical-to-redirect": {
+    severity: "warning",
+    title: "Canonical bir yönlendirmeyi gösteriyor",
+    explanation:
+      "Sayfa asıl adres olarak yönlendirme (3xx) dönen bir adresi bildiriyor. Google yönlendirmeyi izler, ama araya giren her adım sinyali zayıflatır ve iki adres arasında hangisinin dizine gireceği belirsizleşir.",
+    howToFix:
+      "Canonical değerini yönlendirmenin ulaştığı son adrese çevirin; böylece bildirdiğiniz adres ile yayınlanan adres aynı olur.",
+  },
+  "canonical-to-noindex": {
+    severity: "critical",
+    title: "Canonical noindex bir sayfayı gösteriyor",
+    explanation:
+      'Sayfa asıl adres olarak noindex işaretli bir sayfayı bildiriyor. İki yönerge birbirini götürür: bu sayfa "beni değil onu dizine al" derken hedef sayfa "beni dizine alma" diyor. Sonuçta ikisi de dizinden düşebilir.',
+    howToFix:
+      "Ya hedef sayfadaki noindex yönergesini kaldırın ya da bu sayfanın canonical değerini kendisine çevirin.",
+  },
+  "sitemap-noindex-page": {
+    severity: "warning",
+    title: "Site haritasındaki sayfa noindex",
+    explanation:
+      'Sayfa site haritasında listelenmiş ama noindex işaretli. Site haritası "bunu tara ve dizine al" demek, noindex ise tam tersi. Çelişen bu iki sinyal tarama bütçesini boşa harcar.',
+    howToFix:
+      "Sayfa dizine girecekse noindex yönergesini kaldırın. Girmeyecekse sayfayı site haritasından çıkarın.",
+  },
+  "hreflang-missing-x-default": {
+    severity: "info",
+    title: "hreflang kümesinde x-default yok",
+    explanation:
+      "Sayfa hreflang ile dil sürümlerini bildiriyor ama bir x-default sürümü belirtmiyor. x-default, listelenen dillerin hiçbirine uymayan kullanıcıya hangi sürümün gösterileceğini söyler; yoksa Google seçimi kendi yapar.",
+    howToFix:
+      'hreflang kümesine <link rel="alternate" hreflang="x-default" href="..."> ekleyin; genellikle dil seçme sayfası ya da varsayılan pazarın sürümü gösterilir.',
+  },
+  "hreflang-no-return-tag": {
+    severity: "warning",
+    title: "hreflang karşılığı yok",
+    explanation:
+      "Sayfa başka bir adresi dil alternatifi olarak bildiriyor, ama o adres bu sayfayı geri bildirmiyor. hreflang çift taraflı çalışır: karşılığı olmayan bir bildirim yok sayılır, yani iki sayfa da bu etiketten hiçbir fayda görmez.",
+    howToFix:
+      "Hedef sayfaya bu sayfayı gösteren bir hreflang bağlantısı ekleyin. Kümedeki her sayfa, kümedeki tüm sayfaları (kendisi dahil) listelemelidir.",
+  },
   "deep-page": {
     severity: "info",
     title: "Sayfa site yapısında çok derinde",

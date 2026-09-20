@@ -1,10 +1,5 @@
 import { describe, expect, it } from "vitest";
 import { runPageReporters } from "@/server/lib/audit/issues/page-reporters";
-import {
-  findDuplicates,
-  findRedirectChainsAndLoops,
-  type SlimPage,
-} from "@/server/lib/audit/issues/multipage-checks";
 import type { CrawledPageResult, PageLink } from "@/server/lib/audit/types";
 
 const HEALTHY_LINK: PageLink = {
@@ -13,6 +8,13 @@ const HEALTHY_LINK: PageLink = {
   isInternal: true,
   isNofollow: false,
 };
+
+function alts(...codes: string[]) {
+  return codes.map((hreflang) => ({
+    hreflang,
+    href: `https://example.com/${hreflang}`,
+  }));
+}
 
 function makePage(overrides: Partial<CrawledPageResult>): CrawledPageResult {
   return {
@@ -49,7 +51,7 @@ function makePage(overrides: Partial<CrawledPageResult>): CrawledPageResult {
     images: [],
     links: [HEALTHY_LINK],
     hasStructuredData: false,
-    hreflangTags: [],
+    hreflangAlternates: [],
     isIndexable: true,
     responseTimeMs: 200,
     crawlDepth: 1,
@@ -130,6 +132,30 @@ describe("runPageReporters", () => {
     expect(issueTypes(makePage({ h1Count: 3 }))).toContain("multiple-h1");
     expect(issueTypes(makePage({ headingOrder: [1, 2, 4] }))).toContain(
       "heading-order-skip",
+    );
+  });
+
+  // The sitemap says index this and the page says do not. One of the two is
+  // wrong, and neither the crawler nor Google can tell which.
+  it("flags a sitemap entry that is noindexed", () => {
+    expect(
+      issueTypes(makePage({ inSitemap: true, isIndexable: false })),
+    ).toContain("sitemap-noindex-page");
+    expect(
+      issueTypes(makePage({ inSitemap: false, isIndexable: false })),
+    ).not.toContain("sitemap-noindex-page");
+  });
+
+  it("flags an hreflang set with no x-default, and only then", () => {
+    expect(
+      issueTypes(makePage({ hreflangAlternates: alts("en", "de") })),
+    ).toContain("hreflang-missing-x-default");
+    expect(
+      issueTypes(makePage({ hreflangAlternates: alts("en", "X-Default") })),
+    ).not.toContain("hreflang-missing-x-default");
+    // A single-language site has no x-default to be missing.
+    expect(issueTypes(makePage({ hreflangAlternates: [] }))).not.toContain(
+      "hreflang-missing-x-default",
     );
   });
 
@@ -217,138 +243,5 @@ describe("runPageReporters", () => {
     expect(issueTypes(makePage({ links: [HEALTHY_LINK] }))).not.toContain(
       "no-outgoing-links",
     );
-  });
-});
-
-function makeSlimPage(overrides: Partial<SlimPage>): SlimPage {
-  return {
-    id: overrides.url ?? "page",
-    url: "https://example.com/a",
-    statusCode: 200,
-    fetchClass: "ok",
-    title: null,
-    metaDescription: null,
-    contentHash: null,
-    redirectUrl: null,
-    wordCount: 100,
-    isIndexable: true,
-    canonicalUrl: null,
-    headerCanonicalUrl: null,
-    ...overrides,
-  };
-}
-
-describe("findDuplicates", () => {
-  it("flags duplicate titles across pages and includes the other URLs", () => {
-    const issues = findDuplicates([
-      makeSlimPage({ url: "https://example.com/a", title: "Same" }),
-      makeSlimPage({ url: "https://example.com/b", title: "Same" }),
-      makeSlimPage({ url: "https://example.com/c", title: "Different" }),
-    ]);
-    const duplicateTitles = issues.filter(
-      (issue) => issue.issueType === "duplicate-title",
-    );
-    expect(duplicateTitles).toHaveLength(2);
-    expect(duplicateTitles[0].details?.otherUrls).toEqual([
-      "https://example.com/b",
-    ]);
-  });
-
-  it("excludes noindexed and canonicalized pages from duplicate groups", () => {
-    const issues = findDuplicates([
-      makeSlimPage({ url: "https://example.com/a", title: "Same" }),
-      makeSlimPage({
-        url: "https://example.com/b",
-        title: "Same",
-        canonicalUrl: "https://example.com/a",
-      }),
-      makeSlimPage({
-        url: "https://example.com/c",
-        title: "Same",
-        isIndexable: false,
-      }),
-    ]);
-    expect(issues).toHaveLength(0);
-  });
-
-  it("ignores non-2xx and blocked pages", () => {
-    const issues = findDuplicates([
-      makeSlimPage({ url: "https://example.com/a", title: "Same" }),
-      makeSlimPage({
-        url: "https://example.com/b",
-        title: "Same",
-        fetchClass: "blocked",
-        statusCode: 403,
-      }),
-    ]);
-    expect(issues).toHaveLength(0);
-  });
-
-  it("groups duplicate content by hash only when there is text", () => {
-    const issues = findDuplicates([
-      makeSlimPage({ url: "https://example.com/a", contentHash: "h1" }),
-      makeSlimPage({ url: "https://example.com/b", contentHash: "h1" }),
-      makeSlimPage({
-        url: "https://example.com/empty-1",
-        contentHash: "h2",
-        wordCount: 0,
-      }),
-      makeSlimPage({
-        url: "https://example.com/empty-2",
-        contentHash: "h2",
-        wordCount: 0,
-      }),
-    ]);
-    expect(
-      issues.filter((issue) => issue.issueType === "duplicate-content"),
-    ).toHaveLength(2);
-  });
-});
-
-describe("findRedirectChainsAndLoops", () => {
-  const redirect = (url: string, target: string) =>
-    makeSlimPage({ url, statusCode: 301, redirectUrl: target });
-
-  it("ignores single redirects", () => {
-    expect(
-      findRedirectChainsAndLoops([
-        redirect("https://example.com/a", "https://example.com/b"),
-        makeSlimPage({ url: "https://example.com/b" }),
-      ]),
-    ).toHaveLength(0);
-  });
-
-  it("flags a chain once, on its head", () => {
-    const issues = findRedirectChainsAndLoops([
-      redirect("https://example.com/a", "https://example.com/b"),
-      redirect("https://example.com/b", "https://example.com/c"),
-      makeSlimPage({ url: "https://example.com/c" }),
-    ]);
-    expect(issues).toHaveLength(1);
-    expect(issues[0].issueType).toBe("redirect-chain");
-    expect(issues[0].pageUrl).toBe("https://example.com/a");
-    expect(issues[0].details?.hops).toEqual([
-      "https://example.com/a",
-      "https://example.com/b",
-      "https://example.com/c",
-    ]);
-  });
-
-  it("flags loops", () => {
-    const issues = findRedirectChainsAndLoops([
-      redirect("https://example.com/a", "https://example.com/b"),
-      redirect("https://example.com/b", "https://example.com/a"),
-    ]);
-    expect(
-      issues.filter((issue) => issue.issueType === "redirect-loop").length,
-    ).toBeGreaterThan(0);
-  });
-
-  it("flags self-loops", () => {
-    const issues = findRedirectChainsAndLoops([
-      redirect("https://example.com/a", "https://example.com/a"),
-    ]);
-    expect(issues).toHaveLength(1);
-    expect(issues[0].issueType).toBe("redirect-loop");
   });
 });

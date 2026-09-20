@@ -142,6 +142,30 @@ export function runPageReporters(page: CrawledPageResult): DetectedIssue[] {
   if (effectiveCanonical && effectiveCanonical !== page.url) {
     report("canonicalized-page", { canonicalUrl: effectiveCanonical });
   }
+  // Two directives pointing opposite ways. The sitemap says crawl and index
+  // this; the page says do not index it. Whichever one is wrong, the crawl
+  // budget spent reconciling them is wasted.
+  if (page.inSitemap && !page.isIndexable) {
+    report("sitemap-noindex-page", {
+      robotsMeta: page.robotsMeta,
+      xRobotsTag: page.xRobotsTag,
+    });
+  }
+
+  // Internationalization
+  /* Only meaningful once the page actually declares alternates: a
+     single-language site has no x-default to be missing. Google matches the
+     value case-insensitively, so the comparison does too. */
+  if (
+    page.hreflangAlternates.length > 0 &&
+    !page.hreflangAlternates.some(
+      (alternate) => alternate.hreflang.trim().toLowerCase() === "x-default",
+    )
+  ) {
+    report("hreflang-missing-x-default", {
+      hreflangs: page.hreflangAlternates.map((a) => a.hreflang),
+    });
+  }
 
   // Content quality
   if (page.isIndexable && page.wordCount < THIN_CONTENT_WORDS) {

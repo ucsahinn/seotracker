@@ -27,9 +27,20 @@ function analyzeHtmlWithCheerio(html: string, pageUrl: string): PageAnalysis {
   const ogImage =
     $('meta[property="og:image"]').first().attr("content") ?? null;
 
+  /*
+   * The one place the streaming analyzer deliberately improves on the DOM
+   * implementation it replaced, so the reference has to be taught the same
+   * rule: an image inside a heading contributes its alt text. The original
+   * used a bare $(el).text(), which treats <h1><img alt="Acme"></h1> as an
+   * empty heading.
+   */
   const h1s: string[] = [];
-  $("h1").each((_, el) => {
-    h1s.push($(el).text().trim());
+  $("h1").each((_, heading) => {
+    const clone = $(heading).clone();
+    clone.find("img").each((_index, img) => {
+      $(img).replaceWith($("<span>").text($(img).attr("alt") ?? ""));
+    });
+    h1s.push(clone.text().trim());
   });
 
   const headingOrder: number[] = [];
@@ -80,10 +91,12 @@ function analyzeHtmlWithCheerio(html: string, pageUrl: string): PageAnalysis {
     hasStructuredData = true;
   });
 
-  const hreflangTags: string[] = [];
+  const hreflangAlternates: PageAnalysis["hreflangAlternates"] = [];
   $('link[rel="alternate"][hreflang]').each((_, el) => {
     const hreflang = $(el).attr("hreflang");
-    if (hreflang) hreflangTags.push(hreflang);
+    if (hreflang) {
+      hreflangAlternates.push({ hreflang, href: $(el).attr("href") ?? "" });
+    }
   });
 
   return {
@@ -106,7 +119,7 @@ function analyzeHtmlWithCheerio(html: string, pageUrl: string): PageAnalysis {
     images,
     links: Array.from(linksByTarget.values()),
     hasStructuredData,
-    hreflangTags,
+    hreflangAlternates,
   };
 }
 
@@ -192,6 +205,24 @@ describe("analyzeHtml parity with the DOM reference", () => {
       <body><h1>Caf&eacute; &quot;menu&quot;</h1>
       <p>1 &lt; 2 &amp;&amp; 3 &gt; 2</p>
       <a href="/x?a=1&amp;b=2">Query &amp; anchor</a></body></html>`);
+  });
+
+  /*
+   * Asserted directly, not just for parity: this is the one rule where the
+   * streaming analyzer improves on the DOM implementation, so "both agree"
+   * would not be evidence on its own. h1Count is derived from these strings,
+   * and the two shapes have to land on opposite sides of it -- a wordmark
+   * logo is a heading, an empty tag is not.
+   */
+  it("reads a heading's words from image alt text as well as text nodes", () => {
+    const analysis = analyzeHtml(
+      `<body><h1><img src="/logo.svg" alt="Acme"> Store</h1><h1></h1></body>`,
+      PAGE_URL,
+      200,
+      0,
+    );
+
+    expect(analysis.h1s).toEqual(["Acme Store", ""]);
   });
 
   it("matches heading order across nesting", () => {

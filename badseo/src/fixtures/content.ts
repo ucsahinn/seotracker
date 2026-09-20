@@ -4,8 +4,10 @@ import { article } from "./helpers";
 
 const CAT = "Content quality";
 
-// 9 — thin content (< 150 words). The whole document (chrome + panel + body)
-// stays under the threshold, so only thin-content fires.
+// 9 — thin content. The page renders without the test panel, per the rule in
+// lib.ts: the panel's own prose is ~45 words, and the threshold is 50, so a
+// page carrying it cannot be thin however empty its body is. This fixture was
+// written when the threshold was 150 and the panel still fitted under it.
 const thinContent: Fixture = {
   path: "/content/thin-content",
   category: CAT,
@@ -18,6 +20,7 @@ const thinContent: Fixture = {
     htmlResponse(
       renderPage({
         fixture: thinContent,
+        showPanel: false,
         title: "Thin content example",
         metaDescription:
           "A sparse page with almost no visible text, built to show how thin content reads to a crawler.",

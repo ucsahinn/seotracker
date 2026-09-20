@@ -44,7 +44,7 @@ function page(
     images: [],
     links: [],
     hasStructuredData: false,
-    hreflangTags: [],
+    hreflangAlternates: [],
     isIndexable: true,
     responseTimeMs,
     crawlDepth: 0,

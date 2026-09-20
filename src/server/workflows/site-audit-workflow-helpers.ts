@@ -212,6 +212,10 @@ export async function crawlPage(
       ogTitle: analysis.ogTitle,
       ogDescription: analysis.ogDescription,
       ogImage: analysis.ogImage,
+      /* Headings with words in them. An <h1></h1> is the same as no h1 and
+         must still report missing-h1 (badseo pins this), but an
+         <h1><img alt="Acme"></h1> does have words, and counting text nodes
+         alone used to report that page as having no h1 at all. */
       h1Count: analysis.h1s.filter((h) => h.length > 0).length,
       h2Count: headingCount(2),
       h3Count: headingCount(3),
@@ -234,7 +238,13 @@ export async function crawlPage(
       images: analysis.images,
       links: analysis.links,
       hasStructuredData: analysis.hasStructuredData,
-      hreflangTags: analysis.hreflangTags,
+      /* Resolved against the page, the same way the canonical is. A
+         return-tag check compares hrefs, and a relative href would never
+         match the absolute URL of the page it names. */
+      hreflangAlternates: analysis.hreflangAlternates.map((alternate) => ({
+        hreflang: alternate.hreflang,
+        href: normalizeUrl(alternate.href, url) ?? alternate.href,
+      })),
       isIndexable,
       responseTimeMs,
       crawlDepth,
@@ -338,7 +348,7 @@ function emptyPageResult(input: {
     images: [],
     links: [],
     hasStructuredData: false,
-    hreflangTags: [],
+    hreflangAlternates: [],
     isIndexable: false,
     responseTimeMs: input.responseTimeMs,
     crawlDepth: input.crawlDepth,
