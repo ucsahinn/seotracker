@@ -32,12 +32,16 @@ function SiteAuditPage() {
   const { auditId, tab } = Route.useSearch();
   const navigate = useNavigate({ from: Route.fullPath });
 
+  /*
+   * A pushed entry, not a replaced one. All three callers below are real
+   * navigations -- opening an audit, leaving it, switching tab -- and with
+   * `replace` the entire audit screen collapsed into a single history entry:
+   * a reader three tabs deep who pressed Back left the audit altogether
+   * instead of stepping back one tab.
+   */
   const setSearchParams = useCallback(
     (updates: Record<string, string | undefined>) => {
-      void navigate({
-        search: (prev) => ({ ...prev, ...updates }),
-        replace: true,
-      });
+      void navigate({ search: (prev) => ({ ...prev, ...updates }) });
     },
     [navigate],
   );

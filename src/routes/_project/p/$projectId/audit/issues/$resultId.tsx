@@ -27,11 +27,10 @@ function AuditIssuesPage() {
           search: auditId ? { auditId } : undefined,
         })
       }
+      // Pushed, so Back returns to the category the reader came from. The
+      // category tabs are navigation, not a transient filter.
       onCategoryChange={(next) =>
-        void navigate({
-          search: (prev) => ({ ...prev, category: next }),
-          replace: true,
-        })
+        void navigate({ search: (prev) => ({ ...prev, category: next }) })
       }
     />
   );
