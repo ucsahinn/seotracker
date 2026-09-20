@@ -154,26 +154,73 @@ describe("SearchOpportunityService", () => {
     });
     // A page with demand and no traffic is the opportunity, not a row to
     // bury. /no-analytics has the most impressions of the three candidates
-    // and no GA4 row, so it takes the top demand percentile and the neutral
-    // middle for business value: 0.5*1 + 0.3*0.5 + 0.2*0.5 = 75. That ties
-    // the GA4-matched /High-Value (0.5*0.5 + 0.3*1 + 0.2*1), and impressions
-    // break the tie. Under the old scoring it had no score at all and sorted
-    // last, which is the bug this pins.
+    // and no GA4 row, so it takes the top demand mid-rank and the neutral
+    // middle for business value: 0.5*0.8333 + 0.3*0.5 + 0.2*0.5 = 67. Under
+    // the old scoring it had no score at all and sorted last, which is the
+    // bug this pins.
     expect(result.rows[0]).toMatchObject({
       page: "https://example.com/no-analytics",
       joinStatus: "gsc_only",
       ga4: null,
-      score: 75,
-      scoreComponents: { demand: 1, businessValue: 0.5, reachability: 0.5 },
+      score: 67,
+      scoreComponents: {
+        demand: 0.8333,
+        businessValue: 0.5,
+        reachability: 0.5,
+      },
     });
     expect(result.rows[1]).toMatchObject({
       page: "https://EXAMPLE.com/High-Value/?ref=gsc",
       normalizedPage: "example.com/High-Value",
       joinStatus: "joined",
-      score: 75,
+      score: 64,
     });
     expect(result.scoring.businessValueMetric).toBe("sessionKeyEventRate");
     expect(result.warnings).toContain("source_time_zones_differ");
+  });
+
+  /*
+   * The inversion a floor-rank produced: a property whose key event fires on
+   * every session gives every matched page the same rate, so all of them
+   * ranked 0 for business value and sorted below the 0.5 handed to pages GA4
+   * never saw. Measuring a page's value must not cost it points.
+   */
+  it("does not rank matched pages below unmatched ones when their value ties", async () => {
+    mocks.getPerformance.mockResolvedValue({
+      siteUrl: "https://example.com/",
+      request: {},
+      rows: [
+        {
+          keys: ["https://example.com/other"],
+          clicks: 5,
+          impressions: 500,
+          ctr: 0.01,
+          position: 10,
+        },
+        {
+          keys: ["https://example.com/unmatched"],
+          clicks: 5,
+          impressions: 500,
+          ctr: 0.01,
+          position: 10,
+        },
+      ],
+    });
+    mocks.runGa4Report.mockResolvedValue({
+      ...ga4Result,
+      rows: [ga4Result.rows[1]],
+      rowCount: 1,
+      totalRowCount: 1,
+    });
+
+    const result = await SearchOpportunityService.getOpportunities({
+      projectId: "project_1",
+    });
+    const matched = result.rows.find((row) => row.joinStatus === "joined");
+    const unmatched = result.rows.find((row) => row.joinStatus === "gsc_only");
+
+    expect(matched?.scoreComponents?.businessValue).toBe(0.5);
+    expect(matched?.score).toBe(unmatched?.score);
   });
 
   it("uses engagement rate when all joined rows have zero key events", async () => {

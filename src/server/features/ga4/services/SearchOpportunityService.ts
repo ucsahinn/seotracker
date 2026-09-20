@@ -84,12 +84,30 @@ function numberField(
   return typeof value === "number" && Number.isFinite(value) ? value : 0;
 }
 
+/**
+ * Where each value sits in the set, as a mid-rank in [0, 1].
+ *
+ * Mid-rank rather than the floor of a tie block, for two reasons that both
+ * bite here. Search Console impression tails are dense with ties, and
+ * `lower / (n - 1)` gave every member of a tie the rank of its weakest
+ * member: [10, 10, 10, 10, 11] scored the first four at 0, losing them fifty
+ * points for being one impression short of the top.
+ *
+ * The second is the 0.5 a GA4-unmatched page is given for business value. A
+ * floor cannot straddle it: when every matched page ties -- which is what a
+ * property whose key event fires on every session looks like -- they all
+ * score 0 and sort *below* the pages with no measured value at all. A
+ * mid-rank makes 0.5 genuinely the middle, including for a lone value.
+ */
 function percentileRanks(values: number[]): number[] {
-  if (values.length === 0) return [];
-  if (values.length === 1) return [1];
   return values.map((value) => {
-    const lower = values.filter((candidate) => candidate < value).length;
-    return lower / (values.length - 1);
+    let lower = 0;
+    let equal = 0;
+    for (const candidate of values) {
+      if (candidate < value) lower += 1;
+      else if (candidate === value) equal += 1;
+    }
+    return (lower + equal / 2) / values.length;
   });
 }
 
