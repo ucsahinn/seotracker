@@ -92,7 +92,9 @@ describe("backfill", () => {
 
   // Search Console revises the most recent days as late data lands, and the
   // upsert makes re-reading a day free.
-  it("resumes one day before the last stored date", async () => {
+  // Search Console keeps revising the last few days, so the resume point is
+  // the whole revision window, not just the final day.
+  it("resumes a full lag window before the last stored date", async () => {
     mocks.getArchiveState.mockResolvedValue({
       projectId: "p1",
       earliestDate: "2026-05-01",
@@ -103,15 +105,16 @@ describe("backfill", () => {
 
     await GscHistoryService.backfill({ projectId: "p1", today: TODAY });
 
-    expect(requestAt(0).startDate).toBe("2026-06-19");
+    expect(requestAt(0).startDate).toBe("2026-06-17");
   });
 
   it("makes no request when the archive is already current", async () => {
     mocks.getArchiveState.mockResolvedValue({
       projectId: "p1",
       earliestDate: "2026-05-01",
-      // One day past the resume point, so there is nothing left to ask for.
-      lastDate: "2026-06-29",
+      // Past the resume point: the revision window this would re-fetch is
+      // already newer than the latest date Google has finalized.
+      lastDate: "2026-07-01",
       lastRunAt: null,
       lastError: null,
     });

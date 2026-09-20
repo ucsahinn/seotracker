@@ -53,6 +53,13 @@ function addDays(date: string, days: number): string {
   return isoDate(next);
 }
 
+/*
+ * `today` is a UTC date and Search Console's day rolls over on Pacific time,
+ * so for the seven or eight hours between the two midnights this reads one
+ * day ahead of Google's calendar. The lag absorbs it: three days back from a
+ * date that is at most one day optimistic is still inside the finalized
+ * window, and `resolveStart` re-fetches that whole window anyway.
+ */
 function latestAvailableDate(today: Date): string {
   const end = new Date(today);
   end.setUTCDate(end.getUTCDate() - DATA_LAG_DAYS);
@@ -63,16 +70,21 @@ function latestAvailableDate(today: Date): string {
  * Where this run should start.
  *
  * With nothing stored, reach back as far as Google will serve. With a partial
- * archive, resume one day *before* the last stored date: Search Console revises
- * the most recent days as late data arrives, and the upsert makes re-fetching
- * that day free.
+ * archive, resume `DATA_LAG_DAYS` *before* the last stored date, because that
+ * is the window Search Console is still revising as late data arrives.
+ *
+ * It used to resume one day before. Revisions land across the whole lag, not
+ * just the final day, so days two and three of the tail were written once
+ * from partial data and never touched again: the archive's most recent week
+ * permanently under-reported, which is precisely the week anyone looks at.
+ * The upsert makes re-fetching the window free.
  */
 function resolveStart(lastDate: string | null, today: Date): string {
   const floor = new Date(today);
   floor.setUTCDate(floor.getUTCDate() - MAX_HISTORY_DAYS);
   const earliest = isoDate(floor);
   if (!lastDate) return earliest;
-  const resume = addDays(lastDate, -1);
+  const resume = addDays(lastDate, -DATA_LAG_DAYS);
   return resume < earliest ? earliest : resume;
 }
 
