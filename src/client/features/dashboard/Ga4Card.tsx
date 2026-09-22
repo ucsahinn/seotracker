@@ -49,7 +49,7 @@ function SessionsTooltip({
 }) {
   if (!active || !payload?.length) return null;
   return (
-    <div className="rounded-md border border-base-300 bg-base-100 px-3 py-2 shadow-sm">
+    <div className="rounded-box border border-base-300 bg-base-100 px-3 py-2 shadow-sm">
       <p className="text-xs text-muted">{label ? formatTrendDay(label) : ""}</p>
       <p className="text-sm font-medium tabular-nums">
         {formatCount(payload[0].value)} sessions

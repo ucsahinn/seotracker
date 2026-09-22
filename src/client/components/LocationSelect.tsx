@@ -117,7 +117,7 @@ export function LocationSelect({
 
       {open ? (
         <div className="fixed z-30 mt-2 w-full max-w-56 rounded-box border border-base-300 bg-base-100 p-2 shadow-lg">
-          <label className="flex items-center gap-2 rounded-lg border border-base-300 px-3 py-2 focus-within:border-primary">
+          <label className="flex items-center gap-2 rounded-field border border-[var(--control-border)] px-3 py-2 focus-within:border-primary">
             <Search className="size-4 shrink-0 text-muted" />
             <input
               ref={inputRef}

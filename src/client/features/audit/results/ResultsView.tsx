@@ -157,7 +157,7 @@ function CrawlWarning({
   children: ReactNode;
 }) {
   return (
-    <div className="flex items-start gap-3 rounded-lg border border-warning/30 bg-warning/5 px-4 py-3 text-sm">
+    <div className="flex items-start gap-3 rounded-box border border-warning/30 bg-warning/5 px-4 py-3 text-sm">
       <ShieldAlert className="mt-0.5 size-4 shrink-0 text-warning" />
       <p>
         <span className="font-medium">{headline}</span>{" "}
@@ -311,11 +311,20 @@ function StatsStrip({
       valueClass: issues.length === 0 ? "text-success" : "",
       sub: issues.length > 0 && (
         <span className="flex items-center gap-2.5">
-          <SeverityCount count={severityCounts.critical} dotClass="bg-error" />
-          <SeverityCount count={severityCounts.warning} dotClass="bg-warning" />
+          <SeverityCount
+            count={severityCounts.critical}
+            dotClass="bg-error"
+            label="kritik"
+          />
+          <SeverityCount
+            count={severityCounts.warning}
+            dotClass="bg-warning"
+            label="uyarı"
+          />
           <SeverityCount
             count={severityCounts.info}
             dotClass="bg-base-content/30"
+            label="bilgi"
           />
         </span>
       ),
@@ -366,7 +375,7 @@ function StatsStrip({
 
   return (
     <div
-      className={`grid ${columnsClass} gap-px rounded-lg border border-base-300 bg-base-300/70 overflow-hidden`}
+      className={`grid ${columnsClass} gap-px rounded-box border border-base-300 bg-base-300/70 overflow-hidden`}
     >
       {items.map((item) => (
         <div key={item.label} className="bg-base-100 px-4 py-3">
@@ -387,18 +396,27 @@ function StatsStrip({
   );
 }
 
+/**
+ * A count with its severity said, not only coloured.
+ *
+ * Three dots and three numbers - "3 5 2" - carried the whole distinction in
+ * hue, so anyone who cannot separate red from amber read a row of unlabelled
+ * figures. The dot stays; the word is what makes it readable.
+ */
 function SeverityCount({
   count,
   dotClass,
+  label,
 }: {
   count: number;
   dotClass: string;
+  label: string;
 }) {
   if (count === 0) return null;
   return (
     <span className="flex items-center gap-1 tabular-nums">
-      <span className={`size-1.5 rounded-full ${dotClass}`} />
-      {count}
+      <span className={`size-1.5 rounded-full ${dotClass}`} aria-hidden />
+      {count} {label}
     </span>
   );
 }

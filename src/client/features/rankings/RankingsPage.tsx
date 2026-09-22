@@ -287,7 +287,7 @@ function QueryHistoryCard({
 }) {
   if (loading) {
     return (
-      <div className="flex items-center gap-2 rounded-lg border border-base-300 p-4 text-sm text-muted">
+      <div className="flex items-center gap-2 rounded-box border border-base-300 p-4 text-sm text-muted">
         <Loader2 className="size-4 animate-spin" />
         Geçmiş yükleniyor…
       </div>
@@ -296,7 +296,7 @@ function QueryHistoryCard({
 
   if (rows.length === 0) {
     return (
-      <div className="rounded-lg border border-base-300 p-4 text-sm text-muted">
+      <div className="rounded-box border border-base-300 p-4 text-sm text-muted">
         Bu sorgu için kayıtlı gün yok.
       </div>
     );
@@ -311,7 +311,7 @@ function QueryHistoryCard({
   const improved = delta > 0;
 
   return (
-    <div className="space-y-3 rounded-lg border border-base-300 bg-base-100 p-4">
+    <div className="space-y-3 rounded-box border border-base-300 bg-base-100 p-4">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <h2 className="text-sm font-semibold">{query}</h2>
         <span

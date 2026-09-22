@@ -65,7 +65,18 @@ export function GoogleServiceAccountSection() {
       setKeyJson("");
       setEditing(false);
       await invalidate();
-      toast.success("Servis hesabı silindi");
+      /*
+       * Not "revoked". Deleting the key here stops this install using it,
+       * but an access token already minted from it stays valid at Google
+       * for up to an hour and the token cache is per worker isolate, so
+       * clearing it does not reach every copy. If the key is compromised
+       * rather than merely unwanted, the only thing that actually revokes
+       * it is deleting it in Google Cloud - and the toast should not imply
+       * otherwise.
+       */
+      toast.success(
+        "Servis hesabı bu kurulumdan silindi. Anahtarı gerçekten iptal etmek için Google Cloud'dan da silin.",
+      );
     },
     onError: (error) => toast.error(getStandardErrorMessage(error)),
   });
