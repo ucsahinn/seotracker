@@ -107,6 +107,7 @@ export function getProjectNavGroups(projectId: string) {
         byPath("/p/$projectId/rankings"),
         byPath("/p/$projectId/opportunities"),
         byPath("/p/$projectId/saved"),
+        byPath("/p/$projectId/analytics"),
         byPath("/p/$projectId/audit"),
       ],
     },

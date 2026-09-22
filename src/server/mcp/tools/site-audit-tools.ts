@@ -54,14 +54,24 @@ async function latestAudit(projectId: string, auditId?: string) {
     : AuditRepository.getLatestAuditForProject(projectId);
 }
 
+/**
+ * The shape each tool declares differs, so the empty body is passed in.
+ *
+ * Returning one generic object here failed the SDK's own output validation
+ * and turned a clean empty state into "Output validation error: expected
+ * object, received undefined" - worse than the `isError` it replaced. Caught
+ * by calling the tools against a running install; nothing in the unit suite
+ * validates a tool response against its declared schema.
+ */
 function noAuditsYet(
   context: Parameters<typeof buildProjectMeta>[0],
   projectId: string,
+  structuredContent: Record<string, unknown>,
 ) {
   return mcpResponse({
     text: "No audits exist for this project yet. Start one with run_site_audit.",
     meta: buildProjectMeta(context, projectId, `/p/${projectId}/audit`),
-    structuredContent: { auditId: null, rows: [], totalCount: 0 },
+    structuredContent,
   });
 }
 
@@ -206,7 +216,11 @@ export const getAuditStatusTool = {
     // getStatus fetches (and self-heals) the audit row itself; only hit the
     // DB here when we need to default to the most recent audit.
     const audit = await latestAudit(args.projectId, args.auditId);
-    if (!audit) return noAuditsYet(context, args.projectId);
+    if (!audit) {
+      return noAuditsYet(context, args.projectId, {
+        status: { status: "none", pagesCrawled: 0, pagesTotal: 0 },
+      });
+    }
     const auditId = audit.id;
     const status = await AuditService.getStatus(auditId, args.projectId);
 
@@ -282,7 +296,9 @@ export const getAuditIssuesTool = {
   },
   handler: withMcpProjectAuth(async (args: IssuesArgs, context) => {
     const audit = await latestAudit(args.projectId, args.auditId);
-    if (!audit) return noAuditsYet(context, args.projectId);
+    if (!audit) {
+      return noAuditsYet(context, args.projectId, { summary: [], issues: [] });
+    }
     const unsorted = await AuditRepository.getIssuesForAudit(audit.id, {
       severity: args.severity,
       issueType: args.issueType,
@@ -409,7 +425,9 @@ export const getAuditPagesTool = {
   },
   handler: withMcpProjectAuth(async (args: PagesArgs, context) => {
     const audit = await latestAudit(args.projectId, args.auditId);
-    if (!audit) return noAuditsYet(context, args.projectId);
+    if (!audit) {
+      return noAuditsYet(context, args.projectId, { pages: [], total: 0 });
+    }
     const allPages = await AuditRepository.getPagesForAudit(audit.id);
 
     const filtered = allPages.filter(
