@@ -4,11 +4,7 @@ import { Check } from "lucide-react";
 import { SearchConsoleConnectionCard } from "@/client/features/gsc/SearchConsoleConnectionCard";
 import { AUDIT_ISSUE_TYPES } from "@/shared/audit-issues";
 
-import {
-  formatCount,
-  formatCtr,
-  formatPosition,
-} from "@/client/features/search-performance/SearchPerformanceColumns";
+import { formatCount, formatDecimal, formatPercent } from "@/client/lib/format";
 import { getSearchPerformanceReport } from "@/serverFunctions/searchPerformance";
 import {
   CardShell,
@@ -100,10 +96,10 @@ export function GscCard({
               />
             }
           />
-          <Stat label="TO" value={formatCtr(report.totals.ctr)} />
+          <Stat label="TO" value={formatPercent(report.totals.ctr)} />
           <Stat
             label="Ort. sıra"
-            value={formatPosition(report.totals.position)}
+            value={formatDecimal(report.totals.position)}
           />
         </div>
       ) : null}

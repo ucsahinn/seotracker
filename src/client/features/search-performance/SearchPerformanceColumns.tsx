@@ -1,6 +1,7 @@
 import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
 import type { MutableRefObject } from "react";
 import { makeSelectionColumn } from "@/client/components/table/AppDataTable";
+import { formatCount, formatDecimal, formatPercent } from "@/client/lib/format";
 import { SortableHeader } from "@/client/components/table/SortableHeader";
 import type { SelectionAnchor } from "@/client/components/table/tableSelection";
 import type {
@@ -18,20 +19,6 @@ export type SearchPerformanceTableRow = Extract<
 >["rows"][number];
 type DimensionRow = SearchPerformanceTableRow;
 type StrikingRow = Report["strikingDistance"][number];
-
-const numberFormat = new Intl.NumberFormat("tr-TR");
-
-export function formatCount(value: number): string {
-  return numberFormat.format(Math.round(value));
-}
-
-export function formatCtr(value: number): string {
-  return `${(value * 100).toFixed(1)}%`;
-}
-
-export function formatPosition(value: number): string {
-  return value.toFixed(1);
-}
 
 const rightAligned = {
   headerClassName: "text-right",
@@ -71,14 +58,14 @@ export function buildDimensionColumns(
       header: ({ column }) => (
         <SortableHeader column={column} label="TO" align="right" />
       ),
-      cell: ({ getValue }) => formatCtr(getValue()),
+      cell: ({ getValue }) => formatPercent(getValue()),
       meta: rightAligned,
     }),
     dimensionHelper.accessor("position", {
       header: ({ column }) => (
         <SortableHeader column={column} label="Sıra" align="right" />
       ),
-      cell: ({ getValue }) => formatPosition(getValue()),
+      cell: ({ getValue }) => formatDecimal(getValue()),
       meta: rightAligned,
     }),
   ];
@@ -140,7 +127,7 @@ export function buildStrikingColumns(
       header: ({ column }) => (
         <SortableHeader column={column} label="Sıra" align="right" />
       ),
-      cell: ({ getValue }) => formatPosition(getValue()),
+      cell: ({ getValue }) => formatDecimal(getValue()),
       meta: rightAligned,
     }),
   ];

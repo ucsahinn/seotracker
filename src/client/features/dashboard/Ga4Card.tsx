@@ -15,20 +15,14 @@ import {
   Stat,
 } from "@/client/features/dashboard/cardParts";
 import { Ga4ConnectCard } from "@/client/features/dashboard/Ga4ConnectCard";
-import {
-  formatCount,
-  formatCtr,
-} from "@/client/features/search-performance/SearchPerformanceColumns";
+import { formatCount, formatDay, formatPercent } from "@/client/lib/format";
 import { getGa4DashboardReport } from "@/serverFunctions/ga4";
 
 function formatTrendDay(date: string): string {
-  // Construct in local time: Date.parse("2026-08-01") is UTC midnight, which
-  // toLocaleDateString would render as the previous day west of Greenwich.
-  const [year, month, day] = date.split("-").map(Number);
-  return new Date(year, month - 1, day).toLocaleDateString(undefined, {
-    month: "short",
-    day: "numeric",
-  });
+  // `formatDay` handles the calendar-day shape and is pinned to tr-TR; this
+  // used to pass `undefined` as the locale, so the axis read "Aug 1" in a
+  // container with no LANG while the rest of the dashboard read "1 Ağu".
+  return formatDay(date);
 }
 
 function statValue(
@@ -141,7 +135,7 @@ export function Ga4Card({
               />
               <Stat
                 label="Etkileşim oranı"
-                value={statValue(report.totals.engagementRate, formatCtr)}
+                value={statValue(report.totals.engagementRate, formatPercent)}
               />
               <Stat
                 label="Önemli olay"

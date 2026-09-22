@@ -73,6 +73,44 @@ describe("summarizeCoverage", () => {
     expect(result.canonicalMismatches).toBe(1);
   });
 
+  /*
+   * The tile and the table used to decide this separately and disagree. The
+   * flag is what the table reads, so asserting both together is what keeps
+   * them from drifting apart again.
+   */
+  it("flags the same rows it counts, declared canonical or not", () => {
+    const result = summarizeCoverage(
+      [
+        "https://a.test/undeclared",
+        "https://a.test/slash",
+        "https://a.test/agreed",
+      ],
+      storeOf(
+        // Declared nothing; Google chose elsewhere. The costly case.
+        checked("https://a.test/undeclared", {
+          userCanonical: null,
+          googleCanonical: "https://a.test/other",
+        }),
+        // Same page, one trailing slash apart. Not a mismatch.
+        checked("https://a.test/slash", {
+          userCanonical: "https://a.test/slash/",
+          googleCanonical: "https://a.test/slash",
+        }),
+        checked("https://a.test/agreed", {
+          userCanonical: "https://a.test/agreed",
+          googleCanonical: "https://a.test/agreed",
+        }),
+      ),
+    );
+
+    expect(result.rows.map((row) => row.canonicalMismatch)).toEqual([
+      true,
+      false,
+      false,
+    ]);
+    expect(result.canonicalMismatches).toBe(1);
+  });
+
   it("reports the newest check as the stamp", () => {
     const result = summarizeCoverage(
       ["https://a.test/a", "https://a.test/b"],

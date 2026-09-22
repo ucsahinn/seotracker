@@ -43,9 +43,22 @@ export type CoverageRow = {
   checkedAt: string | null;
 };
 
+export type CoverageRowView = CoverageRow & {
+  /**
+   * Google chose a different URL than the page asked for.
+   *
+   * Computed here rather than in the table, because it was computed in both
+   * and the two rules disagreed: the tile counted an undeclared canonical
+   * that Google overrode - the costly case - while the table, which required
+   * a declared one, left that row blank; and the table compared raw strings,
+   * so a trailing slash painted a warning on a page that was fine.
+   */
+  canonicalMismatch: boolean;
+};
+
 export type IndexCoverage = {
   /** Every indexable page in the audit, with its inspection when there is one. */
-  rows: CoverageRow[];
+  rows: CoverageRowView[];
   checked: number;
   indexed: number;
   /** Google looked and said no: excluded, or an error on its side. */
@@ -109,6 +122,18 @@ function sameUrl(a: string, b: string): boolean {
   return normalizeUrl(a) === normalizeUrl(b);
 }
 
+/**
+ * The costly case is the page that declared no canonical at all and had
+ * Google pick a different URL anyway, so an undeclared canonical is compared
+ * against the page's own URL rather than skipped.
+ */
+function hasCanonicalMismatch(row: CoverageRow): boolean {
+  return Boolean(
+    row.googleCanonical &&
+    !sameUrl(row.googleCanonical, row.userCanonical ?? row.url),
+  );
+}
+
 /** SQLite's CURRENT_TIMESTAMP carries no zone marker; treat that shape as UTC. */
 function parseStamp(value: string | null): number {
   if (!value) return Number.NaN;
@@ -161,12 +186,14 @@ export function summarizeCoverage(
   stored: Map<string, CoverageRow>,
   now: Date = new Date(),
 ): IndexCoverage {
-  const rows = urls.map((url) => stored.get(url) ?? blankRow(url));
+  const rows: CoverageRowView[] = urls.map((url) => {
+    const row = stored.get(url) ?? blankRow(url);
+    return { ...row, canonicalMismatch: hasCanonicalMismatch(row) };
+  });
 
   let indexed = 0;
   let notIndexed = 0;
   let pending = 0;
-  let canonicalMismatches = 0;
   let lastCheckedAt: string | null = null;
 
   for (const row of rows) {
@@ -195,17 +222,6 @@ export function summarizeCoverage(
     // "excluded" and FAIL is "error"; both mean it is not there.
     if (row.verdict === "PASS") indexed += 1;
     else notIndexed += 1;
-
-    // The costly case is the one where the page declared no canonical at all
-    // and Google picked a different URL anyway. Comparing only when the page
-    // declared one skipped exactly that case, so an undeclared canonical is
-    // compared against the URL itself.
-    if (
-      row.googleCanonical &&
-      !sameUrl(row.googleCanonical, row.userCanonical ?? row.url)
-    ) {
-      canonicalMismatches += 1;
-    }
   }
 
   return {
@@ -216,7 +232,7 @@ export function summarizeCoverage(
     notIndexed,
     pending,
     due: rows.filter((row) => isStale(stored.get(row.url), now)).length,
-    canonicalMismatches,
+    canonicalMismatches: rows.filter((row) => row.canonicalMismatch).length,
     lastCheckedAt,
   };
 }

@@ -84,6 +84,89 @@ function numberField(
   return typeof value === "number" && Number.isFinite(value) ? value : 0;
 }
 
+type Ga4PageTotals = {
+  sessions: number;
+  activeUsers: number;
+  engagedSessions: number;
+  engagementRate: number;
+  keyEvents: number;
+  sessionKeyEventRate: number;
+  transactions: number;
+  purchaseRevenue: number | null;
+  /** Session-weighted rate sums, divided out by `finishRates`. */
+  weighted: { engagement: number; keyEvent: number };
+};
+
+/**
+ * Fold one GA4 landing-page row into the totals for its page.
+ *
+ * `normalizePageKey` drops the query string on purpose, because Search
+ * Console reports `/blog` where GA4 reports `/blog?utm_source=newsletter`
+ * and the two have to meet. Collapsing without adding, though, kept whichever
+ * variant GA4 happened to return last: a page with 800 organic sessions and
+ * 40 conversions could be read off its own `?utm_source=` row at 120 and 2,
+ * and since business value is a percentile over those numbers, the best page
+ * on the site sorted below pages a tenth its size.
+ *
+ * Sessions, conversions and revenue are additive, so they add. `activeUsers`
+ * is a distinct count and summing it double-counts anyone who arrived through
+ * two variants - GA4 does not expose the overlap, it is the closer of the two
+ * available answers, and nothing is ranked on it.
+ */
+function addRow(
+  totals: Ga4PageTotals | undefined,
+  row: Record<string, string | number | null>,
+): Ga4PageTotals {
+  const revenue =
+    typeof row.purchaseRevenue === "number" &&
+    Number.isFinite(row.purchaseRevenue)
+      ? row.purchaseRevenue
+      : null;
+  const sessions = numberField(row, "sessions");
+  return {
+    sessions: (totals?.sessions ?? 0) + sessions,
+    activeUsers: (totals?.activeUsers ?? 0) + numberField(row, "activeUsers"),
+    engagedSessions:
+      (totals?.engagedSessions ?? 0) + numberField(row, "engagedSessions"),
+    keyEvents: (totals?.keyEvents ?? 0) + numberField(row, "keyEvents"),
+    transactions:
+      (totals?.transactions ?? 0) + numberField(row, "transactions"),
+    purchaseRevenue:
+      revenue === null && totals?.purchaseRevenue == null
+        ? null
+        : (totals?.purchaseRevenue ?? 0) + (revenue ?? 0),
+    weighted: {
+      engagement:
+        (totals?.weighted.engagement ?? 0) +
+        sessions * numberField(row, "engagementRate"),
+      keyEvent:
+        (totals?.weighted.keyEvent ?? 0) +
+        sessions * numberField(row, "sessionKeyEventRate"),
+    },
+    // Divided out by `finishRates` once every variant has been folded in.
+    engagementRate: 0,
+    sessionKeyEventRate: 0,
+  };
+}
+
+/**
+ * Rates are ratios, so they cannot be added - a page whose variants ran at 40%
+ * and 60% is not a 100% page. Each variant's rate is weighted by the sessions
+ * it was measured over, which is the rate the whole page ran at.
+ *
+ * Deliberately not recomputed from the counts we hold: GA4's
+ * `sessionKeyEventRate` is the share of *sessions that fired at least one key
+ * event*, not `keyEvents / sessions`, and one session can fire several - so
+ * dividing the totals would report rates above 1 on a page with repeat
+ * conversions. Weighting keeps Google's definition intact, and for the
+ * ordinary page with a single variant it returns exactly what GA4 reported.
+ */
+function finishRates(totals: Ga4PageTotals): void {
+  if (totals.sessions <= 0) return;
+  totals.engagementRate = totals.weighted.engagement / totals.sessions;
+  totals.sessionKeyEventRate = totals.weighted.keyEvent / totals.sessions;
+}
+
 /**
  * Where each value sits in the set, as a mid-rank in [0, 1].
  *
@@ -164,7 +247,7 @@ async function getOpportunities(
     channel: "organic_search",
   });
 
-  const ga4ByPage = new Map<string, Record<string, string | number | null>>();
+  const ga4ByPage = new Map<string, Ga4PageTotals>();
   let invalidGa4Rows = 0;
   for (const row of ga4.rows) {
     const host = typeof row.hostName === "string" ? row.hostName : "";
@@ -174,8 +257,9 @@ async function getOpportunities(
       invalidGa4Rows += 1;
       continue;
     }
-    ga4ByPage.set(key, row);
+    ga4ByPage.set(key, addRow(ga4ByPage.get(key), row));
   }
+  for (const totals of ga4ByPage.values()) finishRates(totals);
 
   const candidates: Candidate[] = gsc.rows
     .filter((row) => row.position >= 4 && row.position <= 20)
@@ -193,24 +277,7 @@ async function getOpportunities(
         ctr: row.ctr,
         position: row.position,
         joinStatus: analytics ? "joined" : "gsc_only",
-        ga4: analytics
-          ? {
-              sessions: numberField(analytics, "sessions"),
-              activeUsers: numberField(analytics, "activeUsers"),
-              engagedSessions: numberField(analytics, "engagedSessions"),
-              engagementRate: numberField(analytics, "engagementRate"),
-              keyEvents: numberField(analytics, "keyEvents"),
-              sessionKeyEventRate: numberField(
-                analytics,
-                "sessionKeyEventRate",
-              ),
-              transactions: numberField(analytics, "transactions"),
-              purchaseRevenue:
-                typeof analytics.purchaseRevenue === "number"
-                  ? analytics.purchaseRevenue
-                  : null,
-            }
-          : null,
+        ga4: analytics ?? null,
         score: null,
         scoreComponents: null,
       } satisfies Candidate;

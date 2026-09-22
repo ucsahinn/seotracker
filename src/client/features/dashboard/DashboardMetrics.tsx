@@ -1,11 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { MetricRow, MetricTile } from "@/client/components/MetricTile";
-import {
-  formatCount,
-  formatCtr,
-  formatPosition,
-} from "@/client/features/search-performance/SearchPerformanceColumns";
+import { formatCount, formatDecimal, formatPercent } from "@/client/lib/format";
 import { getSearchPerformanceReport } from "@/serverFunctions/searchPerformance";
 
 /**
@@ -80,13 +76,13 @@ export function DashboardMetrics({
       />
       <MetricTile
         label="Tıklama oranı"
-        value={report ? formatCtr(report.totals.ctr) : null}
+        value={report ? formatPercent(report.totals.ctr) : null}
         delta={report ? ratio(report.totals.ctr, report.prevTotals.ctr) : null}
         hint={report ? "Son 28 gün" : undefined}
       />
       <MetricTile
         label="Ortalama sıra"
-        value={report ? formatPosition(report.totals.position) : null}
+        value={report ? formatDecimal(report.totals.position) : null}
         delta={
           report
             ? ratio(report.totals.position, report.prevTotals.position)

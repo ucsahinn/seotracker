@@ -16,12 +16,10 @@ import { TablePagination } from "@/client/components/table/TablePagination";
 import {
   buildDimensionColumns,
   buildStrikingColumns,
-  formatCount,
-  formatCtr,
-  formatPosition,
   type Report,
   type SearchPerformanceTableRow,
 } from "@/client/features/search-performance/SearchPerformanceColumns";
+import { formatCount, formatDecimal, formatPercent } from "@/client/lib/format";
 import {
   buildCsv,
   downloadCsv,
@@ -168,13 +166,13 @@ export function TotalsCards({ report }: { report: Report }) {
       />
       <MetricTile
         label="Tıklama oranı"
-        value={formatCtr(totals.ctr)}
+        value={formatPercent(totals.ctr)}
         delta={percentDelta(totals.ctr, prevTotals.ctr)}
         deltaTitle={deltaTitle}
       />
       <MetricTile
         label="Ortalama sıra"
-        value={formatPosition(totals.position)}
+        value={formatDecimal(totals.position)}
         delta={positionDelta(totals.position, prevTotals.position)}
         deltaTitle={deltaTitle}
       />

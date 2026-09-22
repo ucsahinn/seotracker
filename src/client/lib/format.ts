@@ -30,8 +30,13 @@ export function formatNumber(value: number): string {
   return numberFormatter.format(value);
 }
 
+/** Whole things: clicks, impressions, sessions, pages. */
+export function formatCount(value: number): string {
+  return numberFormatter.format(Math.round(value));
+}
+
 /** One decimal, for rates and averages that would read as noise at more. */
-function formatDecimal(value: number, digits = 1): string {
+export function formatDecimal(value: number, digits = 1): string {
   return value.toLocaleString(LOCALE, {
     minimumFractionDigits: digits,
     maximumFractionDigits: digits,
@@ -48,6 +53,20 @@ export function formatPercent(fraction: number, digits = 1): string {
  * and can show yesterday's date. Treat that shape as UTC explicitly.
  */
 function parse(value: string): number {
+  /*
+   * A bare "2026-08-01" is a calendar day, not an instant. `Date.parse` reads
+   * it as UTC midnight, which renders as the day before anywhere west of
+   * Greenwich - so a chart axis labelled from GA4's dates was off by one for
+   * half the world. Build it in local time and the day stays the day.
+   */
+  const day = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+  if (day) {
+    return new Date(
+      Number(day[1]),
+      Number(day[2]) - 1,
+      Number(day[3]),
+    ).getTime();
+  }
   return Date.parse(
     /^\d{4}-\d{2}-\d{2} /.test(value) ? `${value.replace(" ", "T")}Z` : value,
   );

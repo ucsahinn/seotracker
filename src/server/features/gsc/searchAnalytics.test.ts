@@ -6,10 +6,30 @@ import {
 
 const TODAY = new Date("2026-05-28T00:00:00Z");
 
+/** Both ends included, the way Search Console counts a range. */
+function inclusiveDays(startDate: string, endDate: string): number {
+  const ms =
+    Date.parse(`${endDate}T00:00:00Z`) - Date.parse(`${startDate}T00:00:00Z`);
+  return ms / 86_400_000 + 1;
+}
+
 describe("resolveDateRange", () => {
   it("ends convenience ranges 3 days back for GSC data lag", () => {
     const { endDate } = resolveDateRange({ dateRange: "last_28_days" }, TODAY);
     expect(endDate).toBe("2026-05-25");
+  });
+
+  /*
+   * The count, not the dates, is the contract: Google's range includes both
+   * ends, so asserting only the two strings let a 29-day window pass under
+   * the name "28-day" for as long as the strings matched.
+   */
+  it.each([
+    ["last_7_days", 7],
+    ["last_28_days", 28],
+  ] as const)("asks Google for exactly %s", (dateRange, days) => {
+    const { startDate, endDate } = resolveDateRange({ dateRange }, TODAY);
+    expect(inclusiveDays(startDate, endDate)).toBe(days);
   });
 
   it("computes a 28-day window from the lagged end", () => {
@@ -17,7 +37,7 @@ describe("resolveDateRange", () => {
       { dateRange: "last_28_days" },
       TODAY,
     );
-    expect(startDate).toBe("2026-04-27");
+    expect(startDate).toBe("2026-04-28");
     expect(endDate).toBe("2026-05-25");
   });
 

@@ -180,6 +180,78 @@ describe("SearchOpportunityService", () => {
   });
 
   /*
+   * Search Console reports `/blog`; GA4 reports `/blog`, `/blog?utm_source=x`
+   * and `/blog?page=2` separately. The join key collapses them on purpose,
+   * and before this the collapse kept whichever row GA4 returned last - so a
+   * page's traffic could be read off its smallest campaign variant.
+   */
+  it("adds up the GA4 variants that collapse onto one page", async () => {
+    mocks.runGa4Report.mockResolvedValue({
+      ...ga4Result,
+      rows: [
+        {
+          hostName: "example.com",
+          landingPage: "/blog/",
+          sessions: 800,
+          activeUsers: 700,
+          engagedSessions: 600,
+          engagementRate: 0.75,
+          keyEvents: 40,
+          sessionKeyEventRate: 0.05,
+          transactions: 4,
+          purchaseRevenue: 400,
+        },
+        {
+          hostName: "example.com",
+          landingPage: "/blog/?utm_source=newsletter",
+          sessions: 200,
+          activeUsers: 150,
+          engagedSessions: 100,
+          engagementRate: 0.5,
+          keyEvents: 2,
+          sessionKeyEventRate: 0.01,
+          transactions: 1,
+          purchaseRevenue: 100,
+        },
+      ],
+    });
+    mocks.getPerformance.mockResolvedValue({
+      siteUrl: "https://example.com/",
+      request: {},
+      rows: [
+        {
+          keys: ["https://example.com/blog"],
+          clicks: 50,
+          impressions: 5_000,
+          ctr: 0.01,
+          position: 6,
+        },
+      ],
+    });
+
+    const result = await SearchOpportunityService.getOpportunities(
+      { projectId: "project_1" },
+      { now: new Date("2026-08-06T12:00:00Z") },
+    );
+
+    expect(result.rows[0]).toMatchObject({
+      page: "https://example.com/blog",
+      joinStatus: "joined",
+      ga4: {
+        sessions: 1_000,
+        engagedSessions: 700,
+        keyEvents: 42,
+        transactions: 5,
+        purchaseRevenue: 500,
+        // Session-weighted, not averaged: (800*0.75 + 200*0.5) / 1000.
+        engagementRate: 0.7,
+        // (800*0.05 + 200*0.01) / 1000.
+        sessionKeyEventRate: 0.042,
+      },
+    });
+  });
+
+  /*
    * The inversion a floor-rank produced: a property whose key event fires on
    * every session gives every matched page the same rate, so all of them
    * ranked 0 for business value and sorted below the 0.5 handed to pages GA4

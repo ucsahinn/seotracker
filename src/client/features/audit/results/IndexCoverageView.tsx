@@ -206,10 +206,9 @@ function CoverageTable({
         </thead>
         <tbody>
           {ordered.map((row) => {
-            const mismatch =
-              row.googleCanonical &&
-              row.userCanonical &&
-              row.googleCanonical !== row.userCanonical;
+            // The server decides this, so the column and the tile above it
+            // cannot drift apart again.
+            const mismatch = row.canonicalMismatch;
 
             return (
               <tr key={row.url}>

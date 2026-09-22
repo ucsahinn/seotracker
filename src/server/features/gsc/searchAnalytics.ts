@@ -87,14 +87,21 @@ function subtractUtcMonths(date: Date, months: number): Date {
   return d;
 }
 
+/*
+ * Google's date range is inclusive of both ends, so a 28-day window starts 27
+ * days before the end date, not 28. Subtracting the full count asked Google
+ * for 29 days and called it 28, which loosened every impression threshold
+ * tuned against the window - `MIN_QUERY_IMPRESSIONS` in cannibalization.ts
+ * most visibly.
+ */
 function subtractRange(end: Date, range: GscDateRange): Date {
   const d = new Date(end);
   switch (range) {
     case "last_7_days":
-      d.setUTCDate(d.getUTCDate() - 7);
+      d.setUTCDate(d.getUTCDate() - 6);
       break;
     case "last_28_days":
-      d.setUTCDate(d.getUTCDate() - 28);
+      d.setUTCDate(d.getUTCDate() - 27);
       break;
     case "last_3_months":
       return subtractUtcMonths(d, 3);
