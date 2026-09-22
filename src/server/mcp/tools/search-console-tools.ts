@@ -8,6 +8,7 @@ import { formatMcpTable, type McpTableColumn } from "@/server/mcp/table";
 import { projectIdSchema } from "@/server/mcp/schemas";
 import { buildDashboardUrl } from "@/server/mcp/urls";
 import { hasSelfHostedGoogleOAuthConfig } from "@/server/features/google/oauth-config";
+import { inspectAndRecord } from "@/server/features/gsc/services/GscIndexCoverageService";
 import { GscService } from "@/server/features/gsc/services/GscService";
 import {
   GSC_DATE_RANGES,
@@ -441,8 +442,11 @@ export const inspectUrlsTool = {
       ...optionalMetaOutputSchema,
     },
     annotations: {
+      // Read-only about the site, but it calls Google and consumes a daily
+      // allowance that does not come back, so a client that auto-approves
+      // closed-world read-only tools must not auto-approve this one.
       readOnlyHint: true,
-      openWorldHint: false,
+      openWorldHint: true,
       destructiveHint: false,
     },
   },
@@ -461,11 +465,25 @@ export const inspectUrlsTool = {
     );
 
     try {
-      const { siteUrl, results } = await GscService.inspectUrls({
-        projectId: args.projectId,
-        urls: args.urls,
-        languageCode: args.languageCode,
-      });
+      /*
+       * Through the budgeted path, not `GscService.inspectUrls` directly:
+       * this is the one tool that spends a Google allowance that does not
+       * replenish (2000 URLs per property per day), and calling the client
+       * raw both ignored the remaining budget and left no ledger row, so the
+       * spend was invisible to the Index Coverage screen's own accounting.
+       */
+      const { siteUrl, results, skipped, quotaRemaining } =
+        await inspectAndRecord({
+          projectId: args.projectId,
+          urls: args.urls,
+          languageCode: args.languageCode,
+        });
+
+      const quotaNote =
+        skipped > 0
+          ? `
+${skipped} URL not inspected: the property's daily URL Inspection quota is used up. ${quotaRemaining} left today.`
+          : "";
 
       const summaryLines = results.slice(0, TEXT_SUMMARY_ROWS).map((r) => {
         if (r.error) return `  ${r.url} — error: ${r.error}`;
@@ -478,8 +496,9 @@ export const inspectUrlsTool = {
         return `  ${r.url} — ${verdict}: ${coverage}${canonical}`;
       });
       const text =
-        `${siteUrl} · inspected ${results.length} URL${results.length === 1 ? "" : "s"}\n` +
-        summaryLines.join("\n");
+        `${siteUrl ?? "Search Console"} · inspected ${results.length} URL${results.length === 1 ? "" : "s"}\n` +
+        summaryLines.join("\n") +
+        quotaNote;
 
       return mcpResponse({
         text,

@@ -10,6 +10,7 @@ const mocks = vi.hoisted(() => ({
     getPerformance: vi.fn(),
     inspectUrls: vi.fn(),
   },
+  inspectAndRecord: vi.fn(),
 }));
 
 vi.mock("cloudflare:workers", () => ({ env: {} }));
@@ -23,6 +24,11 @@ vi.mock("@/server/features/projects/services/ProjectService", () => ({
 }));
 vi.mock("@/server/features/gsc/services/GscService", () => ({
   GscService: mocks.GscService,
+}));
+// `inspect_urls` goes through the budgeted, ledgered path rather than the
+// client, and that module reaches the database this suite does not stand up.
+vi.mock("@/server/features/gsc/services/GscIndexCoverageService", () => ({
+  inspectAndRecord: mocks.inspectAndRecord,
 }));
 const toolContext = makeToolContext();
 
@@ -271,9 +277,11 @@ describe("search console MCP tools", () => {
   });
 
   it("inspects multiple URLs and reports partial failures inline", async () => {
-    mocks.GscService.inspectUrls.mockResolvedValue({
+    mocks.inspectAndRecord.mockResolvedValue({
       siteUrl: "sc-domain:example.com",
-      connectedBy: "alice@example.com",
+      requested: 2,
+      skipped: 0,
+      quotaRemaining: 1_998,
       results: [
         {
           url: "https://example.com/a",
@@ -298,7 +306,7 @@ describe("search console MCP tools", () => {
       toolContext,
     );
 
-    expect(mocks.GscService.inspectUrls).toHaveBeenCalledWith(
+    expect(mocks.inspectAndRecord).toHaveBeenCalledWith(
       expect.objectContaining({
         projectId: "project_1",
         urls: ["https://example.com/a", "https://example.com/bad"],
@@ -313,8 +321,47 @@ describe("search console MCP tools", () => {
     expect(first.type === "text" && first.text).toContain("error:");
   });
 
+  /*
+   * The quota does not replenish, so an agent that asked for more than is
+   * left has to be told, not quietly handed a shorter list.
+   */
+  it("tells the agent when the daily inspection quota cut the batch short", async () => {
+    mocks.inspectAndRecord.mockResolvedValue({
+      siteUrl: "sc-domain:example.com",
+      requested: 1,
+      skipped: 2,
+      quotaRemaining: 0,
+      results: [
+        {
+          url: "https://example.com/a",
+          result: {
+            indexStatusResult: { verdict: "PASS", coverageState: "Indexed" },
+          },
+        },
+      ],
+    });
+    const { inspectUrlsTool } = searchConsoleTools;
+
+    const result = await inspectUrlsTool.handler(
+      {
+        projectId: "project_1",
+        urls: [
+          "https://example.com/a",
+          "https://example.com/b",
+          "https://example.com/c",
+        ],
+      },
+      toolContext,
+    );
+
+    const first = result.content[0];
+    expect(first.type === "text" && first.text).toContain(
+      "2 URL not inspected",
+    );
+  });
+
   it("surfaces a not-connected message from inspect_urls", async () => {
-    mocks.GscService.inspectUrls.mockRejectedValue(
+    mocks.inspectAndRecord.mockRejectedValue(
       new GscNotConnectedError("project_1"),
     );
     const { inspectUrlsTool } = searchConsoleTools;

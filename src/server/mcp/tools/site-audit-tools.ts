@@ -82,7 +82,8 @@ export const runSiteAuditTool = {
       .passthrough(),
     annotations: {
       readOnlyHint: false,
-      openWorldHint: false,
+      // It fetches arbitrary external URLs; that is the whole job.
+      openWorldHint: true,
       destructiveHint: false,
     },
   },

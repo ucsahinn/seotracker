@@ -205,6 +205,32 @@ export function runSelfhostPreflight(env: EnvRecord): PreflightResult {
         },
   );
 
+  /*
+   * The dangerous deployment is a combination, and each half reported `ok` on
+   * its own: `AUTH_MODE=local_noauth` is fine on loopback, and `ALLOWED_HOST`
+   * is what the Docker guide tells you to set behind a reverse proxy. Set
+   * together with no `MCP_TOKEN`, they publish every server function as the
+   * admin user and all of `/mcp` unauthenticated, and the operator reads two
+   * green lines and a start-up banner.
+   *
+   * A warning rather than a failure: putting your own auth in front of the
+   * container is a legitimate way to run this, and the preflight cannot see
+   * the proxy. It can see that nothing here is checking.
+   */
+  if (
+    get(env, "AUTH_MODE") === "local_noauth" &&
+    get(env, "ALLOWED_HOST") &&
+    !get(env, "MCP_TOKEN")
+  ) {
+    items.push({
+      key: "auth",
+      name: "AUTH_MODE + ALLOWED_HOST",
+      level: "warn",
+      message:
+        "Reachable off localhost with no authentication: every page, every server function and all MCP tools answer as the admin user. Put your own auth in front of the container, or set MCP_TOKEN and keep the port bound to 127.0.0.1.",
+    });
+  }
+
   return { items, failed: items.some((item) => item.level === "fail") };
 }
 

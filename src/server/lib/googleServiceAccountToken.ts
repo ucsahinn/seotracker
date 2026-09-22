@@ -12,6 +12,8 @@
  */
 import { z } from "zod";
 import { GoogleServiceAccountRepository } from "@/server/features/google/GoogleServiceAccountRepository";
+import { GA4_SERVICE_ACCOUNT_SCOPE } from "@/shared/ga4";
+import { GSC_SERVICE_ACCOUNT_SCOPE } from "@/shared/gsc";
 import {
   buildAssertionPayload,
   GOOGLE_TOKEN_URI,
@@ -37,9 +39,21 @@ class GoogleServiceAccountError extends Error {
   }
 }
 
-/** Whether this install is configured to use a service account at all. */
+/**
+ * Whether this install can actually mint from a service account.
+ *
+ * Deliberately `get()` and not `getStatus()`: the status projection reads
+ * three plaintext columns and cannot tell a decryptable row from one sealed
+ * with a key this container no longer has. That happens for real - restore
+ * the database from a backup into a fresh volume, or rotate
+ * `BETTER_AUTH_SECRET`, and the row survives while the key does not. Asking
+ * the cheaper question meant `true`, which shadowed the OAuth fallback
+ * permanently: every Search Console and Analytics call threw, and Settings
+ * showed the account as connected. The honest answer for an unreadable key is
+ * "not configured", so OAuth gets its turn.
+ */
 export async function hasServiceAccount(): Promise<boolean> {
-  return (await GoogleServiceAccountRepository.getStatus()) !== null;
+  return (await GoogleServiceAccountRepository.get()) !== null;
 }
 
 /**
@@ -50,7 +64,26 @@ export async function hasServiceAccount(): Promise<boolean> {
  * mint is almost always one that was deleted or had its key revoked in Google
  * Cloud, which the operator has to fix there.
  */
+/*
+ * The stored key is as powerful as the scope asked for it. Both call sites
+ * pass a read-only constant today, and nothing in the signer said they had
+ * to: one future call site passing `.../auth/webmasters` instead of
+ * `.../auth/webmasters.readonly` would mint a write-capable token from the
+ * same key, silently. The allowlist makes that a startup-visible mistake
+ * rather than a quiet privilege gain.
+ */
+const ALLOWED_SCOPES = new Set([
+  GSC_SERVICE_ACCOUNT_SCOPE,
+  GA4_SERVICE_ACCOUNT_SCOPE,
+]);
+
 export async function getServiceAccountToken(scope: string): Promise<string> {
+  if (!ALLOWED_SCOPES.has(scope)) {
+    throw new GoogleServiceAccountError(
+      `Servis hesabı için izin verilmeyen kapsam: ${scope}`,
+    );
+  }
+
   const cached = cache.get(scope);
   if (cached && cached.expiresAt - EXPIRY_MARGIN_MS > Date.now()) {
     return cached.token;

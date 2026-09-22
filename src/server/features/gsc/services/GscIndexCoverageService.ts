@@ -135,34 +135,51 @@ export async function getIndexCoverage(input: {
  * Returning how many are still waiting lets the UI offer another run instead
  * of silently doing nothing.
  */
-export async function refreshIndexCoverage(input: {
+/**
+ * Inspect URLs against the daily quota and write what came back.
+ *
+ * Both callers have to come through here. URL Inspection allows 2000 URLs per
+ * property per day and the allowance does not replenish early, so an
+ * inspection that is not counted is one the operator cannot see they spent:
+ * `/mcp` used to call `GscService.inspectUrls` directly, which meant an agent
+ * looping over an audit's pages could burn the whole day's allowance while
+ * `inspectionsInLastDay` still read zero - and the Index Coverage screen
+ * would then fire its own refresh into a quota that was already gone.
+ *
+ * Returns what was actually asked, since the caller cannot assume it got the
+ * whole list.
+ */
+export async function inspectAndRecord(input: {
   projectId: string;
-  auditId: string;
+  urls: string[];
+  languageCode?: string;
   now?: Date;
 }): Promise<{
-  inspected: number;
-  remaining: number;
+  siteUrl: string | null;
+  results: Awaited<ReturnType<typeof GscService.inspectUrls>>["results"];
+  requested: number;
+  skipped: number;
   quotaRemaining: number;
 }> {
   const now = input.now ?? new Date();
-  const urls = await indexableUrlsForAudit(input.auditId, input.projectId);
-  const stored = await storedFor(input.projectId, urls);
   const spent = await inspectionsInLastDay(input.projectId, now);
   const budget = Math.max(DAILY_QUOTA - spent, 0);
-  const { batch, remaining } = selectDueUrls(urls, stored, now, budget);
+  const batch = input.urls.slice(0, budget);
 
   if (batch.length === 0) {
-    return { inspected: 0, remaining, quotaRemaining: budget };
+    return {
+      siteUrl: null,
+      results: [],
+      requested: 0,
+      skipped: input.urls.length,
+      quotaRemaining: 0,
+    };
   }
 
-  const { results } = await GscService.inspectUrls({
+  const { siteUrl, results } = await GscService.inspectUrls({
     projectId: input.projectId,
     urls: batch,
-    // Google localises coverageState, so asking for Turkish means the sentence
-    // explaining a refusal arrives in the UI's language. The local map in
-    // shared/gsc-coverage-states.ts stays as the fallback for the English
-    // phrases already stored, and for anything Google has not translated.
-    languageCode: "tr",
+    languageCode: input.languageCode,
   });
   const checkedAt = now.toISOString();
 
@@ -192,6 +209,46 @@ export async function refreshIndexCoverage(input: {
         set: values,
       });
   }
+
+  return {
+    siteUrl,
+    results,
+    requested: batch.length,
+    skipped: input.urls.length - batch.length,
+    quotaRemaining: Math.max(budget - batch.length, 0),
+  };
+}
+
+export async function refreshIndexCoverage(input: {
+  projectId: string;
+  auditId: string;
+  now?: Date;
+}): Promise<{
+  inspected: number;
+  remaining: number;
+  quotaRemaining: number;
+}> {
+  const now = input.now ?? new Date();
+  const urls = await indexableUrlsForAudit(input.auditId, input.projectId);
+  const stored = await storedFor(input.projectId, urls);
+  const spent = await inspectionsInLastDay(input.projectId, now);
+  const budget = Math.max(DAILY_QUOTA - spent, 0);
+  const { batch, remaining } = selectDueUrls(urls, stored, now, budget);
+
+  if (batch.length === 0) {
+    return { inspected: 0, remaining, quotaRemaining: budget };
+  }
+
+  // Google localises coverageState, so asking for Turkish means the sentence
+  // explaining a refusal arrives in the UI's language. The local map in
+  // shared/gsc-coverage-states.ts stays as the fallback for the English
+  // phrases already stored, and for anything Google has not translated.
+  await inspectAndRecord({
+    projectId: input.projectId,
+    urls: batch,
+    languageCode: "tr",
+    now,
+  });
 
   return {
     inspected: batch.length,
