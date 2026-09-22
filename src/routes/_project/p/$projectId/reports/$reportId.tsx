@@ -110,9 +110,16 @@ function ReportDetailPage() {
   }, [full, setExpanded]);
 
   if (reportQuery.isPending) {
+    // Shaped like the viewer: the back link, the title row, then the report
+    // itself filling the rest of the height.
     return (
-      <div className="flex justify-center py-10">
-        <span className="loading loading-spinner loading-md" />
+      <div
+        className="flex h-full min-h-0 flex-col gap-3 px-4 py-4 md:px-6 md:py-6"
+        aria-busy
+      >
+        <div className="skeleton h-4 w-24" />
+        <div className="skeleton h-8 w-72" />
+        <div className="skeleton min-h-0 flex-1" />
       </div>
     );
   }
