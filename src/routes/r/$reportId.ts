@@ -13,8 +13,7 @@ import { reportDocumentResponse, textResponse } from "@/shared/report-sandbox";
 // ids cannot be probed for existence. An archived project of the reader's own
 // organization gets its own message: the reader is already a member, so naming
 // it leaks nothing and "does not exist" would send them hunting.
-const NOT_FOUND_BODY =
-  "This report does not exist or you do not have access to it.";
+const NOT_FOUND_BODY = "Bu rapor yok ya da erişiminiz bulunmuyor.";
 
 const reportNotFound = () => textResponse(NOT_FOUND_BODY, 404);
 
@@ -30,7 +29,7 @@ async function handleReportRequest(
     // config or session-store failure must not masquerade as "you are logged
     // out", and the self-hosted modes have no sign-in page to complete.
     if (asAppError(error)?.code !== "UNAUTHENTICATED") throw error;
-    return textResponse("Sign in to read this report.", 401);
+    return textResponse("Bu raporu okumak için oturum açın.", 401);
   }
 
   // Reads go through the repository rather than ReportService: the service's

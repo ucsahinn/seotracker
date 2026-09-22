@@ -65,6 +65,7 @@
   --ink-warning: oklch(42% 0.1 70);
   --ink-error: oklch(44% 0.16 25);
   --ink-info: oklch(42% 0.11 240);
+  --ink-primary: oklch(42% 0.15 256);
 }
 
 html[data-theme="seotracker-dark"] {
@@ -80,6 +81,7 @@ html[data-theme="seotracker-dark"] {
   --ink-warning: oklch(85% 0.12 70);
   --ink-error: oklch(78% 0.15 25);
   --ink-info: oklch(80% 0.11 240);
+  --ink-primary: oklch(80% 0.12 256);
 }
 
 @plugin "daisyui" {

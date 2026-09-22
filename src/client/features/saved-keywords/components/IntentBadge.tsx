@@ -2,11 +2,13 @@ import { createPortal } from "react-dom";
 import type { KeywordIntent } from "@/types/keywords";
 import { FloatingTooltip, useFloatingTooltip } from "./FloatingTooltip";
 
+// The fill colour as text on a wash of itself lands near 2.5:1, which is why
+// the ink tokens exist; these were the last chips still doing it.
 const COLORS: Record<KeywordIntent, string> = {
-  informational: "border-info/30 bg-info/15 text-info",
-  commercial: "border-warning/35 bg-warning/20 text-warning",
-  transactional: "border-success/30 bg-success/15 text-success",
-  navigational: "border-primary/30 bg-primary/15 text-primary",
+  informational: "border-info/30 bg-info/15 text-[var(--ink-info)]",
+  commercial: "border-warning/35 bg-warning/20 text-[var(--ink-warning)]",
+  transactional: "border-success/30 bg-success/15 text-[var(--ink-success)]",
+  navigational: "border-primary/30 bg-primary/15 text-[var(--ink-primary)]",
   unknown: "border-base-300 bg-base-200 text-muted",
 };
 

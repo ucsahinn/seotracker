@@ -8,7 +8,10 @@ export function normalizeDomainCandidate(
 ): { ok: true; domain: string } | { ok: false; message: string } {
   const trimmed = value.trim().toLowerCase();
   if (!trimmed) {
-    return { ok: false, message: "Enter a website, like example.com." };
+    return {
+      ok: false,
+      message: "Bir site adresi girin, örneğin example.com.",
+    };
   }
 
   const withProtocol = /^[a-z][a-z\d+.-]*:\/\//.test(trimmed)
@@ -19,12 +22,15 @@ export function normalizeDomainCandidate(
   try {
     host = new URL(withProtocol).hostname.replace(/^www\./, "");
   } catch {
-    return { ok: false, message: "That doesn't look like a website address." };
+    return { ok: false, message: "Bu bir site adresine benzemiyor." };
   }
 
   // At least one dot, labels of letters/digits/hyphens, and a 2+ letter TLD.
   if (!/^[a-z\d-]+(\.[a-z\d-]+)*\.[a-z]{2,}$/.test(host)) {
-    return { ok: false, message: "Enter a valid domain like example.com." };
+    return {
+      ok: false,
+      message: "Geçerli bir alan adı girin, örneğin example.com.",
+    };
   }
 
   return { ok: true, domain: host };

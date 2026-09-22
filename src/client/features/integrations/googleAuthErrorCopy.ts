@@ -12,33 +12,33 @@ export function googleAuthErrorCopy(
   code: string,
   providerLabel?: string,
 ): { title: string; description: string } {
-  const what = providerLabel ? `${providerLabel} connection` : "Google sign-in";
+  const what = providerLabel ? `${providerLabel} bağlantısı` : "Google girişi";
 
   switch (code) {
     case "state_mismatch":
       return {
-        title: `${what} didn't finish`,
+        title: `${what} tamamlanmadı`,
         description:
-          "The attempt expired or was interrupted. Try again in a single browser tab and finish the Google steps within 10 minutes. If it keeps happening, make sure your browser allows cookies for this site.",
+          "Deneme zaman aşımına uğradı ya da yarıda kesildi. Tek bir tarayıcı sekmesinde yeniden deneyin ve Google adımlarını 10 dakika içinde bitirin. Tekrar ederse tarayıcınızın bu site için çerezlere izin verdiğinden emin olun.",
       };
     case "access_denied":
       return {
-        title: `${what} was canceled`,
+        title: `${what} iptal edildi`,
         description:
-          "Google's permission screen was closed or declined. Try again whenever you're ready.",
+          "Google'ın izin ekranı kapatıldı ya da reddedildi. Hazır olduğunuzda yeniden deneyebilirsiniz.",
       };
     case "account_already_linked_to_different_user":
       return {
-        title: "Google account already connected",
+        title: "Google hesabı zaten bağlı",
         description: providerLabel
-          ? `Sign in to the seotracker user that linked it, open the ${providerLabel} property picker, and choose Remove account beside the Google account. Then link it here.`
-          : "That Google account is already linked to a different seotracker user. Sign in with that user, or contact support for help.",
+          ? `Bu Google hesabı başka bir kayıtta bağlı görünüyor. ${providerLabel} mülk seçicisini açıp hesabın yanındaki Hesabı kaldır ile çözün, sonra buradan yeniden bağlayın.`
+          : "Bu Google hesabı başka bir kayıtta bağlı görünüyor. Ayarlar'daki mülk seçicisinden hesabı kaldırıp yeniden bağlayın.",
       };
     default:
       return {
-        title: `${what} didn't finish`,
+        title: `${what} tamamlanmadı`,
         description:
-          "Something went wrong while talking to Google. Please try again — if it keeps failing, contact support.",
+          "Google ile konuşurken bir şeyler ters gitti. Yeniden deneyin; sürerse konteyner günlüğünde hatanın ayrıntısı olacaktır.",
       };
   }
 }

@@ -130,7 +130,7 @@ function AuditDetail({
             <span>Bu denetim yüklenemedi. Silinmiş olabilir.</span>
           </div>
           <button className="btn btn-ghost btn-sm" onClick={onBack}>
-            &larr; Back to audits
+            &larr; Tüm denetimler
           </button>
         </div>
       </div>
@@ -188,9 +188,9 @@ function AuditDetail({
                 Denetim bu siteyi tamamen tarayamadı.
               </p>
               <p>
-                Sorry! This site's bot protection blocked our crawler. We don't
-                have a workaround for this yet. Desktop crawlers run from your
-                own machine and usually get past it: try{" "}
+                Sitenin bot koruması tarayıcımızı engelledi ve bunu aşmanın bir
+                yolu şu an yok. Kendi makinenizde çalışan masaüstü tarayıcılar
+                genellikle geçebiliyor:{" "}
                 <a
                   className="link link-primary"
                   href="https://github.com/PhialsBasement/LibreCrawl"
@@ -199,7 +199,7 @@ function AuditDetail({
                 >
                   LibreCrawl
                 </a>{" "}
-                (free, open source) or{" "}
+                (ücretsiz, açık kaynak) ya da{" "}
                 <a
                   className="link link-primary"
                   href="https://www.screamingfrog.co.uk/seo-spider/"
@@ -208,7 +208,7 @@ function AuditDetail({
                 >
                   Screaming Frog
                 </a>{" "}
-                (free up to 500 URLs).
+                (500 adrese kadar ücretsiz).
               </p>
             </div>
           </div>
@@ -219,13 +219,12 @@ function AuditDetail({
             <AlertCircle className="size-5" />
             <div className="space-y-1">
               <p className="font-medium">
-                This audit stopped early after {partialPageCount} page
-                {partialPageCount === 1 ? "" : "s"}.
+                Denetim {partialPageCount} sayfadan sonra erken durdu.
               </p>
               <p>
-                The results below cover everything crawled before it stopped.
-                Run a new audit to try again. If it keeps happening, check the
-                container log for the failing step.
+                Aşağıdaki sonuçlar durmadan önce taranan her şeyi kapsıyor.
+                Yeniden denemek için yeni bir denetim başlatın. Tekrar ederse
+                hangi adımın düştüğünü konteyner günlüğünde görebilirsiniz.
               </p>
             </div>
           </div>
@@ -298,7 +297,7 @@ function ProgressCard({
             <h2 className="font-medium flex items-center gap-2">
               <Loader2 className="size-4 animate-spin text-primary" />
               {isLighthousePhase
-                ? "Running Lighthouse checks"
+                ? "Lighthouse kontrolleri çalışıyor"
                 : "Sayfalar taranıyor"}
             </h2>
             <span className="badge badge-ghost badge-sm">{phaseLabel}</span>
@@ -313,9 +312,9 @@ function ProgressCard({
           <div className="flex items-center justify-between text-sm">
             {isLighthousePhase ? (
               <span>
-                {lighthouseDone} / {status.lighthouseTotal} checks
+                {lighthouseDone} / {status.lighthouseTotal} kontrol
                 {status.lighthouseFailed > 0
-                  ? ` (${status.lighthouseFailed} failed)`
+                  ? ` (${status.lighthouseFailed} başarısız)`
                   : ""}
               </span>
             ) : (

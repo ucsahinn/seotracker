@@ -62,18 +62,6 @@ function IndexRedirect() {
       );
     }
 
-    if (errorCode === "PAYMENT_REQUIRED") {
-      return (
-        <div className="flex items-center justify-center h-full p-4">
-          <div className="flex flex-col items-center gap-3 max-w-xl text-center">
-            <p className="text-base-content/80">
-              Redirecting you to billing so you can start a hosted subscription.
-            </p>
-          </div>
-        </div>
-      );
-    }
-
     return (
       <div className="flex items-center justify-center h-full p-4">
         <div className="flex flex-col items-center gap-3 max-w-xl">

@@ -102,7 +102,7 @@ export function GoogleAccountRemovalDialog({
             project{impact.data.projectCount === 1 ? "" : "s"}.
           </p>
         ) : (
-          <p className="text-sm text-muted">No projects will be affected.</p>
+          <p className="text-sm text-muted">Hiçbir proje etkilenmeyecek.</p>
         )}
         {removal.isError ? (
           <p role="alert" className="text-sm text-error">

@@ -95,7 +95,7 @@ export function GoogleAnalyticsConnectionCard({
         current ? { ...current, ...saved } : current,
       );
       captureClientEvent("ga4:property_select");
-      toast.success("Google Analytics connected");
+      toast.success("Google Analytics bağlandı");
       queryClient.removeQueries({ queryKey: ["ga4Properties", projectId] });
       void queryClient.invalidateQueries({ queryKey: connectionKey });
       setPicking(false);
@@ -105,7 +105,7 @@ export function GoogleAnalyticsConnectionCard({
   const disconnectMutation = useMutation({
     mutationFn: () => disconnectGa4({ data: { projectId } }),
     onSuccess: () => {
-      toast.success("Google Analytics disconnected from this project");
+      toast.success("Google Analytics bu projeden ayrıldı");
       queryClient.setQueryData(connectionKey, (current: typeof connection) =>
         current ? { ...current, connected: false } : current,
       );

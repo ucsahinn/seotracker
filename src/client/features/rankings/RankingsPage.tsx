@@ -1,4 +1,4 @@
-import { formatNumber } from "@/client/lib/format";
+import { formatDate, formatNumber } from "@/client/lib/format";
 import { PageShell } from "@/client/components/PageShell";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
@@ -205,9 +205,17 @@ function ArchiveStatus({
 
   if (data.rowCount === 0) return null;
 
+  // Both ends are nullable. Interpolated raw they rendered as nothing, so a
+  // half-populated archive read "Arşiv  –  arasını kapsıyor"; the range is
+  // either there or the sentence does without it.
+  const span =
+    data.earliestDate && data.lastDate
+      ? `${formatDate(data.earliestDate)} – ${formatDate(data.lastDate)} arasını kapsıyor, `
+      : "";
+
   return (
     <p className="text-xs text-muted">
-      Arşiv {data.earliestDate} – {data.lastDate} arasını kapsıyor,{" "}
+      Arşiv {span}
       {formatNumber(data.rowCount)} satır.
       {/* `newDays`, not the days written. A caught-up archive re-reads the
           three days Search Console is still revising on every open, and
@@ -282,7 +290,8 @@ function QueryHistoryCard({
       </div>
       <PositionSparkline rows={rows} />
       <p className="text-xs text-muted">
-        {first.date} – {last.date} · {rows.length} gün kayıtlı
+        {formatDate(first.date)} – {formatDate(last.date)} · {rows.length} gün
+        kayıtlı
       </p>
     </div>
   );

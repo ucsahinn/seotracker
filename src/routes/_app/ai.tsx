@@ -59,8 +59,8 @@ function AiPage() {
       <div className="mx-auto max-w-2xl">
         <h1 className="text-2xl font-semibold tracking-tight">Ajan kurulumu</h1>
         <p className="mt-3 text-pretty text-sm leading-relaxed text-base-content/70">
-          seotracker&apos;i kullanmanin en guclu yolu, zaten kullandiginiz yapay
-          zeka ajani. Bir kez kurun, sonra istediginizi sorun.
+          seotracker&apos;ı kullanmanın en güçlü yolu, zaten kullandığınız yapay
+          zeka ajanı. Bir kez kurun, sonra istediğinizi sorun.
         </p>
 
         <div role="tablist" className="tabs tabs-border mt-8 w-fit">

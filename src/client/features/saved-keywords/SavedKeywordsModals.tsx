@@ -3,7 +3,7 @@ import { Modal } from "@/client/components/Modal";
 
 export function RemoveSavedKeywordsError({ message }: { message: string }) {
   return (
-    <div className="flex items-start gap-2 rounded-lg border border-error/30 bg-error/10 p-3 text-sm text-error">
+    <div className="flex items-start gap-2 rounded-lg border border-error/30 bg-error/10 p-3 text-sm text-[var(--ink-error)]">
       <AlertCircle className="mt-0.5 size-4 shrink-0" />
       <span>{message}</span>
     </div>

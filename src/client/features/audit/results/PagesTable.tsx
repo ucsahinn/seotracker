@@ -132,7 +132,7 @@ function buildPagesColumns({
         // Red only when the engine flagged it — a 200 that isn't an HTML
         // document (robots.txt, security.txt) legitimately has no title.
         return missingTitlePageIds.has(row.original.id) ? (
-          <span className="text-error text-xs">missing</span>
+          <span className="text-xs text-[var(--ink-error)]">eksik</span>
         ) : (
           <EmptyCell />
         );

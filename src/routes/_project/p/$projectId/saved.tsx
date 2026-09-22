@@ -159,9 +159,7 @@ function SavedKeywordsPage() {
       captureClientEvent("saved_keywords:bulk_remove", {
         count: result.deletedCount,
       });
-      toast.success(
-        `${result.deletedCount} keyword${result.deletedCount !== 1 ? "s" : ""} removed`,
-      );
+      toast.success(`${result.deletedCount} kelime kaldırıldı`);
     },
     onError: (error) => {
       setRemoveError(getStandardErrorMessage(error, "Kaldırma başarısız."));
@@ -297,9 +295,7 @@ function SavedKeywordsPage() {
             void navigator.clipboard.writeText(
               selectedRows.map((row) => row.keyword).join("\n"),
             );
-            toast.success(
-              `${selectedCount} keyword${selectedCount !== 1 ? "s" : ""} copied`,
-            );
+            toast.success(`${selectedCount} kelime kopyalandı`);
           }}
           onOpenTags={() => setShowTagModal(true)}
           onExportCsv={() => exporter.exportSelectionCsv(selectedRows)}

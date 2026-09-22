@@ -91,7 +91,7 @@ export function SearchConsoleConnectionCard({
         current ? { ...current, ...saved } : current,
       );
       captureClientEvent("gsc:property_select");
-      toast.success("Search Console connected");
+      toast.success("Search Console bağlandı");
       queryClient.removeQueries({ queryKey: ["gscSites", projectId] });
       void queryClient.invalidateQueries({ queryKey: connectionKey });
       setPicking(false);
@@ -118,7 +118,7 @@ export function SearchConsoleConnectionCard({
   const disconnectMutation = useMutation({
     mutationFn: () => disconnectGsc({ data: { projectId } }),
     onSuccess: () => {
-      toast.success("Search Console disconnected from this project");
+      toast.success("Search Console bu projeden ayrıldı");
       queryClient.setQueryData(connectionKey, (current: typeof connection) =>
         current ? { ...current, connected: false } : current,
       );
