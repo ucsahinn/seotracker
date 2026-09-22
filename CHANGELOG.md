@@ -5,6 +5,11 @@ numaraları [SemVer](https://semver.org/lang/tr/) izler.
 
 ## [Yayınlanmamış]
 
+### Düzeltilenler
+
+- `pnpm run verify:local` her koşuda yeni bir proje bırakıyordu; artık tek bir
+  `seotracker verify` projesini yeniden kullanıyor.
+
 ## [0.2.0] — 2026-09-22
 
 Bu çatalın kendi ilk sürümü. Temel aldığı nokta
