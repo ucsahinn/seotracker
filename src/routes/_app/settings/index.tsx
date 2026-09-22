@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Monitor, Moon, Sun } from "lucide-react";
 import { GoogleOAuthClientSection } from "@/client/features/settings/GoogleOAuthClientSection";
 import { GoogleServiceAccountSection } from "@/client/features/settings/GoogleServiceAccountSection";
+import { UpdateSection } from "@/client/features/settings/UpdateSection";
 import { type ThemePreference, useThemePreference } from "@/client/lib/theme";
 import { version } from "../../../../package.json";
 
@@ -63,13 +64,7 @@ function PersonalSettings() {
 
       <GoogleServiceAccountSection />
 
-      <section className="space-y-3">
-        <h2 className="text-sm font-medium text-muted">Hakkında</h2>
-        <div className="flex items-center justify-between gap-6">
-          <span className="text-sm">Sürüm</span>
-          <span className="font-mono text-sm text-muted">v{version}</span>
-        </div>
-      </section>
+      <UpdateSection version={version} />
     </div>
   );
 }

@@ -39,3 +39,5 @@ data, or sensitive paths.
 - `pnpm` rewrites `badseo/pnpm-workspace.yaml` with CRLF on Windows (`core.autocrlf=true`), so `prettier --check` in `ci:check` fails on a file git reports as unmodified. `prettier --write` on that one file clears it; the content never changed.
 
 - `src/server/features/projects/services/projects.test.ts` intermittently times out under full-suite parallelism (`listProjectsEnsuringOne`, ~5s vs ~470ms in isolation) and passes on its own. Not investigated; it makes a green run non-deterministic, so compare the file and test counts rather than trusting the exit code.
+
+- RESOLVED: the `projects.test.ts` flake was `vi.resetModules()` + per-test `await import()`, the pattern CLAUDE.md bans. `projects.ts` holds no module-level state, so the reset bought nothing and cost determinism. Static import now; three consecutive full runs and a shuffled run are green.

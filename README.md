@@ -12,7 +12,8 @@ kaldırır.
 > **Sürümler hakkında.** GitHub çatallara özgün projenin etiketlerini
 > devreder; `v0.0.1` – `v0.1.9` bu depodan kaldırıldı, çünkü onlar
 > open-seo'nun yayınlarıydı, buranın değil. Bu çatalın kendi sürüm dizisi
-> `0.2.0` ile başlar.
+> `v0.2.0` ile başlar; değişiklikler
+> [`CHANGELOG.md`](./CHANGELOG.md) dosyasında.
 
 ## Ne yapar
 
@@ -76,6 +77,23 @@ dosyalarında.
 
 Hız skorları için ücretsiz bir PageSpeed Insights anahtarı önerilir; bu hâlâ bir
 ortam değişkeni: [`docs/PAGESPEED_API_KEY.md`](./docs/PAGESPEED_API_KEY.md).
+
+## Güncelleme
+
+```sh
+git pull
+docker compose up -d --build
+```
+
+Depo klasöründe çalıştırın. Veritabanınız ve şifreleme anahtarınız
+`seotracker_data` biriminde durur; güncelleme onu silmez, yeni göçler açılışta
+kendiliğinden uygulanır. `--build` gerekir çünkü uygulama derlemesi imajın
+içinde değil, konteyner açılışında yapılır — bu yüzden ilk açılış birkaç dakika
+sürer.
+
+**Ayarlar → Hakkında** bölümü günde bir kez GitHub'a bakıp yeni bir sürüm
+yayımlanıp yayımlanmadığını söyler. Bu denetimi oradan kapatabilirsiniz; kapalı
+olduğunda istek hiç kurulmaz.
 
 ## Güvenlik
 

@@ -5,6 +5,11 @@ on:
   push:
     branches:
       - main
+    # A release is cut from a tag, and a tag used to trigger nothing: the
+    # thing being published was covered only by whatever ran on main before
+    # it. Now the tag itself is checked.
+    tags:
+      - "v*"
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -62,7 +67,33 @@ jobs:
           context: .
           file: Dockerfile.selfhost
           push: false
-          load: false
+          # Loaded into the daemon so the boot check below can run it. The
+          # build alone proves the lockfile installs on linux/amd64 and
+          # nothing more: migrations, the SSR build and the preflight all
+          # happen at container start.
+          load: true
+          tags: seotracker:ci
           platforms: linux/amd64
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      # The class of failure the image build cannot see: a migration that
+      # does not apply, a binding that is wrong, an SSR build that runs out
+      # of heap, a route that never answers.
+      - name: Boot the container and verify it end to end
+        env:
+          SEOTRACKER_IMAGE: seotracker:ci
+        run: |
+          docker compose up -d
+          for i in $(seq 1 60); do
+            if curl -fsS http://127.0.0.1:3001/api/health >/dev/null 2>&1; then
+              echo "healthy after ${i} attempts"
+              break
+            fi
+            sleep 5
+          done
+          curl -fsS http://127.0.0.1:3001/api/health
+
+      - name: Container logs on failure
+        if: failure()
+        run: docker compose logs --tail=200

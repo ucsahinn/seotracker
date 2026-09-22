@@ -1,6 +1,13 @@
 # Use the full Node image so workerd has a working CA trust store for outbound HTTPS.
 FROM node:22
 
+# Provenance. Without these `docker inspect` cannot say which commit an image
+# was built from, which matters the moment two people report different
+# behaviour from "the same" seotracker:local.
+ARG SEOTRACKER_VERSION=0.0.0
+ARG SEOTRACKER_REVISION=unknown
+LABEL org.opencontainers.image.title="seotracker"       org.opencontainers.image.source="https://github.com/ucsahinn/seotracker"       org.opencontainers.image.licenses="MIT"       org.opencontainers.image.version="$SEOTRACKER_VERSION"       org.opencontainers.image.revision="$SEOTRACKER_REVISION"
+
 ENV PNPM_HOME=/pnpm
 ENV PATH=$PNPM_HOME:$PATH
 

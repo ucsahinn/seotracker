@@ -1,3 +1,4 @@
+import { version as appVersion } from "../../../package.json";
 import {
   type CallToolResult,
   McpServer,
@@ -112,7 +113,10 @@ export function createMcpServer(authProps: McpProps) {
     {
       name: "seotracker MCP",
       title: "seotracker",
-      version: "1.0.0",
+      // The install's own version, not a number of its own. It was pinned at
+      // "1.0.0" and told every connecting client that, which was wrong from
+      // the first release.
+      version: appVersion,
       description:
         "SEO tools for AI agents, all free-data: Google Search Console performance and URL inspection, Google Analytics reporting, site audits from a built-in crawler, saved keywords, project memory and reports.",
     },
