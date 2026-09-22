@@ -1,6 +1,10 @@
 name: CI
 
 on:
+  # Runnable by hand. A fork's workflows stay suspended until someone enables
+  # them, and without a manual trigger there is no way to get a first green
+  # run except by pushing something you did not otherwise need to push.
+  workflow_dispatch:
   pull_request:
   push:
     branches:
