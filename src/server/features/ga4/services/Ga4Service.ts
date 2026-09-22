@@ -4,6 +4,7 @@ import { account } from "@/db/schema";
 import { AppError } from "@/server/lib/errors";
 import { createGa4AdminClient } from "@/server/lib/ga4Client";
 import { Ga4AdminApiError, Ga4TokenError } from "@/server/lib/ga4Errors";
+import { GoogleServiceAccountRepository } from "@/server/features/google/GoogleServiceAccountRepository";
 import { hasServiceAccount } from "@/server/lib/googleServiceAccountToken";
 import { GA4_OAUTH_PROVIDER_ID } from "@/shared/ga4";
 import {
@@ -45,6 +46,13 @@ function requiresReconnect(error: unknown): boolean {
  */
 const GA4_SERVICE_ACCOUNT_ID = "service-account";
 
+/** The address the picker shows, and the one stored as the connector. */
+async function serviceAccountEmail(): Promise<string | null> {
+  return (
+    (await GoogleServiceAccountRepository.getStatus())?.clientEmail ?? null
+  );
+}
+
 async function listPropertiesForUserWithGrantStatus(userId: string) {
   // One credential, no grants to enumerate, and no signed-in person whose
   // email could be looked up. Same shape as a grant so the picker is unchanged.
@@ -55,7 +63,7 @@ async function listPropertiesForUserWithGrantStatus(userId: string) {
       accounts: [
         {
           accountId: GA4_SERVICE_ACCOUNT_ID,
-          email: null,
+          email: await serviceAccountEmail(),
           requiresReconnect: false,
           propertiesUnavailable: false,
           properties,
@@ -115,17 +123,25 @@ async function setProperty(input: {
   accountId: string;
   userId: string;
 }): Promise<Ga4Connection> {
-  const grants = await listGrantsForUser(input.userId);
-  if (!grants.some((grant) => grant.accountId === input.accountId)) {
-    throw new AppError(
-      "NOT_FOUND",
-      "That Google account isn't connected to your seotracker account.",
-    );
+  // Same as `GscService.setSite`: the reserved service-account id is not a
+  // Better Auth grant and never will be, so the grant check has to be skipped
+  // rather than failed.
+  const usingServiceAccount =
+    input.accountId === GA4_SERVICE_ACCOUNT_ID && (await hasServiceAccount());
+
+  if (!usingServiceAccount) {
+    const grants = await listGrantsForUser(input.userId);
+    if (!grants.some((grant) => grant.accountId === input.accountId)) {
+      throw new AppError(
+        "NOT_FOUND",
+        "That Google account isn't connected to your seotracker account.",
+      );
+    }
   }
 
   const client = createGa4AdminClient({
     userId: input.userId,
-    ga4AccountId: input.accountId,
+    ...(usingServiceAccount ? {} : { ga4AccountId: input.accountId }),
   });
   const properties = await client.listProperties();
   if (
@@ -139,10 +155,14 @@ async function setProperty(input: {
 
   const property = await client.getProperty(input.propertyId);
   let connectedAccountEmail: string | null = null;
-  try {
-    connectedAccountEmail = await client.getUserInfoEmail();
-  } catch {
-    connectedAccountEmail = null;
+  if (usingServiceAccount) {
+    connectedAccountEmail = await serviceAccountEmail();
+  } else {
+    try {
+      connectedAccountEmail = await client.getUserInfoEmail();
+    } catch {
+      connectedAccountEmail = null;
+    }
   }
 
   return Ga4ConnectionRepository.upsert({

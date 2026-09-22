@@ -23,7 +23,7 @@ type SecondaryAction = {
 };
 
 function accountLabel(account: Account) {
-  return account.email ?? `Google account · ${account.accountId.slice(-6)}`;
+  return account.email ?? `Google hesabı · ${account.accountId.slice(-6)}`;
 }
 
 export function GooglePropertyPicker({
@@ -193,9 +193,9 @@ export function GooglePropertyPicker({
                           className="btn btn-ghost btn-xs shrink-0 text-error"
                           disabled={saving}
                           onClick={() => setRemoving(account)}
-                          aria-label={`Remove ${accountLabel(account)}`}
+                          aria-label={`${accountLabel(account)} hesabını kaldır`}
                         >
-                          Remove account
+                          Hesabı kaldır
                         </button>
                       </div>
                       {account.requiresReconnect ? (
@@ -209,7 +209,7 @@ export function GooglePropertyPicker({
                             disabled={linking}
                             aria-busy={linking}
                           >
-                            {linking ? "Opening Google…" : "Reconnect"}
+                            {linking ? "Google açılıyor…" : "Yeniden bağlan"}
                           </button>
                         </div>
                       ) : account.unavailable ? (
@@ -299,7 +299,7 @@ export function GooglePropertyPicker({
                 ) : (
                   <Plus className="size-4" />
                 )}
-                {linking ? "Opening Google…" : "Add Google account"}
+                {linking ? "Google açılıyor…" : "Google hesabı ekle"}
               </button>
             </div>
           </div>

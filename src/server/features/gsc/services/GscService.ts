@@ -1,6 +1,7 @@
 import { and, eq } from "drizzle-orm";
 import { db } from "@/db";
 import { account } from "@/db/schema";
+import { GoogleServiceAccountRepository } from "@/server/features/google/GoogleServiceAccountRepository";
 import { hasServiceAccount } from "@/server/lib/googleServiceAccountToken";
 import { GSC_OAUTH_PROVIDER_ID } from "@/shared/gsc";
 import { AppError } from "@/server/lib/errors";
@@ -89,6 +90,13 @@ async function listGrantsForUser(userId: string) {
  */
 const SERVICE_ACCOUNT_ID = "service-account";
 
+/** The address the picker shows, and the one stored as the connector. */
+async function serviceAccountEmail(): Promise<string | null> {
+  return (
+    (await GoogleServiceAccountRepository.getStatus())?.clientEmail ?? null
+  );
+}
+
 /** Expected ways a stored grant fails to reach Search Console: no token could be
  *  minted (refresh token revoked or expired), or Google rejected the call
  *  (401/403). These surface a reconnect prompt without fault logging. */
@@ -117,7 +125,7 @@ async function listSitesForUserWithGrantStatus(
       accounts: [
         {
           accountId: SERVICE_ACCOUNT_ID,
-          email: null,
+          email: await serviceAccountEmail(),
           requiresReconnect: false,
           propertiesUnavailable: false,
           sites,
@@ -179,17 +187,28 @@ async function setSite(input: {
   accountId: string;
   userId: string;
 }): Promise<GscConnection> {
-  const grants = await listGrantsForUser(input.userId);
-  if (!grants.some((grant) => grant.accountId === input.accountId)) {
-    throw new AppError(
-      "NOT_FOUND",
-      "That Google account isn't connected to your seotracker account.",
-    );
+  /*
+   * A service account has no grant to check against, and the reserved id the
+   * picker uses for it will never appear in Better Auth. Listing was taught
+   * this and saving was not, so choosing a property came back as "İstenen
+   * kayıt bulunamadı" - the connection could be seen and never made.
+   */
+  const usingServiceAccount =
+    input.accountId === SERVICE_ACCOUNT_ID && (await hasServiceAccount());
+
+  if (!usingServiceAccount) {
+    const grants = await listGrantsForUser(input.userId);
+    if (!grants.some((grant) => grant.accountId === input.accountId)) {
+      throw new AppError(
+        "NOT_FOUND",
+        "That Google account isn't connected to your seotracker account.",
+      );
+    }
   }
 
   const client = createGscClient({
     userId: input.userId,
-    gscAccountId: input.accountId,
+    ...(usingServiceAccount ? {} : { gscAccountId: input.accountId }),
   });
   const sites = await client.listSites();
   const match = sites.find((s) => s.siteUrl === input.siteUrl);
@@ -206,10 +225,14 @@ async function setSite(input: {
     );
   }
   let connectedAccountEmail: string | null = null;
-  try {
-    connectedAccountEmail = await client.getUserInfoEmail();
-  } catch {
-    connectedAccountEmail = null;
+  if (usingServiceAccount) {
+    connectedAccountEmail = await serviceAccountEmail();
+  } else {
+    try {
+      connectedAccountEmail = await client.getUserInfoEmail();
+    } catch {
+      connectedAccountEmail = null;
+    }
   }
   return GscConnectionRepository.upsert({
     projectId: input.projectId,

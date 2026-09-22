@@ -45,6 +45,9 @@ const mocks = vi.hoisted(() => {
     upsert: vi.fn(),
     getByProjectId: vi.fn(),
     deleteByProjectId: vi.fn(),
+    hasServiceAccount: vi.fn<() => Promise<boolean>>(),
+    getServiceAccountStatus:
+      vi.fn<() => Promise<{ clientEmail: string } | null>>(),
   };
 });
 
@@ -54,7 +57,10 @@ vi.mock("@/db", () => ({
 }));
 // Reaches the database, which this service test stubs out entirely.
 vi.mock("@/server/lib/googleServiceAccountToken", () => ({
-  hasServiceAccount: () => Promise.resolve(false),
+  hasServiceAccount: mocks.hasServiceAccount,
+}));
+vi.mock("@/server/features/google/GoogleServiceAccountRepository", () => ({
+  GoogleServiceAccountRepository: { getStatus: mocks.getServiceAccountStatus },
 }));
 vi.mock("@/server/lib/gscClient", () => ({
   createGscClient: mocks.createGscClient,
@@ -81,6 +87,45 @@ describe("GscService.setSite", () => {
     mocks.getUserInfoEmail.mockReset();
     mocks.createGscClient.mockClear();
     mocks.upsert.mockReset();
+    mocks.hasServiceAccount.mockResolvedValue(false);
+    mocks.getServiceAccountStatus.mockResolvedValue(null);
+  });
+
+  /*
+   * The reserved id the picker uses for a service account is not a Better
+   * Auth grant and never will be. Listing was taught that and saving was
+   * not, so a service-account install could see its property and never
+   * connect it - the save came back NOT_FOUND. Nothing here covered the
+   * save path, which is why it reached a real operator.
+   */
+  it("saves a property for a service account, which has no grant to match", async () => {
+    mocks.hasServiceAccount.mockResolvedValue(true);
+    mocks.getServiceAccountStatus.mockResolvedValue({
+      clientEmail: "robot@p.iam.gserviceaccount.com",
+    });
+    mocks.state.selectRows = [];
+    mocks.listSites.mockResolvedValue([
+      { siteUrl: "sc-domain:x.test", permissionLevel: "siteOwner" },
+    ]);
+    mocks.upsert.mockResolvedValue({ siteUrl: "sc-domain:x.test" });
+
+    await GscService.setSite({
+      ...baseInput,
+      accountId: "service-account",
+      siteUrl: "sc-domain:x.test",
+    });
+
+    // No `gscAccountId`: there is no grant to target.
+    expect(mocks.createGscClient).toHaveBeenCalledWith({ userId: "u1" });
+    expect(mocks.getUserInfoEmail).not.toHaveBeenCalled();
+    expect(mocks.upsert).toHaveBeenCalledWith(
+      expect.objectContaining({
+        siteUrl: "sc-domain:x.test",
+        // `userinfo` describes a signed-in person; the account's own address
+        // is the honest answer for who connected this.
+        connectedAccountEmail: "robot@p.iam.gserviceaccount.com",
+      }),
+    );
   });
 
   it("upserts a verified property with the selected grant and userinfo email", async () => {
