@@ -110,8 +110,6 @@ function Report({ data }: { data: OpportunityReport }) {
     );
   }
 
-  const scored = data.rows.filter((row) => row.score != null).length;
-
   return (
     <>
       <MetricRow>
@@ -120,10 +118,14 @@ function Report({ data }: { data: OpportunityReport }) {
           value={formatNumber(data.rowCount)}
           hint={`${formatNumber(data.totalCandidateRows)} aday sayfadan`}
         />
+        {/* Was "Puanlanan", counted over the returned page, and every row
+            carries a score since unmatched pages started being scored too -
+            so it always equalled the row count while its hint described the
+            Analytics match. This is the number the hint meant. */}
         <MetricTile
-          label="Puanlanan"
-          value={formatNumber(scored)}
-          hint="Analytics verisiyle eşleşenler"
+          label="Analytics eşleşmesi"
+          value={formatNumber(data.coverage.matchedRows)}
+          hint={`${formatNumber(data.totalCandidateRows)} aday içinde`}
         />
         <MetricTile
           label="Eşleşmeyen"
@@ -188,7 +190,8 @@ function Report({ data }: { data: OpportunityReport }) {
 
       <p className="text-xs text-muted">
         Puan = talep (%50) + iş değeri (%30) + erişilebilirlik (%20).
-        Analytics&apos;te eşleşmeyen sayfalar listede kalır ama puanlanmaz.
+        Analytics&apos;te eşleşmeyen sayfalar da puanlanır; iş değeri için hak
+        etmedikleri bir sıfır yerine nötr orta değeri alırlar.
       </p>
     </>
   );

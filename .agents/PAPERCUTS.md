@@ -37,3 +37,5 @@ data, or sensitive paths.
 - [ ] `2026-09-19T18:05:00Z` — `claude` — Every app page logs one console error: `GET /api/auth/get-session 404`. Better Auth exists here only to encrypt and refresh Google tokens and deliberately serves no `/api/auth` route (see `src/lib/auth.ts`), but a client-side probe still calls it. Harmless — the user is resolved server-side from `AUTH_MODE` — just noise in devtools. Pre-existing, not investigated.
 
 - `pnpm` rewrites `badseo/pnpm-workspace.yaml` with CRLF on Windows (`core.autocrlf=true`), so `prettier --check` in `ci:check` fails on a file git reports as unmodified. `prettier --write` on that one file clears it; the content never changed.
+
+- `src/server/features/projects/services/projects.test.ts` intermittently times out under full-suite parallelism (`listProjectsEnsuringOne`, ~5s vs ~470ms in isolation) and passes on its own. Not investigated; it makes a green run non-deterministic, so compare the file and test counts rather than trusting the exit code.

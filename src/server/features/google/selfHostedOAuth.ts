@@ -10,7 +10,12 @@ import { getAuthMode } from "@/lib/auth-mode";
 import { resolveCloudflareAccessContext } from "@/middleware/ensure-user/cloudflareAccess";
 import { resolveLocalNoAuthContext } from "@/middleware/ensure-user/delegated";
 import { AppError } from "@/server/lib/errors";
-import { responseForAppError } from "@/server/lib/http-errors";
+import {
+  createOAuthState,
+  verifyOAuthState,
+  type OAuthState,
+} from "@/server/features/google/selfHostedOAuthState";
+import { captureServerError } from "@/server/lib/observability";
 import { getPublicOrigin } from "@/server/mcp/public-origin";
 import { GA4_OAUTH_PROVIDER_ID, GA4_OAUTH_SCOPES } from "@/shared/ga4";
 import { GSC_OAUTH_PROVIDER_ID, GSC_OAUTH_SCOPES } from "@/shared/gsc";
@@ -53,12 +58,6 @@ export const GA4_INTEGRATION: SelfHostedGoogleOAuthIntegration = {
   scopes: GA4_OAUTH_SCOPES,
 };
 
-const oauthStateSchema = z.object({
-  userId: z.string().min(1),
-  callbackPath: z.string().min(1),
-  exp: z.number().int(),
-});
-
 const googleTokenResponseSchema = z.object({
   access_token: z.string().min(1),
   expires_in: z.number().optional(),
@@ -71,115 +70,33 @@ const googleTokenResponseSchema = z.object({
 const googleIdTokenSchema = z.object({ sub: z.string().min(1) });
 type GoogleTokenResponse = z.infer<typeof googleTokenResponseSchema>;
 
-function bytesToBase64Url(bytes: Uint8Array) {
-  let binary = "";
-  for (const byte of bytes) binary += String.fromCharCode(byte);
-  return btoa(binary)
-    .replaceAll("+", "-")
-    .replaceAll("/", "_")
-    .replaceAll("=", "");
-}
-
-function base64UrlToBytes(value: string) {
-  const padded = `${value}${"=".repeat((4 - (value.length % 4)) % 4)}`;
-  const binary = atob(padded.replaceAll("-", "+").replaceAll("_", "/"));
-  return Uint8Array.from(binary, (char) => char.charCodeAt(0));
-}
-
-async function getStateKey(clientSecret: string, stateNamespace: string) {
-  return crypto.subtle.importKey(
-    "raw",
-    new TextEncoder().encode(`seotracker:${stateNamespace}:${clientSecret}`),
-    { name: "HMAC", hash: "SHA-256" },
-    false,
-    ["sign", "verify"],
-  );
-}
-
-async function signState(
-  payload: string,
-  clientSecret: string,
-  stateNamespace: string,
-) {
-  const signature = await crypto.subtle.sign(
-    "HMAC",
-    await getStateKey(clientSecret, stateNamespace),
-    new TextEncoder().encode(payload),
-  );
-  return bytesToBase64Url(new Uint8Array(signature));
-}
-
-function getSafeCallbackPath(callbackURL: string, publicOrigin: string) {
-  try {
-    const url = new URL(callbackURL, publicOrigin);
-    if (url.origin !== publicOrigin) return "/";
-    return `${url.pathname}${url.search}${url.hash}`;
-  } catch {
-    return "/";
-  }
-}
-
-async function createState(input: {
-  integration: SelfHostedGoogleOAuthIntegration;
-  clientSecret: string;
-  userId: string;
-  callbackURL: string;
-  publicOrigin: string;
-}) {
-  const payload = bytesToBase64Url(
-    new TextEncoder().encode(
-      JSON.stringify({
-        userId: input.userId,
-        callbackPath: getSafeCallbackPath(
-          input.callbackURL,
-          input.publicOrigin,
-        ),
-        exp: Date.now() + 10 * 60 * 1_000,
-      }),
-    ),
-  );
-  const signature = await signState(
-    payload,
-    input.clientSecret,
-    input.integration.stateNamespace,
-  );
-  return `${payload}.${signature}`;
-}
-
-async function verifyState(input: {
-  state: string;
-  clientSecret: string;
-  integration: SelfHostedGoogleOAuthIntegration;
-}) {
-  const [payload, signature] = input.state.split(".");
-  if (!payload || !signature) {
-    throw new AppError(
-      "VALIDATION_ERROR",
-      `Invalid ${input.integration.displayName} state`,
-    );
-  }
-  const ok = await crypto.subtle.verify(
-    "HMAC",
-    await getStateKey(input.clientSecret, input.integration.stateNamespace),
-    base64UrlToBytes(signature),
-    new TextEncoder().encode(payload),
-  );
-  if (!ok) {
-    throw new AppError(
-      "VALIDATION_ERROR",
-      `Invalid ${input.integration.displayName} state`,
-    );
-  }
-  const parsed = oauthStateSchema.parse(
-    JSON.parse(new TextDecoder().decode(base64UrlToBytes(payload))),
-  );
-  if (parsed.exp < Date.now()) {
-    throw new AppError(
-      "VALIDATION_ERROR",
-      `Expired ${input.integration.displayName} state`,
-    );
-  }
-  return parsed;
+/*
+ * Send the operator back into the app carrying the reason.
+ *
+ * `google_link_error` is the marker `googleLinkError.ts` reads at module
+ * init, and `error` is the code `googleAuthErrorCopy` turns into a Turkish
+ * sentence. Nothing on the server ever set either one, so the whole alert
+ * path was unreachable: declining at Google's consent screen redirected back
+ * with `?error=access_denied`, which this file answered by dropping the
+ * parameter and returning the operator to the integrations page as though
+ * nothing had happened.
+ *
+ * `fallbackPath` is used when the state did not verify, because then there
+ * is no `callbackPath` to trust. `/` bounces to the default project, and the
+ * capture runs before the router does, so the alert survives that hop.
+ */
+function redirectWithLinkError(
+  integration: SelfHostedGoogleOAuthIntegration,
+  code: string,
+  callbackPath = "/",
+): Response {
+  const target = new URL(callbackPath, "http://placeholder.invalid");
+  target.searchParams.set("google_link_error", integration.stateNamespace);
+  target.searchParams.set("error", code);
+  return new Response(null, {
+    status: 303,
+    headers: { Location: `${target.pathname}${target.search}` },
+  });
 }
 
 function getRedirectUri(
@@ -297,8 +214,8 @@ export async function createSelfHostedGoogleAuthorizationUrl(input: {
     );
   }
   const redirectUri = getRedirectUri(input.publicOrigin, input.integration);
-  const state = await createState({
-    integration: input.integration,
+  const state = await createOAuthState({
+    stateNamespace: input.integration.stateNamespace,
     clientSecret: config.clientSecret,
     userId: input.user.userId,
     callbackURL: input.callbackURL,
@@ -331,18 +248,22 @@ export async function handleSelfHostedGoogleOAuthCallback(input: {
   const url = new URL(input.request.url);
   const stateParam = url.searchParams.get("state");
   if (!stateParam) {
-    return new Response(
-      `Missing ${input.integration.displayName} OAuth state`,
-      {
-        status: 400,
-      },
-    );
+    return redirectWithLinkError(input.integration, "state_mismatch");
   }
-  const state = await verifyState({
-    state: stateParam,
-    clientSecret: config.clientSecret,
-    integration: input.integration,
-  });
+  let state: OAuthState;
+  try {
+    state = await verifyOAuthState({
+      state: stateParam,
+      clientSecret: config.clientSecret,
+      stateNamespace: input.integration.stateNamespace,
+      displayName: input.integration.displayName,
+    });
+  } catch {
+    // Ten minutes is not long when the other tab is Google Cloud Console, so
+    // this is the ordinary way a first connection fails. It used to end on an
+    // unstyled English sentence with nothing to click.
+    return redirectWithLinkError(input.integration, "state_mismatch");
+  }
   if (state.userId !== input.user.userId) {
     return new Response(
       `${input.integration.displayName} OAuth user mismatch`,
@@ -356,12 +277,21 @@ export async function handleSelfHostedGoogleOAuthCallback(input: {
       status: 303,
       headers: { Location: state.callbackPath },
     });
-  if (url.searchParams.get("error")) return redirectToCallback();
+  const googleError = url.searchParams.get("error");
+  if (googleError) {
+    return redirectWithLinkError(
+      input.integration,
+      googleError,
+      state.callbackPath,
+    );
+  }
   const code = url.searchParams.get("code");
   if (!code) {
-    return new Response(`Missing ${input.integration.displayName} OAuth code`, {
-      status: 400,
-    });
+    return redirectWithLinkError(
+      input.integration,
+      "unknown",
+      state.callbackPath,
+    );
   }
   const tokens = await exchangeCode({
     integration: input.integration,
@@ -398,9 +328,18 @@ export async function handleSelfHostedGoogleOAuthCallbackRequest(
       publicOrigin: getPublicOrigin(request),
     });
   } catch (error) {
-    return responseForAppError(
-      error,
-      `${integration.displayName} OAuth failed`,
-    );
+    /*
+     * A failure past state verification - the token exchange, or storing the
+     * grant - is a server fault rather than something the operator did. It
+     * still belongs in the app: a bare 400 in an empty tab gives them nothing
+     * to click, and the generic branch of `googleAuthErrorCopy` says to try
+     * again and where to look if it keeps failing. The detail stays in the
+     * container log, which is where it is useful.
+     */
+    void captureServerError(error, {
+      scope: "selfHostedGoogleOAuth",
+      integration: integration.stateNamespace,
+    });
+    return redirectWithLinkError(integration, "unknown");
   }
 }

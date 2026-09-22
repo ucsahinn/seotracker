@@ -64,20 +64,6 @@ async function recordFirstMcpToolCall(organizationId: string): Promise<void> {
     });
 }
 
-async function markCompetitorStepClicked(projectId: string): Promise<void> {
-  const now = new Date().toISOString();
-  await db
-    .insert(projectActivationState)
-    .values({ projectId, competitorStepClickedAt: now, updatedAt: now })
-    .onConflictDoUpdate({
-      target: projectActivationState.projectId,
-      set: {
-        competitorStepClickedAt: sql`coalesce(${projectActivationState.competitorStepClickedAt}, ${now})`,
-        updatedAt: now,
-      },
-    });
-}
-
 async function markGa4CardDismissed(projectId: string): Promise<void> {
   const now = new Date().toISOString();
   await db
@@ -116,12 +102,6 @@ async function setStepDismissed(
       .values({ userId, projectId, step })
       .onConflictDoNothing();
   } else {
-    if (step === "mcp") {
-      await db
-        .update(projectActivationState)
-        .set({ mcpCardDismissedAt: null })
-        .where(eq(projectActivationState.projectId, projectId));
-    }
     await db
       .delete(dashboardStepDismissals)
       .where(
@@ -142,6 +122,5 @@ export const ActivationRepository = {
   getProjectActivation,
   recordFirstMcpAuthorized,
   recordFirstMcpToolCall,
-  markCompetitorStepClicked,
   markGa4CardDismissed,
 };

@@ -48,11 +48,13 @@ export function getStepStatus(
     gsc: activation.gsc.connected,
   };
   if (completed[step]) return "done";
-  // Preserve previous MCP dismissals without treating them as authorization.
-  if (
-    activation.dismissedSteps.includes(step) ||
-    (step === "mcp" && activation.mcp.cardDismissedAt !== null)
-  )
-    return "skipped";
+  /*
+   * `dismissedSteps` is the whole mechanism. There used to be a second
+   * branch here on `mcp.cardDismissedAt`, a column nothing in this fork ever
+   * writes a timestamp to - only `null` - so on the fresh install this
+   * product actually ships as, it could not fire. The test that covered it
+   * had to invent a value the system has no way to produce.
+   */
+  if (activation.dismissedSteps.includes(step)) return "skipped";
   return "todo";
 }

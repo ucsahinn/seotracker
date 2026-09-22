@@ -17,7 +17,6 @@ export type DashboardActivation = {
   mcp: {
     authorizedAt: string | null;
     firstToolCallAt: string | null;
-    cardDismissedAt: string | null;
   };
   hasMultipleProjects: boolean;
   dismissedSteps: string[];
@@ -69,7 +68,6 @@ async function getActivation(input: {
     mcp: {
       authorizedAt: orgActivation?.firstMcpAuthorizedAt ?? null,
       firstToolCallAt: orgActivation?.firstMcpToolCallAt ?? null,
-      cardDismissedAt: projectActivation?.mcpCardDismissedAt ?? null,
     },
   };
 }

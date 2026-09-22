@@ -201,7 +201,8 @@ export function DimensionTable({
       wrapperClassName="overflow-x-auto"
       empty={
         <p className="p-6 text-sm text-muted">
-          No data for this period yet. Search Console data trails by a few days.
+          Bu dönem için henüz veri yok. Search Console verisi birkaç gün
+          gecikmeli gelir.
         </p>
       }
     />
@@ -282,9 +283,8 @@ export function StrikingDistanceTable({
   if (rows.length === 0) {
     return (
       <p className="p-6 text-sm text-muted">
-        No striking-distance queries in this period. These are queries ranking
-        at positions 5 to 20, where an improvement is most likely to move
-        traffic.
+        Bu dönemde eşiğe yakın sorgu yok. Bunlar 5 ile 20. sıra arasındaki,
+        iyileştirmenin trafiğe en çok dokunacağı sorgulardır.
       </p>
     );
   }
@@ -293,8 +293,8 @@ export function StrikingDistanceTable({
     <>
       <div className="p-4">
         <p className="mb-3 text-sm text-muted">
-          Queries ranking at positions 5 to 20, sorted by impressions. Improve
-          the listed page to move them into the top results.
+          5 ile 20. sıra arasındaki sorgular, gösterime göre sıralı. Listedeki
+          sayfayı iyileştirerek bunları ilk sonuçlara taşıyabilirsiniz.
         </p>
         <AppDataTable
           table={table}

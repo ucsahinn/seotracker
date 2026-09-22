@@ -5,6 +5,14 @@ import {
   resolveStartUrlRedirects,
 } from "@/server/lib/audit/url-policy";
 
+// A fresh Response per call: the A and AAAA lookups run in parallel and a
+// body can only be read once.
+const dnsAnswer = () =>
+  new Response(JSON.stringify({ Status: 0, Answer: [] }), {
+    status: 200,
+    headers: { "content-type": "application/dns-json" },
+  });
+
 describe("normalizeAndValidateStartUrl", () => {
   beforeEach(() => {
     vi.stubGlobal("fetch", vi.fn());
@@ -15,16 +23,40 @@ describe("normalizeAndValidateStartUrl", () => {
   });
 
   it("adds https when protocol is missing and strips hash", async () => {
-    vi.mocked(fetch).mockResolvedValue(
-      new Response(JSON.stringify({ Status: 0, Answer: [] }), {
-        status: 200,
-        headers: { "content-type": "application/dns-json" },
-      }),
-    );
+    vi.mocked(fetch).mockImplementation(async () => dnsAnswer());
 
     await expect(
       normalizeAndValidateStartUrl("example.com/path#section"),
     ).resolves.toBe("https://example.com/path");
+  });
+
+  /*
+   * The check is there to keep the crawler out of the operator's own
+   * network, so it must not quietly pass the target through when it cannot
+   * run - an install that cannot reach the DNS resolver used to allow
+   * everything.
+   */
+  it("refuses rather than allowing when the name cannot be resolved", async () => {
+    vi.mocked(fetch).mockRejectedValue(new Error("getaddrinfo ENOTFOUND"));
+
+    await expect(
+      normalizeAndValidateStartUrl("https://example.com"),
+    ).rejects.toMatchObject({
+      code: "CRAWL_TARGET_BLOCKED",
+    } satisfies Partial<AppError>);
+  });
+
+  // Reachable only through the container's own resolver or its hosts file,
+  // and rejected without asking anyone.
+  it("blocks a single-label host with no lookup at all", async () => {
+    vi.mocked(fetch).mockRejectedValue(new Error("should not be called"));
+
+    await expect(
+      normalizeAndValidateStartUrl("http://nas"),
+    ).rejects.toMatchObject({
+      code: "CRAWL_TARGET_BLOCKED",
+    } satisfies Partial<AppError>);
+    expect(vi.mocked(fetch)).not.toHaveBeenCalled();
   });
 
   it("blocks localhost-like targets", async () => {

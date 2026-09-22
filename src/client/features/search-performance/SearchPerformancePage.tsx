@@ -41,9 +41,9 @@ import {
 } from "@/types/schemas/search-performance";
 
 const RANGE_LABELS: Record<SearchPerformanceDateRange, string> = {
-  last_7_days: "Last 7 days",
-  last_28_days: "Last 28 days",
-  last_3_months: "Last 3 months",
+  last_7_days: "Son 7 gün",
+  last_28_days: "Son 28 gün",
+  last_3_months: "Son 3 ay",
 };
 const RANGE_OPTIONS = SEARCH_PERFORMANCE_RANGES.map((value) => ({
   value,
@@ -51,8 +51,8 @@ const RANGE_OPTIONS = SEARCH_PERFORMANCE_RANGES.map((value) => ({
 }));
 
 const DEVICE_LABELS: Record<SearchPerformanceDevice, string> = {
-  DESKTOP: "Desktop",
-  MOBILE: "Mobile",
+  DESKTOP: "Masaüstü",
+  MOBILE: "Mobil",
   TABLET: "Tablet",
 };
 const DEVICE_OPTIONS = GSC_DEVICES.map((value) => ({
@@ -324,7 +324,7 @@ export function SearchPerformancePage({
                       onClick: () => void handleExport("sheets"),
                     },
                     {
-                      label: "Download CSV",
+                      label: "CSV indir",
                       icon: <Download className="size-4" />,
                       onClick: () => void handleExport("csv"),
                     },

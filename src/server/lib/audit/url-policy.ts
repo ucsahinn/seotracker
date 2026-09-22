@@ -126,6 +126,16 @@ function isBlockedHost(hostname: string): boolean {
     return isPrivateIpv4(host) || isPrivateIpv6(host);
   }
 
+  /*
+   * A single-label host - `nas`, `printer`, `router` - matches no blocked
+   * suffix and is not an IP literal, so it used to reach the DNS check and,
+   * whenever that check could not run, the crawler. It can only resolve
+   * through the container's own resolver or its hosts file; no site on the
+   * public internet is named this way. Rejecting it here costs nothing and
+   * holds even when the resolver is unreachable.
+   */
+  if (!host.includes(".")) return true;
+
   return false;
 }
 
@@ -151,7 +161,11 @@ async function resolveAddressRecords(
     },
   );
 
-  if (!response.ok) return [];
+  // Not "no records" - the resolver did not answer. Distinguished so the
+  // caller can fail closed rather than read a 503 as an all-clear.
+  if (!response.ok) {
+    throw new Error(`DoH lookup failed with ${response.status}`);
+  }
 
   const body: DnsJsonResponse = await response.json();
   if (body.Status !== 0 || !Array.isArray(body.Answer)) return [];
@@ -163,27 +177,47 @@ async function resolveAddressRecords(
   ).map((answer) => normalizeHost(answer.data));
 }
 
+/**
+ * Whether the name points somewhere private.
+ *
+ * Throws rather than returning `false` when the lookup itself fails. The
+ * check exists to stop the crawler reaching the operator's own network, and
+ * a control that silently switches itself off the moment it cannot run is
+ * worse than one that says so: an install that cannot reach
+ * `cloudflare-dns.com` - egress-filtered, air-gapped, a corporate proxy -
+ * used to let every hostname through. Refusing is also honest about what it
+ * knows, and the message says which part failed.
+ *
+ * An answered lookup with no records is a different thing and stays `false`:
+ * Google said the name does not resolve, which is not evidence of a private
+ * address, and the fetch that follows will fail on its own.
+ */
 async function hostnameResolvesToBlockedAddress(
   hostname: string,
 ): Promise<boolean> {
   const host = normalizeHost(hostname);
   if (!host || isIpLiteral(host)) return false;
 
+  let addresses: string[];
   try {
     const [v4, v6] = await Promise.all([
       resolveAddressRecords(host, "A"),
       resolveAddressRecords(host, "AAAA"),
     ]);
-
-    const addresses = [...v4, ...v6];
-    if (addresses.length === 0) return false;
-
-    return addresses.some(
-      (address) => isPrivateIpv4(address) || isPrivateIpv6(address),
+    addresses = [...v4, ...v6];
+  } catch (error) {
+    throw new AppError(
+      "CRAWL_TARGET_BLOCKED",
+      "Adresin nereye çözümlendiği doğrulanamadı, bu yüzden tarama başlatılmadı. Konteynerin cloudflare-dns.com adresine erişebildiğinden emin olun.",
+      { reason: error instanceof Error ? error.message : "dns_lookup_failed" },
     );
-  } catch {
-    return false;
   }
+
+  if (addresses.length === 0) return false;
+
+  return addresses.some(
+    (address) => isPrivateIpv4(address) || isPrivateIpv6(address),
+  );
 }
 
 /**

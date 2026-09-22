@@ -229,6 +229,13 @@ export const projectActivationState = sqliteTable("project_activation_state", {
   projectId: text("project_id")
     .primaryKey()
     .references(() => projects.id, { onDelete: "cascade" }),
+  /*
+   * Vestigial: inherited from upstream and written by nothing here.
+   * `competitor_step_clicked_at` belonged to a surface this fork removed,
+   * and `mcp_card_dismissed_at` was superseded by `dashboard_step_dismissals`.
+   * Kept rather than dropped because removing a column is a migration that
+   * risks an operator's data to reclaim nothing.
+   */
   competitorStepClickedAt: text("competitor_step_clicked_at"),
   // "I already connected" on the MCP card: hides the card for this project
   // without faking the org-level first-tool-call milestone, which stays

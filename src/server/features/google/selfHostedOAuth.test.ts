@@ -177,14 +177,21 @@ describe("self-hosted Google OAuth providers", () => {
       if (kind === "tampered") state = `${state.slice(0, -1)}x`;
       else vi.setSystemTime(new Date("2026-08-07T12:11:00Z"));
 
-      await expect(
-        handleSelfHostedGoogleOAuthCallback({
-          integration: GA4_INTEGRATION,
-          request: callbackRequest(GA4_INTEGRATION, state, { code: "code-1" }),
-          user,
-          publicOrigin,
-        }),
-      ).rejects.toMatchObject({ code: "VALIDATION_ERROR" });
+      const response = await handleSelfHostedGoogleOAuthCallback({
+        integration: GA4_INTEGRATION,
+        request: callbackRequest(GA4_INTEGRATION, state, { code: "code-1" }),
+        user,
+        publicOrigin,
+      });
+
+      // Refused, and the operator is put back in the app with the reason
+      // rather than on a bare 400 with nothing to click. Ten minutes is not
+      // long when the other tab is Google Cloud Console, so an expired state
+      // is the ordinary way a first connection fails.
+      expect(response.status).toBe(303);
+      expect(response.headers.get("location")).toBe(
+        "/?google_link_error=ga4&error=state_mismatch",
+      );
       expect(mocks.fetch).not.toHaveBeenCalled();
       expect(mocks.insertValues).not.toHaveBeenCalled();
     },
@@ -202,6 +209,11 @@ describe("self-hosted Google OAuth providers", () => {
     });
 
     expect(response.status).toBe(303);
+    // The code travels with the redirect: without it the operator landed back
+    // on the integrations page as though nothing had happened.
+    expect(response.headers.get("location")).toContain(
+      "google_link_error=ga4&error=access_denied",
+    );
     expect(mocks.fetch).not.toHaveBeenCalled();
     expect(mocks.insertValues).not.toHaveBeenCalled();
   });

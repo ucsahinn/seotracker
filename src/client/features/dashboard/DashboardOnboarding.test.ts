@@ -20,7 +20,7 @@ const fresh: DashboardActivation = {
   domain: null,
   ga4: { connected: false, propertyDisplayName: null, cardDismissedAt: null },
   gsc: { connected: false, siteUrl: null },
-  mcp: { authorizedAt: null, firstToolCallAt: null, cardDismissedAt: null },
+  mcp: { authorizedAt: null, firstToolCallAt: null },
   hasMultipleProjects: false,
   dismissedSteps: [],
 };

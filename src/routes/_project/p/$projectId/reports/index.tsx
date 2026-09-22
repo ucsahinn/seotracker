@@ -41,7 +41,7 @@ function ReportsPage() {
         <div>
           <h1 className="text-2xl font-semibold">Raporlar</h1>
           <p className="text-sm text-base-content/70">
-            HTML reports your agents saved to this project.
+            Ajanlarınızın bu projeye kaydettiği HTML raporlar.
           </p>
         </div>
         <Link
@@ -49,7 +49,7 @@ function ReportsPage() {
           params={{ projectId }}
           className="btn btn-ghost btn-sm"
         >
-          Templates
+          Şablonlar
         </Link>
       </div>
 

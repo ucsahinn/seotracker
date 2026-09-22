@@ -80,24 +80,6 @@ describe("checklist persistence", () => {
       await ActivationRepository.getDismissedSteps("alice", "project-a"),
     ).toEqual([]);
   });
-  it("restores legacy MCP dismissals without changing authorization milestones", async () => {
-    state.database!.exec(
-      "INSERT INTO project_activation_state VALUES ('project-a', '2026-09-05')",
-    );
-    await ActivationRepository.setStepDismissed(
-      "alice",
-      "project-a",
-      "mcp",
-      false,
-    );
-    expect(
-      state
-        .database!.prepare(
-          "SELECT mcp_card_dismissed_at FROM project_activation_state",
-        )
-        .get()?.mcp_card_dismissed_at,
-    ).toBeNull();
-  });
   it("counts only teammates and unexpired pending invitations in this workspace", async () => {
     state.database!.exec("INSERT INTO member VALUES ('member-b', 'org-b')");
     state

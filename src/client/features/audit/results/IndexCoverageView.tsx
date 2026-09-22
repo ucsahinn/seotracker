@@ -189,7 +189,9 @@ function CoverageTable({
   // Problems first: a page Google rejected is the reason to open this tab.
   const ordered = sort(
     rows,
-    (a, b) => rank(a.verdict, a.checkedAt) - rank(b.verdict, b.checkedAt),
+    (a, b) =>
+      rank(a.verdict, a.checkedAt, a.error) -
+      rank(b.verdict, b.checkedAt, b.error),
   );
 
   return (
@@ -304,8 +306,21 @@ function VerdictBadge({
   );
 }
 
-/** Not indexed, then errors, then unchecked, then indexed. */
-function rank(verdict: string | null, checkedAt: string | null): number {
+/**
+ * Not indexed, then errors, then unchecked, then indexed.
+ *
+ * `error` was described in this comment and never passed, so a URL Google
+ * refused to answer about - one outside the verified property, say - landed
+ * in bucket 0 alongside the pages Google looked at and excluded. Twenty-five
+ * failed checks then scattered through the top of the table, above the real
+ * findings.
+ */
+function rank(
+  verdict: string | null,
+  checkedAt: string | null,
+  error: string | null,
+): number {
+  if (error) return 1;
   if (!checkedAt) return 2;
   if (verdict === "PASS") return 3;
   return 0;

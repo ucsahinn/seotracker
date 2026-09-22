@@ -81,8 +81,9 @@ function ReportTemplatesPage() {
         <div>
           <h1 className="text-2xl font-semibold">Rapor şablonları</h1>
           <p className="text-sm text-base-content/70">
-            Reusable briefs your agents follow when they write a report: who it
-            is for, which sections it has, and how it should sound.
+            Ajanlarınızın rapor yazarken izlediği yeniden kullanılabilir
+            brifingler: kimin için, hangi bölümlerden oluşuyor ve tonu ne
+            olmalı.
           </p>
         </div>
         <button
@@ -91,7 +92,7 @@ function ReportTemplatesPage() {
           onClick={() => setForm({})}
         >
           <Plus className="size-4" />
-          New template
+          Yeni şablon
         </button>
       </div>
 

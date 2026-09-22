@@ -6,7 +6,7 @@ const fresh: DashboardActivation = {
   domain: null,
   ga4: { connected: false, propertyDisplayName: null, cardDismissedAt: null },
   gsc: { connected: false, siteUrl: null },
-  mcp: { authorizedAt: null, firstToolCallAt: null, cardDismissedAt: null },
+  mcp: { authorizedAt: null, firstToolCallAt: null },
   hasMultipleProjects: false,
   dismissedSteps: [],
 };
@@ -27,12 +27,11 @@ describe("dashboard checklist", () => {
     expect(
       getStepStatus({ ...fresh, dismissedSteps: ["project"] }, "project"),
     ).toBe("skipped");
-    expect(
-      getStepStatus(
-        { ...fresh, mcp: { ...fresh.mcp, cardDismissedAt: "2026-09-05" } },
-        "mcp",
-      ),
-    ).toBe("skipped");
+    // Every step goes through the same list, including the one that used to
+    // have a second, unreachable path of its own.
+    expect(getStepStatus({ ...fresh, dismissedSteps: ["mcp"] }, "mcp")).toBe(
+      "skipped",
+    );
   });
   it("recognizes setup completed elsewhere even after skipping it", () => {
     const complete: DashboardActivation = {
