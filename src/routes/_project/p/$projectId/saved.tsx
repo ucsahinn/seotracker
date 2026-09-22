@@ -25,6 +25,7 @@ import {
 } from "@/client/features/saved-keywords/SavedKeywordsModals";
 import { SavedKeywordsPagination } from "@/client/features/saved-keywords/SavedKeywordsPagination";
 import { SavedKeywordsStatus } from "@/client/features/saved-keywords/SavedKeywordsStatus";
+import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { SavedKeywordsTable } from "@/client/features/saved-keywords/SavedKeywordsTable";
 import { compileSavedKeywordsFilters } from "@/client/features/saved-keywords/savedKeywordsFilterTypes";
 import {
@@ -111,11 +112,12 @@ function SavedKeywordsPage() {
     [appliedFilters, order, page, pageSize, projectId, selectedTagIds, sort],
   );
 
-  const { data, isLoading, isFetching } = useQuery({
+  const savedQuery = useQuery({
     queryKey: ["savedKeywords", projectId, queryInput],
     queryFn: () => getSavedKeywords({ data: queryInput }),
     placeholderData: keepPreviousData,
   });
+  const { data, isLoading, isFetching } = savedQuery;
 
   const savedKeywords = data?.rows ?? [];
   const availableTags = data?.tags ?? [];
@@ -264,15 +266,27 @@ function SavedKeywordsPage() {
               totalCount={totalCount}
               isFetching={isFetching && !isLoading}
             />
-            <SavedKeywordsTable
-              rows={savedKeywords}
-              rowSelection={rowSelection}
-              sorting={sorting}
-              isLoading={isLoading}
-              hasActiveFilters={hasActiveFilters}
-              onRowSelectionChange={setRowSelection}
-              onSortingChange={handleSortingChange}
-            />
+            {/* Without this the table falls through to its empty state, so
+                a transient 500 told the operator their saved keywords were
+                gone. */}
+            {savedQuery.isError ? (
+              <QueryErrorState
+                compact
+                error={savedQuery.error}
+                onRetry={() => void savedQuery.refetch()}
+                title="Kayıtlı kelimeler yüklenemedi"
+              />
+            ) : (
+              <SavedKeywordsTable
+                rows={savedKeywords}
+                rowSelection={rowSelection}
+                sorting={sorting}
+                isLoading={isLoading}
+                hasActiveFilters={hasActiveFilters}
+                onRowSelectionChange={setRowSelection}
+                onSortingChange={handleSortingChange}
+              />
+            )}
           </div>
 
           <SavedKeywordsPagination

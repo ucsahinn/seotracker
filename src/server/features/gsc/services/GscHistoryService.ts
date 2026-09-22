@@ -256,10 +256,29 @@ async function backfill(input: {
 
   outcome.hasMore = outcome.error === null && cursor <= endDate;
 
+  /*
+   * A first run that saw nothing writes down nothing.
+   *
+   * Zero rows is normally the truth - the site had no impressions in that
+   * window, and recording it as covered is what stops the archive re-reading
+   * empty months on every page view. But a property verified minutes ago, or
+   * one whose permission has not propagated, also answers 200 with an empty
+   * row set, and marking those months covered would freeze them out of the
+   * archive for good: `resolveStart` only ever rewinds three days.
+   *
+   * Narrow on purpose. It applies only when the archive has never held a row
+   * and this run found none either, which is exactly the just-connected
+   * case, and it cannot loop for an archive that has ever seen data.
+   */
+  const learnedNothing =
+    previousLastDate === null &&
+    outcome.rowsWritten === 0 &&
+    outcome.error === null;
+
   await GscHistoryRepository.markRun({
     projectId: input.projectId,
-    earliestDate: outcome.earliestDate,
-    lastDate: outcome.lastDate,
+    earliestDate: learnedNothing ? null : outcome.earliestDate,
+    lastDate: learnedNothing ? null : outcome.lastDate,
     error: outcome.error,
   });
 

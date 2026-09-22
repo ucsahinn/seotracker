@@ -1,3 +1,4 @@
+import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { Link } from "@tanstack/react-router";
 import { ScanSearch, Trash2 } from "lucide-react";
 import type { getAuditHistory } from "@/serverFunctions/audit";
@@ -8,13 +9,29 @@ export function AuditHistorySection({
   projectId,
   history,
   isLoading,
+  error,
+  onRetry,
   onDelete,
 }: {
   projectId: string;
   history: Awaited<ReturnType<typeof getAuditHistory>>;
   isLoading: boolean;
+  error?: unknown;
+  onRetry?: () => void;
   onDelete: (auditId: string) => void;
 }) {
+  // A failed load used to fall into "Henüz denetim yok", telling an operator
+  // with a dozen audits that they had never run one.
+  if (error) {
+    return (
+      <QueryErrorState
+        error={error}
+        onRetry={onRetry}
+        title="Denetim geçmişi yüklenemedi"
+      />
+    );
+  }
+
   if (history.length === 0 && !isLoading) {
     return (
       <div className="flex items-center justify-center py-16">

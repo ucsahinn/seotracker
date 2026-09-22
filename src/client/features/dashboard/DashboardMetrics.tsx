@@ -1,3 +1,4 @@
+import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { MetricRow, MetricTile } from "@/client/components/MetricTile";
@@ -41,6 +42,23 @@ export function DashboardMetrics({
           </div>
         ))}
       </MetricRow>
+    );
+  }
+
+  /*
+   * A connected property whose report call fails suppressed the "connect
+   * Search Console" hint - correctly, it is connected - and then rendered
+   * four bare em-dashes with nothing to click, indistinguishable from a
+   * property that simply has no data.
+   */
+  if (connected && reportQuery.isError) {
+    return (
+      <QueryErrorState
+        compact
+        error={reportQuery.error}
+        onRetry={() => void reportQuery.refetch()}
+        title="Search Console verisi alınamadı"
+      />
     );
   }
 

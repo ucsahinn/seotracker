@@ -2,7 +2,9 @@ import { PageShell } from "@/client/components/PageShell";
 import * as React from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ChevronRight, Plus } from "lucide-react";
+import { ChevronRight, FolderPlus, Plus } from "lucide-react";
+import { EmptyState } from "@/client/components/EmptyState";
+import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { toast } from "sonner";
 import {
   getArchivedProjects,
@@ -58,6 +60,20 @@ function ProjectsPage() {
             <div key={index} className="skeleton h-14" />
           ))}
         </div>
+      ) : projectsQuery.isError ? (
+        <QueryErrorState
+          error={projectsQuery.error}
+          onRetry={() => void projectsQuery.refetch()}
+          title="Projeler yüklenemedi"
+        />
+      ) : projects.length === 0 ? (
+        // Reachable only through a failure upstream, since the loader
+        // guarantees one project - but a bare 1px box said nothing at all.
+        <EmptyState
+          icon={FolderPlus}
+          title="Henüz proje yok"
+          description="Bir proje oluşturun, sonra sitesini ekleyin."
+        />
       ) : (
         <ul className="divide-y divide-base-300 overflow-hidden rounded-box border border-base-300">
           {projects.map((project) => (

@@ -4,7 +4,15 @@ import type { GscPerformanceInput } from "@/server/features/gsc/searchAnalytics"
 const mocks = vi.hoisted(() => ({
   getArchiveState: vi.fn(),
   upsertDailyRows: vi.fn(),
-  markRun: vi.fn(),
+  markRun:
+    vi.fn<
+      (input: {
+        projectId: string;
+        earliestDate: string | null;
+        lastDate: string | null;
+        error: string | null;
+      }) => Promise<void>
+    >(),
   countRows: vi.fn(),
   getQueryHistory: vi.fn(),
   getTrackedQueries: vi.fn(),
@@ -88,6 +96,37 @@ describe("backfill", () => {
     expect(outcome.daysFetched).toBe(2);
     expect(outcome.error).toBeNull();
     expect(mocks.markRun).toHaveBeenCalledOnce();
+  });
+
+  /*
+   * A property verified minutes ago answers 200 with no rows. Writing that
+   * down as covered would freeze those months out of the archive for good,
+   * because the resume point only ever rewinds three days.
+   */
+  it("does not claim coverage when the first run finds nothing at all", async () => {
+    const outcome = await GscHistoryService.backfill({
+      projectId: "p1",
+      today: TODAY,
+    });
+
+    expect(outcome.rowsWritten).toBe(0);
+    expect(mocks.markRun).toHaveBeenCalledWith(
+      expect.objectContaining({ earliestDate: null, lastDate: null }),
+    );
+  });
+
+  // Once the archive holds anything, an empty window is the ordinary truth
+  // and has to be recorded, or every page view re-reads the same empty span.
+  it("records an empty window once the archive has data", async () => {
+    mocks.getArchiveState.mockResolvedValue({
+      earliestDate: "2026-05-01",
+      lastDate: "2026-05-20",
+      error: null,
+    });
+
+    await GscHistoryService.backfill({ projectId: "p1", today: TODAY });
+
+    expect(mocks.markRun.mock.calls[0]?.[0].lastDate).not.toBeNull();
   });
 
   // Search Console revises the most recent days as late data lands, and the

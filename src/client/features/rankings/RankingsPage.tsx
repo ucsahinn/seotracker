@@ -1,3 +1,4 @@
+import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { formatDate, formatNumber } from "@/client/lib/format";
 import { PageShell } from "@/client/components/PageShell";
 import { useState } from "react";
@@ -94,12 +95,36 @@ export function RankingsPage({ projectId }: { projectId: string }) {
             </tr>
           </thead>
           <tbody>
-            {rows.length === 0 && !tracked.isLoading ? (
+            {/* `tracked` is disabled until the sync settles, and a disabled
+                query reports `isLoading: false` - so while the first archive
+                sync ran (up to half a minute of paginated Search Console
+                requests) this table stated there were no queries, directly
+                under a header saying the archive was still updating. */}
+            {rows.length === 0 && !tracked.isLoading && !tracked.isPending ? (
               <tr>
                 <td colSpan={5} className="py-8 text-center text-sm text-muted">
                   {sync.data?.rowCount === 0
                     ? "Arşiv henüz boş. Search Console bağlıysa bu sayfa açıldığında dolmaya başlar."
                     : "Bu aralıkta kayıtlı sorgu yok."}
+                </td>
+              </tr>
+            ) : null}
+            {tracked.isPending ? (
+              <tr>
+                <td colSpan={5} className="py-8 text-center text-sm text-muted">
+                  Arşiv okunuyor…
+                </td>
+              </tr>
+            ) : null}
+            {tracked.isError ? (
+              <tr>
+                <td colSpan={5}>
+                  <QueryErrorState
+                    compact
+                    error={tracked.error}
+                    onRetry={() => void tracked.refetch()}
+                    title="Sorgular yüklenemedi"
+                  />
                 </td>
               </tr>
             ) : null}
@@ -160,6 +185,11 @@ function ArchiveStatus({
 }: {
   sync: {
     isLoading: boolean;
+    // `data.error` is a sync outcome the service reports; `isError` is the
+    // call itself failing. The component used to be handed only the first.
+    isError: boolean;
+    error: unknown;
+    refetch: () => unknown;
     data?: {
       earliestDate: string | null;
       lastDate: string | null;
@@ -177,6 +207,19 @@ function ArchiveStatus({
         <Loader2 className="size-4 animate-spin" />
         Arşiv güncelleniyor…
       </div>
+    );
+  }
+
+  // An unexpected server error used to render nothing at all, leaving the
+  // table below with no explanation for why it was empty.
+  if (sync.isError) {
+    return (
+      <QueryErrorState
+        compact
+        error={sync.error}
+        onRetry={() => void sync.refetch()}
+        title="Arşiv durumu okunamadı"
+      />
     );
   }
 

@@ -25,6 +25,8 @@ export function LaunchView({ projectId, onAuditStarted }: LaunchViewProps) {
         projectId={projectId}
         history={controller.historyQuery.data ?? []}
         isLoading={controller.historyQuery.isLoading}
+        error={controller.historyQuery.error}
+        onRetry={() => void controller.historyQuery.refetch()}
         onDelete={controller.deleteAudit}
       />
     </PageShell>

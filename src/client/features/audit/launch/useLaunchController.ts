@@ -1,3 +1,4 @@
+import * as React from "react";
 import { useForm } from "@tanstack/react-form";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -6,6 +7,7 @@ import {
   getAuditHistory,
   startAudit,
 } from "@/serverFunctions/audit";
+import { getProjects } from "@/serverFunctions/projects";
 import {
   DEFAULT_LAUNCH_FORM_VALUES,
   getMaxPagesLimit,
@@ -50,6 +52,13 @@ export function useLaunchController({
     queryKey: ["audit-history", projectId],
     queryFn: () => getAuditHistory({ data: { projectId } }),
   });
+  // Same key the projects screen uses, so this is a cache read in practice.
+  const projectsQuery = useQuery({
+    queryKey: ["projects"],
+    queryFn: () => getProjects(),
+  });
+  const domain =
+    projectsQuery.data?.find((entry) => entry.id === projectId)?.domain ?? null;
   const { startMutation, deleteMutation } = useLaunchMutations({
     projectId,
     historyRefetch: historyQuery.refetch,
@@ -96,6 +105,22 @@ export function useLaunchController({
       }
     },
   });
+
+  /*
+   * Prefill the start URL from the project's own site.
+   *
+   * Onboarding asks for the domain, then the dashboard's "Denetim çalıştır"
+   * button dropped the operator on an empty field and asked for it again.
+   * Only while the field is untouched, so it never fights someone typing,
+   * and it waits for the query because the form's defaults are read once.
+   */
+  React.useEffect(() => {
+    if (!domain) return;
+    if (launchForm.getFieldMeta("url")?.isDirty) return;
+    if (launchForm.getFieldValue("url")) return;
+    launchForm.setFieldValue("url", domain);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- form identity is stable
+  }, [domain]);
 
   return {
     launchForm,

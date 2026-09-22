@@ -16,6 +16,23 @@ export function AuditFreshnessCard({ projectId }: { projectId: string }) {
     queryFn: () => getAuditFreshnessForProject({ data: { projectId } }),
   });
 
+  // The card is supplementary, so a failure is worth one quiet line rather
+  // than a panel - but not worth disappearing, which is what it used to do.
+  if (freshness.isError) {
+    return (
+      <p className="text-sm text-muted">
+        Denetim tazeliği okunamadı.{" "}
+        <button
+          type="button"
+          className="link link-hover text-primary"
+          onClick={() => void freshness.refetch()}
+        >
+          Tekrar dene
+        </button>
+      </p>
+    );
+  }
+
   const data = freshness.data;
   if (!data?.hasAudit) return null;
 
