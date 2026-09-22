@@ -10,6 +10,27 @@ import { MissingInstanceKeyError, openSecret, sealSecret } from "./secretBox";
 
 const KEY = "an-instance-key-long-enough-to-be-real";
 
+/** The key derivation this module used before it was salted. */
+async function sealTheOldWay(plaintext: string): Promise<string> {
+  const digest = await crypto.subtle.digest(
+    "SHA-256",
+    new TextEncoder().encode(KEY),
+  );
+  const key = await crypto.subtle.importKey("raw", digest, "AES-GCM", false, [
+    "encrypt",
+  ]);
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const ciphertext = await crypto.subtle.encrypt(
+    { name: "AES-GCM", iv },
+    key,
+    new TextEncoder().encode(plaintext),
+  );
+  const packed = new Uint8Array(iv.length + ciphertext.byteLength);
+  packed.set(iv);
+  packed.set(new Uint8Array(ciphertext), iv.length);
+  return btoa(String.fromCharCode(...packed));
+}
+
 beforeEach(() => {
   mocks.getOptionalEnvValue.mockResolvedValue(KEY);
 });
@@ -31,6 +52,28 @@ describe("secretBox", () => {
     ]);
 
     expect(first).not.toBe(second);
+  });
+
+  /*
+   * The compatibility guarantee. An install that predates the salted format
+   * has its Google client secret and service-account key sealed the old way,
+   * and losing them would mean re-entering both with no warning that they
+   * were gone.
+   */
+  it("still opens a value sealed with the pre-salt key", async () => {
+    const legacy = await sealTheOldWay("GOCSPX-from-an-older-install");
+
+    await expect(openSecret(legacy)).resolves.toBe(
+      "GOCSPX-from-an-older-install",
+    );
+  });
+
+  // And the new format is actually being written, or the guarantee above
+  // would be the only path anything ever took.
+  it("writes the salted format, not the old one", async () => {
+    const sealed = await sealSecret("x");
+
+    expect(atob(sealed).charCodeAt(0)).toBe(2);
   });
 
   it("returns null when the instance key changed", async () => {
