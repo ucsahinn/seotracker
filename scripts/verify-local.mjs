@@ -10,6 +10,8 @@
 import process from "node:process";
 
 const BASE = process.argv[2] ?? "http://127.0.0.1:3001";
+/** Fixed, so repeated runs reuse one project instead of adding another. */
+const VERIFY_PROJECT_NAME = "seotracker verify";
 const AUDIT_URL = "https://example.com";
 
 let failures = 0;
@@ -63,12 +65,33 @@ async function main() {
   const names = tools.result?.tools?.map((tool) => tool.name) ?? [];
   report("MCP tool list", names.length > 0, `${names.length} tools`);
 
-  const created = await rpc("tools/call", {
-    name: "create_project",
-    arguments: { name: `Verify ${Date.now()}`, domain: "example.com" },
+  /*
+   * One project, reused.
+   *
+   * This used to be `Verify ${Date.now()}`, so every run of the check the
+   * README tells operators to run left another project behind — and nothing
+   * on the MCP surface can archive one, so the debris was permanent and
+   * grew. Reusing a fixed name leaves exactly one, whatever anyone runs.
+   */
+  const existing = await rpc("tools/call", {
+    name: "list_projects",
+    arguments: {},
   });
-  const projectId = structured(created)?.project?.id;
-  report("create_project", Boolean(projectId));
+  const reusable = structured(existing)?.projects?.find(
+    (project) => project.name === VERIFY_PROJECT_NAME,
+  );
+
+  let projectId = reusable?.id ?? null;
+  if (projectId) {
+    report("create_project", true, "reused the existing verify project");
+  } else {
+    const created = await rpc("tools/call", {
+      name: "create_project",
+      arguments: { name: VERIFY_PROJECT_NAME, domain: "example.com" },
+    });
+    projectId = structured(created)?.project?.id ?? null;
+    report("create_project", Boolean(projectId));
+  }
   if (!projectId) return;
 
   const started = await rpc("tools/call", {
