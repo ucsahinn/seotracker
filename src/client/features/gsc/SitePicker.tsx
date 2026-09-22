@@ -11,6 +11,7 @@ type AccountOption = {
   email: string | null;
   requiresReconnect: boolean;
   propertiesUnavailable: boolean;
+  unavailableReason?: string | null;
   sites: SiteOption[];
 };
 
@@ -40,6 +41,7 @@ export function SitePicker(props: {
       accounts={props.accounts.map((account) => ({
         ...account,
         unavailable: account.propertiesUnavailable,
+        unavailableReason: account.unavailableReason ?? null,
         properties: account.sites.map((site) => ({
           id: site.siteUrl,
           name: site.siteUrl,

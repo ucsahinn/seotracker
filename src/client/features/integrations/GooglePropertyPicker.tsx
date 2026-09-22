@@ -14,6 +14,7 @@ type Account = {
   email: string | null;
   requiresReconnect: boolean;
   unavailable?: boolean;
+  unavailableReason?: string | null;
   properties: Property[];
 };
 type SecondaryAction = {
@@ -162,7 +163,7 @@ export function GooglePropertyPicker({
                   className="flex items-center gap-2 p-3 text-sm text-muted"
                 >
                   <span className="loading loading-spinner loading-xs" />
-                  Loading properties…
+                  Kaynaklar yükleniyor…
                 </p>
               ) : error ? (
                 <div role="alert" className="p-3 text-sm">
@@ -172,7 +173,7 @@ export function GooglePropertyPicker({
                     className="btn btn-ghost btn-sm mt-1"
                     onClick={onRetry}
                   >
-                    Try again
+                    Tekrar dene
                   </button>
                 </div>
               ) : (
@@ -213,21 +214,25 @@ export function GooglePropertyPicker({
                           </button>
                         </div>
                       ) : account.unavailable ? (
-                        <div className="flex flex-wrap items-center justify-between gap-2 px-2 pb-2 text-sm">
-                          <span className="text-muted">
-                            Kaynaklar yüklenemedi
-                          </span>
+                        <div className="space-y-2 px-2 pb-2 text-sm">
+                          {/* When the server knows why, it says why: "could
+                              not load" with a retry button is useless advice
+                              for something retrying will never fix. */}
+                          <p className="text-muted">
+                            {account.unavailableReason ??
+                              "Kaynaklar yüklenemedi."}
+                          </p>
                           <button
                             type="button"
                             className="btn btn-ghost btn-xs"
                             onClick={onRetry}
                           >
-                            Try again
+                            Tekrar dene
                           </button>
                         </div>
                       ) : account.properties.length === 0 ? (
                         <p className="px-2 pb-3 text-sm text-muted">
-                          No properties available
+                          Bu hesapta kaynak yok
                         </p>
                       ) : (
                         account.properties.map((property) => {

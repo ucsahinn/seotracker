@@ -70,10 +70,22 @@ export function GoogleOAuthClientSection() {
    * input the operator cannot guess: it has to match this install's origin
    * exactly, and the app is the only thing that knows what that is.
    */
-  const redirectUri =
+  /*
+   * Both of them. The app has two callbacks -- Search Console and Analytics
+   * -- and this section used to print only the Search Console one, so an
+   * operator who registered exactly what the page showed got Google's
+   * "Erişim engellendi / 400" the moment they tried to connect Analytics.
+   * The page is the only thing that knows this install's origin, so it has
+   * to name every URI Google will be sent.
+   */
+  const origin =
     typeof window === "undefined"
-      ? "http://localhost:3001/api/gsc/oauth/callback"
-      : `${window.location.origin}/api/gsc/oauth/callback`;
+      ? "http://localhost:3001"
+      : window.location.origin;
+  const redirectUris = [
+    { label: "Search Console", value: `${origin}/api/gsc/oauth/callback` },
+    { label: "Analytics", value: `${origin}/api/ga4/oauth/callback` },
+  ];
 
   const stored = status?.source === "settings";
   const fromEnvironment = status?.source === "environment";
@@ -101,19 +113,26 @@ export function GoogleOAuthClientSection() {
 
       <div className="rounded-box border border-base-300 bg-base-200/40 p-3">
         <p className="text-sm text-muted">
-          İstemciyi oluştururken <strong>Authorized redirect URI</strong>{" "}
-          alanına tam olarak bunu yazın. Bir karakter farkı bile Google&apos;ın{" "}
-          <code>redirect_uri_mismatch</code> vermesine yol açar.
+          İstemciyi oluştururken <strong>Authorized redirect URIs</strong>{" "}
+          alanına <strong>ikisini de</strong> tam olarak ekleyin. Bir karakter
+          farkı bile Google&apos;ın <code>redirect_uri_mismatch</code> vermesine
+          yol açar; Analytics&apos;inkini eklemezseniz Search Console bağlanır
+          ama Analytics bağlanmaz.
         </p>
-        <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
-          <code className="min-w-0 truncate font-mono text-sm text-muted">
-            {redirectUri}
-          </code>
-          <CopyButton
-            value={redirectUri}
-            successMessage="Redirect URI kopyalandı"
-          />
-        </div>
+        {redirectUris.map((uri) => (
+          <div
+            key={uri.value}
+            className="mt-2 flex flex-wrap items-center justify-between gap-2"
+          >
+            <code className="min-w-0 truncate font-mono text-sm text-muted">
+              {uri.value}
+            </code>
+            <CopyButton
+              value={uri.value}
+              successMessage={`${uri.label} redirect URI kopyalandı`}
+            />
+          </div>
+        ))}
       </div>
 
       {statusQuery.isPending ? <div className="skeleton h-10 w-full" /> : null}

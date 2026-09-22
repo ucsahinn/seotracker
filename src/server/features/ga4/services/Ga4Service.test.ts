@@ -18,6 +18,9 @@ const mocks = vi.hoisted(() => {
     listProperties,
     getProperty,
     getUserInfoEmail,
+    hasServiceAccount: vi.fn<() => Promise<boolean>>(),
+    getServiceAccountStatus:
+      vi.fn<() => Promise<{ clientEmail: string } | null>>(),
     createGa4AdminClient: vi.fn(() => ({
       listProperties,
       getProperty,
@@ -47,7 +50,10 @@ vi.mock("@/db", () => ({
 }));
 // Reaches the database, which this service test stubs out entirely.
 vi.mock("@/server/lib/googleServiceAccountToken", () => ({
-  hasServiceAccount: () => Promise.resolve(false),
+  hasServiceAccount: mocks.hasServiceAccount,
+}));
+vi.mock("@/server/features/google/GoogleServiceAccountRepository", () => ({
+  GoogleServiceAccountRepository: { getStatus: mocks.getServiceAccountStatus },
 }));
 vi.mock("@/server/lib/ga4Client", () => ({
   createGa4AdminClient: mocks.createGa4AdminClient,
@@ -64,6 +70,49 @@ describe("Ga4Service", () => {
   beforeEach(() => {
     mocks.state.grants = [{ id: "grant-a", accountId: "sub-a" }];
     mocks.deleteByProjectId.mockResolvedValue(undefined);
+    mocks.hasServiceAccount.mockResolvedValue(false);
+    mocks.getServiceAccountStatus.mockResolvedValue(null);
+  });
+
+  /*
+   * Creating the key does not grant anything. A service account reaches
+   * Analytics only once the Admin API is enabled and its address is a user
+   * on the property, and until then Google answers 403 - which used to
+   * reach the picker as "Kaynaklar yüklenemedi" beside a retry button that
+   * could never help.
+   */
+  it("tells the operator what a service account's 403 actually needs", async () => {
+    mocks.hasServiceAccount.mockResolvedValue(true);
+    mocks.getServiceAccountStatus.mockResolvedValue({
+      clientEmail: "robot@p.iam.gserviceaccount.com",
+    });
+    mocks.listProperties.mockRejectedValue(
+      new Ga4AdminApiError(403, "forbidden"),
+    );
+
+    const result = await Ga4Service.listPropertiesForUserWithGrantStatus("u1");
+
+    const account = result.accounts[0];
+    expect(account.propertiesUnavailable).toBe(true);
+    expect(account.unavailableReason).toContain("Admin API");
+    expect(account.unavailableReason).toContain(
+      "robot@p.iam.gserviceaccount.com",
+    );
+  });
+
+  // Anything else still throws: only the 403 is a setup step.
+  it("does not swallow a service account failure that is not a 403", async () => {
+    mocks.hasServiceAccount.mockResolvedValue(true);
+    mocks.getServiceAccountStatus.mockResolvedValue({
+      clientEmail: "robot@p.iam.gserviceaccount.com",
+    });
+    mocks.listProperties.mockRejectedValue(
+      new Ga4AdminApiError(500, "upstream exploded"),
+    );
+
+    await expect(
+      Ga4Service.listPropertiesForUserWithGrantStatus("u1"),
+    ).rejects.toBeInstanceOf(Ga4AdminApiError);
   });
 
   it("verifies a freshly discovered property before persisting metadata", async () => {
@@ -184,6 +233,7 @@ describe("Ga4Service", () => {
           email: null,
           requiresReconnect: true,
           propertiesUnavailable: false,
+          unavailableReason: null,
           properties: [],
         },
         {
@@ -191,6 +241,7 @@ describe("Ga4Service", () => {
           email: null,
           requiresReconnect: false,
           propertiesUnavailable: true,
+          unavailableReason: null,
           properties: [],
         },
       ],

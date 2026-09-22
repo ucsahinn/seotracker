@@ -58,14 +58,46 @@ async function listPropertiesForUserWithGrantStatus(userId: string) {
   // email could be looked up. Same shape as a grant so the picker is unchanged.
   if (await hasServiceAccount()) {
     const client = createGa4AdminClient({ userId });
-    const properties = await client.listProperties();
+    const email = await serviceAccountEmail();
+
+    /*
+     * A 403 here is the ordinary next step, not a fault: a service account
+     * reaches Analytics only once two things are true, and neither of them
+     * happens by creating the key. Thrown, it arrived in the picker as
+     * "Kaynaklar yüklenemedi" with nothing to act on; returned, the operator
+     * is told which two.
+     */
+    let properties: Awaited<ReturnType<typeof client.listProperties>>;
+    try {
+      properties = await client.listProperties();
+    } catch (error) {
+      if (error instanceof Ga4AdminApiError && error.status === 403) {
+        return {
+          accounts: [
+            {
+              accountId: GA4_SERVICE_ACCOUNT_ID,
+              email,
+              requiresReconnect: false,
+              propertiesUnavailable: true,
+              unavailableReason: email
+                ? `Google Analytics bu servis hesabına izin vermedi. İki şey gerekiyor: Google Cloud projenizde Google Analytics Admin API etkin olmalı, ve GA4 mülkünüzde Yönetici → Erişim yönetimi altında ${email} adresi Görüntüleyen olarak ekli olmalı.`
+                : "Google Analytics bu servis hesabına izin vermedi. Google Analytics Admin API'yi etkinleştirin ve hesabın adresini GA4 mülkünüze Görüntüleyen olarak ekleyin.",
+              properties: [],
+            },
+          ],
+        };
+      }
+      throw error;
+    }
+
     return {
       accounts: [
         {
           accountId: GA4_SERVICE_ACCOUNT_ID,
-          email: await serviceAccountEmail(),
+          email,
           requiresReconnect: false,
           propertiesUnavailable: false,
+          unavailableReason: null,
           properties,
         },
       ],
@@ -92,6 +124,7 @@ async function listPropertiesForUserWithGrantStatus(userId: string) {
           email,
           requiresReconnect: false,
           propertiesUnavailable: false,
+          unavailableReason: null,
           properties,
         };
       } catch (error) {
@@ -108,6 +141,7 @@ async function listPropertiesForUserWithGrantStatus(userId: string) {
           email: null,
           requiresReconnect: reconnect,
           propertiesUnavailable: !reconnect,
+          unavailableReason: null,
           properties: [],
         };
       }

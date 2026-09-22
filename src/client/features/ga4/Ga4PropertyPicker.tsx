@@ -11,6 +11,7 @@ type AccountOption = {
   email: string | null;
   requiresReconnect: boolean;
   propertiesUnavailable: boolean;
+  unavailableReason?: string | null;
   properties: PropertyOption[];
 };
 
@@ -40,6 +41,7 @@ export function Ga4PropertyPicker(props: {
       accounts={props.accounts.map((account) => ({
         ...account,
         unavailable: account.propertiesUnavailable,
+        unavailableReason: account.unavailableReason ?? null,
         properties: account.properties.map((property) => ({
           id: property.propertyId,
           name: property.displayName,
