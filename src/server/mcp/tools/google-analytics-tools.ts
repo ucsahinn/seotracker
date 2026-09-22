@@ -436,7 +436,7 @@ export const getSearchOpportunitiesTool = {
   config: {
     title: "Get search opportunities",
     description:
-      "Join Search Console pages ranking in positions 4–20 with GA4 organic landing-page outcomes, then score matched opportunities by demand, business value, and reachability. Unmatched pages remain visible and unscored. Read-only.",
+      "Join Search Console pages ranking in positions 4–20 with GA4 organic landing-page outcomes, then score every candidate by demand, business value and reachability; a page GA4 did not match keeps its score and takes the neutral middle for business value. Requires BOTH Search Console and Google Analytics — with Search Console alone, use get_search_console_performance and read the positions directly. Read-only.",
     inputSchema: opportunityInputSchema,
     outputSchema: opportunityOutputSchema,
     annotations: {

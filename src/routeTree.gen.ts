@@ -30,6 +30,7 @@ import { Route as ProjectPProjectIdRankingsRouteImport } from './routes/_project
 import { Route as ProjectPProjectIdOpportunitiesRouteImport } from './routes/_project/p/$projectId/opportunities'
 import { Route as ProjectPProjectIdContextRouteImport } from './routes/_project/p/$projectId/context'
 import { Route as ProjectPProjectIdAuditRouteImport } from './routes/_project/p/$projectId/audit'
+import { Route as ProjectPProjectIdAnalyticsRouteImport } from './routes/_project/p/$projectId/analytics'
 import { Route as ProjectPProjectIdSettingsIndexRouteImport } from './routes/_project/p/$projectId/settings/index'
 import { Route as ProjectPProjectIdReportsIndexRouteImport } from './routes/_project/p/$projectId/reports/index'
 import { Route as ProjectPProjectIdAuditIndexRouteImport } from './routes/_project/p/$projectId/audit/index'
@@ -147,6 +148,12 @@ const ProjectPProjectIdAuditRoute = ProjectPProjectIdAuditRouteImport.update({
   path: '/audit',
   getParentRoute: () => ProjectPProjectIdRouteRoute,
 } as any)
+const ProjectPProjectIdAnalyticsRoute =
+  ProjectPProjectIdAnalyticsRouteImport.update({
+    id: '/analytics',
+    path: '/analytics',
+    getParentRoute: () => ProjectPProjectIdRouteRoute,
+  } as any)
 const ProjectPProjectIdSettingsIndexRoute =
   ProjectPProjectIdSettingsIndexRouteImport.update({
     id: '/',
@@ -206,6 +213,7 @@ export interface FileRoutesByFullPath {
   '/r/$reportId': typeof RReportIdRoute
   '/p/$projectId': typeof ProjectPProjectIdRouteRouteWithChildren
   '/settings/': typeof AppSettingsIndexRoute
+  '/p/$projectId/analytics': typeof ProjectPProjectIdAnalyticsRoute
   '/p/$projectId/audit': typeof ProjectPProjectIdAuditRouteWithChildren
   '/p/$projectId/context': typeof ProjectPProjectIdContextRoute
   '/p/$projectId/opportunities': typeof ProjectPProjectIdOpportunitiesRoute
@@ -233,6 +241,7 @@ export interface FileRoutesByTo {
   '/api/health': typeof ApiHealthRoute
   '/r/$reportId': typeof RReportIdRoute
   '/settings': typeof AppSettingsIndexRoute
+  '/p/$projectId/analytics': typeof ProjectPProjectIdAnalyticsRoute
   '/p/$projectId/context': typeof ProjectPProjectIdContextRoute
   '/p/$projectId/opportunities': typeof ProjectPProjectIdOpportunitiesRoute
   '/p/$projectId/rankings': typeof ProjectPProjectIdRankingsRoute
@@ -263,6 +272,7 @@ export interface FileRoutesById {
   '/_app/': typeof AppIndexRoute
   '/_project/p/$projectId': typeof ProjectPProjectIdRouteRouteWithChildren
   '/_app/settings/': typeof AppSettingsIndexRoute
+  '/_project/p/$projectId/analytics': typeof ProjectPProjectIdAnalyticsRoute
   '/_project/p/$projectId/audit': typeof ProjectPProjectIdAuditRouteWithChildren
   '/_project/p/$projectId/context': typeof ProjectPProjectIdContextRoute
   '/_project/p/$projectId/opportunities': typeof ProjectPProjectIdOpportunitiesRoute
@@ -294,6 +304,7 @@ export interface FileRouteTypes {
     | '/r/$reportId'
     | '/p/$projectId'
     | '/settings/'
+    | '/p/$projectId/analytics'
     | '/p/$projectId/audit'
     | '/p/$projectId/context'
     | '/p/$projectId/opportunities'
@@ -321,6 +332,7 @@ export interface FileRouteTypes {
     | '/api/health'
     | '/r/$reportId'
     | '/settings'
+    | '/p/$projectId/analytics'
     | '/p/$projectId/context'
     | '/p/$projectId/opportunities'
     | '/p/$projectId/rankings'
@@ -350,6 +362,7 @@ export interface FileRouteTypes {
     | '/_app/'
     | '/_project/p/$projectId'
     | '/_app/settings/'
+    | '/_project/p/$projectId/analytics'
     | '/_project/p/$projectId/audit'
     | '/_project/p/$projectId/context'
     | '/_project/p/$projectId/opportunities'
@@ -528,6 +541,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectPProjectIdAuditRouteImport
       parentRoute: typeof ProjectPProjectIdRouteRoute
     }
+    '/_project/p/$projectId/analytics': {
+      id: '/_project/p/$projectId/analytics'
+      path: '/analytics'
+      fullPath: '/p/$projectId/analytics'
+      preLoaderRoute: typeof ProjectPProjectIdAnalyticsRouteImport
+      parentRoute: typeof ProjectPProjectIdRouteRoute
+    }
     '/_project/p/$projectId/settings/': {
       id: '/_project/p/$projectId/settings/'
       path: '/'
@@ -657,6 +677,7 @@ const ProjectPProjectIdSettingsRouteWithChildren =
   )
 
 interface ProjectPProjectIdRouteRouteChildren {
+  ProjectPProjectIdAnalyticsRoute: typeof ProjectPProjectIdAnalyticsRoute
   ProjectPProjectIdAuditRoute: typeof ProjectPProjectIdAuditRouteWithChildren
   ProjectPProjectIdContextRoute: typeof ProjectPProjectIdContextRoute
   ProjectPProjectIdOpportunitiesRoute: typeof ProjectPProjectIdOpportunitiesRoute
@@ -672,6 +693,7 @@ interface ProjectPProjectIdRouteRouteChildren {
 
 const ProjectPProjectIdRouteRouteChildren: ProjectPProjectIdRouteRouteChildren =
   {
+    ProjectPProjectIdAnalyticsRoute: ProjectPProjectIdAnalyticsRoute,
     ProjectPProjectIdAuditRoute: ProjectPProjectIdAuditRouteWithChildren,
     ProjectPProjectIdContextRoute: ProjectPProjectIdContextRoute,
     ProjectPProjectIdOpportunitiesRoute: ProjectPProjectIdOpportunitiesRoute,

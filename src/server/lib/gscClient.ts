@@ -76,7 +76,15 @@ function messageForStatus(status: number, body: string): string {
   if (status === 404) {
     return "Search Console property not found. It may have been removed in Search Console.";
   }
-  return `Search Console API error (${status}): ${body.slice(0, 300)}`;
+  /*
+   * Deliberately not the body. Every branch above returns a sentence; this
+   * one used to append Google's JSON truncated at 300 characters, which
+   * meant an agent received a broken JSON fragment spliced into prose, and
+   * the app's own UI showed the same. Google's detail belongs in the
+   * container log, where it is diagnosable, not in a message someone reads.
+   */
+  console.error(`Search Console API error (${status}):`, body.slice(0, 500));
+  return `Search Console reporting is temporarily unavailable (${status}).`;
 }
 
 /** Free Google Search Console client. Unlike the DataForSEO client it does NOT

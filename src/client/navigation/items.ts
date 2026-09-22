@@ -1,4 +1,5 @@
 import {
+  BarChart3,
   Bookmark,
   Bot,
   Brain,
@@ -34,6 +35,11 @@ const projectNavItems = [
     to: "/p/$projectId/saved" as const,
     label: "Kayıtlı Kelimeler",
     icon: Bookmark,
+  },
+  {
+    to: "/p/$projectId/analytics" as const,
+    label: "Analytics",
+    icon: BarChart3,
   },
   {
     to: "/p/$projectId/search-performance" as const,

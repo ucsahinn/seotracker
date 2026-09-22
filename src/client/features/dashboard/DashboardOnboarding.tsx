@@ -101,7 +101,7 @@ export function DashboardOnboarding({
               </span>
               {item.id === "domain" && (
                 <span className="hidden text-xs text-primary sm:block">
-                  Start here
+                  Buradan başlayın
                 </span>
               )}
               <ChevronRight
@@ -169,7 +169,7 @@ export function DashboardOnboarding({
         <details className="group border-t border-base-300">
           <summary className="flex cursor-pointer list-none items-center gap-2 px-5 py-4 text-sm sm:px-6 [&::-webkit-details-marker]:hidden">
             <Check className="size-4 text-success" />
-            {completed.length} completed
+            {completed.length} tamamlandı
             <ChevronRight className="ml-auto size-4 text-muted transition-transform group-open:rotate-90" />
           </summary>
           <ul className="space-y-3 px-5 pb-5 sm:px-6">

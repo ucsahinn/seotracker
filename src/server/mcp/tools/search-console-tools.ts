@@ -292,10 +292,16 @@ export const getSearchConsolePerformanceTool = {
     if (blocked) return blocked;
 
     const connectUrl = connectGscUrl(context.baseUrl, args.projectId);
+    /*
+     * The same place `connectGscUrl` names. It pointed at the integrations
+     * page even when the call succeeded, so the only navigational hint on a
+     * healthy read was "go fix your connection" — and on the error path one
+     * payload carried two different URLs.
+     */
     const meta = buildProjectMeta(
       context,
       args.projectId,
-      `/p/${args.projectId}/settings/integrations`,
+      `/p/${args.projectId}/search-performance`,
     );
 
     // GSC rejects searchAppearance combined with any other dimension.
@@ -315,6 +321,35 @@ export const getSearchConsolePerformanceTool = {
         meta,
         "Provide both startDate and endDate, or neither (use dateRange instead).",
       );
+    }
+    /*
+     * Checked here because Google's own answer is untrue. It clamps the
+     * start to its 16-month floor and then reports the clamped range as
+     * "End date cannot precede the start date" — a claim the caller can
+     * verify is false, and will either retry or read as corruption.
+     */
+    if (args.startDate && args.endDate) {
+      if (args.endDate < args.startDate) {
+        return invalidRequest(meta, "endDate is before startDate.");
+      }
+      const floor = new Date();
+      floor.setUTCMonth(floor.getUTCMonth() - 16);
+      const floorDate = floor.toISOString().slice(0, 10);
+      if (args.endDate < floorDate) {
+        return invalidRequest(
+          meta,
+          `Search Console keeps 16 months. The earliest date available today is ${floorDate}.`,
+        );
+      }
+      // A future window is not an empty property, and the two were
+      // indistinguishable: both came back "0 rows".
+      const today = new Date().toISOString().slice(0, 10);
+      if (args.startDate > today) {
+        return invalidRequest(
+          meta,
+          `startDate is in the future (today is ${today}).`,
+        );
+      }
     }
 
     try {
@@ -458,10 +493,16 @@ export const inspectUrlsTool = {
     if (blocked) return blocked;
 
     const connectUrl = connectGscUrl(context.baseUrl, args.projectId);
+    /*
+     * The same place `connectGscUrl` names. It pointed at the integrations
+     * page even when the call succeeded, so the only navigational hint on a
+     * healthy read was "go fix your connection" — and on the error path one
+     * payload carried two different URLs.
+     */
     const meta = buildProjectMeta(
       context,
       args.projectId,
-      `/p/${args.projectId}/settings/integrations`,
+      `/p/${args.projectId}/search-performance`,
     );
 
     try {

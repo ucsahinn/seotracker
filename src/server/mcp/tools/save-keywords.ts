@@ -1,3 +1,4 @@
+import { AppError } from "@/server/lib/errors";
 import { z } from "zod";
 import { KeywordResearchService } from "@/server/features/keywords/services/KeywordResearchService";
 import { mcpResponse } from "@/server/mcp/formatters";
@@ -70,7 +71,13 @@ export const saveKeywordsTool = {
   },
   handler: withMcpProjectAuth(async (args: Args, context) => {
     if (args.tagMode === "replace" && (args.tags?.length ?? 0) === 0) {
-      throw new Error("Replacement tags are required when tagMode is replace.");
+      // `AppError`, not a bare Error: a bare one has no code, so the
+      // instrumentation records it as INTERNAL_ERROR and ships a caller's
+      // mistake to the error log as a fault. `create_project` gets this right.
+      throw new AppError(
+        "VALIDATION_ERROR",
+        "Replacement tags are required when tagMode is replace.",
+      );
     }
 
     const { locationCode, languageCode } = resolveMarket(args, context.project);

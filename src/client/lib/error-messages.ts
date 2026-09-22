@@ -6,8 +6,6 @@ const STANDARD_MESSAGES: Record<ErrorCode, string> = {
   UNAUTHENTICATED: "Lütfen oturum açıp tekrar deneyin.",
   AUTH_CONFIG_MISSING:
     "Kimlik doğrulama yapılandırılmamış. Kurulum adımları için docs/SELF_HOSTING_DOCKER.md dosyasına bakın.",
-  PAYMENT_REQUIRED: "Bu özellik bu kurulumda kullanılamıyor.",
-  INSUFFICIENT_CREDITS: "Bu özellik bu kurulumda kullanılamıyor.",
   FORBIDDEN: "Bu kaynağa erişiminiz yok.",
   NOT_FOUND: "İstenen kayıt bulunamadı.",
   AUDIT_CAPACITY_REACHED:
@@ -17,9 +15,6 @@ const STANDARD_MESSAGES: Record<ErrorCode, string> = {
     "Aynı anda çalışabilecek denetim sayısına ulaştınız. Birinin bitmesini bekleyin ya da silin.",
   VALIDATION_ERROR: "Girdiğiniz bilgileri kontrol edip tekrar deneyin.",
   CRAWL_TARGET_BLOCKED: "Bu adres güvenlik politikası gereği taranamaz.",
-  BACKLINKS_BILLING_ISSUE: "Bu özellik bu kurulumda kullanılamıyor.",
-  AI_SEARCH_BILLING_ISSUE: "Bu özellik bu kurulumda kullanılamıyor.",
-  DATAFORSEO_AUTH_FAILED: "Bu özellik bu kurulumda kullanılamıyor.",
   RATE_LIMITED: "Çok fazla istek gönderildi. Biraz bekleyip tekrar deneyin.",
   UPSTREAM_UNAVAILABLE:
     "Veri kaynağı şu an yanıt vermiyor. Birazdan tekrar deneyin.",

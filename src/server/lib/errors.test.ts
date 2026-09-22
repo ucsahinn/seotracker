@@ -14,9 +14,9 @@ describe("toClientError", () => {
   });
 
   it("keeps public error codes unchanged", () => {
-    const error = toClientError(new AppError("PAYMENT_REQUIRED"));
+    const error = toClientError(new AppError("AUDIT_ALREADY_RUNNING"));
 
-    expect(error.message).toBe("PAYMENT_REQUIRED");
+    expect(error.message).toBe("AUDIT_ALREADY_RUNNING");
   });
 
   it("passes setup-error detail through as CODE: detail", () => {

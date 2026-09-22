@@ -74,7 +74,9 @@ export const listProjectsTool = {
         ? ["No projects yet. Create one in the dashboard."]
         : projects.map(
             (p) =>
-              `- ${p.id}  ${p.name}${p.domain ? ` (${p.domain})` : ""}${p.organization ? `  organization:${p.organization} [${p.organizationId}]` : ""}  market:${p.locationCode}/${p.languageCode}`,
+              // Said rather than omitted: a project with no site cannot be audited,
+              // and `run_site_audit` needs a url the project cannot supply.
+              `- ${p.id}  ${p.name}  ${p.domain ? `(${p.domain})` : "(no site set)"}${p.organization ? `  organization:${p.organization} [${p.organizationId}]` : ""}  market:${p.locationCode}/${p.languageCode}`,
           );
     return mcpResponse({
       text: `Projects (${projects.length}):\n${lines.join("\n")}`,

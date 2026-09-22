@@ -24,19 +24,45 @@ const auditIdSchema = z
   .optional()
   .describe("Audit ID. If omitted, uses the project's most recent audit.");
 
-async function resolveAudit(projectId: string, auditId?: string) {
-  const audit = auditId
-    ? await AuditRepository.getAuditForProject(auditId, projectId)
-    : await AuditRepository.getLatestAuditForProject(projectId);
+/**
+ * The audit asked for, or the newest one.
+ *
+ * A named id that does not exist is a caller mistake and throws. Having no
+ * audits at all is not: it is what every fresh install looks like, and it
+ * used to come back as `isError: true` with no `structuredContent` and no
+ * `_meta` — the only empty state on this surface modelled as a failure,
+ * while `list_reports`, `list_saved_keywords` and `list_report_templates`
+ * all answer with success plus an empty result. An agent reads the
+ * difference as a malfunction, and the telemetry counted a fresh install's
+ * first three audit calls as failures.
+ */
+async function resolveAudit(projectId: string, auditId: string) {
+  const audit = await AuditRepository.getAuditForProject(auditId, projectId);
   if (!audit) {
     throw new AppError(
       "NOT_FOUND",
-      auditId
-        ? `Audit ${auditId} not found in this project.`
-        : "No audits exist for this project yet. Start one with run_site_audit.",
+      `Audit ${auditId} not found in this project.`,
     );
   }
   return audit;
+}
+
+/** null when the project has never run one. */
+async function latestAudit(projectId: string, auditId?: string) {
+  return auditId
+    ? resolveAudit(projectId, auditId)
+    : AuditRepository.getLatestAuditForProject(projectId);
+}
+
+function noAuditsYet(
+  context: Parameters<typeof buildProjectMeta>[0],
+  projectId: string,
+) {
+  return mcpResponse({
+    text: "No audits exist for this project yet. Start one with run_site_audit.",
+    meta: buildProjectMeta(context, projectId, `/p/${projectId}/audit`),
+    structuredContent: { auditId: null, rows: [], totalCount: 0 },
+  });
 }
 
 function auditPath(projectId: string, auditId: string) {
@@ -162,7 +188,7 @@ export const getAuditStatusTool = {
   config: {
     title: "Get site audit status",
     description:
-      "Check the progress of a site audit (phase, pages crawled, Lighthouse progress). Free — reads seotracker state and may reconcile a dead workflow by marking its audit failed. Omit auditId for the most recent audit.",
+      "Check the progress of a site audit (phase, pages crawled, Lighthouse progress). Free — reads seotracker state and may reconcile a dead workflow by marking its audit failed, which is why it is not annotated read-only even though polling it is the documented way to wait for an audit. Omit auditId for the most recent audit.",
     inputSchema: statusInputSchema,
     outputSchema: z
       .object({
@@ -179,7 +205,9 @@ export const getAuditStatusTool = {
   handler: withMcpProjectAuth(async (args: StatusArgs, context) => {
     // getStatus fetches (and self-heals) the audit row itself; only hit the
     // DB here when we need to default to the most recent audit.
-    const auditId = args.auditId ?? (await resolveAudit(args.projectId)).id;
+    const audit = await latestAudit(args.projectId, args.auditId);
+    if (!audit) return noAuditsYet(context, args.projectId);
+    const auditId = audit.id;
     const status = await AuditService.getStatus(auditId, args.projectId);
 
     const lighthouseNote =
@@ -253,7 +281,8 @@ export const getAuditIssuesTool = {
     },
   },
   handler: withMcpProjectAuth(async (args: IssuesArgs, context) => {
-    const audit = await resolveAudit(args.projectId, args.auditId);
+    const audit = await latestAudit(args.projectId, args.auditId);
+    if (!audit) return noAuditsYet(context, args.projectId);
     const unsorted = await AuditRepository.getIssuesForAudit(audit.id, {
       severity: args.severity,
       issueType: args.issueType,
@@ -379,7 +408,8 @@ export const getAuditPagesTool = {
     },
   },
   handler: withMcpProjectAuth(async (args: PagesArgs, context) => {
-    const audit = await resolveAudit(args.projectId, args.auditId);
+    const audit = await latestAudit(args.projectId, args.auditId);
+    if (!audit) return noAuditsYet(context, args.projectId);
     const allPages = await AuditRepository.getPagesForAudit(audit.id);
 
     const filtered = allPages.filter(

@@ -199,7 +199,13 @@ export async function getProjectForOrganization(
     organizationId,
   );
   if (!project) {
-    throw new AppError("NOT_FOUND");
+    // `AppError` falls back to the code as the message, so a code-only throw
+    // reached the caller as the bare string "NOT_FOUND" — which is what all
+    // twenty project-scoped MCP tools answered an unknown id with.
+    throw new AppError(
+      "NOT_FOUND",
+      "No project with that id, or it is not in this workspace. Call list_projects to see what exists.",
+    );
   }
 
   return mapProject(project);
