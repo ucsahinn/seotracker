@@ -46,6 +46,10 @@ import {
   inspectUrlsTool,
 } from "@/server/mcp/tools/search-console-tools";
 import {
+  getCannibalizationTool,
+  getRankingHistoryTool,
+} from "@/server/mcp/tools/ranking-tools";
+import {
   getAuditIssuesTool,
   getAuditPagesTool,
   getAuditStatusTool,
@@ -143,6 +147,8 @@ export function createMcpServer(authProps: McpProps) {
   register(saveKeywordsTool);
   register(getSearchConsolePerformanceTool);
   register(inspectUrlsTool);
+  register(getRankingHistoryTool);
+  register(getCannibalizationTool);
   register(getGoogleAnalyticsOrganicLandingPagesTool);
   register(getGoogleAnalyticsPagePerformanceTool);
   register(getGoogleAnalyticsKeyEventsTool);

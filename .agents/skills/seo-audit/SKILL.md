@@ -38,6 +38,8 @@ Deliver through the `seo-report` skill, saving with `skill: "seo-audit"`. If tha
 - `get_search_opportunities`: pages already ranking in positions 4-20, joined with GA4 organic landing-page outcomes and scored by demand, business value, and how close the page is. The fastest way to name a page worth improving on a site that already has some traffic. Needs Search Console, and GA4 for the business-value half.
 - `inspect_urls`: Google's URL Inspection for up to 10 URLs per call — whether Google has indexed the page, why not, when it last crawled it, and which canonical Google chose. The crawl only shows whether a page *could* be indexed; this shows what Google actually did. Quota is 2,000 URLs per property per day, so use it on the pages the report names.
 - `get_google_analytics_organic_landing_pages` / `get_google_analytics_organic_overview`: what organic visitors did after they arrived. Use when the question is whether the traffic a page gets is worth anything.
+- `get_cannibalization`: queries where two of the site's own pages compete for the same result. Worth one call on any site with more than a handful of pages, because Search Console cannot show it — it reports a query's position without naming the page that earned it, so a split looks healthy there. When it finds something with real impressions behind it, that is often the one thing: merging two pages is cheaper than ranking a new one.
+- `get_ranking_history`: the local archive, which outlives Google's 16-month window. Use it to answer *when* something changed rather than *what* it is now — a query that fell from 4 to 11 in one week is a different story from one that has always been at 11, and the report should say which.
 
 Keep the run tight: one crawl, one or two Search Console reads, and `inspect_urls` only on the pages the report will actually mention.
 
@@ -45,7 +47,7 @@ Keep the run tight: one crawl, one or two Search Console reads, and `inspect_url
 
 1. `whoami`, then resolve the `projectId`.
 2. `run_site_audit` for the domain (Lighthouse stays off unless the user asked for performance depth). While it crawls, pull `get_search_console_performance` for the last 3 months — once by query and once by page — and `get_search_opportunities` when GA4 is connected too.
-3. When the crawl finishes, read `get_audit_issues`.
+3. When the crawl finishes, read `get_audit_issues`. On any site with more than a handful of pages, also call `get_cannibalization` once — it is one Search Console call and it finds a class of problem the crawl cannot see.
 4. If the audit comes back broken or nearly empty (certificate errors, 5xx, one page crawled): investigate before writing. Check the certificate and redirect variants yourself, and search the web for the business. A dead domain often has a live successor site, which flips the whole recommendation to "redirect the old domain".
 5. Verify every finding you plan to report against the live page HTML by fetching pages yourself. When a finding is about indexing — a page that should rank and does not appear in Search Console at all, a canonical you suspect Google overrode, a `noindex` you want confirmed — run `inspect_urls` on those URLs and report Google's own verdict rather than inferring it from the crawl.
 6. Decide the one thing. Derive it from the data, never from generic advice. Common patterns:
