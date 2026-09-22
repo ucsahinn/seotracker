@@ -40,6 +40,13 @@ depodan kaldırıldı, çünkü onlar open-seo'nun yayınlarıydı.
 - **Güncelleme denetimi.** Ayarlar → Hakkında, günde bir kez GitHub'a bakıp
   yeni sürüm yayımlanmış mı söyler. Kapatılabilir; kapalıyken istek hiç
   kurulmaz.
+- **Analytics raporları ekranı.** Yedi GA4 raporu — giriş sayfaları, sayfa
+  performansı, trafik kaynakları, anahtar olaylar, e-ticaret, site içi arama,
+  kitle dağılımı. Motor baştan beri vardı ve yalnızca ajanlar erişebiliyordu.
+- **Ajanlar için iki yeni MCP aracı.** `get_ranking_history` yerel arşivi
+  okur (Google'ın 16 aylık penceresinden sonrasını da), `get_cannibalization`
+  aynı sorgu için yarışan kendi sayfalarınızı bulur — Search Console bunu
+  gösteremez, çünkü sırayı hangi sayfanın kazandığını söylemez.
 - **`pnpm run verify:local`** — çalışan bir kurulumu uçtan uca sınayan
   betik: sağlık ucu, MCP araç listesi, gerçek bir site denetimi.
 
