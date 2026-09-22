@@ -20,7 +20,7 @@ export function GoogleProjectEmptyState({
 }) {
   return (
     <div className="space-y-4">
-      <p className="text-sm text-base-content/70">
+      <p className="text-sm text-muted">
         {hasGrant
           ? `Bu projenin bağlantısını tamamlamak için bir ${name} kaynağı seçin.`
           : `Bu projenin verisini görmek için ${name} bağlayın.`}

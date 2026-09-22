@@ -191,7 +191,7 @@ function DangerSection({
 
       {confirming ? (
         <div className="space-y-3">
-          <p className="text-sm text-base-content/70">
+          <p className="text-sm text-muted">
             <span className="font-medium text-base-content">
               {project.name}
             </span>{" "}

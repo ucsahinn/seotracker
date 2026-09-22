@@ -210,7 +210,7 @@ export function SearchPerformancePage({
       <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <h1 className="text-2xl font-semibold">Arama performansı</h1>
-          <p className="text-sm text-base-content/70">
+          <p className="text-sm text-muted">
             Google Search Console&apos;dan gelen tıklama, gösterim, tıklama
             oranı ve ortalama sıra.
           </p>

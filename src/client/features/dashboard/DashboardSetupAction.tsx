@@ -49,7 +49,7 @@ export function DashboardSetupAction({
   if (step === "mcp")
     return (
       <div className="max-w-2xl space-y-4">
-        <p className="text-sm leading-relaxed text-base-content/65">
+        <p className="text-sm leading-relaxed text-muted">
           Paste this prompt into your agent to automatically configure
           seotracker for you.
         </p>
@@ -102,7 +102,7 @@ export function DashboardSetupAction({
   if (step === "project")
     return (
       <div className="space-y-4">
-        <p className="text-sm leading-relaxed text-base-content/65">
+        <p className="text-sm leading-relaxed text-muted">
           Keep each website’s research, rankings, and connections in its own
           project. Use the project switcher in the sidebar → New project
           anytime.
@@ -119,13 +119,13 @@ export function DashboardSetupAction({
             Have a list of websites? Let your agent set them up.
           </summary>
           <div className="mt-3 space-y-3">
-            <p className="text-sm text-base-content/65">
+            <p className="text-sm text-muted">
               <Link to="/ai" className="link">
                 Connect your agent
               </Link>
               , then paste this prompt with your list of websites.
             </p>
-            <pre className="whitespace-pre-wrap break-words font-sans text-sm leading-relaxed text-base-content/65">
+            <pre className="whitespace-pre-wrap break-words font-sans text-sm leading-relaxed text-muted">
               {projectPrompt}
             </pre>
             <CopyButton
@@ -201,7 +201,7 @@ function WebsiteForm({
         void form.handleSubmit();
       }}
     >
-      <p className="text-sm leading-relaxed text-base-content/65">
+      <p className="text-sm leading-relaxed text-muted">
         Add the website for this project and choose the country your customers
         search from. You can change these in project settings anytime.
       </p>

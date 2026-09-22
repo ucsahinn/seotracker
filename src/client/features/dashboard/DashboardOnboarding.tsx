@@ -68,7 +68,7 @@ export function DashboardOnboarding({
     >
       <header className="border-b border-base-300 px-5 py-5 sm:px-6">
         <h2 className="text-lg font-semibold">Çalışma alanınızı kurun</h2>
-        <p className="mt-1 text-sm text-base-content/65">
+        <p className="mt-1 text-sm text-muted">
           Sitenizi ekleyin, Google hesabınızı bağlayın, ilk denetimi çalıştırın.
         </p>
       </header>
@@ -95,7 +95,7 @@ export function DashboardOnboarding({
               </span>
               <span className="min-w-0 flex-1">
                 <span className="block text-sm font-medium">{item.label}</span>
-                <span className="mt-1 hidden text-xs text-base-content/65 sm:block">
+                <span className="mt-1 hidden text-xs text-muted sm:block">
                   {item.detail}
                 </span>
               </span>
@@ -138,7 +138,7 @@ export function DashboardOnboarding({
       })}
       {deferred.length > 0 && (
         <details className="group border-t border-base-300">
-          <summary className="flex cursor-pointer list-none items-center gap-2 px-5 py-4 text-sm text-base-content/65 sm:px-6 [&::-webkit-details-marker]:hidden">
+          <summary className="flex cursor-pointer list-none items-center gap-2 px-5 py-4 text-sm text-muted sm:px-6 [&::-webkit-details-marker]:hidden">
             <ChevronRight className="size-4 transition-transform group-open:rotate-90" />
             {deferred.length} saved for later
           </summary>
@@ -176,7 +176,7 @@ export function DashboardOnboarding({
             {completed.map((item) => (
               <li
                 key={item.id}
-                className="flex items-center gap-3 text-sm text-base-content/65"
+                className="flex items-center gap-3 text-sm text-muted"
               >
                 <Check className="size-4 shrink-0 text-success" />
                 {item.label}

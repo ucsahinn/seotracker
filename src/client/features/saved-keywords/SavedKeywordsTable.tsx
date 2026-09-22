@@ -119,7 +119,7 @@ function normalizeIntent(value: string | null): KeywordIntent {
 
 function TagList({ tags }: { tags: SavedKeywordRow["tags"] }) {
   if (tags.length === 0) {
-    return <span className="text-base-content/35">-</span>;
+    return <span className="text-subtle">-</span>;
   }
   return (
     <div className="flex flex-wrap gap-1">

@@ -16,7 +16,10 @@ import {
   normalizeAndValidateStartUrl,
   resolveStartUrlRedirects,
 } from "@/server/lib/audit/url-policy";
-import { reconcileRunningAudit } from "@/server/features/audit/services/auditReconciler";
+import {
+  reconcileRunningAudit,
+  reconcileStaleAudits,
+} from "@/server/features/audit/services/auditReconciler";
 
 async function startAudit(input: {
   actorUserId: string;
@@ -162,6 +165,20 @@ async function getResults(auditId: string, projectId: string) {
 }
 
 async function getHistory(projectId: string) {
+  /*
+   * Sweep before listing, because the cron that was supposed to do this
+   * never fires here.
+   *
+   * `wrangler.jsonc` schedules `reconcileStaleAudits` and says outright that
+   * Docker/miniflare will not run it - which is the only deployment this
+   * fork supports. The single-audit self-heal in `getStatus` only runs when
+   * someone opens that audit's own page, so an audit whose workflow died
+   * with the container stayed "Çalışıyor" on this list and on the dashboard
+   * card forever. The sweep is one indexed query that returns nothing unless
+   * something has been running for fifteen minutes.
+   */
+  await reconcileStaleAudits();
+
   const auditList = await AuditRepository.getAuditsByProject(projectId);
 
   return auditList.map((audit) => {

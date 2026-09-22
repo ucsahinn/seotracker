@@ -37,10 +37,10 @@ export function ReportTemplatesList({
           {templates.map((template) => (
             <tr key={template.id}>
               <td className="font-medium">{template.name}</td>
-              <td className="max-w-[420px] text-base-content/70">
+              <td className="max-w-[420px] text-muted">
                 {template.description}
               </td>
-              <td className="whitespace-nowrap text-base-content/70">
+              <td className="whitespace-nowrap text-muted">
                 {formatRelativeTime(template.updatedAt)}
               </td>
               <td className="w-10 text-right">

@@ -84,7 +84,7 @@ export function GoogleOAuthClientSection() {
     <section className="space-y-3">
       <h2 className="text-sm font-medium text-muted">Google bağlantısı</h2>
 
-      <p className="text-sm text-base-content/70">
+      <p className="text-sm text-muted">
         Search Console ve Analytics, kendi Google Cloud projenizden aldığınız
         bir OAuth istemcisiyle çalışır. Kimlik bilgilerini buraya girin; gizli
         anahtar sunucuda şifrelenir ve bir daha tarayıcıya gönderilmez.{" "}
@@ -100,13 +100,13 @@ export function GoogleOAuthClientSection() {
       </p>
 
       <div className="rounded-lg border border-base-300 bg-base-200/40 p-3">
-        <p className="text-sm text-base-content/70">
+        <p className="text-sm text-muted">
           İstemciyi oluştururken <strong>Authorized redirect URI</strong>{" "}
           alanına tam olarak bunu yazın. Bir karakter farkı bile Google&apos;ın{" "}
           <code>redirect_uri_mismatch</code> vermesine yol açar.
         </p>
         <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
-          <code className="min-w-0 truncate font-mono text-sm text-base-content/80">
+          <code className="min-w-0 truncate font-mono text-sm text-muted">
             {redirectUri}
           </code>
           <CopyButton
@@ -122,7 +122,7 @@ export function GoogleOAuthClientSection() {
         <div className="alert alert-info items-start text-sm">
           <div className="space-y-1">
             <p className="font-medium">Ortam değişkenlerinden geliyor</p>
-            <p className="text-base-content/70">
+            <p className="text-muted">
               <code>GOOGLE_CLIENT_ID</code> ve <code>GOOGLE_CLIENT_SECRET</code>{" "}
               ayarlanmış. Buraya bir değer kaydederseniz o kullanılır.
             </p>

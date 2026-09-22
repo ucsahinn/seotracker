@@ -95,7 +95,7 @@ function LaunchOptions({
         Tarama sınırı
       </label>
       <div className="flex items-center gap-2">
-        <span className="text-sm text-base-content/70">En çok sayfa</span>
+        <span className="text-sm text-muted">En çok sayfa</span>
         <launchForm.Field name="maxPagesInput">
           {(field) => (
             <input
@@ -139,7 +139,7 @@ function LighthouseOptions({ launchForm }: Pick<Props, "launchForm">) {
           )}
         </launchForm.Field>
         <span
-          className="text-sm font-medium text-base-content/80"
+          className="text-sm font-medium text-muted"
           title="Sayfalarınızın hızını ölçer ve performans sorunlarını raporlar."
         >
           Hız ölçümünü dahil et

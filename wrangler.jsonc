@@ -72,8 +72,11 @@
   ],
   "triggers": {
     // Every 5 min: reconcile audits whose workflow died without marking them
-    // failed. Dispatched in src/server.ts `scheduled`. Note that Docker/
-    // miniflare never fires this; it only runs on a Cloudflare deploy.
+    // failed. Dispatched in src/server.ts `scheduled`. Docker/miniflare never
+    // fires this; it only runs on a Cloudflare deploy, which is why the two
+    // screens that display a running audit - the audit list and the dashboard
+    // card - run the same sweep themselves. Left here so a Cloudflare deploy
+    // still reconciles without anyone opening a page.
     "crons": ["*/5 * * * *"],
   },
   // The ids below are NOT dead config: miniflare derives its on-disk storage

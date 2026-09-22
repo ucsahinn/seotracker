@@ -22,7 +22,7 @@ export function ConfirmDeleteModal({
       <h3 id="confirm-delete-title" className="text-lg font-semibold">
         {title}
       </h3>
-      <p className="text-sm text-base-content/70">{detail}</p>
+      <p className="text-sm text-muted">{detail}</p>
       <div className="flex justify-end gap-2">
         <button
           type="button"

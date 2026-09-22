@@ -80,7 +80,7 @@ function ReportTemplatesPage() {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h1 className="text-2xl font-semibold">Rapor şablonları</h1>
-          <p className="text-sm text-base-content/70">
+          <p className="text-sm text-muted">
             Ajanlarınızın rapor yazarken izlediği yeniden kullanılabilir
             brifingler: kimin için, hangi bölümlerden oluşuyor ve tonu ne
             olmalı.

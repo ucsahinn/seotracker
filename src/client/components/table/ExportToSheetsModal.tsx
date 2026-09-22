@@ -52,7 +52,7 @@ export function ExportToSheetsModal() {
         </button>
       </div>
 
-      <p className="text-sm text-base-content/75">
+      <p className="text-sm text-muted">
         Open a new Google Sheet and paste to fill it.
       </p>
 

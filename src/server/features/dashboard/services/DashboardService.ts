@@ -1,3 +1,4 @@
+import { reconcileStaleAudits } from "@/server/features/audit/services/auditReconciler";
 import { ProjectRepository } from "@/server/features/projects/repositories/ProjectRepository";
 import { sort } from "remeda";
 import { ActivationRepository } from "@/server/features/activation/repositories/ActivationRepository";
@@ -81,6 +82,12 @@ async function getOverview(input: {
 async function getAuditSummary(
   projectId: string,
 ): Promise<DashboardAuditSummary | null> {
+  // The dashboard can be the only screen an operator opens, and this card
+  // rendered "tarama sürüyor" indefinitely for an audit whose workflow died.
+  // See the note in `AuditService.getHistory`: the scheduled sweep does not
+  // run under Docker.
+  await reconcileStaleAudits();
+
   const audit = await AuditRepository.getLatestAuditForProject(projectId);
   if (!audit) return null;
 

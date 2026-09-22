@@ -124,12 +124,10 @@ export function KeyPagesSection({
                     </span>
                   </div>
                   {page.topic ? (
-                    <p className="text-sm text-base-content/70">
-                      Hedef: {page.topic}
-                    </p>
+                    <p className="text-sm text-muted">Hedef: {page.topic}</p>
                   ) : null}
                   {page.notes ? (
-                    <p className="text-sm text-base-content/70">{page.notes}</p>
+                    <p className="text-sm text-muted">{page.notes}</p>
                   ) : null}
                   <Provenance by={page.updatedBy} at={page.updatedAt} />
                 </div>

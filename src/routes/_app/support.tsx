@@ -19,12 +19,12 @@ function SupportPage() {
         </h1>
       </div>
 
-      <p className="text-sm leading-relaxed text-base-content/70">
+      <p className="text-sm leading-relaxed text-muted">
         Bu kurulum kendi bilgisayarınızda çalışıyor, bu yüzden hemen her sorun
         iki yerde görünür: konteyner günlüğü ve sağlık ucu.
       </p>
 
-      <ul className="space-y-3 text-sm text-base-content/70">
+      <ul className="space-y-3 text-sm text-muted">
         <li>
           <span className="font-medium text-base-content">
             Konteyner günlüğü

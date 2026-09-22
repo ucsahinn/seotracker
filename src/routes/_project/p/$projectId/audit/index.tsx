@@ -1,3 +1,4 @@
+import { PageShell } from "@/client/components/PageShell";
 import { getErrorCode } from "@/client/lib/error-messages";
 import { formatDateTime } from "@/client/lib/format";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
@@ -111,29 +112,27 @@ function AuditDetail({
     // Shaped like the audit that is coming - header, three stats, the results
     // panel - so the page does not jump when it arrives.
     return (
-      <div className="px-4 py-5 md:px-8 md:py-7" aria-busy>
-        <div className="mx-auto flex max-w-(--container-page) flex-col gap-6">
+      <PageShell>
+        <div className="flex flex-col gap-6" aria-busy>
           <div className="skeleton h-9 w-64" />
           <div className="skeleton h-[104px]" />
           <div className="skeleton h-80" />
         </div>
-      </div>
+      </PageShell>
     );
   }
 
   if (statusQuery.isError) {
     return (
-      <div className="px-4 py-6 md:px-6">
-        <div className="mx-auto max-w-3xl space-y-4">
-          <div className="alert alert-error">
-            <AlertCircle className="size-5" />
-            <span>Bu denetim yüklenemedi. Silinmiş olabilir.</span>
-          </div>
-          <button className="btn btn-ghost btn-sm" onClick={onBack}>
-            &larr; Tüm denetimler
-          </button>
+      <PageShell width="reading">
+        <div className="alert alert-error">
+          <AlertCircle className="size-5" />
+          <span>Bu denetim yüklenemedi. Silinmiş olabilir.</span>
         </div>
-      </div>
+        <button className="btn btn-ghost btn-sm" onClick={onBack}>
+          &larr; Tüm denetimler
+        </button>
+      </PageShell>
     );
   }
 
@@ -149,97 +148,87 @@ function AuditDetail({
     (isComplete && status && status.pagesCrawled <= 1);
 
   return (
-    <div className="px-4 py-4 md:px-6 md:py-6 pb-24 md:pb-8 overflow-auto">
-      <div className="mx-auto max-w-(--container-page) space-y-4">
-        <div className="space-y-1">
-          <button className="btn btn-ghost btn-sm px-0" onClick={onBack}>
-            &larr; Tüm denetimler
-          </button>
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-            <h1 className="text-2xl font-semibold">
-              {status ? extractHostname(status.startUrl) : "Site Denetimi"}
-            </h1>
-            {status?.status !== "running" && status && (
-              <StatusBadge status={status.status} />
-            )}
-          </div>
-          {status && (
-            <p className="text-sm text-muted">
-              Site denetimi &middot; {formatStartedAt(status.startedAt)}
-            </p>
+    <PageShell>
+      <div className="space-y-1">
+        <button className="btn btn-ghost btn-sm px-0" onClick={onBack}>
+          &larr; Tüm denetimler
+        </button>
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+          <h1 className="text-2xl font-semibold">
+            {status ? extractHostname(status.startUrl) : "Site Denetimi"}
+          </h1>
+          {status?.status !== "running" && status && (
+            <StatusBadge status={status.status} />
           )}
         </div>
-
-        {isRunning && status && (
-          <ProgressCard
-            projectId={projectId}
-            auditId={auditId}
-            status={status}
-          />
-        )}
-
-        {showSupportCta && (
-          <div
-            className={isFailed ? "alert alert-error" : "alert alert-warning"}
-          >
-            <AlertCircle className="size-5" />
-            <div className="space-y-1">
-              <p className="font-medium">
-                Denetim bu siteyi tamamen tarayamadı.
-              </p>
-              <p>
-                Sitenin bot koruması tarayıcımızı engelledi ve bunu aşmanın bir
-                yolu şu an yok. Kendi makinenizde çalışan masaüstü tarayıcılar
-                genellikle geçebiliyor:{" "}
-                <a
-                  className="link link-primary"
-                  href="https://github.com/PhialsBasement/LibreCrawl"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  LibreCrawl
-                </a>{" "}
-                (ücretsiz, açık kaynak) ya da{" "}
-                <a
-                  className="link link-primary"
-                  href="https://www.screamingfrog.co.uk/seo-spider/"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Screaming Frog
-                </a>{" "}
-                (500 adrese kadar ücretsiz).
-              </p>
-            </div>
-          </div>
-        )}
-
-        {failedWithResults && (
-          <div className="alert alert-warning">
-            <AlertCircle className="size-5" />
-            <div className="space-y-1">
-              <p className="font-medium">
-                Denetim {partialPageCount} sayfadan sonra erken durdu.
-              </p>
-              <p>
-                Aşağıdaki sonuçlar durmadan önce taranan her şeyi kapsıyor.
-                Yeniden denemek için yeni bir denetim başlatın. Tekrar ederse
-                hangi adımın düştüğünü konteyner günlüğünde görebilirsiniz.
-              </p>
-            </div>
-          </div>
-        )}
-
-        {(isComplete || failedWithResults) && resultsQuery.data && (
-          <ResultsView
-            projectId={projectId}
-            data={resultsQuery.data}
-            tab={tab}
-            onTabChange={onTabChange}
-          />
+        {status && (
+          <p className="text-sm text-muted">
+            Site denetimi &middot; {formatStartedAt(status.startedAt)}
+          </p>
         )}
       </div>
-    </div>
+
+      {isRunning && status && (
+        <ProgressCard projectId={projectId} auditId={auditId} status={status} />
+      )}
+
+      {showSupportCta && (
+        <div className={isFailed ? "alert alert-error" : "alert alert-warning"}>
+          <AlertCircle className="size-5" />
+          <div className="space-y-1">
+            <p className="font-medium">Denetim bu siteyi tamamen tarayamadı.</p>
+            <p>
+              Sitenin bot koruması tarayıcımızı engelledi ve bunu aşmanın bir
+              yolu şu an yok. Kendi makinenizde çalışan masaüstü tarayıcılar
+              genellikle geçebiliyor:{" "}
+              <a
+                className="link link-primary"
+                href="https://github.com/PhialsBasement/LibreCrawl"
+                target="_blank"
+                rel="noreferrer"
+              >
+                LibreCrawl
+              </a>{" "}
+              (ücretsiz, açık kaynak) ya da{" "}
+              <a
+                className="link link-primary"
+                href="https://www.screamingfrog.co.uk/seo-spider/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Screaming Frog
+              </a>{" "}
+              (500 adrese kadar ücretsiz).
+            </p>
+          </div>
+        </div>
+      )}
+
+      {failedWithResults && (
+        <div className="alert alert-warning">
+          <AlertCircle className="size-5" />
+          <div className="space-y-1">
+            <p className="font-medium">
+              Denetim {partialPageCount} sayfadan sonra erken durdu.
+            </p>
+            <p>
+              Aşağıdaki sonuçlar durmadan önce taranan her şeyi kapsıyor.
+              Yeniden denemek için yeni bir denetim başlatın. Tekrar ederse
+              hangi adımın düştüğünü konteyner günlüğünde görebilirsiniz.
+            </p>
+          </div>
+        </div>
+      )}
+
+      {(isComplete || failedWithResults) && resultsQuery.data && (
+        <ResultsView
+          projectId={projectId}
+          data={resultsQuery.data}
+          tab={tab}
+          onTabChange={onTabChange}
+        />
+      )}
+    </PageShell>
   );
 }
 
@@ -330,7 +319,7 @@ function ProgressCard({
       {crawledUrls.length > 0 && (
         <div className="card bg-base-100 border border-base-300">
           <div className="card-body gap-2 p-4">
-            <h3 className="text-sm font-medium text-base-content/70">
+            <h3 className="text-sm font-medium text-muted">
               Taranan sayfalar ({crawledUrls.length})
             </h3>
             <p className="text-xs text-muted">
@@ -377,7 +366,7 @@ function ProgressRow({
     >
       <div className="flex items-center gap-2 min-w-0 flex-1">
         <HttpStatusBadge code={entry.statusCode} />
-        <span className="truncate text-base-content/80" title={entry.url}>
+        <span className="truncate text-muted" title={entry.url}>
           {pathname}
         </span>
       </div>

@@ -199,7 +199,7 @@ function Report({ data }: { data: OpportunityReport }) {
 
 function ScoreBadge({ score }: { score: number | null | undefined }) {
   if (score == null) {
-    return <span className="text-base-content/30">-</span>;
+    return <span className="text-subtle">-</span>;
   }
   // One threshold, not a rainbow: above 60 is worth planning work around.
   const strong = score >= 60;
@@ -208,7 +208,7 @@ function ScoreBadge({ score }: { score: number | null | undefined }) {
       className={`badge badge-sm tabular-nums ${
         strong
           ? "border-success/30 bg-success/10 text-[var(--ink-success)]"
-          : "border-base-300 bg-base-200 text-base-content/70"
+          : "border-base-300 bg-base-200 text-muted"
       }`}
     >
       {score}

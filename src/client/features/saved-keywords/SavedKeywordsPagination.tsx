@@ -25,14 +25,14 @@ export function SavedKeywordsPagination({
 
   return (
     <div className="flex flex-col gap-3 border-t border-base-300 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
-      <div className="flex items-center gap-2 text-sm tabular-nums text-base-content/70">
+      <div className="flex items-center gap-2 text-sm tabular-nums text-muted">
         <span>
           {formatNumber(start)}-{formatNumber(end)} / {formatNumber(totalCount)}
         </span>
         {isLoading ? <Loader2 className="size-3.5 animate-spin" /> : null}
       </div>
       <div className="flex items-center gap-6">
-        <label className="flex items-center gap-2 text-sm text-base-content/70">
+        <label className="flex items-center gap-2 text-sm text-muted">
           <span className="whitespace-nowrap">Sayfa başına satır</span>
           <select
             className="select select-bordered select-sm w-20"
@@ -49,7 +49,7 @@ export function SavedKeywordsPagination({
           </select>
         </label>
         <div className="flex items-center gap-2">
-          <span className="whitespace-nowrap text-sm tabular-nums text-base-content/70">
+          <span className="whitespace-nowrap text-sm tabular-nums text-muted">
             Sayfa {formatNumber(page)} / {formatNumber(totalPages)}
           </span>
           <div className="flex items-center gap-1">

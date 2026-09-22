@@ -99,7 +99,7 @@ export function SavedKeywordsBulkTagsModal({
           <h3 id="bulk-tags-title" className="text-lg font-semibold">
             Etiketleri güncelle
           </h3>
-          <p className="text-sm text-base-content/65">
+          <p className="text-sm text-muted">
             Seçili {selectedCount} kelimeye etiket ekleyin ya da bunlardan
             etiket kaldırın.
           </p>
@@ -180,7 +180,7 @@ export function SavedKeywordsBulkTagsModal({
                   className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-base-200"
                 >
                   <Plus className="size-3.5 text-primary" />
-                  <span className="text-base-content/70">Oluştur</span>
+                  <span className="text-muted">Oluştur</span>
                   <span className="font-medium">
                     &ldquo;{trimmedQuery}&rdquo;
                   </span>
@@ -263,7 +263,7 @@ export function SavedKeywordsBulkTagsModal({
         <div className="flex items-center justify-end gap-2 pt-2">
           <button
             type="button"
-            className="rounded-md px-3 py-1.5 text-sm text-base-content/70 hover:bg-base-200"
+            className="rounded-md px-3 py-1.5 text-sm text-muted hover:bg-base-200"
             onClick={onClose}
           >
             Vazgeç
@@ -309,7 +309,7 @@ function SegmentButton({
       className={`inline-flex items-center gap-1.5 rounded px-3 py-1 text-sm transition ${
         active
           ? "bg-base-100 font-medium shadow-sm"
-          : "text-base-content/65 hover:text-base-content"
+          : "text-muted hover:text-base-content"
       } disabled:opacity-40`}
     >
       {label}

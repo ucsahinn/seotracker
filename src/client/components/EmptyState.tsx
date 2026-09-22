@@ -33,7 +33,7 @@ export function EmptyState({
           <Icon className="size-5" strokeWidth={1.5} aria-hidden />
         </div>
       ) : null}
-      <p className="text-sm font-medium text-base-content/80">{title}</p>
+      <p className="text-sm font-medium text-muted">{title}</p>
       {description ? (
         <p className="max-w-sm text-sm text-muted">{description}</p>
       ) : null}

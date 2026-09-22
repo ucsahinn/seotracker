@@ -75,7 +75,7 @@ export function LighthouseIssueRow({ issue }: { issue: LighthouseIssue }) {
           <td colSpan={6} className="pb-4 pt-2 pl-[8.5rem] pr-4">
             <div className="space-y-3">
               {issue.description ? (
-                <div className="text-sm text-base-content/70 leading-relaxed">
+                <div className="text-sm text-muted leading-relaxed">
                   {renderInlineMarkdown(issue.description)}
                 </div>
               ) : null}

@@ -234,7 +234,7 @@ function TagFilterPopover({
           <span className="text-muted">{selectedTagIds.length} seçili</span>
           <button
             type="button"
-            className="rounded px-2 py-1 text-base-content/70 hover:bg-base-200"
+            className="rounded px-2 py-1 text-muted hover:bg-base-200"
             onClick={onClearSelection}
           >
             Tümünü temizle

@@ -1,3 +1,4 @@
+import { PageShell } from "@/client/components/PageShell";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -118,29 +119,24 @@ function ReportDetailPage() {
 
   if (reportQuery.isError || !report) {
     return (
-      <div className="px-4 py-6 md:px-6">
-        <div className="mx-auto max-w-3xl space-y-4">
-          <div className="alert alert-error">
-            <span className="text-sm">
-              {/* A deleted report and another project's report are the
+      <PageShell width="reading">
+        <div className="alert alert-error">
+          <span className="text-sm">
+            {/* A deleted report and another project's report are the
                   same answer on purpose, so ids cannot be probed. */}
-              {getErrorCode(reportQuery.error) === "NOT_FOUND"
-                ? "Bu rapor yok ya da bu rapora erişiminiz yok."
-                : getStandardErrorMessage(
-                    reportQuery.error,
-                    "Rapor yüklenemedi",
-                  )}
-            </span>
-          </div>
-          <Link
-            to="/p/$projectId/reports"
-            params={{ projectId }}
-            className="btn btn-ghost btn-sm"
-          >
-            &larr; Raporlara dön
-          </Link>
+            {getErrorCode(reportQuery.error) === "NOT_FOUND"
+              ? "Bu rapor yok ya da bu rapora erişiminiz yok."
+              : getStandardErrorMessage(reportQuery.error, "Rapor yüklenemedi")}
+          </span>
         </div>
-      </div>
+        <Link
+          to="/p/$projectId/reports"
+          params={{ projectId }}
+          className="btn btn-ghost btn-sm"
+        >
+          &larr; Raporlara dön
+        </Link>
+      </PageShell>
     );
   }
 

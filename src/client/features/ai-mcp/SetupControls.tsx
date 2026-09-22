@@ -59,7 +59,7 @@ export function CopyButton({
       className={
         primary
           ? "btn btn-primary"
-          : "inline-flex items-center gap-1.5 rounded-md border border-base-300 bg-base-100 px-2 py-1 text-xs font-medium text-base-content/70 transition-colors hover:bg-base-300/50 hover:text-base-content"
+          : "inline-flex items-center gap-1.5 rounded-md border border-base-300 bg-base-100 px-2 py-1 text-xs font-medium text-muted transition-colors hover:bg-base-300/50 hover:text-base-content"
       }
     >
       {copied ? (

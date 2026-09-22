@@ -91,7 +91,7 @@ export function ManageTagRow({
         <div className="flex items-center gap-1.5">
           <button
             type="button"
-            className="rounded px-2 py-1 text-xs text-base-content/70 hover:bg-base-300"
+            className="rounded px-2 py-1 text-xs text-muted hover:bg-base-300"
             onClick={onCancel}
           >
             Vazgeç

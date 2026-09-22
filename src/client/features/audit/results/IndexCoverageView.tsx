@@ -236,7 +236,7 @@ function CoverageTable({
                       {pathOf(row.googleCanonical ?? "")}
                     </span>
                   ) : (
-                    <span className="text-base-content/35">-</span>
+                    <span className="text-subtle">-</span>
                   )}
                 </td>
                 <td className="whitespace-nowrap text-muted">

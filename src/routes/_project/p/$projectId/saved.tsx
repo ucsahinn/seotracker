@@ -1,3 +1,4 @@
+import { PageShell } from "@/client/components/PageShell";
 import { createFileRoute } from "@tanstack/react-router";
 // Aliased: `SavedKeywordsPage` has a local `sort` const (the saved-keyword
 // sort key) that would otherwise shadow this import at the call site.
@@ -223,129 +224,125 @@ function SavedKeywordsPage() {
   };
 
   return (
-    <div className="overflow-auto px-4 py-4 pb-24 md:px-6 md:py-6 md:pb-8">
-      <div className="mx-auto max-w-(--container-page) space-y-4">
-        <SavedKeywordsHeader
-          totalCount={totalCount}
-          exporting={exporter.exporting}
-          onExportCsv={() => void exporter.exportFilteredCsv()}
-          onExportSheets={() => void exporter.exportFilteredSheets()}
+    <PageShell>
+      <SavedKeywordsHeader
+        totalCount={totalCount}
+        exporting={exporter.exporting}
+        onExportCsv={() => void exporter.exportFilteredCsv()}
+        onExportSheets={() => void exporter.exportFilteredSheets()}
+      />
+
+      <div className="overflow-hidden rounded-box border border-base-300 bg-base-100">
+        <SavedKeywordsFilters
+          filtersForm={filters.filtersForm}
+          activeFilterCount={filters.activeFilterCount}
+          showFilters={showFilters}
+          onToggleFilters={() => setShowFilters((v) => !v)}
+          onResetAllFilters={handleClearAllFilters}
+          availableTags={availableTags}
+          selectedTagIds={selectedTagIds}
+          busyTagIds={tagManage.busyTagIds}
+          onToggleTagFilter={(tagId) => {
+            setSelectedTagIds((current) =>
+              current.includes(tagId)
+                ? current.filter((id) => id !== tagId)
+                : [...current, tagId],
+            );
+            setPage(1);
+          }}
+          onClearTagSelection={() => {
+            setSelectedTagIds([]);
+            setPage(1);
+          }}
+          onUpdateTag={(input) => void tagManage.updateTag(input)}
+          onDeleteTag={(tagId) => void handleDeleteTag(tagId)}
         />
 
-        <div className="overflow-hidden rounded-box border border-base-300 bg-base-100">
-          <SavedKeywordsFilters
-            filtersForm={filters.filtersForm}
-            activeFilterCount={filters.activeFilterCount}
-            showFilters={showFilters}
-            onToggleFilters={() => setShowFilters((v) => !v)}
-            onResetAllFilters={handleClearAllFilters}
-            availableTags={availableTags}
-            selectedTagIds={selectedTagIds}
-            busyTagIds={tagManage.busyTagIds}
-            onToggleTagFilter={(tagId) => {
-              setSelectedTagIds((current) =>
-                current.includes(tagId)
-                  ? current.filter((id) => id !== tagId)
-                  : [...current, tagId],
-              );
-              setPage(1);
-            }}
-            onClearTagSelection={() => {
-              setSelectedTagIds([]);
-              setPage(1);
-            }}
-            onUpdateTag={(input) => void tagManage.updateTag(input)}
-            onDeleteTag={(tagId) => void handleDeleteTag(tagId)}
+        <div className="space-y-3 p-4">
+          {removeError ? (
+            <RemoveSavedKeywordsError message={removeError} />
+          ) : null}
+          <SavedKeywordsStatus
+            totalCount={totalCount}
+            isFetching={isFetching && !isLoading}
           />
-
-          <div className="space-y-3 p-4">
-            {removeError ? (
-              <RemoveSavedKeywordsError message={removeError} />
-            ) : null}
-            <SavedKeywordsStatus
-              totalCount={totalCount}
-              isFetching={isFetching && !isLoading}
-            />
-            {/* Without this the table falls through to its empty state, so
+          {/* Without this the table falls through to its empty state, so
                 a transient 500 told the operator their saved keywords were
                 gone. */}
-            {savedQuery.isError ? (
-              <QueryErrorState
-                compact
-                error={savedQuery.error}
-                onRetry={() => void savedQuery.refetch()}
-                title="Kayıtlı kelimeler yüklenemedi"
-              />
-            ) : (
-              <SavedKeywordsTable
-                rows={savedKeywords}
-                rowSelection={rowSelection}
-                sorting={sorting}
-                isLoading={isLoading}
-                hasActiveFilters={hasActiveFilters}
-                onRowSelectionChange={setRowSelection}
-                onSortingChange={handleSortingChange}
-              />
-            )}
-          </div>
-
-          <SavedKeywordsPagination
-            page={page}
-            pageSize={pageSize}
-            totalCount={totalCount}
-            isLoading={isFetching}
-            onPageChange={setPage}
-            onPageSizeChange={(nextPageSize) => {
-              setPageSize(nextPageSize);
-              setPage(1);
-            }}
-          />
+          {savedQuery.isError ? (
+            <QueryErrorState
+              compact
+              error={savedQuery.error}
+              onRetry={() => void savedQuery.refetch()}
+              title="Kayıtlı kelimeler yüklenemedi"
+            />
+          ) : (
+            <SavedKeywordsTable
+              rows={savedKeywords}
+              rowSelection={rowSelection}
+              sorting={sorting}
+              isLoading={isLoading}
+              hasActiveFilters={hasActiveFilters}
+              onRowSelectionChange={setRowSelection}
+              onSortingChange={handleSortingChange}
+            />
+          )}
         </div>
 
-        <SavedKeywordsBulkActionBar
-          selectedCount={selectedCount}
-          exportingSelection={exporter.exportingSelection}
-          onCopy={() => {
-            void navigator.clipboard.writeText(
-              selectedRows.map((row) => row.keyword).join("\n"),
-            );
-            toast.success(`${selectedCount} kelime kopyalandı`);
+        <SavedKeywordsPagination
+          page={page}
+          pageSize={pageSize}
+          totalCount={totalCount}
+          isLoading={isFetching}
+          onPageChange={setPage}
+          onPageSizeChange={(nextPageSize) => {
+            setPageSize(nextPageSize);
+            setPage(1);
           }}
-          onOpenTags={() => setShowTagModal(true)}
-          onExportCsv={() => exporter.exportSelectionCsv(selectedRows)}
-          onExportSheets={() =>
-            void exporter.exportSelectionSheets(selectedRows)
-          }
-          onDelete={() => setShowConfirm(true)}
-          onClear={() => setRowSelection({})}
         />
-
-        {showConfirm ? (
-          <DeleteSavedKeywordsModal
-            selectedCount={selectedCount}
-            isPending={removeMutation.isPending}
-            onClose={() => setShowConfirm(false)}
-            onConfirm={() => removeMutation.mutate(selectedIds)}
-          />
-        ) : null}
-
-        {showTagModal ? (
-          <SavedKeywordsBulkTagsModal
-            availableTags={availableTags}
-            selectedCount={selectedCount}
-            selectedRowTags={selectedRowTags}
-            isPending={tagMutation.isPending}
-            onClose={() => setShowTagModal(false)}
-            onApply={({ addTags, removeTagIds }) =>
-              tagMutation.mutate({
-                savedKeywordIds: selectedIds,
-                addTags,
-                removeTagIds,
-              })
-            }
-          />
-        ) : null}
       </div>
-    </div>
+
+      <SavedKeywordsBulkActionBar
+        selectedCount={selectedCount}
+        exportingSelection={exporter.exportingSelection}
+        onCopy={() => {
+          void navigator.clipboard.writeText(
+            selectedRows.map((row) => row.keyword).join("\n"),
+          );
+          toast.success(`${selectedCount} kelime kopyalandı`);
+        }}
+        onOpenTags={() => setShowTagModal(true)}
+        onExportCsv={() => exporter.exportSelectionCsv(selectedRows)}
+        onExportSheets={() => void exporter.exportSelectionSheets(selectedRows)}
+        onDelete={() => setShowConfirm(true)}
+        onClear={() => setRowSelection({})}
+      />
+
+      {showConfirm ? (
+        <DeleteSavedKeywordsModal
+          selectedCount={selectedCount}
+          isPending={removeMutation.isPending}
+          onClose={() => setShowConfirm(false)}
+          onConfirm={() => removeMutation.mutate(selectedIds)}
+        />
+      ) : null}
+
+      {showTagModal ? (
+        <SavedKeywordsBulkTagsModal
+          availableTags={availableTags}
+          selectedCount={selectedCount}
+          selectedRowTags={selectedRowTags}
+          isPending={tagMutation.isPending}
+          onClose={() => setShowTagModal(false)}
+          onApply={({ addTags, removeTagIds }) =>
+            tagMutation.mutate({
+              savedKeywordIds: selectedIds,
+              addTags,
+              removeTagIds,
+            })
+          }
+        />
+      ) : null}
+    </PageShell>
   );
 }

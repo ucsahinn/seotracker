@@ -80,7 +80,7 @@ export function ProjectContextPage({ projectId }: { projectId: string }) {
     // key remounts the whole page when the project switches under it, so no
     // draft, open form, or edit state can carry over to another project.
     <div key={projectId} className="space-y-8">
-      <p className="text-sm text-base-content/70">
+      <p className="text-sm text-muted">
         Claude Code ve bağladığınız diğer MCP istemcilerinin bu proje hakkında
         bildikleri. Çalışmaya başlamadan önce burayı okur, öğrendiklerini geri
         yazarlar; yanlış görünen bir şey varsa düzeltin.
@@ -294,7 +294,7 @@ function CustomSections({
                     />
                   </RowActions>
                 </div>
-                <p className="whitespace-pre-wrap text-sm text-base-content/70">
+                <p className="whitespace-pre-wrap text-sm text-muted">
                   {custom.content}
                 </p>
               </div>
@@ -384,7 +384,7 @@ function ResearchLog({
               className="flex items-start justify-between gap-3 p-3"
             >
               <div className="min-w-0 space-y-0.5">
-                <p className="text-sm text-base-content/80">{entry.summary}</p>
+                <p className="text-sm text-muted">{entry.summary}</p>
                 <div className="flex flex-wrap items-baseline gap-x-2 text-xs text-muted">
                   <span>{formatDate(entry.entryDate)}</span>
                   <Provenance by={entry.createdBy} />

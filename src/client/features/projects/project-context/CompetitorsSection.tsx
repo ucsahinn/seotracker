@@ -114,9 +114,7 @@ export function CompetitorsSection({
                     ) : null}
                   </div>
                   {competitor.notes ? (
-                    <p className="text-sm text-base-content/70">
-                      {competitor.notes}
-                    </p>
+                    <p className="text-sm text-muted">{competitor.notes}</p>
                   ) : null}
                   <Provenance
                     by={competitor.updatedBy}

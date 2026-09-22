@@ -161,7 +161,7 @@ function CrawlWarning({
       <ShieldAlert className="mt-0.5 size-4 shrink-0 text-warning" />
       <p>
         <span className="font-medium">{headline}</span>{" "}
-        <span className="text-base-content/70">{children}</span>
+        <span className="text-muted">{children}</span>
       </p>
     </div>
   );

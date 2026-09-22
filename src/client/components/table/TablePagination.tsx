@@ -43,7 +43,7 @@ export function TablePagination({
 
   return (
     <div className="flex flex-col gap-3 border-t border-base-300 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
-      <div className="flex items-center gap-2 text-sm text-base-content/70 tabular-nums">
+      <div className="flex items-center gap-2 text-sm text-muted tabular-nums">
         <span>{formatRange(page, pageSize, totalCount)}</span>
         {isLoading ? (
           <span className="loading loading-spinner loading-xs" />
@@ -51,7 +51,7 @@ export function TablePagination({
       </div>
 
       <div className="flex items-center gap-6">
-        <label className="flex items-center gap-2 text-sm text-base-content/70">
+        <label className="flex items-center gap-2 text-sm text-muted">
           <span className="whitespace-nowrap">Sayfa başına satır</span>
           <select
             className="select select-bordered select-sm w-20"
@@ -67,7 +67,7 @@ export function TablePagination({
         </label>
 
         <div className="flex items-center gap-2">
-          <span className="whitespace-nowrap text-sm tabular-nums text-base-content/70">
+          <span className="whitespace-nowrap text-sm tabular-nums text-muted">
             Sayfa {formatNumber(page)}
             {totalPages != null ? ` / ${formatNumber(totalPages)}` : ""}
           </span>

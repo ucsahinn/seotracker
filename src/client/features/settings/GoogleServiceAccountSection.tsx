@@ -78,7 +78,7 @@ export function GoogleServiceAccountSection() {
         Servis hesabı (daha kısa yol)
       </h2>
 
-      <p className="text-sm text-base-content/70">
+      <p className="text-sm text-muted">
         Yukarıdaki OAuth istemcisi yerine bunu kullanabilirsiniz. Servis
         hesabında izin ekranı, test kullanıcısı ve redirect URI adımları yok:
         hesabı oluşturup JSON anahtarını buraya yapıştırın, sonra hesabın
@@ -128,7 +128,7 @@ export function GoogleServiceAccountSection() {
           {/* The step people forget: a stored key alone reaches nothing until
               the account is a user on the property. */}
           <div className="rounded-lg border border-base-300 bg-base-200/40 p-3">
-            <p className="text-sm text-base-content/70">
+            <p className="text-sm text-muted">
               Bu adresi Search Console&apos;da{" "}
               <strong>
                 Ayarlar → Kullanıcılar ve izinler → Kullanıcı ekle
@@ -139,7 +139,7 @@ export function GoogleServiceAccountSection() {
               Görüntüleyen olarak ekleyin.
             </p>
             <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
-              <code className="min-w-0 truncate font-mono text-sm text-base-content/80">
+              <code className="min-w-0 truncate font-mono text-sm text-muted">
                 {status?.clientEmail}
               </code>
               <CopyButton

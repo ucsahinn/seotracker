@@ -14,7 +14,7 @@ export function GoogleOAuthSetupWarning({
       <AlertTriangle className="mt-0.5 size-4 shrink-0" />
       <div className="space-y-1">
         <p className="font-medium">Google istemcisi tanımlı değil</p>
-        <p className="text-base-content/70">
+        <p className="text-muted">
           {integrationName} bağlamadan önce Google istemci kimliğinizi ve gizli
           anahtarınızı girin.
         </p>

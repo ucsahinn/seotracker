@@ -45,7 +45,7 @@ export function GoogleLinkErrorAlert({
     >
       <div className="space-y-1">
         <p className="font-semibold text-error">{copy.title}</p>
-        <p className="text-base-content/70">{copy.description}</p>
+        <p className="text-muted">{copy.description}</p>
       </div>
       <button
         type="button"

@@ -64,7 +64,7 @@ export function AuditHistorySection({
             <tbody>
               {history.map((audit) => (
                 <tr key={audit.id} className="hover group">
-                  <td className="text-xs text-base-content/70">
+                  <td className="text-xs text-muted">
                     {formatDate(audit.startedAt)}
                   </td>
                   <td className="max-w-[220px] truncate">{audit.startUrl}</td>

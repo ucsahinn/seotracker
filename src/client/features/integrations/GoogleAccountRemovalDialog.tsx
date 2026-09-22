@@ -77,7 +77,7 @@ export function GoogleAccountRemovalDialog({
           Remove Google account?
         </h3>
         <p className="break-all text-sm font-medium">{label}</p>
-        <p className="text-sm text-base-content/70">
+        <p className="text-sm text-muted">
           This removes the account’s {name} connection from seotracker. You can
           reconnect it anytime.
         </p>

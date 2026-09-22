@@ -182,14 +182,14 @@ function IssueRow({ group }: { group: IssueGroup }) {
       {open && (
         <div className="pl-9 pr-4 pb-4 pt-0.5 space-y-3">
           {group.explanation && (
-            <p className="text-sm text-base-content/70 max-w-prose">
+            <p className="text-sm text-muted max-w-prose">
               {group.explanation}
             </p>
           )}
           {group.howToFix && (
             <p className="text-sm max-w-prose">
               <span className="font-medium">Nasıl düzeltilir: </span>
-              <span className="text-base-content/80">{group.howToFix}</span>
+              <span className="text-muted">{group.howToFix}</span>
             </p>
           )}
           <AffectedUrlList issues={group.issues} />
@@ -211,7 +211,7 @@ function AffectedUrlList({ issues }: { issues: AuditIssueRow[] }) {
           className="px-3 py-1.5 text-sm flex flex-col gap-0.5 border-b border-base-300/50 last:border-b-0"
         >
           <a
-            className="link link-hover text-base-content/80 truncate"
+            className="link link-hover text-muted truncate"
             href={issue.pageUrl}
             target="_blank"
             rel="noreferrer"

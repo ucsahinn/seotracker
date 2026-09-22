@@ -26,7 +26,7 @@ export function DeleteSavedKeywordsModal({
       <h3 id="delete-keywords-title" className="text-lg font-semibold">
         Kelimeler silinsin mi?
       </h3>
-      <p className="text-sm text-base-content/70">
+      <p className="text-sm text-muted">
         Kayıtlı {selectedCount} kelime kalıcı olarak silinecek. Bu geri
         alınamaz.
       </p>

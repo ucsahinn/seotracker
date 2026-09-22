@@ -49,16 +49,14 @@ export function ReportsList({
                     {report.title}
                   </Link>
                 </td>
-                <td className="text-base-content/70">
-                  {formatCreatedBy(report)}
-                </td>
+                <td className="text-muted">{formatCreatedBy(report)}</td>
                 {/* The template the report was written from, else the skill
                     that produced it: what a reader needs to tell two reports
                     on the same site apart. */}
-                <td className="text-base-content/70">
+                <td className="text-muted">
                   {report.templateName ?? report.skill ?? "—"}
                 </td>
-                <td className="whitespace-nowrap text-base-content/70">
+                <td className="whitespace-nowrap text-muted">
                   {formatRelativeTime(report.updatedAt)}
                 </td>
                 <td className="w-10 text-right">

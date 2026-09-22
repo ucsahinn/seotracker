@@ -40,7 +40,7 @@ function ReportsPage() {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h1 className="text-2xl font-semibold">Raporlar</h1>
-          <p className="text-sm text-base-content/70">
+          <p className="text-sm text-muted">
             Ajanlarınızın bu projeye kaydettiği HTML raporlar.
           </p>
         </div>

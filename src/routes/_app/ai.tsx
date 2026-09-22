@@ -1,3 +1,4 @@
+import { PageShell } from "@/client/components/PageShell";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { ShieldAlert } from "lucide-react";
@@ -55,10 +56,10 @@ function AiPage() {
   const [tab, setTab] = useState<"setup" | "skills">("setup");
 
   return (
-    <div className="h-full overflow-auto bg-base-100 px-4 py-12 md:px-6 md:py-16 pb-24 md:pb-12">
-      <div className="mx-auto max-w-2xl">
+    <PageShell width="reading">
+      <div>
         <h1 className="text-2xl font-semibold tracking-tight">Ajan kurulumu</h1>
-        <p className="mt-3 text-pretty text-sm leading-relaxed text-base-content/70">
+        <p className="mt-3 text-pretty text-sm leading-relaxed text-muted">
           seotracker&apos;ı kullanmanın en güçlü yolu, zaten kullandığınız yapay
           zeka ajanı. Bir kez kurun, sonra istediğinizi sorun.
         </p>
@@ -157,14 +158,12 @@ function AiPage() {
             <div className="mt-10 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-t border-base-300 pt-5 text-xs text-muted">
               <span>
                 Bu kurulumun MCP adresi:{" "}
-                <code className="font-mono text-base-content/80">{mcpUrl}</code>
-                . Bu adres kimlik doğrulaması istemez; makinenizdeki başka bir
-                sürecin araçları çalıştırmasını engellemek isterseniz{" "}
-                <code className="font-mono text-base-content/80">
-                  MCP_TOKEN
-                </code>{" "}
+                <code className="font-mono text-muted">{mcpUrl}</code>. Bu adres
+                kimlik doğrulaması istemez; makinenizdeki başka bir sürecin
+                araçları çalıştırmasını engellemek isterseniz{" "}
+                <code className="font-mono text-muted">MCP_TOKEN</code>{" "}
                 ayarlayın ve istemciye{" "}
-                <code className="font-mono text-base-content/80">
+                <code className="font-mono text-muted">
                   Authorization: Bearer …
                 </code>{" "}
                 başlığını ekletin.
@@ -198,6 +197,6 @@ function AiPage() {
           </section>
         )}
       </div>
-    </div>
+    </PageShell>
   );
 }

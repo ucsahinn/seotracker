@@ -58,7 +58,7 @@ export function LighthouseIssuesHeader({
         <div className="card-body py-5 gap-4">
           <div className="space-y-1">
             <h1 className="text-2xl font-semibold">Lighthouse sorunları</h1>
-            <p className="text-sm text-base-content/70 break-all">
+            <p className="text-sm text-muted break-all">
               {finalUrl ?? "Adres yükleniyor…"}
             </p>
           </div>

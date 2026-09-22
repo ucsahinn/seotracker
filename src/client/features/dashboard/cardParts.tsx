@@ -37,7 +37,7 @@ export function EmptyCardBody({
 }) {
   return (
     <div className="flex flex-col items-start gap-3">
-      <p className="text-sm text-base-content/70">{message}</p>
+      <p className="text-sm text-muted">{message}</p>
       {cta}
     </div>
   );
