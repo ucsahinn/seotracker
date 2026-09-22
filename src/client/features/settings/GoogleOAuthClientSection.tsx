@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CheckCircle2, ExternalLink } from "lucide-react";
 import * as React from "react";
 import { toast } from "sonner";
+import { CopyButton } from "@/client/features/ai-mcp/SetupControls";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import {
   clearGoogleOAuthClient,
@@ -63,6 +64,17 @@ export function GoogleOAuthClientSection() {
     onError: (error) => toast.error(getStandardErrorMessage(error)),
   });
 
+  /*
+   * The redirect URI Google must be given, shown rather than described.
+   * `redirect_uri_mismatch` is the setup's most common failure and the only
+   * input the operator cannot guess: it has to match this install's origin
+   * exactly, and the app is the only thing that knows what that is.
+   */
+  const redirectUri =
+    typeof window === "undefined"
+      ? "http://localhost:3001/api/gsc/oauth/callback"
+      : `${window.location.origin}/api/gsc/oauth/callback`;
+
   const stored = status?.source === "settings";
   const fromEnvironment = status?.source === "environment";
   const showForm = editing || (!stored && !fromEnvironment);
@@ -86,6 +98,23 @@ export function GoogleOAuthClientSection() {
           <ExternalLink className="size-3" />
         </a>
       </p>
+
+      <div className="rounded-lg border border-base-300 bg-base-200/40 p-3">
+        <p className="text-sm text-base-content/70">
+          İstemciyi oluştururken <strong>Authorized redirect URI</strong>{" "}
+          alanına tam olarak bunu yazın. Bir karakter farkı bile Google&apos;ın{" "}
+          <code>redirect_uri_mismatch</code> vermesine yol açar.
+        </p>
+        <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
+          <code className="min-w-0 truncate font-mono text-sm text-base-content/80">
+            {redirectUri}
+          </code>
+          <CopyButton
+            value={redirectUri}
+            successMessage="Redirect URI kopyalandı"
+          />
+        </div>
+      </div>
 
       {statusQuery.isPending ? <div className="skeleton h-10 w-full" /> : null}
 
