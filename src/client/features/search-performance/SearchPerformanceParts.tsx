@@ -133,8 +133,11 @@ type Delta = { text: string; improved: boolean } | null;
 function percentDelta(current: number, previous: number): Delta {
   if (previous <= 0) return null;
   const change = (current - previous) / previous;
-  const pct = (change * 100).toFixed(1);
-  return { text: `${change >= 0 ? "+" : ""}${pct}%`, improved: change >= 0 };
+  // The sign is carried in the text, so `formatPercent` gets the magnitude.
+  return {
+    text: `${change >= 0 ? "+" : "-"}${formatPercent(Math.abs(change))}`,
+    improved: change >= 0,
+  };
 }
 
 /** Position falls as rankings improve, so the delta is inverted. */
@@ -142,7 +145,7 @@ function positionDelta(current: number, previous: number): Delta {
   if (previous <= 0 || current <= 0) return null;
   const change = previous - current;
   return {
-    text: `${change >= 0 ? "+" : ""}${change.toFixed(1)}`,
+    text: `${change >= 0 ? "+" : "-"}${formatDecimal(Math.abs(change))}`,
     improved: change >= 0,
   };
 }

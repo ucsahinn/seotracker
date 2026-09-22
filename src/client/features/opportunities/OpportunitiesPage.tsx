@@ -5,7 +5,11 @@ import { EmptyState } from "@/client/components/EmptyState";
 import { MetricRow, MetricTile } from "@/client/components/MetricTile";
 import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
-import { formatNumber, formatPercent } from "@/client/lib/format";
+import {
+  formatDecimal,
+  formatNumber,
+  formatPercent,
+} from "@/client/lib/format";
 import { getSearchOpportunities } from "@/serverFunctions/opportunities";
 
 /**
@@ -172,7 +176,7 @@ function Report({ data }: { data: OpportunityReport }) {
                       {pathOf(row.page)}
                     </span>
                   </td>
-                  <td className="text-right">{row.position.toFixed(1)}</td>
+                  <td className="text-right">{formatDecimal(row.position)}</td>
                   <td className="text-right">
                     {formatNumber(row.impressions)}
                   </td>

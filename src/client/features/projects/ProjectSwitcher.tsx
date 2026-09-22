@@ -221,7 +221,7 @@ export function ProjectSwitcher({
       // trigger still has focus).
       className="relative w-full"
     >
-      <div className="flex items-stretch rounded-lg border border-base-300 bg-base-100">
+      <div className="flex items-stretch rounded-box border border-base-300 bg-base-100">
         <button
           ref={triggerRef}
           type="button"

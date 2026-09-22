@@ -1,3 +1,4 @@
+import { formatDecimal, formatDuration } from "@/client/lib/format";
 import { useMemo, useState } from "react";
 import {
   createColumnHelper,
@@ -179,7 +180,7 @@ function buildPerformanceColumns({
       cell: ({ getValue }) => {
         const value = getValue();
         return value ? (
-          <span className="text-xs">{(value / 1000).toFixed(1)}s</span>
+          <span className="text-xs">{formatDuration(value)}</span>
         ) : (
           <span className="text-xs text-muted">-</span>
         );
@@ -191,7 +192,7 @@ function buildPerformanceColumns({
       cell: ({ getValue }) => {
         const value = getValue();
         return value != null ? (
-          <span className="text-xs">{value.toFixed(3)}</span>
+          <span className="text-xs">{formatDecimal(value, 3)}</span>
         ) : (
           <span className="text-xs text-muted">-</span>
         );

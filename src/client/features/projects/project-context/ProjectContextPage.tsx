@@ -55,8 +55,13 @@ export function ProjectContextPage({ projectId }: { projectId: string }) {
 
   if (contextQuery.isPending) {
     return (
-      <div className="flex justify-center py-10">
-        <span className="loading loading-spinner loading-md" />
+      <div className="space-y-6" aria-busy>
+        {Array.from({ length: 4 }, (_, index) => (
+          <div key={index} className="space-y-2">
+            <div className="skeleton h-3 w-32" />
+            <div className="skeleton h-20" />
+          </div>
+        ))}
       </div>
     );
   }
@@ -267,7 +272,7 @@ function CustomSections({
             ) : (
               <div
                 key={custom.slug}
-                className="space-y-2 rounded-lg border border-base-300 p-3"
+                className="space-y-2 rounded-box border border-base-300 p-3"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
@@ -322,7 +327,7 @@ function CustomSectionForm({
 
   return (
     <form
-      className="space-y-2 rounded-lg border border-base-300 bg-base-200/40 p-3"
+      className="space-y-2 rounded-box border border-base-300 bg-base-200/40 p-3"
       onSubmit={(event) => {
         event.preventDefault();
         if (pending || !content.trim()) return;

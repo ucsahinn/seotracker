@@ -28,7 +28,7 @@ export function ReportViewer({
       title={title}
       className={
         className ??
-        "h-full w-full rounded-lg border border-base-300 bg-base-100"
+        "h-full w-full rounded-box border border-base-300 bg-base-100"
       }
     />
   );

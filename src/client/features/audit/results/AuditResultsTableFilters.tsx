@@ -31,11 +31,11 @@ export function PagesFilterBar({
           value={filters.status}
           onChange={(status) => onChange({ ...filters, status })}
           options={[
-            ["all", "All"],
+            ["all", "Tümü"],
             ["ok", "2xx"],
             ["redirect", "3xx"],
             ["error", "4xx/5xx"],
-            ["missing", "Missing"],
+            ["missing", "Ulaşılamadı"],
           ]}
         />
         <SelectFilter
@@ -43,7 +43,7 @@ export function PagesFilterBar({
           value={filters.missingAlt}
           onChange={(missingAlt) => onChange({ ...filters, missingAlt })}
           options={[
-            ["all", "All"],
+            ["all", "Tümü"],
             ["yes", "Alt metni yok"],
             ["no", "Alt metni tam"],
           ]}
@@ -98,9 +98,9 @@ export function PerformanceFilterBar({
           value={filters.device}
           onChange={(device) => onChange({ ...filters, device })}
           options={[
-            ["all", "All"],
-            ["desktop", "Desktop"],
-            ["mobile", "Mobile"],
+            ["all", "Tümü"],
+            ["desktop", "Masaüstü"],
+            ["mobile", "Mobil"],
           ]}
         />
         <SelectFilter
@@ -108,9 +108,9 @@ export function PerformanceFilterBar({
           value={filters.status}
           onChange={(status) => onChange({ ...filters, status })}
           options={[
-            ["all", "All"],
-            ["ok", "OK"],
-            ["failed", "Failed"],
+            ["all", "Tümü"],
+            ["ok", "Başarılı"],
+            ["failed", "Başarısız"],
           ]}
         />
         <TextFilter
@@ -167,7 +167,7 @@ export function TableFilterToggle({
         type="button"
       >
         <SlidersHorizontal className="size-3.5" />
-        Filters
+        Filtreler
         {activeFilterCount > 0 ? (
           <span className="badge badge-xs badge-primary border-0 text-primary-content">
             {activeFilterCount}
@@ -269,7 +269,7 @@ function RangeFilter({
   onMaxChange: (value: string) => void;
 }) {
   return (
-    <div className="space-y-2 rounded-lg border border-base-300 bg-base-100 p-2.5">
+    <div className="space-y-2 rounded-box border border-base-300 bg-base-100 p-2.5">
       <p className="text-[11px] font-semibold uppercase tracking-wide text-muted">
         {label}
       </p>

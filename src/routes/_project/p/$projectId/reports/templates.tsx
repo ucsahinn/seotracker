@@ -97,8 +97,10 @@ function ReportTemplatesPage() {
       </div>
 
       {templatesQuery.isPending ? (
-        <div className="flex justify-center py-10">
-          <span className="loading loading-spinner loading-md" />
+        <div className="space-y-2" aria-busy>
+          {Array.from({ length: 3 }, (_, index) => (
+            <div key={index} className="skeleton h-20" />
+          ))}
         </div>
       ) : templatesQuery.isError ? (
         <div className="alert alert-error">

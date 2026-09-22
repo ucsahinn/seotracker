@@ -43,6 +43,25 @@ export function formatDecimal(value: number, digits = 1): string {
   });
 }
 
+/**
+ * A duration a person reads, from milliseconds.
+ *
+ * Lighthouse and the crawler both report milliseconds and both were
+ * formatting them by hand, which is how "1.4s" ended up next to "1,4 sn" on
+ * the same screen.
+ */
+export function formatDuration(ms: number): string {
+  if (ms < 1000) return `${formatNumber(Math.round(ms))} ms`;
+  return `${formatDecimal(ms / 1000)} sn`;
+}
+
+/** A byte size a person reads. Binary units, because that is what the tools report. */
+export function formatBytes(bytes: number): string {
+  if (bytes >= 1024 * 1024) return `${formatDecimal(bytes / (1024 * 1024))} MB`;
+  if (bytes >= 1024) return `${formatNumber(Math.round(bytes / 1024))} KB`;
+  return `${formatNumber(Math.round(bytes))} B`;
+}
+
 export function formatPercent(fraction: number, digits = 1): string {
   return `%${formatDecimal(fraction * 100, digits)}`;
 }

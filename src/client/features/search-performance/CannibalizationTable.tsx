@@ -3,7 +3,11 @@ import { CheckCircle2, ChevronRight } from "lucide-react";
 import * as React from "react";
 import { EmptyState } from "@/client/components/EmptyState";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
-import { formatNumber, formatPercent } from "@/client/lib/format";
+import {
+  formatDecimal,
+  formatNumber,
+  formatPercent,
+} from "@/client/lib/format";
 import { getCannibalizationReport } from "@/serverFunctions/cannibalization";
 
 /**
@@ -173,7 +177,7 @@ function PageRow({
       </td>
       <td className="text-right">{formatNumber(page.clicks)}</td>
       <td className="text-right">{formatNumber(page.impressions)}</td>
-      <td className="text-right">{page.position.toFixed(1)}</td>
+      <td className="text-right">{formatDecimal(page.position)}</td>
     </tr>
   );
 }

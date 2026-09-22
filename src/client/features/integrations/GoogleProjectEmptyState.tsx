@@ -32,7 +32,7 @@ export function GoogleProjectEmptyState({
             onClick={hasGrant ? onChoose : onLink}
             disabled={disabled}
             aria-busy={disabled}
-            className="inline-flex items-center gap-2.5 rounded-lg border border-base-300 bg-base-100 px-4 py-2.5 text-sm font-semibold shadow-sm transition hover:bg-base-200 disabled:opacity-50"
+            className="inline-flex items-center gap-2.5 rounded-field border border-base-300 bg-base-100 px-4 py-2.5 text-sm font-semibold shadow-sm transition hover:bg-base-200 disabled:opacity-50"
           >
             {disabled ? (
               <span className="loading loading-spinner loading-xs" />

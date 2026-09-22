@@ -1,5 +1,5 @@
 import { QueryErrorState } from "@/client/components/QueryErrorState";
-import { formatDate, formatNumber } from "@/client/lib/format";
+import { formatDate, formatDecimal, formatNumber } from "@/client/lib/format";
 import { PageShell } from "@/client/components/PageShell";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
@@ -152,7 +152,7 @@ export function RankingsPage({ projectId }: { projectId: string }) {
                   </button>
                 </td>
                 <td className="text-right tabular-nums">
-                  {row.position.toFixed(1)}
+                  {formatDecimal(row.position)}
                 </td>
                 <td className="text-right tabular-nums">
                   {formatNumber(row.impressions)}
@@ -328,7 +328,7 @@ function QueryHistoryCard({
           ) : (
             <TrendingDown className="size-4" />
           )}
-          {first.position.toFixed(1)} → {last.position.toFixed(1)}
+          {formatDecimal(first.position)} → {formatDecimal(last.position)}
         </span>
       </div>
       <PositionSparkline rows={rows} />
@@ -362,6 +362,8 @@ function PositionSparkline({
     .map((row, index) => {
       const x = (index / (rows.length - 1)) * width;
       const y = ((row.position - best) / span) * (height - 16) + 8;
+      // SVG path geometry, not a number anyone reads. A decimal comma
+      // here would be a second coordinate.
       return `${x.toFixed(1)},${y.toFixed(1)}`;
     })
     .join(" ");
@@ -372,7 +374,7 @@ function PositionSparkline({
         viewBox={`0 0 ${width} ${height}`}
         className="h-28 w-full"
         role="img"
-        aria-label={`Sıra geçmişi: ${best.toFixed(1)} ile ${worst.toFixed(1)} arasında`}
+        aria-label={`Sıra geçmişi: ${formatDecimal(best)} ile ${formatDecimal(worst)} arasında`}
       >
         <polyline
           points={points}
@@ -384,8 +386,8 @@ function PositionSparkline({
         />
       </svg>
       <div className="flex justify-between text-xs text-muted">
-        <span>En iyi {best.toFixed(1)}</span>
-        <span>En kötü {worst.toFixed(1)}</span>
+        <span>En iyi {formatDecimal(best)}</span>
+        <span>En kötü {formatDecimal(worst)}</span>
       </div>
     </div>
   );

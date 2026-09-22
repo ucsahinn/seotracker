@@ -18,7 +18,7 @@ interface SidebarProps {
 }
 
 const navItemBaseClass =
-  "relative flex items-center gap-2.5 rounded-md px-3 py-2 text-sm text-muted";
+  "relative flex items-center gap-2.5 rounded-field px-3 py-2 text-sm text-muted";
 
 // Hover uses a lighter tint than the active background (bg-base-300/50) so a
 // hovered item next to the active one stays visually distinct instead of

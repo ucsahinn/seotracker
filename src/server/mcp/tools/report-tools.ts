@@ -13,7 +13,7 @@ import {
 import { withMcpProjectAuth } from "@/server/mcp/project-auth";
 import { projectIdSchema } from "@/server/mcp/schemas";
 import { buildDashboardUrl } from "@/server/mcp/urls";
-import { formatCount } from "@/shared/format";
+import { formatEnglishCount } from "@/shared/format";
 import {
   REPORT_DEFAULT_LIST_LIMIT,
   REPORT_MAX_HTML_BYTES,
@@ -35,8 +35,8 @@ const reportPath = (projectId: string, reportId: string) =>
 // rounding those to "0 KB" reads like a failed save.
 const size = (bytes: number) =>
   bytes < 1000
-    ? `${formatCount(bytes)} bytes`
-    : `${formatCount(Math.round(bytes / 1000))} KB`;
+    ? `${formatEnglishCount(bytes)} bytes`
+    : `${formatEnglishCount(Math.round(bytes / 1000))} KB`;
 
 // The public share token is a capability; only the app mints and shows it.
 // Agents get every other column.
@@ -70,13 +70,13 @@ const saveInputSchema = {
     .string()
     .min(1)
     .describe(
-      `Markdown, under ${formatCount(REPORT_MAX_SUMMARY_CHARS)} characters: the verdict, the single top action, and the key numbers. This is what list_reports returns and what you or another agent read instead of the HTML.`,
+      `Markdown, under ${formatEnglishCount(REPORT_MAX_SUMMARY_CHARS)} characters: the verdict, the single top action, and the key numbers. This is what list_reports returns and what you or another agent read instead of the HTML.`,
     ),
   html: z
     .string()
     .min(1)
     .describe(
-      `The complete self-contained HTML document. Inline all CSS; no external requests of any kind (no CDNs, no web fonts, no images by URL, no fetch) — they are blocked when the report renders, and scripts are blocked too. No backticks and no \${ anywhere, including inside CSS content strings: some clients (Codex) pass this argument through a JavaScript template literal and either sequence corrupts the document. It must be a whole document, ending in </html>: a save that stops mid-document is refused, because there is no version history to fall back on. Aim under 80 KB so the report can be read back whole in one call; the hard limit is ${formatCount(REPORT_MAX_HTML_BYTES)} bytes. Use the seo-report skill's starter template when you have it; otherwise a plain semantic document — heading, short sections, one table — reads fine.`,
+      `The complete self-contained HTML document. Inline all CSS; no external requests of any kind (no CDNs, no web fonts, no images by URL, no fetch) — they are blocked when the report renders, and scripts are blocked too. No backticks and no \${ anywhere, including inside CSS content strings: some clients (Codex) pass this argument through a JavaScript template literal and either sequence corrupts the document. It must be a whole document, ending in </html>: a save that stops mid-document is refused, because there is no version history to fall back on. Aim under 80 KB so the report can be read back whole in one call; the hard limit is ${formatEnglishCount(REPORT_MAX_HTML_BYTES)} bytes. Use the seo-report skill's starter template when you have it; otherwise a plain semantic document — heading, short sections, one table — reads fine.`,
     ),
   reportId: z
     .string()
@@ -262,7 +262,7 @@ export const listReportsTool = {
             ? blocks.join("\n\n")
             : "No reports saved for this project yet.",
           "",
-          `${formatCount(totalCount)} reports. ${more}`,
+          `${formatEnglishCount(totalCount)} reports. ${more}`,
         ].join("\n"),
         meta: buildProjectMeta(
           context,
@@ -345,7 +345,7 @@ export const getReportTool = {
           ...(html
             ? [
                 "",
-                `HTML (${formatCount(report.sizeBytes)} bytes as stored — if what you received is shorter, your client truncated it and you must not save it back):`,
+                `HTML (${formatEnglishCount(report.sizeBytes)} bytes as stored — if what you received is shorter, your client truncated it and you must not save it back):`,
                 html,
               ]
             : []),

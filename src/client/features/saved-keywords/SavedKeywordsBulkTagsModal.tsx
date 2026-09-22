@@ -105,7 +105,7 @@ export function SavedKeywordsBulkTagsModal({
           </p>
         </div>
 
-        <div className="inline-flex rounded-md border border-base-300 bg-base-200/40 p-0.5 text-sm">
+        <div className="inline-flex rounded-field border border-base-300 bg-base-200/40 p-0.5 text-sm">
           <SegmentButton
             active={mode === "add"}
             onClick={() => setMode("add")}
@@ -124,7 +124,7 @@ export function SavedKeywordsBulkTagsModal({
         {mode === "add" ? (
           <div className="space-y-2">
             {addNames.length > 0 ? (
-              <div className="flex flex-wrap items-center gap-1.5 rounded-md border border-base-300 bg-base-200/40 px-2 py-2">
+              <div className="flex flex-wrap items-center gap-1.5 rounded-field border border-base-300 bg-base-200/40 px-2 py-2">
                 {addNames.map((name) => {
                   const existing = availableByNormalized.get(
                     name.toLocaleLowerCase(),
@@ -155,7 +155,7 @@ export function SavedKeywordsBulkTagsModal({
               </div>
             ) : null}
 
-            <label className="flex items-center gap-2 rounded-md border border-base-300 bg-base-100 px-2 py-2">
+            <label className="flex items-center gap-2 rounded-field border border-base-300 bg-base-100 px-2 py-2">
               <Search className="size-3.5 opacity-50" />
               <input
                 ref={inputRef}
@@ -172,7 +172,7 @@ export function SavedKeywordsBulkTagsModal({
               />
             </label>
 
-            <div className="max-h-56 overflow-y-auto rounded-md border border-base-300">
+            <div className="max-h-56 overflow-y-auto rounded-box border border-base-300">
               {showCreate ? (
                 <button
                   type="button"
@@ -229,11 +229,11 @@ export function SavedKeywordsBulkTagsModal({
         ) : (
           <div className="space-y-2">
             {selectedRowTags.length === 0 ? (
-              <div className="rounded-md border border-base-300 bg-base-200/40 px-3 py-6 text-center text-xs text-muted">
+              <div className="rounded-box border border-base-300 bg-base-200/40 px-3 py-6 text-center text-xs text-muted">
                 Seçili kelimelerde kaldırılacak etiket yok.
               </div>
             ) : (
-              <div className="flex flex-wrap gap-1.5 rounded-md border border-base-300 p-3">
+              <div className="flex flex-wrap gap-1.5 rounded-box border border-base-300 p-3">
                 {selectedRowTags.map((tag) => {
                   const checked = removeIds.includes(tag.id);
                   return (
@@ -263,14 +263,14 @@ export function SavedKeywordsBulkTagsModal({
         <div className="flex items-center justify-end gap-2 pt-2">
           <button
             type="button"
-            className="rounded-md px-3 py-1.5 text-sm text-muted hover:bg-base-200"
+            className="rounded-field px-3 py-1.5 text-sm text-muted hover:bg-base-200"
             onClick={onClose}
           >
             Vazgeç
           </button>
           <button
             type="button"
-            className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-content disabled:opacity-50"
+            className="inline-flex items-center gap-1.5 rounded-field bg-primary px-3 py-1.5 text-sm font-medium text-primary-content disabled:opacity-50"
             disabled={!canApply}
             onClick={() =>
               onApply({

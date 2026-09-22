@@ -76,6 +76,8 @@ function IndexRedirect() {
     );
   }
 
+  // A spinner is right here and a skeleton would not be: this route resolves
+  // the project and redirects, so nothing renders at this URL.
   return (
     <div className="flex items-center justify-center h-full">
       <span className="loading loading-spinner loading-md" />

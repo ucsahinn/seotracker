@@ -104,7 +104,7 @@ function TermsTokenInput({
   const Icon = styles.icon;
 
   return (
-    <div className="space-y-2 rounded-lg border border-base-300 bg-base-100 p-2.5">
+    <div className="space-y-2 rounded-box border border-base-300 bg-base-100 p-2.5">
       <div className="flex items-center gap-2">
         <span
           className={`inline-flex size-4 items-center justify-center rounded ${styles.iconBg}`}
@@ -141,7 +141,7 @@ function TermsTokenInput({
             }
           };
           return (
-            <div className="flex min-h-9 flex-wrap items-center gap-1.5 rounded-md border border-base-300 bg-base-200/30 px-2 py-1.5 focus-within:border-primary">
+            <div className="flex min-h-9 flex-wrap items-center gap-1.5 rounded-field border border-base-300 bg-base-200/30 px-2 py-1.5 focus-within:border-primary">
               {terms.map((term) => (
                 <span
                   key={term}

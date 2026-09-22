@@ -106,7 +106,7 @@ export function IssuesView({ issues }: { issues: AuditIssueRow[] }) {
   }
 
   return (
-    <div className="border border-base-300 rounded-lg overflow-hidden">
+    <div className="border border-base-300 rounded-box overflow-hidden">
       {sections.map((section) => (
         <IssueSection key={section.severity} section={section} />
       ))}

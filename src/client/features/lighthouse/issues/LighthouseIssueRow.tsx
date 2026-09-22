@@ -1,3 +1,4 @@
+import { formatBytes, formatDuration } from "@/client/lib/format";
 import { useState, type ReactNode } from "react";
 import {
   ChevronRight,
@@ -56,7 +57,7 @@ export function LighthouseIssueRow({ issue }: { issue: LighthouseIssue }) {
         <td className="py-3 pr-3 hidden md:table-cell text-right">
           {issue.impactMs != null || issue.impactBytes != null ? (
             <span className="text-xs tabular-nums text-muted">
-              {issue.impactMs ? formatMs(issue.impactMs) : null}
+              {issue.impactMs ? formatDuration(issue.impactMs) : null}
               {issue.impactMs && issue.impactBytes ? " / " : null}
               {issue.impactBytes ? formatBytes(issue.impactBytes) : null}
             </span>
@@ -102,18 +103,6 @@ export function LighthouseIssueRow({ issue }: { issue: LighthouseIssue }) {
       ) : null}
     </>
   );
-}
-
-function formatMs(ms: number) {
-  if (ms >= 1000) return `${(ms / 1000).toFixed(1)}s`;
-  return `${ms}ms`;
-}
-
-function formatBytes(bytes: number) {
-  if (bytes === 0) return "0 B";
-  if (bytes >= 1024 * 1024) return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
-  if (bytes >= 1024) return `${(bytes / 1024).toFixed(0)} KB`;
-  return `${bytes} B`;
 }
 
 function renderInlineMarkdown(markdown: string): ReactNode {

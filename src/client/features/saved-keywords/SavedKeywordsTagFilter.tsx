@@ -85,7 +85,7 @@ export function SavedKeywordsTagFilter({
     <div ref={containerRef} className="relative">
       <button
         type="button"
-        className={`inline-flex h-9 items-center gap-2 rounded-md border px-3 text-sm transition ${
+        className={`inline-flex h-9 items-center gap-2 rounded-field border px-3 text-sm transition ${
           hasSelection
             ? "border-primary/50 bg-primary/10 text-base-content"
             : "border-base-300 bg-base-100 hover:border-base-content/30"
@@ -184,7 +184,7 @@ function TagFilterPopover({
   return (
     <div className="absolute right-0 top-full z-20 mt-2 w-80 max-w-[calc(100vw-2rem)] overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-2xl">
       <div className="border-b border-base-300 p-2">
-        <label className="flex items-center gap-2 rounded-md border border-base-300 bg-base-200/50 px-2 py-1.5">
+        <label className="flex items-center gap-2 rounded-field border border-base-300 bg-base-200/50 px-2 py-1.5">
           <Search className="size-3.5 opacity-50" />
           <input
             autoFocus

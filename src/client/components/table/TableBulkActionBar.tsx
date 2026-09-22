@@ -69,7 +69,7 @@ export function TableBulkActionButton({
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className={`inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-sm disabled:opacity-50 ${color}`}
+      className={`inline-flex items-center gap-1.5 rounded-field px-2.5 py-1.5 text-sm disabled:opacity-50 ${color}`}
     >
       {icon}
       {children}
@@ -96,7 +96,7 @@ export function TableBulkExportMenu({
         tabIndex={0}
         disabled={busy}
         aria-haspopup="menu"
-        className="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-sm text-muted hover:bg-base-content/10 disabled:opacity-50"
+        className="inline-flex items-center gap-1.5 rounded-field px-2.5 py-1.5 text-sm text-muted hover:bg-base-content/10 disabled:opacity-50"
       >
         {busy ? (
           <Loader2 className="size-3.5 animate-spin" />

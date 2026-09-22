@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { formatCount } from "@/shared/format";
+import { formatEnglishCount } from "@/shared/format";
 import {
   REPORT_MAX_BYTES_PER_ORG,
   REPORT_MAX_PER_PROJECT,
@@ -138,7 +138,7 @@ describe("saveReport", () => {
     mocks.countReports.mockResolvedValue(REPORT_MAX_PER_PROJECT);
 
     await expect(save()).rejects.toThrow(
-      `This project has ${formatCount(REPORT_MAX_PER_PROJECT)} reports, the limit. Delete one from the Reports page.`,
+      `This project has ${formatEnglishCount(REPORT_MAX_PER_PROJECT)} reports, the limit. Delete one from the Reports page.`,
     );
     expect(mocks.insertReport).not.toHaveBeenCalled();
   });
@@ -159,7 +159,7 @@ describe("saveReport", () => {
     );
 
     await expect(save()).rejects.toThrow(
-      `This organization is storing ${formatCount(REPORT_MAX_BYTES_PER_ORG / 1_000_000)} MB of reports, the limit. Delete reports you no longer need from the Reports page.`,
+      `This organization is storing ${formatEnglishCount(REPORT_MAX_BYTES_PER_ORG / 1_000_000)} MB of reports, the limit. Delete reports you no longer need from the Reports page.`,
     );
     expect(mocks.insertReport).not.toHaveBeenCalled();
   });

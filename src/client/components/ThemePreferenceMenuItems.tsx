@@ -6,9 +6,9 @@ const THEME_OPTIONS: {
   label: string;
   icon: typeof Sun;
 }[] = [
-  { value: "system", label: "System", icon: Monitor },
-  { value: "light", label: "Light", icon: Sun },
-  { value: "dark", label: "Dark", icon: Moon },
+  { value: "system", label: "Sistem", icon: Monitor },
+  { value: "light", label: "Açık", icon: Sun },
+  { value: "dark", label: "Koyu", icon: Moon },
 ];
 
 export function ThemePreferenceMenuItems() {
@@ -24,7 +24,7 @@ export function ThemePreferenceMenuItems() {
         <div
           role="radiogroup"
           aria-label="Tema tercihi"
-          className="flex gap-0.5 rounded-lg bg-base-200 p-0.5"
+          className="flex gap-0.5 rounded-field bg-base-200 p-0.5"
         >
           {THEME_OPTIONS.map((option) => {
             const isActive = option.value === themePreference;
@@ -41,7 +41,7 @@ export function ThemePreferenceMenuItems() {
                   role="radio"
                   aria-checked={isActive}
                   aria-label={option.label}
-                  className={`flex flex-1 cursor-pointer items-center justify-center rounded-md px-2.5 py-1.5 transition-colors ${
+                  className={`flex flex-1 cursor-pointer items-center justify-center rounded-field px-2.5 py-1.5 transition-colors ${
                     isActive
                       ? "bg-base-100 text-base-content shadow-[var(--shadow-raise)] ring-1 ring-[var(--control-border)]"
                       : "text-muted hover:text-muted"

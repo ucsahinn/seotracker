@@ -26,7 +26,7 @@ export function ReportsList({
 
   return (
     <div className="space-y-3">
-      <div className="overflow-x-auto rounded-lg border border-base-300">
+      <div className="overflow-x-auto rounded-box border border-base-300">
         <table className="table table-sm">
           <thead>
             <tr>

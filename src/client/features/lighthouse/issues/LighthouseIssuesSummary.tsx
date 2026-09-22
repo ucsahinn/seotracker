@@ -1,3 +1,4 @@
+import { formatDecimal, formatDuration } from "@/client/lib/format";
 import type {
   LighthouseFieldData,
   LighthouseMetrics,
@@ -115,27 +116,27 @@ function getFieldItems(fieldData?: LighthouseFieldData | null) {
     {
       label: "LCP",
       metric: fieldData.largestContentfulPaint,
-      format: (value: number) => `${(value / 1000).toFixed(1)} sn`,
+      format: (value: number) => formatDuration(value),
     },
     {
       label: "CLS",
       metric: cls,
-      format: (value: number) => (value / 100).toFixed(3),
+      format: (value: number) => formatDecimal(value / 100, 3),
     },
     {
       label: "INP",
       metric: fieldData.interactionToNextPaint,
-      format: (value: number) => `${value} ms`,
+      format: (value: number) => formatDuration(value),
     },
     {
       label: "FCP",
       metric: fieldData.firstContentfulPaint,
-      format: (value: number) => `${(value / 1000).toFixed(1)} sn`,
+      format: (value: number) => formatDuration(value),
     },
     {
       label: "TTFB",
       metric: fieldData.timeToFirstByte,
-      format: (value: number) => `${value} ms`,
+      format: (value: number) => formatDuration(value),
     },
   ]
     .filter(

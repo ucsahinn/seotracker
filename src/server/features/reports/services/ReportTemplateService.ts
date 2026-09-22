@@ -1,6 +1,6 @@
 import { ReportTemplateRepository } from "@/server/features/reports/repositories/ReportTemplateRepository";
 import { AppError } from "@/server/lib/errors";
-import { formatCount } from "@/shared/format";
+import { formatEnglishCount } from "@/shared/format";
 import {
   REPORT_TEMPLATE_MAX_DESCRIPTION_CHARS,
   REPORT_TEMPLATE_MAX_INSTRUCTIONS_CHARS,
@@ -76,7 +76,7 @@ export async function saveReportTemplate(params: SaveParams): Promise<{
   if (name.length > REPORT_TEMPLATE_MAX_NAME_CHARS) {
     throw new AppError(
       "VALIDATION_ERROR",
-      `Name is ${formatCount(name.length)} characters; the limit is ${formatCount(REPORT_TEMPLATE_MAX_NAME_CHARS)}. Shorten it and save again.`,
+      `Name is ${formatEnglishCount(name.length)} characters; the limit is ${formatEnglishCount(REPORT_TEMPLATE_MAX_NAME_CHARS)}. Shorten it and save again.`,
     );
   }
   if (description.length === 0) {
@@ -88,7 +88,7 @@ export async function saveReportTemplate(params: SaveParams): Promise<{
   if (description.length > REPORT_TEMPLATE_MAX_DESCRIPTION_CHARS) {
     throw new AppError(
       "VALIDATION_ERROR",
-      `Description is ${formatCount(description.length)} characters; the limit is ${formatCount(REPORT_TEMPLATE_MAX_DESCRIPTION_CHARS)}. It is one line saying when to use the template — move the detail into the instructions.`,
+      `Description is ${formatEnglishCount(description.length)} characters; the limit is ${formatEnglishCount(REPORT_TEMPLATE_MAX_DESCRIPTION_CHARS)}. It is one line saying when to use the template — move the detail into the instructions.`,
     );
   }
   if (instructions.length === 0) {
@@ -100,7 +100,7 @@ export async function saveReportTemplate(params: SaveParams): Promise<{
   if (instructions.length > REPORT_TEMPLATE_MAX_INSTRUCTIONS_CHARS) {
     throw new AppError(
       "VALIDATION_ERROR",
-      `Instructions are ${formatCount(instructions.length)} characters; the limit is ${formatCount(REPORT_TEMPLATE_MAX_INSTRUCTIONS_CHARS)}. A template is a brief, not the report — say the audience, the sections in order, the tone and the sign-off, and cut the rest.`,
+      `Instructions are ${formatEnglishCount(instructions.length)} characters; the limit is ${formatEnglishCount(REPORT_TEMPLATE_MAX_INSTRUCTIONS_CHARS)}. A template is a brief, not the report — say the audience, the sections in order, the tone and the sign-off, and cut the rest.`,
     );
   }
 
@@ -148,7 +148,7 @@ export async function saveReportTemplate(params: SaveParams): Promise<{
   if (templates.length >= REPORT_TEMPLATE_MAX_PER_PROJECT) {
     throw new AppError(
       "VALIDATION_ERROR",
-      `This project has ${formatCount(REPORT_TEMPLATE_MAX_PER_PROJECT)} report templates, the limit. Delete one from the Templates page.`,
+      `This project has ${formatEnglishCount(REPORT_TEMPLATE_MAX_PER_PROJECT)} report templates, the limit. Delete one from the Templates page.`,
     );
   }
 

@@ -43,8 +43,14 @@ export function ProjectGeneralSettings({ projectId }: { projectId: string }) {
 
   if (projectsQuery.isPending) {
     return (
-      <div className="flex justify-center py-10">
-        <span className="loading loading-spinner loading-md" />
+      // Shaped like the form that is coming, so the page does not jump.
+      <div className="space-y-6" aria-busy>
+        {Array.from({ length: 3 }, (_, index) => (
+          <div key={index} className="space-y-2">
+            <div className="skeleton h-3 w-24" />
+            <div className="skeleton h-10" />
+          </div>
+        ))}
       </div>
     );
   }

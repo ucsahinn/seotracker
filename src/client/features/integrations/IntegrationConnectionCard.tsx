@@ -22,7 +22,7 @@ export function IntegrationConnectionCard({
       <div className="flex flex-col items-start justify-between gap-3 p-5 sm:flex-row sm:gap-4 sm:p-6">
         <div className="flex min-w-0 items-center gap-2.5">
           {icon ? (
-            <span className="grid size-8 shrink-0 place-items-center rounded-lg border border-base-300 bg-base-100 shadow-[var(--shadow-raise)]">
+            <span className="grid size-8 shrink-0 place-items-center rounded-box border border-base-300 bg-base-100 shadow-[var(--shadow-raise)]">
               {icon}
             </span>
           ) : null}

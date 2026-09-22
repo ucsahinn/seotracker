@@ -114,7 +114,7 @@ export function DashboardSetupAction({
         >
           Create another project
         </button>
-        <details className="rounded-lg border border-base-300 p-4">
+        <details className="rounded-box border border-base-300 p-4">
           <summary className="cursor-pointer text-sm font-medium">
             Have a list of websites? Let your agent set them up.
           </summary>
@@ -216,7 +216,7 @@ function WebsiteForm({
       >
         {(field) => (
           <label className="flex flex-col gap-1.5 text-sm">
-            <span className="font-medium">Website</span>
+            <span className="font-medium">Site adresi</span>
             <input
               type="text"
               required

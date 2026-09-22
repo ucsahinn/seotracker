@@ -90,7 +90,7 @@ export function DashboardOnboarding({
               }}
               className={`flex w-full items-center gap-3 px-5 py-4 text-left sm:px-6 ${active ? "bg-primary/5" : "hover:bg-base-200/50"}`}
             >
-              <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-base-200">
+              <span className="flex size-8 shrink-0 items-center justify-center rounded-field bg-base-200">
                 <Icon className="size-4" />
               </span>
               <span className="min-w-0 flex-1">
@@ -146,19 +146,19 @@ export function DashboardOnboarding({
             {deferred.map((item) => (
               <li
                 key={item.id}
-                className="flex items-center justify-between gap-3 rounded-lg bg-base-200/40 px-3 py-2"
+                className="flex items-center justify-between gap-3 rounded-field bg-base-200/40 px-3 py-2"
               >
                 <span className="text-sm">{item.label}</span>
                 <button
                   type="button"
-                  aria-label={`Restore ${item.label}`}
+                  aria-label={`${item.label} adımını geri al`}
                   className="btn btn-ghost btn-sm shrink-0"
                   disabled={dismiss.isPending}
                   onClick={() =>
                     dismiss.mutate({ step: item.id, dismissed: false })
                   }
                 >
-                  <RotateCcw className="size-3.5" /> Restore
+                  <RotateCcw className="size-3.5" /> Geri al
                 </button>
               </li>
             ))}

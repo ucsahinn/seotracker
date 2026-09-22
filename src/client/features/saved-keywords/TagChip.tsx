@@ -30,7 +30,7 @@ export function TagChip({
   title?: string;
 }) {
   const color = resolveTagColor(tag);
-  const base = `inline-flex items-center gap-1.5 rounded-md font-medium ${SIZE_CLASS[size]} ${tagChipClass(color)}`;
+  const base = `inline-flex items-center gap-1.5 rounded-field font-medium ${SIZE_CLASS[size]} ${tagChipClass(color)}`;
   const interactive = onClick
     ? "cursor-pointer hover:brightness-110 transition"
     : "";

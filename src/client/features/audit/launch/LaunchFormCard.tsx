@@ -90,7 +90,7 @@ function LaunchOptions({
   maxPagesLimit,
 }: Props) {
   return (
-    <div className="rounded-lg border border-base-300 bg-base-200/20 p-3 space-y-2">
+    <div className="rounded-box border border-base-300 bg-base-200/20 p-3 space-y-2">
       <label className="text-xs font-medium uppercase tracking-wide text-muted">
         Tarama sınırı
       </label>
@@ -126,7 +126,7 @@ function LaunchOptions({
 
 function LighthouseOptions({ launchForm }: Pick<Props, "launchForm">) {
   return (
-    <div className="rounded-lg border border-base-300 bg-base-200/20 p-3 space-y-2">
+    <div className="rounded-box border border-base-300 bg-base-200/20 p-3 space-y-2">
       <label className="label cursor-pointer justify-start gap-2 p-0">
         <launchForm.Field name="runLighthouse">
           {(field) => (

@@ -41,7 +41,7 @@ export function CopyButton({
         type="button"
         onClick={handleCopy}
         aria-label={label}
-        className="flex size-7 items-center justify-center rounded-md text-muted transition-colors hover:bg-base-200 hover:text-base-content"
+        className="flex size-7 items-center justify-center rounded-field text-muted transition-colors hover:bg-base-200 hover:text-base-content"
       >
         {copied ? (
           <Check className="size-3.5 text-success" />
@@ -59,7 +59,7 @@ export function CopyButton({
       className={
         primary
           ? "btn btn-primary"
-          : "inline-flex items-center gap-1.5 rounded-md border border-base-300 bg-base-100 px-2 py-1 text-xs font-medium text-muted transition-colors hover:bg-base-300/50 hover:text-base-content"
+          : "inline-flex items-center gap-1.5 rounded-field border border-base-300 bg-base-100 px-2 py-1 text-xs font-medium text-muted transition-colors hover:bg-base-300/50 hover:text-base-content"
       }
     >
       {copied ? (

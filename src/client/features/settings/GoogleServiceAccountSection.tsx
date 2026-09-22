@@ -110,7 +110,7 @@ export function GoogleServiceAccountSection() {
 
       {stored && !editing ? (
         <div className="space-y-3">
-          <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-base-300 p-3">
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-box border border-base-300 p-3">
             <div className="flex min-w-0 items-center gap-2">
               <CheckCircle2 className="size-4 shrink-0 text-success" />
               <span className="truncate font-mono text-sm">
@@ -138,7 +138,7 @@ export function GoogleServiceAccountSection() {
 
           {/* The step people forget: a stored key alone reaches nothing until
               the account is a user on the property. */}
-          <div className="rounded-lg border border-base-300 bg-base-200/40 p-3">
+          <div className="rounded-box border border-base-300 bg-base-200/40 p-3">
             <p className="text-sm text-muted">
               Bu adresi Search Console&apos;da{" "}
               <strong>

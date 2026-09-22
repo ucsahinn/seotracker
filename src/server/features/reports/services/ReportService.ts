@@ -1,6 +1,6 @@
 import { ReportRepository } from "@/server/features/reports/repositories/ReportRepository";
 import { AppError } from "@/server/lib/errors";
-import { formatCount } from "@/shared/format";
+import { formatEnglishCount } from "@/shared/format";
 import {
   REPORT_MAX_BYTES_PER_ORG,
   REPORT_MAX_HTML_BYTES,
@@ -20,10 +20,12 @@ import {
 // they must never round to the same number: 499,900 bytes reading "500 KB; the
 // limit is 500 KB" tells the agent to shrink by nothing. Round the actual size
 // up and the limit down.
-const kbUp = (bytes: number) => `${formatCount(Math.ceil(bytes / 1000))} KB`;
-const kbDown = (bytes: number) => `${formatCount(Math.floor(bytes / 1000))} KB`;
+const kbUp = (bytes: number) =>
+  `${formatEnglishCount(Math.ceil(bytes / 1000))} KB`;
+const kbDown = (bytes: number) =>
+  `${formatEnglishCount(Math.floor(bytes / 1000))} KB`;
 const mb = (bytes: number) =>
-  `${formatCount(Math.round(bytes / 1_000_000))} MB`;
+  `${formatEnglishCount(Math.round(bytes / 1_000_000))} MB`;
 
 const htmlBytes = (html: string) => new TextEncoder().encode(html).length;
 
@@ -60,13 +62,13 @@ export async function saveReport(params: SaveReportParams): Promise<{
   if (title.length > REPORT_MAX_TITLE_CHARS) {
     throw new AppError(
       "VALIDATION_ERROR",
-      `Title is ${formatCount(title.length)} characters; the limit is ${formatCount(REPORT_MAX_TITLE_CHARS)}. Shorten it and save again.`,
+      `Title is ${formatEnglishCount(title.length)} characters; the limit is ${formatEnglishCount(REPORT_MAX_TITLE_CHARS)}. Shorten it and save again.`,
     );
   }
   if (summary.length > REPORT_MAX_SUMMARY_CHARS) {
     throw new AppError(
       "VALIDATION_ERROR",
-      `Summary is ${formatCount(summary.length)} characters; the limit is ${formatCount(REPORT_MAX_SUMMARY_CHARS)}. Shorten it and save again.`,
+      `Summary is ${formatEnglishCount(summary.length)} characters; the limit is ${formatEnglishCount(REPORT_MAX_SUMMARY_CHARS)}. Shorten it and save again.`,
     );
   }
   // UTF-8 bytes, not code units: a `.length` check understates multi-byte
@@ -120,7 +122,7 @@ export async function saveReport(params: SaveReportParams): Promise<{
     if (total >= REPORT_MAX_PER_PROJECT) {
       throw new AppError(
         "VALIDATION_ERROR",
-        `This project has ${formatCount(REPORT_MAX_PER_PROJECT)} reports, the limit. Delete one from the Reports page.`,
+        `This project has ${formatEnglishCount(REPORT_MAX_PER_PROJECT)} reports, the limit. Delete one from the Reports page.`,
       );
     }
   }

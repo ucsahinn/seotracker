@@ -117,7 +117,7 @@ export function GooglePropertyPicker({
           aria-expanded={open}
           aria-controls={panelId}
           disabled={saving}
-          className="flex w-full items-center justify-between gap-3 rounded-lg border border-base-300 px-3.5 py-3 text-left text-sm hover:bg-base-200/40 disabled:opacity-50"
+          className="flex w-full items-center justify-between gap-3 rounded-field border border-base-300 px-3.5 py-3 text-left text-sm hover:bg-base-200/40 disabled:opacity-50"
           onClick={() => {
             setOpen(!open);
             setSearch("");
@@ -243,7 +243,7 @@ export function GooglePropertyPicker({
                               disabled={
                                 readOnly || !property.selectable || saving
                               }
-                              className={`flex w-full items-center justify-between gap-3 rounded-md px-2 py-2.5 text-left text-sm hover:bg-base-200 focus-visible:outline-2 focus-visible:outline-primary disabled:opacity-40 ${chosen ? "bg-base-200" : ""}`}
+                              className={`flex w-full items-center justify-between gap-3 rounded-field px-2 py-2.5 text-left text-sm hover:bg-base-200 focus-visible:outline-2 focus-visible:outline-primary disabled:opacity-40 ${chosen ? "bg-base-200" : ""}`}
                               onClick={() => {
                                 onSelect({
                                   accountId: account.accountId,
@@ -289,7 +289,7 @@ export function GooglePropertyPicker({
             <div className="border-t border-base-300 p-1.5">
               <button
                 type="button"
-                className="flex w-full items-center gap-2 rounded-md px-2 py-2.5 text-left text-sm font-medium hover:bg-base-200"
+                className="flex w-full items-center gap-2 rounded-field px-2 py-2.5 text-left text-sm font-medium hover:bg-base-200"
                 onClick={onReconnect}
                 disabled={saving || linking}
                 aria-busy={linking}

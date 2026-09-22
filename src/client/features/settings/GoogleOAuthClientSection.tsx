@@ -99,7 +99,7 @@ export function GoogleOAuthClientSection() {
         </a>
       </p>
 
-      <div className="rounded-lg border border-base-300 bg-base-200/40 p-3">
+      <div className="rounded-box border border-base-300 bg-base-200/40 p-3">
         <p className="text-sm text-muted">
           İstemciyi oluştururken <strong>Authorized redirect URI</strong>{" "}
           alanına tam olarak bunu yazın. Bir karakter farkı bile Google&apos;ın{" "}
@@ -131,7 +131,7 @@ export function GoogleOAuthClientSection() {
       ) : null}
 
       {stored && !editing ? (
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-base-300 p-3">
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-box border border-base-300 p-3">
           <div className="flex min-w-0 items-center gap-2">
             <CheckCircle2 className="size-4 shrink-0 text-success" />
             <span className="truncate font-mono text-sm">

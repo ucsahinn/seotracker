@@ -9,7 +9,7 @@ export function SearchPerformanceLoadingState() {
         {Array.from({ length: 4 }).map((_, index) => (
           <div
             key={index}
-            className="rounded-lg border border-base-300 bg-base-100 p-4 space-y-2"
+            className="rounded-box border border-base-300 bg-base-100 p-4 space-y-2"
           >
             <div className="skeleton h-3 w-20" />
             <div className="skeleton h-7 w-24" />

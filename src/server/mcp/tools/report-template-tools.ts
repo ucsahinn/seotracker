@@ -11,7 +11,7 @@ import {
 import { withMcpProjectAuth } from "@/server/mcp/project-auth";
 import { projectIdSchema } from "@/server/mcp/schemas";
 import { buildDashboardUrl } from "@/server/mcp/urls";
-import { formatCount } from "@/shared/format";
+import { formatEnglishCount } from "@/shared/format";
 import {
   REPORT_TEMPLATE_MAX_DESCRIPTION_CHARS,
   REPORT_TEMPLATE_MAX_INSTRUCTIONS_CHARS,
@@ -115,7 +115,7 @@ const saveInputSchema = {
     .string()
     .min(1)
     .describe(
-      `Markdown, max ${formatCount(REPORT_TEMPLATE_MAX_INSTRUCTIONS_CHARS)} characters: the audience, the sections in order, the tone, the sign-off, and optionally an accent color as "accent: #1C4ED8". This replaces the skill's default section list and tone — never the seo-report HTML constraints, which always apply.`,
+      `Markdown, max ${formatEnglishCount(REPORT_TEMPLATE_MAX_INSTRUCTIONS_CHARS)} characters: the audience, the sections in order, the tone, the sign-off, and optionally an accent color as "accent: #1C4ED8". This replaces the skill's default section list and tone — never the seo-report HTML constraints, which always apply.`,
     ),
 } as const;
 
