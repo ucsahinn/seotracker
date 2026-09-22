@@ -231,8 +231,15 @@ export function GooglePropertyPicker({
                           </button>
                         </div>
                       ) : account.properties.length === 0 ? (
+                        /* An account that can see nothing is usually an
+                           account with nothing to see: the operator has not
+                           created the property yet. Saying "no properties"
+                           leaves them looking for a permission problem that
+                           is not there. */
                         <p className="px-2 pb-3 text-sm text-muted">
-                          Bu hesapta kaynak yok
+                          {provider === "ga4"
+                            ? "Bu hesabın görebildiği bir GA4 mülkü yok. Henüz mülk oluşturmadıysanız analytics.google.com'dan oluşturun, sonra bu hesabı ona Görüntüleyen olarak ekleyin."
+                            : "Bu hesabın görebildiği bir Search Console mülkü yok. Mülkü doğruladıysanız bu hesabı search.google.com/search-console adresinden kullanıcı olarak ekleyin."}
                         </p>
                       ) : (
                         account.properties.map((property) => {
