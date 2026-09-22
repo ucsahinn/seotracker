@@ -9,7 +9,8 @@ It's **optional**: seotracker runs fine without it, just without Search Console 
 
 - A Google account with access to your verified Search Console property.
 - ~10 minutes in the [Google Cloud Console](https://console.cloud.google.com/).
-- Three environment variables set on your deployment (see [step 4](#4-set-environment-variables)).
+- Nothing on the server. The client goes into the app's own Settings
+  ([step 4](#4-enter-the-client-in-settings)); no environment variable is required.
 
 ## 1) Create a Google Cloud project and enable the API
 
@@ -39,10 +40,14 @@ Under **APIs & Services → Credentials → Create credentials → OAuth client 
 2. Add an **Authorized redirect URI** that exactly matches your deployment's
    origin plus `/api/gsc/oauth/callback`:
 
-   | Deployment   | Redirect URI                                                |
-   | ------------ | ----------------------------------------------------------- |
-   | Deployed     | `https://your-seotracker-domain.com/api/gsc/oauth/callback` |
-   | Local Docker | `http://localhost:3001/api/gsc/oauth/callback`              |
+   For the documented Docker setup that is exactly:
+
+   ```
+   http://localhost:3001/api/gsc/oauth/callback
+   ```
+
+   If you changed `PORT`, or put the container behind a reverse proxy and set
+   `ALLOWED_HOST`, use that origin instead.
 
    The scheme, host, and port must match exactly, with no trailing slash.
 
@@ -68,7 +73,7 @@ container on first boot and kept in the data volume. You do not set it.
 
 ## 5) Connect
 
-Open **Integrations**, click **Connect with Google**, authorize the Google
+Open **Ayarlar → Entegrasyonlar**, click **Google ile bağlan**, authorize the Google
 account that owns your verified property, and pick the property to bind to your
 project.
 
@@ -78,7 +83,10 @@ project.
   grant in its database, with the access and refresh tokens **encrypted at rest**
   under the instance key.
 - Access tokens are minted and refreshed on demand — you only authorize once.
-- Search Console data comes from your own Google account, so seotracker never meters credits for it.
+- The data is read from your own Google account under your own quota. The
+  only quota worth knowing about is URL Inspection: Google allows 2000
+  addresses per property per day, which the indexing screen and the
+  `inspect_urls` MCP tool share.
 
 ## Troubleshooting
 
