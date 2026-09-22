@@ -1,5 +1,9 @@
 import { getAuth } from "@/lib/auth";
-import { GSC_OAUTH_PROVIDER_ID } from "@/shared/gsc";
+import {
+  getServiceAccountToken,
+  hasServiceAccount,
+} from "@/server/lib/googleServiceAccountToken";
+import { GSC_OAUTH_PROVIDER_ID, GSC_SERVICE_ACCOUNT_SCOPE } from "@/shared/gsc";
 import { GscApiError, GscTokenError } from "./gscErrors";
 
 export { GscApiError, GscTokenError } from "./gscErrors";
@@ -84,6 +88,23 @@ export function createGscClient(opts: {
   gscAccountId?: string;
 }) {
   async function getToken(): Promise<string> {
+    /*
+     * A service account, when one is stored, is the whole credential: there
+     * is no grant to refresh and no user to be signed in as. It wins over a
+     * stored OAuth client because an operator who set up both meant to move
+     * to the simpler one.
+     */
+    if (await hasServiceAccount()) {
+      try {
+        return await getServiceAccountToken(GSC_SERVICE_ACCOUNT_SCOPE);
+      } catch (error) {
+        throw new GscTokenError(
+          "Servis hesabı Search Console için token alamadı.",
+          error,
+        );
+      }
+    }
+
     let result: { accessToken?: string } | undefined;
     try {
       // Headerless call: getAccessToken trusts body.userId when no request

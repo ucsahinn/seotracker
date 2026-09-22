@@ -4,6 +4,7 @@ import { account } from "@/db/schema";
 import { AppError } from "@/server/lib/errors";
 import { createGa4AdminClient } from "@/server/lib/ga4Client";
 import { Ga4AdminApiError, Ga4TokenError } from "@/server/lib/ga4Errors";
+import { hasServiceAccount } from "@/server/lib/googleServiceAccountToken";
 import { GA4_OAUTH_PROVIDER_ID } from "@/shared/ga4";
 import {
   Ga4ConnectionRepository,
@@ -38,7 +39,31 @@ function requiresReconnect(error: unknown): boolean {
   );
 }
 
+/**
+ * The pseudo account id a service account is listed under; see the note on
+ * the Search Console side. It never reaches Better Auth.
+ */
+const GA4_SERVICE_ACCOUNT_ID = "service-account";
+
 async function listPropertiesForUserWithGrantStatus(userId: string) {
+  // One credential, no grants to enumerate, and no signed-in person whose
+  // email could be looked up. Same shape as a grant so the picker is unchanged.
+  if (await hasServiceAccount()) {
+    const client = createGa4AdminClient({ userId });
+    const properties = await client.listProperties();
+    return {
+      accounts: [
+        {
+          accountId: GA4_SERVICE_ACCOUNT_ID,
+          email: null,
+          requiresReconnect: false,
+          propertiesUnavailable: false,
+          properties,
+        },
+      ],
+    };
+  }
+
   const grants = await listGrantsForUser(userId);
   const accounts = await Promise.all(
     grants.map(async (grant) => {

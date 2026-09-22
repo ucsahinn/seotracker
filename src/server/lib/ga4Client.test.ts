@@ -9,11 +9,21 @@ import {
 
 const mocks = vi.hoisted(() => ({
   getAccessToken: vi.fn(),
+  hasServiceAccount: vi.fn<() => Promise<boolean>>(),
+  getServiceAccountToken: vi.fn<() => Promise<string>>(),
   fetch: vi.fn<typeof fetch>(),
 }));
 
 vi.mock("@/lib/auth", () => ({
   getAuth: () => ({ api: { getAccessToken: mocks.getAccessToken } }),
+}));
+
+// Mocked for the same reason `@/lib/auth` is: the real module reaches the
+// database, which this client does not otherwise touch and the Node test
+// environment cannot load (`cloudflare:workers`).
+vi.mock("@/server/lib/googleServiceAccountToken", () => ({
+  hasServiceAccount: mocks.hasServiceAccount,
+  getServiceAccountToken: mocks.getServiceAccountToken,
 }));
 
 function jsonResponse(body: unknown, status = 200) {
@@ -28,6 +38,8 @@ function requestUrl(input: RequestInfo | URL): string {
 describe("ga4Client admin API", () => {
   beforeEach(() => {
     mocks.getAccessToken.mockResolvedValue({ accessToken: "ga4_tok" });
+    mocks.hasServiceAccount.mockResolvedValue(false);
+    mocks.getServiceAccountToken.mockResolvedValue("sa_tok");
     vi.stubGlobal("fetch", mocks.fetch);
   });
 
@@ -258,6 +270,8 @@ const reportRequest = {
 describe("ga4Client data API", () => {
   beforeEach(() => {
     mocks.getAccessToken.mockResolvedValue({ accessToken: "token" });
+    mocks.hasServiceAccount.mockResolvedValue(false);
+    mocks.getServiceAccountToken.mockResolvedValue("sa_tok");
     vi.stubGlobal("fetch", mocks.fetch);
   });
 

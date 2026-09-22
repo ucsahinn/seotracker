@@ -8,6 +8,7 @@ import { Ga4Service } from "@/server/features/ga4/services/Ga4Service";
 import { AppError } from "@/server/lib/errors";
 import { Ga4ReportError } from "@/server/lib/ga4Errors";
 import { hasSelfHostedGoogleOAuthConfig } from "@/server/features/google/oauth-config";
+import { hasServiceAccount } from "@/server/lib/googleServiceAccountToken";
 import {
   createSelfHostedGoogleAuthorizationUrl,
   GA4_INTEGRATION,
@@ -34,16 +35,21 @@ export const getGa4Connection = createServerFn({ method: "POST" })
   .middleware(requireProjectContext)
   .validator(projectScopedSchema)
   .handler(async ({ context }) => {
-    const [connection, currentUserHasGrant, ga4Configured] = await Promise.all([
-      Ga4Service.getConnection(context.projectId),
-      Ga4Service.userHasGrant(context.userId),
-      hasSelfHostedGoogleOAuthConfig(),
-    ]);
+    const [connection, currentUserHasGrant, ga4Configured, serviceAccount] =
+      await Promise.all([
+        Ga4Service.getConnection(context.projectId),
+        Ga4Service.userHasGrant(context.userId),
+        hasSelfHostedGoogleOAuthConfig(),
+        hasServiceAccount(),
+      ]);
     return {
       connected: Boolean(connection),
       canManage: hasOrgPermission(context.role, { integration: ["manage"] }),
-      currentUserHasGrant,
-      googleOAuthConfigured: ga4Configured,
+      // See the note in `getGscConnection`: a service account is authorised
+      // by existing, so the card skips straight to picking a property.
+      currentUserHasGrant: currentUserHasGrant || serviceAccount,
+      usesServiceAccount: serviceAccount,
+      googleOAuthConfigured: ga4Configured || serviceAccount,
       propertyId: connection?.propertyId ?? null,
       propertyDisplayName: connection?.propertyDisplayName ?? null,
       propertyTimeZone: connection?.propertyTimeZone ?? null,

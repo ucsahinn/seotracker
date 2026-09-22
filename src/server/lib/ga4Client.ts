@@ -7,7 +7,11 @@ import {
   Ga4MalformedResponseError,
   Ga4TokenError,
 } from "@/server/lib/ga4Errors";
-import { GA4_OAUTH_PROVIDER_ID } from "@/shared/ga4";
+import {
+  getServiceAccountToken,
+  hasServiceAccount,
+} from "@/server/lib/googleServiceAccountToken";
+import { GA4_OAUTH_PROVIDER_ID, GA4_SERVICE_ACCOUNT_SCOPE } from "@/shared/ga4";
 
 const GA4_ADMIN_API_BASE = "https://analyticsadmin.googleapis.com/v1beta";
 const GA4_ADMIN_ALPHA_API_BASE =
@@ -126,15 +130,29 @@ type Ga4Property = z.infer<typeof propertySchema>;
 
 async function getGa4AccessToken(opts: {
   userId: string;
-  ga4AccountId: string;
+  /* Absent when a service account is minting: there is no grant to name. */
+  ga4AccountId?: string;
 }): Promise<string> {
+  // Same precedence as the Search Console client: a stored service account is
+  // the whole credential, with no grant to refresh and no user to be.
+  if (await hasServiceAccount()) {
+    try {
+      return await getServiceAccountToken(GA4_SERVICE_ACCOUNT_SCOPE);
+    } catch (error) {
+      throw new Ga4TokenError(
+        "Servis hesabı Google Analytics için token alamadı.",
+        error,
+      );
+    }
+  }
+
   let result: { accessToken?: string } | undefined;
   try {
     result = await getAuth().api.getAccessToken({
       body: {
         providerId: GA4_OAUTH_PROVIDER_ID,
         userId: opts.userId,
-        accountId: opts.ga4AccountId,
+        ...(opts.ga4AccountId ? { accountId: opts.ga4AccountId } : {}),
       },
     });
   } catch (error) {
@@ -164,7 +182,7 @@ function isAbortError(error: unknown): boolean {
 
 function memoizedGa4AccessToken(opts: {
   userId: string;
-  ga4AccountId: string;
+  ga4AccountId?: string;
 }) {
   let accessTokenPromise: Promise<string> | undefined;
   return () => (accessTokenPromise ??= getGa4AccessToken(opts));
@@ -173,7 +191,7 @@ function memoizedGa4AccessToken(opts: {
 /** Read-only Admin API client used only for account/property discovery. */
 export function createGa4AdminClient(opts: {
   userId: string;
-  ga4AccountId: string;
+  ga4AccountId?: string;
 }) {
   const accessToken = memoizedGa4AccessToken(opts);
 

@@ -52,6 +52,10 @@ vi.mock("cloudflare:workers", () => ({ env: {} }));
 vi.mock("@/db", () => ({
   db: { select: mocks.dbSelect, delete: mocks.dbDelete },
 }));
+// Reaches the database, which this service test stubs out entirely.
+vi.mock("@/server/lib/googleServiceAccountToken", () => ({
+  hasServiceAccount: () => Promise.resolve(false),
+}));
 vi.mock("@/server/lib/gscClient", () => ({
   createGscClient: mocks.createGscClient,
 }));

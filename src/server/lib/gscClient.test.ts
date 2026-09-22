@@ -2,11 +2,21 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
   getAccessToken: vi.fn(),
+  hasServiceAccount: vi.fn<() => Promise<boolean>>(),
+  getServiceAccountToken: vi.fn<() => Promise<string>>(),
   fetch: vi.fn<typeof fetch>(),
 }));
 
 vi.mock("@/lib/auth", () => ({
   getAuth: () => ({ api: { getAccessToken: mocks.getAccessToken } }),
+}));
+
+// Mocked for the same reason `@/lib/auth` is: the real module reaches the
+// database, which this client does not otherwise touch and the Node test
+// environment cannot load (`cloudflare:workers`).
+vi.mock("@/server/lib/googleServiceAccountToken", () => ({
+  hasServiceAccount: mocks.hasServiceAccount,
+  getServiceAccountToken: mocks.getServiceAccountToken,
 }));
 
 function jsonResponse(body: unknown, status = 200) {
@@ -17,11 +27,30 @@ describe("gscClient", () => {
   beforeEach(() => {
     mocks.getAccessToken.mockReset();
     mocks.getAccessToken.mockResolvedValue({ accessToken: "tok_123" });
+    mocks.hasServiceAccount.mockResolvedValue(false);
+    mocks.getServiceAccountToken.mockResolvedValue("sa_tok");
     mocks.fetch.mockReset();
     vi.stubGlobal("fetch", mocks.fetch);
   });
   afterEach(() => {
     vi.unstubAllGlobals();
+  });
+
+  /*
+   * A service account replaces the grant entirely: there is nothing to
+   * refresh and no user to be, so Better Auth must not be consulted at all.
+   */
+  it("mints from the service account instead of a grant when one is stored", async () => {
+    mocks.hasServiceAccount.mockResolvedValue(true);
+    mocks.fetch.mockResolvedValue(jsonResponse({ siteEntry: [] }));
+
+    const { createGscClient } = await import("./gscClient");
+    await createGscClient({ userId: "u1" }).listSites();
+
+    expect(mocks.getAccessToken).not.toHaveBeenCalled();
+    expect(mocks.fetch.mock.calls[0]?.[1]?.headers).toMatchObject({
+      Authorization: "Bearer sa_tok",
+    });
   });
 
   it("lists sites with a bearer token", async () => {

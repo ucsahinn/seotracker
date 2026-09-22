@@ -1,6 +1,7 @@
 import { and, eq } from "drizzle-orm";
 import { db } from "@/db";
 import { account } from "@/db/schema";
+import { hasServiceAccount } from "@/server/lib/googleServiceAccountToken";
 import { GSC_OAUTH_PROVIDER_ID } from "@/shared/gsc";
 import { AppError } from "@/server/lib/errors";
 import {
@@ -79,6 +80,15 @@ async function listGrantsForUser(userId: string) {
     );
 }
 
+/**
+ * The pseudo account id a service account is listed under.
+ *
+ * The picker keys rows by account id and a service account has none, so it
+ * gets a reserved one. It never reaches Better Auth: `createGscClient` only
+ * passes `gscAccountId` through when it is minting from a grant.
+ */
+const SERVICE_ACCOUNT_ID = "service-account";
+
 /** Expected ways a stored grant fails to reach Search Console: no token could be
  *  minted (refresh token revoked or expired), or Google rejected the call
  *  (401/403). These surface a reconnect prompt without fault logging. */
@@ -93,6 +103,29 @@ export function isExpectedGrantFailure(error: unknown): boolean {
 async function listSitesForUserWithGrantStatus(
   userId: string,
 ): Promise<GscSiteListResult> {
+  /*
+   * A service account has no grants to enumerate: it is one credential, and
+   * the properties it can see are the ones its address was added to in
+   * Search Console. Presented as a single account so the picker below needs
+   * no second shape, with no email lookup -- `userinfo` describes a signed-in
+   * person and there is not one.
+   */
+  if (await hasServiceAccount()) {
+    const client = createGscClient({ userId });
+    const sites = await client.listSites();
+    return {
+      accounts: [
+        {
+          accountId: SERVICE_ACCOUNT_ID,
+          email: null,
+          requiresReconnect: false,
+          propertiesUnavailable: false,
+          sites,
+        },
+      ],
+    };
+  }
+
   const grants = await listGrantsForUser(userId);
   const accounts = await Promise.all(
     grants.map(async (grant) => {

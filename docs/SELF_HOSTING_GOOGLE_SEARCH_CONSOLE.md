@@ -12,6 +12,45 @@ It's **optional**: seotracker runs fine without it, just without Search Console 
 - Nothing on the server. The client goes into the app's own Settings
   ([step 4](#4-enter-the-client-in-settings)); no environment variable is required.
 
+## Two ways in
+
+There are two credentials that reach Search Console, and you only need one.
+
+**A service account is the shorter path** and the one to pick unless you have
+a reason not to. It skips the three steps setup actually fails on — the
+consent screen, adding yourself as a test user, and a redirect URI that must
+match byte for byte — because there is no sign-in involved. You create the
+account, download its key, paste it into Settings, and add its email address
+to your property in Search Console the way you would add a colleague. Jump to
+[Service account](#service-account-shorter).
+
+**An OAuth client** is the path below. Use it if you would rather grant access
+by signing in as yourself than by adding another address to the property, or
+if your property is managed somewhere you cannot add users.
+
+Both store their secret encrypted with the instance key. If both are
+configured, the service account wins.
+
+## Service account (shorter)
+
+1. [Create a service account](https://console.cloud.google.com/iam-admin/serviceaccounts)
+   in your Google Cloud project. Name it anything; skip the optional
+   role and user-access steps — it needs no project role.
+2. Open it, go to **Keys → Add key → Create new key → JSON**, and download
+   the file.
+3. In seotracker: **Ayarlar → Servis hesabı**, paste the whole file, save.
+   The page then shows the account's email address with a copy button.
+4. In [Search Console](https://search.google.com/search-console): pick your
+   property, **Settings → Users and permissions → Add user**, paste that
+   address, permission **Full**. Without this step the account is
+   authenticated but can see nothing.
+5. For Analytics, add the same address to the GA4 property under
+   **Admin → Access management** as a Viewer.
+
+Make sure the
+[Search Console API](https://console.cloud.google.com/apis/library/searchconsole.googleapis.com)
+is enabled for the project either way; step 1 below covers it.
+
 ## 1) Create a Google Cloud project and enable the API
 
 1. Open the [Google Cloud Console](https://console.cloud.google.com/) and create

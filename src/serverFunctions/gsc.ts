@@ -3,6 +3,7 @@ import { getRequest } from "@tanstack/react-start/server";
 import { waitUntil } from "cloudflare:workers";
 import { z } from "zod";
 import { GscService } from "@/server/features/gsc/services/GscService";
+import { hasServiceAccount } from "@/server/lib/googleServiceAccountToken";
 import { hasSelfHostedGoogleOAuthConfig } from "@/server/features/google/oauth-config";
 import {
   createSelfHostedGoogleAuthorizationUrl,
@@ -33,16 +34,24 @@ export const getGscConnection = createServerFn({ method: "POST" })
   .middleware(requireProjectContext)
   .validator(projectScopedSchema)
   .handler(async ({ context }) => {
-    const [connection, currentUserHasGrant, gscConfigured] = await Promise.all([
-      GscService.getConnection(context.projectId),
-      GscService.userHasGrant(context.userId),
-      hasSelfHostedGoogleOAuthConfig(),
-    ]);
+    const [connection, currentUserHasGrant, gscConfigured, serviceAccount] =
+      await Promise.all([
+        GscService.getConnection(context.projectId),
+        GscService.userHasGrant(context.userId),
+        hasSelfHostedGoogleOAuthConfig(),
+        hasServiceAccount(),
+      ]);
     return {
       connected: Boolean(connection),
       canManage: hasOrgPermission(context.role, { integration: ["manage"] }),
-      currentUserHasGrant,
-      googleOAuthConfigured: gscConfigured,
+      /*
+       * A service account is a credential with no sign-in: there is nothing
+       * to grant and nobody to be. The card treats it as already authorised
+       * and goes straight to choosing a property, so both flags read true.
+       */
+      currentUserHasGrant: currentUserHasGrant || serviceAccount,
+      usesServiceAccount: serviceAccount,
+      googleOAuthConfigured: gscConfigured || serviceAccount,
       siteUrl: connection?.siteUrl ?? null,
       connectedByEmail: connection?.connectedAccountEmail ?? null,
       connectedAt: connection?.createdAt ?? null,
