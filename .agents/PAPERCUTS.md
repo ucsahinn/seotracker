@@ -41,3 +41,5 @@ data, or sensitive paths.
 - `src/server/features/projects/services/projects.test.ts` intermittently times out under full-suite parallelism (`listProjectsEnsuringOne`, ~5s vs ~470ms in isolation) and passes on its own. Not investigated; it makes a green run non-deterministic, so compare the file and test counts rather than trusting the exit code.
 
 - RESOLVED: the `projects.test.ts` flake was `vi.resetModules()` + per-test `await import()`, the pattern CLAUDE.md bans. `projects.ts` holds no module-level state, so the reset bought nothing and cost determinism. Static import now; three consecutive full runs and a shuffled run are green.
+
+- GitHub suspends `push` and `pull_request` workflow triggers on a **forked** repository until the owner clicks "I understand my workflows, go ahead and enable them" in the Actions tab. Verified here: `actions/permissions` reports `enabled: true`, `PUT .../workflows/<id>/enable` returns success, and pushes to `main` still produce zero runs — only `workflow_dispatch` fires. That is why `ci.yml` has a manual trigger. One click in the web UI lifts it permanently.
