@@ -201,12 +201,14 @@ export function GooglePropertyPicker({
                       </div>
                       {account.requiresReconnect ? (
                         <div className="flex flex-wrap items-center justify-between gap-2 px-2 pb-2 text-sm">
-                          <span className="text-muted">Connection expired</span>
+                          <span className="text-muted">
+                            Bağlantının süresi doldu
+                          </span>
                           <button
                             type="button"
                             className="btn btn-ghost btn-xs"
                             onClick={onReconnect}
-                            aria-label={`Reconnect ${accountLabel(account)}`}
+                            aria-label={`${accountLabel(account)} hesabını yeniden bağla`}
                             disabled={linking}
                             aria-busy={linking}
                           >
@@ -275,7 +277,7 @@ export function GooglePropertyPicker({
                                 ) : null}
                                 {!property.selectable ? (
                                   <span className="block text-xs">
-                                    No verified access
+                                    Doğrulanmış erişim yok
                                   </span>
                                 ) : null}
                               </span>

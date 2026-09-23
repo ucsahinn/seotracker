@@ -9,7 +9,8 @@ import {
 import { ProjectSwitcher } from "@/client/features/projects/ProjectSwitcher";
 import { ThemePreferenceMenuItems } from "@/client/components/ThemePreferenceMenuItems";
 import { closeDropdown } from "@/client/lib/dropdown";
-import { useSession } from "@/lib/auth-client";
+import { useQuery } from "@tanstack/react-query";
+import { getCurrentUser } from "@/serverFunctions/currentUser";
 
 interface SidebarProps {
   projectId: string | null;
@@ -125,8 +126,17 @@ export function Sidebar({ projectId, onNavigate, onClose }: SidebarProps) {
 }
 
 function SidebarFooter({ onNavigate }: { onNavigate?: () => void }) {
-  const { data: session } = useSession();
-  const email = session?.user?.email;
+  /*
+   * `staleTime: Infinity` because the identity cannot change without a
+   * reload: there is no sign-in, and the auth mode resolves it per request
+   * from a header this session cannot alter.
+   */
+  const user = useQuery({
+    queryKey: ["currentUser"],
+    queryFn: () => getCurrentUser(),
+    staleTime: Infinity,
+  });
+  const email = user.data?.email;
 
   const closeMenu = () => {
     closeDropdown();

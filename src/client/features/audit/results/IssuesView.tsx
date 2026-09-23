@@ -25,7 +25,7 @@ const SEVERITY_RULE: Record<IssueSeverity, string> = {
   info: "border-l-base-content/20",
 };
 
-const SEVERITY_LABEL: Record<IssueSeverity, string> = {
+export const SEVERITY_LABEL: Record<IssueSeverity, string> = {
   critical: "Kritik",
   warning: "Uyarı",
   info: "Bilgi",

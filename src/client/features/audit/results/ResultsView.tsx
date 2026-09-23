@@ -52,9 +52,9 @@ export function ResultsView({
     <>
       {blockedCount > 0 && (
         <CrawlWarning headline={`${blockedCount} sayfada engellendik.`}>
-          The site's bot protection challenged our crawler, so those pages
-          couldn't be audited. We don't have a workaround for this yet. Desktop
-          crawlers run from your own machine and usually get past it: try{" "}
+          Sitenin bot koruması tarayıcımızı durdurdu, bu yüzden o sayfalar
+          denetlenemedi. Bunun için henüz bir çözümümüz yok. Masaüstü
+          tarayıcılar kendi makinenizden çalıştığı için genelde geçebiliyor:{" "}
           <a
             className="link link-primary"
             href="https://github.com/PhialsBasement/LibreCrawl"
@@ -63,7 +63,7 @@ export function ResultsView({
           >
             LibreCrawl
           </a>{" "}
-          (free, open source) or{" "}
+          (ücretsiz, açık kaynak) ya da{" "}
           <a
             className="link link-primary"
             href="https://www.screamingfrog.co.uk/seo-spider/"
@@ -72,7 +72,7 @@ export function ResultsView({
           >
             Screaming Frog
           </a>{" "}
-          (free up to 500 URLs).
+          (500 adrese kadar ücretsiz) deneyin.
         </CrawlWarning>
       )}
 

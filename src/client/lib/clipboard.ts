@@ -7,7 +7,9 @@ export async function copyTableToClipboard(
   rows: CsvValue[][],
 ): Promise<void> {
   if (typeof navigator === "undefined" || !navigator.clipboard?.write) {
-    throw new Error("Clipboard API not available in this browser.");
+    // Surfaced to the operator verbatim: getStandardErrorMessage returns
+    // error.message, so this string is UI copy, not a developer note.
+    throw new Error("Bu tarayıcıda pano erişimi yok.");
   }
 
   const safeRows = rows.map((row) =>

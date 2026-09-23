@@ -28,7 +28,6 @@ export const getAgentConnection = createServerFn({ method: "POST" })
       lastCallAt: activation?.lastMcpToolCallAt ?? null,
       /** The client's own word for itself. A hint for display, never an identity. */
       clientLabel: activation?.lastMcpClientLabel ?? null,
-      firstCallAt: activation?.firstMcpToolCallAt ?? null,
       /*
        * Whether a shared secret is set. Only the fact, never the value - the
        * page said flatly "this address requires no authentication", which was

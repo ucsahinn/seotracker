@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useLocation } from "@tanstack/react-router";
 import { Check, ExternalLink, X } from "lucide-react";
 import { Modal } from "@/client/components/Modal";
+import { formatCount } from "@/client/lib/format";
 import {
   closeExportToSheetsModal,
   openGoogleSheetsTab,
@@ -39,7 +40,7 @@ export function ExportToSheetsModal() {
             <Check className="size-4" />
           </span>
           <h3 id="export-to-sheets-title" className="text-base font-semibold">
-            Copied {rowCount} row{rowCount === 1 ? "" : "s"} to your clipboard
+            {formatCount(rowCount)} satır panoya kopyalandı
           </h3>
         </div>
         <button
@@ -53,7 +54,7 @@ export function ExportToSheetsModal() {
       </div>
 
       <p className="text-sm text-muted">
-        Open a new Google Sheet and paste to fill it.
+        Yeni bir Google E-Tablo açıp yapıştırın.
       </p>
 
       <div className="flex justify-end">
@@ -62,7 +63,7 @@ export function ExportToSheetsModal() {
           className="btn btn-primary btn-sm gap-1.5"
           onClick={handleOpenSheet}
         >
-          Open new Google Sheet
+          Yeni Google E-Tablo aç
           <ExternalLink className="size-3.5" />
         </button>
       </div>

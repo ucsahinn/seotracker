@@ -74,7 +74,7 @@ function ReportTemplatesPage() {
         className="inline-flex items-center gap-1 text-sm text-muted transition-colors hover:text-base-content"
       >
         <ChevronLeft className="size-4" />
-        Reports
+        Raporlar
       </Link>
 
       <div className="flex flex-wrap items-start justify-between gap-3">
@@ -133,7 +133,7 @@ function ReportTemplatesPage() {
 
       {pendingDelete ? (
         <ConfirmDeleteModal
-          title={`Delete \u201c${pendingDelete.name}\u201d?`}
+          title={`\u201c${pendingDelete.name}\u201d silinsin mi?`}
           detail="Bu şablondan üretilmiş raporlar etkilenmez."
           confirmLabel="Şablonu sil"
           isPending={deleteMutation.isPending}

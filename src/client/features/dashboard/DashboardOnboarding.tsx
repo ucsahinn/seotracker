@@ -44,7 +44,7 @@ export function DashboardOnboarding({
       toast.error(
         getStandardErrorMessage(
           error,
-          "Couldn’t save your preference. Try again.",
+          "Tercihiniz kaydedilemedi. Tekrar deneyin.",
         ),
       ),
   });
@@ -126,7 +126,7 @@ export function DashboardOnboarding({
                       }
                     >
                       {item.id === "project"
-                        ? "I only need one project"
+                        ? "Tek proje bana yeter"
                         : "Şimdilik geç"}
                     </button>
                   </div>
@@ -140,7 +140,7 @@ export function DashboardOnboarding({
         <details className="group border-t border-base-300">
           <summary className="flex cursor-pointer list-none items-center gap-2 px-5 py-4 text-sm text-muted sm:px-6 [&::-webkit-details-marker]:hidden">
             <ChevronRight className="size-4 transition-transform group-open:rotate-90" />
-            {deferred.length} saved for later
+            {deferred.length} adım sonraya bırakıldı
           </summary>
           <ul className="space-y-1 px-5 pb-4 sm:px-6">
             {deferred.map((item) => (

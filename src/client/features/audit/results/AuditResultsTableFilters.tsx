@@ -207,7 +207,7 @@ function FilterPanel({
           <p className="text-sm font-semibold">Sonuçları daralt</p>
           {activeFilterCount > 0 ? (
             <span className="badge badge-xs badge-primary border-0 text-primary-content">
-              {activeFilterCount} active
+              {activeFilterCount} etkin
             </span>
           ) : null}
         </div>
@@ -218,7 +218,7 @@ function FilterPanel({
           disabled={activeFilterCount === 0}
         >
           <RotateCcw className="size-3" />
-          Clear all
+          Tümünü temizle
         </button>
       </div>
       {children}

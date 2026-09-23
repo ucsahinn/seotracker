@@ -16,13 +16,13 @@ export function classifyAccessVerificationError(error: unknown): AppError {
     if (error.claim === "aud") {
       return new AppError(
         "AUTH_CONFIG_MISSING",
-        "Cloudflare Access token rejected: audience mismatch. POLICY_AUD does not match your Access application's AUD tag — copy it from Zero Trust -> Access controls -> Applications -> Configure -> Additional settings.",
+        "Cloudflare Access belirteci reddedildi: hedef kitle uyuşmuyor. POLICY_AUD, Access uygulamanızın AUD etiketiyle aynı değil — Zero Trust -> Access controls -> Applications -> Configure -> Additional settings yolundan kopyalayın.",
       );
     }
     if (error.claim === "iss") {
       return new AppError(
         "AUTH_CONFIG_MISSING",
-        "Cloudflare Access token rejected: issuer mismatch. TEAM_DOMAIN does not match the Cloudflare team that issued the token — check it against your team domain in Zero Trust settings.",
+        "Cloudflare Access belirteci reddedildi: veren taraf uyuşmuyor. TEAM_DOMAIN, belirteci veren Cloudflare ekibiyle aynı değil — Zero Trust ayarlarındaki ekip alan adınızla karşılaştırın.",
       );
     }
     return new AppError("UNAUTHENTICATED");
@@ -39,7 +39,7 @@ export function classifyAccessVerificationError(error: unknown): AppError {
   ) {
     return new AppError(
       "AUTH_CONFIG_MISSING",
-      "Could not verify the Cloudflare Access token against TEAM_DOMAIN's signing keys. Check that TEAM_DOMAIN is your team's https://<team>.cloudflareaccess.com domain.",
+      "Cloudflare Access belirteci TEAM_DOMAIN'in imza anahtarlarıyla doğrulanamadı. TEAM_DOMAIN'in ekibinizin https://<team>.cloudflareaccess.com adresi olduğundan emin olun.",
     );
   }
 

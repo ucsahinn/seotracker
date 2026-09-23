@@ -254,9 +254,7 @@ export function StrikingDistanceTable({
         .map((query) => normalizeExportValue(query))
         .join("\n");
       await navigator.clipboard.writeText(text);
-      toast.success(
-        `Copied ${selectedQueries.length} ${selectedQueries.length === 1 ? "keyword" : "keywords"}`,
-      );
+      toast.success(`${selectedQueries.length} kelime kopyalandı`);
     } catch {
       toast.error("Panoya kopyalanamadı");
     }
@@ -273,9 +271,7 @@ export function StrikingDistanceTable({
       void queryClient.invalidateQueries({
         queryKey: ["savedKeywords", projectId],
       });
-      toast.success(
-        `Saved ${keywords.length} ${keywords.length === 1 ? "keyword" : "keywords"}`,
-      );
+      toast.success(`${keywords.length} kelime kaydedildi`);
       setRowSelection({});
     },
     onError: (error) => {
@@ -325,7 +321,7 @@ export function StrikingDistanceTable({
               icon={<Copy className="size-3.5" />}
               onClick={() => void copyKeywords()}
             >
-              Copy keywords
+              Kelimeleri kopyala
             </TableBulkActionButton>
             <TableBulkActionButton
               icon={
@@ -338,7 +334,7 @@ export function StrikingDistanceTable({
               onClick={() => save.mutate(selectedQueries)}
               disabled={save.isPending}
             >
-              Save as keywords
+              Kelime olarak kaydet
             </TableBulkActionButton>
           </div>
         }

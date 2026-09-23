@@ -1,16 +1,26 @@
 import type { AuditResultsData } from "@/client/features/audit/results/types";
+import {
+  resolveIssueSeverity,
+  SEVERITY_LABEL,
+} from "@/client/features/audit/results/IssuesView";
 import { getIssueDescriptor } from "@/shared/audit-issues";
 import { buildCsv, type CsvValue, downloadCsv } from "@/client/lib/csv";
 import { downloadFile } from "@/client/lib/download";
 import { exportTableToSheets } from "@/client/lib/exportToSheets";
 
-const ISSUES_HEADERS = ["Severity", "Issue", "URL", "Details", "How To Fix"];
+const ISSUES_HEADERS = [
+  "Önem",
+  "Sorun",
+  "Adres",
+  "Ayrıntı",
+  "Nasıl düzeltilir",
+];
 
 function issuesRows(issues: AuditResultsData["issues"]): CsvValue[][] {
   return issues.map((issue) => {
     const descriptor = getIssueDescriptor(issue.issueType);
     return [
-      issue.severity,
+      SEVERITY_LABEL[resolveIssueSeverity(issue)],
       descriptor?.title ?? issue.issueType,
       issue.pageUrl,
       issue.detailsJson ?? "",
@@ -58,14 +68,14 @@ export function exportIssues(
 }
 
 const PAGES_HEADERS = [
-  "URL",
-  "Status",
-  "Title",
+  "Adres",
+  "Durum",
+  "Başlık",
   "H1",
-  "Words",
-  "Images",
-  "Missing Alt",
-  "Response Time (ms)",
+  "Kelime",
+  "Görsel",
+  "Alt metni eksik",
+  "Yanıt süresi (ms)",
 ];
 
 function pagesRows(pages: AuditResultsData["pages"]): CsvValue[][] {
@@ -82,10 +92,10 @@ function pagesRows(pages: AuditResultsData["pages"]): CsvValue[][] {
 }
 
 const PERFORMANCE_HEADERS = [
-  "URL",
-  "Device",
-  "Performance",
-  "Accessibility",
+  "Adres",
+  "Cihaz",
+  "Performans",
+  "Erişilebilirlik",
   "SEO",
   "LCP (ms)",
   "CLS",

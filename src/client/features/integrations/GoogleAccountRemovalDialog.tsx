@@ -74,16 +74,16 @@ export function GoogleAccountRemovalDialog({
     >
       <div className="modal-box max-w-md space-y-4">
         <h3 id={titleId} className="text-lg font-semibold">
-          Remove Google account?
+          Google hesabı kaldırılsın mı?
         </h3>
         <p className="break-all text-sm font-medium">{label}</p>
         <p className="text-sm text-muted">
-          This removes the account’s {name} connection from seotracker. You can
-          reconnect it anytime.
+          Bu hesabın {name} bağlantısı seotracker&apos;dan kaldırılır.
+          İstediğiniz zaman yeniden bağlayabilirsiniz.
         </p>
         {impact.isPending ? (
           <p role="status" className="text-sm text-muted">
-            Checking connected projects…
+            Bağlı projeler denetleniyor…
           </p>
         ) : impact.isError ? (
           <div role="alert" className="text-sm">
@@ -93,13 +93,13 @@ export function GoogleAccountRemovalDialog({
               className="btn btn-ghost btn-sm"
               onClick={() => void impact.refetch()}
             >
-              Try again
+              Tekrar dene
             </button>
           </div>
         ) : impact.data.projectCount > 0 ? (
           <p className="text-sm font-medium">
-            This will also disconnect {name} from {impact.data.projectCount}{" "}
-            project{impact.data.projectCount === 1 ? "" : "s"}.
+            Bu işlem {name} bağlantısını {impact.data.projectCount} projeden de
+            kaldırır.
           </p>
         ) : (
           <p className="text-sm text-muted">Hiçbir proje etkilenmeyecek.</p>
@@ -116,7 +116,7 @@ export function GoogleAccountRemovalDialog({
             disabled={removal.isPending}
             onClick={onClose}
           >
-            Cancel
+            Vazgeç
           </button>
           <button
             type="button"

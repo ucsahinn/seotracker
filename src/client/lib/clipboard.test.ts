@@ -105,7 +105,7 @@ describe("copyTableToClipboard", () => {
   it("throws when the Clipboard API is unavailable", async () => {
     vi.stubGlobal("navigator", {});
     await expect(copyTableToClipboard(["X"], [["y"]])).rejects.toThrow(
-      /Clipboard API not available/,
+      /pano erişimi yok/,
     );
   });
 });

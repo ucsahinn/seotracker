@@ -54,7 +54,7 @@ async function handleReportRequest(
     );
     if (!archived) return reportNotFound();
     return textResponse(
-      `This project is archived, so its reports are hidden. Restore ${archived.name} to read them.`,
+      `Bu proje arşivde, bu yüzden raporları gizli. Okumak için ${archived.name} projesini geri alın.`,
       404,
     );
   }

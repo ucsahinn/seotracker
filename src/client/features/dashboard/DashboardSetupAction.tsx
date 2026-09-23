@@ -11,6 +11,7 @@ import { ProjectMarketFields } from "@/client/features/projects/ProjectMarketFie
 import type { ProjectSummary } from "@/client/features/projects/types";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import { captureClientEvent } from "@/client/lib/observability";
+import { getAgentConnection } from "@/serverFunctions/agentConnection";
 import { getProjects, setProjectWebsite } from "@/serverFunctions/projects";
 import type { DashboardSetupStep } from "@/types/schemas/dashboard";
 import { normalizeDomainCandidate } from "@/client/lib/domain-input";
@@ -35,6 +36,16 @@ export function DashboardSetupAction({
     queryFn: () => getProjects(),
     enabled: step === "domain",
   });
+  /*
+   * Only so the copied prompt can tell the agent whether this install is
+   * behind MCP_TOKEN. Never the token itself: the server function returns a
+   * boolean, so no secret reaches the clipboard or the agent's transcript.
+   */
+  const connection = useQuery({
+    queryKey: ["agentConnection"],
+    queryFn: () => getAgentConnection(),
+    enabled: step === "mcp",
+  });
   const project = projects.data?.find((item) => item.id === projectId);
   if (step === "domain")
     return project ? (
@@ -50,23 +61,26 @@ export function DashboardSetupAction({
     return (
       <div className="max-w-2xl space-y-4">
         <p className="text-sm leading-relaxed text-muted">
-          Paste this prompt into your agent to automatically configure
-          seotracker for you.
+          Bu istemi ajanınıza yapıştırın; seotracker&apos;ı sizin için
+          kendiliğinden kuracak.
         </p>
         <div className="flex flex-col gap-4 rounded-box border border-base-300 bg-base-200/25 p-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-sm font-medium">seotracker plugin</p>
             <p className="mt-1 text-xs text-muted">
-              MCP connection + SEO skills
+              MCP bağlantısı + SEO becerileri
             </p>
           </div>
           <div className="shrink-0 [&>button]:h-10 [&>button]:w-full [&>button]:gap-2 [&>button]:text-sm">
             <CopyButton
               primary
               value={getAgentSetupPrompt(
+                // http, not https: nothing is listening for TLS on 3001, and
+                // this string is what the agent is told to connect to.
                 typeof window === "undefined"
-                  ? "https://localhost:3001"
+                  ? "http://localhost:3001"
                   : window.location.origin,
+                { tokenConfigured: connection.data?.tokenConfigured },
               )}
               label="Kurulum istemini kopyala"
               successMessage="Kurulum istemi kopyalandı"
@@ -78,14 +92,16 @@ export function DashboardSetupAction({
             />
           </div>
         </div>
-        <a
-          href="https://localhost:3001/docs/mcp"
-          target="_blank"
-          rel="noreferrer"
+        {/* Was an absolute https://localhost:3001/docs/mcp, which is the
+            wrong scheme for a port serving plain http and a route that has
+            never existed -- it answered 404 on every install. /ai is the page
+            that actually holds the manual steps, and it is in-app. */}
+        <Link
+          to="/ai"
           className="inline-block text-xs text-muted underline decoration-base-content/25 underline-offset-4 hover:text-base-content"
         >
-          Manual setup instructions
-        </a>
+          Kurulumu elle yapın
+        </Link>
       </div>
     );
   if (step === "gsc")
@@ -103,27 +119,27 @@ export function DashboardSetupAction({
     return (
       <div className="space-y-4">
         <p className="text-sm leading-relaxed text-muted">
-          Keep each website’s research, rankings, and connections in its own
-          project. Use the project switcher in the sidebar → New project
-          anytime.
+          Her sitenin araştırmasını, sıralamalarını ve bağlantılarını kendi
+          projesinde tutun. Yan menüdeki proje değiştiriciden → Yeni proje ile
+          istediğiniz zaman ekleyebilirsiniz.
         </p>
         <button
           type="button"
           className="btn btn-primary btn-sm"
           onClick={() => setShowModal(true)}
         >
-          Create another project
+          Başka bir proje oluştur
         </button>
         <details className="rounded-box border border-base-300 p-4">
           <summary className="cursor-pointer text-sm font-medium">
-            Have a list of websites? Let your agent set them up.
+            Bir site listeniz mi var? Ajanınız hepsini kursun.
           </summary>
           <div className="mt-3 space-y-3">
             <p className="text-sm text-muted">
               <Link to="/ai" className="link">
-                Connect your agent
+                Ajanınızı bağlayın
               </Link>
-              , then paste this prompt with your list of websites.
+              , sonra site listenizle birlikte bu istemi yapıştırın.
             </p>
             <pre className="whitespace-pre-wrap break-words font-sans text-sm leading-relaxed text-muted">
               {projectPrompt}
@@ -177,7 +193,7 @@ function WebsiteForm({
       toast.error(
         getStandardErrorMessage(
           error,
-          "Couldn’t save your website. Try again.",
+          "Siteniz kaydedilemedi. Tekrar deneyin.",
         ),
       ),
   });
@@ -202,8 +218,9 @@ function WebsiteForm({
       }}
     >
       <p className="text-sm leading-relaxed text-muted">
-        Add the website for this project and choose the country your customers
-        search from. You can change these in project settings anytime.
+        Bu projenin sitesini ekleyin ve müşterilerinizin arama yaptığı ülkeyi
+        seçin. İkisini de proje ayarlarından istediğiniz zaman
+        değiştirebilirsiniz.
       </p>
       <form.Field
         name="domain"
@@ -253,7 +270,7 @@ function WebsiteForm({
             className="btn btn-primary btn-sm"
             disabled={!canSubmit || isSubmitting || save.isPending}
           >
-            {save.isPending ? "Saving…" : "Siteyi kaydet"}
+            {save.isPending ? "Kaydediliyor…" : "Siteyi kaydet"}
           </button>
         )}
       </form.Subscribe>

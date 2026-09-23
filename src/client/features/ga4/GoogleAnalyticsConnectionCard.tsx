@@ -155,7 +155,7 @@ export function GoogleAnalyticsConnectionCard({
               className="btn btn-ghost btn-sm"
               onClick={() => void connectionQuery.refetch()}
             >
-              Try again
+              Tekrar dene
             </button>
           </div>
         ) : selfHostedNeedsSetup ? (
@@ -240,8 +240,8 @@ export function GoogleAnalyticsConnectionCard({
         ) : null}
         {connectionQuery.isSuccess && !selfHostedNeedsSetup && !canManage ? (
           <p className="mt-3 text-sm text-muted">
-            Ask an organization owner or admin to change this project's
-            connection.
+            Bu projenin bağlantısını değiştirmek için kuruluş sahibinden ya da
+            yöneticisinden yardım isteyin.
           </p>
         ) : null}
       </IntegrationConnectionCard>

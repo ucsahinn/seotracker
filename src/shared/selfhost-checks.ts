@@ -23,9 +23,11 @@ export function validateTeamDomain(value: string): TeamDomainResult {
     return {
       ok: false,
       message:
-        "TEAM_DOMAIN must be a full https URL like https://your-team.cloudflareaccess.com" +
+        // Reaches the operator through AUTH_CONFIG_MISSING, so it is UI copy.
+        // The throw above it is caught internally and stays English.
+        "TEAM_DOMAIN, https://ekibiniz.cloudflareaccess.com gibi tam bir https adresi olmalı" +
         (normalized && !normalized.includes("://")
-          ? ` — add the https:// prefix to "${normalized}"`
+          ? ` — "${normalized}" değerinin başına https:// ekleyin`
           : ""),
     };
   }

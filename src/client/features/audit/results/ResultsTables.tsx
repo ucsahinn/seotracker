@@ -149,10 +149,12 @@ function buildPerformanceColumns({
             className="badge badge-error badge-outline text-xs"
             title={failureMessage}
           >
-            failed
+            başarısız
           </span>
         ) : (
-          <span className="badge badge-success badge-outline text-xs">ok</span>
+          <span className="badge badge-success badge-outline text-xs">
+            tamam
+          </span>
         );
       },
       enableSorting: true,
@@ -234,7 +236,7 @@ function buildPerformanceColumns({
             params={{ projectId, resultId: row.original.id }}
             search={{ auditId, category: "performance" }}
           >
-            View issues
+            Sorunları gör
           </Link>
         ) : (
           <span className="text-xs text-muted">-</span>

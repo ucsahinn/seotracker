@@ -52,7 +52,7 @@ function SessionsTooltip({
     <div className="rounded-box border border-base-300 bg-base-100 px-3 py-2 shadow-sm">
       <p className="text-xs text-muted">{label ? formatTrendDay(label) : ""}</p>
       <p className="text-sm font-medium tabular-nums">
-        {formatCount(payload[0].value)} sessions
+        {formatCount(payload[0].value)} oturum
       </p>
     </div>
   );
@@ -90,7 +90,7 @@ export function Ga4Card({
           hash="google-analytics"
           className={moreDetailsClass}
         >
-          Manage
+          Yönet
         </Link>
       }
     >
@@ -105,7 +105,7 @@ export function Ga4Card({
         </div>
       ) : reportQuery.isError ? (
         <p className="text-sm text-muted">
-          Couldn&rsquo;t load Google Analytics data. Try again shortly.
+          Google Analytics verileri yüklenemedi. Birazdan tekrar deneyin.
         </p>
       ) : report?.connected ? (
         // Covers null (no report row) and 0: a zero-session period would

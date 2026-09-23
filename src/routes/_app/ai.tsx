@@ -1,4 +1,4 @@
-import { PageShell } from "@/client/components/PageShell";
+import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { StatusPill } from "@/client/components/StatusPill";
 import { useQuery } from "@tanstack/react-query";
 import { formatDateTime, formatRelativeTime } from "@/client/lib/format";
@@ -64,7 +64,6 @@ function AiPage() {
       ? "http://localhost:3001"
       : window.location.origin;
   const mcpUrl = `${origin}/mcp`;
-  const prompt = getAgentSetupPrompt(origin);
   const [tab, setTab] = useState<"setup" | "skills">("setup");
   /*
    * Two states, and the past tense is deliberate. The integration cards say
@@ -75,47 +74,95 @@ function AiPage() {
   const connection = useQuery({
     queryKey: ["agentConnection"],
     queryFn: () => getAgentConnection(),
+    /*
+     * The global default is a 5-minute staleTime, and `refetchOnWindowFocus`
+     * only fires on a stale query -- which would have made this pill inert
+     * during the exact minute it exists for: copy the prompt, paste it into
+     * an agent, come back.
+     */
+    staleTime: 0,
+    /*
+     * And while it is still waiting, poll, so the operator who kept this tab
+     * open watches it flip rather than reaching for reload. It stops the
+     * moment it has an answer -- and on an error, or a failing endpoint would
+     * be polled every five seconds for as long as the tab is open. TanStack
+     * pauses it on a hidden tab either way.
+     */
+    refetchInterval: (query) =>
+      query.state.status === "error" || query.state.data?.lastCallAt
+        ? false
+        : 5_000,
   });
   const lastCallAt = connection.data?.lastCallAt ?? null;
+  /*
+   * Green forever would be a lie of a different kind. Recency is the only
+   * thing this page actually knows, and spending it on a binary ever/never
+   * puts a success pill beside "8 ay önce", which reads as healthy to the one
+   * operator whose agent has been broken since spring. Thirty days is a
+   * judgement, not a measurement: wider than this tool's own weekly cadence,
+   * narrow enough that a dead install stops claiming to be alive.
+   */
+  const isRecent =
+    lastCallAt !== null &&
+    Date.now() - new Date(lastCallAt).getTime() < 30 * 24 * 60 * 60 * 1000;
+  /*
+   * A failed read is not a verdict of "not connected". Several screens in
+   * this app once rendered a 500 as an empty state, which is what
+   * QueryErrorState was written to stop; the same mistake in a header slot
+   * would send an operator whose agent works fine back through setup.
+   */
+  const statusUnknown = connection.isError || connection.data === undefined;
+  const prompt = getAgentSetupPrompt(origin, {
+    tokenConfigured: connection.data?.tokenConfigured,
+  });
 
   return (
     <PageShell width="reading">
       <div>
-        <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-3">
-          <div className="min-w-0">
-            <h1 className="text-2xl font-semibold tracking-tight">
-              Ajan kurulumu
-            </h1>
-            <p className="mt-3 text-pretty text-sm leading-relaxed text-muted">
-              seotracker&apos;ı kullanmanın en güçlü yolu, zaten kullandığınız
-              yapay zeka ajanı. Bir kez kurun, sonra istediğinizi sorun.
-            </p>
-          </div>
-          {/* `aria-live` is not decoration: the operator tabs away, pastes the
-              prompt into their agent, and tabs back — the query refetches on
-              focus and this flips without a reload. A sighted user sees it. */}
-          <div
-            className="flex shrink-0 flex-col items-start gap-1 sm:items-end"
-            aria-live="polite"
-          >
-            {connection.isPending ? (
-              <div className="skeleton h-6 w-28" />
-            ) : lastCallAt ? (
-              <>
-                <StatusPill tone="success" label="Bağlandı" />
-                <span
-                  className="text-xs text-muted"
-                  title={formatDateTime(lastCallAt)}
-                >
-                  {connection.data?.clientLabel ?? "Bir ajan"} · son çağrı{" "}
-                  {formatRelativeTime(lastCallAt)}
-                </span>
-              </>
-            ) : (
-              <StatusPill tone="neutral" label="Bağlanmadı" />
-            )}
-          </div>
-        </div>
+        <PageHeader
+          title="Ajan kurulumu"
+          description="seotracker'ı kullanmanın en güçlü yolu, zaten kullandığınız yapay zeka ajanı. Bir kez kurun, sonra istediğinizi sorun."
+          actions={
+            /* `aria-live` is not decoration: the operator tabs away, pastes
+               the prompt into their agent, and tabs back — the query refetches
+               on focus and this flips without a reload. A sighted user sees
+               it. `min-w-0` because clientLabel is the client's own word for
+               itself, capped at 60 characters but not guaranteed to contain a
+               space. */
+            <div
+              className="flex min-w-0 flex-col items-start gap-1 sm:items-end"
+              aria-live="polite"
+            >
+              {connection.isPending ? (
+                <div className="skeleton h-6 w-28" />
+              ) : statusUnknown ? (
+                <StatusPill tone="warning" label="Durum okunamadı" />
+              ) : lastCallAt ? (
+                <>
+                  <StatusPill
+                    tone={isRecent ? "success" : "warning"}
+                    label="Bağlandı"
+                  />
+                  <span className="break-words text-xs text-muted">
+                    {connection.data?.clientLabel ?? "Bir ajan"} · son çağrı{" "}
+                    <time
+                      dateTime={lastCallAt}
+                      title={formatDateTime(lastCallAt)}
+                    >
+                      {formatRelativeTime(lastCallAt)}
+                    </time>
+                  </span>
+                </>
+              ) : (
+                /* "Bağlanmadı" alone is a plain negative past — a failed
+                   attempt — on a page the operator has not used yet. "Henüz"
+                   keeps the honest past tense and makes it a progress marker
+                   instead of a verdict. */
+                <StatusPill tone="neutral" label="Henüz bağlanmadı" />
+              )}
+            </div>
+          }
+        />
 
         <div role="tablist" className="tabs tabs-border mt-8 w-fit">
           {(
@@ -191,9 +238,9 @@ function AiPage() {
                   Becerilerinizi güncelleyin
                 </h2>
                 <p className="mt-2 text-sm leading-relaxed text-muted">
-                  Zaten bağlı mı? Güncelleme istemini ajanınıza yapıştırın; en
-                  güncel becerileri alırken bağlantı ayarlarınız ve kişisel
-                  düzenlemeleriniz korunur.
+                  Ajanınızı daha önce kurduysanız güncelleme istemini
+                  yapıştırın; en güncel becerileri alırken bağlantı ayarlarınız
+                  ve kişisel düzenlemeleriniz korunur.
                 </p>
                 <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3 [&>button]:h-11 [&>button]:gap-2 [&>button]:text-sm">
                   <CopyButton
@@ -221,7 +268,8 @@ function AiPage() {
               <span>
                 Bu kurulumun MCP adresi:{" "}
                 <code className="font-mono text-muted">{mcpUrl}</code>.{" "}
-                {connection.data?.tokenConfigured ? (
+                {connection.data === undefined ? null : connection.data
+                    .tokenConfigured ? (
                   <>
                     Bu adres{" "}
                     <code className="font-mono text-muted">MCP_TOKEN</code> ile
@@ -263,8 +311,8 @@ function AiPage() {
                   key={name}
                   className="flex flex-col gap-0.5 sm:flex-row sm:gap-3"
                 >
-                  <span className="shrink-0 font-mono text-[13px] text-base-content sm:w-48">
-                    /{name}
+                  <span className="shrink-0 font-mono text-sm text-base-content sm:w-48">
+                    {name}
                   </span>
                   <span className="text-muted">{blurb}</span>
                 </li>

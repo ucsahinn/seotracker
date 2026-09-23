@@ -140,7 +140,7 @@ export function LocationSelect({
           >
             {filtered.length === 0 ? (
               <li className="w-full break-all px-3 py-2 text-sm text-muted">
-                No countries match “{query.trim()}”
+                “{query.trim()}” ile eşleşen ülke yok
               </li>
             ) : (
               filtered.map((option, index) => {
