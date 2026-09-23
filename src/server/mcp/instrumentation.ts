@@ -2,7 +2,7 @@ import { waitUntil } from "cloudflare:workers";
 import type { CallToolResult } from "@modelcontextprotocol/server";
 import type { z } from "zod";
 import { asAppError } from "@/server/lib/errors";
-import { recordExternalMcpToolCall } from "@/server/features/activation/mcpActivation";
+import { recordMcpActivity } from "@/server/features/activation/mcpActivation";
 import {
   captureServerError,
   captureServerEvent,
@@ -158,16 +158,23 @@ export function instrumentMcpToolHandler<TArgs>(
                   : undefined,
             },
       );
-      // Dashboard activation milestone: a successful call from an external
-      // MCP client (OAuth clientId; SAM and the self-hosted transport are
-      // first-party with clientId null). Awaited so the write stays inside
-      // the request's DB scope; a per-isolate memo keeps this off the hot
-      // path after the first call.
+      /*
+       * Record that an agent reached us, and when.
+       *
+       * This used to be gated on `auth.clientId`, which upstream set from an
+       * OAuth provider this fork does not run - so it was null on every call
+       * and the write never happened once. That made the dashboard's "connect
+       * your agent" step impossible to complete and left the agent setup page
+       * with nothing to read. A successful tool call is the right signal
+       * anyway: it proves the whole path, where a handshake only proves a
+       * client found the URL.
+       *
+       * Awaited so the write stays inside the request's DB scope; the
+       * throttle in `recordMcpActivity` keeps it off the hot path.
+       */
       if (succeeded) {
         const auth = context.auth;
-        if (auth.clientId) {
-          await recordExternalMcpToolCall(auth.organizationId);
-        }
+        await recordMcpActivity(auth.organizationId, auth.clientLabel ?? null);
       }
       return result;
     } catch (error) {

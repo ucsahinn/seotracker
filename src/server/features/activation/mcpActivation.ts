@@ -1,20 +1,31 @@
 import { ActivationRepository } from "@/server/features/activation/repositories/ActivationRepository";
 
-// Orgs whose first tool call is already recorded (or in flight) in this
-// isolate. Only the *first* timestamp matters, so after one successful write
-// this hot path never touches the DB again for that org.
-const recordedToolCallOrgs = new Set<string>();
+/**
+ * When this isolate last wrote each org's activity stamp.
+ *
+ * The previous version memoised "written once, ever" because only the first
+ * timestamp mattered. A last-seen stamp has to move, so the memo becomes a
+ * throttle instead: at most one write a minute per org. That costs up to a
+ * minute of accuracy against a relative timestamp whose finest grain is
+ * "az önce", and it keeps a chatty agent from writing on every single call.
+ */
+const WRITE_EVERY_MS = 60_000;
+const lastWriteAt = new Map<string, number>();
 
-export async function recordExternalMcpToolCall(
+export async function recordMcpActivity(
   organizationId: string,
+  clientLabel: string | null,
 ): Promise<void> {
-  if (recordedToolCallOrgs.has(organizationId)) return;
-  recordedToolCallOrgs.add(organizationId);
+  const previous = lastWriteAt.get(organizationId);
+  const now = Date.now();
+  if (previous !== undefined && now - previous < WRITE_EVERY_MS) return;
+  lastWriteAt.set(organizationId, now);
+
   try {
-    await ActivationRepository.recordFirstMcpToolCall(organizationId);
+    await ActivationRepository.recordMcpActivity(organizationId, clientLabel);
   } catch (error) {
-    // Allow a retry on a later call rather than losing the milestone.
-    recordedToolCallOrgs.delete(organizationId);
-    console.error("activation: recordExternalMcpToolCall failed", error);
+    // Allow the next call to retry rather than losing a minute of signal.
+    lastWriteAt.delete(organizationId);
+    console.error("activation: recordMcpActivity failed", error);
   }
 }

@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { StatusPill } from "@/client/components/StatusPill";
 
 type IntegrationConnectionStatus =
   | "connected"
@@ -40,30 +41,11 @@ function ConnectionStatusPill({
 }: {
   status: IntegrationConnectionStatus;
 }) {
-  const connected = status === "connected";
-  const setupRequired = status === "setup_required";
-  return (
-    <span
-      className={[
-        "inline-flex shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium",
-        connected
-          ? "border-success/30 bg-success/10 text-[var(--ink-success)]"
-          : setupRequired
-            ? "border-warning/30 bg-warning/10 text-[var(--ink-warning)]"
-            : "border-base-300 bg-base-200 text-muted",
-      ].join(" ")}
-    >
-      <span
-        className={[
-          "size-1.5 rounded-full",
-          connected
-            ? "bg-success"
-            : setupRequired
-              ? "bg-warning"
-              : "bg-base-content/40",
-        ].join(" ")}
-      />
-      {connected ? "Bağlı" : setupRequired ? "Kurulum gerekli" : "Bağlı değil"}
-    </span>
-  );
+  if (status === "connected") {
+    return <StatusPill tone="success" label="Bağlı" />;
+  }
+  if (status === "setup_required") {
+    return <StatusPill tone="warning" label="Kurulum gerekli" />;
+  }
+  return <StatusPill tone="neutral" label="Bağlı değil" />;
 }

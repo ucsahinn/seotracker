@@ -42,9 +42,11 @@ export function getStepStatus(
   const completed: Record<DashboardSetupStep, boolean> = {
     domain: activation.domain !== null,
     project: activation.hasMultipleProjects,
-    mcp:
-      activation.mcp.authorizedAt !== null ||
-      activation.mcp.firstToolCallAt !== null,
+    // A successful tool call is the whole signal. The other half of this
+    // condition read `firstMcpAuthorizedAt`, a column whose writer had no
+    // caller in this fork - an OAuth step that went with the multi-tenant
+    // surface - so it was always null and contributed nothing.
+    mcp: activation.mcp.firstToolCallAt !== null,
     gsc: activation.gsc.connected,
   };
   if (completed[step]) return "done";

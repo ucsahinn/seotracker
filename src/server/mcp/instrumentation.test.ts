@@ -8,7 +8,7 @@ import { AppError } from "@/server/lib/errors";
 const mocks = vi.hoisted(() => ({
   captureServerError: vi.fn(),
   captureServerEvent: vi.fn(),
-  recordExternalMcpToolCall: vi.fn(),
+  recordMcpActivity: vi.fn(),
 }));
 
 // waitUntil runs the capture promise inline so assertions see the call.
@@ -24,7 +24,7 @@ vi.mock("@/server/lib/observability", () => ({
 // The real module pulls in @/db (cloudflare:workers env) — mock it out and
 // assert the milestone hook at this boundary instead.
 vi.mock("@/server/features/activation/mcpActivation", () => ({
-  recordExternalMcpToolCall: mocks.recordExternalMcpToolCall,
+  recordMcpActivity: mocks.recordMcpActivity,
 }));
 
 const outputSchema = z.object({
@@ -52,7 +52,7 @@ describe("instrumentMcpToolHandler", () => {
   beforeEach(() => {
     mocks.captureServerError.mockReset();
     mocks.captureServerEvent.mockReset();
-    mocks.recordExternalMcpToolCall.mockReset();
+    mocks.recordMcpActivity.mockReset();
   });
 
   it("passes a valid result through without reporting", async () => {
@@ -152,7 +152,7 @@ describe("instrumentMcpToolHandler", () => {
       event: "mcp:tool_call",
       properties: { success: false, error_code: "ga4_not_connected" },
     });
-    expect(mocks.recordExternalMcpToolCall).not.toHaveBeenCalled();
+    expect(mocks.recordMcpActivity).not.toHaveBeenCalled();
   });
 
   it("marks an ok-false tool result as failed usage", async () => {
@@ -170,7 +170,7 @@ describe("instrumentMcpToolHandler", () => {
       event: "mcp:tool_call",
       properties: { success: false, error_code: "audit_not_ready" },
     });
-    expect(mocks.recordExternalMcpToolCall).not.toHaveBeenCalled();
+    expect(mocks.recordMcpActivity).not.toHaveBeenCalled();
   });
 
   it("captures a failed usage event with the error code", async () => {
@@ -186,26 +186,34 @@ describe("instrumentMcpToolHandler", () => {
     });
   });
 
-  it("records the activation milestone for a successful external call", async () => {
+  it("records the call, with the label the client gave itself", async () => {
     const wrapped = instrumentMcpToolHandler("demo", outputSchema, async () =>
       okResult({ items: [] }),
     );
 
     await wrapped({}, toolContext);
 
-    expect(mocks.recordExternalMcpToolCall).toHaveBeenCalledExactlyOnceWith(
+    expect(mocks.recordMcpActivity).toHaveBeenCalledExactlyOnceWith(
       "org-1",
+      authContext.clientLabel ?? null,
     );
   });
 
-  it("skips the activation milestone for first-party (null clientId) calls", async () => {
+  /*
+   * This used to assert the opposite, and that assertion is why nobody
+   * noticed: `clientId` came from an OAuth provider this fork does not run,
+   * so it was null on every call and the write never happened once. The
+   * dashboard's "connect your agent" step could not complete and the agent
+   * setup page had nothing to read.
+   */
+  it("records it on the self-hosted path too, where clientId is always null", async () => {
     const wrapped = instrumentMcpToolHandler("demo", outputSchema, async () =>
       okResult({ items: [] }),
     );
 
     await wrapped({}, { auth: { ...authContext, clientId: null } });
 
-    expect(mocks.recordExternalMcpToolCall).not.toHaveBeenCalled();
+    expect(mocks.recordMcpActivity).toHaveBeenCalledOnce();
   });
 
   it("skips the activation milestone when the call fails", async () => {
@@ -215,6 +223,6 @@ describe("instrumentMcpToolHandler", () => {
 
     await expect(wrapped({}, toolContext)).rejects.toThrow("NOT_FOUND");
 
-    expect(mocks.recordExternalMcpToolCall).not.toHaveBeenCalled();
+    expect(mocks.recordMcpActivity).not.toHaveBeenCalled();
   });
 });

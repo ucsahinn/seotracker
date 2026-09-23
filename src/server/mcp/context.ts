@@ -96,7 +96,12 @@ export function createWorkersOAuthMcpProps(
 // to look. It is client-supplied and typed as an open envelope, so parse it
 // rather than reaching into it.
 const clientInfoMetaSchema = z.object({
-  [CLIENT_INFO_META_KEY]: z.object({ title: z.string().optional() }).optional(),
+  // `name` is the required field in the spec's own schema and `title` is
+  // optional, so reading only `title` silently missed every conformant
+  // client that sends the minimum.
+  [CLIENT_INFO_META_KEY]: z
+    .object({ title: z.string().optional(), name: z.string().optional() })
+    .optional(),
 });
 
 // Not named McpRequestContext: the SDK exports a type by that name. `mcpReq`
@@ -107,7 +112,10 @@ type ToolCallContext = Pick<ServerContext, "http"> &
 
 function readClientTitle(context: ToolCallContext): string | undefined {
   const parsed = clientInfoMetaSchema.safeParse(context.mcpReq?.envelope);
-  return parsed.success ? parsed.data[CLIENT_INFO_META_KEY]?.title : undefined;
+  if (!parsed.success) return undefined;
+  const info = parsed.data[CLIENT_INFO_META_KEY];
+  // Display name first, falling back to the machine name the spec requires.
+  return info?.title ?? info?.name;
 }
 
 export function createMcpToolContext(

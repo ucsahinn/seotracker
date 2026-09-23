@@ -16,7 +16,6 @@ export type DashboardActivation = {
   };
   gsc: { connected: boolean; siteUrl: string | null };
   mcp: {
-    authorizedAt: string | null;
     firstToolCallAt: string | null;
   };
   hasMultipleProjects: boolean;
@@ -67,7 +66,6 @@ async function getActivation(input: {
     },
     gsc: { connected: gsc !== null, siteUrl: gsc?.siteUrl ?? null },
     mcp: {
-      authorizedAt: orgActivation?.firstMcpAuthorizedAt ?? null,
       firstToolCallAt: orgActivation?.firstMcpToolCallAt ?? null,
     },
   };

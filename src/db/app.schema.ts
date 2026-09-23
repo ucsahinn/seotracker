@@ -206,8 +206,9 @@ export const keywordMetrics = sqliteTable(
 
 // Dashboard activation milestones. Organization-scoped: MCP OAuth grants are
 // user-level, so any member connecting an external MCP client satisfies the
-// milestone for the whole organization. Timestamps are first-occurrence only
-// and never move once set.
+// milestone for the whole organization. The `first*` timestamps are
+// first-occurrence only and never move once set; the `last*` pair below is
+// the opposite by design.
 export const organizationActivationState = sqliteTable(
   "organization_activation_state",
   {
@@ -216,6 +217,21 @@ export const organizationActivationState = sqliteTable(
       .references(() => organization.id, { onDelete: "cascade" }),
     firstMcpAuthorizedAt: text("first_mcp_authorized_at"),
     firstMcpToolCallAt: text("first_mcp_tool_call_at"),
+    /**
+     * When an agent last successfully called a tool, and what it called
+     * itself.
+     *
+     * Overwritten, not coalesced: "has one ever connected" cannot answer
+     * "is this still working", which is the question the agent setup page
+     * exists to answer. Recency is genuinely observable here; a present-tense
+     * "connected" is not, because the MCP transport is stateless HTTP with no
+     * session to watch.
+     *
+     * The label is the client's own word for itself, sanitised — a hint for
+     * display, never an identity and never a thing to authorize on.
+     */
+    lastMcpToolCallAt: text("last_mcp_tool_call_at"),
+    lastMcpClientLabel: text("last_mcp_client_label"),
     updatedAt: text("updated_at")
       .notNull()
       .default(sql`(current_timestamp)`),

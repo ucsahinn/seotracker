@@ -1,4 +1,8 @@
 import { PageShell } from "@/client/components/PageShell";
+import { StatusPill } from "@/client/components/StatusPill";
+import { useQuery } from "@tanstack/react-query";
+import { formatDateTime, formatRelativeTime } from "@/client/lib/format";
+import { getAgentConnection } from "@/serverFunctions/agentConnection";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { ShieldAlert } from "lucide-react";
@@ -54,15 +58,56 @@ function AiPage() {
   const mcpUrl = `${origin}/mcp`;
   const prompt = getAgentSetupPrompt(origin);
   const [tab, setTab] = useState<"setup" | "skills">("setup");
+  /*
+   * Two states, and the past tense is deliberate. The integration cards say
+   * "Bağlı" because a credential is sitting in a row; MCP here is stateless
+   * HTTP with no session, so the only honest claim is that an agent *did*
+   * reach us, and when. "Bağlandı", never "Bağlı".
+   */
+  const connection = useQuery({
+    queryKey: ["agentConnection"],
+    queryFn: () => getAgentConnection(),
+  });
+  const lastCallAt = connection.data?.lastCallAt ?? null;
 
   return (
     <PageShell width="reading">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Ajan kurulumu</h1>
-        <p className="mt-3 text-pretty text-sm leading-relaxed text-muted">
-          seotracker&apos;ı kullanmanın en güçlü yolu, zaten kullandığınız yapay
-          zeka ajanı. Bir kez kurun, sonra istediğinizi sorun.
-        </p>
+        <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-3">
+          <div className="min-w-0">
+            <h1 className="text-2xl font-semibold tracking-tight">
+              Ajan kurulumu
+            </h1>
+            <p className="mt-3 text-pretty text-sm leading-relaxed text-muted">
+              seotracker&apos;ı kullanmanın en güçlü yolu, zaten kullandığınız
+              yapay zeka ajanı. Bir kez kurun, sonra istediğinizi sorun.
+            </p>
+          </div>
+          {/* `aria-live` is not decoration: the operator tabs away, pastes the
+              prompt into their agent, and tabs back — the query refetches on
+              focus and this flips without a reload. A sighted user sees it. */}
+          <div
+            className="flex shrink-0 flex-col items-start gap-1 sm:items-end"
+            aria-live="polite"
+          >
+            {connection.isPending ? (
+              <div className="skeleton h-6 w-28" />
+            ) : lastCallAt ? (
+              <>
+                <StatusPill tone="success" label="Bağlandı" />
+                <span
+                  className="text-xs text-muted"
+                  title={formatDateTime(lastCallAt)}
+                >
+                  {connection.data?.clientLabel ?? "Bir ajan"} · son çağrı{" "}
+                  {formatRelativeTime(lastCallAt)}
+                </span>
+              </>
+            ) : (
+              <StatusPill tone="neutral" label="Bağlanmadı" />
+            )}
+          </div>
+        </div>
 
         <div role="tablist" className="tabs tabs-border mt-8 w-fit">
           {(
@@ -120,7 +165,16 @@ function AiPage() {
                 <p className="mt-5 border-t border-base-300 pt-4 text-sm leading-relaxed text-muted">
                   Bağlandıktan sonra ajanınızdan <code>seo-coach</code>{" "}
                   becerisini kullanmasını isteyin; sıradaki adımı birlikte
-                  seçersiniz.
+                  seçersiniz.{" "}
+                  {/* Turns the grey pill from a verdict into a progress
+                      marker, and says it next to the button that resolves
+                      it rather than next to the badge that reports it. */}
+                  {lastCallAt ? null : (
+                    <>
+                      Ajanınız ilk aracı çağırdığında yukarıdaki durum
+                      güncellenir.
+                    </>
+                  )}
                 </p>
               </section>
 
@@ -158,15 +212,29 @@ function AiPage() {
             <div className="mt-10 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-t border-base-300 pt-5 text-xs text-muted">
               <span>
                 Bu kurulumun MCP adresi:{" "}
-                <code className="font-mono text-muted">{mcpUrl}</code>. Bu adres
-                kimlik doğrulaması istemez; makinenizdeki başka bir sürecin
-                araçları çalıştırmasını engellemek isterseniz{" "}
-                <code className="font-mono text-muted">MCP_TOKEN</code>{" "}
-                ayarlayın ve istemciye{" "}
-                <code className="font-mono text-muted">
-                  Authorization: Bearer …
-                </code>{" "}
-                başlığını ekletin.
+                <code className="font-mono text-muted">{mcpUrl}</code>.{" "}
+                {connection.data?.tokenConfigured ? (
+                  <>
+                    Bu adres{" "}
+                    <code className="font-mono text-muted">MCP_TOKEN</code> ile
+                    korunuyor; istemciye{" "}
+                    <code className="font-mono text-muted">
+                      Authorization: Bearer …
+                    </code>{" "}
+                    başlığını ekletin.
+                  </>
+                ) : (
+                  <>
+                    Bu adres kimlik doğrulaması istemez; makinenizdeki başka bir
+                    sürecin araçları çalıştırmasını engellemek isterseniz{" "}
+                    <code className="font-mono text-muted">MCP_TOKEN</code>{" "}
+                    ayarlayın ve istemciye{" "}
+                    <code className="font-mono text-muted">
+                      Authorization: Bearer …
+                    </code>{" "}
+                    başlığını ekletin.
+                  </>
+                )}
               </span>
               <CopyButton
                 value={mcpUrl}

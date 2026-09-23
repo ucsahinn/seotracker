@@ -36,20 +36,6 @@ async function getProjectActivation(
 
 // First-occurrence timestamps only: concurrent writers race harmlessly because
 // COALESCE keeps whichever value landed first.
-async function recordFirstMcpAuthorized(organizationId: string): Promise<void> {
-  const now = new Date().toISOString();
-  await db
-    .insert(organizationActivationState)
-    .values({ organizationId, firstMcpAuthorizedAt: now, updatedAt: now })
-    .onConflictDoUpdate({
-      target: organizationActivationState.organizationId,
-      set: {
-        firstMcpAuthorizedAt: sql`coalesce(${organizationActivationState.firstMcpAuthorizedAt}, ${now})`,
-        updatedAt: now,
-      },
-    });
-}
-
 async function recordFirstMcpToolCall(organizationId: string): Promise<void> {
   const now = new Date().toISOString();
   await db
@@ -59,6 +45,38 @@ async function recordFirstMcpToolCall(organizationId: string): Promise<void> {
       target: organizationActivationState.organizationId,
       set: {
         firstMcpToolCallAt: sql`coalesce(${organizationActivationState.firstMcpToolCallAt}, ${now})`,
+        updatedAt: now,
+      },
+    });
+}
+
+/**
+ * Stamp the most recent successful agent call.
+ *
+ * Deliberately not `coalesce`-guarded like `recordFirstMcpToolCall` above:
+ * this column's whole job is to move. It also records the first call, so a
+ * fresh install needs one write rather than two.
+ */
+async function recordMcpActivity(
+  organizationId: string,
+  clientLabel: string | null,
+): Promise<void> {
+  const now = new Date().toISOString();
+  await db
+    .insert(organizationActivationState)
+    .values({
+      organizationId,
+      firstMcpToolCallAt: now,
+      lastMcpToolCallAt: now,
+      lastMcpClientLabel: clientLabel,
+      updatedAt: now,
+    })
+    .onConflictDoUpdate({
+      target: organizationActivationState.organizationId,
+      set: {
+        firstMcpToolCallAt: sql`coalesce(${organizationActivationState.firstMcpToolCallAt}, ${now})`,
+        lastMcpToolCallAt: now,
+        lastMcpClientLabel: clientLabel,
         updatedAt: now,
       },
     });
@@ -120,7 +138,7 @@ export const ActivationRepository = {
   setStepDismissed,
   getOrganizationActivation,
   getProjectActivation,
-  recordFirstMcpAuthorized,
   recordFirstMcpToolCall,
+  recordMcpActivity,
   markGa4CardDismissed,
 };
