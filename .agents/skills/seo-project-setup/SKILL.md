@@ -96,7 +96,9 @@ Write to `positioning`: audience, the problem, the differentiator, and any claim
 
 ### 6. Save competitors
 
-Turn the competitors and substitutes from step 5 into `addCompetitors` entries: one row per domain, with a short `notes` line on why they matter ("direct competitor, owns the comparison pages"). If the user is unsure who competes in search, search the web for the terms they want to win and read who actually ranks; seotracker has no competitor database of its own. Confirm the list with the user before saving.
+Turn the competitors and substitutes from step 5 into `addCompetitors` entries: one row per domain, with a short `notes` line on why they matter ("direct competitor, owns the comparison pages"). If the user is unsure who competes in search, search the web for the terms they want to win and read who actually ranks. Confirm the list with the user before saving.
+
+Say plainly what this list is and is not: it is **prose memory**, so that later sessions know who the user considers a rival and can weigh a finding against that. seotracker cannot measure, refresh or track a competitor — there is no competitor database, no rank tracking for anyone else's domain, and no way to compare. Setting that expectation now is what stops the next session being asked "how are my competitors doing".
 
 Competitors saved here are shared context: every skill reads them, and the user can edit them on the project's Context page.
 
@@ -116,25 +118,11 @@ Save the pages that actually matter with `addKeyPages` — money pages, topic hu
 
 GSC is the richest first-party signal: existing impressions, near-ranking terms, cannibalization, and pages that already have search demand.
 
-**Preferred (hosted): connect it natively.** On the project's Integrations page, connect Google Search Console and pull live data with `get_search_console_performance`. Once connected, every skill reads it directly — no manual files to maintain — and two more reads unlock: `inspect_urls` for Google's own verdict on whether a page is indexed and which canonical it chose (2,000 URLs per property per day), and, once Google Analytics 4 is connected on the same page, `get_search_opportunities` for the pages already sitting in positions 4-20 scored by demand and business value.
+**Connect it natively, on the project's Integrations page.** This is the only path: every tool here reads Search Console through that connection, and nothing in this build ingests a CSV. An export the operator produces by hand is evidence the rest of the system cannot see, so do not ask for one.
 
-**Fallback (self-hosted, or if the user prefers files):** ask the user to export CSVs from Search Console into a local working folder (see step 9).
+Once connected, `get_search_console_performance` answers directly and two more reads unlock: `inspect_urls` for Google's own verdict on whether a page is indexed and which canonical it chose (2,000 URLs per property per day), and — once Google Analytics 4 is connected on the same page — `get_search_opportunities` for the pages already sitting in positions 4-20 scored by demand and business value.
 
-Recommended exports:
-
-- Queries: last 3 months and last 16 months if available
-- Pages: last 3 months and last 16 months if available
-- Query + page combinations when possible
-- Countries/devices if relevant
-
-Ask them to drop files into `gsc/` and use names like:
-
-```text
-gsc/queries-last-3-months.csv
-gsc/pages-last-3-months.csv
-gsc/queries-last-16-months.csv
-gsc/pages-last-16-months.csv
-```
+If Search Console is not connected, say so plainly and stop treating demand as knowable. There is no fallback that produces the same answer, and guessing at volumes is the thing this build exists not to do.
 
 ### 9. Set up a local folder only for file work
 

@@ -34,6 +34,14 @@ const SKILLS = [
     "Bu hafta yapılacak tek bir işe odaklanan, tek sayfalık site denetimi.",
   ],
   [
+    "seo-check-in",
+    "Bu dönemi öncekiyle karşılaştırır: ne değişti, ne zaman değişti, önemli mi.",
+  ],
+  [
+    "seo-triage",
+    "Trafik düştüyse: gerçek mi, nerede oldu, ne zaman oldu — bir şey değiştirmeden önce.",
+  ],
+  [
     "seo-report",
     "Yukarıdakilerden birini Raporlar sayfanıza rapor olarak kaydeder.",
   ],

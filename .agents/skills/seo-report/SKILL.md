@@ -15,6 +15,7 @@ Every seotracker skill that produces a recommendation delivers through this skil
 
 1. Call `list_reports` for the project. If a report already covers the same subject for the same period, you are correcting your own run: pass its `reportId` to `save_report` and replace it. A new month, a new competitor, or a different skill is a new report. Never save a near-duplicate.
 2. Titles are unique within a project. Saving a second report under an existing title with no `reportId` is rejected, so either pass the `reportId` of the report you are replacing or change the title to name the new subject or period.
+3. **Put the period in the title, always** — "example.com SEO audit, Eylül 2026", not "example.com SEO audit". This is what keeps a recurring skill from colliding with itself, and replacement is destructive with no version history: a second run in the same month must either be a deliberate correction with the `reportId`, or carry a title that says what is different about it. Never resolve the collision by silently replacing a report you did not produce in this session.
 3. To revise an existing report, work from its summary. `get_report` returns the HTML only with `includeHtml: true`, and an 80 KB report is roughly 20,000 tokens, which most clients truncate. Fetch the HTML only when you need to edit a specific passage, and if what comes back looks cut off, send the user to the app instead of saving over it.
 
 ## Following a template
@@ -59,6 +60,7 @@ These are enforced by the viewer, not by taste. A report that breaks them render
 - **No backticks and no `${` anywhere in the HTML.** Codex passes the argument through a JavaScript template literal, where both are syntax. Use `<code>` for inline code and plain text everywhere else.
 - **Finish the document.** The server rejects HTML that does not end with `</html>` as "stopped early". Write the whole page in one call rather than trailing off mid-section.
 - **Keep the doctype, `<html>`, `<head>`, and `<title>`.** The app renders the whole document you save, not a fragment.
+- **Write the report in the operator's language**, and set `<html lang>` to match — the starter template says `en` and that is a default, not an instruction. Take the language from the project context, or from the language the user is speaking to you in. Note that `get_audit_issues` returns its `title` and `howToFix` in Turkish by design: those are source text to render in place, not strings to paste into an English report or to translate silently. If you are writing in another language, say what the issue is in that language and keep Google's own wording where the exact phrase matters.
 
 ## After you save
 

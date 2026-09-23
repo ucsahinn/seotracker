@@ -84,8 +84,12 @@ Want to go deeper?
 
 ## What each workflow does
 
-- `seo-project-setup`: verifies MCP, interviews the user about scope, goals, positioning, competitors, and key pages, and saves it all to the project's shared context. Also connects Google Search Console (or imports GSC exports).
+The order an operator actually lives: set up once, audit once, do the work, then **ask whether it worked** (`seo-check-in`) and **find out what happened** when something breaks (`seo-triage`). The first two are a start; the last two are the habit.
+
+- `seo-project-setup`: verifies MCP, interviews the user about scope, goals, positioning, competitors, and key pages, and saves it all to the project's shared context. Also connects Google Search Console, which is the only path — nothing here reads a CSV.
 - `seo-audit`: audits a site and produces a one-page, plain-language report built around a single next action. The right first workflow for anyone with an existing site, especially beginners.
+- `seo-check-in`: compares this period with the last one and says what moved, when, and whether outcomes followed. Reads the previous check-in as its baseline, so the series becomes the site's history. Monthly. No crawl, no quota.
+- `seo-triage`: for when something fell. A decision tree that separates a broken analytics tag from a real ranking loss before anything gets changed — the first question it asks is whether *every* channel dropped on the same day, which is the one an audit never asks.
 - `seo-report`: the report-writing skill the workflows above deliver through. It carries the starter template and the save rules; users do not run it on its own.
 
 Anything outside those three is coach work done live with the tools below, not a separate skill. Do not point the user at a workflow that does not exist.
@@ -94,7 +98,14 @@ Anything outside those three is coach work done live with the tools below, not a
 
 Explain the difference between data sources:
 
-- seotracker MCP tools read the user's own sites and their own Google accounts. That is: a crawler (`run_site_audit` and the `get_audit_*` reads) for on-site issues, optionally with PageSpeed Insights for performance; Google Search Console for what the site actually earns in search and for Google's own indexing verdict on a URL; Google Analytics 4 for what visitors did after arriving; saved keyword lists (`save_keywords` / `list_saved_keywords`) for tracking the terms the user cares about; plus projects, shared context, and reports. Two of them answer questions Google itself will not: `get_ranking_history` reads this install's own Search Console archive, which keeps going after Google's 16-month window closes, and takes a `query` for one term's day-by-day series; `get_cannibalization` finds queries where two of the user's own pages compete, which Search Console cannot show because it reports a position without naming the page that earned it. The Analytics family is wider than the dashboard suggests: besides landing pages and the organic overview there are traffic acquisition, key events, page performance, site search, ecommerce performance, audience breakdown and measurement health. There is no third-party market data: no search volume estimates, no competitor keyword lists, no link index. Say that plainly when a user expects it.
+- **What the tools read:** only the user's own sites and their own Google accounts. Nothing here queries a market.
+- **Crawler** — `run_site_audit` then the `get_audit_*` reads: on-site issues, optionally with PageSpeed Insights.
+- **Search Console** — `get_search_console_performance` for what the site earns; `inspect_urls` for Google's own verdict on a page.
+- **The local archive** — `get_ranking_history`. It outlives Google's 16-month window, and `query:` gives one term day by day. That is how you answer *when* something moved.
+- **Competing pages** — `get_cannibalization`. Search Console cannot show this: it reports a position without naming the page that earned it.
+- **Analytics** — nine reports, not two: landing pages, page performance, traffic acquisition, key events, ecommerce, site search, audience breakdown, the organic overview, and measurement health (which is how you tell a tracking break from a real drop).
+- **Saved keywords, projects, shared context, reports** — the install's own memory.
+- **No third-party market data.** No search volumes, no keyword difficulty, no backlink index, no competitor rankings. Say that plainly when a user expects it; do not estimate.
 - Google Search Console (when connected on the project's Integrations page) is the user's first-party data — real clicks, impressions, CTR, and position. Read it live with `get_search_console_performance` instead of asking for CSV exports. It is the best starting point for "what already ranks" and for near-ranking queries, and its query list is the honest replacement for a keyword-volume tool: demand Google has already measured on this exact site.
 - `inspect_urls` runs Google's URL Inspection on up to 10 URLs at a time: is this page indexed, why not, when was it last crawled, and which canonical did Google pick. The crawler can only say a page *could* be indexed; this says what Google did. Quota is 2,000 URLs per property per day, so use it on pages that matter rather than sweeping the site.
 - `get_search_opportunities` joins Search Console pages in positions 4-20 with GA4 landing-page outcomes and scores them by demand, business value, and how close the page already is. When a user asks "what should I work on", this usually answers it in one call. It needs Search Console, and GA4 for the business-value half.

@@ -70,7 +70,7 @@ Run the probe twice when the change touches a Google-backed tool: once with the 
 
 ## 4. Ergonomics rubric — what feedback to act on
 
-- **Tool selection**: the probe should pick the right tool first try. With 28 tools, nine of them Analytics reads, a wrong-tool detour means a description needs a sharper "use this when / not this" sentence.
+- **Tool selection**: the probe should pick the right tool first try. With 30 tools, nine of them Analytics reads, a wrong-tool detour means a description needs a sharper "use this when / not this" sentence.
 - **Schemas**: every constraint enforced silently must be in the field's `.describe()` (units, ranges, defaults, what is ignored when). If the probe guessed-and-retried an input, encode the rule server-side (coerce/clamp) or document it — prefer coercing.
 - **Output size**: budget roughly a few KB per row. A 10,000-page crawl or a 1,000-row Search Console window must be trimmed or paged to the fields the tool's job needs; point to the per-page tool for the full shape.
 - **Errors**: actionable, never a raw upstream field name without a hint at the fix. A quota or rate-limit refusal (PageSpeed 429, URL Inspection daily cap) must say which limit was hit and when to retry, not fail anonymously.

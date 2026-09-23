@@ -40,10 +40,17 @@ const historyInputSchema = {
     .number()
     .int()
     .min(7)
-    .max(480)
+    /*
+     * Was 480, which is about 15.8 months -- roughly what Google still
+     * serves. That capped the tool at exactly the window the archive exists
+     * to outlive, so the part worth keeping was unreachable. The repository
+     * has no bound; five years is a limit on the response size, not on the
+     * idea.
+     */
+    .max(1825)
     .optional()
     .describe(
-      "Window in days, read from the local archive rather than from Google. Default 90. Up to 480, which is past Search Console's own 16-month limit -- that is the point of the archive.",
+      "Window in days, read from the local archive rather than from Google. Default 90. Goes past Search Console's own 16-month limit, which is the point of the archive -- ask for 900 days and you get whatever this install has kept.",
     ),
   query: z
     .string()

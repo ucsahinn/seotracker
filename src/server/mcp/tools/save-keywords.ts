@@ -25,7 +25,7 @@ const inputSchema = {
     .max(100)
     .optional()
     .describe(
-      "Optional metrics for the saved keywords. Copy keyword, searchVolume, keywordDifficulty, cpc, competition, and intent from research_keywords or get_keyword_metrics rows. monthlySearches is optional. Match each metric using its keyword field.",
+      "Optional metrics, matched to a keyword by its `keyword` field. There is no keyword-research tool in this build and no third-party market data behind it: `searchVolume`, `keywordDifficulty`, `cpc` and `competition` have no source here, so leave them out rather than estimating them — a number you supplied from memory will be stored and read back as if it were measured. `intent` is a judgement you can make from the keyword itself and is fine to pass.",
     ),
   tags: z
     .array(z.string().min(1).max(64))

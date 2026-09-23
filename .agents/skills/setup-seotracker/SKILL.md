@@ -25,8 +25,8 @@ and no token to paste.
 ## 3. Install the SEO skills
 
 The repository carries its skills under `.agents/skills/`. Install only the
-public ones for this agent: `seo-audit`, `seo-project-setup`, `seo-coach`,
-`seo-report`.
+public ones for this agent: `seo-audit`, `seo-check-in`, `seo-triage`,
+`seo-project-setup`, `seo-coach`, `seo-report`.
 
 - Use this agent's own skill install flow. Do not copy the internal skills (`setup-seotracker`, `verify-local-mcp`, `papercuts`).
 - If skills are unsupported here, use the MCP tools alone.
