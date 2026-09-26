@@ -18,6 +18,7 @@ import {
   findRedirectChainsAndLoops,
   type SlimPage,
 } from "@/server/lib/audit/issues/multipage-checks";
+import { findGoogleVerdictProblems } from "@/server/lib/audit/issues/google-verdict-checks";
 import type { DetectedIssue } from "@/server/lib/audit/issues/page-reporters";
 import type { HreflangAlternate } from "@/server/lib/audit/types";
 
@@ -43,6 +44,7 @@ function parseHreflangAlternates(json: string | null): HreflangAlternate[] {
 
 export async function runMultipageChecks(input: {
   auditId: string;
+  projectId: string;
 }): Promise<DetectedIssue[]> {
   const rows = await db
     .select({
@@ -75,5 +77,15 @@ export async function runMultipageChecks(input: {
     ...findRedirectChainsAndLoops(pages),
     ...findCanonicalTargetProblems(pages),
     ...findHreflangReturnTagProblems(pages),
+    /*
+     * Google's own verdicts, read from the inspection cache these rows can
+     * be joined to. Free: nothing is called, so it spends none of the
+     * 2000-per-property-per-day URL Inspection allowance. Silent until
+     * something has actually been inspected, which is every fresh install.
+     */
+    ...(await findGoogleVerdictProblems({
+      projectId: input.projectId,
+      pages,
+    })),
   ];
 }

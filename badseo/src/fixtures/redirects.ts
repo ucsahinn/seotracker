@@ -70,6 +70,14 @@ const trailingSlashCanonical: Fixture = {
   path: TRAILING_SLASH_CANONICAL,
   category: CAT,
   name: "Trailing-slash canonical (redirect-cycle trap)",
+  /*
+   * The sitemap would otherwise list the non-slash form, which 301s -- and
+   * that is a real finding (`sitemap-redirect-page`: Google asks for the
+   * canonical in the sitemap, not something that redirects to it). A
+   * correct site lists the slash form. This fixture is about not looping on
+   * the redirect, so it does not model that separate mistake as well.
+   */
+  inSitemap: false,
   summary:
     "The canonical URL ends in a slash; the non-slash form 301-redirects to it, like WordPress. This page is correct — it's a trap for crawlers that strip trailing slashes.",
   lesson:

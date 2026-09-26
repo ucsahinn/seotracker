@@ -85,8 +85,20 @@ const PAGE_TOKEN = /([?&](page|p|start)=\d+|\/page\/\d+\/?)/i;
 function withoutPageToken(url: string): string {
   return url
     .replace(/[?&](page|p|start)=\d+/i, "")
-    .replace(/\/page\/\d+\/?$/i, "/")
+    .replace(/\/page\/\d+\/?$/i, "")
     .replace(/\?$/, "");
+}
+
+/*
+ * `canonicalUrlKey` folds scheme, host case and www but deliberately not a
+ * trailing slash, because elsewhere `/a` and `/a/` really can be two pages.
+ * Here they cannot: the question is only whether the canonical is this same
+ * URL with the page number taken off, and a site that writes `/blog/` for
+ * that is saying the same thing as one that writes `/blog`.
+ */
+function samePageIgnoringTrailingSlash(a: string, b: string): boolean {
+  const fold = (url: string) => canonicalUrlKey(url).replace(/\/$/, "");
+  return fold(a) === fold(b);
 }
 
 /** The callback each extracted reporter pushes through. */
@@ -161,8 +173,10 @@ function reportIndexability(page: CrawledPageResult, report: ReportIssue) {
     effectiveCanonical &&
     effectiveCanonical !== page.url &&
     PAGE_TOKEN.test(page.url) &&
-    canonicalUrlKey(effectiveCanonical) ===
-      canonicalUrlKey(withoutPageToken(page.url))
+    samePageIgnoringTrailingSlash(
+      effectiveCanonical,
+      withoutPageToken(page.url),
+    )
   ) {
     report("paginated-canonical-to-first-page", {
       canonicalUrl: effectiveCanonical,

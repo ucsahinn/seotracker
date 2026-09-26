@@ -374,7 +374,7 @@ async function finalizeAudit(args: {
       );
     }
 
-    const issues = await runMultipageChecks({ auditId });
+    const issues = await runMultipageChecks({ auditId, projectId });
     issues.push(...(await runScratchpadLinkChecks(auditId, startUrl, crawl)));
     if (crawl.rateLimited) {
       issues.push({

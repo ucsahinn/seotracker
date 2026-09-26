@@ -2,6 +2,8 @@ import type { Fixture } from "./types";
 import { htmlResponse, renderPage } from "../lib";
 import { article } from "./helpers";
 
+import { indexabilityExtraFixtures } from "./indexability-extra";
+
 const CAT = "Indexability & canonical";
 
 // 14 — noindex via robots meta tag ----------------------------------------
@@ -399,4 +401,5 @@ export const indexabilityFixtures: Fixture[] = [
   hreflangNoXDefault,
   hreflangNoReturn,
   hreflangReturnTarget,
+  ...indexabilityExtraFixtures,
 ];
