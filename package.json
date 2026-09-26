@@ -2,7 +2,7 @@
   "name": "seotracker",
   "private": true,
   "sideEffects": false,
-  "version": "0.2.0",
+  "version": "0.3.0",
   "type": "module",
   "packageManager": "pnpm@10.30.1",
   "scripts": {

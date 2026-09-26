@@ -11,6 +11,7 @@ vi.mock("@/server/features/updates/UpdateCheckRepository", () => ({
   UpdateCheckRepository: { get: mocks.get, save: mocks.save },
 }));
 
+import { version as currentVersion } from "../../../../package.json";
 import { UpdateCheckService } from "./UpdateCheckService";
 
 const BLANK = {
@@ -50,7 +51,7 @@ describe("UpdateCheckService", () => {
   });
 
   it("sends the User-Agent GitHub refuses requests without", async () => {
-    mocks.fetch.mockResolvedValue(release("v0.3.0"));
+    mocks.fetch.mockResolvedValue(release("v9.9.9"));
 
     await UpdateCheckService.getStatus();
 
@@ -58,13 +59,21 @@ describe("UpdateCheckService", () => {
     expect(headers.get("user-agent")).toMatch(/^seotracker\//);
   });
 
+  /*
+   * Derived from the shipped version rather than written as a literal. This
+   * test used to say `v0.3.0`, which stopped being newer the day 0.3.0
+   * shipped -- so cutting a release broke a test that was about comparison,
+   * not about any particular number.
+   */
   it("reports an update when the published tag is newer", async () => {
-    mocks.fetch.mockResolvedValue(release("v0.3.0"));
+    const [major] = currentVersion.split(".");
+    const newer = `v${Number(major) + 1}.0.0`;
+    mocks.fetch.mockResolvedValue(release(newer));
 
     const status = await UpdateCheckService.getStatus();
 
     expect(status).toMatchObject({
-      latestVersion: "v0.3.0",
+      latestVersion: newer,
       updateAvailable: true,
       outcome: "ok",
     });
