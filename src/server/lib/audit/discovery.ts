@@ -33,22 +33,41 @@ export interface RobotsResult {
 }
 
 /**
- * Fetch the raw robots.txt body (null = missing/unreachable). Kept separate
- * from parsing so Workflows can checkpoint the text as durable step state and
- * re-derive the parsed result deterministically on replay.
+ * How the robots.txt fetch actually went.
+ *
+ * Every outcome used to collapse to `null`, which the parser reads as
+ * "everything allowed" -- the right default for crawling and a silent lie to
+ * the operator. A 5xx is the one that matters: Google's own spec says it
+ * stops crawling the site for the first 12 hours and then falls back to the
+ * last good copy for 30 days, so a robots.txt returning 500 is a
+ * site-wide crawl problem and this tool reported nothing at all.
  */
-async function fetchRobotsTxtText(origin: string): Promise<string | null> {
+type RobotsFetch = {
+  text: string | null;
+  /** null when the request never completed (DNS, timeout, TLS). */
+  status: number | null;
+  /** Google stops reading a robots.txt after 500 KiB. */
+  truncated: boolean;
+};
+
+async function fetchRobotsTxtText(origin: string): Promise<RobotsFetch> {
   try {
     const response = await fetch(`${origin}/robots.txt`, {
       headers: { "User-Agent": "seotracker-audit/1.0" },
       signal: AbortSignal.timeout(10_000),
     });
 
-    if (!response.ok) return null;
-    return (await response.text()).slice(0, MAX_ROBOTS_TXT_BYTES);
+    if (!response.ok)
+      return { text: null, status: response.status, truncated: false };
+    const body = await response.text();
+    return {
+      text: body.slice(0, MAX_ROBOTS_TXT_BYTES),
+      status: response.status,
+      truncated: body.length > MAX_ROBOTS_TXT_BYTES,
+    };
   } catch (error) {
     console.warn("Failed to fetch robots.txt:", error);
-    return null;
+    return { text: null, status: null, truncated: false };
   }
 }
 
@@ -226,8 +245,13 @@ async function fetchSitemapDocumentWithRetry(sitemapUrl: string): Promise<{
 export async function discoverUrls(
   origin: string,
   maxPages = 50,
-): Promise<{ urls: string[]; robotsText: string | null }> {
-  const robotsText = await fetchRobotsTxtText(origin);
+): Promise<{
+  urls: string[];
+  robotsText: string | null;
+  robotsFetch: RobotsFetch;
+}> {
+  const robotsFetch = await fetchRobotsTxtText(origin);
+  const robotsText = robotsFetch.text;
   const robots = parseRobotsTxt(origin, robotsText);
 
   // Collect sitemap URLs: from robots.txt + default location
@@ -310,5 +334,6 @@ export async function discoverUrls(
   return {
     urls: Array.from(allUrls).slice(0, maxPages),
     robotsText,
+    robotsFetch,
   };
 }

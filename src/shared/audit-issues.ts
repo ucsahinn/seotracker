@@ -267,6 +267,62 @@ export const AUDIT_ISSUE_TYPES = {
     howToFix:
       "Ya hedef sayfadaki noindex yönergesini kaldırın ya da bu sayfanın canonical değerini kendisine çevirin.",
   },
+  "robots-txt-server-error": {
+    severity: "critical",
+    title: "robots.txt sunucu hatası döndürüyor",
+    explanation:
+      "robots.txt dosyanız 5xx hatası veriyor. Google'ın kendi belgelerine göre bu durumda Google ilk 12 saat siteyi taramayı tamamen durdurur, sonrasında 30 gün boyunca dosyanın son sağlam kopyasını kullanır. Yani bu tek dosyanın hatası tüm sitenin taranmasını etkiler.",
+    howToFix:
+      "Sunucu hatasını giderin. robots.txt yoksa 404 döndürmesi sorun değildir; Google bunu 'kısıtlama yok' olarak okur. Hata 5xx olduğunda ise Google dosyayı okuyamadığını değil, okumaya çalışmaması gerektiğini varsayar.",
+  },
+  "robots-txt-unreachable": {
+    severity: "warning",
+    title: "robots.txt'ye ulaşılamadı",
+    explanation:
+      "robots.txt isteği hiç tamamlanmadı: zaman aşımı, DNS ya da TLS hatası. Bu tarama dosyayı okuyamadığı için sitenin tamamını taranabilir kabul etti; gerçek robots.txt farklı kurallar içeriyor olabilir.",
+    howToFix:
+      "Adresi tarayıcıda açıp gerçekten yanıt verdiğini doğrulayın. Yanıt veriyorsa bu geçici bir ağ hatası olabilir, denetimi tekrar çalıştırın.",
+  },
+  "robots-txt-truncated": {
+    severity: "warning",
+    title: "robots.txt 500 KiB sınırını aşıyor",
+    explanation:
+      "Google robots.txt dosyasının yalnızca ilk 500 KiB'ını okur ve gerisini yok sayar. Dosyanız bu sınırı aştığı için sondaki kurallar Google için hiç var olmamış gibi davranır.",
+    howToFix:
+      "Dosyayı kısaltın. Çok sayıda tekil adresi engellemek yerine dizin kalıpları kullanın; gerçekten dizine girmemesi gereken sayfalar için robots.txt yerine noindex daha kesin bir yoldur.",
+  },
+  "robots-txt-blocks-start-url": {
+    severity: "critical",
+    title: "Başlangıç adresi robots.txt ile engellenmiş",
+    explanation:
+      "Denetimi başlattığınız adresi sitenizin kendi robots.txt dosyası taramaya kapatıyor. Google da bu kurala uyar, yani bu sayfa taranmaz. Bu denetim de aynı nedenle o sayfadan başlayamadı.",
+    howToFix:
+      "Sayfanın taranması gerekiyorsa robots.txt'deki ilgili Disallow satırını kaldırın. Engel kasıtlıysa denetimi taranabilir bir adresten başlatın.",
+  },
+  "sitemap-broken-page": {
+    severity: "critical",
+    title: "Site haritasındaki sayfa açılmıyor",
+    explanation:
+      "Adres site haritanızda listelenmiş ama sunucu hata döndürüyor. Site haritası Google'a 'bu sayfaları tara ve dizine al' demenin yoludur; açılmayan bir adresi listelemek Google'ı boşa gönderir ve site haritanızın geri kalanına olan güveni azaltır.",
+    howToFix:
+      "Sayfa var olmalıysa hatayı giderin. Kaldırıldıysa adresi site haritasından çıkarın; site haritanız otomatik üretiliyorsa üretecin silinmiş sayfaları listelememesi gerekir.",
+  },
+  "sitemap-redirect-page": {
+    severity: "warning",
+    title: "Site haritasındaki sayfa yönlendiriyor",
+    explanation:
+      "Adres site haritanızda listelenmiş ama başka bir adrese yönlendiriyor. Google site haritasındaki adresleri asıl adres önerisi sayar, yani asıl olmadığını kendi söylediğiniz bir adresi öneriyorsunuz. Sayfa taşındıysa bu geçicidir; kalıcıysa harita eskimiş demektir.",
+    howToFix:
+      "Site haritasında yönlendirmenin hedefini listeleyin, kaynağını değil.",
+  },
+  "sitemap-disallowed-page": {
+    severity: "warning",
+    title: "Site haritasındaki adres robots.txt ile engellenmiş",
+    explanation:
+      "Aynı adres için sitenizin iki sistemi birbiriyle çelişiyor: site haritası Google'a 'bunu tara' derken robots.txt 'tarama' diyor. Google robots.txt'ye uyar ve sayfayı taramaz; başka sitelerden bağlantı alıyorsa içeriğini görmeden yine de dizine alabilir.",
+    howToFix:
+      "Sayfanın dizine girmesini istiyorsanız robots.txt engelini kaldırın. İstemiyorsanız adresi site haritasından çıkarın.",
+  },
   "sitemap-canonicalized-page": {
     severity: "info",
     title: "Site haritasındaki sayfa başka adrese canonical veriyor",

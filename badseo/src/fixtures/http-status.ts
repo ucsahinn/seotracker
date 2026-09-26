@@ -23,7 +23,10 @@ const notFound: Fixture = {
   summary: "Listed in the sitemap, but responds 404 Not Found.",
   lesson:
     "A dead URL in your sitemap wastes crawl budget on every visit. Remove it, restore the page, or redirect it to a real one.",
-  expectedIssues: ["broken-page"],
+  // Both, and the second is the point this fixture was built to make: the
+  // lesson above is about the sitemap, and the audit could only report the
+  // status until `sitemap-broken-page` existed.
+  expectedIssues: ["broken-page", "sitemap-broken-page"],
   // The sitemap lists it, so a crawler finds a dead URL. Kept off the catalog
   // so the catalog itself does not earn a broken-internal-link.
   linkedFromCatalog: false,
@@ -61,7 +64,7 @@ const serverError: Fixture = {
   summary: "Responds 500 Internal Server Error instead of a page.",
   lesson:
     "Repeated 5xx errors make search engines crawl a site less and can drop pages from the index. A missing page should return 404, not 500.",
-  expectedIssues: ["server-error"],
+  expectedIssues: ["server-error", "sitemap-broken-page"],
   linkedFromCatalog: false,
   inSitemap: true,
   handler: () =>

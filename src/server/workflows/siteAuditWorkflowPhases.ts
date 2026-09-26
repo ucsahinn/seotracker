@@ -1,4 +1,5 @@
 import type { WorkflowStep } from "cloudflare:workers";
+import type { AuditIssueType } from "@/shared/audit-issues";
 import { discoverUrls, parseRobotsTxt } from "@/server/lib/audit/discovery";
 import {
   failedLighthouseFetch,
@@ -100,6 +101,7 @@ export async function runAuditPhases(
     startUrl,
     config,
     crawl,
+    robotsFindings: discovery.robots,
   });
 }
 
@@ -128,10 +130,13 @@ async function runDiscoveryPhase(
     // step-output limit on big sitemaps).
     let seededCount = 0;
     const normalizedStart = normalizeUrl(startUrl) ?? startUrl;
-    if (
-      robots.isAllowed(normalizedStart) &&
-      isSameOrigin(normalizedStart, origin)
-    ) {
+    /*
+     * Recorded, not just acted on. A start URL its own robots.txt forbids
+     * produced a zero-page audit with no stated reason, which reads as a
+     * broken tool rather than as the finding it is.
+     */
+    const startBlocked = !robots.isAllowed(normalizedStart);
+    if (!startBlocked && isSameOrigin(normalizedStart, origin)) {
       await scratchpad.seedStart(normalizedStart);
       seededCount += 1;
     }
@@ -141,13 +146,20 @@ async function runDiscoveryPhase(
     // link-queue position but gains the in-sitemap flag.
     const seen = new Set<string>();
     const seeds: string[] = [];
+    const disallowedSitemapUrls: string[] = [];
     for (const url of result.urls) {
       const normalized = normalizeUrl(url);
       if (!normalized || seen.has(normalized)) continue;
       seen.add(normalized);
       if (!isSameOrigin(normalized, origin)) continue;
       if (!isCrawlableUrl(normalized)) continue;
-      if (!robots.isAllowed(normalized)) continue;
+      // Two of the site's own systems disagreeing about one URL: the
+      // sitemap says crawl it, robots.txt says do not. Counted rather than
+      // dropped in silence.
+      if (!robots.isAllowed(normalized)) {
+        disallowedSitemapUrls.push(normalized);
+        continue;
+      }
       seeds.push(normalized);
     }
     for (let i = 0; i < seeds.length; i += SEED_RPC_BATCH) {
@@ -159,7 +171,19 @@ async function runDiscoveryPhase(
       pagesTotal: Math.min(seededCount, maxPages),
       currentPhase: "crawling",
     });
-    return { robotsText: result.robotsText, seededCount };
+    return {
+      robotsText: result.robotsText,
+      seededCount,
+      robots: {
+        status: result.robotsFetch.status,
+        truncated: result.robotsFetch.truncated,
+        startBlocked,
+        // Capped: this is durable step state with a ~1MiB ceiling, and the
+        // count is the finding while the samples only illustrate it.
+        disallowedSitemapSample: disallowedSitemapUrls.slice(0, 10),
+        disallowedSitemapCount: disallowedSitemapUrls.length,
+      },
+    };
   });
 }
 
@@ -308,6 +332,18 @@ async function finalizeAudit(args: {
   startUrl: string;
   config: AuditConfig;
   crawl: CrawlPhaseResult;
+  /*
+   * Optional because this is durable Workflow state: a run that started
+   * before this field existed replays its discovery step from storage and
+   * gets the old shape back. Absent means "not recorded", never "clean".
+   */
+  robotsFindings?: {
+    status: number | null;
+    truncated: boolean;
+    startBlocked: boolean;
+    disallowedSitemapSample: string[];
+    disallowedSitemapCount: number;
+  };
 }) {
   const {
     step,
@@ -318,6 +354,7 @@ async function finalizeAudit(args: {
     startUrl,
     config,
     crawl,
+    robotsFindings,
   } = args;
 
   await step.do("multipage-checks", MULTIPAGE_CHECKS_STEP, async () => {
@@ -345,6 +382,34 @@ async function finalizeAudit(args: {
         pageId: null,
         pageUrl: startUrl,
       });
+    }
+    /*
+     * Site-level findings, so `pageId` is null and `pageUrl` is the start
+     * URL -- the same shape `crawl-rate-limited` uses. A 404 robots.txt is
+     * deliberately not among them: Google reads that as "no restrictions",
+     * which is a normal way to run a site.
+     */
+    if (robotsFindings) {
+      const siteIssue = (
+        issueType: AuditIssueType,
+        details?: Record<string, unknown>,
+      ) => issues.push({ issueType, pageId: null, pageUrl: startUrl, details });
+
+      if (robotsFindings.status !== null && robotsFindings.status >= 500) {
+        siteIssue("robots-txt-server-error", {
+          statusCode: robotsFindings.status,
+        });
+      } else if (robotsFindings.status === null) {
+        siteIssue("robots-txt-unreachable");
+      }
+      if (robotsFindings.truncated) siteIssue("robots-txt-truncated");
+      if (robotsFindings.startBlocked) siteIssue("robots-txt-blocks-start-url");
+      if (robotsFindings.disallowedSitemapCount > 0) {
+        siteIssue("sitemap-disallowed-page", {
+          count: robotsFindings.disallowedSitemapCount,
+          sample: robotsFindings.disallowedSitemapSample,
+        });
+      }
     }
     await AuditRepository.insertIssues(auditId, issues);
     return { issueCount: issues.length };

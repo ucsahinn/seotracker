@@ -2,11 +2,17 @@ import { describe, expect, it, vi } from "vitest";
 
 // `start.ts` reaches the global server-function middleware, which imports
 // `waitUntil` from the workers runtime. Module mock, the pattern this suite
-// already uses (see `ActivationRepository.test.ts`).
+// already uses (see `ActivationRepository.test.ts`). `vi.mock` is hoisted
+// above the top-level await below, which is what makes that import safe --
+// and a top-level one rather than a per-test `await import()`, which pulls
+// the whole middleware graph on every run and tipped this test past the
+// five-second default under full-suite parallelism.
 vi.mock("cloudflare:workers", () => ({
   env: {},
   waitUntil: () => undefined,
 }));
+
+const { startOptions } = await import("./start");
 
 /*
  * One `createCsrfMiddleware` registration is all that stands between every
@@ -18,9 +24,7 @@ vi.mock("cloudflare:workers", () => ({
  * instead.
  */
 describe("startOptions", () => {
-  it("registers request middleware, which is the CSRF filter", async () => {
-    const { startOptions } = await import("./start");
-
+  it("registers request middleware, which is the CSRF filter", () => {
     expect(startOptions.requestMiddleware).toHaveLength(1);
   });
 });

@@ -88,16 +88,43 @@ describe("runPageReporters", () => {
   });
 
   it("classifies error statuses by range", () => {
-    expect(issueTypes(makePage({ statusCode: 500 }))).toEqual(["server-error"]);
-    expect(issueTypes(makePage({ statusCode: 404 }))).toEqual(["broken-page"]);
+    const notInSitemap = { inSitemap: false };
+    expect(issueTypes(makePage({ statusCode: 500, ...notInSitemap }))).toEqual([
+      "server-error",
+    ]);
+    expect(issueTypes(makePage({ statusCode: 404, ...notInSitemap }))).toEqual([
+      "broken-page",
+    ]);
     expect(
       issueTypes(
         makePage({
           statusCode: 301,
           redirectUrl: "https://example.com/b",
+          ...notInSitemap,
         }),
       ),
     ).toEqual([]);
+  });
+
+  /*
+   * A bad status and a bad status *in the sitemap* are different findings:
+   * the second says the site is telling Google to crawl something the site
+   * already knows is wrong. A 3xx raised nothing at all before.
+   */
+  it("adds a sitemap finding when the failing URL was submitted to Google", () => {
+    expect(issueTypes(makePage({ statusCode: 404, inSitemap: true }))).toEqual([
+      "broken-page",
+      "sitemap-broken-page",
+    ]);
+    expect(
+      issueTypes(
+        makePage({
+          statusCode: 301,
+          redirectUrl: "https://example.com/b",
+          inSitemap: true,
+        }),
+      ),
+    ).toEqual(["sitemap-redirect-page"]);
   });
 
   it("checks titles and meta descriptions", () => {

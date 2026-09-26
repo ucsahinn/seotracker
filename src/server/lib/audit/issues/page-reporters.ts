@@ -47,6 +47,32 @@ function hasHeadingLevelSkip(headingOrder: number[]): boolean {
   return false;
 }
 
+/**
+ * A sitemap entry that does not answer 200.
+ *
+ * Distinct from the bad status itself: the sitemap is how a site tells
+ * Google which pages to crawl, so a dead or redirecting entry sends Google
+ * somewhere the site already knows is wrong. `broken-page` fires either way
+ * and says nothing about the sitemap, and nothing at all fired for a 3xx.
+ */
+function reportSitemapStatus(
+  page: CrawledPageResult,
+  report: (
+    issueType: AuditIssueType,
+    details?: Record<string, unknown>,
+  ) => void,
+) {
+  if (!page.inSitemap) return;
+  if (page.statusCode >= 400) {
+    report("sitemap-broken-page", { statusCode: page.statusCode });
+    return;
+  }
+  report("sitemap-redirect-page", {
+    statusCode: page.statusCode,
+    redirectUrl: page.redirectUrl,
+  });
+}
+
 export function runPageReporters(page: CrawledPageResult): DetectedIssue[] {
   const issues: DetectedIssue[] = [];
   const report = (
@@ -66,16 +92,15 @@ export function runPageReporters(page: CrawledPageResult): DetectedIssue[] {
     return issues;
   }
 
-  if (page.statusCode >= 500) {
-    report("server-error", { statusCode: page.statusCode });
-    return issues;
-  }
-  if (page.statusCode >= 400) {
-    report("broken-page", { statusCode: page.statusCode });
-    return issues;
-  }
-  // Redirects are normal on their own; chains/loops are flagged in multipage.
   if (page.statusCode >= 300) {
+    if (page.statusCode >= 500) {
+      report("server-error", { statusCode: page.statusCode });
+    } else if (page.statusCode >= 400) {
+      report("broken-page", { statusCode: page.statusCode });
+    }
+    // A redirect on its own is normal; chains and loops are flagged in
+    // multipage. Being in the sitemap is what makes one worth reporting.
+    reportSitemapStatus(page, report);
     return issues;
   }
 
