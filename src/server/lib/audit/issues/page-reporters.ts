@@ -324,6 +324,16 @@ export function runPageReporters(page: CrawledPageResult): DetectedIssue[] {
   // Internationalization
   reportHreflang(page, report);
 
+  /* Google indexes the mobile version of a page, and without a viewport
+     the mobile version is the desktop layout scaled down. Lighthouse
+     already audits this, but on at most ten sampled pages -- so one broken
+     template can sit outside the sample, which is why a crawl-wide check
+     earns its place beside it. `info`, because Search Central recommends
+     responsive design rather than mandating the tag. */
+  if (page.viewport === null) {
+    report("missing-viewport");
+  }
+
   // Content quality
   if (page.isIndexable && page.wordCount < THIN_CONTENT_WORDS) {
     report("thin-content", { wordCount: page.wordCount });

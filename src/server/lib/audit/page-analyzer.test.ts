@@ -96,6 +96,11 @@ function analyzeHtmlWithCheerio(html: string, pageUrl: string): PageAnalysis {
     hasStructuredData = true;
   });
 
+  // The reference reads the same tag the streaming analyzer does, which is
+  // the whole point of this parity suite: if the two disagree, the test
+  // says so rather than the crawler quietly differing from a real browser.
+  const viewport = $('meta[name="viewport"]').first().attr("content");
+
   const hreflangAlternates: PageAnalysis["hreflangAlternates"] = [];
   $('link[rel="alternate"][hreflang]').each((_, el) => {
     const hreflang = $(el).attr("hreflang");
@@ -124,6 +129,7 @@ function analyzeHtmlWithCheerio(html: string, pageUrl: string): PageAnalysis {
     images,
     links: Array.from(linksByTarget.values()),
     hasStructuredData,
+    viewport: viewport === undefined ? null : viewport.trim(),
     hreflangAlternates,
   };
 }

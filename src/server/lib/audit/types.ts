@@ -96,6 +96,8 @@ export interface PageAnalysis {
 
   // Structured data
   hasStructuredData: boolean;
+  /** The raw `<meta name="viewport">` content, or null when absent. */
+  viewport: string | null;
 
   // Hreflang
   /**
@@ -178,6 +180,8 @@ export interface CrawledPageResult {
   images: Array<{ src: string | null; alt: string | null }>;
   links: PageLink[];
   hasStructuredData: boolean;
+  /** The raw `<meta name="viewport">` content, or null when absent. */
+  viewport: string | null;
   hreflangAlternates: HreflangAlternate[];
   isIndexable: boolean;
   responseTimeMs: number;

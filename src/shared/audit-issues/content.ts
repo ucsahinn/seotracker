@@ -98,4 +98,12 @@ export const CONTENT_ISSUES = {
     howToFix:
       "Başlık seviyelerini atlamadan birer birer inecek şekilde düzeltin (H1 → H2 → H3).",
   },
+  "missing-viewport": {
+    severity: "info",
+    title: "Viewport etiketi yok",
+    explanation:
+      'Sayfada `<meta name="viewport">` yok. Google siteleri mobil sürümleri üzerinden dizine alır ve viewport etiketi olmayan bir sayfa telefonda masaüstü genişliğinde açılır: kullanıcı yakınlaştırmadan okuyamaz. Lighthouse bunu zaten denetler, ama en fazla on örnek sayfada; bu kontrol taranan her sayfayı kapsar, yani tek bozuk şablon gözden kaçmaz.',
+    howToFix:
+      'Sayfanın `<head>` bölümüne `<meta name="viewport" content="width=device-width, initial-scale=1">` ekleyin. Neredeyse her durumda doğru değer budur.',
+  },
 } as const satisfies Record<string, AuditIssueDescriptor>;

@@ -39,6 +39,8 @@ interface DocumentOptions {
   /** Raw HTML injected at the end of <head> (extra tags, JSON-LD, etc.). */
   headExtra?: string;
   lang?: string;
+  /** Leave out the viewport meta, for the fixture that is about its absence. */
+  omitViewport?: boolean;
   bodyHtml: string;
 }
 
@@ -49,9 +51,12 @@ export function renderDocument(opts: DocumentOptions): string {
      dev` and every audit-harness run reported pageviews to someone else's
      account -- from a fork whose README promises it sends data nowhere. */
   const head: string[] = ['<meta charset="utf-8">'];
-  head.push(
-    '<meta name="viewport" content="width=device-width, initial-scale=1">',
-  );
+  // Opt-out rather than always-on: one fixture exists to demonstrate the
+  // page without it, and the audit checks every crawled page for it.
+  if (!opts.omitViewport)
+    head.push(
+      '<meta name="viewport" content="width=device-width, initial-scale=1">',
+    );
   if (opts.title !== undefined)
     head.push(`<title>${escapeHtml(opts.title)}</title>`);
   if (opts.metaDescription !== undefined)

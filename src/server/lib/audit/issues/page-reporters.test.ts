@@ -51,6 +51,7 @@ function makePage(overrides: Partial<CrawledPageResult>): CrawledPageResult {
     images: [],
     links: [HEALTHY_LINK],
     hasStructuredData: false,
+    viewport: "width=device-width, initial-scale=1",
     hreflangAlternates: [],
     isIndexable: true,
     responseTimeMs: 200,

@@ -76,6 +76,7 @@ export function analyzeHtml(
   let ogDescription: string | null = null;
   let ogImage: string | null = null;
   let hasStructuredData = false;
+  let viewport: string | null = null;
   const hreflangAlternates: HreflangAlternate[] = [];
 
   const h1s: string[] = [];
@@ -107,6 +108,12 @@ export function analyzeHtml(
       robotsMeta ??= content ?? null;
     } else if (name === "googlebot") {
       googlebotMeta ??= content ?? null;
+    } else if (name === "viewport") {
+      // Recorded rather than judged here; the reporter decides. Google
+      // indexes the mobile version of a page, and Lighthouse's own SEO
+      // audit checks for this -- but Lighthouse runs on ten sampled pages
+      // at most, so one broken template can sit outside the sample.
+      viewport ??= content?.trim() ?? "";
     } else if (attribs["property"] === "og:title") {
       ogTitle ??= content ?? null;
     } else if (attribs["property"] === "og:description") {
@@ -301,6 +308,7 @@ export function analyzeHtml(
     images,
     links: Array.from(linksByTarget.values()),
     hasStructuredData,
+    viewport,
     hreflangAlternates,
   };
 }

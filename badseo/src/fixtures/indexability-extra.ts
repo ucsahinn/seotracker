@@ -164,9 +164,46 @@ const paginatedCanonical: Fixture = {
     ),
 };
 
+// 29 - no viewport, so the mobile version is the desktop one, scaled -------
+const missingViewport: Fixture = {
+  path: "/index/no-viewport",
+  category: CAT,
+  name: "No viewport meta tag",
+  summary:
+    "Renders at desktop width on a phone, because nothing tells the browser otherwise.",
+  lesson:
+    "Google indexes the mobile version of a page. Without a viewport meta tag, that version is the desktop layout shrunk to fit, which nobody can read without zooming.",
+  expectedIssues: ["missing-viewport"],
+  handler: () =>
+    htmlResponse(
+      renderPage({
+        fixture: missingViewport,
+        title: "A page with no viewport",
+        metaDescription:
+          "This page omits the viewport meta tag, so a phone renders it at desktop width and scales the whole thing down.",
+        omitViewport: true,
+        bodyHtml: article({
+          h1: "Desktop width, on a phone",
+          lede: "Nothing here tells the browser how wide the page should be, so it assumes a desktop and shrinks.",
+          sections: [
+            {
+              h2: "What the tag actually does",
+              body: "A phone browser has to guess a width before it can lay anything out, and its guess is around 980 CSS pixels, because that is what an old desktop site expects. The viewport meta tag replaces that guess with the real device width. Without it, your responsive breakpoints never fire: the browser believes it has a wide screen, renders the desktop layout, then scales the result down to fit the physical display.",
+            },
+            {
+              h2: "Why it matters more than it looks",
+              body: "Google indexes the mobile version of a page, so the version being judged is the scaled-down one. The fix is a single line and is the same line on almost every site, which is precisely why its absence is usually an accident: a template that was never finished, or a page rendered outside the normal layout.",
+            },
+          ],
+        }),
+      }),
+    ),
+};
+
 export const indexabilityExtraFixtures: Fixture[] = [
   hreflangInvalidCode,
   hreflangNoSelf,
   nofollowPage,
   paginatedCanonical,
+  missingViewport,
 ];
