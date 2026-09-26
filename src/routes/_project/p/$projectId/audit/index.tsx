@@ -10,7 +10,7 @@ import {
   getAuditStatus,
   getCrawlProgress,
 } from "@/serverFunctions/audit";
-import { auditSearchSchema } from "@/types/schemas/audit";
+import { auditSearchSchema, type AuditTab } from "@/types/schemas/audit";
 import { LaunchView } from "@/client/features/audit/launch/LaunchView";
 import { ResultsView } from "@/client/features/audit/results/ResultsView";
 import {
@@ -76,9 +76,9 @@ function AuditDetail({
 }: {
   projectId: string;
   auditId: string;
-  tab: string;
+  tab: AuditTab;
   onBack: () => void;
-  onTabChange: (tab: "issues" | "pages" | "performance" | "index") => void;
+  onTabChange: (tab: AuditTab) => void;
 }) {
   const statusQuery = useQuery({
     queryKey: ["audit-status", projectId, auditId],

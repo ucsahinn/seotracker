@@ -58,13 +58,20 @@ export function RankingsPage({ projectId }: { projectId: string }) {
             için 16 aylık Google sınırının ötesine geçebilir.
           </p>
         </div>
-        <div role="tablist" className="tabs tabs-border">
+        {/* A pick-one filter, not tabs: it re-queries the one table below
+            rather than swapping between panels, so there is no panel for
+            `aria-controls` to point at. */}
+        <div
+          role="radiogroup"
+          aria-label="Zaman aralığı"
+          className="tabs tabs-border"
+        >
           {WINDOWS.map((option) => (
             <button
               key={option.days}
               type="button"
-              role="tab"
-              aria-selected={days === option.days}
+              role="radio"
+              aria-checked={days === option.days}
               className={`tab ${days === option.days ? "tab-active" : ""}`}
               onClick={() => setDays(option.days)}
             >

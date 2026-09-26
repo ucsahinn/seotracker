@@ -106,28 +106,6 @@ export function exportDimensionRows(
   runExport(dimensionExportTable(dimension, rows, stamp), target);
 }
 
-export function TabButton({
-  active,
-  onClick,
-  label,
-}: {
-  active: boolean;
-  onClick: () => void;
-  label: string;
-}) {
-  return (
-    <button
-      type="button"
-      role="tab"
-      aria-selected={active}
-      className={`tab ${active ? "tab-active" : ""}`}
-      onClick={onClick}
-    >
-      {label}
-    </button>
-  );
-}
-
 type Delta = { text: string; improved: boolean } | null;
 
 function percentDelta(current: number, previous: number): Delta {

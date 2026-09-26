@@ -34,8 +34,11 @@ function getAuthenticatedContext(context: unknown): EnsuredUserContext {
  * simple content type that skips preflight (`text/plain`,
  * `application/x-www-form-urlencoded`), and for a request carrying no
  * `Origin` at all. Only a same-origin request reaches the handler. The
- * framework enforces this and fails closed; adding our own check would be
- * duplicate machinery.
+ * protection is one registration, `createCsrfMiddleware` in `src/start.ts`,
+ * and `startInstance.test.ts` asserts it is still there -- because the
+ * paragraph you are reading would otherwise talk the next reader out of
+ * noticing its removal as effectively as it talks them out of adding a
+ * second one.
  */
 export const globalServerFunctionMiddleware = [
   errorHandlingMiddleware,

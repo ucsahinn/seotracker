@@ -74,6 +74,8 @@ export function DashboardSetupAction({
           <div className="shrink-0 [&>button]:h-10 [&>button]:w-full [&>button]:gap-2 [&>button]:text-sm">
             <CopyButton
               primary
+              // See the same guard on /ai: `undefined` reads as "no token".
+              disabled={connection.isPending}
               value={getAgentSetupPrompt(
                 // http, not https: nothing is listening for TLS on 3001, and
                 // this string is what the agent is told to connect to.

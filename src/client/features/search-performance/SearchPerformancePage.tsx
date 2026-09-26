@@ -1,4 +1,5 @@
 import { PageShell } from "@/client/components/PageShell";
+import { TabPanel, Tabs } from "@/client/components/Tabs";
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import {
@@ -18,7 +19,6 @@ import {
   exportDimensionRows,
   exportStriking,
   StrikingDistanceTable,
-  TabButton,
   TotalsCards,
   type ExportTarget,
   type Tab,
@@ -243,28 +243,21 @@ export function SearchPerformancePage({
           <TotalsCards report={report} />
           <div className="overflow-hidden rounded-box border border-base-300 bg-base-100">
             <div className="flex flex-col gap-3 border-b border-base-300 px-4 py-3 lg:flex-row lg:items-center lg:justify-between">
-              <div role="tablist" className="tabs tabs-border w-fit">
-                <TabButton
-                  active={tab === "striking"}
-                  onClick={() => setTab("striking")}
-                  label={`Eşiğe yakın (${report.strikingDistance.length})`}
-                />
-                <TabButton
-                  active={tab === "queries"}
-                  onClick={() => setTab("queries")}
-                  label="Sorgular"
-                />
-                <TabButton
-                  active={tab === "pages"}
-                  onClick={() => setTab("pages")}
-                  label="Sayfalar"
-                />
-                <TabButton
-                  active={tab === "cannibalization"}
-                  onClick={() => setTab("cannibalization")}
-                  label="Çakışmalar"
-                />
-              </div>
+              <Tabs
+                group="search-performance"
+                className="w-fit"
+                value={tab}
+                onChange={setTab}
+                items={[
+                  {
+                    id: "striking",
+                    label: `Eşiğe yakın (${report.strikingDistance.length})`,
+                  },
+                  { id: "queries", label: "Sorgular" },
+                  { id: "pages", label: "Sayfalar" },
+                  { id: "cannibalization", label: "Çakışmalar" },
+                ]}
+              />
               <div className="flex flex-wrap items-center gap-2">
                 {reportQuery.isFetching && !reportQuery.isPending ? (
                   <Loader2 className="size-4 animate-spin text-muted" />
@@ -333,45 +326,47 @@ export function SearchPerformancePage({
               </div>
             </div>
 
-            {tab === "striking" ? (
-              <StrikingDistanceTable
-                projectId={projectId}
-                rows={report.strikingDistance}
-              />
-            ) : tab === "cannibalization" ? (
-              <CannibalizationTable projectId={projectId} />
-            ) : tableQuery.isPending ? (
-              <div className="flex items-center gap-2 p-8 text-sm text-muted">
-                <Loader2 className="size-4 animate-spin" /> Yükleniyor…
-              </div>
-            ) : tableQuery.isError ? (
-              <div className="p-4">
-                <div className="alert alert-error">
-                  <span className="text-sm">
-                    {getStandardErrorMessage(tableQuery.error)}
-                  </span>
-                </div>
-              </div>
-            ) : (
-              <>
-                <div className="p-4">
-                  <DimensionTable
-                    rows={tableRows}
-                    keyLabel={tab === "queries" ? "Sorgu" : "Sayfa"}
-                  />
-                </div>
-                <TablePagination
-                  page={page}
-                  pageSize={pageSize}
-                  pageSizes={SEARCH_PERFORMANCE_PAGE_SIZES}
-                  totalCount={null}
-                  hasNextPage={hasNextPage}
-                  isLoading={tableQuery.isFetching}
-                  onPageChange={setPage}
-                  onPageSizeChange={setPageSize}
+            <TabPanel group="search-performance" value={tab}>
+              {tab === "striking" ? (
+                <StrikingDistanceTable
+                  projectId={projectId}
+                  rows={report.strikingDistance}
                 />
-              </>
-            )}
+              ) : tab === "cannibalization" ? (
+                <CannibalizationTable projectId={projectId} />
+              ) : tableQuery.isPending ? (
+                <div className="flex items-center gap-2 p-8 text-sm text-muted">
+                  <Loader2 className="size-4 animate-spin" /> Yükleniyor…
+                </div>
+              ) : tableQuery.isError ? (
+                <div className="p-4">
+                  <div className="alert alert-error">
+                    <span className="text-sm">
+                      {getStandardErrorMessage(tableQuery.error)}
+                    </span>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div className="p-4">
+                    <DimensionTable
+                      rows={tableRows}
+                      keyLabel={tab === "queries" ? "Sorgu" : "Sayfa"}
+                    />
+                  </div>
+                  <TablePagination
+                    page={page}
+                    pageSize={pageSize}
+                    pageSizes={SEARCH_PERFORMANCE_PAGE_SIZES}
+                    totalCount={null}
+                    hasNextPage={hasNextPage}
+                    isLoading={tableQuery.isFetching}
+                    onPageChange={setPage}
+                    onPageSizeChange={setPageSize}
+                  />
+                </>
+              )}
+            </TabPanel>
           </div>
         </>
       )}

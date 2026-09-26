@@ -6,6 +6,7 @@ import {
   exportPerformance,
 } from "@/client/features/audit/results/export";
 import type { AuditResultsData } from "@/client/features/audit/results/types";
+import type { AuditTab as ResultsTab } from "@/types/schemas/audit";
 import { IndexCoverageView } from "@/client/features/audit/results/IndexCoverageView";
 import { isLighthouseFailure } from "@/client/features/audit/results/AuditResultsTableFilterLogic";
 import {
@@ -13,12 +14,11 @@ import {
   resolveIssueSeverity,
 } from "@/client/features/audit/results/IssuesView";
 import { PagesTable } from "@/client/features/audit/results/PagesTable";
+import { TabPanel, Tabs } from "@/client/components/Tabs";
 import {
   ExportDropdown,
   PerformanceTable,
 } from "@/client/features/audit/results/ResultsTables";
-
-type ResultsTab = "issues" | "pages" | "performance" | "index";
 
 export function ResultsView({
   projectId,
@@ -28,7 +28,7 @@ export function ResultsView({
 }: {
   projectId: string;
   data: AuditResultsData;
-  tab: string;
+  tab: ResultsTab;
   onTabChange: (tab: ResultsTab) => void;
 }) {
   const { audit, pages, lighthouse, issues } = data;
@@ -123,25 +123,27 @@ export function ResultsView({
             }}
           />
 
-          {activeTab === "index" && (
-            <IndexCoverageView projectId={projectId} auditId={audit.id} />
-          )}
-          {activeTab === "issues" && <IssuesView issues={issues} />}
-          {activeTab === "pages" && (
-            <PagesTable
-              pages={pages}
-              startUrl={audit.startUrl}
-              issues={issues}
-            />
-          )}
-          {activeTab === "performance" && lighthouse.length > 0 && (
-            <PerformanceTable
-              auditId={audit.id}
-              projectId={projectId}
-              lighthouse={lighthouse}
-              pages={pages}
-            />
-          )}
+          <TabPanel group="audit-results" value={activeTab}>
+            {activeTab === "index" && (
+              <IndexCoverageView projectId={projectId} auditId={audit.id} />
+            )}
+            {activeTab === "issues" && <IssuesView issues={issues} />}
+            {activeTab === "pages" && (
+              <PagesTable
+                pages={pages}
+                startUrl={audit.startUrl}
+                issues={issues}
+              />
+            )}
+            {activeTab === "performance" && lighthouse.length > 0 && (
+              <PerformanceTable
+                auditId={audit.id}
+                projectId={projectId}
+                lighthouse={lighthouse}
+                pages={pages}
+              />
+            )}
+          </TabPanel>
         </div>
       </div>
     </>
@@ -224,7 +226,7 @@ function ResultsHeader({
   pageCount: number;
   lighthouseCount: number;
   hasPerformanceTab: boolean;
-  activeTab: string;
+  activeTab: ResultsTab;
   onTabChange: (tab: ResultsTab) => void;
   onExport: (format: "csv" | "json" | "sheets") => void;
 }) {
@@ -244,24 +246,13 @@ function ResultsHeader({
 
   return (
     <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
-      <div role="tablist" className="tabs tabs-border w-fit">
-        {tabs.map(({ label, tab }) => {
-          const isActive = activeTab === tab;
-
-          return (
-            <button
-              key={tab}
-              type="button"
-              role="tab"
-              aria-selected={isActive}
-              className={`tab ${isActive ? "tab-active" : ""}`}
-              onClick={() => onTabChange(tab)}
-            >
-              {label}
-            </button>
-          );
-        })}
-      </div>
+      <Tabs
+        group="audit-results"
+        className="w-fit"
+        value={activeTab}
+        onChange={onTabChange}
+        items={tabs.map(({ tab, label }) => ({ id: tab, label }))}
+      />
 
       {/* No export for index coverage yet, and falling through to the pages
           export downloaded the wrong file without saying so. */}

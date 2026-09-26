@@ -1,5 +1,6 @@
 import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { StatusPill } from "@/client/components/StatusPill";
+import { TabPanel, Tabs } from "@/client/components/Tabs";
 import { useQuery } from "@tanstack/react-query";
 import { formatDateTime, formatRelativeTime } from "@/client/lib/format";
 import { getAgentConnection } from "@/serverFunctions/agentConnection";
@@ -46,6 +47,10 @@ const SKILLS = [
     "Yukarıdakilerden birini Raporlar sayfanıza rapor olarak kaydeder.",
   ],
 ];
+const AI_TABS = [
+  { id: "setup", label: "Ajanınızı kurun" },
+  { id: "skills", label: "Beceriler" },
+] as const;
 const AGENTS = [
   { name: "Claude Code", Icon: ClaudeIcon },
   { name: "ChatGPT", Icon: OpenAIIcon },
@@ -164,28 +169,16 @@ function AiPage() {
           }
         />
 
-        <div role="tablist" className="tabs tabs-border mt-8 w-fit">
-          {(
-            [
-              ["setup", "Ajanınızı kurun"],
-              ["skills", "Beceriler"],
-            ] as const
-          ).map(([id, label]) => (
-            <button
-              key={id}
-              type="button"
-              role="tab"
-              aria-selected={tab === id}
-              className={`tab ${tab === id ? "tab-active" : ""}`}
-              onClick={() => setTab(id)}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
+        <Tabs
+          group="ai"
+          className="mt-8 w-fit"
+          value={tab}
+          onChange={setTab}
+          items={AI_TABS}
+        />
 
         {tab === "setup" ? (
-          <>
+          <TabPanel group="ai" value="setup">
             <div className="mt-6 space-y-5">
               <section className="rounded-box border border-base-300 p-5 sm:p-6">
                 <h2 className="text-base font-semibold">Ajanınızı kurun</h2>
@@ -211,6 +204,13 @@ function AiPage() {
                 <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3 [&>button]:h-11 [&>button]:gap-2 [&>button]:text-sm">
                   <CopyButton
                     primary
+                    /*
+                     * Disabled for the first roundtrip: the prompt's auth
+                     * sentence is chosen from this query, and `undefined`
+                     * reads as "no token", so a click inside that window
+                     * would copy the wrong variant onto a protected install.
+                     */
+                    disabled={connection.isPending}
                     value={prompt}
                     label="Kurulum istemini kopyala"
                     successMessage="Kurulum istemi kopyalandı"
@@ -298,9 +298,9 @@ function AiPage() {
                 onCopy={() => captureClientEvent("mcp:setup_url_copy")}
               />
             </div>
-          </>
+          </TabPanel>
         ) : (
-          <section className="mt-6">
+          <TabPanel group="ai" value="skills" className="mt-6">
             <p className="text-sm text-muted">
               Kurulum istemi bunları kurar. Kısa bir yanıt yerine tam bir çıktı
               istediğinizde beceriyi adıyla çağırın.
@@ -318,7 +318,7 @@ function AiPage() {
                 </li>
               ))}
             </ul>
-          </section>
+          </TabPanel>
         )}
       </div>
     </PageShell>

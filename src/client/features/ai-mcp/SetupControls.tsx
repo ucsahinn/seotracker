@@ -8,6 +8,7 @@ export function CopyButton({
   label = "Kopyala",
   iconOnly = false,
   primary = false,
+  disabled = false,
   onCopy,
 }: {
   value: string;
@@ -15,6 +16,8 @@ export function CopyButton({
   label?: string;
   iconOnly?: boolean;
   primary?: boolean;
+  /** For a value that is not settled yet -- copying it early would copy the wrong thing. */
+  disabled?: boolean;
   onCopy?: () => void;
 }) {
   const [copied, setCopied] = useState(false);
@@ -40,6 +43,7 @@ export function CopyButton({
       <button
         type="button"
         onClick={handleCopy}
+        disabled={disabled}
         aria-label={label}
         className="flex size-7 items-center justify-center rounded-field text-muted transition-colors hover:bg-base-200 hover:text-base-content"
       >
@@ -56,10 +60,13 @@ export function CopyButton({
     <button
       type="button"
       onClick={handleCopy}
+      disabled={disabled}
       className={
         primary
           ? "btn btn-primary"
-          : "inline-flex items-center gap-1.5 rounded-field border border-base-300 bg-base-100 px-2 py-1 text-xs font-medium text-muted transition-colors hover:bg-base-300/50 hover:text-base-content"
+          : // `--control-border`, not the panel hairline: this is a control on
+            // base-100, so the border is the only thing saying so.
+            "inline-flex items-center gap-1.5 rounded-field border border-[var(--control-border)] bg-base-100 px-2 py-1 text-xs font-medium text-muted transition-colors hover:bg-base-300/50 hover:text-base-content disabled:opacity-50"
       }
     >
       {copied ? (

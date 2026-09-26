@@ -48,6 +48,9 @@ export const getCrawlProgressSchema = z.object({
 
 const auditTabs = ["issues", "pages", "performance", "index"] as const;
 
+/** The audit result tabs, validated out of the URL and back into the UI. */
+export type AuditTab = (typeof auditTabs)[number];
+
 export const auditSearchSchema = z.object({
   auditId: z.string().optional().catch(undefined),
   tab: z.enum(auditTabs).catch("issues").default("issues"),

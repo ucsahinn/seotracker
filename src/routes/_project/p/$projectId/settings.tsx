@@ -38,25 +38,27 @@ function ProjectSettingsLayout() {
           <h1 className="text-2xl font-bold tracking-tight">Proje ayarları</h1>
           <p className="text-sm text-muted">{project?.name ?? " "}</p>
         </div>
-        <div role="tablist" className="tabs tabs-border">
+        {/* Navigation, not tabs: each one changes the URL and swaps the
+            <Outlet/>. `role="tab"` here announced "tab" instead of "link" and
+            promised an `aria-controls` panel that never existed. The daisyUI
+            `tabs` classes stay -- they are the look, not the semantics. */}
+        <nav aria-label="Ayar bölümleri" className="tabs tabs-border">
           {tabs.map((tab) => (
             <Link
               key={tab.to}
-              role="tab"
               to={tab.to}
               params={{ projectId }}
               activeOptions={{ exact: tab.exact ?? false }}
               className="tab"
               activeProps={{
                 className: "tab-active",
-                "aria-selected": true,
+                "aria-current": "page",
               }}
-              inactiveProps={{ "aria-selected": false }}
             >
               {tab.label}
             </Link>
           ))}
-        </div>
+        </nav>
       </div>
 
       <Outlet />
