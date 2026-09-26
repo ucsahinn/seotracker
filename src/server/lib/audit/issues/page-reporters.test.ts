@@ -272,3 +272,89 @@ describe("runPageReporters", () => {
     );
   });
 });
+
+/*
+ * The checks added from a pass over Google's own documentation. Each cites
+ * the rule it enforces, because the failure mode for an SEO tool is
+ * shipping folklore, and the registry copy is what an operator acts on.
+ */
+describe("checks traced to Google's documentation", () => {
+  it("rejects hreflang region codes Google's own mistakes list names", () => {
+    const invalid = (hreflang: string) =>
+      issueTypes(
+        makePage({
+          url: "https://example.com/a",
+          hreflangAlternates: [
+            { hreflang, href: "https://example.com/b" },
+            { hreflang: "tr", href: "https://example.com/a" },
+          ],
+        }),
+      ).includes("hreflang-invalid-code");
+
+    // "UK" is not an ISO 3166-1 code; Google names it explicitly.
+    expect(invalid("en-UK")).toBe(true);
+    // Underscore is not the BCP-47 separator.
+    expect(invalid("en_US")).toBe(true);
+    expect(invalid("en-GB")).toBe(false);
+    // x-default is legal and must survive.
+    expect(invalid("x-default")).toBe(false);
+    // Script subtags are legal BCP-47 and must not be rejected.
+    expect(invalid("zh-Hant")).toBe(false);
+  });
+
+  it("wants the page in its own hreflang set, folded the same way", () => {
+    const withSelf = issueTypes(
+      makePage({
+        url: "https://example.com/a",
+        hreflangAlternates: [
+          { hreflang: "tr", href: "https://example.com/a" },
+          { hreflang: "en", href: "https://example.com/b" },
+        ],
+      }),
+    );
+    expect(withSelf).not.toContain("hreflang-missing-self");
+
+    const withoutSelf = issueTypes(
+      makePage({
+        url: "https://example.com/a",
+        hreflangAlternates: [{ hreflang: "en", href: "https://example.com/b" }],
+      }),
+    );
+    expect(withoutSelf).toContain("hreflang-missing-self");
+  });
+
+  it("flags nofollow only where Google would otherwise follow the links", () => {
+    expect(
+      issueTypes(makePage({ robotsMeta: "nofollow", isIndexable: true })),
+    ).toContain("nofollow-page");
+    // `none` is Google's documented shorthand for noindex, nofollow -- so it
+    // is a noindex page, and saying the links are closed adds nothing.
+    expect(
+      issueTypes(makePage({ robotsMeta: "none", isIndexable: false })),
+    ).not.toContain("nofollow-page");
+    expect(
+      issueTypes(makePage({ robotsMeta: "index, follow", isIndexable: true })),
+    ).not.toContain("nofollow-page");
+  });
+
+  it("flags a paginated page canonicalised to page one", () => {
+    expect(
+      issueTypes(
+        makePage({
+          url: "https://example.com/blog?page=2",
+          canonicalUrl: "https://example.com/blog",
+        }),
+      ),
+    ).toContain("paginated-canonical-to-first-page");
+    // A canonical to somewhere else entirely is the ordinary case and
+    // already covered by `canonicalized-page`.
+    expect(
+      issueTypes(
+        makePage({
+          url: "https://example.com/blog?page=2",
+          canonicalUrl: "https://example.com/other",
+        }),
+      ),
+    ).not.toContain("paginated-canonical-to-first-page");
+  });
+});

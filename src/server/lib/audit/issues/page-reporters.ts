@@ -9,6 +9,7 @@
  * live in multipage.ts and run over D1 after the crawl.
  */
 import type { AuditIssueType } from "@/shared/audit-issues";
+import { canonicalUrlKey } from "@/server/lib/audit/url-utils";
 import type { CrawledPageResult } from "@/server/lib/audit/types";
 
 export interface DetectedIssue {
@@ -55,13 +56,171 @@ function hasHeadingLevelSkip(headingOrder: number[]): boolean {
  * somewhere the site already knows is wrong. `broken-page` fires either way
  * and says nothing about the sitemap, and nothing at all fired for a 3xx.
  */
-function reportSitemapStatus(
-  page: CrawledPageResult,
-  report: (
-    issueType: AuditIssueType,
-    details?: Record<string, unknown>,
-  ) => void,
-) {
+/*
+ * BCP-47 shape, plus the three region codes Google's own "common mistakes"
+ * list names. A full ISO 3166-1 table is deliberately not shipped: it is
+ * 250 entries with its own maintenance burden, and every wrong-code example
+ * Google actually gives is either a bad separator or one of these three.
+ * Under-reporting here is the right failure -- a false "invalid" on a legal
+ * code would send someone to break working markup.
+ */
+const HREFLANG_SHAPE = /^[a-z]{2,3}(-[a-z]{4})?(-([a-z]{2}|\d{3}))?$/;
+const NOT_ISO_REGIONS = new Set(["uk", "eu", "un"]);
+
+function isValidHreflang(value: string): boolean {
+  const code = value.trim().toLowerCase();
+  if (code === "x-default") return true;
+  if (!HREFLANG_SHAPE.test(code)) return false;
+  const region = code.split("-").at(-1);
+  return !(region && NOT_ISO_REGIONS.has(region));
+}
+
+/*
+ * A page-number token, and the same URL without it. Google's pagination doc
+ * names canonicalising page 2..n to page 1 as a mistake, because it drops
+ * those pages from the index.
+ */
+const PAGE_TOKEN = /([?&](page|p|start)=\d+|\/page\/\d+\/?)/i;
+
+function withoutPageToken(url: string): string {
+  return url
+    .replace(/[?&](page|p|start)=\d+/i, "")
+    .replace(/\/page\/\d+\/?$/i, "/")
+    .replace(/\?$/, "");
+}
+
+/** The callback each extracted reporter pushes through. */
+type ReportIssue = (
+  issueType: AuditIssueType,
+  details?: Record<string, unknown>,
+) => void;
+
+/**
+ * Robots directives and canonical signals, which are one subject: together
+ * they are everything the page says about whether and where it should be
+ * indexed.
+ */
+function reportIndexability(page: CrawledPageResult, report: ReportIssue) {
+  /* Google on `nofollow`: "Do not follow the links on this page. If you
+     don't specify this rule, Google may use the links on the page to
+     discover those linked pages." Tokenised the same way `isIndexable` is,
+     because `includes("nofollow")` would also match a future directive that
+     merely contains the word -- and because `none` means noindex+nofollow.
+     Only worth saying on a page Google will actually index. */
+  const directives = new Set(
+    [page.robotsMeta, page.googlebotMeta, page.xRobotsTag]
+      .filter(Boolean)
+      .join(",")
+      .toLowerCase()
+      .split(/[,\s]+/)
+      .filter(Boolean),
+  );
+  if (
+    page.isIndexable &&
+    (directives.has("nofollow") || directives.has("none"))
+  ) {
+    report("nofollow-page", {
+      robotsMeta: page.robotsMeta,
+      googlebotMeta: page.googlebotMeta,
+      xRobotsTag: page.xRobotsTag,
+    });
+  }
+
+  // Indexability + canonical signals
+  if (!page.isIndexable) {
+    report("noindex-page", {
+      robotsMeta: page.robotsMeta,
+      xRobotsTag: page.xRobotsTag,
+    });
+  }
+  if (
+    page.canonicalUrl &&
+    page.headerCanonicalUrl &&
+    page.canonicalUrl !== page.headerCanonicalUrl
+  ) {
+    report("canonical-conflict", {
+      htmlCanonical: page.canonicalUrl,
+      headerCanonical: page.headerCanonicalUrl,
+    });
+  }
+  const effectiveCanonical = page.canonicalUrl ?? page.headerCanonicalUrl;
+  if (effectiveCanonical && effectiveCanonical !== page.url) {
+    report("canonicalized-page", { canonicalUrl: effectiveCanonical });
+  }
+  /* Two canonical suggestions for one page: Google treats a sitemap entry as
+     a suggestion that the listed URL is the canonical, and this page names a
+     different one. Google's own list of canonicalization mistakes has this
+     on it. Often deliberate, hence info. */
+  if (page.inSitemap && effectiveCanonical && effectiveCanonical !== page.url) {
+    report("sitemap-canonicalized-page", { canonicalUrl: effectiveCanonical });
+  }
+  /* Google's pagination doc: "Don't use the first page of a paginated
+     sequence as the canonical page. Instead, give each page its own
+     canonical URL." Pages 2..n canonicalised to page 1 leave the index. */
+  if (
+    effectiveCanonical &&
+    effectiveCanonical !== page.url &&
+    PAGE_TOKEN.test(page.url) &&
+    canonicalUrlKey(effectiveCanonical) ===
+      canonicalUrlKey(withoutPageToken(page.url))
+  ) {
+    report("paginated-canonical-to-first-page", {
+      canonicalUrl: effectiveCanonical,
+    });
+  }
+  // The sitemap suggests this URL; the page asks not to be indexed at all.
+  if (page.inSitemap && !page.isIndexable) {
+    report("sitemap-noindex-page", {
+      robotsMeta: page.robotsMeta,
+      xRobotsTag: page.xRobotsTag,
+    });
+  }
+}
+
+/**
+ * The hreflang cluster checks.
+ *
+ * All three are gated on the page declaring an alternate that is not
+ * itself. A single self-referencing `<link rel="alternate" hreflang="tr">`
+ * is what several popular plugins emit on a monolingual site: correct
+ * markup, no cluster, nothing to be missing. Keying off "declares any
+ * alternate" flagged every page on those sites.
+ */
+function reportHreflang(page: CrawledPageResult, report: ReportIssue) {
+  // Google matches the value case-insensitively, so the comparison does too.
+  const foreignAlternates = page.hreflangAlternates.filter(
+    (alternate) => alternate.href !== page.url,
+  );
+  const codes = page.hreflangAlternates.map((a) => a.hreflang);
+
+  const invalid = codes.filter((code) => !isValidHreflang(code));
+  if (invalid.length > 0)
+    report("hreflang-invalid-code", { hreflangs: invalid });
+
+  if (foreignAlternates.length === 0) return;
+
+  if (
+    !page.hreflangAlternates.some(
+      (alternate) => alternate.hreflang.trim().toLowerCase() === "x-default",
+    )
+  ) {
+    report("hreflang-missing-x-default", { hreflangs: codes });
+  }
+  /* Google: "Each language version must list itself as well as all other
+     language versions." Folded through `canonicalUrlKey`, the same way the
+     return-tag check is, so a www or trailing-slash difference does not
+     fake a missing self-reference. */
+  if (
+    !page.hreflangAlternates.some(
+      (alternate) =>
+        canonicalUrlKey(alternate.href) === canonicalUrlKey(page.url),
+    )
+  ) {
+    report("hreflang-missing-self", { hreflangs: codes });
+  }
+}
+
+function reportSitemapStatus(page: CrawledPageResult, report: ReportIssue) {
   if (!page.inSitemap) return;
   if (page.statusCode >= 400) {
     report("sitemap-broken-page", { statusCode: page.statusCode });
@@ -146,62 +305,10 @@ export function runPageReporters(page: CrawledPageResult): DetectedIssue[] {
     report("heading-order-skip");
   }
 
-  // Indexability + canonical signals
-  if (!page.isIndexable) {
-    report("noindex-page", {
-      robotsMeta: page.robotsMeta,
-      xRobotsTag: page.xRobotsTag,
-    });
-  }
-  if (
-    page.canonicalUrl &&
-    page.headerCanonicalUrl &&
-    page.canonicalUrl !== page.headerCanonicalUrl
-  ) {
-    report("canonical-conflict", {
-      htmlCanonical: page.canonicalUrl,
-      headerCanonical: page.headerCanonicalUrl,
-    });
-  }
-  const effectiveCanonical = page.canonicalUrl ?? page.headerCanonicalUrl;
-  if (effectiveCanonical && effectiveCanonical !== page.url) {
-    report("canonicalized-page", { canonicalUrl: effectiveCanonical });
-  }
-  /* Two canonical suggestions for one page: Google treats a sitemap entry as
-     a suggestion that the listed URL is the canonical, and this page names a
-     different one. Google's own list of canonicalization mistakes has this
-     on it. Often deliberate, hence info. */
-  if (page.inSitemap && effectiveCanonical && effectiveCanonical !== page.url) {
-    report("sitemap-canonicalized-page", { canonicalUrl: effectiveCanonical });
-  }
-  // The sitemap suggests this URL; the page asks not to be indexed at all.
-  if (page.inSitemap && !page.isIndexable) {
-    report("sitemap-noindex-page", {
-      robotsMeta: page.robotsMeta,
-      xRobotsTag: page.xRobotsTag,
-    });
-  }
+  reportIndexability(page, report);
 
   // Internationalization
-  /* Only meaningful once the page declares an alternate that is not itself.
-     A single self-referencing `<link rel="alternate" hreflang="tr">` is what
-     several popular plugins emit on a monolingual site: correct markup, no
-     cluster, and nothing for an x-default to fall back to. Keying off
-     "declares any alternate" flagged every page on those sites. Google
-     matches the value case-insensitively, so the comparison does too. */
-  const foreignAlternates = page.hreflangAlternates.filter(
-    (alternate) => alternate.href !== page.url,
-  );
-  if (
-    foreignAlternates.length > 0 &&
-    !page.hreflangAlternates.some(
-      (alternate) => alternate.hreflang.trim().toLowerCase() === "x-default",
-    )
-  ) {
-    report("hreflang-missing-x-default", {
-      hreflangs: page.hreflangAlternates.map((a) => a.hreflang),
-    });
-  }
+  reportHreflang(page, report);
 
   // Content quality
   if (page.isIndexable && page.wordCount < THIN_CONTENT_WORDS) {
