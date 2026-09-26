@@ -492,6 +492,9 @@ async function main() {
     "robots-txt-truncated",
     "robots-txt-blocks-start-url",
     "sitemap-disallowed-page",
+    // Raised from the discovery step's own diagnostics, not from a page.
+    "sitemap-too-large",
+    "sitemap-too-many-urls",
   ];
   /*
    * Read from `gsc_url_inspections`: Google's own verdict about a URL,
@@ -503,6 +506,7 @@ async function main() {
     "google-blocked-by-robots",
     "google-blocked-by-meta",
     "google-chose-different-canonical",
+    "stale-google-verdicts",
   ];
   const OUT_OF_REACH = [...WORKFLOW_ONLY, ...NEEDS_SEARCH_CONSOLE];
   const exercised = new Set(allFixtures.flatMap((f) => f.expectedIssues));

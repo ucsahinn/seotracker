@@ -5,6 +5,86 @@ numaraları [SemVer](https://semver.org/lang/tr/) izler.
 
 ## [Yayınlanmamış]
 
+## [0.4.0] — 2026-09-27
+
+İlk kez canlı bir Search Console bağlantısına karşı test edildi ve bu, birim
+testlerinin ve fixture koşusunun göremediği bir dizi hatayı ortaya çıkardı.
+İki bağımsız inceleme turu da (biri canlı bağlantıyla) bu sürümde açılan
+kodda gerçek kusurlar buldu. Denetim kural sayısı 51'den 56'ya, test 628'den
+649'a çıktı; uçtan uca fixture koşusu 54'ten 56 kontrole.
+
+### Eklenenler
+
+- **Render test paketi.** `vitest` artık iki proje: `unit` (node) ve `render`
+  (happy-dom). Bu turda düzeltilen sekiz "başarısız sorgu boş ekran olarak
+  görünüyor" hatasının hiçbirini 628 node testi göremezdi. Paket, kodu
+  bilerek bozarak doğrulandı: düzeltme geri alınınca iki assertion kırmızıya
+  dönüyor.
+- **Engellenmiş kaynak kontrolü** (`blocked-resource`, kritik). Google:
+  _"Google Search won't render JavaScript from blocked files or on blocked
+  pages."_ Sayfa taranabilir olduğu hâlde onu dolduran script robots.txt ile
+  kapalıysa Google boş kabuk görür. Klasik `Disallow: /wp-includes/` hatası.
+- **Viewport kontrolü** (`missing-viewport`). Lighthouse bunu zaten
+  denetliyor ama en fazla on örnek sayfada; bu kontrol taranan her sayfayı
+  kapsıyor.
+- **İki site haritası sınırı:** okunamayacak kadar büyük parça ve 50.000
+  adresi aşan parça. Öncesinde büyük parça sessizce düşüyor ve sayfaları
+  denetimden yok oluyordu.
+- **`stale-google-verdicts`.** Google'ın eskimiş kararları artık taze
+  kararmış gibi raporlanmıyor; kaç tanesinin yenilenmesi gerektiği tek bir
+  bilgi bulgusu olarak söyleniyor.
+
+### Düzeltilenler
+
+- **Türkçe anahtar kelime bozulması.** `IŞIK` kaydedilince `işik` olarak
+  saklanıyordu — Türkçede olmayan bir kelime — ve `İstanbul` `i` + ayrı bir
+  nokta oluyordu. Saklanan değer aynı zamanda gösterilen değerdi. Artık
+  kelime yazıldığı gibi saklanıyor, eşleştirme için ayrı bir anahtar
+  tutuluyor (migration 0055); etiket tablosu bunu baştan beri böyle yapıyordu.
+  Eski satırlardaki bozulma geri alınamıyor.
+- **`D1_ERROR: too many SQL variables`.** İndeksleme kapsamı okuması
+  denetimdeki tüm adresleri tek sorguya bağlıyordu; D1'in sınırı 100. 100
+  sayfadan büyük her denetimde ekran tamamen çalışmıyordu — yani gerçek
+  sitelerin çoğunda. Fixture sitesi sınırın altında olduğu için hiç
+  görülmemişti.
+- **Geçerli hreflang kodları geçersiz sayılıyordu.** Sahte bölge listesi
+  `uk`/`eu`/`un`; kontrol kodun son parçasına bakıyordu, yani tek parçalı bir
+  dil kodunda dili bölge sanıyordu. `uk` Ukraynaca, `eu` Baskça — doğru
+  markup'ı olan siteye "bozuk" deniyordu.
+- **Üç yorum var olmayan bir katlamayı iddia ediyordu.** `canonicalUrlKey`
+  sondaki eğik çizgiyi bilerek koruyor; üç çağrı noktası tersini varsayıyordu.
+  Sonuç: hreflang kendini listelemiyor sanılıyor, canonical uyuşmazlığı iki
+  ekranda farklı cevaplanıyor, dönüş etiketi sessizce atlanıyordu.
+- **Sayfalama kontrolü Google'ın onayladığı yerde tetikleniyordu.**
+  `?page=1`'i temiz adrese canonical vermek doğru tekilleştirmedir. Ayrıca
+  parametre regex ile kesildiği için `?page=2&sort=asc` bozuluyor ve gerçek
+  ihlal raporlanmıyordu.
+- **Tarama nezaket bütçesi sıfırda sabitlenebiliyordu.** Her başarılı sayfa
+  tam bir gecikme kadar borç ödüyordu; bu, varsayılan yoldaki en küçük
+  tahakkukla birebir eşit. İki isteğinden birini reddeden bir sunucuya karşı
+  tarama süresiz devam ediyordu. Artık geri ödeme kesinlikle daha küçük ve
+  yalnızca gerçekten dönen bir sayfa için geçerli — 403 kredi kazanmıyor.
+- **`MAX_ROBOTS_TXT_BYTES` bayt değil UTF-16 birimi sayıyordu.** Çok baytlı
+  500 KiB'lık bir robots.txt sınırın altında görünüyor ve kesilmiş
+  raporlanmıyordu; Google ise baytla sayıp çoktan okumayı bırakmıştı.
+- **MCP yüzeyinde dört yanlış cevap:** tüm Lighthouse koşuları başarısızken
+  `lighthouse 20/20` yazılıyordu; Google'ın kalıcı 400'ü "geçici olarak
+  kullanılamıyor, yeniden bağlanın" diye raporlanıyordu; bağlanmamış bir
+  projeye "Sıralama sayfasını açın" deniyordu; ve `get_cannibalization`
+  bağlantı yokken tek başına hata fırlatıyordu.
+- **`inspect_urls` kota harcamayan yolda şema hatası veriyordu.** Her adres
+  önbellekten atlandığında `siteUrl: null` dönüyordu, kendi şeması ise
+  `string` diyordu — doğru ve ucuz cevap "Output validation error" olarak
+  görünüyordu.
+- **`google-blocked-by-meta`** sıradan noindex sayfalarda da tetikleniyor ve
+  operatörü olmayan bir render farkını aramaya gönderiyordu.
+
+### Geliştirilenler
+
+- Harness artık deterministik: fixture sitesinin durum sayacı her koşudan
+  önce sıfırlanıyor, ve sıfırlama başarısızsa koşu sessizce devam etmek
+  yerine gürültüyle duruyor.
+
 ## [0.3.0] — 2026-09-26
 
 Bu sürümün büyük kısmı, Google'ın kendi belgelerinin araçtaki karşılığını
@@ -163,5 +243,6 @@ depodan kaldırıldı, çünkü onlar open-seo'nun yayınlarıydı.
   Verileriniz `seotracker_data` biriminde; güncellemeden önce yedek almak
   isteyebilirsiniz.
 
+[0.4.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.4.0
 [0.3.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.3.0
 [0.2.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.2.0
