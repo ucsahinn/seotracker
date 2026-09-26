@@ -174,4 +174,42 @@ describe("createCrawlThrottle", () => {
     expect(await throttle.ready()).toBe(false);
     expect(vi.getTimerCount()).toBe(0);
   });
+
+  /*
+   * The other half of that guard, and the case it used to get wrong.
+   *
+   * One URL that answers 429 on every visit -- a WAF-protected /admin, say
+   * -- among hundreds that serve fine. Each visit pauses the origin and adds
+   * to the budget, and successes reset the consecutive counter but used to
+   * repay nothing, so the audit eventually stopped and left the rest of the
+   * site uncrawled. The pages it had already read were proof the origin was
+   * healthy.
+   */
+  it("keeps crawling when one bad URL is surrounded by pages that serve", async () => {
+    const throttle = createCrawlThrottle(Date.now() + 4 * 60 * 60_000);
+
+    for (let i = 0; i < 40; i++) {
+      // The bad URL: one refusal, then the crawler moves on.
+      expect(await throttle.backoff(1, "60")).toBe(true);
+      await vi.advanceTimersByTimeAsync(60_000);
+      // Ten pages that answer normally before the next visit to the bad one.
+      for (let page = 0; page < 10; page++) await throttle.recovered();
+    }
+
+    expect(throttle.stopped).toBe(false);
+  });
+
+  it("still stops when the origin refuses far more than it serves", async () => {
+    const throttle = createCrawlThrottle(Date.now() + 4 * 60 * 60_000);
+
+    for (let i = 0; i < 8; i++) {
+      expect(await throttle.backoff(1, "600")).not.toBe(null);
+      await vi.advanceTimersByTimeAsync(600_000);
+      // One page gets through between refusals; nowhere near enough.
+      await throttle.recovered();
+      if (throttle.stopped) break;
+    }
+
+    expect(throttle.stopped).toBe(true);
+  });
 });

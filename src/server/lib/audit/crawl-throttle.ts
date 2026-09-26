@@ -99,8 +99,30 @@ export function createCrawlThrottle(
       return !stopped() && attempt <= MAX_RETRIES;
     },
     async recovered() {
-      if (state.consecutiveRateLimits === 0) return;
+      /*
+       * A served page repays a little of the accumulated cooldown.
+       *
+       * `cooldownMs` is a budget guard: past thirty minutes of waiting, this
+       * audit stops. Measured as a lifetime total it could not tell thirty
+       * minutes spread across two thousand successful pages -- an origin
+       * that is simply slow, and worth finishing -- from thirty minutes
+       * spent on three, which is an origin refusing to serve. A single
+       * permanently-429 URL among hundreds of good ones therefore stopped
+       * the whole crawl and left the rest of the site uncrawled.
+       *
+       * Repaying one first-delay per success separates the two: an origin
+       * that genuinely recovers sheds the debt faster than it accrues, while
+       * one that keeps refusing still trips, because every 429 adds at least
+       * as much as a success removes. The existing cumulative-stop test is
+       * unchanged by it, which is the point -- the guard still fires where
+       * it was designed to.
+       */
+      const repaid = Math.max(0, state.cooldownMs - FIRST_DELAY_MS);
+      if (state.consecutiveRateLimits === 0 && repaid === state.cooldownMs) {
+        return;
+      }
       state.consecutiveRateLimits = 0;
+      state.cooldownMs = repaid;
       await save();
     },
     get checkpointFailed() {
