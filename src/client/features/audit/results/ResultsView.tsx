@@ -9,6 +9,7 @@ import {
 import type { AuditResultsData } from "@/client/features/audit/results/types";
 import type { AuditTab as ResultsTab } from "@/types/schemas/audit";
 import { IndexCoverageView } from "@/client/features/audit/results/IndexCoverageView";
+import { SitemapStatusPanel } from "@/client/features/gsc/SitemapStatusPanel";
 import { isLighthouseFailure } from "@/client/features/audit/results/AuditResultsTableFilterLogic";
 import { IssuesView } from "@/client/features/audit/results/IssuesView";
 import { PagesTable } from "@/client/features/audit/results/PagesTable";
@@ -123,7 +124,15 @@ export function ResultsView({
 
           <TabPanel group="audit-results" value={activeTab}>
             {activeTab === "index" && (
-              <IndexCoverageView projectId={projectId} auditId={audit.id} />
+              <div className="space-y-4">
+                {/* Two halves of one question. Above: what the site told
+                    Google to crawl. Below: what Google decided about the
+                    pages this audit found. A sitemap Google has not
+                    downloaded since March explains a coverage table full of
+                    unanswered rows, and the two used to live apart. */}
+                <SitemapStatusPanel projectId={projectId} />
+                <IndexCoverageView projectId={projectId} auditId={audit.id} />
+              </div>
             )}
             {activeTab === "issues" && <IssuesView issues={issues} />}
             {activeTab === "pages" && (

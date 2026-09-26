@@ -1,3 +1,4 @@
+import { z } from "zod";
 import { getAuth } from "@/lib/auth";
 import {
   getServiceAccountToken,
@@ -9,6 +10,57 @@ import { GscApiError, GscTokenError } from "./gscErrors";
 export { GscApiError, GscTokenError } from "./gscErrors";
 
 const GSC_API_BASE = "https://www.googleapis.com/webmasters/v3";
+
+/**
+ * `sitemaps.list`, parsed rather than cast.
+ *
+ * Three things about this response are easy to get wrong, and all three were
+ * confirmed against Google's discovery document rather than its HTML
+ * reference page:
+ *
+ * 1. `errors`, `warnings` and `submitted` are declared `int64`, which the
+ *    API serialises as JSON **strings**. The HTML reference renders them as
+ *    `long`, which reads as "number" and fails at runtime, never in a test.
+ * 2. Nothing is required. The schema declares no `required` array, and
+ *    ProtoJSON omits defaults, so a clean sitemap arrives with no `errors`
+ *    key at all rather than `"0"`.
+ * 3. The `type` enums are documented twice with different casing --
+ *    SCREAMING_SNAKE in the discovery doc, camelCase in the reference page,
+ *    both from Google. A strict enum would reject live data, so the value
+ *    passes through as a string.
+ */
+const sitemapCountSchema = z
+  .string()
+  .optional()
+  .transform((value) => (value == null ? 0 : Number(value)))
+  .pipe(z.number().finite().nonnegative().catch(0));
+
+const sitemapSchema = z.object({
+  path: z.string().optional(),
+  lastSubmitted: z.string().optional(),
+  lastDownloaded: z.string().optional(),
+  isPending: z.boolean().optional().default(false),
+  isSitemapsIndex: z.boolean().optional().default(false),
+  type: z.string().optional(),
+  warnings: sitemapCountSchema,
+  errors: sitemapCountSchema,
+  contents: z
+    .array(
+      z.object({
+        type: z.string().optional(),
+        submitted: sitemapCountSchema,
+      }),
+    )
+    .optional()
+    .default([]),
+});
+
+const sitemapsListSchema = z.object({
+  // The wrapper key is singular and holds an array.
+  sitemap: z.array(sitemapSchema).optional().default([]),
+});
+
+export type GscSitemap = z.infer<typeof sitemapSchema>;
 const GOOGLE_USERINFO_URL = "https://openidconnect.googleapis.com/v1/userinfo";
 
 /** A GSC REST call returned a non-2xx status. `status` drives user-facing messaging. */
@@ -189,6 +241,29 @@ export function createGscClient(opts: {
         { method: "POST", body },
       );
       return data.rows ?? [];
+    },
+
+    /**
+     * Webmasters API `sitemaps.list` — what the operator told Google, and
+     * what Google made of it.
+     *
+     * Distinct from the crawler's own sitemap parsing: this is Google's
+     * side of the conversation, including whether it ever downloaded the
+     * file and how many errors it found. Free in the sense that matters
+     * here -- unlike URL Inspection there is no per-property daily cap,
+     * only a per-user rate limit nothing in this app approaches.
+     */
+    async listSitemaps(siteUrl: string): Promise<GscSitemap[]> {
+      /*
+       * Encoded explicitly. `sc-domain:example.com` carries a colon and a
+       * URL-prefix property carries `://` and a trailing slash; a colon is
+       * legal unencoded in a path segment, so several HTTP clients leave it
+       * alone and the path then splits into the wrong resource.
+       */
+      const data = await request<unknown>(
+        `${GSC_API_BASE}/sites/${encodeURIComponent(siteUrl)}/sitemaps`,
+      );
+      return sitemapsListSchema.parse(data).sitemap;
     },
 
     /** URL Inspection API `urlInspection.index.inspect`. This lives on a

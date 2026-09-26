@@ -51,6 +51,7 @@ import {
 } from "@/server/mcp/tools/ranking-tools";
 import { getAuditIssuesTool } from "@/server/mcp/tools/audit-issues-tool";
 import { getIndexCoverageTool } from "@/server/mcp/tools/index-coverage-tool";
+import { getSitemapsTool } from "@/server/mcp/tools/sitemap-tools";
 import {
   getAuditPagesTool,
   getAuditStatusTool,
@@ -164,6 +165,7 @@ export function createMcpServer(authProps: McpProps) {
   register(getAuditStatusTool);
   register(getAuditIssuesTool);
   register(getIndexCoverageTool);
+  register(getSitemapsTool);
   register(getAuditPagesTool);
   register(saveReportTool);
   register(listReportsTool);
