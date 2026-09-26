@@ -275,6 +275,17 @@ describe("search console MCP tools", () => {
     );
     expect(result.structuredContent).toMatchObject({ ok: true });
   });
+});
+
+describe("inspect_urls", () => {
+  beforeEach(() => {
+    mocks.getProjectForOrganization.mockResolvedValue({
+      id: "project_1",
+      locationCode: 2840,
+      languageCode: "en",
+    });
+    mocks.hasSelfHostedGoogleOAuthConfig.mockResolvedValue(true);
+  });
 
   it("inspects multiple URLs and reports partial failures inline", async () => {
     mocks.inspectAndRecord.mockResolvedValue({
@@ -356,8 +367,41 @@ describe("search console MCP tools", () => {
 
     const first = result.content[0];
     expect(first.type === "text" && first.text).toContain(
-      "2 URL not inspected",
+      "2 URLs not inspected",
     );
+  });
+
+  /*
+   * The tool used to call Google for every URL it was handed, with no
+   * staleness check at all, while the app's own refresh skipped anything
+   * answered inside fourteen days. An agent re-checking forty pages after a
+   * timeout paid for all forty a second time, against an allowance that
+   * does not replenish early.
+   */
+  it("says when a URL was skipped because the answer was already stored", async () => {
+    mocks.inspectAndRecord.mockResolvedValue({
+      siteUrl: "https://example.com/",
+      results: [],
+      requested: 0,
+      skipped: 0,
+      fresh: 2,
+      quotaRemaining: 1_900,
+    });
+    const { inspectUrlsTool } = searchConsoleTools;
+
+    const result = await inspectUrlsTool.handler(
+      {
+        projectId: "project_1",
+        urls: ["https://example.com/a", "https://example.com/b"],
+      },
+      toolContext,
+    );
+
+    const first = result.content[0];
+    expect(first.type === "text" && first.text).toContain(
+      "2 URLs skipped, already answered recently",
+    );
+    expect(first.type === "text" && first.text).toContain("get_index_coverage");
   });
 
   it("surfaces a not-connected message from inspect_urls", async () => {

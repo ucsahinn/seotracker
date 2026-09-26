@@ -1,4 +1,5 @@
 import { PageShell } from "@/client/components/PageShell";
+import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { getErrorCode } from "@/client/lib/error-messages";
 import { formatDateTime } from "@/client/lib/format";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
@@ -219,6 +220,26 @@ function AuditDetail({
           </div>
         </div>
       )}
+
+      {/* The status query has had a skeleton and an error branch since it was
+          written; the results query had neither, so a completed audit whose
+          results call failed rendered a green "completed" badge above an
+          empty page -- no alert, no retry, nothing naming what went wrong.
+          A failed audit whose results also failed rendered a bare header,
+          because both banners above are gated on `resultsQuery` settling. */}
+      {resultsQuery.isPending && (isComplete || isFailed) ? (
+        <div className="skeleton h-80" aria-busy />
+      ) : null}
+
+      {resultsQuery.isError ? (
+        <div className="rounded-box border border-base-300 bg-base-100">
+          <QueryErrorState
+            error={resultsQuery.error}
+            onRetry={() => void resultsQuery.refetch()}
+            title="Denetim sonuçları yüklenemedi"
+          />
+        </div>
+      ) : null}
 
       {(isComplete || failedWithResults) && resultsQuery.data && (
         <ResultsView

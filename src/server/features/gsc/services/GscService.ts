@@ -282,12 +282,22 @@ type GscInspectUrlsResult = {
   siteUrl: string;
   connectedBy: string | null;
   results: GscUrlInspection[];
+  /**
+   * Set when the grant died partway through, with the URLs before it still
+   * in `results`. The caller persists those and then rethrows this.
+   */
+  tokenError?: GscTokenError;
 };
 
 /** Inspect 1–N URLs against a project's connected property. Resolves the
  *  connection once, then inspects each URL; per-URL failures are captured
- *  inline so one bad URL doesn't fail the batch. Token/grant failures
- *  propagate so the caller can prompt a reconnect. */
+ *  inline so one bad URL doesn't fail the batch.
+ *
+ *  A token failure stops the loop but does not throw from here. It used to,
+ *  which discarded every inspection Google had already served -- and
+ *  charged for -- earlier in the batch. Nothing was written, so those URLs
+ *  stayed `checkedAt: null`, sorted to the front of the next batch, and were
+ *  bought a second time after the operator reconnected. */
 async function inspectUrls(input: {
   projectId: string;
   urls: string[];
@@ -313,7 +323,14 @@ async function inspectUrls(input: {
       );
       results.push({ url, result });
     } catch (error) {
-      if (error instanceof GscTokenError) throw error;
+      if (error instanceof GscTokenError) {
+        return {
+          siteUrl: connection.siteUrl,
+          connectedBy: connection.connectedAccountEmail,
+          results,
+          tokenError: error,
+        };
+      }
       results.push({
         url,
         result: null,

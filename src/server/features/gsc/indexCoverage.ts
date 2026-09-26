@@ -177,7 +177,14 @@ function overdueRatio(row: CoverageRow | undefined, now: Date): number {
   return (now.getTime() - ms) / (days * 86_400_000);
 }
 
-function isStale(row: CoverageRow | undefined, now: Date): boolean {
+/**
+ * Worth asking Google about again.
+ *
+ * Exported because `inspect_urls` had no staleness rule at all: the UI
+ * refresh skipped anything answered inside 14 days (or 3 for an unresolved
+ * verdict), while an agent passing the same URL twice in a minute paid twice.
+ */
+export function isStale(row: CoverageRow | undefined, now: Date): boolean {
   return overdueRatio(row, now) > 1;
 }
 

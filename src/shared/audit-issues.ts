@@ -324,3 +324,33 @@ export function getIssueDescriptor(
 ): AuditIssueDescriptor | null {
   return issueRegistry[issueType] ?? null;
 }
+
+/**
+ * The severity of a stored issue row.
+ *
+ * `audit_issues.severity` is written from this registry at insert time, so
+ * the two agree until the registry changes -- and this is self-hosted
+ * software that gets upgraded. Six consumers were split between the two
+ * sources: the issues screen, the results stat row and the CSV export read
+ * the descriptor, while the JSON export, the dashboard card, the freshness
+ * card and the MCP tool read the stored column. Promote one issue type from
+ * `warning` to `critical` in a release and the same audit reported both,
+ * from one button on one screen.
+ *
+ * The registry wins, because it is what the operator is reading today. The
+ * stored value is the fallback for a type the registry no longer knows, and
+ * anything outside the three known values becomes `info` rather than an
+ * undefined index into `ISSUE_SEVERITY_ORDER` -- which turned a comparator
+ * into `NaN` and silently dropped the "critical rows survive truncation"
+ * guarantee.
+ */
+export function resolveIssueSeverity(issue: {
+  issueType: string;
+  severity: string;
+}): IssueSeverity {
+  const descriptor = getIssueDescriptor(issue.issueType);
+  if (descriptor) return descriptor.severity;
+  return issue.severity === "critical" || issue.severity === "warning"
+    ? issue.severity
+    : "info";
+}

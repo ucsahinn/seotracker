@@ -333,7 +333,12 @@ export function SearchPerformancePage({
                   rows={report.strikingDistance}
                 />
               ) : tab === "cannibalization" ? (
-                <CannibalizationTable projectId={projectId} />
+                <CannibalizationTable
+                  projectId={projectId}
+                  dateRange={range}
+                  device={device === ALL ? undefined : device}
+                  country={country === ALL ? undefined : country}
+                />
               ) : tableQuery.isPending ? (
                 <div className="flex items-center gap-2 p-8 text-sm text-muted">
                   <Loader2 className="size-4 animate-spin" /> Yükleniyor…

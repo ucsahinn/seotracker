@@ -1,3 +1,4 @@
+import { resolveIssueSeverity } from "@/shared/audit-issues";
 import { useMemo, type ReactNode } from "react";
 import { ShieldAlert } from "lucide-react";
 import {
@@ -9,10 +10,7 @@ import type { AuditResultsData } from "@/client/features/audit/results/types";
 import type { AuditTab as ResultsTab } from "@/types/schemas/audit";
 import { IndexCoverageView } from "@/client/features/audit/results/IndexCoverageView";
 import { isLighthouseFailure } from "@/client/features/audit/results/AuditResultsTableFilterLogic";
-import {
-  IssuesView,
-  resolveIssueSeverity,
-} from "@/client/features/audit/results/IssuesView";
+import { IssuesView } from "@/client/features/audit/results/IssuesView";
 import { PagesTable } from "@/client/features/audit/results/PagesTable";
 import { TabPanel, Tabs } from "@/client/components/Tabs";
 import {

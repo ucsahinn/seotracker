@@ -49,8 +49,9 @@ import {
   getCannibalizationTool,
   getRankingHistoryTool,
 } from "@/server/mcp/tools/ranking-tools";
+import { getAuditIssuesTool } from "@/server/mcp/tools/audit-issues-tool";
+import { getIndexCoverageTool } from "@/server/mcp/tools/index-coverage-tool";
 import {
-  getAuditIssuesTool,
   getAuditPagesTool,
   getAuditStatusTool,
   runSiteAuditTool,
@@ -162,6 +163,7 @@ export function createMcpServer(authProps: McpProps) {
   register(runSiteAuditTool);
   register(getAuditStatusTool);
   register(getAuditIssuesTool);
+  register(getIndexCoverageTool);
   register(getAuditPagesTool);
   register(saveReportTool);
   register(listReportsTool);

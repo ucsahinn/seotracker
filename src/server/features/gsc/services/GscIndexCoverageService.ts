@@ -3,6 +3,7 @@ import { db } from "@/db";
 import { auditPages, audits, gscUrlInspections } from "@/db/schema";
 import {
   DAILY_QUOTA,
+  isStale,
   selectDueUrls,
   summarizeCoverage,
   type CoverageRow,
@@ -154,29 +155,46 @@ export async function inspectAndRecord(input: {
   urls: string[];
   languageCode?: string;
   now?: Date;
+  /** Ask again even for URLs with a fresh stored answer. */
+  force?: boolean;
 }): Promise<{
   siteUrl: string | null;
   results: Awaited<ReturnType<typeof GscService.inspectUrls>>["results"];
   requested: number;
   skipped: number;
+  /** Not asked because a recent answer is already stored. */
+  fresh: number;
   quotaRemaining: number;
 }> {
   const now = input.now ?? new Date();
   const spent = await inspectionsInLastDay(input.projectId, now);
   const budget = Math.max(DAILY_QUOTA - spent, 0);
-  const batch = input.urls.slice(0, budget);
+  /*
+   * The UI refresh has always gone through `selectDueUrls`, which skips a
+   * URL answered inside the last 14 days. This path had no such check, so an
+   * agent asked to re-check forty pages after a timeout paid for all forty
+   * again -- against an allowance that does not replenish early. Same rule
+   * for both callers now; `force` is the deliberate override.
+   */
+  const stored = input.force
+    ? new Map<string, CoverageRow>()
+    : await storedFor(input.projectId, input.urls);
+  const due = input.urls.filter((url) => isStale(stored.get(url), now));
+  const fresh = input.urls.length - due.length;
+  const batch = due.slice(0, budget);
 
   if (batch.length === 0) {
     return {
       siteUrl: null,
       results: [],
       requested: 0,
-      skipped: input.urls.length,
-      quotaRemaining: 0,
+      skipped: due.length,
+      fresh,
+      quotaRemaining: budget,
     };
   }
 
-  const { siteUrl, results } = await GscService.inspectUrls({
+  const { siteUrl, results, tokenError } = await GscService.inspectUrls({
     projectId: input.projectId,
     urls: batch,
     languageCode: input.languageCode,
@@ -210,11 +228,20 @@ export async function inspectAndRecord(input: {
       });
   }
 
+  /*
+   * Rethrown only after the loop above has persisted everything Google did
+   * serve. The caller still gets its reconnect prompt; the difference is
+   * that the inspections already paid for are on the books, so the next
+   * batch does not buy them again.
+   */
+  if (tokenError) throw tokenError;
+
   return {
     siteUrl,
     results,
     requested: batch.length,
-    skipped: input.urls.length - batch.length,
+    skipped: due.length - batch.length,
+    fresh,
     quotaRemaining: Math.max(budget - batch.length, 0),
   };
 }

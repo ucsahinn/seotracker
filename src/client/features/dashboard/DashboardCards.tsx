@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { Check } from "lucide-react";
+import { AlertCircle, Check, Loader2 } from "lucide-react";
 import { SearchConsoleConnectionCard } from "@/client/features/gsc/SearchConsoleConnectionCard";
 import { AUDIT_ISSUE_TYPES } from "@/shared/audit-issues";
 
@@ -153,7 +153,21 @@ export function AuditHealthCard({
         </Link>
       }
     >
-      {audit.topIssues.length === 0 ? (
+      {/* An empty issue list only means "healthy" for an audit that finished.
+          A crawl still running has not looked yet, and one that failed at
+          discovery never looked at all -- both used to get the green check,
+          the second of them directly under a stamp reading "başarısız". */}
+      {audit.status === "running" ? (
+        <div className="flex items-center gap-2 text-sm text-muted">
+          <Loader2 className="size-4 animate-spin" />
+          Tarama sürüyor, sonuçlar bittiğinde görünecek.
+        </div>
+      ) : audit.status !== "completed" ? (
+        <div className="flex items-center gap-2 text-sm text-muted">
+          <AlertCircle className="size-4 text-warning" />
+          Son tarama tamamlanamadı, bu yüzden sonuç yok.
+        </div>
+      ) : audit.topIssues.length === 0 ? (
         <div className="flex items-center gap-2 text-sm text-muted">
           <Check className="size-4 text-success" />
           Sorun bulunamadı, siteniz sağlıklı görünüyor.

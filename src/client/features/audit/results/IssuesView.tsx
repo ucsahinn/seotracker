@@ -6,6 +6,7 @@ import {
   getIssueDescriptor,
   ISSUE_SEVERITY_ORDER,
   type IssueSeverity,
+  resolveIssueSeverity,
 } from "@/shared/audit-issues";
 import type { AuditResultsData } from "@/client/features/audit/results/types";
 
@@ -38,17 +39,6 @@ interface IssueGroup {
   explanation: string;
   howToFix: string;
   issues: AuditIssueRow[];
-}
-
-export function resolveIssueSeverity(issue: {
-  issueType: string;
-  severity: string;
-}): IssueSeverity {
-  const descriptor = getIssueDescriptor(issue.issueType);
-  if (descriptor) return descriptor.severity;
-  return issue.severity === "critical" || issue.severity === "warning"
-    ? issue.severity
-    : "info";
 }
 
 function groupIssues(issues: AuditIssueRow[]): IssueGroup[] {

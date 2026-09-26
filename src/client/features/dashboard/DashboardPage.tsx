@@ -14,6 +14,7 @@ import {
   useGoogleClientConfigured,
 } from "@/client/features/dashboard/GoogleSetupBanner";
 import { Ga4Card } from "@/client/features/dashboard/Ga4Card";
+import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import {
   getDashboardActivation,
@@ -69,7 +70,21 @@ export function DashboardPage({ projectId }: { projectId: string }) {
     {
       key: "audit",
       hasData: overview?.audit != null,
-      node: (
+      /*
+       * A failed overview is not an operator who has never run an audit.
+       * `overview` is undefined on error just as it is before the first
+       * audit, so this card used to answer a 500 with "tarayın" and a button
+       * -- inviting someone with a week of audits to spend a fresh crawl.
+       */
+      node: overviewQuery.isError ? (
+        <div className="rounded-box border border-base-300 bg-base-100">
+          <QueryErrorState
+            error={overviewQuery.error}
+            onRetry={() => void overviewQuery.refetch()}
+            title="Denetim özeti yüklenemedi"
+          />
+        </div>
+      ) : (
         <AuditHealthCard
           projectId={projectId}
           audit={overview?.audit ?? null}

@@ -7,7 +7,7 @@ import { requireProjectContext } from "@/serverFunctions/middleware";
 
 const schema = z.object({
   projectId: z.string().min(1),
-  limit: z.number().int().min(1).max(100).default(50),
+  limit: z.number().int().min(1).max(250).default(50),
 });
 
 /**

@@ -4,10 +4,15 @@ import * as React from "react";
 import { EmptyState } from "@/client/components/EmptyState";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import {
+  formatDate,
   formatDecimal,
   formatNumber,
   formatPercent,
 } from "@/client/lib/format";
+import type {
+  SearchPerformanceDateRange,
+  SearchPerformanceDevice,
+} from "@/types/schemas/search-performance";
 import { getCannibalizationReport } from "@/serverFunctions/cannibalization";
 
 /**
@@ -18,10 +23,25 @@ import { getCannibalizationReport } from "@/serverFunctions/cannibalization";
  * like one answered by a single page. Asking for both dimensions at once and
  * grouping is the whole trick, and it is free.
  */
-export function CannibalizationTable({ projectId }: { projectId: string }) {
+export function CannibalizationTable({
+  projectId,
+  dateRange,
+  device,
+  country,
+}: {
+  projectId: string;
+  dateRange: SearchPerformanceDateRange;
+  device?: SearchPerformanceDevice;
+  country?: string;
+}) {
   const report = useQuery({
-    queryKey: ["cannibalization", projectId],
-    queryFn: () => getCannibalizationReport({ data: { projectId } }),
+    // The filters belong in the key as well as the payload: without them the
+    // panel kept serving its first answer while the dropdowns above changed.
+    queryKey: ["cannibalization", projectId, dateRange, device, country],
+    queryFn: () =>
+      getCannibalizationReport({
+        data: { projectId, dateRange, device, country },
+      }),
   });
 
   if (report.isPending) {
@@ -72,6 +92,14 @@ export function CannibalizationTable({ projectId }: { projectId: string }) {
         Google&apos;ın tercih ettiği sayfa dışında kalıyor. Önce hangi sayfayı
         hedeflediğinize karar verin ve iç bağlantıları ona yöneltin; sayfalar
         gerçekten aynı soruyu yanıtlıyorsa birleştirin.
+      </p>
+
+      {/* The window is printed because it is not always the one the dropdown
+          says: a 7-day selection is widened to 28, since the impression floor
+          this analysis needs almost never clears in a week. */}
+      <p className="text-xs text-muted">
+        {formatDate(data.startDate)} – {formatDate(data.endDate)} ·{" "}
+        {formatNumber(data.queriesAnalyzed)} sorgu incelendi
       </p>
 
       {data.truncated ? (

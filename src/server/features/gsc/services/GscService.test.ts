@@ -15,6 +15,8 @@ const mocks = vi.hoisted(() => {
     vi.fn<(opts: GscClientOptions) => Promise<string | null>>();
   const querySearchAnalytics =
     vi.fn<(opts: GscClientOptions) => Promise<never[]>>();
+  const inspectUrl =
+    vi.fn<(siteUrl: string, url: string) => Promise<unknown>>();
   const deleteWhere = vi
     .fn<(condition: SQL) => Promise<void>>()
     .mockResolvedValue(undefined);
@@ -37,10 +39,12 @@ const mocks = vi.hoisted(() => {
     listSites,
     getUserInfoEmail,
     querySearchAnalytics,
+    inspectUrl,
     createGscClient: vi.fn((opts: GscClientOptions) => ({
       listSites: () => listSites(opts),
       getUserInfoEmail: () => getUserInfoEmail(opts),
       querySearchAnalytics: () => querySearchAnalytics(opts),
+      inspectUrl: (siteUrl: string, url: string) => inspectUrl(siteUrl, url),
     })),
     upsert: vi.fn(),
     getByProjectId: vi.fn(),
@@ -428,5 +432,35 @@ describe("GscService.disconnect", () => {
     await GscService.disconnect({ projectId: "p1" });
     expect(mocks.deleteByProjectId).toHaveBeenCalledWith("p1");
     expect(mocks.dbDelete).not.toHaveBeenCalled();
+  });
+});
+
+describe("GscService.inspectUrls", () => {
+  /*
+   * A dead grant used to throw straight out of the loop, so the inspections
+   * Google had already served -- and charged against the 2000/day property
+   * allowance -- were discarded. Nothing was written, those URLs stayed
+   * `checkedAt: null`, sorted to the front of the next batch, and were paid
+   * for a second time once the operator reconnected.
+   */
+  it("keeps the inspections already paid for when the grant dies mid-batch", async () => {
+    mocks.getByProjectId.mockResolvedValue({
+      siteUrl: "sc-domain:x.test",
+      connectedByUserId: "u1",
+      gscAccountId: "sub-a",
+      connectedAccountEmail: "a@x.test",
+    });
+    mocks.inspectUrl
+      .mockResolvedValueOnce({ indexStatusResult: { verdict: "PASS" } })
+      .mockRejectedValueOnce(new GscTokenError("grant revoked"));
+
+    const result = await GscService.inspectUrls({
+      projectId: "p1",
+      urls: ["https://x.test/a", "https://x.test/b"],
+    });
+
+    expect(result.results).toHaveLength(1);
+    expect(result.results[0]?.url).toBe("https://x.test/a");
+    expect(result.tokenError).toBeInstanceOf(GscTokenError);
   });
 });

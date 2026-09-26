@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Target } from "lucide-react";
 import { EmptyState } from "@/client/components/EmptyState";
@@ -23,10 +24,13 @@ import { getSearchOpportunities } from "@/serverFunctions/opportunities";
  * band with GA4 outcomes does, and the scoring weighs demand at 50%,
  * business value at 30% and how close the page already is at 20%.
  */
+const LIMITS = [50, 100, 250] as const;
+
 export function OpportunitiesPage({ projectId }: { projectId: string }) {
+  const [limit, setLimit] = useState<(typeof LIMITS)[number]>(50);
   const query = useQuery({
-    queryKey: ["searchOpportunities", projectId],
-    queryFn: () => getSearchOpportunities({ data: { projectId } }),
+    queryKey: ["searchOpportunities", projectId, limit],
+    queryFn: () => getSearchOpportunities({ data: { projectId, limit } }),
     retry: false,
   });
 
@@ -49,7 +53,11 @@ export function OpportunitiesPage({ projectId }: { projectId: string }) {
           </span>
         </div>
       ) : query.data.status === "ok" ? (
-        <Report data={query.data.report} />
+        <Report
+          data={query.data.report}
+          limit={limit}
+          onLimitChange={setLimit}
+        />
       ) : (
         <NotReady projectId={projectId} missing={query.data.status} />
       )}
@@ -101,7 +109,15 @@ type OpportunityReport = Extract<
   { status: "ok" }
 >["report"];
 
-function Report({ data }: { data: OpportunityReport }) {
+function Report({
+  data,
+  limit,
+  onLimitChange,
+}: {
+  data: OpportunityReport;
+  limit: number;
+  onLimitChange: (limit: (typeof LIMITS)[number]) => void;
+}) {
   if (data.rows.length === 0) {
     return (
       <div className="rounded-box border border-base-300 bg-base-100">
@@ -116,11 +132,34 @@ function Report({ data }: { data: OpportunityReport }) {
 
   return (
     <>
+      {data.truncated.gsc ? (
+        <p className="text-xs text-muted">
+          Search Console tek seferde sınırlı satır döndürür ve bu sınıra
+          takıldık, yani aday sayfa sayısı da gerçekte daha yüksek olabilir.
+        </p>
+      ) : null}
+
+      {data.warnings.includes("source_time_zones_differ") ? (
+        <p className="text-xs text-muted">
+          Search Console ve Analytics farklı saat dilimlerinde raporluyor;
+          günlük eşleşmeler bir gün kayabilir.
+        </p>
+      ) : null}
+
       <MetricRow>
+        {/* `rowCount` is the slice, not a verdict: every candidate is
+            scored, so "Fırsat 50" beside "300 aday sayfadan" used to read as
+            "50 of your 300 qualified" when it meant "you are looking at the
+            top 50 of 300". The hint says which, and the selector below lets
+            the operator actually reach the rest. */}
         <MetricTile
-          label="Fırsat"
+          label="Gösterilen"
           value={formatNumber(data.rowCount)}
-          hint={`${formatNumber(data.totalCandidateRows)} aday sayfadan`}
+          hint={
+            data.truncated.candidates
+              ? `${formatNumber(data.totalCandidateRows)} aday sayfanın en iyileri`
+              : `Tüm aday sayfalar (${formatNumber(data.totalCandidateRows)})`
+          }
         />
         {/* Was "Puanlanan", counted over the returned page, and every row
             carries a score since unmatched pages started being scored too -
@@ -150,6 +189,29 @@ function Report({ data }: { data: OpportunityReport }) {
           }
         />
       </MetricRow>
+
+      {/* Without this the cut list had no control at all: no pagination, no
+          limit, nothing saying more existed. */}
+      <div className="flex items-center justify-end gap-2 text-xs text-muted">
+        <label htmlFor="opportunity-limit">Gösterilecek satır</label>
+        <select
+          id="opportunity-limit"
+          className="select select-bordered select-sm w-24"
+          value={limit}
+          onChange={(event) => {
+            const next = LIMITS.find(
+              (option) => String(option) === event.target.value,
+            );
+            if (next) onLimitChange(next);
+          }}
+        >
+          {LIMITS.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+      </div>
 
       <div className="overflow-hidden rounded-box border border-base-300 bg-base-100">
         <div className="overflow-x-auto">

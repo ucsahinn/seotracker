@@ -292,6 +292,20 @@ function VerdictBadge({
       </span>
     );
   }
+  /*
+   * `summarizeCoverage` counts a missing or VERDICT_UNSPECIFIED verdict as
+   * pending, on the stated grounds that calling it "not indexed" invents a
+   * negative Google never gave. This badge had no such branch, so the same
+   * row was pending in the tile and "Dizinde değil" in the table -- the tile
+   * could read 0 while the row below it showed one.
+   */
+  if (!verdict || verdict === "VERDICT_UNSPECIFIED") {
+    return (
+      <span className="text-xs text-muted" title={coverageState ?? undefined}>
+        Yanıt alınamadı
+      </span>
+    );
+  }
   return (
     <span
       className="badge badge-sm border-warning/30 bg-warning/10 text-[var(--ink-warning)]"
@@ -323,6 +337,9 @@ function rank(
   if (error) return 1;
   if (!checkedAt) return 2;
   if (verdict === "PASS") return 3;
+  // Same rule as the badge and the tile: no verdict is not an exclusion, so
+  // it does not sort above the pages Google actually looked at and excluded.
+  if (verdict === "VERDICT_UNSPECIFIED") return 2;
   return 0;
 }
 

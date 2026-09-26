@@ -1,14 +1,8 @@
-import { sort } from "remeda";
 import { z } from "zod";
 import { AuditRepository } from "@/server/features/audit/repositories/AuditRepository";
 import { AuditService } from "@/server/features/audit/services/AuditService";
 import { AppError } from "@/server/lib/errors";
 import { captureServerEvent } from "@/server/lib/observability";
-import {
-  AUDIT_ISSUE_TYPES,
-  getIssueDescriptor,
-  ISSUE_SEVERITY_ORDER,
-} from "@/shared/audit-issues";
 import { PAGE_FETCH_CLASSES } from "@/shared/audit-fetch-class";
 import { mcpResponse } from "@/server/mcp/formatters";
 import { buildProjectMeta } from "@/server/mcp/context";
@@ -18,66 +12,12 @@ import {
 } from "@/server/mcp/output-schemas";
 import { withMcpProjectAuth } from "@/server/mcp/project-auth";
 import { projectIdSchema } from "@/server/mcp/schemas";
-
-const auditIdSchema = z
-  .string()
-  .optional()
-  .describe("Audit ID. If omitted, uses the project's most recent audit.");
-
-/**
- * The audit asked for, or the newest one.
- *
- * A named id that does not exist is a caller mistake and throws. Having no
- * audits at all is not: it is what every fresh install looks like, and it
- * used to come back as `isError: true` with no `structuredContent` and no
- * `_meta` — the only empty state on this surface modelled as a failure,
- * while `list_reports`, `list_saved_keywords` and `list_report_templates`
- * all answer with success plus an empty result. An agent reads the
- * difference as a malfunction, and the telemetry counted a fresh install's
- * first three audit calls as failures.
- */
-async function resolveAudit(projectId: string, auditId: string) {
-  const audit = await AuditRepository.getAuditForProject(auditId, projectId);
-  if (!audit) {
-    throw new AppError(
-      "NOT_FOUND",
-      `Audit ${auditId} not found in this project.`,
-    );
-  }
-  return audit;
-}
-
-/** null when the project has never run one. */
-async function latestAudit(projectId: string, auditId?: string) {
-  return auditId
-    ? resolveAudit(projectId, auditId)
-    : AuditRepository.getLatestAuditForProject(projectId);
-}
-
-/**
- * The shape each tool declares differs, so the empty body is passed in.
- *
- * Returning one generic object here failed the SDK's own output validation
- * and turned a clean empty state into "Output validation error: expected
- * object, received undefined" - worse than the `isError` it replaced. Caught
- * by calling the tools against a running install; nothing in the unit suite
- * validates a tool response against its declared schema.
- */
-function noAuditsYet(
-  context: Parameters<typeof buildProjectMeta>[0],
-  projectId: string,
-  structuredContent: Record<string, unknown>,
-) {
-  return mcpResponse({
-    text: "No audits exist for this project yet. Start one with run_site_audit.",
-    meta: buildProjectMeta(context, projectId, `/p/${projectId}/audit`),
-    structuredContent,
-  });
-}
-
-function auditPath(projectId: string, auditId: string) {
-  return `/p/${projectId}/audit?auditId=${auditId}`;
-}
+import {
+  auditIdSchema,
+  auditPath,
+  latestAudit,
+  noAuditsYet,
+} from "@/server/mcp/tools/audit-shared";
 
 // ─── run_site_audit ──────────────────────────────────────────────────────────
 
@@ -244,130 +184,6 @@ export const getAuditStatusTool = {
         auditPath(args.projectId, status.id),
       ),
       structuredContent: { status },
-    });
-  }),
-};
-
-// ─── get_audit_issues ────────────────────────────────────────────────────────
-
-const issuesInputSchema = {
-  projectId: projectIdSchema,
-  auditId: auditIdSchema,
-  severity: z
-    .enum(["critical", "warning", "info"])
-    .optional()
-    .describe("Only return issues of this severity."),
-  issueType: z
-    .string()
-    .optional()
-    .describe(
-      `Only return issues of this type. One of: ${Object.keys(AUDIT_ISSUE_TYPES).join(", ")}`,
-    ),
-  limit: z
-    .number()
-    .int()
-    .min(1)
-    .max(1_000)
-    .optional()
-    .describe("Max issues to return (default 200)."),
-} as const;
-
-type IssuesArgs = z.infer<z.ZodObject<typeof issuesInputSchema>>;
-
-export const getAuditIssuesTool = {
-  name: "get_audit_issues",
-  config: {
-    title: "Get site audit issues",
-    description:
-      "Read the prioritized issue report from a completed site audit. Every issue carries a how_to_fix with concrete remediation steps an agent can act on. Free — reads seotracker state. Omit auditId for the most recent audit.",
-    inputSchema: issuesInputSchema,
-    outputSchema: z
-      .object({
-        summary: z.array(looseObjectOutputSchema),
-        issues: z.array(looseObjectOutputSchema),
-        ...optionalMetaOutputSchema,
-      })
-      .passthrough(),
-    annotations: {
-      readOnlyHint: true,
-      openWorldHint: false,
-      destructiveHint: false,
-    },
-  },
-  handler: withMcpProjectAuth(async (args: IssuesArgs, context) => {
-    const audit = await latestAudit(args.projectId, args.auditId);
-    if (!audit) {
-      return noAuditsYet(context, args.projectId, { summary: [], issues: [] });
-    }
-    const unsorted = await AuditRepository.getIssuesForAudit(audit.id, {
-      severity: args.severity,
-      issueType: args.issueType,
-    });
-    // Severity-first so truncation drops info rows, never critical ones.
-    const rows = sort(
-      unsorted,
-      (a, b) =>
-        ISSUE_SEVERITY_ORDER[a.severity] - ISSUE_SEVERITY_ORDER[b.severity] ||
-        a.issueType.localeCompare(b.issueType),
-    );
-
-    const counts = new Map<string, number>();
-    for (const row of rows) {
-      counts.set(row.issueType, (counts.get(row.issueType) ?? 0) + 1);
-    }
-    const summary = sort(
-      Array.from(counts.entries()).map(([issueType, count]) => {
-        const descriptor = getIssueDescriptor(issueType);
-        return {
-          issueType,
-          title: descriptor?.title ?? issueType,
-          severity: descriptor?.severity ?? "info",
-          count,
-        };
-      }),
-      (a, b) =>
-        ISSUE_SEVERITY_ORDER[a.severity] - ISSUE_SEVERITY_ORDER[b.severity] ||
-        b.count - a.count,
-    );
-
-    const limit = args.limit ?? 200;
-    const issues = rows.slice(0, limit).map((row) => {
-      const descriptor = getIssueDescriptor(row.issueType);
-      return {
-        severity: row.severity,
-        issueType: row.issueType,
-        title: descriptor?.title ?? row.issueType,
-        url: row.pageUrl,
-        details: row.detailsJson
-          ? (JSON.parse(row.detailsJson) as unknown)
-          : null,
-        howToFix: descriptor?.howToFix ?? null,
-      };
-    });
-
-    const text =
-      rows.length === 0
-        ? args.severity || args.issueType
-          ? `No issues found for audit ${audit.id} matching the given filters.`
-          : `No issues recorded for audit ${audit.id}. Note: audits run before issue checks existed have no issue data — re-run the audit with run_site_audit to get a real report.`
-        : [
-            `Audit ${audit.id} (${audit.startUrl}): ${rows.length} issues${rows.length > limit ? ` (showing ${limit})` : ""}.`,
-            "By type:",
-            ...summary.map(
-              (entry) =>
-                `- [${entry.severity}] ${entry.title} (${entry.issueType}): ${entry.count}`,
-            ),
-            "Full issue rows with how_to_fix instructions are in structuredContent.issues.",
-          ].join("\n");
-
-    return mcpResponse({
-      text,
-      meta: buildProjectMeta(
-        context,
-        args.projectId,
-        auditPath(args.projectId, audit.id),
-      ),
-      structuredContent: { summary, issues },
     });
   }),
 };

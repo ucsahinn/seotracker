@@ -1,9 +1,9 @@
 import type { AuditResultsData } from "@/client/features/audit/results/types";
+import { SEVERITY_LABEL } from "@/client/features/audit/results/IssuesView";
 import {
+  getIssueDescriptor,
   resolveIssueSeverity,
-  SEVERITY_LABEL,
-} from "@/client/features/audit/results/IssuesView";
-import { getIssueDescriptor } from "@/shared/audit-issues";
+} from "@/shared/audit-issues";
 import { buildCsv, type CsvValue, downloadCsv } from "@/client/lib/csv";
 import { downloadFile } from "@/client/lib/download";
 import { exportTableToSheets } from "@/client/lib/exportToSheets";
@@ -37,7 +37,9 @@ export function exportIssues(
     const rows = issues.map((issue) => {
       const descriptor = getIssueDescriptor(issue.issueType);
       return {
-        severity: issue.severity,
+        // The code, not the Turkish label: this file is read by machines.
+        // Same rule as the CSV beside it, which is the point.
+        severity: resolveIssueSeverity(issue),
         issueType: issue.issueType,
         issue: descriptor?.title ?? issue.issueType,
         url: issue.pageUrl,

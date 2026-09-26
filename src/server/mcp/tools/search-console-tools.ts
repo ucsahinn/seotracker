@@ -433,6 +433,8 @@ export const getSearchConsolePerformanceTool = {
 // inspect_urls
 // ---------------------------------------------------------------------------
 
+const plural = (n: number) => (n === 1 ? "URL" : "URLs");
+
 const inspectInputSchema = {
   projectId: projectIdSchema,
   urls: z
@@ -445,7 +447,15 @@ const inspectInputSchema = {
   languageCode: z
     .string()
     .optional()
-    .describe("BCP-47 language for the inspection result (e.g. 'en-US')."),
+    .describe(
+      "BCP-47 language for the inspection result (e.g. 'en-US'). This writes the stored `coverageState` sentence, which the app's own refresh writes in Turkish -- leave it unset unless the operator asked for another language.",
+    ),
+  force: z
+    .boolean()
+    .optional()
+    .describe(
+      "Ask Google again even for URLs with a recent stored answer. Off by default, and leave it off: each URL costs one of the property's 2000 daily inspections and they do not replenish early.",
+    ),
 } as const;
 
 type InspectArgs = z.infer<z.ZodObject<typeof inspectInputSchema>>;
@@ -455,7 +465,7 @@ export const inspectUrlsTool = {
   config: {
     title: "Inspect URLs in Google Search Console",
     description:
-      "Run Google Search Console's URL Inspection on up to 10 URLs of the connected property: index/coverage state, last crawl time, Google-selected vs declared canonical, and mobile/rich-results verdicts. Use it to answer 'is this page indexed? why not?'. Per-URL failures are reported inline. Read-only.",
+      "Run Google Search Console's URL Inspection on up to 10 URLs of the connected property: index/coverage state, last crawl time, Google-selected vs declared canonical, and mobile/rich-results verdicts. Costs one of the property's 2000 daily inspections per URL, and that allowance does not replenish early -- call get_index_coverage first, which reads the stored answers for free, and point this at only the pages it reports as unanswered or due. URLs with a recent stored answer are skipped rather than bought again. Per-URL failures are reported inline.",
     inputSchema: inspectInputSchema,
     outputSchema: {
       ok: z.boolean(),
@@ -513,17 +523,28 @@ export const inspectUrlsTool = {
        * raw both ignored the remaining budget and left no ledger row, so the
        * spend was invisible to the Index Coverage screen's own accounting.
        */
-      const { siteUrl, results, skipped, quotaRemaining } =
+      const { siteUrl, results, skipped, fresh, quotaRemaining } =
         await inspectAndRecord({
           projectId: args.projectId,
           urls: args.urls,
           languageCode: args.languageCode,
+          force: args.force,
         });
 
       const quotaNote =
         skipped > 0
           ? `
-${skipped} URL not inspected: the property's daily URL Inspection quota is used up. ${quotaRemaining} left today.`
+${skipped} ${plural(skipped)} not inspected: the property's daily URL Inspection quota is used up. ${quotaRemaining} left today.`
+          : "";
+      /*
+       * Neither a failure nor a quota skip: the answer was already stored.
+       * Saying so is what stops an agent reaching for `force` to "fix" a
+       * result that came back shorter than the list it passed in.
+       */
+      const freshNote =
+        fresh > 0
+          ? `
+${fresh} ${plural(fresh)} skipped, already answered recently. Read those with get_index_coverage, which is free, or pass force: true to spend quota on them anyway.`
           : "";
 
       const summaryLines = results.slice(0, TEXT_SUMMARY_ROWS).map((r) => {
@@ -539,7 +560,8 @@ ${skipped} URL not inspected: the property's daily URL Inspection quota is used 
       const text =
         `${siteUrl ?? "Search Console"} · inspected ${results.length} URL${results.length === 1 ? "" : "s"}\n` +
         summaryLines.join("\n") +
-        quotaNote;
+        quotaNote +
+        freshNote;
 
       return mcpResponse({
         text,

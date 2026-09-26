@@ -9,13 +9,19 @@ import {
   getTrackedQueries,
   syncGscHistory,
 } from "@/serverFunctions/gscHistory";
-import { getStandardErrorMessage } from "@/client/lib/error-messages";
 
+/*
+ * "Tümü" used to mean 480 days, which is Search Console's own 16-month
+ * window -- so the one thing this archive is for, the months Google has
+ * already dropped, was unreachable from the screen while an agent could read
+ * them through `get_ranking_history`. 1825 matches that tool's cap.
+ */
 const WINDOWS = [
   { days: 30, label: "30 gün" },
   { days: 90, label: "90 gün" },
   { days: 180, label: "6 ay" },
-  { days: 480, label: "Tümü" },
+  { days: 480, label: "16 ay" },
+  { days: 1825, label: "Tümü" },
 ] as const;
 
 export function RankingsPage({ projectId }: { projectId: string }) {
@@ -82,13 +88,6 @@ export function RankingsPage({ projectId }: { projectId: string }) {
       </div>
 
       <ArchiveStatus sync={sync} />
-
-      {tracked.isError ? (
-        <div className="alert alert-error">
-          <AlertCircle className="size-4" />
-          {getStandardErrorMessage(tracked.error)}
-        </div>
-      ) : null}
 
       <div className="overflow-hidden rounded-box border border-base-300 bg-base-100">
         <table className="table table-sm">
@@ -181,6 +180,8 @@ export function RankingsPage({ projectId }: { projectId: string }) {
           query={selected}
           rows={history.data?.rows ?? []}
           loading={history.isLoading}
+          error={history.isError ? history.error : null}
+          onRetry={() => void history.refetch()}
         />
       ) : null}
     </PageShell>
@@ -282,6 +283,8 @@ function QueryHistoryCard({
   query,
   rows,
   loading,
+  error,
+  onRetry,
 }: {
   query: string;
   rows: {
@@ -291,12 +294,32 @@ function QueryHistoryCard({
     impressions: number;
   }[];
   loading: boolean;
+  /*
+   * A failed fetch used to fall through to `rows.length === 0` and tell the
+   * operator the archive had nothing for a query the table directly above
+   * had just reported as having hundreds of archived days.
+   */
+  error: unknown;
+  onRetry: () => void;
 }) {
   if (loading) {
     return (
       <div className="flex items-center gap-2 rounded-box border border-base-300 p-4 text-sm text-muted">
         <Loader2 className="size-4 animate-spin" />
         Geçmiş yükleniyor…
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="rounded-box border border-base-300">
+        <QueryErrorState
+          compact
+          error={error}
+          onRetry={onRetry}
+          title="Sorgu geçmişi yüklenemedi"
+        />
       </div>
     );
   }

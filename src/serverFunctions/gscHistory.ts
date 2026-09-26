@@ -5,15 +5,25 @@ import { requireProjectContext } from "@/serverFunctions/middleware";
 
 const projectSchema = z.object({ projectId: z.string().min(1) });
 
+/*
+ * Five years, matching `get_ranking_history` on the MCP side. The cap was
+ * 480 days -- about 15.8 months, which is roughly what Search Console itself
+ * still serves, so the screen stopped at exactly the window this archive
+ * exists to outlive. The agent surface was raised and the screen was not,
+ * which left the oldest months readable only by an agent. The repository has
+ * no bound; this is a limit on response size, not on the idea.
+ */
+const MAX_ARCHIVE_DAYS = 1825;
+
 const trackedQueriesSchema = projectSchema.extend({
   /** Window in days. 90 covers a quarter, which is where trends become real. */
-  days: z.number().int().min(7).max(480).default(90),
+  days: z.number().int().min(7).max(MAX_ARCHIVE_DAYS).default(90),
   limit: z.number().int().min(1).max(100).default(25),
 });
 
 const queryHistorySchema = projectSchema.extend({
   query: z.string().min(1),
-  days: z.number().int().min(7).max(480).default(90),
+  days: z.number().int().min(7).max(MAX_ARCHIVE_DAYS).default(90),
 });
 
 function sinceDate(days: number): string {
