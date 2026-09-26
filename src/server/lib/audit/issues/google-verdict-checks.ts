@@ -15,10 +15,8 @@ import { and, eq, inArray } from "drizzle-orm";
 import { db } from "@/db";
 import { gscUrlInspections } from "@/db/schema";
 import type { DetectedIssue } from "@/server/lib/audit/issues/page-reporters";
+import { URL_BIND_CHUNK } from "@/server/features/gsc/indexCoverage";
 import { canonicalUrlKey } from "@/server/lib/audit/url-utils";
-
-/** How many inspection rows to pull at once; D1 binds parameters per URL. */
-const URL_CHUNK = 200;
 
 type PageRef = { id: string; url: string };
 
@@ -32,7 +30,7 @@ export async function findGoogleVerdictProblems(input: {
   const urls = [...byUrl.keys()];
   const issues: DetectedIssue[] = [];
 
-  for (let i = 0; i < urls.length; i += URL_CHUNK) {
+  for (let i = 0; i < urls.length; i += URL_BIND_CHUNK) {
     const rows = await db
       .select({
         url: gscUrlInspections.url,
@@ -48,7 +46,7 @@ export async function findGoogleVerdictProblems(input: {
       .where(
         and(
           eq(gscUrlInspections.projectId, input.projectId),
-          inArray(gscUrlInspections.url, urls.slice(i, i + URL_CHUNK)),
+          inArray(gscUrlInspections.url, urls.slice(i, i + URL_BIND_CHUNK)),
         ),
       );
 

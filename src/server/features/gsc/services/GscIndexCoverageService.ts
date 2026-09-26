@@ -4,6 +4,7 @@ import { auditPages, audits, gscUrlInspections } from "@/db/schema";
 import {
   DAILY_QUOTA,
   isStale,
+  URL_BIND_CHUNK,
   selectDueUrls,
   summarizeCoverage,
   type CoverageRow,
@@ -52,15 +53,22 @@ async function storedFor(
   urls: string[],
 ): Promise<Map<string, CoverageRow>> {
   if (urls.length === 0) return new Map();
-  const rows = await db
-    .select()
-    .from(gscUrlInspections)
-    .where(
-      and(
-        eq(gscUrlInspections.projectId, projectId),
-        inArray(gscUrlInspections.url, urls),
-      ),
+  // Chunked because D1 caps bound parameters at 100 per statement; an audit
+  // of more than about a hundred pages used to fail the whole read.
+  const rows: (typeof gscUrlInspections.$inferSelect)[] = [];
+  for (let i = 0; i < urls.length; i += URL_BIND_CHUNK) {
+    rows.push(
+      ...(await db
+        .select()
+        .from(gscUrlInspections)
+        .where(
+          and(
+            eq(gscUrlInspections.projectId, projectId),
+            inArray(gscUrlInspections.url, urls.slice(i, i + URL_BIND_CHUNK)),
+          ),
+        )),
     );
+  }
   return new Map(
     rows.map((row) => [
       row.url,

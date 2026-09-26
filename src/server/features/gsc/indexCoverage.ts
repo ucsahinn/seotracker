@@ -22,6 +22,20 @@ const STALE_AFTER_DAYS = 14;
  */
 const STALE_AFTER_DAYS_UNRESOLVED = 3;
 
+/**
+ * URLs per `IN (...)` statement.
+ *
+ * D1 caps bound parameters at 100 per statement and every query using this
+ * binds a `projectId` alongside the list, so the ceiling is not the number
+ * to use. 80 matches `QUERY_CHUNK_SIZE` in the keyword repositories, which
+ * already had this rule written down -- the index-coverage path simply
+ * never got it, and an unchunked query failed with `D1_ERROR: too many SQL
+ * variables` on any audit past a hundred pages. That is most real sites,
+ * and it only ever showed against one: the fixture site is small enough to
+ * stay under the limit.
+ */
+export const URL_BIND_CHUNK = 80;
+
 export type CoverageRow = {
   url: string;
   verdict: string | null;

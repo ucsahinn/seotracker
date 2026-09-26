@@ -566,7 +566,20 @@ ${fresh} ${plural(fresh)} skipped, already answered recently. Read those with ge
       return mcpResponse({
         text,
         meta,
-        structuredContent: { ok: true, siteUrl, results },
+        /*
+         * `siteUrl` is omitted rather than sent as null when nothing was
+         * asked: the declared schema says `z.string().optional()`, and the
+         * SDK validates the body against it, so a null turns a correct
+         * empty result into "Output validation error" -- worse than the
+         * state it describes. Exactly the mistake the `noAuditsYet` helper
+         * was written to stop, reintroduced on a new path and caught only
+         * by calling the tool twice against a live property.
+         */
+        structuredContent: {
+          ok: true,
+          ...(siteUrl ? { siteUrl } : {}),
+          results,
+        },
       });
     } catch (error) {
       const isNotConnected = error instanceof GscNotConnectedError;
