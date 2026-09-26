@@ -4,7 +4,10 @@
  * orphans) live in multipage.ts.
  */
 import type { DetectedIssue } from "@/server/lib/audit/issues/page-reporters";
-import { canonicalUrlKey } from "@/server/lib/audit/url-utils";
+import {
+  canonicalUrlKey,
+  sameCanonicalTarget,
+} from "@/server/lib/audit/url-utils";
 import type { HreflangAlternate } from "@/server/lib/audit/types";
 import type { PageFetchClass } from "@/shared/audit-fetch-class";
 
@@ -208,16 +211,22 @@ export function findCanonicalTargetProblems(
 export function findHreflangReturnTagProblems(
   pages: SlimPage[],
 ): DetectedIssue[] {
-  const byUrl = new Map(pages.map((page) => [page.url, page]));
+  const foldUrl = (url: string) => canonicalUrlKey(url).replace(/\/$/, "");
+  const byFoldedUrl = new Map(pages.map((page) => [foldUrl(page.url), page]));
   const issues: DetectedIssue[] = [];
 
   for (const page of pages) {
     if (!isOkHtmlPage(page)) continue;
-    const selfKey = canonicalUrlKey(page.url);
 
     for (const alternate of page.hreflangAlternates) {
       if (alternate.href === page.url) continue;
-      const target = byUrl.get(alternate.href);
+      /*
+       * Folded lookup, for the same reason. An exact-string `get` missed a
+       * crawled page whose alternate names it with the other slash form,
+       * and the check then skipped it silently -- a false negative where
+       * the comment above promised a fold.
+       */
+      const target = byFoldedUrl.get(foldUrl(alternate.href));
       if (!target || !isOkHtmlPage(target)) continue;
 
       /*
@@ -226,10 +235,13 @@ export function findHreflangReturnTagProblems(
        * not the one the crawl started from, so `https://www.site.com/en/`
        * and `https://site.com/en` name the same page and a strict compare
        * called a perfectly reciprocal cluster broken.
+       *
+       * That worked example did not work until now: it differs by www *and*
+       * by a trailing slash, and `canonicalUrlKey` folds only the first.
+       * `sameCanonicalTarget` folds both.
        */
-      const returns = target.hreflangAlternates.some(
-        (back) =>
-          back.href === page.url || canonicalUrlKey(back.href) === selfKey,
+      const returns = target.hreflangAlternates.some((back) =>
+        sameCanonicalTarget(back.href, page.url),
       );
       if (returns) continue;
 

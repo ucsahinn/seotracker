@@ -116,20 +116,22 @@ async function countSavedKeywords(projectId: string) {
 
 async function saveKeywordsToProject(params: {
   projectId: string;
-  keywords: string[];
+  /** Display form plus the folded key the unique index is built on. */
+  keywords: { keyword: string; key: string }[];
   locationCode: number;
   languageCode: string;
 }): Promise<SavedKeywordRecord[]> {
   if (params.keywords.length === 0) return [];
 
   await runBatch((tx) =>
-    params.keywords.map((keyword) =>
+    params.keywords.map(({ keyword, key }) =>
       tx
         .insert(savedKeywords)
         .values({
           id: crypto.randomUUID(),
           projectId: params.projectId,
           keyword,
+          keywordKey: key,
           locationCode: params.locationCode,
           languageCode: params.languageCode,
         })
@@ -311,13 +313,16 @@ async function listSavedKeywordsByProject(
 
 async function listSavedKeywordRowsByKeywords(params: {
   projectId: string;
-  keywords: string[];
+  keywords: { keyword: string; key: string }[];
   locationCode: number;
   languageCode: string;
 }) {
+  // Looked up by the folded key, because that is what the unique index is
+  // built on and what a just-inserted row is guaranteed to match.
+  const keys = params.keywords.map((entry) => entry.key);
   const rows: SavedKeywordRecord[] = [];
-  for (let i = 0; i < params.keywords.length; i += QUERY_CHUNK_SIZE) {
-    const chunk = params.keywords.slice(i, i + QUERY_CHUNK_SIZE);
+  for (let i = 0; i < keys.length; i += QUERY_CHUNK_SIZE) {
+    const chunk = keys.slice(i, i + QUERY_CHUNK_SIZE);
     rows.push(
       ...(await db
         .select()
@@ -327,7 +332,7 @@ async function listSavedKeywordRowsByKeywords(params: {
             eq(savedKeywords.projectId, params.projectId),
             eq(savedKeywords.locationCode, params.locationCode),
             eq(savedKeywords.languageCode, params.languageCode),
-            inArray(savedKeywords.keyword, chunk),
+            inArray(savedKeywords.keywordKey, chunk),
           ),
         )),
     );

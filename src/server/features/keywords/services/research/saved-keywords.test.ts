@@ -33,6 +33,39 @@ describe("saved keyword service", () => {
     for (const mock of Object.values(mocks)) mock.mockReset();
   });
 
+  /*
+   * The reason the display form and the match key are two columns.
+   * `String.toLowerCase` is locale-insensitive, so folding "IŞIK" gives
+   * "işik" -- not a Turkish word -- and "İstanbul" gives "i" followed by a
+   * combining dot. When the folded value was also the stored value, the
+   * operator got their own keyword back wrong, in an app whose UI is
+   * pinned to tr-TR.
+   */
+  it("stores a Turkish keyword as typed, and folds only the match key", async () => {
+    mocks.saveKeywordsToProject.mockResolvedValue([savedKeywordRow]);
+    const { saveKeywords } = await import("./saved-keywords");
+
+    await saveKeywords({
+      projectId: "project_1",
+      keywords: ["IŞIK", "İstanbul"],
+      locationCode: 2840,
+      languageCode: "en",
+      tagMode: "append",
+    });
+
+    expect(mocks.saveKeywordsToProject).toHaveBeenCalledWith(
+      expect.objectContaining({
+        keywords: [
+          // The key is the mangled fold and that is fine -- it is only a
+          // key. The keyword beside it is what the operator sees, and it
+          // is exactly what they typed.
+          { keyword: "IŞIK", key: "işik" },
+          { keyword: "İstanbul", key: "i̇stanbul" },
+        ],
+      }),
+    );
+  });
+
   it("attaches tags to saved keyword rows after saving", async () => {
     mocks.saveKeywordsToProject.mockResolvedValue([
       savedKeywordRow,
@@ -53,9 +86,17 @@ describe("saved keyword service", () => {
       tags: ["Content", "BOFU"],
     });
 
+    /*
+     * Deduped on the folded key, stored in the form the operator typed --
+     * and the first spelling wins, which is why " Technical SEO " and not
+     * "technical seo" is what gets saved.
+     */
     expect(mocks.saveKeywordsToProject).toHaveBeenCalledWith({
       projectId: "project_1",
-      keywords: ["technical seo", "content seo"],
+      keywords: [
+        { keyword: "Technical SEO", key: "technical seo" },
+        { keyword: "Content SEO", key: "content seo" },
+      ],
       locationCode: 2840,
       languageCode: "en",
     });

@@ -119,6 +119,18 @@ export type UrlInspectionResult = {
 };
 
 function messageForStatus(status: number, body: string): string {
+  /*
+   * A 400 is Google rejecting the request itself, and it will reject the
+   * same request forever. Falling through to the generic branch called it
+   * "temporarily unavailable" and told the operator to reconnect a
+   * connection that is working -- so both suggestions, retry and
+   * reconnect, were wrong. The tool's own defaults can produce one:
+   * `type: "discover"` with the default `dimensions: ["query"]`, because
+   * Discover has no query dimension.
+   */
+  if (status === 400) {
+    return `Search Console rejected the request (400). This is not a connection problem and retrying will not help -- some dimension, filter or search type is not valid for this property. ${body.slice(0, 200)}`;
+  }
   if (status === 401 || status === 403) {
     return "Search Console denied access to this property (no verified permission, or the connection was revoked).";
   }

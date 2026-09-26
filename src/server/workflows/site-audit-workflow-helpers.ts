@@ -87,7 +87,9 @@ async function fetchPage(url: string, throttle: CrawlThrottle) {
       rateLimited: attempt > 1,
     };
     if (response.status !== 429) {
-      await throttle.recovered();
+      // `response.ok` decides whether this repays the budget: a 403 or a
+      // challenge page ends the run of refusals without being a page.
+      await throttle.recovered(response.ok);
       return result;
     }
 
@@ -239,6 +241,7 @@ export async function crawlPage(
       links: analysis.links,
       hasStructuredData: analysis.hasStructuredData,
       viewport: analysis.viewport,
+      resources: analysis.resources,
       /* Resolved against the page, the same way the canonical is. A
          return-tag check compares hrefs, and a relative href would never
          match the absolute URL of the page it names. */
@@ -350,6 +353,7 @@ function emptyPageResult(input: {
     links: [],
     hasStructuredData: false,
     viewport: null,
+    resources: [],
     hreflangAlternates: [],
     isIndexable: false,
     responseTimeMs: input.responseTimeMs,

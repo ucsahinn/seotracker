@@ -32,18 +32,29 @@ function parseMonthlySearches(payload: string | null): MonthlySearch[] {
 }
 
 export async function saveKeywords(input: ResolvedSaveKeywordsInput) {
-  const normalizedKeywords = [
-    ...new Set(
-      input.keywords.map(normalizeKeyword).filter((kw) => kw.length > 0),
-    ),
-  ];
+  /*
+   * Deduped on the folded key, stored in the form the operator typed. The
+   * first spelling of a duplicate pair wins the display form, which is the
+   * only defensible choice when both are the same keyword.
+   */
+  const byKey = new Map<string, string>();
+  for (const raw of input.keywords) {
+    const normalized = normalizeKeyword(raw);
+    if (normalized && !byKey.has(normalized.key)) {
+      byKey.set(normalized.key, normalized.keyword);
+    }
+  }
+  const normalizedKeywords = [...byKey.entries()].map(([key, keyword]) => ({
+    key,
+    keyword,
+  }));
 
-  const metricByKeyword = new Map(
+  const metricByKey = new Map(
     (input.metrics ?? [])
       .map((metric) => {
-        const keyword = normalizeKeyword(metric.keyword);
-        if (!keyword || !normalizedKeywords.includes(keyword)) return null;
-        return [keyword, metric] as const;
+        const normalized = normalizeKeyword(metric.keyword);
+        if (!normalized || !byKey.has(normalized.key)) return null;
+        return [normalized.key, metric] as const;
       })
       .filter(
         (
@@ -55,15 +66,17 @@ export async function saveKeywords(input: ResolvedSaveKeywordsInput) {
       ),
   );
 
-  if (metricByKeyword.size > 0) {
+  if (metricByKey.size > 0) {
     await Promise.all(
-      normalizedKeywords.map(async (keyword) => {
-        const metric = metricByKeyword.get(keyword);
+      normalizedKeywords.map(async ({ key }) => {
+        const metric = metricByKey.get(key);
         if (!metric) return;
 
+        // `keyword_metrics` is a lookup table nobody reads back as prose,
+        // so it is keyed on the folded form.
         await KeywordResearchRepository.upsertKeywordMetric({
           projectId: input.projectId,
-          keyword,
+          keyword: key,
           locationCode: input.locationCode,
           languageCode: input.languageCode,
           searchVolume: metric.searchVolume ?? null,

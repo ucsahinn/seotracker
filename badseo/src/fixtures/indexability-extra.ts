@@ -200,10 +200,47 @@ const missingViewport: Fixture = {
     ),
 };
 
+// 30 - a page whose own script robots.txt will not let a crawler fetch ----
+const blockedResource: Fixture = {
+  path: "/index/blocked-resource",
+  category: CAT,
+  name: "Page depends on a blocked script",
+  summary:
+    "The page is crawlable; the script that fills it in is disallowed, so a crawler sees the empty shell.",
+  lesson:
+    "Blocking a script does not hide the page, it hides the page's content from the crawler while leaving the page itself indexable. Block the page if you want it gone.",
+  expectedIssues: ["blocked-resource"],
+  handler: (ctx) =>
+    htmlResponse(
+      renderPage({
+        fixture: blockedResource,
+        title: "Crawlable page, uncrawlable script",
+        metaDescription:
+          "This page loads a script from a directory robots.txt disallows, so a crawler renders it without whatever that script would have added.",
+        headExtra: `<script src="${ctx.origin}/blocked-assets/app.js"></script>`,
+        bodyHtml: article({
+          h1: "The page is allowed, the script is not",
+          lede: "robots.txt disallows /blocked-assets/, and this page's only script lives there.",
+          sections: [
+            {
+              h2: "What Google actually does",
+              body: "Google's JavaScript documentation is direct about it: Search will not render JavaScript from blocked files or on blocked pages. It still crawls and indexes this page, because nothing stops it. It simply never runs the script, so whatever that script was going to put on the page does not exist as far as the index is concerned.",
+            },
+            {
+              h2: "Why this is easy to do by accident",
+              body: "Nobody blocks their own application code on purpose. It happens when a rule written for something else is broader than intended, most famously the old advice to disallow a CMS internals directory that also happens to hold the bundles. The page looks fine to you, because your browser is not obeying robots.txt. Blocking a page's resources is not a way to hide the page; it only changes what Google thinks is on it.",
+            },
+          ],
+        }),
+      }),
+    ),
+};
+
 export const indexabilityExtraFixtures: Fixture[] = [
   hreflangInvalidCode,
   hreflangNoSelf,
   nofollowPage,
   paginatedCanonical,
   missingViewport,
+  blockedResource,
 ];

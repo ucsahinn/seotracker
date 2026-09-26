@@ -98,6 +98,14 @@ export interface PageAnalysis {
   hasStructuredData: boolean;
   /** The raw `<meta name="viewport">` content, or null when absent. */
   viewport: string | null;
+  /**
+   * Same-origin `<script src>` and `<link rel=stylesheet>` URLs.
+   *
+   * Carried to the reporter and no further: a later check asks whether
+   * robots.txt blocks any of them, and the answer is the finding. There is
+   * no column, because nothing reads the list back.
+   */
+  resources: string[];
 
   // Hreflang
   /**
@@ -182,6 +190,14 @@ export interface CrawledPageResult {
   hasStructuredData: boolean;
   /** The raw `<meta name="viewport">` content, or null when absent. */
   viewport: string | null;
+  /**
+   * Same-origin `<script src>` and `<link rel=stylesheet>` URLs.
+   *
+   * Carried to the reporter and no further: a later check asks whether
+   * robots.txt blocks any of them, and the answer is the finding. There is
+   * no column, because nothing reads the list back.
+   */
+  resources: string[];
   hreflangAlternates: HreflangAlternate[];
   isIndexable: boolean;
   responseTimeMs: number;

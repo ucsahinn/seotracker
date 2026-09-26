@@ -88,7 +88,21 @@ export const savedKeywords = sqliteTable(
     projectId: text("project_id")
       .notNull()
       .references(() => projects.id, { onDelete: "cascade" }),
+    /** As the operator typed it. This is what every screen shows. */
     keyword: text("keyword").notNull(),
+    /**
+     * The folded form, for dedupe and matching only.
+     *
+     * Separate from `keyword` because folding destroys Turkish: `toLowerCase`
+     * is locale-insensitive, so "IŞIK" became "işik" -- not a word -- and
+     * "İstanbul" became "i" plus a combining dot. When the folded value was
+     * also the stored value, the operator got their keyword back wrong. The
+     * tag table next door has kept `name` and `normalizedName` apart for
+     * exactly this reason.
+     *
+     * Nullable only so the migration can add it to existing rows.
+     */
+    keywordKey: text("keyword_key"),
     locationCode: integer("location_code").notNull().default(2840),
     languageCode: text("language_code").notNull().default("en"),
     createdAt: text("created_at")
@@ -98,7 +112,7 @@ export const savedKeywords = sqliteTable(
   (table) => [
     uniqueIndex("saved_keywords_unique_project_keyword_location_language").on(
       table.projectId,
-      table.keyword,
+      table.keywordKey,
       table.locationCode,
       table.languageCode,
     ),

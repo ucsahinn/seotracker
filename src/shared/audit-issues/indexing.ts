@@ -154,4 +154,12 @@ export const INDEXING_ISSUES = {
     howToFix:
       "Hedef sayfaya bu sayfayı gösteren bir hreflang bağlantısı ekleyin. Kümedeki her sayfa, kümedeki tüm sayfaları (kendisi dahil) listelemelidir.",
   },
+  "stale-google-verdicts": {
+    severity: "info",
+    title: "Google'ın bazı sayfalar hakkındaki yanıtı eskimiş",
+    explanation:
+      "Bu sayfalar için saklanan Google kararları tazelik penceresinin dışında kaldı. Karar sorulduğu andaki durumu anlatır; o zamandan beri sayfa düzelmiş ya da bozulmuş olabilir. Eski bir yanıtı güncelmiş gibi raporlamamak için bu sayfaların Google kararları bu denetimde bulgu olarak sayılmadı.",
+    howToFix:
+      'İndeksleme sekmesindeki "Google\'a sor" düğmesi en çok gecikmiş adresleri yeniden sorar. Günlük 2000 adres sınırı olduğu için tek tıkta hepsi değil, en acil olanları sorulur; birkaç tıkla liste tazelenir.',
+  },
 } as const satisfies Record<string, AuditIssueDescriptor>;

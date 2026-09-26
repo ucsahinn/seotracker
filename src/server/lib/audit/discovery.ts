@@ -61,11 +61,24 @@ async function fetchRobotsTxtText(origin: string): Promise<RobotsFetch> {
 
     if (!response.ok)
       return { text: null, status: response.status, truncated: false };
-    const body = await response.text();
+    /*
+     * Measured in bytes, which is what the constant is named for and what
+     * Google counts. `.length` and `.slice` count UTF-16 code units, so a
+     * robots.txt of 500 KiB of multi-byte content read as under the cap and
+     * was never reported truncated -- while Google, counting bytes, had
+     * already stopped reading it. The same gap let up to roughly 1.5 MB of
+     * text through as durable Workflow step state, whose limit is near
+     * 1 MiB. `readBodyCapped` counts bytes off the stream and is right
+     * here; it was already in this file, used for sitemaps.
+     */
+    const body = await readBodyCapped(response, MAX_ROBOTS_TXT_BYTES);
     return {
-      text: body.slice(0, MAX_ROBOTS_TXT_BYTES),
+      // Null means the cap was hit, so nothing usable was kept. An empty
+      // robots.txt and an over-long one both mean "no rules we can apply",
+      // and `truncated` is what tells the two apart in the report.
+      text: body ?? "",
       status: response.status,
-      truncated: body.length > MAX_ROBOTS_TXT_BYTES,
+      truncated: body === null,
     };
   } catch (error) {
     console.warn("Failed to fetch robots.txt:", error);

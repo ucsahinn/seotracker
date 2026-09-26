@@ -178,4 +178,12 @@ export const CRAWL_ISSUES = {
     howToFix:
       "Dosyayı her biri 50.000 adresin altında kalan parçalara bölün ve bir site haritası dizini (sitemapindex) ile hepsini listeleyin. Search Console'a dizin dosyasını gönderirsiniz, parçaları tek tek değil.",
   },
+  "blocked-resource": {
+    severity: "critical",
+    title: "Sayfanın ihtiyaç duyduğu dosya robots.txt ile engellenmiş",
+    explanation:
+      "Sayfa taranabiliyor ama içindeki bir JavaScript ya da CSS dosyası robots.txt tarafından kapatılmış. Google'ın belgelerine göre engellenmiş dosyalardan gelen JavaScript çalıştırılmaz: içerik sayfada JavaScript ile oluşuyorsa Google boş bir kabuk görür, CSS engelliyse sayfanın nasıl göründüğünü değerlendiremez. Klasik örneği `Disallow: /wp-includes/` kuralıdır.",
+    howToFix:
+      "robots.txt'den bu dosyaları kapsayan kuralı kaldırın. Sayfayı gizlemek istiyorsanız sayfanın kendisini engelleyin; onu oluşturan dosyaları engellemek sayfayı gizlemez, yalnızca Google'ın onu yanlış görmesine yol açar.",
+  },
 } as const satisfies Record<string, AuditIssueDescriptor>;

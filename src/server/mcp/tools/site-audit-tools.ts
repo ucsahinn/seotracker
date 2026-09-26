@@ -166,7 +166,10 @@ export const getAuditStatusTool = {
 
     const lighthouseNote =
       status.lighthouseTotal > 0
-        ? `, lighthouse ${status.lighthouseCompleted + status.lighthouseFailed}/${status.lighthouseTotal}`
+        ? `, lighthouse ${status.lighthouseCompleted}/${status.lighthouseTotal}` +
+          (status.lighthouseFailed > 0
+            ? ` (${status.lighthouseFailed} failed)`
+            : "")
         : "";
     // Failed audits keep partial results — point agents at them instead of
     // letting a mid-crawl death read as "no data".

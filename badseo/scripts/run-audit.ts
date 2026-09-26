@@ -82,6 +82,9 @@ async function crawl(origin: string): Promise<{
   pages: CrawledPageResult[];
   links: CrawlLink[];
   completed: boolean;
+  /** The parsed rules, so the reporters can run the same checks the
+   *  workflow does -- `blocked-resource` needs them. */
+  isAllowed: (url: string) => boolean;
 }> {
   const { urls: sitemapUrls, robotsText } = await discoverUrls(
     origin,
@@ -134,7 +137,20 @@ async function crawl(origin: string): Promise<{
    * chunk, so 90 seconds is a chunk's budget. The harness has one pass and
    * has to reach every fixture in it, so the budget is the whole site's.
    */
-  const throttle = createCrawlThrottle(Date.now() + CRAWL_BUDGET_MS);
+  /*
+   * A cooldown ceiling this run cannot reach. The fixture site serves two
+   * pages that answer 429 to everything, on purpose, so a correctly working
+   * politeness budget stops the crawl partway and everything downstream
+   * reports NOT CRAWLED. That is the guard doing its job against a site
+   * built to provoke it; this harness exists to check issue detection, and
+   * `rate-limited-page` is the finding it wants from those fixtures.
+   */
+  const throttle = createCrawlThrottle(
+    Date.now() + CRAWL_BUDGET_MS,
+    undefined,
+    undefined,
+    Number.MAX_SAFE_INTEGER,
+  );
 
   const enqueue = (url: string, depth: number | null) => {
     const n = normalizeUrl(url);
@@ -201,7 +217,7 @@ async function crawl(origin: string): Promise<{
     dropped === 0 &&
     linkQueue.length === 0 &&
     sitemapQueue.length === 0;
-  return { pages, links, completed };
+  return { pages, links, completed, isAllowed: robots.isAllowed };
 }
 
 /** In-memory equivalents of the two D1-backed multipage checks. */
@@ -301,7 +317,7 @@ async function main() {
   await warmup();
   const origin = new URL(BASE).origin;
   const startUrl = normalizeUrl(`${origin}/`) ?? `${origin}/`;
-  const { pages, links, completed } = await crawl(origin);
+  const { pages, links, completed, isAllowed } = await crawl(origin);
 
   if (process.env.DEBUG_DEPTH) {
     for (const p of pages) {
@@ -313,7 +329,9 @@ async function main() {
 
   // Assign deterministic-ish ids already handled by crawlPage; run detection.
   const detected: DetectedIssue[] = [];
-  for (const page of pages) detected.push(...runPageReporters(page));
+  // The robots rules are parsed above; passing them is what lets the
+  // blocked-resource check run here as it does in the workflow.
+  for (const page of pages) detected.push(...runPageReporters(page, isAllowed));
   const slim = pages.map(toSlim);
   detected.push(...findDuplicates(slim));
   detected.push(...findRedirectChainsAndLoops(slim));

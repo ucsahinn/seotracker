@@ -69,6 +69,10 @@ export function robotsResponse(request: Request): Response {
     `# badseo.dev is broken on purpose, but it lets crawlers in.
 User-agent: *
 Allow: /
+# Deliberately blocked, for the fixture that shows what happens when a page
+# depends on a script a crawler is not allowed to fetch. Google: "Google
+# Search won't render JavaScript from blocked files or on blocked pages."
+Disallow: /blocked-assets/
 
 Sitemap: ${origin}/sitemap.xml
 `,

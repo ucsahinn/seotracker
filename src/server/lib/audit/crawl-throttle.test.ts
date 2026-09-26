@@ -199,6 +199,28 @@ describe("createCrawlThrottle", () => {
     expect(throttle.stopped).toBe(false);
   });
 
+  /*
+   * The exact break-even the default path lands on, and the one the
+   * repayment got wrong: with no `Retry-After`, an origin that refuses
+   * every other request accrues 30s and repays 30s, so the budget never
+   * moves and `consecutiveRateLimits` resets on every success. Both
+   * breakers sat at zero and the crawl continued indefinitely against a
+   * server refusing half its requests -- the opposite of what the budget
+   * is for. Repayment is now strictly smaller than the smallest accrual.
+   */
+  it("still stops on an origin that refuses every other request", async () => {
+    const throttle = createCrawlThrottle(Date.now() + 8 * 60 * 60_000);
+
+    for (let i = 0; i < 200; i++) {
+      await throttle.backoff(1, null);
+      await vi.advanceTimersByTimeAsync(60_000);
+      await throttle.recovered();
+      if (throttle.stopped) break;
+    }
+
+    expect(throttle.stopped).toBe(true);
+  });
+
   it("still stops when the origin refuses far more than it serves", async () => {
     const throttle = createCrawlThrottle(Date.now() + 4 * 60 * 60_000);
 

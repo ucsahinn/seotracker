@@ -35,6 +35,8 @@ const MAX_ANCHOR_CHARS = 200;
  */
 const MAX_EXTRACTED_LINKS = 1_000;
 const MAX_EXTRACTED_IMAGES = 1_000;
+/** Same-origin scripts and stylesheets per page; a template rarely has many. */
+const MAX_EXTRACTED_RESOURCES = 100;
 /*
  * Capped for the same reason as links and images, and one more: every
  * unreciprocated alternate becomes its own issue row, so an uncapped list on
@@ -77,6 +79,7 @@ export function analyzeHtml(
   let ogImage: string | null = null;
   let hasStructuredData = false;
   let viewport: string | null = null;
+  const resources: string[] = [];
   const hreflangAlternates: HreflangAlternate[] = [];
 
   const h1s: string[] = [];
@@ -123,11 +126,29 @@ export function analyzeHtml(
     }
   };
 
+  /*
+   * Same-origin scripts and stylesheets, so a later check can ask whether
+   * the site's own robots.txt blocks them. Google: "Google Search won't
+   * render JavaScript from blocked files or on blocked pages" -- the
+   * classic `Disallow: /wp-includes/` failure, where the page is crawlable
+   * and renders as an empty shell.
+   *
+   * Same-origin only. Judging a third-party CDN would need that host's
+   * robots.txt, which is a fetch per host and a different kind of check.
+   */
+  const collectResource = (raw: string | undefined) => {
+    if (!raw || resources.length >= MAX_EXTRACTED_RESOURCES) return;
+    const resolved = normalizeUrl(raw, pageUrl);
+    if (!resolved || !isSameOrigin(resolved, pageUrl)) return;
+    if (!resources.includes(resolved)) resources.push(resolved);
+  };
+
   const handleLinkTag = (attribs: Record<string, string>) => {
     // htmlparser2 lowercases attribute names, not values, so `rel="Canonical"`
     // and `rel=" alternate"` are both real markup that a strict compare drops
     // silently. `handleMetaTag` already folds its value for the same reason.
     const rel = attribs["rel"]?.trim().toLowerCase();
+    if (rel === "stylesheet") collectResource(attribs["href"]);
     if (rel === "canonical") {
       canonical ??= attribs["href"] ?? null;
     } else if (
@@ -216,6 +237,7 @@ export function analyzeHtml(
             if (attribs["type"] === "application/ld+json") {
               hasStructuredData = true;
             }
+            collectResource(attribs["src"]);
             break;
           case "a": {
             // HTML forbids nested <a>; browsers implicitly close the open
@@ -309,6 +331,7 @@ export function analyzeHtml(
     links: Array.from(linksByTarget.values()),
     hasStructuredData,
     viewport,
+    resources,
     hreflangAlternates,
   };
 }

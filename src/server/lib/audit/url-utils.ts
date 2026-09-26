@@ -52,6 +52,21 @@ export function normalizeUrl(url: string, base?: string): string | null {
  * only for "is this effectively the same page as the start URL" comparisons
  * (e.g. picking the homepage for the Lighthouse sample), not for crawl dedup.
  */
+/**
+ * Whether two URLs name the same page, ignoring a trailing slash.
+ *
+ * `canonicalUrlKey` deliberately keeps the slash, because for crawl
+ * comparisons `/a` and `/a/` really can be two pages. For *canonical*
+ * comparisons they cannot: a site that writes one and means the other is
+ * agreeing with itself, and reporting that as a disagreement is a false
+ * positive. Three call sites had comments claiming `canonicalUrlKey`
+ * already folded it and it does not, so this is the rule they meant.
+ */
+export function sameCanonicalTarget(a: string, b: string): boolean {
+  const fold = (url: string) => canonicalUrlKey(url).replace(/\/$/, "");
+  return fold(a) === fold(b);
+}
+
 export function canonicalUrlKey(url: string): string {
   try {
     const parsed = new URL(url);

@@ -1,4 +1,7 @@
 import { describe, expect, it } from "vitest";
+
+/** Everything except the deliberately blocked directory. */
+const allowAll = (url: string) => !url.includes("/blocked/");
 import { runPageReporters } from "@/server/lib/audit/issues/page-reporters";
 import type { CrawledPageResult, PageLink } from "@/server/lib/audit/types";
 
@@ -52,6 +55,7 @@ function makePage(overrides: Partial<CrawledPageResult>): CrawledPageResult {
     links: [HEALTHY_LINK],
     hasStructuredData: false,
     viewport: "width=device-width, initial-scale=1",
+    resources: [],
     hreflangAlternates: [],
     isIndexable: true,
     responseTimeMs: 200,
@@ -294,6 +298,15 @@ describe("checks traced to Google's documentation", () => {
 
     // "UK" is not an ISO 3166-1 code; Google names it explicitly.
     expect(invalid("en-UK")).toBe(true);
+    /*
+     * But two of the three names on that list are also ISO 639-1
+     * *languages*: uk is Ukrainian, eu is Basque. Reading the last segment
+     * of a bare code treated the language as a region and told a correct
+     * Ukrainian site its markup was broken.
+     */
+    expect(invalid("uk")).toBe(false);
+    expect(invalid("eu")).toBe(false);
+    expect(invalid("uk-UA")).toBe(false);
     // Underscore is not the BCP-47 separator.
     expect(invalid("en_US")).toBe(true);
     expect(invalid("en-GB")).toBe(false);
@@ -314,6 +327,23 @@ describe("checks traced to Google's documentation", () => {
       }),
     );
     expect(withSelf).not.toContain("hreflang-missing-self");
+
+    /*
+     * The fold this test is named for. Both URLs above are byte-identical,
+     * so it never exercised one: the page was crawled as `/a/` and its own
+     * alternate written as `/a`, which `canonicalUrlKey` alone calls two
+     * different pages.
+     */
+    const slashDiffers = issueTypes(
+      makePage({
+        url: "https://example.com/a/",
+        hreflangAlternates: [
+          { hreflang: "tr", href: "https://www.example.com/a" },
+          { hreflang: "en", href: "https://example.com/b" },
+        ],
+      }),
+    );
+    expect(slashDiffers).not.toContain("hreflang-missing-self");
 
     const withoutSelf = issueTypes(
       makePage({
@@ -338,6 +368,36 @@ describe("checks traced to Google's documentation", () => {
     ).not.toContain("nofollow-page");
   });
 
+  /*
+   * Google: "Google Search won't render JavaScript from blocked files or on
+   * blocked pages." A crawlable page whose own script is disallowed renders
+   * for Google as whatever the HTML says before that script runs.
+   */
+  it("flags a script the site's own robots.txt blocks", () => {
+    const page = makePage({
+      url: "https://example.com/a",
+      resources: [
+        "https://example.com/app.js",
+        "https://example.com/blocked/app.js",
+      ],
+    });
+
+    expect(runPageReporters(page, allowAll).map((i) => i.issueType)).toContain(
+      "blocked-resource",
+    );
+    expect(
+      runPageReporters(page, () => true).map((i) => i.issueType),
+    ).not.toContain("blocked-resource");
+  });
+
+  it("says nothing about resources when it was given no robots rules", () => {
+    // Absent rules mean "not checked". Reporting every resource as blocked,
+    // or silently deciding none are, would both be inventing an answer.
+    const page = makePage({ resources: ["https://example.com/app.js"] });
+
+    expect(issueTypes(page)).not.toContain("blocked-resource");
+  });
+
   it("flags a paginated page canonicalised to page one", () => {
     expect(
       issueTypes(
@@ -357,5 +417,35 @@ describe("checks traced to Google's documentation", () => {
         }),
       ),
     ).not.toContain("paginated-canonical-to-first-page");
+
+    /*
+     * Page one is not the mistake. Canonicalising `?page=1` to the clean
+     * URL is correct deduplication; Google's guidance is about pages two
+     * and after, and the registry copy says so.
+     */
+    expect(
+      issueTypes(
+        makePage({
+          url: "https://example.com/blog?page=1",
+          canonicalUrl: "https://example.com/blog",
+        }),
+      ),
+    ).not.toContain("paginated-canonical-to-first-page");
+
+    /*
+     * And the token has to come out of the query properly. Splicing
+     * `[?&]page=\d+` out of the string took the separator with it, so
+     * `?page=2&sort=asc` became `…blog&sort=asc` and a genuine violation
+     * went unreported -- which of the two happened depended on where the
+     * page param sorted among the others.
+     */
+    expect(
+      issueTypes(
+        makePage({
+          url: "https://example.com/blog?page=2&sort=asc",
+          canonicalUrl: "https://example.com/blog?sort=asc",
+        }),
+      ),
+    ).toContain("paginated-canonical-to-first-page");
   });
 });

@@ -101,6 +101,17 @@ function analyzeHtmlWithCheerio(html: string, pageUrl: string): PageAnalysis {
   // says so rather than the crawler quietly differing from a real browser.
   const viewport = $('meta[name="viewport"]').first().attr("content");
 
+  // Same two element kinds the streaming analyzer collects, same
+  // same-origin filter, so a divergence shows up as a parity failure.
+  const resources: string[] = [];
+  $("script[src], link[rel=stylesheet][href]").each((_, el) => {
+    const raw = $(el).attr("src") ?? $(el).attr("href");
+    if (!raw) return;
+    const resolved = normalizeUrl(raw, pageUrl);
+    if (!resolved || !isSameOrigin(resolved, pageUrl)) return;
+    if (!resources.includes(resolved)) resources.push(resolved);
+  });
+
   const hreflangAlternates: PageAnalysis["hreflangAlternates"] = [];
   $('link[rel="alternate"][hreflang]').each((_, el) => {
     const hreflang = $(el).attr("hreflang");
@@ -130,6 +141,7 @@ function analyzeHtmlWithCheerio(html: string, pageUrl: string): PageAnalysis {
     links: Array.from(linksByTarget.values()),
     hasStructuredData,
     viewport: viewport === undefined ? null : viewport.trim(),
+    resources,
     hreflangAlternates,
   };
 }

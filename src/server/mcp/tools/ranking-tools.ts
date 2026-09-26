@@ -13,6 +13,7 @@
 import { z } from "zod";
 import type { CannibalizedQuery } from "@/server/features/gsc/cannibalization";
 import { getCannibalization } from "@/server/features/gsc/services/CannibalizationService";
+import { GscConnectionRepository } from "@/server/features/gsc/repositories/GscConnectionRepository";
 import { GscHistoryService } from "@/server/features/gsc/services/GscHistoryService";
 import { buildProjectMeta } from "@/server/mcp/context";
 import { mcpResponse } from "@/server/mcp/formatters";
@@ -116,6 +117,17 @@ export const getRankingHistoryTool = {
       return mcpResponse({ text, meta, structuredContent: { days, rows } });
     }
 
+    /*
+     * Whether there is a connection at all. This tool reads the local
+     * archive and never calls Google, so it used to answer a project with
+     * no Search Console the same way it answers an empty archive -- "it
+     * fills in when the Rankings page is opened", which for a project with
+     * nothing connected will never happen. Every sibling tool says "not
+     * connected" plainly; this one invented a remedy.
+     */
+    const connected = await GscConnectionRepository.getByProjectId(
+      args.projectId,
+    );
     const rows = await GscHistoryService.getTrackedQueries({
       projectId: args.projectId,
       since: sinceDate(days),
@@ -123,7 +135,9 @@ export const getRankingHistoryTool = {
     });
     const text =
       rows.length === 0
-        ? `The archive has nothing for the last ${days} days yet. It fills in when the Rankings page is opened; a property with no Search Console traffic stays empty.`
+        ? connected
+          ? `The archive has nothing for the last ${days} days yet. It fills in when the Rankings page is opened; a property with no Search Console traffic stays empty.`
+          : `Search Console is not connected for this project, so there is no archive to read. Connect it at ${context.baseUrl}/p/${args.projectId}/settings/integrations.`
         : `Tracked queries (${rows.length}), last ${days} days from the local archive:\n` +
           rows
             .map(
@@ -193,6 +207,35 @@ export const getCannibalizationTool = {
     },
   },
   handler: withMcpProjectAuth(async (args: CannibalizationArgs, context) => {
+    /*
+     * Guarded rather than left to throw. This was the one Search Console
+     * tool that surfaced "not connected" as a tool failure instead of an
+     * instruction: the client saw `isError`, with no connect URL, where
+     * every sibling returns a sentence and a link. Not connected is the
+     * expected first state, not a fault.
+     */
+    const connection = await GscConnectionRepository.getByProjectId(
+      args.projectId,
+    );
+    if (!connection) {
+      return mcpResponse({
+        text: `Search Console is not connected for this project, so there are no queries to compare. Connect it at ${context.baseUrl}/p/${args.projectId}/settings/integrations.`,
+        meta: buildProjectMeta(
+          context,
+          args.projectId,
+          `/p/${args.projectId}/settings/integrations`,
+        ),
+        structuredContent: {
+          rows: [],
+          queriesAnalyzed: 0,
+          splitImpressions: 0,
+          startDate: "",
+          endDate: "",
+          truncated: false,
+        },
+      });
+    }
+
     const result = await getCannibalization({
       projectId: args.projectId,
       dateRange: args.dateRange ?? "last_28_days",

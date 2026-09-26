@@ -9,7 +9,7 @@
  * live in multipage.ts and run over D1 after the crawl.
  */
 import type { AuditIssueType } from "@/shared/audit-issues";
-import { canonicalUrlKey } from "@/server/lib/audit/url-utils";
+import { sameCanonicalTarget } from "@/server/lib/audit/url-utils";
 import type { CrawledPageResult } from "@/server/lib/audit/types";
 
 export interface DetectedIssue {
@@ -71,34 +71,52 @@ function isValidHreflang(value: string): boolean {
   const code = value.trim().toLowerCase();
   if (code === "x-default") return true;
   if (!HREFLANG_SHAPE.test(code)) return false;
-  const region = code.split("-").at(-1);
-  return !(region && NOT_ISO_REGIONS.has(region));
+  /*
+   * Only when a region subtag actually exists. Taking the last segment of a
+   * bare language code reads the language as a region, and two of the three
+   * names on the list are also ISO 639-1 languages: `uk` is Ukrainian and
+   * `eu` is Basque. So a correct Ukrainian site was told its markup was
+   * broken and pointed at advice to change it -- the exact false positive
+   * the comment above says must not happen.
+   */
+  const parts = code.split("-");
+  if (parts.length < 2) return true;
+  return !NOT_ISO_REGIONS.has(parts[parts.length - 1] ?? "");
 }
 
-/*
- * A page-number token, and the same URL without it. Google's pagination doc
- * names canonicalising page 2..n to page 1 as a mistake, because it drops
- * those pages from the index.
+/**
+ * The same URL with its page number removed, or null when there is none
+ * worth removing.
+ *
+ * Null for page one: canonicalising `?page=1` or `?start=0` to the clean
+ * URL is correct deduplication, not the mistake Google names. Its guidance
+ * is about pages two and after, and the registry copy says so.
+ *
+ * Parsed rather than spliced. Cutting `[?&]page=\d+` out of the string
+ * leaves `?a=1&page=2&b=3` as `…?a=1&b=3` but `?page=2&b=3` as `…b=3` --
+ * the separator goes with the match -- so whether a real violation was
+ * caught depended on where the page param sorted among the others.
  */
-const PAGE_TOKEN = /([?&](page|p|start)=\d+|\/page\/\d+\/?)/i;
-
-function withoutPageToken(url: string): string {
-  return url
-    .replace(/[?&](page|p|start)=\d+/i, "")
-    .replace(/\/page\/\d+\/?$/i, "")
-    .replace(/\?$/, "");
-}
-
-/*
- * `canonicalUrlKey` folds scheme, host case and www but deliberately not a
- * trailing slash, because elsewhere `/a` and `/a/` really can be two pages.
- * Here they cannot: the question is only whether the canonical is this same
- * URL with the page number taken off, and a site that writes `/blog/` for
- * that is saying the same thing as one that writes `/blog`.
- */
-function samePageIgnoringTrailingSlash(a: string, b: string): boolean {
-  const fold = (url: string) => canonicalUrlKey(url).replace(/\/$/, "");
-  return fold(a) === fold(b);
+function withoutPageToken(url: string): string | null {
+  const pathMatch = /\/page\/(\d+)\/?$/i.exec(url);
+  if (pathMatch) {
+    if (pathMatch[1] === "1") return null;
+    return url.replace(/\/page\/\d+\/?$/i, "");
+  }
+  try {
+    const parsed = new URL(url);
+    for (const key of ["page", "p", "start"]) {
+      const value = parsed.searchParams.get(key);
+      if (value === null || !/^\d+$/.test(value)) continue;
+      // `start=0` is the first page the same way `page=1` is.
+      if (value === "1" || (key === "start" && value === "0")) return null;
+      parsed.searchParams.delete(key);
+      return parsed.toString().replace(/\?$/, "");
+    }
+  } catch {
+    return null;
+  }
+  return null;
 }
 
 /** The callback each extracted reporter pushes through. */
@@ -169,14 +187,12 @@ function reportIndexability(page: CrawledPageResult, report: ReportIssue) {
   /* Google's pagination doc: "Don't use the first page of a paginated
      sequence as the canonical page. Instead, give each page its own
      canonical URL." Pages 2..n canonicalised to page 1 leave the index. */
+  const firstPage = withoutPageToken(page.url);
   if (
     effectiveCanonical &&
     effectiveCanonical !== page.url &&
-    PAGE_TOKEN.test(page.url) &&
-    samePageIgnoringTrailingSlash(
-      effectiveCanonical,
-      withoutPageToken(page.url),
-    )
+    firstPage !== null &&
+    sameCanonicalTarget(effectiveCanonical, firstPage)
   ) {
     report("paginated-canonical-to-first-page", {
       canonicalUrl: effectiveCanonical,
@@ -221,13 +237,14 @@ function reportHreflang(page: CrawledPageResult, report: ReportIssue) {
     report("hreflang-missing-x-default", { hreflangs: codes });
   }
   /* Google: "Each language version must list itself as well as all other
-     language versions." Folded through `canonicalUrlKey`, the same way the
-     return-tag check is, so a www or trailing-slash difference does not
-     fake a missing self-reference. */
+     language versions." Folded through `sameCanonicalTarget`, so neither a
+     www nor a trailing-slash difference fakes a missing self-reference.
+     This used to call `canonicalUrlKey` directly, which folds www and
+     deliberately does not fold the slash -- so a page crawled as `/a/`
+     whose own alternate writes `/a` was reported as leaving itself out. */
   if (
-    !page.hreflangAlternates.some(
-      (alternate) =>
-        canonicalUrlKey(alternate.href) === canonicalUrlKey(page.url),
+    !page.hreflangAlternates.some((alternate) =>
+      sameCanonicalTarget(alternate.href, page.url),
     )
   ) {
     report("hreflang-missing-self", { hreflangs: codes });
@@ -246,7 +263,15 @@ function reportSitemapStatus(page: CrawledPageResult, report: ReportIssue) {
   });
 }
 
-export function runPageReporters(page: CrawledPageResult): DetectedIssue[] {
+export function runPageReporters(
+  page: CrawledPageResult,
+  /*
+   * The site's own robots rules, when the caller has them. Optional because
+   * the badseo harness runs these reporters directly without a workflow --
+   * and absent must mean "not checked", never "nothing blocked".
+   */
+  isAllowed?: (url: string) => boolean,
+): DetectedIssue[] {
   const issues: DetectedIssue[] = [];
   const report = (
     issueType: AuditIssueType,
@@ -323,6 +348,21 @@ export function runPageReporters(page: CrawledPageResult): DetectedIssue[] {
 
   // Internationalization
   reportHreflang(page, report);
+
+  /* Google: "Google Search won't render JavaScript from blocked files or
+     on blocked pages." So a crawlable page whose own script is disallowed
+     renders for Google as whatever the HTML says before that script runs,
+     which on a client-rendered site is an empty shell. Same-origin only:
+     judging a third-party CDN would need that host's robots.txt. */
+  if (isAllowed) {
+    const blocked = page.resources.filter((url) => !isAllowed(url));
+    if (blocked.length > 0) {
+      report("blocked-resource", {
+        blocked: blocked.slice(0, 10),
+        blockedCount: blocked.length,
+      });
+    }
+  }
 
   /* Google indexes the mobile version of a page, and without a viewport
      the mobile version is the desktop layout scaled down. Lighthouse

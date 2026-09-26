@@ -29,8 +29,13 @@ export interface CrawlThrottle {
   ready(): Promise<boolean>;
   /** Pause the origin on every 429; return whether this URL may retry. */
   backoff(attempt: number, retryAfter: string | null): Promise<boolean>;
-  /** A non-429 response breaks a run of consecutive refusals. */
-  recovered(): Promise<void>;
+  /**
+   * A non-429 response breaks a run of consecutive refusals.
+   *
+   * `served` says whether the response was actually one -- a 403 or a bot
+   * challenge breaks the run but must not repay the politeness budget.
+   */
+  recovered(served?: boolean): Promise<void>;
   readonly checkpointFailed: boolean;
   readonly stopped: boolean;
   readonly state: CrawlThrottleState;
@@ -41,6 +46,13 @@ export function createCrawlThrottle(
   deadlineAt: number,
   previous?: CrawlThrottleState,
   persist?: (state: CrawlThrottleState) => Promise<void>,
+  /*
+   * The cumulative-wait ceiling. Injectable for one caller only: the badseo
+   * harness crawls a site that refuses on purpose, so a working politeness
+   * budget legitimately stops it -- and the harness is measuring issue
+   * detection, not politeness. Production never passes this.
+   */
+  maxCooldownMs: number = MAX_COOLDOWN_MS,
 ): CrawlThrottle {
   const state: CrawlThrottleState = previous
     ? { ...previous }
@@ -66,7 +78,7 @@ export function createCrawlThrottle(
   const stopped = () =>
     checkpointFailed ||
     state.consecutiveRateLimits > MAX_RETRIES ||
-    state.cooldownMs > MAX_COOLDOWN_MS;
+    state.cooldownMs > maxCooldownMs;
   return {
     async ready() {
       while (!stopped()) {
@@ -98,7 +110,7 @@ export function createCrawlThrottle(
       await save();
       return !stopped() && attempt <= MAX_RETRIES;
     },
-    async recovered() {
+    async recovered(served = true) {
       /*
        * A served page repays a little of the accumulated cooldown.
        *
@@ -110,14 +122,30 @@ export function createCrawlThrottle(
        * permanently-429 URL among hundreds of good ones therefore stopped
        * the whole crawl and left the rest of the site uncrawled.
        *
-       * Repaying one first-delay per success separates the two: an origin
-       * that genuinely recovers sheds the debt faster than it accrues, while
-       * one that keeps refusing still trips, because every 429 adds at least
-       * as much as a success removes. The existing cumulative-stop test is
-       * unchanged by it, which is the point -- the guard still fires where
-       * it was designed to.
+       * Repaying part of a first-delay per served page separates the two:
+       * an origin that genuinely recovers sheds debt faster than it
+       * accrues, while one that keeps refusing still trips.
+       *
+       * Strictly *half* a first-delay, and that word is load-bearing. The
+       * first version repaid a whole one, which exactly equals the smallest
+       * accrual on the default no-`Retry-After` path -- so an origin
+       * refusing every other request drifted by zero, never reached the
+       * budget, and never reached `MAX_RETRIES` either because each success
+       * resets that counter. Both breakers sat at zero and the crawl went
+       * on indefinitely against a server refusing half its requests, which
+       * is the opposite of what a politeness budget is for. Repayment has
+       * to be smaller than the smallest accrual or there is no floor.
        */
-      const repaid = Math.max(0, state.cooldownMs - FIRST_DELAY_MS);
+      /*
+       * Only a page that actually came back earns credit. This is called
+       * for any non-429, which includes the 403s and challenge pages that
+       * `classifyFetch` labels `blocked` -- so an origin refusing with 403
+       * between its 429s was buying down the budget meant to stop the
+       * crawl hammering it.
+       */
+      const repaid = served
+        ? Math.max(0, state.cooldownMs - FIRST_DELAY_MS / 2)
+        : state.cooldownMs;
       if (state.consecutiveRateLimits === 0 && repaid === state.cooldownMs) {
         return;
       }

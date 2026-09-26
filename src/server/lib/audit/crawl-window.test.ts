@@ -45,6 +45,7 @@ function page(
     links: [],
     hasStructuredData: false,
     viewport: "width=device-width, initial-scale=1",
+    resources: [],
     hreflangAlternates: [],
     isIndexable: true,
     responseTimeMs,

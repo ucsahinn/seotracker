@@ -375,7 +375,9 @@ async function persistCrawledPages(input: {
   for (const page of pages) {
     page.id = await deterministicAuditRowId(auditId, page.url);
   }
-  const issues = pages.flatMap((page) => runPageReporters(page));
+  const issues = pages.flatMap((page) =>
+    runPageReporters(page, robots.isAllowed),
+  );
   await AuditRepository.insertCrawledBatch(auditId, pages, issues);
 
   const links: ScratchpadPageLinksRow[] = [];
