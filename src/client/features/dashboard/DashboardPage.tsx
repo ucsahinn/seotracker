@@ -102,7 +102,7 @@ export function DashboardPage({ projectId }: { projectId: string }) {
           {
             key: "gsc",
             hasData: false,
-            node: <GscCard projectId={projectId} connected={false} />,
+            node: <GscCard projectId={projectId} />,
           },
         ]),
     ...((ga4Connected || !activation.ga4.cardDismissedAt) &&

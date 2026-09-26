@@ -15,12 +15,21 @@ export const SAVED_KEYWORD_EXPORT_HEADERS = [
   "Son alınma",
 ];
 
+/*
+ * CPC and competition are rounded here rather than at the CSV call site,
+ * which is where it used to happen -- so the same two buttons wrote
+ * `0.42` to a spreadsheet and `0.4183928` to Google Sheets. One shape for
+ * both, since they are the same export with two destinations.
+ */
+const money = (value: number | null) =>
+  value == null ? "" : Number(value.toFixed(2));
+
 export function savedKeywordExportRow(row: SavedKeywordRow): CsvValue[] {
   return [
     row.keyword,
     row.searchVolume ?? "",
-    row.cpc ?? "",
-    row.competition ?? "",
+    money(row.cpc),
+    money(row.competition),
     row.keywordDifficulty ?? "",
     row.intent ?? "",
     row.tags.map((tag) => tag.name).join(", "),

@@ -114,28 +114,37 @@ export function LighthouseIssuesScreen(props: LighthouseIssuesScreenProps) {
             </div>
           ) : null}
 
-          <LighthouseIssuesToolbar
-            category={category}
-            categoryCounts={categoryCounts}
-            categoryPhrase={categoryPhrase}
-            isBusy={exportMutation.isPending}
-            visibleIssues={visibleIssues}
-            allIssues={allIssues}
-            onCategoryChange={onCategoryChange}
-            onCopy={(data, message) => {
-              void runCopy(data, message);
-            }}
-            onExport={(data) => {
-              void runExport(data);
-            }}
-            onExportCsv={runExportCsv}
-            onExportSheets={runExportSheets}
-          />
-          <LighthouseIssueList
-            issues={visibleIssues}
-            isLoading={issuesQuery.isLoading}
-            emptyMessage={emptyMessage}
-          />
+          {/* Everything below reads from `issuesQuery.data`, so on a failure
+              the toolbar showed zero counts and the list said "bu kategoride
+              sorun yok" -- a verdict -- directly under the error that
+              explains why there is nothing. The alert above is the whole
+              answer in that case. */}
+          {issuesQuery.isError ? null : (
+            <>
+              <LighthouseIssuesToolbar
+                category={category}
+                categoryCounts={categoryCounts}
+                categoryPhrase={categoryPhrase}
+                isBusy={exportMutation.isPending}
+                visibleIssues={visibleIssues}
+                allIssues={allIssues}
+                onCategoryChange={onCategoryChange}
+                onCopy={(data, message) => {
+                  void runCopy(data, message);
+                }}
+                onExport={(data) => {
+                  void runExport(data);
+                }}
+                onExportCsv={runExportCsv}
+                onExportSheets={runExportSheets}
+              />
+              <LighthouseIssueList
+                issues={visibleIssues}
+                isLoading={issuesQuery.isLoading}
+                emptyMessage={emptyMessage}
+              />
+            </>
+          )}
         </div>
       </div>
     </PageShell>

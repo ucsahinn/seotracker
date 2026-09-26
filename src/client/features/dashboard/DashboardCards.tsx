@@ -1,18 +1,12 @@
 import { Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
 import { AlertCircle, Check, Loader2 } from "lucide-react";
 import { SearchConsoleConnectionCard } from "@/client/features/gsc/SearchConsoleConnectionCard";
 import { AUDIT_ISSUE_TYPES } from "@/shared/audit-issues";
-
-import { formatCount, formatDecimal, formatPercent } from "@/client/lib/format";
-import { getSearchPerformanceReport } from "@/serverFunctions/searchPerformance";
 import {
   CardShell,
   EmptyCardBody,
   formatDay,
   moreDetailsClass,
-  PercentDelta,
-  Stat,
 } from "@/client/features/dashboard/cardParts";
 import type { DashboardAuditSummary } from "@/server/features/dashboard/services/DashboardService";
 
@@ -22,88 +16,20 @@ const issueTitles: Record<string, string | undefined> = Object.fromEntries(
   Object.entries(AUDIT_ISSUE_TYPES).map(([key, value]) => [key, value.title]),
 );
 
-export function GscCard({
-  projectId,
-  connected,
-}: {
-  projectId: string;
-  connected: boolean;
-}) {
-  const reportQuery = useQuery({
-    queryKey: ["dashboardGscReport", projectId],
-    queryFn: () =>
-      getSearchPerformanceReport({
-        data: { projectId, dateRange: "last_28_days" },
-      }),
-    enabled: connected,
-  });
-
-  // Not connected (or a dead grant discovered by the report call): the
-  // connection card sells and runs the whole flow itself.
-  if (!connected || (reportQuery.data && !reportQuery.data.connected)) {
-    return (
-      <div id="connect-gsc">
-        <SearchConsoleConnectionCard projectId={projectId} />
-      </div>
-    );
-  }
-
-  const report = reportQuery.data;
-
+/**
+ * The Search Console pitch, for a project that has not connected it.
+ *
+ * It used to carry a four-stat body as well, behind a `connected` prop --
+ * and the one call site passes `connected={false}` literally, because when
+ * Search Console *is* connected those numbers are already in the metric row
+ * above and the card would only repeat them. So the body could never render.
+ * Deleted rather than left as a second, drifting copy of the metric row.
+ */
+export function GscCard({ projectId }: { projectId: string }) {
   return (
-    <CardShell
-      title="Arama performansı"
-      stamp="Google Search Console · son 28 gün"
-      action={
-        <Link
-          to="/p/$projectId/search-performance"
-          params={{ projectId }}
-          className={moreDetailsClass}
-        >
-          Ayrıntılar
-        </Link>
-      }
-    >
-      {reportQuery.isPending ? (
-        <div className="grid grid-cols-2 gap-3" aria-busy>
-          {Array.from({ length: 4 }, (_, i) => (
-            <div key={i} className="skeleton h-20" />
-          ))}
-        </div>
-      ) : reportQuery.isError ? (
-        <p className="text-sm text-muted">
-          Search Console verisi yüklenemedi. Birazdan tekrar deneyin.
-        </p>
-      ) : report?.connected ? (
-        <div className="grid grid-cols-2 gap-3">
-          <Stat
-            label="Tıklama"
-            value={formatCount(report.totals.clicks)}
-            sub={
-              <PercentDelta
-                current={report.totals.clicks}
-                previous={report.prevTotals.clicks}
-              />
-            }
-          />
-          <Stat
-            label="Gösterim"
-            value={formatCount(report.totals.impressions)}
-            sub={
-              <PercentDelta
-                current={report.totals.impressions}
-                previous={report.prevTotals.impressions}
-              />
-            }
-          />
-          <Stat label="TO" value={formatPercent(report.totals.ctr)} />
-          <Stat
-            label="Ort. sıra"
-            value={formatDecimal(report.totals.position)}
-          />
-        </div>
-      ) : null}
-    </CardShell>
+    <div id="connect-gsc">
+      <SearchConsoleConnectionCard projectId={projectId} />
+    </div>
   );
 }
 

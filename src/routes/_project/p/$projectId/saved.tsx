@@ -84,10 +84,6 @@ function SavedKeywordsPage() {
     () => compileSavedKeywordsFilters(committedFilterValues),
     [committedFilterValues],
   );
-  const exportFilters = useMemo(
-    () => compileSavedKeywordsFilters(filters.values),
-    [filters.values],
-  );
 
   const sortState = sorting[0];
   const sort = toSavedKeywordSort(sortState?.id);
@@ -197,7 +193,10 @@ function SavedKeywordsPage() {
   const tagManage = useTagManage(projectId);
   const exporter = useSavedKeywordsExport({
     projectId,
-    appliedFilters: exportFilters,
+    // Same values the table is showing: exporting used the live filter
+    // state while the table used the debounced one, so a click inside the
+    // 350 ms window produced a file that did not match the screen.
+    appliedFilters,
     selectedTagIds,
     sort,
     order,
@@ -262,10 +261,16 @@ function SavedKeywordsPage() {
           {removeError ? (
             <RemoveSavedKeywordsError message={removeError} />
           ) : null}
-          <SavedKeywordsStatus
-            totalCount={totalCount}
-            isFetching={isFetching && !isLoading}
-          />
+          {/* Hidden on error: `totalCount` falls back to 0, so this line
+              read "0 kayıtlı kelime" directly above the failure notice --
+              and the export button beside it disables itself on the same
+              zero, which looks like an empty store rather than a failure. */}
+          {savedQuery.isError ? null : (
+            <SavedKeywordsStatus
+              totalCount={totalCount}
+              isFetching={isFetching && !isLoading}
+            />
+          )}
           {/* Without this the table falls through to its empty state, so
                 a transient 500 told the operator their saved keywords were
                 gone. */}

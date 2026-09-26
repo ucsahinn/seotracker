@@ -126,15 +126,7 @@ export function useSavedKeywordsExport(params: {
 }
 
 function downloadKeywordCsv(rows: SavedKeywordRow[]) {
-  const csvRows = rows
-    .map(savedKeywordExportRow)
-    .map((row) =>
-      row.map((cell, index) =>
-        (index === 2 || index === 3) && typeof cell === "number"
-          ? cell.toFixed(2)
-          : cell,
-      ),
-    );
+  const csvRows = rows.map(savedKeywordExportRow);
   downloadCsv(
     "saved-keywords.csv",
     buildCsv(SAVED_KEYWORD_EXPORT_HEADERS, csvRows),
