@@ -8,6 +8,21 @@ const CAT = "HTTP status & links";
 const RATE_LIMIT_REFUSALS = 2;
 let refusals = 0;
 
+/**
+ * Put the counter back to zero between audit runs.
+ *
+ * The worker outlives a run, and a run that stops partway through the
+ * refuse-refuse-serve sequence leaves the counter mid-cycle. The next run
+ * then starts from the wrong place and collects extra 429s, which inflate
+ * the crawl's shared cooldown and drop unrelated pages -- so the harness
+ * alternated between passing and reporting several NOT CRAWLED, with
+ * nothing changed between the two runs. Measured: run one 7/55, run two
+ * 55/55, no file touched in between.
+ */
+export function resetFixtureState(): void {
+  refusals = 0;
+}
+
 function stillRateLimited(): boolean {
   refusals += 1;
   if (refusals <= RATE_LIMIT_REFUSALS) return true;

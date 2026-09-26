@@ -162,4 +162,20 @@ export const CRAWL_ISSUES = {
     howToFix:
       "Üst seviyedeki sayfalardan (kategori sayfaları, menü, toplayıcı sayfalar) bu sayfaya bağlantı ekleyerek yolu kısaltın.",
   },
+  "sitemap-too-large": {
+    severity: "warning",
+    title: "Site haritası dosyası okunamayacak kadar büyük",
+    explanation:
+      "Site haritası parçalarından biri bu aracın okuma sınırını (10 MB) aştı, bu yüzden içindeki adresler bu denetime hiç girmedi. Google'ın kendi sınırı 50 MB, yani dosya Google için geçerli olabilir; ama burada gördüğünüz sayfa listesi eksik.",
+    howToFix:
+      "Site haritanızı parçalara bölün ve bir site haritası dizini ile birbirine bağlayın. Google zaten her parçanın 50 MB ya da 50.000 adresin altında kalmasını istiyor; daha küçük parçalar her iki tarafın da işine yarar.",
+  },
+  "sitemap-too-many-urls": {
+    severity: "warning",
+    title: "Site haritasında 50.000'den fazla adres var",
+    explanation:
+      "Google tek bir site haritası dosyasının en fazla 50.000 adres içermesine izin verir. Bu parça sınırı aşıyor, yani Google dosyayı reddedebilir ya da bir kısmını yok sayabilir.",
+    howToFix:
+      "Dosyayı her biri 50.000 adresin altında kalan parçalara bölün ve bir site haritası dizini (sitemapindex) ile hepsini listeleyin. Search Console'a dizin dosyasını gönderirsiniz, parçaları tek tek değil.",
+  },
 } as const satisfies Record<string, AuditIssueDescriptor>;

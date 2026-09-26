@@ -21,6 +21,8 @@ const SITEMAP_RETRIES = 1;
 // shards are skipped whole — truncated XML would not parse anyway, and real
 // generators shard far below this.
 const MAX_SITEMAP_BYTES = 10 * 1024 * 1024;
+/** Google's documented ceiling: "50MB (uncompressed) or 50,000 URLs". */
+const GOOGLE_MAX_SITEMAP_URLS = 50_000;
 
 const xmlParser = new XMLParser({
   ignoreAttributes: false,
@@ -179,6 +181,13 @@ async function readBodyCapped(
 
 async function fetchSitemapDocumentWithRetry(sitemapUrl: string): Promise<{
   nestedSitemaps: string[];
+  /**
+   * Set when the document was skipped for its size rather than for being
+   * unreachable or malformed. It used to collapse into the same silent
+   * `failedDocs` counter, so an oversized shard took its pages out of the
+   * audit and left no trace an operator could see.
+   */
+  tooLarge?: boolean;
   pageUrls: string[];
   timedOut: boolean;
 }> {
@@ -206,10 +215,15 @@ async function fetchSitemapDocumentWithRetry(sitemapUrl: string): Promise<{
       }
 
       const body = await readBodyCapped(response, MAX_SITEMAP_BYTES);
-      if (
-        body === null ||
-        !isProbablySitemapXml(response.headers.get("content-type"), body)
-      ) {
+      if (body === null) {
+        return {
+          nestedSitemaps: [],
+          pageUrls: [],
+          timedOut: false,
+          tooLarge: true,
+        };
+      }
+      if (!isProbablySitemapXml(response.headers.get("content-type"), body)) {
         return { nestedSitemaps: [], pageUrls: [], timedOut: false };
       }
 
@@ -249,6 +263,12 @@ export async function discoverUrls(
   urls: string[];
   robotsText: string | null;
   robotsFetch: RobotsFetch;
+  sitemapProblems: {
+    oversized: string[];
+    oversizedCount: number;
+    overfull: { url: string; urlCount: number }[];
+    overfullCount: number;
+  };
 }> {
   const robotsFetch = await fetchRobotsTxtText(origin);
   const robotsText = robotsFetch.text;
@@ -271,6 +291,8 @@ export async function discoverUrls(
   const seenSitemapDocs = new Set<string>();
   let fetchedDocs = 0;
   let failedDocs = 0;
+  const oversizedSitemaps: string[] = [];
+  const overfullSitemaps: { url: string; urlCount: number }[] = [];
   let timedOutDocs = 0;
 
   while (queue.length > 0 && allUrls.size < maxDiscoveredUrls) {
@@ -294,6 +316,18 @@ export async function discoverUrls(
         fetchedDocs += 1;
 
         const result = await fetchSitemapDocumentWithRetry(normalizedUrl);
+        if (result.tooLarge) oversizedSitemaps.push(normalizedUrl);
+        /*
+         * Google's own ceiling, which is higher than the one above: a shard
+         * over 50,000 URLs is invalid to Google even when this tool read it
+         * happily. Counted per document, not across the site.
+         */
+        if (result.pageUrls.length > GOOGLE_MAX_SITEMAP_URLS) {
+          overfullSitemaps.push({
+            url: normalizedUrl,
+            urlCount: result.pageUrls.length,
+          });
+        }
         if (
           result.pageUrls.length === 0 &&
           result.nestedSitemaps.length === 0
@@ -335,5 +369,13 @@ export async function discoverUrls(
     urls: Array.from(allUrls).slice(0, maxPages),
     robotsText,
     robotsFetch,
+    sitemapProblems: {
+      // Capped: this crosses a Workflow step boundary with a ~1MiB limit,
+      // and the count is the finding while the samples illustrate it.
+      oversized: oversizedSitemaps.slice(0, 5),
+      oversizedCount: oversizedSitemaps.length,
+      overfull: overfullSitemaps.slice(0, 5),
+      overfullCount: overfullSitemaps.length,
+    },
   };
 }

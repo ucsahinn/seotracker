@@ -92,6 +92,26 @@ async function crawl(origin: string): Promise<{
     sitemapUrls.map((u) => normalizeUrl(u)).filter((u): u is string => !!u),
   );
 
+  /*
+   * The fixture worker outlives a run and its rate-limit counter is module
+   * state, so a run that stops mid-sequence leaves the next one starting
+   * from the wrong place -- which showed up as the harness alternating
+   * between 55/55 and several NOT CRAWLED with nothing changed between.
+   */
+  const reset = await fetch(`${origin}/fixture-reset`, {
+    method: "POST",
+  }).catch(() => null);
+  // Loudly, not with a warning that scrolls past. A silently-missing reset
+  // is exactly what made this flaky in the first place, and `fetch` does
+  // not throw on a 404 -- so the first attempt at this fix reported
+  // success while resetting nothing.
+  if (!reset?.ok) {
+    throw new Error(
+      `Fixture reset failed (${reset?.status ?? "no response"}). ` +
+        "Results would alternate between runs, so refusing to continue.",
+    );
+  }
+
   const visited = new Set<string>();
   const queued = new Set<string>();
   const linkQueue: CrawlEntry[] = [];
@@ -444,10 +464,32 @@ async function main() {
    * the checks directly rather than the workflow, so no page can produce it.
    * Listing it as "missing" forever invites a fixture that cannot work.
    */
-  const WORKFLOW_ONLY: IssueId[] = ["crawl-rate-limited"];
+  const WORKFLOW_ONLY: IssueId[] = [
+    "crawl-rate-limited",
+    // A robots.txt that 5xxs, is unreachable, or blocks the start URL
+    // changes how the whole crawl behaves, so a fixture demonstrating one
+    // would take every other fixture in the run down with it.
+    "robots-txt-server-error",
+    "robots-txt-unreachable",
+    "robots-txt-truncated",
+    "robots-txt-blocks-start-url",
+    "sitemap-disallowed-page",
+  ];
+  /*
+   * Read from `gsc_url_inspections`: Google's own verdict about a URL,
+   * which needs a connected Search Console property and cached inspection
+   * rows. The fixture site is a local Worker with neither.
+   */
+  const NEEDS_SEARCH_CONSOLE: IssueId[] = [
+    "google-soft-404",
+    "google-blocked-by-robots",
+    "google-blocked-by-meta",
+    "google-chose-different-canonical",
+  ];
+  const OUT_OF_REACH = [...WORKFLOW_ONLY, ...NEEDS_SEARCH_CONSOLE];
   const exercised = new Set(allFixtures.flatMap((f) => f.expectedIssues));
   const allTypes = (Object.keys(AUDIT_ISSUE_TYPES) as IssueId[]).filter(
-    (id) => !WORKFLOW_ONLY.includes(id),
+    (id) => !OUT_OF_REACH.includes(id),
   );
   const uncovered = allTypes.filter((id) => !exercised.has(id));
   console.log(
@@ -455,7 +497,10 @@ async function main() {
       `\nissue-type coverage: ${allTypes.length - uncovered.length}/${allTypes.length} fixture-reachable` +
         (uncovered.length
           ? `  (missing: ${uncovered.join(", ")})`
-          : "  ✓ all covered"),
+          : "  ✓ all covered") +
+        `\n${OUT_OF_REACH.length} types are out of this harness's reach: ` +
+        `${WORKFLOW_ONLY.length} raised by the workflow rather than the pure checks it runs, ` +
+        `${NEEDS_SEARCH_CONSOLE.length} read from a connected Search Console.`,
     ),
   );
 

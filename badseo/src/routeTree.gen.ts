@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as FixtureResetRouteImport } from './routes/fixture-reset'
 import { Route as CatalogRouteImport } from './routes/catalog'
 import { Route as SplatRouteImport } from './routes/$'
 import { Route as IndexRouteImport } from './routes/index'
@@ -29,6 +30,11 @@ const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FixtureResetRoute = FixtureResetRouteImport.update({
+  id: '/fixture-reset',
+  path: '/fixture-reset',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CatalogRoute = CatalogRouteImport.update({
@@ -51,6 +57,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
   '/catalog': typeof CatalogRoute
+  '/fixture-reset': typeof FixtureResetRoute
   '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -59,6 +66,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
   '/catalog': typeof CatalogRoute
+  '/fixture-reset': typeof FixtureResetRoute
   '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -68,6 +76,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
   '/catalog': typeof CatalogRoute
+  '/fixture-reset': typeof FixtureResetRoute
   '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -75,14 +84,28 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/$' | '/catalog' | '/privacy' | '/robots.txt' | '/sitemap.xml'
+    | '/'
+    | '/$'
+    | '/catalog'
+    | '/fixture-reset'
+    | '/privacy'
+    | '/robots.txt'
+    | '/sitemap.xml'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/$' | '/catalog' | '/privacy' | '/robots.txt' | '/sitemap.xml'
+  to:
+    | '/'
+    | '/$'
+    | '/catalog'
+    | '/fixture-reset'
+    | '/privacy'
+    | '/robots.txt'
+    | '/sitemap.xml'
   id:
     | '__root__'
     | '/'
     | '/$'
     | '/catalog'
+    | '/fixture-reset'
     | '/privacy'
     | '/robots.txt'
     | '/sitemap.xml'
@@ -92,6 +115,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   SplatRoute: typeof SplatRoute
   CatalogRoute: typeof CatalogRoute
+  FixtureResetRoute: typeof FixtureResetRoute
   PrivacyRoute: typeof PrivacyRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -118,6 +142,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fixture-reset': {
+      id: '/fixture-reset'
+      path: '/fixture-reset'
+      fullPath: '/fixture-reset'
+      preLoaderRoute: typeof FixtureResetRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/catalog': {
@@ -148,6 +179,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SplatRoute: SplatRoute,
   CatalogRoute: CatalogRoute,
+  FixtureResetRoute: FixtureResetRoute,
   PrivacyRoute: PrivacyRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,

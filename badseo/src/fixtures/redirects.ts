@@ -108,9 +108,27 @@ const trailingSlashCanonical: Fixture = {
     ),
 };
 
+// 26 - a sitemap entry that redirects instead of serving -------------------
+const sitemapRedirect: Fixture = {
+  path: "/redirect/in-sitemap",
+  category: CAT,
+  name: "Sitemap lists a URL that redirects",
+  summary:
+    "The sitemap submits this URL to Google; the server answers 301 and sends it somewhere else.",
+  lesson:
+    "A sitemap is a list of the URLs you want in search results, and Google generally shows canonical URLs. Listing one that redirects submits an address you have already said is not the real one.",
+  expectedIssues: ["sitemap-redirect-page"],
+  inSitemap: true,
+  // Off the catalog: a link to it would earn a redirect finding of its own
+  // and muddy what this fixture is demonstrating.
+  linkedFromCatalog: false,
+  handler: () => redirect("/", 301),
+};
+
 export const redirectFixtures: Fixture[] = [
   redirectChain,
   redirectChainMid,
   redirectLoop,
   trailingSlashCanonical,
+  sitemapRedirect,
 ];

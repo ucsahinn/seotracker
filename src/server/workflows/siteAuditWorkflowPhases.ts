@@ -1,5 +1,4 @@
 import type { WorkflowStep } from "cloudflare:workers";
-import type { AuditIssueType } from "@/shared/audit-issues";
 import { discoverUrls, parseRobotsTxt } from "@/server/lib/audit/discovery";
 import {
   failedLighthouseFetch,
@@ -17,6 +16,11 @@ import { AuditRepository } from "@/server/features/audit/repositories/AuditRepos
 import { getAuditScratchpad } from "@/server/features/audit/AuditScratchpad";
 import { AuditProgressKV } from "@/server/lib/audit/progress-kv";
 import { runMultipageChecks } from "@/server/lib/audit/issues/multipage";
+import {
+  siteLevelIssues,
+  type RobotsFindings,
+  type SitemapProblems,
+} from "@/server/lib/audit/issues/site-level-checks";
 import type { DetectedIssue } from "@/server/lib/audit/issues/page-reporters";
 import type { AuditConfig } from "@/server/lib/audit/types";
 import { captureServerEvent } from "@/server/lib/observability";
@@ -102,6 +106,7 @@ export async function runAuditPhases(
     config,
     crawl,
     robotsFindings: discovery.robots,
+    sitemapProblems: discovery.sitemapProblems,
   });
 }
 
@@ -174,6 +179,7 @@ async function runDiscoveryPhase(
     return {
       robotsText: result.robotsText,
       seededCount,
+      sitemapProblems: result.sitemapProblems,
       robots: {
         status: result.robotsFetch.status,
         truncated: result.robotsFetch.truncated,
@@ -337,13 +343,9 @@ async function finalizeAudit(args: {
    * before this field existed replays its discovery step from storage and
    * gets the old shape back. Absent means "not recorded", never "clean".
    */
-  robotsFindings?: {
-    status: number | null;
-    truncated: boolean;
-    startBlocked: boolean;
-    disallowedSitemapSample: string[];
-    disallowedSitemapCount: number;
-  };
+  robotsFindings?: RobotsFindings;
+  /** Optional for the same replay reason as `robotsFindings`. */
+  sitemapProblems?: SitemapProblems;
 }) {
   const {
     step,
@@ -355,6 +357,7 @@ async function finalizeAudit(args: {
     config,
     crawl,
     robotsFindings,
+    sitemapProblems,
   } = args;
 
   await step.do("multipage-checks", MULTIPAGE_CHECKS_STEP, async () => {
@@ -383,34 +386,9 @@ async function finalizeAudit(args: {
         pageUrl: startUrl,
       });
     }
-    /*
-     * Site-level findings, so `pageId` is null and `pageUrl` is the start
-     * URL -- the same shape `crawl-rate-limited` uses. A 404 robots.txt is
-     * deliberately not among them: Google reads that as "no restrictions",
-     * which is a normal way to run a site.
-     */
-    if (robotsFindings) {
-      const siteIssue = (
-        issueType: AuditIssueType,
-        details?: Record<string, unknown>,
-      ) => issues.push({ issueType, pageId: null, pageUrl: startUrl, details });
-
-      if (robotsFindings.status !== null && robotsFindings.status >= 500) {
-        siteIssue("robots-txt-server-error", {
-          statusCode: robotsFindings.status,
-        });
-      } else if (robotsFindings.status === null) {
-        siteIssue("robots-txt-unreachable");
-      }
-      if (robotsFindings.truncated) siteIssue("robots-txt-truncated");
-      if (robotsFindings.startBlocked) siteIssue("robots-txt-blocks-start-url");
-      if (robotsFindings.disallowedSitemapCount > 0) {
-        siteIssue("sitemap-disallowed-page", {
-          count: robotsFindings.disallowedSitemapCount,
-          sample: robotsFindings.disallowedSitemapSample,
-        });
-      }
-    }
+    issues.push(
+      ...siteLevelIssues({ startUrl, robotsFindings, sitemapProblems }),
+    );
     await AuditRepository.insertIssues(auditId, issues);
     return { issueCount: issues.length };
   });
