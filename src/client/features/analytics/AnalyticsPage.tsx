@@ -169,7 +169,12 @@ function ReportTable({
         {result.propertyDisplayName ?? "GA4 mülkü"} ·{" "}
         {formatDate(result.dateRange.startDate)} –{" "}
         {formatDate(result.dateRange.endDate)} ·{" "}
-        {formatCount(result.totalRowCount)} satır
+        {/* Both numbers. This printed the dataset size above a table
+            holding at most 50 rows, so a property with 800 landing pages
+            said "800 satır" over fifty of them. */}
+        {result.rowCount < result.totalRowCount
+          ? `${formatCount(result.rowCount)} / ${formatCount(result.totalRowCount)} satır`
+          : `${formatCount(result.totalRowCount)} satır`}
         {result.sampled ? " · örneklenmiş" : ""}
         {/* Google withholds rows below its own privacy threshold; a total
             that looks short is often this rather than missing traffic. */}

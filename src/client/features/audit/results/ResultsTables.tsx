@@ -1,4 +1,8 @@
-import { formatDecimal, formatDuration } from "@/client/lib/format";
+import {
+  formatCount,
+  formatDecimal,
+  formatDuration,
+} from "@/client/lib/format";
 import { useMemo, useState } from "react";
 import {
   createColumnHelper,
@@ -247,17 +251,30 @@ function buildPerformanceColumns({
 
 export function ExportDropdown({
   onExport,
+  rowCount,
 }: {
   onExport: (format: "csv" | "json" | "sheets") => void;
+  /**
+   * How many rows the export will actually write.
+   *
+   * Named in every label because the export follows the table's filters:
+   * without it, "CSV" on a filtered table is indistinguishable from "CSV" on
+   * the whole audit until the file opens.
+   */
+  rowCount: number;
 }) {
+  const suffix = `(${formatCount(rowCount)} satır)`;
   return (
     <TableExportMenu
       buttonClassName="btn btn-sm btn-ghost gap-1"
-      menuClassName="dropdown-content z-10 menu p-2 shadow-lg bg-base-100 border border-base-300 rounded-box w-52"
+      menuClassName="dropdown-content z-10 menu p-2 shadow-lg bg-base-100 border border-base-300 rounded-box w-56"
       actions={[
-        { label: "Sheets'e aktar", onClick: () => onExport("sheets") },
-        { label: "CSV", onClick: () => onExport("csv") },
-        { label: "JSON", onClick: () => onExport("json") },
+        {
+          label: `Sheets'e aktar ${suffix}`,
+          onClick: () => onExport("sheets"),
+        },
+        { label: `CSV ${suffix}`, onClick: () => onExport("csv") },
+        { label: `JSON ${suffix}`, onClick: () => onExport("json") },
       ]}
     />
   );

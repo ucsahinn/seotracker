@@ -10,6 +10,7 @@ const mocks = vi.hoisted(() => ({
         projectId: string;
         earliestDate: string | null;
         lastDate: string | null;
+        scannedThrough: string | null;
         error: string | null;
       }) => Promise<void>
     >(),
@@ -222,5 +223,61 @@ describe("backfill", () => {
     });
 
     expect(outcome.error).toMatch(/yenilenmesi/);
+  });
+});
+
+/*
+ * The archive used to be unable to fill for a site younger than Google's
+ * retention window.
+ *
+ * A first run starts 480 days back. Finding nothing there, it wrote both
+ * date cursors as null -- on purpose, so a just-verified property would not
+ * have its empty months marked covered. But `resolveStart(null)` returns
+ * that same 480-day mark, so the next visit re-read the same empty months,
+ * forever, while the screen said the archive was filling.
+ */
+describe("empty windows", () => {
+  it("advances past a window that held no rows", async () => {
+    mocks.getArchiveState.mockResolvedValue(null);
+
+    await GscHistoryService.backfill({ projectId: "p1", today: TODAY });
+
+    const run = mocks.markRun.mock.calls[0]?.[0];
+    expect(run?.lastDate).toBeNull();
+    // Four 30-day chunks from the 480-day mark, so the sweep is nowhere near
+    // the newest day and must be resumable from where it stopped.
+    expect(run?.scannedThrough).not.toBeNull();
+  });
+
+  it("resumes from the scanned cursor, not from the retention floor", async () => {
+    mocks.getArchiveState.mockResolvedValue({
+      earliestDate: null,
+      lastDate: null,
+      scannedThrough: "2026-01-31",
+      lastRunAt: null,
+      lastError: null,
+    });
+
+    await GscHistoryService.backfill({ projectId: "p1", today: TODAY });
+
+    expect(requestAt(0).startDate).toBe("2026-02-01");
+  });
+
+  it("starts over once a full sweep has found nothing anywhere", async () => {
+    // One day left to scan, so this run reaches the end with nothing found.
+    mocks.getArchiveState.mockResolvedValue({
+      earliestDate: null,
+      lastDate: null,
+      scannedThrough: "2026-06-26",
+      lastRunAt: null,
+      lastError: null,
+    });
+
+    await GscHistoryService.backfill({ projectId: "p1", today: TODAY });
+
+    const run = mocks.markRun.mock.calls[0]?.[0];
+    // Null, not the end date: a property whose permission had not propagated
+    // would otherwise be marked fully scanned and never looked at again.
+    expect(run?.scannedThrough).toBeNull();
   });
 });

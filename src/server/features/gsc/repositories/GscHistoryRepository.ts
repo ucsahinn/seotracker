@@ -58,6 +58,7 @@ async function markRun(input: {
   projectId: string;
   earliestDate: string | null;
   lastDate: string | null;
+  scannedThrough: string | null;
   error: string | null;
 }): Promise<void> {
   const lastRunAt = new Date().toISOString();
@@ -68,6 +69,7 @@ async function markRun(input: {
         projectId: input.projectId,
         earliestDate: input.earliestDate,
         lastDate: input.lastDate,
+        scannedThrough: input.scannedThrough,
         lastRunAt,
         lastError: input.error,
       })
@@ -77,6 +79,9 @@ async function markRun(input: {
           // Keep the widest window seen: a failed narrow run must not shrink it.
           earliestDate: sql`min(coalesce(${gscArchiveState.earliestDate}, ${input.earliestDate}), coalesce(${input.earliestDate}, ${gscArchiveState.earliestDate}))`,
           lastDate: sql`max(coalesce(${gscArchiveState.lastDate}, ${input.lastDate}), coalesce(${input.lastDate}, ${gscArchiveState.lastDate}))`,
+          // Always the newer value: this cursor only moves forward, and a
+          // null means "start over", which must also be written.
+          scannedThrough: input.scannedThrough,
           lastRunAt,
           lastError: input.error,
         },

@@ -22,15 +22,23 @@ export function LighthouseIssueRow({ issue }: { issue: LighthouseIssue }) {
 
   return (
     <>
-      <tr
-        className={`hover:bg-base-200/50 transition-colors ${hasDetails ? "cursor-pointer" : ""}`}
-        onClick={() => hasDetails && setOpen(!open)}
-      >
+      <tr className="transition-colors hover:bg-base-200/50">
         <td className="py-3 pl-4 pr-2">
           {hasDetails ? (
-            <ChevronRight
-              className={`size-3.5 text-muted transition-transform ${open ? "rotate-90" : ""}`}
-            />
+            /* A real button, not a click handler on the row. The row version
+               had no role, no tab stop and no key handling, so every issue
+               detail on this screen was unreachable without a mouse. */
+            <button
+              type="button"
+              className="flex items-center rounded-field p-0.5 text-muted hover:text-base-content"
+              aria-expanded={open}
+              aria-label={open ? "Ayrıntıları gizle" : "Ayrıntıları göster"}
+              onClick={() => setOpen(!open)}
+            >
+              <ChevronRight
+                className={`size-3.5 transition-transform ${open ? "rotate-90" : ""}`}
+              />
+            </button>
           ) : null}
         </td>
         <td className="py-3 pr-3">

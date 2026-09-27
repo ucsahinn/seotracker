@@ -20,6 +20,7 @@ import {
   type SearchPerformanceTableRow,
 } from "@/client/features/search-performance/SearchPerformanceColumns";
 import { formatCount, formatDecimal, formatPercent } from "@/client/lib/format";
+import { describeTotals } from "@/client/features/search-performance/totals";
 import {
   buildCsv,
   downloadCsv,
@@ -131,30 +132,39 @@ function positionDelta(current: number, previous: number): Delta {
 export function TotalsCards({ report }: { report: Report }) {
   const { totals, prevTotals, range } = report;
   const deltaTitle = `${range.prevStartDate} - ${range.prevEndDate} dönemine göre`;
+  const shown = describeTotals(totals);
+  // Nothing to compare against when the period itself is empty, and a delta
+  // beside a dash is noise.
+  const delta = (current: number, previous: number) =>
+    shown.hasImpressions ? percentDelta(current, previous) : null;
   return (
     <MetricRow>
       <MetricTile
         label="Tıklama"
-        value={formatCount(totals.clicks)}
-        delta={percentDelta(totals.clicks, prevTotals.clicks)}
+        value={shown.clicks}
+        delta={delta(totals.clicks, prevTotals.clicks)}
         deltaTitle={deltaTitle}
       />
       <MetricTile
         label="Gösterim"
-        value={formatCount(totals.impressions)}
-        delta={percentDelta(totals.impressions, prevTotals.impressions)}
+        value={shown.impressions}
+        delta={delta(totals.impressions, prevTotals.impressions)}
         deltaTitle={deltaTitle}
       />
       <MetricTile
         label="Tıklama oranı"
-        value={formatPercent(totals.ctr)}
-        delta={percentDelta(totals.ctr, prevTotals.ctr)}
+        value={shown.ctr}
+        delta={delta(totals.ctr, prevTotals.ctr)}
         deltaTitle={deltaTitle}
       />
       <MetricTile
         label="Ortalama sıra"
-        value={formatDecimal(totals.position)}
-        delta={positionDelta(totals.position, prevTotals.position)}
+        value={shown.position}
+        delta={
+          shown.hasImpressions
+            ? positionDelta(totals.position, prevTotals.position)
+            : null
+        }
         deltaTitle={deltaTitle}
       />
     </MetricRow>
@@ -241,7 +251,7 @@ export function StrikingDistanceTable({
   const save = useMutation({
     mutationFn: (keywords: string[]) =>
       saveKeywords({ data: { projectId, keywords } }),
-    onSuccess: (_result, keywords) => {
+    onSuccess: (result, keywords) => {
       captureClientEvent("keyword:save", {
         source_feature: "search_performance",
         keyword_count: keywords.length,
@@ -249,7 +259,15 @@ export function StrikingDistanceTable({
       void queryClient.invalidateQueries({
         queryKey: ["savedKeywords", projectId],
       });
-      toast.success(`${keywords.length} kelime kaydedildi`);
+      /*
+       * "kayıtlı", not "kaydedildi". The write is an upsert that ignores
+       * conflicts, so selecting ten rows that were already saved used to
+       * report ten new ones. The returned list is what is stored now, which
+       * is both true and the number the operator can go and look at.
+       */
+      toast.success(
+        `${formatCount(result.savedKeywordIds.length)} kelime kayıtlı`,
+      );
       setRowSelection({});
     },
     onError: (error) => {

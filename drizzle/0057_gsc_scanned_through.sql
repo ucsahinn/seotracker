@@ -1,0 +1,16 @@
+-- How far the archive has been *scanned*, as distinct from how far it holds data.
+--
+-- `last_date` is the newest day with rows. A run that found nothing wrote it
+-- back as NULL, deliberately, so a property whose permission had not yet
+-- propagated would not have its empty months marked covered forever.
+--
+-- That guard had a second effect nobody wanted: `resolveStart(null)` returns
+-- the oldest day Google still serves, so a domain younger than the retention
+-- window scanned the same empty months on every page view and never reached
+-- the recent days where its data actually lives. The archive stayed at zero
+-- rows while the screen promised it was filling.
+--
+-- This column always advances. The data cursors stay honest about data; this
+-- one is honest about coverage, and a full sweep that found nothing resets it
+-- so a late-arriving permission still gets picked up.
+ALTER TABLE `gsc_archive_state` ADD `scanned_through` text;

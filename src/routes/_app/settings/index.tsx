@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Monitor, Moon, Sun } from "lucide-react";
 import { GoogleOAuthClientSection } from "@/client/features/settings/GoogleOAuthClientSection";
 import { GoogleServiceAccountSection } from "@/client/features/settings/GoogleServiceAccountSection";
+import { PageSpeedKeySection } from "@/client/features/settings/PageSpeedKeySection";
 import { UpdateSection } from "@/client/features/settings/UpdateSection";
 import { type ThemePreference, useThemePreference } from "@/client/lib/theme";
 import { version } from "../../../../package.json";
@@ -63,6 +64,8 @@ function PersonalSettings() {
       <GoogleOAuthClientSection />
 
       <GoogleServiceAccountSection />
+
+      <PageSpeedKeySection />
 
       <UpdateSection version={version} />
     </div>

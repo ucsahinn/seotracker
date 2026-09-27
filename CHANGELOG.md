@@ -5,6 +5,69 @@ numaraları [SemVer](https://semver.org/lang/tr/) izler.
 
 ## [Yayınlanmamış]
 
+## [0.6.0] — 2026-09-27
+
+Kurulumun son parçası da ortam değişkeninden ekrana taşındı, ve gerçek bir
+mülke (vaultpilot.io) karşı bakınca ekranların ölçemedikleri şeyi sıfır diye
+gösterdiği ortaya çıktı. Üç bağımsız inceleme turu daha yapıldı.
+
+### Eklenenler
+
+- **PageSpeed anahtarı artık Ayarlar'da.** Lighthouse aşamasının kotasını
+  yükselten anahtar `PAGESPEED_API_KEY` olarak yalnızca ortamda
+  ayarlanabiliyordu — yani dosya düzenleyip konteyneri yeniden kurmak
+  gerekiyordu. Google OAuth istemcisiyle aynı yolu izliyor: sunucuda
+  şifreleniyor, tarayıcıya bir daha dönmüyor, ortam değişkeni de çalışmaya
+  devam ediyor. Kurulumda elle dosya düzenlemeyi gerektiren hiçbir şey
+  kalmadı (migration 0056).
+
+### Düzeltilenler
+
+- **Ölçülemeyen değerler sıfır olarak çiziliyordu.** Search Console bağlı ama
+  o dönem için verisi olmayan bir mülkte panel ve arama performansı
+  "Tıklama 0 · Gösterim 0 · TO %0,0 · **Ortalama sıra 0,0**" gösteriyordu.
+  Sıfır gösterimde tıklama oranı 0/0, ortalama sıra da boş kümenin
+  ortalamasıdır — ikisi de tanımsız, ve "ortalama sıra 0,0" ilk sonucun
+  üstünde bir sıra iddia ediyor ki bu mümkün değil. Artık ikisi de "--".
+  Tıklama ve gösterim sıfır kalıyor: onlar gerçek.
+- **Sıralama arşivi hiç dolamıyordu.** İlk koşu 480 gün geriden başlıyor;
+  orada veri bulamayınca imleci `null` yazıyor, bir sonraki açılış yine aynı
+  boş ayları okuyordu. 16 aydan genç her site için arşiv sonsuza dek sıfır
+  satırda kalıyor, ekran ise "bu sayfa açıldığında dolmaya başlar" diyordu.
+  Artık taranan pencere veriden ayrı tutuluyor (migration 0057); tam bir
+  tarama hiçbir şey bulamazsa baştan başlıyor, böylece izni geç yayılan bir
+  mülk de kaçırılmıyor. Gerçek mülkte doğrulandı: imleç 2025-10-01'den
+  2026-01-29'a ilerledi.
+- **Boş arşiv hiçbir şey göstermiyordu.** `rowCount === 0` durumunda durum
+  satırı `null` dönüyordu — yani operatörün en çok karşılaştığı hâl, tek
+  açıklama olmadan boş bir boşluktu. Artık nereye kadar tarandığını ve
+  sıradaki adımı söylüyor.
+- **Fırsatlar ekranındaki "250" seçeneği her seferinde hata veriyordu.**
+  Listede 250 vardı, doğrulayıcı 250'ye izin veriyordu, servis 100'ün
+  üstünde hata fırlatıyordu — üç dosya üç farklı sayı söylüyordu.
+- **Dışa aktarma filtreleri yok sayıyordu.** 477 sayfayı 4xx dönen on dörde
+  indirip CSV'ye basınca 477 satır iniyordu, ekranda bunu söyleyen hiçbir şey
+  olmadan. Artık filtreyi izliyor ve menü kaç satır yazacağını yazıyor.
+- **Analytics başlığı tablodan fazlasını iddia ediyordu.** En fazla 50 satır
+  gösteren tablonun üstünde veri kümesinin tamamı yazıyordu; artık ikisi de.
+- **Lighthouse sorun ayrıntıları fareyle sınırlıydı.** Satırın kendisi
+  tıklanabilirdi ama rolü, odağı ve klavye davranışı yoktu — o ekrandaki her
+  ayrıntı klavyeyle erişilemezdi.
+- **Kayıtlı kelime bildirimi gönderileni sayıyordu.** Zaten kayıtlı on
+  kelimeyi tekrar kaydedince "10 kelime kaydedildi" diyordu; yazma çakışmayı
+  yok sayan bir upsert.
+- **Denetim ekranındaki üç büyük sayı birbirini tutmuyordu.** Satır
+  düzeltmesi grup satırlarına uygulanmış, sekme etiketi ve üstündeki
+  istatistik kayıt saymaya devam ediyordu — sekiz kırık bağlantısı olan bir
+  sayfa ikisini de şişiriyor, gruplar da başlığa toplanmıyordu.
+
+### Geliştirilenler
+
+- Açılış kontrolü ve `/api/health` artık PageSpeed anahtarını kaynağına göre
+  değerlendiriyor: veritabanını göremeyen açılış kontrolü bilgi veriyor,
+  görebilen sağlık ucu gerçekten anahtar yoksa uyarıyor.
+- Denetim sonuçlarındaki sayılar `format.ts` üzerinden geçiyor.
+
 ## [0.5.0] — 2026-09-27
 
 Tasarım turu, depo temizliği ve fixture koşusunun belirsizliğinin
@@ -313,6 +376,7 @@ depodan kaldırıldı, çünkü onlar open-seo'nun yayınlarıydı.
   Verileriniz `seotracker_data` biriminde; güncellemeden önce yedek almak
   isteyebilirsiniz.
 
+[0.6.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.6.0
 [0.5.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.5.0
 [0.4.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.4.0
 [0.3.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.3.0

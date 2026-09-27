@@ -9,14 +9,13 @@ function itemFor(
 }
 
 describe("runSelfhostPreflight", () => {
-  it("passes the stock Docker setup (local_noauth + DataForSEO key)", () => {
+  it("passes the stock Docker setup", () => {
     const result = runSelfhostPreflight({
       AUTH_MODE: "local_noauth",
     });
 
     expect(result.failed).toBe(false);
     expect(itemFor(result, "AUTH_MODE")?.level).toBe("ok");
-    expect(itemFor(result, "PAGESPEED_API_KEY")?.level).toBe("warn");
   });
 
   it("fails an invalid AUTH_MODE with the valid list", () => {
@@ -48,11 +47,18 @@ describe("runSelfhostPreflight", () => {
     expect(itemFor(result, "TEAM_DOMAIN")?.message).toContain("https://");
   });
 
-  it("warns when no PageSpeed key is set", () => {
+  /*
+   * Not a warning. The key normally lives in the database, entered on the
+   * settings page, and this check runs before the app can read it -- so an
+   * absent variable is the expected state of a correctly configured install,
+   * and warning about it trained the operator to ignore the startup banner.
+   */
+  it("points at Settings when no PageSpeed key is in the environment", () => {
     const result = runSelfhostPreflight({ AUTH_MODE: "local_noauth" });
 
-    expect(itemFor(result, "PAGESPEED_API_KEY")?.level).toBe("warn");
-    expect(itemFor(result, "PAGESPEED_API_KEY")?.message).toContain("429");
+    expect(itemFor(result, "PageSpeed")?.level).toBe("info");
+    expect(itemFor(result, "PageSpeed")?.message).toContain("Settings");
+    expect(itemFor(result, "PageSpeed")?.message).toContain("429");
     expect(result.failed).toBe(false);
   });
 
@@ -62,7 +68,7 @@ describe("runSelfhostPreflight", () => {
       PAGESPEED_API_KEY: "AIzaSyExample",
     });
 
-    expect(itemFor(result, "PAGESPEED_API_KEY")?.level).toBe("ok");
+    expect(itemFor(result, "PageSpeed")?.level).toBe("ok");
   });
 
   it("warns that GSC stays disabled on a short BETTER_AUTH_SECRET", () => {

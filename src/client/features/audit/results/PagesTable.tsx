@@ -27,7 +27,6 @@ import {
 } from "@/client/features/audit/results/AuditResultsTableFilters";
 import {
   EMPTY_PAGES_FILTERS,
-  filterPages,
   nullableNumberSort,
   nullableStringSort,
   type PageRow,
@@ -190,12 +189,25 @@ export function PagesTable({
   pages,
   startUrl,
   issues,
+  filters,
+  onFiltersChange,
+  filteredPages,
 }: {
   pages: AuditResultsData["pages"];
   startUrl: string;
   issues: AuditResultsData["issues"];
+  /*
+   * Filter state is owned by `ResultsView`, not here.
+   *
+   * It used to live in this component, which meant the export menu one level
+   * up closed over the unfiltered array: narrowing 477 pages down to the
+   * fourteen that 4xx and clicking CSV wrote all 477 rows, with nothing on
+   * screen saying so. The operator found out in the spreadsheet.
+   */
+  filters: PagesFilters;
+  onFiltersChange: (filters: PagesFilters) => void;
+  filteredPages: AuditResultsData["pages"];
 }) {
-  const [filters, setFilters] = useState<PagesFilters>(EMPTY_PAGES_FILTERS);
   const [showFilters, setShowFilters] = useState(false);
   // URL order reads as a site inventory; status-first would open the table
   // on its most boring rows (redirects) whenever a site has no errors.
@@ -203,10 +215,6 @@ export function PagesTable({
     { id: "url", desc: false },
   ]);
   const activeFilterCount = countActiveFilters(filters, EMPTY_PAGES_FILTERS);
-  const filteredPages = useMemo(
-    () => filterPages(pages, filters),
-    [filters, pages],
-  );
   const columns = useMemo(
     () =>
       buildPagesColumns({
@@ -248,9 +256,9 @@ export function PagesTable({
       {showFilters ? (
         <PagesFilterBar
           filters={filters}
-          onChange={setFilters}
+          onChange={onFiltersChange}
           activeFilterCount={activeFilterCount}
-          onReset={() => setFilters(EMPTY_PAGES_FILTERS)}
+          onReset={() => onFiltersChange(EMPTY_PAGES_FILTERS)}
         />
       ) : null}
       <div className="overflow-hidden rounded-box border border-base-300">

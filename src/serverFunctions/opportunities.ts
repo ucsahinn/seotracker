@@ -7,7 +7,9 @@ import { requireProjectContext } from "@/serverFunctions/middleware";
 
 const schema = z.object({
   projectId: z.string().min(1),
-  limit: z.number().int().min(1).max(250).default(50),
+  // Matches the ceiling SearchOpportunityService enforces; 250 here only
+  // moved the failure from a validation message to a thrown error.
+  limit: z.number().int().min(1).max(100).default(50),
 });
 
 /**

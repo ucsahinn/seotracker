@@ -99,24 +99,28 @@ function checkAuthMode(env: EnvRecord, items: PreflightItem[]): void {
   });
 }
 
+// Like the OAuth client, the PageSpeed key normally lives in the database and
+// this check runs before the app, so it cannot see it. An absent environment
+// variable is therefore not a problem — it is the expected state of an install
+// configured from its own settings page, which is why this is `info` and not
+// the warning it used to be. A key is an opaque string with no cheap shape to
+// validate, so presence is all either branch reports.
 function checkPageSpeed(env: EnvRecord, items: PreflightItem[]): void {
-  // A PageSpeed key is an opaque string with no cheap shape to validate, so
-  // this only reports presence — a false "looks wrong" would be worse than
-  // saying nothing.
   items.push(
     get(env, "PAGESPEED_API_KEY")
       ? {
           key: "pagespeed",
-          name: "PAGESPEED_API_KEY",
+          name: "PageSpeed",
           level: "ok",
-          message: "Set",
+          message:
+            "Key supplied by the environment. A key saved in Settings would take precedence.",
         }
       : {
           key: "pagespeed",
-          name: "PAGESPEED_API_KEY",
-          level: "warn",
+          name: "PageSpeed",
+          level: "info",
           message:
-            "Not set — the Lighthouse phase of a site audit falls back to Google's keyless quota and usually fails with 429. Crawling and every SEO check work without it. Free key: docs/PAGESPEED_API_KEY.md.",
+            "Enter a PageSpeed key in Settings to raise the Lighthouse quota. Without one the API answers on Google's keyless allowance and usually fails with 429; crawling and every SEO check work regardless. Free key: docs/PAGESPEED_API_KEY.md.",
         },
   );
 }

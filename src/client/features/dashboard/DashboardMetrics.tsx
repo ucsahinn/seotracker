@@ -2,7 +2,7 @@ import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { MetricRow, MetricTile } from "@/client/components/MetricTile";
-import { formatCount, formatDecimal, formatPercent } from "@/client/lib/format";
+import { describeTotals } from "@/client/features/search-performance/totals";
 import { getSearchPerformanceReport } from "@/serverFunctions/searchPerformance";
 
 /**
@@ -72,47 +72,57 @@ export function DashboardMetrics({
     </Link>
   );
 
+  const shown = report ? describeTotals(report.totals) : null;
+  /*
+   * A delta needs both a base and a period worth comparing. Without
+   * impressions there is no measurement to have moved.
+   */
+  const delta = (pick: (totals: Totals) => number) =>
+    report && shown?.hasImpressions
+      ? ratio(pick(report.totals), pick(report.prevTotals))
+      : null;
+  // Every tile carries the window, including the first. It used to be the
+  // only one without, because its hint slot held the connect link.
+  const period = report ? "Son 28 gün" : undefined;
+
   return (
     <MetricRow>
       <MetricTile
         label="Tıklama"
-        value={report ? formatCount(report.totals.clicks) : null}
-        delta={
-          report ? ratio(report.totals.clicks, report.prevTotals.clicks) : null
-        }
-        hint={hint}
+        value={shown?.clicks ?? null}
+        delta={delta((totals) => totals.clicks)}
+        hint={hint ?? period}
       />
       <MetricTile
         label="Gösterim"
-        value={report ? formatCount(report.totals.impressions) : null}
-        delta={
-          report
-            ? ratio(report.totals.impressions, report.prevTotals.impressions)
-            : null
-        }
-        hint={report ? "Son 28 gün" : undefined}
+        value={shown?.impressions ?? null}
+        delta={delta((totals) => totals.impressions)}
+        hint={period}
       />
       <MetricTile
         label="Tıklama oranı"
-        value={report ? formatPercent(report.totals.ctr) : null}
-        delta={report ? ratio(report.totals.ctr, report.prevTotals.ctr) : null}
-        hint={report ? "Son 28 gün" : undefined}
+        value={shown?.ctr ?? null}
+        delta={delta((totals) => totals.ctr)}
+        hint={period}
       />
       <MetricTile
         label="Ortalama sıra"
-        value={report ? formatDecimal(report.totals.position) : null}
-        delta={
-          report
-            ? ratio(report.totals.position, report.prevTotals.position)
-            : null
-        }
+        value={shown?.position ?? null}
+        delta={delta((totals) => totals.position)}
         // Position 3 is better than position 8, so a fall is the good direction.
         inverted
-        hint={report ? "Son 28 gün" : undefined}
+        hint={period}
       />
     </MetricRow>
   );
 }
+
+type Totals = {
+  clicks: number;
+  impressions: number;
+  ctr: number;
+  position: number;
+};
 
 /** Fractional change against the previous period; null when there is no base. */
 function ratio(current: number, previous: number): number | null {

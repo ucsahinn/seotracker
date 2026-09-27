@@ -63,4 +63,13 @@ export const gscArchiveState = sqliteTable("gsc_archive_state", {
   // Set when a run failed, so the UI can say why the history stopped growing
   // instead of silently showing a stale window.
   lastError: text("last_error"),
+  /**
+   * The newest day any run has *looked at*, whether or not it found rows.
+   *
+   * Separate from `lastDate` because an empty window is still a window that
+   * has been covered. Keeping only the data cursor meant a site with no
+   * history in Google's oldest months re-read those same months forever and
+   * never reached the days it does have data for.
+   */
+  scannedThrough: text("scanned_through"),
 });

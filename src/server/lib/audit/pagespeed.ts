@@ -1,4 +1,3 @@
-import { getOptionalEnvValue } from "@/server/lib/runtime-env";
 import type { StoredLighthousePayload } from "@/server/lib/lighthouseStoredPayload";
 import {
   PAGESPEED_CATEGORIES,
@@ -86,7 +85,8 @@ function classifyFailure(
   }
   if (status === 429 && !hasApiKey) {
     return new PageSpeedError(
-      `No PAGESPEED_API_KEY set — ${message}. A free key raises the quota; see docs/PAGESPEED_API_KEY.md.`,
+      `No PageSpeed key set — ${message}. A free key raises the quota and ` +
+        `is entered under Settings; see docs/PAGESPEED_API_KEY.md.`,
       { status, retryable: true },
     );
   }
@@ -108,7 +108,16 @@ export async function fetchPageSpeedReport(input: {
   url: string;
   strategy: LighthouseStrategy;
 }): Promise<StoredLighthousePayload> {
-  const apiKey = (await getOptionalEnvValue("PAGESPEED_API_KEY"))?.trim();
+  /*
+   * Loaded here rather than imported at the top. Resolving the key reaches
+   * the database, which reaches `cloudflare:workers` -- a module only the
+   * worker runtime provides. Everything else in this file is plain fetch
+   * code that the node test project imports directly, and a static import
+   * made the whole file unloadable outside workerd.
+   */
+  const { getPageSpeedApiKey } =
+    await import("@/server/features/lighthouse/pagespeed-config");
+  const apiKey = await getPageSpeedApiKey();
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 

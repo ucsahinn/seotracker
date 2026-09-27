@@ -110,7 +110,7 @@ export function RankingsPage({ projectId }: { projectId: string }) {
               <tr>
                 <td colSpan={5} className="py-8 text-center text-sm text-muted">
                   {sync.data?.rowCount === 0
-                    ? "Arşiv henüz boş. Search Console bağlıysa bu sayfa açıldığında dolmaya başlar."
+                    ? "Arşiv henüz boş. Durumu yukarıda."
                     : "Bu aralıkta kayıtlı sorgu yok."}
                 </td>
               </tr>
@@ -201,6 +201,8 @@ function ArchiveStatus({
     data?: {
       earliestDate: string | null;
       lastDate: string | null;
+      /** How far the sweep has looked, data or not. */
+      scannedThrough: string | null;
       rowCount: number;
       newDays: number;
       hasMore: boolean;
@@ -254,7 +256,26 @@ function ArchiveStatus({
     );
   }
 
-  if (data.rowCount === 0) return null;
+  if (data.rowCount === 0) {
+    /*
+     * The state that used to render nothing at all -- no span, no progress,
+     * no reason -- directly above a table promising the archive was filling.
+     * `scannedThrough` is how far the sweep has looked; without it there was
+     * no way to tell "still working through the back catalogue" from
+     * "Google has nothing for this property".
+     */
+    return (
+      <p className="text-xs text-muted">
+        Arşiv boş.{" "}
+        {data.scannedThrough
+          ? `${formatDate(data.scannedThrough)} tarihine kadar tarandı, veri bulunamadı.`
+          : "Tarama henüz başlamadı."}
+        {data.hasMore
+          ? " Kalan günler sonraki açılışlarda taranacak."
+          : " Search Console bu mülk için veri döndürmüyor; site yeni doğrulandıysa birkaç gün sürebilir."}
+      </p>
+    );
+  }
 
   // Both ends are nullable. Interpolated raw they rendered as nothing, so a
   // half-populated archive read "Arşiv  –  arasını kapsıyor"; the range is

@@ -184,9 +184,24 @@ async function backfill(input: {
   const today = input.today ?? new Date();
   const state = await GscHistoryRepository.getArchiveState(input.projectId);
   const endDate = latestAvailableDate(today);
-  let cursor = resolveStart(state?.lastDate ?? null, today);
+  const dataCursor = resolveStart(state?.lastDate ?? null, today);
+  /*
+   * Windows already looked at, whether or not they held rows, so an empty
+   * stretch is not re-read on every page view. `resolveStart` still rewinds
+   * DATA_LAG_DAYS behind the newest stored day, and that rewind must win, so
+   * take whichever start is *earlier*.
+   */
+  const scanCursor = state?.scannedThrough
+    ? addDays(state.scannedThrough, 1)
+    : null;
+  let cursor =
+    scanCursor && scanCursor > dataCursor && state?.lastDate === null
+      ? scanCursor
+      : dataCursor;
 
   const previousLastDate = state?.lastDate ?? null;
+  /** The newest day this run reached, regardless of what it found. */
+  let scannedThrough: string | null = state?.scannedThrough ?? null;
   const outcome: BackfillOutcome = {
     daysFetched: 0,
     newDays: 0,
@@ -251,6 +266,7 @@ async function backfill(input: {
       break;
     }
 
+    scannedThrough = rangeEnd;
     cursor = addDays(rangeEnd, 1);
   }
 
@@ -275,10 +291,20 @@ async function backfill(input: {
     outcome.rowsWritten === 0 &&
     outcome.error === null;
 
+  /*
+   * A sweep that reached the newest available day and still holds no rows
+   * starts over next time. Without this reset, a property whose permission
+   * had not propagated when the archive was first opened would have every
+   * month marked scanned and would never look again.
+   */
+  const sweptEverythingAndFoundNothing =
+    learnedNothing && !outcome.hasMore && !outcome.notConnected;
+
   await GscHistoryRepository.markRun({
     projectId: input.projectId,
     earliestDate: learnedNothing ? null : outcome.earliestDate,
     lastDate: learnedNothing ? null : outcome.lastDate,
+    scannedThrough: sweptEverythingAndFoundNothing ? null : scannedThrough,
     error: outcome.error,
   });
 
@@ -297,6 +323,8 @@ async function getStatus(projectId: string) {
     lastDate: state?.lastDate ?? null,
     lastRunAt: state?.lastRunAt ?? null,
     lastError: state?.lastError ?? null,
+    /** How far the sweep has looked, so an empty archive can say so. */
+    scannedThrough: state?.scannedThrough ?? null,
     rowCount,
   };
 }

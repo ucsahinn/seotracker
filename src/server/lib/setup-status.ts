@@ -5,6 +5,7 @@ import { projects } from "@/db/schema";
 import { getAuthMode } from "@/lib/auth-mode";
 import { runSelfhostChecks } from "@/lib/selfhost-preflight";
 import { getGoogleOAuthClientSource } from "@/server/features/google/oauth-config";
+import { getPageSpeedKeySource } from "@/server/features/lighthouse/pagespeed-config";
 import { getOptionalEnvValue } from "@/server/lib/runtime-env";
 
 // "error" blocks core functionality; "warn" degrades a feature.
@@ -77,14 +78,35 @@ export async function getSelfHostSetupStatus(options?: {
 
   // Unlike the boot preflight, this runs with a database, so it can see a
   // client entered on the settings page and correct the env-only verdict.
-  if (
-    !options?.skipDatabaseCheck &&
-    (await getGoogleOAuthClientSource()) === "settings"
-  ) {
-    checks.gsc = {
-      status: "ok",
-      detail: "OAuth client configured in Settings.",
-    };
+  if (!options?.skipDatabaseCheck) {
+    if ((await getGoogleOAuthClientSource()) === "settings") {
+      checks.gsc = {
+        status: "ok",
+        detail: "OAuth client configured in Settings.",
+      };
+    }
+
+    /*
+     * Same correction for the PageSpeed key, decided by source rather than by
+     * the preflight's verdict. The preflight has to answer "info" because it
+     * cannot see the database, and "info" maps to "ok" -- so reusing it here
+     * reported a healthy PageSpeed check on an install with no key anywhere,
+     * next to a detail line asking for one.
+     */
+    const pageSpeedSource = await getPageSpeedKeySource();
+    checks.pagespeed =
+      pageSpeedSource === "settings"
+        ? { status: "ok", detail: "PageSpeed key configured in Settings." }
+        : pageSpeedSource === "environment"
+          ? {
+              status: "ok",
+              detail: "PageSpeed key supplied by PAGESPEED_API_KEY.",
+            }
+          : {
+              status: "warn",
+              detail:
+                "No PageSpeed key. The Lighthouse phase falls back to Google's keyless quota and usually fails with 429; enter a free key under Settings. Crawling and every SEO check work without it.",
+            };
   }
 
   return { version, authMode: getAuthMode(env.AUTH_MODE), checks };

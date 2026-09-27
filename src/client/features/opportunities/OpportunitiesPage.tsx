@@ -24,7 +24,13 @@ import { getSearchOpportunities } from "@/serverFunctions/opportunities";
  * band with GA4 outcomes does, and the scoring weighs demand at 50%,
  * business value at 30% and how close the page already is at 20%.
  */
-const LIMITS = [50, 100, 250] as const;
+/*
+ * 100 is the ceiling `SearchOpportunityService` enforces, and it threw a
+ * validation error rather than clamping -- so the 250 this list used to
+ * offer broke the screen every time it was picked. Kept in step with
+ * `opportunitiesSchema`, which now caps at the same number.
+ */
+const LIMITS = [25, 50, 100] as const;
 
 export function OpportunitiesPage({ projectId }: { projectId: string }) {
   const [limit, setLimit] = useState<(typeof LIMITS)[number]>(50);

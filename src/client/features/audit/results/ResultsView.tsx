@@ -1,6 +1,6 @@
-import { formatDuration } from "@/client/lib/format";
-import { resolveIssueSeverity } from "@/shared/audit-issues";
-import { useMemo, type ReactNode } from "react";
+import { StatsStrip } from "@/client/features/audit/results/ResultsStats";
+import { formatCount } from "@/client/lib/format";
+import { useMemo, useState, type ReactNode } from "react";
 import { ShieldAlert } from "lucide-react";
 import {
   exportIssues,
@@ -11,7 +11,12 @@ import type { AuditResultsData } from "@/client/features/audit/results/types";
 import type { AuditTab as ResultsTab } from "@/types/schemas/audit";
 import { IndexCoverageView } from "@/client/features/audit/results/IndexCoverageView";
 import { SitemapStatusPanel } from "@/client/features/gsc/SitemapStatusPanel";
-import { isLighthouseFailure } from "@/client/features/audit/results/AuditResultsTableFilterLogic";
+import {
+  EMPTY_PAGES_FILTERS,
+  filterPages,
+  isLighthouseFailure,
+  type PagesFilters,
+} from "@/client/features/audit/results/AuditResultsTableFilterLogic";
 import { IssuesView } from "@/client/features/audit/results/IssuesView";
 import { PagesTable } from "@/client/features/audit/results/PagesTable";
 import { TabPanel, Tabs } from "@/client/components/Tabs";
@@ -46,6 +51,29 @@ export function ResultsView({
   const rateLimitedCount = useMemo(
     () => pages.filter((page) => page.fetchClass === "rate_limited").length,
     [pages],
+  );
+  /*
+   * Distinct pages, matching what every issue row already claims.
+   *
+   * Link-level checks write one row per occurrence, so `issues.length` is a
+   * record count. The group rows were corrected to count pages; the tab
+   * label and the stat above them were not, which left the three biggest
+   * numbers on the screen disagreeing -- and the groups visibly failing to
+   * sum to the header.
+   */
+  /*
+   * Owned here so the export menu and the table agree on what "these rows"
+   * means. See the note on `PagesTable`'s props.
+   */
+  const [pagesFilters, setPagesFilters] =
+    useState<PagesFilters>(EMPTY_PAGES_FILTERS);
+  const filteredPages = useMemo(
+    () => filterPages(pages, pagesFilters),
+    [pages, pagesFilters],
+  );
+  const issuePageCount = useMemo(
+    () => new Set(issues.map((issue) => issue.pageUrl)).size,
+    [issues],
   );
 
   return (
@@ -95,6 +123,7 @@ export function ResultsView({
 
       <StatsStrip
         pagesCrawled={audit.pagesCrawled}
+        issuePageCount={issuePageCount}
         issues={issues}
         totalLighthouse={lighthouse.length}
         averageResponseMs={stats.averageResponseMs}
@@ -104,8 +133,9 @@ export function ResultsView({
       <div className="card bg-base-100 border border-base-300">
         <div className="card-body gap-3">
           <ResultsHeader
-            issueCount={issues.length}
-            pageCount={pages.length}
+            issueCount={issuePageCount}
+            issueRowCount={issues.length}
+            pageCount={filteredPages.length}
             lighthouseCount={lighthouse.length}
             hasPerformanceTab={hasPerformanceTab}
             activeTab={activeTab}
@@ -119,7 +149,7 @@ export function ResultsView({
                 exportIssues(issues, format);
                 return;
               }
-              exportPages(pages, format);
+              exportPages(filteredPages, format);
             }}
           />
 
@@ -141,6 +171,9 @@ export function ResultsView({
                 pages={pages}
                 startUrl={audit.startUrl}
                 issues={issues}
+                filters={pagesFilters}
+                onFiltersChange={setPagesFilters}
+                filteredPages={filteredPages}
               />
             )}
             {activeTab === "performance" && lighthouse.length > 0 && (
@@ -223,6 +256,7 @@ function useResultStats(
 
 function ResultsHeader({
   issueCount,
+  issueRowCount,
   pageCount,
   lighthouseCount,
   hasPerformanceTab,
@@ -230,7 +264,10 @@ function ResultsHeader({
   onTabChange,
   onExport,
 }: {
+  /** Distinct affected pages — what the tab label promises. */
   issueCount: number;
+  /** Issue records — what an issues export actually writes. */
+  issueRowCount: number;
   pageCount: number;
   lighthouseCount: number;
   hasPerformanceTab: boolean;
@@ -239,14 +276,14 @@ function ResultsHeader({
   onExport: (format: "csv" | "json" | "sheets") => void;
 }) {
   const tabs: Array<{ tab: ResultsTab; label: string }> = [
-    { tab: "issues", label: `Sorunlar (${issueCount})` },
-    { tab: "pages", label: `Sayfalar (${pageCount})` },
+    { tab: "issues", label: `Sorunlar (${formatCount(issueCount)})` },
+    { tab: "pages", label: `Sayfalar (${formatCount(pageCount)})` },
     { tab: "index", label: "İndeksleme" },
     ...(hasPerformanceTab
       ? [
           {
             tab: "performance" as const,
-            label: `Performance (${lighthouseCount})`,
+            label: `Performance (${formatCount(lighthouseCount)})`,
           },
         ]
       : []),
@@ -264,165 +301,18 @@ function ResultsHeader({
 
       {/* No export for index coverage yet, and falling through to the pages
           export downloaded the wrong file without saying so. */}
-      {activeTab === "index" ? null : <ExportDropdown onExport={onExport} />}
+      {activeTab === "index" ? null : (
+        <ExportDropdown
+          onExport={onExport}
+          rowCount={
+            activeTab === "performance"
+              ? lighthouseCount
+              : activeTab === "issues"
+                ? issueRowCount
+                : pageCount
+          }
+        />
+      )}
     </div>
   );
-}
-
-interface StatItem {
-  label: string;
-  value: string;
-  valueClass?: string;
-  sub?: ReactNode;
-}
-
-function StatsStrip({
-  pagesCrawled,
-  issues,
-  totalLighthouse,
-  averageResponseMs,
-  lighthouseSummary,
-}: {
-  pagesCrawled: number;
-  issues: AuditResultsData["issues"];
-  totalLighthouse: number;
-  averageResponseMs: number;
-  lighthouseSummary: {
-    failed: number;
-    avgPerformance: number | null;
-    avgSeo: number | null;
-    avgAccessibility: number | null;
-  };
-}) {
-  const severityCounts = useMemo(() => {
-    const counts = { critical: 0, warning: 0, info: 0 };
-    for (const issue of issues) {
-      counts[resolveIssueSeverity(issue)] += 1;
-    }
-    return counts;
-  }, [issues]);
-
-  const items: StatItem[] = [
-    { label: "Taranan sayfa", value: String(pagesCrawled) },
-    {
-      label: "Bulunan sorun",
-      value: String(issues.length),
-      valueClass: issues.length === 0 ? "text-success" : "",
-      sub: issues.length > 0 && (
-        <span className="flex items-center gap-2.5">
-          <SeverityCount
-            count={severityCounts.critical}
-            dotClass="bg-error"
-            label="kritik"
-          />
-          <SeverityCount
-            count={severityCounts.warning}
-            dotClass="bg-warning"
-            label="uyarı"
-          />
-          <SeverityCount
-            count={severityCounts.info}
-            dotClass="bg-base-content/30"
-            label="bilgi"
-          />
-        </span>
-      ),
-    },
-    { label: "Ort. yanıt", value: formatDuration(averageResponseMs) },
-  ];
-
-  if (totalLighthouse > 0) {
-    items.push(
-      { label: "Lighthouse testi", value: String(totalLighthouse) },
-      {
-        label: "Ort. Lighthouse perf.",
-        value:
-          lighthouseSummary.avgPerformance == null
-            ? "-"
-            : String(lighthouseSummary.avgPerformance),
-        valueClass: scoreClass(lighthouseSummary.avgPerformance),
-      },
-      {
-        label: "Ort. Lighthouse SEO",
-        value:
-          lighthouseSummary.avgSeo == null
-            ? "-"
-            : String(lighthouseSummary.avgSeo),
-        valueClass: scoreClass(lighthouseSummary.avgSeo),
-      },
-      {
-        label: "Ort. Lighthouse erişim",
-        value:
-          lighthouseSummary.avgAccessibility == null
-            ? "-"
-            : String(lighthouseSummary.avgAccessibility),
-        valueClass: scoreClass(lighthouseSummary.avgAccessibility),
-      },
-      {
-        label: "Lighthouse hatası",
-        value: String(lighthouseSummary.failed),
-        valueClass:
-          lighthouseSummary.failed > 0 ? "text-error" : "text-success",
-      },
-    );
-  }
-
-  const columnsClass =
-    items.length === 3
-      ? "grid-cols-1 sm:grid-cols-3"
-      : "grid-cols-2 md:grid-cols-4";
-
-  return (
-    <div
-      className={`grid ${columnsClass} gap-px rounded-box border border-base-300 bg-base-300/70 overflow-hidden`}
-    >
-      {items.map((item) => (
-        <div key={item.label} className="bg-base-100 px-4 py-3">
-          <p className="text-[11px] font-medium uppercase tracking-wider text-muted">
-            {item.label}
-          </p>
-          <p
-            className={`text-xl font-semibold mt-0.5 tabular-nums ${item.valueClass ?? ""}`}
-          >
-            {item.value}
-          </p>
-          {item.sub && (
-            <div className="text-xs text-muted mt-1">{item.sub}</div>
-          )}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-/**
- * A count with its severity said, not only coloured.
- *
- * Three dots and three numbers - "3 5 2" - carried the whole distinction in
- * hue, so anyone who cannot separate red from amber read a row of unlabelled
- * figures. The dot stays; the word is what makes it readable.
- */
-function SeverityCount({
-  count,
-  dotClass,
-  label,
-}: {
-  count: number;
-  dotClass: string;
-  label: string;
-}) {
-  if (count === 0) return null;
-  return (
-    <span className="flex items-center gap-1 tabular-nums">
-      <span className={`size-1.5 rounded-full ${dotClass}`} aria-hidden />
-      {count} {label}
-    </span>
-  );
-}
-
-function scoreClass(score: number | null) {
-  if (score == null) return "";
-  if (score >= 90) return "text-success";
-  if (score >= 50) return "text-warning";
-  return "text-error";
 }
