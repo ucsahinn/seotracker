@@ -8,6 +8,7 @@ const fresh: DashboardActivation = {
   gsc: { connected: false, siteUrl: null },
   mcp: { firstToolCallAt: null },
   hasMultipleProjects: false,
+  hasProjectContext: false,
   dismissedSteps: [],
 };
 
@@ -18,6 +19,7 @@ describe("dashboard checklist", () => {
       "project",
       "mcp",
       "gsc",
+      "context",
     ]);
     expect(
       setupSteps.every((step) => getStepStatus(fresh, step.id) === "todo"),
@@ -40,6 +42,7 @@ describe("dashboard checklist", () => {
       hasMultipleProjects: true,
       gsc: { connected: true, siteUrl: "sc-domain:example.com" },
       mcp: { ...fresh.mcp, firstToolCallAt: "2026-09-05" },
+      hasProjectContext: true,
       dismissedSteps: setupSteps.map((step) => step.id),
     };
     expect(

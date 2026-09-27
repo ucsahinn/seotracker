@@ -230,7 +230,7 @@ export function ProjectSwitcher({
           aria-haspopup="listbox"
           onClick={() => (open ? closePanel() : openPanel())}
           onKeyDown={handleTriggerKeyDown}
-          className="flex min-w-0 flex-1 items-center justify-between gap-2 rounded-l-lg px-3 py-1.5 text-left transition-colors hover:bg-base-200"
+          className="flex min-w-0 flex-1 items-center justify-between gap-2 rounded-l-[var(--radius-box)] px-3 py-1.5 text-left transition-colors hover:bg-base-200"
         >
           <span className="flex min-w-0 flex-col">
             <span className="truncate text-sm font-medium text-base-content">
@@ -254,7 +254,7 @@ export function ProjectSwitcher({
               closePanel();
               onCloseDrawer?.();
             }}
-            className="flex shrink-0 items-center justify-center rounded-r-lg border-l border-base-300 px-2.5 text-muted transition-colors hover:bg-base-200 hover:text-base-content"
+            className="flex shrink-0 items-center justify-center rounded-r-[var(--radius-box)] border-l border-base-300 px-2.5 text-muted transition-colors hover:bg-base-200 hover:text-base-content"
           >
             <Settings className="size-4" />
           </Link>

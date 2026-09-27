@@ -3,8 +3,8 @@
 -- Use only if the latest migrations fail with a unique-constraint error for
 -- projects_one_default_per_organization_idx. Prefer the TypeScript runner in
 -- scripts/d1-default-project-cleanup.ts; it adds dry-run output, active-run
--- preflight checks, validation, and remote confirmation. See
--- docs/default-project-cleanup.md for the full recovery runbook.
+-- preflight checks, validation, and remote confirmation, and its --help
+-- walks the whole recovery.
 --
 -- "Newest" matches the app's default project selection. The id tie-breaker is
 -- only here to keep this cleanup deterministic when several race-created rows

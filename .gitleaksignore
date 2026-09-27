@@ -1,0 +1,27 @@
+# Known findings in history. The working tree is clean:
+#
+#   gitleaks detect --source . --no-git --redact     -> no leaks found
+#
+# These three are inherited from upstream (every-app/open-seo), authored
+# before the fork, and none of them is a credential worth rotating. All were
+# checked against HEAD: the first two files no longer exist, and
+# selfhost-preflight.ts line 17 is a console banner today.
+#
+# They are listed here rather than scrubbed from history because rewriting
+# 653 commits to remove two tokens that are public by design is a worse
+# trade than a four-line allowlist. If a real secret ever lands, it does not
+# belong here -- rotate it.
+
+# PostHog project (ingest) key, hardcoded beside https://us.i.posthog.com.
+# A PostHog project key is shipped to the browser by design; it can write
+# events to a project this fork does not own and reads nothing.
+# File deleted from HEAD along with the rest of the telemetry surface.
+1398605ddcdd7dbf51176eae3d92611d8db64a84:src/server/lib/self-host-telemetry.ts:generic-api-key:22
+
+# The same PostHog key, in the preflight script. Line 17 is a banner now.
+625b76ebee0d2aca8bb6fb63bfa9fc1b9621d8e5:scripts/selfhost-preflight.ts:generic-api-key:17
+
+# OpenAI Apps domain-verification token. A .well-known challenge value is
+# served publicly to anyone who asks for it; that is the whole mechanism.
+# Route deleted from HEAD.
+7a0ab0de2c81f118c1686e942222bfe5ba2b59d8:src/routes/[.well-known]/openai-apps-challenge.ts:generic-api-key:4

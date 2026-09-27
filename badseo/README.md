@@ -18,8 +18,12 @@ tool.
 
 ## What's covered
 
-Every issue type in the seotracker audit engine is exercised by at least one page
-(the harness enforces this). Pages are grouped by category:
+Every fixture-reachable issue type in the seotracker audit engine is exercised
+by at least one page, and the harness fails the run if one is not. Thirteen
+types are deliberately out of reach and listed as such in `run-audit.ts`:
+eight change how the whole crawl behaves (a robots.txt that 5xxs would take
+every other fixture down with it) and five need a live Search Console
+connection. Pages are grouped by category:
 
 | Category                     | Pages                                                                                                         |
 | ---------------------------- | ------------------------------------------------------------------------------------------------------------- |
@@ -36,8 +40,8 @@ Browse them all on the homepage at `/#issues`.
 
 ## How it's built
 
-badseo.dev is a TanStack Start app deployed to a Cloudflare Worker, following
-the same Vite and Cloudflare setup as the repository's `web/` app.
+badseo is a TanStack Start app on a Cloudflare Worker, following the same
+Vite and Cloudflare setup as the seotracker app itself.
 
 TanStack React routes render the healthy homepage and privacy policy.
 A TanStack catch-all server route keeps the deliberate fixtures as raw

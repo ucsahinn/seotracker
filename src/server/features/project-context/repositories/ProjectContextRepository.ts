@@ -55,6 +55,20 @@ async function listSections(projectId: string) {
     .orderBy(asc(projectContextSections.key));
 }
 
+/**
+ * Whether the project has any stored context at all.
+ *
+ * The dashboard asks this on every load to decide if the setup list should
+ * still offer the step, so it counts rather than reading the sections back.
+ */
+async function hasAnySection(projectId: string): Promise<boolean> {
+  const [row] = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(projectContextSections)
+    .where(eq(projectContextSections.projectId, projectId));
+  return (row?.count ?? 0) > 0;
+}
+
 function upsertSection(
   tx: Tx,
   params: {
@@ -268,6 +282,7 @@ function pruneResearchLogBefore(tx: Tx, projectId: string, entryDate: string) {
 
 export const ProjectContextRepository = {
   listSections,
+  hasAnySection,
   upsertSection,
   deleteSection,
   listCompetitors,

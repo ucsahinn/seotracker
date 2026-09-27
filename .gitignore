@@ -49,3 +49,13 @@ dist-sourcemaps/
 
 # Browser-automation output from local verification runs.
 .playwright-mcp/
+
+# Keys and certificates. Nothing tracked matches these today; they are here
+# because the one Google credential this app needs is a service-account JSON
+# file, and the obvious place to drop it while debugging is the repo root.
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*-service-account*.json

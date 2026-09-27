@@ -234,7 +234,7 @@ function TagFilterPopover({
           <span className="text-muted">{selectedTagIds.length} seçili</span>
           <button
             type="button"
-            className="rounded px-2 py-1 text-muted hover:bg-base-200"
+            className="rounded-field px-2 py-1 text-muted hover:bg-base-200"
             onClick={onClearSelection}
           >
             Tümünü temizle
@@ -274,7 +274,7 @@ function TagFilterRow({
           onClick={onToggle}
         >
           <span
-            className={`flex size-4 shrink-0 items-center justify-center rounded border ${
+            className={`flex size-4 shrink-0 items-center justify-center rounded-field border ${
               checked
                 ? "border-primary bg-primary text-primary-content"
                 : "border-base-300"
@@ -292,7 +292,7 @@ function TagFilterRow({
         </button>
         <button
           type="button"
-          className={`rounded p-1 text-muted hover:bg-base-300 hover:text-base-content ${
+          className={`rounded-field p-1 text-muted hover:bg-base-300 hover:text-base-content ${
             isManaging ? "bg-base-300 text-base-content" : ""
           }`}
           onClick={() => onStartManaging(isManaging ? null : tag.id)}

@@ -91,23 +91,28 @@ export function AnalyticsPage({ projectId }: { projectId: string }) {
         />
 
         {/* A pick-one filter, not a second tab strip: it narrows the report
-            the tabs above chose rather than swapping the panel. */}
-        <div className="join" role="radiogroup" aria-label="Kanal">
-          {CHANNELS.map((option) => (
-            <button
-              key={option.value}
-              type="button"
-              role="radio"
-              aria-checked={option.value === channel}
-              className={`btn join-item btn-sm ${
-                option.value === channel ? "btn-active" : ""
-              }`}
-              onClick={() => setChannel(option.value)}
-            >
-              {option.label}
-            </button>
-          ))}
-        </div>
+            the tabs above chose rather than swapping the panel. Gone on the
+            setup-check tab, where it used to flip its own active state and
+            change nothing -- a control that visibly responds and has no
+            effect is worse than a disabled one. */}
+        {view === HEALTH ? null : (
+          <div className="join" role="radiogroup" aria-label="Kanal">
+            {CHANNELS.map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                role="radio"
+                aria-checked={option.value === channel}
+                className={`btn join-item btn-sm ${
+                  option.value === channel ? "btn-active" : ""
+                }`}
+                onClick={() => setChannel(option.value)}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       <TabPanel group="ga4-report" value={view} className="space-y-4">

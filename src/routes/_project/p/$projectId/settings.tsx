@@ -1,4 +1,4 @@
-import { PageShell } from "@/client/components/PageShell";
+import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronLeft } from "lucide-react";
@@ -34,10 +34,10 @@ function ProjectSettingsLayout() {
           <ChevronLeft className="size-4" />
           Projeler
         </Link>
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Proje ayarları</h1>
-          <p className="text-sm text-muted">{project?.name ?? " "}</p>
-        </div>
+        {/* The non-breaking space is a placeholder: the project name
+            arrives a beat after the heading, and without it the tab
+            strip below jumped up a line and back. */}
+        <PageHeader title="Proje ayarları" description={project?.name ?? " "} />
         {/* Navigation, not tabs: each one changes the URL and swaps the
             <Outlet/>. `role="tab"` here announced "tab" instead of "link" and
             promised an `aria-controls` panel that never existed. The daisyUI

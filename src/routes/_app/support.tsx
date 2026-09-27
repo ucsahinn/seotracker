@@ -1,4 +1,4 @@
-import { PageShell } from "@/client/components/PageShell";
+import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { createFileRoute } from "@tanstack/react-router";
 import { ExternalLink } from "lucide-react";
 
@@ -12,17 +12,11 @@ export const Route = createFileRoute("/_app/support")({
 function SupportPage() {
   return (
     <PageShell width="reading">
-      <div>
-        <p className="text-sm font-medium text-muted">Yardım</p>
-        <h1 className="mt-1 text-2xl font-bold tracking-tight">
-          Nereye bakmalı
-        </h1>
-      </div>
-
-      <p className="text-sm leading-relaxed text-muted">
-        Bu kurulum kendi bilgisayarınızda çalışıyor, bu yüzden hemen her sorun
-        iki yerde görünür: konteyner günlüğü ve sağlık ucu.
-      </p>
+      <PageHeader
+        eyebrow={<p className="text-sm font-medium text-muted">Yardım</p>}
+        title="Nereye bakmalı"
+        description="Bu kurulum kendi bilgisayarınızda çalışıyor, bu yüzden hemen her sorun iki yerde görünür: konteyner günlüğü ve sağlık ucu."
+      />
 
       <ul className="space-y-3 text-sm text-muted">
         <li>

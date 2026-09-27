@@ -106,6 +106,24 @@ export function DashboardSetupAction({
         </Link>
       </div>
     );
+  if (step === "context")
+    return (
+      <div className="max-w-2xl space-y-4">
+        <p className="text-sm leading-relaxed text-muted">
+          Ne sattığınız, kimi hedeflediğiniz ve hangi sayfaların para
+          kazandırdığı burada duruyor. Rapor şablonları ve bağladığınız ajan bu
+          bilgiyi okuyor; boşken ikisi de siteyi tanımadan yorum yapıyor.
+        </p>
+        <Link
+          to="/p/$projectId/context"
+          params={{ projectId }}
+          className="btn btn-primary btn-sm"
+          onClick={onComplete}
+        >
+          Proje bilgisini doldurun
+        </Link>
+      </div>
+    );
   if (step === "gsc")
     return (
       <SearchConsoleConnectionCard

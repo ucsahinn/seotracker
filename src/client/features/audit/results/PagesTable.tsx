@@ -1,3 +1,6 @@
+import { formatDuration } from "@/client/lib/format";
+import { TablePagination } from "@/client/components/table/TablePagination";
+import { SEARCH_PERFORMANCE_PAGE_SIZES } from "@/types/schemas/search-performance";
 import { useMemo, useState } from "react";
 import {
   createColumnHelper,
@@ -173,7 +176,7 @@ function buildPagesColumns({
       cell: ({ getValue }) => {
         const value = getValue();
         return value ? (
-          <span className="text-xs">{value}ms</span>
+          <span className="text-xs">{formatDuration(value)}</span>
         ) : (
           <EmptyCell />
         );
@@ -223,7 +226,15 @@ export function PagesTable({
     state: { sorting },
     onSortingChange: setSorting,
     withSorting: true,
+    withPagination: true,
+    // Every page of the audit is already in memory, so this is purely about
+    // what the browser renders. A real site is hundreds to thousands of rows
+    // and the table drew all of them: the tab took seconds to appear and
+    // scrolling stuttered. Same client-side pagination the striking-distance
+    // table uses.
+    initialState: { pagination: { pageIndex: 0, pageSize: 50 } },
   });
+  const pagination = table.getState().pagination;
 
   return (
     <div className="space-y-3">
@@ -242,11 +253,27 @@ export function PagesTable({
           onReset={() => setFilters(EMPTY_PAGES_FILTERS)}
         />
       ) : null}
-      <AppDataTable
-        table={table}
-        className="table table-sm"
-        empty={<EmptyTableMessage label="Bu filtrelerle eşleşen sayfa yok." />}
-      />
+      <div className="overflow-hidden rounded-box border border-base-300">
+        <AppDataTable
+          table={table}
+          className="table table-sm"
+          empty={
+            <EmptyTableMessage label="Bu filtrelerle eşleşen sayfa yok." />
+          }
+        />
+        {filteredPages.length > 0 ? (
+          <TablePagination
+            page={pagination.pageIndex + 1}
+            pageSize={pagination.pageSize}
+            pageSizes={SEARCH_PERFORMANCE_PAGE_SIZES}
+            totalCount={filteredPages.length}
+            hasNextPage={table.getCanNextPage()}
+            isLoading={false}
+            onPageChange={(nextPage) => table.setPageIndex(nextPage - 1)}
+            onPageSizeChange={(nextSize) => table.setPageSize(nextSize)}
+          />
+        ) : null}
+      </div>
     </div>
   );
 }

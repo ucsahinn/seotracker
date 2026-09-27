@@ -60,13 +60,19 @@ export function MetricTile({
   );
 }
 
-function DeltaBadge({
+/**
+ * Exported for the dashboard cards, which show a delta beside a `Stat`
+ * rather than inside a tile. They had their own copy -- `PercentDelta` --
+ * that painted direction with a bare glyph and the fill colours the theme
+ * reserves for chips, and announced a percentage with no direction at all.
+ */
+export function DeltaBadge({
   value,
-  inverted,
+  inverted = false,
   title,
 }: {
   value: MetricDelta;
-  inverted: boolean;
+  inverted?: boolean;
   title?: string;
 }) {
   if (value == null) return null;
@@ -101,6 +107,10 @@ function DeltaBadge({
       }`}
     >
       <Icon className="size-3.5" aria-hidden />
+      {/* The arrow carries direction for a sighted reader and is
+          aria-hidden, so without this the announced value is a bare
+          number: no up or down, and good-or-bad only in colour. */}
+      <span className="sr-only">{resolved.up ? "arttı" : "azaldı"} </span>
       {resolved.text}
     </span>
   );

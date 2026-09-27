@@ -39,6 +39,16 @@ interface IssueGroup {
   explanation: string;
   howToFix: string;
   issues: AuditIssueRow[];
+  /**
+   * Distinct pages, not rows.
+   *
+   * Link-level checks write one row per occurrence -- a page with eight
+   * broken links is eight rows -- so printing `issues.length` as "N sayfa"
+   * inflated a single page's problem eightfold against the dashboard card
+   * the operator had just clicked through from. The repository that every
+   * other consumer reads counts `countDistinct(pageUrl)` and says so.
+   */
+  pageCount: number;
 }
 
 function groupIssues(issues: AuditIssueRow[]): IssueGroup[] {
@@ -54,17 +64,25 @@ function groupIssues(issues: AuditIssueRow[]): IssueGroup[] {
         explanation: descriptor?.explanation ?? "",
         howToFix: descriptor?.howToFix ?? "",
         issues: [],
+        pageCount: 0,
       };
       groups.set(issue.issueType, group);
     }
     group.issues.push(issue);
   }
 
+  for (const group of groups.values()) {
+    group.pageCount = new Set(group.issues.map((issue) => issue.pageUrl)).size;
+  }
+
   return sort(
     Array.from(groups.values()),
     (a, b) =>
       ISSUE_SEVERITY_ORDER[a.severity] - ISSUE_SEVERITY_ORDER[b.severity] ||
-      b.issues.length - a.issues.length,
+      // Ordered by pages affected, matching what the row now claims. Rows
+      // would put one page with eight broken links above eight pages with
+      // one problem each.
+      b.pageCount - a.pageCount,
   );
 }
 
@@ -160,7 +178,7 @@ function IssueRow({ group }: { group: IssueGroup }) {
           {group.title}
         </span>
         <span className="text-xs tabular-nums text-muted shrink-0">
-          {group.issues.length} sayfa
+          {group.pageCount} sayfa
         </span>
         <ChevronRight
           className={`size-4 shrink-0 text-muted transition-transform ${
@@ -194,7 +212,7 @@ function AffectedUrlList({ issues }: { issues: AuditIssueRow[] }) {
   const remaining = issues.length - rendered.length;
 
   return (
-    <div className="max-h-[320px] overflow-y-auto rounded border border-base-300/60 bg-base-100">
+    <div className="max-h-[320px] overflow-y-auto rounded-field border border-base-300/60 bg-base-100">
       {rendered.map((issue) => (
         <div
           key={issue.id}

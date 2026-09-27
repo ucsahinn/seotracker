@@ -206,7 +206,7 @@ export function SavedKeywordsBulkTagsModal({
                     className="flex w-full items-center gap-2 px-3 py-1.5 text-left hover:bg-base-200"
                   >
                     <span
-                      className={`flex size-4 shrink-0 items-center justify-center rounded border ${
+                      className={`flex size-4 shrink-0 items-center justify-center rounded-field border ${
                         checked
                           ? "border-primary bg-primary text-primary-content"
                           : "border-base-300"
@@ -306,7 +306,7 @@ function SegmentButton({
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className={`inline-flex items-center gap-1.5 rounded px-3 py-1 text-sm transition ${
+      className={`inline-flex items-center gap-1.5 rounded-field px-3 py-1 text-sm transition ${
         active
           ? "bg-base-100 font-medium shadow-sm"
           : "text-muted hover:text-base-content"

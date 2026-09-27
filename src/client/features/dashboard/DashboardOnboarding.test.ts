@@ -22,6 +22,7 @@ const fresh: DashboardActivation = {
   gsc: { connected: false, siteUrl: null },
   mcp: { firstToolCallAt: null },
   hasMultipleProjects: false,
+  hasProjectContext: false,
   dismissedSteps: [],
 };
 

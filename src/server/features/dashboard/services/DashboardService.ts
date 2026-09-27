@@ -6,6 +6,7 @@ import { AuditRepository } from "@/server/features/audit/repositories/AuditRepos
 import { getIssueTypePageCountsForAudit } from "@/server/features/audit/repositories/auditSummaryQueries";
 import { Ga4ConnectionRepository } from "@/server/features/ga4/repositories/Ga4ConnectionRepository";
 import { GscConnectionRepository } from "@/server/features/gsc/repositories/GscConnectionRepository";
+import { ProjectContextRepository } from "@/server/features/project-context/repositories/ProjectContextRepository";
 
 export type DashboardActivation = {
   domain: string | null;
@@ -19,6 +20,15 @@ export type DashboardActivation = {
     firstToolCallAt: string | null;
   };
   hasMultipleProjects: boolean;
+  /**
+   * Whether the project has any stored context.
+   *
+   * Empty context is the quietest of the setup gaps: every screen renders,
+   * nothing errors, and the audit runs -- but an agent asking "which of
+   * these pages earns money" has nothing to read, and the report templates
+   * fill in generic prose. Nothing on the dashboard said so.
+   */
+  hasProjectContext: boolean;
   dismissedSteps: string[];
 };
 
@@ -45,19 +55,28 @@ async function getActivation(input: {
   organizationId: string;
   domain: string | null;
 }): Promise<DashboardActivation> {
-  const [ga4, gsc, orgActivation, projectActivation, projectCount, dismissed] =
-    await Promise.all([
-      Ga4ConnectionRepository.getByProjectId(input.projectId),
-      GscConnectionRepository.getByProjectId(input.projectId),
-      ActivationRepository.getOrganizationActivation(input.organizationId),
-      ActivationRepository.getProjectActivation(input.projectId),
-      ProjectRepository.countProjects(input.organizationId),
-      ActivationRepository.getDismissedSteps(input.userId, input.projectId),
-    ]);
+  const [
+    ga4,
+    gsc,
+    orgActivation,
+    projectActivation,
+    projectCount,
+    dismissed,
+    hasProjectContext,
+  ] = await Promise.all([
+    Ga4ConnectionRepository.getByProjectId(input.projectId),
+    GscConnectionRepository.getByProjectId(input.projectId),
+    ActivationRepository.getOrganizationActivation(input.organizationId),
+    ActivationRepository.getProjectActivation(input.projectId),
+    ProjectRepository.countProjects(input.organizationId),
+    ActivationRepository.getDismissedSteps(input.userId, input.projectId),
+    ProjectContextRepository.hasAnySection(input.projectId),
+  ]);
 
   return {
     domain: input.domain,
     hasMultipleProjects: projectCount > 1,
+    hasProjectContext,
     dismissedSteps: dismissed.map((row) => row.step),
     ga4: {
       connected: ga4 !== null,

@@ -1,4 +1,4 @@
-import { Bot, FolderPlus, Globe, Search } from "lucide-react";
+import { Bot, BookOpen, FolderPlus, Globe, Search } from "lucide-react";
 import type { DashboardActivation } from "@/server/features/dashboard/services/DashboardService";
 import type { DashboardSetupStep } from "@/types/schemas/dashboard";
 
@@ -33,6 +33,15 @@ export const setupSteps: {
     detail: "Gerçek tıklamalarınızı ve sorgularınızı buraya getirin.",
     icon: Search,
   },
+  // Last, deliberately: it is the only step that asks the operator to write
+  // something rather than click a button, and it is worth far more once
+  // there is an audit and some Search Console data to write about.
+  {
+    id: "context",
+    label: "Projeyi anlatın",
+    detail: "Ajanınız ve raporlarınız bu siteyi neyin ilgilendirdiğini bilsin.",
+    icon: BookOpen,
+  },
 ];
 
 export function getStepStatus(
@@ -48,6 +57,7 @@ export function getStepStatus(
     // surface - so it was always null and contributed nothing.
     mcp: activation.mcp.firstToolCallAt !== null,
     gsc: activation.gsc.connected,
+    context: activation.hasProjectContext,
   };
   if (completed[step]) return "done";
   /*

@@ -52,7 +52,7 @@ export function ManageTagRow({
           <input
             value={name}
             onChange={(event) => setName(event.target.value)}
-            className="min-w-0 flex-1 rounded border border-base-300 bg-base-100 px-2 py-1 text-sm outline-none focus:border-primary"
+            className="min-w-0 flex-1 rounded-field border border-base-300 bg-base-100 px-2 py-1 text-sm outline-none focus:border-primary"
           />
         </div>
       </div>
@@ -91,14 +91,14 @@ export function ManageTagRow({
         <div className="flex items-center gap-1.5">
           <button
             type="button"
-            className="rounded px-2 py-1 text-xs text-muted hover:bg-base-300"
+            className="rounded-field px-2 py-1 text-xs text-muted hover:bg-base-300"
             onClick={onCancel}
           >
             Vazgeç
           </button>
           <button
             type="button"
-            className="rounded bg-primary px-2 py-1 text-xs font-medium text-primary-content disabled:opacity-50"
+            className="rounded-field bg-primary px-2 py-1 text-xs font-medium text-primary-content disabled:opacity-50"
             disabled={!canSave}
             onClick={() =>
               onSave({

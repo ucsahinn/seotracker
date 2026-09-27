@@ -308,21 +308,27 @@ export function SearchPerformancePage({
                     </option>
                   ))}
                 </select>
-                <TableExportMenu
-                  buttonClassName="btn btn-ghost btn-sm gap-1"
-                  actions={[
-                    {
-                      label: "Sheets'e aktar",
-                      icon: <Sheet className="size-4" />,
-                      onClick: () => void handleExport("sheets"),
-                    },
-                    {
-                      label: "CSV indir",
-                      icon: <Download className="size-4" />,
-                      onClick: () => void handleExport("csv"),
-                    },
-                  ]}
-                />
+                {/* Cannibalization has no export of its own, and
+                    `tabDimension` answers "query" for it -- so the button
+                    downloaded a query report while the screen showed
+                    overlapping pages, with nothing saying so. */}
+                {tab === "cannibalization" ? null : (
+                  <TableExportMenu
+                    buttonClassName="btn btn-ghost btn-sm gap-1"
+                    actions={[
+                      {
+                        label: "Sheets'e aktar",
+                        icon: <Sheet className="size-4" />,
+                        onClick: () => void handleExport("sheets"),
+                      },
+                      {
+                        label: "CSV indir",
+                        icon: <Download className="size-4" />,
+                        onClick: () => void handleExport("csv"),
+                      },
+                    ]}
+                  />
+                )}
               </div>
             </div>
 

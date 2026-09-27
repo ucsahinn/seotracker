@@ -76,7 +76,7 @@ export function LighthouseIssuesHeader({
               <TriangleAlert className="size-3" />
               Uyarı {severityCounts.warning}
             </span>
-            <span className="badge border border-info/30 bg-info/10 text-info/80 gap-1">
+            <span className="badge border border-info/30 bg-info/10 text-[var(--ink-info)] gap-1">
               <Info className="size-3" />
               Bilgi {severityCounts.info}
             </span>

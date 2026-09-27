@@ -9,6 +9,7 @@ export const dashboardSetupStepSchema = z.enum([
   "project",
   "mcp",
   "gsc",
+  "context",
 ]);
 export type DashboardSetupStep = z.infer<typeof dashboardSetupStepSchema>;
 export const dashboardStepDismissalSchema = dashboardProjectInputSchema.extend({

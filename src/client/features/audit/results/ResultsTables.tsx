@@ -206,7 +206,7 @@ function buildPerformanceColumns({
       cell: ({ getValue }) => {
         const value = getValue();
         return value ? (
-          <span className="text-xs">{Math.round(value)}ms</span>
+          <span className="text-xs">{formatDuration(value)}</span>
         ) : (
           <span className="text-xs text-muted">-</span>
         );
@@ -218,7 +218,7 @@ function buildPerformanceColumns({
       cell: ({ getValue }) => {
         const value = getValue();
         return value ? (
-          <span className="text-xs">{Math.round(value)}ms</span>
+          <span className="text-xs">{formatDuration(value)}</span>
         ) : (
           <span className="text-xs text-muted">-</span>
         );

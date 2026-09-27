@@ -1,7 +1,11 @@
 import { PageShell } from "@/client/components/PageShell";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { getErrorCode } from "@/client/lib/error-messages";
-import { formatDateTime } from "@/client/lib/format";
+import {
+  formatCount,
+  formatDateTime,
+  formatPercent,
+} from "@/client/lib/format";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useCallback } from "react";
 import { AlertCircle, Loader2 } from "lucide-react";
@@ -270,14 +274,10 @@ function ProgressCard({
   };
 }) {
   const crawlProgress =
-    status.pagesTotal > 0
-      ? Math.round((status.pagesCrawled / status.pagesTotal) * 100)
-      : 0;
+    status.pagesTotal > 0 ? status.pagesCrawled / status.pagesTotal : 0;
   const lighthouseDone = status.lighthouseCompleted + status.lighthouseFailed;
   const lighthouseProgress =
-    status.lighthouseTotal > 0
-      ? Math.round((lighthouseDone / status.lighthouseTotal) * 100)
-      : 0;
+    status.lighthouseTotal > 0 ? lighthouseDone / status.lighthouseTotal : 0;
   const isLighthousePhase = status.currentPhase === "lighthouse";
   const phaseLabel =
     status.currentPhase === "discovery"
@@ -316,23 +316,25 @@ function ProgressCard({
           <progress
             className="progress progress-primary w-full"
             value={progress}
-            max={100}
+            max={1}
           />
 
           <div className="flex items-center justify-between text-sm">
             {isLighthousePhase ? (
               <span>
-                {lighthouseDone} / {status.lighthouseTotal} kontrol
+                {formatCount(lighthouseDone)} /{" "}
+                {formatCount(status.lighthouseTotal)} kontrol
                 {status.lighthouseFailed > 0
-                  ? ` (${status.lighthouseFailed} başarısız)`
+                  ? ` (${formatCount(status.lighthouseFailed)} başarısız)`
                   : ""}
               </span>
             ) : (
               <span>
-                {status.pagesCrawled} / {status.pagesTotal} sayfa
+                {formatCount(status.pagesCrawled)} /{" "}
+                {formatCount(status.pagesTotal)} sayfa
               </span>
             )}
-            <span className="text-muted">{progress}%</span>
+            <span className="text-muted">{formatPercent(progress, 0)}</span>
           </div>
         </div>
       </div>
@@ -341,7 +343,7 @@ function ProgressCard({
         <div className="card bg-base-100 border border-base-300">
           <div className="card-body gap-2 p-4">
             <h3 className="text-sm font-medium text-muted">
-              Taranan sayfalar ({crawledUrls.length})
+              Taranan sayfalar ({formatCount(crawledUrls.length)})
             </h3>
             <p className="text-xs text-muted">
               Güncellendi{" "}
@@ -379,7 +381,7 @@ function ProgressRow({
 
   return (
     <div
-      className={`flex items-center justify-between gap-3 px-2 py-1.5 rounded text-sm ${
+      className={`flex items-center justify-between gap-3 px-2 py-1.5 rounded-field text-sm ${
         index === 0
           ? "bg-primary/5 animate-in fade-in slide-in-from-top-1 duration-300"
           : ""

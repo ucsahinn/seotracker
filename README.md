@@ -24,7 +24,7 @@ kaldırır.
   kayıtları yerelde tuttuğu için o sınırın ötesine geçer. Sıralama sayfası her
   açılışta eksik günleri kendiliğinden tamamlar; zamanlanmış bir göreve gerek
   yoktur.
-- **Site denetimi** — kendi tarayıcısıyla sitenizi gezer ve 36 ayrı teknik SEO
+- **Site denetimi** — kendi tarayıcısıyla sitenizi gezer ve 56 ayrı teknik SEO
   sorununu raporlar: kırık bağlantı, eksik başlık, yinelenen içerik, yönlendirme
   zinciri, yetim sayfa ve diğerleri.
 - **Hız skorları** — denetim sırasında Google PageSpeed Insights ile örnek
@@ -45,7 +45,7 @@ kaldırır.
 - **Denetim karşılaştırması** — bir haftadır tarama yapılmadıysa panel hatırlatır
   ve son iki denetimi karşılaştırıp yeni çıkan sorunları ayrı gösterir.
 - **Raporlar** — yapay zeka ajanının yazdığı, kendi kendine yeten HTML belgeler.
-- **MCP sunucusu** — Claude Code gibi ajanlar bu verinin tamamına 28 araç
+- **MCP sunucusu** — Claude Code gibi ajanlar bu verinin tamamına 32 araç
   üzerinden erişir.
 
 ## Ne yapmaz

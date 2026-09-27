@@ -13,8 +13,6 @@ import {
 // permission check fails.
 const statement = {
   ...defaultStatements,
-  // Subscribe, top-ups, Stripe portal, cancel. Owner-only.
-  billing: ["manage"],
   // Create + archive/restore projects. Renames/settings stay open to all.
   project: ["create", "delete"],
   // GSC/GA4 connect, re-point, disconnect.
@@ -26,7 +24,6 @@ export const orgAccessControl = createAccessControl(statement);
 export const orgRoles = {
   owner: orgAccessControl.newRole({
     ...ownerAc.statements,
-    billing: ["manage"],
     project: ["create", "delete"],
     integration: ["manage"],
   }),
@@ -37,7 +34,7 @@ export const orgRoles = {
   }),
   // Defined from day one so exposing it later is UI-only; not offered in the
   // invite picker yet. Members can view everything and run research, but not
-  // manage the org, billing, projects, or integrations.
+  // manage the org, projects, or integrations.
   member: orgAccessControl.newRole({
     ...memberAc.statements,
   }),

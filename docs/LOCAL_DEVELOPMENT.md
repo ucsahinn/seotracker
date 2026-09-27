@@ -106,6 +106,12 @@ Generate migration:
 pnpm run db:generate
 ```
 
+> **Read the output before keeping it.** Migrations `0048` and up are
+> hand-written and have no drizzle snapshot, so drizzle's newest snapshot is
+> `0047`. `db:generate` diffs the schema against `0047`, not against the
+> database, and will happily re-emit eight migrations' worth of changes that
+> are already applied. Keep only the statements for the change you just made.
+
 Migrate local DB:
 
 ```sh

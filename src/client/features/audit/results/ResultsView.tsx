@@ -1,3 +1,4 @@
+import { formatDuration } from "@/client/lib/format";
 import { resolveIssueSeverity } from "@/shared/audit-issues";
 import { useMemo, type ReactNode } from "react";
 import { ShieldAlert } from "lucide-react";
@@ -327,7 +328,7 @@ function StatsStrip({
         </span>
       ),
     },
-    { label: "Ort. yanıt", value: `${averageResponseMs}ms` },
+    { label: "Ort. yanıt", value: formatDuration(averageResponseMs) },
   ];
 
   if (totalLighthouse > 0) {

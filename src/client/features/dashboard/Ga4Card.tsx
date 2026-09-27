@@ -11,9 +11,9 @@ import {
 import {
   CardShell,
   moreDetailsClass,
-  PercentDelta,
   Stat,
 } from "@/client/features/dashboard/cardParts";
+import { DeltaBadge } from "@/client/components/MetricTile";
 import { Ga4ConnectCard } from "@/client/features/dashboard/Ga4ConnectCard";
 import { formatCount, formatDay, formatPercent } from "@/client/lib/format";
 import { getGa4DashboardReport } from "@/serverFunctions/ga4";
@@ -33,9 +33,8 @@ function statValue(
 }
 
 function statDelta(current: number | null, previous: number | null) {
-  return current !== null && previous !== null ? (
-    <PercentDelta current={current} previous={previous} />
-  ) : undefined;
+  if (current === null || previous === null || previous <= 0) return undefined;
+  return <DeltaBadge value={(current - previous) / previous} />;
 }
 
 function SessionsTooltip({

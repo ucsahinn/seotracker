@@ -1,13 +1,13 @@
 import { fileURLToPath } from "node:url";
 import type { Plugin } from "vite";
 
-// Literal `new URL(..., import.meta.url)` per stub (rather than a path
-// helper) so knip sees the stub files as used.
+// Literal `new URL(..., import.meta.url)` (rather than a path helper) so
+// knip sees the stub file as used. Note the cost of that: it also hides a
+// stub that has gone dead. `workers-ai-provider-stub.ts` sat here invisible
+// to `ci:check` long after its package left the lockfile. If a stub's
+// package is gone, the alias and the file go with it.
 const JUST_BASH_STUB = fileURLToPath(
   new URL("./src/server/lib/just-bash-stub.ts", import.meta.url),
-);
-const WORKERS_AI_PROVIDER_STUB = fileURLToPath(
-  new URL("./src/server/lib/workers-ai-provider-stub.ts", import.meta.url),
 );
 /**
  * Dependencies that must never be reachable from the workers' eager startup
@@ -19,22 +19,10 @@ const WORKERS_AI_PROVIDER_STUB = fileURLToPath(
  */
 const EAGER_DENYLIST: Array<{ pattern: RegExp; expected: string }> = [
   {
-    pattern: /node_modules\/autumn-js\//,
-    expected:
-      "lazy-loaded behind the facade in src/server/billing/autumn.ts and " +
-      "the /api/autumn route's lazy handler",
-  },
-  {
-    pattern:
-      /node_modules\/(workers-ai-provider|@ai-sdk\/(openai|anthropic))\//,
-    expected:
-      "aliased to workers-ai-provider-stub.ts (@cloudflare/think's default " +
-      "provider path is dead code — our agents construct OpenRouter models)",
-  },
-  {
     pattern: /node_modules\/just-bash\//,
     expected:
-      "aliased to just-bash-stub.ts (Think's workspace bash tool is disabled)",
+      "aliased to just-bash-stub.ts (the agent workspace bash tool is " +
+      "disabled)",
   },
   {
     // The barrel (index.*) is allowed — the load hook rewrites its content to
@@ -58,8 +46,8 @@ const EAGER_DENYLIST: Array<{ pattern: RegExp; expected: string }> = [
 /**
  * Keeps the worker's eager server bundle lean, in three parts:
  *
- * 1. `resolve.alias` stubs for packages that are pure dead weight (dead code
- *    paths in @cloudflare/think).
+ * 1. A `resolve.alias` stub for a package that is pure dead weight, pulled
+ *    in eagerly by a dependency that never reaches the code path needing it.
  * 2. A `load`-hook swap of zod v4's all-languages locales barrel for an
  *    en-only barrel (the barrel is imported via relative specifiers inside
  *    zod itself, and pre-enforced resolvers in this plugin stack win the
@@ -77,15 +65,12 @@ export function leanWorkerBundle(): Plugin {
       return {
         resolve: {
           alias: {
-            // Rationale for each stub lives in its docblock. TODO: remove the
-            // just-bash workaround once @cloudflare/think stops eagerly
-            // importing it (https://github.com/cloudflare/agents/issues/1673).
+            // Rationale lives in the stub's docblock. TODO: remove the
+            // just-bash workaround once `agents` stops eagerly importing it
+            // (https://github.com/cloudflare/agents/issues/1673). The credit
+            // used to go to @cloudflare/think, which left the lockfile;
+            // `pnpm why just-bash` names the current importer.
             "just-bash": JUST_BASH_STUB,
-            // Subpaths must precede the bare specifier, which would otherwise
-            // prefix-match them.
-            "workers-ai-provider/anthropic": WORKERS_AI_PROVIDER_STUB,
-            "workers-ai-provider/openai": WORKERS_AI_PROVIDER_STUB,
-            "workers-ai-provider": WORKERS_AI_PROVIDER_STUB,
           },
         },
       };

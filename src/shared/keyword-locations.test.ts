@@ -1,17 +1,11 @@
 import { sort } from "remeda";
 import { describe, expect, it } from "vitest";
 import {
-  LABS_LOCATION_OPTIONS,
   LOCATION_OPTIONS,
-  formatLocationLabel,
-  getIsoCountryCode,
   getKeywordDataProvider,
   getLanguageCode,
-  isLabsLocationCode,
   isSupportedLanguageCode,
   isSupportedLocationCode,
-  resolveKeywordDataLanguage,
-  resolveLabsMarket,
   resolveMarket,
 } from "./keyword-locations";
 
@@ -24,7 +18,6 @@ describe("keyword locations", () => {
   it("routes Google-Ads-only countries to google_ads", () => {
     expect(getKeywordDataProvider(2352)).toBe("google_ads"); // Iceland
     expect(isSupportedLocationCode(2352)).toBe(true);
-    expect(isLabsLocationCode(2352)).toBe(false);
     expect(getLanguageCode(2352)).toBe("is");
   });
 
@@ -33,18 +26,12 @@ describe("keyword locations", () => {
     expect(isSupportedLocationCode(999999)).toBe(false);
   });
 
-  it("excludes every Google-Ads-only country from the Labs picker", () => {
+  it("routes every googleAdsOnly country away from the per-country lists", () => {
     const adsOnly = LOCATION_OPTIONS.filter((option) => option.googleAdsOnly);
     expect(adsOnly.length).toBeGreaterThan(0);
-    const labsCodes = new Set(
-      LABS_LOCATION_OPTIONS.map((option) => option.code),
-    );
     for (const option of adsOnly) {
-      expect(labsCodes.has(option.code)).toBe(false);
+      expect(getKeywordDataProvider(option.code)).toBe("google_ads");
     }
-    expect(LABS_LOCATION_OPTIONS.length + adsOnly.length).toBe(
-      LOCATION_OPTIONS.length,
-    );
   });
 
   it("accepts every supported language code and rejects unknown ones", () => {
@@ -67,35 +54,6 @@ describe("keyword locations", () => {
     expect(labels).toEqual(sort(labels, (a, b) => a.localeCompare(b)));
     const codes = LOCATION_OPTIONS.map((option) => option.code);
     expect(new Set(codes).size).toBe(codes.length);
-  });
-});
-
-describe("getIsoCountryCode", () => {
-  it("lowercases the shortLabel for standard countries", () => {
-    expect(getIsoCountryCode(2840)).toBe("us");
-    expect(getIsoCountryCode(2036)).toBe("au");
-  });
-
-  it("maps the UK display label to its ISO code gb", () => {
-    expect(getIsoCountryCode(2826)).toBe("gb");
-  });
-
-  it("falls back to us for unknown location codes", () => {
-    expect(getIsoCountryCode(999999)).toBe("us");
-  });
-});
-
-describe("formatLocationLabel", () => {
-  it("trims uneven spacing around canonical name segments", () => {
-    expect(formatLocationLabel("Portland-Auburn, ME,United States")).toBe(
-      "Portland-Auburn, ME, United States",
-    );
-  });
-
-  it("truncates to maxSegments for compact display", () => {
-    expect(formatLocationLabel("Springfield,Illinois,United States", 2)).toBe(
-      "Springfield, Illinois",
-    );
   });
 });
 
@@ -136,51 +94,5 @@ describe("resolveMarket", () => {
     expect(
       resolveMarket({ locationCode: 2276, languageCode: "en" }, vietnamProject),
     ).toEqual({ locationCode: 2276, languageCode: "en" });
-  });
-});
-
-describe("resolveLabsMarket", () => {
-  it("inherits a Labs-served project market like resolveMarket does", () => {
-    expect(
-      resolveLabsMarket({}, { locationCode: 2704, languageCode: "vi" }),
-    ).toEqual({ locationCode: 2704, languageCode: "vi" });
-  });
-
-  it("falls back to the US when the project market is Google-Ads-served", () => {
-    // Iceland has no Labs data. The caller never picked it, so a Labs-only
-    // tool must not fail on it.
-    expect(
-      resolveLabsMarket({}, { locationCode: 2352, languageCode: "en" }),
-    ).toEqual({ locationCode: 2840, languageCode: "en" });
-  });
-
-  it("falls back to the US when the project pair is not served", () => {
-    // Concurrent half-updates can leave a location/language pair Labs rejects;
-    // sending it would spend credits on a task that always fails.
-    expect(
-      resolveLabsMarket({}, { locationCode: 2276, languageCode: "vi" }),
-    ).toEqual({ locationCode: 2840, languageCode: "en" });
-  });
-
-  it("leaves an explicit location alone so the caller's assert can reject it", () => {
-    expect(
-      resolveLabsMarket(
-        { locationCode: 2352 },
-        { locationCode: 2704, languageCode: "vi" },
-      ),
-    ).toMatchObject({ locationCode: 2352 });
-  });
-});
-
-describe("resolveKeywordDataLanguage", () => {
-  it("keeps a language the country's keyword data serves", () => {
-    expect(resolveKeywordDataLanguage(2840, "es")).toBe("es");
-  });
-
-  it("falls back to the country default for a SERP-only pair", () => {
-    // Rank tracking can track English in Czechia; Labs would charge and fail.
-    expect(resolveKeywordDataLanguage(2203, "en")).toBe("cs");
-    // Google-Ads countries keep their single default too.
-    expect(resolveKeywordDataLanguage(2352, "en")).toBe("is");
   });
 });

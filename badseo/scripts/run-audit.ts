@@ -51,6 +51,8 @@ const MAX_PAGES = 200;
  */
 const CRAWL_BUDGET_MS = 30 * 60_000;
 const CONCURRENCY = 10;
+// Mirrors MAX_RETRIES in crawl-throttle.ts, for the stop-reason readout.
+const MAX_RETRIES = 3;
 
 interface CrawlLink {
   sourceId: string;
@@ -82,6 +84,14 @@ async function crawl(origin: string): Promise<{
   pages: CrawledPageResult[];
   links: CrawlLink[];
   completed: boolean;
+  /**
+   * Why the crawl stopped short, when it did.
+   *
+   * A bare "TRUNCATED" has now been misread three times -- as a page cap, a
+   * cold start, and a regression -- and it was none of them. The run
+   * already knows which breaker fired; it just was not saying.
+   */
+  stopReason: string | null;
   /** The parsed rules, so the reporters can run the same checks the
    *  workflow does -- `blocked-resource` needs them. */
   isAllowed: (url: string) => boolean;
@@ -137,20 +147,49 @@ async function crawl(origin: string): Promise<{
    * chunk, so 90 seconds is a chunk's budget. The harness has one pass and
    * has to reach every fixture in it, so the budget is the whole site's.
    */
+  // Production settings. The main crawl must never see a 429 now -- see
+  // `rateLimitUrls` below -- so if this one ever trips, that is a real
+  // signal rather than the fixture site provoking it.
+  const throttle = createCrawlThrottle(Date.now() + CRAWL_BUDGET_MS);
+
   /*
-   * A cooldown ceiling this run cannot reach. The fixture site serves two
-   * pages that answer 429 to everything, on purpose, so a correctly working
-   * politeness budget stops the crawl partway and everything downstream
-   * reports NOT CRAWLED. That is the guard doing its job against a site
-   * built to provoke it; this harness exists to check issue detection, and
-   * `rate-limited-page` is the finding it wants from those fixtures.
+   * The fixture site serves two pages that answer 429 to everything, on
+   * purpose. A throttle is shared across an origin, so on a shared one those
+   * two poisoned the whole run: `crawl-throttle` stops a crawl after
+   * MAX_RETRIES consecutive 429s with no success between them, and at
+   * CONCURRENCY = 10 whether a success interleaves is a scheduling race. The
+   * run alternated between ~46 and ~57 pages with nothing changed, and the
+   * "NOT CRAWLED" rows that followed were read as a regression three times.
+   *
+   * So these URLs get a throttle each, and the rest of the site gets the
+   * real one. That is deliberately not production behaviour -- there a
+   * refusing origin *should* stop the crawl, and `crawl-throttle.test.ts`
+   * covers that. Here the assertion is only that `rate-limited-page` is
+   * detected, and one page built to refuse should not decide whether the
+   * other fifty-odd fixtures get checked.
+   *
+   * Fast delays for the same reason: the real backoff doubles from 30s with
+   * no Retry-After, which would add minutes to a run about issue detection.
    */
-  const throttle = createCrawlThrottle(
-    Date.now() + CRAWL_BUDGET_MS,
-    undefined,
-    undefined,
-    Number.MAX_SAFE_INTEGER,
+  const rateLimitUrls = new Set(
+    allFixtures
+      .filter((f) => f.expectedIssues.includes("rate-limited-page"))
+      .flatMap((f) => fixturePaths(f))
+      .map((path) => normalizeUrl(`${origin}${path}`))
+      .filter((u): u is string => !!u),
   );
+  const throttleFor = (url: string) =>
+    rateLimitUrls.has(url)
+      ? createCrawlThrottle(
+          Date.now() + CRAWL_BUDGET_MS,
+          undefined,
+          undefined,
+          {
+            firstDelayMs: 25,
+            maxIntervalMs: 50,
+          },
+        )
+      : throttle;
 
   const enqueue = (url: string, depth: number | null) => {
     const n = normalizeUrl(url);
@@ -182,7 +221,7 @@ async function crawl(origin: string): Promise<{
 
     const crawled = await Promise.all(
       batch.map((e) =>
-        crawlPage(e.url, e.depth, sitemapSet.has(e.url), throttle),
+        crawlPage(e.url, e.depth, sitemapSet.has(e.url), throttleFor(e.url)),
       ),
     );
 
@@ -212,12 +251,24 @@ async function crawl(origin: string): Promise<{
     }
   }
 
-  const completed =
-    !throttle.stopped &&
-    dropped === 0 &&
-    linkQueue.length === 0 &&
-    sitemapQueue.length === 0;
-  return { pages, links, completed, isAllowed: robots.isAllowed };
+  const remaining = linkQueue.length + sitemapQueue.length;
+  const completed = !throttle.stopped && dropped === 0 && remaining === 0;
+  const { consecutiveRateLimits, cooldownMs } = throttle.state;
+  const stopReason = completed
+    ? null
+    : throttle.checkpointFailed
+      ? "the throttle could not checkpoint"
+      : consecutiveRateLimits > MAX_RETRIES
+        ? `${consecutiveRateLimits} consecutive 429s tripped the retry ` +
+          "breaker (the fixture site serves two permanently-429 pages on " +
+          "purpose, and whether a success interleaves is a scheduling race)"
+        : pages.length >= MAX_PAGES
+          ? `hit the ${MAX_PAGES}-page cap`
+          : dropped > 0
+            ? `${dropped} fetches returned nothing, with ` +
+              `${Math.round(cooldownMs / 1000)}s of cooldown accrued`
+            : `${remaining} URLs still queued`;
+  return { pages, links, completed, stopReason, isAllowed: robots.isAllowed };
 }
 
 /** In-memory equivalents of the two D1-backed multipage checks. */
@@ -317,7 +368,8 @@ async function main() {
   await warmup();
   const origin = new URL(BASE).origin;
   const startUrl = normalizeUrl(`${origin}/`) ?? `${origin}/`;
-  const { pages, links, completed, isAllowed } = await crawl(origin);
+  const { pages, links, completed, stopReason, isAllowed } =
+    await crawl(origin);
 
   if (process.env.DEBUG_DEPTH) {
     for (const p of pages) {
@@ -351,7 +403,7 @@ async function main() {
   console.log(
     c.dim(
       `crawled ${pages.length} pages, ${links.length} internal links, ${detected.length} issues, crawl ${
-        completed ? "completed" : "TRUNCATED"
+        completed ? "completed" : `TRUNCATED -- ${stopReason}`
       }\n`,
     ),
   );

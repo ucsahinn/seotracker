@@ -47,13 +47,21 @@ export function createCrawlThrottle(
   previous?: CrawlThrottleState,
   persist?: (state: CrawlThrottleState) => Promise<void>,
   /*
-   * The cumulative-wait ceiling. Injectable for one caller only: the badseo
-   * harness crawls a site that refuses on purpose, so a working politeness
-   * budget legitimately stops it -- and the harness is measuring issue
-   * detection, not politeness. Production never passes this.
+   * Pacing overrides for one caller only: the badseo harness, which crawls
+   * two pages built to refuse every request. Real waits there would add
+   * minutes to a run whose subject is issue detection, not politeness, and
+   * the pacing itself is covered by this file's own unit tests. Production
+   * passes nothing and gets the constants above.
    */
-  maxCooldownMs: number = MAX_COOLDOWN_MS,
+  limits: {
+    maxCooldownMs?: number;
+    firstDelayMs?: number;
+    maxIntervalMs?: number;
+  } = {},
 ): CrawlThrottle {
+  const maxCooldownMs = limits.maxCooldownMs ?? MAX_COOLDOWN_MS;
+  const firstDelayMs = limits.firstDelayMs ?? FIRST_DELAY_MS;
+  const maxIntervalMs = limits.maxIntervalMs ?? MAX_INTERVAL_MS;
   const state: CrawlThrottleState = previous
     ? { ...previous }
     : {
@@ -97,11 +105,11 @@ export function createCrawlThrottle(
     },
     async backoff(attempt, retryAfter) {
       state.consecutiveRateLimits += 1;
-      state.intervalMs = Math.min(MAX_INTERVAL_MS, state.intervalMs * 2);
+      state.intervalMs = Math.min(maxIntervalMs, state.intervalMs * 2);
       const delayMs = Math.max(
         state.intervalMs,
         parseRetryAfterMs(retryAfter) ??
-          FIRST_DELAY_MS * 2 ** (state.consecutiveRateLimits - 1),
+          firstDelayMs * 2 ** (state.consecutiveRateLimits - 1),
       );
       const now = Date.now();
       const pausedUntil = Math.max(state.pausedUntil, now + delayMs);
@@ -144,7 +152,7 @@ export function createCrawlThrottle(
        * crawl hammering it.
        */
       const repaid = served
-        ? Math.max(0, state.cooldownMs - FIRST_DELAY_MS / 2)
+        ? Math.max(0, state.cooldownMs - firstDelayMs / 2)
         : state.cooldownMs;
       if (state.consecutiveRateLimits === 0 && repaid === state.cooldownMs) {
         return;

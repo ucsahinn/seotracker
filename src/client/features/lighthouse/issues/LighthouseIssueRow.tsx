@@ -89,7 +89,7 @@ export function LighthouseIssueRow({ issue }: { issue: LighthouseIssue }) {
                     {issue.items.map((item, itemIndex) => (
                       <pre
                         key={`${issue.auditKey}-${itemIndex}`}
-                        className="bg-base-200/60 p-2 rounded overflow-x-auto text-xs leading-relaxed"
+                        className="bg-base-200/60 p-2 rounded-field overflow-x-auto text-xs leading-relaxed"
                       >
                         {item}
                       </pre>
@@ -150,7 +150,7 @@ function severityBadgeClass(severity: "critical" | "warning" | "info") {
   if (severity === "warning") {
     return "border-warning/35 bg-warning/10 text-[var(--ink-warning)]";
   }
-  return "border-info/30 bg-info/10 text-info/80";
+  return "border-info/30 bg-info/10 text-[var(--ink-info)]";
 }
 
 function severityIcon(severity: "critical" | "warning" | "info") {

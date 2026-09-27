@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted. Shipped in PR #570. Report templates (`specs/0013-report-templates.md`) and public share links (`specs/0014-public-share-links.md`) build on it.
+Accepted. Shipped in PR #570. Report templates (`specs/0013-report-templates.md`) build on it. Public share links were specced upstream and deleted with the rest of the hosted surface; a report is viewed in-app or exported.
 
 ## What it does
 
@@ -42,7 +42,7 @@ Both self-host modes get reports with no new binding or store. Erasing a user re
 - A nonce instead of a hash for the print script: the tag is spliced into a document the app did not parse, and a dangling tag in the report could absorb the nonce.
 - An injected print banner: the document it warns about could hide or fake it with CSS.
 - Server-side PDF: the report is a real document with its own print CSS, so the browser prints it.
-- A separate report domain: covered in `specs/0014-public-share-links.md`.
+- A separate report domain: only mattered for public share links, which this fork does not have. A self-hosted report is served from the same origin as the app.
 
 ## Not in scope
 

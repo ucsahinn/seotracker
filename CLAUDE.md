@@ -39,10 +39,10 @@ Inspection allows 2000 URLs per property per day, so results are cached in
 
 ## Interface
 
-The whole visual language lives in `src/client/styles/app.css`. Seventy-one
-files use daisyUI class names, so the theme tokens and the component overrides
-at the bottom of that file restyle every screen at once. Change them there
-before you change a component.
+The whole visual language lives in `src/client/styles/app.css`. Close to a
+hundred files use daisyUI class names -- nearly every screen -- so the theme
+tokens and the component overrides at the bottom of that file restyle all of
+them at once. Change them there before you change a component.
 
 - **Surfaces** carry a trace of chroma. No pure black, no pure white.
 - **Separation is a hairline** (`var(--hairline)`), never a mid-grey 1px box.

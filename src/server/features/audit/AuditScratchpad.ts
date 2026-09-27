@@ -251,7 +251,11 @@ export class AuditScratchpad extends DurableObject {
   async runFinalizeChecks(input: {
     startUrl: string;
     crawlCompleted: boolean;
-  }): Promise<{ brokenLinks: BrokenLinkRow[]; orphanPages: OrphanPageRow[] }> {
+  }): Promise<{
+    brokenLinks: BrokenLinkRow[];
+    orphanPages: OrphanPageRow[];
+    repairedDepths: Array<{ url: string; depth: number }>;
+  }> {
     // Only flag targets we actually crawled and saw fail — never inferred
     // from absence. Blocked targets (WAF challenges) are excluded: a 403
     // from bot protection is not evidence of a broken link.
@@ -287,7 +291,28 @@ export class AuditScratchpad extends DurableObject {
             .map((row) => ({ pageId: row.page_id, url: row.url }))
         : [];
 
-    return { brokenLinks, orphanPages };
+    /*
+     * Depths the frontier learned after the page row was already written.
+     *
+     * A page is leased with whatever depth the frontier knew at that moment,
+     * and sitemap seeds are inserted with depth NULL. `recordBatch` repairs
+     * the frontier when a link later reaches the same URL -- but the page
+     * row was persisted at lease time and never revisited, so on a
+     * sitemap-driven crawl most pages kept `crawl_depth` NULL. Measured on
+     * a real 212-page audit: 196 of them, 92%. The `deep-page` check skips
+     * a NULL depth, so it was silently off for almost the whole site.
+     *
+     * Handed back so the workflow can backfill the rows. Only non-NULL
+     * depths: a URL nothing ever linked to genuinely has no click path.
+     */
+    const repairedDepths = this.ctx.storage.sql
+      .exec<{
+        url: string;
+        depth: number;
+      }>(`SELECT url, depth FROM frontier WHERE depth IS NOT NULL`)
+      .toArray();
+
+    return { brokenLinks, orphanPages, repairedDepths };
   }
 
   /** Wipe all state (success path, or explicit audit deletion). */

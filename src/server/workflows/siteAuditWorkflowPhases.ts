@@ -12,6 +12,7 @@ import {
   normalizeUrl,
 } from "@/server/lib/audit/url-utils";
 import { isCrawlableUrl } from "@/server/lib/audit/url-policy";
+import { AuditLighthouseRepository } from "@/server/features/audit/repositories/AuditLighthouseRepository";
 import { AuditRepository } from "@/server/features/audit/repositories/AuditRepository";
 import { getAuditScratchpad } from "@/server/features/audit/AuditScratchpad";
 import { AuditProgressKV } from "@/server/lib/audit/progress-kv";
@@ -278,7 +279,10 @@ export async function runLighthousePhase(
             }),
           ),
         );
-        await AuditRepository.insertLighthouseResults(auditId, results);
+        await AuditLighthouseRepository.insertLighthouseResults(
+          auditId,
+          results,
+        );
 
         const failed = results.filter((result) => result.errorMessage).length;
         const completed = results.length - failed;
@@ -436,13 +440,24 @@ async function runScratchpadLinkChecks(
   crawl: CrawlPhaseResult,
 ): Promise<DetectedIssue[]> {
   const scratchpad = getAuditScratchpad(auditId);
-  const { brokenLinks, orphanPages } = await scratchpad.runFinalizeChecks({
-    // Page rows store normalized URLs; normalize the start URL the same way
-    // so the orphan exclusion matches.
-    startUrl: normalizeUrl(startUrl) ?? startUrl,
-    // Orphan detection only makes sense when the crawl wasn't truncated.
-    crawlCompleted: crawl.completed,
-  });
+  const { brokenLinks, orphanPages, repairedDepths } =
+    await scratchpad.runFinalizeChecks({
+      // Page rows store normalized URLs; normalize the start URL the same
+      // way so the orphan exclusion matches.
+      startUrl: normalizeUrl(startUrl) ?? startUrl,
+      // Orphan detection only makes sense when the crawl wasn't truncated.
+      crawlCompleted: crawl.completed,
+    });
+
+  /*
+   * Backfill the click depth the frontier worked out after each page row
+   * was written. Sitemap seeds are leased at depth NULL, and the row is
+   * persisted then; a link reaching the same URL later repairs the frontier
+   * and never touches the row. On a sitemap-driven crawl that left most
+   * pages at NULL, and `deep-page` skips NULL -- so the check was off for
+   * almost the whole site. Runs before the checks below read the rows.
+   */
+  await AuditRepository.backfillCrawlDepths(auditId, repairedDepths);
 
   return [
     ...brokenLinks.map((row) => ({

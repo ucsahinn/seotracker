@@ -32,7 +32,7 @@ export function TableBulkActionBar({
           <button
             type="button"
             aria-label="Seçimi temizle"
-            className="-ml-1 rounded p-1 text-muted hover:bg-base-content/10 hover:text-base-content"
+            className="-ml-1 rounded-field p-1 text-muted hover:bg-base-content/10 hover:text-base-content"
             onClick={onClear}
           >
             <X className="size-3.5" />

@@ -2,7 +2,7 @@
  * Build-time stand-in for `just-bash`, wired up via the leanWorkerBundle
  * plugin's alias (vite-plugin-lean-worker-bundle.ts).
  *
- * `@cloudflare/think` eagerly imports just-bash (~21 MB of source, plus
+ * `agents` eagerly imports just-bash (~21 MB of source, plus
  * turndown and the 8.6 MB @mixmark-io/domino DOM implementation) at module
  * init, and SamChatAgent is re-exported from src/server.ts, so the whole chain
  * lands in the main worker's startup module graph — raising every isolate's
@@ -12,7 +12,7 @@
  * is unreachable; this stub keeps it out of the bundle entirely.
  *
  * Remove once https://github.com/cloudflare/agents/issues/1673 lands and
- * @cloudflare/think loads just-bash lazily.
+ * the importing package loads just-bash lazily.
  */
 const STUBBED_MESSAGE =
   "just-bash is stubbed out of the worker bundle (see " +

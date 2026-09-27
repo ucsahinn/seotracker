@@ -35,10 +35,20 @@ vi.mock("@/server/lib/audit/lighthouse", async (importOriginal) => {
 vi.mock("@/server/features/audit/repositories/AuditRepository", () => ({
   AuditRepository: {
     getPagesForAudit: getPagesForAuditMock,
-    insertLighthouseResults: insertLighthouseResultsMock,
     updateAuditProgress: updateAuditProgressMock,
   },
 }));
+// Lighthouse rows moved to their own repository when AuditRepository
+// crossed its line ceiling; they come from a different source (PageSpeed
+// Insights, not this crawler), which is the seam that cost least to cut.
+vi.mock(
+  "@/server/features/audit/repositories/AuditLighthouseRepository",
+  () => ({
+    AuditLighthouseRepository: {
+      insertLighthouseResults: insertLighthouseResultsMock,
+    },
+  }),
+);
 vi.mock("@/server/features/audit/AuditScratchpad", () => ({
   getAuditScratchpad: vi.fn(),
 }));

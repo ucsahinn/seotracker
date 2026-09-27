@@ -45,3 +45,27 @@ data, or sensitive paths.
 - RESOLVED: the `projects.test.ts` flake was `vi.resetModules()` + per-test `await import()`, the pattern CLAUDE.md bans. `projects.ts` holds no module-level state, so the reset bought nothing and cost determinism. Static import now; three consecutive full runs and a shuffled run are green.
 
 - GitHub suspends `push` and `pull_request` workflow triggers on a **forked** repository until the owner clicks "I understand my workflows, go ahead and enable them" in the Actions tab. Verified here: `actions/permissions` reports `enabled: true`, `PUT .../workflows/<id>/enable` returns success, and pushes to `main` still produce zero runs — only `workflow_dispatch` fires. That is why `ci.yml` has a manual trigger. One click in the web UI lifts it permanently.
+
+- RESOLVED: the badseo harness's intermittent `NOT CRAWLED` block. Guessed
+  three times -- a page cap, a cold start, a regression from this session's
+  own changes -- and it was none of them. Measured by making the harness
+  print why it stopped: `4 consecutive 429s tripped the retry breaker`. The
+  fixture site serves two pages that answer 429 to everything on purpose; a
+  throttle is shared across an origin, and `crawl-throttle` stops a crawl
+  after MAX*RETRIES consecutive 429s with no success between them, so at
+  `CONCURRENCY = 10` whether a success interleaves was a scheduling race.
+  Runs alternated between ~46 and ~57 pages with nothing changed. The guard
+  was behaving correctly -- the fixture site was provoking it, and a previous
+  pass had neutralised the \_other* breaker (`maxCooldownMs`) for exactly this
+  reason and missed this one. Fixed by giving those two URLs a throttle each
+  and leaving the rest of the site on production settings, so one page built
+  to refuse no longer decides whether the other fifty-odd fixtures get
+  checked. Four consecutive runs: 57 pages, crawl completed, 56/56. The
+  harness also prints its stop reason now instead of a bare "TRUNCATED".
+
+- `pnpm run dev:agents` and `dev:agents:force` are POSIX-only: `mkdir -p` and
+  `tee` do not exist in `cmd.exe`, which is what pnpm runs scripts through on
+  Windows, and `mkdir -p .logs` there creates a directory literally named
+  `-p`. Run `vite dev` directly, or the script from Git Bash. Not fixed
+  because changing it means adding a cross-platform shim for a convenience
+  wrapper; noted so the next person on Windows does not debug it twice.

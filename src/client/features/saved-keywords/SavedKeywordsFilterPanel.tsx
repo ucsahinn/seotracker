@@ -107,7 +107,7 @@ function TermsTokenInput({
     <div className="space-y-2 rounded-box border border-base-300 bg-base-100 p-2.5">
       <div className="flex items-center gap-2">
         <span
-          className={`inline-flex size-4 items-center justify-center rounded ${styles.iconBg}`}
+          className={`inline-flex size-4 items-center justify-center rounded-field ${styles.iconBg}`}
         >
           <Icon className="size-2.5" />
         </span>
@@ -145,7 +145,7 @@ function TermsTokenInput({
               {terms.map((term) => (
                 <span
                   key={term}
-                  className={`inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-xs ${styles.chip}`}
+                  className={`inline-flex items-center gap-1 rounded-field px-1.5 py-0.5 text-xs ${styles.chip}`}
                 >
                   {term}
                   <button

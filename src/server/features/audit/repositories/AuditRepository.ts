@@ -4,7 +4,7 @@
  * audit_pages, audit_issues, and stored Lighthouse results. Link edges live
  * in the per-audit scratchpad Durable Object, not here.
  */
-import { and, count, desc, eq } from "drizzle-orm";
+import { and, count, desc, eq, isNull } from "drizzle-orm";
 import { db } from "@/db";
 import {
   audits,
@@ -17,11 +17,7 @@ import { executeInBatches } from "@/db/runBatch";
 import { AUDIT_ISSUE_TYPES } from "@/shared/audit-issues";
 import { deterministicAuditRowId } from "@/server/lib/audit/ids";
 import type { DetectedIssue } from "@/server/lib/audit/issues/page-reporters";
-import type {
-  AuditConfig,
-  CrawledPageResult,
-  LighthouseResult,
-} from "@/server/lib/audit/types";
+import type { AuditConfig, CrawledPageResult } from "@/server/lib/audit/types";
 import type { PageFetchClass } from "@/shared/audit-fetch-class";
 
 async function createAudit(data: {
@@ -223,44 +219,6 @@ async function insertIssues(auditId: string, issues: DetectedIssue[]) {
   );
 }
 
-async function insertLighthouseResults(
-  auditId: string,
-  lighthouseResults: LighthouseResult[],
-) {
-  const rows = await Promise.all(
-    lighthouseResults.map(async (result) => ({
-      id: await deterministicAuditRowId(
-        auditId,
-        result.pageId,
-        result.strategy,
-      ),
-      auditId,
-      pageId: result.pageId,
-      strategy: result.strategy,
-      performanceScore: result.performanceScore,
-      accessibilityScore: result.accessibilityScore,
-      bestPracticesScore: result.bestPracticesScore,
-      seoScore: result.seoScore,
-      lcpMs: result.lcpMs,
-      cls: result.cls,
-      inpMs: result.inpMs,
-      ttfbMs: result.ttfbMs,
-      errorMessage: result.errorMessage ?? null,
-      r2Key: result.r2Key ?? null,
-      payloadSizeBytes: result.payloadSizeBytes ?? null,
-    })),
-  );
-  // The persistence step is retryable after its paid provider result has been
-  // checkpointed, so repeated writes must stay idempotent.
-  await executeInBatches(rows, (tx, row) => {
-    const { id: _id, auditId: _auditId, ...dataColumns } = row;
-    return tx.insert(auditLighthouseResults).values(row).onConflictDoUpdate({
-      target: auditLighthouseResults.id,
-      set: dataColumns,
-    });
-  });
-}
-
 async function getAuditForProject(auditId: string, projectId: string) {
   return db.query.audits.findFirst({
     where: and(eq(audits.id, auditId), eq(audits.projectId, projectId)),
@@ -287,6 +245,32 @@ async function getIssuesForAudit(
         : undefined,
     ),
   });
+}
+
+/**
+ * Write the click depths the frontier worked out after the rows were saved.
+ *
+ * Only where the row has none: a depth already on the row came from the
+ * lease and is the one the crawl actually used, and the frontier's repair
+ * only ever lowers a value, so overwriting would rewrite history for no
+ * gain.
+ */
+async function backfillCrawlDepths(
+  auditId: string,
+  depths: Array<{ url: string; depth: number }>,
+) {
+  await executeInBatches(depths, (tx, { url, depth }) =>
+    tx
+      .update(auditPages)
+      .set({ crawlDepth: depth })
+      .where(
+        and(
+          eq(auditPages.auditId, auditId),
+          eq(auditPages.url, url),
+          isNull(auditPages.crawlDepth),
+        ),
+      ),
+  );
 }
 
 async function getPagesForAudit(auditId: string) {
@@ -389,41 +373,6 @@ async function getAuditResultsForProject(auditId: string, projectId: string) {
   return { audit, pages, lighthouse, issues };
 }
 
-async function getLighthouseResultById(input: {
-  lighthouseResultId: string;
-  projectId: string;
-}) {
-  const lighthouse = await db.query.auditLighthouseResults.findFirst({
-    where: eq(auditLighthouseResults.id, input.lighthouseResultId),
-  });
-
-  if (!lighthouse) {
-    return null;
-  }
-
-  const [parentAudit, page] = await Promise.all([
-    db.query.audits.findFirst({
-      where: and(
-        eq(audits.id, lighthouse.auditId),
-        eq(audits.projectId, input.projectId),
-      ),
-    }),
-    db.query.auditPages.findFirst({
-      where: eq(auditPages.id, lighthouse.pageId),
-    }),
-  ]);
-
-  if (!parentAudit) {
-    return null;
-  }
-
-  return {
-    lighthouse,
-    page,
-    audit: parentAudit,
-  };
-}
-
 async function deleteAuditForProject(auditId: string, projectId: string) {
   await db
     .delete(audits)
@@ -438,16 +387,15 @@ export const AuditRepository = {
   getAuditForWorkflow,
   insertCrawledBatch,
   insertIssues,
-  insertLighthouseResults,
   getAuditForProject,
   getLatestAuditForProject,
   getIssuesForAudit,
   getPagesForAudit,
+  backfillCrawlDepths,
   countPagesByFetchClass,
   hasPagesForAudit,
   getAuditsByProject,
   getAuditUsageForOrganization,
   getAuditResultsForProject,
-  getLighthouseResultById,
   deleteAuditForProject,
 } as const;

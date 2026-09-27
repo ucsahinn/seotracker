@@ -14,8 +14,4 @@
   "observability": {
     "enabled": true,
   },
-  "routes": [
-    { "pattern": "badseo.dev", "custom_domain": true },
-    { "pattern": "www.badseo.dev", "custom_domain": true },
-  ],
 }

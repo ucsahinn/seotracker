@@ -69,23 +69,4 @@ export function Stat({
   );
 }
 
-export function PercentDelta({
-  current,
-  previous,
-}: {
-  current: number;
-  previous: number;
-}) {
-  if (previous <= 0) return null;
-  const pct = ((current - previous) / previous) * 100;
-  if (!Number.isFinite(pct)) return null;
-  const rounded = Math.round(pct);
-  const tone = rounded > 0 ? "text-success" : rounded < 0 ? "text-error" : "";
-  return (
-    <p className={`text-xs tabular-nums ${tone}`}>
-      {rounded > 0 ? "▲" : rounded < 0 ? "▼" : ""} {Math.abs(rounded)}%
-    </p>
-  );
-}
-
 export const moreDetailsClass = "btn btn-ghost btn-xs";

@@ -144,8 +144,8 @@ export function GoogleAnalyticsConnectionCard({
             aria-label="Bağlantı yükleniyor"
             className="space-y-3 animate-pulse"
           >
-            <div className="h-4 w-2/3 rounded bg-base-200" />
-            <div className="h-9 w-24 rounded bg-base-200" />
+            <div className="h-4 w-2/3 rounded-field bg-base-200" />
+            <div className="h-9 w-24 rounded-field bg-base-200" />
           </div>
         ) : connectionUnavailable ? (
           <div role="alert" className="space-y-3 text-sm">
