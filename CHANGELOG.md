@@ -5,6 +5,76 @@ numaraları [SemVer](https://semver.org/lang/tr/) izler.
 
 ## [Yayınlanmamış]
 
+## [0.5.0] — 2026-09-27
+
+Tasarım turu, depo temizliği ve fixture koşusunun belirsizliğinin
+giderilmesi. Ölçülenler: 56 denetim kuralı, 32 MCP aracı, 635 test, ve
+fixture koşusu ilk kez dört ardışık koşuda da 56/56 (57 sayfa, tarama
+tamamlandı).
+
+### Eklenenler
+
+- **Beşinci kurulum adımı: proje bilgisi.** Kurulum boşluklarının en
+  sessizi: hiçbir şey hata vermiyor, denetim çalışıyor, ama "bu sayfalardan
+  hangisi para kazandırıyor" diye soran bir ajanın okuyacağı hiçbir şey yok
+  ve rapor şablonları siteyi tanımadan yazıyor. Panoda artık söyleniyor.
+- Harness neden durduğunu yazıyor. Kuru bir "TRUNCATED" üç kez yanlış
+  okundu; koşu hangi sigortanın attığını zaten biliyordu, sadece
+  söylemiyordu.
+
+### Düzeltilenler
+
+- **Fixture koşusundaki belirsizlik giderildi.** Aralıklı `NOT CRAWLED`
+  bloğu üç kez yanlış teşhis edildi — sayfa sınırı, soğuk başlangıç,
+  regresyon — ve hiçbiri değildi. Ölçüldü: dört ardışık 429 tekrar
+  sigortasını attırıyor. Throttle bir origin boyunca paylaşılıyor, fixture
+  sitesi de bilerek her isteğe 429 dönen iki sayfa sunuyor; `CONCURRENCY =
+10`'da araya bir başarının girip girmemesi zamanlama yarışıydı. Koşular
+  hiçbir şey değişmeden ~46 ile ~57 sayfa arasında gidip geliyordu. Sigorta
+  doğru çalışıyordu, fixture onu tetikliyordu. Artık o iki adres kendi
+  throttle'ını alıyor, sitenin geri kalanı üretim ayarlarında kalıyor.
+- **"N sayfa" sayfa değil satır sayıyordu.** Bağlantı düzeyindeki
+  kontroller her bulgu için bir satır yazıyor, yani sekiz kırık bağlantısı
+  olan bir sayfa sekiz sayfa gibi okunuyordu — operatörün az önce
+  tıkladığı, tekil adres sayan panodaki kartın tam tersi. Sıralama da artık
+  satırın gösterdiği sayıya göre.
+- **Sayfalar sekmesi taranan her sayfayı birden çiziyordu.** Gerçek bir
+  sitede bu yüzlerce–binlerce satır; sekmenin açılması saniyeler alıyordu.
+  Artık istemci tarafında sayfalanıyor.
+- **Çakışmalar sekmesindeki dışa aktarma yanlış dosyayı indiriyordu.**
+  `tabDimension` o sekme için "query" cevaplıyor, yani ekranda örtüşen
+  sayfalar dururken sorgu raporu iniyordu — hiçbir uyarı olmadan.
+- **İkinci bir delta bileşeni** (`PercentDelta`) temanın rozetlere ayırdığı
+  dolgu renklerini kullanıyor ve yönü hiç seslendirmiyordu. Silindi;
+  `MetricTile` bunu ok ve ekran okuyucu metniyle bir kez yapıyor.
+- Denetim ilerleme ekranındaki sayılar `format.ts` üzerinden geçiyor.
+
+### Geliştirilenler
+
+- **Tek yarıçap ölçeği artık gerçekten tek.** 23 çıplak `rounded` ve ölçek
+  dışı üç yönlü yarıçap, temanın üç jetonuna çevrildi.
+- **Dört kullanılmayan bağımlılık kaldırıldı** (`@ai-sdk/react`, `ai`,
+  `@modelcontextprotocol/client`, `@modelcontextprotocol/sdk`). MCP v1 SDK
+  `agents` üzerinden geçişli olarak duruyor, bu yüzden onu bekleyen dört
+  `pnpm-workspace` geçersiz kılması geçerliliğini koruyor. Güvenlik
+  uyarıları 29'dan 28'e.
+- **Ölü kod silindi:** kilit dosyasında bulunmayan paketleri koruyan
+  `workers-ai-provider-stub.ts` ve iki denylist kaydı; yalnızca kendi
+  testlerinin çağırdığı yedi `keyword-locations` dışa aktarımı; anahtar
+  olmadan yenilenemeyen ücretli API anlık görüntüsü; ve hiçbir yerden
+  referans verilmeyen üç görsel — `transparent-logo.png` tek başına her
+  kendi kendine barındırma imajında 1.46 MB idi.
+- **`.gitleaksignore`** eklendi. Geçmişteki üç bulgu upstream kaynaklı ve
+  tasarımı gereği herkese açık jetonlar; artık doğru tanımlanıyorlar.
+  `.gitignore`'a anahtar ve sertifika kalıpları eklendi.
+- **Dokümantasyon doğruluğu:** README'deki iki manşet sayı dahil altı sayı
+  eskimişti (36 → 56 denetim kuralı, 28 → 32 MCP aracı). `AGENTS.md`
+  `CLAUDE.md`'nin yarısına kadar birebir kopyasıydı ve orada duruyordu, yani
+  onu okuyan bir ajan arayüz kurallarını hiç görmüyordu; artık bir işaretçi.
+  Dört ölü doküman yolu — biri kurtarma sırasında operatöre yazdırılıyordu.
+  Ve `db:generate` tuzağı belgelendi: 0048'den itibaren göçler elle yazıldı,
+  yani komut 0047'ye karşı fark alıyor.
+
 ## [0.4.0] — 2026-09-27
 
 İlk kez canlı bir Search Console bağlantısına karşı test edildi ve bu, birim
@@ -243,6 +313,7 @@ depodan kaldırıldı, çünkü onlar open-seo'nun yayınlarıydı.
   Verileriniz `seotracker_data` biriminde; güncellemeden önce yedek almak
   isteyebilirsiniz.
 
+[0.5.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.5.0
 [0.4.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.4.0
 [0.3.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.3.0
 [0.2.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.2.0
