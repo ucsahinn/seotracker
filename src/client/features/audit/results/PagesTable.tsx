@@ -1,4 +1,4 @@
-import { formatDuration } from "@/client/lib/format";
+import { formatCount, formatDuration } from "@/client/lib/format";
 import { TablePagination } from "@/client/components/table/TablePagination";
 import { SEARCH_PERFORMANCE_PAGE_SIZES } from "@/types/schemas/search-performance";
 import { useMemo, useState } from "react";
@@ -181,6 +181,46 @@ function buildPagesColumns({
         );
       },
       sortingFn: nullableNumberSort,
+    }),
+    /*
+     * Three columns the crawler has always filled and no screen showed.
+     *
+     * They are the questions an operator arrives with on a site this size:
+     * which pages is Google allowed to index, how deep is this one buried,
+     * and did the sitemap forget it. Only depth is nullable, and a null
+     * there means nothing linked to the page -- not depth zero.
+     */
+    pageColumnHelper.accessor("isIndexable", {
+      header: ({ column }) => <SortableHeader column={column} label="Dizin" />,
+      cell: ({ getValue }) =>
+        getValue() ? (
+          <span className="text-xs text-muted">Evet</span>
+        ) : (
+          <span className="text-xs text-[var(--ink-warning)]">noindex</span>
+        ),
+    }),
+    pageColumnHelper.accessor("crawlDepth", {
+      header: ({ column }) => (
+        <SortableHeader column={column} label="Derinlik" />
+      ),
+      cell: ({ getValue }) => {
+        const value = getValue();
+        return value === null ? (
+          <EmptyCell />
+        ) : (
+          <span className="text-xs">{formatCount(value)}</span>
+        );
+      },
+      sortingFn: nullableNumberSort,
+    }),
+    pageColumnHelper.accessor("inSitemap", {
+      header: ({ column }) => <SortableHeader column={column} label="Harita" />,
+      cell: ({ getValue }) =>
+        getValue() ? (
+          <span className="text-xs text-muted">Var</span>
+        ) : (
+          <span className="text-xs text-subtle">Yok</span>
+        ),
     }),
   ];
 }

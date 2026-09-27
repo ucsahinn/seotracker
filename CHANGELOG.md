@@ -5,6 +5,44 @@ numaraları [SemVer](https://semver.org/lang/tr/) izler.
 
 ## [Yayınlanmamış]
 
+## [0.7.0] — 2026-09-27
+
+Ekranların tıklanabilir, filtrelenebilir ve kendi kendine güncellenen hâle
+getirilmesi. Denetim verisi 212 sayfalık gerçek bir taramaya karşı
+doğrulandı.
+
+### Eklenenler
+
+- **Sayfa tablosunda üç yeni sütun: Dizin, Derinlik, Harita.** Tarayıcı bu
+  üçünü baştan beri kaydedip tarayıcıya gönderiyordu; hiçbir ekran
+  göstermiyordu. Üçü de sıralanabilir, üçünün de filtresi var — "hangi
+  sayfaları Google dizine alabiliyor", "hangisi kaç tık derinde", "haritanın
+  unuttukları". Gerçek veriyle doğrulandı: 212 sayfa, `noindex` filtresiyle
+  2'ye iniyor.
+- **Panel kartlarındaki her bulgu artık bir bağlantı.** "Sayfa noindex ·
+  2 sayfa"ya tıklamak o denetimin sorunlar sekmesini açıyor.
+
+### Düzeltilenler
+
+- **Panel kartı anlattığı denetime ulaşamıyordu.** `DashboardAuditSummary`
+  ve `AuditFreshness` `auditId` taşımıyordu, bu yüzden "Ayrıntılar"
+  `/audit`'e gidiyor — yani "474 sayfa tarandı · 3 kritik" okuyup tıklayan
+  operatör, yeni bir tarama başlatmasını isteyen bir formda buluyordu
+  kendini.
+- **Denetim başlatmak hiçbir şeyi tazelemiyordu.** `startAudit` hiçbir
+  sorguyu geçersiz kılmıyordu; beş dakika boyunca (genel `staleTime`)
+  geçmiş listesi, panel kartı ve tazelik kartı tarama öncesi cevabı
+  vermeye devam ediyordu — panelin "sonuçlar bittiğinde görünecek" sözü
+  dahil, ki onu tazeleyecek hiçbir şey yoktu.
+- **Geçmiş tablosu tarama sürerken donuyordu.** Satır, sert bir yeniden
+  yükleme yapılana kadar "Sürüyor"da kalıyordu; üç tık ötedeki ayrıntı
+  görünümü ise üç saniyede bir yokluyordu.
+
+### Geliştirilenler
+
+- Tazelik kartındaki yön göstergeleri temanın `--ink-*` jetonlarını
+  kullanıyor, dolgu renklerini değil.
+
 ## [0.6.0] — 2026-09-27
 
 Kurulumun son parçası da ortam değişkeninden ekrana taşındı, ve gerçek bir
@@ -376,6 +414,7 @@ depodan kaldırıldı, çünkü onlar open-seo'nun yayınlarıydı.
   Verileriniz `seotracker_data` biriminde; güncellemeden önce yedek almak
   isteyebilirsiniz.
 
+[0.7.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.7.0
 [0.6.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.6.0
 [0.5.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.5.0
 [0.4.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.4.0

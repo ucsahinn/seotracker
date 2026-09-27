@@ -49,7 +49,36 @@ export function PagesFilterBar({
           ]}
         />
       </div>
-      <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
+        <SelectFilter
+          label="Dizinlenebilir"
+          value={filters.indexable}
+          onChange={(indexable) => onChange({ ...filters, indexable })}
+          options={[
+            ["all", "Tümü"],
+            ["yes", "Evet"],
+            ["no", "Hayır (noindex)"],
+          ]}
+        />
+        <SelectFilter
+          label="Site haritası"
+          value={filters.inSitemap}
+          onChange={(inSitemap) => onChange({ ...filters, inSitemap })}
+          options={[
+            ["all", "Tümü"],
+            ["yes", "Haritada"],
+            ["no", "Haritada yok"],
+          ]}
+        />
+      </div>
+      <div className="grid grid-cols-1 gap-2 lg:grid-cols-3">
+        <RangeFilter
+          label="Tıklama derinliği"
+          min={filters.minDepth}
+          max={filters.maxDepth}
+          onMinChange={(minDepth) => onChange({ ...filters, minDepth })}
+          onMaxChange={(maxDepth) => onChange({ ...filters, maxDepth })}
+        />
         <RangeFilter
           label="Kelime"
           min={filters.minWords}

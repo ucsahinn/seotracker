@@ -26,6 +26,8 @@ type IssueDelta = {
 
 type AuditFreshness = {
   hasAudit: boolean;
+  /** The audit these deltas were computed against, so the card can link. */
+  auditId: string | null;
   lastCompletedAt: string | null;
   daysSince: number | null;
   isStale: boolean;
@@ -60,6 +62,7 @@ export async function getAuditFreshness(input: {
   if (!latest) {
     return {
       hasAudit: false,
+      auditId: null,
       lastCompletedAt: null,
       daysSince: null,
       isStale: false,
@@ -71,6 +74,7 @@ export async function getAuditFreshness(input: {
   const daysSince = daysBetween(latest.startedAt, now);
   const base = {
     hasAudit: true,
+    auditId: latest.id,
     lastCompletedAt: latest.startedAt,
     daysSince,
     isStale: daysSince !== null && daysSince >= STALE_AFTER_DAYS,

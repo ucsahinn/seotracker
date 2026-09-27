@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ArrowDown, ArrowUp, CalendarClock } from "lucide-react";
 import { getAuditFreshnessForProject } from "@/serverFunctions/audit";
 import { getIssueDescriptor } from "@/shared/audit-issues";
+import { formatCount } from "@/client/lib/format";
 
 /**
  * Two things the dashboard can say about the audit that a single crawl cannot:
@@ -47,8 +48,8 @@ export function AuditFreshnessCard({ projectId }: { projectId: string }) {
           <div className="flex items-center gap-2 text-sm">
             <CalendarClock className="size-4 shrink-0 text-warning" />
             <span>
-              Son denetimin üzerinden {data.daysSince} gün geçti. Sitede
-              değişiklik yaptıysanız yeniden taramak iyi olur.
+              Son denetimin üzerinden {formatCount(data.daysSince ?? 0)} gün
+              geçti. Sitede değişiklik yaptıysanız yeniden taramak iyi olur.
             </span>
           </div>
           <Link
@@ -65,12 +66,16 @@ export function AuditFreshnessCard({ projectId }: { projectId: string }) {
       {hasChanges ? (
         <div className="grid gap-4 sm:grid-cols-2">
           <IssueDeltaList
+            projectId={projectId}
+            auditId={data.auditId}
             title="Son denetimde yeni çıkanlar"
             emptyLabel="Yeni sorun yok."
             tone="new"
             items={data.newIssues}
           />
           <IssueDeltaList
+            projectId={projectId}
+            auditId={data.auditId}
             title="Düzelenler"
             emptyLabel="Düzelen sorun yok."
             tone="resolved"
@@ -94,11 +99,19 @@ function IssueDeltaList({
   emptyLabel,
   tone,
   items,
+  projectId,
+  auditId,
 }: {
   title: string;
   emptyLabel: string;
   tone: "new" | "resolved";
   items: Delta[];
+  /*
+   * These are the most actionable three things on the dashboard, and they
+   * were plain text. Each one now opens the audit it was measured from.
+   */
+  projectId: string;
+  auditId: string | null;
 }) {
   return (
     <div className="space-y-2">
@@ -109,30 +122,49 @@ function IssueDeltaList({
         <p className="text-sm text-muted">{emptyLabel}</p>
       ) : (
         <ul className="space-y-1.5">
-          {items.slice(0, 4).map((item) => (
-            <li
-              key={item.issueType}
-              className="flex items-baseline justify-between gap-2 text-sm"
-            >
-              <span className="truncate">
-                {getIssueDescriptor(item.issueType)?.title ?? item.issueType}
-              </span>
-              <span
-                className={`inline-flex shrink-0 items-center gap-1 tabular-nums ${
-                  tone === "new" ? "text-error" : "text-success"
-                }`}
-              >
-                {tone === "new" ? (
-                  <ArrowUp className="size-3.5" />
+          {items.slice(0, 4).map((item) => {
+            const label = (
+              <>
+                <span className="truncate">
+                  {getIssueDescriptor(item.issueType)?.title ?? item.issueType}
+                </span>
+                <span
+                  className={`inline-flex shrink-0 items-center gap-1 tabular-nums ${
+                    tone === "new"
+                      ? "text-[var(--ink-error)]"
+                      : "text-[var(--ink-success)]"
+                  }`}
+                >
+                  {tone === "new" ? (
+                    <ArrowUp className="size-3.5" />
+                  ) : (
+                    <ArrowDown className="size-3.5" />
+                  )}
+                  {item.previousCount === null
+                    ? `${formatCount(item.count)} sayfa`
+                    : `${formatCount(item.previousCount)} → ${formatCount(item.count)}`}
+                </span>
+              </>
+            );
+            return (
+              <li key={item.issueType}>
+                {auditId ? (
+                  <Link
+                    to="/p/$projectId/audit"
+                    params={{ projectId }}
+                    search={{ auditId, tab: "issues" as const }}
+                    className="flex items-baseline justify-between gap-2 rounded-field px-1 py-0.5 text-sm transition-colors hover:bg-base-200/60"
+                  >
+                    {label}
+                  </Link>
                 ) : (
-                  <ArrowDown className="size-3.5" />
+                  <span className="flex items-baseline justify-between gap-2 px-1 py-0.5 text-sm">
+                    {label}
+                  </span>
                 )}
-                {item.previousCount === null
-                  ? `${item.count} sayfa`
-                  : `${item.previousCount} → ${item.count}`}
-              </span>
-            </li>
-          ))}
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>

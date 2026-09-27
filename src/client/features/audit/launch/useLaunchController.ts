@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useForm } from "@tanstack/react-form";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import {
   deleteAudit,
@@ -51,6 +51,15 @@ export function useLaunchController({
   const historyQuery = useQuery({
     queryKey: ["audit-history", projectId],
     queryFn: () => getAuditHistory({ data: { projectId } }),
+    /*
+     * A running audit's row sat on "Sürüyor" until a hard reload. The detail
+     * view three clicks away polls every 3s; this list, which is where an
+     * operator waits after pressing start, did not poll at all.
+     */
+    refetchInterval: (query) =>
+      query.state.data?.some((audit) => audit.status === "running")
+        ? 5_000
+        : false,
   });
   // Same key the projects screen uses, so this is a cache read in practice.
   const projectsQuery = useQuery({
@@ -138,6 +147,7 @@ function useLaunchMutations({
   projectId: string;
   historyRefetch: () => Promise<unknown>;
 }) {
+  const queryClient = useQueryClient();
   const startMutation = useMutation({
     mutationFn: (data: {
       projectId: string;
@@ -145,6 +155,26 @@ function useLaunchMutations({
       maxPages: number;
       lighthouseStrategy: "auto" | "none";
     }) => startAudit({ data }),
+    /*
+     * Starting an audit invalidated nothing, so for the next five minutes
+     * (the global staleTime) the history list, the dashboard card and the
+     * freshness card all kept serving their pre-crawl answers -- including
+     * the dashboard's "tarama sürüyor, sonuçlar bittiğinde görünecek",
+     * which nothing was going to refetch.
+     */
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: ["audit-history", projectId],
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ["dashboardOverview", projectId],
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ["auditFreshness", projectId],
+        }),
+      ]);
+    },
   });
 
   const deleteMutation = useMutation({

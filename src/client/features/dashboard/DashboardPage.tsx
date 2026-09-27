@@ -29,6 +29,13 @@ export function DashboardPage({ projectId }: { projectId: string }) {
   const overviewQuery = useQuery({
     queryKey: ["dashboardOverview", projectId],
     queryFn: () => getDashboardOverview({ data: { projectId } }),
+    /*
+     * The audit card promises "sonuçlar bittiğinde görünecek" while a crawl
+     * runs. Nothing refetched it, so the promise needed a reload to come
+     * true. Polls only while there is a crawl to wait for.
+     */
+    refetchInterval: (query) =>
+      query.state.data?.audit?.status === "running" ? 5_000 : false,
   });
   const googleConfigured = useGoogleClientConfigured();
 

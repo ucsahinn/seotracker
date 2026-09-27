@@ -17,6 +17,7 @@ vi.mock("@tanstack/react-router", () => ({
 const audit = (
   overrides: Partial<DashboardAuditSummary> = {},
 ): DashboardAuditSummary => ({
+  auditId: "audit-1",
   status: "completed",
   pagesCrawled: 42,
   startedAt: "2026-09-20T10:00:00.000Z",

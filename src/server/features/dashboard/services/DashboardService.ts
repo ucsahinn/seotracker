@@ -33,6 +33,15 @@ export type DashboardActivation = {
 };
 
 export type DashboardAuditSummary = {
+  /**
+   * The audit this card is describing.
+   *
+   * Without it "Ayrıntılar" linked to `/audit` with no id, which renders the
+   * launch form and the history table -- so an operator who read "474 sayfa
+   * tarandı · 3 kritik" and clicked through landed on a form asking them to
+   * start a new crawl.
+   */
+  auditId: string;
   status: "running" | "completed" | "failed";
   pagesCrawled: number;
   startedAt: string;
@@ -122,6 +131,7 @@ async function getAuditSummary(
   );
 
   return {
+    auditId: audit.id,
     status: audit.status,
     pagesCrawled: audit.pagesCrawled,
     startedAt: audit.startedAt,

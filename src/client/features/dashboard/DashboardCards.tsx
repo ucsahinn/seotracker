@@ -8,6 +8,7 @@ import {
   formatDay,
   moreDetailsClass,
 } from "@/client/features/dashboard/cardParts";
+import { formatCount } from "@/client/lib/format";
 import type { DashboardAuditSummary } from "@/server/features/dashboard/services/DashboardService";
 
 // Plain string-keyed view of the registry: issue types from the DB are not
@@ -64,7 +65,7 @@ export function AuditHealthCard({
       title="Site denetimi"
       stamp={`Site denetimi · ${
         audit.status === "completed"
-          ? `${audit.pagesCrawled} sayfa tarandı · ${formatDay(audit.startedAt)}`
+          ? `${formatCount(audit.pagesCrawled)} sayfa tarandı · ${formatDay(audit.startedAt)}`
           : audit.status === "running"
             ? "tarama sürüyor"
             : "son tarama başarısız"
@@ -73,6 +74,10 @@ export function AuditHealthCard({
         <Link
           to="/p/$projectId/audit"
           params={{ projectId }}
+          // The audit this card is about, not the launch form. Without the
+          // id, clicking through from "474 sayfa tarandı · 3 kritik" landed
+          // on a page asking you to start a new crawl.
+          search={{ auditId: audit.auditId, tab: "issues" as const }}
           className={moreDetailsClass}
         >
           Ayrıntılar
@@ -101,32 +106,44 @@ export function AuditHealthCard({
       ) : (
         <ul className="space-y-2">
           {audit.topIssues.map((issue) => (
-            <li
-              key={issue.issueType}
-              className="flex items-center justify-between gap-2 text-sm"
-            >
-              <span className="flex min-w-0 items-center gap-2">
-                <span
-                  className={`size-2 shrink-0 rounded-full ${
-                    issue.severity === "critical"
-                      ? "bg-error"
-                      : issue.severity === "warning"
-                        ? "bg-warning"
-                        : "bg-base-content/30"
-                  }`}
-                />
-                <span className="truncate">
-                  {issueTitles[issue.issueType] ?? issue.issueType}
+            <li key={issue.issueType}>
+              <Link
+                to="/p/$projectId/audit"
+                params={{ projectId }}
+                search={{ auditId: audit.auditId, tab: "issues" as const }}
+                className="flex items-center justify-between gap-2 rounded-field px-1 py-0.5 text-sm transition-colors hover:bg-base-200/60"
+              >
+                <span className="flex min-w-0 items-center gap-2">
+                  <span
+                    className={`size-2 shrink-0 rounded-full ${
+                      issue.severity === "critical"
+                        ? "bg-error"
+                        : issue.severity === "warning"
+                          ? "bg-warning"
+                          : "bg-base-content/30"
+                    }`}
+                  />
+                  <span className="truncate">
+                    {issueTitles[issue.issueType] ?? issue.issueType}
+                  </span>
                 </span>
-              </span>
-              <span className="shrink-0 tabular-nums text-muted">
-                {issue.count} sayfa
-              </span>
+                <span className="shrink-0 tabular-nums text-muted">
+                  {formatCount(issue.count)} sayfa
+                </span>
+              </Link>
             </li>
           ))}
           {audit.totalIssueTypes > audit.topIssues.length ? (
-            <li className="text-xs text-muted">
-              + {audit.totalIssueTypes - audit.topIssues.length} sorun daha
+            <li>
+              <Link
+                to="/p/$projectId/audit"
+                params={{ projectId }}
+                search={{ auditId: audit.auditId, tab: "issues" as const }}
+                className="text-xs text-muted underline decoration-base-content/25 underline-offset-4 hover:text-base-content"
+              >
+                + {formatCount(audit.totalIssueTypes - audit.topIssues.length)}{" "}
+                sorun daha
+              </Link>
             </li>
           ) : null}
         </ul>

@@ -23,6 +23,20 @@ export type PagesFilters = {
   minResponseMs: string;
   maxResponseMs: string;
   missingAlt: "all" | "yes" | "no";
+  /*
+   * The crawler has always stored these three and shipped them to the
+   * browser; nothing rendered or filtered on them. They answer the
+   * questions an operator actually arrives with -- which pages Google is
+   * allowed to index, which are buried, which the sitemap forgot.
+   *
+   * `isIndexable` and `inSitemap` are NOT NULL in the schema, so they are
+   * plain booleans. Depth is nullable and means "nothing linked here",
+   * which is a different statement from depth zero.
+   */
+  indexable: "all" | "yes" | "no";
+  inSitemap: "all" | "yes" | "no";
+  minDepth: string;
+  maxDepth: string;
 };
 
 export type PerformanceFilters = {
@@ -44,6 +58,10 @@ export const EMPTY_PAGES_FILTERS: PagesFilters = {
   minResponseMs: "",
   maxResponseMs: "",
   missingAlt: "all",
+  indexable: "all",
+  inSitemap: "all",
+  minDepth: "",
+  maxDepth: "",
 };
 
 export const EMPTY_PERFORMANCE_FILTERS: PerformanceFilters = {
@@ -99,8 +117,18 @@ export function filterPages(rows: PageRow[], filters: PagesFilters) {
     if (filters.missingAlt === "no" && row.imagesMissingAlt > 0) {
       return false;
     }
+    if (!matchesYesNo(row.isIndexable, filters.indexable)) return false;
+    if (!matchesYesNo(row.inSitemap, filters.inSitemap)) return false;
+    if (!matchesRange(row.crawlDepth, filters.minDepth, filters.maxDepth)) {
+      return false;
+    }
     return true;
   });
+}
+
+function matchesYesNo(value: boolean, filter: "all" | "yes" | "no"): boolean {
+  if (filter === "all") return true;
+  return filter === "yes" ? value : !value;
 }
 
 export function filterPerformanceRows(
