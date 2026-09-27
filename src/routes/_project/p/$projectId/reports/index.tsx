@@ -1,4 +1,6 @@
 import { PageShell } from "@/client/components/PageShell";
+import { CopyButton } from "@/client/features/ai-mcp/SetupControls";
+import { reportRequestPrompt } from "@/client/features/reports/reportRequestPrompt";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
@@ -41,16 +43,25 @@ function ReportsPage() {
         <div>
           <h1 className="text-2xl font-semibold">Raporlar</h1>
           <p className="text-sm text-muted">
-            Ajanlarınızın bu projeye kaydettiği HTML raporlar.
+            Ajanlarınızın bu projeye kaydettiği HTML raporlar. Yenisini
+            yazdırmak için istemi kopyalayıp ajanınıza verin.
           </p>
         </div>
-        <Link
-          to="/p/$projectId/reports/templates"
-          params={{ projectId }}
-          className="btn btn-ghost btn-sm"
-        >
-          Şablonlar
-        </Link>
+        <div className="flex items-center gap-2">
+          <CopyButton
+            primary
+            value={reportRequestPrompt(projectId)}
+            label="Ajanına rapor yazdır"
+            successMessage="İstem kopyalandı, ajanınıza yapıştırın"
+          />
+          <Link
+            to="/p/$projectId/reports/templates"
+            params={{ projectId }}
+            className="btn btn-ghost btn-sm"
+          >
+            Şablonlar
+          </Link>
+        </div>
       </div>
 
       {reportsQuery.isPending ? (

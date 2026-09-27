@@ -41,19 +41,22 @@ export type SearchPerformanceTableDimension =
   (typeof SEARCH_PERFORMANCE_TABLE_DIMENSIONS)[number];
 
 export const SEARCH_PERFORMANCE_PAGE_SIZES = [25, 50, 100] as const;
-export const SEARCH_PERFORMANCE_DEFAULT_PAGE_SIZE = 25;
 
+/*
+ * No page here on purpose.
+ *
+ * This used to paginate through Google with `startRow`, which meant the
+ * client held 25 rows and sorted those -- so clicking "Gösterim" reordered
+ * twenty-five of the top-twenty-five-by-clicks and presented the result as
+ * the highest-impression queries. That is the wrong answer to the question
+ * the header appears to ask, and impression-tail work is exactly what this
+ * table is for. Search Console has no `orderBy`, so the only way to sort a
+ * dataset is to hold it: one capped fetch, then sort and paginate in the
+ * browser, the way the striking-distance table already does.
+ */
 export const searchPerformanceTableInputSchema = z.object({
   ...searchPerformanceFilterShape,
   dimension: z.enum(SEARCH_PERFORMANCE_TABLE_DIMENSIONS),
-  page: z.number().int().positive().default(1),
-  pageSize: z
-    .number()
-    .int()
-    .refine((value) =>
-      (SEARCH_PERFORMANCE_PAGE_SIZES as readonly number[]).includes(value),
-    )
-    .default(SEARCH_PERFORMANCE_DEFAULT_PAGE_SIZE),
 });
 
 /** Export pulls the full dataset (capped) rather than a single page. */

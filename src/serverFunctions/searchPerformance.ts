@@ -27,6 +27,11 @@ const COUNTRY_ROW_LIMIT = 25;
 // Export pulls the whole dimension in one shot, capped at GSC's per-call max
 // (GSC_MAX_ROW_LIMIT). Large stores get everything up to this ceiling.
 const EXPORT_ROW_LIMIT = 1000;
+/*
+ * The table holds its whole dataset so the column headers can sort it.
+ * Same ceiling as the export: what you can sort is what you can download.
+ */
+const TABLE_ROW_LIMIT = 1000;
 
 /** Not connected, or a dead/denied grant (token failure or 401/403): the page
  *  renders the connect card. Other statuses (429, 5xx) are real faults. */
@@ -122,31 +127,27 @@ export const getSearchPerformanceTable = createServerFn({ method: "POST" })
       dateRange: data.dateRange,
     });
     const { filters } = buildGscFilters(data);
-    const offset = (data.page - 1) * data.pageSize;
 
     try {
+      // One extra row so the client can say the set was capped rather than
+      // silently presenting a truncated table as the whole dataset.
       const result = await GscService.getPerformance({
         projectId: context.projectId,
         startDate,
         endDate,
         dimensions: [data.dimension],
         filters,
-        // One extra row tells us whether a further page exists.
-        rowLimit: data.pageSize + 1,
-        startRow: offset,
+        rowLimit: TABLE_ROW_LIMIT + 1,
       });
 
       const fetched = toDimensionRows(result.rows);
-      const hasNextPage = fetched.length > data.pageSize;
-      const rows = hasNextPage ? fetched.slice(0, data.pageSize) : fetched;
+      const truncated = fetched.length > TABLE_ROW_LIMIT;
 
       return {
         connected: true as const,
         dimension: data.dimension,
-        page: data.page,
-        pageSize: data.pageSize,
-        hasNextPage,
-        rows,
+        truncated,
+        rows: truncated ? fetched.slice(0, TABLE_ROW_LIMIT) : fetched,
       };
     } catch (error) {
       if (isExpectedConnectionFailure(error)) {

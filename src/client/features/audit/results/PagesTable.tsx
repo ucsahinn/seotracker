@@ -88,9 +88,15 @@ const EmptyCell = () => <span className="text-xs text-muted">-</span>;
 function buildPagesColumns({
   canonicalHost,
   missingTitlePageIds,
+  issueCountByPageId,
+  onShowIssues,
 }: {
   canonicalHost: string;
   missingTitlePageIds: Set<string>;
+  /** Findings per page, so a row can say how much is wrong with it. */
+  issueCountByPageId: Map<string, number>;
+  /** Opens the issues tab filtered to this page. */
+  onShowIssues: (url: string) => void;
 }): ColumnDef<PageRow>[] {
   return [
     pageColumnHelper.accessor("url", {
@@ -115,6 +121,29 @@ function buildPagesColumns({
       header: ({ column }) => <SortableHeader column={column} label="Durum" />,
       cell: ({ getValue }) => <HttpStatusBadge code={getValue()} />,
       sortingFn: nullableNumberSort,
+    }),
+    /*
+     * The row's only exit used to be the live URL in a new tab. A page with
+     * findings could not reach them, even though both sides key off the
+     * same id -- so "which of these 212 pages is broken, and how" took a
+     * tab switch and a manual scan.
+     */
+    pageColumnHelper.display({
+      id: "issues",
+      header: "Sorun",
+      cell: ({ row }) => {
+        const count = issueCountByPageId.get(row.original.id) ?? 0;
+        if (count === 0) return <EmptyCell />;
+        return (
+          <button
+            type="button"
+            onClick={() => onShowIssues(row.original.url)}
+            className="link link-hover text-xs text-[var(--ink-warning)]"
+          >
+            {formatCount(count)}
+          </button>
+        );
+      },
     }),
     pageColumnHelper.accessor("title", {
       header: ({ column }) => <SortableHeader column={column} label="Başlık" />,
@@ -232,6 +261,7 @@ export function PagesTable({
   filters,
   onFiltersChange,
   filteredPages,
+  onShowIssues,
 }: {
   pages: AuditResultsData["pages"];
   startUrl: string;
@@ -247,6 +277,7 @@ export function PagesTable({
   filters: PagesFilters;
   onFiltersChange: (filters: PagesFilters) => void;
   filteredPages: AuditResultsData["pages"];
+  onShowIssues: (url: string) => void;
 }) {
   const [showFilters, setShowFilters] = useState(false);
   // URL order reads as a site inventory; status-first would open the table
@@ -255,6 +286,14 @@ export function PagesTable({
     { id: "url", desc: false },
   ]);
   const activeFilterCount = countActiveFilters(filters, EMPTY_PAGES_FILTERS);
+  const issueCountByPageId = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const issue of issues) {
+      if (!issue.pageId) continue;
+      counts.set(issue.pageId, (counts.get(issue.pageId) ?? 0) + 1);
+    }
+    return counts;
+  }, [issues]);
   const columns = useMemo(
     () =>
       buildPagesColumns({
@@ -265,8 +304,10 @@ export function PagesTable({
             .map((issue) => issue.pageId)
             .filter((pageId): pageId is string => pageId !== null),
         ),
+        issueCountByPageId,
+        onShowIssues,
       }),
-    [issues, pages, startUrl],
+    [issueCountByPageId, issues, onShowIssues, pages, startUrl],
   );
   const table = useAppTable({
     data: filteredPages,

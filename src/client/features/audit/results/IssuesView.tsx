@@ -86,8 +86,27 @@ function groupIssues(issues: AuditIssueRow[]): IssueGroup[] {
   );
 }
 
-export function IssuesView({ issues }: { issues: AuditIssueRow[] }) {
-  const groups = useMemo(() => groupIssues(issues), [issues]);
+export function IssuesView({
+  issues,
+  focusUrl,
+  onClearFocus,
+}: {
+  issues: AuditIssueRow[];
+  /**
+   * Narrow to one page's findings.
+   *
+   * Set when an operator arrives here from a row in the pages table, which
+   * previously had no way to reach the findings it was counting.
+   */
+  focusUrl?: string;
+  onClearFocus: () => void;
+}) {
+  const scoped = useMemo(
+    () =>
+      focusUrl ? issues.filter((issue) => issue.pageUrl === focusUrl) : issues,
+    [focusUrl, issues],
+  );
+  const groups = useMemo(() => groupIssues(scoped), [scoped]);
 
   const sections = useMemo(
     () =>
@@ -100,7 +119,7 @@ export function IssuesView({ issues }: { issues: AuditIssueRow[] }) {
     [groups],
   );
 
-  if (issues.length === 0) {
+  if (scoped.length === 0 && !focusUrl) {
     return (
       <div className="py-10 text-center text-muted">
         <p className="font-medium">Bu denetimde kayıtlı sorun yok.</p>
@@ -114,10 +133,32 @@ export function IssuesView({ issues }: { issues: AuditIssueRow[] }) {
   }
 
   return (
-    <div className="border border-base-300 rounded-box overflow-hidden">
-      {sections.map((section) => (
-        <IssueSection key={section.severity} section={section} />
-      ))}
+    <div className="space-y-3">
+      {focusUrl ? (
+        <div className="flex flex-wrap items-center justify-between gap-2 rounded-box border border-base-300 bg-base-200/40 px-3 py-2">
+          <span className="min-w-0 truncate text-sm text-muted">
+            Yalnızca <span className="font-medium">{focusUrl}</span>
+          </span>
+          <button
+            type="button"
+            className="btn btn-ghost btn-xs shrink-0"
+            onClick={onClearFocus}
+          >
+            Tüm sayfaları göster
+          </button>
+        </div>
+      ) : null}
+      {sections.length === 0 ? (
+        <div className="rounded-box border border-base-300 py-10 text-center text-muted">
+          <p className="font-medium">Bu sayfada kayıtlı sorun yok.</p>
+        </div>
+      ) : (
+        <div className="border border-base-300 rounded-box overflow-hidden">
+          {sections.map((section) => (
+            <IssueSection key={section.severity} section={section} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

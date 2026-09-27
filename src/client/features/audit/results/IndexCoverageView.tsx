@@ -3,7 +3,9 @@ import { sort } from "remeda";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ExternalLink, Loader2, RefreshCw, SearchCheck } from "lucide-react";
 import { toast } from "sonner";
+import { useMemo, useState } from "react";
 import { EmptyState } from "@/client/components/EmptyState";
+import { TablePagination } from "@/client/components/table/TablePagination";
 import { MetricRow, MetricTile } from "@/client/components/MetricTile";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import { formatDateTime, formatNumber } from "@/client/lib/format";
@@ -181,86 +183,122 @@ export function IndexCoverageView({
   );
 }
 
+const COVERAGE_PAGE_SIZES = [25, 50, 100] as const;
+
 function CoverageTable({
   rows,
 }: {
   rows: Awaited<ReturnType<typeof getAuditIndexCoverage>>["rows"];
 }) {
   // Problems first: a page Google rejected is the reason to open this tab.
-  const ordered = sort(
-    rows,
-    (a, b) =>
-      rank(a.verdict, a.checkedAt, a.error) -
-      rank(b.verdict, b.checkedAt, b.error),
+  const ordered = useMemo(
+    () =>
+      sort(
+        rows,
+        (a, b) =>
+          rank(a.verdict, a.checkedAt, a.error) -
+          rank(b.verdict, b.checkedAt, b.error),
+      ),
+    [rows],
   );
+  /*
+   * Paginated because this table grows with the audit, not with the quota.
+   * It holds the pages Google has been asked about -- 53 today on a
+   * 212-page site, and every one of them once the daily allowance catches
+   * up. It was rendering `ordered.map(...)` with no cap at all.
+   */
+  const [pageSize, setPageSize] = useState<number>(COVERAGE_PAGE_SIZES[0]);
+  const [page, setPage] = useState(1);
+  const pageCount = Math.max(1, Math.ceil(ordered.length / pageSize));
+  const current = Math.min(page, pageCount);
+  const visible = ordered.slice((current - 1) * pageSize, current * pageSize);
 
   return (
-    <div className="overflow-x-auto">
-      <table className="table table-sm">
-        <thead>
-          <tr>
-            <th>Sayfa</th>
-            <th>Durum</th>
-            <th>Google&apos;ın canonical&apos;ı</th>
-            <th>Son tarama</th>
-            <th />
-          </tr>
-        </thead>
-        <tbody>
-          {ordered.map((row) => {
-            // The server decides this, so the column and the tile above it
-            // cannot drift apart again.
-            const mismatch = row.canonicalMismatch;
+    <>
+      <div className="overflow-x-auto">
+        <table className="table table-sm">
+          <thead>
+            <tr>
+              <th>Sayfa</th>
+              <th>Durum</th>
+              <th>Google&apos;ın canonical&apos;ı</th>
+              <th>Son tarama</th>
+              <th />
+            </tr>
+          </thead>
+          <tbody>
+            {visible.map((row) => {
+              // The server decides this, so the column and the tile above it
+              // cannot drift apart again.
+              const mismatch = row.canonicalMismatch;
 
-            return (
-              <tr key={row.url}>
-                <td className="max-w-md">
-                  <span className="block truncate" title={row.url}>
-                    {pathOf(row.url)}
-                  </span>
-                </td>
-                <td>
-                  <VerdictBadge
-                    verdict={row.verdict}
-                    coverageState={row.coverageState}
-                    error={row.error}
-                    checkedAt={row.checkedAt}
-                  />
-                </td>
-                <td className="max-w-xs">
-                  {mismatch ? (
-                    <span
-                      className="block truncate text-warning"
-                      title={row.googleCanonical ?? undefined}
-                    >
-                      {pathOf(row.googleCanonical ?? "")}
+              return (
+                <tr key={row.url}>
+                  <td className="max-w-md">
+                    <span className="block truncate" title={row.url}>
+                      {pathOf(row.url)}
                     </span>
-                  ) : (
-                    <span className="text-subtle">-</span>
-                  )}
-                </td>
-                <td className="whitespace-nowrap text-muted">
-                  {row.lastCrawlTime ? formatDateTime(row.lastCrawlTime) : "-"}
-                </td>
-                <td>
-                  {row.inspectionLink ? (
-                    <a
-                      href={row.inspectionLink}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                      className="link link-hover inline-flex items-center gap-1 text-xs"
-                      title="Search Console'da aç"
-                    >
-                      <ExternalLink className="size-3.5" />
-                    </a>
-                  ) : null}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
+                  </td>
+                  <td>
+                    <VerdictBadge
+                      verdict={row.verdict}
+                      coverageState={row.coverageState}
+                      error={row.error}
+                      checkedAt={row.checkedAt}
+                    />
+                  </td>
+                  <td className="max-w-xs">
+                    {mismatch ? (
+                      <span
+                        className="block truncate text-warning"
+                        title={row.googleCanonical ?? undefined}
+                      >
+                        {pathOf(row.googleCanonical ?? "")}
+                      </span>
+                    ) : (
+                      <span className="text-subtle">-</span>
+                    )}
+                  </td>
+                  <td className="whitespace-nowrap text-muted">
+                    {row.lastCrawlTime
+                      ? formatDateTime(row.lastCrawlTime)
+                      : "-"}
+                  </td>
+                  <td>
+                    {row.inspectionLink ? (
+                      <a
+                        href={row.inspectionLink}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        className="link link-hover inline-flex items-center gap-1 text-xs"
+                        title="Search Console'da aç"
+                      >
+                        <ExternalLink className="size-3.5" />
+                      </a>
+                    ) : null}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      {ordered.length > COVERAGE_PAGE_SIZES[0] ? (
+        <TablePagination
+          page={current}
+          pageSize={pageSize}
+          pageSizes={COVERAGE_PAGE_SIZES}
+          totalCount={ordered.length}
+          hasNextPage={current < pageCount}
+          isLoading={false}
+          onPageChange={setPage}
+          onPageSizeChange={(next) => {
+            setPageSize(next);
+            setPage(1);
+          }}
+        />
+      ) : null}
+    </>
   );
 }
 

@@ -1,6 +1,6 @@
 import { PageShell } from "@/client/components/PageShell";
 import { TabPanel, Tabs } from "@/client/components/Tabs";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   keepPreviousData,
@@ -11,7 +11,6 @@ import {
 import { Download, Loader2, Sheet } from "lucide-react";
 import { toast } from "sonner";
 import { TableExportMenu } from "@/client/components/table/TableBulkActionBar";
-import { TablePagination } from "@/client/components/table/TablePagination";
 import { SearchConsoleConnectionCard } from "@/client/features/gsc/SearchConsoleConnectionCard";
 import { SearchPerformanceLoadingState } from "@/client/features/search-performance/SearchPerformanceLoadingState";
 import {
@@ -32,8 +31,6 @@ import {
 } from "@/serverFunctions/searchPerformance";
 import {
   GSC_DEVICES,
-  SEARCH_PERFORMANCE_DEFAULT_PAGE_SIZE,
-  SEARCH_PERFORMANCE_PAGE_SIZES,
   SEARCH_PERFORMANCE_RANGES,
   type SearchPerformanceDateRange,
   type SearchPerformanceDevice,
@@ -99,22 +96,13 @@ function buildFilterInput(
 function tableQueryOptions(
   projectId: string,
   dimension: SearchPerformanceTableDimension,
-  page: number,
-  pageSize: number,
   filterInput: FilterInput,
 ) {
   return queryOptions({
-    queryKey: [
-      "searchPerformanceTable",
-      projectId,
-      dimension,
-      page,
-      pageSize,
-      filterInput,
-    ],
+    queryKey: ["searchPerformanceTable", projectId, dimension, filterInput],
     queryFn: () =>
       getSearchPerformanceTable({
-        data: { projectId, dimension, page, pageSize, ...filterInput },
+        data: { projectId, dimension, ...filterInput },
       }),
   });
 }
@@ -154,15 +142,6 @@ export function SearchPerformancePage({
 }) {
   const queryClient = useQueryClient();
   const setTab = (next: Tab) => onViewChange({ tab: next });
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState<number>(
-    SEARCH_PERFORMANCE_DEFAULT_PAGE_SIZE,
-  );
-
-  // Any change to the query set (tab, filters, page size) restarts at page 1.
-  useEffect(() => {
-    setPage(1);
-  }, [tab, range, device, country, pageSize]);
 
   const filterInput = buildFilterInput(range, device, country);
 
@@ -177,13 +156,13 @@ export function SearchPerformancePage({
   const isTableTab = tab === "queries" || tab === "pages";
   const dimension = tabDimension(tab);
   const tableQuery = useQuery({
-    ...tableQueryOptions(projectId, dimension, page, pageSize, filterInput),
+    ...tableQueryOptions(projectId, dimension, filterInput),
     enabled: report?.connected === true && isTableTab,
     placeholderData: keepPreviousData,
   });
   const tableData = tableQuery.data;
   const tableRows = tableData?.connected ? tableData.rows : [];
-  const hasNextPage = tableData?.connected ? tableData.hasNextPage : false;
+  const tableTruncated = tableData?.connected ? tableData.truncated : false;
 
   // Warm the Queries tab (first page) as soon as the report connects so the tab
   // opens instantly instead of showing a spinner. Free first-party GSC data.
@@ -193,8 +172,6 @@ export function SearchPerformancePage({
       tableQueryOptions(
         projectId,
         "query",
-        1,
-        SEARCH_PERFORMANCE_DEFAULT_PAGE_SIZE,
         buildFilterInput(range, device, country),
       ),
     );
@@ -383,18 +360,10 @@ export function SearchPerformancePage({
                     <DimensionTable
                       rows={tableRows}
                       keyLabel={tab === "queries" ? "Sorgu" : "Sayfa"}
+                      truncated={tableTruncated}
+                      hasActiveFilter={Boolean(device ?? country)}
                     />
                   </div>
-                  <TablePagination
-                    page={page}
-                    pageSize={pageSize}
-                    pageSizes={SEARCH_PERFORMANCE_PAGE_SIZES}
-                    totalCount={null}
-                    hasNextPage={hasNextPage}
-                    isLoading={tableQuery.isFetching}
-                    onPageChange={setPage}
-                    onPageSizeChange={setPageSize}
-                  />
                 </>
               )}
             </TabPanel>

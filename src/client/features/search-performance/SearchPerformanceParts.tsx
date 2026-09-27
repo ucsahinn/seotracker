@@ -174,29 +174,72 @@ export function TotalsCards({ report }: { report: Report }) {
 export function DimensionTable({
   rows,
   keyLabel,
+  truncated,
+  hasActiveFilter,
 }: {
   rows: SearchPerformanceTableRow[];
   keyLabel: string;
+  /** The fetch hit its ceiling, so this is not the whole dimension. */
+  truncated: boolean;
+  /** Changes what an empty table means, and therefore what to say about it. */
+  hasActiveFilter: boolean;
 }) {
   const columns = useMemo(() => buildDimensionColumns(keyLabel), [keyLabel]);
+  /*
+   * Sorted and paginated here, over the whole fetched set.
+   *
+   * Google paginated this server-side and returns its own clicks-desc
+   * order, so the client held one page and sorted that -- "Gösterim"
+   * reordered twenty-five of the top-twenty-five-by-clicks and called them
+   * the highest-impression queries.
+   */
   const table = useAppTable({
     data: rows,
     columns,
     withSorting: true,
-    initialState: { sorting: [{ id: "clicks", desc: true }] },
+    withPagination: true,
+    initialState: {
+      sorting: [{ id: "clicks", desc: true }],
+      pagination: { pageIndex: 0, pageSize: SEARCH_PERFORMANCE_PAGE_SIZES[0] },
+    },
   });
+  const pagination = table.getState().pagination;
+
   return (
-    <AppDataTable
-      table={table}
-      className="table table-zebra table-sm"
-      wrapperClassName="overflow-x-auto"
-      empty={
-        <p className="p-6 text-sm text-muted">
-          Bu dönem için henüz veri yok. Search Console verisi birkaç gün
-          gecikmeli gelir.
-        </p>
-      }
-    />
+    <>
+      <AppDataTable
+        table={table}
+        className="table table-zebra table-sm"
+        wrapperClassName="overflow-x-auto"
+        empty={
+          <p className="p-6 text-sm text-muted">
+            {hasActiveFilter
+              ? "Bu filtrelerle eşleşen satır yok. Filtreleri genişletmeyi deneyin."
+              : "Bu dönem için henüz veri yok. Search Console verisi birkaç gün gecikmeli gelir."}
+          </p>
+        }
+      />
+      {rows.length > 0 ? (
+        <>
+          <TablePagination
+            page={pagination.pageIndex + 1}
+            pageSize={pagination.pageSize}
+            pageSizes={SEARCH_PERFORMANCE_PAGE_SIZES}
+            totalCount={rows.length}
+            hasNextPage={table.getCanNextPage()}
+            isLoading={false}
+            onPageChange={(next) => table.setPageIndex(next - 1)}
+            onPageSizeChange={(next) => table.setPageSize(next)}
+          />
+          {truncated ? (
+            <p className="border-t border-base-300 px-4 py-2 text-xs text-muted">
+              Google&apos;ın tek çağrıda döndürdüğü üst sınıra ulaşıldı, bu
+              yüzden bu liste tam değil. Daraltmak için filtreleri kullanın.
+            </p>
+          ) : null}
+        </>
+      ) : null}
+    </>
   );
 }
 

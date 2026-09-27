@@ -5,6 +5,39 @@ numaraları [SemVer](https://semver.org/lang/tr/) izler.
 
 ## [Yayınlanmamış]
 
+## [0.9.0] — 2026-09-27
+
+Açıkta bıraktığım dört işin tamamlanması. Biri yanlış cevap veriyordu, ikisi
+gerçek ölçekte çöküyordu, biri de ekranı salt-okunur bırakıyordu.
+
+### Düzeltilenler
+
+- **Arama performansında sıralama yanlış cevap veriyordu.** Google
+  sayfalamayı sunucu tarafında yapıyor ve kendi tıklama sırasını
+  döndürüyordu; istemci elindeki 25 satırı sıralıyordu. Yani "Gösterim"e
+  tıklamak, _tıklamaya göre ilk 25_'in içinden 25'ini yeniden sıralayıp
+  bunu "en çok gösterim alan sorgular" diye sunuyordu — tam olarak bu
+  tablonun cevaplaması gereken sorunun yanlış cevabı. Search Console'da
+  `orderBy` yok, bu yüzden bir kümeyi sıralamanın tek yolu onu elde
+  tutmak: tek çağrıda 1000 satıra kadar getirilip tarayıcıda sıralanıyor
+  ve sayfalanıyor. Sınıra ulaşıldığında bunu söylüyor.
+
+### Eklenenler
+
+- **İndeksleme tablosu sayfalanıyor.** `ordered.map(...)` ile hiçbir sınır
+  olmadan çiziliyordu. Bugün 53 satır, ama bu tablo denetimle birlikte
+  büyüyor: kota yetiştiğinde 474 satır olacak.
+- **Sayfa satırından o sayfanın sorunlarına geçiş.** Satırın tek çıkışı
+  yeni sekmede açılan canlı adresti; bulguları olan bir sayfa onlara
+  ulaşamıyordu, üstelik iki taraf da aynı kimliği kullanıyorken. Artık
+  "Sorun" sütunu bulgu sayısını gösteriyor ve tıklayınca sorunlar sekmesi
+  o adrese odaklanıyor.
+- **Raporlar ekranı bir rapor başlatabiliyor.** Raporları `save_report` ile
+  ajan yazıyor, insan okuyor — elle HTML yazma yolu yok ve bir belge
+  düzenleyici icat etmek kimsenin istemediği bir iş olurdu. Eksik olan
+  kaydet düğmesi değil, raporları listeleyen ekrandan bir rapor
+  _başlatabilmekti_: panodaki ajan kurulum isteminin aynı şekli.
+
 ## [0.8.0] — 2026-09-27
 
 Görünüm durumunun adrese taşınması ve istatistik kartlarının gerçekten
@@ -443,6 +476,7 @@ depodan kaldırıldı, çünkü onlar open-seo'nun yayınlarıydı.
   Verileriniz `seotracker_data` biriminde; güncellemeden önce yedek almak
   isteyebilirsiniz.
 
+[0.9.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.9.0
 [0.8.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.8.0
 [0.7.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.7.0
 [0.6.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.6.0

@@ -72,6 +72,7 @@ export function ResultsView({
   const [performanceFilters, setPerformanceFilters] =
     useState<PerformanceFilters>(EMPTY_PERFORMANCE_FILTERS);
   const [performanceIds, setPerformanceIds] = useState<string[] | null>(null);
+  const [issueFocusUrl, setIssueFocusUrl] = useState<string | undefined>();
   const filteredLighthouse = useMemo(() => {
     if (!performanceIds) return lighthouse;
     const keep = new Set(performanceIds);
@@ -176,7 +177,13 @@ export function ResultsView({
                 <IndexCoverageView projectId={projectId} auditId={audit.id} />
               </div>
             )}
-            {activeTab === "issues" && <IssuesView issues={issues} />}
+            {activeTab === "issues" && (
+              <IssuesView
+                issues={issues}
+                focusUrl={issueFocusUrl}
+                onClearFocus={() => setIssueFocusUrl(undefined)}
+              />
+            )}
             {activeTab === "pages" && (
               <PagesTable
                 pages={pages}
@@ -185,6 +192,10 @@ export function ResultsView({
                 filters={pagesFilters}
                 onFiltersChange={setPagesFilters}
                 filteredPages={filteredPages}
+                onShowIssues={(url) => {
+                  setIssueFocusUrl(url);
+                  onTabChange("issues");
+                }}
               />
             )}
             {activeTab === "performance" && lighthouse.length > 0 && (
