@@ -3,7 +3,7 @@ import {
   formatDecimal,
   formatDuration,
 } from "@/client/lib/format";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   createColumnHelper,
   type ColumnDef,
@@ -44,15 +44,24 @@ export function PerformanceTable({
   projectId,
   lighthouse,
   pages,
+  filters,
+  onFiltersChange,
+  onFilteredIdsChange,
 }: {
   auditId: string;
   projectId: string;
   lighthouse: AuditResultsData["lighthouse"];
   pages: AuditResultsData["pages"];
+  /*
+   * Owned by `ResultsView`, for the same reason the pages filters are: the
+   * export menu lives one level up and was closing over the unfiltered
+   * array, so a narrowed table exported everything.
+   */
+  filters: PerformanceFilters;
+  onFiltersChange: (filters: PerformanceFilters) => void;
+  /** The ids that survived the filter, so the export can write exactly them. */
+  onFilteredIdsChange: (ids: string[]) => void;
 }) {
-  const [filters, setFilters] = useState<PerformanceFilters>(
-    EMPTY_PERFORMANCE_FILTERS,
-  );
   const [showFilters, setShowFilters] = useState(false);
   const [sorting, setSorting] = useState<SortingState>([
     { id: "performanceScore", desc: false },
@@ -74,6 +83,19 @@ export function PerformanceTable({
     () => filterPerformanceRows(rows, filters),
     [filters, rows],
   );
+  /*
+   * Reported up rather than recomputed up. The rows are assembled here by
+   * joining Lighthouse results to their pages, and the text filter searches
+   * the joined URL -- so filtering again upstairs without the join would
+   * quietly export the wrong rows.
+   */
+  const filteredIds = useMemo(
+    () => filteredRows.map((row) => row.id),
+    [filteredRows],
+  );
+  useEffect(() => {
+    onFilteredIdsChange(filteredIds);
+  }, [filteredIds, onFilteredIdsChange]);
   const activeFilterCount = countActiveFilters(
     filters,
     EMPTY_PERFORMANCE_FILTERS,
@@ -102,9 +124,9 @@ export function PerformanceTable({
       {showFilters ? (
         <PerformanceFilterBar
           filters={filters}
-          onChange={setFilters}
+          onChange={onFiltersChange}
           activeFilterCount={activeFilterCount}
-          onReset={() => setFilters(EMPTY_PERFORMANCE_FILTERS)}
+          onReset={() => onFiltersChange(EMPTY_PERFORMANCE_FILTERS)}
         />
       ) : null}
       <AppDataTable

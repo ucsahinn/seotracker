@@ -4,12 +4,31 @@ import {
   SearchPerformancePage,
   SEARCH_PERFORMANCE_TABS,
 } from "@/client/features/search-performance/SearchPerformancePage";
+import {
+  GSC_DEVICES,
+  SEARCH_PERFORMANCE_RANGES,
+} from "@/types/schemas/search-performance";
 
-// The tab lives in the URL, like the audit page's does. Held in component
-// state it could not be linked or bookmarked, reload dropped you back to the
-// first tab, and Back left the page entirely.
+/*
+ * The whole view state lives in the URL, not just the tab.
+ *
+ * On this screen the filter *is* the finding -- "mobile, Turkey, last 3
+ * months" is the answer, and it was component state. A reload, a Back, or a
+ * link sent to a colleague dropped all of it back to the defaults, on the
+ * one screen where the reader most needs to arrive at what the sender was
+ * looking at. `catch` on every field means a hand-edited URL degrades to
+ * the default rather than throwing.
+ */
 const searchSchema = z.object({
   tab: z.enum(SEARCH_PERFORMANCE_TABS).catch("striking").default("striking"),
+  range: z
+    .enum(SEARCH_PERFORMANCE_RANGES)
+    .catch("last_28_days")
+    .default("last_28_days"),
+  device: z.enum(GSC_DEVICES).optional().catch(undefined),
+  country: z.string().min(2).max(3).optional().catch(undefined),
+  // Page is deliberately not persisted: it is a position inside a result
+  // set, and the set is rebuilt whenever any filter above it changes.
 });
 
 export const Route = createFileRoute(
@@ -21,14 +40,19 @@ export const Route = createFileRoute(
 
 function SearchPerformanceRoute() {
   const { projectId } = Route.useParams();
-  const { tab } = Route.useSearch();
+  const search = Route.useSearch();
   const navigate = useNavigate({ from: Route.fullPath });
 
   return (
     <SearchPerformancePage
       projectId={projectId}
-      tab={tab}
-      onTabChange={(next) => void navigate({ search: { tab: next } })}
+      tab={search.tab}
+      range={search.range}
+      device={search.device}
+      country={search.country}
+      onViewChange={(next) =>
+        void navigate({ search: (current) => ({ ...current, ...next }) })
+      }
     />
   );
 }

@@ -2,6 +2,7 @@ import { useMemo, type ReactNode } from "react";
 import { resolveIssueSeverity } from "@/shared/audit-issues";
 import { formatCount, formatDuration } from "@/client/lib/format";
 import type { AuditResultsData } from "@/client/features/audit/results/types";
+import type { AuditTab } from "@/types/schemas/audit";
 
 /**
  * The numbers across the top of an audit result.
@@ -15,6 +16,16 @@ interface StatItem {
   value: string;
   valueClass?: string;
   sub?: ReactNode;
+  /**
+   * The tab this number is about.
+   *
+   * Every one of these was a `<p>`. "Lighthouse hatası 3" is the most
+   * clickable-looking thing on the screen and did nothing; an operator
+   * reading "Taranan sayfa 212" wants the pages. Tiles without an obvious
+   * destination -- the averages, the response time -- stay inert rather
+   * than navigating somewhere arbitrary.
+   */
+  tab?: AuditTab;
 }
 
 export function StatsStrip({
@@ -24,7 +35,9 @@ export function StatsStrip({
   totalLighthouse,
   averageResponseMs,
   lighthouseSummary,
+  onTabChange,
 }: {
+  onTabChange: (tab: AuditTab) => void;
   pagesCrawled: number;
   /** Distinct pages with at least one finding, not rows. */
   issuePageCount: number;
@@ -47,10 +60,11 @@ export function StatsStrip({
   }, [issues]);
 
   const items: StatItem[] = [
-    { label: "Taranan sayfa", value: formatCount(pagesCrawled) },
+    { label: "Taranan sayfa", value: formatCount(pagesCrawled), tab: "pages" },
     {
       label: "Sorunlu sayfa",
       value: formatCount(issuePageCount),
+      tab: "issues" as const,
       valueClass: issuePageCount === 0 ? "text-success" : "",
       sub: issues.length > 0 && (
         <span className="flex items-center gap-2.5">
@@ -77,7 +91,11 @@ export function StatsStrip({
 
   if (totalLighthouse > 0) {
     items.push(
-      { label: "Lighthouse testi", value: formatCount(totalLighthouse) },
+      {
+        label: "Lighthouse testi",
+        value: formatCount(totalLighthouse),
+        tab: "performance" as const,
+      },
       {
         label: "Ort. Lighthouse perf.",
         value:
@@ -105,6 +123,7 @@ export function StatsStrip({
       {
         label: "Lighthouse hatası",
         value: formatCount(lighthouseSummary.failed),
+        tab: "performance" as const,
         valueClass:
           lighthouseSummary.failed > 0 ? "text-error" : "text-success",
       },
@@ -120,21 +139,38 @@ export function StatsStrip({
     <div
       className={`grid ${columnsClass} gap-px rounded-box border border-base-300 bg-base-300/70 overflow-hidden`}
     >
-      {items.map((item) => (
-        <div key={item.label} className="bg-base-100 px-4 py-3">
-          <p className="text-[11px] font-medium uppercase tracking-wider text-muted">
-            {item.label}
-          </p>
-          <p
-            className={`text-xl font-semibold mt-0.5 tabular-nums ${item.valueClass ?? ""}`}
+      {items.map((item) => {
+        const body = (
+          <>
+            <p className="text-[11px] font-medium uppercase tracking-wider text-muted">
+              {item.label}
+            </p>
+            <p
+              className={`text-xl font-semibold mt-0.5 tabular-nums ${item.valueClass ?? ""}`}
+            >
+              {item.value}
+            </p>
+            {item.sub && (
+              <div className="text-xs text-muted mt-1">{item.sub}</div>
+            )}
+          </>
+        );
+        const tab = item.tab;
+        return tab ? (
+          <button
+            key={item.label}
+            type="button"
+            onClick={() => onTabChange(tab)}
+            className="bg-base-100 px-4 py-3 text-left transition-colors hover:bg-base-200/60"
           >
-            {item.value}
-          </p>
-          {item.sub && (
-            <div className="text-xs text-muted mt-1">{item.sub}</div>
-          )}
-        </div>
-      ))}
+            {body}
+          </button>
+        ) : (
+          <div key={item.label} className="bg-base-100 px-4 py-3">
+            {body}
+          </div>
+        );
+      })}
     </div>
   );
 }

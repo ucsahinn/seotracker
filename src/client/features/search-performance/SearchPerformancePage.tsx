@@ -84,13 +84,13 @@ type FilterInput = {
 // The server filter payload: drop device/country when set to the "ALL" sentinel.
 function buildFilterInput(
   range: SearchPerformanceDateRange,
-  device: SearchPerformanceDevice | typeof ALL,
-  country: string,
+  device: SearchPerformanceDevice | undefined,
+  country: string | undefined,
 ): FilterInput {
   return {
     dateRange: range,
-    ...(device === ALL ? {} : { device }),
-    ...(country === ALL ? {} : { country }),
+    ...(device ? { device } : {}),
+    ...(country ? { country } : {}),
   };
 }
 
@@ -130,19 +130,30 @@ export const SEARCH_PERFORMANCE_TABS = [
 export function SearchPerformancePage({
   projectId,
   tab,
-  onTabChange: setTab,
+  range,
+  device,
+  country,
+  onViewChange,
 }: {
   projectId: string;
   tab: Tab;
-  onTabChange: (tab: Tab) => void;
+  /*
+   * Range, device and country come from the URL rather than local state:
+   * on this screen the filter is the finding, and a link that drops it is
+   * a link to the wrong answer. `undefined` means "no filter".
+   */
+  range: SearchPerformanceDateRange;
+  device?: SearchPerformanceDevice;
+  country?: string;
+  onViewChange: (next: {
+    tab?: Tab;
+    range?: SearchPerformanceDateRange;
+    device?: SearchPerformanceDevice;
+    country?: string;
+  }) => void;
 }) {
   const queryClient = useQueryClient();
-  const [range, setRange] =
-    useState<SearchPerformanceDateRange>("last_28_days");
-  const [device, setDevice] = useState<SearchPerformanceDevice | typeof ALL>(
-    ALL,
-  );
-  const [country, setCountry] = useState<string>(ALL);
+  const setTab = (next: Tab) => onViewChange({ tab: next });
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState<number>(
     SEARCH_PERFORMANCE_DEFAULT_PAGE_SIZE,
@@ -264,12 +275,14 @@ export function SearchPerformancePage({
                 ) : null}
                 <select
                   className="select select-bordered select-sm w-36"
-                  value={device}
-                  onChange={(event) => {
-                    setDevice(
-                      isDevice(event.target.value) ? event.target.value : ALL,
-                    );
-                  }}
+                  value={device ?? ALL}
+                  onChange={(event) =>
+                    onViewChange({
+                      device: isDevice(event.target.value)
+                        ? event.target.value
+                        : undefined,
+                    })
+                  }
                   aria-label="Cihaz filtresi"
                 >
                   <option value={ALL}>Tüm cihazlar</option>
@@ -281,8 +294,15 @@ export function SearchPerformancePage({
                 </select>
                 <select
                   className="select select-bordered select-sm w-36"
-                  value={country}
-                  onChange={(event) => setCountry(event.target.value)}
+                  value={country ?? ALL}
+                  onChange={(event) =>
+                    onViewChange({
+                      country:
+                        event.target.value === ALL
+                          ? undefined
+                          : event.target.value,
+                    })
+                  }
                   aria-label="Ülke filtresi"
                 >
                   <option value={ALL}>Tüm ülkeler</option>
@@ -297,7 +317,7 @@ export function SearchPerformancePage({
                   value={range}
                   onChange={(event) => {
                     if (isDateRange(event.target.value)) {
-                      setRange(event.target.value);
+                      onViewChange({ range: event.target.value });
                     }
                   }}
                   aria-label="Tarih aralığı"
@@ -342,8 +362,8 @@ export function SearchPerformancePage({
                 <CannibalizationTable
                   projectId={projectId}
                   dateRange={range}
-                  device={device === ALL ? undefined : device}
-                  country={country === ALL ? undefined : country}
+                  device={device}
+                  country={country}
                 />
               ) : tableQuery.isPending ? (
                 <div className="flex items-center gap-2 p-8 text-sm text-muted">

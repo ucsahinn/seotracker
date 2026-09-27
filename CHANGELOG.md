@@ -5,6 +5,35 @@ numaraları [SemVer](https://semver.org/lang/tr/) izler.
 
 ## [Yayınlanmamış]
 
+## [0.8.0] — 2026-09-27
+
+Görünüm durumunun adrese taşınması ve istatistik kartlarının gerçekten
+tıklanabilir olması.
+
+### Eklenenler
+
+- **Arama performansında filtreler artık adreste.** Tarih aralığı, cihaz ve
+  ülke bileşen durumundaydı — yani yeniden yükleme, Geri ve paylaşılan bir
+  bağlantı hepsini varsayılana düşürüyordu. Bu ekranda filtrenin kendisi
+  bulgu: "mobil, Türkiye, son 3 ay" cevabın ta kendisi, ve bağlantıyı alan
+  kişi gönderenin baktığı şeyi görmüyordu. Her alanda `catch` var, yani elle
+  bozulmuş bir adres hata vermek yerine varsayılana düşüyor.
+- **İstatistik kartları sekmelerine gidiyor.** "Taranan sayfa 212",
+  "Sorunlu sayfa", "Lighthouse testi" ve "Lighthouse hatası" birer `<p>`
+  etiketiydi — ekrandaki en tıklanabilir görünen şeyler hiçbir şey
+  yapmıyordu. Belirgin bir hedefi olmayan kartlar (ortalamalar, yanıt
+  süresi) bilerek hareketsiz kaldı; rastgele bir yere götürmek, hiçbir yere
+  götürmemekten kötü.
+
+### Düzeltilenler
+
+- **Performans sekmesinin dışa aktarması da filtreleri yok sayıyordu.**
+  Sayfalar sekmesinde giderilen kusurun aynısı buradaydı. Filtrelenmiş
+  satırların kimlikleri yukarı bildiriliyor — yeniden filtrelenmiyor, çünkü
+  metin filtresi Lighthouse sonucuyla sayfasının birleştirilmesinden gelen
+  adrese bakıyor ve o birleştirme olmadan yapılan ikinci bir filtreleme
+  sessizce yanlış satırları yazardı.
+
 ## [0.7.0] — 2026-09-27
 
 Ekranların tıklanabilir, filtrelenebilir ve kendi kendine güncellenen hâle
@@ -414,6 +443,7 @@ depodan kaldırıldı, çünkü onlar open-seo'nun yayınlarıydı.
   Verileriniz `seotracker_data` biriminde; güncellemeden önce yedek almak
   isteyebilirsiniz.
 
+[0.8.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.8.0
 [0.7.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.7.0
 [0.6.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.6.0
 [0.5.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.5.0

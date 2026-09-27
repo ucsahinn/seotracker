@@ -13,9 +13,11 @@ import { IndexCoverageView } from "@/client/features/audit/results/IndexCoverage
 import { SitemapStatusPanel } from "@/client/features/gsc/SitemapStatusPanel";
 import {
   EMPTY_PAGES_FILTERS,
+  EMPTY_PERFORMANCE_FILTERS,
   filterPages,
   isLighthouseFailure,
   type PagesFilters,
+  type PerformanceFilters,
 } from "@/client/features/audit/results/AuditResultsTableFilterLogic";
 import { IssuesView } from "@/client/features/audit/results/IssuesView";
 import { PagesTable } from "@/client/features/audit/results/PagesTable";
@@ -67,6 +69,14 @@ export function ResultsView({
    */
   const [pagesFilters, setPagesFilters] =
     useState<PagesFilters>(EMPTY_PAGES_FILTERS);
+  const [performanceFilters, setPerformanceFilters] =
+    useState<PerformanceFilters>(EMPTY_PERFORMANCE_FILTERS);
+  const [performanceIds, setPerformanceIds] = useState<string[] | null>(null);
+  const filteredLighthouse = useMemo(() => {
+    if (!performanceIds) return lighthouse;
+    const keep = new Set(performanceIds);
+    return lighthouse.filter((row) => keep.has(row.id));
+  }, [lighthouse, performanceIds]);
   const filteredPages = useMemo(
     () => filterPages(pages, pagesFilters),
     [pages, pagesFilters],
@@ -128,6 +138,7 @@ export function ResultsView({
         totalLighthouse={lighthouse.length}
         averageResponseMs={stats.averageResponseMs}
         lighthouseSummary={stats.lighthouseSummary}
+        onTabChange={onTabChange}
       />
 
       <div className="card bg-base-100 border border-base-300">
@@ -136,13 +147,13 @@ export function ResultsView({
             issueCount={issuePageCount}
             issueRowCount={issues.length}
             pageCount={filteredPages.length}
-            lighthouseCount={lighthouse.length}
+            lighthouseCount={filteredLighthouse.length}
             hasPerformanceTab={hasPerformanceTab}
             activeTab={activeTab}
             onTabChange={onTabChange}
             onExport={(format) => {
               if (activeTab === "performance") {
-                exportPerformance(lighthouse, pages, format);
+                exportPerformance(filteredLighthouse, pages, format);
                 return;
               }
               if (activeTab === "issues") {
@@ -182,6 +193,9 @@ export function ResultsView({
                 projectId={projectId}
                 lighthouse={lighthouse}
                 pages={pages}
+                filters={performanceFilters}
+                onFiltersChange={setPerformanceFilters}
+                onFilteredIdsChange={setPerformanceIds}
               />
             )}
           </TabPanel>
