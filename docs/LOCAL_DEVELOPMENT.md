@@ -37,9 +37,10 @@ Two more, both genuinely optional:
   without it. See [`PAGESPEED_API_KEY.md`](./PAGESPEED_API_KEY.md).
 - `PORT` if 3001 is taken.
 
-> `.env.example` is still the upstream file and describes DataForSEO, hosted
-> auth and Postgres, none of which exist here. Do not copy it; the list above
-> is what this fork reads.
+There is no `.env.example`: the upstream one described DataForSEO, hosted
+auth and Postgres, none of which exist here, and telling people not to copy a
+file is not as good as not shipping it. [`ENVIRONMENT.md`](./ENVIRONMENT.md)
+is the full list.
 
 The Google OAuth client is not an environment variable: enter it in the app
 under **Ayarlar → Google bağlantısı**. See

@@ -15,10 +15,6 @@ dist-sourcemaps/
 .env
 .env.
 .env.*
-!.env.example
-!.env.preview.example
-!.env.production.example
-!.env.selfhost.example
 .vercel
 .output
 .nitro

@@ -5,6 +5,44 @@ numaraları [SemVer](https://semver.org/lang/tr/) izler.
 
 ## [Yayınlanmamış]
 
+## [0.10.0] — 2026-09-27
+
+Doğrulama turu: iddia edilen ama kanıtlanmamış üç şeyin gerçekten sınanması,
+ve kurulumdaki son yanıltıcı dosyanın kaldırılması.
+
+### Kaldırılanlar
+
+- **`.env.example` silindi.** Upstream'den gelen dosya `DATAFORSEO_API_KEY`,
+  `AUTUMN_SECRET_KEY`, `LOOPS_*` ve `POSTHOG_*` tanımlıyordu — hiçbiri bu
+  çatallamada yok. İki doküman insanlara onu kopyalamamalarını söylüyordu,
+  ki bu bir çözüm değil: yeni gelen birinin ilk refleksi
+  `cp .env.example .env`. Yerine [`docs/ENVIRONMENT.md`](docs/ENVIRONMENT.md)
+  geldi: `compose.yaml`'ın gerçekten ilettiği sekiz değişken, hangisinin
+  Ayarlar'dan girilmesinin daha kolay olduğu, ve `BETTER_AUTH_SECRET`'ın
+  zaten kendiliğinden üretildiği. `.gitignore`'daki dört izin girdisi de
+  var olmayan dosyaları işaret ediyordu; onlar da gitti.
+
+### Eklenenler
+
+- **Sıralama için regresyon testi.** Bir önceki sürümde düzeltilen "yalnızca
+  görünen satırları sıralıyor" kusuru tiplerle doğrulanmıştı, veriyle değil
+  — çünkü bu mülkte Search Console verisi yok. Test, tıklamaya göre ikinci
+  sayfada duran yüksek gösterimli bir satır kuruyor: sıralama tüm kümeye
+  ulaşmıyorsa o satır hiç görünmez. Eski davranış geri konarak kırmızıya
+  döndüğü doğrulandı.
+- Tablonun boş hâli artık iki durumu ayırıyor: dönemde veri olmaması ile
+  filtrelerin hiçbir şeyle eşleşmemesi. İkincisi tek tıkla düzelir,
+  birincisi operatörü başka yere gönderir.
+
+### Doğrulananlar
+
+- **Kendi kendine güncellenme, gerçek bir taramada ölçüldü.** vaultpilot.io
+  üzerinde 50 sayfalık bir denetim başlatıldı, geçmiş listesine dönüldü ve
+  hiç yeniden yükleme yapılmadan izlendi: satır 40. saniyede "Sürüyor"dan
+  "Bitti"ye geçti. Panel de yeni denetimi aldı ve doğru `auditId` ile
+  bağlandı.
+- 23 rotanın tamamı gezildi: hepsi çiziliyor, konsolda hata yok.
+
 ## [0.9.0] — 2026-09-27
 
 Açıkta bıraktığım dört işin tamamlanması. Biri yanlış cevap veriyordu, ikisi
@@ -476,6 +514,7 @@ depodan kaldırıldı, çünkü onlar open-seo'nun yayınlarıydı.
   Verileriniz `seotracker_data` biriminde; güncellemeden önce yedek almak
   isteyebilirsiniz.
 
+[0.10.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.10.0
 [0.9.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.9.0
 [0.8.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.8.0
 [0.7.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.7.0

@@ -20,10 +20,11 @@ docker compose up -d
 Hepsi bu. `.env` dosyası gerekmiyor: compose onu isteğe bağlı okur ve token
 şifreleme anahtarı ilk açılışta kendiliğinden üretilir.
 
-> **`.env.example`'ı kopyalamayın.** O dosya hâlâ upstream projeye ait ve
-> DataForSEO, Postgres, barındırılan kimlik doğrulama gibi bu çatalda var
-> olmayan şeyleri anlatıyor; içindeki `OPEN_SEO_IMAGE` değişkeni de artık
-> okunmuyor. Bu sayfadaki değişkenler, gerçekten okunanların tamamı.
+> `.env.example` diye bir dosya yok. Upstream'den gelen o dosya DataForSEO,
+> Postgres ve barındırılan kimlik doğrulama gibi bu çatalda var olmayan
+> şeyleri anlatıyordu; insanlara kopyalamamalarını söylemek, onu hiç
+> göndermemek kadar iyi değil. Tam liste:
+> [`ENVIRONMENT.md`](./ENVIRONMENT.md).
 
 `http://localhost:3001` adresini açın. İlk başlatma uygulamayı konteyner içinde
 derler ve birkaç dakika sürebilir (sağlık kontrolü 5 dakikaya kadar bekler);
