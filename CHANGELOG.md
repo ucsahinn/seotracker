@@ -5,10 +5,15 @@ numaraları [SemVer](https://semver.org/lang/tr/) izler.
 
 ## [Yayınlanmamış]
 
-## [0.13.0] — 2026-09-28
+## [1.0.0] — 2026-09-28
 
-Geriye kalan listenin tamamı: erişilebilirlik artıkları, ölü şema yüzeyi ve
-panelin cevaplamadığı soru.
+İlk kararlı sürüm. seotracker artık kurulumdan raporlamaya kadar tek bir
+ürün: kurulum tamamen uygulamanın içinde, ekranlar gerçek veriye karşı
+doğrulanmış, ve ölçmediği hiçbir şeyi iddia etmiyor.
+
+Bu başlık, 0.4.0'dan sonra art arda çıkan dokuz ara sürümün tamamını
+kapsıyor. Ölçülenler: 56 denetim kuralı, 32 MCP aracı, 657 test, uçtan uca
+fixture koşusu 56/56, `gitleaks` tüm geçmişte temiz.
 
 ### Eklenenler
 
@@ -29,6 +34,83 @@ panelin cevaplamadığı soru.
   alta kadar geçiriliyordu ve yalnızca arka plan boyuyordu — 474 satırlık
   bir tablonun elli satırlık sayfası başlıklarını kaydırıp götürüyordu.
 
+- **Sürüm notları Ayarlar'da.** Kendi sunucusunda bir araç güncelleyen kişi
+  bir sürüm sayfası görmez: bir komut çalıştırır ve konteyner bir sürüm
+  yeni döner. Notlar artık depodaki `CHANGELOG.md`'den okunuyor — ayrı bir
+  kopya bir sürümde birbirinden ayrılırdı — çalışan sürüm işaretli, eskiler
+  tek tıkla açılıyor.
+- **Her ayarın yanında "nasıl yapılır".** Yedi bölüm ve altı alan için,
+  etiketi tekrar eden değil işi anlatan metin: OAuth istemcisinin Google
+  Cloud'da tam olarak nerede olduğu, PageSpeed anahtarı için önce hangi
+  API'nin etkinleştirilmesi gerektiği, servis hesabının neden daha kısa yol
+  olduğu. Tetikleyici gerçek bir düğme: klavyeyle erişilir, Escape kapatır,
+  `aria-describedby` bağlar.
+- **İndeksleme sekmesine dışa aktarma.** Denetimin dört sekmesinden üçünde
+  vardı; Google'ın adres başına kararını taşıyan, yani operatörün asıl
+  tabloya döktüğü sekmede yoktu.
+
+- **Sıralama için regresyon testi.** Bir önceki sürümde düzeltilen "yalnızca
+  görünen satırları sıralıyor" kusuru tiplerle doğrulanmıştı, veriyle değil
+  — çünkü bu mülkte Search Console verisi yok. Test, tıklamaya göre ikinci
+  sayfada duran yüksek gösterimli bir satır kuruyor: sıralama tüm kümeye
+  ulaşmıyorsa o satır hiç görünmez. Eski davranış geri konarak kırmızıya
+  döndüğü doğrulandı.
+- Tablonun boş hâli artık iki durumu ayırıyor: dönemde veri olmaması ile
+  filtrelerin hiçbir şeyle eşleşmemesi. İkincisi tek tıkla düzelir,
+  birincisi operatörü başka yere gönderir.
+
+- **İndeksleme tablosu sayfalanıyor.** `ordered.map(...)` ile hiçbir sınır
+  olmadan çiziliyordu. Bugün 53 satır, ama bu tablo denetimle birlikte
+  büyüyor: kota yetiştiğinde 474 satır olacak.
+- **Sayfa satırından o sayfanın sorunlarına geçiş.** Satırın tek çıkışı
+  yeni sekmede açılan canlı adresti; bulguları olan bir sayfa onlara
+  ulaşamıyordu, üstelik iki taraf da aynı kimliği kullanıyorken. Artık
+  "Sorun" sütunu bulgu sayısını gösteriyor ve tıklayınca sorunlar sekmesi
+  o adrese odaklanıyor.
+- **Raporlar ekranı bir rapor başlatabiliyor.** Raporları `save_report` ile
+  ajan yazıyor, insan okuyor — elle HTML yazma yolu yok ve bir belge
+  düzenleyici icat etmek kimsenin istemediği bir iş olurdu. Eksik olan
+  kaydet düğmesi değil, raporları listeleyen ekrandan bir rapor
+  _başlatabilmekti_: panodaki ajan kurulum isteminin aynı şekli.
+
+- **Arama performansında filtreler artık adreste.** Tarih aralığı, cihaz ve
+  ülke bileşen durumundaydı — yani yeniden yükleme, Geri ve paylaşılan bir
+  bağlantı hepsini varsayılana düşürüyordu. Bu ekranda filtrenin kendisi
+  bulgu: "mobil, Türkiye, son 3 ay" cevabın ta kendisi, ve bağlantıyı alan
+  kişi gönderenin baktığı şeyi görmüyordu. Her alanda `catch` var, yani elle
+  bozulmuş bir adres hata vermek yerine varsayılana düşüyor.
+- **İstatistik kartları sekmelerine gidiyor.** "Taranan sayfa 212",
+  "Sorunlu sayfa", "Lighthouse testi" ve "Lighthouse hatası" birer `<p>`
+  etiketiydi — ekrandaki en tıklanabilir görünen şeyler hiçbir şey
+  yapmıyordu. Belirgin bir hedefi olmayan kartlar (ortalamalar, yanıt
+  süresi) bilerek hareketsiz kaldı; rastgele bir yere götürmek, hiçbir yere
+  götürmemekten kötü.
+
+- **Sayfa tablosunda üç yeni sütun: Dizin, Derinlik, Harita.** Tarayıcı bu
+  üçünü baştan beri kaydedip tarayıcıya gönderiyordu; hiçbir ekran
+  göstermiyordu. Üçü de sıralanabilir, üçünün de filtresi var — "hangi
+  sayfaları Google dizine alabiliyor", "hangisi kaç tık derinde", "haritanın
+  unuttukları". Gerçek veriyle doğrulandı: 212 sayfa, `noindex` filtresiyle
+  2'ye iniyor.
+- **Panel kartlarındaki her bulgu artık bir bağlantı.** "Sayfa noindex ·
+  2 sayfa"ya tıklamak o denetimin sorunlar sekmesini açıyor.
+
+- **PageSpeed anahtarı artık Ayarlar'da.** Lighthouse aşamasının kotasını
+  yükselten anahtar `PAGESPEED_API_KEY` olarak yalnızca ortamda
+  ayarlanabiliyordu — yani dosya düzenleyip konteyneri yeniden kurmak
+  gerekiyordu. Google OAuth istemcisiyle aynı yolu izliyor: sunucuda
+  şifreleniyor, tarayıcıya bir daha dönmüyor, ortam değişkeni de çalışmaya
+  devam ediyor. Kurulumda elle dosya düzenlemeyi gerektiren hiçbir şey
+  kalmadı (migration 0056).
+
+- **Beşinci kurulum adımı: proje bilgisi.** Kurulum boşluklarının en
+  sessizi: hiçbir şey hata vermiyor, denetim çalışıyor, ama "bu sayfalardan
+  hangisi para kazandırıyor" diye soran bir ajanın okuyacağı hiçbir şey yok
+  ve rapor şablonları siteyi tanımadan yazıyor. Panoda artık söyleniyor.
+- Harness neden durduğunu yazıyor. Kuru bir "TRUNCATED" üç kez yanlış
+  okundu; koşu hangi sigortanın attığını zaten biliyordu, sadece
+  söylemiyordu.
+
 ### Düzeltilenler
 
 - **Dışa aktarma tetikleyicisi `<div role="button">` idi** — sekme durağı
@@ -40,27 +122,6 @@ panelin cevaplamadığı soru.
 - **İki tablonun boş hâli yanlış suçluyordu.** "Bu filtrelerle eşleşen
   sayfa yok" koşulsuz yazılıyordu, yani hiç sayfa taramamış bir denetim
   kimsenin kurmadığı bir filtreyi suçluyordu.
-
-### Kaldırılanlar
-
-- **`user_onboarding_answers` tablosu.** Barındırılan ürünün kayıt anketi:
-  hangi özellikleri istiyorsunuz, kimin için çalışıyorsunuz, kaç müşteri
-  siteniz var. Sekiz sütun ve bir indeks, ve sembol kendi tanımı dışında
-  hiçbir yerde geçmiyor. Tek kullanıcılı bir kurulumun soracağı kimse yok.
-- **`reports.share_token` / `shared_at`.** Herkese açık paylaşım bağlantısı
-  yeteneğiydi; şema yorumu nasıl çalışacağını tarif ediyor ("yetenek
-  jetonun kendisidir") ama hiçbir şey jeton üretmiyor. `/r/$reportId` raporu
-  kimliğiyle buluyor, MCP aracı ikisini çıktısından açıkça çıkarıyor.
-  Tasarlandı, göç edildi, indekslendi — sonra ait olduğu barındırılan yüzey
-  kaldırıldı (migration 0058).
-- `.claude/skills` altındaki iki beceri Windows'ta düz dosya olarak
-  kaydedilmişti, yani çözülmüyorlardı; dokuzu da sembolik bağ oldu.
-
-## [0.12.0] — 2026-09-28
-
-Bir önceki sürümde işaret edip bıraktığım iki tablo.
-
-### Düzeltilenler
 
 - **Fırsatlar tablosu sıralanamıyor, hiçbir yere gitmiyor ve dışa
   aktarılamıyordu.** Ham bir `<table>` idi: sıralanabilir başlık yok, satır
@@ -77,35 +138,6 @@ Bir önceki sürümde işaret edip bıraktığım iki tablo.
   sorgulu bir arşiv yirmi beş sorguluk görünüyordu. Artık tek çağrıda
   getirilen küme tarayıcıda sayfalanıyor ve sınıra ulaşıldığında bunu
   söylüyor.
-
-### Geliştirilenler
-
-- `RankingsPage` satır tavanını aştığı için sorgu geçmişi kartı kendi
-  dosyasına ayrıldı.
-
-## [0.11.0] — 2026-09-28
-
-Uygulamanın kendini anlatması: sürüm notları içeride, her ayarın yanında
-"nasıl yapılır", ve panelin bağlı-ama-boş hâline nihayet bir cevabı var.
-
-### Eklenenler
-
-- **Sürüm notları Ayarlar'da.** Kendi sunucusunda bir araç güncelleyen kişi
-  bir sürüm sayfası görmez: bir komut çalıştırır ve konteyner bir sürüm
-  yeni döner. Notlar artık depodaki `CHANGELOG.md`'den okunuyor — ayrı bir
-  kopya bir sürümde birbirinden ayrılırdı — çalışan sürüm işaretli, eskiler
-  tek tıkla açılıyor.
-- **Her ayarın yanında "nasıl yapılır".** Yedi bölüm ve altı alan için,
-  etiketi tekrar eden değil işi anlatan metin: OAuth istemcisinin Google
-  Cloud'da tam olarak nerede olduğu, PageSpeed anahtarı için önce hangi
-  API'nin etkinleştirilmesi gerektiği, servis hesabının neden daha kısa yol
-  olduğu. Tetikleyici gerçek bir düğme: klavyeyle erişilir, Escape kapatır,
-  `aria-describedby` bağlar.
-- **İndeksleme sekmesine dışa aktarma.** Denetimin dört sekmesinden üçünde
-  vardı; Google'ın adres başına kararını taşıyan, yani operatörün asıl
-  tabloya döktüğü sekmede yoktu.
-
-### Düzeltilenler
 
 - **Bağlı-ama-boş Search Console'un cevabı yoktu.** Google'ın veri
   döndürmediği bir mülkte panelin en görünür bloğu `0 / 0 / -- / --` olarak
@@ -130,51 +162,6 @@ Uygulamanın kendini anlatması: sürüm notları içeride, her ayarın yanında
   kullanılmayan `tone` desteği dolgu renkleri yerine `--ink-*` jetonlarını
   kullanıyor.
 
-## [0.10.0] — 2026-09-27
-
-Doğrulama turu: iddia edilen ama kanıtlanmamış üç şeyin gerçekten sınanması,
-ve kurulumdaki son yanıltıcı dosyanın kaldırılması.
-
-### Kaldırılanlar
-
-- **`.env.example` silindi.** Upstream'den gelen dosya `DATAFORSEO_API_KEY`,
-  `AUTUMN_SECRET_KEY`, `LOOPS_*` ve `POSTHOG_*` tanımlıyordu — hiçbiri bu
-  çatallamada yok. İki doküman insanlara onu kopyalamamalarını söylüyordu,
-  ki bu bir çözüm değil: yeni gelen birinin ilk refleksi
-  `cp .env.example .env`. Yerine [`docs/ENVIRONMENT.md`](docs/ENVIRONMENT.md)
-  geldi: `compose.yaml`'ın gerçekten ilettiği sekiz değişken, hangisinin
-  Ayarlar'dan girilmesinin daha kolay olduğu, ve `BETTER_AUTH_SECRET`'ın
-  zaten kendiliğinden üretildiği. `.gitignore`'daki dört izin girdisi de
-  var olmayan dosyaları işaret ediyordu; onlar da gitti.
-
-### Eklenenler
-
-- **Sıralama için regresyon testi.** Bir önceki sürümde düzeltilen "yalnızca
-  görünen satırları sıralıyor" kusuru tiplerle doğrulanmıştı, veriyle değil
-  — çünkü bu mülkte Search Console verisi yok. Test, tıklamaya göre ikinci
-  sayfada duran yüksek gösterimli bir satır kuruyor: sıralama tüm kümeye
-  ulaşmıyorsa o satır hiç görünmez. Eski davranış geri konarak kırmızıya
-  döndüğü doğrulandı.
-- Tablonun boş hâli artık iki durumu ayırıyor: dönemde veri olmaması ile
-  filtrelerin hiçbir şeyle eşleşmemesi. İkincisi tek tıkla düzelir,
-  birincisi operatörü başka yere gönderir.
-
-### Doğrulananlar
-
-- **Kendi kendine güncellenme, gerçek bir taramada ölçüldü.** vaultpilot.io
-  üzerinde 50 sayfalık bir denetim başlatıldı, geçmiş listesine dönüldü ve
-  hiç yeniden yükleme yapılmadan izlendi: satır 40. saniyede "Sürüyor"dan
-  "Bitti"ye geçti. Panel de yeni denetimi aldı ve doğru `auditId` ile
-  bağlandı.
-- 23 rotanın tamamı gezildi: hepsi çiziliyor, konsolda hata yok.
-
-## [0.9.0] — 2026-09-27
-
-Açıkta bıraktığım dört işin tamamlanması. Biri yanlış cevap veriyordu, ikisi
-gerçek ölçekte çöküyordu, biri de ekranı salt-okunur bırakıyordu.
-
-### Düzeltilenler
-
 - **Arama performansında sıralama yanlış cevap veriyordu.** Google
   sayfalamayı sunucu tarafında yapıyor ve kendi tıklama sırasını
   döndürüyordu; istemci elindeki 25 satırı sıralıyordu. Yani "Gösterim"e
@@ -185,69 +172,12 @@ gerçek ölçekte çöküyordu, biri de ekranı salt-okunur bırakıyordu.
   tutmak: tek çağrıda 1000 satıra kadar getirilip tarayıcıda sıralanıyor
   ve sayfalanıyor. Sınıra ulaşıldığında bunu söylüyor.
 
-### Eklenenler
-
-- **İndeksleme tablosu sayfalanıyor.** `ordered.map(...)` ile hiçbir sınır
-  olmadan çiziliyordu. Bugün 53 satır, ama bu tablo denetimle birlikte
-  büyüyor: kota yetiştiğinde 474 satır olacak.
-- **Sayfa satırından o sayfanın sorunlarına geçiş.** Satırın tek çıkışı
-  yeni sekmede açılan canlı adresti; bulguları olan bir sayfa onlara
-  ulaşamıyordu, üstelik iki taraf da aynı kimliği kullanıyorken. Artık
-  "Sorun" sütunu bulgu sayısını gösteriyor ve tıklayınca sorunlar sekmesi
-  o adrese odaklanıyor.
-- **Raporlar ekranı bir rapor başlatabiliyor.** Raporları `save_report` ile
-  ajan yazıyor, insan okuyor — elle HTML yazma yolu yok ve bir belge
-  düzenleyici icat etmek kimsenin istemediği bir iş olurdu. Eksik olan
-  kaydet düğmesi değil, raporları listeleyen ekrandan bir rapor
-  _başlatabilmekti_: panodaki ajan kurulum isteminin aynı şekli.
-
-## [0.8.0] — 2026-09-27
-
-Görünüm durumunun adrese taşınması ve istatistik kartlarının gerçekten
-tıklanabilir olması.
-
-### Eklenenler
-
-- **Arama performansında filtreler artık adreste.** Tarih aralığı, cihaz ve
-  ülke bileşen durumundaydı — yani yeniden yükleme, Geri ve paylaşılan bir
-  bağlantı hepsini varsayılana düşürüyordu. Bu ekranda filtrenin kendisi
-  bulgu: "mobil, Türkiye, son 3 ay" cevabın ta kendisi, ve bağlantıyı alan
-  kişi gönderenin baktığı şeyi görmüyordu. Her alanda `catch` var, yani elle
-  bozulmuş bir adres hata vermek yerine varsayılana düşüyor.
-- **İstatistik kartları sekmelerine gidiyor.** "Taranan sayfa 212",
-  "Sorunlu sayfa", "Lighthouse testi" ve "Lighthouse hatası" birer `<p>`
-  etiketiydi — ekrandaki en tıklanabilir görünen şeyler hiçbir şey
-  yapmıyordu. Belirgin bir hedefi olmayan kartlar (ortalamalar, yanıt
-  süresi) bilerek hareketsiz kaldı; rastgele bir yere götürmek, hiçbir yere
-  götürmemekten kötü.
-
-### Düzeltilenler
-
 - **Performans sekmesinin dışa aktarması da filtreleri yok sayıyordu.**
   Sayfalar sekmesinde giderilen kusurun aynısı buradaydı. Filtrelenmiş
   satırların kimlikleri yukarı bildiriliyor — yeniden filtrelenmiyor, çünkü
   metin filtresi Lighthouse sonucuyla sayfasının birleştirilmesinden gelen
   adrese bakıyor ve o birleştirme olmadan yapılan ikinci bir filtreleme
   sessizce yanlış satırları yazardı.
-
-## [0.7.0] — 2026-09-27
-
-Ekranların tıklanabilir, filtrelenebilir ve kendi kendine güncellenen hâle
-getirilmesi. Denetim verisi 212 sayfalık gerçek bir taramaya karşı
-doğrulandı.
-
-### Eklenenler
-
-- **Sayfa tablosunda üç yeni sütun: Dizin, Derinlik, Harita.** Tarayıcı bu
-  üçünü baştan beri kaydedip tarayıcıya gönderiyordu; hiçbir ekran
-  göstermiyordu. Üçü de sıralanabilir, üçünün de filtresi var — "hangi
-  sayfaları Google dizine alabiliyor", "hangisi kaç tık derinde", "haritanın
-  unuttukları". Gerçek veriyle doğrulandı: 212 sayfa, `noindex` filtresiyle
-  2'ye iniyor.
-- **Panel kartlarındaki her bulgu artık bir bağlantı.** "Sayfa noindex ·
-  2 sayfa"ya tıklamak o denetimin sorunlar sekmesini açıyor.
-
-### Düzeltilenler
 
 - **Panel kartı anlattığı denetime ulaşamıyordu.** `DashboardAuditSummary`
   ve `AuditFreshness` `auditId` taşımıyordu, bu yüzden "Ayrıntılar"
@@ -262,29 +192,6 @@ doğrulandı.
 - **Geçmiş tablosu tarama sürerken donuyordu.** Satır, sert bir yeniden
   yükleme yapılana kadar "Sürüyor"da kalıyordu; üç tık ötedeki ayrıntı
   görünümü ise üç saniyede bir yokluyordu.
-
-### Geliştirilenler
-
-- Tazelik kartındaki yön göstergeleri temanın `--ink-*` jetonlarını
-  kullanıyor, dolgu renklerini değil.
-
-## [0.6.0] — 2026-09-27
-
-Kurulumun son parçası da ortam değişkeninden ekrana taşındı, ve gerçek bir
-mülke (vaultpilot.io) karşı bakınca ekranların ölçemedikleri şeyi sıfır diye
-gösterdiği ortaya çıktı. Üç bağımsız inceleme turu daha yapıldı.
-
-### Eklenenler
-
-- **PageSpeed anahtarı artık Ayarlar'da.** Lighthouse aşamasının kotasını
-  yükselten anahtar `PAGESPEED_API_KEY` olarak yalnızca ortamda
-  ayarlanabiliyordu — yani dosya düzenleyip konteyneri yeniden kurmak
-  gerekiyordu. Google OAuth istemcisiyle aynı yolu izliyor: sunucuda
-  şifreleniyor, tarayıcıya bir daha dönmüyor, ortam değişkeni de çalışmaya
-  devam ediyor. Kurulumda elle dosya düzenlemeyi gerektiren hiçbir şey
-  kalmadı (migration 0056).
-
-### Düzeltilenler
 
 - **Ölçülemeyen değerler sıfır olarak çiziliyordu.** Search Console bağlı ama
   o dönem için verisi olmayan bir mülkte panel ve arama performansı
@@ -324,32 +231,6 @@ gösterdiği ortaya çıktı. Üç bağımsız inceleme turu daha yapıldı.
   istatistik kayıt saymaya devam ediyordu — sekiz kırık bağlantısı olan bir
   sayfa ikisini de şişiriyor, gruplar da başlığa toplanmıyordu.
 
-### Geliştirilenler
-
-- Açılış kontrolü ve `/api/health` artık PageSpeed anahtarını kaynağına göre
-  değerlendiriyor: veritabanını göremeyen açılış kontrolü bilgi veriyor,
-  görebilen sağlık ucu gerçekten anahtar yoksa uyarıyor.
-- Denetim sonuçlarındaki sayılar `format.ts` üzerinden geçiyor.
-
-## [0.5.0] — 2026-09-27
-
-Tasarım turu, depo temizliği ve fixture koşusunun belirsizliğinin
-giderilmesi. Ölçülenler: 56 denetim kuralı, 32 MCP aracı, 635 test, ve
-fixture koşusu ilk kez dört ardışık koşuda da 56/56 (57 sayfa, tarama
-tamamlandı).
-
-### Eklenenler
-
-- **Beşinci kurulum adımı: proje bilgisi.** Kurulum boşluklarının en
-  sessizi: hiçbir şey hata vermiyor, denetim çalışıyor, ama "bu sayfalardan
-  hangisi para kazandırıyor" diye soran bir ajanın okuyacağı hiçbir şey yok
-  ve rapor şablonları siteyi tanımadan yazıyor. Panoda artık söyleniyor.
-- Harness neden durduğunu yazıyor. Kuru bir "TRUNCATED" üç kez yanlış
-  okundu; koşu hangi sigortanın attığını zaten biliyordu, sadece
-  söylemiyordu.
-
-### Düzeltilenler
-
 - **Fixture koşusundaki belirsizlik giderildi.** Aralıklı `NOT CRAWLED`
   bloğu üç kez yanlış teşhis edildi — sayfa sınırı, soğuk başlangıç,
   regresyon — ve hiçbiri değildi. Ölçüldü: dört ardışık 429 tekrar
@@ -377,6 +258,17 @@ tamamlandı).
 
 ### Geliştirilenler
 
+- `RankingsPage` satır tavanını aştığı için sorgu geçmişi kartı kendi
+  dosyasına ayrıldı.
+
+- Tazelik kartındaki yön göstergeleri temanın `--ink-*` jetonlarını
+  kullanıyor, dolgu renklerini değil.
+
+- Açılış kontrolü ve `/api/health` artık PageSpeed anahtarını kaynağına göre
+  değerlendiriyor: veritabanını göremeyen açılış kontrolü bilgi veriyor,
+  görebilen sağlık ucu gerçekten anahtar yoksa uyarıyor.
+- Denetim sonuçlarındaki sayılar `format.ts` üzerinden geçiyor.
+
 - **Tek yarıçap ölçeği artık gerçekten tek.** 23 çıplak `rounded` ve ölçek
   dışı üç yönlü yarıçap, temanın üç jetonuna çevrildi.
 - **Dört kullanılmayan bağımlılık kaldırıldı** (`@ai-sdk/react`, `ai`,
@@ -400,6 +292,40 @@ tamamlandı).
   Dört ölü doküman yolu — biri kurtarma sırasında operatöre yazdırılıyordu.
   Ve `db:generate` tuzağı belgelendi: 0048'den itibaren göçler elle yazıldı,
   yani komut 0047'ye karşı fark alıyor.
+
+### Kaldırılanlar
+
+- **`user_onboarding_answers` tablosu.** Barındırılan ürünün kayıt anketi:
+  hangi özellikleri istiyorsunuz, kimin için çalışıyorsunuz, kaç müşteri
+  siteniz var. Sekiz sütun ve bir indeks, ve sembol kendi tanımı dışında
+  hiçbir yerde geçmiyor. Tek kullanıcılı bir kurulumun soracağı kimse yok.
+- **`reports.share_token` / `shared_at`.** Herkese açık paylaşım bağlantısı
+  yeteneğiydi; şema yorumu nasıl çalışacağını tarif ediyor ("yetenek
+  jetonun kendisidir") ama hiçbir şey jeton üretmiyor. `/r/$reportId` raporu
+  kimliğiyle buluyor, MCP aracı ikisini çıktısından açıkça çıkarıyor.
+  Tasarlandı, göç edildi, indekslendi — sonra ait olduğu barındırılan yüzey
+  kaldırıldı (migration 0058).
+- `.claude/skills` altındaki iki beceri Windows'ta düz dosya olarak
+  kaydedilmişti, yani çözülmüyorlardı; dokuzu da sembolik bağ oldu.
+
+- **`.env.example` silindi.** Upstream'den gelen dosya `DATAFORSEO_API_KEY`,
+  `AUTUMN_SECRET_KEY`, `LOOPS_*` ve `POSTHOG_*` tanımlıyordu — hiçbiri bu
+  çatallamada yok. İki doküman insanlara onu kopyalamamalarını söylüyordu,
+  ki bu bir çözüm değil: yeni gelen birinin ilk refleksi
+  `cp .env.example .env`. Yerine [`docs/ENVIRONMENT.md`](docs/ENVIRONMENT.md)
+  geldi: `compose.yaml`'ın gerçekten ilettiği sekiz değişken, hangisinin
+  Ayarlar'dan girilmesinin daha kolay olduğu, ve `BETTER_AUTH_SECRET`'ın
+  zaten kendiliğinden üretildiği. `.gitignore`'daki dört izin girdisi de
+  var olmayan dosyaları işaret ediyordu; onlar da gitti.
+
+### Doğrulananlar
+
+- **Kendi kendine güncellenme, gerçek bir taramada ölçüldü.** vaultpilot.io
+  üzerinde 50 sayfalık bir denetim başlatıldı, geçmiş listesine dönüldü ve
+  hiç yeniden yükleme yapılmadan izlendi: satır 40. saniyede "Sürüyor"dan
+  "Bitti"ye geçti. Panel de yeni denetimi aldı ve doğru `auditId` ile
+  bağlandı.
+- 23 rotanın tamamı gezildi: hepsi çiziliyor, konsolda hata yok.
 
 ## [0.4.0] — 2026-09-27
 
@@ -639,15 +565,7 @@ depodan kaldırıldı, çünkü onlar open-seo'nun yayınlarıydı.
   Verileriniz `seotracker_data` biriminde; güncellemeden önce yedek almak
   isteyebilirsiniz.
 
-[0.13.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.13.0
-[0.12.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.12.0
-[0.11.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.11.0
-[0.10.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.10.0
-[0.9.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.9.0
-[0.8.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.8.0
-[0.7.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.7.0
-[0.6.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.6.0
-[0.5.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.5.0
+[1.0.0]: https://github.com/ucsahinn/seotracker/releases/tag/v1.0.0
 [0.4.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.4.0
 [0.3.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.3.0
 [0.2.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.2.0
