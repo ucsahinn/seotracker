@@ -440,7 +440,7 @@ async function runScratchpadLinkChecks(
   crawl: CrawlPhaseResult,
 ): Promise<DetectedIssue[]> {
   const scratchpad = getAuditScratchpad(auditId);
-  const { brokenLinks, orphanPages, repairedDepths } =
+  const { brokenLinks, redirectLinks, orphanPages, repairedDepths } =
     await scratchpad.runFinalizeChecks({
       // Page rows store normalized URLs; normalize the start URL the same
       // way so the orphan exclusion matches.
@@ -466,6 +466,17 @@ async function runScratchpadLinkChecks(
       pageUrl: row.sourceUrl,
       dedupeKey: row.targetUrl,
       details: { targetUrl: row.targetUrl, targetStatus: row.targetStatus },
+    })),
+    ...redirectLinks.map((row) => ({
+      issueType: "internal-link-to-redirect" as const,
+      pageId: row.sourcePageId,
+      pageUrl: row.sourceUrl,
+      dedupeKey: row.targetUrl,
+      details: {
+        targetUrl: row.targetUrl,
+        targetStatus: row.targetStatus,
+        finalUrl: row.finalUrl,
+      },
     })),
     ...orphanPages.map((row) => ({
       issueType: "orphan-page" as const,

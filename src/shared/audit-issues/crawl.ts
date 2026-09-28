@@ -186,4 +186,12 @@ export const CRAWL_ISSUES = {
     howToFix:
       "robots.txt'den bu dosyaları kapsayan kuralı kaldırın. Sayfayı gizlemek istiyorsanız sayfanın kendisini engelleyin; onu oluşturan dosyaları engellemek sayfayı gizlemez, yalnızca Google'ın onu yanlış görmesine yol açar.",
   },
+  "internal-link-to-redirect": {
+    severity: "info",
+    title: "İç bağlantı yönlendirmeye gidiyor",
+    explanation:
+      "Sayfa, kendi sitesindeki bir adrese bağlantı veriyor ama o adres başka bir yere yönlendiriyor. Bağlantı çalışır, sadece bir adım fazladan atılır: tarayıcı zıplamayı takip eder, okuyucu bekler, ve bağlantının taşıdığı güç seyrelerek varır. Genelde adresler değişip iç bağlantılar eskisinde kalınca olur.",
+    howToFix:
+      "Bağlantıyı yönlendirmenin vardığı adresle değiştirin. Yönlendirme kalsın -- dışarıdan gelen bağlantılar için gerekli; düzeltilecek olan kendi sitenizin içinden verdiğiniz adres.",
+  },
 } as const satisfies Record<string, AuditIssueDescriptor>;

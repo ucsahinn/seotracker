@@ -75,6 +75,35 @@ export const BROKEN_LINKS_SQL = `
 `;
 
 /**
+ * Every internal link whose target we crawled and saw redirect.
+ *
+ * A link is a vote, and a vote cast at a redirect is spent walking: the
+ * crawler follows the hop, the reader waits for it, and the strength the
+ * link carries arrives diluted. `BROKEN_LINKS_SQL` next door only looks at
+ * 4xx and 5xx, so the far more common case -- a site that moved its URLs
+ * and left every internal link pointing at the old ones -- was invisible.
+ *
+ * Same shape and the same CROSS JOIN pinning as the broken-link query, for
+ * the same planner reason. Takes the issue cap as its only parameter.
+ */
+export const REDIRECT_LINKS_SQL = `
+  SELECT source_page_id, source_url, target_url, target_status, final_url FROM (
+    SELECT p.page_id AS source_page_id, p.url AS source_url, j.value AS target_url,
+           m.status_code AS target_status, m.redirect_url AS final_url
+    FROM page_links p, json_each(p.targets_json) AS j
+    CROSS JOIN page_mirror m ON m.url = j.value
+    WHERE m.status_code >= 300 AND m.status_code < 400 AND m.fetch_class = 'ok'
+    UNION ALL
+    SELECT l.source_page_id, l.source_url, l.target_url,
+           m.status_code AS target_status, m.redirect_url AS final_url
+    FROM links l JOIN page_mirror m ON m.url = l.target_url
+    WHERE m.status_code >= 300 AND m.status_code < 400 AND m.fetch_class = 'ok'
+  )
+  ORDER BY source_page_id, target_url
+  LIMIT ?
+`;
+
+/**
  * Pages nothing links to. The inbound set is built once and anti-joined,
  * rather than probed per page: without the old per-edge target index a
  * correlated NOT EXISTS would rescan the whole edge set for every page.

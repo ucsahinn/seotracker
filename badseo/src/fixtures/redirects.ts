@@ -125,10 +125,53 @@ const sitemapRedirect: Fixture = {
   handler: () => redirect("/", 301),
 };
 
+// 34 — a page whose own internal link points at a redirect ----------------
+const linksToRedirect: Fixture = {
+  path: "/redirect/links-to-redirect",
+  category: CAT,
+  name: "Internal link points at a redirect",
+  summary:
+    "The body links to /redirect/chain-1, which 301s. The link works; it just costs a hop.",
+  lesson:
+    "A link is a vote, and a vote cast at a redirect is spent walking. The redirect should stay for outside links; the one to fix is the address you wrote yourself.",
+  expectedIssues: ["internal-link-to-redirect"],
+  inSitemap: false,
+  handler: () =>
+    htmlResponse(
+      renderPage({
+        fixture: linksToRedirect,
+        title: "This page links to the long way round",
+        metaDescription:
+          "One internal link here points at an address that redirects, so every visit takes an extra hop.",
+        /*
+         * The link is appended raw rather than written into `article`,
+         * whose helper escapes every field -- an anchor passed there comes
+         * out as visible text and the crawler sees no edge at all.
+         */
+        bodyHtml: `${article({
+          h1: "A link that arrives late",
+          lede: "The link at the end of this page goes to an address that redirects, rather than to the page it ends up on.",
+          sections: [
+            {
+              h2: "Why this happens to everyone",
+              body: "URLs change: a section is renamed, a slug is tidied, a trailing slash is standardised. The redirect gets added and the job feels done, because nothing is broken. What nobody does is walk the templates and the old posts and repoint the links, so the site keeps sending its own readers the long way round for years.",
+            },
+            {
+              h2: "What it costs",
+              body: "One hop is small, and that is exactly why it accumulates. The crawler spends budget following it, the visitor waits for it, and the strength the link passes arrives diluted. On a site where every navigation item points at a redirect, that is every page paying on every link.",
+            },
+          ],
+        })}
+<p><a href="/redirect/chain-1">The long way round</a></p>`,
+      }),
+    ),
+};
+
 export const redirectFixtures: Fixture[] = [
   redirectChain,
   redirectChainMid,
   redirectLoop,
   trailingSlashCanonical,
   sitemapRedirect,
+  linksToRedirect,
 ];

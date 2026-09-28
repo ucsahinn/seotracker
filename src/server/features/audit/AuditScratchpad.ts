@@ -22,6 +22,7 @@ import { DurableObject, env } from "cloudflare:workers";
 import type { CrawlThrottleState } from "@/server/lib/audit/crawl-throttle";
 import {
   BROKEN_LINKS_SQL,
+  REDIRECT_LINKS_SQL,
   ORPHAN_PAGES_SQL,
   SCRATCHPAD_SCHEMA_SQL,
 } from "@/server/features/audit/scratchpad-sql";
@@ -83,6 +84,15 @@ interface BrokenLinkRow {
   sourceUrl: string;
   targetUrl: string;
   targetStatus: number;
+}
+
+interface RedirectLinkRow {
+  sourcePageId: string;
+  sourceUrl: string;
+  targetUrl: string;
+  targetStatus: number;
+  /** Where the redirect points, when the crawler recorded it. */
+  finalUrl: string | null;
 }
 
 interface OrphanPageRow {
@@ -253,6 +263,7 @@ export class AuditScratchpad extends DurableObject {
     crawlCompleted: boolean;
   }): Promise<{
     brokenLinks: BrokenLinkRow[];
+    redirectLinks: RedirectLinkRow[];
     orphanPages: OrphanPageRow[];
     repairedDepths: Array<{ url: string; depth: number }>;
   }> {
@@ -272,6 +283,30 @@ export class AuditScratchpad extends DurableObject {
         sourceUrl: row.source_url,
         targetUrl: row.target_url,
         targetStatus: row.target_status,
+      }));
+
+    /*
+     * Internal links to a page that redirects. Not broken -- the reader
+     * still arrives -- but every one is a hop the crawler and the visitor
+     * pay for, and the usual cause is a URL change nobody followed through
+     * the templates. Shares the broken-link cap: the two together are one
+     * budget of link findings.
+     */
+    const redirectLinks = this.ctx.storage.sql
+      .exec<{
+        source_page_id: string;
+        source_url: string;
+        target_url: string;
+        target_status: number;
+        final_url: string | null;
+      }>(REDIRECT_LINKS_SQL, BROKEN_LINK_ISSUE_CAP)
+      .toArray()
+      .map((row) => ({
+        sourcePageId: row.source_page_id,
+        sourceUrl: row.source_url,
+        targetUrl: row.target_url,
+        targetStatus: row.target_status,
+        finalUrl: row.final_url,
       }));
 
     // A live 2xx page is an orphan when no OTHER crawled page links to it
@@ -312,7 +347,7 @@ export class AuditScratchpad extends DurableObject {
       }>(`SELECT url, depth FROM frontier WHERE depth IS NOT NULL`)
       .toArray();
 
-    return { brokenLinks, orphanPages, repairedDepths };
+    return { brokenLinks, redirectLinks, orphanPages, repairedDepths };
   }
 
   /** Wipe all state (success path, or explicit audit deletion). */

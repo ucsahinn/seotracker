@@ -297,6 +297,40 @@ function findBrokenInternalLinks(
   return issues;
 }
 
+/*
+ * The scratchpad's `REDIRECT_LINKS_SQL`, in the shape this harness runs
+ * checks in. Same rule: a link whose crawled target answered 3xx.
+ */
+function findInternalLinksToRedirects(
+  pages: CrawledPageResult[],
+  links: CrawlLink[],
+): DetectedIssue[] {
+  const byUrl = new Map(pages.map((p) => [p.url, p]));
+  const issues: DetectedIssue[] = [];
+  const seen = new Set<string>();
+  for (const link of links) {
+    const target = byUrl.get(link.targetUrl);
+    if (!target) continue;
+    if (target.fetchClass !== "ok") continue;
+    if (target.statusCode < 300 || target.statusCode >= 400) continue;
+    const key = `${link.sourceUrl}::${link.targetUrl}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    issues.push({
+      issueType: "internal-link-to-redirect",
+      pageId: link.sourceId,
+      pageUrl: link.sourceUrl,
+      dedupeKey: link.targetUrl,
+      details: {
+        targetUrl: link.targetUrl,
+        targetStatus: target.statusCode,
+        finalUrl: target.redirectUrl,
+      },
+    });
+  }
+  return issues;
+}
+
 function findOrphanPages(
   pages: CrawledPageResult[],
   links: CrawlLink[],
@@ -390,6 +424,7 @@ async function main() {
   detected.push(...findCanonicalTargetProblems(slim));
   detected.push(...findHreflangReturnTagProblems(slim));
   detected.push(...findBrokenInternalLinks(pages, links));
+  detected.push(...findInternalLinksToRedirects(pages, links));
   if (completed) detected.push(...findOrphanPages(pages, links, startUrl));
 
   const byUrl = new Map<string, Set<IssueId>>();
@@ -462,8 +497,13 @@ async function main() {
     });
   };
 
-  // Non-fixture content pages must be clean.
-  check("Homepage", "/", [], false);
+  /*
+   * Non-fixture content pages must be clean -- except that the homepage
+   * links into the redirect fixtures, which is the whole point of them
+   * being reachable. That link IS an internal link to a redirect, so the
+   * finding here is correct and this is where the check earns its fixture.
+   */
+  check("Homepage", "/", ["internal-link-to-redirect"], false);
   check("Privacy policy", "/privacy", [], false);
 
   const byCategory = new Map<string, Fixture[]>();
