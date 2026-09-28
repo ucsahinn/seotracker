@@ -17,10 +17,15 @@ function analyzeHtmlWithCheerio(html: string, pageUrl: string): PageAnalysis {
   const metaDescription =
     $('meta[name="description"]').first().attr("content")?.trim() ?? "";
   const canonical = $('link[rel="canonical"]').first().attr("href") ?? null;
-  // Counted the same way the analyzer counts: the parity test's second
-  // fixture declares two, and a reference that reports one would let a
-  // miscount through.
-  const canonicalCount = $('link[rel="canonical"]').length;
+  // Distinct head targets, the same way the analyzer counts: identical
+  // duplicates are not a contradiction, and a canonical after <body> is
+  // markup Google does not read.
+  const canonicalCount = new Set(
+    $('head link[rel="canonical"]')
+      .map((_, el) => ($(el).attr("href") ?? "").trim())
+      .get()
+      .filter(Boolean),
+  ).size;
   const robotsMeta = $('meta[name="robots"]').first().attr("content") ?? null;
   const googlebotMeta =
     $('meta[name="googlebot"]').first().attr("content") ?? null;
@@ -300,5 +305,46 @@ describe("analyzeHtml extraction caps", () => {
     );
     expect(analysis.links).toHaveLength(1_000);
     expect(analysis.images).toHaveLength(1_000);
+  });
+});
+
+describe("canonical counting", () => {
+  /*
+   * A template and an SEO plugin both writing the correct canonical is the
+   * common case and not a problem. Counting tags rather than targets filed
+   * a finding against it, and at the highest severity in the app.
+   */
+  it("does not count two tags naming the same address as a contradiction", () => {
+    const analysis = analyzeHtml(
+      `<html><head><link rel="canonical" href="/a"><link rel="canonical" href="/a"></head><body>x</body></html>`,
+      "https://example.com/a",
+      200,
+      0,
+    );
+
+    expect(analysis.canonicalCount).toBe(1);
+  });
+
+  it("counts genuinely different targets", () => {
+    const analysis = analyzeHtml(
+      `<html><head><link rel="canonical" href="/a"><link rel="canonical" href="/b"></head><body>x</body></html>`,
+      "https://example.com/a",
+      200,
+      0,
+    );
+
+    expect(analysis.canonicalCount).toBe(2);
+  });
+
+  // Markup after <body> is not something Google reads as a canonical.
+  it("ignores a canonical declared after the head", () => {
+    const analysis = analyzeHtml(
+      `<html><head><link rel="canonical" href="/a"></head><body><link rel="canonical" href="/b">x</body></html>`,
+      "https://example.com/a",
+      200,
+      0,
+    );
+
+    expect(analysis.canonicalCount).toBe(1);
   });
 });

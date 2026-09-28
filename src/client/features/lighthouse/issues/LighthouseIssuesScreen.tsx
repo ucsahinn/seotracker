@@ -1,3 +1,4 @@
+import { TabPanel } from "@/client/components/Tabs";
 import { PageShell } from "@/client/components/PageShell";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AlertCircle, TriangleAlert } from "lucide-react";
@@ -138,11 +139,20 @@ export function LighthouseIssuesScreen(props: LighthouseIssuesScreenProps) {
                 onExportCsv={runExportCsv}
                 onExportSheets={runExportSheets}
               />
-              <LighthouseIssueList
-                issues={visibleIssues}
-                isLoading={issuesQuery.isLoading}
-                emptyMessage={emptyMessage}
-              />
+              {/*
+               * The panel the category tabs point at. `Tabs` gives every
+               * tab an `aria-controls`, so without this the promise led
+               * nowhere -- a broken reference is worse than the plain
+               * buttons this replaced, because it is announced and then
+               * cannot be followed.
+               */}
+              <TabPanel group="lighthouse-category" value={category}>
+                <LighthouseIssueList
+                  issues={visibleIssues}
+                  isLoading={issuesQuery.isLoading}
+                  emptyMessage={emptyMessage}
+                />
+              </TabPanel>
             </>
           )}
         </div>

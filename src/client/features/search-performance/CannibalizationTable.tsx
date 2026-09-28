@@ -202,7 +202,10 @@ function PageRow({
   primary?: boolean;
 }) {
   return (
-    <tr>
+    /* `group/row`: UrlCell reveals its copy button on row hover, and this
+       table builds its own <tr> rather than going through AppDataTable --
+       so without the class the button stayed invisible to a mouse. */
+    <tr className="group/row">
       <td className="max-w-md">
         <span className="flex min-w-0 items-center gap-2">
           {/* The panel exists to compare two pages; until this, neither

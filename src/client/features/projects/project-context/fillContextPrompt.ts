@@ -1,6 +1,16 @@
 import promptTemplate from "./fillContextPrompt.md?raw";
 import type { ProjectContextSectionKey } from "@/types/schemas/projectContext";
 
+/*
+ * Values go in through a function, because the string form of `replace`
+ * reads `$&` and its siblings in the *replacement* as patterns. A project
+ * named `A$&B` rewrites itself into `A{{PROJECT}}B`, and the "rest of the
+ * string" pattern splices the template back into the middle of the prompt.
+ * Project names and domains are typed by the operator, so they are exactly
+ * the strings that carry a `$`.
+ */
+const put = (value: string) => () => value;
+
 /**
  * The prompt the operator hands an agent to fill this page in.
  *
@@ -27,12 +37,12 @@ export function buildFillContextPrompt({
 }): string {
   return promptTemplate
     .replace(/\r\n/g, "\n")
-    .replace("{{PROJECT}}", projectName)
-    .replace("{{PROJECT_ID}}", projectId)
-    .replace("{{SITE}}", domain ? `Site: ${domain}` : "")
+    .replace("{{PROJECT}}", put(projectName))
+    .replace("{{PROJECT_ID}}", put(projectId))
+    .replace("{{SITE}}", put(domain ? `Site: ${domain}` : ""))
     .replace(
       "{{STATE}}",
-      describeState({ missingSections, competitorCount, keyPageCount }),
+      put(describeState({ missingSections, competitorCount, keyPageCount })),
     )
     .replace(/\n{3,}/g, "\n\n")
     .trim();

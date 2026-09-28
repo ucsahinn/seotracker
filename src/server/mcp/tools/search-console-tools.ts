@@ -448,7 +448,7 @@ const inspectInputSchema = {
     .string()
     .optional()
     .describe(
-      "BCP-47 language for the inspection result (e.g. 'en-US'). This writes the stored `coverageState` sentence, which the app's own refresh writes in Turkish -- leave it unset unless the operator asked for another language.",
+      "BCP-47 language for the inspection result (e.g. 'en-US'). Leave it unset. This writes the stored `coverageState` sentence, and the app asks for English on purpose: the audit's indexing findings are keyed on Google's English wording, so a row written in another language is stored and displayed correctly but produces no finding at all.",
     ),
   force: z
     .boolean()

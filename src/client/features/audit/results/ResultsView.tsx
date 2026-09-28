@@ -223,7 +223,7 @@ export function ResultsView({
                 <IndexCoverageView
                   projectId={projectId}
                   auditId={audit.id}
-                  onRowsChange={setCoverageRows}
+                  onRowsChange={(rows) => setCoverageRows(rows ?? null)}
                   askDisabledReason={
                     property.covered
                       ? undefined
@@ -259,9 +259,9 @@ export function ResultsView({
                     reads the same whether every page is mediocre or half are
                     perfect and half are broken. Those are different jobs. */}
                 <p className="mb-2 text-sm font-medium">Hız puanı dağılımı</p>
-                <ScoreHistogram
-                  scores={lighthouse.map((row) => row.performanceScore)}
-                />
+                {/* The filtered set, so the distribution follows the table
+                    under it rather than describing a different population. */}
+                <ScoreHistogram rows={filteredLighthouse} />
               </div>
             )}
             {activeTab === "performance" && lighthouse.length > 0 && (

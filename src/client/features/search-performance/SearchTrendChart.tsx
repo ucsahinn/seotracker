@@ -23,9 +23,14 @@ type DailyRow = { key: string; clicks: number; impressions: number };
  *
  * Search Console is already asked for these rows by date — the totals are a
  * sum of them — so this reads data the screen was throwing away rather than
- * spending another call. The previous period rides along as a receded band,
- * because "down 12%" is a different problem depending on whether the drop is
- * a step on one day or a slope across four weeks.
+ * spending another call. "Down 12%" is a different problem depending on
+ * whether the drop is a step on one day or a slope across four weeks, and
+ * the four totals above cannot tell those apart.
+ *
+ * One series. The previous period is summed into the delta badges above and
+ * is deliberately not drawn here: the comparison it would support is the
+ * shape of the *current* period, and a second band at a different scale
+ * competes with the line it is meant to explain.
  */
 function SearchTrendChart({
   daily,

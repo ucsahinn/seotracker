@@ -105,12 +105,15 @@ export const getSearchPerformanceReport = createServerFn({ method: "POST" })
         prevTotals: sumSearchTotals(previous.rows),
         /*
          * The same rows the totals are summed from, kept instead of thrown
-         * away. Both periods are already fetched by date, so the trend costs
-         * no extra Google call -- and "4.200 tıklama in 28 days" and "it
-         * halved on day 14" are different findings.
+         * away. Already fetched by date, so the trend costs no extra Google
+         * call -- and "4.200 tıklama in 28 days" and "it halved on day 14"
+         * are different findings.
+         *
+         * Only the current period. The previous one is summed into
+         * `prevTotals` for the deltas; sending its ~90 daily rows as well
+         * would be payload nothing reads.
          */
         daily: toDimensionRows(current.rows),
-        prevDaily: toDimensionRows(previous.rows),
         strikingDistance: buildStrikingDistanceRows(queryPages.rows),
         countries: toDimensionRows(countries.rows),
       };

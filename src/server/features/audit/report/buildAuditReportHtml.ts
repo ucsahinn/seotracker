@@ -36,9 +36,16 @@ type AuditReportInput = {
     severity: string | null;
     pageUrl: string | null;
   }>;
-  /* Only the score: the histogram is about the spread, not about which
-     page scored what, and the rows carry a page id rather than a URL. */
-  lighthouse: Array<{ performanceScore: number | null }>;
+  /*
+   * Score and strategy. Every page is measured twice -- mobile and desktop
+   * -- so counting rows reported a 10-page sample as "20 sayfa ölçüldü",
+   * and mixed two distributions into one. Mobile decides, the same way the
+   * speed findings do: Google indexes mobile-first.
+   */
+  lighthouse: Array<{
+    performanceScore: number | null;
+    strategy: "mobile" | "desktop";
+  }>;
 };
 
 type AuditReportDocument = {
@@ -211,7 +218,9 @@ function describePages(pages: AuditReportInput["pages"]) {
 }
 
 function describeLighthouse(rows: AuditReportInput["lighthouse"]) {
-  const scored = rows.filter((row) => row.performanceScore !== null);
+  const scored = rows.filter(
+    (row) => row.strategy === "mobile" && row.performanceScore !== null,
+  );
   if (scored.length === 0) return null;
   const buckets = { poor: 0, fair: 0, good: 0 };
   for (const row of scored) {
@@ -294,7 +303,7 @@ function lighthouseSection(summary: ReturnType<typeof describeLighthouse>) {
   ];
   return `<section>
     <h2>Hız ölçümü</h2>
-    <p class="note">${numberFormatter.format(summary.measured)} sayfa ölçüldü. Ortalama tek bir sayı olarak "her sayfa orta" ile "yarısı mükemmel yarısı felaket"i aynı gösterdiği için dağılım veriliyor.</p>
+    <p class="note">${numberFormatter.format(summary.measured)} sayfa mobilde ölçüldü. Ortalama tek bir sayı olarak "her sayfa orta" ile "yarısı mükemmel yarısı felaket"i aynı gösterdiği için dağılım veriliyor.</p>
     <table class="bars">
       ${rows
         .map(

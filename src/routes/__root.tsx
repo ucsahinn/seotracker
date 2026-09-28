@@ -18,10 +18,18 @@ import { NotFound } from "@/client/components/NotFound";
 import appCss from "@/client/styles/app.css?url";
 import { Toaster } from "sonner";
 import { queryClient } from "@/client/tanstack-db";
+import { startClientLog } from "@/client/lib/clientLog";
 
 // Capture Google link error params before the router starts — a route loader
 // redirect would otherwise replace the URL and lose them. See googleLinkError.ts.
 captureGoogleLinkError();
+
+/*
+ * Browser errors have to be caught before the first render to be worth
+ * catching: the ones that matter most are the ones that stop the app from
+ * drawing, and a handler attached inside a component never runs for those.
+ */
+startClientLog();
 
 export const Route = createRootRoute({
   head: () => ({

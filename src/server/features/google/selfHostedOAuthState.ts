@@ -55,11 +55,19 @@ async function getStateKey(clientSecret: string, stateNamespace: string) {
  * parameter, and an OAuth callback that forwards wherever it is told is an
  * open redirect.
  */
-function getSafeCallbackPath(callbackURL: string, publicOrigin: string) {
+export function getSafeCallbackPath(callbackURL: string, publicOrigin: string) {
   try {
     const url = new URL(callbackURL, publicOrigin);
     if (url.origin !== publicOrigin) return "/";
-    return `${url.pathname}${url.search}${url.hash}`;
+    const path = `${url.pathname}${url.search}${url.hash}`;
+    /*
+     * The origin check alone is not enough. `/..//evil.com` resolves to
+     * this origin with the pathname `//evil.com`, and the success redirect
+     * writes that path straight into `Location` -- where a browser reads a
+     * leading `//` as protocol-relative and leaves for evil.com. The
+     * origin matched; the destination did not.
+     */
+    return path.startsWith("//") ? "/" : path;
   } catch {
     return "/";
   }

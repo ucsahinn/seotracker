@@ -211,11 +211,11 @@ export const INDEXING_ISSUES = {
       "Sayfa türüne uyan şemayla başlayın: dokümantasyon için Article ve BreadcrumbList, SSS sayfası için FAQPage, ürün sayfası için Product. İşaretlemenin sayfada gerçekten görünen içeriği anlatması şart; görünmeyeni işaretlemek Google'ın kurallarını ihlal eder.",
   },
   "multiple-canonical-tags": {
-    severity: "critical",
-    title: "Sayfada birden fazla canonical etiketi var",
+    severity: "warning",
+    title: "Sayfa birbiriyle çelişen canonical adresleri bildiriyor",
     explanation:
-      "Sayfa birden çok rel=canonical bildiriyor. Google bu durumda hepsini yok sayar ve asıl adresi kendi seçer, yani canonical etiketini koymamışsınız gibi davranır. Genelde şablonun bir yerde, eklentinin başka bir yerde canonical yazmasından çıkar.",
+      "Sayfanın head bölümünde farklı adresleri gösteren birden çok rel=canonical var. Canonical, içeriğin hangi adreste durduğuna dair tek bir ifadedir; ikisi daha güçlü bir ifade değil, bir çelişkidir. Google çelişkiyi kendi seçimini yaparak çözer, yani asıl adresi siz belirlememiş olursunuz. Genelde şablonun bir değer, bir eklentinin başka bir değer yazmasından çıkar.",
     howToFix:
-      "Sayfanın HTML'inde rel=canonical arayın ve bir tane bırakın. Şablonla eklenti aynı anda yazıyorsa birini kapatın.",
+      "Sayfanın kaynağında rel=canonical arayın; hangisinin doğru olduğuna karar verip diğerini üreten yeri kapatın. Aynı adresi iki kez yazan bir kurulum sorun değildir, bu bulgu yalnızca hedefler farklıyken çıkar.",
   },
 } as const satisfies Record<string, AuditIssueDescriptor>;

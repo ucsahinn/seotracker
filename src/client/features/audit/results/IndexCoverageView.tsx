@@ -36,8 +36,8 @@ export function IndexCoverageView({
 }: {
   projectId: string;
   auditId: string;
-  /** Hands the rows to the export menu, which lives a level up. */
-  onRowsChange?: (rows: CoverageRow[]) => void;
+  /** Hands the rows to the export menu a level up; undefined while loading. */
+  onRowsChange?: (rows: CoverageRow[] | undefined) => void;
   /*
    * Set when asking Google would spend quota on a question it cannot
    * answer -- an audit of a site the project's property does not cover.
@@ -60,10 +60,16 @@ export function IndexCoverageView({
    */
   const rows = coverage.data?.rows;
   useEffect(() => {
-    // Only once they exist. Reporting `[]` while the query is still in
-    // flight made the tab label upstairs read "(0)" for a moment, and an
-    // export clicked in that moment wrote an empty file.
-    if (!rows) return;
+    /*
+     * `undefined` while the query is in flight, the rows once they arrive.
+     *
+     * Reporting `[]` during the flight made the tab label upstairs read
+     * "(0)" for a moment and an export clicked then wrote an empty file.
+     * But holding the previous value was worse: switching to another audit
+     * with this tab open left the parent holding the *old* audit's rows,
+     * so the label counted one crawl while the screen drew another -- and
+     * an export in that moment wrote a different audit's coverage.
+     */
     onRowsChange?.(rows);
   }, [onRowsChange, rows]);
 
@@ -152,7 +158,7 @@ export function IndexCoverageView({
    */
   const share = neverChecked ? null : (
     <StackedShare
-      summary={`${formatNumber(data.rows.length)} sayfadan ${formatNumber(data.indexed)} tanesi Google'da, ${formatNumber(data.notIndexed)} tanesi dizinde değil, ${formatNumber(data.due)} tanesi henüz sorulmadı.`}
+      summary={`${formatNumber(data.rows.length)} sayfadan ${formatNumber(data.indexed)} tanesi Google'da, ${formatNumber(data.notIndexed)} tanesi dizinde değil, ${formatNumber(data.pending)} tanesi henüz yanıtlanmadı.`}
       segments={[
         {
           label: "Google'da",
@@ -165,8 +171,15 @@ export function IndexCoverageView({
           color: "var(--color-warning)",
         },
         {
-          label: "Sorulmayı bekleyen",
-          value: data.due,
+          /*
+           * `pending`, not `due`. The three have to add up to the whole, and
+           * only these do: `indexed + notIndexed + pending === rows.length`.
+           * `due` counts every row worth re-asking, which includes answered
+           * rows whose answer has aged out -- so a site answered three weeks
+           * ago had every page counted twice and the bar read 200%.
+           */
+          label: "Yanıt bekleyen",
+          value: data.pending,
           color: "var(--color-base-300)",
         },
       ]}
@@ -286,7 +299,10 @@ function CoverageTable({
 
   return (
     <>
-      <div className="overflow-x-auto">
+      {/* Framed like the Pages and Issues tables. This one sat on the page
+          background, so switching tabs changed whether the results looked
+          like a panel. */}
+      <div className="overflow-x-auto rounded-box border border-base-300">
         <table className="table table-sm">
           <thead>
             <tr>

@@ -78,7 +78,7 @@ export function analyzeHtml(
   let ogDescription: string | null = null;
   let ogImage: string | null = null;
   let hasStructuredData = false;
-  let canonicalCount = 0;
+  const canonicalTargets = new Set<string>();
   let viewport: string | null = null;
   const resources: string[] = [];
   const hreflangAlternates: HreflangAlternate[] = [];
@@ -152,12 +152,21 @@ export function analyzeHtml(
     if (rel === "stylesheet") collectResource(attribs["href"]);
     if (rel === "canonical") {
       /*
-       * Counted, not just kept. Google ignores every canonical on a page
-       * that declares more than one conflicting value, so "there are two"
-       * is the finding -- and taking the first silently hid it.
+       * Distinct targets, declared in the head.
+       *
+       * Two canonicals naming the same address is what a template and an
+       * SEO plugin both writing the correct value looks like: harmless,
+       * and reporting it as a problem sends someone to fix nothing. Two
+       * naming *different* addresses is the contradiction Google has to
+       * resolve on its own. Only the second is a finding.
+       *
+       * The head boundary matters too: a stray canonical after <body> is
+       * markup Google does not read, so counting it would invent a
+       * disagreement that no crawler sees.
        */
-      canonicalCount += 1;
-      canonical ??= attribs["href"] ?? null;
+      const href = attribs["href"];
+      if (!sawBody && href) canonicalTargets.add(href.trim());
+      canonical ??= href ?? null;
     } else if (
       rel === "alternate" &&
       attribs["hreflang"] &&
@@ -337,7 +346,7 @@ export function analyzeHtml(
     images,
     links: Array.from(linksByTarget.values()),
     hasStructuredData,
-    canonicalCount,
+    canonicalCount: canonicalTargets.size,
     viewport,
     resources,
     hreflangAlternates,

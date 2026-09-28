@@ -16,8 +16,22 @@ const FAIR_FROM = 50;
  * page is mediocre or half are perfect and half are unusable — and those
  * are different weeks of work. Three bands answer which one it is.
  */
-export function ScoreHistogram({ scores }: { scores: Array<number | null> }) {
-  const measured = scores.filter((score): score is number => score !== null);
+export function ScoreHistogram({
+  rows,
+}: {
+  rows: Array<{ performanceScore: number | null; strategy: string }>;
+}) {
+  /*
+   * Mobile only. Every page is measured twice, so counting both reported a
+   * ten-page sample as twenty and blended two distributions — and desktop
+   * scores run systematically higher, so the blend reads optimistic. The
+   * speed findings pick mobile for the same reason: Google indexes
+   * mobile-first and its thresholds are written for mobile.
+   */
+  const measured = rows
+    .filter((row) => row.strategy === "mobile")
+    .map((row) => row.performanceScore)
+    .filter((score): score is number => score !== null);
   if (measured.length === 0) return null;
 
   const good = measured.filter((score) => score >= GOOD_FROM).length;
@@ -28,7 +42,7 @@ export function ScoreHistogram({ scores }: { scores: Array<number | null> }) {
 
   return (
     <StackedShare
-      summary={`${formatCount(measured.length)} ölçümden ${formatCount(good)} iyi, ${formatCount(fair)} orta, ${formatCount(poor)} zayıf.`}
+      summary={`Mobilde ölçülen ${formatCount(measured.length)} sayfadan ${formatCount(good)} iyi, ${formatCount(fair)} orta, ${formatCount(poor)} zayıf.`}
       segments={[
         { label: "İyi (90+)", value: good, color: "var(--color-success)" },
         { label: "Orta (50-89)", value: fair, color: "var(--color-warning)" },

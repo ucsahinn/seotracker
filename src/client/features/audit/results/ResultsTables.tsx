@@ -129,17 +129,22 @@ export function PerformanceTable({
           onReset={() => onFiltersChange(EMPTY_PERFORMANCE_FILTERS)}
         />
       ) : null}
-      <AppDataTable
-        table={table}
-        className="table table-sm"
-        empty={
-          <EmptyTableMessage
-            label="Bu denetimde Lighthouse sonucu yok."
-            filteredLabel="Bu filtrelerle eşleşen performans sonucu yok."
-            hasActiveFilter={activeFilterCount > 0}
-          />
-        }
-      />
+      {/* Framed like the Pages and Issues tables beside it. This one sat
+          on the page background, so switching tabs changed whether the
+          results looked like a panel. */}
+      <div className="overflow-hidden rounded-box border border-base-300">
+        <AppDataTable
+          table={table}
+          className="table table-sm"
+          empty={
+            <EmptyTableMessage
+              label="Bu denetimde Lighthouse sonucu yok."
+              filteredLabel="Bu filtrelerle eşleşen performans sonucu yok."
+              hasActiveFilter={activeFilterCount > 0}
+            />
+          }
+        />
+      </div>
     </div>
   );
 }

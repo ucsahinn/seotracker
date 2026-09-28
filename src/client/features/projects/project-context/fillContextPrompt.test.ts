@@ -67,3 +67,21 @@ describe("fill context prompt", () => {
     expect(prompt).toContain("update_project_context");
   });
 });
+
+/*
+ * `replace` with a string replacement reads `$&` and friends as patterns, so
+ * a project name is a small template injection into the agent's prompt.
+ */
+describe("values that look like replacement patterns", () => {
+  it("puts a project name containing $& in verbatim", () => {
+    const prompt = buildFillContextPrompt({
+      ...base,
+      projectName: "A$&B",
+      domain: "x$'y.com",
+    });
+
+    expect(prompt).toContain('"A$&B"');
+    expect(prompt).toContain("Site: x$'y.com");
+    expect(prompt).not.toContain("{{PROJECT}}");
+  });
+});

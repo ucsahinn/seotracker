@@ -1,6 +1,7 @@
 import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { createFileRoute } from "@tanstack/react-router";
 import { ExternalLink } from "lucide-react";
+import { DiagnosticsBundleButton } from "@/client/features/support/DiagnosticsBundleButton";
 
 const GITHUB_URL = "https://github.com/ucsahinn/seotracker";
 const UPSTREAM_URL = "https://github.com/every-app/open-seo";
@@ -42,6 +43,21 @@ function SupportPage() {
           Search Console ve Analytics kurulumunu anlatır.
         </li>
       </ul>
+
+      <section className="space-y-2 rounded-box border border-base-300 bg-base-200/30 p-4">
+        <h2 className="text-sm font-medium">Sorun bildirecekseniz</h2>
+        <p className="max-w-prose text-sm text-muted">
+          Tek bir arşiv indirin: sürüm, kurulum denetimleri, tablo büyüklükleri,
+          bağlı Google mülkleri, son denetimlerin durumu ve bu sekmede yakalanan
+          tarayıcı hataları. İçinde hiçbir gizli değer yok &mdash; jetonlar ve
+          anahtarlar toplanmıyor, yalnızca yapılandırılmış olup olmadıkları
+          yazıyor. Arşivdeki <code className="text-xs">README.txt</code> ne
+          olduğunu ve neyin sizi tanımladığını satır satır anlatır.
+        </p>
+        <div className="pt-1">
+          <DiagnosticsBundleButton />
+        </div>
+      </section>
 
       <div className="space-y-2 border-t border-base-300 pt-6">
         <a
