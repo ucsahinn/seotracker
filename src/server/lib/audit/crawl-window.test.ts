@@ -19,6 +19,7 @@ function page(
     redirectUrl: null,
     title: "",
     metaDescription: "",
+    canonicalCount: 0,
     canonicalUrl: null,
     robotsMeta: null,
     googlebotMeta: null,

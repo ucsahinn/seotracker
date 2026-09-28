@@ -204,6 +204,7 @@ export async function crawlPage(
       redirectUrl: null,
       title: analysis.title,
       metaDescription: analysis.metaDescription,
+      canonicalCount: analysis.canonicalCount,
       canonicalUrl: analysis.canonical
         ? (normalizeUrl(analysis.canonical, url) ?? analysis.canonical)
         : null,
@@ -327,6 +328,7 @@ function emptyPageResult(input: {
     redirectUrl: input.redirectUrl,
     title: "",
     metaDescription: "",
+    canonicalCount: 0,
     canonicalUrl: null,
     robotsMeta: null,
     googlebotMeta: null,

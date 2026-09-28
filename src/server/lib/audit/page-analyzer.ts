@@ -78,6 +78,7 @@ export function analyzeHtml(
   let ogDescription: string | null = null;
   let ogImage: string | null = null;
   let hasStructuredData = false;
+  let canonicalCount = 0;
   let viewport: string | null = null;
   const resources: string[] = [];
   const hreflangAlternates: HreflangAlternate[] = [];
@@ -150,6 +151,12 @@ export function analyzeHtml(
     const rel = attribs["rel"]?.trim().toLowerCase();
     if (rel === "stylesheet") collectResource(attribs["href"]);
     if (rel === "canonical") {
+      /*
+       * Counted, not just kept. Google ignores every canonical on a page
+       * that declares more than one conflicting value, so "there are two"
+       * is the finding -- and taking the first silently hid it.
+       */
+      canonicalCount += 1;
       canonical ??= attribs["href"] ?? null;
     } else if (
       rel === "alternate" &&
@@ -330,6 +337,7 @@ export function analyzeHtml(
     images,
     links: Array.from(linksByTarget.values()),
     hasStructuredData,
+    canonicalCount,
     viewport,
     resources,
     hreflangAlternates,

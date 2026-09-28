@@ -69,6 +69,8 @@ export interface PageAnalysis {
   title: string;
   metaDescription: string;
   canonical: string | null;
+  /** How many rel=canonical links the page declared, not just the first. */
+  canonicalCount: number;
   robotsMeta: string | null;
   /** Bot-specific directive; Google prefers it over the generic one. */
   googlebotMeta: string | null;
@@ -148,6 +150,8 @@ export interface CrawledPageResult {
   title: string;
   metaDescription: string;
   canonicalUrl: string | null;
+  /** How many rel=canonical links the page declared, not just the first. */
+  canonicalCount: number;
   robotsMeta: string | null;
   /** Bot-specific directive; Google prefers it over the generic one. */
   googlebotMeta: string | null;

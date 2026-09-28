@@ -163,6 +163,11 @@ function reportIndexability(page: CrawledPageResult, report: ReportIssue) {
       xRobotsTag: page.xRobotsTag,
     });
   }
+  /* Google ignores every canonical on a page that declares more than one,
+     so the count is the finding -- whatever the values happen to be. */
+  if (page.canonicalCount > 1) {
+    report("multiple-canonical-tags", { count: page.canonicalCount });
+  }
   if (
     page.canonicalUrl &&
     page.headerCanonicalUrl &&

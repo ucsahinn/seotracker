@@ -17,6 +17,10 @@ function analyzeHtmlWithCheerio(html: string, pageUrl: string): PageAnalysis {
   const metaDescription =
     $('meta[name="description"]').first().attr("content")?.trim() ?? "";
   const canonical = $('link[rel="canonical"]').first().attr("href") ?? null;
+  // Counted the same way the analyzer counts: the parity test's second
+  // fixture declares two, and a reference that reports one would let a
+  // miscount through.
+  const canonicalCount = $('link[rel="canonical"]').length;
   const robotsMeta = $('meta[name="robots"]').first().attr("content") ?? null;
   const googlebotMeta =
     $('meta[name="googlebot"]').first().attr("content") ?? null;
@@ -128,6 +132,7 @@ function analyzeHtmlWithCheerio(html: string, pageUrl: string): PageAnalysis {
     title,
     metaDescription,
     canonical,
+    canonicalCount,
     robotsMeta,
     googlebotMeta,
     ogTitle,

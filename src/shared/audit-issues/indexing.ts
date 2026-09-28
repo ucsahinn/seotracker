@@ -210,4 +210,12 @@ export const INDEXING_ISSUES = {
     howToFix:
       "Sayfa türüne uyan şemayla başlayın: dokümantasyon için Article ve BreadcrumbList, SSS sayfası için FAQPage, ürün sayfası için Product. İşaretlemenin sayfada gerçekten görünen içeriği anlatması şart; görünmeyeni işaretlemek Google'ın kurallarını ihlal eder.",
   },
+  "multiple-canonical-tags": {
+    severity: "critical",
+    title: "Sayfada birden fazla canonical etiketi var",
+    explanation:
+      "Sayfa birden çok rel=canonical bildiriyor. Google bu durumda hepsini yok sayar ve asıl adresi kendi seçer, yani canonical etiketini koymamışsınız gibi davranır. Genelde şablonun bir yerde, eklentinin başka bir yerde canonical yazmasından çıkar.",
+    howToFix:
+      "Sayfanın HTML'inde rel=canonical arayın ve bir tane bırakın. Şablonla eklenti aynı anda yazıyorsa birini kapatın.",
+  },
 } as const satisfies Record<string, AuditIssueDescriptor>;

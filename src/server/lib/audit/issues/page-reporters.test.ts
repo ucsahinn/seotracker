@@ -29,6 +29,7 @@ function makePage(overrides: Partial<CrawledPageResult>): CrawledPageResult {
     title: "A perfectly reasonable page title",
     metaDescription:
       "A reasonable meta description that says something useful about the page.",
+    canonicalCount: 0,
     canonicalUrl: null,
     robotsMeta: null,
     googlebotMeta: null,

@@ -236,6 +236,45 @@ const blockedResource: Fixture = {
     ),
 };
 
+// 33 - two canonical tags on one page --------------------------------------
+const twoCanonicals: Fixture = {
+  path: "/index/two-canonicals",
+  category: CAT,
+  name: "Two canonical tags on one page",
+  summary:
+    "The page declares rel=canonical twice, so Google ignores both and picks its own.",
+  lesson:
+    "A second canonical does not override the first; it cancels them. Google's documentation says conflicting canonical declarations make it fall back to its own choice, which is the same as declaring nothing.",
+  /* Only the count. The first canonical names this page, so nothing here
+     is canonicalised away -- which is exactly the trap: the page looks
+     correctly self-canonical right up until Google discards both. */
+  expectedIssues: ["multiple-canonical-tags"],
+  handler: (ctx) =>
+    htmlResponse(
+      renderPage({
+        fixture: twoCanonicals,
+        title: "This page names itself twice, differently",
+        metaDescription:
+          "One canonical points here and another points elsewhere, so Google discards both and decides on its own.",
+        headExtra: `<link rel="canonical" href="${ctx.origin}/index/two-canonicals"><link rel="canonical" href="${ctx.origin}/catalog">`,
+        bodyHtml: article({
+          h1: "Two canonicals, no canonical",
+          lede: "The head of this page declares rel=canonical twice with different targets.",
+          sections: [
+            {
+              h2: "Why both are thrown away",
+              body: "A canonical is a single statement about which address holds this content. Two of them is not a stronger statement, it is a contradiction, and Google resolves a contradiction by ignoring the markup and choosing a canonical itself. The practical result is the same as never having added one.",
+            },
+            {
+              h2: "How a page ends up with two",
+              body: "Almost always two systems writing to the same head: the site template emits one, and a plugin or an SEO module emits another. Neither knows about the other, and the page looks correct in both codebases. Viewing the rendered source is the only place the pair is visible.",
+            },
+          ],
+        }),
+      }),
+    ),
+};
+
 export const indexabilityExtraFixtures: Fixture[] = [
   hreflangInvalidCode,
   hreflangNoSelf,
@@ -243,4 +282,5 @@ export const indexabilityExtraFixtures: Fixture[] = [
   paginatedCanonical,
   missingViewport,
   blockedResource,
+  twoCanonicals,
 ];
