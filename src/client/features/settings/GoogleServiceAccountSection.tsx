@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CheckCircle2, ExternalLink } from "lucide-react";
 import * as React from "react";
 import { toast } from "sonner";
-import { CopyButton } from "@/client/features/ai-mcp/SetupControls";
+import { CopyButton } from "@/client/components/CopyButton";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import {
   clearGoogleServiceAccount,

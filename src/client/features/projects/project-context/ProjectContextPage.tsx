@@ -11,6 +11,7 @@ import {
   type ProjectContextSectionKey,
 } from "@/types/schemas/projectContext";
 import { CompetitorsSection } from "./CompetitorsSection";
+import { FillWithAgentCard } from "./FillWithAgentCard";
 import { KeyPagesSection } from "./KeyPagesSection";
 import {
   ConfirmDeleteButton,
@@ -44,7 +45,15 @@ const SECTION_PLACEHOLDERS: Record<ProjectContextSectionKey, string> = {
     "örn. Sade ve doğrudan, abartı yok. 'Kusursuz' ya da 'devrim niteliğinde' yazma. Rakip fiyatlarına girme.",
 };
 
-export function ProjectContextPage({ projectId }: { projectId: string }) {
+export function ProjectContextPage({
+  projectId,
+  projectName,
+  domain,
+}: {
+  projectId: string;
+  projectName: string;
+  domain?: string | null;
+}) {
   const contextQuery = useQuery({
     queryKey: projectContextQueryKey(projectId),
     queryFn: () => getProjectContext({ data: { projectId } }),
@@ -90,6 +99,15 @@ export function ProjectContextPage({ projectId }: { projectId: string }) {
         bildikleri. Çalışmaya başlamadan önce burayı okur, öğrendiklerini geri
         yazarlar; yanlış görünen bir şey varsa düzeltin.
       </p>
+
+      <FillWithAgentCard
+        projectName={projectName}
+        projectId={projectId}
+        domain={domain}
+        missingSections={context.missingSections}
+        competitorCount={context.competitors.length}
+        keyPageCount={context.keyPages.length}
+      />
 
       <ProseSections
         projectId={projectId}

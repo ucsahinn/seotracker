@@ -13,7 +13,7 @@ import {
   agentUpdatePrompt,
   getAgentSetupPrompt,
 } from "@/client/features/ai-mcp/agentSetupPrompt";
-import { CopyButton } from "@/client/features/ai-mcp/SetupControls";
+import { CopyButton } from "@/client/components/CopyButton";
 import {
   ClaudeIcon,
   GrokIcon,

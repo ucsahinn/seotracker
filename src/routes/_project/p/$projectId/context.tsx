@@ -1,4 +1,4 @@
-import { PageShell } from "@/client/components/PageShell";
+import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { ProjectContextPage } from "@/client/features/projects/project-context/ProjectContextPage";
@@ -18,12 +18,15 @@ function ProjectContextRoute() {
 
   return (
     <PageShell width="reading">
-      <div>
-        <h1 className="text-2xl font-semibold">Proje bilgisi</h1>
-        <p className="text-sm text-muted">{project?.name ?? " "}</p>
-      </div>
+      {/* PageHeader, not a hand-rolled h1: this page had its own heading
+          markup and its own idea of the gap below it. */}
+      <PageHeader title="Proje bilgisi" description={project?.name} />
 
-      <ProjectContextPage projectId={projectId} />
+      <ProjectContextPage
+        projectId={projectId}
+        projectName={project?.name ?? "bu proje"}
+        domain={project?.domain}
+      />
     </PageShell>
   );
 }

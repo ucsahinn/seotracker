@@ -1,5 +1,5 @@
 import { PageShell } from "@/client/components/PageShell";
-import { CopyButton } from "@/client/features/ai-mcp/SetupControls";
+import { CopyButton } from "@/client/components/CopyButton";
 import { reportRequestPrompt } from "@/client/features/reports/reportRequestPrompt";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";

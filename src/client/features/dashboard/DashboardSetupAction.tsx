@@ -4,7 +4,7 @@ import { Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { getAgentSetupPrompt } from "@/client/features/ai-mcp/agentSetupPrompt";
-import { CopyButton } from "@/client/features/ai-mcp/SetupControls";
+import { CopyButton } from "@/client/components/CopyButton";
 import { SearchConsoleConnectionCard } from "@/client/features/gsc/SearchConsoleConnectionCard";
 import { CreateProjectModal } from "@/client/features/projects/CreateProjectModal";
 import { ProjectMarketFields } from "@/client/features/projects/ProjectMarketFields";
