@@ -1,3 +1,4 @@
+import { SettingsHeading } from "@/client/components/HelpTip";
 import { queryClient } from "@/client/tanstack-db/queryClient";
 import {
   gscConnectionOptions,
@@ -26,7 +27,10 @@ function ProjectIntegrationsRoute() {
       {/* The ids are the targets old #search-console / #google-analytics deep
           links are redirected to from the settings index. */}
       <section id="search-console" className="scroll-mt-6 space-y-3">
-        <h2 className="text-sm font-medium text-muted">Search Console</h2>
+        <SettingsHeading
+          title="Search Console"
+          help="Bağlanmadan önce Ayarlar'da bir Google OAuth istemcisi ya da servis hesabı tanımlı olmalı. Bağlandıktan sonra hangi mülkü izleyeceğinizi seçersiniz; yeni doğrulanmış bir mülkte Google'ın veri döndürmesi birkaç gün sürebilir."
+        />
         <SearchConsoleConnectionCard projectId={projectId} />
       </section>
 
@@ -34,7 +38,10 @@ function ProjectIntegrationsRoute() {
         <GoogleAnalyticsConnectionCard
           projectId={projectId}
           heading={
-            <h2 className="text-sm font-medium text-muted">Analytics</h2>
+            <SettingsHeading
+              title="Analytics"
+              help="Search Console ile aynı Google istemcisini kullanır, ayrı bir kurulum gerekmez. Bağlandıktan sonra GA4 mülkünüzü seçersiniz; organik trafik panelde ve Analytics ekranında görünür."
+            />
           }
         />
       </section>

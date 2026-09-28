@@ -1,3 +1,4 @@
+import { HelpTip, SettingsHeading } from "@/client/components/HelpTip";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   ArrowUpCircle,
@@ -61,7 +62,10 @@ export function UpdateSection({ version }: { version: string }) {
 
   return (
     <section className="space-y-3">
-      <h2 className="text-sm font-medium text-muted">Hakkında</h2>
+      <SettingsHeading
+        title="Hakkında"
+        help="Bu kurulum bir git kopyası, yani güncelleme buradan yapılmaz: uygulama yeni sürümü fark eder ve çalıştırmanız gereken komutu verir. Kontrolü kapatırsanız GitHub'a hiç istek gitmez."
+      />
 
       <div className="flex items-center justify-between gap-6">
         <span className="text-sm">Sürüm</span>
@@ -130,7 +134,14 @@ export function UpdateSection({ version }: { version: string }) {
             disabled={statusQuery.isPending || toggle.isPending}
             onChange={(event) => toggle.mutate(event.target.checked)}
           />
-          Güncellemeleri denetle
+          <span className="flex items-center gap-1.5">
+            Güncellemeleri denetle
+            <HelpTip label="Güncellemeleri denetle">
+              Açıkken günde bir kez GitHub&apos;daki sürüm listesine bakar,
+              başka hiçbir şey göndermez. Kapatırsanız dışarıya hiç istek gitmez
+              ve sürümü kendiniz takip edersiniz.
+            </HelpTip>
+          </span>
         </label>
         {status?.enabled ? (
           <button

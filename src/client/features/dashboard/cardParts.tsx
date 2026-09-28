@@ -51,11 +51,21 @@ export function Stat({
 }: {
   label: string;
   value: string;
+  /*
+   * `--ink-*`, not the fill colours: on a base-100 surface `text-success`
+   * lands near 2.5:1, which is why the house rule names the ink tokens.
+   * No caller passes this today; it is typed correctly so the first one
+   * does not have to notice.
+   */
   tone?: "success" | "error";
   sub?: React.ReactNode;
 }) {
   const toneClass =
-    tone === "success" ? "text-success" : tone === "error" ? "text-error" : "";
+    tone === "success"
+      ? "text-[var(--ink-success)]"
+      : tone === "error"
+        ? "text-[var(--ink-error)]"
+        : "";
   return (
     <div>
       <p className="text-xs font-medium uppercase tracking-wider text-muted">

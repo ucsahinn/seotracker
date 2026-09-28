@@ -3,7 +3,8 @@ import type { ReactNode } from "react";
 
 export function TableBulkActionBar({
   selectedCount,
-  selectedLabel = "selected",
+  // The UI is Turkish; this default rendered "12 selected" in it.
+  selectedLabel = "seçili",
   actions,
   onClear,
   placement = "fixed",

@@ -9,6 +9,7 @@ import {
   moreDetailsClass,
 } from "@/client/features/dashboard/cardParts";
 import { formatCount } from "@/client/lib/format";
+import { SEVERITY_LABEL } from "@/client/features/audit/results/IssuesView";
 import type { DashboardAuditSummary } from "@/server/features/dashboard/services/DashboardService";
 
 // Plain string-keyed view of the registry: issue types from the DB are not
@@ -63,13 +64,16 @@ export function AuditHealthCard({
   return (
     <CardShell
       title="Site denetimi"
-      stamp={`Site denetimi · ${
+      // Not prefixed with "Site denetimi": CardShell renders that as the
+      // title directly above, so the one metadata line was spending its
+      // first third repeating it.
+      stamp={
         audit.status === "completed"
           ? `${formatCount(audit.pagesCrawled)} sayfa tarandı · ${formatDay(audit.startedAt)}`
           : audit.status === "running"
             ? "tarama sürüyor"
             : "son tarama başarısız"
-      }`}
+      }
       action={
         <Link
           to="/p/$projectId/audit"
@@ -122,7 +126,14 @@ export function AuditHealthCard({
                           ? "bg-warning"
                           : "bg-base-content/30"
                     }`}
+                    aria-hidden
                   />
+                  {/* The dot alone carried severity: no text, no accessible
+                      name. The house rule says direction is never colour
+                      alone, and rank is no different. */}
+                  <span className="sr-only">
+                    {SEVERITY_LABEL[issue.severity]}:{" "}
+                  </span>
                   <span className="truncate">
                     {issueTitles[issue.issueType] ?? issue.issueType}
                   </span>

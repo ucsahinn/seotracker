@@ -1,3 +1,5 @@
+import { WhatsNewSection } from "@/client/features/settings/WhatsNewSection";
+import { SettingsHeading } from "@/client/components/HelpTip";
 import { createFileRoute } from "@tanstack/react-router";
 import { Monitor, Moon, Sun } from "lucide-react";
 import { GoogleOAuthClientSection } from "@/client/features/settings/GoogleOAuthClientSection";
@@ -27,7 +29,10 @@ function PersonalSettings() {
   return (
     <div className="space-y-10">
       <section className="space-y-3">
-        <h2 className="text-sm font-medium text-muted">Görünüm</h2>
+        <SettingsHeading
+          title="Görünüm"
+          help="Sistem, işletim sisteminizin açık/koyu tercihini izler. Seçim bu tarayıcıda saklanır; başka bir cihazda ayrı seçilir."
+        />
         <div className="flex items-center justify-between gap-6">
           <span className="text-sm">Tema</span>
           <div
@@ -68,6 +73,8 @@ function PersonalSettings() {
       <PageSpeedKeySection />
 
       <UpdateSection version={version} />
+
+      <WhatsNewSection version={version} />
     </div>
   );
 }

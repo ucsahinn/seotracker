@@ -1,4 +1,9 @@
 import type { AuditResultsData } from "@/client/features/audit/results/types";
+import type { getAuditIndexCoverage } from "@/serverFunctions/indexCoverage";
+
+type CoverageRow = Awaited<
+  ReturnType<typeof getAuditIndexCoverage>
+>["rows"][number];
 import { SEVERITY_LABEL } from "@/client/features/audit/results/IssuesView";
 import {
   getIssueDescriptor,
@@ -200,4 +205,61 @@ export function exportPerformance(
   }
 
   downloadCsv("audit-performance.csv", buildCsv(PERFORMANCE_HEADERS, rows));
+}
+
+const COVERAGE_HEADERS = [
+  "Adres",
+  "Karar",
+  "Kapsam durumu",
+  "Google'ın canonical'ı",
+  "Sizin canonical'ınız",
+  "Canonical uyuşmazlığı",
+  "Son tarama",
+  "Sorgulandı",
+  "Hata",
+] as const;
+
+/**
+ * Index coverage was the one audit tab with no export.
+ *
+ * It is also the table an operator is most likely to hand to someone else:
+ * Google's own per-URL verdict, bought with a daily quota, and the answer
+ * to "why is this page not in the index". The other three tabs have had an
+ * export since they existed.
+ */
+export function exportIndexCoverage(
+  rows: CoverageRow[],
+  format: "csv" | "json" | "sheets",
+) {
+  if (format === "json") {
+    downloadFile(
+      JSON.stringify(rows, null, 2),
+      "index-coverage.json",
+      "application/json",
+    );
+    return;
+  }
+
+  const csvRows = rows.map((row): CsvValue[] => [
+    row.url,
+    row.verdict,
+    row.coverageState,
+    row.googleCanonical,
+    row.userCanonical,
+    row.canonicalMismatch ? "evet" : "hayır",
+    row.lastCrawlTime,
+    row.checkedAt,
+    row.error,
+  ]);
+
+  if (format === "sheets") {
+    void exportTableToSheets({
+      headers: [...COVERAGE_HEADERS],
+      rows: csvRows,
+      feature: "audit_index_coverage",
+    });
+    return;
+  }
+
+  downloadCsv("index-coverage.csv", buildCsv([...COVERAGE_HEADERS], csvRows));
 }

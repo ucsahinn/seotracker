@@ -1,5 +1,8 @@
 import { createPortal } from "react-dom";
-import { FloatingTooltip, useFloatingTooltip } from "./FloatingTooltip";
+import {
+  FloatingTooltip,
+  useFloatingTooltip,
+} from "@/client/components/FloatingTooltip";
 
 /** A table header label with a hover/focus tooltip explaining the column. */
 export function HeaderHelpLabel({

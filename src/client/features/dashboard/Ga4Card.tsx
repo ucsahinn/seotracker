@@ -29,7 +29,9 @@ function statValue(
   value: number | null,
   format: (value: number) => string,
 ): string {
-  return value === null ? "—" : format(value);
+  // "--", matching MetricTile: two absence glyphs on one screen for the
+  // same meaning is a detail the reader has to resolve for no reason.
+  return value === null ? "--" : format(value);
 }
 
 function statDelta(current: number | null, previous: number | null) {
@@ -103,9 +105,16 @@ export function Ga4Card({
           <div className="skeleton h-24" />
         </div>
       ) : reportQuery.isError ? (
-        <p className="text-sm text-muted">
-          Google Analytics verileri yüklenemedi. Birazdan tekrar deneyin.
-        </p>
+        <div className="space-y-2 text-sm">
+          <p className="text-muted">Google Analytics verileri yüklenemedi.</p>
+          <button
+            type="button"
+            className="btn btn-ghost btn-xs"
+            onClick={() => void reportQuery.refetch()}
+          >
+            Tekrar dene
+          </button>
+        </div>
       ) : report?.connected ? (
         // Covers null (no report row) and 0: a zero-session period would
         // otherwise render an all-zero flatline chart in an empty box.

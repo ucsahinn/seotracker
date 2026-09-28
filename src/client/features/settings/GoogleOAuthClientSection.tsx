@@ -1,3 +1,4 @@
+import { HelpTip, SettingsHeading } from "@/client/components/HelpTip";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CheckCircle2, ExternalLink } from "lucide-react";
 import * as React from "react";
@@ -94,7 +95,10 @@ export function GoogleOAuthClientSection() {
 
   return (
     <section className="space-y-3">
-      <h2 className="text-sm font-medium text-muted">Google bağlantısı</h2>
+      <SettingsHeading
+        title="Google bağlantısı"
+        help="Google Cloud Console'da bir proje açın, 'APIs & Services → Credentials' altından OAuth client ID oluşturun (tür: Web application), aşağıdaki iki redirect URI'yi ekleyin ve verilen kimlik ile sırrı buraya yapıştırın. Search Console ve Analytics aynı istemciyi kullanır."
+      />
 
       <p className="text-sm text-muted">
         Search Console ve Analytics, kendi Google Cloud projenizden aldığınız
@@ -189,7 +193,14 @@ export function GoogleOAuthClientSection() {
           }}
         >
           <label className="form-control w-full">
-            <span className="label-text text-sm">İstemci kimliği</span>
+            <span className="label-text flex items-center gap-1.5 text-sm">
+              İstemci kimliği
+              <HelpTip label="İstemci kimliği">
+                Google Cloud Console → APIs &amp; Services → Credentials
+                listesinde OAuth 2.0 Client IDs altında görünür.
+                `.apps.googleusercontent.com` ile biter ve gizli değildir.
+              </HelpTip>
+            </span>
             <input
               type="text"
               autoComplete="off"
@@ -202,7 +213,15 @@ export function GoogleOAuthClientSection() {
           </label>
 
           <label className="form-control w-full">
-            <span className="label-text text-sm">Gizli anahtar</span>
+            <span className="label-text flex items-center gap-1.5 text-sm">
+              Gizli anahtar
+              <HelpTip label="Gizli anahtar">
+                Aynı istemciyi açtığınızda sağdaki panelde. Google onu yalnızca
+                oluşturma anında tam gösterir; kaçırdıysanız yeni bir sır
+                üretin. Burada sunucuda şifrelenir ve bir daha tarayıcıya
+                gönderilmez.
+              </HelpTip>
+            </span>
             <input
               type="password"
               autoComplete="off"

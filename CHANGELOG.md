@@ -5,6 +5,53 @@ numaraları [SemVer](https://semver.org/lang/tr/) izler.
 
 ## [Yayınlanmamış]
 
+## [0.11.0] — 2026-09-28
+
+Uygulamanın kendini anlatması: sürüm notları içeride, her ayarın yanında
+"nasıl yapılır", ve panelin bağlı-ama-boş hâline nihayet bir cevabı var.
+
+### Eklenenler
+
+- **Sürüm notları Ayarlar'da.** Kendi sunucusunda bir araç güncelleyen kişi
+  bir sürüm sayfası görmez: bir komut çalıştırır ve konteyner bir sürüm
+  yeni döner. Notlar artık depodaki `CHANGELOG.md`'den okunuyor — ayrı bir
+  kopya bir sürümde birbirinden ayrılırdı — çalışan sürüm işaretli, eskiler
+  tek tıkla açılıyor.
+- **Her ayarın yanında "nasıl yapılır".** Yedi bölüm ve altı alan için,
+  etiketi tekrar eden değil işi anlatan metin: OAuth istemcisinin Google
+  Cloud'da tam olarak nerede olduğu, PageSpeed anahtarı için önce hangi
+  API'nin etkinleştirilmesi gerektiği, servis hesabının neden daha kısa yol
+  olduğu. Tetikleyici gerçek bir düğme: klavyeyle erişilir, Escape kapatır,
+  `aria-describedby` bağlar.
+- **İndeksleme sekmesine dışa aktarma.** Denetimin dört sekmesinden üçünde
+  vardı; Google'ın adres başına kararını taşıyan, yani operatörün asıl
+  tabloya döktüğü sekmede yoktu.
+
+### Düzeltilenler
+
+- **Bağlı-ama-boş Search Console'un cevabı yoktu.** Google'ın veri
+  döndürmediği bir mülkte panelin en görünür bloğu `0 / 0 / -- / --` olarak
+  çiziliyor, nedenini söylemiyor ve hiçbir yere gitmiyordu. Bu üçüncü bir
+  durum — "bağlı değil" ve "verisi var" ikisi de ele alınmıştı — ve artık
+  kendi metnini taşıyor.
+- **Sorunlar sekmesinin dışa aktarması odak çipini yok sayıyordu.** Sayfalar
+  ve performans için iki sürüm önce giderilen kusurun aynısı buradaydı: bir
+  sayfaya odaklanıp CSV'ye basınca denetimdeki tüm sorunlar iniyordu.
+- **Sıralama yönü ekran okuyucuya ulaşmıyordu.** `aria-pressed` artan ile
+  azalanı aynı okutuyordu; yön `aria-sort` ile başlık hücresine taşındı,
+  yani uygulamadaki her sıralanabilir tabloda.
+- **Önem derecesi yalnızca renkle anlatılıyordu.** Panel kartındaki 8
+  piksellik nokta, metinsiz ve adsızdı.
+- **Analytics kartının hatasından çıkış yoktu** — aynı sayfadaki diğer iki
+  hata durumunun ikisinde de yeniden deneme vardı.
+- **Kurulum listesinin alt başlığı var olmayan bir adımı anlatıyordu** ve
+  tamamlanmış iki adımı sayıyordu; artık kaç adım kaldığını söylüyor.
+- Toplu seçim çubuğu Türkçe arayüzde "12 selected" yazıyordu.
+- Denetim kartının damgası kendi başlığını tekrar ediyordu.
+- İki farklı "veri yok" işareti (`—` ve `--`) tek işarete indi, ve `Stat`'ın
+  kullanılmayan `tone` desteği dolgu renkleri yerine `--ink-*` jetonlarını
+  kullanıyor.
+
 ## [0.10.0] — 2026-09-27
 
 Doğrulama turu: iddia edilen ama kanıtlanmamış üç şeyin gerçekten sınanması,
@@ -514,6 +561,7 @@ depodan kaldırıldı, çünkü onlar open-seo'nun yayınlarıydı.
   Verileriniz `seotracker_data` biriminde; güncellemeden önce yedek almak
   isteyebilirsiniz.
 
+[0.11.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.11.0
 [0.10.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.10.0
 [0.9.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.9.0
 [0.8.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.8.0

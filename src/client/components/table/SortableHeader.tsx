@@ -23,8 +23,14 @@ export function SortableHeader({
       type="button"
       className="inline-flex items-center gap-1 font-medium transition-colors hover:text-base-content"
       onClick={column.getToggleSortingHandler()}
-      aria-label={`${label} sütununa göre sırala`}
-      aria-pressed={!!sorted}
+      /* Direction lives in `aria-sort` on the cell; this names the action. */
+      aria-label={
+        sorted === "asc"
+          ? `${label} sütununa göre sırala (şu an artan)`
+          : sorted === "desc"
+            ? `${label} sütununa göre sırala (şu an azalan)`
+            : `${label} sütununa göre sırala`
+      }
     >
       {helpText ? <HeaderHelpLabel label={label} helpText={helpText} /> : label}
       {sorted === "asc" ? (

@@ -227,8 +227,27 @@ function HeaderCell<TData>({
   stickyHeader?: boolean;
 }) {
   const meta = header.column.columnDef.meta;
+  /*
+   * `aria-sort` belongs on the header cell, and it is the only thing that
+   * announces direction. `SortableHeader` used `aria-pressed` on its button
+   * instead, which reads identically for ascending and descending -- so on
+   * every sortable table in the app, which way a column was sorted was
+   * unreachable without seeing the arrow.
+   */
+  const sorted = header.column.getCanSort?.()
+    ? header.column.getIsSorted()
+    : false;
   return (
     <th
+      aria-sort={
+        sorted === "asc"
+          ? "ascending"
+          : sorted === "desc"
+            ? "descending"
+            : header.column.getCanSort?.()
+              ? "none"
+              : undefined
+      }
       className={[
         stickyHeader ? "bg-base-200" : undefined,
         meta?.headerClassName,

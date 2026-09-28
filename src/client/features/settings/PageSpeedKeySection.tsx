@@ -1,3 +1,4 @@
+import { HelpTip, SettingsHeading } from "@/client/components/HelpTip";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CheckCircle2, ExternalLink } from "lucide-react";
 import * as React from "react";
@@ -61,7 +62,10 @@ export function PageSpeedKeySection() {
 
   return (
     <section className="space-y-3">
-      <h2 className="text-sm font-medium text-muted">Hız ölçümü</h2>
+      <SettingsHeading
+        title="Hız ölçümü"
+        help="Google Cloud Console'da PageSpeed Insights API'sini etkinleştirin, 'Credentials → Create credentials → API key' ile bir anahtar alın ve buraya yapıştırın. Ücretsiz. Anahtarsız da çalışır ama Google'ın anahtarsız kotası birkaç sayfadan sonra 429 döndürür."
+      />
 
       <p className="text-sm text-muted">
         Denetimin Lighthouse aşaması Google PageSpeed Insights&apos;ı kullanır.
@@ -130,7 +134,14 @@ export function PageSpeedKeySection() {
           }}
         >
           <label className="form-control w-full">
-            <span className="label-text text-sm">API anahtarı</span>
+            <span className="label-text flex items-center gap-1.5 text-sm">
+              API anahtarı
+              <HelpTip label="API anahtarı">
+                Google Cloud Console → Credentials → Create credentials → API
+                key. Önce aynı projede PageSpeed Insights API&apos;sini
+                etkinleştirmeniz gerekir, yoksa anahtar 403 döndürür.
+              </HelpTip>
+            </span>
             <input
               type="password"
               autoComplete="off"

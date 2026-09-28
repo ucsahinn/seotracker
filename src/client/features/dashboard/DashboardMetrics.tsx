@@ -62,7 +62,19 @@ export function DashboardMetrics({
     );
   }
 
-  const hint = connected ? undefined : (
+  const shownTotals = report ? describeTotals(report.totals) : null;
+
+  /*
+   * Connected-but-empty is a third state, and it had no copy.
+   *
+   * A property Google has no data for renders 0 / 0 / -- / -- with nothing
+   * saying why and nothing to click: the most prominent block on the
+   * dashboard, dead. "Not connected" and "has data" were both handled; this
+   * one was left looking like a broken integration. The likeliest causes
+   * are a newly verified property and Search Console's two-to-three day
+   * lag, and both are worth naming.
+   */
+  const hint = !connected ? (
     <Link
       to="/p/$projectId/search-performance"
       params={{ projectId }}
@@ -70,9 +82,25 @@ export function DashboardMetrics({
     >
       Search Console'u bağlayın
     </Link>
+  ) : shownTotals && !shownTotals.hasImpressions ? (
+    <Link
+      to="/p/$projectId/search-performance"
+      params={{ projectId }}
+      className="link link-hover text-muted"
+    >
+      Bu dönemde gösterim yok — ayrıntılar
+    </Link>
+  ) : (
+    <Link
+      to="/p/$projectId/search-performance"
+      params={{ projectId }}
+      className="link link-hover text-muted"
+    >
+      Son 28 gün
+    </Link>
   );
 
-  const shown = report ? describeTotals(report.totals) : null;
+  const shown = shownTotals;
   /*
    * A delta needs both a base and a period worth comparing. Without
    * impressions there is no measurement to have moved.
@@ -81,8 +109,11 @@ export function DashboardMetrics({
     report && shown?.hasImpressions
       ? ratio(pick(report.totals), pick(report.prevTotals))
       : null;
-  // Every tile carries the window, including the first. It used to be the
-  // only one without, because its hint slot held the connect link.
+  /*
+   * Every tile carries the window, and the first one carries the way in.
+   * Until now nothing on this row was clickable once connected, so the four
+   * numbers the dashboard exists to show led nowhere.
+   */
   const period = report ? "Son 28 gün" : undefined;
 
   return (
@@ -91,7 +122,7 @@ export function DashboardMetrics({
         label="Tıklama"
         value={shown?.clicks ?? null}
         delta={delta((totals) => totals.clicks)}
-        hint={hint ?? period}
+        hint={hint}
       />
       <MetricTile
         label="Gösterim"

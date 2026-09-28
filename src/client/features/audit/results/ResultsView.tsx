@@ -1,8 +1,14 @@
 import { StatsStrip } from "@/client/features/audit/results/ResultsStats";
+import type { getAuditIndexCoverage } from "@/serverFunctions/indexCoverage";
+
+type CoverageRow = Awaited<
+  ReturnType<typeof getAuditIndexCoverage>
+>["rows"][number];
 import { formatCount } from "@/client/lib/format";
 import { useMemo, useState, type ReactNode } from "react";
 import { ShieldAlert } from "lucide-react";
 import {
+  exportIndexCoverage,
   exportIssues,
   exportPages,
   exportPerformance,
@@ -73,6 +79,20 @@ export function ResultsView({
     useState<PerformanceFilters>(EMPTY_PERFORMANCE_FILTERS);
   const [performanceIds, setPerformanceIds] = useState<string[] | null>(null);
   const [issueFocusUrl, setIssueFocusUrl] = useState<string | undefined>();
+  const [coverageRows, setCoverageRows] = useState<CoverageRow[]>([]);
+  /*
+   * The export has to follow the focus chip, the same way the pages and
+   * performance exports follow their filters. Without this, focusing one
+   * page and clicking CSV wrote every issue in the audit while the screen
+   * showed one.
+   */
+  const scopedIssues = useMemo(
+    () =>
+      issueFocusUrl
+        ? issues.filter((issue) => issue.pageUrl === issueFocusUrl)
+        : issues,
+    [issueFocusUrl, issues],
+  );
   const filteredLighthouse = useMemo(() => {
     if (!performanceIds) return lighthouse;
     const keep = new Set(performanceIds);
@@ -146,19 +166,24 @@ export function ResultsView({
         <div className="card-body gap-3">
           <ResultsHeader
             issueCount={issuePageCount}
-            issueRowCount={issues.length}
+            issueRowCount={scopedIssues.length}
+            coverageCount={coverageRows.length}
             pageCount={filteredPages.length}
             lighthouseCount={filteredLighthouse.length}
             hasPerformanceTab={hasPerformanceTab}
             activeTab={activeTab}
             onTabChange={onTabChange}
             onExport={(format) => {
+              if (activeTab === "index") {
+                exportIndexCoverage(coverageRows, format);
+                return;
+              }
               if (activeTab === "performance") {
                 exportPerformance(filteredLighthouse, pages, format);
                 return;
               }
               if (activeTab === "issues") {
-                exportIssues(issues, format);
+                exportIssues(scopedIssues, format);
                 return;
               }
               exportPages(filteredPages, format);
@@ -174,7 +199,11 @@ export function ResultsView({
                     downloaded since March explains a coverage table full of
                     unanswered rows, and the two used to live apart. */}
                 <SitemapStatusPanel projectId={projectId} />
-                <IndexCoverageView projectId={projectId} auditId={audit.id} />
+                <IndexCoverageView
+                  projectId={projectId}
+                  auditId={audit.id}
+                  onRowsChange={setCoverageRows}
+                />
               </div>
             )}
             {activeTab === "issues" && (
@@ -282,6 +311,7 @@ function useResultStats(
 function ResultsHeader({
   issueCount,
   issueRowCount,
+  coverageCount,
   pageCount,
   lighthouseCount,
   hasPerformanceTab,
@@ -293,6 +323,8 @@ function ResultsHeader({
   issueCount: number;
   /** Issue records — what an issues export actually writes. */
   issueRowCount: number;
+  /** Rows Google has answered about, which is what the index export writes. */
+  coverageCount: number;
   pageCount: number;
   lighthouseCount: number;
   hasPerformanceTab: boolean;
@@ -326,18 +358,18 @@ function ResultsHeader({
 
       {/* No export for index coverage yet, and falling through to the pages
           export downloaded the wrong file without saying so. */}
-      {activeTab === "index" ? null : (
-        <ExportDropdown
-          onExport={onExport}
-          rowCount={
-            activeTab === "performance"
-              ? lighthouseCount
-              : activeTab === "issues"
-                ? issueRowCount
+      <ExportDropdown
+        onExport={onExport}
+        rowCount={
+          activeTab === "performance"
+            ? lighthouseCount
+            : activeTab === "issues"
+              ? issueRowCount
+              : activeTab === "index"
+                ? coverageCount
                 : pageCount
-          }
-        />
-      )}
+        }
+      />
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import { SettingsHeading } from "@/client/components/HelpTip";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CheckCircle2, ExternalLink } from "lucide-react";
 import * as React from "react";
@@ -85,9 +86,10 @@ export function GoogleServiceAccountSection() {
 
   return (
     <section className="space-y-3">
-      <h2 className="text-sm font-medium text-muted">
-        Servis hesabı (daha kısa yol)
-      </h2>
+      <SettingsHeading
+        title="Servis hesabı (daha kısa yol)"
+        help="OAuth kurulumu onay ekranı, test kullanıcısı ve birebir eşleşen redirect URI ister; kurulum genelde bu üçünde takılır. Servis hesabı üçünü de atlar: Google Cloud'da bir servis hesabı açıp JSON anahtarını indirin, sonra o hesabın e-postasını Search Console mülkünüze bir meslektaşınızı ekler gibi ekleyin."
+      />
 
       <p className="text-sm text-muted">
         Yukarıdaki OAuth istemcisi yerine bunu kullanabilirsiniz. Servis

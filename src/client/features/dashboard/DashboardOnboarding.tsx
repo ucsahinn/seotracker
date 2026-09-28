@@ -68,8 +68,14 @@ export function DashboardOnboarding({
     >
       <header className="border-b border-base-300 px-5 py-5 sm:px-6">
         <h2 className="text-lg font-semibold">Çalışma alanınızı kurun</h2>
+        {/* Describes what is left, not a fixed script: the old copy named
+            two steps that were already done and one ("ilk denetimi
+            çalıştırın") that is not in `setupSteps` at all. */}
         <p className="mt-1 text-sm text-muted">
-          Sitenizi ekleyin, Google hesabınızı bağlayın, ilk denetimi çalıştırın.
+          {remaining.length === 1
+            ? "Bir adım kaldı."
+            : `${remaining.length} adım kaldı.`}{" "}
+          Hepsi isteğe bağlı; atladığınız bir adımı sonra geri alabilirsiniz.
         </p>
       </header>
       {remaining.map((item) => {

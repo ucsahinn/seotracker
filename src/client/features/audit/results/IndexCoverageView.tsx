@@ -1,9 +1,12 @@
 import { coverageStateLabel } from "@/shared/gsc-coverage-states";
+type CoverageRow = Awaited<
+  ReturnType<typeof getAuditIndexCoverage>
+>["rows"][number];
 import { sort } from "remeda";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ExternalLink, Loader2, RefreshCw, SearchCheck } from "lucide-react";
 import { toast } from "sonner";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { EmptyState } from "@/client/components/EmptyState";
 import { TablePagination } from "@/client/components/table/TablePagination";
 import { MetricRow, MetricTile } from "@/client/components/MetricTile";
@@ -25,9 +28,12 @@ import {
 export function IndexCoverageView({
   projectId,
   auditId,
+  onRowsChange,
 }: {
   projectId: string;
   auditId: string;
+  /** Hands the rows to the export menu, which lives a level up. */
+  onRowsChange?: (rows: CoverageRow[]) => void;
 }) {
   const queryClient = useQueryClient();
   const queryKey = ["indexCoverage", projectId, auditId] as const;
@@ -36,6 +42,16 @@ export function IndexCoverageView({
     queryKey,
     queryFn: () => getAuditIndexCoverage({ data: { projectId, auditId } }),
   });
+
+  /*
+   * Handed up so the export menu one level away writes these rows. The
+   * query lives here, and duplicating it upstairs would mean two fetches
+   * of the same quota-backed cache.
+   */
+  const rows = coverage.data?.rows;
+  useEffect(() => {
+    onRowsChange?.(rows ?? []);
+  }, [onRowsChange, rows]);
 
   const refresh = useMutation({
     mutationFn: () =>

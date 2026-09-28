@@ -72,3 +72,31 @@ describe("AuditHealthCard", () => {
     expect(screen.getByText(/tarayın/i)).toBeDefined();
   });
 });
+
+/*
+ * Severity was an 8px coloured dot and nothing else -- no text, no
+ * accessible name. The house rule already says direction is never colour
+ * alone, and rank is no different: a reader who cannot separate red from
+ * amber had no way to tell a critical finding from a warning.
+ */
+describe("severity is not carried by colour alone", () => {
+  it("names each severity in text for a screen reader", () => {
+    render(
+      <AuditHealthCard
+        projectId="p1"
+        audit={audit({
+          topIssues: [
+            { issueType: "missing-title", severity: "critical", count: 3 },
+            { issueType: "title-too-long", severity: "warning", count: 5 },
+            { issueType: "deep-page", severity: "info", count: 2 },
+          ],
+          totalIssueTypes: 3,
+        })}
+      />,
+    );
+
+    expect(screen.getByText(/^Kritik:/)).toBeDefined();
+    expect(screen.getByText(/^Uyarı:/)).toBeDefined();
+    expect(screen.getByText(/^Bilgi:/)).toBeDefined();
+  });
+});

@@ -1,6 +1,9 @@
 import { createPortal } from "react-dom";
 import type { KeywordIntent } from "@/types/keywords";
-import { FloatingTooltip, useFloatingTooltip } from "./FloatingTooltip";
+import {
+  FloatingTooltip,
+  useFloatingTooltip,
+} from "@/client/components/FloatingTooltip";
 
 // The fill colour as text on a wash of itself lands near 2.5:1, which is why
 // the ink tokens exist; these were the last chips still doing it.

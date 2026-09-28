@@ -1,3 +1,4 @@
+import { HelpTip, SettingsHeading } from "@/client/components/HelpTip";
 import * as React from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -119,10 +120,19 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
 
   return (
     <section className="space-y-3">
-      <h2 className="text-sm font-medium text-muted">Genel</h2>
+      <SettingsHeading
+        title="Genel"
+        help="Site adresi, taramanın nereden başlayacağını belirler. Ülke ve dil, Search Console verisinin hangi pazar için okunacağını; yanlış seçilirse sayılar doğru ama sizinle ilgisiz olur."
+      />
       <form onSubmit={handleSubmit} className="space-y-4">
         <label className="flex flex-col gap-1.5 text-sm">
-          <span className="font-medium">Ad</span>
+          <span className="flex items-center gap-1.5 font-medium">
+            Ad
+            <HelpTip label="Ad">
+              Yalnızca sizin için: proje değiştiricide ve raporların başlığında
+              görünür. Google&apos;a gönderilmez.
+            </HelpTip>
+          </span>
           <input
             type="text"
             value={name}
@@ -133,8 +143,12 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
         </label>
 
         <label className="flex flex-col gap-1.5 text-sm">
-          <span className="font-medium">
+          <span className="flex items-center gap-1.5 font-medium">
             Alan adı <span className="text-muted">(isteğe bağlı)</span>
+            <HelpTip label="Alan adı">
+              Denetimin başlangıç adresi buradan gelir ve Search Console mülkünü
+              eşleştirmekte kullanılır. Protokolsüz yazın: example.com.
+            </HelpTip>
           </span>
           <input
             type="text"
@@ -193,7 +207,10 @@ function DangerSection({
 
   return (
     <section className="space-y-3 border-t border-base-300 pt-8">
-      <h2 className="text-sm font-medium text-muted">Projeyi arşivle</h2>
+      <SettingsHeading
+        title="Projeyi arşivle"
+        help="Arşivlenen proje kenar çubuğundan kalkar ama hiçbir verisi silinmez: denetimler, kelimeler ve raporlar durur, geri alınca aynen döner."
+      />
 
       {confirming ? (
         <div className="space-y-3">
