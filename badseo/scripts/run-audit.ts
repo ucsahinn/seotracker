@@ -558,6 +558,10 @@ async function main() {
     "google-blocked-by-robots",
     "google-blocked-by-meta",
     "google-chose-different-canonical",
+    "google-crawled-not-indexed",
+    "google-discovered-not-indexed",
+    "google-duplicate-no-canonical",
+    "google-url-unknown",
     "stale-google-verdicts",
   ];
   /*

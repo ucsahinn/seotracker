@@ -274,14 +274,29 @@ export async function refreshIndexCoverage(input: {
     return { inspected: 0, remaining, quotaRemaining: budget };
   }
 
-  // Google localises coverageState, so asking for Turkish means the sentence
-  // explaining a refusal arrives in the UI's language. The local map in
-  // shared/gsc-coverage-states.ts stays as the fallback for the English
-  // phrases already stored, and for anything Google has not translated.
+  /*
+   * English, and translated on the way out.
+   *
+   * `coverageState` is the only field that says *why* a page is not
+   * indexed, and Google localises it. Asking for Turkish put the right
+   * words on screen but made the column unreadable by anything else: the
+   * enums beside it cannot tell "discovered, not indexed" from "unknown to
+   * Google" -- both arrive NEUTRAL/UNSPECIFIED -- so the sentence is the
+   * only signal, and a sentence in an unknown language is no signal.
+   *
+   * It also left the table holding both languages at once, since rows
+   * stored before that change are English, so the same state read as two
+   * different sentences on one screen.
+   *
+   * `coverageStateLabel` in shared/gsc-coverage-states.ts translates the
+   * documented set for display, which is what it was written for. Rows
+   * already stored in Turkish pass through it unchanged and stay readable;
+   * they simply produce no finding until they are inspected again.
+   */
   await inspectAndRecord({
     projectId: input.projectId,
     urls: batch,
-    languageCode: "tr",
+    languageCode: "en",
     now,
   });
 

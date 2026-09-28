@@ -17,6 +17,7 @@ import { gscUrlInspections } from "@/db/schema";
 import type { DetectedIssue } from "@/server/lib/audit/issues/page-reporters";
 import { isStale, URL_BIND_CHUNK } from "@/server/features/gsc/indexCoverage";
 import { sameCanonicalTarget } from "@/server/lib/audit/url-utils";
+import { classifyCoverageState } from "@/shared/gsc-coverage-states";
 
 type PageRef = { id: string; url: string; isIndexable: boolean };
 
@@ -40,7 +41,11 @@ export async function findGoogleVerdictProblems(input: {
       | "google-soft-404"
       | "google-blocked-by-robots"
       | "google-blocked-by-meta"
-      | "google-chose-different-canonical",
+      | "google-chose-different-canonical"
+      | "google-crawled-not-indexed"
+      | "google-discovered-not-indexed"
+      | "google-duplicate-no-canonical"
+      | "google-url-unknown",
     at: { pageId: string; pageUrl: string },
     details: Record<string, unknown>,
   ) => issues.push({ ...at, issueType, details });
@@ -52,6 +57,7 @@ export async function findGoogleVerdictProblems(input: {
         verdict: gscUrlInspections.verdict,
         pageFetchState: gscUrlInspections.pageFetchState,
         indexingState: gscUrlInspections.indexingState,
+        coverageState: gscUrlInspections.coverageState,
         robotsTxtState: gscUrlInspections.robotsTxtState,
         googleCanonical: gscUrlInspections.googleCanonical,
         userCanonical: gscUrlInspections.userCanonical,
@@ -159,6 +165,30 @@ export async function findGoogleVerdictProblems(input: {
           declared: row.userCanonical,
           chosen: row.googleCanonical,
         });
+      }
+
+      /*
+       * Why Google has not indexed the page, which only the coverage
+       * sentence says: the enums beside it are identical for "discovered,
+       * not indexed" and "unknown to Google", and those two send an
+       * operator to opposite fixes. Unrecognised sentences classify as
+       * null and raise nothing.
+       *
+       * The blocked and duplicate-canonical states are deliberately absent
+       * from the classifier: `google-blocked-by-robots` and
+       * `google-chose-different-canonical` above already report them from
+       * the enums, and reporting both would file two findings for one
+       * fact.
+       */
+      const coverage = classifyCoverageState(row.coverageState);
+      if (coverage === "crawled-not-indexed") {
+        verdict("google-crawled-not-indexed");
+      } else if (coverage === "discovered-not-indexed") {
+        verdict("google-discovered-not-indexed");
+      } else if (coverage === "duplicate-no-canonical") {
+        verdict("google-duplicate-no-canonical");
+      } else if (coverage === "unknown-to-google") {
+        verdict("google-url-unknown");
       }
     }
   }

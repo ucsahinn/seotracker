@@ -37,3 +37,32 @@ export function coverageStateLabel(state: string | null): string | null {
   if (!state) return null;
   return COVERAGE_STATE_TR[state] ?? state;
 }
+
+/**
+ * The coverage states worth raising as findings, and nothing else.
+ *
+ * Keyed on Google's English sentences because that is what the inspection
+ * is now asked for. Anything unrecognised — a state Google adds, or a row
+ * stored back when Turkish was requested — classifies as null and produces
+ * no finding. Silent is the right failure here: a wrong reason for why
+ * Google will not index a page sends someone to fix the wrong thing.
+ */
+const COVERAGE_STATE_FINDING: Record<string, CoverageFinding> = {
+  "Crawled - currently not indexed": "crawled-not-indexed",
+  "Discovered - currently not indexed": "discovered-not-indexed",
+  "Duplicate without user-selected canonical": "duplicate-no-canonical",
+  "URL is unknown to Google": "unknown-to-google",
+};
+
+type CoverageFinding =
+  | "crawled-not-indexed"
+  | "discovered-not-indexed"
+  | "duplicate-no-canonical"
+  | "unknown-to-google";
+
+export function classifyCoverageState(
+  state: string | null,
+): CoverageFinding | null {
+  if (!state) return null;
+  return COVERAGE_STATE_FINDING[state] ?? null;
+}

@@ -162,4 +162,36 @@ export const INDEXING_ISSUES = {
     howToFix:
       'İndeksleme sekmesindeki "Google\'a sor" düğmesi en çok gecikmiş adresleri yeniden sorar. Günlük 2000 adres sınırı olduğu için tek tıkta hepsi değil, en acil olanları sorulur; birkaç tıkla liste tazelenir.',
   },
+  "google-crawled-not-indexed": {
+    severity: "warning",
+    title: "Google taradı ama dizine almadı",
+    explanation:
+      "Google sayfayı çekti, okudu ve dizine almamayı seçti. Teknik bir engel yok: karar içerikle ilgili. En sık sebepler sayfanın başka bir sayfayla büyük ölçüde örtüşmesi, tek başına bir arama niyetini karşılamayacak kadar ince olması, ya da sitede ona işaret eden bağlantı azlığı yüzünden önemsiz görünmesi.",
+    howToFix:
+      "Sayfanın kendine ait bir sorusu ve cevabı olduğundan emin olun. Yakın konulu başka sayfalarla örtüşüyorsa birleştirip tek adrese yönlendirin. Duracaksa içeriği derinleştirin ve ilgili sayfalardan ona bağlantı verin.",
+  },
+  "google-discovered-not-indexed": {
+    severity: "warning",
+    title: "Google keşfetti ama henüz taramadı",
+    explanation:
+      "Google adresi biliyor ama sayfayı çekmedi. Bu bir içerik kararı değil, bir sıraya girme sorunu: Google siteye ayırdığı tarama bütçesini bu adrese harcamaya değer bulmamış. Büyük sitelerde ve iç bağlantısı zayıf sayfalarda olur.",
+    howToFix:
+      "Sayfaya site içinden, özellikle sık taranan sayfalardan bağlantı verin ve site haritasında olduğundan emin olun. Sunucu yavaşsa tarama bütçesi de daralır, yanıt süresine bakın.",
+  },
+  "google-duplicate-no-canonical": {
+    severity: "warning",
+    title: "Google yinelenen içerik gördü, canonical yok",
+    explanation:
+      "Google bu sayfayı bir başkasının kopyası saydı ve hangisinin asıl olduğunu siz söylemediğiniz için kendi seçti. Seçtiği sayfa sizin istediğiniz olmayabilir; sıralama sinyalleri o adreste toplanır.",
+    howToFix:
+      "Kopya kümesindeki her sayfaya, asıl saydığınız adresi gösteren bir rel=canonical ekleyin. Kopyalar gereksizse yönlendirin.",
+  },
+  "google-url-unknown": {
+    severity: "warning",
+    title: "Google bu adresi hiç bilmiyor",
+    explanation:
+      "Google adresi hiç duymamış: ne keşfetmiş ne taramış. Sayfaya giden bir yol yok demektir. Dizine girmeyen bir sayfa arama sonuçlarında hiç görünmez.",
+    howToFix:
+      "Adresi site haritasına ekleyin ve site haritasını Search Console'a gönderin. Ayrıca sitenin taranan sayfalarından bu sayfaya bağlantı verin; Google sayfaları bağlantı takip ederek bulur.",
+  },
 } as const satisfies Record<string, AuditIssueDescriptor>;
