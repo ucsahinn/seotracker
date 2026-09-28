@@ -7,7 +7,7 @@ import {
 } from "@/types/schemas/projectContext";
 import {
   ConfirmDeleteButton,
-  EmptyState,
+  EmptyListNote,
   FormActions,
   listClass,
   Provenance,
@@ -92,10 +92,10 @@ export function KeyPagesSection({
 
       {keyPages.length === 0 ? (
         adding ? null : (
-          <EmptyState>
+          <EmptyListNote>
             Henüz önemli sayfa yok. Sıralamada olması gereken birkaç sayfayı
             ekleyin, ya da bir ajan son site denetiminizden bunları önersin.
-          </EmptyState>
+          </EmptyListNote>
         )
       ) : (
         <ul className={listClass}>

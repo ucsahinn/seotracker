@@ -187,7 +187,7 @@ function buildPagesColumns({
       cell: ({ row }) => {
         if (!hasAnalyzedContent(row.original)) return <EmptyCell />;
         return row.original.imagesMissingAlt > 0 ? (
-          <span className="text-warning">
+          <span className="text-[var(--ink-warning)]">
             {row.original.imagesMissingAlt}/{row.original.imagesTotal}
           </span>
         ) : (

@@ -87,8 +87,17 @@ export function SectionHeader({
   );
 }
 
-/** Muted panel used when a list has nothing in it yet. */
-export function EmptyState({ children }: { children: ReactNode }) {
+/**
+ * A one-line note under a sub-list that has nothing in it yet.
+ *
+ * Deliberately not `components/EmptyState`, and renamed away from that
+ * name because sharing it was the problem: a caller importing `EmptyState`
+ * here believed it was reaching the house component, and got the dashed
+ * grey box that component's own docblock says it replaced. This is the
+ * smaller thing -- no icon, no title, no action -- for a list inside a
+ * section that already has all three.
+ */
+export function EmptyListNote({ children }: { children: ReactNode }) {
   return (
     <p className="rounded-box border border-dashed border-base-300 px-4 py-3 text-sm text-muted">
       {children}

@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { useEffect, useId, useRef, useState } from "react";
 
-type Position = { top: number; left: number };
+type Position = { top: number; left: number; below?: boolean };
 
 export function FloatingTooltip({
   id,
@@ -16,7 +16,9 @@ export function FloatingTooltip({
     <span
       id={id}
       role="tooltip"
-      className="pointer-events-none fixed z-[1000] w-max max-w-64 -translate-x-1/2 -translate-y-full rounded-field border border-base-300 bg-base-100 px-2.5 py-2 text-[11px] font-normal normal-case leading-snug text-base-content shadow-md"
+      className={`pointer-events-none fixed z-[1000] w-max max-w-64 -translate-x-1/2 rounded-field border border-base-300 bg-base-100 px-2.5 py-2 text-[11px] font-normal normal-case leading-snug text-base-content shadow-md ${
+        position.below ? "" : "-translate-y-full"
+      }`}
       style={{ left: position.left, top: position.top }}
     >
       {children}
@@ -40,9 +42,25 @@ export function useFloatingTooltip<T extends HTMLElement>({
   const updatePosition = () => {
     const rect = triggerRef.current?.getBoundingClientRect();
     if (!rect) return;
+    /*
+     * Clamped and flipped, because neither was happening.
+     *
+     * The panel is `max-w-64` centred on the trigger and translated fully
+     * above it, so a trigger near the right edge pushed 128px off-screen
+     * and one near the top clipped upward. Every settings help marker sits
+     * right-aligned against a label, which is exactly the at-risk spot.
+     */
+    const HALF = 128;
+    const EDGE = 8;
+    const left = Math.min(
+      Math.max(rect.left + rect.width / 2, HALF + EDGE),
+      window.innerWidth - HALF - EDGE,
+    );
+    const fitsAbove = rect.top > 120;
     setPosition({
-      top: rect.top - 8,
-      left: rect.left + rect.width / 2,
+      top: fitsAbove ? rect.top - 8 : rect.bottom + 8,
+      left,
+      below: !fitsAbove,
     });
   };
 

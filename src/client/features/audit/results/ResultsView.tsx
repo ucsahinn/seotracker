@@ -79,7 +79,12 @@ export function ResultsView({
     useState<PerformanceFilters>(EMPTY_PERFORMANCE_FILTERS);
   const [performanceIds, setPerformanceIds] = useState<string[] | null>(null);
   const [issueFocusUrl, setIssueFocusUrl] = useState<string | undefined>();
-  const [coverageRows, setCoverageRows] = useState<CoverageRow[]>([]);
+  /*
+   * null until the index tab has been opened once: the query lives inside
+   * that tab, so before then the count is unknown, not zero. The tab label
+   * says nothing rather than claiming "(0)" for a table nobody has loaded.
+   */
+  const [coverageRows, setCoverageRows] = useState<CoverageRow[] | null>(null);
   /*
    * The export has to follow the focus chip, the same way the pages and
    * performance exports follow their filters. Without this, focusing one
@@ -167,7 +172,7 @@ export function ResultsView({
           <ResultsHeader
             issueCount={issuePageCount}
             issueRowCount={scopedIssues.length}
-            coverageCount={coverageRows.length}
+            coverageCount={coverageRows === null ? null : coverageRows.length}
             pageCount={filteredPages.length}
             lighthouseCount={filteredLighthouse.length}
             hasPerformanceTab={hasPerformanceTab}
@@ -175,7 +180,7 @@ export function ResultsView({
             onTabChange={onTabChange}
             onExport={(format) => {
               if (activeTab === "index") {
-                exportIndexCoverage(coverageRows, format);
+                exportIndexCoverage(coverageRows ?? [], format);
                 return;
               }
               if (activeTab === "performance") {
@@ -323,8 +328,8 @@ function ResultsHeader({
   issueCount: number;
   /** Issue records — what an issues export actually writes. */
   issueRowCount: number;
-  /** Rows Google has answered about, which is what the index export writes. */
-  coverageCount: number;
+  /** Rows Google has answered about, or null before that tab has loaded. */
+  coverageCount: number | null;
   pageCount: number;
   lighthouseCount: number;
   hasPerformanceTab: boolean;
@@ -335,7 +340,13 @@ function ResultsHeader({
   const tabs: Array<{ tab: ResultsTab; label: string }> = [
     { tab: "issues", label: `Sorunlar (${formatCount(issueCount)})` },
     { tab: "pages", label: `Sayfalar (${formatCount(pageCount)})` },
-    { tab: "index", label: "İndeksleme" },
+    {
+      tab: "index",
+      label:
+        coverageCount === null
+          ? "İndeksleme"
+          : `İndeksleme (${formatCount(coverageCount)})`,
+    },
     ...(hasPerformanceTab
       ? [
           {
@@ -366,7 +377,7 @@ function ResultsHeader({
             : activeTab === "issues"
               ? issueRowCount
               : activeTab === "index"
-                ? coverageCount
+                ? (coverageCount ?? 0)
                 : pageCount
         }
       />

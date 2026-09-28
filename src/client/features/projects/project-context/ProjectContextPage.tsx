@@ -14,7 +14,7 @@ import { CompetitorsSection } from "./CompetitorsSection";
 import { KeyPagesSection } from "./KeyPagesSection";
 import {
   ConfirmDeleteButton,
-  EmptyState,
+  EmptyListNote,
   FormActions,
   listClass,
   Provenance,
@@ -168,11 +168,11 @@ function ProseSections({
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       {missingSections.length === PROJECT_CONTEXT_SECTION_KEYS.length ? (
-        <EmptyState>
+        <EmptyListNote>
           Henüz hiçbir şey yazılmamış. Elinizden geldiğince doldurun, ya da
           bağladığınız ajandan sitenizden bir taslak çıkarmasını isteyip
           doğruluğunu onaylayın.
-        </EmptyState>
+        </EmptyListNote>
       ) : null}
 
       {PROJECT_CONTEXT_SECTION_KEYS.map((key) => {
@@ -249,10 +249,10 @@ function CustomSections({
       />
 
       {customSections.length === 0 ? (
-        <EmptyState>
+        <EmptyListNote>
           Burada henüz bir şey yok. Ajanlar başka yere sığmayan önemli bir şey
           öğrendiklerinde buraya bir bölüm ekler.
-        </EmptyState>
+        </EmptyListNote>
       ) : (
         <div className="space-y-3">
           {customSections.map((custom) =>
@@ -377,10 +377,10 @@ function ResearchLog({
       />
 
       {researchLog.length === 0 ? (
-        <EmptyState>
+        <EmptyListNote>
           Henüz kayıt yok. Bağladığınız ajan bir araştırma yaptıkça buraya
           yazar.
-        </EmptyState>
+        </EmptyListNote>
       ) : (
         <ul className={listClass}>
           {researchLog.map((entry) => (

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { CheckCircle2, ChevronRight } from "lucide-react";
+import { CheckCircle2, ChevronRight, SearchX } from "lucide-react";
 import * as React from "react";
 import { EmptyState } from "@/client/components/EmptyState";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
@@ -69,13 +69,27 @@ export function CannibalizationTable({
   const data = report.data;
   if (!data || data.rows.length === 0) {
     return (
+      /*
+       * A pass verdict needs something to have been examined.
+       *
+       * At zero analysed queries this rendered a green check and "none of
+       * the 0 queries examined have pages competing" -- a clean bill of
+       * health for an analysis that looked at nothing, which is exactly
+       * what a property Search Console returns no rows for produces.
+       */
       <EmptyState
-        icon={CheckCircle2}
-        title="Çakışma bulunamadı"
+        icon={(data?.queriesAnalyzed ?? 0) === 0 ? SearchX : CheckCircle2}
+        title={
+          (data?.queriesAnalyzed ?? 0) === 0
+            ? "Çakışma araması yapılamadı"
+            : "Çakışma bulunamadı"
+        }
         description={
-          data?.truncated
-            ? `İncelenen ${formatNumber(data.queriesAnalyzed)} sorguda çakışma yok. Ancak Search Console satır sınırına takıldık, yani bakamadığımız sorgular kaldı.`
-            : `İncelenen ${formatNumber(data?.queriesAnalyzed ?? 0)} sorgunun hiçbirinde iki sayfanız birbiriyle yarışmıyor.`
+          (data?.queriesAnalyzed ?? 0) === 0
+            ? "Search Console bu dönem için sorgu döndürmedi, bu yüzden karşılaştırılacak bir şey yoktu. Daha geniş bir tarih aralığı deneyin."
+            : data?.truncated
+              ? `İncelenen ${formatNumber(data.queriesAnalyzed)} sorguda çakışma yok. Ancak Search Console satır sınırına takıldık, yani bakamadığımız sorgular kaldı.`
+              : `İncelenen ${formatNumber(data.queriesAnalyzed)} sorgunun hiçbirinde iki sayfanız birbiriyle yarışmıyor.`
         }
       />
     );

@@ -290,6 +290,10 @@ function ProgressCard({
             ? "Tamamlanıyor"
             : (status.currentPhase ?? "Çalışıyor");
   const progress = isLighthousePhase ? lighthouseProgress : crawlProgress;
+  /** Discovery has not produced a denominator yet. */
+  const hasTotal = isLighthousePhase
+    ? status.lighthouseTotal > 0
+    : status.pagesTotal > 0;
 
   const crawlProgressQuery = useQuery({
     queryKey: ["audit-crawl-progress", projectId, auditId],
@@ -313,14 +317,27 @@ function ProgressCard({
             <span className="badge badge-ghost badge-sm">{phaseLabel}</span>
           </div>
 
+          {/* Indeterminate until there is a total to be a fraction of.
+              During discovery `pagesTotal` is 0, so a determinate bar sat
+              at zero and the line read "0 / 0 sayfa · %0" for exactly the
+              phase where the operator is least sure anything is happening.
+              A `<progress>` with no `value` animates instead. */}
           <progress
             className="progress progress-primary w-full"
-            value={progress}
-            max={1}
+            aria-label="Denetim ilerlemesi"
+            {...(hasTotal ? { value: progress, max: 1 } : {})}
           />
 
-          <div className="flex items-center justify-between text-sm">
-            {isLighthousePhase ? (
+          {/* One polite region for the whole run: a screen reader got
+              nothing at all for a crawl that takes minutes. */}
+          <div
+            className="flex items-center justify-between text-sm"
+            role="status"
+            aria-live="polite"
+          >
+            {!hasTotal ? (
+              <span>Adresler bulunuyor…</span>
+            ) : isLighthousePhase ? (
               <span>
                 {formatCount(lighthouseDone)} /{" "}
                 {formatCount(status.lighthouseTotal)} kontrol
@@ -334,7 +351,9 @@ function ProgressCard({
                 {formatCount(status.pagesTotal)} sayfa
               </span>
             )}
-            <span className="text-muted">{formatPercent(progress, 0)}</span>
+            {hasTotal ? (
+              <span className="text-muted">{formatPercent(progress, 0)}</span>
+            ) : null}
           </div>
         </div>
       </div>

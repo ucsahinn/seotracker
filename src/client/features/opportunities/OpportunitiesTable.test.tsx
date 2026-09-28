@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { OpportunitiesTable } from "./OpportunitiesPage";
+import { OpportunitiesTable } from "./OpportunitiesTable";
 
 /*
  * `Link` needs a router, and this suite is about what the table lets you do

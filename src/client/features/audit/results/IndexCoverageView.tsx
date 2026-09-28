@@ -50,7 +50,11 @@ export function IndexCoverageView({
    */
   const rows = coverage.data?.rows;
   useEffect(() => {
-    onRowsChange?.(rows ?? []);
+    // Only once they exist. Reporting `[]` while the query is still in
+    // flight made the tab label upstairs read "(0)" for a moment, and an
+    // export clicked in that moment wrote an empty file.
+    if (!rows) return;
+    onRowsChange?.(rows);
   }, [onRowsChange, rows]);
 
   const refresh = useMutation({
@@ -266,7 +270,7 @@ function CoverageTable({
                   <td className="max-w-xs">
                     {mismatch ? (
                       <span
-                        className="block truncate text-warning"
+                        className="block truncate text-[var(--ink-warning)]"
                         title={row.googleCanonical ?? undefined}
                       >
                         {pathOf(row.googleCanonical ?? "")}

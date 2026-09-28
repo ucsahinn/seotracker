@@ -37,7 +37,14 @@ export function HelpTip({
         aria-label={`${label} — nasıl yapılır`}
         aria-describedby={tooltip.isOpen ? tooltip.tooltipId : undefined}
         aria-expanded={tooltip.isOpen}
-        className="inline-flex size-4 shrink-0 items-center justify-center rounded-full text-subtle transition-colors hover:text-base-content focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        /*
+         * 24px, not 16. WCAG 2.2 SC 2.5.8 sets the minimum target at 24
+         * CSS px, and the spacing exception does not apply here: these sit
+         * inline against a label and, on the project form, immediately
+         * beside a focusable input. The negative margin keeps the 14px
+         * glyph and the surrounding layout unchanged.
+         */
+        className="-m-1 inline-flex size-6 shrink-0 items-center justify-center rounded-full text-subtle transition-colors hover:text-base-content focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         onMouseEnter={tooltip.scheduleOpen}
         onMouseLeave={tooltip.close}
         onFocus={tooltip.open}

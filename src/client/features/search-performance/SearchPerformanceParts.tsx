@@ -19,7 +19,12 @@ import {
   type Report,
   type SearchPerformanceTableRow,
 } from "@/client/features/search-performance/SearchPerformanceColumns";
-import { formatCount, formatDecimal, formatPercent } from "@/client/lib/format";
+import {
+  formatCount,
+  formatDate,
+  formatDecimal,
+  formatPercent,
+} from "@/client/lib/format";
 import { describeTotals } from "@/client/features/search-performance/totals";
 import {
   buildCsv,
@@ -131,7 +136,7 @@ function positionDelta(current: number, previous: number): Delta {
 
 export function TotalsCards({ report }: { report: Report }) {
   const { totals, prevTotals, range } = report;
-  const deltaTitle = `${range.prevStartDate} - ${range.prevEndDate} dönemine göre`;
+  const deltaTitle = `${formatDate(range.prevStartDate)} - ${formatDate(range.prevEndDate)} dönemine göre`;
   const shown = describeTotals(totals);
   // Nothing to compare against when the period itself is empty, and a delta
   // beside a dash is noise.
@@ -352,7 +357,7 @@ export function StrikingDistanceTable({
       />
       <TableBulkActionBar
         selectedCount={selectedQueries.length}
-        selectedLabel={selectedQueries.length === 1 ? "query" : "queries"}
+        selectedLabel="kelime"
         onClear={() => setRowSelection({})}
         actions={
           <div className="flex items-center gap-1 px-1.5">

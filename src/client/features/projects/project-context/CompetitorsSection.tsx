@@ -3,7 +3,7 @@ import { Pencil, Plus } from "lucide-react";
 import type { ProjectContextUpdate } from "@/types/schemas/projectContext";
 import {
   ConfirmDeleteButton,
-  EmptyState,
+  EmptyListNote,
   FormActions,
   listClass,
   Provenance,
@@ -80,10 +80,10 @@ export function CompetitorsSection({
 
       {competitors.length === 0 ? (
         adding ? null : (
-          <EmptyState>
+          <EmptyListNote>
             Henüz rakip yok. Rekabet ettiğiniz siteleri ekleyin, ya da
             bağladığınız ajandan bunları bulup buraya kaydetmesini isteyin.
-          </EmptyState>
+          </EmptyListNote>
         )
       ) : (
         <ul className={listClass}>

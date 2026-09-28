@@ -65,7 +65,7 @@ export function StatsStrip({
       label: "Sorunlu sayfa",
       value: formatCount(issuePageCount),
       tab: "issues" as const,
-      valueClass: issuePageCount === 0 ? "text-success" : "",
+      valueClass: issuePageCount === 0 ? "text-[var(--ink-success)]" : "",
       sub: issues.length > 0 && (
         <span className="flex items-center gap-2.5">
           <SeverityCount
@@ -125,7 +125,9 @@ export function StatsStrip({
         value: formatCount(lighthouseSummary.failed),
         tab: "performance" as const,
         valueClass:
-          lighthouseSummary.failed > 0 ? "text-error" : "text-success",
+          lighthouseSummary.failed > 0
+            ? "text-[var(--ink-error)]"
+            : "text-[var(--ink-success)]",
       },
     );
   }
@@ -202,7 +204,7 @@ function SeverityCount({
 
 function scoreClass(score: number | null) {
   if (score == null) return "";
-  if (score >= 90) return "text-success";
-  if (score >= 50) return "text-warning";
-  return "text-error";
+  if (score >= 90) return "text-[var(--ink-success)]";
+  if (score >= 50) return "text-[var(--ink-warning)]";
+  return "text-[var(--ink-error)]";
 }

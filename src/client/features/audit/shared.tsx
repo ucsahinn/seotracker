@@ -61,6 +61,10 @@ export function LighthouseScoreBadge({ score }: { score: number | null }) {
     return <span className="text-xs text-muted">-</span>;
   }
   const color =
-    score >= 90 ? "text-success" : score >= 50 ? "text-warning" : "text-error";
+    score >= 90
+      ? "text-[var(--ink-success)]"
+      : score >= 50
+        ? "text-[var(--ink-warning)]"
+        : "text-[var(--ink-error)]";
   return <span className={`font-medium text-sm ${color}`}>{score}</span>;
 }

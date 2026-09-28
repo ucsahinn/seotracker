@@ -1,5 +1,6 @@
 import { ChevronRight } from "lucide-react";
 import * as React from "react";
+import { formatDate } from "@/client/lib/format";
 import { SettingsHeading } from "@/client/components/HelpTip";
 import {
   CHANGELOG_ENTRIES,
@@ -82,7 +83,7 @@ function ReleaseNotes({
         />
         <span className="font-medium tabular-nums">v{entry.version}</span>
         {entry.date ? (
-          <span className="text-xs text-muted">{entry.date}</span>
+          <span className="text-xs text-muted">{formatDate(entry.date)}</span>
         ) : null}
         {isRunning ? (
           <span className="rounded-full border border-base-300 px-2 py-0.5 text-[11px] text-muted">

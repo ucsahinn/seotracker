@@ -36,6 +36,9 @@ export function LaunchFormCard({
                   className={`input input-bordered w-full lg:col-span-9 ${urlError ? "input-error" : ""}`}
                 >
                   <input
+                    // A placeholder is not a label: it disappears on the
+                    // first keystroke and is never announced as a name.
+                    aria-label="Taranacak site adresi"
                     placeholder="https://example.com"
                     value={field.state.value}
                     onChange={(event) => {
@@ -91,15 +94,20 @@ function LaunchOptions({
 }: Props) {
   return (
     <div className="rounded-box border border-base-300 bg-base-200/20 p-3 space-y-2">
-      <label className="text-xs font-medium uppercase tracking-wide text-muted">
+      {/* Not a <label>: it wraps nothing and carries no htmlFor, so it
+          named no control. The field below gets its own name. */}
+      <p className="text-xs font-medium uppercase tracking-wide text-muted">
         Tarama sınırı
-      </label>
+      </p>
       <div className="flex items-center gap-2">
-        <span className="text-sm text-muted">En çok sayfa</span>
+        <span className="text-sm text-muted" aria-hidden>
+          En çok sayfa
+        </span>
         <launchForm.Field name="maxPagesInput">
           {(field) => (
             <input
               type="number"
+              aria-label="En çok taranacak sayfa sayısı"
               min={MIN_PAGES}
               max={maxPagesLimit}
               className="input input-bordered input-sm w-28"
@@ -172,7 +180,7 @@ function LaunchErrors({ launchForm }: Pick<Props, "launchForm">) {
           const urlError = getFieldError(field.state.meta.errors);
 
           return urlError ? (
-            <p className="text-sm text-error">{urlError}</p>
+            <p className="text-sm text-[var(--ink-error)]">{urlError}</p>
           ) : null;
         }}
       </launchForm.Field>
