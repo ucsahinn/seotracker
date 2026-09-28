@@ -44,13 +44,23 @@ export function TablePagination({
   return (
     <div className="flex flex-col gap-3 border-t border-base-300 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
       <div className="flex items-center gap-2 text-sm text-muted tabular-nums">
-        <span>{formatRange(page, pageSize, totalCount)}</span>
+        {/* `1–50 / 120` is one value. Left to wrap it broke onto four lines
+            in the narrow column it gets at tablet width. */}
+        <span className="whitespace-nowrap">
+          {formatRange(page, pageSize, totalCount)}
+        </span>
         {isLoading ? (
           <span className="loading loading-spinner loading-xs" />
         ) : null}
       </div>
 
-      <div className="flex items-center gap-6">
+      {/*
+       * Wraps. The page-size selector and the page controls together are
+       * wider than a phone, and the card around this has `overflow-hidden`
+       * -- so instead of scrolling to the next-page button, there was no
+       * way to reach it at all. A pager you cannot press is not a pager.
+       */}
+      <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
         <label className="flex items-center gap-2 text-sm text-muted">
           <span className="whitespace-nowrap">Sayfa başına satır</span>
           <select

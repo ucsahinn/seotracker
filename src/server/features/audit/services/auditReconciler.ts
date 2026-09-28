@@ -47,8 +47,39 @@ type RunningAudit = {
  */
 export async function reconcileRunningAudit(
   audit: RunningAudit,
+  options?: { instanceCannotBeRunning?: boolean },
 ): Promise<AuditErrorInfo | null> {
   if (!audit.workflowInstanceId) return null;
+
+  /*
+   * A row left "running" by a process that no longer exists.
+   *
+   * This fork runs as one container against one database -- Docker and
+   * miniflare, as `wrangler.jsonc` says outright. Nothing else can advance
+   * an audit, so an audit still marked running when this process starts
+   * was abandoned by the previous one: restart the container mid-crawl and
+   * nothing is executing that workflow any more.
+   *
+   * The instance record survives the restart and keeps reporting
+   * "running", so the status check below never fires and the row stayed
+   * "Sürüyor" forever -- past the crawl, past the day, past every later
+   * audit. Failing it is the truthful answer, and `failAudit` keeps the
+   * pages already crawled, which are persisted per batch.
+   */
+  if (
+    options?.instanceCannotBeRunning &&
+    isOlderThan(audit.startedAt, INSTANCE_LOST_GRACE_MS)
+  ) {
+    const abandoned: AuditErrorInfo = {
+      errorCode: "instance_lost",
+      errorDetail: "Interrupted: the process running this audit restarted",
+    };
+    await AuditRepository.failAudit(audit.id, audit.workflowInstanceId, {
+      ...abandoned,
+      failedPhase: audit.currentPhase,
+    });
+    return abandoned;
+  }
 
   let errorInfo: AuditErrorInfo | null = null;
   try {
@@ -92,13 +123,24 @@ export async function reconcileRunningAudit(
 }
 
 /** Cron watchdog: sweep stale running audits and reconcile each. */
+/*
+ * Whether this process has swept yet. The first sweep after boot is the one
+ * that can say "nothing here is running", because everything it finds was
+ * started by a process that has since gone.
+ */
+let sweptSinceBoot = false;
+
 export async function reconcileStaleAudits() {
   const cutoff = new Date(Date.now() - STALE_RUNNING_AFTER_MS);
   const stale = await getStaleRunningAudits(cutoff, WATCHDOG_BATCH_LIMIT);
+  const firstSweep = !sweptSinceBoot;
+  sweptSinceBoot = true;
 
   for (const audit of stale) {
     try {
-      const errorInfo = await reconcileRunningAudit(audit);
+      const errorInfo = await reconcileRunningAudit(audit, {
+        instanceCannotBeRunning: firstSweep,
+      });
       if (!errorInfo) continue;
 
       console.log(
