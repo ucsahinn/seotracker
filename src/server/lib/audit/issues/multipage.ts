@@ -15,6 +15,7 @@ import {
   findCanonicalTargetProblems,
   findDuplicates,
   findHreflangReturnTagProblems,
+  findMissingStructuredData,
   findRedirectChainsAndLoops,
   type SlimPage,
 } from "@/server/lib/audit/issues/multipage-checks";
@@ -46,6 +47,8 @@ function parseHreflangAlternates(json: string | null): HreflangAlternate[] {
 export async function runMultipageChecks(input: {
   auditId: string;
   projectId: string;
+  /** For findings about the crawl as a whole rather than about one page. */
+  startUrl: string;
 }): Promise<DetectedIssue[]> {
   const rows = await db
     .select({
@@ -64,6 +67,7 @@ export async function runMultipageChecks(input: {
       robotsMeta: auditPages.robotsMeta,
       xRobotsTag: auditPages.xRobotsTag,
       hreflangTagsJson: auditPages.hreflangTagsJson,
+      hasStructuredData: auditPages.hasStructuredData,
     })
     .from(auditPages)
     .where(eq(auditPages.auditId, input.auditId));
@@ -78,6 +82,7 @@ export async function runMultipageChecks(input: {
     ...findRedirectChainsAndLoops(pages),
     ...findCanonicalTargetProblems(pages),
     ...findHreflangReturnTagProblems(pages),
+    ...findMissingStructuredData(pages, input.startUrl),
     /*
      * Google's own verdicts, read from the inspection cache these rows can
      * be joined to. Free: nothing is called, so it spends none of the

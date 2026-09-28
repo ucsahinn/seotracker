@@ -562,6 +562,7 @@ async function main() {
     "google-discovered-not-indexed",
     "google-duplicate-no-canonical",
     "google-url-unknown",
+    "google-rich-results-invalid",
     "stale-google-verdicts",
   ];
   /*
@@ -576,10 +577,18 @@ async function main() {
     "cwv-inp-poor",
     "lighthouse-seo-low",
   ];
+  /*
+   * Statements about the crawl as a whole, carrying `pageId: null` and the
+   * start URL. The fixture model asserts per page, so there is no page for
+   * one of these to be expected on -- the same reason the sitemap and
+   * robots findings above are listed.
+   */
+  const SITE_LEVEL: IssueId[] = ["structured-data-missing-site"];
   const OUT_OF_REACH = [
     ...WORKFLOW_ONLY,
     ...NEEDS_SEARCH_CONSOLE,
     ...NEEDS_PAGESPEED,
+    ...SITE_LEVEL,
   ];
   const exercised = new Set(allFixtures.flatMap((f) => f.expectedIssues));
   const allTypes = (Object.keys(AUDIT_ISSUE_TYPES) as IssueId[]).filter(
@@ -595,7 +604,8 @@ async function main() {
         `\n${OUT_OF_REACH.length} types are out of this harness's reach: ` +
         `${WORKFLOW_ONLY.length} raised by the workflow rather than the pure checks it runs, ` +
         `${NEEDS_SEARCH_CONSOLE.length} read from a connected Search Console, ` +
-        `${NEEDS_PAGESPEED.length} from a PageSpeed measurement of a public URL.`,
+        `${NEEDS_PAGESPEED.length} from a PageSpeed measurement of a public URL, ` +
+        `${SITE_LEVEL.length} describing the crawl rather than a page.`,
     ),
   );
 

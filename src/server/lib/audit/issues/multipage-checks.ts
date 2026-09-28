@@ -34,6 +34,8 @@ export interface SlimPage {
    */
   robotsMeta: string | null;
   xRobotsTag: string | null;
+  /** Whether the page carries any schema.org JSON-LD block. */
+  hasStructuredData: boolean;
   hreflangAlternates: HreflangAlternate[];
 }
 
@@ -342,4 +344,40 @@ export function findRedirectChainsAndLoops(pages: SlimPage[]): DetectedIssue[] {
   }
 
   return issues;
+}
+
+/**
+ * One finding when the whole site carries no schema.org markup.
+ *
+ * Per page this would be noise on every crawl: structured data is not
+ * required, and most pages have nothing worth marking up. Across a site it
+ * is a different statement -- nobody has set any of it up -- and that is a
+ * decision someone can actually take.
+ *
+ * `has_structured_data` has been written by every crawl since the analyzer
+ * was built and read by nothing.
+ */
+export function findMissingStructuredData(
+  pages: SlimPage[],
+  startUrl: string,
+): DetectedIssue[] {
+  const html = pages.filter(isOkHtmlPage);
+  // Under a handful of pages this says more about the crawl than the site.
+  if (html.length < 5) return [];
+  if (html.some((page) => page.hasStructuredData)) return [];
+
+  /*
+   * Site-level shape -- `pageId: null` and the start URL -- the same as the
+   * robots and sitemap findings. Pinning a statement about the whole site
+   * to whichever page happened to be crawled first would make a reader ask
+   * what is wrong with that page.
+   */
+  return [
+    {
+      issueType: "structured-data-missing-site",
+      pageId: null,
+      pageUrl: startUrl,
+      details: { pagesChecked: html.length },
+    },
+  ];
 }

@@ -45,7 +45,8 @@ export async function findGoogleVerdictProblems(input: {
       | "google-crawled-not-indexed"
       | "google-discovered-not-indexed"
       | "google-duplicate-no-canonical"
-      | "google-url-unknown",
+      | "google-url-unknown"
+      | "google-rich-results-invalid",
     at: { pageId: string; pageUrl: string },
     details: Record<string, unknown>,
   ) => issues.push({ ...at, issueType, details });
@@ -58,6 +59,7 @@ export async function findGoogleVerdictProblems(input: {
         pageFetchState: gscUrlInspections.pageFetchState,
         indexingState: gscUrlInspections.indexingState,
         coverageState: gscUrlInspections.coverageState,
+        richResultsVerdict: gscUrlInspections.richResultsVerdict,
         robotsTxtState: gscUrlInspections.robotsTxtState,
         googleCanonical: gscUrlInspections.googleCanonical,
         userCanonical: gscUrlInspections.userCanonical,
@@ -180,6 +182,23 @@ export async function findGoogleVerdictProblems(input: {
        * the enums, and reporting both would file two findings for one
        * fact.
        */
+      /*
+       * Google's own verdict on the page's schema.org markup. A crawler can
+       * see that markup exists -- `has_structured_data` does -- but not
+       * whether it is valid, so this is the only source for it. PARTIAL
+       * counts: it means some items were rejected, and the operator's
+       * question is the same either way.
+       */
+      if (
+        row.richResultsVerdict === "FAIL" ||
+        row.richResultsVerdict === "PARTIAL"
+      ) {
+        push("google-rich-results-invalid", at, {
+          ...details,
+          verdict: row.richResultsVerdict,
+        });
+      }
+
       const coverage = classifyCoverageState(row.coverageState);
       if (coverage === "crawled-not-indexed") {
         verdict("google-crawled-not-indexed");

@@ -194,4 +194,20 @@ export const INDEXING_ISSUES = {
     howToFix:
       "Adresi site haritasına ekleyin ve site haritasını Search Console'a gönderin. Ayrıca sitenin taranan sayfalarından bu sayfaya bağlantı verin; Google sayfaları bağlantı takip ederek bulur.",
   },
+  "google-rich-results-invalid": {
+    severity: "warning",
+    title: "Google yapısal veride hata buldu",
+    explanation:
+      "Sayfadaki yapısal veri (schema.org işaretlemesi) Google'ın zengin sonuç denetiminden geçemedi. Zengin sonuç, arama sonucunda yıldız, SSS açılırı, fiyat gibi ek alanların çıkmasıdır; hatalı işaretleme bunları kapatır. Bu karar Google'ın kendisinden geliyor: yerel bir tarayıcı işaretlemenin geçerli olup olmadığını söyleyemez, yalnızca var olup olmadığını görebilir.",
+    howToFix:
+      "Adresi Google'ın Zengin Sonuç Testi'nde açın; hangi alanın eksik ya da yanlış türde olduğunu adıyla söyler. Genelde zorunlu bir alanın boş bırakılması ya da sayfada görünmeyen bir şeyin işaretlenmesi olur.",
+  },
+  "structured-data-missing-site": {
+    severity: "info",
+    title: "Sitede hiç yapısal veri yok",
+    explanation:
+      "Taranan hiçbir sayfada schema.org işaretlemesi bulunamadı. Yapısal veri bir sıralama sinyali değildir; arama sonucunda ek alanların (SSS, ürün, nasıl yapılır, kırıntı yolu) çıkmasını mümkün kılar. Bu alanlar sonuçta kapladığınız yeri ve tıklanma oranını değiştirir.",
+    howToFix:
+      "Sayfa türüne uyan şemayla başlayın: dokümantasyon için Article ve BreadcrumbList, SSS sayfası için FAQPage, ürün sayfası için Product. İşaretlemenin sayfada gerçekten görünen içeriği anlatması şart; görünmeyeni işaretlemek Google'ın kurallarını ihlal eder.",
+  },
 } as const satisfies Record<string, AuditIssueDescriptor>;

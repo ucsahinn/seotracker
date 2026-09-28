@@ -9,6 +9,7 @@ import {
   findCanonicalTargetProblems,
   findDuplicates,
   findHreflangReturnTagProblems,
+  findMissingStructuredData,
   findRedirectChainsAndLoops,
   type SlimPage,
 } from "@/server/lib/audit/issues/multipage-checks";
@@ -27,6 +28,7 @@ function makeSlimPage(overrides: Partial<SlimPage>): SlimPage {
     redirectUrl: null,
     wordCount: 100,
     isIndexable: true,
+    hasStructuredData: false,
     canonicalUrl: null,
     headerCanonicalUrl: null,
     robotsMeta: null,
@@ -316,5 +318,45 @@ describe("findHreflangReturnTagProblems", () => {
       "https://example.com/b",
       "https://example.com/c",
     ]);
+  });
+});
+
+const START = "https://example.com/";
+
+describe("findMissingStructuredData", () => {
+  const site = (count: number, overrides: Partial<SlimPage> = {}) =>
+    Array.from({ length: count }, (_, index) =>
+      makeSlimPage({ url: `https://example.com/${index}`, ...overrides }),
+    );
+
+  it("raises one finding when no page on the site has any", () => {
+    const issues = findMissingStructuredData(site(6), START);
+
+    expect(issues).toHaveLength(1);
+    expect(issues[0].issueType).toBe("structured-data-missing-site");
+    // Site-level shape: a statement about the crawl, not about a page.
+    expect(issues[0].pageId).toBeNull();
+    expect(issues[0].pageUrl).toBe(START);
+  });
+
+  it("says nothing when even one page has it", () => {
+    const pages = site(6);
+    pages[3].hasStructuredData = true;
+
+    expect(findMissingStructuredData(pages, START)).toEqual([]);
+  });
+
+  /*
+   * On a tiny crawl the absence says more about how far the crawler got
+   * than about how the site is built.
+   */
+  it("stays quiet on a crawl too small to generalise from", () => {
+    expect(findMissingStructuredData(site(4), START)).toEqual([]);
+  });
+
+  it("ignores pages that are not crawled HTML", () => {
+    expect(
+      findMissingStructuredData(site(6, { fetchClass: "blocked" }), START),
+    ).toEqual([]);
   });
 });
