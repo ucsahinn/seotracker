@@ -62,9 +62,7 @@ export type ReportMetadata = {
    * builds the link from it (`<origin>/s/<token>`) rather than storing a URL,
    * so the same row works on the hosted domain and a self-hosted one.
    */
-  shareToken: string | null;
   /** When the current share token was minted, or null when not shared. */
-  sharedAt: string | null;
   createdAt: string;
   updatedAt: string;
 };

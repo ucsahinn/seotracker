@@ -133,7 +133,11 @@ export function PerformanceTable({
         table={table}
         className="table table-sm"
         empty={
-          <EmptyTableMessage label="Bu filtrelerle eşleşen performans sonucu yok." />
+          <EmptyTableMessage
+            label="Bu denetimde Lighthouse sonucu yok."
+            filteredLabel="Bu filtrelerle eşleşen performans sonucu yok."
+            hasActiveFilter={activeFilterCount > 0}
+          />
         }
       />
     </div>

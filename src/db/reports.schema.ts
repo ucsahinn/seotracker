@@ -1,10 +1,4 @@
-import {
-  index,
-  integer,
-  sqliteTable,
-  text,
-  uniqueIndex,
-} from "drizzle-orm/sqlite-core";
+import { index, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { sql } from "drizzle-orm";
 import { projects } from "./app.schema";
 
@@ -46,14 +40,6 @@ export const reports = sqliteTable(
     // UTF-8 byte length of `html`, so readers can detect a truncated read
     // without loading the document.
     sizeBytes: integer("size_bytes").notNull(),
-    // Public share link. Null means not shared: the capability IS the token, so
-    // nulling it is what revokes the link. 192 bits of base64url, stored in
-    // plaintext — it is an unguessable URL, not a credential to compare against
-    // a user, and the raw endpoint has to look a row up by it.
-    shareToken: text("share_token"),
-    // When the current token was minted. Re-sharing mints a new token and a new
-    // stamp; content saves never touch either column.
-    sharedAt: text("shared_at"),
     // Timestamps are text on both dialects and stamped by the repository. The
     // default emits ISO (unlike current_timestamp's space format) because the
     // list order is lexicographic against app-written ISO stamps.
@@ -77,9 +63,5 @@ export const reports = sqliteTable(
       table.id,
       table.sizeBytes,
     ),
-    // The public read path: one lookup by token, with no project id to scope
-    // it. Unique so a mint collision fails loudly instead of pointing one link
-    // at two reports; nulls do not collide on either dialect.
-    uniqueIndex("reports_share_token_idx").on(table.shareToken),
   ],
 );

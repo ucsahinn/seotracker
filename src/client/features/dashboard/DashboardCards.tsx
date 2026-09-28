@@ -9,6 +9,7 @@ import {
   moreDetailsClass,
 } from "@/client/features/dashboard/cardParts";
 import { formatCount } from "@/client/lib/format";
+import { extractPathname } from "@/client/features/audit/shared";
 import { SEVERITY_LABEL } from "@/client/features/audit/results/IssuesView";
 import type { DashboardAuditSummary } from "@/server/features/dashboard/services/DashboardService";
 
@@ -144,6 +145,8 @@ export function AuditHealthCard({
               </Link>
             </li>
           ))}
+          {/* Severity across every finding, not just the three above. The
+              overflow line used to hide whether the rest held criticals. */}
           {audit.totalIssueTypes > audit.topIssues.length ? (
             <li>
               <Link
@@ -157,8 +160,60 @@ export function AuditHealthCard({
               </Link>
             </li>
           ) : null}
+          {/* Severity across every finding, not only the three listed. The
+              overflow line above hid whether the rest held criticals, so a
+              card could read calm with the worst of it one line down. */}
+          <li className="flex gap-2.5 pt-1 text-xs text-muted">
+            {(
+              [
+                ["critical", "kritik", "bg-error"],
+                ["warning", "uyarı", "bg-warning"],
+                ["info", "bilgi", "bg-base-content/30"],
+              ] as const
+            ).map(([key, label, dot]) =>
+              audit.severityTotals[key] > 0 ? (
+                <span key={key} className="flex items-center gap-1">
+                  <span
+                    className={`size-1.5 rounded-full ${dot}`}
+                    aria-hidden
+                  />
+                  {formatCount(audit.severityTotals[key])} {label}
+                </span>
+              ) : null,
+            )}
+          </li>
         </ul>
       )}
+
+      {audit.topPages.length > 0 ? (
+        <div className="mt-4 space-y-2 border-t border-base-300 pt-3">
+          {/* The card named issue types and never pages, yet opening a page
+              is always the next move. Worst severity first, then count. */}
+          <h3 className="text-xs font-semibold uppercase tracking-wider text-muted">
+            En çok sorunlu sayfalar
+          </h3>
+          <ul className="space-y-1">
+            {audit.topPages.map((page) => (
+              <li key={page.pageUrl}>
+                <Link
+                  to="/p/$projectId/audit"
+                  params={{ projectId }}
+                  search={{ auditId: audit.auditId, tab: "pages" as const }}
+                  className="flex items-center justify-between gap-2 rounded-field px-1 py-0.5 text-sm transition-colors hover:bg-base-200/60"
+                  title={page.pageUrl}
+                >
+                  <span className="min-w-0 truncate text-muted">
+                    {extractPathname(page.pageUrl)}
+                  </span>
+                  <span className="shrink-0 tabular-nums text-muted">
+                    {formatCount(page.issueCount)} sorun
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
     </CardShell>
   );
 }

@@ -3,7 +3,13 @@ import { ProjectRepository } from "@/server/features/projects/repositories/Proje
 import { sort } from "remeda";
 import { ActivationRepository } from "@/server/features/activation/repositories/ActivationRepository";
 import { AuditRepository } from "@/server/features/audit/repositories/AuditRepository";
-import { getIssueTypePageCountsForAudit } from "@/server/features/audit/repositories/auditSummaryQueries";
+import {
+  getIssueTypePageCountsForAudit,
+  getTopAffectedPagesForAudit,
+} from "@/server/features/audit/repositories/auditSummaryQueries";
+
+/** Enough to act on without turning the card into a table. */
+const TOP_PAGES = 5;
 import { Ga4ConnectionRepository } from "@/server/features/ga4/repositories/Ga4ConnectionRepository";
 import { GscConnectionRepository } from "@/server/features/gsc/repositories/GscConnectionRepository";
 import { ProjectContextRepository } from "@/server/features/project-context/repositories/ProjectContextRepository";
@@ -52,6 +58,20 @@ export type DashboardAuditSummary = {
     count: number;
   }[];
   totalIssueTypes: number;
+  /**
+   * Severity totals across every finding, not only the three shown.
+   *
+   * "+ N sorun daha" hid whether the rest contained criticals, so the card
+   * could look calm while the worst of it was one line below the fold.
+   */
+  severityTotals: { critical: number; warning: number; info: number };
+  /**
+   * The pages with the most wrong with them.
+   *
+   * The card named issue types and never pages, and opening a page is
+   * always the operator's next move.
+   */
+  topPages: { pageUrl: string; issueCount: number }[];
 };
 
 type DashboardOverview = {
@@ -117,7 +137,10 @@ async function getAuditSummary(
   const audit = await AuditRepository.getLatestAuditForProject(projectId);
   if (!audit) return null;
 
-  const typeRows = await getIssueTypePageCountsForAudit(audit.id);
+  const [typeRows, topPages] = await Promise.all([
+    getIssueTypePageCountsForAudit(audit.id),
+    getTopAffectedPagesForAudit(audit.id, TOP_PAGES),
+  ]);
 
   const severityRank = { critical: 0, warning: 1, info: 2 };
   const sorted = sort(
@@ -130,6 +153,9 @@ async function getAuditSummary(
       severityRank[a.severity] - severityRank[b.severity] || b.count - a.count,
   );
 
+  const severityTotals = { critical: 0, warning: 0, info: 0 };
+  for (const row of sorted) severityTotals[row.severity] += row.count;
+
   return {
     auditId: audit.id,
     status: audit.status,
@@ -137,6 +163,11 @@ async function getAuditSummary(
     startedAt: audit.startedAt,
     topIssues: sorted.slice(0, 3),
     totalIssueTypes: sorted.length,
+    severityTotals,
+    topPages: topPages.map((row) => ({
+      pageUrl: row.pageUrl,
+      issueCount: row.issueCount,
+    })),
   };
 }
 

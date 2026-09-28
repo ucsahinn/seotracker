@@ -20,8 +20,6 @@ const metadataColumns = {
   createdBy: reports.createdBy,
   createdByUserId: reports.createdByUserId,
   sizeBytes: reports.sizeBytes,
-  shareToken: reports.shareToken,
-  sharedAt: reports.sharedAt,
   createdAt: reports.createdAt,
   updatedAt: reports.updatedAt,
 };

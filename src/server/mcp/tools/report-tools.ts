@@ -1,4 +1,3 @@
-import { omit } from "remeda";
 import { z } from "zod";
 import { ReportService } from "@/server/features/reports/services/ReportService";
 import { ReportTemplateService } from "@/server/features/reports/services/ReportTemplateService";
@@ -37,11 +36,6 @@ const size = (bytes: number) =>
   bytes < 1000
     ? `${formatEnglishCount(bytes)} bytes`
     : `${formatEnglishCount(Math.round(bytes / 1000))} KB`;
-
-// The public share token is a capability; only the app mints and shows it.
-// Agents get every other column.
-const forAgent = (report: ReportMetadata) =>
-  omit(report, ["shareToken", "sharedAt"]);
 
 const metaLine = (
   report: Pick<
@@ -239,7 +233,7 @@ export const listReportsTool = {
         });
 
       const rows = reports.map((report) => ({
-        ...forAgent(report),
+        ...report,
         summary: truncatePreview(report.summary),
       }));
 
@@ -353,7 +347,7 @@ export const getReportTool = {
         meta: buildProjectMeta(context, args.projectId, path),
         structuredContent: {
           report: {
-            ...forAgent(report),
+            ...report,
             htmlBytes: report.sizeBytes,
             url,
           },

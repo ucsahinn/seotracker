@@ -17,6 +17,13 @@ import {
 } from "@/shared/ga4-reports";
 
 type Channel = "organic_search" | "all";
+/** Matches the windows Search Performance offers, so the two read alike. */
+type WindowDays = 7 | 28 | 90;
+const WINDOWS: { value: WindowDays; label: string }[] = [
+  { value: 7, label: "Son 7 gün" },
+  { value: 28, label: "Son 28 gün" },
+  { value: 90, label: "Son 3 ay" },
+];
 
 const CHANNELS: { value: Channel; label: string }[] = [
   { value: "organic_search", label: "Organik arama" },
@@ -55,12 +62,21 @@ type View = Ga4ReportKindName | typeof HEALTH;
 export function AnalyticsPage({ projectId }: { projectId: string }) {
   const [view, setView] = React.useState<View>("landing_pages");
   const [channel, setChannel] = React.useState<Channel>("organic_search");
+  /*
+   * The page was pinned to 28 days with no control, while the server
+   * function had accepted a range all along -- so the one question an
+   * Analytics screen exists for, "is this better or worse than before",
+   * could not be asked.
+   */
+  const [windowDays, setWindowDays] = React.useState<WindowDays>(28);
   const kind = view === HEALTH ? "landing_pages" : view;
 
   const reportQuery = useQuery({
-    queryKey: ["ga4Report", projectId, kind, channel],
+    queryKey: ["ga4Report", projectId, kind, channel, windowDays],
     queryFn: () =>
-      getGa4Report({ data: { projectId, kind, channel, limit: 50 } }),
+      getGa4Report({
+        data: { projectId, kind, channel, windowDays, limit: 50 },
+      }),
     enabled: view !== HEALTH,
   });
   const result = reportQuery.data;
@@ -96,21 +112,40 @@ export function AnalyticsPage({ projectId }: { projectId: string }) {
             change nothing -- a control that visibly responds and has no
             effect is worse than a disabled one. */}
         {view === HEALTH ? null : (
-          <div className="join" role="radiogroup" aria-label="Kanal">
-            {CHANNELS.map((option) => (
-              <button
-                key={option.value}
-                type="button"
-                role="radio"
-                aria-checked={option.value === channel}
-                className={`btn join-item btn-sm ${
-                  option.value === channel ? "btn-active" : ""
-                }`}
-                onClick={() => setChannel(option.value)}
-              >
-                {option.label}
-              </button>
-            ))}
+          <div className="flex items-center gap-2">
+            <select
+              className="select select-bordered select-sm w-32"
+              value={windowDays}
+              onChange={(event) => {
+                const next = WINDOWS.find(
+                  (option) => String(option.value) === event.target.value,
+                );
+                if (next) setWindowDays(next.value);
+              }}
+              aria-label="Tarih aralığı"
+            >
+              {WINDOWS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+            <div className="join" role="radiogroup" aria-label="Kanal">
+              {CHANNELS.map((option) => (
+                <button
+                  key={option.value}
+                  type="button"
+                  role="radio"
+                  aria-checked={option.value === channel}
+                  className={`btn join-item btn-sm ${
+                    option.value === channel ? "btn-active" : ""
+                  }`}
+                  onClick={() => setChannel(option.value)}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
           </div>
         )}
       </div>

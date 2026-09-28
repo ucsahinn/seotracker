@@ -170,8 +170,31 @@ export function PerformanceFilterBar({
   );
 }
 
-export function EmptyTableMessage({ label }: { label: string }) {
-  return <div className="py-6 text-center text-muted">{label}</div>;
+/**
+ * An empty table means two different things and the operator can act on
+ * only one of them.
+ *
+ * This said "nothing matched your filters" unconditionally, so an audit
+ * that crawled nothing, or one with no Lighthouse rows, blamed a filter
+ * nobody had set. `DimensionTable` and the saved-keywords table already
+ * branch on this.
+ */
+export function EmptyTableMessage({
+  label,
+  filteredLabel,
+  hasActiveFilter = false,
+}: {
+  /** Shown when the table is genuinely empty. */
+  label: string;
+  /** Shown when a filter is what emptied it. */
+  filteredLabel?: string;
+  hasActiveFilter?: boolean;
+}) {
+  return (
+    <div className="py-6 text-center text-muted">
+      {hasActiveFilter && filteredLabel ? filteredLabel : label}
+    </div>
+  );
 }
 
 export function TableFilterToggle({

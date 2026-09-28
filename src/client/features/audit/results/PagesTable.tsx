@@ -345,9 +345,15 @@ export function PagesTable({
       <div className="overflow-hidden rounded-box border border-base-300">
         <AppDataTable
           table={table}
+          stickyHeader
+          wrapperClassName="max-h-[70vh] overflow-auto"
           className="table table-sm"
           empty={
-            <EmptyTableMessage label="Bu filtrelerle eşleşen sayfa yok." />
+            <EmptyTableMessage
+              label="Bu denetim hiçbir sayfa taramadı."
+              filteredLabel="Bu filtrelerle eşleşen sayfa yok."
+              hasActiveFilter={activeFilterCount > 0}
+            />
           }
         />
         {filteredPages.length > 0 ? (

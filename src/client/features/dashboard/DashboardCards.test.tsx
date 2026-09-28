@@ -23,6 +23,8 @@ const audit = (
   startedAt: "2026-09-20T10:00:00.000Z",
   topIssues: [],
   totalIssueTypes: 0,
+  severityTotals: { critical: 0, warning: 0, info: 0 },
+  topPages: [],
   ...overrides,
 });
 
@@ -98,5 +100,53 @@ describe("severity is not carried by colour alone", () => {
     expect(screen.getByText(/^Kritik:/)).toBeDefined();
     expect(screen.getByText(/^Uyarı:/)).toBeDefined();
     expect(screen.getByText(/^Bilgi:/)).toBeDefined();
+  });
+});
+
+/*
+ * The card answered "which issue types" and never "which pages", yet
+ * opening a page is always the operator's next move. And "+ N sorun daha"
+ * hid whether the rest held criticals, so a card could read calm with the
+ * worst of it one line below.
+ */
+describe("what the card points at", () => {
+  it("names the pages with the most wrong with them", () => {
+    render(
+      <AuditHealthCard
+        projectId="p1"
+        audit={audit({
+          topIssues: [
+            { issueType: "missing-title", severity: "critical", count: 1 },
+          ],
+          totalIssueTypes: 1,
+          topPages: [
+            { pageUrl: "https://example.com/worst", issueCount: 7 },
+            { pageUrl: "https://example.com/next", issueCount: 2 },
+          ],
+        })}
+      />,
+    );
+
+    expect(screen.getByText("En çok sorunlu sayfalar")).toBeDefined();
+    expect(screen.getByText("/worst")).toBeDefined();
+    expect(screen.getByText("7 sorun")).toBeDefined();
+  });
+
+  it("totals every severity, not only the ones it lists", () => {
+    render(
+      <AuditHealthCard
+        projectId="p1"
+        audit={audit({
+          topIssues: [
+            { issueType: "missing-title", severity: "warning", count: 4 },
+          ],
+          totalIssueTypes: 9,
+          severityTotals: { critical: 6, warning: 4, info: 1 },
+        })}
+      />,
+    );
+
+    // The listed issue is a warning; the criticals are in the overflow.
+    expect(screen.getByText(/6 kritik/)).toBeDefined();
   });
 });

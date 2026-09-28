@@ -11,6 +11,12 @@ const schema = z.object({
   channel: z.enum(["organic_search", "all"]).default("organic_search"),
   startDate: z.string().optional(),
   endDate: z.string().optional(),
+  /*
+   * How far back, in days. The screen picks the length and the service
+   * picks the dates, because "last complete day" is a fact about the
+   * property's timezone and not about the browser's.
+   */
+  windowDays: z.union([z.literal(7), z.literal(28), z.literal(90)]).default(28),
   limit: z.number().int().min(1).max(200).default(50),
   comparePreviousPeriod: z.boolean().default(false),
 });
@@ -39,6 +45,7 @@ export const getGa4Report = createServerFn({ method: "POST" })
         channel: data.channel,
         startDate: data.startDate,
         endDate: data.endDate,
+        windowDays: data.windowDays,
         limit: data.limit,
         comparePreviousPeriod: data.comparePreviousPeriod,
       });

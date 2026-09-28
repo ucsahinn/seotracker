@@ -28,7 +28,15 @@ export function TableBulkActionBar({
 
   return (
     <div className={wrapperClass}>
-      <div role="toolbar" aria-label="Toplu işlemler" className={toolbarClass}>
+      {/* Announced, because this bar materialises at the bottom of the
+          screen the moment a row is checked -- a keyboard user got six new
+          actions with nothing saying they had appeared. */}
+      <div
+        role="toolbar"
+        aria-label="Toplu işlemler"
+        aria-live="polite"
+        className={toolbarClass}
+      >
         <div className="flex items-center gap-2 border-r border-base-content/10 px-3 py-2 text-sm">
           <button
             type="button"
@@ -145,12 +153,20 @@ export function TableExportMenu({
 }) {
   return (
     <div className="dropdown dropdown-end">
-      <div tabIndex={0} role="button" className={buttonClassName}>
+      {/* A real button, like `TableBulkExportMenu` below. As a
+          `<div role="button">` it took a tab stop but had no key handler,
+          so daisyUI's focus-within opened it and Enter did nothing. */}
+      <button
+        type="button"
+        tabIndex={0}
+        aria-haspopup="menu"
+        className={buttonClassName}
+      >
         <Download className="size-4" />
         Dışa aktar
         <ChevronDown className="size-3 opacity-60" />
-      </div>
-      <ul tabIndex={0} className={menuClassName}>
+      </button>
+      <ul tabIndex={0} role="menu" className={menuClassName}>
         {actions.map((action, index) => (
           <li key={index}>
             <button

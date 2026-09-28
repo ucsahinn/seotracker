@@ -5,6 +5,57 @@ numaraları [SemVer](https://semver.org/lang/tr/) izler.
 
 ## [Yayınlanmamış]
 
+## [0.13.0] — 2026-09-28
+
+Geriye kalan listenin tamamı: erişilebilirlik artıkları, ölü şema yüzeyi ve
+panelin cevaplamadığı soru.
+
+### Eklenenler
+
+- **Panelde "en çok sorunlu sayfalar".** Kart hangi sorun _türlerinin_
+  bulunduğunu söylüyor, hangi _sayfayı_ açacağınızı hiç söylemiyordu —
+  oysa operatörün bir sonraki hareketi hep bir sayfa açmak. Aynı tablo,
+  ters gruplanmış: adres başına bir satır, önce en kötü önem derecesine
+  sonra sayıya göre. Gerçek veriyle doğrulandı.
+- **Önem toplamları kartta.** "+ N sorun daha" satırı, geri kalanın kritik
+  içerip içermediğini saklıyordu; kart sakin görünürken en kötüsü bir satır
+  aşağıda olabiliyordu.
+- **Analytics'e tarih aralığı** (7 / 28 gün / 3 ay). Sunucu işlevi aralığı
+  baştan beri kabul ediyordu, ekran göndermiyordu — yani bir Analytics
+  ekranının var olma sebebi olan "öncekine göre daha mı iyi" sorusu
+  sorulamıyordu. Pencere uzunluğu sunucuya gidiyor, tarihleri servis
+  seçiyor: "son tam gün" tarayıcının değil mülkün saat diliminde bir olgu.
+- **Sayfa tablosunda yapışkan başlık.** `stickyHeader` prop'u vardı, en
+  alta kadar geçiriliyordu ve yalnızca arka plan boyuyordu — 474 satırlık
+  bir tablonun elli satırlık sayfası başlıklarını kaydırıp götürüyordu.
+
+### Düzeltilenler
+
+- **Dışa aktarma tetikleyicisi `<div role="button">` idi** — sekme durağı
+  alıyor ama tuş işleyicisi olmadığı için Enter'a yanıt vermiyordu. Dört
+  fonksiyon aşağıdaki kardeşi zaten gerçek bir düğme.
+- **Toplu seçim çubuğu sessizce beliriyordu.** Klavyeyle bir satır
+  işaretleyen kullanıcıya altı yeni eylemin çıktığını söyleyen hiçbir şey
+  yoktu; artık `aria-live` taşıyor.
+- **İki tablonun boş hâli yanlış suçluyordu.** "Bu filtrelerle eşleşen
+  sayfa yok" koşulsuz yazılıyordu, yani hiç sayfa taramamış bir denetim
+  kimsenin kurmadığı bir filtreyi suçluyordu.
+
+### Kaldırılanlar
+
+- **`user_onboarding_answers` tablosu.** Barındırılan ürünün kayıt anketi:
+  hangi özellikleri istiyorsunuz, kimin için çalışıyorsunuz, kaç müşteri
+  siteniz var. Sekiz sütun ve bir indeks, ve sembol kendi tanımı dışında
+  hiçbir yerde geçmiyor. Tek kullanıcılı bir kurulumun soracağı kimse yok.
+- **`reports.share_token` / `shared_at`.** Herkese açık paylaşım bağlantısı
+  yeteneğiydi; şema yorumu nasıl çalışacağını tarif ediyor ("yetenek
+  jetonun kendisidir") ama hiçbir şey jeton üretmiyor. `/r/$reportId` raporu
+  kimliğiyle buluyor, MCP aracı ikisini çıktısından açıkça çıkarıyor.
+  Tasarlandı, göç edildi, indekslendi — sonra ait olduğu barındırılan yüzey
+  kaldırıldı (migration 0058).
+- `.claude/skills` altındaki iki beceri Windows'ta düz dosya olarak
+  kaydedilmişti, yani çözülmüyorlardı; dokuzu da sembolik bağ oldu.
+
 ## [0.12.0] — 2026-09-28
 
 Bir önceki sürümde işaret edip bıraktığım iki tablo.
@@ -588,6 +639,7 @@ depodan kaldırıldı, çünkü onlar open-seo'nun yayınlarıydı.
   Verileriniz `seotracker_data` biriminde; güncellemeden önce yedek almak
   isteyebilirsiniz.
 
+[0.13.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.13.0
 [0.12.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.12.0
 [0.11.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.11.0
 [0.10.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.10.0

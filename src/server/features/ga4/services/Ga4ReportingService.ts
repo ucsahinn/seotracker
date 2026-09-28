@@ -29,6 +29,8 @@ export type Ga4ReportInput = {
   projectId: string;
   kind: Ga4ReportKind;
   startDate?: string;
+  /** Days back from the last complete day, when explicit dates are absent. */
+  windowDays?: number;
   endDate?: string;
   limit?: number;
   offset?: number;
@@ -56,7 +58,7 @@ function parseDate(value: string): Date | null {
 }
 
 export function resolveGa4DateRange(
-  input: Pick<Ga4ReportInput, "startDate" | "endDate">,
+  input: Pick<Ga4ReportInput, "startDate" | "endDate" | "windowDays">,
   propertyTimeZone: string,
   now: Date = new Date(),
 ) {
@@ -87,7 +89,17 @@ export function resolveGa4DateRange(
     -1,
   );
   let endDate = requestedDateRange?.endDate ?? lastCompleteDay;
-  const startDate = requestedDateRange?.startDate ?? shiftGa4Date(endDate, -27);
+  /*
+   * The window length comes from the caller; the dates do not.
+   *
+   * "Last complete day" depends on the property's timezone, not the
+   * browser's, so a screen that computed its own start and end would be a
+   * day out for anyone whose property is not in their own zone. It sends
+   * how many days it wants and this decides which ones they are.
+   */
+  const windowDays = input.windowDays ?? 28;
+  const startDate =
+    requestedDateRange?.startDate ?? shiftGa4Date(endDate, -(windowDays - 1));
   const warnings: string[] = [];
   if (endDate > lastCompleteDay) {
     endDate = lastCompleteDay;

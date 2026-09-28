@@ -69,3 +69,14 @@ data, or sensitive paths.
   `-p`. Run `vite dev` directly, or the script from Git Bash. Not fixed
   because changing it means adding a cross-platform shim for a convenience
   wrapper; noted so the next person on Windows does not debug it twice.
+
+- `.claude/skills/` is a set of symlinks into `.agents/skills/`, and Windows
+  checks out symlinks as plain text files unless `core.symlinks=true` (git's
+  default on Windows is false). Two of the nine -- `seo-check-in` and
+  `seo-triage` -- had been committed that way: mode `100644`, contents the
+  literal string `../../.agents/skills/<name>`, so those two skills did not
+  resolve while the other seven did. Fixed with
+  `git update-index --cacheinfo 120000,<blob>,<path>`, which writes the
+  symlink mode without needing the filesystem to support one. Worth knowing
+  before adding a tenth: check `git ls-files -s .claude/skills` and expect
+  `120000` on every row.

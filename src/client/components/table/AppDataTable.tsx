@@ -249,7 +249,14 @@ function HeaderCell<TData>({
               : undefined
       }
       className={[
-        stickyHeader ? "bg-base-200" : undefined,
+        /*
+         * Actually sticky. The prop existed and was threaded all the way
+         * down here, but only ever painted a background -- so a fifty-row
+         * page of a 474-row table scrolled its headings away and nothing
+         * said which column was which. Needs the opaque background too,
+         * or rows show through.
+         */
+        stickyHeader ? "sticky top-0 z-10 bg-base-200" : undefined,
         meta?.headerClassName,
       ]
         .filter(Boolean)
