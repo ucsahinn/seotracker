@@ -19,7 +19,7 @@ export function PagesFilterBar({
 }) {
   return (
     <FilterPanel activeFilterCount={activeFilterCount} onReset={onReset}>
-      <div className="grid grid-cols-1 gap-3 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
         <TextFilter
           label="Ara"
           value={filters.query}
@@ -49,7 +49,7 @@ export function PagesFilterBar({
           ]}
         />
       </div>
-      <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
         <SelectFilter
           label="Dizinlenebilir"
           value={filters.indexable}
@@ -71,7 +71,7 @@ export function PagesFilterBar({
           ]}
         />
       </div>
-      <div className="grid grid-cols-1 gap-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
         <RangeFilter
           label="Tıklama derinliği"
           min={filters.minDepth}
@@ -115,7 +115,7 @@ export function PerformanceFilterBar({
 }) {
   return (
     <FilterPanel activeFilterCount={activeFilterCount} onReset={onReset}>
-      <div className="grid grid-cols-1 gap-3 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4">
         <TextFilter
           label="Ara"
           value={filters.query}
@@ -150,7 +150,7 @@ export function PerformanceFilterBar({
           onChange={(maxLcpSeconds) => onChange({ ...filters, maxLcpSeconds })}
         />
       </div>
-      <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
         <RangeFilter
           label="Perf"
           min={filters.minPerf}

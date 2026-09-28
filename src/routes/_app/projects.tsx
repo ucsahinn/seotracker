@@ -1,4 +1,4 @@
-import { PageShell } from "@/client/components/PageShell";
+import { PageHeader, PageShell } from "@/client/components/PageShell";
 import * as React from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -36,23 +36,20 @@ function ProjectsPage() {
 
   return (
     <PageShell width="reading">
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-semibold">Projeler</h1>
-          <p className="mt-1 text-sm text-muted">
-            Her projenin kendi Search Console bağlantısı, arama performansı
-            verisi ve site denetimleri olur.
-          </p>
-        </div>
-        <button
-          type="button"
-          className="btn btn-primary btn-sm shrink-0"
-          onClick={() => setCreating(true)}
-        >
-          <Plus className="size-4" />
-          Yeni proje
-        </button>
-      </div>
+      <PageHeader
+        title="Projeler"
+        description="Her projenin kendi Search Console bağlantısı, arama performansı verisi ve site denetimleri olur."
+        actions={
+          <button
+            type="button"
+            className="btn btn-primary btn-sm shrink-0"
+            onClick={() => setCreating(true)}
+          >
+            <Plus className="size-4" />
+            Yeni proje
+          </button>
+        }
+      />
 
       {projectsQuery.isLoading ? (
         <div className="space-y-2" aria-busy>

@@ -2,7 +2,7 @@ import { QueryHistoryCard } from "@/client/features/rankings/QueryHistoryCard";
 import { TablePagination } from "@/client/components/table/TablePagination";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { formatDate, formatDecimal, formatNumber } from "@/client/lib/format";
-import { PageShell } from "@/client/components/PageShell";
+import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { AlertCircle, Loader2 } from "lucide-react";
@@ -74,36 +74,33 @@ export function RankingsPage({ projectId }: { projectId: string }) {
 
   return (
     <PageShell>
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-semibold">Sıralama takibi</h1>
-          <p className="mt-1 text-sm text-muted">
-            Google&apos;ın kendi ölçtüğü ortalama sıra. Arşiv yerelde tutulduğu
-            için 16 aylık Google sınırının ötesine geçebilir.
-          </p>
-        </div>
-        {/* A pick-one filter, not tabs: it re-queries the one table below
-            rather than swapping between panels, so there is no panel for
-            `aria-controls` to point at. */}
-        <div
-          role="radiogroup"
-          aria-label="Zaman aralığı"
-          className="tabs tabs-border"
-        >
-          {WINDOWS.map((option) => (
-            <button
-              key={option.days}
-              type="button"
-              role="radio"
-              aria-checked={days === option.days}
-              className={`tab ${days === option.days ? "tab-active" : ""}`}
-              onClick={() => setDays(option.days)}
-            >
-              {option.label}
-            </button>
-          ))}
-        </div>
-      </div>
+      <PageHeader
+        title="Sıralama takibi"
+        description="Google'ın kendi ölçtüğü ortalama sıra. Arşiv yerelde tutulduğu için 16 aylık Google sınırının ötesine geçebilir."
+        /* A pick-one filter, not tabs: it re-queries the one table below
+           rather than swapping between panels, so there is no panel for
+           `aria-controls` to point at. */
+        actions={
+          <div
+            role="radiogroup"
+            aria-label="Zaman aralığı"
+            className="tabs tabs-border"
+          >
+            {WINDOWS.map((option) => (
+              <button
+                key={option.days}
+                type="button"
+                role="radio"
+                aria-checked={days === option.days}
+                className={`tab ${days === option.days ? "tab-active" : ""}`}
+                onClick={() => setDays(option.days)}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+        }
+      />
 
       <ArchiveStatus sync={sync} />
 

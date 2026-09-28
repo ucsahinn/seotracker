@@ -1,4 +1,4 @@
-import { PageShell } from "@/client/components/PageShell";
+import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { AuditHistorySection } from "@/client/features/audit/launch/AuditHistorySection";
 import { LaunchFormCard } from "@/client/features/audit/launch/LaunchFormCard";
 import { useLaunchController } from "@/client/features/audit/launch/useLaunchController";
@@ -13,7 +13,10 @@ export function LaunchView({ projectId, onAuditStarted }: LaunchViewProps) {
 
   return (
     <PageShell>
-      <h1 className="text-2xl font-semibold">Site Denetimi</h1>
+      <PageHeader
+        title="Site denetimi"
+        description="Sitenizi kendi tarayıcımızla tarar; bulduğu sorunları önem sırasına göre listeler."
+      />
 
       <LaunchFormCard
         launchForm={controller.launchForm}

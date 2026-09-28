@@ -1,4 +1,4 @@
-import { PageShell } from "@/client/components/PageShell";
+import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
@@ -78,24 +78,20 @@ function ReportTemplatesPage() {
         Raporlar
       </Link>
 
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-semibold">Rapor şablonları</h1>
-          <p className="text-sm text-muted">
-            Ajanlarınızın rapor yazarken izlediği yeniden kullanılabilir
-            brifingler: kimin için, hangi bölümlerden oluşuyor ve tonu ne
-            olmalı.
-          </p>
-        </div>
-        <button
-          type="button"
-          className="btn btn-primary btn-sm gap-1.5"
-          onClick={() => setForm({})}
-        >
-          <Plus className="size-4" />
-          Yeni şablon
-        </button>
-      </div>
+      <PageHeader
+        title="Rapor şablonları"
+        description="Ajanlarınızın rapor yazarken izlediği yeniden kullanılabilir brifingler: kimin için, hangi bölümlerden oluşuyor ve tonu ne olmalı."
+        actions={
+          <button
+            type="button"
+            className="btn btn-primary btn-sm gap-1.5"
+            onClick={() => setForm({})}
+          >
+            <Plus className="size-4" />
+            Yeni şablon
+          </button>
+        }
+      />
 
       {templatesQuery.isPending ? (
         <div className="space-y-2" aria-busy>

@@ -1,5 +1,5 @@
 import { QueryErrorState } from "@/client/components/QueryErrorState";
-import { PageShell } from "@/client/components/PageShell";
+import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { SearchTrendPanel } from "@/client/features/search-performance/SearchTrendChart";
 import { TabPanel, Tabs } from "@/client/components/Tabs";
 import { useEffect } from "react";
@@ -197,24 +197,21 @@ export function SearchPerformancePage({
 
   return (
     <PageShell>
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold">Arama performansı</h1>
-          <p className="text-sm text-muted">
-            Google Search Console&apos;dan gelen tıklama, gösterim, tıklama
-            oranı ve ortalama sıra.
-          </p>
-        </div>
-        {report?.connected ? (
-          <Link
-            to="/p/$projectId/settings/integrations"
-            params={{ projectId }}
-            className="link link-hover shrink-0 self-start text-sm font-medium text-muted transition-colors hover:text-base-content sm:mt-1"
-          >
-            Kaynağı değiştir
-          </Link>
-        ) : null}
-      </div>
+      <PageHeader
+        title="Arama performansı"
+        description="Google Search Console'dan gelen tıklama, gösterim, tıklama oranı ve ortalama sıra."
+        actions={
+          report?.connected ? (
+            <Link
+              to="/p/$projectId/settings/integrations"
+              params={{ projectId }}
+              className="link link-hover shrink-0 self-start text-sm font-medium text-muted transition-colors hover:text-base-content sm:mt-1"
+            >
+              Kaynağı değiştir
+            </Link>
+          ) : null
+        }
+      />
 
       {reportQuery.isPending ? (
         <SearchPerformanceLoadingState />

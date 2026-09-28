@@ -24,7 +24,15 @@ function AuditIssuesPage() {
         void navigate({
           to: "/p/$projectId/audit",
           params: { projectId },
-          search: auditId ? { auditId } : undefined,
+          /*
+           * Back to the tab this screen is reached from, not to the audit's
+           * default one. Every route into here is the Performance table's
+           * "Sorunları gör" button, and dropping `tab` landed the reader on
+           * Sorunlar -- a different table, with no sign of where they were.
+           */
+          search: auditId
+            ? { auditId, tab: "performance" as const }
+            : undefined,
         })
       }
       // Pushed, so Back returns to the category the reader came from. The

@@ -1,3 +1,5 @@
+import { formatCount } from "@/client/lib/format";
+import { Tabs } from "@/client/components/Tabs";
 import {
   ChevronDown,
   Copy,
@@ -142,6 +144,14 @@ export function LighthouseIssuesToolbar({
   );
 }
 
+/**
+ * The house tab strip, not a seventh hand-rolled one.
+ *
+ * This was a row of plain buttons: no `role="tablist"`, no `aria-selected`,
+ * no arrow keys, and no `aria-controls` pointing at the list it filters. The
+ * shared component is the same widget everywhere else on the screen already
+ * uses, and it carries the whole ARIA pattern.
+ */
 function CategoryTabs({
   category,
   categoryCounts,
@@ -152,24 +162,15 @@ function CategoryTabs({
   onCategoryChange: (next: CategoryTab) => void;
 }) {
   return (
-    <div className="flex flex-wrap items-center gap-4">
-      {categoryTabs.map((tab) => (
-        <button
-          key={tab}
-          className={`pb-2 border-b-2 text-sm font-medium transition-colors ${
-            category === tab
-              ? "border-primary text-base-content"
-              : "border-transparent text-muted hover:text-base-content"
-          }`}
-          onClick={() => onCategoryChange(tab)}
-        >
-          <span>{categoryLabel(tab)}</span>
-          <span className="ml-1 text-xs opacity-70">
-            ({categoryCounts[tab]})
-          </span>
-        </button>
-      ))}
-    </div>
+    <Tabs
+      group="lighthouse-category"
+      value={category}
+      onChange={onCategoryChange}
+      items={categoryTabs.map((tab) => ({
+        id: tab,
+        label: `${categoryLabel(tab)} (${formatCount(categoryCounts[tab])})`,
+      }))}
+    />
   );
 }
 
