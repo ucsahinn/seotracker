@@ -19,6 +19,7 @@ import {
   type SlimPage,
 } from "@/server/lib/audit/issues/multipage-checks";
 import { findGoogleVerdictProblems } from "@/server/lib/audit/issues/google-verdict-checks";
+import { findLighthouseProblems } from "@/server/lib/audit/issues/lighthouse-checks";
 import type { DetectedIssue } from "@/server/lib/audit/issues/page-reporters";
 import type { HreflangAlternate } from "@/server/lib/audit/types";
 
@@ -87,5 +88,11 @@ export async function runMultipageChecks(input: {
       projectId: input.projectId,
       pages,
     })),
+    /*
+     * The speed measurement, which the Lighthouse phase has already written
+     * by the time finalize runs. Silent when the audit was started with
+     * Lighthouse off, because then there are no rows.
+     */
+    ...(await findLighthouseProblems({ auditId: input.auditId })),
   ];
 }

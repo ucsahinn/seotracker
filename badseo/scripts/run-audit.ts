@@ -560,7 +560,23 @@ async function main() {
     "google-chose-different-canonical",
     "stale-google-verdicts",
   ];
-  const OUT_OF_REACH = [...WORKFLOW_ONLY, ...NEEDS_SEARCH_CONSOLE];
+  /*
+   * Read from `audit_lighthouse_results`, which the PageSpeed Insights phase
+   * fills by asking Google to measure a public URL. The fixture site is a
+   * local Worker that Google cannot reach, so no fixture can produce a
+   * measurement -- let alone one past a "poor" threshold.
+   */
+  const NEEDS_PAGESPEED: IssueId[] = [
+    "cwv-lcp-poor",
+    "cwv-cls-poor",
+    "cwv-inp-poor",
+    "lighthouse-seo-low",
+  ];
+  const OUT_OF_REACH = [
+    ...WORKFLOW_ONLY,
+    ...NEEDS_SEARCH_CONSOLE,
+    ...NEEDS_PAGESPEED,
+  ];
   const exercised = new Set(allFixtures.flatMap((f) => f.expectedIssues));
   const allTypes = (Object.keys(AUDIT_ISSUE_TYPES) as IssueId[]).filter(
     (id) => !OUT_OF_REACH.includes(id),
@@ -574,7 +590,8 @@ async function main() {
           : "  ✓ all covered") +
         `\n${OUT_OF_REACH.length} types are out of this harness's reach: ` +
         `${WORKFLOW_ONLY.length} raised by the workflow rather than the pure checks it runs, ` +
-        `${NEEDS_SEARCH_CONSOLE.length} read from a connected Search Console.`,
+        `${NEEDS_SEARCH_CONSOLE.length} read from a connected Search Console, ` +
+        `${NEEDS_PAGESPEED.length} from a PageSpeed measurement of a public URL.`,
     ),
   );
 
