@@ -5,6 +5,83 @@ numaraları [SemVer](https://semver.org/lang/tr/) izler.
 
 ## [Yayınlanmamış]
 
+## [1.1.0] — 2026-09-28
+
+Denetim on bir kural derinleşti, ekranlar bulunan hataların hepsinden
+arındırıldı, ve sorun bildirmek için tek düğmelik bir tanılama paketi geldi.
+
+Ölçülenler: 67 denetim kuralı, 33 MCP aracı, 715 test, fixture koşusu 57/57
+(kapsam 44/44), `gitleaks` temiz.
+
+### Eklendi
+
+- **Denetim raporu indirme.** Sonuç ekranından tek dosyalık HTML rapor
+  üretiliyor; iniyor ve Raporlar sekmesine kaydediliyor, oradan tekrar
+  indirilebiliyor. Belge kendi kendine yeter: ne betik, ne dış yazı tipi,
+  ne CDN bağlantısı.
+- **Tanılama paketi.** Yardım ekranından ZIP: sürüm, kurulum denetimleri,
+  tablo satır sayıları, projeler, bağlı Google mülkleri, son 25 denetimin
+  durumu ve tarayıcıda yakalanan hatalar. Hiçbir gizli değer yok — jetonlar
+  ve anahtarlar yalnızca "yapılandırılmış mı" olarak geçiyor. Aynı anlık
+  görüntü ajanlar için `get_diagnostics` aracından okunuyor.
+- **Hız bulguları.** Lighthouse tablosu her denetimde doluyor ve tek bir
+  bulgu üretmiyordu; dört saniyelik LCP'si olan sayfa temiz sayılıyordu.
+  Dört kural eklendi, eşikler Google'ın kendi "zayıf" sınırları.
+- **Dizine alınmama sebepleri.** Google'ın "neden almadım" cevabı hiç
+  okunmuyordu. Dört kural: tarandı ama alınmadı, keşfedildi ama taranmadı,
+  canonical'sız kopya, adresi hiç bilmiyor.
+- **Yapısal veri.** Google'ın zengin sonuç kararı ve sitede hiç işaretleme
+  olmaması artık raporlanıyor.
+- **Çelişen canonical.** Head'de farklı adresleri gösteren birden çok
+  rel=canonical bulgusu.
+- **Grafikler.** Arama performansında günlük seyir, fırsat puanı kırılımı,
+  denetimde sorun türü dağılımı, indeksleme dağılımı, hız puanı dağılımı.
+  Hepsi zaten elde olan veriden; ek Google çağrısı yok.
+- **Satır eylemleri.** Denetim geçmişinde "aynı ayarlarla yeniden çalıştır",
+  ve sekiz tabloda adresi açma/kopyalama.
+- **Proje bilgisi için ajan istemi**, ve ayarlarda sürüm notları.
+
+### Düzeltildi
+
+- **Farklı bir site denetlendiğinde Search Console verisi karışıyordu.**
+  Proje tek mülk tutuyor, form her adresi kabul ediyor; İndeksleme sekmesi
+  başka bir sitenin site haritasını gösteriyordu. Artık uyarı çıkıyor ve
+  kotayı boşa harcayacak sorgu kapatılıyor.
+- **İndeksleme dağılım çubuğu %200'e çıkabiliyordu** — cevaplanmış ama
+  bayatlamış satırlar iki kez sayılıyordu.
+- **Rapor ve hız dağılımı ölçüm sayısını sayfa sanıyordu.** Her sayfa iki
+  kez ölçülüyor; artık mobil karar veriyor.
+- **Sayfalama telefonda erişilemiyordu.** Düğmeler ekran dışındaydı ve
+  saran kart kırptığı için kaydırarak da ulaşılamıyordu.
+- **Terk edilen denetim sonsuza dek "Sürüyor" kalıyordu.** Konteyner denetim
+  ortasında yeniden başlarsa artık ilk süpürmede kapatılıyor; taranmış
+  sayfalar korunuyor.
+- **Denetimler arası geçişte** İndeksleme dışa aktarımı önceki denetimin
+  satırlarını yazabiliyordu.
+- **Sıfır sorguda çakışma tablosu** yeşil "sorun yok" diyordu.
+- **Fırsatlar boş ekranı** yanlış sebep sayıyor ve hangi döneme baktığını
+  söylemiyordu.
+- Çakışma panelinde sayfalar açılamıyordu; Lighthouse sorunlarından geri
+  dönüş yanlış sekmeye gidiyordu; yüklenemeyen yedi bölüm yeniden deneme
+  sunmuyordu.
+
+### Güvenlik
+
+- OAuth geri dönüş yolu `/..//evil.com` ile atlatılabiliyordu: origin aynı
+  görünüyor, yol `//` ile başlıyor, tarayıcı onu başka bir konak olarak
+  okuyor.
+- Tablolardaki adresler artık şema denetiminden geçiyor; http(s) olmayan
+  değer bağlantı değil metin olarak çiziliyor.
+- Proje adındaki `$&` ajan istemini bozabiliyordu.
+
+### Erişilebilirlik
+
+- Lighthouse kategori sekmeleri gerçek sekme oldu: ok tuşları, `aria-selected`
+  ve işaret ettiği panel.
+- Sekiz ekran ortak `PageHeader`'a geçti; denetim filtreleri tablet
+  genişliğinde sütunlaşıyor; tablo satırları ve sekme geçişleri artık
+  `prefers-reduced-motion`'a uyan kısa bir geçişle değişiyor.
+
 ## [1.0.0] — 2026-09-28
 
 İlk kararlı sürüm. seotracker artık kurulumdan raporlamaya kadar tek bir
