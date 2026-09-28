@@ -18,6 +18,7 @@ import {
 } from "@/serverFunctions/indexCoverage";
 import { UrlCell } from "@/client/components/table/UrlCell";
 import { StackedShare } from "@/client/components/StackedShare";
+import { QueryErrorState } from "@/client/components/QueryErrorState";
 
 /**
  * What Google says about the pages the crawler found.
@@ -119,8 +120,13 @@ export function IndexCoverageView({
 
   if (coverage.isError) {
     return (
-      <div className="alert alert-error">
-        {getStandardErrorMessage(coverage.error)}
+      <div className="rounded-box border border-base-300 bg-base-100">
+        <QueryErrorState
+          compact
+          error={coverage.error}
+          onRetry={() => void coverage.refetch()}
+          title="Dizin durumu yüklenemedi"
+        />
       </div>
     );
   }

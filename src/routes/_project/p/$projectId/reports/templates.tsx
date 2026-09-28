@@ -15,6 +15,7 @@ import {
   listReportTemplates,
 } from "@/serverFunctions/reportTemplates";
 import type { ReportTemplate } from "@/types/schemas/report-templates";
+import { QueryErrorState } from "@/client/components/QueryErrorState";
 
 export const Route = createFileRoute(
   "/_project/p/$projectId/reports/templates",
@@ -103,13 +104,12 @@ function ReportTemplatesPage() {
           ))}
         </div>
       ) : templatesQuery.isError ? (
-        <div className="alert alert-error">
-          <span className="text-sm">
-            {getStandardErrorMessage(
-              templatesQuery.error,
-              "Şablonlar yüklenemedi",
-            )}
-          </span>
+        <div className="rounded-box border border-base-300 bg-base-100">
+          <QueryErrorState
+            error={templatesQuery.error}
+            onRetry={() => void templatesQuery.refetch()}
+            title="Şablonlar yüklenemedi"
+          />
         </div>
       ) : (
         <ReportTemplatesList

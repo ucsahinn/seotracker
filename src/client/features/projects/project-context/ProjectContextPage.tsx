@@ -2,7 +2,6 @@ import * as React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Pencil } from "lucide-react";
 import { formatDate } from "@/client/lib/format";
-import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import { getProjectContext } from "@/serverFunctions/projectContext";
 import {
   PROJECT_CONTEXT_SECTION_KEYS,
@@ -25,6 +24,7 @@ import {
   useContextUpdate,
   type ProjectContextData,
 } from "./shared";
+import { QueryErrorState } from "@/client/components/QueryErrorState";
 
 const SECTION_HINTS: Record<ProjectContextSectionKey, string> = {
   business_overview: "Ne satıyorsunuz, kim alıyor, nerede.",
@@ -77,13 +77,12 @@ export function ProjectContextPage({
 
   if (contextQuery.isError) {
     return (
-      <div className="alert alert-error">
-        <span className="text-sm">
-          {getStandardErrorMessage(
-            contextQuery.error,
-            "Proje bilgisi yüklenemedi",
-          )}
-        </span>
+      <div className="rounded-box border border-base-300 bg-base-100">
+        <QueryErrorState
+          error={contextQuery.error}
+          onRetry={() => void contextQuery.refetch()}
+          title="Proje bilgisi yüklenemedi"
+        />
       </div>
     );
   }

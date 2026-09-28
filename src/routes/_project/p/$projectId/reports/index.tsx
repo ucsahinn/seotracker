@@ -10,9 +10,9 @@ import {
   reportsQueryKey,
   useDeleteReport,
 } from "@/client/features/reports/shared";
-import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import { listReports, type ReportListItem } from "@/serverFunctions/reports";
 import { REPORT_APP_LIST_LIMIT } from "@/types/schemas/reports";
+import { QueryErrorState } from "@/client/components/QueryErrorState";
 
 export const Route = createFileRoute("/_project/p/$projectId/reports/")({
   component: ReportsPage,
@@ -71,13 +71,12 @@ function ReportsPage() {
           ))}
         </div>
       ) : reportsQuery.isError ? (
-        <div className="alert alert-error">
-          <span className="text-sm">
-            {getStandardErrorMessage(
-              reportsQuery.error,
-              "Raporlar yüklenemedi",
-            )}
-          </span>
+        <div className="rounded-box border border-base-300 bg-base-100">
+          <QueryErrorState
+            error={reportsQuery.error}
+            onRetry={() => void reportsQuery.refetch()}
+            title="Raporlar yüklenemedi"
+          />
         </div>
       ) : (
         <ReportsList

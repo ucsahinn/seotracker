@@ -1,3 +1,4 @@
+import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { PageShell } from "@/client/components/PageShell";
 import { SearchTrendPanel } from "@/client/features/search-performance/SearchTrendChart";
 import { TabPanel, Tabs } from "@/client/components/Tabs";
@@ -218,10 +219,12 @@ export function SearchPerformancePage({
       {reportQuery.isPending ? (
         <SearchPerformanceLoadingState />
       ) : reportQuery.isError ? (
-        <div className="alert alert-error">
-          <span className="text-sm">
-            {getStandardErrorMessage(reportQuery.error)}
-          </span>
+        <div className="rounded-box border border-base-300 bg-base-100">
+          <QueryErrorState
+            error={reportQuery.error}
+            onRetry={() => void reportQuery.refetch()}
+            title="Arama performansı yüklenemedi"
+          />
         </div>
       ) : !report?.connected ? (
         <div className="max-w-2xl">
@@ -350,11 +353,12 @@ export function SearchPerformancePage({
                 </div>
               ) : tableQuery.isError ? (
                 <div className="p-4">
-                  <div className="alert alert-error">
-                    <span className="text-sm">
-                      {getStandardErrorMessage(tableQuery.error)}
-                    </span>
-                  </div>
+                  <QueryErrorState
+                    compact
+                    error={tableQuery.error}
+                    onRetry={() => void tableQuery.refetch()}
+                    title="Tablo yüklenemedi"
+                  />
                 </div>
               ) : (
                 <>

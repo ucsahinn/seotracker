@@ -15,7 +15,6 @@ import {
 } from "@/client/features/dashboard/GoogleSetupBanner";
 import { Ga4Card } from "@/client/features/dashboard/Ga4Card";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
-import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import {
   getDashboardActivation,
   getDashboardOverview,
@@ -45,9 +44,11 @@ export function DashboardPage({ projectId }: { projectId: string }) {
   if (activationQuery.isError) {
     return (
       <PageShell>
-        <div className="alert alert-error">
-          {getStandardErrorMessage(activationQuery.error)}
-        </div>
+        <QueryErrorState
+          error={activationQuery.error}
+          onRetry={() => void activationQuery.refetch()}
+          title="Panel yüklenemedi"
+        />
       </PageShell>
     );
   }

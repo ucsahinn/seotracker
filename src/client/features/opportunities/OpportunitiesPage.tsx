@@ -7,9 +7,9 @@ import { MetricRow, MetricTile } from "@/client/components/MetricTile";
 import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { OpportunitiesTable } from "@/client/features/opportunities/OpportunitiesTable";
 import type { OpportunityReport } from "@/client/features/opportunities/report";
-import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import { formatDate, formatNumber } from "@/client/lib/format";
 import { getSearchOpportunities } from "@/serverFunctions/opportunities";
+import { QueryErrorState } from "@/client/components/QueryErrorState";
 /**
  * Pages sitting between positions 4 and 20, ranked by what moving them up
  * would be worth.
@@ -50,10 +50,12 @@ export function OpportunitiesPage({ projectId }: { projectId: string }) {
           <div className="skeleton h-96" />
         </div>
       ) : query.isError ? (
-        <div className="alert alert-error">
-          <span className="text-sm">
-            {getStandardErrorMessage(query.error)}
-          </span>
+        <div className="rounded-box border border-base-300 bg-base-100">
+          <QueryErrorState
+            error={query.error}
+            onRetry={() => void query.refetch()}
+            title="Fırsatlar yüklenemedi"
+          />
         </div>
       ) : query.data.status === "ok" ? (
         <Report
