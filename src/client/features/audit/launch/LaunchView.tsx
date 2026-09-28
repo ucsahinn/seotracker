@@ -28,6 +28,7 @@ export function LaunchView({ projectId, onAuditStarted }: LaunchViewProps) {
         error={controller.historyQuery.error}
         onRetry={() => void controller.historyQuery.refetch()}
         onDelete={controller.deleteAudit}
+        onRerun={controller.rerunAudit}
       />
     </PageShell>
   );

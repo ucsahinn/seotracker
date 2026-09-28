@@ -1,9 +1,12 @@
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { Link } from "@tanstack/react-router";
-import { ScanSearch, Trash2 } from "lucide-react";
+import { RotateCw, ScanSearch, Trash2 } from "lucide-react";
 import type { getAuditHistory } from "@/serverFunctions/audit";
 import { PortalMenu } from "@/client/components/PortalMenu";
 import { formatDate, StatusBadge } from "@/client/features/audit/shared";
+import { CopyButton } from "@/client/components/CopyButton";
+
+type HistoryRow = Awaited<ReturnType<typeof getAuditHistory>>[number];
 
 export function AuditHistorySection({
   projectId,
@@ -12,6 +15,7 @@ export function AuditHistorySection({
   error,
   onRetry,
   onDelete,
+  onRerun,
 }: {
   projectId: string;
   history: Awaited<ReturnType<typeof getAuditHistory>>;
@@ -19,6 +23,7 @@ export function AuditHistorySection({
   error?: unknown;
   onRetry?: () => void;
   onDelete: (auditId: string) => void;
+  onRerun: (audit: HistoryRow) => void;
 }) {
   // A failed load used to fall into "Henüz denetim yok", telling an operator
   // with a dozen audits that they had never run one.
@@ -38,6 +43,26 @@ export function AuditHistorySection({
         <div className="text-center text-muted space-y-3">
           <ScanSearch className="size-12 mx-auto opacity-30" />
           <p className="text-lg font-medium">Henüz denetim yok</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (history.length === 0 && isLoading) {
+    /*
+     * Shaped like the table that is coming. This branch used to `return null`
+     * while the first load ran, so the screen below the launch form was empty
+     * and nothing said more was on the way.
+     */
+    return (
+      <div className="card bg-base-100 border border-base-300" aria-busy>
+        <div className="card-body gap-3">
+          <div className="skeleton h-5 w-40" />
+          <div className="space-y-2">
+            {Array.from({ length: 4 }, (_, index) => (
+              <div key={index} className="skeleton h-8" />
+            ))}
+          </div>
         </div>
       </div>
     );
@@ -67,7 +92,21 @@ export function AuditHistorySection({
                   <td className="text-xs text-muted">
                     {formatDate(audit.startedAt)}
                   </td>
-                  <td className="max-w-[220px] truncate">{audit.startUrl}</td>
+                  <td className="max-w-[220px]">
+                    <div className="flex items-center gap-1">
+                      <span className="truncate" title={audit.startUrl}>
+                        {audit.startUrl}
+                      </span>
+                      {/* The cell truncates, and the full address was not
+                          reachable from anywhere on this screen. */}
+                      <CopyButton
+                        iconOnly
+                        value={audit.startUrl}
+                        label="Adresi kopyala"
+                        successMessage="Adres kopyalandı"
+                      />
+                    </div>
+                  </td>
                   <td>
                     <StatusBadge status={audit.status} />
                   </td>
@@ -80,8 +119,9 @@ export function AuditHistorySection({
                   <td>
                     <HistoryActions
                       projectId={projectId}
-                      auditId={audit.id}
+                      audit={audit}
                       onDelete={onDelete}
+                      onRerun={onRerun}
                     />
                   </td>
                 </tr>
@@ -96,37 +136,52 @@ export function AuditHistorySection({
 
 function HistoryActions({
   projectId,
-  auditId,
+  audit,
   onDelete,
+  onRerun,
 }: {
   projectId: string;
-  auditId: string;
+  audit: HistoryRow;
   onDelete: (auditId: string) => void;
+  onRerun: (audit: HistoryRow) => void;
 }) {
   return (
     <div className="flex items-center justify-end gap-2 transition-opacity md:opacity-0 md:group-hover:opacity-100 md:group-focus-within:opacity-100">
       <Link
         to="/p/$projectId/audit"
         params={{ projectId }}
-        search={{ auditId, tab: "pages" }}
+        search={{ auditId: audit.id, tab: "pages" }}
         className="btn btn-primary btn-xs"
       >
         Görüntüle
       </Link>
       <PortalMenu ariaLabel="Denetim işlemleri">
         {(close) => (
-          <li>
-            <button
-              className="text-error"
-              onClick={() => {
-                close();
-                onDelete(auditId);
-              }}
-            >
-              <Trash2 className="size-3.5" />
-              Denetimi sil
-            </button>
-          </li>
+          <>
+            <li>
+              <button
+                onClick={() => {
+                  close();
+                  onRerun(audit);
+                }}
+              >
+                <RotateCw className="size-3.5" />
+                Aynı ayarlarla yeniden çalıştır
+              </button>
+            </li>
+            <li>
+              <button
+                className="text-error"
+                onClick={() => {
+                  close();
+                  onDelete(audit.id);
+                }}
+              >
+                <Trash2 className="size-3.5" />
+                Denetimi sil
+              </button>
+            </li>
+          </>
         )}
       </PortalMenu>
     </div>

@@ -137,6 +137,30 @@ export function useLaunchController({
     maxPagesLimit,
     commitMaxPagesInput: () => commitMaxPagesInput(launchForm, maxPagesLimit),
     deleteAudit: (auditId: string) => deleteMutation.mutate(auditId),
+    /*
+     * Run a past audit again with the settings it used.
+     *
+     * Goes through the form rather than straight to the mutation, so the URL
+     * is validated the same way, the large-crawl confirmation still appears,
+     * and a failure lands in the same place as one raised by the form. It
+     * also leaves the form showing what is running, which is where the
+     * operator looks next.
+     */
+    rerunAudit: (audit: {
+      startUrl: string;
+      pagesTotal: number;
+      pagesCrawled: number;
+      ranLighthouse: boolean;
+    }) => {
+      // `pagesTotal` is the reservation the audit was started with, which is
+      // the setting being repeated. It is 0 on rows old enough to predate
+      // the column, and there the pages actually crawled is the better guess.
+      const pages = audit.pagesTotal || audit.pagesCrawled || MIN_PAGES;
+      launchForm.setFieldValue("url", audit.startUrl);
+      launchForm.setFieldValue("maxPagesInput", String(pages));
+      launchForm.setFieldValue("runLighthouse", audit.ranLighthouse);
+      void launchForm.handleSubmit();
+    },
   };
 }
 

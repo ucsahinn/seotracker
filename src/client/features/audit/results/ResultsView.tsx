@@ -17,6 +17,8 @@ import type { AuditResultsData } from "@/client/features/audit/results/types";
 import type { AuditTab as ResultsTab } from "@/types/schemas/audit";
 import { IndexCoverageView } from "@/client/features/audit/results/IndexCoverageView";
 import { SitemapStatusPanel } from "@/client/features/gsc/SitemapStatusPanel";
+import { ForeignPropertyNotice } from "@/client/features/audit/results/ForeignPropertyNotice";
+import { useAuditPropertyMatch } from "@/client/features/audit/results/useAuditPropertyMatch";
 import {
   EMPTY_PAGES_FILTERS,
   EMPTY_PERFORMANCE_FILTERS,
@@ -52,6 +54,7 @@ export function ResultsView({
   const activeTab =
     tab === "performance" && !hasPerformanceTab ? "issues" : tab;
   const stats = useResultStats(pages, lighthouse);
+  const property = useAuditPropertyMatch(projectId, audit.startUrl);
   const blockedCount = useMemo(
     () => pages.filter((page) => page.fetchClass === "blocked").length,
     [pages],
@@ -203,11 +206,23 @@ export function ResultsView({
                     pages this audit found. A sitemap Google has not
                     downloaded since March explains a coverage table full of
                     unanswered rows, and the two used to live apart. */}
+                {property.covered ? null : (
+                  <ForeignPropertyNotice
+                    projectId={projectId}
+                    auditedHost={property.auditedHost}
+                    propertyHost={property.propertyHost ?? "başka bir mülk"}
+                  />
+                )}
                 <SitemapStatusPanel projectId={projectId} />
                 <IndexCoverageView
                   projectId={projectId}
                   auditId={audit.id}
                   onRowsChange={setCoverageRows}
+                  askDisabledReason={
+                    property.covered
+                      ? undefined
+                      : `Bu denetim ${property.auditedHost} adresine ait, bağlı mülk ise ${property.propertyHost ?? "başka bir site"}. Sormak kotayı boşa harcardı.`
+                  }
                 />
               </div>
             )}

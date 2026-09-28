@@ -29,11 +29,18 @@ export function IndexCoverageView({
   projectId,
   auditId,
   onRowsChange,
+  askDisabledReason,
 }: {
   projectId: string;
   auditId: string;
   /** Hands the rows to the export menu, which lives a level up. */
   onRowsChange?: (rows: CoverageRow[]) => void;
+  /*
+   * Set when asking Google would spend quota on a question it cannot
+   * answer -- an audit of a site the project's property does not cover.
+   * The allowance is 2000 URLs a day and does not replenish early.
+   */
+  askDisabledReason?: string;
 }) {
   const queryClient = useQueryClient();
   const queryKey = ["indexCoverage", projectId, auditId] as const;
@@ -178,7 +185,10 @@ export function IndexCoverageView({
           /* `due`, not `pending`: a page Google already answered becomes
              worth re-asking once the answer ages out, and keying off
              `pending` left the button disabled while there was work. */
-          disabled={refresh.isPending || data.due === 0}
+          disabled={
+            refresh.isPending || data.due === 0 || Boolean(askDisabledReason)
+          }
+          title={askDisabledReason}
           onClick={() => refresh.mutate()}
         >
           {refresh.isPending ? (
