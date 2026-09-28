@@ -17,6 +17,7 @@ import {
   refreshAuditIndexCoverage,
 } from "@/serverFunctions/indexCoverage";
 import { UrlCell } from "@/client/components/table/UrlCell";
+import { StackedShare } from "@/client/components/StackedShare";
 
 /**
  * What Google says about the pages the crawler found.
@@ -138,8 +139,41 @@ export function IndexCoverageView({
   // `checked === 0` but plenty to show: the error strings live in the table.
   const neverChecked = data.asked === 0;
 
+  /*
+   * The same four numbers as the tiles below, but as shares of one whole.
+   * Four tiles say how many; this says how far through the site Google has
+   * actually got, which is the question the screen exists to answer.
+   */
+  const share = neverChecked ? null : (
+    <StackedShare
+      summary={`${formatNumber(data.rows.length)} sayfadan ${formatNumber(data.indexed)} tanesi Google'da, ${formatNumber(data.notIndexed)} tanesi dizinde değil, ${formatNumber(data.due)} tanesi henüz sorulmadı.`}
+      segments={[
+        {
+          label: "Google'da",
+          value: data.indexed,
+          color: "var(--color-success)",
+        },
+        {
+          label: "Dizinde değil",
+          value: data.notIndexed,
+          color: "var(--color-warning)",
+        },
+        {
+          label: "Sorulmayı bekleyen",
+          value: data.due,
+          color: "var(--color-base-300)",
+        },
+      ]}
+    />
+  );
+
   return (
     <div className="space-y-4">
+      {share ? (
+        <div className="rounded-box border border-base-300 bg-base-100 px-4 py-3">
+          {share}
+        </div>
+      ) : null}
       <MetricRow>
         <MetricTile
           label="Google'da"

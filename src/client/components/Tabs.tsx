@@ -123,11 +123,17 @@ export function TabPanel({
 }) {
   return (
     <div
+      /*
+       * Keyed on the value so switching tabs remounts the panel and the
+       * entrance animation runs again. Without the key React reuses the
+       * node, the class is already applied, and the swap is a hard cut.
+       */
+      key={value}
       id={panelId(group, value)}
       role="tabpanel"
       aria-labelledby={tabId(group, value)}
       tabIndex={0}
-      className={className}
+      className={["enter", className].filter(Boolean).join(" ")}
     >
       {children}
     </div>

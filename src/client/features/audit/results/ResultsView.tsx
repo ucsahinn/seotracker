@@ -18,6 +18,7 @@ import type { AuditTab as ResultsTab } from "@/types/schemas/audit";
 import { IndexCoverageView } from "@/client/features/audit/results/IndexCoverageView";
 import { SitemapStatusPanel } from "@/client/features/gsc/SitemapStatusPanel";
 import { DownloadReportButton } from "@/client/features/audit/results/DownloadReportButton";
+import { ScoreHistogram } from "@/client/features/audit/results/ScoreHistogram";
 import { ForeignPropertyNotice } from "@/client/features/audit/results/ForeignPropertyNotice";
 import { useAuditPropertyMatch } from "@/client/features/audit/results/useAuditPropertyMatch";
 import {
@@ -251,6 +252,17 @@ export function ResultsView({
                   onTabChange("issues");
                 }}
               />
+            )}
+            {activeTab === "performance" && lighthouse.length > 0 && (
+              <div className="mb-4 rounded-box border border-base-300 bg-base-100 px-4 py-3">
+                {/* The strip above reports one average, and an average of 62
+                    reads the same whether every page is mediocre or half are
+                    perfect and half are broken. Those are different jobs. */}
+                <p className="mb-2 text-sm font-medium">Hız puanı dağılımı</p>
+                <ScoreHistogram
+                  scores={lighthouse.map((row) => row.performanceScore)}
+                />
+              </div>
             )}
             {activeTab === "performance" && lighthouse.length > 0 && (
               <PerformanceTable
