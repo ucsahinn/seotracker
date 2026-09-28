@@ -183,7 +183,13 @@ export function AppDataTable<TData>({
               <tr
                 key={row.id}
                 onClick={rowProps?.onClick}
-                className={[getRowClassName?.(row), rowProps?.className]
+                /* `group/row` so a cell can reveal a per-row control on
+                   hover without every table repeating the wiring. */
+                className={[
+                  "group/row",
+                  getRowClassName?.(row),
+                  rowProps?.className,
+                ]
                   .filter(Boolean)
                   .join(" ")}
               >

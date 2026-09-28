@@ -8,6 +8,7 @@ import type {
   getSearchPerformanceReport,
   getSearchPerformanceTable,
 } from "@/serverFunctions/searchPerformance";
+import { UrlCell } from "@/client/components/table/UrlCell";
 
 export type Report = Extract<
   Awaited<ReturnType<typeof getSearchPerformanceReport>>,
@@ -34,11 +35,21 @@ export function buildDimensionColumns(
     dimensionHelper.accessor("key", {
       enableSorting: false,
       header: () => keyLabel,
-      cell: ({ getValue }) => (
-        <span className="block max-w-xl truncate" title={getValue()}>
-          {getValue()}
-        </span>
-      ),
+      /*
+       * The same value the striking-distance table linkifies. This column
+       * holds a query on the Sorgular tab and a page URL on the Sayfalar
+       * tab, so it links only when it is an address -- and the scheme check
+       * is the same defense-in-depth the sibling column uses before
+       * rendering an href from Search Console data.
+       */
+      cell: ({ getValue }) =>
+        /^https?:\/\//.test(getValue()) ? (
+          <UrlCell url={getValue()} className="max-w-xl" />
+        ) : (
+          <span className="block max-w-xl truncate" title={getValue()}>
+            {getValue()}
+          </span>
+        ),
     }),
     dimensionHelper.accessor("clicks", {
       header: ({ column }) => (

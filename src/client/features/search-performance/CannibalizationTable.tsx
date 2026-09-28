@@ -14,6 +14,7 @@ import type {
   SearchPerformanceDevice,
 } from "@/types/schemas/search-performance";
 import { getCannibalizationReport } from "@/serverFunctions/cannibalization";
+import { UrlCell } from "@/client/components/table/UrlCell";
 
 /**
  * Queries your own pages are competing for.
@@ -204,9 +205,9 @@ function PageRow({
     <tr>
       <td className="max-w-md">
         <span className="flex min-w-0 items-center gap-2">
-          <span className="truncate" title={page.page}>
-            {pathOf(page.page)}
-          </span>
+          {/* The panel exists to compare two pages; until this, neither
+              could be opened and neither address could be copied. */}
+          <UrlCell url={page.page} label={pathOf(page.page)} />
           {primary ? (
             <span
               className="badge badge-sm shrink-0 border-success/30 bg-success/10 text-[var(--ink-success)]"

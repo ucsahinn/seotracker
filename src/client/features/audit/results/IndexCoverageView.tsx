@@ -16,6 +16,7 @@ import {
   getAuditIndexCoverage,
   refreshAuditIndexCoverage,
 } from "@/serverFunctions/indexCoverage";
+import { UrlCell } from "@/client/components/table/UrlCell";
 
 /**
  * What Google says about the pages the crawler found.
@@ -263,11 +264,9 @@ function CoverageTable({
               const mismatch = row.canonicalMismatch;
 
               return (
-                <tr key={row.url}>
+                <tr key={row.url} className="group/row">
                   <td className="max-w-md">
-                    <span className="block truncate" title={row.url}>
-                      {pathOf(row.url)}
-                    </span>
+                    <UrlCell url={row.url} label={pathOf(row.url)} />
                   </td>
                   <td>
                     <VerdictBadge
@@ -278,13 +277,14 @@ function CoverageTable({
                     />
                   </td>
                   <td className="max-w-xs">
-                    {mismatch ? (
-                      <span
-                        className="block truncate text-[var(--ink-warning)]"
-                        title={row.googleCanonical ?? undefined}
-                      >
-                        {pathOf(row.googleCanonical ?? "")}
-                      </span>
+                    {mismatch && row.googleCanonical ? (
+                      /* The value someone fixing a canonical mismatch has to
+                         paste somewhere; it was only ever a title tooltip. */
+                      <UrlCell
+                        url={row.googleCanonical}
+                        label={pathOf(row.googleCanonical)}
+                        className="text-[var(--ink-warning)]"
+                      />
                     ) : (
                       <span className="text-subtle">-</span>
                     )}

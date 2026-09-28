@@ -7,11 +7,11 @@ import {
   type ColumnDef,
   type SortingState,
 } from "@tanstack/react-table";
-import { ExternalLink } from "lucide-react";
 import {
   AppDataTable,
   useAppTable,
 } from "@/client/components/table/AppDataTable";
+import { UrlCell } from "@/client/components/table/UrlCell";
 import { SortableHeader } from "@/client/components/table/SortableHeader";
 import {
   extractHostname,
@@ -101,21 +101,14 @@ function buildPagesColumns({
   return [
     pageColumnHelper.accessor("url", {
       header: ({ column }) => <SortableHeader column={column} label="URL" />,
-      cell: ({ getValue }) => {
-        const url = getValue();
-        return (
-          <a
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="link link-primary inline-flex items-center gap-1 text-xs"
-          >
-            <span className="truncate">{displayPath(url, canonicalHost)}</span>
-            <ExternalLink className="size-3 shrink-0" />
-          </a>
-        );
-      },
-      meta: { cellClassName: "max-w-[240px] truncate" },
+      cell: ({ getValue }) => (
+        <UrlCell
+          url={getValue()}
+          label={displayPath(getValue(), canonicalHost)}
+          className="text-xs"
+        />
+      ),
+      meta: { cellClassName: "max-w-[240px]" },
     }),
     pageColumnHelper.accessor("statusCode", {
       header: ({ column }) => <SortableHeader column={column} label="Durum" />,
