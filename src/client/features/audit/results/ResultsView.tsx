@@ -17,6 +17,7 @@ import type { AuditResultsData } from "@/client/features/audit/results/types";
 import type { AuditTab as ResultsTab } from "@/types/schemas/audit";
 import { IndexCoverageView } from "@/client/features/audit/results/IndexCoverageView";
 import { SitemapStatusPanel } from "@/client/features/gsc/SitemapStatusPanel";
+import { DownloadReportButton } from "@/client/features/audit/results/DownloadReportButton";
 import { ForeignPropertyNotice } from "@/client/features/audit/results/ForeignPropertyNotice";
 import { useAuditPropertyMatch } from "@/client/features/audit/results/useAuditPropertyMatch";
 import {
@@ -159,6 +160,10 @@ export function ResultsView({
           isteyin.
         </CrawlWarning>
       )}
+
+      <div className="flex justify-end">
+        <DownloadReportButton projectId={projectId} auditId={audit.id} />
+      </div>
 
       <StatsStrip
         pagesCrawled={audit.pagesCrawled}

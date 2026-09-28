@@ -1,6 +1,11 @@
 import { Link } from "@tanstack/react-router";
-import { Trash2 } from "lucide-react";
+import { Download, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 import { PortalMenu } from "@/client/components/PortalMenu";
+import {
+  downloadReport,
+  reportFilename,
+} from "@/client/features/reports/downloadReport";
 import { formatCreatedBy } from "@/client/features/reports/shared";
 import { formatRelativeTime } from "@/client/lib/format";
 import type { ReportListItem } from "@/serverFunctions/reports";
@@ -62,18 +67,34 @@ export function ReportsList({
                 <td className="w-10 text-right">
                   <PortalMenu ariaLabel={`${report.title} için işlemler`}>
                     {(close) => (
-                      <li>
-                        <button
-                          className="text-error"
-                          onClick={() => {
-                            close();
-                            onDelete(report);
-                          }}
-                        >
-                          <Trash2 className="size-3.5" />
-                          Sil
-                        </button>
-                      </li>
+                      <>
+                        <li>
+                          <button
+                            onClick={() => {
+                              close();
+                              void downloadReport(
+                                report.id,
+                                reportFilename(report.title),
+                              ).catch(() => toast.error("Rapor indirilemedi."));
+                            }}
+                          >
+                            <Download className="size-3.5" />
+                            İndir
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="text-error"
+                            onClick={() => {
+                              close();
+                              onDelete(report);
+                            }}
+                          >
+                            <Trash2 className="size-3.5" />
+                            Sil
+                          </button>
+                        </li>
+                      </>
                     )}
                   </PortalMenu>
                 </td>
