@@ -9,6 +9,7 @@ import {
   resolveIssueSeverity,
 } from "@/shared/audit-issues";
 import type { AuditResultsData } from "@/client/features/audit/results/types";
+import { IssueWorkloadChart } from "@/client/features/audit/results/IssueWorkloadChart";
 
 type AuditIssueRow = AuditResultsData["issues"][number];
 
@@ -134,6 +135,9 @@ export function IssuesView({
 
   return (
     <div className="space-y-3">
+      {/* Only for the whole audit: narrowed to one page the chart would be a
+          bar per issue type with a count of one, which says nothing. */}
+      {focusUrl ? null : <IssueWorkloadChart groups={groups} />}
       {focusUrl ? (
         <div className="flex flex-wrap items-center justify-between gap-2 rounded-box border border-base-300 bg-base-200/40 px-3 py-2">
           <span className="min-w-0 truncate text-sm text-muted">

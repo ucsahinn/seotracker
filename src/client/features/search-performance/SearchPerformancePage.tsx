@@ -1,4 +1,5 @@
 import { PageShell } from "@/client/components/PageShell";
+import { SearchTrendPanel } from "@/client/features/search-performance/SearchTrendChart";
 import { TabPanel, Tabs } from "@/client/components/Tabs";
 import { useEffect } from "react";
 import { Link } from "@tanstack/react-router";
@@ -229,6 +230,7 @@ export function SearchPerformancePage({
       ) : (
         <>
           <TotalsCards report={report} />
+          <SearchTrendPanel daily={report.daily} />
           <div className="overflow-hidden rounded-box border border-base-300 bg-base-100">
             <div className="flex flex-col gap-3 border-b border-base-300 px-4 py-3 lg:flex-row lg:items-center lg:justify-between">
               <Tabs
