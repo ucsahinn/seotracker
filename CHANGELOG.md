@@ -5,6 +5,33 @@ numaraları [SemVer](https://semver.org/lang/tr/) izler.
 
 ## [Yayınlanmamış]
 
+## [0.12.0] — 2026-09-28
+
+Bir önceki sürümde işaret edip bıraktığım iki tablo.
+
+### Düzeltilenler
+
+- **Fırsatlar tablosu sıralanamıyor, hiçbir yere gitmiyor ve dışa
+  aktarılamıyordu.** Ham bir `<table>` idi: sıralanabilir başlık yok, satır
+  hedefi yok, dışa aktarma yok — üstelik tüm işi sayfaları sıralamak olan
+  ekranda. En yakın komşusu, aynı Search Console şeklindeki eşiğe-yakın
+  tablosu, üçünü de baştan beri yapıyor. "En çok gösterim alanlar" ya da
+  "ilk sayfaya en yakın olanlar" isteyen biri elli satırı gözüyle yeniden
+  okumak zorundaydı. Artık her sütun sıralanıyor, her satırın iki çıkışı
+  var (canlı adres ve o sayfanın arama performansı), ve liste tabloya
+  aktarılabiliyor.
+- **Sıralama Takibi sessizce ilk 25'i gösteriyordu.** Sayfalama yok,
+  sayfa boyutu seçeneği yok, 25'in bir kesme olduğunu söyleyen hiçbir şey
+  yok — oysa her komşu liste sayfalıyor ve toplamını yazıyor. Dört yüz
+  sorgulu bir arşiv yirmi beş sorguluk görünüyordu. Artık tek çağrıda
+  getirilen küme tarayıcıda sayfalanıyor ve sınıra ulaşıldığında bunu
+  söylüyor.
+
+### Geliştirilenler
+
+- `RankingsPage` satır tavanını aştığı için sorgu geçmişi kartı kendi
+  dosyasına ayrıldı.
+
 ## [0.11.0] — 2026-09-28
 
 Uygulamanın kendini anlatması: sürüm notları içeride, her ayarın yanında
@@ -561,6 +588,7 @@ depodan kaldırıldı, çünkü onlar open-seo'nun yayınlarıydı.
   Verileriniz `seotracker_data` biriminde; güncellemeden önce yedek almak
   isteyebilirsiniz.
 
+[0.12.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.12.0
 [0.11.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.11.0
 [0.10.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.10.0
 [0.9.0]: https://github.com/ucsahinn/seotracker/releases/tag/v0.9.0

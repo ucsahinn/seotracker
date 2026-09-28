@@ -1,14 +1,19 @@
+import { QueryHistoryCard } from "@/client/features/rankings/QueryHistoryCard";
+import { TablePagination } from "@/client/components/table/TablePagination";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { formatDate, formatDecimal, formatNumber } from "@/client/lib/format";
 import { PageShell } from "@/client/components/PageShell";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { AlertCircle, Loader2, TrendingDown, TrendingUp } from "lucide-react";
+import { AlertCircle, Loader2 } from "lucide-react";
 import {
   getQueryHistory,
   getTrackedQueries,
   syncGscHistory,
 } from "@/serverFunctions/gscHistory";
+
+/** Rows per page, and the third value is also what one fetch asks for. */
+const PAGE_SIZES = [25, 50, 100] as const;
 
 /*
  * "Tümü" used to mean 480 days, which is Search Console's own 16-month
@@ -41,7 +46,8 @@ export function RankingsPage({ projectId }: { projectId: string }) {
 
   const tracked = useQuery({
     queryKey: ["trackedQueries", projectId, days],
-    queryFn: () => getTrackedQueries({ data: { projectId, days, limit: 25 } }),
+    queryFn: () =>
+      getTrackedQueries({ data: { projectId, days, limit: PAGE_SIZES[2] } }),
     enabled: sync.isSuccess || sync.isError,
   });
 
@@ -52,7 +58,19 @@ export function RankingsPage({ projectId }: { projectId: string }) {
     enabled: selected !== null,
   });
 
-  const rows = tracked.data?.rows ?? [];
+  const allRows = tracked.data?.rows ?? [];
+  /*
+   * Paginated in the browser over the whole fetched set. The screen used to
+   * ask Google's archive for 25 rows and render them with no pagination and
+   * nothing saying 25 was a cut, while every neighbouring list paginates
+   * and names its total -- so an archive of four hundred queries looked
+   * like an archive of twenty-five.
+   */
+  const [pageSize, setPageSize] = useState<number>(PAGE_SIZES[0]);
+  const [page, setPage] = useState(1);
+  const pageCount = Math.max(1, Math.ceil(allRows.length / pageSize));
+  const current = Math.min(page, pageCount);
+  const rows = allRows.slice((current - 1) * pageSize, current * pageSize);
 
   return (
     <PageShell>
@@ -173,6 +191,28 @@ export function RankingsPage({ projectId }: { projectId: string }) {
             ))}
           </tbody>
         </table>
+        {allRows.length > PAGE_SIZES[0] ? (
+          <TablePagination
+            page={current}
+            pageSize={pageSize}
+            pageSizes={PAGE_SIZES}
+            totalCount={allRows.length}
+            hasNextPage={current < pageCount}
+            isLoading={tracked.isFetching}
+            onPageChange={setPage}
+            onPageSizeChange={(next) => {
+              setPageSize(next);
+              setPage(1);
+            }}
+          />
+        ) : null}
+        {tracked.data?.truncated ? (
+          <p className="border-t border-base-300 px-4 py-2 text-xs text-muted">
+            Arşivde daha fazla sorgu var; bu liste en çok gösterim alan{" "}
+            {formatNumber(allRows.length)} tanesiyle sınırlı. Aralığı daraltarak
+            farklı sorguları görebilirsiniz.
+          </p>
+        ) : null}
       </div>
 
       {selected ? (
@@ -297,149 +337,5 @@ function ArchiveStatus({
           end, not the old one. */}
       {data.hasMore ? " Kalan günler sonraki açılışta tamamlanacak." : ""}
     </p>
-  );
-}
-
-function QueryHistoryCard({
-  query,
-  rows,
-  loading,
-  error,
-  onRetry,
-}: {
-  query: string;
-  rows: {
-    date: string;
-    position: number;
-    clicks: number;
-    impressions: number;
-  }[];
-  loading: boolean;
-  /*
-   * A failed fetch used to fall through to `rows.length === 0` and tell the
-   * operator the archive had nothing for a query the table directly above
-   * had just reported as having hundreds of archived days.
-   */
-  error: unknown;
-  onRetry: () => void;
-}) {
-  if (loading) {
-    return (
-      <div className="flex items-center gap-2 rounded-box border border-base-300 p-4 text-sm text-muted">
-        <Loader2 className="size-4 animate-spin" />
-        Geçmiş yükleniyor…
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="rounded-box border border-base-300">
-        <QueryErrorState
-          compact
-          error={error}
-          onRetry={onRetry}
-          title="Sorgu geçmişi yüklenemedi"
-        />
-      </div>
-    );
-  }
-
-  if (rows.length === 0) {
-    return (
-      <div className="rounded-box border border-base-300 p-4 text-sm text-muted">
-        Bu sorgu için kayıtlı gün yok.
-      </div>
-    );
-  }
-
-  const first = rows[0];
-  const last = rows[rows.length - 1];
-  if (!first || !last) return null;
-  // Lower position numbers are better, so a drop in the number is an
-  // improvement. The arrow follows the ranking, not the arithmetic.
-  const delta = first.position - last.position;
-  const improved = delta > 0;
-
-  return (
-    <div className="space-y-3 rounded-box border border-base-300 bg-base-100 p-4">
-      <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h2 className="text-sm font-semibold">{query}</h2>
-        <span
-          className={`inline-flex items-center gap-1 text-sm font-semibold ${
-            Math.abs(delta) < 0.1
-              ? "text-muted"
-              : improved
-                ? "text-success"
-                : "text-error"
-          }`}
-        >
-          {Math.abs(delta) < 0.1 ? null : improved ? (
-            <TrendingUp className="size-4" />
-          ) : (
-            <TrendingDown className="size-4" />
-          )}
-          {formatDecimal(first.position)} → {formatDecimal(last.position)}
-        </span>
-      </div>
-      <PositionSparkline rows={rows} />
-      <p className="text-xs text-muted">
-        {formatDate(first.date)} – {formatDate(last.date)} · {rows.length} gün
-        kayıtlı
-      </p>
-    </div>
-  );
-}
-
-/**
- * Position over time. Drawn with the y axis inverted, because position 1 is the
- * top of the page: a line going up has to mean the ranking improved.
- */
-function PositionSparkline({
-  rows,
-}: {
-  rows: { date: string; position: number }[];
-}) {
-  if (rows.length < 2) return null;
-
-  const width = 600;
-  const height = 120;
-  const positions = rows.map((row) => row.position);
-  const best = Math.min(...positions);
-  const worst = Math.max(...positions);
-  const span = Math.max(worst - best, 1);
-
-  const points = rows
-    .map((row, index) => {
-      const x = (index / (rows.length - 1)) * width;
-      const y = ((row.position - best) / span) * (height - 16) + 8;
-      // SVG path geometry, not a number anyone reads. A decimal comma
-      // here would be a second coordinate.
-      return `${x.toFixed(1)},${y.toFixed(1)}`;
-    })
-    .join(" ");
-
-  return (
-    <div>
-      <svg
-        viewBox={`0 0 ${width} ${height}`}
-        className="h-28 w-full"
-        role="img"
-        aria-label={`Sıra geçmişi: ${formatDecimal(best)} ile ${formatDecimal(worst)} arasında`}
-      >
-        <polyline
-          points={points}
-          fill="none"
-          className="stroke-primary"
-          strokeWidth={2}
-          strokeLinejoin="round"
-          strokeLinecap="round"
-        />
-      </svg>
-      <div className="flex justify-between text-xs text-muted">
-        <span>En iyi {formatDecimal(best)}</span>
-        <span>En kötü {formatDecimal(worst)}</span>
-      </div>
-    </div>
   );
 }

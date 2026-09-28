@@ -14,11 +14,20 @@ const projectSchema = z.object({ projectId: z.string().min(1) });
  * no bound; this is a limit on response size, not on the idea.
  */
 const MAX_ARCHIVE_DAYS = 1825;
+/** Ceiling for one tracked-queries fetch; the client paginates below it. */
+const TRACKED_QUERY_LIMIT = 500;
 
 const trackedQueriesSchema = projectSchema.extend({
   /** Window in days. 90 covers a quarter, which is where trends become real. */
   days: z.number().int().min(7).max(MAX_ARCHIVE_DAYS).default(90),
-  limit: z.number().int().min(1).max(100).default(25),
+  /*
+   * The screen holds its whole set and paginates in the browser, the way
+   * the search-performance tables do. It used to ask for 25 and show them
+   * with no pagination and nothing saying 25 was a cut -- so an archive of
+   * four hundred queries looked like an archive of twenty-five. These rows
+   * are already aggregated by query in SQLite, so a larger fetch is cheap.
+   */
+  limit: z.number().int().min(1).max(TRACKED_QUERY_LIMIT).default(25),
 });
 
 const queryHistorySchema = projectSchema.extend({
@@ -57,9 +66,15 @@ export const getTrackedQueries = createServerFn({ method: "POST" })
     const rows = await GscHistoryService.getTrackedQueries({
       projectId: context.projectId,
       since: sinceDate(data.days),
-      limit: data.limit,
+      limit: data.limit + 1,
     });
-    return { rows, days: data.days };
+    // One extra row so the screen can say the set was capped instead of
+    // presenting a truncated list as the whole archive.
+    return {
+      rows: rows.slice(0, data.limit),
+      truncated: rows.length > data.limit,
+      days: data.days,
+    };
   });
 
 export const getQueryHistory = createServerFn({ method: "POST" })
