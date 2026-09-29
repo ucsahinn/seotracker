@@ -406,6 +406,7 @@ export function runPageReporters(
   if (page.isIndexable && page.wordCount < THIN_CONTENT_WORDS) {
     report("thin-content", { wordCount: page.wordCount });
   }
+  reportAltQuality(page, report);
   if (page.imagesMissingAlt > 0) {
     report("images-missing-alt", {
       imagesMissingAlt: page.imagesMissingAlt,
@@ -422,4 +423,46 @@ export function runPageReporters(
   }
 
   return issues;
+}
+
+/*
+ * Alt text that exists but does not describe anything.
+ *
+ * `images_json` has carried every src and alt since the analyzer was
+ * written, and only the missing-alt *count* was ever read. An alt of
+ * "IMG_2231.jpg" passes that count and helps nobody: a screen reader
+ * announces the filename, and image search learns nothing.
+ */
+const FILENAME_ALT =
+  /^(?:img[_-]?\d+|dsc[_-]?\d+|photo[_-]?\d+|image[_-]?\d+|screenshot[\s_-]?\d*|untitled[_-]?\d*)(?:\.\w{2,5})?$/i;
+
+/** Roughly where a description stops describing and starts narrating. */
+const ALT_TOO_LONG_CHARS = 250;
+
+function reportAltQuality(page: CrawledPageResult, report: ReportIssue): void {
+  let filenameAlts = 0;
+  let longAlts = 0;
+  let firstFilename: string | null = null;
+
+  for (const image of page.images) {
+    const alt = image.alt?.trim();
+    if (!alt) continue;
+    // Any extension at all, or a camera/screenshot pattern.
+    if (
+      FILENAME_ALT.test(alt) ||
+      /\.(jpe?g|png|gif|webp|avif|svg)$/i.test(alt)
+    ) {
+      filenameAlts += 1;
+      firstFilename ??= alt;
+    } else if (alt.length > ALT_TOO_LONG_CHARS) {
+      longAlts += 1;
+    }
+  }
+
+  if (filenameAlts > 0) {
+    report("alt-is-filename", { count: filenameAlts, example: firstFilename });
+  }
+  if (longAlts > 0) {
+    report("alt-too-long", { count: longAlts, limit: ALT_TOO_LONG_CHARS });
+  }
 }

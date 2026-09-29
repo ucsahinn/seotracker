@@ -257,6 +257,37 @@ const noSubheadings: Fixture = {
     ),
 };
 
+// 36 — alt text that exists but describes nothing -------------------------
+const altIsFilename: Fixture = {
+  path: "/content/alt-filename",
+  category: CAT,
+  name: "Alt text that describes nothing",
+  summary: "Two images name the camera's file; a third narrates a paragraph.",
+  lesson:
+    'A missing-alt check passes here, and nobody is helped: a screen reader announces "IMG_2231 dot jpg" and image search learns nothing about the page.',
+  // Both halves of the same mistake: alt text that is not a description.
+  // One says too little to be one, the other says too much.
+  expectedIssues: ["alt-is-filename", "alt-too-long"],
+  handler: () =>
+    htmlResponse(
+      renderPage({
+        fixture: altIsFilename,
+        title: "Photographs with names instead of descriptions",
+        metaDescription:
+          "The images on this page all carry alt text, and all of it is the filename the camera produced.",
+        bodyHtml: `<h1>Alt text that says nothing</h1>
+<p>${lorem(90)}</p>
+<img src="/img/placeholder.svg" alt="IMG_2231.jpg" width="720" height="360">
+<h2>Why a filename is not a description</h2>
+<p>${lorem(90)}</p>
+<img src="/img/placeholder.svg" alt="DSC0043" width="720" height="360">
+<h2>And the opposite mistake</h2>
+<p>${lorem(90)}</p>
+<img src="/img/placeholder.svg" alt="${lorem(60)}" width="720" height="360">`,
+      }),
+    ),
+};
+
 export const contentFixtures: Fixture[] = [
   thinContent,
   imagesMissingAlt,
@@ -266,4 +297,5 @@ export const contentFixtures: Fixture[] = [
   dupMetaA,
   dupMetaB,
   noSubheadings,
+  altIsFilename,
 ];

@@ -114,4 +114,20 @@ export const CONTENT_ISSUES = {
     howToFix:
       "Metni konularına göre bölüp her bölüme bir H2 verin. Başlıklar içeriği anlatsın; anahtar kelime doldurmak için değil, okuyan kişi nerede olduğunu bilsin diye.",
   },
+  "alt-is-filename": {
+    severity: "info",
+    title: "Görsel alt metni dosya adı",
+    explanation:
+      "Görselin alt metni bir dosya adı ya da kamera çıktısı gibi görünüyor (IMG_2231.jpg, DSC0043, ekran-goruntusu-1.png). Alt metin görseli göremeyen birine ne olduğunu anlatmak içindir; dosya adı bunu anlatmaz. Görsel aramasında da sayfanın ne hakkında olduğunu söyleyen tek sinyal budur.",
+    howToFix:
+      'Görselde ne olduğunu yazın: "kırmızı koltukta oturan kadın" gibi. Sayfayı sesli dinleyen biri o cümleyi duyunca görseli kaçırmamalı. Süs amaçlı görsellerde alt metni boş bırakmak (alt="") doğru olandır.',
+  },
+  "alt-too-long": {
+    severity: "info",
+    title: "Görsel alt metni çok uzun",
+    explanation:
+      "Alt metin 125 karakteri epey aşıyor. Ekran okuyucular alt metni kesmez, sonuna kadar okur; uzun bir alt metin görseli anlatmayı bırakıp paragrafa dönüşür ve dinleyen kişi sayfanın akışını kaybeder.",
+    howToFix:
+      "Görselin ne olduğunu bir cümlede söyleyin. Anlatılacak daha fazla şey varsa onu sayfanın metnine ya da figure altına yazın; orası hem görenlerin hem görmeyenlerin okuduğu yer.",
+  },
 } as const satisfies Record<string, AuditIssueDescriptor>;

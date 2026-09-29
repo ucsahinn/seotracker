@@ -489,3 +489,46 @@ describe("no-subheadings", () => {
     ).not.toContain("no-subheadings");
   });
 });
+
+describe("alt text quality", () => {
+  const withImages = (...alts: Array<string | null>) =>
+    issueTypes(
+      makePage({
+        images: alts.map((alt) => ({ src: "/i.jpg", alt })),
+        imagesTotal: alts.length,
+        imagesMissingAlt: alts.filter((a) => !a).length,
+      }),
+    );
+
+  /*
+   * An alt of "IMG_2231.jpg" passes the missing-alt count and helps nobody:
+   * a screen reader announces the filename and image search learns nothing.
+   */
+  it("reports alt text that is really a filename", () => {
+    expect(withImages("IMG_2231.jpg")).toContain("alt-is-filename");
+    expect(withImages("DSC0043")).toContain("alt-is-filename");
+    expect(withImages("screenshot-2.png")).toContain("alt-is-filename");
+  });
+
+  it("leaves a real description alone", () => {
+    expect(withImages("Kırmızı koltukta oturan kadın")).not.toContain(
+      "alt-is-filename",
+    );
+  });
+
+  // Screen readers do not truncate; a long alt becomes a paragraph.
+  it("reports an alt long enough to stop being a description", () => {
+    expect(withImages("a".repeat(300))).toContain("alt-too-long");
+    expect(withImages("a".repeat(100))).not.toContain("alt-too-long");
+  });
+
+  /*
+   * An empty alt is the correct markup for a decorative image, and a
+   * missing one is already reported by `images-missing-alt`.
+   */
+  it("says nothing about an image with no alt at all", () => {
+    const types = withImages(null, "");
+    expect(types).not.toContain("alt-is-filename");
+    expect(types).not.toContain("alt-too-long");
+  });
+});
