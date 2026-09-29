@@ -89,4 +89,19 @@ describe("buildAuditReportHtml", () => {
     expect(title.length).toBeLessThanOrEqual(120);
     expect(summary.length).toBeLessThanOrEqual(2500);
   });
+
+  /*
+   * Every attribute in the document is double-quoted today. A single-quoted
+   * one added later would be a hole nobody would think to look for, so the
+   * escaper covers it and this test keeps it covering it.
+   */
+  it("escapes both quote styles and the slash", () => {
+    const { html } = buildAuditReportHtml(
+      input({ siteUrl: `https://example.com/'"</script>` }),
+    );
+
+    expect(html).not.toContain("</script>");
+    expect(html).toContain("&#39;");
+    expect(html).toContain("&#47;");
+  });
 });

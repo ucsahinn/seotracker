@@ -1,4 +1,15 @@
 import { sort } from "remeda";
+/*
+ * The app's one formatting module, not a second copy.
+ *
+ * It lives under `client/` but imports nothing and touches no browser API;
+ * it is the tr-TR locale rules, which the report needs for exactly the
+ * reason every screen does. Its date parser also handles SQLite's
+ * timezone-less stamps as UTC -- the local `new Date(...)` this file used
+ * read them as local time, so the report's dates shifted with the
+ * container's timezone.
+ */
+import { formatCount, formatDate, formatDateTime } from "@/client/lib/format";
 import {
   getIssueDescriptor,
   ISSUE_SEVERITY_ORDER,
@@ -66,17 +77,6 @@ const SEVERITY_COLOR: Record<IssueSeverity, string> = {
   info: "#5b6472",
 };
 
-/** Turkish, like every other surface a person reads in this app. */
-const dateFormatter = new Intl.DateTimeFormat("tr-TR", {
-  day: "numeric",
-  month: "long",
-  year: "numeric",
-  hour: "2-digit",
-  minute: "2-digit",
-});
-
-const numberFormatter = new Intl.NumberFormat("tr-TR");
-
 export function buildAuditReportHtml(
   input: AuditReportInput,
 ): AuditReportDocument {
@@ -89,12 +89,12 @@ export function buildAuditReportHtml(
 
   const title = `${host} site denetimi - ${formatDate(input.completedAt ?? input.startedAt)}`;
   const summary = [
-    `${host} için ${numberFormatter.format(input.pagesCrawled)} sayfa tarandı.`,
+    `${host} için ${formatCount(input.pagesCrawled)} sayfa tarandı.`,
     counts.total === 0
       ? "Kayıtlı sorun yok."
-      : `${numberFormatter.format(counts.total)} sorun türü bulundu: ${numberFormatter.format(counts.critical)} kritik, ${numberFormatter.format(counts.warning)} uyarı, ${numberFormatter.format(counts.info)} bilgi.`,
+      : `${formatCount(counts.total)} sorun türü bulundu: ${formatCount(counts.critical)} kritik, ${formatCount(counts.warning)} uyarı, ${formatCount(counts.info)} bilgi.`,
     groups.length > 0
-      ? `En çok sayfayı etkileyen: ${groups[0].title} (${numberFormatter.format(groups[0].pageCount)} sayfa).`
+      ? `En çok sayfayı etkileyen: ${groups[0].title} (${formatCount(groups[0].pageCount)} sayfa).`
       : "",
   ]
     .filter(Boolean)
@@ -117,10 +117,10 @@ export function buildAuditReportHtml(
   </header>
 
   <section class="cards">
-    ${card("Taranan sayfa", numberFormatter.format(input.pagesCrawled))}
-    ${card("Kritik sorun türü", numberFormatter.format(counts.critical), counts.critical > 0 ? "critical" : undefined)}
-    ${card("Uyarı", numberFormatter.format(counts.warning), counts.warning > 0 ? "warning" : undefined)}
-    ${card("Ortalama yanıt", stats.avgResponseMs === null ? "--" : `${numberFormatter.format(stats.avgResponseMs)} ms`)}
+    ${card("Taranan sayfa", formatCount(input.pagesCrawled))}
+    ${card("Kritik sorun türü", formatCount(counts.critical), counts.critical > 0 ? "critical" : undefined)}
+    ${card("Uyarı türü", formatCount(counts.warning), counts.warning > 0 ? "warning" : undefined)}
+    ${card("Ortalama yanıt", stats.avgResponseMs === null ? "--" : `${formatCount(stats.avgResponseMs)} ms`)}
   </section>
 
   ${indexabilitySection(stats, input.pagesCrawled)}
@@ -257,12 +257,12 @@ function indexabilitySection(
           ([label, value]) => `<tr>
         <th scope="row">${escapeHtml(label)}</th>
         <td class="bar-cell"><span class="bar" style="width:${percent(value, crawled)}%"></span></td>
-        <td class="num">${numberFormatter.format(value)}</td>
+        <td class="num">${formatCount(value)}</td>
       </tr>`,
         )
         .join("")}
     </table>
-    <p class="note">${numberFormatter.format(crawled)} taranan sayfaya oranla.</p>
+    <p class="note">${formatCount(crawled)} taranan sayfaya oranla.</p>
   </section>`;
 }
 
@@ -283,7 +283,7 @@ function issuesSection(groups: IssueGroup[]) {
       <div class="issue-head">
         <span class="chip chip--${group.severity}">${SEVERITY_LABEL[group.severity]}</span>
         <h3>${escapeHtml(group.title)}</h3>
-        <span class="issue-count">${numberFormatter.format(group.pageCount)} sayfa</span>
+        <span class="issue-count">${formatCount(group.pageCount)} sayfa</span>
       </div>
       <div class="issue-bar"><span style="width:${percent(group.pageCount, max)}%;background:${SEVERITY_COLOR[group.severity]}"></span></div>
       ${group.explanation ? `<p>${escapeHtml(group.explanation)}</p>` : ""}
@@ -303,14 +303,14 @@ function lighthouseSection(summary: ReturnType<typeof describeLighthouse>) {
   ];
   return `<section>
     <h2>Hız ölçümü</h2>
-    <p class="note">${numberFormatter.format(summary.measured)} sayfa mobilde ölçüldü. Ortalama tek bir sayı olarak "her sayfa orta" ile "yarısı mükemmel yarısı felaket"i aynı gösterdiği için dağılım veriliyor.</p>
+    <p class="note">${formatCount(summary.measured)} sayfa mobilde ölçüldü. Ortalama tek bir sayı olarak "her sayfa orta" ile "yarısı mükemmel yarısı felaket"i aynı gösterdiği için dağılım veriliyor.</p>
     <table class="bars">
       ${rows
         .map(
           ([label, value, color]) => `<tr>
         <th scope="row">${escapeHtml(label)}</th>
         <td class="bar-cell"><span class="bar" style="width:${percent(value, summary.measured)}%;background:${color}"></span></td>
-        <td class="num">${numberFormatter.format(value)}</td>
+        <td class="num">${formatCount(value)}</td>
       </tr>`,
         )
         .join("")}
@@ -334,7 +334,7 @@ function slowestSection(pages: AuditReportInput["pages"]) {
           .map(
             (page) => `<tr>
           <td class="url">${escapeHtml(page.url)}</td>
-          <td class="num">${numberFormatter.format(page.responseTimeMs ?? 0)} ms</td>
+          <td class="num">${formatCount(page.responseTimeMs ?? 0)} ms</td>
         </tr>`,
           )
           .join("")}
@@ -356,33 +356,25 @@ function hostOf(url: string): string {
   }
 }
 
-function formatDateTime(value: string): string {
-  const date = new Date(value);
-  return Number.isNaN(date.getTime()) ? value : dateFormatter.format(date);
-}
-
-function formatDate(value: string): string {
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return value;
-  return new Intl.DateTimeFormat("tr-TR", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  }).format(date);
-}
-
 /*
  * Every interpolated value goes through this. Page titles, meta descriptions
  * and URLs come from crawled third-party HTML, so the report is assembling a
  * document out of somebody else's input.
  */
 function escapeHtml(value: string): string {
+  /*
+   * Both quote styles and the slash. Every attribute in this file is
+   * double-quoted today, so `'` is belt and braces -- but a single-quoted
+   * one added later would be a hole nobody would think to look for, and
+   * `/` closes the `</script>`-inside-a-string case the same way.
+   */
   return value
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
+    .replace(/'/g, "&#39;")
+    .replace(/\//g, "&#47;");
 }
 
 const STYLES = `
