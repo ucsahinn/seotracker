@@ -194,4 +194,12 @@ export const CRAWL_ISSUES = {
     howToFix:
       "Bağlantıyı yönlendirmenin vardığı adresle değiştirin. Yönlendirme kalsın -- dışarıdan gelen bağlantılar için gerekli; düzeltilecek olan kendi sitenizin içinden verdiğiniz adres.",
   },
+  "mixed-content-resource": {
+    severity: "critical",
+    title: "Güvenli sayfada güvensiz kaynak",
+    explanation:
+      "https ile sunulan bu sayfa, http ile yüklenen bir betik veya stil dosyası istiyor. Tarayıcılar bunu engeller: betik hiç çalışmaz, stil hiç uygulanmaz. Google'ın işleyicisi de aynısını yapar, yani dizine aldığı sayfa sizin gördüğünüz sayfa değildir. Adres çubuğundaki kilit de kırılır.",
+    howToFix:
+      "Kaynağın adresini https'e çevirin. Kaynak https sunmuyorsa kendi sunucunuza alın ya da https sunan bir alternatifle değiştirin; protokolsüz (//) yazmak da çalışır ama adresi açıkça https yapmak daha nettir.",
+  },
 } as const satisfies Record<string, AuditIssueDescriptor>;

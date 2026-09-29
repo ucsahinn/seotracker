@@ -383,6 +383,18 @@ export function runPageReporters(
      which on a client-rendered site is an empty shell. Same-origin only:
      judging a third-party CDN would need that host's robots.txt. */
   if (isAllowed) {
+    /*
+     * Blocked by the browser rather than by robots.txt, and blocked
+     * outright: the script never runs, so the page Google renders is not
+     * the page an http visitor sees. Critical for that reason, not for
+     * the padlock.
+     */
+    if (page.insecureResources.length > 0) {
+      report("mixed-content-resource", {
+        count: page.insecureResources.length,
+        example: page.insecureResources[0],
+      });
+    }
     const blocked = page.resources.filter((url) => !isAllowed(url));
     if (blocked.length > 0) {
       report("blocked-resource", {

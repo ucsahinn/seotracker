@@ -243,6 +243,7 @@ export async function crawlPage(
       hasStructuredData: analysis.hasStructuredData,
       viewport: analysis.viewport,
       resources: analysis.resources,
+      insecureResources: analysis.insecureResources,
       /* Resolved against the page, the same way the canonical is. A
          return-tag check compares hrefs, and a relative href would never
          match the absolute URL of the page it names. */
@@ -356,6 +357,7 @@ function emptyPageResult(input: {
     hasStructuredData: false,
     viewport: null,
     resources: [],
+    insecureResources: [],
     hreflangAlternates: [],
     isIndexable: false,
     responseTimeMs: input.responseTimeMs,

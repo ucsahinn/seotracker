@@ -108,6 +108,15 @@ export interface PageAnalysis {
    * no column, because nothing reads the list back.
    */
   resources: string[];
+  /**
+   * `http:` scripts and stylesheets on an `https:` page.
+   *
+   * Separate from `resources`, which is same-origin by definition and so
+   * can never hold one: a different scheme is a different origin, and the
+   * filter dropped exactly the case worth reporting. Carried to the
+   * reporter and no further, like `resources`.
+   */
+  insecureResources: string[];
 
   // Hreflang
   /**
@@ -202,6 +211,15 @@ export interface CrawledPageResult {
    * no column, because nothing reads the list back.
    */
   resources: string[];
+  /**
+   * `http:` scripts and stylesheets on an `https:` page.
+   *
+   * Separate from `resources`, which is same-origin by definition and so
+   * can never hold one: a different scheme is a different origin, and the
+   * filter dropped exactly the case worth reporting. Carried to the
+   * reporter and no further, like `resources`.
+   */
+  insecureResources: string[];
   hreflangAlternates: HreflangAlternate[];
   isIndexable: boolean;
   responseTimeMs: number;

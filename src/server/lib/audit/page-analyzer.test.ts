@@ -152,6 +152,7 @@ function analyzeHtmlWithCheerio(html: string, pageUrl: string): PageAnalysis {
     hasStructuredData,
     viewport: viewport === undefined ? null : viewport.trim(),
     resources,
+    insecureResources: [],
     hreflangAlternates,
   };
 }
@@ -346,5 +347,48 @@ describe("canonical counting", () => {
     );
 
     expect(analysis.canonicalCount).toBe(1);
+  });
+});
+
+describe("mixed content", () => {
+  /*
+   * `resources` is same-origin by definition, and a different scheme is a
+   * different origin — so the filter dropped exactly the case worth
+   * reporting. These go in their own list.
+   */
+  it("collects an http script on an https page", () => {
+    const analysis = analyzeHtml(
+      `<html><head><script src="http://example.com/a.js"></script></head><body>x</body></html>`,
+      "https://example.com/a",
+      200,
+      0,
+    );
+
+    expect(analysis.insecureResources).toEqual(["http://example.com/a.js"]);
+    expect(analysis.resources).toEqual([]);
+  });
+
+  it("says nothing about an http resource on an http page", () => {
+    const analysis = analyzeHtml(
+      `<html><head><script src="http://example.com/a.js"></script></head><body>x</body></html>`,
+      "http://example.com/a",
+      200,
+      0,
+    );
+
+    expect(analysis.insecureResources).toEqual([]);
+  });
+
+  // A cross-origin https resource is neither insecure nor judgeable here.
+  it("leaves a secure third-party resource out of both lists", () => {
+    const analysis = analyzeHtml(
+      `<html><head><script src="https://cdn.other.com/a.js"></script></head><body>x</body></html>`,
+      "https://example.com/a",
+      200,
+      0,
+    );
+
+    expect(analysis.insecureResources).toEqual([]);
+    expect(analysis.resources).toEqual([]);
   });
 });

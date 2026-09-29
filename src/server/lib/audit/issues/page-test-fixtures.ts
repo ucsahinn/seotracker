@@ -54,6 +54,7 @@ export function makeCrawledPage(
     hasStructuredData: false,
     viewport: "width=device-width, initial-scale=1",
     resources: [],
+    insecureResources: [],
     hreflangAlternates: [],
     isIndexable: true,
     responseTimeMs: 200,

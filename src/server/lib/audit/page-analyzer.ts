@@ -79,6 +79,7 @@ export function analyzeHtml(
   let ogImage: string | null = null;
   let hasStructuredData = false;
   const canonicalTargets = new Set<string>();
+  const insecureResources: string[] = [];
   let viewport: string | null = null;
   const resources: string[] = [];
   const hreflangAlternates: HreflangAlternate[] = [];
@@ -140,7 +141,21 @@ export function analyzeHtml(
   const collectResource = (raw: string | undefined) => {
     if (!raw || resources.length >= MAX_EXTRACTED_RESOURCES) return;
     const resolved = normalizeUrl(raw, pageUrl);
-    if (!resolved || !isSameOrigin(resolved, pageUrl)) return;
+    if (!resolved) return;
+    /*
+     * An http resource on an https page, before the same-origin test drops
+     * it -- and it always does, because a different scheme is a different
+     * origin. Browsers block these outright, so the script never runs and
+     * the stylesheet never applies; Google's renderer does the same, which
+     * means the page it indexes is not the page you see over http.
+     */
+    if (isInsecureOn(resolved, pageUrl)) {
+      if (!insecureResources.includes(resolved)) {
+        insecureResources.push(resolved);
+      }
+      return;
+    }
+    if (!isSameOrigin(resolved, pageUrl)) return;
     if (!resources.includes(resolved)) resources.push(resolved);
   };
 
@@ -349,6 +364,22 @@ export function analyzeHtml(
     canonicalCount: canonicalTargets.size,
     viewport,
     resources,
+    insecureResources,
     hreflangAlternates,
   };
+}
+
+/*
+ * An `http:` subresource on an `https:` page. Same-host or not: the browser
+ * blocks it either way, and the reader's question is the same.
+ */
+function isInsecureOn(resourceUrl: string, pageUrl: string): boolean {
+  try {
+    return (
+      new URL(pageUrl).protocol === "https:" &&
+      new URL(resourceUrl).protocol === "http:"
+    );
+  } catch {
+    return false;
+  }
 }
