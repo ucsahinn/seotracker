@@ -21,7 +21,14 @@ export function SortableHeader({
   const content = (
     <button
       type="button"
-      className="inline-flex items-center gap-1 font-medium transition-colors hover:text-base-content"
+      /*
+       * `min-h-6` and the negative margin: the label's own line box is 17px
+       * tall, which is under the 24 CSS px WCAG 2.2 SC 2.5.8 asks of a
+       * target. The padding grows the hit area without moving the text, and
+       * the margin takes the space back out of the header row so the table
+       * does not get taller.
+       */
+      className="-my-1 inline-flex min-h-6 items-center gap-1 py-1 font-medium transition-colors hover:text-base-content"
       onClick={column.getToggleSortingHandler()}
       /* Direction lives in `aria-sort` on the cell; this names the action. */
       aria-label={
