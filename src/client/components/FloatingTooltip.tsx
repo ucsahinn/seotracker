@@ -52,10 +52,22 @@ export function useFloatingTooltip<T extends HTMLElement>({
      */
     const HALF = 128;
     const EDGE = 8;
-    const left = Math.min(
-      Math.max(rect.left + rect.width / 2, HALF + EDGE),
-      window.innerWidth - HALF - EDGE,
-    );
+    const centre = rect.left + rect.width / 2;
+    /*
+     * On a viewport too narrow to hold the panel with a margin on both
+     * sides, the two clamps below cross and `min` wins -- which pinned the
+     * tip to one fixed spot regardless of which trigger opened it. There is
+     * no position that satisfies both, so centre it and let it use the
+     * width it has.
+     */
+    const room = window.innerWidth - 2 * (HALF + EDGE);
+    const left =
+      room <= 0
+        ? window.innerWidth / 2
+        : Math.min(
+            Math.max(centre, HALF + EDGE),
+            window.innerWidth - HALF - EDGE,
+          );
     const fitsAbove = rect.top > 120;
     setPosition({
       top: fitsAbove ? rect.top - 8 : rect.bottom + 8,
