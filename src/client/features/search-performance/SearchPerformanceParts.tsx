@@ -40,6 +40,8 @@ import {
   type SearchPerformanceTableDimension,
 } from "@/types/schemas/search-performance";
 import { saveKeywords } from "@/serverFunctions/savedKeywords";
+import { Search, Target } from "lucide-react";
+import { EmptyState } from "@/client/components/EmptyState";
 
 export type Tab = "striking" | "queries" | "pages" | "cannibalization";
 export type ExportTarget = "csv" | "sheets";
@@ -183,9 +185,12 @@ export function DimensionTable({
   hasActiveFilter,
   search,
   onSearchChange,
+  onSaveKeyword,
 }: {
   rows: SearchPerformanceTableRow[];
   keyLabel: string;
+  /** Absent on the Sayfalar tab: a page is not a keyword. */
+  onSaveKeyword?: (keyword: string) => void;
   /** The fetch hit its ceiling, so this is not the whole dimension. */
   truncated: boolean;
   /** Changes what an empty table means, and therefore what to say about it. */
@@ -194,7 +199,10 @@ export function DimensionTable({
   search: string;
   onSearchChange: (next: string) => void;
 }) {
-  const columns = useMemo(() => buildDimensionColumns(keyLabel), [keyLabel]);
+  const columns = useMemo(
+    () => buildDimensionColumns(keyLabel, onSaveKeyword),
+    [keyLabel, onSaveKeyword],
+  );
   /*
    * Narrowed here rather than at the server: the whole dimension is already
    * in memory (Google returns it in one call), and a thousand-row table with
@@ -252,13 +260,27 @@ export function DimensionTable({
         className="table table-zebra table-sm"
         wrapperClassName="overflow-x-auto"
         empty={
-          <p className="p-6 text-sm text-muted">
-            {needle
-              ? `"${search}" ile eşleşen satır yok.`
-              : hasActiveFilter
-                ? "Bu filtrelerle eşleşen satır yok. Filtreleri genişletmeyi deneyin."
-                : "Bu dönem için henüz veri yok. Search Console verisi birkaç gün gecikmeli gelir."}
-          </p>
+          /* The copy already distinguished the three reasons; this gives it
+             the component -- the icon medallion, the constrained measure,
+             and room for an action. */
+          <EmptyState
+            compact
+            icon={Search}
+            title={
+              needle
+                ? "Aramanıza uyan satır yok"
+                : hasActiveFilter
+                  ? "Bu filtrelerle eşleşen satır yok"
+                  : "Bu dönem için henüz veri yok"
+            }
+            description={
+              needle
+                ? `"${search}" hiçbir satırda geçmiyor. Aramayı temizleyin ya da başka bir terim deneyin.`
+                : hasActiveFilter
+                  ? "Cihaz ya da ülke filtresini genişletmeyi deneyin."
+                  : "Search Console verisi birkaç gün gecikmeli gelir; mülk yeni bağlandıysa birkaç gün sürebilir."
+            }
+          />
         }
       />
       {visible.length > 0 ? (
@@ -362,10 +384,12 @@ export function StrikingDistanceTable({
 
   if (rows.length === 0) {
     return (
-      <p className="p-6 text-sm text-muted">
-        Bu dönemde eşiğe yakın sorgu yok. Bunlar 5 ile 20. sıra arasındaki,
-        iyileştirmenin trafiğe en çok dokunacağı sorgulardır.
-      </p>
+      <EmptyState
+        compact
+        icon={Target}
+        title="Bu dönemde eşiğe yakın sorgu yok"
+        description="Bunlar 5 ile 20. sıra arasındaki, iyileştirmenin trafiğe en çok dokunacağı sorgulardır."
+      />
     );
   }
 

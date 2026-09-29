@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { DimensionTable } from "./SearchPerformanceParts";
 import type { SearchPerformanceTableRow } from "./SearchPerformanceColumns";
 
@@ -176,6 +176,66 @@ describe("DimensionTable search", () => {
       />,
     );
 
-    expect(screen.getByText(/"bulunamaz" ile eşleşen satır yok/)).toBeDefined();
+    // The invariant is that the *search term* is named, not that the
+    // filters are described: those are different reasons for an empty table
+    // and they need different fixes from the reader.
+    expect(screen.getByText(/bulunamaz/)).toBeDefined();
+    expect(screen.getByText(/Aramanıza uyan satır yok/)).toBeDefined();
+  });
+});
+
+/*
+ * Sorgular is where an operator actually browses queries, and it was the one
+ * table in the app a keyword could not be saved from -- the round trip only
+ * went one way: Kayıtlı Kelimeler could send you here, nothing could send
+ * anything back.
+ */
+describe("DimensionTable row actions", () => {
+  const rows = [row("kasa yazılımı", 10, 100)];
+
+  it("offers saving a query as a keyword when the tab supports it", () => {
+    const onSaveKeyword = vi.fn();
+    render(
+      <DimensionTable
+        rows={rows}
+        keyLabel="Sorgu"
+        truncated={false}
+        hasActiveFilter={false}
+        search=""
+        onSearchChange={() => {}}
+        onSaveKeyword={onSaveKeyword}
+      />,
+    );
+
+    fireEvent.click(
+      screen.getByRole("button", { name: /kasa yazılımı için işlemler/ }),
+    );
+    fireEvent.click(screen.getByText("Kelime olarak kaydet"));
+
+    expect(onSaveKeyword).toHaveBeenCalledWith("kasa yazılımı");
+  });
+
+  /*
+   * Saving a page as a keyword makes no sense, so the Sayfalar tab passes no
+   * handler and the item is absent rather than disabled -- a disabled item
+   * reads as "broken", not as "not applicable here".
+   */
+  it("leaves the save item out when the tab does not support it", () => {
+    render(
+      <DimensionTable
+        rows={rows}
+        keyLabel="Sayfa"
+        truncated={false}
+        hasActiveFilter={false}
+        search=""
+        onSearchChange={() => {}}
+      />,
+    );
+
+    fireEvent.click(
+      screen.getByRole("button", { name: /kasa yazılımı için işlemler/ }),
+    );
+
+    expect(screen.queryByText("Kelime olarak kaydet")).toBeNull();
   });
 });

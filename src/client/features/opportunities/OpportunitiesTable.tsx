@@ -17,6 +17,8 @@ import {
   formatPercent,
 } from "@/client/lib/format";
 import type { OpportunityReport } from "@/client/features/opportunities/report";
+import { Target } from "lucide-react";
+import { EmptyState } from "@/client/components/EmptyState";
 
 /*
  * The three parts a score is made of, at the weights that make it.
@@ -183,7 +185,15 @@ export function OpportunitiesTable({
         className="table table-sm"
         wrapperClassName="overflow-x-auto"
         empty={
-          <p className="p-6 text-sm text-muted">Gösterilecek satır yok.</p>
+          /* Reachable in normal use: pick a position band with rows, then
+             change the window. "Gösterilecek satır yok." with no reason and
+             no way back was the whole of it. */
+          <EmptyState
+            compact
+            icon={Target}
+            title="Gösterilecek satır yok"
+            description="Seçili sıra bandında bu dönem için fırsat çıkmadı. Bandı kaldırmayı ya da dönemi genişletmeyi deneyin."
+          />
         }
       />
     </div>

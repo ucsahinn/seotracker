@@ -8,6 +8,7 @@ import { Link } from "@tanstack/react-router";
 import {
   keepPreviousData,
   queryOptions,
+  useMutation,
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
@@ -27,6 +28,7 @@ import {
 } from "@/client/features/search-performance/SearchPerformanceParts";
 import { CannibalizationTable } from "@/client/features/search-performance/CannibalizationTable";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
+import { saveKeywords } from "@/serverFunctions/savedKeywords";
 import { describeWindow } from "@/shared/dataFreshness";
 import { formatCountry, formatDate } from "@/client/lib/format";
 import {
@@ -150,6 +152,25 @@ export function SearchPerformancePage({
   }) => void;
 }) {
   const queryClient = useQueryClient();
+  /*
+   * One keyword from a row menu. The bulk path on the striking-distance tab
+   * already existed; this is the same server call for the single row an
+   * operator is looking at, so the Sorgular tab stops being the one place a
+   * keyword cannot be saved.
+   */
+  const saveOne = useMutation({
+    mutationFn: (keyword: string) =>
+      saveKeywords({ data: { projectId, keywords: [keyword] } }),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: ["savedKeywords", projectId],
+      });
+      toast.success("Kelime kayıtlı");
+    },
+    onError: (error) => {
+      toast.error(getStandardErrorMessage(error, "Kelime kaydedilemedi"));
+    },
+  });
   const setTab = (next: Tab) => onViewChange({ tab: next });
 
   const filterInput = buildFilterInput(range, device, country);
@@ -368,8 +389,13 @@ export function SearchPerformancePage({
                   country={country}
                 />
               ) : tableQuery.isPending ? (
-                <div className="flex items-center gap-2 p-8 text-sm text-muted">
-                  <Loader2 className="size-4 animate-spin" /> Yükleniyor…
+                /* Shaped like the table that is coming, per the house rule:
+                   a spinner in an empty box tells the reader nothing about
+                   what is about to appear or how tall it will be. */
+                <div className="space-y-2 p-4" aria-busy>
+                  {Array.from({ length: 8 }, (_, index) => (
+                    <div key={index} className="skeleton h-10" />
+                  ))}
                 </div>
               ) : tableQuery.isError ? (
                 <div className="p-4">
@@ -386,6 +412,11 @@ export function SearchPerformancePage({
                     <DimensionTable
                       rows={tableRows}
                       keyLabel={tab === "queries" ? "Sorgu" : "Sayfa"}
+                      onSaveKeyword={
+                        tab === "queries"
+                          ? (keyword) => saveOne.mutate(keyword)
+                          : undefined
+                      }
                       truncated={tableTruncated}
                       hasActiveFilter={Boolean(device ?? country)}
                       search={query}

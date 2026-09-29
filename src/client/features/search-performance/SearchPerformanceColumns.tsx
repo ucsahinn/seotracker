@@ -9,6 +9,9 @@ import type {
   getSearchPerformanceTable,
 } from "@/serverFunctions/searchPerformance";
 import { UrlCell } from "@/client/components/table/UrlCell";
+import { RowActions } from "@/client/components/table/RowActions";
+import { getSafeExternalUrl } from "@/client/components/table/url";
+import { BookmarkPlus, Copy, ExternalLink } from "lucide-react";
 
 export type Report = Extract<
   Awaited<ReturnType<typeof getSearchPerformanceReport>>,
@@ -30,6 +33,12 @@ const dimensionHelper = createColumnHelper<DimensionRow>();
 
 export function buildDimensionColumns(
   keyLabel: string,
+  /*
+   * Present on the Sorgular tab, absent on Sayfalar. Saving a page as a
+   * keyword makes no sense, so the column adapts rather than showing a
+   * disabled item -- which reads as "broken" rather than "not applicable".
+   */
+  onSaveKeyword?: (keyword: string) => void,
 ): ColumnDef<DimensionRow>[] {
   return [
     dimensionHelper.accessor("key", {
@@ -77,6 +86,55 @@ export function buildDimensionColumns(
         <SortableHeader column={column} label="Sıra" align="right" />
       ),
       cell: ({ getValue }) => formatDecimal(getValue()),
+      meta: rightAligned,
+    }),
+    /*
+     * Row actions, which only the striking-distance tab had. Sorgular is
+     * where an operator actually browses queries, and it was the one place
+     * a keyword could not be saved -- the round trip only went one way:
+     * Kayıtlı Kelimeler could send you here, nothing could send anything
+     * back.
+     */
+    dimensionHelper.display({
+      id: "actions",
+      header: () => null,
+      cell: ({ row }) => {
+        const value = row.original.key;
+        const isUrl = /^https?:\/\//.test(value);
+        return (
+          <RowActions
+            label={`${value} için işlemler`}
+            actions={[
+              ...(isUrl
+                ? [
+                    {
+                      label: "Sayfayı yeni sekmede aç",
+                      icon: ExternalLink,
+                      onSelect: () => {
+                        const safe = getSafeExternalUrl(value);
+                        if (safe) window.open(safe, "_blank", "noopener");
+                      },
+                    },
+                  ]
+                : []),
+              {
+                label: isUrl ? "Adresi kopyala" : "Kelimeyi kopyala",
+                icon: Copy,
+                onSelect: () => void navigator.clipboard.writeText(value),
+              },
+              ...(!isUrl && onSaveKeyword
+                ? [
+                    {
+                      label: "Kelime olarak kaydet",
+                      icon: BookmarkPlus,
+                      onSelect: () => onSaveKeyword(value),
+                    },
+                  ]
+                : []),
+            ]}
+          />
+        );
+      },
       meta: rightAligned,
     }),
   ];

@@ -10,12 +10,18 @@ import * as React from "react";
  *
  *   "wide"    tables, charts, dashboards. Fills the display.
  *   "reading" forms and prose. A 1344px-wide text field is not a feature.
+ *   "fill"    one element that must own the height, such as the report
+ *             viewer's iframe. It needs `h-full`, which the bottom padding
+ *             and the centring max-width fight -- and the alternative was a
+ *             fourth padding written out by hand in that one route, which is
+ *             how the app got nine widths the first time.
  */
-type ShellWidth = "wide" | "reading";
+type ShellWidth = "wide" | "reading" | "fill";
 
 const WIDTH_CLASS: Record<ShellWidth, string> = {
   wide: "max-w-(--container-page)",
   reading: "max-w-3xl",
+  fill: "max-w-none h-full min-h-0",
 };
 
 export function PageShell({
@@ -27,7 +33,13 @@ export function PageShell({
 }) {
   return (
     // The outer scroll container belongs to the app shell, not to this.
-    <div className="px-4 py-5 pb-10 md:px-8 md:py-7">
+    <div
+      className={
+        width === "fill"
+          ? "flex h-full min-h-0 flex-col px-4 py-5 md:px-8 md:py-7"
+          : "px-4 py-5 pb-10 md:px-8 md:py-7"
+      }
+    >
       <div className={`mx-auto flex flex-col gap-6 ${WIDTH_CLASS[width]}`}>
         {children}
       </div>

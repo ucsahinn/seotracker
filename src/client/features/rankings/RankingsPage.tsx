@@ -5,7 +5,7 @@ import { formatDate, formatDecimal, formatNumber } from "@/client/lib/format";
 import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { AlertCircle, Loader2 } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 import { SortableHeader } from "@/client/components/table/SortableHeader";
 import { describeWindow } from "@/shared/dataFreshness";
 import { TrendingUp } from "lucide-react";
@@ -382,12 +382,13 @@ function ArchiveStatus({
   };
 }) {
   if (sync.isLoading) {
-    return (
-      <div className="flex items-center gap-2 text-sm text-muted">
-        <Loader2 className="size-4 animate-spin" />
-        Arşiv güncelleniyor…
-      </div>
-    );
+    /*
+     * A line of text where a line of text is coming. `ArchiveStatus` renders
+     * one sentence, so a skeleton of the same shape is the honest
+     * placeholder -- and unlike the spinner it does not claim motion the
+     * archive sync may not have.
+     */
+    return <div className="skeleton h-4 w-72" aria-busy />;
   }
 
   // An unexpected server error used to render nothing at all, leaving the

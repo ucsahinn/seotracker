@@ -9,6 +9,10 @@ import { OrganicTrendPanel } from "@/client/features/analytics/OrganicTrendPanel
 import { MeasurementHealthPanel } from "@/client/features/analytics/MeasurementHealthPanel";
 import { formatCount, formatDate, formatPercent } from "@/client/lib/format";
 import { getGa4Report } from "@/serverFunctions/ga4Reports";
+import { TableExportMenu } from "@/client/components/table/TableBulkActionBar";
+import { UrlCell } from "@/client/components/table/UrlCell";
+import { buildCsv, downloadCsv, type CsvValue } from "@/client/lib/csv";
+import { exportTableToSheets } from "@/client/lib/exportToSheets";
 import { SortableHeader } from "@/client/components/table/SortableHeader";
 import {
   compareText,
@@ -283,6 +287,41 @@ function ReportTable({
         {result.thresholded ? " · eşik altı satırlar gizlendi" : ""}
       </p>
 
+      {/*
+       * Export, which this screen -- the densest tabular data in the app --
+       * was the only one without. The rows are the ones on screen, in the
+       * order on screen, so a download matches what was exported from.
+       */}
+      {result.rows.length > 0 ? (
+        <div className="flex justify-end">
+          <TableExportMenu
+            buttonClassName="btn btn-ghost btn-sm gap-1"
+            actions={[
+              {
+                label: `Sheets'e aktar (${formatCount(rows.length)} satır)`,
+                onClick: () =>
+                  void exportTableToSheets({
+                    headers: columns.map(columnLabel),
+                    rows: toCsvRows(rows, columns),
+                    feature: "ga4_report",
+                  }),
+              },
+              {
+                label: `CSV (${formatCount(rows.length)} satır)`,
+                onClick: () =>
+                  downloadCsv(
+                    "analytics.csv",
+                    buildCsv(
+                      columns.map(columnLabel),
+                      toCsvRows(rows, columns),
+                    ),
+                  ),
+              },
+            ]}
+          />
+        </div>
+      ) : null}
+
       {result.rows.length === 0 ? (
         <div className="rounded-box border border-base-300 bg-base-100">
           <EmptyState
@@ -323,6 +362,7 @@ function ReportTable({
                 <tr key={rowIndex}>
                   {columns.map((field, index) => {
                     const isDimension = index < result.dimensions.length;
+                    const target = urlFor(field, row);
                     return (
                       <td
                         key={field}
@@ -335,7 +375,17 @@ function ReportTable({
                           isDimension ? String(row[field] ?? "") : undefined
                         }
                       >
-                        {cellValue(field, row[field] ?? null)}
+                        {/* Reachable, like every other URL column in the
+                            app. These were truncated strings with a tooltip
+                            -- no open, no copy, no way through. */}
+                        {target ? (
+                          <UrlCell
+                            url={target}
+                            label={String(row[field] ?? "")}
+                          />
+                        ) : (
+                          cellValue(field, row[field] ?? null)
+                        )}
                       </td>
                     );
                   })}
@@ -362,4 +412,35 @@ function compareReportCells(
   if (b === null) return -1;
   if (isDimension) return compareText(String(a), String(b));
   return Number(a) - Number(b);
+}
+
+/** The GA4 dimensions that are paths, and the one that carries their host. */
+const PATH_DIMENSIONS = new Set(["landingPage", "pagePath"]);
+
+/**
+ * A full address for a path cell, or null when it is not one.
+ *
+ * GA4 reports the path and the host as separate dimensions, so neither is a
+ * link on its own -- which is why these cells were dead text. Both reports
+ * that carry a path ask for `hostName` beside it, so joining them is the
+ * whole job.
+ */
+function urlFor(
+  field: string,
+  row: Record<string, string | number | null>,
+): string | null {
+  if (!PATH_DIMENSIONS.has(field)) return null;
+  const path = row[field];
+  const host = row["hostName"];
+  if (typeof path !== "string" || typeof host !== "string") return null;
+  if (!path.startsWith("/") || !host) return null;
+  return `https://${host}${path}`;
+}
+
+/** The rendered values, so an export reads like the table it came from. */
+function toCsvRows(
+  rows: Array<Record<string, string | number | null>>,
+  columns: string[],
+): CsvValue[][] {
+  return rows.map((row) => columns.map((field) => row[field] ?? null));
 }
