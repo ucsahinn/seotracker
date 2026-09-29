@@ -36,7 +36,13 @@ export function ExportToSheetsModal() {
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-2">
-          <span className="inline-flex size-8 items-center justify-center rounded-full bg-success/15 text-success">
+          <span /*
+           * Measured at 3.27:1 with the fill colour on its own 15% wash --
+           * the exact case the house rule names. The ink token is 7.07:1 on
+           * the same background.
+           */
+            className="inline-flex size-8 items-center justify-center rounded-full bg-success/15 text-[var(--ink-success)]"
+          >
             <Check className="size-4" />
           </span>
           <h3 id="export-to-sheets-title" className="text-base font-semibold">

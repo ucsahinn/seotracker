@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import { CheckCircle2, ChevronRight, SearchX } from "lucide-react";
 import * as React from "react";
 import { EmptyState } from "@/client/components/EmptyState";
-import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import {
   formatDate,
   formatDecimal,
@@ -15,6 +14,7 @@ import type {
 } from "@/types/schemas/search-performance";
 import { getCannibalizationReport } from "@/serverFunctions/cannibalization";
 import { UrlCell } from "@/client/components/table/UrlCell";
+import { QueryErrorState } from "@/client/components/QueryErrorState";
 
 /**
  * Queries your own pages are competing for.
@@ -56,14 +56,19 @@ export function CannibalizationTable({
   }
 
   if (report.isError) {
+    /*
+     * With a retry, like every other error path on these screens. A dead-end
+     * alert meant a transient Google failure took the tab out until the
+     * whole page was reloaded -- switching tabs away and back does not
+     * necessarily refetch.
+     */
     return (
-      <div className="p-4">
-        <div className="alert alert-error">
-          <span className="text-sm">
-            {getStandardErrorMessage(report.error)}
-          </span>
-        </div>
-      </div>
+      <QueryErrorState
+        compact
+        error={report.error}
+        onRetry={() => void report.refetch()}
+        title="Çakışma raporu yüklenemedi"
+      />
     );
   }
 

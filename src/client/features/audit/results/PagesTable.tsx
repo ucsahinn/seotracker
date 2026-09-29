@@ -171,8 +171,14 @@ function buildPagesColumns({
     }),
     pageColumnHelper.accessor("wordCount", {
       header: ({ column }) => <SortableHeader column={column} label="Kelime" />,
+      // Through the formatter, like every other count in this table: a
+      // 3.400-word page was rendering as "3400" next to columns that group.
       cell: ({ getValue, row }) =>
-        hasAnalyzedContent(row.original) ? getValue() : <EmptyCell />,
+        hasAnalyzedContent(row.original) ? (
+          formatCount(getValue())
+        ) : (
+          <EmptyCell />
+        ),
     }),
     pageColumnHelper.display({
       id: "images",

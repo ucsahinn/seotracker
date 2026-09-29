@@ -196,10 +196,20 @@ export function MeasurementHealthPanel({ projectId }: { projectId: string }) {
                   {/* An icon as well as the colour: success and error sit at
                       nearly the same lightness in both themes. */}
                   {on ? (
-                    <Check className="size-3.5 text-success" />
+                    <Check
+                      aria-hidden
+                      className="size-3.5 text-[var(--ink-success)]"
+                    />
                   ) : (
-                    <X className="size-3.5 text-subtle" />
+                    <X aria-hidden className="size-3.5 text-subtle" />
                   )}
+                  {/*
+                   * Lucide emits a bare <svg> with no role and no name, so
+                   * without this a screen reader heard six feature names and
+                   * no states at all -- the panel read as a list rather than
+                   * as three on and three off.
+                   */}
+                  <span className="sr-only">{on ? "açık: " : "kapalı: "}</span>
                   {label}
                 </li>
               );

@@ -9,6 +9,8 @@ import { OrganicTrendPanel } from "@/client/features/analytics/OrganicTrendPanel
 import { MeasurementHealthPanel } from "@/client/features/analytics/MeasurementHealthPanel";
 import { formatCount, formatDate, formatPercent } from "@/client/lib/format";
 import { getGa4Report } from "@/serverFunctions/ga4Reports";
+import { sort as sortRows } from "remeda";
+import { SortableHeader } from "@/client/components/table/SortableHeader";
 import {
   GA4_FIELD_LABELS,
   GA4_RATE_FIELDS,
@@ -25,6 +27,9 @@ const WINDOWS: { value: WindowDays; label: string }[] = [
   { value: 28, label: "Son 28 gün" },
   { value: 90, label: "Son 3 ay" },
 ];
+
+/** Matches the ceiling `ga4Reports`' schema enforces. */
+const ROW_LIMITS = [50, 100, 200] as const;
 
 const CHANNELS: { value: Channel; label: string }[] = [
   { value: "organic_search", label: "Organik arama" },
@@ -79,12 +84,20 @@ export function AnalyticsPage({
    * could not be asked.
    */
   const kind = view === HEALTH ? "landing_pages" : view;
+  /*
+   * The row cap was a literal 50 with no control, over a report that says
+   * "50 / 800 satır" right above the table -- so the screen named 750 rows
+   * the operator had no way to reach. 200 is the server's own ceiling.
+   */
+  const [rowLimit, setRowLimit] = React.useState<(typeof ROW_LIMITS)[number]>(
+    ROW_LIMITS[0],
+  );
 
   const reportQuery = useQuery({
-    queryKey: ["ga4Report", projectId, kind, channel, windowDays],
+    queryKey: ["ga4Report", projectId, kind, channel, windowDays, rowLimit],
     queryFn: () =>
       getGa4Report({
-        data: { projectId, kind, channel, windowDays, limit: 50 },
+        data: { projectId, kind, channel, windowDays, limit: rowLimit },
       }),
     enabled: view !== HEALTH,
   });
@@ -121,7 +134,26 @@ export function AnalyticsPage({
             change nothing -- a control that visibly responds and has no
             effect is worse than a disabled one. */}
         {view === HEALTH ? null : (
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <label className="flex items-center gap-2 text-xs text-muted">
+              <span className="whitespace-nowrap">Satır</span>
+              <select
+                className="select select-bordered select-sm w-20"
+                value={rowLimit}
+                onChange={(event) => {
+                  const next = ROW_LIMITS.find(
+                    (option) => String(option) === event.target.value,
+                  );
+                  if (next) setRowLimit(next);
+                }}
+              >
+                {ROW_LIMITS.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </label>
             <select
               className="select select-bordered select-sm w-32"
               value={windowDays}
@@ -209,6 +241,17 @@ function ReportTable({
   result: Extract<Awaited<ReturnType<typeof getGa4Report>>, { status: "ok" }>;
 }) {
   const columns = [...result.dimensions, ...result.metrics];
+  /*
+   * Sortable. Seven GA4 reports rendered in whatever order Google returned,
+   * so "which landing page converts worst" could not be asked on the screen
+   * built to answer it. Dimensions sort as text, metrics as numbers, and a
+   * first click on a metric sorts it biggest-first -- the same convention
+   * the opportunity and search-performance tables use.
+   */
+  const [sort, setSort] = React.useState<{ key: string; desc: boolean } | null>(
+    null,
+  );
+  const rows = sortReportRows(result.rows, sort, result.dimensions);
 
   return (
     <div className="space-y-3">
@@ -245,20 +288,45 @@ function ReportTable({
           <table className="table table-sm">
             <thead>
               <tr>
-                {columns.map((field, index) => (
-                  <th
-                    key={field}
-                    className={
-                      index < result.dimensions.length ? "" : "text-right"
-                    }
-                  >
-                    {columnLabel(field)}
-                  </th>
-                ))}
+                {columns.map((field, index) => {
+                  const isDimension = index < result.dimensions.length;
+                  return (
+                    <th
+                      key={field}
+                      className={isDimension ? "" : "text-right"}
+                      aria-sort={
+                        sort?.key === field
+                          ? sort.desc
+                            ? "descending"
+                            : "ascending"
+                          : undefined
+                      }
+                    >
+                      <SortableHeader
+                        column={{
+                          getIsSorted: (): false | "asc" | "desc" =>
+                            sort?.key === field
+                              ? sort.desc
+                                ? "desc"
+                                : "asc"
+                              : false,
+                          getToggleSortingHandler: () => () =>
+                            setSort(
+                              sort?.key === field
+                                ? { key: field, desc: !sort.desc }
+                                : { key: field, desc: !isDimension },
+                            ),
+                        }}
+                        label={columnLabel(field)}
+                        align={isDimension ? "left" : "right"}
+                      />
+                    </th>
+                  );
+                })}
               </tr>
             </thead>
             <tbody>
-              {result.rows.map((row, rowIndex) => (
+              {rows.map((row, rowIndex) => (
                 <tr key={rowIndex}>
                   {columns.map((field, index) => {
                     const isDimension = index < result.dimensions.length;
@@ -286,4 +354,35 @@ function ReportTable({
       )}
     </div>
   );
+}
+
+/**
+ * GA4 rows in the operator's chosen order.
+ *
+ * Google's own ordering is kept when nothing is chosen -- it is meaningful
+ * (each report definition asks for its own `orderBys`), so a default of
+ * "sorted by the first column" would throw that away.
+ */
+function sortReportRows(
+  rows: Array<Record<string, string | number | null>>,
+  sort: { key: string; desc: boolean } | null,
+  dimensions: readonly string[],
+) {
+  if (!sort) return rows;
+  const direction = sort.desc ? -1 : 1;
+  const isDimension = dimensions.includes(sort.key);
+
+  return sortRows(rows, (left, right) => {
+    const a = left[sort.key] ?? null;
+    const b = right[sort.key] ?? null;
+    // Absent values sink to the bottom whichever way the column is sorted;
+    // a null is not "smaller", it is "not measured".
+    if (a === null && b === null) return 0;
+    if (a === null) return 1;
+    if (b === null) return -1;
+    if (isDimension) {
+      return direction * String(a).localeCompare(String(b), "tr");
+    }
+    return direction * (Number(a) - Number(b));
+  });
 }

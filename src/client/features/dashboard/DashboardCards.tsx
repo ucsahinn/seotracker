@@ -100,7 +100,13 @@ export function AuditHealthCard({
         </div>
       ) : audit.status !== "completed" ? (
         <div className="flex items-center gap-2 text-sm text-muted">
-          <AlertCircle className="size-4 text-warning" />
+          {/*
+           * Measured at 2.69:1 on base-100 in the light theme, under the
+           * 3:1 SC 1.4.11 asks of a meaningful graphic. The text beside it
+           * carries the same meaning, so nothing was lost -- but the ink
+           * token is 8.49:1 and costs nothing.
+           */}
+          <AlertCircle className="size-4 text-[var(--ink-warning)]" />
           Son tarama tamamlanamadı, bu yüzden sonuç yok.
         </div>
       ) : audit.topIssues.length === 0 ? (

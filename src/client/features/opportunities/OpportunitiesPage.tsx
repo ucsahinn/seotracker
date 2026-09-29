@@ -221,6 +221,11 @@ function Report({
 }) {
   const [band, setBand] = useState<BandId | null>(null);
 
+  const shown =
+    band === null
+      ? data.rows
+      : data.rows.filter((row) => bandOf(row.position) === band);
+
   const windowControl = (
     <WindowPicker windowDays={windowDays} onChange={onWindowChange} />
   );
@@ -282,13 +287,21 @@ function Report({
             "50 of your 300 qualified" when it meant "you are looking at the
             top 50 of 300". The hint says which, and the selector below lets
             the operator actually reach the rest. */}
+        {/*
+         * Counts what is on screen. With a position band selected the tile
+         * kept reporting the unfiltered total -- "50" above nine visible
+         * rows -- while the export menu beside it already labelled itself
+         * from the filtered array.
+         */}
         <MetricTile
           label="Gösterilen"
-          value={formatNumber(data.rowCount)}
+          value={formatNumber(shown.length)}
           hint={
-            data.truncated.candidates
-              ? `${formatNumber(data.totalCandidateRows)} aday sayfanın en iyileri`
-              : `Tüm aday sayfalar (${formatNumber(data.totalCandidateRows)})`
+            band !== null
+              ? `${band}. sıra bandı · ${formatNumber(data.rowCount)} satır içinde`
+              : data.truncated.candidates
+                ? `${formatNumber(data.totalCandidateRows)} aday sayfanın en iyileri`
+                : `Tüm aday sayfalar (${formatNumber(data.totalCandidateRows)})`
           }
         />
         {/* Was "Puanlanan", counted over the returned page, and every row
@@ -346,14 +359,7 @@ function Report({
 
       <PositionBands rows={data.rows} selected={band} onSelect={setBand} />
 
-      <OpportunitiesTable
-        projectId={projectId}
-        rows={
-          band === null
-            ? data.rows
-            : data.rows.filter((row) => bandOf(row.position) === band)
-        }
-      />
+      <OpportunitiesTable projectId={projectId} rows={shown} />
 
       <p className="text-xs text-muted">
         Puan = talep (%50) + iş değeri (%30) + erişilebilirlik (%20).

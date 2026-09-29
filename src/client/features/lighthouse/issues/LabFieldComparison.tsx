@@ -122,7 +122,7 @@ function GapLabel({
 
   if (verdict === "slower") {
     return (
-      <span className="inline-flex items-center gap-1 text-xs font-medium text-error">
+      <span className="inline-flex items-center gap-1 text-xs font-medium text-[var(--ink-error)]">
         <ArrowUp aria-hidden className="size-3" />
         {gap} daha yavaş
       </span>
@@ -130,7 +130,7 @@ function GapLabel({
   }
 
   return (
-    <span className="inline-flex items-center gap-1 text-xs font-medium text-success">
+    <span className="inline-flex items-center gap-1 text-xs font-medium text-[var(--ink-success)]">
       <ArrowDown aria-hidden className="size-3" />
       {gap} daha hızlı
     </span>

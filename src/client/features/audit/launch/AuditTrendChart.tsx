@@ -9,7 +9,7 @@ import {
 import { sort } from "remeda";
 import { Chart, CHART_AXIS, CHART_GRID } from "@/client/components/Chart";
 import { ChartTooltip } from "@/client/components/Chart";
-import { formatCount, formatDate } from "@/client/lib/format";
+import { formatCount, formatDate, formatDateTime } from "@/client/lib/format";
 
 /**
  * Whether the site is getting better, which the table under it cannot say.
@@ -114,7 +114,7 @@ export function AuditTrendChart({ history }: { history: HistoryRow[] }) {
                 if (!point) return null;
                 return (
                   <ChartTooltip
-                    title={`${formatDate(point.date)} · ${formatCount(point.pages)} sayfa`}
+                    title={`${formatDateTime(point.date)} · ${formatCount(point.pages)} sayfa`}
                     rows={[
                       {
                         label: "Kritik",

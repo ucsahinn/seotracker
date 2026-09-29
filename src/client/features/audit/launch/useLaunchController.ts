@@ -137,6 +137,9 @@ export function useLaunchController({
     maxPagesLimit,
     commitMaxPagesInput: () => commitMaxPagesInput(launchForm, maxPagesLimit),
     deleteAudit: (auditId: string) => deleteMutation.mutate(auditId),
+    // Exposed so the view can disable its confirm button while the delete is
+    // in flight, the way every other destructive action in the app does.
+    isDeleting: deleteMutation.isPending,
     /*
      * Run a past audit again with the settings it used.
      *

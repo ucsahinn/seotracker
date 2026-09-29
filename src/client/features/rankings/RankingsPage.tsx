@@ -6,6 +6,8 @@ import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { AlertCircle, Loader2 } from "lucide-react";
+import { sort as sort_ } from "remeda";
+import { SortableHeader } from "@/client/components/table/SortableHeader";
 import {
   getQueryHistory,
   getTrackedQueries,
@@ -75,7 +77,34 @@ export function RankingsPage({
     enabled: selected !== null,
   });
 
-  const allRows = tracked.data?.rows ?? [];
+  /*
+   * Sorting and a text filter, on the screen whose entire subject is average
+   * position. It was a hand-rolled table with five static <th> and no sort
+   * at all, so "which of my queries rank worst" -- the question the page
+   * exists to answer -- could not be asked, and finding one query among a
+   * hundred meant paging through four screens.
+   *
+   * Local state rather than `useAppTable`: the query cell is a disclosure
+   * button and the pagination below is already wired, so this reuses
+   * `SortableHeader` (and with it the aria-sort contract and the 24px
+   * target fix) without moving the table onto a different engine.
+   */
+  const [sort, setSort] = useState<{ key: SortKey; desc: boolean }>({
+    key: "impressions",
+    desc: true,
+  });
+  const [search, setSearch] = useState("");
+
+  const fetched = tracked.data?.rows ?? [];
+  const needle = search.trim().toLocaleLowerCase("tr");
+  const allRows = sortRows(
+    needle
+      ? fetched.filter((row) =>
+          row.query.toLocaleLowerCase("tr").includes(needle),
+        )
+      : fetched,
+    sort,
+  );
   /*
    * Paginated in the browser over the whole fetched set. The screen used to
    * ask Google's archive for 25 rows and render them with no pagination and
@@ -122,14 +151,59 @@ export function RankingsPage({
       <ArchiveStatus sync={sync} />
 
       <div className="overflow-hidden rounded-box border border-base-300 bg-base-100">
+        <div className="border-b border-base-300 px-4 py-3">
+          <input
+            type="search"
+            className="input input-bordered input-sm w-full sm:max-w-xs"
+            placeholder="Sorgu içinde ara"
+            aria-label="Sorgu içinde ara"
+            value={search}
+            onChange={(event) => {
+              setSearch(event.target.value);
+              setPage(1);
+            }}
+          />
+        </div>
         <table className="table table-sm">
           <thead>
             <tr>
-              <th>Sorgu</th>
-              <th className="text-right">Ort. sıra</th>
-              <th className="text-right">Gösterim</th>
-              <th className="text-right">Tıklama</th>
-              <th className="text-right">Gün</th>
+              <th aria-sort={ariaSort(sort, "query")}>
+                <SortableHeader
+                  column={sortColumn(sort, setSort, "query")}
+                  label="Sorgu"
+                />
+              </th>
+              <th className="text-right" aria-sort={ariaSort(sort, "position")}>
+                <SortableHeader
+                  column={sortColumn(sort, setSort, "position")}
+                  label="Ort. sıra"
+                  align="right"
+                />
+              </th>
+              <th
+                className="text-right"
+                aria-sort={ariaSort(sort, "impressions")}
+              >
+                <SortableHeader
+                  column={sortColumn(sort, setSort, "impressions")}
+                  label="Gösterim"
+                  align="right"
+                />
+              </th>
+              <th className="text-right" aria-sort={ariaSort(sort, "clicks")}>
+                <SortableHeader
+                  column={sortColumn(sort, setSort, "clicks")}
+                  label="Tıklama"
+                  align="right"
+                />
+              </th>
+              <th className="text-right" aria-sort={ariaSort(sort, "days")}>
+                <SortableHeader
+                  column={sortColumn(sort, setSort, "days")}
+                  label="Gün"
+                  align="right"
+                />
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -352,4 +426,62 @@ function ArchiveStatus({
       {data.hasMore ? " Kalan günler sonraki açılışta tamamlanacak." : ""}
     </p>
   );
+}
+
+type SortKey = "query" | "position" | "impressions" | "clicks" | "days";
+type SortState = { key: SortKey; desc: boolean };
+type TrackedRow = {
+  query: string;
+  position: number;
+  impressions: number;
+  clicks: number;
+  days: number;
+};
+
+/**
+ * The shape `SortableHeader` reads, synthesised from local state.
+ *
+ * It takes a TanStack column, and the two methods it calls are the whole
+ * contract -- so a hand-rolled table can wear the same header without being
+ * moved onto `useAppTable`.
+ */
+function sortColumn(
+  sort: SortState,
+  setSort: (next: SortState) => void,
+  key: SortKey,
+) {
+  return {
+    getIsSorted: (): false | "asc" | "desc" =>
+      sort.key === key ? (sort.desc ? "desc" : "asc") : false,
+    getToggleSortingHandler: () => () => {
+      /*
+       * A first click on a new column sorts it the useful way round: worst
+       * rank first for position (ascending is *better* there), biggest first
+       * for the counts, alphabetical for the query.
+       */
+      setSort(
+        sort.key === key
+          ? { key, desc: !sort.desc }
+          : { key, desc: key !== "query" && key !== "position" },
+      );
+    },
+  };
+}
+
+function ariaSort(sort: SortState, key: SortKey) {
+  if (sort.key !== key) return undefined;
+  return sort.desc ? ("descending" as const) : ("ascending" as const);
+}
+
+function sortRows(rows: TrackedRow[], sort: SortState): TrackedRow[] {
+  const direction = sort.desc ? -1 : 1;
+  return sort_(rows, (left, right) => {
+    if (sort.key === "query") {
+      // Turkish collation: "ı" and "i" are different letters, and the
+      // default comparison puts them in an order a Turkish reader reads as
+      // wrong.
+      return direction * left.query.localeCompare(right.query, "tr");
+    }
+    return direction * (left[sort.key] - right[sort.key]);
+  });
 }

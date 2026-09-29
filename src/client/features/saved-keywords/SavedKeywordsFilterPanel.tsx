@@ -12,7 +12,7 @@ export function SavedKeywordsFilterPanel({
   onReset: () => void;
 }) {
   return (
-    <div className="space-y-3 border-b border-base-300 bg-gradient-to-b from-base-100 to-base-200/30 px-4 py-3">
+    <div className="space-y-3 border-b border-base-300 bg-base-200/30 px-4 py-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           <p className="text-sm font-semibold">Sonuçları daralt</p>
@@ -141,16 +141,24 @@ function TermsTokenInput({
             }
           };
           return (
-            <div className="flex min-h-9 flex-wrap items-center gap-1.5 rounded-field border border-base-300 bg-base-200/30 px-2 py-1.5 focus-within:border-primary">
+            <div className="flex min-h-9 flex-wrap items-center gap-1.5 rounded-field border border-[var(--control-border)] bg-base-200/30 px-2 py-1.5 focus-within:border-primary">
               {terms.map((term) => (
                 <span
                   key={term}
-                  className={`inline-flex items-center gap-1 rounded-field px-1.5 py-0.5 text-xs ${styles.chip}`}
+                  className={`inline-flex items-center gap-1 rounded-full px-1.5 py-0.5 text-xs ${styles.chip}`}
                 >
                   {term}
                   <button
                     type="button"
-                    className="opacity-70 hover:opacity-100"
+                    /*
+                     * The bare 12px icon was the whole hit area, under the
+                     * 24px SC 2.5.8 asks of a target, and the 6px chip gap
+                     * is too tight for the spacing exception. Same trick
+                     * `SortableHeader` documents: pad the target, take the
+                     * space back with a negative margin so the chip keeps
+                     * its height.
+                     */
+                    className="-m-1 inline-flex min-h-6 min-w-6 items-center justify-center p-1 opacity-70 hover:opacity-100"
                     aria-label={`${term} terimini kaldır`}
                     onClick={() =>
                       commit(terms.filter((existing) => existing !== term))
@@ -161,6 +169,7 @@ function TermsTokenInput({
                 </span>
               ))}
               <input
+                aria-label={label}
                 value={draft}
                 onChange={(event) => setDraft(event.target.value)}
                 onKeyDown={handleKeyDown}

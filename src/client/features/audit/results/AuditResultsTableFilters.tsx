@@ -253,7 +253,7 @@ function FilterPanel({
   children: ReactNode;
 }) {
   return (
-    <div className="space-y-3 border-b border-base-300 bg-gradient-to-b from-base-100 to-base-200/30 px-4 py-3">
+    <div className="space-y-3 border-b border-base-300 bg-base-200/25 px-4 py-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           <p className="text-sm font-semibold">Sonuçları daralt</p>
@@ -325,12 +325,19 @@ function RangeFilter({
       <p className="text-[11px] font-semibold uppercase tracking-wide text-muted">
         {label}
       </p>
+      {/*
+       * Named individually. The heading above is a <p> that labels nothing,
+       * and the placeholders are the only other text -- so with five of
+       * these on one filter panel a screen reader heard "Min, Max, Min,
+       * Max, Min, Max" with no way to tell crawl depth from word count.
+       */}
       <div className="grid grid-cols-2 gap-2">
         <input
           className="input input-bordered input-xs bg-base-100"
           type="number"
           value={min}
           placeholder="Min"
+          aria-label={`${label} en az`}
           onChange={(event) => onMinChange(event.target.value)}
         />
         <input
@@ -338,6 +345,7 @@ function RangeFilter({
           type="number"
           value={max}
           placeholder="Max"
+          aria-label={`${label} en çok`}
           onChange={(event) => onMaxChange(event.target.value)}
         />
       </div>

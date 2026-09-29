@@ -30,7 +30,13 @@ export function LighthouseIssueRow({ issue }: { issue: LighthouseIssue }) {
                detail on this screen was unreachable without a mouse. */
             <button
               type="button"
-              className="flex items-center rounded-field p-0.5 text-muted hover:text-base-content"
+              /*
+               * Measured at 18x18 in the browser, under the 24 CSS px WCAG
+               * 2.2 SC 2.5.8 asks of a target. Grown with padding and taken
+               * back out of the row with a negative margin, the way
+               * `SortableHeader` documents, so the table keeps its height.
+               */
+              className="-m-1 flex min-h-6 min-w-6 items-center justify-center rounded-box p-1 text-muted hover:text-base-content"
               aria-expanded={open}
               aria-label={open ? "Ayrıntıları gizle" : "Ayrıntıları göster"}
               onClick={() => setOpen(!open)}
@@ -81,7 +87,15 @@ export function LighthouseIssueRow({ issue }: { issue: LighthouseIssue }) {
       </tr>
       {open ? (
         <tr className="!bg-transparent">
-          <td colSpan={6} className="pb-4 pt-2 pl-[8.5rem] pr-4">
+          <td
+            colSpan={6} /*
+             * Full width on a phone. The 8.5rem aligns the detail to the desktop
+             * Önem column, but at 390px it left roughly 174px for the <pre> blocks
+             * that hold DOM selectors and full URLs -- horizontally scrolling
+             * slivers rather than readable text.
+             */
+            className="pb-4 pl-4 pr-4 pt-2 sm:pl-[8.5rem]"
+          >
             <div className="space-y-3">
               {issue.description ? (
                 <div className="text-sm text-muted leading-relaxed">
@@ -97,7 +111,7 @@ export function LighthouseIssueRow({ issue }: { issue: LighthouseIssue }) {
                     {issue.items.map((item, itemIndex) => (
                       <pre
                         key={`${issue.auditKey}-${itemIndex}`}
-                        className="bg-base-200/60 p-2 rounded-field overflow-x-auto text-xs leading-relaxed"
+                        className="bg-base-200/60 p-2 rounded-box overflow-x-auto text-xs leading-relaxed"
                       >
                         {item}
                       </pre>

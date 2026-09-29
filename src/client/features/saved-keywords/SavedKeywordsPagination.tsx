@@ -31,7 +31,14 @@ export function SavedKeywordsPagination({
         </span>
         {isLoading ? <Loader2 className="size-3.5 animate-spin" /> : null}
       </div>
-      <div className="flex items-center gap-6">
+      {/*
+       * Wraps, for the reason the shared `TablePagination` documents: this
+       * row is wider than a phone and the card around it is
+       * `overflow-hidden`, so without a wrap the next-page button is not
+       * scrolled past -- it is clipped away and cannot be pressed at all.
+       * This file is a fork of that component and lost the fix in the copy.
+       */}
+      <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
         <label className="flex items-center gap-2 text-sm text-muted">
           <span className="whitespace-nowrap">Sayfa başına satır</span>
           <select

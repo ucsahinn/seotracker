@@ -1,6 +1,7 @@
-import { Loader2, TrendingDown, TrendingUp } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { formatDate, formatDecimal } from "@/client/lib/format";
+import { DeltaBadge } from "@/client/components/MetricTile";
 
 /**
  * One query's history, opened from the table beside it.
@@ -74,22 +75,26 @@ export function QueryHistoryCard({
     <div className="space-y-3 rounded-box border border-base-300 bg-base-100 p-4">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <h2 className="text-sm font-semibold">{query}</h2>
-        <span
-          className={`inline-flex items-center gap-1 text-sm font-semibold ${
-            Math.abs(delta) < 0.1
-              ? "text-muted"
-              : improved
-                ? "text-success"
-                : "text-error"
-          }`}
-        >
-          {Math.abs(delta) < 0.1 ? null : improved ? (
-            <TrendingUp className="size-4" />
-          ) : (
-            <TrendingDown className="size-4" />
-          )}
-          {formatDecimal(first.position)} → {formatDecimal(last.position)}
-        </span>
+        {/*
+         * `DeltaBadge`, not a fourth copy of the pattern it retired. The
+         * hand-rolled version painted direction with `text-success` /
+         * `text-error` -- the fill colours, which land near 3.3:1 on a
+         * base-100 surface -- and gave its arrows no `aria-hidden` and no
+         * spoken direction, so a screen reader heard "12,4 → 8,1" with the
+         * improvement carried in colour alone.
+         */}
+        {Math.abs(delta) < 0.1 ? (
+          <span className="text-sm font-semibold text-muted">
+            {formatDecimal(first.position)} → {formatDecimal(last.position)}
+          </span>
+        ) : (
+          <DeltaBadge
+            value={{
+              text: `${formatDecimal(first.position)} → ${formatDecimal(last.position)}`,
+              improved,
+            }}
+          />
+        )}
       </div>
       <PositionSparkline rows={rows} />
       <p className="text-xs text-muted">

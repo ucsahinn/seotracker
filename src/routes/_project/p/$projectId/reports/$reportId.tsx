@@ -161,7 +161,23 @@ function ReportDetailPage() {
     return (
       <div className="fixed inset-0 z-50 flex flex-col bg-base-100">
         <div className="flex items-center justify-between gap-3 border-b border-base-300 px-4 py-2">
-          <span className="truncate text-sm font-medium">{report.title}</span>
+          <div className="flex min-w-0 items-baseline gap-2">
+            <span className="truncate text-sm font-medium">{report.title}</span>
+            {/*
+             * The age, which the normal view shows and this one dropped.
+             * `?full=true` is a shareable link, and the report body is
+             * agent-written HTML with no timestamp of its own -- so without
+             * this a reader landing on that link sees a rendered SEO report
+             * with no date anywhere and no way to tell it is a month old.
+             */}
+            <time
+              dateTime={report.updatedAt}
+              title={formatDateTime(report.updatedAt)}
+              className="shrink-0 text-xs text-muted"
+            >
+              {formatRelativeTime(report.updatedAt)}
+            </time>
+          </div>
           <button
             type="button"
             ref={exitRef}

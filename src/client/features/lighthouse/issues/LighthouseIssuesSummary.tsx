@@ -25,7 +25,7 @@ export function LighthouseIssuesSummary({
   return (
     <>
       {scores ? (
-        <div className="grid grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           <ScoreGauge label="Performans" score={scores.performance} />
           <ScoreGauge label="Erişilebilirlik" score={scores.accessibility} />
           <ScoreGauge
@@ -95,9 +95,16 @@ export function LighthouseIssuesSummary({
 
 /** Google's own FAST / AVERAGE / SLOW verdict for a field metric. */
 function fieldCategoryClass(category: string) {
-  if (category === "FAST") return "text-success";
-  if (category === "AVERAGE") return "text-warning";
-  if (category === "SLOW") return "text-error";
+  /*
+   * The ink tokens, not the fills. On a base-100 surface `text-warning`
+   * lands near 2.6:1 -- under SC 1.4.3 and under even the 3:1 large-text
+   * floor -- while `--ink-warning` is around 8:1. The same thresholds are
+   * already rendered correctly in `LighthouseScoreBadge`, so a score of 62
+   * was readable in the table and barely legible in the gauge.
+   */
+  if (category === "FAST") return "text-[var(--ink-success)]";
+  if (category === "AVERAGE") return "text-[var(--ink-warning)]";
+  if (category === "SLOW") return "text-[var(--ink-error)]";
   return "text-base-content";
 }
 
@@ -156,9 +163,9 @@ function getFieldItems(fieldData?: LighthouseFieldData | null) {
 
 function scoreColor(score: number | null) {
   if (score == null) return "text-muted";
-  if (score >= 90) return "text-success";
-  if (score >= 50) return "text-warning";
-  return "text-error";
+  if (score >= 90) return "text-[var(--ink-success)]";
+  if (score >= 50) return "text-[var(--ink-warning)]";
+  return "text-[var(--ink-error)]";
 }
 
 function scoreStrokeColor(score: number | null) {
