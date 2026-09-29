@@ -1,5 +1,6 @@
 import { ChevronDown, Download, Loader2, X } from "lucide-react";
 import type { ReactNode } from "react";
+import { PortalMenu } from "@/client/components/PortalMenu";
 
 export function TableBulkActionBar({
   selectedCount,
@@ -98,49 +99,51 @@ export function TableBulkExportMenu({
   }>;
   busy?: boolean;
 }) {
+  // Same move as `TableExportMenu`: the CSS dropdown had no `aria-expanded`,
+  // no Escape, and lived inside a clipping ancestor.
   return (
-    <div className="dropdown dropdown-top dropdown-end">
-      <button
-        type="button"
-        tabIndex={0}
-        disabled={busy}
-        aria-haspopup="menu"
-        className="inline-flex items-center gap-1.5 rounded-field px-2.5 py-1.5 text-sm text-muted hover:bg-base-content/10 disabled:opacity-50"
-      >
-        {busy ? (
-          <Loader2 className="size-3.5 animate-spin" />
-        ) : (
-          <Download className="size-3.5" />
-        )}
-        Dışa aktar
-        <ChevronDown className="size-3 opacity-60" />
-      </button>
-      <ul
-        tabIndex={0}
-        role="menu"
-        className="dropdown-content menu z-10 mb-2 w-52 rounded-box border border-base-300 bg-base-100 p-2 shadow-lg"
-      >
-        {actions.map((action, index) => (
+    <PortalMenu
+      ariaLabel="Seçili satırları dışa aktar"
+      triggerClassName="inline-flex items-center gap-1.5 rounded-field px-2.5 py-1.5 text-sm text-muted hover:bg-base-content/10 disabled:opacity-50"
+      triggerContent={
+        <>
+          {busy ? (
+            <Loader2 className="size-3.5 animate-spin" />
+          ) : (
+            <Download className="size-3.5" />
+          )}
+          Dışa aktar
+          <ChevronDown className="size-3 opacity-60" />
+        </>
+      }
+      menuClassName="w-52"
+    >
+      {(close) =>
+        actions.map((action, index) => (
           <li key={index}>
             <button
               type="button"
-              onClick={action.onClick}
+              role="menuitem"
               disabled={busy || action.disabled}
+              onClick={() => {
+                close();
+                action.onClick();
+              }}
             >
               {action.icon}
               {action.label}
             </button>
           </li>
-        ))}
-      </ul>
-    </div>
+        ))
+      }
+    </PortalMenu>
   );
 }
 
 export function TableExportMenu({
   actions,
   buttonClassName = "btn btn-sm gap-1",
-  menuClassName = "dropdown-content z-10 menu p-2 shadow-lg bg-base-100 border border-base-300 rounded-box w-56",
+  menuClassName = "w-56",
 }: {
   actions: Array<{
     label: ReactNode;
@@ -151,35 +154,50 @@ export function TableExportMenu({
   buttonClassName?: string;
   menuClassName?: string;
 }) {
+  /*
+   * Through `PortalMenu` rather than a daisyUI CSS dropdown.
+   *
+   * Two problems, both of which that component already solves. It carried no
+   * `aria-expanded`, no Escape handler and no `role="menuitem"` on its items,
+   * so nothing announced whether it was open. And it rendered inside the
+   * table's `overflow-hidden rounded-box` wrapper -- on a table with no rows
+   * the card is about 110px tall, so a menu opening below the button was cut
+   * off with no way to scroll to it. `PortalMenu` renders fixed, through a
+   * portal, and closes on outside click, Escape, scroll and resize.
+   */
   return (
-    <div className="dropdown dropdown-end">
-      {/* A real button, like `TableBulkExportMenu` below. As a
-          `<div role="button">` it took a tab stop but had no key handler,
-          so daisyUI's focus-within opened it and Enter did nothing. */}
-      <button
-        type="button"
-        tabIndex={0}
-        aria-haspopup="menu"
-        className={buttonClassName}
-      >
-        <Download className="size-4" />
-        Dışa aktar
-        <ChevronDown className="size-3 opacity-60" />
-      </button>
-      <ul tabIndex={0} role="menu" className={menuClassName}>
-        {actions.map((action, index) => (
+    <PortalMenu
+      ariaLabel="Dışa aktarma seçenekleri"
+      triggerClassName={buttonClassName}
+      triggerContent={
+        <>
+          <Download className="size-4" />
+          Dışa aktar
+          <ChevronDown className="size-3 opacity-60" />
+        </>
+      }
+      menuClassName={menuClassName}
+    >
+      {(close) =>
+        actions.map((action, index) => (
           <li key={index}>
             <button
               type="button"
-              onClick={action.onClick}
+              role="menuitem"
               disabled={action.disabled}
+              // Close first: the action can navigate or open a modal, and a
+              // menu left mounted over it has to be dismissed by hand.
+              onClick={() => {
+                close();
+                action.onClick();
+              }}
             >
               {action.icon}
               {action.label}
             </button>
           </li>
-        ))}
-      </ul>
-    </div>
+        ))
+      }
+    </PortalMenu>
   );
 }

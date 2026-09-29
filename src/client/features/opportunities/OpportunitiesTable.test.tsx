@@ -83,8 +83,18 @@ describe("OpportunitiesTable", () => {
     );
   });
 
+  /*
+   * The menu now mounts through a portal and only while open, so this opens
+   * it -- which is also closer to what an operator does. The count in the
+   * label is the point: an export that silently wrote a different number of
+   * rows than the screen showed is the bug it guards.
+   */
   it("can hand the list to a spreadsheet, and says how many rows", () => {
     render(<OpportunitiesTable projectId="p1" rows={rows} />);
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "Dışa aktarma seçenekleri" }),
+    );
 
     expect(screen.getByText(/CSV \(2 satır\)/)).toBeDefined();
   });

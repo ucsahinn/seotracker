@@ -10,10 +10,9 @@ import { SortableHeader } from "@/client/components/table/SortableHeader";
 import { describeWindow } from "@/shared/dataFreshness";
 import { TrendingUp } from "lucide-react";
 import { EmptyState } from "@/client/components/EmptyState";
+import { useLocalSort } from "@/client/components/table/useLocalSort";
 import {
-  ariaSort,
-  sortColumn,
-  sortRows,
+  compareTracked,
   type SortKey,
 } from "@/client/features/rankings/rankingsSort";
 import {
@@ -97,21 +96,18 @@ export function RankingsPage({
    * `SortableHeader` (and with it the aria-sort contract and the 24px
    * target fix) without moving the table onto a different engine.
    */
-  const [sort, setSort] = useState<{ key: SortKey; desc: boolean }>({
-    key: "impressions",
-    desc: true,
-  });
+  const sorting = useLocalSort<SortKey>({ key: "impressions", desc: true });
   const [search, setSearch] = useState("");
 
   const fetched = tracked.data?.rows ?? [];
   const needle = search.trim().toLocaleLowerCase("tr");
-  const allRows = sortRows(
+  const allRows = sorting.apply(
     needle
       ? fetched.filter((row) =>
           row.query.toLocaleLowerCase("tr").includes(needle),
         )
       : fetched,
-    sort,
+    compareTracked,
   );
   /*
    * Paginated in the browser over the whole fetched set. The screen used to
@@ -185,39 +181,42 @@ export function RankingsPage({
         <table className="table table-sm">
           <thead>
             <tr>
-              <th aria-sort={ariaSort(sort, "query")}>
+              <th aria-sort={sorting.ariaSort("query")}>
                 <SortableHeader
-                  column={sortColumn(sort, setSort, "query")}
+                  column={sorting.column("query", false)}
                   label="Sorgu"
                 />
               </th>
-              <th className="text-right" aria-sort={ariaSort(sort, "position")}>
+              <th
+                className="text-right"
+                aria-sort={sorting.ariaSort("position")}
+              >
                 <SortableHeader
-                  column={sortColumn(sort, setSort, "position")}
+                  column={sorting.column("position", false)}
                   label="Ort. sıra"
                   align="right"
                 />
               </th>
               <th
                 className="text-right"
-                aria-sort={ariaSort(sort, "impressions")}
+                aria-sort={sorting.ariaSort("impressions")}
               >
                 <SortableHeader
-                  column={sortColumn(sort, setSort, "impressions")}
+                  column={sorting.column("impressions")}
                   label="Gösterim"
                   align="right"
                 />
               </th>
-              <th className="text-right" aria-sort={ariaSort(sort, "clicks")}>
+              <th className="text-right" aria-sort={sorting.ariaSort("clicks")}>
                 <SortableHeader
-                  column={sortColumn(sort, setSort, "clicks")}
+                  column={sorting.column("clicks")}
                   label="Tıklama"
                   align="right"
                 />
               </th>
-              <th className="text-right" aria-sort={ariaSort(sort, "days")}>
+              <th className="text-right" aria-sort={sorting.ariaSort("days")}>
                 <SortableHeader
-                  column={sortColumn(sort, setSort, "days")}
+                  column={sorting.column("days")}
                   label="Gün"
                   align="right"
                 />

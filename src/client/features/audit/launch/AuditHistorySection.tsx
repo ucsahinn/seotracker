@@ -6,6 +6,11 @@ import { RowActions } from "@/client/components/table/RowActions";
 import { formatDateTime, StatusBadge } from "@/client/features/audit/shared";
 import { CopyButton } from "@/client/components/CopyButton";
 import { AuditTrendChart } from "./AuditTrendChart";
+import { SortableHeader } from "@/client/components/table/SortableHeader";
+import {
+  compareText,
+  useLocalSort,
+} from "@/client/components/table/useLocalSort";
 
 type HistoryRow = Awaited<ReturnType<typeof getAuditHistory>>[number];
 
@@ -26,6 +31,17 @@ export function AuditHistorySection({
   onDelete: (auditId: string) => void;
   onRerun: (audit: HistoryRow) => void;
 }) {
+  /*
+   * Sortable, because this list only grows. `getAuditHistory` returns every
+   * audit the project has ever run with no cap, so on a long-lived install
+   * the newest-first order the server happens to produce is the only order
+   * there is -- and "which crawl found the most pages" meant scrolling.
+   */
+  const sorting = useLocalSort<HistorySortKey>({
+    key: "startedAt",
+    desc: true,
+  });
+
   // A failed load used to fall into "Henüz denetim yok", telling an operator
   // with a dozen audits that they had never run one.
   if (error) {
@@ -80,16 +96,36 @@ export function AuditHistorySection({
           <table className="table table-sm">
             <thead>
               <tr>
-                <th>Tarih</th>
-                <th>URL</th>
-                <th>Durum</th>
-                <th>Sayfa</th>
+                <th aria-sort={sorting.ariaSort("startedAt")}>
+                  <SortableHeader
+                    column={sorting.column("startedAt")}
+                    label="Tarih"
+                  />
+                </th>
+                <th aria-sort={sorting.ariaSort("startUrl")}>
+                  <SortableHeader
+                    column={sorting.column("startUrl", false)}
+                    label="URL"
+                  />
+                </th>
+                <th aria-sort={sorting.ariaSort("status")}>
+                  <SortableHeader
+                    column={sorting.column("status", false)}
+                    label="Durum"
+                  />
+                </th>
+                <th aria-sort={sorting.ariaSort("pages")}>
+                  <SortableHeader
+                    column={sorting.column("pages")}
+                    label="Sayfa"
+                  />
+                </th>
                 <th>Lighthouse</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
-              {history.map((audit) => (
+              {sorting.apply(history, compareAudits).map((audit) => (
                 <tr key={audit.id} className="hover group">
                   <td className="text-xs text-muted">
                     {/* With the time. Six audits in one day all read
@@ -177,4 +213,20 @@ function HistoryActions({
       />
     </div>
   );
+}
+
+type HistorySortKey = "startedAt" | "startUrl" | "status" | "pages";
+
+/** Ascending; `useLocalSort` applies the direction. */
+function compareAudits(
+  a: HistoryRow,
+  b: HistoryRow,
+  key: HistorySortKey,
+): number {
+  if (key === "startedAt") return compareText(a.startedAt, b.startedAt);
+  if (key === "startUrl") return compareText(a.startUrl, b.startUrl);
+  if (key === "status") return compareText(a.status, b.status);
+  // The number the row actually shows: `pagesTotal` while a crawl is
+  // planning, `pagesCrawled` once it has started returning pages.
+  return (a.pagesTotal || a.pagesCrawled) - (b.pagesTotal || b.pagesCrawled);
 }

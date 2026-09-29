@@ -106,21 +106,32 @@ Ajanlar hiçbir şey çalıştıramadı, bu yüzden her iddia tarayıcıda yenid
 - **Analytics sekme şeridi 390px'te 120px** yüksekliğinde. Sarma, yatay kaydırmadan iyi: kaydırma sekmeleri gizler.
 - **Analytics tablosunda taşan başlıklar** tablonun kendi `overflow-x-auto` kabı içinde; sayfa seviyesinde kaydırma yok (ölçüldü).
 
+### Mimari
+
+Aynı sıralama mantığı üç ekranda birden gerekti (Sıralama, Analytics,
+Lighthouse). Üçüncü kopyayı yazmak yerine
+`src/client/components/table/useLocalSort.ts`'e alındı: tek bir durum tutuyor
+ve `SortableHeader`'ın gerçekten çağırdığı iki metodu veriyor, yani o tablolar
+`aria-sort` sözleşmesini ve 24px hedefini paylaşılan başlıktan almaya devam
+ediyor. İkinci bir tablo motoru değil — bu tabloların her birinde
+`AppDataTable`'ın zorlanacağı bir hücre var (ilk sütunda açma butonu, rapora
+göre değişen sütun kümesi, genişletilebilir ayrıntı satırı).
+
 ### Açık kalan bulgular
 
-| #    | Bulgu                                                          | Neden ertelendi                                                          |
-| ---- | -------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| 6.18 | Denetim geçmişi, Raporlar ve Şablonlar tabloları sıralanamıyor | Değer var ama Sıralama/Analytics kadar acil değil; bu tur ikisi yapıldı. |
-| 6.19 | Lighthouse sorun tablosu sıralanamıyor ("Etki" sütunu varken)  | Genişletilebilir satır `useAppTable`'a taşınmayı ister.                  |
-| 6.20 | Sorgular/Sayfalar satırlarında kaydet/kopyala yok              | Yalnızca "Eşiğe yakın" sekmesinde var; halka kapalı değil.               |
-| 6.21 | Analytics'te URL hücreleri tıklanamaz, dışa aktarma yok        | `UrlCell` + `TableExportMenu` eklenebilir.                               |
-| 6.22 | `TableExportMenu` `PortalMenu` kullanmıyor                     | `aria-expanded` yok, Escape yok, kırpılabilir.                           |
-| 6.23 | Üç ekranda iskelet yerine dönen çark                           | Ev kuralı iskelet istiyor.                                               |
-| 6.24 | Dört boş durum `EmptyState` kullanmıyor                        | Metinler iyi, bileşeni giymiyorlar.                                      |
-| 6.25 | Ülke kodları ham (TUR, GBR)                                    | `Intl.DisplayNames` ile "Türkiye" yapılabilir.                           |
-| 6.26 | Rapor görüntüleyici dördüncü bir sayfa dolgusu icat ediyor     | `PageShell`'e `fill` genişliği ister.                                    |
-| 6.27 | Sıralama tablosu kapsadığı dönemi yazmıyor                     | Tek kalan ekran; `describeWindow` eklenebilir.                           |
-| 6.28 | Denetim ilerlemesi geçen süre/tahmin vermiyor                  | 500 sayfalık tarama dakikalarca sürebiliyor.                             |
+| #    | Bulgu                                                         | Neden ertelendi                                                                                                                                                                          |
+| ---- | ------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 6.18 | ~~Denetim geçmişi sıralanamıyor~~                             | **Bitti** — Tarih/URL/Durum/Sayfa sıralanabilir. Doğrulandı: "Sayfa" tıklanınca 212·212·212·212·200·120 sırasına geçiyor. Raporlar ve Şablonlar tabloları kaldı (az satır, düşük değer). |
+| 6.19 | Lighthouse sorun tablosu sıralanamıyor ("Etki" sütunu varken) | Genişletilebilir satır `useAppTable`'a taşınmayı ister.                                                                                                                                  |
+| 6.20 | Sorgular/Sayfalar satırlarında kaydet/kopyala yok             | Yalnızca "Eşiğe yakın" sekmesinde var; halka kapalı değil.                                                                                                                               |
+| 6.21 | Analytics'te URL hücreleri tıklanamaz, dışa aktarma yok       | `UrlCell` + `TableExportMenu` eklenebilir.                                                                                                                                               |
+| 6.22 | `TableExportMenu` `PortalMenu` kullanmıyor                    | `aria-expanded` yok, Escape yok, kırpılabilir.                                                                                                                                           |
+| 6.23 | Üç ekranda iskelet yerine dönen çark                          | Ev kuralı iskelet istiyor.                                                                                                                                                               |
+| 6.24 | Dört boş durum `EmptyState` kullanmıyor                       | Metinler iyi, bileşeni giymiyorlar.                                                                                                                                                      |
+| 6.25 | Ülke kodları ham (TUR, GBR)                                   | `Intl.DisplayNames` ile "Türkiye" yapılabilir.                                                                                                                                           |
+| 6.26 | Rapor görüntüleyici dördüncü bir sayfa dolgusu icat ediyor    | `PageShell`'e `fill` genişliği ister.                                                                                                                                                    |
+| 6.27 | Sıralama tablosu kapsadığı dönemi yazmıyor                    | Tek kalan ekran; `describeWindow` eklenebilir.                                                                                                                                           |
+| 6.28 | Denetim ilerlemesi geçen süre/tahmin vermiyor                 | 500 sayfalık tarama dakikalarca sürebiliyor.                                                                                                                                             |
 
 ## 7. Senin kararını bekleyenler
 

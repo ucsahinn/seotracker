@@ -9,8 +9,11 @@ import { OrganicTrendPanel } from "@/client/features/analytics/OrganicTrendPanel
 import { MeasurementHealthPanel } from "@/client/features/analytics/MeasurementHealthPanel";
 import { formatCount, formatDate, formatPercent } from "@/client/lib/format";
 import { getGa4Report } from "@/serverFunctions/ga4Reports";
-import { sort as sortRows } from "remeda";
 import { SortableHeader } from "@/client/components/table/SortableHeader";
+import {
+  compareText,
+  useLocalSort,
+} from "@/client/components/table/useLocalSort";
 import {
   GA4_FIELD_LABELS,
   GA4_RATE_FIELDS,
@@ -248,10 +251,19 @@ function ReportTable({
    * first click on a metric sorts it biggest-first -- the same convention
    * the opportunity and search-performance tables use.
    */
-  const [sort, setSort] = React.useState<{ key: string; desc: boolean } | null>(
-    null,
-  );
-  const rows = sortReportRows(result.rows, sort, result.dimensions);
+  const sorting = useLocalSort<string>({ key: "", desc: true });
+  const rows = sorting.sort.key
+    ? sorting.apply(result.rows, (a, b, key) =>
+        compareReportCells(
+          a[key] ?? null,
+          b[key] ?? null,
+          result.dimensions.includes(key),
+        ),
+      )
+    : // Google's own ordering when nothing is chosen: each report definition
+      // asks for its own `orderBys`, so defaulting to a column would throw
+      // a meaningful order away.
+      result.rows;
 
   return (
     <div className="space-y-3">
@@ -294,29 +306,10 @@ function ReportTable({
                     <th
                       key={field}
                       className={isDimension ? "" : "text-right"}
-                      aria-sort={
-                        sort?.key === field
-                          ? sort.desc
-                            ? "descending"
-                            : "ascending"
-                          : undefined
-                      }
+                      aria-sort={sorting.ariaSort(field)}
                     >
                       <SortableHeader
-                        column={{
-                          getIsSorted: (): false | "asc" | "desc" =>
-                            sort?.key === field
-                              ? sort.desc
-                                ? "desc"
-                                : "asc"
-                              : false,
-                          getToggleSortingHandler: () => () =>
-                            setSort(
-                              sort?.key === field
-                                ? { key: field, desc: !sort.desc }
-                                : { key: field, desc: !isDimension },
-                            ),
-                        }}
+                        column={sorting.column(field, !isDimension)}
                         label={columnLabel(field)}
                         align={isDimension ? "left" : "right"}
                       />
@@ -356,33 +349,17 @@ function ReportTable({
   );
 }
 
-/**
- * GA4 rows in the operator's chosen order.
- *
- * Google's own ordering is kept when nothing is chosen -- it is meaningful
- * (each report definition asks for its own `orderBys`), so a default of
- * "sorted by the first column" would throw that away.
- */
-function sortReportRows(
-  rows: Array<Record<string, string | number | null>>,
-  sort: { key: string; desc: boolean } | null,
-  dimensions: readonly string[],
-) {
-  if (!sort) return rows;
-  const direction = sort.desc ? -1 : 1;
-  const isDimension = dimensions.includes(sort.key);
-
-  return sortRows(rows, (left, right) => {
-    const a = left[sort.key] ?? null;
-    const b = right[sort.key] ?? null;
-    // Absent values sink to the bottom whichever way the column is sorted;
-    // a null is not "smaller", it is "not measured".
-    if (a === null && b === null) return 0;
-    if (a === null) return 1;
-    if (b === null) return -1;
-    if (isDimension) {
-      return direction * String(a).localeCompare(String(b), "tr");
-    }
-    return direction * (Number(a) - Number(b));
-  });
+/** One GA4 cell against another, ascending; `useLocalSort` applies direction. */
+function compareReportCells(
+  a: string | number | null,
+  b: string | number | null,
+  isDimension: boolean,
+): number {
+  // Absent sinks to the bottom whichever way the column is sorted: a null is
+  // not "smaller", it is "not measured".
+  if (a === null && b === null) return 0;
+  if (a === null) return 1;
+  if (b === null) return -1;
+  if (isDimension) return compareText(String(a), String(b));
+  return Number(a) - Number(b);
 }

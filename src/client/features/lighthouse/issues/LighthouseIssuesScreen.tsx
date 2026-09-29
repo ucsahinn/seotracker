@@ -1,3 +1,4 @@
+import { LighthouseIssueList } from "@/client/features/lighthouse/issues/LighthouseIssueList";
 import { TabPanel } from "@/client/components/Tabs";
 import { PageShell } from "@/client/components/PageShell";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -13,7 +14,6 @@ import { exportTableToSheets } from "@/client/lib/exportToSheets";
 import type { CategoryTab, ExportPayload, LighthouseIssue } from "./types";
 import { categoryIssuePhrase, issuesToCsv, issuesToTable } from "./utils";
 import {
-  LighthouseIssueList,
   LighthouseIssuesHeader,
   LighthouseIssuesToolbar,
 } from "./LighthouseIssuesParts";

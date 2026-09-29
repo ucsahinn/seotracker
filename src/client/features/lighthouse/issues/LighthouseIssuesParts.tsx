@@ -19,7 +19,6 @@ import type {
   LighthouseMetrics,
   LighthouseScores,
 } from "./types";
-import { LighthouseIssueRow } from "./LighthouseIssueRow";
 import { LighthouseIssuesSummary } from "./LighthouseIssuesSummary";
 import { categoryLabel } from "./utils";
 import { categoryTabs } from "./types";
@@ -352,56 +351,5 @@ function ExportMenu({
         </>
       )}
     </PortalMenu>
-  );
-}
-
-export function LighthouseIssueList({
-  issues,
-  isLoading,
-  emptyMessage,
-}: {
-  issues: LighthouseIssue[];
-  isLoading: boolean;
-  emptyMessage?: string;
-}) {
-  if (isLoading) {
-    return <p className="text-sm text-muted">Sorunlar yükleniyor…</p>;
-  }
-  if (!issues.length) {
-    return (
-      <p className="text-sm text-muted">
-        {emptyMessage ?? "Bu kategoride işlem gerektiren sorun yok."}
-      </p>
-    );
-  }
-  return (
-    <table className="table table-sm w-full table-fixed">
-      <colgroup>
-        <col className="w-8" />
-        <col className="w-24" />
-        <col />
-        <col className="w-28 hidden sm:table-column" />
-        <col className="w-28 hidden md:table-column" />
-        <col className="w-14" />
-      </colgroup>
-      <thead>
-        <tr className="text-xs text-muted uppercase tracking-wide border-b border-base-300">
-          <th />
-          <th className="font-medium">Önem</th>
-          <th className="font-medium">Sorun</th>
-          <th className="font-medium hidden sm:table-cell">Kategori</th>
-          <th className="font-medium hidden md:table-cell text-right">Etki</th>
-          <th className="font-medium text-right">Puan</th>
-        </tr>
-      </thead>
-      <tbody className="divide-y divide-base-300/60">
-        {issues.map((issue, issueIndex) => (
-          <LighthouseIssueRow
-            key={`${issue.category}-${issue.auditKey}-${issueIndex}`}
-            issue={issue}
-          />
-        ))}
-      </tbody>
-    </table>
   );
 }

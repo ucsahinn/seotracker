@@ -4,6 +4,7 @@ import { getErrorCode } from "@/client/lib/error-messages";
 import {
   formatCount,
   formatDateTime,
+  formatDuration,
   formatPercent,
 } from "@/client/lib/format";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
@@ -271,6 +272,7 @@ function ProgressCard({
     lighthouseCompleted: number;
     lighthouseFailed: number;
     currentPhase: string | null;
+    startedAt: string;
   };
 }) {
   const crawlProgress =
@@ -294,6 +296,22 @@ function ProgressCard({
   const hasTotal = isLighthousePhase
     ? status.lighthouseTotal > 0
     : status.pagesTotal > 0;
+
+  /*
+   * How long it has been running, and roughly how much is left.
+   *
+   * A five-hundred-page crawl can run for many minutes -- the launch form
+   * says so before starting one -- and the only thing telling the operator
+   * whether to wait or come back was a fraction that can sit still for
+   * thirty seconds on a slow host. The estimate is gated on 5%: before
+   * that the rate is one or two pages of noise and the number it produces
+   * is a guess dressed as an answer.
+   */
+  const elapsedMs = Date.now() - new Date(status.startedAt).getTime();
+  const remainingMs =
+    hasTotal && progress > 0.05 && elapsedMs > 0
+      ? (elapsedMs * (1 - progress)) / progress
+      : null;
 
   const crawlProgressQuery = useQuery({
     queryKey: ["audit-crawl-progress", projectId, auditId],
@@ -352,7 +370,12 @@ function ProgressCard({
               </span>
             )}
             {hasTotal ? (
-              <span className="text-muted">{formatPercent(progress, 0)}</span>
+              <span className="text-muted">
+                {formatPercent(progress, 0)}
+                {remainingMs !== null
+                  ? ` · ~${formatDuration(remainingMs)} kaldı`
+                  : ""}
+              </span>
             ) : null}
           </div>
         </div>
