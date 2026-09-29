@@ -5,7 +5,7 @@ type CoverageRow = Awaited<
   ReturnType<typeof getAuditIndexCoverage>
 >["rows"][number];
 import { formatCount } from "@/client/lib/format";
-import { useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { ShieldAlert } from "lucide-react";
 import {
   exportIndexCoverage,
@@ -55,6 +55,18 @@ export function ResultsView({
   const hasPerformanceTab = lighthouse.length > 0;
   const activeTab =
     tab === "performance" && !hasPerformanceTab ? "issues" : tab;
+  /*
+   * Put the URL back in step with the screen.
+   *
+   * An audit run without Lighthouse has no Performance tab, and a link to
+   * `?tab=performance` -- from a bookmark, or from the audit before this
+   * one -- silently drew Sorunlar while the address bar still said
+   * performance. Reload it and you got the same mismatch again; share it
+   * and the other person saw something else than you described.
+   */
+  useEffect(() => {
+    if (tab !== activeTab) onTabChange(activeTab);
+  }, [activeTab, onTabChange, tab]);
   const stats = useResultStats(pages, lighthouse);
   const property = useAuditPropertyMatch(projectId, audit.startUrl);
   const blockedCount = useMemo(

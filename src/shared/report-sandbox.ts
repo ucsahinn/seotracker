@@ -101,7 +101,7 @@ function withPrintScript(html: string): string {
 
 /**
  * The one response both report documents are served with — `/r/<id>` for a
- * member and `/s/<token>/raw` for a link holder — so the sandbox, the print
+ * member — so the sandbox, the print
  * script and the header set cannot drift between them. Only the cache scope
  * and the robots tag differ: the public document is the one search engines
  * could reach.

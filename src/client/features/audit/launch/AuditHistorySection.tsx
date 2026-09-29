@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { RotateCw, ScanSearch, Trash2 } from "lucide-react";
 import type { getAuditHistory } from "@/serverFunctions/audit";
 import { RowActions } from "@/client/components/table/RowActions";
-import { formatDate, StatusBadge } from "@/client/features/audit/shared";
+import { formatDateTime, StatusBadge } from "@/client/features/audit/shared";
 import { CopyButton } from "@/client/components/CopyButton";
 
 type HistoryRow = Awaited<ReturnType<typeof getAuditHistory>>[number];
@@ -90,7 +90,9 @@ export function AuditHistorySection({
               {history.map((audit) => (
                 <tr key={audit.id} className="hover group">
                   <td className="text-xs text-muted">
-                    {formatDate(audit.startedAt)}
+                    {/* With the time. Six audits in one day all read
+                        "28 Eyl 2026" and could not be told apart. */}
+                    {formatDateTime(audit.startedAt)}
                   </td>
                   <td className="max-w-[220px]">
                     <div className="flex items-center gap-1">

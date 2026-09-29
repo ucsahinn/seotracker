@@ -17,7 +17,7 @@ export function extractHostname(url: string): string {
 }
 
 export {
-  formatDate,
+  formatDateTime,
   formatDateTime as formatStartedAt,
 } from "@/client/lib/format";
 
