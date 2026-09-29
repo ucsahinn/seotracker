@@ -5,6 +5,73 @@ numaraları [SemVer](https://semver.org/lang/tr/) izler.
 
 ## [Yayınlanmamış]
 
+## [1.2.0] — 2026-09-29
+
+Denetim altı kural daha derinleşti, toplanıp hiç okunmayan kolonlar okunmaya
+başladı, ve inceleme turunun bulduğu hataların kalanı kapandı.
+
+Ölçülenler: 73 denetim kuralı, 33 MCP aracı, 731 test, fixture koşusu 60/60
+(kapsam 48/48), `gitleaks` temiz.
+
+### Eklendi
+
+- **İç bağlantı yönlendirmeye gidiyorsa** bulgu. Kırık bağlantı sorgusu
+  yalnız 4xx/5xx'e bakıyordu; çok daha sık olan durum -- adresler değişmiş,
+  iç bağlantılar eskisinde kalmış -- görünmüyordu.
+- **Alt başlıksız uzun metin.** Başlık sayıları her taramada yazılıyor,
+  hiçbir kontrol bakmıyordu.
+- **Google'ın bayat taraması.** `last_crawl_time` okunmuyordu; oysa hiçbir
+  tarayıcının söyleyemeyeceği bir şeyi söylüyor: Google'ın elindeki sürüm
+  sizin yayımladığınız mı.
+- **Alt metni dosya adı / çok uzun.** `images_json` her src ve alt'ı
+  taşıyor, okunan tek şey eksik alt sayısıydı.
+- **Güvenli sayfada güvensiz kaynak.** https sayfadaki http betik ve stiller
+  tarayıcı tarafından engelleniyor, yani Google'ın dizine aldığı sayfa
+  sizin gördüğünüz değil.
+- **`<meta name="googlebot">`** artık saklanıyor. Ayrıştırılıp yazmadan
+  düşürülüyordu, o yüzden çapraz sayfa kontrolleri ona kördü.
+- **Analytics'e organik seyir çizgisi.** Motor servis yazıldığından beri
+  hazırdı, tek okuyucusu panel kartıydı.
+- **Arama performansına ülke dağılımı.** Tam metrik seti bir açılır listeyi
+  etiketlemek için harcanıyordu.
+- **Tablolarda arama.** Sorgular ve Sayfalar yüzlerce satır taşıyor ve
+  içinde bir şey bulmanın yolu yoktu. Arama URL'de duruyor.
+- **Kayıtlı kelimelerde satır eylemleri** ve ortak `RowActions`: kopyala,
+  sil, Arama Performansı'nda aç.
+
+### Düzeltildi
+
+- Denetim ortasında konteyner yeniden başlarsa denetim sonsuza dek
+  "Sürüyor" kalıyordu.
+- Sayfalama telefonda ekran dışındaydı ve kaydırarak da ulaşılamıyordu.
+- İndeksleme dağılım çubuğu %200'e çıkabiliyordu.
+- Rapor ve hız dağılımı ölçüm sayısını sayfa sayısı sanıyordu.
+- `tab=performance` sessizce Sorunlar'a düşerken adres çubuğu aksini
+  söylüyordu.
+- Denetim listesinde saat yoktu, aynı günün altı denetimi ayırt
+  edilemiyordu.
+- Çelişen canonical kontrolü etiket sayıyordu, hedef değil -- şablon ve
+  eklenti aynı doğru adresi yazınca yanlış pozitif üretiyordu.
+- Projenin mülkünün kapsamadığı sayfalar için Google bulgusu üretilebiliyordu.
+- Dar ekranda ipucu tetikleyicisinden bağımsız sabit bir noktaya
+  yapışıyordu.
+- Yüklenemeyen yedi bölüm yeniden deneme sunmuyordu; grafikler her sayfa
+  yüklenişinde konsola uyarı yazıyordu.
+
+### Güvenlik ve erişilebilirlik
+
+- OAuth geri dönüş yolu `/..//evil.com` ile atlatılabiliyordu.
+- Tablolardaki adresler şema denetiminden geçiyor; rapor kaçırıcısı tek
+  tırnağı ve eğik çizgiyi de kapsıyor.
+- Sıralama başlıkları 17px'ten 25px'e çıktı (WCAG 2.2 SC 2.5.8).
+- Lighthouse kategori sekmeleri işaret ettiği panele kavuştu.
+
+### İç düzen
+
+- Dört indirme kopyası teke indi; rapor uygulamanın tek formatlama
+  modülünü kullanıyor (kendi tarih ayrıştırıcısı SQLite damgasını yerel
+  saat sayıyordu); satır menüsü kalıbı üç dosyadan tek bileşene indi.
+
 ## [1.1.0] — 2026-09-28
 
 Denetim on bir kural derinleşti, ekranlar bulunan hataların hepsinden
