@@ -603,6 +603,7 @@ async function main() {
     "google-duplicate-no-canonical",
     "google-url-unknown",
     "google-rich-results-invalid",
+    "google-crawl-stale",
     "stale-google-verdicts",
   ];
   /*

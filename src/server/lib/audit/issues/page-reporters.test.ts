@@ -450,3 +450,42 @@ describe("checks traced to Google's documentation", () => {
     ).toContain("paginated-canonical-to-first-page");
   });
 });
+
+describe("no-subheadings", () => {
+  /*
+   * The heading counts have been written by every crawl since the analyzer
+   * was built and read by nothing. This is the question they answer.
+   */
+  it("reports a long page with nothing below the H1", () => {
+    expect(
+      issueTypes(
+        makePage({ wordCount: 900, h1Count: 1, h2Count: 0, h3Count: 0 }),
+      ),
+    ).toContain("no-subheadings");
+  });
+
+  it("says nothing when the page has sections", () => {
+    expect(
+      issueTypes(
+        makePage({ wordCount: 900, h1Count: 1, h2Count: 3, h3Count: 0 }),
+      ),
+    ).not.toContain("no-subheadings");
+    expect(
+      issueTypes(
+        makePage({ wordCount: 900, h1Count: 1, h2Count: 0, h3Count: 2 }),
+      ),
+    ).not.toContain("no-subheadings");
+  });
+
+  /*
+   * A short page needs no sections, and saying otherwise on every small
+   * page would bury the pages where it matters.
+   */
+  it("leaves a short page alone", () => {
+    expect(
+      issueTypes(
+        makePage({ wordCount: 200, h1Count: 1, h2Count: 0, h3Count: 0 }),
+      ),
+    ).not.toContain("no-subheadings");
+  });
+});

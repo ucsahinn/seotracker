@@ -106,4 +106,12 @@ export const CONTENT_ISSUES = {
     howToFix:
       'Sayfanın `<head>` bölümüne `<meta name="viewport" content="width=device-width, initial-scale=1">` ekleyin. Neredeyse her durumda doğru değer budur.',
   },
+  "no-subheadings": {
+    severity: "info",
+    title: "Uzun metin alt başlıksız",
+    explanation:
+      "Sayfada epey metin var ama H1 dışında hiç başlık yok. Alt başlıklar metni tarayarak okunabilir hale getirir ve her bölümün neyi anlattığını söyler; Google da bir sayfanın hangi alt konuları kapsadığını kısmen buradan çıkarır. Başlıksız uzun bir metin tek bir duvar olarak okunur.",
+    howToFix:
+      "Metni konularına göre bölüp her bölüme bir H2 verin. Başlıklar içeriği anlatsın; anahtar kelime doldurmak için değil, okuyan kişi nerede olduğunu bilsin diye.",
+  },
 } as const satisfies Record<string, AuditIssueDescriptor>;

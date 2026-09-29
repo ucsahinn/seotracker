@@ -1,5 +1,5 @@
 import type { Fixture } from "./types";
-import { htmlResponse, renderPage } from "../lib";
+import { htmlResponse, lorem, renderPage } from "../lib";
 import { article } from "./helpers";
 
 const CAT = "Content quality";
@@ -232,6 +232,31 @@ const dupMetaB: Fixture = {
     ),
 };
 
+// 35 — a long page with nothing below the H1 -----------------------------
+const noSubheadings: Fixture = {
+  path: "/content/no-subheadings",
+  category: CAT,
+  name: "Long page with no subheadings",
+  summary:
+    "Nine hundred words under a single H1 and not one H2. One wall of text.",
+  lesson:
+    "Subheadings are how a reader skims and how a page states which sub-topics it covers. A long page without them is read as one undifferentiated block by people and by Google alike.",
+  expectedIssues: ["no-subheadings"],
+  handler: () =>
+    htmlResponse(
+      renderPage({
+        fixture: noSubheadings,
+        title: "Everything about this topic, in one breath",
+        metaDescription:
+          "A long page that never once breaks its text into sections, so nothing tells the reader where they are.",
+        bodyHtml: `<h1>One heading, nine hundred words</h1>
+<p>${lorem(300)}</p>
+<p>${lorem(300)}</p>
+<p>${lorem(300)}</p>`,
+      }),
+    ),
+};
+
 export const contentFixtures: Fixture[] = [
   thinContent,
   imagesMissingAlt,
@@ -240,4 +265,5 @@ export const contentFixtures: Fixture[] = [
   dupTitleB,
   dupMetaA,
   dupMetaB,
+  noSubheadings,
 ];

@@ -21,6 +21,19 @@ import { classifyCoverageState } from "@/shared/gsc-coverage-states";
 
 type PageRef = { id: string; url: string; isIndexable: boolean };
 
+/*
+ * Ninety days. Not a Google number -- there is no published crawl cadence --
+ * but far enough past any healthy interval that "Google has not looked in a
+ * quarter" is a fact about the page rather than about the calendar.
+ */
+const GOOGLE_CRAWL_STALE_DAYS = 90;
+
+function isOlderThanDays(timestamp: string, days: number, now: Date): boolean {
+  const at = Date.parse(timestamp);
+  if (Number.isNaN(at)) return false;
+  return now.getTime() - at > days * 24 * 60 * 60 * 1000;
+}
+
 export async function findGoogleVerdictProblems(input: {
   projectId: string;
   pages: PageRef[];
@@ -46,7 +59,8 @@ export async function findGoogleVerdictProblems(input: {
       | "google-discovered-not-indexed"
       | "google-duplicate-no-canonical"
       | "google-url-unknown"
-      | "google-rich-results-invalid",
+      | "google-rich-results-invalid"
+      | "google-crawl-stale",
     at: { pageId: string; pageUrl: string },
     details: Record<string, unknown>,
   ) => issues.push({ ...at, issueType, details });
@@ -59,6 +73,7 @@ export async function findGoogleVerdictProblems(input: {
         pageFetchState: gscUrlInspections.pageFetchState,
         indexingState: gscUrlInspections.indexingState,
         coverageState: gscUrlInspections.coverageState,
+        lastCrawlTime: gscUrlInspections.lastCrawlTime,
         richResultsVerdict: gscUrlInspections.richResultsVerdict,
         robotsTxtState: gscUrlInspections.robotsTxtState,
         googleCanonical: gscUrlInspections.googleCanonical,
@@ -196,6 +211,24 @@ export async function findGoogleVerdictProblems(input: {
         push("google-rich-results-invalid", at, {
           ...details,
           verdict: row.richResultsVerdict,
+        });
+      }
+
+      /*
+       * When Google last fetched the page. Stored since the coverage screen
+       * was built, read by nothing -- yet it answers a question no crawler
+       * can: whether the version Google has is the version you published.
+       * Only for pages Google has actually crawled; a null here means never,
+       * which the coverage states above already report with the right words.
+       */
+      if (
+        row.lastCrawlTime &&
+        isOlderThanDays(row.lastCrawlTime, GOOGLE_CRAWL_STALE_DAYS, now)
+      ) {
+        push("google-crawl-stale", at, {
+          ...details,
+          lastCrawlTime: row.lastCrawlTime,
+          thresholdDays: GOOGLE_CRAWL_STALE_DAYS,
         });
       }
 

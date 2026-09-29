@@ -29,6 +29,13 @@ const TITLE_MAX_CHARS = 60;
 const TITLE_MIN_CHARS = 10;
 const META_DESCRIPTION_MAX_CHARS = 160;
 const META_DESCRIPTION_MIN_CHARS = 70;
+/*
+ * Where a page is long enough that a reader expects sections. Not a Google
+ * threshold -- there is none -- so it is set where the advice starts being
+ * true rather than where a tool could technically fire it.
+ */
+const SUBHEADING_EXPECTED_WORDS = 600;
+
 /* 150 was an SEO-tool convention with no Google basis, and `wordCount` counts
    every text node in the body: nav, sidebar, cookie banner, footer. On most
    templates that chrome alone clears 150, so the check never fired on the
@@ -348,6 +355,21 @@ export function runPageReporters(
   }
   if (hasHeadingLevelSkip(page.headingOrder)) {
     report("heading-order-skip");
+  }
+  /*
+   * A long page with nothing below the H1. The heading counts have been
+   * written by every crawl and read by nothing; this is the question they
+   * answer. The word floor is deliberately well above `thin-content`: a
+   * short page needs no sections, and saying otherwise on every small page
+   * would bury the pages where it matters.
+   */
+  if (
+    page.isIndexable &&
+    page.wordCount >= SUBHEADING_EXPECTED_WORDS &&
+    page.h2Count === 0 &&
+    page.h3Count === 0
+  ) {
+    report("no-subheadings", { wordCount: page.wordCount });
   }
 
   reportIndexability(page, report);

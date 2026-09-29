@@ -218,4 +218,12 @@ export const INDEXING_ISSUES = {
     howToFix:
       "Sayfanın kaynağında rel=canonical arayın; hangisinin doğru olduğuna karar verip diğerini üreten yeri kapatın. Aynı adresi iki kez yazan bir kurulum sorun değildir, bu bulgu yalnızca hedefler farklıyken çıkar.",
   },
+  "google-crawl-stale": {
+    severity: "info",
+    title: "Google bu sayfayı uzun süredir taramadı",
+    explanation:
+      "Google'ın bu adresi en son ziyareti aylar öncesine dayanıyor. Sayfa dizinde olabilir, ama Google'ın gördüğü sürüm o tarihteki sürüm: o günden sonra yaptığınız hiçbir değişiklik arama sonuçlarına yansımamıştır. Nadiren taranan bir sayfa genelde sitenin geri kalanından yeterince bağlantı almayan ya da Google'ın önemsiz bulduğu bir sayfadır.",
+    howToFix:
+      "Sayfayı sık taranan sayfalardan bağlantılayın ve site haritasında olduğundan emin olun. İçerik gerçekten güncellendiyse Search Console'dan dizine ekleme isteyebilirsiniz; ama asıl çözüm sayfanın siteye daha iyi bağlanması.",
+  },
 } as const satisfies Record<string, AuditIssueDescriptor>;
