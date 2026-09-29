@@ -33,6 +33,8 @@ export interface SlimPage {
    * reported as pointing at a noindexed page.
    */
   robotsMeta: string | null;
+  /** Google's own directive, which overrides the generic one for Google. */
+  googlebotMeta: string | null;
   xRobotsTag: string | null;
   /** Whether the page carries any schema.org JSON-LD block. */
   hasStructuredData: boolean;
@@ -178,11 +180,20 @@ export function findCanonicalTargetProblems(
       });
     } else if (
       !target.isIndexable &&
-      (target.robotsMeta !== null || target.xRobotsTag !== null)
+      (target.robotsMeta !== null ||
+        target.googlebotMeta !== null ||
+        target.xRobotsTag !== null)
     ) {
-      // The directive has to be there in writing. A page noindexed only by
-      // `<meta name="googlebot">` is missed, because that one is not stored;
-      // a missed finding beats a critical invented against a PDF.
+      /*
+       * The directive has to be there in writing, because `isIndexable` is
+       * also false for every non-HTML 200 -- a canonical pointing at a PDF
+       * would otherwise be reported as pointing at a noindexed page.
+       *
+       * `googlebotMeta` now counts too. It was parsed and dropped before
+       * the write, so a page noindexed only by
+       * `<meta name="googlebot" content="noindex">` was invisible here --
+       * and that is the directive Google gives precedence to.
+       */
       issues.push({
         issueType: "canonical-to-noindex",
         pageId: page.id,

@@ -72,6 +72,12 @@ export const auditPages = sqliteTable(
     metaDescription: text("meta_description"),
     canonicalUrl: text("canonical_url"),
     robotsMeta: text("robots_meta"),
+    /*
+     * Google's own directive, which overrides the generic one for Google.
+     * Parsed since the analyzer was written and dropped before the write,
+     * so every cross-page check was blind to a page noindexed only this way.
+     */
+    googlebotMeta: text("googlebot_meta"),
     // Open Graph
     ogTitle: text("og_title"),
     ogDescription: text("og_description"),

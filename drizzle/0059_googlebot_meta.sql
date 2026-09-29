@@ -1,0 +1,13 @@
+-- The bot-specific robots directive, which the crawler has parsed since the
+-- analyzer was written and then dropped on the floor.
+--
+-- `<meta name="googlebot" content="noindex">` overrides the generic
+-- `<meta name="robots">` for Google specifically, and Google documents it as
+-- taking precedence. The page reporter already reads it from the live crawl
+-- result, so a page noindexed only that way is reported correctly while the
+-- crawl is running — but the value was never written to a column, so every
+-- cross-page check afterwards was blind to it. `canonical-to-noindex` says so
+-- in a comment: it has to skip such a page rather than risk a false critical.
+--
+-- One nullable text column, stored exactly as `robots_meta` is.
+ALTER TABLE `audit_pages` ADD `googlebot_meta` text;

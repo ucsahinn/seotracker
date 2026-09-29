@@ -23,6 +23,7 @@ function page(overrides: Partial<PageRow>): PageRow {
     metaDescription: null,
     canonicalUrl: null,
     robotsMeta: null,
+    googlebotMeta: null,
     ogTitle: null,
     ogDescription: null,
     ogImage: null,

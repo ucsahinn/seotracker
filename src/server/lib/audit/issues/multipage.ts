@@ -65,6 +65,7 @@ export async function runMultipageChecks(input: {
       canonicalUrl: auditPages.canonicalUrl,
       headerCanonicalUrl: auditPages.headerCanonicalUrl,
       robotsMeta: auditPages.robotsMeta,
+      googlebotMeta: auditPages.googlebotMeta,
       xRobotsTag: auditPages.xRobotsTag,
       hreflangTagsJson: auditPages.hreflangTagsJson,
       hasStructuredData: auditPages.hasStructuredData,

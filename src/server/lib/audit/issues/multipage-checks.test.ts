@@ -32,6 +32,7 @@ function makeSlimPage(overrides: Partial<SlimPage>): SlimPage {
     canonicalUrl: null,
     headerCanonicalUrl: null,
     robotsMeta: null,
+    googlebotMeta: null,
     xRobotsTag: null,
     hreflangAlternates: [],
     ...overrides,
@@ -358,5 +359,46 @@ describe("findMissingStructuredData", () => {
     expect(
       findMissingStructuredData(site(6, { fetchClass: "blocked" }), START),
     ).toEqual([]);
+  });
+});
+
+describe("canonical-to-noindex and the googlebot directive", () => {
+  const target = (overrides: Partial<SlimPage>) =>
+    makeSlimPage({
+      url: "https://example.com/target",
+      isIndexable: false,
+      ...overrides,
+    });
+
+  const source = makeSlimPage({
+    url: "https://example.com/source",
+    canonicalUrl: "https://example.com/target",
+  });
+
+  /*
+   * `<meta name="googlebot">` is the directive Google gives precedence to,
+   * and it was parsed and then dropped before the write — so a page
+   * noindexed only that way was invisible to this check.
+   */
+  it("reports a canonical pointing at a page noindexed only for Google", () => {
+    const issues = findCanonicalTargetProblems([
+      source,
+      target({ googlebotMeta: "noindex" }),
+    ]);
+
+    expect(issues.map((i) => i.issueType)).toContain("canonical-to-noindex");
+  });
+
+  /*
+   * `isIndexable` is also false for every non-HTML 200, so without a
+   * directive in writing this would report a canonical pointing at a PDF
+   * as pointing at a noindexed page.
+   */
+  it("stays quiet when no directive says so in writing", () => {
+    const issues = findCanonicalTargetProblems([source, target({})]);
+
+    expect(issues.map((i) => i.issueType)).not.toContain(
+      "canonical-to-noindex",
+    );
   });
 });
