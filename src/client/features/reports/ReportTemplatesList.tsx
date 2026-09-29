@@ -1,5 +1,5 @@
 import { Pencil, Trash2 } from "lucide-react";
-import { PortalMenu } from "@/client/components/PortalMenu";
+import { RowActions } from "@/client/components/table/RowActions";
 import { formatRelativeTime } from "@/client/lib/format";
 import type { ReportTemplate } from "@/types/schemas/report-templates";
 
@@ -44,35 +44,22 @@ export function ReportTemplatesList({
                 {formatRelativeTime(template.updatedAt)}
               </td>
               <td className="w-10 text-right">
-                <PortalMenu ariaLabel={`${template.name} için işlemler`}>
-                  {(close) => (
-                    <>
-                      <li>
-                        <button
-                          onClick={() => {
-                            close();
-                            onEdit(template);
-                          }}
-                        >
-                          <Pencil className="size-3.5" />
-                          Düzenle
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          className="text-error"
-                          onClick={() => {
-                            close();
-                            onDelete(template);
-                          }}
-                        >
-                          <Trash2 className="size-3.5" />
-                          Sil
-                        </button>
-                      </li>
-                    </>
-                  )}
-                </PortalMenu>
+                <RowActions
+                  label={`${template.name} için işlemler`}
+                  actions={[
+                    {
+                      label: "Düzenle",
+                      icon: Pencil,
+                      onSelect: () => onEdit(template),
+                    },
+                    {
+                      label: "Sil",
+                      icon: Trash2,
+                      destructive: true,
+                      onSelect: () => onDelete(template),
+                    },
+                  ]}
+                />
               </td>
             </tr>
           ))}

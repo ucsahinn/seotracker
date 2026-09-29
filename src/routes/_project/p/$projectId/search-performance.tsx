@@ -27,6 +27,9 @@ const searchSchema = z.object({
     .default("last_28_days"),
   device: z.enum(GSC_DEVICES).optional().catch(undefined),
   country: z.string().min(2).max(3).optional().catch(undefined),
+  /* Free-text narrowing of the queries/pages table. In the URL so a link
+     from a saved keyword lands on that keyword, and so a reload keeps it. */
+  q: z.string().max(200).optional().catch(undefined),
   // Page is deliberately not persisted: it is a position inside a result
   // set, and the set is rebuilt whenever any filter above it changes.
 });
@@ -50,6 +53,7 @@ function SearchPerformanceRoute() {
       range={search.range}
       device={search.device}
       country={search.country}
+      query={search.q ?? ""}
       onViewChange={(next) =>
         void navigate({ search: (current) => ({ ...current, ...next }) })
       }

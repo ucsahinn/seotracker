@@ -123,6 +123,7 @@ export function SearchPerformancePage({
   range,
   device,
   country,
+  query,
   onViewChange,
 }: {
   projectId: string;
@@ -135,11 +136,14 @@ export function SearchPerformancePage({
   range: SearchPerformanceDateRange;
   device?: SearchPerformanceDevice;
   country?: string;
+  /** Free-text narrowing of the dimension table, from the URL. */
+  query: string;
   onViewChange: (next: {
     tab?: Tab;
     range?: SearchPerformanceDateRange;
     device?: SearchPerformanceDevice;
     country?: string;
+    q?: string;
   }) => void;
 }) {
   const queryClient = useQueryClient();
@@ -365,6 +369,10 @@ export function SearchPerformancePage({
                       keyLabel={tab === "queries" ? "Sorgu" : "Sayfa"}
                       truncated={tableTruncated}
                       hasActiveFilter={Boolean(device ?? country)}
+                      search={query}
+                      onSearchChange={(next) =>
+                        onViewChange({ q: next || undefined })
+                      }
                     />
                   </div>
                 </>

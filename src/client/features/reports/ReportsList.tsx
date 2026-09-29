@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Download, Trash2 } from "lucide-react";
 import { toast } from "sonner";
-import { PortalMenu } from "@/client/components/PortalMenu";
+import { RowActions } from "@/client/components/table/RowActions";
 import {
   downloadReport,
   reportFilename,
@@ -65,38 +65,27 @@ export function ReportsList({
                   {formatRelativeTime(report.updatedAt)}
                 </td>
                 <td className="w-10 text-right">
-                  <PortalMenu ariaLabel={`${report.title} için işlemler`}>
-                    {(close) => (
-                      <>
-                        <li>
-                          <button
-                            onClick={() => {
-                              close();
-                              void downloadReport(
-                                report.id,
-                                reportFilename(report.title),
-                              ).catch(() => toast.error("Rapor indirilemedi."));
-                            }}
-                          >
-                            <Download className="size-3.5" />
-                            İndir
-                          </button>
-                        </li>
-                        <li>
-                          <button
-                            className="text-error"
-                            onClick={() => {
-                              close();
-                              onDelete(report);
-                            }}
-                          >
-                            <Trash2 className="size-3.5" />
-                            Sil
-                          </button>
-                        </li>
-                      </>
-                    )}
-                  </PortalMenu>
+                  <RowActions
+                    label={`${report.title} için işlemler`}
+                    actions={[
+                      {
+                        label: "İndir",
+                        icon: Download,
+                        onSelect: () => {
+                          void downloadReport(
+                            report.id,
+                            reportFilename(report.title),
+                          ).catch(() => toast.error("Rapor indirilemedi."));
+                        },
+                      },
+                      {
+                        label: "Sil",
+                        icon: Trash2,
+                        destructive: true,
+                        onSelect: () => onDelete(report),
+                      },
+                    ]}
+                  />
                 </td>
               </tr>
             ))}

@@ -19,6 +19,9 @@ import { IntentBadge } from "@/client/features/saved-keywords/components";
 import type { KeywordIntent, SavedKeywordRow } from "@/types/keywords";
 import { TagChip } from "./TagChip";
 import { formatSavedKeywordDate } from "./savedKeywordsUtils";
+import { Copy, Search as SearchIcon, Trash2 } from "lucide-react";
+import { toast } from "sonner";
+import { RowActions } from "@/client/components/table/RowActions";
 
 const columnHelper = createColumnHelper<SavedKeywordRow>();
 
@@ -30,6 +33,8 @@ export function SavedKeywordsTable({
   hasActiveFilters,
   onRowSelectionChange,
   onSortingChange,
+  onRemove,
+  onInspect,
 }: {
   rows: SavedKeywordRow[];
   rowSelection: RowSelectionState;
@@ -38,6 +43,9 @@ export function SavedKeywordsTable({
   hasActiveFilters: boolean;
   onRowSelectionChange: OnChangeFn<RowSelectionState>;
   onSortingChange: OnChangeFn<SortingState>;
+  onRemove: (id: string) => void;
+  /** Opens Search Performance filtered to this keyword. */
+  onInspect: (keyword: string) => void;
 }) {
   const selectAnchorRef = useSelectionAnchor();
   const columns = useMemo<ColumnDef<SavedKeywordRow>[]>(
@@ -79,8 +87,46 @@ export function SavedKeywordsTable({
           </span>
         ),
       }),
+      /*
+       * Per-row actions. Everything here used to live only in the bulk bar,
+       * so copying one keyword meant: tick its box, wait for the bar, open
+       * a dropdown, pick "copy keywords". Four steps to move one word.
+       */
+      columnHelper.display({
+        id: "actions",
+        header: () => null,
+        cell: ({ row }) => (
+          <RowActions
+            label={`${row.original.keyword} için işlemler`}
+            actions={[
+              {
+                label: "Kelimeyi kopyala",
+                icon: Copy,
+                onSelect: () => {
+                  void navigator.clipboard
+                    .writeText(row.original.keyword)
+                    .then(() => toast.success("Kelime kopyalandı"))
+                    .catch(() => toast.error("Panoya kopyalanamadı"));
+                },
+              },
+              {
+                label: "Arama performansında ara",
+                icon: SearchIcon,
+                onSelect: () => onInspect(row.original.keyword),
+              },
+              {
+                label: "Kelimeyi sil",
+                icon: Trash2,
+                destructive: true,
+                onSelect: () => onRemove(row.original.id),
+              },
+            ]}
+          />
+        ),
+        meta: { cellClassName: "w-10 text-right" },
+      }),
     ],
-    [selectAnchorRef],
+    [onInspect, onRemove, selectAnchorRef],
   );
   const table = useAppTable({
     data: rows,

@@ -39,6 +39,8 @@ describe("DimensionTable sorting", () => {
         keyLabel="Sorgu"
         truncated={false}
         hasActiveFilter={false}
+        search=""
+        onSearchChange={() => {}}
       />,
     );
 
@@ -57,6 +59,8 @@ describe("DimensionTable sorting", () => {
         keyLabel="Sorgu"
         truncated
         hasActiveFilter={false}
+        search=""
+        onSearchChange={() => {}}
       />,
     );
 
@@ -75,6 +79,8 @@ describe("DimensionTable sorting", () => {
         keyLabel="Sorgu"
         truncated={false}
         hasActiveFilter={false}
+        search=""
+        onSearchChange={() => {}}
       />,
     );
     expect(screen.getByText(/henüz veri yok/i)).toBeDefined();
@@ -85,8 +91,91 @@ describe("DimensionTable sorting", () => {
         keyLabel="Sorgu"
         truncated={false}
         hasActiveFilter
+        search=""
+        onSearchChange={() => {}}
       />,
     );
     expect(screen.getByText(/filtrelerle eşleşen satır yok/i)).toBeDefined();
+  });
+});
+
+describe("DimensionTable search", () => {
+  const rows = [
+    {
+      key: "parola yöneticisi",
+      clicks: 10,
+      impressions: 100,
+      ctr: 0.1,
+      position: 4,
+    },
+    {
+      key: "şifre yöneticisi",
+      clicks: 5,
+      impressions: 50,
+      ctr: 0.1,
+      position: 8,
+    },
+    {
+      key: "windows server",
+      clicks: 1,
+      impressions: 10,
+      ctr: 0.1,
+      position: 20,
+    },
+  ];
+
+  /*
+   * The tables run to hundreds of rows and had no way to find one of them.
+   * Narrowing happens over the whole fetched set, not the visible page.
+   */
+  it("keeps only the rows containing the search text", () => {
+    render(
+      <DimensionTable
+        rows={rows}
+        keyLabel="Sorgu"
+        truncated={false}
+        hasActiveFilter={false}
+        search="yönet"
+        onSearchChange={() => {}}
+      />,
+    );
+
+    expect(screen.getByText("parola yöneticisi")).toBeDefined();
+    expect(screen.getByText("şifre yöneticisi")).toBeDefined();
+    expect(screen.queryByText("windows server")).toBeNull();
+  });
+
+  /*
+   * Turkish casing: a plain toLowerCase turns "I" into "i" and leaves "İ"
+   * alone, so searching "şi" would miss a row starting "Şifre".
+   */
+  it("matches regardless of Turkish casing", () => {
+    render(
+      <DimensionTable
+        rows={[{ ...rows[1], key: "ŞİFRE YÖNETİCİSİ" }]}
+        keyLabel="Sorgu"
+        truncated={false}
+        hasActiveFilter={false}
+        search="şifre"
+        onSearchChange={() => {}}
+      />,
+    );
+
+    expect(screen.getByText("ŞİFRE YÖNETİCİSİ")).toBeDefined();
+  });
+
+  it("says what matched nothing, rather than what filters are set", () => {
+    render(
+      <DimensionTable
+        rows={rows}
+        keyLabel="Sorgu"
+        truncated={false}
+        hasActiveFilter={false}
+        search="bulunamaz"
+        onSearchChange={() => {}}
+      />,
+    );
+
+    expect(screen.getByText(/"bulunamaz" ile eşleşen satır yok/)).toBeDefined();
   });
 });

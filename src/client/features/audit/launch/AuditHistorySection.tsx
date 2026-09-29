@@ -2,7 +2,7 @@ import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { Link } from "@tanstack/react-router";
 import { RotateCw, ScanSearch, Trash2 } from "lucide-react";
 import type { getAuditHistory } from "@/serverFunctions/audit";
-import { PortalMenu } from "@/client/components/PortalMenu";
+import { RowActions } from "@/client/components/table/RowActions";
 import { formatDate, StatusBadge } from "@/client/features/audit/shared";
 import { CopyButton } from "@/client/components/CopyButton";
 
@@ -155,35 +155,22 @@ function HistoryActions({
       >
         Görüntüle
       </Link>
-      <PortalMenu ariaLabel="Denetim işlemleri">
-        {(close) => (
-          <>
-            <li>
-              <button
-                onClick={() => {
-                  close();
-                  onRerun(audit);
-                }}
-              >
-                <RotateCw className="size-3.5" />
-                Aynı ayarlarla yeniden çalıştır
-              </button>
-            </li>
-            <li>
-              <button
-                className="text-error"
-                onClick={() => {
-                  close();
-                  onDelete(audit.id);
-                }}
-              >
-                <Trash2 className="size-3.5" />
-                Denetimi sil
-              </button>
-            </li>
-          </>
-        )}
-      </PortalMenu>
+      <RowActions
+        label={`${audit.startUrl} denetimi için işlemler`}
+        actions={[
+          {
+            label: "Aynı ayarlarla yeniden çalıştır",
+            icon: RotateCw,
+            onSelect: () => onRerun(audit),
+          },
+          {
+            label: "Denetimi sil",
+            icon: Trash2,
+            destructive: true,
+            onSelect: () => onDelete(audit.id),
+          },
+        ]}
+      />
     </div>
   );
 }

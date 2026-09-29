@@ -1,5 +1,5 @@
 import { PageShell } from "@/client/components/PageShell";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 // Aliased: `SavedKeywordsPage` has a local `sort` const (the saved-keyword
 // sort key) that would otherwise shadow this import at the call site.
 import { sort as sortArray } from "remeda";
@@ -62,6 +62,7 @@ function SavedKeywordsPage() {
   const [sorting, setSorting] = useState<SortingState>([
     { id: "fetchedAt", desc: true },
   ]);
+  const navigate = useNavigate();
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [removeError, setRemoveError] = useState<string | null>(null);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -290,6 +291,19 @@ function SavedKeywordsPage() {
               hasActiveFilters={hasActiveFilters}
               onRowSelectionChange={setRowSelection}
               onSortingChange={handleSortingChange}
+              onRemove={(id) => removeMutation.mutate([id])}
+              /*
+               * The other end of the one-way trip. Keywords are saved from
+               * Search Performance and the empty state says so, but there
+               * was no way back to the numbers behind one.
+               */
+              onInspect={(keyword) =>
+                void navigate({
+                  to: "/p/$projectId/search-performance",
+                  params: { projectId },
+                  search: { tab: "queries", q: keyword },
+                })
+              }
             />
           )}
         </div>

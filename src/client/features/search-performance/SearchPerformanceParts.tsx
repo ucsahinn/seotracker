@@ -181,6 +181,8 @@ export function DimensionTable({
   keyLabel,
   truncated,
   hasActiveFilter,
+  search,
+  onSearchChange,
 }: {
   rows: SearchPerformanceTableRow[];
   keyLabel: string;
@@ -188,8 +190,24 @@ export function DimensionTable({
   truncated: boolean;
   /** Changes what an empty table means, and therefore what to say about it. */
   hasActiveFilter: boolean;
+  /** Free-text narrowing, kept in the URL so it survives a reload. */
+  search: string;
+  onSearchChange: (next: string) => void;
 }) {
   const columns = useMemo(() => buildDimensionColumns(keyLabel), [keyLabel]);
+  /*
+   * Narrowed here rather than at the server: the whole dimension is already
+   * in memory (Google returns it in one call), and a thousand-row table with
+   * no way to find one query in it is a list, not a table.
+   */
+  const needle = search.trim().toLocaleLowerCase("tr");
+  const visible = useMemo(
+    () =>
+      needle
+        ? rows.filter((row) => row.key.toLocaleLowerCase("tr").includes(needle))
+        : rows,
+    [needle, rows],
+  );
   /*
    * Sorted and paginated here, over the whole fetched set.
    *
@@ -199,7 +217,7 @@ export function DimensionTable({
    * the highest-impression queries.
    */
   const table = useAppTable({
-    data: rows,
+    data: visible,
     columns,
     withSorting: true,
     withPagination: true,
@@ -212,25 +230,44 @@ export function DimensionTable({
 
   return (
     <>
+      {rows.length > 0 ? (
+        <div className="flex flex-wrap items-center gap-2 border-b border-base-300 px-4 py-2">
+          <input
+            type="search"
+            value={search}
+            onChange={(event) => onSearchChange(event.target.value)}
+            placeholder={`${keyLabel} içinde ara`}
+            aria-label={`${keyLabel} içinde ara`}
+            className="input input-bordered input-sm w-full max-w-xs"
+          />
+          {needle ? (
+            <span className="text-xs text-muted tabular-nums">
+              {formatCount(visible.length)} / {formatCount(rows.length)}
+            </span>
+          ) : null}
+        </div>
+      ) : null}
       <AppDataTable
         table={table}
         className="table table-zebra table-sm"
         wrapperClassName="overflow-x-auto"
         empty={
           <p className="p-6 text-sm text-muted">
-            {hasActiveFilter
-              ? "Bu filtrelerle eşleşen satır yok. Filtreleri genişletmeyi deneyin."
-              : "Bu dönem için henüz veri yok. Search Console verisi birkaç gün gecikmeli gelir."}
+            {needle
+              ? `"${search}" ile eşleşen satır yok.`
+              : hasActiveFilter
+                ? "Bu filtrelerle eşleşen satır yok. Filtreleri genişletmeyi deneyin."
+                : "Bu dönem için henüz veri yok. Search Console verisi birkaç gün gecikmeli gelir."}
           </p>
         }
       />
-      {rows.length > 0 ? (
+      {visible.length > 0 ? (
         <>
           <TablePagination
             page={pagination.pageIndex + 1}
             pageSize={pagination.pageSize}
             pageSizes={SEARCH_PERFORMANCE_PAGE_SIZES}
-            totalCount={rows.length}
+            totalCount={visible.length}
             hasNextPage={table.getCanNextPage()}
             isLoading={false}
             onPageChange={(next) => table.setPageIndex(next - 1)}
