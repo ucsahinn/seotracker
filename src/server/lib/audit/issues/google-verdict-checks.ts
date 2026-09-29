@@ -17,6 +17,8 @@ import { gscUrlInspections } from "@/db/schema";
 import type { DetectedIssue } from "@/server/lib/audit/issues/page-reporters";
 import { isStale, URL_BIND_CHUNK } from "@/server/features/gsc/indexCoverage";
 import { sameCanonicalTarget } from "@/server/lib/audit/url-utils";
+import { GscService } from "@/server/features/gsc/services/GscService";
+import { gscPropertyCoversHost } from "@/shared/gscProperty";
 import { classifyCoverageState } from "@/shared/gsc-coverage-states";
 
 type PageRef = { id: string; url: string; isIndexable: boolean };
@@ -27,6 +29,15 @@ type PageRef = { id: string; url: string; isIndexable: boolean };
  * quarter" is a fact about the page rather than about the calendar.
  */
 const GOOGLE_CRAWL_STALE_DAYS = 90;
+
+function hostOf(url: string | undefined): string | null {
+  if (!url) return null;
+  try {
+    return new URL(url).hostname;
+  } catch {
+    return null;
+  }
+}
 
 function isOlderThanDays(timestamp: string, days: number, now: Date): boolean {
   const at = Date.parse(timestamp);
@@ -40,6 +51,21 @@ export async function findGoogleVerdictProblems(input: {
   now?: Date;
 }): Promise<DetectedIssue[]> {
   if (input.pages.length === 0) return [];
+
+  /*
+   * Only when the property covers what was crawled.
+   *
+   * The inspection cache is keyed by project and URL, not by property, so
+   * pages of a site the project's property does not cover can have rows in
+   * it -- asked before the Index Coverage tab started refusing, or through
+   * the MCP tool. Those rows read "URL is unknown to Google", which is
+   * true and useless: Google was asked the wrong question. Reporting it
+   * would tell someone to fix their sitemap over a site that was never in
+   * that property.
+   */
+  const connection = await GscService.getConnection(input.projectId);
+  const auditedHost = hostOf(input.pages[0]?.url);
+  if (!gscPropertyCoversHost(connection?.siteUrl, auditedHost)) return [];
 
   const byUrl = new Map(input.pages.map((page) => [page.url, page]));
   const urls = [...byUrl.keys()];

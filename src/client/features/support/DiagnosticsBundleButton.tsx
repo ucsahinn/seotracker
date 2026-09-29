@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import { readClientLog } from "@/client/lib/clientLog";
 import { buildZip } from "@/client/lib/zip";
+import { downloadBlob } from "@/client/lib/download";
 import { getDiagnostics } from "@/serverFunctions/diagnostics";
 
 /**
@@ -28,15 +29,10 @@ export function DiagnosticsBundleButton() {
         { name: "summary.txt", content: summary(server, clientLog.length) },
       ]);
 
-      const href = URL.createObjectURL(archive);
-      try {
-        const link = document.createElement("a");
-        link.href = href;
-        link.download = `seotracker-tanilama-${server.generatedAt.slice(0, 10)}.zip`;
-        link.click();
-      } finally {
-        URL.revokeObjectURL(href);
-      }
+      downloadBlob(
+        archive,
+        `seotracker-tanilama-${server.generatedAt.slice(0, 10)}.zip`,
+      );
     },
     onSuccess: () => toast.success("Tanılama paketi indirildi."),
     onError: (error) =>

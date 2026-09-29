@@ -1,3 +1,4 @@
+import { downloadBlob } from "@/client/lib/download";
 /**
  * Saves a stored report to the reader's disk.
  *
@@ -17,15 +18,7 @@ export async function downloadReport(
     throw new Error("Rapor indirilemedi.");
   }
 
-  const href = URL.createObjectURL(await response.blob());
-  try {
-    const link = document.createElement("a");
-    link.href = href;
-    link.download = filename;
-    link.click();
-  } finally {
-    URL.revokeObjectURL(href);
-  }
+  downloadBlob(await response.blob(), filename);
 }
 
 /**
