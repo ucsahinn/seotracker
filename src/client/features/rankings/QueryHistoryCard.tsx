@@ -1,4 +1,3 @@
-import { Loader2 } from "lucide-react";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { formatDate, formatDecimal } from "@/client/lib/format";
 import { DeltaBadge } from "@/client/components/MetricTile";
@@ -34,10 +33,23 @@ export function QueryHistoryCard({
   onRetry: () => void;
 }) {
   if (loading) {
+    /*
+     * Shaped like the card that is coming -- title bar, chart block, footer
+     * line -- rather than a one-line spinner box. The spinner version was a
+     * third the height of the loaded card, so opening a query made the page
+     * jump once the history landed.
+     */
     return (
-      <div className="flex items-center gap-2 rounded-box border border-base-300 p-4 text-sm text-muted">
-        <Loader2 className="size-4 animate-spin" />
-        Geçmiş yükleniyor…
+      <div
+        className="space-y-3 rounded-box border border-base-300 bg-base-100 p-4"
+        aria-busy
+      >
+        <div className="flex items-baseline justify-between gap-2">
+          <div className="skeleton h-4 w-48" />
+          <div className="skeleton h-4 w-24" />
+        </div>
+        <div className="skeleton h-28 w-full" />
+        <div className="skeleton h-3 w-2/3" />
       </div>
     );
   }

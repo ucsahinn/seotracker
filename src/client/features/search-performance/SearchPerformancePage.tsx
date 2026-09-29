@@ -28,7 +28,7 @@ import {
 import { CannibalizationTable } from "@/client/features/search-performance/CannibalizationTable";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import { describeWindow } from "@/shared/dataFreshness";
-import { formatDate } from "@/client/lib/format";
+import { formatCountry, formatDate } from "@/client/lib/format";
 import {
   exportSearchPerformanceTable,
   getSearchPerformanceReport,
@@ -310,7 +310,7 @@ export function SearchPerformancePage({
                   <option value={ALL}>Tüm ülkeler</option>
                   {report.countries.map((row) => (
                     <option key={row.key} value={row.key}>
-                      {row.key.toUpperCase()}
+                      {formatCountry(row.key)}
                     </option>
                   ))}
                 </select>

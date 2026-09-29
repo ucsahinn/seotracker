@@ -71,9 +71,10 @@ export const getTrackedQueries = createServerFn({ method: "POST" })
   .middleware(requireProjectContext)
   .validator(trackedQueriesSchema)
   .handler(async ({ data, context }) => {
+    const since = sinceDate(data.days);
     const rows = await GscHistoryService.getTrackedQueries({
       projectId: context.projectId,
-      since: sinceDate(data.days),
+      since,
       limit: data.limit + 1,
     });
     // One extra row so the screen can say the set was capped instead of
@@ -82,8 +83,23 @@ export const getTrackedQueries = createServerFn({ method: "POST" })
       rows: rows.slice(0, data.limit),
       truncated: rows.length > data.limit,
       days: data.days,
+      /*
+       * The days these aggregates cover. Rankings was the one screen in the
+       * app that showed numbers without saying what period they were over --
+       * the only statement of it was which of five tabs looked pressed, and
+       * the archive-status line above reports the *archive's* span, which is
+       * a different thing and invites the misread.
+       */
+      range: { startDate: since, endDate: latestDate() },
     };
   });
+
+/** The newest day the archive can hold, which is where every window ends. */
+function latestDate(): string {
+  const end = new Date();
+  end.setUTCDate(end.getUTCDate() - GSC_DATA_LAG_DAYS);
+  return end.toISOString().slice(0, 10);
+}
 
 export const getQueryHistory = createServerFn({ method: "POST" })
   .middleware(requireProjectContext)

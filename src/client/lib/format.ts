@@ -97,6 +97,134 @@ function safe(value: string, formatter: Intl.DateTimeFormat): string {
 }
 
 /** "19 Eyl" - for dense rows where the year is obvious from context. */
+/*
+ * Search Console reports countries as ISO-3166-1 alpha-3, and `DisplayNames`
+ * only speaks alpha-2 -- so the panel headed "Ülkeler" read "TUR / GBR / DEU"
+ * in a Turkish UI. The map covers what a single-operator install actually
+ * sees; anything outside it falls back to the code, which is still better
+ * than a wrong country name.
+ */
+const regionNames = new Intl.DisplayNames([LOCALE], { type: "region" });
+
+/** Built lazily: `Intl.supportedValuesOf` is cheap but not free. */
+let alpha3ToAlpha2: Map<string, string> | null = null;
+
+function alpha2Of(code: string): string | null {
+  alpha3ToAlpha2 ??= new Map(
+    Object.entries({
+      TUR: "TR",
+      USA: "US",
+      GBR: "GB",
+      DEU: "DE",
+      FRA: "FR",
+      NLD: "NL",
+      ITA: "IT",
+      ESP: "ES",
+      RUS: "RU",
+      UKR: "UA",
+      POL: "PL",
+      ROU: "RO",
+      BGR: "BG",
+      GRC: "GR",
+      AZE: "AZ",
+      KAZ: "KZ",
+      UZB: "UZ",
+      GEO: "GE",
+      IRN: "IR",
+      IRQ: "IQ",
+      SAU: "SA",
+      ARE: "AE",
+      QAT: "QA",
+      KWT: "KW",
+      EGY: "EG",
+      MAR: "MA",
+      DZA: "DZ",
+      TUN: "TN",
+      ISR: "IL",
+      IND: "IN",
+      PAK: "PK",
+      BGD: "BD",
+      CHN: "CN",
+      JPN: "JP",
+      KOR: "KR",
+      IDN: "ID",
+      MYS: "MY",
+      SGP: "SG",
+      THA: "TH",
+      VNM: "VN",
+      PHL: "PH",
+      AUS: "AU",
+      NZL: "NZ",
+      CAN: "CA",
+      MEX: "MX",
+      BRA: "BR",
+      ARG: "AR",
+      CHL: "CL",
+      COL: "CO",
+      ZAF: "ZA",
+      NGA: "NG",
+      KEN: "KE",
+      SWE: "SE",
+      NOR: "NO",
+      DNK: "DK",
+      FIN: "FI",
+      CHE: "CH",
+      AUT: "AT",
+      BEL: "BE",
+      PRT: "PT",
+      IRL: "IE",
+      CZE: "CZ",
+      HUN: "HU",
+      SVK: "SK",
+      HRV: "HR",
+      SRB: "RS",
+      CYP: "CY",
+      MKD: "MK",
+      ALB: "AL",
+      BIH: "BA",
+      MDA: "MD",
+      BLR: "BY",
+      LTU: "LT",
+      LVA: "LV",
+      EST: "EE",
+      TKM: "TM",
+      KGZ: "KG",
+      TJK: "TJ",
+      AFG: "AF",
+      LBN: "LB",
+      JOR: "JO",
+      SYR: "SY",
+      LBY: "LY",
+      SDN: "SD",
+      ETH: "ET",
+      TZA: "TZ",
+      UGA: "UG",
+      GHA: "GH",
+      CIV: "CI",
+      SEN: "SN",
+      HKG: "HK",
+      TWN: "TW",
+      LUX: "LU",
+      ISL: "IS",
+      MLT: "MT",
+      SVN: "SI",
+    }),
+  );
+  return alpha3ToAlpha2.get(code.toUpperCase()) ?? null;
+}
+
+/** "TUR" -> "Türkiye". Falls back to the code when it is not recognised. */
+export function formatCountry(code: string): string {
+  const upper = code.toUpperCase();
+  const alpha2 = upper.length === 2 ? upper : alpha2Of(upper);
+  if (!alpha2) return upper;
+  try {
+    return regionNames.of(alpha2) ?? upper;
+  } catch {
+    return upper;
+  }
+}
+
 export function formatDay(value: string): string {
   return safe(value, dayFormatter);
 }

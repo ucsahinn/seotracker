@@ -1,5 +1,10 @@
 import { sort } from "remeda";
-import { formatCount, formatDecimal, formatPercent } from "@/client/lib/format";
+import {
+  formatCount,
+  formatCountry,
+  formatDecimal,
+  formatPercent,
+} from "@/client/lib/format";
 
 type CountryRow = {
   key: string;
@@ -59,7 +64,13 @@ export function CountryBreakdown({ countries }: { countries: CountryRow[] }) {
         <tbody>
           {shown.map((row) => (
             <tr key={row.key}>
-              <td className="font-medium uppercase">{row.key}</td>
+              {/* The name, not the code. GSC reports alpha-3, so a panel
+                  headed "Ülkeler" read "TUR / GBR / DEU" in a Turkish UI.
+                  The code stays in the title for anyone matching it against
+                  Search Console's own export. */}
+              <td className="font-medium" title={row.key.toUpperCase()}>
+                {formatCountry(row.key)}
+              </td>
               <td className="w-1/3">
                 {/* The bar is a restatement of the count beside it, so it
                     carries no label of its own. */}
