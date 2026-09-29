@@ -275,9 +275,18 @@ function AiPage() {
                     <code className="font-mono text-muted">MCP_TOKEN</code> ile
                     korunuyor; istemciye{" "}
                     <code className="font-mono text-muted">
-                      Authorization: Bearer …
+                      Authorization: Bearer &lt;token&gt;
                     </code>{" "}
-                    başlığını ekletin.
+                    başlığını ekletin. Kendiniz bir değer vermediyseniz
+                    konteyner ilk açılışta bir tane üretti; okumak için:{" "}
+                    {/* Komutla, ekranda değil: token'ı buraya basmak onu
+                        tarayıcı geçmişine, ekran görüntülerine ve bu sayfayı
+                        okuyan bir ajanın dökümüne düşürür. */}
+                    <code className="font-mono text-muted">
+                      docker compose exec seotracker cat
+                      /app/.wrangler/mcp-token
+                    </code>
+                    .
                   </>
                 ) : (
                   <>

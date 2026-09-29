@@ -5,6 +5,77 @@ numaraları [SemVer](https://semver.org/lang/tr/) izler.
 
 ## [Yayınlanmamış]
 
+## [1.3.0] — 2026-09-30
+
+Veriler artık canlı ve hangi günleri kapsadıklarını söylüyor; tüm ekranlara
+tasarım ve erişilebilirlik denetimi çekildi; MCP ucu varsayılanda kapandı.
+
+Ölçülenler: 76 denetim kuralı, 33 MCP aracı, 762 test, fixture koşusu 60/60
+(kapsam 48/48), `gitleaks` temiz, konsol uyarısı sıfır.
+
+### Kırıcı değişiklik
+
+- **MCP ucu artık token istiyor.** Konteyner ilk açılışta bir tane üretip
+  `/app/.wrangler/mcp-token` içinde saklıyor; değeri log'a basmıyor, çünkü
+  log'u okuyabilen herkes token'ı da okuyabilirdi. Mevcut ajan
+  yapılandırmalarınız 401 alacak: token'ı
+  `docker compose exec seotracker cat /app/.wrangler/mcp-token` ile okuyup
+  `Authorization: Bearer <token>` başlığını ekleyin. Token'sız çalıştırmak
+  için compose dosyanızda `MCP_TOKEN=` bırakın.
+
+### Eklendi
+
+- **Üç denetim kuralı.** `open-graph-missing-site` (og etiketleri her
+  taramada yazılıp hiç okunmuyordu), `sitemap-lastmod-missing` ve
+  `sitemap-lastmod-future` — Google lastmod'u tutarlı doğruysa kullanıyor,
+  değilse tümden yok sayıyor, yani iki hâl de bir bulgu.
+- **Fırsatlar'a dönem seçici.** 28 gün servisin içinde literaldi ve
+  dışarıdan geçirilecek yol yoktu, yani "bu aralıkta fırsat yok" hiç
+  seçmediğiniz bir dönem hakkında bir hükümdü.
+- **Denetimler arası seyir grafiği.** Yüz sayfa başına kritik/uyarı, farklı
+  büyüklükteki taramalar karşılaştırılabilsin diye yoğunluk olarak.
+- **Laboratuvar ↔ gerçek kullanıcı karşılaştırması.** INP dışarıda:
+  laboratuvar değeri zaten saha değerinin kopyası.
+- **Sorunların önem dağılımı halkası.**
+- **Fırsatlar'da tıklanabilir sıra bantları**, Sayfalar tablosunda bağlantı
+  sayıları, Analytics'te tıklanabilir adresler ve dışa aktarma, Sorgular
+  satırlarında kaydet/kopyala.
+- **Sıralama, Analytics, Lighthouse ve denetim geçmişi tabloları
+  sıralanabilir.** Sıralamayı konu alan ekranda sıralama yoktu.
+- **Tarama ilerlemesinde süre tahmini** ("~3 dk kaldı").
+- **Otomatik yenileme.** Yarım saatte bir, yalnızca sekme görünürken:
+  Search Console günde bir kez yeni gün yayımlıyor, daha sık sormak Google
+  kotasını değişmeyen veri için harcar.
+
+### Düzeltildi
+
+- **Grafik "Son 28 gün" derken 7 gün çiziyordu.** Search Console gösterimi
+  olmayan güne satır döndürmüyor; o günler gerçek sıfır, boşluk değil.
+- **Kullanılan tarih aralığı yalnızca boş durumda görünüyordu** — yani tam
+  da veri olmadığı anda.
+- **Sıralama penceresi gecikmeye göre sayılmıyordu:** "30 gün" 27 günlük
+  veri kapsıyordu.
+- **Analytics ve Sıralama dönemi yenilemede kayboluyordu.**
+- **Denetim silme hiç onay sormuyordu** — uygulamadaki tek onaysız yıkıcı
+  işlem.
+- **Kontrast.** Açık temada `text-warning` 2,69:1 ve `text-success` 3,93:1
+  ölçüldü (eşik 4,5:1); ink token'ları 8,3–8,5:1.
+- **Dokunma hedefleri.** 18×18 ve 22×25 ölçülen hedefler 24px'e çıkarıldı.
+- **TTFB değeri yerine cümle basıyordu** ("Root doküman 0 ms. sürdü").
+- **Ülke kodları ham geliyordu** (TUR → Türkiye).
+- İskeletler, boş durumlar, erişilebilirlik etiketleri, dışa aktarma
+  menülerinde `aria-expanded` ve Escape, 390px'te kırpılan sayfalama.
+
+### Değişti
+
+- Search Console'un ~3 günlük gecikme sabiti üç ayrı yerde kopyalanmıştı;
+  `src/shared/dataFreshness.ts`'e toplandı.
+- Aynı sıralama mantığı üç ekranda gerekince
+  `src/client/components/table/useLocalSort.ts`'e alındı.
+- Sıralamada "Tümü" seçeneği "Arşivin tamamı" oldu; 5 yıl yazması taze bir
+  kurulumda backfill'in ulaşamayacağı veriyi vaat ediyordu.
+- `docs/BACKLOG.md` eklendi: her istenen işin durumu, gerekçeleriyle.
+
 ## [1.2.0] — 2026-09-29
 
 Denetim altı kural daha derinleşti, toplanıp hiç okunmayan kolonlar okunmaya

@@ -10,6 +10,7 @@ import {
 } from "@/shared/audit-issues";
 import type { AuditResultsData } from "@/client/features/audit/results/types";
 import { IssueWorkloadChart } from "@/client/features/audit/results/IssueWorkloadChart";
+import { SeverityDonut } from "@/client/features/audit/results/SeverityDonut";
 
 type AuditIssueRow = AuditResultsData["issues"][number];
 
@@ -109,6 +110,18 @@ export function IssuesView({
   );
   const groups = useMemo(() => groupIssues(scoped), [scoped]);
 
+  /*
+   * Findings, not pages. `pageCount` is the *distinct pages* a type affects,
+   * so summing it gave 63 under a ring labelled "bulgu" while the header
+   * above counted 65 records -- two different true numbers presented as one.
+   * The section headers count records, so this counts records.
+   */
+  const severityCounts = useMemo(() => {
+    const counts = { critical: 0, warning: 0, info: 0 };
+    for (const group of groups) counts[group.severity] += group.issues.length;
+    return counts;
+  }, [groups]);
+
   const sections = useMemo(
     () =>
       (["critical", "warning", "info"] as const)
@@ -135,9 +148,15 @@ export function IssuesView({
 
   return (
     <div className="space-y-3">
-      {/* Only for the whole audit: narrowed to one page the chart would be a
-          bar per issue type with a count of one, which says nothing. */}
-      {focusUrl ? null : <IssueWorkloadChart groups={groups} />}
+      {/* Both only for the whole audit: narrowed to one page a workload bar
+          per issue type reads "1, 1, 1" and a severity ring is three slivers
+          of one finding each. */}
+      {focusUrl ? null : (
+        <div className="grid gap-3 lg:grid-cols-[1fr_minmax(0,22rem)]">
+          <IssueWorkloadChart groups={groups} />
+          <SeverityDonut counts={severityCounts} />
+        </div>
+      )}
       {focusUrl ? (
         <div className="flex flex-wrap items-center justify-between gap-2 rounded-box border border-base-300 bg-base-200/40 px-3 py-2">
           <span className="min-w-0 truncate text-sm text-muted">

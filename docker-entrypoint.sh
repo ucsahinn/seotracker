@@ -25,6 +25,32 @@ if [ -z "${BETTER_AUTH_SECRET:-}" ]; then
   export BETTER_AUTH_SECRET
 fi
 
+# The MCP endpoint answers as the admin user and can spend Google's daily
+# quota, so it should not be an open desk. Generated on first boot and kept in
+# the data volume, the same way the encryption key above is -- a token nobody
+# has to invent is a token that actually gets used.
+#
+# The value is NOT printed. Anything echoed here lands in `docker logs`, and
+# the whole point of the token is to not be readable by whatever else can see
+# this machine. The path is printed instead, with the command to read it.
+MCP_TOKEN_FILE="/app/.wrangler/mcp-token"
+if [ -z "${MCP_TOKEN:-}" ]; then
+  if [ ! -f "$MCP_TOKEN_FILE" ]; then
+    mkdir -p "$(dirname "$MCP_TOKEN_FILE")"
+    head -c 24 /dev/urandom | base64 | tr -d '[:space:]/+=' > "$MCP_TOKEN_FILE"
+    chmod 600 "$MCP_TOKEN_FILE"
+    echo ""
+    echo "Generated an MCP token at $MCP_TOKEN_FILE."
+    echo "Agents must now send it. Read it with:"
+    echo "  docker compose exec seotracker cat $MCP_TOKEN_FILE"
+    echo "and add 'Authorization: Bearer <token>' to your MCP client config."
+    echo "To run without one, set MCP_TOKEN= (empty) in your compose file."
+    echo ""
+  fi
+  MCP_TOKEN="$(cat "$MCP_TOKEN_FILE")"
+  export MCP_TOKEN
+fi
+
 # The preflight validates env BEFORE the slow steps, so misconfiguration fails
 # in seconds with the exact fix instead of after a multi-minute build.
 pnpm exec tsx scripts/selfhost-preflight.ts
