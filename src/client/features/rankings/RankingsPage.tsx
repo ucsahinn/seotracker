@@ -21,16 +21,33 @@ const PAGE_SIZES = [25, 50, 100] as const;
  * already dropped, was unreachable from the screen while an agent could read
  * them through `get_ranking_history`. 1825 matches that tool's cap.
  */
-const WINDOWS = [
+export const RANKING_WINDOWS = [
   { days: 30, label: "30 gün" },
   { days: 90, label: "90 gün" },
   { days: 180, label: "6 ay" },
+  /*
+   * 480 is where a *backfill* stops: Google retains sixteen months, so
+   * `GscHistoryService.MAX_HISTORY_DAYS` cannot reach past it on a fresh
+   * install. The option above is not a duplicate of it -- the local archive
+   * keeps every day it has ever stored, so an install running longer than
+   * sixteen months holds history Google will no longer serve. Labelled for
+   * that, rather than as "5 yıl", which would promise a fresh install data
+   * no backfill can fetch.
+   */
   { days: 480, label: "16 ay" },
-  { days: 1825, label: "Tümü" },
+  { days: 1825, label: "Arşivin tamamı" },
 ] as const;
 
-export function RankingsPage({ projectId }: { projectId: string }) {
-  const [days, setDays] = useState<number>(90);
+export function RankingsPage({
+  projectId,
+  days,
+  onDaysChange,
+}: {
+  projectId: string;
+  /** Held in the URL by the route, so a reload or a shared link keeps it. */
+  days: number;
+  onDaysChange: (days: number) => void;
+}) {
   const [selected, setSelected] = useState<string | null>(null);
 
   // Catching the archive up is the page's first act: it fills any gap, and
@@ -86,14 +103,14 @@ export function RankingsPage({ projectId }: { projectId: string }) {
             aria-label="Zaman aralığı"
             className="tabs tabs-border"
           >
-            {WINDOWS.map((option) => (
+            {RANKING_WINDOWS.map((option) => (
               <button
                 key={option.days}
                 type="button"
                 role="radio"
                 aria-checked={days === option.days}
                 className={`tab ${days === option.days ? "tab-active" : ""}`}
-                onClick={() => setDays(option.days)}
+                onClick={() => onDaysChange(option.days)}
               >
                 {option.label}
               </button>

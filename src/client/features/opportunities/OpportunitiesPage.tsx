@@ -8,8 +8,14 @@ import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { OpportunitiesTable } from "@/client/features/opportunities/OpportunitiesTable";
 import type { OpportunityReport } from "@/client/features/opportunities/report";
 import { formatDate, formatNumber } from "@/client/lib/format";
+import { DEFAULT_WINDOW_DAYS, describeWindow } from "@/shared/dataFreshness";
 import { getSearchOpportunities } from "@/serverFunctions/opportunities";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
+import {
+  bandOf,
+  PositionBands,
+  type BandId,
+} from "@/client/features/opportunities/PositionBands";
 /**
  * Pages sitting between positions 4 and 20, ranked by what moving them up
  * would be worth.
@@ -29,11 +35,28 @@ import { QueryErrorState } from "@/client/components/QueryErrorState";
  */
 const LIMITS = [25, 50, 100] as const;
 
+/*
+ * The same vocabulary the search-performance and analytics screens use. This
+ * screen had no window control at all -- 28 days was a literal inside
+ * `SearchOpportunityService` with no path to override it -- so "bu aralıkta
+ * fırsat yok" was a verdict on a period the operator never chose and could
+ * not widen.
+ */
+const WINDOWS = [
+  { days: 7, label: "Son 7 gün" },
+  { days: 28, label: "Son 28 gün" },
+  { days: 90, label: "Son 90 gün" },
+] as const;
+
+type WindowDays = (typeof WINDOWS)[number]["days"];
+
 export function OpportunitiesPage({ projectId }: { projectId: string }) {
   const [limit, setLimit] = useState<(typeof LIMITS)[number]>(50);
+  const [windowDays, setWindowDays] = useState<WindowDays>(DEFAULT_WINDOW_DAYS);
   const query = useQuery({
-    queryKey: ["searchOpportunities", projectId, limit],
-    queryFn: () => getSearchOpportunities({ data: { projectId, limit } }),
+    queryKey: ["searchOpportunities", projectId, limit, windowDays],
+    queryFn: () =>
+      getSearchOpportunities({ data: { projectId, limit, windowDays } }),
     retry: false,
   });
 
@@ -62,6 +85,8 @@ export function OpportunitiesPage({ projectId }: { projectId: string }) {
           data={query.data.report}
           limit={limit}
           onLimitChange={setLimit}
+          windowDays={windowDays}
+          onWindowChange={setWindowDays}
           projectId={projectId}
         />
       ) : (
@@ -148,25 +173,75 @@ function NoOpportunities({
   );
 }
 
+function WindowPicker({
+  windowDays,
+  onChange,
+}: {
+  windowDays: WindowDays;
+  onChange: (days: WindowDays) => void;
+}) {
+  return (
+    <div className="flex items-center gap-2">
+      <label htmlFor="opportunity-window">Dönem</label>
+      <select
+        id="opportunity-window"
+        className="select select-bordered select-sm w-32"
+        value={windowDays}
+        onChange={(event) => {
+          const next = WINDOWS.find(
+            (option) => String(option.days) === event.target.value,
+          );
+          if (next) onChange(next.days);
+        }}
+      >
+        {WINDOWS.map((option) => (
+          <option key={option.days} value={option.days}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+}
+
 function Report({
   data,
   limit,
   onLimitChange,
+  windowDays,
+  onWindowChange,
   projectId,
 }: {
   data: OpportunityReport;
   limit: number;
   onLimitChange: (limit: (typeof LIMITS)[number]) => void;
+  windowDays: WindowDays;
+  onWindowChange: (days: WindowDays) => void;
   projectId: string;
 }) {
+  const [band, setBand] = useState<BandId | null>(null);
+
+  const windowControl = (
+    <WindowPicker windowDays={windowDays} onChange={onWindowChange} />
+  );
+
   if (data.rows.length === 0) {
+    /*
+     * The picker stays on screen. Without it a 7-day window that found
+     * nothing left the operator on an empty page whose only control was a
+     * row-count selector -- no way to widen the period that produced the
+     * emptiness.
+     */
     return (
-      <div className="rounded-box border border-base-300 bg-base-100">
-        <NoOpportunities
-          dateRange={data.request.dateRange}
-          pagesConsidered={data.coverage.gscRowsConsidered}
-        />
-      </div>
+      <>
+        <div className="flex justify-end">{windowControl}</div>
+        <div className="rounded-box border border-base-300 bg-base-100">
+          <NoOpportunities
+            dateRange={data.request.dateRange}
+            pagesConsidered={data.coverage.gscRowsConsidered}
+          />
+        </div>
+      </>
     );
   }
 
@@ -185,6 +260,21 @@ function Report({
           günlük eşleşmeler bir gün kayabilir.
         </p>
       ) : null}
+
+      {/*
+       * The window the numbers below actually cover. It used to appear only
+       * in the empty state, so an operator reading a populated screen was
+       * never told which days it was about -- or that Search Console's
+       * newest finalised day is three days behind, which is why "bugün"
+       * is never the end of it.
+       */}
+      <p className="text-xs text-muted">
+        {describeWindow(
+          data.request.dateRange.startDate,
+          data.request.dateRange.endDate,
+          formatDate,
+        )}
+      </p>
 
       <MetricRow>
         {/* `rowCount` is the slice, not a verdict: every candidate is
@@ -232,7 +322,8 @@ function Report({
 
       {/* Without this the cut list had no control at all: no pagination, no
           limit, nothing saying more existed. */}
-      <div className="flex items-center justify-end gap-2 text-xs text-muted">
+      <div className="flex flex-wrap items-center justify-end gap-3 text-xs text-muted">
+        {windowControl}
         <label htmlFor="opportunity-limit">Gösterilecek satır</label>
         <select
           id="opportunity-limit"
@@ -253,7 +344,16 @@ function Report({
         </select>
       </div>
 
-      <OpportunitiesTable projectId={projectId} rows={data.rows} />
+      <PositionBands rows={data.rows} selected={band} onSelect={setBand} />
+
+      <OpportunitiesTable
+        projectId={projectId}
+        rows={
+          band === null
+            ? data.rows
+            : data.rows.filter((row) => bandOf(row.position) === band)
+        }
+      />
 
       <p className="text-xs text-muted">
         Puan = talep (%50) + iş değeri (%30) + erişilebilirlik (%20).

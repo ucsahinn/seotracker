@@ -4,6 +4,7 @@ import { GSC_MAX_ROW_LIMIT } from "@/server/features/gsc/searchAnalytics";
 import { GscNotConnectedError } from "@/server/lib/gscErrors";
 import { GscService } from "@/server/features/gsc/services/GscService";
 import { isExpectedGrantFailure } from "@/server/features/gsc/services/GscService";
+import { GSC_DATA_LAG_DAYS } from "@/shared/dataFreshness";
 
 /**
  * Local archive of Search Console's daily query data.
@@ -17,8 +18,6 @@ import { isExpectedGrantFailure } from "@/server/features/gsc/services/GscServic
  * complete as a nightly job would have been.
  */
 
-/** Search Console finalizes a day's data a few days late. */
-const DATA_LAG_DAYS = 3;
 /** Google's own retention limit, and therefore the furthest a backfill reaches. */
 const MAX_HISTORY_DAYS = 480;
 /** Days per chunk. Each chunk is one or more API calls. */
@@ -62,7 +61,7 @@ function addDays(date: string, days: number): string {
  */
 function latestAvailableDate(today: Date): string {
   const end = new Date(today);
-  end.setUTCDate(end.getUTCDate() - DATA_LAG_DAYS);
+  end.setUTCDate(end.getUTCDate() - GSC_DATA_LAG_DAYS);
   return isoDate(end);
 }
 
@@ -70,7 +69,7 @@ function latestAvailableDate(today: Date): string {
  * Where this run should start.
  *
  * With nothing stored, reach back as far as Google will serve. With a partial
- * archive, resume `DATA_LAG_DAYS` *before* the last stored date, because that
+ * archive, resume `GSC_DATA_LAG_DAYS` *before* the last stored date, because that
  * is the window Search Console is still revising as late data arrives.
  *
  * It used to resume one day before. Revisions land across the whole lag, not
@@ -84,7 +83,7 @@ function resolveStart(lastDate: string | null, today: Date): string {
   floor.setUTCDate(floor.getUTCDate() - MAX_HISTORY_DAYS);
   const earliest = isoDate(floor);
   if (!lastDate) return earliest;
-  const resume = addDays(lastDate, -DATA_LAG_DAYS);
+  const resume = addDays(lastDate, -GSC_DATA_LAG_DAYS);
   return resume < earliest ? earliest : resume;
 }
 
@@ -168,7 +167,7 @@ async function fetchRange(
  * Fetch the days this project is missing, bounded so one call stays quick.
  *
  * A caught-up archive still costs one request. `resolveStart` deliberately
- * rewinds `DATA_LAG_DAYS` so the window Search Console is still revising is
+ * rewinds `GSC_DATA_LAG_DAYS` so the window Search Console is still revising is
  * re-read, and `lastDate` can never exceed `endDate`, so the early return
  * below is only reachable for a `today` that moved backwards. This used to
  * claim it made no request when nothing was missing, which was false for
@@ -188,7 +187,7 @@ async function backfill(input: {
   /*
    * Windows already looked at, whether or not they held rows, so an empty
    * stretch is not re-read on every page view. `resolveStart` still rewinds
-   * DATA_LAG_DAYS behind the newest stored day, and that rewind must win, so
+   * GSC_DATA_LAG_DAYS behind the newest stored day, and that rewind must win, so
    * take whichever start is *earlier*.
    */
   const scanCursor = state?.scannedThrough

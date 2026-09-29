@@ -27,6 +27,8 @@ import {
 } from "@/client/features/search-performance/SearchPerformanceParts";
 import { CannibalizationTable } from "@/client/features/search-performance/CannibalizationTable";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
+import { describeWindow } from "@/shared/dataFreshness";
+import { formatDate } from "@/client/lib/format";
 import {
   exportSearchPerformanceTable,
   getSearchPerformanceReport,
@@ -234,6 +236,21 @@ export function SearchPerformancePage({
         </div>
       ) : (
         <>
+          {/*
+           * Which days these totals are about. The dropdown says "Son 28
+           * gün" and the resolved range reached the client all along, but
+           * it was spent on export filenames and a tooltip -- so nothing on
+           * a populated screen told the operator the window stops three
+           * days short of today, which is the first thing someone asks
+           * when a number looks lower than they expected.
+           */}
+          <p className="text-xs text-muted">
+            {describeWindow(
+              report.range.startDate,
+              report.range.endDate,
+              formatDate,
+            )}
+          </p>
           <TotalsCards report={report} />
           <SearchTrendPanel daily={report.daily} />
           <CountryBreakdown countries={report.countries} />

@@ -53,6 +53,16 @@ export const Route = createRootRoute({
         name: "google",
         content: "notranslate",
       },
+      /*
+       * Both spellings. Chrome deprecated the `apple-` prefixed one and logs
+       * a warning about it in the console of every install on every page —
+       * but iOS Safari still reads only that one, so dropping it would take
+       * standalone mode away from anyone who adds this to their home screen.
+       */
+      {
+        name: "mobile-web-app-capable",
+        content: "yes",
+      },
       {
         name: "apple-mobile-web-app-capable",
         content: "yes",

@@ -29,6 +29,8 @@ function makeSlimPage(overrides: Partial<SlimPage>): SlimPage {
     wordCount: 100,
     isIndexable: true,
     hasStructuredData: false,
+    ogTitle: null,
+    ogImage: null,
     canonicalUrl: null,
     headerCanonicalUrl: null,
     robotsMeta: null,

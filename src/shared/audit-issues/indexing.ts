@@ -202,6 +202,14 @@ export const INDEXING_ISSUES = {
     howToFix:
       "Adresi Google'ın Zengin Sonuç Testi'nde açın; hangi alanın eksik ya da yanlış türde olduğunu adıyla söyler. Genelde zorunlu bir alanın boş bırakılması ya da sayfada görünmeyen bir şeyin işaretlenmesi olur.",
   },
+  "open-graph-missing-site": {
+    severity: "info",
+    title: "Sitede hiç paylaşım kartı etiketi yok",
+    explanation:
+      "Taranan sayfaların hiçbirinde og:title ya da og:image bulunamadı. Bu etiketler Google sıralamasını doğrudan etkilemez; adresiniz WhatsApp'ta, LinkedIn'de, Slack'te veya X'te paylaşıldığında ne görüneceğini belirler. Yoklarsa bağlantı çıplak bir URL olarak görünür ve paylaşımdan gelen tıklama düşer. Sayfa başına bildirilmiyor: eksiklik tek tek sayfaların değil, şablonun.",
+    howToFix:
+      "Şablonun <head> bölümüne og:title, og:description ve mutlak adresli (en az 1200x630 piksel) bir og:image ekleyin. Tek bir şablon düzeltmesi tüm sayfaları kapatır.",
+  },
   "structured-data-missing-site": {
     severity: "info",
     title: "Sitede hiç yapısal veri yok",

@@ -178,6 +178,22 @@ export const CRAWL_ISSUES = {
     howToFix:
       "Dosyayı her biri 50.000 adresin altında kalan parçalara bölün ve bir site haritası dizini (sitemapindex) ile hepsini listeleyin. Search Console'a dizin dosyasını gönderirsiniz, parçaları tek tek değil.",
   },
+  "sitemap-lastmod-missing": {
+    severity: "info",
+    title: "Site haritasında hiç lastmod tarihi yok",
+    explanation:
+      "Site haritasındaki adreslerin hiçbirinde <lastmod> yok. Google bu alanı, tutarlı biçimde doğru olduğu sürece hangi sayfayı ne zaman yeniden tarayacağına karar verirken kullanır. Yoksa yeniden tarama tamamen Google'ın kendi takvimine kalır; güncellediğiniz bir sayfanın fark edilmesi günler sürebilir.",
+    howToFix:
+      "Site haritasını üreten koda her adres için <lastmod> ekleyin ve içeriğin gerçekten değiştiği anı yazın. Yayın tarihini ya da her derlemede o anki zamanı yazmak bu alanı değersizleştirir.",
+  },
+  "sitemap-lastmod-future": {
+    severity: "warning",
+    title: "Site haritasında gelecek tarihli lastmod var",
+    explanation:
+      "En az bir adresin <lastmod> değeri gelecekte. Böyle bir tarih doğru olamaz; Google bir sitenin tarihlerini tutarsız bulduğunda alanı o site için tümden yok sayar, yani doğru olan diğer tarihler de işe yaramaz hale gelir.",
+    howToFix:
+      "Tarihleri üreten yeri kontrol edin. Genelde sebep sunucunun saatinin ileri olması ya da tarih alanına içerik tarihi yerine bir yayın planı tarihinin yazılmasıdır.",
+  },
   "blocked-resource": {
     severity: "critical",
     title: "Sayfanın ihtiyaç duyduğu dosya robots.txt ile engellenmiş",

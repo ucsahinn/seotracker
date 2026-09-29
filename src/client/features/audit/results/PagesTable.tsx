@@ -192,6 +192,36 @@ function buildPagesColumns({
         left.original.imagesMissingAlt - right.original.imagesMissingAlt ||
         left.original.imagesTotal - right.original.imagesTotal,
     }),
+    /*
+     * Both link counts, written by every crawl since the crawler was built
+     * and shown on no screen. Internal is the one that matters for ranking
+     * -- a page nothing links to is a page Google reaches last and weights
+     * least -- so it leads, and the external count sits behind it as the
+     * outbound half of the same sentence.
+     */
+    pageColumnHelper.accessor("internalLinkCount", {
+      header: ({ column }) => (
+        <SortableHeader
+          column={column}
+          label="Bağlantı"
+          helpText="Bu sayfadan çıkan bağlantılar: önce site içi, sonra dışarı. Site içi bağlantısı olmayan bir sayfa, kendi sitesinin geri kalanına yol açmıyor demektir."
+        />
+      ),
+      cell: ({ row }) => {
+        if (!hasAnalyzedContent(row.original)) return <EmptyCell />;
+        return (
+          <span className="whitespace-nowrap text-xs">
+            {formatCount(row.original.internalLinkCount)}
+            <span className="text-subtle"> · </span>
+            <span className="text-muted">
+              {formatCount(row.original.externalLinkCount)}
+            </span>
+          </span>
+        );
+      },
+      sortingFn: (left, right) =>
+        left.original.internalLinkCount - right.original.internalLinkCount,
+    }),
     pageColumnHelper.accessor("responseTimeMs", {
       header: ({ column }) => <SortableHeader column={column} label="Hız" />,
       cell: ({ getValue }) => {

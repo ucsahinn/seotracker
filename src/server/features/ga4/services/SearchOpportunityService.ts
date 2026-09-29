@@ -7,11 +7,14 @@ import {
 import { Ga4ReportError } from "@/server/lib/ga4Errors";
 import { Ga4ConnectionRepository } from "@/server/features/ga4/repositories/Ga4ConnectionRepository";
 import { ga4DateInTimeZone, shiftGa4Date } from "./Ga4Dates";
+import { DEFAULT_WINDOW_DAYS, GSC_DATA_LAG_DAYS } from "@/shared/dataFreshness";
 
 type SearchOpportunityInput = {
   projectId: string;
   startDate?: string;
   endDate?: string;
+  /** How many days back from Search Console's newest finalised day. */
+  windowDays?: number;
   limit?: number;
 };
 
@@ -42,14 +45,26 @@ type Candidate = {
 };
 
 function resolveCombinedDates(
-  input: Pick<SearchOpportunityInput, "startDate" | "endDate">,
+  input: Pick<SearchOpportunityInput, "startDate" | "endDate" | "windowDays">,
   propertyTimeZone: string,
   now: Date,
 ) {
   if (!input.startDate && !input.endDate) {
-    const endDate = shiftGa4Date(ga4DateInTimeZone(now, propertyTimeZone), -3);
+    /*
+     * GSC's boundary, not GA4's, on both halves. The two sources are joined
+     * row by row here, so pulling Analytics back to the day Search Console
+     * has finalised is what makes the pair comparable -- it is the reason
+     * this is not `resolveGa4DateRange`.
+     */
+    const endDate = shiftGa4Date(
+      ga4DateInTimeZone(now, propertyTimeZone),
+      -GSC_DATA_LAG_DAYS,
+    );
     return {
-      startDate: shiftGa4Date(endDate, -27),
+      startDate: shiftGa4Date(
+        endDate,
+        -((input.windowDays ?? DEFAULT_WINDOW_DAYS) - 1),
+      ),
       endDate,
     };
   }

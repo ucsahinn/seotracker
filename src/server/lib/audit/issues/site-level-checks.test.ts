@@ -17,6 +17,19 @@ const robots = (
   ...overrides,
 });
 
+const sitemapWith = (lastmod: {
+  urls: number;
+  withLastmod: number;
+  future: number;
+  futureSample: string | null;
+}) => ({
+  oversized: [],
+  oversizedCount: 0,
+  overfull: [],
+  overfullCount: 0,
+  lastmod,
+});
+
 describe("siteLevelIssues", () => {
   it("says nothing when nothing was recorded", () => {
     // Absent findings mean the run predates them, not that the site is
@@ -95,6 +108,77 @@ describe("siteLevelIssues", () => {
     ]);
     expect(issues[0]?.details).toMatchObject({ count: 2 });
     expect(issues[1]?.details).toMatchObject({ urlCount: 60_000 });
+  });
+
+  it("reports a sitemap that carries no lastmod at all", () => {
+    const issues = siteLevelIssues({
+      startUrl: START,
+      sitemapProblems: sitemapWith({
+        urls: 40,
+        withLastmod: 0,
+        future: 0,
+        futureSample: null,
+      }),
+    });
+
+    expect(issues.map((i) => i.issueType)).toEqual(["sitemap-lastmod-missing"]);
+    expect(issues[0]?.details).toMatchObject({ urlCount: 40 });
+  });
+
+  /*
+   * The two findings are mutually exclusive by construction -- a date in the
+   * future is a date -- and reporting "no dates" alongside "this date is
+   * wrong" would be a contradiction on one screen.
+   */
+  it("reports an impossible date instead, when there are dates", () => {
+    const issues = siteLevelIssues({
+      startUrl: START,
+      sitemapProblems: sitemapWith({
+        urls: 40,
+        withLastmod: 40,
+        future: 3,
+        futureSample: "2099-01-01",
+      }),
+    });
+
+    expect(issues.map((i) => i.issueType)).toEqual(["sitemap-lastmod-future"]);
+    expect(issues[0]?.details).toMatchObject({
+      count: 3,
+      example: "2099-01-01",
+    });
+  });
+
+  it("stays quiet on a sitemap too small to judge", () => {
+    const issues = siteLevelIssues({
+      startUrl: START,
+      sitemapProblems: sitemapWith({
+        urls: 4,
+        withLastmod: 0,
+        future: 0,
+        futureSample: null,
+      }),
+    });
+
+    expect(issues).toEqual([]);
+  });
+
+  /*
+   * An audit that started before the field existed replays its discovery
+   * step from durable storage and gets the old shape back. Absent has to
+   * mean "not recorded", never "no dates".
+   */
+  it("stays quiet when the discovery step recorded nothing", () => {
+    const issues = siteLevelIssues({
+      startUrl: START,
+      sitemapProblems: {
+        oversized: [],
+        oversizedCount: 0,
+        overfull: [],
+        overfullCount: 0,
+      },
+    });
+
+    expect(issues).toEqual([]);
   });
 
   it("attaches site findings to no page, since none of them is about one", () => {

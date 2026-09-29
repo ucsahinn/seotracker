@@ -58,6 +58,55 @@ export function sumSearchTotals(
 }
 
 /** Flatten single-dimension rows (query or page) into a keyed table row. */
+/**
+ * The daily rows across the whole requested window, zeros included.
+ *
+ * Search Console returns a row only for a day that had at least one
+ * impression. On a property that is still ramping up that meant the trend
+ * chart drew seven days under a heading saying "Son 28 gün" -- the label and
+ * the picture disagreed, and two windows of the same length were not
+ * comparable because each drew however many days happened to have data.
+ *
+ * A day Google returned nothing for had no impressions, which is a real
+ * zero, not a gap. Filling it is the honest reading and the one that makes
+ * the axis mean what the period control says.
+ */
+export function toDailyRows(
+  rows: GscSearchAnalyticsRow[],
+  startDate: string,
+  endDate: string,
+): SearchPerformanceDimensionRow[] {
+  const byDay = new Map(
+    toDimensionRows(rows).map((row) => [row.key, row] as const),
+  );
+
+  // Dates are the `YYYY-MM-DD` strings Google returns; stepped in UTC so a
+  // local DST change cannot skip or repeat a day.
+  const first = Date.parse(`${startDate}T00:00:00Z`);
+  const last = Date.parse(`${endDate}T00:00:00Z`);
+  if (Number.isNaN(first) || Number.isNaN(last) || last < first) {
+    return toDimensionRows(rows);
+  }
+
+  const days = Math.round((last - first) / DAY_MS) + 1;
+  return Array.from({ length: days }, (_, index) => {
+    const key = new Date(first + index * DAY_MS).toISOString().slice(0, 10);
+    return (
+      byDay.get(key) ?? {
+        key,
+        clicks: 0,
+        impressions: 0,
+        ctr: 0,
+        // Not zero: "average position 0" would be a better rank than 1. No
+        // impressions means the site held no position that day at all.
+        position: 0,
+      }
+    );
+  });
+}
+
+const DAY_MS = 24 * 60 * 60 * 1000;
+
 export function toDimensionRows(
   rows: GscSearchAnalyticsRow[],
 ): SearchPerformanceDimensionRow[] {

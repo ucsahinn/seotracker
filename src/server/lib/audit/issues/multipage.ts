@@ -21,6 +21,7 @@ import {
 } from "@/server/lib/audit/issues/multipage-checks";
 import { findGoogleVerdictProblems } from "@/server/lib/audit/issues/google-verdict-checks";
 import { findLighthouseProblems } from "@/server/lib/audit/issues/lighthouse-checks";
+import { findMissingOpenGraph } from "@/server/lib/audit/issues/open-graph-check";
 import type { DetectedIssue } from "@/server/lib/audit/issues/page-reporters";
 import type { HreflangAlternate } from "@/server/lib/audit/types";
 
@@ -69,6 +70,8 @@ export async function runMultipageChecks(input: {
       xRobotsTag: auditPages.xRobotsTag,
       hreflangTagsJson: auditPages.hreflangTagsJson,
       hasStructuredData: auditPages.hasStructuredData,
+      ogTitle: auditPages.ogTitle,
+      ogImage: auditPages.ogImage,
     })
     .from(auditPages)
     .where(eq(auditPages.auditId, input.auditId));
@@ -84,6 +87,7 @@ export async function runMultipageChecks(input: {
     ...findCanonicalTargetProblems(pages),
     ...findHreflangReturnTagProblems(pages),
     ...findMissingStructuredData(pages, input.startUrl),
+    ...findMissingOpenGraph(pages, input.startUrl),
     /*
      * Google's own verdicts, read from the inspection cache these rows can
      * be joined to. Free: nothing is called, so it spends none of the

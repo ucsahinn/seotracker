@@ -65,6 +65,12 @@ function SearchTrendChart({
           width={48}
           tickFormatter={formatCount}
           domain={[0, "auto"]}
+          /*
+           * Clicks are whole things. Without this a property with a single
+           * click got a 0–1 domain sliced into fifths, and the axis read
+           * "1 1 1 0 0" -- five ticks rounding to three distinct labels.
+           */
+          allowDecimals={false}
         />
         <Tooltip
           cursor={{ stroke: "currentColor", strokeOpacity: 0.2 }}

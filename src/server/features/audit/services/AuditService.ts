@@ -179,7 +179,10 @@ async function getHistory(projectId: string) {
    */
   await reconcileStaleAudits();
 
-  const auditList = await AuditRepository.getAuditsByProject(projectId);
+  const [auditList, issueCounts] = await Promise.all([
+    AuditRepository.getAuditsByProject(projectId),
+    AuditRepository.getIssueCountsByAudit(projectId),
+  ]);
 
   return auditList.map((audit) => {
     const parsedConfig = parseAuditConfig(audit.config);
@@ -194,6 +197,13 @@ async function getHistory(projectId: string) {
       ranLighthouse,
       startedAt: audit.startedAt,
       completedAt: audit.completedAt,
+      // Zero is a real answer here — a clean audit — so the absent row and
+      // the empty one have to collapse to the same shape.
+      issues: issueCounts.get(audit.id) ?? {
+        critical: 0,
+        warning: 0,
+        info: 0,
+      },
     };
   });
 }

@@ -123,6 +123,9 @@ export const getGa4DashboardReport = createServerFn({ method: "POST" })
       });
       return {
         connected: true as const,
+        // The dates the report covers, so the card can name its own window
+        // instead of carrying a literal that can drift from it.
+        resolvedDateRange: overview.request.resolvedDateRange,
         totals: totals(overview.current),
         prevTotals: totals(overview.previous),
         trend: fillDailySessions(

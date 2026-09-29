@@ -5,6 +5,7 @@ import type { getAuditHistory } from "@/serverFunctions/audit";
 import { RowActions } from "@/client/components/table/RowActions";
 import { formatDateTime, StatusBadge } from "@/client/features/audit/shared";
 import { CopyButton } from "@/client/components/CopyButton";
+import { AuditTrendChart } from "./AuditTrendChart";
 
 type HistoryRow = Awaited<ReturnType<typeof getAuditHistory>>[number];
 
@@ -74,6 +75,7 @@ export function AuditHistorySection({
     <div className="card bg-base-100 border border-base-300">
       <div className="card-body gap-3">
         <h2 className="card-title text-base">Önceki denetimler</h2>
+        <AuditTrendChart history={history} />
         <div className="overflow-x-auto">
           <table className="table table-sm">
             <thead>

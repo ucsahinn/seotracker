@@ -587,6 +587,10 @@ async function main() {
     // Raised from the discovery step's own diagnostics, not from a page.
     "sitemap-too-large",
     "sitemap-too-many-urls",
+    // Same: read from the <lastmod> values the discovery step counted while
+    // reading the sitemap, which this harness does not run.
+    "sitemap-lastmod-missing",
+    "sitemap-lastmod-future",
   ];
   /*
    * Read from `gsc_url_inspections`: Google's own verdict about a URL,
@@ -624,7 +628,10 @@ async function main() {
    * one of these to be expected on -- the same reason the sitemap and
    * robots findings above are listed.
    */
-  const SITE_LEVEL: IssueId[] = ["structured-data-missing-site"];
+  const SITE_LEVEL: IssueId[] = [
+    "structured-data-missing-site",
+    "open-graph-missing-site",
+  ];
   /*
    * Mixed content is an `http:` subresource on an `https:` page, and the
    * fixture site is served over plain http on localhost -- so no page here

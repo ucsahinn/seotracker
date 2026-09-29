@@ -289,6 +289,7 @@ async function getPagesForAudit(auditId: string) {
       crawlDepth: auditPages.crawlDepth,
       inSitemap: auditPages.inSitemap,
       internalLinkCount: auditPages.internalLinkCount,
+      externalLinkCount: auditPages.externalLinkCount,
       responseTimeMs: auditPages.responseTimeMs,
     })
     .from(auditPages)
@@ -328,6 +329,39 @@ async function getAuditsByProject(projectId: string) {
     .orderBy(desc(audits.startedAt));
 
   return rows.map(({ audit }) => audit);
+}
+
+async function getIssueCountsByAudit(projectId: string) {
+  /*
+   * One grouped query for the whole history, rather than one per row.
+   * `audit_issues_audit_type_idx` leads with `audit_id`, so the join to
+   * `audits` for the project filter reads the index rather than the table.
+   */
+  const rows = await db
+    .select({
+      auditId: auditIssues.auditId,
+      severity: auditIssues.severity,
+      total: count(),
+    })
+    .from(auditIssues)
+    .innerJoin(audits, eq(audits.id, auditIssues.auditId))
+    .where(eq(audits.projectId, projectId))
+    .groupBy(auditIssues.auditId, auditIssues.severity);
+
+  const byAudit = new Map<
+    string,
+    { critical: number; warning: number; info: number }
+  >();
+  for (const row of rows) {
+    const entry = byAudit.get(row.auditId) ?? {
+      critical: 0,
+      warning: 0,
+      info: 0,
+    };
+    entry[row.severity] = row.total;
+    byAudit.set(row.auditId, entry);
+  }
+  return byAudit;
 }
 
 // Org-scoped: the free-plan quota belongs to the org (the Autumn customer),
@@ -396,6 +430,7 @@ export const AuditRepository = {
   countPagesByFetchClass,
   hasPagesForAudit,
   getAuditsByProject,
+  getIssueCountsByAudit,
   getAuditUsageForOrganization,
   getAuditResultsForProject,
   deleteAuditForProject,

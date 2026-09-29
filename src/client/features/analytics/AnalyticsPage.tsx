@@ -60,7 +60,16 @@ function cellValue(field: string, value: string | number | null): string {
 const HEALTH = "measurement_health";
 type View = Ga4ReportKindName | typeof HEALTH;
 
-export function AnalyticsPage({ projectId }: { projectId: string }) {
+export function AnalyticsPage({
+  projectId,
+  windowDays,
+  onWindowChange,
+}: {
+  projectId: string;
+  /** Held in the URL by the route, so a reload or a shared link keeps it. */
+  windowDays: WindowDays;
+  onWindowChange: (days: WindowDays) => void;
+}) {
   const [view, setView] = React.useState<View>("landing_pages");
   const [channel, setChannel] = React.useState<Channel>("organic_search");
   /*
@@ -69,7 +78,6 @@ export function AnalyticsPage({ projectId }: { projectId: string }) {
    * Analytics screen exists for, "is this better or worse than before",
    * could not be asked.
    */
-  const [windowDays, setWindowDays] = React.useState<WindowDays>(28);
   const kind = view === HEALTH ? "landing_pages" : view;
 
   const reportQuery = useQuery({
@@ -121,7 +129,7 @@ export function AnalyticsPage({ projectId }: { projectId: string }) {
                 const next = WINDOWS.find(
                   (option) => String(option.value) === event.target.value,
                 );
-                if (next) setWindowDays(next.value);
+                if (next) onWindowChange(next.value);
               }}
               aria-label="Tarih aralığı"
             >

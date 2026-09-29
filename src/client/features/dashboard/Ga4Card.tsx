@@ -11,6 +11,7 @@ import { Chart, CHART_SERIES } from "@/client/components/Chart";
 import { Ga4ConnectCard } from "@/client/features/dashboard/Ga4ConnectCard";
 import { formatCount, formatDay, formatPercent } from "@/client/lib/format";
 import { getGa4DashboardReport } from "@/serverFunctions/ga4";
+import { formatDate } from "@/client/lib/format";
 
 function formatTrendDay(date: string): string {
   // `formatDay` handles the calendar-day shape and is pinned to tr-TR; this
@@ -73,11 +74,22 @@ export function Ga4Card({
   }
 
   const report = reportQuery.data;
+  /*
+   * The dates the report actually covers, rather than a literal beside a
+   * query whose window is a service default -- the two could disagree and
+   * nothing would catch it. Absent while the first load is in flight, so the
+   * stamp names the source alone until the dates arrive.
+   */
+  const covered = report?.connected ? report.resolvedDateRange : null;
 
   return (
     <CardShell
       title="Organik trafik"
-      stamp="Google Analytics · son 28 gün"
+      stamp={
+        covered
+          ? `Google Analytics · ${formatDate(covered.startDate)} – ${formatDate(covered.endDate)}`
+          : "Google Analytics"
+      }
       action={
         <Link
           to="/p/$projectId/settings"
@@ -114,7 +126,7 @@ export function Ga4Card({
         // otherwise render an all-zero flatline chart in an empty box.
         !report.totals.sessions ? (
           <p className="text-sm text-muted">
-            Son 28 günde organik arama trafiği kaydedilmemiş.
+            Bu aralıkta organik arama trafiği kaydedilmemiş.
           </p>
         ) : (
           <div className="space-y-4">

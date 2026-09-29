@@ -39,9 +39,7 @@ export const GSC_DEFAULT_ROW_LIMIT = 250;
 // supports up to 25000, but we keep fetched == returned so counts stay honest;
 // the agent paginates with `startRow` for more.
 export const GSC_MAX_ROW_LIMIT = 1000;
-// GSC data trails by ~2-3 days; default the end of convenience ranges before it.
-const GSC_DATA_LAG_DAYS = 3;
-
+import { GSC_DATA_LAG_DAYS } from "@/shared/dataFreshness";
 export type GscDimension = (typeof GSC_DIMENSIONS)[number];
 type GscFilterOperator = (typeof GSC_FILTER_OPERATORS)[number];
 export type GscSearchType = (typeof GSC_SEARCH_TYPES)[number];

@@ -1,4 +1,5 @@
 import { formatDecimal, formatDuration } from "@/client/lib/format";
+import { LabFieldComparison } from "./LabFieldComparison";
 import type {
   LighthouseFieldData,
   LighthouseMetrics,
@@ -35,12 +36,14 @@ export function LighthouseIssuesSummary({
         </div>
       ) : null}
       {metricItems.length > 0 ? (
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-1 rounded-box border border-base-300 bg-base-200/25 px-4 py-3">
+        /*
+         * Stacked, not label-left/value-right. In a four-column grid that
+         * layout pushed each value hard against the *next* column's label,
+         * so "FCP … 1,1 sn. LCP" read as if the number belonged to LCP.
+         */
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-3 rounded-box border border-base-300 bg-base-200/25 px-4 py-3">
           {metricItems.map((metric) => (
-            <div
-              key={metric.label}
-              className="flex items-baseline justify-between gap-2 py-1"
-            >
+            <div key={metric.label} className="flex flex-col gap-0.5">
               <span className="text-xs text-muted uppercase tracking-wide">
                 {metric.label}
               </span>
@@ -69,12 +72,9 @@ export function LighthouseIssuesSummary({
             Yukarıdaki skorlar Google&apos;ın test makinesinde ölçüldü. Bunlar
             sitenizi gerçekten ziyaret eden Chrome kullanıcılarından geliyor.
           </p>
-          <div className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1 sm:grid-cols-4">
+          <div className="mt-3 grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-4">
             {fieldItems.map((metric) => (
-              <div
-                key={metric.label}
-                className="flex items-baseline justify-between gap-2 py-1"
-              >
+              <div key={metric.label} className="flex flex-col gap-0.5">
                 <span className="text-xs uppercase tracking-wide text-muted">
                   {metric.label}
                 </span>
@@ -88,6 +88,7 @@ export function LighthouseIssuesSummary({
           </div>
         </div>
       ) : null}
+      <LabFieldComparison metrics={metrics} fieldData={fieldData} />
     </>
   );
 }
@@ -222,7 +223,21 @@ function getMetricItems(metrics?: LighthouseMetrics | null) {
     { label: "TTI", value: metrics.timeToInteractive.displayValue },
     { label: "CLS", value: metrics.cumulativeLayoutShift.displayValue },
     { label: "INP", value: metrics.interactionToNextPaint.displayValue },
-    { label: "TTFB", value: metrics.serverResponseTime.displayValue },
+    /*
+     * The one metric whose `displayValue` is a sentence rather than a value.
+     * Lighthouse returns "Root document took 0 ms" for `server-response-time`
+     * where every other audit returns "1,2 s" -- so the grid, which is label
+     * beside number, was rendering "TTFB · Root doküman 0 ms. sürdü". The
+     * numeric value is right there and goes through the app's own formatter,
+     * the way the field column beside it already does.
+     */
+    {
+      label: "TTFB",
+      value:
+        metrics.serverResponseTime.numericValue == null
+          ? null
+          : formatDuration(metrics.serverResponseTime.numericValue),
+    },
   ].filter(
     (metric): metric is { label: string; value: string } =>
       metric.value != null,

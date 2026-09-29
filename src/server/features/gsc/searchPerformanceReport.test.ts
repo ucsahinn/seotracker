@@ -3,6 +3,7 @@ import {
   buildStrikingDistanceRows,
   previousPeriod,
   sumSearchTotals,
+  toDailyRows,
   toDimensionRows,
 } from "@/server/features/gsc/searchPerformanceReport";
 
@@ -136,5 +137,72 @@ describe("previousPeriod", () => {
       startDate: "2026-06-09",
       endDate: "2026-06-09",
     });
+  });
+});
+
+describe("toDailyRows", () => {
+  /*
+   * Search Console returns a row only for a day that had an impression. The
+   * chart heading names a period, so a window that drew only the days Google
+   * happened to answer for made the label a lie and made two windows of the
+   * same length incomparable.
+   */
+  it("covers every day of the window, filling the silent ones with zeros", () => {
+    const rows = toDailyRows(
+      [
+        {
+          keys: ["2026-09-03"],
+          clicks: 4,
+          impressions: 40,
+          ctr: 0.1,
+          position: 3,
+        },
+      ],
+      "2026-09-01",
+      "2026-09-05",
+    );
+
+    expect(rows.map((day) => day.key)).toEqual([
+      "2026-09-01",
+      "2026-09-02",
+      "2026-09-03",
+      "2026-09-04",
+      "2026-09-05",
+    ]);
+    expect(rows[2]).toMatchObject({ clicks: 4, impressions: 40 });
+    expect(rows[0]).toMatchObject({ clicks: 0, impressions: 0 });
+  });
+
+  it("steps across a month boundary without skipping or repeating a day", () => {
+    const rows = toDailyRows([], "2026-01-30", "2026-02-02");
+
+    expect(rows.map((day) => day.key)).toEqual([
+      "2026-01-30",
+      "2026-01-31",
+      "2026-02-01",
+      "2026-02-02",
+    ]);
+  });
+
+  /*
+   * A malformed range must not silently produce an empty chart; falling back
+   * to whatever Google returned keeps the screen showing real data.
+   */
+  it("falls back to the returned rows when the range cannot be read", () => {
+    const rows = toDailyRows(
+      [
+        {
+          keys: ["2026-09-03"],
+          clicks: 4,
+          impressions: 40,
+          ctr: 0.1,
+          position: 3,
+        },
+      ],
+      "not-a-date",
+      "2026-09-05",
+    );
+
+    expect(rows.map((day) => day.key)).toEqual(["2026-09-03"]);
   });
 });

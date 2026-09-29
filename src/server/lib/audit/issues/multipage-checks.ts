@@ -38,6 +38,9 @@ export interface SlimPage {
   xRobotsTag: string | null;
   /** Whether the page carries any schema.org JSON-LD block. */
   hasStructuredData: boolean;
+  /** Open Graph, read only site-wide: see `findMissingOpenGraph`. */
+  ogTitle: string | null;
+  ogImage: string | null;
   hreflangAlternates: HreflangAlternate[];
 }
 

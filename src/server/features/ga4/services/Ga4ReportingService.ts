@@ -24,6 +24,7 @@ import {
 } from "./Ga4ReportEnhancements";
 import { normalizeGa4Response } from "./Ga4ReportNormalization";
 import { ga4DateInTimeZone, shiftGa4Date } from "./Ga4Dates";
+import { DEFAULT_WINDOW_DAYS, GA4_DATA_LAG_DAYS } from "@/shared/dataFreshness";
 
 export type Ga4ReportInput = {
   projectId: string;
@@ -86,7 +87,7 @@ export function resolveGa4DateRange(
 
   const lastCompleteDay = shiftGa4Date(
     ga4DateInTimeZone(now, propertyTimeZone),
-    -1,
+    -GA4_DATA_LAG_DAYS,
   );
   let endDate = requestedDateRange?.endDate ?? lastCompleteDay;
   /*
@@ -97,7 +98,7 @@ export function resolveGa4DateRange(
    * day out for anyone whose property is not in their own zone. It sends
    * how many days it wants and this decides which ones they are.
    */
-  const windowDays = input.windowDays ?? 28;
+  const windowDays = input.windowDays ?? DEFAULT_WINDOW_DAYS;
   const startDate =
     requestedDateRange?.startDate ?? shiftGa4Date(endDate, -(windowDays - 1));
   const warnings: string[] = [];

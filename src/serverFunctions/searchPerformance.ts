@@ -9,6 +9,7 @@ import {
   buildStrikingDistanceRows,
   previousPeriod,
   sumSearchTotals,
+  toDailyRows,
   toDimensionRows,
 } from "@/server/features/gsc/searchPerformanceReport";
 import { buildGscFilters } from "@/server/features/gsc/performanceFilters";
@@ -113,7 +114,7 @@ export const getSearchPerformanceReport = createServerFn({ method: "POST" })
          * `prevTotals` for the deltas; sending its ~90 daily rows as well
          * would be payload nothing reads.
          */
-        daily: toDimensionRows(current.rows),
+        daily: toDailyRows(current.rows, startDate, endDate),
         strikingDistance: buildStrikingDistanceRows(queryPages.rows),
         countries: toDimensionRows(countries.rows),
       };

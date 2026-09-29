@@ -4,12 +4,22 @@ import { SearchOpportunityService } from "@/server/features/ga4/services/SearchO
 import { Ga4ReportError } from "@/server/lib/ga4Errors";
 import { GscNotConnectedError } from "@/server/lib/gscErrors";
 import { requireProjectContext } from "@/serverFunctions/middleware";
+import { DEFAULT_WINDOW_DAYS } from "@/shared/dataFreshness";
 
 const schema = z.object({
   projectId: z.string().min(1),
   // Matches the ceiling SearchOpportunityService enforces; 250 here only
   // moved the failure from a validation message to a thrown error.
   limit: z.number().int().min(1).max(100).default(50),
+  /*
+   * The window was a literal inside the service with no way to pass one, so
+   * this screen was the only data screen in the app with no period control
+   * at all. Same three options the search-performance and analytics screens
+   * offer, so the vocabulary matches across the app.
+   */
+  windowDays: z
+    .union([z.literal(7), z.literal(28), z.literal(90)])
+    .default(DEFAULT_WINDOW_DAYS),
 });
 
 /**
@@ -30,6 +40,7 @@ export const getSearchOpportunities = createServerFn({ method: "POST" })
       const report = await SearchOpportunityService.getOpportunities({
         projectId: context.projectId,
         limit: data.limit,
+        windowDays: data.windowDays,
       });
       return { status: "ok" as const, report };
     } catch (error) {

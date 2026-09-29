@@ -30,6 +30,17 @@ export type SitemapProblems = {
   /** Shards past Google's 50,000-URL ceiling. */
   overfull: { url: string; urlCount: number }[];
   overfullCount: number;
+  /*
+   * Optional for the same reason the two fields above are: an audit that
+   * started before this existed replays its discovery step from durable
+   * storage and gets the old shape back. Absent means "not recorded".
+   */
+  lastmod?: {
+    urls: number;
+    withLastmod: number;
+    future: number;
+    futureSample: string | null;
+  };
 };
 
 export function siteLevelIssues(input: {
@@ -92,7 +103,41 @@ export function siteLevelIssues(input: {
     for (const shard of sitemapProblems.overfull) {
       at("sitemap-too-many-urls", shard.url, { urlCount: shard.urlCount });
     }
+    reportLastmod(sitemapProblems.lastmod, startUrl, at);
   }
 
   return issues;
+}
+
+/** Under this, "no dates" says more about the sitemap's size than its quality. */
+const LASTMOD_MIN_URLS = 5;
+
+/**
+ * Google documents lastmod as a signal it uses "if it is consistently
+ * accurate", and ignores otherwise. Both halves of that sentence are worth a
+ * finding: no dates at all means Google recrawls on its own schedule, and a
+ * date in the future is the kind of inaccuracy that makes it stop trusting
+ * the rest of them.
+ */
+function reportLastmod(
+  lastmod: SitemapProblems["lastmod"],
+  startUrl: string,
+  at: (
+    issueType: AuditIssueType,
+    pageUrl: string,
+    details?: Record<string, unknown>,
+  ) => void,
+) {
+  if (!lastmod || lastmod.urls < LASTMOD_MIN_URLS) return;
+
+  if (lastmod.withLastmod === 0) {
+    at("sitemap-lastmod-missing", startUrl, { urlCount: lastmod.urls });
+    return;
+  }
+  if (lastmod.future > 0) {
+    at("sitemap-lastmod-future", startUrl, {
+      count: lastmod.future,
+      example: lastmod.futureSample,
+    });
+  }
 }

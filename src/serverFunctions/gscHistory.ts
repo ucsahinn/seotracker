@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { GscHistoryService } from "@/server/features/gsc/services/GscHistoryService";
 import { requireProjectContext } from "@/serverFunctions/middleware";
+import { GSC_DATA_LAG_DAYS } from "@/shared/dataFreshness";
 
 const projectSchema = z.object({ projectId: z.string().min(1) });
 
@@ -35,9 +36,16 @@ const queryHistorySchema = projectSchema.extend({
   days: z.number().int().min(7).max(MAX_ARCHIVE_DAYS).default(90),
 });
 
+/*
+ * Counted back from the newest day Search Console has finalised, not from
+ * today. The archive this reads only ever reaches `today - GSC_DATA_LAG_DAYS`
+ * because that is as far as the backfill goes, so counting from today made a
+ * "30 gün" selection cover 27 days of data -- and every window was short by
+ * the same three days, which is invisible until two screens are compared.
+ */
 function sinceDate(days: number): string {
   const since = new Date();
-  since.setUTCDate(since.getUTCDate() - days);
+  since.setUTCDate(since.getUTCDate() - GSC_DATA_LAG_DAYS - (days - 1));
   return since.toISOString().slice(0, 10);
 }
 

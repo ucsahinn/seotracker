@@ -4,6 +4,15 @@ import { Link } from "@tanstack/react-router";
 import { MetricRow, MetricTile } from "@/client/components/MetricTile";
 import { describeTotals } from "@/client/features/search-performance/totals";
 import { getSearchPerformanceReport } from "@/serverFunctions/searchPerformance";
+import { DEFAULT_WINDOW_DAYS } from "@/shared/dataFreshness";
+import { formatDate } from "@/client/lib/format";
+
+/*
+ * The dashboard's one window, named once. The label and the query used to be
+ * separate literals, which is how a label outlives the window it describes.
+ */
+const DASHBOARD_RANGE = "last_28_days" as const;
+const DASHBOARD_RANGE_LABEL = `Son ${DEFAULT_WINDOW_DAYS} gün`;
 
 /**
  * The four numbers the dashboard exists to show, across the top of the page.
@@ -25,7 +34,7 @@ export function DashboardMetrics({
     queryKey: ["dashboardGscReport", projectId],
     queryFn: () =>
       getSearchPerformanceReport({
-        data: { projectId, dateRange: "last_28_days" },
+        data: { projectId, dateRange: DASHBOARD_RANGE },
       }),
     enabled: connected,
   });
@@ -96,7 +105,7 @@ export function DashboardMetrics({
       params={{ projectId }}
       className="link link-hover text-muted"
     >
-      Son 28 gün
+      {DASHBOARD_RANGE_LABEL}
     </Link>
   );
 
@@ -114,7 +123,15 @@ export function DashboardMetrics({
    * Until now nothing on this row was clickable once connected, so the four
    * numbers the dashboard exists to show led nowhere.
    */
-  const period = report ? "Son 28 gün" : undefined;
+  /*
+   * Derived from the range the server resolved, not written out again. The
+   * literal "Son 28 gün" appeared three times in this file against a query
+   * that named its window once -- so changing the window would have left
+   * three labels quietly claiming the old one.
+   */
+  const period = report
+    ? `${formatDate(report.range.startDate)} – ${formatDate(report.range.endDate)}`
+    : undefined;
 
   return (
     <MetricRow>

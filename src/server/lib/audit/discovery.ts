@@ -136,6 +136,47 @@ function getSitemapLocations(input: unknown): string[] {
     .filter((loc): loc is string => typeof loc === "string");
 }
 
+/**
+ * What the `<lastmod>` values in one `<urlset>` add up to.
+ *
+ * Counts rather than the dates themselves, because this travels in Workflow
+ * step state, which has a ~1MiB ceiling that a per-URL date list on a large
+ * site would eat. Google says it uses lastmod only when a site's dates are
+ * consistently accurate, so the two questions worth carrying are "are there
+ * any" and "are any of them impossible".
+ */
+function readLastmodStats(input: unknown): {
+  urls: number;
+  withLastmod: number;
+  future: number;
+  futureSample: string | null;
+} {
+  const entries = Array.isArray(input) ? input : input ? [input] : [];
+  // A minute of slack: a sitemap regenerated during the crawl is not a lie.
+  const horizon = Date.now() + 60_000;
+  let withLastmod = 0;
+  let future = 0;
+  let futureSample: string | null = null;
+
+  for (const entry of entries) {
+    if (!isRecord(entry)) continue;
+    const raw = entry["lastmod"];
+    // The XML parser hands back a Date-looking string, or a number for a
+    // bare year. Either way only a parseable instant is a claim.
+    const text = typeof raw === "string" ? raw.trim() : null;
+    if (!text) continue;
+    const parsed = Date.parse(text);
+    if (Number.isNaN(parsed)) continue;
+    withLastmod += 1;
+    if (parsed > horizon) {
+      future += 1;
+      futureSample ??= text;
+    }
+  }
+
+  return { urls: entries.length, withLastmod, future, futureSample };
+}
+
 function isRecord(value: unknown): value is Record<string, unknown> {
   return !!value && typeof value === "object";
 }
@@ -203,6 +244,12 @@ async function fetchSitemapDocumentWithRetry(sitemapUrl: string): Promise<{
   tooLarge?: boolean;
   pageUrls: string[];
   timedOut: boolean;
+  lastmod?: {
+    urls: number;
+    withLastmod: number;
+    future: number;
+    futureSample: string | null;
+  };
 }> {
   const normalizedSitemapUrl = normalizeUrl(sitemapUrl);
   if (!normalizedSitemapUrl) {
@@ -249,7 +296,12 @@ async function fetchSitemapDocumentWithRetry(sitemapUrl: string): Promise<{
         .map((loc) => normalizeUrl(loc, finalUrl))
         .filter((loc): loc is string => loc !== null);
 
-      return { nestedSitemaps, pageUrls, timedOut: false };
+      return {
+        nestedSitemaps,
+        pageUrls,
+        timedOut: false,
+        lastmod: readLastmodStats(sections.url),
+      };
     } catch (error) {
       lastError = error;
       if (!isTimeoutError(error) || attempt === SITEMAP_RETRIES) {
@@ -281,6 +333,13 @@ export async function discoverUrls(
     oversizedCount: number;
     overfull: { url: string; urlCount: number }[];
     overfullCount: number;
+    /** Summed across every shard read; see `readLastmodStats`. */
+    lastmod: {
+      urls: number;
+      withLastmod: number;
+      future: number;
+      futureSample: string | null;
+    };
   };
 }> {
   const robotsFetch = await fetchRobotsTxtText(origin);
@@ -306,6 +365,12 @@ export async function discoverUrls(
   let failedDocs = 0;
   const oversizedSitemaps: string[] = [];
   const overfullSitemaps: { url: string; urlCount: number }[] = [];
+  const lastmod = {
+    urls: 0,
+    withLastmod: 0,
+    future: 0,
+    futureSample: null as string | null,
+  };
   let timedOutDocs = 0;
 
   while (queue.length > 0 && allUrls.size < maxDiscoveredUrls) {
@@ -335,6 +400,12 @@ export async function discoverUrls(
          * over 50,000 URLs is invalid to Google even when this tool read it
          * happily. Counted per document, not across the site.
          */
+        if (result.lastmod) {
+          lastmod.urls += result.lastmod.urls;
+          lastmod.withLastmod += result.lastmod.withLastmod;
+          lastmod.future += result.lastmod.future;
+          lastmod.futureSample ??= result.lastmod.futureSample;
+        }
         if (result.pageUrls.length > GOOGLE_MAX_SITEMAP_URLS) {
           overfullSitemaps.push({
             url: normalizedUrl,
@@ -389,6 +460,7 @@ export async function discoverUrls(
       oversizedCount: oversizedSitemaps.length,
       overfull: overfullSitemaps.slice(0, 5),
       overfullCount: overfullSitemaps.length,
+      lastmod,
     },
   };
 }
