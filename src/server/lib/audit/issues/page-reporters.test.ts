@@ -3,14 +3,11 @@ import { describe, expect, it } from "vitest";
 /** Everything except the deliberately blocked directory. */
 const allowAll = (url: string) => !url.includes("/blocked/");
 import { runPageReporters } from "@/server/lib/audit/issues/page-reporters";
-import type { CrawledPageResult, PageLink } from "@/server/lib/audit/types";
-
-const HEALTHY_LINK: PageLink = {
-  targetUrl: "https://example.com/catalog",
-  anchor: "Catalog",
-  isInternal: true,
-  isNofollow: false,
-};
+import type { CrawledPageResult } from "@/server/lib/audit/types";
+import {
+  HEALTHY_LINK,
+  makeCrawledPage,
+} from "@/server/lib/audit/issues/page-test-fixtures";
 
 function alts(...codes: string[]) {
   return codes.map((hreflang) => ({
@@ -19,52 +16,7 @@ function alts(...codes: string[]) {
   }));
 }
 
-function makePage(overrides: Partial<CrawledPageResult>): CrawledPageResult {
-  return {
-    id: "page-1",
-    url: "https://example.com/a",
-    statusCode: 200,
-    fetchClass: "ok",
-    redirectUrl: null,
-    title: "A perfectly reasonable page title",
-    metaDescription:
-      "A reasonable meta description that says something useful about the page.",
-    canonicalCount: 0,
-    canonicalUrl: null,
-    robotsMeta: null,
-    googlebotMeta: null,
-    xRobotsTag: null,
-    headerCanonicalUrl: null,
-    ogTitle: null,
-    ogDescription: null,
-    ogImage: null,
-    h1Count: 1,
-    h2Count: 0,
-    h3Count: 0,
-    h4Count: 0,
-    h5Count: 0,
-    h6Count: 0,
-    headingOrder: [1, 2, 3],
-    wordCount: 500,
-    contentHash: "abc123",
-    isHtml: true,
-    htmlBytes: 10_000,
-    rateLimited: false,
-    imagesTotal: 0,
-    imagesMissingAlt: 0,
-    images: [],
-    links: [HEALTHY_LINK],
-    hasStructuredData: false,
-    viewport: "width=device-width, initial-scale=1",
-    resources: [],
-    hreflangAlternates: [],
-    isIndexable: true,
-    responseTimeMs: 200,
-    crawlDepth: 1,
-    inSitemap: true,
-    ...overrides,
-  };
-}
+const makePage = makeCrawledPage;
 
 function issueTypes(page: CrawledPageResult): string[] {
   return runPageReporters(page).map((issue) => issue.issueType);
@@ -448,87 +400,5 @@ describe("checks traced to Google's documentation", () => {
         }),
       ),
     ).toContain("paginated-canonical-to-first-page");
-  });
-});
-
-describe("no-subheadings", () => {
-  /*
-   * The heading counts have been written by every crawl since the analyzer
-   * was built and read by nothing. This is the question they answer.
-   */
-  it("reports a long page with nothing below the H1", () => {
-    expect(
-      issueTypes(
-        makePage({ wordCount: 900, h1Count: 1, h2Count: 0, h3Count: 0 }),
-      ),
-    ).toContain("no-subheadings");
-  });
-
-  it("says nothing when the page has sections", () => {
-    expect(
-      issueTypes(
-        makePage({ wordCount: 900, h1Count: 1, h2Count: 3, h3Count: 0 }),
-      ),
-    ).not.toContain("no-subheadings");
-    expect(
-      issueTypes(
-        makePage({ wordCount: 900, h1Count: 1, h2Count: 0, h3Count: 2 }),
-      ),
-    ).not.toContain("no-subheadings");
-  });
-
-  /*
-   * A short page needs no sections, and saying otherwise on every small
-   * page would bury the pages where it matters.
-   */
-  it("leaves a short page alone", () => {
-    expect(
-      issueTypes(
-        makePage({ wordCount: 200, h1Count: 1, h2Count: 0, h3Count: 0 }),
-      ),
-    ).not.toContain("no-subheadings");
-  });
-});
-
-describe("alt text quality", () => {
-  const withImages = (...alts: Array<string | null>) =>
-    issueTypes(
-      makePage({
-        images: alts.map((alt) => ({ src: "/i.jpg", alt })),
-        imagesTotal: alts.length,
-        imagesMissingAlt: alts.filter((a) => !a).length,
-      }),
-    );
-
-  /*
-   * An alt of "IMG_2231.jpg" passes the missing-alt count and helps nobody:
-   * a screen reader announces the filename and image search learns nothing.
-   */
-  it("reports alt text that is really a filename", () => {
-    expect(withImages("IMG_2231.jpg")).toContain("alt-is-filename");
-    expect(withImages("DSC0043")).toContain("alt-is-filename");
-    expect(withImages("screenshot-2.png")).toContain("alt-is-filename");
-  });
-
-  it("leaves a real description alone", () => {
-    expect(withImages("Kırmızı koltukta oturan kadın")).not.toContain(
-      "alt-is-filename",
-    );
-  });
-
-  // Screen readers do not truncate; a long alt becomes a paragraph.
-  it("reports an alt long enough to stop being a description", () => {
-    expect(withImages("a".repeat(300))).toContain("alt-too-long");
-    expect(withImages("a".repeat(100))).not.toContain("alt-too-long");
-  });
-
-  /*
-   * An empty alt is the correct markup for a decorative image, and a
-   * missing one is already reported by `images-missing-alt`.
-   */
-  it("says nothing about an image with no alt at all", () => {
-    const types = withImages(null, "");
-    expect(types).not.toContain("alt-is-filename");
-    expect(types).not.toContain("alt-too-long");
   });
 });
