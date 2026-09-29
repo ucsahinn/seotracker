@@ -13,6 +13,8 @@ type Ga4OrganicOverviewInput = {
   projectId: string;
   startDate?: string;
   endDate?: string;
+  /** Days back from the last complete day, when no explicit range is given. */
+  windowDays?: number;
   trend?: "daily" | "weekly";
 };
 

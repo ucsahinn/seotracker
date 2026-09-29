@@ -23,6 +23,10 @@ import {
 } from "@/serverFunctions/middleware";
 
 const projectScopedSchema = z.object({ projectId: z.string().min(1) });
+const overviewSchema = projectScopedSchema.extend({
+  /** Omitted by the dashboard card, which wants the service's default. */
+  windowDays: z.number().int().positive().max(365).optional(),
+});
 const setPropertySchema = projectScopedSchema.extend({
   accountId: z.string().min(1),
   propertyId: z.string().regex(/^properties\/\d+$/),
@@ -93,15 +97,23 @@ function fillDailySessions(
   return days;
 }
 
-/** The dashboard's GA4 card: organic totals vs the previous period plus a
- *  daily sessions trend, over the default (last 28 complete days) range. */
+/**
+ * Organic totals against the previous period, plus a daily sessions trend.
+ *
+ * Two readers: the dashboard card, which takes the default window, and the
+ * Analytics screen, which passes the one the operator picked. The trend has
+ * existed in the service since it was written and only the card ever asked
+ * for it -- the screen that is actually about Analytics drew seven tables
+ * and no line.
+ */
 export const getGa4DashboardReport = createServerFn({ method: "POST" })
   .middleware(requireProjectContext)
-  .validator(projectScopedSchema)
-  .handler(async ({ context }) => {
+  .validator(overviewSchema)
+  .handler(async ({ context, data }) => {
     try {
       const overview = await Ga4OrganicOverviewService.getOrganicOverview({
         projectId: context.projectId,
+        windowDays: data.windowDays,
       });
       const totals = (row: Record<string, string | number | null> | null) => ({
         sessions: overviewMetric(row, "sessions"),

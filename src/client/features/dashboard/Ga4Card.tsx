@@ -1,19 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import {
-  Area,
-  AreaChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
+import { Area, AreaChart, Tooltip, XAxis, YAxis } from "recharts";
 import {
   CardShell,
   moreDetailsClass,
   Stat,
 } from "@/client/features/dashboard/cardParts";
 import { DeltaBadge } from "@/client/components/MetricTile";
+import { Chart, CHART_SERIES } from "@/client/components/Chart";
 import { Ga4ConnectCard } from "@/client/features/dashboard/Ga4ConnectCard";
 import { formatCount, formatDay, formatPercent } from "@/client/lib/format";
 import { getGa4DashboardReport } from "@/serverFunctions/ga4";
@@ -154,32 +148,55 @@ export function Ga4Card({
                 )}
               />
             </div>
-            <div className="h-24">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart
-                  data={report.trend}
-                  margin={{ top: 4, right: 0, bottom: 0, left: 0 }}
-                >
-                  <XAxis dataKey="date" hide />
-                  <YAxis hide domain={[0, "auto"]} />
-                  <Tooltip
-                    content={<SessionsTooltip />}
-                    cursor={{ stroke: "currentColor", strokeOpacity: 0.2 }}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="sessions"
-                    stroke="var(--color-primary)"
-                    strokeWidth={2}
-                    fill="var(--color-primary)"
-                    fillOpacity={0.08}
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            </div>
+            {/*
+             * Through the shared wrapper like every other chart. Its own
+             * `ResponsiveContainer` measured during hydration, before the
+             * card had layout, and printed a -1 warning to the console of
+             * every install on every dashboard load.
+             */}
+            <Chart
+              height={96}
+              summary={trendSummary(report.trend)}
+              className="[&_figcaption]:hidden"
+            >
+              <AreaChart
+                data={report.trend}
+                margin={{ top: 4, right: 0, bottom: 0, left: 0 }}
+              >
+                <XAxis dataKey="date" hide />
+                <YAxis hide domain={[0, "auto"]} />
+                <Tooltip
+                  content={<SessionsTooltip />}
+                  cursor={{ stroke: "currentColor", strokeOpacity: 0.2 }}
+                />
+                <Area
+                  type="monotone"
+                  dataKey="sessions"
+                  stroke={CHART_SERIES.primary}
+                  strokeWidth={2}
+                  fill={CHART_SERIES.primary}
+                  fillOpacity={0.08}
+                />
+              </AreaChart>
+            </Chart>
           </div>
         )
       ) : null}
     </CardShell>
   );
+}
+
+/*
+ * The card's chart has no axes -- it is a shape, not a readout -- so the
+ * sentence is the only thing a screen reader gets from it.
+ */
+function trendSummary(
+  trend: Array<{ date: string; sessions: number }>,
+): string {
+  if (trend.length === 0) return "Gösterilecek oturum verisi yok.";
+  const total = trend.reduce((sum, row) => sum + row.sessions, 0);
+  const peak = trend.reduce((best, row) =>
+    row.sessions > best.sessions ? row : best,
+  );
+  return `${trend.length} günde toplam ${formatCount(total)} oturum. En yüksek gün ${formatTrendDay(peak.date)}, ${formatCount(peak.sessions)} oturum.`;
 }

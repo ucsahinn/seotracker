@@ -5,6 +5,7 @@ import { EmptyState } from "@/client/components/EmptyState";
 import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { TabPanel, Tabs } from "@/client/components/Tabs";
+import { OrganicTrendPanel } from "@/client/features/analytics/OrganicTrendPanel";
 import { MeasurementHealthPanel } from "@/client/features/analytics/MeasurementHealthPanel";
 import { formatCount, formatDate, formatPercent } from "@/client/lib/format";
 import { getGa4Report } from "@/serverFunctions/ga4Reports";
@@ -158,6 +159,9 @@ export function AnalyticsPage({ projectId }: { projectId: string }) {
           <MeasurementHealthPanel projectId={projectId} />
         ) : (
           <>
+            {/* The window's shape, above whichever report lists it. Its own
+                query, so a slow overview never holds up the table. */}
+            <OrganicTrendPanel projectId={projectId} windowDays={windowDays} />
             {reportQuery.isPending ? (
               <div className="space-y-2" aria-busy>
                 <div className="skeleton h-10" />

@@ -29,6 +29,29 @@ export function Chart({
   height?: number;
   className?: string;
 }) {
+  /*
+   * Measured here before recharts is allowed to measure it.
+   *
+   * These pages are server-rendered, and `ResponsiveContainer` reads its
+   * box the moment it mounts. Before layout settles that read comes back
+   * as -1 by -1, and recharts logs a warning to the console of every
+   * install on every page with a chart — for a chart that then draws
+   * correctly a frame later. Waiting for a real width means it never sees
+   * the bad one. The box keeps its height throughout, so nothing moves.
+   */
+  const box = React.useRef<HTMLDivElement>(null);
+  const [width, setWidth] = React.useState(0);
+
+  React.useEffect(() => {
+    const element = box.current;
+    if (!element) return;
+    const observer = new ResizeObserver(([entry]) => {
+      setWidth(entry?.contentRect.width ?? 0);
+    });
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <figure className={className}>
       {/*
@@ -36,16 +59,22 @@ export function Chart({
        * `fill="currentColor"` instead of each chart picking its own grey.
        */}
       <div
+        ref={box}
         className="w-full text-muted"
         style={{ height }}
         role="img"
         aria-label={summary}
       >
-        {/* `minWidth={0}` keeps recharts from warning about a -1 measurement
-            on the first paint, before the server-rendered markup has layout. */}
-        <ResponsiveContainer width="100%" height="100%" minWidth={0}>
-          {children}
-        </ResponsiveContainer>
+        {/*
+         * A fixed width, not `100%`: it is the width this element actually
+         * has, so recharts does no measuring of its own and cannot catch
+         * the element mid-layout.
+         */}
+        {width > 0 ? (
+          <ResponsiveContainer width={width} height={height}>
+            {children}
+          </ResponsiveContainer>
+        ) : null}
       </div>
     </figure>
   );
