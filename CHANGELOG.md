@@ -5,7 +5,7 @@ Yayında tek sürüm tutuluyor, bu yüzden burada tek not var. Eski notlar
 
 ## [Yayınlanmamış]
 
-## [1.5.0] — 2026-09-30
+## [1.5.1] — 2026-09-30
 
 ### Önce şunu yapın
 
@@ -28,6 +28,7 @@ bırakın.
 - Fırsatlar: bir satıra tıklayınca neden listede olduğunu ve ne yapacağınızı görürsünüz.
 - Panelde "Sıradaki adımlar", hızlı filtreler ve tek tıkla işlem düğmeleri.
 - Analytics'te cihaz, ülke ve yeni/dönen ziyaretçi dağılımı.
+- Panelde önem çubuğuna tıklayınca sorun listesi o önemle açılır.
 - Denetim sonuçları ve ekran metinleri sade Türkçeye çevrildi.
 
 ### Düzeltilenler
@@ -36,5 +37,5 @@ bırakın.
 - Grafik "Son 28 gün" derken 7 gün çiziyordu.
 - Bazı renkler açık temada okunmuyordu.
 
-[Yayınlanmamış]: https://github.com/ucsahinn/seotracker/compare/v1.5.0...HEAD
-[1.5.0]: https://github.com/ucsahinn/seotracker/releases/tag/v1.5.0
+[Yayınlanmamış]: https://github.com/ucsahinn/seotracker/compare/v1.5.1...HEAD
+[1.5.1]: https://github.com/ucsahinn/seotracker/releases/tag/v1.5.1
