@@ -347,7 +347,7 @@ export function StrikingDistanceTable({
         compact
         icon={Target}
         title="Bu dönemde eşiğe yakın sorgu yok"
-        description="Sıralaması 5 ile 20 arasında kalan sorgu bulunmuyor. Bu aralıktaki sorgular, küçük bir iyileştirmeyle ilk sayfaya çıkabilecek olanlardır."
+        description="Sıralaması 5 ile 20 arasında kalan sorgu bulunmuyor. Bu aralıktaki sorgular, küçük bir iyileştirmeyle daha üst sıralara çıkabilecek olanlardır."
       />
     );
   }

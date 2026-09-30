@@ -3,7 +3,6 @@ import { discoverUrls, parseRobotsTxt } from "@/server/lib/audit/discovery";
 import {
   failedLighthouseFetch,
   fetchLighthouseResult,
-  selectLighthouseSample,
   storeLighthouseResult,
 } from "@/server/lib/audit/lighthouse";
 import {
@@ -12,6 +11,7 @@ import {
   normalizeUrl,
 } from "@/server/lib/audit/url-utils";
 import { isCrawlableUrl } from "@/server/lib/audit/url-policy";
+import { selectLighthouseWork } from "@/server/workflows/siteAuditWorkflowLighthouseSelect";
 import { AuditLighthouseRepository } from "@/server/features/audit/repositories/AuditLighthouseRepository";
 import { AuditRepository } from "@/server/features/audit/repositories/AuditRepository";
 import { getAuditScratchpad } from "@/server/features/audit/AuditScratchpad";
@@ -39,8 +39,8 @@ import {
 
 /**
  * URLs fetched concurrently per wave. Each URL runs mobile + desktop, so one
- * wave holds up to 10 paid DataForSEO calls in flight; the aux worker's parse
- * lock serializes the memory-heavy payload parsing behind them.
+ * wave holds up to 10 PageSpeed calls in flight; the aux worker's parse lock
+ * serializes the memory-heavy payload parsing behind them.
  */
 const LIGHTHOUSE_URL_CONCURRENCY = 5;
 /** Frontier seeds per scratchpad RPC call. */
@@ -210,7 +210,7 @@ export async function runLighthousePhase(
   const { auditId, workflowInstanceId, projectId, startUrl, config } = params;
   if (config.lighthouseStrategy === "none") return;
 
-  const lighthouseWork = await selectLighthousePages({
+  const lighthouseWork = await selectLighthouseWork({
     step,
     auditId,
     workflowInstanceId,
@@ -296,41 +296,11 @@ export async function runLighthousePhase(
 
     completedChecks += counts.completed;
     failedChecks += counts.failed;
+
+    // Daily quota spent: stop and keep what is stored; the results screen
+    // explains the gap from the quota rows and the planned total.
+    if (fetched.some((item) => item.quotaExhausted)) break;
   }
-}
-
-async function selectLighthousePages(params: {
-  step: WorkflowStep;
-  auditId: string;
-  workflowInstanceId: string;
-  startUrl: string;
-  strategy: AuditConfig["lighthouseStrategy"];
-}) {
-  const { step, auditId, workflowInstanceId, startUrl, strategy } = params;
-  return step.do("select-lighthouse-sample", DB_STEP, async () => {
-    // Crawled pages come from the DB — the crawl phase no longer holds a
-    // whole-crawl page list in memory.
-    const crawledPages = await AuditRepository.getPagesForAudit(auditId);
-    const sample = selectLighthouseSample(
-      crawledPages.map((page) => ({
-        url: page.url,
-        statusCode: page.statusCode ?? 0,
-      })),
-      startUrl,
-      strategy,
-    );
-    const selectedUrls = new Set(sample);
-
-    await AuditRepository.updateAuditProgress(auditId, workflowInstanceId, {
-      currentPhase: "lighthouse",
-      lighthouseTotal: sample.length * 2,
-      lighthouseCompleted: 0,
-      lighthouseFailed: 0,
-    });
-    return crawledPages.flatMap((page) =>
-      selectedUrls.has(page.url) ? [{ url: page.url, pageId: page.id }] : [],
-    );
-  });
 }
 
 async function finalizeAudit(args: {

@@ -23,15 +23,22 @@ export class PageSpeedError extends Error {
   readonly status: number | null;
   /** True when another attempt could plausibly succeed. */
   readonly retryable: boolean;
+  /** True when the daily quota is spent: every later call fails the same way. */
+  readonly quotaExhausted: boolean;
 
   constructor(
     message: string,
-    options: { status: number | null; retryable: boolean },
+    options: {
+      status: number | null;
+      retryable: boolean;
+      quotaExhausted?: boolean;
+    },
   ) {
     super(message);
     this.name = "PageSpeedError";
     this.status = options.status;
     this.retryable = options.retryable;
+    this.quotaExhausted = options.quotaExhausted ?? false;
   }
 }
 
@@ -75,11 +82,21 @@ function buildRequestUrl(
  * key that will never work, is final — retrying it only burns the step budget
  * and delays the rest of the audit.
  */
-function classifyFailure(
+export function classifyFailure(
   status: number,
   message: string,
   hasApiKey: boolean,
 ): PageSpeedError {
+  // "Queries per day" never recovers within the audit, so retrying only burns
+  // time; the audit stops measuring and keeps what it has. A per-minute 429
+  // falls through and is retried.
+  if (status === 429 && /per day|daily/i.test(message)) {
+    return new PageSpeedError(message, {
+      status,
+      retryable: false,
+      quotaExhausted: true,
+    });
+  }
   if (isFinalStatus(status) || isPageFault(message)) {
     return new PageSpeedError(message, { status, retryable: false });
   }

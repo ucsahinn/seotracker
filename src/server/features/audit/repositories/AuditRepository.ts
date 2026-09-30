@@ -169,6 +169,7 @@ async function insertCrawledBatch(
       ogDescription: page.ogDescription,
       ogImage: page.ogImage,
       h1Count: page.h1Count,
+      firstH1: page.firstH1,
       h2Count: page.h2Count,
       h3Count: page.h3Count,
       h4Count: page.h4Count,

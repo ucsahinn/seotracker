@@ -7,6 +7,34 @@ import { StatusPill } from "@/client/components/StatusPill";
 import { formatCount, formatDate } from "@/client/lib/format";
 import { getSitemapReport } from "@/serverFunctions/sitemaps";
 
+const CONTENT_LABELS: Record<string, string> = {
+  web: "web",
+  image: "görsel",
+  video: "video",
+  news: "haber",
+};
+
+/**
+ * "120 web, 30 görsel gönderilmiş". Google no longer returns indexed counts,
+ * so this is only what the file declared. Types with nothing submitted are
+ * left out; with no per-type data it falls back to the plain total.
+ */
+function describeSubmitted(sitemap: {
+  submitted: number;
+  contents: { type: string | null; submitted: number }[];
+}): string {
+  const parts = sitemap.contents
+    .filter((entry) => entry.submitted > 0)
+    .map((entry) => {
+      const label = entry.type
+        ? (CONTENT_LABELS[entry.type] ?? entry.type)
+        : "";
+      return `${formatCount(entry.submitted)} ${label}`.trim();
+    });
+  if (parts.length === 0) return `${formatCount(sitemap.submitted)} adres`;
+  return `${parts.join(", ")} gönderilmiş`;
+}
+
 /**
  * Google's side of the sitemap conversation.
  *
@@ -107,7 +135,7 @@ export function SitemapStatusPanel({ projectId }: { projectId: string }) {
                 {sitemap.path}
               </p>
               <p className="mt-0.5 text-xs text-muted">
-                {formatCount(sitemap.submitted)} adres
+                {describeSubmitted(sitemap)}
                 {sitemap.isSitemapsIndex ? " · dizin dosyası" : ""}
                 {" · "}
                 {sitemap.lastDownloaded

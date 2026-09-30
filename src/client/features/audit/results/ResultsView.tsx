@@ -250,7 +250,7 @@ export function ResultsView({
                   askDisabledReason={
                     property.covered
                       ? undefined
-                      : `Bu denetim ${property.auditedHost} adresine ait, bağlı mülk ise ${property.propertyHost ?? "başka bir site"}. Sormak kotayı boşa harcardı.`
+                      : `Bu denetim ${property.auditedHost} adresine ait, bağlı mülk ise ${property.propertyHost ?? "başka bir mülk"}. Sormak kotayı boşa harcardı.`
                   }
                 />
               </div>
@@ -288,6 +288,7 @@ export function ResultsView({
               <div className="mb-4">
                 <PerformanceSummary
                   lighthouse={lighthouse}
+                  plannedChecks={audit.lighthouseTotal}
                   filters={performanceFilters}
                   onChange={setPerformanceFilters}
                 />

@@ -76,7 +76,7 @@ export function explainRow(row: OpportunityRow): string {
     const gap =
       row.ctrGap === null
         ? ""
-        : `, sitenizde bu sıradaki sayfaların medyanından ${formatPercent(Math.abs(row.ctrGap))} puan geride`;
+        : `, sitenizde bu sıradaki sayfaların medyanından ${formatDecimal(Math.abs(row.ctrGap) * 100)} yüzde puan daha düşük`;
     return `Ortalama ${position}. sırada ${impressions} kez gösterildi ama yalnızca ${clicks} tıklama aldı (tıklama oranı ${formatPercent(row.ctr)}${gap}).${ga4}`;
   }
   if (row.kind === "near_miss") {

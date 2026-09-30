@@ -85,6 +85,7 @@ const duplicateContent: Fixture = {
     "Identical pages at different URLs split the ranking signals. Pick one URL and redirect the rest.",
   expectedIssues: [
     "duplicate-content",
+    "duplicate-h1",
     "duplicate-title",
     "duplicate-meta-description",
   ],

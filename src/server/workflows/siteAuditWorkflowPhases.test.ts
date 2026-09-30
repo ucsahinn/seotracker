@@ -3,20 +3,22 @@ import type { LighthouseResult } from "@/server/lib/audit/types";
 
 const {
   fetchLighthouseResultMock,
-  selectLighthouseSampleMock,
+  selectLighthousePagesMock,
   storeLighthouseResultMock,
   stepDoMock,
   getPagesForAuditMock,
   insertLighthouseResultsMock,
   updateAuditProgressMock,
+  getPageSpeedApiKeyMock,
 } = vi.hoisted(() => ({
   fetchLighthouseResultMock: vi.fn(),
-  selectLighthouseSampleMock: vi.fn(),
+  selectLighthousePagesMock: vi.fn(),
   storeLighthouseResultMock: vi.fn(),
   stepDoMock: vi.fn(),
   getPagesForAuditMock: vi.fn(),
   insertLighthouseResultsMock: vi.fn(),
   updateAuditProgressMock: vi.fn(),
+  getPageSpeedApiKeyMock: vi.fn(),
 }));
 
 // The real module reaches cloudflare:workers through r2.ts at import time.
@@ -28,10 +30,13 @@ vi.mock("@/server/lib/audit/lighthouse", async (importOriginal) => {
   return {
     ...actual,
     fetchLighthouseResult: fetchLighthouseResultMock,
-    selectLighthouseSample: selectLighthouseSampleMock,
+    selectLighthousePages: selectLighthousePagesMock,
     storeLighthouseResult: storeLighthouseResultMock,
   };
 });
+vi.mock("@/server/features/lighthouse/pagespeed-config", () => ({
+  getPageSpeedApiKey: getPageSpeedApiKeyMock,
+}));
 vi.mock("@/server/features/audit/repositories/AuditRepository", () => ({
   AuditRepository: {
     getPagesForAudit: getPagesForAuditMock,
@@ -65,6 +70,7 @@ vi.mock("@/server/workflows/siteAuditWorkflowCrawl", () => ({
   runCrawlPhase: vi.fn(),
 }));
 
+import { UNKEYED_LIGHTHOUSE_PAGE_CAP } from "@/shared/audit-limits";
 import { runLighthousePhase } from "@/server/workflows/siteAuditWorkflowPhases";
 
 const PHASE_PARAMS = {
@@ -98,7 +104,7 @@ describe("runLighthousePhase", () => {
         statusCode: 200,
       },
     ]);
-    selectLighthouseSampleMock.mockReturnValue(["https://example.com/"]);
+    selectLighthousePagesMock.mockReturnValue(["https://example.com/"]);
     fetchLighthouseResultMock.mockImplementation(
       async (_url: string, pageId: string, strategy: "mobile" | "desktop") => ({
         result: { pageId, strategy },
@@ -110,6 +116,7 @@ describe("runLighthousePhase", () => {
     );
     insertLighthouseResultsMock.mockResolvedValue(undefined);
     updateAuditProgressMock.mockResolvedValue(undefined);
+    getPageSpeedApiKeyMock.mockResolvedValue("key");
   });
 
   it("retries persistence without re-running a completed fetch step", async () => {
@@ -165,7 +172,7 @@ describe("runLighthousePhase", () => {
       { id: "page-1", url: "https://example.com/", statusCode: 200 },
       { id: "page-2", url: "https://example.com/about", statusCode: 200 },
     ]);
-    selectLighthouseSampleMock.mockReturnValue([
+    selectLighthousePagesMock.mockReturnValue([
       "https://example.com/",
       "https://example.com/about",
     ]);
@@ -201,6 +208,66 @@ describe("runLighthousePhase", () => {
       "audit-1",
       "workflow-1",
       { lighthouseCompleted: 2, lighthouseFailed: 2 },
+    );
+  });
+
+  it("caps the run when no PageSpeed key is set and leaves it open with one", async () => {
+    stepDoMock.mockImplementation(
+      async (
+        _name: string,
+        _config: unknown,
+        callback: () => Promise<unknown>,
+      ) => callback(),
+    );
+
+    await runLighthousePhase(stepStub(), PHASE_PARAMS);
+    expect(selectLighthousePagesMock.mock.calls[0]?.[3]).toBe(
+      Number.POSITIVE_INFINITY,
+    );
+
+    getPageSpeedApiKeyMock.mockResolvedValue(undefined);
+    await runLighthousePhase(stepStub(), PHASE_PARAMS);
+    expect(selectLighthousePagesMock.mock.calls[1]?.[3]).toBe(
+      UNKEYED_LIGHTHOUSE_PAGE_CAP,
+    );
+  });
+
+  it("stops after the chunk that hit the daily quota and keeps what it has", async () => {
+    // Six pages = two chunks of five and one; the quota hits in the first.
+    const pages = Array.from({ length: 6 }, (_, index) => ({
+      id: `page-${index}`,
+      url: `https://example.com/p${index}`,
+      statusCode: 200,
+    }));
+    getPagesForAuditMock.mockResolvedValue(pages);
+    selectLighthousePagesMock.mockReturnValue(pages.map((page) => page.url));
+    fetchLighthouseResultMock.mockImplementation(
+      async (url: string, pageId: string, strategy: "mobile" | "desktop") =>
+        url.endsWith("/p3")
+          ? {
+              result: { pageId, strategy, errorMessage: "Kota doldu: dolu" },
+              payloadJson: null,
+              quotaExhausted: true,
+            }
+          : { result: { pageId, strategy }, payloadJson: "{}" },
+    );
+    stepDoMock.mockImplementation(
+      async (
+        _name: string,
+        _config: unknown,
+        callback: () => Promise<unknown>,
+      ) => callback(),
+    );
+
+    await runLighthousePhase(stepStub(), PHASE_PARAMS);
+
+    // Only the first chunk ran: five pages, ten checks, two of them quota rows.
+    expect(fetchLighthouseResultMock).toHaveBeenCalledTimes(10);
+    expect(insertLighthouseResultsMock).toHaveBeenCalledTimes(1);
+    expect(updateAuditProgressMock).toHaveBeenLastCalledWith(
+      "audit-1",
+      "workflow-1",
+      { lighthouseCompleted: 8, lighthouseFailed: 2 },
     );
   });
 });

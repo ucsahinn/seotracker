@@ -205,6 +205,12 @@ export async function crawlPage(
       title: analysis.title,
       metaDescription: analysis.metaDescription,
       canonicalCount: analysis.canonicalCount,
+      titleCount: analysis.titleCount,
+      metaDescriptionCount: analysis.metaDescriptionCount,
+      emptyAnchorCount: analysis.emptyAnchorCount,
+      charsetDeclared:
+        /charset\s*=/i.test(contentType) ||
+        /<meta\b[^>]*\bcharset\s*=/i.test(body.slice(0, 1024)),
       canonicalUrl: analysis.canonical
         ? (normalizeUrl(analysis.canonical, url) ?? analysis.canonical)
         : null,
@@ -221,6 +227,7 @@ export async function crawlPage(
          <h1><img alt="Acme"></h1> does have words, and counting text nodes
          alone used to report that page as having no h1 at all. */
       h1Count: analysis.h1s.filter((h) => h.length > 0).length,
+      firstH1: analysis.h1s.find((h) => h.length > 0) ?? null,
       h2Count: headingCount(2),
       h3Count: headingCount(3),
       h4Count: headingCount(4),
@@ -242,6 +249,7 @@ export async function crawlPage(
       images: analysis.images,
       links: analysis.links,
       hasStructuredData: analysis.hasStructuredData,
+      invalidStructuredDataCount: analysis.invalidStructuredDataCount,
       viewport: analysis.viewport,
       resources: analysis.resources,
       insecureResources: analysis.insecureResources,
@@ -331,6 +339,10 @@ function emptyPageResult(input: {
     title: "",
     metaDescription: "",
     canonicalCount: 0,
+    titleCount: 0,
+    metaDescriptionCount: 0,
+    emptyAnchorCount: 0,
+    charsetDeclared: true,
     canonicalUrl: null,
     robotsMeta: null,
     googlebotMeta: null,
@@ -341,6 +353,7 @@ function emptyPageResult(input: {
     ogDescription: null,
     ogImage: null,
     h1Count: 0,
+    firstH1: null,
     h2Count: 0,
     h3Count: 0,
     h4Count: 0,
@@ -357,6 +370,7 @@ function emptyPageResult(input: {
     images: [],
     links: [],
     hasStructuredData: false,
+    invalidStructuredDataCount: 0,
     viewport: null,
     resources: [],
     insecureResources: [],

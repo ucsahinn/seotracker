@@ -35,7 +35,7 @@ const runInputSchema = {
     .boolean()
     .optional()
     .describe(
-      "Run Lighthouse on a sample of up to 10 representative pages (default false — it adds several minutes of wall-clock time). Pass true only when the user wants performance/Core Web Vitals detail.",
+      "Run Lighthouse (PageSpeed) on every crawled page, mobile and desktop (default false — it adds minutes of wall-clock time, roughly 8 seconds per page; capped at 50 pages when no PageSpeed key is set, and it stops early if Google's daily quota runs out). Pass true only when the user wants performance/Core Web Vitals detail.",
     ),
 } as const;
 

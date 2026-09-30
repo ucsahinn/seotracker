@@ -1,4 +1,12 @@
+import { useQuery } from "@tanstack/react-query";
+import { Link } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
+import {
+  estimateLighthouseMinutes,
+  LIGHTHOUSE_CHECKS_PER_PAGE,
+  UNKEYED_LIGHTHOUSE_PAGE_CAP,
+} from "@/shared/audit-limits";
+import { getPageSpeedKeyStatus } from "@/serverFunctions/pagespeedKey";
 import { MIN_PAGES } from "@/client/features/audit/launch/types";
 import type { useLaunchController } from "@/client/features/audit/launch/useLaunchController";
 import { formatNumber } from "@/client/lib/format";
@@ -142,6 +150,42 @@ function LaunchOptions({
   );
 }
 
+/** The real number of checks and a realistic duration for this launch. */
+function LighthouseEstimate({ maxPages }: { maxPages: number }) {
+  // Same key the settings screen uses, so this is usually a cache read.
+  const keyQuery = useQuery({
+    queryKey: ["pageSpeedKeyStatus"],
+    queryFn: () => getPageSpeedKeyStatus(),
+  });
+  const hasKey = keyQuery.data ? keyQuery.data.source !== null : null;
+  if (hasKey === null) return null;
+
+  const pages = hasKey
+    ? maxPages
+    : Math.min(maxPages, UNKEYED_LIGHTHOUSE_PAGE_CAP);
+  const checks = pages * LIGHTHOUSE_CHECKS_PER_PAGE;
+  const minutes = estimateLighthouseMinutes(pages);
+
+  return (
+    <div className="space-y-1">
+      <p className="text-xs text-muted">
+        {hasKey
+          ? `Taranan her sayfanın hızı telefonda ve bilgisayarda ölçülür. En çok ${formatNumber(pages)} sayfa, yani ${formatNumber(checks)} ölçüm; hız aşamasının yaklaşık ${formatNumber(minutes)} dakika sürmesi beklenir.`
+          : `PageSpeed anahtarı yok: Google'ın ücretsiz kotası çok küçük olduğu için en çok ${formatNumber(UNKEYED_LIGHTHOUSE_PAGE_CAP)} sayfa (${formatNumber(UNKEYED_LIGHTHOUSE_PAGE_CAP * LIGHTHOUSE_CHECKS_PER_PAGE)} ölçüm) ölçülür, yaklaşık ${formatNumber(minutes)} dakika sürer.`}
+      </p>
+      {hasKey ? null : (
+        <p className="text-xs text-muted">
+          Tüm sayfaları ölçmek için{" "}
+          <Link to="/settings" className="link">
+            Ayarlar
+          </Link>
+          'dan ücretsiz bir PageSpeed anahtarı ekleyin.
+        </p>
+      )}
+    </div>
+  );
+}
+
 function LighthouseOptions({ launchForm }: Pick<Props, "launchForm">) {
   return (
     <div className="rounded-box border border-base-300 bg-base-200/20 p-3 space-y-2">
@@ -162,23 +206,26 @@ function LighthouseOptions({ launchForm }: Pick<Props, "launchForm">) {
         <span className="text-sm font-medium text-muted">
           Sayfa hızını da ölç{" "}
           <HelpTip label="Hız ölçümü">
-            Google Lighthouse ile sayfalarınızın telefonda ve bilgisayarda ne
-            kadar hızlı açıldığını ölçer, yavaşlatan sorunları listeler.
+            Google Lighthouse ile taranan her sayfanın telefonda ve bilgisayarda
+            ne kadar hızlı açıldığını ölçer, yavaşlatan sorunları listeler.
           </HelpTip>
         </span>
       </label>
 
       <launchForm.Subscribe
-        selector={(snapshot) => snapshot.values.runLighthouse}
+        selector={(snapshot) => ({
+          runLighthouse: snapshot.values.runLighthouse,
+          maxPagesInput: snapshot.values.maxPagesInput,
+        })}
       >
-        {(runLighthouse) =>
+        {({ runLighthouse, maxPagesInput }) =>
           runLighthouse ? (
-            <div className="space-y-1">
-              <p className="text-xs text-muted">
-                Benzer sayfalar ayıklanır, en çok 20 farklı sayfanın hızı
-                ölçülür.
-              </p>
-            </div>
+            <LighthouseEstimate
+              maxPages={Math.max(
+                Number.parseInt(maxPagesInput, 10) || MIN_PAGES,
+                MIN_PAGES,
+              )}
+            />
           ) : null
         }
       </launchForm.Subscribe>

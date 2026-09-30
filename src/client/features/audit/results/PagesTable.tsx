@@ -137,6 +137,7 @@ export function PagesTable({
         filters={filters}
         onChange={onFiltersChange}
         counts={presetCounts}
+        sitemapFound={pages.some((page) => page.inSitemap)}
       />
       <TableFilterToggle
         showFilters={showFilters}

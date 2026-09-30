@@ -154,6 +154,7 @@ async function getResults(auditId: string, projectId: string) {
       status: audit.status,
       pagesCrawled: audit.pagesCrawled,
       pagesTotal: audit.pagesTotal,
+      lighthouseTotal: audit.lighthouseTotal,
       startedAt: audit.startedAt,
       completedAt: audit.completedAt,
       config: parsedConfig,

@@ -1,4 +1,8 @@
 import {
+  LIGHTHOUSE_CHECKS_PER_PAGE,
+  LIGHTHOUSE_QUOTA_MARKER,
+} from "@/shared/audit-limits";
+import {
   isLighthouseFailure,
   type PerformanceFilters,
   type PerformanceRowData,
@@ -128,4 +132,39 @@ export function summarizeLighthouse(
     avgSeo: average("seoScore"),
     avgAccessibility: average("accessibilityScore"),
   };
+}
+
+/**
+ * The plain-language note for a speed run that stopped because Google's daily
+ * quota ran out, or null when it did not.
+ *
+ * `plannedChecks` is the audit's own total (pages x 2); an older audit that
+ * never recorded it falls back to the pages that have any row.
+ */
+export function describeQuotaStop(
+  rows: Array<
+    Pick<PerformanceRowData, "pageId" | "errorMessage"> & {
+      performanceScore: number | null;
+      accessibilityScore: number | null;
+      bestPracticesScore: number | null;
+      seoScore: number | null;
+    }
+  >,
+  plannedChecks: number,
+): string | null {
+  const stopped = rows.some((row) =>
+    row.errorMessage?.startsWith(LIGHTHOUSE_QUOTA_MARKER),
+  );
+  if (!stopped) return null;
+
+  const measured = new Set(
+    rows.filter((row) => !isLighthouseFailure(row)).map((row) => row.pageId),
+  ).size;
+  const planned =
+    plannedChecks > 0
+      ? Math.ceil(plannedChecks / LIGHTHOUSE_CHECKS_PER_PAGE)
+      : new Set(rows.map((row) => row.pageId)).size;
+  const left = Math.max(0, planned - measured);
+
+  return `${LIGHTHOUSE_QUOTA_MARKER}; ${measured} sayfa ölçüldü, ${left} sayfa ölçülemedi. Google'ın ücretsiz günlük ölçüm sınırı bitti, sayfalarınızda bir sorun yok. Ayarlar'dan bir PageSpeed anahtarı ekleyin ya da kota yenilenince denetimi yeniden başlatın.`;
 }

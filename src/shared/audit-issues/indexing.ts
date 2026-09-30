@@ -10,6 +10,14 @@ export const INDEXING_ISSUES = {
     howToFix:
       "Her sayfaya kendi içeriğini anlatan farklı bir başlık yazın. Şablondan üretilen sayfalarda ayırt edici bilgiyi (ürün adı, kategori, şehir) başlık şablonuna ekleyin.",
   },
+  "duplicate-h1": {
+    severity: "warning",
+    title: "Yinelenen ana başlık (H1)",
+    explanation:
+      "Birden çok sayfa aynı ana başlığı (H1) kullanıyor. Başlık, ziyaretçiye ve Google'a sayfanın ne hakkında olduğunu söyler; aynı başlık farklı sayfaları birbirinden ayırt edilmez kılar. Sitenin her sayfasında logo ya da site adı H1 olarak yazılmışsa bu uyarı genelde ondan gelir.",
+    howToFix:
+      "Her sayfanın H1'ini o sayfanın konusunu anlatan kendi cümlesiyle yazın. Logo ya da site adı H1 ise onu H1 olmayan bir etikete çevirin ve sayfa başlığını H1 yapın.",
+  },
   "duplicate-meta-description": {
     severity: "warning",
     title: "Yinelenen meta açıklama",
@@ -161,6 +169,32 @@ export const INDEXING_ISSUES = {
       "Bu sayfa başka bir adresi dil sürümü (hreflang) olarak gösteriyor ama o adres bu sayfayı geri göstermiyor. Dil sürümü bağlantısı iki taraflı çalışır; karşılığı olmayan bildirim yok sayılır, yani iki sayfa da bundan fayda görmez.",
     howToFix:
       "Hedef sayfaya bu sayfayı gösteren bir dil sürümü bağlantısı ekleyin. Gruptaki her sayfa, kendisi dahil tüm sayfaları listelemeli.",
+  },
+  "hreflang-target-broken": {
+    severity: "warning",
+    title:
+      "Dil sürümü açılmayan ya da dizinden çıkarılmış bir sayfayı gösteriyor",
+    explanation:
+      "Bu sayfa başka bir adresi dil sürümü (hreflang) olarak gösteriyor ama o adres hata veriyor (404, 500 gibi), başka yere yönlendiriyor ya da noindex ile dizinden çıkarılmış. Google böyle bir adresi dil sürümü olarak kullanamaz, bildirim boşa gider.",
+    howToFix:
+      "Ayrıntılardaki adrese bakın. Hata veriyorsa sayfayı düzeltin ya da bu bildirimi kaldırın; yönlendiriyorsa bildirimi son adrese çevirin; noindex ise ya noindex'i kaldırın ya da bildirimi silin.",
+  },
+  "canonical-cross-host-or-http": {
+    severity: "warning",
+    title:
+      "Asıl adres (canonical) başka bir alan adını ya da http'yi gösteriyor",
+    explanation:
+      "Sayfanın asıl adresi (canonical, yani Google'a bu içeriğin ana adresi olarak bildirdiğiniz adres) ya güvensiz http:// ile başlıyor ya da başka bir alan adına gidiyor. Bu, sayfanın kendisini dizinde istemediğinizi söyler. Başka sitede yayımlanan içeriği bilerek böyle işaretliyorsanız bu uyarıyı yok sayabilirsiniz.",
+    howToFix:
+      "Bilerek yapmadıysanız asıl adresi sayfanın kendi https:// adresine çevirin. Şablon ya da SEO eklentisindeki site adresi ayarı genelde yanlış yazılmıştır; oradan bir kez düzeltmek hepsine yeter.",
+  },
+  "structured-data-invalid-json": {
+    severity: "warning",
+    title: "Yapısal veri bloğu bozuk",
+    explanation:
+      "Sayfadaki yapısal veri bloklarından (ld+json) en az biri okunamıyor ya da içinde tür (@type) yok. Bozuk blok Google tarafından yok sayılır, yani o işaretlemeden beklediğiniz ek alanlar (SSS, ürün, kırıntı yolu) aramada çıkmaz.",
+    howToFix:
+      'Bloğu bir JSON denetleyicisine yapıştırın; genelde fazladan virgül ya da kapanmamış tırnak çıkar. Sonra bloğa en az bir tür ekleyin, örneğin "@type": "Article". Eklentiyle üretiliyorsa eklentiyi güncelleyin.',
   },
   "stale-google-verdicts": {
     severity: "info",

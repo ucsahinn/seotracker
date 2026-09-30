@@ -48,7 +48,7 @@ import {
 /** What each tab is for, in one plain sentence, shown above its panel. */
 const TAB_HINTS: Record<Tab, string> = {
   striking:
-    "Sıralaması 5 ile 20 arasında olan sorgular. Küçük bir iyileştirmeyle ilk sayfaya çıkabilecek fırsatlar, gösterime göre sıralı.",
+    "Ortalama sırası 5 ile 20 arasında olan sorgular. 5-10 arası ilk sayfanın alt yarısı, 11-20 ikinci sayfa; küçük bir iyileştirme ikisini de üste taşıyabilir. Gösterime göre sıralı.",
   queries:
     "İnsanların sizi hangi aramalarla bulduğu; her sorgunun tıklama, gösterim ve ortalama sırasıyla.",
   pages: "Google'da en çok görünen ve tıklanan sayfalarınız.",
@@ -279,7 +279,7 @@ export function SearchPerformancePage({
                 items={[
                   {
                     id: "striking",
-                    label: `İlk sayfaya yakın (${report.strikingDistance.length})`,
+                    label: `Sıra 5-20 (${report.strikingDistance.length})`,
                   },
                   { id: "queries", label: "Sorgular" },
                   { id: "pages", label: "Sayfalar" },
@@ -323,6 +323,9 @@ export function SearchPerformancePage({
 
             <p className="border-b border-base-300 px-4 py-2.5 text-sm text-muted">
               {TAB_HINTS[tab]}
+              {tab === "cannibalization" && range === "last_7_days"
+                ? " 7 günlük seçim bu analizde 28 güne genişletilir; gösterilen tarih aralığı aşağıda yazar."
+                : null}
             </p>
 
             <TabPanel group="search-performance" value={tab}>

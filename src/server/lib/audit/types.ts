@@ -51,6 +51,17 @@ export interface HreflangAlternate {
   href: string;
 }
 
+/** One `<img>`, as far as the checks need it. */
+export interface PageImage {
+  src: string | null;
+  alt: string | null;
+  /**
+   * True when a raster image lacks a `width` or `height` attribute. SVG is
+   * never flagged: it scales by definition and carries its own viewBox.
+   */
+  missingDimensions: boolean;
+}
+
 export interface PageLink {
   targetUrl: string;
   anchor: string | null;
@@ -71,6 +82,12 @@ export interface PageAnalysis {
   canonical: string | null;
   /** Distinct canonical targets declared in the head; more than one is a contradiction. */
   canonicalCount: number;
+  /** `<title>` elements in the document (outside inline SVG). More than one is malformed. */
+  titleCount: number;
+  /** Distinct non-empty `<meta name="description">` values in the head. */
+  metaDescriptionCount: number;
+  /** Internal links with no text, no aria-label/title and no media child. */
+  emptyAnchorCount: number;
   robotsMeta: string | null;
   /** Bot-specific directive; Google prefers it over the generic one. */
   googlebotMeta: string | null;
@@ -93,13 +110,18 @@ export interface PageAnalysis {
   bodyText: string;
 
   // Images
-  images: Array<{ src: string | null; alt: string | null }>;
+  images: PageImage[];
 
   // Links (normalized, deduped by target)
   links: PageLink[];
 
   // Structured data
   hasStructuredData: boolean;
+  /**
+   * JSON-LD blocks that do not parse, or parse but name no `@type`. A count,
+   * not the JSON: the reporter only needs to know a block is broken.
+   */
+  invalidStructuredDataCount: number;
   /** The raw `<meta name="viewport">` content, or null when absent. */
   viewport: string | null;
   /**
@@ -163,6 +185,12 @@ export interface CrawledPageResult {
   canonicalUrl: string | null;
   /** Distinct canonical targets declared in the head; more than one is a contradiction. */
   canonicalCount: number;
+  /** `<title>` elements in the document (outside inline SVG). More than one is malformed. */
+  titleCount: number;
+  /** Distinct non-empty `<meta name="description">` values in the head. */
+  metaDescriptionCount: number;
+  /** Internal links with no text, no aria-label/title and no media child. */
+  emptyAnchorCount: number;
   robotsMeta: string | null;
   /** Bot-specific directive; Google prefers it over the generic one. */
   googlebotMeta: string | null;
@@ -174,6 +202,8 @@ export interface CrawledPageResult {
   ogDescription: string | null;
   ogImage: string | null;
   h1Count: number;
+  /** Text of the first non-empty `<h1>`; feeds the cross-page duplicate-h1 check. */
+  firstH1: string | null;
   h2Count: number;
   h3Count: number;
   h4Count: number;
@@ -202,11 +232,19 @@ export interface CrawledPageResult {
   rateLimited: boolean;
   imagesTotal: number;
   imagesMissingAlt: number;
-  images: Array<{ src: string | null; alt: string | null }>;
+  images: PageImage[];
   links: PageLink[];
   hasStructuredData: boolean;
+  /** JSON-LD blocks that do not parse or name no `@type`. Transient. */
+  invalidStructuredDataCount: number;
   /** The raw `<meta name="viewport">` content, or null when absent. */
   viewport: string | null;
+  /**
+   * True when the character encoding is declared: a `charset` in the
+   * Content-Type header, or a `<meta charset>` in the first 1024 bytes.
+   * Transient; the crawler sets it, the analyzer never sees headers.
+   */
+  charsetDeclared: boolean;
   /**
    * Same-origin `<script src>` and `<link rel=stylesheet>` URLs.
    *

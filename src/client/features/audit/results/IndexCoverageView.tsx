@@ -179,8 +179,8 @@ export function IndexCoverageView({
           value={neverChecked ? null : formatNumber(data.canonicalMismatches)}
           hint={
             data.canonicalMismatches > 0
-              ? "Google, sizin seçtiğiniz adres yerine başka bir sayfayı ana sayfa saydı"
-              : undefined
+              ? "Kontrol edilen tüm sayfalar içinde; halka seçiminden etkilenmez. Google, sizin seçtiğiniz adres yerine başka bir sayfayı ana sayfa saydı"
+              : "Kontrol edilen tüm sayfalar içinde; halka seçiminden etkilenmez"
           }
         />
         <MetricTile
@@ -197,7 +197,7 @@ export function IndexCoverageView({
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm text-muted">
           Google, günde en fazla 2000 adresin durumunu sormanıza izin verir. Her
-          tıklamada 25 sayfa sorulur: önce hiç sorulmamışlar, sonra
+          seferde 25 sayfa kontrol edilir: önce hiç sorulmamışlar, sonra
           Google&apos;ın dizine almadıkları.
         </p>
         <button
@@ -209,7 +209,6 @@ export function IndexCoverageView({
           disabled={
             refresh.isPending || data.due === 0 || Boolean(askDisabledReason)
           }
-          title={askDisabledReason}
           onClick={() => refresh.mutate()}
         >
           {refresh.isPending ? (
@@ -219,6 +218,9 @@ export function IndexCoverageView({
           )}
           Google'da durumunu kontrol et
         </button>
+        {askDisabledReason ? (
+          <p className="basis-full text-xs text-muted">{askDisabledReason}</p>
+        ) : null}
       </div>
 
       {neverChecked ? (

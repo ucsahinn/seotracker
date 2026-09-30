@@ -40,6 +40,7 @@ function page(overrides: Partial<PageRow>): PageRow {
     imagesMissingAlt: 0,
     imagesJson: null,
     htmlLang: null,
+    firstH1: null,
     internalLinkCount: 0,
     externalLinkCount: 0,
     hasStructuredData: false,

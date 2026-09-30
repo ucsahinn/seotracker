@@ -8,6 +8,8 @@ import { redirectFixtures } from "./redirects";
 import { performanceFixtures } from "./performance";
 import { structureFixtures } from "./structure";
 import { kitchenSinkFixtures } from "./kitchen-sink";
+import { auditExtraFixtures } from "./audit-extra";
+import { auditHygieneFixtures } from "./audit-hygiene";
 
 /** Every fixture on the site, in catalog order. */
 export const allFixtures: Fixture[] = [
@@ -19,6 +21,8 @@ export const allFixtures: Fixture[] = [
   ...redirectFixtures,
   ...performanceFixtures,
   ...structureFixtures,
+  ...auditExtraFixtures,
+  ...auditHygieneFixtures,
   ...kitchenSinkFixtures,
 ];
 

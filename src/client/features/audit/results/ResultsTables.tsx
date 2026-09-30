@@ -15,6 +15,7 @@ import {
   useAppTable,
 } from "@/client/components/table/AppDataTable";
 import { TableExportMenu } from "@/client/components/table/TableBulkActionBar";
+import { TablePagination } from "@/client/components/table/TablePagination";
 import { SortableHeader } from "@/client/components/table/SortableHeader";
 import {
   extractPathname,
@@ -37,6 +38,8 @@ import {
   type PerformanceFilters,
   type PerformanceRowData,
 } from "@/client/features/audit/results/AuditResultsTableFilterLogic";
+
+const PERFORMANCE_PAGE_SIZES = [50, 100, 250] as const;
 
 const performanceColumnHelper = createColumnHelper<PerformanceRowData>();
 
@@ -67,19 +70,20 @@ export function PerformanceTable({
   const [sorting, setSorting] = useState<SortingState>([
     { id: "performanceScore", desc: false },
   ]);
-  const rows = useMemo(
-    () =>
-      lighthouse.map((result) => {
-        const page = pages.find((candidate) => candidate.id === result.pageId);
-        const pageUrl = page?.url ?? null;
-        return {
-          ...result,
-          pageUrl,
-          pagePath: pageUrl ? extractPathname(pageUrl) : null,
-        };
-      }),
-    [lighthouse, pages],
-  );
+  const rows = useMemo(() => {
+    // A Map, not `find` per row: every page is measured twice, so a large
+    // audit is tens of thousands of rows against thousands of pages.
+    const pageById = new Map(pages.map((page) => [page.id, page]));
+    return lighthouse.map((result) => {
+      const page = pageById.get(result.pageId);
+      const pageUrl = page?.url ?? null;
+      return {
+        ...result,
+        pageUrl,
+        pagePath: pageUrl ? extractPathname(pageUrl) : null,
+      };
+    });
+  }, [lighthouse, pages]);
   const filteredRows = useMemo(
     () => filterPerformanceRows(rows, filters),
     [filters, rows],
@@ -111,7 +115,10 @@ export function PerformanceTable({
     state: { sorting },
     onSortingChange: setSorting,
     withSorting: true,
+    withPagination: true,
+    initialState: { pagination: { pageIndex: 0, pageSize: 50 } },
   });
+  const pagination = table.getState().pagination;
 
   return (
     <div className="space-y-3">
@@ -145,6 +152,18 @@ export function PerformanceTable({
             />
           }
         />
+        {filteredRows.length > 0 ? (
+          <TablePagination
+            page={pagination.pageIndex + 1}
+            pageSize={pagination.pageSize}
+            pageSizes={PERFORMANCE_PAGE_SIZES}
+            totalCount={filteredRows.length}
+            hasNextPage={table.getCanNextPage()}
+            isLoading={false}
+            onPageChange={(nextPage) => table.setPageIndex(nextPage - 1)}
+            onPageSizeChange={(nextSize) => table.setPageSize(nextSize)}
+          />
+        ) : null}
       </div>
     </div>
   );

@@ -15,6 +15,7 @@ import {
   findCanonicalTargetProblems,
   findDuplicates,
   findHreflangReturnTagProblems,
+  findHreflangTargetProblems,
   findMissingStructuredData,
   findRedirectChainsAndLoops,
   type SlimPage,
@@ -58,6 +59,7 @@ export async function runMultipageChecks(input: {
       statusCode: auditPages.statusCode,
       fetchClass: auditPages.fetchClass,
       title: auditPages.title,
+      firstH1: auditPages.firstH1,
       metaDescription: auditPages.metaDescription,
       contentHash: auditPages.contentHash,
       redirectUrl: auditPages.redirectUrl,
@@ -86,6 +88,7 @@ export async function runMultipageChecks(input: {
     ...findRedirectChainsAndLoops(pages),
     ...findCanonicalTargetProblems(pages),
     ...findHreflangReturnTagProblems(pages),
+    ...findHreflangTargetProblems(pages),
     ...findMissingStructuredData(pages, input.startUrl),
     ...findMissingOpenGraph(pages, input.startUrl),
     /*

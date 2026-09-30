@@ -74,11 +74,12 @@ function analyzeHtmlWithCheerio(html: string, pageUrl: string): PageAnalysis {
   const bodyText = bodyClone.text().replace(/\s+/g, " ").trim();
   const wordCount = bodyText ? bodyText.split(/\s+/).length : 0;
 
-  const images: Array<{ src: string | null; alt: string | null }> = [];
+  const images: PageAnalysis["images"] = [];
   $("img").each((_, el) => {
     images.push({
       src: $(el).attr("src") ?? null,
       alt: $(el).attr("alt") ?? null,
+      missingDimensions: !($(el).attr("width") && $(el).attr("height")),
     });
   });
 
@@ -138,6 +139,16 @@ function analyzeHtmlWithCheerio(html: string, pageUrl: string): PageAnalysis {
     metaDescription,
     canonical,
     canonicalCount,
+    titleCount: $("title").filter((_, el) => $(el).closest("svg").length === 0)
+      .length,
+    metaDescriptionCount: new Set(
+      $('head meta[name="description"]')
+        .map((_, el) => ($(el).attr("content") ?? "").trim())
+        .get()
+        .filter(Boolean),
+    ).size,
+    // Judged by the dedicated suite in page-analyzer-hygiene.test.ts.
+    emptyAnchorCount: 0,
     robotsMeta,
     googlebotMeta,
     htmlLang: $("html").first().attr("lang")?.trim() || null,
@@ -151,6 +162,7 @@ function analyzeHtmlWithCheerio(html: string, pageUrl: string): PageAnalysis {
     images,
     links: Array.from(linksByTarget.values()),
     hasStructuredData,
+    invalidStructuredDataCount: 0,
     viewport: viewport === undefined ? null : viewport.trim(),
     resources,
     insecureResources: [],
@@ -411,5 +423,52 @@ describe("mixed content", () => {
 
     expect(analysis.insecureResources).toEqual([]);
     expect(analysis.resources).toEqual([]);
+  });
+});
+
+const ld = (body: string) =>
+  `<script type="application/ld+json">${body}</script>`;
+
+describe("structured data validity", () => {
+  const invalid = (scripts: string) =>
+    analyzeHtml(
+      `<html><head>${scripts}</head><body>x</body></html>`,
+      PAGE_URL,
+      200,
+      0,
+    ).invalidStructuredDataCount;
+
+  it("counts a block that is not JSON or names no @type", () => {
+    expect(invalid(ld(`{"@type": "Article",}`))).toBe(1);
+    expect(invalid(ld(`{"name": "no type"}`))).toBe(1);
+    expect(invalid(ld(`{"@type":"Article"}`) + ld(`[]`))).toBe(1);
+  });
+
+  it("accepts a typed node, including one inside @graph", () => {
+    expect(invalid(ld(`{"@type":"Article"}`))).toBe(0);
+    expect(
+      invalid(
+        ld(
+          `{"@context":"https://schema.org","@graph":[{"@type":"Organization"}]}`,
+        ),
+      ),
+    ).toBe(0);
+  });
+});
+
+describe("image dimensions", () => {
+  it("flags raster images without width and height, never SVG", () => {
+    const { images } = analyzeHtml(
+      `<body><img src="/a.png"><img src="/b.png" width="10" height="10"><img src="/c.png" width="10"><img src="/d.svg?v=2"></body>`,
+      PAGE_URL,
+      200,
+      0,
+    );
+    expect(images.map((image) => image.missingDimensions)).toEqual([
+      true,
+      false,
+      true,
+      false,
+    ]);
   });
 });

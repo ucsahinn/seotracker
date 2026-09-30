@@ -12,7 +12,12 @@
  */
 import { Parser } from "htmlparser2";
 import { normalizeUrl, isSameOrigin } from "./url-utils";
-import type { HreflangAlternate, PageAnalysis, PageLink } from "./types";
+import type {
+  HreflangAlternate,
+  PageAnalysis,
+  PageImage,
+  PageLink,
+} from "./types";
 
 const SKIPPED_LINK_PROTOCOLS = /^(javascript:|mailto:|tel:|#)/;
 /** Subtrees whose text is not visible content. */
@@ -26,6 +31,18 @@ const HEADING_LEVELS: Record<string, number> = {
   h6: 6,
 };
 const MAX_ANCHOR_CHARS = 200;
+/** Elements that give a link something to see or announce without any text. */
+const MEDIA_TAGS = new Set([
+  "img",
+  "svg",
+  "picture",
+  "video",
+  "canvas",
+  "object",
+  "iframe",
+  "input",
+  "button",
+]);
 /**
  * Per-page caps on the extracted collections. Crawler-trap and mega-menu
  * pages can carry thousands of links/images per page, and crawled pages sit
@@ -45,11 +62,74 @@ const MAX_EXTRACTED_RESOURCES = 100;
  * A real hreflang cluster is a handful of locales.
  */
 const MAX_EXTRACTED_HREFLANGS = 50;
+/**
+ * A JSON-LD body longer than this is not buffered or judged. Product feeds
+ * can inline hundreds of KB, and holding each one just to call JSON.parse
+ * is the memory cost this tokenizer exists to avoid. Not judged means not
+ * reported: a block we skipped is never called broken.
+ */
+const MAX_JSONLD_CHARS = 200_000;
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function hasSchemaType(node: unknown): boolean {
+  if (!isRecord(node)) return false;
+  const type = node["@type"];
+  return typeof type === "string" ? type.trim() !== "" : Array.isArray(type);
+}
+
+/**
+ * Whether one JSON-LD body is usable: it parses, and at least one node
+ * (after flattening `@graph`) names a `@type`.
+ */
+function isValidJsonLd(raw: string): boolean {
+  let data: unknown;
+  try {
+    data = JSON.parse(raw);
+  } catch {
+    return false;
+  }
+  const roots = Array.isArray(data) ? data : [data];
+  return roots.some((root) => {
+    if (hasSchemaType(root)) return true;
+    const graph = isRecord(root) ? root["@graph"] : null;
+    return Array.isArray(graph) && graph.some(hasSchemaType);
+  });
+}
+
+/** Raster images need reserved space; SVG scales on its own. */
+function isSvgSource(src: string | undefined): boolean {
+  if (!src) return false;
+  return /^data:image\/svg|\.svg(?:[?#]|$)/i.test(src.trim());
+}
 
 interface OpenAnchor {
   href: string;
   rel: string;
   text: string[];
+  /** An accessible name that is not text: aria-label, title, or a media child. */
+  named: boolean;
+  /** `aria-hidden="true"`: assistive technology skips it, so it is not judged. */
+  hidden: boolean;
+}
+
+function newOpenAnchor(
+  href: string,
+  attribs: Record<string, string>,
+): OpenAnchor {
+  return {
+    href,
+    rel: attribs["rel"]?.toLowerCase() ?? "",
+    text: [],
+    named: Boolean(
+      attribs["aria-label"]?.trim() ||
+      attribs["aria-labelledby"]?.trim() ||
+      attribs["title"]?.trim(),
+    ),
+    hidden: attribs["aria-hidden"]?.trim().toLowerCase() === "true",
+  };
 }
 
 /**
@@ -65,6 +145,7 @@ export function analyzeHtml(
   let title: string | null = null;
   let titleDepth = 0;
   let titleDone = false;
+  let titleCount = 0;
   // parse5 (the old DOM path) treats <noscript> content as raw text when
   // scripting is enabled; skip element extraction inside it to match.
   let noscriptDepth = 0;
@@ -80,7 +161,13 @@ export function analyzeHtml(
   let ogDescription: string | null = null;
   let ogImage: string | null = null;
   let hasStructuredData = false;
+  let invalidStructuredDataCount = 0;
+  // Body of the JSON-LD script being read; null outside one.
+  let jsonLdParts: string[] | null = null;
+  let jsonLdChars = 0;
   const canonicalTargets = new Set<string>();
+  const metaDescriptions = new Set<string>();
+  let emptyAnchorCount = 0;
   const insecureResources: string[] = [];
   let viewport: string | null = null;
   const resources: string[] = [];
@@ -90,7 +177,7 @@ export function analyzeHtml(
   const headingOrder: number[] = [];
   let openH1: string[] | null = null;
 
-  const images: Array<{ src: string | null; alt: string | null }> = [];
+  const images: PageImage[] = [];
   const linksByTarget = new Map<string, PageLink>();
   let openAnchor: OpenAnchor | null = null;
 
@@ -111,6 +198,8 @@ export function analyzeHtml(
     const name = attribs["name"]?.trim().toLowerCase();
     if (name === "description") {
       metaDescription ??= content?.trim() ?? "";
+      // Distinct non-empty values in the head, like the canonical targets.
+      if (!sawBody && content?.trim()) metaDescriptions.add(content.trim());
     } else if (name === "robots") {
       robotsMeta ??= content ?? null;
     } else if (name === "googlebot") {
@@ -196,6 +285,13 @@ export function analyzeHtml(
     }
   };
 
+  const openTitle = () => {
+    titleCount += 1;
+    if (titleDone) return;
+    titleDepth += 1;
+    if (title === null) title = "";
+  };
+
   const closeH1 = () => {
     if (!openH1) return;
     h1s.push(openH1.join("").replace(/\s+/g, " ").trim());
@@ -204,16 +300,23 @@ export function analyzeHtml(
 
   const closeAnchor = () => {
     if (!openAnchor) return;
-    const { href, rel, text } = openAnchor;
+    const { href, rel, text, named, hidden } = openAnchor;
     openAnchor = null;
-    if (linksByTarget.size >= MAX_EXTRACTED_LINKS) return;
     const resolved = normalizeUrl(href, pageUrl);
-    if (!resolved || linksByTarget.has(resolved)) return;
+    if (!resolved) return;
     const anchor = text
       .join("")
       .replace(/\s+/g, " ")
       .trim()
       .slice(0, MAX_ANCHOR_CHARS);
+    // Counted before the dedupe: a second empty link to the same target is
+    // still an empty link. Internal only, because internal anchors are the
+    // ones the site owner controls and Google reads for discovery.
+    if (!anchor && !named && !hidden && isSameOrigin(resolved, pageUrl)) {
+      emptyAnchorCount += 1;
+    }
+    if (linksByTarget.size >= MAX_EXTRACTED_LINKS) return;
+    if (linksByTarget.has(resolved)) return;
     linksByTarget.set(resolved, {
       targetUrl: resolved,
       anchor: anchor || null,
@@ -230,13 +333,11 @@ export function analyzeHtml(
         }
         if (name === "noscript") noscriptDepth += 1;
         if (noscriptDepth > 0) return;
+        if (openAnchor && MEDIA_TAGS.has(name)) openAnchor.named = true;
         switch (name) {
           case "title":
             // Ignore <title> inside <svg> — only the document title counts.
-            if (!titleDone && suppressDepth === 0) {
-              titleDepth += 1;
-              if (title === null) title = "";
-            }
+            if (suppressDepth === 0) openTitle();
             break;
           case "html":
             htmlLang ??= attribs["lang"]?.trim() || null;
@@ -259,6 +360,9 @@ export function analyzeHtml(
               images.push({
                 src: attribs["src"] ?? null,
                 alt: "alt" in attribs ? attribs["alt"] : null,
+                missingDimensions:
+                  !isSvgSource(attribs["src"]) &&
+                  !(attribs["width"]?.trim() && attribs["height"]?.trim()),
               });
             }
             /* An image inside a heading carries the heading's words. A
@@ -270,8 +374,12 @@ export function analyzeHtml(
             if (openH1) openH1.push(` ${attribs["alt"] ?? ""} `);
             break;
           case "script":
-            if (attribs["type"] === "application/ld+json") {
+            if (
+              attribs["type"]?.trim().toLowerCase() === "application/ld+json"
+            ) {
               hasStructuredData = true;
+              jsonLdParts = [];
+              jsonLdChars = 0;
             }
             collectResource(attribs["src"]);
             break;
@@ -281,11 +389,7 @@ export function analyzeHtml(
             closeAnchor();
             const href = attribs["href"];
             if (href && !SKIPPED_LINK_PROTOCOLS.test(href)) {
-              openAnchor = {
-                href,
-                rel: attribs["rel"]?.toLowerCase() ?? "",
-                text: [],
-              };
+              openAnchor = newOpenAnchor(href, attribs);
             }
             break;
           }
@@ -304,6 +408,10 @@ export function analyzeHtml(
         }
       },
       ontext(text) {
+        if (jsonLdParts) {
+          jsonLdChars += text.length;
+          if (jsonLdChars <= MAX_JSONLD_CHARS) jsonLdParts.push(text);
+        }
         if (suppressDepth > 0) return;
         if (titleDepth > 0) {
           if (title !== null) title += text;
@@ -318,6 +426,13 @@ export function analyzeHtml(
         }
       },
       onclosetag(name) {
+        if (name === "script" && jsonLdParts) {
+          const body = jsonLdParts.join("");
+          jsonLdParts = null;
+          if (jsonLdChars <= MAX_JSONLD_CHARS && !isValidJsonLd(body)) {
+            invalidStructuredDataCount += 1;
+          }
+        }
         if (NON_CONTENT_TAGS.has(name) && suppressDepth > 0) {
           suppressDepth -= 1;
         }
@@ -367,7 +482,11 @@ export function analyzeHtml(
     images,
     links: Array.from(linksByTarget.values()),
     hasStructuredData,
+    invalidStructuredDataCount,
     canonicalCount: canonicalTargets.size,
+    titleCount,
+    metaDescriptionCount: metaDescriptions.size,
+    emptyAnchorCount,
     viewport,
     resources,
     insecureResources,

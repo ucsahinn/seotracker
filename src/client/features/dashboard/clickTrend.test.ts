@@ -9,14 +9,12 @@ const days = (clicks: number[]) =>
   }));
 
 describe("describeClickTrend", () => {
-  it("compares the later half with the earlier half and finds the peak", () => {
-    const trend = describeClickTrend(days([1, 1, 2, 2, 3, 3, 9, 3]));
-    expect(trend).toMatchObject({ total: 24, peakDay: "2026-09-07" });
-    expect(trend?.change).toBeCloseTo((18 - 6) / 6);
-  });
-
-  it("has no change when the earlier half had no clicks", () => {
-    expect(describeClickTrend(days([0, 0, 2, 2]))?.change).toBeNull();
+  it("totals the clicks and finds the peak day", () => {
+    expect(describeClickTrend(days([1, 1, 2, 2, 3, 3, 9, 3]))).toMatchObject({
+      total: 24,
+      peakDay: "2026-09-07",
+      peakClicks: 9,
+    });
   });
 
   it("draws nothing for a window too short or without impressions", () => {

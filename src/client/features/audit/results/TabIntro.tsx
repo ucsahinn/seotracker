@@ -6,7 +6,7 @@ import type { AuditTab } from "@/types/schemas/audit";
  */
 const INTRO: Record<AuditTab, string> = {
   issues:
-    "Sitenizde düzeltmeniz gereken her şey, önem sırasıyla. Bir satıra tıklayın: neden önemli olduğunu, nasıl düzelteceğinizi ve etkilenen sayfaları görün.",
+    "Sitenizde düzeltmeniz gereken her şey, önem sırasıyla. Bir satıra tıklayın: neden önemli olduğunu, nasıl düzelteceğinizi ve hangi sayfaların etkilendiğini adresleriyle görün.",
   pages:
     "Taranan her sayfa ve sunucunun ona verdiği yanıt. Hatalı, yavaş ya da derinde kalmış sayfaları buradan bulun.",
   index:

@@ -7,8 +7,7 @@ const counts = {
   noindex: 3,
   slow: 2,
   alt: 5,
-  sitemap: 1,
-  broken: 0,
+  sitemap: 0,
 };
 
 function page(
@@ -19,7 +18,6 @@ function page(
     inSitemap: true,
     imagesMissingAlt: 0,
     responseTimeMs: 100,
-    statusCode: 200,
     ...overrides,
   };
 }
@@ -36,7 +34,6 @@ describe("quickFilterCounts", () => {
       page({ responseTimeMs: 4000 }),
       page({ imagesMissingAlt: 2 }),
       page({ inSitemap: false }),
-      page({ statusCode: 404 }),
       page(),
     ]);
 
@@ -45,7 +42,6 @@ describe("quickFilterCounts", () => {
       slow: 1,
       alt: 1,
       sitemap: 1,
-      broken: 1,
     });
   });
 
@@ -62,6 +58,7 @@ describe("QuickFilters", () => {
         filters={EMPTY_PAGES_FILTERS}
         onChange={onChange}
         counts={counts}
+        sitemapFound
       />,
     );
 
@@ -83,6 +80,7 @@ describe("QuickFilters", () => {
         filters={{ ...EMPTY_PAGES_FILTERS, indexable: "no" }}
         onChange={onChange}
         counts={counts}
+        sitemapFound
       />,
     );
 
@@ -100,6 +98,7 @@ describe("QuickFilters", () => {
         filters={{ ...EMPTY_PAGES_FILTERS, indexable: "no" }}
         onChange={onChange}
         counts={counts}
+        sitemapFound
       />,
     );
 
@@ -111,7 +110,7 @@ describe("QuickFilters", () => {
   });
 
   /*
-   * "No broken pages" is an answer worth seeing, so the chip stays — it just
+   * "No sitemap misses" is an answer worth seeing, so the chip stays — it just
    * cannot be pressed into an empty table.
    */
   it("shows a preset with nothing behind it, disabled", () => {
@@ -120,12 +119,45 @@ describe("QuickFilters", () => {
         filters={EMPTY_PAGES_FILTERS}
         onChange={vi.fn()}
         counts={counts}
+        sitemapFound
       />,
     );
 
-    expect(screen.getByRole("button", { name: /Hatalı/ })).toHaveProperty(
-      "disabled",
-      true,
+    expect(
+      screen.getByRole("button", { name: /Site haritasında yok/ }),
+    ).toHaveProperty("disabled", true);
+  });
+
+  /*
+   * With no sitemap found every page reads "not in it", so the chip would
+   * count the whole crawl. It is replaced by a visible reason instead.
+   */
+  it("replaces the sitemap chip with a reason when no sitemap was found", () => {
+    render(
+      <QuickFilters
+        filters={EMPTY_PAGES_FILTERS}
+        onChange={vi.fn()}
+        counts={counts}
+        sitemapFound={false}
+      />,
     );
+
+    expect(screen.queryByRole("button", { name: /Site haritasında yok/ })).toBe(
+      null,
+    );
+    expect(screen.getByText(/site haritası bulunamadı/)).toBeTruthy();
+  });
+
+  it("does not offer a second Hatalı control next to the summary bar", () => {
+    render(
+      <QuickFilters
+        filters={EMPTY_PAGES_FILTERS}
+        onChange={vi.fn()}
+        counts={counts}
+        sitemapFound
+      />,
+    );
+
+    expect(screen.queryByRole("button", { name: /Hatalı/ })).toBe(null);
   });
 });

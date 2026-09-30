@@ -31,6 +31,14 @@ const BREAKDOWNS: { value: Breakdown; label: string }[] = [
   { value: "new_vs_returning", label: "Yeni / geri dönen" },
 ];
 
+type AcquisitionBreakdown = "channel_group" | "source_medium" | "campaign";
+const ACQUISITION_BREAKDOWNS: { value: AcquisitionBreakdown; label: string }[] =
+  [
+    { value: "channel_group", label: "Kanal grubu" },
+    { value: "source_medium", label: "Kaynak / ortam" },
+    { value: "campaign", label: "Kampanya" },
+  ];
+
 /** Matches the ceiling `ga4Reports`' schema enforces. */
 const ROW_LIMITS = [50, 100, 200] as const;
 
@@ -119,6 +127,9 @@ export function AnalyticsPage({
    */
   const [breakdown, setBreakdown] = React.useState<Breakdown>("device");
 
+  const [acquisition, setAcquisition] =
+    React.useState<AcquisitionBreakdown>("channel_group");
+
   const reportQuery = useQuery({
     queryKey: [
       "ga4Report",
@@ -128,6 +139,7 @@ export function AnalyticsPage({
       windowDays,
       rowLimit,
       breakdown,
+      acquisition,
     ],
     queryFn: () =>
       getGa4Report({
@@ -138,6 +150,7 @@ export function AnalyticsPage({
           windowDays,
           limit: rowLimit,
           audienceBreakdown: breakdown,
+          acquisitionBreakdown: acquisition,
         },
       }),
     enabled: view !== HEALTH,
@@ -278,6 +291,29 @@ export function AnalyticsPage({
               </div>
             ) : null}
 
+            {kind === "traffic_acquisition" ? (
+              <div
+                role="radiogroup"
+                aria-label="Trafiği neye göre böl"
+                className="join"
+              >
+                {ACQUISITION_BREAKDOWNS.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    role="radio"
+                    aria-checked={option.value === acquisition}
+                    onClick={() => setAcquisition(option.value)}
+                    className={`btn btn-sm join-item ${
+                      option.value === acquisition ? "btn-active" : "btn-ghost"
+                    }`}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            ) : null}
+
             {reportQuery.isError ? (
               <QueryErrorState
                 error={reportQuery.error}
@@ -298,7 +334,7 @@ export function AnalyticsPage({
 
             {result?.status === "ok" ? (
               <ReportView
-                key={`${kind}-${channel}-${windowDays}-${rowLimit}-${breakdown}`}
+                key={`${kind}-${channel}-${windowDays}-${rowLimit}-${breakdown}-${acquisition}`}
                 kind={kind}
                 result={result}
                 organicOnly={channel === "organic_search"}

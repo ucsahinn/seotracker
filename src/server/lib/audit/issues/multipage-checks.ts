@@ -19,6 +19,8 @@ export interface SlimPage {
   statusCode: number | null;
   fetchClass: PageFetchClass;
   title: string | null;
+  /** Text of the first non-empty `<h1>`, for the duplicate-h1 grouping. */
+  firstH1: string | null;
   metaDescription: string | null;
   contentHash: string | null;
   redirectUrl: string | null;
@@ -62,6 +64,24 @@ function isDuplicateCandidate(page: SlimPage): boolean {
   if (!isOkHtmlPage(page) || !page.isIndexable) return false;
   const effectiveCanonical = page.canonicalUrl ?? page.headerCanonicalUrl;
   return !effectiveCanonical || effectiveCanonical === page.url;
+}
+
+/** Case and spacing never make two headings different. */
+function normalizeHeading(text: string | null): string | null {
+  return text?.replace(/\s+/g, " ").trim().toLowerCase() || null;
+}
+
+/**
+ * A directive in writing says the page is noindexed: `isIndexable` alone is
+ * also false for every non-HTML 200, so a PDF would read as noindexed.
+ */
+function isNoindexedByDirective(page: SlimPage): boolean {
+  return (
+    !page.isIndexable &&
+    (page.robotsMeta !== null ||
+      page.googlebotMeta !== null ||
+      page.xRobotsTag !== null)
+  );
 }
 
 export function findDuplicates(pages: SlimPage[]): DetectedIssue[] {
@@ -108,6 +128,10 @@ export function findDuplicates(pages: SlimPage[]): DetectedIssue[] {
   emitGroups(
     groupBy((page) => page.title || null),
     "duplicate-title",
+  );
+  emitGroups(
+    groupBy((page) => normalizeHeading(page.firstH1)),
+    "duplicate-h1",
   );
   emitGroups(
     groupBy((page) => page.metaDescription || null),
@@ -181,12 +205,7 @@ export function findCanonicalTargetProblems(
         pageUrl: page.url,
         details: { ...details, fetchClass: target.fetchClass },
       });
-    } else if (
-      !target.isIndexable &&
-      (target.robotsMeta !== null ||
-        target.googlebotMeta !== null ||
-        target.xRobotsTag !== null)
-    ) {
+    } else if (isNoindexedByDirective(target)) {
       /*
        * The directive has to be there in writing, because `isIndexable` is
        * also false for every non-HTML 200 -- a canonical pointing at a PDF
@@ -271,6 +290,55 @@ export function findHreflangReturnTagProblems(
         details: {
           alternateUrl: alternate.href,
           hreflang: alternate.hreflang,
+        },
+      });
+    }
+  }
+
+  return issues;
+}
+
+/**
+ * hreflang alternates that lead somewhere Google cannot use.
+ *
+ * Complements the return-tag check, which skips any target that is not a
+ * healthy page. An alternate that answers 4xx/5xx, redirects, or is
+ * noindexed is dropped from the cluster. Only crawled targets are judged; a
+ * target the crawl never visited, or that blocked this crawler, is skipped.
+ */
+export function findHreflangTargetProblems(pages: SlimPage[]): DetectedIssue[] {
+  const foldUrl = (url: string) => canonicalUrlKey(url).replace(/\/$/, "");
+  const byFoldedUrl = new Map(pages.map((page) => [foldUrl(page.url), page]));
+  const issues: DetectedIssue[] = [];
+
+  for (const page of pages) {
+    if (!isOkHtmlPage(page)) continue;
+    for (const alternate of page.hreflangAlternates) {
+      if (alternate.href === page.url) continue;
+      const target = byFoldedUrl.get(foldUrl(alternate.href));
+      if (!target || target.id === page.id) continue;
+      if (target.fetchClass === "blocked") continue;
+      if (target.fetchClass === "rate_limited") continue;
+
+      const status = target.statusCode;
+      let reason: "error" | "redirect" | "noindex" | null = null;
+      if (status !== null && status >= 400) reason = "error";
+      else if (status !== null && status >= 300) reason = "redirect";
+      else if (isOkHtmlPage(target) && isNoindexedByDirective(target)) {
+        reason = "noindex";
+      }
+      if (!reason) continue;
+
+      issues.push({
+        issueType: "hreflang-target-broken",
+        pageId: page.id,
+        pageUrl: page.url,
+        dedupeKey: alternate.href,
+        details: {
+          alternateUrl: alternate.href,
+          hreflang: alternate.hreflang,
+          reason,
+          statusCode: status,
         },
       });
     }

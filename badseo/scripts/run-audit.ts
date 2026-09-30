@@ -28,6 +28,7 @@ import {
   findCanonicalTargetProblems,
   findDuplicates,
   findHreflangReturnTagProblems,
+  findHreflangTargetProblems,
   findRedirectChainsAndLoops,
   type SlimPage,
 } from "../../src/server/lib/audit/issues/multipage-checks";
@@ -368,6 +369,7 @@ function toSlim(page: CrawledPageResult): SlimPage {
     statusCode: page.statusCode,
     fetchClass: page.fetchClass,
     title: page.title || null,
+    firstH1: page.firstH1,
     metaDescription: page.metaDescription || null,
     contentHash: page.contentHash,
     redirectUrl: page.redirectUrl,
@@ -376,7 +378,11 @@ function toSlim(page: CrawledPageResult): SlimPage {
     canonicalUrl: page.canonicalUrl,
     headerCanonicalUrl: page.headerCanonicalUrl,
     robotsMeta: page.robotsMeta,
+    googlebotMeta: page.googlebotMeta,
     xRobotsTag: page.xRobotsTag,
+    hasStructuredData: page.hasStructuredData,
+    ogTitle: page.ogTitle,
+    ogImage: page.ogImage,
     hreflangAlternates: page.hreflangAlternates,
   };
 }
@@ -423,6 +429,7 @@ async function main() {
   detected.push(...findRedirectChainsAndLoops(slim));
   detected.push(...findCanonicalTargetProblems(slim));
   detected.push(...findHreflangReturnTagProblems(slim));
+  detected.push(...findHreflangTargetProblems(slim));
   detected.push(...findBrokenInternalLinks(pages, links));
   detected.push(...findInternalLinksToRedirects(pages, links));
   if (completed) detected.push(...findOrphanPages(pages, links, startUrl));

@@ -2,7 +2,10 @@ import { useMemo } from "react";
 import { AlertTriangle } from "lucide-react";
 import { formatCount } from "@/client/lib/format";
 import { ScoreHistogram } from "@/client/features/audit/results/ScoreHistogram";
-import { summarizeLighthouse } from "@/client/features/audit/results/performanceBands";
+import {
+  describeQuotaStop,
+  summarizeLighthouse,
+} from "@/client/features/audit/results/performanceBands";
 import type { PerformanceFilters } from "@/client/features/audit/results/AuditResultsTableFilterLogic";
 import type { AuditResultsData } from "@/client/features/audit/results/types";
 
@@ -17,9 +20,15 @@ function scoreClass(score: number | null) {
  * Why the measurements failed, in words, when the stored error says.
  *
  * Every row failing with the same 429 is a quota, not twenty broken pages, and
- * a reader who sees only dashes will assume the pages are at fault.
+ * a reader who sees only dashes will assume the pages are at fault. A run that
+ * stopped on the daily quota says how far it got.
  */
-function failureReason(rows: AuditResultsData["lighthouse"]): string | null {
+function failureReason(
+  rows: AuditResultsData["lighthouse"],
+  plannedChecks: number,
+): string | null {
+  const stopped = describeQuotaStop(rows, plannedChecks);
+  if (stopped) return stopped;
   const quota = rows.some((row) => /429|quota/i.test(row.errorMessage ?? ""));
   if (!quota) return null;
   return "Google'ın ücretsiz ölçüm kotası dolmuş; sayfalarınızda bir sorun yok. Ayarlar'dan PageSpeed anahtarı ekleyin ya da kota yenilenince denetimi yeniden başlatın.";
@@ -34,16 +43,19 @@ function failureReason(rows: AuditResultsData["lighthouse"]): string | null {
  */
 export function PerformanceSummary({
   lighthouse,
+  plannedChecks,
   filters,
   onChange,
 }: {
   lighthouse: AuditResultsData["lighthouse"];
+  /** Checks the audit set out to run (pages x 2); 0 when it never recorded it. */
+  plannedChecks: number;
   filters: PerformanceFilters;
   onChange: (filters: PerformanceFilters) => void;
 }) {
   const stats = useMemo(() => summarizeLighthouse(lighthouse), [lighthouse]);
   const failedActive = filters.status === "failed";
-  const reason = failureReason(lighthouse);
+  const reason = failureReason(lighthouse, plannedChecks);
   const averages: Array<[string, number | null]> = [
     ["Hız", stats.avgPerformance],
     ["SEO", stats.avgSeo],

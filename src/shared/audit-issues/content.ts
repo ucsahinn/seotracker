@@ -113,6 +113,14 @@ export const CONTENT_ISSUES = {
     howToFix:
       'Sayfanın başındaki `<html>` etiketine dilinizi ekleyin; Türkçe bir sayfa için `<html lang="tr">`. Sayfalar tek şablondan üretiliyorsa şablonda bir kez düzeltmek hepsine yeter.',
   },
+  "images-missing-dimensions": {
+    severity: "info",
+    title: "Görsellerde genişlik ve yükseklik yok",
+    explanation:
+      "Sayfada genişlik (width) ve yükseklik (height) belirtilmemiş üç ya da daha fazla görsel var. Tarayıcı görsel inmeden ona ne kadar yer ayıracağını bilemez; görsel gelince yazılar aşağı kayar ve okuyan kişi yerini kaybeder.",
+    howToFix:
+      'Her `<img>` etiketine görselin gerçek boyutunu yazın: `<img src="..." width="800" height="600">`. CSS ile küçültüyorsanız bu değerler oranı korur, yine de yazın. SVG görsellerde gerek yok.',
+  },
   "no-subheadings": {
     severity: "info",
     title: "Uzun metinde alt başlık yok",
@@ -136,5 +144,69 @@ export const CONTENT_ISSUES = {
       "Bir görselin alt metni 250 karakteri aşıyor. Ekran okuyucular alt metni sonuna kadar okur; bu kadar uzun olunca görsel anlatımı paragrafa döner ve dinleyen sayfanın akışını kaybeder.",
     howToFix:
       "Görselin ne olduğunu bir cümleyle anlatın (yaklaşık 125 karakter). Daha fazla anlatılacak şey varsa onu sayfanın metnine ya da görselin açıklama yazısına taşıyın.",
+  },
+  "multiple-titles": {
+    severity: "warning",
+    title: "Sayfada birden fazla başlık etiketi (<title>)",
+    explanation:
+      "Sayfada birden fazla <title> etiketi var. Bir sayfanın tek başlığı olur; Google hangisini alacağını kendisi seçer ve seçtiği, arama sonucunda görmek istediğiniz olmayabilir. Genelde şablon ile SEO eklentisinin ikisi birden başlık yazınca olur.",
+    howToFix:
+      "Sayfa kaynağında <title> araması yapın ve yalnızca birini bırakın. İkisi farklı yerden geliyorsa (şablon ve eklenti) birini kapatın.",
+  },
+  "multiple-meta-descriptions": {
+    severity: "warning",
+    title: "Sayfada birbirinden farklı birden fazla meta açıklama",
+    explanation:
+      "Sayfada içeriği farklı iki ya da daha fazla meta açıklama var. Google hangisini özet olarak göstereceğini kendisi seçer, yani arama sonucunda çıkan yazı sizin yazdığınız olmayabilir. Şablon ile SEO eklentisinin ikisi birden yazınca olur.",
+    howToFix:
+      'Sayfa kaynağında name="description" araması yapın ve yalnızca birini bırakın. İki kaynak varsa (şablon ve eklenti) birini kapatın.',
+  },
+  "placeholder-title": {
+    severity: "warning",
+    title: "Başlık etiketi yer tutucu bir yazı",
+    explanation:
+      'Sayfanın başlığı "Untitled", "Başlıksız" ya da "New Page" gibi kimsenin yazmadığı bir yer tutucu. Arama sonucunda mavi bağlantı olarak bu çıkar; kimse tıklamak istemez ve Google çoğu zaman bu başlığı kullanmayıp başka bir metinle değiştirir.',
+    howToFix:
+      "Sayfanın konusunu anlatan kendi başlığını yazın (yaklaşık 50-60 karakter). Sayfa sonradan doldurulacaksa dolana kadar noindex ile dizin dışında tutun.",
+  },
+  "h1-too-long": {
+    severity: "info",
+    title: "Ana başlık (H1) çok uzun",
+    explanation:
+      "Sayfanın ana başlığı (H1) 70 karakterden uzun. Google için bir sınır yok ve sıralamayı etkilemez; ama uzun başlık bir bakışta okunmaz, genelde de başlığa metin paragrafı yazılmıştır.",
+    howToFix:
+      "H1'i bir cümlelik, sayfanın konusunu söyleyen kısa bir başlığa indirin. Geri kalan açıklamayı başlığın altındaki paragrafa taşıyın.",
+  },
+  "empty-anchor-text": {
+    severity: "info",
+    title: "Metni olmayan iç bağlantılar",
+    explanation:
+      'Sayfada içinde yazı, görsel ya da erişilebilirlik etiketi (aria-label) olmayan iç bağlantılar var. Google bir bağlantının nereye gittiğini bağlantı metninden anlar; boş bağlantı hiçbir şey söylemez. Ekran okuyucu kullanan ziyaretçi için de bağlantı sadece "bağlantı" diye okunur.',
+    howToFix:
+      'Bağlantıya görünür bir yazı ekleyin ya da yalnızca simge ise `aria-label="Sepet"` gibi ne yaptığını söyleyen bir etiket ekleyin. Kullanılmayan boş `<a>` etiketlerini silin.',
+  },
+  "generic-anchor-text": {
+    severity: "info",
+    title: '"Buraya tıklayın" gibi anlamsız bağlantı metinleri',
+    explanation:
+      'Sayfada "buraya tıklayın", "devamı", "daha fazla", "click here" gibi hedefi anlatmayan iç bağlantı metinleri var (üç ya da daha fazla). Google, bağlantı metnini hedef sayfanın konusunu anlamak için kullanır; bu metinler o bilgiyi vermez. Ekran okuyucu kullanan biri bağlantı listesini açtığında hepsini aynı duyar.',
+    howToFix:
+      'Bağlantı metnini hedefin konusuyla değiştirin: "buraya tıklayın" yerine "2026 fiyat listesini indirin". Kart şablonlarında "Devamı" yazısına yazı başlığını ekleyin ya da görünmeyen bir aria-label ile tamamlayın.',
+  },
+  "too-many-links": {
+    severity: "info",
+    title: "Sayfada çok fazla bağlantı",
+    explanation:
+      "Sayfada 300'den fazla farklı adrese bağlantı var. Google'ın sabit bir sınırı yok ve bu tek başına sıralamayı düşürmez; ama bu kadar bağlantı ziyaretçinin seçim yapmasını zorlaştırır ve Google'ın önemli bağlantıyı ayırt etmesini güçleştirir. Genelde büyük bir menü ya da kategori listesinin her sayfada tekrarlanması yüzünden olur.",
+    howToFix:
+      "Menüyü ve alt bilgiyi (footer) en önemli sayfalarla sınırlayın. Uzun listeleri sayfalara bölün ya da kategori sayfalarına indirin.",
+  },
+  "internal-nofollow-links": {
+    severity: "info",
+    title: "Kendi sitenizin sayfalarına nofollow bağlantılar",
+    explanation:
+      'Sayfada kendi sitenizin sayfalarına giden üç ya da daha fazla bağlantıda rel="nofollow" var. nofollow, Google\'a "bu bağlantıya güvenme" demek içindir ve iç bağlantıda genelde gerek yoktur. Google bu bağlantıları takip etmeyebilir; yani sayfaya başka yolla ulaşılamıyorsa hedef sayfa dizine geç girer ya da hiç girmez.',
+    howToFix:
+      'Kendi sayfalarınıza verdiğiniz bağlantılardan rel="nofollow" özelliğini kaldırın. Sayfanın dizine girmesini istemiyorsanız bağlantıyı değil sayfayı noindex ile işaretleyin.',
   },
 } as const satisfies Record<string, AuditIssueDescriptor>;

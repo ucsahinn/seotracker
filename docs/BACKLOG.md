@@ -243,3 +243,16 @@ Mock veri hiç kullanılmadı. Tek proje: `df26abab-fa39-4133-96cc-a5627d8b80ad`
 | Cihaz halkası (Arama performansı)                                        | **Bitti** — halka tıklayınca ekranı cihaza göre süzüyor.                                     |
 | Takip edilen sorgularda yükselen/düşen                                   | **Bitti** — Değişim sütunu, "Yükselenler ve düşenler" kartı ve filtre düğmeleri.             |
 | Önem çubuğundan denetimi süzme                                           | **Bitti** — rotada `severity` parametresi var; çubuk Sorunlar sekmesini o önemle açar.       |
+
+### v1.7.0'da yapılanlar ve açık kalanlar
+
+| Konu                                           | Durum                                                                                                                                                       |
+| ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Hız ölçümü tüm sayfalarda                      | **Bitti** — anahtarsız 50 sayfa sınırı; gerçek Google çağrısıyla denenmedi. Çok büyük denetimlerde (yaklaşık 10.000 sayfa) iş akışı adım sınırı bilinmiyor. |
+| Sorunlar sekmesinde etkilenen adresler         | **Bitti** — vaultpilot'ta doğrulandı.                                                                                                                       |
+| İndirilen rapor                                | **Bitti** — gerçek denetimden üretildi (11 grafik, betik ve dış istek yok). Ekran görüntüsüyle bakılamadı (sayfa görüntü almayı zaman aşımına uğratıyor).   |
+| Denetim kuralları 95'e çıktı                   | **Bitti** — harness'te yeni kurallar sahte siteyle kapsandı. https'e bağlı kural uçtan uca denenmedi.                                                       |
+| Arama görünümü (searchAppearance) dökümü       | Açık — sunucu şemasında değişiklik gerekiyor.                                                                                                               |
+| Arama türü (görsel, video, Discover)           | Açık — arayüz ve sunucu işlevi yok.                                                                                                                         |
+| CrUX geçmişi                                   | Açık — yeni API çağrısı gerekiyor.                                                                                                                          |
+| Kayıtlı kelimeler, Sıralama takibi widget'ları | Açık — vaultpilot'ta sorgu verisi yok, yalnızca birim testi var.                                                                                            |

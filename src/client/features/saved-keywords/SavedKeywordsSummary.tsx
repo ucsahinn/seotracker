@@ -125,10 +125,10 @@ export function SavedKeywordsSummary({
           },
           {
             id: "top20",
-            label: "İlk sayfaya yakın",
+            label: `Sıra ${BAND_LABELS.top20}`,
             icon: Target,
             count: counts.top20,
-            hint: "Ortalama sırası 11 ile 20 arasında olanlar. Küçük bir iyileştirme ilk sayfaya taşıyabilir.",
+            hint: "Ortalama sırası 11 ile 20 arasında olanlar, yani ikinci sayfadakiler. Küçük bir iyileştirme ilk sayfaya taşıyabilir.",
           },
           {
             id: "none",

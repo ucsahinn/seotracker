@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { EMPTY_PERFORMANCE_FILTERS } from "./AuditResultsTableFilterLogic";
-import { speedBands } from "./performanceBands";
+import { describeQuotaStop, speedBands } from "./performanceBands";
 import { ScoreHistogram } from "./ScoreHistogram";
 
 const mobile = (performanceScore: number | null) => ({
@@ -83,5 +83,30 @@ describe("ScoreHistogram", () => {
     );
 
     expect(container.firstChild).toBeNull();
+  });
+});
+
+const row = (pageId: string, errorMessage: string | null) => ({
+  pageId,
+  errorMessage,
+  performanceScore: errorMessage ? null : 80,
+  accessibilityScore: errorMessage ? null : 80,
+  bestPracticesScore: errorMessage ? null : 80,
+  seoScore: errorMessage ? null : 80,
+});
+
+describe("describeQuotaStop", () => {
+  it("says how many pages were measured and how many were not", () => {
+    const note = describeQuotaStop(
+      [row("a", null), row("a", null), row("b", "Kota doldu: dolu")],
+      20,
+    );
+
+    expect(note).toContain("Kota doldu; 1 sayfa ölçüldü, 9 sayfa ölçülemedi");
+    expect(note).toContain("PageSpeed anahtarı");
+  });
+
+  it("stays silent for ordinary failures", () => {
+    expect(describeQuotaStop([row("a", "NO_FCP")], 2)).toBeNull();
   });
 });

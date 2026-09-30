@@ -42,6 +42,8 @@ interface DocumentOptions {
   lang?: string | null;
   /** Leave out the viewport meta, for the fixture that is about its absence. */
   omitViewport?: boolean;
+  /** Leave out `<meta charset>`; the response must then also drop the header charset. */
+  omitCharset?: boolean;
   bodyHtml: string;
 }
 
@@ -51,7 +53,7 @@ export function renderDocument(opts: DocumentOptions): string {
      and GA4 measurement id, which meant every local `pnpm --dir badseo run
      dev` and every audit-harness run reported pageviews to someone else's
      account -- from a fork whose README promises it sends data nowhere. */
-  const head: string[] = ['<meta charset="utf-8">'];
+  const head: string[] = opts.omitCharset ? [] : ['<meta charset="utf-8">'];
   // Opt-out rather than always-on: one fixture exists to demonstrate the
   // page without it, and the audit checks every crawled page for it.
   if (!opts.omitViewport)

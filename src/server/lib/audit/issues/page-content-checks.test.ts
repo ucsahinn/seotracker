@@ -57,7 +57,11 @@ describe("alt text quality", () => {
   const withImages = (...alts: Array<string | null>) =>
     issueTypes(
       makePage({
-        images: alts.map((alt) => ({ src: "/i.jpg", alt })),
+        images: alts.map((alt) => ({
+          src: "/i.jpg",
+          alt,
+          missingDimensions: false,
+        })),
         imagesTotal: alts.length,
         imagesMissingAlt: alts.filter((a) => !a).length,
       }),
@@ -100,7 +104,7 @@ describe("images-missing-alt names its images", () => {
   const missingAlt = (images: Array<{ src: string; alt: string | null }>) =>
     runPageReporters(
       makePage({
-        images,
+        images: images.map((image) => ({ ...image, missingDimensions: false })),
         imagesTotal: images.length,
         imagesMissingAlt: images.filter((image) => !image.alt?.trim()).length,
       }),

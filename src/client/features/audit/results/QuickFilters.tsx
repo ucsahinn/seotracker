@@ -1,15 +1,10 @@
-import {
-  EyeOff,
-  FileWarning,
-  ImageOff,
-  Link2Off,
-  Timer,
-  X,
-} from "lucide-react";
+import { EyeOff, ImageOff, Link2Off, Timer, X } from "lucide-react";
 import type { PagesFilters } from "@/client/features/audit/results/AuditResultsTableFilterLogic";
 
 /**
- * The four questions an operator arrives with, as one click each.
+ * The four questions an operator arrives with, as one click each. A fifth,
+ * "Hatalı", used to sit here too; it wrote the same `status: "error"` as the
+ * "Hatalı" bar in PagesSummary, so the bar is the only one now.
  *
  * Every one of these was reachable before — open the filter panel, find the
  * right control among eleven, set it, remember to unset it. That is the
@@ -72,14 +67,6 @@ const PRESETS: Preset[] = [
     apply: (filters) => ({ ...filters, inSitemap: "no" }),
     matches: (filters) => filters.inSitemap === "no",
   },
-  {
-    key: "broken",
-    icon: FileWarning,
-    label: "Hatalı",
-    title: "4xx veya 5xx dönen sayfalar",
-    apply: (filters) => ({ ...filters, status: "error" }),
-    matches: (filters) => filters.status === "error",
-  },
 ];
 
 /** The neutral value for every field a preset can set. */
@@ -98,45 +85,60 @@ export function QuickFilters({
   filters,
   onChange,
   counts,
+  sitemapFound,
 }: {
   filters: PagesFilters;
   onChange: (filters: PagesFilters) => void;
   /** How many pages each preset would show, so a zero can say so. */
   counts: Record<string, number>;
+  /**
+   * False when no page of the crawl is in a sitemap: the audit found none, so
+   * "not in the sitemap" would be every page and say nothing.
+   */
+  sitemapFound: boolean;
 }) {
   const anyActive = PRESETS.some((preset) => preset.matches(filters));
 
   return (
     <div className="flex flex-wrap items-center gap-2">
-      {PRESETS.map((preset) => {
-        const active = preset.matches(filters);
-        const count = counts[preset.key] ?? 0;
-        return (
-          <button
-            key={preset.key}
-            type="button"
-            title={preset.title}
-            aria-pressed={active}
-            // A preset with nothing behind it is a filter to an empty table.
-            // Kept visible, because "no slow pages" is itself an answer.
-            disabled={count === 0 && !active}
-            onClick={() =>
-              onChange(
-                active ? cleared(filters) : preset.apply(cleared(filters)),
-              )
-            }
-            className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs transition-all duration-150 disabled:cursor-default disabled:opacity-50 ${
-              active
-                ? "border-primary bg-primary/10 text-primary shadow-[0_0_0_3px_var(--color-primary)]/10"
-                : "border-[var(--control-border)] enabled:hover:border-primary/50 enabled:hover:bg-primary/5"
-            }`}
-          >
-            <preset.icon aria-hidden className="size-3.5" />
-            {preset.label}
-            <span className="tabular-nums opacity-70">{count}</span>
-          </button>
-        );
-      })}
+      {PRESETS.filter((preset) => sitemapFound || preset.key !== "sitemap").map(
+        (preset) => {
+          const active = preset.matches(filters);
+          const count = counts[preset.key] ?? 0;
+          return (
+            <button
+              key={preset.key}
+              type="button"
+              title={preset.title}
+              aria-pressed={active}
+              // A preset with nothing behind it is a filter to an empty table.
+              // Kept visible, because "no slow pages" is itself an answer.
+              disabled={count === 0 && !active}
+              onClick={() =>
+                onChange(
+                  active ? cleared(filters) : preset.apply(cleared(filters)),
+                )
+              }
+              className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs transition-all duration-150 disabled:cursor-default disabled:opacity-50 ${
+                active
+                  ? "border-primary bg-primary/10 text-primary shadow-[0_0_0_3px_var(--color-primary)]/10"
+                  : "border-[var(--control-border)] enabled:hover:border-primary/50 enabled:hover:bg-primary/5"
+              }`}
+            >
+              <preset.icon aria-hidden className="size-3.5" />
+              {preset.label}
+              <span className="tabular-nums opacity-70">{count}</span>
+            </button>
+          );
+        },
+      )}
+
+      {sitemapFound ? null : (
+        <span className="text-xs text-muted">
+          "Site haritasında yok" kullanılamıyor: bu denetimde site haritası
+          bulunamadı.
+        </span>
+      )}
 
       {anyActive ? (
         <button
@@ -159,7 +161,6 @@ export function quickFilterCounts(
     inSitemap: boolean;
     imagesMissingAlt: number;
     responseTimeMs: number | null;
-    statusCode: number | null;
   }[],
 ): Record<string, number> {
   return {
@@ -168,6 +169,5 @@ export function quickFilterCounts(
       .length,
     alt: pages.filter((page) => page.imagesMissingAlt > 0).length,
     sitemap: pages.filter((page) => !page.inSitemap).length,
-    broken: pages.filter((page) => (page.statusCode ?? 0) >= 400).length,
   };
 }

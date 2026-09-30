@@ -1,4 +1,4 @@
-import { detectUrlTemplate, canonicalUrlKey } from "./url-utils";
+import { canonicalUrlKey } from "./url-utils";
 import { fetchPageSpeedReport, PageSpeedError } from "./pagespeed";
 import { isLighthouseRuntimeError } from "./pagespeedPayload";
 import type {
@@ -7,10 +7,12 @@ import type {
   LighthouseStrategy,
 } from "./types";
 import { putTextToR2 } from "@/server/lib/r2";
+import { LIGHTHOUSE_QUOTA_MARKER } from "@/shared/audit-limits";
 
-interface LighthouseSamplePage {
+interface LighthousePage {
   url: string;
   statusCode: number;
+  fetchClass?: string;
 }
 
 function canonicalUrlKeyWithoutTrailingSlash(url: string): string {
@@ -24,6 +26,8 @@ function canonicalUrlKeyWithoutTrailingSlash(url: string): string {
 type LighthouseFetchResult = {
   result: LighthouseResult;
   payloadJson: string | null;
+  /** Google's daily quota is spent; the phase stops instead of going on. */
+  quotaExhausted?: boolean;
 };
 
 /** A check that produced no payload — provider error, or a failed fetch step. */
@@ -81,6 +85,15 @@ export async function fetchLighthouseResult(
     // step retries. Everything else becomes a failed row: the crawl results are
     // the bulk of an audit's value and must still land.
     if (error instanceof PageSpeedError && error.retryable) throw error;
+    if (error instanceof PageSpeedError && error.quotaExhausted) {
+      const quota = failedLighthouseFetch(
+        url,
+        pageId,
+        strategy,
+        `${LIGHTHOUSE_QUOTA_MARKER}: Google'ın günlük PageSpeed ölçüm sınırı doldu.`,
+      );
+      return { ...quota, quotaExhausted: true };
+    }
 
     const failed = error instanceof Error ? error : new Error(String(error));
     // A Lighthouse runtime error means the page itself didn't load for Google's
@@ -114,27 +127,38 @@ export async function storeLighthouseResult(input: {
   };
 }
 
+// The crawler does not store a content type, so a document that cannot be
+// HTML is recognised by its extension. PageSpeed rejects those as NOT_HTML.
+const NON_HTML_PATH =
+  /\.(pdf|docx?|xlsx?|pptx?|zip|gz|rar|xml|json|txt|csv|rss|atom|jpe?g|png|gif|webp|avif|svg|ico|mp[34]|mov|webm|woff2?|ttf|css|js)$/i;
+
+function isMeasurablePage(page: LighthousePage): boolean {
+  if (page.statusCode < 200 || page.statusCode >= 300) return false;
+  if (page.fetchClass !== undefined && page.fetchClass !== "ok") return false;
+  return !NON_HTML_PATH.test(new URL(page.url).pathname);
+}
+
 /**
- * Select which pages to run Lighthouse on, based on the chosen strategy.
+ * Which crawled pages get a speed measurement.
+ *
+ * Every page that loaded (2xx, not blocked) is measured, indexable or not,
+ * each URL once. The start page comes first so a quota that runs out early
+ * still covers the page that matters most. `cap` bounds the run when no
+ * PageSpeed key is set.
  */
-export function selectLighthouseSample(
-  pages: LighthouseSamplePage[],
+export function selectLighthousePages(
+  pages: LighthousePage[],
   startUrl: string,
   mode: LighthouseMode,
+  cap: number = Number.POSITIVE_INFINITY,
 ): string[] {
   if (mode === "none") return [];
 
-  // Only consider pages that loaded successfully
-  const validPages = pages.filter(
-    (p) => p.statusCode >= 200 && p.statusCode < 300,
-  );
+  const validPages = pages.filter(isMeasurablePage);
 
-  // mode === "auto": homepage + 1 per URL pattern, capped at 10
-  const selected = new Set<string>();
-
-  // Always include the start URL / homepage. Prefer an exact canonical match
-  // so distinct 2xx `/path` and `/path/` pages stay distinct, then tolerate a
-  // trailing-slash redirect when the exact start URL was not crawled as 2xx.
+  // Prefer an exact canonical match so distinct 2xx `/path` and `/path/` pages
+  // stay distinct, then tolerate a trailing-slash redirect when the exact
+  // start URL was not crawled as 2xx.
   const startKey = canonicalUrlKey(startUrl);
   const startPage =
     validPages.find((p) => canonicalUrlKey(p.url) === startKey) ??
@@ -143,29 +167,10 @@ export function selectLighthouseSample(
         canonicalUrlKeyWithoutTrailingSlash(p.url) ===
         canonicalUrlKeyWithoutTrailingSlash(startUrl),
     );
+
+  const selected = new Set<string>();
   if (startPage) selected.add(startPage.url);
+  for (const page of validPages) selected.add(page.url);
 
-  // Group by URL template pattern
-  const templateGroups = new Map<string, LighthouseSamplePage>();
-  if (startPage) {
-    templateGroups.set(
-      detectUrlTemplate(new URL(startPage.url).pathname),
-      startPage,
-    );
-  }
-  for (const page of validPages) {
-    if (selected.has(page.url)) continue;
-    const template = detectUrlTemplate(new URL(page.url).pathname);
-    if (!templateGroups.has(template)) {
-      templateGroups.set(template, page);
-    }
-  }
-
-  // Add one page per template group
-  for (const [, page] of templateGroups) {
-    if (selected.size >= 10) break;
-    selected.add(page.url);
-  }
-
-  return Array.from(selected);
+  return Array.from(selected).slice(0, cap);
 }

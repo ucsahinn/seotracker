@@ -23,6 +23,7 @@ function makeSlimPage(overrides: Partial<SlimPage>): SlimPage {
     statusCode: 200,
     fetchClass: "ok",
     title: null,
+    firstH1: null,
     metaDescription: null,
     contentHash: null,
     redirectUrl: null,

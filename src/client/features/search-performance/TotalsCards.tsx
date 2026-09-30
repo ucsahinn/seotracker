@@ -15,12 +15,25 @@ function percentDelta(current: number, previous: number): Delta {
   };
 }
 
+/**
+ * CTR is already a percentage, so its change is a difference in percentage
+ * points ("puan"), not a percentage of a percentage.
+ */
+function ctrDelta(current: number, previous: number): Delta {
+  if (previous <= 0) return null;
+  const points = (current - previous) * 100;
+  return {
+    text: `${points >= 0 ? "+" : "-"}${formatDecimal(Math.abs(points))} puan`,
+    improved: points >= 0,
+  };
+}
+
 /** Position falls as rankings improve, so the delta is inverted. */
 function positionDelta(current: number, previous: number): Delta {
   if (previous <= 0 || current <= 0) return null;
   const change = previous - current;
   return {
-    text: `${change >= 0 ? "+" : "-"}${formatDecimal(Math.abs(change))}`,
+    text: `${change >= 0 ? "+" : "-"}${formatDecimal(Math.abs(change))} sıra`,
     improved: change >= 0,
   };
 }
@@ -51,7 +64,9 @@ export function TotalsCards({ report }: { report: Report }) {
         label="Tıklama oranı"
         hint="Gösterimlerin yüzde kaçı tıklamaya döndü."
         value={shown.ctr}
-        delta={delta(totals.ctr, prevTotals.ctr)}
+        delta={
+          shown.hasImpressions ? ctrDelta(totals.ctr, prevTotals.ctr) : null
+        }
         deltaTitle={deltaTitle}
       />
       <MetricTile

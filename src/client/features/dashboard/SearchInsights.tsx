@@ -14,6 +14,7 @@ import {
 } from "@/client/features/dashboard/cardParts";
 import { dashboardGscReportQuery } from "@/client/features/dashboard/dashboardGscReport";
 import { describeClickTrend } from "@/client/features/dashboard/clickTrend";
+import { DEFAULT_WINDOW_DAYS } from "@/shared/dataFreshness";
 import {
   formatCount,
   formatDay,
@@ -56,6 +57,15 @@ export function SearchInsights({
   if (!report) return null;
 
   const trend = describeClickTrend(report.daily);
+  /*
+   * The same comparison the Tıklama tile above makes (previous period), so
+   * the two percentages for clicks cannot disagree.
+   */
+  const change =
+    report.prevTotals.clicks > 0
+      ? (report.totals.clicks - report.prevTotals.clicks) /
+        report.prevTotals.clicks
+      : null;
   const striking = report.strikingDistance.slice(0, TOP_QUERIES);
 
   return (
@@ -79,31 +89,33 @@ export function SearchInsights({
               <p className="text-2xl font-semibold tabular-nums">
                 {formatCount(trend.total)}
               </p>
-              <p className="text-sm text-muted">tıklama, son 28 gün</p>
-              {trend.change !== null ? (
+              <p className="text-sm text-muted">
+                tıklama, son {DEFAULT_WINDOW_DAYS} gün
+              </p>
+              {change !== null ? (
                 <span
                   className={`inline-flex items-center gap-0.5 text-sm tabular-nums ${
-                    trend.change >= 0
+                    change >= 0
                       ? "text-[var(--ink-success)]"
                       : "text-[var(--ink-error)]"
                   }`}
                 >
-                  {trend.change >= 0 ? (
+                  {change >= 0 ? (
                     <ArrowUpRight className="size-4" aria-hidden />
                   ) : (
                     <ArrowDownRight className="size-4" aria-hidden />
                   )}
-                  {formatPercent(Math.abs(trend.change))}
-                  <span className="text-muted"> ilk yarıya göre</span>
+                  {formatPercent(Math.abs(change))}
+                  <span className="text-muted"> önceki döneme göre</span>
                 </span>
               ) : null}
             </div>
             <Chart
               height={120}
               summary={`Son ${formatCount(report.daily.length)} günde ${formatCount(trend.total)} tıklama. ${
-                trend.change === null
+                change === null
                   ? ""
-                  : `İkinci yarı ilk yarıdan yüzde ${formatDecimal(Math.abs(trend.change) * 100, 0)} ${trend.change >= 0 ? "yüksek" : "düşük"}. `
+                  : `Önceki döneme göre yüzde ${formatDecimal(Math.abs(change) * 100, 0)} ${change >= 0 ? "yüksek" : "düşük"}. `
               }En yüksek gün ${formatDay(trend.peakDay)}, ${formatCount(trend.peakClicks)} tıklama.`}
             >
               <AreaChart
@@ -152,7 +164,7 @@ export function SearchInsights({
 
       <div style={{ animationDelay: "60ms" }}>
         <CardShell
-          title="Birinci sayfaya yakın sorgular"
+          title="Sıra 5-20 arası sorgular"
           action={
             <Link
               to="/p/$projectId/search-performance"

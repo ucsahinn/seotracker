@@ -11,7 +11,11 @@
 import type { AuditIssueType } from "@/shared/audit-issues";
 import { sameCanonicalTarget } from "@/server/lib/audit/url-utils";
 import type { CrawledPageResult } from "@/server/lib/audit/types";
+import { reportHygiene } from "@/server/lib/audit/issues/page-hygiene-checks";
 import {
+  MIN_IMAGES_MISSING_DIMENSIONS,
+  countImagesMissingDimensions,
+  crossHostCanonical,
   isPlainHttpPage,
   lacksCanonical,
   lacksLanguage,
@@ -333,6 +337,13 @@ export function runPageReporters(
   if (isPlainHttpPage(page)) report("not-https");
   if (lacksLanguage(page)) report("missing-lang");
   if (lacksCanonical(page)) report("missing-canonical");
+  const crossHost = crossHostCanonical(page);
+  if (crossHost) report("canonical-cross-host-or-http", crossHost);
+  if (page.invalidStructuredDataCount > 0) {
+    report("structured-data-invalid-json", {
+      count: page.invalidStructuredDataCount,
+    });
+  }
 
   // Titles
   if (!page.title) {
@@ -382,6 +393,7 @@ export function runPageReporters(
   }
 
   reportIndexability(page, report);
+  reportHygiene(page, report);
 
   // Internationalization
   reportHreflang(page, report);
@@ -428,6 +440,13 @@ export function runPageReporters(
     report("thin-content", { wordCount: page.wordCount });
   }
   reportAltQuality(page, report);
+  const missingDimensions = countImagesMissingDimensions(page);
+  if (missingDimensions >= MIN_IMAGES_MISSING_DIMENSIONS) {
+    report("images-missing-dimensions", {
+      count: missingDimensions,
+      imagesTotal: page.imagesTotal,
+    });
+  }
   if (page.imagesMissingAlt > 0) {
     report("images-missing-alt", {
       imagesMissingAlt: page.imagesMissingAlt,

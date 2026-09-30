@@ -1,6 +1,7 @@
 import type { LighthouseMode } from "@/server/lib/audit/types";
 import {
   DEFAULT_AUDIT_PAGES,
+  LIGHTHOUSE_CHECKS_PER_PAGE,
   MAX_AUDIT_PAGES,
   MIN_AUDIT_PAGES,
 } from "@/shared/audit-limits";
@@ -20,8 +21,9 @@ import {
  */
 export const AUDIT_LIMITS = {
   maxPagesPerAudit: MAX_AUDIT_PAGES,
-  // Two full-size audits plus headroom, counted in pages + Lighthouse checks.
-  maxCapacityUnits: 25_000,
+  // Two full-size audits (10,000 pages + 20,000 Lighthouse checks each),
+  // counted in pages + Lighthouse checks.
+  maxCapacityUnits: 60_000,
   maxRunningAudits: 3,
 };
 
@@ -38,8 +40,11 @@ export function getEstimatedAuditCapacity(input: {
 }) {
   const pagesTotal = clampAuditMaxPages(input.maxPages);
   const lighthouseStrategy = input.lighthouseStrategy ?? "auto";
-  // "auto" samples up to 10 pages, checked on mobile + desktop.
-  const lighthouseChecks = lighthouseStrategy === "auto" ? 20 : 0;
+  // "auto" measures every crawled page on mobile + desktop. This is the
+  // ceiling: the workflow replaces it with the real count once the crawl is
+  // done, and caps it when no PageSpeed key is set.
+  const lighthouseChecks =
+    lighthouseStrategy === "auto" ? pagesTotal * LIGHTHOUSE_CHECKS_PER_PAGE : 0;
 
   return {
     pagesTotal,

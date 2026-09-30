@@ -28,6 +28,14 @@ const schema = z.object({
   audienceBreakdown: z
     .enum(["device", "country", "new_vs_returning"])
     .default("device"),
+  /*
+   * What the acquisition report splits by. The definitions have built
+   * source/medium and campaign since the start; nothing on the screen chose
+   * them, so the report only ever showed channel groups.
+   */
+  acquisitionBreakdown: z
+    .enum(["channel_group", "source_medium", "campaign"])
+    .default("channel_group"),
 });
 
 /**
@@ -58,6 +66,7 @@ export const getGa4Report = createServerFn({ method: "POST" })
         limit: data.limit,
         comparePreviousPeriod: data.comparePreviousPeriod,
         audienceBreakdown: data.audienceBreakdown,
+        acquisitionBreakdown: data.acquisitionBreakdown,
       });
 
       /*
