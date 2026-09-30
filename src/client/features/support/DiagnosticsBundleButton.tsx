@@ -26,7 +26,10 @@ export function DiagnosticsBundleButton() {
         { name: "diagnostics.json", content: pretty(server) },
         { name: "client-log.json", content: pretty(clientLog) },
         { name: "browser.json", content: pretty(describeBrowser()) },
-        { name: "summary.txt", content: summary(server, clientLog.length) },
+        {
+          name: "summary.txt",
+          content: buildDiagnosticsSummary(server, clientLog.length),
+        },
       ]);
 
       downloadBlob(
@@ -89,7 +92,7 @@ Oluşturulma: ${generatedAt}
 `;
 }
 
-function summary(
+export function buildDiagnosticsSummary(
   server: Awaited<ReturnType<typeof getDiagnostics>>,
   clientLogCount: number,
 ): string {

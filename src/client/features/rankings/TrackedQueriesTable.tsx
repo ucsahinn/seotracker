@@ -7,6 +7,7 @@ import { RowActions } from "@/client/components/table/RowActions";
 import { SortableHeader } from "@/client/components/table/SortableHeader";
 import type { useLocalSort } from "@/client/components/table/useLocalSort";
 import type { SortKey } from "@/client/features/rankings/rankingsSort";
+import { PositionChange } from "@/client/features/rankings/PositionChange";
 import { formatDecimal, formatNumber } from "@/client/lib/format";
 
 type Row = {
@@ -15,6 +16,8 @@ type Row = {
   impressions: number;
   clicks: number;
   days: number;
+  previousPosition: number | null;
+  delta: number | null;
 };
 
 /** The tracked-queries table: sortable header, states, and per-row actions. */
@@ -58,6 +61,13 @@ export function TrackedQueriesTable({
               align="right"
             />
           </th>
+          <th className="text-right" aria-sort={sorting.ariaSort("delta")}>
+            <SortableHeader
+              column={sorting.column("delta")}
+              label="Değişim"
+              align="right"
+            />
+          </th>
           <th
             className="text-right"
             aria-sort={sorting.ariaSort("impressions")}
@@ -93,7 +103,7 @@ export function TrackedQueriesTable({
                 under a header saying the archive was still updating. */}
         {rows.length === 0 && !tracked.isLoading && !tracked.isPending ? (
           <tr>
-            <td colSpan={6} className="p-0">
+            <td colSpan={7} className="p-0">
               <EmptyState
                 compact
                 icon={TrendingUp}
@@ -112,7 +122,7 @@ export function TrackedQueriesTable({
                 <td>
                   <div className="skeleton h-4 w-40" />
                 </td>
-                {Array.from({ length: 4 }, (__, cell) => (
+                {Array.from({ length: 5 }, (__, cell) => (
                   <td key={cell}>
                     <div className="skeleton ml-auto h-4 w-12" />
                   </td>
@@ -122,7 +132,7 @@ export function TrackedQueriesTable({
           : null}
         {tracked.isError ? (
           <tr>
-            <td colSpan={6}>
+            <td colSpan={7}>
               <QueryErrorState
                 compact
                 error={tracked.error}
@@ -155,6 +165,9 @@ export function TrackedQueriesTable({
             </td>
             <td className="text-right tabular-nums">
               {formatDecimal(row.position)}
+            </td>
+            <td className="text-right tabular-nums">
+              <PositionChange delta={row.delta} />
             </td>
             <td className="text-right tabular-nums">
               {formatNumber(row.impressions)}

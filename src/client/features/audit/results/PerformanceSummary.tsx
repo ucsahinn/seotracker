@@ -14,6 +14,18 @@ function scoreClass(score: number | null) {
 }
 
 /**
+ * Why the measurements failed, in words, when the stored error says.
+ *
+ * Every row failing with the same 429 is a quota, not twenty broken pages, and
+ * a reader who sees only dashes will assume the pages are at fault.
+ */
+function failureReason(rows: AuditResultsData["lighthouse"]): string | null {
+  const quota = rows.some((row) => /429|quota/i.test(row.errorMessage ?? ""));
+  if (!quota) return null;
+  return "Google'ın ücretsiz ölçüm kotası dolmuş; sayfalarınızda bir sorun yok. Ayarlar'dan PageSpeed anahtarı ekleyin ya da kota yenilenince denetimi yeniden başlatın.";
+}
+
+/**
  * The Performance tab's own numbers: the three category averages, the band
  * split as a filter, and the measurements that failed as one click.
  *
@@ -31,6 +43,7 @@ export function PerformanceSummary({
 }) {
   const stats = useMemo(() => summarizeLighthouse(lighthouse), [lighthouse]);
   const failedActive = filters.status === "failed";
+  const reason = failureReason(lighthouse);
   const averages: Array<[string, number | null]> = [
     ["Hız", stats.avgPerformance],
     ["SEO", stats.avgSeo],
@@ -70,6 +83,7 @@ export function PerformanceSummary({
             Ölçülemeyen {formatCount(stats.failed)} sayfa
           </button>
         ) : null}
+        {reason ? <p className="mt-2 text-xs text-muted">{reason}</p> : null}
       </section>
       <section className="rounded-box border border-base-300 bg-base-100 px-3 py-3">
         <h3 className="px-2 text-sm font-medium">Mobilde hız dağılımı</h3>

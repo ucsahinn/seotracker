@@ -6,240 +6,240 @@ export const INDEXING_ISSUES = {
     severity: "warning",
     title: "Yinelenen başlık",
     explanation:
-      "Birden çok sayfa aynı başlık etiketini paylaşıyor. Arama motorları sayfaları başlıklarıyla ayırt eder; yinelenen başlıklar sayfaları birbiriyle yarıştırır ve tıklama oranını düşürür.",
+      "Birden çok sayfa aynı başlığı (<title>) kullanıyor. Google sayfaları başlıklarıyla ayırt eder; aynı başlık sayfaları birbiriyle yarıştırır ve arama sonucunda hangisine tıklanacağı belirsizleşir, tıklama oranı düşer.",
     howToFix:
-      "Her sayfaya kendi içeriğini anlatan benzersiz bir başlık yazın. Şablondan üretilen sayfalarda ayırt edici özelliği (ad, kategori, konum) şablona ekleyin.",
+      "Her sayfaya kendi içeriğini anlatan farklı bir başlık yazın. Şablondan üretilen sayfalarda ayırt edici bilgiyi (ürün adı, kategori, şehir) başlık şablonuna ekleyin.",
   },
   "duplicate-meta-description": {
     severity: "warning",
     title: "Yinelenen meta açıklama",
     explanation:
-      "Birden çok sayfa aynı meta açıklamayı paylaşıyor, bu yüzden arama sonuçlarında aynı özet görünüyor ve kullanıcı sayfaları ayırt edemiyor.",
+      "Birden çok sayfa aynı meta açıklamayı (arama sonucunda başlığın altındaki özet) kullanıyor. Aramada hepsi aynı özetle çıkar ve ziyaretçi sayfaları ayırt edemez.",
     howToFix:
-      "Her sayfaya kendi meta açıklamasını yazın ya da yineleneni tamamen kaldırın. Arama motorunun sayfa içeriğinden ürettiği özet, yanlış bir yinelenenden iyidir.",
+      "Her sayfaya kendi açıklamasını yazın ya da yinelenen açıklamayı tamamen silin. Açıklama yoksa Google sayfa metninden bir özet seçer; bu, yanlış bir kopyadan iyidir.",
   },
   "duplicate-content": {
     severity: "warning",
     title: "Yinelenen sayfa içeriği",
     explanation:
-      "İki ya da daha fazla adres birebir aynı görünür metni sunuyor. Arama motoru bir sürümü seçip dizine alır, ve seçtiği sizin istediğiniz olmayabilir. Yinelenen içerik bir ceza değildir.",
+      "İki ya da daha fazla adres birebir aynı metni gösteriyor. Google bunlardan birini seçip dizine alır ve seçtiği sizin istediğiniz olmayabilir. Ceza değildir, ama sıralama gücü adresler arasında bölünür.",
     howToFix:
-      "Yinelenenleri birleştirin: asıl adresi seçin, diğerlerinden ona rel=canonical verin ve mümkünse 301 ile yönlendirin. Sık görülen nedenler: sonda eğik çizgi farkı, adres parametreleri, http/https veya www farkı.",
+      "Asıl adresi (aramada görünmesini istediğiniz tek adres) seçin. Diğerlerinde canonical (asıl adres) etiketi ile asıl adresi gösterin ve mümkünse 301 ile yönlendirin. Sık nedenler: sonda eğik çizgi farkı, adrese eklenen parametreler, http/https ya da www farkı.",
   },
   "missing-canonical": {
     severity: "info",
     title: "Sayfada canonical (asıl adres) etiketi yok",
     explanation:
-      "Sayfa, kendi asıl adresini belirtmiyor. Aynı sayfa birden çok adresten açılabilir (sonunda eğik çizgi olan ve olmayan, ?utm_source gibi eklerle gelen, www'lu ve www'suz adresler). Asıl adres etiketi yoksa arama motoru bunlardan hangisini göstereceğine kendisi karar verir. Google bu etiketi zorunlu değil, önerilen bir işaret olarak tanımlar; o yüzden bu yalnızca bir öneridir.",
+      "Sayfa, kendi asıl adresini (canonical) belirtmiyor. Aynı sayfa birden çok adresten açılabilir: sonunda eğik çizgi olan ve olmayan, ?utm_source gibi eklerle gelen, www'lu ve www'suz adresler. Etiket yoksa Google bunlardan hangisini göstereceğine kendi karar verir. Google bu etiketi zorunlu değil, önerilen bir işaret sayar; bu yüzden bu yalnızca bir öneridir.",
     howToFix:
-      'Sayfanın `<head>` bölümüne kendi tam adresini gösteren bir satır ekleyin: `<link rel="canonical" href="https://www.siteniz.com/hakkimizda">`. Adres, sayfanın arama sonuçlarında görünmesini istediğiniz adres olmalı. Çoğu site oluşturucu ve SEO eklentisi bunu tek bir ayarla tüm sayfalara ekler.',
+      'Sayfanın `<head>` bölümüne kendi tam adresini gösteren şu satırı ekleyin: `<link rel="canonical" href="https://www.siteniz.com/hakkimizda">`. Adres, aramada görünmesini istediğiniz adres olsun. Çoğu site oluşturucu ve SEO eklentisi bunu tek ayarla tüm sayfalara ekler.',
   },
   "canonical-conflict": {
     severity: "warning",
     title: "Asıl adres bildirimleri birbiriyle çelişiyor",
     explanation:
-      "Sayfa, HTML içindeki <link rel=canonical> ile HTTP Link başlığında farklı asıl adresler bildiriyor. Sinyaller çeliştiğinde arama motoru ikisini de yok sayıp kendi seçimini yapar.",
+      "Sayfa, asıl adresi iki yerde farklı söylüyor: HTML içindeki canonical etiketinde bir adres, HTTP Link başlığında başka bir adres. Sinyaller çelişince Google ikisini de bırakıp kendi seçimini yapar.",
     howToFix:
-      "Tek bir asıl adres seçin ve yalnız bir yerde bildirin (genelde HTML head). Diğer bildirimi kaldırın ya da aynı adrese getirin.",
+      "Tek bir asıl adres seçin ve onu yalnızca bir yerde bildirin (genelde HTML head). Diğerini kaldırın ya da aynı adrese çevirin.",
   },
   "noindex-page": {
     severity: "info",
     title: "Sayfa arama sonuçlarından gizlenmiş (noindex)",
     explanation:
-      "Sayfa, arama motorlarından kendisini dizine almamalarını istiyor (robots meta etiketi veya X-Robots-Tag başlığı ile). Bu çoğu zaman bilinçlidir; bu bir hata değil, bilgi notudur.",
+      "Sayfa, arama motorlarından kendisini dizine almamalarını istiyor (robots meta etiketi ya da X-Robots-Tag başlığıyla). Yani sayfa aramada çıkmaz. Çoğu zaman bilerek yapılır; bu bir hata değil, bilgi notudur.",
     howToFix:
-      "Bu sayfanın sıralanması gerekiyorsa noindex yönergesini kaldırın. Bilinçliyse (yönetim, teşekkür, filtre sayfaları) yapılacak bir şey yok.",
+      "Sayfa aramada çıkmalıysa noindex yönergesini kaldırın. Bilerek konduysa (yönetim paneli, teşekkür, filtre sayfaları gibi) yapmanız gereken bir şey yok.",
   },
   "canonicalized-page": {
     severity: "info",
     title: "Sayfa, asıl adres olarak başka bir sayfayı gösteriyor",
     explanation:
-      "Sayfa asıl adres olarak başka bir adresi bildiriyor, yani arama motoruna onun yerine o adresi dizine almasını söylüyor. Bilinçliyse sorun değil (parametreli sayfalar, yeniden yayın); ama bu sayfa sıralanacaksa sorundur.",
+      "Sayfa asıl adres olarak başka bir adresi gösteriyor, yani Google'dan onun yerine o adresi dizine almasını istiyor. Bilerek yaptıysanız sorun yok (parametreli sayfalar gibi); ama bu sayfanın aramada çıkmasını istiyorsanız sorundur.",
     howToFix:
-      "Bu sayfa kendi başına sıralanacaksa canonical değerini kendisine çevirin. Aksi hâlde yapılacak bir şey yok.",
+      "Bu sayfa kendi adıyla aramada çıkacaksa canonical etiketini sayfanın kendi adresine çevirin. Aksi halde yapılacak bir şey yok.",
   },
   "canonical-to-broken": {
     severity: "warning",
     title: "Asıl adres olarak gösterilen sayfa açılmıyor",
     explanation:
-      "Sayfa asıl adres olarak taramada hata veren bir adresi bildiriyor (404 veya 5xx). rel=canonical bir yönerge değil, güçlü bir sinyaldir; gösterdiği adres yayında değilse Google bu sinyali kullanamaz ve asıl adresi kendi seçer. Sonuç, hiç canonical vermemişsiniz gibi olur.",
+      "Sayfa, asıl adres olarak hata veren (404 ya da 5xx) bir adresi gösteriyor. Canonical güçlü bir işarettir ama gösterdiği adres yayında değilse Google onu kullanamaz ve asıl adresi kendi seçer. Sonuç, hiç canonical vermemişsiniz gibi olur.",
     howToFix:
-      "Canonical değerini çalışan bir adrese çevirin ya da hedef adresi yeniden yayına alın. Hedefin gerçekten kaldırıldığı durumda canonical sayfanın kendisini göstermelidir.",
+      "Canonical'ı çalışan bir adrese çevirin ya da hedef sayfayı yeniden yayınlayın. Hedef gerçekten kaldırıldıysa canonical sayfanın kendi adresini göstersin.",
   },
   "canonical-to-redirect": {
     severity: "warning",
     title: "Asıl adres olarak yönlendiren bir sayfa gösterilmiş",
     explanation:
-      "Sayfa asıl adres olarak yönlendirme (3xx) dönen bir adresi bildiriyor. Google yönlendirmeyi izler; üstelik yönlendirmenin kendisi hedefin asıl adres olduğunu söyleyen ayrı bir sinyaldir. Yani bu sayfa, Google'a zaten asıl olmadığı bildirilmiş bir adresi asıl diye gösteriyor.",
+      "Sayfa, asıl adres olarak başka yere yönlendiren (3xx) bir adresi gösteriyor. Yönlendirmenin kendisi zaten hedefin asıl olduğunu söyler; yani bu sayfa, asıl olmadığı bilinen bir adresi asıl diye öneriyor.",
     howToFix:
-      "Canonical değerini yönlendirmenin ulaştığı son adrese çevirin; böylece bildirdiğiniz adres ile yayınlanan adres aynı olur.",
+      "Canonical'ı yönlendirmenin vardığı son adrese çevirin; bildirdiğiniz adres ile açılan adres aynı olsun.",
   },
   "canonical-to-noindex": {
     severity: "critical",
     title: "Asıl adres olarak gizlenmiş bir sayfa gösterilmiş",
     explanation:
-      "Sayfa asıl adres olarak noindex işaretli bir sayfayı bildiriyor. İkisi eşit ağırlıkta değil: noindex kesin bir yönergedir ve hedef sayfanın arama sonuçlarında hiç görünmemesini sağlar, rel=canonical ise yalnızca bir sinyaldir. Yani bu sayfa, Google'ın asla gösteremeyeceği bir adresi asıl adres olarak öneriyor. Google da canonical seçimi için noindex kullanılmamasını öneriyor.",
+      "Sayfa, asıl adres olarak noindex ile gizlenmiş bir sayfayı gösteriyor. Noindex kesin bir yönergedir, canonical ise yalnızca bir işarettir; yani bu sayfa, Google'ın hiçbir zaman gösteremeyeceği bir adresi öneriyor ve kendisi de aramadan düşebilir.",
     howToFix:
-      "Ya hedef sayfadaki noindex yönergesini kaldırın ya da bu sayfanın canonical değerini kendisine çevirin.",
+      "İki yoldan biri: hedef sayfadaki noindex'i kaldırın ya da bu sayfanın canonical etiketini sayfanın kendi adresine çevirin.",
   },
   "google-soft-404": {
     severity: "critical",
     title: "Google sayfayı boş sayıyor (soft 404)",
     explanation:
-      "Sayfa 200 döndürüyor ama Google onu 'bulunamadı' olarak değerlendiriyor. Google bunu Sayfa dizine ekleme raporunda soft 404 diye adlandırır ve sayfayı dizine almaz. Bir tarayıcı bunu kendi başına göremez: durum kodu sağlıklı görünür, kararı veren Google'dır. Genellikle boş sonuç sayfaları, silinmiş ürünler ya da 'kayıt bulunamadı' mesajı gösteren şablonlarda olur.",
+      "Sayfa normal açılıyor (200) ama Google onu 'bulunamadı' sayıyor (soft 404) ve dizine almıyor. Bunu yalnızca Google söyleyebilir; durum kodu sağlıklı göründüğü için tarayıcılar fark etmez. En sık boş sonuç sayfalarında, silinmiş ürünlerde ve 'kayıt bulunamadı' gösteren şablonlarda olur.",
     howToFix:
-      "Sayfa gerçekten yoksa 404 ya da 410 döndürün. Varsa, içeriğinin gerçekten var olduğunu belli edecek kadar dolu olduğundan emin olun; boş liste şablonları en sık nedendir.",
+      "Sayfa gerçekten yoksa 404 ya da 410 döndürün. Varsa, içeriğinin gerçek ve dolu olduğundan emin olun; boş liste şablonları en sık nedendir.",
   },
   "google-blocked-by-robots": {
     severity: "critical",
     title: "Google sayfayı robots.txt yüzünden tarayamıyor",
     explanation:
-      "Google'ın kendi URL denetimi bu adresi robots.txt'nin engellediğini söylüyor. Bu denetimin tarayıcısı sayfaya ulaşabildiği hâlde Google ulaşamıyorsa, iki tarayıcıya farklı kurallar uygulanıyor demektir.",
+      "Google'ın URL denetimi bu adresi robots.txt'nin engellediğini söylüyor. Bizim tarayıcımız sayfaya ulaşabildiği halde Google ulaşamıyorsa, iki tarayıcıya farklı kurallar uygulanıyor demektir.",
     howToFix:
-      "robots.txt'de bu adresi kapsayan Disallow satırını bulun. Google'ın kullandığı user-agent adına özel bir kural olup olmadığını kontrol edin; çoğu zaman genel kural değil, Googlebot'a özel bir satır olur.",
+      "robots.txt'te bu adresi kapsayan Disallow satırını bulup kaldırın. Googlebot'a özel bir kural (User-agent: Googlebot) olup olmadığına da bakın; çoğu zaman sorun genel kuralda değil, ona özel satırdadır.",
   },
   "google-blocked-by-meta": {
     severity: "warning",
     title: "Google sayfada gizleme etiketi (noindex) görüyor",
     explanation:
-      "Google'ın kendi denetimi bu sayfada bir noindex yönergesi gördüğünü bildiriyor. Bu denetimin tarayıcısı sayfayı dizine alınabilir gördüyse, ikisi sayfanın farklı sürümlerini okuyor demektir: örneğin yönerge yalnızca JavaScript çalıştıktan sonra ekleniyor olabilir.",
+      "Google bu sayfada noindex (aramada gösterme) yönergesi gördüğünü söylüyor. Bizim tarayıcımız sayfayı dizine alınabilir görüyorsa, iki tarayıcı sayfanın farklı sürümlerini okuyor demektir; örneğin yönerge yalnızca JavaScript çalışınca ekleniyor olabilir.",
     howToFix:
-      "Sayfanın kaynak kodunu Google'ın gördüğü hâliyle karşılaştırın. Search Console'daki canlı test, işlenmiş HTML'i gösterir.",
+      "Sayfanın kaynak kodunu Google'ın gördüğü haliyle karşılaştırın; Search Console'daki canlı test işlenmiş HTML'i gösterir. Noindex'in nereden geldiğini bulup kaldırın.",
   },
   "google-chose-different-canonical": {
     severity: "warning",
     title: "Google başka bir adresi asıl adres seçti",
     explanation:
-      "Sayfa bir asıl adres bildiriyor, Google başkasını seçti. rel=canonical bir yönerge değil sinyaldir; Google içerik benzerliğine, iç bağlantılara ve site haritasına bakarak farklı karar verebilir. Sonuç olarak arama sonuçlarında sizin seçtiğiniz adres görünmez.",
+      "Sayfa bir asıl adres bildiriyor ama Google başka bir adresi seçti. Canonical bir emir değil, öneridir; Google içerik benzerliğine, iç bağlantılara ve site haritasına bakıp farklı karar verebilir. Sonuçta aramada sizin seçtiğiniz adres çıkmaz.",
     howToFix:
-      "Google'ın seçtiği adrese bakın: sayfalar gerçekten aynıysa iç bağlantılarınızı ve site haritanızı istediğiniz adrese yöneltin. Farklıysa, aralarındaki farkı içerikte belirginleştirin.",
+      "Google'ın seçtiği adrese bakın. Sayfalar gerçekten aynıysa iç bağlantılarınızı ve site haritanızı istediğiniz adrese çevirin. Farklıysa aradaki farkı içerikte belirginleştirin.",
   },
   "hreflang-invalid-code": {
     severity: "warning",
     title: "Dil sürümü kodu (hreflang) geçersiz",
     explanation:
-      'hreflang değeri Google\'ın beklediği biçimde değil. Google dil için ISO 639-1, isteğe bağlı bölge için ISO 3166-1 Alpha 2 bekler ve ikisini tire ile ayırır. Google\'ın kendi yaygın hata listesi "UK", "EU" ve "UN" gibi uydurma bölge kodlarını açıkça sayar. Geçersiz bir kod, o alternatifin tamamen yok sayılması demektir.',
+      'Dil sürümü bağlantısındaki (hreflang) kod Google\'ın beklediği biçimde değil. Google dil için iki harfli kodu (tr, en), istenirse bölge için iki harfli ülke kodunu bekler ve ikisini tire ile ayırır. "UK", "EU" ve "UN" gibi uydurma kodları Google açıkça hata sayar. Geçersiz kod, o dil sürümünün tamamen yok sayılması demektir.',
     howToFix:
-      'Birleşik Krallık için "en-GB" kullanın, "en-UK" diye bir kod yok. Ayırıcı alt çizgi değil tire olmalı ("en_US" değil "en-US"). "x-default" geçerlidir ve olduğu gibi bırakılmalıdır.',
+      'Birleşik Krallık için "en-GB" yazın; "en-UK" diye bir kod yok. Ayırıcı alt çizgi değil tire olmalı ("en_US" değil "en-US"). "x-default" geçerlidir, olduğu gibi bırakın.',
   },
   "hreflang-missing-self": {
     severity: "warning",
     title: "Dil sürümleri arasında sayfa kendini listelemiyor (hreflang)",
     explanation:
-      "Google'ın belgelerine göre her dil sürümü, diğerlerinin yanı sıra kendisini de listelemelidir. Bu sayfa alternatiflerini bildiriyor ama aralarında kendisi yok, bu yüzden Google kümeyi eksik görebilir ve bağlantıyı kurmayabilir.",
+      "Bu sayfa, dil sürümü bağlantılarında (hreflang) diğer dilleri listeliyor ama kendisini listelemiyor. Google'ın belgelerine göre her dil sürümü kendisini de listelemeli; yoksa Google dil sürümlerini birbirine bağlamayabilir.",
     howToFix:
-      "Sayfanın kendi adresini de kendi dil koduyla hreflang listesine ekleyin. Çoğu şablonda bu, listeyi tüm diller üzerinde döndürüp geçerli olanı atlamaktan kaynaklanır.",
+      "Sayfanın kendi adresini, kendi dil koduyla dil sürümü listesine ekleyin. Şablonlarda sorun çoğu zaman listenin geçerli sayfayı atlayarak üretilmesinden kaynaklanır.",
   },
   "nofollow-page": {
     severity: "warning",
     title: "Sayfa robots yönergesiyle bağlantılarını kapatıyor",
     explanation:
-      'Sayfa "nofollow" (ya da eşdeğeri "none") yönergesi taşıyor. Google\'ın belgelerine göre bu, sayfadaki bağlantıların izlenmemesi demektir: Google normalde bu bağlantıları yeni sayfa keşfetmek için kullanır, burada kullanmaz. Sayfa dizine giriyorsa, ondan çıkan yollar Google için kapalıdır.',
+      'Sayfada "nofollow" (ya da "none") yönergesi var; yani Google bu sayfadaki bağlantıları izlemez. Google yeni sayfaları çoğunlukla bağlantı izleyerek bulur; sayfa aramada çıkıyor olsa bile ondan çıkan yollar kapalıdır.',
     howToFix:
-      'Bağlantıların izlenmesini istiyorsanız yönergeden "nofollow" ifadesini kaldırın. Giriş, filtre ya da kullanıcı içeriği sayfalarında bu bilinçli olabilir; o durumda bir şey yapmanız gerekmez.',
+      'Bağlantıların izlenmesini istiyorsanız yönergeden "nofollow" ifadesini kaldırın. Giriş, filtre ya da kullanıcı içeriği sayfalarında bu bilerek yapılmış olabilir; o durumda yapmanız gereken bir şey yok.',
   },
   "paginated-canonical-to-first-page": {
     severity: "warning",
     title: "Sayfalanmış sayfa, asıl adres olarak ilk sayfayı gösteriyor",
     explanation:
-      "Adres bir sayfa numarası taşıyor ama asıl adres olarak numarasız hâlini, yani ilk sayfayı bildiriyor. Google bunu sayfalama belgelerinde açıkça hata olarak sayar: her sayfa kendi adresini asıl adres olarak vermelidir. Aksi hâlde ikinci ve sonraki sayfalardaki içerik dizinden düşer.",
+      "Adres bir sayfa numarası taşıyor (2. sayfa gibi) ama asıl adres olarak numarasız ilk sayfayı gösteriyor. Google bunu sayfalama belgelerinde hata sayar: her sayfa kendi adresini asıl adres olarak vermeli. Aksi halde 2. ve sonraki sayfalardaki içerik aramadan düşer.",
     howToFix:
-      "Her sayfalama adımının canonical değerini kendisine çevirin. Gerçekten tümünü tek sayfada gösteren bir sürüm varsa, Google o sürümün asıl adres olmasına izin verir.",
+      "Her sayfalama adımının canonical etiketini o sayfanın kendi adresine çevirin. Tüm içeriği tek sayfada gösteren bir sürümünüz varsa Google onun asıl adres olmasına izin verir.",
   },
   "hreflang-missing-x-default": {
     severity: "info",
     title: "Dil sürümlerinde varsayılan sürüm (x-default) yok",
     explanation:
-      "Sayfa hreflang ile dil sürümlerini bildiriyor ama bir x-default sürümü belirtmiyor. x-default, listelenen dillerin hiçbirine uymayan kullanıcıya hangi sürümün gösterileceğini söyler; yoksa Google seçimi kendi yapar.",
+      "Sayfa dil sürümlerini bildiriyor (hreflang) ama varsayılan bir sürüm (x-default) belirtmiyor. x-default, listelenen dillerin hiçbirine uymayan ziyaretçiye hangi sürümün gösterileceğini söyler; yoksa Google seçimi kendisi yapar.",
     howToFix:
-      'hreflang kümesine <link rel="alternate" hreflang="x-default" href="..."> ekleyin; genellikle dil seçme sayfası ya da varsayılan pazarın sürümü gösterilir.',
+      'Dil sürümü listesine `<link rel="alternate" hreflang="x-default" href="...">` satırını ekleyin. Genelde dil seçme sayfası ya da ana pazarınızın sürümü gösterilir.',
   },
   "hreflang-no-return-tag": {
     severity: "warning",
     title: "Dil sürümü karşılıklı bağlanmamış (hreflang)",
     explanation:
-      "Sayfa başka bir adresi dil alternatifi olarak bildiriyor, ama o adres bu sayfayı geri bildirmiyor. hreflang çift taraflı çalışır: karşılığı olmayan bir bildirim yok sayılır, yani iki sayfa da bu etiketten hiçbir fayda görmez.",
+      "Bu sayfa başka bir adresi dil sürümü (hreflang) olarak gösteriyor ama o adres bu sayfayı geri göstermiyor. Dil sürümü bağlantısı iki taraflı çalışır; karşılığı olmayan bildirim yok sayılır, yani iki sayfa da bundan fayda görmez.",
     howToFix:
-      "Hedef sayfaya bu sayfayı gösteren bir hreflang bağlantısı ekleyin. Kümedeki her sayfa, kümedeki tüm sayfaları (kendisi dahil) listelemelidir.",
+      "Hedef sayfaya bu sayfayı gösteren bir dil sürümü bağlantısı ekleyin. Gruptaki her sayfa, kendisi dahil tüm sayfaları listelemeli.",
   },
   "stale-google-verdicts": {
     severity: "info",
     title: "Google'ın bazı sayfalar hakkındaki yanıtı eskimiş",
     explanation:
-      "Bu sayfalar için saklanan Google kararları tazelik penceresinin dışında kaldı. Karar sorulduğu andaki durumu anlatır; o zamandan beri sayfa düzelmiş ya da bozulmuş olabilir. Eski bir yanıtı güncelmiş gibi raporlamamak için bu sayfaların Google kararları bu denetimde bulgu olarak sayılmadı.",
+      "Bu sayfalar için saklanan Google yanıtları eskidi. Yanıt, sorulduğu andaki durumu anlatır; sayfa o zamandan beri düzelmiş ya da bozulmuş olabilir. Eski yanıtı güncelmiş gibi göstermemek için bu sayfaların Google yanıtları bu denetimde bulgu sayılmadı.",
     howToFix:
-      'İndeksleme sekmesindeki "Google\'a sor" düğmesi en çok gecikmiş adresleri yeniden sorar. Günlük 2000 adres sınırı olduğu için tek tıkta hepsi değil, en acil olanları sorulur; birkaç tıkla liste tazelenir.',
+      'Dizin durumu sekmesindeki "Google\'da durumunu kontrol et" düğmesine basın; en eski yanıtlı sayfalar yeniden sorulur. Google günde en fazla 2000 adres sorgulatır, bu yüzden her tıklamada 25 sayfa sorulur; birkaç tıkla liste yenilenir.',
   },
   "google-crawled-not-indexed": {
     severity: "warning",
     title: "Google taradı ama dizine almadı",
     explanation:
-      "Google sayfayı çekti, okudu ve dizine almamayı seçti. Teknik bir engel yok: karar içerikle ilgili. En sık sebepler sayfanın başka bir sayfayla büyük ölçüde örtüşmesi, tek başına bir arama niyetini karşılamayacak kadar ince olması, ya da sitede ona işaret eden bağlantı azlığı yüzünden önemsiz görünmesi.",
+      "Google sayfayı çekti, okudu ve dizine almamaya karar verdi. Teknik bir engel yok; karar içerikle ilgili. En sık nedenler: sayfanın başka bir sayfayla büyük ölçüde aynı olması, tek başına bir aramayı karşılayamayacak kadar ince olması ya da siteden çok az bağlantı alıp önemsiz görünmesi.",
     howToFix:
-      "Sayfanın kendine ait bir sorusu ve cevabı olduğundan emin olun. Yakın konulu başka sayfalarla örtüşüyorsa birleştirip tek adrese yönlendirin. Duracaksa içeriği derinleştirin ve ilgili sayfalardan ona bağlantı verin.",
+      "Sayfanın kendine ait bir sorusu ve cevabı olduğundan emin olun. Yakın konulu başka sayfalarla örtüşüyorsa birleştirip tek adrese yönlendirin. Sayfa kalacaksa içeriği derinleştirin ve ilgili sayfalardan buraya bağlantı verin.",
   },
   "google-discovered-not-indexed": {
     severity: "warning",
     title: "Google keşfetti ama henüz taramadı",
     explanation:
-      "Google adresi biliyor ama sayfayı çekmedi. Bu bir içerik kararı değil, bir sıraya girme sorunu: Google siteye ayırdığı tarama bütçesini bu adrese harcamaya değer bulmamış. Büyük sitelerde ve iç bağlantısı zayıf sayfalarda olur.",
+      "Google bu adresi biliyor ama sayfayı henüz çekmedi. Bu bir içerik kararı değil, sıra sorunu: Google, siteniz için ayırdığı tarama bütçesini (tarama zamanı ve isteği) bu adrese harcamaya değer bulmamış. Büyük sitelerde ve az bağlantı alan sayfalarda olur.",
     howToFix:
-      "Sayfaya site içinden, özellikle sık taranan sayfalardan bağlantı verin ve site haritasında olduğundan emin olun. Sunucu yavaşsa tarama bütçesi de daralır, yanıt süresine bakın.",
+      "Sayfaya site içinden, özellikle sık taranan sayfalardan bağlantı verin ve site haritasında olduğundan emin olun. Sunucunuz yavaşsa tarama bütçesi de daralır; sunucu yanıt süresine de bakın.",
   },
   "google-duplicate-no-canonical": {
     severity: "warning",
     title: "Google yinelenen içerik gördü, asıl adres belirtilmemiş",
     explanation:
-      "Google bu sayfayı bir başkasının kopyası saydı ve hangisinin asıl olduğunu siz söylemediğiniz için kendi seçti. Seçtiği sayfa sizin istediğiniz olmayabilir; sıralama sinyalleri o adreste toplanır.",
+      "Google bu sayfayı başka bir sayfanın kopyası saydı ve hangisinin asıl olduğunu siz söylemediğiniz için kendisi seçti. Seçtiği sayfa sizin istediğiniz olmayabilir; sıralama gücü de seçtiği adreste toplanır.",
     howToFix:
-      "Kopya kümesindeki her sayfaya, asıl saydığınız adresi gösteren bir rel=canonical ekleyin. Kopyalar gereksizse yönlendirin.",
+      "Kopya grubundaki her sayfaya, asıl saydığınız adresi gösteren bir canonical (asıl adres) etiketi ekleyin. Kopyalar gereksizse asıl sayfaya yönlendirin.",
   },
   "google-url-unknown": {
     severity: "warning",
     title: "Google bu adresi hiç bilmiyor",
     explanation:
-      "Google adresi hiç duymamış: ne keşfetmiş ne taramış. Sayfaya giden bir yol yok demektir. Dizine girmeyen bir sayfa arama sonuçlarında hiç görünmez.",
+      "Google bu adresi hiç duymamış: ne keşfetmiş ne taramış. Yani sayfaya giden bir yol yok ve dizine girmeyen sayfa aramada hiç çıkmaz.",
     howToFix:
-      "Adresi site haritasına ekleyin ve site haritasını Search Console'a gönderin. Ayrıca sitenin taranan sayfalarından bu sayfaya bağlantı verin; Google sayfaları bağlantı takip ederek bulur.",
+      "Adresi site haritasına ekleyin ve site haritasını Search Console'a gönderin. Ayrıca sitenizin taranan sayfalarından bu sayfaya bağlantı verin; Google sayfaları bağlantıları izleyerek bulur.",
   },
   "google-rich-results-invalid": {
     severity: "warning",
     title: "Google yapısal veride hata buldu",
     explanation:
-      "Sayfadaki yapısal veri (schema.org işaretlemesi) Google'ın zengin sonuç denetiminden geçemedi. Zengin sonuç, arama sonucunda yıldız, SSS açılırı, fiyat gibi ek alanların çıkmasıdır; hatalı işaretleme bunları kapatır. Bu karar Google'ın kendisinden geliyor: yerel bir tarayıcı işaretlemenin geçerli olup olmadığını söyleyemez, yalnızca var olup olmadığını görebilir.",
+      "Sayfadaki yapısal veri (Google'a sayfanın ürün, SSS, tarif gibi ne olduğunu anlatan işaretleme) Google'ın zengin sonuç denetiminden geçemedi. Zengin sonuç, aramada yıldız, SSS açılırı ya da fiyat gibi ek bilgilerin çıkmasıdır; hatalı işaretleme bunları kapatır. Bu kararı yalnızca Google verebilir; bizim tarayıcımız işaretlemenin var olup olmadığını görür, geçerli olup olmadığını göremez.",
     howToFix:
-      "Adresi Google'ın Zengin Sonuç Testi'nde açın; hangi alanın eksik ya da yanlış türde olduğunu adıyla söyler. Genelde zorunlu bir alanın boş bırakılması ya da sayfada görünmeyen bir şeyin işaretlenmesi olur.",
+      "Adresi Google'ın Zengin Sonuç Testi'nde açın; hangi alanın eksik ya da yanlış türde olduğunu adıyla söyler. Çoğunlukla zorunlu bir alan boştur ya da sayfada görünmeyen bir şey işaretlenmiştir; düzeltin.",
   },
   "open-graph-missing-site": {
     severity: "info",
     title: "Sitede sosyal medya paylaşım etiketleri (Open Graph) yok",
     explanation:
-      "Taranan sayfaların hiçbirinde og:title ya da og:image bulunamadı. Bu etiketler Google sıralamasını doğrudan etkilemez; adresiniz WhatsApp'ta, LinkedIn'de, Slack'te veya X'te paylaşıldığında ne görüneceğini belirler. Yoklarsa bağlantı çıplak bir URL olarak görünür ve paylaşımdan gelen tıklama düşer. Sayfa başına bildirilmiyor: eksiklik tek tek sayfaların değil, şablonun.",
+      "Taranan sayfaların hiçbirinde og:title ya da og:image yok. Bu etiketler Google sıralamasını etkilemez; bağlantınız WhatsApp, LinkedIn, Slack ya da X'te paylaşılınca ne görüneceğini belirler. Yoksa bağlantı çıplak adres olarak görünür ve paylaşımdan gelen tıklama düşer. Bu bulgu sayfa başına değil, site genelinde bir şablon eksiğini gösterir.",
     howToFix:
-      "Şablonun <head> bölümüne og:title, og:description ve mutlak adresli (en az 1200x630 piksel) bir og:image ekleyin. Tek bir şablon düzeltmesi tüm sayfaları kapatır.",
+      "Şablonun <head> bölümüne og:title, og:description ve tam adresli bir og:image (en az 1200x630 piksel) ekleyin. Tek bir şablon düzeltmesi tüm sayfaları kapatır; SEO eklentileri bunu hazır ayar olarak sunar.",
   },
   "structured-data-missing-site": {
     severity: "info",
     title: "Sitede hiç yapısal veri yok",
     explanation:
-      "Taranan hiçbir sayfada schema.org işaretlemesi bulunamadı. Yapısal veri bir sıralama sinyali değildir; arama sonucunda ek alanların (SSS, ürün, nasıl yapılır, kırıntı yolu) çıkmasını mümkün kılar. Bu alanlar sonuçta kapladığınız yeri ve tıklanma oranını değiştirir.",
+      "Taranan hiçbir sayfada yapısal veri (Google'a sayfanın ürün, SSS, makale gibi ne olduğunu anlatan işaretleme) yok. Yapısal veri sıralamayı doğrudan etkilemez; ama aramada SSS, ürün, yol haritası ya da kırıntı yolu gibi ek alanların çıkmasını sağlar ve bunlar sonucun kapladığı yeri ve tıklama oranını artırabilir.",
     howToFix:
-      "Sayfa türüne uyan şemayla başlayın: dokümantasyon için Article ve BreadcrumbList, SSS sayfası için FAQPage, ürün sayfası için Product. İşaretlemenin sayfada gerçekten görünen içeriği anlatması şart; görünmeyeni işaretlemek Google'ın kurallarını ihlal eder.",
+      "Sayfa türüne uyan işaretlemeyle başlayın: yazılar için Article ve BreadcrumbList, SSS sayfası için FAQPage, ürün sayfası için Product. İşaretleme sayfada gerçekten görünen içeriği anlatmalı; görünmeyeni işaretlemek Google kurallarına aykırıdır.",
   },
   "multiple-canonical-tags": {
     severity: "warning",
     title: "Sayfa birbiriyle çelişen asıl adresler bildiriyor",
     explanation:
-      "Sayfanın head bölümünde farklı adresleri gösteren birden çok rel=canonical var. Canonical, içeriğin hangi adreste durduğuna dair tek bir ifadedir; ikisi daha güçlü bir ifade değil, bir çelişkidir. Google çelişkiyi kendi seçimini yaparak çözer, yani asıl adresi siz belirlememiş olursunuz. Genelde şablonun bir değer, bir eklentinin başka bir değer yazmasından çıkar.",
+      "Sayfanın head bölümünde farklı adresleri gösteren birden çok canonical (asıl adres) etiketi var. Bu, iki farklı söz demektir, daha güçlü bir söz değil; Google çelişkiyi kendi seçimini yaparak çözer. Genelde şablon bir adres, bir eklenti başka bir adres yazınca olur.",
     howToFix:
-      "Sayfanın kaynağında rel=canonical arayın; hangisinin doğru olduğuna karar verip diğerini üreten yeri kapatın. Aynı adresi iki kez yazan bir kurulum sorun değildir, bu bulgu yalnızca hedefler farklıyken çıkar.",
+      "Sayfa kaynağında canonical etiketlerini bulun, hangisinin doğru olduğuna karar verin ve diğerini üreten ayarı ya da eklentiyi kapatın. Aynı adresi iki kez yazan kurulum sorun değildir; bulgu yalnızca adresler farklıyken çıkar.",
   },
   "google-crawl-stale": {
     severity: "info",
     title: "Google bu sayfayı uzun süredir taramadı",
     explanation:
-      "Google'ın bu adresi en son ziyareti aylar öncesine dayanıyor. Sayfa dizinde olabilir, ama Google'ın gördüğü sürüm o tarihteki sürüm: o günden sonra yaptığınız hiçbir değişiklik arama sonuçlarına yansımamıştır. Nadiren taranan bir sayfa genelde sitenin geri kalanından yeterince bağlantı almayan ya da Google'ın önemsiz bulduğu bir sayfadır.",
+      "Google bu adresi en son aylar önce ziyaret etmiş. Sayfa dizinde olabilir ama Google'ın gördüğü sürüm o tarihteki sürüm: sonradan yaptığınız değişiklikler aramaya yansımamıştır. Nadiren taranan sayfalar genelde siteden yeterince bağlantı almayan ya da Google'ın önemsiz bulduğu sayfalardır.",
     howToFix:
-      "Sayfayı sık taranan sayfalardan bağlantılayın ve site haritasında olduğundan emin olun. İçerik gerçekten güncellendiyse Search Console'dan dizine ekleme isteyebilirsiniz; ama asıl çözüm sayfanın siteye daha iyi bağlanması.",
+      "Sayfaya sık taranan sayfalardan bağlantı verin ve site haritasında olduğundan emin olun. İçerik gerçekten güncellendiyse Search Console'dan dizine ekleme isteyebilirsiniz; ama kalıcı çözüm sayfayı siteye daha iyi bağlamaktır.",
   },
 } as const satisfies Record<string, AuditIssueDescriptor>;

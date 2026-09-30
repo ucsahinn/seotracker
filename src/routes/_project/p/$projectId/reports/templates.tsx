@@ -45,7 +45,7 @@ function ReportTemplatesPage() {
     void queryClient.invalidateQueries({
       queryKey: templatesQueryKey(projectId),
     });
-    // The reports list renders the template name in its Type column.
+    // The reports list renders the template name in its type column.
     void queryClient.invalidateQueries({
       queryKey: reportsQueryKey(projectId),
     });
@@ -80,7 +80,7 @@ function ReportTemplatesPage() {
 
       <PageHeader
         title="Rapor şablonları"
-        description="Ajanlarınızın rapor yazarken izlediği yeniden kullanılabilir brifingler: kimin için, hangi bölümlerden oluşuyor ve tonu ne olmalı."
+        description="Ajanınızın rapor yazarken izleyeceği, yeniden kullanılabilir yönergeler: rapor kimin için, hangi bölümlerden oluşur, nasıl bir dille yazılır."
         actions={
           <button
             type="button"

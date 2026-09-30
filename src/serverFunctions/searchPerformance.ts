@@ -25,6 +25,8 @@ const STRIKING_DISTANCE_FETCH_LIMIT = 1000;
 // dimensions:["date"] returns one row per day; the longest range is ~92 days.
 const DAILY_ROW_LIMIT = 200;
 const COUNTRY_ROW_LIMIT = 25;
+// GSC knows three devices.
+const DEVICE_ROW_LIMIT = 3;
 // Export pulls the whole dimension in one shot, capped at GSC's per-call max
 // (GSC_MAX_ROW_LIMIT). Large stores get everything up to this ceiling.
 const EXPORT_ROW_LIMIT = 1000;
@@ -57,42 +59,56 @@ export const getSearchPerformanceReport = createServerFn({ method: "POST" })
     const prev = previousPeriod(startDate, endDate);
     const projectId = context.projectId;
     const { deviceFilters, filters } = buildGscFilters(data);
+    // The device ring ignores the device filter (so every device stays
+    // visible while one is chosen) but keeps the country filter.
+    const deviceRingFilters = buildGscFilters({
+      country: data.country,
+    }).filters;
 
     try {
-      const [current, previous, queryPages, countries] = await Promise.all([
-        GscService.getPerformance({
-          projectId,
-          startDate,
-          endDate,
-          dimensions: ["date"],
-          filters,
-          rowLimit: DAILY_ROW_LIMIT,
-        }),
-        GscService.getPerformance({
-          projectId,
-          startDate: prev.startDate,
-          endDate: prev.endDate,
-          dimensions: ["date"],
-          filters,
-          rowLimit: DAILY_ROW_LIMIT,
-        }),
-        GscService.getPerformance({
-          projectId,
-          startDate,
-          endDate,
-          dimensions: ["query", "page"],
-          filters,
-          rowLimit: STRIKING_DISTANCE_FETCH_LIMIT,
-        }),
-        GscService.getPerformance({
-          projectId,
-          startDate,
-          endDate,
-          dimensions: ["country"],
-          filters: deviceFilters,
-          rowLimit: COUNTRY_ROW_LIMIT,
-        }),
-      ]);
+      const [current, previous, queryPages, countries, devices] =
+        await Promise.all([
+          GscService.getPerformance({
+            projectId,
+            startDate,
+            endDate,
+            dimensions: ["date"],
+            filters,
+            rowLimit: DAILY_ROW_LIMIT,
+          }),
+          GscService.getPerformance({
+            projectId,
+            startDate: prev.startDate,
+            endDate: prev.endDate,
+            dimensions: ["date"],
+            filters,
+            rowLimit: DAILY_ROW_LIMIT,
+          }),
+          GscService.getPerformance({
+            projectId,
+            startDate,
+            endDate,
+            dimensions: ["query", "page"],
+            filters,
+            rowLimit: STRIKING_DISTANCE_FETCH_LIMIT,
+          }),
+          GscService.getPerformance({
+            projectId,
+            startDate,
+            endDate,
+            dimensions: ["country"],
+            filters: deviceFilters,
+            rowLimit: COUNTRY_ROW_LIMIT,
+          }),
+          GscService.getPerformance({
+            projectId,
+            startDate,
+            endDate,
+            dimensions: ["device"],
+            filters: deviceRingFilters,
+            rowLimit: DEVICE_ROW_LIMIT,
+          }),
+        ]);
 
       return {
         connected: true as const,
@@ -117,6 +133,7 @@ export const getSearchPerformanceReport = createServerFn({ method: "POST" })
         daily: toDailyRows(current.rows, startDate, endDate),
         strikingDistance: buildStrikingDistanceRows(queryPages.rows),
         countries: toDimensionRows(countries.rows),
+        devices: toDimensionRows(devices.rows),
       };
     } catch (error) {
       if (isExpectedConnectionFailure(error)) {

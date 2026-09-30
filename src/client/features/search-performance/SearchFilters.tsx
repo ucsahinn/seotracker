@@ -1,3 +1,7 @@
+import {
+  DEVICE_LABELS,
+  isDevice,
+} from "@/client/features/search-performance/deviceShare";
 import { formatCountry } from "@/client/lib/format";
 import {
   GSC_DEVICES,
@@ -16,11 +20,6 @@ const RANGE_OPTIONS = SEARCH_PERFORMANCE_RANGES.map((value) => ({
   label: RANGE_LABELS[value],
 }));
 
-const DEVICE_LABELS: Record<SearchPerformanceDevice, string> = {
-  DESKTOP: "Masaüstü",
-  MOBILE: "Mobil",
-  TABLET: "Tablet",
-};
 const DEVICE_OPTIONS = GSC_DEVICES.map((value) => ({
   value,
   label: DEVICE_LABELS[value],
@@ -31,10 +30,6 @@ const ALL = "ALL";
 
 function isDateRange(value: string): value is SearchPerformanceDateRange {
   return SEARCH_PERFORMANCE_RANGES.some((option) => option === value);
-}
-
-function isDevice(value: string): value is SearchPerformanceDevice {
-  return GSC_DEVICES.some((option) => option === value);
 }
 
 /** The device, country and date-range selects beside the tabs. */

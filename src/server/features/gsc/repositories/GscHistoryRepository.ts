@@ -1,4 +1,4 @@
-import { and, asc, desc, eq, gte, sql } from "drizzle-orm";
+import { and, asc, desc, eq, gte, lte, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { executeInBatches, runBatch } from "@/db/runBatch";
 import { gscArchiveState, gscQueryDaily } from "@/db/schema";
@@ -122,6 +122,8 @@ async function getQueryHistory(input: {
 async function getTrackedQueries(input: {
   projectId: string;
   since: string;
+  /** Inclusive upper bound; omitted means "through the newest day". */
+  until?: string;
   limit: number;
 }) {
   return db
@@ -141,6 +143,7 @@ async function getTrackedQueries(input: {
       and(
         eq(gscQueryDaily.projectId, input.projectId),
         gte(gscQueryDaily.date, input.since),
+        input.until ? lte(gscQueryDaily.date, input.until) : undefined,
       ),
     )
     .groupBy(gscQueryDaily.query)

@@ -64,7 +64,11 @@ export function KeyPagesSection({
   };
 
   return (
-    <section className="space-y-3">
+    <section
+      id="context-key-pages"
+      tabIndex={-1}
+      className="scroll-mt-6 space-y-3 outline-none"
+    >
       <SectionHeader
         title="Önemli sayfalar"
         hint="Siteyi taşıyan sayfaların kısa listesi — tam bir envanter değil."

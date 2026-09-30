@@ -5,6 +5,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { ReportsList } from "@/client/features/reports/ReportsList";
+import { ReportsSummarySkeleton } from "@/client/features/reports/ReportsSummary";
 import {
   DeleteReportModal,
   reportsQueryKey,
@@ -41,13 +42,13 @@ function ReportsPage() {
     <PageShell>
       <PageHeader
         title="Raporlar"
-        description="Bu projeye kaydedilen HTML raporlar: denetim ekranından indirdikleriniz ve ajanlarınızın yazdıkları. Yenisini yazdırmak için istemi kopyalayıp ajanınıza verin."
+        description="Bu projeye kaydedilen HTML raporlar: denetim ekranından indirdikleriniz ve yapay zekâ ajanınızın yazdıkları. Yeni rapor için istemi kopyalayıp ajanınıza yapıştırın."
         actions={
           <div className="flex items-center gap-2">
             <CopyButton
               primary
               value={reportRequestPrompt(projectId)}
-              label="Ajanına rapor yazdır"
+              label="Ajanıma rapor yazdır"
               successMessage="İstem kopyalandı, ajanınıza yapıştırın"
             />
             <Link
@@ -62,10 +63,13 @@ function ReportsPage() {
       />
 
       {reportsQuery.isPending ? (
-        <div className="space-y-2" aria-busy>
-          {Array.from({ length: 4 }, (_, index) => (
-            <div key={index} className="skeleton h-14" />
-          ))}
+        <div className="space-y-4">
+          <ReportsSummarySkeleton />
+          <div className="space-y-2" aria-busy>
+            {Array.from({ length: 4 }, (_, index) => (
+              <div key={index} className="skeleton h-14" />
+            ))}
+          </div>
         </div>
       ) : reportsQuery.isError ? (
         <div className="rounded-box border border-base-300 bg-base-100">

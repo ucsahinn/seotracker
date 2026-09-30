@@ -5,6 +5,7 @@ import {
   isFirstPage,
 } from "./quickFilters";
 import { countrySegments } from "./countryShare";
+import { deviceSegments } from "./deviceShare";
 
 const row = (
   position: number,
@@ -72,6 +73,22 @@ describe("countrySegments", () => {
   it("has no remainder slice when there is nothing left over", () => {
     expect(countrySegments([{ key: "tur", clicks: 5 }])).toEqual([
       { key: "tur", clicks: 5 },
+    ]);
+  });
+});
+
+describe("deviceSegments", () => {
+  it("ranks known devices by clicks and drops empty or unknown ones", () => {
+    expect(
+      deviceSegments([
+        { key: "DESKTOP", clicks: 10 },
+        { key: "MOBILE", clicks: 30 },
+        { key: "TABLET", clicks: 0 },
+        { key: "SMART_TV", clicks: 5 },
+      ]),
+    ).toEqual([
+      { key: "MOBILE", label: "Mobil", value: 30 },
+      { key: "DESKTOP", label: "Bilgisayar", value: 10 },
     ]);
   });
 });

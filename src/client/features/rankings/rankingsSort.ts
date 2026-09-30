@@ -6,7 +6,13 @@
  */
 import { compareText } from "@/client/components/table/useLocalSort";
 
-export type SortKey = "query" | "position" | "impressions" | "clicks" | "days";
+export type SortKey =
+  | "query"
+  | "position"
+  | "impressions"
+  | "clicks"
+  | "days"
+  | "delta";
 
 type TrackedRow = {
   query: string;
@@ -14,6 +20,7 @@ type TrackedRow = {
   impressions: number;
   clicks: number;
   days: number;
+  delta: number | null;
 };
 
 export function compareTracked(
@@ -22,5 +29,6 @@ export function compareTracked(
   key: SortKey,
 ): number {
   if (key === "query") return compareText(a.query, b.query);
-  return a[key] - b[key];
+  // A query with no previous reading sorts as no change.
+  return (a[key] ?? 0) - (b[key] ?? 0);
 }

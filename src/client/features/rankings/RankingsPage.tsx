@@ -6,7 +6,14 @@ import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { describeWindow } from "@/shared/dataFreshness";
 import { useLocalSort } from "@/client/components/table/useLocalSort";
-import { CircleSlash, Eye, Trophy } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowUp,
+  CircleSlash,
+  Eye,
+  LogOut,
+  Trophy,
+} from "lucide-react";
 import { TrackedQueriesTable } from "@/client/features/rankings/TrackedQueriesTable";
 import { FilterChips } from "@/client/features/search-performance/FilterChips";
 import { PositionBandBars } from "@/client/features/rankings/PositionBandBars";
@@ -17,6 +24,12 @@ import {
   type BandId,
   type ChipId,
 } from "@/client/features/rankings/positionBands";
+import { MoversCard } from "@/client/features/rankings/MoversCard";
+import {
+  applyMove,
+  countMoves,
+  type MoveId,
+} from "@/client/features/rankings/rankingMoves";
 import { ArchiveStatus } from "@/client/features/rankings/ArchiveStatus";
 import {
   compareTracked,
@@ -109,6 +122,7 @@ export function RankingsPage({
   // because they describe a look at one fetch, not a shareable view.
   const [band, setBand] = useState<BandId | undefined>(undefined);
   const [chip, setChip] = useState<ChipId | undefined>(undefined);
+  const [move, setMove] = useState<MoveId | undefined>(undefined);
   const historyRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -127,7 +141,8 @@ export function RankingsPage({
   // could never show.
   const inBand = applyBandAndChip(fetched, band, undefined);
   const chipCounts = countChips(inBand);
-  const filtered = applyBandAndChip(fetched, band, chip);
+  const moveCounts = countMoves(inBand);
+  const filtered = applyMove(applyBandAndChip(fetched, band, chip), move);
   const allRows = sorting.apply(
     needle
       ? filtered.filter((row) =>
@@ -136,7 +151,9 @@ export function RankingsPage({
       : filtered,
     compareTracked,
   );
-  const narrowed = band !== undefined || chip !== undefined;
+  const narrowed =
+    band !== undefined || chip !== undefined || move !== undefined;
+  const hasChange = fetched.some((row) => row.delta !== null);
   const archiveEmpty = sync.data?.rowCount === 0;
   const searching = search.trim() !== "";
   const emptyTitle = archiveEmpty
@@ -208,6 +225,21 @@ export function RankingsPage({
         </p>
       ) : null}
 
+      {tracked.data && fetched.length > 0 ? (
+        hasChange ? (
+          <MoversCard rows={fetched} onPick={setSelected} />
+        ) : (
+          <p className="rounded-box border border-base-300 bg-base-100 px-4 py-3 text-sm text-muted">
+            Değişim gösterilemiyor: arşivde önceki dönem (
+            {formatDate(tracked.data.previousRange.startDate)} –{" "}
+            {formatDate(tracked.data.previousRange.endDate)}) için bu sorgulara
+            ait kayıt yok. Karşılaştırma, aynı uzunluktaki iki dönemde de verisi
+            olan sorgular için yapılır; daha kısa bir aralık seçin ya da arşiv
+            birikmeye devam etsin.
+          </p>
+        )
+      ) : null}
+
       <PositionBandBars
         rows={fetched}
         active={band}
@@ -231,37 +263,70 @@ export function RankingsPage({
             }}
           />
           {fetched.length > 0 ? (
-            <FilterChips<ChipId>
-              label="Hızlı filtreler"
-              active={chip}
-              onChange={(next) => {
-                setChip(next);
-                setPage(1);
-              }}
-              chips={[
-                {
-                  id: "firstPage",
-                  label: "İlk sayfada",
-                  icon: Trophy,
-                  count: chipCounts.firstPage,
-                  hint: "Ortalama sırası 10 veya daha iyi olan sorgular.",
-                },
-                {
-                  id: "highImpressions",
-                  label: "Gösterimi yüksek",
-                  icon: Eye,
-                  count: chipCounts.highImpressions,
-                  hint: `${formatNumber(HIGH_IMPRESSIONS)} veya daha fazla gösterim alan sorgular.`,
-                },
-                {
-                  id: "noClicks",
-                  label: "Hiç tıklanmayan",
-                  icon: CircleSlash,
-                  count: chipCounts.noClicks,
-                  hint: "Gösterilmiş ama hiç tıklanmamış sorgular.",
-                },
-              ]}
-            />
+            <div className="flex flex-col gap-2">
+              <FilterChips<MoveId>
+                label="Değişim filtreleri"
+                active={move}
+                onChange={(next) => {
+                  setMove(next);
+                  setPage(1);
+                }}
+                chips={[
+                  {
+                    id: "risers",
+                    label: "Yükselenler",
+                    icon: ArrowUp,
+                    count: moveCounts.risers,
+                    hint: "Önceki döneme göre en az yarım sıra yükselen sorgular.",
+                  },
+                  {
+                    id: "fallers",
+                    label: "Düşenler",
+                    icon: ArrowDown,
+                    count: moveCounts.fallers,
+                    hint: "Önceki döneme göre en az yarım sıra düşen sorgular.",
+                  },
+                  {
+                    id: "top10",
+                    label: "İlk 10",
+                    icon: Trophy,
+                    count: moveCounts.top10,
+                    hint: "Ortalama sırası 10 veya daha iyi olan ve önceki dönemde de verisi olan sorgular.",
+                  },
+                  {
+                    id: "lost",
+                    label: "Sıralama kaybedenler",
+                    icon: LogOut,
+                    count: moveCounts.lost,
+                    hint: "Önceki dönemde ilk 10'da olup şimdi ilk 10'un dışına çıkan sorgular.",
+                  },
+                ]}
+              />
+              <FilterChips<ChipId>
+                label="Hızlı filtreler"
+                active={chip}
+                onChange={(next) => {
+                  setChip(next);
+                  setPage(1);
+                }}
+                chips={[
+                  {
+                    id: "highImpressions",
+                    label: "Gösterimi yüksek",
+                    icon: Eye,
+                    count: chipCounts.highImpressions,
+                    hint: `${formatNumber(HIGH_IMPRESSIONS)} veya daha fazla gösterim alan sorgular.`,
+                  },
+                  {
+                    id: "noClicks",
+                    label: "Hiç tıklanmayan",
+                    icon: CircleSlash,
+                    count: chipCounts.noClicks,
+                    hint: "Gösterilmiş ama hiç tıklanmamış sorgular.",
+                  },
+                ]}
+              />
+            </div>
           ) : null}
         </div>
         <TrackedQueriesTable

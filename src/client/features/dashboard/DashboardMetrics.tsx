@@ -3,15 +3,11 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { MetricRow, MetricTile } from "@/client/components/MetricTile";
 import { describeTotals } from "@/client/features/search-performance/totals";
-import { getSearchPerformanceReport } from "@/serverFunctions/searchPerformance";
+import { dashboardGscReportQuery } from "@/client/features/dashboard/dashboardGscReport";
 import { DEFAULT_WINDOW_DAYS } from "@/shared/dataFreshness";
 import { formatDate } from "@/client/lib/format";
 
-/*
- * The dashboard's one window, named once. The label and the query used to be
- * separate literals, which is how a label outlives the window it describes.
- */
-const DASHBOARD_RANGE = "last_28_days" as const;
+/* The window itself lives in dashboardGscReport.ts; this is only its label. */
 const DASHBOARD_RANGE_LABEL = `Son ${DEFAULT_WINDOW_DAYS} gün`;
 
 /**
@@ -30,14 +26,7 @@ export function DashboardMetrics({
   projectId: string;
   connected: boolean;
 }) {
-  const reportQuery = useQuery({
-    queryKey: ["dashboardGscReport", projectId],
-    queryFn: () =>
-      getSearchPerformanceReport({
-        data: { projectId, dateRange: DASHBOARD_RANGE },
-      }),
-    enabled: connected,
-  });
+  const reportQuery = useQuery(dashboardGscReportQuery(projectId, connected));
 
   const report = reportQuery.data?.connected ? reportQuery.data : null;
 

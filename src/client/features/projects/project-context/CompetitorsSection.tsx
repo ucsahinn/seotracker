@@ -52,7 +52,11 @@ export function CompetitorsSection({
   };
 
   return (
-    <section className="space-y-3">
+    <section
+      id="context-competitors"
+      tabIndex={-1}
+      className="scroll-mt-6 space-y-3 outline-none"
+    >
       <SectionHeader
         title="Rakipler"
         hint="Kendinizi kıyasladığınız siteler."

@@ -15,6 +15,7 @@ import {
 } from "@/client/features/dashboard/GoogleSetupBanner";
 import { Ga4Card } from "@/client/features/dashboard/Ga4Card";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
+import { SearchInsights } from "@/client/features/dashboard/SearchInsights";
 import { NextStepsCard } from "@/client/features/dashboard/NextStepsCard";
 import {
   getDashboardActivation,
@@ -159,6 +160,8 @@ export function DashboardPage({ projectId }: { projectId: string }) {
       />
 
       <AuditFreshnessCard projectId={projectId} />
+
+      <SearchInsights projectId={projectId} connected={gscConnected} />
 
       {/* Cards with data sort before setup pitches and empty states. A lone
           card takes the full width rather than leaving half the row empty. */}

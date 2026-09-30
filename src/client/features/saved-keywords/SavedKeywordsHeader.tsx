@@ -18,7 +18,7 @@ export function SavedKeywordsHeader({
   return (
     <PageHeader
       title="Kayıtlı kelimeler"
-      description="Önemsediğiniz sorguları bir arada tutun, etiketleyin ve harekete geçmeye hazır olduğunuzda geri dönün."
+      description="Arama performansından kaydettiğiniz sorgular. Etiketleyin, Search Console'daki ortalama sıralarına bakın, CSV ya da Sheets'e aktarın."
       actions={
         /*
          * The shared menu, not a third copy of the same dropdown. The inline

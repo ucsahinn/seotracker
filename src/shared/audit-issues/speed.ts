@@ -19,33 +19,33 @@ export const SPEED_ISSUES = {
     severity: "warning",
     title: "Sayfanın ana içeriği geç yükleniyor (LCP)",
     explanation:
-      "Sayfanın en büyük görsel öğesi 4 saniyeden geç yerleşti. Google bu eşiği 'zayıf' sayar ve LCP, sayfa deneyimi sinyallerinden biridir. Ölçüm PageSpeed Insights laboratuvarından gelir; ziyaretçilerinizin gerçek süresi değildir, ama tekrarlanabilir bir göstergesidir.",
+      "Sayfanın en büyük öğesi (genelde kapak görseli ya da ana başlık) 4 saniyeden geç göründü. Google bu süreyi 'zayıf' sayar ve sayfa deneyimi sıralamayı etkiler. Bu, PageSpeed Insights'ın laboratuvar ölçümüdür; ziyaretçilerinizin gerçek süresi değil, ama onun güvenilir bir göstergesidir.",
     howToFix:
-      "En büyük öğenin ne olduğunu PageSpeed Insights raporunda görün. Genelde bir kapak görseli ya da başlık metni olur: görseli sıkıştırıp modern bir biçime geçirin, ilk ekrandaki görsele yükleme önceliği verin, ve o öğeyi geciktiren yazı tipi ile betikleri erteleyin.",
+      "PageSpeed Insights raporunda en büyük öğenin ne olduğuna bakın. Genelde bir görseldir: görseli küçültüp WebP gibi hafif bir biçime çevirin, ilk ekrandaki görselin geç yüklenmesini kapatın ve sayfayı yavaşlatan betik ve yazı tiplerini erteleyin.",
   },
   "cwv-cls-poor": {
     severity: "warning",
     title: "Sayfa yüklenirken içerik kayıyor (CLS)",
     explanation:
-      "Sayfa yüklenirken içerik 0,25'ten fazla yer değiştirdi; Google bu eşiği 'zayıf' sayar. Okumaya başlayan biri metnin altından kaymasıyla yanlış yere tıklar. Ölçüm laboratuvar ölçümüdür.",
+      "Sayfa yüklenirken içerik 0,25'ten fazla kaydı; Google bu değeri 'zayıf' sayar. Okurken metin kayınca ziyaretçi yanlış yere tıklar. Bu, laboratuvar ölçümüdür.",
     howToFix:
-      "Görsellere ve gömülü çerçevelere genişlik ve yükseklik verin, reklam ve banner alanları için yer ayırın, ve sonradan yüklenen yazı tiplerinde yerleşimi bozmayan bir yedek yazı tipi tanımlayın.",
+      "Görsellere ve gömülü çerçevelere genişlik ile yükseklik verin, reklam ve afiş alanları için yer ayırın, özel yazı tipi için yerleşimi bozmayan bir yedek yazı tipi tanımlayın.",
   },
   "cwv-inp-poor": {
     severity: "warning",
     title: "Sayfa tıklamalara geç yanıt veriyor (INP)",
     explanation:
-      "Sayfa bir etkileşime yanıt vermek için 500 milisaniyeden uzun sürdü; Google bu eşiği 'zayıf' sayar. INP, 2024'te FID'in yerini alan sayfa deneyimi ölçüsüdür. Ölçüm laboratuvar ölçümüdür.",
+      "Sayfa bir tıklamaya ya da dokunuşa 500 milisaniyeden geç yanıt verdi; Google bu süreyi 'zayıf' sayar. Bu ölçü (INP) 2024'ten beri sayfa deneyiminin parçasıdır. Bu, laboratuvar ölçümüdür.",
     howToFix:
-      "Ana iş parçacığını uzun süre meşgul eden betikleri bulun. Genelde suçlu üçüncü taraf etiketleri ve büyük paketlerdir: gereksizleri kaldırın, kalanları erteleyin, uzun işleri parçalara bölün.",
+      "Sayfayı en çok meşgul eden betikleri bulun; genelde üçüncü taraf etiketler (reklam, sohbet, takip kodu) ve büyük betik paketleridir. Gereksizleri kaldırın, kalanları sayfa açıldıktan sonra yükleyin.",
   },
   "lighthouse-seo-low": {
     severity: "warning",
     title: "Google'ın SEO denetim puanı düşük",
     explanation:
-      "PageSpeed Insights'ın SEO denetimi bu sayfada 90'ın altında bir puan verdi. Bu denetim tarayıcının baktığından farklı şeylere de bakar: bağlantı metinleri, dokunma hedefi boyutları, eklenti kullanımı, robots yönergeleri. Puan bir sıralama sinyali değildir; hangi kontrollerin düştüğünü gösteren bir işarettir.",
+      "PageSpeed Insights'ın SEO denetimi bu sayfaya 90'ın altında puan verdi. Bu denetim bağlantı metinleri, dokunma alanı boyutu ve robots yönergeleri gibi şeylere bakar. Puanın kendisi sıralamayı etkilemez; hangi kontrollerin başarısız olduğunu gösterir.",
     howToFix:
-      "Bu sayfayı PageSpeed Insights'ta açıp SEO bölümündeki düşen kontrollere bakın. Her biri neyin eksik olduğunu adıyla söyler.",
+      "Sayfayı PageSpeed Insights'ta açın ve SEO bölümünde başarısız görünen kontrollere bakın. Her biri neyin eksik olduğunu adıyla söyler; hepsi düzelince puan 90'ın üstüne çıkar.",
   },
 } as const satisfies Record<string, AuditIssueDescriptor>;
 

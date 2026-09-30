@@ -9,6 +9,7 @@ import {
   PROSE_MAX_CHARS,
   type ProjectContextSectionKey,
 } from "@/types/schemas/projectContext";
+import { ContextHealthCard } from "./ContextHealthCard";
 import { CompetitorsSection } from "./CompetitorsSection";
 import { FillWithAgentCard } from "./FillWithAgentCard";
 import { KeyPagesSection } from "./KeyPagesSection";
@@ -95,9 +96,11 @@ export function ProjectContextPage({
     <div key={projectId} className="space-y-8">
       <p className="text-sm text-muted">
         Claude Code ve bağladığınız diğer MCP istemcilerinin bu proje hakkında
-        bildikleri. Çalışmaya başlamadan önce burayı okur, öğrendiklerini geri
-        yazarlar; yanlış görünen bir şey varsa düzeltin.
+        bildikleri. Ajanlar işe başlamadan önce burayı okur, öğrendiklerini
+        buraya yazar. Yanlış bir şey görürseniz kendiniz düzeltin.
       </p>
+
+      <ContextHealthCard projectId={projectId} context={context} />
 
       <FillWithAgentCard
         projectName={projectName}

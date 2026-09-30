@@ -240,6 +240,6 @@ Mock veri hiç kullanılmadı. Tek proje: `df26abab-fa39-4133-96cc-a5627d8b80ad`
 | Üç yeni denetim kuralı: https değil, asıl adres eksik, dil bilgisi eksik | **Bitti** — birim testli; https kuralı uçtan uca denenmedi (fixture sitesi https sunamıyor). |
 | Her ekrana kendi özet grafiği, tek ortak halka bileşeni                  | **Bitti**                                                                                    |
 | Fırsatlar satır penceresi ("Ne yapmalı?")                                | **Bitti**                                                                                    |
-| Cihaz halkası (Arama performansı)                                        | Açık — sunucuda cihaz boyutlu sorgu gerekiyor.                                               |
-| Takip edilen sorgularda yükselen/düşen                                   | Açık — önceki dönem sırası gerekiyor.                                                        |
+| Cihaz halkası (Arama performansı)                                        | **Bitti** — halka tıklayınca ekranı cihaza göre süzüyor.                                     |
+| Takip edilen sorgularda yükselen/düşen                                   | **Bitti** — Değişim sütunu, "Yükselenler ve düşenler" kartı ve filtre düğmeleri.             |
 | Önem çubuğundan denetimi süzme                                           | **Bitti** — rotada `severity` parametresi var; çubuk Sorunlar sekmesini o önemle açar.       |

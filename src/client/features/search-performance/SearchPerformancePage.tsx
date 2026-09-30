@@ -1,6 +1,7 @@
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { SearchTrendPanel } from "@/client/features/search-performance/SearchTrendChart";
+import { DeviceBreakdown } from "@/client/features/search-performance/DeviceBreakdown";
 import { CountryBreakdown } from "@/client/features/search-performance/CountryBreakdown";
 import { TabPanel, Tabs } from "@/client/components/Tabs";
 import { useEffect } from "react";
@@ -258,6 +259,11 @@ export function SearchPerformancePage({
           </p>
           <TotalsCards report={report} />
           <SearchTrendPanel daily={report.daily} />
+          <DeviceBreakdown
+            devices={report.devices}
+            selected={device}
+            onSelect={(next) => onViewChange({ device: next })}
+          />
           <CountryBreakdown
             countries={report.countries}
             selected={country}

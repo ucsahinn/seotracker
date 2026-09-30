@@ -19,7 +19,11 @@ import {
   reportQueryKey,
   useDeleteReport,
 } from "@/client/features/reports/shared";
-import { formatDateTime, formatRelativeTime } from "@/client/lib/format";
+import {
+  formatBytes,
+  formatDateTime,
+  formatRelativeTime,
+} from "@/client/lib/format";
 import {
   getErrorCode,
   getStandardErrorMessage,
@@ -131,7 +135,7 @@ function ReportDetailPage() {
             {/* A deleted report and another project's report are the
                   same answer on purpose, so ids cannot be probed. */}
             {getErrorCode(reportQuery.error) === "NOT_FOUND"
-              ? "Bu rapor yok ya da bu rapora erişiminiz yok."
+              ? "Bu rapor bulunamadı. Silinmiş olabilir ya da başka bir projeye ait olabilir."
               : getStandardErrorMessage(reportQuery.error, "Rapor yüklenemedi")}
           </span>
         </div>
@@ -140,7 +144,7 @@ function ReportDetailPage() {
           params={{ projectId }}
           className="btn btn-ghost btn-sm"
         >
-          &larr; Raporlara dön
+          ← Raporlara dön
         </Link>
       </PageShell>
     );
@@ -183,7 +187,7 @@ function ReportDetailPage() {
             className="btn btn-ghost btn-sm gap-1.5"
             onClick={() => setExpanded(false)}
           >
-            <Minimize2 className="size-4" />
+            <Minimize2 aria-hidden className="size-4" />
             Çık
           </button>
         </div>
@@ -231,6 +235,16 @@ function ReportDetailPage() {
                   <dd>{report.templateName ?? report.skill ?? "—"}</dd>
                 </div>
                 <div className="flex items-baseline gap-1.5">
+                  <dt className="text-muted">Oluşturulma</dt>
+                  <dd title={formatDateTime(report.createdAt)}>
+                    {formatRelativeTime(report.createdAt)}
+                  </dd>
+                </div>
+                <div className="flex items-baseline gap-1.5">
+                  <dt className="text-muted">Boyut</dt>
+                  <dd>{formatBytes(report.sizeBytes)}</dd>
+                </div>
+                <div className="flex items-baseline gap-1.5">
                   <dt className="text-muted">Güncellenme</dt>
                   <dd title={formatDateTime(report.updatedAt)}>
                     {formatRelativeTime(report.updatedAt)}
@@ -244,8 +258,8 @@ function ReportDetailPage() {
                 className="btn btn-primary btn-sm gap-1.5"
                 onClick={exportPdf}
               >
-                <FileDown className="size-4" />
-                Dışa aktar
+                <FileDown aria-hidden className="size-4" />
+                PDF olarak kaydet
               </button>
               <PortalMenu
                 ariaLabel="Rapor işlemleri"

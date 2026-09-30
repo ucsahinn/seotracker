@@ -1,0 +1,91 @@
+import { sort } from "remeda";
+import type { ReportListItem } from "@/serverFunctions/reports";
+
+/** Reports with no template and no skill share this one label. */
+export const OTHER_KIND = "Belirtilmemiş";
+
+const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+
+export type ReportFilter = "all" | "recent" | "template" | "skill";
+
+type ReportLike = Pick<
+  ReportListItem,
+  "templateName" | "skill" | "updatedAt" | "sizeBytes"
+>;
+
+/** What tells two reports on one site apart: the template, else the skill. */
+export function reportKind(report: ReportLike): string {
+  return report.templateName ?? report.skill ?? OTHER_KIND;
+}
+
+export function matchesFilter(
+  report: ReportLike,
+  filter: ReportFilter,
+  now: number,
+): boolean {
+  switch (filter) {
+    case "all":
+      return true;
+    case "recent":
+      return now - Date.parse(report.updatedAt) <= WEEK_MS;
+    case "template":
+      return report.templateName !== null;
+    case "skill":
+      return report.templateName === null && report.skill !== null;
+  }
+}
+
+export function filterCounts(
+  reports: ReportLike[],
+  now: number,
+): Record<ReportFilter, number> {
+  return {
+    all: reports.length,
+    recent: reports.filter((r) => matchesFilter(r, "recent", now)).length,
+    template: reports.filter((r) => matchesFilter(r, "template", now)).length,
+    skill: reports.filter((r) => matchesFilter(r, "skill", now)).length,
+  };
+}
+
+/**
+ * Counts per kind, biggest first. Past `max` kinds the tail is pooled, since a
+ * ring stops being readable beyond a handful of arcs.
+ */
+export function kindSegments(
+  reports: ReportLike[],
+  max = 5,
+): { key: string; label: string; value: number; disabled?: boolean }[] {
+  const counts = new Map<string, number>();
+  for (const report of reports) {
+    const kind = reportKind(report);
+    counts.set(kind, (counts.get(kind) ?? 0) + 1);
+  }
+  const sorted = sort(
+    [...counts.entries()],
+    (a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "tr"),
+  );
+  const head = sorted.slice(0, max).map(([key, value]) => ({
+    key,
+    label: key,
+    value,
+  }));
+  const rest = sorted.slice(max).reduce((sum, [, value]) => sum + value, 0);
+  return rest > 0
+    ? [
+        ...head,
+        { key: "__other", label: "Diğer türler", value: rest, disabled: true },
+      ]
+    : head;
+}
+
+/** The newest `updatedAt`, or null for an empty list. */
+export function latestUpdate(reports: { updatedAt: string }[]): string | null {
+  return reports.reduce<string | null>(
+    (best, r) => (best === null || r.updatedAt > best ? r.updatedAt : best),
+    null,
+  );
+}
+
+export function totalBytes(reports: ReportLike[]): number {
+  return reports.reduce((sum, r) => sum + r.sizeBytes, 0);
+}

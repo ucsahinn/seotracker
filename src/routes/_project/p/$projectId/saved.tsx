@@ -3,12 +3,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 // Aliased: `SavedKeywordsPage` has a local `sort` const (the saved-keyword
 // sort key) that would otherwise shadow this import at the call site.
 import { sort as sortArray } from "remeda";
-import {
-  keepPreviousData,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import type {
   OnChangeFn,
   RowSelectionState,
@@ -25,6 +20,12 @@ import {
   RemoveSavedKeywordsError,
 } from "@/client/features/saved-keywords/SavedKeywordsModals";
 import { TablePagination } from "@/client/components/table/TablePagination";
+import { SavedKeywordsSummary } from "@/client/features/saved-keywords/SavedKeywordsSummary";
+import {
+  filterByPosition,
+  type PositionFilter,
+} from "@/client/features/saved-keywords/savedKeywordPositions";
+import { useSavedKeywordPositions } from "@/client/features/saved-keywords/useSavedKeywordPositions";
 import { SavedKeywordsStatus } from "@/client/features/saved-keywords/SavedKeywordsStatus";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { SavedKeywordsTable } from "@/client/features/saved-keywords/SavedKeywordsTable";
@@ -35,14 +36,9 @@ import {
 } from "@/client/features/saved-keywords/savedKeywordsUtils";
 import { useSavedKeywordsExport } from "@/client/features/saved-keywords/useSavedKeywordsExport";
 import { useSavedKeywordsFilters } from "@/client/features/saved-keywords/useSavedKeywordsFilters";
+import { useSavedKeywordMutations } from "@/client/features/saved-keywords/useSavedKeywordMutations";
 import { useTagManage } from "@/client/features/saved-keywords/useTagManage";
-import { getStandardErrorMessage } from "@/client/lib/error-messages";
-import { captureClientEvent } from "@/client/lib/observability";
-import {
-  getSavedKeywords,
-  removeSavedKeywords,
-  updateSavedKeywordTags,
-} from "@/serverFunctions/savedKeywords";
+import { getSavedKeywords } from "@/serverFunctions/savedKeywords";
 import type { SavedKeywordTag } from "@/types/keywords";
 
 export const Route = createFileRoute("/_project/p/$projectId/saved")({
@@ -53,9 +49,12 @@ const FILTER_DEBOUNCE_MS = 350;
 
 function SavedKeywordsPage() {
   const { projectId } = Route.useParams();
-  const queryClient = useQueryClient();
   const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
   const [showFilters, setShowFilters] = useState(false);
+  // A position group chosen in the summary. Null means the server-paged list.
+  const [positionFilter, setPositionFilter] = useState<PositionFilter | null>(
+    null,
+  );
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] =
     useState<(typeof SAVED_KEYWORD_PAGE_SIZES)[number]>(50);
@@ -95,7 +94,9 @@ function SavedKeywordsPage() {
     : "desc";
   const tagFilterKey = selectedTagIds.join("|");
   const hasActiveFilters =
-    filters.activeFilterCount > 0 || selectedTagIds.length > 0;
+    filters.activeFilterCount > 0 ||
+    selectedTagIds.length > 0 ||
+    positionFilter !== null;
 
   const queryInput = useMemo(
     () => ({
@@ -117,9 +118,35 @@ function SavedKeywordsPage() {
   });
   const { data, isLoading, isFetching } = savedQuery;
 
-  const savedKeywords = data?.rows ?? [];
+  // The whole filtered list plus the Search Console archive: the summary
+  // counts it, and choosing a position group pages through it locally
+  // because the server knows nothing about positions.
+  const positionData = useSavedKeywordPositions(projectId, {
+    ...appliedFilters,
+    tagIds: selectedTagIds.length > 0 ? selectedTagIds : undefined,
+    sort,
+    order,
+  });
+  const positionRows = useMemo(
+    () =>
+      filterByPosition(
+        positionData.all.data?.rows ?? [],
+        positionFilter,
+        positionData.positions,
+      ),
+    [positionData.all.data, positionData.positions, positionFilter],
+  );
+  const byPosition = positionFilter !== null;
+  const loadingList = byPosition
+    ? positionData.all.isLoading || positionData.tracked.isLoading
+    : isLoading;
+  const listError = byPosition ? positionData.all : savedQuery;
+
+  const savedKeywords = byPosition
+    ? positionRows.slice((page - 1) * pageSize, page * pageSize)
+    : (data?.rows ?? []);
   const availableTags = data?.tags ?? [];
-  const totalCount = data?.totalCount ?? 0;
+  const totalCount = byPosition ? positionRows.length : (data?.totalCount ?? 0);
   const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
   const selectedRows = savedKeywords.filter((row) => rowSelection[row.id]);
   const selectedIds = selectedRows.map((row) => row.id);
@@ -139,55 +166,31 @@ function SavedKeywordsPage() {
 
   useEffect(() => {
     setRowSelection({});
-  }, [page, pageSize, appliedFilters, tagFilterKey, sort, order]);
+  }, [
+    page,
+    pageSize,
+    appliedFilters,
+    tagFilterKey,
+    sort,
+    order,
+    positionFilter,
+  ]);
 
   useEffect(() => {
     if (page > totalPages) setPage(totalPages);
   }, [page, totalPages]);
 
-  const invalidateSavedKeywords = () =>
-    queryClient.invalidateQueries({ queryKey: ["savedKeywords", projectId] });
-
-  const removeMutation = useMutation({
-    mutationFn: (savedKeywordIds: string[]) =>
-      removeSavedKeywords({ data: { projectId, savedKeywordIds } }),
-    onSuccess: (result) => {
+  const { removeMutation, tagMutation } = useSavedKeywordMutations({
+    projectId,
+    onRemoved: () => {
       setRowSelection({});
       setShowConfirm(false);
       setRemoveError(null);
-      void invalidateSavedKeywords();
-      captureClientEvent("saved_keywords:bulk_remove", {
-        count: result.deletedCount,
-      });
-      toast.success(`${result.deletedCount} kelime kaldırıldı`);
     },
-    onError: (error) => {
-      setRemoveError(getStandardErrorMessage(error, "Kaldırma başarısız."));
-    },
-  });
-
-  const tagMutation = useMutation({
-    mutationFn: (input: {
-      savedKeywordIds: string[];
-      addTags?: string[];
-      removeTagIds?: string[];
-    }) =>
-      updateSavedKeywordTags({
-        data: {
-          projectId,
-          savedKeywordIds: input.savedKeywordIds,
-          addTags: input.addTags,
-          removeTagIds: input.removeTagIds,
-        },
-      }),
-    onSuccess: (result) => {
+    onRemoveFailed: setRemoveError,
+    onTagged: () => {
       setRowSelection({});
       setShowTagModal(false);
-      void invalidateSavedKeywords();
-      toast.success(`${result.taggedCount} kelimenin etiketleri güncellendi`);
-    },
-    onError: (error) => {
-      toast.error(getStandardErrorMessage(error, "Etiketler güncellenemedi"));
     },
   });
 
@@ -220,6 +223,7 @@ function SavedKeywordsPage() {
   const handleClearAllFilters = () => {
     filters.resetFilters();
     setSelectedTagIds([]);
+    setPositionFilter(null);
     setPage(1);
   };
 
@@ -230,6 +234,24 @@ function SavedKeywordsPage() {
         exporting={exporter.exporting}
         onExportCsv={() => void exporter.exportFilteredCsv()}
         onExportSheets={() => void exporter.exportFilteredSheets()}
+      />
+
+      <SavedKeywordsSummary
+        projectId={projectId}
+        keywords={positionData.all.data?.rows}
+        isLoading={positionData.all.isLoading}
+        positions={{
+          loading: positionData.tracked.isLoading,
+          error: positionData.tracked.error,
+          onRetry: () => void positionData.tracked.refetch(),
+          archiveRows: positionData.tracked.data?.rows.length ?? 0,
+          map: positionData.positions,
+        }}
+        filter={positionFilter}
+        onFilter={(next) => {
+          setPositionFilter(next);
+          setPage(1);
+        }}
       />
 
       <div className="overflow-hidden rounded-box border border-base-300 bg-base-100">
@@ -266,28 +288,30 @@ function SavedKeywordsPage() {
               read "0 kayıtlı kelime" directly above the failure notice --
               and the export button beside it disables itself on the same
               zero, which looks like an empty store rather than a failure. */}
-          {savedQuery.isError ? null : (
+          {listError.isError ? null : (
             <SavedKeywordsStatus
               totalCount={totalCount}
-              isFetching={isFetching && !isLoading}
+              isFetching={isFetching && !loadingList}
             />
           )}
           {/* Without this the table falls through to its empty state, so
                 a transient 500 told the operator their saved keywords were
                 gone. */}
-          {savedQuery.isError ? (
+          {listError.isError ? (
             <QueryErrorState
               compact
-              error={savedQuery.error}
-              onRetry={() => void savedQuery.refetch()}
+              error={listError.error}
+              onRetry={() => void listError.refetch()}
               title="Kayıtlı kelimeler yüklenemedi"
             />
           ) : (
             <SavedKeywordsTable
+              projectId={projectId}
+              positions={positionData.positions}
               rows={savedKeywords}
               rowSelection={rowSelection}
               sorting={sorting}
-              isLoading={isLoading}
+              isLoading={loadingList}
               hasActiveFilters={hasActiveFilters}
               onRowSelectionChange={setRowSelection}
               onSortingChange={handleSortingChange}

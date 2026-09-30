@@ -3,6 +3,10 @@ import { z } from "zod";
 import { GscHistoryService } from "@/server/features/gsc/services/GscHistoryService";
 import { requireProjectContext } from "@/serverFunctions/middleware";
 import { GSC_DATA_LAG_DAYS } from "@/shared/dataFreshness";
+import { attachChange, previousWindow } from "@/shared/rankingChange";
+
+/** How many queries of the preceding window are read to match against. */
+const PREVIOUS_WINDOW_LIMIT = 5000;
 
 const projectSchema = z.object({ projectId: z.string().min(1) });
 
@@ -77,10 +81,19 @@ export const getTrackedQueries = createServerFn({ method: "POST" })
       since,
       limit: data.limit + 1,
     });
+    const before = previousWindow(since, data.days);
+    const previous = await GscHistoryService.getTrackedQueries({
+      projectId: context.projectId,
+      since: before.since,
+      until: before.until,
+      limit: PREVIOUS_WINDOW_LIMIT,
+    });
     // One extra row so the screen can say the set was capped instead of
     // presenting a truncated list as the whole archive.
     return {
-      rows: rows.slice(0, data.limit),
+      rows: attachChange(rows.slice(0, data.limit), previous),
+      previousRange: { startDate: before.since, endDate: before.until },
+      previousQueryCount: previous.length,
       truncated: rows.length > data.limit,
       days: data.days,
       /*

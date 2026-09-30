@@ -39,7 +39,7 @@ export function GoogleSetupBanner() {
             to="/settings"
             className="font-medium text-base-content underline underline-offset-2"
           >
-            Ayarlar'da gir
+            İstemci kimliğini Ayarlar'a girin
           </Link>
           <SafeExternalLink
             url={GSC_SELF_HOSTED_SETUP_DOCS_URL}

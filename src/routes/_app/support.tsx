@@ -1,6 +1,7 @@
 import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { createFileRoute } from "@tanstack/react-router";
 import { ExternalLink } from "lucide-react";
+import { SetupStatusPanel } from "@/client/features/support/SetupStatusPanel";
 import { DiagnosticsBundleButton } from "@/client/features/support/DiagnosticsBundleButton";
 
 const GITHUB_URL = "https://github.com/ucsahinn/seotracker";
@@ -16,8 +17,10 @@ function SupportPage() {
       <PageHeader
         eyebrow={<p className="text-sm font-medium text-muted">Yardım</p>}
         title="Nereye bakmalı"
-        description="Bu kurulum kendi bilgisayarınızda çalışıyor, bu yüzden hemen her sorun iki yerde görünür: konteyner günlüğü ve sağlık ucu."
+        description="Bu kurulum kendi bilgisayarınızda çalıştığı için sorunların izi hemen her zaman iki yerde olur: konteyner günlüğü ve sağlık ucu. Önce aşağıdaki duruma bakın."
       />
+
+      <SetupStatusPanel />
 
       <ul className="space-y-3 text-sm text-muted">
         <li>
@@ -25,15 +28,15 @@ function SupportPage() {
             Konteyner günlüğü
           </span>{" "}
           — <code className="text-xs">docker compose logs -f</code>. Açılış
-          denetimleri uygulama çalışmaya başlamadan önce buraya yazılır.
+          denetimleri uygulama başlamadan önce buraya yazılır.
         </li>
         <li>
           <span className="font-medium text-base-content">Sağlık ucu</span> —{" "}
           <a href="/api/health" className="link link-primary">
             /api/health
           </a>{" "}
-          hangi entegrasyonların yapılandırıldığını ve veritabanının yanıt verip
-          vermediğini söyler.
+          hangi bağlantıların ayarlı olduğunu ve veritabanının yanıt verip
+          vermediğini gösterir.
         </li>
         <li>
           <span className="font-medium text-base-content">
@@ -45,13 +48,14 @@ function SupportPage() {
       </ul>
 
       <section className="space-y-2 rounded-box border border-base-300 bg-base-200/30 p-4">
-        <h2 className="text-sm font-medium">Sorun bildirecekseniz</h2>
+        <h2 className="text-sm font-medium">Sorun bildirmek için</h2>
         <p className="max-w-prose text-sm text-muted">
           Tek bir arşiv indirin: sürüm, kurulum denetimleri, tablo büyüklükleri,
           bağlı Google mülkleri, son denetimlerin durumu ve bu sekmede yakalanan
-          tarayıcı hataları. İçinde hiçbir gizli değer yok &mdash; jetonlar ve
-          anahtarlar toplanmıyor, yalnızca yapılandırılmış olup olmadıkları
-          yazıyor. Arşivdeki <code className="text-xs">README.txt</code> ne
+          tarayıcı hataları. İçinde gizli değer yok; jetonlar ve anahtarlar
+          toplanmaz, yalnızca ayarlı olup olmadıkları yazılır. Kısa bir not
+          yeterliyse yukarıdaki "Özeti kopyala" düğmesi aynı özeti metin olarak
+          verir. Arşivdeki <code className="text-xs">README.txt</code> ne
           olduğunu ve neyin sizi tanımladığını satır satır anlatır.
         </p>
         <div className="pt-1">

@@ -6,136 +6,135 @@ export const CONTENT_ISSUES = {
     severity: "critical",
     title: "Başlık etiketi yok",
     explanation:
-      "Sayfanın <title> etiketi yok. Başlık, sayfanın konusunu anlatan en güçlü sinyal ve arama sonuçlarında görünen manşettir. Yoksa arama motoru kendi üretir, genelde kötü bir şekilde.",
+      "Sayfanın başlık etiketi (<title>) yok. Başlık, arama sonucunda mavi bağlantı olarak görünen yazıdır ve Google sayfanın konusunu en çok buradan anlar. Yoksa Google kendisi bir başlık üretir, genelde de kötü olur.",
     howToFix:
-      "Sayfanın ana konusunu içeren, yaklaşık 50-60 karakterlik benzersiz ve açıklayıcı bir <title> ekleyin.",
+      "Sayfaya konusunu anlatan, sayfaya özgü bir <title> ekleyin (yaklaşık 50-60 karakter). SEO eklentisi ya da site oluşturucunuz varsa başlık alanını doldurmanız yeter.",
   },
   "missing-meta-description": {
     severity: "warning",
     title: "Meta açıklama yok",
     explanation:
-      "Sayfanın meta açıklaması yok. Arama motoru özeti sayfa metninden derler; bu genelde daha az çekici olur ve tıklama oranını düşürür.",
+      "Sayfanın meta açıklaması yok. Bu, arama sonucunda başlığın altında görünen kısa özet yazısıdır. Yoksa Google özeti sayfa metninden kendisi seçer; çoğu zaman daha az çekici olur ve tıklama oranını düşürür.",
     howToFix:
-      "Sayfayı özetleyen ve tıklamak için bir sebep veren, yaklaşık 70-160 karakterlik bir meta açıklama ekleyin.",
+      "Sayfayı özetleyen ve tıklamak için bir neden veren 70-160 karakterlik bir meta açıklama yazın.",
   },
   "missing-h1": {
     severity: "warning",
     title: "H1 başlığı yok",
     explanation:
-      "Sayfada H1 yok. H1, sayfanın ne hakkında olduğunu hem kullanıcıya hem arama motoruna söyler; H1'i olmayan sayfaların konu netliği zayıf kalır.",
+      "Sayfada H1 (sayfanın ana başlığı) yok. H1, hem ziyaretçiye hem Google'a sayfanın ne hakkında olduğunu ilk bakışta söyler.",
     howToFix:
-      "Sayfanın ana konusunu belirten, başlık etiketiyle tutarlı tek bir H1 ekleyin.",
+      "Sayfaya konusunu anlatan tek bir H1 ekleyin; başlık etiketiyle uyumlu olsun.",
   },
   "multiple-h1": {
     severity: "info",
     title: "Birden çok H1 başlığı",
     explanation:
-      "Sayfada birden fazla H1 var. Bu tek başına bir hata değildir; Google birden çok H1’i sorunsuz işler. Ancak çoğu zaman bir şablon hatasının işaretidir (logo ile manşetin ikisinin de H1 olması gibi), o yüzden bakmaya değer.",
+      "Sayfada birden fazla H1 var. Google bunu sorun etmez, yani ceza yok. Ama çoğu zaman şablon hatasının işaretidir; örneğin logo ile sayfa başlığının ikisi de H1 olmuştur.",
     howToFix:
-      "Ana başlık için tek bir H1 bırakın, diğerlerini H2/H3 yapın. Logo gibi başlık olmayan öğeleri başlık etiketinden çıkarın.",
+      "Ana başlık için tek H1 bırakın, diğerlerini H2 ya da H3 yapın. Logo gibi başlık olmayan öğelerden H1 etiketini kaldırın.",
   },
   "thin-content": {
     severity: "info",
     title: "Sayfada neredeyse hiç metin yok",
     explanation:
-      "Bu adreste çok az görünür metin bulundu. Genelde bunun anlamı, içeriğin JavaScript ile geldiği ve sunucudan gelen HTML'de yer almadığıdır. Kelime sayısı bir kalite ölçüsü değildir: kısa olması sorun değil, boş olması sorundur.",
+      "Bu sayfada neredeyse hiç görünür metin bulunamadı. Genelde içeriğin JavaScript ile sonradan yüklenmesi ve ilk gelen HTML'de yer almaması yüzünden olur. Metnin kısa olması sorun değil; sorun sayfanın boş görünmesi, çünkü Google boş sayfayı dizine almak istemez.",
     howToFix:
-      'Sayfayı tarayıcıda açıp metnin göründüğünü, sonra "kaynağı görüntüle" ile aynı metnin HTML\'de de olduğunu doğrulayın. Yoksa sunucu tarafında oluşturun. Sayfa gerçekten boşsa noindex yapın ya da daha güçlü bir sayfayla birleştirin.',
+      "Sayfayı açıp metnin göründüğünü, sonra sağ tık > Sayfa kaynağını görüntüle ile aynı metnin orada da olduğunu kontrol edin. Yoksa içeriği sunucu tarafında üretin. Sayfa gerçekten boşsa noindex ekleyin ya da daha dolu bir sayfayla birleştirin.",
   },
   "images-missing-alt": {
     severity: "warning",
     title: "Alt metni olmayan görseller",
     explanation:
-      "Sayfadaki bir veya daha fazla görselin alt niteliği yok. Alt metni hem erişilebilirlik gereğidir hem de arama motorunun görseli anlamasının başlıca yoludur.",
+      "Sayfadaki bazı görsellerin alt metni (görseli anlatan kısa yazı) yok. Alt metin, görmeyen kullanıcılar için gereklidir ve Google'ın görselin ne olduğunu anlamasının başlıca yoludur.",
     howToFix:
-      'Anlam taşıyan görsellere açıklayıcı alt metni yazın; yalnız süs amaçlı olanlarda boş alt (alt="") kullanın.',
+      'Anlam taşıyan her görsele ne gösterdiğini anlatan kısa bir alt metin yazın. Yalnızca süs olan görsellerde alt metni boş bırakın (alt="").',
   },
   "no-outgoing-links": {
     severity: "info",
     title: "Sayfadan başka hiçbir yere bağlantı yok",
     explanation:
-      "Sayfadan hiçbir yere bağlantı çıkmıyor, yani bir çıkmaz sokak. Tarayıcının buradan gidecek yeri olmaz ve kullanıcı geri düğmesine uzanır.",
+      "Bu sayfadan başka hiçbir sayfaya bağlantı verilmiyor, yani ziyaretçi ve Google için çıkmaz sokak. Google siteyi bağlantıları izleyerek gezer; buradan yeni bir yere gidemez.",
     howToFix:
-      "İlgili sayfalara, üst kategoriye ya da ana sayfaya bağlantı ekleyin. Menü JavaScript ile oluşuyorsa sunucudan gelen HTML'de de bulunduğundan emin olun.",
+      "İlgili sayfalara, üst kategoriye ya da ana sayfaya bağlantı ekleyin. Menü JavaScript ile oluşuyorsa, bağlantıların ilk gelen HTML'de de bulunduğundan emin olun.",
   },
   "title-too-long": {
     severity: "info",
     title: "Başlık çok uzun",
     explanation:
-      "Başlık yaklaşık 60 karakteri aşıyor, bu yüzden arama sonuçlarında kesilecek ve sonu yarıda kalabilecek.",
+      "Başlık yaklaşık 60 karakteri aşıyor. Google sonucu gösterirken sonunu keser, yani en önemli kısım görünmeyebilir.",
     howToFix:
-      "Başlığı yaklaşık 50-60 karaktere indirin ve en önemli kelimeleri başa alın.",
+      "Başlığı 50-60 karaktere indirin ve en önemli kelimeleri başa koyun.",
   },
   "title-too-short": {
     severity: "info",
     title: "Başlık çok kısa",
     explanation:
-      "Başlık yaklaşık 10 karakterin altında. Bu kadar kısa bir başlık sayfayı anlatmak ya da tıklama çekmek için genelde fazla genel kalır.",
+      "Başlık 10 karakterden kısa. Bu kadar kısa bir başlık sayfanın ne sunduğunu anlatmaya ve tıklatmaya yetmez.",
     howToFix:
-      "Başlığı, sayfanın ne sunduğunu söyleyen açıklayıcı bir ifadeye genişletin (yaklaşık 30-60 karakter).",
+      "Başlığı, sayfanın ne sunduğunu söyleyen bir ifadeye genişletin (yaklaşık 30-60 karakter).",
   },
   "meta-description-too-long": {
     severity: "info",
     title: "Meta açıklama çok uzun",
     explanation:
-      "Meta açıklama yaklaşık 160 karakteri aşıyor, bu yüzden arama motoru özeti kesecek.",
-    howToFix:
-      "Ana mesajı ve tıklama çağrısını koruyarak açıklamayı yaklaşık 70-160 karaktere indirin.",
+      "Meta açıklama yaklaşık 160 karakteri aşıyor. Google arama sonucunda özeti kesecek, sonundaki mesaj görünmeyecek.",
+    howToFix: "Ana mesajı başta tutarak açıklamayı 70-160 karaktere indirin.",
   },
   "meta-description-too-short": {
     severity: "info",
     title: "Meta açıklama çok kısa",
     explanation:
-      "Meta açıklama yaklaşık 70 karakterin altında. Kısa açıklamalar arama sonucunun size verdiği alanı boşa harcar ve arama motorları çoğu zaman bunları yok sayıp sayfadan metin çeker.",
+      "Meta açıklama 70 karakterden kısa. Bu kadar kısa yazılar arama sonucundaki alanı boşa harcar ve Google çoğu zaman bunun yerine sayfadan kendi seçtiği bir metni gösterir.",
     howToFix:
-      "Açıklamayı, sayfayı özetleyen ve tıklamak için sebep veren yaklaşık 70-160 karaktere genişletin.",
+      "Açıklamayı, sayfayı özetleyen ve tıklamak için bir neden veren 70-160 karaktere genişletin.",
   },
   "heading-order-skip": {
     severity: "info",
     title: "Başlık seviyeleri atlanmış",
     explanation:
-      "Başlık sıralaması seviye atlıyor (H2'den sonra doğrudan H4 gibi). Bu, erişilebilirlik araçları ve içerik ayrıştırma için belge yapısını zayıflatabilir. Menü ve altbilgi başlıkları da bu sıralamaya karıştığı için yanlış alarm olabilir.",
+      "Başlık seviyeleri atlanmış, örneğin H2'den sonra doğrudan H4 gelmiş. Bu, sayfanın bölüm yapısını ekran okuyucular ve arama motorları için karıştırır. Menü ve altbilgi başlıkları da bu sıralamaya dahil olduğundan bazen yanlış alarm olabilir.",
     howToFix:
-      "Başlık seviyelerini atlamadan birer birer inecek şekilde düzeltin (H1 → H2 → H3).",
+      "Başlıkları sırayla kullanın: H1, sonra H2, sonra H3. Seviye atlayan başlığı bir kademe yukarı çekin. Atlamanın menü ya da altbilgiden geldiğini görürseniz orada başlık etiketi yerine düz metin kullanın.",
   },
   "missing-viewport": {
     severity: "info",
     title: "Mobil görünüm etiketi (viewport) yok",
     explanation:
-      'Sayfada `<meta name="viewport">` yok. Google siteleri mobil sürümleri üzerinden dizine alır ve viewport etiketi olmayan bir sayfa telefonda masaüstü genişliğinde açılır: kullanıcı yakınlaştırmadan okuyamaz. Lighthouse bunu zaten denetler, ama en fazla on örnek sayfada; bu kontrol taranan her sayfayı kapsar, yani tek bozuk şablon gözden kaçmaz.',
+      'Sayfada mobil görünüm etiketi (`<meta name="viewport">`) yok. Google siteleri telefon sürümü üzerinden değerlendirir; bu etiket yoksa sayfa telefonda masaüstü genişliğinde açılır ve okumak için yakınlaştırmak gerekir. Bu denetim taranan her sayfaya bakar, bu yüzden bozuk bir şablon gözden kaçmaz.',
     howToFix:
-      'Sayfanın `<head>` bölümüne `<meta name="viewport" content="width=device-width, initial-scale=1">` ekleyin. Neredeyse her durumda doğru değer budur.',
+      'Sayfanın `<head>` bölümüne `<meta name="viewport" content="width=device-width, initial-scale=1">` satırını ekleyin. Hemen her site için doğru değer budur.',
   },
   "missing-lang": {
     severity: "info",
     title: "Sayfa dili belirtilmemiş",
     explanation:
-      "Sayfanın `<html>` etiketinde `lang` özelliği yok. Bu özellik sayfanın hangi dilde yazıldığını söyler. Ekran okuyucular doğru telaffuz için buna bakar; tarayıcılar çeviri önerisini ve yazım denetimini buna göre yapar. Google dili içerikten kendisi de anlar, ama açıkça yazılmış dil size hiçbir şeye mal olmadan bir belirsizliği ortadan kaldırır.",
+      "Sayfanın `<html>` etiketinde `lang` (sayfa dili) yok. Ekran okuyucular doğru telaffuz için, tarayıcılar çeviri önerisi için buna bakar. Google dili içerikten de anlar, ama açıkça yazmak belirsizliği ortadan kaldırır.",
     howToFix:
-      'Sayfanın ilk satırlarındaki `<html>` etiketine dilinizi ekleyin: Türkçe bir sayfa için `<html lang="tr">`. Tek şablondan üretilen sitelerde bunu şablonda bir kez düzeltmeniz tüm sayfalara yeter.',
+      'Sayfanın başındaki `<html>` etiketine dilinizi ekleyin; Türkçe bir sayfa için `<html lang="tr">`. Sayfalar tek şablondan üretiliyorsa şablonda bir kez düzeltmek hepsine yeter.',
   },
   "no-subheadings": {
     severity: "info",
     title: "Uzun metinde alt başlık yok",
     explanation:
-      "Sayfada epey metin var ama H1 dışında hiç başlık yok. Alt başlıklar metni tarayarak okunabilir hale getirir ve her bölümün neyi anlattığını söyler; Google da bir sayfanın hangi alt konuları kapsadığını kısmen buradan çıkarır. Başlıksız uzun bir metin tek bir duvar olarak okunur.",
+      "Sayfada epey uzun metin var ama H1 dışında hiç başlık yok. Alt başlıklar uzun metni taranabilir yapar ve Google'ın sayfanın hangi konuları kapsadığını anlamasına yardım eder.",
     howToFix:
-      "Metni konularına göre bölüp her bölüme bir H2 verin. Başlıklar içeriği anlatsın; anahtar kelime doldurmak için değil, okuyan kişi nerede olduğunu bilsin diye.",
+      "Metni konularına göre bölün ve her bölüme bir H2 başlığı verin. Başlıklar bölümün ne anlattığını söylesin; anahtar kelime doldurmayın.",
   },
   "alt-is-filename": {
     severity: "info",
     title: "Görselin alt metni bir dosya adı",
     explanation:
-      "Görselin alt metni bir dosya adı ya da kamera çıktısı gibi görünüyor (IMG_2231.jpg, DSC0043, ekran-goruntusu-1.png). Alt metin görseli göremeyen birine ne olduğunu anlatmak içindir; dosya adı bunu anlatmaz. Görsel aramasında da sayfanın ne hakkında olduğunu söyleyen tek sinyal budur.",
+      "Bir görselin alt metni dosya adı ya da kamera çıktısı gibi duruyor (IMG_2231.jpg, DSC0043, ekran-goruntusu-1.png). Alt metin, görseli göremeyen birine ne olduğunu anlatmalıdır; dosya adı bunu yapmaz. Google'ın görselin konusunu anlamasına da yardım etmez.",
     howToFix:
-      'Görselde ne olduğunu yazın: "kırmızı koltukta oturan kadın" gibi. Sayfayı sesli dinleyen biri o cümleyi duyunca görseli kaçırmamalı. Süs amaçlı görsellerde alt metni boş bırakmak (alt="") doğru olandır.',
+      'Alt metne görselde ne olduğunu yazın, örneğin "kırmızı koltukta oturan kadın". Yalnızca süs olan görsellerde alt metni boş bırakın (alt="").',
   },
   "alt-too-long": {
     severity: "info",
     title: "Görsel alt metni çok uzun",
     explanation:
-      "Alt metin 125 karakteri epey aşıyor. Ekran okuyucular alt metni kesmez, sonuna kadar okur; uzun bir alt metin görseli anlatmayı bırakıp paragrafa dönüşür ve dinleyen kişi sayfanın akışını kaybeder.",
+      "Bir görselin alt metni 250 karakteri aşıyor. Ekran okuyucular alt metni sonuna kadar okur; bu kadar uzun olunca görsel anlatımı paragrafa döner ve dinleyen sayfanın akışını kaybeder.",
     howToFix:
-      "Görselin ne olduğunu bir cümlede söyleyin. Anlatılacak daha fazla şey varsa onu sayfanın metnine ya da figure altına yazın; orası hem görenlerin hem görmeyenlerin okuduğu yer.",
+      "Görselin ne olduğunu bir cümleyle anlatın (yaklaşık 125 karakter). Daha fazla anlatılacak şey varsa onu sayfanın metnine ya da görselin açıklama yazısına taşıyın.",
   },
 } as const satisfies Record<string, AuditIssueDescriptor>;
