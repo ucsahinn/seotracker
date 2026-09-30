@@ -242,4 +242,4 @@ Mock veri hiç kullanılmadı. Tek proje: `df26abab-fa39-4133-96cc-a5627d8b80ad`
 | Fırsatlar satır penceresi ("Ne yapmalı?")                                | **Bitti**                                                                                    |
 | Cihaz halkası (Arama performansı)                                        | Açık — sunucuda cihaz boyutlu sorgu gerekiyor.                                               |
 | Takip edilen sorgularda yükselen/düşen                                   | Açık — önceki dönem sırası gerekiyor.                                                        |
-| Önem çubuğundan denetimi süzme                                           | Açık — rotada önem parametresi yok.                                                          |
+| Önem çubuğundan denetimi süzme                                           | **Bitti** — rotada `severity` parametresi var; çubuk Sorunlar sekmesini o önemle açar.       |
