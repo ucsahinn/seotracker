@@ -500,7 +500,62 @@ h3 {
   animation: enter 180ms cubic-bezier(0.32, 0.72, 0, 1) both;
 }
 
+/* Cards arriving one after another rather than all at once.
+ *
+ * `.enter` fades a block in as one thing. A row of tiles doing that in the
+ * same frame reads as a page swap; offset by a few tens of milliseconds each
+ * they read as data arriving, which is what is happening. The delay is set
+ * per child as an inline `animation-delay` by the component, so it is data
+ * rather than a growing pile of nth-child rules. */
+.stagger > * {
+  animation: enter 240ms cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+
+/* A number that just changed.
+ *
+ * The dashboard refreshes on its own now, so a figure can move while nobody
+ * is looking at it. A short tint is how an operator who glances back finds
+ * out which one. Fades to nothing: it marks *that* it changed, and the
+ * arrow and the delta beside it already say which way. */
+@keyframes flash {
+  from {
+    background-color: color-mix(
+      in oklch,
+      var(--color-primary) 22%,
+      transparent
+    );
+  }
+}
+.flash {
+  animation: flash 1400ms ease-out both;
+  border-radius: var(--radius-field);
+}
+
+/* A tile that needs doing something about.
+ *
+ * Two slow breaths of a tinted ring, then stillness. Looping forever would
+ * make the whole dashboard shimmer the moment there is a critical finding,
+ * which teaches the reader to stop seeing it -- so it plays twice and stops. */
+@keyframes attention {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in oklch, var(--color-error) 0%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 5px
+      color-mix(in oklch, var(--color-error) 18%, transparent);
+  }
+}
+.attention {
+  animation: attention 2200ms ease-in-out 2;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .stagger > *,
+  .flash,
+  .attention {
+    animation: none;
+  }
   .skeleton {
     animation: none;
   }

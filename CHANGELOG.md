@@ -7,8 +7,8 @@ sürümlerin notları `git log CHANGELOG.md` ile durduğu yerde duruyor.
 
 ## [1.4.0] — 2026-09-30
 
-Ekranlardaki sayılar artık daha eksiksiz. Google'dan zaten aldığımız ama
-hiçbir yerde göstermediğimiz veriler yerine kondu.
+Panel artık "şimdi ne yapmalıyım" sorusunu cevaplıyor. Google'dan zaten
+aldığımız ama hiçbir yerde göstermediğimiz veriler de yerine kondu.
 
 ### Önce şunu yapın
 
@@ -24,6 +24,22 @@ ekleyin. Şifre istemiyorsanız compose dosyanızdaki `MCP_TOKEN=` satırını b
 bırakın. Şifreyi koyduk çünkü o adrese bilgisayarınızdaki başka bir program
 da erişebiliyordu.
 
+### Yenilikler
+
+- **Panelde "Sıradaki adımlar".** Sitenizin durumuna bakıp en fazla üç iş
+  öneriyor: Search Console'u bağlayın, kritik sorunlara bakın, denetimi
+  tazeleyin. Her satır tek tıkla ilgili ekrana götürüyor.
+- **Sayfalar tablosunda hızlı filtreler.** Dizine kapalı, yavaş, alt metni
+  eksik, site haritasında yok, hatalı. Her düğmenin üstünde kaç sayfa
+  olduğu yazıyor. Karşılığı sıfır olan düğme kapalı görünüyor.
+- **Dizin durumunda "Neden" sütunu.** Google bir sayfayı neden dizine almadı:
+  robots.txt mi engelliyor, noindex mi var, sayfa alınamadı mı. Sizin
+  belirttiğiniz canonical ile Google'ın seçtiği yan yana görünüyor.
+- **Alt metni eksik görsellerin adresleri.** Bulgu artık "12 görselden 3'ü"
+  demekle kalmıyor, hangi görseller olduğunu da yazıyor.
+- **Ülke tablosunda gösterim ve tıklama oranı.** Çok gösterim alıp tıklanmayan
+  bir ülke, sıralama değil başlık ve açıklama sorunudur.
+
 ### Fırsatlar artık her sayfayı kapsıyor
 
 Ekran yalnızca 4 ile 20. sıra arasını gösteriyordu. Bu yanlıştı: 1. sırada
@@ -38,8 +54,8 @@ karar veriyoruz, hazır bir tabloya değil.
 
 ### Yeni gösterilen veriler
 
-- **Organik gelir ve sipariş sayısı.** Analytics'ten zaten alıyorduk,
-  hiçbir yerde göstermiyorduk.
+- **Organik gelir ve sipariş sayısı.** Yalnızca gerçekten satış yapan
+  sitelerde çıkıyor. Mağazası olmayan bir sitede "gelir: 0" görmezsiniz.
 - **Ortalama sıra ve tıklama oranı grafiği.** Günlük seyir grafiğinde artık
   iki değil dört ölçü var.
 - **Site geneli hız verisi.** Bir sayfanın ziyaretçi sayısı azsa Google o
@@ -65,7 +81,7 @@ karar veriyoruz, hazır bir tabloya değil.
 
 ### Sayılar
 
-76 denetim kuralı · 774 test · 13 ekran çalışıyor
+76 denetim kuralı · 795 test · 13 ekran çalışıyor
 
 [Yayınlanmamış]: https://github.com/ucsahinn/seotracker/compare/v1.4.0...HEAD
 [1.4.0]: https://github.com/ucsahinn/seotracker/releases/tag/v1.4.0

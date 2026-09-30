@@ -423,6 +423,17 @@ export function runPageReporters(
     report("images-missing-alt", {
       imagesMissingAlt: page.imagesMissingAlt,
       imagesTotal: page.imagesTotal,
+      /*
+       * Which ones. `images_json` has carried every src since the analyzer
+       * was written and the finding only ever said "3 of 12" -- so fixing
+       * it meant opening the page and hunting. A short sample, not the
+       * list: a page can carry hundreds of images and this row lives in
+       * `details_json`, which is read on every issues screen.
+       */
+      examples: page.images
+        .filter((image) => !image.alt?.trim() && image.src)
+        .slice(0, MISSING_ALT_EXAMPLES)
+        .map((image) => image.src),
     });
   }
 
@@ -447,6 +458,9 @@ export function runPageReporters(
  */
 const FILENAME_ALT =
   /^(?:img[_-]?\d+|dsc[_-]?\d+|photo[_-]?\d+|image[_-]?\d+|screenshot[\s_-]?\d*|untitled[_-]?\d*)(?:\.\w{2,5})?$/i;
+
+/** How many un-described images the finding names, so the row stays small. */
+const MISSING_ALT_EXAMPLES = 3;
 
 /** Roughly where a description stops describing and starts narrating. */
 const ALT_TOO_LONG_CHARS = 250;

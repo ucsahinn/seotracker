@@ -63,6 +63,15 @@ export function CountryBreakdown({ countries }: { countries: CountryRow[] }) {
             <th scope="col" className="text-right">
               Tıklama
             </th>
+            {/* Fetched on every load and dropped: a market with plenty of
+                impressions and no clicks is a snippet problem, not a
+                ranking problem, and the panel held the numbers to say so. */}
+            <th scope="col" className="text-right">
+              Gösterim
+            </th>
+            <th scope="col" className="text-right">
+              TO
+            </th>
             <th scope="col" className="text-right">
               Pay
             </th>
@@ -94,6 +103,12 @@ export function CountryBreakdown({ countries }: { countries: CountryRow[] }) {
                 {formatCount(row.clicks)}
               </td>
               <td className="text-right tabular-nums text-muted">
+                {formatCount(row.impressions)}
+              </td>
+              <td className="text-right tabular-nums text-muted">
+                {formatPercent(row.ctr)}
+              </td>
+              <td className="text-right tabular-nums text-muted">
                 {formatPercent(row.clicks / total)}
               </td>
               <td className="text-right tabular-nums text-muted">
@@ -108,6 +123,8 @@ export function CountryBreakdown({ countries }: { countries: CountryRow[] }) {
               <td className="text-right tabular-nums">
                 {formatCount(restClicks)}
               </td>
+              <td />
+              <td />
               <td className="text-right tabular-nums">
                 {formatPercent(restClicks / total)}
               </td>

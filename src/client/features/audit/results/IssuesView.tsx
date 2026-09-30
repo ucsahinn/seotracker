@@ -333,16 +333,51 @@ function IssueDetails({ detailsJson }: { detailsJson: string | null }) {
   );
   if (entries.length === 0) return null;
 
+  /*
+   * Lists on their own lines, scalars on one. Everything used to be joined
+   * into a single truncated line, which reads fine for "count: 3" and turns
+   * a list of image addresses into an unreadable smear -- and a list of
+   * addresses is exactly what an operator fixing the finding needs to copy.
+   */
+  const lists = entries.filter(([, value]) => isStringList(value));
+  const scalars = entries.filter(([, value]) => !isStringList(value));
+
   return (
-    <span className="text-xs text-muted truncate">
-      {entries
-        .map(([key, value]) => {
-          const rendered = Array.isArray(value)
-            ? value.join(" → ")
-            : String(value);
-          return `${key}: ${rendered}`;
-        })
-        .join(" · ")}
+    <span className="block min-w-0 space-y-0.5 text-xs text-muted">
+      {scalars.length > 0 ? (
+        <span className="block truncate">
+          {scalars
+            .map(([key, value]) => {
+              const rendered = Array.isArray(value)
+                ? value.join(" → ")
+                : String(value);
+              return `${key}: ${rendered}`;
+            })
+            .join(" · ")}
+        </span>
+      ) : null}
+      {lists.map(([key, value]) =>
+        Array.isArray(value)
+          ? value.map((item) => (
+              <span
+                key={`${key}-${String(item)}`}
+                className="block truncate font-mono"
+                title={String(item)}
+              >
+                {String(item)}
+              </span>
+            ))
+          : null,
+      )}
     </span>
+  );
+}
+
+/** A list of address-like strings, as opposed to a heading-order sequence. */
+function isStringList(value: unknown): boolean {
+  return (
+    Array.isArray(value) &&
+    value.length > 0 &&
+    value.every((item) => typeof item === "string" && item.length > 12)
   );
 }

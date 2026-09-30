@@ -95,3 +95,54 @@ describe("alt text quality", () => {
     expect(types).not.toContain("alt-too-long");
   });
 });
+
+describe("images-missing-alt names its images", () => {
+  const missingAlt = (images: Array<{ src: string; alt: string | null }>) =>
+    runPageReporters(
+      makePage({
+        images,
+        imagesTotal: images.length,
+        imagesMissingAlt: images.filter((image) => !image.alt?.trim()).length,
+      }),
+    ).find((issue) => issue.issueType === "images-missing-alt");
+
+  /*
+   * The finding used to say "3 of 12" and nothing else, so fixing it meant
+   * opening the page and hunting. `images_json` had carried every src since
+   * the analyzer was written.
+   */
+  it("lists the addresses of the images with no alt text", () => {
+    const issue = missingAlt([
+      { src: "/img/hero.jpg", alt: "Ekip toplantısı" },
+      { src: "/img/logo-old.png", alt: null },
+      { src: "/img/banner.webp", alt: "" },
+    ]);
+
+    expect(issue?.details).toMatchObject({
+      examples: ["/img/logo-old.png", "/img/banner.webp"],
+    });
+  });
+
+  /*
+   * The row lives in `details_json`, read on every issues screen, and a page
+   * can carry hundreds of images. A sample, not the list.
+   */
+  it("caps the sample so the row stays small", () => {
+    const issue = missingAlt(
+      Array.from({ length: 40 }, (_, index) => ({
+        src: `/img/${index}.jpg`,
+        alt: null,
+      })),
+    );
+
+    expect(issue?.details?.["examples"]).toHaveLength(3);
+    // The count still says the truth about all of them.
+    expect(issue?.details).toMatchObject({ imagesMissingAlt: 40 });
+  });
+
+  it("does not report a page whose images all have alt text", () => {
+    expect(
+      missingAlt([{ src: "/img/hero.jpg", alt: "Ekip toplantısı" }]),
+    ).toBeUndefined();
+  });
+});

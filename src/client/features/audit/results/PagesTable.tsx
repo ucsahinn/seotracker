@@ -20,6 +20,10 @@ import {
 } from "@/client/features/audit/shared";
 import type { AuditResultsData } from "@/client/features/audit/results/types";
 import {
+  QuickFilters,
+  quickFilterCounts,
+} from "@/client/features/audit/results/QuickFilters";
+import {
   countActiveFilters,
   EmptyTableMessage,
   PagesFilterBar,
@@ -315,6 +319,9 @@ export function PagesTable({
     { id: "url", desc: false },
   ]);
   const activeFilterCount = countActiveFilters(filters, EMPTY_PAGES_FILTERS);
+  // Counted over the whole crawl, not the filtered view: a chip that only
+  // counted what is already on screen would read zero the moment you used it.
+  const presetCounts = useMemo(() => quickFilterCounts(pages), [pages]);
   const issueCountByPageId = useMemo(() => {
     const counts = new Map<string, number>();
     for (const issue of issues) {
@@ -356,6 +363,16 @@ export function PagesTable({
 
   return (
     <div className="space-y-3">
+      {/*
+       * The four questions that get asked every time, one click each. The
+       * full panel stays for the unusual ones; these write into the same
+       * filter state, so a chip and the panel cannot disagree.
+       */}
+      <QuickFilters
+        filters={filters}
+        onChange={onFiltersChange}
+        counts={presetCounts}
+      />
       <TableFilterToggle
         showFilters={showFilters}
         onToggle={() => setShowFilters((current) => !current)}

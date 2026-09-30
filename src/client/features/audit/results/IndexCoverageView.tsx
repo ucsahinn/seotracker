@@ -20,6 +20,7 @@ import { UrlCell } from "@/client/components/table/UrlCell";
 import { StackedShare } from "@/client/components/StackedShare";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { severityChip } from "@/client/features/audit/shared";
+import { coverageReasons } from "@/client/features/audit/results/coverageReasons";
 
 /**
  * What Google says about the pages the crawler found.
@@ -309,6 +310,7 @@ function CoverageTable({
             <tr>
               <th>Sayfa</th>
               <th>Durum</th>
+              <th>Neden</th>
               <th>Google&apos;ın canonical&apos;ı</th>
               <th>Son tarama</th>
               <th />
@@ -319,6 +321,7 @@ function CoverageTable({
               // The server decides this, so the column and the tile above it
               // cannot drift apart again.
               const mismatch = row.canonicalMismatch;
+              const reasons = coverageReasons(row);
 
               return (
                 <tr key={row.url} className="group/row">
@@ -333,15 +336,43 @@ function CoverageTable({
                       checkedAt={row.checkedAt}
                     />
                   </td>
+                  {/*
+                   * Google's own machine-readable answer. `coverageState`
+                   * -- the only thing this table showed -- is a free-form
+                   * sentence Google reformats and localises; these enums
+                   * say why, and they were fetched, stored and shipped here
+                   * without ever being rendered.
+                   */}
+                  <td className="max-w-xs">
+                    {reasons.length > 0 ? (
+                      <ul className="space-y-0.5 text-xs text-muted">
+                        {reasons.map((reason) => (
+                          <li key={reason}>{reason}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <span className="text-subtle">-</span>
+                    )}
+                  </td>
                   <td className="max-w-xs">
                     {mismatch && row.googleCanonical ? (
                       /* The value someone fixing a canonical mismatch has to
                          paste somewhere; it was only ever a title tooltip. */
-                      <UrlCell
-                        url={row.googleCanonical}
-                        label={pathOf(row.googleCanonical)}
-                        className="text-[var(--ink-warning)]"
-                      />
+                      <div className="space-y-0.5">
+                        <UrlCell
+                          url={row.googleCanonical}
+                          label={pathOf(row.googleCanonical)}
+                          className="text-[var(--ink-warning)]"
+                        />
+                        {/* Both sides of the mismatch. The tile above says
+                            one exists; without the declared value the reader
+                            had to download the CSV to see what it was. */}
+                        {row.userCanonical ? (
+                          <p className="truncate text-xs text-muted">
+                            Sizin belirttiğiniz: {pathOf(row.userCanonical)}
+                          </p>
+                        ) : null}
+                      </div>
                     ) : (
                       <span className="text-subtle">-</span>
                     )}

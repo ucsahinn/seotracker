@@ -73,9 +73,9 @@ export function NextStepsCard({
           Acil bir iş görünmüyor. Denetim güncel ve kritik sorun yok.
         </p>
       ) : (
-        <ul className="divide-y divide-base-300">
-          {steps.map((step) => (
-            <li key={step.key}>
+        <ul className="stagger divide-y divide-base-300">
+          {steps.map((step, index) => (
+            <li key={step.key} style={{ animationDelay: `${index * 60}ms` }}>
               <Link
                 to={step.to}
                 params={step.params}
@@ -89,9 +89,15 @@ export function NextStepsCard({
               >
                 <span
                   aria-hidden
+                  /*
+                   * `attention` breathes a ring twice and stops. Looping it
+                   * would make the whole dashboard shimmer the moment a
+                   * critical finding exists, which teaches the reader to stop
+                   * seeing it -- so it is a nudge, not an alarm.
+                   */
                   className={`flex size-8 shrink-0 items-center justify-center rounded-full ${
                     step.tone === "urgent"
-                      ? "bg-error/10 text-[var(--ink-error)]"
+                      ? "attention bg-error/10 text-[var(--ink-error)]"
                       : "bg-primary/10 text-primary"
                   }`}
                 >

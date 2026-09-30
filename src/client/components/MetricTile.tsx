@@ -122,8 +122,23 @@ export function DeltaBadge({
  */
 export function MetricRow({ children }: { children: React.ReactNode }) {
   return (
-    <div className="grid grid-cols-2 divide-x divide-y divide-base-300 overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-[var(--shadow-raise)] lg:grid-cols-4 lg:divide-y-0">
-      {children}
+    /*
+     * `stagger`: the tiles arrive one after another instead of in the same
+     * frame, so a row of four numbers reads as data landing rather than a
+     * page swap. The index is written onto each child below.
+     */
+    <div className="stagger grid grid-cols-2 divide-x divide-y divide-base-300 overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-[var(--shadow-raise)] lg:grid-cols-4 lg:divide-y-0">
+      {React.Children.map(children, (child, index) => (
+        /*
+         * The delay is written as `animation-delay` itself rather than as a
+         * `--i` custom property read back by the stylesheet: a CSS variable
+         * is not part of `CSSProperties`, and typing one in costs a cast.
+         * Capped at the sixth tile so a long row never waits a second.
+         */
+        <div style={{ animationDelay: `${Math.min(index, 5) * 40}ms` }}>
+          {child}
+        </div>
+      ))}
     </div>
   );
 }
