@@ -192,7 +192,7 @@ raporunda deftere hiç yazılmamış bulgular vardı. Tamamı aşağıda.
 
 | Konu                                                | Neden                                                                                                                        |
 | --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| `searchAppearance` boyutu (zengin sonuç türleri)    | Hiçbir ekran istemiyor; Search Console'da bu mülkün sorgu verisi henüz boş, gösterecek bir şey yok.                          |
+| `searchAppearance` boyutu (zengin sonuç türleri)    | **Sonradan eklendi (v1.8.0)** — Arama performansında kart olarak; veri gelmezse gizli.                                       |
 | GA4 kota ve `countingMethod`                        | Küçük ve doğru, ama bir kullanıcı sorusuna cevap değil; ölçüm durumu sekmesine ait, ayrı bir tur.                            |
 | Sıralama sparkline'ı                                | `gsc_query_daily` bu projede boş — yazsak da çizecek veri yok.                                                               |
 | Sitede gerçekten değişen şey: yeni bir API bağlamak | Bağlı üç kaynak (Search Console, Analytics, PageSpeed) henüz tam kullanılmıyor; dördüncüyü eklemek yerine önce bunlar bitti. |
