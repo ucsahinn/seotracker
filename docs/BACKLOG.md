@@ -234,12 +234,12 @@ Mock veri hiç kullanılmadı. Tek proje: `df26abab-fa39-4133-96cc-a5627d8b80ad`
 
 ### v1.5.0'te yapılanlar ve açık kalanlar
 
-| Konu | Durum |
-| ---- | ----- |
-| Site puanı (0–100), yalnızca sorun kalmayınca 100 | **Bitti** |
+| Konu                                                                     | Durum                                                                                        |
+| ------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- |
+| Site puanı (0–100), yalnızca sorun kalmayınca 100                        | **Bitti**                                                                                    |
 | Üç yeni denetim kuralı: https değil, asıl adres eksik, dil bilgisi eksik | **Bitti** — birim testli; https kuralı uçtan uca denenmedi (fixture sitesi https sunamıyor). |
-| Her ekrana kendi özet grafiği, tek ortak halka bileşeni | **Bitti** |
-| Fırsatlar satır penceresi ("Ne yapmalı?") | **Bitti** |
-| Cihaz halkası (Arama performansı) | Açık — sunucuda cihaz boyutlu sorgu gerekiyor. |
-| Takip edilen sorgularda yükselen/düşen | Açık — önceki dönem sırası gerekiyor. |
-| Önem çubuğundan denetimi süzme | Açık — rotada önem parametresi yok. |
+| Her ekrana kendi özet grafiği, tek ortak halka bileşeni                  | **Bitti**                                                                                    |
+| Fırsatlar satır penceresi ("Ne yapmalı?")                                | **Bitti**                                                                                    |
+| Cihaz halkası (Arama performansı)                                        | Açık — sunucuda cihaz boyutlu sorgu gerekiyor.                                               |
+| Takip edilen sorgularda yükselen/düşen                                   | Açık — önceki dönem sırası gerekiyor.                                                        |
+| Önem çubuğundan denetimi süzme                                           | Açık — rotada önem parametresi yok.                                                          |

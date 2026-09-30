@@ -54,7 +54,7 @@ describe("NextStepsCard", () => {
   it("asks for a first crawl when there has never been one", () => {
     render(<NextStepsCard projectId="p1" gscConnected={true} audit={null} />);
 
-    expect(screen.getByText(/İlk denetimi çalıştırın/)).toBeDefined();
+    expect(screen.getByText(/İlk denetimi başlatın/)).toBeDefined();
   });
 
   /*

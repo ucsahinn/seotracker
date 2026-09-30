@@ -158,7 +158,7 @@ function buildSteps({
         "Hangi kelimede kaçıncı sırada olduğunuzu ancak Google'ın kendi verisi söyler. Ücretsiz.",
       to: "/p/$projectId/settings/integrations",
       params,
-      cta: "Bağla",
+      cta: "Search Console'u bağla",
       tone: "urgent",
     });
   }
@@ -167,12 +167,12 @@ function buildSteps({
     steps.push({
       key: "first-audit",
       icon: Radar,
-      title: "İlk denetimi çalıştırın",
+      title: "İlk denetimi başlatın",
       detail:
         "Sitenizi kendi tarayıcımızla tarar; teknik sorunları önem sırasına göre listeler.",
       to: "/p/$projectId/audit",
       params,
-      cta: "Başlat",
+      cta: "Denetimi başlat",
       tone: "urgent",
     });
     return steps;
@@ -188,7 +188,7 @@ function buildSteps({
       to: "/p/$projectId/audit",
       params,
       search: { auditId: audit.auditId, tab: "issues" },
-      cta: "Bak",
+      cta: "Kritik sorunları gör",
       tone: "urgent",
     });
   }
@@ -202,7 +202,7 @@ function buildSteps({
         "Sıraya göre değil, üzerinde çalışmanın değerine göre sıralanmış sayfalarınız.",
       to: "/p/$projectId/opportunities",
       params,
-      cta: "Aç",
+      cta: "Fırsatları aç",
       tone: "normal",
     });
   }
@@ -221,7 +221,7 @@ function buildSteps({
       detail: `Son tarama ${formatRelativeTime(audit.startedAt)}. Bu ekrandaki sayılar o taramadan geliyor.`,
       to: "/p/$projectId/audit",
       params,
-      cta: "Tara",
+      cta: "Yeniden denetle",
       tone: "normal",
     });
   }
@@ -235,7 +235,7 @@ function buildSteps({
       to: "/p/$projectId/audit",
       params,
       search: { auditId: audit.auditId, tab: "issues" },
-      cta: "Bak",
+      cta: "Uyarıları gör",
       tone: "normal",
     });
   }
