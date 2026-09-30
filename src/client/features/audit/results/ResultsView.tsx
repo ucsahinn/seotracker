@@ -19,6 +19,7 @@ import { IndexCoverageView } from "@/client/features/audit/results/IndexCoverage
 import { SitemapStatusPanel } from "@/client/features/gsc/SitemapStatusPanel";
 import { DownloadReportButton } from "@/client/features/audit/results/DownloadReportButton";
 import { PerformanceSummary } from "@/client/features/audit/results/PerformanceSummary";
+import { CruxHistoryCard } from "@/client/features/lighthouse/CruxHistoryCard";
 import { TabIntro } from "@/client/features/audit/results/TabIntro";
 import { ForeignPropertyNotice } from "@/client/features/audit/results/ForeignPropertyNotice";
 import { useAuditPropertyMatch } from "@/client/features/audit/results/useAuditPropertyMatch";
@@ -283,6 +284,11 @@ export function ResultsView({
                   onTabChange("issues");
                 }}
               />
+            )}
+            {activeTab === "performance" && (
+              <div className="mb-4">
+                <CruxHistoryCard url={audit.startUrl} />
+              </div>
             )}
             {activeTab === "performance" && lighthouse.length > 0 && (
               <div className="mb-4">

@@ -32,17 +32,14 @@ import {
 import {
   DB_STEP,
   DISCOVERY_STEP,
-  LIGHTHOUSE_FETCH_STEP,
+  LIGHTHOUSE_CHUNK_STEP,
   LIGHTHOUSE_PERSIST_STEP,
   MULTIPAGE_CHECKS_STEP,
 } from "@/server/workflows/auditStepConfigs";
 
-/**
- * URLs fetched concurrently per wave. Each URL runs mobile + desktop, so one
- * wave holds up to 10 PageSpeed calls in flight; the aux worker's parse lock
- * serializes the memory-heavy payload parsing behind them.
- */
-const LIGHTHOUSE_URL_CONCURRENCY = 5;
+import { LIGHTHOUSE_URLS_PER_STEP } from "@/server/workflows/auditStepBudget";
+
+type LighthouseFetched = Awaited<ReturnType<typeof fetchLighthouseResult>>;
 /** Frontier seeds per scratchpad RPC call. */
 const SEED_RPC_BATCH = 2_000;
 
@@ -223,83 +220,80 @@ export async function runLighthousePhase(
   for (
     let chunkStart = 0;
     chunkStart < lighthouseWork.length;
-    chunkStart += LIGHTHOUSE_URL_CONCURRENCY
+    chunkStart += LIGHTHOUSE_URLS_PER_STEP
   ) {
     const chunk = lighthouseWork.slice(
       chunkStart,
-      chunkStart + LIGHTHOUSE_URL_CONCURRENCY,
+      chunkStart + LIGHTHOUSE_URLS_PER_STEP,
     );
+    const chunkIndex = Math.floor(chunkStart / LIGHTHOUSE_URLS_PER_STEP) + 1;
+    const priorCompleted = completedChecks;
+    const priorFailed = failedChecks;
 
-    // The paid calls are checkpointed separately from all storage. With
-    // Workflow retries disabled, a later R2/DB/progress failure cannot replay
-    // DataForSEO. One URL groups its mobile + desktop checks into one compact
-    // checkpoint. allSettled, not all: a rejected step must not orphan the
-    // sibling calls mid-flight — their checkpoints complete and persist below
-    // either way.
-    const settled = await Promise.allSettled(
-      chunk.map(({ url, pageId }, chunkOffset) =>
-        step.do(
-          `lighthouse-fetch-${chunkStart + chunkOffset + 1}`,
-          LIGHTHOUSE_FETCH_STEP,
-          () =>
-            Promise.all([
+    // ONE step per wave (5 URLs x mobile + desktop = 10 PageSpeed calls in
+    // parallel): fetch, store the raw payloads to R2, insert rows and bump
+    // progress, then return only counts. The raw payloads are multi-MB, far
+    // over the 1MiB step-result limit, so they never become step state. A
+    // retry re-runs the free PageSpeed calls; the rows have deterministic ids
+    // and R2 keys, so the writes are idempotent.
+    const persistChunk = (fetched: LighthouseFetched[]) => async () => {
+      const results = await Promise.all(
+        fetched.map((result) =>
+          storeLighthouseResult({ projectId, auditId, fetched: result }),
+        ),
+      );
+      await AuditLighthouseRepository.insertLighthouseResults(auditId, results);
+      const failed = results.filter((result) => result.errorMessage).length;
+      const completed = results.length - failed;
+      await AuditRepository.updateAuditProgress(auditId, workflowInstanceId, {
+        lighthouseCompleted: priorCompleted + completed,
+        lighthouseFailed: priorFailed + failed,
+      });
+      return {
+        completed,
+        failed,
+        quotaExhausted: fetched.some((item) => item.quotaExhausted),
+      };
+    };
+
+    let counts: Awaited<ReturnType<ReturnType<typeof persistChunk>>>;
+    try {
+      counts = await step.do(
+        `lighthouse-chunk-${chunkIndex}`,
+        LIGHTHOUSE_CHUNK_STEP,
+        async () => {
+          const fetched = await Promise.all(
+            chunk.flatMap(({ url, pageId }) => [
               fetchLighthouseResult(url, pageId, "mobile"),
               fetchLighthouseResult(url, pageId, "desktop"),
             ]),
-        ),
-      ),
-    );
-    const fetched = settled.flatMap((outcome, chunkOffset) => {
-      if (outcome.status === "fulfilled") return outcome.value;
-      // Step timeout or engine failure — provider errors never reject here
-      // (the audit-layer fetch converts them into errorMessage results).
-      const { url, pageId } = chunk[chunkOffset];
-      const message =
-        outcome.reason instanceof Error
-          ? outcome.reason.message
-          : String(outcome.reason);
-      return (["mobile", "desktop"] as const).map((strategy) =>
-        failedLighthouseFetch(url, pageId, strategy, message),
+          );
+          return persistChunk(fetched)();
+        },
       );
-    });
-
-    const chunkIndex = Math.floor(chunkStart / LIGHTHOUSE_URL_CONCURRENCY) + 1;
-    const priorCompleted = completedChecks;
-    const priorFailed = failedChecks;
-    const counts = await step.do(
-      `lighthouse-persist-chunk-${chunkIndex}`,
-      LIGHTHOUSE_PERSIST_STEP,
-      async () => {
-        const results = await Promise.all(
-          fetched.map((result) =>
-            storeLighthouseResult({
-              projectId,
-              auditId,
-              fetched: result,
-            }),
+    } catch (error) {
+      // Step timeout or retries exhausted: the wave still lands as error
+      // rows so the crawl results and the other waves are not lost.
+      const message = error instanceof Error ? error.message : String(error);
+      counts = await step.do(
+        `lighthouse-chunk-${chunkIndex}-failed`,
+        LIGHTHOUSE_PERSIST_STEP,
+        persistChunk(
+          chunk.flatMap(({ url, pageId }) =>
+            (["mobile", "desktop"] as const).map((strategy) =>
+              failedLighthouseFetch(url, pageId, strategy, message),
+            ),
           ),
-        );
-        await AuditLighthouseRepository.insertLighthouseResults(
-          auditId,
-          results,
-        );
-
-        const failed = results.filter((result) => result.errorMessage).length;
-        const completed = results.length - failed;
-        await AuditRepository.updateAuditProgress(auditId, workflowInstanceId, {
-          lighthouseCompleted: priorCompleted + completed,
-          lighthouseFailed: priorFailed + failed,
-        });
-        return { completed, failed };
-      },
-    );
+        ),
+      );
+    }
 
     completedChecks += counts.completed;
     failedChecks += counts.failed;
 
     // Daily quota spent: stop and keep what is stored; the results screen
     // explains the gap from the quota rows and the planned total.
-    if (fetched.some((item) => item.quotaExhausted)) break;
+    if (counts.quotaExhausted) break;
   }
 }
 

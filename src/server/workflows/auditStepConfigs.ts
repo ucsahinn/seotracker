@@ -22,7 +22,7 @@ export const CRAWL_CHUNK_STEP: WorkflowStepConfig = {
 };
 
 /**
- * One Lighthouse URL (mobile + desktop) against PageSpeed Insights. The calls
+ * One wave of 5 URLs (10 PageSpeed calls in parallel, stored in the same step) against PageSpeed Insights. The calls
  * are free and idempotent, so a replay is harmless — unlike the billed provider
  * this replaced, which forced retries to zero. Cold runs and quota rejections
  * are both transient; three attempts at 30s/60s ride them out without hammering
@@ -30,7 +30,7 @@ export const CRAWL_CHUNK_STEP: WorkflowStepConfig = {
  * marked result and the phase stops. The timeout is per attempt, covering two parallel
  * 120-second requests.
  */
-export const LIGHTHOUSE_FETCH_STEP: WorkflowStepConfig = {
+export const LIGHTHOUSE_CHUNK_STEP: WorkflowStepConfig = {
   retries: { limit: 2, delay: "30 seconds", backoff: "exponential" },
   timeout: "5 minutes",
 };

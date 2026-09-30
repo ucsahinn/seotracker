@@ -8,6 +8,7 @@ import { QUICK_FILTER_IDS } from "@/client/features/search-performance/quickFilt
 import {
   GSC_DEVICES,
   SEARCH_PERFORMANCE_RANGES,
+  SEARCH_PERFORMANCE_TYPES,
 } from "@/types/schemas/search-performance";
 
 /*
@@ -27,6 +28,8 @@ const searchSchema = z.object({
     .catch("last_28_days")
     .default("last_28_days"),
   device: z.enum(GSC_DEVICES).optional().catch(undefined),
+  /* Arama türü; web varsayılan olduğu için URL'de yalnızca diğerleri görünür. */
+  type: z.enum(SEARCH_PERFORMANCE_TYPES).optional().catch(undefined),
   country: z.string().min(2).max(3).optional().catch(undefined),
   /* Free-text narrowing of the queries/pages table. In the URL so a link
      from a saved keyword lands on that keyword, and so a reload keeps it. */
@@ -56,6 +59,7 @@ function SearchPerformanceRoute() {
       range={search.range}
       device={search.device}
       country={search.country}
+      searchType={search.type ?? "web"}
       query={search.q ?? ""}
       quickFilter={search.f}
       onViewChange={(next) =>

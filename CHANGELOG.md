@@ -5,7 +5,7 @@ Yayında tek sürüm tutuluyor, bu yüzden burada tek not var. Eski notlar
 
 ## [Yayınlanmamış]
 
-## [1.7.0] — 2026-09-30
+## [1.8.0] — 2026-09-30
 
 Bu sürüm, bugüne kadar çıkan tüm sürümlerin notlarını tek yerde toplar.
 
@@ -26,6 +26,8 @@ bırakın.
 
 - Site denetimi 0 ile 100 arası puan veriyor. Sorun kalmayınca 100 alırsınız.
 - Hız ölçümü artık taranan tüm sayfalarda, mobil ve masaüstünde yapılıyor. Google kotası dolarsa ölçülenler korunur ve ekran bunu söyler.
+- Hız sekmesinde gerçek ziyaretçilerin son haftalardaki hız gidişatı (LCP, CLS, INP). Google Cloud projenizde "Chrome UX Report API" açık olmalı; değilse ekran bunu söyler.
+- Arama performansında arama türü seçimi (web, görsel, video, haber) ve "arama görünümü" dökümü.
 - Sorunlar sekmesinde her sorunun etkilediği sayfalar adresleriyle görünüyor; adresleri kopyalayabilir, sorunu CSV olarak indirebilirsiniz.
 - İndirilen denetim raporu baştan yazıldı: kapak ve puan, grafikler, her sorun için etkilenen adresler, hız, dizin durumu ve sayfa listesi. A4 olarak yazdırılabilir.
 - Denetim 95 kontrol yapıyor. Yeniler: paylaşım kartı etiketleri, sayfa https değil, asıl adres eksik, dil bilgisi eksik, geçersiz yapısal veri, yinelenen H1, bozuk dil sürümü bağlantısı, boş veya genel bağlantı metni, çok uzun adres, karakter kodlaması eksik ve daha fazlası.
@@ -62,5 +64,5 @@ bırakın.
 - Sıralama takibi sessizce yalnızca ilk 25 sorguyu gösteriyordu; arşiv hiç dolmuyordu.
 - Ölçülemeyen değerler sıfır olarak çiziliyordu.
 
-[Yayınlanmamış]: https://github.com/ucsahinn/seotracker/compare/v1.7.0...HEAD
-[1.7.0]: https://github.com/ucsahinn/seotracker/releases/tag/v1.7.0
+[Yayınlanmamış]: https://github.com/ucsahinn/seotracker/compare/v1.8.0...HEAD
+[1.8.0]: https://github.com/ucsahinn/seotracker/releases/tag/v1.8.0

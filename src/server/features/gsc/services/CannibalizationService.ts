@@ -2,7 +2,10 @@ import {
   findCannibalizedQueries,
   type CannibalizationReport,
 } from "@/server/features/gsc/cannibalization";
-import { GSC_MAX_ROW_LIMIT } from "@/server/features/gsc/searchAnalytics";
+import {
+  GSC_MAX_ROW_LIMIT,
+  type GscSearchType,
+} from "@/server/features/gsc/searchAnalytics";
 import { buildGscFilters } from "@/server/features/gsc/performanceFilters";
 import { GscService } from "@/server/features/gsc/services/GscService";
 
@@ -26,6 +29,7 @@ export async function getCannibalization(input: {
    */
   device?: string;
   country?: string;
+  searchType?: GscSearchType;
 }): Promise<CannibalizationReport> {
   const rows = [];
   let request;
@@ -35,6 +39,7 @@ export async function getCannibalization(input: {
     const performance = await GscService.getPerformance({
       projectId: input.projectId,
       dimensions: ["query", "page"],
+      type: input.searchType,
       dateRange: input.dateRange ?? "last_28_days",
       filters: buildGscFilters(input).filters,
       rowLimit: GSC_MAX_ROW_LIMIT,

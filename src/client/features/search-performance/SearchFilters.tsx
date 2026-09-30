@@ -6,8 +6,10 @@ import { formatCountry } from "@/client/lib/format";
 import {
   GSC_DEVICES,
   SEARCH_PERFORMANCE_RANGES,
+  SEARCH_PERFORMANCE_TYPES,
   type SearchPerformanceDateRange,
   type SearchPerformanceDevice,
+  type SearchPerformanceType,
 } from "@/types/schemas/search-performance";
 
 const RANGE_LABELS: Record<SearchPerformanceDateRange, string> = {
@@ -25,6 +27,21 @@ const DEVICE_OPTIONS = GSC_DEVICES.map((value) => ({
   label: DEVICE_LABELS[value],
 }));
 
+export const TYPE_LABELS: Record<SearchPerformanceType, string> = {
+  web: "Web",
+  image: "Görsel",
+  video: "Video",
+  news: "Haber",
+};
+const TYPE_OPTIONS = SEARCH_PERFORMANCE_TYPES.map((value) => ({
+  value,
+  label: TYPE_LABELS[value],
+}));
+
+function isSearchType(value: string): value is SearchPerformanceType {
+  return SEARCH_PERFORMANCE_TYPES.some((option) => option === value);
+}
+
 // Sentinel for "no filter" in the selects; never sent to the server.
 const ALL = "ALL";
 
@@ -37,21 +54,44 @@ export function SearchFilters({
   range,
   device,
   country,
+  searchType,
   countries,
   onViewChange,
 }: {
   range: SearchPerformanceDateRange;
   device?: SearchPerformanceDevice;
   country?: string;
+  searchType: SearchPerformanceType;
   countries: { key: string }[];
   onViewChange: (next: {
     range?: SearchPerformanceDateRange;
     device?: SearchPerformanceDevice;
     country?: string;
+    type?: SearchPerformanceType;
   }) => void;
 }) {
   return (
     <>
+      <select
+        className="select select-bordered select-sm w-32"
+        value={searchType}
+        onChange={(event) => {
+          if (isSearchType(event.target.value)) {
+            // Web is the default, so it leaves the URL instead of sitting in it.
+            onViewChange({
+              type:
+                event.target.value === "web" ? undefined : event.target.value,
+            });
+          }
+        }}
+        aria-label="Arama türü"
+      >
+        {TYPE_OPTIONS.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
       <select
         className="select select-bordered select-sm w-36"
         value={device ?? ALL}

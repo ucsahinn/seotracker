@@ -12,6 +12,19 @@ export const SEARCH_PERFORMANCE_RANGES = [
 /** Device values exactly as the GSC `device` dimension returns/accepts them. */
 export const GSC_DEVICES = ["DESKTOP", "MOBILE", "TABLET"] as const;
 
+/*
+ * Search types the page offers. Discover and Google News are left out on
+ * purpose: they have no query dimension, so the queries table and the
+ * striking-distance scan (query x page) would be rejected with a 400.
+ */
+export const SEARCH_PERFORMANCE_TYPES = [
+  "web",
+  "image",
+  "video",
+  "news",
+] as const;
+export type SearchPerformanceType = (typeof SEARCH_PERFORMANCE_TYPES)[number];
+
 export type SearchPerformanceDateRange =
   (typeof SEARCH_PERFORMANCE_RANGES)[number];
 export type SearchPerformanceDevice = (typeof GSC_DEVICES)[number];
@@ -22,6 +35,7 @@ const searchPerformanceFilterShape = {
   projectId: z.string().min(1),
   dateRange: z.enum(SEARCH_PERFORMANCE_RANGES).default("last_28_days"),
   device: z.enum(GSC_DEVICES).optional(),
+  searchType: z.enum(SEARCH_PERFORMANCE_TYPES).default("web"),
   // ISO-3166-1 alpha-3, the code GSC returns in `country` dimension keys.
   country: z
     .string()

@@ -71,6 +71,7 @@ vi.mock("@/server/workflows/siteAuditWorkflowCrawl", () => ({
 }));
 
 import { UNKEYED_LIGHTHOUSE_PAGE_CAP } from "@/shared/audit-limits";
+import { lighthouseStepCount } from "@/server/workflows/auditStepBudget";
 import { runLighthousePhase } from "@/server/workflows/siteAuditWorkflowPhases";
 
 const PHASE_PARAMS = {
@@ -119,27 +120,23 @@ describe("runLighthousePhase", () => {
     getPageSpeedApiKeyMock.mockResolvedValue("key");
   });
 
-  it("retries persistence without re-running a completed fetch step", async () => {
-    let persistenceAttempts = 0;
-    let fetchRetryLimit: number | undefined;
-    let persistenceRetryLimit: number | undefined;
+  it("retries the wave step; rows and R2 keys are idempotent so the re-fetch is harmless", async () => {
+    let chunkAttempts = 0;
+    let chunkRetryLimit: number | undefined;
     stepDoMock.mockImplementation(
       async (
         name: string,
         config: { retries?: { limit?: number } },
         callback: () => Promise<unknown>,
       ) => {
-        if (name === "lighthouse-fetch-1") {
-          fetchRetryLimit = config.retries?.limit;
-        }
-        if (name === "lighthouse-persist-chunk-1") {
-          persistenceRetryLimit = config.retries?.limit;
-          persistenceAttempts += 1;
+        if (name === "lighthouse-chunk-1") {
+          chunkRetryLimit = config.retries?.limit;
+          chunkAttempts += 1;
           try {
             return await callback();
           } catch (error) {
             if ((config.retries?.limit ?? 0) < 1) throw error;
-            persistenceAttempts += 1;
+            chunkAttempts += 1;
             return callback();
           }
         }
@@ -154,12 +151,11 @@ describe("runLighthousePhase", () => {
 
     await runLighthousePhase(stepStub(), PHASE_PARAMS);
 
-    expect(fetchLighthouseResultMock).toHaveBeenCalledTimes(2);
-    expect(storeLighthouseResultMock).toHaveBeenCalledTimes(4);
+    // Attempt 1 fetched and failed at progress; attempt 2 re-ran everything.
+    expect(fetchLighthouseResultMock).toHaveBeenCalledTimes(4);
     expect(insertLighthouseResultsMock).toHaveBeenCalledTimes(2);
-    expect(persistenceAttempts).toBe(2);
-    expect(fetchRetryLimit).toBe(2);
-    expect(persistenceRetryLimit).toBe(3);
+    expect(chunkAttempts).toBe(2);
+    expect(chunkRetryLimit).toBe(2);
     expect(updateAuditProgressMock).toHaveBeenLastCalledWith(
       "audit-1",
       "workflow-1",
@@ -167,7 +163,7 @@ describe("runLighthousePhase", () => {
     );
   });
 
-  it("persists sibling results when one fetch step fails", async () => {
+  it("records error rows for a wave whose step fails after retries", async () => {
     getPagesForAuditMock.mockResolvedValue([
       { id: "page-1", url: "https://example.com/", statusCode: 200 },
       { id: "page-2", url: "https://example.com/about", statusCode: 200 },
@@ -182,7 +178,7 @@ describe("runLighthousePhase", () => {
         _config: unknown,
         callback: () => Promise<unknown>,
       ) => {
-        if (name === "lighthouse-fetch-2") {
+        if (name === "lighthouse-chunk-1") {
           throw new Error("step timed out");
         }
         return callback();
@@ -191,9 +187,9 @@ describe("runLighthousePhase", () => {
 
     await runLighthousePhase(stepStub(), PHASE_PARAMS);
 
-    // Only the surviving URL's pair was fetched; the failed step's checks
-    // still land as errorMessage rows in the same insert.
-    expect(fetchLighthouseResultMock).toHaveBeenCalledTimes(2);
+    // The wave step threw before fetching; its checks land as errorMessage
+    // rows through the fallback step.
+    expect(fetchLighthouseResultMock).toHaveBeenCalledTimes(0);
     expect(insertLighthouseResultsMock).toHaveBeenCalledTimes(1);
     // vi.fn() mock calls are untyped; the mocked storeLighthouseResult above
     // passes fetch results through as rows.
@@ -203,12 +199,51 @@ describe("runLighthousePhase", () => {
     expect(inserted).toHaveLength(4);
     expect(
       inserted.filter((row) => row.errorMessage === "step timed out"),
-    ).toHaveLength(2);
+    ).toHaveLength(4);
     expect(updateAuditProgressMock).toHaveBeenLastCalledWith(
       "audit-1",
       "workflow-1",
-      { lighthouseCompleted: 2, lighthouseFailed: 2 },
+      { lighthouseCompleted: 0, lighthouseFailed: 4 },
     );
+  });
+
+  it("creates one step per wave of five URLs and returns only counts", async () => {
+    const pages = Array.from({ length: 12 }, (_, index) => ({
+      id: `page-${index}`,
+      url: `https://example.com/p${index}`,
+      statusCode: 200,
+    }));
+    getPagesForAuditMock.mockResolvedValue(pages);
+    selectLighthousePagesMock.mockReturnValue(pages.map((page) => page.url));
+    const names: string[] = [];
+    const returned: unknown[] = [];
+    stepDoMock.mockImplementation(
+      async (
+        name: string,
+        _config: unknown,
+        callback: () => Promise<unknown>,
+      ) => {
+        names.push(name);
+        const value = await callback();
+        returned.push(value);
+        return value;
+      },
+    );
+
+    await runLighthousePhase(stepStub(), PHASE_PARAMS);
+
+    expect(names).toEqual([
+      "select-lighthouse-sample",
+      "lighthouse-chunk-1",
+      "lighthouse-chunk-2",
+      "lighthouse-chunk-3",
+    ]);
+    expect(names.length - 1).toBe(lighthouseStepCount(12));
+    expect(returned[1]).toEqual({
+      completed: 10,
+      failed: 0,
+      quotaExhausted: false,
+    });
   });
 
   it("caps the run when no PageSpeed key is set and leaves it open with one", async () => {

@@ -11,6 +11,7 @@ import {
 import type {
   SearchPerformanceDateRange,
   SearchPerformanceDevice,
+  SearchPerformanceType,
 } from "@/types/schemas/search-performance";
 import { getCannibalizationReport } from "@/serverFunctions/cannibalization";
 import { UrlCell } from "@/client/components/table/UrlCell";
@@ -29,19 +30,28 @@ export function CannibalizationTable({
   dateRange,
   device,
   country,
+  searchType,
 }: {
   projectId: string;
   dateRange: SearchPerformanceDateRange;
   device?: SearchPerformanceDevice;
   country?: string;
+  searchType: SearchPerformanceType;
 }) {
   const report = useQuery({
     // The filters belong in the key as well as the payload: without them the
     // panel kept serving its first answer while the dropdowns above changed.
-    queryKey: ["cannibalization", projectId, dateRange, device, country],
+    queryKey: [
+      "cannibalization",
+      projectId,
+      dateRange,
+      device,
+      country,
+      searchType,
+    ],
     queryFn: () =>
       getCannibalizationReport({
-        data: { projectId, dateRange, device, country },
+        data: { projectId, dateRange, device, country, searchType },
       }),
   });
 

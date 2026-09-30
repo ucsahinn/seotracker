@@ -25,6 +25,8 @@ const STRIKING_DISTANCE_FETCH_LIMIT = 1000;
 // dimensions:["date"] returns one row per day; the longest range is ~92 days.
 const DAILY_ROW_LIMIT = 200;
 const COUNTRY_ROW_LIMIT = 25;
+// Google defines a few dozen appearance types; the ring shows the top few.
+const APPEARANCE_ROW_LIMIT = 25;
 // GSC knows three devices.
 const DEVICE_ROW_LIMIT = 3;
 // Export pulls the whole dimension in one shot, capped at GSC's per-call max
@@ -58,6 +60,7 @@ export const getSearchPerformanceReport = createServerFn({ method: "POST" })
     });
     const prev = previousPeriod(startDate, endDate);
     const projectId = context.projectId;
+    const type = data.searchType;
     const { deviceFilters, filters } = buildGscFilters(data);
     // The device ring ignores the device filter (so every device stays
     // visible while one is chosen) but keeps the country filter.
@@ -66,13 +69,14 @@ export const getSearchPerformanceReport = createServerFn({ method: "POST" })
     }).filters;
 
     try {
-      const [current, previous, queryPages, countries, devices] =
+      const [current, previous, queryPages, countries, devices, appearances] =
         await Promise.all([
           GscService.getPerformance({
             projectId,
             startDate,
             endDate,
             dimensions: ["date"],
+            type,
             filters,
             rowLimit: DAILY_ROW_LIMIT,
           }),
@@ -81,6 +85,7 @@ export const getSearchPerformanceReport = createServerFn({ method: "POST" })
             startDate: prev.startDate,
             endDate: prev.endDate,
             dimensions: ["date"],
+            type,
             filters,
             rowLimit: DAILY_ROW_LIMIT,
           }),
@@ -89,6 +94,7 @@ export const getSearchPerformanceReport = createServerFn({ method: "POST" })
             startDate,
             endDate,
             dimensions: ["query", "page"],
+            type,
             filters,
             rowLimit: STRIKING_DISTANCE_FETCH_LIMIT,
           }),
@@ -97,6 +103,7 @@ export const getSearchPerformanceReport = createServerFn({ method: "POST" })
             startDate,
             endDate,
             dimensions: ["country"],
+            type,
             filters: deviceFilters,
             rowLimit: COUNTRY_ROW_LIMIT,
           }),
@@ -105,8 +112,23 @@ export const getSearchPerformanceReport = createServerFn({ method: "POST" })
             startDate,
             endDate,
             dimensions: ["device"],
+            type,
             filters: deviceRingFilters,
             rowLimit: DEVICE_ROW_LIMIT,
+          }),
+          /*
+           * searchAppearance cannot be combined with any other dimension, so
+           * it is its own call. Same range, country and device filters as
+           * the trend; most sites get no rows back.
+           */
+          GscService.getPerformance({
+            projectId,
+            startDate,
+            endDate,
+            dimensions: ["searchAppearance"],
+            type,
+            filters,
+            rowLimit: APPEARANCE_ROW_LIMIT,
           }),
         ]);
 
@@ -134,6 +156,7 @@ export const getSearchPerformanceReport = createServerFn({ method: "POST" })
         strikingDistance: buildStrikingDistanceRows(queryPages.rows),
         countries: toDimensionRows(countries.rows),
         devices: toDimensionRows(devices.rows),
+        searchAppearance: toDimensionRows(appearances.rows),
       };
     } catch (error) {
       if (isExpectedConnectionFailure(error)) {
@@ -165,6 +188,7 @@ export const getSearchPerformanceTable = createServerFn({ method: "POST" })
         startDate,
         endDate,
         dimensions: [data.dimension],
+        type: data.searchType,
         filters,
         rowLimit: TABLE_ROW_LIMIT + 1,
       });
@@ -204,6 +228,7 @@ export const exportSearchPerformanceTable = createServerFn({ method: "POST" })
       startDate,
       endDate,
       dimensions: [data.dimension],
+      type: data.searchType,
       filters,
       rowLimit: EXPORT_ROW_LIMIT,
     });

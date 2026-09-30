@@ -2,6 +2,8 @@ import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { SearchTrendPanel } from "@/client/features/search-performance/SearchTrendChart";
 import { DeviceBreakdown } from "@/client/features/search-performance/DeviceBreakdown";
+import { SearchAppearanceBreakdown } from "@/client/features/search-performance/SearchAppearanceBreakdown";
+import { TYPE_LABELS } from "@/client/features/search-performance/SearchFilters";
 import { CountryBreakdown } from "@/client/features/search-performance/CountryBreakdown";
 import { TabPanel, Tabs } from "@/client/components/Tabs";
 import { useEffect } from "react";
@@ -43,6 +45,7 @@ import {
   type SearchPerformanceDateRange,
   type SearchPerformanceDevice,
   type SearchPerformanceTableDimension,
+  type SearchPerformanceType,
 } from "@/types/schemas/search-performance";
 
 /** What each tab is for, in one plain sentence, shown above its panel. */
@@ -64,6 +67,7 @@ type FilterInput = {
   dateRange: SearchPerformanceDateRange;
   device?: SearchPerformanceDevice;
   country?: string;
+  searchType: SearchPerformanceType;
 };
 
 // The server filter payload: drop device/country when set to the "ALL" sentinel.
@@ -71,9 +75,11 @@ function buildFilterInput(
   range: SearchPerformanceDateRange,
   device: SearchPerformanceDevice | undefined,
   country: string | undefined,
+  searchType: SearchPerformanceType,
 ): FilterInput {
   return {
     dateRange: range,
+    searchType,
     ...(device ? { device } : {}),
     ...(country ? { country } : {}),
   };
@@ -109,6 +115,7 @@ export function SearchPerformancePage({
   range,
   device,
   country,
+  searchType,
   query,
   quickFilter,
   onViewChange,
@@ -123,6 +130,8 @@ export function SearchPerformancePage({
   range: SearchPerformanceDateRange;
   device?: SearchPerformanceDevice;
   country?: string;
+  /** Web unless the URL says otherwise. */
+  searchType: SearchPerformanceType;
   /** Free-text narrowing of the dimension table, from the URL. */
   query: string;
   /** Chip filter on the queries and pages tables, from the URL. */
@@ -132,6 +141,7 @@ export function SearchPerformancePage({
     range?: SearchPerformanceDateRange;
     device?: SearchPerformanceDevice;
     country?: string;
+    type?: SearchPerformanceType;
     q?: string;
     f?: QuickFilterId;
   }) => void;
@@ -158,10 +168,17 @@ export function SearchPerformancePage({
   });
   const setTab = (next: Tab) => onViewChange({ tab: next });
 
-  const filterInput = buildFilterInput(range, device, country);
+  const filterInput = buildFilterInput(range, device, country, searchType);
 
   const reportQuery = useQuery({
-    queryKey: ["searchPerformance", projectId, range, device, country],
+    queryKey: [
+      "searchPerformance",
+      projectId,
+      range,
+      device,
+      country,
+      searchType,
+    ],
     queryFn: () =>
       getSearchPerformanceReport({ data: { projectId, ...filterInput } }),
     placeholderData: keepPreviousData,
@@ -187,10 +204,18 @@ export function SearchPerformancePage({
       tableQueryOptions(
         projectId,
         "query",
-        buildFilterInput(range, device, country),
+        buildFilterInput(range, device, country, searchType),
       ),
     );
-  }, [report?.connected, projectId, range, device, country, queryClient]);
+  }, [
+    report?.connected,
+    projectId,
+    range,
+    device,
+    country,
+    searchType,
+    queryClient,
+  ]);
 
   const handleExport = async (target: ExportTarget) => {
     if (!report?.connected) return;
@@ -256,6 +281,9 @@ export function SearchPerformancePage({
               report.range.endDate,
               formatDate,
             )}
+            {searchType === "web"
+              ? null
+              : ` · Arama türü: ${TYPE_LABELS[searchType]}`}
           </p>
           <TotalsCards report={report} />
           <SearchTrendPanel daily={report.daily} />
@@ -264,6 +292,7 @@ export function SearchPerformancePage({
             selected={device}
             onSelect={(next) => onViewChange({ device: next })}
           />
+          <SearchAppearanceBreakdown rows={report.searchAppearance} />
           <CountryBreakdown
             countries={report.countries}
             selected={country}
@@ -294,6 +323,7 @@ export function SearchPerformancePage({
                   range={range}
                   device={device}
                   country={country}
+                  searchType={searchType}
                   countries={report.countries}
                   onViewChange={onViewChange}
                 />
@@ -340,6 +370,7 @@ export function SearchPerformancePage({
                   dateRange={range}
                   device={device}
                   country={country}
+                  searchType={searchType}
                 />
               ) : tableQuery.isPending ? (
                 /* Shaped like the table that is coming, per the house rule:
@@ -371,7 +402,9 @@ export function SearchPerformancePage({
                           : undefined
                       }
                       truncated={tableTruncated}
-                      hasActiveFilter={Boolean(device ?? country)}
+                      hasActiveFilter={
+                        Boolean(device ?? country) || searchType !== "web"
+                      }
                       search={query}
                       onSearchChange={(next) =>
                         onViewChange({ q: next || undefined })

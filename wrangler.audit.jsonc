@@ -18,6 +18,13 @@
       "enabled": true,
     },
   },
+  // Workflow step ceiling: default 10,000, raisable to 25,000 (Cloudflare
+  // Workflows limits, verified 2026-09-30). An audit of MAX_AUDIT_PAGES uses
+  // about 2,100 steps (see src/server/workflows/auditStepBudget.ts); this is
+  // headroom for slow sites whose crawl chunks are cut short.
+  "limits": {
+    "steps": 25000,
+  },
   // This worker is the code home of the site-audit workflow; the app worker
   // binds to it cross-script via script_name (see wrangler.jsonc).
   "workflows": [

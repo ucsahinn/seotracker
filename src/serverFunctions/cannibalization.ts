@@ -2,7 +2,10 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { getCannibalization } from "@/server/features/gsc/services/CannibalizationService";
 import { requireProjectContext } from "@/serverFunctions/middleware";
-import { GSC_DEVICES } from "@/types/schemas/search-performance";
+import {
+  GSC_DEVICES,
+  SEARCH_PERFORMANCE_TYPES,
+} from "@/types/schemas/search-performance";
 
 /*
  * Two vocabularies met here. The Search Performance page offers 7 days / 28
@@ -22,6 +25,7 @@ const schema = z.object({
     .enum(["last_7_days", "last_28_days", "last_3_months", "last_6_months"])
     .default("last_28_days"),
   device: z.enum(GSC_DEVICES).optional(),
+  searchType: z.enum(SEARCH_PERFORMANCE_TYPES).default("web"),
   country: z
     .string()
     .length(3)
@@ -39,5 +43,6 @@ export const getCannibalizationReport = createServerFn({ method: "POST" })
         data.dateRange === "last_7_days" ? "last_28_days" : data.dateRange,
       device: data.device,
       country: data.country,
+      searchType: data.searchType,
     }),
   );

@@ -236,7 +236,7 @@ export function DimensionTable({
                 : quickFilter
                   ? "Yukarıdaki hızlı filtreyi kaldırarak tüm satırlara dönün."
                   : hasActiveFilter
-                    ? "Cihaz ya da ülke filtresini genişletmeyi deneyin."
+                    ? "Arama türü, cihaz ya da ülke filtresini genişletmeyi deneyin."
                     : "Search Console verisi birkaç gün gecikmeli gelir; mülk yeni bağlandıysa birkaç gün sürebilir."
             }
           />
