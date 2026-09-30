@@ -78,6 +78,8 @@ export const auditPages = sqliteTable(
      * so every cross-page check was blind to a page noindexed only this way.
      */
     googlebotMeta: text("googlebot_meta"),
+    // `<html lang>` as declared; null when absent or blank.
+    htmlLang: text("html_lang"),
     // Open Graph
     ogTitle: text("og_title"),
     ogDescription: text("og_description"),

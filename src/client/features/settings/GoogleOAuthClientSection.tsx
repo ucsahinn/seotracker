@@ -117,11 +117,12 @@ export function GoogleOAuthClientSection() {
 
       <div className="rounded-box border border-base-300 bg-base-200/40 p-3">
         <p className="text-sm text-muted">
-          İstemciyi oluştururken <strong>Authorized redirect URIs</strong>{" "}
-          alanına <strong>ikisini de</strong> tam olarak ekleyin. Bir karakter
-          farkı bile Google&apos;ın <code>redirect_uri_mismatch</code> vermesine
-          yol açar; Analytics&apos;inkini eklemezseniz Search Console bağlanır
-          ama Analytics bağlanmaz.
+          İstemciyi oluştururken <strong>Yetkili yönlendirme adresleri</strong>{" "}
+          (Authorized redirect URIs) alanına <strong>ikisini de</strong> tam
+          olarak ekleyin. Bir karakter farkı bile Google&apos;ın{" "}
+          <code>redirect_uri_mismatch</code> vermesine yol açar;
+          Analytics&apos;inkini eklemezseniz Search Console bağlanır ama
+          Analytics bağlanmaz.
         </p>
         {redirectUris.map((uri) => (
           <div
@@ -133,7 +134,7 @@ export function GoogleOAuthClientSection() {
             </code>
             <CopyButton
               value={uri.value}
-              successMessage={`${uri.label} redirect URI kopyalandı`}
+              successMessage={`${uri.label} yönlendirme adresi kopyalandı`}
             />
           </div>
         ))}
@@ -217,9 +218,9 @@ export function GoogleOAuthClientSection() {
               Gizli anahtar
               <HelpTip label="Gizli anahtar">
                 Aynı istemciyi açtığınızda sağdaki panelde. Google onu yalnızca
-                oluşturma anında tam gösterir; kaçırdıysanız yeni bir sır
-                üretin. Burada sunucuda şifrelenir ve bir daha tarayıcıya
-                gönderilmez.
+                oluşturma anında tam gösterir; kaçırdıysanız yeni bir gizli
+                anahtar üretin. Burada sunucuda şifrelenir ve bir daha
+                tarayıcıya gönderilmez.
               </HelpTip>
             </span>
             <input

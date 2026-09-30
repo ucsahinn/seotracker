@@ -58,7 +58,7 @@ export function AuditFreshnessCard({ projectId }: { projectId: string }) {
             search={{}}
             className="btn btn-primary btn-sm"
           >
-            Denetim çalıştır
+            Denetimi başlat
           </Link>
         </div>
       ) : null}

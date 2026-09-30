@@ -100,8 +100,8 @@ export function UpdateSection({ version }: { version: string }) {
             />
           </div>
           <p className="text-xs text-subtle">
-            Depo klasöründe çalıştırın. Verileriniz `.wrangler` biriminde kalır,
-            güncelleme onu silmez.
+            Proje klasöründe çalıştırın. Verileriniz `.wrangler` klasöründe
+            kalır, güncelleme onu silmez.
           </p>
         </div>
       ) : null}
@@ -135,8 +135,8 @@ export function UpdateSection({ version }: { version: string }) {
             onChange={(event) => toggle.mutate(event.target.checked)}
           />
           <span className="flex items-center gap-1.5">
-            Güncellemeleri denetle
-            <HelpTip label="Güncellemeleri denetle">
+            Güncellemeleri kontrol et
+            <HelpTip label="Güncellemeleri kontrol et">
               Açıkken günde bir kez GitHub&apos;daki sürüm listesine bakar,
               başka hiçbir şey göndermez. Kapatırsanız dışarıya hiç istek gitmez
               ve sürümü kendiniz takip edersiniz.
@@ -153,7 +153,7 @@ export function UpdateSection({ version }: { version: string }) {
             <RotateCw
               className={`size-4 ${checkNow.isPending ? "animate-spin" : ""}`}
             />
-            Şimdi denetle
+            Şimdi kontrol et
           </button>
         ) : null}
       </div>

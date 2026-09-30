@@ -52,7 +52,7 @@ export const CONTENT_ISSUES = {
   },
   "no-outgoing-links": {
     severity: "info",
-    title: "Sayfadan hiç bağlantı çıkmıyor",
+    title: "Sayfadan başka hiçbir yere bağlantı yok",
     explanation:
       "Sayfadan hiçbir yere bağlantı çıkmıyor, yani bir çıkmaz sokak. Tarayıcının buradan gidecek yeri olmaz ve kullanıcı geri düğmesine uzanır.",
     howToFix:
@@ -100,15 +100,23 @@ export const CONTENT_ISSUES = {
   },
   "missing-viewport": {
     severity: "info",
-    title: "Viewport etiketi yok",
+    title: "Mobil görünüm etiketi (viewport) yok",
     explanation:
       'Sayfada `<meta name="viewport">` yok. Google siteleri mobil sürümleri üzerinden dizine alır ve viewport etiketi olmayan bir sayfa telefonda masaüstü genişliğinde açılır: kullanıcı yakınlaştırmadan okuyamaz. Lighthouse bunu zaten denetler, ama en fazla on örnek sayfada; bu kontrol taranan her sayfayı kapsar, yani tek bozuk şablon gözden kaçmaz.',
     howToFix:
       'Sayfanın `<head>` bölümüne `<meta name="viewport" content="width=device-width, initial-scale=1">` ekleyin. Neredeyse her durumda doğru değer budur.',
   },
+  "missing-lang": {
+    severity: "info",
+    title: "Sayfa dili belirtilmemiş",
+    explanation:
+      "Sayfanın `<html>` etiketinde `lang` özelliği yok. Bu özellik sayfanın hangi dilde yazıldığını söyler. Ekran okuyucular doğru telaffuz için buna bakar; tarayıcılar çeviri önerisini ve yazım denetimini buna göre yapar. Google dili içerikten kendisi de anlar, ama açıkça yazılmış dil size hiçbir şeye mal olmadan bir belirsizliği ortadan kaldırır.",
+    howToFix:
+      'Sayfanın ilk satırlarındaki `<html>` etiketine dilinizi ekleyin: Türkçe bir sayfa için `<html lang="tr">`. Tek şablondan üretilen sitelerde bunu şablonda bir kez düzeltmeniz tüm sayfalara yeter.',
+  },
   "no-subheadings": {
     severity: "info",
-    title: "Uzun metin alt başlıksız",
+    title: "Uzun metinde alt başlık yok",
     explanation:
       "Sayfada epey metin var ama H1 dışında hiç başlık yok. Alt başlıklar metni tarayarak okunabilir hale getirir ve her bölümün neyi anlattığını söyler; Google da bir sayfanın hangi alt konuları kapsadığını kısmen buradan çıkarır. Başlıksız uzun bir metin tek bir duvar olarak okunur.",
     howToFix:
@@ -116,7 +124,7 @@ export const CONTENT_ISSUES = {
   },
   "alt-is-filename": {
     severity: "info",
-    title: "Görsel alt metni dosya adı",
+    title: "Görselin alt metni bir dosya adı",
     explanation:
       "Görselin alt metni bir dosya adı ya da kamera çıktısı gibi görünüyor (IMG_2231.jpg, DSC0043, ekran-goruntusu-1.png). Alt metin görseli göremeyen birine ne olduğunu anlatmak içindir; dosya adı bunu anlatmaz. Görsel aramasında da sayfanın ne hakkında olduğunu söyleyen tek sinyal budur.",
     howToFix:

@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   EMPTY_PAGES_FILTERS,
   filterPages,
+  scopeToUrls,
   type PageRow,
 } from "./AuditResultsTableFilterLogic";
 
@@ -38,6 +39,7 @@ function page(overrides: Partial<PageRow>): PageRow {
     imagesTotal: 0,
     imagesMissingAlt: 0,
     imagesJson: null,
+    htmlLang: null,
     internalLinkCount: 0,
     externalLinkCount: 0,
     hasStructuredData: false,
@@ -96,5 +98,18 @@ describe("indexability, sitemap and depth filters", () => {
 
     const deep = filterPages(rows, { ...EMPTY_PAGES_FILTERS, minDepth: "4" });
     expect(deep.map((row) => row.url)).toEqual(["https://example.com/deep"]);
+  });
+});
+
+describe("scopeToUrls", () => {
+  it("keeps only the listed pages; an empty list shows nothing, not everything", () => {
+    const rows = [
+      page({ url: "https://example.com/a" }),
+      page({ url: "https://example.com/b" }),
+    ];
+
+    expect(scopeToUrls(rows, ["https://example.com/b"])).toHaveLength(1);
+    expect(scopeToUrls(rows, [])).toHaveLength(0);
+    expect(scopeToUrls(rows, undefined)).toHaveLength(2);
   });
 });

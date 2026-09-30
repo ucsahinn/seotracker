@@ -24,7 +24,7 @@ export const GOOGLE_TOKEN_URI = "https://oauth2.googleapis.com/token";
 const serviceAccountKeySchema = z.object({
   type: z.literal("service_account", {
     message:
-      'Bu bir servis hesabı anahtarı değil. Dosyada "type": "service_account" yazmalı.',
+      'Bu bir hizmet hesabı anahtarı değil. Dosyada "type": "service_account" yazmalı.',
   }),
   client_email: z.string().email("client_email bir e-posta adresi olmalı."),
   private_key: z.string().includes("BEGIN PRIVATE KEY", {

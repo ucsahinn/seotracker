@@ -70,8 +70,8 @@ export function PageSpeedKeySection() {
       <p className="text-sm text-muted">
         Denetimin Lighthouse aşaması Google PageSpeed Insights&apos;ı kullanır.
         Anahtarsız da çalışır, ama Google&apos;ın anahtarsız kotası birkaç
-        sayfadan sonra 429 döndürür — yani gerçek bir sitede hız ölçümü büyük
-        ölçüde boş kalır. Anahtar ücretsiz.{" "}
+        sayfadan sonra "çok fazla istek" (429) hatası verir; gerçek bir sitede
+        hız ölçümünün büyük kısmı boş kalır. Anahtar ücretsiz.{" "}
         <a
           href={KEY_URL}
           target="_blank"

@@ -19,6 +19,15 @@ const schema = z.object({
   windowDays: z.union([z.literal(7), z.literal(28), z.literal(90)]).default(28),
   limit: z.number().int().min(1).max(200).default(50),
   comparePreviousPeriod: z.boolean().default(false),
+  /*
+   * What the audience report splits by. The service has supported all three
+   * since it was written and this function never passed one through, so the
+   * report was device-only and a country breakdown -- the first thing a site
+   * with more than one market asks -- was unreachable from the screen.
+   */
+  audienceBreakdown: z
+    .enum(["device", "country", "new_vs_returning"])
+    .default("device"),
 });
 
 /**
@@ -48,6 +57,7 @@ export const getGa4Report = createServerFn({ method: "POST" })
         windowDays: data.windowDays,
         limit: data.limit,
         comparePreviousPeriod: data.comparePreviousPeriod,
+        audienceBreakdown: data.audienceBreakdown,
       });
 
       /*

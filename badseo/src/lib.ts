@@ -38,7 +38,8 @@ interface DocumentOptions {
   robotsMeta?: string;
   /** Raw HTML injected at the end of <head> (extra tags, JSON-LD, etc.). */
   headExtra?: string;
-  lang?: string;
+  /** `<html lang>`; pass null to leave the attribute off (tests missing-lang). */
+  lang?: string | null;
   /** Leave out the viewport meta, for the fixture that is about its absence. */
   omitViewport?: boolean;
   bodyHtml: string;
@@ -76,7 +77,7 @@ export function renderDocument(opts: DocumentOptions): string {
   if (opts.headExtra) head.push(opts.headExtra);
 
   return `<!doctype html>
-<html lang="${opts.lang ?? "en"}">
+<html${opts.lang === null ? "" : ` lang="${opts.lang ?? "en"}"`}>
 <head>
 ${head.join("\n")}
 </head>

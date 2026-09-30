@@ -162,6 +162,7 @@ async function insertCrawledBatch(
       canonicalUrl: page.canonicalUrl,
       robotsMeta: page.robotsMeta,
       googlebotMeta: page.googlebotMeta,
+      htmlLang: page.htmlLang,
       xRobotsTag: page.xRobotsTag,
       headerCanonicalUrl: page.headerCanonicalUrl,
       ogTitle: page.ogTitle,

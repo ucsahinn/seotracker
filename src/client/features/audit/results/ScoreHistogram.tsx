@@ -1,53 +1,62 @@
-import { StackedShare } from "@/client/components/StackedShare";
+import {
+  DistributionBars,
+  type DistributionRow,
+} from "@/client/features/audit/results/DistributionBars";
+import type {
+  PerformanceFilters,
+  PerformanceRowData,
+} from "@/client/features/audit/results/AuditResultsTableFilterLogic";
+import { speedBands } from "@/client/features/audit/results/performanceBands";
 import { formatCount } from "@/client/lib/format";
-
-/*
- * Lighthouse's own bands. Not thresholds this app invented: the report
- * colours scores by these, so an operator who opens PageSpeed Insights sees
- * the same three groups.
- */
-const GOOD_FROM = 90;
-const FAIR_FROM = 50;
 
 /**
  * How the speed scores are spread, beside the average that hides it.
  *
  * An average of 62 across two hundred pages reads identically whether every
- * page is mediocre or half are perfect and half are unusable — and those
- * are different weeks of work. Three bands answer which one it is.
+ * page is mediocre or half are perfect and half are unusable -- and those
+ * are different weeks of work. Three bands answer which one it is, and each
+ * is a filter: the counts come from the unfiltered audit so the other bands
+ * stay clickable after one is chosen.
  */
 export function ScoreHistogram({
   rows,
+  filters,
+  onChange,
 }: {
-  rows: Array<{ performanceScore: number | null; strategy: string }>;
+  rows: Array<Pick<PerformanceRowData, "performanceScore" | "strategy">>;
+  filters: PerformanceFilters;
+  onChange: (filters: PerformanceFilters) => void;
 }) {
-  /*
-   * Mobile only. Every page is measured twice, so counting both reported a
-   * ten-page sample as twenty and blended two distributions — and desktop
-   * scores run systematically higher, so the blend reads optimistic. The
-   * speed findings pick mobile for the same reason: Google indexes
-   * mobile-first and its thresholds are written for mobile.
-   */
-  const measured = rows
-    .filter((row) => row.strategy === "mobile")
-    .map((row) => row.performanceScore)
-    .filter((score): score is number => score !== null);
-  if (measured.length === 0) return null;
+  const bands = speedBands(rows);
+  const measured = bands.reduce((sum, band) => sum + band.count, 0);
+  if (measured === 0) return null;
 
-  const good = measured.filter((score) => score >= GOOD_FROM).length;
-  const fair = measured.filter(
-    (score) => score >= FAIR_FROM && score < GOOD_FROM,
-  ).length;
-  const poor = measured.length - good - fair;
+  const distribution: DistributionRow[] = bands.map((band) => ({
+    key: band.key,
+    label: band.label,
+    hint: band.hint,
+    count: band.count,
+    color: band.color,
+    active: band.matches(filters),
+  }));
+  const parts = bands
+    .map(
+      (band) =>
+        `${formatCount(band.count)} ${band.label.toLocaleLowerCase("tr")}`,
+    )
+    .join(", ");
 
   return (
-    <StackedShare
-      summary={`Mobilde ölçülen ${formatCount(measured.length)} sayfadan ${formatCount(good)} iyi, ${formatCount(fair)} orta, ${formatCount(poor)} zayıf.`}
-      segments={[
-        { label: "İyi (90+)", value: good, color: "var(--color-success)" },
-        { label: "Orta (50-89)", value: fair, color: "var(--color-warning)" },
-        { label: "Zayıf (0-49)", value: poor, color: "var(--color-error)" },
-      ]}
+    <DistributionBars
+      rows={distribution}
+      summary={`Mobilde ölçülen ${formatCount(measured)} sayfadan ${parts}.`}
+      onSelect={(key) => {
+        const band = bands.find((entry) => entry.key === key);
+        if (!band) return;
+        onChange(
+          band.matches(filters) ? band.clear(filters) : band.apply(filters),
+        );
+      }}
     />
   );
 }

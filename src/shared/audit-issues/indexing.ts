@@ -26,9 +26,17 @@ export const INDEXING_ISSUES = {
     howToFix:
       "Yinelenenleri birleştirin: asıl adresi seçin, diğerlerinden ona rel=canonical verin ve mümkünse 301 ile yönlendirin. Sık görülen nedenler: sonda eğik çizgi farkı, adres parametreleri, http/https veya www farkı.",
   },
+  "missing-canonical": {
+    severity: "info",
+    title: "Sayfada canonical (asıl adres) etiketi yok",
+    explanation:
+      "Sayfa, kendi asıl adresini belirtmiyor. Aynı sayfa birden çok adresten açılabilir (sonunda eğik çizgi olan ve olmayan, ?utm_source gibi eklerle gelen, www'lu ve www'suz adresler). Asıl adres etiketi yoksa arama motoru bunlardan hangisini göstereceğine kendisi karar verir. Google bu etiketi zorunlu değil, önerilen bir işaret olarak tanımlar; o yüzden bu yalnızca bir öneridir.",
+    howToFix:
+      'Sayfanın `<head>` bölümüne kendi tam adresini gösteren bir satır ekleyin: `<link rel="canonical" href="https://www.siteniz.com/hakkimizda">`. Adres, sayfanın arama sonuçlarında görünmesini istediğiniz adres olmalı. Çoğu site oluşturucu ve SEO eklentisi bunu tek bir ayarla tüm sayfalara ekler.',
+  },
   "canonical-conflict": {
     severity: "warning",
-    title: "Çelişen canonical sinyalleri",
+    title: "Asıl adres bildirimleri birbiriyle çelişiyor",
     explanation:
       "Sayfa, HTML içindeki <link rel=canonical> ile HTTP Link başlığında farklı asıl adresler bildiriyor. Sinyaller çeliştiğinde arama motoru ikisini de yok sayıp kendi seçimini yapar.",
     howToFix:
@@ -36,7 +44,7 @@ export const INDEXING_ISSUES = {
   },
   "noindex-page": {
     severity: "info",
-    title: "Sayfa noindex",
+    title: "Sayfa arama sonuçlarından gizlenmiş (noindex)",
     explanation:
       "Sayfa, arama motorlarından kendisini dizine almamalarını istiyor (robots meta etiketi veya X-Robots-Tag başlığı ile). Bu çoğu zaman bilinçlidir; bu bir hata değil, bilgi notudur.",
     howToFix:
@@ -44,7 +52,7 @@ export const INDEXING_ISSUES = {
   },
   "canonicalized-page": {
     severity: "info",
-    title: "Başka bir adrese canonical verilmiş",
+    title: "Sayfa, asıl adres olarak başka bir sayfayı gösteriyor",
     explanation:
       "Sayfa asıl adres olarak başka bir adresi bildiriyor, yani arama motoruna onun yerine o adresi dizine almasını söylüyor. Bilinçliyse sorun değil (parametreli sayfalar, yeniden yayın); ama bu sayfa sıralanacaksa sorundur.",
     howToFix:
@@ -52,7 +60,7 @@ export const INDEXING_ISSUES = {
   },
   "canonical-to-broken": {
     severity: "warning",
-    title: "Canonical çalışmayan bir adresi gösteriyor",
+    title: "Asıl adres olarak gösterilen sayfa açılmıyor",
     explanation:
       "Sayfa asıl adres olarak taramada hata veren bir adresi bildiriyor (404 veya 5xx). rel=canonical bir yönerge değil, güçlü bir sinyaldir; gösterdiği adres yayında değilse Google bu sinyali kullanamaz ve asıl adresi kendi seçer. Sonuç, hiç canonical vermemişsiniz gibi olur.",
     howToFix:
@@ -60,7 +68,7 @@ export const INDEXING_ISSUES = {
   },
   "canonical-to-redirect": {
     severity: "warning",
-    title: "Canonical bir yönlendirmeyi gösteriyor",
+    title: "Asıl adres olarak yönlendiren bir sayfa gösterilmiş",
     explanation:
       "Sayfa asıl adres olarak yönlendirme (3xx) dönen bir adresi bildiriyor. Google yönlendirmeyi izler; üstelik yönlendirmenin kendisi hedefin asıl adres olduğunu söyleyen ayrı bir sinyaldir. Yani bu sayfa, Google'a zaten asıl olmadığı bildirilmiş bir adresi asıl diye gösteriyor.",
     howToFix:
@@ -68,7 +76,7 @@ export const INDEXING_ISSUES = {
   },
   "canonical-to-noindex": {
     severity: "critical",
-    title: "Canonical noindex bir sayfayı gösteriyor",
+    title: "Asıl adres olarak gizlenmiş bir sayfa gösterilmiş",
     explanation:
       "Sayfa asıl adres olarak noindex işaretli bir sayfayı bildiriyor. İkisi eşit ağırlıkta değil: noindex kesin bir yönergedir ve hedef sayfanın arama sonuçlarında hiç görünmemesini sağlar, rel=canonical ise yalnızca bir sinyaldir. Yani bu sayfa, Google'ın asla gösteremeyeceği bir adresi asıl adres olarak öneriyor. Google da canonical seçimi için noindex kullanılmamasını öneriyor.",
     howToFix:
@@ -76,7 +84,7 @@ export const INDEXING_ISSUES = {
   },
   "google-soft-404": {
     severity: "critical",
-    title: "Google sayfayı soft 404 sayıyor",
+    title: "Google sayfayı boş sayıyor (soft 404)",
     explanation:
       "Sayfa 200 döndürüyor ama Google onu 'bulunamadı' olarak değerlendiriyor. Google bunu Sayfa dizine ekleme raporunda soft 404 diye adlandırır ve sayfayı dizine almaz. Bir tarayıcı bunu kendi başına göremez: durum kodu sağlıklı görünür, kararı veren Google'dır. Genellikle boş sonuç sayfaları, silinmiş ürünler ya da 'kayıt bulunamadı' mesajı gösteren şablonlarda olur.",
     howToFix:
@@ -84,7 +92,7 @@ export const INDEXING_ISSUES = {
   },
   "google-blocked-by-robots": {
     severity: "critical",
-    title: "Google sayfayı robots.txt nedeniyle tarayamıyor",
+    title: "Google sayfayı robots.txt yüzünden tarayamıyor",
     explanation:
       "Google'ın kendi URL denetimi bu adresi robots.txt'nin engellediğini söylüyor. Bu denetimin tarayıcısı sayfaya ulaşabildiği hâlde Google ulaşamıyorsa, iki tarayıcıya farklı kurallar uygulanıyor demektir.",
     howToFix:
@@ -92,7 +100,7 @@ export const INDEXING_ISSUES = {
   },
   "google-blocked-by-meta": {
     severity: "warning",
-    title: "Google sayfada noindex görüyor",
+    title: "Google sayfada gizleme etiketi (noindex) görüyor",
     explanation:
       "Google'ın kendi denetimi bu sayfada bir noindex yönergesi gördüğünü bildiriyor. Bu denetimin tarayıcısı sayfayı dizine alınabilir gördüyse, ikisi sayfanın farklı sürümlerini okuyor demektir: örneğin yönerge yalnızca JavaScript çalıştıktan sonra ekleniyor olabilir.",
     howToFix:
@@ -108,7 +116,7 @@ export const INDEXING_ISSUES = {
   },
   "hreflang-invalid-code": {
     severity: "warning",
-    title: "Geçersiz hreflang kodu",
+    title: "Dil sürümü kodu (hreflang) geçersiz",
     explanation:
       'hreflang değeri Google\'ın beklediği biçimde değil. Google dil için ISO 639-1, isteğe bağlı bölge için ISO 3166-1 Alpha 2 bekler ve ikisini tire ile ayırır. Google\'ın kendi yaygın hata listesi "UK", "EU" ve "UN" gibi uydurma bölge kodlarını açıkça sayar. Geçersiz bir kod, o alternatifin tamamen yok sayılması demektir.',
     howToFix:
@@ -116,7 +124,7 @@ export const INDEXING_ISSUES = {
   },
   "hreflang-missing-self": {
     severity: "warning",
-    title: "hreflang kümesi kendini listelemiyor",
+    title: "Dil sürümleri arasında sayfa kendini listelemiyor (hreflang)",
     explanation:
       "Google'ın belgelerine göre her dil sürümü, diğerlerinin yanı sıra kendisini de listelemelidir. Bu sayfa alternatiflerini bildiriyor ama aralarında kendisi yok, bu yüzden Google kümeyi eksik görebilir ve bağlantıyı kurmayabilir.",
     howToFix:
@@ -132,7 +140,7 @@ export const INDEXING_ISSUES = {
   },
   "paginated-canonical-to-first-page": {
     severity: "warning",
-    title: "Sayfalanmış sayfa ilk sayfaya canonical veriyor",
+    title: "Sayfalanmış sayfa, asıl adres olarak ilk sayfayı gösteriyor",
     explanation:
       "Adres bir sayfa numarası taşıyor ama asıl adres olarak numarasız hâlini, yani ilk sayfayı bildiriyor. Google bunu sayfalama belgelerinde açıkça hata olarak sayar: her sayfa kendi adresini asıl adres olarak vermelidir. Aksi hâlde ikinci ve sonraki sayfalardaki içerik dizinden düşer.",
     howToFix:
@@ -140,7 +148,7 @@ export const INDEXING_ISSUES = {
   },
   "hreflang-missing-x-default": {
     severity: "info",
-    title: "hreflang kümesinde x-default yok",
+    title: "Dil sürümlerinde varsayılan sürüm (x-default) yok",
     explanation:
       "Sayfa hreflang ile dil sürümlerini bildiriyor ama bir x-default sürümü belirtmiyor. x-default, listelenen dillerin hiçbirine uymayan kullanıcıya hangi sürümün gösterileceğini söyler; yoksa Google seçimi kendi yapar.",
     howToFix:
@@ -148,7 +156,7 @@ export const INDEXING_ISSUES = {
   },
   "hreflang-no-return-tag": {
     severity: "warning",
-    title: "hreflang karşılığı yok",
+    title: "Dil sürümü karşılıklı bağlanmamış (hreflang)",
     explanation:
       "Sayfa başka bir adresi dil alternatifi olarak bildiriyor, ama o adres bu sayfayı geri bildirmiyor. hreflang çift taraflı çalışır: karşılığı olmayan bir bildirim yok sayılır, yani iki sayfa da bu etiketten hiçbir fayda görmez.",
     howToFix:
@@ -180,7 +188,7 @@ export const INDEXING_ISSUES = {
   },
   "google-duplicate-no-canonical": {
     severity: "warning",
-    title: "Google yinelenen içerik gördü, canonical yok",
+    title: "Google yinelenen içerik gördü, asıl adres belirtilmemiş",
     explanation:
       "Google bu sayfayı bir başkasının kopyası saydı ve hangisinin asıl olduğunu siz söylemediğiniz için kendi seçti. Seçtiği sayfa sizin istediğiniz olmayabilir; sıralama sinyalleri o adreste toplanır.",
     howToFix:
@@ -204,7 +212,7 @@ export const INDEXING_ISSUES = {
   },
   "open-graph-missing-site": {
     severity: "info",
-    title: "Sitede hiç paylaşım kartı etiketi yok",
+    title: "Sitede sosyal medya paylaşım etiketleri (Open Graph) yok",
     explanation:
       "Taranan sayfaların hiçbirinde og:title ya da og:image bulunamadı. Bu etiketler Google sıralamasını doğrudan etkilemez; adresiniz WhatsApp'ta, LinkedIn'de, Slack'te veya X'te paylaşıldığında ne görüneceğini belirler. Yoklarsa bağlantı çıplak bir URL olarak görünür ve paylaşımdan gelen tıklama düşer. Sayfa başına bildirilmiyor: eksiklik tek tek sayfaların değil, şablonun.",
     howToFix:
@@ -220,7 +228,7 @@ export const INDEXING_ISSUES = {
   },
   "multiple-canonical-tags": {
     severity: "warning",
-    title: "Sayfa birbiriyle çelişen canonical adresleri bildiriyor",
+    title: "Sayfa birbiriyle çelişen asıl adresler bildiriyor",
     explanation:
       "Sayfanın head bölümünde farklı adresleri gösteren birden çok rel=canonical var. Canonical, içeriğin hangi adreste durduğuna dair tek bir ifadedir; ikisi daha güçlü bir ifade değil, bir çelişkidir. Google çelişkiyi kendi seçimini yaparak çözer, yani asıl adresi siz belirlememiş olursunuz. Genelde şablonun bir değer, bir eklentinin başka bir değer yazmasından çıkar.",
     howToFix:

@@ -55,7 +55,7 @@ export function LabFieldComparison({
       <p className="mt-1 text-xs leading-relaxed text-muted">
         {optimistic > 0
           ? "Test makinesi sitenizi ziyaretçilerden daha hızlı görüyor. Google sıralamada sağdaki sütunu kullanır."
-          : "İki ölçüm örtüşüyor; laboratuvar skoru ziyaretçilerin gördüğünü temsil ediyor."}
+          : "İki ölçüm örtüşüyor; laboratuvar puanı ziyaretçilerin gördüğünü temsil ediyor."}
       </p>
       <table className="mt-3 table table-sm">
         <thead>

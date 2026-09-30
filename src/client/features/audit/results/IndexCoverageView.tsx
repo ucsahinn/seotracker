@@ -1,14 +1,11 @@
-import { coverageStateLabel } from "@/shared/gsc-coverage-states";
 type CoverageRow = Awaited<
   ReturnType<typeof getAuditIndexCoverage>
 >["rows"][number];
-import { sort } from "remeda";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ExternalLink, Loader2, RefreshCw, SearchCheck } from "lucide-react";
+import { Loader2, RefreshCw, SearchCheck } from "lucide-react";
 import { toast } from "sonner";
 import { useEffect, useMemo, useState } from "react";
 import { EmptyState } from "@/client/components/EmptyState";
-import { TablePagination } from "@/client/components/table/TablePagination";
 import { MetricRow, MetricTile } from "@/client/components/MetricTile";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import { formatDateTime, formatNumber } from "@/client/lib/format";
@@ -16,11 +13,14 @@ import {
   getAuditIndexCoverage,
   refreshAuditIndexCoverage,
 } from "@/serverFunctions/indexCoverage";
-import { UrlCell } from "@/client/components/table/UrlCell";
-import { StackedShare } from "@/client/components/StackedShare";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
-import { severityChip } from "@/client/features/audit/shared";
-import { coverageReasons } from "@/client/features/audit/results/coverageReasons";
+import { CoverageTable } from "@/client/features/audit/results/CoverageTable";
+import { CoverageVerdictDonut } from "@/client/features/audit/results/CoverageVerdictDonut";
+import {
+  coverageBucket,
+  countCoverage,
+  type CoverageBucket,
+} from "@/client/features/audit/results/coverageBuckets";
 
 /**
  * What Google says about the pages the crawler found.
@@ -61,6 +61,8 @@ export function IndexCoverageView({
    * of the same quota-backed cache.
    */
   const rows = coverage.data?.rows;
+  // Set by the donut; the table below shows only this group. Null is all.
+  const [bucket, setBucket] = useState<CoverageBucket | null>(null);
   useEffect(() => {
     /*
      * `undefined` while the query is in flight, the rows once they arrive.
@@ -81,7 +83,7 @@ export function IndexCoverageView({
     onSuccess: async (result) => {
       if (result.status === "needs_gsc") {
         toast.error(
-          "Search Console bağlı değil. Google'a sormadan önce bağlamanız gerekiyor.",
+          "Search Console bağlı değil. Google'da durumunu kontrol etmeden önce bağlamanız gerekiyor.",
         );
         return;
       }
@@ -116,6 +118,15 @@ export function IndexCoverageView({
   });
 
   const data = coverage.data;
+  const allRows = data?.rows;
+  const bucketCounts = useMemo(() => countCoverage(allRows ?? []), [allRows]);
+  const visibleRows = useMemo(
+    () =>
+      bucket === null
+        ? (allRows ?? [])
+        : (allRows ?? []).filter((row) => coverageBucket(row) === bucket),
+    [allRows, bucket],
+  );
 
   if (coverage.isPending) {
     return (
@@ -153,68 +164,22 @@ export function IndexCoverageView({
   // `checked === 0` but plenty to show: the error strings live in the table.
   const neverChecked = data.asked === 0;
 
-  /*
-   * The same four numbers as the tiles below, but as shares of one whole.
-   * Four tiles say how many; this says how far through the site Google has
-   * actually got, which is the question the screen exists to answer.
-   */
-  const share = neverChecked ? null : (
-    <StackedShare
-      summary={`${formatNumber(data.rows.length)} sayfadan ${formatNumber(data.indexed)} tanesi Google'da, ${formatNumber(data.notIndexed)} tanesi dizinde değil, ${formatNumber(data.pending)} tanesi henüz yanıtlanmadı.`}
-      segments={[
-        {
-          label: "Google'da",
-          value: data.indexed,
-          color: "var(--color-success)",
-        },
-        {
-          label: "Dizinde değil",
-          value: data.notIndexed,
-          color: "var(--color-warning)",
-        },
-        {
-          /*
-           * `pending`, not `due`. The three have to add up to the whole, and
-           * only these do: `indexed + notIndexed + pending === rows.length`.
-           * `due` counts every row worth re-asking, which includes answered
-           * rows whose answer has aged out -- so a site answered three weeks
-           * ago had every page counted twice and the bar read 200%.
-           */
-          label: "Yanıt bekleyen",
-          value: data.pending,
-          color: "var(--color-base-300)",
-        },
-      ]}
-    />
-  );
-
   return (
     <div className="space-y-4">
-      {share ? (
-        <div className="rounded-box border border-base-300 bg-base-100 px-4 py-3">
-          {share}
-        </div>
-      ) : null}
+      {neverChecked ? null : (
+        <CoverageVerdictDonut
+          counts={bucketCounts}
+          selected={bucket}
+          onSelect={setBucket}
+        />
+      )}
       <MetricRow>
-        <MetricTile
-          label="Google'da"
-          value={neverChecked ? null : formatNumber(data.indexed)}
-          hint={
-            neverChecked
-              ? undefined
-              : `${formatNumber(data.rows.length)} sayfadan`
-          }
-        />
-        <MetricTile
-          label="Dizinde değil"
-          value={neverChecked ? null : formatNumber(data.notIndexed)}
-        />
         <MetricTile
           label="Canonical uyuşmazlığı"
           value={neverChecked ? null : formatNumber(data.canonicalMismatches)}
           hint={
             data.canonicalMismatches > 0
-              ? "Google sizin seçtiğinizden başka bir sayfayı tercih etti"
+              ? "Google, sizin seçtiğiniz adres yerine başka bir sayfayı ana sayfa saydı"
               : undefined
           }
         />
@@ -231,8 +196,8 @@ export function IndexCoverageView({
 
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm text-muted">
-          Google URL Inspection API günde 2000 adres sorgulamanıza izin verir.
-          Her tıklamada 25 sayfa sorulur: önce hiç sorulmayanlar, sonra
+          Google, günde en fazla 2000 adresin durumunu sormanıza izin verir. Her
+          tıklamada 25 sayfa sorulur: önce hiç sorulmamışlar, sonra
           Google&apos;ın dizine almadıkları.
         </p>
         <button
@@ -252,7 +217,7 @@ export function IndexCoverageView({
           ) : (
             <RefreshCw className="size-4" />
           )}
-          Google'a sor
+          Google'da durumunu kontrol et
         </button>
       </div>
 
@@ -263,254 +228,12 @@ export function IndexCoverageView({
           description="Taradığınız sayfaların gerçekten dizine girip girmediğini görmek için yukarıdaki düğmeyi kullanın."
         />
       ) : (
-        <CoverageTable rows={data.rows} />
+        <CoverageTable
+          rows={visibleRows}
+          filtered={bucket !== null}
+          onClearFilter={() => setBucket(null)}
+        />
       )}
     </div>
   );
-}
-
-const COVERAGE_PAGE_SIZES = [25, 50, 100] as const;
-
-function CoverageTable({
-  rows,
-}: {
-  rows: Awaited<ReturnType<typeof getAuditIndexCoverage>>["rows"];
-}) {
-  // Problems first: a page Google rejected is the reason to open this tab.
-  const ordered = useMemo(
-    () =>
-      sort(
-        rows,
-        (a, b) =>
-          rank(a.verdict, a.checkedAt, a.error) -
-          rank(b.verdict, b.checkedAt, b.error),
-      ),
-    [rows],
-  );
-  /*
-   * Paginated because this table grows with the audit, not with the quota.
-   * It holds the pages Google has been asked about -- 53 today on a
-   * 212-page site, and every one of them once the daily allowance catches
-   * up. It was rendering `ordered.map(...)` with no cap at all.
-   */
-  const [pageSize, setPageSize] = useState<number>(COVERAGE_PAGE_SIZES[0]);
-  const [page, setPage] = useState(1);
-  const pageCount = Math.max(1, Math.ceil(ordered.length / pageSize));
-  const current = Math.min(page, pageCount);
-  const visible = ordered.slice((current - 1) * pageSize, current * pageSize);
-
-  return (
-    <>
-      {/* Framed like the Pages and Issues tables. This one sat on the page
-          background, so switching tabs changed whether the results looked
-          like a panel. */}
-      <div className="overflow-x-auto rounded-box border border-base-300">
-        <table className="table table-sm">
-          <thead>
-            <tr>
-              <th>Sayfa</th>
-              <th>Durum</th>
-              <th>Neden</th>
-              <th>Google&apos;ın canonical&apos;ı</th>
-              <th>Son tarama</th>
-              <th />
-            </tr>
-          </thead>
-          <tbody>
-            {visible.map((row) => {
-              // The server decides this, so the column and the tile above it
-              // cannot drift apart again.
-              const mismatch = row.canonicalMismatch;
-              const reasons = coverageReasons(row);
-
-              return (
-                <tr key={row.url} className="group/row">
-                  <td className="max-w-md">
-                    <UrlCell url={row.url} label={pathOf(row.url)} />
-                  </td>
-                  <td>
-                    <VerdictBadge
-                      verdict={row.verdict}
-                      coverageState={row.coverageState}
-                      error={row.error}
-                      checkedAt={row.checkedAt}
-                    />
-                  </td>
-                  {/*
-                   * Google's own machine-readable answer. `coverageState`
-                   * -- the only thing this table showed -- is a free-form
-                   * sentence Google reformats and localises; these enums
-                   * say why, and they were fetched, stored and shipped here
-                   * without ever being rendered.
-                   */}
-                  <td className="max-w-xs">
-                    {reasons.length > 0 ? (
-                      <ul className="space-y-0.5 text-xs text-muted">
-                        {reasons.map((reason) => (
-                          <li key={reason}>{reason}</li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <span className="text-subtle">-</span>
-                    )}
-                  </td>
-                  <td className="max-w-xs">
-                    {mismatch && row.googleCanonical ? (
-                      /* The value someone fixing a canonical mismatch has to
-                         paste somewhere; it was only ever a title tooltip. */
-                      <div className="space-y-0.5">
-                        <UrlCell
-                          url={row.googleCanonical}
-                          label={pathOf(row.googleCanonical)}
-                          className="text-[var(--ink-warning)]"
-                        />
-                        {/* Both sides of the mismatch. The tile above says
-                            one exists; without the declared value the reader
-                            had to download the CSV to see what it was. */}
-                        {row.userCanonical ? (
-                          <p className="truncate text-xs text-muted">
-                            Sizin belirttiğiniz: {pathOf(row.userCanonical)}
-                          </p>
-                        ) : null}
-                      </div>
-                    ) : (
-                      <span className="text-subtle">-</span>
-                    )}
-                  </td>
-                  <td className="whitespace-nowrap text-muted">
-                    {row.lastCrawlTime
-                      ? formatDateTime(row.lastCrawlTime)
-                      : "-"}
-                  </td>
-                  <td>
-                    {row.inspectionLink ? (
-                      <a
-                        href={row.inspectionLink}
-                        target="_blank"
-                        rel="noreferrer noopener"
-                        /*
-                         * `aria-label`, not `title` alone: a title is only a
-                         * fallback accessible name and several screen
-                         * readers never expose it. The padding takes the
-                         * 14px icon up to a 24px target.
-                         */
-                        className="link link-hover inline-flex size-6 items-center justify-center text-xs"
-                        aria-label={`${row.url} adresini Search Console'da aç`}
-                        title="Search Console'da aç"
-                      >
-                        <ExternalLink aria-hidden className="size-3.5" />
-                      </a>
-                    ) : null}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-      {ordered.length > COVERAGE_PAGE_SIZES[0] ? (
-        <TablePagination
-          page={current}
-          pageSize={pageSize}
-          pageSizes={COVERAGE_PAGE_SIZES}
-          totalCount={ordered.length}
-          hasNextPage={current < pageCount}
-          isLoading={false}
-          onPageChange={setPage}
-          onPageSizeChange={(next) => {
-            setPageSize(next);
-            setPage(1);
-          }}
-        />
-      ) : null}
-    </>
-  );
-}
-
-function VerdictBadge({
-  verdict,
-  coverageState,
-  error,
-  checkedAt,
-}: {
-  verdict: string | null;
-  coverageState: string | null;
-  error: string | null;
-  checkedAt: string | null;
-}) {
-  if (error) {
-    return (
-      <span className={`badge badge-sm ${severityChip.error}`} title={error}>
-        Hata
-      </span>
-    );
-  }
-  if (!checkedAt) {
-    return <span className="text-xs text-muted">Sorulmadı</span>;
-  }
-  if (verdict === "PASS") {
-    return (
-      <span className="badge badge-sm border-success/30 bg-success/10 text-[var(--ink-success)]">
-        Google&apos;da
-      </span>
-    );
-  }
-  /*
-   * `summarizeCoverage` counts a missing or VERDICT_UNSPECIFIED verdict as
-   * pending, on the stated grounds that calling it "not indexed" invents a
-   * negative Google never gave. This badge had no such branch, so the same
-   * row was pending in the tile and "Dizinde değil" in the table -- the tile
-   * could read 0 while the row below it showed one.
-   */
-  if (!verdict || verdict === "VERDICT_UNSPECIFIED") {
-    return (
-      <span className="text-xs text-muted" title={coverageState ?? undefined}>
-        Yanıt alınamadı
-      </span>
-    );
-  }
-  return (
-    <span
-      className="badge badge-sm border-warning/30 bg-warning/10 text-[var(--ink-warning)]"
-      // Google's own sentence explains why, and it is more precise than
-      // anything we could paraphrase.
-      // Google's own wording, kept as the tooltip so the exact phrase is
-      // still searchable when someone goes looking in Search Console.
-      title={coverageState ?? undefined}
-    >
-      {coverageStateLabel(coverageState) ?? "Dizinde değil"}
-    </span>
-  );
-}
-
-/**
- * Not indexed, then errors, then unchecked, then indexed.
- *
- * `error` was described in this comment and never passed, so a URL Google
- * refused to answer about - one outside the verified property, say - landed
- * in bucket 0 alongside the pages Google looked at and excluded. Twenty-five
- * failed checks then scattered through the top of the table, above the real
- * findings.
- */
-function rank(
-  verdict: string | null,
-  checkedAt: string | null,
-  error: string | null,
-): number {
-  if (error) return 1;
-  if (!checkedAt) return 2;
-  if (verdict === "PASS") return 3;
-  // Same rule as the badge and the tile: no verdict is not an exclusion, so
-  // it does not sort above the pages Google actually looked at and excluded.
-  if (verdict === "VERDICT_UNSPECIFIED") return 2;
-  return 0;
-}
-
-function pathOf(url: string): string {
-  try {
-    const parsed = new URL(url);
-    return parsed.pathname + parsed.search || "/";
-  } catch {
-    return url;
-  }
 }

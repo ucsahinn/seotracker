@@ -1,4 +1,7 @@
 import { sort } from "remeda";
+import { X } from "lucide-react";
+import { DonutChart } from "@/client/components/DonutChart";
+import { countrySegments } from "@/client/features/search-performance/countryShare";
 import {
   formatCount,
   formatCountry,
@@ -30,7 +33,16 @@ const SHOWN = 6;
  * Bars rather than a chart library: six rows of one number each is a list
  * with a length, and recharts for that is machinery around a `<div>`.
  */
-export function CountryBreakdown({ countries }: { countries: CountryRow[] }) {
+export function CountryBreakdown({
+  countries,
+  selected,
+  onSelect,
+}: {
+  countries: CountryRow[];
+  /** The country filter currently in the URL, if any. */
+  selected?: string;
+  onSelect: (country: string | undefined) => void;
+}) {
   const ranked = sort(countries, (a, b) => b.clicks - a.clicks);
   const shown = ranked.slice(0, SHOWN);
   const rest = ranked.slice(SHOWN);
@@ -45,11 +57,43 @@ export function CountryBreakdown({ countries }: { countries: CountryRow[] }) {
   return (
     <section className="overflow-hidden rounded-box border border-base-300 bg-base-100">
       <div className="border-b border-base-300 px-4 py-3">
-        <h2 className="text-sm font-medium">Ülkeler</h2>
+        <div className="flex items-center justify-between gap-3">
+          <h2 className="text-sm font-medium">Ülkeler</h2>
+          {selected ? (
+            <button
+              type="button"
+              className="btn btn-ghost btn-xs gap-1"
+              onClick={() => onSelect(undefined)}
+            >
+              <X className="size-3" aria-hidden />
+              {formatCountry(selected)} filtresini kaldır
+            </button>
+          ) : null}
+        </div>
         <p className="mt-0.5 text-xs text-muted">
-          Tıklamaların ülkelere dağılımı. Bir ülkeyi seçmek için yukarıdaki
-          filtreyi kullanın.
+          Tıklamaların hangi ülkelerden geldiği. Halkadan ya da tablodan bir
+          ülkeye dokunarak tüm sayfayı o ülkeye göre daraltabilirsiniz.
         </p>
+      </div>
+      <div className="border-b border-base-300 px-4 py-4">
+        <DonutChart
+          height={144}
+          totalLabel="tıklama"
+          segments={countrySegments(countries).map((segment) => ({
+            key: segment.key ?? OTHER_COUNTRIES,
+            label: segment.key ? formatCountry(segment.key) : "Diğer ülkeler",
+            value: segment.clicks,
+            // The pooled remainder is a neutral grey, so it reads as "the
+            // rest" rather than as a fourth market.
+            color: segment.key ? undefined : "var(--color-base-300)",
+            disabled: segment.key === null,
+          }))}
+          summary={countrySummary(countries)}
+          selectedKey={selected ?? null}
+          onSelect={(key) =>
+            onSelect(key === null || key === OTHER_COUNTRIES ? undefined : key)
+          }
+        />
       </div>
       <table className="table table-sm">
         <thead>
@@ -70,7 +114,7 @@ export function CountryBreakdown({ countries }: { countries: CountryRow[] }) {
               Gösterim
             </th>
             <th scope="col" className="text-right">
-              TO
+              Tıklama oranı
             </th>
             <th scope="col" className="text-right">
               Pay
@@ -82,13 +126,25 @@ export function CountryBreakdown({ countries }: { countries: CountryRow[] }) {
         </thead>
         <tbody>
           {shown.map((row) => (
-            <tr key={row.key}>
+            <tr
+              key={row.key}
+              className={selected === row.key ? "bg-base-200/60" : undefined}
+            >
               {/* The name, not the code. GSC reports alpha-3, so a panel
                   headed "Ülkeler" read "TUR / GBR / DEU" in a Turkish UI.
                   The code stays in the title for anyone matching it against
                   Search Console's own export. */}
               <td className="font-medium" title={row.key.toUpperCase()}>
-                {formatCountry(row.key)}
+                <button
+                  type="button"
+                  aria-pressed={selected === row.key}
+                  className="link link-hover text-left"
+                  onClick={() =>
+                    onSelect(selected === row.key ? undefined : row.key)
+                  }
+                >
+                  {formatCountry(row.key)}
+                </button>
               </td>
               <td className="w-1/3">
                 {/* The bar is a restatement of the count beside it, so it
@@ -135,4 +191,16 @@ export function CountryBreakdown({ countries }: { countries: CountryRow[] }) {
       </table>
     </section>
   );
+}
+
+const OTHER_COUNTRIES = "__other__";
+
+/** The finding, for readers who cannot see the ring. */
+function countrySummary(countries: { key: string; clicks: number }[]): string {
+  const segments = countrySegments(countries);
+  const total = segments.reduce((sum, segment) => sum + segment.clicks, 0);
+  const lead = segments.find((segment) => segment.key !== null);
+  return lead?.key
+    ? `Toplam ${formatCount(total)} tıklamanın ${formatPercent(lead.clicks / total)} kadarı ${formatCountry(lead.key)} kaynaklı.`
+    : `Toplam ${formatCount(total)} tıklama.`;
 }

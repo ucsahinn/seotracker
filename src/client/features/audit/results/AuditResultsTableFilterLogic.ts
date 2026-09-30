@@ -126,6 +126,19 @@ export function filterPages(rows: PageRow[], filters: PagesFilters) {
   });
 }
 
+/**
+ * Keeps only the pages whose address is in `urls`.
+ *
+ * `undefined` means no scope, which is different from an empty list: a
+ * problem whose pages are all gone from the crawl should show nothing, not
+ * quietly show everything.
+ */
+export function scopeToUrls(rows: PageRow[], urls: string[] | undefined) {
+  if (!urls) return rows;
+  const keep = new Set(urls);
+  return rows.filter((row) => keep.has(row.url));
+}
+
 function matchesYesNo(value: boolean, filter: "all" | "yes" | "no"): boolean {
   if (filter === "all") return true;
   return filter === "yes" ? value : !value;

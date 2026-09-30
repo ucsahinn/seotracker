@@ -23,6 +23,7 @@ function page(
     canonicalUrl: null,
     robotsMeta: null,
     googlebotMeta: null,
+    htmlLang: "en",
     xRobotsTag: null,
     headerCanonicalUrl: null,
     ogTitle: null,

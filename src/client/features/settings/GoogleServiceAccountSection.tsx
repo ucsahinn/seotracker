@@ -55,7 +55,7 @@ export function GoogleServiceAccountSection() {
       setKeyJson("");
       setEditing(false);
       await invalidate();
-      toast.success("Servis hesabı kaydedildi");
+      toast.success("Hizmet hesabı kaydedildi");
     },
     onError: (error) => toast.error(getStandardErrorMessage(error)),
   });
@@ -76,7 +76,7 @@ export function GoogleServiceAccountSection() {
        * otherwise.
        */
       toast.success(
-        "Servis hesabı bu kurulumdan silindi. Anahtarı gerçekten iptal etmek için Google Cloud'dan da silin.",
+        "Hizmet hesabı bu kurulumdan silindi. Anahtarı gerçekten iptal etmek için Google Cloud'dan da silin.",
       );
     },
     onError: (error) => toast.error(getStandardErrorMessage(error)),
@@ -87,8 +87,8 @@ export function GoogleServiceAccountSection() {
   return (
     <section className="space-y-3">
       <SettingsHeading
-        title="Servis hesabı (daha kısa yol)"
-        help="OAuth kurulumu onay ekranı, test kullanıcısı ve birebir eşleşen redirect URI ister; kurulum genelde bu üçünde takılır. Servis hesabı üçünü de atlar: Google Cloud'da bir servis hesabı açıp JSON anahtarını indirin, sonra o hesabın e-postasını Search Console mülkünüze bir meslektaşınızı ekler gibi ekleyin."
+        title="Hizmet hesabı (daha kısa yol)"
+        help="OAuth kurulumu onay ekranı, test kullanıcısı ve birebir eşleşen redirect URI ister; kurulum genelde bu üçünde takılır. Hizmet hesabı üçünü de atlar: Google Cloud'da bir servis hesabı açıp JSON anahtarını indirin, sonra o hesabın e-postasını Search Console mülkünüze bir meslektaşınızı ekler gibi ekleyin."
       />
 
       <p className="text-sm text-muted">
@@ -157,7 +157,7 @@ export function GoogleServiceAccountSection() {
               </code>
               <CopyButton
                 value={status?.clientEmail ?? ""}
-                successMessage="Servis hesabı adresi kopyalandı"
+                successMessage="Hizmet hesabı adresi kopyalandı"
               />
             </div>
           </div>

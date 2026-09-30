@@ -216,7 +216,7 @@ function SavedKeywordsEmptyState({
       description={
         hasActiveFilters
           ? "Filtreleri gevşetin ya da temizleyin."
-          : "Arama Performansı sayfasındaki sorgularınızı kaydederek buraya ekleyin."
+          : "Arama performansı sayfasındaki sorgularınızı kaydederek buraya ekleyin."
       }
     />
   );

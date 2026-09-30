@@ -1,18 +1,22 @@
 import { QueryHistoryCard } from "@/client/features/rankings/QueryHistoryCard";
 import { TablePagination } from "@/client/components/table/TablePagination";
-import { QueryErrorState } from "@/client/components/QueryErrorState";
-import { formatDate, formatDecimal, formatNumber } from "@/client/lib/format";
+import { formatDate, formatNumber } from "@/client/lib/format";
 import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { SortableHeader } from "@/client/components/table/SortableHeader";
 import { describeWindow } from "@/shared/dataFreshness";
-import { TrendingUp } from "lucide-react";
-import { EmptyState } from "@/client/components/EmptyState";
 import { useLocalSort } from "@/client/components/table/useLocalSort";
-import { Copy, Search } from "lucide-react";
-import { RowActions } from "@/client/components/table/RowActions";
-import { useNavigate } from "@tanstack/react-router";
+import { CircleSlash, Eye, Trophy } from "lucide-react";
+import { TrackedQueriesTable } from "@/client/features/rankings/TrackedQueriesTable";
+import { FilterChips } from "@/client/features/search-performance/FilterChips";
+import { PositionBandBars } from "@/client/features/rankings/PositionBandBars";
+import {
+  applyBandAndChip,
+  countChips,
+  HIGH_IMPRESSIONS,
+  type BandId,
+  type ChipId,
+} from "@/client/features/rankings/positionBands";
 import { ArchiveStatus } from "@/client/features/rankings/ArchiveStatus";
 import {
   compareTracked,
@@ -101,8 +105,11 @@ export function RankingsPage({
    */
   const sorting = useLocalSort<SortKey>({ key: "impressions", desc: true });
   const [search, setSearch] = useState("");
+  // Both narrow the table from the summary above it; neither is in the URL,
+  // because they describe a look at one fetch, not a shareable view.
+  const [band, setBand] = useState<BandId | undefined>(undefined);
+  const [chip, setChip] = useState<ChipId | undefined>(undefined);
   const historyRef = useRef<HTMLDivElement | null>(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (!selected) return;
@@ -115,14 +122,37 @@ export function RankingsPage({
 
   const fetched = tracked.data?.rows ?? [];
   const needle = search.trim().toLocaleLowerCase("tr");
+  // Chip counts describe the band that is open, so pressing "İlk sayfada"
+  // inside the 21+ bar honestly reads zero instead of a number the table
+  // could never show.
+  const inBand = applyBandAndChip(fetched, band, undefined);
+  const chipCounts = countChips(inBand);
+  const filtered = applyBandAndChip(fetched, band, chip);
   const allRows = sorting.apply(
     needle
-      ? fetched.filter((row) =>
+      ? filtered.filter((row) =>
           row.query.toLocaleLowerCase("tr").includes(needle),
         )
-      : fetched,
+      : filtered,
     compareTracked,
   );
+  const narrowed = band !== undefined || chip !== undefined;
+  const archiveEmpty = sync.data?.rowCount === 0;
+  const searching = search.trim() !== "";
+  const emptyTitle = archiveEmpty
+    ? "Arşiv henüz boş"
+    : searching
+      ? "Aramanıza uyan sorgu yok"
+      : narrowed
+        ? "Bu filtreye uyan sorgu yok"
+        : "Bu aralıkta kayıtlı sorgu yok";
+  const emptyDescription = archiveEmpty
+    ? "Arşivin durumu yukarıda yazıyor; Search Console veri döndürmeye başlayınca burada birikir."
+    : searching
+      ? "Arama kutusunu temizleyin ya da başka bir sorgu deneyin."
+      : narrowed
+        ? "Sıra dağılımındaki çubuğu ya da hızlı filtreyi kaldırın."
+        : "Daha geniş bir dönem seçmeyi deneyin.";
   /*
    * Paginated in the browser over the whole fetched set. The screen used to
    * ask Google's archive for 25 rows and render them with no pagination and
@@ -140,7 +170,7 @@ export function RankingsPage({
     <PageShell>
       <PageHeader
         title="Sıralama takibi"
-        description="Google'ın kendi ölçtüğü ortalama sıra. Arşiv yerelde tutulduğu için 16 aylık Google sınırının ötesine geçebilir."
+        description="Sorgularınızın Google'daki ortalama sırası. Arşiv bu bilgisayarda saklandığı için Google'ın 16 aylık sınırından daha eskiye de bakabilirsiniz."
         /* A pick-one filter, not tabs: it re-queries the one table below
            rather than swapping between panels, so there is no panel for
            `aria-controls` to point at. */
@@ -178,8 +208,17 @@ export function RankingsPage({
         </p>
       ) : null}
 
+      <PositionBandBars
+        rows={fetched}
+        active={band}
+        onChange={(next) => {
+          setBand(next);
+          setPage(1);
+        }}
+      />
+
       <div className="overflow-hidden rounded-box border border-base-300 bg-base-100">
-        <div className="border-b border-base-300 px-4 py-3">
+        <div className="flex flex-col gap-3 border-b border-base-300 px-4 py-3 lg:flex-row lg:items-center lg:justify-between">
           <input
             type="search"
             className="input input-bordered input-sm w-full sm:max-w-xs"
@@ -191,180 +230,50 @@ export function RankingsPage({
               setPage(1);
             }}
           />
+          {fetched.length > 0 ? (
+            <FilterChips<ChipId>
+              label="Hızlı filtreler"
+              active={chip}
+              onChange={(next) => {
+                setChip(next);
+                setPage(1);
+              }}
+              chips={[
+                {
+                  id: "firstPage",
+                  label: "İlk sayfada",
+                  icon: Trophy,
+                  count: chipCounts.firstPage,
+                  hint: "Ortalama sırası 10 veya daha iyi olan sorgular.",
+                },
+                {
+                  id: "highImpressions",
+                  label: "Gösterimi yüksek",
+                  icon: Eye,
+                  count: chipCounts.highImpressions,
+                  hint: `${formatNumber(HIGH_IMPRESSIONS)} veya daha fazla gösterim alan sorgular.`,
+                },
+                {
+                  id: "noClicks",
+                  label: "Hiç tıklanmayan",
+                  icon: CircleSlash,
+                  count: chipCounts.noClicks,
+                  hint: "Gösterilmiş ama hiç tıklanmamış sorgular.",
+                },
+              ]}
+            />
+          ) : null}
         </div>
-        <table className="table table-sm">
-          <thead>
-            <tr>
-              <th aria-sort={sorting.ariaSort("query")}>
-                <SortableHeader
-                  column={sorting.column("query", false)}
-                  label="Sorgu"
-                />
-              </th>
-              <th
-                className="text-right"
-                aria-sort={sorting.ariaSort("position")}
-              >
-                <SortableHeader
-                  column={sorting.column("position", false)}
-                  label="Ort. sıra"
-                  align="right"
-                />
-              </th>
-              <th
-                className="text-right"
-                aria-sort={sorting.ariaSort("impressions")}
-              >
-                <SortableHeader
-                  column={sorting.column("impressions")}
-                  label="Gösterim"
-                  align="right"
-                />
-              </th>
-              <th className="text-right" aria-sort={sorting.ariaSort("clicks")}>
-                <SortableHeader
-                  column={sorting.column("clicks")}
-                  label="Tıklama"
-                  align="right"
-                />
-              </th>
-              <th className="text-right" aria-sort={sorting.ariaSort("days")}>
-                <SortableHeader
-                  column={sorting.column("days")}
-                  label="Gün"
-                  align="right"
-                />
-              </th>
-              <th />
-            </tr>
-          </thead>
-          <tbody>
-            {/* `tracked` is disabled until the sync settles, and a disabled
-                query reports `isLoading: false` - so while the first archive
-                sync ran (up to half a minute of paginated Search Console
-                requests) this table stated there were no queries, directly
-                under a header saying the archive was still updating. */}
-            {rows.length === 0 && !tracked.isLoading && !tracked.isPending ? (
-              <tr>
-                <td colSpan={6} className="p-0">
-                  <EmptyState
-                    compact
-                    icon={TrendingUp}
-                    title={
-                      sync.data?.rowCount === 0
-                        ? "Arşiv henüz boş"
-                        : search.trim()
-                          ? "Aramanıza uyan sorgu yok"
-                          : "Bu aralıkta kayıtlı sorgu yok"
-                    }
-                    description={
-                      sync.data?.rowCount === 0
-                        ? "Arşivin durumu yukarıda yazıyor; Search Console veri döndürmeye başlayınca burada birikir."
-                        : search.trim()
-                          ? "Arama kutusunu temizleyin ya da başka bir sorgu deneyin."
-                          : "Daha geniş bir dönem seçmeyi deneyin."
-                    }
-                  />
-                </td>
-              </tr>
-            ) : null}
-            {/* Shaped like the rows that are coming, not a sentence in a
-                merged cell: the house rule asks for a skeleton so the table
-                does not change height when the archive lands. */}
-            {tracked.isPending
-              ? Array.from({ length: 6 }, (_, index) => (
-                  <tr key={`skeleton-${index}`} aria-hidden>
-                    <td>
-                      <div className="skeleton h-4 w-40" />
-                    </td>
-                    {Array.from({ length: 4 }, (__, cell) => (
-                      <td key={cell}>
-                        <div className="skeleton ml-auto h-4 w-12" />
-                      </td>
-                    ))}
-                  </tr>
-                ))
-              : null}
-            {tracked.isError ? (
-              <tr>
-                <td colSpan={6}>
-                  <QueryErrorState
-                    compact
-                    error={tracked.error}
-                    onRetry={() => void tracked.refetch()}
-                    title="Sorgular yüklenemedi"
-                  />
-                </td>
-              </tr>
-            ) : null}
-            {rows.map((row) => (
-              <tr
-                key={row.query}
-                className={
-                  selected === row.query ? "bg-base-200/60" : undefined
-                }
-              >
-                {/* A real button, not a click handler on the row. Opening a
-                      query's history is the whole point of this screen, and
-                      on a bare <tr> it was reachable with a mouse and nothing
-                      else. A button also picks up the app's focus ring. */}
-                <td className="max-w-md p-0">
-                  <button
-                    type="button"
-                    className="w-full truncate px-4 py-2 text-left transition-colors hover:bg-base-200/50"
-                    aria-expanded={selected === row.query}
-                    onClick={() =>
-                      setSelected(selected === row.query ? null : row.query)
-                    }
-                  >
-                    {row.query}
-                  </button>
-                </td>
-                <td className="text-right tabular-nums">
-                  {formatDecimal(row.position)}
-                </td>
-                <td className="text-right tabular-nums">
-                  {formatNumber(row.impressions)}
-                </td>
-                <td className="text-right tabular-nums">
-                  {formatNumber(row.clicks)}
-                </td>
-                <td className="text-right tabular-nums text-muted">
-                  {formatNumber(row.days)}
-                </td>
-                {/*
-                 * Row actions. An operator looking at a query that dropped
-                 * nine positions could not copy it, save it, or jump to its
-                 * Search Console rows -- the four cells beside the
-                 * disclosure button were inert.
-                 */}
-                <td className="w-10 text-right">
-                  <RowActions
-                    label={`${row.query} için işlemler`}
-                    actions={[
-                      {
-                        label: "Kelimeyi kopyala",
-                        icon: Copy,
-                        onSelect: () =>
-                          void navigator.clipboard.writeText(row.query),
-                      },
-                      {
-                        label: "Arama performansında ara",
-                        icon: Search,
-                        onSelect: () =>
-                          void navigate({
-                            to: "/p/$projectId/search-performance",
-                            params: { projectId },
-                            search: { tab: "queries" as const, q: row.query },
-                          }),
-                      },
-                    ]}
-                  />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <TrackedQueriesTable
+          projectId={projectId}
+          rows={rows}
+          sorting={sorting}
+          tracked={tracked}
+          selected={selected}
+          onSelect={setSelected}
+          emptyTitle={emptyTitle}
+          emptyDescription={emptyDescription}
+        />
         {allRows.length > PAGE_SIZES[0] ? (
           <TablePagination
             page={current}
@@ -383,7 +292,7 @@ export function RankingsPage({
         {tracked.data?.truncated ? (
           <p className="border-t border-base-300 px-4 py-2 text-xs text-muted">
             Arşivde daha fazla sorgu var; bu liste en çok gösterim alan{" "}
-            {formatNumber(allRows.length)} tanesiyle sınırlı. Aralığı daraltarak
+            {formatNumber(fetched.length)} tanesiyle sınırlı. Aralığı daraltarak
             farklı sorguları görebilirsiniz.
           </p>
         ) : null}

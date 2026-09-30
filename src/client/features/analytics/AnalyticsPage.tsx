@@ -6,21 +6,10 @@ import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { TabPanel, Tabs } from "@/client/components/Tabs";
 import { OrganicTrendPanel } from "@/client/features/analytics/OrganicTrendPanel";
+import { ReportView } from "@/client/features/analytics/ReportView";
 import { MeasurementHealthPanel } from "@/client/features/analytics/MeasurementHealthPanel";
-import { formatCount, formatDate, formatPercent } from "@/client/lib/format";
 import { getGa4Report } from "@/serverFunctions/ga4Reports";
-import { TableExportMenu } from "@/client/components/table/TableBulkActionBar";
-import { UrlCell } from "@/client/components/table/UrlCell";
-import { buildCsv, downloadCsv, type CsvValue } from "@/client/lib/csv";
-import { exportTableToSheets } from "@/client/lib/exportToSheets";
-import { SortableHeader } from "@/client/components/table/SortableHeader";
 import {
-  compareText,
-  useLocalSort,
-} from "@/client/components/table/useLocalSort";
-import {
-  GA4_FIELD_LABELS,
-  GA4_RATE_FIELDS,
   GA4_REPORT_KINDS,
   GA4_REPORT_LABELS,
   type Ga4ReportKindName,
@@ -35,6 +24,13 @@ const WINDOWS: { value: WindowDays; label: string }[] = [
   { value: 90, label: "Son 3 ay" },
 ];
 
+type Breakdown = "device" | "country" | "new_vs_returning";
+const BREAKDOWNS: { value: Breakdown; label: string }[] = [
+  { value: "device", label: "Cihaz" },
+  { value: "country", label: "Ülke" },
+  { value: "new_vs_returning", label: "Yeni / geri dönen" },
+];
+
 /** Matches the ceiling `ga4Reports`' schema enforces. */
 const ROW_LIMITS = [50, 100, 200] as const;
 
@@ -42,26 +38,6 @@ const CHANNELS: { value: Channel; label: string }[] = [
   { value: "organic_search", label: "Organik arama" },
   { value: "all", label: "Tüm trafik" },
 ];
-
-function columnLabel(field: string): string {
-  return GA4_FIELD_LABELS[field] ?? field;
-}
-
-/** Rates as percentages, everything else as a count. Strings pass through. */
-function cellValue(
-  field: string,
-  value: string | number | null,
-): React.ReactNode {
-  // "-" in `text-subtle`, matching `MetricTile` and the opportunity table.
-  // Two absence glyphs on one screen for the same meaning is a detail the
-  // reader has to resolve for no reason.
-  if (value === null || value === "") {
-    return <span className="text-subtle">-</span>;
-  }
-  if (typeof value === "string") return value;
-  if (GA4_RATE_FIELDS.has(field)) return formatPercent(value);
-  return formatCount(value);
-}
 
 /**
  * The seven Google Analytics reports.
@@ -78,6 +54,34 @@ function cellValue(
  * names paths one by one, so a new page orphans silently.
  */
 const HEALTH = "measurement_health";
+
+/** The one question each tab answers, in plain words, above its content. */
+const REPORT_QUESTIONS: Record<Ga4ReportKindName, string> = {
+  landing_pages:
+    "Ziyaretçiler siteye hangi sayfadan giriyor ve o sayfada kalıp bir sonuca ulaşıyor mu?",
+  page_performance:
+    "Hangi sayfalar en çok görüntüleniyor ve okurlar orada ne kadar vakit geçiriyor?",
+  traffic_acquisition:
+    "Ziyaretçiler hangi kanallardan geliyor ve hangi kanal gerçekten sonuç getiriyor?",
+  key_events:
+    "Sonuç saydığınız olaylar ne sıklıkla gerçekleşiyor ve kaç kişi tetikliyor?",
+  ecommerce_performance:
+    "Hangi ürünler görüntüleniyor, sepete ekleniyor ve gelir getiriyor? Mülkte e-ticaret ölçümü yoksa bu sekme boş kalır.",
+  site_search:
+    "Ziyaretçiler sitenizde ne arıyor? Bulamadıkları içerik, yazacağınız yeni sayfaların ipucudur.",
+  audience_breakdown:
+    "Ziyaretçileriniz hangi cihazlardan geliyor ve cihaza göre deneyim nasıl değişiyor?",
+};
+
+/*
+ * The organic trend describes landing-page and channel questions. Repeated
+ * on all seven tabs it was the same chart seven times, and on "Site içi
+ * arama" or "Anahtar olaylar" it answered a question nobody had asked.
+ */
+const TREND_REPORTS = new Set<Ga4ReportKindName>([
+  "landing_pages",
+  "traffic_acquisition",
+]);
 type View = Ga4ReportKindName | typeof HEALTH;
 
 export function AnalyticsPage({
@@ -108,11 +112,33 @@ export function AnalyticsPage({
     ROW_LIMITS[0],
   );
 
+  /*
+   * What the audience report splits by. Only that report has one, so it is
+   * only offered there; the service has supported all three since it was
+   * written, and the screen was stuck on device.
+   */
+  const [breakdown, setBreakdown] = React.useState<Breakdown>("device");
+
   const reportQuery = useQuery({
-    queryKey: ["ga4Report", projectId, kind, channel, windowDays, rowLimit],
+    queryKey: [
+      "ga4Report",
+      projectId,
+      kind,
+      channel,
+      windowDays,
+      rowLimit,
+      breakdown,
+    ],
     queryFn: () =>
       getGa4Report({
-        data: { projectId, kind, channel, windowDays, limit: rowLimit },
+        data: {
+          projectId,
+          kind,
+          channel,
+          windowDays,
+          limit: rowLimit,
+          audienceBreakdown: breakdown,
+        },
       }),
     enabled: view !== HEALTH,
   });
@@ -124,8 +150,8 @@ export function AnalyticsPage({
         title="Analytics raporları"
         description={
           view === HEALTH
-            ? "Analytics gerçekten ölçüyor mu? Mülkünüzün kurulumunu okur, rapor verisi harcamaz."
-            : GA4_REPORT_LABELS[kind].description
+            ? "Analytics gerçekten ölçüyor mu? Mülkünüzün kurulum ayarlarını okur; rapor kotanızdan harcamaz."
+            : REPORT_QUESTIONS[kind]
         }
       />
 
@@ -216,11 +242,39 @@ export function AnalyticsPage({
           <>
             {/* The window's shape, above whichever report lists it. Its own
                 query, so a slow overview never holds up the table. */}
-            <OrganicTrendPanel projectId={projectId} windowDays={windowDays} />
+            {TREND_REPORTS.has(kind) ? (
+              <OrganicTrendPanel
+                projectId={projectId}
+                windowDays={windowDays}
+              />
+            ) : null}
             {reportQuery.isPending ? (
               <div className="space-y-2" aria-busy>
                 <div className="skeleton h-10" />
                 <div className="skeleton h-64" />
+              </div>
+            ) : null}
+
+            {kind === "audience_breakdown" ? (
+              <div
+                role="radiogroup"
+                aria-label="Kitleyi neye göre böl"
+                className="join"
+              >
+                {BREAKDOWNS.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    role="radio"
+                    aria-checked={option.value === breakdown}
+                    onClick={() => setBreakdown(option.value)}
+                    className={`btn btn-sm join-item ${
+                      option.value === breakdown ? "btn-active" : "btn-ghost"
+                    }`}
+                  >
+                    {option.label}
+                  </button>
+                ))}
               </div>
             ) : null}
 
@@ -242,213 +296,20 @@ export function AnalyticsPage({
               </div>
             ) : null}
 
-            {result?.status === "ok" ? <ReportTable result={result} /> : null}
+            {result?.status === "ok" ? (
+              <ReportView
+                key={`${kind}-${channel}-${windowDays}-${rowLimit}-${breakdown}`}
+                kind={kind}
+                result={result}
+                organicOnly={channel === "organic_search"}
+                onOrganicOnlyChange={(next) =>
+                  setChannel(next ? "organic_search" : "all")
+                }
+              />
+            ) : null}
           </>
         )}
       </TabPanel>
     </PageShell>
   );
-}
-
-function ReportTable({
-  result,
-}: {
-  result: Extract<Awaited<ReturnType<typeof getGa4Report>>, { status: "ok" }>;
-}) {
-  const columns = [...result.dimensions, ...result.metrics];
-  /*
-   * Sortable. Seven GA4 reports rendered in whatever order Google returned,
-   * so "which landing page converts worst" could not be asked on the screen
-   * built to answer it. Dimensions sort as text, metrics as numbers, and a
-   * first click on a metric sorts it biggest-first -- the same convention
-   * the opportunity and search-performance tables use.
-   */
-  const sorting = useLocalSort<string>({ key: "", desc: true });
-  const rows = sorting.sort.key
-    ? sorting.apply(result.rows, (a, b, key) =>
-        compareReportCells(
-          a[key] ?? null,
-          b[key] ?? null,
-          result.dimensions.includes(key),
-        ),
-      )
-    : // Google's own ordering when nothing is chosen: each report definition
-      // asks for its own `orderBys`, so defaulting to a column would throw
-      // a meaningful order away.
-      result.rows;
-
-  return (
-    <div className="space-y-3">
-      <p className="text-xs text-muted">
-        {result.propertyDisplayName ?? "GA4 mülkü"} ·{" "}
-        {formatDate(result.dateRange.startDate)} –{" "}
-        {formatDate(result.dateRange.endDate)} ·{" "}
-        {/* Both numbers. This printed the dataset size above a table
-            holding at most 50 rows, so a property with 800 landing pages
-            said "800 satır" over fifty of them. */}
-        {result.rowCount < result.totalRowCount
-          ? `${formatCount(result.rowCount)} / ${formatCount(result.totalRowCount)} satır`
-          : `${formatCount(result.totalRowCount)} satır`}
-        {result.sampled ? " · örneklenmiş" : ""}
-        {/* Google withholds rows below its own privacy threshold; a total
-            that looks short is often this rather than missing traffic. */}
-        {result.thresholded ? " · eşik altı satırlar gizlendi" : ""}
-      </p>
-
-      {/*
-       * Export, which this screen -- the densest tabular data in the app --
-       * was the only one without. The rows are the ones on screen, in the
-       * order on screen, so a download matches what was exported from.
-       */}
-      {result.rows.length > 0 ? (
-        <div className="flex justify-end">
-          <TableExportMenu
-            buttonClassName="btn btn-ghost btn-sm gap-1"
-            actions={[
-              {
-                label: `Sheets'e aktar (${formatCount(rows.length)} satır)`,
-                onClick: () =>
-                  void exportTableToSheets({
-                    headers: columns.map(columnLabel),
-                    rows: toCsvRows(rows, columns),
-                    feature: "ga4_report",
-                  }),
-              },
-              {
-                label: `CSV (${formatCount(rows.length)} satır)`,
-                onClick: () =>
-                  downloadCsv(
-                    "analytics.csv",
-                    buildCsv(
-                      columns.map(columnLabel),
-                      toCsvRows(rows, columns),
-                    ),
-                  ),
-              },
-            ]}
-          />
-        </div>
-      ) : null}
-
-      {result.rows.length === 0 ? (
-        <div className="rounded-box border border-base-300 bg-base-100">
-          <EmptyState
-            icon={BarChart3}
-            title="Bu dönemde veri yok"
-            description={
-              result.emptyReason
-                ? `Google bir satır döndürmedi (${result.emptyReason}).`
-                : "Google bu aralık için satır döndürmedi. Mülk yeni bağlandıysa veriler birkaç gün sonra görünür."
-            }
-          />
-        </div>
-      ) : (
-        <div className="overflow-x-auto rounded-box border border-base-300 bg-base-100">
-          <table className="table table-sm">
-            <thead>
-              <tr>
-                {columns.map((field, index) => {
-                  const isDimension = index < result.dimensions.length;
-                  return (
-                    <th
-                      key={field}
-                      className={isDimension ? "" : "text-right"}
-                      aria-sort={sorting.ariaSort(field)}
-                    >
-                      <SortableHeader
-                        column={sorting.column(field, !isDimension)}
-                        label={columnLabel(field)}
-                        align={isDimension ? "left" : "right"}
-                      />
-                    </th>
-                  );
-                })}
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((row, rowIndex) => (
-                <tr key={rowIndex}>
-                  {columns.map((field, index) => {
-                    const isDimension = index < result.dimensions.length;
-                    const target = urlFor(field, row);
-                    return (
-                      <td
-                        key={field}
-                        className={
-                          isDimension
-                            ? "max-w-md truncate"
-                            : "text-right tabular-nums"
-                        }
-                        title={
-                          isDimension ? String(row[field] ?? "") : undefined
-                        }
-                      >
-                        {/* Reachable, like every other URL column in the
-                            app. These were truncated strings with a tooltip
-                            -- no open, no copy, no way through. */}
-                        {target ? (
-                          <UrlCell
-                            url={target}
-                            label={String(row[field] ?? "")}
-                          />
-                        ) : (
-                          cellValue(field, row[field] ?? null)
-                        )}
-                      </td>
-                    );
-                  })}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-    </div>
-  );
-}
-
-/** One GA4 cell against another, ascending; `useLocalSort` applies direction. */
-function compareReportCells(
-  a: string | number | null,
-  b: string | number | null,
-  isDimension: boolean,
-): number {
-  // Absent sinks to the bottom whichever way the column is sorted: a null is
-  // not "smaller", it is "not measured".
-  if (a === null && b === null) return 0;
-  if (a === null) return 1;
-  if (b === null) return -1;
-  if (isDimension) return compareText(String(a), String(b));
-  return Number(a) - Number(b);
-}
-
-/** The GA4 dimensions that are paths, and the one that carries their host. */
-const PATH_DIMENSIONS = new Set(["landingPage", "pagePath"]);
-
-/**
- * A full address for a path cell, or null when it is not one.
- *
- * GA4 reports the path and the host as separate dimensions, so neither is a
- * link on its own -- which is why these cells were dead text. Both reports
- * that carry a path ask for `hostName` beside it, so joining them is the
- * whole job.
- */
-function urlFor(
-  field: string,
-  row: Record<string, string | number | null>,
-): string | null {
-  if (!PATH_DIMENSIONS.has(field)) return null;
-  const path = row[field];
-  const host = row["hostName"];
-  if (typeof path !== "string" || typeof host !== "string") return null;
-  if (!path.startsWith("/") || !host) return null;
-  return `https://${host}${path}`;
-}
-
-/** The rendered values, so an export reads like the table it came from. */
-function toCsvRows(
-  rows: Array<Record<string, string | number | null>>,
-  columns: string[],
-): CsvValue[][] {
-  return rows.map((row) => columns.map((field) => row[field] ?? null));
 }

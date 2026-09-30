@@ -74,6 +74,8 @@ export function analyzeHtml(
   /* Google honours a bot-specific directive over the generic one, so a page
      can be noindexed by `<meta name="googlebot">` alone. */
   let googlebotMeta: string | null = null;
+  // The `<html lang>` value, trimmed; null when absent or blank.
+  let htmlLang: string | null = null;
   let ogTitle: string | null = null;
   let ogDescription: string | null = null;
   let ogImage: string | null = null;
@@ -236,6 +238,9 @@ export function analyzeHtml(
               if (title === null) title = "";
             }
             break;
+          case "html":
+            htmlLang ??= attribs["lang"]?.trim() || null;
+            break;
           case "head":
             headDepth += 1;
             break;
@@ -351,6 +356,7 @@ export function analyzeHtml(
     canonical,
     robotsMeta,
     googlebotMeta,
+    htmlLang,
     ogTitle,
     ogDescription,
     ogImage,

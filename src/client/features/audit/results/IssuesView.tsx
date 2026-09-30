@@ -1,20 +1,18 @@
 import { useMemo, useState } from "react";
-import { ChevronRight } from "lucide-react";
-import { sort } from "remeda";
-import { formatCount, formatNumber } from "@/client/lib/format";
-import {
-  getIssueDescriptor,
-  ISSUE_SEVERITY_ORDER,
-  type IssueSeverity,
-  resolveIssueSeverity,
-} from "@/shared/audit-issues";
-import type { AuditResultsData } from "@/client/features/audit/results/types";
+import { X } from "lucide-react";
+import type { IssueSeverity } from "@/shared/audit-issues";
+import { IssueCard } from "@/client/features/audit/results/IssueCard";
 import { IssueWorkloadChart } from "@/client/features/audit/results/IssueWorkloadChart";
 import { SeverityDonut } from "@/client/features/audit/results/SeverityDonut";
+import {
+  applyIssueFilters,
+  countBySeverity,
+  groupIssues,
+  SEVERITY_LABEL,
+  type AuditIssueRow,
+} from "@/client/features/audit/results/issueGroups";
 
-type AuditIssueRow = AuditResultsData["issues"][number];
-
-const MAX_RENDERED_URLS = 100;
+export { SEVERITY_LABEL };
 
 const SEVERITY_DOT: Record<IssueSeverity, string> = {
   critical: "bg-error",
@@ -22,76 +20,13 @@ const SEVERITY_DOT: Record<IssueSeverity, string> = {
   info: "bg-base-content/30",
 };
 
-const SEVERITY_RULE: Record<IssueSeverity, string> = {
-  critical: "border-l-error/60",
-  warning: "border-l-warning/60",
-  info: "border-l-base-content/20",
-};
-
-export const SEVERITY_LABEL: Record<IssueSeverity, string> = {
-  critical: "Kritik",
-  warning: "Uyarı",
-  info: "Bilgi",
-};
-
-interface IssueGroup {
-  issueType: string;
-  severity: IssueSeverity;
-  title: string;
-  explanation: string;
-  howToFix: string;
-  issues: AuditIssueRow[];
-  /**
-   * Distinct pages, not rows.
-   *
-   * Link-level checks write one row per occurrence -- a page with eight
-   * broken links is eight rows -- so printing `issues.length` as "N sayfa"
-   * inflated a single page's problem eightfold against the dashboard card
-   * the operator had just clicked through from. The repository that every
-   * other consumer reads counts `countDistinct(pageUrl)` and says so.
-   */
-  pageCount: number;
-}
-
-function groupIssues(issues: AuditIssueRow[]): IssueGroup[] {
-  const groups = new Map<string, IssueGroup>();
-  for (const issue of issues) {
-    let group = groups.get(issue.issueType);
-    if (!group) {
-      const descriptor = getIssueDescriptor(issue.issueType);
-      group = {
-        issueType: issue.issueType,
-        severity: resolveIssueSeverity(issue),
-        title: descriptor?.title ?? issue.issueType,
-        explanation: descriptor?.explanation ?? "",
-        howToFix: descriptor?.howToFix ?? "",
-        issues: [],
-        pageCount: 0,
-      };
-      groups.set(issue.issueType, group);
-    }
-    group.issues.push(issue);
-  }
-
-  for (const group of groups.values()) {
-    group.pageCount = new Set(group.issues.map((issue) => issue.pageUrl)).size;
-  }
-
-  return sort(
-    Array.from(groups.values()),
-    (a, b) =>
-      ISSUE_SEVERITY_ORDER[a.severity] - ISSUE_SEVERITY_ORDER[b.severity] ||
-      // Ordered by pages affected, matching what the row now claims. Rows
-      // would put one page with eight broken links above eight pages with
-      // one problem each.
-      b.pageCount - a.pageCount,
-  );
-}
+const SEVERITY_ORDER: IssueSeverity[] = ["critical", "warning", "info"];
 
 export function IssuesView({
   issues,
   focusUrl,
   onClearFocus,
+  onShowPages,
 }: {
   issues: AuditIssueRow[];
   /**
@@ -102,6 +37,8 @@ export function IssuesView({
    */
   focusUrl?: string;
   onClearFocus: () => void;
+  /** Carries one problem's pages to the Sayfalar tab as a filter. */
+  onShowPages: (urls: string[], label: string) => void;
 }) {
   const scoped = useMemo(
     () =>
@@ -109,35 +46,41 @@ export function IssuesView({
     [focusUrl, issues],
   );
   const groups = useMemo(() => groupIssues(scoped), [scoped]);
+  const [severity, setSeverity] = useState<IssueSeverity | null>(null);
+  const [issueType, setIssueType] = useState<string | null>(null);
 
   /*
-   * Findings, not pages. `pageCount` is the *distinct pages* a type affects,
-   * so summing it gave 63 under a ring labelled "bulgu" while the header
-   * above counted 65 records -- two different true numbers presented as one.
-   * The section headers count records, so this counts records.
+   * The ring and the bars are drawn from every group, not the narrowed ones:
+   * a chart that shrank to what you had just clicked would leave nothing to
+   * click next.
+   *
+   * Findings, not pages, in the ring. `pageCount` is the *distinct pages* a
+   * type affects, so summing it gave 63 under a ring labelled "bulgu" while
+   * the list counted 65 records -- two different true numbers presented as
+   * one.
    */
-  const severityCounts = useMemo(() => {
-    const counts = { critical: 0, warning: 0, info: 0 };
-    for (const group of groups) counts[group.severity] += group.issues.length;
-    return counts;
-  }, [groups]);
-
+  const severityCounts = useMemo(() => countBySeverity(groups), [groups]);
+  const shown = useMemo(
+    () => applyIssueFilters(groups, { severity, issueType }),
+    [groups, severity, issueType],
+  );
   const sections = useMemo(
     () =>
-      (["critical", "warning", "info"] as const)
-        .map((severity) => ({
-          severity,
-          groups: groups.filter((group) => group.severity === severity),
-        }))
-        .filter((section) => section.groups.length > 0),
-    [groups],
+      SEVERITY_ORDER.map((level) => ({
+        severity: level,
+        groups: shown.filter((group) => group.severity === level),
+      })).filter((section) => section.groups.length > 0),
+    [shown],
   );
+  const issueTypeTitle = groups.find(
+    (group) => group.issueType === issueType,
+  )?.title;
 
   if (scoped.length === 0 && !focusUrl) {
     return (
       <div className="py-10 text-center text-muted">
         <p className="font-medium">Bu denetimde kayıtlı sorun yok.</p>
-        <p className="text-sm mt-1">
+        <p className="mt-1 text-sm">
           Site gerçekten iyi durumda olabilir ya da bu denetim, sorun
           kontrolleri eklenmeden önce çalıştırılmış olabilir. Tam raporu görmek
           için yeni bir denetim başlatın.
@@ -146,15 +89,25 @@ export function IssuesView({
     );
   }
 
+  const hasNarrowing = severity !== null || issueType !== null;
+
   return (
     <div className="space-y-3">
       {/* Both only for the whole audit: narrowed to one page a workload bar
           per issue type reads "1, 1, 1" and a severity ring is three slivers
           of one finding each. */}
       {focusUrl ? null : (
-        <div className="grid gap-3 lg:grid-cols-[1fr_minmax(0,22rem)]">
-          <IssueWorkloadChart groups={groups} />
-          <SeverityDonut counts={severityCounts} />
+        <div className="grid gap-3 lg:grid-cols-[1fr_minmax(0,24rem)]">
+          <IssueWorkloadChart
+            groups={groups}
+            selectedType={issueType}
+            onSelect={setIssueType}
+          />
+          <SeverityDonut
+            counts={severityCounts}
+            selected={severity}
+            onSelect={setSeverity}
+          />
         </div>
       )}
       {focusUrl ? (
@@ -171,14 +124,70 @@ export function IssuesView({
           </button>
         </div>
       ) : null}
+      {hasNarrowing ? (
+        <div className="flex flex-wrap items-center gap-2 text-xs">
+          <span className="text-muted">Gösterilen:</span>
+          {severity ? (
+            <FilterChip
+              label={SEVERITY_LABEL[severity]}
+              onRemove={() => setSeverity(null)}
+            />
+          ) : null}
+          {issueType ? (
+            <FilterChip
+              label={issueTypeTitle ?? issueType}
+              onRemove={() => setIssueType(null)}
+            />
+          ) : null}
+        </div>
+      ) : null}
       {sections.length === 0 ? (
         <div className="rounded-box border border-base-300 py-10 text-center text-muted">
-          <p className="font-medium">Bu sayfada kayıtlı sorun yok.</p>
+          <p className="font-medium">
+            {hasNarrowing
+              ? "Seçtiğiniz kombinasyonda sorun yok."
+              : "Bu sayfada kayıtlı sorun yok."}
+          </p>
+          {hasNarrowing ? (
+            <button
+              type="button"
+              className="btn btn-ghost btn-sm mt-2"
+              onClick={() => {
+                setSeverity(null);
+                setIssueType(null);
+              }}
+            >
+              Seçimi temizle
+            </button>
+          ) : null}
         </div>
       ) : (
-        <div className="border border-base-300 rounded-box overflow-hidden">
+        <div className="overflow-hidden rounded-box border border-base-300">
           {sections.map((section) => (
-            <IssueSection key={section.severity} section={section} />
+            <div
+              key={section.severity}
+              className="border-t border-base-300 first:border-t-0"
+            >
+              <div className="flex items-center gap-2 border-b border-base-300/60 bg-base-200/60 px-4 py-1.5">
+                <span
+                  className={`size-1.5 rounded-full ${SEVERITY_DOT[section.severity]}`}
+                />
+                <span className="text-[11px] font-semibold uppercase tracking-wider text-muted">
+                  {SEVERITY_LABEL[section.severity]}
+                </span>
+              </div>
+              <div className="divide-y divide-base-300/60">
+                {section.groups.map((group) => (
+                  <IssueCard
+                    key={group.issueType}
+                    group={group}
+                    // One problem left is one problem to read.
+                    defaultOpen={issueType !== null}
+                    onShowPages={onShowPages}
+                  />
+                ))}
+              </div>
+            </div>
           ))}
         </div>
       )}
@@ -186,198 +195,22 @@ export function IssuesView({
   );
 }
 
-function IssueSection({
-  section,
+function FilterChip({
+  label,
+  onRemove,
 }: {
-  section: { severity: IssueSeverity; groups: IssueGroup[] };
+  label: string;
+  onRemove: () => void;
 }) {
-  const issueCount = section.groups.reduce(
-    (sum, group) => sum + group.issues.length,
-    0,
-  );
-
   return (
-    <div className="border-t border-base-300 first:border-t-0">
-      <div className="flex items-center gap-2 bg-base-200/60 px-4 py-1.5 border-b border-base-300/60">
-        <span
-          className={`size-1.5 rounded-full ${SEVERITY_DOT[section.severity]}`}
-        />
-        <span className="text-[11px] font-semibold uppercase tracking-wider text-muted">
-          {SEVERITY_LABEL[section.severity]}
-        </span>
-        <span className="text-[11px] tabular-nums text-muted">
-          {formatCount(issueCount)}
-        </span>
-      </div>
-      <div className="divide-y divide-base-300/60">
-        {section.groups.map((group) => (
-          <IssueRow key={group.issueType} group={group} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function IssueRow({ group }: { group: IssueGroup }) {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <div
-      className={
-        open
-          ? `border-l-2 ${SEVERITY_RULE[group.severity]} bg-base-200/20`
-          : "border-l-2 border-l-transparent"
-      }
+    <button
+      type="button"
+      onClick={onRemove}
+      aria-label={`${label} seçimini kaldır`}
+      className="inline-flex items-center gap-1 rounded-full border border-primary bg-primary/10 px-2.5 py-1 text-primary transition-colors hover:bg-primary/15"
     >
-      <button
-        type="button"
-        className="w-full flex items-center gap-3 px-4 py-2.5 text-left hover:bg-base-200/40 transition-colors"
-        onClick={() => setOpen((value) => !value)}
-        aria-expanded={open}
-      >
-        <span
-          className={`size-2 shrink-0 rounded-full ${SEVERITY_DOT[group.severity]}`}
-        />
-        <span className="text-sm font-medium flex-1 min-w-0 truncate">
-          {group.title}
-        </span>
-        <span className="text-xs tabular-nums text-muted shrink-0">
-          {formatCount(group.pageCount)} sayfa
-        </span>
-        <ChevronRight
-          className={`size-4 shrink-0 text-muted transition-transform ${
-            open ? "rotate-90" : ""
-          }`}
-        />
-      </button>
-
-      {open && (
-        <div className="pl-9 pr-4 pb-4 pt-0.5 space-y-3">
-          {group.explanation && (
-            <p className="text-sm text-muted max-w-prose">
-              {group.explanation}
-            </p>
-          )}
-          {group.howToFix && (
-            <p className="text-sm max-w-prose">
-              <span className="font-medium">Nasıl düzeltilir: </span>
-              <span className="text-muted">{group.howToFix}</span>
-            </p>
-          )}
-          <AffectedUrlList issues={group.issues} />
-        </div>
-      )}
-    </div>
-  );
-}
-
-function AffectedUrlList({ issues }: { issues: AuditIssueRow[] }) {
-  const rendered = issues.slice(0, MAX_RENDERED_URLS);
-  const remaining = issues.length - rendered.length;
-
-  return (
-    <div className="max-h-[320px] overflow-y-auto rounded-box border border-base-300/60 bg-base-100">
-      {rendered.map((issue) => (
-        <div
-          key={issue.id}
-          className="px-3 py-1.5 text-sm flex flex-col gap-0.5 border-b border-base-300/50 last:border-b-0"
-        >
-          <a
-            className="link link-hover text-muted truncate"
-            href={issue.pageUrl}
-            target="_blank"
-            rel="noreferrer"
-            title={issue.pageUrl}
-          >
-            {issue.pageUrl}
-          </a>
-          <IssueDetails detailsJson={issue.detailsJson} />
-        </div>
-      ))}
-      {remaining > 0 && (
-        <div className="px-3 py-2 text-xs text-muted">
-          …ve {formatNumber(remaining)} tane daha. Tam liste için sorunları CSV
-          olarak dışa aktarın.
-        </div>
-      )}
-    </div>
-  );
-}
-
-function parseDetails(detailsJson: string): Array<[string, unknown]> | null {
-  try {
-    const parsed: unknown = JSON.parse(detailsJson);
-    if (
-      typeof parsed === "object" &&
-      parsed !== null &&
-      !Array.isArray(parsed)
-    ) {
-      return Object.entries(parsed);
-    }
-    return null;
-  } catch {
-    return null;
-  }
-}
-
-function IssueDetails({ detailsJson }: { detailsJson: string | null }) {
-  const details = useMemo(
-    () => (detailsJson ? parseDetails(detailsJson) : null),
-    [detailsJson],
-  );
-
-  if (!details) return null;
-
-  const entries = details.filter(
-    ([, value]) => value !== null && value !== undefined,
-  );
-  if (entries.length === 0) return null;
-
-  /*
-   * Lists on their own lines, scalars on one. Everything used to be joined
-   * into a single truncated line, which reads fine for "count: 3" and turns
-   * a list of image addresses into an unreadable smear -- and a list of
-   * addresses is exactly what an operator fixing the finding needs to copy.
-   */
-  const lists = entries.filter(([, value]) => isStringList(value));
-  const scalars = entries.filter(([, value]) => !isStringList(value));
-
-  return (
-    <span className="block min-w-0 space-y-0.5 text-xs text-muted">
-      {scalars.length > 0 ? (
-        <span className="block truncate">
-          {scalars
-            .map(([key, value]) => {
-              const rendered = Array.isArray(value)
-                ? value.join(" → ")
-                : String(value);
-              return `${key}: ${rendered}`;
-            })
-            .join(" · ")}
-        </span>
-      ) : null}
-      {lists.map(([key, value]) =>
-        Array.isArray(value)
-          ? value.map((item) => (
-              <span
-                key={`${key}-${String(item)}`}
-                className="block truncate font-mono"
-                title={String(item)}
-              >
-                {String(item)}
-              </span>
-            ))
-          : null,
-      )}
-    </span>
-  );
-}
-
-/** A list of address-like strings, as opposed to a heading-order sequence. */
-function isStringList(value: unknown): boolean {
-  return (
-    Array.isArray(value) &&
-    value.length > 0 &&
-    value.every((item) => typeof item === "string" && item.length > 12)
+      {label}
+      <X aria-hidden className="size-3" />
+    </button>
   );
 }

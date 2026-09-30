@@ -127,7 +127,7 @@ describe("what the card points at", () => {
       />,
     );
 
-    expect(screen.getByText("En çok sorunlu sayfalar")).toBeDefined();
+    expect(screen.getByText("En çok sorunu olan sayfalar")).toBeDefined();
     expect(screen.getByText("/worst")).toBeDefined();
     expect(screen.getByText("7 sorun")).toBeDefined();
   });

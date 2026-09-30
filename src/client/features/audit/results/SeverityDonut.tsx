@@ -1,56 +1,63 @@
-import { DonutChart } from "@/client/components/DonutChart";
-import { formatCount, formatPercent } from "@/client/lib/format";
+import { DonutCard, donutSummary } from "@/client/components/DonutChart";
 import type { IssueSeverity } from "@/shared/audit-issues";
 
 /**
- * How one audit's findings divide by severity.
+ * How one audit's findings divide by severity, and a way into each part.
  *
- * The screen already counts them — three numbers in a row above the table —
- * but three numbers do not say whether this is "mostly information with two
- * real problems" or "half of it is critical", and those are different
+ * Three numbers in a row do not say whether this is "mostly information with
+ * two real problems" or "half of it is critical", and those are different
  * afternoons. A ring answers that in one glance because the parts sum to the
- * whole, which is the case a donut is actually for.
- *
- * Bars stayed bars elsewhere (countries, position bands) because those are
- * rankings, not divisions of a total.
+ * whole, which is the case a donut is actually for. Choosing a part narrows
+ * the list beside it to that severity.
  */
 
-const SEVERITY = [
-  { key: "critical", label: "Kritik", color: "var(--color-error)" },
-  { key: "warning", label: "Uyarı", color: "var(--color-warning)" },
-  { key: "info", label: "Bilgi", color: "var(--color-info)" },
-] as const;
+const SEVERITY: Array<{
+  key: IssueSeverity;
+  label: string;
+  hint: string;
+  color: string;
+}> = [
+  {
+    key: "critical",
+    label: "Kritik",
+    hint: "Google'ın sitenizi anlamasını engelliyor",
+    color: "var(--color-error)",
+  },
+  {
+    key: "warning",
+    label: "Uyarı",
+    hint: "Sıralamanızı ve tıklanmanızı düşürüyor",
+    color: "var(--color-warning)",
+  },
+  {
+    key: "info",
+    label: "Bilgi",
+    hint: "Küçük iyileştirme fırsatları",
+    color: "var(--color-info)",
+  },
+];
 
 export function SeverityDonut({
   counts,
+  selected,
+  onSelect,
 }: {
   counts: Record<IssueSeverity, number>;
+  selected: IssueSeverity | null;
+  onSelect: (severity: IssueSeverity | null) => void;
 }) {
-  const total = SEVERITY.reduce((sum, row) => sum + counts[row.key], 0);
-  if (total === 0) return null;
-
-  const segments = SEVERITY.map((row) => ({
-    key: row.key,
-    label: row.label,
-    value: counts[row.key],
-    color: row.color,
-  }));
-
-  const worst = segments.find((segment) => segment.value > 0);
-
+  const segments = SEVERITY.map((row) => ({ ...row, value: counts[row.key] }));
   return (
-    <section className="rounded-box border border-base-300 bg-base-100 px-4 py-4">
-      <h3 className="mb-3 text-sm font-medium">Sorunların önem dağılımı</h3>
-      <DonutChart
-        segments={segments}
-        totalLabel="bulgu"
-        height={180}
-        summary={
-          worst
-            ? `${formatCount(total)} bulgunun ${formatPercent(worst.value / total)} kadarı ${worst.label.toLocaleLowerCase("tr")} düzeyinde.`
-            : `${formatCount(total)} bulgu.`
-        }
-      />
-    </section>
+    <DonutCard
+      title="Sorunlar ne kadar ciddi?"
+      description="Bir gruba tıklayın, liste yalnızca o sorunları göstersin."
+      totalLabel="bulgu"
+      segments={segments}
+      summary={donutSummary(segments, "bulgu")}
+      selectedKey={selected}
+      onSelect={(key) =>
+        onSelect(SEVERITY.find((row) => row.key === key)?.key ?? null)
+      }
+    />
   );
 }

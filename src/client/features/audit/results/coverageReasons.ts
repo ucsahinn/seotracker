@@ -32,7 +32,7 @@ const INDEXING: Record<string, string> = {
 
 const PAGE_FETCH: Record<string, string> = {
   SUCCESSFUL: "Sayfa başarıyla alındı",
-  SOFT_404: "Yumuşak 404 (boş sayfa 200 dönüyor)",
+  SOFT_404: "Boş sayfa, hata vermeden açılıyor (soft 404)",
   BLOCKED_ROBOTS_TXT: "robots.txt engelledi",
   NOT_FOUND: "404 bulunamadı",
   ACCESS_DENIED: "401 yetkisiz",
@@ -46,10 +46,10 @@ const PAGE_FETCH: Record<string, string> = {
 };
 
 const RICH_RESULTS: Record<string, string> = {
-  PASS: "Zengin sonuç işaretlemesi geçerli",
-  PARTIAL: "Zengin sonuç işaretlemesinde uyarı var",
-  FAIL: "Zengin sonuç işaretlemesi geçersiz",
-  NEUTRAL: "Zengin sonuç işaretlemesi yok",
+  PASS: "Zengin sonuç verisi geçerli",
+  PARTIAL: "Zengin sonuç verisinde uyarı var",
+  FAIL: "Zengin sonuç verisi geçersiz",
+  NEUTRAL: "Zengin sonuç verisi yok",
   VERDICT_UNSPECIFIED: "Google henüz değerlendirmedi",
 };
 

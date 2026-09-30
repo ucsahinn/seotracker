@@ -170,6 +170,33 @@ raporunda deftere hiç yazılmamış bulgular vardı. Tamamı aşağıda.
 | `ai.tsx`'te iki düğmenin 44px yüksekliği      | 44px makul bir dokunma hedefi; ortada bir kusur yok, yalnızca daisyUI ölçeğinin dışında.                      |
 | Karanlık temada dolgu renkleri                | Ölçüldü: 6,1–9,3:1, zaten geçiyor. Ajanın hata tahmini yalnızca açık tema içindi.                             |
 
+### Son turda eklenenler (v1.4.0 ve v1.5.0)
+
+| Bulgu                                                         | Sonuç                                                                                                                                                                                                                             |
+| ------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Panel "site nasıl" diyor, "ne yapayım" demiyordu              | **Bitti** — "Sıradaki adımlar": en fazla üç iş, yeni istek yok.                                                                                                                                                                   |
+| Sık sorulan beş soru filtre panelinin içindeydi               | **Bitti** — dizine kapalı, yavaş, alt metni eksik, site haritasında yok, hatalı. Sayaçlar tüm taramadan.                                                                                                                          |
+| Google'ın makine okunur dizin cevapları hiç gösterilmiyordu   | **Bitti** — "Neden" sütunu; sizin canonical'ınız ile Google'ınki yan yana.                                                                                                                                                        |
+| Alt metni eksik bulgusu hangi görseller olduğunu söylemiyordu | **Bitti** — üç örnek adres.                                                                                                                                                                                                       |
+| Ülke tablosu gösterim ve tıklama oranını atıyordu             | **Bitti**.                                                                                                                                                                                                                        |
+| Organik gelir ve sipariş çekilip atılıyordu                   | **Bitti** — yalnızca satış yapan mülkte çıkıyor.                                                                                                                                                                                  |
+| Günlük seyirde ortalama sıra ve tıklama oranı yoktu           | **Bitti** — dört ölçü, sıra ekseni ters.                                                                                                                                                                                          |
+| Site geneli CrUX verisi ayrıştırılmıyordu                     | **Bitti** — sayfanın kendi verisi yoksa sitenin ortalaması, etiketiyle.                                                                                                                                                           |
+| Fırsatlar yalnızca 4–20. sırayı gösteriyordu                  | **Bitti** — Tıklanmıyor / Yaklaşmış / Derinde.                                                                                                                                                                                    |
+| Dizin durumu kayıtlarının 29'undan 23'ü sessizce boştu        | **Bitti** — Türkçe saklanan cümleler eşlendi.                                                                                                                                                                                     |
+| Sürüm notu karmaşıktı, geçmiş sürümler duruyordu              | **Bitti** — tek sürüm, sade dil, uygulama ve GitHub aynı metin.                                                                                                                                                                   |
+| Ölü/çift kod                                                  | **Bitti** — sayfalama forku, üçüncü dışa aktarma menüsü silindi.                                                                                                                                                                  |
+| Renk ve canlılık                                              | **Bitti** — kutucuklar sırayla beliriyor, acil adımda halka iki kez nefes alıp duruyor. Sonsuz döngü değil: kritik bulgu çıktığı anda tüm paneli titretir ve okuyucuya onu görmemeyi öğretir. `prefers-reduced-motion`'a saygılı. |
+
+### Hâlâ yapılmayanlar (bilerek)
+
+| Konu                                                | Neden                                                                                                                        |
+| --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `searchAppearance` boyutu (zengin sonuç türleri)    | Hiçbir ekran istemiyor; Search Console'da bu mülkün sorgu verisi henüz boş, gösterecek bir şey yok.                          |
+| GA4 kota ve `countingMethod`                        | Küçük ve doğru, ama bir kullanıcı sorusuna cevap değil; ölçüm durumu sekmesine ait, ayrı bir tur.                            |
+| Sıralama sparkline'ı                                | `gsc_query_daily` bu projede boş — yazsak da çizecek veri yok.                                                               |
+| Sitede gerçekten değişen şey: yeni bir API bağlamak | Bağlı üç kaynak (Search Console, Analytics, PageSpeed) henüz tam kullanılmıyor; dördüncüyü eklemek yerine önce bunlar bitti. |
+
 ## 7. Senin kararını bekleyenler
 
 Bunlar davranış değiştirir, o yüzden yapılmadı.
@@ -204,3 +231,15 @@ Mock veri hiç kullanılmadı. Tek proje: `df26abab-fa39-4133-96cc-a5627d8b80ad`
 - `gsc_query_daily` **boş** — bu yüzden sparkline'ın (2.10) gösterecek verisi yok.
 - Taranan 1439 sayfanın 1426'sında `og:title` var — yeni og kuralı bu projede
   doğru şekilde ateşlemiyor.
+
+### v1.5.0'te yapılanlar ve açık kalanlar
+
+| Konu | Durum |
+| ---- | ----- |
+| Site puanı (0–100), yalnızca sorun kalmayınca 100 | **Bitti** |
+| Üç yeni denetim kuralı: https değil, asıl adres eksik, dil bilgisi eksik | **Bitti** — birim testli; https kuralı uçtan uca denenmedi (fixture sitesi https sunamıyor). |
+| Her ekrana kendi özet grafiği, tek ortak halka bileşeni | **Bitti** |
+| Fırsatlar satır penceresi ("Ne yapmalı?") | **Bitti** |
+| Cihaz halkası (Arama performansı) | Açık — sunucuda cihaz boyutlu sorgu gerekiyor. |
+| Takip edilen sorgularda yükselen/düşen | Açık — önceki dönem sırası gerekiyor. |
+| Önem çubuğundan denetimi süzme | Açık — rotada önem parametresi yok. |

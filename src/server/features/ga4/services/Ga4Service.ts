@@ -80,8 +80,8 @@ async function listPropertiesForUserWithGrantStatus(userId: string) {
               requiresReconnect: false,
               propertiesUnavailable: true,
               unavailableReason: email
-                ? `Google Analytics bu servis hesabına izin vermedi. İki şey gerekiyor: Google Cloud projenizde Google Analytics Admin API etkin olmalı, ve GA4 mülkünüzde Yönetici → Erişim yönetimi altında ${email} adresi Görüntüleyen olarak ekli olmalı.`
-                : "Google Analytics bu servis hesabına izin vermedi. Google Analytics Admin API'yi etkinleştirin ve hesabın adresini GA4 mülkünüze Görüntüleyen olarak ekleyin.",
+                ? `Google Analytics bu hizmet hesabına izin vermedi. İki şey gerekiyor: Google Cloud projenizde Google Analytics Admin API etkin olmalı, ve GA4 mülkünüzde Yönetici → Erişim yönetimi altında ${email} adresi Görüntüleyen olarak ekli olmalı.`
+                : "Google Analytics bu hizmet hesabına izin vermedi. Google Analytics Admin API'yi etkinleştirin ve hesabın adresini GA4 mülkünüze Görüntüleyen olarak ekleyin.",
               properties: [],
             },
           ],

@@ -1,8 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "@tanstack/react-router";
-import { Target } from "lucide-react";
 import { useState } from "react";
-import { EmptyState } from "@/client/components/EmptyState";
+import {
+  Intro,
+  NoOpportunities,
+  NotReady,
+} from "@/client/features/opportunities/OpportunityStates";
 import { MetricRow, MetricTile } from "@/client/components/MetricTile";
 import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { OpportunitiesTable } from "@/client/features/opportunities/OpportunitiesTable";
@@ -11,10 +13,15 @@ import { formatDate, formatNumber } from "@/client/lib/format";
 import { describeWindow } from "@/shared/dataFreshness";
 import { getSearchOpportunities } from "@/serverFunctions/opportunities";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
+import { OpportunityKinds } from "@/client/features/opportunities/OpportunityKinds";
+import { OpportunityQuickFilters } from "@/client/features/opportunities/OpportunityQuickFilters";
+import { OpportunitySummary } from "@/client/features/opportunities/OpportunitySummary";
 import {
-  OpportunityKinds,
+  applyFilters,
+  quickCounts,
   type KindId,
-} from "@/client/features/opportunities/OpportunityKinds";
+  type QuickId,
+} from "@/client/features/opportunities/opportunityLogic";
 /**
  * Every page Google showed, ranked by what working on it would be worth.
  *
@@ -79,8 +86,10 @@ export function OpportunitiesPage({
     <PageShell>
       <PageHeader
         title="Fırsatlar"
-        description="Arama sonuçlarında görünen sayfalarınız, üzerinde çalışmanın değerine göre sıralanmış."
+        description="Google'da görünen sayfalarınız, emek harcamaya değer olma sırasına göre."
       />
+
+      <Intro />
 
       {query.isPending ? (
         <div className="space-y-4" aria-busy>
@@ -108,83 +117,6 @@ export function OpportunitiesPage({
         <NotReady projectId={projectId} missing={query.data.status} />
       )}
     </PageShell>
-  );
-}
-
-/**
- * This screen needs both Search Console and Analytics, so "not connected" is
- * the expected first state rather than a failure. The server says which one is
- * missing; this used to guess by matching the error text, which never worked
- * because the message reaching the client is a generic one.
- */
-function NotReady({
-  projectId,
-  missing,
-}: {
-  projectId: string;
-  missing: "needs_ga4" | "needs_gsc";
-}) {
-  const needsGa4 = missing === "needs_ga4";
-
-  return (
-    <div className="rounded-box border border-base-300 bg-base-100">
-      <EmptyState
-        icon={Target}
-        title={
-          needsGa4
-            ? "Google Analytics bağlı değil"
-            : "Search Console bağlı değil"
-        }
-        description="Bu sayfa iki kaynağı birleştirir: sıralarınız Search Console'dan, o sayfaların ne kazandırdığı Analytics'ten gelir. İkisi de bağlı olmadan bir fırsat puanlanamaz."
-        action={
-          <Link
-            to="/p/$projectId/settings/integrations"
-            params={{ projectId }}
-            className="btn btn-primary btn-sm"
-          >
-            Bağlantıları aç
-          </Link>
-        }
-      />
-    </div>
-  );
-}
-
-/**
- * Nothing scored — and which of the two reasons it was decides what to do
- * next, so the screen has to say which.
- *
- * The old copy offered both at once ("ya hepsi ilk üçte, ya da henüz kimse
- * görmüyor") and neither is true when Search Console returned no pages at
- * all for the period, which is exactly the state a fresh property is in.
- * It also never named the period, so "no pages" read as a verdict on the
- * site rather than on twenty-eight days of it.
- */
-function NoOpportunities({
-  dateRange,
-  pagesConsidered,
-}: {
-  dateRange: { startDate: string; endDate: string };
-  pagesConsidered: number;
-}) {
-  const period = `${formatDate(dateRange.startDate)} – ${formatDate(dateRange.endDate)}`;
-
-  if (pagesConsidered === 0) {
-    return (
-      <EmptyState
-        icon={Target}
-        title="Search Console bu dönem için veri döndürmedi"
-        description={`${period} aralığında hiçbir sayfanız arama sonuçlarında görünmedi. Mülk yeni bağlandıysa Google'ın veriyi doldurması birkaç gün sürer.`}
-      />
-    );
-  }
-
-  return (
-    <EmptyState
-      icon={Target}
-      title="Bu aralıkta fırsat yok"
-      description={`${period} aralığında hiçbir sayfanız arama sonuçlarında gösterilmedi.`}
-    />
   );
 }
 
@@ -235,9 +167,10 @@ function Report({
   projectId: string;
 }) {
   const [kind, setKind] = useState<KindId | null>(null);
+  const [quick, setQuick] = useState<QuickId | null>(null);
 
-  const shown =
-    kind === null ? data.rows : data.rows.filter((row) => row.kind === kind);
+  const shown = applyFilters(data.rows, kind, quick);
+  const filtered = kind !== null || quick !== null;
 
   const windowControl = (
     <WindowPicker windowDays={windowDays} onChange={onWindowChange} />
@@ -267,8 +200,8 @@ function Report({
     <>
       {data.truncated.gsc ? (
         <p className="text-xs text-muted">
-          Search Console tek seferde sınırlı satır döndürür ve bu sınıra
-          takıldık, yani aday sayfa sayısı da gerçekte daha yüksek olabilir.
+          Search Console tek seferde sınırlı sayıda satır verir ve bu sınıra
+          ulaşıldı; gerçekte daha fazla aday sayfa olabilir.
         </p>
       ) : null}
 
@@ -307,11 +240,11 @@ function Report({
          * from the filtered array.
          */}
         <MetricTile
-          label="Gösterilen"
+          label="Listelenen"
           value={formatNumber(shown.length)}
           hint={
-            kind !== null
-              ? `Seçili türde · ${formatNumber(data.rowCount)} satır içinde`
+            filtered
+              ? `Süzgece uyan · ${formatNumber(data.rowCount)} satır içinde`
               : data.truncated.candidates
                 ? `${formatNumber(data.totalCandidateRows)} aday sayfanın en iyileri`
                 : `Tüm aday sayfalar (${formatNumber(data.totalCandidateRows)})`
@@ -327,12 +260,12 @@ function Report({
           hint={`${formatNumber(data.totalCandidateRows)} aday içinde`}
         />
         <MetricTile
-          label="Eşleşmeyen"
+          label="Analytics'te bulunamayan"
           value={formatNumber(data.coverage.unmatchedGscRows)}
-          hint="Analytics'te karşılığı bulunamadı"
+          hint="Yalnızca Search Console verisiyle puanlandı"
         />
         <MetricTile
-          label="İş değeri ölçütü"
+          label="İş değeri neye göre?"
           value={
             data.scoring.businessValueMetric === "engagementRate"
               ? "Etkileşim"
@@ -340,7 +273,7 @@ function Report({
           }
           hint={
             data.scoring.engagementFallback
-              ? "Dönüşüm tanımlı değil, etkileşime düşüldü"
+              ? "Dönüşüm tanımlı olmadığı için etkileşim kullanıldı"
               : undefined
           }
         />
@@ -350,7 +283,7 @@ function Report({
           limit, nothing saying more existed. */}
       <div className="flex flex-wrap items-center justify-end gap-3 text-xs text-muted">
         {windowControl}
-        <label htmlFor="opportunity-limit">Gösterilecek satır</label>
+        <label htmlFor="opportunity-limit">Satır sayısı</label>
         <select
           id="opportunity-limit"
           className="select select-bordered select-sm w-24"
@@ -370,14 +303,37 @@ function Report({
         </select>
       </div>
 
+      <OpportunitySummary
+        rows={data.rows}
+        selectedKind={kind}
+        onSelectKind={setKind}
+      />
+
       <OpportunityKinds rows={data.rows} selected={kind} onSelect={setKind} />
 
-      <OpportunitiesTable projectId={projectId} rows={shown} />
+      <OpportunityQuickFilters
+        counts={quickCounts(data.rows)}
+        selected={quick}
+        onSelect={setQuick}
+      />
+
+      <OpportunitiesTable
+        projectId={projectId}
+        rows={shown}
+        onReset={
+          filtered
+            ? () => {
+                setKind(null);
+                setQuick(null);
+              }
+            : undefined
+        }
+      />
 
       <p className="text-xs text-muted">
-        Puan = talep (%50) + iş değeri (%30) + erişilebilirlik (%20).
-        Analytics&apos;te eşleşmeyen sayfalar da puanlanır; iş değeri için hak
-        etmedikleri bir sıfır yerine nötr orta değeri alırlar.
+        Puan = talep (%50) + iş değeri (%30) + yakınlık (%20). Analytics&apos;te
+        karşılığı bulunmayan sayfalar da puanlanır; iş değerinde haksız yere
+        sıfır almamaları için nötr bir orta değer verilir.
       </p>
     </>
   );

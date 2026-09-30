@@ -1,128 +1,17 @@
-import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
-import { Link } from "@tanstack/react-router";
-import { ExternalLink } from "lucide-react";
-import { useMemo } from "react";
+import { useMemo, useState, type MouseEvent } from "react";
+import { Target } from "lucide-react";
+import { EmptyState } from "@/client/components/EmptyState";
 import {
   AppDataTable,
   useAppTable,
 } from "@/client/components/table/AppDataTable";
-import { SortableHeader } from "@/client/components/table/SortableHeader";
-import { nullableNumberSort } from "@/client/features/audit/results/AuditResultsTableFilterLogic";
 import { TableExportMenu } from "@/client/components/table/TableBulkActionBar";
+import { buildOpportunityColumns } from "@/client/features/opportunities/OpportunityColumns";
+import { OpportunityDetail } from "@/client/features/opportunities/OpportunityDetail";
+import type { OpportunityRow } from "@/client/features/opportunities/opportunityLogic";
 import { buildCsv, downloadCsv, type CsvValue } from "@/client/lib/csv";
 import { exportTableToSheets } from "@/client/lib/exportToSheets";
-import {
-  formatDecimal,
-  formatNumber,
-  formatPercent,
-} from "@/client/lib/format";
-import type { OpportunityReport } from "@/client/features/opportunities/report";
-import { Target } from "lucide-react";
-import { EmptyState } from "@/client/components/EmptyState";
-import { Copy } from "lucide-react";
-import { RowActions } from "@/client/components/table/RowActions";
-import { getSafeExternalUrl } from "@/client/components/table/url";
-
-/*
- * The three parts a score is made of, at the weights that make it.
- *
- * The page already explains in prose that the score is 50% demand, 30%
- * business value and 20% reachability. It never showed which of the three a
- * given row's number came from -- and "67, all of it demand" and "67, the
- * page already earns" argue for different weeks of work. The widths are the
- * weighted contributions, so the filled part of the bar is literally the
- * score out of 100.
- */
-const SCORE_PARTS = [
-  { key: "demand", label: "Talep", weight: 0.5, opacity: 1 },
-  { key: "businessValue", label: "İş değeri", weight: 0.3, opacity: 0.62 },
-  { key: "reachability", label: "Yakınlık", weight: 0.2, opacity: 0.34 },
-] as const;
-
-function ScoreBadge({
-  score,
-  components,
-}: {
-  score: number | null | undefined;
-  components?: OpportunityRow["scoreComponents"];
-}) {
-  if (score == null) {
-    return <span className="text-subtle">-</span>;
-  }
-  // One threshold, not a rainbow: above 60 is worth planning work around.
-  const strong = score >= 60;
-
-  const parts = components
-    ? SCORE_PARTS.map((part) => ({
-        ...part,
-        // Already 0-1 from the service; the weight turns it into points.
-        points: (components[part.key] ?? 0) * part.weight * 100,
-      }))
-    : null;
-
-  return (
-    <div className="flex flex-col items-end gap-1">
-      <span
-        className={`badge badge-sm tabular-nums ${
-          strong
-            ? "border-success/30 bg-success/10 text-[var(--ink-success)]"
-            : "border-base-300 bg-base-200 text-muted"
-        }`}
-      >
-        {score}
-      </span>
-      {parts ? (
-        <>
-          {/*
-           * The breakdown was a `title` on an `aria-hidden` element, so it
-           * reached neither keyboard nor screen reader -- the split this
-           * component exists to expose ("67, all of it demand" and "67, the
-           * page already earns" argue for different weeks) was available on
-           * mouse hover only. The bar stays hidden; the sentence gets a
-           * reachable home beside it.
-           */}
-          <span className="sr-only">
-            {parts
-              .map(
-                (part) =>
-                  `${part.label}: ${formatDecimal(part.points)} / ${part.weight * 100}`,
-              )
-              .join(", ")}
-          </span>
-          <span
-            className="flex h-1 w-16 overflow-hidden rounded-full bg-base-200"
-            title={parts
-              .map(
-                (part) =>
-                  `${part.label}: ${formatDecimal(part.points)} / ${part.weight * 100}`,
-              )
-              .join(" · ")}
-            aria-hidden
-          >
-            {parts.map((part) => (
-              <span
-                key={part.key}
-                className="h-full bg-primary"
-                style={{ width: `${part.points}%`, opacity: part.opacity }}
-              />
-            ))}
-          </span>
-        </>
-      ) : null}
-    </div>
-  );
-}
-
-function pathOf(url: string): string {
-  try {
-    return new URL(url).pathname || "/";
-  } catch {
-    return url;
-  }
-}
-
-type OpportunityRow = OpportunityReport["rows"][number];
-const opportunityHelper = createColumnHelper<OpportunityRow>();
+import { formatNumber } from "@/client/lib/format";
 
 const OPPORTUNITY_HEADERS = [
   "Puan",
@@ -130,30 +19,32 @@ const OPPORTUNITY_HEADERS = [
   "Sıra",
   "Gösterim",
   "Tıklama",
-  "TO",
+  "Tıklama oranı",
   "Oturum",
 ] as const;
 
 /**
  * The ranked worklist, as a real table.
  *
- * It used to be a raw `<table>`: no sortable headers, no way into a row, no
- * export. Its nearest neighbour -- the striking-distance table, same Search
- * Console shape -- sorts, paginates, selects and saves, so an operator who
- * wanted "the ones with the most impressions" or "the closest to page one"
- * had to re-read fifty rows by eye on the one screen whose whole job is to
- * rank them.
+ * A row opens the detail panel: the numbers alone never said why a page was
+ * on the list or what to do about it. The button in the page cell is the
+ * keyboard route; a click anywhere else on the row is the same thing for a
+ * mouse, unless it landed on a control that has its own job.
  */
 export function OpportunitiesTable({
   projectId,
   rows,
+  onReset,
 }: {
   projectId: string;
   rows: OpportunityRow[];
+  /** Clears the filters that emptied the table, when there are any. */
+  onReset?: () => void;
 }) {
+  const [openPage, setOpenPage] = useState<string | null>(null);
   const columns = useMemo(
-    () => buildOpportunityColumns(projectId),
-    [projectId],
+    () => buildOpportunityColumns((row) => setOpenPage(row.page)),
+    [],
   );
   const table = useAppTable({
     data: rows,
@@ -162,6 +53,8 @@ export function OpportunitiesTable({
     // Score is the point of the screen, so it stays the default order.
     initialState: { sorting: [{ id: "score", desc: true }] },
   });
+
+  const opened = rows.find((row) => row.page === openPage) ?? null;
 
   const csvRows = rows.map((row): CsvValue[] => [
     row.score,
@@ -175,7 +68,10 @@ export function OpportunitiesTable({
 
   return (
     <div className="overflow-hidden rounded-box border border-base-300 bg-base-100">
-      <div className="flex items-center justify-end border-b border-base-300 px-3 py-2">
+      <div className="flex items-center justify-between gap-3 border-b border-base-300 px-3 py-2">
+        <p className="text-xs text-muted">
+          Ayrıntı ve öneriler için bir satıra tıklayın.
+        </p>
         <TableExportMenu
           buttonClassName="btn btn-ghost btn-sm gap-1"
           actions={[
@@ -203,179 +99,41 @@ export function OpportunitiesTable({
         table={table}
         className="table table-sm"
         wrapperClassName="overflow-x-auto"
+        getRowProps={(row) => ({
+          className: "cursor-pointer hover:bg-base-200/60",
+          onClick: (event: MouseEvent<HTMLTableRowElement>) => {
+            if (
+              event.target instanceof Element &&
+              event.target.closest("a, button, [role=menu]")
+            ) {
+              return;
+            }
+            setOpenPage(row.original.page);
+          },
+        })}
         empty={
-          /* Reachable in normal use: pick a position band with rows, then
-             change the window. "Gösterilecek satır yok." with no reason and
-             no way back was the whole of it. */
           <EmptyState
             compact
             icon={Target}
-            title="Gösterilecek satır yok"
-            description="Seçili sıra bandında bu dönem için fırsat çıkmadı. Bandı kaldırmayı ya da dönemi genişletmeyi deneyin."
+            title="Bu süzgece uyan sayfa yok"
+            description="Seçtiğiniz tür ya da hızlı süzgeç bu dönemde hiçbir sayfayla eşleşmedi. Süzgeçleri kaldırın ya da dönemi genişletin."
+            action={
+              onReset ? (
+                <button type="button" className="btn btn-sm" onClick={onReset}>
+                  Süzgeçleri kaldır
+                </button>
+              ) : undefined
+            }
           />
         }
       />
+      {opened ? (
+        <OpportunityDetail
+          row={opened}
+          projectId={projectId}
+          onClose={() => setOpenPage(null)}
+        />
+      ) : null}
     </div>
   );
-}
-
-function buildOpportunityColumns(
-  projectId: string,
-): ColumnDef<OpportunityRow>[] {
-  const right = {
-    headerClassName: "text-right",
-    cellClassName: "text-right tabular-nums",
-  } as const;
-  return [
-    opportunityHelper.accessor("score", {
-      header: ({ column }) => (
-        <SortableHeader column={column} label="Puan" align="right" />
-      ),
-      cell: ({ getValue, row }) => (
-        <ScoreBadge
-          score={getValue()}
-          components={row.original.scoreComponents}
-        />
-      ),
-      meta: right,
-    }),
-    opportunityHelper.accessor("page", {
-      header: ({ column }) => <SortableHeader column={column} label="Sayfa" />,
-      cell: ({ getValue }) => {
-        const url = getValue();
-        return (
-          <span className="flex min-w-0 items-center gap-2">
-            {/* Two exits, because the question splits: what does this page
-                look like, and what is it ranking for. Neither existed. */}
-            <Link
-              to="/p/$projectId/search-performance"
-              params={{ projectId }}
-              search={{ tab: "pages" as const }}
-              className="link link-hover min-w-0 truncate"
-              title={url}
-            >
-              {pathOf(url)}
-            </Link>
-            <a
-              href={url}
-              target="_blank"
-              rel="noreferrer noopener"
-              className="shrink-0 text-muted hover:text-base-content"
-              aria-label="Sayfayı yeni sekmede aç"
-            >
-              <ExternalLink className="size-3.5" />
-            </a>
-          </span>
-        );
-      },
-      meta: { cellClassName: "max-w-md" },
-    }),
-    opportunityHelper.accessor("position", {
-      header: ({ column }) => (
-        <SortableHeader column={column} label="Sıra" align="right" />
-      ),
-      cell: ({ getValue }) => formatDecimal(getValue()),
-      meta: right,
-    }),
-    opportunityHelper.accessor("impressions", {
-      header: ({ column }) => (
-        <SortableHeader column={column} label="Gösterim" align="right" />
-      ),
-      cell: ({ getValue }) => formatNumber(getValue()),
-      meta: right,
-    }),
-    opportunityHelper.accessor("clicks", {
-      header: ({ column }) => (
-        <SortableHeader column={column} label="Tıklama" align="right" />
-      ),
-      cell: ({ getValue }) => formatNumber(getValue()),
-      meta: right,
-    }),
-    opportunityHelper.accessor("ctr", {
-      header: ({ column }) => (
-        <SortableHeader
-          column={column}
-          label="TO"
-          align="right"
-          helpText="Tıklama oranı. Altındaki fark, bu sayfanın sizin aynı sıradaki diğer sayfalarınıza göre nerede durduğunu söyler."
-        />
-      ),
-      /*
-       * The gap under the rate, which is the number that makes "Tıklanmıyor"
-       * a finding rather than a label. Measured against this site's own
-       * median for the position band, not a published CTR curve: a brand
-       * term at position 3 behaves nothing like a comparison term at
-       * position 3, so somebody else's average is not a bar.
-       */
-      cell: ({ getValue, row }) => {
-        const gap = row.original.ctrGap;
-        return (
-          <span className="block">
-            {formatPercent(getValue())}
-            {gap !== null && Math.abs(gap) >= 0.005 ? (
-              <span
-                className={`block text-xs ${
-                  gap < 0
-                    ? "text-[var(--ink-error)]"
-                    : "text-[var(--ink-success)]"
-                }`}
-              >
-                {gap < 0 ? "▼" : "▲"} {formatPercent(Math.abs(gap))}
-              </span>
-            ) : null}
-          </span>
-        );
-      },
-      meta: right,
-    }),
-    /*
-     * Row actions. The page cell already carried two exits, but copying the
-     * address -- the thing an operator does before pasting it into a brief
-     * or a ticket -- had no home on this screen at all.
-     */
-    opportunityHelper.display({
-      id: "actions",
-      header: () => null,
-      cell: ({ row }) => {
-        const url = row.original.page;
-        return (
-          <RowActions
-            label={`${pathOf(url)} için işlemler`}
-            actions={[
-              {
-                label: "Adresi kopyala",
-                icon: Copy,
-                onSelect: () => void navigator.clipboard.writeText(url),
-              },
-              {
-                label: "Sayfayı yeni sekmede aç",
-                icon: ExternalLink,
-                onSelect: () => {
-                  const safe = getSafeExternalUrl(url);
-                  if (safe) window.open(safe, "_blank", "noopener");
-                },
-              },
-            ]}
-          />
-        );
-      },
-      meta: right,
-    }),
-    opportunityHelper.accessor((row) => row.ga4?.sessions ?? null, {
-      id: "sessions",
-      header: ({ column }) => (
-        <SortableHeader column={column} label="Oturum" align="right" />
-      ),
-      cell: ({ getValue }) => {
-        const value = getValue();
-        return value === null ? (
-          <span className="text-subtle">-</span>
-        ) : (
-          formatNumber(value)
-        );
-      },
-      sortingFn: nullableNumberSort,
-      meta: right,
-    }),
-  ];
 }

@@ -11,6 +11,7 @@ export const Route = createFileRoute("/privacy")({
           "BadSEO is a static test site for the seotracker audit crawler. It runs no analytics, sets no cookies, and collects nothing from visitors.",
       },
     ],
+    links: [{ rel: "canonical", href: "/privacy" }],
   }),
   component: PrivacyPage,
 });

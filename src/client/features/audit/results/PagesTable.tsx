@@ -1,23 +1,12 @@
-import { formatCount, formatDuration } from "@/client/lib/format";
+import { X } from "lucide-react";
 import { TablePagination } from "@/client/components/table/TablePagination";
 import { SEARCH_PERFORMANCE_PAGE_SIZES } from "@/types/schemas/search-performance";
 import { useMemo, useState } from "react";
-import {
-  createColumnHelper,
-  type ColumnDef,
-  type SortingState,
-} from "@tanstack/react-table";
+import type { SortingState } from "@tanstack/react-table";
 import {
   AppDataTable,
   useAppTable,
 } from "@/client/components/table/AppDataTable";
-import { UrlCell } from "@/client/components/table/UrlCell";
-import { SortableHeader } from "@/client/components/table/SortableHeader";
-import {
-  extractHostname,
-  extractPathname,
-  HttpStatusBadge,
-} from "@/client/features/audit/shared";
 import type { AuditResultsData } from "@/client/features/audit/results/types";
 import {
   QuickFilters,
@@ -31,261 +20,13 @@ import {
 } from "@/client/features/audit/results/AuditResultsTableFilters";
 import {
   EMPTY_PAGES_FILTERS,
-  nullableNumberSort,
-  nullableStringSort,
-  type PageRow,
   type PagesFilters,
 } from "@/client/features/audit/results/AuditResultsTableFilterLogic";
-
-const pageColumnHelper = createColumnHelper<PageRow>();
-
-/**
- * Path shown in the URL/redirect cells. Redirect sources on another host
- * (e.g. the apex domain 301ing to www) would otherwise render identically
- * to their target, so include the host whenever it differs from the
- * site's canonical host.
- */
-function displayPath(url: string, canonicalHost: string): string {
-  const host = extractHostname(url);
-  const path = extractPathname(url);
-  return host === canonicalHost ? path : host + path;
-}
-
-/**
- * The host most of the site's real (2xx) pages live on. The start URL's host
- * is only a fallback: audits often start from the apex domain of a site that
- * canonicalizes to www, and prefixing every row with the host is exactly the
- * noise this display is meant to avoid.
- */
-function predominantHost(pages: PageRow[], startUrl: string): string {
-  const counts = new Map<string, number>();
-  for (const page of pages) {
-    if (page.statusCode === null || page.statusCode >= 300) continue;
-    const host = extractHostname(page.url);
-    counts.set(host, (counts.get(host) ?? 0) + 1);
-  }
-  let best = extractHostname(startUrl);
-  let bestCount = 0;
-  for (const [host, count] of counts) {
-    if (count > bestCount) {
-      best = host;
-      bestCount = count;
-    }
-  }
-  return best;
-}
-
-function isRedirect(row: PageRow): boolean {
-  return (
-    row.statusCode !== null && row.statusCode >= 300 && row.statusCode < 400
-  );
-}
-
-/** Redirects and blocked/errored fetches have no analyzed content — their
- * zero H1/word/image counts are an artifact, not a finding. */
-function hasAnalyzedContent(row: PageRow): boolean {
-  return row.fetchClass === "ok" && !isRedirect(row);
-}
-
-const EmptyCell = () => <span className="text-xs text-muted">-</span>;
-
-function buildPagesColumns({
-  canonicalHost,
-  missingTitlePageIds,
-  issueCountByPageId,
-  onShowIssues,
-}: {
-  canonicalHost: string;
-  missingTitlePageIds: Set<string>;
-  /** Findings per page, so a row can say how much is wrong with it. */
-  issueCountByPageId: Map<string, number>;
-  /** Opens the issues tab filtered to this page. */
-  onShowIssues: (url: string) => void;
-}): ColumnDef<PageRow>[] {
-  return [
-    pageColumnHelper.accessor("url", {
-      header: ({ column }) => <SortableHeader column={column} label="URL" />,
-      cell: ({ getValue }) => (
-        <UrlCell
-          url={getValue()}
-          label={displayPath(getValue(), canonicalHost)}
-          className="text-xs"
-        />
-      ),
-      meta: { cellClassName: "max-w-[240px]" },
-    }),
-    pageColumnHelper.accessor("statusCode", {
-      header: ({ column }) => <SortableHeader column={column} label="Durum" />,
-      cell: ({ getValue }) => <HttpStatusBadge code={getValue()} />,
-      sortingFn: nullableNumberSort,
-    }),
-    /*
-     * The row's only exit used to be the live URL in a new tab. A page with
-     * findings could not reach them, even though both sides key off the
-     * same id -- so "which of these 212 pages is broken, and how" took a
-     * tab switch and a manual scan.
-     */
-    pageColumnHelper.display({
-      id: "issues",
-      header: "Sorun",
-      cell: ({ row }) => {
-        const count = issueCountByPageId.get(row.original.id) ?? 0;
-        if (count === 0) return <EmptyCell />;
-        return (
-          <button
-            type="button"
-            onClick={() => onShowIssues(row.original.url)}
-            className="link link-hover text-xs text-[var(--ink-warning)]"
-          >
-            {formatCount(count)}
-          </button>
-        );
-      },
-    }),
-    pageColumnHelper.accessor("title", {
-      header: ({ column }) => <SortableHeader column={column} label="Başlık" />,
-      cell: ({ getValue, row }) => {
-        if (isRedirect(row.original)) {
-          const target = row.original.redirectUrl;
-          return (
-            <span className="text-xs text-muted">
-              → {target ? displayPath(target, canonicalHost) : "redirect"}
-            </span>
-          );
-        }
-        const title = getValue();
-        if (title) {
-          return <span className="break-words">{title}</span>;
-        }
-        // Red only when the engine flagged it — a 200 that isn't an HTML
-        // document (robots.txt, security.txt) legitimately has no title.
-        return missingTitlePageIds.has(row.original.id) ? (
-          <span className="text-xs text-[var(--ink-error)]">eksik</span>
-        ) : (
-          <EmptyCell />
-        );
-      },
-      sortingFn: nullableStringSort,
-      meta: { cellClassName: "max-w-[360px]" },
-    }),
-    pageColumnHelper.accessor("h1Count", {
-      header: ({ column }) => <SortableHeader column={column} label="H1" />,
-      cell: ({ getValue, row }) =>
-        hasAnalyzedContent(row.original) ? getValue() : <EmptyCell />,
-    }),
-    pageColumnHelper.accessor("wordCount", {
-      header: ({ column }) => <SortableHeader column={column} label="Kelime" />,
-      // Through the formatter, like every other count in this table: a
-      // 3.400-word page was rendering as "3400" next to columns that group.
-      cell: ({ getValue, row }) =>
-        hasAnalyzedContent(row.original) ? (
-          formatCount(getValue())
-        ) : (
-          <EmptyCell />
-        ),
-    }),
-    pageColumnHelper.display({
-      id: "images",
-      header: ({ column }) => <SortableHeader column={column} label="Görsel" />,
-      cell: ({ row }) => {
-        if (!hasAnalyzedContent(row.original)) return <EmptyCell />;
-        return row.original.imagesMissingAlt > 0 ? (
-          <span className="text-[var(--ink-warning)]">
-            {row.original.imagesMissingAlt}/{row.original.imagesTotal}
-          </span>
-        ) : (
-          row.original.imagesTotal
-        );
-      },
-      enableSorting: true,
-      sortingFn: (left, right) =>
-        left.original.imagesMissingAlt - right.original.imagesMissingAlt ||
-        left.original.imagesTotal - right.original.imagesTotal,
-    }),
-    /*
-     * Both link counts, written by every crawl since the crawler was built
-     * and shown on no screen. Internal is the one that matters for ranking
-     * -- a page nothing links to is a page Google reaches last and weights
-     * least -- so it leads, and the external count sits behind it as the
-     * outbound half of the same sentence.
-     */
-    pageColumnHelper.accessor("internalLinkCount", {
-      header: ({ column }) => (
-        <SortableHeader
-          column={column}
-          label="Bağlantı"
-          helpText="Bu sayfadan çıkan bağlantılar: önce site içi, sonra dışarı. Site içi bağlantısı olmayan bir sayfa, kendi sitesinin geri kalanına yol açmıyor demektir."
-        />
-      ),
-      cell: ({ row }) => {
-        if (!hasAnalyzedContent(row.original)) return <EmptyCell />;
-        return (
-          <span className="whitespace-nowrap text-xs">
-            {formatCount(row.original.internalLinkCount)}
-            <span className="text-subtle"> · </span>
-            <span className="text-muted">
-              {formatCount(row.original.externalLinkCount)}
-            </span>
-          </span>
-        );
-      },
-      sortingFn: (left, right) =>
-        left.original.internalLinkCount - right.original.internalLinkCount,
-    }),
-    pageColumnHelper.accessor("responseTimeMs", {
-      header: ({ column }) => <SortableHeader column={column} label="Hız" />,
-      cell: ({ getValue }) => {
-        const value = getValue();
-        return value ? (
-          <span className="text-xs">{formatDuration(value)}</span>
-        ) : (
-          <EmptyCell />
-        );
-      },
-      sortingFn: nullableNumberSort,
-    }),
-    /*
-     * Three columns the crawler has always filled and no screen showed.
-     *
-     * They are the questions an operator arrives with on a site this size:
-     * which pages is Google allowed to index, how deep is this one buried,
-     * and did the sitemap forget it. Only depth is nullable, and a null
-     * there means nothing linked to the page -- not depth zero.
-     */
-    pageColumnHelper.accessor("isIndexable", {
-      header: ({ column }) => <SortableHeader column={column} label="Dizin" />,
-      cell: ({ getValue }) =>
-        getValue() ? (
-          <span className="text-xs text-muted">Evet</span>
-        ) : (
-          <span className="text-xs text-[var(--ink-warning)]">noindex</span>
-        ),
-    }),
-    pageColumnHelper.accessor("crawlDepth", {
-      header: ({ column }) => (
-        <SortableHeader column={column} label="Derinlik" />
-      ),
-      cell: ({ getValue }) => {
-        const value = getValue();
-        return value === null ? (
-          <EmptyCell />
-        ) : (
-          <span className="text-xs">{formatCount(value)}</span>
-        );
-      },
-      sortingFn: nullableNumberSort,
-    }),
-    pageColumnHelper.accessor("inSitemap", {
-      header: ({ column }) => <SortableHeader column={column} label="Harita" />,
-      cell: ({ getValue }) =>
-        getValue() ? (
-          <span className="text-xs text-muted">Var</span>
-        ) : (
-          <span className="text-xs text-subtle">Yok</span>
-        ),
-    }),
-  ];
-}
+import {
+  buildPagesColumns,
+  predominantHost,
+} from "@/client/features/audit/results/pagesColumns";
+import { PagesSummary } from "@/client/features/audit/results/PagesSummary";
 
 export function PagesTable({
   pages,
@@ -295,6 +36,8 @@ export function PagesTable({
   onFiltersChange,
   filteredPages,
   onShowIssues,
+  scopeLabel,
+  onClearScope,
 }: {
   pages: AuditResultsData["pages"];
   startUrl: string;
@@ -311,6 +54,9 @@ export function PagesTable({
   onFiltersChange: (filters: PagesFilters) => void;
   filteredPages: AuditResultsData["pages"];
   onShowIssues: (url: string) => void;
+  /** Set when the table was narrowed to one problem's pages from Sorunlar. */
+  scopeLabel?: string;
+  onClearScope: () => void;
 }) {
   const [showFilters, setShowFilters] = useState(false);
   // URL order reads as a site inventory; status-first would open the table
@@ -363,6 +109,25 @@ export function PagesTable({
 
   return (
     <div className="space-y-3">
+      <PagesSummary
+        pages={pages}
+        filters={filters}
+        onChange={onFiltersChange}
+      />
+      {scopeLabel ? (
+        <div className="flex flex-wrap items-center gap-2 text-xs">
+          <span className="text-muted">Gösterilen:</span>
+          <button
+            type="button"
+            onClick={onClearScope}
+            aria-label={`${scopeLabel} seçimini kaldır`}
+            className="inline-flex items-center gap-1 rounded-full border border-primary bg-primary/10 px-2.5 py-1 text-primary transition-colors hover:bg-primary/15"
+          >
+            {scopeLabel} sorunu olan sayfalar
+            <X aria-hidden className="size-3" />
+          </button>
+        </div>
+      ) : null}
       {/*
        * The four questions that get asked every time, one click each. The
        * full panel stays for the unusual ones; these write into the same

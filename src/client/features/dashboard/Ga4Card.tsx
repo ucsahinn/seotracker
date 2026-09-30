@@ -107,14 +107,25 @@ export function Ga4Card({
           : "Google Analytics"
       }
       action={
-        <Link
-          to="/p/$projectId/settings"
-          params={{ projectId }}
-          hash="google-analytics"
-          className={moreDetailsClass}
-        >
-          Yönet
-        </Link>
+        <div className="flex items-center gap-1">
+          {report?.connected ? (
+            <Link
+              to="/p/$projectId/analytics"
+              params={{ projectId }}
+              className={moreDetailsClass}
+            >
+              Raporlar
+            </Link>
+          ) : null}
+          <Link
+            to="/p/$projectId/settings"
+            params={{ projectId }}
+            hash="google-analytics"
+            className={moreDetailsClass}
+          >
+            Yönet
+          </Link>
+        </div>
       }
     >
       {reportQuery.isPending ? (
@@ -156,7 +167,7 @@ export function Ga4Card({
                 )}
               />
               <Stat
-                label="Etkin kullanıcı"
+                label="Aktif kullanıcı"
                 value={statValue(report.totals.activeUsers, formatCount)}
                 sub={statDelta(
                   report.totals.activeUsers,
@@ -168,7 +179,7 @@ export function Ga4Card({
                 value={statValue(report.totals.engagementRate, formatPercent)}
               />
               <Stat
-                label="Önemli olay"
+                label="Anahtar olay"
                 value={statValue(report.totals.keyEvents, formatCount)}
                 sub={statDelta(
                   report.totals.keyEvents,

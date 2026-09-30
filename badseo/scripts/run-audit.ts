@@ -429,6 +429,10 @@ async function main() {
 
   const byUrl = new Map<string, Set<IssueId>>();
   for (const issue of detected) {
+    /* Every page here is plain http, so `not-https` would fire on all of
+       them. It is a fact about the fixture server, not about any fixture;
+       the unit tests own that check. */
+    if (issue.issueType === "not-https") continue;
     const set = byUrl.get(issue.pageUrl) ?? new Set<IssueId>();
     set.add(issue.issueType);
     byUrl.set(issue.pageUrl, set);
@@ -635,9 +639,11 @@ async function main() {
   /*
    * Mixed content is an `http:` subresource on an `https:` page, and the
    * fixture site is served over plain http on localhost -- so no page here
-   * can be the secure half of that pair.
+   * can be the secure half of that pair. `not-https` is the mirror image:
+   * every page here IS plain http, so it is skipped when results are
+   * grouped above and no page can demonstrate it.
    */
-  const NEEDS_HTTPS: IssueId[] = ["mixed-content-resource"];
+  const NEEDS_HTTPS: IssueId[] = ["mixed-content-resource", "not-https"];
   const OUT_OF_REACH = [
     ...WORKFLOW_ONLY,
     ...NEEDS_SEARCH_CONSOLE,

@@ -421,6 +421,13 @@
       "when": 1790680488227,
       "tag": "0059_googlebot_meta",
       "breakpoints": true
+    },
+    {
+      "idx": 60,
+      "version": "6",
+      "when": 1790766888488,
+      "tag": "0060_html_lang",
+      "breakpoints": true
     }
   ]
 }

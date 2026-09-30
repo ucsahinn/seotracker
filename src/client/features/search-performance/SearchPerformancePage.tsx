@@ -22,58 +22,38 @@ import {
   exportDimensionRows,
   exportStriking,
   StrikingDistanceTable,
-  TotalsCards,
   type ExportTarget,
   type Tab,
 } from "@/client/features/search-performance/SearchPerformanceParts";
+import { TotalsCards } from "@/client/features/search-performance/TotalsCards";
+import { SearchFilters } from "@/client/features/search-performance/SearchFilters";
 import { CannibalizationTable } from "@/client/features/search-performance/CannibalizationTable";
+import type { QuickFilterId } from "@/client/features/search-performance/quickFilters";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import { saveKeywords } from "@/serverFunctions/savedKeywords";
 import { describeWindow } from "@/shared/dataFreshness";
-import { formatCountry, formatDate } from "@/client/lib/format";
+import { formatDate } from "@/client/lib/format";
 import {
   exportSearchPerformanceTable,
   getSearchPerformanceReport,
   getSearchPerformanceTable,
 } from "@/serverFunctions/searchPerformance";
 import {
-  GSC_DEVICES,
-  SEARCH_PERFORMANCE_RANGES,
   type SearchPerformanceDateRange,
   type SearchPerformanceDevice,
   type SearchPerformanceTableDimension,
 } from "@/types/schemas/search-performance";
 
-const RANGE_LABELS: Record<SearchPerformanceDateRange, string> = {
-  last_7_days: "Son 7 gün",
-  last_28_days: "Son 28 gün",
-  last_3_months: "Son 3 ay",
+/** What each tab is for, in one plain sentence, shown above its panel. */
+const TAB_HINTS: Record<Tab, string> = {
+  striking:
+    "Sıralaması 5 ile 20 arasında olan sorgular. Küçük bir iyileştirmeyle ilk sayfaya çıkabilecek fırsatlar, gösterime göre sıralı.",
+  queries:
+    "İnsanların sizi hangi aramalarla bulduğu; her sorgunun tıklama, gösterim ve ortalama sırasıyla.",
+  pages: "Google'da en çok görünen ve tıklanan sayfalarınız.",
+  cannibalization:
+    "Aynı arama için birden fazla sayfanızın birbiriyle yarıştığı yerler.",
 };
-const RANGE_OPTIONS = SEARCH_PERFORMANCE_RANGES.map((value) => ({
-  value,
-  label: RANGE_LABELS[value],
-}));
-
-const DEVICE_LABELS: Record<SearchPerformanceDevice, string> = {
-  DESKTOP: "Masaüstü",
-  MOBILE: "Mobil",
-  TABLET: "Tablet",
-};
-const DEVICE_OPTIONS = GSC_DEVICES.map((value) => ({
-  value,
-  label: DEVICE_LABELS[value],
-}));
-
-// Sentinel for "no filter" in the selects; never sent to the server.
-const ALL = "ALL";
-
-function isDateRange(value: string): value is SearchPerformanceDateRange {
-  return SEARCH_PERFORMANCE_RANGES.some((option) => option === value);
-}
-
-function isDevice(value: string): value is SearchPerformanceDevice {
-  return GSC_DEVICES.some((option) => option === value);
-}
 
 function tabDimension(tab: Tab): SearchPerformanceTableDimension {
   return tab === "pages" ? "page" : "query";
@@ -129,6 +109,7 @@ export function SearchPerformancePage({
   device,
   country,
   query,
+  quickFilter,
   onViewChange,
 }: {
   projectId: string;
@@ -143,12 +124,15 @@ export function SearchPerformancePage({
   country?: string;
   /** Free-text narrowing of the dimension table, from the URL. */
   query: string;
+  /** Chip filter on the queries and pages tables, from the URL. */
+  quickFilter?: QuickFilterId;
   onViewChange: (next: {
     tab?: Tab;
     range?: SearchPerformanceDateRange;
     device?: SearchPerformanceDevice;
     country?: string;
     q?: string;
+    f?: QuickFilterId;
   }) => void;
 }) {
   const queryClient = useQueryClient();
@@ -274,7 +258,11 @@ export function SearchPerformancePage({
           </p>
           <TotalsCards report={report} />
           <SearchTrendPanel daily={report.daily} />
-          <CountryBreakdown countries={report.countries} />
+          <CountryBreakdown
+            countries={report.countries}
+            selected={country}
+            onSelect={(next) => onViewChange({ country: next })}
+          />
           <div className="overflow-hidden rounded-box border border-base-300 bg-base-100">
             <div className="flex flex-col gap-3 border-b border-base-300 px-4 py-3 lg:flex-row lg:items-center lg:justify-between">
               <Tabs
@@ -285,72 +273,24 @@ export function SearchPerformancePage({
                 items={[
                   {
                     id: "striking",
-                    label: `Eşiğe yakın (${report.strikingDistance.length})`,
+                    label: `İlk sayfaya yakın (${report.strikingDistance.length})`,
                   },
                   { id: "queries", label: "Sorgular" },
                   { id: "pages", label: "Sayfalar" },
-                  { id: "cannibalization", label: "Çakışmalar" },
+                  { id: "cannibalization", label: "Sayfa çakışmaları" },
                 ]}
               />
               <div className="flex flex-wrap items-center gap-2">
                 {reportQuery.isFetching && !reportQuery.isPending ? (
                   <Loader2 className="size-4 animate-spin text-muted" />
                 ) : null}
-                <select
-                  className="select select-bordered select-sm w-36"
-                  value={device ?? ALL}
-                  onChange={(event) =>
-                    onViewChange({
-                      device: isDevice(event.target.value)
-                        ? event.target.value
-                        : undefined,
-                    })
-                  }
-                  aria-label="Cihaz filtresi"
-                >
-                  <option value={ALL}>Tüm cihazlar</option>
-                  {DEVICE_OPTIONS.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  className="select select-bordered select-sm w-36"
-                  value={country ?? ALL}
-                  onChange={(event) =>
-                    onViewChange({
-                      country:
-                        event.target.value === ALL
-                          ? undefined
-                          : event.target.value,
-                    })
-                  }
-                  aria-label="Ülke filtresi"
-                >
-                  <option value={ALL}>Tüm ülkeler</option>
-                  {report.countries.map((row) => (
-                    <option key={row.key} value={row.key}>
-                      {formatCountry(row.key)}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  className="select select-bordered select-sm w-36"
-                  value={range}
-                  onChange={(event) => {
-                    if (isDateRange(event.target.value)) {
-                      onViewChange({ range: event.target.value });
-                    }
-                  }}
-                  aria-label="Tarih aralığı"
-                >
-                  {RANGE_OPTIONS.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
+                <SearchFilters
+                  range={range}
+                  device={device}
+                  country={country}
+                  countries={report.countries}
+                  onViewChange={onViewChange}
+                />
                 {/* Cannibalization has no export of its own, and
                     `tabDimension` answers "query" for it -- so the button
                     downloaded a query report while the screen showed
@@ -374,6 +314,10 @@ export function SearchPerformancePage({
                 )}
               </div>
             </div>
+
+            <p className="border-b border-base-300 px-4 py-2.5 text-sm text-muted">
+              {TAB_HINTS[tab]}
+            </p>
 
             <TabPanel group="search-performance" value={tab}>
               {tab === "striking" ? (
@@ -423,6 +367,8 @@ export function SearchPerformancePage({
                       onSearchChange={(next) =>
                         onViewChange({ q: next || undefined })
                       }
+                      quickFilter={quickFilter}
+                      onQuickFilterChange={(next) => onViewChange({ f: next })}
                     />
                   </div>
                 </>

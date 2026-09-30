@@ -23,7 +23,7 @@ const projectNavItems = [
   },
   {
     to: "/p/$projectId/rankings" as const,
-    label: "Sıralama Takibi",
+    label: "Sıralama takibi",
     icon: TrendingUp,
   },
   {
@@ -33,7 +33,7 @@ const projectNavItems = [
   },
   {
     to: "/p/$projectId/saved" as const,
-    label: "Kayıtlı Kelimeler",
+    label: "Kayıtlı kelimeler",
     icon: Bookmark,
   },
   {
@@ -43,12 +43,12 @@ const projectNavItems = [
   },
   {
     to: "/p/$projectId/search-performance" as const,
-    label: "Arama Performansı",
+    label: "Arama performansı",
     icon: GoogleGlyphMuted,
   },
   {
     to: "/p/$projectId/audit" as const,
-    label: "Site Denetimi",
+    label: "Site denetimi",
     icon: ClipboardCheck,
   },
   {
@@ -58,7 +58,7 @@ const projectNavItems = [
   },
   {
     to: "/p/$projectId/context" as const,
-    label: "Proje Bilgisi",
+    label: "Proje bilgisi",
     icon: Brain,
   },
 ] as const;
@@ -74,7 +74,7 @@ const aiNavItem = linkOptions({
 // Shown only when no project is selected; with a project, Agent setup lives in
 // the "AI" group below.
 export const connectNavGroup = {
-  label: "Yapay Zeka",
+  label: "Yapay zeka",
   items: [aiNavItem],
 };
 
@@ -112,7 +112,7 @@ export function getProjectNavGroups(projectId: string) {
       ],
     },
     {
-      label: "Yapay Zeka",
+      label: "Yapay zeka",
       items: [
         byPath("/p/$projectId/reports"),
         byPath("/p/$projectId/context"),

@@ -45,7 +45,7 @@ kaldırır.
 - **Denetim karşılaştırması** — bir haftadır tarama yapılmadıysa panel hatırlatır
   ve son iki denetimi karşılaştırıp yeni çıkan sorunları ayrı gösterir.
 - **Raporlar** — yapay zeka ajanının yazdığı, kendi kendine yeten HTML belgeler.
-- **MCP sunucusu** — Claude Code gibi ajanlar bu verinin tamamına 32 araç
+- **MCP sunucusu** — Claude Code gibi ajanlar bu verinin tamamına 33 araç
   üzerinden erişir.
 
 ## Ne yapmaz

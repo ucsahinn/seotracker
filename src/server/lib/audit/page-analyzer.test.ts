@@ -140,6 +140,7 @@ function analyzeHtmlWithCheerio(html: string, pageUrl: string): PageAnalysis {
     canonicalCount,
     robotsMeta,
     googlebotMeta,
+    htmlLang: $("html").first().attr("lang")?.trim() || null,
     ogTitle,
     ogDescription,
     ogImage,
@@ -306,6 +307,26 @@ describe("analyzeHtml extraction caps", () => {
     );
     expect(analysis.links).toHaveLength(1_000);
     expect(analysis.images).toHaveLength(1_000);
+  });
+});
+
+describe("html lang", () => {
+  const lang = (html: string) => analyzeHtml(html, PAGE_URL, 200, 0).htmlLang;
+
+  it("reads the declared language, trimmed", () => {
+    expect(
+      lang(`<html lang=" tr-TR "><head></head><body>x</body></html>`),
+    ).toBe("tr-TR");
+  });
+
+  it("is null when the attribute is absent or blank", () => {
+    expect(lang(`<html><head></head><body>x</body></html>`)).toBeNull();
+    expect(lang(`<html lang=""><head></head><body>x</body></html>`)).toBeNull();
+    expect(lang(`<html lang="  "><body>x</body></html>`)).toBeNull();
+  });
+
+  it("ignores a lang on some other element", () => {
+    expect(lang(`<html><body><p lang="fr">x</p></body></html>`)).toBeNull();
   });
 });
 

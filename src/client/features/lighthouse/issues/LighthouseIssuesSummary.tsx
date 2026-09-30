@@ -88,7 +88,7 @@ export function LighthouseIssuesSummary({
             ) : null}
           </div>
           <p className="mt-1 text-xs leading-relaxed text-muted">
-            Yukarıdaki skorlar Google&apos;ın test makinesinde ölçüldü. Bunlar
+            Yukarıdaki puanlar Google&apos;ın test makinesinde ölçüldü. Bunlar
             sitenizi gerçekten ziyaret eden Chrome kullanıcılarından geliyor.
             {usingOrigin
               ? " Bu sayfanın kendi ziyaretçi sayısı Google'ın eşiğinin altında kaldığı için sitenizin tamamının ortalaması gösteriliyor."

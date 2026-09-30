@@ -1,4 +1,4 @@
-import { StatsStrip } from "@/client/features/audit/results/ResultsStats";
+import { ScoreCard } from "@/client/features/audit/results/ScoreCard";
 import type { getAuditIndexCoverage } from "@/serverFunctions/indexCoverage";
 
 type CoverageRow = Awaited<
@@ -18,14 +18,15 @@ import type { AuditTab as ResultsTab } from "@/types/schemas/audit";
 import { IndexCoverageView } from "@/client/features/audit/results/IndexCoverageView";
 import { SitemapStatusPanel } from "@/client/features/gsc/SitemapStatusPanel";
 import { DownloadReportButton } from "@/client/features/audit/results/DownloadReportButton";
-import { ScoreHistogram } from "@/client/features/audit/results/ScoreHistogram";
+import { PerformanceSummary } from "@/client/features/audit/results/PerformanceSummary";
+import { TabIntro } from "@/client/features/audit/results/TabIntro";
 import { ForeignPropertyNotice } from "@/client/features/audit/results/ForeignPropertyNotice";
 import { useAuditPropertyMatch } from "@/client/features/audit/results/useAuditPropertyMatch";
 import {
   EMPTY_PAGES_FILTERS,
   EMPTY_PERFORMANCE_FILTERS,
   filterPages,
-  isLighthouseFailure,
+  scopeToUrls,
   type PagesFilters,
   type PerformanceFilters,
 } from "@/client/features/audit/results/AuditResultsTableFilterLogic";
@@ -67,7 +68,6 @@ export function ResultsView({
   useEffect(() => {
     if (tab !== activeTab) onTabChange(activeTab);
   }, [activeTab, onTabChange, tab]);
-  const stats = useResultStats(pages, lighthouse);
   const property = useAuditPropertyMatch(projectId, audit.startUrl);
   const blockedCount = useMemo(
     () => pages.filter((page) => page.fetchClass === "blocked").length,
@@ -97,6 +97,15 @@ export function ResultsView({
   const [performanceIds, setPerformanceIds] = useState<string[] | null>(null);
   const [issueFocusUrl, setIssueFocusUrl] = useState<string | undefined>();
   /*
+   * Set from a problem card on Sorunlar: the Sayfalar table then shows only
+   * that problem's pages. Kept beside the filters rather than inside them
+   * because it is a list of addresses, not a value the filter panel can edit.
+   */
+  const [pageScope, setPageScope] = useState<{
+    label: string;
+    urls: string[];
+  } | null>(null);
+  /*
    * null until the index tab has been opened once: the query lives inside
    * that tab, so before then the count is unknown, not zero. The tab label
    * says nothing rather than claiming "(0)" for a table nobody has loaded.
@@ -121,8 +130,8 @@ export function ResultsView({
     return lighthouse.filter((row) => keep.has(row.id));
   }, [lighthouse, performanceIds]);
   const filteredPages = useMemo(
-    () => filterPages(pages, pagesFilters),
-    [pages, pagesFilters],
+    () => scopeToUrls(filterPages(pages, pagesFilters), pageScope?.urls),
+    [pages, pagesFilters, pageScope],
   );
   const issuePageCount = useMemo(
     () => new Set(issues.map((issue) => issue.pageUrl)).size,
@@ -167,7 +176,7 @@ export function ResultsView({
         >
           {crawlStopped
             ? "İstenen bekleme süresi denetim süresini aştı, bazı adresler ziyaret edilmedi. Bu rapor eksiktir. "
-            : "429 Too Many Requests döndüren sayfalar denetlenemedi. "}
+            : 'Sunucunun "çok fazla istek" (429) yanıtı verdiği sayfalar denetlenemedi. '}
           İstek sınırı sıfırlandıktan sonra denetimi yeniden çalıştırın, ya da
           site sahibinden "seotracker-audit" tarayıcısına izin vermesini
           isteyin.
@@ -178,14 +187,10 @@ export function ResultsView({
         <DownloadReportButton projectId={projectId} auditId={audit.id} />
       </div>
 
-      <StatsStrip
-        pagesCrawled={audit.pagesCrawled}
-        issuePageCount={issuePageCount}
+      <ScoreCard
         issues={issues}
-        totalLighthouse={lighthouse.length}
-        averageResponseMs={stats.averageResponseMs}
-        lighthouseSummary={stats.lighthouseSummary}
-        onTabChange={onTabChange}
+        pagesCrawled={audit.pagesCrawled}
+        onOpenIssues={() => onTabChange("issues")}
       />
 
       <div className="card bg-base-100 border border-base-300">
@@ -217,6 +222,9 @@ export function ResultsView({
           />
 
           <TabPanel group="audit-results" value={activeTab}>
+            <div className="mb-3">
+              <TabIntro tab={activeTab} />
+            </div>
             {activeTab === "index" && (
               <div className="space-y-4">
                 {/* Two halves of one question. Above: what the site told
@@ -249,6 +257,11 @@ export function ResultsView({
                 issues={issues}
                 focusUrl={issueFocusUrl}
                 onClearFocus={() => setIssueFocusUrl(undefined)}
+                onShowPages={(urls, label) => {
+                  setPagesFilters(EMPTY_PAGES_FILTERS);
+                  setPageScope({ label, urls });
+                  onTabChange("pages");
+                }}
               />
             )}
             {activeTab === "pages" && (
@@ -259,6 +272,8 @@ export function ResultsView({
                 filters={pagesFilters}
                 onFiltersChange={setPagesFilters}
                 filteredPages={filteredPages}
+                scopeLabel={pageScope?.label}
+                onClearScope={() => setPageScope(null)}
                 onShowIssues={(url) => {
                   setIssueFocusUrl(url);
                   onTabChange("issues");
@@ -266,14 +281,12 @@ export function ResultsView({
               />
             )}
             {activeTab === "performance" && lighthouse.length > 0 && (
-              <div className="mb-4 rounded-box border border-base-300 bg-base-100 px-4 py-3">
-                {/* The strip above reports one average, and an average of 62
-                    reads the same whether every page is mediocre or half are
-                    perfect and half are broken. Those are different jobs. */}
-                <p className="mb-2 text-sm font-medium">Hız puanı dağılımı</p>
-                {/* The filtered set, so the distribution follows the table
-                    under it rather than describing a different population. */}
-                <ScoreHistogram rows={filteredLighthouse} />
+              <div className="mb-4">
+                <PerformanceSummary
+                  lighthouse={lighthouse}
+                  filters={performanceFilters}
+                  onChange={setPerformanceFilters}
+                />
               </div>
             )}
             {activeTab === "performance" && lighthouse.length > 0 && (
@@ -313,50 +326,6 @@ function CrawlWarning({
   );
 }
 
-function useResultStats(
-  pages: AuditResultsData["pages"],
-  lighthouse: AuditResultsData["lighthouse"],
-) {
-  const averageResponseMs = useMemo(() => {
-    if (pages.length === 0) return 0;
-    const total = pages.reduce(
-      (sum: number, page: AuditResultsData["pages"][number]) =>
-        sum + (page.responseTimeMs ?? 0),
-      0,
-    );
-    return Math.round(total / pages.length);
-  }, [pages]);
-
-  const lighthouseSummary = useMemo(() => {
-    const failed = lighthouse.filter(
-      (row: AuditResultsData["lighthouse"][number]) => isLighthouseFailure(row),
-    ).length;
-    const successful = lighthouse.filter(
-      (row: AuditResultsData["lighthouse"][number]) =>
-        !isLighthouseFailure(row),
-    );
-    const averageScore = (
-      key: "performanceScore" | "seoScore" | "accessibilityScore",
-    ) => {
-      const values = successful
-        .map((row: AuditResultsData["lighthouse"][number]) => row[key])
-        .filter((value: number | null): value is number => value != null);
-      if (values.length === 0) return null;
-      const total = values.reduce((sum: number, value) => sum + value, 0);
-      return Math.round(total / values.length);
-    };
-
-    return {
-      failed,
-      avgPerformance: averageScore("performanceScore"),
-      avgSeo: averageScore("seoScore"),
-      avgAccessibility: averageScore("accessibilityScore"),
-    };
-  }, [lighthouse]);
-
-  return { averageResponseMs, lighthouseSummary };
-}
-
 function ResultsHeader({
   issueCount,
   issueRowCount,
@@ -388,14 +357,14 @@ function ResultsHeader({
       tab: "index",
       label:
         coverageCount === null
-          ? "İndeksleme"
-          : `İndeksleme (${formatCount(coverageCount)})`,
+          ? "Dizin durumu"
+          : `Dizin durumu (${formatCount(coverageCount)})`,
     },
     ...(hasPerformanceTab
       ? [
           {
             tab: "performance" as const,
-            label: `Performance (${formatCount(lighthouseCount)})`,
+            label: `Hız (${formatCount(lighthouseCount)})`,
           },
         ]
       : []),

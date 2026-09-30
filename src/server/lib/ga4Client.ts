@@ -140,7 +140,7 @@ async function getGa4AccessToken(opts: {
       return await getServiceAccountToken(GA4_SERVICE_ACCOUNT_SCOPE);
     } catch (error) {
       throw new Ga4TokenError(
-        "Servis hesabı Google Analytics için token alamadı.",
+        "Hizmet hesabı Google Analytics için token alamadı.",
         error,
       );
     }

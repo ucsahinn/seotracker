@@ -29,7 +29,7 @@ function ProjectIntegrationsRoute() {
       <section id="search-console" className="scroll-mt-6 space-y-3">
         <SettingsHeading
           title="Search Console"
-          help="Bağlanmadan önce Ayarlar'da bir Google OAuth istemcisi ya da servis hesabı tanımlı olmalı. Bağlandıktan sonra hangi mülkü izleyeceğinizi seçersiniz; yeni doğrulanmış bir mülkte Google'ın veri döndürmesi birkaç gün sürebilir."
+          help="Bağlanmadan önce Ayarlar'da bir Google OAuth istemcisi ya da hizmet hesabı tanımlı olmalı. Bağlandıktan sonra hangi mülkü izleyeceğinizi seçersiniz; yeni doğrulanmış bir mülkte Google'ın veri döndürmesi birkaç gün sürebilir."
         />
         <SearchConsoleConnectionCard projectId={projectId} />
       </section>

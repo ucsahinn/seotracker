@@ -26,10 +26,12 @@ export function makeCrawledPage(
     title: "A perfectly reasonable page title",
     metaDescription:
       "A reasonable meta description that says something useful about the page.",
-    canonicalCount: 0,
-    canonicalUrl: null,
+    // Self-canonical, as a healthy page has: the tag is what `missing-canonical` looks for.
+    canonicalCount: 1,
+    canonicalUrl: "https://example.com/a",
     robotsMeta: null,
     googlebotMeta: null,
+    htmlLang: "en",
     xRobotsTag: null,
     headerCanonicalUrl: null,
     ogTitle: null,

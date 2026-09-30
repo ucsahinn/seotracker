@@ -35,7 +35,7 @@ function getLaunchValidationErrors(
 
   return createFormValidationErrors({
     fields: {
-      url: "Bir URL girin.",
+      url: "Taranacak site adresini girin.",
     },
   });
 }

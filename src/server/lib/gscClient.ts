@@ -171,7 +171,7 @@ export function createGscClient(opts: {
         return await getServiceAccountToken(GSC_SERVICE_ACCOUNT_SCOPE);
       } catch (error) {
         throw new GscTokenError(
-          "Servis hesabı Search Console için token alamadı.",
+          "Hizmet hesabı Search Console için token alamadı.",
           error,
         );
       }

@@ -76,7 +76,7 @@ export function buildDimensionColumns(
     }),
     dimensionHelper.accessor("ctr", {
       header: ({ column }) => (
-        <SortableHeader column={column} label="TO" align="right" />
+        <SortableHeader column={column} label="Tıklama oranı" align="right" />
       ),
       cell: ({ getValue }) => formatPercent(getValue()),
       meta: rightAligned,

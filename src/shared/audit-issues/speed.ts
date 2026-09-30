@@ -17,7 +17,7 @@ import type { AuditIssueDescriptor } from "../audit-issue-types";
 export const SPEED_ISSUES = {
   "cwv-lcp-poor": {
     severity: "warning",
-    title: "En büyük içerik çok geç geliyor (LCP)",
+    title: "Sayfanın ana içeriği geç yükleniyor (LCP)",
     explanation:
       "Sayfanın en büyük görsel öğesi 4 saniyeden geç yerleşti. Google bu eşiği 'zayıf' sayar ve LCP, sayfa deneyimi sinyallerinden biridir. Ölçüm PageSpeed Insights laboratuvarından gelir; ziyaretçilerinizin gerçek süresi değildir, ama tekrarlanabilir bir göstergesidir.",
     howToFix:
@@ -25,7 +25,7 @@ export const SPEED_ISSUES = {
   },
   "cwv-cls-poor": {
     severity: "warning",
-    title: "Sayfa yerleşimi kayıyor (CLS)",
+    title: "Sayfa yüklenirken içerik kayıyor (CLS)",
     explanation:
       "Sayfa yüklenirken içerik 0,25'ten fazla yer değiştirdi; Google bu eşiği 'zayıf' sayar. Okumaya başlayan biri metnin altından kaymasıyla yanlış yere tıklar. Ölçüm laboratuvar ölçümüdür.",
     howToFix:
@@ -33,7 +33,7 @@ export const SPEED_ISSUES = {
   },
   "cwv-inp-poor": {
     severity: "warning",
-    title: "Etkileşime yanıt yavaş (INP)",
+    title: "Sayfa tıklamalara geç yanıt veriyor (INP)",
     explanation:
       "Sayfa bir etkileşime yanıt vermek için 500 milisaniyeden uzun sürdü; Google bu eşiği 'zayıf' sayar. INP, 2024'te FID'in yerini alan sayfa deneyimi ölçüsüdür. Ölçüm laboratuvar ölçümüdür.",
     howToFix:
@@ -41,7 +41,7 @@ export const SPEED_ISSUES = {
   },
   "lighthouse-seo-low": {
     severity: "warning",
-    title: "Lighthouse SEO puanı düşük",
+    title: "Google'ın SEO denetim puanı düşük",
     explanation:
       "PageSpeed Insights'ın SEO denetimi bu sayfada 90'ın altında bir puan verdi. Bu denetim tarayıcının baktığından farklı şeylere de bakar: bağlantı metinleri, dokunma hedefi boyutları, eklenti kullanımı, robots yönergeleri. Puan bir sıralama sinyali değildir; hangi kontrollerin düştüğünü gösteren bir işarettir.",
     howToFix:

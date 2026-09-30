@@ -203,7 +203,7 @@ export function SearchTrendPanel({ daily }: { daily: DailyRow[] }) {
     <section className="overflow-hidden rounded-box border border-base-300 bg-base-100">
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-base-300 px-4 py-3">
         <div>
-          <h2 className="text-sm font-medium">Günlük seyir</h2>
+          <h2 className="text-sm font-medium">Günlük değişim</h2>
           <p className="mt-0.5 text-xs text-muted">
             Yukarıdaki toplamların günlere dağılımı.
           </p>
@@ -230,7 +230,7 @@ export function SearchTrendPanel({ daily }: { daily: DailyRow[] }) {
         </div>
       ) : (
         <p className="px-4 py-6 text-sm text-muted">
-          Bu dönemde hiç gösterim yok, çizilecek bir seyir de yok. Search
+          Bu dönemde hiç gösterim yok, çizilecek bir değişim de yok. Search
           Console sayfalarınızı arama sonuçlarında göstermeye başladığında
           burada günlük dağılım çıkar.
         </p>

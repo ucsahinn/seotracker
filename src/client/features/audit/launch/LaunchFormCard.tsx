@@ -106,11 +106,11 @@ function LaunchOptions({
       {/* Not a <label>: it wraps nothing and carries no htmlFor, so it
           named no control. The field below gets its own name. */}
       <p className="text-xs font-medium uppercase tracking-wide text-muted">
-        Tarama sınırı
+        Kaç sayfa taransın?
       </p>
       <div className="flex items-center gap-2">
         <span className="text-sm text-muted" aria-hidden>
-          En çok sayfa
+          En fazla
         </span>
         <launchForm.Field name="maxPagesInput">
           {(field) => (
@@ -135,7 +135,8 @@ function LaunchOptions({
         </launchForm.Field>
       </div>
       <p className="text-xs text-muted">
-        {MIN_PAGES} ile {formatNumber(maxPagesLimit)} arasında bir değer girin.
+        {MIN_PAGES} ile {formatNumber(maxPagesLimit)} arasında bir sayı girin.
+        Sınırı aşan sayfalar taranmaz.
       </p>
     </div>
   );
@@ -159,9 +160,10 @@ function LighthouseOptions({ launchForm }: Pick<Props, "launchForm">) {
             element is mouse-hover only, so a keyboard user never saw the
             explanation. */}
         <span className="text-sm font-medium text-muted">
-          Hız ölçümünü dahil et{" "}
+          Sayfa hızını da ölç{" "}
           <HelpTip label="Hız ölçümü">
-            Sayfalarınızın hızını ölçer ve performans sorunlarını raporlar.
+            Google Lighthouse ile sayfalarınızın telefonda ve bilgisayarda ne
+            kadar hızlı açıldığını ölçer, yavaşlatan sorunları listeler.
           </HelpTip>
         </span>
       </label>
@@ -173,7 +175,7 @@ function LighthouseOptions({ launchForm }: Pick<Props, "launchForm">) {
           runLighthouse ? (
             <div className="space-y-1">
               <p className="text-xs text-muted">
-                Aynı şablondan gelen sayfalar elenerek 20 sayfalık bir örneklem
+                Benzer sayfalar ayıklanır, en çok 20 farklı sayfanın hızı
                 ölçülür.
               </p>
             </div>

@@ -108,7 +108,7 @@ export function OrganicTrendPanel({
       ) : (
         /* A flat line along zero is a shape that looks like an answer. */
         <p className="px-4 py-6 text-sm text-muted">
-          Bu aralıkta organik oturum yok, çizilecek bir seyir de yok.
+          Bu aralıkta organik oturum yok, çizilecek bir değişim de yok.
         </p>
       )}
     </section>

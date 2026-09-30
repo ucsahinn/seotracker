@@ -4,6 +4,7 @@ import { Activity, Check, X } from "lucide-react";
 import { EmptyState } from "@/client/components/EmptyState";
 import { MetricRow, MetricTile } from "@/client/components/MetricTile";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
+import { HelpTip } from "@/client/components/HelpTip";
 import { StatusPill } from "@/client/components/StatusPill";
 import { formatCount } from "@/client/lib/format";
 import { getGa4MeasurementHealth } from "@/serverFunctions/ga4MeasurementHealth";
@@ -48,7 +49,23 @@ const MEASUREMENT_TOGGLES = [
   ["videoEngagementEnabled", "Video"],
   ["fileDownloadsEnabled", "Dosya indirme"],
   ["formInteractionsEnabled", "Form"],
+  ["pageChangesEnabled", "Sayfa geçişleri"],
 ] as const;
+
+/*
+ * How GA4 counts a key event. The choice changes every conversion number on
+ * the other tabs: once per event inflates a form that fires twice, once per
+ * session hides a second purchase.
+ */
+const COUNTING_METHOD_COPY: Record<string, string> = {
+  ONCE_PER_EVENT: "Her tetiklemede sayılır",
+  ONCE_PER_SESSION: "Oturumda bir kez sayılır",
+};
+
+const STREAM_TYPE_COPY: Record<string, string> = {
+  ANDROID_APP_DATA_STREAM: "Android uygulaması",
+  IOS_APP_DATA_STREAM: "iOS uygulaması",
+};
 
 export function MeasurementHealthPanel({ projectId }: { projectId: string }) {
   const query = useQuery({
@@ -185,7 +202,20 @@ export function MeasurementHealthPanel({ projectId }: { projectId: string }) {
             />
           </div>
 
-          <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5">
+          <p className="mt-3 text-xs text-muted">
+            {formatCount(
+              MEASUREMENT_TOGGLES.filter(
+                ([key]) => stream.enhancedMeasurement[key],
+              ).length,
+            )}{" "}
+            / {formatCount(MEASUREMENT_TOGGLES.length)} otomatik olay açık
+            <HelpTip label="Gelişmiş ölçüm">
+              Gelişmiş ölçüm; kaydırma, dış bağlantı tıklaması ve dosya indirme
+              gibi olayları koda dokunmadan toplar. Kapalı olanlar raporlarda
+              hiç görünmez.
+            </HelpTip>
+          </p>
+          <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1.5">
             {MEASUREMENT_TOGGLES.map(([key, label]) => {
               const on = stream.enhancedMeasurement[key];
               return (
@@ -218,16 +248,50 @@ export function MeasurementHealthPanel({ projectId }: { projectId: string }) {
         </section>
       ))}
 
+      {health.otherStreams.length > 0 ? (
+        <section className="rounded-box border border-base-300 bg-base-100 p-4">
+          <h3 className="text-sm font-medium">Uygulama veri akışları</h3>
+          <p className="mt-0.5 text-xs text-muted">
+            Bu mülke bağlı, web dışındaki akışlar. Buradaki raporlar yalnızca
+            web trafiğini kapsamaz; uygulama verisi de toplamlara karışır.
+          </p>
+          <ul className="mt-2 space-y-1">
+            {health.otherStreams.map((stream) => (
+              <li
+                key={stream.streamId}
+                className="flex items-baseline justify-between gap-3 text-sm"
+              >
+                <span className="truncate">{stream.displayName}</span>
+                <span className="shrink-0 text-xs text-muted">
+                  {STREAM_TYPE_COPY[stream.type] ?? stream.type}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
       {health.keyEvents.length > 0 ? (
         <section className="rounded-box border border-base-300 bg-base-100 p-4">
-          <h3 className="text-sm font-medium">Anahtar olaylar</h3>
-          <ul className="mt-2 flex flex-wrap gap-2">
+          <h3 className="flex items-center gap-1.5 text-sm font-medium">
+            Anahtar olaylar
+            <HelpTip label="Sayım yöntemi">
+              Sayım yöntemi, aynı oturumda tekrarlanan bir olayın kaç kez
+              sayılacağını belirler. Dönüşüm rakamlarını karşılaştırırken bu
+              ayara bakın.
+            </HelpTip>
+          </h3>
+          <ul className="mt-2 divide-y divide-base-300">
             {health.keyEvents.map((event) => (
               <li
                 key={event.eventName}
-                className="rounded-full border border-base-300 px-2.5 py-1 font-mono text-xs text-muted"
+                className="flex flex-wrap items-baseline justify-between gap-x-3 py-1.5"
               >
-                {event.eventName}
+                <span className="font-mono text-xs">{event.eventName}</span>
+                <span className="text-xs text-muted">
+                  {COUNTING_METHOD_COPY[event.countingMethod] ??
+                    event.countingMethod}
+                </span>
               </li>
             ))}
           </ul>

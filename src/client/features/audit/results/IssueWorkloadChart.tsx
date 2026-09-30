@@ -47,7 +47,17 @@ type WorkloadRow = {
  * one page sits above a warning on ninety. Both orderings are right for
  * different questions; this answers "what would fixing one thing change".
  */
-export function IssueWorkloadChart({ groups }: { groups: WorkloadRow[] }) {
+export function IssueWorkloadChart({
+  groups,
+  selectedType = null,
+  onSelect,
+}: {
+  groups: WorkloadRow[];
+  /** The issue type the list below is narrowed to, if any. */
+  selectedType?: string | null;
+  /** A bar was clicked: narrow the list to that type, or release it. */
+  onSelect?: (issueType: string | null) => void;
+}) {
   // Two bars is a comparison the list already makes; below that it is noise.
   if (groups.length < 3) return null;
 
@@ -68,10 +78,13 @@ export function IssueWorkloadChart({ groups }: { groups: WorkloadRow[] }) {
 
   return (
     <div className="rounded-box border border-base-300 bg-base-100 px-2 py-3">
-      <p className="px-2 text-sm font-medium">Sorun türüne göre sayfa sayısı</p>
+      <p className="px-2 text-sm font-medium">
+        En çok sayfayı hangi sorun etkiliyor?
+      </p>
       <p className="mb-1 px-2 text-xs text-muted">
         En çok sayfayı etkileyen {rows.length} tür
         {hidden > 0 ? `, kalan ${formatCount(hidden)} tür aşağıda` : ""}.
+        {onSelect ? " Bir çubuğa tıklayıp listeyi daraltın." : ""}
       </p>
       <Chart
         height={Math.max(120, rows.length * 34)}
@@ -111,7 +124,17 @@ export function IssueWorkloadChart({ groups }: { groups: WorkloadRow[] }) {
               );
             }}
           />
-          <Bar dataKey="pageCount" radius={[0, 4, 4, 0]}>
+          <Bar
+            dataKey="pageCount"
+            radius={[0, 4, 4, 0]}
+            animationDuration={700}
+            className={onSelect ? "cursor-pointer" : undefined}
+            onClick={(_, index: number) => {
+              const row = rows[index];
+              if (!onSelect || !row) return;
+              onSelect(row.issueType === selectedType ? null : row.issueType);
+            }}
+          >
             {/*
              * The count sits at the end of its own bar. Without it the chart
              * is a set of lengths and the reader has to go to the list below
@@ -127,7 +150,15 @@ export function IssueWorkloadChart({ groups }: { groups: WorkloadRow[] }) {
               }
             />
             {rows.map((row) => (
-              <Cell key={row.issueType} fill={SEVERITY_FILL[row.severity]} />
+              <Cell
+                key={row.issueType}
+                fill={SEVERITY_FILL[row.severity]}
+                fillOpacity={
+                  selectedType === null || selectedType === row.issueType
+                    ? 1
+                    : 0.3
+                }
+              />
             ))}
           </Bar>
         </BarChart>

@@ -14,13 +14,13 @@ const STANDARD_MESSAGES: Record<ErrorCode, string> = {
   AUDIT_ALREADY_RUNNING:
     "Aynı anda çalışabilecek denetim sayısına ulaştınız. Birinin bitmesini bekleyin ya da silin.",
   VALIDATION_ERROR: "Girdiğiniz bilgileri kontrol edip tekrar deneyin.",
-  CRAWL_TARGET_BLOCKED: "Bu adres güvenlik politikası gereği taranamaz.",
+  CRAWL_TARGET_BLOCKED: "Güvenlik nedeniyle bu adres taranamaz.",
   RATE_LIMITED: "Çok fazla istek gönderildi. Biraz bekleyip tekrar deneyin.",
   UPSTREAM_UNAVAILABLE:
     "Veri kaynağı şu an yanıt vermiyor. Birazdan tekrar deneyin.",
-  CONFLICT: "Bu istek mevcut kayıtlarla çakışıyor.",
+  CONFLICT: "Bu işlem mevcut bir kayıtla çakışıyor.",
   INTERNAL_ERROR:
-    "Beklenmeyen bir hata oluştu. Konteyner günlüğüne bakıp tekrar deneyin.",
+    "Beklenmeyen bir hata oluştu. Ayrıntı için Docker günlüğüne bakın.",
 };
 
 // Setup errors cross the wire as "CODE: detail" (see toClientError) so the

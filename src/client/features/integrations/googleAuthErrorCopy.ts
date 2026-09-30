@@ -38,7 +38,7 @@ export function googleAuthErrorCopy(
       return {
         title: `${what} tamamlanmadı`,
         description:
-          "Google ile konuşurken bir şeyler ters gitti. Yeniden deneyin; sürerse konteyner günlüğünde hatanın ayrıntısı olacaktır.",
+          "Google ile konuşurken bir şeyler ters gitti. Yeniden deneyin; sürerse Docker günlüğünde hatanın ayrıntısı olur.",
       };
   }
 }

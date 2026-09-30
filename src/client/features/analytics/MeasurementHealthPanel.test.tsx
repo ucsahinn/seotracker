@@ -85,6 +85,39 @@ describe("MeasurementHealthPanel", () => {
     expect(await screen.findByText(/eksik bulunamadı/i)).toBeDefined();
   });
 
+  it("shows how each key event is counted and any app streams", async () => {
+    getGa4MeasurementHealth.mockResolvedValue({
+      status: "ok",
+      propertyDisplayName: "Example",
+      propertyId: "1",
+      summary: {
+        dataStreamCount: 2,
+        webStreamCount: 1,
+        keyEventCount: 1,
+        customDimensionCount: 0,
+        customMetricCount: 0,
+        issueCount: 0,
+      },
+      issues: [],
+      webStreams: [],
+      otherStreams: [
+        {
+          streamId: "9",
+          type: "ANDROID_APP_DATA_STREAM",
+          displayName: "Uygulama",
+        },
+      ],
+      keyEvents: [
+        { eventName: "purchase", countingMethod: "ONCE_PER_SESSION" },
+      ],
+    });
+
+    mount();
+
+    expect(await screen.findByText(/Oturumda bir kez sayılır/)).toBeDefined();
+    expect(screen.getByText("Android uygulaması")).toBeDefined();
+  });
+
   it("turns Google's issue codes into a sentence the operator can act on", async () => {
     getGa4MeasurementHealth.mockResolvedValue({
       status: "ok",

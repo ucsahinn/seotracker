@@ -4,6 +4,7 @@ import {
   SearchPerformancePage,
   SEARCH_PERFORMANCE_TABS,
 } from "@/client/features/search-performance/SearchPerformancePage";
+import { QUICK_FILTER_IDS } from "@/client/features/search-performance/quickFilters";
 import {
   GSC_DEVICES,
   SEARCH_PERFORMANCE_RANGES,
@@ -30,6 +31,8 @@ const searchSchema = z.object({
   /* Free-text narrowing of the queries/pages table. In the URL so a link
      from a saved keyword lands on that keyword, and so a reload keeps it. */
   q: z.string().max(200).optional().catch(undefined),
+  /* Chip filter on the queries/pages tables ("Hiç tıklanmayan" and so on). */
+  f: z.enum(QUICK_FILTER_IDS).optional().catch(undefined),
   // Page is deliberately not persisted: it is a position inside a result
   // set, and the set is rebuilt whenever any filter above it changes.
 });
@@ -54,6 +57,7 @@ function SearchPerformanceRoute() {
       device={search.device}
       country={search.country}
       query={search.q ?? ""}
+      quickFilter={search.f}
       onViewChange={(next) =>
         void navigate({ search: (current) => ({ ...current, ...next }) })
       }

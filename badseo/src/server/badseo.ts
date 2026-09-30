@@ -24,6 +24,41 @@ function requestOrigin(request: Request, url: URL): string {
   return `${url.protocol}//${host}`;
 }
 
+/*
+ * A healthy page names its own address, and the audit now says so when one
+ * does not. Most fixtures exist to demonstrate some other defect, so the
+ * handler gives each a self-canonical rather than every fixture repeating it.
+ * Left alone: a fixture that expects `missing-canonical`, one that already
+ * declares a canonical (in the head or the Link header), and anything that is
+ * not a 200 HTML page.
+ */
+async function withSelfCanonical(
+  fixture: Fixture,
+  response: Response,
+  context: FixtureContext,
+): Promise<Response> {
+  const isHtml = response.headers.get("content-type")?.includes("text/html");
+  if (
+    response.status !== 200 ||
+    !isHtml ||
+    fixture.expectedIssues.includes("missing-canonical") ||
+    response.headers.has("link")
+  ) {
+    return response;
+  }
+  const html = await response.text();
+  const headers = new Headers(response.headers);
+  headers.delete("content-length");
+  if (/<link[^>]+rel=["']?canonical/i.test(html) || !html.includes("</head>")) {
+    return new Response(html, { status: response.status, headers });
+  }
+  const tag = `<link rel="canonical" href="${context.origin}${context.path}">`;
+  return new Response(html.replace("</head>", `${tag}\n</head>`), {
+    status: response.status,
+    headers,
+  });
+}
+
 export async function handleFixtureRequest(
   request: Request,
 ): Promise<Response> {
@@ -41,7 +76,7 @@ export async function handleFixtureRequest(
       request,
       path,
     };
-    return fixture.handler(context);
+    return withSelfCanonical(fixture, await fixture.handler(context), context);
   }
 
   return new Response(

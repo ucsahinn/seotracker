@@ -1,3 +1,8 @@
+import {
+  KIND_COPY,
+  KIND_ORDER,
+  type KindId,
+} from "@/client/features/opportunities/opportunityLogic";
 import { formatCount, formatNumber } from "@/client/lib/format";
 
 /**
@@ -14,30 +19,6 @@ import { formatCount, formatNumber } from "@/client/lib/format";
  */
 
 type Row = { kind: KindId; clicks: number; impressions: number };
-
-export type KindId = "ctr_gap" | "near_miss" | "deep";
-
-const KINDS = [
-  {
-    id: "ctr_gap",
-    label: "Tıklanmıyor",
-    hint: "Sıra iyi ama tıklama oranı, sizin bu sıradaki diğer sayfalarınızın altında. Başlık ve açıklama işi.",
-  },
-  {
-    id: "near_miss",
-    label: "Yaklaşmış",
-    hint: "İlk sayfaya yakın ya da üstünde. Sıra yükseltme işi.",
-  },
-  {
-    id: "deep",
-    label: "Derinde",
-    hint: "20. sıranın altında ama talep var. İçerik kararı.",
-  },
-] as const satisfies ReadonlyArray<{
-  id: KindId;
-  label: string;
-  hint: string;
-}>;
 
 export function OpportunityKinds({
   rows,
@@ -56,11 +37,15 @@ export function OpportunityKinds({
     counts.set(row.kind, entry);
   }
 
-  const most = Math.max(1, ...KINDS.map((k) => counts.get(k.id)?.pages ?? 0));
+  const most = Math.max(
+    1,
+    ...KIND_ORDER.map((id) => counts.get(id)?.pages ?? 0),
+  );
 
   return (
     <section aria-label="Fırsat türleri" className="grid gap-3 sm:grid-cols-3">
-      {KINDS.map((kind) => {
+      {KIND_ORDER.map((id) => {
+        const kind = { id, ...KIND_COPY[id] };
         const entry = counts.get(kind.id) ?? { pages: 0, impressions: 0 };
         const active = selected === kind.id;
         return (
@@ -89,7 +74,7 @@ export function OpportunityKinds({
               className="mt-2 block h-1.5 rounded-full bg-base-200"
             >
               <span
-                className={`block h-full rounded-full ${active ? "bg-primary" : "bg-primary/45"}`}
+                className={`block h-full rounded-full transition-[width] duration-500 ${active ? "bg-primary" : "bg-primary/45"}`}
                 style={{ width: `${(entry.pages / most) * 100}%` }}
               />
             </span>

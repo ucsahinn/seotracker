@@ -28,11 +28,11 @@ const SKILLS = [
   ["seo-coach", "Nerede durduğunuzu anlatır ve sıradaki adımı seçer."],
   [
     "seo-project-setup",
-    "Hedeflerinizi, rakiplerinizi ve önemli sayfalarınızı ortak bilgi olarak kaydeder.",
+    "Hedeflerinizi, rakiplerinizi ve önemli sayfalarınızı bir kez kaydeder; diğer beceriler bunu hep bilir.",
   ],
   [
     "seo-audit",
-    "Bu hafta yapılacak tek bir işe odaklanan, tek sayfalık site denetimi.",
+    "Sitenizi denetler ve bu hafta yapılacak tek bir işi öne çıkarır.",
   ],
   [
     "seo-check-in",
@@ -40,11 +40,11 @@ const SKILLS = [
   ],
   [
     "seo-triage",
-    "Trafik düştüyse: gerçek mi, nerede oldu, ne zaman oldu — bir şey değiştirmeden önce.",
+    "Trafik düştüyse önce şunu netleştirir: düşüş gerçek mi, nerede ve ne zaman oldu.",
   ],
   [
     "seo-report",
-    "Yukarıdakilerden birini Raporlar sayfanıza rapor olarak kaydeder.",
+    "Yukarıdakilerden birinin sonucunu Raporlar sayfasına kaydeder.",
   ],
 ];
 const AI_TABS = [

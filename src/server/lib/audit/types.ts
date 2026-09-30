@@ -74,6 +74,8 @@ export interface PageAnalysis {
   robotsMeta: string | null;
   /** Bot-specific directive; Google prefers it over the generic one. */
   googlebotMeta: string | null;
+  /** `<html lang>`, trimmed; null when the attribute is absent or blank. */
+  htmlLang: string | null;
   ogTitle: string | null;
   ogDescription: string | null;
   ogImage: string | null;
@@ -164,6 +166,8 @@ export interface CrawledPageResult {
   robotsMeta: string | null;
   /** Bot-specific directive; Google prefers it over the generic one. */
   googlebotMeta: string | null;
+  /** `<html lang>`, trimmed; null when the attribute is absent or blank. */
+  htmlLang: string | null;
   xRobotsTag: string | null;
   headerCanonicalUrl: string | null;
   ogTitle: string | null;

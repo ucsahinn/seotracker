@@ -80,7 +80,7 @@ const ALLOWED_SCOPES = new Set([
 export async function getServiceAccountToken(scope: string): Promise<string> {
   if (!ALLOWED_SCOPES.has(scope)) {
     throw new GoogleServiceAccountError(
-      `Servis hesabı için izin verilmeyen kapsam: ${scope}`,
+      `Hizmet hesabı için izin verilmeyen kapsam: ${scope}`,
     );
   }
 
@@ -92,7 +92,7 @@ export async function getServiceAccountToken(scope: string): Promise<string> {
   const account = await GoogleServiceAccountRepository.get();
   if (!account) {
     throw new GoogleServiceAccountError(
-      "Servis hesabı tanımlı değil ya da saklanan anahtar okunamıyor.",
+      "Hizmet hesabı tanımlı değil ya da saklanan anahtar okunamıyor.",
     );
   }
 
@@ -106,7 +106,7 @@ export async function getServiceAccountToken(scope: string): Promise<string> {
     account.privateKey,
   ).catch((error: unknown) => {
     throw new GoogleServiceAccountError(
-      "Servis hesabı anahtarı imzalanamadı; dosya bozuk olabilir.",
+      "Hizmet hesabı anahtarı imzalanamadı; dosya bozuk olabilir.",
       { cause: error },
     );
   });
@@ -129,7 +129,7 @@ export async function getServiceAccountToken(scope: string): Promise<string> {
      */
     const detail = (await response.text().catch(() => "")).slice(0, 200);
     throw new GoogleServiceAccountError(
-      `Google servis hesabı için token vermedi (${response.status}). ${detail}`,
+      `Google hizmet hesabı için token vermedi (${response.status}). ${detail}`,
     );
   }
 

@@ -54,7 +54,7 @@ export function GoogleConnectedState({
               className="btn btn-ghost btn-sm text-error hover:bg-error/10"
               onClick={onDisconnect}
             >
-              {disconnecting ? "Bağlantı kesiliyor…" : "Projeden ayır"}
+              {disconnecting ? "Bağlantı kesiliyor…" : "Bağlantıyı kes"}
             </button>
           ) : null}
         </fieldset>

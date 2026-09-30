@@ -137,7 +137,7 @@ export function DashboardPage({ projectId }: { projectId: string }) {
             params={{ projectId }}
             className="btn btn-primary btn-sm"
           >
-            Denetim çalıştır
+            Denetimi başlat
           </Link>
         }
       />

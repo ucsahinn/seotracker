@@ -4,7 +4,7 @@ import type { AuditIssueDescriptor } from "../audit-issue-types";
 export const CRAWL_ISSUES = {
   "blocked-page": {
     severity: "critical",
-    title: "Tarayıcı engellendi",
+    title: "Tarama robotu engellendi",
     explanation:
       "Sayfa yerine bir bot doğrulaması ya da erişim reddi döndü (Cloudflare doğrulaması veya 403 gibi). Bu sayfa denetlenemedi. Arama motorlarının tarayıcıları da benzer bir engelle karşılaşıyor olabilir.",
     howToFix:
@@ -44,7 +44,7 @@ export const CRAWL_ISSUES = {
   },
   "broken-page": {
     severity: "warning",
-    title: "Sayfa hata döndürüyor (4xx)",
+    title: "Sayfa açılırken hata veriyor (4xx)",
     explanation:
       "Taranan bu adres bir istemci hatası döndürdü (404 gibi). Site haritanızda veya başka sayfalarda geçiyorsa tarayıcılar boşuna istek yapmaya devam eder.",
     howToFix:
@@ -68,7 +68,7 @@ export const CRAWL_ISSUES = {
   },
   "orphan-page": {
     severity: "warning",
-    title: "Yetim sayfa",
+    title: "Hiçbir sayfadan bağlantı almayan sayfa",
     explanation:
       "Taranan hiçbir sayfa bu adrese bağlantı vermiyor. İç bağlantısı olmayan sayfalar daha seyrek taranır ve kullanıcı gezinerek onlara ulaşamaz.",
     howToFix:
@@ -84,7 +84,7 @@ export const CRAWL_ISSUES = {
   },
   "robots-txt-server-error": {
     severity: "critical",
-    title: "robots.txt sunucu hatası döndürüyor",
+    title: "robots.txt dosyası sunucu hatası veriyor",
     explanation:
       "robots.txt dosyanız 5xx hatası veriyor. Google'ın kendi belgelerine göre bu durumda Google ilk 12 saat siteyi taramayı tamamen durdurur, sonrasında 30 gün boyunca dosyanın son sağlam kopyasını kullanır. Yani bu tek dosyanın hatası tüm sitenin taranmasını etkiler.",
     howToFix:
@@ -140,7 +140,8 @@ export const CRAWL_ISSUES = {
   },
   "sitemap-canonicalized-page": {
     severity: "info",
-    title: "Site haritasındaki sayfa başka adrese canonical veriyor",
+    title:
+      "Site haritasındaki sayfa, asıl adres olarak başka sayfayı gösteriyor",
     explanation:
       "Sayfa site haritasında listelenmiş, ama kendi içinde asıl adres olarak başka bir adresi bildiriyor. Google site haritasındaki adresleri asıl adres önerisi sayar, dolayısıyla aynı sayfa için iki farklı öneri göndermiş oluyorsunuz. Google bu iki öneriden birini seçer; bilinçli yaptıysanız sorun değil.",
     howToFix:
@@ -148,7 +149,7 @@ export const CRAWL_ISSUES = {
   },
   "sitemap-noindex-page": {
     severity: "info",
-    title: "Site haritasındaki sayfa noindex",
+    title: "Site haritasındaki sayfa arama sonuçlarından gizlenmiş",
     explanation:
       "Sayfa site haritasında listelenmiş ama noindex işaretli. Site haritası dizine almayı garanti etmez; adres keşfine yarar ve listelediği adresleri asıl adres olarak önerir. Yani burada gösterilmeyecek bir sayfayı öneriyorsunuz. Bu çoğu zaman geçicidir: bir sayfayı yeni noindex yaptıysanız Google yönergeyi görebilmek için sayfayı yine de taramalıdır.",
     howToFix:
@@ -209,6 +210,14 @@ export const CRAWL_ISSUES = {
       "Sayfa, kendi sitesindeki bir adrese bağlantı veriyor ama o adres başka bir yere yönlendiriyor. Bağlantı çalışır, sadece bir adım fazladan atılır: tarayıcı zıplamayı takip eder, okuyucu bekler, ve bağlantının taşıdığı güç seyrelerek varır. Genelde adresler değişip iç bağlantılar eskisinde kalınca olur.",
     howToFix:
       "Bağlantıyı yönlendirmenin vardığı adresle değiştirin. Yönlendirme kalsın -- dışarıdan gelen bağlantılar için gerekli; düzeltilecek olan kendi sitenizin içinden verdiğiniz adres.",
+  },
+  "not-https": {
+    severity: "warning",
+    title: "Sayfa güvenli olmayan http ile açılıyor",
+    explanation:
+      'Sayfa şifreli (https) yerine düz http üzerinden sunuluyor. Tarayıcılar bu sayfalarda adres çubuğunda "Güvenli değil" uyarısı gösterir, bu da ziyaretçinin güvenini sarsar ve formlarda girilen bilgilerin başkalarınca görülebilmesi demektir. Google da https kullanımını hafif bir sıralama işareti olarak sayar; aynı içeriğin http ve https sürümü varsa https olanı tercih eder.',
+    howToFix:
+      'Barındırma firmanızdan (ya da kullandığınız site oluşturucunun ayarlarından) ücretsiz bir SSL sertifikası etkinleştirin. Sonra tüm http adreslerini kalıcı yönlendirmeyle (301) https karşılığına gönderin; böylece "http://siteniz.com/hakkimizda" açılınca "https://siteniz.com/hakkimizda" adresine geçilir.',
   },
   "mixed-content-resource": {
     severity: "critical",

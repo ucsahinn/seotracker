@@ -23,6 +23,8 @@ export const Route = createFileRoute("/")({
       { title: "BadSEO | Technical SEO test site" },
       { name: "description", content: PRODUCT_DESCRIPTION },
     ],
+    // Relative on purpose: the origin differs between localhost and a deploy.
+    links: [{ rel: "canonical", href: "/" }],
   }),
   component: HomePage,
 });

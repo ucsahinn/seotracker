@@ -70,19 +70,39 @@ describe("OpportunitiesTable", () => {
     expect(cells[0].textContent).toContain("/many-impressions");
   });
 
-  /*
-   * Two exits, because the question splits: what does this page look like,
-   * and what is it ranking for. The row had neither.
-   */
-  it("gives every row a way out", () => {
+  it("gives every row a copy and an open-in-new-tab shortcut", () => {
     render(<OpportunitiesTable projectId="p1" rows={rows} />);
 
-    expect(
-      screen.getAllByRole("link", { name: /high-score/ }).length,
-    ).toBeGreaterThan(0);
+    expect(screen.getAllByLabelText("Adresi kopyala").length).toBe(rows.length);
     expect(screen.getAllByLabelText("Sayfayı yeni sekmede aç").length).toBe(
       rows.length,
     );
+  });
+
+  it("opens the detail on a row click and closes it on Escape", () => {
+    render(<OpportunitiesTable projectId="p1" rows={rows} />);
+
+    fireEvent.click(screen.getAllByRole("row")[1]);
+
+    const dialog = screen.getByRole("dialog");
+    expect(dialog.textContent).toContain("Ne yapmalı?");
+    expect(dialog.textContent).toContain("iç bağlantı");
+
+    fireEvent.keyDown(window, { key: "Escape" });
+    expect(screen.queryByRole("dialog")).toBeNull();
+  });
+
+  it("shows the checklist for the row's own kind", () => {
+    render(
+      <OpportunitiesTable
+        projectId="p1"
+        rows={[{ ...row("https://example.com/a", 50, 100), kind: "ctr_gap" }]}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "/a" }));
+
+    expect(screen.getByRole("dialog").textContent).toContain("Meta açıklamayı");
   });
 
   /*

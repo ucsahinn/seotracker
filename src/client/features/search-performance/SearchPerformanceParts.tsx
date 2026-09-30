@@ -1,4 +1,3 @@
-import { MetricRow, MetricTile } from "@/client/components/MetricTile";
 import { useMemo, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Copy, Loader2, Save } from "lucide-react";
@@ -19,13 +18,7 @@ import {
   type Report,
   type SearchPerformanceTableRow,
 } from "@/client/features/search-performance/SearchPerformanceColumns";
-import {
-  formatCount,
-  formatDate,
-  formatDecimal,
-  formatPercent,
-} from "@/client/lib/format";
-import { describeTotals } from "@/client/features/search-performance/totals";
+import { formatCount } from "@/client/lib/format";
 import {
   buildCsv,
   downloadCsv,
@@ -42,6 +35,11 @@ import {
 import { saveKeywords } from "@/serverFunctions/savedKeywords";
 import { Search, Target } from "lucide-react";
 import { EmptyState } from "@/client/components/EmptyState";
+import { QuickFilterBar } from "@/client/features/search-performance/QuickFilterBar";
+import {
+  applyQuickFilter,
+  type QuickFilterId,
+} from "@/client/features/search-performance/quickFilters";
 
 export type Tab = "striking" | "queries" | "pages" | "cannibalization";
 export type ExportTarget = "csv" | "sheets";
@@ -71,7 +69,13 @@ function dimensionExportTable(
   const isPage = dimension === "page";
   return {
     filename: `search-performance-${isPage ? "pages" : "queries"}-${stamp}.csv`,
-    headers: [isPage ? "Sayfa" : "Sorgu", "Tıklama", "Gösterim", "TO", "Sıra"],
+    headers: [
+      isPage ? "Sayfa" : "Sorgu",
+      "Tıklama",
+      "Gösterim",
+      "Tıklama oranı",
+      "Sıra",
+    ],
     rows: rows.map((row) => [
       row.key,
       row.clicks,
@@ -114,70 +118,6 @@ export function exportDimensionRows(
   runExport(dimensionExportTable(dimension, rows, stamp), target);
 }
 
-type Delta = { text: string; improved: boolean } | null;
-
-function percentDelta(current: number, previous: number): Delta {
-  if (previous <= 0) return null;
-  const change = (current - previous) / previous;
-  // The sign is carried in the text, so `formatPercent` gets the magnitude.
-  return {
-    text: `${change >= 0 ? "+" : "-"}${formatPercent(Math.abs(change))}`,
-    improved: change >= 0,
-  };
-}
-
-/** Position falls as rankings improve, so the delta is inverted. */
-function positionDelta(current: number, previous: number): Delta {
-  if (previous <= 0 || current <= 0) return null;
-  const change = previous - current;
-  return {
-    text: `${change >= 0 ? "+" : "-"}${formatDecimal(Math.abs(change))}`,
-    improved: change >= 0,
-  };
-}
-
-export function TotalsCards({ report }: { report: Report }) {
-  const { totals, prevTotals, range } = report;
-  const deltaTitle = `${formatDate(range.prevStartDate)} - ${formatDate(range.prevEndDate)} dönemine göre`;
-  const shown = describeTotals(totals);
-  // Nothing to compare against when the period itself is empty, and a delta
-  // beside a dash is noise.
-  const delta = (current: number, previous: number) =>
-    shown.hasImpressions ? percentDelta(current, previous) : null;
-  return (
-    <MetricRow>
-      <MetricTile
-        label="Tıklama"
-        value={shown.clicks}
-        delta={delta(totals.clicks, prevTotals.clicks)}
-        deltaTitle={deltaTitle}
-      />
-      <MetricTile
-        label="Gösterim"
-        value={shown.impressions}
-        delta={delta(totals.impressions, prevTotals.impressions)}
-        deltaTitle={deltaTitle}
-      />
-      <MetricTile
-        label="Tıklama oranı"
-        value={shown.ctr}
-        delta={delta(totals.ctr, prevTotals.ctr)}
-        deltaTitle={deltaTitle}
-      />
-      <MetricTile
-        label="Ortalama sıra"
-        value={shown.position}
-        delta={
-          shown.hasImpressions
-            ? positionDelta(totals.position, prevTotals.position)
-            : null
-        }
-        deltaTitle={deltaTitle}
-      />
-    </MetricRow>
-  );
-}
-
 export function DimensionTable({
   rows,
   keyLabel,
@@ -185,6 +125,8 @@ export function DimensionTable({
   hasActiveFilter,
   search,
   onSearchChange,
+  quickFilter,
+  onQuickFilterChange,
   onSaveKeyword,
 }: {
   rows: SearchPerformanceTableRow[];
@@ -198,6 +140,9 @@ export function DimensionTable({
   /** Free-text narrowing, kept in the URL so it survives a reload. */
   search: string;
   onSearchChange: (next: string) => void;
+  /** Chip filter, kept in the URL. Omit `onQuickFilterChange` to hide chips. */
+  quickFilter?: QuickFilterId;
+  onQuickFilterChange?: (next: QuickFilterId | undefined) => void;
 }) {
   const columns = useMemo(
     () => buildDimensionColumns(keyLabel, onSaveKeyword),
@@ -209,13 +154,14 @@ export function DimensionTable({
    * no way to find one query in it is a list, not a table.
    */
   const needle = search.trim().toLocaleLowerCase("tr");
-  const visible = useMemo(
-    () =>
-      needle
-        ? rows.filter((row) => row.key.toLocaleLowerCase("tr").includes(needle))
-        : rows,
-    [needle, rows],
-  );
+  const visible = useMemo(() => {
+    const chipped = applyQuickFilter(rows, quickFilter);
+    return needle
+      ? chipped.filter((row) =>
+          row.key.toLocaleLowerCase("tr").includes(needle),
+        )
+      : chipped;
+  }, [needle, rows, quickFilter]);
   /*
    * Sorted and paginated here, over the whole fetched set.
    *
@@ -238,6 +184,15 @@ export function DimensionTable({
 
   return (
     <>
+      {rows.length > 0 && onQuickFilterChange ? (
+        <div className="border-b border-base-300 px-4 py-2">
+          <QuickFilterBar
+            rows={rows}
+            active={quickFilter}
+            onChange={onQuickFilterChange}
+          />
+        </div>
+      ) : null}
       {rows.length > 0 ? (
         <div className="flex flex-wrap items-center gap-2 border-b border-base-300 px-4 py-2">
           <input
@@ -248,7 +203,7 @@ export function DimensionTable({
             aria-label={`${keyLabel} içinde ara`}
             className="input input-bordered input-sm w-full max-w-xs"
           />
-          {needle ? (
+          {needle || quickFilter ? (
             <span className="text-xs text-muted tabular-nums">
               {formatCount(visible.length)} / {formatCount(rows.length)}
             </span>
@@ -269,16 +224,20 @@ export function DimensionTable({
             title={
               needle
                 ? "Aramanıza uyan satır yok"
-                : hasActiveFilter
-                  ? "Bu filtrelerle eşleşen satır yok"
-                  : "Bu dönem için henüz veri yok"
+                : quickFilter
+                  ? "Bu hızlı filtreye uyan satır yok"
+                  : hasActiveFilter
+                    ? "Bu filtrelerle eşleşen satır yok"
+                    : "Bu dönem için henüz veri yok"
             }
             description={
               needle
                 ? `"${search}" hiçbir satırda geçmiyor. Aramayı temizleyin ya da başka bir terim deneyin.`
-                : hasActiveFilter
-                  ? "Cihaz ya da ülke filtresini genişletmeyi deneyin."
-                  : "Search Console verisi birkaç gün gecikmeli gelir; mülk yeni bağlandıysa birkaç gün sürebilir."
+                : quickFilter
+                  ? "Yukarıdaki hızlı filtreyi kaldırarak tüm satırlara dönün."
+                  : hasActiveFilter
+                    ? "Cihaz ya da ülke filtresini genişletmeyi deneyin."
+                    : "Search Console verisi birkaç gün gecikmeli gelir; mülk yeni bağlandıysa birkaç gün sürebilir."
             }
           />
         }
@@ -388,7 +347,7 @@ export function StrikingDistanceTable({
         compact
         icon={Target}
         title="Bu dönemde eşiğe yakın sorgu yok"
-        description="Bunlar 5 ile 20. sıra arasındaki, iyileştirmenin trafiğe en çok dokunacağı sorgulardır."
+        description="Sıralaması 5 ile 20 arasında kalan sorgu bulunmuyor. Bu aralıktaki sorgular, küçük bir iyileştirmeyle ilk sayfaya çıkabilecek olanlardır."
       />
     );
   }
@@ -396,10 +355,6 @@ export function StrikingDistanceTable({
   return (
     <>
       <div className="p-4">
-        <p className="mb-3 text-sm text-muted">
-          5 ile 20. sıra arasındaki sorgular, gösterime göre sıralı. Listedeki
-          sayfayı iyileştirerek bunları ilk sonuçlara taşıyabilirsiniz.
-        </p>
         <AppDataTable
           table={table}
           className="table table-zebra table-sm"

@@ -1,5 +1,6 @@
 import type { Fixture } from "./types";
 import { headTagFixtures } from "./head-tags";
+import { headBasicsFixtures } from "./head-basics";
 import { contentFixtures } from "./content";
 import { indexabilityFixtures } from "./indexability";
 import { httpStatusFixtures } from "./http-status";
@@ -11,6 +12,7 @@ import { kitchenSinkFixtures } from "./kitchen-sink";
 /** Every fixture on the site, in catalog order. */
 export const allFixtures: Fixture[] = [
   ...headTagFixtures,
+  ...headBasicsFixtures,
   ...contentFixtures,
   ...indexabilityFixtures,
   ...httpStatusFixtures,

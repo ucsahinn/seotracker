@@ -75,7 +75,7 @@ export function AuditTrendChart({ history }: { history: HistoryRow[] }) {
   return (
     <section className="rounded-box border border-base-300 bg-base-200/25 px-2 py-3">
       <div className="px-2">
-        <h3 className="text-sm font-medium">Denetimler arası seyir</h3>
+        <h3 className="text-sm font-medium">Denetimler arası değişim</h3>
         <p className="mt-0.5 text-xs text-muted">
           Yüz sayfa başına sorun sayısı. Farklı büyüklükteki taramalar bu
           ölçüyle karşılaştırılabilir.
@@ -84,8 +84,8 @@ export function AuditTrendChart({ history }: { history: HistoryRow[] }) {
       {!anyFindings ? (
         <p className="px-2 pt-3 text-sm text-muted">
           Bu {formatCount(points.length)} denetimin hiçbirinde kritik sorun ya
-          da uyarı çıkmadı. Çizilecek bir seyir yok; bilgi düzeyindeki bulgular
-          aşağıdaki denetimlerin kendi sayfalarında.
+          da uyarı çıkmadı. Çizilecek bir değişim yok; bilgi düzeyindeki
+          bulgular aşağıdaki denetimlerin kendi sayfalarında.
         </p>
       ) : (
         <Chart height={180} summary={summarise(first, last, points.length)}>

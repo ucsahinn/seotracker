@@ -11,6 +11,11 @@
 import type { AuditIssueType } from "@/shared/audit-issues";
 import { sameCanonicalTarget } from "@/server/lib/audit/url-utils";
 import type { CrawledPageResult } from "@/server/lib/audit/types";
+import {
+  isPlainHttpPage,
+  lacksCanonical,
+  lacksLanguage,
+} from "@/server/lib/audit/issues/page-basics-checks";
 
 export interface DetectedIssue {
   issueType: AuditIssueType;
@@ -324,6 +329,10 @@ export function runPageReporters(
   if (!page.isHtml) {
     return issues;
   }
+
+  if (isPlainHttpPage(page)) report("not-https");
+  if (lacksLanguage(page)) report("missing-lang");
+  if (lacksCanonical(page)) report("missing-canonical");
 
   // Titles
   if (!page.title) {
