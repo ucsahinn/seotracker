@@ -1,5 +1,6 @@
 import { PageHeader } from "@/client/components/PageShell";
-import { ChevronDown, Download, FileDown, Loader2, Sheet } from "lucide-react";
+import { TableExportMenu } from "@/client/components/table/TableBulkActionBar";
+import { Download, FileDown, Loader2, Sheet } from "lucide-react";
 
 export function SavedKeywordsHeader({
   totalCount,
@@ -19,47 +20,38 @@ export function SavedKeywordsHeader({
       title="Kayıtlı kelimeler"
       description="Önemsediğiniz sorguları bir arada tutun, etiketleyin ve harekete geçmeye hazır olduğunuzda geri dönün."
       actions={
-        <div className="flex items-center gap-2">
-          <div className="dropdown dropdown-end">
-            <button
-              type="button"
-              tabIndex={0}
-              disabled={disabled}
-              aria-haspopup="menu"
-              className={`btn btn-ghost btn-sm gap-1.5 ${disabled ? "btn-disabled" : ""}`}
-            >
-              {exporting != null ? (
-                <Loader2 className="size-4 animate-spin" />
-              ) : (
-                <Download className="size-4" />
-              )}
-              Dışa aktar
-              <ChevronDown className="size-3 opacity-60" />
-            </button>
-            <ul
-              tabIndex={0}
-              role="menu"
-              className="dropdown-content menu z-10 w-56 rounded-box border border-base-300 bg-base-100 p-2 shadow-lg"
-            >
-              <li>
-                <button
-                  type="button"
-                  onClick={onExportSheets}
-                  disabled={disabled}
-                >
-                  <Sheet className="size-4" />
-                  Sheets&apos;e aktar
-                </button>
-              </li>
-              <li>
-                <button type="button" onClick={onExportCsv} disabled={disabled}>
-                  <FileDown className="size-4" />
-                  CSV indir
-                </button>
-              </li>
-            </ul>
-          </div>
-        </div>
+        /*
+         * The shared menu, not a third copy of the same dropdown. The inline
+         * one had no `aria-expanded`, no Escape handler, and could be clipped
+         * by an overflow ancestor — all three already solved once in
+         * `TableExportMenu`, and all three reintroduced by copying it.
+         */
+        <TableExportMenu
+          buttonClassName={`btn btn-ghost btn-sm gap-1.5 ${
+            disabled ? "btn-disabled" : ""
+          }`}
+          triggerIcon={
+            exporting != null ? (
+              <Loader2 className="size-4 animate-spin" />
+            ) : (
+              <Download className="size-4" />
+            )
+          }
+          actions={[
+            {
+              label: "Sheets'e aktar",
+              icon: <Sheet className="size-4" />,
+              onClick: onExportSheets,
+              disabled,
+            },
+            {
+              label: "CSV indir",
+              icon: <FileDown className="size-4" />,
+              onClick: onExportCsv,
+              disabled,
+            },
+          ]}
+        />
       }
     />
   );

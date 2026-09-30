@@ -63,6 +63,15 @@ export const getAuditLighthouseIssues = createServerFn({ method: "POST" })
       scores: lighthouse.payload.storedPayload?.scores ?? null,
       metrics: lighthouse.payload.storedPayload?.metrics ?? null,
       fieldData: lighthouse.payload.storedPayload?.fieldData ?? null,
+      /*
+       * The site-wide CrUX numbers, which matter most when the page has none
+       * of its own: a URL needs its own Chrome traffic to get field data, so
+       * on a small site the field card was empty on almost every page while
+       * Google had been returning origin numbers in the same response all
+       * along.
+       */
+      originFieldData:
+        lighthouse.payload.storedPayload?.originFieldData ?? null,
       issues: lighthouse.payload.report.issues,
     };
   });

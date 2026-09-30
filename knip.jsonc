@@ -29,7 +29,12 @@
     // which knip does not parse.
     "@fontsource-variable/geist",
     "@fontsource-variable/geist-mono",
-    // `cloudflare:workers` is a runtime-provided module, not a package.
+    /*
+     * `cloudflare:workers` is a runtime-provided module, not a package.
+     * knip prints a hint saying this entry is redundant -- it is not:
+     * removing it produces 22 "unlisted dependency" errors across the
+     * worker, the workflows and the D1 client. Verified 2026-09-30.
+     */
     "cloudflare",
   ],
 }

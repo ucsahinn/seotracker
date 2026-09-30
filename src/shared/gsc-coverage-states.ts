@@ -33,9 +33,43 @@ const COVERAGE_STATE_TR: Record<string, string> = {
   "URL is unknown to Google": "Google bu adresi bilmiyor",
 };
 
-export function coverageStateLabel(state: string | null): string | null {
+/**
+ * Google's own localized renderings, mapped back to the English sentence.
+ *
+ * The inspection used to be requested in Turkish, so rows stored then hold
+ * Google's Turkish sentence rather than the key everything else is written
+ * against. Measured on the real install: 23 of 29 stored inspections were
+ * in that state, and every one of them classified as "no finding" -- so
+ * four fifths of the index-coverage answers the operator had already spent
+ * quota on produced nothing at all.
+ *
+ * Re-inspecting would fix it too, at one of the property's 2000 daily
+ * inspections per URL. Mapping the sentence costs nothing and recovers
+ * answers that are already paid for.
+ *
+ * Only sentences actually seen in stored data are listed. An unrecognised
+ * one still falls through unchanged, which is the safe direction: a wrong
+ * reason for why Google will not index a page sends someone to fix the
+ * wrong thing.
+ */
+const COVERAGE_STATE_ALIASES: Record<string, string> = {
+  "Keşfedildi - şu anda dizine eklenmiş değil":
+    "Discovered - currently not indexed",
+  "URL Google tarafından bilinmiyor": "URL is unknown to Google",
+};
+
+/** The English sentence this state is, whatever language it arrived in. */
+function canonicalCoverageState(state: string | null): string | null {
   if (!state) return null;
-  return COVERAGE_STATE_TR[state] ?? state;
+  return COVERAGE_STATE_ALIASES[state] ?? state;
+}
+
+export function coverageStateLabel(state: string | null): string | null {
+  const canonical = canonicalCoverageState(state);
+  if (!canonical) return null;
+  // Falls back to the sentence as stored, so a state Google invents still
+  // shows rather than disappearing.
+  return COVERAGE_STATE_TR[canonical] ?? canonical;
 }
 
 /**
@@ -63,6 +97,7 @@ type CoverageFinding =
 export function classifyCoverageState(
   state: string | null,
 ): CoverageFinding | null {
-  if (!state) return null;
-  return COVERAGE_STATE_FINDING[state] ?? null;
+  const canonical = canonicalCoverageState(state);
+  if (!canonical) return null;
+  return COVERAGE_STATE_FINDING[canonical] ?? null;
 }

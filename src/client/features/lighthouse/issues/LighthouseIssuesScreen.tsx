@@ -92,6 +92,7 @@ export function LighthouseIssuesScreen(props: LighthouseIssuesScreenProps) {
         scores={issuesQuery.data?.scores}
         metrics={issuesQuery.data?.metrics}
         fieldData={issuesQuery.data?.fieldData}
+        originFieldData={issuesQuery.data?.originFieldData}
         severityCounts={severityCounts}
       />
 

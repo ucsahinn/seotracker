@@ -9,7 +9,12 @@ import {
 import { DeltaBadge } from "@/client/components/MetricTile";
 import { Chart, CHART_SERIES } from "@/client/components/Chart";
 import { Ga4ConnectCard } from "@/client/features/dashboard/Ga4ConnectCard";
-import { formatCount, formatDay, formatPercent } from "@/client/lib/format";
+import {
+  formatCount,
+  formatDay,
+  formatMoney,
+  formatPercent,
+} from "@/client/lib/format";
 import { getGa4DashboardReport } from "@/serverFunctions/ga4";
 import { formatDate } from "@/client/lib/format";
 
@@ -81,6 +86,17 @@ export function Ga4Card({
    * stamp names the source alone until the dates arrive.
    */
   const covered = report?.connected ? report.resolvedDateRange : null;
+  /*
+   * Whether this property sells anything, rather than whether it sold
+   * anything this week: a shop with a quiet window still wants its revenue
+   * tile, and a site with no shop never wants it.
+   */
+  const hasEcommerce =
+    report?.connected === true &&
+    ((report.totals.purchaseRevenue ?? 0) > 0 ||
+      (report.prevTotals.purchaseRevenue ?? 0) > 0 ||
+      (report.totals.transactions ?? 0) > 0 ||
+      (report.prevTotals.transactions ?? 0) > 0);
 
   return (
     <CardShell
@@ -159,6 +175,39 @@ export function Ga4Card({
                   report.prevTotals.keyEvents,
                 )}
               />
+              {/*
+               * Revenue, when the property records any. It was fetched on
+               * every dashboard load -- for this window and the previous
+               * one -- and thrown away at the projection.
+               *
+               * GA4 answers 0 rather than null for a property with no shop,
+               * so "is this null" was the wrong question: it put a confident
+               * "Organik gelir ₺0" on the dashboard of every site that does
+               * not sell anything. Zero in *both* windows is what says the
+               * property has no ecommerce at all.
+               */}
+              {hasEcommerce ? (
+                <Stat
+                  label="Organik gelir"
+                  value={statValue(report.totals.purchaseRevenue, (value) =>
+                    formatMoney(value, report.currencyCode),
+                  )}
+                  sub={statDelta(
+                    report.totals.purchaseRevenue,
+                    report.prevTotals.purchaseRevenue,
+                  )}
+                />
+              ) : null}
+              {hasEcommerce ? (
+                <Stat
+                  label="Sipariş"
+                  value={statValue(report.totals.transactions, formatCount)}
+                  sub={statDelta(
+                    report.totals.transactions,
+                    report.prevTotals.transactions,
+                  )}
+                />
+              ) : null}
             </div>
             {/*
              * Through the shared wrapper like every other chart. Its own

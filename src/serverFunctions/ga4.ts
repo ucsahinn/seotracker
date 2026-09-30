@@ -115,11 +115,24 @@ export const getGa4DashboardReport = createServerFn({ method: "POST" })
         projectId: context.projectId,
         windowDays: data.windowDays,
       });
+      /*
+       * Every metric the report asked for, not four of seven.
+       *
+       * `OVERVIEW_METRICS` requests engaged sessions, transactions and
+       * revenue, and the service fetches them twice per page load -- once
+       * for the window and once for the comparison -- and this projection
+       * dropped all three on the floor. "Organic revenue is down 30%" is
+       * the headline an SEO tool exists to produce, and it was one line
+       * away the whole time.
+       */
       const totals = (row: Record<string, string | number | null> | null) => ({
         sessions: overviewMetric(row, "sessions"),
         activeUsers: overviewMetric(row, "activeUsers"),
+        engagedSessions: overviewMetric(row, "engagedSessions"),
         engagementRate: overviewMetric(row, "engagementRate"),
         keyEvents: overviewMetric(row, "keyEvents"),
+        transactions: overviewMetric(row, "transactions"),
+        purchaseRevenue: overviewMetric(row, "purchaseRevenue"),
       });
       return {
         connected: true as const,
@@ -129,6 +142,9 @@ export const getGa4DashboardReport = createServerFn({ method: "POST" })
         // against is "%12 arttı" with an unnamed baseline.
         resolvedDateRange: overview.request.resolvedDateRange,
         previousDateRange: overview.request.previousDateRange,
+        // Revenue with no unit is a bare number. The property's currency was
+        // already read from the Admin API and carried this far.
+        currencyCode: overview.request.currencyCode,
         totals: totals(overview.current),
         prevTotals: totals(overview.previous),
         trend: fillDailySessions(

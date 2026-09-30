@@ -56,6 +56,28 @@ export function formatDuration(ms: number): string {
 }
 
 /** A byte size a person reads. Binary units, because that is what the tools report. */
+/**
+ * Money, in the property's own currency.
+ *
+ * GA4 reports revenue as a bare number and names the currency separately, so
+ * a revenue column without this is a figure whose unit the reader has to
+ * guess. An unknown or malformed code falls back to the plain number rather
+ * than throwing: `Intl` rejects anything that is not a valid ISO 4217 code,
+ * and a screen is not the place to find that out.
+ */
+export function formatMoney(value: number, currency: string | null): string {
+  if (!currency) return formatDecimal(value, 2);
+  try {
+    return new Intl.NumberFormat(LOCALE, {
+      style: "currency",
+      currency,
+      maximumFractionDigits: 0,
+    }).format(value);
+  } catch {
+    return formatDecimal(value, 2);
+  }
+}
+
 export function formatBytes(bytes: number): string {
   if (bytes >= 1024 * 1024) return `${formatDecimal(bytes / (1024 * 1024))} MB`;
   if (bytes >= 1024) return `${formatNumber(Math.round(bytes / 1024))} KB`;

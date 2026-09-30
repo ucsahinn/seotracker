@@ -15,6 +15,7 @@ import {
 } from "@/client/features/dashboard/GoogleSetupBanner";
 import { Ga4Card } from "@/client/features/dashboard/Ga4Card";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
+import { NextStepsCard } from "@/client/features/dashboard/NextStepsCard";
 import {
   getDashboardActivation,
   getDashboardOverview,
@@ -144,6 +145,18 @@ export function DashboardPage({ projectId }: { projectId: string }) {
       {googleConfigured === false ? <GoogleSetupBanner /> : null}
 
       <DashboardMetrics projectId={projectId} connected={gscConnected} />
+
+      {/*
+       * Above the cards on purpose: everything below is "how is the site",
+       * and this is "so what do I do" -- which is the question an operator
+       * opens the dashboard with. Built from the data the two queries above
+       * already fetched, so it costs no extra request.
+       */}
+      <NextStepsCard
+        projectId={projectId}
+        gscConnected={gscConnected}
+        audit={overview?.audit ?? null}
+      />
 
       <AuditFreshnessCard projectId={projectId} />
 

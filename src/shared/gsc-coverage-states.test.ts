@@ -28,17 +28,18 @@ describe("classifyCoverageState", () => {
   });
 
   /*
-   * Rows stored while the inspection asked for Turkish are still in the
-   * table. Guessing at a translation would attach a confident reason to
-   * the wrong page; silence leaves the row reported by the enums alone.
+   * The Turkish sentence that used to be in this list has moved to the
+   * suite below: it is no longer "unrecognised". Two of Google's Turkish
+   * renderings were verified against real stored rows -- the machine-
+   * readable `indexingState`, `robotsTxtState` and `pageFetchState` match
+   * their English twins exactly -- so mapping them is a reading, not a
+   * guess. Everything still unverified stays silent.
    */
   it("stays silent on a sentence it does not recognise", () => {
     expect(
-      classifyCoverageState("Keşfedildi - şu anda dizine eklenmiş değil"),
-    ).toBeNull();
-    expect(
       classifyCoverageState("Some state Google invents in 2027"),
     ).toBeNull();
+    expect(classifyCoverageState("Tanımadığımız bir Türkçe cümle")).toBeNull();
     expect(classifyCoverageState(null)).toBeNull();
   });
 
@@ -59,5 +60,49 @@ describe("coverageStateLabel", () => {
     );
     expect(coverageStateLabel("Mars'tan bir durum")).toBe("Mars'tan bir durum");
     expect(coverageStateLabel(null)).toBeNull();
+  });
+});
+
+/*
+ * The inspection used to be requested in Turkish, so rows stored then hold
+ * Google's Turkish sentence rather than the English key everything else is
+ * written against. Measured on the real install: 23 of 29 stored inspections
+ * were in that state and every one classified as "no finding" -- four fifths
+ * of the answers the operator had already spent quota on produced nothing.
+ */
+describe("states stored in Turkish", () => {
+  it("still produces a finding", () => {
+    expect(
+      classifyCoverageState("Keşfedildi - şu anda dizine eklenmiş değil"),
+    ).toBe("discovered-not-indexed");
+    expect(classifyCoverageState("URL Google tarafından bilinmiyor")).toBe(
+      "unknown-to-google",
+    );
+  });
+
+  /*
+   * And reads in the app's own words rather than Google's. Two phrasings of
+   * one state on one screen is a difference the reader has to resolve for no
+   * reason.
+   */
+  it("is labelled the same as its English twin", () => {
+    expect(
+      coverageStateLabel("Keşfedildi - şu anda dizine eklenmiş değil"),
+    ).toBe(coverageStateLabel("Discovered - currently not indexed"));
+    expect(coverageStateLabel("URL Google tarafından bilinmiyor")).toBe(
+      coverageStateLabel("URL is unknown to Google"),
+    );
+  });
+
+  /*
+   * A sentence nobody has mapped must not become a wrong reason: a wrong
+   * explanation for why Google will not index a page sends someone to fix
+   * the wrong thing.
+   */
+  it("leaves an unrecognised sentence alone rather than guessing", () => {
+    expect(classifyCoverageState("Bilinmeyen bir durum")).toBeNull();
+    expect(coverageStateLabel("Bilinmeyen bir durum")).toBe(
+      "Bilinmeyen bir durum",
+    );
   });
 });

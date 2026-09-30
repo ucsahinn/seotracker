@@ -19,6 +19,7 @@ import {
   formatCount,
   formatDate,
   formatDay,
+  formatMoney,
   formatPercent,
 } from "@/client/lib/format";
 import { getGa4DashboardReport } from "@/serverFunctions/ga4";
@@ -81,6 +82,22 @@ export function OrganicTrendPanel({
             deltaTitle={deltaTitle}
             format={formatPercent}
           />
+          {/* Fetched on every load for both windows and dropped before it
+              reached the screen. GA4 answers 0 rather than null for a
+              property with no shop, so zero in both windows -- not null --
+              is what says there is no ecommerce here. */}
+          {(totals.purchaseRevenue ?? 0) > 0 ||
+          (prevTotals.purchaseRevenue ?? 0) > 0 ? (
+            <Total
+              label="Organik gelir"
+              value={totals.purchaseRevenue}
+              previous={prevTotals.purchaseRevenue}
+              deltaTitle={deltaTitle}
+              format={(value) =>
+                formatMoney(value, query.data.currencyCode ?? null)
+              }
+            />
+          ) : null}
         </div>
       </div>
 

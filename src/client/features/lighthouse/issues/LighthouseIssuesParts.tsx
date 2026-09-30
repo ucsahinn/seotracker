@@ -31,6 +31,7 @@ export function LighthouseIssuesHeader({
   scores,
   metrics,
   fieldData,
+  originFieldData,
   severityCounts,
 }: {
   backLabel: string;
@@ -40,6 +41,7 @@ export function LighthouseIssuesHeader({
   scores?: LighthouseScores | null;
   metrics?: LighthouseMetrics | null;
   fieldData?: LighthouseFieldData | null;
+  originFieldData?: LighthouseFieldData | null;
   severityCounts: { critical: number; warning: number; info: number };
 }) {
   return (
@@ -67,6 +69,7 @@ export function LighthouseIssuesHeader({
             scores={scores}
             metrics={metrics}
             fieldData={fieldData}
+            originFieldData={originFieldData}
           />
           <div className="flex flex-wrap gap-2 text-xs">
             <span className="badge border border-error/30 bg-error/10 text-[var(--ink-error)] gap-1">

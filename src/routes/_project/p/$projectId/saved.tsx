@@ -24,14 +24,14 @@ import {
   DeleteSavedKeywordsModal,
   RemoveSavedKeywordsError,
 } from "@/client/features/saved-keywords/SavedKeywordsModals";
-import { SavedKeywordsPagination } from "@/client/features/saved-keywords/SavedKeywordsPagination";
+import { TablePagination } from "@/client/components/table/TablePagination";
 import { SavedKeywordsStatus } from "@/client/features/saved-keywords/SavedKeywordsStatus";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { SavedKeywordsTable } from "@/client/features/saved-keywords/SavedKeywordsTable";
 import { compileSavedKeywordsFilters } from "@/client/features/saved-keywords/savedKeywordsFilterTypes";
 import {
+  SAVED_KEYWORD_PAGE_SIZES,
   toSavedKeywordSort,
-  type SAVED_KEYWORD_PAGE_SIZES,
 } from "@/client/features/saved-keywords/savedKeywordsUtils";
 import { useSavedKeywordsExport } from "@/client/features/saved-keywords/useSavedKeywordsExport";
 import { useSavedKeywordsFilters } from "@/client/features/saved-keywords/useSavedKeywordsFilters";
@@ -308,10 +308,18 @@ function SavedKeywordsPage() {
           )}
         </div>
 
-        <SavedKeywordsPagination
+        {/*
+         * The shared component, not a fork of it. The fork had already lost
+         * one of its fixes in the copy -- the wrap that keeps the next-page
+         * button reachable on a phone -- which is the argument against
+         * forks generally.
+         */}
+        <TablePagination
           page={page}
           pageSize={pageSize}
+          pageSizes={SAVED_KEYWORD_PAGE_SIZES}
           totalCount={totalCount}
+          hasNextPage={page * pageSize < totalCount}
           isLoading={isFetching}
           onPageChange={setPage}
           onPageSizeChange={(nextPageSize) => {

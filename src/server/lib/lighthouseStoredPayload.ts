@@ -98,6 +98,12 @@ export const storedLighthousePayloadSchema = z.object({
   // Absent on rows written before field data was collected, and on URLs Chrome
   // has too little traffic to report on.
   fieldData: storedFieldDataSchema.nullish(),
+  /*
+   * The same shape for the whole origin. Nullish because payloads stored
+   * before this existed have no such key, and a stored payload is read back
+   * exactly as it was written.
+   */
+  originFieldData: storedFieldDataSchema.nullish(),
   issues: z.array(storedLighthouseIssueSchema),
 });
 

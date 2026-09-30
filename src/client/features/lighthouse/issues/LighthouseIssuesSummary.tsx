@@ -10,13 +10,30 @@ export function LighthouseIssuesSummary({
   scores,
   metrics,
   fieldData,
+  originFieldData,
 }: {
   scores?: LighthouseScores | null;
   metrics?: LighthouseMetrics | null;
   fieldData?: LighthouseFieldData | null;
+  /*
+   * The whole site's numbers, which matter most when the page has none of
+   * its own: a URL needs its own Chrome traffic to get field data, so on a
+   * small site this card was empty on almost every page while Google had
+   * been returning origin numbers in the same response all along.
+   */
+  originFieldData?: LighthouseFieldData | null;
 }) {
   const metricItems = getMetricItems(metrics);
-  const fieldItems = getFieldItems(fieldData);
+  const pageItems = getFieldItems(fieldData);
+  const originItems = getFieldItems(originFieldData);
+  /*
+   * The page's own numbers when it has them, the site's otherwise. Never
+   * both: two rows of the same five metrics, one of which is not about this
+   * page, is a comparison the reader has to be told not to make.
+   */
+  const usingOrigin = pageItems.length === 0 && originItems.length > 0;
+  const fieldItems = usingOrigin ? originItems : pageItems;
+  const shownFieldData = usingOrigin ? originFieldData : fieldData;
 
   if (!scores && metricItems.length === 0 && fieldItems.length === 0) {
     return null;
@@ -58,19 +75,24 @@ export function LighthouseIssuesSummary({
         <div className="rounded-box border border-base-300 bg-base-200/25 px-4 py-3">
           <div className="flex items-baseline justify-between gap-2">
             <span className="text-xs uppercase tracking-wide text-muted">
-              Gerçek kullanıcı verisi · son 28 gün
+              {usingOrigin
+                ? "Gerçek kullanıcı verisi · site geneli · son 28 gün"
+                : "Gerçek kullanıcı verisi · bu sayfa · son 28 gün"}
             </span>
-            {fieldData?.overall ? (
+            {shownFieldData?.overall ? (
               <span
-                className={`text-xs font-semibold ${fieldCategoryClass(fieldData.overall)}`}
+                className={`text-xs font-semibold ${fieldCategoryClass(shownFieldData.overall)}`}
               >
-                {fieldCategoryLabel(fieldData.overall)}
+                {fieldCategoryLabel(shownFieldData.overall)}
               </span>
             ) : null}
           </div>
           <p className="mt-1 text-xs leading-relaxed text-muted">
             Yukarıdaki skorlar Google&apos;ın test makinesinde ölçüldü. Bunlar
             sitenizi gerçekten ziyaret eden Chrome kullanıcılarından geliyor.
+            {usingOrigin
+              ? " Bu sayfanın kendi ziyaretçi sayısı Google'ın eşiğinin altında kaldığı için sitenizin tamamının ortalaması gösteriliyor."
+              : ""}
           </p>
           <div className="mt-3 grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-4">
             {fieldItems.map((metric) => (
@@ -88,7 +110,11 @@ export function LighthouseIssuesSummary({
           </div>
         </div>
       ) : null}
-      <LabFieldComparison metrics={metrics} fieldData={fieldData} />
+      {/* Only against the page's own numbers: comparing a lab run of one
+          page with the whole site's field data is two different subjects. */}
+      {usingOrigin ? null : (
+        <LabFieldComparison metrics={metrics} fieldData={fieldData} />
+      )}
     </>
   );
 }

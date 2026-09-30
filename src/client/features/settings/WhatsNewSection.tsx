@@ -8,8 +8,14 @@ import {
   type ChangelogEntry,
 } from "@/client/features/settings/changelog";
 
-/** Older releases stay one click away rather than filling the page. */
-const OPEN_BY_DEFAULT = 1;
+/*
+ * One release, because there is one release.
+ *
+ * `CHANGELOG.md` now keeps only the version that is published; the older
+ * notes live in `git log`. A list that offers "previous N releases" for a
+ * repository with a single tag promises history the operator cannot
+ * actually be running, so the expander is gone with it.
+ */
 
 /**
  * What changed, in the app rather than only on GitHub.
@@ -20,22 +26,17 @@ const OPEN_BY_DEFAULT = 1;
  * `CHANGELOG.md`, so it cannot fall behind what was actually shipped.
  */
 export function WhatsNewSection({ version }: { version: string }) {
-  const [expanded, setExpanded] = React.useState(false);
-  const entries = expanded
-    ? CHANGELOG_ENTRIES
-    : CHANGELOG_ENTRIES.slice(0, OPEN_BY_DEFAULT);
-
   if (CHANGELOG_ENTRIES.length === 0) return null;
 
   return (
     <section className="space-y-3">
       <SettingsHeading
         title="Sürüm notları"
-        help="Her sürümde neyin değiştiği. Çalıştırdığınız sürüm en üstte; eskiler için listeyi genişletin. Bu metin depodaki CHANGELOG.md dosyasından okunur, yani yayımlananla aynıdır."
+        help="Bu sürümde neyin değiştiği. Metin depodaki CHANGELOG.md dosyasından okunur, yani yayımlananla aynıdır."
       />
 
       <div className="divide-y divide-base-300 overflow-hidden rounded-box border border-base-300">
-        {entries.map((entry) => (
+        {CHANGELOG_ENTRIES.map((entry) => (
           <ReleaseNotes
             key={entry.version}
             entry={entry}
@@ -43,18 +44,6 @@ export function WhatsNewSection({ version }: { version: string }) {
           />
         ))}
       </div>
-
-      {CHANGELOG_ENTRIES.length > OPEN_BY_DEFAULT ? (
-        <button
-          type="button"
-          className="btn btn-ghost btn-sm"
-          onClick={() => setExpanded((open) => !open)}
-        >
-          {expanded
-            ? "Eski sürümleri gizle"
-            : `Önceki ${CHANGELOG_ENTRIES.length - OPEN_BY_DEFAULT} sürüm`}
-        </button>
-      ) : null}
     </section>
   );
 }

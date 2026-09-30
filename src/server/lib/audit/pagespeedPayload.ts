@@ -45,18 +45,29 @@ const fieldMetricSchema = z.object({
   category: z.string().optional(),
 });
 
+const loadingExperienceSchema = z.object({
+  // Set when the URL itself has no field data and Google substituted
+  // origin-wide numbers. Those describe the whole site, not this page.
+  origin_fallback: z.boolean().optional(),
+  overall_category: z.string().optional(),
+  metrics: z.record(z.string(), fieldMetricSchema.optional()).optional(),
+});
+
 const pagespeedResponseSchema = z.object({
   analysisUTCTimestamp: z.string().optional(),
   lighthouseResult: lighthouseResultSchema.optional(),
-  loadingExperience: z
-    .object({
-      // Set when the URL itself has no field data and Google substituted
-      // origin-wide numbers. Those describe the whole site, not this page.
-      origin_fallback: z.boolean().optional(),
-      overall_category: z.string().optional(),
-      metrics: z.record(z.string(), fieldMetricSchema.optional()).optional(),
-    })
-    .optional(),
+  loadingExperience: loadingExperienceSchema.optional(),
+  /*
+   * The site-wide CrUX block, which the schema did not declare and zod
+   * therefore dropped at parse -- in the same response, already paid for.
+   *
+   * It matters most exactly where the page block is empty: a URL needs its
+   * own Chrome traffic to get field data, so on a small site most pages have
+   * none and the screen showed nothing at all. The origin numbers are not
+   * this page's, and are labelled as the site's rather than substituted for
+   * it.
+   */
+  originLoadingExperience: loadingExperienceSchema.optional(),
 });
 
 const apiErrorSchema = z.object({
@@ -123,8 +134,11 @@ function readFieldMetric(
  */
 function readFieldData(
   loadingExperience: LoadingExperience,
+  /** Set for the origin block, where origin numbers are the point. */
+  isOrigin = false,
 ): StoredFieldData | null {
-  if (!loadingExperience || loadingExperience.origin_fallback) return null;
+  if (!loadingExperience) return null;
+  if (!isOrigin && loadingExperience.origin_fallback) return null;
 
   const fieldData: StoredFieldData = {
     overall: loadingExperience.overall_category ?? null,
@@ -190,6 +204,15 @@ export function parsePageSpeedPayload(
   const issueReport = buildStoredLighthouseIssues({ audits, categories });
   const metrics = buildStoredLighthouseMetrics({ audits });
   const fieldData = readFieldData(parsed.data.loadingExperience);
+  /*
+   * Read with the fallback guard off: `origin_fallback` marks a *page* block
+   * carrying origin numbers, which is the thing to reject. This block is the
+   * origin by definition, so the same numbers are the honest answer here.
+   */
+  const originFieldData = readFieldData(
+    parsed.data.originLoadingExperience,
+    true,
+  );
 
   const storedPayload: StoredLighthousePayload = {
     version: 2,
@@ -230,6 +253,7 @@ export function parsePageSpeedPayload(
           : metrics.interactionToNextPaint,
     },
     fieldData,
+    originFieldData,
     issues: issueReport.issues,
   };
 
