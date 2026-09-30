@@ -10,7 +10,10 @@ import {
   toPositionFilter,
   type PositionFilter,
 } from "./savedKeywordPositions";
-import { POSITION_WINDOW_DAYS } from "./useSavedKeywordPositions";
+import {
+  POSITION_WINDOW_DAYS,
+  TRACKED_LIMIT,
+} from "./useSavedKeywordPositions";
 
 type Positions = {
   loading: boolean;
@@ -103,6 +106,9 @@ export function SavedKeywordsSummary({
             .
           </>
         ) : null}
+        {positions.archiveRows >= TRACKED_LIMIT
+          ? ` Arşivden en çok ${formatCount(TRACKED_LIMIT)} sorgu okunuyor; bu yüzden bazı kelimelerin sırası eksik görünebilir.`
+          : null}
       </p>
 
       <FilterChips<PositionFilter>

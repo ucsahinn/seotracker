@@ -8,7 +8,7 @@ import { indexPositions } from "./savedKeywordPositions";
 /** The window the average position is read over: a quarter. */
 export const POSITION_WINDOW_DAYS = 90;
 /** The most queries one archive read returns. */
-const TRACKED_LIMIT = 500;
+export const TRACKED_LIMIT = 500;
 
 /**
  * Every saved keyword that matches the current filters, next to the average
