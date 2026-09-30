@@ -30,6 +30,7 @@ import {
   type PagesFilters,
   type PerformanceFilters,
 } from "@/client/features/audit/results/AuditResultsTableFilterLogic";
+import type { IssueSeverity } from "@/shared/audit-issues";
 import { IssuesView } from "@/client/features/audit/results/IssuesView";
 import { PagesTable } from "@/client/features/audit/results/PagesTable";
 import { TabPanel, Tabs } from "@/client/components/Tabs";
@@ -43,10 +44,12 @@ export function ResultsView({
   data,
   onTabChange,
   tab,
+  severity,
 }: {
   projectId: string;
   data: AuditResultsData;
   tab: ResultsTab;
+  severity?: IssueSeverity;
   onTabChange: (tab: ResultsTab) => void;
 }) {
   const { audit, pages, lighthouse, issues } = data;
@@ -255,6 +258,7 @@ export function ResultsView({
             {activeTab === "issues" && (
               <IssuesView
                 issues={issues}
+                initialSeverity={severity}
                 focusUrl={issueFocusUrl}
                 onClearFocus={() => setIssueFocusUrl(undefined)}
                 onShowPages={(urls, label) => {

@@ -24,11 +24,14 @@ const SEVERITY_ORDER: IssueSeverity[] = ["critical", "warning", "info"];
 
 export function IssuesView({
   issues,
+  initialSeverity,
   focusUrl,
   onClearFocus,
   onShowPages,
 }: {
   issues: AuditIssueRow[];
+  /** Open with one severity already chosen (a link from the dashboard bar). */
+  initialSeverity?: IssueSeverity;
   /**
    * Narrow to one page's findings.
    *
@@ -46,7 +49,9 @@ export function IssuesView({
     [focusUrl, issues],
   );
   const groups = useMemo(() => groupIssues(scoped), [scoped]);
-  const [severity, setSeverity] = useState<IssueSeverity | null>(null);
+  const [severity, setSeverity] = useState<IssueSeverity | null>(
+    initialSeverity ?? null,
+  );
   const [issueType, setIssueType] = useState<string | null>(null);
 
   /*

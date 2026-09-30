@@ -213,7 +213,7 @@ const COVERAGE_HEADERS = [
   "Kapsam durumu",
   "Google'ın seçtiği asıl adres",
   "Sizin belirttiğiniz asıl adres",
-  "Canonical uyuşmazlığı",
+  "Asıl adres uyuşmazlığı",
   "Son tarama",
   "Sorgulandı",
   "Hata",

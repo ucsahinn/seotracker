@@ -70,7 +70,7 @@ export function SeverityBar({
             key={segment.key}
             to="/p/$projectId/audit"
             params={{ projectId }}
-            search={{ auditId, tab: "issues" as const }}
+            search={{ auditId, tab: "issues" as const, severity: segment.key }}
             className={`${segment.fill} min-w-1 transition-opacity hover:opacity-70`}
             style={{ flexGrow: totals[segment.key] }}
             title={`${segment.label}: ${formatCount(totals[segment.key])} bulgu. ${segment.hint}`}

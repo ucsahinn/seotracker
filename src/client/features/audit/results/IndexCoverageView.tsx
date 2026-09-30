@@ -175,7 +175,7 @@ export function IndexCoverageView({
       )}
       <MetricRow>
         <MetricTile
-          label="Canonical uyuşmazlığı"
+          label="Asıl adres uyuşmazlığı"
           value={neverChecked ? null : formatNumber(data.canonicalMismatches)}
           hint={
             data.canonicalMismatches > 0
@@ -184,12 +184,12 @@ export function IndexCoverageView({
           }
         />
         <MetricTile
-          label="Sorulmayı bekleyen"
+          label="Kontrol bekleyen"
           value={formatNumber(data.due)}
           hint={
             data.lastCheckedAt
               ? `Son kontrol ${formatDateTime(data.lastCheckedAt)}`
-              : "Henüz hiç sorulmadı"
+              : "Henüz hiç kontrol edilmedi"
           }
         />
       </MetricRow>
@@ -224,7 +224,7 @@ export function IndexCoverageView({
       {neverChecked ? (
         <EmptyState
           icon={SearchCheck}
-          title="Google'a henüz sorulmadı"
+          title="Google'da henüz kontrol edilmedi"
           description="Taradığınız sayfaların gerçekten dizine girip girmediğini görmek için yukarıdaki düğmeyi kullanın."
         />
       ) : (
