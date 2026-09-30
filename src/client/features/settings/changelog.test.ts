@@ -55,6 +55,35 @@ describe("changelog", () => {
     expect(wrapped.length).toBeGreaterThan(0);
   });
 
+  /*
+   * A release note is not always a list. "Önce şunu yapın" is a paragraph
+   * and a command, and writing it as a bullet to satisfy the parser would be
+   * the tail wagging the dog -- which is exactly what happened: the notes
+   * were rewritten in plainer language and the screen silently dropped a
+   * whole section because it had no bullets in it.
+   */
+  it("keeps a prose section rather than dropping it", () => {
+    const prose = CHANGELOG_ENTRIES.flatMap((entry) => entry.sections).filter(
+      (section) => !section.heading.includes("Ekle"),
+    );
+    expect(prose.every((section) => section.items.length > 0)).toBe(true);
+  });
+
+  /*
+   * The screen has nowhere to render a fenced block, and the sentence around
+   * it already says what to run -- so the fence markers must not leak into
+   * the text as literal backticks.
+   */
+  it("leaves fenced code out of the items", () => {
+    const items = CHANGELOG_ENTRIES.flatMap((entry) =>
+      entry.sections.flatMap((section) => section.items),
+    );
+    expect(items.some((item) => item.includes("```"))).toBe(false);
+    expect(items.some((item) => item.startsWith("docker compose exec"))).toBe(
+      false,
+    );
+  });
+
   it("strips the inline markdown rather than printing it", () => {
     expect(plainText("**kalın** ve `kod` ve [bağlantı](http://x)")).toBe(
       "kalın ve kod ve bağlantı",

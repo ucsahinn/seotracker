@@ -54,11 +54,21 @@ export function CountryBreakdown({ countries }: { countries: CountryRow[] }) {
       <table className="table table-sm">
         <thead>
           <tr>
-            <th>Ülke</th>
-            <th />
-            <th className="text-right">Tıklama</th>
-            <th className="text-right">Pay</th>
-            <th className="text-right">Ort. sıra</th>
+            <th scope="col">Ülke</th>
+            <th scope="col">
+              {/* Named, even though the bar restates the count beside it: an
+                  empty <th> leaves the column unannounced in the header row. */}
+              <span className="sr-only">Dağılım</span>
+            </th>
+            <th scope="col" className="text-right">
+              Tıklama
+            </th>
+            <th scope="col" className="text-right">
+              Pay
+            </th>
+            <th scope="col" className="text-right">
+              Ort. sıra
+            </th>
           </tr>
         </thead>
         <tbody>

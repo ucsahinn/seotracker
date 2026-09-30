@@ -19,6 +19,7 @@ import {
 import { UrlCell } from "@/client/components/table/UrlCell";
 import { StackedShare } from "@/client/components/StackedShare";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
+import { severityChip } from "@/client/features/audit/shared";
 
 /**
  * What Google says about the pages the crawler found.
@@ -356,10 +357,17 @@ function CoverageTable({
                         href={row.inspectionLink}
                         target="_blank"
                         rel="noreferrer noopener"
-                        className="link link-hover inline-flex items-center gap-1 text-xs"
+                        /*
+                         * `aria-label`, not `title` alone: a title is only a
+                         * fallback accessible name and several screen
+                         * readers never expose it. The padding takes the
+                         * 14px icon up to a 24px target.
+                         */
+                        className="link link-hover inline-flex size-6 items-center justify-center text-xs"
+                        aria-label={`${row.url} adresini Search Console'da aç`}
                         title="Search Console'da aç"
                       >
-                        <ExternalLink className="size-3.5" />
+                        <ExternalLink aria-hidden className="size-3.5" />
                       </a>
                     ) : null}
                   </td>
@@ -401,7 +409,7 @@ function VerdictBadge({
 }) {
   if (error) {
     return (
-      <span className="badge badge-sm badge-error badge-outline" title={error}>
+      <span className={`badge badge-sm ${severityChip.error}`} title={error}>
         Hata
       </span>
     );

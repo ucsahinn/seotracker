@@ -8,6 +8,12 @@ import { Ga4ReportError } from "@/server/lib/ga4Errors";
 import { Ga4ConnectionRepository } from "@/server/features/ga4/repositories/Ga4ConnectionRepository";
 import { ga4DateInTimeZone, shiftGa4Date } from "./Ga4Dates";
 import { DEFAULT_WINDOW_DAYS, GSC_DATA_LAG_DAYS } from "@/shared/dataFreshness";
+import {
+  classify,
+  ctrGap,
+  expectedCtrByBucket,
+  type OpportunityKind,
+} from "@/server/features/ga4/services/opportunityKind";
 
 type SearchOpportunityInput = {
   projectId: string;
@@ -36,6 +42,16 @@ type Candidate = {
     transactions: number;
     purchaseRevenue: number | null;
   } | null;
+  /*
+   * What kind of work this page needs. The screen used to keep only
+   * positions 4-20 and call everything else "not an opportunity", which
+   * threw away a page ranking second that nobody clicks and a page at 34
+   * with four thousand impressions.
+   */
+  kind: OpportunityKind;
+  /** How far the click-through sits from this site's own median for the
+      position, or null when there is too little to compare against. */
+  ctrGap: number | null;
   score: number | null;
   scoreComponents: {
     demand: number;
@@ -276,8 +292,16 @@ async function getOpportunities(
   }
   for (const totals of ga4ByPage.values()) finishRates(totals);
 
+  /*
+   * The site's own click-through by position, computed before the rows are
+   * mapped so every candidate can be compared against it.
+   */
+  const expectedCtr = expectedCtrByBucket(gsc.rows);
+
   const candidates: Candidate[] = gsc.rows
-    .filter((row) => row.position >= 4 && row.position <= 20)
+    // Anything Google actually showed. A row with no impressions is not an
+    // opportunity, it is a page nobody has been offered yet.
+    .filter((row) => row.impressions > 0)
     .map((row) => {
       const page = row.keys?.[0] ?? "";
       const normalizedPage = normalizePageKey(page);
@@ -293,6 +317,8 @@ async function getOpportunities(
         position: row.position,
         joinStatus: analytics ? "joined" : "gsc_only",
         ga4: analytics ?? null,
+        kind: classify(row, expectedCtr),
+        ctrGap: ctrGap(row, expectedCtr),
         score: null,
         scoreComponents: null,
       } satisfies Candidate;

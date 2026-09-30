@@ -18,13 +18,16 @@ export type ChangelogEntry = {
  * so what the screen shows and what `git log` shows cannot disagree.
  *
  * Deliberately a small parser rather than a markdown renderer: these notes
- * are headings and bullets, and pulling in a renderer to display them would
- * be a dependency and an XSS surface for content that is already ours.
+ * are headings, bullets and short paragraphs, and pulling in a renderer to
+ * display them would be a dependency and an XSS surface for content that is
+ * already ours.
  */
 function parseChangelog(source: string): ChangelogEntry[] {
   const entries: ChangelogEntry[] = [];
   let entry: ChangelogEntry | null = null;
   let section: { heading: string; items: string[] } | null = null;
+  let inFence = false;
+  let paragraphOpen = false;
 
   for (const line of source.split("\n")) {
     const release = /^## \[([^\]]+)\](?:\s*[—-]\s*(.+))?$/.exec(line.trim());
@@ -39,6 +42,8 @@ function parseChangelog(source: string): ChangelogEntry[] {
           : { version, date: date?.trim() ?? null, intro: "", sections: [] };
       if (entry) entries.push(entry);
       section = null;
+      inFence = false;
+      paragraphOpen = false;
       continue;
     }
     if (!entry) continue;
@@ -47,12 +52,14 @@ function parseChangelog(source: string): ChangelogEntry[] {
     if (heading) {
       section = { heading: heading[1], items: [] };
       entry.sections.push(section);
+      paragraphOpen = false;
       continue;
     }
 
     const bullet = /^- (.+)$/.exec(line);
     if (bullet && section) {
       section.items.push(bullet[1]);
+      paragraphOpen = false;
       continue;
     }
 
@@ -64,8 +71,37 @@ function parseChangelog(source: string): ChangelogEntry[] {
     }
 
     const text = line.trim();
-    if (text && !section) {
+    if (!text) {
+      // A blank line ends a paragraph, so the next one does not run into it.
+      paragraphOpen = false;
+      continue;
+    }
+    if (!section) {
       entry.intro = entry.intro ? `${entry.intro} ${text}` : text;
+      continue;
+    }
+
+    /*
+     * Prose under a heading, kept as an item of its own.
+     *
+     * A release note is not always a list: "what you have to do first" is a
+     * paragraph and a command, and writing it as a bullet to satisfy the
+     * parser would be the tail wagging the dog. Fenced code is skipped --
+     * the screen has nowhere to put a code block, and the sentence around
+     * it already says what to run.
+     */
+    if (text.startsWith("```")) {
+      inFence = !inFence;
+      paragraphOpen = false;
+      continue;
+    }
+    if (inFence) continue;
+
+    if (paragraphOpen && section.items.length > 0) {
+      section.items[section.items.length - 1] += ` ${text}`;
+    } else {
+      section.items.push(text);
+      paragraphOpen = true;
     }
   }
 

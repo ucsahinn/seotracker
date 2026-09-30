@@ -1,3 +1,4 @@
+import * as React from "react";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { formatDate, formatDecimal } from "@/client/lib/format";
 import { DeltaBadge } from "@/client/components/MetricTile";
@@ -10,12 +11,19 @@ import { DeltaBadge } from "@/client/components/MetricTile";
  * table and the pagination.
  */
 export function QueryHistoryCard({
+  ref,
   query,
   rows,
   loading,
   error,
   onRetry,
 }: {
+  /*
+   * So the page can scroll the card into view and move focus to it when a
+   * query is opened: on a phone the card lands about a screen below the
+   * fold, and the only feedback in place was the row's tint.
+   */
+  ref?: React.Ref<HTMLDivElement>;
   query: string;
   rows: {
     date: string;
@@ -41,6 +49,8 @@ export function QueryHistoryCard({
      */
     return (
       <div
+        ref={ref}
+        tabIndex={-1}
         className="space-y-3 rounded-box border border-base-300 bg-base-100 p-4"
         aria-busy
       >
@@ -56,7 +66,11 @@ export function QueryHistoryCard({
 
   if (error) {
     return (
-      <div className="rounded-box border border-base-300">
+      <div
+        ref={ref}
+        tabIndex={-1}
+        className="rounded-box border border-base-300"
+      >
         <QueryErrorState
           compact
           error={error}
@@ -84,7 +98,11 @@ export function QueryHistoryCard({
   const improved = delta > 0;
 
   return (
-    <div className="space-y-3 rounded-box border border-base-300 bg-base-100 p-4">
+    <div
+      ref={ref}
+      tabIndex={-1}
+      className="space-y-3 rounded-box border border-base-300 bg-base-100 p-4"
+    >
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <h2 className="text-sm font-semibold">{query}</h2>
         {/*

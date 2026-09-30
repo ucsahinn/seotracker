@@ -147,33 +147,67 @@ describe("SearchOpportunityService", () => {
         kind: "landing_pages",
       }),
     );
-    expect(result.totalCandidateRows).toBe(3);
+    /*
+     * Four, not three. `/top-result` at position 2 used to be dropped by a
+     * hard 4-20 band and called "not an opportunity" -- but a page ranking
+     * second that nobody clicks is a title-and-description afternoon, which
+     * is the cheapest work on the screen. Every row Google showed is now a
+     * candidate and the *kind* says which afternoon it is.
+     */
+    expect(result.totalCandidateRows).toBe(4);
+    expect(result.rows.map((row) => row.page)).toContain(
+      "https://example.com/top-result",
+    );
     expect(result.coverage).toMatchObject({
       matchedRows: 2,
-      unmatchedGscRows: 1,
+      unmatchedGscRows: 2,
     });
-    // A page with demand and no traffic is the opportunity, not a row to
-    // bury. /no-analytics has the most impressions of the three candidates
-    // and no GA4 row, so it takes the top demand mid-rank and the neutral
-    // middle for business value: 0.5*0.8333 + 0.3*0.5 + 0.2*0.5 = 67. Under
-    // the old scoring it had no score at all and sorted last, which is the
-    // bug this pins.
+    /*
+     * The page the old band hid. `/top-result` has the most impressions of
+     * the four and the best position, so it leads on both demand and
+     * reachability -- and it was not on this screen at all, because 2 is
+     * outside 4-20.
+     */
     expect(result.rows[0]).toMatchObject({
-      page: "https://example.com/no-analytics",
-      joinStatus: "gsc_only",
-      ga4: null,
-      score: 67,
+      page: "https://example.com/top-result",
+      score: 76,
       scoreComponents: {
-        demand: 0.8333,
-        businessValue: 0.5,
-        reachability: 0.5,
+        demand: 0.875,
+        reachability: 0.875,
       },
     });
-    expect(result.rows[1]).toMatchObject({
-      page: "https://EXAMPLE.com/High-Value/?ref=gsc",
+
+    /*
+     * The invariant that survives the widening: a page with demand and no
+     * traffic is still scored rather than buried. /no-analytics has no GA4
+     * row, so it takes the neutral middle for business value instead of a
+     * zero it did not earn -- under the old scoring it had no score at all
+     * and sorted last.
+     */
+    const noAnalytics = result.rows.find(
+      (row) => row.page === "https://example.com/no-analytics",
+    );
+    expect(noAnalytics).toMatchObject({
+      joinStatus: "gsc_only",
+      ga4: null,
+      scoreComponents: { businessValue: 0.5 },
+    });
+    expect(noAnalytics?.score).toBeGreaterThan(0);
+    /*
+     * Looked up by page rather than by index: this test is about
+     * normalization and about every candidate being scored, not about the
+     * ranking -- and pinning positions made it fail for the right change.
+     */
+    expect(
+      result.rows.find(
+        (row) => row.page === "https://EXAMPLE.com/High-Value/?ref=gsc",
+      ),
+    ).toMatchObject({
       normalizedPage: "example.com/High-Value",
       joinStatus: "joined",
-      score: 64,
+      // Relative to the candidate set, which is now four rows rather than
+      // three -- `scoring.relativeToCandidateSet` says so in the response.
+      score: 54,
     });
     expect(result.scoring.businessValueMetric).toBe("sessionKeyEventRate");
     expect(result.warnings).toContain("source_time_zones_differ");

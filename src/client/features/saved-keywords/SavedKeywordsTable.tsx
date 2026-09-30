@@ -181,9 +181,13 @@ function SavedKeywordsSkeleton() {
     <div className="space-y-3" aria-busy>
       <div className="skeleton h-4 w-48" />
       {Array.from({ length: 8 }).map((_, index) => (
-        <div key={index} className="grid grid-cols-9 items-center gap-3">
-          <div className="skeleton h-4" />
-          <div className="skeleton col-span-2 h-4" />
+        /* Six columns, matching the table: select, Kelime, Amaç, Etiketler,
+           Son alınma, işlemler. It was a nine-column grid holding eight
+           children, so none of the bars lined up with what landed. */
+        <div
+          key={index}
+          className="grid grid-cols-[1.5rem_2fr_1fr_2fr_1fr_2rem] items-center gap-3"
+        >
           <div className="skeleton h-4" />
           <div className="skeleton h-4" />
           <div className="skeleton h-4" />

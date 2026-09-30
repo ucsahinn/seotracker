@@ -21,6 +21,7 @@ import {
   LighthouseScoreBadge,
 } from "@/client/features/audit/shared";
 import type { AuditResultsData } from "@/client/features/audit/results/types";
+import { severityChip } from "@/client/features/audit/shared";
 import {
   countActiveFilters,
   EmptyTableMessage,
@@ -181,15 +182,13 @@ function buildPerformanceColumns({
           "Hız ölçümü hiçbir kategori puanı döndürmedi";
         return isFailed ? (
           <span
-            className="badge badge-error badge-outline text-xs"
+            className={`badge text-xs ${severityChip.error}`}
             title={failureMessage}
           >
             başarısız
           </span>
         ) : (
-          <span className="badge badge-success badge-outline text-xs">
-            tamam
-          </span>
+          <span className={`badge text-xs ${severityChip.success}`}>tamam</span>
         );
       },
       enableSorting: true,

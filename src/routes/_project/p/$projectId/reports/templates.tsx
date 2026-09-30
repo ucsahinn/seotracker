@@ -2,7 +2,7 @@ import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { ChevronLeft, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { toast } from "sonner";
 import { ConfirmDeleteModal } from "@/client/components/ConfirmDeleteModal";
 import { ReportTemplateForm } from "@/client/features/reports/ReportTemplateForm";
@@ -16,6 +16,7 @@ import {
 } from "@/serverFunctions/reportTemplates";
 import type { ReportTemplate } from "@/types/schemas/report-templates";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
+import { backLinkClass, BackLinkLabel } from "@/client/components/BackLink";
 
 export const Route = createFileRoute(
   "/_project/p/$projectId/reports/templates",
@@ -72,10 +73,9 @@ function ReportTemplatesPage() {
       <Link
         to="/p/$projectId/reports"
         params={{ projectId }}
-        className="inline-flex items-center gap-1 text-sm text-muted transition-colors hover:text-base-content"
+        className={backLinkClass}
       >
-        <ChevronLeft className="size-4" />
-        Raporlar
+        <BackLinkLabel>Raporlar</BackLinkLabel>
       </Link>
 
       <PageHeader

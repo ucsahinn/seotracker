@@ -164,8 +164,15 @@ function QueryRow({
           {row.query}
         </span>
         <span className="shrink-0 text-xs text-muted">{competing} sayfa</span>
+        {/*
+         * Hidden below `sm`. Five items in one non-wrapping row left about
+         * 65px for the query at 390px -- four or five characters before the
+         * ellipsis, which stops being a row you can scan. The split share
+         * is the one of the three a reader can do without at that width:
+         * it is a refinement of "how bad", not "which query".
+         */}
         <span
-          className="shrink-0 text-xs text-muted"
+          className="hidden shrink-0 text-xs text-muted sm:inline"
           title="Google'ın tercih ettiği sayfa dışında kalan gösterim payı"
         >
           {formatPercent(row.splitShare, 0)} bölünme

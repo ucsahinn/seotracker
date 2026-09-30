@@ -2,6 +2,8 @@ import { Pencil, Trash2 } from "lucide-react";
 import { RowActions } from "@/client/components/table/RowActions";
 import { formatRelativeTime } from "@/client/lib/format";
 import type { ReportTemplate } from "@/types/schemas/report-templates";
+import { FileText } from "lucide-react";
+import { EmptyState } from "@/client/components/EmptyState";
 
 export function ReportTemplatesList({
   templates,
@@ -14,11 +16,11 @@ export function ReportTemplatesList({
 }) {
   if (templates.length === 0) {
     return (
-      <p className="rounded-box border border-dashed border-base-300 px-4 py-6 text-sm text-muted">
-        Henüz şablon yok. Şablon, bir rapor türü için yeniden kullanılabilir bir
-        tariftir: kime yazıldığı, hangi bölümlerden oluştuğu, nasıl bir dil
-        kullandığı.
-      </p>
+      <EmptyState
+        icon={FileText}
+        title="Henüz şablon yok"
+        description="Şablon, bir rapor türü için yeniden kullanılabilir bir tariftir: kime yazıldığı, hangi bölümlerden oluştuğu, nasıl bir dil kullandığı."
+      />
     );
   }
 

@@ -1,8 +1,8 @@
 import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { ChevronLeft } from "lucide-react";
 import { getProjects } from "@/serverFunctions/projects";
+import { backLinkClass, BackLinkLabel } from "@/client/components/BackLink";
 
 export const Route = createFileRoute("/_project/p/$projectId/settings")({
   component: ProjectSettingsLayout,
@@ -27,12 +27,8 @@ function ProjectSettingsLayout() {
   return (
     <PageShell width="reading">
       <div className="space-y-4">
-        <Link
-          to="/projects"
-          className="inline-flex items-center gap-1 text-sm text-muted transition-colors hover:text-base-content"
-        >
-          <ChevronLeft className="size-4" />
-          Projeler
+        <Link to="/projects" className={backLinkClass}>
+          <BackLinkLabel>Projeler</BackLinkLabel>
         </Link>
         {/* The non-breaking space is a placeholder: the project name
             arrives a beat after the heading, and without it the tab

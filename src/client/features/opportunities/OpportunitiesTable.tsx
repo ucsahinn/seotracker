@@ -19,6 +19,9 @@ import {
 import type { OpportunityReport } from "@/client/features/opportunities/report";
 import { Target } from "lucide-react";
 import { EmptyState } from "@/client/components/EmptyState";
+import { Copy } from "lucide-react";
+import { RowActions } from "@/client/components/table/RowActions";
+import { getSafeExternalUrl } from "@/client/components/table/url";
 
 /*
  * The three parts a score is made of, at the weights that make it.
@@ -69,26 +72,42 @@ function ScoreBadge({
         {score}
       </span>
       {parts ? (
-        <span
-          className="flex h-1 w-16 overflow-hidden rounded-full bg-base-200"
-          /* The bar is a restatement of the number beside it, so it carries
-             the breakdown as a title rather than as its own announcement. */
-          title={parts
-            .map(
-              (part) =>
-                `${part.label}: ${formatDecimal(part.points)} / ${part.weight * 100}`,
-            )
-            .join(" · ")}
-          aria-hidden
-        >
-          {parts.map((part) => (
-            <span
-              key={part.key}
-              className="h-full bg-primary"
-              style={{ width: `${part.points}%`, opacity: part.opacity }}
-            />
-          ))}
-        </span>
+        <>
+          {/*
+           * The breakdown was a `title` on an `aria-hidden` element, so it
+           * reached neither keyboard nor screen reader -- the split this
+           * component exists to expose ("67, all of it demand" and "67, the
+           * page already earns" argue for different weeks) was available on
+           * mouse hover only. The bar stays hidden; the sentence gets a
+           * reachable home beside it.
+           */}
+          <span className="sr-only">
+            {parts
+              .map(
+                (part) =>
+                  `${part.label}: ${formatDecimal(part.points)} / ${part.weight * 100}`,
+              )
+              .join(", ")}
+          </span>
+          <span
+            className="flex h-1 w-16 overflow-hidden rounded-full bg-base-200"
+            title={parts
+              .map(
+                (part) =>
+                  `${part.label}: ${formatDecimal(part.points)} / ${part.weight * 100}`,
+              )
+              .join(" · ")}
+            aria-hidden
+          >
+            {parts.map((part) => (
+              <span
+                key={part.key}
+                className="h-full bg-primary"
+                style={{ width: `${part.points}%`, opacity: part.opacity }}
+              />
+            ))}
+          </span>
+        </>
       ) : null}
     </div>
   );
@@ -274,9 +293,72 @@ function buildOpportunityColumns(
     }),
     opportunityHelper.accessor("ctr", {
       header: ({ column }) => (
-        <SortableHeader column={column} label="TO" align="right" />
+        <SortableHeader
+          column={column}
+          label="TO"
+          align="right"
+          helpText="Tıklama oranı. Altındaki fark, bu sayfanın sizin aynı sıradaki diğer sayfalarınıza göre nerede durduğunu söyler."
+        />
       ),
-      cell: ({ getValue }) => formatPercent(getValue()),
+      /*
+       * The gap under the rate, which is the number that makes "Tıklanmıyor"
+       * a finding rather than a label. Measured against this site's own
+       * median for the position band, not a published CTR curve: a brand
+       * term at position 3 behaves nothing like a comparison term at
+       * position 3, so somebody else's average is not a bar.
+       */
+      cell: ({ getValue, row }) => {
+        const gap = row.original.ctrGap;
+        return (
+          <span className="block">
+            {formatPercent(getValue())}
+            {gap !== null && Math.abs(gap) >= 0.005 ? (
+              <span
+                className={`block text-xs ${
+                  gap < 0
+                    ? "text-[var(--ink-error)]"
+                    : "text-[var(--ink-success)]"
+                }`}
+              >
+                {gap < 0 ? "▼" : "▲"} {formatPercent(Math.abs(gap))}
+              </span>
+            ) : null}
+          </span>
+        );
+      },
+      meta: right,
+    }),
+    /*
+     * Row actions. The page cell already carried two exits, but copying the
+     * address -- the thing an operator does before pasting it into a brief
+     * or a ticket -- had no home on this screen at all.
+     */
+    opportunityHelper.display({
+      id: "actions",
+      header: () => null,
+      cell: ({ row }) => {
+        const url = row.original.page;
+        return (
+          <RowActions
+            label={`${pathOf(url)} için işlemler`}
+            actions={[
+              {
+                label: "Adresi kopyala",
+                icon: Copy,
+                onSelect: () => void navigator.clipboard.writeText(url),
+              },
+              {
+                label: "Sayfayı yeni sekmede aç",
+                icon: ExternalLink,
+                onSelect: () => {
+                  const safe = getSafeExternalUrl(url);
+                  if (safe) window.open(safe, "_blank", "noopener");
+                },
+              },
+            ]}
+          />
+        );
+      },
       meta: right,
     }),
     opportunityHelper.accessor((row) => row.ga4?.sessions ?? null, {

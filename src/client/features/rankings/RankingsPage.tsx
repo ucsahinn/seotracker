@@ -3,14 +3,17 @@ import { TablePagination } from "@/client/components/table/TablePagination";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { formatDate, formatDecimal, formatNumber } from "@/client/lib/format";
 import { PageHeader, PageShell } from "@/client/components/PageShell";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { AlertCircle } from "lucide-react";
 import { SortableHeader } from "@/client/components/table/SortableHeader";
 import { describeWindow } from "@/shared/dataFreshness";
 import { TrendingUp } from "lucide-react";
 import { EmptyState } from "@/client/components/EmptyState";
 import { useLocalSort } from "@/client/components/table/useLocalSort";
+import { Copy, Search } from "lucide-react";
+import { RowActions } from "@/client/components/table/RowActions";
+import { useNavigate } from "@tanstack/react-router";
+import { ArchiveStatus } from "@/client/features/rankings/ArchiveStatus";
 import {
   compareTracked,
   type SortKey,
@@ -98,6 +101,17 @@ export function RankingsPage({
    */
   const sorting = useLocalSort<SortKey>({ key: "impressions", desc: true });
   const [search, setSearch] = useState("");
+  const historyRef = useRef<HTMLDivElement | null>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!selected) return;
+    const node = historyRef.current;
+    if (!node) return;
+    // `block: "nearest"` so a card already in view does not jump.
+    node.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    node.focus({ preventScroll: true });
+  }, [selected]);
 
   const fetched = tracked.data?.rows ?? [];
   const needle = search.trim().toLocaleLowerCase("tr");
@@ -221,6 +235,7 @@ export function RankingsPage({
                   align="right"
                 />
               </th>
+              <th />
             </tr>
           </thead>
           <tbody>
@@ -231,7 +246,7 @@ export function RankingsPage({
                 under a header saying the archive was still updating. */}
             {rows.length === 0 && !tracked.isLoading && !tracked.isPending ? (
               <tr>
-                <td colSpan={5} className="p-0">
+                <td colSpan={6} className="p-0">
                   <EmptyState
                     compact
                     icon={TrendingUp}
@@ -272,7 +287,7 @@ export function RankingsPage({
               : null}
             {tracked.isError ? (
               <tr>
-                <td colSpan={5}>
+                <td colSpan={6}>
                   <QueryErrorState
                     compact
                     error={tracked.error}
@@ -317,6 +332,35 @@ export function RankingsPage({
                 <td className="text-right tabular-nums text-muted">
                   {formatNumber(row.days)}
                 </td>
+                {/*
+                 * Row actions. An operator looking at a query that dropped
+                 * nine positions could not copy it, save it, or jump to its
+                 * Search Console rows -- the four cells beside the
+                 * disclosure button were inert.
+                 */}
+                <td className="w-10 text-right">
+                  <RowActions
+                    label={`${row.query} için işlemler`}
+                    actions={[
+                      {
+                        label: "Kelimeyi kopyala",
+                        icon: Copy,
+                        onSelect: () =>
+                          void navigator.clipboard.writeText(row.query),
+                      },
+                      {
+                        label: "Arama performansında ara",
+                        icon: Search,
+                        onSelect: () =>
+                          void navigate({
+                            to: "/p/$projectId/search-performance",
+                            params: { projectId },
+                            search: { tab: "queries" as const, q: row.query },
+                          }),
+                      },
+                    ]}
+                  />
+                </td>
               </tr>
             ))}
           </tbody>
@@ -346,7 +390,15 @@ export function RankingsPage({
       </div>
 
       {selected ? (
+        /*
+         * Scrolled to, and focused. The card renders after the table and
+         * after the pagination row, so tapping row 3 of 25 on a phone put
+         * it roughly a screen below the fold with no in-place feedback
+         * beyond the row's tint -- the screen looked like it had ignored
+         * the tap.
+         */
         <QueryHistoryCard
+          ref={historyRef}
           query={selected}
           rows={history.data?.rows ?? []}
           loading={history.isLoading}
@@ -355,118 +407,5 @@ export function RankingsPage({
         />
       ) : null}
     </PageShell>
-  );
-}
-
-function ArchiveStatus({
-  sync,
-}: {
-  sync: {
-    isLoading: boolean;
-    // `data.error` is a sync outcome the service reports; `isError` is the
-    // call itself failing. The component used to be handed only the first.
-    isError: boolean;
-    error: unknown;
-    refetch: () => unknown;
-    data?: {
-      earliestDate: string | null;
-      lastDate: string | null;
-      /** How far the sweep has looked, data or not. */
-      scannedThrough: string | null;
-      rowCount: number;
-      newDays: number;
-      hasMore: boolean;
-      notConnected: boolean;
-      error: string | null;
-    };
-  };
-}) {
-  if (sync.isLoading) {
-    /*
-     * A line of text where a line of text is coming. `ArchiveStatus` renders
-     * one sentence, so a skeleton of the same shape is the honest
-     * placeholder -- and unlike the spinner it does not claim motion the
-     * archive sync may not have.
-     */
-    return <div className="skeleton h-4 w-72" aria-busy />;
-  }
-
-  // An unexpected server error used to render nothing at all, leaving the
-  // table below with no explanation for why it was empty.
-  if (sync.isError) {
-    return (
-      <QueryErrorState
-        compact
-        error={sync.error}
-        onRetry={() => void sync.refetch()}
-        title="Arşiv durumu okunamadı"
-      />
-    );
-  }
-
-  const data = sync.data;
-  if (!data) return null;
-
-  // Setup being unfinished is not a sync failure, so it gets a plain
-  // instruction rather than a warning alert.
-  if (data.notConnected) {
-    return (
-      <p className="text-sm text-muted">
-        Sıralama arşivi Search Console verisinden doldurulur. Bağladığınızda
-        geçmiş günler kendiliğinden birikmeye başlar.
-      </p>
-    );
-  }
-
-  if (data.error) {
-    return (
-      <div className="alert alert-warning text-sm">
-        <AlertCircle className="size-4 shrink-0" />
-        <span>Arşiv güncellenemedi: {data.error}</span>
-      </div>
-    );
-  }
-
-  if (data.rowCount === 0) {
-    /*
-     * The state that used to render nothing at all -- no span, no progress,
-     * no reason -- directly above a table promising the archive was filling.
-     * `scannedThrough` is how far the sweep has looked; without it there was
-     * no way to tell "still working through the back catalogue" from
-     * "Google has nothing for this property".
-     */
-    return (
-      <p className="text-xs text-muted">
-        Arşiv boş.{" "}
-        {data.scannedThrough
-          ? `${formatDate(data.scannedThrough)} tarihine kadar tarandı, veri bulunamadı.`
-          : "Tarama henüz başlamadı."}
-        {data.hasMore
-          ? " Kalan günler sonraki açılışlarda taranacak."
-          : " Search Console bu mülk için veri döndürmüyor; site yeni doğrulandıysa birkaç gün sürebilir."}
-      </p>
-    );
-  }
-
-  // Both ends are nullable. Interpolated raw they rendered as nothing, so a
-  // half-populated archive read "Arşiv  –  arasını kapsıyor"; the range is
-  // either there or the sentence does without it.
-  const span =
-    data.earliestDate && data.lastDate
-      ? `${formatDate(data.earliestDate)} – ${formatDate(data.lastDate)} arasını kapsıyor, `
-      : "";
-
-  return (
-    <p className="text-xs text-muted">
-      Arşiv {span}
-      {formatNumber(data.rowCount)} satır.
-      {/* `newDays`, not the days written. A caught-up archive re-reads the
-          three days Search Console is still revising on every open, and
-          reporting that as days added claimed growth that never happened. */}
-      {data.newDays > 0 ? ` Bu açılışta ${data.newDays} gün eklendi.` : ""}
-      {/* The backfill walks oldest to newest, so what is left is the recent
-          end, not the old one. */}
-      {data.hasMore ? " Kalan günler sonraki açılışta tamamlanacak." : ""}
-    </p>
   );
 }

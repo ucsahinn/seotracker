@@ -117,21 +117,58 @@ ediyor. İkinci bir tablo motoru değil — bu tabloların her birinde
 `AppDataTable`'ın zorlanacağı bir hücre var (ilk sütunda açma butonu, rapora
 göre değişen sütun kümesi, genişletilebilir ayrıntı satırı).
 
-### Tasarım denetiminin kalan bulguları — hepsi kapandı
+### Tasarım denetiminin bulguları — hepsi kapandı
 
-| #    | Bulgu                                                      | Sonuç                                                                                                                                                                                                                                                           |
-| ---- | ---------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 6.18 | Denetim geçmişi sıralanamıyor                              | **Bitti** — Tarih/URL/Durum/Sayfa. Doğrulandı: "Sayfa" tıklanınca 212·212·212·212·200·120. Raporlar ve Şablonlar tabloları **bilerek bırakıldı**: ikisi de üst sınırla kesiliyor ve kesildiklerini yazıyor, satır sayısı sıralamayı hak edecek kadar büyümüyor. |
-| 6.19 | Lighthouse sorun tablosu sıralanamıyor                     | **Bitti** — Önem/Sorun/Etki/Puan. "Etki" tek sütunda iki birim taşıyor (ms ve bayt); zaman önce geliyor çünkü engelleyen istek her ziyaretçiye bekleme, büyük görsel bant genişliği maliyeti. Altı test.                                                        |
-| 6.20 | Sorgular/Sayfalar satırlarında kaydet/kopyala yok          | **Bitti** — `RowActions`: kopyala iki sekmede de, "kelime olarak kaydet" yalnızca Sorgular'da (sayfa kelime değil), "yeni sekmede aç" yalnızca adres olduğunda. İki test.                                                                                       |
-| 6.21 | Analytics'te URL hücreleri tıklanamaz, dışa aktarma yok    | **Bitti** — GA4 yolu ve alan adını ayrı boyut veriyor, ikisi birleştirilip `UrlCell` oluyor. Doğrulandı: gerçek `https://vaultpilot.io/tr/...` bağlantıları geliyor. CSV + Sheets eklendi.                                                                      |
-| 6.22 | `TableExportMenu` `PortalMenu` kullanmıyor                 | **Bitti** — iki dışa aktarma menüsü de taşındı: `aria-expanded`, Escape, dışarı tık, kırpılmayan konum.                                                                                                                                                         |
-| 6.23 | İskelet yerine dönen çark                                  | **Bitti** — beşi de: Sıralama tablosu, sorgu geçmişi kartı, Lighthouse sorun listesi, Arama Performansı sekme gövdesi, arşiv senkron satırı.                                                                                                                    |
-| 6.24 | Boş durumlar `EmptyState` kullanmıyor                      | **Bitti** — dördü de. Metinler korundu; üç ayrı boşluk sebebi (arama eşleşmedi / filtre eşleşmedi / dönemde veri yok) ayrı ayrı söyleniyor.                                                                                                                     |
-| 6.25 | Ülke kodları ham (TUR, GBR)                                | **Bitti** — `formatCountry`, alpha-3→alpha-2 daraltmasıyla. Kod, Search Console dışa aktarımıyla eşleştirmek için `title`'da kalıyor. Dört test.                                                                                                                |
-| 6.26 | Rapor görüntüleyici dördüncü bir sayfa dolgusu icat ediyor | **Bitti** — `PageShell`'e `fill` genişliği; `md:px-6 md:py-6` iki yerde elle yazılıydı ve birbirinden ayrı düşebilirdi.                                                                                                                                         |
-| 6.27 | Sıralama tablosu kapsadığı dönemi yazmıyor                 | **Bitti** — sunucu çözülen aralığı döndürüyor. Doğrulandı: 90 gün "29 Haz – 26 Eyl" veriyor, yani gecikme düzeltmesi de yerinde.                                                                                                                                |
-| 6.28 | Denetim ilerlemesi geçen süre/tahmin vermiyor              | **Bitti** — "%42 · ~3 dk kaldı". Tahmin %5 altında gösterilmiyor: orada oran bir iki sayfalık gürültü.                                                                                                                                                          |
+İlk turda yalnızca bir alt kümesini bu listeye geçirmiştim; ajanların
+raporunda deftere hiç yazılmamış bulgular vardı. Tamamı aşağıda.
+
+| Bulgu                                                               | Sonuç                                                                                                                         |
+| ------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| Denetim silme onay sormuyordu                                       | **Bitti** — uygulamadaki tek onaysız yıkıcı işlemdi.                                                                          |
+| Dolgu renkleri metin olarak kullanılıyordu                          | **Bitti** — açık temada `text-warning` 2,69:1 ölçüldü (eşik 4,5:1); ink token'ları 8,3–8,5:1.                                 |
+| Kayıtlı Kelimeler sayfalaması telefonda kırpılıyordu                | **Bitti** — paylaşılan bileşenin forkuydu, `flex-wrap`'i kopyada kaybetmişti.                                                 |
+| Sıralama, Analytics, Lighthouse, denetim geçmişi sıralanamıyordu    | **Bitti** — dördü de. Sıralama'ya arama kutusu da geldi.                                                                      |
+| Analytics 50 satıra sabitti, dışa aktarma yoktu                     | **Bitti** — 50/100/200 seçici, CSV + Sheets.                                                                                  |
+| Analytics'te adresler ölü metindi                                   | **Bitti** — GA4 yolu ve alan adını ayrı boyut veriyor; birleştirilip bağlantı oluyor.                                         |
+| Sorgular satırlarında kaydet/kopyala yoktu                          | **Bitti** — Kayıtlı Kelimeler buraya gönderebiliyordu, buradan geri gönderilemiyordu.                                         |
+| Fırsatlar ve Sıralama'da hiç satır işlemi yoktu                     | **Bitti** — kopyala, yeni sekmede aç, arama performansına git.                                                                |
+| Dışa aktarma menülerinde `aria-expanded`/Escape yoktu, kırpılıyordu | **Bitti** — ikisi de `PortalMenu`'ye taşındı.                                                                                 |
+| Denetim ilerlemesi süre vermiyordu                                  | **Bitti** — "%42 · ~3 dk kaldı".                                                                                              |
+| Ülke kodları ham geliyordu                                          | **Bitti** — TUR → Türkiye.                                                                                                    |
+| Sıralama tablosu dönemini yazmıyordu                                | **Bitti** — uygulamada rakam gösterip dönemini söylemeyen tek ekrandı.                                                        |
+| Dokunma hedefleri 24px altındaydı                                   | **Bitti** — 18×18 genişletme oku, 22×25 sütun başlığı, 12px etiket kapatma.                                                   |
+| Altı Min/Max girdisi adsızdı                                        | **Bitti** — ekran okuyucu "Min, Max, Min, Max…" duyuyordu.                                                                    |
+| Ölçüm anahtarları durumu yalnızca ikonla veriyordu                  | **Bitti** — `sr-only` "açık/kapalı".                                                                                          |
+| Tam ekran rapor tarih damgasını düşürüyordu                         | **Bitti** — paylaşılabilir bağlantıda bir aylık rapor güncel görünüyordu.                                                     |
+| Çakışmalar hatası çıkışsızdı                                        | **Bitti** — yeniden dene.                                                                                                     |
+| Bant seçilince "Gösterilen" kutucuğu yalan söylüyordu               | **Bitti** — 9 satır görünürken 50 yazıyordu.                                                                                  |
+| Lighthouse ayrıntısı 390px'te 174px'e sıkışıyordu                   | **Bitti**.                                                                                                                    |
+| Kelime ve bulgu sayıları `format.ts`'i atlıyordu                    | **Bitti**.                                                                                                                    |
+| Denetim ayrıntısı kendi başlığını elle yazıyordu                    | **Bitti** — `PageHeader` + `eyebrow`.                                                                                         |
+| Dört ekran geri bağlantısını elle yazıyordu                         | **Bitti** — `BackLink`; üç ayrı boşluk vardı.                                                                                 |
+| Form hatası alana bağlı değildi                                     | **Bitti** — `aria-invalid`, `aria-describedby`, `role="alert"`.                                                               |
+| Hız ölçümü açıklaması klavyeyle ulaşılamıyordu                      | **Bitti** — `title` yerine `HelpTip`.                                                                                         |
+| Puan dökümü yalnızca fareyle görülüyordu                            | **Bitti** — `aria-hidden` bir öğedeki `title` ne klavyeye ne ekran okuyucuya ulaşıyordu.                                      |
+| Search Console'da aç bağlantısının adı yoktu                        | **Bitti** — `title` tek başına yeterli değil.                                                                                 |
+| Dağılım sütununun başlığı boştu                                     | **Bitti** — `sr-only` ad.                                                                                                     |
+| Rozetler aynı iş için dört farklı görünümdeydi                      | **Bitti** — tek `severityChip`.                                                                                               |
+| Rapor ve şablon listeleri kesikli kutu kullanıyordu                 | **Bitti** — `EmptyState`.                                                                                                     |
+| İki iskelet yanlış şekildeydi                                       | **Bitti** — Arama Performansı dört kutu çizip tek kutuya dönüşüyordu; Kayıtlı Kelimeler 6 sütunluk tabloya 9 sütun çiziyordu. |
+| Analytics'te farklı bir yokluk işareti vardı                        | **Bitti** — "—" yerine "-".                                                                                                   |
+| Organik seyir deltası neye göre olduğunu söylemiyordu               | **Bitti** — önceki dönem adıyla yazılıyor.                                                                                    |
+| Çakışmalar satırı 390px'te sorguya 65px bırakıyordu                 | **Bitti** — bölünme payı dar ekranda gizli.                                                                                   |
+| Sorgu geçmişi telefonda ekran altında açılıyordu                    | **Bitti** — kaydırma ve odak.                                                                                                 |
+| `ai.tsx` tüm sayfayı tek `div`'e sarıp boşlukları elle yönetiyordu  | **Bitti**.                                                                                                                    |
+| Panel rozetleri kontrol yarıçapı kullanıyordu                       | **Bitti**.                                                                                                                    |
+
+### Bilerek yapılmayanlar
+
+| Konu                                          | Neden                                                                                                         |
+| --------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Raporlar ve Şablonlar tabloları sıralanamıyor | İkisi de üst sınırla kesiliyor ve kesildiklerini yazıyor; satır sayısı sıralamayı hak edecek kadar büyümüyor. |
+| Analytics sekme şeridi 390px'te 120px         | Sarma, yatay kaydırmadan iyi: kaydırma sekmeleri gizler.                                                      |
+| `ai.tsx`'te iki düğmenin 44px yüksekliği      | 44px makul bir dokunma hedefi; ortada bir kusur yok, yalnızca daisyUI ölçeğinin dışında.                      |
+| Karanlık temada dolgu renkleri                | Ölçüldü: 6,1–9,3:1, zaten geçiyor. Ajanın hata tahmini yalnızca açık tema içindi.                             |
 
 ## 7. Senin kararını bekleyenler
 

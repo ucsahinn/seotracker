@@ -80,3 +80,16 @@ data, or sensitive paths.
   symlink mode without needing the filesystem to support one. Worth knowing
   before adding a tenth: check `git ls-files -s .claude/skills` and expect
   `120000` on every row.
+
+## badseo harness `slow-response` is wall-clock flaky under load
+
+Running `pnpm --dir badseo run audit` while a `docker compose up --build` is
+running on the same machine produced two spurious failures — "Noindex (robots
+meta)" and "hreflang with an invalid region code", both `extra: slow-response`.
+A second run with the machine idle passed 60/60.
+
+`slow-response` compares a real response time against a fixed threshold, so
+the fixture server losing the CPU to a container build is enough to trip it on
+whichever fixtures happen to be crawled during the spike. Nothing to fix in the
+rule — it is measuring what it says it measures — but a harness failure that
+names only `slow-response` is worth re-running before believing.

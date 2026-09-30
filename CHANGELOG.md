@@ -5,6 +5,49 @@ numaraları [SemVer](https://semver.org/lang/tr/) izler.
 
 ## [Yayınlanmamış]
 
+## [1.4.0] — 2026-09-30
+
+Ekranların kullanılabilirliği baştan sona gözden geçirildi: tabloların çoğuna
+satır işlemleri geldi, klavye ve ekran okuyucuyla ulaşılamayan yerler açıldı,
+ve okunmayan renkler düzeltildi.
+
+### Ne değişti
+
+- **Listelerde satır işlemleri.** Fırsatlar ve Sıralama Takibi'nde bir satırı
+  kopyalayabilir, sayfasını açabilir ya da arama performansında
+  arayabilirsiniz. Önceden bu iki ekranda hiçbir satır işlemi yoktu.
+- **Sıralama Takibi'nde bir sorguya tıklayınca geçmiş kartına iniyor.**
+  Telefonda kart ekranın bir boy altında açılıyordu ve hiçbir şey olmamış
+  gibi görünüyordu.
+- **Denetim ekranı ne zaman tarandığını "4 gün önce" diye söylüyor.** Tam
+  saat üstüne gelince görünüyor. "26 Eyl 10:36" okuyanı hesap yapmaya
+  zorluyordu.
+- **Rapor ve şablon listeleri boşken düzgün bir karşılama gösteriyor.**
+
+### Düzeltilenler
+
+- **Puan dökümü yalnızca fareyle görülebiliyordu.** Fırsatlar tablosundaki
+  puanın neyden oluştuğu klavyeyle de ekran okuyucuyla da ulaşılamıyordu.
+- **Denetim başlatma formunda hata mesajı alana bağlı değildi.** Ekran
+  okuyucu kullanan biri gönderiyor, alan hâlâ "geçerli" diye okunuyor ve
+  mesaj hiç duyulmuyordu.
+- **Hız ölçümü açıklaması yalnızca fareyle görünüyordu.**
+- **Search Console'da aç bağlantısının adı yoktu.**
+- **Dağılım sütununun başlığı boştu.**
+- **Rozetler aynı iş için dört farklı görünümdeydi.** Denetim geçmişinde
+  "Bitti" ve "Başarısız" yan yana iki ayrı dilde duruyordu.
+- **İki yükleme iskeleti yanlış şekildeydi** ve içerik gelince sayfa
+  zıplıyordu.
+- **Çakışmalar satırı telefonda sorguya beş harf yer bırakıyordu.**
+- **Analytics'te başka bir yokluk işareti kullanılıyordu.**
+- **Organik seyir yüzdesi neye göre arttığını söylemiyordu.**
+- Uygulama içindeki sürüm notu ekranı, düz paragraflı bir bölümü sessizce
+  atlıyordu.
+
+### Sayılar
+
+76 denetim kuralı · 764 test · 13 ekran çalışıyor · hata ayıklama uyarısı yok
+
 ## [1.3.0] — 2026-09-30
 
 Sayılar artık hangi günleri kapsadığını söylüyor, tablolar sıralanabiliyor,

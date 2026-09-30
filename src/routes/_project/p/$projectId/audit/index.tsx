@@ -1,4 +1,5 @@
-import { PageShell } from "@/client/components/PageShell";
+import { PageHeader, PageShell } from "@/client/components/PageShell";
+import { formatRelativeTime } from "@/client/lib/format";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { getErrorCode } from "@/client/lib/error-messages";
 import {
@@ -19,6 +20,7 @@ import {
 import { auditSearchSchema, type AuditTab } from "@/types/schemas/audit";
 import { LaunchView } from "@/client/features/audit/launch/LaunchView";
 import { ResultsView } from "@/client/features/audit/results/ResultsView";
+import { BackLink } from "@/client/components/BackLink";
 import {
   extractHostname,
   extractPathname,
@@ -155,24 +157,36 @@ function AuditDetail({
 
   return (
     <PageShell>
-      <div className="space-y-1">
-        <button className="btn btn-ghost btn-sm px-0" onClick={onBack}>
-          &larr; Tüm denetimler
-        </button>
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-          <h1 className="text-2xl font-semibold">
+      {/* `PageHeader`, not a hand-rolled h1: this screen had its own heading
+          markup and its own idea of the gap below it, which is how the app
+          ended up with several. The back button is what `eyebrow` is for. */}
+      <PageHeader
+        eyebrow={<BackLink onClick={onBack}>Tüm denetimler</BackLink>}
+        title={
+          <span className="flex flex-wrap items-center gap-x-3 gap-y-1">
             {status ? extractHostname(status.startUrl) : "Site Denetimi"}
-          </h1>
-          {status?.status !== "running" && status && (
-            <StatusBadge status={status.status} />
-          )}
-        </div>
-        {status && (
-          <p className="text-sm text-muted">
-            Site denetimi &middot; {formatStartedAt(status.startedAt)}
-          </p>
-        )}
-      </div>
+            {status && status.status !== "running" ? (
+              <StatusBadge status={status.status} />
+            ) : null}
+          </span>
+        }
+        description={
+          status ? (
+            <>
+              {/* Relative, with the exact time in the tooltip. "26 Eyl 10:36"
+                  makes the reader do date arithmetic to answer the only
+                  question they have: is this crawl current? */}
+              Site denetimi ·{" "}
+              <time
+                dateTime={status.startedAt}
+                title={formatStartedAt(status.startedAt)}
+              >
+                {formatRelativeTime(status.startedAt)}
+              </time>
+            </>
+          ) : undefined
+        }
+      />
 
       {isRunning && status && (
         <ProgressCard projectId={projectId} auditId={auditId} status={status} />

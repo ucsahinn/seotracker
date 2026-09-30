@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { ChevronRight } from "lucide-react";
 import { sort } from "remeda";
-import { formatNumber } from "@/client/lib/format";
+import { formatCount, formatNumber } from "@/client/lib/format";
 import {
   getIssueDescriptor,
   ISSUE_SEVERITY_ORDER,
@@ -206,7 +206,7 @@ function IssueSection({
           {SEVERITY_LABEL[section.severity]}
         </span>
         <span className="text-[11px] tabular-nums text-muted">
-          {issueCount}
+          {formatCount(issueCount)}
         </span>
       </div>
       <div className="divide-y divide-base-300/60">
@@ -242,7 +242,7 @@ function IssueRow({ group }: { group: IssueGroup }) {
           {group.title}
         </span>
         <span className="text-xs tabular-nums text-muted shrink-0">
-          {group.pageCount} sayfa
+          {formatCount(group.pageCount)} sayfa
         </span>
         <ChevronRight
           className={`size-4 shrink-0 text-muted transition-transform ${
@@ -276,7 +276,7 @@ function AffectedUrlList({ issues }: { issues: AuditIssueRow[] }) {
   const remaining = issues.length - rendered.length;
 
   return (
-    <div className="max-h-[320px] overflow-y-auto rounded-field border border-base-300/60 bg-base-100">
+    <div className="max-h-[320px] overflow-y-auto rounded-box border border-base-300/60 bg-base-100">
       {rendered.map((issue) => (
         <div
           key={issue.id}

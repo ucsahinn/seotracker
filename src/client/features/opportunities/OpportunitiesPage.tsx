@@ -8,24 +8,27 @@ import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { OpportunitiesTable } from "@/client/features/opportunities/OpportunitiesTable";
 import type { OpportunityReport } from "@/client/features/opportunities/report";
 import { formatDate, formatNumber } from "@/client/lib/format";
-import { DEFAULT_WINDOW_DAYS, describeWindow } from "@/shared/dataFreshness";
+import { describeWindow } from "@/shared/dataFreshness";
 import { getSearchOpportunities } from "@/serverFunctions/opportunities";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import {
-  bandOf,
-  PositionBands,
-  type BandId,
-} from "@/client/features/opportunities/PositionBands";
+  OpportunityKinds,
+  type KindId,
+} from "@/client/features/opportunities/OpportunityKinds";
 /**
- * Pages sitting between positions 4 and 20, ranked by what moving them up
- * would be worth.
+ * Every page Google showed, ranked by what working on it would be worth.
  *
- * Position 4 to 20 is the band where effort pays: the page already ranks, so
- * Google has accepted it, and the clicks above it are real. Which of them to
- * spend a week on is the actual question, and Search Console alone cannot
- * answer it because it does not know which pages earn anything. Joining the
- * band with GA4 outcomes does, and the scoring weighs demand at 50%,
- * business value at 30% and how close the page already is at 20%.
+ * This used to keep only positions 4 through 20 and call the rest "not an
+ * opportunity", which threw away two real ones: a page ranking second whose
+ * snippet nobody clicks is a title-and-description afternoon, and a page at
+ * 34 with four thousand impressions is a content decision. An opportunity is
+ * an opportunity; the band only ever said which *kind* -- so that is what
+ * the tiles above the table now say.
+ *
+ * Which page to spend a week on is the actual question, and Search Console
+ * alone cannot answer it because it does not know which pages earn anything.
+ * Joining it with GA4 outcomes does: demand at 50%, business value at 30%,
+ * and how close the page already is at 20%.
  */
 /*
  * 100 is the ceiling `SearchOpportunityService` enforces, and it threw a
@@ -50,9 +53,21 @@ const WINDOWS = [
 
 type WindowDays = (typeof WINDOWS)[number]["days"];
 
-export function OpportunitiesPage({ projectId }: { projectId: string }) {
-  const [limit, setLimit] = useState<(typeof LIMITS)[number]>(50);
-  const [windowDays, setWindowDays] = useState<WindowDays>(DEFAULT_WINDOW_DAYS);
+export function OpportunitiesPage({
+  projectId,
+  windowDays,
+  limit,
+  onViewChange,
+}: {
+  projectId: string;
+  /** Held in the URL by the route, so a reload or a shared link keeps it. */
+  windowDays: WindowDays;
+  limit: (typeof LIMITS)[number];
+  onViewChange: (next: {
+    windowDays?: WindowDays;
+    limit?: (typeof LIMITS)[number];
+  }) => void;
+}) {
   const query = useQuery({
     queryKey: ["searchOpportunities", projectId, limit, windowDays],
     queryFn: () =>
@@ -64,7 +79,7 @@ export function OpportunitiesPage({ projectId }: { projectId: string }) {
     <PageShell>
       <PageHeader
         title="Fırsatlar"
-        description="4. ile 20. sıra arasındaki sayfalarınız, yukarı taşımanın değerine göre sıralanmış."
+        description="Arama sonuçlarında görünen sayfalarınız, üzerinde çalışmanın değerine göre sıralanmış."
       />
 
       {query.isPending ? (
@@ -84,9 +99,9 @@ export function OpportunitiesPage({ projectId }: { projectId: string }) {
         <Report
           data={query.data.report}
           limit={limit}
-          onLimitChange={setLimit}
+          onLimitChange={(next) => onViewChange({ limit: next })}
           windowDays={windowDays}
-          onWindowChange={setWindowDays}
+          onWindowChange={(next) => onViewChange({ windowDays: next })}
           projectId={projectId}
         />
       ) : (
@@ -168,7 +183,7 @@ function NoOpportunities({
     <EmptyState
       icon={Target}
       title="Bu aralıkta fırsat yok"
-      description={`${period} aralığında görünen ${formatNumber(pagesConsidered)} sayfanın hiçbiri 4. ile 20. sıra arasında değil. Ya hepsi ilk üçte, ya da hepsi 20. sıranın altında.`}
+      description={`${period} aralığında hiçbir sayfanız arama sonuçlarında gösterilmedi.`}
     />
   );
 }
@@ -219,12 +234,10 @@ function Report({
   onWindowChange: (days: WindowDays) => void;
   projectId: string;
 }) {
-  const [band, setBand] = useState<BandId | null>(null);
+  const [kind, setKind] = useState<KindId | null>(null);
 
   const shown =
-    band === null
-      ? data.rows
-      : data.rows.filter((row) => bandOf(row.position) === band);
+    kind === null ? data.rows : data.rows.filter((row) => row.kind === kind);
 
   const windowControl = (
     <WindowPicker windowDays={windowDays} onChange={onWindowChange} />
@@ -288,7 +301,7 @@ function Report({
             top 50 of 300". The hint says which, and the selector below lets
             the operator actually reach the rest. */}
         {/*
-         * Counts what is on screen. With a position band selected the tile
+         * Counts what is on screen. With a kind selected the tile
          * kept reporting the unfiltered total -- "50" above nine visible
          * rows -- while the export menu beside it already labelled itself
          * from the filtered array.
@@ -297,8 +310,8 @@ function Report({
           label="Gösterilen"
           value={formatNumber(shown.length)}
           hint={
-            band !== null
-              ? `${band}. sıra bandı · ${formatNumber(data.rowCount)} satır içinde`
+            kind !== null
+              ? `Seçili türde · ${formatNumber(data.rowCount)} satır içinde`
               : data.truncated.candidates
                 ? `${formatNumber(data.totalCandidateRows)} aday sayfanın en iyileri`
                 : `Tüm aday sayfalar (${formatNumber(data.totalCandidateRows)})`
@@ -357,7 +370,7 @@ function Report({
         </select>
       </div>
 
-      <PositionBands rows={data.rows} selected={band} onSelect={setBand} />
+      <OpportunityKinds rows={data.rows} selected={kind} onSelect={setKind} />
 
       <OpportunitiesTable projectId={projectId} rows={shown} />
 

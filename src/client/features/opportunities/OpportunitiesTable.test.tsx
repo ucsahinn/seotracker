@@ -33,6 +33,8 @@ function row(page: string, score: number, impressions: number) {
     joinStatus: "gsc_only" as const,
     ga4: null,
     score,
+    kind: "near_miss" as const,
+    ctrGap: null,
     scoreComponents: null,
   };
 }

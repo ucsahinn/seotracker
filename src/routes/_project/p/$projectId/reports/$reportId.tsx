@@ -3,7 +3,6 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
-  ChevronLeft,
   ExternalLink,
   FileDown,
   Maximize2,
@@ -27,6 +26,7 @@ import {
 } from "@/client/lib/error-messages";
 import { captureClientEvent } from "@/client/lib/observability";
 import { getReport } from "@/serverFunctions/reports";
+import { backLinkClass, BackLinkLabel } from "@/client/components/BackLink";
 
 // Expand lives in the URL, not in state, so a refresh (or a link someone
 // pasted) comes back expanded.
@@ -212,10 +212,9 @@ function ReportDetailPage() {
           <Link
             to="/p/$projectId/reports"
             params={{ projectId }}
-            className="inline-flex items-center gap-1 text-sm text-muted transition-colors hover:text-base-content"
+            className={backLinkClass}
           >
-            <ChevronLeft className="size-4" />
-            Raporlar
+            <BackLinkLabel>Raporlar</BackLinkLabel>
           </Link>
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div className="min-w-0">

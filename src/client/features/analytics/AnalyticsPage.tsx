@@ -48,8 +48,16 @@ function columnLabel(field: string): string {
 }
 
 /** Rates as percentages, everything else as a count. Strings pass through. */
-function cellValue(field: string, value: string | number | null): string {
-  if (value === null || value === "") return "—";
+function cellValue(
+  field: string,
+  value: string | number | null,
+): React.ReactNode {
+  // "-" in `text-subtle`, matching `MetricTile` and the opportunity table.
+  // Two absence glyphs on one screen for the same meaning is a detail the
+  // reader has to resolve for no reason.
+  if (value === null || value === "") {
+    return <span className="text-subtle">-</span>;
+  }
   if (typeof value === "string") return value;
   if (GA4_RATE_FIELDS.has(field)) return formatPercent(value);
   return formatCount(value);

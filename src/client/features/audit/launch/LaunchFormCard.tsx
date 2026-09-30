@@ -3,6 +3,7 @@ import { MIN_PAGES } from "@/client/features/audit/launch/types";
 import type { useLaunchController } from "@/client/features/audit/launch/useLaunchController";
 import { formatNumber } from "@/client/lib/format";
 import { getFieldError, getFormError } from "@/client/lib/forms";
+import { HelpTip } from "@/client/components/HelpTip";
 
 type Props = {
   launchForm: ReturnType<typeof useLaunchController>["launchForm"];
@@ -39,6 +40,14 @@ export function LaunchFormCard({
                     // A placeholder is not a label: it disappears on the
                     // first keystroke and is never announced as a name.
                     aria-label="Taranacak site adresi"
+                    /*
+                     * The error lives outside the form element, so without
+                     * these a screen-reader user submitted, focus stayed on
+                     * a field that still announced as valid, and the message
+                     * sat in an unannounced region they never reached.
+                     */
+                    aria-invalid={urlError ? true : undefined}
+                    aria-describedby={urlError ? "launch-url-error" : undefined}
                     placeholder="https://example.com"
                     value={field.state.value}
                     onChange={(event) => {
@@ -146,11 +155,14 @@ function LighthouseOptions({ launchForm }: Pick<Props, "launchForm">) {
             />
           )}
         </launchForm.Field>
-        <span
-          className="text-sm font-medium text-muted"
-          title="Sayfalarınızın hızını ölçer ve performans sorunlarını raporlar."
-        >
-          Hız ölçümünü dahil et
+        {/* `HelpTip`, not `title` on a span: a title on a non-interactive
+            element is mouse-hover only, so a keyboard user never saw the
+            explanation. */}
+        <span className="text-sm font-medium text-muted">
+          Hız ölçümünü dahil et{" "}
+          <HelpTip label="Hız ölçümü">
+            Sayfalarınızın hızını ölçer ve performans sorunlarını raporlar.
+          </HelpTip>
         </span>
       </label>
 
@@ -180,7 +192,12 @@ function LaunchErrors({ launchForm }: Pick<Props, "launchForm">) {
           const urlError = getFieldError(field.state.meta.errors);
 
           return urlError ? (
-            <p className="text-sm text-[var(--ink-error)]">{urlError}</p>
+            <p
+              id="launch-url-error"
+              className="text-sm text-[var(--ink-error)]"
+            >
+              {urlError}
+            </p>
           ) : null;
         }}
       </launchForm.Field>
@@ -190,7 +207,9 @@ function LaunchErrors({ launchForm }: Pick<Props, "launchForm">) {
           const errorMessage = getFormError(submitError);
 
           return errorMessage ? (
-            <div className="alert alert-error py-2">
+            /* `role="alert"`: a form-level failure that appears after a
+               submit is exactly the case an assertive region exists for. */
+            <div role="alert" className="alert alert-error py-2">
               <span className="text-sm">{errorMessage}</span>
             </div>
           ) : null;

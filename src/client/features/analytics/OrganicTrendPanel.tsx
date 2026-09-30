@@ -15,7 +15,12 @@ import {
   CHART_SERIES,
 } from "@/client/components/Chart";
 import { DeltaBadge } from "@/client/components/MetricTile";
-import { formatCount, formatDay, formatPercent } from "@/client/lib/format";
+import {
+  formatCount,
+  formatDate,
+  formatDay,
+  formatPercent,
+} from "@/client/lib/format";
 import { getGa4DashboardReport } from "@/serverFunctions/ga4";
 
 type TrendRow = { date: string; sessions: number };
@@ -45,7 +50,10 @@ export function OrganicTrendPanel({
   // in their own words, and a second copy of that message helps nobody.
   if (query.isError || !query.data?.connected) return null;
 
-  const { totals, prevTotals, trend } = query.data;
+  const { totals, prevTotals, trend, previousDateRange } = query.data;
+  /* The same sentence the search-performance totals use, so a reader who
+     has seen one knows what the other means. */
+  const deltaTitle = `${formatDate(previousDateRange.startDate)} – ${formatDate(previousDateRange.endDate)} dönemine göre`;
   const rows: TrendRow[] = trend;
   const hasSessions = rows.some((row) => row.sessions > 0);
 
@@ -63,12 +71,14 @@ export function OrganicTrendPanel({
             label="Oturum"
             value={totals.sessions}
             previous={prevTotals.sessions}
+            deltaTitle={deltaTitle}
             format={formatCount}
           />
           <Total
             label="Etkileşim oranı"
             value={totals.engagementRate}
             previous={prevTotals.engagementRate}
+            deltaTitle={deltaTitle}
             format={formatPercent}
           />
         </div>
@@ -92,11 +102,14 @@ function Total({
   label,
   value,
   previous,
+  deltaTitle,
   format,
 }: {
   label: string;
   value: number | null;
   previous: number | null;
+  /** What the delta is measured against, named rather than implied. */
+  deltaTitle: string;
   format: (value: number) => string;
 }) {
   return (
@@ -105,7 +118,10 @@ function Total({
       <p className="flex items-center gap-1.5 text-sm font-medium tabular-nums">
         {value === null ? "--" : format(value)}
         {value !== null && previous !== null && previous > 0 ? (
-          <DeltaBadge value={(value - previous) / previous} />
+          <DeltaBadge
+            value={(value - previous) / previous}
+            title={deltaTitle}
+          />
         ) : null}
       </p>
     </div>

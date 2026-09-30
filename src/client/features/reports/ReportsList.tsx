@@ -10,6 +10,8 @@ import { formatCreatedBy } from "@/client/features/reports/shared";
 import { formatRelativeTime } from "@/client/lib/format";
 import type { ReportListItem } from "@/serverFunctions/reports";
 import { REPORT_APP_LIST_LIMIT } from "@/types/schemas/reports";
+import { FileText } from "lucide-react";
+import { EmptyState } from "@/client/components/EmptyState";
 
 export function ReportsList({
   projectId,
@@ -22,10 +24,13 @@ export function ReportsList({
 }) {
   if (reports.length === 0) {
     return (
-      <p className="rounded-box border border-dashed border-base-300 px-4 py-6 text-sm text-muted">
-        Henüz rapor yok. Claude Code ya da Codex üzerinden seo-audit gibi bir
-        seotracker becerisi çalıştırın; rapor burada görünecek.
-      </p>
+      /* The primary empty state of a whole screen, and it was the grey
+         sentence in a dashed box that `EmptyState` exists to replace. */
+      <EmptyState
+        icon={FileText}
+        title="Henüz rapor yok"
+        description="Claude Code ya da Codex üzerinden seo-audit gibi bir seotracker becerisi çalıştırın; rapor burada görünecek."
+      />
     );
   }
 

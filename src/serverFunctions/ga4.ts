@@ -124,8 +124,11 @@ export const getGa4DashboardReport = createServerFn({ method: "POST" })
       return {
         connected: true as const,
         // The dates the report covers, so the card can name its own window
-        // instead of carrying a literal that can drift from it.
+        // instead of carrying a literal that can drift from it. The previous
+        // window comes too: a delta badge that does not say what it is
+        // against is "%12 arttı" with an unnamed baseline.
         resolvedDateRange: overview.request.resolvedDateRange,
+        previousDateRange: overview.request.previousDateRange,
         totals: totals(overview.current),
         prevTotals: totals(overview.previous),
         trend: fillDailySessions(

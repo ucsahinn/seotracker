@@ -32,28 +32,46 @@ export function StatusBadge({ status }: { status: string }) {
 
   if (status === "completed") {
     return (
-      <span className="badge badge-sm gap-1 border-success/30 bg-success/10 text-[var(--ink-success)]">
+      <span className={`badge badge-sm gap-1 ${severityChip.success}`}>
         <CheckCircle className="size-3" /> Bitti
       </span>
     );
   }
 
   return (
-    <span className="badge badge-error badge-sm gap-1">
+    <span className={`badge badge-sm gap-1 ${severityChip.error}`}>
       <AlertCircle className="size-3" /> Başarısız
     </span>
   );
 }
 
+/**
+ * One tinted chip for the whole severity family.
+ *
+ * "Bitti" was a tinted chip and "Başarısız" two lines below it was a solid
+ * daisyUI badge, so the audit history table showed the two side by side in
+ * two different visual languages. The tinted form is the house one, and it
+ * is the readable one: the fill colour on white is around 2.7:1 for warning.
+ */
+export const severityChip = {
+  success: "border-success/30 bg-success/10 text-[var(--ink-success)]",
+  warning: "border-warning/30 bg-warning/10 text-[var(--ink-warning)]",
+  error: "border-error/30 bg-error/10 text-[var(--ink-error)]",
+} as const;
+
 export function HttpStatusBadge({ code }: { code: number | null }) {
   if (!code) return <span className="badge badge-ghost badge-sm">-</span>;
   if (code >= 200 && code < 300) {
-    return <span className="badge badge-success badge-sm">{code}</span>;
+    return (
+      <span className={`badge badge-sm ${severityChip.success}`}>{code}</span>
+    );
   }
   if (code >= 300 && code < 400) {
-    return <span className="badge badge-warning badge-sm">{code}</span>;
+    return (
+      <span className={`badge badge-sm ${severityChip.warning}`}>{code}</span>
+    );
   }
-  return <span className="badge badge-error badge-sm">{code}</span>;
+  return <span className={`badge badge-sm ${severityChip.error}`}>{code}</span>;
 }
 
 export function LighthouseScoreBadge({ score }: { score: number | null }) {
