@@ -136,11 +136,19 @@ function SavedKeywordsPage() {
       ),
     [positionData.all.data, positionData.positions, positionFilter],
   );
-  const byPosition = positionFilter !== null;
+  // Without the archive a position group cannot be computed, and the summary
+  // then shows an error instead of the chips, so the filter could never be
+  // cleared. Fall back to the plain list and let the summary carry the error.
+  const trackedFailed = positionData.tracked.isError;
+  const byPosition = positionFilter !== null && !trackedFailed;
   const loadingList = byPosition
     ? positionData.all.isLoading || positionData.tracked.isLoading
     : isLoading;
   const listError = byPosition ? positionData.all : savedQuery;
+
+  useEffect(() => {
+    if (trackedFailed) setPositionFilter(null);
+  }, [trackedFailed]);
 
   const savedKeywords = byPosition
     ? positionRows.slice((page - 1) * pageSize, page * pageSize)

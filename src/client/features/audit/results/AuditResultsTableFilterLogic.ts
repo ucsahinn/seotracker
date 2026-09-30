@@ -89,13 +89,13 @@ export function isLighthouseFailure(row: LighthouseFailureFields) {
 }
 
 export function filterPages(rows: PageRow[], filters: PagesFilters) {
-  const query = filters.query.trim().toLowerCase();
+  const query = filters.query.trim().toLocaleLowerCase("tr-TR");
   return rows.filter((row) => {
     if (query) {
       const haystack = [row.url, row.title, row.metaDescription]
         .filter(Boolean)
         .join(" ")
-        .toLowerCase();
+        .toLocaleLowerCase("tr-TR");
       if (!haystack.includes(query)) return false;
     }
     if (!matchesStatus(row.statusCode, filters.status)) return false;
@@ -148,11 +148,11 @@ export function filterPerformanceRows(
   rows: PerformanceRowData[],
   filters: PerformanceFilters,
 ) {
-  const query = filters.query.trim().toLowerCase();
+  const query = filters.query.trim().toLocaleLowerCase("tr-TR");
   return rows.filter((row) => {
     if (query) {
       const haystack = [row.pageUrl, row.pagePath].filter(Boolean).join(" ");
-      if (!haystack.toLowerCase().includes(query)) return false;
+      if (!haystack.toLocaleLowerCase("tr-TR").includes(query)) return false;
     }
     if (filters.device !== "all" && row.strategy !== filters.device) {
       return false;

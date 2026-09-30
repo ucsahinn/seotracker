@@ -26,6 +26,8 @@ function matchesMove(id: MoveId, row: MoveRow): boolean {
     case "fallers":
       return directionOf(row.delta) === "down";
     case "top10":
+      // Anything on page one now that also has a previous reading, including
+      // queries that have just risen in.
       return onFirstPage(row.position);
     case "lost":
       // On page one before, not any more.

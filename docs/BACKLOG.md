@@ -15,7 +15,7 @@ Son güncelleme: 2026-09-29, commit `4530d62` (v1.2.0 + veri tazeliği turu).
 | ---- | -------------------------------------------------------------------------------------------- | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 1.1  | Denetim raporu, denetlenen siteye ait olmalı (başka site denetlerken vaultpilot görünüyordu) | **bitti**          | `src/shared/gscProperty.ts` + `ForeignPropertyNotice`. example.com denetleyip vaultpilot'ın 210 URL'lik site haritasının geldiğini görerek yeniden üretildi, sonra kapatıldı. |
 | 1.2  | Denetim tablosunda hızlı butonlar (yeniden çalıştır, kopyala)                                | **bitti**          | `RowActions` + `UrlCell`; denetim geçmişi, raporlar, şablonlar ve kayıtlı kelimelerde kullanılıyor.                                                                           |
-| 1.3  | Denetimi olabildiğince iyileştir — "bir siteyi 1 numara yapacak her şey"                     | **bitti (bu tur)** | 67 → 73 → **76 kural**. Son üç: `open-graph-missing-site`, `sitemap-lastmod-missing`, `sitemap-lastmod-future`.                                                               |
+| 1.3  | Denetimi olabildiğince iyileştir — "bir siteyi 1 numara yapacak her şey"                     | **bitti (bu tur)** | 67 → 73 → 76 → şimdi **95 kural** (o tur sonundaki sayı 76 idi). Son üç: `open-graph-missing-site`, `sitemap-lastmod-missing`, `sitemap-lastmod-future`.                      |
 | 1.4  | Gün sonunda "raporu indir": profesyonel görselli, Raporlar sekmesine de yazılan rapor        | **bitti**          | `src/server/features/audit/report/buildAuditReportHtml.ts`. Kendi kendine yeten HTML: script yok, CDN yok, font yok.                                                          |
 | 1.5  | Terk edilmiş denetimin sonsuza "Sürüyor" kalması                                             | **bitti**          | `auditReconciler`, açılıştan sonraki ilk süpürmede `instance_lost` işaretliyor. Konteyner yeniden başlatılarak doğrulandı.                                                    |
 | 1.6  | `og:*` alanları yazılıyor, hiç okunmuyordu                                                   | **bitti**          | Site seviyesinde kural. Sayfa başına olsaydı vaultpilot'ta 212 aynı satır ederdi.                                                                                             |
@@ -210,12 +210,13 @@ Bunlar davranış değiştirir, o yüzden yapılmadı.
 
 ---
 
-## Ölçülen değerler (`4530d62`)
+## Ölçülen değerler (`4530d62`, 2026-09-29 — tarihsel)
 
-- **76** denetim kuralı
-- **33** MCP aracı
-- **750** test / 105 dosya — hepsi yeşil
-- badseo harness **60/60**, kural kapsamı **48/48** (28 tür harness'ın erişimi dışında)
+Aşağıdaki kural, test ve harness sayıları o günün ölçümüdür; güncel değildir (güncel durum için kod ve `pnpm test` çıktısına bakın).
+
+- 76 denetim kuralı (tarihsel)
+- 750 test / 105 dosya — o gün hepsi yeşildi (tarihsel)
+- badseo harness 60/60, kural kapsamı 48/48 (tarihsel)
 - `pnpm run ci:check` çıkış kodu **0**
 - gitleaks: sır yok
 - 11 rota 200/307, konsol uyarısı **sıfır**

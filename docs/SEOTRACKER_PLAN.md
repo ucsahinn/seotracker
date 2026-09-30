@@ -348,8 +348,8 @@ Değişmesi gereken yalnız sağlayıcı sarmalayıcısı.
 | Veritabanı ve R2      | `audit_lighthouse_results`, `site-audit/{projectId}/{auditId}/{pageId}-{strategy}.json`  | Değişmiyor                                                    |
 
 Ücretli olmadığı için iki kısıt gevşiyor: Lighthouse adımının **yeniden deneme sayısı sıfırdı**
-(her deneme para demekti), artık denenebilir; örneklem sınırı 10 sayfa × 2 cihaz, kota elverdiği
-için sonradan artırılabilir. Ayrıntılı tasarım ve kararlar Faz 3'te.
+(her deneme para demekti), artık denenebilir; örneklem sınırı 10 sayfa × 2 cihaz idi (tarihsel, geçersiz:
+artık anahtar varsa taranan her sayfa mobil ve masaüstünde ölçülüyor; anahtar yoksa 50 sayfa sınırı var). Ayrıntılı tasarım ve kararlar Faz 3'te.
 
 ### 5.4 MCP sunucusu ve ajan becerileri
 

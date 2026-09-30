@@ -5,7 +5,7 @@ Yayında tek sürüm tutuluyor, bu yüzden burada tek not var. Eski notlar
 
 ## [Yayınlanmamış]
 
-## [1.8.0] — 2026-09-30
+## [1.8.1] — 2026-09-30
 
 Bu sürüm, bugüne kadar çıkan tüm sürümlerin notlarını tek yerde toplar.
 
@@ -61,8 +61,14 @@ bırakın.
 - Dizin durumunda bazı satırlar boş görünüyordu.
 - Hız ölçümü kota yüzünden başarısız olunca ekran nedenini söylemiyordu.
 - Aynı denetimin raporunu aynı gün ikinci kez indirmek hata veriyordu.
+- Çok büyük denetimlerde (yaklaşık 7.500 sayfadan sonra) hız ölçümü, iş akışının sınırına takılıp denetimi bozabiliyordu.
+- Bir ölçüm dalgası hata verince o dalganın başarılı ölçümleri de silinebiliyordu.
+- PDF gibi dosyalara giden asıl adres ve dil bağlantıları yanlışlıkla "noindex" sayılabiliyordu.
+- Kayıtlı kelimelerde arşiv kesilince "Verisi yok" diyordu; artık "Bilinmiyor (arşiv kesildi)" diyor.
+- Panelden bir sorguya tıklayınca sorgunun kendisi yerine tüm liste açılıyordu.
+- Raporlar ekranındaki özet, seçili filtreyle uyuşmuyordu.
 - Sıralama takibi sessizce yalnızca ilk 25 sorguyu gösteriyordu; arşiv hiç dolmuyordu.
 - Ölçülemeyen değerler sıfır olarak çiziliyordu.
 
-[Yayınlanmamış]: https://github.com/ucsahinn/seotracker/compare/v1.8.0...HEAD
-[1.8.0]: https://github.com/ucsahinn/seotracker/releases/tag/v1.8.0
+[Yayınlanmamış]: https://github.com/ucsahinn/seotracker/compare/v1.8.1...HEAD
+[1.8.1]: https://github.com/ucsahinn/seotracker/releases/tag/v1.8.1

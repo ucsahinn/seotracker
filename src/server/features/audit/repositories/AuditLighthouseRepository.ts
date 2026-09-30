@@ -17,6 +17,11 @@ import type { LighthouseResult } from "@/server/lib/audit/types";
 async function insertLighthouseResults(
   auditId: string,
   lighthouseResults: LighthouseResult[],
+  /**
+   * Leave a row that is already stored alone. The fallback that records a
+   * failed wave must not overwrite the checks of that wave that succeeded.
+   */
+  options: { keepExisting?: boolean } = {},
 ) {
   const rows = await Promise.all(
     lighthouseResults.map(async (result) => ({
@@ -45,10 +50,13 @@ async function insertLighthouseResults(
   // checkpointed, so repeated writes must stay idempotent.
   await executeInBatches(rows, (tx, row) => {
     const { id: _id, auditId: _auditId, ...dataColumns } = row;
-    return tx.insert(auditLighthouseResults).values(row).onConflictDoUpdate({
-      target: auditLighthouseResults.id,
-      set: dataColumns,
-    });
+    const insert = tx.insert(auditLighthouseResults).values(row);
+    return options.keepExisting
+      ? insert.onConflictDoNothing()
+      : insert.onConflictDoUpdate({
+          target: auditLighthouseResults.id,
+          set: dataColumns,
+        });
   });
 }
 

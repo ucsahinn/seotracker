@@ -56,7 +56,7 @@ function defineBand({
 
 /**
  * Mobile only. Every page is measured twice, so counting both reported a
- * ten-page sample as twenty and blended two distributions -- and desktop
+ * ten-page audit as twenty and blended two distributions -- and desktop
  * scores run systematically higher, so the blend reads optimistic. Google
  * indexes mobile-first and its thresholds are written for mobile. Clicking a
  * band therefore also sets the device filter, so the table shows the rows the

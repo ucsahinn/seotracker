@@ -404,4 +404,16 @@ describe("canonical-to-noindex and the googlebot directive", () => {
       "canonical-to-noindex",
     );
   });
+
+  // A directive that is not a noindex (a PDF's `nosnippet`) is still no noindex.
+  it("ignores a written directive that does not say noindex", () => {
+    const issues = findCanonicalTargetProblems([
+      source,
+      target({ xRobotsTag: "nosnippet" }),
+    ]);
+
+    expect(issues.map((i) => i.issueType)).not.toContain(
+      "canonical-to-noindex",
+    );
+  });
 });

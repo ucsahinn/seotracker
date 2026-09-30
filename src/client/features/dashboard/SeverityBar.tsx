@@ -74,31 +74,46 @@ export function SeverityBar({
             className={`${segment.fill} min-w-1 transition-opacity hover:opacity-70`}
             style={{ flexGrow: totals[segment.key] }}
             title={`${segment.label}: ${formatCount(totals[segment.key])} bulgu. ${segment.hint}`}
-            aria-label={`${segment.label}: ${formatCount(totals[segment.key])} bulgu`}
+            // The legend below carries the same links with a readable hit
+            // area, so the thin bar is a pointer shortcut only.
+            aria-hidden
+            tabIndex={-1}
           />
         ))}
       </div>
       <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted">
         {present.map((segment) => (
-          <li key={segment.key} className="flex items-center gap-1.5">
-            <span
-              className={`size-1.5 rounded-full ${segment.fill}`}
-              aria-hidden
-            />
-            <span className="tabular-nums">
-              {formatCount(totals[segment.key])} {segment.label.toLowerCase()}
-            </span>
-            <span className="text-subtle tabular-nums">
-              {formatPercent(totals[segment.key] / total, 0)}
-            </span>
+          <li key={segment.key}>
+            <Link
+              to="/p/$projectId/audit"
+              params={{ projectId }}
+              search={{
+                auditId,
+                tab: "issues" as const,
+                severity: segment.key,
+              }}
+              className="flex items-center gap-1.5 rounded-field py-0.5 transition-colors hover:text-base-content"
+              title={segment.hint}
+            >
+              <span
+                className={`size-1.5 rounded-full ${segment.fill}`}
+                aria-hidden
+              />
+              <span className="tabular-nums">
+                {formatCount(totals[segment.key])} {segment.label.toLowerCase()}
+              </span>
+              <span className="text-subtle tabular-nums">
+                {formatPercent(totals[segment.key] / total, 0)}
+              </span>
+            </Link>
           </li>
         ))}
         <li>
           <HelpTip label="Önem düzeyi">
             Kritik sorunlar sayfanın aramada görünmesini engelleyebilir,
             uyarılar sıralamayı zamanla aşındırır, bilgi notları ise küçük
-            iyileştirmelerdir. Renkli çubuğa tıklarsanız sorun listesine
-            geçersiniz.
+            iyileştirmelerdir. Çubuğa ya da altındaki etiketlerden birine
+            tıklarsanız sorun listesine geçersiniz.
           </HelpTip>
         </li>
       </ul>

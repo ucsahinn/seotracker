@@ -114,3 +114,18 @@ describe("scopeToUrls", () => {
     expect(scopeToUrls(rows, undefined)).toHaveLength(2);
   });
 });
+
+describe("filterPages Turkish search", () => {
+  it("matches dotted and dotless I the Turkish way", () => {
+    const rows = [
+      page({ id: "a", title: "Işık ve gölge" }),
+      page({ id: "b", title: "İstanbul rehberi" }),
+    ];
+    const run = (query: string) =>
+      filterPages(rows, { ...EMPTY_PAGES_FILTERS, query }).map((r) => r.id);
+    expect(run("Işık")).toEqual(["a"]);
+    expect(run("ışık")).toEqual(["a"]);
+    expect(run("İstanbul")).toEqual(["b"]);
+    expect(run("istanbul")).toEqual(["b"]);
+  });
+});

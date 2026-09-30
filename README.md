@@ -24,11 +24,13 @@ kaldırır.
   kayıtları yerelde tuttuğu için o sınırın ötesine geçer. Sıralama sayfası her
   açılışta eksik günleri kendiliğinden tamamlar; zamanlanmış bir göreve gerek
   yoktur.
-- **Site denetimi** — kendi tarayıcısıyla sitenizi gezer ve 56 ayrı teknik SEO
+- **Site denetimi** — kendi tarayıcısıyla sitenizi gezer ve 95 ayrı teknik SEO
   sorununu raporlar: kırık bağlantı, eksik başlık, yinelenen içerik, yönlendirme
   zinciri, yetim sayfa ve diğerleri.
-- **Hız skorları** — denetim sırasında Google PageSpeed Insights ile örnek
-  sayfaların performans, erişilebilirlik ve SEO puanları. Laboratuvar
+- **Hız skorları** — denetim sırasında Google PageSpeed Insights ile taranan
+  her sayfanın (başarılı HTML yanıtı veren) mobil ve masaüstü performans,
+  erişilebilirlik ve SEO puanları. PageSpeed anahtarı tanımlı değilse Google'ın
+  ortak kotası küçük olduğu için ilk 50 sayfayla sınırlanır. Laboratuvar
   skorlarının yanında, sitenizi gerçekten ziyaret eden Chrome kullanıcılarından
   gelen Çekirdek Web Verileri de gösterilir.
 - **İndeksleme durumu** — Google'ın bu sayfaları gerçekten dizine alıp
@@ -38,9 +40,10 @@ kaldırır.
 - **Çakışan sorgular** — aynı sorgu için kendi sayfalarınızın birbiriyle
   yarıştığı yerler. Search Console bunu göstermez: sorguları ve sayfaları ayrı
   listeler. İki boyutu birlikte isteyip gruplamak yeter.
-- **Fırsatlar** — 4. ile 20. sıra arasındaki sayfalar, talebe, iş değerine ve
-  ne kadar yakın olduklarına göre puanlanmış. Search Console hangi sayfanın
-  para kazandırdığını bilmez; Analytics ile birleştirince bilir.
+- **Fırsatlar** — her sayfa gösterilir ve türüne göre ayrılır (tıklanmıyor,
+  yaklaşmış, derinde); talebe, iş değerine ve ne kadar yakın olduklarına göre
+  puanlanır. Search Console hangi sayfanın para kazandırdığını bilmez;
+  Analytics ile birleştirince bilir.
 - **Google Analytics 4** — organik trafik, açılış sayfaları, dönüşümler.
 - **Denetim karşılaştırması** — bir haftadır tarama yapılmadıysa panel hatırlatır
   ve son iki denetimi karşılaştırıp yeni çıkan sorunları ayrı gösterir.

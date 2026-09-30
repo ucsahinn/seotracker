@@ -99,6 +99,9 @@ export function DonutChart({
     onSelect?.(key === selectedKey ? null : key);
   };
   const selected = shown.find((segment) => segment.key === selectedKey);
+  // A chosen group with no value has no arc; dimming every arc for it would
+  // leave a ring with nothing lit, so it counts as no choice for the ring.
+  const activeKey = selected ? selected.key : null;
   const interactive = onSelect !== undefined;
 
   return (
@@ -130,9 +133,7 @@ export function DonutChart({
                   fill={colorOf(segment)}
                   // The ones not chosen fade back while a choice is active.
                   opacity={
-                    selectedKey === null || selectedKey === segment.key
-                      ? 1
-                      : 0.35
+                    activeKey === null || activeKey === segment.key ? 1 : 0.35
                   }
                 />
               ))}

@@ -31,7 +31,7 @@ export async function selectLighthouseWork(params: {
       strategy,
       hasKey ? Number.POSITIVE_INFINITY : UNKEYED_LIGHTHOUSE_PAGE_CAP,
     );
-    const selectedUrls = new Set(sample);
+    const idByUrl = new Map(crawledPages.map((page) => [page.url, page.id]));
 
     await AuditRepository.updateAuditProgress(auditId, workflowInstanceId, {
       currentPhase: "lighthouse",
@@ -39,8 +39,15 @@ export async function selectLighthouseWork(params: {
       lighthouseCompleted: 0,
       lighthouseFailed: 0,
     });
-    return crawledPages.flatMap((page) =>
-      selectedUrls.has(page.url) ? [{ url: page.url, pageId: page.id }] : [],
-    );
+    /*
+     * Page ids only, in measurement order (start page first, so an early
+     * quota stop still covers it). The result is step state, limited to
+     * 1 MiB: ids are ~40 bytes each, where id + URL per page was ~135 and
+     * overflowed around 7,500 pages. Each wave looks its URLs up.
+     */
+    return sample.flatMap((url) => {
+      const id = idByUrl.get(url);
+      return id ? [id] : [];
+    });
   });
 }

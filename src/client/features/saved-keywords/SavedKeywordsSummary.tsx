@@ -68,6 +68,13 @@ export function SavedKeywordsSummary({
 
   const counts = countPositionGroups(keywords, positions.map);
   const ranked = keywords.length - counts.none;
+  // The archive read stops at TRACKED_LIMIT rows, so a keyword missing from it
+  // may still rank; "no record" would be a claim the data cannot back.
+  const truncated = positions.archiveRows >= TRACKED_LIMIT;
+  const noneLabel = truncated ? "Bilinmiyor (arşiv kesildi)" : "Verisi yok";
+  const noneHint = truncated
+    ? "Okunan arşiv kesildiği için bu kelimelerin sırası bilinmiyor; Search Console'da sırası olabilir."
+    : "Search Console arşivinde bu kelimeyle eşleşen sorgu olmayanlar.";
   const segments = [
     { key: "top3", label: `Sıra ${BAND_LABELS.top3}`, value: counts.top3 },
     { key: "top10", label: `Sıra ${BAND_LABELS.top10}`, value: counts.top10 },
@@ -79,9 +86,9 @@ export function SavedKeywordsSummary({
     },
     {
       key: "none",
-      label: "Verisi yok",
+      label: noneLabel,
       value: counts.none,
-      hint: "Search Console bu kelime için henüz bir sıra kaydetmemiş.",
+      hint: noneHint,
     },
   ];
   const selectedKey = filter === null || filter === "firstPage" ? null : filter;
@@ -132,10 +139,10 @@ export function SavedKeywordsSummary({
           },
           {
             id: "none",
-            label: "Verisi yok",
+            label: noneLabel,
             icon: CircleHelp,
             count: counts.none,
-            hint: "Search Console arşivinde bu kelimeyle eşleşen sorgu olmayanlar.",
+            hint: noneHint,
           },
         ]}
       />

@@ -188,7 +188,7 @@ export function SearchInsights({
                   <Link
                     to="/p/$projectId/search-performance"
                     params={{ projectId }}
-                    search={{ tab: "striking", q: row.query }}
+                    search={{ tab: "queries", q: row.query }}
                     className="flex items-center justify-between gap-3 rounded-field px-1 py-1 text-sm transition-colors hover:bg-base-200/60"
                   >
                     <span className="min-w-0 truncate">{row.query}</span>

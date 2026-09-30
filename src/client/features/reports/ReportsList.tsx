@@ -92,11 +92,15 @@ export function ReportsList({
 
   const now = Date.now();
   const counts = filterCounts(reports, now);
+  // The summary reads this set, so its tiles and ring agree with the table;
+  // only the kind ring is left out, because it is the control that narrows
+  // by kind and must keep showing every kind in the set.
+  const chipFiltered = reports.filter((report) =>
+    matchesFilter(report, filter, now),
+  );
   const visible = sorting.apply(
-    reports.filter(
-      (report) =>
-        matchesFilter(report, filter, now) &&
-        (kind === null || reportKind(report) === kind),
+    chipFiltered.filter(
+      (report) => kind === null || reportKind(report) === kind,
     ),
     compareReports,
   );
@@ -118,7 +122,8 @@ export function ReportsList({
   return (
     <div className="space-y-4">
       <ReportsSummary
-        reports={reports}
+        reports={chipFiltered}
+        visibleReports={visible}
         now={now}
         selectedKind={kind}
         onSelectKind={(next) => {
@@ -136,6 +141,7 @@ export function ReportsList({
             className={`btn btn-sm gap-1.5 ${filter === key ? "btn-primary" : "btn-ghost border-base-300"}`}
             onClick={() => {
               setFilter(key);
+              setKind(null);
               setPage(1);
             }}
           >

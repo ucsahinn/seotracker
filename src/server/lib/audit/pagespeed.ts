@@ -147,7 +147,7 @@ export async function fetchPageSpeedReport(input: {
   } catch (error) {
     throw new PageSpeedError(
       error instanceof Error
-        ? `PageSpeed Insights request failed: ${error.message}`
+        ? `PageSpeed Insights request failed: ${redactKey(error.message)}`
         : "PageSpeed Insights request failed",
       { status: null, retryable: true },
     );
@@ -172,4 +172,13 @@ export async function fetchPageSpeedReport(input: {
     const body = await response.json();
     return parsePageSpeedPayload(body, input);
   });
+}
+
+/**
+ * The key travels in the query string, and some runtimes echo the request URL
+ * in a network error. The message ends up in stored rows and in the report, so
+ * it is stripped here rather than trusted never to appear.
+ */
+function redactKey(message: string): string {
+  return message.replace(/([?&]key=)[^&\s"']+/gi, "$1[gizli]");
 }

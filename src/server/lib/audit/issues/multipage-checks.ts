@@ -72,15 +72,18 @@ function normalizeHeading(text: string | null): string | null {
 }
 
 /**
- * A directive in writing says the page is noindexed: `isIndexable` alone is
- * also false for every non-HTML 200, so a PDF would read as noindexed.
+ * A directive in writing says the page is noindexed. `isIndexable` alone is
+ * also false for every non-HTML 200, and any `X-Robots-Tag` at all (a PDF's
+ * `nosnippet`, say) is not a noindex, so the directive itself is read.
  */
+const NOINDEX_TOKEN = /\b(noindex|none)\b/i;
+
 function isNoindexedByDirective(page: SlimPage): boolean {
   return (
     !page.isIndexable &&
-    (page.robotsMeta !== null ||
-      page.googlebotMeta !== null ||
-      page.xRobotsTag !== null)
+    [page.robotsMeta, page.googlebotMeta, page.xRobotsTag].some(
+      (directive) => directive !== null && NOINDEX_TOKEN.test(directive),
+    )
   );
 }
 
@@ -108,6 +111,9 @@ export function findDuplicates(pages: SlimPage[]): DetectedIssue[] {
   ) => {
     for (const group of groups.values()) {
       if (group.length < 2) continue;
+      // The first few members, taken once: filtering the whole group per page
+      // was quadratic when a template gave thousands of pages one title.
+      const sample = group.slice(0, DUPLICATE_GROUP_SAMPLE + 1);
       for (const page of group) {
         issues.push({
           issueType,
@@ -115,7 +121,7 @@ export function findDuplicates(pages: SlimPage[]): DetectedIssue[] {
           pageUrl: page.url,
           details: {
             groupSize: group.length,
-            otherUrls: group
+            otherUrls: sample
               .filter((other) => other.id !== page.id)
               .slice(0, DUPLICATE_GROUP_SAMPLE)
               .map((other) => other.url),

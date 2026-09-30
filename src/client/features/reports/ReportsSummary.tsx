@@ -25,22 +25,26 @@ export function ReportsSummarySkeleton() {
 }
 
 /**
- * Numbers and a ring computed from the reports already on screen. The ring
- * filters the list by report type.
+ * Numbers and a ring computed from the reports already on screen, so they
+ * match the table. The ring filters the list by report type.
  */
 export function ReportsSummary({
   reports,
+  visibleReports,
   now,
   selectedKind,
   onSelectKind,
 }: {
+  /** The reports the quick filter keeps; the kind ring splits these. */
   reports: ReportListItem[];
+  /** What the table shows (quick filter and kind): the tiles count these. */
+  visibleReports: ReportListItem[];
   now: number;
   selectedKind: string | null;
   onSelectKind: (kind: string | null) => void;
 }) {
-  const counts = filterCounts(reports, now);
-  const latest = latestUpdate(reports);
+  const counts = filterCounts(visibleReports, now);
+  const latest = latestUpdate(visibleReports);
   const segments = kindSegments(reports);
 
   return (
@@ -59,7 +63,7 @@ export function ReportsSummary({
         />
         <MetricTile
           label="Toplam boyut"
-          value={formatBytes(totalBytes(reports))}
+          value={formatBytes(totalBytes(visibleReports))}
         />
       </MetricRow>
       <DonutCard

@@ -27,10 +27,13 @@ describe("SeverityBar", () => {
       />,
     );
 
-    const critical = screen.getByRole("link", { name: /Kritik: 3/ });
+    // The legend items are the reachable links, so a thin segment still is.
+    const critical = screen.getByRole("link", { name: /3 kritik/ });
     expect(critical.getAttribute("data-tab")).toBe("issues");
-    expect(screen.queryByRole("link", { name: /Uyarı/ })).toBeNull();
-    expect(screen.getByText(/1 bilgi/)).toBeDefined();
+    expect(screen.queryByRole("link", { name: /uyarı/ })).toBeNull();
+    expect(
+      screen.getByRole("link", { name: /1 bilgi/ }).getAttribute("data-tab"),
+    ).toBe("issues");
   });
 
   it("draws nothing for an audit with no findings", () => {

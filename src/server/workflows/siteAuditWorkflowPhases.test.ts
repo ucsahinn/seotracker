@@ -15,7 +15,12 @@ const {
   selectLighthousePagesMock: vi.fn(),
   storeLighthouseResultMock: vi.fn(),
   stepDoMock: vi.fn(),
-  getPagesForAuditMock: vi.fn(),
+  getPagesForAuditMock:
+    vi.fn<
+      () => Promise<
+        Array<{ id: string; url: string; [field: string]: unknown }>
+      >
+    >(),
   insertLighthouseResultsMock: vi.fn(),
   updateAuditProgressMock: vi.fn(),
   getPageSpeedApiKeyMock: vi.fn(),
@@ -40,6 +45,11 @@ vi.mock("@/server/features/lighthouse/pagespeed-config", () => ({
 vi.mock("@/server/features/audit/repositories/AuditRepository", () => ({
   AuditRepository: {
     getPagesForAudit: getPagesForAuditMock,
+    // A wave looks its URLs up by id; the pages come from the same fixture.
+    getPageUrlsByIds: async (_auditId: string, ids: string[]) =>
+      (await getPagesForAuditMock())
+        .filter((page) => ids.includes(page.id))
+        .map((page) => ({ id: page.id, url: page.url })),
     updateAuditProgress: updateAuditProgressMock,
   },
 }));

@@ -4,7 +4,7 @@
  * audit_pages, audit_issues, and stored Lighthouse results. Link edges live
  * in the per-audit scratchpad Durable Object, not here.
  */
-import { and, count, desc, eq, isNull } from "drizzle-orm";
+import { and, count, desc, eq, inArray, isNull } from "drizzle-orm";
 import { db } from "@/db";
 import {
   audits,
@@ -298,6 +298,15 @@ async function getPagesForAudit(auditId: string) {
     .where(eq(auditPages.auditId, auditId));
 }
 
+/** URLs for a handful of page ids (one Lighthouse wave); ids are few, so one IN list stays under D1's bound-parameter limit. */
+async function getPageUrlsByIds(auditId: string, ids: string[]) {
+  if (ids.length === 0) return [];
+  return db
+    .select({ id: auditPages.id, url: auditPages.url })
+    .from(auditPages)
+    .where(and(eq(auditPages.auditId, auditId), inArray(auditPages.id, ids)));
+}
+
 async function countPagesByFetchClass(
   auditId: string,
   fetchClass: PageFetchClass,
@@ -428,6 +437,7 @@ export const AuditRepository = {
   getLatestAuditForProject,
   getIssuesForAudit,
   getPagesForAudit,
+  getPageUrlsByIds,
   backfillCrawlDepths,
   countPagesByFetchClass,
   hasPagesForAudit,

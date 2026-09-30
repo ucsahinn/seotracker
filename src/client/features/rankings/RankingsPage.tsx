@@ -288,10 +288,10 @@ export function RankingsPage({
                   },
                   {
                     id: "top10",
-                    label: "İlk 10'da kalanlar",
+                    label: "Şu an ilk 10'da",
                     icon: Trophy,
                     count: moveCounts.top10,
-                    hint: "Şimdi ortalama 10 veya daha iyi sırada olan ve önceki dönemde de verisi olan sorgular. Üstteki çubuk ise şu anki tüm sorguları sayar.",
+                    hint: "Şimdi ortalama 10 veya daha iyi sırada olan sorgular; yeni yükselip ilk 10'a girenler de dahildir. Yalnızca önceki dönemde de verisi olanlar sayılır; üstteki çubuk ise şu anki tüm sorguları sayar.",
                   },
                   {
                     id: "lost",

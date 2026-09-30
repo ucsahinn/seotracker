@@ -222,10 +222,19 @@ export async function runLighthousePhase(
     chunkStart < lighthouseWork.length;
     chunkStart += LIGHTHOUSE_URLS_PER_STEP
   ) {
-    const chunk = lighthouseWork.slice(
+    const chunkIds = lighthouseWork.slice(
       chunkStart,
       chunkStart + LIGHTHOUSE_URLS_PER_STEP,
     );
+    const urlById = new Map(
+      (await AuditRepository.getPageUrlsByIds(auditId, chunkIds)).map(
+        (page) => [page.id, page.url],
+      ),
+    );
+    const chunk = chunkIds.flatMap((pageId) => {
+      const url = urlById.get(pageId);
+      return url ? [{ url, pageId }] : [];
+    });
     const chunkIndex = Math.floor(chunkStart / LIGHTHOUSE_URLS_PER_STEP) + 1;
     const priorCompleted = completedChecks;
     const priorFailed = failedChecks;
@@ -236,25 +245,31 @@ export async function runLighthousePhase(
     // over the 1MiB step-result limit, so they never become step state. A
     // retry re-runs the free PageSpeed calls; the rows have deterministic ids
     // and R2 keys, so the writes are idempotent.
-    const persistChunk = (fetched: LighthouseFetched[]) => async () => {
-      const results = await Promise.all(
-        fetched.map((result) =>
-          storeLighthouseResult({ projectId, auditId, fetched: result }),
-        ),
-      );
-      await AuditLighthouseRepository.insertLighthouseResults(auditId, results);
-      const failed = results.filter((result) => result.errorMessage).length;
-      const completed = results.length - failed;
-      await AuditRepository.updateAuditProgress(auditId, workflowInstanceId, {
-        lighthouseCompleted: priorCompleted + completed,
-        lighthouseFailed: priorFailed + failed,
-      });
-      return {
-        completed,
-        failed,
-        quotaExhausted: fetched.some((item) => item.quotaExhausted),
+    const persistChunk =
+      (fetched: LighthouseFetched[], keepExisting = false) =>
+      async () => {
+        const results = await Promise.all(
+          fetched.map((result) =>
+            storeLighthouseResult({ projectId, auditId, fetched: result }),
+          ),
+        );
+        await AuditLighthouseRepository.insertLighthouseResults(
+          auditId,
+          results,
+          { keepExisting },
+        );
+        const failed = results.filter((result) => result.errorMessage).length;
+        const completed = results.length - failed;
+        await AuditRepository.updateAuditProgress(auditId, workflowInstanceId, {
+          lighthouseCompleted: priorCompleted + completed,
+          lighthouseFailed: priorFailed + failed,
+        });
+        return {
+          completed,
+          failed,
+          quotaExhausted: fetched.some((item) => item.quotaExhausted),
+        };
       };
-    };
 
     let counts: Awaited<ReturnType<ReturnType<typeof persistChunk>>>;
     try {
@@ -284,6 +299,8 @@ export async function runLighthousePhase(
               failedLighthouseFetch(url, pageId, strategy, message),
             ),
           ),
+          // Some checks of this wave may already be stored as successes.
+          true,
         ),
       );
     }
