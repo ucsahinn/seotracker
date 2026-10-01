@@ -40,7 +40,10 @@ export function OpportunityKinds({
   }
 
   return (
-    <section aria-label="Fırsat türleri" className="grid gap-3 sm:grid-cols-3">
+    <section
+      aria-label="Fırsat türleri"
+      className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4"
+    >
       {KIND_ORDER.map((id) => {
         const kind = { id, ...KIND_COPY[id] };
         const entry = counts.get(kind.id) ?? { pages: 0 };

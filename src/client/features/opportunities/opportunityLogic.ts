@@ -10,7 +10,7 @@ export type OpportunityRow = OpportunityReport["rows"][number];
 export type KindId = OpportunityRow["kind"];
 export type QuickId = "analytics" | "no_analytics" | "top_impressions";
 
-/** The three kinds, cheapest work first. Copy lives here so the tiles, the ring and the panel agree. */
+/** The four kinds, cheapest work first. Copy lives here so the tiles, the ring and the panel agree. */
 export const KIND_COPY = {
   ctr_gap: {
     label: "Az tıklanan",
@@ -20,6 +20,16 @@ export const KIND_COPY = {
       "Başlığı, kullanıcının aradığı şeyi ilk kelimelerde karşılayacak biçimde yeniden yazın.",
       "Meta açıklamayı, tıklamaya değeceğini gösteren tek bir somut vaatle güncelleyin.",
       "Yayına aldıktan iki hafta sonra bu ekrana dönüp tıklama oranına bakın.",
+    ],
+  },
+  top: {
+    label: "İlk sıralarda",
+    hint: "Zaten ilk üçte ve tıklama oranı normal. Yükselecek yer yok; içeriği güncel tutmak yeterli.",
+    color: "var(--color-success)",
+    todo: [
+      "İçeriği güncel tutun; tarih, fiyat ve örnekleri yılda en az bir kez gözden geçirin.",
+      "Bu sayfadan öne çıkarmak istediğiniz diğer sayfalara iç bağlantı verin.",
+      "Sıralamada düşüş olursa bu ekrandan hemen fark edeceksiniz; şimdilik dokunmayın.",
     ],
   },
   near_miss: {
@@ -47,7 +57,12 @@ export const KIND_COPY = {
   { label: string; hint: string; color: string; todo: readonly string[] }
 >;
 
-export const KIND_ORDER: readonly KindId[] = ["ctr_gap", "near_miss", "deep"];
+export const KIND_ORDER: readonly KindId[] = [
+  "ctr_gap",
+  "near_miss",
+  "top",
+  "deep",
+];
 
 export const QUICK_COPY = {
   analytics: "Analytics'te trafiği olanlar",
@@ -80,7 +95,7 @@ export function explainRow(row: OpportunityRow): string {
         : `, sitenizde bu sıradaki sayfaların medyanından ${formatDecimal(Math.abs(row.ctrGap) * 100)} yüzde puan daha düşük`;
     return `Ortalama ${position}. sırada ${impressions} kez gösterildi ama yalnızca ${clicks} tıklama aldı (tıklama oranı ${formatPercent(row.ctr)}${gap}).${ga4}`;
   }
-  if (row.kind === "near_miss" && row.position < 4) {
+  if (row.kind === "top") {
     return `Ortalama ${position}. sırada, yani zaten ilk sıralarda. ${impressions} gösterimden ${clicks} tıklama aldı; sıra kazanmaktan çok içeriği ve başlığı güçlü tutmak önemli.${ga4}`;
   }
   if (row.kind === "near_miss") {

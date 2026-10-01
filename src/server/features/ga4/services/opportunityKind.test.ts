@@ -82,7 +82,7 @@ describe("classify", () => {
   });
 
   it("leaves a well-ranked page earning its normal rate alone", () => {
-    expect(classify(row(2, 0.2), expected)).toBe("near_miss");
+    expect(classify(row(2, 0.2), expected)).toBe("top");
   });
 
   /*
@@ -90,7 +90,7 @@ describe("classify", () => {
    * the bar, so ordinary variation does not fill the screen.
    */
   it("does not call ordinary variation a gap", () => {
-    expect(classify(row(2, 0.15), expected)).toBe("near_miss");
+    expect(classify(row(2, 0.15), expected)).toBe("top");
   });
 
   /*

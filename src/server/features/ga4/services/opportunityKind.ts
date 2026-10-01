@@ -17,7 +17,7 @@ import { sort as sortNumbers } from "remeda";
  * position earn X". It also needs no data we do not already have.
  */
 
-export type OpportunityKind = "ctr_gap" | "near_miss" | "deep";
+export type OpportunityKind = "ctr_gap" | "top" | "near_miss" | "deep";
 
 /** Buckets wide enough that each holds several pages on a small site. */
 const BUCKETS = [3, 5, 10, 20, 50] as const;
@@ -84,6 +84,8 @@ export function classify(
   // Half the bucket's median, so "slightly below average" is not a finding.
   const bar = expected.get(positionBucket(row.position));
   if (gap !== null && bar != null && gap < -bar / 2) return "ctr_gap";
+  // Already on top with a normal click-through: nothing to climb to.
+  if (row.position < 4) return "top";
   if (row.position <= 20) return "near_miss";
   return "deep";
 }
