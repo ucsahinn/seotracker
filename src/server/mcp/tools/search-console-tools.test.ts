@@ -402,6 +402,16 @@ describe("inspect_urls", () => {
       "2 URLs skipped, already answered recently",
     );
     expect(first.type === "text" && first.text).toContain("get_index_coverage");
+    // A client that shows only structuredContent must still see why the
+    // results list is empty.
+    expect(result.structuredContent).toMatchObject({
+      ok: true,
+      results: [],
+      requested: 0,
+      fresh: 2,
+      skipped: 0,
+      quotaRemaining: 1_900,
+    });
   });
 
   it("surfaces a not-connected message from inspect_urls", async () => {

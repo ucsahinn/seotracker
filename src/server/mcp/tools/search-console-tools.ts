@@ -484,6 +484,13 @@ export const inspectUrlsTool = {
             .passthrough(),
         )
         .optional(),
+      /** URLs actually sent to Google. */
+      requested: z.number().optional(),
+      /** URLs not inspected because a recent stored answer exists (read them with get_index_coverage, or pass force). */
+      fresh: z.number().optional(),
+      /** URLs not inspected because today's quota ran out. */
+      skipped: z.number().optional(),
+      quotaRemaining: z.number().optional(),
       ...optionalMetaOutputSchema,
     },
     annotations: {
@@ -523,7 +530,7 @@ export const inspectUrlsTool = {
        * raw both ignored the remaining budget and left no ledger row, so the
        * spend was invisible to the Index Coverage screen's own accounting.
        */
-      const { siteUrl, results, skipped, fresh, quotaRemaining } =
+      const { siteUrl, results, requested, skipped, fresh, quotaRemaining } =
         await inspectAndRecord({
           projectId: args.projectId,
           urls: args.urls,
@@ -579,6 +586,15 @@ ${fresh} ${plural(fresh)} skipped, already answered recently. Read those with ge
           ok: true,
           ...(siteUrl ? { siteUrl } : {}),
           results,
+          /*
+           * The counts the text carries, in the body too: a client that
+           * shows only structuredContent otherwise sees an empty `results`
+           * with no reason when every URL was answered recently.
+           */
+          requested,
+          fresh,
+          skipped,
+          quotaRemaining,
         },
       });
     } catch (error) {
