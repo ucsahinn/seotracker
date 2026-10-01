@@ -143,9 +143,6 @@ function createRequestHandler(props: McpProps) {
   };
 }
 
-// Hosted credentials (OAuth grants and API keys) are user-scoped: the
-// organizationId they carry is only the fallback context for tools with no
-// project argument, so keep it while the membership holds, else rebind to the
 /**
  * 401 when `MCP_TOKEN` is set and the request does not carry it. The decision
  * itself is in `token-auth.ts`; this is the I/O and the response shape.
