@@ -5,96 +5,35 @@ Yayında tek sürüm tutuluyor, bu yüzden burada tek not var. Eski notlar
 
 ## [Yayınlanmamış]
 
-## [1.8.6] — 2026-09-30
+## [2.0.0] — 2026-10-01
 
-Bu sürüm, bugüne kadar çıkan tüm sürümlerin notlarını tek yerde toplar.
+seotracker, kendi bilgisayarınızda çalışan, tek kişilik ve ücretsiz bir SEO
+aracıdır. Google Search Console, Google Analytics, kendi site tarayıcısı ve
+Google PageSpeed verisini tek yerde toplar; hiçbir ücretli veri kaynağına
+bağlanmaz. Bu, her ekranın gerçek veriyle çalıştığı ilk ana sürümdür.
 
-### Önce şunu yapın
+### Neler sunuyor
 
-Ajanların bağlandığı adres artık şifre istiyor. Mevcut ajan ayarlarınız
-çalışmayı durdurur. Şifreyi görmek için:
+- **Site denetimi.** Sitenizi tarar, geniş bir kontrol listesiyle sorunları bulur ve 0 ile 100 arası bir puan verir. Her sorunun hangi sayfaları etkilediği adresleriyle görünür; adresleri kopyalayabilir, sorunları CSV olarak indirebilirsiniz.
+- **Hız ölçümü.** Taranan her sayfa telefonda ve bilgisayarda ölçülür. Gerçek ziyaretçilerin son haftalardaki hız gidişatı da görünür.
+- **Dizin durumu.** Google'ın hangi sayfaları dizine aldığını, almadıysa nedenini gösterir.
+- **Denetim raporu.** Kapak, puan, grafikler, her sorun için etkilenen adresler, hız ve dizin durumuyla tek dosya olarak indirilir ve A4 yazdırılabilir.
+- **Denetim geçmişi.** Eski denetimlere dönebilir, önceki denetime göre neyin düzeldiğini ya da kötüleştiğini görebilirsiniz.
+- **Fırsatlar.** Google'da görünen ama daha çok tıklanabilecek sayfaları puanla sıralar. Bir satıra tıklayınca neden listede olduğunu ve ne yapacağınızı yazar.
+- **Arama performansı.** Tıklama, gösterim ve sıra; ülke, cihaz ve arama türüne göre. Grafiklere tıklayarak tabloyu süzersiniz.
+- **Sıralama takibi ve kayıtlı kelimeler.** Kelimelerinizin sırasını izler, yükselenleri ve düşenleri ayrı gösterir.
+- **Analytics.** Ziyaretçi, kaynak, cihaz ve ülke dağılımı; Fırsatlar'da Search Console verisiyle eşleştirilir.
+- **Panel.** Sıradaki adımları, tıklama eğilimini ve birinci sayfaya yakın kelimeleri tek bakışta verir.
+- **Ajan bağlantısı.** Yapay zekâ ajanlarınız aynı verileri okuyabilir. Bağlantı bir şifreyle korunur.
+- **Sade kullanım.** Her ekranda ne işe yaradığı yazar, tablo başlıklarının yanında açıklama vardır, hızlı filtre düğmeleri ve tıklanabilir grafikler listeyi süzer. Açık ve koyu tema, klavye ve ekran okuyucu desteği vardır.
+
+### Başlamadan önce
+
+- Ajanları bağlamak için şifreyi şu komutla görün ve ajan ayarlarınıza `Authorization: Bearer <şifre>` olarak ekleyin:
 
 ```
 docker compose exec seotracker cat /app/.wrangler/mcp-token
 ```
 
-Çıkan yazıyı ajan ayarlarınıza `Authorization: Bearer <şifre>` olarak
-ekleyin. Şifre istemiyorsanız `.env` dosyanıza `MCP_TOKEN=off` yazın ve
-konteyneri `docker compose up -d --force-recreate seotracker` ile yeniden
-oluşturun.
-
-### Eklendi
-
-- Site denetimi 0 ile 100 arası puan veriyor. Sorun kalmayınca 100 alırsınız.
-- Hız ölçümü artık taranan tüm sayfalarda, mobil ve masaüstünde yapılıyor. Google kotası dolarsa ölçülenler korunur ve ekran bunu söyler.
-- Hız sekmesinde gerçek ziyaretçilerin son haftalardaki hız gidişatı (LCP, CLS, INP). Google Cloud projenizde "Chrome UX Report API" açık olmalı; değilse ekran bunu söyler.
-- Arama performansında arama türü seçimi (web, görsel, video, haber) ve "arama görünümü" dökümü.
-- Sorunlar sekmesinde her sorunun etkilediği sayfalar adresleriyle görünüyor; adresleri kopyalayabilir, sorunu CSV olarak indirebilirsiniz.
-- İndirilen denetim raporu baştan yazıldı: kapak ve puan, grafikler, her sorun için etkilenen adresler, hız, dizin durumu ve sayfa listesi. A4 olarak yazdırılabilir.
-- Denetim 95 kontrol yapıyor. Yeniler: paylaşım kartı etiketleri, sayfa https değil, asıl adres eksik, dil bilgisi eksik, geçersiz yapısal veri, yinelenen H1, bozuk dil sürümü bağlantısı, boş veya genel bağlantı metni, çok uzun adres, karakter kodlaması eksik ve daha fazlası.
-- Dizin durumunda "Neden" sütunu: Google bir sayfayı neden dizine almadı.
-- Fırsatlar artık her sayfayı gösteriyor. Bir satıra tıklayınca neden listede olduğunu ve ne yapacağınızı görürsünüz.
-- Panelde "Sıradaki adımlar", tıklama eğilimi ve birinci sayfaya yakın sorgular.
-- Arama performansında ülke ve cihaz halkaları, Analytics'te cihaz, ülke, yeni/dönen ziyaretçi ve kaynak/kampanya dağılımı.
-- Sıralama takibinde yükselen ve düşen sorgular.
-- Raporlar, Kayıtlı kelimeler, Proje bilgisi ve Destek ekranlarına özet kartları.
-- Her ekranda tıklayınca listeyi süzen grafikler ve hızlı filtre düğmeleri.
-- Denetim raporunu tek dosya olarak indirme, tanılama paketi, ekranların yarım saatte bir kendini yenilemesi.
-- Denetimler arası gidişat grafiği ve tarama süresi tahmini.
-
-### Düzenlendi
-
-- Tüm ekran metinleri ve denetim kurallarının açıklamaları sade Türkçeye çevrildi.
-- Tablolar sıralanabiliyor, adresler tıklanabiliyor, seçtiğiniz tarih aralığı ve filtreler adreste saklanıyor.
-- Denetim silmeden önce soruyor.
-- Renkler açık temada okunur hale getirildi.
-- Klavye ve ekran okuyucu desteği: menüler ve pencereler klavyeyle kullanılabiliyor, "Ana içeriğe geç" bağlantısı var, grafiklerin değerleri gizli tablo olarak okunabiliyor, hareketi azaltma ayarına uyuluyor.
-- Büyük denetimler çok daha hafif açılıyor (10.000 sayfada yük yaklaşık 68 MB yerine 3 MB).
-- Arama performansı ve Analytics'in her sekmesinin kendi özeti var; çubuklara tıklayınca tablo süzülüyor.
-- Panelde metrik kutuları ilgili ekrana gidiyor. Fırsatlar'da "Analytics'te bulunamayan" kutusu listeyi süzüyor.
-- Denetim geçmişinde Kritik ve Uyarı sütunları, önceki denetime göre değişim ve tıklanabilir tarih var.
-- Raporlar ve Rapor şablonları satırları tıklanabiliyor; Sıralama takibinde satırdan "Kayıtlı kelimelere ekle" var.
-
-### Çıkarıldı
-
-- Ücretli veriden kalan Hacim, CPC, Rekabet ve Zorluk sütunları kayıtlı kelimelerin dışa aktarımından kalktı.
-- Fırsatlardaki "yalnızca 4 ile 20. sıra" sınırı kalktı.
-- Aynı işi yapan dört ayrı halka grafiği tek bileşene indi.
-- Eski sürüm notları kaldırıldı; hepsi bu nottadır.
-
-### Düzeltildi
-
-- Grafik "Son 28 gün" derken 7 gün çiziyordu.
-- Dizin durumunda bazı satırlar boş görünüyordu.
-- Hız ölçümü kota yüzünden başarısız olunca ekran nedenini söylemiyordu.
-- Aynı denetimin raporunu aynı gün ikinci kez indirmek hata veriyordu.
-- Çok büyük denetimlerde (yaklaşık 7.500 sayfadan sonra) hız ölçümü, iş akışının sınırına takılıp denetimi bozabiliyordu.
-- Bir ölçüm dalgası hata verince o dalganın başarılı ölçümleri de silinebiliyordu.
-- PDF gibi dosyalara giden asıl adres ve dil bağlantıları yanlışlıkla "noindex" sayılabiliyordu.
-- Kayıtlı kelimelerde arşiv kesilince "Verisi yok" diyordu; artık "Bilinmiyor (arşiv kesildi)" diyor.
-- Panelden bir sorguya tıklayınca sorgunun kendisi yerine tüm liste açılıyordu.
-- Raporlar ekranındaki özet, seçili filtreyle uyuşmuyordu.
-- Sayfa aramasında "INFO" yazınca "info" bulunmuyordu; Türkçe ve İngilizce büyük harfler artık aynı sayılıyor.
-- Tablo başlıkları ve küçük yazılar açık temada okunaklı değildi.
-- Hatalı bir adres parametresi (örneğin ?full=yes) rapor ekranını çökertiyordu.
-- Birçok hata iletisi İngilizce görünüyordu.
-- Hız ölçümünde dakikalık Google sınırına takılan ölçümler kalıcı hata olarak kaydediliyordu (212 sayfalık bir denetimde 40 ölçüm kayboldu). Artık bekleyip yeniden deniyor.
-- Hız ölçümünde tek bir ölçüm hata verince aynı gruptaki sağlam ölçümler de kayboluyordu.
-- Hız sekmesi, ölçümler neden yapılamadıysa (dakikalık sınır, anahtar yok, günlük kota) bunu ve ne yapılacağını söylüyor.
-- Arama performansında yanlış sekmeye ait bir filtre adreste kalıp tabloyu daraltıyordu ve kaldırma düğmesi yoktu.
-- Sayfalar sekmesi ilk açılışta bir an Sorgular satırlarını gösteriyordu.
-- "%30'unu" gibi Türkçe ekler yanlış yazılıyordu; kalıplar yeniden yazıldı.
-- Farklı sayfalardan başlayan denetimler birbiriyle karşılaştırılıyordu (örneğin ana sayfa ile /blog).
-- Ajan şifresini kapatmak için "boş bırakın" denmişti ama bu hiçbir zaman çalışmıyordu. Artık `MCP_TOKEN=off` yazıyorsunuz; boş değer şifre üretmeye devam ediyor.
-- Ajan aracı `inspect_urls`, 10 adreste yaklaşık 70 saniye sürüp zaman aşımına düşüyordu. Adresler artık beşer beşer paralel soruluyor.
-- Yardım ekranındaki tanılama paketinde her denetimin bulgu sayısı 0 görünüyordu.
-- Yalnızca boşluktan oluşan bir `MCP_TOKEN` değeri ajan adresini sessizce şifresiz bırakıyordu.
-- Site adresini dışarıya açıp kimlik doğrulaması koymayanlara verilen uyarı, ajan şifresi varsa susuyordu; oysa şifre yalnızca ajan adresini korur, sayfalar açık kalır.
-- Sorun grafiğindeki çubuklar yalnızca fareyle seçilebiliyordu; artık klavyeyle de seçilebiliyor.
-- İki küçük açıklama balonu, fareyi üzerine götürünce kapanıyordu.
-- Google'ın "URL Denetleme Aracı" adı ekranda ve raporda aynı yazılıyor.
-- Sıralama takibi sessizce yalnızca ilk 25 sorguyu gösteriyordu; arşiv hiç dolmuyordu.
-- Ölçülemeyen değerler sıfır olarak çiziliyordu.
-
-[Yayınlanmamış]: https://github.com/ucsahinn/seotracker/compare/v1.8.6...HEAD
-[1.8.6]: https://github.com/ucsahinn/seotracker/releases/tag/v1.8.6
+- Şifre istemiyorsanız `.env` dosyanıza `MCP_TOKEN=off` yazıp `docker compose up -d --force-recreate seotracker` çalıştırın.
+- Ayarlar'a bir PageSpeed anahtarı girin; anahtar yokken hız ölçümü en çok 50 sayfayla sınırlıdır. Gerçek ziyaretçi hız gidişatı için Google Cloud projenizde "Chrome UX Report API" açık olmalı; değilse ekran bunu söyler.
