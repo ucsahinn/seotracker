@@ -108,11 +108,17 @@ export function CompetitorsSection({
               >
                 <div className="min-w-0 space-y-0.5">
                   <div className="flex flex-wrap items-baseline gap-x-2">
-                    <span className="truncate text-sm font-medium">
+                    <span
+                      className="truncate text-sm font-medium"
+                      title={competitor.domain}
+                    >
                       {competitor.domain}
                     </span>
                     {competitor.name ? (
-                      <span className="truncate text-xs text-muted">
+                      <span
+                        className="truncate text-xs text-muted"
+                        title={competitor.name}
+                      >
                         {competitor.name}
                       </span>
                     ) : null}

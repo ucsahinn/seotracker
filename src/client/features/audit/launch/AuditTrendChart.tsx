@@ -9,7 +9,12 @@ import {
 import { sort } from "remeda";
 import { Chart, CHART_AXIS, CHART_GRID } from "@/client/components/Chart";
 import { ChartTooltip } from "@/client/components/Chart";
-import { formatCount, formatDate, formatDateTime } from "@/client/lib/format";
+import {
+  formatCount,
+  formatDate,
+  formatDateTime,
+  formatDecimal,
+} from "@/client/lib/format";
 import { useReducedMotion } from "@/client/lib/useReducedMotion";
 
 /**
@@ -72,7 +77,7 @@ export function AuditTrendChart({ history }: { history: HistoryRow[] }) {
    * panel makes for a property with no impressions yet.
    */
   const anyFindings = points.some(
-    (point) => point.critical > 0 || point.warning > 0,
+    (point) => point.criticalTotal > 0 || point.warningTotal > 0,
   );
 
   return (
@@ -100,8 +105,8 @@ export function AuditTrendChart({ history }: { history: HistoryRow[] }) {
             rows: points.map((point) => [
               formatDateTime(point.date),
               formatCount(point.pages),
-              `${formatCount(point.critical)} (${formatCount(point.criticalTotal)} toplam)`,
-              `${formatCount(point.warning)} (${formatCount(point.warningTotal)} toplam)`,
+              `${formatDecimal(point.critical)} (${formatCount(point.criticalTotal)} toplam)`,
+              `${formatDecimal(point.warning)} (${formatCount(point.warningTotal)} toplam)`,
             ]),
           }}
         >
@@ -136,12 +141,12 @@ export function AuditTrendChart({ history }: { history: HistoryRow[] }) {
                     rows={[
                       {
                         label: "Kritik",
-                        value: `${formatCount(point.critical)} / 100 sayfa (${formatCount(point.criticalTotal)} toplam)`,
+                        value: `${formatDecimal(point.critical)} / 100 sayfa (${formatCount(point.criticalTotal)} toplam)`,
                         color: SEVERITY.critical,
                       },
                       {
                         label: "Uyarı",
-                        value: `${formatCount(point.warning)} / 100 sayfa (${formatCount(point.warningTotal)} toplam)`,
+                        value: `${formatDecimal(point.warning)} / 100 sayfa (${formatCount(point.warningTotal)} toplam)`,
                         color: SEVERITY.warning,
                       },
                     ]}
@@ -196,7 +201,11 @@ function summarise(first: Point, last: Point, total: number) {
 
   const delta = series.to - series.from;
   const direction = delta === 0 ? "değişmedi" : delta < 0 ? "azaldı" : "arttı";
-  return `${formatCount(total)} denetim. Yüz sayfa başına ${series.label} ${formatDate(first.date)} tarihinde ${formatCount(series.from)} iken ${formatDate(last.date)} tarihinde ${formatCount(series.to)}; ${direction}.`;
+  return `${formatCount(total)} denetim. Yüz sayfa başına ${series.label} ${formatDate(first.date)} tarihinde ${formatDecimal(series.from)} iken ${formatDate(last.date)} tarihinde ${formatDecimal(series.to)}; ${direction}.`;
+}
+
+function roundTenth(value: number): number {
+  return Math.round(value * 10) / 10;
 }
 
 function getPoints(history: HistoryRow[]): Point[] {
@@ -213,8 +222,8 @@ function getPoints(history: HistoryRow[]): Point[] {
       key: row.id,
       date: row.startedAt,
       pages: row.pagesCrawled,
-      critical: Math.round((row.issues.critical / row.pagesCrawled) * 100),
-      warning: Math.round((row.issues.warning / row.pagesCrawled) * 100),
+      critical: roundTenth((row.issues.critical / row.pagesCrawled) * 100),
+      warning: roundTenth((row.issues.warning / row.pagesCrawled) * 100),
       criticalTotal: row.issues.critical,
       warningTotal: row.issues.warning,
     }),

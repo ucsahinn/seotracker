@@ -81,6 +81,25 @@ const ga4Result = makeGa4ReportResult({
   warnings: [],
 });
 
+const ga4Row = (landingPage: string) => ({
+  hostName: "example.com",
+  landingPage,
+  sessions: 10,
+  activeUsers: 9,
+  engagedSessions: 5,
+  engagementRate: 0.5,
+  keyEvents: 1,
+  sessionKeyEventRate: 0.1,
+  transactions: 0,
+  purchaseRevenue: 0,
+});
+const gscRow = (url: string) => ({
+  keys: [url],
+  clicks: 5,
+  impressions: 500,
+  ctr: 0.01,
+  position: 8,
+});
 describe("SearchOpportunityService", () => {
   beforeEach(() => {
     mocks.getGa4Connection.mockResolvedValue({
@@ -211,6 +230,26 @@ describe("SearchOpportunityService", () => {
     });
     expect(result.scoring.businessValueMetric).toBe("sessionKeyEventRate");
     expect(result.warnings).toContain("source_time_zones_differ");
+  });
+
+  it("counts a GA4 page once when two GSC URLs collapse onto it", async () => {
+    mocks.runGa4Report.mockResolvedValue({
+      ...ga4Result,
+      rows: [ga4Row("/blog/"), ga4Row("/other-page")],
+    });
+    mocks.getPerformance.mockResolvedValue({
+      siteUrl: "https://example.com/",
+      request: {},
+      rows: [
+        gscRow("https://example.com/blog"),
+        gscRow("https://example.com/blog?ref=x"),
+      ],
+    });
+    const result = await SearchOpportunityService.getOpportunities(
+      { projectId: "project_1" },
+      { now: new Date("2026-08-06T12:00:00Z") },
+    );
+    expect(result.coverage.unmatchedGa4Rows).toBe(1);
   });
 
   /*

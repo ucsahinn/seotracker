@@ -236,11 +236,17 @@ export function ProjectSwitcher({
           className="flex min-w-0 flex-1 items-center justify-between gap-2 rounded-l-[var(--radius-box)] px-3 py-1.5 text-left transition-colors hover:bg-base-200"
         >
           <span className="flex min-w-0 flex-col">
-            <span className="truncate text-sm font-medium text-base-content">
+            <span
+              className="truncate text-sm font-medium text-base-content"
+              title={activeProject?.name ?? "Proje seçin"}
+            >
               {activeProject?.name ?? "Proje seçin"}
             </span>
             {activeProject?.domain ? (
-              <span className="truncate text-xs font-normal text-muted">
+              <span
+                className="truncate text-xs font-normal text-muted"
+                title={activeProject.domain}
+              >
                 {activeProject.domain}
               </span>
             ) : null}
@@ -324,9 +330,14 @@ export function ProjectSwitcher({
                       }
                     >
                       <span className="flex min-w-0 flex-1 flex-col">
-                        <span className="truncate">{project.name}</span>
+                        <span className="truncate" title={project.name}>
+                          {project.name}
+                        </span>
                         {project.domain ? (
-                          <span className="truncate text-xs text-muted">
+                          <span
+                            className="truncate text-xs text-muted"
+                            title={project.domain}
+                          >
                             {project.domain}
                           </span>
                         ) : null}

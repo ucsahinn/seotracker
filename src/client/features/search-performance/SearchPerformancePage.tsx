@@ -338,6 +338,7 @@ export function SearchPerformancePage({
                     rows={strikingRows}
                     filtered={activeFilter !== undefined}
                     hasQueryData={report.queryRowCount > 0}
+                    segmentFiltered={Boolean(device ?? country)}
                     onClearFilter={clearFilter}
                   />
                 </>

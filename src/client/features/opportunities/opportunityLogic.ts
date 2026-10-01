@@ -24,12 +24,12 @@ export const KIND_COPY = {
   },
   top: {
     label: "İlk sıralarda",
-    hint: "Zaten ilk üçte ve tıklama oranı normal. Yükselecek yer yok; içeriği güncel tutmak yeterli.",
+    hint: "Zaten ilk üçte; yükselecek yer az. Tıklama oranı düşükse başlığa ve açıklamaya bakın, değilse içeriği güncel tutmak yeterli.",
     color: "var(--color-success)",
     todo: [
       "İçeriği güncel tutun; tarih, fiyat ve örnekleri yılda en az bir kez gözden geçirin.",
       "Bu sayfadan öne çıkarmak istediğiniz diğer sayfalara iç bağlantı verin.",
-      "Sıralamada düşüş olursa bu ekrandan hemen fark edeceksiniz; şimdilik dokunmayın.",
+      "Tıklama oranı beklediğinizden düşükse başlığı ve meta açıklamayı yeniden yazın.",
     ],
   },
   near_miss: {
@@ -65,7 +65,7 @@ export const KIND_ORDER: readonly KindId[] = [
 ];
 
 export const QUICK_COPY = {
-  analytics: "Analytics'te trafiği olanlar",
+  analytics: "Analytics'te karşılığı olanlar",
   no_analytics: "Analytics'te karşılığı yok",
   top_impressions: "En çok gösterim alan 10",
 } as const satisfies Record<QuickId, string>;
@@ -96,7 +96,13 @@ export function explainRow(row: OpportunityRow): string {
     return `Ortalama ${position}. sırada ${impressions} kez gösterildi ama yalnızca ${clicks} tıklama aldı (tıklama oranı ${formatPercent(row.ctr)}${gap}).${ga4}`;
   }
   if (row.kind === "top") {
-    return `Ortalama ${position}. sırada, yani zaten ilk sıralarda. ${impressions} gösterimden ${clicks} tıklama aldı; sıra kazanmaktan çok içeriği ve başlığı güçlü tutmak önemli.${ga4}`;
+    // Without a baseline (small site) the click-through cannot be judged, so
+    // do not call it normal; say what is known and what to check.
+    const judged =
+      row.ctrGap === null
+        ? `Tıklama oranını (${formatPercent(row.ctr)}) kıyaslayacak kadar veri yok; düşük görünüyorsa başlığı ve açıklamayı gözden geçirin.`
+        : "Tıklama oranı sitenizdeki benzer sıradaki sayfalarla uyumlu; içeriği ve başlığı güçlü tutmak yeterli.";
+    return `Ortalama ${position}. sırada, yani zaten ilk sıralarda. ${impressions} gösterimden ${clicks} tıklama aldı. ${judged}${ga4}`;
   }
   if (row.kind === "near_miss") {
     return `Ortalama ${position}. sırada; ilk sayfaya çok yakın. ${impressions} gösterimden ${clicks} tıklama aldı, birkaç basamak yükselmek bunu belirgin şekilde artırabilir.${ga4}`;
@@ -149,9 +155,9 @@ export function scoreWords(components: OpportunityRow["scoreComponents"]) {
   });
 }
 
-/** Rows that Analytics also saw traffic for. */
+/** Rows Analytics has a record for. The complement of `lacksAnalyticsMatch`, so the two chips split the list. */
 function hasAnalyticsTraffic(row: OpportunityRow): boolean {
-  return row.ga4 !== null && row.ga4.sessions > 0;
+  return row.ga4 !== null;
 }
 
 /** Rows Search Console saw but Analytics has no record of (scored on Search Console data alone). */

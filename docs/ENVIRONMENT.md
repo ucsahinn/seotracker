@@ -10,6 +10,16 @@ listesidir. Kurulumun geri kalanı — Google OAuth istemcisi, PageSpeed anahtar
 Kullanmak için proje kökünde bir `.env` dosyası oluşturup istediğiniz satırları
 yazın. Dosya `.gitignore`'da.
 
+`.env` dosyasını değiştirdikten sonra konteyneri yeniden oluşturun; düz
+`docker compose up -d` değişikliği uygulamaz:
+
+```sh
+docker compose up -d --force-recreate seotracker
+```
+
+Windows'ta Not Defteri dosyayı `.env.txt` diye kaydedebilir; PowerShell ile
+oluşturmak güvenlidir, örneğin `Set-Content -Encoding ascii .env 'PORT=3002'`.
+
 ## Ağ
 
 | Değişken       | Varsayılan | Ne işe yarar                                                                                                               |
@@ -42,10 +52,10 @@ ve [SELF_HOSTING_GOOGLE_ANALYTICS.md](./SELF_HOSTING_GOOGLE_ANALYTICS.md).
 
 ## Diğer isteğe bağlı
 
-| Değişken            | Ne işe yarar                                                                                                                                                                                                                  |
-| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `PAGESPEED_API_KEY` | Denetimin Lighthouse aşaması için. **Ayarlar'dan girmek daha kolay.** Anahtarsız da çalışır ama Google'ın anahtarsız kotası birkaç sayfadan sonra 429 döndürür. Bkz. [PAGESPEED_API_KEY.md](./PAGESPEED_API_KEY.md).          |
-| `MCP_TOKEN`         | `/mcp` ucu için paylaşılan sır. Boşsa Docker konteyneri ilk açılışta bir tane üretir (`/app/.wrangler/mcp-token`). Kendi değerinizi verebilir ya da `off` yazıp kapatabilirsiniz (yalnızca Docker'da; boş bırakmak kapatmaz). |
+| Değişken            | Ne işe yarar                                                                                                                                                                                                                                                                                                                                                                               |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `PAGESPEED_API_KEY` | Denetimin Lighthouse aşaması için. **Ayarlar'dan girmek daha kolay.** Anahtarsız ölçüm ilk 50 sayfayla sınırlıdır ve çoğu zaman kısmen 429 ile başarısız olur; anahtar önerilir. Bkz. [PAGESPEED_API_KEY.md](./PAGESPEED_API_KEY.md).                                                                                                                                                      |
+| `MCP_TOKEN`         | `/mcp` ucu için paylaşılan sır. Boşsa Docker konteyneri ilk açılışta bir tane üretir (`/app/.wrangler/mcp-token`). Kendi değerinizi verebilir ya da `off` yazıp kapatabilirsiniz (yalnızca Docker'da; boş bırakmak kapatmaz). Rastgele değer üretmek için: `openssl rand -hex 32` (Git Bash/Linux/macOS) ya da PowerShell'de `-join ((1..32) \| % { '{0:x2}' -f (Get-Random -Max 256) })`. |
 
 ## Neden `.env.example` yok
 

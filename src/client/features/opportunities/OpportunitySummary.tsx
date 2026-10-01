@@ -78,7 +78,7 @@ export function OpportunitySummary({
         onSelect={(key) =>
           onSelectKind(KIND_ORDER.find((id) => id === key) ?? null)
         }
-        summary={`Toplam ${formatCount(total)} ${unit} içinde en büyük pay ${leader.label.toLocaleLowerCase("tr")} sayfalarda (${formatPercent(leader.value / total)}).`}
+        summary={`Toplam ${formatCount(total)} ${unit} içinde en büyük pay ${leader.label.toLocaleLowerCase("tr")} kümesinde (${formatPercent(leader.value / total)}).`}
       />
     </section>
   );

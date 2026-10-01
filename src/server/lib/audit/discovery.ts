@@ -3,6 +3,7 @@
  */
 import robotsParser from "robots-parser";
 import { XMLParser } from "fast-xml-parser";
+import { isCrawlableUrl } from "./url-policy";
 import { isSameOrigin, normalizeUrl } from "./url-utils";
 
 const SITEMAP_FETCH_TIMEOUT_MS = 15_000;
@@ -52,12 +53,50 @@ type RobotsFetch = {
   truncated: boolean;
 };
 
+const MAX_DISCOVERY_REDIRECTS = 3;
+
+/**
+ * fetch with redirects followed by hand: every hop must stay on the audited
+ * origin and pass the crawl URL policy, so a hostile origin cannot bounce
+ * discovery to a metadata endpoint or a sibling container. Returns null when
+ * a hop leaves the origin, is blocked, or the chain is too long; the caller
+ * treats that like an unreachable file.
+ */
+async function fetchWithinOrigin(
+  url: string,
+  origin: string,
+  init: { headers: Record<string, string>; timeoutMs: number },
+): Promise<Response | null> {
+  let current = url;
+  for (let hop = 0; hop <= MAX_DISCOVERY_REDIRECTS; hop++) {
+    if (!isSameOrigin(current, origin) || !isCrawlableUrl(current)) {
+      return null;
+    }
+    const response = await fetch(current, {
+      headers: init.headers,
+      redirect: "manual",
+      signal: AbortSignal.timeout(init.timeoutMs),
+    });
+    if (response.status < 300 || response.status >= 400) return response;
+
+    await response.body?.cancel();
+    const location = response.headers.get("location");
+    const next = location ? normalizeUrl(location, current) : null;
+    if (!next) return null;
+    current = next;
+  }
+  return null;
+}
+
 async function fetchRobotsTxtText(origin: string): Promise<RobotsFetch> {
   try {
-    const response = await fetch(`${origin}/robots.txt`, {
+    const response = await fetchWithinOrigin(`${origin}/robots.txt`, origin, {
       headers: { "User-Agent": "seotracker-audit/1.0" },
-      signal: AbortSignal.timeout(10_000),
+      timeoutMs: 10_000,
     });
+    if (!response) {
+      return { text: null, status: null, truncated: false };
+    }
 
     if (!response.ok)
       return { text: null, status: response.status, truncated: false };
@@ -233,7 +272,10 @@ async function readBodyCapped(
   return new TextDecoder().decode(joined);
 }
 
-async function fetchSitemapDocumentWithRetry(sitemapUrl: string): Promise<{
+async function fetchSitemapDocumentWithRetry(
+  sitemapUrl: string,
+  origin: string,
+): Promise<{
   nestedSitemaps: string[];
   /**
    * Set when the document was skipped for its size rather than for being
@@ -260,10 +302,13 @@ async function fetchSitemapDocumentWithRetry(sitemapUrl: string): Promise<{
 
   for (let attempt = 0; attempt <= SITEMAP_RETRIES; attempt++) {
     try {
-      const response = await fetch(normalizedSitemapUrl, {
+      const response = await fetchWithinOrigin(normalizedSitemapUrl, origin, {
         headers: { "User-Agent": "seotracker-audit/1.0" },
-        signal: AbortSignal.timeout(SITEMAP_FETCH_TIMEOUT_MS),
+        timeoutMs: SITEMAP_FETCH_TIMEOUT_MS,
       });
+      if (!response) {
+        return { nestedSitemaps: [], pageUrls: [], timedOut: false };
+      }
 
       const finalUrl = normalizeUrl(response.url, normalizedSitemapUrl);
       if (!finalUrl || !isSameOrigin(finalUrl, normalizedSitemapUrl)) {
@@ -393,7 +438,10 @@ export async function discoverUrls(
         seenSitemapDocs.add(normalizedUrl);
         fetchedDocs += 1;
 
-        const result = await fetchSitemapDocumentWithRetry(normalizedUrl);
+        const result = await fetchSitemapDocumentWithRetry(
+          normalizedUrl,
+          origin,
+        );
         if (result.tooLarge) oversizedSitemaps.push(normalizedUrl);
         /*
          * Google's own ceiling, which is higher than the one above: a shard

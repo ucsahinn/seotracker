@@ -144,7 +144,13 @@ export function ScoreCard({
                   onClick={onOpenIssues}
                   className="group flex w-full items-center gap-3 rounded-field px-2 py-1.5 text-left transition-colors hover:bg-base-200/50"
                 >
-                  <span className="min-w-0 flex-1 truncate text-sm">
+                  <span
+                    className="min-w-0 flex-1 truncate text-sm"
+                    title={
+                      getIssueDescriptor(gain.issueType)?.title ??
+                      gain.issueType
+                    }
+                  >
                     {getIssueDescriptor(gain.issueType)?.title ??
                       gain.issueType}
                   </span>

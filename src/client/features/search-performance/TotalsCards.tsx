@@ -8,7 +8,7 @@ type Delta = { text: string; improved: boolean } | null;
 
 function percentDelta(current: number, previous: number): Delta {
   const change = fractionalChange(current, previous);
-  if (change === null) return null;
+  if (change === null || Math.round(Math.abs(change) * 100) === 0) return null;
   // The sign is carried in the text, so `formatPercent` gets the magnitude.
   return {
     text: `${change >= 0 ? "+" : "-"}${formatPercent(Math.abs(change))}`,
@@ -23,20 +23,21 @@ function percentDelta(current: number, previous: number): Delta {
 function ctrDelta(current: number, previous: number): Delta {
   if (previous <= 0) return null;
   const points = (current - previous) * 100;
+  if (formatDecimal(Math.abs(points)) === formatDecimal(0)) return null;
   return {
     text: `${points >= 0 ? "+" : "-"}${formatDecimal(Math.abs(points))} puan`,
     improved: points >= 0,
   };
 }
 
-/** Position falls as rankings improve, so the delta is inverted. */
-function positionDelta(current: number, previous: number): Delta {
-  if (previous <= 0 || current <= 0) return null;
-  const change = previous - current;
-  return {
-    text: `${change >= 0 ? "+" : "-"}${formatDecimal(Math.abs(change))} sıra`,
-    improved: change >= 0,
-  };
+/**
+ * Position falls as rankings improve, so the badge is inverted. A relative
+ * change, as on the dashboard tile: one arrow and one wording for the same
+ * number on both screens.
+ */
+function positionDelta(current: number, previous: number): number | null {
+  if (current <= 0) return null;
+  return fractionalChange(current, previous);
 }
 
 export function TotalsCards({ report }: { report: Report }) {
@@ -80,6 +81,7 @@ export function TotalsCards({ report }: { report: Report }) {
             : null
         }
         deltaTitle={deltaTitle}
+        inverted
       />
     </MetricRow>
   );

@@ -1,5 +1,6 @@
 import { and, count, eq, gte, inArray } from "drizzle-orm";
 import { db } from "@/db";
+import { executeInBatches } from "@/db/runBatch";
 import { auditPages, audits, gscUrlInspections } from "@/db/schema";
 import {
   DAILY_QUOTA,
@@ -212,7 +213,12 @@ export async function inspectAndRecord(input: {
   });
   const checkedAt = now.toISOString();
 
-  for (const entry of results) {
+  /*
+   * One D1 round trip per 100 rows instead of one per URL (up to 2000 a
+   * day). Each statement is still a single-row upsert, so the bound
+   * parameters stay per statement and the order is the order Google answered.
+   */
+  await executeInBatches(results, (tx, entry) => {
     const status = entry.result?.indexStatusResult;
     const values = {
       projectId: input.projectId,
@@ -230,14 +236,24 @@ export async function inspectAndRecord(input: {
       error: entry.error ?? null,
       checkedAt,
     };
-    await db
+    /*
+     * A failed inspection carries no answer. Writing its nulls over the
+     * conflict would erase a verdict Google already gave and restart the
+     * retry clock on a page that is not actually stale, so a failure on an
+     * already-stored URL only records the error and the attempt time. A URL
+     * with nothing stored still gets the full row from the insert.
+     */
+    const failed = !entry.result && !!entry.error;
+    return tx
       .insert(gscUrlInspections)
       .values(values)
       .onConflictDoUpdate({
         target: [gscUrlInspections.projectId, gscUrlInspections.url],
-        set: values,
+        set: failed
+          ? { error: values.error, checkedAt: values.checkedAt }
+          : values,
       });
-  }
+  });
 
   /*
    * Rethrown only after the loop above has persisted everything Google did

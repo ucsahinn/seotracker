@@ -259,9 +259,14 @@ export function DonutCard({
   onSelect?: (key: string | null) => void;
 }) {
   const selected = ring.segments.find((segment) => segment.key === selectedKey);
+  const sectionRef = React.useRef<HTMLElement>(null);
 
   return (
-    <section className="rounded-box border border-base-300 bg-base-100 p-4">
+    <section
+      ref={sectionRef}
+      tabIndex={-1}
+      className="rounded-box border border-base-300 bg-base-100 p-4 outline-none"
+    >
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div>
           <h2 className="text-sm font-medium">{title}</h2>
@@ -273,7 +278,11 @@ export function DonutCard({
           <button
             type="button"
             className="btn btn-ghost btn-xs gap-1"
-            onClick={() => onSelect(null)}
+            onClick={() => {
+              onSelect(null);
+              // The button unmounts with the selection; keep focus in the card.
+              sectionRef.current?.focus();
+            }}
           >
             <X aria-hidden className="size-3.5" />
             Seçimi kaldır

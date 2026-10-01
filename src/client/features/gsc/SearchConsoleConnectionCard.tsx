@@ -171,7 +171,7 @@ export function SearchConsoleConnectionCard({
         </div>
       ) : connectionQuery.isError && !connection ? (
         <div role="alert" className="space-y-3 text-sm">
-          <p className="text-error">
+          <p className="text-[var(--ink-error)]">
             Bu projenin bağlantısı kontrol edilemedi.
           </p>
           <button
@@ -244,7 +244,7 @@ export function SearchConsoleConnectionCard({
         ></GoogleProjectEmptyState>
       )}
       {setSiteMutation.isError || disconnectMutation.isError ? (
-        <p role="alert" className="mt-3 text-sm text-error">
+        <p role="alert" className="mt-3 text-sm text-[var(--ink-error)]">
           {getStandardErrorMessage(
             setSiteMutation.error ?? disconnectMutation.error,
           )}

@@ -181,7 +181,9 @@ function buildPerformanceColumns({
     performanceColumnHelper.accessor("pagePath", {
       header: ({ column }) => <SortableHeader column={column} label="URL" />,
       cell: ({ getValue }) => (
-        <span className="text-xs">{getValue() ?? "-"}</span>
+        <span className="text-xs" title={getValue() ?? undefined}>
+          {getValue() ?? "-"}
+        </span>
       ),
       sortingFn: nullableStringSort,
       meta: { cellClassName: "max-w-[180px] truncate" },

@@ -44,7 +44,7 @@ export function GoogleLinkErrorAlert({
       className={`flex items-start justify-between gap-3 rounded-box border border-error/30 bg-error/10 p-3.5 text-sm ${className ?? ""}`}
     >
       <div className="space-y-1">
-        <p className="font-semibold text-error">{copy.title}</p>
+        <p className="font-semibold text-[var(--ink-error)]">{copy.title}</p>
         <p className="text-muted">{copy.description}</p>
       </div>
       <button

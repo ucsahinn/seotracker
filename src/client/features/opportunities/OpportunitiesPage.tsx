@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useRef, useState, type ReactNode } from "react";
 import {
   Intro,
@@ -92,6 +92,9 @@ export function OpportunitiesPage({
     queryFn: () =>
       getSearchOpportunities({ data: { projectId, limit, windowDays } }),
     retry: false,
+    // Keep the previous rows (and the pickers mounted) while a new window or
+    // limit loads, so focus and the report state survive a change.
+    placeholderData: keepPreviousData,
   });
 
   return (

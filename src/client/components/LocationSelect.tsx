@@ -1,6 +1,7 @@
 import { searchFold } from "@/client/lib/searchFold";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Check, Search } from "lucide-react";
+import { formatRegionName } from "@/shared/format";
 import { LOCATION_OPTIONS } from "@/shared/keyword-locations";
 
 type LocationOption = (typeof LOCATION_OPTIONS)[number];
@@ -14,15 +15,9 @@ type Props = {
   className?: string;
 };
 
-const REGION_NAMES = new Intl.DisplayNames(["tr"], { type: "region" });
-
 /** The country in Turkish; the English data label when the runtime has no name for the code. */
 function countryName(option: LocationOption): string {
-  try {
-    return REGION_NAMES.of(option.shortLabel) ?? option.label;
-  } catch {
-    return option.label;
-  }
+  return formatRegionName(option.shortLabel, option.label);
 }
 
 function matches(option: LocationOption, query: string): boolean {
@@ -52,6 +47,7 @@ export function LocationSelect({
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
   const selected = options.find((option) => option.code === value) ?? null;
 
@@ -88,9 +84,14 @@ export function LocationSelect({
     activeItem?.scrollIntoView({ block: "nearest" });
   }, [activeIndex, open]);
 
+  const close = () => {
+    setOpen(false);
+    triggerRef.current?.focus();
+  };
+
   const select = (option: LocationOption) => {
     onChange(option.code);
-    setOpen(false);
+    close();
   };
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
@@ -111,7 +112,7 @@ export function LocationSelect({
       }
       case "Escape":
         event.preventDefault();
-        setOpen(false);
+        close();
         break;
     }
   };
@@ -119,7 +120,9 @@ export function LocationSelect({
   return (
     <div ref={containerRef} className={`relative ${className}`}>
       <button
+        ref={triggerRef}
         type="button"
+        aria-label={`Ülke: ${selected ? countryName(selected) : "seçilmedi"}`}
         className="select select-bordered flex w-full items-center justify-between gap-2 text-left font-normal"
         aria-haspopup="listbox"
         aria-expanded={open}
@@ -131,7 +134,7 @@ export function LocationSelect({
       </button>
 
       {open ? (
-        <div className="fixed z-30 mt-2 w-full max-w-56 rounded-box border border-base-300 bg-base-100 p-2 shadow-lg">
+        <div className="absolute left-0 top-full z-30 mt-2 w-full min-w-48 max-w-56 rounded-box border border-base-300 bg-base-100 p-2 shadow-lg">
           <label className="flex items-center gap-2 rounded-field border border-[var(--control-border)] px-3 py-2 focus-within:border-primary">
             <Search className="size-4 shrink-0 text-muted" />
             <input
@@ -139,6 +142,7 @@ export function LocationSelect({
               type="text"
               className="grow min-w-0 bg-transparent text-sm outline-none placeholder:text-muted"
               placeholder="Ülke ara"
+              aria-label="Ülke ara"
               value={query}
               onChange={(event) => {
                 setQuery(event.target.value);
@@ -161,14 +165,11 @@ export function LocationSelect({
               filtered.map((option, index) => {
                 const isSelected = option.code === value;
                 return (
-                  <li
-                    key={option.code}
-                    role="option"
-                    aria-selected={isSelected}
-                  >
-                    <button
-                      type="button"
-                      className={`w-full ${index === activeIndex ? "menu-focus" : ""}`}
+                  <li key={option.code} role="presentation">
+                    <div
+                      role="option"
+                      aria-selected={isSelected}
+                      className={`flex w-full cursor-pointer items-center ${index === activeIndex ? "menu-focus" : ""}`}
                       onClick={() => select(option)}
                       onMouseEnter={() => setActiveIndex(index)}
                     >
@@ -178,7 +179,7 @@ export function LocationSelect({
                       {isSelected ? (
                         <Check className="size-4 shrink-0 text-primary" />
                       ) : null}
-                    </button>
+                    </div>
                   </li>
                 );
               })

@@ -127,7 +127,10 @@ export function CoverageTable({
                             one exists; without the declared value the reader
                             had to download the CSV to see what it was. */}
                         {row.userCanonical ? (
-                          <p className="truncate text-xs text-muted">
+                          <p
+                            className="truncate text-xs text-muted"
+                            title={row.userCanonical}
+                          >
                             Sizin seçtiğiniz: {pathOf(row.userCanonical)}
                           </p>
                         ) : null}

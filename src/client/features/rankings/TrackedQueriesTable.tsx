@@ -105,7 +105,10 @@ export function TrackedQueriesTable({
                 sync ran (up to half a minute of paginated Search Console
                 requests) this table stated there were no queries, directly
                 under a header saying the archive was still updating. */}
-        {rows.length === 0 && !tracked.isLoading && !tracked.isPending ? (
+        {rows.length === 0 &&
+        !tracked.isLoading &&
+        !tracked.isPending &&
+        !tracked.isError ? (
           <tr>
             <td colSpan={7} className="p-0">
               <EmptyState

@@ -110,6 +110,7 @@ export function buildPagesColumns({
         return (
           <button
             type="button"
+            aria-label={`${formatCount(count)} sorunu göster`}
             onClick={() => onShowIssues(row.original.url)}
             className="link link-hover text-xs text-[var(--ink-warning)]"
           >

@@ -9,11 +9,9 @@ türetilmiştir. Özgün proje ücretli bir veri sağlayıcısına (DataForSEO) 
 bu çatal o bağımlılığın tamamını ve onunla gelen çok kullanıcılı altyapıyı
 kaldırır.
 
-> **Sürümler hakkında.** GitHub çatallara özgün projenin etiketlerini
-> devreder; `v0.0.1` – `v0.1.9` bu depodan kaldırıldı, çünkü onlar
-> open-seo'nun yayınlarıydı, buranın değil. Bu çatalın kendi sürüm dizisi
-> `v0.2.0` ile başlar; değişiklikler
-> [`CHANGELOG.md`](./CHANGELOG.md) dosyasında.
+> **Sürümler hakkında.** Yayında tek sürüm tutulur; güncel sürüm ve notlar
+> [`CHANGELOG.md`](./CHANGELOG.md) dosyasında. `v0.0.1` – `v0.1.9`
+> open-seo'nun etiketleriydi ve kaldırıldı.
 
 ## Ne yapar
 
@@ -48,8 +46,9 @@ kaldırır.
 - **Denetim karşılaştırması** — bir haftadır tarama yapılmadıysa panel hatırlatır
   ve son iki denetimi karşılaştırıp yeni çıkan sorunları ayrı gösterir.
 - **Raporlar** — yapay zeka ajanının yazdığı, kendi kendine yeten HTML belgeler.
-- **MCP sunucusu** — Claude Code gibi ajanlar bu verinin tamamına 33 araç
-  üzerinden erişir.
+- **MCP sunucusu** — Claude Code gibi ajanlar bu verinin tamamına MCP araçları
+  üzerinden erişir. Ajanın göndermesi gereken şifre için
+  [`docs/SELF_HOSTING_DOCKER.md`](./docs/SELF_HOSTING_DOCKER.md#mcp-kimlik-doğrulaması).
 
 ## Ne yapmaz
 
@@ -58,7 +57,8 @@ takibi yoktur. Bunların hepsi satın alınan veriye dayanıyordu.
 
 ## Kurulum
 
-Gerekenler: Docker ve bir Google hesabı. Ayrıntılar için
+Gerekenler: Docker, bir Google hesabı ve depoyu indirmek için Git (Git
+yoksa GitHub sayfasındaki **Code → Download ZIP** ile de olur). Ayrıntılar için
 [`docs/SELF_HOSTING_DOCKER.md`](./docs/SELF_HOSTING_DOCKER.md).
 
 ```sh
@@ -71,6 +71,32 @@ Başka bir şey gerekmez: imaj bu depodan derlenir, veritabanı ilk açılışta
 kurulur ve şifreleme anahtarı kendiliğinden üretilir. İlk açılış birkaç dakika
 sürer. Uygulama `http://localhost:3001` adresinde açılır.
 
+### Açılmıyorsa
+
+- Docker Desktop çalışıyor mu? Windows'ta tepsideki Docker simgesi "running"
+  göstermeli.
+- `docker compose ps` çalıştırın ve durum **healthy** olana kadar bekleyin; ilk
+  açılış birkaç dakika sürebilir.
+- Hâlâ açılmıyorsa son günlük satırlarına bakın: `docker compose logs --tail 50`
+- `Bind for 127.0.0.1:3001 failed` gibi bir hata, portun başka bir program
+  tarafından kullanıldığını gösterir. Proje klasöründe `PORT=3002` satırını içeren
+  bir `.env` dosyası oluşturun. Windows'ta Not Defteri dosyayı sessizce
+  `.env.txt` diye kaydedebilir; PowerShell ile oluşturmak güvenlidir:
+
+  ```powershell
+  Set-Content -Encoding ascii .env 'PORT=3002'
+  ```
+
+  Sonra konteyneri yeniden oluşturun ve `http://localhost:3002` adresini açın:
+
+  ```sh
+  docker compose up -d --force-recreate seotracker
+  ```
+
+  Port değişirse Google OAuth yönlendirme adresini de
+  (`http://localhost:3002/api/gsc/oauth/callback`) Google Cloud Console'da
+  güncelleyin.
+
 Search Console ve Analytics bağlantısı için kendi Google OAuth istemcinizi
 **Ayarlar → Google bağlantısı** bölümüne girin; ikisi de aynı istemciyi
 kullanır. İstemciyi nereden alacağınız
@@ -78,8 +104,12 @@ kullanır. İstemciyi nereden alacağınız
 ve [`docs/SELF_HOSTING_GOOGLE_ANALYTICS.md`](./docs/SELF_HOSTING_GOOGLE_ANALYTICS.md)
 dosyalarında.
 
-Hız skorları için ücretsiz bir PageSpeed Insights anahtarı önerilir; bu hâlâ bir
-ortam değişkeni: [`docs/PAGESPEED_API_KEY.md`](./docs/PAGESPEED_API_KEY.md).
+Hız skorları için ücretsiz bir PageSpeed Insights anahtarı önerilir; anahtarı
+**Ayarlar → Hız ölçümü** bölümüne yapıştırıp kaydedin, yeniden başlatma gerekmez:
+[`docs/PAGESPEED_API_KEY.md`](./docs/PAGESPEED_API_KEY.md).
+
+İsteğe bağlı ortam değişkenlerinin tam listesi:
+[`docs/ENVIRONMENT.md`](./docs/ENVIRONMENT.md).
 
 ## Güncelleme
 

@@ -102,6 +102,28 @@ describe("classify", () => {
     expect(classify(row(34, 0.01, 4000), expected)).toBe("deep");
   });
 
+  it("keeps a deep page deep even with a low click-through and a bar", () => {
+    const withDeepBar = expectedCtrByBucket([
+      row(34, 0.05),
+      row(34, 0.05),
+      row(34, 0.05),
+    ]);
+    expect(classify(row(34, 0.001, 4000), withDeepBar)).toBe("deep");
+  });
+
+  it("still calls a top-3 page top without a baseline, since it has nowhere to climb", () => {
+    expect(classify(row(1.5, 0, 5000), new Map())).toBe("top");
+  });
+
+  it("uses the first bucket's edge for top", () => {
+    const wide = expectedCtrByBucket([
+      row(3.5, 0.1),
+      row(3.5, 0.1),
+      row(3.5, 0.1),
+    ]);
+    expect(classify(row(3.5, 0.1), wide)).toBe("near_miss");
+  });
+
   it("has no opinion when the bucket has no bar", () => {
     expect(classify(row(80, 0.001), expected)).toBe("deep");
   });

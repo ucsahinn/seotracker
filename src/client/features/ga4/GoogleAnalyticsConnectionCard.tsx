@@ -149,7 +149,7 @@ export function GoogleAnalyticsConnectionCard({
           </div>
         ) : connectionUnavailable ? (
           <div role="alert" className="space-y-3 text-sm">
-            <p className="text-error">
+            <p className="text-[var(--ink-error)]">
               Bu projenin bağlantısı kontrol edilemedi.
             </p>
             <button
@@ -234,7 +234,7 @@ export function GoogleAnalyticsConnectionCard({
           <DismissButton onClick={onDismiss} disabled={dismissDisabled} />
         ) : null}
         {setPropertyMutation.isError || disconnectMutation.isError ? (
-          <p role="alert" className="mt-3 text-sm text-error">
+          <p role="alert" className="mt-3 text-sm text-[var(--ink-error)]">
             {getStandardErrorMessage(
               setPropertyMutation.error ?? disconnectMutation.error,
             )}

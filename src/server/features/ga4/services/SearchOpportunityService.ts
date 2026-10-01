@@ -389,6 +389,8 @@ async function getOpportunities(
   );
 
   const matchedRows = joined.length;
+  // Several GSC URLs can normalize to one GA4 page; count that page once.
+  const matchedGa4Pages = new Set(joined.map((c) => c.normalizedPage)).size;
   const unmatchedGscRows = candidates.length - matchedRows;
   const returned = candidates.slice(0, limit);
   return {
@@ -429,7 +431,7 @@ async function getOpportunities(
       matchedRows,
       unmatchedGscRows,
       unmatchedGa4Rows:
-        Math.max(ga4ByPage.size - matchedRows, 0) + invalidGa4Rows,
+        Math.max(ga4ByPage.size - matchedGa4Pages, 0) + invalidGa4Rows,
     },
     truncated: {
       gsc: gsc.rows.length >= 1_000,

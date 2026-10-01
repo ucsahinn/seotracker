@@ -191,7 +191,10 @@ function QueryRow({
           }`}
           aria-hidden
         />
-        <span className="min-w-0 flex-1 truncate text-sm font-medium">
+        <span
+          className="min-w-0 flex-1 truncate text-sm font-medium"
+          title={row.query}
+        >
           {row.query}
         </span>
         <span className="shrink-0 text-xs text-muted">{competing} sayfa</span>

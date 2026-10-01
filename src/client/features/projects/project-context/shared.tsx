@@ -156,7 +156,7 @@ export function ConfirmDeleteButton({
   return (
     <button
       type="button"
-      className="btn btn-ghost btn-xs text-error"
+      className="btn btn-ghost btn-xs text-[var(--ink-error)]"
       aria-label={label}
       disabled={pending}
       onClick={() => setConfirming(true)}

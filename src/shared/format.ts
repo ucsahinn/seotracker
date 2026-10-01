@@ -247,6 +247,15 @@ export function formatCountry(code: string): string {
   }
 }
 
+/** The region (ISO-3166 alpha-2) in Turkish; `fallback` when the runtime has no name. */
+export function formatRegionName(alpha2: string, fallback: string): string {
+  try {
+    return regionNames.of(alpha2) ?? fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 export function formatDay(value: string): string {
   return safe(value, dayFormatter);
 }

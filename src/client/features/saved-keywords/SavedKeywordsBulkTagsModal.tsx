@@ -157,10 +157,11 @@ export function SavedKeywordsBulkTagsModal({
               </div>
             ) : null}
 
-            <label className="flex items-center gap-2 rounded-field border border-base-300 bg-base-100 px-2 py-2">
+            <label className="flex items-center gap-2 rounded-field border border-base-300 bg-base-100 px-2 py-2 focus-within:border-primary">
               <Search className="size-3.5 opacity-50" />
               <input
                 ref={inputRef}
+                aria-label="Etiket ara"
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
                 onKeyDown={(event) => {
@@ -263,16 +264,12 @@ export function SavedKeywordsBulkTagsModal({
         )}
 
         <div className="flex items-center justify-end gap-2 pt-2">
-          <button
-            type="button"
-            className="rounded-field px-3 py-1.5 text-sm text-muted hover:bg-base-200"
-            onClick={onClose}
-          >
+          <button type="button" className="btn btn-sm" onClick={onClose}>
             Vazgeç
           </button>
           <button
             type="button"
-            className="inline-flex items-center gap-1.5 rounded-field bg-primary px-3 py-1.5 text-sm font-medium text-primary-content disabled:opacity-50"
+            className="btn btn-primary btn-sm"
             disabled={!canApply}
             onClick={() =>
               onApply({

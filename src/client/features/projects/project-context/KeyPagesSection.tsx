@@ -120,7 +120,10 @@ export function KeyPagesSection({
               >
                 <div className="min-w-0 space-y-0.5">
                   <div className="flex flex-wrap items-baseline gap-x-2">
-                    <span className="truncate text-sm font-medium">
+                    <span
+                      className="truncate text-sm font-medium"
+                      title={page.url}
+                    >
                       {page.url}
                     </span>
                     <span className="badge badge-ghost badge-sm shrink-0">

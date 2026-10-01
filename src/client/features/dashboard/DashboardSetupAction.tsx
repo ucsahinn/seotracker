@@ -51,7 +51,7 @@ export function DashboardSetupAction({
     return project ? (
       <WebsiteForm project={project} onComplete={onComplete} />
     ) : projects.isError ? (
-      <p role="alert" className="text-sm text-error">
+      <p role="alert" className="text-sm text-[var(--ink-error)]">
         {getStandardErrorMessage(projects.error)}
       </p>
     ) : (

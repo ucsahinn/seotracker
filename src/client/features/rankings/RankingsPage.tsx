@@ -156,7 +156,8 @@ export function RankingsPage({
   const narrowed =
     band !== undefined || chip !== undefined || move !== undefined;
   const hasChange = fetched.some((row) => row.delta !== null);
-  const archiveEmpty = sync.data?.rowCount === 0;
+  const archiveEmpty =
+    sync.data?.rowCount === 0 && !sync.data.notConnected && !sync.data.error;
   const searching = search.trim() !== "";
   const emptyTitle = searching
     ? "Aramanıza uyan sorgu yok"

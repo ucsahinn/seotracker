@@ -71,7 +71,7 @@ export function SavedKeywordsTagFilter({
   }, [open]);
 
   const filteredTags = useMemo(() => {
-    const q = query.trim().toLocaleLowerCase();
+    const q = query.trim().toLocaleLowerCase("tr");
     if (!q) return availableTags;
     return availableTags.filter((tag) => tag.normalizedName.includes(q));
   }, [availableTags, query]);
@@ -184,10 +184,11 @@ function TagFilterPopover({
   return (
     <div className="absolute right-0 top-full z-20 mt-2 w-80 max-w-[calc(100vw-2rem)] overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-2xl">
       <div className="border-b border-base-300 p-2">
-        <label className="flex items-center gap-2 rounded-field border border-base-300 bg-base-200/50 px-2 py-1.5">
+        <label className="flex items-center gap-2 rounded-field border border-base-300 bg-base-200/50 px-2 py-1.5 focus-within:border-primary">
           <Search className="size-3.5 opacity-50" />
           <input
             autoFocus
+            aria-label="Etiket ara"
             value={query}
             onChange={(event) => onQueryChange(event.target.value)}
             placeholder="Etiket ara…"

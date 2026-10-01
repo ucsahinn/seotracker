@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import { ArrowDownRight, ArrowUpRight } from "lucide-react";
 import { Area, AreaChart, Tooltip, XAxis } from "recharts";
 import {
   CHART_AXIS,
@@ -14,14 +13,10 @@ import {
 } from "@/client/features/dashboard/cardParts";
 import { dashboardGscReportQuery } from "@/client/features/dashboard/dashboardGscReport";
 import { describeClickTrend } from "@/client/features/dashboard/clickTrend";
+import { DeltaBadge } from "@/client/components/MetricTile";
 import { useReducedMotion } from "@/client/lib/useReducedMotion";
 import { DEFAULT_WINDOW_DAYS } from "@/shared/dataFreshness";
-import {
-  formatCount,
-  formatDay,
-  formatDecimal,
-  formatPercent,
-} from "@/client/lib/format";
+import { formatCount, formatDay, formatDecimal } from "@/client/lib/format";
 
 const TOP_QUERIES = 4;
 
@@ -95,19 +90,8 @@ export function SearchInsights({
                 tıklama, son {DEFAULT_WINDOW_DAYS} gün
               </p>
               {change !== null ? (
-                <span
-                  className={`inline-flex items-center gap-0.5 text-sm tabular-nums ${
-                    change >= 0
-                      ? "text-[var(--ink-success)]"
-                      : "text-[var(--ink-error)]"
-                  }`}
-                >
-                  {change >= 0 ? (
-                    <ArrowUpRight className="size-4" aria-hidden />
-                  ) : (
-                    <ArrowDownRight className="size-4" aria-hidden />
-                  )}
-                  {formatPercent(Math.abs(change))}
+                <span className="inline-flex items-center gap-1 text-sm tabular-nums">
+                  <DeltaBadge value={change} />
                   <span className="text-muted"> önceki döneme göre</span>
                 </span>
               ) : null}

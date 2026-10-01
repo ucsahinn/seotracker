@@ -129,7 +129,7 @@ export function GoogleServiceAccountSection() {
               </button>
               <button
                 type="button"
-                className="btn btn-sm btn-ghost text-error"
+                className="btn btn-sm btn-ghost text-[var(--ink-error)]"
                 disabled={clear.isPending}
                 onClick={() => clear.mutate()}
               >

@@ -1,8 +1,8 @@
 # PageSpeed Insights anahtarı
 
 Site denetiminin hız ölçümü Google'ın PageSpeed Insights API'sini kullanır.
-API ücretsizdir. Anahtarsız da yanıt verir ama kotası çok düşüktür; bu yüzden
-anahtar yokken ölçüm en çok 50 sayfayla sınırlanır.
+API ücretsizdir. Anahtarsız ölçüm ilk 50 sayfayla sınırlıdır ve çoğu zaman
+kısmen 429 ile başarısız olur; anahtar önerilir.
 
 Taranan her sayfa telefonda ve bilgisayarda ölçülür, yani sayfa başına 2
 istek yapılır (212 sayfa için 424). Dakikalık sınır aşılırsa denetim bekleyip o
@@ -25,13 +25,12 @@ Quotas** bölümünden görebilirsiniz.
 
 ## Anahtarı verme
 
-`.env` dosyanıza ekleyin:
+Uygulamayı açın, **Ayarlar → Hız ölçümü** bölümüne anahtarı yapıştırıp
+kaydedin. Yeniden başlatma gerekmez; sonraki denetim anahtarı kullanır.
 
-```
-PAGESPEED_API_KEY=AIza...
-```
-
-Konteyner ortam değişkenini yalnız yeniden oluşturulduğunda okur:
+Gelişmiş alternatif: anahtarı `.env` dosyanıza `PAGESPEED_API_KEY=AIza...`
+olarak yazabilirsiniz. Konteyner ortam değişkenini yalnız yeniden
+oluşturulduğunda okur:
 
 ```sh
 docker compose up -d --force-recreate seotracker
@@ -44,6 +43,6 @@ hız satırları anahtarı işaret eden bir hata mesajıyla boş kalır.
 
 ## Anahtarsız çalıştırma
 
-Anahtar vermezseniz denetim yine çalışır ve 56 teknik SEO kontrolünün hepsini
-üretir. Yalnız Lighthouse aşaması kota nedeniyle başarısız olur. Tek bir sayfayı
-denemek için yeterlidir.
+Anahtar vermezseniz denetim yine çalışır ve tüm teknik SEO kontrollerini üretir.
+Yalnız Lighthouse aşaması ilk 50 sayfayla sınırlıdır ve kota nedeniyle çoğu
+zaman kısmen başarısız olur. Tek bir sayfayı denemek için yeterlidir.

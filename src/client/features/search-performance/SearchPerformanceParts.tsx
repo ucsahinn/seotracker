@@ -35,6 +35,7 @@ import {
 import { saveKeywords } from "@/serverFunctions/savedKeywords";
 import { Search, Target } from "lucide-react";
 import { EmptyState } from "@/client/components/EmptyState";
+import { strikingEmptyCopy } from "@/client/features/search-performance/strikingEmptyCopy";
 import { QuickFilterBar } from "@/client/features/search-performance/QuickFilterBar";
 import {
   applyQuickFilter,
@@ -287,12 +288,15 @@ export function StrikingDistanceTable({
   rows,
   filtered = false,
   hasQueryData,
+  segmentFiltered = false,
   onClearFilter,
 }: {
   projectId: string;
   rows: Report["strikingDistance"];
   /** False when Search Console returned no keyword-level rows at all. */
   hasQueryData: boolean;
+  /** A country or device filter is on, so zero rows may only mean this segment. */
+  segmentFiltered?: boolean;
   /** A summary filter is narrowing `rows`, so empty means "nothing in this group". */
   filtered?: boolean;
   onClearFilter?: () => void;
@@ -366,24 +370,13 @@ export function StrikingDistanceTable({
   });
 
   if (rows.length === 0) {
+    const copy = strikingEmptyCopy({ filtered, hasQueryData, segmentFiltered });
     return (
       <EmptyState
         compact
         icon={Target}
-        title={
-          filtered
-            ? "Bu gruba uyan sorgu yok"
-            : hasQueryData
-              ? "Bu dönemde 5-20. sırada kelime yok"
-              : "Kelime düzeyinde veri henüz gelmedi"
-        }
-        description={
-          filtered
-            ? "Seçimi kaldırarak tüm eşiğe yakın sorgulara dönün."
-            : hasQueryData
-              ? "Hiçbir kelimeniz 5-20. sırada değil. Bu aralıktaki kelimeler küçük bir iyileştirmeyle üst sıralara çıkabilir; olunca burada listelenir."
-              : "Search Console, hangi kelimeyle arandığınızı bu dönem için henüz paylaşmadı. Az trafikli sitelerde bu normaldir. Veri gelince 5-20. sıradaki kelimeler burada listelenir."
-        }
+        title={copy.title}
+        description={copy.description}
         action={
           filtered && onClearFilter ? (
             <button

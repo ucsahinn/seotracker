@@ -75,7 +75,10 @@ export function IssueCard({
         <span
           className={`size-2 shrink-0 rounded-full ${SEVERITY_DOT[group.severity]}`}
         />
-        <span className="min-w-0 flex-1 truncate text-sm font-medium">
+        <span
+          className="min-w-0 flex-1 truncate text-sm font-medium"
+          title={group.title}
+        >
           {group.title}
         </span>
         <span className="shrink-0 text-xs tabular-nums text-muted">

@@ -87,7 +87,9 @@ export function GoogleAccountRemovalDialog({
           </p>
         ) : impact.isError ? (
           <div role="alert" className="text-sm">
-            <p className="text-error">Bağlı projeler kontrol edilemedi.</p>
+            <p className="text-[var(--ink-error)]">
+              Bağlı projeler kontrol edilemedi.
+            </p>
             <button
               type="button"
               className="btn btn-ghost btn-sm"
@@ -105,7 +107,7 @@ export function GoogleAccountRemovalDialog({
           <p className="text-sm text-muted">Hiçbir proje etkilenmeyecek.</p>
         )}
         {removal.isError ? (
-          <p role="alert" className="text-sm text-error">
+          <p role="alert" className="text-sm text-[var(--ink-error)]">
             {getStandardErrorMessage(removal.error)}
           </p>
         ) : null}

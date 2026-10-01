@@ -5,7 +5,7 @@ ya **açık** ya da **karar bekliyor** — "kısmen" yazan bir madde, neyin
 yapılmadığını da söyler. Ölçülmemiş hiçbir rakam yok; bitti diyen bir madde
 çalışan sistemde doğrulanmış demektir.
 
-Son güncelleme: 2026-09-29, commit `4530d62` (v1.2.0 + veri tazeliği turu).
+Son güncelleme: 2026-09-29, commit `4530d62` (veri tazeliği turu).
 
 ---
 
@@ -67,10 +67,10 @@ Son güncelleme: 2026-09-29, commit `4530d62` (v1.2.0 + veri tazeliği turu).
 
 | #   | İş                                           | Durum              | Not                                                                                                                                                    |
 | --- | -------------------------------------------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 5.1 | Tek bir gerçek sürüm bırak, diğerlerini uçur | **bitti**          | Uzakta tek etiket ve tek release: **v1.2.0**.                                                                                                          |
+| 5.1 | Tek bir gerçek sürüm bırak, diğerlerini uçur | **bitti**          | Uzakta tek etiket ve tek release var; güncel sürüm `CHANGELOG.md` dosyasında.                                                                          |
 | 5.2 | Sürüm çıkarmadan önce sor                    | **kalıcı kural**   | Hafızaya yazıldı. Commit/push serbest, yayın ayrı karar.                                                                                               |
 | 5.3 | Mimari düzen ve temizlik                     | **kısmen**         | Bu tur: gecikme sabitleri tek yerde, `SlimPage` genişletildi, kural tablosu konuya göre bölünmüş durumda. Ölü kod `knip` ile sürekli kontrol ediliyor. |
-| 5.4 | Bir sonraki sürüme geç                       | **karar bekliyor** | `4530d62` v1.2.0 üzerine yayımlanmamış duruyor. Yeni sürüm (v1.3.0) için onay gerekiyor.                                                               |
+| 5.4 | Bir sonraki sürüme geç                       | **karar bekliyor** | `4530d62` yayımlanmış sürümün üzerinde yayımlanmamış duruyor. Yeni sürüm için onay gerekiyor.                                                          |
 
 ## 6. Tasarım denetimi
 
@@ -201,12 +201,12 @@ raporunda deftere hiç yazılmamış bulgular vardı. Tamamı aşağıda.
 
 Bunlar davranış değiştirir, o yüzden yapılmadı.
 
-| #   | Konu                                                           | Neden karar gerekiyor                                                                                         |
-| --- | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| 7.1 | `MCP_TOKEN` varsayılanda boş                                   | Aynı makinedeki başka bir süreç 33 MCP aracını sürebiliyor. Otomatik üretmek ajan kurulum akışını değiştirir. |
-| 7.2 | `local_noauth` + public `ALLOWED_HOST` açılışta uyarı vermiyor | Uyarı eklemek, bu kombinasyonla çalışan mevcut kurulumlarda açılışta yeni bir mesaj çıkarır.                  |
-| 7.3 | Pasta/halka grafik                                             | İstenirse eklenir; şu an dağılımlar çubukla gösteriliyor (bkz. 3.2).                                          |
-| 7.4 | Otomatik yenileme (polling)                                    | Google kotası maliyeti var (bkz. 2.9).                                                                        |
+| #   | Konu                                                           | Neden karar gerekiyor                                                                        |
+| --- | -------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| 7.1 | `MCP_TOKEN`                                                    | **bitti**                                                                                    | Konteyner ilk açılışta bir token üretir (`/app/.wrangler/mcp-token`); `MCP_TOKEN=off` ile kapatılır. Artık karar beklemiyor. |
+| 7.2 | `local_noauth` + public `ALLOWED_HOST` açılışta uyarı vermiyor | Uyarı eklemek, bu kombinasyonla çalışan mevcut kurulumlarda açılışta yeni bir mesaj çıkarır. |
+| 7.3 | Pasta/halka grafik                                             | İstenirse eklenir; şu an dağılımlar çubukla gösteriliyor (bkz. 3.2).                         |
+| 7.4 | Otomatik yenileme (polling)                                    | Google kotası maliyeti var (bkz. 2.9).                                                       |
 
 ---
 

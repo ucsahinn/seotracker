@@ -145,7 +145,7 @@ export function GooglePropertyPicker({
             className="mt-2 overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-sm"
             onKeyDown={(event) => handlePropertyKeyDown(event, close)}
           >
-            <label className="flex items-center gap-2 border-b border-base-300 px-3.5 py-3">
+            <label className="flex items-center gap-2 border-b border-base-300 px-3.5 py-3 focus-within:border-primary">
               <Search className="size-4 shrink-0 text-muted" />
               <input
                 autoFocus
@@ -168,7 +168,9 @@ export function GooglePropertyPicker({
                 </p>
               ) : error ? (
                 <div role="alert" className="p-3 text-sm">
-                  <p className="text-error">Mülkler yüklenemedi.</p>
+                  <p className="text-[var(--ink-error)]">
+                    Mülkler yüklenemedi.
+                  </p>
                   <button
                     type="button"
                     className="btn btn-ghost btn-sm mt-1"
@@ -192,7 +194,7 @@ export function GooglePropertyPicker({
                         </span>
                         <button
                           type="button"
-                          className="btn btn-ghost btn-xs shrink-0 text-error"
+                          className="btn btn-ghost btn-xs shrink-0 text-[var(--ink-error)]"
                           disabled={saving}
                           onClick={() => setRemoving(account)}
                           aria-label={`${accountLabel(account)} hesabını kaldır`}

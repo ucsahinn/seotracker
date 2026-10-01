@@ -148,11 +148,11 @@ export function OpportunityDetail({
         <Link
           to="/p/$projectId/search-performance"
           params={{ projectId }}
-          search={{ tab: "pages" as const, q: pathOf(row.page) }}
+          search={{ tab: "pages" as const, q: row.page }}
           className="btn btn-primary btn-sm gap-1.5"
         >
           <Search className="size-4" />
-          Bu sayfanın sorgularını gör
+          Arama performansında aç
         </Link>
         <button
           type="button"

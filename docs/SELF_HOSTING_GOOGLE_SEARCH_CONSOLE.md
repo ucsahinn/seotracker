@@ -1,152 +1,167 @@
-# Self-hosted Google Search Console
+# Kendi kurulumunuzda Google Search Console
 
-Connecting Google Search Console (GSC) lets seotracker pull your real clicks,
-impressions, positions, and URL inspection data, straight from Google.
+Google Search Console (GSC) bağlantısı, seotracker'ın gerçek tıklama, gösterim,
+sıra ve URL Inspection verilerinizi doğrudan Google'dan çekmesini sağlar.
 
-It's **optional**: seotracker runs fine without it, just without Search Console data.
+**İsteğe bağlıdır:** seotracker bağlantı olmadan da çalışır, yalnızca Search
+Console verisi olmaz.
 
-## What you'll need
+## Gerekenler
 
-- A Google account with access to your verified Search Console property.
-- ~10 minutes in the [Google Cloud Console](https://console.cloud.google.com/).
-- Nothing on the server. The client goes into the app's own Settings
-  ([step 4](#4-enter-the-client-in-settings)); no environment variable is required.
+- Doğrulanmış Search Console mülkünüze erişimi olan bir Google hesabı.
+- [Google Cloud Console](https://console.cloud.google.com/)'da yaklaşık 10 dakika.
+- Sunucuda yapılacak bir şey yok. İstemci uygulamanın kendi Ayarlar ekranına
+  girilir ([4. adım](#4-istemciyi-ayarlara-girin)); ortam değişkeni gerekmez.
 
-## Two ways in
+## 1) Google Cloud projesi oluşturun ve API'yi etkinleştirin
 
-There are two credentials that reach Search Console, and you only need one.
+Hangi yolu seçerseniz seçin bu adım ortaktır ve her şeyden önce gelir.
 
-**A service account is the shorter path** and the one to pick unless you have
-a reason not to. It skips the three steps setup actually fails on — the
-consent screen, adding yourself as a test user, and a redirect URI that must
-match byte for byte — because there is no sign-in involved. You create the
-account, download its key, paste it into Settings, and add its email address
-to your property in Search Console the way you would add a colleague. Jump to
-[Service account](#service-account-shorter).
+1. [Google Cloud Console](https://console.cloud.google.com/) açın ve bir proje
+   oluşturun (ya da var olan bir projeyi seçin). Sonraki tüm adımlar aynı
+   projede yapılır; sayfanın üstündeki proje seçicide doğru projenin seçili
+   olduğuna bakın.
+2. Bu proje için
+   [Google Search Console API](https://console.cloud.google.com/apis/library/searchconsole.googleapis.com)'yi
+   etkinleştirin.
+3. Google Analytics 4'ü de bağlayacaksanız aynı projede **Google Analytics
+   Admin API** ve **Google Analytics Data API**'yi de etkinleştirin. Ayrıntı:
+   [SELF_HOSTING_GOOGLE_ANALYTICS.md](./SELF_HOSTING_GOOGLE_ANALYTICS.md).
 
-**An OAuth client** is the path below. Use it if you would rather grant access
-by signing in as yourself than by adding another address to the property, or
-if your property is managed somewhere you cannot add users.
+## İki yol
 
-Both store their secret encrypted with the instance key. If both are
-configured, the service account wins.
+Search Console'a ulaşan iki kimlik bilgisi türü vardır; yalnızca birine ihtiyacınız
+var.
 
-## Service account (shorter)
+**Hizmet hesabı daha kısa yoldur** ve özel bir nedeniniz yoksa seçilecek olandır.
+Kurulumun gerçekten takıldığı üç adımı atlar — onay ekranı, kendinizi test
+kullanıcısı olarak eklemek ve bayt bayt eşleşmesi gereken yönlendirme adresi —
+çünkü hiçbir oturum açma işlemi yoktur. Hesabı oluşturur, anahtarını indirir,
+Ayarlar'a yapıştırır ve hesabın e-posta adresini Search Console mülkünüze bir
+meslektaşınızı eklermiş gibi eklersiniz. Bkz.
+[Hizmet hesabı](#hizmet-hesabı-daha-kısa-yol).
 
-1. [Create a service account](https://console.cloud.google.com/iam-admin/serviceaccounts)
-   in your Google Cloud project. Name it anything; skip the optional
-   role and user-access steps — it needs no project role.
-2. Open it, go to **Keys → Add key → Create new key → JSON**, and download
-   the file.
-3. In seotracker: **Ayarlar → Servis hesabı**, paste the whole file, save.
-   The page then shows the account's email address with a copy button.
-4. In [Search Console](https://search.google.com/search-console): pick your
-   property, **Settings → Users and permissions → Add user**, paste that
-   address, permission **Full**. Without this step the account is
-   authenticated but can see nothing.
-5. For Analytics, add the same address to the GA4 property under
-   **Admin → Access management** as a Viewer.
+**OAuth istemcisi** aşağıdaki yoldur. Mülke başka bir adres eklemek yerine kendi
+hesabınızla oturum açarak erişim vermeyi tercih ediyorsanız ya da mülkünüz
+kullanıcı ekleyemeyeceğiniz bir yerden yönetiliyorsa bunu kullanın.
 
-Make sure the
-[Search Console API](https://console.cloud.google.com/apis/library/searchconsole.googleapis.com)
-is enabled for the project either way; step 1 below covers it.
+İkisi de sırlarını kurulum anahtarıyla şifreli saklar. İkisi birden tanımlıysa
+hizmet hesabı kazanır.
 
-## 1) Create a Google Cloud project and enable the API
+## Hizmet hesabı (daha kısa yol)
 
-1. Open the [Google Cloud Console](https://console.cloud.google.com/) and create
-   a project (or pick an existing one).
-2. Enable the
-   [Google Search Console API](https://console.cloud.google.com/apis/library/searchconsole.googleapis.com)
-   for that project.
+1. 1. adımdaki projede
+      [bir hizmet hesabı oluşturun](https://console.cloud.google.com/iam-admin/serviceaccounts).
+      İstediğiniz adı verin; isteğe bağlı rol ve kullanıcı erişimi adımlarını
+      atlayın — proje rolü gerekmez.
+2. Hesabı açın, **Keys → Add key → Create new key → JSON** yolunu izleyin ve
+   dosyayı indirin.
+3. seotracker'da: **Ayarlar → Hizmet hesabı (daha kısa yol)** bölümüne dosyanın
+   tamamını yapıştırın ve kaydedin. Sayfa bundan sonra hesabın e-posta adresini
+   bir kopyalama düğmesiyle gösterir.
+4. [Search Console](https://search.google.com/search-console)'da mülkünüzü seçin,
+   **Settings → Users and permissions → Add user** yolunu izleyin, o adresi
+   yapıştırın ve izni **Full** yapın. Bu adım olmadan hesap kimliği doğrulanmış
+   olur ama hiçbir şey göremez.
+5. Analytics için aynı adresi GA4 mülkünde **Admin → Access management**
+   altından Viewer olarak ekleyin; ayrıca 1. adımdaki Analytics API'lerinin
+   etkin olduğundan emin olun.
 
-## 2) Configure the OAuth consent screen
+## 2) OAuth onay ekranını yapılandırın
 
-Under **APIs & Services → OAuth consent screen**:
+**APIs & Services → OAuth consent screen** altında:
 
-- Pick **External** (unless everyone using it is in your Google Workspace org).
-- Fill in the app name, support email, and developer contact email.
-- While the app is in **Testing**, add the Google accounts that will connect as
-  **test users** — otherwise Google blocks the sign-in with `access_denied`.
+- **External** seçin (kullanacakların hepsi Google Workspace kuruluşunuzdaysa
+  başka).
+- Uygulama adını, destek e-postasını ve geliştirici iletişim e-postasını doldurun.
+- Uygulama **Testing** durumundayken bağlanacak Google hesaplarını **test
+  kullanıcısı** olarak ekleyin; aksi hâlde Google oturum açmayı `access_denied`
+  ile engeller.
 
-For personal or internal use you don't need to submit for verification; testing
-mode is enough.
+Kişisel ya da kurum içi kullanım için doğrulama başvurusu yapmanız gerekmez; test
+modu yeterlidir.
 
-## 3) Create an OAuth client ID
+## 3) OAuth istemci kimliği oluşturun
 
-Under **APIs & Services → Credentials → Create credentials → OAuth client ID**:
+**APIs & Services → Credentials → Create credentials → OAuth client ID** altında:
 
-1. Application type: **Web application**.
-2. Add an **Authorized redirect URI** that exactly matches your deployment's
-   origin plus `/api/gsc/oauth/callback`:
+1. Uygulama türü: **Web application**.
+2. Dağıtımınızın kaynağı (origin) artı `/api/gsc/oauth/callback` ile birebir
+   eşleşen bir **Authorized redirect URI** ekleyin.
 
-   For the documented Docker setup that is exactly:
+   Belgelenen Docker kurulumu için tam olarak şudur:
 
    ```
    http://localhost:3001/api/gsc/oauth/callback
    ```
 
-   If you changed `PORT`, or put the container behind a reverse proxy and set
-   `ALLOWED_HOST`, use that origin instead.
+   `PORT`'u değiştirdiyseniz ya da konteyneri bir ters vekil sunucunun arkasına
+   koyup `ALLOWED_HOST` ayarladıysanız onun kaynağını kullanın.
 
-   The scheme, host, and port must match exactly, with no trailing slash.
+   Şema, konak ve port birebir eşleşmelidir; sonda eğik çizgi olmamalıdır.
 
-3. Save, then copy the **Client ID** and **Client secret**.
+3. Kaydedin, ardından **Client ID** ve **Client secret** değerlerini kopyalayın.
 
-## 4) Enter the client in Settings
+## 4) İstemciyi Ayarlar'a girin
 
-Open seotracker, go to **Ayarlar** (Settings) and paste the client ID and client
-secret from step 3 into **Google bağlantısı**. Save.
+seotracker'ı açın, **Ayarlar**'a gidin ve 3. adımdaki istemci kimliğini ile gizli
+anahtarı **Google bağlantısı** bölümüne yapıştırın. Kaydedin.
 
-The secret is encrypted on the server before it is stored, and is never sent
-back to the browser. Nothing has to restart — the next connection attempt uses
-the new client.
+Gizli anahtar saklanmadan önce sunucuda şifrelenir ve tarayıcıya geri
+gönderilmez. Hiçbir şeyin yeniden başlaması gerekmez; sonraki bağlantı denemesi
+yeni istemciyi kullanır.
 
-The key that encrypts it, and the Google tokens it mints, is generated by the
-container on first boot and kept in the data volume. You do not set it.
+Gizli anahtarı ve Google'ın verdiği jetonları şifreleyen anahtarı konteyner ilk açılışta
+üretir ve veri biriminde saklar. Siz ayarlamazsınız.
 
-> Prefer to inject credentials from outside? `GOOGLE_CLIENT_ID` and
-> `GOOGLE_CLIENT_SECRET` still work as environment variables, and
-> `BETTER_AUTH_SECRET` (at least 32 characters) then replaces the generated key.
-> A client saved in Settings takes precedence over both. Keep whatever you set:
-> changing the key makes existing Google connections unreadable.
+> Kimlik bilgilerini dışarıdan enjekte etmek mi istiyorsunuz? `GOOGLE_CLIENT_ID` ve
+> `GOOGLE_CLIENT_SECRET` ortam değişkeni olarak hâlâ çalışır ve o zaman
+> `BETTER_AUTH_SECRET` (en az 32 karakter) üretilen anahtarın yerini alır.
+> Ayarlar'a kaydedilen istemci ikisinden de önceliklidir. Ne ayarladıysanız
+> saklayın: anahtarın değişmesi mevcut Google bağlantılarını okunamaz yapar.
 
-## 5) Connect
+## 5) Bağlanın
 
-Open **Ayarlar → Entegrasyonlar**, click **Google ile bağlan**, authorize the Google
-account that owns your verified property, and pick the property to bind to your
-project.
+Bu adım bir **projenin** ayarlarında yapılır. Projenizi açın,
+projenin ayar sayfasındaki **Entegrasyonlar** sekmesine gidin (genel **Ayarlar**
+ekranı değil) ve **Bağlan** düğmesine tıklayın. Bağlantının süresi dolduysa aynı
+yerde **Yeniden bağlan** düğmesi çıkar. Doğrulanmış mülkün sahibi Google hesabını
+yetkilendirin ve projenize bağlanacak mülkü seçin.
 
-## How it works
+## Nasıl çalışır
 
-- seotracker uses your Google client to run the OAuth flow and stores the resulting
-  grant in its database, with the access and refresh tokens **encrypted at rest**
-  under the instance key.
-- Access tokens are minted and refreshed on demand — you only authorize once.
-- The data is read from your own Google account under your own quota. The
-  only quota worth knowing about is URL Inspection: Google allows 2000
-  addresses per property per day, which the indexing screen and the
-  `inspect_urls` MCP tool share.
+- seotracker, OAuth akışını yürütmek için sizin Google istemcinizi kullanır ve
+  ortaya çıkan yetkiyi, erişim ve yenileme jetonları kurulum anahtarıyla **diskte
+  şifrelenmiş** olarak veritabanında saklar.
+- Erişim jetonları gerektiğinde üretilir ve yenilenir; yalnızca bir kez yetki
+  verirsiniz.
+- Veri kendi Google hesabınızdan, kendi kotanız altında okunur. Bilmeye değer tek
+  kota URL Inspection'dır: Google mülk başına günde 2000 adrese izin verir ve bunu
+  indeksleme ekranı ile `inspect_urls` MCP aracı paylaşır.
 
-## Troubleshooting
+## Sorun giderme
 
-**`redirect_uri_mismatch` from Google** — the redirect URI in your OAuth client
-must exactly equal `<your-origin>/api/gsc/oauth/callback`. Re-check scheme
-(`http` vs `https`), host, port, and that there's no trailing slash.
+**Google'dan `redirect_uri_mismatch`** — OAuth istemcinizdeki yönlendirme adresi
+tam olarak `<kaynağınız>/api/gsc/oauth/callback` olmalıdır. Şemayı (`http` ile
+`https`), konağı, portu ve sonda eğik çizgi olmadığını yeniden kontrol edin.
 
 **"Google istemcisi tanımlı değil" / "not configured for Search Console yet"**
-(in the app or via the MCP tools) — no OAuth client is stored. Enter one under
-**Ayarlar → Google bağlantısı**. If you set `BETTER_AUTH_SECRET` yourself, check
-it is at least 32 characters; below that the integration stays off.
+(uygulamada ya da MCP araçlarında) — kayıtlı bir OAuth istemcisi yok. **Ayarlar →
+Google bağlantısı** altından bir tane girin. `BETTER_AUTH_SECRET`'ı kendiniz
+ayarladıysanız en az 32 karakter olduğunu kontrol edin; altındaysa entegrasyon
+kapalı kalır.
 
-**Connection worked yesterday, now asks to reconnect** — the instance key
-changed, so the stored tokens can no longer be decrypted. That happens if
-`BETTER_AUTH_SECRET` was added, changed or removed, or if the data volume was
-recreated. Re-enter the client and reconnect.
+**Dün bağlantı çalışıyordu, şimdi yeniden bağlanmamı istiyor** — kurulum anahtarı
+değişti, bu yüzden kayıtlı jetonların şifresi artık çözülemiyor. Bu,
+`BETTER_AUTH_SECRET` eklendiğinde, değiştirildiğinde ya da kaldırıldığında veya
+veri birimi yeniden oluşturulduğunda olur. İstemciyi yeniden girin ve yeniden
+bağlanın.
 
-**`access_denied` during sign-in** — the Google account isn't listed as a test
-user on the OAuth consent screen (while the app is in Testing mode). Add it under
-**OAuth consent screen → Test users**.
+**Oturum açarken `access_denied`** — Google hesabı OAuth onay ekranında test
+kullanıcısı olarak listelenmemiş (uygulama Testing modundayken). **OAuth consent
+screen → Test users** altından ekleyin.
 
-**Connected, but no properties to pick** — the Google account you authorized
-doesn't have a verified property in Search Console. Verify the site in
-[Search Console](https://search.google.com/search-console) first, then reconnect.
+**Bağlandı ama seçilecek mülk yok** — yetkilendirdiğiniz Google hesabının Search
+Console'da doğrulanmış bir mülkü yok. Önce siteyi
+[Search Console](https://search.google.com/search-console)'da doğrulayın, sonra
+yeniden bağlanın.

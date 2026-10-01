@@ -14,8 +14,9 @@ Connect seotracker to this agent. Do what you can; guide me through anything tha
 
 ## 2. Add the MCP server
 
-seotracker runs on my own machine and answers only to me, so there is no sign-in
-and no token to paste.
+seotracker runs on my own machine and answers only to me, so there is no sign-in.
+If the server answers 401, it needs the token: ask me to run
+`docker compose exec seotracker cat /app/.wrangler/mcp-token` in the seotracker folder.
 
 - Add `http://localhost:3001/mcp` as an HTTP MCP server, using this agent's own documented command or config file.
 - Claude Code, for example: `claude mcp add --transport http --scope user seotracker http://localhost:3001/mcp`

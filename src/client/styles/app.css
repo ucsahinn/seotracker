@@ -303,21 +303,21 @@ html[data-theme="seotracker"]
    it sat next to. A tinted wash with a matching hairline says the same thing;
    the icon and the heading carry the severity. */
 .alert {
-  @apply flex gap-3 rounded-box border p-4 text-base-content/75;
+  @apply flex gap-3 rounded-box border p-4 text-muted;
   align-items: flex-start;
 }
 
 .alert-warning {
-  @apply border-warning/30 bg-warning/10 text-base-content/85;
+  @apply border-warning/30 bg-warning/10 text-base-content;
 }
 .alert-info {
-  @apply border-info/30 bg-info/10 text-base-content/85;
+  @apply border-info/30 bg-info/10 text-base-content;
 }
 .alert-success {
-  @apply border-success/30 bg-success/10 text-base-content/85;
+  @apply border-success/30 bg-success/10 text-base-content;
 }
 .alert-error {
-  @apply border-error/30 bg-error/10 text-base-content/85;
+  @apply border-error/30 bg-error/10 text-base-content;
 }
 
 .alert-warning > svg:first-child {

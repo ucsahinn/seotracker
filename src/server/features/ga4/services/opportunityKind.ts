@@ -83,9 +83,15 @@ export function classify(
   const gap = ctrGap(row, expected);
   // Half the bucket's median, so "slightly below average" is not a finding.
   const bar = expected.get(positionBucket(row.position));
-  if (gap !== null && bar != null && gap < -bar / 2) return "ctr_gap";
-  // Already on top with a normal click-through: nothing to climb to.
-  if (row.position < 4) return "top";
+  // Only within reach: a page at 34 with a low click-through is not a
+  // snippet problem, it is a ranking one, and stays `deep`.
+  if (row.position <= 20 && gap !== null && bar != null && gap < -bar / 2) {
+    return "ctr_gap";
+  }
+  // `<= 3` matches the first bucket's edge. Without a baseline (a small
+  // site) a top page still has nowhere to climb to; the screen then says its
+  // click-through could not be compared instead of calling it normal.
+  if (row.position <= 3) return "top";
   if (row.position <= 20) return "near_miss";
   return "deep";
 }

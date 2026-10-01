@@ -145,7 +145,7 @@ export function PerformanceFilterBar({
           ]}
         />
         <TextFilter
-          label="Max LCP s"
+          label="En çok LCP (sn)"
           value={filters.maxLcpSeconds}
           placeholder="2.5"
           type="number"

@@ -1,9 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import {
-  GscNotConnectedError,
-  GscService,
-  isExpectedGrantFailure,
-} from "@/server/features/gsc/services/GscService";
+import { GscService } from "@/server/features/gsc/services/GscService";
 import { resolveDateRange } from "@/server/features/gsc/searchAnalytics";
 import {
   buildStrikingDistanceRows,
@@ -13,6 +9,10 @@ import {
   toDimensionRows,
 } from "@/server/features/gsc/searchPerformanceReport";
 import { buildGscFilters } from "@/server/features/gsc/performanceFilters";
+import {
+  isExpectedConnectionFailure,
+  optionalRows,
+} from "@/server/features/gsc/connectionFailure";
 import { requireProjectContext } from "@/serverFunctions/middleware";
 import {
   searchPerformanceInputSchema,
@@ -37,12 +37,6 @@ const EXPORT_ROW_LIMIT = 1000;
  * Same ceiling as the export: what you can sort is what you can download.
  */
 const TABLE_ROW_LIMIT = 1000;
-
-/** Not connected, or a dead/denied grant (token failure or 401/403): the page
- *  renders the connect card. Other statuses (429, 5xx) are real faults. */
-function isExpectedConnectionFailure(error: unknown): boolean {
-  return error instanceof GscNotConnectedError || isExpectedGrantFailure(error);
-}
 
 /**
  * The Search Performance overview: current + previous-period totals, the
@@ -107,29 +101,33 @@ export const getSearchPerformanceReport = createServerFn({ method: "POST" })
             filters: deviceFilters,
             rowLimit: COUNTRY_ROW_LIMIT,
           }),
-          GscService.getPerformance({
-            projectId,
-            startDate,
-            endDate,
-            dimensions: ["device"],
-            type,
-            filters: deviceRingFilters,
-            rowLimit: DEVICE_ROW_LIMIT,
-          }),
+          optionalRows(
+            GscService.getPerformance({
+              projectId,
+              startDate,
+              endDate,
+              dimensions: ["device"],
+              type,
+              filters: deviceRingFilters,
+              rowLimit: DEVICE_ROW_LIMIT,
+            }),
+          ),
           /*
            * searchAppearance cannot be combined with any other dimension, so
            * it is its own call. Same range, country and device filters as
            * the trend; most sites get no rows back.
            */
-          GscService.getPerformance({
-            projectId,
-            startDate,
-            endDate,
-            dimensions: ["searchAppearance"],
-            type,
-            filters,
-            rowLimit: APPEARANCE_ROW_LIMIT,
-          }),
+          optionalRows(
+            GscService.getPerformance({
+              projectId,
+              startDate,
+              endDate,
+              dimensions: ["searchAppearance"],
+              type,
+              filters,
+              rowLimit: APPEARANCE_ROW_LIMIT,
+            }),
+          ),
         ]);
 
       return {
@@ -157,8 +155,8 @@ export const getSearchPerformanceReport = createServerFn({ method: "POST" })
         queryRowCount: queryPages.rows.length,
         strikingDistance: buildStrikingDistanceRows(queryPages.rows),
         countries: toDimensionRows(countries.rows),
-        devices: toDimensionRows(devices.rows),
-        searchAppearance: toDimensionRows(appearances.rows),
+        devices: toDimensionRows(devices),
+        searchAppearance: toDimensionRows(appearances),
       };
     } catch (error) {
       if (isExpectedConnectionFailure(error)) {

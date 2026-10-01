@@ -14,6 +14,13 @@ const BLOCKED_HOST_SUFFIXES = [
   ".localdomain",
   ".internal",
   ".home.arpa",
+  // Conventional private-network suffixes. None is a public TLD, so a site
+  // named this way can only resolve through the container's own resolver.
+  ".lan",
+  ".corp",
+  ".intranet",
+  ".private",
+  ".home",
 ];
 
 const DOH_ENDPOINT = "https://cloudflare-dns.com/dns-query";
@@ -43,67 +50,91 @@ function isPrivateIpv4(host: string): boolean {
     return false;
   }
 
-  const [a, b] = parts;
+  const [a, b, c] = parts;
   if (a === 10) return true;
   if (a === 127) return true;
   if (a === 0) return true;
   if (a === 169 && b === 254) return true;
   if (a === 172 && b >= 16 && b <= 31) return true;
   if (a === 192 && b === 168) return true;
+  // IETF protocol assignments, 192.0.0.0/24.
+  if (a === 192 && b === 0 && c === 0) return true;
   if (a === 100 && b >= 64 && b <= 127) return true;
   if (a === 198 && (b === 18 || b === 19)) return true;
   if (a >= 224) return true;
   return false;
 }
 
-function parseMappedIpv4FromIpv6(host: string): string | null {
-  const normalized = normalizeHost(host);
-  if (!normalized.startsWith("::ffff:")) return null;
+const toGroups = (part: string) => (part === "" ? [] : part.split(":"));
 
-  const mapped = normalized.slice("::ffff:".length);
-  if (/^\d+\.\d+\.\d+\.\d+$/.test(mapped)) {
-    return mapped;
+/** The 16 bytes of an IPv6 literal, or null when it does not parse. */
+function parseIpv6Bytes(host: string): number[] | null {
+  let value = normalizeHost(host);
+
+  // A dotted IPv4 tail (`::ffff:127.0.0.1`) stands for the last two groups.
+  const tail = /(\d+)\.(\d+)\.(\d+)\.(\d+)$/.exec(value);
+  if (tail) {
+    const octets = tail.slice(1).map(Number);
+    if (octets.some((octet) => octet > 255)) return null;
+    const high = ((octets[0] << 8) | octets[1]).toString(16);
+    const low = ((octets[2] << 8) | octets[3]).toString(16);
+    value = `${value.slice(0, tail.index)}${high}:${low}`;
   }
 
-  const segments = mapped.split(":").filter(Boolean);
-  if (segments.length !== 2) return null;
+  const halves = value.split("::");
+  if (halves.length > 2) return null;
+  const head = toGroups(halves[0]);
+  const rest = halves.length === 2 ? toGroups(halves[1]) : [];
+  if (halves.length === 1 && head.length !== 8) return null;
+  if (halves.length === 2 && head.length + rest.length > 7) return null;
 
-  const high = Number.parseInt(segments[0], 16);
-  const low = Number.parseInt(segments[1], 16);
-  if (
-    !Number.isFinite(high) ||
-    !Number.isFinite(low) ||
-    high < 0 ||
-    high > 0xffff ||
-    low < 0 ||
-    low > 0xffff
-  ) {
-    return null;
+  const groups = [
+    ...head,
+    ...Array<string>(8 - head.length - rest.length).fill("0"),
+    ...rest,
+  ];
+  const bytes: number[] = [];
+  for (const group of groups) {
+    if (!/^[0-9a-f]{1,4}$/.test(group)) return null;
+    const word = Number.parseInt(group, 16);
+    bytes.push(word >> 8, word & 0xff);
   }
-
-  const a = (high >> 8) & 0xff;
-  const b = high & 0xff;
-  const c = (low >> 8) & 0xff;
-  const d = low & 0xff;
-  return `${a}.${b}.${c}.${d}`;
+  return bytes;
 }
 
 function isPrivateIpv6(host: string): boolean {
-  const value = normalizeHost(host);
-  if (value === "::1" || value === "::") return true;
-  if (value.startsWith("fc") || value.startsWith("fd")) return true;
-  if (
-    value.startsWith("fe8") ||
-    value.startsWith("fe9") ||
-    value.startsWith("fea") ||
-    value.startsWith("feb")
-  ) {
-    return true;
-  }
+  const bytes = parseIpv6Bytes(host);
+  // Not parseable means not provably public.
+  if (!bytes) return true;
 
-  const mappedIpv4 = parseMappedIpv4FromIpv6(value);
-  if (mappedIpv4 && isPrivateIpv4(mappedIpv4)) {
-    return true;
+  const embeddedIpv4 = (at: number) => bytes.slice(at, at + 4).join(".");
+  const zeros = (from: number, to: number) =>
+    bytes.slice(from, to).every((byte) => byte === 0);
+
+  // fc00::/7 unique local, ff00::/8 multicast.
+  if ((bytes[0] & 0xfe) === 0xfc || bytes[0] === 0xff) return true;
+  // fe80::/10 link-local and the deprecated fec0::/10 site-local.
+  if (bytes[0] === 0xfe && (bytes[1] & 0x80) === 0x80) return true;
+
+  // ::/96 IPv4-compatible (covers ::, ::1 and ::7f00:1 alike).
+  if (zeros(0, 12)) return true;
+  // ::ffff:0:0/96 IPv4-mapped.
+  if (zeros(0, 10) && bytes[10] === 0xff && bytes[11] === 0xff) {
+    return isPrivateIpv4(embeddedIpv4(12));
+  }
+  // 64:ff9b::/96 NAT64, plus 64:ff9b:1::/48 which is local-use only.
+  if (
+    bytes[0] === 0x00 &&
+    bytes[1] === 0x64 &&
+    bytes[2] === 0xff &&
+    bytes[3] === 0x9b
+  ) {
+    if (zeros(4, 12)) return isPrivateIpv4(embeddedIpv4(12));
+    if (bytes[4] === 0x00 && bytes[5] === 0x01) return true;
+  }
+  // 2002::/16 6to4 carries the IPv4 address in bytes 2-5.
+  if (bytes[0] === 0x20 && bytes[1] === 0x02) {
+    return isPrivateIpv4(embeddedIpv4(2));
   }
 
   return false;
@@ -123,7 +154,7 @@ function isBlockedHost(hostname: string): boolean {
   }
 
   if (isIpLiteral(host)) {
-    return isPrivateIpv4(host) || isPrivateIpv6(host);
+    return host.includes(":") ? isPrivateIpv6(host) : isPrivateIpv4(host);
   }
 
   /*
@@ -188,9 +219,8 @@ async function resolveAddressRecords(
  * used to let every hostname through. Refusing is also honest about what it
  * knows, and the message says which part failed.
  *
- * An answered lookup with no records is a different thing and stays `false`:
- * Google said the name does not resolve, which is not evidence of a private
- * address, and the fetch that follows will fail on its own.
+ * An answered lookup with no records is blocked too (see below): a name the
+ * public resolver cannot place might still resolve inside the container.
  */
 async function hostnameResolvesToBlockedAddress(
   hostname: string,
@@ -213,10 +243,24 @@ async function hostnameResolvesToBlockedAddress(
     );
   }
 
-  if (addresses.length === 0) return false;
+  /*
+   * No A or AAAA answer (NXDOMAIN, or a name with no address records) is
+   * treated as blocked. Cloudflare's resolver cannot see the container's own
+   * DNS, so a name it does not know may still resolve internally - a
+   * `router.example` served by split-horizon DNS or the hosts file - and an
+   * audited site could redirect the crawler there. A name no public resolver
+   * can place is not a site this tool can audit anyway.
+   */
+  if (addresses.length === 0) {
+    throw new AppError(
+      "CRAWL_TARGET_BLOCKED",
+      "Adres herkese açık DNS'te çözümlenmiyor, bu yüzden tarama başlatılmadı.",
+      { reason: "dns_no_public_records" },
+    );
+  }
 
-  return addresses.some(
-    (address) => isPrivateIpv4(address) || isPrivateIpv6(address),
+  return addresses.some((address) =>
+    address.includes(":") ? isPrivateIpv6(address) : isPrivateIpv4(address),
   );
 }
 

@@ -7,11 +7,12 @@ import {
 
 // A fresh Response per call: the A and AAAA lookups run in parallel and a
 // body can only be read once.
-const dnsAnswer = () =>
-  new Response(JSON.stringify({ Status: 0, Answer: [] }), {
+const dnsAnswer = (answer: { type: number; data: string }[]) =>
+  new Response(JSON.stringify({ Status: 0, Answer: answer }), {
     status: 200,
     headers: { "content-type": "application/dns-json" },
   });
+const publicAnswer = () => dnsAnswer([{ type: 1, data: "93.184.216.34" }]);
 
 describe("normalizeAndValidateStartUrl", () => {
   beforeEach(() => {
@@ -23,7 +24,7 @@ describe("normalizeAndValidateStartUrl", () => {
   });
 
   it("adds https when protocol is missing and strips hash", async () => {
-    vi.mocked(fetch).mockImplementation(async () => dnsAnswer());
+    vi.mocked(fetch).mockImplementation(async () => publicAnswer());
 
     await expect(
       normalizeAndValidateStartUrl("example.com/path#section"),
@@ -75,6 +76,72 @@ describe("normalizeAndValidateStartUrl", () => {
     } satisfies Partial<AppError>);
   });
 
+  it.each(["http://router.lan", "http://nas.corp", "http://x.intranet"])(
+    "blocks the private-network suffix in %s with no lookup",
+    async (url) => {
+      await expect(normalizeAndValidateStartUrl(url)).rejects.toMatchObject({
+        code: "CRAWL_TARGET_BLOCKED",
+      } satisfies Partial<AppError>);
+      expect(vi.mocked(fetch)).not.toHaveBeenCalled();
+    },
+  );
+
+  // The public resolver cannot see the container's own DNS, so "no such
+  // name" there says nothing about whether it resolves internally.
+  it("blocks a name the public resolver returns no address for", async () => {
+    vi.mocked(fetch).mockImplementation(async () => dnsAnswer([]));
+
+    await expect(
+      normalizeAndValidateStartUrl("https://split-horizon.example.com"),
+    ).rejects.toMatchObject({
+      code: "CRAWL_TARGET_BLOCKED",
+    } satisfies Partial<AppError>);
+  });
+
+  it("blocks a name that resolves to a private address", async () => {
+    vi.mocked(fetch).mockImplementation(async () =>
+      dnsAnswer([{ type: 1, data: "10.0.0.5" }]),
+    );
+
+    await expect(
+      normalizeAndValidateStartUrl("https://rebind.example.com"),
+    ).rejects.toMatchObject({
+      code: "CRAWL_TARGET_BLOCKED",
+    } satisfies Partial<AppError>);
+  });
+
+  it.each([
+    "http://[::7f00:1]/",
+    "http://[::a00:1]/",
+    "http://[64:ff9b::7f00:1]/",
+    "http://[64:ff9b::169.254.169.254]/",
+    "http://[64:ff9b:1::1]/",
+    "http://[2002:7f00:1::]/",
+    "http://[2002:a9fe:a9fe::1]/",
+    "http://[fec0::1]/",
+    "http://[ff02::1]/",
+    "http://[::ffff:7f00:1]/",
+    "http://[::1]/",
+    "http://[fd00::1]/",
+    "http://[fe80::1]/",
+    "http://192.0.0.8/",
+  ])("blocks the IP literal %s", async (url) => {
+    await expect(normalizeAndValidateStartUrl(url)).rejects.toMatchObject({
+      code: "CRAWL_TARGET_BLOCKED",
+    } satisfies Partial<AppError>);
+  });
+
+  it.each([
+    "http://[2002:5db8:d822::1]/",
+    "http://[64:ff9b::5db8:d822]/",
+    "http://[2606:4700::1111]/",
+    "http://93.184.216.34/",
+  ])("allows the public IP literal %s", async (url) => {
+    await expect(normalizeAndValidateStartUrl(url)).resolves.toBe(
+      new URL(url).toString(),
+    );
+  });
+
   it("rejects invalid URL input", async () => {
     await expect(
       normalizeAndValidateStartUrl("not a url"),
@@ -84,11 +151,6 @@ describe("normalizeAndValidateStartUrl", () => {
   });
 });
 
-const dnsOk = () =>
-  new Response(JSON.stringify({ Status: 0, Answer: [] }), {
-    status: 200,
-    headers: { "content-type": "application/dns-json" },
-  });
 const redirect = (location: string) =>
   new Response(null, { status: 301, headers: { location } });
 
@@ -105,7 +167,7 @@ describe("resolveStartUrlRedirects", () => {
   function stubFetch(routes: Record<string, () => Response>) {
     vi.mocked(fetch).mockImplementation((input) => {
       const url = String(input instanceof Request ? input.url : input);
-      if (url.includes("dns-query")) return Promise.resolve(dnsOk());
+      if (url.includes("dns-query")) return Promise.resolve(publicAnswer());
       const route = routes[url];
       return route
         ? Promise.resolve(route())

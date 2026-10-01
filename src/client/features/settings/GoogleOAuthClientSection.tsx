@@ -110,7 +110,7 @@ export function GoogleOAuthClientSection() {
           rel="noreferrer noopener"
           className="inline-flex items-center gap-1 font-medium underline underline-offset-2"
         >
-          Google Cloud Console
+          <span lang="en">Google Cloud Console</span>
           <ExternalLink className="size-3" />
         </a>
       </p>
@@ -118,10 +118,10 @@ export function GoogleOAuthClientSection() {
       <div className="rounded-box border border-base-300 bg-base-200/40 p-3">
         <p className="text-sm text-muted">
           İstemciyi oluştururken <strong>Yetkili yönlendirme adresleri</strong>{" "}
-          (Authorized redirect URIs) alanına <strong>ikisini de</strong> tam
-          olarak ekleyin. Bir karakter farkı bile Google&apos;ın{" "}
-          <code>redirect_uri_mismatch</code> vermesine yol açar;
-          Analytics&apos;inkini eklemezseniz Search Console bağlanır ama
+          (<span lang="en">Authorized redirect URIs</span>) alanına{" "}
+          <strong>ikisini de</strong> tam olarak ekleyin. Bir karakter farkı
+          bile Google&apos;ın <code>redirect_uri_mismatch</code> vermesine yol
+          açar; Analytics&apos;inkini eklemezseniz Search Console bağlanır ama
           Analytics bağlanmaz.
         </p>
         {redirectUris.map((uri) => (
@@ -175,7 +175,7 @@ export function GoogleOAuthClientSection() {
             </button>
             <button
               type="button"
-              className="btn btn-sm btn-ghost text-error"
+              className="btn btn-sm btn-ghost text-[var(--ink-error)]"
               disabled={clear.isPending}
               onClick={() => clear.mutate()}
             >

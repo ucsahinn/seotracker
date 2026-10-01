@@ -117,7 +117,10 @@ export function IssuesView({
       )}
       {focusUrl ? (
         <div className="flex flex-wrap items-center justify-between gap-2 rounded-box border border-base-300 bg-base-200/40 px-3 py-2">
-          <span className="min-w-0 truncate text-sm text-muted">
+          <span
+            className="min-w-0 truncate text-sm text-muted"
+            title={focusUrl}
+          >
             Yalnızca <span className="font-medium">{focusUrl}</span>
           </span>
           <button

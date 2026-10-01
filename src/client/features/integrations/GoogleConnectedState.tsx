@@ -63,7 +63,7 @@ export function GoogleConnectedState({
           {canManage ? (
             <button
               type="button"
-              className="btn btn-ghost btn-sm text-error hover:bg-error/10"
+              className="btn btn-ghost btn-sm text-[var(--ink-error)] hover:bg-error/10"
               onClick={onDisconnect}
             >
               {disconnecting ? "Bağlantı kesiliyor…" : "Bağlantıyı kes"}

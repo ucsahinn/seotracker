@@ -52,6 +52,16 @@ describe("applyFilters", () => {
     ]);
   });
 
+  it("splits the list between the two Analytics chips, zero sessions included", () => {
+    const zero = row("z", { ga4: { ...traffic, sessions: 0 } });
+    const all = [...rows, zero];
+    const counts = quickCounts(all);
+    expect(counts.analytics + counts.no_analytics).toBe(all.length);
+    expect(applyFilters(all, null, "analytics").map((r) => r.page)).toContain(
+      "z",
+    );
+  });
+
   it("measures the top ten over the whole set, then applies the kind", () => {
     expect(applyFilters(rows, null, "top_impressions")).toHaveLength(10);
     expect(
@@ -104,5 +114,16 @@ describe("explainRow", () => {
     expect(explainRow(row("b", { position: 8 }))).toContain(
       "ilk sayfaya çok yakın",
     );
+  });
+
+  it("does not call a top page's click-through normal when it could not be compared", () => {
+    const text = explainRow(
+      row("a", { position: 1.2, kind: "top", ctrGap: null }),
+    );
+    expect(text).toContain("kıyaslayacak kadar veri yok");
+    expect(text).not.toContain("uyumlu");
+    expect(
+      explainRow(row("b", { position: 1.2, kind: "top", ctrGap: 0.01 })),
+    ).toContain("uyumlu");
   });
 });

@@ -31,5 +31,9 @@ describe("agent setup prompt", () => {
     expect(open).toContain(NO_AUTH_SENTENCE);
     expect(closed).not.toContain(NO_AUTH_SENTENCE);
     expect(closed).toContain("Authorization: Bearer <token>");
+    expect(closed).toContain(
+      "docker compose exec seotracker cat /app/.wrangler/mcp-token",
+    );
+    expect(closed).toContain("ONLY into the MCP client config");
   });
 });

@@ -34,7 +34,7 @@ export function HelpTip({
         type="button"
         // Explanations are not actions: clicking one should not submit the
         // form it sits inside.
-        aria-label={`${label} — nasıl yapılır`}
+        aria-label={`${label} hakkında açıklama`}
         aria-describedby={tooltip.isOpen ? tooltip.tooltipId : undefined}
         /*
          * 24px, not 16. WCAG 2.2 SC 2.5.8 sets the minimum target at 24

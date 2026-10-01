@@ -51,6 +51,7 @@ export function ManageTagRow({
           <Pencil className="size-3 opacity-50" />
           <input
             value={name}
+            aria-label="Etiketi yeniden adlandır"
             onChange={(event) => setName(event.target.value)}
             className="min-w-0 flex-1 rounded-field border border-base-300 bg-base-100 px-2 py-1 text-sm outline-none focus:border-primary"
           />
@@ -67,7 +68,8 @@ export function ManageTagRow({
               key={key}
               type="button"
               aria-label={COLOR_LABELS[key]}
-              className={`size-5 rounded-full transition ${tagSwatchClass(key)} ${
+              aria-pressed={color === key}
+              className={`size-6 rounded-full transition ${tagSwatchClass(key)} ${
                 color === key
                   ? "ring-2 ring-offset-2 ring-offset-base-200 ring-base-content/40"
                   : "hover:scale-110"
@@ -81,7 +83,7 @@ export function ManageTagRow({
       <div className="flex items-center justify-between pt-1">
         <button
           type="button"
-          className="inline-flex items-center gap-1 text-xs text-error hover:underline disabled:opacity-50"
+          className="inline-flex items-center gap-1 text-xs text-[var(--ink-error)] hover:underline disabled:opacity-50"
           onClick={onDelete}
           disabled={isBusy}
         >
@@ -89,16 +91,12 @@ export function ManageTagRow({
           Sil
         </button>
         <div className="flex items-center gap-1.5">
-          <button
-            type="button"
-            className="rounded-field px-2 py-1 text-xs text-muted hover:bg-base-300"
-            onClick={onCancel}
-          >
+          <button type="button" className="btn btn-xs" onClick={onCancel}>
             Vazgeç
           </button>
           <button
             type="button"
-            className="rounded-field bg-primary px-2 py-1 text-xs font-medium text-primary-content disabled:opacity-50"
+            className="btn btn-primary btn-xs"
             disabled={!canSave}
             onClick={() =>
               onSave({

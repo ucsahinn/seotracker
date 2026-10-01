@@ -125,7 +125,9 @@ export function MeasurementHealthPanel({ projectId }: { projectId: string }) {
           hint={
             health.summary.dataStreamCount > health.summary.webStreamCount
               ? `${formatCount(health.summary.dataStreamCount)} akıştan web olanlar`
-              : "Tüm akışlar web"
+              : health.summary.webStreamCount === 0
+                ? "Web akışı yok"
+                : "Tüm akışlar web"
           }
         />
         <MetricTile

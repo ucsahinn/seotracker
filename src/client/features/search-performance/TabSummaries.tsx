@@ -326,7 +326,9 @@ export function CannibalizationSummary({
                   aria-hidden
                   className="size-3.5 shrink-0 text-warning"
                 />
-                <span className="truncate">{worst.query}</span>
+                <span className="truncate" title={worst.query}>
+                  {worst.query}
+                </span>
               </button>
               <span className="text-xs text-muted tabular-nums">
                 {formatNumber(splitImpressionsOf(worst))} gösterim bölünüyor ·{" "}
