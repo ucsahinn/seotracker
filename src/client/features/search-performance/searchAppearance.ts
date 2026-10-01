@@ -6,7 +6,7 @@ const APPEARANCE_LABELS: Record<string, string> = {
   AMP_BLUE_LINK: "AMP sayfası",
   AMP_TOP_STORIES: "AMP haber kutusu",
   AMP_STORY: "AMP hikayesi",
-  BREADCRUMB: "Yol haritası (breadcrumb)",
+  BREADCRUMB: "Gezinme yolu (breadcrumb)",
   EVENT_DETAILS: "Etkinlik ayrıntısı",
   EVENT_LISTING: "Etkinlik listesi",
   FAQ_RICH_RESULT: "Sık sorulan sorular",

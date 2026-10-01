@@ -9,7 +9,8 @@ import { CRAWL_ISSUES } from "@/shared/audit-issues/crawl";
 import { CONTENT_ISSUES } from "@/shared/audit-issues/content";
 import { INDEXING_ISSUES } from "@/shared/audit-issues/indexing";
 import { SPEED_ISSUES } from "@/shared/audit-issues/speed";
-import { scoreAudit } from "@/shared/auditScore";
+import { auditScoreTier, scoreAudit } from "@/shared/auditScore";
+import { lighthouseBand } from "@/shared/lighthouse";
 import { describeDetails } from "./reportFormat";
 import type {
   AuditReportInput,
@@ -163,13 +164,16 @@ export function countSeverities(groups: IssueGroup[]) {
 export function scoreVerdict(score: number | null): string {
   if (score === null) return "Taranan sayfa olmadığı için puan hesaplanamadı.";
   if (score === 100) return "Kayıtlı hiçbir sorun yok. Site temiz görünüyor.";
-  if (score >= 90)
-    return "Site sağlıklı. Kalan birkaç düzeltme puanı yukarı çeker.";
-  if (score >= 70)
-    return "Temel sağlam, ama düzeltilmesi gereken belirgin sorunlar var.";
-  if (score >= 50)
-    return "Orta düzeyde. Kritik ve uyarı sorunları aramadaki performansı gölgeliyor.";
-  return "Zayıf. Önce kritik sorunlar düzeltilmeli; bunlar sayfaların aramada görünmesini engelleyebilir.";
+  switch (auditScoreTier(score)) {
+    case "excellent":
+      return "Site sağlıklı. Kalan birkaç düzeltme puanı yukarı çeker.";
+    case "good":
+      return "Temel sağlam, ama düzeltilmesi gereken belirgin sorunlar var.";
+    case "fair":
+      return "Orta düzeyde. Kritik ve uyarı sorunları aramadaki performansı gölgeliyor.";
+    case "poor":
+      return "Zayıf. Önce kritik sorunlar düzeltilmeli; bunlar sayfaların aramada görünmesini engelleyebilir.";
+  }
 }
 
 type Bucket = { label: string; value: number };
@@ -241,13 +245,6 @@ export function describePages(pages: ReportPage[]) {
   };
 }
 
-/** Lighthouse's own bands, so the report reads like PageSpeed Insights. */
-export function scoreBand(score: number): "good" | "fair" | "poor" {
-  if (score >= 90) return "good";
-  if (score >= 50) return "fair";
-  return "poor";
-}
-
 export function describeLighthouse(rows: ReportLighthouse[]) {
   const scored = rows.filter(
     (row) => row.strategy === "mobile" && row.performanceScore !== null,
@@ -257,7 +254,7 @@ export function describeLighthouse(rows: ReportLighthouse[]) {
   const bins = Array.from({ length: 10 }, () => 0);
   for (const row of scored) {
     const score = row.performanceScore ?? 0;
-    bands[scoreBand(score)] += 1;
+    bands[lighthouseBand(score)] += 1;
     bins[Math.min(9, Math.floor(score / 10))] += 1;
   }
   const histogram: Bucket[] = bins.map((value, i) => ({

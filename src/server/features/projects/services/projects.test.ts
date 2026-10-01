@@ -253,7 +253,7 @@ describe("project service", () => {
           name: "Acme",
           domain: "999.999.999.999",
         }),
-      ).rejects.toThrow("Enter a valid domain");
+      ).rejects.toThrow("Geçerli bir alan adı girin");
       expect(mocks.updateProject).not.toHaveBeenCalled();
     });
   });

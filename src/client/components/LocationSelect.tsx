@@ -1,3 +1,4 @@
+import { searchFold } from "@/client/lib/searchFold";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Check, Search } from "lucide-react";
 import { LOCATION_OPTIONS } from "@/shared/keyword-locations";
@@ -14,11 +15,11 @@ type Props = {
 };
 
 function matches(option: LocationOption, query: string): boolean {
-  const needle = query.trim().toLowerCase();
+  const needle = searchFold(query.trim());
   if (!needle) return true;
   return (
-    option.label.toLowerCase().includes(needle) ||
-    option.shortLabel.toLowerCase().includes(needle)
+    searchFold(option.label).includes(needle) ||
+    searchFold(option.shortLabel).includes(needle)
   );
 }
 

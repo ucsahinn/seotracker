@@ -72,7 +72,7 @@ export function CountryBreakdown({
         </div>
         <p className="mt-0.5 text-xs text-muted">
           Tıklamaların hangi ülkelerden geldiği. Halkadan ya da tablodan bir
-          ülkeye dokunarak tüm sayfayı o ülkeye göre daraltabilirsiniz.
+          ülkeye tıklayarak tüm sayfayı o ülkeye göre daraltabilirsiniz.
         </p>
       </div>
       <div className="border-b border-base-300 px-4 py-4">

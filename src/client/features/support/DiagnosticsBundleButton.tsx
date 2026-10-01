@@ -74,14 +74,14 @@ Oluşturulma: ${generatedAt}
 
 İçindekiler
   summary.txt        Tek sayfalık özet.
-  diagnostics.json   Sürüm, kurulum denetimleri, tablo satır sayıları,
+  diagnostics.json   Sürüm, kurulum kontrolleri, tablo satır sayıları,
                      projeler, bağlı Google mülkleri ve son 25 denetim.
   client-log.json    Bu sekmede yakalanan tarayıcı hataları.
   browser.json       Tarayıcı ve ekran bilgisi.
 
 İçinde OLMAYAN şeyler
   Hiçbir gizli değer yok: Google erişim ve yenileme jetonları, istemci
-  sırrı, PageSpeed API anahtarı, MCP jetonu ve oturum çerezleri
+  gizli anahtarı, PageSpeed API anahtarı, MCP jetonu ve oturum çerezleri
   toplanmıyor. Yalnızca her birinin yapılandırılmış olup olmadığı yazıyor.
   Taranan sayfaların içeriği de yok, yalnızca sayıları var.
 
@@ -112,7 +112,7 @@ export function buildDiagnosticsSummary(
   return `seotracker ${server.version} · ${server.authMode}
 Oluşturulma: ${server.generatedAt}
 
-Kurulum denetimleri
+Kurulum kontrolleri
 ${failing || "  hepsi ok"}
 
 Tablolar

@@ -1,3 +1,4 @@
+import { searchFold } from "@/client/lib/searchFold";
 import { buildCsv } from "@/client/lib/csv";
 import {
   formatCount,
@@ -31,11 +32,11 @@ const LABELS: Record<string, string> = {
   length: "Uzunluk (karakter)",
   wordCount: "Kelime sayısı",
   h1Count: "H1 sayısı",
-  crawlDepth: "Tıklama derinliği",
+  crawlDepth: "Ana sayfadan uzaklık (tık)",
   responseTimeMs: "Yanıt süresi",
-  canonicalUrl: "Kanonik adres",
-  htmlCanonical: "Sayfadaki kanonik adres",
-  headerCanonical: "Başlıktaki kanonik adres",
+  canonicalUrl: "Asıl adres",
+  htmlCanonical: "Sayfadaki asıl adres",
+  headerCanonical: "Başlıktaki asıl adres",
   redirectUrl: "Yönlendirdiği adres",
   redirectsTo: "Yönlendirdiği adres",
   finalUrl: "Son adres",
@@ -148,15 +149,13 @@ export function filterAffectedPages(
   pages: AffectedPage[],
   query: string,
 ): AffectedPage[] {
-  const needle = query.trim().toLocaleLowerCase("tr-TR");
+  const needle = searchFold(query.trim());
   if (!needle) return pages;
   return pages.filter(
     (page) =>
-      page.url.toLocaleLowerCase("tr-TR").includes(needle) ||
+      searchFold(page.url).includes(needle) ||
       page.records.some((lines) =>
-        lines.some((line) =>
-          line.value.toLocaleLowerCase("tr-TR").includes(needle),
-        ),
+        lines.some((line) => searchFold(line.value).includes(needle)),
       ),
   );
 }

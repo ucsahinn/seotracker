@@ -52,12 +52,12 @@ export function PositionBandBars({
         <h2 className="text-sm font-medium">Sıra dağılımı</h2>
         <HelpTip label="Sıra dağılımı">
           Takip edilen sorguların ortalama sırasına göre kaç gruba ayrıldığını
-          gösterir. Bir çubuğa basarak tabloyu o gruba daraltın.
+          gösterir. Bir çubuğa tıklayarak tabloyu o gruba daraltın.
         </HelpTip>
       </div>
       <p className="mt-0.5 text-xs text-muted">
-        {formatCount(total)} sorgunun ortalama sırası. Bir çubuğa basınca tablo
-        o gruba göre daralır.
+        {formatCount(total)} sorgunun ortalama sırası. Bir çubuğa tıklayınca
+        tablo o gruba göre daralır.
       </p>
       <div role="group" aria-label="Sıra grupları" className="mt-3 space-y-1.5">
         {BAND_IDS.map((id) => {

@@ -2,7 +2,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { DashboardActivation } from "@/server/features/dashboard/services/DashboardService";
+import type { DashboardActivation } from "@/types/schemas/dashboard";
 import { DashboardOnboarding } from "./DashboardOnboarding";
 import { setupSteps } from "./dashboardSteps";
 

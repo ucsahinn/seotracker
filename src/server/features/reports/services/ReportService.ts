@@ -139,7 +139,7 @@ export async function saveReport(params: SaveReportParams): Promise<{
   ) {
     throw new AppError(
       "VALIDATION_ERROR",
-      `This organization is storing ${mb(orgBytes)} of reports, the limit. Delete reports you no longer need from the Reports page.`,
+      `This workspace is storing ${mb(orgBytes)} of reports, the limit. Delete reports you no longer need from the Reports page.`,
     );
   }
 

@@ -216,7 +216,7 @@ function ExportMenu({
       {(close) => (
         <>
           <li className="menu-title">
-            <span>Sheets&apos;e aktar</span>
+            <span>E-Tablolar&apos;a aktar</span>
           </li>
           <li>
             <button
@@ -227,7 +227,7 @@ function ExportMenu({
               }}
             >
               <Sheet className="size-4" />
-              Sheets&apos;te aç — {categoryPhrase.subject}
+              E-Tablolar&apos;da aç — {categoryPhrase.subject}
             </button>
           </li>
           <li>
@@ -239,7 +239,7 @@ function ExportMenu({
               }}
             >
               <Sheet className="size-4" />
-              Sheets&apos;te aç — işlem gerektiren tüm sorunlar
+              E-Tablolar&apos;da aç — işlem gerektiren tüm sorunlar
             </button>
           </li>
           <li className="menu-title">

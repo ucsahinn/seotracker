@@ -12,7 +12,7 @@ import { SeverityBar } from "@/client/features/dashboard/SeverityBar";
 import { formatCount } from "@/client/lib/format";
 import { extractPathname } from "@/client/features/audit/shared";
 import { SEVERITY_LABEL } from "@/client/features/audit/results/IssuesView";
-import type { DashboardAuditSummary } from "@/server/features/dashboard/services/DashboardService";
+import type { DashboardAuditSummary } from "@/types/schemas/dashboard";
 
 // Plain string-keyed view of the registry: issue types from the DB are not
 // statically guaranteed to be registry keys.
@@ -73,8 +73,8 @@ export function AuditHealthCard({
         audit.status === "completed"
           ? `${formatCount(audit.pagesCrawled)} sayfa tarandı · ${formatDay(audit.startedAt)}`
           : audit.status === "running"
-            ? "tarama sürüyor"
-            : "son tarama başarısız"
+            ? "denetim sürüyor"
+            : "son denetim başarısız"
       }
       action={
         <Link
@@ -97,7 +97,7 @@ export function AuditHealthCard({
       {audit.status === "running" ? (
         <div className="flex items-center gap-2 text-sm text-muted">
           <Loader2 className="size-4 animate-spin" />
-          Tarama sürüyor, sonuçlar bittiğinde görünecek.
+          Denetim sürüyor, sonuçlar bittiğinde görünecek.
         </div>
       ) : audit.status !== "completed" ? (
         <div className="flex items-center gap-2 text-sm text-muted">
@@ -108,7 +108,7 @@ export function AuditHealthCard({
            * token is 8.49:1 and costs nothing.
            */}
           <AlertCircle className="size-4 text-[var(--ink-warning)]" />
-          Son tarama tamamlanamadı, bu yüzden sonuç yok.
+          Son denetim tamamlanamadı, bu yüzden sonuç yok.
         </div>
       ) : audit.topIssues.length === 0 ? (
         <div className="flex items-center gap-2 text-sm text-muted">

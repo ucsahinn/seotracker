@@ -8,7 +8,7 @@ export const SAVED_KEYWORD_EXPORT_HEADERS = [
   "Kelime",
   "Amaç",
   "Etiketler",
-  "Son alınma",
+  "Son güncelleme",
 ];
 
 export function savedKeywordExportRow(row: SavedKeywordRow): CsvValue[] {

@@ -60,7 +60,7 @@ export function ExportToSheetsModal() {
       </div>
 
       <p className="text-sm text-muted">
-        Yeni bir Google E-Tablo açıp yapıştırın.
+        Google E-Tablolar&apos;da yeni bir dosya açıp yapıştırın.
       </p>
 
       <div className="flex justify-end">
@@ -69,7 +69,7 @@ export function ExportToSheetsModal() {
           className="btn btn-primary btn-sm gap-1.5"
           onClick={handleOpenSheet}
         >
-          Yeni Google E-Tablo aç
+          Google E-Tablolar&apos;da yeni dosya aç
           <ExternalLink className="size-3.5" />
         </button>
       </div>

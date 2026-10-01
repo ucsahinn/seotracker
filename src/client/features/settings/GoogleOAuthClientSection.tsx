@@ -97,7 +97,7 @@ export function GoogleOAuthClientSection() {
     <section className="space-y-3">
       <SettingsHeading
         title="Google bağlantısı"
-        help="Google Cloud Console'da bir proje açın, 'APIs & Services → Credentials' altından OAuth client ID oluşturun (tür: Web application), aşağıdaki iki redirect URI'yi ekleyin ve verilen kimlik ile sırrı buraya yapıştırın. Search Console ve Analytics aynı istemciyi kullanır."
+        help="Google Cloud Console'da bir proje açın, 'APIs & Services → Credentials' altından OAuth client ID oluşturun (tür: Web application), aşağıdaki iki yönlendirme adresini ekleyin ve verilen kimlik ile gizli anahtarı buraya yapıştırın. Search Console ve Analytics aynı istemciyi kullanır."
       />
 
       <p className="text-sm text-muted">

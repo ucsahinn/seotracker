@@ -12,7 +12,7 @@ export function normalizeSavedKeywordTag(
   if (name.length === 0) return null;
   return {
     name,
-    normalizedName: name.toLocaleLowerCase(),
+    normalizedName: name.toLocaleLowerCase("tr"),
   };
 }
 

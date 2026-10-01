@@ -1,3 +1,4 @@
+import { searchFold } from "@/client/lib/searchFold";
 import * as React from "react";
 import { Link, useRouter } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
@@ -53,12 +54,14 @@ export function ProjectSwitcher({
     projects.find((project) => project.id === activeProjectId) ?? null;
 
   const showSearch = projects.length >= SEARCH_THRESHOLD;
-  const normalizedQuery = query.trim().toLowerCase();
+  const normalizedQuery = searchFold(query.trim());
   const filteredProjects = normalizedQuery
     ? projects.filter(
         (project) =>
-          project.name.toLowerCase().includes(normalizedQuery) ||
-          project.domain?.toLowerCase().includes(normalizedQuery),
+          searchFold(project.name).includes(normalizedQuery) ||
+          (project.domain !== null &&
+            project.domain !== undefined &&
+            searchFold(project.domain).includes(normalizedQuery)),
       )
     : projects;
 

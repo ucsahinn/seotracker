@@ -81,12 +81,13 @@ export function RankingsPage({
 
   // Catching the archive up is the page's first act: it fills any gap, and
   // even when caught up it re-reads the days Search Console is still
-  // revising. Kept fresh for a minute so that costs one request per visit,
-  // not one per window switch.
+  // revising. Kept fresh for 15 minutes: the sync spends Search Console
+  // quota, and the days it re-reads only settle over hours, so navigating
+  // back to the page should not re-read them every minute.
   const sync = useQuery({
     queryKey: ["gscHistorySync", projectId],
     queryFn: () => syncGscHistory({ data: { projectId } }),
-    staleTime: 60_000,
+    staleTime: 15 * 60_000,
     retry: false,
   });
 
@@ -295,7 +296,7 @@ export function RankingsPage({
                   },
                   {
                     id: "lost",
-                    label: "Sıralama kaybedenler",
+                    label: "İlk 10'dan çıkanlar",
                     icon: LogOut,
                     count: moveCounts.lost,
                     hint: "Önceki dönemde ilk 10'da olup şimdi ilk 10'un dışına çıkan sorgular.",

@@ -143,6 +143,7 @@ export function PerformanceTable({
       <div className="overflow-hidden rounded-box border border-base-300">
         <AppDataTable
           table={table}
+          caption="Sayfa hızı ölçümleri"
           className="table table-sm"
           empty={
             <EmptyTableMessage
@@ -319,7 +320,7 @@ export function ExportDropdown({
       menuClassName="dropdown-content z-10 menu p-2 shadow-lg bg-base-100 border border-base-300 rounded-box w-56"
       actions={[
         {
-          label: `Sheets'e aktar ${suffix}`,
+          label: `E-Tablolar'a aktar ${suffix}`,
           onClick: () => onExport("sheets"),
         },
         { label: `CSV ${suffix}`, onClick: () => onExport("csv") },

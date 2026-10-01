@@ -110,7 +110,7 @@ function getGoogleAccountId(tokens: GoogleTokenResponse) {
   if (!tokens.id_token) {
     throw new AppError(
       "VALIDATION_ERROR",
-      "Google did not return an ID token.",
+      "Google kimlik bilgisini döndürmedi. Bağlantıyı yeniden deneyin.",
     );
   }
   return googleIdTokenSchema.parse(decodeJwt(tokens.id_token)).sub;
@@ -194,7 +194,7 @@ async function exchangeCode(input: {
   if (!response.ok) {
     throw new AppError(
       "VALIDATION_ERROR",
-      `Google rejected the ${input.integration.displayName} authorization code.`,
+      `Google, ${input.integration.displayName} yetkilendirme kodunu reddetti. Bağlantıyı yeniden deneyin.`,
     );
   }
   return googleTokenResponseSchema.parse(await response.json());
@@ -210,7 +210,7 @@ export async function createSelfHostedGoogleAuthorizationUrl(input: {
   if (!config || !(await hasSelfHostedGoogleOAuthConfig(config))) {
     throw new AppError(
       "AUTH_CONFIG_MISSING",
-      `${input.integration.displayName} is not configured. Set GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, and BETTER_AUTH_SECRET.`,
+      `${input.integration.displayName} yapılandırılmamış. GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET ve BETTER_AUTH_SECRET değerlerini ayarlayın.`,
     );
   }
   const redirectUri = getRedirectUri(input.publicOrigin, input.integration);

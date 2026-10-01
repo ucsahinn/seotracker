@@ -212,6 +212,7 @@ export function DimensionTable({
       ) : null}
       <AppDataTable
         table={table}
+        caption={`Arama performansı: ${keyLabel}`}
         className="table table-zebra table-sm"
         wrapperClassName="overflow-x-auto"
         empty={
@@ -357,6 +358,7 @@ export function StrikingDistanceTable({
       <div className="p-4">
         <AppDataTable
           table={table}
+          caption="Eşiğe yakın sorgular"
           className="table table-zebra table-sm"
           wrapperClassName="overflow-x-auto"
         />

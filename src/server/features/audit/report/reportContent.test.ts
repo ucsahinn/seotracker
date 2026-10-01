@@ -141,3 +141,42 @@ describe("chart builders", () => {
     expect(capList([1, 2, 3], 2)).toEqual({ shown: [1, 2], hidden: 1 });
   });
 });
+
+const scripts = (value: string) => value.match(/<script/gi)?.length ?? 0;
+
+describe("hostile crawled values", () => {
+  const ATTACK_URL = 'javascript:alert(1)"><script>';
+  const ATTACK_TITLE = "</text><script>";
+
+  // Titles, URLs and redirect targets come from third-party HTML.
+  it("never reaches the document unescaped", () => {
+    const hostile = [
+      page("https://example.com/", {
+        title: ATTACK_TITLE,
+        redirectUrl: ATTACK_URL,
+        canonicalUrl: ATTACK_URL,
+      }),
+      page(ATTACK_URL, { title: ATTACK_TITLE }),
+    ];
+    const baseline = buildAuditReportHtml(
+      input({ pagesCrawled: 2, pages: [page("https://a.test/")] }),
+    ).html;
+    const { html } = buildAuditReportHtml(
+      input({
+        pagesCrawled: 2,
+        pages: hostile,
+        issues: hostile.map((p, i) => ({
+          issueType: "missing-title",
+          severity: "critical",
+          pageUrl: p.url,
+          pageId: `id${i}`,
+        })),
+      }),
+    );
+
+    expect(scripts(html)).toBe(scripts(baseline));
+    expect(html).not.toContain('"><script');
+    expect(html).not.toContain("</text><script");
+    expect(html).not.toMatch(/(?:href|src|action)\s*=\s*["']?\s*javascript:/i);
+  });
+});

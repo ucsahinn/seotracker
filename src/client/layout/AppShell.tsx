@@ -2,7 +2,10 @@ import * as React from "react";
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { Menu } from "lucide-react";
-import { MobileSidebarDrawer } from "@/client/layout/AppShellParts";
+import {
+  MOBILE_DRAWER_ID,
+  MobileSidebarDrawer,
+} from "@/client/layout/AppShellParts";
 import { Sidebar } from "@/client/components/Sidebar";
 import { getProjects } from "@/serverFunctions/projects";
 import { getLastProjectId } from "@/client/lib/active-project";
@@ -17,6 +20,7 @@ export function AuthenticatedAppLayout({
   banner?: React.ReactNode;
 }) {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const drawerOpener = React.useRef<HTMLButtonElement | null>(null);
   // On non-project pages (e.g. /settings) there's no projectId in the URL, so
   // derive one for the nav/switcher: prefer the last-visited project, else the
   // most recent. The whole app tree is client-only (see root ClientOnly), so we
@@ -46,6 +50,12 @@ export function AuthenticatedAppLayout({
 
   return (
     <div className="flex h-[100dvh] bg-base-200">
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-2 focus:top-2 focus:z-[1100] focus:rounded-field focus:bg-base-100 focus:px-3 focus:py-2 focus:text-sm focus:font-medium focus:text-base-content focus:shadow-lg"
+      >
+        Ana içeriğe geç
+      </a>
       <div className="hidden shrink-0 md:block">
         <Sidebar projectId={sidebarProjectId} />
       </div>
@@ -54,6 +64,7 @@ export function AuthenticatedAppLayout({
         <MobileTopBar
           drawerOpen={drawerOpen}
           onOpenDrawer={() => setDrawerOpen(true)}
+          openerRef={drawerOpener}
         />
 
         {/* PostHog-style cutout: the main content sits on a raised panel with a
@@ -62,7 +73,13 @@ export function AuthenticatedAppLayout({
           <div className="flex min-h-0 flex-1 flex-col overflow-hidden bg-base-100 md:rounded-tl-[var(--radius-box)] md:border-l md:border-t md:border-base-300">
             {banner}
 
-            <div className="min-h-0 flex-1 overflow-auto">{children}</div>
+            <main
+              id="main"
+              tabIndex={-1}
+              className="min-h-0 flex-1 overflow-auto focus:outline-none"
+            >
+              {children}
+            </main>
           </div>
         </div>
       </div>
@@ -71,6 +88,7 @@ export function AuthenticatedAppLayout({
         open={drawerOpen}
         projectId={sidebarProjectId}
         onClose={() => setDrawerOpen(false)}
+        openerRef={drawerOpener}
       />
     </div>
   );
@@ -79,16 +97,20 @@ export function AuthenticatedAppLayout({
 function MobileTopBar({
   drawerOpen,
   onOpenDrawer,
+  openerRef,
 }: {
   drawerOpen: boolean;
   onOpenDrawer: () => void;
+  openerRef: React.RefObject<HTMLButtonElement | null>;
 }) {
   return (
     <div className="flex shrink-0 items-center gap-1 border-b border-base-300 bg-base-100 px-2 py-1.5 md:hidden">
       <button
+        ref={openerRef}
         type="button"
         className="btn btn-square btn-ghost btn-sm"
-        aria-label="Kenar çubuğunu aç/kapat"
+        aria-label="Kenar çubuğunu aç"
+        aria-controls={MOBILE_DRAWER_ID}
         aria-expanded={drawerOpen}
         onClick={onOpenDrawer}
       >

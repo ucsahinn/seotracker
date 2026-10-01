@@ -1,3 +1,4 @@
+import { lighthouseBand } from "@/shared/lighthouse";
 import { formatDecimal, formatDuration } from "@/client/lib/format";
 import { LabFieldComparison } from "./LabFieldComparison";
 import type {
@@ -189,15 +190,17 @@ function getFieldItems(fieldData?: LighthouseFieldData | null) {
 
 function scoreColor(score: number | null) {
   if (score == null) return "text-muted";
-  if (score >= 90) return "text-[var(--ink-success)]";
-  if (score >= 50) return "text-[var(--ink-warning)]";
+  const band = lighthouseBand(score);
+  if (band === "good") return "text-[var(--ink-success)]";
+  if (band === "fair") return "text-[var(--ink-warning)]";
   return "text-[var(--ink-error)]";
 }
 
 function scoreStrokeColor(score: number | null) {
   if (score == null) return "stroke-base-content/20";
-  if (score >= 90) return "stroke-success";
-  if (score >= 50) return "stroke-warning";
+  const band = lighthouseBand(score);
+  if (band === "good") return "stroke-success";
+  if (band === "fair") return "stroke-warning";
   return "stroke-error";
 }
 

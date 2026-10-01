@@ -1,3 +1,4 @@
+import { fractionalChange } from "@/shared/delta";
 import { MetricRow, MetricTile } from "@/client/components/MetricTile";
 import type { Report } from "@/client/features/search-performance/SearchPerformanceColumns";
 import { describeTotals } from "@/client/features/search-performance/totals";
@@ -6,8 +7,8 @@ import { formatDate, formatDecimal, formatPercent } from "@/client/lib/format";
 type Delta = { text: string; improved: boolean } | null;
 
 function percentDelta(current: number, previous: number): Delta {
-  if (previous <= 0) return null;
-  const change = (current - previous) / previous;
+  const change = fractionalChange(current, previous);
+  if (change === null) return null;
   // The sign is carried in the text, so `formatPercent` gets the magnitude.
   return {
     text: `${change >= 0 ? "+" : "-"}${formatPercent(Math.abs(change))}`,

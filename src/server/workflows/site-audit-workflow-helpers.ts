@@ -381,3 +381,19 @@ function emptyPageResult(input: {
     inSitemap: input.inSitemap,
   };
 }
+
+/**
+ * Page ids to measure, in sample order, with the check total derived from the
+ * ids actually found. A sampled URL with no stored row cannot be measured, so
+ * counting it in the total would leave progress stuck below 100%.
+ */
+export function resolveLighthouseWork(
+  sample: readonly string[],
+  idByUrl: ReadonlyMap<string, string>,
+) {
+  const pageIds = sample.flatMap((url) => {
+    const id = idByUrl.get(url);
+    return id ? [id] : [];
+  });
+  return { pageIds, lighthouseTotal: pageIds.length * 2 };
+}

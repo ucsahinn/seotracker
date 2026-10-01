@@ -1,5 +1,5 @@
 import { sort } from "remeda";
-import { formatCount, formatDate, formatDateTime } from "@/client/lib/format";
+import { formatCount, formatDate, formatDateTime } from "@/shared/format";
 import {
   barChart,
   chartSummary,

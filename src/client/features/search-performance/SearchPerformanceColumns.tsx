@@ -146,7 +146,7 @@ export function buildStrikingColumns(
   anchorRef: MutableRefObject<SelectionAnchor | null>,
 ): ColumnDef<StrikingRow>[] {
   return [
-    makeSelectionColumn<StrikingRow>(anchorRef),
+    makeSelectionColumn<StrikingRow>(anchorRef, (row) => row.original.query),
     strikingHelper.accessor("query", {
       enableSorting: false,
       header: () => "Sorgu",

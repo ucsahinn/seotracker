@@ -16,6 +16,8 @@ export function CreateProjectModal({ onClose }: { onClose: () => void }) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [name, setName] = React.useState("");
+  const [nameError, setNameError] = React.useState<string | null>(null);
+  const nameInput = React.useRef<HTMLInputElement>(null);
   const [domain, setDomain] = React.useState("");
   const [market, setMarket] = React.useState({
     locationCode: DEFAULT_LOCATION_CODE,
@@ -55,7 +57,8 @@ export function CreateProjectModal({ onClose }: { onClose: () => void }) {
     event.preventDefault();
     if (isPending) return;
     if (!name.trim()) {
-      toast.error("Proje adı gerekli");
+      setNameError("Proje adı gerekli");
+      nameInput.current?.focus();
       return;
     }
     createMutation.mutate();
@@ -75,14 +78,31 @@ export function CreateProjectModal({ onClose }: { onClose: () => void }) {
         <label className="flex flex-col gap-1.5 text-sm">
           <span className="font-medium">Ad</span>
           <input
+            ref={nameInput}
             type="text"
             value={name}
-            onChange={(event) => setName(event.target.value)}
+            onChange={(event) => {
+              setName(event.target.value);
+              setNameError(null);
+            }}
             placeholder="Acme Inc."
             maxLength={120}
             autoFocus
-            className="input input-bordered w-full"
+            aria-invalid={nameError ? true : undefined}
+            aria-describedby={
+              nameError ? "create-project-name-error" : undefined
+            }
+            className={`input input-bordered w-full ${nameError ? "input-error" : ""}`}
           />
+          {nameError ? (
+            <span
+              id="create-project-name-error"
+              role="alert"
+              className="text-xs text-[var(--ink-error)]"
+            >
+              {nameError}
+            </span>
+          ) : null}
         </label>
 
         <label className="flex flex-col gap-1.5 text-sm">

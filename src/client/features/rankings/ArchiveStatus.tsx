@@ -91,10 +91,10 @@ export function ArchiveStatus({
       <p className="text-xs text-muted">
         Arşiv boş.{" "}
         {data.scannedThrough
-          ? `${formatDate(data.scannedThrough)} tarihine kadar tarandı, veri bulunamadı.`
-          : "Tarama henüz başlamadı."}
+          ? `${formatDate(data.scannedThrough)} tarihine kadar kontrol edildi, veri bulunamadı.`
+          : "Veri yükleme henüz başlamadı."}
         {data.hasMore
-          ? " Kalan günler sonraki açılışlarda taranacak."
+          ? " Kalan günler sonraki açılışlarda yüklenecek."
           : " Search Console bu mülk için veri döndürmüyor; site yeni doğrulandıysa birkaç gün sürebilir."}
       </p>
     );

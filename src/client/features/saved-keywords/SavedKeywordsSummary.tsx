@@ -149,7 +149,7 @@ export function SavedKeywordsSummary({
 
       <DonutCard
         title="Sıra dağılımı"
-        description="Bir gruba basınca tablo yalnızca o gruptaki kelimeleri gösterir."
+        description="Bir gruba tıklayınca tablo yalnızca o gruptaki anahtar kelimeleri gösterir."
         segments={segments}
         totalLabel="kelime"
         summary={donutSummary(segments, "kelime")}

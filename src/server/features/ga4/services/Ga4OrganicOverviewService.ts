@@ -1,3 +1,4 @@
+import { fractionalChange } from "@/shared/delta";
 import { Ga4ConnectionRepository } from "@/server/features/ga4/repositories/Ga4ConnectionRepository";
 import { createGa4DataClient } from "@/server/lib/ga4Client";
 import {
@@ -46,8 +47,8 @@ function keyEventDiagnostics(
   if (currentValue == null || previousValue == null || previousValue < 5) {
     return [];
   }
-  const percentChange = (currentValue - previousValue) / previousValue;
-  if (percentChange > -0.5) return [];
+  const percentChange = fractionalChange(currentValue, previousValue);
+  if (percentChange === null || percentChange > -0.5) return [];
   return [
     {
       code: "key_events_sharp_decline",

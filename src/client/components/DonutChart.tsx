@@ -3,6 +3,7 @@ import * as React from "react";
 import { Cell, Pie, PieChart, Tooltip } from "recharts";
 import { Chart, ChartTooltip } from "@/client/components/Chart";
 import { formatCount, formatPercent } from "@/client/lib/format";
+import { useReducedMotion } from "@/client/lib/useReducedMotion";
 
 /**
  * A share of a whole, as a ring — and, when the caller passes `onSelect`, as
@@ -55,14 +56,6 @@ function tint(index: number): string {
   return `color-mix(in oklab, var(--color-primary) ${share}%, var(--color-base-100))`;
 }
 
-function prefersReducedMotion(): boolean {
-  return (
-    typeof window !== "undefined" &&
-    typeof window.matchMedia === "function" &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches
-  );
-}
-
 export function DonutChart({
   segments,
   totalLabel,
@@ -82,6 +75,7 @@ export function DonutChart({
   /** Passing this makes the ring and its legend clickable. */
   onSelect?: (key: string | null) => void;
 }) {
+  const reduced = useReducedMotion();
   const [hovered, setHovered] = React.useState<number | null>(null);
   const shown = segments.filter((segment) => segment.value > 0);
   const total = shown.reduce((sum, segment) => sum + segment.value, 0);
@@ -117,7 +111,7 @@ export function DonutChart({
               outerRadius="92%"
               paddingAngle={2}
               stroke="none"
-              isAnimationActive={!prefersReducedMotion()}
+              isAnimationActive={!reduced}
               animationDuration={700}
               cursor={interactive ? "pointer" : "default"}
               onMouseEnter={(_, index: number) => setHovered(index)}

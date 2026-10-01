@@ -9,6 +9,7 @@ import {
 } from "recharts";
 import { Chart, ChartTooltip, CHART_AXIS } from "@/client/components/Chart";
 import { sort } from "remeda";
+import { useReducedMotion } from "@/client/lib/useReducedMotion";
 import { formatCount } from "@/client/lib/format";
 import type { IssueSeverity } from "@/shared/audit-issues";
 
@@ -58,6 +59,7 @@ export function IssueWorkloadChart({
   /** A bar was clicked: narrow the list to that type, or release it. */
   onSelect?: (issueType: string | null) => void;
 }) {
+  const reduced = useReducedMotion();
   // Two bars is a comparison the list already makes; below that it is noise.
   if (groups.length < 3) return null;
 
@@ -89,6 +91,15 @@ export function IssueWorkloadChart({
       <Chart
         height={Math.max(120, rows.length * 34)}
         summary={`En çok sayfayı etkileyen sorun: ${top.title}, ${formatCount(top.pageCount)} sayfa. Grafikte ${rows.length} tür var.`}
+        table={{
+          caption: "Sorun türüne göre etkilenen sayfa sayısı",
+          columns: ["Sorun", "Önem", "Etkilenen sayfa"],
+          rows: rows.map((row) => [
+            row.title,
+            SEVERITY_LABEL[row.severity],
+            formatCount(row.pageCount),
+          ]),
+        }}
       >
         <BarChart
           layout="vertical"
@@ -128,6 +139,7 @@ export function IssueWorkloadChart({
             dataKey="pageCount"
             radius={[0, 4, 4, 0]}
             animationDuration={700}
+            isAnimationActive={!reduced}
             className={onSelect ? "cursor-pointer" : undefined}
             onClick={(_, index: number) => {
               const row = rows[index];

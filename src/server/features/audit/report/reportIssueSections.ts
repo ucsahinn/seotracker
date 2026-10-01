@@ -1,4 +1,4 @@
-import { formatCount } from "@/client/lib/format";
+import { formatCount } from "@/shared/format";
 import { capList, escapeHtml, moreLine } from "./reportFormat";
 import {
   CATEGORY_LABEL,

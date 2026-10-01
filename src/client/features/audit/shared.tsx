@@ -1,4 +1,5 @@
 import { AlertCircle, CheckCircle, Loader2 } from "lucide-react";
+import { lighthouseBand } from "@/shared/lighthouse";
 
 export function extractPathname(url: string): string {
   try {
@@ -78,11 +79,10 @@ export function LighthouseScoreBadge({ score }: { score: number | null }) {
   if (score == null) {
     return <span className="text-xs text-muted">-</span>;
   }
-  const color =
-    score >= 90
-      ? "text-[var(--ink-success)]"
-      : score >= 50
-        ? "text-[var(--ink-warning)]"
-        : "text-[var(--ink-error)]";
+  const color = {
+    good: "text-[var(--ink-success)]",
+    fair: "text-[var(--ink-warning)]",
+    poor: "text-[var(--ink-error)]",
+  }[lighthouseBand(score)];
   return <span className={`font-medium text-sm ${color}`}>{score}</span>;
 }

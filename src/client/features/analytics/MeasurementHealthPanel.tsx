@@ -124,7 +124,7 @@ export function MeasurementHealthPanel({ projectId }: { projectId: string }) {
           value={formatCount(health.summary.webStreamCount)}
           hint={
             health.summary.dataStreamCount > health.summary.webStreamCount
-              ? `${formatCount(health.summary.dataStreamCount)} akışın webi`
+              ? `${formatCount(health.summary.dataStreamCount)} akıştan web olanlar`
               : "Tüm akışlar web"
           }
         />

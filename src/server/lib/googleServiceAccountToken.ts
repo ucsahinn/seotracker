@@ -129,7 +129,7 @@ export async function getServiceAccountToken(scope: string): Promise<string> {
      */
     const detail = (await response.text().catch(() => "")).slice(0, 200);
     throw new GoogleServiceAccountError(
-      `Google hizmet hesabı için token vermedi (${response.status}). ${detail}`,
+      `Google hizmet hesabı için erişim anahtarı vermedi (${response.status}). ${detail}`,
     );
   }
 
@@ -138,7 +138,7 @@ export async function getServiceAccountToken(scope: string): Promise<string> {
   const body = tokenResponseSchema.safeParse(await response.json());
   if (!body.success) {
     throw new GoogleServiceAccountError(
-      "Google beklenmeyen bir token yanıtı döndürdü.",
+      "Google beklenmeyen bir erişim anahtarı yanıtı döndürdü.",
     );
   }
 

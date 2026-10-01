@@ -58,7 +58,10 @@ export function SavedKeywordsTable({
   const selectAnchorRef = useSelectionAnchor();
   const columns = useMemo<ColumnDef<SavedKeywordRow>[]>(
     () => [
-      makeSelectionColumn<SavedKeywordRow>(selectAnchorRef),
+      makeSelectionColumn<SavedKeywordRow>(
+        selectAnchorRef,
+        (row) => row.original.keyword,
+      ),
       columnHelper.accessor("keyword", {
         header: ({ column }) => (
           <SortableHeader column={column} label="Kelime" />
@@ -168,6 +171,7 @@ export function SavedKeywordsTable({
   return (
     <AppDataTable
       table={table}
+      caption="Kayıtlı anahtar kelimeler"
       className="table table-sm"
       isLoading={isLoading}
       loading={<SavedKeywordsSkeleton />}

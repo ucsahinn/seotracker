@@ -38,3 +38,22 @@ export function describeWindow(
 ): string {
   return `${formatDate(startDate)} – ${formatDate(endDate)} · Search Console verisi ${GSC_DATA_LAG_DAYS} gün gecikmeli gelir, bu yüzden aralık bugünde bitmez.`;
 }
+
+/**
+ * The inclusive window of `days` days that ends on the newest day Search
+ * Console has finalised. Start and end come from one clock reading, so a call
+ * straddling UTC midnight cannot produce a window of the wrong length.
+ */
+export function gscHistoryWindow(
+  days: number,
+  now: Date = new Date(),
+): { startDate: string; endDate: string } {
+  const end = new Date(now);
+  end.setUTCDate(end.getUTCDate() - GSC_DATA_LAG_DAYS);
+  const start = new Date(end);
+  start.setUTCDate(start.getUTCDate() - (days - 1));
+  return {
+    startDate: start.toISOString().slice(0, 10),
+    endDate: end.toISOString().slice(0, 10),
+  };
+}

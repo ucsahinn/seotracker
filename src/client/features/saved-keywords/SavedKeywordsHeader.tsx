@@ -18,7 +18,7 @@ export function SavedKeywordsHeader({
   return (
     <PageHeader
       title="Kayıtlı kelimeler"
-      description="Arama performansından kaydettiğiniz sorgular. Etiketleyin, Search Console'daki ortalama sıralarına bakın, CSV ya da Sheets'e aktarın."
+      description="Arama performansından kaydettiğiniz sorgular. Etiketleyin, Search Console'daki ortalama sıralarına bakın, CSV ya da E-Tablolar'a aktarın."
       actions={
         /*
          * The shared menu, not a third copy of the same dropdown. The inline
@@ -39,7 +39,7 @@ export function SavedKeywordsHeader({
           }
           actions={[
             {
-              label: "Sheets'e aktar",
+              label: "E-Tablolar'a aktar",
               icon: <Sheet className="size-4" />,
               onClick: onExportSheets,
               disabled,

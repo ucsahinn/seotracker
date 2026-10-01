@@ -42,7 +42,7 @@ export function OpportunityQuickFilters({
   return (
     <div
       role="group"
-      aria-label="Hızlı süzgeçler"
+      aria-label="Hızlı filtreler"
       className="flex flex-wrap items-center gap-2"
     >
       {CHIPS.map(({ id, icon: Icon, emptyReason }) => {

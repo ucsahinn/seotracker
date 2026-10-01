@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { AlertTriangle } from "lucide-react";
+import { lighthouseBand } from "@/shared/lighthouse";
 import { formatCount } from "@/client/lib/format";
 import { ScoreHistogram } from "@/client/features/audit/results/ScoreHistogram";
 import {
@@ -11,8 +12,9 @@ import type { AuditResultsData } from "@/client/features/audit/results/types";
 
 function scoreClass(score: number | null) {
   if (score === null) return "text-subtle";
-  if (score >= 90) return "text-[var(--ink-success)]";
-  if (score >= 50) return "text-[var(--ink-warning)]";
+  const band = lighthouseBand(score);
+  if (band === "good") return "text-[var(--ink-success)]";
+  if (band === "fair") return "text-[var(--ink-warning)]";
   return "text-[var(--ink-error)]";
 }
 

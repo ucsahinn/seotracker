@@ -245,7 +245,7 @@ export function SearchPerformancePage({
               params={{ projectId }}
               className="link link-hover shrink-0 self-start text-sm font-medium text-muted transition-colors hover:text-base-content sm:mt-1"
             >
-              Kaynağı değiştir
+              Mülkü değiştir
             </Link>
           ) : null
         }
@@ -336,7 +336,7 @@ export function SearchPerformancePage({
                     buttonClassName="btn btn-ghost btn-sm gap-1"
                     actions={[
                       {
-                        label: "Sheets'e aktar",
+                        label: "E-Tablolar'a aktar",
                         icon: <Sheet className="size-4" />,
                         onClick: () => void handleExport("sheets"),
                       },

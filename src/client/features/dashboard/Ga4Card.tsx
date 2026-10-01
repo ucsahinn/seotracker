@@ -1,3 +1,4 @@
+import { fractionalChange } from "@/shared/delta";
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { Area, AreaChart, Tooltip, XAxis, YAxis } from "recharts";
@@ -15,6 +16,7 @@ import {
   formatMoney,
   formatPercent,
 } from "@/client/lib/format";
+import { useReducedMotion } from "@/client/lib/useReducedMotion";
 import { getGa4DashboardReport } from "@/serverFunctions/ga4";
 import { formatDate } from "@/client/lib/format";
 
@@ -35,8 +37,9 @@ function statValue(
 }
 
 function statDelta(current: number | null, previous: number | null) {
-  if (current === null || previous === null || previous <= 0) return undefined;
-  return <DeltaBadge value={(current - previous) / previous} />;
+  if (current === null || previous === null) return undefined;
+  const change = fractionalChange(current, previous);
+  return change === null ? undefined : <DeltaBadge value={change} />;
 }
 
 function SessionsTooltip({
@@ -66,6 +69,7 @@ export function Ga4Card({
   projectId: string;
   connected: boolean;
 }) {
+  const reduced = useReducedMotion();
   const reportQuery = useQuery({
     queryKey: ["dashboardGa4Report", projectId],
     queryFn: () => getGa4DashboardReport({ data: { projectId } }),
@@ -248,6 +252,7 @@ export function Ga4Card({
                   strokeWidth={2}
                   fill={CHART_SERIES.primary}
                   fillOpacity={0.08}
+                  isAnimationActive={!reduced}
                 />
               </AreaChart>
             </Chart>

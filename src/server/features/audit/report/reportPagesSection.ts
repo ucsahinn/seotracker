@@ -1,5 +1,5 @@
 import { sort } from "remeda";
-import { formatCount } from "@/client/lib/format";
+import { formatCount } from "@/shared/format";
 import {
   capList,
   escapeHtml,

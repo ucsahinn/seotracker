@@ -70,7 +70,9 @@ export function ProgressCard({
   const crawlProgressQuery = useQuery({
     queryKey: ["audit-crawl-progress", projectId, auditId],
     queryFn: () => getCrawlProgress({ data: { projectId, auditId } }),
-    refetchInterval: 1500,
+    // Same cadence as the status poll in the audit route, so one tick of the
+    // page drives both instead of two independent timers.
+    refetchInterval: 3000,
   });
 
   const crawledUrls = crawlProgressQuery.data ?? [];

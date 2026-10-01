@@ -3,6 +3,7 @@ import { selectLighthousePages } from "@/server/lib/audit/lighthouse";
 import { AuditRepository } from "@/server/features/audit/repositories/AuditRepository";
 import { getPageSpeedApiKey } from "@/server/features/lighthouse/pagespeed-config";
 import type { AuditConfig } from "@/server/lib/audit/types";
+import { resolveLighthouseWork } from "@/server/workflows/site-audit-workflow-helpers";
 import { DB_STEP } from "@/server/workflows/auditStepConfigs";
 import { UNKEYED_LIGHTHOUSE_PAGE_CAP } from "@/shared/audit-limits";
 
@@ -33,9 +34,11 @@ export async function selectLighthouseWork(params: {
     );
     const idByUrl = new Map(crawledPages.map((page) => [page.url, page.id]));
 
+    const work = resolveLighthouseWork(sample, idByUrl);
+
     await AuditRepository.updateAuditProgress(auditId, workflowInstanceId, {
       currentPhase: "lighthouse",
-      lighthouseTotal: sample.length * 2,
+      lighthouseTotal: work.lighthouseTotal,
       lighthouseCompleted: 0,
       lighthouseFailed: 0,
     });
@@ -45,9 +48,6 @@ export async function selectLighthouseWork(params: {
      * 1 MiB: ids are ~40 bytes each, where id + URL per page was ~135 and
      * overflowed around 7,500 pages. Each wave looks its URLs up.
      */
-    return sample.flatMap((url) => {
-      const id = idByUrl.get(url);
-      return id ? [id] : [];
-    });
+    return work.pageIds;
   });
 }

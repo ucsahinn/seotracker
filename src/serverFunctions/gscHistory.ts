@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { GscHistoryService } from "@/server/features/gsc/services/GscHistoryService";
 import { requireProjectContext } from "@/serverFunctions/middleware";
-import { GSC_DATA_LAG_DAYS } from "@/shared/dataFreshness";
+import { gscHistoryWindow } from "@/shared/dataFreshness";
 import { attachChange, previousWindow } from "@/shared/rankingChange";
 
 /** How many queries of the preceding window are read to match against. */
@@ -40,19 +40,6 @@ const queryHistorySchema = projectSchema.extend({
   days: z.number().int().min(7).max(MAX_ARCHIVE_DAYS).default(90),
 });
 
-/*
- * Counted back from the newest day Search Console has finalised, not from
- * today. The archive this reads only ever reaches `today - GSC_DATA_LAG_DAYS`
- * because that is as far as the backfill goes, so counting from today made a
- * "30 gün" selection cover 27 days of data -- and every window was short by
- * the same three days, which is invisible until two screens are compared.
- */
-function sinceDate(days: number): string {
-  const since = new Date();
-  since.setUTCDate(since.getUTCDate() - GSC_DATA_LAG_DAYS - (days - 1));
-  return since.toISOString().slice(0, 10);
-}
-
 /**
  * Catch the archive up and report where it stands. Called when the ranking
  * page opens, and a caught-up archive still costs one small request: the
@@ -75,7 +62,9 @@ export const getTrackedQueries = createServerFn({ method: "POST" })
   .middleware(requireProjectContext)
   .validator(trackedQueriesSchema)
   .handler(async ({ data, context }) => {
-    const since = sinceDate(data.days);
+    // Counted back from the newest day Search Console has finalised, not
+    // from today, so "30 gün" really covers 30 days of data.
+    const { startDate: since, endDate: latest } = gscHistoryWindow(data.days);
     const rows = await GscHistoryService.getTrackedQueries({
       projectId: context.projectId,
       since,
@@ -103,16 +92,9 @@ export const getTrackedQueries = createServerFn({ method: "POST" })
        * the archive-status line above reports the *archive's* span, which is
        * a different thing and invites the misread.
        */
-      range: { startDate: since, endDate: latestDate() },
+      range: { startDate: since, endDate: latest },
     };
   });
-
-/** The newest day the archive can hold, which is where every window ends. */
-function latestDate(): string {
-  const end = new Date();
-  end.setUTCDate(end.getUTCDate() - GSC_DATA_LAG_DAYS);
-  return end.toISOString().slice(0, 10);
-}
 
 export const getQueryHistory = createServerFn({ method: "POST" })
   .middleware(requireProjectContext)
@@ -121,7 +103,7 @@ export const getQueryHistory = createServerFn({ method: "POST" })
     const rows = await GscHistoryService.getQueryHistory({
       projectId: context.projectId,
       query: data.query,
-      since: sinceDate(data.days),
+      since: gscHistoryWindow(data.days).startDate,
     });
     return { query: data.query, rows };
   });

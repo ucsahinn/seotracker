@@ -129,7 +129,7 @@ describe("ReportView quick chips", () => {
     fireEvent.click(screen.getByRole("button", { name: /^Direct/ }));
     fireEvent.click(screen.getByRole("button", { name: /Dönüşümü olan/ }));
 
-    expect(screen.getByText(/süzgeçlere uyan satır yok/)).toBeDefined();
+    expect(screen.getByText(/filtrelere uyan satır yok/)).toBeDefined();
   });
 });
 

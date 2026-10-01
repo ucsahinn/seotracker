@@ -3,7 +3,8 @@ import { MAX_AUDIT_PAGES } from "@/shared/audit-limits";
 import { isErrorCode, type ErrorCode } from "@/shared/error-codes";
 
 const STANDARD_MESSAGES: Record<ErrorCode, string> = {
-  UNAUTHENTICATED: "Lütfen oturum açıp tekrar deneyin.",
+  UNAUTHENTICATED:
+    "Oturumunuz doğrulanamadı. Sayfayı yenileyip tekrar deneyin.",
   AUTH_CONFIG_MISSING:
     "Kimlik doğrulama yapılandırılmamış. Kurulum adımları için docs/SELF_HOSTING_DOCKER.md dosyasına bakın.",
   FORBIDDEN: "Bu kaynağa erişiminiz yok.",
@@ -12,7 +13,7 @@ const STANDARD_MESSAGES: Record<ErrorCode, string> = {
     "Denetim kapasitesi doldu. Yeni bir denetim başlatmak için eski denetimleri silin.",
   AUDIT_PAGE_LIMIT_EXCEEDED: `Bir denetim en çok ${formatNumber(MAX_AUDIT_PAGES)} sayfa tarayabilir.`,
   AUDIT_ALREADY_RUNNING:
-    "Aynı anda çalışabilecek denetim sayısına ulaştınız. Birinin bitmesini bekleyin ya da silin.",
+    "Aynı anda çalışabilecek denetim sayısına ulaştınız. Çalışan denetimlerden birinin bitmesini bekleyin ya da birini silin.",
   VALIDATION_ERROR: "Girdiğiniz bilgileri kontrol edip tekrar deneyin.",
   CRAWL_TARGET_BLOCKED: "Güvenlik nedeniyle bu adres taranamaz.",
   RATE_LIMITED: "Çok fazla istek gönderildi. Biraz bekleyip tekrar deneyin.",

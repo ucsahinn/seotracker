@@ -1,5 +1,5 @@
 import { sort } from "remeda";
-import { formatCount, formatDecimal } from "@/client/lib/format";
+import { formatCount, formatDecimal } from "@/shared/format";
 import {
   barChart,
   chartSummary,
@@ -8,7 +8,8 @@ import {
   figure,
 } from "./reportCharts";
 import { capList, escapeHtml, moreLine, truncate } from "./reportFormat";
-import { describeLighthouse, scoreBand } from "./reportModel";
+import { lighthouseBand } from "@/shared/lighthouse";
+import { describeLighthouse } from "./reportModel";
 import type { AuditReportInput, ReportLighthouse } from "./reportTypes";
 
 /** Pages listed in the per-page speed table. */
@@ -49,7 +50,7 @@ function formatMetric(metric: Metric, value: number | null | undefined) {
 
 function scoreCell(score: number | null | undefined): string {
   if (score === null || score === undefined) return "--";
-  return `${formatCount(score)} (${BAND_LABEL[scoreBand(score)]})`;
+  return `${formatCount(score)} (${BAND_LABEL[lighthouseBand(score)]})`;
 }
 
 function average(values: Array<number | null | undefined>): number | null {

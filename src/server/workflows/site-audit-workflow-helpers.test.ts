@@ -1,7 +1,10 @@
 import { spawnSync } from "node:child_process";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createCrawlThrottle } from "@/server/lib/audit/crawl-throttle";
-import { crawlPage } from "@/server/workflows/site-audit-workflow-helpers";
+import {
+  crawlPage,
+  resolveLighthouseWork,
+} from "@/server/workflows/site-audit-workflow-helpers";
 
 const PAGE_URL = "https://example.com/page";
 const PAGE_HTML =
@@ -308,4 +311,20 @@ describe("crawlPage", () => {
     expect(result.error).toBeUndefined();
     expect(result.status, result.stderr).toBe(0);
   }, 25_000);
+});
+
+describe("resolveLighthouseWork", () => {
+  it("totals only the sampled pages that have a stored id", () => {
+    const idByUrl = new Map([
+      ["https://a.test/", "id-a"],
+      ["https://c.test/", "id-c"],
+    ]);
+
+    expect(
+      resolveLighthouseWork(
+        ["https://a.test/", "https://b.test/", "https://c.test/"],
+        idByUrl,
+      ),
+    ).toEqual({ pageIds: ["id-a", "id-c"], lighthouseTotal: 4 });
+  });
 });

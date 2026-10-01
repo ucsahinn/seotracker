@@ -138,7 +138,7 @@ export function ReportView({
         <div
           className="flex flex-wrap items-center gap-2"
           role="group"
-          aria-label="Hızlı süzgeçler"
+          aria-label="Hızlı filtreler"
         >
           <button
             type="button"
@@ -174,9 +174,9 @@ export function ReportView({
             );
           })}
           {chips.length > 0 ? (
-            <HelpTip label="Hızlı süzgeçler">
+            <HelpTip label="Hızlı filtreler">
               Sayılar, listelenen tüm satırlar üzerinden hesaplanır. Birden
-              fazla süzgeç seçerseniz bir satırın hepsini birden sağlaması
+              fazla filtre seçerseniz bir satırın hepsini birden sağlaması
               gerekir.
             </HelpTip>
           ) : null}
@@ -187,7 +187,7 @@ export function ReportView({
               onClick={clearFilters}
             >
               <FilterX aria-hidden className="size-3.5" />
-              Süzgeçleri temizle
+              Filtreleri temizle
             </button>
           ) : null}
         </div>
@@ -197,7 +197,7 @@ export function ReportView({
             buttonClassName="btn btn-ghost btn-sm gap-1"
             actions={[
               {
-                label: `Sheets'e aktar (${formatCount(rows.length)} satır)`,
+                label: `E-Tablolar'a aktar (${formatCount(rows.length)} satır)`,
                 onClick: () =>
                   void exportTableToSheets({
                     headers: columns.map(columnLabel),
@@ -237,15 +237,15 @@ export function ReportView({
         <div className="rounded-box border border-base-300 bg-base-100">
           <EmptyState
             icon={FilterX}
-            title="Bu süzgeçlere uyan satır yok"
-            description="Seçtiğiniz süzgeçlerin birleşimi hiçbir satırla eşleşmiyor."
+            title="Bu filtrelere uyan satır yok"
+            description="Seçtiğiniz filtrelerin birleşimi hiçbir satırla eşleşmiyor."
             action={
               <button
                 type="button"
                 className="btn btn-sm"
                 onClick={clearFilters}
               >
-                Süzgeçleri temizle
+                Filtreleri temizle
               </button>
             }
           />

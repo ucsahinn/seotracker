@@ -98,7 +98,10 @@ export function Sidebar({ projectId, onNavigate, onClose }: SidebarProps) {
         />
       </div>
 
-      <nav className="min-h-0 flex-1 overflow-y-auto px-2 py-2">
+      <nav
+        aria-label="Ana gezinme"
+        className="min-h-0 flex-1 overflow-y-auto px-2 py-2"
+      >
         {navGroups.map((group) => (
           <div key={group.label} className="mb-1">
             <div className="px-3 pb-1 pt-3 text-xs font-semibold uppercase tracking-wider text-subtle">

@@ -10,6 +10,7 @@ import { sort } from "remeda";
 import { Chart, CHART_AXIS, CHART_GRID } from "@/client/components/Chart";
 import { ChartTooltip } from "@/client/components/Chart";
 import { formatCount, formatDate, formatDateTime } from "@/client/lib/format";
+import { useReducedMotion } from "@/client/lib/useReducedMotion";
 
 /**
  * Whether the site is getting better, which the table under it cannot say.
@@ -53,6 +54,7 @@ type Point = {
 };
 
 export function AuditTrendChart({ history }: { history: HistoryRow[] }) {
+  const reduced = useReducedMotion();
   const points = getPoints(history);
 
   // Two points make a line; one makes a dot that looks like a verdict.
@@ -88,7 +90,20 @@ export function AuditTrendChart({ history }: { history: HistoryRow[] }) {
           bulgular aşağıdaki denetimlerin kendi sayfalarında.
         </p>
       ) : (
-        <Chart height={180} summary={summarise(first, last, points.length)}>
+        <Chart
+          height={180}
+          summary={summarise(first, last, points.length)}
+          table={{
+            caption: "Denetim başına sayfa yoğunluğu: yüz sayfa başına sorun",
+            columns: ["Tarih", "Sayfa", "Kritik", "Uyarı"],
+            rows: points.map((point) => [
+              formatDateTime(point.date),
+              formatCount(point.pages),
+              `${formatCount(point.critical)} (${formatCount(point.criticalTotal)} toplam)`,
+              `${formatCount(point.warning)} (${formatCount(point.warningTotal)} toplam)`,
+            ]),
+          }}
+        >
           <LineChart
             data={points}
             margin={{ top: 12, right: 8, bottom: 0, left: 0 }}
@@ -138,6 +153,7 @@ export function AuditTrendChart({ history }: { history: HistoryRow[] }) {
               stroke={SEVERITY.critical}
               strokeWidth={2}
               dot={{ r: 3 }}
+              isAnimationActive={!reduced}
             />
             <Line
               type="monotone"
@@ -152,6 +168,7 @@ export function AuditTrendChart({ history }: { history: HistoryRow[] }) {
                */
               strokeDasharray="4 3"
               dot={{ r: 3 }}
+              isAnimationActive={!reduced}
             />
           </LineChart>
         </Chart>

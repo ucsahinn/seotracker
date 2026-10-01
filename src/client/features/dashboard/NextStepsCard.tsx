@@ -218,7 +218,7 @@ function buildSteps({
       key: "rescan",
       icon: Radar,
       title: "Denetimi tazeleyin",
-      detail: `Son tarama ${formatRelativeTime(audit.startedAt)}. Bu ekrandaki sayılar o taramadan geliyor.`,
+      detail: `Son denetim ${formatRelativeTime(audit.startedAt)}. Bu ekrandaki sayılar o denetimden geliyor.`,
       to: "/p/$projectId/audit",
       params,
       cta: "Yeniden denetle",

@@ -76,7 +76,7 @@ export function OpportunitiesTable({
           buttonClassName="btn btn-ghost btn-sm gap-1"
           actions={[
             {
-              label: `Sheets'e aktar (${formatNumber(rows.length)} satır)`,
+              label: `E-Tablolar'a aktar (${formatNumber(rows.length)} satır)`,
               onClick: () =>
                 void exportTableToSheets({
                   headers: [...OPPORTUNITY_HEADERS],
@@ -97,6 +97,7 @@ export function OpportunitiesTable({
       </div>
       <AppDataTable
         table={table}
+        caption="Fırsatlar"
         className="table table-sm"
         wrapperClassName="overflow-x-auto"
         getRowProps={(row) => ({
@@ -116,11 +117,11 @@ export function OpportunitiesTable({
             compact
             icon={Target}
             title="Bu süzgece uyan sayfa yok"
-            description="Seçtiğiniz tür ya da hızlı süzgeç bu dönemde hiçbir sayfayla eşleşmedi. Süzgeçleri kaldırın ya da dönemi genişletin."
+            description="Seçtiğiniz tür ya da hızlı filtre bu dönemde hiçbir sayfayla eşleşmedi. Filtreleri kaldırın ya da dönemi genişletin."
             action={
               onReset ? (
                 <button type="button" className="btn btn-sm" onClick={onReset}>
-                  Süzgeçleri kaldır
+                  Filtreleri kaldır
                 </button>
               ) : undefined
             }

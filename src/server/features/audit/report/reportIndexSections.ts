@@ -1,5 +1,5 @@
 import { sort } from "remeda";
-import { formatCount, formatDate } from "@/client/lib/format";
+import { formatCount, formatDate } from "@/shared/format";
 import { coverageStateLabel } from "@/shared/gsc-coverage-states";
 import {
   barChart,

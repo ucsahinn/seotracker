@@ -186,7 +186,7 @@ function HistoryActions({
   onRerun: (audit: HistoryRow) => void;
 }) {
   return (
-    <div className="flex items-center justify-end gap-2 transition-opacity md:opacity-0 md:group-hover:opacity-100 md:group-focus-within:opacity-100">
+    <div className="flex items-center justify-end gap-2 transition-opacity can-hover:opacity-0 can-hover:group-hover:opacity-100 can-hover:group-focus-within:opacity-100">
       <Link
         to="/p/$projectId/audit"
         params={{ projectId }}
@@ -199,7 +199,7 @@ function HistoryActions({
         label={`${audit.startUrl} denetimi için işlemler`}
         actions={[
           {
-            label: "Aynı ayarlarla yeniden çalıştır",
+            label: "Aynı ayarlarla yeniden başlat",
             icon: RotateCw,
             onSelect: () => onRerun(audit),
           },

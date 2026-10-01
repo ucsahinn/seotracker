@@ -64,7 +64,7 @@ function isReservedDefaultConflict(
 }
 
 const RESERVED_DEFAULT_MESSAGE =
-  'A project named "Default" with no domain already exists. Pick a different name or add a domain.';
+  'Alan adı olmayan "Default" adında bir proje zaten var. Farklı bir ad seçin ya da bir alan adı ekleyin.';
 
 export async function listProjects(organizationId: string) {
   const rows = await ProjectRepository.listProjects(organizationId);
@@ -86,8 +86,8 @@ export async function listProjectsEnsuringOne(organizationId: string) {
 
 /**
  * Validates and canonicalizes a project domain (lowercase bare host, www and
- * protocol/path stripped) with the same rules the backlink fetch will apply
- * later, so junk fails at save time instead of at the first paid call.
+ * protocol/path stripped) with the same rules (`normalizeDomainInput`) every
+ * later lookup applies, so junk fails at save time instead of at the first crawl.
  * Undefined passes through — updateProject uses that to clear the domain.
  */
 function normalizeProjectDomain(domain: string | undefined) {
@@ -97,7 +97,7 @@ function normalizeProjectDomain(domain: string | undefined) {
   } catch {
     throw new AppError(
       "VALIDATION_ERROR",
-      "Enter a valid domain, like acme.com.",
+      "Geçerli bir alan adı girin, örneğin acme.com.",
     );
   }
 }
@@ -151,7 +151,7 @@ export async function archiveProject(
 ) {
   const remaining = await ProjectRepository.countProjects(organizationId);
   if (remaining <= 1) {
-    throw new AppError("CONFLICT", "You can't archive your only project.");
+    throw new AppError("CONFLICT", "Tek projenizi arşivleyemezsiniz.");
   }
 
   await ProjectRepository.archiveProject(input.projectId, organizationId);
@@ -182,7 +182,7 @@ export async function restoreProject(
     ) {
       throw new AppError(
         "CONFLICT",
-        'An active project named "Default" with no domain already exists. Rename it first, then restore this one.',
+        'Alan adı olmayan, "Default" adında etkin bir proje zaten var. Önce onu yeniden adlandırın, sonra bunu geri yükleyin.',
       );
     }
     throw error;
@@ -228,7 +228,8 @@ export async function setProjectWebsite(
   input: SetProjectWebsiteInput,
 ) {
   const domain = normalizeProjectDomain(input.domain);
-  if (!domain) throw new AppError("VALIDATION_ERROR", "Enter a valid domain.");
+  if (!domain)
+    throw new AppError("VALIDATION_ERROR", "Geçerli bir alan adı girin.");
   assertLanguageForLocation(input.locationCode, input.languageCode);
   const row = await ProjectRepository.updateProjectWebsite(
     input.projectId,

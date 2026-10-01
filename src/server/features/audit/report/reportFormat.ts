@@ -1,4 +1,4 @@
-import { formatCount } from "@/client/lib/format";
+import { formatCount } from "@/shared/format";
 
 /*
  * Every interpolated value goes through this. Page titles, meta descriptions

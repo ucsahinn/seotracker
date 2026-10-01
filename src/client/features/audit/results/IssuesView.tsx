@@ -162,7 +162,7 @@ export function IssuesView({
                 setIssueType(null);
               }}
             >
-              Seçimi temizle
+              Filtreleri temizle
             </button>
           ) : null}
         </div>

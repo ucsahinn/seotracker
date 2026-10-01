@@ -1,5 +1,8 @@
 import { z } from "zod";
-import { LIGHTHOUSE_CATEGORIES } from "@/shared/lighthouse";
+import {
+  LIGHTHOUSE_CATEGORIES,
+  LIGHTHOUSE_GOOD_FROM,
+} from "@/shared/lighthouse";
 
 export type RawLighthouseAudit = {
   title?: string;
@@ -234,7 +237,7 @@ export function buildStoredLighthouseIssues(input: {
 
       const isPass =
         score == null ||
-        score >= 90 ||
+        score >= LIGHTHOUSE_GOOD_FROM ||
         scoreDisplayMode === "notApplicable" ||
         scoreDisplayMode === "informative" ||
         scoreDisplayMode === "manual" ||

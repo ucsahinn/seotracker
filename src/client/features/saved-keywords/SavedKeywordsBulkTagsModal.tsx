@@ -31,7 +31,7 @@ export function SavedKeywordsBulkTagsModal({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const normalizedAddSet = useMemo(
-    () => new Set(addNames.map((name) => name.toLocaleLowerCase())),
+    () => new Set(addNames.map((name) => name.toLocaleLowerCase("tr"))),
     [addNames],
   );
 
@@ -44,13 +44,13 @@ export function SavedKeywordsBulkTagsModal({
   }, [availableTags]);
 
   const filteredAvailable = useMemo(() => {
-    const q = query.trim().toLocaleLowerCase();
+    const q = query.trim().toLocaleLowerCase("tr");
     if (!q) return availableTags;
     return availableTags.filter((tag) => tag.normalizedName.includes(q));
   }, [availableTags, query]);
 
   const trimmedQuery = query.trim();
-  const queryNormalized = trimmedQuery.toLocaleLowerCase();
+  const queryNormalized = trimmedQuery.toLocaleLowerCase("tr");
   const showCreate =
     mode === "add" &&
     trimmedQuery.length > 0 &&
@@ -63,7 +63,7 @@ export function SavedKeywordsBulkTagsModal({
     setAddNames((current) =>
       normalizedAddSet.has(tag.normalizedName)
         ? current.filter(
-            (name) => name.toLocaleLowerCase() !== tag.normalizedName,
+            (name) => name.toLocaleLowerCase("tr") !== tag.normalizedName,
           )
         : [...current, tag.name],
     );
@@ -73,7 +73,7 @@ export function SavedKeywordsBulkTagsModal({
   const handleCreate = () => {
     if (!trimmedQuery) return;
     setAddNames((current) =>
-      current.some((name) => name.toLocaleLowerCase() === queryNormalized)
+      current.some((name) => name.toLocaleLowerCase("tr") === queryNormalized)
         ? current
         : [...current, trimmedQuery],
     );
@@ -88,7 +88,9 @@ export function SavedKeywordsBulkTagsModal({
         : [...current, tag.id],
     );
     setAddNames((current) =>
-      current.filter((name) => name.toLocaleLowerCase() !== tag.normalizedName),
+      current.filter(
+        (name) => name.toLocaleLowerCase("tr") !== tag.normalizedName,
+      ),
     );
   };
 
@@ -127,12 +129,12 @@ export function SavedKeywordsBulkTagsModal({
               <div className="flex flex-wrap items-center gap-1.5 rounded-field border border-base-300 bg-base-200/40 px-2 py-2">
                 {addNames.map((name) => {
                   const existing = availableByNormalized.get(
-                    name.toLocaleLowerCase(),
+                    name.toLocaleLowerCase("tr"),
                   );
                   const tag = existing ?? {
                     id: `new:${name}`,
                     name,
-                    normalizedName: name.toLocaleLowerCase(),
+                    normalizedName: name.toLocaleLowerCase("tr"),
                     color: null,
                   };
                   return (
@@ -314,7 +316,7 @@ function SegmentButton({
     >
       {label}
       {count > 0 ? (
-        <span className="inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-semibold text-primary-content">
+        <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1 text-xs font-semibold text-primary-content">
           {count}
         </span>
       ) : null}

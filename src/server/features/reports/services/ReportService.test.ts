@@ -157,7 +157,7 @@ describe("saveReport", () => {
     );
 
     await expect(save()).rejects.toThrow(
-      `This organization is storing ${formatEnglishCount(REPORT_MAX_BYTES_PER_ORG / 1_000_000)} MB of reports, the limit. Delete reports you no longer need from the Reports page.`,
+      `This workspace is storing ${formatEnglishCount(REPORT_MAX_BYTES_PER_ORG / 1_000_000)} MB of reports, the limit. Delete reports you no longer need from the Reports page.`,
     );
     expect(mocks.insertReport).not.toHaveBeenCalled();
   });

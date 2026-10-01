@@ -118,7 +118,7 @@ export function SearchConsoleConnectionCard({
   const disconnectMutation = useMutation({
     mutationFn: () => disconnectGsc({ data: { projectId } }),
     onSuccess: () => {
-      toast.success("Search Console bu projeden ayrıldı");
+      toast.success("Search Console bağlantısı kesildi");
       queryClient.setQueryData(connectionKey, (current: typeof connection) =>
         current ? { ...current, connected: false } : current,
       );
@@ -171,7 +171,9 @@ export function SearchConsoleConnectionCard({
         </div>
       ) : connectionQuery.isError && !connection ? (
         <div role="alert" className="space-y-3 text-sm">
-          <p className="text-error">Bu projenin bağlantısı denetlenemedi.</p>
+          <p className="text-error">
+            Bu projenin bağlantısı kontrol edilemedi.
+          </p>
           <button
             type="button"
             className="btn btn-ghost btn-sm"
@@ -250,8 +252,8 @@ export function SearchConsoleConnectionCard({
       ) : null}
       {connectionQuery.isSuccess && !selfHostedNeedsSetup && !canManage ? (
         <p className="mt-3 text-sm text-muted">
-          Bu projenin bağlantısını değiştirmek için kuruluş sahibinden ya da
-          yöneticisinden yardım isteyin.
+          Bağlantıyı değiştirmek için Ayarlar&apos;daki Google kurulumunu
+          kontrol edin.
         </p>
       ) : null}
     </IntegrationConnectionCard>

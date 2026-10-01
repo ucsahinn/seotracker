@@ -140,7 +140,7 @@ async function getGa4AccessToken(opts: {
       return await getServiceAccountToken(GA4_SERVICE_ACCOUNT_SCOPE);
     } catch (error) {
       throw new Ga4TokenError(
-        "Hizmet hesabı Google Analytics için token alamadı.",
+        "Hizmet hesabı Google Analytics için erişim anahtarı alamadı.",
         error,
       );
     }
@@ -157,12 +157,14 @@ async function getGa4AccessToken(opts: {
     });
   } catch (error) {
     throw new Ga4TokenError(
-      "Could not mint a Google Analytics access token.",
+      "Google Analytics erişim anahtarı alınamadı (yetki iptal edilmiş ya da süresi dolmuş olabilir).",
       error,
     );
   }
   if (!result?.accessToken) {
-    throw new Ga4TokenError("Google Analytics returned no access token.");
+    throw new Ga4TokenError(
+      "Google Analytics erişim anahtarı döndürmedi (yetki iptal edilmiş ya da süresi dolmuş olabilir).",
+    );
   }
   return result.accessToken;
 }

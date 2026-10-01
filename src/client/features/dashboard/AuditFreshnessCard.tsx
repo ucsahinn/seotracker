@@ -49,7 +49,8 @@ export function AuditFreshnessCard({ projectId }: { projectId: string }) {
             <CalendarClock className="size-4 shrink-0 text-warning" />
             <span>
               Son denetimin üzerinden {formatCount(data.daysSince ?? 0)} gün
-              geçti. Sitede değişiklik yaptıysanız yeniden taramak iyi olur.
+              geçti. Sitede değişiklik yaptıysanız yeni bir denetim başlatmak
+              iyi olur.
             </span>
           </div>
           <Link

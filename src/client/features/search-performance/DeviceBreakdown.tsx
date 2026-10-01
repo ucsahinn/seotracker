@@ -24,7 +24,7 @@ export function DeviceBreakdown({
   return (
     <DonutCard
       title="Cihazlar"
-      description="Tıklamaların hangi cihazlardan geldiği. Bir cihaza dokunarak tüm sayfayı o cihaza göre daraltabilirsiniz."
+      description="Tıklamaların hangi cihazlardan geldiği. Bir cihaza tıklayarak tüm sayfayı o cihaza göre daraltabilirsiniz."
       totalLabel="tıklama"
       height={144}
       segments={segments}

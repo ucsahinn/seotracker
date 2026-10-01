@@ -83,11 +83,11 @@ export function GoogleAccountRemovalDialog({
         </p>
         {impact.isPending ? (
           <p role="status" className="text-sm text-muted">
-            Bağlı projeler denetleniyor…
+            Bağlı projeler kontrol ediliyor…
           </p>
         ) : impact.isError ? (
           <div role="alert" className="text-sm">
-            <p className="text-error">Bağlı projeler denetlenemedi.</p>
+            <p className="text-error">Bağlı projeler kontrol edilemedi.</p>
             <button
               type="button"
               className="btn btn-ghost btn-sm"

@@ -39,11 +39,11 @@ const SECTION_PLACEHOLDERS: Record<ProjectContextSectionKey, string> = {
   business_overview:
     "örn. Bağımsız restoranlar için rezervasyon yazılımı. Alıcılar pazarlamacı değil, işletme sahipleri.",
   current_goal:
-    "örn. Dördüncü çeyreğe kadar organik kayıtları ikiye katlamak. Karşılaştırma sayfaları şu anki bahis.",
+    "örn. Dördüncü çeyreğe kadar organik üyelikleri ikiye katlamak. Karşılaştırma sayfaları şu anki öncelik.",
   positioning:
-    "örn. Bir öğleden sonrada kurulan tek rezervasyon aracı. Yerleşiklerden ucuz, kendin-yap yığınından basit.",
+    "örn. Bir öğleden sonrada kurulan tek rezervasyon aracı. Mevcut rakiplerden ucuz, kendin yap çözümlerden basit.",
   writing_preferences:
-    "örn. Sade ve doğrudan, abartı yok. 'Kusursuz' ya da 'devrim niteliğinde' yazma. Rakip fiyatlarına girme.",
+    "örn. Sade ve doğrudan, abartı yok. “Kusursuz” ya da “devrim niteliğinde” yazmayın. Rakip fiyatlarına girmeyin.",
 };
 
 export function ProjectContextPage({

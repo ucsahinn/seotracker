@@ -68,28 +68,25 @@ export function PagesTable({
   // Counted over the whole crawl, not the filtered view: a chip that only
   // counted what is already on screen would read zero the moment you used it.
   const presetCounts = useMemo(() => quickFilterCounts(pages), [pages]);
-  const issueCountByPageId = useMemo(() => {
+  const { issueCountByPageId, missingTitlePageIds } = useMemo(() => {
     const counts = new Map<string, number>();
+    const missingTitle = new Set<string>();
     for (const issue of issues) {
       if (!issue.pageId) continue;
       counts.set(issue.pageId, (counts.get(issue.pageId) ?? 0) + 1);
+      if (issue.issueType === "missing-title") missingTitle.add(issue.pageId);
     }
-    return counts;
+    return { issueCountByPageId: counts, missingTitlePageIds: missingTitle };
   }, [issues]);
   const columns = useMemo(
     () =>
       buildPagesColumns({
         canonicalHost: predominantHost(pages, startUrl),
-        missingTitlePageIds: new Set(
-          issues
-            .filter((issue) => issue.issueType === "missing-title")
-            .map((issue) => issue.pageId)
-            .filter((pageId): pageId is string => pageId !== null),
-        ),
+        missingTitlePageIds,
         issueCountByPageId,
         onShowIssues,
       }),
-    [issueCountByPageId, issues, onShowIssues, pages, startUrl],
+    [issueCountByPageId, missingTitlePageIds, onShowIssues, pages, startUrl],
   );
   const table = useAppTable({
     data: filteredPages,
@@ -157,6 +154,7 @@ export function PagesTable({
       <div className="overflow-hidden rounded-box border border-base-300">
         <AppDataTable
           table={table}
+          caption="Taranan sayfalar"
           stickyHeader
           wrapperClassName="max-h-[70vh] overflow-auto"
           className="table table-sm"

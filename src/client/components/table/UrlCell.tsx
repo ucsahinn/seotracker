@@ -54,7 +54,7 @@ export function UrlCell({
        * row is a column of buttons competing with the data. It stays in the
        * tab order, and shows on focus, so the keyboard path is unaffected.
        */}
-      <span className="shrink-0 transition-opacity md:opacity-0 md:group-hover/row:opacity-100 md:focus-within:opacity-100">
+      <span className="shrink-0 transition-opacity can-hover:opacity-0 can-hover:group-hover/row:opacity-100 can-hover:focus-within:opacity-100">
         <CopyButton
           iconOnly
           value={url}

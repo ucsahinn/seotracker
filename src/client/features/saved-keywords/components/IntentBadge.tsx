@@ -19,7 +19,7 @@ const SHORT_LABELS: Record<KeywordIntent, string> = {
   informational: "Bilgi",
   commercial: "Ticari",
   transactional: "İşlem",
-  navigational: "Yön",
+  navigational: "Gezinme",
   unknown: "?",
 };
 

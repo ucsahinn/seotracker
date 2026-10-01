@@ -28,7 +28,7 @@ function SupportPage() {
             Konteyner günlüğü
           </span>{" "}
           — <code className="text-xs">docker compose logs -f</code>. Açılış
-          denetimleri uygulama başlamadan önce buraya yazılır.
+          kontrolleri uygulama başlamadan önce buraya yazılır.
         </li>
         <li>
           <span className="font-medium text-base-content">Sağlık ucu</span> —{" "}
@@ -50,7 +50,7 @@ function SupportPage() {
       <section className="space-y-2 rounded-box border border-base-300 bg-base-200/30 p-4">
         <h2 className="text-sm font-medium">Sorun bildirmek için</h2>
         <p className="max-w-prose text-sm text-muted">
-          Tek bir arşiv indirin: sürüm, kurulum denetimleri, tablo büyüklükleri,
+          Tek bir arşiv indirin: sürüm, kurulum kontrolleri, tablo büyüklükleri,
           bağlı Google mülkleri, son denetimlerin durumu ve bu sekmede yakalanan
           tarayıcı hataları. İçinde gizli değer yok; jetonlar ve anahtarlar
           toplanmaz, yalnızca ayarlı olup olmadıkları yazılır. Kısa bir not

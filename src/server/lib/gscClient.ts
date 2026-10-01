@@ -151,8 +151,8 @@ function messageForStatus(status: number, body: string): string {
   return `Search Console reporting is temporarily unavailable (${status}).`;
 }
 
-/** Free Google Search Console client. Unlike the DataForSEO client it does NOT
- *  meter credits — GSC is first-party data with no per-call cost. Access tokens
+/** Free Google Search Console client. Nothing is metered — GSC is first-party
+ *  data with no per-call cost. Access tokens
  *  are minted (and auto-refreshed) by Better Auth from the connector's stored
  *  google-search-console grant. */
 export function createGscClient(opts: {
@@ -192,13 +192,13 @@ export function createGscClient(opts: {
       });
     } catch (error) {
       throw new GscTokenError(
-        "Could not mint a Search Console access token (grant revoked or expired).",
+        "Search Console erişim anahtarı alınamadı (yetki iptal edilmiş ya da süresi dolmuş olabilir).",
         error,
       );
     }
     if (!result?.accessToken) {
       throw new GscTokenError(
-        "Search Console returned no access token (grant revoked or expired).",
+        "Search Console erişim anahtarı döndürmedi (yetki iptal edilmiş ya da süresi dolmuş olabilir).",
       );
     }
     return result.accessToken;

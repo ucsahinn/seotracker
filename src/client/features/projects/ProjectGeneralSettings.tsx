@@ -122,7 +122,7 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
     <section className="space-y-3">
       <SettingsHeading
         title="Genel"
-        help="Site adresi, taramanın nereden başlayacağını belirler. Ülke ve dil, Search Console verisinin hangi pazar için okunacağını; yanlış seçilirse sayılar doğru ama sizinle ilgisiz olur."
+        help="Site adresi, denetimin nereden başlayacağını belirler. Ülke ve dil, Search Console verisinin hangi pazar için okunacağını; yanlış seçilirse sayılar doğru ama sizinle ilgisiz olur."
       />
       <form onSubmit={handleSubmit} className="space-y-4">
         <label className="flex flex-col gap-1.5 text-sm">

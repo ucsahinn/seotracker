@@ -1,3 +1,4 @@
+import { searchFold } from "@/client/lib/searchFold";
 import type { AuditResultsData } from "@/client/features/audit/results/types";
 
 export type PageRow = AuditResultsData["pages"][number];
@@ -88,16 +89,23 @@ export function isLighthouseFailure(row: LighthouseFailureFields) {
   return !!row.errorMessage || hasMissingLighthouseScores(row);
 }
 
+/** Lowercased url/title/description per row, built once per crawl. */
+const haystackCache = new WeakMap<PageRow, string>();
+
+function haystackOf(row: PageRow) {
+  const cached = haystackCache.get(row);
+  if (cached !== undefined) return cached;
+  const haystack = searchFold(
+    [row.url, row.title, row.metaDescription].filter(Boolean).join(" "),
+  );
+  haystackCache.set(row, haystack);
+  return haystack;
+}
+
 export function filterPages(rows: PageRow[], filters: PagesFilters) {
-  const query = filters.query.trim().toLocaleLowerCase("tr-TR");
+  const query = searchFold(filters.query.trim());
   return rows.filter((row) => {
-    if (query) {
-      const haystack = [row.url, row.title, row.metaDescription]
-        .filter(Boolean)
-        .join(" ")
-        .toLocaleLowerCase("tr-TR");
-      if (!haystack.includes(query)) return false;
-    }
+    if (query && !haystackOf(row).includes(query)) return false;
     if (!matchesStatus(row.statusCode, filters.status)) return false;
     if (!matchesRange(row.wordCount, filters.minWords, filters.maxWords)) {
       return false;
@@ -148,11 +156,11 @@ export function filterPerformanceRows(
   rows: PerformanceRowData[],
   filters: PerformanceFilters,
 ) {
-  const query = filters.query.trim().toLocaleLowerCase("tr-TR");
+  const query = searchFold(filters.query.trim());
   return rows.filter((row) => {
     if (query) {
       const haystack = [row.pageUrl, row.pagePath].filter(Boolean).join(" ");
-      if (!haystack.toLocaleLowerCase("tr-TR").includes(query)) return false;
+      if (!searchFold(haystack).includes(query)) return false;
     }
     if (filters.device !== "all" && row.strategy !== filters.device) {
       return false;

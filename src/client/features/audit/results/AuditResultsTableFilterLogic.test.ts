@@ -9,48 +9,26 @@ import {
 /**
  * A complete row, because `PageRow` is what `filterPages` takes.
  *
- * Long for a fixture, but the type requires every column and an
- * `as PageRow` on a partial is the assertion the lint rule exists to catch:
- * it would let a renamed column slip past the test that guards it.
+ * The type requires every column and an `as PageRow` on a partial is the
+ * assertion the lint rule exists to catch.
  */
 function page(overrides: Partial<PageRow>): PageRow {
   return {
     id: "page-1",
-    auditId: "audit-1",
     url: "https://example.com/",
     statusCode: 200,
     redirectUrl: null,
     title: null,
     metaDescription: null,
-    canonicalUrl: null,
-    robotsMeta: null,
-    googlebotMeta: null,
-    ogTitle: null,
-    ogDescription: null,
-    ogImage: null,
-    headingOrderJson: null,
     h1Count: 1,
-    h2Count: 0,
-    h3Count: 0,
-    h4Count: 0,
-    h5Count: 0,
-    h6Count: 0,
     wordCount: 100,
     imagesTotal: 0,
     imagesMissingAlt: 0,
-    imagesJson: null,
-    htmlLang: null,
-    firstH1: null,
     internalLinkCount: 0,
     externalLinkCount: 0,
-    hasStructuredData: false,
-    hreflangTagsJson: null,
     isIndexable: true,
-    xRobotsTag: null,
-    headerCanonicalUrl: null,
     crawlDepth: 1,
     inSitemap: true,
-    contentHash: null,
     fetchClass: "ok",
     responseTimeMs: 100,
     ...overrides,

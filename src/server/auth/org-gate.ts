@@ -12,9 +12,6 @@ export function requireOrgPermission(
   permissions: OrgPermissionRequest,
 ) {
   if (!hasOrgPermission(context.role, permissions)) {
-    throw new AppError(
-      "FORBIDDEN",
-      "Your organization role does not allow this action.",
-    );
+    throw new AppError("FORBIDDEN", "Bu işlem için yetkiniz yok.");
   }
 }

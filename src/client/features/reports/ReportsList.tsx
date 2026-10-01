@@ -132,7 +132,7 @@ export function ReportsList({
         }}
       />
 
-      <div className="flex flex-wrap gap-2" role="group" aria-label="Süzgeç">
+      <div className="flex flex-wrap gap-2" role="group" aria-label="Filtre">
         {FILTERS.map(({ key, label, icon: Icon }) => (
           <button
             key={key}
@@ -168,7 +168,7 @@ export function ReportsList({
                   setKind(null);
                 }}
               >
-                Süzgeçleri temizle
+                Filtreleri temizle
               </button>
             }
           />

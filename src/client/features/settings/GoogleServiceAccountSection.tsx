@@ -88,13 +88,13 @@ export function GoogleServiceAccountSection() {
     <section className="space-y-3">
       <SettingsHeading
         title="Hizmet hesabı (daha kısa yol)"
-        help="OAuth kurulumu onay ekranı, test kullanıcısı ve birebir eşleşen redirect URI ister; kurulum genelde bu üçünde takılır. Hizmet hesabı üçünü de atlar: Google Cloud'da bir servis hesabı açıp JSON anahtarını indirin, sonra o hesabın e-postasını Search Console mülkünüze bir meslektaşınızı ekler gibi ekleyin."
+        help="OAuth kurulumu onay ekranı, test kullanıcısı ve birebir eşleşen yönlendirme adresi ister; kurulum genelde bu üçünde takılır. Hizmet hesabı üçünü de atlar: Google Cloud'da bir hizmet hesabı açıp JSON anahtarını indirin, sonra o hesabın e-postasını Search Console mülkünüze bir meslektaşınızı ekler gibi ekleyin."
       />
 
       <p className="text-sm text-muted">
-        Yukarıdaki OAuth istemcisi yerine bunu kullanabilirsiniz. Servis
-        hesabında izin ekranı, test kullanıcısı ve redirect URI adımları yok:
-        hesabı oluşturup JSON anahtarını buraya yapıştırın, sonra hesabın
+        Yukarıdaki OAuth istemcisi yerine bunu kullanabilirsiniz. Hizmet
+        hesabında izin ekranı, test kullanıcısı ve yönlendirme adresi adımları
+        yok: hesabı oluşturup JSON anahtarını buraya yapıştırın, sonra hesabın
         e-posta adresini Search Console&apos;da mülkünüze kullanıcı olarak
         ekleyin.{" "}
         <a
@@ -103,7 +103,7 @@ export function GoogleServiceAccountSection() {
           rel="noreferrer noopener"
           className="inline-flex items-center gap-1 font-medium underline underline-offset-2"
         >
-          Servis hesapları
+          Hizmet hesapları
           <ExternalLink className="size-3" />
         </a>
       </p>

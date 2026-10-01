@@ -1,4 +1,4 @@
-import { formatCount, formatDate, formatDateTime } from "@/client/lib/format";
+import { formatCount, formatDate, formatDateTime } from "@/shared/format";
 import { escapeHtml, hostOf } from "./reportFormat";
 import { appendixSection, issuesSection } from "./reportIssueSections";
 import { indexSection, sitemapSection } from "./reportIndexSections";
@@ -29,7 +29,7 @@ import type { AuditReportDocument, AuditReportInput } from "./reportTypes";
  * not a library. Print it to PDF from the browser: the stylesheet lays it out
  * for A4, one section per page, with a running header.
  *
- * Dates go through `@/client/lib/format`, the app's one formatting module
+ * Dates go through `@/shared/format`, the app's one formatting module
  * (tr-TR; it also reads SQLite's timezone-less stamps as UTC, which a local
  * `new Date(...)` here did not).
  */

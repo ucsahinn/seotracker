@@ -36,7 +36,6 @@ export function HelpTip({
         // form it sits inside.
         aria-label={`${label} — nasıl yapılır`}
         aria-describedby={tooltip.isOpen ? tooltip.tooltipId : undefined}
-        aria-expanded={tooltip.isOpen}
         /*
          * 24px, not 16. WCAG 2.2 SC 2.5.8 sets the minimum target at 24
          * CSS px, and the spacing exception does not apply here: these sit
@@ -46,7 +45,7 @@ export function HelpTip({
          */
         className="-m-1 inline-flex size-6 shrink-0 items-center justify-center rounded-full text-subtle transition-colors hover:text-base-content focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         onMouseEnter={tooltip.scheduleOpen}
-        onMouseLeave={tooltip.close}
+        onMouseLeave={tooltip.scheduleClose}
         onFocus={tooltip.open}
         onBlur={tooltip.close}
         /*
@@ -65,7 +64,11 @@ export function HelpTip({
       </button>
       {tooltip.isOpen && typeof document !== "undefined"
         ? createPortal(
-            <FloatingTooltip id={tooltip.tooltipId} position={tooltip.position}>
+            <FloatingTooltip
+              id={tooltip.tooltipId}
+              position={tooltip.position}
+              {...tooltip.hoverBridge}
+            >
               {children}
             </FloatingTooltip>,
             document.body,

@@ -27,7 +27,12 @@ import {
 const SCORE_PARTS = [
   { key: "demand", label: "Talep", weight: 0.5, opacity: 1 },
   { key: "businessValue", label: "İş değeri", weight: 0.3, opacity: 0.62 },
-  { key: "reachability", label: "Yakınlık", weight: 0.2, opacity: 0.34 },
+  {
+    key: "reachability",
+    label: "Yükselme kolaylığı",
+    weight: 0.2,
+    opacity: 0.34,
+  },
 ] as const;
 
 function ScoreBadge({

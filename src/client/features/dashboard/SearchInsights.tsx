@@ -14,6 +14,7 @@ import {
 } from "@/client/features/dashboard/cardParts";
 import { dashboardGscReportQuery } from "@/client/features/dashboard/dashboardGscReport";
 import { describeClickTrend } from "@/client/features/dashboard/clickTrend";
+import { useReducedMotion } from "@/client/lib/useReducedMotion";
 import { DEFAULT_WINDOW_DAYS } from "@/shared/dataFreshness";
 import {
   formatCount,
@@ -41,6 +42,7 @@ export function SearchInsights({
   projectId: string;
   connected: boolean;
 }) {
+  const reduced = useReducedMotion();
   const query = useQuery(dashboardGscReportQuery(projectId, connected));
   if (!connected || query.isError) return null;
 
@@ -155,6 +157,7 @@ export function SearchInsights({
                   strokeWidth={2}
                   fill={CHART_SERIES.primary}
                   fillOpacity={0.08}
+                  isAnimationActive={!reduced}
                 />
               </AreaChart>
             </Chart>

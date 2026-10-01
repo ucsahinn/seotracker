@@ -21,6 +21,8 @@ import {
   formatPercent,
 } from "@/client/lib/format";
 
+import { useReducedMotion } from "@/client/lib/useReducedMotion";
+
 type DailyRow = {
   key: string;
   clicks: number;
@@ -52,6 +54,7 @@ function SearchTrendChart({
   daily: DailyRow[];
   metric: MetricId;
 }) {
+  const reduced = useReducedMotion();
   if (daily.length < 2) return null;
 
   const config = METRICS.find((entry) => entry.id === metric) ?? METRICS[0];
@@ -89,6 +92,11 @@ function SearchTrendChart({
   return (
     <Chart
       height={180}
+      table={{
+        caption: `Günlük ${label}`,
+        columns: ["Gün", config.label],
+        rows: shown.map((row) => [formatDay(row.key), format(row[metric])]),
+      }}
       summary={
         config.kind === "count"
           ? `${formatCount(shown.length)} günde toplam ${format(total)} ${label}. En yüksek gün ${formatDay(peak.key)}, ${format(peak[metric])}.`
@@ -156,6 +164,7 @@ function SearchTrendChart({
           strokeWidth={2}
           fill={CHART_SERIES.primary}
           fillOpacity={0.08}
+          isAnimationActive={!reduced}
         />
       </AreaChart>
     </Chart>

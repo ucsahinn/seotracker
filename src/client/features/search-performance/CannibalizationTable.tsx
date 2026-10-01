@@ -195,6 +195,7 @@ function QueryRow({
       {open ? (
         <div className="border-t border-base-300 bg-base-200/25 px-4 py-3">
           <table className="table table-sm">
+            <caption className="sr-only">Aynı sorguya yarışan sayfalar</caption>
             <thead>
               <tr>
                 <th>Sayfa</th>

@@ -71,8 +71,8 @@ them at once. Change them there before you change a component.
   same lightness, so a delta carries an arrow as well as a tint.
 - **Numbers are tabular** everywhere (set on `body`), so columns do not wobble
   as values change.
-- Every visible number, date and time goes through `src/client/lib/format.ts`,
-  which is pinned to `tr-TR`. Do not call `toLocaleString` at a call site and
+- Every visible number, date and time goes through `src/shared/format.ts`
+  (re-exported by `src/client/lib/format.ts`), which is pinned to `tr-TR`. Do not call `toLocaleString` at a call site and
   do not add a second formatting module.
 - Empty, loading and error states are part of the screen, not an afterthought.
   Reach for `EmptyState` and for skeletons shaped like the content that is

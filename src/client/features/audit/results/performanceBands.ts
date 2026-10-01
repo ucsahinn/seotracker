@@ -3,6 +3,10 @@ import {
   LIGHTHOUSE_QUOTA_MARKER,
 } from "@/shared/audit-limits";
 import {
+  LIGHTHOUSE_FAIR_FROM,
+  LIGHTHOUSE_GOOD_FROM,
+} from "@/shared/lighthouse";
+import {
   isLighthouseFailure,
   type PerformanceFilters,
   type PerformanceRowData,
@@ -14,8 +18,8 @@ import {
  * the same three groups. Scores are whole numbers, which is why the filter
  * for "orta" can say 89 rather than "below 90".
  */
-const GOOD_FROM = 90;
-const FAIR_FROM = 50;
+const GOOD_FROM = LIGHTHOUSE_GOOD_FROM;
+const FAIR_FROM = LIGHTHOUSE_FAIR_FROM;
 
 type SpeedBand = {
   key: "good" | "fair" | "poor";
@@ -76,29 +80,29 @@ export function speedBands(rows: ScoreRow[]): SpeedBand[] {
     defineBand({
       key: "good",
       label: "Hızlı",
-      hint: "90 ve üzeri",
+      hint: `${GOOD_FROM} ve üzeri`,
       color: "var(--color-success)",
       count: good,
-      minPerf: "90",
+      minPerf: String(GOOD_FROM),
       maxPerf: "",
     }),
     defineBand({
       key: "fair",
       label: "Orta",
-      hint: "50 – 89",
+      hint: `${FAIR_FROM} – ${GOOD_FROM - 1}`,
       color: "var(--color-warning)",
       count: fair,
-      minPerf: "50",
-      maxPerf: "89",
+      minPerf: String(FAIR_FROM),
+      maxPerf: String(GOOD_FROM - 1),
     }),
     defineBand({
       key: "poor",
       label: "Yavaş",
-      hint: "0 – 49",
+      hint: `0 – ${FAIR_FROM - 1}`,
       color: "var(--color-error)",
       count: measured.length - good - fair,
       minPerf: "",
-      maxPerf: "49",
+      maxPerf: String(FAIR_FROM - 1),
     }),
   ];
 }

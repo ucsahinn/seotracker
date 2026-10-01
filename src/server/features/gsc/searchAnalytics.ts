@@ -1,3 +1,4 @@
+import { clamp } from "remeda";
 import type { GscSearchAnalyticsRequest } from "@/server/lib/gscClient";
 
 // Shared option sets — also drive the MCP tool Zod schemas so the two stay in sync.
@@ -63,10 +64,6 @@ export type GscPerformanceInput = {
   type?: GscSearchType;
   dataState?: "all" | "final";
 };
-
-function clamp(value: number, min: number, max: number): number {
-  return Math.min(Math.max(value, min), max);
-}
 
 function formatDate(date: Date): string {
   return date.toISOString().slice(0, 10);
@@ -156,11 +153,10 @@ export function buildSearchAnalyticsRequest(
       input.dimensions && input.dimensions.length > 0
         ? input.dimensions
         : ["query"],
-    rowLimit: clamp(
-      input.rowLimit ?? GSC_DEFAULT_ROW_LIMIT,
-      1,
-      GSC_MAX_ROW_LIMIT,
-    ),
+    rowLimit: clamp(input.rowLimit ?? GSC_DEFAULT_ROW_LIMIT, {
+      min: 1,
+      max: GSC_MAX_ROW_LIMIT,
+    }),
     type: input.type ?? "web",
     dataState: input.dataState ?? "all",
   };

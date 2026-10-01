@@ -53,7 +53,7 @@ function IndexRedirect() {
       return (
         <div className="flex items-center justify-center h-full p-4">
           <UnauthenticatedErrorCard
-            message="Bu çalışma alanına erişmek için oturum açın."
+            message="Bu çalışma alanına erişim doğrulanamadı."
             onRetry={() => {
               void refetch();
             }}

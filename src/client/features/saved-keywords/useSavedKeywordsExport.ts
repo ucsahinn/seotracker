@@ -78,7 +78,7 @@ export function useSavedKeywordsExport(params: {
         feature: "saved_keywords",
       });
     } catch (error) {
-      toast.error(getStandardErrorMessage(error, "Sheets'e aktarılamadı"));
+      toast.error(getStandardErrorMessage(error, "E-Tablolar'a aktarılamadı"));
     } finally {
       setExporting(null);
     }
@@ -109,7 +109,7 @@ export function useSavedKeywordsExport(params: {
         feature: "saved_keywords",
       });
     } catch (error) {
-      toast.error(getStandardErrorMessage(error, "Sheets'e aktarılamadı"));
+      toast.error(getStandardErrorMessage(error, "E-Tablolar'a aktarılamadı"));
     } finally {
       setExportingSelection(null);
     }

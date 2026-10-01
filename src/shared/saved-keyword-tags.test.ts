@@ -30,3 +30,13 @@ describe("saved keyword tag helpers", () => {
     ]);
   });
 });
+
+describe("Turkish tag normalization", () => {
+  // Locale-less lowercasing would make these depend on the machine's locale.
+  it("lowercases with Turkish rules regardless of runtime locale", () => {
+    expect(normalizeSavedKeywordTag("IŞIK")?.normalizedName).toBe("ışık");
+    expect(normalizeSavedKeywordTag("İstanbul")?.normalizedName).not.toBe(
+      normalizeSavedKeywordTag("Istanbul")?.normalizedName,
+    );
+  });
+});

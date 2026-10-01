@@ -54,6 +54,36 @@ type AuditScore = {
   }[];
 };
 
+/*
+ * Where a site score changes meaning, defined once so the audit screen, the
+ * dashboard and the exported report colour and word the same number the same
+ * way. 90/70/50: the screen's verdict used to switch at 75 and its ring at 60
+ * while the report used 70 and 50, so one score read "good" on screen and
+ * "fair" in the PDF. The report's 70 won because its wording ("temel sağlam")
+ * does not depend on the exact cut. Not the Lighthouse bands (see
+ * `lighthouseBand`), which are Google's and apply to a different score.
+ */
+const AUDIT_EXCELLENT_FROM = 90;
+const AUDIT_GOOD_FROM = 70;
+const AUDIT_FAIR_FROM = 50;
+
+/** Four-way tier for wording. 100 ("nothing left to fix") is the caller's. */
+export function auditScoreTier(
+  score: number,
+): "excellent" | "good" | "fair" | "poor" {
+  if (score >= AUDIT_EXCELLENT_FROM) return "excellent";
+  if (score >= AUDIT_GOOD_FROM) return "good";
+  if (score >= AUDIT_FAIR_FROM) return "fair";
+  return "poor";
+}
+
+/** Three-way band for colour: green, amber, red. */
+export function auditScoreBand(score: number): "good" | "fair" | "poor" {
+  const tier = auditScoreTier(score);
+  if (tier === "excellent") return "good";
+  return tier === "poor" ? "poor" : "fair";
+}
+
 export function scoreAudit(
   findings: ScoredFinding[],
   pagesCrawled: number,

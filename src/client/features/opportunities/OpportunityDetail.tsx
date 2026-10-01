@@ -152,7 +152,7 @@ export function OpportunityDetail({
           className="btn btn-primary btn-sm gap-1.5"
         >
           <Search className="size-4" />
-          Bu sayfanın sorgularına bak
+          Bu sayfanın sorgularını gör
         </Link>
         <button
           type="button"

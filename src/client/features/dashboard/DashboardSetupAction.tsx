@@ -264,9 +264,17 @@ function WebsiteForm({
               onBlur={field.handleBlur}
               onChange={(event) => field.handleChange(event.target.value)}
               aria-invalid={field.state.meta.errors.length > 0}
+              aria-describedby={
+                field.state.meta.errors.length > 0
+                  ? "setup-domain-error"
+                  : undefined
+              }
             />
             {field.state.meta.errors.length > 0 && (
-              <span className="text-xs text-error">
+              <span
+                id="setup-domain-error"
+                className="text-xs text-[var(--ink-error)]"
+              >
                 {field.state.meta.errors.join(", ")}
               </span>
             )}

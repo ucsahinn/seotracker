@@ -88,7 +88,7 @@ export function explainRow(row: OpportunityRow): string {
 const PARTS = [
   { key: "demand", label: "Talep", weight: 50 },
   { key: "businessValue", label: "İş değeri", weight: 30 },
-  { key: "reachability", label: "Yakınlık", weight: 20 },
+  { key: "reachability", label: "Yükselme kolaylığı", weight: 20 },
 ] as const;
 
 function level(fraction: number): "yüksek" | "orta" | "düşük" {

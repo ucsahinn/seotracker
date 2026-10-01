@@ -4,6 +4,7 @@ import { Link } from "@tanstack/react-router";
 import { MetricRow, MetricTile } from "@/client/components/MetricTile";
 import { describeTotals } from "@/client/features/search-performance/totals";
 import { dashboardGscReportQuery } from "@/client/features/dashboard/dashboardGscReport";
+import { fractionalChange } from "@/shared/delta";
 import { DEFAULT_WINDOW_DAYS } from "@/shared/dataFreshness";
 import { formatDate } from "@/client/lib/format";
 
@@ -105,7 +106,7 @@ export function DashboardMetrics({
    */
   const delta = (pick: (totals: Totals) => number) =>
     report && shown?.hasImpressions
-      ? ratio(pick(report.totals), pick(report.prevTotals))
+      ? fractionalChange(pick(report.totals), pick(report.prevTotals))
       : null;
   /*
    * Every tile carries the window, and the first one carries the way in.
@@ -160,9 +161,3 @@ type Totals = {
   ctr: number;
   position: number;
 };
-
-/** Fractional change against the previous period; null when there is no base. */
-function ratio(current: number, previous: number): number | null {
-  if (!previous) return null;
-  return (current - previous) / previous;
-}

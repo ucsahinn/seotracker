@@ -1,4 +1,5 @@
-import { formatCount } from "@/client/lib/format";
+import { formatCount } from "@/shared/format";
+import { auditScoreBand } from "@/shared/auditScore";
 import { escapeHtml, percent, truncate } from "./reportFormat";
 
 /*
@@ -18,6 +19,12 @@ export const COLORS = {
   good: "#1c7a4a",
   accent: "#1d3b6e",
   muted: "#94a3b8",
+} as const;
+
+const GAUGE_COLOR = {
+  good: COLORS.good,
+  fair: COLORS.warning,
+  poor: COLORS.critical,
 } as const;
 
 export type ChartDatum = { label: string; value: number; color?: string };
@@ -169,13 +176,7 @@ export function stackedBars(rows: StackedRow[]): string {
 export function gauge(score: number | null): string {
   const value = score ?? 0;
   const color =
-    score === null
-      ? COLORS.muted
-      : score >= 90
-        ? COLORS.good
-        : score >= 50
-          ? COLORS.warning
-          : COLORS.critical;
+    score === null ? COLORS.muted : GAUGE_COLOR[auditScoreBand(score)];
   const c = 2 * Math.PI * 52;
   return `<svg viewBox="0 0 120 120" class="gauge" role="img" aria-label="${score === null ? "Puan yok" : `Site puanı 100 üzerinden ${score}`}">
     <circle cx="60" cy="60" r="52" fill="none" stroke="#eef0f3" stroke-width="10"/>

@@ -5,6 +5,11 @@
 @import "@fontsource-variable/geist";
 @import "@fontsource-variable/geist-mono";
 
+/* Row controls that appear on hover. Only where a pointer can hover and the
+   screen is wide: a touch tablet at 768px or more has no hover, so hiding
+   them there would hide them for good. */
+@custom-variant can-hover (@media (hover: hover) and (min-width: 48rem));
+
 @theme {
   --font-sans:
     "Geist Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
@@ -53,7 +58,7 @@
      on a light one, because of the +0.05 floor in the contrast formula, so
      these are set per theme rather than reusing one opacity ladder. */
   --text-muted: oklch(23% 0.012 265 / 0.78);
-  --text-subtle: oklch(23% 0.012 265 / 0.62);
+  --text-subtle: oklch(23% 0.012 265 / 0.66);
   /* A control's perimeter has to be visible; a panel's does not. */
   --control-border: oklch(0% 0 0 / 0.42);
 
@@ -455,7 +460,8 @@ h3 {
 
 /* Table headers: small, quiet, and separated by a line rather than a fill. */
 .table thead th {
-  @apply text-[11px] font-medium uppercase tracking-wider text-base-content/45;
+  @apply text-xs font-medium uppercase tracking-wider;
+  color: var(--text-subtle);
   border-bottom-color: var(--hairline);
 }
 .table :where(tbody tr) {
@@ -567,6 +573,17 @@ h3 {
     animation: none;
   }
   .table :where(tbody tr) {
+    transition: none;
+  }
+  /* Spinners, width transitions and entrance animations in components. */
+  .animate-spin,
+  .animate-pulse,
+  .animate-in {
+    animation: none;
+  }
+  .transition-all,
+  .transition-\[width\],
+  .transition-opacity {
     transition: none;
   }
 }

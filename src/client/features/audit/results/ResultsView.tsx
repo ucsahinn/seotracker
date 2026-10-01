@@ -145,7 +145,9 @@ export function ResultsView({
   return (
     <>
       {blockedCount > 0 && (
-        <CrawlWarning headline={`${blockedCount} sayfada engellendik.`}>
+        <CrawlWarning
+          headline={`${formatCount(blockedCount)} sayfada engellendik.`}
+        >
           Sitenin bot koruması tarayıcımızı durdurdu, bu yüzden o sayfalar
           denetlenemedi. Bunun için henüz bir çözümümüz yok. Masaüstü
           tarayıcılar kendi makinenizden çalıştığı için genelde geçebiliyor:{" "}
@@ -175,13 +177,13 @@ export function ResultsView({
           headline={
             crawlStopped
               ? "Tarama, sitenin istek sınırı yüzünden erken durdu."
-              : `Site ${rateLimitedCount} sayfada istek sınırı uyguladı.`
+              : `Site ${formatCount(rateLimitedCount)} sayfada istek sınırı uyguladı.`
           }
         >
           {crawlStopped
             ? "İstenen bekleme süresi denetim süresini aştı, bazı adresler ziyaret edilmedi. Bu rapor eksiktir. "
             : 'Sunucunun "çok fazla istek" (429) yanıtı verdiği sayfalar denetlenemedi. '}
-          İstek sınırı sıfırlandıktan sonra denetimi yeniden çalıştırın, ya da
+          İstek sınırı sıfırlandıktan sonra denetimi yeniden başlatın, ya da
           site sahibinden "seotracker-audit" tarayıcısına izin vermesini
           isteyin.
         </CrawlWarning>

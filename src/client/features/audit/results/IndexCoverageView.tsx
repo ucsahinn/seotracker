@@ -97,7 +97,7 @@ export function IndexCoverageView({
          */
         if (result.quotaRemaining === 0) {
           toast.error(
-            `Google'ın günlük 2000 adres sınırına ulaşıldı. ${formatNumber(result.remaining)} sayfa bekliyor; sınır birkaç saat içinde yenilenir.`,
+            `Google'ın günlük 2.000 adres sınırına ulaşıldı. ${formatNumber(result.remaining)} sayfa bekliyor; sınır birkaç saat içinde yenilenir.`,
           );
         } else {
           toast.success("Tüm sayfalar güncel, sorulacak bir şey yok.");
@@ -105,14 +105,18 @@ export function IndexCoverageView({
         return;
       }
       const left =
-        result.remaining > 0 ? ` ${result.remaining} sayfa kaldı.` : "";
+        result.remaining > 0
+          ? ` ${formatNumber(result.remaining)} sayfa kaldı.`
+          : "";
       // The daily cap is worth naming only when it is close enough to stop
       // the next run; otherwise it is a number nobody needs.
       const quota =
         result.quotaRemaining < 100
-          ? ` Bugünkü kotadan ${result.quotaRemaining} sorgu kaldı.`
+          ? ` Bugünkü kotadan ${formatNumber(result.quotaRemaining)} sorgu kaldı.`
           : "";
-      toast.success(`${result.inspected} sayfa soruldu.${left}${quota}`);
+      toast.success(
+        `${formatNumber(result.inspected)} sayfa soruldu.${left}${quota}`,
+      );
     },
     onError: (error) => toast.error(getStandardErrorMessage(error)),
   });
@@ -179,7 +183,7 @@ export function IndexCoverageView({
           value={neverChecked ? null : formatNumber(data.canonicalMismatches)}
           hint={
             data.canonicalMismatches > 0
-              ? "Kontrol edilen tüm sayfalar içinde; halka seçiminden etkilenmez. Google, sizin seçtiğiniz adres yerine başka bir sayfayı ana sayfa saydı"
+              ? "Kontrol edilen tüm sayfalar içinde; halka seçiminden etkilenmez. Google, sizin seçtiğiniz adres yerine başka bir sayfayı asıl sayfa saydı"
               : "Kontrol edilen tüm sayfalar içinde; halka seçiminden etkilenmez"
           }
         />
@@ -196,8 +200,8 @@ export function IndexCoverageView({
 
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm text-muted">
-          Google, günde en fazla 2000 adresin durumunu sormanıza izin verir. Her
-          seferde 25 sayfa kontrol edilir: önce hiç sorulmamışlar, sonra
+          Google, günde en fazla 2.000 adresin durumunu sormanıza izin verir.
+          Her seferde 25 sayfa kontrol edilir: önce hiç sorulmamışlar, sonra
           Google&apos;ın dizine almadıkları.
         </p>
         <button

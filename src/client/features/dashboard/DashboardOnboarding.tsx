@@ -6,8 +6,10 @@ import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import { captureClientEvent } from "@/client/lib/observability";
 import { getGoogleLinkError } from "@/client/features/integrations/googleLinkError";
 import { setDashboardStepDismissed } from "@/serverFunctions/dashboard";
-import type { DashboardActivation } from "@/server/features/dashboard/services/DashboardService";
-import type { DashboardSetupStep } from "@/types/schemas/dashboard";
+import type {
+  DashboardActivation,
+  DashboardSetupStep,
+} from "@/types/schemas/dashboard";
 import { getStepStatus, setupSteps } from "./dashboardSteps";
 import { DashboardSetupAction } from "./DashboardSetupAction";
 

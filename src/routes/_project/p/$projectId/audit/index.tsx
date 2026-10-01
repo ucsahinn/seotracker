@@ -107,6 +107,10 @@ function AuditDetail({
     queryKey: ["audit-results", projectId, auditId],
     queryFn: () => getAuditResults({ data: { projectId, auditId } }),
     enabled: isComplete || isFailed,
+    // Only queried once the audit is completed or failed, and a finished
+    // audit never changes (a re-run is a new audit id), so never refetch.
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
   });
 
   if (statusQuery.isLoading) {

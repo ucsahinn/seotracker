@@ -29,12 +29,15 @@ import {
   getStandardErrorMessage,
 } from "@/client/lib/error-messages";
 import { captureClientEvent } from "@/client/lib/observability";
+import { booleanSearchParamSchema } from "@/types/schemas/search-params";
 import { getReport } from "@/serverFunctions/reports";
 import { backLinkClass, BackLinkLabel } from "@/client/components/BackLink";
 
 // Expand lives in the URL, not in state, so a refresh (or a link someone
 // pasted) comes back expanded.
-const reportDetailSearchSchema = z.object({ full: z.boolean().optional() });
+const reportDetailSearchSchema = z.object({
+  full: booleanSearchParamSchema.optional().catch(undefined),
+});
 
 export const Route = createFileRoute(
   "/_project/p/$projectId/reports/$reportId",

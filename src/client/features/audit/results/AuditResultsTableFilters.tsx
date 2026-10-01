@@ -1,10 +1,12 @@
 import { formatNumber } from "@/client/lib/format";
 import { RotateCcw, SlidersHorizontal } from "lucide-react";
-import type { ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import type {
   PagesFilters,
   PerformanceFilters,
 } from "@/client/features/audit/results/AuditResultsTableFilterLogic";
+
+const SEARCH_DEBOUNCE_MS = 200;
 
 export function PagesFilterBar({
   filters,
@@ -23,7 +25,7 @@ export function PagesFilterBar({
         <TextFilter
           label="Ara"
           value={filters.query}
-          placeholder="URL, title, meta"
+          placeholder="Adres, başlık, açıklama"
           onChange={(query) => onChange({ ...filters, query })}
         />
         <SelectFilter
@@ -73,7 +75,7 @@ export function PagesFilterBar({
       </div>
       <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
         <RangeFilter
-          label="Tıklama derinliği"
+          label="Ana sayfadan uzaklık (tık)"
           min={filters.minDepth}
           max={filters.maxDepth}
           onMinChange={(minDepth) => onChange({ ...filters, minDepth })}
@@ -87,7 +89,7 @@ export function PagesFilterBar({
           onMaxChange={(maxWords) => onChange({ ...filters, maxWords })}
         />
         <RangeFilter
-          label="Hız ms"
+          label="Yanıt süresi (ms)"
           min={filters.minResponseMs}
           max={filters.maxResponseMs}
           onMinChange={(minResponseMs) =>
@@ -119,7 +121,7 @@ export function PerformanceFilterBar({
         <TextFilter
           label="Ara"
           value={filters.query}
-          placeholder="URL"
+          placeholder="Adres"
           onChange={(query) => onChange({ ...filters, query })}
         />
         <SelectFilter
@@ -291,6 +293,33 @@ function TextFilter({
   type?: "text" | "number";
   onChange: (value: string) => void;
 }) {
+  /*
+   * Text is held locally and committed after a short pause: every commit
+   * re-filters every crawled page, so doing it per keystroke made typing
+   * lag on a large audit. Number inputs commit immediately. An outside
+   * change to `value` (the filter reset) replaces the draft.
+   */
+  const delay = type === "text" ? SEARCH_DEBOUNCE_MS : 0;
+  const [draft, setDraft] = useState(value);
+  const committed = useRef(value);
+  const onChangeRef = useRef(onChange);
+  useEffect(() => {
+    onChangeRef.current = onChange;
+  });
+  useEffect(() => {
+    if (value === committed.current) return;
+    committed.current = value;
+    setDraft(value);
+  }, [value]);
+  useEffect(() => {
+    if (draft === committed.current) return;
+    const timer = setTimeout(() => {
+      committed.current = draft;
+      onChangeRef.current(draft);
+    }, delay);
+    return () => clearTimeout(timer);
+  }, [draft, delay]);
+
   return (
     <label className="form-control gap-1.5">
       <span className="text-[11px] font-semibold uppercase tracking-wide text-muted">
@@ -299,9 +328,9 @@ function TextFilter({
       <input
         className="input input-bordered input-sm w-full bg-base-100"
         type={type}
-        value={value}
+        value={draft}
         placeholder={placeholder}
-        onChange={(event) => onChange(event.target.value)}
+        onChange={(event) => setDraft(event.target.value)}
       />
     </label>
   );
@@ -336,7 +365,7 @@ function RangeFilter({
           className="input input-bordered input-xs bg-base-100"
           type="number"
           value={min}
-          placeholder="Min"
+          placeholder="En az"
           aria-label={`${label} en az`}
           onChange={(event) => onMinChange(event.target.value)}
         />
@@ -344,8 +373,8 @@ function RangeFilter({
           className="input input-bordered input-xs bg-base-100"
           type="number"
           value={max}
-          placeholder="Max"
-          aria-label={`${label} en çok`}
+          placeholder="En fazla"
+          aria-label={`${label} en fazla`}
           onChange={(event) => onMaxChange(event.target.value)}
         />
       </div>

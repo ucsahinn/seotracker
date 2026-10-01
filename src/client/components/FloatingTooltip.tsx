@@ -7,19 +7,29 @@ export function FloatingTooltip({
   id,
   position,
   children,
+  onPointerEnter,
+  onPointerLeave,
 }: {
   id: string;
   position: Position;
   children: ReactNode;
+  /**
+   * WCAG 1.4.13 (hoverable): the pointer may move from the trigger onto the
+   * tooltip without it closing. Pass the hook's `hoverBridge` handlers.
+   */
+  onPointerEnter?: () => void;
+  onPointerLeave?: () => void;
 }) {
   return (
     <span
       id={id}
       role="tooltip"
-      className={`pointer-events-none fixed z-[1000] w-max max-w-64 -translate-x-1/2 rounded-field border border-base-300 bg-base-100 px-2.5 py-2 text-[11px] font-normal normal-case leading-snug text-base-content shadow-md ${
+      className={`fixed z-[1000] w-max max-w-64 -translate-x-1/2 rounded-field border border-base-300 bg-base-100 px-2.5 py-2 text-xs font-normal normal-case leading-snug text-base-content shadow-md ${
         position.below ? "" : "-translate-y-full"
       }`}
       style={{ left: position.left, top: position.top }}
+      onPointerEnter={onPointerEnter}
+      onPointerLeave={onPointerLeave}
     >
       {children}
     </span>
@@ -103,6 +113,16 @@ export function useFloatingTooltip<T extends HTMLElement>({
     setIsOpen(false);
   };
 
+  // Leaving the trigger closes after a short grace period, which the tooltip
+  // cancels by being entered. Without it the 8px gap would close it first.
+  const scheduleClose = () => {
+    clearOpenTimeout();
+    timeoutRef.current = setTimeout(() => {
+      setIsOpen(false);
+      timeoutRef.current = null;
+    }, 150);
+  };
+
   useEffect(() => clearOpenTimeout, []);
 
   useEffect(() => {
@@ -122,7 +142,12 @@ export function useFloatingTooltip<T extends HTMLElement>({
 
   return {
     close,
+    hoverBridge: {
+      onPointerEnter: clearOpenTimeout,
+      onPointerLeave: scheduleClose,
+    },
     isOpen,
+    scheduleClose,
     open,
     position,
     scheduleOpen,

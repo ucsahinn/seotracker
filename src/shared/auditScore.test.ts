@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { scoreAudit } from "./auditScore";
+import { auditScoreBand, auditScoreTier, scoreAudit } from "./auditScore";
 
 const finding = (
   severity: "critical" | "warning" | "info",
@@ -95,5 +95,21 @@ describe("scoreAudit", () => {
     );
 
     expect(wreck.score).toBe(0);
+  });
+});
+
+describe("auditScoreTier and auditScoreBand", () => {
+  it.each([
+    [100, "excellent", "good"],
+    [90, "excellent", "good"],
+    [89, "good", "fair"],
+    [70, "good", "fair"],
+    [69, "fair", "fair"],
+    [50, "fair", "fair"],
+    [49, "poor", "poor"],
+    [0, "poor", "poor"],
+  ] as const)("scores %i as %s / %s", (score, tier, band) => {
+    expect(auditScoreTier(score)).toBe(tier);
+    expect(auditScoreBand(score)).toBe(band);
   });
 });

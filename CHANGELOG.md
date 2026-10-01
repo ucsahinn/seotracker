@@ -5,7 +5,7 @@ Yayında tek sürüm tutuluyor, bu yüzden burada tek not var. Eski notlar
 
 ## [Yayınlanmamış]
 
-## [1.8.1] — 2026-09-30
+## [1.8.2] — 2026-09-30
 
 Bu sürüm, bugüne kadar çıkan tüm sürümlerin notlarını tek yerde toplar.
 
@@ -47,6 +47,8 @@ bırakın.
 - Tablolar sıralanabiliyor, adresler tıklanabiliyor, seçtiğiniz tarih aralığı ve filtreler adreste saklanıyor.
 - Denetim silmeden önce soruyor.
 - Renkler açık temada okunur hale getirildi.
+- Klavye ve ekran okuyucu desteği: menüler ve pencereler klavyeyle kullanılabiliyor, "Ana içeriğe geç" bağlantısı var, grafiklerin değerleri gizli tablo olarak okunabiliyor, hareketi azaltma ayarına uyuluyor.
+- Büyük denetimler çok daha hafif açılıyor (10.000 sayfada yük yaklaşık 68 MB yerine 3 MB).
 
 ### Çıkarıldı
 
@@ -67,8 +69,12 @@ bırakın.
 - Kayıtlı kelimelerde arşiv kesilince "Verisi yok" diyordu; artık "Bilinmiyor (arşiv kesildi)" diyor.
 - Panelden bir sorguya tıklayınca sorgunun kendisi yerine tüm liste açılıyordu.
 - Raporlar ekranındaki özet, seçili filtreyle uyuşmuyordu.
+- Sayfa aramasında "INFO" yazınca "info" bulunmuyordu; Türkçe ve İngilizce büyük harfler artık aynı sayılıyor.
+- Tablo başlıkları ve küçük yazılar açık temada okunaklı değildi.
+- Hatalı bir adres parametresi (örneğin ?full=yes) rapor ekranını çökertiyordu.
+- Birçok hata iletisi İngilizce görünüyordu.
 - Sıralama takibi sessizce yalnızca ilk 25 sorguyu gösteriyordu; arşiv hiç dolmuyordu.
 - Ölçülemeyen değerler sıfır olarak çiziliyordu.
 
-[Yayınlanmamış]: https://github.com/ucsahinn/seotracker/compare/v1.8.1...HEAD
-[1.8.1]: https://github.com/ucsahinn/seotracker/releases/tag/v1.8.1
+[Yayınlanmamış]: https://github.com/ucsahinn/seotracker/compare/v1.8.2...HEAD
+[1.8.2]: https://github.com/ucsahinn/seotracker/releases/tag/v1.8.2

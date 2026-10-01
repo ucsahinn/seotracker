@@ -1,6 +1,10 @@
 import { ArrowRight } from "lucide-react";
 import { useMemo } from "react";
-import { scoreAudit } from "@/shared/auditScore";
+import {
+  auditScoreBand,
+  auditScoreTier,
+  scoreAudit,
+} from "@/shared/auditScore";
 import {
   getIssueDescriptor,
   resolveIssueSeverity,
@@ -23,17 +27,24 @@ import type { AuditResultsData } from "@/client/features/audit/results/types";
 const SHOWN = 3;
 
 function ringColor(score: number): string {
-  if (score >= 90) return "var(--color-success)";
-  if (score >= 60) return "var(--color-warning)";
+  const band = auditScoreBand(score);
+  if (band === "good") return "var(--color-success)";
+  if (band === "fair") return "var(--color-warning)";
   return "var(--color-error)";
 }
 
 function verdict(score: number): string {
   if (score === 100) return "Eksiksiz. Düzeltilecek bir şey kalmadı.";
-  if (score >= 90) return "Çok iyi. Birkaç küçük iş kaldı.";
-  if (score >= 75) return "İyi. Birkaç düzeltme puanı yükseltir.";
-  if (score >= 50) return "Orta. Önce kritik sorunlara bakın.";
-  return "Zayıf. Google'ın sitenizi anlamasını engelleyen sorunlar var.";
+  switch (auditScoreTier(score)) {
+    case "excellent":
+      return "Çok iyi. Birkaç küçük iş kaldı.";
+    case "good":
+      return "İyi. Birkaç düzeltme puanı yükseltir.";
+    case "fair":
+      return "Orta. Önce kritik sorunlara bakın.";
+    case "poor":
+      return "Zayıf. Google'ın sitenizi anlamasını engelleyen sorunlar var.";
+  }
 }
 
 export function ScoreCard({

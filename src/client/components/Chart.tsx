@@ -16,9 +16,16 @@ import { ResponsiveContainer } from "recharts";
  * read at all. Write the finding, not the shape: "28 günde 4.200 tıklama,
  * 14. günden sonra düşüşte", not "tıklama grafiği".
  */
+type ChartTable = {
+  caption: string;
+  columns: string[];
+  rows: string[][];
+};
+
 export function Chart({
   children,
   summary,
+  table,
   height = 200,
   className,
 }: {
@@ -26,6 +33,11 @@ export function Chart({
   children: React.ReactElement;
   /** What the chart shows, in a sentence, for readers who cannot see it. */
   summary: string;
+  /**
+   * The same values as the marks, as a table for readers who cannot hover.
+   * Visually hidden; the summary says the finding, this holds the numbers.
+   */
+  table?: ChartTable;
   height?: number;
   className?: string;
 }) {
@@ -76,6 +88,29 @@ export function Chart({
           </ResponsiveContainer>
         ) : null}
       </div>
+      {table ? (
+        <table className="sr-only">
+          <caption>{table.caption}</caption>
+          <thead>
+            <tr>
+              {table.columns.map((column) => (
+                <th key={column} scope="col">
+                  {column}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {table.rows.map((row) => (
+              <tr key={row.join("|")}>
+                {row.map((value, index) => (
+                  <td key={table.columns[index] ?? index}>{value}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : null}
     </figure>
   );
 }

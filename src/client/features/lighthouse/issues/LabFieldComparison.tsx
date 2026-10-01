@@ -46,6 +46,7 @@ export function LabFieldComparison({
   if (rows.length === 0) return null;
 
   const optimistic = rows.filter((row) => verdictOf(row) === "slower").length;
+  const pessimistic = rows.filter((row) => verdictOf(row) === "faster").length;
 
   return (
     <section className="rounded-box border border-base-300 bg-base-200/25 px-4 py-3">
@@ -54,8 +55,10 @@ export function LabFieldComparison({
       </h3>
       <p className="mt-1 text-xs leading-relaxed text-muted">
         {optimistic > 0
-          ? "Test makinesi sitenizi ziyaretçilerden daha hızlı görüyor. Google sıralamada sağdaki sütunu kullanır."
-          : "İki ölçüm örtüşüyor; laboratuvar puanı ziyaretçilerin gördüğünü temsil ediyor."}
+          ? "Test ortamında sitenizin hızı ziyaretçilerinkinden iyi çıkıyor. Google sıralamada sağdaki sütunu kullanır."
+          : pessimistic > 0
+            ? "Gerçek ziyaretçiler sitenizi test ortamından daha hızlı görüyor. Google sıralamada sağdaki sütunu kullanır."
+            : "İki ölçüm örtüşüyor; laboratuvar puanı ziyaretçilerin gördüğünü temsil ediyor."}
       </p>
       <table className="mt-3 table table-sm">
         <thead>

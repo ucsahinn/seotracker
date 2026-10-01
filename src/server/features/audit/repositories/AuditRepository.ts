@@ -276,24 +276,31 @@ async function backfillCrawlDepths(
   );
 }
 
+/*
+ * Page columns the results screen, CSV export and report read. The heavy
+ * `imagesJson`, `headingOrderJson` and `hreflangTagsJson` blobs stay out:
+ * on a 10k-page audit they were tens of MB through D1 and the query cache.
+ */
+const slimPageColumns = {
+  id: auditPages.id,
+  url: auditPages.url,
+  statusCode: auditPages.statusCode,
+  fetchClass: auditPages.fetchClass,
+  redirectUrl: auditPages.redirectUrl,
+  title: auditPages.title,
+  metaDescription: auditPages.metaDescription,
+  wordCount: auditPages.wordCount,
+  isIndexable: auditPages.isIndexable,
+  crawlDepth: auditPages.crawlDepth,
+  inSitemap: auditPages.inSitemap,
+  internalLinkCount: auditPages.internalLinkCount,
+  externalLinkCount: auditPages.externalLinkCount,
+  responseTimeMs: auditPages.responseTimeMs,
+};
+
 async function getPagesForAudit(auditId: string) {
   return db
-    .select({
-      id: auditPages.id,
-      url: auditPages.url,
-      statusCode: auditPages.statusCode,
-      fetchClass: auditPages.fetchClass,
-      redirectUrl: auditPages.redirectUrl,
-      title: auditPages.title,
-      metaDescription: auditPages.metaDescription,
-      wordCount: auditPages.wordCount,
-      isIndexable: auditPages.isIndexable,
-      crawlDepth: auditPages.crawlDepth,
-      inSitemap: auditPages.inSitemap,
-      internalLinkCount: auditPages.internalLinkCount,
-      externalLinkCount: auditPages.externalLinkCount,
-      responseTimeMs: auditPages.responseTimeMs,
-    })
+    .select(slimPageColumns)
     .from(auditPages)
     .where(eq(auditPages.auditId, auditId));
 }
@@ -405,9 +412,15 @@ async function getAuditResultsForProject(auditId: string, projectId: string) {
   }
 
   const [pages, lighthouse, issues] = await Promise.all([
-    db.query.auditPages.findMany({
-      where: eq(auditPages.auditId, auditId),
-    }),
+    db
+      .select({
+        ...slimPageColumns,
+        h1Count: auditPages.h1Count,
+        imagesTotal: auditPages.imagesTotal,
+        imagesMissingAlt: auditPages.imagesMissingAlt,
+      })
+      .from(auditPages)
+      .where(eq(auditPages.auditId, auditId)),
     db.query.auditLighthouseResults.findMany({
       where: eq(auditLighthouseResults.auditId, auditId),
     }),

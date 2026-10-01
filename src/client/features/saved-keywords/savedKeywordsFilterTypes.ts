@@ -1,3 +1,4 @@
+import { clamp } from "remeda";
 export type SavedKeywordsFilterValues = {
   include: string;
   exclude: string;
@@ -33,16 +34,10 @@ export type AppliedSavedKeywordsFilters = {
 
 function parseTerms(value: string): string[] {
   return value
-    .toLowerCase()
+    .toLocaleLowerCase("tr")
     .split(/[,+]/)
     .map((term) => term.trim())
     .filter(Boolean);
-}
-
-function clamp(value: number, bounds: { min?: number; max?: number }) {
-  if (bounds.min != null && value < bounds.min) return bounds.min;
-  if (bounds.max != null && value > bounds.max) return bounds.max;
-  return value;
 }
 
 function toIntOrUndef(

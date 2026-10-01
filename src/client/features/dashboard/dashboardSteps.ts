@@ -1,6 +1,8 @@
 import { Bot, BookOpen, FolderPlus, Globe, Search } from "lucide-react";
-import type { DashboardActivation } from "@/server/features/dashboard/services/DashboardService";
-import type { DashboardSetupStep } from "@/types/schemas/dashboard";
+import type {
+  DashboardActivation,
+  DashboardSetupStep,
+} from "@/types/schemas/dashboard";
 
 export const setupSteps: {
   id: DashboardSetupStep;

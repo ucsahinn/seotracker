@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { DashboardActivation } from "@/server/features/dashboard/services/DashboardService";
+import type { DashboardActivation } from "@/types/schemas/dashboard";
 import { getStepStatus, setupSteps } from "./dashboardSteps";
 
 const fresh: DashboardActivation = {

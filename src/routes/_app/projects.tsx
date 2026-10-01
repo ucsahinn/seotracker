@@ -84,7 +84,7 @@ function ProjectsPage() {
                   <span className="flex items-center gap-2">
                     <span className="truncate font-medium">{project.name}</span>
                     {project.id === currentProjectId ? (
-                      <span className="shrink-0 rounded-full bg-base-300/70 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-muted">
+                      <span className="shrink-0 rounded-full bg-base-300/70 px-1.5 py-0.5 text-xs font-medium uppercase tracking-wide text-muted">
                         Etkin
                       </span>
                     ) : null}

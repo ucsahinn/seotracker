@@ -22,7 +22,7 @@ export function GoogleProjectEmptyState({
     <div className="space-y-4">
       <p className="text-sm text-muted">
         {hasGrant
-          ? `Bu projenin bağlantısını tamamlamak için bir ${name} kaynağı seçin.`
+          ? `Bu projenin bağlantısını tamamlamak için bir ${name} mülkü seçin.`
           : `Bu projenin verisini görmek için ${name} bağlayın.`}
       </p>
       <div className="flex flex-wrap items-center gap-1">
@@ -43,7 +43,7 @@ export function GoogleProjectEmptyState({
               ? "Google açılıyor…"
               : canManage
                 ? hasGrant
-                  ? "Kaynak seç"
+                  ? "Mülk seç"
                   : "Bağlan"
                 : "Google hesaplarını yönet"}
           </button>

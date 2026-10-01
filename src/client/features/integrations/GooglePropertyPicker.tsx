@@ -1,3 +1,4 @@
+import { searchFold } from "@/client/lib/searchFold";
 import { GoogleAccountRemovalDialog } from "@/client/features/integrations/GoogleAccountRemovalDialog";
 import { useId, useRef, useState, type KeyboardEvent } from "react";
 import { Check, ChevronDown, Plus, Search } from "lucide-react";
@@ -73,21 +74,21 @@ export function GooglePropertyPicker({
     !selectedAccount?.unavailable &&
     !loading &&
     !error;
-  const query = search.trim().toLowerCase();
+  const query = searchFold(search.trim());
   const filtered = accounts
     .map((account) => ({
       ...account,
       properties: account.properties.filter((property) =>
-        `${account.email ?? ""} ${property.name} ${property.detail ?? ""} ${property.id}`
-          .toLowerCase()
-          .includes(query),
+        searchFold(
+          `${account.email ?? ""} ${property.name} ${property.detail ?? ""} ${property.id}`,
+        ).includes(query),
       ),
     }))
     .filter(
       (account) =>
         !query ||
         account.properties.length > 0 ||
-        accountLabel(account).toLowerCase().includes(query),
+        searchFold(accountLabel(account)).includes(query),
     );
   const close = () => {
     setOpen(false);
@@ -110,7 +111,7 @@ export function GooglePropertyPicker({
       ) : null}
       <div>
         <p className="mb-2 text-sm font-medium">
-          {readOnly ? "Google hesaplarını yönet" : "Kaynak seç"}
+          {readOnly ? "Google hesaplarını yönet" : "Mülk seç"}
         </p>
         <button
           ref={trigger}
@@ -126,7 +127,7 @@ export function GooglePropertyPicker({
         >
           <span className="min-w-0">
             <span className="block truncate">
-              {selected?.name ?? "Bir kaynak seçin…"}
+              {selected?.name ?? "Bir mülk seçin…"}
             </span>
             {selectedAccount ? (
               <span className="mt-0.5 block truncate text-xs text-muted">
@@ -140,7 +141,7 @@ export function GooglePropertyPicker({
           <div
             id={panelId}
             role="region"
-            aria-label="Google kaynakları"
+            aria-label="Google mülkleri"
             className="mt-2 overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-sm"
             onKeyDown={(event) => handlePropertyKeyDown(event, close)}
           >
@@ -149,8 +150,8 @@ export function GooglePropertyPicker({
               <input
                 autoFocus
                 type="search"
-                aria-label="Kaynak veya hesap ara"
-                placeholder="Kaynak veya hesap ara…"
+                aria-label="Mülk veya hesap ara"
+                placeholder="Mülk veya hesap ara…"
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
                 className="min-w-0 w-full bg-transparent text-sm outline-none"
@@ -163,11 +164,11 @@ export function GooglePropertyPicker({
                   className="flex items-center gap-2 p-3 text-sm text-muted"
                 >
                   <span className="loading loading-spinner loading-xs" />
-                  Kaynaklar yükleniyor…
+                  Mülkler yükleniyor…
                 </p>
               ) : error ? (
                 <div role="alert" className="p-3 text-sm">
-                  <p className="text-error">Kaynaklar yüklenemedi.</p>
+                  <p className="text-error">Mülkler yüklenemedi.</p>
                   <button
                     type="button"
                     className="btn btn-ghost btn-sm mt-1"
@@ -222,7 +223,7 @@ export function GooglePropertyPicker({
                               for something retrying will never fix. */}
                           <p className="text-muted">
                             {account.unavailableReason ??
-                              "Kaynaklar yüklenemedi."}
+                              "Mülkler yüklenemedi."}
                           </p>
                           <button
                             type="button"
@@ -293,8 +294,8 @@ export function GooglePropertyPicker({
                   {filtered.length === 0 ? (
                     <p className="p-3 text-sm text-muted">
                       {query
-                        ? "Eşleşen kaynak veya hesap yok"
-                        : "Kaynakları bulmak için bir Google hesabı ekleyin."}
+                        ? "Eşleşen mülk veya hesap yok"
+                        : "Mülkleri bulmak için bir Google hesabı ekleyin."}
                     </p>
                   ) : null}
                 </>
@@ -327,7 +328,7 @@ export function GooglePropertyPicker({
           onClick={onSave}
           disabled={!canSave || saving}
         >
-          {saving ? "Kaydediliyor…" : "Kaynağı kaydet"}
+          {saving ? "Kaydediliyor…" : "Mülkü kaydet"}
         </button>
         {secondaryAction ? (
           <button

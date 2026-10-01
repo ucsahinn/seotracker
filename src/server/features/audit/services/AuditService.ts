@@ -5,6 +5,7 @@ import {
   clampAuditMaxPages,
   getEstimatedAuditCapacity,
 } from "@/server/features/audit/services/audit-capacity";
+import { getPageSpeedApiKey } from "@/server/features/lighthouse/pagespeed-config";
 import { AppError } from "@/server/lib/errors";
 import { AuditProgressKV } from "@/server/lib/audit/progress-kv";
 import {
@@ -39,6 +40,7 @@ async function startAudit(input: {
   const reservation = getEstimatedAuditCapacity({
     maxPages,
     lighthouseStrategy,
+    hasPageSpeedKey: Boolean(await getPageSpeedApiKey()),
   });
 
   const auditId = crypto.randomUUID();
@@ -107,7 +109,7 @@ async function startAudit(input: {
 async function getStatus(auditId: string, projectId: string) {
   let audit = await AuditRepository.getAuditForProject(auditId, projectId);
   if (!audit)
-    throw new AppError("NOT_FOUND", "Audit not found in this project.");
+    throw new AppError("NOT_FOUND", "Bu projede böyle bir denetim bulunamadı.");
 
   // Self-heal audits whose workflow died without reaching the mark-failed
   // step (instance terminated/errored, instance expired from retention, ...).
@@ -144,7 +146,7 @@ async function getResults(auditId: string, projectId: string) {
 
   const parsedConfig = parseAuditConfig(audit.config);
   if (!parsedConfig) {
-    throw new AppError("INTERNAL_ERROR", "Invalid audit configuration");
+    throw new AppError("INTERNAL_ERROR", "Denetim ayarları geçersiz.");
   }
 
   return {
@@ -228,7 +230,7 @@ async function remove(auditId: string, projectId: string) {
     if (!audit.workflowInstanceId) {
       throw new AppError(
         "CONFLICT",
-        "Cannot delete a running audit without workflow context.",
+        "Çalışan denetimin iş akışı bilgisi bulunamadığı için silinemiyor.",
       );
     }
 
@@ -253,7 +255,7 @@ async function remove(auditId: string, projectId: string) {
         );
       if (stillRunning) {
         console.error(`Failed to terminate audit workflow ${audit.id}:`, error);
-        throw new AppError("CONFLICT", "Unable to stop the running audit.");
+        throw new AppError("CONFLICT", "Çalışan denetim durdurulamadı.");
       }
     }
   }

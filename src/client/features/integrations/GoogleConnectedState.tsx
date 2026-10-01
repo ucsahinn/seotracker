@@ -45,7 +45,7 @@ export function GoogleConnectedState({
             onClick={onChange}
           >
             {canManage
-              ? "Kaynağı veya hesabı değiştir"
+              ? "Mülkü veya hesabı değiştir"
               : "Google hesaplarını yönet"}
           </button>
           {canManage ? (

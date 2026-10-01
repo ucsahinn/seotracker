@@ -1,3 +1,4 @@
+import { fractionalChange } from "@/shared/delta";
 import { useQuery } from "@tanstack/react-query";
 import {
   Area,
@@ -22,6 +23,7 @@ import {
   formatMoney,
   formatPercent,
 } from "@/client/lib/format";
+import { useReducedMotion } from "@/client/lib/useReducedMotion";
 import { getGa4DashboardReport } from "@/serverFunctions/ga4";
 
 type TrendRow = { date: string; sessions: number };
@@ -129,23 +131,25 @@ function Total({
   deltaTitle: string;
   format: (value: number) => string;
 }) {
+  const change =
+    value === null || previous === null
+      ? null
+      : fractionalChange(value, previous);
   return (
     <div className="text-right">
       <p className="text-xs text-muted">{label}</p>
       <p className="flex items-center gap-1.5 text-sm font-medium tabular-nums">
         {value === null ? "--" : format(value)}
-        {value !== null && previous !== null && previous > 0 ? (
-          <DeltaBadge
-            value={(value - previous) / previous}
-            title={deltaTitle}
-          />
-        ) : null}
+        {change === null ? null : (
+          <DeltaBadge value={change} title={deltaTitle} />
+        )}
       </p>
     </div>
   );
 }
 
 function TrendChart({ rows }: { rows: TrendRow[] }) {
+  const reduced = useReducedMotion();
   const total = rows.reduce((sum, row) => sum + row.sessions, 0);
   const peak = rows.reduce((best, row) =>
     row.sessions > best.sessions ? row : best,
@@ -197,6 +201,7 @@ function TrendChart({ rows }: { rows: TrendRow[] }) {
           strokeWidth={2}
           fill={CHART_SERIES.primary}
           fillOpacity={0.08}
+          isAnimationActive={!reduced}
         />
       </AreaChart>
     </Chart>

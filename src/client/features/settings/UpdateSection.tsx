@@ -121,7 +121,7 @@ export function UpdateSection({ version }: { version: string }) {
 
       {status?.outcome === "unreachable" ? (
         <p className="text-sm text-muted">
-          Son denetimde GitHub&apos;a ulaşılamadı.
+          Son kontrolde GitHub&apos;a ulaşılamadı.
         </p>
       ) : null}
 
@@ -164,9 +164,9 @@ export function UpdateSection({ version }: { version: string }) {
         Açıkken günde bir kez GitHub&apos;a bağlanıp bu deponun en son sürüm
         etiketini sorar. GitHub bu istekte ağınızın genel IP adresini ve
         uygulama adı ile sürümünüzü görür; siteleriniz, Google hesabınız ya da
-        taramalarınızla ilgili hiçbir şey gönderilmez.
+        denetimlerinizle ilgili hiçbir şey gönderilmez.
         {status?.checkedAt
-          ? ` Son denetim: ${formatDateTime(status.checkedAt)}.`
+          ? ` Son kontrol: ${formatDateTime(status.checkedAt)}.`
           : ""}
       </p>
     </section>

@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { AuditHealthCard } from "./DashboardCards";
-import type { DashboardAuditSummary } from "@/server/features/dashboard/services/DashboardService";
+import type { DashboardAuditSummary } from "@/types/schemas/dashboard";
 
 /*
  * `Link` needs a router. This suite is about what the card says, not about

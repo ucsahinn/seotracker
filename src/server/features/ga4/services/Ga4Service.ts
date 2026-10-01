@@ -168,7 +168,7 @@ async function setProperty(input: {
     if (!grants.some((grant) => grant.accountId === input.accountId)) {
       throw new AppError(
         "NOT_FOUND",
-        "That Google account isn't connected to your seotracker account.",
+        "Bu Google hesabı seotracker hesabınıza bağlı değil.",
       );
     }
   }
@@ -183,7 +183,7 @@ async function setProperty(input: {
   ) {
     throw new AppError(
       "NOT_FOUND",
-      "That Google Analytics property isn't available on your connected Google account.",
+      "Bu Google Analytics mülkü bağlı Google hesabınızda bulunmuyor.",
     );
   }
 

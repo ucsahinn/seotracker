@@ -60,8 +60,20 @@ export function useSelectionAnchor(): MutableRefObject<SelectionAnchor | null> {
   return useRef<SelectionAnchor | null>(null);
 }
 
+/**
+ * The accessible name of a row's checkbox. Forty identical "Satırı seç"
+ * checkboxes tell a screen reader user nothing; naming them after the row's
+ * main cell ("Satırı seç: seo araçları") makes each one findable.
+ */
+export function selectRowLabel(name?: string): string {
+  const trimmed = name?.trim();
+  return trimmed ? `Satırı seç: ${trimmed}` : "Satırı seç";
+}
+
 export function makeSelectionColumn<TData>(
   anchorRef: MutableRefObject<SelectionAnchor | null>,
+  /** The row's primary cell as text, used to name its checkbox. */
+  getRowName?: (row: Row<TData>) => string | undefined,
 ): ColumnDef<TData> {
   return {
     id: "select",
@@ -77,7 +89,12 @@ export function makeSelectionColumn<TData>(
       />
     ),
     cell: ({ row, table }) => (
-      <SelectionCheckbox row={row} table={table} anchorRef={anchorRef} />
+      <SelectionCheckbox
+        row={row}
+        table={table}
+        anchorRef={anchorRef}
+        label={selectRowLabel(getRowName?.(row))}
+      />
     ),
   };
 }
@@ -86,10 +103,12 @@ function SelectionCheckbox<TData>({
   row,
   table,
   anchorRef,
+  label,
 }: {
   row: Row<TData>;
   table: Table<TData>;
   anchorRef: MutableRefObject<SelectionAnchor | null>;
+  label: string;
 }) {
   const rangeHandledRef = useRef(false);
   return (
@@ -97,7 +116,7 @@ function SelectionCheckbox<TData>({
       type="checkbox"
       className="checkbox checkbox-xs [--radius-selector:0.25rem]"
       checked={row.getIsSelected()}
-      aria-label="Satırı seç"
+      aria-label={label}
       onClick={(event) => {
         event.stopPropagation();
         rangeHandledRef.current = applyShiftRangeSelection(
@@ -120,6 +139,7 @@ function SelectionCheckbox<TData>({
 
 export function AppDataTable<TData>({
   table,
+  caption,
   className = "table table-sm",
   wrapperClassName = "overflow-x-auto",
   empty,
@@ -132,6 +152,8 @@ export function AppDataTable<TData>({
   stickyHeader,
 }: {
   table: Table<TData>;
+  /** What the table lists, announced when a screen reader enters it. */
+  caption: string;
   className?: string;
   wrapperClassName?: string;
   empty?: ReactNode;
@@ -155,6 +177,7 @@ export function AppDataTable<TData>({
         className={className}
         style={fixedLayout ? { tableLayout: "fixed" } : undefined}
       >
+        <caption className="sr-only">{caption}</caption>
         {fixedLayout ? (
           <colgroup>
             {table.getVisibleLeafColumns().map((column) => (

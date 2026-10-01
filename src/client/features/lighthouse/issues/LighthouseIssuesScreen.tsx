@@ -79,7 +79,7 @@ export function LighthouseIssuesScreen(props: LighthouseIssuesScreenProps) {
   const showsLegacyPayloadNotice =
     issuesQuery.data != null && !issuesQuery.data.hasIssueDetails;
   const emptyMessage = showsLegacyPayloadNotice
-    ? "Bu denetim, Lighthouse sorun ayrıntıları olmadan kaydedilmiş. Bu ekranı doldurmak için denetimi yeniden çalıştırın."
+    ? "Bu denetim, Lighthouse sorun ayrıntıları olmadan kaydedilmiş. Bu ekranı doldurmak için denetimi yeniden başlatın."
     : undefined;
 
   return (
@@ -111,7 +111,7 @@ export function LighthouseIssuesScreen(props: LighthouseIssuesScreenProps) {
               <span>
                 Bu Lighthouse çalışması, sorun ayrıntıları saklanmaya başlamadan
                 önce kaydedilmiş. Kategori sayılarını ve sorun kartlarını görmek
-                için denetimi yeniden çalıştırın.
+                için denetimi yeniden başlatın.
               </span>
             </div>
           ) : null}

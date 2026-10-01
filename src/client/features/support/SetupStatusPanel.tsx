@@ -136,8 +136,8 @@ function StatusBody({
           </h2>
           <p className="mt-0.5 text-xs text-muted" aria-live="polite">
             {problems === 0
-              ? "Tüm denetimler geçti."
-              : `${problems} denetim dikkat istiyor.`}{" "}
+              ? "Tüm kontroller geçti."
+              : `${problems} kontrol dikkat istiyor.`}{" "}
             Sürüm {data.version}.
           </p>
         </div>

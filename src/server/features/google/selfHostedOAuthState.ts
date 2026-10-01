@@ -112,7 +112,10 @@ export async function verifyOAuthState(input: {
   displayName: string;
 }): Promise<OAuthState> {
   const invalid = () =>
-    new AppError("VALIDATION_ERROR", `Invalid ${input.displayName} state`);
+    new AppError(
+      "VALIDATION_ERROR",
+      `${input.displayName} bağlantı isteği geçersiz. Bağlantıyı yeniden başlatın.`,
+    );
 
   const [payload, signature] = input.state.split(".");
   if (!payload || !signature) throw invalid();
@@ -131,7 +134,7 @@ export async function verifyOAuthState(input: {
   if (parsed.exp < Date.now()) {
     throw new AppError(
       "VALIDATION_ERROR",
-      `Expired ${input.displayName} state`,
+      `${input.displayName} bağlantı isteğinin süresi doldu. Bağlantıyı yeniden başlatın.`,
     );
   }
   return parsed;

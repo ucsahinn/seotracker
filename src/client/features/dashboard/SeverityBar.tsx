@@ -100,7 +100,8 @@ export function SeverityBar({
                 aria-hidden
               />
               <span className="tabular-nums">
-                {formatCount(totals[segment.key])} {segment.label.toLowerCase()}
+                {formatCount(totals[segment.key])}{" "}
+                {segment.label.toLocaleLowerCase("tr-TR")}
               </span>
               <span className="text-subtle tabular-nums">
                 {formatPercent(totals[segment.key] / total, 0)}

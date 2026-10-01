@@ -4,6 +4,7 @@ import {
   LIGHTHOUSE_CHECKS_PER_PAGE,
   MAX_AUDIT_PAGES,
   MIN_AUDIT_PAGES,
+  UNKEYED_LIGHTHOUSE_PAGE_CAP,
 } from "@/shared/audit-limits";
 
 /*
@@ -28,23 +29,34 @@ export const AUDIT_LIMITS = {
 };
 
 export function clampAuditMaxPages(maxPages?: number) {
-  return Math.min(
-    Math.max(maxPages ?? DEFAULT_AUDIT_PAGES, MIN_AUDIT_PAGES),
-    MAX_AUDIT_PAGES,
-  );
+  // NaN survives Math.max/min and would become a NaN capacity reservation.
+  const requested =
+    typeof maxPages === "number" && Number.isFinite(maxPages)
+      ? maxPages
+      : DEFAULT_AUDIT_PAGES;
+  return Math.min(Math.max(requested, MIN_AUDIT_PAGES), MAX_AUDIT_PAGES);
 }
 
 export function getEstimatedAuditCapacity(input: {
   maxPages?: number;
   lighthouseStrategy?: LighthouseMode;
+  /** False when no PageSpeed key is set: the run measures at most 50 pages. */
+  hasPageSpeedKey?: boolean;
 }) {
   const pagesTotal = clampAuditMaxPages(input.maxPages);
   const lighthouseStrategy = input.lighthouseStrategy ?? "auto";
   // "auto" measures every crawled page on mobile + desktop. This is the
   // ceiling: the workflow replaces it with the real count once the crawl is
-  // done, and caps it when no PageSpeed key is set.
+  // done. Without a PageSpeed key it measures at most the unkeyed cap, so the
+  // reservation is capped the same way instead of overstating it.
+  const measuredPages =
+    input.hasPageSpeedKey === false
+      ? Math.min(pagesTotal, UNKEYED_LIGHTHOUSE_PAGE_CAP)
+      : pagesTotal;
   const lighthouseChecks =
-    lighthouseStrategy === "auto" ? pagesTotal * LIGHTHOUSE_CHECKS_PER_PAGE : 0;
+    lighthouseStrategy === "auto"
+      ? measuredPages * LIGHTHOUSE_CHECKS_PER_PAGE
+      : 0;
 
   return {
     pagesTotal,
