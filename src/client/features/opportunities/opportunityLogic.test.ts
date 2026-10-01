@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   applyFilters,
+  explainRow,
   quickCounts,
   topOpportunity,
   type OpportunityRow,
@@ -91,5 +92,17 @@ describe("topOpportunity", () => {
   it("is null when nothing is scored", () => {
     expect(topOpportunity([])).toBeNull();
     expect(topOpportunity([row("c", { score: null })])).toBeNull();
+  });
+});
+
+describe("explainRow", () => {
+  // A top-3 page is never "close to page one"; the copy must not claim it.
+  it("does not tell a top-3 page it is near the first page", () => {
+    const text = explainRow(row("a", { position: 1.4 }));
+    expect(text).toContain("zaten ilk sıralarda");
+    expect(text).not.toContain("ilk sayfaya çok yakın");
+    expect(explainRow(row("b", { position: 8 }))).toContain(
+      "ilk sayfaya çok yakın",
+    );
   });
 });

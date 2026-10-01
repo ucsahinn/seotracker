@@ -80,6 +80,9 @@ export function explainRow(row: OpportunityRow): string {
         : `, sitenizde bu sıradaki sayfaların medyanından ${formatDecimal(Math.abs(row.ctrGap) * 100)} yüzde puan daha düşük`;
     return `Ortalama ${position}. sırada ${impressions} kez gösterildi ama yalnızca ${clicks} tıklama aldı (tıklama oranı ${formatPercent(row.ctr)}${gap}).${ga4}`;
   }
+  if (row.kind === "near_miss" && row.position < 4) {
+    return `Ortalama ${position}. sırada, yani zaten ilk sıralarda. ${impressions} gösterimden ${clicks} tıklama aldı; sıra kazanmaktan çok içeriği ve başlığı güçlü tutmak önemli.${ga4}`;
+  }
   if (row.kind === "near_miss") {
     return `Ortalama ${position}. sırada; ilk sayfaya çok yakın. ${impressions} gösterimden ${clicks} tıklama aldı, birkaç basamak yükselmek bunu belirgin şekilde artırabilir.${ga4}`;
   }
