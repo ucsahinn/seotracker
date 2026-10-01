@@ -175,6 +175,9 @@ export async function inspectAndRecord(input: {
   quotaRemaining: number;
 }> {
   const now = input.now ?? new Date();
+  // A URL listed twice would be bought twice and counted twice in
+  // `requested`, `fresh` and `skipped`.
+  const urls = [...new Set(input.urls)];
   const spent = await inspectionsInLastDay(input.projectId, now);
   const budget = Math.max(DAILY_QUOTA - spent, 0);
   /*
@@ -186,9 +189,9 @@ export async function inspectAndRecord(input: {
    */
   const stored = input.force
     ? new Map<string, CoverageRow>()
-    : await storedFor(input.projectId, input.urls);
-  const due = input.urls.filter((url) => isStale(stored.get(url), now));
-  const fresh = input.urls.length - due.length;
+    : await storedFor(input.projectId, urls);
+  const due = urls.filter((url) => isStale(stored.get(url), now));
+  const fresh = urls.length - due.length;
   const batch = due.slice(0, budget);
 
   if (batch.length === 0) {

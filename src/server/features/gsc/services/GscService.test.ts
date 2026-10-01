@@ -480,15 +480,42 @@ describe("GscService.inspectUrls", () => {
     mocks.inspectUrl.mockImplementation(async (_site, url) => {
       inFlight += 1;
       peak = Math.max(peak, inFlight);
-      await Promise.resolve();
+      // The first URL answers last, so completion order is not asking order.
+      const ticks = url.endsWith("/a") ? 3 : 1;
+      for (let tick = 0; tick < ticks; tick += 1) await Promise.resolve();
       inFlight -= 1;
       return { inspectionResultLink: url };
     });
-    const urls = ["a", "b", "c"].map((path) => "https://x.test/" + path);
+    const urls = ["a", "b", "c", "d", "e", "f"].map(
+      (path) => "https://x.test/" + path,
+    );
 
     const result = await GscService.inspectUrls({ projectId: "p1", urls });
 
-    expect(peak).toBe(3);
+    expect(peak).toBe(5);
     expect(result.results.map((entry) => entry.url)).toEqual(urls);
+  });
+
+  it("asks nothing past the batch in which the grant died", async () => {
+    mocks.getByProjectId.mockResolvedValue({
+      siteUrl: "sc-domain:x.test",
+      connectedByUserId: "u1",
+      connectedAccountEmail: "a@x.test",
+    });
+    mocks.inspectUrl.mockImplementation(async (_site, url) => {
+      if (url.endsWith("/b")) throw new GscTokenError("grant revoked");
+      return { inspectionResultLink: url };
+    });
+    const urls = ["a", "b", "c", "d", "e", "f"].map(
+      (path) => "https://x.test/" + path,
+    );
+
+    const result = await GscService.inspectUrls({ projectId: "p1", urls });
+
+    expect(mocks.inspectUrl).toHaveBeenCalledTimes(5);
+    expect(result.tokenError).toBeInstanceOf(GscTokenError);
+    expect(result.results.map((entry) => entry.url)).toEqual(
+      ["a", "c", "d", "e"].map((path) => "https://x.test/" + path),
+    );
   });
 });

@@ -283,8 +283,9 @@ type GscInspectUrlsResult = {
   connectedBy: string | null;
   results: GscUrlInspection[];
   /**
-   * Set when the grant died partway through, with the URLs before it still
-   * in `results`. The caller persists those and then rethrows this.
+   * Set when the grant died partway through. `results` still holds every
+   * answer received before the batch stopped, including others from the
+   * same chunk; the caller persists those and then rethrows this.
    */
   tokenError?: GscTokenError;
 };
@@ -321,11 +322,8 @@ async function inspectUrls(input: {
     gscAccountId: connection.gscAccountId ?? undefined,
   });
   const results: GscUrlInspection[] = [];
-  // Each inspection is one of the property's 2000 a day; a URL listed twice
-  // would be bought twice.
-  const urls = [...new Set(input.urls)];
-  for (let i = 0; i < urls.length; i += INSPECT_CONCURRENCY) {
-    const chunk = urls.slice(i, i + INSPECT_CONCURRENCY);
+  for (let i = 0; i < input.urls.length; i += INSPECT_CONCURRENCY) {
+    const chunk = input.urls.slice(i, i + INSPECT_CONCURRENCY);
     const settled = await Promise.all(
       chunk.map((url) =>
         client.inspectUrl(connection.siteUrl, url, input.languageCode).then(
