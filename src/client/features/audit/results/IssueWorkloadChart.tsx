@@ -175,6 +175,34 @@ export function IssueWorkloadChart({
           </Bar>
         </BarChart>
       </Chart>
+      {/*
+       * The bars are a pointer shortcut. This is the same choice for the
+       * keyboard: invisible until a button is focused, then shown, so focus
+       * is never lost on an element the reader cannot see.
+       */}
+      {onSelect ? (
+        <ul
+          aria-label="Sorun türüne göre filtre"
+          className="sr-only focus-within:not-sr-only focus-within:mt-2 focus-within:flex focus-within:flex-wrap focus-within:gap-1 focus-within:px-2"
+        >
+          {rows.map((row) => (
+            <li key={row.issueType}>
+              <button
+                type="button"
+                aria-pressed={selectedType === row.issueType}
+                className="btn btn-xs btn-ghost border-base-300"
+                onClick={() =>
+                  onSelect(
+                    row.issueType === selectedType ? null : row.issueType,
+                  )
+                }
+              >
+                {row.title} · {formatCount(row.pageCount)}
+              </button>
+            </li>
+          ))}
+        </ul>
+      ) : null}
     </div>
   );
 }

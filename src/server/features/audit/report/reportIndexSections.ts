@@ -35,7 +35,7 @@ export function indexSection(input: AuditReportInput): string {
   if (!cov || cov.asked === 0) {
     return `<section id="dizin">
       <h2>4. Google dizin durumu</h2>
-      <p class="empty">Bu denetimin sayfaları için Search Console URL İnceleme sonucu kayıtlı değil, bu yüzden Google'ın hangi sayfaları dizine aldığı rapora girmiyor. Dizin Kapsamı ekranından inceleme çalıştırıldıktan sonra rapor yeniden oluşturulursa bu bölüm dolar.</p>
+      <p class="empty">Bu denetimin sayfaları için Search Console URL Denetleme Aracı sonucu kayıtlı değil, bu yüzden Google'ın hangi sayfaları dizine aldığı rapora girmiyor. Dizin Kapsamı ekranından inceleme çalıştırıldıktan sonra rapor yeniden oluşturulursa bu bölüm dolar.</p>
     </section>`;
   }
 
@@ -62,7 +62,7 @@ export function indexSection(input: AuditReportInput): string {
 
   return `<section id="dizin">
     <h2>4. Google dizin durumu</h2>
-    <p class="note">Kaynak: Search Console URL İnceleme. Sonuçlar kayıtlıdır, bu rapor Google'a yeni istek atmaz${cov.lastCheckedAt ? `; son inceleme ${escapeHtml(formatDate(cov.lastCheckedAt))}` : ""}. Dizine girebilen ${formatCount(cov.rows.length)} sayfadan ${formatCount(cov.checked)} tanesi için Google yanıt verdi (%${formatCount(percent(cov.checked, cov.rows.length))}).</p>
+    <p class="note">Kaynak: Search Console URL Denetleme Aracı. Sonuçlar kayıtlıdır, bu rapor Google'a yeni istek atmaz${cov.lastCheckedAt ? `; son inceleme ${escapeHtml(formatDate(cov.lastCheckedAt))}` : ""}. Dizine girebilen ${formatCount(cov.rows.length)} sayfadan ${formatCount(cov.checked)} tanesi için Google yanıt verdi (%${formatCount(percent(cov.checked, cov.rows.length))}).</p>
     <div class="grid2">
       ${figure("Dizin durumu", donutChart(data, formatCount(cov.rows.length), "sayfa"), chartSummary(data), "Google dizin durumu dağılımı")}
       ${stateData.length > 0 ? figure("Google'ın verdiği durumlar", barChart(stateData, 34), chartSummary(stateData, " sayfa"), "Kapsam durumu dağılımı") : ""}

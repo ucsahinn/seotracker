@@ -5,7 +5,7 @@ Yayında tek sürüm tutuluyor, bu yüzden burada tek not var. Eski notlar
 
 ## [Yayınlanmamış]
 
-## [1.8.2] — 2026-09-30
+## [1.8.3] — 2026-09-30
 
 Bu sürüm, bugüne kadar çıkan tüm sürümlerin notlarını tek yerde toplar.
 
@@ -73,8 +73,11 @@ bırakın.
 - Tablo başlıkları ve küçük yazılar açık temada okunaklı değildi.
 - Hatalı bir adres parametresi (örneğin ?full=yes) rapor ekranını çökertiyordu.
 - Birçok hata iletisi İngilizce görünüyordu.
+- Sorun grafiğindeki çubuklar yalnızca fareyle seçilebiliyordu; artık klavyeyle de seçilebiliyor.
+- İki küçük açıklama balonu, fareyi üzerine götürünce kapanıyordu.
+- Google'ın "URL Denetleme Aracı" adı ekranda ve raporda aynı yazılıyor.
 - Sıralama takibi sessizce yalnızca ilk 25 sorguyu gösteriyordu; arşiv hiç dolmuyordu.
 - Ölçülemeyen değerler sıfır olarak çiziliyordu.
 
-[Yayınlanmamış]: https://github.com/ucsahinn/seotracker/compare/v1.8.2...HEAD
-[1.8.2]: https://github.com/ucsahinn/seotracker/releases/tag/v1.8.2
+[Yayınlanmamış]: https://github.com/ucsahinn/seotracker/compare/v1.8.3...HEAD
+[1.8.3]: https://github.com/ucsahinn/seotracker/releases/tag/v1.8.3

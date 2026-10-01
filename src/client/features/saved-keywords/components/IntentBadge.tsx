@@ -63,7 +63,7 @@ const DESCRIPTIONS: Record<
 };
 
 export function IntentBadge({ intent }: { intent: KeywordIntent }) {
-  const tooltip = useFloatingTooltip<HTMLSpanElement>({ delayMs: 0 });
+  const tooltip = useFloatingTooltip<HTMLSpanElement>({ delayMs: 150 });
   const details = DESCRIPTIONS[intent];
 
   return (
@@ -74,7 +74,7 @@ export function IntentBadge({ intent }: { intent: KeywordIntent }) {
       aria-label={`${details.label} arama amacı`}
       aria-describedby={tooltip.isOpen ? tooltip.tooltipId : undefined}
       onMouseEnter={tooltip.open}
-      onMouseLeave={tooltip.close}
+      onMouseLeave={tooltip.scheduleClose}
       onFocus={tooltip.open}
       onBlur={tooltip.close}
       onKeyDown={(e) => {
@@ -84,7 +84,11 @@ export function IntentBadge({ intent }: { intent: KeywordIntent }) {
       {SHORT_LABELS[intent]}
       {tooltip.isOpen && typeof document !== "undefined"
         ? createPortal(
-            <FloatingTooltip id={tooltip.tooltipId} position={tooltip.position}>
+            <FloatingTooltip
+              id={tooltip.tooltipId}
+              position={tooltip.position}
+              {...tooltip.hoverBridge}
+            >
               <span className="block font-semibold">{details.label}</span>
               <span className="mt-1 block">{details.description}</span>
             </FloatingTooltip>,

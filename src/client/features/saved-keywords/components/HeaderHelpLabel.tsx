@@ -21,7 +21,7 @@ export function HeaderHelpLabel({
       ref={tooltip.triggerRef}
       className="relative inline-flex items-center"
       onMouseEnter={tooltip.scheduleOpen}
-      onMouseLeave={tooltip.close}
+      onMouseLeave={tooltip.scheduleClose}
       onFocus={tooltip.scheduleOpen}
       onBlur={tooltip.close}
       onKeyDown={(e) => {
@@ -32,7 +32,11 @@ export function HeaderHelpLabel({
       <span>{label}</span>
       {tooltip.isOpen && typeof document !== "undefined"
         ? createPortal(
-            <FloatingTooltip id={tooltip.tooltipId} position={tooltip.position}>
+            <FloatingTooltip
+              id={tooltip.tooltipId}
+              position={tooltip.position}
+              {...tooltip.hoverBridge}
+            >
               {helpText}
             </FloatingTooltip>,
             document.body,
