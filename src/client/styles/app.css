@@ -214,6 +214,50 @@ select {
   body {
     overscroll-behavior: none;
   }
+
+  /* 24px is the WCAG floor for a target; a thumb wants closer to 32. The
+     extra-small button is used for row and card actions, which sit close
+     together, so it is the one that mis-taps. Sizes grow only where the
+     pointer is a finger, so the dense desktop tables stay dense. */
+  .btn-xs {
+    min-height: 2rem;
+    min-width: 2rem;
+  }
+  .btn-sm {
+    min-height: 2.5rem;
+  }
+}
+
+/* Headings break evenly and paragraphs avoid a one-word last line. Both are
+   pure typography, ignored by a browser that lacks them. */
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+p {
+  text-wrap: pretty;
+}
+
+/* A focused control must not sit under the sticky mobile top bar (WCAG 2.4.11). */
+html {
+  scroll-padding-top: 4.5rem;
+}
+
+/* The one place the accent is allowed to glow: where you are. A soft halo on
+   the active navigation bar, and a barely-there lift on the primary button
+   while the pointer is over it. Both are skipped when motion is reduced. */
+.nav-active-bar {
+  box-shadow: 0 0 10px 1px
+    color-mix(in oklab, var(--color-primary) 55%, transparent);
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .btn-primary:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow:
+      var(--shadow-raise),
+      0 6px 18px -8px color-mix(in oklab, var(--color-primary) 60%, transparent);
+  }
 }
 
 /* Dark mode: neutral interactive surfaces should lift above the panel, not

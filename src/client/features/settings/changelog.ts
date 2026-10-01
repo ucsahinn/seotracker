@@ -1,12 +1,15 @@
 import raw from "../../../../CHANGELOG.md?raw";
 
+/** A line of prose, or a fenced command the reader will want to copy. */
+export type ChangelogItem = { text: string; code: boolean };
+
 export type ChangelogEntry = {
   version: string;
   /** Already formatted in the source; shown as written. */
   date: string | null;
   /** The paragraph under the heading, when there is one. */
   intro: string;
-  sections: { heading: string; items: string[] }[];
+  sections: { heading: string; items: ChangelogItem[] }[];
 };
 
 /**
@@ -25,7 +28,8 @@ export type ChangelogEntry = {
 function parseChangelog(source: string): ChangelogEntry[] {
   const entries: ChangelogEntry[] = [];
   let entry: ChangelogEntry | null = null;
-  let section: { heading: string; items: string[] } | null = null;
+  let section: { heading: string; items: ChangelogItem[] } | null = null;
+  let codeLines: string[] = [];
   let inFence = false;
   let paragraphOpen = false;
 
@@ -48,6 +52,26 @@ function parseChangelog(source: string): ChangelogEntry[] {
     }
     if (!entry) continue;
 
+    /*
+     * Fences first: a command line inside one must not be read as a bullet,
+     * a heading or a wrapped continuation. A fenced block is kept as a code
+     * item, because the command inside it is what the reader came for and
+     * the sentence around it only says to run it.
+     */
+    if (line.trim().startsWith("```")) {
+      if (inFence && section && codeLines.length > 0) {
+        section.items.push({ text: codeLines.join("\n"), code: true });
+      }
+      codeLines = [];
+      inFence = !inFence;
+      paragraphOpen = false;
+      continue;
+    }
+    if (inFence) {
+      codeLines.push(line.trimEnd());
+      continue;
+    }
+
     const heading = /^### (.+)$/.exec(line.trim());
     if (heading) {
       section = { heading: heading[1], items: [] };
@@ -58,15 +82,16 @@ function parseChangelog(source: string): ChangelogEntry[] {
 
     const bullet = /^- (.+)$/.exec(line);
     if (bullet && section) {
-      section.items.push(bullet[1]);
+      section.items.push({ text: bullet[1], code: false });
       paragraphOpen = false;
       continue;
     }
 
     // A wrapped continuation of the bullet above it.
     const continuation = /^\s{2,}(\S.*)$/.exec(line);
-    if (continuation && section && section.items.length > 0) {
-      section.items[section.items.length - 1] += ` ${continuation[1]}`;
+    const last = section?.items.at(-1);
+    if (continuation && last && !last.code) {
+      last.text += ` ${continuation[1]}`;
       continue;
     }
 
@@ -86,21 +111,13 @@ function parseChangelog(source: string): ChangelogEntry[] {
      *
      * A release note is not always a list: "what you have to do first" is a
      * paragraph and a command, and writing it as a bullet to satisfy the
-     * parser would be the tail wagging the dog. Fenced code is skipped --
-     * the screen has nowhere to put a code block, and the sentence around
-     * it already says what to run.
+     * parser would be the tail wagging the dog.
      */
-    if (text.startsWith("```")) {
-      inFence = !inFence;
-      paragraphOpen = false;
-      continue;
-    }
-    if (inFence) continue;
-
-    if (paragraphOpen && section.items.length > 0) {
-      section.items[section.items.length - 1] += ` ${text}`;
+    const tail = section.items.at(-1);
+    if (paragraphOpen && tail && !tail.code) {
+      tail.text += ` ${text}`;
     } else {
-      section.items.push(text);
+      section.items.push({ text, code: false });
       paragraphOpen = true;
     }
   }

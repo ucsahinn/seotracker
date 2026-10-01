@@ -119,7 +119,7 @@ describe("OpportunitiesPage", () => {
     renderPage();
 
     const tile = await screen.findByRole("button", {
-      name: /Analytics'te karşılığı yok.*tanesi/,
+      name: /Analytics\s*'te karşılığı yok.*tanesi/,
     });
     // The tile counts every candidate; its click lists only the returned rows.
     expect(tile.textContent).toContain("Listelenen");

@@ -14,10 +14,22 @@ type Props = {
   className?: string;
 };
 
+const REGION_NAMES = new Intl.DisplayNames(["tr"], { type: "region" });
+
+/** The country in Turkish; the English data label when the runtime has no name for the code. */
+function countryName(option: LocationOption): string {
+  try {
+    return REGION_NAMES.of(option.shortLabel) ?? option.label;
+  } catch {
+    return option.label;
+  }
+}
+
 function matches(option: LocationOption, query: string): boolean {
   const needle = searchFold(query.trim());
   if (!needle) return true;
   return (
+    searchFold(countryName(option)).includes(needle) ||
     searchFold(option.label).includes(needle) ||
     searchFold(option.shortLabel).includes(needle)
   );
@@ -113,7 +125,9 @@ export function LocationSelect({
         aria-expanded={open}
         onClick={() => setOpen((prev) => !prev)}
       >
-        <span className="truncate">{selected?.label ?? "Ülke seçin"}</span>
+        <span className="truncate">
+          {selected ? countryName(selected) : "Ülke seçin"}
+        </span>
       </button>
 
       {open ? (
@@ -158,7 +172,9 @@ export function LocationSelect({
                       onClick={() => select(option)}
                       onMouseEnter={() => setActiveIndex(index)}
                     >
-                      <span className="flex-1 truncate">{option.label}</span>
+                      <span className="flex-1 truncate">
+                        {countryName(option)}
+                      </span>
                       {isSelected ? (
                         <Check className="size-4 shrink-0 text-primary" />
                       ) : null}

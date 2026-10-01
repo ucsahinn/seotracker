@@ -89,13 +89,10 @@ export function ArchiveStatus({
      */
     return (
       <p className="text-xs text-muted">
-        Arşiv boş.{" "}
         {data.scannedThrough
-          ? `${formatDate(data.scannedThrough)} tarihine kadar kontrol edildi, veri bulunamadı.`
+          ? `${formatDate(data.scannedThrough)} tarihine kadar kontrol edildi, kelime verisi bulunamadı.`
           : "Veri yükleme henüz başlamadı."}
-        {data.hasMore
-          ? " Kalan günler sonraki açılışlarda yüklenecek."
-          : " Henüz kelime düzeyinde veri gelmedi. Search Console siteniz için toplam rakamları veriyorsa (Arama performansı'na bakın), hangi kelimeyle arandığınızı henüz paylaşmamış demektir. Az trafikli sitelerde bu normaldir; veri geldikçe burada birikir."}
+        {data.hasMore ? " Kalan günler sonraki açılışlarda yüklenecek." : ""}
       </p>
     );
   }

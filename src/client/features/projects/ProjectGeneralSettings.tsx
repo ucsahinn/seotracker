@@ -121,7 +121,7 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
   return (
     <section className="space-y-3">
       <SettingsHeading
-        title="Genel"
+        title="Temel bilgiler"
         help="Site adresi, denetimin nereden başlayacağını belirler. Ülke ve dil, Search Console verisinin hangi pazar için okunacağını; yanlış seçilirse sayılar doğru ama sizinle ilgisiz olur."
       />
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -137,6 +137,7 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
             type="text"
             value={name}
             onChange={(event) => setName(event.target.value)}
+            aria-label="Ad"
             maxLength={120}
             className="input input-bordered w-full"
           />
@@ -155,6 +156,7 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
             value={domain}
             onChange={(event) => setDomain(event.target.value)}
             placeholder="example.com"
+            aria-label="Alan adı"
             maxLength={255}
             className="input input-bordered w-full"
           />

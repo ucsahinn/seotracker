@@ -45,7 +45,7 @@ export const KIND_COPY = {
   deep: {
     label: "Derinde kalan",
     hint: "20. sıranın gerisinde ama aramaya karşılık gelen bir talep var. Genişletme ya da birleştirme kararı gerekir.",
-    color: "var(--color-info)",
+    color: "color-mix(in oklab, var(--color-base-content) 45%, transparent)",
     todo: [
       "Sayfa gerçekten bu konunun cevabı mı? Değilse hangi bölümler eksik, yazın.",
       "Aynı konuya değinen başka sayfanız varsa birleştirmeyi ve yönlendirme kurmayı düşünün.",

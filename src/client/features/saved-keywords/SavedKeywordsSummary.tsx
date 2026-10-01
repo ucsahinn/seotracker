@@ -99,27 +99,39 @@ export function SavedKeywordsSummary({
         {formatCount(keywords.length)} kelimenin {formatCount(ranked)} tanesi
         Search Console arşivinde var; sıralar son {POSITION_WINDOW_DAYS} günün
         ortalaması.
-        {positions.archiveRows === 0 ? (
-          <>
-            {" "}
-            Henüz kelime düzeyinde veri gelmediği için hiçbirinin sırası yok.
-            Search Console toplam rakamları veriyor olabilir (Arama
-            performansı'na bakın); ama hangi kelimeyle arandığınızı henüz
-            paylaşmadı. Az trafikli sitelerde bu normaldir.{" "}
+        {positions.archiveRows >= TRACKED_LIMIT
+          ? ` Arşivden en çok ${formatCount(TRACKED_LIMIT)} sorgu okunuyor; bu yüzden bazı kelimelerin sırası eksik görünebilir.`
+          : null}
+      </p>
+
+      {positions.archiveRows === 0 ? (
+        <div className="rounded-box border border-base-300 bg-base-200/40 px-4 py-3 text-sm text-muted">
+          <p className="font-medium text-base-content">
+            Kelimelerinizin sırası henüz yok
+          </p>
+          <p className="mt-1">
+            Sıralar, Search Console'un hangi kelimeyle arandığınızı paylaşmasına
+            bağlı. Az ziyaretçisi olan sitelerde bu normaldir; veri gelince
+            sıralar kendiliğinden dolar. Toplam rakamlara{" "}
+            <Link
+              to="/p/$projectId/search-performance"
+              params={{ projectId }}
+              className="link link-primary"
+            >
+              Arama performansı
+            </Link>
+            'ndan, bağlantı durumuna{" "}
             <Link
               to="/p/$projectId/settings/integrations"
               params={{ projectId }}
               className="link link-primary"
             >
-              Search Console bağlantısını kontrol edin
-            </Link>
-            .
-          </>
-        ) : null}
-        {positions.archiveRows >= TRACKED_LIMIT
-          ? ` Arşivden en çok ${formatCount(TRACKED_LIMIT)} sorgu okunuyor; bu yüzden bazı kelimelerin sırası eksik görünebilir.`
-          : null}
-      </p>
+              entegrasyon ayarlarından
+            </Link>{" "}
+            bakabilirsiniz.
+          </p>
+        </div>
+      ) : null}
 
       <FilterChips<PositionFilter>
         label="Sıraya göre hızlı filtreler"

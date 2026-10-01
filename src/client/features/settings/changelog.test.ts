@@ -51,7 +51,7 @@ describe("changelog", () => {
   it("joins a bullet that wraps across lines", () => {
     const wrapped = CHANGELOG_ENTRIES.flatMap((entry) =>
       entry.sections.flatMap((section) => section.items),
-    ).filter((item) => item.length > 90);
+    ).filter((item) => item.text.length > 90);
     expect(wrapped.length).toBeGreaterThan(0);
   });
 
@@ -70,18 +70,20 @@ describe("changelog", () => {
   });
 
   /*
-   * The screen has nowhere to render a fenced block, and the sentence around
-   * it already says what to run -- so the fence markers must not leak into
-   * the text as literal backticks.
+   * The command in a fenced block is the point of a "what to do first"
+   * section, and the sentence around it only says to run it -- so it is kept
+   * as a code item of its own, without the fence markers.
    */
-  it("leaves fenced code out of the items", () => {
+  it("keeps fenced code as a code item without the fences", () => {
     const items = CHANGELOG_ENTRIES.flatMap((entry) =>
       entry.sections.flatMap((section) => section.items),
     );
-    expect(items.some((item) => item.includes("```"))).toBe(false);
-    expect(items.some((item) => item.startsWith("docker compose exec"))).toBe(
-      false,
-    );
+    expect(items.some((item) => item.text.includes("```"))).toBe(false);
+    expect(
+      items.some(
+        (item) => item.code && item.text.startsWith("docker compose exec"),
+      ),
+    ).toBe(true);
   });
 
   it("strips the inline markdown rather than printing it", () => {

@@ -57,7 +57,7 @@ export function OpportunityKinds({
             disabled={entry.pages === 0}
             aria-pressed={active}
             onClick={() => onSelect(active ? null : kind.id)}
-            className={`rounded-box border px-4 py-3 text-left transition-colors disabled:cursor-default disabled:opacity-60 ${
+            className={`flex flex-col items-start justify-start rounded-box border px-4 py-3 text-left transition-colors disabled:cursor-default disabled:opacity-60 ${
               active
                 ? "border-primary bg-primary/5"
                 : "border-base-300 bg-base-100 enabled:hover:border-primary/40"

@@ -19,12 +19,24 @@ export function GoogleConnectedState({
   canManageAccounts: boolean;
   disabled: boolean;
 }) {
+  /* Search Console's own spelling of a domain property is "sc-domain:host",
+     which reads as a typo to anyone who did not pick it from a list. */
+  const domainProperty = property.startsWith("sc-domain:")
+    ? property.slice("sc-domain:".length)
+    : null;
+
   return (
     <div className="space-y-4">
       <div className="min-w-0">
         <p className="break-words text-sm font-semibold">
-          {property || detail}
+          {domainProperty ?? (property || detail)}
         </p>
+        {domainProperty ? (
+          <p className="mt-1 text-xs text-muted">
+            Alan adı mülkü: tüm alt alan adlarını ve http/https adreslerini
+            kapsar.
+          </p>
+        ) : null}
         {detail ? (
           <p className="mt-1 text-xs text-muted">
             ID {detail.replace(/^properties\//, "")}

@@ -2,9 +2,9 @@ import { ChevronRight } from "lucide-react";
 import * as React from "react";
 import { formatDate } from "@/client/lib/format";
 import { SettingsHeading } from "@/client/components/HelpTip";
+import { CopyButton } from "@/client/components/CopyButton";
 import {
   CHANGELOG_ENTRIES,
-  plainText,
   type ChangelogEntry,
 } from "@/client/features/settings/changelog";
 
@@ -48,6 +48,38 @@ export function WhatsNewSection({ version }: { version: string }) {
   );
 }
 
+const INLINE = /(\*\*[^*]+\*\*|`[^`]+`|\[[^\]]+\]\([^)]*\))/g;
+
+/**
+ * The inline markdown these notes use -- bold, code, links -- as elements.
+ * Built as React nodes rather than HTML, so a note can never inject markup;
+ * a link keeps its words and drops its address, as the plain-text pass did.
+ */
+function InlineText({ text }: { text: string }) {
+  return (
+    <>
+      {text.split(INLINE).map((part, index) => {
+        if (part.startsWith("**") && part.endsWith("**")) {
+          return (
+            <strong key={index} className="font-semibold text-base-content">
+              {part.slice(2, -2)}
+            </strong>
+          );
+        }
+        if (part.startsWith("`") && part.endsWith("`")) {
+          return (
+            <code key={index} className="text-xs">
+              {part.slice(1, -1)}
+            </code>
+          );
+        }
+        const link = /^\[([^\]]+)\]\([^)]*\)$/.exec(part);
+        return link ? link[1] : part;
+      })}
+    </>
+  );
+}
+
 function ReleaseNotes({
   entry,
   isRunning,
@@ -84,8 +116,8 @@ function ReleaseNotes({
       {open ? (
         <div className="space-y-4 px-4 pb-4 pl-11">
           {entry.intro ? (
-            <p className="max-w-prose text-sm text-muted">
-              {plainText(entry.intro)}
+            <p className="max-w-prose text-sm leading-relaxed">
+              <InlineText text={entry.intro} />
             </p>
           ) : null}
           {entry.sections.map((section) => (
@@ -93,15 +125,31 @@ function ReleaseNotes({
               <h3 className="text-xs font-semibold uppercase tracking-wider text-muted">
                 {section.heading}
               </h3>
-              <ul className="space-y-1.5">
-                {section.items.map((item, index) => (
-                  <li
-                    key={index}
-                    className="max-w-prose text-sm leading-relaxed text-muted"
-                  >
-                    {plainText(item)}
-                  </li>
-                ))}
+              <ul className="space-y-2 pl-4">
+                {section.items.map((item, index) =>
+                  item.code ? (
+                    <li key={index} className="max-w-prose list-none">
+                      <div className="flex items-start justify-between gap-2 rounded-field border border-[var(--hairline)] bg-base-200 px-3 py-2">
+                        <pre className="min-w-0 overflow-x-auto whitespace-pre-wrap break-all text-xs">
+                          <code>{item.text}</code>
+                        </pre>
+                        <CopyButton
+                          iconOnly
+                          value={item.text}
+                          label="Komutu kopyala"
+                          successMessage="Komut kopyalandı"
+                        />
+                      </div>
+                    </li>
+                  ) : (
+                    <li
+                      key={index}
+                      className="max-w-prose list-disc text-sm leading-relaxed marker:text-subtle"
+                    >
+                      <InlineText text={item.text} />
+                    </li>
+                  ),
+                )}
               </ul>
             </div>
           ))}

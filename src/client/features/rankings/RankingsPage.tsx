@@ -31,6 +31,7 @@ import {
   type MoveId,
 } from "@/client/features/rankings/rankingMoves";
 import { ArchiveStatus } from "@/client/features/rankings/ArchiveStatus";
+import { EmptyArchivePanel } from "@/client/features/rankings/EmptyArchivePanel";
 import {
   compareTracked,
   type SortKey,
@@ -157,20 +158,16 @@ export function RankingsPage({
   const hasChange = fetched.some((row) => row.delta !== null);
   const archiveEmpty = sync.data?.rowCount === 0;
   const searching = search.trim() !== "";
-  const emptyTitle = archiveEmpty
-    ? "Arşiv henüz boş"
-    : searching
-      ? "Aramanıza uyan sorgu yok"
-      : narrowed
-        ? "Bu filtreye uyan sorgu yok"
-        : "Bu aralıkta kayıtlı sorgu yok";
-  const emptyDescription = archiveEmpty
-    ? "Arşivin durumu yukarıda yazıyor; Search Console veri döndürmeye başlayınca burada birikir."
-    : searching
-      ? "Arama kutusunu temizleyin ya da başka bir sorgu deneyin."
-      : narrowed
-        ? "Sıra dağılımındaki çubuğu ya da hızlı filtreyi kaldırın."
-        : "Daha geniş bir dönem seçmeyi deneyin.";
+  const emptyTitle = searching
+    ? "Aramanıza uyan sorgu yok"
+    : narrowed
+      ? "Bu filtreye uyan sorgu yok"
+      : "Bu aralıkta kayıtlı sorgu yok";
+  const emptyDescription = searching
+    ? "Arama kutusunu temizleyin ya da başka bir sorgu deneyin."
+    : narrowed
+      ? "Sıra dağılımındaki çubuğu ya da hızlı filtreyi kaldırın."
+      : "Daha geniş bir dönem seçmeyi deneyin.";
   /*
    * Paginated in the browser over the whole fetched set. The screen used to
    * ask Google's archive for 25 rows and render them with no pagination and
@@ -241,128 +238,134 @@ export function RankingsPage({
         )
       ) : null}
 
-      <PositionBandBars
-        rows={fetched}
-        active={band}
-        onChange={(next) => {
-          setBand(next);
-          setPage(1);
-        }}
-      />
+      {archiveEmpty ? (
+        <EmptyArchivePanel projectId={projectId} />
+      ) : (
+        <>
+          <PositionBandBars
+            rows={fetched}
+            active={band}
+            onChange={(next) => {
+              setBand(next);
+              setPage(1);
+            }}
+          />
 
-      <div className="overflow-hidden rounded-box border border-base-300 bg-base-100">
-        <div className="flex flex-col gap-3 border-b border-base-300 px-4 py-3 lg:flex-row lg:items-center lg:justify-between">
-          <input
-            type="search"
-            className="input input-bordered input-sm w-full sm:max-w-xs"
-            placeholder="Sorgu içinde ara"
-            aria-label="Sorgu içinde ara"
-            value={search}
-            onChange={(event) => {
-              setSearch(event.target.value);
-              setPage(1);
-            }}
-          />
-          {fetched.length > 0 ? (
-            <div className="flex flex-col gap-2">
-              <FilterChips<MoveId>
-                label="Değişim filtreleri"
-                active={move}
-                onChange={(next) => {
-                  setMove(next);
+          <div className="overflow-hidden rounded-box border border-base-300 bg-base-100">
+            <div className="flex flex-col gap-3 border-b border-base-300 px-4 py-3 lg:flex-row lg:items-center lg:justify-between">
+              <input
+                type="search"
+                className="input input-bordered input-sm w-full sm:max-w-xs"
+                placeholder="Sorgu içinde ara"
+                aria-label="Sorgu içinde ara"
+                value={search}
+                onChange={(event) => {
+                  setSearch(event.target.value);
                   setPage(1);
                 }}
-                chips={[
-                  {
-                    id: "risers",
-                    label: "Yükselenler",
-                    icon: ArrowUp,
-                    count: moveCounts.risers,
-                    hint: "Önceki döneme göre en az yarım sıra yükselen sorgular.",
-                  },
-                  {
-                    id: "fallers",
-                    label: "Düşenler",
-                    icon: ArrowDown,
-                    count: moveCounts.fallers,
-                    hint: "Önceki döneme göre en az yarım sıra düşen sorgular.",
-                  },
-                  {
-                    id: "top10",
-                    label: "Şu an ilk 10'da",
-                    icon: Trophy,
-                    count: moveCounts.top10,
-                    hint: "Şimdi ortalama 10 veya daha iyi sırada olan sorgular; yeni yükselip ilk 10'a girenler de dahildir. Yalnızca önceki dönemde de verisi olanlar sayılır; üstteki çubuk ise şu anki tüm sorguları sayar.",
-                  },
-                  {
-                    id: "lost",
-                    label: "İlk 10'dan çıkanlar",
-                    icon: LogOut,
-                    count: moveCounts.lost,
-                    hint: "Önceki dönemde ilk 10'da olup şimdi ilk 10'un dışına çıkan sorgular.",
-                  },
-                ]}
               />
-              <FilterChips<ChipId>
-                label="Hızlı filtreler"
-                active={chip}
-                onChange={(next) => {
-                  setChip(next);
-                  setPage(1);
-                }}
-                chips={[
-                  {
-                    id: "highImpressions",
-                    label: "Gösterimi yüksek",
-                    icon: Eye,
-                    count: chipCounts.highImpressions,
-                    hint: `${formatNumber(HIGH_IMPRESSIONS)} veya daha fazla gösterim alan sorgular.`,
-                  },
-                  {
-                    id: "noClicks",
-                    label: "Hiç tıklanmayan",
-                    icon: CircleSlash,
-                    count: chipCounts.noClicks,
-                    hint: "Gösterilmiş ama hiç tıklanmamış sorgular.",
-                  },
-                ]}
-              />
+              {fetched.length > 0 ? (
+                <div className="flex flex-col gap-2">
+                  <FilterChips<MoveId>
+                    label="Değişim filtreleri"
+                    active={move}
+                    onChange={(next) => {
+                      setMove(next);
+                      setPage(1);
+                    }}
+                    chips={[
+                      {
+                        id: "risers",
+                        label: "Yükselenler",
+                        icon: ArrowUp,
+                        count: moveCounts.risers,
+                        hint: "Önceki döneme göre en az yarım sıra yükselen sorgular.",
+                      },
+                      {
+                        id: "fallers",
+                        label: "Düşenler",
+                        icon: ArrowDown,
+                        count: moveCounts.fallers,
+                        hint: "Önceki döneme göre en az yarım sıra düşen sorgular.",
+                      },
+                      {
+                        id: "top10",
+                        label: "Şu an ilk 10'da",
+                        icon: Trophy,
+                        count: moveCounts.top10,
+                        hint: "Şimdi ortalama 10 veya daha iyi sırada olan sorgular; yeni yükselip ilk 10'a girenler de dahildir. Yalnızca önceki dönemde de verisi olanlar sayılır; üstteki çubuk ise şu anki tüm sorguları sayar.",
+                      },
+                      {
+                        id: "lost",
+                        label: "İlk 10'dan çıkanlar",
+                        icon: LogOut,
+                        count: moveCounts.lost,
+                        hint: "Önceki dönemde ilk 10'da olup şimdi ilk 10'un dışına çıkan sorgular.",
+                      },
+                    ]}
+                  />
+                  <FilterChips<ChipId>
+                    label="Hızlı filtreler"
+                    active={chip}
+                    onChange={(next) => {
+                      setChip(next);
+                      setPage(1);
+                    }}
+                    chips={[
+                      {
+                        id: "highImpressions",
+                        label: "Gösterimi yüksek",
+                        icon: Eye,
+                        count: chipCounts.highImpressions,
+                        hint: `${formatNumber(HIGH_IMPRESSIONS)} veya daha fazla gösterim alan sorgular.`,
+                      },
+                      {
+                        id: "noClicks",
+                        label: "Hiç tıklanmayan",
+                        icon: CircleSlash,
+                        count: chipCounts.noClicks,
+                        hint: "Gösterilmiş ama hiç tıklanmamış sorgular.",
+                      },
+                    ]}
+                  />
+                </div>
+              ) : null}
             </div>
-          ) : null}
-        </div>
-        <TrackedQueriesTable
-          projectId={projectId}
-          rows={rows}
-          sorting={sorting}
-          tracked={tracked}
-          selected={selected}
-          onSelect={setSelected}
-          emptyTitle={emptyTitle}
-          emptyDescription={emptyDescription}
-        />
-        {allRows.length > PAGE_SIZES[0] ? (
-          <TablePagination
-            page={current}
-            pageSize={pageSize}
-            pageSizes={PAGE_SIZES}
-            totalCount={allRows.length}
-            hasNextPage={current < pageCount}
-            isLoading={tracked.isFetching}
-            onPageChange={setPage}
-            onPageSizeChange={(next) => {
-              setPageSize(next);
-              setPage(1);
-            }}
-          />
-        ) : null}
-        {tracked.data?.truncated ? (
-          <p className="border-t border-base-300 px-4 py-2 text-xs text-muted">
-            Arşivde daha fazla sorgu var; bu liste en çok gösterim alan{" "}
-            {formatNumber(fetched.length)} tanesiyle sınırlı. Aralığı daraltarak
-            farklı sorguları görebilirsiniz.
-          </p>
-        ) : null}
-      </div>
+            <TrackedQueriesTable
+              projectId={projectId}
+              rows={rows}
+              sorting={sorting}
+              tracked={tracked}
+              selected={selected}
+              onSelect={setSelected}
+              emptyTitle={emptyTitle}
+              emptyDescription={emptyDescription}
+            />
+            {allRows.length > PAGE_SIZES[0] ? (
+              <TablePagination
+                page={current}
+                pageSize={pageSize}
+                pageSizes={PAGE_SIZES}
+                totalCount={allRows.length}
+                hasNextPage={current < pageCount}
+                isLoading={tracked.isFetching}
+                onPageChange={setPage}
+                onPageSizeChange={(next) => {
+                  setPageSize(next);
+                  setPage(1);
+                }}
+              />
+            ) : null}
+            {tracked.data?.truncated ? (
+              <p className="border-t border-base-300 px-4 py-2 text-xs text-muted">
+                Arşivde daha fazla sorgu var; bu liste en çok gösterim alan{" "}
+                {formatNumber(fetched.length)} tanesiyle sınırlı. Aralığı
+                daraltarak farklı sorguları görebilirsiniz.
+              </p>
+            ) : null}
+          </div>
+        </>
+      )}
 
       {selected ? (
         /*

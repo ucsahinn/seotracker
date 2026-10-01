@@ -113,8 +113,10 @@ export function AuditTrendChart({ history }: { history: HistoryRow[] }) {
             <XAxis
               dataKey="date"
               {...CHART_AXIS}
-              tickFormatter={formatDate}
-              minTickGap={24}
+              // Several audits often share a day, so a date-only label repeats; the
+              // time makes each tick one audit, and the gap hides overlaps.
+              tickFormatter={formatDateTime}
+              minTickGap={36}
             />
             <YAxis
               {...CHART_AXIS}

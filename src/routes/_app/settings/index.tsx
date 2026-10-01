@@ -27,7 +27,10 @@ function PersonalSettings() {
   const { themePreference, setThemePreference } = useThemePreference();
 
   return (
-    <div className="space-y-10">
+    /* A hairline between blocks instead of ten rows of air: with only
+       whitespace the sections ran into one long form and the small headings
+       were the only thing saying where one ended. */
+    <div className="divide-y divide-[var(--hairline)] [&>*]:py-8 [&>*:first-child]:pt-0 [&>*:last-child]:pb-0">
       <section className="space-y-3">
         <SettingsHeading
           title="Görünüm"

@@ -87,7 +87,7 @@ export function SettingsHeading({
   help: string;
 }) {
   return (
-    <h2 className="flex items-center gap-1.5 text-sm font-medium text-muted">
+    <h2 className="flex items-center gap-1.5 text-base font-semibold">
       {title}
       <HelpTip label={title}>{help}</HelpTip>
     </h2>

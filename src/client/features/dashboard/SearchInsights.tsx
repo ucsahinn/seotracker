@@ -71,7 +71,7 @@ export function SearchInsights({
   const striking = report.strikingDistance.slice(0, TOP_QUERIES);
 
   return (
-    <div className="stagger grid items-start gap-5 lg:grid-cols-2">
+    <div className="stagger grid gap-5 lg:grid-cols-2">
       {trend ? (
         <div style={{ animationDelay: "0ms" }}>
           <CardShell

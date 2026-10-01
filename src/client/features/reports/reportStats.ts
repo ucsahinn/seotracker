@@ -4,6 +4,21 @@ import type { ReportListItem } from "@/serverFunctions/reports";
 /** Reports with no template and no skill share this one label. */
 export const OTHER_KIND = "Belirtilmemiş";
 
+/** The skill names agents write, said the way the rest of the screen speaks. */
+const KIND_LABELS: Record<string, string> = {
+  "seo-audit": "SEO denetimi",
+  "seo-check-in": "Dönem karşılaştırması",
+  "seo-triage": "Trafik düşüşü incelemesi",
+  "seo-report": "SEO raporu",
+  "seo-coach": "Koçluk notu",
+  "seo-project-setup": "Proje kurulumu",
+};
+
+/** What a person reads for a kind; an unknown kind keeps its own name. */
+export function kindLabel(kind: string): string {
+  return KIND_LABELS[kind] ?? kind;
+}
+
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 
 export type ReportFilter = "all" | "recent" | "template" | "skill";
@@ -66,7 +81,7 @@ export function kindSegments(
   );
   const head = sorted.slice(0, max).map(([key, value]) => ({
     key,
-    label: key,
+    label: kindLabel(key),
     value,
   }));
   const rest = sorted.slice(max).reduce((sum, [, value]) => sum + value, 0);

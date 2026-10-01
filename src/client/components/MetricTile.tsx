@@ -52,7 +52,8 @@ export function MetricTile({
   /** Lower is better, as with an average search position. */
   inverted = false,
 }: {
-  label: string;
+  /** A node so a Latin brand word can carry lang="en": uppercasing it under lang="tr" turns "Analytics" into "ANALYTİCS". */
+  label: React.ReactNode;
   value: string | null;
   delta?: MetricDelta;
   deltaTitle?: string;

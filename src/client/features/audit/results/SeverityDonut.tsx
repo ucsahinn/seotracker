@@ -20,13 +20,13 @@ const SEVERITY: Array<{
   {
     key: "critical",
     label: "Kritik",
-    hint: "Google'ın sitenizi anlamasını engelliyor",
+    hint: "Google siteyi anlayamıyor",
     color: "var(--color-error)",
   },
   {
     key: "warning",
     label: "Uyarı",
-    hint: "Sıralamanızı ve tıklanmanızı düşürüyor",
+    hint: "Sıralamayı ve tıklamayı düşürür",
     color: "var(--color-warning)",
   },
   {

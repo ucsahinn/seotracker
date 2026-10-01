@@ -55,7 +55,7 @@ function SidebarNavLink({
       {({ isActive }: { isActive: boolean }) => (
         <>
           {isActive ? (
-            <div className="absolute left-0 top-1 bottom-1 w-[3px] rounded-r-full bg-primary" />
+            <div className="nav-active-bar absolute left-0 top-1 bottom-1 w-[3px] rounded-r-full bg-primary" />
           ) : null}
           <Icon className="h-4 w-4 shrink-0" />
           <span className="truncate">{label}</span>

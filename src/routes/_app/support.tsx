@@ -28,14 +28,17 @@ function SupportPage() {
           <span className="font-medium text-base-content">
             Konteyner günlüğü
           </span>{" "}
-          — <code className="text-xs">docker compose logs -f</code>{" "}
-          <CopyButton
-            iconOnly
-            value="docker compose logs -f"
-            label="Komutu kopyala"
-            successMessage="Komut kopyalandı"
-          />
-          . Açılış kontrolleri uygulama başlamadan önce buraya yazılır.
+          — Açılış kontrolleri uygulama başlamadan önce buraya yazılır. Komut:{" "}
+          {/* One unit, so the copy button never lands on a line of its own. */}
+          <span className="inline-flex items-center gap-1 whitespace-nowrap align-middle">
+            <code className="text-xs">docker compose logs -f</code>
+            <CopyButton
+              iconOnly
+              value="docker compose logs -f"
+              label="Komutu kopyala"
+              successMessage="Komut kopyalandı"
+            />
+          </span>
         </li>
         <li>
           <span className="font-medium text-base-content">Sağlık ucu</span> —{" "}

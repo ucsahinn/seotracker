@@ -20,12 +20,14 @@ const MAX_BARS = 8;
  * Severity decides the bar's colour, and the bar also carries its count and
  * its name — because `--color-error` and `--color-warning` sit at nearly the
  * same lightness, so a reader who cannot separate them must still be able to
- * read the chart. Direction is never colour alone.
+ * read the chart. Direction is never colour alone. Info uses the same blue
+ * as the severity ring beside it; a grey bar on the dark surface all but
+ * disappeared.
  */
 const SEVERITY_FILL: Record<IssueSeverity, string> = {
   critical: "var(--color-error)",
   warning: "var(--color-warning)",
-  info: "var(--color-base-300)",
+  info: "var(--color-info)",
 };
 
 const SEVERITY_LABEL: Record<IssueSeverity, string> = {
@@ -89,7 +91,7 @@ export function IssueWorkloadChart({
         {onSelect ? " Bir çubuğa tıklayıp listeyi daraltın." : ""}
       </p>
       <Chart
-        height={Math.max(120, rows.length * 34)}
+        height={Math.max(140, rows.length * 40)}
         summary={`En çok sayfayı etkileyen sorun: ${top.title}, ${formatCount(top.pageCount)} sayfa. Grafikte ${rows.length} tür var.`}
         table={{
           caption: "Sorun türüne göre etkilenen sayfa sayısı",
@@ -112,7 +114,7 @@ export function IssueWorkloadChart({
             type="category"
             dataKey="title"
             {...CHART_AXIS}
-            width={150}
+            width={210}
             interval={0}
           />
           <Tooltip

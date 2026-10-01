@@ -62,6 +62,16 @@ const WINDOWS = [
 
 type WindowDays = (typeof WINDOWS)[number]["days"];
 
+/** "Analytics" is a Latin brand word; under lang="tr" the tile's uppercase would print it as "ANALYTİCS". */
+function AnalyticsLabel({ suffix }: { suffix: string }) {
+  return (
+    <>
+      <span lang="en">Analytics</span>
+      {suffix}
+    </>
+  );
+}
+
 export function OpportunitiesPage({
   projectId,
   windowDays,
@@ -254,34 +264,37 @@ function Report({
 
   return (
     <>
-      {data.truncated.gsc ? (
-        <p className="text-xs text-muted">
-          Search Console tek seferde sınırlı sayıda satır verir ve bu sınıra
-          ulaşıldı; gerçekte daha fazla aday sayfa olabilir.
-        </p>
-      ) : null}
+      {/* One block: three one-line notes read as one note, not three sections. */}
+      <div className="space-y-1">
+        {data.truncated.gsc ? (
+          <p className="text-xs text-muted">
+            Search Console tek seferde sınırlı sayıda satır verir ve bu sınıra
+            ulaşıldı; gerçekte daha fazla aday sayfa olabilir.
+          </p>
+        ) : null}
 
-      {data.warnings.includes("source_time_zones_differ") ? (
-        <p className="text-xs text-muted">
-          Search Console ve Analytics farklı saat dilimlerinde raporluyor;
-          günlük eşleşmeler bir gün kayabilir.
-        </p>
-      ) : null}
+        {data.warnings.includes("source_time_zones_differ") ? (
+          <p className="text-xs text-muted">
+            Search Console ve Analytics farklı saat dilimlerinde raporluyor;
+            günlük eşleşmeler bir gün kayabilir.
+          </p>
+        ) : null}
 
-      {/*
-       * The window the numbers below actually cover. It used to appear only
-       * in the empty state, so an operator reading a populated screen was
-       * never told which days it was about -- or that Search Console's
-       * newest finalised day is three days behind, which is why "bugün"
-       * is never the end of it.
-       */}
-      <p className="text-xs text-muted">
-        {describeWindow(
-          data.request.dateRange.startDate,
-          data.request.dateRange.endDate,
-          formatDate,
-        )}
-      </p>
+        {/*
+         * The window the numbers below actually cover. It used to appear only
+         * in the empty state, so an operator reading a populated screen was
+         * never told which days it was about -- or that Search Console's
+         * newest finalised day is three days behind, which is why "bugün"
+         * is never the end of it.
+         */}
+        <p className="text-xs text-muted">
+          {describeWindow(
+            data.request.dateRange.startDate,
+            data.request.dateRange.endDate,
+            formatDate,
+          )}
+        </p>
+      </div>
 
       <MetricRow>
         {/* `rowCount` is the slice, not a verdict: every candidate is
@@ -311,9 +324,9 @@ function Report({
             so it always equalled the row count while its hint described the
             Analytics match. This is the number the hint meant. */}
         <MetricTile
-          label="Analytics'te karşılığı var"
+          label={<AnalyticsLabel suffix="'te karşılığı var" />}
           value={formatNumber(data.coverage.matchedRows)}
-          hint={`${formatNumber(data.totalCandidateRows)} aday içinde · Bu sayfa için Google Analytics'te de ziyaret kaydı bulundu.`}
+          hint={`${formatNumber(data.totalCandidateRows)} aday içinde`}
         />
         {/* A count with no way to see those pages is a complaint, not a
             tool, so it applies the same filter the chip below does. The tile
@@ -326,12 +339,12 @@ function Report({
           }}
         >
           <MetricTile
-            label="Analytics'te karşılığı yok"
+            label={<AnalyticsLabel suffix="'te karşılığı yok" />}
             value={formatNumber(data.coverage.unmatchedGscRows)}
             hint={
               counts.no_analytics === 0
                 ? "Listedeki her sayfanın Analytics karşılığı var"
-                : `Analytics bu sayfaya hiç ziyaret görmemiş ya da adresi farklı yazılmış olabilir. Listelenen ${formatNumber(data.rowCount)} sayfanın ${formatNumber(counts.no_analytics)} tanesi · listele`
+                : `Listelenen ${formatNumber(data.rowCount)} sayfanın ${formatNumber(counts.no_analytics)} tanesi · listele`
             }
           />
         </TileButton>
@@ -386,18 +399,28 @@ function Report({
         }
       />
 
-      <p className="text-xs text-muted">
-        Puan = talep (%50) + iş değeri (%30) + yükselme kolaylığı (%20).
-        Analytics&apos;te karşılığı bulunmayan sayfalar da puanlanır; iş
-        değerinde haksız yere sıfır almamaları için nötr bir orta değer verilir.
-        İş değeri{" "}
-        {data.scoring.businessValueMetric === "engagementRate"
-          ? data.scoring.engagementFallback
-            ? "dönüşüm tanımlı olmadığı için etkileşim oranına"
-            : "etkileşim oranına"
-          : "dönüşümlere"}{" "}
-        göre hesaplandı.
-      </p>
+      <div className="space-y-1 text-xs text-muted">
+        <p>
+          <span className="font-medium text-base-content">
+            Puan nasıl hesaplanır?
+          </span>{" "}
+          Talep (%50) + iş değeri (%30) + yükselme kolaylığı (%20). İş değeri{" "}
+          {data.scoring.businessValueMetric === "engagementRate"
+            ? data.scoring.engagementFallback
+              ? "dönüşüm tanımlı olmadığı için etkileşim oranına"
+              : "etkileşim oranına"
+            : "dönüşümlere"}{" "}
+          göre hesaplandı.
+        </p>
+        <p>
+          <span className="font-medium text-base-content">
+            Analytics&apos;te karşılığı yok ne demek?
+          </span>{" "}
+          Analytics o sayfaya hiç ziyaret görmemiş ya da adresi farklı yazılmış
+          olabilir. Bu sayfalar da puanlanır; iş değerinde haksız yere sıfır
+          almamaları için nötr bir orta değer verilir.
+        </p>
+      </div>
     </>
   );
 }

@@ -139,7 +139,7 @@ function AiPage() {
                itself, capped at 60 characters but not guaranteed to contain a
                space. */
           <div
-            className="flex min-w-0 flex-col items-start gap-1 sm:items-end"
+            className="flex min-w-0 flex-col items-start gap-1"
             aria-live="polite"
           >
             {connection.isPending ? (

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   filterCounts,
+  kindLabel,
   kindSegments,
   latestUpdate,
   reportKind,
@@ -19,6 +20,11 @@ describe("report stats", () => {
     expect(reportKind(make("Aylık", "seo-audit"))).toBe("Aylık");
     expect(reportKind(make(null, "seo-audit"))).toBe("seo-audit");
     expect(reportKind(make(null, null))).toBe(OTHER_KIND);
+  });
+
+  it("says a known skill in Turkish and leaves any other kind as written", () => {
+    expect(kindLabel("seo-audit")).toBe("SEO denetimi");
+    expect(kindLabel("Aylık")).toBe("Aylık");
   });
 
   it("counts each quick filter, with skill meaning skill-only", () => {

@@ -174,7 +174,7 @@ export function DonutChart({
        * had never existed. An empty group cannot be chosen: there is nothing
        * to filter down to.
        */}
-      <ul className="w-full space-y-1">
+      <ul className="w-full space-y-1 sm:max-w-md">
         {segments.map((segment) => {
           const isSelected = segment.key === selectedKey;
           const empty = segment.value <= 0;

@@ -68,11 +68,14 @@ export function PageHeader({
       {eyebrow}
       <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-3">
         <div className="min-w-0 space-y-1">
-          <h1 className="truncate text-2xl font-semibold text-base-content">
+          <h1 className="text-2xl font-semibold text-base-content [overflow-wrap:anywhere]">
             {title}
           </h1>
           {description ? (
-            <p className="text-sm text-muted">{description}</p>
+            // A description that runs the full 1,300px of a wide page is read
+            // as one line that never ends; ~75 characters is where the eye
+            // can still find the next line.
+            <p className="max-w-[75ch] text-sm text-muted">{description}</p>
           ) : null}
         </div>
         {actions ? (

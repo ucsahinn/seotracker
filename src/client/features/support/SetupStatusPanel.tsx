@@ -18,7 +18,12 @@ type Diagnostics = Awaited<ReturnType<typeof getDiagnostics>>;
 /** Plain names for the checks the server reports, and where each is fixed. */
 const CHECK_INFO: Record<
   string,
-  { label: string; fix?: { to: "/settings"; label: string } }
+  {
+    label: string;
+    /** Said when the check passed and the server sent no sentence of its own. */
+    okDetail?: string;
+    fix?: { to: "/settings"; label: string };
+  }
 > = {
   auth: { label: "Giriş ve erişim" },
   gsc: {
@@ -29,8 +34,11 @@ const CHECK_INFO: Record<
     label: "PageSpeed anahtarı",
     fix: { to: "/settings", label: "Anahtar gir" },
   },
-  runtime: { label: "Çalışma ortamı" },
-  database: { label: "Veritabanı" },
+  runtime: { label: "Çalışma ortamı", okDetail: "Çalışma ortamı hazır." },
+  database: {
+    label: "Veritabanı",
+    okDetail: "Yerel veritabanı yanıt veriyor.",
+  },
 };
 
 function checkLabel(key: string): string {
@@ -179,8 +187,11 @@ function StatusBody({
                     — {STATUS_WORD[check.status] ?? check.status}
                   </span>
                 </p>
-                {check.detail ? (
-                  <p className="text-xs text-muted">{check.detail}</p>
+                {check.detail ||
+                (check.status === "ok" && CHECK_INFO[key]?.okDetail) ? (
+                  <p className="text-xs text-muted">
+                    {check.detail || CHECK_INFO[key]?.okDetail}
+                  </p>
                 ) : null}
               </div>
               {fix && check.status !== "ok" ? (

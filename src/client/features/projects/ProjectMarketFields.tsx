@@ -5,6 +5,17 @@ import {
 } from "@/shared/keyword-locations";
 import type { ProjectMarket } from "@/client/features/projects/types";
 
+const languageNames = new Intl.DisplayNames(["tr"], { type: "language" });
+
+/** "Turkish" in the data, "Türkçe" on a Turkish screen. */
+function languageLabel(code: string, fallback: string): string {
+  try {
+    return languageNames.of(code) ?? fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 /**
  * The project's default market: country plus the language served for it.
  * Shared by project settings and onboarding so the pair — and the rule that
@@ -52,7 +63,7 @@ export function ProjectMarketFields({
         >
           {languageOptions.map((option) => (
             <option key={option.code} value={option.code}>
-              {option.label}
+              {languageLabel(option.code, option.label)}
             </option>
           ))}
         </select>

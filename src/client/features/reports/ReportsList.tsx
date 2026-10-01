@@ -28,6 +28,7 @@ import {
   filterCounts,
   isInteractiveTarget,
   matchesFilter,
+  kindLabel,
   reportKind,
   type ReportFilter,
 } from "@/client/features/reports/reportStats";
@@ -58,7 +59,7 @@ function compareReports(
     case "createdBy":
       return compareText(formatCreatedBy(a), formatCreatedBy(b));
     case "kind":
-      return compareText(reportKind(a), reportKind(b));
+      return compareText(kindLabel(reportKind(a)), kindLabel(reportKind(b)));
     case "updatedAt":
       return Date.parse(a.updatedAt) - Date.parse(b.updatedAt);
     case "sizeBytes":
@@ -230,7 +231,9 @@ export function ReportsList({
                     {/* The template the report was written from, else the
                         skill that produced it: what a reader needs to tell
                         two reports on the same site apart. */}
-                    <td className="text-muted">{reportKind(report)}</td>
+                    <td className="text-muted">
+                      {kindLabel(reportKind(report))}
+                    </td>
                     <td className="whitespace-nowrap text-muted">
                       {formatBytes(report.sizeBytes)}
                     </td>

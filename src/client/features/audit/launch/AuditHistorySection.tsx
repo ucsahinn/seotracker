@@ -167,7 +167,10 @@ export function AuditHistorySection({
                     align="right"
                   />
                 </th>
-                <th>Lighthouse</th>
+                <th>
+                  {/* lang="en": the header is uppercased, and under lang="tr" "Lighthouse" would print as "LİGHTHOUSE". */}
+                  <span lang="en">Lighthouse</span>
+                </th>
                 <th></th>
               </tr>
             </thead>
