@@ -5,6 +5,7 @@ import {
   countBands,
   countChips,
   matchesChip,
+  positionInk,
 } from "./positionBands";
 
 const row = (position: number, impressions = 10, clicks = 1) => ({
@@ -68,5 +69,14 @@ describe("band and chip filters", () => {
     ]);
     expect(applyBandAndChip(rows, "beyond", "firstPage")).toEqual([]);
     expect(applyBandAndChip(rows, undefined, undefined)).toHaveLength(4);
+  });
+});
+
+describe("positionInk", () => {
+  it("follows the band cuts: first page success, second warning, rest muted", () => {
+    expect(positionInk(10.4)).toContain("--ink-success");
+    expect(positionInk(10.6)).toContain("--ink-warning");
+    expect(positionInk(20.4)).toContain("--ink-warning");
+    expect(positionInk(21)).toBe("text-muted");
   });
 });

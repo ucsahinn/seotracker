@@ -55,7 +55,7 @@ export function ReportTemplatesList({
         ? compareText(a.name, b.name)
         : Date.parse(a.updatedAt) - Date.parse(b.updatedAt),
   );
-  const latest = latestUpdate(templates);
+  const latest = latestUpdate(templates)?.updatedAt ?? null;
 
   return (
     <div className="space-y-3">
@@ -110,7 +110,15 @@ export function ReportTemplatesList({
           <tbody>
             {visible.map((template) => (
               <tr key={template.id}>
-                <td className="font-medium">{template.name}</td>
+                <td className="font-medium">
+                  <button
+                    type="button"
+                    className="link link-hover text-left font-medium"
+                    onClick={() => onEdit(template)}
+                  >
+                    {template.name}
+                  </button>
+                </td>
                 <td className="max-w-[420px] text-muted">
                   {template.description}
                 </td>

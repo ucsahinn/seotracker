@@ -1,24 +1,53 @@
 import { Link } from "@tanstack/react-router";
 import { ChevronDown, Target } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { EmptyState } from "@/client/components/EmptyState";
 import { formatDate } from "@/client/lib/format";
 
+export const INTRO_STORAGE_KEY = "seotracker:opportunities-intro-collapsed";
+
+/** Storage can be missing or throw (private window, blocked site data); the intro then just stays open. */
+function readCollapsed(): boolean {
+  try {
+    return window.localStorage.getItem(INTRO_STORAGE_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function writeCollapsed(collapsed: boolean): void {
+  try {
+    if (collapsed) window.localStorage.setItem(INTRO_STORAGE_KEY, "1");
+    else window.localStorage.removeItem(INTRO_STORAGE_KEY);
+  } catch {
+    // Not remembered; the toggle still works for this visit.
+  }
+}
+
 /**
- * What this screen is for, said once at the top. Open by default -- a page
- * whose purpose was unclear is why this exists -- and collapsible so it does
- * not sit above the table forever for someone who has read it.
+ * What this screen is for, said once at the top. Open the first time -- a
+ * page whose purpose was unclear is why this exists -- and collapsible; the
+ * choice is kept per browser so it does not reopen on every visit. Read in an
+ * effect rather than the initial state so server and client render the same
+ * markup.
  */
 export function Intro() {
   const [open, setOpen] = useState(true);
+  useEffect(() => {
+    setOpen(!readCollapsed());
+  }, []);
+  const toggle = () => {
+    writeCollapsed(open);
+    setOpen(!open);
+  };
   return (
-    <section className="rounded-box border border-base-300 bg-base-100 px-4 py-3">
+    <section className="rounded-box border border-base-300 bg-base-100 p-4 shadow-[var(--shadow-raise)]">
       <button
         type="button"
         aria-expanded={open}
         aria-controls="opportunities-intro"
-        onClick={() => setOpen(!open)}
-        className="flex w-full items-center justify-between gap-2 text-left text-sm font-medium"
+        onClick={toggle}
+        className="flex w-full items-center justify-between gap-2 text-left text-sm font-semibold"
       >
         Bu ekran ne işe yarar?
         <ChevronDown

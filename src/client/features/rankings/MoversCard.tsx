@@ -9,12 +9,15 @@ import {
 function MoverList({
   title,
   icon: Icon,
+  ink,
   rows,
   empty,
   onPick,
 }: {
   title: string;
   icon: LucideIcon;
+  /** Text colour for the position pair; the arrow beside the title carries direction too. */
+  ink: string;
   rows: MoveRow[];
   empty: string;
   onPick: (query: string) => void;
@@ -28,7 +31,7 @@ function MoverList({
       {rows.length === 0 ? (
         <p className="mt-2 text-sm text-muted">{empty}</p>
       ) : (
-        <ul className="mt-2 divide-y divide-[var(--hairline)]">
+        <ul className="stagger mt-2 divide-y divide-[var(--hairline)]">
           {rows.map((row) => (
             <li key={row.query}>
               <button
@@ -37,7 +40,7 @@ function MoverList({
                 onClick={() => onPick(row.query)}
               >
                 <span className="truncate">{row.query}</span>
-                <span className="shrink-0 tabular-nums text-muted">
+                <span className={`shrink-0 tabular-nums ${ink}`}>
                   {formatDecimal(row.previousPosition ?? 0)} →{" "}
                   {formatDecimal(row.position)}
                 </span>
@@ -72,6 +75,7 @@ export function MoversCard({
         <MoverList
           title="En çok yükselenler"
           icon={ArrowUp}
+          ink="text-[var(--ink-success)]"
           rows={risers}
           empty="Bu dönemde belirgin yükselen sorgu yok."
           onPick={onPick}
@@ -79,6 +83,7 @@ export function MoversCard({
         <MoverList
           title="En çok düşenler"
           icon={ArrowDown}
+          ink="text-[var(--ink-error)]"
           rows={fallers}
           empty="Bu dönemde belirgin düşen sorgu yok."
           onPick={onPick}

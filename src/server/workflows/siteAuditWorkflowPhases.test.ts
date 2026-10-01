@@ -10,7 +10,9 @@ const {
   insertLighthouseResultsMock,
   updateAuditProgressMock,
   getPageSpeedApiKeyMock,
+  sleepMock,
 } = vi.hoisted(() => ({
+  sleepMock: vi.fn(),
   fetchLighthouseResultMock: vi.fn(),
   selectLighthousePagesMock: vi.fn(),
   storeLighthouseResultMock: vi.fn(),
@@ -82,7 +84,7 @@ vi.mock("@/server/workflows/siteAuditWorkflowCrawl", () => ({
 
 import { UNKEYED_LIGHTHOUSE_PAGE_CAP } from "@/shared/audit-limits";
 import { lighthouseStepCount } from "@/server/workflows/auditStepBudget";
-import { runLighthousePhase } from "@/server/workflows/siteAuditWorkflowPhases";
+import { runLighthousePhase } from "@/server/workflows/siteAuditWorkflowLighthouse";
 
 const PHASE_PARAMS = {
   auditId: "audit-1",
@@ -98,12 +100,23 @@ const PHASE_PARAMS = {
 function stepStub() {
   const step: Parameters<typeof runLighthousePhase>[0] = {
     do: stepDoMock,
-    sleep: vi.fn(),
+    sleep: sleepMock,
     sleepUntil: vi.fn(),
     waitForEvent: vi.fn(),
   };
   return step;
 }
+
+const rateLimited = (pageId: string, strategy: "mobile" | "desktop") => ({
+  result: { pageId, strategy, errorMessage: "429 per minute" },
+  payloadJson: null,
+  rateLimited: true,
+});
+const passThrough = async (
+  _name: string,
+  _config: unknown,
+  callback: () => Promise<unknown>,
+) => callback();
 
 describe("runLighthousePhase", () => {
   beforeEach(() => {
@@ -253,6 +266,7 @@ describe("runLighthousePhase", () => {
       completed: 10,
       failed: 0,
       quotaExhausted: false,
+      pending: [],
     });
   });
 
@@ -314,5 +328,131 @@ describe("runLighthousePhase", () => {
       "workflow-1",
       { lighthouseCompleted: 8, lighthouseFailed: 2 },
     );
+  });
+
+  describe("per-minute rate limit", () => {
+    function insertedRows() {
+      // The mocked storeLighthouseResult passes fetch results through as rows.
+      return insertLighthouseResultsMock.mock.calls.flatMap(
+        // oxlint-disable-next-line typescript-eslint/no-unsafe-type-assertion
+        (call) => call[1] as LighthouseResult[],
+      );
+    }
+
+    it("pauses, re-runs only the rate-limited checks and keeps first-pass successes", async () => {
+      getPagesForAuditMock.mockResolvedValue([
+        { id: "page-1", url: "https://example.com/", statusCode: 200 },
+        { id: "page-2", url: "https://example.com/about", statusCode: 200 },
+      ]);
+      selectLighthousePagesMock.mockReturnValue([
+        "https://example.com/",
+        "https://example.com/about",
+      ]);
+      const names: string[] = [];
+      stepDoMock.mockImplementation(
+        async (name: string, ...rest: [unknown, () => Promise<unknown>]) => {
+          names.push(name);
+          return passThrough(name, ...rest);
+        },
+      );
+      // page-2 mobile is rejected once, then succeeds.
+      let aboutMobileCalls = 0;
+      fetchLighthouseResultMock.mockImplementation(
+        async (url: string, pageId: string, strategy: "mobile" | "desktop") => {
+          if (url.endsWith("/about") && strategy === "mobile") {
+            aboutMobileCalls += 1;
+            if (aboutMobileCalls === 1) return rateLimited(pageId, strategy);
+          }
+          return { result: { pageId, strategy }, payloadJson: "{}" };
+        },
+      );
+
+      await runLighthousePhase(stepStub(), PHASE_PARAMS);
+
+      // 4 checks first pass + only the 1 rejected check again.
+      expect(fetchLighthouseResultMock).toHaveBeenCalledTimes(5);
+      expect(sleepMock).toHaveBeenCalledWith(
+        "lighthouse-chunk-1-cooldown-1",
+        "65 seconds",
+      );
+      expect(names).toEqual([
+        "select-lighthouse-sample",
+        "lighthouse-chunk-1",
+        "lighthouse-chunk-1-retry-1",
+      ]);
+      const rows = insertedRows();
+      expect(rows).toHaveLength(4);
+      expect(rows.filter((row) => row.errorMessage)).toHaveLength(0);
+      expect(updateAuditProgressMock).toHaveBeenLastCalledWith(
+        "audit-1",
+        "workflow-1",
+        { lighthouseCompleted: 4, lighthouseFailed: 0 },
+      );
+    });
+
+    it("stores an error row only for a check still rejected after the re-passes", async () => {
+      stepDoMock.mockImplementation(passThrough);
+      fetchLighthouseResultMock.mockImplementation(
+        async (_url: string, pageId: string, strategy: "mobile" | "desktop") =>
+          strategy === "mobile"
+            ? rateLimited(pageId, strategy)
+            : { result: { pageId, strategy }, payloadJson: "{}" },
+      );
+
+      await runLighthousePhase(stepStub(), PHASE_PARAMS);
+
+      // desktop once; mobile on the first pass and both re-passes.
+      expect(fetchLighthouseResultMock).toHaveBeenCalledTimes(4);
+      expect(sleepMock).toHaveBeenCalledTimes(2);
+      const rows = insertedRows();
+      expect(rows).toHaveLength(2);
+      expect(rows.filter((row) => row.errorMessage)).toEqual([
+        expect.objectContaining({ strategy: "mobile" }),
+      ]);
+      expect(updateAuditProgressMock).toHaveBeenLastCalledWith(
+        "audit-1",
+        "workflow-1",
+        { lighthouseCompleted: 1, lighthouseFailed: 1 },
+      );
+    });
+
+    it("does not wait out a daily quota: rate-limited siblings are stored and the phase stops", async () => {
+      stepDoMock.mockImplementation(passThrough);
+      fetchLighthouseResultMock.mockImplementation(
+        async (_url: string, pageId: string, strategy: "mobile" | "desktop") =>
+          strategy === "mobile"
+            ? rateLimited(pageId, strategy)
+            : {
+                result: { pageId, strategy, errorMessage: "Kota doldu: dolu" },
+                payloadJson: null,
+                quotaExhausted: true,
+              },
+      );
+
+      await runLighthousePhase(stepStub(), PHASE_PARAMS);
+
+      expect(fetchLighthouseResultMock).toHaveBeenCalledTimes(2);
+      expect(sleepMock).not.toHaveBeenCalled();
+      expect(insertedRows()).toHaveLength(2);
+    });
+
+    it("pauses between waves but not after the last one", async () => {
+      const pages = Array.from({ length: 6 }, (_, index) => ({
+        id: `page-${index}`,
+        url: `https://example.com/p${index}`,
+        statusCode: 200,
+      }));
+      getPagesForAuditMock.mockResolvedValue(pages);
+      selectLighthousePagesMock.mockReturnValue(pages.map((page) => page.url));
+      stepDoMock.mockImplementation(passThrough);
+
+      await runLighthousePhase(stepStub(), PHASE_PARAMS);
+
+      expect(sleepMock).toHaveBeenCalledTimes(1);
+      expect(sleepMock).toHaveBeenCalledWith(
+        "lighthouse-pause-1",
+        "10 seconds",
+      );
+    });
   });
 });

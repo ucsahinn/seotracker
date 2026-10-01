@@ -1,6 +1,9 @@
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { Link } from "@tanstack/react-router";
-import { RotateCw, ScanSearch, Trash2 } from "lucide-react";
+import { ArrowDown, ArrowUp, RotateCw, ScanSearch, Trash2 } from "lucide-react";
+import { EmptyState } from "@/client/components/EmptyState";
+import { formatCount, formatPercent } from "@/client/lib/format";
+import { issueDelta, previousAuditIds, type IssueDelta } from "./auditDelta";
 import type { getAuditHistory } from "@/serverFunctions/audit";
 import { RowActions } from "@/client/components/table/RowActions";
 import { formatDateTime, StatusBadge } from "@/client/features/audit/shared";
@@ -22,10 +25,13 @@ export function AuditHistorySection({
   onRetry,
   onDelete,
   onRerun,
+  onStartFirst,
 }: {
   projectId: string;
   history: Awaited<ReturnType<typeof getAuditHistory>>;
   isLoading: boolean;
+  /** Moves focus to the address field of the launch form above. */
+  onStartFirst: () => void;
   error?: unknown;
   onRetry?: () => void;
   onDelete: (auditId: string) => void;
@@ -56,12 +62,22 @@ export function AuditHistorySection({
 
   if (history.length === 0 && !isLoading) {
     return (
-      <div className="flex items-center justify-center py-16">
-        <div className="text-center text-muted space-y-3">
-          <ScanSearch className="size-12 mx-auto opacity-30" />
-          <p className="text-lg font-medium">Henüz denetim yok</p>
-        </div>
-      </div>
+      <section className="rounded-box border border-base-300 bg-base-100 p-4">
+        <EmptyState
+          icon={ScanSearch}
+          title="Henüz denetim yok"
+          description="Denetim geçmişi, ilk taramadan sonra burada listelenir. İlk denetimi yukarıdaki formdan başlatın."
+          action={
+            <button
+              type="button"
+              className="btn btn-primary btn-sm"
+              onClick={onStartFirst}
+            >
+              Site adresini gir
+            </button>
+          }
+        />
+      </section>
     );
   }
 
@@ -72,25 +88,29 @@ export function AuditHistorySection({
      * and nothing said more was on the way.
      */
     return (
-      <div className="card bg-base-100 border border-base-300" aria-busy>
-        <div className="card-body gap-3">
-          <div className="skeleton h-5 w-40" />
-          <div className="space-y-2">
-            {Array.from({ length: 4 }, (_, index) => (
-              <div key={index} className="skeleton h-8" />
-            ))}
-          </div>
+      <section
+        className="space-y-3 rounded-box border border-base-300 bg-base-100 p-4"
+        aria-busy
+      >
+        <div className="skeleton h-5 w-40" />
+        <div className="space-y-2">
+          {Array.from({ length: 4 }, (_, index) => (
+            <div key={index} className="skeleton h-8" />
+          ))}
         </div>
-      </div>
+      </section>
     );
   }
 
   if (history.length === 0) return null;
 
+  const previousIds = previousAuditIds(history);
+  const byId = new Map(history.map((row) => [row.id, row]));
+
   return (
-    <div className="card bg-base-100 border border-base-300">
-      <div className="card-body gap-3">
-        <h2 className="card-title text-base">Önceki denetimler</h2>
+    <section className="space-y-3 rounded-box border border-base-300 bg-base-100 p-4">
+      <div className="space-y-3">
+        <h2 className="text-sm font-semibold">Önceki denetimler</h2>
         <AuditTrendChart history={history} />
         <div className="overflow-x-auto">
           <table className="table table-sm">
@@ -120,6 +140,26 @@ export function AuditHistorySection({
                     label="Sayfa"
                   />
                 </th>
+                <th
+                  className="text-right"
+                  aria-sort={sorting.ariaSort("critical")}
+                >
+                  <SortableHeader
+                    column={sorting.column("critical")}
+                    label="Kritik"
+                    align="right"
+                  />
+                </th>
+                <th
+                  className="text-right"
+                  aria-sort={sorting.ariaSort("warning")}
+                >
+                  <SortableHeader
+                    column={sorting.column("warning")}
+                    label="Uyarı"
+                    align="right"
+                  />
+                </th>
                 <th>Lighthouse</th>
                 <th></th>
               </tr>
@@ -127,14 +167,25 @@ export function AuditHistorySection({
             <tbody>
               {sorting.apply(history, compareAudits).map((audit) => (
                 <tr key={audit.id} className="hover group">
-                  <td className="text-xs text-muted">
+                  <td className="text-xs">
                     {/* With the time. Six audits in one day all read
-                        "28 Eyl 2026" and could not be told apart. */}
-                    {formatDateTime(audit.startedAt)}
+                        "28 Eyl 2026" and could not be told apart. The
+                        whole row opens through this link. */}
+                    <Link
+                      to="/p/$projectId/audit"
+                      params={{ projectId }}
+                      search={{ auditId: audit.id, tab: "pages" }}
+                      className="link link-hover"
+                    >
+                      {formatDateTime(audit.startedAt)}
+                    </Link>
                   </td>
                   <td className="max-w-[220px]">
                     <div className="flex items-center gap-1">
-                      <span className="truncate" title={audit.startUrl}>
+                      <span
+                        className="truncate text-muted"
+                        title={audit.startUrl}
+                      >
                         {audit.startUrl}
                       </span>
                       {/* The cell truncates, and the full address was not
@@ -151,6 +202,20 @@ export function AuditHistorySection({
                     <StatusBadge status={audit.status} />
                   </td>
                   <td>{audit.pagesTotal || audit.pagesCrawled}</td>
+                  <td className="text-right">
+                    <SeverityCell
+                      row={audit}
+                      previous={byId.get(previousIds.get(audit.id) ?? "")}
+                      severity="critical"
+                    />
+                  </td>
+                  <td className="text-right">
+                    <SeverityCell
+                      row={audit}
+                      previous={byId.get(previousIds.get(audit.id) ?? "")}
+                      severity="warning"
+                    />
+                  </td>
                   <td>
                     {audit.ranLighthouse ? (
                       <span className="badge badge-ghost badge-xs">Evet</span>
@@ -158,7 +223,6 @@ export function AuditHistorySection({
                   </td>
                   <td>
                     <HistoryActions
-                      projectId={projectId}
                       audit={audit}
                       onDelete={onDelete}
                       onRerun={onRerun}
@@ -170,31 +234,78 @@ export function AuditHistorySection({
           </table>
         </div>
       </div>
+    </section>
+  );
+}
+
+const CHIP = {
+  critical: "border-error/30 bg-error/10 text-[var(--ink-error)]",
+  warning: "border-warning/30 bg-warning/10 text-[var(--ink-warning)]",
+};
+
+function SeverityCell({
+  row,
+  previous,
+  severity,
+}: {
+  row: HistoryRow;
+  previous: HistoryRow | undefined;
+  severity: "critical" | "warning";
+}) {
+  // Counts of a crawl that is still running or failed are partial.
+  if (row.status !== "completed") return <span className="text-subtle">–</span>;
+  const count = row.issues[severity];
+  const delta = previous ? issueDelta(count, previous.issues[severity]) : null;
+
+  return (
+    <div className="flex flex-col items-end gap-0.5">
+      {count > 0 ? (
+        <span
+          className={`inline-flex rounded-full border px-2 text-xs font-medium ${CHIP[severity]}`}
+        >
+          {formatCount(count)}
+        </span>
+      ) : (
+        <span className="text-xs text-muted">0</span>
+      )}
+      {delta && delta.diff !== 0 ? <DeltaText delta={delta} /> : null}
     </div>
   );
 }
 
+/** Fewer issues is the good direction; the arrow carries it, not the tint. */
+function DeltaText({ delta }: { delta: IssueDelta }) {
+  const fewer = delta.diff < 0;
+  const Icon = fewer ? ArrowDown : ArrowUp;
+  const size = Math.abs(delta.diff);
+
+  return (
+    <span
+      className={`inline-flex items-center gap-0.5 text-xs ${
+        fewer ? "text-[var(--ink-success)]" : "text-[var(--ink-error)]"
+      }`}
+      title="Aynı siteye ait bir önceki denetime göre"
+    >
+      <Icon className="size-3" aria-hidden />
+      <span className="sr-only">{fewer ? "azaldı" : "arttı"} </span>
+      {delta.fraction === null
+        ? formatCount(size)
+        : formatPercent(Math.abs(delta.fraction), 0)}
+    </span>
+  );
+}
+
 function HistoryActions({
-  projectId,
   audit,
   onDelete,
   onRerun,
 }: {
-  projectId: string;
   audit: HistoryRow;
   onDelete: (auditId: string) => void;
   onRerun: (audit: HistoryRow) => void;
 }) {
   return (
     <div className="flex items-center justify-end gap-2 transition-opacity can-hover:opacity-0 can-hover:group-hover:opacity-100 can-hover:group-focus-within:opacity-100">
-      <Link
-        to="/p/$projectId/audit"
-        params={{ projectId }}
-        search={{ auditId: audit.id, tab: "pages" }}
-        className="btn btn-primary btn-xs"
-      >
-        Görüntüle
-      </Link>
       <RowActions
         label={`${audit.startUrl} denetimi için işlemler`}
         actions={[
@@ -215,7 +326,13 @@ function HistoryActions({
   );
 }
 
-type HistorySortKey = "startedAt" | "startUrl" | "status" | "pages";
+type HistorySortKey =
+  | "startedAt"
+  | "startUrl"
+  | "status"
+  | "pages"
+  | "critical"
+  | "warning";
 
 /** Ascending; `useLocalSort` applies the direction. */
 function compareAudits(
@@ -226,6 +343,8 @@ function compareAudits(
   if (key === "startedAt") return compareText(a.startedAt, b.startedAt);
   if (key === "startUrl") return compareText(a.startUrl, b.startUrl);
   if (key === "status") return compareText(a.status, b.status);
+  if (key === "critical") return a.issues.critical - b.issues.critical;
+  if (key === "warning") return a.issues.warning - b.issues.warning;
   // The number the row actually shows: `pagesTotal` while a crawl is
   // planning, `pagesCrawled` once it has started returning pages.
   return (a.pagesTotal || a.pagesCrawled) - (b.pagesTotal || b.pagesCrawled);

@@ -13,6 +13,17 @@ export const WORKFLOW_DEFAULT_STEP_LIMIT = 10_000;
 
 /** URLs measured per `lighthouse-chunk-N` step (2 checks each, in parallel). */
 export const LIGHTHOUSE_URLS_PER_STEP = 5;
+/**
+ * Re-passes a wave may make for checks that hit Google's per-minute limit,
+ * each after a pause. A pass is a `step.do`; the pauses are `step.sleep`.
+ */
+export const LIGHTHOUSE_RATE_LIMIT_PASSES = 2;
+/**
+ * Pause before a re-pass: longer than the one-minute window the limit resets
+ * on. Not verified against Google; the window length is the documented
+ * meaning of "per minute".
+ */
+export const LIGHTHOUSE_RATE_LIMIT_PAUSE = "65 seconds";
 /** Crawl chunk size: pages claimed per `crawl-chunk-N` step at most. */
 const CRAWL_CHUNK_PAGES = 200;
 /**
@@ -24,9 +35,9 @@ const FIXED_AUDIT_STEPS = 6;
 /** Steps the speed phase creates for this many measured pages. */
 export function lighthouseStepCount(pages: number, worstCase = false) {
   const chunks = Math.ceil(pages / LIGHTHOUSE_URLS_PER_STEP);
-  // Worst case: every chunk step fails after its retries and a fallback
-  // step records the error rows.
-  return worstCase ? chunks * 2 : chunks;
+  // Worst case: every wave is rate limited through all its re-passes and then
+  // fails into a fallback step that records the error rows.
+  return worstCase ? chunks * (LIGHTHOUSE_RATE_LIMIT_PASSES + 2) : chunks;
 }
 
 /**

@@ -60,7 +60,9 @@ export function DistributionBars({
               }`}
             >
               <span className="min-w-0">
-                <span className="block truncate">{row.label}</span>
+                <span className="block truncate" title={row.label}>
+                  {row.label}
+                </span>
                 {row.hint ? (
                   <span className="block truncate text-xs text-subtle">
                     {row.hint}

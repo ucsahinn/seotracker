@@ -1,13 +1,12 @@
+import { Link } from "@tanstack/react-router";
 import { DonutCard, donutSummary } from "@/client/components/DonutChart";
 import { MetricRow, MetricTile } from "@/client/components/MetricTile";
 import {
   filterCounts,
   kindSegments,
   latestUpdate,
-  totalBytes,
 } from "@/client/features/reports/reportStats";
 import {
-  formatBytes,
   formatCount,
   formatDateTime,
   formatRelativeTime,
@@ -29,12 +28,14 @@ export function ReportsSummarySkeleton() {
  * match the table. The ring filters the list by report type.
  */
 export function ReportsSummary({
+  projectId,
   reports,
   visibleReports,
   now,
   selectedKind,
   onSelectKind,
 }: {
+  projectId: string;
   /** The reports the quick filter keeps; the kind ring splits these. */
   reports: ReportListItem[];
   /** What the table shows (quick filter and kind): the tiles count these. */
@@ -58,12 +59,18 @@ export function ReportsSummary({
         />
         <MetricTile
           label="Son güncelleme"
-          value={latest ? formatRelativeTime(latest) : null}
-          hint={latest ? formatDateTime(latest) : undefined}
-        />
-        <MetricTile
-          label="Toplam boyut"
-          value={formatBytes(totalBytes(visibleReports))}
+          value={latest ? formatRelativeTime(latest.updatedAt) : null}
+          hint={
+            latest ? (
+              <Link
+                to="/p/$projectId/reports/$reportId"
+                params={{ projectId, reportId: latest.id }}
+                className="link link-hover"
+              >
+                {formatDateTime(latest.updatedAt)} · raporu aç
+              </Link>
+            ) : undefined
+          }
         />
       </MetricRow>
       <DonutCard

@@ -1,6 +1,8 @@
 import * as React from "react";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
-import { formatDate, formatDecimal } from "@/client/lib/format";
+import { Link } from "@tanstack/react-router";
+import { formatCount, formatDate, formatDecimal } from "@/client/lib/format";
+import { PositionSparkline } from "@/client/features/rankings/PositionSparkline";
 import { DeltaBadge } from "@/client/components/MetricTile";
 
 /**
@@ -12,6 +14,7 @@ import { DeltaBadge } from "@/client/components/MetricTile";
  */
 export function QueryHistoryCard({
   ref,
+  projectId,
   query,
   rows,
   loading,
@@ -24,6 +27,7 @@ export function QueryHistoryCard({
    * fold, and the only feedback in place was the row's tint.
    */
   ref?: React.Ref<HTMLDivElement>;
+  projectId: string;
   query: string;
   rows: {
     date: string;
@@ -83,7 +87,7 @@ export function QueryHistoryCard({
 
   if (rows.length === 0) {
     return (
-      <div className="rounded-box border border-base-300 p-4 text-sm text-muted">
+      <div className="rounded-box border border-base-300 bg-base-100 p-4 text-sm text-muted">
         Bu sorgu için kayıtlı gün yok.
       </div>
     );
@@ -96,12 +100,14 @@ export function QueryHistoryCard({
   // improvement. The arrow follows the ranking, not the arithmetic.
   const delta = first.position - last.position;
   const improved = delta > 0;
+  const totalClicks = rows.reduce((sum, row) => sum + row.clicks, 0);
+  const totalImpressions = rows.reduce((sum, row) => sum + row.impressions, 0);
 
   return (
     <div
       ref={ref}
       tabIndex={-1}
-      className="space-y-3 rounded-box border border-base-300 bg-base-100 p-4"
+      className="enter space-y-3 rounded-box border border-base-300 bg-base-100 p-4"
     >
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <h2 className="text-sm font-semibold">{query}</h2>
@@ -127,63 +133,24 @@ export function QueryHistoryCard({
         )}
       </div>
       <PositionSparkline rows={rows} />
-      <p className="text-xs text-muted">
-        {formatDate(first.date)} – {formatDate(last.date)} · {rows.length} gün
-        kayıtlı
-      </p>
-    </div>
-  );
-}
-
-/**
- * Position over time. Drawn with the y axis inverted, because position 1 is the
- * top of the page: a line going up has to mean the ranking improved.
- */
-function PositionSparkline({
-  rows,
-}: {
-  rows: { date: string; position: number }[];
-}) {
-  if (rows.length < 2) return null;
-
-  const width = 600;
-  const height = 120;
-  const positions = rows.map((row) => row.position);
-  const best = Math.min(...positions);
-  const worst = Math.max(...positions);
-  const span = Math.max(worst - best, 1);
-
-  const points = rows
-    .map((row, index) => {
-      const x = (index / (rows.length - 1)) * width;
-      const y = ((row.position - best) / span) * (height - 16) + 8;
-      // SVG path geometry, not a number anyone reads. A decimal comma
-      // here would be a second coordinate.
-      return `${x.toFixed(1)},${y.toFixed(1)}`;
-    })
-    .join(" ");
-
-  return (
-    <div>
-      <svg
-        viewBox={`0 0 ${width} ${height}`}
-        className="h-28 w-full"
-        role="img"
-        aria-label={`Sıra geçmişi: ${formatDecimal(best)} ile ${formatDecimal(worst)} arasında`}
-      >
-        <polyline
-          points={points}
-          fill="none"
-          className="stroke-primary"
-          strokeWidth={2}
-          strokeLinejoin="round"
-          strokeLinecap="round"
-        />
-      </svg>
-      <div className="flex justify-between text-xs text-muted">
-        <span>En iyi {formatDecimal(best)}</span>
-        <span>En kötü {formatDecimal(worst)}</span>
+      <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 text-xs text-muted">
+        <p>
+          {formatDate(first.date)} – {formatDate(last.date)} · {rows.length} gün
+          kayıtlı
+        </p>
+        <p>
+          Toplam tıklama / gösterim: {formatCount(totalClicks)} /{" "}
+          {formatCount(totalImpressions)}
+        </p>
       </div>
+      <Link
+        to="/p/$projectId/search-performance"
+        params={{ projectId }}
+        search={{ tab: "queries" as const, q: query }}
+        className="link link-primary text-xs"
+      >
+        Arama performansında aç
+      </Link>
     </div>
   );
 }

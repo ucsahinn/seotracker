@@ -35,16 +35,23 @@ export function OpportunitiesTable({
   projectId,
   rows,
   onReset,
+  openPage: controlledPage,
+  onOpenPageChange,
 }: {
   projectId: string;
   rows: OpportunityRow[];
   /** Clears the filters that emptied the table, when there are any. */
   onReset?: () => void;
+  /** Lets the page open a row's dialog from outside (the top-score tile). Uncontrolled when omitted. */
+  openPage?: string | null;
+  onOpenPageChange?: (page: string | null) => void;
 }) {
-  const [openPage, setOpenPage] = useState<string | null>(null);
+  const [ownPage, setOwnPage] = useState<string | null>(null);
+  const openPage = controlledPage === undefined ? ownPage : controlledPage;
+  const setOpenPage = onOpenPageChange ?? setOwnPage;
   const columns = useMemo(
     () => buildOpportunityColumns((row) => setOpenPage(row.page)),
-    [],
+    [setOpenPage],
   );
   const table = useAppTable({
     data: rows,
@@ -67,7 +74,7 @@ export function OpportunitiesTable({
   ]);
 
   return (
-    <div className="overflow-hidden rounded-box border border-base-300 bg-base-100">
+    <div className="overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-[var(--shadow-raise)]">
       <div className="flex items-center justify-between gap-3 border-b border-base-300 px-3 py-2">
         <p className="text-xs text-muted">
           Ayrıntı ve öneriler için bir satıra tıklayın.

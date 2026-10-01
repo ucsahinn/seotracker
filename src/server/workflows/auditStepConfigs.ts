@@ -26,8 +26,10 @@ export const CRAWL_CHUNK_STEP: WorkflowStepConfig = {
  * are free and idempotent, so a replay is harmless — unlike the billed provider
  * this replaced, which forced retries to zero. Cold runs and quota rejections
  * are both transient; three attempts at 30s/60s ride them out without hammering
- * the per-minute quota. A spent daily quota is not retried: the fetch returns a
- * marked result and the phase stops. The timeout is per attempt, covering two parallel
+ * the per-minute quota. A per-minute 429 is not thrown at all: the fetch returns
+ * it flagged `rateLimited`, and the phase pauses (`step.sleep`) and re-runs only
+ * those checks in `-retry-N` steps of this same config. A spent daily quota is
+ * not retried: the fetch returns a marked result and the phase stops. The timeout is per attempt, covering two parallel
  * 120-second requests.
  */
 export const LIGHTHOUSE_CHUNK_STEP: WorkflowStepConfig = {

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import {
   Intro,
   NoOpportunities,
@@ -18,7 +18,9 @@ import { OpportunityQuickFilters } from "@/client/features/opportunities/Opportu
 import { OpportunitySummary } from "@/client/features/opportunities/OpportunitySummary";
 import {
   applyFilters,
+  pathOf,
   quickCounts,
+  topOpportunity,
   type KindId,
   type QuickId,
 } from "@/client/features/opportunities/opportunityLogic";
@@ -87,6 +89,23 @@ export function OpportunitiesPage({
       <PageHeader
         title="Fırsatlar"
         description="Google'da görünen sayfalarınız, emek harcamaya değer olma sırasına göre."
+        /* Beside the title because they re-query everything below, the same
+           place Rankings puts its window. Shown whenever the data came back
+           ok, so the empty state keeps its way to widen the period. */
+        actions={
+          query.data?.status === "ok" ? (
+            <>
+              <WindowPicker
+                windowDays={windowDays}
+                onChange={(next) => onViewChange({ windowDays: next })}
+              />
+              <LimitPicker
+                limit={limit}
+                onChange={(next) => onViewChange({ limit: next })}
+              />
+            </>
+          ) : undefined
+        }
       />
 
       <Intro />
@@ -105,14 +124,7 @@ export function OpportunitiesPage({
           />
         </div>
       ) : query.data.status === "ok" ? (
-        <Report
-          data={query.data.report}
-          limit={limit}
-          onLimitChange={(next) => onViewChange({ limit: next })}
-          windowDays={windowDays}
-          onWindowChange={(next) => onViewChange({ windowDays: next })}
-          projectId={projectId}
-        />
+        <Report data={query.data.report} projectId={projectId} />
       ) : (
         <NotReady projectId={projectId} missing={query.data.status} />
       )}
@@ -128,7 +140,7 @@ function WindowPicker({
   onChange: (days: WindowDays) => void;
 }) {
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 text-xs text-muted">
       <label htmlFor="opportunity-window">Dönem</label>
       <select
         id="opportunity-window"
@@ -151,48 +163,91 @@ function WindowPicker({
   );
 }
 
+/* Without this the cut list had no control at all: no pagination, no
+   limit, nothing saying more existed. */
+function LimitPicker({
+  limit,
+  onChange,
+}: {
+  limit: (typeof LIMITS)[number];
+  onChange: (limit: (typeof LIMITS)[number]) => void;
+}) {
+  return (
+    <div className="flex items-center gap-2 text-xs text-muted">
+      <label htmlFor="opportunity-limit">Satır sayısı</label>
+      <select
+        id="opportunity-limit"
+        className="select select-bordered select-sm w-24"
+        value={limit}
+        onChange={(event) => {
+          const next = LIMITS.find(
+            (option) => String(option) === event.target.value,
+          );
+          if (next) onChange(next);
+        }}
+      >
+        {LIMITS.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+}
+
+/** A tile that does something: a button, so keyboard and touch reach it. */
+function TileButton({
+  onClick,
+  disabled,
+  children,
+}: {
+  onClick: () => void;
+  disabled?: boolean;
+  children: ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      className="block h-full w-full text-left transition-colors enabled:hover:bg-base-200/60 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary disabled:cursor-default"
+    >
+      {children}
+    </button>
+  );
+}
+
 function Report({
   data,
-  limit,
-  onLimitChange,
-  windowDays,
-  onWindowChange,
   projectId,
 }: {
   data: OpportunityReport;
-  limit: number;
-  onLimitChange: (limit: (typeof LIMITS)[number]) => void;
-  windowDays: WindowDays;
-  onWindowChange: (days: WindowDays) => void;
   projectId: string;
 }) {
   const [kind, setKind] = useState<KindId | null>(null);
   const [quick, setQuick] = useState<QuickId | null>(null);
+  const [openPage, setOpenPage] = useState<string | null>(null);
 
   const shown = applyFilters(data.rows, kind, quick);
   const filtered = kind !== null || quick !== null;
 
-  const windowControl = (
-    <WindowPicker windowDays={windowDays} onChange={onWindowChange} />
-  );
+  const counts = quickCounts(data.rows);
+  const top = topOpportunity(data.rows);
 
   if (data.rows.length === 0) {
     /*
-     * The picker stays on screen. Without it a 7-day window that found
-     * nothing left the operator on an empty page whose only control was a
-     * row-count selector -- no way to widen the period that produced the
-     * emptiness.
+     * The window picker lives in the page header and stays there for this
+     * branch. Without it a 7-day window that found nothing left the operator
+     * on an empty page with no way to widen the period.
      */
     return (
-      <>
-        <div className="flex justify-end">{windowControl}</div>
-        <div className="rounded-box border border-base-300 bg-base-100">
-          <NoOpportunities
-            dateRange={data.request.dateRange}
-            pagesConsidered={data.coverage.gscRowsConsidered}
-          />
-        </div>
-      </>
+      <div className="rounded-box border border-base-300 bg-base-100 shadow-[var(--shadow-raise)]">
+        <NoOpportunities
+          dateRange={data.request.dateRange}
+          pagesConsidered={data.coverage.gscRowsConsidered}
+        />
+      </div>
     );
   }
 
@@ -259,49 +314,44 @@ function Report({
           value={formatNumber(data.coverage.matchedRows)}
           hint={`${formatNumber(data.totalCandidateRows)} aday içinde`}
         />
-        <MetricTile
-          label="Analytics'te bulunamayan"
-          value={formatNumber(data.coverage.unmatchedGscRows)}
-          hint="Yalnızca Search Console verisiyle puanlandı"
-        />
-        <MetricTile
-          label="İş değeri neye göre?"
-          value={
-            data.scoring.businessValueMetric === "engagementRate"
-              ? "Etkileşim"
-              : "Dönüşüm"
-          }
-          hint={
-            data.scoring.engagementFallback
-              ? "Dönüşüm tanımlı olmadığı için etkileşim kullanıldı"
-              : undefined
-          }
-        />
-      </MetricRow>
-
-      {/* Without this the cut list had no control at all: no pagination, no
-          limit, nothing saying more existed. */}
-      <div className="flex flex-wrap items-center justify-end gap-3 text-xs text-muted">
-        {windowControl}
-        <label htmlFor="opportunity-limit">Satır sayısı</label>
-        <select
-          id="opportunity-limit"
-          className="select select-bordered select-sm w-24"
-          value={limit}
-          onChange={(event) => {
-            const next = LIMITS.find(
-              (option) => String(option) === event.target.value,
-            );
-            if (next) onLimitChange(next);
+        {/* A count with no way to see those pages is a complaint, not a
+            tool, so it applies the same filter the chip below does. The tile
+            counts every candidate, the chip only the rows returned. */}
+        <TileButton
+          disabled={counts.no_analytics === 0}
+          onClick={() => {
+            setKind(null);
+            setQuick("no_analytics");
           }}
         >
-          {LIMITS.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
-      </div>
+          <MetricTile
+            label="Analytics'te bulunamayan"
+            value={formatNumber(data.coverage.unmatchedGscRows)}
+            hint={
+              counts.no_analytics === 0
+                ? "Listedeki her sayfanın Analytics karşılığı var"
+                : "Yalnızca Search Console verisiyle puanlandı · listele"
+            }
+          />
+        </TileButton>
+        {/* Was a tile naming the business-value setting, which is a label
+            rather than a number; the footnote says how it is chosen. */}
+        <TileButton
+          disabled={top === null}
+          onClick={() => {
+            if (top === null) return;
+            setKind(null);
+            setQuick(null);
+            setOpenPage(top.page);
+          }}
+        >
+          <MetricTile
+            label="En yüksek puan"
+            value={top?.score == null ? null : formatNumber(top.score)}
+            hint={top === null ? undefined : `${pathOf(top.page)} · ayrıntı`}
+          />
+        </TileButton>
+      </MetricRow>
 
       <OpportunitySummary
         rows={data.rows}
@@ -312,7 +362,7 @@ function Report({
       <OpportunityKinds rows={data.rows} selected={kind} onSelect={setKind} />
 
       <OpportunityQuickFilters
-        counts={quickCounts(data.rows)}
+        counts={counts}
         selected={quick}
         onSelect={setQuick}
       />
@@ -320,6 +370,8 @@ function Report({
       <OpportunitiesTable
         projectId={projectId}
         rows={shown}
+        openPage={openPage}
+        onOpenPageChange={setOpenPage}
         onReset={
           filtered
             ? () => {
@@ -333,7 +385,13 @@ function Report({
       <p className="text-xs text-muted">
         Puan = talep (%50) + iş değeri (%30) + yakınlık (%20). Analytics&apos;te
         karşılığı bulunmayan sayfalar da puanlanır; iş değerinde haksız yere
-        sıfır almamaları için nötr bir orta değer verilir.
+        sıfır almamaları için nötr bir orta değer verilir. İş değeri{" "}
+        {data.scoring.businessValueMetric === "engagementRate"
+          ? data.scoring.engagementFallback
+            ? "dönüşüm tanımlı olmadığı için etkileşim oranına"
+            : "etkileşim oranına"
+          : "dönüşümlere"}{" "}
+        göre hesaplandı.
       </p>
     </>
   );

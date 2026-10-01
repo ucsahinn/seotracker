@@ -81,15 +81,6 @@ const REPORT_QUESTIONS: Record<Ga4ReportKindName, string> = {
     "Ziyaretçileriniz hangi cihazlardan geliyor ve cihaza göre deneyim nasıl değişiyor?",
 };
 
-/*
- * The organic trend describes landing-page and channel questions. Repeated
- * on all seven tabs it was the same chart seven times, and on "Site içi
- * arama" or "Anahtar olaylar" it answered a question nobody had asked.
- */
-const TREND_REPORTS = new Set<Ga4ReportKindName>([
-  "landing_pages",
-  "traffic_acquisition",
-]);
 type View = Ga4ReportKindName | typeof HEALTH;
 
 export function AnalyticsPage({
@@ -255,7 +246,10 @@ export function AnalyticsPage({
           <>
             {/* The window's shape, above whichever report lists it. Its own
                 query, so a slow overview never holds up the table. */}
-            {TREND_REPORTS.has(kind) ? (
+            {/* The one chart every tab used to share, now on the first tab
+                only: the others have their own summary, and one line above
+                two different tables read as the answer to both. */}
+            {kind === "landing_pages" ? (
               <OrganicTrendPanel
                 projectId={projectId}
                 windowDays={windowDays}
@@ -341,6 +335,7 @@ export function AnalyticsPage({
                 onOrganicOnlyChange={(next) =>
                   setChannel(next ? "organic_search" : "all")
                 }
+                onOpenHealth={() => setView(HEALTH)}
               />
             ) : null}
           </>

@@ -1,11 +1,16 @@
 # PageSpeed Insights anahtarı
 
 Site denetiminin hız ölçümü Google'ın PageSpeed Insights API'sini kullanır.
-API ücretsizdir. Anahtarsız da yanıt verir ama kotası çok düşüktür ve bir
-denetimin 20 isteği genellikle 429 ile reddedilir.
+API ücretsizdir. Anahtarsız da yanıt verir ama kotası çok düşüktür; bu yüzden
+anahtar yokken ölçüm en çok 50 sayfayla sınırlanır.
 
-Anahtarlı kota: günde 25.000 sorgu, dakikada 240. Bir denetim en çok 20 istek
-yapar, yani bu sınırlara kişisel kullanımda yaklaşmazsınız.
+Taranan her sayfa telefonda ve bilgisayarda ölçülür, yani sayfa başına 2
+istek yapılır (212 sayfa için 424). Dakikalık sınır aşılırsa denetim bekleyip o
+ölçümleri yeniden dener; günlük sınır dolarsa ölçülenler korunur ve ölçüm durur.
+
+Kota sayılarını Google resmî belgelerinde bulamadık; kendi projenizin gerçek
+kotasını Google Cloud Console'da **APIs & Services → PageSpeed Insights API →
+Quotas** bölümünden görebilirsiniz.
 
 ## Anahtarı alma
 

@@ -1,12 +1,14 @@
 import { useNavigate } from "@tanstack/react-router";
 import type { UseQueryResult } from "@tanstack/react-query";
-import { Copy, Search, TrendingUp } from "lucide-react";
+import { Bookmark, Copy, Search, TrendingUp } from "lucide-react";
 import { EmptyState } from "@/client/components/EmptyState";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { RowActions } from "@/client/components/table/RowActions";
 import { SortableHeader } from "@/client/components/table/SortableHeader";
 import type { useLocalSort } from "@/client/components/table/useLocalSort";
 import type { SortKey } from "@/client/features/rankings/rankingsSort";
+import { positionInk } from "@/client/features/rankings/positionBands";
+import { useSaveTrackedKeyword } from "@/client/features/rankings/useSaveTrackedKeyword";
 import { PositionChange } from "@/client/features/rankings/PositionChange";
 import { formatDecimal, formatNumber } from "@/client/lib/format";
 
@@ -44,6 +46,7 @@ export function TrackedQueriesTable({
   emptyDescription: string;
 }) {
   const navigate = useNavigate();
+  const saveKeyword = useSaveTrackedKeyword(projectId);
   return (
     <table className="table table-sm">
       <thead>
@@ -163,7 +166,9 @@ export function TrackedQueriesTable({
                 {row.query}
               </button>
             </td>
-            <td className="text-right tabular-nums">
+            <td
+              className={`text-right tabular-nums ${positionInk(row.position)}`}
+            >
               {formatDecimal(row.position)}
             </td>
             <td className="text-right tabular-nums">
@@ -193,6 +198,11 @@ export function TrackedQueriesTable({
                     icon: Copy,
                     onSelect: () =>
                       void navigator.clipboard.writeText(row.query),
+                  },
+                  {
+                    label: "Kayıtlı kelimelere ekle",
+                    icon: Bookmark,
+                    onSelect: () => saveKeyword.mutate(row.query),
                   },
                   {
                     label: "Arama performansında ara",

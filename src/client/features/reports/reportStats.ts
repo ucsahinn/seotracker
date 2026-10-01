@@ -78,14 +78,20 @@ export function kindSegments(
     : head;
 }
 
-/** The newest `updatedAt`, or null for an empty list. */
-export function latestUpdate(reports: { updatedAt: string }[]): string | null {
-  return reports.reduce<string | null>(
-    (best, r) => (best === null || r.updatedAt > best ? r.updatedAt : best),
+/** The most recently updated report (id and time), or null for an empty list. */
+export function latestUpdate(
+  reports: { id: string; updatedAt: string }[],
+): { id: string; updatedAt: string } | null {
+  return reports.reduce<{ id: string; updatedAt: string } | null>(
+    (best, r) => (best === null || r.updatedAt > best.updatedAt ? r : best),
     null,
   );
 }
 
-export function totalBytes(reports: ReportLike[]): number {
-  return reports.reduce((sum, r) => sum + r.sizeBytes, 0);
+/** True when a click landed on a control inside the row, which keeps precedence over the row itself. */
+export function isInteractiveTarget(target: EventTarget | null): boolean {
+  return (
+    target instanceof Element &&
+    target.closest("a, button, [role=menu]") !== null
+  );
 }

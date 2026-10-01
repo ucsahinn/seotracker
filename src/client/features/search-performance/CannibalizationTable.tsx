@@ -1,4 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
 import { CheckCircle2, ChevronRight, SearchX } from "lucide-react";
 import * as React from "react";
 import { EmptyState } from "@/client/components/EmptyState";
@@ -13,7 +12,8 @@ import type {
   SearchPerformanceDevice,
   SearchPerformanceType,
 } from "@/types/schemas/search-performance";
-import { getCannibalizationReport } from "@/serverFunctions/cannibalization";
+import { useCannibalizationReport } from "@/client/features/search-performance/useCannibalizationReport";
+import type { getCannibalizationReport } from "@/serverFunctions/cannibalization";
 import { UrlCell } from "@/client/components/table/UrlCell";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 
@@ -31,28 +31,24 @@ export function CannibalizationTable({
   device,
   country,
   searchType,
+  search = "",
+  onClearSearch,
 }: {
   projectId: string;
   dateRange: SearchPerformanceDateRange;
   device?: SearchPerformanceDevice;
   country?: string;
   searchType: SearchPerformanceType;
+  /** Narrows the list to queries containing this text; set from the summary card. */
+  search?: string;
+  onClearSearch?: () => void;
 }) {
-  const report = useQuery({
-    // The filters belong in the key as well as the payload: without them the
-    // panel kept serving its first answer while the dropdowns above changed.
-    queryKey: [
-      "cannibalization",
-      projectId,
-      dateRange,
-      device,
-      country,
-      searchType,
-    ],
-    queryFn: () =>
-      getCannibalizationReport({
-        data: { projectId, dateRange, device, country, searchType },
-      }),
+  const report = useCannibalizationReport({
+    projectId,
+    dateRange,
+    device,
+    country,
+    searchType,
   });
 
   if (report.isPending) {
@@ -111,6 +107,13 @@ export function CannibalizationTable({
     );
   }
 
+  const needle = search.trim().toLocaleLowerCase("tr");
+  const shown = needle
+    ? data.rows.filter((row) =>
+        row.query.toLocaleLowerCase("tr").includes(needle),
+      )
+    : data.rows;
+
   return (
     <div className="space-y-3 p-4">
       <p className="text-sm text-muted">
@@ -139,8 +142,26 @@ export function CannibalizationTable({
         </p>
       ) : null}
 
+      {needle ? (
+        <p className="flex flex-wrap items-center gap-2 text-xs text-muted">
+          <span>
+            &quot;{search}&quot; geçen {formatNumber(shown.length)} sorgu
+            gösteriliyor.
+          </span>
+          {onClearSearch ? (
+            <button
+              type="button"
+              className="btn btn-ghost btn-xs"
+              onClick={onClearSearch}
+            >
+              Filtreyi kaldır
+            </button>
+          ) : null}
+        </p>
+      ) : null}
+
       <div className="overflow-hidden rounded-box border border-base-300">
-        {data.rows.map((row) => (
+        {shown.map((row) => (
           <QueryRow key={row.query} row={row} />
         ))}
       </div>

@@ -1,3 +1,4 @@
+import type * as React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
@@ -17,17 +18,20 @@ type Props = {
   launchForm: ReturnType<typeof useLaunchController>["launchForm"];
   commitMaxPagesInput: () => number;
   maxPagesLimit: number;
+  /** Lets the empty history state move focus to the address field. */
+  urlInputRef: React.Ref<HTMLInputElement>;
 };
 
 export function LaunchFormCard({
   commitMaxPagesInput,
   launchForm,
   maxPagesLimit,
+  urlInputRef,
 }: Props) {
   return (
-    <div className="card bg-base-100 border border-base-300">
-      <div className="card-body gap-4">
-        <h2 className="card-title text-base">Yeni denetim başlat</h2>
+    <section className="space-y-4 rounded-box border border-base-300 bg-base-100 p-4">
+      <div className="space-y-4">
+        <h2 className="text-sm font-semibold">Yeni denetim başlat</h2>
 
         <form
           className="grid grid-cols-1 gap-3 lg:grid-cols-12 lg:items-center"
@@ -45,6 +49,7 @@ export function LaunchFormCard({
                   className={`input input-bordered w-full lg:col-span-9 ${urlError ? "input-error" : ""}`}
                 >
                   <input
+                    ref={urlInputRef}
                     // A placeholder is not a label: it disappears on the
                     // first keystroke and is never announced as a name.
                     aria-label="Taranacak site adresi"
@@ -100,7 +105,7 @@ export function LaunchFormCard({
 
         <LaunchErrors launchForm={launchForm} />
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -108,7 +113,7 @@ function LaunchOptions({
   launchForm,
   commitMaxPagesInput,
   maxPagesLimit,
-}: Props) {
+}: Omit<Props, "urlInputRef">) {
   return (
     <div className="rounded-box border border-base-300 bg-base-200/20 p-3 space-y-2">
       {/* Not a <label>: it wraps nothing and carries no htmlFor, so it

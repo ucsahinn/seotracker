@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   applyFilters,
   quickCounts,
+  topOpportunity,
   type OpportunityRow,
 } from "./opportunityLogic";
 
@@ -58,10 +59,37 @@ describe("applyFilters", () => {
   });
 
   it("counts chips over everything, so an empty one can be disabled", () => {
-    expect(quickCounts(rows)).toEqual({ analytics: 1, top_impressions: 10 });
+    expect(quickCounts(rows)).toEqual({
+      analytics: 1,
+      no_analytics: 12,
+      top_impressions: 10,
+    });
     expect(quickCounts([row("x")])).toEqual({
       analytics: 0,
+      no_analytics: 1,
       top_impressions: 1,
     });
+  });
+
+  it("keeps only pages Analytics has no record of", () => {
+    const shown = applyFilters(rows, null, "no_analytics").map((r) => r.page);
+    expect(shown).toHaveLength(12);
+    expect(shown).not.toContain("g");
+  });
+});
+
+describe("topOpportunity", () => {
+  it("returns the highest score, ignoring unscored rows", () => {
+    const rows = [
+      row("a", { score: 40 }),
+      row("b", { score: 90 }),
+      row("c", { score: null }),
+    ];
+    expect(topOpportunity(rows)?.page).toBe("b");
+  });
+
+  it("is null when nothing is scored", () => {
+    expect(topOpportunity([])).toBeNull();
+    expect(topOpportunity([row("c", { score: null })])).toBeNull();
   });
 });

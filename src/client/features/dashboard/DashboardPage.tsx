@@ -87,7 +87,7 @@ export function DashboardPage({ projectId }: { projectId: string }) {
        * -- inviting someone with a week of audits to spend a fresh crawl.
        */
       node: overviewQuery.isError ? (
-        <div className="rounded-box border border-base-300 bg-base-100">
+        <div className="rounded-box border border-base-300 bg-base-100 shadow-[var(--shadow-raise)]">
           <QueryErrorState
             error={overviewQuery.error}
             onRetry={() => void overviewQuery.refetch()}
@@ -166,7 +166,7 @@ export function DashboardPage({ projectId }: { projectId: string }) {
       {/* Cards with data sort before setup pitches and empty states. A lone
           card takes the full width rather than leaving half the row empty. */}
       <div
-        className={`grid items-start gap-5 ${
+        className={`stagger grid items-start gap-5 ${
           cards.length > 1 ? "lg:grid-cols-2" : ""
         }`}
       >

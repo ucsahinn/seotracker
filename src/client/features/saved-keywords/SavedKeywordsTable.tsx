@@ -19,6 +19,7 @@ import {
 import { SortableHeader } from "@/client/components/table/SortableHeader";
 import { IntentBadge } from "@/client/features/saved-keywords/components";
 import type { KeywordIntent, SavedKeywordRow } from "@/types/keywords";
+import { positionInk } from "@/client/features/rankings/positionBands";
 import { TagChip } from "./TagChip";
 import { formatSavedKeywordDate } from "./savedKeywordsUtils";
 import { positionOf } from "./savedKeywordPositions";
@@ -67,7 +68,14 @@ export function SavedKeywordsTable({
           <SortableHeader column={column} label="Kelime" />
         ),
         cell: ({ getValue }) => (
-          <span className="font-medium">{getValue()}</span>
+          <button
+            type="button"
+            className="link link-hover text-left font-medium"
+            title="Arama performansında göster"
+            onClick={() => onInspect(getValue())}
+          >
+            {getValue()}
+          </button>
         ),
       }),
       // Search volume, CPC, ad competition and keyword difficulty were bought
@@ -87,7 +95,9 @@ export function SavedKeywordsTable({
               -
             </span>
           ) : (
-            <span className="tabular-nums">{formatDecimal(position)}</span>
+            <span className={`tabular-nums ${positionInk(position)}`}>
+              {formatDecimal(position)}
+            </span>
           );
         },
         enableSorting: false,

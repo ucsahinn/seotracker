@@ -105,12 +105,28 @@ describe("selectLighthousePages", () => {
 describe("fetchLighthouseResult", () => {
   it("rethrows a retryable provider failure so the workflow step retries", async () => {
     fetchPageSpeedReportMock.mockRejectedValue(
-      new PageSpeedError("quota exceeded", { status: 429, retryable: true }),
+      new PageSpeedError("backend error", { status: 503, retryable: true }),
     );
 
     await expect(
       fetchLighthouseResult("https://example.com/", "page-1", "desktop"),
-    ).rejects.toThrow("quota exceeded");
+    ).rejects.toThrow("backend error");
+  });
+
+  it("hands a per-minute 429 back flagged instead of throwing or finalising it", async () => {
+    fetchPageSpeedReportMock.mockRejectedValue(
+      classifyFailure(429, "Quota exceeded: Queries per minute", true),
+    );
+
+    const fetched = await fetchLighthouseResult(
+      "https://example.com/",
+      "page-1",
+      "desktop",
+    );
+
+    expect(fetched.rateLimited).toBe(true);
+    expect(fetched.quotaExhausted).toBeUndefined();
+    expect(fetched.result.errorMessage).toContain("Queries per minute");
   });
 
   it("records a non-retryable failure on the row instead of throwing", async () => {
@@ -167,5 +183,6 @@ describe("classifyFailure", () => {
       true,
       false,
     ]);
+    expect([daily.rateLimited, perMinute.rateLimited]).toEqual([false, true]);
   });
 });

@@ -1,6 +1,7 @@
 import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { createFileRoute } from "@tanstack/react-router";
 import { ExternalLink } from "lucide-react";
+import { CopyButton } from "@/client/components/CopyButton";
 import { SetupStatusPanel } from "@/client/features/support/SetupStatusPanel";
 import { DiagnosticsBundleButton } from "@/client/features/support/DiagnosticsBundleButton";
 
@@ -22,13 +23,19 @@ function SupportPage() {
 
       <SetupStatusPanel />
 
-      <ul className="space-y-3 text-sm text-muted">
+      <ul className="enter space-y-3 text-sm text-muted">
         <li>
           <span className="font-medium text-base-content">
             Konteyner günlüğü
           </span>{" "}
-          — <code className="text-xs">docker compose logs -f</code>. Açılış
-          kontrolleri uygulama başlamadan önce buraya yazılır.
+          — <code className="text-xs">docker compose logs -f</code>{" "}
+          <CopyButton
+            iconOnly
+            value="docker compose logs -f"
+            label="Komutu kopyala"
+            successMessage="Komut kopyalandı"
+          />
+          . Açılış kontrolleri uygulama başlamadan önce buraya yazılır.
         </li>
         <li>
           <span className="font-medium text-base-content">Sağlık ucu</span> —{" "}
@@ -47,8 +54,8 @@ function SupportPage() {
         </li>
       </ul>
 
-      <section className="space-y-2 rounded-box border border-base-300 bg-base-200/30 p-4">
-        <h2 className="text-sm font-medium">Sorun bildirmek için</h2>
+      <section className="space-y-2 rounded-box border border-base-300 bg-base-100 p-4">
+        <h2 className="text-sm font-semibold">Sorun bildirmek için</h2>
         <p className="max-w-prose text-sm text-muted">
           Tek bir arşiv indirin: sürüm, kurulum kontrolleri, tablo büyüklükleri,
           bağlı Google mülkleri, son denetimlerin durumu ve bu sekmede yakalanan

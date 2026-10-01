@@ -37,6 +37,23 @@ export function bandOf(position: number): BandId {
   return "beyond";
 }
 
+/**
+ * Text colour for a position number, on the same cuts as the bars: the first
+ * page reads as success, the second as warning, the rest stays muted. The
+ * number itself is always printed, so colour never carries it alone.
+ */
+export function positionInk(position: number): string {
+  switch (bandOf(position)) {
+    case "top3":
+    case "top10":
+      return "text-[var(--ink-success)]";
+    case "top20":
+      return "text-[var(--ink-warning)]";
+    case "beyond":
+      return "text-muted";
+  }
+}
+
 export function countBands(
   rows: { position: number }[],
 ): Record<BandId, number> {

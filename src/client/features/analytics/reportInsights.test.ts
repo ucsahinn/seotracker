@@ -1,9 +1,11 @@
 import { describe, expect, it } from "vitest";
 import {
   applySegment,
+  availableChips,
   buildShareSegments,
   OTHER_KEY,
 } from "@/client/features/analytics/reportInsights";
+import { buildSummary } from "@/client/features/analytics/reportBuckets";
 
 describe("buildShareSegments", () => {
   const rows = Array.from({ length: 8 }, (_, index) => ({
@@ -32,5 +34,65 @@ describe("buildShareSegments", () => {
     );
 
     expect(segments.map((segment) => segment.label)).toEqual(["b"]);
+  });
+});
+
+const label = (field: string) => field;
+
+describe("buildSummary", () => {
+  const rows = ["a", "b", "c", "d", "e", "f", "g"].map((channel, index) => ({
+    channel,
+    sessions: 10 - index,
+  }));
+
+  it("uses a ring up to six groups and bars past it, following the report's own dimension", () => {
+    expect(
+      buildSummary("traffic_acquisition", ["channel"], rows.slice(0, 6), label)
+        ?.form,
+    ).toBe("ring");
+    expect(
+      buildSummary("traffic_acquisition", ["channel"], rows, label)?.form,
+    ).toBe("bars");
+  });
+
+  it("hides itself below two groups", () => {
+    expect(
+      buildSummary("traffic_acquisition", ["channel"], rows.slice(0, 1), label),
+    ).toBeNull();
+  });
+
+  it("sums rows that share a label", () => {
+    const segments = buildShareSegments(
+      [
+        { p: "/x", n: 2 },
+        { p: "/x", n: 3 },
+      ],
+      "p",
+      "n",
+    );
+    expect(segments).toEqual([
+      { key: "/x", label: "/x", value: 5, members: ["/x"] },
+    ]);
+  });
+});
+
+const row = (seconds: number) => ({
+  userEngagementDuration: seconds,
+  activeUsers: 1,
+});
+
+describe("median-based chips", () => {
+  const metrics = ["userEngagementDuration", "activeUsers"];
+
+  it("flags pages under half the median dwell time", () => {
+    const rows = [row(60), row(60), row(60), row(20)];
+    const chip = availableChips(metrics, rows).find(
+      (item) => item.id === "lowDwell",
+    );
+    expect(chip?.count).toBe(1);
+  });
+
+  it("stays hidden when there are too few rows to take a median", () => {
+    expect(availableChips(metrics, [row(60), row(5)])).toEqual([]);
   });
 });

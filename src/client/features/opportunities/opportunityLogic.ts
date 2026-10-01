@@ -1,4 +1,4 @@
-import { filter, sort } from "remeda";
+import { filter, firstBy, sort } from "remeda";
 import type { OpportunityReport } from "@/client/features/opportunities/report";
 import {
   formatDecimal,
@@ -8,7 +8,7 @@ import {
 
 export type OpportunityRow = OpportunityReport["rows"][number];
 export type KindId = OpportunityRow["kind"];
-export type QuickId = "analytics" | "top_impressions";
+export type QuickId = "analytics" | "no_analytics" | "top_impressions";
 
 /** The three kinds, cheapest work first. Copy lives here so the tiles, the ring and the panel agree. */
 export const KIND_COPY = {
@@ -51,6 +51,7 @@ export const KIND_ORDER: readonly KindId[] = ["ctr_gap", "near_miss", "deep"];
 
 export const QUICK_COPY = {
   analytics: "Analytics'te trafiği olanlar",
+  no_analytics: "Analytics eşleşmesi yok",
   top_impressions: "En çok gösterim alan 10",
 } as const satisfies Record<QuickId, string>;
 
@@ -135,6 +136,17 @@ function hasAnalyticsTraffic(row: OpportunityRow): boolean {
   return row.ga4 !== null && row.ga4.sessions > 0;
 }
 
+/** Rows Search Console saw but Analytics has no record of (scored on Search Console data alone). */
+function lacksAnalyticsMatch(row: OpportunityRow): boolean {
+  return row.ga4 === null;
+}
+
+/** The row with the highest score, or null for an empty list. */
+export function topOpportunity(rows: OpportunityRow[]): OpportunityRow | null {
+  const scored = filter(rows, (row) => row.score !== null);
+  return firstBy(scored, [(row) => row.score ?? 0, "desc"]) ?? null;
+}
+
 /** Page ids of the ten most-shown rows across the WHOLE set, so a kind filter cannot change what "top 10" means. */
 function topImpressionPages(rows: OpportunityRow[]): Set<string> {
   const ranked = sort(rows, (a, b) => b.impressions - a.impressions);
@@ -144,6 +156,7 @@ function topImpressionPages(rows: OpportunityRow[]): Set<string> {
 export function quickCounts(rows: OpportunityRow[]): Record<QuickId, number> {
   return {
     analytics: filter(rows, hasAnalyticsTraffic).length,
+    no_analytics: filter(rows, lacksAnalyticsMatch).length,
     top_impressions: Math.min(10, rows.length),
   };
 }
@@ -159,6 +172,7 @@ export function applyFilters(
     (row) =>
       (kind === null || row.kind === kind) &&
       (quick !== "analytics" || hasAnalyticsTraffic(row)) &&
+      (quick !== "no_analytics" || lacksAnalyticsMatch(row)) &&
       (top === null || top.has(row.page)),
   );
 }

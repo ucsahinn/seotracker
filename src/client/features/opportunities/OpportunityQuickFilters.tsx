@@ -1,4 +1,4 @@
-import { BarChart3, TrendingUp, type LucideIcon } from "lucide-react";
+import { BarChart3, SearchX, TrendingUp, type LucideIcon } from "lucide-react";
 import {
   QUICK_COPY,
   type QuickId,
@@ -16,6 +16,12 @@ const CHIPS: ReadonlyArray<{
     icon: BarChart3,
     emptyReason:
       "Analytics'te trafiği olan sayfa yok; Analytics bağlı değilse önce bağlayın.",
+  },
+  {
+    id: "no_analytics",
+    icon: SearchX,
+    emptyReason:
+      "Her sayfanın Analytics'te karşılığı var; eşleşmeyen sayfa kalmadı.",
   },
   {
     id: "top_impressions",

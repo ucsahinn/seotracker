@@ -41,10 +41,10 @@ export function OpportunitySummary({
   return (
     <section
       aria-label="Fırsatların dağılımı"
-      className="rounded-box border border-base-300 bg-base-100 px-4 py-4 transition-opacity duration-700 starting:opacity-0"
+      className="rounded-box border border-base-300 bg-base-100 p-4 shadow-[var(--shadow-raise)] transition-opacity duration-700 starting:opacity-0"
     >
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-        <h2 className="text-sm font-medium">Fırsat nerede toplanıyor?</h2>
+        <h2 className="text-sm font-semibold">Fırsat nerede toplanıyor?</h2>
         <div role="group" aria-label="Ölçü" className="join">
           {METRICS.map((option) => (
             <button

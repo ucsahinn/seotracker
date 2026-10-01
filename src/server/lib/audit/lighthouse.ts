@@ -28,6 +28,11 @@ type LighthouseFetchResult = {
   payloadJson: string | null;
   /** Google's daily quota is spent; the phase stops instead of going on. */
   quotaExhausted?: boolean;
+  /**
+   * Per-minute 429: not a failure yet. The wave pauses and re-runs this check;
+   * the error row is only stored once the re-passes are used up.
+   */
+  rateLimited?: boolean;
 };
 
 /** A check that produced no payload — provider error, or a failed fetch step. */
@@ -81,9 +86,16 @@ export async function fetchLighthouseResult(
       payloadJson: JSON.stringify(data),
     };
   } catch (error) {
-    // A transient failure (network, quota, 5xx) goes back to the Workflow so the
+    // A per-minute 429 is handed back flagged. Another transient failure
+    // (network, 5xx) goes back to the Workflow so the
     // step retries. Everything else becomes a failed row: the crawl results are
     // the bulk of an audit's value and must still land.
+    if (error instanceof PageSpeedError && error.rateLimited) {
+      return {
+        ...failedLighthouseFetch(url, pageId, strategy, error.message),
+        rateLimited: true,
+      };
+    }
     if (error instanceof PageSpeedError && error.retryable) throw error;
     if (error instanceof PageSpeedError && error.quotaExhausted) {
       const quota = failedLighthouseFetch(

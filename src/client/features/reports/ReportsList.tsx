@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import {
   Clock,
   Download,
@@ -26,6 +26,7 @@ import {
 import { ReportsSummary } from "@/client/features/reports/ReportsSummary";
 import {
   filterCounts,
+  isInteractiveTarget,
   matchesFilter,
   reportKind,
   type ReportFilter,
@@ -79,6 +80,7 @@ export function ReportsList({
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState<(typeof PAGE_SIZES)[number]>(25);
   const sorting = useLocalSort<SortKey>({ key: "updatedAt", desc: true });
+  const navigate = useNavigate();
 
   if (reports.length === 0) {
     return (
@@ -86,6 +88,11 @@ export function ReportsList({
         icon={FileText}
         title="Henüz rapor yok"
         description="Claude Code ya da Codex üzerinden seo-audit gibi bir seotracker becerisini başlatın; yazdığı rapor burada görünür."
+        action={
+          <Link to="/ai" className="btn btn-sm">
+            Ajan kurulumunu aç
+          </Link>
+        }
       />
     );
   }
@@ -120,8 +127,9 @@ export function ReportsList({
   );
 
   return (
-    <div className="space-y-4">
+    <div className="enter space-y-4">
       <ReportsSummary
+        projectId={projectId}
         reports={chipFiltered}
         visibleReports={visible}
         now={now}
@@ -132,7 +140,11 @@ export function ReportsList({
         }}
       />
 
-      <div className="flex flex-wrap gap-2" role="group" aria-label="Filtre">
+      <div
+        className="stagger flex flex-wrap gap-2"
+        role="group"
+        aria-label="Filtre"
+      >
         {FILTERS.map(({ key, label, icon: Icon }) => (
           <button
             key={key}
@@ -189,7 +201,17 @@ export function ReportsList({
               </thead>
               <tbody>
                 {rows.map((report) => (
-                  <tr key={report.id} className="hover:bg-base-200">
+                  <tr
+                    key={report.id}
+                    className="cursor-pointer hover:bg-base-200"
+                    onClick={(event) => {
+                      if (isInteractiveTarget(event.target)) return;
+                      void navigate({
+                        to: "/p/$projectId/reports/$reportId",
+                        params: { projectId, reportId: report.id },
+                      });
+                    }}
+                  >
                     <td className="max-w-[420px]">
                       <Link
                         to="/p/$projectId/reports/$reportId"

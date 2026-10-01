@@ -25,6 +25,11 @@ export class PageSpeedError extends Error {
   readonly retryable: boolean;
   /** True when the daily quota is spent: every later call fails the same way. */
   readonly quotaExhausted: boolean;
+  /**
+   * True for a per-minute 429. The limit frees up within about a minute, so the
+   * workflow pauses and re-runs just those checks rather than storing a failure.
+   */
+  readonly rateLimited: boolean;
 
   constructor(
     message: string,
@@ -32,6 +37,7 @@ export class PageSpeedError extends Error {
       status: number | null;
       retryable: boolean;
       quotaExhausted?: boolean;
+      rateLimited?: boolean;
     },
   ) {
     super(message);
@@ -39,6 +45,7 @@ export class PageSpeedError extends Error {
     this.status = options.status;
     this.retryable = options.retryable;
     this.quotaExhausted = options.quotaExhausted ?? false;
+    this.rateLimited = options.rateLimited ?? false;
   }
 }
 
@@ -89,7 +96,7 @@ export function classifyFailure(
 ): PageSpeedError {
   // "Queries per day" never recovers within the audit, so retrying only burns
   // time; the audit stops measuring and keeps what it has. A per-minute 429
-  // falls through and is retried.
+  // is flagged `rateLimited` below so the wave can pause and re-run it.
   if (status === 429 && /per day|daily/i.test(message)) {
     return new PageSpeedError(message, {
       status,
@@ -104,10 +111,14 @@ export function classifyFailure(
     return new PageSpeedError(
       `No PageSpeed key set — ${message}. A free key raises the quota and ` +
         `is entered under Settings; see docs/PAGESPEED_API_KEY.md.`,
-      { status, retryable: true },
+      { status, retryable: true, rateLimited: true },
     );
   }
-  return new PageSpeedError(message, { status, retryable: true });
+  return new PageSpeedError(message, {
+    status,
+    retryable: true,
+    rateLimited: status === 429,
+  });
 }
 
 function isFinalStatus(status: number): boolean {

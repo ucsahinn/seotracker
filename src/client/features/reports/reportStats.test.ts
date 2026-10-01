@@ -45,13 +45,13 @@ describe("report stats", () => {
     });
   });
 
-  it("finds the latest update", () => {
+  it("finds the latest update with its report id", () => {
     expect(latestUpdate([])).toBeNull();
     expect(
       latestUpdate([
-        make(null, null, "2026-01-01"),
-        make(null, null, "2026-02-01"),
+        { id: "a", updatedAt: "2026-01-01" },
+        { id: "b", updatedAt: "2026-02-01" },
       ]),
-    ).toBe("2026-02-01");
+    ).toEqual({ id: "b", updatedAt: "2026-02-01" });
   });
 });

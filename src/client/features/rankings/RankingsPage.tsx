@@ -374,6 +374,7 @@ export function RankingsPage({
          */
         <QueryHistoryCard
           ref={historyRef}
+          projectId={projectId}
           query={selected}
           rows={history.data?.rows ?? []}
           loading={history.isLoading}

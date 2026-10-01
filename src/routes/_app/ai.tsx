@@ -183,9 +183,9 @@ function AiPage() {
 
       {tab === "setup" ? (
         <TabPanel group="ai" value="setup">
-          <div className="mt-6 space-y-5">
-            <section className="rounded-box border border-base-300 p-5 sm:p-6">
-              <h2 className="text-base font-semibold">Ajanınızı kurun</h2>
+          <div className="enter mt-6 space-y-5">
+            <section className="rounded-box border border-base-300 bg-base-100 p-4">
+              <h2 className="text-sm font-semibold">Ajanınızı kurun</h2>
               <p className="mt-2 text-sm leading-relaxed text-muted">
                 Kurulum istemini ajanınıza yapıştırın; seotracker&apos;ı
                 bağlayıp SEO becerilerini kuracak. Elle yapmanız gereken
@@ -236,8 +236,8 @@ function AiPage() {
               </p>
             </section>
 
-            <section className="rounded-box border border-base-300 p-5 sm:p-6">
-              <h2 className="text-base font-semibold">
+            <section className="rounded-box border border-base-300 bg-base-100 p-4">
+              <h2 className="text-sm font-semibold">
                 Becerilerinizi güncelleyin
               </h2>
               <p className="mt-2 text-sm leading-relaxed text-muted">
@@ -322,8 +322,16 @@ function AiPage() {
                 key={name}
                 className="flex flex-col gap-0.5 sm:flex-row sm:gap-3"
               >
-                <span className="shrink-0 font-mono text-sm text-base-content sm:w-48">
-                  {name}
+                <span className="flex shrink-0 items-center gap-1 sm:w-56">
+                  <span className="font-mono text-sm text-base-content">
+                    {name}
+                  </span>
+                  <CopyButton
+                    iconOnly
+                    value={name}
+                    label={`${name} adını kopyala`}
+                    successMessage="Beceri adı kopyalandı"
+                  />
                 </span>
                 <span className="text-muted">{blurb}</span>
               </li>

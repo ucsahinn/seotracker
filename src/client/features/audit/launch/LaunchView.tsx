@@ -12,6 +12,7 @@ type LaunchViewProps = {
 };
 
 export function LaunchView({ projectId, onAuditStarted }: LaunchViewProps) {
+  const urlInputRef = React.useRef<HTMLInputElement>(null);
   const controller = useLaunchController({ projectId, onAuditStarted });
   const history = controller.historyQuery.data ?? [];
   /*
@@ -36,6 +37,7 @@ export function LaunchView({ projectId, onAuditStarted }: LaunchViewProps) {
         launchForm={controller.launchForm}
         commitMaxPagesInput={controller.commitMaxPagesInput}
         maxPagesLimit={controller.maxPagesLimit}
+        urlInputRef={urlInputRef}
       />
 
       <AuditHistorySection
@@ -48,6 +50,7 @@ export function LaunchView({ projectId, onAuditStarted }: LaunchViewProps) {
           setPendingDelete(history.find((row) => row.id === auditId) ?? null)
         }
         onRerun={controller.rerunAudit}
+        onStartFirst={() => urlInputRef.current?.focus()}
       />
 
       {pendingDelete ? (

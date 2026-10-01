@@ -5,7 +5,7 @@ Yayında tek sürüm tutuluyor, bu yüzden burada tek not var. Eski notlar
 
 ## [Yayınlanmamış]
 
-## [1.8.3] — 2026-09-30
+## [1.8.4] — 2026-09-30
 
 Bu sürüm, bugüne kadar çıkan tüm sürümlerin notlarını tek yerde toplar.
 
@@ -49,6 +49,10 @@ bırakın.
 - Renkler açık temada okunur hale getirildi.
 - Klavye ve ekran okuyucu desteği: menüler ve pencereler klavyeyle kullanılabiliyor, "Ana içeriğe geç" bağlantısı var, grafiklerin değerleri gizli tablo olarak okunabiliyor, hareketi azaltma ayarına uyuluyor.
 - Büyük denetimler çok daha hafif açılıyor (10.000 sayfada yük yaklaşık 68 MB yerine 3 MB).
+- Arama performansı ve Analytics'in her sekmesinin kendi özeti var; çubuklara tıklayınca tablo süzülüyor.
+- Panelde metrik kutuları ilgili ekrana gidiyor. Fırsatlar'da "Analytics'te bulunamayan" kutusu listeyi süzüyor.
+- Denetim geçmişinde Kritik ve Uyarı sütunları, önceki denetime göre değişim ve tıklanabilir tarih var.
+- Raporlar ve Rapor şablonları satırları tıklanabiliyor; Sıralama takibinde satırdan "Kayıtlı kelimelere ekle" var.
 
 ### Çıkarıldı
 
@@ -73,11 +77,12 @@ bırakın.
 - Tablo başlıkları ve küçük yazılar açık temada okunaklı değildi.
 - Hatalı bir adres parametresi (örneğin ?full=yes) rapor ekranını çökertiyordu.
 - Birçok hata iletisi İngilizce görünüyordu.
+- Hız ölçümünde dakikalık Google sınırına takılan ölçümler kalıcı hata olarak kaydediliyordu (212 sayfalık bir denetimde 40 ölçüm kayboldu). Artık bekleyip yeniden deniyor.
 - Sorun grafiğindeki çubuklar yalnızca fareyle seçilebiliyordu; artık klavyeyle de seçilebiliyor.
 - İki küçük açıklama balonu, fareyi üzerine götürünce kapanıyordu.
 - Google'ın "URL Denetleme Aracı" adı ekranda ve raporda aynı yazılıyor.
 - Sıralama takibi sessizce yalnızca ilk 25 sorguyu gösteriyordu; arşiv hiç dolmuyordu.
 - Ölçülemeyen değerler sıfır olarak çiziliyordu.
 
-[Yayınlanmamış]: https://github.com/ucsahinn/seotracker/compare/v1.8.3...HEAD
-[1.8.3]: https://github.com/ucsahinn/seotracker/releases/tag/v1.8.3
+[Yayınlanmamış]: https://github.com/ucsahinn/seotracker/compare/v1.8.4...HEAD
+[1.8.4]: https://github.com/ucsahinn/seotracker/releases/tag/v1.8.4

@@ -1,18 +1,11 @@
 import type { WorkflowStep } from "cloudflare:workers";
 import { discoverUrls, parseRobotsTxt } from "@/server/lib/audit/discovery";
 import {
-  failedLighthouseFetch,
-  fetchLighthouseResult,
-  storeLighthouseResult,
-} from "@/server/lib/audit/lighthouse";
-import {
   getOrigin,
   isSameOrigin,
   normalizeUrl,
 } from "@/server/lib/audit/url-utils";
 import { isCrawlableUrl } from "@/server/lib/audit/url-policy";
-import { selectLighthouseWork } from "@/server/workflows/siteAuditWorkflowLighthouseSelect";
-import { AuditLighthouseRepository } from "@/server/features/audit/repositories/AuditLighthouseRepository";
 import { AuditRepository } from "@/server/features/audit/repositories/AuditRepository";
 import { getAuditScratchpad } from "@/server/features/audit/AuditScratchpad";
 import { AuditProgressKV } from "@/server/lib/audit/progress-kv";
@@ -32,14 +25,10 @@ import {
 import {
   DB_STEP,
   DISCOVERY_STEP,
-  LIGHTHOUSE_CHUNK_STEP,
-  LIGHTHOUSE_PERSIST_STEP,
   MULTIPAGE_CHECKS_STEP,
 } from "@/server/workflows/auditStepConfigs";
+import { runLighthousePhase } from "@/server/workflows/siteAuditWorkflowLighthouse";
 
-import { LIGHTHOUSE_URLS_PER_STEP } from "@/server/workflows/auditStepBudget";
-
-type LighthouseFetched = Awaited<ReturnType<typeof fetchLighthouseResult>>;
 /** Frontier seeds per scratchpad RPC call. */
 const SEED_RPC_BATCH = 2_000;
 
@@ -189,129 +178,6 @@ async function runDiscoveryPhase(
       },
     };
   });
-}
-
-type LighthousePhaseParams = {
-  auditId: string;
-  workflowInstanceId: string;
-  actorUserId: string;
-  projectId: string;
-  startUrl: string;
-  config: AuditConfig;
-};
-
-export async function runLighthousePhase(
-  step: WorkflowStep,
-  params: LighthousePhaseParams,
-) {
-  const { auditId, workflowInstanceId, projectId, startUrl, config } = params;
-  if (config.lighthouseStrategy === "none") return;
-
-  const lighthouseWork = await selectLighthouseWork({
-    step,
-    auditId,
-    workflowInstanceId,
-    startUrl,
-    strategy: config.lighthouseStrategy,
-  });
-
-  let completedChecks = 0;
-  let failedChecks = 0;
-  for (
-    let chunkStart = 0;
-    chunkStart < lighthouseWork.length;
-    chunkStart += LIGHTHOUSE_URLS_PER_STEP
-  ) {
-    const chunkIds = lighthouseWork.slice(
-      chunkStart,
-      chunkStart + LIGHTHOUSE_URLS_PER_STEP,
-    );
-    const urlById = new Map(
-      (await AuditRepository.getPageUrlsByIds(auditId, chunkIds)).map(
-        (page) => [page.id, page.url],
-      ),
-    );
-    const chunk = chunkIds.flatMap((pageId) => {
-      const url = urlById.get(pageId);
-      return url ? [{ url, pageId }] : [];
-    });
-    const chunkIndex = Math.floor(chunkStart / LIGHTHOUSE_URLS_PER_STEP) + 1;
-    const priorCompleted = completedChecks;
-    const priorFailed = failedChecks;
-
-    // ONE step per wave (5 URLs x mobile + desktop = 10 PageSpeed calls in
-    // parallel): fetch, store the raw payloads to R2, insert rows and bump
-    // progress, then return only counts. The raw payloads are multi-MB, far
-    // over the 1MiB step-result limit, so they never become step state. A
-    // retry re-runs the free PageSpeed calls; the rows have deterministic ids
-    // and R2 keys, so the writes are idempotent.
-    const persistChunk =
-      (fetched: LighthouseFetched[], keepExisting = false) =>
-      async () => {
-        const results = await Promise.all(
-          fetched.map((result) =>
-            storeLighthouseResult({ projectId, auditId, fetched: result }),
-          ),
-        );
-        await AuditLighthouseRepository.insertLighthouseResults(
-          auditId,
-          results,
-          { keepExisting },
-        );
-        const failed = results.filter((result) => result.errorMessage).length;
-        const completed = results.length - failed;
-        await AuditRepository.updateAuditProgress(auditId, workflowInstanceId, {
-          lighthouseCompleted: priorCompleted + completed,
-          lighthouseFailed: priorFailed + failed,
-        });
-        return {
-          completed,
-          failed,
-          quotaExhausted: fetched.some((item) => item.quotaExhausted),
-        };
-      };
-
-    let counts: Awaited<ReturnType<ReturnType<typeof persistChunk>>>;
-    try {
-      counts = await step.do(
-        `lighthouse-chunk-${chunkIndex}`,
-        LIGHTHOUSE_CHUNK_STEP,
-        async () => {
-          const fetched = await Promise.all(
-            chunk.flatMap(({ url, pageId }) => [
-              fetchLighthouseResult(url, pageId, "mobile"),
-              fetchLighthouseResult(url, pageId, "desktop"),
-            ]),
-          );
-          return persistChunk(fetched)();
-        },
-      );
-    } catch (error) {
-      // Step timeout or retries exhausted: the wave still lands as error
-      // rows so the crawl results and the other waves are not lost.
-      const message = error instanceof Error ? error.message : String(error);
-      counts = await step.do(
-        `lighthouse-chunk-${chunkIndex}-failed`,
-        LIGHTHOUSE_PERSIST_STEP,
-        persistChunk(
-          chunk.flatMap(({ url, pageId }) =>
-            (["mobile", "desktop"] as const).map((strategy) =>
-              failedLighthouseFetch(url, pageId, strategy, message),
-            ),
-          ),
-          // Some checks of this wave may already be stored as successes.
-          true,
-        ),
-      );
-    }
-
-    completedChecks += counts.completed;
-    failedChecks += counts.failed;
-
-    // Daily quota spent: stop and keep what is stored; the results screen
-    // explains the gap from the quota rows and the planned total.
-    if (counts.quotaExhausted) break;
-  }
 }
 
 async function finalizeAudit(args: {

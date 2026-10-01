@@ -10,7 +10,6 @@ import { useEffect } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   keepPreviousData,
-  queryOptions,
   useMutation,
   useQuery,
   useQueryClient,
@@ -31,7 +30,22 @@ import {
 import { TotalsCards } from "@/client/features/search-performance/TotalsCards";
 import { SearchFilters } from "@/client/features/search-performance/SearchFilters";
 import { CannibalizationTable } from "@/client/features/search-performance/CannibalizationTable";
-import type { QuickFilterId } from "@/client/features/search-performance/quickFilters";
+import {
+  applyQuickFilter,
+  type QuickFilterId,
+} from "@/client/features/search-performance/quickFilters";
+import {
+  CannibalizationSummary,
+  PagesSummary,
+  QueriesSummary,
+  StrikingSummary,
+  TabSummarySkeleton,
+} from "@/client/features/search-performance/TabSummaries";
+import {
+  buildFilterInput,
+  tabDimension,
+  tableQueryOptions,
+} from "@/client/features/search-performance/searchPerformanceQueries";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import { saveKeywords } from "@/serverFunctions/savedKeywords";
 import { describeWindow } from "@/shared/dataFreshness";
@@ -39,12 +53,10 @@ import { formatDate } from "@/client/lib/format";
 import {
   exportSearchPerformanceTable,
   getSearchPerformanceReport,
-  getSearchPerformanceTable,
 } from "@/serverFunctions/searchPerformance";
 import {
   type SearchPerformanceDateRange,
   type SearchPerformanceDevice,
-  type SearchPerformanceTableDimension,
   type SearchPerformanceType,
 } from "@/types/schemas/search-performance";
 
@@ -58,48 +70,6 @@ const TAB_HINTS: Record<Tab, string> = {
   cannibalization:
     "Aynı arama için birden fazla sayfanızın birbiriyle yarıştığı yerler.",
 };
-
-function tabDimension(tab: Tab): SearchPerformanceTableDimension {
-  return tab === "pages" ? "page" : "query";
-}
-
-type FilterInput = {
-  dateRange: SearchPerformanceDateRange;
-  device?: SearchPerformanceDevice;
-  country?: string;
-  searchType: SearchPerformanceType;
-};
-
-// The server filter payload: drop device/country when set to the "ALL" sentinel.
-function buildFilterInput(
-  range: SearchPerformanceDateRange,
-  device: SearchPerformanceDevice | undefined,
-  country: string | undefined,
-  searchType: SearchPerformanceType,
-): FilterInput {
-  return {
-    dateRange: range,
-    searchType,
-    ...(device ? { device } : {}),
-    ...(country ? { country } : {}),
-  };
-}
-
-// Single source for the paginated table query, shared by the live query and the
-// warm-on-connect prefetch so their key + fn can never drift apart.
-function tableQueryOptions(
-  projectId: string,
-  dimension: SearchPerformanceTableDimension,
-  filterInput: FilterInput,
-) {
-  return queryOptions({
-    queryKey: ["searchPerformanceTable", projectId, dimension, filterInput],
-    queryFn: () =>
-      getSearchPerformanceTable({
-        data: { projectId, dimension, ...filterInput },
-      }),
-  });
-}
 
 /** The tab values the route validates against. */
 export const SEARCH_PERFORMANCE_TABS = [
@@ -166,7 +136,8 @@ export function SearchPerformancePage({
       toast.error(getStandardErrorMessage(error, "Kelime kaydedilemedi"));
     },
   });
-  const setTab = (next: Tab) => onViewChange({ tab: next });
+  // A chip chosen on one tab must not silently narrow the next one.
+  const setTab = (next: Tab) => onViewChange({ tab: next, f: undefined });
 
   const filterInput = buildFilterInput(range, device, country, searchType);
 
@@ -194,6 +165,12 @@ export function SearchPerformancePage({
   });
   const tableData = tableQuery.data;
   const tableRows = tableData?.connected ? tableData.rows : [];
+  const strikingRows = applyQuickFilter(
+    report?.connected ? report.strikingDistance : [],
+    quickFilter,
+  );
+  const onFilter = (next: QuickFilterId | undefined) =>
+    onViewChange({ f: next });
   const tableTruncated = tableData?.connected ? tableData.truncated : false;
 
   // Warm the Queries tab (first page) as soon as the report connects so the tab
@@ -360,27 +337,50 @@ export function SearchPerformancePage({
 
             <TabPanel group="search-performance" value={tab}>
               {tab === "striking" ? (
-                <StrikingDistanceTable
-                  projectId={projectId}
-                  rows={report.strikingDistance}
-                />
+                <>
+                  <StrikingSummary
+                    rows={report.strikingDistance}
+                    active={quickFilter}
+                    onChange={onFilter}
+                  />
+                  <StrikingDistanceTable
+                    projectId={projectId}
+                    rows={strikingRows}
+                    filtered={quickFilter !== undefined}
+                  />
+                </>
               ) : tab === "cannibalization" ? (
-                <CannibalizationTable
-                  projectId={projectId}
-                  dateRange={range}
-                  device={device}
-                  country={country}
-                  searchType={searchType}
-                />
+                <>
+                  <CannibalizationSummary
+                    projectId={projectId}
+                    dateRange={range}
+                    device={device}
+                    country={country}
+                    searchType={searchType}
+                    onPickQuery={(picked) => onViewChange({ q: picked })}
+                  />
+                  <CannibalizationTable
+                    projectId={projectId}
+                    dateRange={range}
+                    device={device}
+                    country={country}
+                    searchType={searchType}
+                    search={query}
+                    onClearSearch={() => onViewChange({ q: undefined })}
+                  />
+                </>
               ) : tableQuery.isPending ? (
                 /* Shaped like the table that is coming, per the house rule:
                    a spinner in an empty box tells the reader nothing about
                    what is about to appear or how tall it will be. */
-                <div className="space-y-2 p-4" aria-busy>
-                  {Array.from({ length: 8 }, (_, index) => (
-                    <div key={index} className="skeleton h-10" />
-                  ))}
-                </div>
+                <>
+                  <TabSummarySkeleton />
+                  <div className="space-y-2 p-4" aria-busy>
+                    {Array.from({ length: 8 }, (_, index) => (
+                      <div key={index} className="skeleton h-10" />
+                    ))}
+                  </div>
+                </>
               ) : tableQuery.isError ? (
                 <div className="p-4">
                   <QueryErrorState
@@ -392,6 +392,19 @@ export function SearchPerformancePage({
                 </div>
               ) : (
                 <>
+                  {tab === "queries" ? (
+                    <QueriesSummary
+                      rows={tableRows}
+                      active={quickFilter}
+                      onChange={onFilter}
+                    />
+                  ) : (
+                    <PagesSummary
+                      rows={tableRows}
+                      active={quickFilter}
+                      onChange={onFilter}
+                    />
+                  )}
                   <div className="p-4">
                     <DimensionTable
                       rows={tableRows}
@@ -410,7 +423,6 @@ export function SearchPerformancePage({
                         onViewChange({ q: next || undefined })
                       }
                       quickFilter={quickFilter}
-                      onQuickFilterChange={(next) => onViewChange({ f: next })}
                     />
                   </div>
                 </>

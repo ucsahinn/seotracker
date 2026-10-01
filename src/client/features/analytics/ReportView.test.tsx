@@ -1,5 +1,6 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
+import type { Ga4ReportKindName } from "@/shared/ga4-reports";
 import {
   ReportView,
   type ReportResult,
@@ -41,10 +42,7 @@ const channels: ReportResult = {
   ],
 };
 
-function mount(
-  result: ReportResult,
-  kind: "traffic_acquisition" | "landing_pages",
-) {
+function mount(result: ReportResult, kind: Ga4ReportKindName) {
   return render(
     <ReportView
       kind={kind}
@@ -147,20 +145,127 @@ describe("ReportView share ring", () => {
     expect(bodyRows()).toHaveLength(3);
   });
 
-  it("draws no ring where a share is not meaningful", () => {
+  it("draws nothing for a single group", () => {
     mount(
       {
         ...base,
         dimensions: ["hostName", "landingPage"],
         metrics: ["sessions"],
-        rows: [
-          { hostName: "a.io", landingPage: "/", sessions: 5 },
-          { hostName: "a.io", landingPage: "/x", sessions: 4 },
-        ],
+        rows: [{ hostName: "a.io", landingPage: "/", sessions: 5 }],
       },
       "landing_pages",
     );
 
-    expect(screen.queryByText(/dağılımı/)).toBeNull();
+    expect(screen.queryByText(/oturuma göre/)).toBeNull();
+  });
+});
+
+const pages: ReportResult = {
+  ...base,
+  dimensions: ["hostName", "landingPage"],
+  metrics: ["sessions", "sessionKeyEventRate"],
+  rows: [
+    {
+      hostName: "a.io",
+      landingPage: "/a",
+      sessions: 100,
+      sessionKeyEventRate: 0,
+    },
+    {
+      hostName: "a.io",
+      landingPage: "/b",
+      sessions: 80,
+      sessionKeyEventRate: 0.1,
+    },
+    {
+      hostName: "a.io",
+      landingPage: "/c",
+      sessions: 20,
+      sessionKeyEventRate: 0,
+    },
+    {
+      hostName: "a.io",
+      landingPage: "/d",
+      sessions: 10,
+      sessionKeyEventRate: 0.2,
+    },
+  ],
+};
+
+describe("ReportView per-tab summaries", () => {
+  it("ranks landing pages as bars that filter the table", () => {
+    mount(pages, "landing_pages");
+
+    fireEvent.click(screen.getByRole("button", { name: /^\/b/ }));
+
+    expect(bodyRows()).toHaveLength(1);
+    expect(screen.getByText("Giriş sayfaları, oturuma göre")).toBeDefined();
+  });
+
+  it("flags busy pages that convert poorly", () => {
+    mount(pages, "landing_pages");
+
+    // Median sessions 50, median rate 0.05: only /a is busy and below it.
+    const chip = screen.getByRole("button", { name: /Trafiği yüksek/ });
+    expect(chip.textContent).toContain("1");
+    fireEvent.click(chip);
+    expect(bodyRows()).toHaveLength(1);
+  });
+
+  it("shows figures for key events and names the likely reason when empty", () => {
+    mount(
+      {
+        ...base,
+        dimensions: ["eventName"],
+        metrics: ["keyEvents", "totalUsers"],
+        rows: [
+          { eventName: "purchase", keyEvents: 6, totalUsers: 5 },
+          { eventName: "signup", keyEvents: 4, totalUsers: 4 },
+        ],
+      },
+      "key_events",
+    );
+    expect(screen.getByText("En çok tetiklenen")).toBeDefined();
+    expect(screen.getByText("Olaylar, tetiklenme sayısına göre")).toBeDefined();
+  });
+
+  it("explains an empty key events tab and offers the setup check", () => {
+    const onOpenHealth = vi.fn();
+    render(
+      <ReportView
+        kind="key_events"
+        result={{
+          ...base,
+          dimensions: ["eventName"],
+          metrics: [],
+          rows: [],
+          rowCount: 0,
+          totalRowCount: 0,
+        }}
+        organicOnly
+        onOrganicOnlyChange={() => undefined}
+        onOpenHealth={onOpenHealth}
+      />,
+    );
+
+    expect(screen.getByText("Bu dönemde anahtar olay kaydı yok")).toBeDefined();
+    fireEvent.click(screen.getByRole("button", { name: /Ölçüm durumunu/ }));
+    expect(onOpenHealth).toHaveBeenCalled();
+  });
+
+  it("shows long-tail figures for site search", () => {
+    mount(
+      {
+        ...base,
+        dimensions: ["searchTerm"],
+        metrics: ["eventCount"],
+        rows: [
+          { searchTerm: "fiyat", eventCount: 9 },
+          { searchTerm: "iade", eventCount: 1 },
+        ],
+      },
+      "site_search",
+    );
+    expect(screen.getByText("Yalnızca bir kez aranan")).toBeDefined();
   });
 });

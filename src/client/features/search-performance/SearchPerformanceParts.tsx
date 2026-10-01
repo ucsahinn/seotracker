@@ -270,9 +270,12 @@ export function DimensionTable({
 export function StrikingDistanceTable({
   projectId,
   rows,
+  filtered = false,
 }: {
   projectId: string;
   rows: Report["strikingDistance"];
+  /** A summary filter is narrowing `rows`, so empty means "nothing in this group". */
+  filtered?: boolean;
 }) {
   const queryClient = useQueryClient();
   const anchorRef = useSelectionAnchor();
@@ -347,8 +350,16 @@ export function StrikingDistanceTable({
       <EmptyState
         compact
         icon={Target}
-        title="Bu dönemde eşiğe yakın sorgu yok"
-        description="Sıralaması 5 ile 20 arasında kalan sorgu bulunmuyor. Bu aralıktaki sorgular, küçük bir iyileştirmeyle daha üst sıralara çıkabilecek olanlardır."
+        title={
+          filtered
+            ? "Bu gruba uyan sorgu yok"
+            : "Bu dönemde eşiğe yakın sorgu yok"
+        }
+        description={
+          filtered
+            ? "Yukarıdaki seçimi kaldırarak tüm eşiğe yakın sorgulara dönün."
+            : "Sıralaması 5 ile 20 arasında kalan sorgu bulunmuyor. Bu aralıktaki sorgular, küçük bir iyileştirmeyle daha üst sıralara çıkabilecek olanlardır."
+        }
       />
     );
   }

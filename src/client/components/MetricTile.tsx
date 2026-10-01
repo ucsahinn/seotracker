@@ -1,5 +1,7 @@
 import { ArrowDownRight, ArrowUpRight } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import * as React from "react";
+import { useFlashOnChange } from "@/client/components/useFlashOnChange";
 import { formatPercent } from "@/client/lib/format";
 
 /**
@@ -22,12 +24,22 @@ type MetricDelta =
   | null
   | undefined;
 
+/** Where a tile leads. Every target takes only the project. */
+export type MetricTileHref = {
+  to:
+    | "/p/$projectId/rankings"
+    | "/p/$projectId/search-performance"
+    | "/p/$projectId/analytics";
+  projectId: string;
+};
+
 export function MetricTile({
   label,
   value,
   delta,
   deltaTitle,
   hint,
+  href,
   /** Lower is better, as with an average search position. */
   inverted = false,
 }: {
@@ -35,11 +47,14 @@ export function MetricTile({
   value: string | null;
   delta?: MetricDelta;
   deltaTitle?: string;
+  /** With `href` the whole tile is the link, so keep the hint plain text. */
   hint?: React.ReactNode;
+  href?: MetricTileHref;
   inverted?: boolean;
 }) {
-  return (
-    <div className="flex min-w-0 flex-col gap-1.5 px-5 py-4">
+  const flash = useFlashOnChange(value);
+  const body = (
+    <>
       <p className="truncate text-xs font-medium uppercase tracking-wider text-muted">
         {label}
       </p>
@@ -47,7 +62,12 @@ export function MetricTile({
         <p className="text-2xl font-semibold text-subtle">--</p>
       ) : (
         <div className="flex items-baseline gap-2">
-          <p className="truncate text-2xl font-semibold tracking-tight">
+          {/* Remounted by the key when a refetch changes the number, so the
+              tint plays then and not on first paint. */}
+          <p
+            key={flash.key}
+            className={`truncate text-2xl font-semibold tracking-tight ${flash.className}`}
+          >
             {value}
           </p>
           <DeltaBadge value={delta} inverted={inverted} title={deltaTitle} />
@@ -56,7 +76,19 @@ export function MetricTile({
       {/* Not truncated: a hint is usually the one link that makes the tile
           useful, and half a link is worse than a second line. */}
       {hint ? <p className="text-xs text-subtle">{hint}</p> : null}
-    </div>
+    </>
+  );
+  const frame = "flex min-w-0 flex-col gap-1.5 px-5 py-4";
+
+  if (!href) return <div className={frame}>{body}</div>;
+  return (
+    <Link
+      to={href.to}
+      params={{ projectId: href.projectId }}
+      className={`${frame} h-full transition-colors hover:bg-base-200/60 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary`}
+    >
+      {body}
+    </Link>
   );
 }
 
@@ -135,7 +167,10 @@ export function MetricRow({ children }: { children: React.ReactNode }) {
          * is not part of `CSSProperties`, and typing one in costs a cast.
          * Capped at the sixth tile so a long row never waits a second.
          */
-        <div style={{ animationDelay: `${Math.min(index, 5) * 40}ms` }}>
+        <div
+          className="h-full"
+          style={{ animationDelay: `${Math.min(index, 5) * 40}ms` }}
+        >
           {child}
         </div>
       ))}

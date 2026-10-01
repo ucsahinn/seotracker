@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Pencil } from "lucide-react";
-import { formatDate } from "@/client/lib/format";
+import { formatCount, formatDate } from "@/client/lib/format";
 import { getProjectContext } from "@/serverFunctions/projectContext";
 import {
   PROJECT_CONTEXT_SECTION_KEYS,
@@ -209,7 +209,9 @@ function ProseSections({
               {section ? (
                 <Provenance by={section.updatedBy} at={section.updatedAt} />
               ) : (
-                <span className="text-xs text-muted">Boş</span>
+                <span className="badge badge-sm border-warning/30 bg-warning/10 text-[var(--ink-warning)]">
+                  Boş
+                </span>
               )}
             </div>
             <p className="text-xs text-muted">{SECTION_HINTS[key]}</p>
@@ -238,7 +240,12 @@ function ProseSections({
         );
       })}
 
-      <div className="flex justify-end">
+      <div className="flex items-center justify-end gap-3">
+        {changed.length > 0 ? (
+          <p className="text-xs text-muted" role="status">
+            {formatCount(changed.length)} bölüm kaydedilmedi
+          </p>
+        ) : null}
         <button
           type="submit"
           className="btn btn-primary btn-sm"
