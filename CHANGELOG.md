@@ -5,7 +5,7 @@ Yayında tek sürüm tutuluyor, bu yüzden burada tek not var. Eski notlar
 
 ## [Yayınlanmamış]
 
-## [1.8.5] — 2026-09-30
+## [1.8.6] — 2026-09-30
 
 Bu sürüm, bugüne kadar çıkan tüm sürümlerin notlarını tek yerde toplar.
 
@@ -19,8 +19,9 @@ docker compose exec seotracker cat /app/.wrangler/mcp-token
 ```
 
 Çıkan yazıyı ajan ayarlarınıza `Authorization: Bearer <şifre>` olarak
-ekleyin. Şifre istemiyorsanız compose dosyanızda `MCP_TOKEN=` satırını boş
-bırakın.
+ekleyin. Şifre istemiyorsanız `.env` dosyanıza `MCP_TOKEN=off` yazın ve
+konteyneri `docker compose up -d --force-recreate seotracker` ile yeniden
+oluşturun.
 
 ### Eklendi
 
@@ -84,11 +85,14 @@ bırakın.
 - Sayfalar sekmesi ilk açılışta bir an Sorgular satırlarını gösteriyordu.
 - "%30'unu" gibi Türkçe ekler yanlış yazılıyordu; kalıplar yeniden yazıldı.
 - Farklı sayfalardan başlayan denetimler birbiriyle karşılaştırılıyordu (örneğin ana sayfa ile /blog).
+- Ajan şifresini kapatmak için "boş bırakın" denmişti ama bu hiçbir zaman çalışmıyordu. Artık `MCP_TOKEN=off` yazıyorsunuz; boş değer şifre üretmeye devam ediyor.
+- Ajan aracı `inspect_urls`, 10 adreste yaklaşık 70 saniye sürüp zaman aşımına düşüyordu. Adresler artık beşer beşer paralel soruluyor.
+- Yardım ekranındaki tanılama paketinde her denetimin bulgu sayısı 0 görünüyordu.
 - Sorun grafiğindeki çubuklar yalnızca fareyle seçilebiliyordu; artık klavyeyle de seçilebiliyor.
 - İki küçük açıklama balonu, fareyi üzerine götürünce kapanıyordu.
 - Google'ın "URL Denetleme Aracı" adı ekranda ve raporda aynı yazılıyor.
 - Sıralama takibi sessizce yalnızca ilk 25 sorguyu gösteriyordu; arşiv hiç dolmuyordu.
 - Ölçülemeyen değerler sıfır olarak çiziliyordu.
 
-[Yayınlanmamış]: https://github.com/ucsahinn/seotracker/compare/v1.8.5...HEAD
-[1.8.5]: https://github.com/ucsahinn/seotracker/releases/tag/v1.8.5
+[Yayınlanmamış]: https://github.com/ucsahinn/seotracker/compare/v1.8.6...HEAD
+[1.8.6]: https://github.com/ucsahinn/seotracker/releases/tag/v1.8.6
