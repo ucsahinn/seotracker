@@ -235,15 +235,15 @@ Mock veri hiç kullanılmadı. Tek proje: `df26abab-fa39-4133-96cc-a5627d8b80ad`
 
 ### v1.5.0'te yapılanlar ve açık kalanlar
 
-| Konu                                                                     | Durum                                                                                        |
-| ------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- |
-| Site puanı (0–100), yalnızca sorun kalmayınca 100                        | **Bitti**                                                                                    |
-| Üç yeni denetim kuralı: https değil, asıl adres eksik, dil bilgisi eksik | **Bitti** — birim testli; https kuralı uçtan uca denenmedi (fixture sitesi https sunamıyor). |
-| Her ekrana kendi özet grafiği, tek ortak halka bileşeni                  | **Bitti**                                                                                    |
-| Fırsatlar satır penceresi ("Ne yapmalı?")                                | **Bitti**                                                                                    |
-| Cihaz halkası (Arama performansı)                                        | **Bitti** — halka tıklayınca ekranı cihaza göre süzüyor.                                     |
-| Takip edilen sorgularda yükselen/düşen                                   | **Bitti** — Değişim sütunu, "Yükselenler ve düşenler" kartı ve filtre düğmeleri.             |
-| Önem çubuğundan denetimi süzme                                           | **Bitti** — rotada `severity` parametresi var; çubuk Sorunlar sekmesini o önemle açar.       |
+| Konu                                                                     | Durum                                                                                                                   |
+| ------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
+| Site puanı (0–100), yalnızca sorun kalmayınca 100                        | **Bitti**                                                                                                               |
+| Üç yeni denetim kuralı: https değil, asıl adres eksik, dil bilgisi eksik | **Bitti** — birim testli; https kuralı `http://example.com` taramasıyla uçtan uca doğrulandı (not-https bulgusu çıktı). |
+| Her ekrana kendi özet grafiği, tek ortak halka bileşeni                  | **Bitti**                                                                                                               |
+| Fırsatlar satır penceresi ("Ne yapmalı?")                                | **Bitti**                                                                                                               |
+| Cihaz halkası (Arama performansı)                                        | **Bitti** — halka tıklayınca ekranı cihaza göre süzüyor.                                                                |
+| Takip edilen sorgularda yükselen/düşen                                   | **Bitti** — Değişim sütunu, "Yükselenler ve düşenler" kartı ve filtre düğmeleri.                                        |
+| Önem çubuğundan denetimi süzme                                           | **Bitti** — rotada `severity` parametresi var; çubuk Sorunlar sekmesini o önemle açar.                                  |
 
 ### v1.7.0'da yapılanlar ve açık kalanlar
 
@@ -252,7 +252,7 @@ Mock veri hiç kullanılmadı. Tek proje: `df26abab-fa39-4133-96cc-a5627d8b80ad`
 | Hız ölçümü tüm sayfalarda                      | **Bitti ve denendi** — 30 sayfa, 60/60 ölçüm, yaklaşık 3,5 dakika. İş akışı adımları 5'li dalga başına (10.000 sayfada yaklaşık 2.056 adım; Cloudflare varsayılan sınırı 10.000). Anahtarsız 50 sayfa sınırı. Yerelde miniflare'in sınırı uygulayıp uygulamadığı ve büyük denetimlerde alt istek sınırı doğrulanmadı. |
 | Sorunlar sekmesinde etkilenen adresler         | **Bitti** — vaultpilot'ta doğrulandı.                                                                                                                                                                                                                                                                                 |
 | İndirilen rapor                                | **Bitti** — gerçek denetimden üretildi (11 grafik, betik ve dış istek yok). Ekran görüntüsüyle bakılamadı (sayfa görüntü almayı zaman aşımına uğratıyor).                                                                                                                                                             |
-| Denetim kuralları 95'e çıktı                   | **Bitti** — harness'te yeni kurallar sahte siteyle kapsandı. https'e bağlı kural uçtan uca denenmedi.                                                                                                                                                                                                                 |
+| Denetim kuralları 95'e çıktı                   | **Bitti** — harness'te yeni kurallar sahte siteyle kapsandı. `not-https` gerçek bir http sitesiyle uçtan uca doğrulandı.                                                                                                                                                                                              |
 | Arama görünümü dökümü ve arama türü seçimi     | **Bitti** — arama türü vaultpilot'ta denendi (görselde veri yok); arama görünümü kartı veri gelmeyince gizli, vaultpilot'ta görülemedi. Discover ve Haber (Google News) sorgu boyutu olmadığı için yok.                                                                                                               |
 | CrUX geçmişi                                   | **Kod bitti; kök neden bulundu** — Google'ın yanıtına göre vaultpilot'taki PageSpeed anahtarının API kısıtlaması Chrome UX Report API'yi dışarıda bırakıyor. Anahtarın kısıtlamasına "Chrome UX Report API" eklenince kart çalışmalı; gerçek grafik henüz görülmedi.                                                  |
 | Kayıtlı kelimeler, Sıralama takibi widget'ları | Açık — vaultpilot'ta sorgu verisi yok, yalnızca birim testi var.                                                                                                                                                                                                                                                      |
