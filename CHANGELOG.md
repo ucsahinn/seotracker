@@ -88,6 +88,8 @@ oluşturun.
 - Ajan şifresini kapatmak için "boş bırakın" denmişti ama bu hiçbir zaman çalışmıyordu. Artık `MCP_TOKEN=off` yazıyorsunuz; boş değer şifre üretmeye devam ediyor.
 - Ajan aracı `inspect_urls`, 10 adreste yaklaşık 70 saniye sürüp zaman aşımına düşüyordu. Adresler artık beşer beşer paralel soruluyor.
 - Yardım ekranındaki tanılama paketinde her denetimin bulgu sayısı 0 görünüyordu.
+- Yalnızca boşluktan oluşan bir `MCP_TOKEN` değeri ajan adresini sessizce şifresiz bırakıyordu.
+- Site adresini dışarıya açıp kimlik doğrulaması koymayanlara verilen uyarı, ajan şifresi varsa susuyordu; oysa şifre yalnızca ajan adresini korur, sayfalar açık kalır.
 - Sorun grafiğindeki çubuklar yalnızca fareyle seçilebiliyordu; artık klavyeyle de seçilebiliyor.
 - İki küçük açıklama balonu, fareyi üzerine götürünce kapanıyordu.
 - Google'ın "URL Denetleme Aracı" adı ekranda ve raporda aynı yazılıyor.
