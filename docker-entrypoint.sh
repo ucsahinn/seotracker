@@ -38,11 +38,16 @@ fi
 # MCP_TOKEN=${MCP_TOKEN:-}, so an empty string is what every default install
 # already has, and "leave it empty" could never mean "no token".
 MCP_TOKEN_FILE="/app/.wrangler/mcp-token"
-if [ "${MCP_TOKEN:-}" = "off" ]; then
+# Trimmed first: the server trims the value too, so a whitespace-only value
+# would otherwise be exported, read back as empty, and open the endpoint.
+MCP_TOKEN="$(printf '%s' "${MCP_TOKEN:-}" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+if [ "$MCP_TOKEN" = "off" ]; then
   unset MCP_TOKEN
   echo "MCP_TOKEN=off: the /mcp endpoint accepts requests without a token."
-elif [ -z "${MCP_TOKEN:-}" ]; then
-  if [ ! -f "$MCP_TOKEN_FILE" ]; then
+elif [ -z "$MCP_TOKEN" ]; then
+  # -s, not -f: a file left empty by an interrupted first boot would export an
+  # empty token, which the server treats as "no token".
+  if [ ! -s "$MCP_TOKEN_FILE" ]; then
     mkdir -p "$(dirname "$MCP_TOKEN_FILE")"
     head -c 24 /dev/urandom | base64 | tr -d '[:space:]/+=' > "$MCP_TOKEN_FILE"
     chmod 600 "$MCP_TOKEN_FILE"

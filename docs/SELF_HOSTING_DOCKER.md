@@ -79,9 +79,13 @@ claude mcp add --transport http --scope user seotracker http://localhost:3001/mc
 ```
 
 İstemci başlığı göndermezse bağlantı 401 döner. Token'ı kendiniz seçmek
-isterseniz `.env` dosyanıza `MCP_TOKEN=$(openssl rand -hex 32)` gibi bir değer
-yazın. Token istemiyorsanız `MCP_TOKEN=off` yazın. Boş bırakmak kapatmaz,
-çünkü boş değer zaten varsayılan.
+isterseniz kabukta `openssl rand -hex 32` çalıştırın ve çıkan değeri `.env`
+dosyanıza `MCP_TOKEN=<değer>` olarak yazın. Komutu `.env` içine yazmayın;
+Compose orada komut çalıştırmaz ve satırı olduğu gibi token yapar.
+
+Token istemiyorsanız `MCP_TOKEN=off` yazın. Bu durumda bu makinedeki her
+süreç 33 aracın hepsini yönetici olarak çalıştırabilir ve Google kotanızı
+harcayabilir. Boş bırakmak kapatmaz, çünkü boş değer zaten varsayılan.
 
 `.env` dosyasını değiştirdiğinizde konteyner yeniden **oluşturulmalıdır**. Düz
 `up -d` değişikliği uygulamaz:
