@@ -1,3 +1,5 @@
+import { GA4_HELP } from "@/client/features/analytics/metricHelp";
+import { HeaderHelpLabel } from "@/client/features/saved-keywords/components/HeaderHelpLabel";
 import { fractionalChange } from "@/shared/delta";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -79,6 +81,7 @@ export function OrganicTrendPanel({
           />
           <Total
             label="Etkileşim oranı"
+            help={GA4_HELP.engagementRate}
             value={totals.engagementRate}
             previous={prevTotals.engagementRate}
             deltaTitle={deltaTitle}
@@ -123,8 +126,10 @@ function Total({
   previous,
   deltaTitle,
   format,
+  help,
 }: {
   label: string;
+  help?: string;
   value: number | null;
   previous: number | null;
   /** What the delta is measured against, named rather than implied. */
@@ -137,7 +142,9 @@ function Total({
       : fractionalChange(value, previous);
   return (
     <div className="text-right">
-      <p className="text-xs text-muted">{label}</p>
+      <p className="text-xs text-muted">
+        {help ? <HeaderHelpLabel label={label} helpText={help} /> : label}
+      </p>
       <p className="flex items-center gap-1.5 text-sm font-medium tabular-nums">
         {value === null ? "--" : format(value)}
         {change === null ? null : (

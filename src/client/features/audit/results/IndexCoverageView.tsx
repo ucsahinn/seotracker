@@ -179,21 +179,21 @@ export function IndexCoverageView({
       )}
       <MetricRow>
         <MetricTile
-          label="Asıl adres uyuşmazlığı"
+          label="Google'ın farklı adresi seçtiği sayfalar"
           value={neverChecked ? null : formatNumber(data.canonicalMismatches)}
           hint={
             data.canonicalMismatches > 0
-              ? "Kontrol edilen tüm sayfalar içinde; halka seçiminden etkilenmez. Google, sizin seçtiğiniz adres yerine başka bir sayfayı asıl sayfa saydı"
-              : "Kontrol edilen tüm sayfalar içinde; halka seçiminden etkilenmez"
+              ? "Üstteki grafikte seçtiğiniz gruptan bağımsız, kontrol edilen tüm sayfalar. Google, sizin seçtiğiniz adres yerine başka bir sayfayı asıl sayfa saydı."
+              : "Üstteki grafikte seçtiğiniz gruptan bağımsız, kontrol edilen tüm sayfalar."
           }
         />
         <MetricTile
-          label="Kontrol bekleyen"
+          label="Bu denetimde henüz sorulmamış"
           value={formatNumber(data.due)}
           hint={
             data.lastCheckedAt
-              ? `Son kontrol ${formatDateTime(data.lastCheckedAt)}`
-              : "Henüz hiç kontrol edilmedi"
+              ? `Google'a henüz hiç sorulmamış sayfalar. Son kontrol ${formatDateTime(data.lastCheckedAt)}`
+              : "Google'a henüz hiç sorulmamış sayfalar. Henüz hiç kontrol edilmedi."
           }
         />
       </MetricRow>

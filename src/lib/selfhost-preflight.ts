@@ -52,7 +52,7 @@ function checkAuthMode(env: EnvRecord, items: PreflightItem[]): void {
       name: "AUTH_MODE",
       level: "ok",
       message:
-        "local_noauth — no auth, single admin user. Do not expose publicly without your own auth in front.",
+        "Parolasız tek kullanıcı kipi. Önüne kendi kimlik doğrulamanızı koymadan internete açmayın.",
     });
     return;
   }

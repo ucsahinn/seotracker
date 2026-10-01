@@ -1,6 +1,13 @@
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { Link } from "@tanstack/react-router";
-import { ArrowDown, ArrowUp, RotateCw, ScanSearch, Trash2 } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowUp,
+  Eye,
+  RotateCw,
+  ScanSearch,
+  Trash2,
+} from "lucide-react";
 import { EmptyState } from "@/client/components/EmptyState";
 import { formatCount, formatPercent } from "@/client/lib/format";
 import { issueDelta, previousAuditIds, type IssueDelta } from "./auditDelta";
@@ -222,11 +229,26 @@ export function AuditHistorySection({
                     ) : null}
                   </td>
                   <td>
-                    <HistoryActions
-                      audit={audit}
-                      onDelete={onDelete}
-                      onRerun={onRerun}
-                    />
+                    <div className="flex items-center justify-end gap-2">
+                      {/* Always visible: the row actions below only appear on
+                          hover, and the date link alone did not read as a
+                          button. */}
+                      <Link
+                        to="/p/$projectId/audit"
+                        params={{ projectId }}
+                        search={{ auditId: audit.id, tab: "pages" }}
+                        className="btn btn-ghost btn-xs gap-1"
+                        aria-label={`${formatDateTime(audit.startedAt)} denetimini görüntüle`}
+                      >
+                        <Eye className="size-3.5" aria-hidden />
+                        Görüntüle
+                      </Link>
+                      <HistoryActions
+                        audit={audit}
+                        onDelete={onDelete}
+                        onRerun={onRerun}
+                      />
+                    </div>
                   </td>
                 </tr>
               ))}

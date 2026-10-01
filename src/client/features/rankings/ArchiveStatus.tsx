@@ -95,7 +95,7 @@ export function ArchiveStatus({
           : "Veri yükleme henüz başlamadı."}
         {data.hasMore
           ? " Kalan günler sonraki açılışlarda yüklenecek."
-          : " Search Console bu mülk için veri döndürmüyor; site yeni doğrulandıysa birkaç gün sürebilir."}
+          : " Henüz kelime düzeyinde veri gelmedi. Search Console siteniz için toplam rakamları veriyorsa (Arama performansı'na bakın), hangi kelimeyle arandığınızı henüz paylaşmamış demektir. Az trafikli sitelerde bu normaldir; veri geldikçe burada birikir."}
       </p>
     );
   }

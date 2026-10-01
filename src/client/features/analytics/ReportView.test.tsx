@@ -212,6 +212,21 @@ describe("ReportView per-tab summaries", () => {
     expect(bodyRows()).toHaveLength(1);
   });
 
+  it("disables the weak-conversion filter when no key event is defined", () => {
+    mount(
+      {
+        ...pages,
+        rows: pages.rows.map((row) => ({ ...row, sessionKeyEventRate: 0 })),
+      },
+      "landing_pages",
+    );
+
+    const chip = screen.getByRole("button", { name: /Trafiği yüksek/ });
+    expect(chip.hasAttribute("disabled")).toBe(true);
+    expect(chip.getAttribute("title")).toContain("anahtar olay");
+    expect(chip.textContent).toContain("0");
+  });
+
   it("shows figures for key events and names the likely reason when empty", () => {
     mount(
       {

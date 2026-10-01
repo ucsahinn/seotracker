@@ -370,12 +370,12 @@ export function StrikingDistanceTable({
         title={
           filtered
             ? "Bu gruba uyan sorgu yok"
-            : "Bu dönemde eşiğe yakın sorgu yok"
+            : "Bu dönemde 5-20. sırada kelime görünmüyor"
         }
         description={
           filtered
             ? "Seçimi kaldırarak tüm eşiğe yakın sorgulara dönün."
-            : "Sıralaması 5 ile 20 arasında kalan sorgu bulunmuyor. Bu aralıktaki sorgular, küçük bir iyileştirmeyle daha üst sıralara çıkabilecek olanlardır."
+            : "Ya Search Console kelime düzeyinde veriyi henüz paylaşmadı (az trafikli sitelerde olağandır), ya da hiçbir kelimeniz 5-20. sırada değil. Kelime düzeyinde veri gelince 5-20. sıradaki kelimeler burada listelenir; bunlar küçük bir iyileştirmeyle üst sıralara çıkabilecek kelimelerdir."
         }
         action={
           filtered && onClearFilter ? (

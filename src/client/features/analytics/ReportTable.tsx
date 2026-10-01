@@ -1,3 +1,4 @@
+import { ga4ColumnHelp } from "@/client/features/analytics/metricHelp";
 import * as React from "react";
 import { SortableHeader } from "@/client/components/table/SortableHeader";
 import { UrlCell } from "@/client/components/table/UrlCell";
@@ -86,6 +87,7 @@ export function ReportTable({
                   <SortableHeader
                     column={sorting.column(field, !isDimension)}
                     label={columnLabel(field)}
+                    helpText={ga4ColumnHelp(field)}
                     align={isDimension ? "left" : "right"}
                   />
                 </th>

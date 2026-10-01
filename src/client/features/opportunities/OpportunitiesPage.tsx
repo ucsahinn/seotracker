@@ -311,9 +311,9 @@ function Report({
             so it always equalled the row count while its hint described the
             Analytics match. This is the number the hint meant. */}
         <MetricTile
-          label="Analytics eşleşmesi"
+          label="Analytics'te karşılığı var"
           value={formatNumber(data.coverage.matchedRows)}
-          hint={`${formatNumber(data.totalCandidateRows)} aday içinde`}
+          hint={`${formatNumber(data.totalCandidateRows)} aday içinde · Bu sayfa için Google Analytics'te de ziyaret kaydı bulundu.`}
         />
         {/* A count with no way to see those pages is a complaint, not a
             tool, so it applies the same filter the chip below does. The tile
@@ -326,12 +326,12 @@ function Report({
           }}
         >
           <MetricTile
-            label="Analytics'te bulunamayan"
+            label="Analytics'te karşılığı yok"
             value={formatNumber(data.coverage.unmatchedGscRows)}
             hint={
               counts.no_analytics === 0
                 ? "Listedeki her sayfanın Analytics karşılığı var"
-                : `Listelenen ${formatNumber(data.rowCount)} sayfanın ${formatNumber(counts.no_analytics)} tanesi · listele`
+                : `Analytics bu sayfaya hiç ziyaret görmemiş ya da adresi farklı yazılmış olabilir. Listelenen ${formatNumber(data.rowCount)} sayfanın ${formatNumber(counts.no_analytics)} tanesi · listele`
             }
           />
         </TileButton>
@@ -387,9 +387,10 @@ function Report({
       />
 
       <p className="text-xs text-muted">
-        Puan = talep (%50) + iş değeri (%30) + yakınlık (%20). Analytics&apos;te
-        karşılığı bulunmayan sayfalar da puanlanır; iş değerinde haksız yere
-        sıfır almamaları için nötr bir orta değer verilir. İş değeri{" "}
+        Puan = talep (%50) + iş değeri (%30) + yükselme kolaylığı (%20).
+        Analytics&apos;te karşılığı bulunmayan sayfalar da puanlanır; iş
+        değerinde haksız yere sıfır almamaları için nötr bir orta değer verilir.
+        İş değeri{" "}
         {data.scoring.businessValueMetric === "engagementRate"
           ? data.scoring.engagementFallback
             ? "dönüşüm tanımlı olmadığı için etkileşim oranına"

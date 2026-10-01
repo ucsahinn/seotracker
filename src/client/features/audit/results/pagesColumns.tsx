@@ -150,7 +150,13 @@ export function buildPagesColumns({
         hasAnalyzedContent(row.original) ? getValue() : <EmptyCell />,
     }),
     pageColumnHelper.accessor("wordCount", {
-      header: ({ column }) => <SortableHeader column={column} label="Kelime" />,
+      header: ({ column }) => (
+        <SortableHeader
+          column={column}
+          label="Kelime"
+          helpText="Sayfadaki kelime sayısı"
+        />
+      ),
       // Through the formatter, like every other count in this table: a
       // 3.400-word page was rendering as "3400" next to columns that group.
       cell: ({ getValue, row }) =>
@@ -162,7 +168,13 @@ export function buildPagesColumns({
     }),
     pageColumnHelper.display({
       id: "images",
-      header: ({ column }) => <SortableHeader column={column} label="Görsel" />,
+      header: ({ column }) => (
+        <SortableHeader
+          column={column}
+          label="Görsel"
+          helpText="Sayfadaki görsel sayısı. Uyarı renkli sayı, açıklaması (alt metni) eksik görselleri gösterir."
+        />
+      ),
       cell: ({ row }) => {
         if (!hasAnalyzedContent(row.original)) return <EmptyCell />;
         return row.original.imagesMissingAlt > 0 ? (
@@ -190,7 +202,7 @@ export function buildPagesColumns({
         <SortableHeader
           column={column}
           label="Bağlantı"
-          helpText="Bu sayfadan çıkan bağlantılar: önce site içi, sonra dışarı. Site içi bağlantısı olmayan bir sayfa, kendi sitesinin geri kalanına yol açmıyor demektir."
+          helpText="Site içi · dışarıya giden bağlantı sayısı. Bu sayfadan çıkan bağlantılar: önce site içi, sonra dışarı. Site içi bağlantısı olmayan bir sayfa, kendi sitesinin geri kalanına yol açmıyor demektir."
         />
       ),
       cell: ({ row }) => {
@@ -239,7 +251,11 @@ export function buildPagesColumns({
     }),
     pageColumnHelper.accessor("crawlDepth", {
       header: ({ column }) => (
-        <SortableHeader column={column} label="Derinlik" />
+        <SortableHeader
+          column={column}
+          label="Derinlik"
+          helpText="Ana sayfadan kaç tıkla ulaşılıyor"
+        />
       ),
       cell: ({ getValue }) => {
         const value = getValue();
@@ -252,7 +268,13 @@ export function buildPagesColumns({
       sortingFn: nullableNumberSort,
     }),
     pageColumnHelper.accessor("inSitemap", {
-      header: ({ column }) => <SortableHeader column={column} label="Harita" />,
+      header: ({ column }) => (
+        <SortableHeader
+          column={column}
+          label="Harita"
+          helpText="Site haritasında var mı"
+        />
+      ),
       cell: ({ getValue }) =>
         getValue() ? (
           <span className="text-xs text-muted">Var</span>

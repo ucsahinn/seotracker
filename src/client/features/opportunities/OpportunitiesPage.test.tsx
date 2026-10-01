@@ -119,7 +119,7 @@ describe("OpportunitiesPage", () => {
     renderPage();
 
     const tile = await screen.findByRole("button", {
-      name: /Analytics'te bulunamayan/,
+      name: /Analytics'te karşılığı yok.*tanesi/,
     });
     // The tile counts every candidate; its click lists only the returned rows.
     expect(tile.textContent).toContain("Listelenen");
@@ -127,8 +127,9 @@ describe("OpportunitiesPage", () => {
 
     expect(
       screen
-        .getByRole("button", { name: /Analytics eşleşmesi yok/ })
-        .getAttribute("aria-pressed"),
+        .getAllByRole("button", { name: /^Analytics'te karşılığı yok/ })
+        .find((button) => button.hasAttribute("aria-pressed"))
+        ?.getAttribute("aria-pressed"),
     ).toBe("true");
     expect(screen.getAllByRole("row").slice(1)).toHaveLength(1);
     expect(screen.getByText("/alone")).toBeDefined();

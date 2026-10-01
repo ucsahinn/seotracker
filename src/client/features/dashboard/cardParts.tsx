@@ -1,3 +1,4 @@
+import { HeaderHelpLabel } from "@/client/features/saved-keywords/components/HeaderHelpLabel";
 // Shared building blocks for the dashboard cards. Same visual language as the
 // GSC IntegrationCard (rounded-box, hairline, raise shadow) so the embedded
 // SearchConsoleConnectionCard doesn't read as a different design system.
@@ -48,8 +49,11 @@ export function Stat({
   value,
   tone,
   sub,
+  help,
 }: {
   label: string;
+  /** A plain-language meaning, shown on hover or focus beside the label. */
+  help?: string;
   value: string;
   /*
    * `--ink-*`, not the fill colours: on a base-100 surface `text-success`
@@ -69,7 +73,7 @@ export function Stat({
   return (
     <div>
       <p className="text-xs font-medium uppercase tracking-wider text-muted">
-        {label}
+        {help ? <HeaderHelpLabel label={label} helpText={help} /> : label}
       </p>
       <p className={`text-2xl font-semibold tabular-nums ${toneClass}`}>
         {value}

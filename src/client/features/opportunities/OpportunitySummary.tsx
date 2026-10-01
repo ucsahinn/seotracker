@@ -45,23 +45,32 @@ export function OpportunitySummary({
     >
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
         <h2 className="text-sm font-semibold">Fırsat nerede toplanıyor?</h2>
-        <div role="group" aria-label="Ölçü" className="join">
-          {METRICS.map((option) => (
-            <button
-              key={option.id}
-              type="button"
-              aria-pressed={metric === option.id}
-              onClick={() => setMetric(option.id)}
-              className={`btn btn-xs join-item ${metric === option.id ? "btn-neutral" : ""}`}
-            >
-              {option.label}
-            </button>
-          ))}
+        <div className="flex items-center gap-2">
+          <span id="opportunity-metric-label" className="text-xs text-muted">
+            Kutular neye göre hesaplansın?
+          </span>
+          <div
+            role="group"
+            aria-labelledby="opportunity-metric-label"
+            className="join"
+          >
+            {METRICS.map((option) => (
+              <button
+                key={option.id}
+                type="button"
+                aria-pressed={metric === option.id}
+                onClick={() => setMetric(option.id)}
+                className={`btn btn-xs join-item ${metric === option.id ? "btn-neutral" : ""}`}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
       <DonutChart
         segments={segments}
-        totalLabel={unit}
+        totalLabel={`toplam ${unit}`}
         height={170}
         selectedKey={selectedKind}
         // `KIND_ORDER.find` narrows the ring's string key back to a `KindId`
@@ -69,7 +78,7 @@ export function OpportunitySummary({
         onSelect={(key) =>
           onSelectKind(KIND_ORDER.find((id) => id === key) ?? null)
         }
-        summary={`${formatCount(total)} ${unit} içinde en büyük pay ${leader.label.toLocaleLowerCase("tr")} sayfalarda (${formatPercent(leader.value / total)}).`}
+        summary={`Toplam ${formatCount(total)} ${unit} içinde en büyük pay ${leader.label.toLocaleLowerCase("tr")} sayfalarda (${formatPercent(leader.value / total)}).`}
       />
     </section>
   );

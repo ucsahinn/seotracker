@@ -149,6 +149,7 @@ export function ReportView({
                 key={chip.id}
                 type="button"
                 aria-pressed={on}
+                disabled={chip.disabledReason !== null}
                 title={chip.hint}
                 className={`btn btn-xs gap-1.5 rounded-full ${on ? "btn-neutral" : "btn-ghost border-base-300"}`}
                 onClick={() =>

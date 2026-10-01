@@ -131,7 +131,7 @@ export function MeasurementHealthPanel({ projectId }: { projectId: string }) {
         <MetricTile
           label="Anahtar olay"
           value={formatCount(health.summary.keyEventCount)}
-          hint="Sonuç ölçen olaylar"
+          hint="Önemli saydığınız hareket, örneğin form gönderme ya da satın alma. Tanımlı değilse rapor hep 0 gösterir."
         />
         <MetricTile
           label="Özel boyut"

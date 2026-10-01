@@ -140,7 +140,11 @@ export function DashboardMetrics({
         delta={delta((totals) => totals.position)}
         // Position 3 is better than position 8, so a fall is the good direction.
         inverted
-        hint={period}
+        hint={
+          period
+            ? `${period} · küçük olan iyidir; 1, en üst sıra`
+            : "Küçük olan iyidir; 1, en üst sıra"
+        }
       />
     </MetricRow>
   );

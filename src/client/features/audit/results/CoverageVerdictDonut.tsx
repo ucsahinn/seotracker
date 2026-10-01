@@ -20,7 +20,7 @@ const BUCKET: Record<
   },
   pending: {
     label: "Yanıt bekleyen",
-    hint: "Henüz kontrol edilmedi ya da yanıt gelmedi",
+    hint: "Google'a sorduk ama yanıt gelmedi ya da hiç sorulmadı",
     color: "var(--color-base-300)",
   },
 };

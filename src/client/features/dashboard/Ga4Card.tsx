@@ -1,3 +1,4 @@
+import { GA4_HELP } from "@/client/features/analytics/metricHelp";
 import { fractionalChange } from "@/shared/delta";
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
@@ -172,6 +173,7 @@ export function Ga4Card({
               />
               <Stat
                 label="Aktif kullanıcı"
+                help={GA4_HELP.activeUsers}
                 value={statValue(report.totals.activeUsers, formatCount)}
                 sub={statDelta(
                   report.totals.activeUsers,
@@ -180,10 +182,12 @@ export function Ga4Card({
               />
               <Stat
                 label="Etkileşim oranı"
+                help={GA4_HELP.engagementRate}
                 value={statValue(report.totals.engagementRate, formatPercent)}
               />
               <Stat
                 label="Anahtar olay"
+                help={GA4_HELP.keyEvents}
                 value={statValue(report.totals.keyEvents, formatCount)}
                 sub={statDelta(
                   report.totals.keyEvents,

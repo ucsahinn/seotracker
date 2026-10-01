@@ -102,7 +102,10 @@ export function SavedKeywordsSummary({
         {positions.archiveRows === 0 ? (
           <>
             {" "}
-            Arşiv boş olduğu için hiçbirinin sırası yok.{" "}
+            Henüz kelime düzeyinde veri gelmediği için hiçbirinin sırası yok.
+            Search Console toplam rakamları veriyor olabilir (Arama
+            performansı'na bakın); ama hangi kelimeyle arandığınızı henüz
+            paylaşmadı. Az trafikli sitelerde bu normaldir.{" "}
             <Link
               to="/p/$projectId/settings/integrations"
               params={{ projectId }}

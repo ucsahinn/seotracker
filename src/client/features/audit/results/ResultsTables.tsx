@@ -217,22 +217,46 @@ function buildPerformanceColumns({
         Number(isLighthouseFailure(right.original)),
     }),
     performanceColumnHelper.accessor("performanceScore", {
-      header: ({ column }) => <SortableHeader column={column} label="Perf" />,
+      header: ({ column }) => (
+        <SortableHeader
+          column={column}
+          label="Perf"
+          helpText="Hız puanı (0-100)"
+        />
+      ),
       cell: ({ getValue }) => <LighthouseScoreBadge score={getValue()} />,
       sortingFn: nullableNumberSort,
     }),
     performanceColumnHelper.accessor("accessibilityScore", {
-      header: ({ column }) => <SortableHeader column={column} label="A11y" />,
+      header: ({ column }) => (
+        <SortableHeader
+          column={column}
+          label="A11y"
+          helpText="Erişilebilirlik puanı (0-100)"
+        />
+      ),
       cell: ({ getValue }) => <LighthouseScoreBadge score={getValue()} />,
       sortingFn: nullableNumberSort,
     }),
     performanceColumnHelper.accessor("seoScore", {
-      header: ({ column }) => <SortableHeader column={column} label="SEO" />,
+      header: ({ column }) => (
+        <SortableHeader
+          column={column}
+          label="SEO"
+          helpText="Arama motoru uyumu puanı (0-100)"
+        />
+      ),
       cell: ({ getValue }) => <LighthouseScoreBadge score={getValue()} />,
       sortingFn: nullableNumberSort,
     }),
     performanceColumnHelper.accessor("lcpMs", {
-      header: ({ column }) => <SortableHeader column={column} label="LCP" />,
+      header: ({ column }) => (
+        <SortableHeader
+          column={column}
+          label="LCP"
+          helpText="Ana içeriğin görünme süresi"
+        />
+      ),
       cell: ({ getValue }) => {
         const value = getValue();
         return value ? (
@@ -244,7 +268,13 @@ function buildPerformanceColumns({
       sortingFn: nullableNumberSort,
     }),
     performanceColumnHelper.accessor("cls", {
-      header: ({ column }) => <SortableHeader column={column} label="CLS" />,
+      header: ({ column }) => (
+        <SortableHeader
+          column={column}
+          label="CLS"
+          helpText="Sayfanın oynama miktarı"
+        />
+      ),
       cell: ({ getValue }) => {
         const value = getValue();
         return value != null ? (
@@ -256,7 +286,13 @@ function buildPerformanceColumns({
       sortingFn: nullableNumberSort,
     }),
     performanceColumnHelper.accessor("inpMs", {
-      header: ({ column }) => <SortableHeader column={column} label="INP" />,
+      header: ({ column }) => (
+        <SortableHeader
+          column={column}
+          label="INP"
+          helpText="Tıklamaya yanıt süresi"
+        />
+      ),
       cell: ({ getValue }) => {
         const value = getValue();
         return value ? (
@@ -268,7 +304,13 @@ function buildPerformanceColumns({
       sortingFn: nullableNumberSort,
     }),
     performanceColumnHelper.accessor("ttfbMs", {
-      header: ({ column }) => <SortableHeader column={column} label="TTFB" />,
+      header: ({ column }) => (
+        <SortableHeader
+          column={column}
+          label="TTFB"
+          helpText="Sunucunun ilk yanıt süresi"
+        />
+      ),
       cell: ({ getValue }) => {
         const value = getValue();
         return value ? (

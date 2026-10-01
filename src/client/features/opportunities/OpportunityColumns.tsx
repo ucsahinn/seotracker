@@ -182,21 +182,36 @@ export function buildOpportunityColumns(
     }),
     opportunityHelper.accessor("position", {
       header: ({ column }) => (
-        <SortableHeader column={column} label="Sıra" align="right" />
+        <SortableHeader
+          column={column}
+          label="Sıra"
+          align="right"
+          helpText="Google'da kaçıncı sırada çıktığınız; küçük olan iyidir. 1, sonuçların en üstü demek."
+        />
       ),
       cell: ({ getValue }) => formatDecimal(getValue()),
       meta: right,
     }),
     opportunityHelper.accessor("impressions", {
       header: ({ column }) => (
-        <SortableHeader column={column} label="Gösterim" align="right" />
+        <SortableHeader
+          column={column}
+          label="Gösterim"
+          align="right"
+          helpText="Sayfanızın arama sonuçlarında kaç kez göründüğü."
+        />
       ),
       cell: ({ getValue }) => formatNumber(getValue()),
       meta: right,
     }),
     opportunityHelper.accessor("clicks", {
       header: ({ column }) => (
-        <SortableHeader column={column} label="Tıklama" align="right" />
+        <SortableHeader
+          column={column}
+          label="Tıklama"
+          align="right"
+          helpText="Aramalardan sayfanıza kaç kez tıklandığı."
+        />
       ),
       cell: ({ getValue }) => formatNumber(getValue()),
       meta: right,
@@ -207,7 +222,7 @@ export function buildOpportunityColumns(
           column={column}
           label="Tıklama oranı"
           align="right"
-          helpText="Gösterimlerin kaçının tıklamaya döndüğü. Altındaki ok, sayfanın sitenizde aynı sıradaki sayfalara göre farkını gösterir."
+          helpText="Gösterilenlerin yüzde kaçı tıklandı. Altındaki ok, sayfanın sitenizde aynı sıradaki sayfalara göre farkını gösterir."
         />
       ),
       /*
@@ -241,7 +256,12 @@ export function buildOpportunityColumns(
     opportunityHelper.accessor((row) => row.ga4?.sessions ?? null, {
       id: "sessions",
       header: ({ column }) => (
-        <SortableHeader column={column} label="Oturum" align="right" />
+        <SortableHeader
+          column={column}
+          label="Oturum"
+          align="right"
+          helpText="Analytics'ten, Search Console ile aynı tarih aralığı için alınır; Analytics ekranındaki aralıktan farklı olabilir."
+        />
       ),
       cell: ({ getValue }) => {
         const value = getValue();

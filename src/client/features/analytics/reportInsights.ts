@@ -20,7 +20,15 @@ export type ChipId =
   | "lowDwell"
   | "weakConversion";
 
-type ChipRule = { hint: string; test: (row: ReportRow) => boolean };
+type ChipRule = {
+  hint: string;
+  test: (row: ReportRow) => boolean;
+  /** Set when the filter cannot say anything true for this report. */
+  disabledReason?: string;
+};
+
+const NO_KEY_EVENT_REASON =
+  "Dönüşüm (anahtar olay) tanımlı olmadığı için bu filtre kullanılamıyor";
 
 type ChipDef = {
   id: ChipId;
@@ -146,6 +154,19 @@ const CHIP_DEFS: ChipDef[] = [
         rows.map((row) => numeric(row, "sessionKeyEventRate")),
       );
       if (midSessions === null || midRate === null) return null;
+      // Without a key event every page has a rate of zero, and "converts
+      // poorly" would match every busy page: a claim about the setup, not
+      // about the pages.
+      const anyKeyEvent = rows.some(
+        (row) => (numeric(row, "sessionKeyEventRate") ?? 0) > 0,
+      );
+      if (!anyKeyEvent) {
+        return {
+          hint: NO_KEY_EVENT_REASON,
+          disabledReason: NO_KEY_EVENT_REASON,
+          test: () => false,
+        };
+      }
       return {
         hint: `Oturumu listenin ortancasına (${formatCount(midSessions)}) eşit ya da üstünde olup oturum başına anahtar olay oranı ortancanın (${formatPercent(midRate)}) altında kalan, ya da hiç olay getirmeyen sayfalar.`,
         test: (row) => {
@@ -167,6 +188,8 @@ type ChipState = {
   id: ChipId;
   label: string;
   hint: string;
+  /** Why the filter cannot be used for this report; null when it can. */
+  disabledReason: string | null;
   /** Rows that match, counted over the whole result and not the filtered view. */
   count: number;
   test: (row: ReportRow) => boolean;
@@ -185,8 +208,9 @@ export function availableChips(
             id: def.id,
             label: def.label,
             hint: rule.hint,
+            disabledReason: rule.disabledReason ?? null,
             test: rule.test,
-            count: rows.filter(rule.test).length,
+            count: rule.disabledReason ? 0 : rows.filter(rule.test).length,
           },
         ]
       : [];
@@ -198,7 +222,9 @@ export function applyChips(
   chips: readonly ChipState[],
   active: readonly ChipId[],
 ): ReportRow[] {
-  const on = chips.filter((chip) => active.includes(chip.id));
+  const on = chips.filter(
+    (chip) => active.includes(chip.id) && chip.disabledReason === null,
+  );
   if (on.length === 0) return rows;
   return rows.filter((row) => on.every((chip) => chip.test(row)));
 }

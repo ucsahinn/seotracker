@@ -39,6 +39,7 @@ type HistoryRow = {
   id: string;
   status: string;
   pagesCrawled: number;
+  startedAt: string;
   completedAt: string | null;
   issues: { critical: number; warning: number; info: number };
 };
@@ -204,10 +205,11 @@ function getPoints(history: HistoryRow[]): Point[] {
       row.pagesCrawled >= MIN_PAGES,
   );
 
-  return sort(usable, (a, b) => a.completedAt.localeCompare(b.completedAt)).map(
+  // Start time, like the history list below: one audit, one time.
+  return sort(usable, (a, b) => a.startedAt.localeCompare(b.startedAt)).map(
     (row) => ({
       key: row.id,
-      date: row.completedAt,
+      date: row.startedAt,
       pages: row.pagesCrawled,
       critical: Math.round((row.issues.critical / row.pagesCrawled) * 100),
       warning: Math.round((row.issues.warning / row.pagesCrawled) * 100),

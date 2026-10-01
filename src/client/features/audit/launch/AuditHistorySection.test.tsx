@@ -61,6 +61,8 @@ describe("AuditHistorySection", () => {
       .getAllByRole("link")
       .map((link) => link.getAttribute("href"));
     expect(hrefs).toContain("/audit?auditId=new&tab=pages");
+    // One visible "Görüntüle" per audit, not only the hover-revealed menu.
+    expect(screen.getAllByRole("link", { name: "Görüntüle" })).toHaveLength(2);
     // 4 -> 2 is a 50% drop, announced as text and not only as colour.
     expect(screen.getByText("azaldı")).toBeTruthy();
   });

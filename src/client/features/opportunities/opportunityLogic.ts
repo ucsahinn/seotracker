@@ -66,7 +66,7 @@ export const KIND_ORDER: readonly KindId[] = [
 
 export const QUICK_COPY = {
   analytics: "Analytics'te trafiği olanlar",
-  no_analytics: "Analytics eşleşmesi yok",
+  no_analytics: "Analytics'te karşılığı yok",
   top_impressions: "En çok gösterim alan 10",
 } as const satisfies Record<QuickId, string>;
 

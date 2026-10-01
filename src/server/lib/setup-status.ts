@@ -82,7 +82,7 @@ export async function getSelfHostSetupStatus(options?: {
     if ((await getGoogleOAuthClientSource()) === "settings") {
       checks.gsc = {
         status: "ok",
-        detail: "OAuth client configured in Settings.",
+        detail: "Google OAuth istemcisi Ayarlar'da tanımlı.",
       };
     }
 
@@ -96,7 +96,7 @@ export async function getSelfHostSetupStatus(options?: {
     const pageSpeedSource = await getPageSpeedKeySource();
     checks.pagespeed =
       pageSpeedSource === "settings"
-        ? { status: "ok", detail: "PageSpeed key configured in Settings." }
+        ? { status: "ok", detail: "PageSpeed anahtarı Ayarlar'da kayıtlı." }
         : pageSpeedSource === "environment"
           ? {
               status: "ok",

@@ -68,6 +68,7 @@ export function TrackedQueriesTable({
             <SortableHeader
               column={sorting.column("delta")}
               label="Değişim"
+              helpText="Bir önceki, aynı uzunluktaki dönemin ortalama sırasıyla karşılaştırılır. Sıra numarası küçüldüyse (örn. 12'den 8'e) kelime yukarı çıkmıştır ve yeşil 'Yükseldi' görünür; büyüdüyse kırmızı 'Düştü' görünür."
               align="right"
             />
           </th>

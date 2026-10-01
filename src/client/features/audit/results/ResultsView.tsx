@@ -364,7 +364,7 @@ function ResultsHeader({
   onExport: (format: "csv" | "json" | "sheets") => void;
 }) {
   const tabs: Array<{ tab: ResultsTab; label: string }> = [
-    { tab: "issues", label: `Sorunlar (${formatCount(issueCount)})` },
+    { tab: "issues", label: `Sorunlu sayfalar (${formatCount(issueCount)})` },
     { tab: "pages", label: `Sayfalar (${formatCount(pageCount)})` },
     {
       tab: "index",
