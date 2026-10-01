@@ -463,4 +463,32 @@ describe("GscService.inspectUrls", () => {
     expect(result.results[0]?.url).toBe("https://x.test/a");
     expect(result.tokenError).toBeInstanceOf(GscTokenError);
   });
+
+  /*
+   * One inspection takes about seven seconds. Asked one after another, ten
+   * URLs ran past the MCP client's timeout, so the batch has to be in flight
+   * at once -- and still come back in the order it was asked.
+   */
+  it("asks a batch at once and answers in the order asked", async () => {
+    mocks.getByProjectId.mockResolvedValue({
+      siteUrl: "sc-domain:x.test",
+      connectedByUserId: "u1",
+      connectedAccountEmail: "a@x.test",
+    });
+    let inFlight = 0;
+    let peak = 0;
+    mocks.inspectUrl.mockImplementation(async (_site, url) => {
+      inFlight += 1;
+      peak = Math.max(peak, inFlight);
+      await Promise.resolve();
+      inFlight -= 1;
+      return { inspectionResultLink: url };
+    });
+    const urls = ["a", "b", "c"].map((path) => "https://x.test/" + path);
+
+    const result = await GscService.inspectUrls({ projectId: "p1", urls });
+
+    expect(peak).toBe(3);
+    expect(result.results.map((entry) => entry.url)).toEqual(urls);
+  });
 });

@@ -297,7 +297,14 @@ type GscInspectUrlsResult = {
  *  which discarded every inspection Google had already served -- and
  *  charged for -- earlier in the batch. Nothing was written, so those URLs
  *  stayed `checkedAt: null`, sorted to the front of the next batch, and were
- *  bought a second time after the operator reconnected. */
+ *  bought a second time after the operator reconnected.
+ *
+ *  URLs are asked INSPECT_CONCURRENCY at a time. One inspection takes about
+ *  seven seconds, so asking ten in sequence ran past the MCP client's
+ *  request timeout and the agent saw "The operation timed out" for a call
+ *  that was still spending quota. */
+const INSPECT_CONCURRENCY = 5;
+
 async function inspectUrls(input: {
   projectId: string;
   urls: string[];
@@ -314,28 +321,41 @@ async function inspectUrls(input: {
     gscAccountId: connection.gscAccountId ?? undefined,
   });
   const results: GscUrlInspection[] = [];
-  for (const url of input.urls) {
-    try {
-      const result = await client.inspectUrl(
-        connection.siteUrl,
-        url,
-        input.languageCode,
-      );
-      results.push({ url, result });
-    } catch (error) {
-      if (error instanceof GscTokenError) {
-        return {
-          siteUrl: connection.siteUrl,
-          connectedBy: connection.connectedAccountEmail,
-          results,
-          tokenError: error,
-        };
+  // Each inspection is one of the property's 2000 a day; a URL listed twice
+  // would be bought twice.
+  const urls = [...new Set(input.urls)];
+  for (let i = 0; i < urls.length; i += INSPECT_CONCURRENCY) {
+    const chunk = urls.slice(i, i + INSPECT_CONCURRENCY);
+    const settled = await Promise.all(
+      chunk.map((url) =>
+        client.inspectUrl(connection.siteUrl, url, input.languageCode).then(
+          (result) => ({ url, result, failure: null }),
+          (failure: unknown) => ({ url, result: null, failure }),
+        ),
+      ),
+    );
+    let tokenError: GscTokenError | undefined;
+    for (const { url, result, failure } of settled) {
+      if (failure === null) {
+        results.push({ url, result });
+      } else if (failure instanceof GscTokenError) {
+        tokenError ??= failure;
+      } else {
+        results.push({
+          url,
+          result: null,
+          error:
+            failure instanceof Error ? failure.message : "Inspection failed",
+        });
       }
-      results.push({
-        url,
-        result: null,
-        error: error instanceof Error ? error.message : "Inspection failed",
-      });
+    }
+    if (tokenError) {
+      return {
+        siteUrl: connection.siteUrl,
+        connectedBy: connection.connectedAccountEmail,
+        results,
+        tokenError,
+      };
     }
   }
   return {
