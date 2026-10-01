@@ -1,6 +1,6 @@
 import { canonicalUrlKey } from "./url-utils";
 import { fetchPageSpeedReport, PageSpeedError } from "./pagespeed";
-import { isLighthouseRuntimeError } from "./pagespeedPayload";
+import { isLighthouseRuntimeError, redactKey } from "./pagespeedPayload";
 import type {
   LighthouseMode,
   LighthouseResult,
@@ -33,9 +33,18 @@ type LighthouseFetchResult = {
    * the error row is only stored once the re-passes are used up.
    */
   rateLimited?: boolean;
+  /**
+   * Another transient failure (network, 5xx). Settled per check like a 429: its
+   * siblings are stored now and only this one is re-fetched after a pause.
+   */
+  retryable?: boolean;
 };
 
-/** A check that produced no payload — provider error, or a failed fetch step. */
+/**
+ * A check that produced no payload — provider error, or a failed fetch step.
+ * The one choke point for stored error text: the API key is stripped here so
+ * no caller has to remember to.
+ */
 export function failedLighthouseFetch(
   url: string,
   pageId: string,
@@ -55,7 +64,7 @@ export function failedLighthouseFetch(
       cls: null,
       inpMs: null,
       ttfbMs: null,
-      errorMessage,
+      errorMessage: redactKey(errorMessage),
     },
     payloadJson: null,
   };
@@ -86,17 +95,22 @@ export async function fetchLighthouseResult(
       payloadJson: JSON.stringify(data),
     };
   } catch (error) {
-    // A per-minute 429 is handed back flagged. Another transient failure
-    // (network, 5xx) goes back to the Workflow so the
-    // step retries. Everything else becomes a failed row: the crawl results are
-    // the bulk of an audit's value and must still land.
-    if (error instanceof PageSpeedError && error.rateLimited) {
+    // A per-minute 429 or another transient failure (network, 5xx) is handed
+    // back flagged, never thrown: one flaky check must not discard its healthy
+    // siblings. The wave re-runs only the flagged checks and stores an error
+    // row once its passes are used up. Everything else becomes a failed row:
+    // the crawl results are the bulk of an audit's value and must still land.
+    if (
+      error instanceof PageSpeedError &&
+      (error.rateLimited || error.retryable) &&
+      !error.quotaExhausted
+    ) {
       return {
         ...failedLighthouseFetch(url, pageId, strategy, error.message),
-        rateLimited: true,
+        retryable: true,
+        ...(error.rateLimited ? { rateLimited: true } : {}),
       };
     }
-    if (error instanceof PageSpeedError && error.retryable) throw error;
     if (error instanceof PageSpeedError && error.quotaExhausted) {
       const quota = failedLighthouseFetch(
         url,
@@ -107,15 +121,21 @@ export async function fetchLighthouseResult(
       return { ...quota, quotaExhausted: true };
     }
 
-    const failed = error instanceof Error ? error : new Error(String(error));
+    const failed = failedLighthouseFetch(
+      url,
+      pageId,
+      strategy,
+      error instanceof Error ? error.message : String(error),
+    );
+    const message = failed.result.errorMessage ?? "";
     // A Lighthouse runtime error means the page itself didn't load for Google's
     // Chrome. It's already surfaced on the audit row, so there's nothing to act
     // on here.
-    const log = isLighthouseRuntimeError(failed.message)
+    const log = isLighthouseRuntimeError(message)
       ? console.warn
       : console.error;
-    log(`Lighthouse failed for ${url} (${strategy}): ${failed.message}`);
-    return failedLighthouseFetch(url, pageId, strategy, failed.message);
+    log(`Lighthouse failed for ${url} (${strategy}): ${message}`);
+    return failed;
   }
 }
 

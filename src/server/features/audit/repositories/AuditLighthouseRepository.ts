@@ -7,7 +7,7 @@
  * source -- Google PageSpeed Insights rather than this crawler -- so it
  * is the seam that costs least to cut.
  */
-import { and, eq } from "drizzle-orm";
+import { and, eq, inArray } from "drizzle-orm";
 import { db } from "@/db";
 import { audits, auditLighthouseResults, auditPages } from "@/db/schema";
 import { executeInBatches } from "@/db/runBatch";
@@ -60,6 +60,26 @@ async function insertLighthouseResults(
   });
 }
 
+/**
+ * What is actually stored for these pages. The fallback of a failed wave
+ * derives its progress from this, because rows a failed attempt already wrote
+ * (kept by `keepExisting`) are not the wave's own in-memory results.
+ */
+async function countResultsForPages(auditId: string, pageIds: string[]) {
+  if (pageIds.length === 0) return { ok: 0, error: 0 };
+  const rows = await db
+    .select({ errorMessage: auditLighthouseResults.errorMessage })
+    .from(auditLighthouseResults)
+    .where(
+      and(
+        eq(auditLighthouseResults.auditId, auditId),
+        inArray(auditLighthouseResults.pageId, pageIds),
+      ),
+    );
+  const error = rows.filter((row) => row.errorMessage).length;
+  return { ok: rows.length - error, error };
+}
+
 async function getLighthouseResultById(input: {
   lighthouseResultId: string;
   projectId: string;
@@ -97,5 +117,6 @@ async function getLighthouseResultById(input: {
 
 export const AuditLighthouseRepository = {
   insertLighthouseResults,
+  countResultsForPages,
   getLighthouseResultById,
 };

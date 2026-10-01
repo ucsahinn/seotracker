@@ -19,13 +19,16 @@ export type IssueDelta = {
 };
 
 /**
- * "https://www.Example.com/blog" and "http://example.com" are one site: the
- * address is typed by hand each run, and a delta against a different site's
- * audit would be noise.
+ * "https://www.Example.com/blog/" and "http://example.com/blog" are one
+ * scope: the address is typed by hand each run. The start path counts, since
+ * a crawl of /blog is not comparable with a crawl of the whole host, and a
+ * delta between them would be noise.
  */
 export function siteKey(url: string): string {
   try {
-    return new URL(url).hostname.toLowerCase().replace(/^www\./, "");
+    const parsed = new URL(url);
+    const host = parsed.hostname.toLowerCase().replace(/^www\./, "");
+    return host + parsed.pathname.replace(/\/+$/, "");
   } catch {
     return url.trim().toLowerCase();
   }

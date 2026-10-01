@@ -10,7 +10,6 @@ import { useEffect } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   keepPreviousData,
-  useMutation,
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
@@ -38,6 +37,7 @@ import {
   CannibalizationSummary,
   PagesSummary,
   QueriesSummary,
+  quickFilterForTab,
   StrikingSummary,
   TabSummarySkeleton,
 } from "@/client/features/search-performance/TabSummaries";
@@ -47,7 +47,7 @@ import {
   tableQueryOptions,
 } from "@/client/features/search-performance/searchPerformanceQueries";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
-import { saveKeywords } from "@/serverFunctions/savedKeywords";
+import { useSaveTrackedKeyword } from "@/client/features/rankings/useSaveTrackedKeyword";
 import { describeWindow } from "@/shared/dataFreshness";
 import { formatDate } from "@/client/lib/format";
 import {
@@ -117,25 +117,8 @@ export function SearchPerformancePage({
   }) => void;
 }) {
   const queryClient = useQueryClient();
-  /*
-   * One keyword from a row menu. The bulk path on the striking-distance tab
-   * already existed; this is the same server call for the single row an
-   * operator is looking at, so the Sorgular tab stops being the one place a
-   * keyword cannot be saved.
-   */
-  const saveOne = useMutation({
-    mutationFn: (keyword: string) =>
-      saveKeywords({ data: { projectId, keywords: [keyword] } }),
-    onSuccess: () => {
-      void queryClient.invalidateQueries({
-        queryKey: ["savedKeywords", projectId],
-      });
-      toast.success("Kelime kayıtlı");
-    },
-    onError: (error) => {
-      toast.error(getStandardErrorMessage(error, "Kelime kaydedilemedi"));
-    },
-  });
+  // One keyword from a row menu, the same call the rankings screen uses.
+  const saveOne = useSaveTrackedKeyword(projectId);
   // A chip chosen on one tab must not silently narrow the next one.
   const setTab = (next: Tab) => onViewChange({ tab: next, f: undefined });
 
@@ -161,14 +144,21 @@ export function SearchPerformancePage({
   const tableQuery = useQuery({
     ...tableQueryOptions(projectId, dimension, filterInput),
     enabled: report?.connected === true && isTableTab,
-    placeholderData: keepPreviousData,
+    /* Keep the old rows while a filter changes, never across dimensions:
+       only queries are prefetched, so Sayfalar would otherwise open on
+       query rows until Google answered. */
+    placeholderData: (previous, previousQuery) =>
+      previousQuery?.queryKey[2] === dimension ? previous : undefined,
   });
   const tableData = tableQuery.data;
   const tableRows = tableData?.connected ? tableData.rows : [];
+  // A link can carry a chip that belongs to another tab; ignore it here.
+  const activeFilter = quickFilterForTab(tab, quickFilter);
   const strikingRows = applyQuickFilter(
     report?.connected ? report.strikingDistance : [],
-    quickFilter,
+    activeFilter,
   );
+  const clearFilter = () => onViewChange({ f: undefined });
   const onFilter = (next: QuickFilterId | undefined) =>
     onViewChange({ f: next });
   const tableTruncated = tableData?.connected ? tableData.truncated : false;
@@ -340,13 +330,14 @@ export function SearchPerformancePage({
                 <>
                   <StrikingSummary
                     rows={report.strikingDistance}
-                    active={quickFilter}
+                    active={activeFilter}
                     onChange={onFilter}
                   />
                   <StrikingDistanceTable
                     projectId={projectId}
                     rows={strikingRows}
-                    filtered={quickFilter !== undefined}
+                    filtered={activeFilter !== undefined}
+                    onClearFilter={clearFilter}
                   />
                 </>
               ) : tab === "cannibalization" ? (
@@ -395,13 +386,13 @@ export function SearchPerformancePage({
                   {tab === "queries" ? (
                     <QueriesSummary
                       rows={tableRows}
-                      active={quickFilter}
+                      active={activeFilter}
                       onChange={onFilter}
                     />
                   ) : (
                     <PagesSummary
                       rows={tableRows}
-                      active={quickFilter}
+                      active={activeFilter}
                       onChange={onFilter}
                     />
                   )}
@@ -422,7 +413,8 @@ export function SearchPerformancePage({
                       onSearchChange={(next) =>
                         onViewChange({ q: next || undefined })
                       }
-                      quickFilter={quickFilter}
+                      quickFilter={activeFilter}
+                      onClearQuickFilter={clearFilter}
                     />
                   </div>
                 </>

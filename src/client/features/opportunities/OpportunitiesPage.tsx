@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState, type ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import {
   Intro,
   NoOpportunities,
@@ -228,6 +228,7 @@ function Report({
   const [kind, setKind] = useState<KindId | null>(null);
   const [quick, setQuick] = useState<QuickId | null>(null);
   const [openPage, setOpenPage] = useState<string | null>(null);
+  const filtersRef = useRef<HTMLDivElement>(null);
 
   const shown = applyFilters(data.rows, kind, quick);
   const filtered = kind !== null || quick !== null;
@@ -330,7 +331,7 @@ function Report({
             hint={
               counts.no_analytics === 0
                 ? "Listedeki her sayfanın Analytics karşılığı var"
-                : "Yalnızca Search Console verisiyle puanlandı · listele"
+                : `Listelenen ${formatNumber(data.rowCount)} sayfanın ${formatNumber(counts.no_analytics)} tanesi · listele`
             }
           />
         </TileButton>
@@ -365,6 +366,7 @@ function Report({
         counts={counts}
         selected={quick}
         onSelect={setQuick}
+        ref={filtersRef}
       />
 
       <OpportunitiesTable
@@ -375,6 +377,8 @@ function Report({
         onReset={
           filtered
             ? () => {
+                // The button being clicked is about to unmount.
+                filtersRef.current?.focus();
                 setKind(null);
                 setQuick(null);
               }

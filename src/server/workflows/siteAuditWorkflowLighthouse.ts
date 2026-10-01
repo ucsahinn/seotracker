@@ -54,10 +54,11 @@ type WaveContext = {
  * PageSpeed calls; rows have deterministic ids and R2 keys, so the writes are
  * idempotent.
  *
- * A check that hit the per-minute limit is not stored unless this is the last
- * pass (or the daily quota is gone, when waiting cannot help): it is handed
- * back as `pending` so the caller can pause and re-run it. Everything else,
- * including successes, is stored now and never fetched again.
+ * A check that hit the per-minute limit or a transient failure (network, 5xx)
+ * is not stored unless this is the last pass (or the daily quota is gone, when
+ * waiting cannot help): it is handed back as `pending` so the caller can pause
+ * and re-run it. Everything else, including successes, is stored now and never
+ * fetched again, so one flaky check cannot discard its siblings.
  */
 async function runPass(
   step: WorkflowStep,
@@ -66,10 +67,12 @@ async function runPass(
     name: string;
     checks: Check[];
     prior: { completed: number; failed: number };
+    /** Counters before this wave's first pass, and the wave's page ids. */
+    wave: { completed: number; failed: number; pageIds: string[] };
     lastPass: boolean;
   },
 ): Promise<PassCounts> {
-  const { name, checks, prior, lastPass } = input;
+  const { name, checks, prior, wave, lastPass } = input;
 
   const persist = async (
     fetched: LighthouseFetched[],
@@ -90,8 +93,18 @@ async function runPass(
       results,
       { keepExisting },
     );
-    const failed = results.filter((result) => result.errorMessage).length;
-    const completed = results.length - failed;
+    // The fallback may not know what a failed attempt already stored, so it
+    // reads the wave's counts back instead of trusting its own list.
+    let failed = results.filter((result) => result.errorMessage).length;
+    let completed = results.length - failed;
+    if (keepExisting) {
+      const stored = await AuditLighthouseRepository.countResultsForPages(
+        ctx.auditId,
+        wave.pageIds,
+      );
+      completed = wave.completed + stored.ok - prior.completed;
+      failed = wave.failed + stored.error - prior.failed;
+    }
     await AuditRepository.updateAuditProgress(
       ctx.auditId,
       ctx.workflowInstanceId,
@@ -116,14 +129,13 @@ async function runPass(
         ),
       );
       const waiting = !lastPass && !fetched.some((item) => item.quotaExhausted);
-      const deferred = checks.filter(
-        (_check, index) => waiting && fetched[index]?.rateLimited,
-      );
+      // Settled per check: successes and final failures are stored now, only
+      // the transient ones (429, network, 5xx) wait for the next pass.
+      const isDeferred = (item: LighthouseFetched | undefined) =>
+        waiting && Boolean(item?.rateLimited || item?.retryable);
       return persist(
-        fetched.filter(
-          (_item, index) => !(waiting && fetched[index]?.rateLimited),
-        ),
-        deferred,
+        fetched.filter((item) => !isDeferred(item)),
+        checks.filter((_check, index) => isDeferred(fetched[index])),
         false,
       );
     });
@@ -192,6 +204,11 @@ export async function runLighthousePhase(
         : [];
     });
     let quotaExhausted = false;
+    const wave = {
+      completed: completedChecks,
+      failed: failedChecks,
+      pageIds: chunkIds,
+    };
     for (
       let pass = 0;
       pass <= LIGHTHOUSE_RATE_LIMIT_PASSES && pending.length > 0;
@@ -210,6 +227,7 @@ export async function runLighthousePhase(
             : `lighthouse-chunk-${chunkIndex}-retry-${pass}`,
         checks: pending,
         prior: { completed: completedChecks, failed: failedChecks },
+        wave,
         lastPass: pass === LIGHTHOUSE_RATE_LIMIT_PASSES,
       });
       completedChecks += counts.completed;

@@ -48,9 +48,18 @@ describe("QueryHistoryCard", () => {
   it("reads out a day's numbers while hovering the chart", () => {
     renderCard();
     // jsdom has no layout, so give the chart a box to measure against.
-    const chart = screen.getByRole("img");
+    const chart = screen.getByRole("slider");
     chart.getBoundingClientRect = () => new DOMRect(0, 0, 100, 10);
     fireEvent.pointerMove(chart, { clientX: 100 });
+    expect(screen.getByText(/4 tıklama/)).toBeDefined();
+  });
+
+  it("reads out a day's numbers from the keyboard too", () => {
+    renderCard();
+    const chart = screen.getByRole("slider");
+    fireEvent.keyDown(chart, { key: "ArrowLeft" });
+    expect(screen.getByText(/3 tıklama/)).toBeDefined();
+    fireEvent.keyDown(chart, { key: "ArrowRight" });
     expect(screen.getByText(/4 tıklama/)).toBeDefined();
   });
 });

@@ -3,8 +3,13 @@ import {
   PAGESPEED_CATEGORIES,
   parsePageSpeedPayload,
   readPageSpeedApiError,
+  redactKey,
 } from "./pagespeedPayload";
 import type { LighthouseStrategy } from "./types";
+import {
+  LIGHTHOUSE_NO_KEY_MARKER,
+  LIGHTHOUSE_RATE_LIMIT_MARKER,
+} from "@/shared/audit-limits";
 
 const PAGESPEED_ENDPOINT =
   "https://www.googleapis.com/pagespeedonline/v5/runPagespeed";
@@ -109,16 +114,20 @@ export function classifyFailure(
   }
   if (status === 429 && !hasApiKey) {
     return new PageSpeedError(
-      `No PageSpeed key set — ${message}. A free key raises the quota and ` +
-        `is entered under Settings; see docs/PAGESPEED_API_KEY.md.`,
+      `${LIGHTHOUSE_NO_KEY_MARKER}: PageSpeed anahtarı girilmediği için ` +
+        `Google'ın ortak ücretsiz kotası aşıldı (${message}). Ücretsiz bir ` +
+        `anahtar Ayarlar'dan girilir; bkz. docs/PAGESPEED_API_KEY.md.`,
       { status, retryable: true, rateLimited: true },
     );
   }
-  return new PageSpeedError(message, {
-    status,
-    retryable: true,
-    rateLimited: status === 429,
-  });
+  if (status === 429) {
+    return new PageSpeedError(`${LIGHTHOUSE_RATE_LIMIT_MARKER}: ${message}`, {
+      status,
+      retryable: true,
+      rateLimited: true,
+    });
+  }
+  return new PageSpeedError(message, { status, retryable: true });
 }
 
 function isFinalStatus(status: number): boolean {
@@ -183,13 +192,4 @@ export async function fetchPageSpeedReport(input: {
     const body = await response.json();
     return parsePageSpeedPayload(body, input);
   });
-}
-
-/**
- * The key travels in the query string, and some runtimes echo the request URL
- * in a network error. The message ends up in stored rows and in the report, so
- * it is stripped here rather than trusted never to appear.
- */
-function redactKey(message: string): string {
-  return message.replace(/([?&]key=)[^&\s"']+/gi, "$1[gizli]");
 }

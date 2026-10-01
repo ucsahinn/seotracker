@@ -201,7 +201,7 @@ export function AuditHistorySection({
                   <td>
                     <StatusBadge status={audit.status} />
                   </td>
-                  <td>{audit.pagesTotal || audit.pagesCrawled}</td>
+                  <td>{pagesShown(audit)}</td>
                   <td className="text-right">
                     <SeverityCell
                       row={audit}
@@ -278,6 +278,9 @@ function DeltaText({ delta }: { delta: IssueDelta }) {
   const fewer = delta.diff < 0;
   const Icon = fewer ? ArrowDown : ArrowUp;
   const size = Math.abs(delta.diff);
+  // A change that rounds to "%0" would read as no change under an arrow.
+  const percent =
+    delta.fraction === null ? 0 : Math.round(Math.abs(delta.fraction) * 100);
 
   return (
     <span
@@ -288,9 +291,9 @@ function DeltaText({ delta }: { delta: IssueDelta }) {
     >
       <Icon className="size-3" aria-hidden />
       <span className="sr-only">{fewer ? "azaldı" : "arttı"} </span>
-      {delta.fraction === null
-        ? formatCount(size)
-        : formatPercent(Math.abs(delta.fraction), 0)}
+      {delta.fraction !== null && percent > 0
+        ? formatPercent(Math.abs(delta.fraction), 0)
+        : formatCount(size)}
     </span>
   );
 }
@@ -335,6 +338,16 @@ type HistorySortKey =
   | "warning";
 
 /** Ascending; `useLocalSort` applies the direction. */
+/**
+ * `pagesTotal` is the reservation the audit started with, so a finished
+ * audit shows what it actually crawled; one still planning has crawled
+ * nothing yet and shows the reservation.
+ */
+function pagesShown(a: HistoryRow): number {
+  if (a.status === "completed") return a.pagesCrawled;
+  return a.pagesTotal || a.pagesCrawled;
+}
+
 function compareAudits(
   a: HistoryRow,
   b: HistoryRow,
@@ -345,7 +358,5 @@ function compareAudits(
   if (key === "status") return compareText(a.status, b.status);
   if (key === "critical") return a.issues.critical - b.issues.critical;
   if (key === "warning") return a.issues.warning - b.issues.warning;
-  // The number the row actually shows: `pagesTotal` while a crawl is
-  // planning, `pagesCrawled` once it has started returning pages.
-  return (a.pagesTotal || a.pagesCrawled) - (b.pagesTotal || b.pagesCrawled);
+  return pagesShown(a) - pagesShown(b);
 }

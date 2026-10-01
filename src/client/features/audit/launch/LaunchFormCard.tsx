@@ -175,8 +175,8 @@ function LighthouseEstimate({ maxPages }: { maxPages: number }) {
     <div className="space-y-1">
       <p className="text-xs text-muted">
         {hasKey
-          ? `Taranan her sayfanın hızı telefonda ve bilgisayarda ölçülür. En çok ${formatNumber(pages)} sayfa, yani ${formatNumber(checks)} ölçüm; hız aşamasının yaklaşık ${formatNumber(minutes)} dakika sürmesi beklenir.`
-          : `PageSpeed anahtarı yok: Google'ın ücretsiz kotası çok küçük olduğu için en çok ${formatNumber(UNKEYED_LIGHTHOUSE_PAGE_CAP)} sayfa (${formatNumber(UNKEYED_LIGHTHOUSE_PAGE_CAP * LIGHTHOUSE_CHECKS_PER_PAGE)} ölçüm) ölçülür, yaklaşık ${formatNumber(minutes)} dakika sürer.`}
+          ? `Taranan her sayfanın hızı telefonda ve bilgisayarda ölçülür. En çok ${formatNumber(pages)} sayfa, yani ${formatNumber(checks)} ölçüm; hız aşaması en az yaklaşık ${formatNumber(minutes)} dakika sürer; Google sınırına takılırsa daha uzun sürer.`
+          : `PageSpeed anahtarı yok: Google'ın ücretsiz kotası çok küçük olduğu için en çok ${formatNumber(UNKEYED_LIGHTHOUSE_PAGE_CAP)} sayfa (${formatNumber(UNKEYED_LIGHTHOUSE_PAGE_CAP * LIGHTHOUSE_CHECKS_PER_PAGE)} ölçüm) ölçülür; hız aşaması en az yaklaşık ${formatNumber(minutes)} dakika sürer, Google sınırına takılırsa daha uzun sürer.`}
       </p>
       {hasKey ? null : (
         <p className="text-xs text-muted">

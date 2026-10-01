@@ -9,7 +9,7 @@ import {
   Trash2,
   type LucideIcon,
 } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { EmptyState } from "@/client/components/EmptyState";
 import { RowActions } from "@/client/components/table/RowActions";
@@ -77,6 +77,7 @@ export function ReportsList({
 }) {
   const [filter, setFilter] = useState<ReportFilter>("all");
   const [kind, setKind] = useState<string | null>(null);
+  const filtersRef = useRef<HTMLDivElement>(null);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState<(typeof PAGE_SIZES)[number]>(25);
   const sorting = useLocalSort<SortKey>({ key: "updatedAt", desc: true });
@@ -141,6 +142,8 @@ export function ReportsList({
       />
 
       <div
+        ref={filtersRef}
+        tabIndex={-1}
         className="stagger flex flex-wrap gap-2"
         role="group"
         aria-label="Filtre"
@@ -176,6 +179,8 @@ export function ReportsList({
                 type="button"
                 className="btn btn-ghost btn-sm"
                 onClick={() => {
+                  // The button unmounts once the list is back; keep focus in the filters.
+                  filtersRef.current?.focus();
                   setFilter("all");
                   setKind(null);
                 }}

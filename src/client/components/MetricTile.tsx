@@ -33,6 +33,14 @@ export type MetricTileHref = {
   projectId: string;
 };
 
+/**
+ * With `href` the whole tile is the link, so the hint must be plain text: a
+ * link inside a link is invalid HTML. The union makes that a type error.
+ */
+type TileTarget =
+  | { href: MetricTileHref; hint?: string }
+  | { href?: undefined; hint?: React.ReactNode };
+
 export function MetricTile({
   label,
   value,
@@ -40,6 +48,7 @@ export function MetricTile({
   deltaTitle,
   hint,
   href,
+  flashKey,
   /** Lower is better, as with an average search position. */
   inverted = false,
 }: {
@@ -47,12 +56,11 @@ export function MetricTile({
   value: string | null;
   delta?: MetricDelta;
   deltaTitle?: string;
-  /** With `href` the whole tile is the link, so keep the hint plain text. */
-  hint?: React.ReactNode;
-  href?: MetricTileHref;
+  /** What to compare for the change flash when `value` is a rendering of something steadier (a relative time of a timestamp). */
+  flashKey?: string | number | null;
   inverted?: boolean;
-}) {
-  const flash = useFlashOnChange(value);
+} & TileTarget) {
+  const flash = useFlashOnChange(flashKey === undefined ? value : flashKey);
   const body = (
     <>
       <p className="truncate text-xs font-medium uppercase tracking-wider text-muted">

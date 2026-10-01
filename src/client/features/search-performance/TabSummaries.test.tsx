@@ -1,6 +1,16 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { PagesSummary, QueriesSummary, StrikingSummary } from "./TabSummaries";
+import {
+  clickTierBuckets,
+  positionBuckets,
+  strikingBuckets,
+} from "./tabBuckets";
+import {
+  PagesSummary,
+  QueriesSummary,
+  quickFilterForTab,
+  StrikingSummary,
+} from "./TabSummaries";
 
 const row = (position: number, clicks: number, impressions = 100) => ({
   position,
@@ -48,5 +58,42 @@ describe("tab summaries", () => {
     expect(
       screen.getByText(/5 ile 20 arasında kalan sorgu olmadığı/),
     ).toBeDefined();
+  });
+
+  it("writes the click share without a number-dependent suffix", () => {
+    const cases: [string, number[]][] = [
+      ["%20", Array.from({ length: 25 }, () => 4)],
+      ["%30", [6, 6, 6, 6, 6, ...Array.from({ length: 14 }, () => 5)]],
+      ["%100", [1000, 1000, 1000, 1000, 1000, 1]],
+    ];
+    for (const [expected, clicks] of cases) {
+      const { unmount } = render(
+        <PagesSummary
+          rows={clicks.map((count) => row(3, count))}
+          active={undefined}
+          onChange={() => {}}
+        />,
+      );
+      expect(document.body.textContent).toContain(`payı: ${expected}.`);
+      unmount();
+    }
+  });
+
+  it("lets a tab apply only the filters it can show and clear", () => {
+    expect(quickFilterForTab("pages", "pos5to10")).toBeUndefined();
+    expect(quickFilterForTab("queries", "pos5to10")).toBeUndefined();
+    expect(quickFilterForTab("striking", "pos5to10")).toBe("pos5to10");
+    expect(quickFilterForTab("queries", "lowCtr")).toBe("lowCtr");
+    expect(quickFilterForTab("cannibalization", "noClicks")).toBeUndefined();
+    // Every bar a tab draws is a filter that tab accepts.
+    for (const bucket of positionBuckets([])) {
+      expect(quickFilterForTab("queries", bucket.id)).toBe(bucket.id);
+    }
+    for (const bucket of clickTierBuckets([])) {
+      expect(quickFilterForTab("pages", bucket.id)).toBe(bucket.id);
+    }
+    for (const bucket of strikingBuckets([])) {
+      expect(quickFilterForTab("striking", bucket.id)).toBe(bucket.id);
+    }
   });
 });

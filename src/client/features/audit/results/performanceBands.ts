@@ -1,6 +1,8 @@
 import {
   LIGHTHOUSE_CHECKS_PER_PAGE,
+  LIGHTHOUSE_NO_KEY_MARKER,
   LIGHTHOUSE_QUOTA_MARKER,
+  LIGHTHOUSE_RATE_LIMIT_MARKER,
 } from "@/shared/audit-limits";
 import {
   LIGHTHOUSE_FAIR_FROM,
@@ -138,9 +140,18 @@ export function summarizeLighthouse(
   };
 }
 
+function countMarked(
+  rows: Array<Pick<PerformanceRowData, "errorMessage">>,
+  marker: string,
+) {
+  return rows.filter((row) => row.errorMessage?.startsWith(marker)).length;
+}
+
 /**
- * The plain-language note for a speed run that stopped because Google's daily
- * quota ran out, or null when it did not.
+ * The plain-language note for a speed run whose failures have a known cause
+ * and remedy, or null when none carries a marker: the daily quota ran out,
+ * Google's per-minute limit still rejected checks after the re-passes, or no
+ * PageSpeed key is set. Every note points at Ayarlar.
  *
  * `plannedChecks` is the audit's own total (pages x 2); an older audit that
  * never recorded it falls back to the pages that have any row.
@@ -156,19 +167,31 @@ export function describeQuotaStop(
   >,
   plannedChecks: number,
 ): string | null {
-  const stopped = rows.some((row) =>
-    row.errorMessage?.startsWith(LIGHTHOUSE_QUOTA_MARKER),
-  );
-  if (!stopped) return null;
-
-  const measured = new Set(
-    rows.filter((row) => !isLighthouseFailure(row)).map((row) => row.pageId),
-  ).size;
-  const planned =
-    plannedChecks > 0
-      ? Math.ceil(plannedChecks / LIGHTHOUSE_CHECKS_PER_PAGE)
-      : new Set(rows.map((row) => row.pageId)).size;
-  const left = Math.max(0, planned - measured);
-
-  return `${LIGHTHOUSE_QUOTA_MARKER}; ${measured} sayfa ölçüldü, ${left} sayfa ölçülemedi. Google'ın ücretsiz günlük ölçüm sınırı bitti, sayfalarınızda bir sorun yok. Ayarlar'dan bir PageSpeed anahtarı ekleyin ya da kota yenilenince denetimi yeniden başlatın.`;
+  const notes: string[] = [];
+  if (countMarked(rows, LIGHTHOUSE_QUOTA_MARKER) > 0) {
+    const measured = new Set(
+      rows.filter((row) => !isLighthouseFailure(row)).map((row) => row.pageId),
+    ).size;
+    const planned =
+      plannedChecks > 0
+        ? Math.ceil(plannedChecks / LIGHTHOUSE_CHECKS_PER_PAGE)
+        : new Set(rows.map((row) => row.pageId)).size;
+    const left = Math.max(0, planned - measured);
+    notes.push(
+      `${LIGHTHOUSE_QUOTA_MARKER}; ${measured} sayfa ölçüldü, ${left} sayfa ölçülemedi. Google'ın ücretsiz günlük ölçüm sınırı bitti, sayfalarınızda bir sorun yok. Ayarlar'dan bir PageSpeed anahtarı ekleyin ya da kota yenilenince denetimi yeniden başlatın.`,
+    );
+  }
+  const noKey = countMarked(rows, LIGHTHOUSE_NO_KEY_MARKER);
+  if (noKey > 0) {
+    notes.push(
+      `PageSpeed anahtarı girilmediği için ${noKey} ölçüm yapılamadı: Google'ın ortak ücretsiz kotası doldu, sayfalarınızda bir sorun yok. Ayarlar'dan ücretsiz bir anahtar ekleyip denetimi yeniden başlatın.`,
+    );
+  }
+  const perMinute = countMarked(rows, LIGHTHOUSE_RATE_LIMIT_MARKER);
+  if (perMinute > 0) {
+    notes.push(
+      `Google'ın dakikalık sınırı yüzünden ${perMinute} ölçüm yapılamadı; denetimi daha sonra yeniden başlatın veya Ayarlar'dan anahtarınızın kotasını kontrol edin.`,
+    );
+  }
+  return notes.length > 0 ? notes.join(" ") : null;
 }

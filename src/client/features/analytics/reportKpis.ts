@@ -86,7 +86,7 @@ export function buildKpis(
       {
         label: "Yalnızca bir kez aranan",
         value: formatCount(once),
-        hint: `Terimlerin ${formatPercent(once / rows.length)}'i`,
+        hint: `Pay: ${formatPercent(once / rows.length)}`,
       },
     ];
   }

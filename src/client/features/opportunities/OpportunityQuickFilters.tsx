@@ -1,3 +1,4 @@
+import type { Ref } from "react";
 import { BarChart3, SearchX, TrendingUp, type LucideIcon } from "lucide-react";
 import {
   QUICK_COPY,
@@ -40,13 +41,18 @@ export function OpportunityQuickFilters({
   counts,
   selected,
   onSelect,
+  ref,
 }: {
   counts: Record<QuickId, number>;
   selected: QuickId | null;
   onSelect: (next: QuickId | null) => void;
+  /** Focus lands here when a reset elsewhere unmounts the button that was clicked. */
+  ref?: Ref<HTMLDivElement>;
 }) {
   return (
     <div
+      ref={ref}
+      tabIndex={-1}
       role="group"
       aria-label="Hızlı filtreler"
       className="flex flex-wrap items-center gap-2"

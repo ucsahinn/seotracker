@@ -37,7 +37,7 @@ const CHIPS: Partial<Record<QuickFilterId, ChipDef>> = {
   lowCtr: {
     label: "Tıklama oranı düşük",
     icon: MousePointerClick,
-    hint: `İlk sayfada olup ${formatCount(LOW_CTR_MIN_IMPRESSIONS)} veya daha fazla gösterim alan ve tıklama oranı ${formatPercent(LOW_CTR_THRESHOLD, 0)}'nin altında kalan satırlar. Başlığı ve açıklamayı iyileştirmeye değer.`,
+    hint: `İlk sayfada olup ${formatCount(LOW_CTR_MIN_IMPRESSIONS)} veya daha fazla gösterim alan ve tıklama oranı ${formatPercent(LOW_CTR_THRESHOLD, 0)} altında kalan satırlar. Başlığı ve açıklamayı iyileştirmeye değer.`,
   },
   hasClicks: {
     label: "Tıklama alanlar",

@@ -121,6 +121,14 @@ describe("readPageSpeedApiError", () => {
     ).toBe("PageSpeed Insights 429: Quota exceeded");
   });
 
+  it("strips an echoed ?key= from the API message", () => {
+    const text = readPageSpeedApiError(400, {
+      error: { message: "bad request /run?url=a&key=SECRET123" },
+    });
+
+    expect(text).not.toContain("SECRET123");
+  });
+
   it("falls back to the status when the body is unusable", () => {
     expect(readPageSpeedApiError(503, "<html>")).toBe(
       "PageSpeed Insights request failed with HTTP 503",

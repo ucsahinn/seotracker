@@ -34,7 +34,29 @@ const LIGHTHOUSE_PAGES_PER_WAVE = 5;
  */
 export const LIGHTHOUSE_QUOTA_MARKER = "Kota doldu";
 
-/** Rough minutes the speed stage takes for this many pages. */
+/**
+ * Start of the stored error for a check Google rejected for its per-minute
+ * limit even after the pauses and re-passes. The results screen recognises it
+ * by this prefix.
+ */
+export const LIGHTHOUSE_RATE_LIMIT_MARKER = "Dakikalık sınır";
+/**
+ * Start of the stored error for a check that hit Google's shared keyless
+ * quota because no PageSpeed key is set.
+ */
+export const LIGHTHOUSE_NO_KEY_MARKER = "Anahtar yok";
+
+/**
+ * A LOWER BOUND in minutes for the speed stage, not an expected time.
+ *
+ * The 40 second wave time is an assumption from the usual 20-60 second
+ * PageSpeed response time and is unmeasured. The formula ignores the 65 second
+ * cooldown re-passes after a per-minute rejection and the 120 second request
+ * timeout. The only real data point: a 212-page audit took about 35 minutes
+ * (02:10:45Z to 02:45:41Z) with 40 rate-limited failures. The formula also
+ * gives 35 for 212 pages, but that is one run, so it is a single data point
+ * and no validation; a run with more rejections takes longer.
+ */
 export function estimateLighthouseMinutes(pages: number) {
   const seconds =
     (pages / LIGHTHOUSE_PAGES_PER_WAVE) *

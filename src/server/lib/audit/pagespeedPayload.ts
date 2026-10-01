@@ -89,12 +89,21 @@ function summarizeZodIssues(error: z.ZodError, maxIssues = 3): string {
     .join("; ");
 }
 
+/**
+ * The key travels in the query string, and some runtimes or Google's own error
+ * text echo the request URL. Every message that can be stored or logged passes
+ * through here instead of being trusted never to contain it.
+ */
+export function redactKey(message: string): string {
+  return message.replace(/([?&]key=)[^&\s"']+/gi, "$1[gizli]");
+}
+
 /** Pulls a readable message out of a PageSpeed Insights error body. */
 export function readPageSpeedApiError(status: number, body: unknown): string {
   const parsed = apiErrorSchema.safeParse(body);
   const message = parsed.success ? parsed.data.error?.message : undefined;
   return message
-    ? `PageSpeed Insights ${status}: ${message}`
+    ? `PageSpeed Insights ${status}: ${redactKey(message)}`
     : `PageSpeed Insights request failed with HTTP ${status}`;
 }
 

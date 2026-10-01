@@ -87,7 +87,11 @@ export function QueryHistoryCard({
 
   if (rows.length === 0) {
     return (
-      <div className="rounded-box border border-base-300 bg-base-100 p-4 text-sm text-muted">
+      <div
+        ref={ref}
+        tabIndex={-1}
+        className="rounded-box border border-base-300 bg-base-100 p-4 text-sm text-muted"
+      >
         Bu sorgu için kayıtlı gün yok.
       </div>
     );

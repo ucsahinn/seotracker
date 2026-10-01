@@ -6,6 +6,7 @@ import {
 } from "@/client/features/audit/results/DistributionBars";
 import { QuickFilterBar } from "@/client/features/search-performance/QuickFilterBar";
 import type { QuickFilterId } from "@/client/features/search-performance/quickFilters";
+import type { Tab } from "@/client/features/search-performance/SearchPerformanceParts";
 import {
   clickTierBuckets,
   hasEnoughGroups,
@@ -32,6 +33,29 @@ import type {
  * rows are spread. Each bar writes the same `f` URL filter the chips do, so
  * bar, chip and table share one source of truth.
  */
+
+const QUERY_CHIPS: QuickFilterId[] = ["top10", "noClicks", "lowCtr"];
+const PAGE_CHIPS: QuickFilterId[] = ["hasClicks", "noClicks"];
+const STRIKING_CHIPS: QuickFilterId[] = ["pos5to10", "pos11to20"];
+
+/**
+ * The one list of `f` values each tab understands: its chips plus its bar
+ * ids. A link carrying a value from another tab (`?tab=pages&f=pos5to10`)
+ * must not narrow a table whose own chips and bars cannot show or clear it.
+ */
+const TAB_QUICK_FILTERS: Partial<Record<Tab, QuickFilterId[]>> = {
+  striking: STRIKING_CHIPS,
+  queries: [...QUERY_CHIPS, "pos1to3", "pos4to10", "pos11to20", "pos21plus"],
+  pages: [...PAGE_CHIPS, "clicks1to9", "clicks10to99", "clicks100plus"],
+};
+
+/** The quick filter if this tab offers it, otherwise none. */
+export function quickFilterForTab(
+  tab: Tab,
+  id: QuickFilterId | undefined,
+): QuickFilterId | undefined {
+  return id && TAB_QUICK_FILTERS[tab]?.includes(id) ? id : undefined;
+}
 
 type Selection = {
   active: QuickFilterId | undefined;
@@ -154,11 +178,7 @@ export function QueriesSummary({
         selection={selection}
         summary={`${formatCount(rows.length)} sorgunun ortalama sıraya göre dağılımı; ${formatCount(firstPage)} tanesi ilk sayfada.`}
       />
-      <Chips
-        rows={rows}
-        ids={["top10", "noClicks", "lowCtr"]}
-        selection={selection}
-      />
+      <Chips rows={rows} ids={QUERY_CHIPS} selection={selection} />
     </Card>
   );
 }
@@ -182,7 +202,7 @@ export function PagesSummary({
   const lead =
     share === null
       ? `${formatCount(rows.length)} sayfanın ${formatCount(clicked)} tanesi tıklama aldı.`
-      : `En çok tıklanan 5 sayfa, tüm tıklamaların ${formatPercent(share, 0)}'ini alıyor.`;
+      : `En çok tıklanan 5 sayfanın tıklamalardaki payı: ${formatPercent(share, 0)}.`;
   return (
     <Card
       title={title}
@@ -193,11 +213,7 @@ export function PagesSummary({
         selection={selection}
         summary={`${formatCount(rows.length)} sayfanın aldığı tıklamaya göre dağılımı. ${lead}`}
       />
-      <Chips
-        rows={rows}
-        ids={["hasClicks", "noClicks"]}
-        selection={selection}
-      />
+      <Chips rows={rows} ids={PAGE_CHIPS} selection={selection} />
     </Card>
   );
 }
@@ -227,11 +243,7 @@ export function StrikingSummary({
         selection={selection}
         summary={`Eşiğe yakın ${formatCount(rows.length)} sorgunun ${formatCount(impressions)} gösterimi, sıra 5-10 ve 11-20 olarak bölünmüş.`}
       />
-      <Chips
-        rows={rows}
-        ids={["pos5to10", "pos11to20"]}
-        selection={selection}
-      />
+      <Chips rows={rows} ids={STRIKING_CHIPS} selection={selection} />
     </Card>
   );
 }

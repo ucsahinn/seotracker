@@ -48,18 +48,35 @@ export function PositionSparkline({ rows }: { rows: Day[] }) {
     setHovered(Math.min(lastIndex, Math.max(0, Math.round(ratio * lastIndex))));
   };
 
+  const onKey = (event: React.KeyboardEvent<SVGSVGElement>) => {
+    const step =
+      event.key === "ArrowLeft" ? -1 : event.key === "ArrowRight" ? 1 : 0;
+    if (step === 0) return;
+    event.preventDefault();
+    setHovered((current) =>
+      Math.min(lastIndex, Math.max(0, (current ?? lastIndex) + step)),
+    );
+  };
+
   const day = hovered === null ? undefined : rows[hovered];
-  const marked = hovered === null ? [0, lastIndex] : [0, lastIndex, hovered];
+  const marked = [...new Set([0, lastIndex, hovered ?? 0])];
 
   return (
     <div>
       <svg
         viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
         className="h-28 w-full touch-pan-y"
-        role="img"
+        role="slider"
+        tabIndex={0}
         aria-label={`Sıra geçmişi: ${formatDecimal(best)} ile ${formatDecimal(worst)} arasında`}
+        aria-valuemin={0}
+        aria-valuemax={lastIndex}
+        aria-valuenow={hovered ?? lastIndex}
+        aria-valuetext={formatDate(rows[hovered ?? lastIndex]?.date ?? "")}
         onPointerMove={onMove}
         onPointerLeave={() => setHovered(null)}
+        onKeyDown={onKey}
+        onBlur={() => setHovered(null)}
       >
         <polyline
           points={points}
@@ -87,7 +104,7 @@ export function PositionSparkline({ rows }: { rows: Day[] }) {
         <span>En iyi {formatDecimal(best)}</span>
         <span>En kötü {formatDecimal(worst)}</span>
       </div>
-      <p className="mt-1 min-h-4 text-xs tabular-nums">
+      <p className="mt-1 min-h-4 text-xs tabular-nums" aria-live="polite">
         {day ? (
           <>
             {formatDate(day.date)} · Sıra {formatDecimal(day.position)} ·{" "}
@@ -96,7 +113,8 @@ export function PositionSparkline({ rows }: { rows: Day[] }) {
           </>
         ) : (
           <span className="text-subtle">
-            Günlük değeri görmek için grafiğin üzerine gelin.
+            Günlük değeri görmek için grafiğin üzerine gelin ya da grafiğe
+            odaklanıp sol ve sağ ok tuşlarını kullanın.
           </span>
         )}
       </p>

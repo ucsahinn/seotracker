@@ -63,6 +63,7 @@ export function ReportView({
   const sorting = useLocalSort<string>({ key: "", desc: true });
   const [activeChips, setActiveChips] = React.useState<ChipId[]>([]);
   const [segmentKey, setSegmentKey] = React.useState<string | null>(null);
+  const filtersRef = React.useRef<HTMLDivElement>(null);
 
   const plan = buildSummary(kind, result.dimensions, result.rows, columnLabel);
   const segment =
@@ -76,10 +77,14 @@ export function ReportView({
       : "",
   );
 
+  // A chip the data no longer offers must neither narrow nor count.
+  const appliedChips = activeChips.filter((id) =>
+    chips.some((chip) => chip.id === id),
+  );
   const filtered = applyChips(
     plan ? applySegment(result.rows, plan.dimension, segment) : result.rows,
     chips,
-    activeChips,
+    appliedChips,
   );
   const rows = sorting.sort.key
     ? sorting.apply(filtered, (a, b, key) =>
@@ -91,9 +96,11 @@ export function ReportView({
       )
     : // Google's own ordering when nothing is chosen.
       filtered;
-  const isFiltered = activeChips.length > 0 || segment !== null;
+  const isFiltered = appliedChips.length > 0 || segment !== null;
 
   const clearFilters = () => {
+    // The clicked button unmounts with the filters; keep focus in the group.
+    filtersRef.current?.focus();
     setActiveChips([]);
     setSegmentKey(null);
   };
@@ -120,6 +127,8 @@ export function ReportView({
 
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div
+          ref={filtersRef}
+          tabIndex={-1}
           className="flex flex-wrap items-center gap-2"
           role="group"
           aria-label="Hızlı filtreler"

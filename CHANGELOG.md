@@ -5,7 +5,7 @@ Yayında tek sürüm tutuluyor, bu yüzden burada tek not var. Eski notlar
 
 ## [Yayınlanmamış]
 
-## [1.8.4] — 2026-09-30
+## [1.8.5] — 2026-09-30
 
 Bu sürüm, bugüne kadar çıkan tüm sürümlerin notlarını tek yerde toplar.
 
@@ -78,11 +78,17 @@ bırakın.
 - Hatalı bir adres parametresi (örneğin ?full=yes) rapor ekranını çökertiyordu.
 - Birçok hata iletisi İngilizce görünüyordu.
 - Hız ölçümünde dakikalık Google sınırına takılan ölçümler kalıcı hata olarak kaydediliyordu (212 sayfalık bir denetimde 40 ölçüm kayboldu). Artık bekleyip yeniden deniyor.
+- Hız ölçümünde tek bir ölçüm hata verince aynı gruptaki sağlam ölçümler de kayboluyordu.
+- Hız sekmesi, ölçümler neden yapılamadıysa (dakikalık sınır, anahtar yok, günlük kota) bunu ve ne yapılacağını söylüyor.
+- Arama performansında yanlış sekmeye ait bir filtre adreste kalıp tabloyu daraltıyordu ve kaldırma düğmesi yoktu.
+- Sayfalar sekmesi ilk açılışta bir an Sorgular satırlarını gösteriyordu.
+- "%30'unu" gibi Türkçe ekler yanlış yazılıyordu; kalıplar yeniden yazıldı.
+- Farklı sayfalardan başlayan denetimler birbiriyle karşılaştırılıyordu (örneğin ana sayfa ile /blog).
 - Sorun grafiğindeki çubuklar yalnızca fareyle seçilebiliyordu; artık klavyeyle de seçilebiliyor.
 - İki küçük açıklama balonu, fareyi üzerine götürünce kapanıyordu.
 - Google'ın "URL Denetleme Aracı" adı ekranda ve raporda aynı yazılıyor.
 - Sıralama takibi sessizce yalnızca ilk 25 sorguyu gösteriyordu; arşiv hiç dolmuyordu.
 - Ölçülemeyen değerler sıfır olarak çiziliyordu.
 
-[Yayınlanmamış]: https://github.com/ucsahinn/seotracker/compare/v1.8.4...HEAD
-[1.8.4]: https://github.com/ucsahinn/seotracker/releases/tag/v1.8.4
+[Yayınlanmamış]: https://github.com/ucsahinn/seotracker/compare/v1.8.5...HEAD
+[1.8.5]: https://github.com/ucsahinn/seotracker/releases/tag/v1.8.5

@@ -103,14 +103,51 @@ describe("selectLighthousePages", () => {
 });
 
 describe("fetchLighthouseResult", () => {
-  it("rethrows a retryable provider failure so the workflow step retries", async () => {
+  it("hands a retryable provider failure back flagged instead of rejecting the wave", async () => {
     fetchPageSpeedReportMock.mockRejectedValue(
       new PageSpeedError("backend error", { status: 503, retryable: true }),
     );
 
-    await expect(
-      fetchLighthouseResult("https://example.com/", "page-1", "desktop"),
-    ).rejects.toThrow("backend error");
+    const fetched = await fetchLighthouseResult(
+      "https://example.com/",
+      "page-1",
+      "desktop",
+    );
+
+    expect(fetched.retryable).toBe(true);
+    expect(fetched.rateLimited).toBeUndefined();
+  });
+
+  it("never lets a ?key= secret reach the stored text or the log", async () => {
+    const error = vi.spyOn(console, "error").mockImplementation(() => {});
+    fetchPageSpeedReportMock.mockRejectedValue(
+      new Error("boom https://x/run?url=a&key=SECRET123&b=1"),
+    );
+    const generic = await fetchLighthouseResult(
+      "https://example.com/",
+      "page-1",
+      "desktop",
+    );
+    fetchPageSpeedReportMock.mockRejectedValue(
+      new PageSpeedError("down ?key=SECRET123", {
+        status: 503,
+        retryable: true,
+      }),
+    );
+    const transient = await fetchLighthouseResult(
+      "https://example.com/",
+      "page-1",
+      "desktop",
+    );
+
+    const seen = [
+      generic.result.errorMessage,
+      transient.result.errorMessage,
+      String(error.mock.calls),
+    ].join(" ");
+    expect(seen).not.toContain("SECRET123");
+    expect(seen).toContain("key=[gizli]");
+    error.mockRestore();
   });
 
   it("hands a per-minute 429 back flagged instead of throwing or finalising it", async () => {

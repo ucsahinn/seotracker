@@ -127,6 +127,7 @@ export function DimensionTable({
   onSearchChange,
   quickFilter,
   onQuickFilterChange,
+  onClearQuickFilter,
   onSaveKeyword,
 }: {
   rows: SearchPerformanceTableRow[];
@@ -143,6 +144,8 @@ export function DimensionTable({
   /** Chip filter, kept in the URL. Omit `onQuickFilterChange` to hide chips. */
   quickFilter?: QuickFilterId;
   onQuickFilterChange?: (next: QuickFilterId | undefined) => void;
+  /** Always offered while a chip filter narrows the table, even when its bar is hidden. */
+  onClearQuickFilter?: () => void;
 }) {
   const columns = useMemo(
     () => buildDimensionColumns(keyLabel, onSaveKeyword),
@@ -181,6 +184,16 @@ export function DimensionTable({
     },
   });
   const pagination = table.getState().pagination;
+  const clearButton =
+    quickFilter && onClearQuickFilter ? (
+      <button
+        type="button"
+        className="btn btn-ghost btn-xs"
+        onClick={onClearQuickFilter}
+      >
+        Filtreyi kaldır
+      </button>
+    ) : null;
 
   return (
     <>
@@ -208,6 +221,7 @@ export function DimensionTable({
               {formatCount(visible.length)} / {formatCount(rows.length)}
             </span>
           ) : null}
+          {clearButton}
         </div>
       ) : null}
       <AppDataTable
@@ -235,11 +249,12 @@ export function DimensionTable({
               needle
                 ? `"${search}" hiçbir satırda geçmiyor. Aramayı temizleyin ya da başka bir terim deneyin.`
                 : quickFilter
-                  ? "Yukarıdaki hızlı filtreyi kaldırarak tüm satırlara dönün."
+                  ? "Hızlı filtreyi kaldırarak tüm satırlara dönün."
                   : hasActiveFilter
                     ? "Arama türü, cihaz ya da ülke filtresini genişletmeyi deneyin."
                     : "Search Console verisi birkaç gün gecikmeli gelir; mülk yeni bağlandıysa birkaç gün sürebilir."
             }
+            action={clearButton ?? undefined}
           />
         }
       />
@@ -271,11 +286,13 @@ export function StrikingDistanceTable({
   projectId,
   rows,
   filtered = false,
+  onClearFilter,
 }: {
   projectId: string;
   rows: Report["strikingDistance"];
   /** A summary filter is narrowing `rows`, so empty means "nothing in this group". */
   filtered?: boolean;
+  onClearFilter?: () => void;
 }) {
   const queryClient = useQueryClient();
   const anchorRef = useSelectionAnchor();
@@ -357,8 +374,19 @@ export function StrikingDistanceTable({
         }
         description={
           filtered
-            ? "Yukarıdaki seçimi kaldırarak tüm eşiğe yakın sorgulara dönün."
+            ? "Seçimi kaldırarak tüm eşiğe yakın sorgulara dönün."
             : "Sıralaması 5 ile 20 arasında kalan sorgu bulunmuyor. Bu aralıktaki sorgular, küçük bir iyileştirmeyle daha üst sıralara çıkabilecek olanlardır."
+        }
+        action={
+          filtered && onClearFilter ? (
+            <button
+              type="button"
+              className="btn btn-sm"
+              onClick={onClearFilter}
+            >
+              Filtreyi kaldır
+            </button>
+          ) : undefined
         }
       />
     );

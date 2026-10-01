@@ -110,3 +110,32 @@ describe("describeQuotaStop", () => {
     expect(describeQuotaStop([row("a", "NO_FCP")], 2)).toBeNull();
   });
 });
+
+const failed = (errorMessage: string, pageId = "p") => ({
+  pageId,
+  errorMessage,
+  performanceScore: null,
+  accessibilityScore: null,
+  bestPracticesScore: null,
+  seoScore: null,
+});
+
+describe("describeQuotaStop markers", () => {
+  it("explains rows left rate-limited after the final re-pass", () => {
+    const note = describeQuotaStop(
+      [failed("Dakikalık sınır: 429"), failed("Dakikalık sınır: 429", "q")],
+      4,
+    );
+
+    expect(note).toBe(
+      "Google'ın dakikalık sınırı yüzünden 2 ölçüm yapılamadı; denetimi daha sonra yeniden başlatın veya Ayarlar'dan anahtarınızın kotasını kontrol edin.",
+    );
+  });
+
+  it("explains keyless quota rows and stays silent for an unmarked failure", () => {
+    expect(describeQuotaStop([failed("Anahtar yok: kota")], 2)).toMatch(
+      /anahtarı girilmediği için 1 ölçüm.*Ayarlar/,
+    );
+    expect(describeQuotaStop([failed("NO_FCP")], 2)).toBeNull();
+  });
+});

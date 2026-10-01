@@ -20,6 +20,11 @@ describe("audit step budget", () => {
     );
   });
 
+  it("fits the worst-case speed steps of the default page limit", () => {
+    // 2,000 waves x (3 passes + 1 fallback) = 8,000 of 10,000, before crawl.
+    expect(lighthouseStepCount(MAX_AUDIT_PAGES, true)).toBe(8_000);
+  });
+
   it("stays under the limit in the pessimistic case too", () => {
     // Every crawl chunk cut to 25 pages by the soft deadline, every speed
     // wave failing into its fallback step.

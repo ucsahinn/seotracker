@@ -118,9 +118,12 @@ describe("OpportunitiesPage", () => {
     getSearchOpportunities.mockResolvedValue(report(rows));
     renderPage();
 
-    fireEvent.click(
-      await screen.findByRole("button", { name: /Analytics'te bulunamayan/ }),
-    );
+    const tile = await screen.findByRole("button", {
+      name: /Analytics'te bulunamayan/,
+    });
+    // The tile counts every candidate; its click lists only the returned rows.
+    expect(tile.textContent).toContain("Listelenen");
+    fireEvent.click(tile);
 
     expect(
       screen

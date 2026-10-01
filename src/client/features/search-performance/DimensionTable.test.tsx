@@ -239,3 +239,27 @@ describe("DimensionTable row actions", () => {
     expect(screen.queryByText("Kelime olarak kaydet")).toBeNull();
   });
 });
+
+describe("DimensionTable quick filter", () => {
+  it("offers a way out when the chip filter leaves nothing", () => {
+    const onClear = vi.fn();
+    render(
+      <DimensionTable
+        rows={[row("a", 1, 10)]}
+        keyLabel="Sorgu"
+        truncated={false}
+        hasActiveFilter={false}
+        search=""
+        onSearchChange={() => {}}
+        quickFilter="pos11to20"
+        onClearQuickFilter={onClear}
+      />,
+    );
+    // The row sits at position 10, so the 11-20 filter empties the table.
+    fireEvent.click(
+      screen.getAllByRole("button", { name: "Filtreyi kaldır" })[0],
+    );
+    expect(onClear).toHaveBeenCalled();
+    expect(screen.getByText(/Bu hızlı filtreye uyan satır yok/)).toBeDefined();
+  });
+});

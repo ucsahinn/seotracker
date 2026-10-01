@@ -21,13 +21,25 @@ describe("previousAuditIds", () => {
       row("a", "https://www.example.com/", "2026-01-01"),
       row("other", "https://other.com", "2026-02-01"),
       row("failed", "https://example.com", "2026-02-15", "failed"),
-      row("b", "http://example.com/blog", "2026-02-01"),
+      row("b", "http://example.com", "2026-02-01"),
     ]);
     expect(previous.get("c")).toBe("b");
     expect(previous.get("b")).toBe("a");
     expect(previous.has("a")).toBe(false);
     expect(previous.has("other")).toBe(false);
     expect(previous.has("failed")).toBe(false);
+  });
+});
+
+describe("scope", () => {
+  it("does not compare different start paths on one host", () => {
+    const previous = previousAuditIds([
+      row("root", "https://example.com", "2026-01-01"),
+      row("blog", "https://example.com/blog", "2026-02-01"),
+      row("blog2", "https://www.example.com/blog/", "2026-03-01"),
+    ]);
+    expect(previous.has("blog")).toBe(false);
+    expect(previous.get("blog2")).toBe("blog");
   });
 });
 

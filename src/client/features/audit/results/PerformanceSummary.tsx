@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { Link } from "@tanstack/react-router";
 import { AlertTriangle } from "lucide-react";
 import { lighthouseBand } from "@/shared/lighthouse";
 import { formatCount } from "@/client/lib/format";
@@ -29,8 +30,8 @@ function failureReason(
   rows: AuditResultsData["lighthouse"],
   plannedChecks: number,
 ): string | null {
-  const stopped = describeQuotaStop(rows, plannedChecks);
-  if (stopped) return stopped;
+  const marked = describeQuotaStop(rows, plannedChecks);
+  if (marked) return marked;
   const quota = rows.some((row) => /429|quota/i.test(row.errorMessage ?? ""));
   if (!quota) return null;
   return "Google'ın ücretsiz ölçüm kotası dolmuş; sayfalarınızda bir sorun yok. Ayarlar'dan PageSpeed anahtarı ekleyin ya da kota yenilenince denetimi yeniden başlatın.";
@@ -97,7 +98,14 @@ export function PerformanceSummary({
             Ölçülemeyen {formatCount(stats.failed)} sayfa
           </button>
         ) : null}
-        {reason ? <p className="mt-2 text-xs text-muted">{reason}</p> : null}
+        {reason ? (
+          <p className="mt-2 text-xs text-muted">
+            {reason}{" "}
+            <Link to="/settings" className="link">
+              Ayarlar&apos;ı aç
+            </Link>
+          </p>
+        ) : null}
       </section>
       <section className="rounded-box border border-base-300 bg-base-100 px-3 py-3">
         <h3 className="px-2 text-sm font-medium">Mobilde hız dağılımı</h3>

@@ -63,6 +63,7 @@ vi.mock(
   () => ({
     AuditLighthouseRepository: {
       insertLighthouseResults: insertLighthouseResultsMock,
+      countResultsForPages: async () => ({ ok: 0, error: 4 }),
     },
   }),
 );
@@ -122,11 +123,7 @@ describe("runLighthousePhase", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     getPagesForAuditMock.mockResolvedValue([
-      {
-        id: "page-1",
-        url: "https://example.com/",
-        statusCode: 200,
-      },
+      { id: "page-1", url: "https://example.com/", statusCode: 200 },
     ]);
     selectLighthousePagesMock.mockReturnValue(["https://example.com/"]);
     fetchLighthouseResultMock.mockImplementation(

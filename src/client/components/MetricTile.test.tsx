@@ -47,4 +47,41 @@ describe("MetricTile", () => {
 
     expect(screen.queryByRole("link")).toBeNull();
   });
+
+  it("types a linked tile's hint as plain text so links never nest", () => {
+    render(
+      <MetricTile
+        label="Sıra"
+        value="3"
+        href={{ to: "/p/$projectId/rankings", projectId: "p1" }}
+        hint="düz metin"
+      />,
+    );
+    expect(screen.getAllByRole("link")).toHaveLength(1);
+
+    const nested = (
+      // @ts-expect-error a ReactNode hint cannot sit inside a linked tile
+      <MetricTile
+        label="Sıra"
+        value="3"
+        href={{ to: "/p/$projectId/rankings", projectId: "p1" }}
+        hint={<a href="/y">bağlantı</a>}
+      />
+    );
+    expect(nested).toBeDefined();
+  });
+
+  it("does not flash when only the wording of the value changes", () => {
+    const { rerender, container } = render(
+      <MetricTile label="Son güncelleme" value="2 dk önce" flashKey="t1" />,
+    );
+    rerender(
+      <MetricTile label="Son güncelleme" value="3 dk önce" flashKey="t1" />,
+    );
+    expect(container.querySelector(".flash")).toBeNull();
+    rerender(
+      <MetricTile label="Son güncelleme" value="1 dk önce" flashKey="t2" />,
+    );
+    expect(container.querySelector(".flash")).not.toBeNull();
+  });
 });

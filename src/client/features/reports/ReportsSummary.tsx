@@ -60,6 +60,7 @@ export function ReportsSummary({
         <MetricTile
           label="Son güncelleme"
           value={latest ? formatRelativeTime(latest.updatedAt) : null}
+          flashKey={latest?.updatedAt ?? null}
           hint={
             latest ? (
               <Link
