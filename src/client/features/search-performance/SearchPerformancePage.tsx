@@ -337,6 +337,7 @@ export function SearchPerformancePage({
                     projectId={projectId}
                     rows={strikingRows}
                     filtered={activeFilter !== undefined}
+                    hasQueryData={report.queryRowCount > 0}
                     onClearFilter={clearFilter}
                   />
                 </>

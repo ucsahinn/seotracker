@@ -153,6 +153,8 @@ export const getSearchPerformanceReport = createServerFn({ method: "POST" })
          * would be payload nothing reads.
          */
         daily: toDailyRows(current.rows, startDate, endDate),
+        /** Zero means Search Console shared no keyword-level data at all. */
+        queryRowCount: queryPages.rows.length,
         strikingDistance: buildStrikingDistanceRows(queryPages.rows),
         countries: toDimensionRows(countries.rows),
         devices: toDimensionRows(devices.rows),

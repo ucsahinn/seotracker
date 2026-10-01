@@ -286,10 +286,13 @@ export function StrikingDistanceTable({
   projectId,
   rows,
   filtered = false,
+  hasQueryData,
   onClearFilter,
 }: {
   projectId: string;
   rows: Report["strikingDistance"];
+  /** False when Search Console returned no keyword-level rows at all. */
+  hasQueryData: boolean;
   /** A summary filter is narrowing `rows`, so empty means "nothing in this group". */
   filtered?: boolean;
   onClearFilter?: () => void;
@@ -370,12 +373,16 @@ export function StrikingDistanceTable({
         title={
           filtered
             ? "Bu gruba uyan sorgu yok"
-            : "Bu dönemde 5-20. sırada kelime görünmüyor"
+            : hasQueryData
+              ? "Bu dönemde 5-20. sırada kelime yok"
+              : "Kelime düzeyinde veri henüz gelmedi"
         }
         description={
           filtered
             ? "Seçimi kaldırarak tüm eşiğe yakın sorgulara dönün."
-            : "Ya Search Console kelime düzeyinde veriyi henüz paylaşmadı (az trafikli sitelerde olağandır), ya da hiçbir kelimeniz 5-20. sırada değil. Kelime düzeyinde veri gelince 5-20. sıradaki kelimeler burada listelenir; bunlar küçük bir iyileştirmeyle üst sıralara çıkabilecek kelimelerdir."
+            : hasQueryData
+              ? "Hiçbir kelimeniz 5-20. sırada değil. Bu aralıktaki kelimeler küçük bir iyileştirmeyle üst sıralara çıkabilir; olunca burada listelenir."
+              : "Search Console, hangi kelimeyle arandığınızı bu dönem için henüz paylaşmadı. Az trafikli sitelerde bu normaldir. Veri gelince 5-20. sıradaki kelimeler burada listelenir."
         }
         action={
           filtered && onClearFilter ? (

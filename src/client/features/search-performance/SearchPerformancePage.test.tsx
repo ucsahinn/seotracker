@@ -9,6 +9,7 @@ vi.mock("@/serverFunctions/searchPerformance", () => ({
     Promise.resolve({
       connected: true,
       range: { startDate: "2026-09-01", endDate: "2026-09-28" },
+      queryRowCount: 0,
       strikingDistance: [],
       countries: [],
     }),
