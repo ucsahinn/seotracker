@@ -1,4 +1,4 @@
-import { count, desc, sql } from "drizzle-orm";
+import { count, desc, inArray } from "drizzle-orm";
 import { version } from "../../../../package.json";
 import { db } from "@/db";
 import {
@@ -150,7 +150,7 @@ async function listConnections() {
  * crawl died, which is the question almost every report about this tool
  * turns out to be.
  */
-async function listRecentAudits() {
+export async function listRecentAudits() {
   const rows = await db
     .select({
       id: audits.id,
@@ -165,17 +165,38 @@ async function listRecentAudits() {
       lighthouseFailed: audits.lighthouseFailed,
       startedAt: audits.startedAt,
       completedAt: audits.completedAt,
-      issueCount: sql<number>`(
-        select count(*) from ${auditIssues} where ${auditIssues.auditId} = ${audits.id}
-      )`,
     })
     .from(audits)
     .orderBy(desc(audits.startedAt))
     .limit(AUDIT_SAMPLE);
 
+  /*
+   * Counted in a second query, not a correlated subquery in the select list.
+   * Drizzle writes a column inside `sql` without its table name when the
+   * select has one table, so `audit_id = id` resolved `id` to the inner
+   * table and matched nothing: every audit reported 0 findings.
+   */
+  const counts =
+    rows.length === 0
+      ? []
+      : await db
+          .select({ auditId: auditIssues.auditId, total: count() })
+          .from(auditIssues)
+          .where(
+            inArray(
+              auditIssues.auditId,
+              rows.map((row) => row.id),
+            ),
+          )
+          .groupBy(auditIssues.auditId);
+  const issueCounts = new Map(counts.map((row) => [row.auditId, row.total]));
+
   // The start URL is the site, and the site is already named by the project
   // row; repeating it per audit adds nothing and widens the surface.
-  return rows;
+  return rows.map((row) => ({
+    ...row,
+    issueCount: issueCounts.get(row.id) ?? 0,
+  }));
 }
 
 function emailDomain(email: string | null): string | null {
