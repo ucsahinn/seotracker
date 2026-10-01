@@ -36,9 +36,10 @@ services:
       # Google PageSpeed Insights, for the Lighthouse phase of a site audit.
       # Optional: without it the API answers on a much smaller keyless quota.
       - PAGESPEED_API_KEY=${PAGESPEED_API_KEY:-}
-      # Optional shared secret for the /mcp endpoint. Unset by default, which
-      # is right for a container on 127.0.0.1 with one user. Set it when
-      # another process on this machine should not be able to drive the tools.
+      # Shared secret for the /mcp endpoint. Left empty, the container
+      # generates one on first boot and keeps it in the data volume; read it
+      # with: docker compose exec seotracker cat /app/.wrangler/mcp-token
+      # Set your own value to choose it, or "off" to run without one.
       - MCP_TOKEN=${MCP_TOKEN:-}
       - VITE_SHOW_DEVTOOLS=false
     ports:

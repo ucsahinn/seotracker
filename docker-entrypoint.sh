@@ -33,8 +33,15 @@ fi
 # The value is NOT printed. Anything echoed here lands in `docker logs`, and
 # the whole point of the token is to not be readable by whatever else can see
 # this machine. The path is printed instead, with the command to read it.
+#
+# The opt-out is the literal "off", not an empty value: compose.yaml passes
+# MCP_TOKEN=${MCP_TOKEN:-}, so an empty string is what every default install
+# already has, and "leave it empty" could never mean "no token".
 MCP_TOKEN_FILE="/app/.wrangler/mcp-token"
-if [ -z "${MCP_TOKEN:-}" ]; then
+if [ "${MCP_TOKEN:-}" = "off" ]; then
+  unset MCP_TOKEN
+  echo "MCP_TOKEN=off: the /mcp endpoint accepts requests without a token."
+elif [ -z "${MCP_TOKEN:-}" ]; then
   if [ ! -f "$MCP_TOKEN_FILE" ]; then
     mkdir -p "$(dirname "$MCP_TOKEN_FILE")"
     head -c 24 /dev/urandom | base64 | tr -d '[:space:]/+=' > "$MCP_TOKEN_FILE"
@@ -44,7 +51,7 @@ if [ -z "${MCP_TOKEN:-}" ]; then
     echo "Agents must now send it. Read it with:"
     echo "  docker compose exec seotracker cat $MCP_TOKEN_FILE"
     echo "and add 'Authorization: Bearer <token>' to your MCP client config."
-    echo "To run without one, set MCP_TOKEN= (empty) in your compose file."
+    echo "To run without one, set MCP_TOKEN=off and recreate the container."
     echo ""
   fi
   MCP_TOKEN="$(cat "$MCP_TOKEN_FILE")"
