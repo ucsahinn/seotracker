@@ -17,7 +17,7 @@ export const NO_AUTH_SENTENCE =
   "seotracker runs on my own machine and answers only to me, so there is no sign-in.\nIf the server answers 401, it needs the token: ask me to run\n`docker compose exec seotracker cat /app/.wrangler/mcp-token` in the seotracker folder.";
 
 const TOKEN_SENTENCE =
-  "This install is behind a shared secret, so the MCP server needs an auth header.\nAsk me for the token and set `Authorization: Bearer <token>` on the MCP server\nyou add below. Do not guess it, and do not write it into a file I did not name.\nAsk me to run `docker compose exec seotracker cat /app/.wrangler/mcp-token` in the\nseotracker folder, and put the result ONLY into the MCP client config. Never paste\nit into chat, logs, or any other file.";
+  "This install is behind a shared secret, so the MCP server needs the header `Authorization: Bearer <token>`.\nI read the token myself: ask me to run `docker compose exec seotracker cat /app/.wrangler/mcp-token` in the\nseotracker folder, and put it ONLY into the MCP client config. Never ask me to paste it into chat,\nand never print, log or write it anywhere else.";
 
 // The copyable installer and internal skill share one source of truth.
 export function getAgentSetupPrompt(

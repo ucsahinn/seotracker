@@ -454,7 +454,7 @@ const inspectInputSchema = {
     .boolean()
     .optional()
     .describe(
-      "Ask Google again even for URLs with a recent stored answer. Off by default, and leave it off: each URL costs one of the property's 2000 daily inspections and they do not replenish early.",
+      "Ask Google again even for URLs with a recent stored answer. Off by default; use it only when the user asks for it: each URL costs one of the property's 2000 daily inspections and they do not replenish early.",
     ),
 } as const;
 
@@ -486,7 +486,7 @@ export const inspectUrlsTool = {
         .optional(),
       /** URLs actually sent to Google. */
       requested: z.number().optional(),
-      /** URLs not inspected because a recent stored answer exists (read them with get_index_coverage, or pass force). */
+      /** URLs not inspected because a recent stored answer exists (read them with get_index_coverage). */
       fresh: z.number().optional(),
       /** URLs not inspected because today's quota ran out. */
       skipped: z.number().optional(),
@@ -551,7 +551,7 @@ ${skipped} ${plural(skipped)} not inspected: the property's daily URL Inspection
       const freshNote =
         fresh > 0
           ? `
-${fresh} ${plural(fresh)} skipped, already answered recently. Read those with get_index_coverage, which is free, or pass force: true to spend quota on them anyway.`
+${fresh} ${plural(fresh)} skipped, already answered recently. Read those with get_index_coverage, which is free.`
           : "";
 
       const summaryLines = results.slice(0, TEXT_SUMMARY_ROWS).map((r) => {

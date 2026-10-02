@@ -402,6 +402,8 @@ describe("inspect_urls", () => {
       "2 URLs skipped, already answered recently",
     );
     expect(first.type === "text" && first.text).toContain("get_index_coverage");
+    // The result text must not coach the agent into spending quota.
+    expect(first.type === "text" && first.text).not.toContain("force");
     // A client that shows only structuredContent must still see why the
     // results list is empty.
     expect(result.structuredContent).toMatchObject({
