@@ -93,36 +93,80 @@ function pageSpeedItem(
   };
 }
 
+// Documented ceilings of a standard GA4 property (Analytics Data API, "Property
+// quotas"); Analytics 360 gets ten times as much. Google returns only what is
+// left, never the ceiling, so these are assumptions the card labels as such.
+const GA4_STANDARD_CEILING = { daily: 200_000, hourly: 40_000 } as const;
+
+function ga4Item(input: {
+  id: string;
+  label: string;
+  windowLabel: string;
+  ceiling: number;
+  pair: { consumed: number; remaining: number } | null;
+  seenAt: string | null;
+}): QuotaItem {
+  const { id, label, windowLabel, ceiling, pair, seenAt } = input;
+  const base = {
+    id,
+    kind: "ga4" as const,
+    label,
+    unit: "belirteç" as const,
+    source: "Google yanıtındaki son kota bilgisi",
+    updatedAt: seenAt,
+  };
+  if (!pair) {
+    return {
+      ...base,
+      used: null,
+      limit: null,
+      state: "unknown",
+      detail:
+        "Uygulama yeniden başladığından beri GA4 raporu çalışmadı; sayaç bir rapor çalışınca dolar.",
+    };
+  }
+  const lastCost = `Son istek: ${formatNumber(pair.consumed)} belirteç.`;
+  // Above the assumed ceiling this is not a standard property: show what is
+  // left and draw no bar, since a bar needs a real denominator.
+  if (pair.remaining > ceiling) {
+    return {
+      ...base,
+      used: null,
+      limit: null,
+      remaining: pair.remaining,
+      state: "unknown",
+      detail: `Kalan değer standart mülk sınırını (${windowLabel} ${formatNumber(ceiling)}) aşıyor; mülk büyük olasılıkla Analytics 360, sınır 10 kat. Gerçek sınır Google'dan gelmez, bu yüzden çubuk gösterilmez. ${lastCost}`,
+    };
+  }
+  const used = ceiling - pair.remaining;
+  return {
+    ...base,
+    used,
+    limit: ceiling,
+    state: stateFromUsage(used, ceiling),
+    detail: `Google yalnızca kalanı bildirir. Sınır varsayımdır: standart mülk için ${windowLabel} ${formatNumber(ceiling)}; 360 mülklerde 10 kat. Kullanılan = varsayılan sınır − kalan. ${lastCost} Sıfırlanma saati doğrulanmadı.`,
+  };
+}
+
 function ga4Items(snapshot: Ga4QuotaSnapshot | null): QuotaItem[] {
-  const rows = [
-    {
+  return [
+    ga4Item({
       id: "ga4_daily",
       label: "GA4 Data API: günlük belirteç",
+      windowLabel: "günlük",
+      ceiling: GA4_STANDARD_CEILING.daily,
       pair: snapshot?.tokensPerDay ?? null,
-    },
-    {
+      seenAt: snapshot?.seenAt ?? null,
+    }),
+    ga4Item({
       id: "ga4_hourly",
       label: "GA4 Data API: saatlik belirteç",
+      windowLabel: "saatlik",
+      ceiling: GA4_STANDARD_CEILING.hourly,
       pair: snapshot?.tokensPerHour ?? null,
-    },
+      seenAt: snapshot?.seenAt ?? null,
+    }),
   ];
-  return rows.map(({ id, label, pair }): QuotaItem => {
-    const limit = pair ? pair.consumed + pair.remaining : null;
-    return {
-      id,
-      kind: "ga4",
-      label,
-      used: pair ? pair.consumed : null,
-      limit,
-      unit: "belirteç",
-      state: pair ? stateFromUsage(pair.consumed, limit) : "unknown",
-      detail: pair
-        ? "Google'ın son GA4 raporuyla birlikte döndürdüğü değer; ek istek yapılmaz. Sıfırlanma saati doğrulanmadı."
-        : "Bu oturumda henüz bir GA4 raporu çalışmadı; rapor çalışınca Google'ın bildirdiği kota burada görünür.",
-      source: "Google yanıtındaki son kota bilgisi",
-      updatedAt: snapshot?.seenAt ?? null,
-    };
-  });
 }
 
 function auditItem(

@@ -7,6 +7,10 @@
  * and a restart simply shows "unknown" until the next report runs.
  */
 
+/**
+ * Google's `QuotaStatus`: `consumed` is only the cost of the LAST request, and
+ * `remaining` is what is left in the window. The ceiling is not returned.
+ */
 type QuotaPair = { consumed: number; remaining: number };
 
 type Ga4QuotaInput = {

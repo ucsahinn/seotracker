@@ -1,5 +1,6 @@
 import installerSkill from "../../../../.agents/skills/setup-seotracker/SKILL.md?raw";
 import codexPrompt from "./agentCodexSetupPrompt.md?raw";
+import installPrompt from "./agentInstallPrompt.md?raw";
 import updatePrompt from "./agentUpdatePrompt.md?raw";
 
 export const agentUpdatePrompt = updatePrompt.trim();
@@ -35,7 +36,7 @@ export function getAgentSetupPrompt(
   return authed.replaceAll("http://localhost:3001", origin);
 }
 
-const CODEX_TOKEN_FLAG = " --bearer-token-env-var SEOTRACKER_MCP_TOKEN";
+const CODEX_TOKEN_FLAG = " --bearer-token-env-var SEOTRACKER_MCP_AUTH";
 
 /*
  * Codex-only variant of the installer. Codex has its own verified commands
@@ -51,11 +52,32 @@ export function getCodexSetupPrompt(
   const tokenConfigured = options?.tokenConfigured === true;
   const auth = tokenConfigured
     ? "This install is behind a shared secret: add the entry with the bearer flag and follow the token steps now. The token goes ONLY into the environment variable, read by the shell inside one command. Never ask me to paste it into chat."
-    : "seotracker runs on my own machine and answers only to me, so there is no sign-in. If the server answers 401, it needs the token: re-add the entry with `--bearer-token-env-var SEOTRACKER_MCP_TOKEN` and follow the token steps.";
+    : "seotracker runs on my own machine and answers only to me, so there is no sign-in. If the server answers 401, it needs the token: re-add the entry with `--bearer-token-env-var SEOTRACKER_MCP_AUTH` and follow the token steps.";
   return codexPrompt
     .trim()
     .replace(/\r\n/g, "\n")
     .replace("{{AUTH}}", auth)
     .replace("{{FLAG}}", tokenConfigured ? CODEX_TOKEN_FLAG : "")
+    .replaceAll("http://localhost:3001", origin);
+}
+
+/*
+ * From-scratch install guide: Docker, Google access, PageSpeed key, project,
+ * agent connection, first results. The one install-dependent part is the MCP
+ * token note, filled from a placeholder like the Codex prompt's, so a reword
+ * cannot silently desync it. Phase 5 points at the setup prompts above rather
+ * than repeating them.
+ */
+export function getInstallPrompt(
+  origin: string,
+  options?: { tokenConfigured?: boolean },
+) {
+  const token = options?.tokenConfigured
+    ? "This install is behind a shared secret, so the MCP server needs the header `Authorization: Bearer <token>`. The token is read by the shell inside one command (`docker compose exec -T seotracker cat /app/.wrangler/mcp-token`; Git Bash needs `MSYS_NO_PATHCONV=1` in front, PowerShell does not) and goes ONLY into the MCP client config. Never print it, never ask me to paste it into chat."
+    : "seotracker runs on my own machine and answers only to me, so there is no sign-in. If the server answers 401, it needs the token: the setup prompt covers it; never print it or ask me to paste it into chat.";
+  return installPrompt
+    .trim()
+    .replace(/\r\n/g, "\n")
+    .replace("{{TOKEN}}", token)
     .replaceAll("http://localhost:3001", origin);
 }

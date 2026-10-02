@@ -123,9 +123,29 @@ describe("agent setup prompt", () => {
     // The flag is only part of the command for a protected install.
     expect(open).not.toContain("/mcp` --bearer-token-env-var");
     expect(closed).toContain(
-      "/mcp` --bearer-token-env-var SEOTRACKER_MCP_TOKEN",
+      "/mcp` --bearer-token-env-var SEOTRACKER_MCP_AUTH",
     );
     expect(closed).toContain("ONLY into the environment variable");
+  });
+
+  // Codex's shell_environment_policy can exclude *_TOKEN, *_KEY, *_SECRET and
+  // *_PASSWORD, so the variable name must match none of them.
+  it("names the Codex variable so no default exclude pattern matches it", () => {
+    const { codexWithToken: closed } = prompts;
+    expect(closed).toContain("SEOTRACKER_MCP_AUTH");
+    expect(closed).not.toMatch(/SEOTRACKER_MCP_(TOKEN|KEY|SECRET|PASSWORD)/);
+    expect(closed).not.toMatch(/rename it/i);
+  });
+
+  it("says a Git Bash export never reaches the Codex app, and what the persistent form stores", () => {
+    const { codexWithToken: closed } = prompts;
+    expect(closed).toContain(
+      "the Codex app and IDE extension never see it, so use it only for CLI sessions started from that same shell",
+    );
+    expect(closed).toContain("HKCU\\Environment");
+    expect(closed).toContain(
+      "SetEnvironmentVariable('SEOTRACKER_MCP_AUTH', $null, 'User')",
+    );
   });
 
   it("keeps the Codex prompt compact", () => {

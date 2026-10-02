@@ -116,15 +116,19 @@ export function CommonProblems({ projectId }: { projectId: string | null }) {
       <Problem title="Ajanım MCP'ye bağlanamıyor (401)">
         <p>
           MCP ucu varsayılan olarak bir jeton ister. Jeton ilk açılışta üretilir
-          ve veri biriminde durur; okumak için:{" "}
-          <Command value="docker compose exec seotracker cat /app/.wrangler/mcp-token" />
+          ve veri biriminde durur; okumak için (PowerShell ve cmd):{" "}
+          <Command value="docker compose exec -T seotracker cat /app/.wrangler/mcp-token" />
+        </p>
+        <p>
+          Git Bash (Windows):{" "}
+          <Command value="MSYS_NO_PATHCONV=1 docker compose exec -T seotracker cat /app/.wrangler/mcp-token" />{" "}
+          Önek olmadan Git Bash yolu bozar ve jeton boş çıkar;
+          PowerShell&apos;de önek hata verir.
         </p>
         <p>
           Adres: <Command value={`${origin}/mcp`} /> İstemciniz{" "}
           <code className="text-xs">Authorization: Bearer &lt;jeton&gt;</code>{" "}
-          başlığını göndermezse bağlantı 401 döner. Git Bash kullanıyorsanız
-          komutun başına <code className="text-xs">MSYS_NO_PATHCONV=1</code>{" "}
-          ekleyin.
+          başlığını göndermezse bağlantı 401 döner.
         </p>
         <p>
           <Link to="/ai" className={linkClass}>

@@ -11,8 +11,16 @@ import {
   saveGoogleOAuthClient,
 } from "@/serverFunctions/googleOAuthClient";
 import { SectionHeaderRow } from "./SectionBadge";
-import { oauthClientBadge, UNREADABLE } from "./sectionStatus";
-import { googleOAuthClientStatusOptions } from "./settingsQueries";
+import {
+  activeCredentialNote,
+  activeGoogleCredential,
+  oauthClientBadge,
+  UNREADABLE,
+} from "./sectionStatus";
+import {
+  googleOAuthClientStatusOptions,
+  googleServiceAccountStatusOptions,
+} from "./settingsQueries";
 import { useOrigin } from "./useOrigin";
 import { CLIENT_ID_SUFFIX, clientIdProblem } from "./googleClientId";
 
@@ -39,6 +47,7 @@ export function GoogleOAuthClientSection() {
 
   const statusQuery = useQuery(googleOAuthClientStatusOptions());
   const status = statusQuery.data;
+  const serviceAccountQuery = useQuery(googleServiceAccountStatusOptions());
 
   const invalidate = async () => {
     await queryClient.invalidateQueries({ queryKey: STATUS_KEY });
@@ -102,6 +111,13 @@ export function GoogleOAuthClientSection() {
    * "buraya bir değer kaydederseniz o kullanılır": a promise with no field to
    * keep it in. Only the loading state hides it now.
    */
+  const credentialNote =
+    status?.source && !serviceAccountQuery.isPending
+      ? activeCredentialNote(
+          "oauth",
+          activeGoogleCredential(status, serviceAccountQuery.data),
+        )
+      : null;
   const showForm = !statusQuery.isPending && (editing || !stored);
   const idProblem = clientIdProblem(clientId);
   const canSave =
@@ -117,6 +133,9 @@ export function GoogleOAuthClientSection() {
           help="Google Cloud Console'da bir proje açın, 'APIs & Services → Credentials' altından OAuth client ID oluşturun (tür: Web application), aşağıdaki iki yönlendirme adresini ekleyin ve verilen kimlik ile gizli anahtarı buraya yapıştırın. Search Console ve Analytics aynı istemciyi kullanır."
         />
       </SectionHeaderRow>
+      {credentialNote ? (
+        <p className="text-xs font-medium text-muted">{credentialNote}</p>
+      ) : null}
 
       <p className="text-sm text-muted">
         Search Console ve Analytics, kendi Google Cloud projenizden aldığınız

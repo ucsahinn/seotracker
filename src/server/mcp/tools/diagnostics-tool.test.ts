@@ -45,7 +45,7 @@ it("adds each active project's quota meters", async () => {
   const result = await diagnosticsTool.handler();
 
   expect(mocks.getQuotaStatus).toHaveBeenCalledTimes(1);
-  expect(result.structuredContent?.quotas).toEqual([
+  expect(result.structuredContent?.diagnostics.quotas).toEqual([
     {
       projectId: "p1",
       id: "url_inspection",

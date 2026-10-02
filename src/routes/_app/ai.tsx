@@ -15,6 +15,7 @@ import {
   getCodexSetupPrompt,
 } from "@/client/features/ai-mcp/agentSetupPrompt";
 import { CopyButton } from "@/client/components/CopyButton";
+import { InstallPromptButton } from "@/client/features/ai-mcp/InstallPromptButton";
 import {
   ClaudeIcon,
   GrokIcon,
@@ -196,9 +197,26 @@ function AiPage() {
         <TabPanel group="ai" value="setup">
           <div className="enter mt-6 space-y-5">
             <section className="rounded-box border border-base-300 bg-base-100 p-4">
+              <h2 className="text-sm font-semibold">
+                Kurulum istemi (sıfırdan kurulum)
+              </h2>
+              <p className="mt-2 text-sm leading-relaxed text-muted">
+                Depoyu yeni indirdiyseniz buradan başlayın. Bu istemi Claude
+                Code, Codex, Cursor gibi ajanınıza yapıştırın; Docker&apos;ı,
+                Google erişimini, PageSpeed anahtarını ve ilk projenizi sırayla
+                kontrol edip bitirir. Google Cloud&apos;daki tıklamaları ve
+                anahtar yapıştırmayı siz yaparsınız; anahtarlar sohbete değil,
+                yalnızca Ayarlar ekranına girilir.
+              </p>
+              <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3 [&>button]:h-11 [&>button]:gap-2 [&>button]:text-sm">
+                <InstallPromptButton primary />
+              </div>
+            </section>
+
+            <section className="rounded-box border border-base-300 bg-base-100 p-4">
               <h2 className="text-sm font-semibold">Ajanınızı kurun</h2>
               <p className="mt-2 text-sm leading-relaxed text-muted">
-                Kurulum istemini ajanınıza yapıştırın; seotracker&apos;ı
+                Ajan kurulum istemini ajanınıza yapıştırın; seotracker&apos;ı
                 bağlayıp SEO becerilerini kuracak. Elle yapmanız gereken
                 adımlarda size yol gösterir.
               </p>
@@ -227,8 +245,8 @@ function AiPage() {
                    */
                   disabled={connection.isPending}
                   value={prompt}
-                  label="Kurulum istemini kopyala"
-                  successMessage="Kurulum istemi kopyalandı"
+                  label="Ajan kurulum istemini kopyala"
+                  successMessage="Ajan kurulum istemi kopyalandı"
                   onCopy={() => captureClientEvent("mcp:setup_prompt_copy")}
                 />
               </div>
@@ -329,14 +347,20 @@ function AiPage() {
                     Authorization: Bearer &lt;token&gt;
                   </code>{" "}
                   başlığını ekletin. Kendiniz bir değer vermediyseniz konteyner
-                  ilk açılışta bir tane üretti; okumak için:{" "}
+                  ilk açılışta bir tane üretti; okumak için (PowerShell ve cmd):{" "}
                   {/* Komutla, ekranda değil: token'ı buraya basmak onu
                         tarayıcı geçmişine, ekran görüntülerine ve bu sayfayı
                         okuyan bir ajanın dökümüne düşürür. */}
                   <code className="font-mono text-muted">
-                    docker compose exec seotracker cat /app/.wrangler/mcp-token
+                    docker compose exec -T seotracker cat
+                    /app/.wrangler/mcp-token
                   </code>
-                  .
+                  . Windows&apos;ta Git Bash için komutun başına{" "}
+                  <code className="font-mono text-muted">
+                    MSYS_NO_PATHCONV=1
+                  </code>{" "}
+                  ekleyin; yoksa token boş çıkar (PowerShell&apos;de bu önek
+                  hata verir).
                 </>
               ) : (
                 <>

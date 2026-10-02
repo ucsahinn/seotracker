@@ -49,6 +49,9 @@ function amount(item: QuotaItem, value: number): string {
 
 /** "1.250 / 2.000 sorgu"; just "12 ölçüm" when there is no ceiling. */
 export function usageText(item: QuotaItem): string {
+  if (item.used === null && item.remaining !== undefined) {
+    return `Kalan: ${amount(item, item.remaining)} ${item.unit}`;
+  }
   if (item.used === null) {
     return item.limit === null
       ? "Veri yok"

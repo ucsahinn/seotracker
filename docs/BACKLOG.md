@@ -260,3 +260,4 @@ Mock veri hiç kullanılmadı. Tek proje: `df26abab-fa39-4133-96cc-a5627d8b80ad`
 ### Fikirler (kararsız)
 
 - Aynı projede bir denetim hız ölçümü aşamasındayken ikinci bir denetim başlatılırsa uyarı vermek: ikisi PageSpeed kotasını paylaşıp birbirini yaklaşık yarı hıza düşürüyor (212 sayfa tek başına 24 dakika, iki denetim yan yana 48 dakika sürdü).
+- Rapor ve bağlantı yazarını MCP `clientInfo.name` yerine HTTP `User-Agent` başlığından türetmek: istemci adı ajanın kendi bildirimi, başlık sunucunun gördüğü değer. Düşük öncelik.

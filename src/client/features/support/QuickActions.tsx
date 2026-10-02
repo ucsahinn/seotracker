@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { BookOpen, Bot, ScrollText } from "lucide-react";
+import { InstallPromptButton } from "@/client/features/ai-mcp/InstallPromptButton";
 import { RefreshButton } from "@/client/components/RefreshButton";
 import { DiagnosticsBundleButton } from "./DiagnosticsBundleButton";
 import { DOCS_INDEX_URL } from "./links";
@@ -42,6 +43,7 @@ export function QuickActions() {
         <ScrollText className="size-4" aria-hidden />
         Sürüm notları
       </Link>
+      <InstallPromptButton />
       <Link to="/ai" className="btn btn-sm gap-1.5">
         <Bot className="size-4" aria-hidden />
         Ajan kurulumu

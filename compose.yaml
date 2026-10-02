@@ -38,7 +38,8 @@ services:
       - PAGESPEED_API_KEY=${PAGESPEED_API_KEY:-}
       # Shared secret for the /mcp endpoint. Left empty, the container
       # generates one on first boot and keeps it in the data volume; read it
-      # with: docker compose exec seotracker cat /app/.wrangler/mcp-token
+      # with: docker compose exec -T seotracker cat /app/.wrangler/mcp-token
+      # (Git Bash on Windows: prefix it with MSYS_NO_PATHCONV=1 or the token comes out empty)
       # Set your own value to choose it, or "off" to run without one.
       - MCP_TOKEN=${MCP_TOKEN:-}
       - VITE_SHOW_DEVTOOLS=false

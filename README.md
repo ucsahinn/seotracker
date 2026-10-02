@@ -71,6 +71,14 @@ Başka bir şey gerekmez: imaj bu depodan derlenir, veritabanı ilk açılışta
 kurulur ve şifreleme anahtarı kendiliğinden üretilir. İlk açılış birkaç dakika
 sürer. Uygulama `http://localhost:3001` adresinde açılır.
 
+### Hızlı kurulum
+
+Uygulama açıldıktan sonra kalan her şey (Google erişimi, PageSpeed anahtarı,
+ilk proje, ajan bağlantısı) için **Ajan kurulumu** sayfasındaki **Kurulum
+istemi**ni kopyalayıp kendi ajanınıza (Claude Code, Codex, Cursor...) yapıştırın;
+adımları sırayla doğrular ve elle yapmanız gerekenleri söyler. Anahtarları
+yalnızca uygulamanın Ayarlar ekranına girersiniz, sohbete değil.
+
 ### Açılmıyorsa
 
 - Docker Desktop çalışıyor mu? Windows'ta tepsideki Docker simgesi "running"

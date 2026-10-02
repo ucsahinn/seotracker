@@ -18,26 +18,28 @@ export const diagnosticsTool = {
   config: {
     title: "Get diagnostics",
     description:
-      "Reads this install's diagnostic snapshot: version, auth mode, setup checks, table row counts, projects, connected Google properties, and the last 25 audits with their status, phase and error code. Start here when the user reports that something is broken, misconfigured, slow, or empty — it answers most of what you would otherwise ask them one question at a time. Also lists each active project's quota meters (URL Inspection, PageSpeed, Analytics, audit) as `quotas`. Contains no secret values: tokens, client secrets and API keys are reported only as configured or not.",
+      "Reads this install's diagnostic snapshot: version, auth mode, setup checks, table row counts, projects, connected Google properties, and the last 25 audits with their status, phase and error code. Start here when the user reports that something is broken, misconfigured, slow, or empty — it answers most of what you would otherwise ask them one question at a time. Also lists each active project's quota meters (URL Inspection, PageSpeed, Analytics, audit) as `diagnostics.quotas`. Contains no secret values: tokens, client secrets and API keys are reported only as configured or not.",
     inputSchema: {} as Record<string, never>,
     outputSchema: {
       version: z.string(),
       authMode: z.string(),
       generatedAt: z.string(),
-      diagnostics: z.unknown(),
-      quotas: z
-        .array(
-          z.object({
-            projectId: z.string(),
-            id: z.string(),
-            label: z.string(),
-            used: z.number().nullable(),
-            limit: z.number().nullable(),
-            state: z.enum(["ok", "warn", "critical", "unknown"]),
-            detail: z.string(),
-          }),
-        )
-        .optional(),
+      diagnostics: z.looseObject({
+        quotas: z
+          .array(
+            z.object({
+              projectId: z.string(),
+              id: z.string(),
+              label: z.string(),
+              used: z.number().nullable(),
+              limit: z.number().nullable(),
+              remaining: z.number().optional(),
+              state: z.enum(["ok", "warn", "critical", "unknown"]),
+              detail: z.string(),
+            }),
+          )
+          .optional(),
+      }),
       ...optionalMetaOutputSchema,
     },
     annotations: {
@@ -61,6 +63,7 @@ export const diagnosticsTool = {
               label: item.label,
               used: item.used,
               limit: item.limit,
+              remaining: item.remaining,
               state: item.state,
               detail: item.detail,
             })),
@@ -86,8 +89,7 @@ export const diagnosticsTool = {
         version: diagnostics.version,
         authMode: diagnostics.authMode,
         generatedAt: diagnostics.generatedAt,
-        diagnostics,
-        quotas,
+        diagnostics: { ...diagnostics, quotas },
       },
     });
   },

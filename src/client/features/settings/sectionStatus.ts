@@ -34,6 +34,29 @@ export function serviceAccountBadge(
     : { tone: "neutral", label: "Kullanılmıyor" };
 }
 
+/**
+ * Which Google credential the install actually uses. Mirrors the server: a
+ * stored service account wins over an OAuth client (gscClient, ga4Client).
+ */
+export function activeGoogleCredential(
+  oauth: { source: "settings" | "environment" | null } | undefined,
+  serviceAccount: { clientEmail: string | null } | undefined,
+): "service_account" | "oauth" | null {
+  if (serviceAccount?.clientEmail) return "service_account";
+  return oauth?.source ? "oauth" : null;
+}
+
+/** The line a credential section shows about whether it is the live one. */
+export function activeCredentialNote(
+  self: "service_account" | "oauth",
+  active: "service_account" | "oauth" | null,
+): string | null {
+  if (active === null) return null;
+  const names = { service_account: "hizmet hesabı", oauth: "OAuth istemcisi" };
+  if (active === self) return `Şu an kullanılan: ${names[self]}`;
+  return `Şu an kullanılmıyor (${names[active]} öncelikli): ${names[self]}`;
+}
+
 export function pageSpeedBadge(
   status: { source: "settings" | "environment" | null } | undefined,
 ): SectionBadge | null {

@@ -78,9 +78,13 @@ export function formatMoney(value: number, currency: string | null): string {
   }
 }
 
+/**
+ * Decimal units (1 KB = 1000 bytes), matching the 500 KB report limit that
+ * save_report and the seo-report skill state in the same unit.
+ */
 export function formatBytes(bytes: number): string {
-  if (bytes >= 1024 * 1024) return `${formatDecimal(bytes / (1024 * 1024))} MB`;
-  if (bytes >= 1024) return `${formatNumber(Math.round(bytes / 1024))} KB`;
+  if (bytes >= 1_000_000) return `${formatDecimal(bytes / 1_000_000)} MB`;
+  if (bytes >= 1000) return `${formatNumber(Math.round(bytes / 1000))} KB`;
   return `${formatNumber(Math.round(bytes))} B`;
 }
 

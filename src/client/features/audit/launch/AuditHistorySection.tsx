@@ -157,6 +157,7 @@ export function AuditHistorySection({
                   <SortableHeader
                     column={sorting.column("critical")}
                     label="Kritik"
+                    helpText="Yüz sayfa başına (toplam ayrıca parantezde)"
                     align="right"
                   />
                 </th>
@@ -167,6 +168,7 @@ export function AuditHistorySection({
                   <SortableHeader
                     column={sorting.column("warning")}
                     label="Uyarı"
+                    helpText="Yüz sayfa başına (toplam ayrıca parantezde)"
                     align="right"
                   />
                 </th>

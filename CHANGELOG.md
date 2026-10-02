@@ -4,6 +4,25 @@ Her sürümün notu burada, en yenisi en üstte.
 
 ## [Yayınlanmamış]
 
+## [2.2.0] — 2026-10-02
+
+Depoyu yeni indirenler için sıfırdan kurulum istemi geldi; bu sürüm ayrıca
+kota göstergelerindeki bir hesap hatasını ve birkaç yanıltıcı metni düzeltiyor.
+
+### Eklendi
+
+- **Kurulum istemi.** Depoyu GitHub'dan yeni indirdiyseniz Ajan kurulumu ekranındaki "Kurulum istemi"ni ajanınıza (Claude Code, Codex, Cursor) yapıştırın: Docker'ın çalıştığını, Google erişimini, PageSpeed anahtarını, projeyi, ajan bağlantısını ve ilk sonuçları sırayla kontrol eder. Elle yapmanız gereken Google Cloud adımlarını işaretler. Gizli bilgileri sohbete yapıştırmanızı istemez; onları yalnızca seotracker'ın Ayarlar ekranına siz girersiniz. Aynı istem Yardım ekranındaki hızlı eylemlerde de var.
+
+### Düzeltildi
+
+- Analytics kota kartı yanlış hesaplıyordu ("1 / 199.769"); artık Google'ın verdiği kalan değerden doğru kullanımı gösterir ("231 / 200.000"). 360 mülklerde bar gösterilmez, yalnızca kalan yazar.
+- Rapor boyutları her yerde aynı birimle (1 KB = 1.000 bayt) yazılır; 500 KB sınırı ekranda 488 KB görünmüyor.
+- Ayarlar ekranı hizmet hesabı ile OAuth istemcisinden hangisinin kullanıldığını söyler.
+- Denetim geçmişindeki sütunların "yüz sayfa başına" olduğu belirtildi.
+- MCP şifresini okuma komutu Git Bash'te boş çıkıyordu; tüm ekran ve belgelerde doğru biçimde yazıldı.
+- Codex kurulumu, kullanıcı ayarlarındaki `*_TOKEN` süzgecinden etkilenmeyen bir değişken adı kullanır; Windows uygulaması için kalıcı kullanıcı değişkeni yolu açıklandı.
+- `get_diagnostics` kota bilgisini `diagnostics` içinde döndürür.
+
 ## [2.1.0] — 2026-10-02
 
 Bu sürüm Codex'i ilk sınıf istemci yapıyor, Google sınırlarınızı ekranda
@@ -65,8 +84,10 @@ bağlanmaz. Bu, her ekranın gerçek veriyle çalıştığı ilk ana sürümdür
 - Ajanları bağlamak için şifreyi şu komutla görün ve ajan ayarlarınıza `Authorization: Bearer <şifre>` olarak ekleyin:
 
 ```
-docker compose exec seotracker cat /app/.wrangler/mcp-token
+docker compose exec -T seotracker cat /app/.wrangler/mcp-token
 ```
+
+Windows'ta Git Bash kullanıyorsanız komutun başına `MSYS_NO_PATHCONV=1` ekleyin; yoksa şifre boş çıkar. PowerShell ve cmd'de önek gerekmez (PowerShell'de hata verir).
 
 - Şifre istemiyorsanız `.env` dosyanıza `MCP_TOKEN=off` yazıp `docker compose up -d --force-recreate seotracker` çalıştırın.
 - Ayarlar'a bir PageSpeed anahtarı girin; anahtar yokken hız ölçümü en çok 50 sayfayla sınırlıdır. Gerçek ziyaretçi hız gidişatı için Google Cloud projenizde "Chrome UX Report API" açık olmalı; değilse ekran bunu söyler.

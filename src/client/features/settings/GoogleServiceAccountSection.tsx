@@ -11,8 +11,16 @@ import {
   saveGoogleServiceAccount,
 } from "@/serverFunctions/googleServiceAccount";
 import { SectionHeaderRow } from "./SectionBadge";
-import { serviceAccountBadge, UNREADABLE } from "./sectionStatus";
-import { googleServiceAccountStatusOptions } from "./settingsQueries";
+import {
+  activeCredentialNote,
+  activeGoogleCredential,
+  serviceAccountBadge,
+  UNREADABLE,
+} from "./sectionStatus";
+import {
+  googleOAuthClientStatusOptions,
+  googleServiceAccountStatusOptions,
+} from "./settingsQueries";
 
 const SERVICE_ACCOUNT_URL =
   "https://console.cloud.google.com/iam-admin/serviceaccounts";
@@ -37,6 +45,7 @@ export function GoogleServiceAccountSection() {
   const statusQuery = useQuery(googleServiceAccountStatusOptions());
   const status = statusQuery.data;
   const stored = Boolean(status?.clientEmail);
+  const oauthQuery = useQuery(googleOAuthClientStatusOptions());
 
   const invalidate = async () => {
     await queryClient.invalidateQueries({ queryKey: STATUS_KEY });
@@ -101,6 +110,14 @@ export function GoogleServiceAccountSection() {
           help="OAuth kurulumu onay ekranı, test kullanıcısı ve birebir eşleşen yönlendirme adresi ister; kurulum genelde bu üçünde takılır. Hizmet hesabı üçünü de atlar: Google Cloud'da bir hizmet hesabı açıp JSON anahtarını indirin, sonra o hesabın e-postasını Search Console mülkünüze bir meslektaşınızı ekler gibi ekleyin."
         />
       </SectionHeaderRow>
+      {stored ? (
+        <p className="text-xs font-medium text-muted">
+          {activeCredentialNote(
+            "service_account",
+            activeGoogleCredential(oauthQuery.data, status),
+          )}
+        </p>
+      ) : null}
 
       <p className="text-sm text-muted">
         Yukarıdaki OAuth istemcisi yerine bunu kullanabilirsiniz. Hizmet

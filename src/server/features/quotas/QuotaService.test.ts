@@ -97,19 +97,45 @@ describe("getQuotaStatus", () => {
     });
   });
 
-  it("shows GA4 as unknown until a report response was seen, then derives the limit", async () => {
-    expect((await byId(["ga4"])).get("ga4_daily")?.state).toBe("unknown");
+  it("shows GA4 as unknown until a report response was seen", async () => {
+    const daily = (await byId(["ga4"])).get("ga4_daily");
+    expect(daily?.state).toBe("unknown");
+    expect(daily?.detail).toContain("yeniden başladığından beri");
+  });
+
+  it("derives GA4 usage from remaining against the documented standard ceiling, not from the last request's cost", async () => {
     recordGa4Quota(
       "p1",
-      { tokensPerDay: { consumed: 150_000, remaining: 50_000 } },
+      {
+        tokensPerDay: { consumed: 231, remaining: 199_769 },
+        tokensPerHour: { consumed: 231, remaining: 39_796 },
+      },
       NOW,
     );
-    const daily = (await byId(["ga4"])).get("ga4_daily");
-    expect(daily).toMatchObject({
-      used: 150_000,
+    const items = await byId(["ga4"]);
+    expect(items.get("ga4_daily")).toMatchObject({
+      used: 231,
       limit: 200_000,
-      state: "warn",
+      state: "ok",
       updatedAt: NOW.toISOString(),
+    });
+    expect(items.get("ga4_hourly")).toMatchObject({
+      used: 204,
+      limit: 40_000,
+    });
+  });
+
+  it("shows only what is left, with no bar or state, when remaining exceeds the standard ceiling (360)", async () => {
+    recordGa4Quota(
+      "p1",
+      { tokensPerDay: { consumed: 500, remaining: 1_900_000 } },
+      NOW,
+    );
+    expect((await byId(["ga4"])).get("ga4_daily")).toMatchObject({
+      used: null,
+      limit: null,
+      remaining: 1_900_000,
+      state: "unknown",
     });
   });
 

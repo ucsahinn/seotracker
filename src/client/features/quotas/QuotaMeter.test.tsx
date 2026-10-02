@@ -37,6 +37,22 @@ describe("QuotaMeter", () => {
     expect(screen.queryByRole("meter")).toBeNull();
     expect(screen.getByText("Bilinmiyor")).toBeTruthy();
   });
+
+  it("shows only what is left, with no bar, when the source reports no ceiling", () => {
+    render(
+      <QuotaMeter
+        item={item({
+          used: null,
+          limit: null,
+          remaining: 1_900_000,
+          state: "unknown",
+          unit: "belirteç",
+        })}
+      />,
+    );
+    expect(screen.queryByRole("meter")).toBeNull();
+    expect(screen.getByText("Kalan: 1.900.000 belirteç")).toBeTruthy();
+  });
 });
 
 describe("worstQuotaState", () => {

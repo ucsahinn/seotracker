@@ -94,12 +94,12 @@ ister: `MCP_TOKEN` boşsa konteyner ilk açılışta bir tane üretir ve veri
 biriminde saklar. Okumak için:
 
 ```sh
-docker compose exec seotracker cat /app/.wrangler/mcp-token
+docker compose exec -T seotracker cat /app/.wrangler/mcp-token
 ```
 
 Windows'ta Git Bash kullanıyorsanız komutun başına `MSYS_NO_PATHCONV=1`
-ekleyin; yoksa Git Bash `/app/...` yolunu bir Windows yoluna çevirir ve dosya
-bulunamaz. PowerShell ve cmd'de fazladan bir şey gerekmez (o önek PowerShell'de
+ekleyin; yoksa Git Bash `/app/...` yolunu bir Windows yoluna çevirir ve token
+boş çıkar. PowerShell ve cmd'de fazladan bir şey gerekmez (o önek PowerShell'de
 hata verir).
 
 Sonra istemcinizi başlığı gönderecek şekilde ayarlayın; Claude Code için:
@@ -110,11 +110,11 @@ claude mcp add --transport http --scope user seotracker http://localhost:3001/mc
 
 Codex için token başlığı yapılandırmaya yazılmaz; bir ortam değişkeninden
 okunur. Değişkeni kendiniz ayarlayın (PowerShell, seotracker klasöründen:
-`[Environment]::SetEnvironmentVariable('SEOTRACKER_MCP_TOKEN', (docker compose exec -T seotracker cat /app/.wrangler/mcp-token).Trim(), 'User')`),
+`[Environment]::SetEnvironmentVariable('SEOTRACKER_MCP_AUTH', (docker compose exec -T seotracker cat /app/.wrangler/mcp-token).Trim(), 'User')`),
 sonra bağlayın ve Codex'i yeniden başlatın:
 
 ```sh
-codex mcp add seotracker --url http://localhost:3001/mcp --bearer-token-env-var SEOTRACKER_MCP_TOKEN
+codex mcp add seotracker --url http://localhost:3001/mcp --bearer-token-env-var SEOTRACKER_MCP_AUTH
 ```
 
 Becerileri `.agents/skills` altındaki altı `seo-*` klasörünü

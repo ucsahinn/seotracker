@@ -32,6 +32,12 @@ export type QuotaItem = {
   used: number | null;
   /** Null when no verified ceiling exists: the item then shows status text. */
   limit: number | null;
+  /**
+   * What the source reports as left, when that is the only hard figure (GA4
+   * returns remaining tokens, never the ceiling). Absent when remaining is
+   * simply limit - used.
+   */
+  remaining?: number;
   unit: QuotaUnit;
   state: QuotaState;
   /** One Turkish sentence: the window, and what the figure does not say. */
