@@ -14,6 +14,7 @@ import {
   moreLine,
   percent,
   truncate,
+  truncateUrl,
 } from "./reportFormat";
 import { SEVERITY_LABEL, type IssueGroup } from "./reportModel";
 import { issueAnchor } from "./reportSections";
@@ -63,7 +64,7 @@ export function indexSection(input: AuditReportInput): string {
   return `<section id="dizin">
     <h2>4. Google dizin durumu</h2>
     <p class="note">Kaynak: Search Console URL Denetleme Aracı. Sonuçlar kayıtlıdır, bu rapor Google'a yeni istek atmaz${cov.lastCheckedAt ? `; son inceleme ${escapeHtml(formatDate(cov.lastCheckedAt))}` : ""}. Dizine girebilen ${formatCount(cov.rows.length)} sayfadan ${formatCount(cov.checked)} tanesi için Google yanıt verdi (%${formatCount(percent(cov.checked, cov.rows.length))}).</p>
-    <div class="grid2">
+    <div>
       ${figure("Dizin durumu", donutChart(data, formatCount(cov.rows.length), "sayfa"), chartSummary(data), "Google dizin durumu dağılımı")}
       ${stateData.length > 0 ? figure("Google'ın verdiği durumlar", barChart(stateData, 34), chartSummary(stateData, " sayfa"), "Kapsam durumu dağılımı") : ""}
     </div>
@@ -75,10 +76,10 @@ export function indexSection(input: AuditReportInput): string {
       <tbody>${shown
         .map(
           (row) => `<tr>
-        <td class="url">${escapeHtml(row.url)}</td>
+        <td class="url">${escapeHtml(truncateUrl(row.url, 110))}</td>
         <td>${escapeHtml(verdictText(row.verdict))}</td>
         <td>${escapeHtml(row.error ? `Hata: ${truncate(row.error, 80)}` : (coverageStateLabel(row.coverageState) ?? "--"))}</td>
-        <td class="url">${escapeHtml(row.canonicalMismatch ? (row.googleCanonical ?? "--") : "Aynı")}</td>
+        <td class="url">${escapeHtml(row.canonicalMismatch ? truncateUrl(row.googleCanonical ?? "--", 110) : "Aynı")}</td>
       </tr>`,
         )
         .join("")}</tbody>
@@ -116,7 +117,7 @@ export function sitemapSection(
     ${
       missing.length > 0
         ? `<h3>Dizine girebilen ama haritada olmayan sayfalar (${formatCount(missing.length)})</h3>
-    <ul class="ap-list">${shown.map((p) => `<li>${escapeHtml(p.url)}</li>`).join("")}</ul>
+    <ul class="ap-list">${shown.map((p) => `<li>${escapeHtml(truncateUrl(p.url, 110))}</li>`).join("")}</ul>
     ${moreLine(hidden, "sayfa")}`
         : ""
     }

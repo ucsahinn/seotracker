@@ -1,11 +1,19 @@
 import { sort } from "remeda";
+import {
+  APP_REPORT_CREATOR,
+  LEGACY_APP_REPORT_CREATOR,
+} from "@/shared/report-creator";
 import type { ReportListItem } from "@/serverFunctions/reports";
 
 /** Reports with no template and no skill share this one label. */
 export const OTHER_KIND = "Belirtilmemiş";
 
+/** The kind of the report the Site denetimi screen saves from its download button. */
+export const AUDIT_EXPORT_KIND = "site-audit-export";
+
 /** The skill names agents write, said the way the rest of the screen speaks. */
 const KIND_LABELS: Record<string, string> = {
+  [AUDIT_EXPORT_KIND]: "Site denetimi raporu",
   "seo-audit": "SEO denetimi",
   "seo-check-in": "Dönem karşılaştırması",
   "seo-triage": "Trafik düşüşü incelemesi",
@@ -26,11 +34,34 @@ export type ReportFilter = "all" | "recent" | "template" | "skill";
 type ReportLike = Pick<
   ReportListItem,
   "templateName" | "skill" | "updatedAt" | "sizeBytes"
->;
+> & { createdBy?: string };
 
-/** What tells two reports on one site apart: the template, else the skill. */
+/** True for the label the app stamps on reports it builds itself (old and new). */
+export function isAppCreator(createdBy: string | undefined): boolean {
+  return (
+    createdBy === APP_REPORT_CREATOR || createdBy === LEGACY_APP_REPORT_CREATOR
+  );
+}
+
+/** An empty string means "none", the same as null. */
+function present(value: string | null): string | null {
+  return value === null || value === "" ? null : value;
+}
+
+/** True when the report followed a template. */
+export function hasTemplate(report: Pick<ReportLike, "templateName">): boolean {
+  return present(report.templateName) !== null;
+}
+
+/**
+ * What tells two reports on one site apart: the template, else the skill. A
+ * report with neither that the app itself saved (not an agent)
+ * is the audit download.
+ */
 export function reportKind(report: ReportLike): string {
-  return report.templateName ?? report.skill ?? OTHER_KIND;
+  const named = present(report.templateName) ?? present(report.skill);
+  if (named !== null) return named;
+  return isAppCreator(report.createdBy) ? AUDIT_EXPORT_KIND : OTHER_KIND;
 }
 
 export function matchesFilter(
@@ -44,9 +75,9 @@ export function matchesFilter(
     case "recent":
       return now - Date.parse(report.updatedAt) <= WEEK_MS;
     case "template":
-      return report.templateName !== null;
+      return hasTemplate(report);
     case "skill":
-      return report.templateName === null && report.skill !== null;
+      return !hasTemplate(report) && present(report.skill) !== null;
   }
 }
 

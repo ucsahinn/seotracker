@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { REPORT_IFRAME_SANDBOX } from "@/shared/report-sandbox";
 
 /**
@@ -20,16 +21,52 @@ export function ReportViewer({
   title: string;
   className?: string;
 }) {
+  // Keyed by `src`, so a different report starts unloaded.
+  // The frame is sandboxed without `allow-same-origin`, so its
+  // `contentDocument` is unreadable and `onLoad` is the only load signal.
+  const framed = className === undefined;
   return (
-    <iframe
+    <ViewerFrame
+      key={src}
       src={src}
-      sandbox={REPORT_IFRAME_SANDBOX}
-      referrerPolicy="no-referrer"
       title={title}
       className={
         className ??
         "h-full w-full rounded-box border border-base-300 bg-base-100"
       }
+      skeletonClassName={framed ? "rounded-box" : ""}
     />
+  );
+}
+
+function ViewerFrame({
+  src,
+  title,
+  className,
+  skeletonClassName,
+}: {
+  src: string;
+  title: string;
+  className: string;
+  skeletonClassName: string;
+}) {
+  const [loaded, setLoaded] = useState(false);
+  return (
+    <div className="relative h-full w-full" aria-busy={!loaded}>
+      <iframe
+        src={src}
+        sandbox={REPORT_IFRAME_SANDBOX}
+        referrerPolicy="no-referrer"
+        title={`Rapor önizlemesi: ${title}`}
+        onLoad={() => setLoaded(true)}
+        className={className}
+      />
+      {loaded ? null : (
+        <div
+          className={`skeleton pointer-events-none absolute inset-0 ${skeletonClassName}`}
+          aria-hidden
+        />
+      )}
+    </div>
   );
 }

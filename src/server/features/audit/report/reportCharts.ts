@@ -18,7 +18,8 @@ export const COLORS = {
   info: "#5b6472",
   good: "#1c7a4a",
   accent: "#1d3b6e",
-  muted: "#94a3b8",
+  // 4.8:1 on white; the lighter slate this was (#94a3b8) is 2.6:1.
+  muted: "#64748b",
 } as const;
 
 const GAUGE_COLOR = {

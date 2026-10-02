@@ -79,6 +79,46 @@ export type AuditReportInput = {
   lighthouse: ReportLighthouse[];
   /** Stored URL Inspection answers; absent when Search Console was never asked. */
   indexCoverage?: ReportIndexCoverage | null;
+  /** The crawl's page cap, from the audit's config. Absent in older callers. */
+  maxPages?: number | null;
+  /** Whether the audit ran Lighthouse at all ("none" = speed was switched off). */
+  lighthouseMode?: "auto" | "none" | null;
+  /**
+   * How many Lighthouse CHECKS the audit planned, as stored on the audit: two
+   * per page (mobile and desktop). The builder converts it to pages.
+   */
+  lighthouseTotal?: number | null;
+  /** The audit's status. Absent means completed (older callers, tests). */
+  status?: "running" | "completed" | "failed" | null;
+  /** Short audit id, so two audits of one site on one day get distinct titles. */
+  auditId?: string | null;
+};
+
+/*
+ * How many rows each list prints. The stored report is capped in bytes, so
+ * the builder halves these until the document fits (see buildAuditReportHtml).
+ */
+export type ReportCaps = {
+  issuePages: number;
+  appendix: number;
+  pages: number;
+  speed: number;
+  /** Longest address printed under an issue or in the appendix. */
+  urlChars: number;
+  /** Longest "Ayrıntı" cell. */
+  detailChars: number;
+  /** How many issue types are listed in full (worst first); the rest are counted. */
+  issueTypes: number;
+};
+
+export const DEFAULT_CAPS: ReportCaps = {
+  issuePages: 50,
+  appendix: 3000,
+  pages: 300,
+  speed: 50,
+  urlChars: 110,
+  detailChars: 200,
+  issueTypes: Number.POSITIVE_INFINITY,
 };
 
 export type AuditReportDocument = {

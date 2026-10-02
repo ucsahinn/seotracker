@@ -70,7 +70,7 @@ const saveInputSchema = {
     .string()
     .min(1)
     .describe(
-      `The complete self-contained HTML document. Inline all CSS; no external requests of any kind (no CDNs, no web fonts, no images by URL, no fetch) — they are blocked when the report renders, and scripts are blocked too. No backticks and no \${ anywhere, including inside CSS content strings: some clients (Codex) pass this argument through a JavaScript template literal and either sequence corrupts the document. It must be a whole document, ending in </html>: a save that stops mid-document is refused, because there is no version history to fall back on. Aim under 80 KB so the report can be read back whole in one call; the hard limit is ${formatEnglishCount(REPORT_MAX_HTML_BYTES)} bytes. Use the seo-report skill's starter template when you have it; otherwise a plain semantic document — heading, short sections, one table — reads fine.`,
+      `The complete self-contained HTML document. Inline all CSS; no external requests of any kind (no CDNs, no web fonts, no images by URL, no fetch) — they are blocked when the report renders, and scripts are blocked too, and a save containing <script>, on…= handlers, javascript: URLs, <meta refresh>, <base>, <iframe>, <object>, <embed> or <form> is refused. No backticks and no \${ anywhere, including inside CSS content strings: some clients (Codex) pass this argument through a JavaScript template literal and either sequence corrupts the document. It must be a whole document, ending in </html>: a save that stops mid-document is refused, because there is no version history to fall back on. Aim under 80 KB so the report can be read back whole in one call; the hard limit is ${formatEnglishCount(REPORT_MAX_HTML_BYTES)} bytes. Use the seo-report skill's starter template when you have it; otherwise a plain semantic document — heading, short sections, one table — reads fine.`,
     ),
   reportId: z
     .string()
@@ -81,6 +81,8 @@ const saveInputSchema = {
     ),
   skill: z
     .string()
+    .trim()
+    .min(1)
     .max(REPORT_MAX_SKILL_CHARS)
     .optional()
     .describe(

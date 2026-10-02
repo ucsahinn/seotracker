@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { ConfirmDeleteModal } from "@/client/components/ConfirmDeleteModal";
+import { isAppCreator } from "@/client/features/reports/reportStats";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import { captureClientEvent } from "@/client/lib/observability";
 import { deleteReport, type ReportListItem } from "@/serverFunctions/reports";
@@ -20,9 +21,10 @@ export const reportQueryKey = (projectId: string, reportId: string) =>
  * alone when the user cannot be resolved.
  */
 export function formatCreatedBy(report: ReportListItem): string {
-  return report.createdByName
-    ? `${report.createdByName} · ${report.createdBy}`
+  const client = isAppCreator(report.createdBy)
+    ? "seotracker"
     : report.createdBy;
+  return report.createdByName ? `${report.createdByName} · ${client}` : client;
 }
 
 /**

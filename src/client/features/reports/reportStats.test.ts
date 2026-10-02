@@ -4,8 +4,10 @@ import {
   kindLabel,
   kindSegments,
   latestUpdate,
+  matchesFilter,
   reportKind,
   OTHER_KIND,
+  AUDIT_EXPORT_KIND,
 } from "@/client/features/reports/reportStats";
 
 const NOW = Date.parse("2026-09-30T12:00:00Z");
@@ -20,6 +22,25 @@ describe("report stats", () => {
     expect(reportKind(make("Aylık", "seo-audit"))).toBe("Aylık");
     expect(reportKind(make(null, "seo-audit"))).toBe("seo-audit");
     expect(reportKind(make(null, null))).toBe(OTHER_KIND);
+  });
+
+  it("treats empty strings as missing, in the kind and in the filters", () => {
+    expect(reportKind(make("", "seo-audit"))).toBe("seo-audit");
+    expect(reportKind(make("", ""))).toBe(OTHER_KIND);
+    expect(matchesFilter(make("", "seo-audit"), "template", NOW)).toBe(false);
+    expect(matchesFilter(make("", "seo-audit"), "skill", NOW)).toBe(true);
+    expect(matchesFilter(make("", ""), "skill", NOW)).toBe(false);
+  });
+
+  it("calls a report the app saved itself the audit export, old marker or new", () => {
+    for (const createdBy of ["app:site-audit", "seotracker"]) {
+      expect(reportKind({ ...make(null, null), createdBy })).toBe(
+        AUDIT_EXPORT_KIND,
+      );
+    }
+    expect(reportKind({ ...make(null, null), createdBy: "Claude" })).toBe(
+      OTHER_KIND,
+    );
   });
 
   it("says a known skill in Turkish and leaves any other kind as written", () => {

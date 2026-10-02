@@ -114,6 +114,54 @@ describe("cover", () => {
   });
 });
 
+describe("issue grouping", () => {
+  // Rows whose page was deleted keep a pageId but lose the URL; scoreAudit
+  // drops a finding on zero pages, which turned them into a perfect 100.
+  it("still scores findings whose page is gone", () => {
+    const { html, summary } = buildAuditReportHtml(
+      input({
+        pagesCrawled: 4,
+        issues: [
+          {
+            issueType: "missing-title",
+            severity: "critical",
+            pageUrl: null,
+            pageId: "gone",
+          },
+        ],
+      }),
+    );
+
+    expect(summary).toContain("1 sorun türü bulundu");
+    expect(html).not.toContain("Kayıtlı hiçbir sorun yok");
+    expect(html).not.toContain("Site puanı 100 üzerinden 100");
+  });
+
+  it("takes the worst severity of an unknown issue type, not the first row's", () => {
+    const { summary } = buildAuditReportHtml(
+      input({
+        pagesCrawled: 2,
+        issues: [
+          {
+            issueType: "custom-check",
+            severity: "info",
+            pageUrl: "/a",
+            pageId: "a",
+          },
+          {
+            issueType: "custom-check",
+            severity: "critical",
+            pageUrl: "/b",
+            pageId: "b",
+          },
+        ],
+      }),
+    );
+
+    expect(summary).toContain("1 kritik, 0 uyarı, 0 bilgi");
+  });
+});
+
 describe("chart builders", () => {
   it("escapes labels and never divides by zero", () => {
     const donut = donutChart([{ label: "<b>x</b>", value: 0 }], "0", "sayfa");
@@ -178,5 +226,80 @@ describe("hostile crawled values", () => {
     expect(html).not.toContain('"><script');
     expect(html).not.toContain("</text><script");
     expect(html).not.toMatch(/(?:href|src|action)\s*=\s*["']?\s*javascript:/i);
+  });
+});
+
+describe("size budget", () => {
+  /*
+   * The reports table refuses a document over 500 000 bytes, and a save that
+   * trips it fails the whole download. A big crawl with long URLs must shrink
+   * its lists instead, and still say how many rows it left out.
+   */
+  it("keeps a 10 000-page site with long URLs under the stored limit", () => {
+    const pages = Array.from({ length: 10_000 }, (_, i) =>
+      page(`https://example.com/${"segment/".repeat(250)}${i}`, {
+        id: `id${i}`,
+      }),
+    );
+    const types = [
+      "missing-title",
+      "missing-h1",
+      "title-too-long",
+      "thin-content",
+      "images-missing-alt",
+      "server-error",
+      "broken-internal-link",
+      "redirect-chain",
+    ];
+    const issues = types.flatMap((issueType) =>
+      pages.map((p) => ({
+        issueType,
+        severity: "warning",
+        pageUrl: p.url,
+        pageId: p.id,
+      })),
+    );
+    const { html } = buildAuditReportHtml(
+      input({ pagesCrawled: pages.length, pages, issues }),
+    );
+
+    expect(new TextEncoder().encode(html).length).toBeLessThan(500_000);
+    expect(html).toMatch(/ve [\d.]+ (adres|sayfa) daha/);
+  });
+});
+
+describe("cover and speed honesty", () => {
+  it("names the pages behind each of the three first actions", () => {
+    const urls = ["https://example.com/a", "https://example.com/b"];
+    const { html } = buildAuditReportHtml(
+      input({
+        pagesCrawled: 2,
+        pages: urls.map((url) => page(url)),
+        issues: urls.map((pageUrl, i) => ({
+          issueType: "server-error",
+          severity: "critical",
+          pageUrl,
+          pageId: `id${i}`,
+        })),
+      }),
+    );
+
+    expect(html).toContain("Bu hafta yapılacak 1 şey");
+    expect(html).toMatch(/todo-pages[^]*example.com&#47;a/);
+  });
+
+  it("says so when speed measurement was partial", () => {
+    const { html } = buildAuditReportHtml(
+      input({
+        pagesCrawled: 10,
+        pages: [page("https://example.com/", { id: "p1" })],
+        lighthouse: [
+          { pageId: "p1", strategy: "mobile", performanceScore: 80 },
+        ],
+        lighthouseTotal: 10,
+      }),
+    );
+
+    expect(html).toContain("Ölçüm kısmi");
   });
 });

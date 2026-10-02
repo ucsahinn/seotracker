@@ -57,6 +57,16 @@ export function truncate(value: string, max: number): string {
   return value.length <= max ? value : `${value.slice(0, max - 1)}…`;
 }
 
+/**
+ * Shortens an address in the middle, so both the host and the page it ends at
+ * stay readable: a long product path is told apart by its tail, not its head.
+ */
+export function truncateUrl(value: string, max: number): string {
+  if (value.length <= max) return value;
+  const tail = Math.floor((max - 1) * 0.4);
+  return `${value.slice(0, max - 1 - tail)}…${value.slice(value.length - tail)}`;
+}
+
 export function formatMs(value: number | null | undefined): string {
   return value === null || value === undefined
     ? "--"

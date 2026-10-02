@@ -36,12 +36,15 @@ export function ReportTemplatesList({
       <EmptyState
         icon={FileText}
         title="Henüz şablon yok"
-        description="Şablon, bir rapor türü için yeniden kullanılabilir yönergedir: rapor kime yazılır, hangi bölümlerden oluşur, nasıl bir dille yazılır. Sağ üstteki düğmeyle ilkini oluşturun."
+        description="Şablon olmadan da rapor alabilirsiniz. Her seferinde aynı biçimde rapor istiyorsanız (örneğin yöneticiye aylık özet) sağ üstteki düğmeyle ilk şablonunuzu oluşturun."
       />
     );
   }
 
-  const needle = query.trim().toLocaleLowerCase("tr");
+  const showSearch = templates.length > 5;
+  // Only a visible search box may filter: a leftover query with no input to
+  // clear it would hide rows for no visible reason.
+  const needle = showSearch ? query.trim().toLocaleLowerCase("tr") : "";
   const visible = sorting.apply(
     templates.filter(
       (template) =>
@@ -74,7 +77,7 @@ export function ReportTemplatesList({
             </>
           ) : null}
         </p>
-        {templates.length > 5 ? (
+        {showSearch ? (
           <input
             type="search"
             className="input input-bordered input-sm w-full sm:w-64"
@@ -125,23 +128,30 @@ export function ReportTemplatesList({
                 <td className="whitespace-nowrap text-muted">
                   {formatRelativeTime(template.updatedAt)}
                 </td>
-                <td className="w-10 text-right">
-                  <RowActions
-                    label={`${template.name} için işlemler`}
-                    actions={[
-                      {
-                        label: "Düzenle",
-                        icon: Pencil,
-                        onSelect: () => onEdit(template),
-                      },
-                      {
-                        label: "Sil",
-                        icon: Trash2,
-                        destructive: true,
-                        onSelect: () => onDelete(template),
-                      },
-                    ]}
-                  />
+                <td className="w-px whitespace-nowrap">
+                  <div className="flex items-center justify-end gap-1">
+                    <button
+                      type="button"
+                      className="btn btn-sm min-h-10 gap-1.5 sm:min-h-8"
+                      aria-label={`${template.name} şablonunu düzenle`}
+                      onClick={() => onEdit(template)}
+                    >
+                      <Pencil aria-hidden className="size-4" />
+                      Düzenle
+                    </button>
+                    <RowActions
+                      triggerClassName="btn btn-ghost btn-sm btn-square"
+                      label={`${template.name} için işlemler`}
+                      actions={[
+                        {
+                          label: "Sil",
+                          icon: Trash2,
+                          destructive: true,
+                          onSelect: () => onDelete(template),
+                        },
+                      ]}
+                    />
+                  </div>
                 </td>
               </tr>
             ))}

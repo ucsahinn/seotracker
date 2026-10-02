@@ -15,6 +15,8 @@
  */
 const REPORT_MAX_CREATED_BY_CHARS = 60;
 
+import { LEGACY_APP_REPORT_CREATOR } from "@/shared/report-creator";
+
 /** Verified User-Agent strings: `claude-code/2.1.259 (sdk-cli)`, `codex-mcp-client/0.149.1`. */
 const KNOWN_CLIENTS: [RegExp, string][] = [
   [/^claude-code\//i, "Claude Code"],
@@ -30,12 +32,15 @@ export const DEFAULT_CLIENT_LABEL = "API key";
 
 /** Spaces are kept so a client title like "VS Code" survives; everything else is dropped. */
 function sanitizeLabel(value: string): string {
-  return value
+  const label = value
     .replace(/[^A-Za-z0-9._+\- ]/g, "")
     .replace(/\s+/g, " ")
     .trim()
     .slice(0, REPORT_MAX_CREATED_BY_CHARS)
     .trim();
+  // The app's own pre-existing report marker is reserved: a client must not be
+  // able to pass its reports off as the audit download.
+  return label.toLowerCase() === LEGACY_APP_REPORT_CREATOR ? "" : label;
 }
 
 export function resolveClientLabel(input: {

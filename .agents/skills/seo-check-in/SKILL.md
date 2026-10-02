@@ -56,16 +56,16 @@ No previous check-in means this is the baseline. Say that, print the numbers, sa
 
 ## Output format
 
-`h1`: the domain and the period, e.g. "example.com — Eylül 2026".
+Build the page from the `seo-report` design system and write in the site's language; headings below are English labels (Turkish: Özet, Ne değişti ve ne zaman, Değişmeyenler, Sonuçlar, Sırada ne var). `h1`: the domain and the period, e.g. "example.com — Eylül 2026".
 
 Sections in this order:
 
-1. **Verdict** — three to five bullets. Both periods' numbers side by side, the single largest mover, and whether outcomes followed traffic. No prose.
-2. **What moved, and when** — one row per item: what it is, both numbers, the change, and the date the archive says it moved. Where the archive is empty, say "tarih bilinmiyor" rather than leaving it blank.
+1. **Verdict** — the "Bu hafta yapılacak tek şey" callout, then KPI tiles (clicks, impressions, average position, and outcomes when GA4 answers) each with a delta tile: arrow, signed number, "önceki dönem" window. Then three to five bullets: both periods' numbers side by side, the single largest mover, and whether outcomes followed traffic. No prose.
+2. **What moved, and when** — one row per item: what it is, both numbers, the change, and the date the archive says it moved. Use the two-series line chart for the headline metric (this period solid, last dashed, end values labelled). Where the archive is empty, say "tarih bilinmiyor" rather than leaving it blank.
 3. **What did not move** — short, and worth including. A page that held its position through a month of work is information, and its absence from the report reads as an oversight.
 4. **Outcomes** — sessions against key events. Omit the section entirely when GA4 is not connected rather than filling it with search data wearing an outcome label.
-5. **What to do next** — an ordered list, at most three items, each one doable before the next check-in.
-6. **How this report was made** — the skill link line from `seo-report` pointing at `https://github.com/ucsahinn/seotracker/tree/main/.agents/skills/seo-check-in`, the two windows as exact dates, and which sources answered.
+5. **What to do next** — an ordered list, at most three items, each one naming its page and tagged with Etki, doable before the next check-in.
+6. **How this report was made** — the skill link line from `seo-report` pointing at `https://github.com/ucsahinn/seotracker/tree/main/.agents/skills/seo-check-in`, the two windows as exact dates, and Kaynaklar listing every tool call behind a number.
 
 ## Guardrails
 
@@ -73,6 +73,7 @@ Sections in this order:
 - Two periods of different lengths are not a comparison. State both windows as dates in the report so the reader can check.
 - A percentage on a small number is noise. Below roughly 50 impressions, report the absolute numbers and say the sample is small.
 - Traffic up and conversions flat is a finding. Do not report the first without the second when GA4 can answer.
+- Name gaps in a Veri notu (no query-level data, GA4 missing, empty ranking archive, the newest three days incomplete because of Search Console lag).
 - Missing GA4 means the outcome half is unavailable, not zero. Say which, and do not describe sessions you cannot see.
 - Tone: calm and plain. No exclamation points, no drama words, no em dashes, no "Not X. Y." contrasts. Gloss every term of art on first use.
 - If nothing moved, say so in one line and keep the report short. A check-in that finds nothing is a good outcome and padding it to look like work is the failure mode.

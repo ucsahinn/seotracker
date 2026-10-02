@@ -29,10 +29,12 @@ export function DownloadReportButton({
   const create = useMutation({
     mutationFn: () => createAuditReport({ data: { projectId, auditId } }),
     onSuccess: async ({ reportId, title }) => {
-      await downloadReport(reportId, reportFilename(title));
+      // The report is saved either way, so the list is refreshed first: a
+      // failed download must not leave Raporlar showing a pre-save list.
       await queryClient.invalidateQueries({
         queryKey: reportsQueryKey(projectId),
       });
+      await downloadReport(reportId, reportFilename(title));
       toast.success("Rapor indirildi ve Raporlar sekmesine kaydedildi.");
     },
     onError: (error) =>

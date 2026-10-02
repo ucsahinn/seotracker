@@ -6,7 +6,7 @@ export const INDEXING_ISSUES = {
     severity: "warning",
     title: "Yinelenen başlık",
     explanation:
-      "Birden çok sayfa aynı başlığı (<title>) kullanıyor. Google sayfaları başlıklarıyla ayırt eder; aynı başlık sayfaları birbiriyle yarıştırır ve arama sonucunda hangisine tıklanacağı belirsizleşir, tıklama oranı düşer.",
+      "Birden çok sayfa aynı başlığı (<title>) kullanıyor. Aynı başlıkla arama sonucunda sayfalar birbirine benzer görünür ve ziyaretçi hangisine tıklayacağını seçemez.",
     howToFix:
       "Her sayfaya kendi içeriğini anlatan farklı bir başlık yazın. Şablondan üretilen sayfalarda ayırt edici bilgiyi (ürün adı, kategori, şehir) başlık şablonuna ekleyin.",
   },
@@ -14,7 +14,7 @@ export const INDEXING_ISSUES = {
     severity: "warning",
     title: "Yinelenen ana başlık (H1)",
     explanation:
-      "Birden çok sayfa aynı ana başlığı (H1) kullanıyor. Başlık, ziyaretçiye ve Google'a sayfanın ne hakkında olduğunu söyler; aynı başlık farklı sayfaları birbirinden ayırt edilmez kılar. Sitenin her sayfasında logo ya da site adı H1 olarak yazılmışsa bu uyarı genelde ondan gelir.",
+      "Birden çok sayfa aynı ana başlığı (H1) kullanıyor. Başlık, ziyaretçiye ve Google'a sayfanın ne hakkında olduğunu söyler; aynı başlık farklı sayfaları ayırt etmeyi zorlaştırır. Sitenin her sayfasında logo ya da site adı H1 olarak yazılmışsa bu uyarı genelde ondan gelir.",
     howToFix:
       "Her sayfanın H1'ini o sayfanın konusunu anlatan kendi cümlesiyle yazın. Logo ya da site adı H1 ise onu H1 olmayan bir etikete çevirin ve sayfa başlığını H1 yapın.",
   },
@@ -32,7 +32,7 @@ export const INDEXING_ISSUES = {
     explanation:
       "İki ya da daha fazla adres birebir aynı metni gösteriyor. Google bunlardan birini seçip dizine alır ve seçtiği sizin istediğiniz olmayabilir. Ceza değildir, ama sıralama gücü adresler arasında bölünür.",
     howToFix:
-      "Asıl adresi (aramada görünmesini istediğiniz tek adres) seçin. Diğerlerinde canonical (asıl adres) etiketi ile asıl adresi gösterin ve mümkünse 301 ile yönlendirin. Sık nedenler: sonda eğik çizgi farkı, adrese eklenen parametreler, http/https ya da www farkı.",
+      "Asıl adresi (aramada görünmesini istediğiniz tek adres) seçin. Kopya adres kullanıcıya gerekmiyorsa 301 ile asıl adrese yönlendirin; kopya adres açık kalacaksa (parametreli sayfa gibi) canonical (asıl adres) etiketiyle asıl adresi gösterin. Sık nedenler: sonda eğik çizgi farkı, adrese eklenen parametreler, http/https ya da www farkı.",
   },
   "missing-canonical": {
     severity: "info",
@@ -112,7 +112,7 @@ export const INDEXING_ISSUES = {
     explanation:
       "Google bu sayfada noindex (aramada gösterme) yönergesi gördüğünü söylüyor. Bizim tarayıcımız sayfayı dizine alınabilir görüyorsa, iki tarayıcı sayfanın farklı sürümlerini okuyor demektir; örneğin yönerge yalnızca JavaScript çalışınca ekleniyor olabilir.",
     howToFix:
-      "Sayfanın kaynak kodunu Google'ın gördüğü haliyle karşılaştırın; Search Console'daki canlı test işlenmiş HTML'i gösterir. Noindex'in nereden geldiğini bulup kaldırın.",
+      "Sayfanın kaynak kodunu Google'ın gördüğü haliyle karşılaştırın: Search Console'da URL Denetleme > Canlı URL'yi test et > Taranan sayfayı görüntüle > HTML ekranı işlenmiş HTML'i gösterir. Noindex'in nereden geldiğini bulup kaldırın.",
   },
   "google-chose-different-canonical": {
     severity: "warning",
@@ -126,9 +126,9 @@ export const INDEXING_ISSUES = {
     severity: "warning",
     title: "Dil sürümü kodu (hreflang) geçersiz",
     explanation:
-      'Dil sürümü bağlantısındaki (hreflang) kod Google\'ın beklediği biçimde değil. Google dil için iki harfli kodu (tr, en), istenirse bölge için iki harfli ülke kodunu bekler ve ikisini tire ile ayırır. "UK", "EU" ve "UN" gibi uydurma kodları Google açıkça hata sayar. Geçersiz kod, o dil sürümünün tamamen yok sayılması demektir.',
+      'Dil sürümü bağlantısındaki (hreflang) kod Google\'ın beklediği biçimde değil. Google dil için ISO 639-1 kodunu (tr, en), istenirse bölge için ISO 3166-1 ülke kodunu bekler ve ikisini tire ile ayırır; zh-Hans gibi yazı sistemi eki de geçerlidir. "UK", "EU" ve "UN" gibi ayrılmış kodlarda Google bölge kısmını yok sayar (en-UK, en gibi okunur); es-419 gibi bölge kodları da desteklenmez. Geçersiz kod, o dil sürümünün yok sayılması demektir.',
     howToFix:
-      'Birleşik Krallık için "en-GB" yazın; "en-UK" diye bir kod yok. Ayırıcı alt çizgi değil tire olmalı ("en_US" değil "en-US"). "x-default" geçerlidir, olduğu gibi bırakın.',
+      'Birleşik Krallık için "en-GB" yazın; "en-UK" geçerli bir bölge kodu değil. Latin Amerika İspanyolcası için es-419 yerine "es" yazın. Ayırıcı alt çizgi değil tire olmalı ("en_US" değil "en-US"). "x-default" geçerlidir, olduğu gibi bırakın.',
   },
   "hreflang-missing-self": {
     severity: "warning",
@@ -192,7 +192,7 @@ export const INDEXING_ISSUES = {
     severity: "warning",
     title: "Yapısal veri bloğu bozuk",
     explanation:
-      "Sayfadaki yapısal veri bloklarından (ld+json) en az biri okunamıyor ya da içinde tür (@type) yok. Bozuk blok Google tarafından yok sayılır, yani o işaretlemeden beklediğiniz ek alanlar (SSS, ürün, kırıntı yolu) aramada çıkmaz.",
+      "Sayfadaki yapısal veri bloklarından (ld+json) en az biri okunamıyor ya da içinde tür (@type) yok. Bozuk blok Google tarafından yok sayılır, yani o işaretlemeden beklediğiniz ek bilgiler (ürün, makale, kırıntı yolu) aramada çıkmaz.",
     howToFix:
       'Bloğu bir JSON denetleyicisine yapıştırın; genelde fazladan virgül ya da kapanmamış tırnak çıkar. Sonra bloğa en az bir tür ekleyin, örneğin "@type": "Article". Eklentiyle üretiliyorsa eklentiyi güncelleyin.',
   },
@@ -202,23 +202,23 @@ export const INDEXING_ISSUES = {
     explanation:
       "Bu sayfalar için saklanan Google yanıtları eskidi. Yanıt, sorulduğu andaki durumu anlatır; sayfa o zamandan beri düzelmiş ya da bozulmuş olabilir. Eski yanıtı güncelmiş gibi göstermemek için bu sayfaların Google yanıtları bu denetimde bulgu sayılmadı.",
     howToFix:
-      'Dizin durumu sekmesindeki "Google\'da durumunu kontrol et" düğmesine basın; en eski yanıtlı sayfalar yeniden sorulur. Google günde en fazla 2.000 adres sorgulatır, bu yüzden her tıklamada 25 sayfa sorulur; birkaç tıkla liste yenilenir.',
+      'Dizin durumu sekmesindeki "Google\'da durumunu kontrol et" düğmesine basın; en eski yanıtlı sayfalar yeniden sorulur. Google bir sitede günde en fazla 2.000 adres incelemeye izin verir, bu yüzden her tıklamada 25 sayfa sorulur; birkaç tıkla liste yenilenir.',
   },
   "google-crawled-not-indexed": {
     severity: "warning",
     title: "Google taradı ama dizine almadı",
     explanation:
-      "Google sayfayı çekti, okudu ve dizine almamaya karar verdi. Teknik bir engel yok; karar içerikle ilgili. En sık nedenler: sayfanın başka bir sayfayla büyük ölçüde aynı olması, tek başına bir aramayı karşılayamayacak kadar ince olması ya da siteden çok az bağlantı alıp önemsiz görünmesi.",
+      "Google sayfayı çekti ama dizine almadı; yeniden istek göndermeniz gerekmez, sonradan dizine girebilir de girmeyebilir de. Google nedenini söylemez. Sık görülen olasılıklar: sayfanın başka bir sayfayla büyük ölçüde aynı olması, çok az özgün içerik taşıması ya da siteden az bağlantı alması.",
     howToFix:
-      "Sayfanın kendine ait bir sorusu ve cevabı olduğundan emin olun. Yakın konulu başka sayfalarla örtüşüyorsa birleştirip tek adrese yönlendirin. Sayfa kalacaksa içeriği derinleştirin ve ilgili sayfalardan buraya bağlantı verin.",
+      "Önce URL Denetleme Aracı'nda noindex, engellenen kaynak ya da boş görünen içerik olup olmadığına bakın. Sorun yoksa sayfanın kendine ait bir sorusu ve cevabı olduğundan emin olun. Yakın konulu başka sayfalarla örtüşüyorsa birleştirip tek adrese yönlendirin. Sayfa kalacaksa içeriği derinleştirin ve ilgili sayfalardan buraya bağlantı verin.",
   },
   "google-discovered-not-indexed": {
     severity: "warning",
     title: "Google keşfetti ama henüz taramadı",
     explanation:
-      "Google bu adresi biliyor ama sayfayı henüz çekmedi. Bu bir içerik kararı değil, sıra sorunu: Google, siteniz için ayırdığı tarama bütçesini (tarama zamanı ve isteği) bu adrese harcamaya değer bulmamış. Büyük sitelerde ve az bağlantı alan sayfalarda olur.",
+      "Google bu adresi biliyor ama sayfayı henüz çekmedi. Google'ın belgelerine göre bu genelde siteyi aşırı yüklememek için taramanın ertelenmesidir; sayfa hakkında bir kalite kararı değildir. Büyük sitelerde ve az bağlantı alan sayfalarda daha sık görülür.",
     howToFix:
-      "Sayfaya site içinden, özellikle sık taranan sayfalardan bağlantı verin ve site haritasında olduğundan emin olun. Sunucunuz yavaşsa tarama bütçesi de daralır; sunucu yanıt süresine de bakın.",
+      "Çoğu durumda beklemek yeterlidir. Sayfa önemliyse sık taranan sayfalardan bağlantı verin, site haritasında olduğundan emin olun ve Search Console'dan dizine ekleme isteyin. Sunucunuz yavaşsa onu da iyileştirin.",
   },
   "google-duplicate-no-canonical": {
     severity: "warning",
@@ -240,7 +240,7 @@ export const INDEXING_ISSUES = {
     severity: "warning",
     title: "Google yapısal veride hata buldu",
     explanation:
-      "Sayfadaki yapısal veri (Google'a sayfanın ürün, SSS, tarif gibi ne olduğunu anlatan işaretleme) Google'ın zengin sonuç denetiminden geçemedi. Zengin sonuç, aramada yıldız, SSS açılırı ya da fiyat gibi ek bilgilerin çıkmasıdır; hatalı işaretleme bunları kapatır. Bu kararı yalnızca Google verebilir; bizim tarayıcımız işaretlemenin var olup olmadığını görür, geçerli olup olmadığını göremez.",
+      "Sayfadaki yapısal veri (Google'a sayfanın ürün, makale, tarif gibi ne olduğunu anlatan işaretleme) Google'ın zengin sonuç denetiminden geçemedi. Zengin sonuç, aramada yıldız puanı, fiyat ya da stok durumu gibi ek bilgilerin çıkmasıdır; hatalı işaretleme bunları kapatır. Bu kararı yalnızca Google verebilir; bizim tarayıcımız işaretlemenin var olup olmadığını görür, geçerli olup olmadığını göremez.",
     howToFix:
       "Adresi Google'ın Zengin Sonuç Testi'nde açın; hangi alanın eksik ya da yanlış türde olduğunu adıyla söyler. Çoğunlukla zorunlu bir alan boştur ya da sayfada görünmeyen bir şey işaretlenmiştir; düzeltin.",
   },
@@ -256,9 +256,9 @@ export const INDEXING_ISSUES = {
     severity: "info",
     title: "Sitede hiç yapısal veri yok",
     explanation:
-      "Taranan hiçbir sayfada yapısal veri (Google'a sayfanın ürün, SSS, makale gibi ne olduğunu anlatan işaretleme) yok. Yapısal veri sıralamayı doğrudan etkilemez; ama aramada SSS, ürün, yol haritası ya da kırıntı yolu gibi ek alanların çıkmasını sağlar ve bunlar sonucun kapladığı yeri ve tıklama oranını artırabilir.",
+      "Taranan hiçbir sayfada yapısal veri (Google'a sayfanın ürün, makale, kurum gibi ne olduğunu anlatan işaretleme) yok. Yapısal veri sıralamayı doğrudan etkilemez; bazı türler (ürün, makale, kırıntı yolu, kurum, etkinlik) aramada fiyat, puan ya da yol gibi ek bilgilerle görünmeyi mümkün kılar. Hangi türlerin gösterildiğini Google belirler ve zaman zaman kaldırır; garanti yoktur.",
     howToFix:
-      "Sayfa türüne uyan işaretlemeyle başlayın: yazılar için Article ve BreadcrumbList, SSS sayfası için FAQPage, ürün sayfası için Product. İşaretleme sayfada gerçekten görünen içeriği anlatmalı; görünmeyeni işaretlemek Google kurallarına aykırıdır.",
+      "Sayfa türüne uyan işaretlemeyle başlayın: yazılar için Article, her yerde BreadcrumbList, ürün sayfası için Product, ana sayfa için Organization. Google'ın desteklediği türleri Search Gallery'den kontrol edin; FAQPage ve HowTo artık arama sonucunda zengin görünüm üretmez. İşaretleme sayfada gerçekten görünen içeriği anlatmalı; görünmeyeni işaretlemek Google kurallarına aykırıdır.",
   },
   "multiple-canonical-tags": {
     severity: "warning",

@@ -23,23 +23,32 @@ type RowAction = {
 export function RowActions({
   label,
   actions,
+  triggerClassName,
 }: {
   /** Names the row, so screen readers get "Actions for <this row>". */
   label: string;
   actions: RowAction[];
+  /** Overrides the compact default trigger, e.g. a larger touch target. */
+  triggerClassName?: string;
 }) {
   const usable = actions.filter(Boolean);
   if (usable.length === 0) return null;
 
   return (
-    <PortalMenu ariaLabel={label} menuClassName="w-56">
+    <PortalMenu
+      ariaLabel={label}
+      triggerClassName={triggerClassName}
+      menuClassName="w-56"
+    >
       {(close) => (
         <>
           {usable.map((action) => (
             <li key={action.label}>
               <button
                 type="button"
-                className={action.destructive ? "text-error" : undefined}
+                className={
+                  action.destructive ? "text-[var(--ink-error)]" : undefined
+                }
                 disabled={Boolean(action.disabledReason)}
                 title={action.disabledReason}
                 onClick={() => {

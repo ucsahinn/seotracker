@@ -17,17 +17,17 @@ function issue(issueType: string, pageUrl: string): AuditIssueRow {
   };
 }
 
-// missing-title is critical and images-missing-alt is a warning in the registry.
+// server-error is critical and images-missing-alt is a warning in the registry.
 const issues = [
-  issue("missing-title", "https://example.com/a"),
-  issue("missing-title", "https://example.com/b"),
+  issue("server-error", "https://example.com/a"),
+  issue("server-error", "https://example.com/b"),
   issue("images-missing-alt", "https://example.com/c"),
 ];
 
 describe("groupIssues", () => {
   it("counts distinct pages, so eight rows on one page are one page", () => {
     const rows = Array.from({ length: 8 }, () =>
-      issue("missing-title", "https://example.com/a"),
+      issue("server-error", "https://example.com/a"),
     );
 
     const [group] = groupIssues(rows);

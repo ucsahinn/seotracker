@@ -97,9 +97,13 @@ async function getReportWithHtml(
 async function findReportByTitle(
   projectId: string,
   title: string,
-): Promise<{ id: string; title: string } | null> {
+): Promise<{ id: string; title: string; createdBy: string } | null> {
   const [row] = await db
-    .select({ id: reports.id, title: reports.title })
+    .select({
+      id: reports.id,
+      title: reports.title,
+      createdBy: reports.createdBy,
+    })
     .from(reports)
     .where(and(eq(reports.projectId, projectId), eq(reports.title, title)))
     .limit(1);

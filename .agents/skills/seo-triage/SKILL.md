@@ -63,9 +63,9 @@ These have different fixes and the report must name which.
 
 ## Output format
 
-`h1`: the domain and "düşüş incelemesi".
+Build the page from the `seo-report` design system and write in the site's language (the labels below are Turkish; translate them for another language). `h1`: the domain and "düşüş incelemesi".
 
-Open with **one sentence naming the verdict**, which must be one of exactly five:
+Open with **one sentence naming the verdict** inside the "Bu hafta yapılacak tek şey" callout (for "düşüş bulunamadı" the one thing is when to re-check), which must be one of exactly five:
 
 - **Ölçüm kopması** — the tag, not the traffic.
 - **Düşüş bulunamadı** — the numbers do not show one in the window checked.
@@ -77,16 +77,17 @@ A closed set is the point. It is what stops the report becoming a speculative es
 
 Then:
 
-1. **Ne oldu** — the verdict with the numbers behind it and the date, if the data gives one.
+1. **Ne oldu** — KPI tiles for both periods with deltas (arrow plus signed number), the daily line chart with the drop date labelled when the data gives one, and one sentence explaining the verdict in plain words.
 2. **Nasıl bulduk** — the steps that ruled things out, in order. This is what lets the reader disagree with you.
-3. **Etkilenen sayfalar** — a table, worst first, with both periods' numbers.
-4. **Sırada ne var** — at most three actions, the first one being whatever the verdict implies. When the verdict is "düşüş bulunamadı", the next step is to wait and re-check, and saying so is a real answer.
-5. **How this report was made** — the skill link line from `seo-report` pointing at `https://github.com/ucsahinn/seotracker/tree/main/.agents/skills/seo-triage`, and which tools answered.
+3. **Etkilenen sayfalar** — a stacked table, worst first, with both periods' numbers and each page's URL.
+4. **Sırada ne var** — at most three actions, each tagged with Etki and naming its page, the first one being whatever the verdict implies. When the verdict is "düşüş bulunamadı", the next step is to wait and re-check, and saying so is a real answer.
+5. **How this report was made** — the skill link line from `seo-report` pointing at `https://github.com/ucsahinn/seotracker/tree/main/.agents/skills/seo-triage`, and Kaynaklar listing every tool call behind a number with its date range.
 
 ## Guardrails
 
 - **Do not name a cause you cannot show.** Never "a Google update", never "seasonality", never "a competitor". This install cannot observe any of them. The tree tells you *where* and *when*; anything past that is a guess and reads as authority.
 - **Stop at the first answer.** Continuing past a confirmed measurement break produces a report full of drops that did not happen.
+- Name gaps in a Veri notu (no GA4, no query-level data, empty ranking archive, Search Console lag).
 - Without GA4 the whole "is it real" gate is unavailable. Say that plainly, work from Search Console clicks, and state in the report that a tracking artefact could not be ruled out.
 - A three-day window is not evidence. Search Console lags about three days and revises the most recent ones; compare settled periods and pass `dataState: "final"`.
 - Report Google's indexing verdict only from `inspect_urls`. A page missing from a crawl or from Search Console is weaker evidence, and the report must say which of the two it is leaning on.

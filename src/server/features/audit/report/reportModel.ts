@@ -105,9 +105,22 @@ export function groupIssues(input: AuditReportInput): IssueGroup[] {
       };
       byType.set(issue.issueType, entry);
     }
+    // Known types always resolve to the registry's severity; an unknown type
+    // takes the worst severity any of its rows carries, not the first row's.
+    const severity = resolveIssueSeverity({
+      issueType: issue.issueType,
+      severity: issue.severity ?? "",
+    });
+    if (
+      ISSUE_SEVERITY_ORDER[severity] <
+      ISSUE_SEVERITY_ORDER[entry.group.severity]
+    ) {
+      entry.group.severity = severity;
+    }
     const siteLevel = issue.pageId === null;
     if (siteLevel) entry.group.siteLevel = true;
-    else if (issue.pageUrl) entry.pages.add(issue.pageUrl);
+    // A row whose page was deleted has an id but no URL; it still counts.
+    else entry.pages.add(issue.pageUrl ?? issue.pageId ?? "");
     entry.group.rows.push({
       url: issue.pageUrl ?? "",
       detail: describeDetails(issue.detailsJson),
@@ -117,7 +130,8 @@ export function groupIssues(input: AuditReportInput): IssueGroup[] {
 
   const groups = [...byType.values()].map(({ group, pages }) => ({
     ...group,
-    pageCount: group.siteLevel ? input.pagesCrawled : pages.size,
+    // At least one page for any group that has rows, or the score drops it.
+    pageCount: group.siteLevel ? input.pagesCrawled : Math.max(1, pages.size),
   }));
 
   const { gains } = scoreGroups(groups, input.pagesCrawled);
@@ -161,7 +175,25 @@ export function countSeverities(groups: IssueGroup[]) {
   };
 }
 
-export function scoreVerdict(score: number | null): string {
+/**
+ * Whether the audit's findings can be read as "everything found". A failed or
+ * still-running audit, or one that crawled nothing, has an incomplete (maybe
+ * empty) issue list, and "no issues" would be a false all-clear.
+ */
+export function isReliable(input: AuditReportInput): boolean {
+  return (
+    input.pagesCrawled > 0 &&
+    (input.status === undefined ||
+      input.status === null ||
+      input.status === "completed")
+  );
+}
+
+export const UNRELIABLE_NOTE =
+  'Denetim tamamlanmadığı ya da hiç sayfa taranamadığı için sorun listesi eksik olabilir; bu yüzden "sorun yok" denmiyor.';
+
+export function scoreVerdict(score: number | null, reliable = true): string {
+  if (!reliable) return "Denetim tamamlanmadığı için puan hesaplanmadı.";
   if (score === null) return "Taranan sayfa olmadığı için puan hesaplanamadı.";
   if (score === 100) return "Kayıtlı hiçbir sorun yok. Site temiz görünüyor.";
   switch (auditScoreTier(score)) {

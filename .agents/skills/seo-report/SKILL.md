@@ -7,245 +7,262 @@ description: "Write and save an seotracker report as one self-contained HTML pag
 
 ## Goal
 
-Turn finished research into one self-contained HTML page, saved to the project with `save_report`, so anyone on the team can open it in the app, read it on a phone, and print it to PDF.
+Turn finished research into one self-contained HTML page, saved with `save_report`, that a business owner can open in the app, read on a phone in two minutes, and print to PDF. It must look designed, read like a person wrote it, and never contain a number that no tool returned.
 
-Every seotracker skill that produces a recommendation delivers through this skill. Chat gets the link, the verdict, and the top action. The report gets everything else.
+Every seotracker skill that produces a recommendation delivers through this skill. Chat gets the link, the verdict, and the top action. The report gets everything else. `seo-audit`, `seo-check-in` and `seo-triage` choose the sections; this skill owns the look, the language rules and the self-check.
 
 ## Before you write
 
-1. Call `list_reports` for the project. If a report already covers the same subject for the same period, you are correcting your own run: pass its `reportId` to `save_report` and replace it. A new month, a new competitor, or a different skill is a new report. Never save a near-duplicate.
-2. Titles are unique within a project. Saving a second report under an existing title with no `reportId` is rejected, so either pass the `reportId` of the report you are replacing or change the title to name the new subject or period.
-3. **Put the period in the title, always** — "example.com SEO audit, Eylül 2026", not "example.com SEO audit". This is what keeps a recurring skill from colliding with itself, and replacement is destructive with no version history: a second run in the same month must either be a deliberate correction with the `reportId`, or carry a title that says what is different about it. Never resolve the collision by silently replacing a report you did not produce in this session.
-3. To revise an existing report, work from its summary. `get_report` returns the HTML only with `includeHtml: true`, and an 80 KB report is roughly 20,000 tokens, which most clients truncate. Fetch the HTML only when you need to edit a specific passage, and if what comes back looks cut off, send the user to the app instead of saving over it.
+1. Call `list_reports`. If a report already covers the same subject and period, you are correcting your own run: pass its `reportId` to `save_report`. A new month, competitor or skill is a new report. Never save a near-duplicate, and never replace a report you did not produce in this session (replacement is destructive, with no version history).
+2. Titles are unique per project, and the period always goes in the title: "example.com SEO denetimi, Eylül 2026". A second run in the same period is either a deliberate correction (`reportId`) or carries a title saying what differs.
+3. To revise, work from `get_report`'s summary. Fetch the HTML (`includeHtml: true`) only to edit a passage; if it looks cut off, send the user to the app instead of saving over it.
 
 ## Following a template
 
-A project can carry report templates: named, reusable briefs saying who a report is for, which sections it has in what order, how it should sound, and how to sign off. They are listed in project context, and `list_report_templates` returns the full instructions for each one. Templates belong to a project. To reuse one in another project, list it there and save a copy here.
+A project can carry report templates: reusable briefs (audience, sections in order, tone, sign-off). `list_report_templates` returns them in full. Use one only when the user names it or asks for the kind of report it describes; a plain skill run uses the skill's default sections. If two match, ask in one line. A template replaces the skill's section list, audience and tone; the HTML constraints, language rules and self-check never change. Project `writing_preferences` always apply; a template's tone wins only where they conflict. Pass `templateId` to `save_report`. A template may set `--accent` (one colour; check it still reads at 4.5:1 on the background, otherwise keep the default), the byline and the footer; nothing else in the CSS changes.
 
-Use a template only when the user names it, or asks for the kind of report a template's name or description names. A plain skill run ("audit this site") uses the skill's default format. If two match, ask in one line. A template's sections, audience and tone replace the skill's Output format list; the HTML constraints and writing rules never change. Project writing_preferences always apply; a template's tone wins only where they conflict. Pass its `templateId` to `save_report`.
+## Language and voice
 
-## Writing rules
+- **Write in the reader's language.** Take it from project context or from the language the user speaks, and set `<html lang>` to match. For a Turkish site or user, write natural, plain Turkish: short sentences, "siz" form, no translated-sounding English. Labels in the skeleton below are Turkish; translate them for other languages.
+- **No jargon without a gloss.** Explain each term once, in plain words, where it first appears, and then use it freely. Turkish glosses to reuse: gösterim (sitenizin Google sonuçlarında görünme sayısı), tıklama (görünenlerden kaç kişinin girdiği), TO / CTR (gösterimlerin yüzde kaçının tıklamaya döndüğü), konum (sonuç sayfasındaki sıra; 1 en üst, düşük sayı iyidir), dizine eklenmiş (Google sayfayı tanıyor ve listeleyebiliyor), canonical (aynı içerik birden çok adreste olduğunda Google'a "asıl adres bu" diyen etiket).
+- **Notes, not essays.** A finding is a heading plus two or three short bullets (Durum with the number, Yapılacak with the step, Neden only when not obvious). No paragraph runs past two sentences. No drama words, no exclamation marks, no filler. Severity words only where literally true.
+- **One spine.** Verdict, then the one action, then evidence, then a ranked list. A report with twenty findings has failed.
+- **Name the pages.** Every recommendation names the page URL or the query it concerns and the expected effect in words ("en çok gösterilen sayfa, tıklaması düşük").
+- **Rank by impact.** "Sırada ne var" is ordered by expected effect on clicks or leads, each item tagged Etki: yüksek, orta or düşük (text, never colour alone), at most five items.
 
-- **Write notes, not essays.** The reader scans. A finding is a heading and two or three short bullets: Status (what is true, with the number), Fix (the step), and Why only when it is not obvious. No paragraph runs past two sentences. A section opens with one sentence or none. A summary section (a verdict, a snapshot, a market read) is a bullet list, one fact per line, never prose. How the data was gathered goes in the closing "How this report was made" section, not in the finding.
-- **Be specific and numeric.** "Position 4.6, one click on 1,085 impressions" beats "underperforming". Every claim carries the number, the quoted tag, or the URL that proves it.
-- **Be honest about confidence.** Say which numbers came from a tool and which you verified yourself. When you could not check something, put it in a `.note` and say so.
-- **Plain language.** Gloss every term of art on first use: canonical, meta description, crawler, 301, structured data. No drama words, no exclamation points, no filler.
-- **One report, one spine.** Lead with the verdict, then the single most important action, then the supporting detail. A report with twenty findings has failed.
-- **Print the numbers.** A chart never carries a value that is not also written out in text.
+## Numbers and honesty
+
+- **Never invent a number.** Every figure in the report (tiles, tables, chart values, percentages) comes from a tool call you made in this run, or is arithmetic on such figures (say so: "hesaplandı"). If a value is unavailable write `bilinmiyor` and explain in a data note.
+- **Compute deltas yourself** from two same-length windows and print both windows as exact dates. Below roughly 50 impressions, show absolute numbers and say the sample is small, not a percentage.
+- **Name the gaps in a `.note` ("Veri notu")** whenever one applies: Search Console not connected, no query-level data (only page totals), partial speed measurement (only some pages measured, or Lighthouse off), GA4 missing (outcomes unknown, not zero), the ranking archive empty, a crawl that covered N of roughly M pages, and Search Console's three-day lag (the newest days are incomplete, so windows end about three days back). A missing source means "not connected" or "no data yet", never a penalty.
+- **Never attribute a cause** you cannot show (algorithm updates, seasonality, competitors). Say where and when; leave why open.
+- **Kaynaklar is mandatory.** The closing section lists every tool call behind the numbers: tool name, what it supplied, and the date range. A number that is not traceable to that list must not be in the report.
 
 ## Title and summary
 
-- `title`: names the subject and the period, under 120 characters. "badseo.dev SEO audit, Sep 2026". Never "SEO Report" or "Analysis".
-- `summary`: markdown under 2,500 characters, in this order — the verdict, the single top action, then the key numbers. This is what `list_reports` returns and what you or another agent read instead of the HTML, so write it for a reader who will never open the page.
-
-## The closing section: how this report was made
-
-Every report ends with an `h2` titled "How this report was made" (id `how-this-report-was-made`), after "What to do next". It is the only section with a fixed opening line: one sentence naming the skill that produced the report and linking its docs page, so a reader who was handed the link can learn what the workflow does and rerun it.
-
-```html
-<p>Generated by the <a href="https://github.com/ucsahinn/seotracker/tree/main/.agents/skills/seo-audit" target="_blank" rel="noopener">seotracker SEO Audit skill</a>, run by AGENT NAME on MONTH D, YYYY.</p>
-```
-
-The URL is always `https://github.com/ucsahinn/seotracker/tree/main/.agents/skills/` followed by the skill's directory name, exactly as written in that skill's Output format list. Copy it; do not guess a slug. It points at the skill's source in the public repository, because this app serves no docs route -- the previous link went to a page that never existed. Then the rest of the section as the skill describes it: which tools reported what, and what you verified by hand. A report written from a template keeps this section too, as its last one.
+- `title`: subject and period, under 120 characters. Never "SEO Report" or "Analysis".
+- `summary`: markdown under 2,500 characters: the verdict, the single top action, then the key numbers. It is what `list_reports` returns and what other agents read instead of the HTML, so write it for someone who will never open the page.
 
 ## HTML constraints
 
-These are enforced by the viewer, not by taste. A report that breaks them renders blank or broken.
+Enforced by the viewer (`src/shared/report-sandbox.ts`): the report is served with `default-src 'none'; style-src 'unsafe-inline'; img-src data:; font-src data:; connect-src 'none'` inside a sandboxed iframe. A report that breaks them renders blank or broken.
 
-- **No external resources of any kind.** No web fonts, no CDN scripts or stylesheets, no images by URL, no `fetch`. Every request from a saved report is blocked. Inline all CSS in one `<style>` block.
-- **Links open in a new tab.** Write every link as `<a href="..." target="_blank" rel="noopener">`. A plain link would navigate the report frame itself, replacing the report with a broken copy of the target. The exception is an in-page anchor (`href="#id"`, as in the contents rail), which stays in the document.
-- **No `<script>`.** Scripts are blocked outright. Anything interactive has to be static.
-- **Charts are inline SVG or CSS bars**, with real `<text>` labels and a `viewBox`. Always print the numbers next to the chart too.
-- **Aim under 80 KB.** The hard cap is 500,000 bytes, and the error says "the limit is 500 KB". Inlined images are the usual way people blow it. A filled report is normally 10-30 KB.
-- **No backticks and no `${` anywhere in the HTML.** Codex passes the argument through a JavaScript template literal, where both are syntax. Use `<code>` for inline code and plain text everywhere else.
-- **Finish the document.** The server rejects HTML that does not end with `</html>` as "stopped early". Write the whole page in one call rather than trailing off mid-section.
-- **Keep the doctype, `<html>`, `<head>`, and `<title>`.** The app renders the whole document you save, not a fragment.
-- **Write the report in the operator's language**, and set `<html lang>` to match — the starter template says `en` and that is a default, not an instruction. Take the language from the project context, or from the language the user is speaking to you in. Note that `get_audit_issues` returns its `title` and `howToFix` in Turkish by design: those are source text to render in place, not strings to paste into an English report or to translate silently. If you are writing in another language, say what the issue is in that language and keep Google's own wording where the exact phrase matters.
+- **No external resources.** No web fonts, CDN files, images by URL, `fetch`, `@import` or `url(http...)`. One inline `<style>` block; system fonts only. Inline `data:` images are allowed but rarely worth their bytes.
+- **No `<script>`, no event attributes.** Everything is static: use native `<details>` if something must collapse, and put anything essential outside it.
+- **Links** are `<a href="..." target="_blank" rel="noopener">`. In-page anchors (`href="#id"`) are the only exception.
+- **Charts are inline SVG** with `viewBox`, real `<text>` labels, and `role="img"` plus an `aria-label` that states the finding. Colours come from the CSS tokens, never hard-coded in the SVG.
+- **Size:** aim under 80 KB (a filled report is normally 15-35 KB); the hard cap is 500,000 bytes.
+- **No backticks and no `${` anywhere** (Codex passes the argument through a JavaScript template literal). Use `<code>` for inline code.
+- **Finish the document:** keep doctype, `<html lang>`, `<head>`, `<title>`, and end with `</html>`. Write the whole page in one call.
+- `get_audit_issues` returns `title` and `howToFix` in Turkish by design. For a Turkish report render them in place; for another language, say the issue in that language and keep Google's own wording only where the exact phrase matters.
 
-## After you save
+## Design system
 
-- `save_report` returns `{ reportId, url, htmlBytes }`. The whole reply is at most three short bullets, then the link last on its own line as `Read the full report: <url>`. The bullets: the verdict, the top action, and anything the user has to act on (a project you created, a question you need answered). Nothing else: no account of the run, no reviewer notes, no list of what worked, no restating the report. The report is how they learn; chat only points at it.
-- The skill you are running appends its own research-log line; add one only if it does not: `{ appendResearchLog: { summary: "Report: <title>. Verdict: <conclusion>" } }`.
-- If the save fails, the error names the limit and the value. Fix that one thing and save again. Never paste the report into chat instead.
+One look, kept good. Copy the skeleton, keep the CSS as it is, replace ALL-CAPS placeholders, repeat the blocks you need and delete the ones you do not. Do not restyle per report.
 
-## Starter template
-
-Copy this, keep the CSS as it is, and replace the ALL-CAPS placeholders. Each primitive shows one example row; repeat the ones you need and delete the ones you do not.
+- **Type scale:** 14 / 17 body / 20 / 26 / 32 (KPI values) / clamp 30-44 (title). System font stack. Body line-height 1.6, one column 760px wide.
+- **Spacing scale:** 4, 8, 12, 16, 24, 40, 64. Nothing in between.
+- **Colour:** neutral surfaces, ONE accent, three semantic colours (good, bad, warn) used only for meaning. Light only: a saved report cannot hear the app's theme switch, so a dark report would clash with a light app and with print/PDF. All text pairs are at least 4.5:1.
+- **Direction is never colour alone.** A delta carries an arrow and a signed number: the arrow shows what the number did (up or down), the colour shows whether that is good. Position improving (number going down) is a green down-arrow.
+- **Charts:** bars for ranked comparisons, one line chart for this period against the last, a donut only for three or fewer parts of a whole. Label values directly on the mark, no legend lookups. Every chart is followed by (or contains) a visually-hidden `.sr` table with the same values, and the numbers are also in the text.
+- **Tables** stack into labelled rows below 600px (`data-label` on every `td`), so nothing scrolls sideways. Numeric columns carry `class="n"`; five columns at most; long text last.
+- **Print:** A4, 14mm margins, `break-inside: avoid` on tiles, tables, figures and findings, headings kept with their text, links not underlined.
 
 ```html
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8">
+<html lang="tr"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>DOMAIN — REPORT TITLE</title>
+<title>ALAN ADI - RAPOR BAŞLIĞI, DÖNEM</title>
 <style>
-/* One light look, on screen and on paper. The report is read inside the app,
-   which has its own theme toggle, and a saved document has no way to hear about
-   it: a report that follows the OS scheme alone shows a black panel inside a
-   light app for anyone whose two settings disagree. */
-:root{--bg:#fff;--fg:#0a0a0a;--fg-2:#454545;--fg-3:#8f8f8f;--rule:#ebebeb;--rule-2:#dcdcdc;--sunk:#fafafa;
-  /* The one token a report template may change. Left as the text color, so a
-     report with no template looks exactly as it did before. */
-  --accent:var(--fg)}
+:root{color-scheme:light;--bg:#fff;--surface:#f6f7f9;--fg:#14161a;--fg-2:#444b57;--fg-3:#646b78;--rule:#e3e6eb;
+--accent:#2457d6;--wash:#eaf0ff;--good:#0f7a3d;--bad:#b42318;--warn:#8a5a00;--warn-wash:#fff6e0;
+--s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:24px;--s6:40px;--s7:64px}
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-body{background:var(--bg);color:var(--fg);margin:0;padding:0 24px 120px;font-size:18px;line-height:1.65;letter-spacing:-.003em;
-  font-family:Geist,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
-.shell{max-width:1100px;margin:0 auto}
-header{padding:40px 0 0;max-width:660px}
-h1{font-size:clamp(34px,6vw,56px);font-weight:700;line-height:1.03;letter-spacing:-.035em;margin:0;text-wrap:balance}
-.byline{margin:24px 0 0;font-size:16px;color:var(--fg-2)}
-.body{display:grid;grid-template-columns:minmax(0,660px) 1fr;gap:0 64px;margin:48px 0 0}
-/* Both explicitly in row 1: without it the rail auto-places into row 1 and
-   pushes the article down a whole row, opening an empty band above the text. */
-article{grid-column:1;grid-row:1;min-width:0}
-.rail{grid-column:2;grid-row:1;font-size:14px;color:var(--fg-3);padding-top:6px}
-.rail .sticky{position:sticky;top:40px}
-.toc-label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-3);margin:0 0 10px}
-.toc ol{list-style:none;margin:0;padding:0}
-.toc li{margin:0 0 7px}
-.toc a{color:var(--fg-2);text-decoration:none}
-.toc a:hover{color:var(--fg)}
-/* Below 900px the rail is dropped rather than stacked: a contents list above
-   the report is a wall to scroll past on a phone, not a shortcut. */
-@media (max-width:900px){.body{grid-template-columns:1fr}.rail{display:none}}
-article p{margin:0 0 26px;text-wrap:pretty}
-h2{font-size:30px;font-weight:600;letter-spacing:-.025em;line-height:1.2;margin:60px 0 22px;text-wrap:balance}
-h3{font-size:20px;font-weight:600;letter-spacing:-.015em;margin:38px 0 14px}
-.finding{list-style:none;padding:0;margin:0 0 26px}
-.finding li{margin:0 0 8px;color:var(--fg-2)}
-.finding b{color:var(--accent);font-weight:600}
-a{color:var(--fg);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--rule-2)}
-strong{font-weight:600}
-code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:var(--sunk);border:1px solid var(--rule);padding:1px 5px;border-radius:4px}
-ul,ol{margin:0 0 26px;padding-left:22px}li{margin:0 0 11px}li::marker{color:var(--fg-3)}
-.note{border-left:2px solid var(--fg);padding:2px 0 2px 22px;margin:0 0 26px}
-.note p{margin:0;color:var(--fg-2)}
-.note p+p{margin-top:14px}
-.tw{overflow-x:auto;margin:0 0 30px}
-table{border-collapse:collapse;width:100%;font-size:15.5px;min-width:440px}
-th{text-align:left;font-weight:500;color:var(--fg-3);padding:0 20px 10px 0;border-bottom:1px solid var(--rule-2);white-space:nowrap}
-td{padding:13px 20px 13px 0;border-bottom:1px solid var(--rule);vertical-align:top;color:var(--fg-2)}
-td:first-child{color:var(--fg)}
-td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
-td:last-child,th:last-child{padding-right:0}
-tr:last-child td{border-bottom:none}
-figure{margin:0 0 30px}
-figcaption{font-size:14px;color:var(--fg-3);margin-top:8px}
-.bars{display:grid;grid-template-columns:minmax(90px,170px) 1fr auto;gap:10px 12px;align-items:center;font-size:14px}
-.bars .label{color:var(--fg-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.bars .track{display:block;height:20px;background:var(--sunk)}
-.bars .bar{display:block;height:100%;background:var(--accent);opacity:.16}
-.bars .value{font-variant-numeric:tabular-nums;min-width:3ch;text-align:right}
-svg{display:block;max-width:100%;height:auto}
-hr{border:none;border-top:1px solid var(--rule);margin:60px 0}
-footer{max-width:660px;margin:64px 0 0;padding:26px 0 0;border-top:1px solid var(--rule);font-size:15px;color:var(--fg-3)}
-@media print{
-  /* A zero top margin hides the browser's own print header (date, tab title);
-     the bottom margin holds a page counter instead of the browser's URL line.
-     The body padding supplies the visible page margins. */
-  @page{margin:0 0 12mm 0;@bottom-center{content:counter(page) " of " counter(pages);font:10px -apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;color:#8f8f8f}}
-  body{background:#fff;color:#111;padding:14mm 16mm 6mm;font-size:11pt}
-  .shell,.body{display:block;max-width:none}
-  header{padding:0;max-width:none}
-  h1{font-size:26pt}
-  h2{font-size:15pt;margin:22pt 0 10pt}
-  h3{font-size:12pt;margin:14pt 0 6pt}
-  article,footer{max-width:none}
-  .rail{display:none}
-  h1,h2,h3{break-after:avoid}
-  table,figure,.note,svg{break-inside:avoid}
-  tr,td,th{break-inside:avoid}
-  p,li{orphans:3;widows:3}
-  thead{display:table-header-group}
-  .tw{overflow:visible}
-  table{font-size:10pt;min-width:0}
-  .byline,footer,figcaption{font-size:9.5pt}
-  svg,.bars .bar,.bars .track{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  a{text-decoration:none}
-}
+body{margin:0;padding:0 var(--s4) var(--s7);background:var(--bg);color:var(--fg);font:17px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-text-size-adjust:100%;font-variant-numeric:tabular-nums}
+.page{max-width:760px;margin:0 auto}
+h1{font-size:clamp(30px,6vw,44px);line-height:1.1;letter-spacing:-.03em;margin:var(--s2) 0 var(--s3);text-wrap:balance}
+h2{font-size:26px;line-height:1.25;letter-spacing:-.02em;margin:var(--s6) 0 var(--s3);text-wrap:balance}
+h3{font-size:20px;line-height:1.3;margin:var(--s5) 0 var(--s2)}
+p{margin:0 0 var(--s3)}
+a{color:var(--accent);text-underline-offset:3px}
+code{font:.88em ui-monospace,Menlo,Consolas,monospace;background:var(--surface);border:1px solid var(--rule);border-radius:4px;padding:1px 5px;overflow-wrap:anywhere}
+ul,ol{margin:0 0 var(--s4);padding-left:22px}li{margin:0 0 var(--s2)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.cover{padding:var(--s6) 0 var(--s5);border-bottom:1px solid var(--rule)}
+.eyebrow{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-3)}
+.meta{display:flex;flex-wrap:wrap;gap:var(--s1) var(--s5);font-size:14px;color:var(--fg-2)}
+.lead{font-size:19px;color:var(--fg-2);margin:var(--s3) 0}
+.action{background:var(--wash);border-left:4px solid var(--accent);border-radius:8px;padding:var(--s4) var(--s5);margin:var(--s5) 0}
+.action .k{font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--accent)}
+.action .t{font-size:22px;font-weight:650;line-height:1.3;margin:var(--s1) 0 var(--s2)}
+.action p:last-child{margin:0}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:var(--s3);margin:var(--s5) 0 var(--s2)}
+.kpi{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:var(--s3) var(--s4)}
+.kpi .l{font-size:14px;color:var(--fg-2)}
+.kpi .v{font-size:32px;font-weight:700;line-height:1.15;letter-spacing:-.02em}
+.d{font-size:14px;font-weight:600}.d.good{color:var(--good)}.d.bad{color:var(--bad)}.d.flat{color:var(--fg-2)}
+.vs{display:block;font-size:13px;font-weight:400;color:var(--fg-3)}
+.gl{font-size:14px;color:var(--fg-3);margin:var(--s2) 0 0}
+.finding{list-style:none;padding:0;margin:0 0 var(--s4)}
+.finding li{margin:0 0 var(--s1);color:var(--fg-2)}.finding b{color:var(--fg)}
+.note{background:var(--warn-wash);border-left:4px solid var(--warn);border-radius:8px;padding:var(--s3) var(--s4);margin:var(--s4) 0;font-size:15px}
+.note p{margin:0}.note b{color:var(--warn)}
+figure{margin:var(--s4) 0 var(--s5)}
+figcaption{font-size:14px;color:var(--fg-3);margin-top:var(--s2)}
+svg{display:block;width:100%;max-width:480px;height:auto}
+svg text{font:12px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;fill:var(--fg-2)}
+svg .val{fill:var(--fg);font-weight:600}
+.bar{fill:var(--accent)}.bar2{fill:var(--fg-3)}.axis{stroke:var(--rule);stroke-width:1}
+.ln{fill:none;stroke:var(--accent);stroke-width:2.5;stroke-linejoin:round}.ln2{fill:none;stroke:var(--fg-3);stroke-width:2;stroke-dasharray:4 3}
+.dot{fill:var(--accent)}
+.donut{display:flex;align-items:center;gap:var(--s5);flex-wrap:wrap}.donut svg{width:140px}
+.ring{fill:none;stroke-width:6}
+.legend{list-style:none;padding:0;margin:0}.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:var(--s2);vertical-align:-1px}
+.tw{margin:var(--s4) 0 var(--s5)}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th{text-align:left;font-size:13px;font-weight:600;color:var(--fg-3);padding:var(--s2) var(--s3) var(--s2) 0;border-bottom:1px solid var(--rule)}
+td{padding:var(--s3) var(--s3) var(--s3) 0;border-bottom:1px solid var(--rule);vertical-align:top;overflow-wrap:anywhere}
+.n{text-align:right;white-space:nowrap}th:last-child,td:last-child{padding-right:0}
+@media (max-width:600px){
+thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+tr{display:block;padding:var(--s3) 0;border-bottom:1px solid var(--rule)}
+td{display:flex;justify-content:space-between;gap:var(--s4);border:0;padding:var(--s1) 0;text-align:right}
+td::before{content:attr(data-label);color:var(--fg-3);text-align:left;flex:none}
+td:first-child{display:block;text-align:left;font-weight:600}td:first-child::before{content:none}}
+.acts{list-style:none;padding:0;counter-reset:a}
+.acts>li{counter-increment:a;display:grid;grid-template-columns:32px 1fr;gap:0 var(--s3);padding:var(--s4) 0;border-bottom:1px solid var(--rule);margin:0}
+.acts>li::before{content:counter(a);grid-row:span 3;width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--bg);font-weight:700;text-align:center;line-height:28px}
+.acts .h{font-weight:650}.acts .m{font-size:15px;color:var(--fg-2)}
+.tag{display:inline-block;font-size:12px;font-weight:700;border:1px solid var(--fg-3);color:var(--fg-2);border-radius:99px;padding:0 var(--s2);margin-left:var(--s2);white-space:nowrap}
+.src{margin-top:var(--s6);padding-top:var(--s4);border-top:1px solid var(--rule);font-size:14px;color:var(--fg-2)}
+.src li{margin:0 0 var(--s1)}
+footer{margin-top:var(--s5);font-size:13px;color:var(--fg-3)}
+@page{size:A4;margin:14mm}
+@media print{body{padding:0;font-size:11pt}.page{max-width:none}.cover{padding-top:0}h1{font-size:26pt}h2{font-size:16pt}h3{font-size:13pt}
+h2,h3{break-after:avoid}.kpi,.action,.note,figure,tr,.acts>li,.finding{break-inside:avoid}.pb{break-before:page}
+a{color:inherit;text-decoration:none}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 </style></head>
-<body><div class="shell">
+<body><div class="page">
 
-<header>
-  <h1>REPORT TITLE</h1>
-  <p class="byline">Prepared for NAME · MONTH D, YYYY</p>
+<header class="cover">
+  <div class="eyebrow">SEO DENETİMİ / AYLIK KONTROL / DÜŞÜŞ İNCELEMESİ</div>
+  <h1>ALAN ADI</h1>
+  <div class="meta"><span>DÖNEM: GG AA - GG AA YYYY</span><span>Hazırlayan: seotracker</span><span>Veri tarihi: GG AA YYYY</span></div>
 </header>
 
-<div class="body">
-  <aside class="rail"><div class="sticky">
-    <p class="toc-label">Contents</p>
-    <nav class="toc" aria-label="Contents">
-      <ol>
-        <li><a href="#section-heading">SECTION HEADING</a></li>
-        <li><a href="#what-to-do-next">What to do next</a></li>
-        <li><a href="#how-this-report-was-made">How this report was made</a></li>
-      </ol>
-    </nav>
-  </div></aside>
-  <article>
+<p class="lead">BİR YA DA İKİ CÜMLE: sitenin durumu ve tek yapılacak iş, sade Turkce, sayiyla.</p>
 
-    <p>One or two sentences: the state of things and the one action.</p>
+<section class="action" aria-labelledby="tek-is">
+  <div class="k" id="tek-is">Bu hafta yapılacak tek şey</div>
+  <p class="t">SAYFA ADI / URL için NE YAPILACAK.</p>
+  <p>Neden: SAYI gösterim, SAYI tıklama. Beklenen etki: tek cümle. Nasıl: kopyala-yapıştır adım.</p>
+</section>
 
-    <h2 id="section-heading">SECTION HEADING</h2>
+<div class="kpis">
+  <div class="kpi"><div class="l">Tıklama</div><div class="v">SAYI</div>
+    <div class="d good"><span aria-hidden="true">▲</span> +%SAYI <span class="sr">arttı, iyi yönde</span><span class="vs">önceki 28 güne göre</span></div></div>
+  <div class="kpi"><div class="l">Gösterim</div><div class="v">SAYI</div>
+    <div class="d bad"><span aria-hidden="true">▼</span> -%SAYI <span class="sr">azaldı, kötü yönde</span><span class="vs">önceki 28 güne göre</span></div></div>
+  <div class="kpi"><div class="l">Ortalama konum</div><div class="v">SAYI</div>
+    <div class="d good"><span aria-hidden="true">▼</span> -SAYI sıra <span class="sr">düştü, yani iyileşti</span><span class="vs">önceki 28 güne göre</span></div></div>
+  <div class="kpi"><div class="l">Tıklanma oranı</div><div class="v">%SAYI</div>
+    <div class="d flat"><span aria-hidden="true">■</span> değişmedi<span class="vs">önceki 28 güne göre</span></div></div>
+</div>
+<p class="gl">Gösterim: sitenizin Google sonuçlarında görünme sayısı. Tıklama: görünenlerden kaçının girdiği. Konum: sonuç sayfasındaki sıra, düşük sayı daha iyi.</p>
 
-    <h3>FINDING TITLE</h3>
-    <ul class="finding">
-      <li><b>Status:</b> what is true, with the number or the quoted tag that proves it.</li>
-      <li><b>Fix:</b> the concrete step, doable this week by a non-technical person.</li>
-    </ul>
+<div class="note"><p><b>Veri notu:</b> neyin eksik, kısmi ya da gecikmeli olduğu ve bunun neyi değiştirdiği (ör. sorgu verisi yok, hız ölçümü yalnızca N sayfa, Search Console verisi 3 gün geriden gelir).</p></div>
 
-    <div class="note"><p>A caveat, a confidence note, or something you could not verify.</p></div>
+<h2 id="ne-degisti">Ne değişti</h2>
+<figure>
+  <svg viewBox="0 0 360 150" role="img" aria-label="Günlük tıklama: bu dönem SAYI, önceki dönem SAYI">
+    <line class="axis" x1="8" y1="120" x2="352" y2="120"/>
+    <polyline class="ln2" points="8,90 80,84 152,92 224,80 296,86 340,82"/>
+    <polyline class="ln" points="8,100 80,88 152,70 224,60 296,48 340,40"/>
+    <circle class="dot" cx="340" cy="40" r="4"/>
+    <text class="val" x="340" y="28" text-anchor="end">Bu dönem SAYI</text>
+    <text x="340" y="104" text-anchor="end">Önceki dönem SAYI</text>
+    <text x="8" y="138">GG AA</text><text x="352" y="138" text-anchor="end">GG AA</text>
+  </svg>
+  <figcaption>Düz çizgi bu dönem, kesikli çizgi önceki dönem. Aynı uzunlukta iki pencere.</figcaption>
+  <table class="sr"><caption>Günlük tıklama</caption><thead><tr><th>Dönem</th><th>Tıklama</th></tr></thead>
+    <tbody><tr><td>Bu dönem</td><td>SAYI</td></tr><tr><td>Önceki dönem</td><td>SAYI</td></tr></tbody></table>
+</figure>
 
-    <div class="tw">
-      <table>
-        <thead><tr><th>Item</th><th class="n">Impressions</th><th class="n">Position</th></tr></thead>
-        <tbody><tr><td>example query</td><td class="n">1,300</td><td class="n">6.4</td></tr></tbody>
-      </table>
-    </div>
+<h2 id="sayfalar">En çok gösterilen sayfalar</h2>
+<figure>
+  <svg viewBox="0 0 360 132" role="img" aria-label="Gösterim: SAYFA 1 SAYI, SAYFA 2 SAYI, SAYFA 3 SAYI">
+    <text x="0" y="14">/SAYFA-1</text><rect class="bar" x="0" y="20" width="290" height="14" rx="3"/><text class="val" x="296" y="32">SAYI</text>
+    <text x="0" y="58">/SAYFA-2</text><rect class="bar" x="0" y="64" width="174" height="14" rx="3"/><text class="val" x="180" y="76">SAYI</text>
+    <text x="0" y="102">/SAYFA-3</text><rect class="bar2" x="0" y="108" width="87" height="14" rx="3"/><text class="val" x="93" y="120">SAYI</text>
+  </svg>
+  <figcaption>En geniş çubuk 290 birimdir, ötekiler ona oranlanır (değer / en büyük değer x 290).</figcaption>
+</figure>
+<div class="tw"><table>
+  <thead><tr><th>Sayfa</th><th class="n">Gösterim</th><th class="n">Tıklama</th><th class="n">Konum</th></tr></thead>
+  <tbody><tr><td data-label="Sayfa">/SAYFA-1</td><td class="n" data-label="Gösterim">SAYI</td><td class="n" data-label="Tıklama">SAYI</td><td class="n" data-label="Konum">SAYI</td></tr></tbody>
+</table></div>
 
-    <figure>
-      <div class="bars" role="img" aria-label="Impressions: alpha 1,300, beta 590">
-        <span class="label">alpha</span><span class="track"><span class="bar" style="width:100%"></span></span><span class="value">1,300</span>
-        <span class="label">beta</span><span class="track"><span class="bar" style="width:45%"></span></span><span class="value">590</span>
-      </div>
-      <figcaption>One row per item; the widest bar is 100% and the rest are scaled to it.</figcaption>
-    </figure>
-
-    <hr>
-    <h2 id="what-to-do-next">What to do next</h2>
-    <ol><li>The top priority, first.</li></ol>
-
-    <h2 id="how-this-report-was-made">How this report was made</h2>
-    <p>Generated by the <a href="https://github.com/ucsahinn/seotracker/tree/main/.agents/skills/SKILL-NAME" target="_blank" rel="noopener">seotracker SKILL TITLE skill</a>, run by AGENT NAME on MONTH D, YYYY.</p>
-    <ul class="finding">
-      <li><b>Tools:</b> which seotracker tools reported which numbers.</li>
-      <li><b>Verified:</b> what you checked against the live site by hand.</li>
-    </ul>
-
-  </article>
+<h2 id="dagilim">Dağılım (en çok üç parça)</h2>
+<div class="donut">
+  <svg viewBox="0 0 42 42" role="img" aria-label="Cihaz dağılımı: telefon %SAYI, masaüstü %SAYI, tablet %SAYI">
+    <circle class="ring" cx="21" cy="21" r="15.9155" stroke="var(--rule)"/>
+    <circle class="ring" cx="21" cy="21" r="15.9155" stroke="var(--accent)" stroke-dasharray="60 40" stroke-dashoffset="25"/>
+    <circle class="ring" cx="21" cy="21" r="15.9155" stroke="var(--fg-3)" stroke-dasharray="30 70" stroke-dashoffset="-35"/>
+    <text x="21" y="23" text-anchor="middle" style="font-size:7px">SAYI</text>
+  </svg>
+  <ul class="legend"><li><i style="background:var(--accent)"></i>Telefon %SAYI</li><li><i style="background:var(--fg-3)"></i>Masaüstü %SAYI</li><li><i style="background:var(--rule)"></i>Diğer %SAYI</li></ul>
 </div>
 
-<footer>Prepared with seotracker. Data as of MONTH D, YYYY.</footer>
+<h2 id="bulgular">Bulgular</h2>
+<h3>BULGU BAŞLIĞI (SAYFA)</h3>
+<ul class="finding">
+  <li><b>Durum:</b> ne doğru, sayısıyla ya da alıntılanan etiketle.</li>
+  <li><b>Yapılacak:</b> teknik bilgisi olmayan birinin bu hafta yapabileceği somut adım.</li>
+</ul>
+
+<h2 id="sirada-ne-var">Sırada ne var</h2>
+<ol class="acts">
+  <li><span class="h">İLK İŞ: SAYFA / SORGU<span class="tag">Etki: yüksek</span></span><span class="m">Neden: sayı ve tek cümle.</span><span class="m">Nasıl: adım.</span></li>
+  <li><span class="h">İKİNCİ İŞ<span class="tag">Etki: orta</span></span><span class="m">Neden.</span><span class="m">Nasıl.</span></li>
+</ol>
+
+<section class="src" id="how-this-report-was-made">
+  <h2>Bu rapor nasıl hazırlandı</h2>
+  <p>Generated by the <a href="https://github.com/ucsahinn/seotracker/tree/main/.agents/skills/SKILL-ADI" target="_blank" rel="noopener">seotracker SKILL BAŞLIĞI skill</a>, run by AGENT ADI on GG AA YYYY.</p>
+  <p><b>Kaynaklar</b></p>
+  <ul>
+    <li><code>get_search_console_performance</code>: tıklama, gösterim, konum; GG AA - GG AA YYYY ve önceki pencere GG AA - GG AA YYYY.</li>
+    <li><code>get_google_analytics_organic_overview</code>: oturumlar; aynı pencereler.</li>
+    <li>Elle doğrulanan: ne, hangi sayfada.</li>
+    <li>Hesaplanan: yüzde değişimler iki pencerenin farkından.</li>
+  </ul>
+</section>
+<footer>seotracker ile hazırlandı. Veri tarihi: GG AA YYYY.</footer>
 </div></body></html>
 ```
 
-## The primitives
+The "How this report was made" section is required and last, with `id="how-this-report-was-made"` (translate the heading, keep the id). The link is always `https://github.com/ucsahinn/seotracker/tree/main/.agents/skills/` plus the producing skill's directory name, copied from that skill's Output format; do not guess a slug.
 
-- **Header** — `h1` (the report title) and `.byline` (who it is for and the date): "Prepared for badseo.dev · September 3, 2026".
-- **`.rail` contents** — the table of contents, sticky to the right of the text on a wide screen, dropped on a phone and in print. Every `h2` has an id, and the contents list links to each one with a plain `href="#id"` — in-page anchors are the one kind of link that must **not** use `target="_blank"`. Ids are the kebab-case of the heading text.
-- **`h2` / `h3`** — `h2` opens a section, `h3` names one finding. Do not skip levels.
-- **Finding** — `h3`, then a `.finding` list: `<li><b>Status:</b> …</li>`, `<li><b>Fix:</b> …</li>`, and `<li><b>Why:</b> …</li>` only when the reason is not obvious. Each bullet is one or two sentences. This is the workhorse; most of a report is a run of these.
-- **`.note`** — one left-ruled callout for a caveat, a confidence limit, or something you could not verify. Two or three in a report, never a row of them.
-- **`.tw` table** — every numeric column gets `class="n"` on both the `th` and the `td` so the digits line up. Keep tables to five columns or fewer, put the long-text column last, and keep cell text short; a wide table scrolls on a phone and clips in print.
-- **`figure` + `.bars`** — one small bar chart where a comparison reads faster than a sentence. One row per item: `.label`, a `.track` holding a `.bar` whose inline width is the value as a percentage of the largest, and `.value`. Inline SVG is fine for anything that is not a bar chart; give it a `viewBox` and real `<text>` labels.
-- **`hr` then a closing `h2`** — the "What to do next" list, ordered, shortest useful.
-- **How this report was made** — the last `h2`: the skill link line, then Tools and Verified bullets. See the section above.
-- **`footer`** — one line: the sign-off and the data date. Method detail belongs in the closing section, not here.
+## Self-check before `save_report`
+
+Run every line; fix, then save.
+
+1. **No external URLs** in `src`, `href` (other than `target="_blank"` links), `url(...)`, `@import`. No `<script>`, no `on...=` attributes, no backticks, no `${`.
+2. **Ends with `</html>`**; `<html lang>` matches the language; `<title>` set.
+3. **Numbers traced:** every figure maps to a line in Kaynaklar (tool, window). Nothing invented, `bilinmiyor` where unknown, data gaps named in a Veri notu.
+4. **Contrast and meaning:** text uses tokens only (4.5:1 in both schemes); every delta has an arrow and a sign; priority carries a word ("Etki: yüksek").
+5. **Mobile 390px:** tables stack (`data-label` on each `td`), no horizontal scroll, SVG has `viewBox`.
+6. **Language:** terms glossed once, no jargon left bare, pages named in every recommendation, "Bu hafta yapılacak tek şey" is one action doable this week.
+7. **Size** under 80 KB; the summary carries verdict, action and key numbers.
+
+## After you save
+
+- `save_report` returns `{ reportId, url, htmlBytes }`. Reply with at most three short bullets (the verdict, the top action, anything the user must act on), then `Read the full report: <url>` on its own line. No account of the run, no restating the report.
+- The running skill appends its own research-log line; add `{ appendResearchLog: { summary: "Report: <title>. Verdict: <conclusion>" } }` only if it does not.
+- If the save fails, the error names the limit and the value. Fix that one thing and save again. Never paste the report into chat instead.
 
 ## Guardrails
 
-- Do not narrate the run in chat. Three bullets and the link is the ceiling, not the floor.
-- Do not restyle the template per report. One look, kept good, is the point. A report template may set `--accent`, the byline (for example `Prepared for NAME` or a `Prepared by` sign-off), and the footer; nothing else in the CSS changes.
-- Do not paste the report body into chat, and do not offer to write it to a local file instead. The report lives in the project.
-- Do not save a report into a project you were not asked about. `save_report` takes the `projectId` the skill is already working in.
-- Do not invent a number to fill a table cell. Write `unknown` and say why in a `.note`.
+- Do not narrate the run in chat, paste the report body, or offer a local file instead. The report lives in the project.
+- Do not save into a project you were not asked about; `save_report` takes the `projectId` the skill is working in.
+- Do not restyle the design system per report and do not add scripts, web fonts or remote images "just once".

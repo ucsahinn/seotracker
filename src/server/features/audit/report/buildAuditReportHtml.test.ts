@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { REPORT_MAX_HTML_BYTES } from "@/types/schemas/reports";
 import { buildAuditReportHtml } from "./buildAuditReportHtml";
 
 function input(overrides: Partial<Parameters<typeof buildAuditReportHtml>[0]>) {
@@ -13,6 +14,20 @@ function input(overrides: Partial<Parameters<typeof buildAuditReportHtml>[0]>) {
     ...overrides,
   };
 }
+
+const issuesFor = (count: number) =>
+  Array.from({ length: count }, (_, i) => ({
+    issueType: "missing-title",
+    severity: "critical",
+    pageUrl: `https://example.com/p${i}`,
+    pageId: `id${i}`,
+  }));
+
+const row = (pageId: string, strategy: "mobile" | "desktop") => ({
+  pageId,
+  strategy,
+  performanceScore: 90,
+});
 
 describe("buildAuditReportHtml", () => {
   /*
@@ -57,7 +72,7 @@ describe("buildAuditReportHtml", () => {
     const { html, summary } = buildAuditReportHtml(
       input({
         issues: [
-          { issueType: "missing-title", severity: "critical", pageUrl: "/a" },
+          { issueType: "server-error", severity: "critical", pageUrl: "/a" },
           {
             issueType: "meta-description-too-long",
             severity: "info",
@@ -88,6 +103,79 @@ describe("buildAuditReportHtml", () => {
 
     expect(title.length).toBeLessThanOrEqual(120);
     expect(summary.length).toBeLessThanOrEqual(2500);
+  });
+
+  it("links Ek A only when the appendix exists", () => {
+    const few = buildAuditReportHtml(
+      input({ pagesCrawled: 3, issues: issuesFor(3) }),
+    );
+    expect(few.html).not.toContain('href="#ek-adresler"');
+
+    const many = buildAuditReportHtml(
+      input({ pagesCrawled: 80, issues: issuesFor(80) }),
+    );
+    expect(many.html).toContain('href="#ek-adresler"');
+    expect(many.html).toContain('id="ek-adresler"');
+  });
+
+  /*
+   * Nothing but the lists is capped by halving, so a pathological audit (many
+   * issue types, long details and addresses) used to end above the budget and
+   * be refused by saveReport.
+   */
+  it("fits the stored cap for a pathological audit", () => {
+    const longUrl = `https://example.com/${"x".repeat(2000)}`;
+    const details = JSON.stringify({ a: "d".repeat(5000) });
+    const issues = Array.from({ length: 3000 }, (_, i) => ({
+      issueType: `custom-type-${i}-${"t".repeat(100)}`,
+      severity: "warning",
+      pageUrl: `${longUrl}${i}`,
+      pageId: `id${i}`,
+      detailsJson: details,
+    }));
+    const { html } = buildAuditReportHtml(
+      input({ pagesCrawled: 3000, issues }),
+    );
+
+    expect(new TextEncoder().encode(html).length).toBeLessThanOrEqual(
+      REPORT_MAX_HTML_BYTES,
+    );
+  });
+
+  it("counts Lighthouse checks as two per page when judging partial measurement", () => {
+    const rows = ["a", "b", "c"].flatMap((id) => [
+      row(id, "mobile"),
+      row(id, "desktop"),
+    ]);
+    const full = buildAuditReportHtml(
+      input({ lighthouse: rows, lighthouseTotal: 6 }),
+    );
+    expect(full.html).not.toContain("Ölçüm kısmi");
+
+    const partial = buildAuditReportHtml(
+      input({ lighthouse: rows, lighthouseTotal: 10 }),
+    );
+    expect(partial.html).toContain("Ölçüm kısmi");
+    expect(partial.html).toContain("5 sayfanın ölçülmesi planlandı");
+  });
+
+  it("does not call a failed or empty audit clean", () => {
+    for (const overrides of [
+      { status: "failed" as const },
+      { pagesCrawled: 0 },
+    ]) {
+      const { html, summary } = buildAuditReportHtml(input(overrides));
+      expect(html).not.toContain("Kayıtlı hiçbir sorun yok");
+      expect(html).not.toContain("Bu denetimde kayıtlı sorun yok");
+      expect(summary).not.toContain("Kayıtlı sorun yok");
+      expect(summary).not.toContain("Site puanı");
+    }
+  });
+
+  it("gives two audits of one site on one day different titles", () => {
+    const a = buildAuditReportHtml(input({ auditId: "aaaaaa-1" }));
+    const b = buildAuditReportHtml(input({ auditId: "bbbbbb-2" }));
+    expect(a.title).not.toBe(b.title);
   });
 
   /*

@@ -6,14 +6,20 @@ import {
   COLORS,
   columnChart,
   figure,
+  stackedBars,
 } from "./reportCharts";
-import { capList, escapeHtml, moreLine, truncate } from "./reportFormat";
+import {
+  capList,
+  escapeHtml,
+  moreLine,
+  percent,
+  truncate,
+  truncateUrl,
+} from "./reportFormat";
+import { LIGHTHOUSE_CHECKS_PER_PAGE } from "@/shared/audit-limits";
 import { lighthouseBand } from "@/shared/lighthouse";
 import { describeLighthouse } from "./reportModel";
 import type { AuditReportInput, ReportLighthouse } from "./reportTypes";
-
-/** Pages listed in the per-page speed table. */
-const SPEED_TABLE_CAP = 50;
 
 const BAND_LABEL = { good: "İyi", fair: "Orta", poor: "Zayıf" };
 const BAND_COLOR = {
@@ -74,17 +80,90 @@ function worstList(
   return `<div><h4>${label}: en kötü 5</h4><table class="rows"><tbody>${worst
     .map(
       (r) =>
-        `<tr><td class="url">${escapeHtml(truncate(r.url, 70))}</td><td class="num">${escapeHtml(formatMetric(metric, r[metric]))}</td></tr>`,
+        `<tr><td class="url">${escapeHtml(truncateUrl(r.url, 70))}</td><td class="num">${escapeHtml(formatMetric(metric, r[metric]))}</td></tr>`,
     )
     .join("")}</tbody></table></div>`;
 }
 
-export function speedSection(input: AuditReportInput): string {
+const VITAL_INFO: Array<{ metric: Metric; name: string; plain: string }> = [
+  {
+    metric: "lcpMs",
+    name: "LCP (en büyük içerik)",
+    plain:
+      "Sayfanın ana görselinin ya da başlığının ekranda belirmesi ne kadar sürdü. 2,5 saniye altı iyi.",
+  },
+  {
+    metric: "cls",
+    name: "CLS (görsel kayma)",
+    plain:
+      "Sayfa yüklenirken içerik ne kadar yer değiştirdi; yanlış tıklamaya yol açan kayma. 0,1 altı iyi.",
+  },
+  {
+    metric: "inpMs",
+    name: "INP (tepki süresi)",
+    plain:
+      "Bir tıklamaya ya da dokunmaya sayfa ne kadar çabuk karşılık verdi. 200 ms altı iyi.",
+  },
+];
+
+/** Good / needs-work / poor counts per vital, as one stacked bar each. */
+function vitalsChart(rows: Array<ReportLighthouse>): string {
+  const bars = VITAL_INFO.flatMap(({ metric, name }) => {
+    const values = rows.flatMap((r) => {
+      const v = r[metric];
+      return typeof v === "number" ? [v] : [];
+    });
+    if (values.length === 0) return [];
+    const t = THRESHOLDS[metric];
+    return [
+      {
+        label: name.split(" ")[0],
+        parts: [
+          {
+            value: values.filter((v) => v <= t.good).length,
+            color: COLORS.good,
+            tag: "İ",
+          },
+          {
+            value: values.filter((v) => v > t.good && v <= t.poor).length,
+            color: COLORS.warning,
+            tag: "O",
+          },
+          {
+            value: values.filter((v) => v > t.poor).length,
+            color: COLORS.critical,
+            tag: "Z",
+          },
+        ],
+      },
+    ];
+  });
+  if (bars.length === 0) return "";
+  const caption = `${bars
+    .map(
+      (b) =>
+        `${b.label}: ${b.parts.map((p, i) => `${formatCount(p.value)} ${["iyi", "orta", "zayıf"][i]}`).join(", ")}`,
+    )
+    .join(
+      "; ",
+    )}. İ iyi, O orta, Z zayıf; her sayfa yalnızca ölçülen metrikte sayılır.`;
+  return figure(
+    "Temel Web Verileri: sayfaların dağılımı (mobil)",
+    stackedBars(bars),
+    caption,
+    "Her metrik için iyi, orta ve zayıf sayfa sayısı",
+  );
+}
+
+export function speedSection(
+  input: AuditReportInput,
+  tableCap: number,
+): string {
   const summary = describeLighthouse(input.lighthouse);
   if (!summary) {
     return `<section id="hiz">
       <h2>3. Hız ölçümü</h2>
-      <p class="empty">Bu denetimde kayıtlı Lighthouse sonucu yok; ya hız ölçümü kapalıydı ya da ölçümler tamamlanamadı.</p>
+      <p class="empty">${input.lighthouseMode === "none" ? "Bu denetimde hız ölçümü kapalıydı, bu yüzden sayfa hızı hakkında bir şey söylenmiyor." : "Bu denetimde kayıtlı Lighthouse sonucu yok: hız ölçümü kapalıydı ya da ölçümler tamamlanamadı (ör. ölçüm servisi istek sınırına takıldı). Hız ölçülmediği için bu rapor hız hakkında bir şey söylemez."}</p>
     </section>`;
   }
 
@@ -102,6 +181,11 @@ export function speedSection(input: AuditReportInput): string {
       .map((r) => [r.pageId ?? r.url, r]),
   );
   const failed = withUrl.filter((r) => r.errorMessage).length;
+  const plannedPages =
+    typeof input.lighthouseTotal === "number"
+      ? Math.ceil(input.lighthouseTotal / LIGHTHOUSE_CHECKS_PER_PAGE)
+      : 0;
+  const partial = plannedPages > summary.measured;
 
   const bands = [
     { label: "İyi (90-100)", value: summary.good, color: BAND_COLOR.good },
@@ -128,14 +212,14 @@ export function speedSection(input: AuditReportInput): string {
     mobile,
     (a, b) => (a.performanceScore ?? 101) - (b.performanceScore ?? 101),
   );
-  const { shown, hidden } = capList(ordered, SPEED_TABLE_CAP);
+  const { shown, hidden } = capList(ordered, tableCap);
   const table = `<table class="rows">
     <thead><tr><th>Adres</th><th>Mobil puan</th><th>Masaüstü puan</th><th>LCP</th><th>CLS</th><th>INP</th></tr></thead>
     <tbody>${shown
       .map((r) => {
         const desktop = desktopByPage.get(r.pageId ?? r.url);
         return `<tr>
-        <td class="url">${escapeHtml(truncate(r.url, 80))}${r.errorMessage ? `<br><span class="detail">Ölçüm hatası: ${escapeHtml(truncate(r.errorMessage, 120))}</span>` : ""}</td>
+        <td class="url">${escapeHtml(truncateUrl(r.url, 80))}${r.errorMessage ? `<br><span class="detail">Ölçüm hatası: ${escapeHtml(truncate(r.errorMessage, 120))}</span>` : ""}</td>
         <td class="num">${escapeHtml(scoreCell(r.performanceScore))}</td>
         <td class="num">${escapeHtml(scoreCell(desktop?.performanceScore))}</td>
         <td class="num">${escapeHtml(formatMetric("lcpMs", r.lcpMs))}</td>
@@ -148,11 +232,14 @@ export function speedSection(input: AuditReportInput): string {
 
   return `<section id="hiz">
     <h2>3. Hız ölçümü</h2>
-    <p class="note">${formatCount(summary.measured)} sayfa mobilde ölçüldü${failed > 0 ? `; ${formatCount(failed)} ölçüm hata verdi` : ""}. Ortalama tek bir sayı "her sayfa orta" ile "yarısı mükemmel yarısı felaket"i aynı gösterdiği için dağılım veriliyor.</p>
-    <div class="grid2">
+    <p class="note"><strong>${formatCount(summary.measured)} sayfa mobilde ölçüldü</strong>${input.pagesCrawled > 0 ? ` (taranan ${formatCount(input.pagesCrawled)} sayfanın %${formatCount(percent(summary.measured, input.pagesCrawled))}'i)` : ""}${failed > 0 ? `; ${formatCount(failed)} ölçüm hata verdi` : ""}. Ortalama tek bir sayı "her sayfa orta" ile "yarısı mükemmel yarısı felaket"i aynı gösterdiği için dağılım veriliyor.</p>
+    ${partial ? `<div class="callout callout--warn"><p><strong>Ölçüm kısmi.</strong> ${formatCount(plannedPages)} sayfanın ölçülmesi planlandı, ${formatCount(summary.measured)} tanesi puan verdi${failed > 0 ? "; kalanlar hata verdi ya da ölçüm servisinin istek sınırına takılmış olabilir" : ""}. Aşağıdaki dağılım yalnızca ölçülen sayfaları yansıtır; ölçülmeyenler iyi ya da kötü sayılmadı.</p></div>` : ""}
+    <div>
       ${figure("Mobil performans puanı dağılımı", columnChart(summary.histogram), chartSummary(summary.histogram, " sayfa"), "Lighthouse performans puanı histogramı")}
       ${figure("Puan bandı", barChart(bands), chartSummary(bands, " sayfa"), "İyi, orta, zayıf sayfa sayısı")}
     </div>
+    ${vitalsChart(mobile)}
+    <dl class="vitals">${VITAL_INFO.map((v) => `<div><dt>${escapeHtml(v.name)}</dt><dd>${escapeHtml(v.plain)}</dd></div>`).join("")}</dl>
     ${catData.length > 0 ? figure("Lighthouse kategorileri", barChart(catData), chartSummary(catData), "Kategori başına mobil ortalama puan") : ""}
     <h3>Sayfa sayfa sonuçlar</h3>
     <p class="note">Mobil performans puanı en düşük sayfalar üstte. Metrikler mobil ölçümden.</p>
@@ -164,7 +251,7 @@ export function speedSection(input: AuditReportInput): string {
       ${worstList(mobile, "inpMs", "INP")}
     </div>
     <div class="callout">
-      <p><strong>Laboratuvar ve gerçek kullanıcı verisi.</strong> Buradaki rakamlar Lighthouse'un laboratuvar ölçümüdür: tek bir sanal cihazda, kontrollü ağ ve işlemci koşulunda yapılır. Gerçek ziyaretçilerden toplanan alan verisi (Chrome Kullanıcı Deneyimi Raporu, CrUX) bu denetimde saklanmadığı için rapora girmiyor. İkisi farklı çıkabilir; Google sıralamada alan verisine bakar.</p>
+      <p><strong>Laboratuvar ve gerçek kullanıcı verisi.</strong> Buradaki rakamlar Lighthouse'un laboratuvar ölçümüdür: tek bir sanal cihazda, kontrollü ağ ve işlemci koşulunda yapılır. Gerçek ziyaretçilerden toplanan alan verisi (Chrome Kullanıcı Deneyimi Raporu, CrUX) bu denetimde saklanmadığı için rapora girmiyor. İkisi farklı çıkabilir. Google, sıralama sistemlerinde alan verisini (CrUX) kullanır; ama iyi bir değer tek başına sıralama garantisi vermez, içeriğin ilgili olması öncelik taşır.</p>
       <p>Eşikler Google'ın yayımladığı değerlerdir: LCP 2,5 sn altı iyi, 4 sn üstü zayıf; CLS 0,1 altı iyi, 0,25 üstü zayıf; INP 200 ms altı iyi, 500 ms üstü zayıf. INP laboratuvarda çoğu zaman ölçülemez ("--" görünür).</p>
     </div>
   </section>`;

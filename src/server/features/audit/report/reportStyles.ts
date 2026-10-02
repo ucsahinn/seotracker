@@ -12,13 +12,15 @@ main{max-width:920px;margin:0 auto;padding:32px 28px 56px;background:var(--surfa
 .running{display:none}
 a{color:var(--accent)}
 section{margin-top:40px}
+section>h2:first-child{margin-top:0}
 .cover{margin-top:0;padding-bottom:8px}
 .eyebrow{margin:0;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-h1{margin:8px 0 6px;font-size:34px;line-height:1.1;letter-spacing:-.02em;word-break:break-all}
-h2{font-size:20px;margin:0 0 12px;padding-bottom:8px;border-bottom:2px solid var(--accent);letter-spacing:-.01em}
+h1{margin:8px 0 6px;font-size:34px;line-height:1.1;letter-spacing:-.02em;overflow-wrap:anywhere}
+h2{font-size:20px;margin:28px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--accent);letter-spacing:-.01em}
 h3{font-size:15px;margin:22px 0 8px}
 h4{font-size:14px;margin:0;font-weight:600}
-.sub{margin:2px 0;color:var(--muted);font-size:13px;word-break:break-all}
+.sub{margin:2px 0;color:var(--muted);font-size:13px;overflow-wrap:anywhere}
+.sub--url{word-break:break-all}
 .scorebox{display:flex;align-items:center;gap:24px;margin:26px 0;padding:20px 24px;border:1px solid var(--line);border-radius:12px;background:#fafbfc}
 .gauge{width:132px;height:132px;flex:none}
 .gauge-num{font-size:34px;font-weight:700;fill:var(--ink)}
@@ -30,6 +32,15 @@ h4{font-size:14px;margin:0;font-weight:600}
 .card--critical{border-color:#e6b9bb}.card--warning{border-color:#e6d2a8}
 .card-label{margin:0;font-size:12px;color:var(--muted)}
 .card-value{margin:2px 0 0;font-size:22px;font-weight:600;letter-spacing:-.02em}
+.todos{margin:0;padding:0;list-style:none;counter-reset:todo}
+.todo{counter-increment:todo;position:relative;margin:10px 0;padding:14px 16px 12px 52px;border:1px solid var(--line);border-radius:12px;break-inside:avoid}
+.todo::before{content:counter(todo);position:absolute;left:14px;top:14px;width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;text-align:center;line-height:26px}
+.todo-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.todo-title{font-weight:700;font-size:15px}
+.todo p{margin:6px 0 0;font-size:13px}
+.todo-pages{margin:8px 0 0;padding:6px 10px;list-style:none;background:#f6f7f9;border-radius:8px;font-size:11.5px;overflow-wrap:anywhere}
+.todo-pages li{padding:1px 0}
+.todo-pages .more{color:var(--muted)}
 .fixlist{margin:0;padding-left:22px}
 .fixlist li{padding:6px 0;border-bottom:1px solid var(--line)}
 .fix-meta{color:var(--muted);font-size:12.5px;margin-left:6px}
@@ -60,6 +71,14 @@ table{width:100%;border-collapse:collapse}
 .empty{color:var(--muted)}
 .callout{margin-top:18px;padding:12px 16px;border-left:4px solid var(--accent);background:#f3f6fb;font-size:12.5px;border-radius:0 8px 8px 0}
 .callout p{margin:4px 0}
+.callout--warn{border-left-color:var(--warning);background:#fdf6e6}
+.vitals{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:12px 0}
+.vitals div,.method div{break-inside:avoid}
+.vitals dt,.method dt{font-weight:700;font-size:13px}
+.vitals dd,.method dd{margin:2px 0 0;font-size:12.5px;color:#3d4450}
+.method{margin:0}
+.method div{padding:8px 0;border-bottom:1px solid var(--line)}
+.plain{margin:0;padding-left:20px;font-size:13px}
 .sev-head{font-size:17px;margin:30px 0 4px;padding:6px 12px;border-radius:8px;background:#f1f3f6}
 .sev-block--critical .sev-head{border-left:5px solid var(--critical)}
 .sev-block--warning .sev-head{border-left:5px solid var(--warning)}
@@ -74,20 +93,28 @@ table{width:100%;border-collapse:collapse}
 .why{color:#3d4450}
 .chip{font-size:11px;padding:2px 9px;border-radius:999px;border:1px solid currentColor;font-weight:700}
 .chip--critical{color:var(--critical)}.chip--warning{color:var(--warning)}.chip--info{color:var(--info)}
-.rows{margin-top:10px;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.rows{margin-top:10px;border:1px solid var(--line)}
 .rows th{text-align:left;font-size:11.5px;color:var(--muted);font-weight:600;padding:6px 10px;border-bottom:1px solid var(--line);background:#fafbfc}
-.rows td{padding:5px 10px;border-bottom:1px solid var(--line);font-size:12px;vertical-align:top}
+.rows td{overflow-wrap:anywhere;padding:5px 10px;border-bottom:1px solid var(--line);font-size:12px;vertical-align:top}
 .rows tr:last-child td{border-bottom:0}
 .rows th.num{text-align:right}
-.url{word-break:break-all}
+.url{overflow-wrap:anywhere;word-break:break-all}
+.issue--long{break-inside:auto}
 .detail{color:var(--muted);font-size:11px;word-break:break-word}
 .pages td,.pages th{font-size:11px;padding:4px 8px}
 .ap-head{margin:16px 0 4px;font-size:13px}
 .ap-list{margin:0;padding-left:18px;columns:2;column-gap:24px;font-size:11px;word-break:break-all}
 .ap-list li{break-inside:avoid;padding:1px 0}
 footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}
-@page{size:A4;margin:20mm 14mm 18mm;@bottom-right{content:counter(page);font-size:9pt;color:#5b6472}}
-@media (max-width:700px){.grid2,.grid3,.cards{grid-template-columns:1fr}.scorebox{flex-direction:column;align-items:flex-start}.toc-issues,.ap-list{columns:1}}
+@page{size:A4;margin:20mm 14mm 18mm;@bottom-right{content:"Sayfa " counter(page) " / " counter(pages);font-size:9pt;color:#5b6472}}
+@media screen and (max-width:700px){.rows{display:block;overflow-x:auto}}
+@media (max-width:700px){.grid2,.grid3,.cards,.vitals{grid-template-columns:1fr}.scorebox{flex-direction:column;align-items:flex-start}.toc-issues,.ap-list{columns:1}}
+/*
+ * The @bottom-right page counter and the position:fixed running header are
+ * Chromium PDF features (Print to PDF); other engines ignore or repeat them.
+ * Print sizes are pt/em, not px, so they follow html{font-size:10.5pt}: the
+ * smallest printed text is 9pt.
+ */
 @media print{
 html{font-size:10.5pt}
 body{background:#fff}
@@ -95,9 +122,15 @@ main{max-width:none;padding:0}
 .running{display:block;position:fixed;top:-14mm;left:0;right:0;font-size:8.5pt;color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:2mm}
 section{break-before:page;margin-top:0}
 .cover{break-before:auto}
-.toc{break-inside:avoid}
-.issue,.card,.chart,.scorebox,.callout{break-inside:avoid}
-h2,h3,h4{break-after:avoid}
+.issue:not(.issue--long),.card,.chart,.scorebox,.callout{break-inside:avoid}
+h2,h3,h4,.chart-title,.sev-head,.cat-head,.issue-head{break-after:avoid}
+h2+.note{break-after:avoid}
+.note+.todos{break-before:avoid}
+.eyebrow,.cat,.chip,.detail,.pages td,.pages th,.ap-list,.todo-pages,figcaption,.cat-n,.toc-sub,.rows td,.rows th{font-size:9pt}
+.sub,.fix-meta,.note,.toc-issues,.callout,.legend th,.legend td,.vitals dd,.method dd,.todo p,.issue p,.plain{font-size:9.5pt}
+footer{font-size:9pt}
+figure,.todo,.vitals div{break-inside:avoid}
+table{break-inside:auto}
 tr{break-inside:avoid}
 thead{display:table-header-group}
 a{color:inherit;text-decoration:none}

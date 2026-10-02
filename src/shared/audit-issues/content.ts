@@ -3,26 +3,26 @@ import type { AuditIssueDescriptor } from "../audit-issue-types";
 
 export const CONTENT_ISSUES = {
   "missing-title": {
-    severity: "critical",
+    severity: "warning",
     title: "Başlık etiketi yok",
     explanation:
-      "Sayfanın başlık etiketi (<title>) yok. Başlık, arama sonucunda mavi bağlantı olarak görünen yazıdır ve Google sayfanın konusunu en çok buradan anlar. Yoksa Google kendisi bir başlık üretir, genelde de kötü olur.",
+      "Sayfanın başlık etiketi (<title>) yok. Başlık, arama sonucunda mavi bağlantı olarak görünen yazıdır. Yoksa Google başlığı sayfadaki başlıklardan ya da başka bağlantı metinlerinden türetir; bu, sizin seçmeyeceğiniz bir metin olabilir.",
     howToFix:
-      "Sayfaya konusunu anlatan, sayfaya özgü bir <title> ekleyin (yaklaşık 50-60 karakter). SEO eklentisi ya da site oluşturucunuz varsa başlık alanını doldurmanız yeter.",
+      "Sayfaya konusunu anlatan, sayfaya özgü bir <title> ekleyin (yaklaşık 50-60 karakter bir ölçüttür, kural değil). SEO eklentisi ya da site oluşturucunuz varsa başlık alanını doldurmanız yeter.",
   },
   "missing-meta-description": {
     severity: "warning",
     title: "Meta açıklama yok",
     explanation:
-      "Sayfanın meta açıklaması yok. Bu, arama sonucunda başlığın altında görünen kısa özet yazısıdır. Yoksa Google özeti sayfa metninden kendisi seçer; çoğu zaman daha az çekici olur ve tıklama oranını düşürür.",
+      "Sayfanın meta açıklaması yok. Bu, arama sonucunda başlığın altında görünen kısa özet yazısıdır. Yoksa Google özeti sayfa metninden kendisi seçer; bu özet sizin vermek istediğiniz mesaj olmayabilir.",
     howToFix:
-      "Sayfayı özetleyen ve tıklamak için bir neden veren 70-160 karakterlik bir meta açıklama yazın.",
+      "Sayfayı özetleyen ve tıklamak için bir neden veren bir meta açıklama yazın. Yaklaşık 70-160 karakter bir ölçüttür, kural değil; Google sınır koymaz, kesilme ekran genişliğine göre değişir.",
   },
   "missing-h1": {
-    severity: "warning",
+    severity: "info",
     title: "H1 başlığı yok",
     explanation:
-      "Sayfada H1 (sayfanın ana başlığı) yok. H1, hem ziyaretçiye hem Google'a sayfanın ne hakkında olduğunu ilk bakışta söyler.",
+      "Sayfada H1 (ana başlık) yok. Google H1'i zorunlu tutmaz, ama başlıklar ziyaretçinin sayfanın konusunu ilk bakışta anlamasını ve ekran okuyucuyla gezinmeyi kolaylaştırır; Google da başlıkları sayfanın yapısını anlamak için kullanabilir.",
     howToFix:
       "Sayfaya konusunu anlatan tek bir H1 ekleyin; başlık etiketiyle uyumlu olsun.",
   },
@@ -62,9 +62,9 @@ export const CONTENT_ISSUES = {
     severity: "info",
     title: "Başlık çok uzun",
     explanation:
-      "Başlık yaklaşık 60 karakteri aşıyor. Google sonucu gösterirken sonunu keser, yani en önemli kısım görünmeyebilir.",
+      "Başlık yaklaşık 60 karakteri aşıyor. Bu bir ölçüt, kural değil: Google karakter sınırı koymaz, arama sonucunda kesilme ekran genişliğine göre değişir. Uzun başlıkta en önemli kısım görünmeyebilir.",
     howToFix:
-      "Başlığı 50-60 karaktere indirin ve en önemli kelimeleri başa koyun.",
+      "Başlığı yaklaşık 50-60 karaktere indirin ve en önemli kelimeleri başa koyun.",
   },
   "title-too-short": {
     severity: "info",
@@ -78,22 +78,23 @@ export const CONTENT_ISSUES = {
     severity: "info",
     title: "Meta açıklama çok uzun",
     explanation:
-      "Meta açıklama yaklaşık 160 karakteri aşıyor. Google arama sonucunda özeti kesecek, sonundaki mesaj görünmeyecek.",
-    howToFix: "Ana mesajı başta tutarak açıklamayı 70-160 karaktere indirin.",
+      "Meta açıklama yaklaşık 160 karakteri aşıyor. Bu bir ölçüt, kural değil: Google sınır koymaz, arama sonucunda kesilme ekran genişliğine göre değişir. Uzun açıklamada sondaki mesaj görünmeyebilir.",
+    howToFix:
+      "Ana mesajı başta tutarak açıklamayı yaklaşık 70-160 karaktere indirin.",
   },
   "meta-description-too-short": {
     severity: "info",
     title: "Meta açıklama çok kısa",
     explanation:
-      "Meta açıklama 70 karakterden kısa. Bu kadar kısa yazılar arama sonucundaki alanı boşa harcar ve Google çoğu zaman bunun yerine sayfadan kendi seçtiği bir metni gösterir.",
+      "Meta açıklama yaklaşık 70 karakterden kısa. Bu bir ölçüt, kural değil; ama bu kadar kısa yazı arama sonucundaki alanı boşa harcar ve Google bunun yerine sayfadan kendi seçtiği bir metni gösterebilir.",
     howToFix:
-      "Açıklamayı, sayfayı özetleyen ve tıklamak için bir neden veren 70-160 karaktere genişletin.",
+      "Açıklamayı, sayfayı özetleyen ve tıklamak için bir neden veren yaklaşık 70-160 karaktere genişletin.",
   },
   "heading-order-skip": {
     severity: "info",
     title: "Başlık seviyeleri atlanmış",
     explanation:
-      "Başlık seviyeleri atlanmış, örneğin H2'den sonra doğrudan H4 gelmiş. Bu, sayfanın bölüm yapısını ekran okuyucular ve arama motorları için karıştırır. Menü ve altbilgi başlıkları da bu sıralamaya dahil olduğundan bazen yanlış alarm olabilir.",
+      "Başlık seviyeleri atlanmış, örneğin H2'den sonra doğrudan H4 gelmiş. Bu, ekran okuyucuyla gezinen ziyaretçiler için sayfa yapısını karıştırır; Google için sıralama kuralı yoktur. Menü ve altbilgi başlıkları da bu sıralamaya dahil olduğundan bazen yanlış alarm olabilir.",
     howToFix:
       "Başlıkları sırayla kullanın: H1, sonra H2, sonra H3. Seviye atlayan başlığı bir kademe yukarı çekin. Atlamanın menü ya da altbilgiden geldiğini görürseniz orada başlık etiketi yerine düz metin kullanın.",
   },
@@ -165,9 +166,9 @@ export const CONTENT_ISSUES = {
     severity: "warning",
     title: "Başlık etiketi yer tutucu bir yazı",
     explanation:
-      'Sayfanın başlığı "Untitled", "Başlıksız" ya da "New Page" gibi kimsenin yazmadığı bir yer tutucu. Arama sonucunda mavi bağlantı olarak bu çıkar; kimse tıklamak istemez ve Google çoğu zaman bu başlığı kullanmayıp başka bir metinle değiştirir.',
+      'Sayfanın başlığı "Untitled", "Başlıksız" ya da "New Page" gibi kimsenin yazmadığı bir yer tutucu. Arama sonucunda mavi bağlantı olarak bu çıkabilir; kimse tıklamak istemez. Google da bazen bu başlığı kullanmayıp başka bir metinle değiştirir.',
     howToFix:
-      "Sayfanın konusunu anlatan kendi başlığını yazın (yaklaşık 50-60 karakter). Sayfa sonradan doldurulacaksa dolana kadar noindex ile dizin dışında tutun.",
+      "Sayfanın konusunu anlatan kendi başlığını yazın (yaklaşık 50-60 karakter bir ölçüttür). Sayfa sonradan doldurulacaksa dolana kadar noindex ile dizin dışında tutun.",
   },
   "h1-too-long": {
     severity: "info",

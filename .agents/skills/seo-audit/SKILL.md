@@ -63,19 +63,19 @@ Keep the run tight: one crawl, one or two Search Console reads, and `inspect_url
 
 ## Output format
 
-`h1`: the domain. Then one or two opening sentences: the overall state and the one thing.
+Build the page from the `seo-report` design system (cover, "Bu hafta yapılacak tek şey" callout, KPI tiles, charts, stacked tables, Kaynaklar, self-check) and write in the site's language; headings below are English labels, translate them (Turkish: Özet, Bu hafta yapılacak tek şey, Küçük düzeltmeler, Önce nereye odaklanmalı, Şu an iyi giden, Sırada ne var). `h1`: the domain. Then one or two opening sentences: the overall state and the one thing.
 
 If a report template applies (see `seo-report`), its sections and tone replace this list.
 
 Sections in this order:
 
-1. **Verdict** — three to five bullets, one line each: the state of the site, the numbers that matter (pages crawled and indexable, clicks and impressions over the period, how many of the named pages Google has actually indexed), and the biggest gap. No prose. **Name the crawl budget against the site's apparent size.** `run_site_audit` defaults to 50 pages; "50 of roughly 900 pages crawled" and "50 pages crawled" say very different things, and only the first is honest on a large site. Raise `maxPages` instead when the site warrants it.
-2. **Top priority** — one finding, with copy-paste-ready mechanics.
-3. **Small fixes** — one finding each, 5 to 10 max, ordered by impact. Each shows the exact evidence: a quoted tag, a number, or a URL.
-4. **Where to focus first** (healthy sites only) — one sentence, then a table of 3 to 5 near-ranking queries with impressions and average position and the page that should own each, plus a bar chart when the impression counts are worth comparing. Omit the whole section when the site is down or Search Console is not connected.
+1. **Verdict** — KPI tiles for pages crawled, clicks and impressions (no deltas: an audit has one period) plus three to five bullets, one line each: the state of the site, the numbers that matter (pages crawled and indexable, clicks and impressions over the period, how many of the named pages Google has actually indexed), and the biggest gap. No prose. **Name the crawl budget against the site's apparent size.** `run_site_audit` defaults to 50 pages; "50 of roughly 900 pages crawled" and "50 pages crawled" say very different things, and only the first is honest on a large site. Raise `maxPages` instead when the site warrants it.
+2. **Top priority** — the `.action` callout ("Bu hafta yapılacak tek şey"): the page named, what to do, the expected effect in words, and copy-paste-ready mechanics.
+3. **Small fixes** — one finding each, 5 to 10 max, ordered by impact, each naming its page. Each shows the exact evidence: a quoted tag, a number, or a URL.
+4. **Where to focus first** (healthy sites only) — one sentence, then a table of 3 to 5 near-ranking queries with impressions and average position and the page that should own each, plus the bar chart pattern when the impression counts are worth comparing. Omit the whole section when the site is down or Search Console is not connected.
 5. **What's working now** — a short list.
-6. **What to do next** — an ordered list, the one thing first.
-7. **How this report was made** — opens with the skill link line from `seo-report`, pointing at `https://github.com/ucsahinn/seotracker/tree/main/.agents/skills/seo-audit` ("seotracker SEO Audit skill"), then what the tools reported and what you verified by hand.
+6. **What to do next** — the ranked `.acts` list with Etki tags, the one thing first.
+7. **How this report was made** — opens with the skill link line from `seo-report`, pointing at `https://github.com/ucsahinn/seotracker/tree/main/.agents/skills/seo-audit` ("seotracker SEO Audit skill"), then Kaynaklar: every tool call behind a number, with its date range, and what you verified by hand.
 
 Use a note for anything you could not verify or where the site's goal makes a standard recommendation the wrong call.
 
@@ -87,4 +87,5 @@ Use a note for anything you could not verify or where the site's goal makes a st
 - Missing Search Console data means "not connected" or "no recorded impressions", not a penalty; say which one and move on rather than dramatizing it.
 - Only claim a page is or is not indexed when `inspect_urls` said so. A page missing from the crawl or from Search Console is weaker evidence, and the report should say which of the two it is leaning on.
 - Favor queries the site can win now: real impressions, position 4 to 20, clear intent. Do not list head terms where the site has never been seen.
+- Name data gaps in a Veri notu: crawl covered N of roughly M pages, Lighthouse off or partial speed data, no query-level data, Search Console's three-day lag. Never fill a gap with an estimate.
 - Separate what the tools reported from what you verified yourself, and note both in the method footer.

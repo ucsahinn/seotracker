@@ -5,6 +5,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { ReportsList } from "@/client/features/reports/ReportsList";
+import { ReportKindsHelp } from "@/client/features/reports/ReportKindsHelp";
 import { ReportsSummarySkeleton } from "@/client/features/reports/ReportsSummary";
 import {
   DeleteReportModal,
@@ -42,15 +43,18 @@ function ReportsPage() {
     <PageShell>
       <PageHeader
         title="Raporlar"
-        description="Bu projeye kaydedilen HTML raporlar: denetim ekranından indirdikleriniz ve yapay zekâ ajanınızın yazdıkları. Yeni rapor için istemi kopyalayıp ajanınıza yapıştırın."
+        description="Projeniz için hazırlanmış SEO raporları. Her raporu buradan açabilir, indirebilir ya da silebilirsiniz."
         actions={
           <div className="flex items-center gap-2">
-            <CopyButton
-              primary
-              value={reportRequestPrompt(projectId)}
-              label="Ajanıma rapor yazdır"
-              successMessage="İstem kopyalandı, ajanınıza yapıştırın"
-            />
+            {/* With no reports the empty state carries this primary action. */}
+            {reportsQuery.data?.reports.length === 0 ? null : (
+              <CopyButton
+                primary
+                value={reportRequestPrompt(projectId)}
+                label="Yeni rapor iste"
+                successMessage="İstem kopyalandı, ajanınıza yapıştırın"
+              />
+            )}
             <Link
               to="/p/$projectId/reports/templates"
               params={{ projectId }}
@@ -62,16 +66,16 @@ function ReportsPage() {
         }
       />
 
-      {reportsQuery.isPending ? (
+      {!reportsQuery.data && reportsQuery.isPending ? (
         <div className="space-y-4">
-          <ReportsSummarySkeleton />
           <div className="space-y-2" aria-busy>
-            {Array.from({ length: 4 }, (_, index) => (
-              <div key={index} className="skeleton h-14" />
+            {Array.from({ length: 5 }, (_, index) => (
+              <div key={index} className="skeleton h-16" />
             ))}
           </div>
+          <ReportsSummarySkeleton />
         </div>
-      ) : reportsQuery.isError ? (
+      ) : !reportsQuery.data ? (
         <div className="rounded-box border border-base-300 bg-base-100">
           <QueryErrorState
             error={reportsQuery.error}
@@ -86,6 +90,8 @@ function ReportsPage() {
           onDelete={setPendingDelete}
         />
       )}
+
+      <ReportKindsHelp />
 
       {pendingDelete ? (
         <DeleteReportModal

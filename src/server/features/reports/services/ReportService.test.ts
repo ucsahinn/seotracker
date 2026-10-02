@@ -4,6 +4,7 @@ import {
   REPORT_MAX_BYTES_PER_ORG,
   REPORT_MAX_PER_PROJECT,
 } from "@/types/schemas/reports";
+import { buildAuditReportHtml } from "@/server/features/audit/report/buildAuditReportHtml";
 import { deleteReport, getReport, saveReport } from "./ReportService";
 
 const mocks = vi.hoisted(() => ({
@@ -110,6 +111,84 @@ describe("saveReport", () => {
       "Report is 640 KB; the limit is 500 KB. Inlined images are the usual cause. Remove them and save again.",
     );
     expect(mocks.insertReport).not.toHaveBeenCalled();
+  });
+
+  it("refuses markup the sandbox would block anyway", async () => {
+    for (const bad of [
+      "<html><body><script>alert(1)</script></body></html>",
+      '<html><body><img src="x" onerror="alert(1)"></body></html>',
+      '<html><body><a href="javascript:alert(1)">x</a></body></html>',
+      '<html><head><meta http-equiv="refresh" content="0;url=https://evil.example"></head><body></body></html>',
+      "<html><body><iframe src='https://evil.example'></iframe></body></html>",
+      "<html><body><svg/onload=alert(1)></svg></body></html>",
+      '<html><body><img src="x"onerror=alert(1)></body></html>',
+      '<html><body><img alt=">" onerror=alert(1)></body></html>',
+      '<html><body><a href="&#106;avascript:alert(1)">x</a></body></html>',
+      '<html><body><a href="java&Tab;script&colon;alert(1)">x</a></body></html>',
+      '<html><body><a href="jav	ascript:alert(1)">x</a></body></html>',
+      '<html><body><a xlink:href=" javascript:alert(1)">x</a></body></html>',
+    ]) {
+      await expect(save({ html: bad })).rejects.toThrow("reports may not use");
+    }
+    // Values that merely contain the text, and look-alike attribute names, pass.
+    for (const ok of [
+      '<a title="see onerror= here">x</a>',
+      '<a title="a > b" href="https://example.com/?x=javascript:1">x</a>',
+      '<div data-src="javascript:alert(1)" data-onclick="x">x</div>',
+    ]) {
+      await expect(
+        save({ html: `<html><body>${ok}</body></html>` }),
+      ).resolves.toBeDefined();
+    }
+    // Prose that merely mentions a script is not markup.
+    await expect(
+      save({
+        html: "<html><body><p>The script tag and onclick= are explained here.</p></body></html>",
+      }),
+    ).resolves.toBeDefined();
+  });
+
+  it("accepts the audit report builder's own output for hostile crawled text", async () => {
+    const built = buildAuditReportHtml({
+      siteUrl: "https://example.com/",
+      startedAt: "2026-09-28T08:00:00.000Z",
+      completedAt: "2026-09-28T08:04:00.000Z",
+      pagesCrawled: 2,
+      pages: [
+        {
+          url: "https://example.com/a",
+          statusCode: 200,
+          title: 'x" onclick="alert(1)',
+          metaDescription: "<script>alert(1)</script>",
+          wordCount: 1,
+          responseTimeMs: 1,
+          isIndexable: true,
+          inSitemap: true,
+        },
+      ],
+      issues: [
+        {
+          issueType: "missing-title",
+          severity: "critical",
+          pageUrl: 'https://example.com/"onerror="x',
+          pageId: "p1",
+          detailsJson: JSON.stringify({
+            title: 'x" onclick="alert(1)<script>',
+          }),
+        },
+      ],
+      lighthouse: [],
+    });
+
+    await expect(save({ html: built.html })).resolves.toBeDefined();
+  });
+
+  it("keeps the stored skill when an update sends an empty one", async () => {
+    await save({ reportId: "report_1", skill: "" });
+
+    expect(mocks.updateReportContent).toHaveBeenCalledWith(
+      expect.objectContaining({ skill: "seo-audit" }),
+    );
   });
 
   it("refuses a document that stopped mid-write", async () => {
