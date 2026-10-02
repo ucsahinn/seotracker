@@ -68,4 +68,24 @@ describe("inspectAndRecord", () => {
     );
     expect(rows[0]).toMatchObject({ verdict: "PASS", error: "quota" });
   });
+
+  it("keeps a stored verdict when a later answer has neither result nor error", async () => {
+    const url = "https://example.com/b";
+    state.inspectUrls.mockResolvedValueOnce({
+      siteUrl: "sc-domain:example.com",
+      results: [{ url, result: { indexStatusResult: { verdict: "PASS" } } }],
+    });
+    await inspectAndRecord({ projectId: "p1", urls: [url] });
+
+    state.inspectUrls.mockResolvedValueOnce({
+      siteUrl: "sc-domain:example.com",
+      results: [{ url, result: null }],
+    });
+    await inspectAndRecord({ projectId: "p1", urls: [url], force: true });
+
+    const { rows } = await client.execute(
+      "SELECT verdict FROM gsc_url_inspections WHERE url = 'https://example.com/b'",
+    );
+    expect(rows[0]).toMatchObject({ verdict: "PASS" });
+  });
 });

@@ -1,16 +1,14 @@
 import { PageShell } from "@/client/components/PageShell";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-// Aliased: `SavedKeywordsPage` has a local `sort` const (the saved-keyword
-// sort key) that would otherwise shadow this import at the call site.
-import { sort as sortArray } from "remeda";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import type {
   OnChangeFn,
   RowSelectionState,
   SortingState,
 } from "@tanstack/react-table";
 import { useEffect, useMemo, useState } from "react";
-import { toast } from "sonner";
+import { copyText } from "@/client/lib/copyText";
+import { refreshState } from "@/client/lib/refreshState";
 import { SavedKeywordsBulkActionBar } from "@/client/features/saved-keywords/SavedKeywordsBulkActionBar";
 import { SavedKeywordsBulkTagsModal } from "@/client/features/saved-keywords/SavedKeywordsBulkTagsModal";
 import { SavedKeywordsFilters } from "@/client/features/saved-keywords/SavedKeywordsFilters";
@@ -33,13 +31,13 @@ import { compileSavedKeywordsFilters } from "@/client/features/saved-keywords/sa
 import {
   SAVED_KEYWORD_PAGE_SIZES,
   toSavedKeywordSort,
+  uniqueTagsOf,
 } from "@/client/features/saved-keywords/savedKeywordsUtils";
 import { useSavedKeywordsExport } from "@/client/features/saved-keywords/useSavedKeywordsExport";
 import { useSavedKeywordsFilters } from "@/client/features/saved-keywords/useSavedKeywordsFilters";
 import { useSavedKeywordMutations } from "@/client/features/saved-keywords/useSavedKeywordMutations";
 import { useTagManage } from "@/client/features/saved-keywords/useTagManage";
 import { getSavedKeywords } from "@/serverFunctions/savedKeywords";
-import type { SavedKeywordTag } from "@/types/keywords";
 
 export const Route = createFileRoute("/_project/p/$projectId/saved")({
   component: SavedKeywordsPage,
@@ -114,7 +112,10 @@ function SavedKeywordsPage() {
   const savedQuery = useQuery({
     queryKey: ["savedKeywords", projectId, queryInput],
     queryFn: () => getSavedKeywords({ data: queryInput }),
-    placeholderData: keepPreviousData,
+    /* Only ever carry rows over within one project: a project switch must
+       not show the old project's keywords while the new ones load. */
+    placeholderData: (previous, previousQuery) =>
+      previousQuery?.queryKey[1] === projectId ? previous : undefined,
   });
   const { data, isLoading, isFetching } = savedQuery;
 
@@ -155,22 +156,17 @@ function SavedKeywordsPage() {
     : (data?.rows ?? []);
   const availableTags = data?.tags ?? [];
   const totalCount = byPosition ? positionRows.length : (data?.totalCount ?? 0);
+  // A new page, sort or filter is loading behind the previous rows.
+  const stale = byPosition ? false : savedQuery.isPlaceholderData;
   const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
   const selectedRows = savedKeywords.filter((row) => rowSelection[row.id]);
   const selectedIds = selectedRows.map((row) => row.id);
   const selectedCount = selectedIds.length;
 
-  const selectedRowTags = useMemo<SavedKeywordTag[]>(() => {
-    const map = new Map<string, SavedKeywordTag>();
-    for (const row of selectedRows) {
-      for (const tag of row.tags) {
-        if (!map.has(tag.id)) map.set(tag.id, tag);
-      }
-    }
-    return sortArray([...map.values()], (a, b) =>
-      a.normalizedName.localeCompare(b.normalizedName),
-    );
-  }, [selectedRows]);
+  const selectedRowTags = useMemo(
+    () => uniqueTagsOf(selectedRows),
+    [selectedRows],
+  );
 
   useEffect(() => {
     setRowSelection({});
@@ -212,6 +208,9 @@ function SavedKeywordsPage() {
     selectedTagIds,
     sort,
     order,
+    // The rows on screen while a position group narrows the table locally;
+    // the server filters know nothing about positions.
+    positionRows: byPosition ? positionRows : null,
   });
 
   const handleSortingChange: OnChangeFn<SortingState> = (updater) => {
@@ -239,6 +238,11 @@ function SavedKeywordsPage() {
     <PageShell>
       <SavedKeywordsHeader
         totalCount={totalCount}
+        refresh={refreshState([
+          savedQuery,
+          positionData.all,
+          positionData.tracked,
+        ])}
         exporting={exporter.exporting}
         onExportCsv={() => void exporter.exportFilteredCsv()}
         onExportSheets={() => void exporter.exportFilteredSheets()}
@@ -288,7 +292,12 @@ function SavedKeywordsPage() {
           onDeleteTag={(tagId) => void handleDeleteTag(tagId)}
         />
 
-        <div className="space-y-3 p-4">
+        <div
+          className={`space-y-3 p-4 transition-opacity ${
+            stale ? "opacity-60" : ""
+          }`}
+          aria-busy={stale}
+        >
           {removeError ? (
             <RemoveSavedKeywordsError message={removeError} />
           ) : null}
@@ -364,12 +373,12 @@ function SavedKeywordsPage() {
       <SavedKeywordsBulkActionBar
         selectedCount={selectedCount}
         exportingSelection={exporter.exportingSelection}
-        onCopy={() => {
-          void navigator.clipboard.writeText(
+        onCopy={() =>
+          void copyText(
             selectedRows.map((row) => row.keyword).join("\n"),
-          );
-          toast.success(`${selectedCount} kelime kopyalandı`);
-        }}
+            `${selectedCount} kelime kopyalandı`,
+          )
+        }
         onOpenTags={() => setShowTagModal(true)}
         onExportCsv={() => exporter.exportSelectionCsv(selectedRows)}
         onExportSheets={() => void exporter.exportSelectionSheets(selectedRows)}

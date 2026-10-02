@@ -63,7 +63,12 @@ function SearchPerformanceRoute() {
       query={search.q ?? ""}
       quickFilter={search.f}
       onViewChange={(next) =>
-        void navigate({ search: (current) => ({ ...current, ...next }) })
+        void navigate({
+          search: (current) => ({ ...current, ...next }),
+          // A search term is a refinement of the same view, not a new place
+          // to go Back to: replace the entry instead of one per pause.
+          replace: Object.keys(next).length === 1 && "q" in next,
+        })
       }
     />
   );

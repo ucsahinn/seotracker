@@ -78,3 +78,24 @@ describe("IssuesView", () => {
     );
   });
 });
+
+describe("IssuesView severity in the URL", () => {
+  it("reports a cleared severity so the address bar stops carrying it", () => {
+    const onSeverityChange = vi.fn();
+    render(
+      <IssuesView
+        issues={issues}
+        initialSeverity="critical"
+        onSeverityChange={onSeverityChange}
+        onClearFocus={() => {}}
+        onShowPages={() => {}}
+      />,
+    );
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "Kritik seçimini kaldır" }),
+    );
+
+    expect(onSeverityChange).toHaveBeenCalledWith(null);
+  });
+});

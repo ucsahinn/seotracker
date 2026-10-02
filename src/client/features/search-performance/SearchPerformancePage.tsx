@@ -5,14 +5,13 @@ import { DeviceBreakdown } from "@/client/features/search-performance/DeviceBrea
 import { SearchAppearanceBreakdown } from "@/client/features/search-performance/SearchAppearanceBreakdown";
 import { TYPE_LABELS } from "@/client/features/search-performance/SearchFilters";
 import { CountryBreakdown } from "@/client/features/search-performance/CountryBreakdown";
+import { PageActions, RefreshButton } from "@/client/components/RefreshButton";
+import { refreshState } from "@/client/lib/refreshState";
+import { TAB_HINTS } from "@/client/features/search-performance/tabHints";
+import { useWarmQueriesTab } from "@/client/features/search-performance/useWarmQueriesTab";
 import { TabPanel, Tabs } from "@/client/components/Tabs";
-import { useEffect } from "react";
 import { Link } from "@tanstack/react-router";
-import {
-  keepPreviousData,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Download, Loader2, Sheet } from "lucide-react";
 import { toast } from "sonner";
 import { TableExportMenu } from "@/client/components/table/TableBulkActionBar";
@@ -60,17 +59,6 @@ import {
   type SearchPerformanceType,
 } from "@/types/schemas/search-performance";
 
-/** What each tab is for, in one plain sentence, shown above its panel. */
-const TAB_HINTS: Record<Tab, string> = {
-  striking:
-    "Ortalama sırası 5 ile 20 arasında olan sorgular. 5-10 arası ilk sayfanın alt yarısı, 11-20 ikinci sayfa; küçük bir iyileştirme ikisini de üste taşıyabilir. Gösterime göre sıralı.",
-  queries:
-    "İnsanların sizi hangi aramalarla bulduğu; her sorgunun tıklama, gösterim ve ortalama sırasıyla.",
-  pages: "Google'da en çok görünen ve tıklanan sayfalarınız.",
-  cannibalization:
-    "Aynı arama için birden fazla sayfanızın birbiriyle yarıştığı yerler.",
-};
-
 /** The tab values the route validates against. */
 export const SEARCH_PERFORMANCE_TABS = [
   "striking",
@@ -116,11 +104,12 @@ export function SearchPerformancePage({
     f?: QuickFilterId;
   }) => void;
 }) {
-  const queryClient = useQueryClient();
   // One keyword from a row menu, the same call the rankings screen uses.
   const saveOne = useSaveTrackedKeyword(projectId);
-  // A chip chosen on one tab must not silently narrow the next one.
-  const setTab = (next: Tab) => onViewChange({ tab: next, f: undefined });
+  // A chip or a search term chosen on one tab must not silently narrow the
+  // next one (a query typed on Sorgular would filter Sayfalar by that text).
+  const setTab = (next: Tab) =>
+    onViewChange({ tab: next, f: undefined, q: undefined });
 
   const filterInput = buildFilterInput(range, device, country, searchType);
 
@@ -135,7 +124,9 @@ export function SearchPerformancePage({
     ],
     queryFn: () =>
       getSearchPerformanceReport({ data: { projectId, ...filterInput } }),
-    placeholderData: keepPreviousData,
+    // Carry the report over a filter change, never across projects.
+    placeholderData: (previous, previousQuery) =>
+      previousQuery?.queryKey[1] === projectId ? previous : undefined,
   });
   const report = reportQuery.data;
 
@@ -148,7 +139,10 @@ export function SearchPerformancePage({
        only queries are prefetched, so Sayfalar would otherwise open on
        query rows until Google answered. */
     placeholderData: (previous, previousQuery) =>
-      previousQuery?.queryKey[2] === dimension ? previous : undefined,
+      previousQuery?.queryKey[1] === projectId &&
+      previousQuery.queryKey[2] === dimension
+        ? previous
+        : undefined,
   });
   const tableData = tableQuery.data;
   const tableRows = tableData?.connected ? tableData.rows : [];
@@ -163,26 +157,15 @@ export function SearchPerformancePage({
     onViewChange({ f: next });
   const tableTruncated = tableData?.connected ? tableData.truncated : false;
 
-  // Warm the Queries tab (first page) as soon as the report connects so the tab
-  // opens instantly instead of showing a spinner. Free first-party GSC data.
-  useEffect(() => {
-    if (report?.connected !== true) return;
-    void queryClient.prefetchQuery(
-      tableQueryOptions(
-        projectId,
-        "query",
-        buildFilterInput(range, device, country, searchType),
-      ),
-    );
-  }, [
-    report?.connected,
-    projectId,
-    range,
-    device,
-    country,
-    searchType,
-    queryClient,
-  ]);
+  useWarmQueriesTab(projectId, report?.connected === true, filterInput);
+
+  // The table query is only live on the Sorgular and Sayfalar tabs; a disabled
+  // query would still fetch on refetch(), so it joins only while it is shown.
+  const refresh = refreshState(
+    isTableTab ? [reportQuery, tableQuery] : [reportQuery],
+  );
+
+  const stale = reportQuery.isPlaceholderData || tableQuery.isPlaceholderData;
 
   const handleExport = async (target: ExportTarget) => {
     if (!report?.connected) return;
@@ -207,13 +190,16 @@ export function SearchPerformancePage({
         description="Google Search Console'dan gelen tıklama, gösterim, tıklama oranı ve ortalama sıra."
         actions={
           report?.connected ? (
-            <Link
-              to="/p/$projectId/settings/integrations"
-              params={{ projectId }}
-              className="link link-hover shrink-0 self-start text-sm font-medium text-muted transition-colors hover:text-base-content sm:mt-1"
-            >
-              Mülkü değiştir
-            </Link>
+            <PageActions>
+              <RefreshButton {...refresh} shortcut />
+              <Link
+                to="/p/$projectId/settings/integrations"
+                params={{ projectId }}
+                className="link link-hover shrink-0 text-sm font-medium text-muted transition-colors hover:text-base-content"
+              >
+                Mülkü değiştir
+              </Link>
+            </PageActions>
           ) : null
         }
       />
@@ -233,7 +219,14 @@ export function SearchPerformancePage({
           <SearchConsoleConnectionCard projectId={projectId} />
         </div>
       ) : (
-        <>
+        /* The previous report stays up while a new range, device or country
+           loads; dimmed and aria-busy so it is not mistaken for the answer. */
+        <div
+          className={`flex flex-col gap-6 transition-opacity ${
+            stale ? "opacity-60" : ""
+          }`}
+          aria-busy={stale}
+        >
           {/*
            * Which days these totals are about. The dropdown says "Son 28
            * gün" and the resolved range reached the client all along, but
@@ -423,7 +416,7 @@ export function SearchPerformancePage({
               )}
             </TabPanel>
           </div>
-        </>
+        </div>
       )}
     </PageShell>
   );

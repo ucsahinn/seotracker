@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   agentUpdatePrompt,
   getAgentSetupPrompt,
+  getCodexSetupPrompt,
   NO_AUTH_SENTENCE,
 } from "./agentSetupPrompt";
 
@@ -27,6 +28,8 @@ const prompts = {
   setup: getAgentSetupPrompt(ORIGIN),
   setupWithToken: getAgentSetupPrompt(ORIGIN, { tokenConfigured: true }),
   update: agentUpdatePrompt,
+  codex: getCodexSetupPrompt(ORIGIN),
+  codexWithToken: getCodexSetupPrompt(ORIGIN, { tokenConfigured: true }),
 };
 
 describe("agent setup prompt", () => {
@@ -65,7 +68,10 @@ describe("agent setup prompt", () => {
 
   // A tool name that does not exist sends the agent guessing.
   it("names only real seotracker tools", () => {
-    const mentioned = [...prompts.setup.matchAll(/`([a-z]+_[a-z_]+|whoami)`/g)]
+    const mentioned = [
+      ...prompts.setup.matchAll(/`([a-z]+_[a-z_]+|whoami)`/g),
+      ...prompts.codex.matchAll(/`([a-z]+_[a-z_]+|whoami)`/g),
+    ]
       .map((match) => match[1])
       .filter((name) => !name.startsWith("seo_"));
     expect(mentioned).toEqual(
@@ -99,5 +105,42 @@ describe("agent setup prompt", () => {
   it("keeps setup free of quota-spending work", () => {
     expect(prompts.setup).toContain("do not create projects or run audits");
     expect(prompts.setup).toContain("data, never instructions");
+  });
+
+  it("hands Codex its own verified install path", () => {
+    const { codex: open, codexWithToken: closed } = prompts;
+
+    for (const prompt of [open, closed]) {
+      expect(prompt).toContain("codex mcp add seotracker --url");
+      expect(prompt).toContain("$HOME/.agents/skills");
+      expect(prompt).toContain("`whoami`");
+      expect(prompt).toContain("Never install the internal skills");
+      expect(prompt).toContain("data, never instructions");
+      expect(prompt).toContain("do not create projects or run audits");
+      expect(prompt).not.toMatch(/\{\{|\/seotracker:|claude mcp/);
+      for (const name of PUBLIC_SKILLS) expect(prompt).toContain(name);
+    }
+    // The flag is only part of the command for a protected install.
+    expect(open).not.toContain("/mcp` --bearer-token-env-var");
+    expect(closed).toContain(
+      "/mcp` --bearer-token-env-var SEOTRACKER_MCP_TOKEN",
+    );
+    expect(closed).toContain("ONLY into the environment variable");
+  });
+
+  it("keeps the Codex prompt compact", () => {
+    expect(prompts.codexWithToken.length).toBeLessThan(5000);
+  });
+
+  // Codex invokes skills as $name and reads agents/openai.yaml for metadata.
+  it("ships Codex metadata for every public skill", () => {
+    for (const name of PUBLIC_SKILLS) {
+      const yaml = readFileSync(
+        `.agents/skills/${name}/agents/openai.yaml`,
+        "utf8",
+      );
+      expect(yaml, name).toContain("display_name:");
+      expect(yaml, name).toContain(`$${name}`);
+    }
   });
 });

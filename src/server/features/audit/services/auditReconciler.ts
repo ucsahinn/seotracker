@@ -22,6 +22,15 @@ import {
 import { captureServerEvent } from "@/server/lib/observability";
 
 /**
+ * When this process started. This fork runs as one container against one
+ * database, so any audit that began before this moment was started by a
+ * previous process and nothing is executing it now. Truncated to whole
+ * seconds because audit timestamps have second precision: an audit started
+ * in the boot second must not read as older than the boot.
+ */
+const PROCESS_BOOT_MS = Math.floor(Date.now() / 1000) * 1000;
+
+/**
  * Don't declare an instance "lost" until the audit is comfortably older than
  * any legitimate create/start delay: startAudit inserts the row before
  * creating the workflow, so a brand-new audit can briefly have no instance.
@@ -47,7 +56,6 @@ type RunningAudit = {
  */
 export async function reconcileRunningAudit(
   audit: RunningAudit,
-  options?: { instanceCannotBeRunning?: boolean },
 ): Promise<AuditErrorInfo | null> {
   if (!audit.workflowInstanceId) return null;
 
@@ -66,10 +74,7 @@ export async function reconcileRunningAudit(
    * audit. Failing it is the truthful answer, and `failAudit` keeps the
    * pages already crawled, which are persisted per batch.
    */
-  if (
-    options?.instanceCannotBeRunning &&
-    isOlderThan(audit.startedAt, INSTANCE_LOST_GRACE_MS)
-  ) {
+  if (parseStartedAt(audit.startedAt) < PROCESS_BOOT_MS) {
     const abandoned: AuditErrorInfo = {
       errorCode: "instance_lost",
       errorDetail: "Interrupted: the process running this audit restarted",
@@ -123,27 +128,20 @@ export async function reconcileRunningAudit(
 }
 
 /** Cron watchdog: sweep stale running audits and reconcile each. */
-/*
- * Whether this process has swept yet. The first sweep after boot is the one
- * that can say "nothing here is running", because everything it finds was
- * started by a process that has since gone.
- */
-let sweptSinceBoot = false;
-
 export async function reconcileStaleAudits() {
-  const cutoff = new Date(Date.now() - STALE_RUNNING_AFTER_MS);
+  // An audit from before this boot is a candidate however young it is; a
+  // newer one only once it has been running suspiciously long.
+  const cutoff = new Date(
+    Math.max(Date.now() - STALE_RUNNING_AFTER_MS, PROCESS_BOOT_MS),
+  );
   const stale = await getStaleRunningAudits(cutoff, WATCHDOG_BATCH_LIMIT);
-  const firstSweep = !sweptSinceBoot;
-  sweptSinceBoot = true;
 
   for (const audit of stale) {
     try {
-      const errorInfo = await reconcileRunningAudit(audit, {
-        instanceCannotBeRunning: firstSweep,
-      });
+      const errorInfo = await reconcileRunningAudit(audit);
       if (!errorInfo) continue;
 
-      console.log(
+      console.warn(
         `Audit watchdog: marked ${audit.id} failed (${errorInfo.errorCode}, phase=${audit.currentPhase})`,
       );
       const project = await db.query.projects.findFirst({
@@ -205,12 +203,16 @@ async function getStaleRunningAudits(cutoff: Date, limit: number) {
   });
 }
 
-function isOlderThan(startedAt: string, ageMs: number): boolean {
+/** Epoch ms of a stored timestamp; unparseable reads as infinitely old. */
+function parseStartedAt(startedAt: string): number {
   // D1-default timestamps ("YYYY-MM-DD HH:MM:SS") lack the T/Z; normalize so
   // Date.parse reads them as UTC, matching the PG ISO format.
   const parsed = Date.parse(
     startedAt.includes("T") ? startedAt : `${startedAt.replace(" ", "T")}Z`,
   );
-  if (Number.isNaN(parsed)) return true;
-  return parsed < Date.now() - ageMs;
+  return Number.isNaN(parsed) ? Number.NEGATIVE_INFINITY : parsed;
+}
+
+function isOlderThan(startedAt: string, ageMs: number): boolean {
+  return parseStartedAt(startedAt) < Date.now() - ageMs;
 }

@@ -10,6 +10,8 @@
 
 /** Platform default on the Paid plan; wrangler.audit.jsonc raises it. */
 export const WORKFLOW_DEFAULT_STEP_LIMIT = 10_000;
+/** `limits.steps` in wrangler.audit.jsonc, the limit audits actually run under. */
+export const WORKFLOW_STEP_LIMIT = 25_000;
 
 /** URLs measured per `lighthouse-chunk-N` step (2 checks each, in parallel). */
 export const LIGHTHOUSE_URLS_PER_STEP = 5;
@@ -35,9 +37,10 @@ const FIXED_AUDIT_STEPS = 6;
 /** Steps the speed phase creates for this many measured pages. */
 export function lighthouseStepCount(pages: number, worstCase = false) {
   const chunks = Math.ceil(pages / LIGHTHOUSE_URLS_PER_STEP);
+  // Every wave has a `lighthouse-urls-N` read step plus its fetch pass.
   // Worst case: every wave is rate limited through all its re-passes and then
   // fails into a fallback step that records the error rows.
-  return worstCase ? chunks * (LIGHTHOUSE_RATE_LIMIT_PASSES + 2) : chunks;
+  return worstCase ? chunks * (LIGHTHOUSE_RATE_LIMIT_PASSES + 3) : chunks * 2;
 }
 
 /**

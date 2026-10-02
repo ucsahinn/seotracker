@@ -58,6 +58,8 @@ export function OpportunityKinds({
             aria-pressed={active}
             onClick={() => onSelect(active ? null : kind.id)}
             className={`flex flex-col items-start justify-start rounded-box border px-4 py-3 text-left transition-colors disabled:cursor-default disabled:opacity-60 ${
+              entry.pages === 0 ? "" : "card-lift"
+            } ${
               active
                 ? "border-primary bg-primary/5"
                 : "border-base-300 bg-base-100 enabled:hover:border-primary/40"

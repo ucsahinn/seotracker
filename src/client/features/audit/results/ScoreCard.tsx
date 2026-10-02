@@ -1,3 +1,4 @@
+import { AnimatedNumber } from "@/client/components/AnimatedNumber";
 import { ArrowRight } from "lucide-react";
 import { useMemo } from "react";
 import {
@@ -126,7 +127,9 @@ export function ScoreCard({
           />
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-3xl font-semibold tabular-nums">{score}</span>
+          <span className="text-3xl font-semibold tabular-nums">
+            <AnimatedNumber value={score} />
+          </span>
           <span className="text-xs text-muted">/ 100</span>
         </div>
       </div>

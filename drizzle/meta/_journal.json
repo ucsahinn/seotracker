@@ -435,6 +435,13 @@
       "when": 1790853288488,
       "tag": "0061_first_h1",
       "breakpoints": true
+    },
+    {
+      "idx": 62,
+      "version": "6",
+      "when": 1790939688488,
+      "tag": "0062_update_check_last_success",
+      "breakpoints": true
     }
   ]
 }

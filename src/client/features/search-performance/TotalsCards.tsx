@@ -2,7 +2,12 @@ import { fractionalChange } from "@/shared/delta";
 import { MetricRow, MetricTile } from "@/client/components/MetricTile";
 import type { Report } from "@/client/features/search-performance/SearchPerformanceColumns";
 import { describeTotals } from "@/client/features/search-performance/totals";
-import { formatDate, formatDecimal, formatPercent } from "@/client/lib/format";
+import {
+  formatCount,
+  formatDate,
+  formatDecimal,
+  formatPercent,
+} from "@/client/lib/format";
 
 type Delta = { text: string; improved: boolean } | null;
 
@@ -53,12 +58,14 @@ export function TotalsCards({ report }: { report: Report }) {
       <MetricTile
         label="Tıklama"
         value={shown.clicks}
+        animateTo={{ value: totals.clicks, format: formatCount }}
         delta={delta(totals.clicks, prevTotals.clicks)}
         deltaTitle={deltaTitle}
       />
       <MetricTile
         label="Gösterim"
         value={shown.impressions}
+        animateTo={{ value: totals.impressions, format: formatCount }}
         delta={delta(totals.impressions, prevTotals.impressions)}
         deltaTitle={deltaTitle}
       />
@@ -66,6 +73,7 @@ export function TotalsCards({ report }: { report: Report }) {
         label="Tıklama oranı"
         hint="Gösterimlerin yüzde kaçı tıklamaya döndü."
         value={shown.ctr}
+        animateTo={{ value: totals.ctr, format: (n) => formatPercent(n) }}
         delta={
           shown.hasImpressions ? ctrDelta(totals.ctr, prevTotals.ctr) : null
         }
@@ -75,6 +83,7 @@ export function TotalsCards({ report }: { report: Report }) {
         label="Ortalama sıra"
         hint="Küçük olan iyidir; 1, sonuçların en üstü demek."
         value={shown.position}
+        animateTo={{ value: totals.position, format: (n) => formatDecimal(n) }}
         delta={
           shown.hasImpressions
             ? positionDelta(totals.position, prevTotals.position)

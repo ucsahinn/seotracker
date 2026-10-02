@@ -16,11 +16,12 @@ export function GoogleOAuthSetupWarning({
         <p className="font-medium">Google istemcisi tanımlı değil</p>
         <p className="text-muted">
           {integrationName} bağlamadan önce Google istemci kimliğinizi ve gizli
-          anahtarınızı girin.
+          anahtarınızı ya da bir hizmet hesabı anahtarını girin.
         </p>
         <div className="flex flex-wrap items-center gap-3">
           <Link
             to="/settings"
+            hash="google"
             className="font-medium underline underline-offset-2"
           >
             Ayarlar'da gir

@@ -1,3 +1,4 @@
+import { copyText } from "@/client/lib/copyText";
 import { Link } from "@tanstack/react-router";
 import { Check, Copy, ExternalLink, Search, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -158,7 +159,8 @@ export function OpportunityDetail({
           type="button"
           className="btn btn-sm gap-1.5"
           onClick={() => {
-            void navigator.clipboard.writeText(row.page).then(() => {
+            void copyText(row.page, "Adres kopyalandı").then((ok) => {
+              if (!ok) return;
               setCopied(true);
               window.setTimeout(() => setCopied(false), 2000);
             });

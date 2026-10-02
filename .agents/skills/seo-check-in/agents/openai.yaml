@@ -1,0 +1,4 @@
+interface:
+  display_name: "SEO Check-in"
+  short_description: "Compare this period with the last one"
+  default_prompt: "Use $seo-check-in to tell me what changed since last period and whether it matters."

@@ -105,7 +105,7 @@ async function storedFor(
  * overwritten. That makes this a floor, which is why it is spent against
  * 2000 and not treated as an exact ledger.
  */
-async function inspectionsInLastDay(
+export async function inspectionsInLastDay(
   projectId: string,
   now: Date,
 ): Promise<number> {
@@ -237,13 +237,14 @@ export async function inspectAndRecord(input: {
       checkedAt,
     };
     /*
-     * A failed inspection carries no answer. Writing its nulls over the
+     * A failed inspection carries no answer, with or without an error
+     * message: an entry with no result is a failure. Writing its nulls over the
      * conflict would erase a verdict Google already gave and restart the
      * retry clock on a page that is not actually stale, so a failure on an
      * already-stored URL only records the error and the attempt time. A URL
      * with nothing stored still gets the full row from the insert.
      */
-    const failed = !entry.result && !!entry.error;
+    const failed = !entry.result;
     return tx
       .insert(gscUrlInspections)
       .values(values)

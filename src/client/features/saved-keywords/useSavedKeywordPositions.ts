@@ -1,4 +1,4 @@
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { getTrackedQueries } from "@/serverFunctions/gscHistory";
 import { exportSavedKeywords } from "@/serverFunctions/savedKeywords";
@@ -26,7 +26,9 @@ export function useSavedKeywordPositions(
   const all = useQuery({
     queryKey: ["savedKeywords", projectId, "all", filters],
     queryFn: () => exportSavedKeywords({ data: { projectId, ...filters } }),
-    placeholderData: keepPreviousData,
+    // Carry the list over a filter change, never across projects.
+    placeholderData: (previous, previousQuery) =>
+      previousQuery?.queryKey[1] === projectId ? previous : undefined,
   });
   const tracked = useQuery({
     queryKey: ["trackedQueries", projectId, POSITION_WINDOW_DAYS, "saved"],

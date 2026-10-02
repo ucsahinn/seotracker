@@ -43,17 +43,39 @@ type UpdateStatus = {
   releaseUrl: string;
   publishedAt: string | null;
   updateAvailable: boolean;
+  /** When GitHub was last asked, whether or not it answered. */
   checkedAt: string | null;
+  /** When GitHub last answered usefully: the age of `latestVersion`. */
+  lastSuccessAt: string | null;
   /**
    * Why there is nothing to show, when there is nothing to show. `ok` covers
-   * both "up to date" and "an update exists".
+   * both "up to date" and "an update exists". `error` means the last attempt
+   * failed but an older answer is cached: `latestVersion` is then only the
+   * last known one, as of `lastSuccessAt`.
    */
-  outcome: "ok" | "disabled" | "never_checked" | "no_releases" | "unreachable";
+  outcome:
+    | "ok"
+    | "error"
+    | "disabled"
+    | "never_checked"
+    | "no_releases"
+    | "unreachable";
 };
+
+/** 200 and 304 both confirm the cached answer; 404 is "no releases yet". */
+function isFailedAttempt(lastStatus: number | null): boolean {
+  return (
+    lastStatus !== null &&
+    lastStatus !== 200 &&
+    lastStatus !== 304 &&
+    lastStatus !== 404
+  );
+}
 
 function statusFrom(row: {
   enabled: boolean;
   checkedAt: string | null;
+  lastSuccessAt: string | null;
   latestTag: string | null;
   releaseUrl: string | null;
   publishedAt: string | null;
@@ -67,7 +89,9 @@ function statusFrom(row: {
       : row.lastStatus === 404
         ? "no_releases"
         : latestVersion
-          ? "ok"
+          ? isFailedAttempt(row.lastStatus)
+            ? "error"
+            : "ok"
           : "unreachable";
 
   return {
@@ -80,6 +104,7 @@ function statusFrom(row: {
       latestVersion && isNewerVersion(currentVersion, latestVersion),
     ),
     checkedAt: row.checkedAt,
+    lastSuccessAt: row.lastSuccessAt,
     outcome,
   };
 }
@@ -139,13 +164,18 @@ async function getStatus(options?: { force?: boolean }): Promise<UpdateStatus> {
     const result = await fetchLatest(row.etag);
     if (result.status === 304) {
       return statusFrom(
-        await UpdateCheckRepository.save({ checkedAt, lastStatus: 304 }),
+        await UpdateCheckRepository.save({
+          checkedAt,
+          lastSuccessAt: checkedAt,
+          lastStatus: 304,
+        }),
       );
     }
     if (result.release) {
       return statusFrom(
         await UpdateCheckRepository.save({
           checkedAt,
+          lastSuccessAt: checkedAt,
           lastStatus: 200,
           etag: result.etag,
           latestTag: result.release.tag_name,

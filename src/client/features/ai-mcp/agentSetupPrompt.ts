@@ -1,4 +1,5 @@
 import installerSkill from "../../../../.agents/skills/setup-seotracker/SKILL.md?raw";
+import codexPrompt from "./agentCodexSetupPrompt.md?raw";
 import updatePrompt from "./agentUpdatePrompt.md?raw";
 
 export const agentUpdatePrompt = updatePrompt.trim();
@@ -32,4 +33,29 @@ export function getAgentSetupPrompt(
     ? instructions.replace(NO_AUTH_SENTENCE, TOKEN_SENTENCE)
     : instructions;
   return authed.replaceAll("http://localhost:3001", origin);
+}
+
+const CODEX_TOKEN_FLAG = " --bearer-token-env-var SEOTRACKER_MCP_TOKEN";
+
+/*
+ * Codex-only variant of the installer. Codex has its own verified commands
+ * (`codex mcp add`, `$HOME/.agents/skills`, `$skill` invocation), so it gets a
+ * compact prompt instead of the all-clients one. The auth sentence and the
+ * flag are the only parts that depend on the install, and they are filled from
+ * placeholders so a reword cannot silently desync them.
+ */
+export function getCodexSetupPrompt(
+  origin: string,
+  options?: { tokenConfigured?: boolean },
+) {
+  const tokenConfigured = options?.tokenConfigured === true;
+  const auth = tokenConfigured
+    ? "This install is behind a shared secret: add the entry with the bearer flag and follow the token steps now. The token goes ONLY into the environment variable, read by the shell inside one command. Never ask me to paste it into chat."
+    : "seotracker runs on my own machine and answers only to me, so there is no sign-in. If the server answers 401, it needs the token: re-add the entry with `--bearer-token-env-var SEOTRACKER_MCP_TOKEN` and follow the token steps.";
+  return codexPrompt
+    .trim()
+    .replace(/\r\n/g, "\n")
+    .replace("{{AUTH}}", auth)
+    .replace("{{FLAG}}", tokenConfigured ? CODEX_TOKEN_FLAG : "")
+    .replaceAll("http://localhost:3001", origin);
 }

@@ -1,3 +1,5 @@
+import { PageActions, RefreshButton } from "@/client/components/RefreshButton";
+import { ReportsQuota } from "@/client/features/reports/ReportsQuota";
 import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { CopyButton } from "@/client/components/CopyButton";
 import { reportRequestPrompt } from "@/client/features/reports/reportRequestPrompt";
@@ -45,7 +47,13 @@ function ReportsPage() {
         title="Raporlar"
         description="Projeniz için hazırlanmış SEO raporları. Her raporu buradan açabilir, indirebilir ya da silebilirsiniz."
         actions={
-          <div className="flex items-center gap-2">
+          <PageActions>
+            <RefreshButton
+              onRefresh={() => void reportsQuery.refetch()}
+              isFetching={reportsQuery.isFetching}
+              dataUpdatedAt={reportsQuery.dataUpdatedAt}
+              shortcut
+            />
             {/* With no reports the empty state carries this primary action. */}
             {reportsQuery.data?.reports.length === 0 ? null : (
               <CopyButton
@@ -62,7 +70,7 @@ function ReportsPage() {
             >
               Şablonlar
             </Link>
-          </div>
+          </PageActions>
         }
       />
 
@@ -92,6 +100,8 @@ function ReportsPage() {
       )}
 
       <ReportKindsHelp />
+
+      <ReportsQuota projectId={projectId} />
 
       {pendingDelete ? (
         <DeleteReportModal

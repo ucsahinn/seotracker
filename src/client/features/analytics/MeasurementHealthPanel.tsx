@@ -122,6 +122,10 @@ export function MeasurementHealthPanel({ projectId }: { projectId: string }) {
         <MetricTile
           label="Web veri akışı"
           value={formatCount(health.summary.webStreamCount)}
+          animateTo={{
+            value: health.summary.webStreamCount,
+            format: formatCount,
+          }}
           hint={
             health.summary.dataStreamCount > health.summary.webStreamCount
               ? `${formatCount(health.summary.dataStreamCount)} akıştan web olanlar`
@@ -133,16 +137,25 @@ export function MeasurementHealthPanel({ projectId }: { projectId: string }) {
         <MetricTile
           label="Anahtar olay"
           value={formatCount(health.summary.keyEventCount)}
+          animateTo={{
+            value: health.summary.keyEventCount,
+            format: formatCount,
+          }}
           hint="Önemli saydığınız hareket, örneğin form gönderme ya da satın alma. Tanımlı değilse rapor hep 0 gösterir."
         />
         <MetricTile
           label="Özel boyut"
           value={formatCount(health.summary.customDimensionCount)}
+          animateTo={{
+            value: health.summary.customDimensionCount,
+            format: formatCount,
+          }}
           hint={`${formatCount(health.summary.customMetricCount)} özel metrik`}
         />
         <MetricTile
           label="Bulgu"
           value={formatCount(health.summary.issueCount)}
+          animateTo={{ value: health.summary.issueCount, format: formatCount }}
           hint={
             health.summary.issueCount === 0
               ? "Kurulum eksiksiz"

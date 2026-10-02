@@ -1,0 +1,4 @@
+interface:
+  display_name: "SEO Triage"
+  short_description: "Work out whether a traffic drop is real"
+  default_prompt: "Use $seo-triage to find out whether my traffic drop is real, where and when."

@@ -35,10 +35,10 @@ Coach mode is for quick orientation: a read of where things stand, a plain expla
 
 When the user wants to go deeper, hand off to a skill instead of doing the full workflow inline:
 
-- Name the skill and what it produces in one line, then offer to run it: "Want the full version? `/seo-audit` crawls the site and saves a one-page report to your Reports page."
+- Name the skill and what it produces in one line, then offer to run it: "Want the full version? The `seo-audit` skill crawls the site and saves a one-page report to your Reports page."
 - Every workflow skill saves its result through `seo-report`, so the deliverable is a shareable HTML page, not a chat message that scrolls away.
 - Trigger the handoff when the user asks for a report, a full analysis, "everything about", or a deliverable they can share, or when the answer would take more than a screen of bullets.
-- Invoke a skill the way this client does: as a slash command (`/seotracker:<skill>` from the plugin, `/<skill>` installed standalone) or by name, whichever the user used. If this client has no skill mechanism, name the skill and follow its `SKILL.md`.
+- Invoke a skill the way this client does (a slash command, a `$skill` mention, or by name), whichever the user used; do not assume one syntax. If this client has no skill mechanism, name the skill and follow its `SKILL.md`.
 
 ## Project context
 
@@ -82,7 +82,7 @@ The one thing to do this week: rewrite the /pricing title and description so the
 
 Want to go deeper?
 1. Show the ten queries /pricing is closest on.
-2. Run `/seo-audit` for the full report.
+2. Run the `seo-audit` skill for the full report.
 3. Explain any of the numbers above.
 ```
 

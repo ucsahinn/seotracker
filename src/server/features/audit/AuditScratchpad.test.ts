@@ -10,6 +10,7 @@ import {
   BROKEN_LINKS_SQL,
   ORPHAN_PAGES_SQL,
   SCRATCHPAD_SCHEMA_SQL,
+  UPSERT_DISCOVERED_SQL,
 } from "@/server/features/audit/scratchpad-sql";
 
 const START = "https://site.test/";
@@ -248,5 +249,25 @@ describe("query plans", () => {
     ).toBe(true);
     // page_mirror is scanned once as the outer loop, never per inbound row.
     expect(detail.filter((line) => /SCAN m\b/.test(line))).toHaveLength(1);
+  });
+});
+
+describe("rediscovered URL depth", () => {
+  const depthAfter = (...discoveries: Array<number | null>) => {
+    for (const depth of discoveries) {
+      db.prepare(UPSERT_DISCOVERED_SQL).run("https://site.test/a", depth);
+    }
+    return db
+      .prepare("SELECT depth FROM frontier WHERE url = 'https://site.test/a'")
+      .get();
+  };
+
+  it("keeps a known depth when the URL is rediscovered without one", () => {
+    expect(depthAfter(3, null)).toEqual({ depth: 3 });
+  });
+
+  it("fills a missing depth and only ever lowers a known one", () => {
+    expect(depthAfter(null, 4)).toEqual({ depth: 4 });
+    expect(depthAfter(2, 5)).toEqual({ depth: 2 });
   });
 });

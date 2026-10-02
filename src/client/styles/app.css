@@ -676,3 +676,159 @@ html[data-theme="seotracker"]
 .table thead th {
   color: var(--text-subtle);
 }
+
+/* -------------------------------------------------------------------------
+   Premium touches
+
+   Every moving part sits inside `prefers-reduced-motion: no-preference`, so a
+   reader who asked for less motion gets the static version of each element
+   and nothing is hidden behind an animation. Only transform and opacity move,
+   so none of it shifts layout. No new colours: all tints are the existing
+   accent, success, warning and error mixed into transparency.
+   ------------------------------------------------------------------------- */
+
+/* Progress. The fill is full width and scaled from the left edge, which
+   animates on the compositor instead of re-laying out a width. */
+.progress-track {
+  height: 0.5rem;
+  overflow: hidden;
+  border-radius: 9999px;
+  background: color-mix(in oklab, var(--color-base-content) 10%, transparent);
+}
+.progress-fill {
+  height: 100%;
+  width: 100%;
+  border-radius: inherit;
+  transform-origin: left center;
+}
+/* Unknown length without motion: a half-strength full bar, state in the text. */
+.progress-indeterminate {
+  opacity: 0.4;
+}
+
+@keyframes shimmer-slide {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+@keyframes progress-slide {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(250%);
+  }
+}
+@keyframes dot-ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  80%,
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+@keyframes glow-breathe {
+  50% {
+    box-shadow: 0 0 14px 1px
+      color-mix(in oklab, var(--color-primary) 45%, transparent);
+  }
+}
+
+/* A live indicator: the dot itself is static, a ring expands from it. */
+.dot-live {
+  position: relative;
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background: currentColor;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .progress-fill {
+    transition: transform 500ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  .progress-active {
+    background-image: linear-gradient(
+      100deg,
+      transparent 30%,
+      color-mix(in oklab, var(--color-base-100) 35%, transparent) 50%,
+      transparent 70%
+    );
+    background-size: 200% 100%;
+    animation: shimmer-slide 1.8s linear infinite;
+  }
+  .progress-indeterminate {
+    opacity: 1;
+    width: 40%;
+    transform-origin: left center;
+    animation: progress-slide 1.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+
+  .dot-live::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: currentColor;
+    animation: dot-ping 1.8s ease-out infinite;
+  }
+
+  /* Loading placeholders: a light band passes over the tint. */
+  .skeleton {
+    background-image: linear-gradient(
+      100deg,
+      transparent 30%,
+      color-mix(in oklab, var(--color-base-content) 9%, transparent) 50%,
+      transparent 70%
+    );
+    background-size: 200% 100%;
+    animation: shimmer-slide 1.8s linear infinite;
+  }
+
+  /* Focus arrives as a soft halo rather than a snap. The 2px ring above stays
+     the indicator; the halo is reinforcement. */
+  .input,
+  .select,
+  .textarea {
+    transition:
+      border-color 150ms ease,
+      background-color 150ms ease,
+      box-shadow 150ms ease;
+  }
+  .input:focus-visible,
+  .select:focus-visible,
+  .textarea:focus-visible {
+    box-shadow: 0 0 0 4px
+      color-mix(in oklab, var(--color-primary) 16%, transparent);
+  }
+
+  /* A press you can feel. */
+  .btn:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+
+  /* Opt-in: where the accent marks the active item. */
+  .glow-active {
+    animation: glow-breathe 3.2s ease-in-out infinite;
+  }
+}
+
+/* Opt-in lift for clickable cards. Only where a pointer can hover. */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .card-lift {
+    transition:
+      transform 180ms cubic-bezier(0.32, 0.72, 0, 1),
+      box-shadow 180ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  .card-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-float);
+  }
+}

@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { DonutCard, donutSummary } from "@/client/components/DonutChart";
+import { Reveal } from "@/client/components/Reveal";
 import { MetricRow, MetricTile } from "@/client/components/MetricTile";
 import {
   filterCounts,
@@ -49,12 +50,17 @@ export function ReportsSummary({
   const segments = kindSegments(reports);
 
   return (
-    <div className="space-y-4">
+    <Reveal className="space-y-4">
       <MetricRow>
-        <MetricTile label="Rapor" value={formatCount(counts.all)} />
+        <MetricTile
+          label="Rapor"
+          value={formatCount(counts.all)}
+          animateTo={{ value: counts.all, format: formatCount }}
+        />
         <MetricTile
           label="Son 7 gün"
           value={formatCount(counts.recent)}
+          animateTo={{ value: counts.recent, format: formatCount }}
           hint="Bu sürede güncellenen"
         />
         <MetricTile
@@ -83,6 +89,6 @@ export function ReportsSummary({
         selectedKey={selectedKind}
         onSelect={onSelectKind}
       />
-    </div>
+    </Reveal>
   );
 }

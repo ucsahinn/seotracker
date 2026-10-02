@@ -1,3 +1,4 @@
+import { copyText } from "@/client/lib/copyText";
 import { EmptyState } from "@/client/components/EmptyState";
 import {
   createColumnHelper,
@@ -24,7 +25,6 @@ import { TagChip } from "./TagChip";
 import { formatSavedKeywordDate } from "./savedKeywordsUtils";
 import { positionOf } from "./savedKeywordPositions";
 import { Copy, Search as SearchIcon, Trash2 } from "lucide-react";
-import { toast } from "sonner";
 import { RowActions } from "@/client/components/table/RowActions";
 
 const columnHelper = createColumnHelper<SavedKeywordRow>();
@@ -141,12 +141,8 @@ export function SavedKeywordsTable({
               {
                 label: "Kelimeyi kopyala",
                 icon: Copy,
-                onSelect: () => {
-                  void navigator.clipboard
-                    .writeText(row.original.keyword)
-                    .then(() => toast.success("Kelime kopyalandı"))
-                    .catch(() => toast.error("Panoya kopyalanamadı"));
-                },
+                onSelect: () =>
+                  void copyText(row.original.keyword, "Kelime kopyalandı"),
               },
               {
                 label: "Arama performansında ara",

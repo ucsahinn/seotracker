@@ -4,7 +4,7 @@ import { ClipboardCheck, Sparkles } from "lucide-react";
 export function ReportKindsHelp() {
   return (
     <div className="grid gap-3 sm:grid-cols-2">
-      <div className="flex gap-3 rounded-box border border-base-300 bg-base-100 p-4">
+      <div className="card-lift flex gap-3 rounded-box border border-base-300 bg-base-100 p-4">
         <Sparkles aria-hidden className="mt-0.5 size-5 shrink-0 text-muted" />
         <div className="space-y-1">
           <h2 className="text-sm font-semibold">Ajanın yazdığı raporlar</h2>
@@ -16,7 +16,7 @@ export function ReportKindsHelp() {
           </p>
         </div>
       </div>
-      <div className="flex gap-3 rounded-box border border-base-300 bg-base-100 p-4">
+      <div className="card-lift flex gap-3 rounded-box border border-base-300 bg-base-100 p-4">
         <ClipboardCheck
           aria-hidden
           className="mt-0.5 size-5 shrink-0 text-muted"

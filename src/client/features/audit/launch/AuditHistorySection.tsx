@@ -33,6 +33,7 @@ export function AuditHistorySection({
   onDelete,
   onRerun,
   onStartFirst,
+  isRerunPending = false,
 }: {
   projectId: string;
   history: Awaited<ReturnType<typeof getAuditHistory>>;
@@ -43,6 +44,8 @@ export function AuditHistorySection({
   onRetry?: () => void;
   onDelete: (auditId: string) => void;
   onRerun: (audit: HistoryRow) => void;
+  /** A start is already in flight; the "run again" action waits for it. */
+  isRerunPending?: boolean;
 }) {
   /*
    * Sortable, because this list only grows. `getAuditHistory` returns every
@@ -250,6 +253,7 @@ export function AuditHistorySection({
                         audit={audit}
                         onDelete={onDelete}
                         onRerun={onRerun}
+                        isRerunPending={isRerunPending}
                       />
                     </div>
                   </td>
@@ -327,10 +331,12 @@ function HistoryActions({
   audit,
   onDelete,
   onRerun,
+  isRerunPending,
 }: {
   audit: HistoryRow;
   onDelete: (auditId: string) => void;
   onRerun: (audit: HistoryRow) => void;
+  isRerunPending: boolean;
 }) {
   return (
     <div className="flex items-center justify-end gap-2 transition-opacity can-hover:opacity-0 can-hover:group-hover:opacity-100 can-hover:group-focus-within:opacity-100">
@@ -341,6 +347,9 @@ function HistoryActions({
             label: "Aynı ayarlarla yeniden başlat",
             icon: RotateCw,
             onSelect: () => onRerun(audit),
+            disabledReason: isRerunPending
+              ? "Bir denetim zaten başlatılıyor"
+              : undefined,
           },
           {
             label: "Denetimi sil",

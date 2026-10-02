@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
-  get: vi.fn(),
+  get: vi.fn<() => Promise<Record<string, unknown>>>(),
   save: vi.fn(),
   fetch: vi.fn<typeof fetch>(),
 }));
@@ -17,6 +17,7 @@ import { UpdateCheckService } from "./UpdateCheckService";
 const BLANK = {
   enabled: true,
   checkedAt: null,
+  lastSuccessAt: null,
   etag: null,
   latestTag: null,
   releaseUrl: null,
@@ -39,10 +40,10 @@ describe("UpdateCheckService", () => {
   beforeEach(() => {
     mocks.get.mockResolvedValue({ ...BLANK });
     // The service reads back what it wrote, so the save mock has to merge.
-    mocks.save.mockImplementation(async (values: Record<string, unknown>) => ({
-      ...BLANK,
-      ...values,
-    }));
+    mocks.save.mockImplementation(async (values: Record<string, unknown>) => {
+      const current: Record<string, unknown> = await mocks.get();
+      return { ...current, ...values };
+    });
     vi.stubGlobal("fetch", mocks.fetch);
   });
   afterEach(() => {
@@ -99,6 +100,49 @@ describe("UpdateCheckService", () => {
     const status = await UpdateCheckService.getStatus();
 
     expect(status.outcome).toBe("unreachable");
+  });
+
+  /*
+   * The bug this pins: a forced check that failed used to keep outcome "ok"
+   * because an older tag was cached, so the button answered "up to date"
+   * after a failed GitHub call.
+   */
+  it.each([
+    ["the network is down", () => Promise.reject(new Error("ENOTFOUND"))],
+    [
+      "GitHub rate limits the call",
+      () => Promise.resolve(new Response("", { status: 403 })),
+    ],
+  ])(
+    "reports a failed forced check when %s, keeping the cached version",
+    async (_name, respond) => {
+      const lastSuccessAt = "2026-09-20T08:00:00.000Z";
+      mocks.get.mockResolvedValue({
+        ...BLANK,
+        checkedAt: lastSuccessAt,
+        lastSuccessAt,
+        lastStatus: 200,
+        latestTag: "v0.3.0",
+      });
+      mocks.fetch.mockImplementation(respond);
+
+      const status = await UpdateCheckService.getStatus({ force: true });
+
+      expect(status).toMatchObject({
+        outcome: "error",
+        latestVersion: "v0.3.0",
+        lastSuccessAt,
+      });
+      expect(status.checkedAt).not.toBe(lastSuccessAt);
+    },
+  );
+
+  it("records when GitHub last answered, so a later failure can report it", async () => {
+    mocks.fetch.mockResolvedValue(release("v0.3.0"));
+
+    const status = await UpdateCheckService.getStatus();
+
+    expect(status.lastSuccessAt).toBe(status.checkedAt);
   });
 
   // Every call is one of 60 an hour, shared with everything else on the

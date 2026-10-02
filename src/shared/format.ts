@@ -113,6 +113,15 @@ function parse(value: string): number {
   );
 }
 
+/**
+ * Epoch ms for a stored timestamp: SQLite's zone-less "YYYY-MM-DD HH:MM:SS"
+ * is read as UTC, an ISO string or a bare day as `parse` above does. NaN when
+ * unparseable. Use this instead of `new Date(value)` for database columns.
+ */
+export function parseTimestamp(value: string): number {
+  return parse(value);
+}
+
 function safe(value: string, formatter: Intl.DateTimeFormat): string {
   const ms = parse(value);
   return Number.isNaN(ms) ? value : formatter.format(ms);

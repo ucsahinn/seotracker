@@ -34,6 +34,7 @@ import {
 import type { IssueSeverity } from "@/shared/audit-issues";
 import { IssuesView } from "@/client/features/audit/results/IssuesView";
 import { PagesTable } from "@/client/features/audit/results/PagesTable";
+import { Reveal } from "@/client/components/Reveal";
 import { TabPanel, Tabs } from "@/client/components/Tabs";
 import {
   ExportDropdown,
@@ -46,12 +47,14 @@ export function ResultsView({
   onTabChange,
   tab,
   severity,
+  onSeverityChange,
 }: {
   projectId: string;
   data: AuditResultsData;
   tab: ResultsTab;
   severity?: IssueSeverity;
-  onTabChange: (tab: ResultsTab) => void;
+  onTabChange: (tab: ResultsTab, options?: { replace?: boolean }) => void;
+  onSeverityChange?: (severity: IssueSeverity | null) => void;
 }) {
   const { audit, pages, lighthouse, issues } = data;
   const crawlStopped = issues.some(
@@ -70,7 +73,8 @@ export function ResultsView({
    * and the other person saw something else than you described.
    */
   useEffect(() => {
-    if (tab !== activeTab) onTabChange(activeTab);
+    // Replace, not push: the corrected entry must not trap the Back button.
+    if (tab !== activeTab) onTabChange(activeTab, { replace: true });
   }, [activeTab, onTabChange, tab]);
   const property = useAuditPropertyMatch(projectId, audit.startUrl);
   const blockedCount = useMemo(
@@ -189,133 +193,136 @@ export function ResultsView({
         </CrawlWarning>
       )}
 
-      <div className="flex justify-end">
-        <DownloadReportButton projectId={projectId} auditId={audit.id} />
-      </div>
+      <Reveal className="flex flex-col gap-6">
+        <div className="flex justify-end">
+          <DownloadReportButton projectId={projectId} auditId={audit.id} />
+        </div>
 
-      <ScoreCard
-        issues={issues}
-        pagesCrawled={audit.pagesCrawled}
-        onOpenIssues={() => onTabChange("issues")}
-      />
+        <ScoreCard
+          issues={issues}
+          pagesCrawled={audit.pagesCrawled}
+          onOpenIssues={() => onTabChange("issues")}
+        />
 
-      <div className="card bg-base-100 border border-base-300">
-        <div className="card-body gap-3">
-          <ResultsHeader
-            issueCount={issuePageCount}
-            issueRowCount={scopedIssues.length}
-            coverageCount={coverageRows === null ? null : coverageRows.length}
-            pageCount={filteredPages.length}
-            lighthouseCount={filteredLighthouse.length}
-            hasPerformanceTab={hasPerformanceTab}
-            activeTab={activeTab}
-            onTabChange={onTabChange}
-            onExport={(format) => {
-              if (activeTab === "index") {
-                exportIndexCoverage(coverageRows ?? [], format);
-                return;
-              }
-              if (activeTab === "performance") {
-                exportPerformance(filteredLighthouse, pages, format);
-                return;
-              }
-              if (activeTab === "issues") {
-                exportIssues(scopedIssues, format);
-                return;
-              }
-              exportPages(filteredPages, format);
-            }}
-          />
+        <div className="card bg-base-100 border border-base-300">
+          <div className="card-body gap-3">
+            <ResultsHeader
+              issueCount={issuePageCount}
+              issueRowCount={scopedIssues.length}
+              coverageCount={coverageRows === null ? null : coverageRows.length}
+              pageCount={filteredPages.length}
+              lighthouseCount={filteredLighthouse.length}
+              hasPerformanceTab={hasPerformanceTab}
+              activeTab={activeTab}
+              onTabChange={onTabChange}
+              onExport={(format) => {
+                if (activeTab === "index") {
+                  exportIndexCoverage(coverageRows ?? [], format);
+                  return;
+                }
+                if (activeTab === "performance") {
+                  exportPerformance(filteredLighthouse, pages, format);
+                  return;
+                }
+                if (activeTab === "issues") {
+                  exportIssues(scopedIssues, format);
+                  return;
+                }
+                exportPages(filteredPages, format);
+              }}
+            />
 
-          <TabPanel group="audit-results" value={activeTab}>
-            <div className="mb-3">
-              <TabIntro tab={activeTab} />
-            </div>
-            {activeTab === "index" && (
-              <div className="space-y-4">
-                {/* Two halves of one question. Above: what the site told
+            <TabPanel group="audit-results" value={activeTab}>
+              <div className="mb-3">
+                <TabIntro tab={activeTab} />
+              </div>
+              {activeTab === "index" && (
+                <div className="space-y-4">
+                  {/* Two halves of one question. Above: what the site told
                     Google to crawl. Below: what Google decided about the
                     pages this audit found. A sitemap Google has not
                     downloaded since March explains a coverage table full of
                     unanswered rows, and the two used to live apart. */}
-                {property.covered ? null : (
-                  <ForeignPropertyNotice
+                  {property.covered ? null : (
+                    <ForeignPropertyNotice
+                      projectId={projectId}
+                      auditedHost={property.auditedHost}
+                      propertyHost={property.propertyHost ?? "başka bir mülk"}
+                    />
+                  )}
+                  <SitemapStatusPanel projectId={projectId} />
+                  <IndexCoverageView
                     projectId={projectId}
-                    auditedHost={property.auditedHost}
-                    propertyHost={property.propertyHost ?? "başka bir mülk"}
+                    auditId={audit.id}
+                    onRowsChange={(rows) => setCoverageRows(rows ?? null)}
+                    askDisabledReason={
+                      property.covered
+                        ? undefined
+                        : `Bu denetim ${property.auditedHost} adresine ait, bağlı mülk ise ${property.propertyHost ?? "başka bir mülk"}. Sormak kotayı boşa harcardı.`
+                    }
                   />
-                )}
-                <SitemapStatusPanel projectId={projectId} />
-                <IndexCoverageView
-                  projectId={projectId}
+                </div>
+              )}
+              {activeTab === "issues" && (
+                <IssuesView
+                  issues={issues}
+                  initialSeverity={severity}
+                  onSeverityChange={onSeverityChange}
+                  focusUrl={issueFocusUrl}
+                  onClearFocus={() => setIssueFocusUrl(undefined)}
+                  onShowPages={(urls, label) => {
+                    setPagesFilters(EMPTY_PAGES_FILTERS);
+                    setPageScope({ label, urls });
+                    onTabChange("pages");
+                  }}
+                />
+              )}
+              {activeTab === "pages" && (
+                <PagesTable
+                  pages={pages}
+                  startUrl={audit.startUrl}
+                  issues={issues}
+                  filters={pagesFilters}
+                  onFiltersChange={setPagesFilters}
+                  filteredPages={filteredPages}
+                  scopeLabel={pageScope?.label}
+                  onClearScope={() => setPageScope(null)}
+                  onShowIssues={(url) => {
+                    setIssueFocusUrl(url);
+                    onTabChange("issues");
+                  }}
+                />
+              )}
+              {activeTab === "performance" && (
+                <div className="mb-4">
+                  <CruxHistoryCard url={audit.startUrl} />
+                </div>
+              )}
+              {activeTab === "performance" && lighthouse.length > 0 && (
+                <div className="mb-4">
+                  <PerformanceSummary
+                    lighthouse={lighthouse}
+                    plannedChecks={audit.lighthouseTotal}
+                    filters={performanceFilters}
+                    onChange={setPerformanceFilters}
+                  />
+                </div>
+              )}
+              {activeTab === "performance" && lighthouse.length > 0 && (
+                <PerformanceTable
                   auditId={audit.id}
-                  onRowsChange={(rows) => setCoverageRows(rows ?? null)}
-                  askDisabledReason={
-                    property.covered
-                      ? undefined
-                      : `Bu denetim ${property.auditedHost} adresine ait, bağlı mülk ise ${property.propertyHost ?? "başka bir mülk"}. Sormak kotayı boşa harcardı.`
-                  }
-                />
-              </div>
-            )}
-            {activeTab === "issues" && (
-              <IssuesView
-                issues={issues}
-                initialSeverity={severity}
-                focusUrl={issueFocusUrl}
-                onClearFocus={() => setIssueFocusUrl(undefined)}
-                onShowPages={(urls, label) => {
-                  setPagesFilters(EMPTY_PAGES_FILTERS);
-                  setPageScope({ label, urls });
-                  onTabChange("pages");
-                }}
-              />
-            )}
-            {activeTab === "pages" && (
-              <PagesTable
-                pages={pages}
-                startUrl={audit.startUrl}
-                issues={issues}
-                filters={pagesFilters}
-                onFiltersChange={setPagesFilters}
-                filteredPages={filteredPages}
-                scopeLabel={pageScope?.label}
-                onClearScope={() => setPageScope(null)}
-                onShowIssues={(url) => {
-                  setIssueFocusUrl(url);
-                  onTabChange("issues");
-                }}
-              />
-            )}
-            {activeTab === "performance" && (
-              <div className="mb-4">
-                <CruxHistoryCard url={audit.startUrl} />
-              </div>
-            )}
-            {activeTab === "performance" && lighthouse.length > 0 && (
-              <div className="mb-4">
-                <PerformanceSummary
+                  projectId={projectId}
                   lighthouse={lighthouse}
-                  plannedChecks={audit.lighthouseTotal}
+                  pages={pages}
                   filters={performanceFilters}
-                  onChange={setPerformanceFilters}
+                  onFiltersChange={setPerformanceFilters}
+                  onFilteredIdsChange={setPerformanceIds}
                 />
-              </div>
-            )}
-            {activeTab === "performance" && lighthouse.length > 0 && (
-              <PerformanceTable
-                auditId={audit.id}
-                projectId={projectId}
-                lighthouse={lighthouse}
-                pages={pages}
-                filters={performanceFilters}
-                onFiltersChange={setPerformanceFilters}
-                onFilteredIdsChange={setPerformanceIds}
-              />
-            )}
-          </TabPanel>
+              )}
+            </TabPanel>
+          </div>
         </div>
-      </div>
+      </Reveal>
     </>
   );
 }

@@ -26,25 +26,9 @@ import {
   type ProjectContextData,
 } from "./shared";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
-
-const SECTION_HINTS: Record<ProjectContextSectionKey, string> = {
-  business_overview: "Ne satıyorsunuz, kim alıyor, nerede.",
-  current_goal: "Şu anda neyin peşindesiniz ve ne zamana kadar.",
-  positioning: "Biri neden alternatifler yerine sizi seçsin.",
-  writing_preferences:
-    "Üslup, kullanılmayacak kelimeler, girilmeyecek konular.",
-};
-
-const SECTION_PLACEHOLDERS: Record<ProjectContextSectionKey, string> = {
-  business_overview:
-    "örn. Bağımsız restoranlar için rezervasyon yazılımı. Alıcılar pazarlamacı değil, işletme sahipleri.",
-  current_goal:
-    "örn. Dördüncü çeyreğe kadar organik üyelikleri ikiye katlamak. Karşılaştırma sayfaları şu anki öncelik.",
-  positioning:
-    "örn. Bir öğleden sonrada kurulan tek rezervasyon aracı. Mevcut rakiplerden ucuz, kendin yap çözümlerden basit.",
-  writing_preferences:
-    "örn. Sade ve doğrudan, abartı yok. “Kusursuz” ya da “devrim niteliğinde” yazmayın. Rakip fiyatlarına girmeyin.",
-};
+import { RefreshButton } from "@/client/components/RefreshButton";
+import { SECTION_HINTS, SECTION_PLACEHOLDERS } from "./sectionCopy";
+import { SectionCompleteness } from "./SectionCompleteness";
 
 export function ProjectContextPage({
   projectId,
@@ -94,11 +78,21 @@ export function ProjectContextPage({
     // key remounts the whole page when the project switches under it, so no
     // draft, open form, or edit state can carry over to another project.
     <div key={projectId} className="space-y-8">
-      <p className="text-sm text-muted">
-        Claude Code ve bağladığınız diğer MCP istemcilerinin bu proje hakkında
-        bildikleri. Ajanlar işe başlamadan önce burayı okur, öğrendiklerini
-        buraya yazar. Yanlış bir şey görürseniz kendiniz düzeltin.
-      </p>
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <p className="max-w-prose text-sm text-muted">
+          Claude Code ve bağladığınız diğer MCP istemcilerinin bu proje hakkında
+          bildikleri. Ajanlar işe başlamadan önce burayı okur, öğrendiklerini
+          buraya yazar. Yanlış bir şey görürseniz kendiniz düzeltin.
+        </p>
+        <RefreshButton
+          onRefresh={() => void contextQuery.refetch()}
+          isFetching={contextQuery.isFetching}
+          dataUpdatedAt={contextQuery.dataUpdatedAt}
+          shortcut
+        />
+      </div>
+
+      <SectionCompleteness context={context} />
 
       <ContextHealthCard projectId={projectId} context={context} />
 

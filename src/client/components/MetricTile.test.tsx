@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { MetricTile } from "./MetricTile";
+import { DeltaBadge, MetricTile } from "./MetricTile";
 
 // `Link` needs a router; the contract here is where the tile points.
 vi.mock("@tanstack/react-router", () => ({
@@ -83,5 +83,18 @@ describe("MetricTile", () => {
       <MetricTile label="Son güncelleme" value="1 dk önce" flashKey="t2" />,
     );
     expect(container.querySelector(".flash")).not.toBeNull();
+  });
+});
+
+describe("DeltaBadge", () => {
+  it("renders nothing when the change rounds to 0% at the displayed precision", () => {
+    const { container } = render(<DeltaBadge value={0.004} />);
+    expect(container.innerHTML).toBe("");
+  });
+
+  it("shows direction and whole percent otherwise", () => {
+    render(<DeltaBadge value={-0.12} />);
+    expect(screen.getByText(/azaldı/)).toBeTruthy();
+    expect(screen.getByText("%12")).toBeTruthy();
   });
 });

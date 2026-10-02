@@ -66,6 +66,37 @@ export function noAuditsYet(
   });
 }
 
+/**
+ * Output-schema fields for tools that read an audit's results. Without them
+ * an agent that calls a results tool right after `run_site_audit` reads the
+ * half-written audit as a clean site.
+ */
+export const auditProgressOutputSchema = {
+  auditStatus: z.enum(["running", "completed", "failed"]).optional(),
+  pagesCrawled: z.number().optional(),
+};
+
+export function auditProgressFields(audit: {
+  status: "running" | "completed" | "failed";
+  pagesCrawled: number;
+}) {
+  return { auditStatus: audit.status, pagesCrawled: audit.pagesCrawled };
+}
+
+/** A line to put before the results when the audit is not finished; else null. */
+export function incompleteAuditNote(audit: {
+  id: string;
+  status: "running" | "completed" | "failed";
+  pagesCrawled: number;
+}): string | null {
+  if (audit.status === "completed") return null;
+  const state =
+    audit.status === "running"
+      ? "still running, results incomplete"
+      : "failed before finishing, results incomplete";
+  return `Audit ${audit.id} is ${state} (${audit.pagesCrawled} pages crawled so far). Do not read missing findings as a clean site; poll get_audit_status until it completes.`;
+}
+
 export function auditPath(projectId: string, auditId: string) {
   return `/p/${projectId}/audit?auditId=${auditId}`;
 }

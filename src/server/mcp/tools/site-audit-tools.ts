@@ -83,7 +83,7 @@ export const runSiteAuditTool = {
       // no audit started, so there is no auditId to report.
       const refusalText =
         error instanceof AppError && error.code === "AUDIT_CAPACITY_REACHED"
-          ? "Audit capacity reached for this account — delete old audits in the dashboard to free capacity, then try again."
+          ? "Audit capacity reached: the audits running right now already reserve the most this install carries. Poll get_audit_status until one finishes, then try again."
           : error instanceof AppError && error.code === "AUDIT_ALREADY_RUNNING"
             ? "This account is at its limit of concurrently running audits. Poll get_audit_status until one finishes, then try again."
             : null;

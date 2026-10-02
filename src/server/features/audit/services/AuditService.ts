@@ -1,4 +1,5 @@
 import { env } from "cloudflare:workers";
+import { AuditLighthouseRepository } from "@/server/features/audit/repositories/AuditLighthouseRepository";
 import { AuditRepository } from "@/server/features/audit/repositories/AuditRepository";
 import {
   AUDIT_LIMITS,
@@ -7,6 +8,7 @@ import {
 } from "@/server/features/audit/services/audit-capacity";
 import { getPageSpeedApiKey } from "@/server/features/lighthouse/pagespeed-config";
 import { AppError } from "@/server/lib/errors";
+import { deleteManyFromR2 } from "@/server/lib/r2";
 import { AuditProgressKV } from "@/server/lib/audit/progress-kv";
 import {
   parseAuditConfig,
@@ -260,7 +262,22 @@ async function remove(auditId: string, projectId: string) {
     }
   }
 
+  // The rows cascade away with the audit, and with them the only record of
+  // which Lighthouse payloads it stored in R2, so collect the keys first.
+  // Both the lookup and the R2 delete are best-effort: leaked payloads must
+  // not stop an audit from being deleted.
+  const payloadKeys = await AuditLighthouseRepository.getR2KeysForAudit(
+    auditId,
+  ).catch((error: unknown) => {
+    console.warn(`Failed to list Lighthouse payloads of ${auditId}:`, error);
+    return [];
+  });
   await AuditRepository.deleteAuditForProject(auditId, projectId);
+  try {
+    await deleteManyFromR2(payloadKeys);
+  } catch (error) {
+    console.warn(`Failed to delete Lighthouse payloads of ${auditId}:`, error);
+  }
   // Best-effort: drop the crawl scratchpad DO with the audit (it lives in
   // the seotracker-audit worker, behind the AuditEngine RPC). A missed destroy
   // self-cleans via the DO's 7-day alarm.

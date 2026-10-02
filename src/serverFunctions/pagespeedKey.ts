@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { PageSpeedKeyRepository } from "@/server/features/lighthouse/PageSpeedKeyRepository";
+import { PageSpeedKeyTestService } from "@/server/features/lighthouse/services/PageSpeedKeyTestService";
 import { getPageSpeedKeySource } from "@/server/features/lighthouse/pagespeed-config";
 import { requireAuthenticatedContext } from "@/serverFunctions/middleware";
 
@@ -41,3 +42,12 @@ export const clearPageSpeedKey = createServerFn({ method: "POST" })
     await PageSpeedKeyRepository.clear();
     return { ok: true as const };
   });
+
+/**
+ * Spends one PageSpeed request on a fixed public page to check that the key
+ * works. The reply is a state and a fixed Turkish sentence: no key, no Google
+ * message.
+ */
+export const testPageSpeedKey = createServerFn({ method: "POST" })
+  .middleware(requireAuthenticatedContext)
+  .handler(async () => PageSpeedKeyTestService.testKey());

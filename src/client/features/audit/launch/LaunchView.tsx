@@ -1,6 +1,8 @@
 import * as React from "react";
 import { ConfirmDeleteModal } from "@/client/components/ConfirmDeleteModal";
 import { PageHeader, PageShell } from "@/client/components/PageShell";
+import { PageActions, RefreshButton } from "@/client/components/RefreshButton";
+import { QuotaCard } from "@/client/features/quotas/QuotaCard";
 import { AuditHistorySection } from "@/client/features/audit/launch/AuditHistorySection";
 import { LaunchFormCard } from "@/client/features/audit/launch/LaunchFormCard";
 import { useLaunchController } from "@/client/features/audit/launch/useLaunchController";
@@ -31,14 +33,30 @@ export function LaunchView({ projectId, onAuditStarted }: LaunchViewProps) {
       <PageHeader
         title="Site denetimi"
         description="Sitenizi kendi tarayıcımızla tarar; bulduğu sorunları önem sırasına göre listeler."
+        actions={
+          <PageActions>
+            <RefreshButton
+              onRefresh={() => void controller.historyQuery.refetch()}
+              isFetching={controller.historyQuery.isFetching}
+              dataUpdatedAt={controller.historyQuery.dataUpdatedAt}
+              shortcut
+            />
+          </PageActions>
+        }
       />
 
-      <LaunchFormCard
-        launchForm={controller.launchForm}
-        commitMaxPagesInput={controller.commitMaxPagesInput}
-        maxPagesLimit={controller.maxPagesLimit}
-        urlInputRef={urlInputRef}
-      />
+      <div className="grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]">
+        <LaunchFormCard
+          launchForm={controller.launchForm}
+          commitMaxPagesInput={controller.commitMaxPagesInput}
+          maxPagesLimit={controller.maxPagesLimit}
+          urlInputRef={urlInputRef}
+        />
+        <QuotaCard
+          projectId={projectId}
+          kinds={["pagespeed", "url_inspection"]}
+        />
+      </div>
 
       <AuditHistorySection
         projectId={projectId}
@@ -50,6 +68,7 @@ export function LaunchView({ projectId, onAuditStarted }: LaunchViewProps) {
           setPendingDelete(history.find((row) => row.id === auditId) ?? null)
         }
         onRerun={controller.rerunAudit}
+        isRerunPending={controller.isStarting}
         onStartFirst={() => urlInputRef.current?.focus()}
       />
 

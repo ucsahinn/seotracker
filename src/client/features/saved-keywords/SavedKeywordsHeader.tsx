@@ -1,13 +1,17 @@
+import { PageActions, RefreshButton } from "@/client/components/RefreshButton";
 import { PageHeader } from "@/client/components/PageShell";
 import { TableExportMenu } from "@/client/components/table/TableBulkActionBar";
+import type { refreshState } from "@/client/lib/refreshState";
 import { Download, FileDown, Loader2, Sheet } from "lucide-react";
 
 export function SavedKeywordsHeader({
+  refresh,
   totalCount,
   exporting,
   onExportCsv,
   onExportSheets,
 }: {
+  refresh: ReturnType<typeof refreshState>;
   totalCount: number;
   exporting: "csv" | "sheets" | null;
   onExportCsv: () => void;
@@ -20,38 +24,46 @@ export function SavedKeywordsHeader({
       title="Kayıtlı kelimeler"
       description="Arama performansından kaydettiğiniz sorgular. Etiketleyin, Search Console'daki ortalama sıralarına bakın, CSV ya da E-Tablolar'a aktarın."
       actions={
-        /*
-         * The shared menu, not a third copy of the same dropdown. The inline
-         * one had no `aria-expanded`, no Escape handler, and could be clipped
-         * by an overflow ancestor — all three already solved once in
-         * `TableExportMenu`, and all three reintroduced by copying it.
-         */
-        <TableExportMenu
-          buttonClassName={`btn btn-ghost btn-sm gap-1.5 ${
-            disabled ? "btn-disabled" : ""
-          }`}
-          triggerIcon={
-            exporting != null ? (
-              <Loader2 className="size-4 animate-spin" />
-            ) : (
-              <Download className="size-4" />
-            )
-          }
-          actions={[
-            {
-              label: "E-Tablolar'a aktar",
-              icon: <Sheet className="size-4" />,
-              onClick: onExportSheets,
-              disabled,
-            },
-            {
-              label: "CSV indir",
-              icon: <FileDown className="size-4" />,
-              onClick: onExportCsv,
-              disabled,
-            },
-          ]}
-        />
+        <PageActions>
+          <RefreshButton
+            onRefresh={refresh.onRefresh}
+            isFetching={refresh.isFetching}
+            dataUpdatedAt={refresh.dataUpdatedAt}
+            shortcut
+          />
+          {/*
+           * The shared menu, not a third copy of the same dropdown. The inline
+           * one had no `aria-expanded`, no Escape handler, and could be clipped
+           * by an overflow ancestor — all three already solved once in
+           * `TableExportMenu`, and all three reintroduced by copying it.
+           */}
+          <TableExportMenu
+            buttonClassName={`btn btn-ghost btn-sm gap-1.5 ${
+              disabled ? "btn-disabled" : ""
+            }`}
+            triggerIcon={
+              exporting != null ? (
+                <Loader2 className="size-4 animate-spin" />
+              ) : (
+                <Download className="size-4" />
+              )
+            }
+            actions={[
+              {
+                label: "E-Tablolar'a aktar",
+                icon: <Sheet className="size-4" />,
+                onClick: onExportSheets,
+                disabled,
+              },
+              {
+                label: "CSV indir",
+                icon: <FileDown className="size-4" />,
+                onClick: onExportCsv,
+                disabled,
+              },
+            ]}
+          />
+        </PageActions>
       }
     />
   );

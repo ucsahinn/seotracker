@@ -2,17 +2,23 @@ import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { createFileRoute } from "@tanstack/react-router";
 import { ExternalLink } from "lucide-react";
 import { CopyButton } from "@/client/components/CopyButton";
+import { SystemLimitsSection } from "@/client/features/quotas/SystemLimitsSection";
+import { CommonProblems } from "@/client/features/support/CommonProblems";
+import { QuickActions } from "@/client/features/support/QuickActions";
 import { SetupStatusPanel } from "@/client/features/support/SetupStatusPanel";
-import { DiagnosticsBundleButton } from "@/client/features/support/DiagnosticsBundleButton";
-
-const GITHUB_URL = "https://github.com/ucsahinn/seotracker";
-const UPSTREAM_URL = "https://github.com/every-app/open-seo";
+import { REPO_URL } from "@/client/features/support/links";
+import { useSetupSnapshot } from "@/client/features/support/useSetupSnapshot";
 
 export const Route = createFileRoute("/_app/support")({
   component: SupportPage,
 });
 
 function SupportPage() {
+  const { diagnostics } = useSetupSnapshot();
+  const projectId =
+    diagnostics.data?.projects.find((project) => !project.archivedAt)?.id ??
+    null;
+
   return (
     <PageShell width="reading">
       <PageHeader
@@ -21,9 +27,15 @@ function SupportPage() {
         description="Bu kurulum kendi bilgisayarınızda çalıştığı için sorunların izi hemen her zaman iki yerde olur: konteyner günlüğü ve sağlık ucu. Önce aşağıdaki duruma bakın."
       />
 
+      <QuickActions />
+
       <SetupStatusPanel />
 
-      <ul className="enter space-y-3 text-sm text-muted">
+      <CommonProblems projectId={projectId} />
+
+      <SystemLimitsSection />
+
+      <ul className="space-y-3 text-sm text-muted">
         <li>
           <span className="font-medium text-base-content">
             Konteyner günlüğü
@@ -42,7 +54,12 @@ function SupportPage() {
         </li>
         <li>
           <span className="font-medium text-base-content">Sağlık ucu</span> —{" "}
-          <a href="/api/health" className="link link-primary">
+          <a
+            href="/api/health"
+            target="_blank"
+            rel="noreferrer"
+            className="link link-primary"
+          >
             /api/health
           </a>{" "}
           hangi bağlantıların ayarlı olduğunu ve veritabanının yanıt verip
@@ -53,48 +70,38 @@ function SupportPage() {
             Kurulum belgeleri
           </span>{" "}
           — depodaki <code className="text-xs">docs/</code> dizini Docker,
-          Search Console ve Analytics kurulumunu anlatır.
+          Search Console, Analytics ve PageSpeed kurulumunu anlatır; üstteki
+          &quot;Belgeleri aç&quot; düğmesi oraya götürür.
         </li>
       </ul>
 
-      <section className="space-y-2 rounded-box border border-base-300 bg-base-100 p-4">
+      <section
+        id="tanilama"
+        className="space-y-2 rounded-box border border-base-300 bg-base-100 p-4"
+      >
         <h2 className="text-sm font-semibold">Sorun bildirmek için</h2>
         <p className="max-w-prose text-sm text-muted">
-          Tek bir arşiv indirin: sürüm, kurulum kontrolleri, tablo büyüklükleri,
-          bağlı Google mülkleri, son denetimlerin durumu ve bu sekmede yakalanan
-          tarayıcı hataları. İçinde gizli değer yok; jetonlar ve anahtarlar
-          toplanmaz, yalnızca ayarlı olup olmadıkları yazılır. Kısa bir not
-          yeterliyse yukarıdaki "Özeti kopyala" düğmesi aynı özeti metin olarak
+          Üstteki &quot;Tanılama paketi indir&quot; düğmesi tek bir arşiv verir:
+          sürüm, kurulum kontrolleri, tablo büyüklükleri, bağlı Google mülkleri,
+          son denetimlerin durumu ve bu sekmede yakalanan tarayıcı hataları.
+          İçinde gizli değer yok; jetonlar ve anahtarlar toplanmaz, yalnızca
+          ayarlı olup olmadıkları yazılır. Kısa bir not yeterliyse durum
+          panelindeki &quot;Özeti kopyala&quot; düğmesi aynı özeti metin olarak
           verir. Arşivdeki <code className="text-xs">README.txt</code> ne
           olduğunu ve neyin sizi tanımladığını satır satır anlatır.
         </p>
-        <div className="pt-1">
-          <DiagnosticsBundleButton />
-        </div>
       </section>
 
-      <div className="space-y-2 border-t border-base-300 pt-6">
+      <div className="border-t border-base-300 pt-6">
         <a
-          href={GITHUB_URL}
+          href={REPO_URL}
           target="_blank"
           rel="noreferrer"
           className="link link-primary inline-flex items-center gap-1.5 text-sm"
         >
-          Bu çatal GitHub'da
+          Bu çatal GitHub&apos;da
           <ExternalLink className="size-3.5" />
         </a>
-        <p className="text-xs text-muted">
-          Şu depodan türetildi:{" "}
-          <a
-            href={UPSTREAM_URL}
-            target="_blank"
-            rel="noreferrer"
-            className="link"
-          >
-            every-app/open-seo
-          </a>
-          , MIT lisanslı.
-        </p>
       </div>
     </PageShell>
   );

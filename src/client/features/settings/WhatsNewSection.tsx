@@ -29,7 +29,7 @@ export function WhatsNewSection({ version }: { version: string }) {
   if (CHANGELOG_ENTRIES.length === 0) return null;
 
   return (
-    <section className="space-y-3">
+    <section id="surum-notlari" className="scroll-mt-16 space-y-3">
       <SettingsHeading
         title="Sürüm notları"
         help="Bu sürümde neyin değiştiği. Metin depodaki CHANGELOG.md dosyasından okunur, yani yayımlananla aynıdır."

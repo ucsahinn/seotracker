@@ -1,4 +1,5 @@
-import { Loader2 } from "lucide-react";
+import { ProgressBar, StepProgress } from "@/client/components/ProgressBar";
+import { estimateRemainingMs } from "@/client/features/audit/launch/progressEstimate";
 import { useQuery } from "@tanstack/react-query";
 import {
   HttpStatusBadge,
@@ -8,9 +9,25 @@ import {
   formatCount,
   formatDateTime,
   formatDuration,
-  formatPercent,
 } from "@/client/lib/format";
 import { getCrawlProgress } from "@/serverFunctions/audit";
+
+const PHASE_LABEL: Record<string, string> = {
+  discovery: "Keşif",
+  crawling: "Taranıyor",
+  lighthouse: "Hız ölçümü",
+  finalizing: "Tamamlanıyor",
+};
+
+/** Step list for the phases this audit will actually go through. */
+function phaseSteps(withLighthouse: boolean) {
+  return [
+    { key: "discovery", label: "Keşif" },
+    { key: "crawling", label: "Tarama" },
+    ...(withLighthouse ? [{ key: "lighthouse", label: "Hız ölçümü" }] : []),
+    { key: "finalizing", label: "Tamamlanıyor" },
+  ];
+}
 
 export function ProgressCard({
   projectId,
@@ -35,16 +52,10 @@ export function ProgressCard({
   const lighthouseProgress =
     status.lighthouseTotal > 0 ? lighthouseDone / status.lighthouseTotal : 0;
   const isLighthousePhase = status.currentPhase === "lighthouse";
-  const phaseLabel =
-    status.currentPhase === "discovery"
-      ? "Keşif"
-      : status.currentPhase === "crawling"
-        ? "Taranıyor"
-        : status.currentPhase === "lighthouse"
-          ? "Hız ölçümü"
-          : status.currentPhase === "finalizing"
-            ? "Tamamlanıyor"
-            : (status.currentPhase ?? "Çalışıyor");
+  const isFinalizing = status.currentPhase === "finalizing";
+  const phaseLabel = status.currentPhase
+    ? (PHASE_LABEL[status.currentPhase] ?? status.currentPhase)
+    : "Çalışıyor";
   const progress = isLighthousePhase ? lighthouseProgress : crawlProgress;
   /** Discovery has not produced a denominator yet. */
   const hasTotal = isLighthousePhase
@@ -52,20 +63,28 @@ export function ProgressCard({
     : status.pagesTotal > 0;
 
   /*
-   * How long it has been running, and roughly how much is left.
-   *
-   * A five-hundred-page crawl can run for many minutes -- the launch form
-   * says so before starting one -- and the only thing telling the operator
-   * whether to wait or come back was a fraction that can sit still for
-   * thirty seconds on a slow host. The estimate is gated on 5%: before
-   * that the rate is one or two pages of noise and the number it produces
-   * is a guess dressed as an answer.
+   * How long it has been running, and roughly how much is left. A
+   * five-hundred-page crawl can run for many minutes and the only thing
+   * telling the operator whether to wait was a fraction that can sit still
+   * for thirty seconds on a slow host. See `estimateRemainingMs` for the
+   * 5% gate and the UTC parsing.
    */
-  const elapsedMs = Date.now() - new Date(status.startedAt).getTime();
-  const remainingMs =
-    hasTotal && progress > 0.05 && elapsedMs > 0
-      ? (elapsedMs * (1 - progress)) / progress
-      : null;
+  const remainingMs = estimateRemainingMs({
+    startedAt: status.startedAt,
+    progress,
+    hasTotal,
+  });
+  const eta =
+    remainingMs !== null ? `~${formatDuration(remainingMs)} kaldı` : undefined;
+
+  const showSpeedBar =
+    status.lighthouseTotal > 0 &&
+    (isLighthousePhase || isFinalizing || lighthouseDone > 0);
+  const crawlDone = isLighthousePhase || isFinalizing;
+  const steps = phaseSteps(status.lighthouseTotal > 0 || isLighthousePhase);
+  const currentStep = steps.findIndex(
+    (step) => step.key === status.currentPhase,
+  );
 
   const crawlProgressQuery = useQuery({
     queryKey: ["audit-crawl-progress", projectId, auditId],
@@ -83,7 +102,7 @@ export function ProgressCard({
         <div className="card-body gap-3">
           <div className="flex items-center justify-between">
             <h2 className="font-medium flex items-center gap-2">
-              <Loader2 className="size-4 animate-spin text-primary" />
+              <span className="dot-live text-primary" aria-hidden />
               {isLighthousePhase
                 ? "Lighthouse kontrolleri çalışıyor"
                 : "Sayfalar taranıyor"}
@@ -91,49 +110,66 @@ export function ProgressCard({
             <span className="badge badge-ghost badge-sm">{phaseLabel}</span>
           </div>
 
-          {/* Indeterminate until there is a total to be a fraction of.
-              During discovery `pagesTotal` is 0, so a determinate bar sat
-              at zero and the line read "0 / 0 sayfa · %0" for exactly the
-              phase where the operator is least sure anything is happening.
-              A `<progress>` with no `value` animates instead. */}
-          <progress
-            className="progress progress-primary w-full"
-            aria-label="Denetim ilerlemesi"
-            {...(hasTotal ? { value: progress, max: 1 } : {})}
-          />
+          <div className="grid items-start gap-4 md:grid-cols-[minmax(0,1fr)_11rem]">
+            <div className="space-y-3">
+              {/* Indeterminate until there is a total to be a fraction of.
+                  During discovery `pagesTotal` is 0, and a determinate bar
+                  sat at zero for exactly the phase where the operator is
+                  least sure anything is happening. */}
+              <ProgressBar
+                label="Tarama"
+                value={status.pagesCrawled}
+                max={Math.max(status.pagesTotal, 1)}
+                showCount
+                state={crawlDone ? "done" : "running"}
+                indeterminate={status.pagesTotal === 0}
+                eta={crawlDone ? undefined : eta}
+              />
+              {showSpeedBar ? (
+                <ProgressBar
+                  label="Hız ölçümü"
+                  value={lighthouseDone}
+                  max={status.lighthouseTotal}
+                  showCount
+                  state={
+                    isLighthousePhase
+                      ? "running"
+                      : status.lighthouseFailed > 0
+                        ? "warning"
+                        : "done"
+                  }
+                  eta={isLighthousePhase ? eta : undefined}
+                />
+              ) : null}
+              {status.lighthouseFailed > 0 ? (
+                <p className="text-xs text-muted">
+                  {formatCount(status.lighthouseFailed)} ölçüm başarısız oldu;
+                  kalanlar sürüyor.
+                </p>
+              ) : null}
+            </div>
+            {currentStep >= 0 ? (
+              <StepProgress
+                steps={steps.map((step) => step.label)}
+                current={currentStep}
+              />
+            ) : null}
+          </div>
 
           {/* One polite region for the whole run: a screen reader got
               nothing at all for a crawl that takes minutes. */}
-          <div
-            className="flex items-center justify-between text-sm"
-            role="status"
-            aria-live="polite"
-          >
-            {!hasTotal ? (
-              <span>Adresler bulunuyor…</span>
-            ) : isLighthousePhase ? (
-              <span>
-                {formatCount(lighthouseDone)} /{" "}
-                {formatCount(status.lighthouseTotal)} kontrol
-                {status.lighthouseFailed > 0
-                  ? ` (${formatCount(status.lighthouseFailed)} başarısız)`
-                  : ""}
-              </span>
-            ) : (
-              <span>
-                {formatCount(status.pagesCrawled)} /{" "}
-                {formatCount(status.pagesTotal)} sayfa
-              </span>
-            )}
-            {hasTotal ? (
-              <span className="text-muted">
-                {formatPercent(progress, 0)}
-                {remainingMs !== null
-                  ? ` · ~${formatDuration(remainingMs)} kaldı`
-                  : ""}
-              </span>
-            ) : null}
-          </div>
+          <p className="sr-only" role="status" aria-live="polite">
+            {!hasTotal
+              ? "Adresler bulunuyor…"
+              : isLighthousePhase
+                ? `${formatCount(lighthouseDone)} / ${formatCount(status.lighthouseTotal)} kontrol${
+                    status.lighthouseFailed > 0
+                      ? ` (${formatCount(status.lighthouseFailed)} başarısız)`
+                      : ""
+                  }`
+                : `${formatCount(status.pagesCrawled)} / ${formatCount(status.pagesTotal)} sayfa`}
+            {eta ? `, ${eta}` : ""}
+          </p>
         </div>
       </div>
 

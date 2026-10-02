@@ -1,4 +1,4 @@
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useRef, useState, type ReactNode } from "react";
 import {
   Intro,
@@ -7,6 +7,8 @@ import {
 } from "@/client/features/opportunities/OpportunityStates";
 import { MetricRow, MetricTile } from "@/client/components/MetricTile";
 import { PageHeader, PageShell } from "@/client/components/PageShell";
+import { PageActions, RefreshButton } from "@/client/components/RefreshButton";
+import { refreshState } from "@/client/lib/refreshState";
 import { OpportunitiesTable } from "@/client/features/opportunities/OpportunitiesTable";
 import type { OpportunityReport } from "@/client/features/opportunities/report";
 import { formatDate, formatNumber } from "@/client/lib/format";
@@ -93,8 +95,10 @@ export function OpportunitiesPage({
       getSearchOpportunities({ data: { projectId, limit, windowDays } }),
     retry: false,
     // Keep the previous rows (and the pickers mounted) while a new window or
-    // limit loads, so focus and the report state survive a change.
-    placeholderData: keepPreviousData,
+    // limit loads, so focus and the report state survive a change; never
+    // across projects, where they would be the wrong site's pages.
+    placeholderData: (previous, previousQuery) =>
+      previousQuery?.queryKey[1] === projectId ? previous : undefined,
   });
 
   return (
@@ -106,18 +110,21 @@ export function OpportunitiesPage({
            place Rankings puts its window. Shown whenever the data came back
            ok, so the empty state keeps its way to widen the period. */
         actions={
-          query.data?.status === "ok" ? (
-            <>
-              <WindowPicker
-                windowDays={windowDays}
-                onChange={(next) => onViewChange({ windowDays: next })}
-              />
-              <LimitPicker
-                limit={limit}
-                onChange={(next) => onViewChange({ limit: next })}
-              />
-            </>
-          ) : undefined
+          <PageActions>
+            {query.data?.status === "ok" ? (
+              <>
+                <WindowPicker
+                  windowDays={windowDays}
+                  onChange={(next) => onViewChange({ windowDays: next })}
+                />
+                <LimitPicker
+                  limit={limit}
+                  onChange={(next) => onViewChange({ limit: next })}
+                />
+              </>
+            ) : null}
+            <RefreshButton {...refreshState([query])} shortcut />
+          </PageActions>
         }
       />
 
@@ -137,7 +144,11 @@ export function OpportunitiesPage({
           />
         </div>
       ) : query.data.status === "ok" ? (
-        <Report data={query.data.report} projectId={projectId} />
+        <Report
+          data={query.data.report}
+          projectId={projectId}
+          stale={query.isPlaceholderData}
+        />
       ) : (
         <NotReady projectId={projectId} missing={query.data.status} />
       )}
@@ -234,9 +245,12 @@ function TileButton({
 function Report({
   data,
   projectId,
+  stale,
 }: {
   data: OpportunityReport;
   projectId: string;
+  /** A new window or row count is loading behind these rows. */
+  stale: boolean;
 }) {
   const [kind, setKind] = useState<KindId | null>(null);
   const [quick, setQuick] = useState<QuickId | null>(null);
@@ -266,7 +280,12 @@ function Report({
   }
 
   return (
-    <>
+    <div
+      className={`flex flex-col gap-6 transition-opacity ${
+        stale ? "opacity-60" : ""
+      }`}
+      aria-busy={stale}
+    >
       {/* One block: three one-line notes read as one note, not three sections. */}
       <div className="space-y-1">
         {data.truncated.gsc ? (
@@ -424,6 +443,6 @@ function Report({
           almamaları için nötr bir orta değer verilir.
         </p>
       </div>
-    </>
+    </div>
   );
 }

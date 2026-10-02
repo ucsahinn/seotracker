@@ -3,16 +3,20 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CheckCircle2, ExternalLink } from "lucide-react";
 import * as React from "react";
 import { toast } from "sonner";
+import { ConfirmDeleteModal } from "@/client/components/ConfirmDeleteModal";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import {
   clearPageSpeedKey,
-  getPageSpeedKeyStatus,
   savePageSpeedKey,
 } from "@/serverFunctions/pagespeedKey";
+import { PageSpeedKeyTest } from "./PageSpeedKeyTest";
+import { SectionHeaderRow } from "./SectionBadge";
+import { pageSpeedBadge, UNREADABLE } from "./sectionStatus";
+import { pageSpeedKeyStatusOptions } from "./settingsQueries";
 
 const KEY_URL =
   "https://console.cloud.google.com/apis/library/pagespeedonline.googleapis.com";
-const STATUS_KEY = ["pageSpeedKeyStatus"] as const;
+const STATUS_KEY = pageSpeedKeyStatusOptions().queryKey;
 
 /**
  * Where the PageSpeed Insights key is entered.
@@ -26,11 +30,9 @@ export function PageSpeedKeySection() {
   const queryClient = useQueryClient();
   const [key, setKey] = React.useState("");
   const [editing, setEditing] = React.useState(false);
+  const [confirmingClear, setConfirmingClear] = React.useState(false);
 
-  const statusQuery = useQuery({
-    queryKey: STATUS_KEY,
-    queryFn: () => getPageSpeedKeyStatus(),
-  });
+  const statusQuery = useQuery(pageSpeedKeyStatusOptions());
   const status = statusQuery.data;
   const stored = status?.source === "settings";
   const fromEnvironment = status?.source === "environment";
@@ -52,20 +54,28 @@ export function PageSpeedKeySection() {
     onSuccess: async () => {
       setKey("");
       setEditing(false);
+      setConfirmingClear(false);
       await queryClient.invalidateQueries({ queryKey: STATUS_KEY });
       toast.success("PageSpeed anahtarı silindi");
     },
-    onError: (error) => toast.error(getStandardErrorMessage(error)),
+    onError: (error) => {
+      setConfirmingClear(false);
+      toast.error(getStandardErrorMessage(error));
+    },
   });
 
   const canSave = key.trim().length > 0 && !save.isPending;
 
   return (
-    <section className="space-y-3">
-      <SettingsHeading
-        title="Hız ölçümü"
-        help="Google Cloud Console'da PageSpeed Insights API'sini etkinleştirin, 'Credentials → Create credentials → API key' ile bir anahtar alın ve buraya yapıştırın. Ücretsiz. Anahtarsız da çalışır ama Google'ın anahtarsız kotası birkaç sayfadan sonra 429 döndürür."
-      />
+    <section id="hiz-olcumu" className="scroll-mt-16 space-y-3">
+      <SectionHeaderRow
+        badge={statusQuery.isError ? UNREADABLE : pageSpeedBadge(status)}
+      >
+        <SettingsHeading
+          title="Hız ölçümü"
+          help="Google Cloud Console'da PageSpeed Insights API'sini etkinleştirin, 'Credentials → Create credentials → API key' ile bir anahtar alın ve buraya yapıştırın. Ücretsiz. Anahtarsız da çalışır ama Google'ın anahtarsız kotası birkaç sayfadan sonra 429 döndürür."
+        />
+      </SectionHeaderRow>
 
       <p className="text-sm text-muted">
         Denetimin Lighthouse aşaması Google PageSpeed Insights&apos;ı kullanır.
@@ -85,6 +95,19 @@ export function PageSpeedKeySection() {
 
       {statusQuery.isPending ? <div className="skeleton h-10 w-full" /> : null}
 
+      {statusQuery.isError ? (
+        <p role="alert" className="text-sm text-[var(--ink-error)]">
+          Anahtar durumu okunamadı.{" "}
+          <button
+            type="button"
+            className="link"
+            onClick={() => void statusQuery.refetch()}
+          >
+            Tekrar dene
+          </button>
+        </p>
+      ) : null}
+
       {fromEnvironment ? (
         <div className="alert alert-info items-start text-sm">
           <div className="space-y-1">
@@ -96,6 +119,8 @@ export function PageSpeedKeySection() {
           </div>
         </div>
       ) : null}
+
+      {(stored && !editing) || fromEnvironment ? <PageSpeedKeyTest /> : null}
 
       {stored && !editing ? (
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-box border border-base-300 p-3">
@@ -117,7 +142,7 @@ export function PageSpeedKeySection() {
               type="button"
               className="btn btn-sm btn-ghost text-[var(--ink-error)]"
               disabled={clear.isPending}
-              onClick={() => clear.mutate()}
+              onClick={() => setConfirmingClear(true)}
             >
               Sil
             </button>
@@ -174,6 +199,16 @@ export function PageSpeedKeySection() {
             ) : null}
           </div>
         </form>
+      ) : null}
+      {confirmingClear ? (
+        <ConfirmDeleteModal
+          title="PageSpeed anahtarı silinsin mi?"
+          detail="Anahtar bu kurulumdan silinir; hız ölçümü Google'ın anahtarsız kotasına döner ve gerçek bir sitede çoğu zaman 429 ile yarım kalır. İstediğiniz zaman yeniden girebilirsiniz."
+          confirmLabel="Anahtarı sil"
+          isPending={clear.isPending}
+          onClose={() => setConfirmingClear(false)}
+          onConfirm={() => clear.mutate()}
+        />
       ) : null}
     </section>
   );

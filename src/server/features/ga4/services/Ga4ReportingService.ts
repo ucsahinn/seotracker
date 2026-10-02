@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { createGa4DataClient } from "@/server/lib/ga4Client";
+import { recordGa4Quota } from "@/server/features/quotas/ga4QuotaSnapshot";
 import {
   Ga4AdminApiError,
   Ga4DataApiError,
@@ -313,6 +314,9 @@ async function runReport(input: Ga4ReportInput, opts: { now?: Date } = {}) {
       previousRequest ? client.runReport(previousRequest) : null,
     ]);
     const normalized = normalizeGa4Response(response, request);
+    // Google sends the property quota with every report at no extra cost;
+    // keep the latest for the quota meter. A response without it is ignored.
+    recordGa4Quota(input.projectId, normalized.quota);
     const previousNormalized =
       previousResponse && previousRequest
         ? normalizeGa4Response(previousResponse, previousRequest)

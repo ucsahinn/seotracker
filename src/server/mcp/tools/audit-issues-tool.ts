@@ -19,6 +19,9 @@ import { projectIdSchema } from "@/server/mcp/schemas";
 import {
   auditIdSchema,
   auditPath,
+  auditProgressFields,
+  auditProgressOutputSchema,
+  incompleteAuditNote,
   latestAudit,
   noAuditsYet,
 } from "@/server/mcp/tools/audit-shared";
@@ -60,6 +63,7 @@ export const getAuditIssuesTool = {
       .object({
         summary: z.array(looseObjectOutputSchema),
         issues: z.array(looseObjectOutputSchema),
+        ...auditProgressOutputSchema,
         ...optionalMetaOutputSchema,
       })
       .passthrough(),
@@ -138,7 +142,8 @@ export const getAuditIssuesTool = {
       };
     });
 
-    const text =
+    const note = incompleteAuditNote(audit);
+    const body =
       rows.length === 0
         ? args.severity || args.issueType
           ? `No issues found for audit ${audit.id} matching the given filters.`
@@ -152,6 +157,7 @@ export const getAuditIssuesTool = {
             ),
             "Full issue rows with how_to_fix instructions are in structuredContent.issues.",
           ].join("\n");
+    const text = note ? `${note}\n${body}` : body;
 
     return mcpResponse({
       text,
@@ -160,7 +166,7 @@ export const getAuditIssuesTool = {
         args.projectId,
         auditPath(args.projectId, audit.id),
       ),
-      structuredContent: { summary, issues },
+      structuredContent: { summary, issues, ...auditProgressFields(audit) },
     });
   }),
 };

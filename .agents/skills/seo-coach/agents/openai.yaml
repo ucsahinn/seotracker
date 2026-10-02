@@ -1,0 +1,4 @@
+interface:
+  display_name: "SEO Coach"
+  short_description: "Explain where you stand and pick the next step"
+  default_prompt: "Use $seo-coach to tell me where my SEO stands and what to do next."

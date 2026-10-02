@@ -4,14 +4,15 @@ import {
   auditStepCount,
   lighthouseStepCount,
   WORKFLOW_DEFAULT_STEP_LIMIT,
+  WORKFLOW_STEP_LIMIT,
 } from "@/server/workflows/auditStepBudget";
 
 describe("audit step budget", () => {
-  it("counts one speed step per wave of five pages", () => {
-    expect(lighthouseStepCount(1)).toBe(1);
-    expect(lighthouseStepCount(5)).toBe(1);
-    expect(lighthouseStepCount(6)).toBe(2);
-    expect(lighthouseStepCount(MAX_AUDIT_PAGES)).toBe(2_000);
+  it("counts a url step and a fetch step per wave of five pages", () => {
+    expect(lighthouseStepCount(1)).toBe(2);
+    expect(lighthouseStepCount(5)).toBe(2);
+    expect(lighthouseStepCount(6)).toBe(4);
+    expect(lighthouseStepCount(MAX_AUDIT_PAGES)).toBe(4_000);
   });
 
   it("keeps a MAX_AUDIT_PAGES audit under the default step limit", () => {
@@ -21,8 +22,10 @@ describe("audit step budget", () => {
   });
 
   it("fits the worst-case speed steps of the default page limit", () => {
-    // 2,000 waves x (3 passes + 1 fallback) = 8,000 of 10,000, before crawl.
-    expect(lighthouseStepCount(MAX_AUDIT_PAGES, true)).toBe(8_000);
+    // 2,000 waves x (1 url read + 3 passes + 1 fallback) = 10,000, before
+    // crawl: past the platform default, which is why wrangler.audit.jsonc
+    // raises `limits.steps`.
+    expect(lighthouseStepCount(MAX_AUDIT_PAGES, true)).toBe(10_000);
   });
 
   it("stays under the limit in the pessimistic case too", () => {
@@ -32,6 +35,6 @@ describe("audit step budget", () => {
       speed: true,
       pagesPerCrawlChunk: 25,
     });
-    expect(worst).toBeLessThan(WORKFLOW_DEFAULT_STEP_LIMIT);
+    expect(worst).toBeLessThan(WORKFLOW_STEP_LIMIT);
   });
 });

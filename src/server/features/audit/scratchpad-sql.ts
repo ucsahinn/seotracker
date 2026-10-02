@@ -130,3 +130,16 @@ export const ORPHAN_PAGES_SQL = `
       SELECT 1 FROM page_mirror r WHERE r.redirect_url = m.url
     )
 `;
+
+/**
+ * A link-discovered URL: new rows are inserted, known rows keep everything
+ * but a lowered depth. The CASE matters: SQLite's scalar MIN returns NULL if
+ * any argument is NULL, so a rediscovery without a depth would otherwise wipe
+ * a depth that is already known.
+ */
+export const UPSERT_DISCOVERED_SQL = `
+  INSERT INTO frontier (url, depth, source, in_sitemap) VALUES (?, ?, 'link', 0)
+  ON CONFLICT(url) DO UPDATE SET depth = CASE
+    WHEN excluded.depth IS NULL THEN depth
+    ELSE MIN(COALESCE(depth, excluded.depth), excluded.depth)
+  END`;

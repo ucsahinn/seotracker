@@ -25,6 +25,7 @@ import {
   REDIRECT_LINKS_SQL,
   ORPHAN_PAGES_SQL,
   SCRATCHPAD_SCHEMA_SQL,
+  UPSERT_DISCOVERED_SQL,
 } from "@/server/features/audit/scratchpad-sql";
 
 export interface ClaimedUrl {
@@ -230,12 +231,7 @@ export class AuditScratchpad extends DurableObject {
       // INSERT OR IGNORE, so on any site with a complete sitemap every page
       // kept depth NULL and the deep-page check could never fire. NULL now
       // means only what it should: not reachable by a link at all.
-      this.ctx.storage.sql.exec(
-        `INSERT INTO frontier (url, depth, source, in_sitemap) VALUES (?, ?, 'link', 0)
-         ON CONFLICT(url) DO UPDATE SET depth = MIN(COALESCE(depth, excluded.depth), excluded.depth)`,
-        found.url,
-        found.depth,
-      );
+      this.ctx.storage.sql.exec(UPSERT_DISCOVERED_SQL, found.url, found.depth);
     }
     return this.stats();
   }

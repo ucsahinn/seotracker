@@ -5,14 +5,19 @@ import * as React from "react";
 import { toast } from "sonner";
 import { CopyButton } from "@/client/components/CopyButton";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
+import { ConfirmDeleteModal } from "@/client/components/ConfirmDeleteModal";
 import {
   clearGoogleOAuthClient,
-  getGoogleOAuthClientStatus,
   saveGoogleOAuthClient,
 } from "@/serverFunctions/googleOAuthClient";
+import { SectionHeaderRow } from "./SectionBadge";
+import { oauthClientBadge, UNREADABLE } from "./sectionStatus";
+import { googleOAuthClientStatusOptions } from "./settingsQueries";
+import { useOrigin } from "./useOrigin";
+import { CLIENT_ID_SUFFIX, clientIdProblem } from "./googleClientId";
 
 const CONSOLE_URL = "https://console.cloud.google.com/apis/credentials";
-const STATUS_KEY = ["googleOAuthClientStatus"] as const;
+const STATUS_KEY = googleOAuthClientStatusOptions().queryKey;
 
 /**
  * Where the Google OAuth client is entered.
@@ -27,11 +32,12 @@ export function GoogleOAuthClientSection() {
   const [clientId, setClientId] = React.useState("");
   const [clientSecret, setClientSecret] = React.useState("");
   const [editing, setEditing] = React.useState(false);
+  const [confirmingClear, setConfirmingClear] = React.useState(false);
+  // Shown only once the field was left, so the first characters of a valid id
+  // are not met with an error while typing.
+  const [idTouched, setIdTouched] = React.useState(false);
 
-  const statusQuery = useQuery({
-    queryKey: STATUS_KEY,
-    queryFn: () => getGoogleOAuthClientStatus(),
-  });
+  const statusQuery = useQuery(googleOAuthClientStatusOptions());
   const status = statusQuery.data;
 
   const invalidate = async () => {
@@ -59,10 +65,14 @@ export function GoogleOAuthClientSection() {
       setClientId("");
       setClientSecret("");
       setEditing(false);
+      setConfirmingClear(false);
       await invalidate();
       toast.success("Google istemcisi silindi");
     },
-    onError: (error) => toast.error(getStandardErrorMessage(error)),
+    onError: (error) => {
+      setConfirmingClear(false);
+      toast.error(getStandardErrorMessage(error));
+    },
   });
 
   /*
@@ -79,10 +89,7 @@ export function GoogleOAuthClientSection() {
    * The page is the only thing that knows this install's origin, so it has
    * to name every URI Google will be sent.
    */
-  const origin =
-    typeof window === "undefined"
-      ? "http://localhost:3001"
-      : window.location.origin;
+  const origin = useOrigin();
   const redirectUris = [
     { label: "Search Console", value: `${origin}/api/gsc/oauth/callback` },
     { label: "Analytics", value: `${origin}/api/ga4/oauth/callback` },
@@ -90,15 +97,26 @@ export function GoogleOAuthClientSection() {
 
   const stored = status?.source === "settings";
   const fromEnvironment = status?.source === "environment";
-  const showForm = editing || (!stored && !fromEnvironment);
-  const canSave = clientId.trim() !== "" && clientSecret.trim() !== "";
+  /*
+   * The environment case used to hide the form, while the notice below said
+   * "buraya bir değer kaydederseniz o kullanılır": a promise with no field to
+   * keep it in. Only the loading state hides it now.
+   */
+  const showForm = !statusQuery.isPending && (editing || !stored);
+  const idProblem = clientIdProblem(clientId);
+  const canSave =
+    clientId.trim() !== "" && idProblem === null && clientSecret.trim() !== "";
 
   return (
-    <section className="space-y-3">
-      <SettingsHeading
-        title="Google bağlantısı"
-        help="Google Cloud Console'da bir proje açın, 'APIs & Services → Credentials' altından OAuth client ID oluşturun (tür: Web application), aşağıdaki iki yönlendirme adresini ekleyin ve verilen kimlik ile gizli anahtarı buraya yapıştırın. Search Console ve Analytics aynı istemciyi kullanır."
-      />
+    <section id="google" className="scroll-mt-16 space-y-3">
+      <SectionHeaderRow
+        badge={statusQuery.isError ? UNREADABLE : oauthClientBadge(status)}
+      >
+        <SettingsHeading
+          title="Google bağlantısı"
+          help="Google Cloud Console'da bir proje açın, 'APIs & Services → Credentials' altından OAuth client ID oluşturun (tür: Web application), aşağıdaki iki yönlendirme adresini ekleyin ve verilen kimlik ile gizli anahtarı buraya yapıştırın. Search Console ve Analytics aynı istemciyi kullanır."
+        />
+      </SectionHeaderRow>
 
       <p className="text-sm text-muted">
         Search Console ve Analytics, kendi Google Cloud projenizden aldığınız
@@ -142,6 +160,19 @@ export function GoogleOAuthClientSection() {
 
       {statusQuery.isPending ? <div className="skeleton h-10 w-full" /> : null}
 
+      {statusQuery.isError ? (
+        <p role="alert" className="text-sm text-[var(--ink-error)]">
+          İstemci durumu okunamadı.{" "}
+          <button
+            type="button"
+            className="link"
+            onClick={() => void statusQuery.refetch()}
+          >
+            Tekrar dene
+          </button>
+        </p>
+      ) : null}
+
       {fromEnvironment ? (
         <div className="alert alert-info items-start text-sm">
           <div className="space-y-1">
@@ -158,7 +189,10 @@ export function GoogleOAuthClientSection() {
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-box border border-base-300 p-3">
           <div className="flex min-w-0 items-center gap-2">
             <CheckCircle2 className="size-4 shrink-0 text-success" />
-            <span className="truncate font-mono text-sm">
+            <span
+              className="truncate font-mono text-sm"
+              title={status?.clientId ?? undefined}
+            >
               {status?.clientId}
             </span>
           </div>
@@ -177,7 +211,7 @@ export function GoogleOAuthClientSection() {
               type="button"
               className="btn btn-sm btn-ghost text-[var(--ink-error)]"
               disabled={clear.isPending}
-              onClick={() => clear.mutate()}
+              onClick={() => setConfirmingClear(true)}
             >
               Sil
             </button>
@@ -197,9 +231,7 @@ export function GoogleOAuthClientSection() {
             <span className="label-text flex items-center gap-1.5 text-sm">
               İstemci kimliği
               <HelpTip label="İstemci kimliği">
-                Google Cloud Console → APIs &amp; Services → Credentials
-                listesinde OAuth 2.0 Client IDs altında görünür.
-                `.apps.googleusercontent.com` ile biter ve gizli değildir.
+                {`Google Cloud Console → APIs & Services → Credentials listesinde OAuth 2.0 Client IDs altında görünür. ${CLIENT_ID_SUFFIX} ile biter ve gizli değildir.`}
               </HelpTip>
             </span>
             <input
@@ -209,8 +241,22 @@ export function GoogleOAuthClientSection() {
               className="input input-bordered w-full font-mono text-sm"
               placeholder="1234567890-abc.apps.googleusercontent.com"
               value={clientId}
+              aria-invalid={idTouched && idProblem !== null}
+              aria-describedby={
+                idTouched && idProblem ? "client-id-problem" : undefined
+              }
               onChange={(event) => setClientId(event.target.value)}
+              onBlur={() => setIdTouched(true)}
             />
+            {idTouched && idProblem ? (
+              <span
+                id="client-id-problem"
+                role="alert"
+                className="mt-1 block text-xs text-[var(--ink-error)]"
+              >
+                {idProblem}
+              </span>
+            ) : null}
           </label>
 
           <label className="form-control w-full">
@@ -256,6 +302,17 @@ export function GoogleOAuthClientSection() {
             ) : null}
           </div>
         </form>
+      ) : null}
+
+      {confirmingClear ? (
+        <ConfirmDeleteModal
+          title="Google istemcisi silinsin mi?"
+          detail="Kimlik ve gizli anahtar bu kurulumdan silinir. Mevcut Search Console ve Analytics bağlantıları yerinde kalır ama istemci yeniden girilene kadar çalışmaz."
+          confirmLabel="İstemciyi sil"
+          isPending={clear.isPending}
+          onClose={() => setConfirmingClear(false)}
+          onConfirm={() => clear.mutate()}
+        />
       ) : null}
     </section>
   );

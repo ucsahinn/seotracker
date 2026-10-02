@@ -1,3 +1,4 @@
+import { copyText } from "@/client/lib/copyText";
 import { useNavigate } from "@tanstack/react-router";
 import type { UseQueryResult } from "@tanstack/react-query";
 import { Bookmark, Copy, Search, TrendingUp } from "lucide-react";
@@ -201,7 +202,7 @@ export function TrackedQueriesTable({
                     label: "Kelimeyi kopyala",
                     icon: Copy,
                     onSelect: () =>
-                      void navigator.clipboard.writeText(row.query),
+                      void copyText(row.query, "Kelime kopyalandı"),
                   },
                   {
                     label: "Kayıtlı kelimelere ekle",

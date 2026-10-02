@@ -1,9 +1,13 @@
+import { Fragment } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { sort } from "remeda";
 import { AuditFreshnessCard } from "./AuditFreshnessCard";
 import { DashboardOnboarding } from "./DashboardOnboarding";
 import { PageHeader, PageShell } from "@/client/components/PageShell";
+import { PageActions, RefreshButton } from "@/client/components/RefreshButton";
+import { Reveal } from "@/client/components/Reveal";
+import { useDashboardRefresh } from "@/client/features/dashboard/useDashboardRefresh";
 import {
   AuditHealthCard,
   GscCard,
@@ -39,6 +43,7 @@ export function DashboardPage({ projectId }: { projectId: string }) {
       query.state.data?.audit?.status === "running" ? 5_000 : false,
   });
   const googleConfigured = useGoogleClientConfigured();
+  const refresh = useDashboardRefresh(projectId);
 
   const activation = activationQuery.data;
   const overview = overviewQuery.data;
@@ -133,13 +138,16 @@ export function DashboardPage({ projectId }: { projectId: string }) {
         title="Panel"
         description={activation.domain ?? undefined}
         actions={
-          <Link
-            to="/p/$projectId/audit"
-            params={{ projectId }}
-            className="btn btn-primary btn-sm"
-          >
-            Denetimi başlat
-          </Link>
+          <PageActions>
+            <RefreshButton {...refresh} shortcut />
+            <Link
+              to="/p/$projectId/audit"
+              params={{ projectId }}
+              className="btn btn-primary btn-sm"
+            >
+              Denetimi başlat
+            </Link>
+          </PageActions>
         }
       />
 
@@ -165,17 +173,18 @@ export function DashboardPage({ projectId }: { projectId: string }) {
 
       {/* Cards with data sort before setup pitches and empty states. A lone
           card takes the full width rather than leaving half the row empty. */}
-      <div
-        className={`stagger grid items-start gap-5 ${
+      <Reveal
+        className={`grid items-start gap-5 ${
           cards.length > 1 ? "lg:grid-cols-2" : ""
         }`}
+        stepMs={60}
       >
         {sort(cards, (a, b) => Number(b.hasData) - Number(a.hasData)).map(
           (card) => (
-            <div key={card.key}>{card.node}</div>
+            <Fragment key={card.key}>{card.node}</Fragment>
           ),
         )}
-      </div>
+      </Reveal>
 
       {/* Setup last. It is the one thing on this page you finish and never
           look at again, so it does not get the top of the screen. */}

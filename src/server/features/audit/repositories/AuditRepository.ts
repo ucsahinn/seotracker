@@ -5,6 +5,7 @@
  * in the per-audit scratchpad Durable Object, not here.
  */
 import { and, count, desc, eq, inArray, isNull } from "drizzle-orm";
+import { chunk } from "remeda";
 import { db } from "@/db";
 import {
   audits,
@@ -14,11 +15,15 @@ import {
   projects,
 } from "@/db/schema";
 import { executeInBatches } from "@/db/runBatch";
+import { getIssueCountsByAudit } from "./auditSummaryQueries";
 import { AUDIT_ISSUE_TYPES } from "@/shared/audit-issues";
 import { deterministicAuditRowId } from "@/server/lib/audit/ids";
 import type { DetectedIssue } from "@/server/lib/audit/issues/page-reporters";
 import type { AuditConfig, CrawledPageResult } from "@/server/lib/audit/types";
 import type { PageFetchClass } from "@/shared/audit-fetch-class";
+
+// Page ids per delete statement, under D1's bound-parameter cap.
+const ISSUE_DELETE_PAGES = 80;
 
 async function createAudit(data: {
   id: string;
@@ -87,6 +92,10 @@ async function completeAudit(
       and(
         eq(audits.id, auditId),
         eq(audits.workflowInstanceId, workflowInstanceId),
+        // Same guard as failAudit: a finished audit never changes state
+        // again, so one the reconciler already failed does not flip to
+        // completed with its error columns still set.
+        eq(audits.status, "running"),
       ),
     );
 }
@@ -145,13 +154,32 @@ async function getAuditForWorkflow(
  * Idempotent on step retry: callers assign deterministic page ids
  * (deterministicAuditRowId) and issue ids are derived from stable content.
  * Page rows upsert (a retried fetch may legitimately differ — last attempt
- * wins); issues are insert-or-ignore.
+ * wins); the chunk's earlier issues are replaced, not merged.
  */
 async function insertCrawledBatch(
   auditId: string,
   pages: CrawledPageResult[],
   issues: DetectedIssue[],
 ) {
+  // A retried chunk may find different issues on the same pages. Issues are
+  // insert-or-ignore, so without this the first attempt's findings would
+  // survive next to the retry's. Same step, so a retry redoes both.
+  await executeInBatches(
+    chunk(
+      pages.map((page) => page.id),
+      ISSUE_DELETE_PAGES,
+    ),
+    (tx, pageIds) =>
+      tx
+        .delete(auditIssues)
+        .where(
+          and(
+            eq(auditIssues.auditId, auditId),
+            inArray(auditIssues.pageId, pageIds),
+          ),
+        ),
+  );
+
   await executeInBatches(pages, (tx, page) => {
     const dataColumns = {
       url: page.url,
@@ -349,59 +377,31 @@ async function getAuditsByProject(projectId: string) {
   return rows.map(({ audit }) => audit);
 }
 
-async function getIssueCountsByAudit(projectId: string) {
-  /*
-   * One grouped query for the whole history, rather than one per row.
-   * `audit_issues_audit_type_idx` leads with `audit_id`, so the join to
-   * `audits` for the project filter reads the index rather than the table.
-   */
-  const rows = await db
-    .select({
-      auditId: auditIssues.auditId,
-      severity: auditIssues.severity,
-      total: count(),
-    })
-    .from(auditIssues)
-    .innerJoin(audits, eq(audits.id, auditIssues.auditId))
-    .where(eq(audits.projectId, projectId))
-    .groupBy(auditIssues.auditId, auditIssues.severity);
-
-  const byAudit = new Map<
-    string,
-    { critical: number; warning: number; info: number }
-  >();
-  for (const row of rows) {
-    const entry = byAudit.get(row.auditId) ?? {
-      critical: 0,
-      warning: 0,
-      info: 0,
-    };
-    entry[row.severity] = row.total;
-    byAudit.set(row.auditId, entry);
-  }
-  return byAudit;
-}
-
-// Org-scoped: the free-plan quota belongs to the org (the Autumn customer),
-// so usage must aggregate across every member — counting per starting user
-// would multiply the free ceiling by the member count.
+// Only audits still running count, for both the concurrency and the capacity
+// guards: the limits describe what the machine carries at once. Counting
+// finished audits made the capacity ceiling a lifetime quota that only
+// deleting history could clear. Org-scoped like the project rows it joins.
 async function getAuditUsageForOrganization(organizationId: string) {
   const rows = await db
     .select({
-      status: audits.status,
       pagesTotal: audits.pagesTotal,
       lighthouseTotal: audits.lighthouseTotal,
     })
     .from(audits)
     .innerJoin(projects, eq(audits.projectId, projects.id))
-    .where(eq(projects.organizationId, organizationId));
+    .where(
+      and(
+        eq(projects.organizationId, organizationId),
+        eq(audits.status, "running"),
+      ),
+    );
 
   return {
     capacityUnits: rows.reduce(
       (total, row) => total + row.pagesTotal + row.lighthouseTotal,
       0,
     ),
-    runningCount: rows.filter((row) => row.status === "running").length,
+    runningCount: rows.length,
   };
 }
 

@@ -21,6 +21,9 @@ import { withMcpProjectAuth } from "@/server/mcp/project-auth";
 import { projectIdSchema } from "@/server/mcp/schemas";
 import {
   auditIdSchema,
+  auditProgressFields,
+  auditProgressOutputSchema,
+  incompleteAuditNote,
   latestAudit,
   noAuditsYet,
 } from "@/server/mcp/tools/audit-shared";
@@ -64,6 +67,7 @@ export const getIndexCoverageTool = {
       asked: z.number(),
       due: z.number(),
       rows: z.array(z.record(z.string(), z.unknown())),
+      ...auditProgressOutputSchema,
       ...optionalMetaOutputSchema,
     },
     annotations: {
@@ -102,11 +106,13 @@ export const getIndexCoverageTool = {
      * is the same rule `summarizeCoverage` applies to the tiles: a missing
      * verdict is pending, never a negative Google did not give.
      */
-    const text =
+    const note = incompleteAuditNote(audit);
+    const body =
       coverage.asked === 0
         ? `No page in this audit has been inspected yet. ${coverage.rows.length} indexable page${coverage.rows.length === 1 ? " is" : "s are"} waiting; inspect_urls will ask Google about them, at one quota unit each.`
         : `${coverage.indexed} on Google, ${coverage.notIndexed} not, ${coverage.pending} unanswered, out of ${coverage.rows.length} indexable pages. ${coverage.due} are due for a re-check.\n` +
           lines.join("\n");
+    const text = note ? `${note}\n${body}` : body;
 
     return mcpResponse({
       text,
@@ -119,6 +125,7 @@ export const getIndexCoverageTool = {
         asked: coverage.asked,
         due: coverage.due,
         rows,
+        ...auditProgressFields(audit),
       },
     });
   }),

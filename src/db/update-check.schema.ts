@@ -22,6 +22,12 @@ export const updateCheck = sqliteTable("update_check", {
   enabled: integer("enabled", { mode: "boolean" }).notNull().default(true),
   /** When GitHub was last asked, successfully or not. Drives the TTL. */
   checkedAt: text("checked_at"),
+  /**
+   * When GitHub last answered with a usable result (200 or 304). `checkedAt`
+   * moves on every attempt, so without this a failed check would erase when
+   * the cached version was last confirmed.
+   */
+  lastSuccessAt: text("last_success_at"),
   etag: text("etag"),
   latestTag: text("latest_tag"),
   releaseUrl: text("release_url"),

@@ -3,6 +3,7 @@ import * as React from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ChevronRight, FolderPlus, Plus } from "lucide-react";
+import { PageActions, RefreshButton } from "@/client/components/RefreshButton";
 import { EmptyState } from "@/client/components/EmptyState";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { toast } from "sonner";
@@ -40,14 +41,21 @@ function ProjectsPage() {
         title="Projeler"
         description="Her projenin kendi Search Console bağlantısı, arama performansı verisi ve site denetimleri olur."
         actions={
-          <button
-            type="button"
-            className="btn btn-primary btn-sm shrink-0"
-            onClick={() => setCreating(true)}
-          >
-            <Plus className="size-4" />
-            Yeni proje
-          </button>
+          <PageActions>
+            <RefreshButton
+              onRefresh={() => void projectsQuery.refetch()}
+              isFetching={projectsQuery.isFetching}
+              dataUpdatedAt={projectsQuery.dataUpdatedAt}
+            />
+            <button
+              type="button"
+              className="btn btn-primary btn-sm shrink-0"
+              onClick={() => setCreating(true)}
+            >
+              <Plus className="size-4" />
+              Yeni proje
+            </button>
+          </PageActions>
         }
       />
 

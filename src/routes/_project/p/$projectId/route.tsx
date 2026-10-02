@@ -40,7 +40,8 @@ function useProjectAccessRedirect(projectId: string) {
   }, [error, navigate]);
 }
 
-function ProjectLayout() {
+/** Exported so the layout can be rendered directly in tests. */
+export function ProjectLayout() {
   const { projectId } = Route.useParams();
   useProjectAccessRedirect(projectId);
 
@@ -62,7 +63,9 @@ function ProjectLayout() {
 
   return (
     <AuthenticatedAppLayout projectId={projectId}>
-      <Outlet />
+      {/* Keyed so a project switch remounts the page, not the shell: page
+          state (filters, selection, placeholder data) must not leak across. */}
+      <Outlet key={projectId} />
     </AuthenticatedAppLayout>
   );
 }

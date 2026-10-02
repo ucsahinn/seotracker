@@ -12,11 +12,13 @@ import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import { formatDateTime } from "@/client/lib/format";
 import {
   checkForUpdateNow,
-  getUpdateStatus,
   setUpdateCheckEnabled,
 } from "@/serverFunctions/updateCheck";
+import { SectionHeaderRow } from "./SectionBadge";
+import { UNREADABLE, updateBadge } from "./sectionStatus";
+import { updateStatusOptions } from "./settingsQueries";
 
-const STATUS_KEY = ["updateStatus"] as const;
+const STATUS_KEY = updateStatusOptions().queryKey;
 const UPDATE_COMMAND = "git pull && docker compose up -d --build";
 
 /**
@@ -30,10 +32,7 @@ const UPDATE_COMMAND = "git pull && docker compose up -d --build";
 export function UpdateSection({ version }: { version: string }) {
   const queryClient = useQueryClient();
 
-  const statusQuery = useQuery({
-    queryKey: STATUS_KEY,
-    queryFn: () => getUpdateStatus(),
-  });
+  const statusQuery = useQuery(updateStatusOptions());
   const status = statusQuery.data;
 
   const checkNow = useMutation({
@@ -42,6 +41,10 @@ export function UpdateSection({ version }: { version: string }) {
       queryClient.setQueryData(STATUS_KEY, result);
       if (result.outcome === "unreachable") {
         toast.error("GitHub'a ulaşılamadı.");
+      } else if (result.outcome === "error") {
+        toast.error(
+          `GitHub'a ulaşılamadı; son bilinen sürüm ${result.latestVersion}.`,
+        );
       } else if (result.outcome === "no_releases") {
         toast.success("Henüz yayımlanmış bir sürüm yok.");
       } else if (result.updateAvailable) {
@@ -61,11 +64,15 @@ export function UpdateSection({ version }: { version: string }) {
   });
 
   return (
-    <section className="space-y-3">
-      <SettingsHeading
-        title="Hakkında"
-        help="Bu kurulum bir git kopyası, yani güncelleme buradan yapılmaz: uygulama yeni sürümü fark eder ve çalıştırmanız gereken komutu verir. Kontrolü kapatırsanız GitHub'a hiç istek gitmez."
-      />
+    <section id="guncelleme" className="scroll-mt-16 space-y-3">
+      <SectionHeaderRow
+        badge={statusQuery.isError ? UNREADABLE : updateBadge(status)}
+      >
+        <SettingsHeading
+          title="Hakkında"
+          help="Bu kurulum bir git kopyası, yani güncelleme buradan yapılmaz: uygulama yeni sürümü fark eder ve çalıştırmanız gereken komutu verir. Kontrolü kapatırsanız GitHub'a hiç istek gitmez."
+        />
+      </SectionHeaderRow>
 
       <div className="flex items-center justify-between gap-6">
         <span className="text-sm">Sürüm</span>
@@ -100,8 +107,8 @@ export function UpdateSection({ version }: { version: string }) {
             />
           </div>
           <p className="text-xs text-subtle">
-            Proje klasöründe çalıştırın. Verileriniz `.wrangler` klasöründe
-            kalır, güncelleme onu silmez.
+            Proje klasöründe çalıştırın. Verileriniz Docker biriminde (
+            <code>seotracker_data</code>) kalır, güncelleme onu silmez.
           </p>
         </div>
       ) : null}
@@ -116,6 +123,24 @@ export function UpdateSection({ version }: { version: string }) {
       {status?.outcome === "no_releases" ? (
         <p className="text-sm text-muted">
           Depoda henüz yayımlanmış bir sürüm yok.
+        </p>
+      ) : null}
+
+      {status && !status.enabled ? (
+        <p className="text-sm text-muted">
+          Güncelleme kontrolü kapalı; GitHub&apos;a istek gitmiyor. Yeni
+          sürümleri depodaki yayınlardan kendiniz takip edebilirsiniz.
+        </p>
+      ) : null}
+
+      {status?.outcome === "error" ? (
+        <p role="alert" className="text-sm text-[var(--ink-warning)]">
+          Son kontrol başarısız oldu: GitHub&apos;a ulaşılamadı. Son bilinen
+          sürüm {status.latestVersion}
+          {status.lastSuccessAt
+            ? ` (son başarılı kontrol: ${formatDateTime(status.lastSuccessAt)})`
+            : ""}
+          ; güncel olup olmadığınız doğrulanamadı.
         </p>
       ) : null}
 

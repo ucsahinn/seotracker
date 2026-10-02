@@ -19,9 +19,12 @@
     },
   },
   // Workflow step ceiling: default 10,000, raisable to 25,000 (Cloudflare
-  // Workflows limits, verified 2026-09-30). An audit of MAX_AUDIT_PAGES uses
-  // about 2,100 steps (see src/server/workflows/auditStepBudget.ts); this is
-  // headroom for slow sites whose crawl chunks are cut short.
+  // Workflows limits, verified 2026-09-30). An audit of MAX_AUDIT_PAGES (10,000)
+  // uses about 4,056 steps with speed on, 56 without; the worst case (every
+  // crawl chunk cut to 25 pages, every speed wave failing into its fallback)
+  // is 10,406 (see src/server/workflows/auditStepBudget.ts and its test).
+  // The raised limit is headroom for that worst case, which passes the
+  // 10,000 default.
   "limits": {
     "steps": 25000,
   },

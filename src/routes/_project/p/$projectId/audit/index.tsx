@@ -1,4 +1,5 @@
 import { PageHeader, PageShell } from "@/client/components/PageShell";
+import { PageActions, RefreshButton } from "@/client/components/RefreshButton";
 import { formatRelativeTime } from "@/client/lib/format";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { getErrorCode } from "@/client/lib/error-messages";
@@ -39,8 +40,14 @@ function SiteAuditPage() {
    * instead of stepping back one tab.
    */
   const setSearchParams = useCallback(
-    (updates: Record<string, string | undefined>) => {
-      void navigate({ search: (prev) => ({ ...prev, ...updates }) });
+    (
+      updates: Record<string, string | undefined>,
+      options?: { replace?: boolean },
+    ) => {
+      void navigate({
+        search: (prev) => ({ ...prev, ...updates }),
+        replace: options?.replace ?? false,
+      });
     },
     [navigate],
   );
@@ -61,7 +68,14 @@ function SiteAuditPage() {
       tab={tab}
       severity={severity}
       onBack={() => setSearchParams({ auditId: undefined })}
-      onTabChange={(nextTab) => setSearchParams({ tab: nextTab })}
+      onTabChange={(nextTab, options) =>
+        setSearchParams({ tab: nextTab }, options)
+      }
+      // A filter tweak is not a navigation: replace, so Back is not a stack of
+      // every severity click.
+      onSeverityChange={(next) =>
+        setSearchParams({ severity: next ?? undefined }, { replace: true })
+      }
     />
   );
 }
@@ -73,13 +87,15 @@ function AuditDetail({
   severity,
   onBack,
   onTabChange,
+  onSeverityChange,
 }: {
   projectId: string;
   auditId: string;
   tab: AuditTab;
   severity: IssueSeverity | undefined;
   onBack: () => void;
-  onTabChange: (tab: AuditTab) => void;
+  onTabChange: (tab: AuditTab, options?: { replace?: boolean }) => void;
+  onSeverityChange: (severity: IssueSeverity | null) => void;
 }) {
   const statusQuery = useQuery({
     queryKey: ["audit-status", projectId, auditId],
@@ -166,6 +182,21 @@ function AuditDetail({
               <StatusBadge status={status.status} />
             ) : null}
           </span>
+        }
+        actions={
+          <PageActions>
+            <RefreshButton
+              onRefresh={() => {
+                void statusQuery.refetch();
+                if (isComplete || isFailed) void resultsQuery.refetch();
+              }}
+              isFetching={statusQuery.isFetching || resultsQuery.isFetching}
+              dataUpdatedAt={
+                resultsQuery.dataUpdatedAt || statusQuery.dataUpdatedAt
+              }
+              shortcut
+            />
+          </PageActions>
         }
         description={
           status ? (
@@ -264,6 +295,7 @@ function AuditDetail({
           tab={tab}
           severity={severity}
           onTabChange={onTabChange}
+          onSeverityChange={onSeverityChange}
         />
       )}
     </PageShell>

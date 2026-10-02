@@ -23,7 +23,8 @@ import {
 export const AUDIT_LIMITS = {
   maxPagesPerAudit: MAX_AUDIT_PAGES,
   // Two full-size audits (10,000 pages + 20,000 Lighthouse checks each),
-  // counted in pages + Lighthouse checks.
+  // counted in pages + Lighthouse checks, across the audits running right
+  // now. Finished audits do not count.
   maxCapacityUnits: 60_000,
   maxRunningAudits: 3,
 };

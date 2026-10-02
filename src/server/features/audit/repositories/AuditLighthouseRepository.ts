@@ -7,7 +7,7 @@
  * source -- Google PageSpeed Insights rather than this crawler -- so it
  * is the seam that costs least to cut.
  */
-import { and, eq, inArray } from "drizzle-orm";
+import { and, eq, inArray, isNotNull } from "drizzle-orm";
 import { db } from "@/db";
 import { audits, auditLighthouseResults, auditPages } from "@/db/schema";
 import { executeInBatches } from "@/db/runBatch";
@@ -80,6 +80,20 @@ async function countResultsForPages(auditId: string, pageIds: string[]) {
   return { ok: rows.length - error, error };
 }
 
+/** R2 keys of the stored Lighthouse payloads, for cleaning up with the audit. */
+async function getR2KeysForAudit(auditId: string): Promise<string[]> {
+  const rows = await db
+    .select({ r2Key: auditLighthouseResults.r2Key })
+    .from(auditLighthouseResults)
+    .where(
+      and(
+        eq(auditLighthouseResults.auditId, auditId),
+        isNotNull(auditLighthouseResults.r2Key),
+      ),
+    );
+  return rows.flatMap((row) => row.r2Key ?? []);
+}
+
 async function getLighthouseResultById(input: {
   lighthouseResultId: string;
   projectId: string;
@@ -118,5 +132,6 @@ async function getLighthouseResultById(input: {
 export const AuditLighthouseRepository = {
   insertLighthouseResults,
   countResultsForPages,
+  getR2KeysForAudit,
   getLighthouseResultById,
 };

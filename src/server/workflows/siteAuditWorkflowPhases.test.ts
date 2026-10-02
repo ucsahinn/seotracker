@@ -254,12 +254,13 @@ describe("runLighthousePhase", () => {
 
     expect(names).toEqual([
       "select-lighthouse-sample",
-      "lighthouse-chunk-1",
-      "lighthouse-chunk-2",
-      "lighthouse-chunk-3",
+      ...[1, 2, 3].flatMap((n) => [
+        `lighthouse-urls-${n}`,
+        `lighthouse-chunk-${n}`,
+      ]),
     ]);
     expect(names.length - 1).toBe(lighthouseStepCount(12));
-    expect(returned[1]).toEqual({
+    expect(returned[2]).toEqual({
       completed: 10,
       failed: 0,
       quotaExhausted: false,
@@ -374,6 +375,7 @@ describe("runLighthousePhase", () => {
       );
       expect(names).toEqual([
         "select-lighthouse-sample",
+        "lighthouse-urls-1",
         "lighthouse-chunk-1",
         "lighthouse-chunk-1-retry-1",
       ]);

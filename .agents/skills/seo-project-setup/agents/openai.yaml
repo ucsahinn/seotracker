@@ -1,0 +1,4 @@
+interface:
+  display_name: "SEO Project Setup"
+  short_description: "Save site goals, competitors and key pages"
+  default_prompt: "Use $seo-project-setup to set up my project context by interview."

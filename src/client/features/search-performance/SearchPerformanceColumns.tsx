@@ -1,3 +1,4 @@
+import { copyText } from "@/client/lib/copyText";
 import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
 import type { MutableRefObject } from "react";
 import { makeSelectionColumn } from "@/client/components/table/AppDataTable";
@@ -120,7 +121,11 @@ export function buildDimensionColumns(
               {
                 label: isUrl ? "Adresi kopyala" : "Kelimeyi kopyala",
                 icon: Copy,
-                onSelect: () => void navigator.clipboard.writeText(value),
+                onSelect: () =>
+                  void copyText(
+                    value,
+                    isUrl ? "Adres kopyalandı" : "Kelime kopyalandı",
+                  ),
               },
               ...(!isUrl && onSaveKeyword
                 ? [

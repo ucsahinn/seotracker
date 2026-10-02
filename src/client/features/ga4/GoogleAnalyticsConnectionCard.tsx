@@ -1,5 +1,6 @@
 import { ga4ConnectionOptions } from "@/client/features/integrations/googleConnectionQueries";
 import * as React from "react";
+import { invalidatePropertyDependents } from "@/client/features/gsc/invalidatePropertyDependents";
 import { GoogleConnectedState } from "@/client/features/integrations/GoogleConnectedState";
 import { useGooglePickerResume } from "@/client/features/integrations/useGooglePickerResume";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -79,14 +80,8 @@ export function GoogleAnalyticsConnectionCard({
     }
   }, [accounts, selection, picking, connected]);
 
-  const invalidateReports = () => {
-    void queryClient.invalidateQueries({
-      queryKey: ["dashboardActivation", projectId],
-    });
-    void queryClient.invalidateQueries({
-      queryKey: ["dashboardGa4Report", projectId],
-    });
-  };
+  const invalidateReports = () =>
+    invalidatePropertyDependents(queryClient, projectId);
   const setPropertyMutation = useMutation({
     mutationFn: (selected: Ga4PropertySelection) =>
       setGa4Property({ data: { projectId, ...selected } }),

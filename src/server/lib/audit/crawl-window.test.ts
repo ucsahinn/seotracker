@@ -3,64 +3,21 @@ import {
   adjustCrawlWindow,
   RETRY_CRAWL_WINDOW,
 } from "@/server/lib/audit/crawl-window";
-import type { CrawledPageResult } from "@/server/lib/audit/types";
+import { makeCrawledPage } from "@/server/test-support/crawled-page";
 import type { PageFetchClass } from "@/shared/audit-fetch-class";
 
 function page(
   fetchClass: PageFetchClass,
   responseTimeMs: number,
   htmlBytes = 10_000,
-): CrawledPageResult {
-  return {
+) {
+  return makeCrawledPage({
     id: "",
-    url: "https://example.com/",
-    statusCode: fetchClass === "ok" ? 200 : 0,
     fetchClass,
-    redirectUrl: null,
-    title: "",
-    metaDescription: "",
-    canonicalCount: 0,
-    titleCount: 0,
-    metaDescriptionCount: 0,
-    emptyAnchorCount: 0,
-    charsetDeclared: true,
-    canonicalUrl: null,
-    robotsMeta: null,
-    googlebotMeta: null,
-    htmlLang: "en",
-    xRobotsTag: null,
-    headerCanonicalUrl: null,
-    ogTitle: null,
-    ogDescription: null,
-    ogImage: null,
-    h1Count: 0,
-    firstH1: null,
-    h2Count: 0,
-    h3Count: 0,
-    h4Count: 0,
-    h5Count: 0,
-    h6Count: 0,
-    headingOrder: [],
-    wordCount: 0,
-    contentHash: null,
-    isHtml: true,
-    htmlBytes,
-    rateLimited: false,
-    imagesTotal: 0,
-    imagesMissingAlt: 0,
-    images: [],
-    links: [],
-    hasStructuredData: false,
-    invalidStructuredDataCount: 0,
-    viewport: "width=device-width, initial-scale=1",
-    resources: [],
-    insecureResources: [],
-    hreflangAlternates: [],
-    isIndexable: true,
+    statusCode: fetchClass === "ok" ? 200 : 0,
     responseTimeMs,
-    crawlDepth: 0,
-    inSitemap: false,
-  };
+    htmlBytes,
+  });
 }
 
 describe("adjustCrawlWindow", () => {

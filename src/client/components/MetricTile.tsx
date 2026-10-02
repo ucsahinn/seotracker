@@ -1,6 +1,7 @@
 import { ArrowDownRight, ArrowUpRight } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import * as React from "react";
+import { AnimatedNumber } from "@/client/components/AnimatedNumber";
 import { useFlashOnChange } from "@/client/components/useFlashOnChange";
 import { formatPercent } from "@/client/lib/format";
 
@@ -49,6 +50,7 @@ export function MetricTile({
   hint,
   href,
   flashKey,
+  animateTo,
   /** Lower is better, as with an average search position. */
   inverted = false,
 }: {
@@ -60,6 +62,8 @@ export function MetricTile({
   /** What to compare for the change flash when `value` is a rendering of something steadier (a relative time of a timestamp). */
   flashKey?: string | number | null;
   inverted?: boolean;
+  /** Opt in to a count-up: the raw number and its formatter. `value` stays the fallback and the null check. Off by default. */
+  animateTo?: { value: number; format: (n: number) => string };
 } & TileTarget) {
   const flash = useFlashOnChange(flashKey === undefined ? value : flashKey);
   const body = (
@@ -77,7 +81,14 @@ export function MetricTile({
             key={flash.key}
             className={`truncate text-2xl font-semibold tracking-tight ${flash.className}`}
           >
-            {value}
+            {animateTo ? (
+              <AnimatedNumber
+                value={animateTo.value}
+                format={animateTo.format}
+              />
+            ) : (
+              value
+            )}
           </p>
           <DeltaBadge value={delta} inverted={inverted} title={deltaTitle} />
         </div>
@@ -125,7 +136,9 @@ export function DeltaBadge({
     typeof value === "number"
       ? (() => {
           if (!Number.isFinite(value)) return null;
-          const rounded = Math.round(value * 1000) / 1000;
+          // Round to what is displayed (whole percent): +0.4% must not
+          // render an arrow beside "%0".
+          const rounded = Math.round(value * 100) / 100;
           if (rounded === 0) return null;
           return {
             text: formatPercent(Math.abs(rounded), 0),

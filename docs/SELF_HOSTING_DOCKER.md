@@ -108,6 +108,20 @@ Sonra istemcinizi başlığı gönderecek şekilde ayarlayın; Claude Code için
 claude mcp add --transport http --scope user seotracker http://localhost:3001/mcp --header "Authorization: Bearer <token>"
 ```
 
+Codex için token başlığı yapılandırmaya yazılmaz; bir ortam değişkeninden
+okunur. Değişkeni kendiniz ayarlayın (PowerShell, seotracker klasöründen:
+`[Environment]::SetEnvironmentVariable('SEOTRACKER_MCP_TOKEN', (docker compose exec -T seotracker cat /app/.wrangler/mcp-token).Trim(), 'User')`),
+sonra bağlayın ve Codex'i yeniden başlatın:
+
+```sh
+codex mcp add seotracker --url http://localhost:3001/mcp --bearer-token-env-var SEOTRACKER_MCP_TOKEN
+```
+
+Becerileri `.agents/skills` altındaki altı `seo-*` klasörünü
+`~/.agents/skills/` içine kopyalayarak kurun; Codex'te `$seo-audit` diye
+çağrılır. Kolay yol: uygulamada **Ajan kurulumu** sayfasındaki "Codex için
+kurulum istemi".
+
 İstemci başlığı göndermezse bağlantı 401 döner. Token'ı kendiniz seçmek
 isterseniz kabukta `openssl rand -hex 32` çalıştırın (PowerShell'de:
 `-join ((1..32) | % { '{0:x2}' -f (Get-Random -Max 256) })`) ve çıkan değeri `.env`

@@ -73,6 +73,9 @@ export function useLaunchController({
     historyRefetch: historyQuery.refetch,
   });
 
+  /** Set once a submit actually started an audit (see `rerunAudit`). */
+  const startedRef = React.useRef(false);
+
   const launchForm = useForm({
     defaultValues: DEFAULT_LAUNCH_FORM_VALUES,
     validators: {
@@ -103,6 +106,7 @@ export function useLaunchController({
           maxPages: effectiveMaxPages,
           lighthouseStrategy: value.runLighthouse ? "auto" : "none",
         });
+        startedRef.current = true;
         toast.success("Denetim başlatıldı");
         onAuditStarted(result.auditId);
       } catch (error) {
@@ -140,6 +144,8 @@ export function useLaunchController({
     // Exposed so the view can disable its confirm button while the delete is
     // in flight, the way every other destructive action in the app does.
     isDeleting: deleteMutation.isPending,
+    // True while a start request is in flight, so "run again" can wait.
+    isStarting: startMutation.isPending,
     /*
      * Run a past audit again with the settings it used.
      *
@@ -155,6 +161,10 @@ export function useLaunchController({
       pagesCrawled: number;
       ranLighthouse: boolean;
     }) => {
+      // A second click (or a click while the form is submitting) used to
+      // queue a second audit and overwrite what the operator had typed.
+      if (startMutation.isPending || launchForm.state.isSubmitting) return;
+      const previous = launchForm.state.values;
       // `pagesTotal` is the reservation the audit was started with, which is
       // the setting being repeated. It is 0 on rows old enough to predate
       // the column, and there the pages actually crawled is the better guess.
@@ -162,7 +172,16 @@ export function useLaunchController({
       launchForm.setFieldValue("url", audit.startUrl);
       launchForm.setFieldValue("maxPagesInput", String(pages));
       launchForm.setFieldValue("runLighthouse", audit.ranLighthouse);
-      void launchForm.handleSubmit();
+      startedRef.current = false;
+      void launchForm.handleSubmit().then(() => {
+        // The large-crawl confirmation was declined: nothing started and
+        // nothing failed, so give the operator their own input back.
+        if (startedRef.current) return;
+        if (launchForm.state.errorMap.onSubmit) return;
+        launchForm.setFieldValue("url", previous.url);
+        launchForm.setFieldValue("maxPagesInput", previous.maxPagesInput);
+        launchForm.setFieldValue("runLighthouse", previous.runLighthouse);
+      });
     },
   };
 }
@@ -200,6 +219,8 @@ function useLaunchMutations({
         queryClient.invalidateQueries({
           queryKey: ["auditFreshness", projectId],
         }),
+        // Lighthouse runs spend PageSpeed quota.
+        queryClient.invalidateQueries({ queryKey: ["quotaStatus", projectId] }),
       ]);
     },
   });
@@ -207,8 +228,24 @@ function useLaunchMutations({
   const deleteMutation = useMutation({
     mutationFn: (auditId: string) =>
       deleteAudit({ data: { projectId, auditId } }),
-    onSuccess: () => {
+    onSuccess: (_result, auditId) => {
       void historyRefetch();
+      // The dashboard card and the freshness card read the latest audit, and
+      // the deleted audit's own caches must not be served if its id is opened.
+      void queryClient.invalidateQueries({
+        queryKey: ["dashboardOverview", projectId],
+      });
+      void queryClient.invalidateQueries({
+        queryKey: ["auditFreshness", projectId],
+      });
+      for (const key of [
+        "audit-status",
+        "audit-results",
+        "audit-crawl-progress",
+        "indexCoverage",
+      ]) {
+        queryClient.removeQueries({ queryKey: [key, projectId, auditId] });
+      }
       toast.success("Denetim silindi");
     },
   });

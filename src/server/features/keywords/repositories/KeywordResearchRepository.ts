@@ -146,6 +146,31 @@ function escapeLike(value: string) {
   return value.replace(/[\\%_]/g, (char) => `\\${char}`);
 }
 
+/*
+ * Matching runs against the folded `keyword_key` column, never `lower()` of
+ * the display form: SQLite's `lower()` is ASCII-only, so "ÇAY" stayed "Çay"
+ * and a Turkish search or exclude term never matched. The key was folded in
+ * JS with `toLowerCase()`, which leaves "İ" as "i" plus U+0307 and "ı" as is.
+ * Both sides are therefore reduced to the same plain form: no combining dot,
+ * dotless ı read as i. Rows from before migration 0055 have key == keyword.
+ */
+const keywordKeyExpr = sql`coalesce(${savedKeywords.keywordKey}, ${savedKeywords.keyword})`;
+const matchableKey = sql`replace(replace(${keywordKeyExpr}, char(775), ''), 'ı', 'i')`;
+
+function foldForMatch(term: string) {
+  return term
+    .toLowerCase()
+    .replace(/\u0307/g, "")
+    .replace(/\u0131/g, "i");
+}
+
+function keywordContains(term: string, negate = false) {
+  const pattern = `%${escapeLike(foldForMatch(term))}%`;
+  return negate
+    ? sql`${matchableKey} not like ${pattern} escape '\\'`
+    : sql`${matchableKey} like ${pattern} escape '\\'`;
+}
+
 function buildSavedKeywordWhere(params: {
   projectId: string;
   search?: string;
@@ -162,23 +187,17 @@ function buildSavedKeywordWhere(params: {
   const clauses: SQL[] = [eq(savedKeywords.projectId, params.projectId)];
   const search = params.search?.trim();
   if (search) {
-    clauses.push(
-      sql`lower(${savedKeywords.keyword}) like ${`%${escapeLike(search.toLocaleLowerCase())}%`} escape '\\'`,
-    );
+    clauses.push(keywordContains(search));
   }
   for (const term of params.includeTerms ?? []) {
     const trimmed = term.trim();
     if (!trimmed) continue;
-    clauses.push(
-      sql`lower(${savedKeywords.keyword}) like ${`%${escapeLike(trimmed.toLocaleLowerCase())}%`} escape '\\'`,
-    );
+    clauses.push(keywordContains(trimmed));
   }
   for (const term of params.excludeTerms ?? []) {
     const trimmed = term.trim();
     if (!trimmed) continue;
-    clauses.push(
-      sql`lower(${savedKeywords.keyword}) not like ${`%${escapeLike(trimmed.toLocaleLowerCase())}%`} escape '\\'`,
-    );
+    clauses.push(keywordContains(trimmed, true));
   }
   if (params.minVolume != null) {
     clauses.push(gte(keywordMetrics.searchVolume, params.minVolume));
@@ -266,7 +285,9 @@ async function listSavedKeywordsByProject(
   });
 
   const metricJoin = and(
-    eq(keywordMetrics.keyword, savedKeywords.keyword),
+    // `keyword_metrics.keyword` holds the folded key (see saveKeywords), not
+    // the display form.
+    eq(keywordMetrics.keyword, keywordKeyExpr),
     eq(keywordMetrics.projectId, savedKeywords.projectId),
     eq(keywordMetrics.locationCode, savedKeywords.locationCode),
     eq(keywordMetrics.languageCode, savedKeywords.languageCode),

@@ -1,4 +1,4 @@
-import { AlertCircle, CheckCircle, Loader2 } from "lucide-react";
+import { AlertCircle, CheckCircle } from "lucide-react";
 import { lighthouseBand } from "@/shared/lighthouse";
 
 export function extractPathname(url: string): string {
@@ -26,7 +26,7 @@ export function StatusBadge({ status }: { status: string }) {
   if (status === "running") {
     return (
       <span className="badge badge-info badge-sm gap-1">
-        <Loader2 className="size-3 animate-spin" /> Sürüyor
+        <span className="dot-live" aria-hidden /> Sürüyor
       </span>
     );
   }

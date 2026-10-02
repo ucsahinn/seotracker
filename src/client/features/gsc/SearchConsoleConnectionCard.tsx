@@ -15,6 +15,7 @@ import {
   SitePicker,
   type GscSiteSelection,
 } from "@/client/features/gsc/SitePicker";
+import { invalidatePropertyDependents } from "@/client/features/gsc/invalidatePropertyDependents";
 import { disconnectGsc, listGscSites, setGscSite } from "@/serverFunctions/gsc";
 
 const GRANT_STATUS_KEY = ["gscGrantStatus"];
@@ -96,22 +97,9 @@ export function SearchConsoleConnectionCard({
       void queryClient.invalidateQueries({ queryKey: connectionKey });
       setPicking(false);
       void queryClient.invalidateQueries({ queryKey: GRANT_STATUS_KEY });
-      // The Search Performance report caches {connected:false}; refresh it so
-      // the page shows data right after connecting instead of the stale card.
-      void queryClient.invalidateQueries({
-        queryKey: ["searchPerformance", projectId],
-      });
-      void queryClient.invalidateQueries({
-        queryKey: ["searchPerformanceTable", projectId],
-      });
-      // The dashboard embeds this card and swaps it for the Search
-      // performance stats card once activation reports the connection.
-      void queryClient.invalidateQueries({
-        queryKey: ["dashboardActivation", projectId],
-      });
-      void queryClient.invalidateQueries({
-        queryKey: ["dashboardGscReport", projectId],
-      });
+      // Drop every cache derived from the property (reports, rankings,
+      // opportunities, dashboard, quota) so nothing serves the old one.
+      invalidatePropertyDependents(queryClient, projectId);
     },
   });
 
@@ -127,18 +115,9 @@ export function SearchConsoleConnectionCard({
       setSelection(null);
       void queryClient.invalidateQueries({ queryKey: connectionKey });
       void queryClient.invalidateQueries({ queryKey: GRANT_STATUS_KEY });
-      void queryClient.invalidateQueries({
-        queryKey: ["searchPerformance", projectId],
-      });
-      void queryClient.invalidateQueries({
-        queryKey: ["searchPerformanceTable", projectId],
-      });
-      void queryClient.invalidateQueries({
-        queryKey: ["dashboardActivation", projectId],
-      });
-      void queryClient.invalidateQueries({
-        queryKey: ["dashboardGscReport", projectId],
-      });
+      // Drop every cache derived from the property (reports, rankings,
+      // opportunities, dashboard, quota) so nothing serves the old one.
+      invalidatePropertyDependents(queryClient, projectId);
     },
   });
 

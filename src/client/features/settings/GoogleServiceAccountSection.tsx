@@ -5,15 +5,18 @@ import * as React from "react";
 import { toast } from "sonner";
 import { CopyButton } from "@/client/components/CopyButton";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
+import { ConfirmDeleteModal } from "@/client/components/ConfirmDeleteModal";
 import {
   clearGoogleServiceAccount,
-  getGoogleServiceAccountStatus,
   saveGoogleServiceAccount,
 } from "@/serverFunctions/googleServiceAccount";
+import { SectionHeaderRow } from "./SectionBadge";
+import { serviceAccountBadge, UNREADABLE } from "./sectionStatus";
+import { googleServiceAccountStatusOptions } from "./settingsQueries";
 
 const SERVICE_ACCOUNT_URL =
   "https://console.cloud.google.com/iam-admin/serviceaccounts";
-const STATUS_KEY = ["googleServiceAccountStatus"] as const;
+const STATUS_KEY = googleServiceAccountStatusOptions().queryKey;
 
 /**
  * The shorter way to connect Google.
@@ -29,11 +32,9 @@ export function GoogleServiceAccountSection() {
   const queryClient = useQueryClient();
   const [keyJson, setKeyJson] = React.useState("");
   const [editing, setEditing] = React.useState(false);
+  const [confirmingClear, setConfirmingClear] = React.useState(false);
 
-  const statusQuery = useQuery({
-    queryKey: STATUS_KEY,
-    queryFn: () => getGoogleServiceAccountStatus(),
-  });
+  const statusQuery = useQuery(googleServiceAccountStatusOptions());
   const status = statusQuery.data;
   const stored = Boolean(status?.clientEmail);
 
@@ -65,6 +66,7 @@ export function GoogleServiceAccountSection() {
     onSuccess: async () => {
       setKeyJson("");
       setEditing(false);
+      setConfirmingClear(false);
       await invalidate();
       /*
        * Not "revoked". Deleting the key here stops this install using it,
@@ -79,17 +81,26 @@ export function GoogleServiceAccountSection() {
         "Hizmet hesabı bu kurulumdan silindi. Anahtarı gerçekten iptal etmek için Google Cloud'dan da silin.",
       );
     },
-    onError: (error) => toast.error(getStandardErrorMessage(error)),
+    onError: (error) => {
+      setConfirmingClear(false);
+      toast.error(getStandardErrorMessage(error));
+    },
   });
 
-  const showForm = editing || !stored;
+  // Not while loading: the empty form flashed up before a stored account
+  // replaced it.
+  const showForm = !statusQuery.isPending && (editing || !stored);
 
   return (
-    <section className="space-y-3">
-      <SettingsHeading
-        title="Hizmet hesabı (daha kısa yol)"
-        help="OAuth kurulumu onay ekranı, test kullanıcısı ve birebir eşleşen yönlendirme adresi ister; kurulum genelde bu üçünde takılır. Hizmet hesabı üçünü de atlar: Google Cloud'da bir hizmet hesabı açıp JSON anahtarını indirin, sonra o hesabın e-postasını Search Console mülkünüze bir meslektaşınızı ekler gibi ekleyin."
-      />
+    <section id="hizmet-hesabi" className="scroll-mt-16 space-y-3">
+      <SectionHeaderRow
+        badge={statusQuery.isError ? UNREADABLE : serviceAccountBadge(status)}
+      >
+        <SettingsHeading
+          title="Hizmet hesabı (daha kısa yol)"
+          help="OAuth kurulumu onay ekranı, test kullanıcısı ve birebir eşleşen yönlendirme adresi ister; kurulum genelde bu üçünde takılır. Hizmet hesabı üçünü de atlar: Google Cloud'da bir hizmet hesabı açıp JSON anahtarını indirin, sonra o hesabın e-postasını Search Console mülkünüze bir meslektaşınızı ekler gibi ekleyin."
+        />
+      </SectionHeaderRow>
 
       <p className="text-sm text-muted">
         Yukarıdaki OAuth istemcisi yerine bunu kullanabilirsiniz. Hizmet
@@ -110,12 +121,28 @@ export function GoogleServiceAccountSection() {
 
       {statusQuery.isPending ? <div className="skeleton h-10 w-full" /> : null}
 
+      {statusQuery.isError ? (
+        <p role="alert" className="text-sm text-[var(--ink-error)]">
+          Hizmet hesabı durumu okunamadı.{" "}
+          <button
+            type="button"
+            className="link"
+            onClick={() => void statusQuery.refetch()}
+          >
+            Tekrar dene
+          </button>
+        </p>
+      ) : null}
+
       {stored && !editing ? (
         <div className="space-y-3">
           <div className="flex flex-wrap items-center justify-between gap-3 rounded-box border border-base-300 p-3">
             <div className="flex min-w-0 items-center gap-2">
               <CheckCircle2 className="size-4 shrink-0 text-success" />
-              <span className="truncate font-mono text-sm">
+              <span
+                className="truncate font-mono text-sm"
+                title={status?.clientEmail ?? undefined}
+              >
                 {status?.clientEmail}
               </span>
             </div>
@@ -131,7 +158,7 @@ export function GoogleServiceAccountSection() {
                 type="button"
                 className="btn btn-sm btn-ghost text-[var(--ink-error)]"
                 disabled={clear.isPending}
-                onClick={() => clear.mutate()}
+                onClick={() => setConfirmingClear(true)}
               >
                 Sil
               </button>
@@ -171,6 +198,8 @@ export function GoogleServiceAccountSection() {
           </label>
           <textarea
             id="service-account-key"
+            autoComplete="off"
+            spellCheck={false}
             className="textarea textarea-bordered h-32 w-full font-mono text-xs"
             placeholder='{ "type": "service_account", "project_id": "...", ... }'
             value={keyJson}
@@ -202,6 +231,16 @@ export function GoogleServiceAccountSection() {
             Anahtar sunucuda şifrelenir ve bir daha tarayıcıya gönderilmez.
           </p>
         </div>
+      ) : null}
+      {confirmingClear ? (
+        <ConfirmDeleteModal
+          title="Hizmet hesabı silinsin mi?"
+          detail="JSON anahtarı bu kurulumdan silinir ve Search Console ile Analytics bu hesapla veri çekemez. Anahtarı Google tarafında da iptal etmek için Google Cloud'dan silmeniz gerekir."
+          confirmLabel="Hesabı sil"
+          isPending={clear.isPending}
+          onClose={() => setConfirmingClear(false)}
+          onConfirm={() => clear.mutate()}
+        />
       ) : null}
     </section>
   );

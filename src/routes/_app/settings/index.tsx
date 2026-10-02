@@ -1,83 +1,40 @@
-import { WhatsNewSection } from "@/client/features/settings/WhatsNewSection";
-import { SettingsHeading } from "@/client/components/HelpTip";
 import { createFileRoute } from "@tanstack/react-router";
-import { Monitor, Moon, Sun } from "lucide-react";
+import { SystemLimitsSection } from "@/client/features/quotas/SystemLimitsSection";
 import { GoogleOAuthClientSection } from "@/client/features/settings/GoogleOAuthClientSection";
 import { GoogleServiceAccountSection } from "@/client/features/settings/GoogleServiceAccountSection";
 import { PageSpeedKeySection } from "@/client/features/settings/PageSpeedKeySection";
+import { SettingsIndex } from "@/client/features/settings/SettingsIndex";
+import { ThemeSection } from "@/client/features/settings/ThemeSection";
 import { UpdateSection } from "@/client/features/settings/UpdateSection";
-import { type ThemePreference, useThemePreference } from "@/client/lib/theme";
+import { WhatsNewSection } from "@/client/features/settings/WhatsNewSection";
 import { version } from "../../../../package.json";
 
 export const Route = createFileRoute("/_app/settings/")({
   component: PersonalSettings,
 });
 
-const THEME_OPTIONS: {
-  value: ThemePreference;
-  label: string;
-  icon: typeof Sun;
-}[] = [
-  { value: "system", label: "Sistem", icon: Monitor },
-  { value: "light", label: "Açık", icon: Sun },
-  { value: "dark", label: "Koyu", icon: Moon },
-];
-
 function PersonalSettings() {
-  const { themePreference, setThemePreference } = useThemePreference();
-
   return (
-    /* A hairline between blocks instead of ten rows of air: with only
-       whitespace the sections ran into one long form and the small headings
-       were the only thing saying where one ended. */
-    <div className="divide-y divide-[var(--hairline)] [&>*]:py-8 [&>*:first-child]:pt-0 [&>*:last-child]:pb-0">
-      <section className="space-y-3">
-        <SettingsHeading
-          title="Görünüm"
-          help="Sistem, işletim sisteminizin açık/koyu tercihini izler. Seçim bu tarayıcıda saklanır; başka bir cihazda ayrı seçilir."
-        />
-        <div className="flex items-center justify-between gap-6">
-          <span className="text-sm">Tema</span>
-          <div
-            role="radiogroup"
-            aria-label="Tema tercihi"
-            className="flex gap-0.5 rounded-field bg-base-200 p-0.5"
-          >
-            {THEME_OPTIONS.map((option) => {
-              const isActive = option.value === themePreference;
-              const Icon = option.icon;
+    <>
+      <SettingsIndex />
+      {/* A hairline between blocks instead of ten rows of air: with only
+          whitespace the sections ran into one long form and the small
+          headings were the only thing saying where one ended. */}
+      <div className="enter divide-y divide-[var(--hairline)] [&>*]:py-8 [&>*:first-child]:pt-0 [&>*:last-child]:pb-0">
+        <ThemeSection />
 
-              return (
-                <button
-                  key={option.value}
-                  type="button"
-                  role="radio"
-                  aria-checked={isActive}
-                  aria-label={option.label}
-                  className={`flex cursor-pointer items-center justify-center rounded-field px-3 py-1.5 transition-colors ${
-                    isActive
-                      ? "bg-base-100 text-base-content shadow-[var(--shadow-raise)] ring-1 ring-[var(--control-border)]"
-                      : "text-muted hover:text-muted"
-                  }`}
-                  onClick={() => setThemePreference(option.value)}
-                >
-                  <Icon className="size-4" />
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+        <GoogleOAuthClientSection />
 
-      <GoogleOAuthClientSection />
+        <GoogleServiceAccountSection />
 
-      <GoogleServiceAccountSection />
+        <PageSpeedKeySection />
 
-      <PageSpeedKeySection />
+        <SystemLimitsSection id="sinirlar" />
 
-      <UpdateSection version={version} />
+        <UpdateSection version={version} />
 
-      <WhatsNewSection version={version} />
-    </div>
+        <WhatsNewSection version={version} />
+      </div>
+    </>
   );
 }

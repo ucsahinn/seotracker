@@ -9,6 +9,7 @@ import type { SavedKeywordRow } from "@/types/keywords";
 import type { ExportSavedKeywordsInput } from "@/types/schemas/keywords";
 import type { AppliedSavedKeywordsFilters } from "./savedKeywordsFilterTypes";
 import {
+  resolveFilteredRows,
   SAVED_KEYWORD_EXPORT_HEADERS,
   savedKeywordExportRow,
 } from "./savedKeywordsUtils";
@@ -19,6 +20,13 @@ export function useSavedKeywordsExport(params: {
   selectedTagIds: string[];
   sort: ExportSavedKeywordsInput["sort"];
   order: ExportSavedKeywordsInput["order"];
+  /**
+   * The rows on screen while a position group narrows the table locally, or
+   * null when the server filters already describe the screen. The server
+   * knows nothing about positions, so exporting by filters alone would hand
+   * over the whole list.
+   */
+  positionRows?: SavedKeywordRow[] | null;
 }) {
   const [exporting, setExporting] = useState<"csv" | "sheets" | null>(null);
   const [exportingSelection, setExportingSelection] = useState<
@@ -43,10 +51,11 @@ export function useSavedKeywordsExport(params: {
     ],
   );
 
-  const loadFilteredRows = async () => {
-    const result = await exportSavedKeywords({ data: exportInput });
-    return result.rows;
-  };
+  const loadFilteredRows = () =>
+    resolveFilteredRows(params.positionRows ?? null, async () => {
+      const result = await exportSavedKeywords({ data: exportInput });
+      return result.rows;
+    });
 
   const exportFilteredCsv = async () => {
     setExporting("csv");

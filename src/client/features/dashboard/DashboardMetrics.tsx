@@ -9,7 +9,12 @@ import { describeTotals } from "@/client/features/search-performance/totals";
 import { dashboardGscReportQuery } from "@/client/features/dashboard/dashboardGscReport";
 import { fractionalChange } from "@/shared/delta";
 import { DEFAULT_WINDOW_DAYS } from "@/shared/dataFreshness";
-import { formatDate } from "@/client/lib/format";
+import {
+  formatCount,
+  formatDate,
+  formatDecimal,
+  formatPercent,
+} from "@/client/lib/format";
 
 /* The window itself lives in dashboardGscReport.ts; this is only its label. */
 const DASHBOARD_RANGE_LABEL = `Son ${DEFAULT_WINDOW_DAYS} gün`;
@@ -116,6 +121,7 @@ export function DashboardMetrics({
         label="Tıklama"
         href={searchPerformance}
         value={shown?.clicks ?? null}
+        animateTo={count(report?.totals.clicks, formatCount)}
         delta={delta((totals) => totals.clicks)}
         hint={hint}
       />
@@ -123,6 +129,7 @@ export function DashboardMetrics({
         label="Gösterim"
         href={searchPerformance}
         value={shown?.impressions ?? null}
+        animateTo={count(report?.totals.impressions, formatCount)}
         delta={delta((totals) => totals.impressions)}
         hint={period}
       />
@@ -130,6 +137,7 @@ export function DashboardMetrics({
         label="Tıklama oranı"
         href={searchPerformance}
         value={shown?.ctr ?? null}
+        animateTo={count(report?.totals.ctr, (n) => formatPercent(n))}
         delta={delta((totals) => totals.ctr)}
         hint={period}
       />
@@ -137,6 +145,7 @@ export function DashboardMetrics({
         label="Ortalama sıra"
         href={{ to: "/p/$projectId/rankings", projectId }}
         value={shown?.position ?? null}
+        animateTo={count(report?.totals.position, (n) => formatDecimal(n))}
         delta={delta((totals) => totals.position)}
         // Position 3 is better than position 8, so a fall is the good direction.
         inverted
@@ -148,6 +157,11 @@ export function DashboardMetrics({
       />
     </MetricRow>
   );
+}
+
+/** The count-up props, only when there is a number (tiles show "--" otherwise). */
+function count(value: number | undefined, format: (n: number) => string) {
+  return value === undefined ? undefined : { value, format };
 }
 
 type Totals = {

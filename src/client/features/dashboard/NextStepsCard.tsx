@@ -7,7 +7,11 @@ import {
   Search,
   TriangleAlert,
 } from "lucide-react";
-import { formatCount, formatRelativeTime } from "@/client/lib/format";
+import {
+  formatCount,
+  formatRelativeTime,
+  parseTimestamp,
+} from "@/client/lib/format";
 
 /**
  * What to do next, in order, on the one screen an operator opens first.
@@ -211,8 +215,7 @@ function buildSteps({
    * A crawl older than a week describes a site that has since changed, and
    * every number on this screen comes from it.
    */
-  const ageDays =
-    (Date.now() - new Date(audit.startedAt).getTime()) / 86_400_000;
+  const ageDays = (Date.now() - parseTimestamp(audit.startedAt)) / 86_400_000;
   if (audit.status === "completed" && ageDays > STALE_AFTER_DAYS) {
     steps.push({
       key: "rescan",

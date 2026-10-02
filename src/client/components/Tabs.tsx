@@ -48,9 +48,8 @@ export function Tabs<Id extends string>({
     const next = items[index];
     if (!next) return;
     onChange(next.id);
-    // Focus follows selection, which is the automatic-activation half of the
-    // pattern and the right half here: every panel is already rendered from
-    // state, so there is no request to spare by deferring activation.
+    // Focus follows selection (automatic activation): a panel is just state
+    // being swapped, so there is no request to spare by deferring it.
     refs.current.get(next.id)?.focus();
   };
 
@@ -86,7 +85,9 @@ export function Tabs<Id extends string>({
             type="button"
             role="tab"
             aria-selected={active}
-            aria-controls={panelId(group, item.id)}
+            // Only the active panel is rendered; pointing at a missing id
+            // is an invalid reference.
+            aria-controls={active ? panelId(group, item.id) : undefined}
             /*
              * Roving tabindex: the strip is a single stop in the page's tab
              * order, and the arrows move inside it. Without this, a strip of

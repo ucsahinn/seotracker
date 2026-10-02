@@ -1,3 +1,4 @@
+import { QuotaCard } from "@/client/features/quotas/QuotaCard";
 type CoverageRow = Awaited<
   ReturnType<typeof getAuditIndexCoverage>
 >["rows"][number];
@@ -119,6 +120,9 @@ export function IndexCoverageView({
       );
     },
     onError: (error) => toast.error(getStandardErrorMessage(error)),
+    // URL Inspection spends the daily quota whether or not the call succeeds.
+    onSettled: () =>
+      queryClient.invalidateQueries({ queryKey: ["quotaStatus", projectId] }),
   });
 
   const data = coverage.data;
@@ -181,6 +185,7 @@ export function IndexCoverageView({
         <MetricTile
           label="Google'ın farklı adresi seçtiği sayfalar"
           value={neverChecked ? null : formatNumber(data.canonicalMismatches)}
+          animateTo={{ value: data.canonicalMismatches, format: formatNumber }}
           hint={
             data.canonicalMismatches > 0
               ? "Üstteki grafikte seçtiğiniz gruptan bağımsız, kontrol edilen tüm sayfalar. Google, sizin seçtiğiniz adres yerine başka bir sayfayı asıl sayfa saydı."
@@ -190,6 +195,7 @@ export function IndexCoverageView({
         <MetricTile
           label="Bu denetimde henüz sorulmamış"
           value={formatNumber(data.due)}
+          animateTo={{ value: data.due, format: formatNumber }}
           hint={
             data.lastCheckedAt
               ? `Google'a henüz hiç sorulmamış sayfalar. Son kontrol ${formatDateTime(data.lastCheckedAt)}`
@@ -226,6 +232,8 @@ export function IndexCoverageView({
           <p className="basis-full text-xs text-muted">{askDisabledReason}</p>
         ) : null}
       </div>
+
+      <QuotaCard projectId={projectId} kinds={["url_inspection"]} />
 
       {neverChecked ? (
         <EmptyState

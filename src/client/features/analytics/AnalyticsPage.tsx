@@ -1,8 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
+import { useIsFetching, useQuery, useQueryClient } from "@tanstack/react-query";
 import { BarChart3 } from "lucide-react";
 import * as React from "react";
 import { EmptyState } from "@/client/components/EmptyState";
 import { PageHeader, PageShell } from "@/client/components/PageShell";
+import { PageActions, RefreshButton } from "@/client/components/RefreshButton";
+import { QuotaCard } from "@/client/features/quotas/QuotaCard";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { TabPanel, Tabs } from "@/client/components/Tabs";
 import { OrganicTrendPanel } from "@/client/features/analytics/OrganicTrendPanel";
@@ -62,6 +64,13 @@ const CHANNELS: { value: Channel; label: string }[] = [
  * names paths one by one, so a new page orphans silently.
  */
 const HEALTH = "measurement_health";
+
+/** The cached answers the visible Analytics screen is made of. */
+const VISIBLE_REPORT_KEYS: readonly string[] = [
+  "ga4Report",
+  "ga4Overview",
+  "ga4MeasurementHealth",
+];
 
 /** The one question each tab answers, in plain words, above its content. */
 const REPORT_QUESTIONS: Record<Ga4ReportKindName, string> = {
@@ -148,6 +157,26 @@ export function AnalyticsPage({
   });
   const result = reportQuery.data;
 
+  const queryClient = useQueryClient();
+  const isRefreshing =
+    useIsFetching({
+      predicate: (query) =>
+        query.queryKey[1] === projectId &&
+        VISIBLE_REPORT_KEYS.includes(String(query.queryKey[0])),
+    }) > 0;
+  const refreshVisible = async () => {
+    await queryClient.refetchQueries({
+      type: "active",
+      predicate: (query) =>
+        query.queryKey[1] === projectId &&
+        VISIBLE_REPORT_KEYS.includes(String(query.queryKey[0])),
+    });
+    // GA4 reports spend the property's token quota.
+    await queryClient.invalidateQueries({
+      queryKey: ["quotaStatus", projectId],
+    });
+  };
+
   return (
     <PageShell>
       <PageHeader
@@ -156,6 +185,16 @@ export function AnalyticsPage({
           view === HEALTH
             ? "Analytics gerçekten ölçüyor mu? Mülkünüzün kurulum ayarlarını okur; rapor kotanızdan harcamaz."
             : REPORT_QUESTIONS[kind]
+        }
+        actions={
+          <PageActions>
+            <RefreshButton
+              onRefresh={() => void refreshVisible()}
+              isFetching={isRefreshing}
+              dataUpdatedAt={reportQuery.dataUpdatedAt || undefined}
+              shortcut
+            />
+          </PageActions>
         }
       />
 
@@ -341,6 +380,8 @@ export function AnalyticsPage({
           </>
         )}
       </TabPanel>
+
+      <QuotaCard projectId={projectId} kinds={["ga4"]} />
     </PageShell>
   );
 }

@@ -9,6 +9,7 @@ import { selectLighthouseWork } from "@/server/workflows/siteAuditWorkflowLighth
 import { AuditLighthouseRepository } from "@/server/features/audit/repositories/AuditLighthouseRepository";
 import { AuditRepository } from "@/server/features/audit/repositories/AuditRepository";
 import {
+  DB_STEP,
   LIGHTHOUSE_CHUNK_STEP,
   LIGHTHOUSE_PERSIST_STEP,
 } from "@/server/workflows/auditStepConfigs";
@@ -183,12 +184,20 @@ export async function runLighthousePhase(
       chunkStart,
       chunkStart + LIGHTHOUSE_URLS_PER_STEP,
     );
+    const chunkIndex = Math.floor(chunkStart / LIGHTHOUSE_URLS_PER_STEP) + 1;
+    // A read between steps is not replay-cached and has no retry, so a D1
+    // blip here would fail the whole audit. As a step it is retried and its
+    // result is checkpointed. Pairs, not a Map: step results are JSON.
     const urlById = new Map(
-      (await AuditRepository.getPageUrlsByIds(auditId, chunkIds)).map(
-        (page) => [page.id, page.url],
+      await step.do(
+        `lighthouse-urls-${chunkIndex}`,
+        DB_STEP,
+        async (): Promise<Array<[string, string]>> =>
+          (await AuditRepository.getPageUrlsByIds(auditId, chunkIds)).map(
+            (page) => [page.id, page.url],
+          ),
       ),
     );
-    const chunkIndex = Math.floor(chunkStart / LIGHTHOUSE_URLS_PER_STEP) + 1;
 
     // ONE step per wave pass (5 URLs x mobile + desktop = 10 PageSpeed calls in
     // parallel). Checks rejected for the per-minute limit are re-run after a

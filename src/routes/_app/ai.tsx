@@ -12,6 +12,7 @@ import { captureClientEvent } from "@/client/lib/observability";
 import {
   agentUpdatePrompt,
   getAgentSetupPrompt,
+  getCodexSetupPrompt,
 } from "@/client/features/ai-mcp/agentSetupPrompt";
 import { CopyButton } from "@/client/components/CopyButton";
 import {
@@ -46,6 +47,12 @@ const SKILLS = [
     "seo-report",
     "Yukarıdakilerden birinin sonucunu Raporlar sayfasına kaydeder.",
   ],
+];
+// How each client invokes a skill, shown beside the setup buttons.
+const CLIENT_LINES = [
+  ["Claude Code", "Genel istem; beceriler /seo-audit gibi çağrılır."],
+  ["Codex", "Codex istemi; beceriler $seo-audit gibi çağrılır."],
+  ["Diğerleri", "Genel istem; beceriyi istemcinizin kendi yoluyla çağırın."],
 ];
 const AI_TABS = [
   { id: "setup", label: "Ajanınızı kurun" },
@@ -118,6 +125,10 @@ function AiPage() {
    */
   const statusUnknown = connection.isError || connection.data === undefined;
   const prompt = getAgentSetupPrompt(origin, {
+    tokenConfigured: connection.data?.tokenConfigured,
+  });
+
+  const codexPrompt = getCodexSetupPrompt(origin, {
     tokenConfigured: connection.data?.tokenConfigured,
   });
 
@@ -234,6 +245,43 @@ function AiPage() {
                   </>
                 )}
               </p>
+            </section>
+
+            <section className="rounded-box border border-base-300 bg-base-100 p-4">
+              <h2 className="flex items-center gap-2 text-sm font-semibold">
+                <OpenAIIcon className="size-4" />
+                Codex için kurulum istemi
+              </h2>
+              <p className="mt-2 text-sm leading-relaxed text-muted">
+                Codex (komut satırı, uygulama veya IDE eklentisi)
+                kullanıyorsanız genel istem yerine bunu yapıştırın.{" "}
+                <code>codex mcp add</code> ile bağlanır, becerileri{" "}
+                <code>~/.agents/skills</code> altına kopyalar ve{" "}
+                <code>whoami</code> ile doğrular. Token&apos;ı sohbete yazmaz;
+                bir ortam değişkeninden okunur.
+              </p>
+              <ul className="mt-3 space-y-1 text-xs text-muted">
+                {CLIENT_LINES.map(([client, line]) => (
+                  <li key={client}>
+                    <span className="font-medium text-base-content">
+                      {client}:
+                    </span>{" "}
+                    {line}
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3 [&>button]:h-11 [&>button]:gap-2 [&>button]:text-sm">
+                <CopyButton
+                  primary
+                  // Same reason as the generic prompt: the auth wording
+                  // depends on the first roundtrip.
+                  disabled={connection.isPending}
+                  value={codexPrompt}
+                  label="Codex istemini kopyala"
+                  successMessage="Codex istemi kopyalandı"
+                  onCopy={() => captureClientEvent("mcp:codex_prompt_copy")}
+                />
+              </div>
             </section>
 
             <section className="rounded-box border border-base-300 bg-base-100 p-4">

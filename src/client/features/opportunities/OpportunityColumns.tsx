@@ -1,3 +1,4 @@
+import { copyText } from "@/client/lib/copyText";
 import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
 import { Copy, ExternalLink } from "lucide-react";
 import { SortableHeader } from "@/client/components/table/SortableHeader";
@@ -159,7 +160,7 @@ export function buildOpportunityColumns(
               className="shrink-0 text-muted hover:text-base-content"
               aria-label="Adresi kopyala"
               title="Adresi kopyala"
-              onClick={() => void navigator.clipboard.writeText(url)}
+              onClick={() => void copyText(url, "Adres kopyalandı")}
             >
               <Copy className="size-3.5" />
             </button>

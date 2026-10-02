@@ -10,7 +10,7 @@ const STANDARD_MESSAGES: Record<ErrorCode, string> = {
   FORBIDDEN: "Bu kaynağa erişiminiz yok.",
   NOT_FOUND: "İstenen kayıt bulunamadı.",
   AUDIT_CAPACITY_REACHED:
-    "Denetim kapasitesi doldu. Yeni bir denetim başlatmak için eski denetimleri silin.",
+    "Denetim kapasitesi doldu: şu an çalışan denetimler bu kurulumun taşıyabileceği en fazla işi ayırdı. Çalışan denetimlerin bitmesini bekleyip tekrar deneyin; biten denetimler kapasiteyi tutmaz.",
   AUDIT_PAGE_LIMIT_EXCEEDED: `Bir denetim en çok ${formatNumber(MAX_AUDIT_PAGES)} sayfa tarayabilir.`,
   AUDIT_ALREADY_RUNNING:
     "Aynı anda çalışabilecek denetim sayısına ulaştınız. Çalışan denetimlerden birinin bitmesini bekleyin ya da birini silin.",

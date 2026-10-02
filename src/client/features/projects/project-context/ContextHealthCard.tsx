@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { AlertCircle, CheckCircle2, Circle, Loader2 } from "lucide-react";
+import { ProgressBar } from "@/client/components/ProgressBar";
 import {
   ga4ConnectionOptions,
   gscConnectionOptions,
@@ -81,18 +82,14 @@ export function ContextHealthCard({
         Ajanların ve bu aracın sağlıklı çalışması için gerekenler. Eksik olan
         her satırın yanındaki düğme sizi düzelteceğiniz yere götürür.
       </p>
-      <div
-        role="progressbar"
-        aria-label="Kurulum ilerlemesi"
-        aria-valuemin={0}
-        aria-valuemax={total}
-        aria-valuenow={done}
-        aria-valuetext={`${total} adımın ${done} tanesi tamam`}
-        className="mt-3 h-1.5 overflow-hidden rounded-full bg-base-200"
-      >
-        <div
-          className="h-full rounded-full bg-primary transition-[width] duration-700 ease-out motion-reduce:transition-none"
-          style={{ width: `${(done / total) * 100}%` }}
+      <div className="mt-3">
+        <ProgressBar
+          label="Kurulum ilerlemesi"
+          value={done}
+          max={total}
+          state={done === total ? "done" : "warning"}
+          showCount
+          showPercent={false}
         />
       </div>
       <ul className="mt-3 divide-y divide-base-300">

@@ -1,3 +1,4 @@
+import { copyText } from "@/client/lib/copyText";
 import { useMemo, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Copy, Loader2, Save } from "lucide-react";
@@ -36,6 +37,7 @@ import { saveKeywords } from "@/serverFunctions/savedKeywords";
 import { Search, Target } from "lucide-react";
 import { EmptyState } from "@/client/components/EmptyState";
 import { strikingEmptyCopy } from "@/client/features/search-performance/strikingEmptyCopy";
+import { useDebouncedUrlSearch } from "@/client/features/search-performance/useDebouncedUrlSearch";
 import { QuickFilterBar } from "@/client/features/search-performance/QuickFilterBar";
 import {
   applyQuickFilter,
@@ -157,7 +159,8 @@ export function DimensionTable({
    * in memory (Google returns it in one call), and a thousand-row table with
    * no way to find one query in it is a list, not a table.
    */
-  const needle = search.trim().toLocaleLowerCase("tr");
+  const [draft, setDraft] = useDebouncedUrlSearch(search, onSearchChange);
+  const needle = draft.trim().toLocaleLowerCase("tr");
   const visible = useMemo(() => {
     const chipped = applyQuickFilter(rows, quickFilter);
     return needle
@@ -211,8 +214,8 @@ export function DimensionTable({
         <div className="flex flex-wrap items-center gap-2 border-b border-base-300 px-4 py-2">
           <input
             type="search"
-            value={search}
-            onChange={(event) => onSearchChange(event.target.value)}
+            value={draft}
+            onChange={(event) => setDraft(event.target.value)}
             placeholder={`${keyLabel} içinde ara`}
             aria-label={`${keyLabel} içinde ara`}
             className="input input-bordered input-sm w-full max-w-xs"
@@ -248,7 +251,7 @@ export function DimensionTable({
             }
             description={
               needle
-                ? `"${search}" hiçbir satırda geçmiyor. Aramayı temizleyin ya da başka bir terim deneyin.`
+                ? `"${draft}" hiçbir satırda geçmiyor. Aramayı temizleyin ya da başka bir terim deneyin.`
                 : quickFilter
                   ? "Hızlı filtreyi kaldırarak tüm satırlara dönün."
                   : hasActiveFilter
@@ -328,19 +331,13 @@ export function StrikingDistanceTable({
     new Set(table.getSelectedRowModel().rows.map((row) => row.original.query)),
   );
 
-  const copyKeywords = async () => {
-    try {
-      // Sanitize against spreadsheet formula injection: GSC query strings are
-      // untrusted and may begin with =, +, -, @, etc. See @/client/lib/csv.
-      const text = selectedQueries
-        .map((query) => normalizeExportValue(query))
-        .join("\n");
-      await navigator.clipboard.writeText(text);
-      toast.success(`${selectedQueries.length} kelime kopyalandı`);
-    } catch {
-      toast.error("Panoya kopyalanamadı");
-    }
-  };
+  // Sanitize against spreadsheet formula injection: GSC query strings are
+  // untrusted and may begin with =, +, -, @, etc. See @/client/lib/csv.
+  const copyKeywords = () =>
+    copyText(
+      selectedQueries.map((query) => normalizeExportValue(query)).join("\n"),
+      `${selectedQueries.length} kelime kopyalandı`,
+    );
 
   const save = useMutation({
     mutationFn: (keywords: string[]) =>

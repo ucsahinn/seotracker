@@ -1,0 +1,4 @@
+interface:
+  display_name: "SEO Report"
+  short_description: "Save a finished analysis as an HTML report"
+  default_prompt: "Use $seo-report to save this analysis as a report."

@@ -2,6 +2,8 @@ import { QueryHistoryCard } from "@/client/features/rankings/QueryHistoryCard";
 import { TablePagination } from "@/client/components/table/TablePagination";
 import { formatDate, formatNumber } from "@/client/lib/format";
 import { PageHeader, PageShell } from "@/client/components/PageShell";
+import { PageActions, RefreshButton } from "@/client/components/RefreshButton";
+import { refreshState } from "@/client/lib/refreshState";
 import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { describeWindow } from "@/shared/dataFreshness";
@@ -136,6 +138,12 @@ export function RankingsPage({
     node.focus({ preventScroll: true });
   }, [selected]);
 
+  // The history card only refetches while a query is open: a disabled query
+  // would still fetch on refetch().
+  const refresh = refreshState(
+    selected === null ? [sync, tracked] : [sync, tracked, history],
+  );
+
   const fetched = tracked.data?.rows ?? [];
   const needle = search.trim().toLocaleLowerCase("tr");
   // Chip counts describe the band that is open, so pressing "İlk sayfada"
@@ -191,24 +199,42 @@ export function RankingsPage({
            rather than swapping between panels, so there is no panel for
            `aria-controls` to point at. */
         actions={
-          <div
-            role="radiogroup"
-            aria-label="Zaman aralığı"
-            className="tabs tabs-border"
-          >
-            {RANKING_WINDOWS.map((option) => (
-              <button
-                key={option.days}
-                type="button"
-                role="radio"
-                aria-checked={days === option.days}
-                className={`tab ${days === option.days ? "tab-active" : ""}`}
-                onClick={() => onDaysChange(option.days)}
-              >
-                {option.label}
-              </button>
-            ))}
-          </div>
+          <PageActions>
+            <RefreshButton
+              {...refresh}
+              onRefresh={() => {
+                // Catch the archive up first: the table reads what the sync
+                // just stored, so refetching both at once shows stale rows.
+                void sync
+                  .refetch()
+                  .then(() =>
+                    Promise.all([
+                      tracked.refetch(),
+                      selected === null ? null : history.refetch(),
+                    ]),
+                  );
+              }}
+              shortcut
+            />
+            <div
+              role="radiogroup"
+              aria-label="Zaman aralığı"
+              className="tabs tabs-border"
+            >
+              {RANKING_WINDOWS.map((option) => (
+                <button
+                  key={option.days}
+                  type="button"
+                  role="radio"
+                  aria-checked={days === option.days}
+                  className={`tab ${days === option.days ? "tab-active" : ""}`}
+                  onClick={() => onDaysChange(option.days)}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+          </PageActions>
         }
       />
 

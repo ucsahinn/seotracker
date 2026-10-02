@@ -1,0 +1,4 @@
+interface:
+  display_name: "SEO Audit"
+  short_description: "Find the biggest SEO issues, one action for this week"
+  default_prompt: "Use $seo-audit to audit my site and tell me the one thing to do this week."

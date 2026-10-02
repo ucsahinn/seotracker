@@ -3,6 +3,9 @@ import { AUDIT_LIMITS } from "@/server/features/audit/services/audit-capacity";
 
 const mocks = vi.hoisted(() => ({
   createAudit: vi.fn(),
+  getAuditForProject: vi.fn(),
+  getR2KeysForAudit: vi.fn(),
+  r2Delete: vi.fn(),
   deleteAuditForProject: vi.fn(),
   getAuditUsageForOrganization: vi.fn(),
   workflowCreate: vi.fn(),
@@ -10,6 +13,8 @@ const mocks = vi.hoisted(() => ({
 
 vi.mock("cloudflare:workers", () => ({
   env: {
+    R2: { delete: mocks.r2Delete },
+    AUDIT_ENGINE: { destroyScratchpad: vi.fn() },
     SITE_AUDIT_WORKFLOW: {
       create: mocks.workflowCreate,
       get: vi.fn().mockRejectedValue(new Error("gone")),
@@ -19,10 +24,17 @@ vi.mock("cloudflare:workers", () => ({
 vi.mock("@/server/features/audit/repositories/AuditRepository", () => ({
   AuditRepository: {
     createAudit: mocks.createAudit,
+    getAuditForProject: mocks.getAuditForProject,
     deleteAuditForProject: mocks.deleteAuditForProject,
     getAuditUsageForOrganization: mocks.getAuditUsageForOrganization,
   },
 }));
+vi.mock(
+  "@/server/features/audit/repositories/AuditLighthouseRepository",
+  () => ({
+    AuditLighthouseRepository: { getR2KeysForAudit: mocks.getR2KeysForAudit },
+  }),
+);
 vi.mock("@/server/features/lighthouse/pagespeed-config", () => ({
   getPageSpeedApiKey: vi.fn().mockResolvedValue("key"),
 }));
@@ -88,5 +100,30 @@ describe("AuditService.startAudit limits", () => {
     await expect(start()).rejects.toMatchObject({
       code: "AUDIT_CAPACITY_REACHED",
     });
+  });
+});
+
+describe("AuditService.remove", () => {
+  beforeEach(() => {
+    mocks.getAuditForProject.mockResolvedValue({
+      id: "a1",
+      status: "completed",
+    });
+    mocks.getR2KeysForAudit.mockResolvedValue(["k1", "k2"]);
+  });
+
+  it("deletes the audit's Lighthouse payloads from R2 with its rows", async () => {
+    await AuditService.remove("a1", "p");
+
+    expect(mocks.deleteAuditForProject).toHaveBeenCalledWith("a1", "p");
+    expect(mocks.r2Delete).toHaveBeenCalledWith(["k1", "k2"]);
+  });
+
+  it("still deletes the audit when R2 cannot be reached", async () => {
+    mocks.r2Delete.mockRejectedValue(new Error("r2 down"));
+    vi.spyOn(console, "warn").mockImplementation(() => undefined);
+
+    await expect(AuditService.remove("a1", "p")).resolves.toBeUndefined();
+    expect(mocks.deleteAuditForProject).toHaveBeenCalledTimes(1);
   });
 });
