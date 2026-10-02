@@ -120,7 +120,7 @@ function checkPageSpeed(env: EnvRecord, items: PreflightItem[]): void {
           name: "PageSpeed",
           level: "info",
           message:
-            "Enter a PageSpeed key in Settings to raise the Lighthouse quota. Without one the API answers on Google's keyless allowance and usually fails with 429; crawling and every SEO check work regardless. Free key: docs/PAGESPEED_API_KEY.md.",
+            "No PAGESPEED_API_KEY in the environment. This check cannot see the database, so a key already saved in Settings is not counted here; if none is saved, enter one in Settings to raise the Lighthouse quota. Without a key the API answers on Google's keyless allowance and usually fails with 429; crawling and every SEO check work regardless. Free key: docs/PAGESPEED_API_KEY.md.",
         },
   );
 }
