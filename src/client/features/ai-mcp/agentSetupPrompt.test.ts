@@ -58,7 +58,7 @@ describe("agent setup prompt", () => {
     expect(closed).not.toContain(NO_AUTH_SENTENCE);
     expect(closed).toContain("Authorization: Bearer <token>");
     expect(closed).toContain(
-      "docker compose exec seotracker cat /app/.wrangler/mcp-token",
+      "docker compose exec -T seotracker cat /app/.wrangler/mcp-token",
     );
     expect(closed).toContain("ONLY into the MCP client config");
   });
@@ -78,7 +78,7 @@ describe("agent setup prompt", () => {
 
   it("never carries a token-looking value", () => {
     for (const [label, prompt] of Object.entries(prompts)) {
-      expect(prompt, label).not.toMatch(/Bearer (?!<token>|\$\{)\S/);
+      expect(prompt, label).not.toMatch(/Bearer (?!<token>|\$[({t])\S/);
       expect(prompt, label).not.toMatch(/[A-Za-z0-9_-]{32,}/);
     }
   });

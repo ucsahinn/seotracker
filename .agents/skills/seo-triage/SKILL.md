@@ -31,7 +31,7 @@ Done when: the report names exactly one of the five verdicts below and the chat 
 Follow it in order. Steps 1 and 2 can end the investigation (no drop, or a measurement break): stop there. Otherwise run steps 3 to 7 together, because they are complementary views of one loss, not alternatives, and decide the verdict from all of them. Each step rules out a cause the next cannot distinguish.
 
 **1. Is there a drop at all?**
-`get_google_analytics_organic_overview` with `trend: "daily"`. Look for the day it changed. A gradual slope and a cliff are different problems.
+`get_google_analytics_organic_overview` with `trend: "daily"`. Look for the day it changed. A gradual slope and a cliff are different problems. In GA4 page rows check `hostName`; if `localhost` or `127.0.0.1` appears, tell the user and do not count those rows as the site's traffic.
 
 **2. Did every channel fall on the same day?**
 `get_google_analytics_traffic_acquisition`, `breakdown: "channel_group"`, `comparePreviousPeriod: true`.
@@ -49,7 +49,7 @@ This is the single most valuable step here, and it is the one an audit will neve
 These have different fixes and the report must name which.
 
 **4. Which pages?**
-`get_search_console_performance`, `dimensions: ["page"]`, both windows. Compute the losses yourself. Concentrated in a handful of pages is a page problem; spread evenly across the site is a site problem.
+`get_search_console_performance`, `dimensions: ["page"]`, both windows. Compute the losses yourself, per page: never sum this table into a site total (Google counts every result a page appears in separately, so the sum overstates); totals come from step 3's `["date"]` read. Concentrated in a handful of pages is a page problem; spread evenly across the site is a site problem.
 
 **5. When did the ranking move?**
 `get_ranking_history` with `query:` for the lost terms. Empty archive → say so once, tell the operator it fills when they open the Rankings page, and fall back to `dimensions: ["date"]` filtered to the query.
