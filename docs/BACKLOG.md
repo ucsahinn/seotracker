@@ -256,3 +256,7 @@ Mock veri hiç kullanılmadı. Tek proje: `df26abab-fa39-4133-96cc-a5627d8b80ad`
 | Arama görünümü dökümü ve arama türü seçimi     | **Bitti** — arama türü vaultpilot'ta denendi (görselde veri yok); arama görünümü kartı veri gelmeyince gizli, vaultpilot'ta görülemedi. Discover ve Haber (Google News) sorgu boyutu olmadığı için yok.                                                                                                               |
 | CrUX geçmişi                                   | **Kod bitti; kök neden bulundu** — Google'ın yanıtına göre vaultpilot'taki PageSpeed anahtarının API kısıtlaması Chrome UX Report API'yi dışarıda bırakıyor. Anahtarın kısıtlamasına "Chrome UX Report API" eklenince kart çalışmalı; gerçek grafik henüz görülmedi.                                                  |
 | Kayıtlı kelimeler, Sıralama takibi widget'ları | Açık — vaultpilot'ta sorgu verisi yok, yalnızca birim testi var.                                                                                                                                                                                                                                                      |
+
+### Fikirler (kararsız)
+
+- Aynı projede bir denetim hız ölçümü aşamasındayken ikinci bir denetim başlatılırsa uyarı vermek: ikisi PageSpeed kotasını paylaşıp birbirini yaklaşık yarı hıza düşürüyor (212 sayfa tek başına 24 dakika, iki denetim yan yana 48 dakika sürdü).
