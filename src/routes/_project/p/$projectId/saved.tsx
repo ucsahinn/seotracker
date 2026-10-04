@@ -57,7 +57,7 @@ function SavedKeywordsPage() {
   const [pageSize, setPageSize] =
     useState<(typeof SAVED_KEYWORD_PAGE_SIZES)[number]>(50);
   const [sorting, setSorting] = useState<SortingState>([
-    { id: "fetchedAt", desc: true },
+    { id: "createdAt", desc: true },
   ]);
   const navigate = useNavigate();
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});

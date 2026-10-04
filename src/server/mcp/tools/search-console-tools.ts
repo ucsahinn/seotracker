@@ -10,6 +10,8 @@ import { buildDashboardUrl } from "@/server/mcp/urls";
 import { hasSelfHostedGoogleOAuthConfig } from "@/server/features/google/oauth-config";
 import { inspectAndRecord } from "@/server/features/gsc/services/GscIndexCoverageService";
 import { GscService } from "@/server/features/gsc/services/GscService";
+import { captureServerError } from "@/server/lib/observability";
+import { hasServiceAccount } from "@/server/lib/googleServiceAccountToken";
 import {
   GSC_DATE_RANGES,
   GSC_DEFAULT_ROW_LIMIT,
@@ -71,7 +73,11 @@ async function missingSelfHostedGoogleClientResponse(
   context: ProjectAuthContext,
   projectId: string,
 ) {
-  if (await hasSelfHostedGoogleOAuthConfig()) return null;
+  // A stored service account is a complete credential on its own (the UI and
+  // gscClient accept it), so it must not be told to configure an OAuth client.
+  if ((await hasServiceAccount()) || (await hasSelfHostedGoogleOAuthConfig())) {
+    return null;
+  }
 
   return mcpResponse({
     text: `This seotracker instance is not configured for Search Console yet. Open Settings in the app, enter a Google OAuth client id and secret, then connect Search Console from the project. Setup docs: ${GSC_SELF_HOSTED_SETUP_DOCS_URL}`,
@@ -96,6 +102,20 @@ function invalidRequest(
   });
 }
 
+/** Calendar date 16 months back, clamped to the target month's last day:
+ *  `setUTCMonth` alone turns 31 March into 1 December. */
+function sixteenMonthsAgo(now: Date): string {
+  const day = now.getUTCDate();
+  const floor = new Date(
+    Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - 16, 1),
+  );
+  const lastDay = new Date(
+    Date.UTC(floor.getUTCFullYear(), floor.getUTCMonth() + 1, 0),
+  ).getUTCDate();
+  floor.setUTCDate(Math.min(day, lastDay));
+  return floor.toISOString().slice(0, 10);
+}
+
 function describeGscError(error: unknown): string {
   if (error instanceof GscNotConnectedError) {
     return "Search Console is not connected for this project.";
@@ -106,7 +126,10 @@ function describeGscError(error: unknown): string {
   if (error instanceof GscApiError) {
     return error.message;
   }
-  return error instanceof Error ? error.message : String(error);
+  // Anything else is not Google's wording and can carry SQL or bound
+  // parameters; the agent gets a generic line and the container log the detail.
+  void captureServerError(error, { scope: "searchConsoleTools" });
+  return "Search Console could not be read because of an internal error. Check the container log.";
 }
 
 // ---------------------------------------------------------------------------
@@ -332,9 +355,7 @@ export const getSearchConsolePerformanceTool = {
       if (args.endDate < args.startDate) {
         return invalidRequest(meta, "endDate is before startDate.");
       }
-      const floor = new Date();
-      floor.setUTCMonth(floor.getUTCMonth() - 16);
-      const floorDate = floor.toISOString().slice(0, 10);
+      const floorDate = sixteenMonthsAgo(new Date());
       if (args.endDate < floorDate) {
         return invalidRequest(
           meta,
@@ -465,7 +486,7 @@ export const inspectUrlsTool = {
   config: {
     title: "Inspect URLs in Google Search Console",
     description:
-      "Run Google Search Console's URL Inspection on up to 10 URLs of the connected property: index/coverage state, last crawl time, Google-selected vs declared canonical, and mobile/rich-results verdicts. Costs one of the property's 2000 daily inspections per URL, and that allowance does not replenish early -- call get_index_coverage first, which reads the stored answers for free, and point this at only the pages it reports as unanswered or due. URLs with a recent stored answer are skipped rather than bought again. Per-URL failures are reported inline.",
+      "Run Google Search Console's URL Inspection on up to 10 URLs of the connected property: index/coverage state, last crawl time, and Google-selected vs declared canonical. Answers are stored for get_index_coverage. Costs one of the property's 2000 daily inspections per URL, and that allowance does not replenish early -- call get_index_coverage first, which reads the stored answers for free, and point this at only the pages it reports as unanswered or due. URLs with a recent stored answer are skipped rather than bought again. Per-URL failures are reported inline.",
     inputSchema: inspectInputSchema,
     outputSchema: {
       ok: z.boolean(),
@@ -494,10 +515,11 @@ export const inspectUrlsTool = {
       ...optionalMetaOutputSchema,
     },
     annotations: {
-      // Read-only about the site, but it calls Google and consumes a daily
-      // allowance that does not come back, so a client that auto-approves
-      // closed-world read-only tools must not auto-approve this one.
-      readOnlyHint: true,
+      // Not read-only: it writes the answers to gsc_url_inspections and the
+      // attempt ledger, calls Google and consumes a daily allowance that does
+      // not come back, so a client that auto-approves read-only tools must
+      // not auto-approve this one. Nothing it writes is destructive.
+      readOnlyHint: false,
       openWorldHint: true,
       destructiveHint: false,
     },

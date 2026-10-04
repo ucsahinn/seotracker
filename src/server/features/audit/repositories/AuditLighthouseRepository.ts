@@ -7,7 +7,7 @@
  * source -- Google PageSpeed Insights rather than this crawler -- so it
  * is the seam that costs least to cut.
  */
-import { and, eq, inArray, isNotNull } from "drizzle-orm";
+import { and, eq, inArray, isNotNull, isNull } from "drizzle-orm";
 import { db } from "@/db";
 import { audits, auditLighthouseResults, auditPages } from "@/db/schema";
 import { executeInBatches } from "@/db/runBatch";
@@ -17,11 +17,6 @@ import type { LighthouseResult } from "@/server/lib/audit/types";
 async function insertLighthouseResults(
   auditId: string,
   lighthouseResults: LighthouseResult[],
-  /**
-   * Leave a row that is already stored alone. The fallback that records a
-   * failed wave must not overwrite the checks of that wave that succeeded.
-   */
-  options: { keepExisting?: boolean } = {},
 ) {
   const rows = await Promise.all(
     lighthouseResults.map(async (result) => ({
@@ -46,24 +41,44 @@ async function insertLighthouseResults(
       payloadSizeBytes: result.payloadSizeBytes ?? null,
     })),
   );
-  // The persistence step is retryable after its paid provider result has been
-  // checkpointed, so repeated writes must stay idempotent.
+  // Steps retry, so repeated writes must stay idempotent. A stored success is
+  // final: a retry's failure (or fallback error row) must never replace it, so
+  // an existing row is only overwritten while it is itself an error.
   await executeInBatches(rows, (tx, row) => {
     const { id: _id, auditId: _auditId, ...dataColumns } = row;
-    const insert = tx.insert(auditLighthouseResults).values(row);
-    return options.keepExisting
-      ? insert.onConflictDoNothing()
-      : insert.onConflictDoUpdate({
-          target: auditLighthouseResults.id,
-          set: dataColumns,
-        });
+    return tx
+      .insert(auditLighthouseResults)
+      .values(row)
+      .onConflictDoUpdate({
+        target: auditLighthouseResults.id,
+        set: dataColumns,
+        setWhere: isNotNull(auditLighthouseResults.errorMessage),
+      });
   });
 }
 
+/** Checks of these pages already stored as successes (no error message). */
+async function getSucceededChecks(auditId: string, pageIds: string[]) {
+  if (pageIds.length === 0) return [];
+  return db
+    .select({
+      pageId: auditLighthouseResults.pageId,
+      strategy: auditLighthouseResults.strategy,
+    })
+    .from(auditLighthouseResults)
+    .where(
+      and(
+        eq(auditLighthouseResults.auditId, auditId),
+        inArray(auditLighthouseResults.pageId, pageIds),
+        isNull(auditLighthouseResults.errorMessage),
+      ),
+    );
+}
+
 /**
- * What is actually stored for these pages. The fallback of a failed wave
- * derives its progress from this, because rows a failed attempt already wrote
- * (kept by `keepExisting`) are not the wave's own in-memory results.
+ * What is actually stored for these pages. A wave's progress is derived from
+ * this, because rows an earlier attempt of the step wrote are not the current
+ * attempt's own in-memory results.
  */
 async function countResultsForPages(auditId: string, pageIds: string[]) {
   if (pageIds.length === 0) return { ok: 0, error: 0 };
@@ -78,20 +93,6 @@ async function countResultsForPages(auditId: string, pageIds: string[]) {
     );
   const error = rows.filter((row) => row.errorMessage).length;
   return { ok: rows.length - error, error };
-}
-
-/** R2 keys of the stored Lighthouse payloads, for cleaning up with the audit. */
-async function getR2KeysForAudit(auditId: string): Promise<string[]> {
-  const rows = await db
-    .select({ r2Key: auditLighthouseResults.r2Key })
-    .from(auditLighthouseResults)
-    .where(
-      and(
-        eq(auditLighthouseResults.auditId, auditId),
-        isNotNull(auditLighthouseResults.r2Key),
-      ),
-    );
-  return rows.flatMap((row) => row.r2Key ?? []);
 }
 
 async function getLighthouseResultById(input: {
@@ -131,7 +132,7 @@ async function getLighthouseResultById(input: {
 
 export const AuditLighthouseRepository = {
   insertLighthouseResults,
+  getSucceededChecks,
   countResultsForPages,
-  getR2KeysForAudit,
   getLighthouseResultById,
 };

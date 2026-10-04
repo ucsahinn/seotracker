@@ -14,6 +14,7 @@ import { env } from "cloudflare:workers";
 import { and, eq, lt } from "drizzle-orm";
 import { db } from "@/db";
 import { audits, projects } from "@/db/schema";
+import { getAuditHeartbeat } from "@/server/features/audit/auditHeartbeat";
 import { AuditRepository } from "@/server/features/audit/repositories/AuditRepository";
 import {
   classifyAuditError,
@@ -23,12 +24,21 @@ import { captureServerEvent } from "@/server/lib/observability";
 
 /**
  * When this process started. This fork runs as one container against one
- * database, so any audit that began before this moment was started by a
- * previous process and nothing is executing it now. Truncated to whole
- * seconds because audit timestamps have second precision: an audit started
- * in the boot second must not read as older than the boot.
+ * database, so an audit that began before this moment was started by a
+ * previous process, and unless the audit worker kept running through a mere
+ * reload of this one, nothing is executing it now. Truncated to whole
+ * seconds because audit timestamps have second precision.
  */
 const PROCESS_BOOT_MS = Math.floor(Date.now() / 1000) * 1000;
+
+/**
+ * How long an audit from before this boot may stay silent, counted from the
+ * boot, before it is declared abandoned. The audit worker beats after every
+ * persisted batch of work, so a live workflow shows up well inside this; the
+ * longest legitimate gap is a crawl cooldown (30 minutes, see
+ * crawl-throttle.ts) plus the step that follows it.
+ */
+const WORKER_SILENCE_MS = 45 * 60 * 1000;
 
 /**
  * Don't declare an instance "lost" until the audit is comfortably older than
@@ -63,27 +73,40 @@ export async function reconcileRunningAudit(
    * A row left "running" by a process that no longer exists.
    *
    * This fork runs as one container against one database -- Docker and
-   * miniflare, as `wrangler.jsonc` says outright. Nothing else can advance
-   * an audit, so an audit still marked running when this process starts
-   * was abandoned by the previous one: restart the container mid-crawl and
-   * nothing is executing that workflow any more.
+   * miniflare, as `wrangler.jsonc` says outright. Restart the container
+   * mid-crawl and nothing is executing that workflow any more, yet its
+   * instance record survives and keeps reporting "running", so the status
+   * check below never fires and the row stayed "Sürüyor" forever.
    *
-   * The instance record survives the restart and keeps reporting
-   * "running", so the status check below never fires and the row stayed
-   * "Sürüyor" forever -- past the crawl, past the day, past every later
-   * audit. Failing it is the truthful answer, and `failAudit` keeps the
-   * pages already crawled, which are persisted per batch.
+   * But this module's boot time only proves that THIS worker started. The
+   * audit worker is separate and can outlive a reload of the app worker, so a
+   * boot older than the audit is not evidence of death. The evidence is
+   * silence: a live workflow records a heartbeat after every batch of work,
+   * so an audit from before the boot is abandoned only when nothing has been
+   * heard since the boot for WORKER_SILENCE_MS. If the heartbeat cannot be
+   * read the state is unknown, and unknown never fails an audit.
+   * `failAudit` keeps the pages already crawled, which are persisted per batch.
    */
   if (parseStartedAt(audit.startedAt) < PROCESS_BOOT_MS) {
-    const abandoned: AuditErrorInfo = {
-      errorCode: "instance_lost",
-      errorDetail: "Interrupted: the process running this audit restarted",
-    };
-    await AuditRepository.failAudit(audit.id, audit.workflowInstanceId, {
-      ...abandoned,
-      failedPhase: audit.currentPhase,
-    });
-    return abandoned;
+    let lastHeartbeat: number | null;
+    try {
+      lastHeartbeat = await getAuditHeartbeat(audit.id);
+    } catch {
+      return null;
+    }
+    const lastSign = Math.max(PROCESS_BOOT_MS, lastHeartbeat ?? 0);
+    if (Date.now() - lastSign > WORKER_SILENCE_MS) {
+      const abandoned: AuditErrorInfo = {
+        errorCode: "instance_lost",
+        errorDetail:
+          "Interrupted: the process running this audit restarted and the audit made no progress since",
+      };
+      await AuditRepository.failAudit(audit.id, audit.workflowInstanceId, {
+        ...abandoned,
+        failedPhase: audit.currentPhase,
+      });
+      return abandoned;
+    }
   }
 
   let errorInfo: AuditErrorInfo | null = null;
@@ -129,8 +152,9 @@ export async function reconcileRunningAudit(
 
 /** Cron watchdog: sweep stale running audits and reconcile each. */
 export async function reconcileStaleAudits() {
-  // An audit from before this boot is a candidate however young it is; a
-  // newer one only once it has been running suspiciously long.
+  // An audit from before this boot is a candidate however young it is (the
+  // heartbeat decides whether it is really abandoned); a newer one only once
+  // it has been running suspiciously long.
   const cutoff = new Date(
     Math.max(Date.now() - STALE_RUNNING_AFTER_MS, PROCESS_BOOT_MS),
   );

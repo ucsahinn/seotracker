@@ -1,3 +1,4 @@
+import { Ga4ConnectionRepository } from "@/server/features/ga4/repositories/Ga4ConnectionRepository";
 import { DAILY_QUOTA } from "@/server/features/gsc/indexCoverage";
 import { getPageSpeedKeySource } from "@/server/features/lighthouse/pagespeed-config";
 import {
@@ -69,9 +70,11 @@ function pageSpeedDetail(
     );
   }
   const lastEvent = events.length
-    ? `Son 24 saatte ${events.join(", ")}.`
-    : "Son 24 saatte sınır olayı yok.";
-  return `${key} ${lastEvent} Google'ın günlük toplamı doğrulanmadı; gerçek kota Google Cloud Console > PageSpeed Insights API > Quotas bölümünde.`;
+    ? `Son 24 saatte başlayan denetimlerde ${events.join(", ")}.`
+    : "Son 24 saatte başlayan denetimlerde sınır olayı yok.";
+  // Results carry no timestamp of their own, so the window is the audit's
+  // start time: a long audit's later checks still count for the day it began.
+  return `${key} Sayılar, son 24 saatte başlayan denetimlere aittir (tek tek ölçüm saati kaydedilmez). ${lastEvent} Google'ın günlük toplamı doğrulanmadı; gerçek kota Google Cloud Console > PageSpeed Insights API > Quotas bölümünde.`;
 }
 
 function pageSpeedItem(
@@ -122,7 +125,7 @@ function ga4Item(input: {
       limit: null,
       state: "unknown",
       detail:
-        "Uygulama yeniden başladığından beri GA4 raporu çalışmadı; sayaç bir rapor çalışınca dolar.",
+        "Uygulama yeniden başladığından ya da GA4 bağlantısı değiştiğinden beri bu bağlantıyla GA4 raporu çalışmadı; sayaç bir rapor çalışınca dolar.",
     };
   }
   const lastCost = `Son istek: ${formatNumber(pair.consumed)} belirteç.`;
@@ -266,7 +269,11 @@ export async function getQuotaStatus(input: {
     items.push(pageSpeedItem(usage, keySource, now));
   }
   if (wanted.has("ga4")) {
-    items.push(...ga4Items(readGa4Quota(input.projectId)));
+    const connection = await Ga4ConnectionRepository.getByProjectId(
+      input.projectId,
+    );
+    // Only a reading from the project's current connection counts.
+    items.push(...ga4Items(connection ? readGa4Quota(connection) : null));
   }
   if (wanted.has("audit")) {
     items.push(

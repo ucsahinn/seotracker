@@ -1,4 +1,4 @@
-import { downloadBlob } from "./download";
+import { downloadFile } from "./download";
 import Papa from "papaparse";
 
 export type CsvValue = string | number | boolean | null | undefined;
@@ -51,8 +51,5 @@ function sanitizeCsvValue(
 }
 
 export function downloadCsv(filename: string, content: string): void {
-  downloadBlob(
-    new Blob([content], { type: "text/csv;charset=utf-8;" }),
-    filename,
-  );
+  downloadFile(content, filename, "text/csv");
 }

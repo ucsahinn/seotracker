@@ -10,7 +10,10 @@ const { fetchMock, selectMock, progressMock, sleepMock, stepDoMock, stored } =
     progressMock: vi.fn(),
     sleepMock: vi.fn(),
     stepDoMock: vi.fn(),
-    stored: new Map<string, { pageId: string; errorMessage?: string }>(),
+    stored: new Map<
+      string,
+      { pageId: string; strategy?: string; errorMessage?: string }
+    >(),
   }));
 
 vi.mock("cloudflare:workers", () => ({ env: {} }));
@@ -19,6 +22,9 @@ vi.mock("@/server/lib/audit/lighthouse", async (importOriginal) => ({
   fetchLighthouseResult: fetchMock,
   storeLighthouseResult: async ({ fetched }: { fetched: { result: Row } }) =>
     fetched.result,
+}));
+vi.mock("@/server/features/audit/auditHeartbeat", () => ({
+  recordAuditHeartbeat: vi.fn(),
 }));
 vi.mock("@/server/workflows/siteAuditWorkflowLighthouseSelect", () => ({
   selectLighthouseWork: selectMock,
@@ -35,17 +41,18 @@ vi.mock(
   "@/server/features/audit/repositories/AuditLighthouseRepository",
   () => ({
     AuditLighthouseRepository: {
-      insertLighthouseResults: async (
-        _auditId: string,
-        rows: Row[],
-        options: { keepExisting?: boolean },
-      ) => {
+      insertLighthouseResults: async (_auditId: string, rows: Row[]) => {
         for (const row of rows) {
           const key = `${row.pageId}-${row.strategy}`;
-          if (options.keepExisting && stored.has(key)) continue;
+          // The real repository never replaces a stored success.
+          if (stored.get(key) && !stored.get(key)?.errorMessage) continue;
           stored.set(key, row);
         }
       },
+      getSucceededChecks: async (_auditId: string, pageIds: string[]) =>
+        [...stored.values()].filter(
+          (row) => pageIds.includes(row.pageId) && !row.errorMessage,
+        ),
       countResultsForPages: async (_auditId: string, pageIds: string[]) => {
         const rows = [...stored.values()].filter((row) =>
           pageIds.includes(row.pageId),
@@ -146,6 +153,35 @@ describe("runLighthousePhase counters and settlement", () => {
     expect(fetchMock).toHaveBeenCalledTimes(6);
     expect(progressMock).toHaveBeenLastCalledWith("audit-1", "workflow-1", {
       lighthouseCompleted: 3,
+      lighthouseFailed: 1,
+    });
+  });
+
+  it("does not refetch or downgrade a check an earlier attempt stored", async () => {
+    stepDoMock.mockImplementation(
+      async (_name: string, _config: unknown, run: () => Promise<unknown>) =>
+        run(),
+    );
+    selectMock.mockResolvedValue(["page-1"]);
+    stored.set("page-1-mobile", { pageId: "page-1", strategy: "mobile" });
+    fetchMock.mockImplementation(
+      async (_url: string, pageId: string, strategy: Strategy) => ({
+        result: { pageId, strategy, errorMessage: "late failure" },
+        payloadJson: null,
+      }),
+    );
+
+    await runLighthousePhase(stepStub(), PARAMS);
+
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(fetchMock).toHaveBeenCalledWith(
+      "https://example.com/page-1",
+      "page-1",
+      "desktop",
+    );
+    expect(stored.get("page-1-mobile")?.errorMessage).toBeUndefined();
+    expect(progressMock).toHaveBeenLastCalledWith("audit-1", "workflow-1", {
+      lighthouseCompleted: 1,
       lighthouseFailed: 1,
     });
   });

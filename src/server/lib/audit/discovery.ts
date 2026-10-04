@@ -3,7 +3,13 @@
  */
 import robotsParser from "robots-parser";
 import { XMLParser } from "fast-xml-parser";
-import { isCrawlableUrl } from "./url-policy";
+import { assertPublicHostname, isCrawlableUrl } from "./url-policy";
+import { decodeUtf8, readBodyCapped, readBodyPrefix } from "./discovery-body";
+import {
+  getParsedSitemapSections,
+  getSitemapLocations,
+  readLastmodStats,
+} from "./sitemap-xml";
 import { isSameOrigin, normalizeUrl } from "./url-utils";
 
 const SITEMAP_FETCH_TIMEOUT_MS = 15_000;
@@ -66,11 +72,28 @@ async function fetchWithinOrigin(
   url: string,
   origin: string,
   init: { headers: Record<string, string>; timeoutMs: number },
+  checkedHosts: Set<string>,
 ): Promise<Response | null> {
   let current = url;
   for (let hop = 0; hop <= MAX_DISCOVERY_REDIRECTS; hop++) {
     if (!isSameOrigin(current, origin) || !isCrawlableUrl(current)) {
       return null;
+    }
+    /*
+     * isSameOrigin treats www and apex as one site, but they are two DNS
+     * names. The origin's own host passed the public-address check when the
+     * audit started; any other hostname (the www/apex sibling) gets the same
+     * check before it is contacted. Pre-flight only: Workers cannot pin the
+     * address a fetch connects to.
+     */
+    const host = new URL(current).hostname;
+    if (host !== new URL(origin).hostname && !checkedHosts.has(host)) {
+      try {
+        await assertPublicHostname(host);
+      } catch {
+        return null;
+      }
+      checkedHosts.add(host);
     }
     const response = await fetch(current, {
       headers: init.headers,
@@ -88,12 +111,17 @@ async function fetchWithinOrigin(
   return null;
 }
 
-async function fetchRobotsTxtText(origin: string): Promise<RobotsFetch> {
+async function fetchRobotsTxtText(
+  origin: string,
+  checkedHosts: Set<string>,
+): Promise<RobotsFetch> {
   try {
-    const response = await fetchWithinOrigin(`${origin}/robots.txt`, origin, {
-      headers: { "User-Agent": "seotracker-audit/1.0" },
-      timeoutMs: 10_000,
-    });
+    const response = await fetchWithinOrigin(
+      `${origin}/robots.txt`,
+      origin,
+      { headers: { "User-Agent": "seotracker-audit/1.0" }, timeoutMs: 10_000 },
+      checkedHosts,
+    );
     if (!response) {
       return { text: null, status: null, truncated: false };
     }
@@ -110,14 +138,30 @@ async function fetchRobotsTxtText(origin: string): Promise<RobotsFetch> {
      * 1 MiB. `readBodyCapped` counts bytes off the stream and is right
      * here; it was already in this file, used for sitemaps.
      */
-    const body = await readBodyCapped(response, MAX_ROBOTS_TXT_BYTES);
+    const body = await readBodyPrefix(response, MAX_ROBOTS_TXT_BYTES);
+    if (!body.truncated) {
+      return {
+        text: decodeUtf8(body.bytes),
+        status: response.status,
+        truncated: false,
+      };
+    }
+    /*
+     * Over the cap: keep the complete lines of the prefix, which is exactly
+     * what Google does, so the Disallow rules the site did publish still
+     * apply. Reading the cap as "no rules" would turn an oversized file into
+     * allow-all. A prefix with no line break has no recoverable rule, and
+     * guessing "allow" there is the unsafe direction, so it fails closed.
+     */
+    const prefix = decodeUtf8(body.bytes);
+    const lastBreak = prefix.lastIndexOf("\n");
     return {
-      // Null means the cap was hit, so nothing usable was kept. An empty
-      // robots.txt and an over-long one both mean "no rules we can apply",
-      // and `truncated` is what tells the two apart in the report.
-      text: body ?? "",
+      text:
+        lastBreak === -1
+          ? "User-agent: *\nDisallow: /\n"
+          : prefix.slice(0, lastBreak + 1),
       status: response.status,
-      truncated: body === null,
+      truncated: true,
     };
   } catch (error) {
     console.warn("Failed to fetch robots.txt:", error);
@@ -161,120 +205,15 @@ function isProbablySitemapXml(
   );
 }
 
-function getSitemapLocations(input: unknown): string[] {
-  if (!input) return [];
-  const entries = Array.isArray(input) ? input : [input];
-  return entries
-    .map((entry) => {
-      if (isRecord(entry)) {
-        const loc = entry["loc"];
-        return typeof loc === "string" ? loc : null;
-      }
-      return null;
-    })
-    .filter((loc): loc is string => typeof loc === "string");
-}
-
-/**
- * What the `<lastmod>` values in one `<urlset>` add up to.
- *
- * Counts rather than the dates themselves, because this travels in Workflow
- * step state, which has a ~1MiB ceiling that a per-URL date list on a large
- * site would eat. Google says it uses lastmod only when a site's dates are
- * consistently accurate, so the two questions worth carrying are "are there
- * any" and "are any of them impossible".
- */
-function readLastmodStats(input: unknown): {
-  urls: number;
-  withLastmod: number;
-  future: number;
-  futureSample: string | null;
-} {
-  const entries = Array.isArray(input) ? input : input ? [input] : [];
-  // A minute of slack: a sitemap regenerated during the crawl is not a lie.
-  const horizon = Date.now() + 60_000;
-  let withLastmod = 0;
-  let future = 0;
-  let futureSample: string | null = null;
-
-  for (const entry of entries) {
-    if (!isRecord(entry)) continue;
-    const raw = entry["lastmod"];
-    // The XML parser hands back a Date-looking string, or a number for a
-    // bare year. Either way only a parseable instant is a claim.
-    const text = typeof raw === "string" ? raw.trim() : null;
-    if (!text) continue;
-    const parsed = Date.parse(text);
-    if (Number.isNaN(parsed)) continue;
-    withLastmod += 1;
-    if (parsed > horizon) {
-      future += 1;
-      futureSample ??= text;
-    }
-  }
-
-  return { urls: entries.length, withLastmod, future, futureSample };
-}
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return !!value && typeof value === "object";
-}
-
-function getParsedSitemapSections(parsed: unknown): {
-  sitemap: unknown;
-  url: unknown;
-} {
-  if (!parsed || typeof parsed !== "object") {
-    return { sitemap: undefined, url: undefined };
-  }
-
-  const root = parsed as {
-    sitemapindex?: { sitemap?: unknown };
-    urlset?: { url?: unknown };
-  };
-
-  return {
-    sitemap: root.sitemapindex?.sitemap,
-    url: root.urlset?.url,
-  };
-}
-
 function isTimeoutError(error: unknown): boolean {
   if (!error || typeof error !== "object") return false;
   return "name" in error && error.name === "TimeoutError";
 }
 
-/** Read a response body up to maxBytes; null when the body exceeds it. */
-async function readBodyCapped(
-  response: Response,
-  maxBytes: number,
-): Promise<string | null> {
-  if (!response.body) return "";
-  const reader = response.body.getReader();
-  const chunks: Uint8Array[] = [];
-  let total = 0;
-  for (;;) {
-    const { done, value } = await reader.read();
-    if (done) break;
-    total += value.byteLength;
-    if (total > maxBytes) {
-      await reader.cancel();
-      return null;
-    }
-    chunks.push(value);
-  }
-  const joined = new Uint8Array(total);
-  let offset = 0;
-  for (const chunk of chunks) {
-    joined.set(chunk, offset);
-    offset += chunk.byteLength;
-  }
-  return new TextDecoder().decode(joined);
-}
-
 async function fetchSitemapDocumentWithRetry(
   sitemapUrl: string,
   origin: string,
+  checkedHosts: Set<string>,
 ): Promise<{
   nestedSitemaps: string[];
   /**
@@ -302,10 +241,15 @@ async function fetchSitemapDocumentWithRetry(
 
   for (let attempt = 0; attempt <= SITEMAP_RETRIES; attempt++) {
     try {
-      const response = await fetchWithinOrigin(normalizedSitemapUrl, origin, {
-        headers: { "User-Agent": "seotracker-audit/1.0" },
-        timeoutMs: SITEMAP_FETCH_TIMEOUT_MS,
-      });
+      const response = await fetchWithinOrigin(
+        normalizedSitemapUrl,
+        origin,
+        {
+          headers: { "User-Agent": "seotracker-audit/1.0" },
+          timeoutMs: SITEMAP_FETCH_TIMEOUT_MS,
+        },
+        checkedHosts,
+      );
       if (!response) {
         return { nestedSitemaps: [], pageUrls: [], timedOut: false };
       }
@@ -370,7 +314,18 @@ export async function discoverUrls(
   origin: string,
   maxPages = 50,
 ): Promise<{
+  /**
+   * Every sitemap URL discovered (bounded by the discovery cap, not by
+   * `maxPages`). This is the sitemap membership set; the crawl's page budget
+   * is enforced by the crawl itself.
+   */
   urls: string[];
+  /**
+   * False when discovery stopped early (URL cap, document cap, depth cap, an
+   * oversized or timed-out document), so "not in `urls`" does not prove "not
+   * in the sitemap".
+   */
+  membershipComplete: boolean;
   robotsText: string | null;
   robotsFetch: RobotsFetch;
   sitemapProblems: {
@@ -387,7 +342,9 @@ export async function discoverUrls(
     };
   };
 }> {
-  const robotsFetch = await fetchRobotsTxtText(origin);
+  // Hostnames beyond the origin's own that already passed the DNS check.
+  const checkedHosts = new Set<string>();
+  const robotsFetch = await fetchRobotsTxtText(origin, checkedHosts);
   const robotsText = robotsFetch.text;
   const robots = parseRobotsTxt(origin, robotsText);
 
@@ -417,6 +374,8 @@ export async function discoverUrls(
     futureSample: null as string | null,
   };
   let timedOutDocs = 0;
+  // Set whenever a sitemap document or entry was left unread.
+  let membershipComplete = true;
 
   while (queue.length > 0 && allUrls.size < maxDiscoveredUrls) {
     if (fetchedDocs >= MAX_SITEMAP_DOCS) {
@@ -441,8 +400,13 @@ export async function discoverUrls(
         const result = await fetchSitemapDocumentWithRetry(
           normalizedUrl,
           origin,
+          checkedHosts,
         );
-        if (result.tooLarge) oversizedSitemaps.push(normalizedUrl);
+        if (result.tooLarge) {
+          oversizedSitemaps.push(normalizedUrl);
+          membershipComplete = false;
+        }
+        if (result.timedOut) membershipComplete = false;
         /*
          * Google's own ceiling, which is higher than the one above: a shard
          * over 50,000 URLs is invalid to Google even when this tool read it
@@ -473,11 +437,17 @@ export async function discoverUrls(
 
         for (const pageUrl of result.pageUrls) {
           if (!isSameOrigin(pageUrl, origin)) continue;
-          if (allUrls.size >= maxDiscoveredUrls) break;
+          if (allUrls.size >= maxDiscoveredUrls) {
+            membershipComplete = false;
+            break;
+          }
           allUrls.add(pageUrl);
         }
 
-        if (depth <= 1) return;
+        if (depth <= 1) {
+          if (result.nestedSitemaps.length > 0) membershipComplete = false;
+          return;
+        }
 
         for (const nestedUrl of result.nestedSitemaps) {
           if (!isSameOrigin(nestedUrl, origin)) continue;
@@ -489,16 +459,24 @@ export async function discoverUrls(
     );
   }
 
+  // The loop also ends with documents still queued (URL cap or document cap).
+  if (queue.length > 0) membershipComplete = false;
+
   if (failedDocs > 0) {
     console.warn(
       `Sitemap discovery completed with partial failures for ${origin}: fetched=${fetchedDocs}, failed=${failedDocs}, timedOut=${timedOutDocs}, discoveredUrls=${allUrls.size}`,
     );
   }
 
-  // Cap at the crawl's page budget: these are seeds, the crawl can never use
-  // more — and an uncapped list can blow the ~1MiB Workflow step-state limit.
+  /*
+   * Not sliced to maxPages: that was the seed prefix, and membership read off
+   * it marked a listed URL reached later through links as "not in the
+   * sitemap". The list is bounded by maxDiscoveredUrls, and the caller writes
+   * it to the scratchpad rather than returning it as step state.
+   */
   return {
-    urls: Array.from(allUrls).slice(0, maxPages),
+    urls: Array.from(allUrls),
+    membershipComplete,
     robotsText,
     robotsFetch,
     sitemapProblems: {

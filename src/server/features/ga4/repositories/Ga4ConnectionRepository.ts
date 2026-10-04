@@ -1,6 +1,7 @@
 import { eq, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { ga4Connections } from "@/db/schema";
+import { clearGa4Quota } from "@/server/features/quotas/ga4QuotaSnapshot";
 
 export type Ga4Connection = typeof ga4Connections.$inferSelect;
 
@@ -50,6 +51,8 @@ async function upsert(input: {
     })
     .returning();
   if (!row) throw new Error("Failed to upsert ga4_connection");
+  // The property or account may have changed: old quota readings are not its.
+  clearGa4Quota(input.projectId);
   return row;
 }
 
@@ -57,6 +60,7 @@ async function deleteByProjectId(projectId: string): Promise<void> {
   await db
     .delete(ga4Connections)
     .where(eq(ga4Connections.projectId, projectId));
+  clearGa4Quota(projectId);
 }
 
 export const Ga4ConnectionRepository = {

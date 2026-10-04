@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   canonicalUrlKey,
+  sameCanonicalTarget,
   detectUrlTemplate,
   getOrigin,
   isSameOrigin,
@@ -53,6 +54,24 @@ describe("canonicalUrlKey", () => {
     expect(canonicalUrlKey("https://example.com/services")).not.toBe(
       canonicalUrlKey("https://example.com/services/"),
     );
+  });
+});
+
+describe("sameCanonicalTarget", () => {
+  it("keeps scheme, www and trailing slash distinct", () => {
+    const base = "https://example.com/a";
+    expect(sameCanonicalTarget(base, "http://example.com/a")).toBe(false);
+    expect(sameCanonicalTarget(base, "https://www.example.com/a")).toBe(false);
+    expect(sameCanonicalTarget(base, "https://example.com/a/")).toBe(false);
+  });
+
+  it("ignores only fragment, hostname case and query order", () => {
+    expect(
+      sameCanonicalTarget(
+        "https://Example.com/a?x=1&y=2#top",
+        "https://example.com/a?y=2&x=1",
+      ),
+    ).toBe(true);
   });
 });
 

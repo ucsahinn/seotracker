@@ -172,9 +172,9 @@ describe("buildAuditReportHtml", () => {
     }
   });
 
-  it("gives two audits of one site on one day different titles", () => {
+  it("gives two audits sharing an id prefix, of one site on one day, different titles", () => {
     const a = buildAuditReportHtml(input({ auditId: "aaaaaa-1" }));
-    const b = buildAuditReportHtml(input({ auditId: "bbbbbb-2" }));
+    const b = buildAuditReportHtml(input({ auditId: "aaaaaa-2" }));
     expect(a.title).not.toBe(b.title);
   });
 

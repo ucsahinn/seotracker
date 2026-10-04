@@ -42,7 +42,13 @@ export function getStandardErrorMessage(
   fallback: string = STANDARD_MESSAGES.INTERNAL_ERROR,
 ): string {
   if (!(error instanceof Error)) return fallback;
-  if (isErrorCode(error.message)) return STANDARD_MESSAGES[error.message];
+  if (isErrorCode(error.message)) {
+    // A caller's own sentence beats the generic "unexpected error" text (the
+    // fallback defaults to that same text), but never replaces a code that
+    // has specific copy.
+    if (error.message === "INTERNAL_ERROR") return fallback;
+    return STANDARD_MESSAGES[error.message];
+  }
   const coded = splitCodedMessage(error.message);
   if (coded) return coded.detail;
   if (error.message) return error.message;

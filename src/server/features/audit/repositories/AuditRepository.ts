@@ -4,8 +4,7 @@
  * audit_pages, audit_issues, and stored Lighthouse results. Link edges live
  * in the per-audit scratchpad Durable Object, not here.
  */
-import { and, count, desc, eq, inArray, isNull } from "drizzle-orm";
-import { chunk } from "remeda";
+import { and, asc, count, desc, eq, inArray, sql } from "drizzle-orm";
 import { db } from "@/db";
 import {
   audits,
@@ -14,16 +13,10 @@ import {
   auditPages,
   projects,
 } from "@/db/schema";
-import { executeInBatches } from "@/db/runBatch";
 import { getIssueCountsByAudit } from "./auditSummaryQueries";
-import { AUDIT_ISSUE_TYPES } from "@/shared/audit-issues";
-import { deterministicAuditRowId } from "@/server/lib/audit/ids";
-import type { DetectedIssue } from "@/server/lib/audit/issues/page-reporters";
-import type { AuditConfig, CrawledPageResult } from "@/server/lib/audit/types";
+import { AuditCrawlRepository } from "./AuditCrawlRepository";
+import type { AuditConfig } from "@/server/lib/audit/types";
 import type { PageFetchClass } from "@/shared/audit-fetch-class";
-
-// Page ids per delete statement, under D1's bound-parameter cap.
-const ISSUE_DELETE_PAGES = 80;
 
 async function createAudit(data: {
   id: string;
@@ -145,111 +138,6 @@ async function getAuditForWorkflow(
   });
 }
 
-/**
- * Persist one crawled sub-batch (pages + per-page issues). Called inside the
- * crawl-chunk Workflow step so results land in the app DB incrementally
- * instead of accumulating in memory until finalize. Link edges go to the
- * audit's scratchpad DO, not here.
- *
- * Idempotent on step retry: callers assign deterministic page ids
- * (deterministicAuditRowId) and issue ids are derived from stable content.
- * Page rows upsert (a retried fetch may legitimately differ — last attempt
- * wins); the chunk's earlier issues are replaced, not merged.
- */
-async function insertCrawledBatch(
-  auditId: string,
-  pages: CrawledPageResult[],
-  issues: DetectedIssue[],
-) {
-  // A retried chunk may find different issues on the same pages. Issues are
-  // insert-or-ignore, so without this the first attempt's findings would
-  // survive next to the retry's. Same step, so a retry redoes both.
-  await executeInBatches(
-    chunk(
-      pages.map((page) => page.id),
-      ISSUE_DELETE_PAGES,
-    ),
-    (tx, pageIds) =>
-      tx
-        .delete(auditIssues)
-        .where(
-          and(
-            eq(auditIssues.auditId, auditId),
-            inArray(auditIssues.pageId, pageIds),
-          ),
-        ),
-  );
-
-  await executeInBatches(pages, (tx, page) => {
-    const dataColumns = {
-      url: page.url,
-      statusCode: page.statusCode,
-      redirectUrl: page.redirectUrl,
-      title: page.title,
-      metaDescription: page.metaDescription,
-      canonicalUrl: page.canonicalUrl,
-      robotsMeta: page.robotsMeta,
-      googlebotMeta: page.googlebotMeta,
-      htmlLang: page.htmlLang,
-      xRobotsTag: page.xRobotsTag,
-      headerCanonicalUrl: page.headerCanonicalUrl,
-      ogTitle: page.ogTitle,
-      ogDescription: page.ogDescription,
-      ogImage: page.ogImage,
-      h1Count: page.h1Count,
-      firstH1: page.firstH1,
-      h2Count: page.h2Count,
-      h3Count: page.h3Count,
-      h4Count: page.h4Count,
-      h5Count: page.h5Count,
-      h6Count: page.h6Count,
-      headingOrderJson: JSON.stringify(page.headingOrder),
-      wordCount: page.wordCount,
-      contentHash: page.contentHash,
-      imagesTotal: page.imagesTotal,
-      imagesMissingAlt: page.imagesMissingAlt,
-      imagesJson: JSON.stringify(page.images),
-      internalLinkCount: page.links.filter((l) => l.isInternal).length,
-      externalLinkCount: page.links.filter((l) => !l.isInternal).length,
-      hasStructuredData: page.hasStructuredData,
-      hreflangTagsJson: JSON.stringify(page.hreflangAlternates),
-      isIndexable: page.isIndexable,
-      fetchClass: page.fetchClass,
-      crawlDepth: page.crawlDepth,
-      inSitemap: page.inSitemap,
-      responseTimeMs: page.responseTimeMs,
-    };
-    return tx
-      .insert(auditPages)
-      .values({ id: page.id, auditId, ...dataColumns })
-      .onConflictDoUpdate({ target: auditPages.id, set: dataColumns });
-  });
-
-  await insertIssues(auditId, issues);
-}
-
-async function insertIssues(auditId: string, issues: DetectedIssue[]) {
-  const issueRows = await Promise.all(
-    issues.map(async (issue) => ({
-      id: await deterministicAuditRowId(
-        auditId,
-        issue.pageUrl,
-        issue.issueType,
-        issue.dedupeKey ?? "",
-      ),
-      auditId,
-      pageId: issue.pageId,
-      pageUrl: issue.pageUrl,
-      issueType: issue.issueType,
-      severity: AUDIT_ISSUE_TYPES[issue.issueType].severity,
-      detailsJson: issue.details ? JSON.stringify(issue.details) : null,
-    })),
-  );
-  await executeInBatches(issueRows, (tx, row) =>
-    tx.insert(auditIssues).values(row).onConflictDoNothing(),
-  );
-}
-
 async function getAuditForProject(auditId: string, projectId: string) {
   return db.query.audits.findFirst({
     where: and(eq(audits.id, auditId), eq(audits.projectId, projectId)),
@@ -276,32 +164,6 @@ async function getIssuesForAudit(
         : undefined,
     ),
   });
-}
-
-/**
- * Write the click depths the frontier worked out after the rows were saved.
- *
- * Only where the row has none: a depth already on the row came from the
- * lease and is the one the crawl actually used, and the frontier's repair
- * only ever lowers a value, so overwriting would rewrite history for no
- * gain.
- */
-async function backfillCrawlDepths(
-  auditId: string,
-  depths: Array<{ url: string; depth: number }>,
-) {
-  await executeInBatches(depths, (tx, { url, depth }) =>
-    tx
-      .update(auditPages)
-      .set({ crawlDepth: depth })
-      .where(
-        and(
-          eq(auditPages.auditId, auditId),
-          eq(auditPages.url, url),
-          isNull(auditPages.crawlDepth),
-        ),
-      ),
-  );
 }
 
 /*
@@ -331,6 +193,46 @@ async function getPagesForAudit(auditId: string) {
     .select(slimPageColumns)
     .from(auditPages)
     .where(eq(auditPages.auditId, auditId));
+}
+
+/**
+ * One filtered, URL-ordered slice of an audit's pages plus the count of every
+ * match, for callers that show a bounded list (MCP get_audit_pages). The filter
+ * and LIMIT run in SQL so a 10k-page audit never crosses D1 to be filtered in
+ * JS. `instr` keeps the substring match case-sensitive, as `String.includes`
+ * was; LIKE would not.
+ */
+async function searchPagesForAudit(
+  auditId: string,
+  filters: {
+    fetchClass?: PageFetchClass;
+    statusCode?: number;
+    urlContains?: string;
+    limit: number;
+  },
+) {
+  const where = and(
+    eq(auditPages.auditId, auditId),
+    filters.fetchClass
+      ? eq(auditPages.fetchClass, filters.fetchClass)
+      : undefined,
+    filters.statusCode !== undefined
+      ? eq(auditPages.statusCode, filters.statusCode)
+      : undefined,
+    filters.urlContains
+      ? sql`instr(${auditPages.url}, ${filters.urlContains}) > 0`
+      : undefined,
+  );
+  const [pages, [totalRow]] = await Promise.all([
+    db
+      .select(slimPageColumns)
+      .from(auditPages)
+      .where(where)
+      .orderBy(asc(auditPages.url), asc(auditPages.id))
+      .limit(filters.limit),
+    db.select({ value: count() }).from(auditPages).where(where),
+  ]);
+  return { pages, total: totalRow?.value ?? 0 };
 }
 
 /** URLs for a handful of page ids (one Lighthouse wave); ids are few, so one IN list stays under D1's bound-parameter limit. */
@@ -444,14 +346,13 @@ export const AuditRepository = {
   completeAudit,
   failAudit,
   getAuditForWorkflow,
-  insertCrawledBatch,
-  insertIssues,
+  ...AuditCrawlRepository,
   getAuditForProject,
   getLatestAuditForProject,
   getIssuesForAudit,
   getPagesForAudit,
+  searchPagesForAudit,
   getPageUrlsByIds,
-  backfillCrawlDepths,
   countPagesByFetchClass,
   hasPagesForAudit,
   getAuditsByProject,

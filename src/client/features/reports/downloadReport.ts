@@ -15,33 +15,16 @@ const DOWNLOAD_CSP =
 const CSP_META = `<meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="${DOWNLOAD_CSP}">`;
 
 /**
- * Puts the CSP meta ahead of everything else the document says. It goes right
- * after a leading doctype (a meta before the doctype would drop the page into
- * quirks mode), else at the very start; the parser then makes it the first
- * child of an implied `<head>`. Not searched for `<head>`: a `<head>` inside a
- * comment or a script string would swallow the meta.
+ * Puts a trusted doctype and the CSP meta ahead of everything the report says.
+ * The prefix is unconditional rather than found inside the document: deciding
+ * where the stored HTML's own doctype or comments end means re-implementing the
+ * HTML tokenizer, and any disagreement (`<!-->`, `--!>`, a `<head>` in a
+ * comment) leaves executable content in front of the policy. The browser
+ * ignores the report's own later doctype and merges its `<html>` attributes,
+ * and the meta becomes the first child of the implied `<head>`.
  */
 export function withDownloadCsp(html: string): string {
-  const at = doctypeEnd(html);
-  return html.slice(0, at) + CSP_META + html.slice(at);
-}
-
-/**
- * End offset of a leading doctype, skipping whitespace and comments before it;
- * 0 when there is none. A linear scan: the regex this replaced backtracked
- * exponentially on a long run of comments with no doctype.
- */
-function doctypeEnd(html: string): number {
-  let pos = 0;
-  for (;;) {
-    while (pos < html.length && /\s/.test(html.charAt(pos))) pos += 1;
-    if (!html.startsWith("<!--", pos)) break;
-    const close = html.indexOf("-->", pos + 4);
-    if (close === -1) return 0;
-    pos = close + 3;
-  }
-  const doctype = /^<!doctype[^>]*>/i.exec(html.slice(pos, pos + 2048));
-  return doctype ? pos + doctype[0].length : 0;
+  return `<!doctype html>${CSP_META}${html}`;
 }
 
 /**

@@ -1,7 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { AppError } from "@/server/lib/errors";
 import {
+  isCrawlableUrl,
   normalizeAndValidateStartUrl,
+  redactUrlUserinfo,
   resolveStartUrlRedirects,
 } from "@/server/lib/audit/url-policy";
 
@@ -29,6 +31,26 @@ describe("normalizeAndValidateStartUrl", () => {
     await expect(
       normalizeAndValidateStartUrl("example.com/path#section"),
     ).resolves.toBe("https://example.com/path");
+  });
+
+  it("accepts an upper-case scheme without corrupting the host", async () => {
+    vi.mocked(fetch).mockImplementation(async () => publicAnswer());
+
+    await expect(
+      normalizeAndValidateStartUrl("HTTPS://example.com"),
+    ).resolves.toBe("https://example.com/");
+  });
+
+  it("rejects credential-bearing URLs at entry and as crawl targets", async () => {
+    await expect(
+      normalizeAndValidateStartUrl("https://user:pw@example.com/"),
+    ).rejects.toMatchObject({
+      code: "VALIDATION_ERROR",
+    } satisfies Partial<AppError>);
+    expect(isCrawlableUrl("https://user:pw@example.com/a")).toBe(false);
+    expect(redactUrlUserinfo("https://user:pw@example.com/a")).toBe(
+      "https://example.com/a",
+    );
   });
 
   /*

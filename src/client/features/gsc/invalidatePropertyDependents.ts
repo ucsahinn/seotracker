@@ -6,10 +6,11 @@ import type { QueryClient } from "@tanstack/react-query";
  * all of them, or screens keep serving the previous property's data for the
  * global staleTime. Keys are matched by prefix: `[name, projectId]`.
  */
-const PROPERTY_DEPENDENT_QUERY_KEYS = [
+export const PROPERTY_DEPENDENT_QUERY_KEYS = [
   "searchPerformance",
   "searchPerformanceTable",
   "searchOpportunities",
+  "cannibalization",
   "gscHistorySync",
   "trackedQueries",
   "queryHistory",

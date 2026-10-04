@@ -6,6 +6,15 @@ import {
   resolveLighthouseWork,
 } from "@/server/workflows/site-audit-workflow-helpers";
 
+// The DNS check has its own tests; here every host passes unless a test says
+// otherwise, so the stubbed fetch only ever sees page requests.
+const dns = vi.hoisted(() => ({ blocked: false }));
+vi.mock("@/server/lib/audit/url-policy", () => ({
+  assertPublicHostname: async () => {
+    if (dns.blocked) throw new Error("blocked");
+  },
+}));
+
 const PAGE_URL = "https://example.com/page";
 const PAGE_HTML =
   "<html><head><title>A page</title></head><body><h1>A page</h1></body></html>";
@@ -43,6 +52,22 @@ afterEach(() => {
 });
 
 describe("crawlPage", () => {
+  it("never fetches a hostname that fails the public-address check", async () => {
+    dns.blocked = true;
+    const fetchSpy = stubFetch({ status: 200 });
+
+    const result = await crawlPage(
+      "https://www.sibling.test/page",
+      0,
+      false,
+      createCrawlThrottle(Date.now() + 90_000),
+    );
+
+    dns.blocked = false;
+    expect(fetchSpy).not.toHaveBeenCalled();
+    expect(result).toMatchObject({ statusCode: 0, fetchClass: "error" });
+  });
+
   it("waits out the server's Retry-After and keeps the retried page", async () => {
     vi.useFakeTimers();
     const fetchMock = stubFetch(
@@ -270,7 +295,10 @@ describe("crawlPage", () => {
           import { crawlPage } from ${JSON.stringify(new URL("./site-audit-workflow-helpers.ts", import.meta.url).href)};
           import { createCrawlThrottle } from ${JSON.stringify(new URL("../lib/audit/crawl-throttle.ts", import.meta.url).href)};
           const throttle = createCrawlThrottle(Date.now() + 90_000);
-          globalThis.fetch = async () => {
+          globalThis.fetch = async (input) => {
+            if (String(input).includes("cloudflare-dns.com")) {
+              return Response.json({ Status: 0, Answer: [{ type: 1, data: "93.184.216.34" }] });
+            }
             const html = '<title>Example memory regression 🌱</title>' +
               '<meta name="description" content="A small description">' +
               '<script>' + 'x'.repeat(1024 * 1024) + '</script>';

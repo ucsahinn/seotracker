@@ -7,7 +7,7 @@ import type {
 } from "@/types/schemas/projects";
 import { ProjectRepository } from "@/server/features/projects/repositories/ProjectRepository";
 import { normalizeDomainInput } from "@/server/lib/domainUtils";
-import { AppError } from "@/server/lib/errors";
+import { AppError, isUniqueConstraintError } from "@/server/lib/errors";
 import { assertLanguageForLocation } from "@/server/lib/market";
 import { getLanguageCode } from "@/shared/keyword-locations";
 
@@ -56,10 +56,7 @@ function isReservedDefaultConflict(
   input: { name: string; domain?: string },
 ) {
   return (
-    input.name === "Default" &&
-    !input.domain &&
-    error instanceof Error &&
-    error.message.includes("UNIQUE constraint failed")
+    input.name === "Default" && !input.domain && isUniqueConstraintError(error)
   );
 }
 
@@ -149,11 +146,7 @@ export async function archiveProject(
   organizationId: string,
   input: ArchiveProjectInput,
 ) {
-  const remaining = await ProjectRepository.countProjects(organizationId);
-  if (remaining <= 1) {
-    throw new AppError("CONFLICT", "Tek projenizi arşivleyemezsiniz.");
-  }
-
+  // The repository refuses to archive the last active project atomically.
   await ProjectRepository.archiveProject(input.projectId, organizationId);
   return { success: true };
 }
@@ -176,10 +169,7 @@ export async function restoreProject(
     // The Default singleton index is the only unique index on projects, and
     // restore only writes archived_at — so a UNIQUE failure can only mean an
     // active Default/no-domain project already exists.
-    if (
-      error instanceof Error &&
-      error.message.includes("UNIQUE constraint failed")
-    ) {
+    if (isUniqueConstraintError(error)) {
       throw new AppError(
         "CONFLICT",
         'Alan adı olmayan, "Default" adında etkin bir proje zaten var. Önce onu yeniden adlandırın, sonra bunu geri yükleyin.',

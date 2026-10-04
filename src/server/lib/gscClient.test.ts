@@ -8,7 +8,8 @@ const mocks = vi.hoisted(() => ({
 }));
 
 vi.mock("@/lib/auth", () => ({
-  getAuth: () => ({ api: { getAccessToken: mocks.getAccessToken } }),
+  getGoogleGrantAuth: () =>
+    Promise.resolve({ api: { getAccessToken: mocks.getAccessToken } }),
 }));
 
 // Mocked for the same reason `@/lib/auth` is: the real module reaches the
@@ -187,6 +188,17 @@ describe("gscClient", () => {
     await expect(
       createGscClient({ userId: "u1" }).listSites(),
     ).rejects.toMatchObject({ status: 429 });
+  });
+
+  it("turns a stalled Google call into a GscApiError instead of hanging", async () => {
+    mocks.fetch.mockRejectedValue(
+      new DOMException("signal timed out", "TimeoutError"),
+    );
+    const { createGscClient } = await import("./gscClient");
+    await expect(
+      createGscClient({ userId: "u1" }).listSites(),
+    ).rejects.toMatchObject({ name: "GscApiError", status: 504 });
+    expect(mocks.fetch.mock.calls[0]?.[1]?.signal).toBeInstanceOf(AbortSignal);
   });
 
   it("throws GscTokenError when no access token can be minted", async () => {

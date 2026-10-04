@@ -60,6 +60,7 @@ beforeEach(() => {
   mocks.countReports.mockResolvedValue(3);
   mocks.sumReportBytesForOrganization.mockResolvedValue(0);
   mocks.findReportByTitle.mockResolvedValue(null);
+  mocks.updateReportContent.mockResolvedValue(true);
   mocks.getTemplate.mockResolvedValue(null);
   mocks.captureServerEvent.mockResolvedValue(undefined);
 });

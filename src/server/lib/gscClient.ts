@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { getAuth } from "@/lib/auth";
+import { getGoogleGrantAuth } from "@/lib/auth";
 import {
   getServiceAccountToken,
   hasServiceAccount,
@@ -10,6 +10,7 @@ import { GscApiError, GscTokenError } from "./gscErrors";
 export { GscApiError, GscTokenError } from "./gscErrors";
 
 const GSC_API_BASE = "https://www.googleapis.com/webmasters/v3";
+const GSC_REQUEST_TIMEOUT_MS = 30_000;
 
 /**
  * `sitemaps.list`, parsed rather than cast.
@@ -183,7 +184,9 @@ export function createGscClient(opts: {
       // session is present, and auto-refreshes via the genericOAuth provider.
       // Works in every auth mode — self-hosted builds the same Better Auth
       // instance once BETTER_AUTH_SECRET is set.
-      result = await getAuth().api.getAccessToken({
+      result = await (
+        await getGoogleGrantAuth()
+      ).api.getAccessToken({
         body: {
           providerId: GSC_OAUTH_PROVIDER_ID,
           userId: opts.userId,
@@ -210,14 +213,29 @@ export function createGscClient(opts: {
   ): Promise<T> {
     const token = await getToken();
     const hasBody = init?.body !== undefined;
-    const response = await fetch(url, {
-      method: init?.method ?? "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        ...(hasBody ? { "Content-Type": "application/json" } : {}),
-      },
-      body: hasBody ? JSON.stringify(init?.body) : undefined,
-    });
+    let response: Response;
+    try {
+      response = await fetch(url, {
+        method: init?.method ?? "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          ...(hasBody ? { "Content-Type": "application/json" } : {}),
+        },
+        body: hasBody ? JSON.stringify(init?.body) : undefined,
+        // A stalled Google call must not hold a request or a bulk inspection
+        // run open indefinitely.
+        signal: AbortSignal.timeout(GSC_REQUEST_TIMEOUT_MS),
+      });
+    } catch (error) {
+      if (error instanceof Error && error.name === "TimeoutError") {
+        throw new GscApiError(
+          504,
+          "Search Console did not answer in time. Retry shortly.",
+          "",
+        );
+      }
+      throw error;
+    }
     if (!response.ok) {
       const body = await response.text().catch(() => "");
       throw new GscApiError(

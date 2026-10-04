@@ -13,6 +13,10 @@ import {
   vi,
 } from "vitest";
 import type { runBatch } from "@/db/runBatch";
+import {
+  readGa4Quota,
+  recordGa4Quota,
+} from "@/server/features/quotas/ga4QuotaSnapshot";
 import type * as ServiceModule from "./GoogleAccountService";
 
 vi.mock("cloudflare:workers", () => ({ env: {} }));
@@ -67,6 +71,19 @@ beforeAll(async () => {
     );
   }
   await client.execute("ALTER TABLE gsc_connections ADD gsc_account_id text");
+  for (const file of [
+    "0048_gsc_history",
+    "0050_gsc_url_inspections",
+    "0057_gsc_scanned_through",
+    "0064_gsc_inspection_attempts",
+  ]) {
+    await client.executeMultiple(
+      readFileSync(`drizzle/${file}.sql`, "utf8").replaceAll(
+        "--> statement-breakpoint",
+        "",
+      ),
+    );
+  }
   ({ GoogleAccountService: service } = await import("./GoogleAccountService"));
 });
 
@@ -83,7 +100,7 @@ afterAll(() => {
 });
 beforeEach(async () => {
   await client.executeMultiple(
-    "DROP TRIGGER IF EXISTS fail_remove; DELETE FROM gsc_connections; DELETE FROM ga4_connections; DELETE FROM account;",
+    "DROP TRIGGER IF EXISTS fail_remove; DELETE FROM gsc_connections; DELETE FROM gsc_query_daily; DELETE FROM gsc_archive_state; DELETE FROM gsc_url_inspections; DELETE FROM ga4_connections; DELETE FROM account;",
   );
 });
 
@@ -214,6 +231,32 @@ for (const provider of ["gsc", "ga4"] as const) {
   });
 }
 
+it("removing a GSC account also drops that account's projects' stored property data, and only theirs", async () => {
+  await grant("google-search-console");
+  await mapping("gsc", "p1");
+  await mapping("gsc", "p3", "google-b");
+  await client.executeMultiple(`
+    INSERT INTO gsc_query_daily VALUES ('p1', '2026-01-01', 'q', 1, 2, 0.5, 3, 'now'), ('p3', '2026-01-01', 'q', 1, 2, 0.5, 3, 'now');
+    INSERT INTO gsc_archive_state (project_id, last_date) VALUES ('p1', '2026-01-01'), ('p3', '2026-01-01');
+    INSERT INTO gsc_url_inspections (project_id, url) VALUES ('p1', 'https://a/'), ('p3', 'https://a/');
+  `);
+  await service.remove({
+    provider: "gsc",
+    accountId: "google-a",
+    userId: "u1",
+  });
+  for (const table of [
+    "gsc_query_daily",
+    "gsc_archive_state",
+    "gsc_url_inspections",
+  ]) {
+    const { rows: left } = await client.execute(
+      `SELECT project_id FROM ${table}`,
+    );
+    expect(left.map((row) => row.project_id)).toEqual(["p3"]);
+  }
+});
+
 it("includes legacy GSC mappings in removal without touching another user's legacy mappings", async () => {
   await grant("google-search-console");
   await mapping("gsc", "p1", null);
@@ -228,6 +271,50 @@ it("includes legacy GSC mappings in removal without touching another user's lega
   expect((await rows("gsc_connections")).map((row) => row.project_id)).toEqual([
     "p2",
   ]);
+});
+
+// A legacy mapping authenticates through any of the user's grants, so with a
+// second grant left it may belong to that one and must keep its data.
+it("keeps a legacy GSC project's data when the user has another grant left", async () => {
+  await grant("google-search-console", "google-x");
+  await grant("google-search-console", "google-y");
+  await mapping("gsc", "p1", null);
+  await mapping("gsc", "p3", "google-x");
+  await client.execute(
+    "INSERT INTO gsc_url_inspections (project_id, url) VALUES ('p1', 'https://a/'), ('p3', 'https://a/')",
+  );
+  const input = {
+    provider: "gsc" as const,
+    accountId: "google-x",
+    userId: "u1",
+  };
+  expect((await service.getRemovalImpact(input)).projectCount).toBe(1);
+  await service.remove(input);
+  expect((await rows("gsc_connections")).map((row) => row.project_id)).toEqual([
+    "p1",
+  ]);
+  const { rows: left } = await client.execute(
+    "SELECT project_id FROM gsc_url_inspections",
+  );
+  expect(left.map((row) => row.project_id)).toEqual(["p1"]);
+});
+
+it("forgets the GA4 quota snapshot of every project the removed account served", async () => {
+  const owner = {
+    projectId: "p1",
+    propertyId: "properties/123",
+    ga4AccountId: "google-a",
+    connectedByUserId: "u1",
+  };
+  await grant("google-analytics");
+  await mapping("ga4", "p1");
+  recordGa4Quota(owner, { tokensPerDay: { consumed: 1, remaining: 9 } });
+  await service.remove({
+    provider: "ga4",
+    accountId: "google-a",
+    userId: "u1",
+  });
+  expect(readGa4Quota(owner)).toBeNull();
 });
 
 it.each(["same-account", "other-account", "other-user"] as const)(

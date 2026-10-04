@@ -269,7 +269,7 @@ describe("checks traced to Google's documentation", () => {
     expect(invalid("zh-Hant")).toBe(false);
   });
 
-  it("wants the page in its own hreflang set, folded the same way", () => {
+  it("wants the page in its own hreflang set, compared strictly", () => {
     const withSelf = issueTypes(
       makePage({
         url: "https://example.com/a",
@@ -282,10 +282,9 @@ describe("checks traced to Google's documentation", () => {
     expect(withSelf).not.toContain("hreflang-missing-self");
 
     /*
-     * The fold this test is named for. Both URLs above are byte-identical,
-     * so it never exercised one: the page was crawled as `/a/` and its own
-     * alternate written as `/a`, which `canonicalUrlKey` alone calls two
-     * different pages.
+     * Canonical equality is conservative: `/a/` and `/a` (or www vs apex)
+     * can be different pages, so a self-reference written the other way is
+     * not a self-reference.
      */
     const slashDiffers = issueTypes(
       makePage({
@@ -296,7 +295,7 @@ describe("checks traced to Google's documentation", () => {
         ],
       }),
     );
-    expect(slashDiffers).not.toContain("hreflang-missing-self");
+    expect(slashDiffers).toContain("hreflang-missing-self");
 
     const withoutSelf = issueTypes(
       makePage({

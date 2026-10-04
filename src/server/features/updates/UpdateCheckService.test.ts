@@ -94,6 +94,36 @@ describe("UpdateCheckService", () => {
     expect(status.updateAvailable).toBe(false);
   });
 
+  it("checks a 'no releases yet' repo once a day, not on the failure back-off", async () => {
+    mocks.get.mockResolvedValue({
+      ...BLANK,
+      checkedAt: new Date(Date.now() - 7 * 60 * 60 * 1000).toISOString(),
+      lastStatus: 404,
+    });
+
+    await UpdateCheckService.getStatus();
+
+    expect(mocks.fetch).not.toHaveBeenCalled();
+  });
+
+  it("records a 200 that is not a release as a failed attempt", async () => {
+    mocks.get.mockResolvedValue({
+      ...BLANK,
+      checkedAt: "2026-09-20T08:00:00.000Z",
+      lastSuccessAt: "2026-09-20T08:00:00.000Z",
+      lastStatus: 200,
+      latestTag: "v0.3.0",
+    });
+    mocks.fetch.mockResolvedValue(Response.json({ message: "unexpected" }));
+
+    const status = await UpdateCheckService.getStatus({ force: true });
+
+    expect(status).toMatchObject({
+      outcome: "error",
+      lastSuccessAt: "2026-09-20T08:00:00.000Z",
+    });
+  });
+
   it("degrades to 'unreachable' rather than throwing when the call fails", async () => {
     mocks.fetch.mockRejectedValue(new Error("getaddrinfo ENOTFOUND"));
 

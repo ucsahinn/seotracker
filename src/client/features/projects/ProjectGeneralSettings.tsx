@@ -32,7 +32,9 @@ export function ProjectGeneralSettings({ projectId }: { projectId: string }) {
    * failed `getProjects` spun forever on the screen that sets the site
    * domain - the first step of onboarding - with refresh as the only exit.
    */
-  if (projectsQuery.isError) {
+  // Only when there is nothing to show: a failed background refetch must not
+  // unmount the form and discard what was typed.
+  if (projectsQuery.isError && !projectsQuery.data) {
     return (
       <QueryErrorState
         error={projectsQuery.error}
@@ -94,8 +96,21 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
           ...market,
         },
       }),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["projects"] });
+    onSuccess: async (saved) => {
+      // The server normalizes the domain (https://www.Acme.com/ -> acme.com);
+      // show what was stored so the form is not left dirty against it.
+      setName(saved.name);
+      setDomain(saved.domain ?? "");
+      // Domain and market feed the dashboard's setup state and overview too.
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["projects"] }),
+        queryClient.invalidateQueries({
+          queryKey: ["dashboardActivation", project.id],
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ["dashboardOverview", project.id],
+        }),
+      ]);
       toast.success("Proje güncellendi");
     },
     onError: (error) =>

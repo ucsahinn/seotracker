@@ -281,7 +281,42 @@ export function isCrawlableUrl(url: string): boolean {
   if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
     return false;
   }
+  // A link or redirect carrying `user:pass@` must not become a crawl target:
+  // the credentials would be sent upstream and stored with the page.
+  if (parsed.username || parsed.password) return false;
   return !isBlockedHost(parsed.hostname);
+}
+
+/**
+ * The same hostname gate the start URL passes, for any further hostname the
+ * crawl is about to contact (a www/apex sibling counts as its own host):
+ * lexical blocklist first, then the public-DNS check. Throws
+ * CRAWL_TARGET_BLOCKED when the host is blocked or cannot be verified.
+ *
+ * This is a pre-flight check, not connection-time enforcement: Workers
+ * cannot pin the address a `fetch` connects to, so a resolver that answers
+ * differently the second time (DNS rebinding) is not covered.
+ */
+export async function assertPublicHostname(hostname: string): Promise<void> {
+  if (isBlockedHost(hostname)) {
+    throw new AppError("CRAWL_TARGET_BLOCKED");
+  }
+  if (await hostnameResolvesToBlockedAddress(hostname)) {
+    throw new AppError("CRAWL_TARGET_BLOCKED");
+  }
+}
+
+/** Drops `user:pass@` from a stored URL before it is shown or exported. */
+export function redactUrlUserinfo(url: string): string {
+  try {
+    const parsed = new URL(url);
+    if (!parsed.username && !parsed.password) return url;
+    parsed.username = "";
+    parsed.password = "";
+    return parsed.toString();
+  } catch {
+    return url;
+  }
 }
 
 export async function normalizeAndValidateStartUrl(
@@ -290,7 +325,7 @@ export async function normalizeAndValidateStartUrl(
   let raw = input.trim();
   if (!raw) throw new AppError("VALIDATION_ERROR");
 
-  if (!raw.startsWith("http://") && !raw.startsWith("https://")) {
+  if (!/^https?:\/\//i.test(raw)) {
     raw = `https://${raw}`;
   }
 
@@ -305,13 +340,14 @@ export async function normalizeAndValidateStartUrl(
     throw new AppError("VALIDATION_ERROR");
   }
 
-  if (isBlockedHost(parsed.hostname)) {
-    throw new AppError("CRAWL_TARGET_BLOCKED");
+  if (parsed.username || parsed.password) {
+    throw new AppError(
+      "VALIDATION_ERROR",
+      "Kullanıcı adı veya parola içeren adresler taranamaz.",
+    );
   }
 
-  if (await hostnameResolvesToBlockedAddress(parsed.hostname)) {
-    throw new AppError("CRAWL_TARGET_BLOCKED");
-  }
+  await assertPublicHostname(parsed.hostname);
 
   parsed.hash = "";
   return parsed.toString();

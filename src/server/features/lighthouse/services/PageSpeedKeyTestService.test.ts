@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const SECRET = "AIzaSyTESTKEYNOTREAL";
+const SECRET = "fake-AIzaSyTESTKEYNOTREAL";
 
 const mocks = vi.hoisted(() => ({
   source: vi.fn(),

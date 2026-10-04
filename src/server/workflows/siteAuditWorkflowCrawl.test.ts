@@ -7,13 +7,18 @@ const mocks = vi.hoisted(() => ({
     vi.fn<
       () => Promise<{ attempted: number; pending: number; seen: number }>
     >(),
-  recordBatch: vi.fn(),
+  recordBatch:
+    vi.fn<(batch: { links: Array<{ targets: string[] }> }) => unknown>(),
   releaseUrls: vi.fn<(urls: string[]) => Promise<void>>(),
   insertCrawledBatch: vi.fn(),
   stepDo: vi.fn(),
   sleepUntil: vi.fn(),
   getCrawlThrottle: vi.fn(),
   saveCrawlThrottle: vi.fn(),
+}));
+vi.mock("@/server/lib/audit/url-policy", async (importOriginal) => ({
+  ...(await importOriginal<Record<string, unknown>>()),
+  assertPublicHostname: async () => undefined,
 }));
 vi.mock("cloudflare:workflows", () => ({
   NonRetryableError: class extends Error {},
@@ -26,6 +31,9 @@ vi.mock("@/server/features/audit/repositories/AuditRepository", () => ({
     insertCrawledBatch: mocks.insertCrawledBatch,
     updateAuditProgress: vi.fn(),
   },
+}));
+vi.mock("@/server/features/audit/auditHeartbeat", () => ({
+  recordAuditHeartbeat: vi.fn(),
 }));
 vi.mock("@/server/lib/audit/progress-kv", () => ({
   AuditProgressKV: { pushCrawledUrls: vi.fn() },
@@ -283,5 +291,39 @@ describe("crawl pacing and cooldowns", () => {
     expect(fetchMock).toHaveBeenCalledTimes(1);
     expect(mocks.sleepUntil).not.toHaveBeenCalled();
     expect(mocks.releaseUrls.mock.calls[0][0]).toHaveLength(99);
+  });
+});
+
+describe("retained link rows", () => {
+  it("records a linkless page as an empty row and flags a page cut at the link cap", async () => {
+    const manyLinks = Array.from(
+      { length: 501 },
+      (_, i) => `<a href="/p/${i}">p</a>`,
+    ).join("");
+    vi.spyOn(globalThis, "fetch").mockImplementation(async (input) => {
+      const url = input instanceof Request ? input.url : String(input);
+      const body = url.endsWith("/0")
+        ? `<html><title>t</title><body>${manyLinks}</body></html>`
+        : HTML;
+      return new Response(body, { headers: { "content-type": "text/html" } });
+    });
+
+    const result = crawl(2);
+    await vi.runAllTimersAsync();
+    await result;
+
+    const links = mocks.recordBatch.mock.calls.flatMap(
+      ([batch]) => batch.links,
+    );
+    expect(links).toEqual([
+      expect.objectContaining({ url: `${ORIGIN}/0`, truncated: true }),
+      {
+        pageId: `${ORIGIN}/1`,
+        url: `${ORIGIN}/1`,
+        targets: [],
+        truncated: false,
+      },
+    ]);
+    expect(links[0].targets).toHaveLength(500);
   });
 });

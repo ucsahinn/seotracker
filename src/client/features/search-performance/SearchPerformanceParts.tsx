@@ -20,12 +20,7 @@ import {
   type SearchPerformanceTableRow,
 } from "@/client/features/search-performance/SearchPerformanceColumns";
 import { formatCount } from "@/client/lib/format";
-import {
-  buildCsv,
-  downloadCsv,
-  normalizeExportValue,
-  type CsvValue,
-} from "@/client/lib/csv";
+import { buildCsv, downloadCsv, type CsvValue } from "@/client/lib/csv";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import { exportTableToSheets } from "@/client/lib/exportToSheets";
 import { captureClientEvent } from "@/client/lib/observability";
@@ -43,6 +38,9 @@ import {
   applyQuickFilter,
   type QuickFilterId,
 } from "@/client/features/search-performance/quickFilters";
+
+// Mirrors the max(500) of saveKeywordsSchema.
+const SAVE_BATCH_SIZE = 500;
 
 export type Tab = "striking" | "queries" | "pages" | "cannibalization";
 export type ExportTarget = "csv" | "sheets";
@@ -331,17 +329,30 @@ export function StrikingDistanceTable({
     new Set(table.getSelectedRowModel().rows.map((row) => row.original.query)),
   );
 
-  // Sanitize against spreadsheet formula injection: GSC query strings are
-  // untrusted and may begin with =, +, -, @, etc. See @/client/lib/csv.
+  // Raw text: this is clipboard, not a spreadsheet file, so the CSV
+  // injection prefix would only corrupt "-5 kg ..." into "'-5 kg ...".
   const copyKeywords = () =>
     copyText(
-      selectedQueries.map((query) => normalizeExportValue(query)).join("\n"),
+      selectedQueries.join("\n"),
       `${selectedQueries.length} kelime kopyalandı`,
     );
 
   const save = useMutation({
-    mutationFn: (keywords: string[]) =>
-      saveKeywords({ data: { projectId, keywords } }),
+    // saveKeywordsSchema accepts 500 keywords per call; a larger selection
+    // is saved in consecutive batches instead of failing validation.
+    mutationFn: async (keywords: string[]) => {
+      const savedKeywordIds: string[] = [];
+      for (let start = 0; start < keywords.length; start += SAVE_BATCH_SIZE) {
+        const result = await saveKeywords({
+          data: {
+            projectId,
+            keywords: keywords.slice(start, start + SAVE_BATCH_SIZE),
+          },
+        });
+        savedKeywordIds.push(...result.savedKeywordIds);
+      }
+      return { savedKeywordIds };
+    },
     onSuccess: (result, keywords) => {
       captureClientEvent("keyword:save", {
         source_feature: "search_performance",

@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { PROPERTY_DEPENDENT_QUERY_KEYS } from "@/client/features/gsc/invalidatePropertyDependents";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import {
   getGoogleAccountRemovalImpact,
@@ -33,23 +34,14 @@ export function GoogleAccountRemovalDialog({
     mutationFn: () =>
       removeGoogleAccount({ data: { provider, accountId, confirmed: true } }),
     onSuccess: async () => {
-      const keys =
-        provider === "gsc"
-          ? [
-              "gscConnection",
-              "gscSites",
-              "gscGrantStatus",
-              "searchPerformance",
-              "searchPerformanceTable",
-              "dashboardGscReport",
-              "dashboardActivation",
-            ]
-          : [
-              "ga4Connection",
-              "ga4Properties",
-              "dashboardGa4Report",
-              "dashboardActivation",
-            ];
+      // The account can serve any project, so match by prefix on the name
+      // alone: everything derived from a property, plus the connection lists.
+      const keys: readonly string[] = [
+        ...(provider === "gsc"
+          ? ["gscConnection", "gscSites", "gscGrantStatus"]
+          : ["ga4Connection", "ga4Properties"]),
+        ...PROPERTY_DEPENDENT_QUERY_KEYS,
+      ];
       await Promise.all(
         keys.map((key) => queryClient.invalidateQueries({ queryKey: [key] })),
       );

@@ -4,9 +4,7 @@ const mocks = vi.hoisted(() => ({
   createProject: vi.fn(),
   updateProject: vi.fn(),
   updateProjectWebsite: vi.fn(),
-  archiveProject: vi.fn(),
   restoreProject: vi.fn(),
-  countProjects: vi.fn(),
   getProjectForOrganization: vi.fn(),
   listProjects: vi.fn(),
   listArchivedProjects: vi.fn(),
@@ -18,7 +16,6 @@ vi.mock("@/server/features/projects/repositories/ProjectRepository", () => ({
 }));
 
 import {
-  archiveProject,
   createProject,
   listProjectsEnsuringOne,
   restoreProject,
@@ -255,30 +252,6 @@ describe("project service", () => {
         }),
       ).rejects.toThrow("Geçerli bir alan adı girin");
       expect(mocks.updateProject).not.toHaveBeenCalled();
-    });
-  });
-
-  describe("archiveProject", () => {
-    it("refuses to archive the org's only project", async () => {
-      mocks.countProjects.mockResolvedValue(1);
-
-      await expect(
-        archiveProject("org_1", { projectId: "project_default" }),
-      ).rejects.toMatchObject({ code: "CONFLICT" });
-      expect(mocks.archiveProject).not.toHaveBeenCalled();
-    });
-
-    it("archives when more than one project remains", async () => {
-      mocks.countProjects.mockResolvedValue(2);
-      mocks.archiveProject.mockResolvedValue(undefined);
-
-      await expect(
-        archiveProject("org_1", { projectId: "project_acme" }),
-      ).resolves.toEqual({ success: true });
-      expect(mocks.archiveProject).toHaveBeenCalledWith(
-        "project_acme",
-        "org_1",
-      );
     });
   });
 

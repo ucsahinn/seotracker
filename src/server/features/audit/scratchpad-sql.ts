@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 /**
  * The scratchpad's SQLite schema and its two finalize link queries, kept in a
  * plain module (no `cloudflare:workers` import) so they can be exercised
@@ -47,7 +49,86 @@ export const SCRATCHPAD_SCHEMA_SQL = `
     redirect_url TEXT
   );
   CREATE INDEX IF NOT EXISTS page_mirror_redirect_idx ON page_mirror (redirect_url);
+  CREATE TABLE IF NOT EXISTS truncated_links (
+    page_id TEXT PRIMARY KEY
+  ) WITHOUT ROWID;
+  CREATE TABLE IF NOT EXISTS shortest_depth (
+    url TEXT PRIMARY KEY,
+    depth INTEGER NOT NULL
+  ) WITHOUT ROWID;
 `;
+
+/**
+ * Page rows whose stored link list was cut at the per-page cap. Their dropped
+ * targets are unknown, so any conclusion built on an edge being ABSENT
+ * (orphan pages, shortest click paths) is unproven while this is non-empty.
+ */
+export const HAS_TRUNCATED_LINKS_SQL = `SELECT 1 FROM truncated_links LIMIT 1`;
+
+/** URLs reached at the same depth through a redirect (no click). Param: level. */
+const REDIRECT_CLOSURE_SQL = `
+  INSERT OR IGNORE INTO shortest_depth (url, depth)
+  SELECT m.redirect_url, d.depth
+  FROM shortest_depth d CROSS JOIN page_mirror m ON m.url = d.url
+  WHERE d.depth = ? AND m.redirect_url IS NOT NULL
+  RETURNING url
+`;
+
+/**
+ * URLs one click beyond a level. page_links is the outer loop (one scan per
+ * level, probing shortest_depth by primary key) because it has no url index.
+ * Params: level + 1, level.
+ */
+const NEXT_LEVEL_SQL = `
+  INSERT OR IGNORE INTO shortest_depth (url, depth)
+  SELECT DISTINCT j.value, ?
+  FROM page_links p
+  CROSS JOIN shortest_depth d ON d.url = p.url AND d.depth = ?
+  CROSS JOIN json_each(p.targets_json) j
+  RETURNING url
+`;
+
+/** A real site is not this many clicks deep; past it the walk reports incomplete. */
+const MAX_DEPTH_LEVELS = 100;
+
+const depthRowSchema = z.object({ url: z.string(), depth: z.number() });
+
+/**
+ * Shortest click depth of every crawled page, breadth-first over the retained
+ * link graph from the start URL. A redirect hop costs no click, matching how
+ * the frontier hands out depths. `complete` is false when the walk stopped at
+ * MAX_DEPTH_LEVELS rather than running out of new URLs.
+ *
+ * The frontier cannot do this itself: it only lowers depths for URLs a link
+ * rediscovers, and a child of a depth-NULL parent (every sitemap-seeded
+ * page) is queued with NULL and never revisited.
+ */
+export function computeShortestDepths(
+  run: (query: string, ...params: Array<string | number>) => unknown[],
+  startUrl: string,
+): { depths: Array<{ url: string; depth: number }>; complete: boolean } {
+  run(`DELETE FROM shortest_depth`);
+  run(`INSERT INTO shortest_depth (url, depth) VALUES (?, 0)`, startUrl);
+  let complete = false;
+  for (let level = 0; level < MAX_DEPTH_LEVELS; level += 1) {
+    while (run(REDIRECT_CLOSURE_SQL, level).length > 0) {
+      // Redirect chains settle within the level.
+    }
+    if (run(NEXT_LEVEL_SQL, level + 1, level).length === 0) {
+      complete = true;
+      break;
+    }
+  }
+  // Only URLs that became page rows: the rest have nothing to repair.
+  const depths = run(
+    `SELECT d.url AS url, d.depth AS depth
+     FROM shortest_depth d CROSS JOIN page_mirror m ON m.url = d.url`,
+  ).flatMap((row) => {
+    const parsed = depthRowSchema.safeParse(row);
+    return parsed.success ? [parsed.data] : [];
+  });
+  return { depths, complete };
+}
 
 /**
  * Every internal link whose target we crawled and saw fail. `json_each`

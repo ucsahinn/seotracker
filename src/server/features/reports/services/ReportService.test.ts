@@ -56,6 +56,7 @@ describe("saveReport", () => {
     mocks.countReports.mockResolvedValue(0);
     mocks.sumReportBytesForOrganization.mockResolvedValue(0);
     mocks.getReport.mockResolvedValue(storedReport);
+    mocks.updateReportContent.mockResolvedValue(true);
   });
 
   it("updates in place, keeping the stored skill and attribution", async () => {
@@ -80,6 +81,20 @@ describe("saveReport", () => {
       skill: "seo-audit",
       sizeBytes: html.length,
     });
+  });
+
+  it("fails an update whose report was deleted after it was read", async () => {
+    mocks.updateReportContent.mockResolvedValue(false);
+    await expect(save({ reportId: "report_1" })).rejects.toThrow(
+      "No report report_1",
+    );
+  });
+
+  it("turns a title collision lost to a concurrent save into the duplicate refusal", async () => {
+    mocks.insertReport.mockRejectedValue(
+      new Error("UNIQUE constraint failed: reports.project_id, reports.title"),
+    );
+    await expect(save()).rejects.toThrow("A report titled");
   });
 
   it("refuses an unknown reportId", async () => {
@@ -123,10 +138,24 @@ describe("saveReport", () => {
       "<html><body><svg/onload=alert(1)></svg></body></html>",
       '<html><body><img src="x"onerror=alert(1)></body></html>',
       '<html><body><img alt=">" onerror=alert(1)></body></html>',
+      // A quote inside an unquoted value is literal; the tag still ends at `>`.
+      '<html><body><script a=b"c>alert(1)</script></body></html>',
+      "<html><body><script a=b'c>alert(1)</script></body></html>",
       '<html><body><a href="&#106;avascript:alert(1)">x</a></body></html>',
       '<html><body><a href="java&Tab;script&colon;alert(1)">x</a></body></html>',
       '<html><body><a href="jav	ascript:alert(1)">x</a></body></html>',
       '<html><body><a xlink:href=" javascript:alert(1)">x</a></body></html>',
+      // A quote after `=` inside an unquoted value is literal, so the tag ends early.
+      '<html><body><a b=c=" ><script>alert(1)</script><p class="x"></body></html>',
+      // A comment closes at its first `-->`; the quote inside it is only text.
+      '<html><body><!--<a x="--><script>alert(1)</script><!--"--></body></html>',
+      "<html><body><!--><script>alert(1)</script></body></html>",
+      "<html><body><!--x--!><script>alert(1)</script></body></html>",
+      // Raw-text elements hold text, so a quote in a style cannot hide the script.
+      '<html><head><style>/*<a x="*/</style></head><body><script>alert(1)</script><p class="y"></body></html>',
+      "<html><body><svg><script>alert(1)</script></svg></body></html>",
+      '<html><body><a =" onclick=alert(1)">x</a></body></html>',
+      '<html><head><link rel="preconnect" href="https://evil.example"></head></html>',
     ]) {
       await expect(save({ html: bad })).rejects.toThrow("reports may not use");
     }

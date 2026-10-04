@@ -1,5 +1,5 @@
 /**
- * The last GA4 `propertyQuota` a report response carried, per project.
+ * The last GA4 `propertyQuota` a report response carried, per project and connection.
  *
  * Google returns it with every runReport at no extra cost, so this never asks
  * for it: whoever runs a GA4 report calls `recordGa4Quota` with the response.
@@ -24,21 +24,51 @@ export type Ga4QuotaSnapshot = {
   seenAt: string;
 };
 
-const snapshots = new Map<string, Ga4QuotaSnapshot>();
+/**
+ * Who a response belongs to. Google's quota is per property and the token is
+ * per connected account, so a snapshot only describes the connection that
+ * produced it.
+ */
+type Ga4QuotaOwner = {
+  projectId: string;
+  propertyId: string;
+  ga4AccountId: string;
+  connectedByUserId: string;
+};
+
+const ownerKey = (owner: Ga4QuotaOwner) =>
+  JSON.stringify([
+    owner.propertyId,
+    owner.ga4AccountId,
+    owner.connectedByUserId,
+  ]);
+
+// project -> owner -> snapshot. A response that lands after the connection
+// changed is stored under its old owner, where no reader of the new
+// connection looks.
+const snapshots = new Map<string, Map<string, Ga4QuotaSnapshot>>();
 
 export function recordGa4Quota(
-  projectId: string,
+  owner: Ga4QuotaOwner,
   quota: Ga4QuotaInput,
   now: Date = new Date(),
 ): void {
   if (!quota || (!quota.tokensPerDay && !quota.tokensPerHour)) return;
-  snapshots.set(projectId, {
+  const forProject =
+    snapshots.get(owner.projectId) ?? new Map<string, Ga4QuotaSnapshot>();
+  forProject.set(ownerKey(owner), {
     tokensPerDay: quota.tokensPerDay ?? null,
     tokensPerHour: quota.tokensPerHour ?? null,
     seenAt: now.toISOString(),
   });
+  snapshots.set(owner.projectId, forProject);
 }
 
-export function readGa4Quota(projectId: string): Ga4QuotaSnapshot | null {
-  return snapshots.get(projectId) ?? null;
+export function readGa4Quota(owner: Ga4QuotaOwner): Ga4QuotaSnapshot | null {
+  return snapshots.get(owner.projectId)?.get(ownerKey(owner)) ?? null;
+}
+
+/** Called when a project's GA4 connection is replaced or removed. */
+export function clearGa4Quota(projectId: string): void {
+  snapshots.delete(projectId);
 }

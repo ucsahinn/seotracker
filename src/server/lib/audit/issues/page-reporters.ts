@@ -55,7 +55,7 @@ const THIN_CONTENT_WORDS = 50;
 /* Matches Lighthouse's own server-response-time audit, which this tool also
    shows. At 1500 a page could pass here and fail there in the same report. */
 const SLOW_RESPONSE_MS = 600;
-const DEEP_PAGE_DEPTH = 5;
+export const DEEP_PAGE_DEPTH = 5;
 
 function hasHeadingLevelSkip(headingOrder: number[]): boolean {
   for (let i = 1; i < headingOrder.length; i++) {

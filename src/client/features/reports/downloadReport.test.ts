@@ -2,36 +2,30 @@ import { describe, expect, it } from "vitest";
 import { reportFilename, withDownloadCsp } from "./downloadReport";
 
 describe("withDownloadCsp", () => {
-  const meta = `<meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none';`;
+  const prefix = `<!doctype html><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none';`;
 
-  it("puts the policy first, after the doctype and ahead of scripts and remote images", () => {
+  it("puts a trusted doctype and the policy first, ahead of scripts and remote images", () => {
     const html =
       '<!doctype html><html><head><script>x()</script></head><body><img src="https://evil.test/a.png"></body></html>';
     const out = withDownloadCsp(html);
-    expect(out.startsWith(`<!doctype html>${meta}`)).toBe(true);
-    expect(out.indexOf("<script>")).toBeGreaterThan(out.indexOf(meta));
+    expect(out.startsWith(prefix)).toBe(true);
+    expect(out.indexOf("<script>")).toBeGreaterThan(out.indexOf("<meta"));
     expect(out).toContain("img-src data:");
   });
 
-  it("leads even without a doctype, and ignores a decoy <head> in a comment", () => {
-    expect(withDownloadCsp("<p>düz</p>").startsWith(meta)).toBe(true);
-    expect(
-      withDownloadCsp("<!-- <head> --><html></html>").startsWith(meta),
-    ).toBe(true);
-  });
-
-  it("finds a doctype behind comments, and stays fast on thousands of them", () => {
-    expect(
-      withDownloadCsp("<!-- a --> <!-- b --><!DOCTYPE html><p>x</p>"),
-    ).toContain(`<!-- b --><!DOCTYPE html>${meta}`);
-    const comments = "<!-- x -->".repeat(5000);
-    const started = performance.now();
-    const out = withDownloadCsp(`${comments}<p>x</p>`);
-    expect(performance.now() - started).toBeLessThan(500);
-    expect(out.startsWith(meta)).toBe(true);
-    expect(withDownloadCsp(`${comments}<!doctype html>`)).toContain(
-      `${comments}<!doctype html>${meta}`,
-    );
+  /*
+   * `<!-->` and `--!>` are whole comments to a browser but not to a search for
+   * a literal `-->`, which used to place the policy after a live script.
+   */
+  it("leads even when comments are malformed, so nothing executes before the policy", () => {
+    for (const html of [
+      "<!--><script>x()</script><!-- --><!doctype html><p>x</p>",
+      "<!----!><script>x()</script><!-- --><!doctype html><p>x</p>",
+      "<!-- <head> --><html></html>",
+    ]) {
+      const out = withDownloadCsp(html);
+      expect(out.startsWith(prefix)).toBe(true);
+    }
   });
 });
 

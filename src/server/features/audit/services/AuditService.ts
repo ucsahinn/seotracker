@@ -1,5 +1,4 @@
 import { env } from "cloudflare:workers";
-import { AuditLighthouseRepository } from "@/server/features/audit/repositories/AuditLighthouseRepository";
 import { AuditRepository } from "@/server/features/audit/repositories/AuditRepository";
 import {
   AUDIT_LIMITS,
@@ -8,7 +7,10 @@ import {
 } from "@/server/features/audit/services/audit-capacity";
 import { getPageSpeedApiKey } from "@/server/features/lighthouse/pagespeed-config";
 import { AppError } from "@/server/lib/errors";
-import { deleteManyFromR2 } from "@/server/lib/r2";
+import {
+  deleteAuditPayloads,
+  isWorkflowNotFound,
+} from "@/server/features/audit/services/auditCleanup";
 import { AuditProgressKV } from "@/server/lib/audit/progress-kv";
 import {
   parseAuditConfig,
@@ -17,6 +19,7 @@ import {
 } from "@/server/lib/audit/types";
 import {
   normalizeAndValidateStartUrl,
+  redactUrlUserinfo,
   resolveStartUrlRedirects,
 } from "@/server/lib/audit/url-policy";
 import {
@@ -126,7 +129,7 @@ async function getStatus(auditId: string, projectId: string) {
 
   return {
     id: audit.id,
-    startUrl: audit.startUrl,
+    startUrl: redactUrlUserinfo(audit.startUrl),
     status: audit.status,
     pagesCrawled: audit.pagesCrawled,
     pagesTotal: audit.pagesTotal,
@@ -154,7 +157,7 @@ async function getResults(auditId: string, projectId: string) {
   return {
     audit: {
       id: audit.id,
-      startUrl: audit.startUrl,
+      startUrl: redactUrlUserinfo(audit.startUrl),
       status: audit.status,
       pagesCrawled: audit.pagesCrawled,
       pagesTotal: audit.pagesTotal,
@@ -195,7 +198,7 @@ async function getHistory(projectId: string) {
 
     return {
       id: audit.id,
-      startUrl: audit.startUrl,
+      startUrl: redactUrlUserinfo(audit.startUrl),
       status: audit.status,
       pagesCrawled: audit.pagesCrawled,
       pagesTotal: audit.pagesTotal,
@@ -222,6 +225,56 @@ async function getCrawlProgress(auditId: string, projectId: string) {
   return AuditProgressKV.getCrawledUrls(auditId);
 }
 
+/**
+ * Make sure the workflow instance has stopped before its audit is deleted.
+ * Returns only on positive evidence: the instance is confirmed absent (never
+ * created, or expired from retention), terminate() succeeded, or its status
+ * is terminal. Any other outcome, including a control-plane error, aborts the
+ * delete: removing the rows under a workflow that may still be writing would
+ * leave it recreating orphan data.
+ */
+async function stopWorkflow(auditId: string, workflowInstanceId: string) {
+  const unverified = (error: unknown) => {
+    console.error(`Could not verify audit workflow ${auditId} stopped:`, error);
+    return new AppError(
+      "CONFLICT",
+      "Çalışan denetimin durumu doğrulanamadı; silme iptal edildi. Lütfen tekrar deneyin.",
+    );
+  };
+
+  let instance;
+  try {
+    instance = await env.SITE_AUDIT_WORKFLOW.get(workflowInstanceId);
+  } catch (error) {
+    // A row can be "running" with no instance if a start failed between the
+    // row insert and workflow creation and its rollback delete also failed.
+    if (isWorkflowNotFound(error)) return;
+    throw unverified(error);
+  }
+
+  try {
+    await instance.terminate();
+    return;
+  } catch (terminateError) {
+    // terminate() throws when the instance already reached a terminal state
+    // (it completed or errored just before the user hit stop). Re-check the
+    // live status instead of guessing.
+    try {
+      const { status } = await instance.status();
+      if (["complete", "errored", "terminated"].includes(status)) return;
+      console.error(
+        `Failed to terminate audit workflow ${auditId}:`,
+        terminateError,
+      );
+      throw new AppError("CONFLICT", "Çalışan denetim durdurulamadı.");
+    } catch (statusError) {
+      if (statusError instanceof AppError) throw statusError;
+      if (isWorkflowNotFound(statusError)) return;
+      throw unverified(statusError);
+    }
+  }
+}
+
 async function remove(auditId: string, projectId: string) {
   const audit = await AuditRepository.getAuditForProject(auditId, projectId);
   if (!audit) {
@@ -236,48 +289,23 @@ async function remove(auditId: string, projectId: string) {
       );
     }
 
-    // A row can be "running" with no live workflow instance if a start failed
-    // between the row insert and workflow creation and its rollback delete
-    // also failed. Nothing to terminate then — deleting the row is the fix.
-    const instance = await env.SITE_AUDIT_WORKFLOW.get(
-      audit.workflowInstanceId,
-    ).catch(() => null);
-    try {
-      await instance?.terminate();
-    } catch (error) {
-      // terminate() throws when the instance already reached a terminal state
-      // (it completed or errored in the moment before the user hit stop). That
-      // race shouldn't block deletion — re-check the live status and only fail
-      // if the workflow is genuinely still running.
-      const status = await instance?.status().catch(() => null);
-      const stillRunning =
-        status != null &&
-        ["queued", "running", "paused", "waiting", "waitingForPause"].includes(
-          status.status,
-        );
-      if (stillRunning) {
-        console.error(`Failed to terminate audit workflow ${audit.id}:`, error);
-        throw new AppError("CONFLICT", "Çalışan denetim durdurulamadı.");
-      }
-    }
+    await stopWorkflow(audit.id, audit.workflowInstanceId);
   }
 
-  // The rows cascade away with the audit, and with them the only record of
-  // which Lighthouse payloads it stored in R2, so collect the keys first.
-  // Both the lookup and the R2 delete are best-effort: leaked payloads must
-  // not stop an audit from being deleted.
-  const payloadKeys = await AuditLighthouseRepository.getR2KeysForAudit(
-    auditId,
-  ).catch((error: unknown) => {
-    console.warn(`Failed to list Lighthouse payloads of ${auditId}:`, error);
-    return [];
-  });
-  await AuditRepository.deleteAuditForProject(auditId, projectId);
+  // R2 before the row: the audit id and project id are the only record of
+  // where its payloads live (they are swept by key prefix), so deleting the
+  // row first would make a failed sweep unrepeatable. A failure here keeps the
+  // audit and tells the user to retry instead of leaking payloads silently.
   try {
-    await deleteManyFromR2(payloadKeys);
+    await deleteAuditPayloads(projectId, auditId);
   } catch (error) {
-    console.warn(`Failed to delete Lighthouse payloads of ${auditId}:`, error);
+    console.error(`Failed to delete Lighthouse payloads of ${auditId}:`, error);
+    throw new AppError(
+      "INTERNAL_ERROR",
+      "Denetimin Lighthouse çıktıları silinemedi; denetim silinmedi. Lütfen tekrar deneyin.",
+    );
   }
+  await AuditRepository.deleteAuditForProject(auditId, projectId);
   // Best-effort: drop the crawl scratchpad DO with the audit (it lives in
   // the seotracker-audit worker, behind the AuditEngine RPC). A missed destroy
   // self-cleans via the DO's 7-day alarm.

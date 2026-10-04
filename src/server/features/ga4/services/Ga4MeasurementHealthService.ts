@@ -16,7 +16,8 @@ async function getMeasurementHealth(projectId: string) {
     ga4AccountId: connection.ga4AccountId,
   });
   try {
-    const streams = await client.listDataStreams(connection.propertyId);
+    const streamList = await client.listDataStreams(connection.propertyId);
+    const streams = streamList.items;
     const webStreams = [];
     for (const stream of streams) {
       if (stream.type !== "WEB_DATA_STREAM") continue;
@@ -33,13 +34,27 @@ async function getMeasurementHealth(projectId: string) {
         enhancedMeasurement,
       });
     }
-    const [keyEvents, customDimensions, customMetrics] = await Promise.all([
+    const [keyEventList, dimensionList, metricList] = await Promise.all([
       client.listKeyEvents(connection.propertyId),
       client.listCustomDimensions(connection.propertyId),
       client.listCustomMetrics(connection.propertyId),
     ]);
+    const keyEvents = keyEventList.items;
+    const customDimensions = dimensionList.items;
+    const customMetrics = metricList.items;
+    // Lists are capped by a request budget; name every one that was cut short
+    // so a partial page is never read as the whole inventory.
+    const incompleteLists = [
+      ...(streamList.complete ? [] : ["data_streams"]),
+      ...(keyEventList.complete ? [] : ["key_events"]),
+      ...(dimensionList.complete ? [] : ["custom_dimensions"]),
+      ...(metricList.complete ? [] : ["custom_metrics"]),
+    ];
     const issues: string[] = [];
-    if (webStreams.length === 0) issues.push("no_web_stream");
+    // An empty or missing item in a truncated list proves nothing.
+    if (webStreams.length === 0 && streamList.complete) {
+      issues.push("no_web_stream");
+    }
     if (
       webStreams.length > 0 &&
       webStreams.every((stream) => !stream.enhancedMeasurement.streamEnabled)
@@ -56,7 +71,10 @@ async function getMeasurementHealth(projectId: string) {
     ) {
       issues.push("site_search_measurement_disabled");
     }
-    if (keyEvents.length === 0) issues.push("no_key_events_configured");
+    if (keyEvents.length === 0 && keyEventList.complete) {
+      issues.push("no_key_events_configured");
+    }
+    if (incompleteLists.length > 0) issues.push("inventory_incomplete");
 
     return {
       status: "ok" as const,
@@ -74,6 +92,7 @@ async function getMeasurementHealth(projectId: string) {
         issueCount: issues.length,
       },
       issues,
+      incompleteLists,
       webStreams,
       otherStreams: streams
         .filter((stream) => stream.type !== "WEB_DATA_STREAM")

@@ -72,4 +72,12 @@ export const gscArchiveState = sqliteTable("gsc_archive_state", {
    * never reached the days it does have data for.
    */
   scannedThrough: text("scanned_through"),
+  /**
+   * A window whose page budget ran out holds only the top queries. `lastDate`
+   * and `scannedThrough` still move past it (it was looked at), so this range
+   * records what is *not* completely archived; later runs re-read it in
+   * one-day windows and clear it. Null when nothing is partial.
+   */
+  incompleteFrom: text("incomplete_from"),
+  incompleteThrough: text("incomplete_through"),
 });

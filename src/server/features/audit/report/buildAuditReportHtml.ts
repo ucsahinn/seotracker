@@ -141,11 +141,12 @@ export function buildAuditReportHtml(
   };
 
   /*
-   * Titles are unique per project, so the audit id keeps two audits of one
-   * site on one day apart (re-downloading the same audit still matches). The
-   * host is what gets cut when the title is too long, never the suffix.
+   * Titles are unique per project, and the saved report is found again by
+   * title, so the whole audit id is in it: a prefix would let two audits that
+   * share it overwrite each other's report. The host is what gets cut when the
+   * title is too long, never the suffix.
    */
-  const suffix = ` - ${formatDate(stamp)}${input.auditId ? ` · ${input.auditId.slice(0, 6)}` : ""}`;
+  const suffix = ` - ${formatDate(stamp)}${input.auditId ? ` · ${input.auditId}` : ""}`;
   const title = `${`${host} site denetimi`.slice(0, 120 - suffix.length)}${suffix}`;
   const summary = [
     `${host} için ${formatCount(input.pagesCrawled)} sayfa tarandı.`,

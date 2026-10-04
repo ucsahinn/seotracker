@@ -3,6 +3,7 @@ import type {
   Ga4RunReportRequest,
   Ga4RunReportResponse,
 } from "@/server/lib/ga4Client";
+import { readGa4Quota } from "@/server/features/quotas/ga4QuotaSnapshot";
 import { makeGa4Connection } from "./ga4-test-fixtures";
 import { Ga4ReportingService } from "./Ga4ReportingService";
 
@@ -83,5 +84,38 @@ describe("Ga4ReportingService previous-period comparison", () => {
       fetchedRowCount: 0,
       totalRowCount: 0,
     });
+  });
+
+  it("keeps the quota of the last response, not just the primary one", async () => {
+    const headers = {
+      dimensionHeaders: [{ name: "deviceCategory" }],
+      metricHeaders: [
+        "activeUsers",
+        "sessions",
+        "engagementRate",
+        "keyEvents",
+      ].map((name) => ({ name })),
+    };
+    mocks.runReport
+      .mockResolvedValueOnce({
+        ...headers,
+        propertyQuota: { tokensPerDay: { consumed: 5, remaining: 1000 } },
+      })
+      .mockResolvedValueOnce({
+        ...headers,
+        propertyQuota: { tokensPerDay: { consumed: 5, remaining: 995 } },
+      });
+
+    await Ga4ReportingService.runReport(
+      {
+        projectId: "project_1",
+        kind: "audience_breakdown",
+        audienceBreakdown: "device",
+        comparePreviousPeriod: true,
+      },
+      { now: new Date("2026-08-06T15:00:00Z") },
+    );
+
+    expect(readGa4Quota(connection)?.tokensPerDay?.remaining).toBe(995);
   });
 });

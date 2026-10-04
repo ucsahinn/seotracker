@@ -1,5 +1,11 @@
 import { sql } from "drizzle-orm";
-import { index, primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import {
+  index,
+  integer,
+  primaryKey,
+  sqliteTable,
+  text,
+} from "drizzle-orm/sqlite-core";
 import { projects } from "./app.schema";
 
 /**
@@ -38,15 +44,46 @@ export const gscUrlInspections = sqliteTable(
 
     /** Set when this one URL failed while others in the batch succeeded. */
     error: text("error"),
+    /**
+     * When Google last *answered* for this URL. A failed attempt does not move
+     * it, so an old verdict never looks fresher than it is.
+     */
     checkedAt: text("checked_at")
       .notNull()
       .default(sql`(CURRENT_TIMESTAMP)`),
+    /** The last time we asked, answered or not. Null on rows from before it existed. */
+    lastAttemptAt: text("last_attempt_at"),
   },
   (table) => [
     primaryKey({ columns: [table.projectId, table.url] }),
     index("gsc_url_inspections_checked_idx").on(
       table.projectId,
       table.checkedAt,
+    ),
+  ],
+);
+
+/**
+ * One row per URL Inspection call, keyed by the property that was asked.
+ *
+ * The quota is Google's count of calls, not our count of cached answers: a
+ * forced re-inspection overwrites its cache row but still spends an
+ * inspection. Keyed by property (not project) because the allowance belongs to
+ * the property, and deliberately not cleared when a project disconnects or
+ * switches property, or reconnecting would reset the meter. Rows older than
+ * the 24-hour window are pruned on write.
+ */
+export const gscInspectionAttempts = sqliteTable(
+  "gsc_inspection_attempts",
+  {
+    id: integer("id").primaryKey({ autoIncrement: true }),
+    siteUrl: text("site_url").notNull(),
+    attemptedAt: text("attempted_at").notNull(),
+  },
+  (table) => [
+    index("gsc_inspection_attempts_site_idx").on(
+      table.siteUrl,
+      table.attemptedAt,
     ),
   ],
 );

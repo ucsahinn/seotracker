@@ -8,6 +8,7 @@ import { DatabaseSync } from "node:sqlite";
 import { beforeEach, describe, expect, it } from "vitest";
 import {
   BROKEN_LINKS_SQL,
+  computeShortestDepths,
   ORPHAN_PAGES_SQL,
   SCRATCHPAD_SCHEMA_SQL,
   UPSERT_DISCOVERED_SQL,
@@ -269,5 +270,38 @@ describe("rediscovered URL depth", () => {
   it("fills a missing depth and only ever lowers a known one", () => {
     expect(depthAfter(null, 4)).toEqual({ depth: 4 });
     expect(depthAfter(2, 5)).toEqual({ depth: 2 });
+  });
+});
+
+describe("shortest click depths", () => {
+  const depthsOf = () =>
+    Object.fromEntries(
+      computeShortestDepths(
+        (query, ...params) => db.prepare(query).all(...params),
+        START,
+      ).depths.map(({ url, depth }) => [url.replace(START, "/"), depth]),
+    );
+
+  it("takes the shortest path, follows a redirect without a click, and survives cycles", () => {
+    for (const path of ["", "a", "b", "x", "y", "moved", "new"]) {
+      addPage(`p-${path}`, `${START}${path}`, {
+        redirectUrl: path === "moved" ? `${START}new` : null,
+      });
+    }
+    addLinks("p-", START, [`${START}a`, `${START}x`]);
+    addLinks("p-a", `${START}a`, [`${START}b`, START]);
+    addLinks("p-x", `${START}x`, [`${START}y`]);
+    addLinks("p-y", `${START}y`, [`${START}b`]);
+    addLinks("p-b", `${START}b`, [`${START}moved`]);
+
+    expect(depthsOf()).toEqual({
+      "/": 0,
+      "/a": 1,
+      "/x": 1,
+      "/b": 2,
+      "/y": 2,
+      "/moved": 3,
+      "/new": 3,
+    });
   });
 });

@@ -91,13 +91,14 @@ describe("summarizeCoverage", () => {
           userCanonical: null,
           googleCanonical: "https://a.test/other",
         }),
-        // Same page, one trailing slash apart. Not a mismatch.
+        // `/slash` and `/slash/` can be different pages: a real disagreement.
         checked("https://a.test/slash", {
           userCanonical: "https://a.test/slash/",
           googleCanonical: "https://a.test/slash",
         }),
+        // Host case is the only difference, which the URL standard folds.
         checked("https://a.test/agreed", {
-          userCanonical: "https://a.test/agreed",
+          userCanonical: "https://A.TEST/agreed",
           googleCanonical: "https://a.test/agreed",
         }),
       ),
@@ -105,10 +106,10 @@ describe("summarizeCoverage", () => {
 
     expect(result.rows.map((row) => row.canonicalMismatch)).toEqual([
       true,
-      false,
+      true,
       false,
     ]);
-    expect(result.canonicalMismatches).toBe(1);
+    expect(result.canonicalMismatches).toBe(2);
   });
 
   it("reports the newest check as the stamp", () => {

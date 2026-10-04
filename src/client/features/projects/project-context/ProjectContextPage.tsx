@@ -60,7 +60,10 @@ export function ProjectContextPage({
     );
   }
 
-  if (contextQuery.isError) {
+  // Not pending and no data means the first load failed. A failed background
+  // refetch keeps the data, and must not unmount the form and its drafts.
+  const context = contextQuery.data;
+  if (!context) {
     return (
       <div className="rounded-box border border-base-300 bg-base-100">
         <QueryErrorState
@@ -71,8 +74,6 @@ export function ProjectContextPage({
       </div>
     );
   }
-
-  const context = contextQuery.data;
 
   return (
     // key remounts the whole page when the project switches under it, so no

@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { GSC_MAX_ROW_LIMIT } from "@/server/features/gsc/searchAnalytics";
 import type { GscPerformanceInput } from "@/server/features/gsc/searchAnalytics";
 
 const mocks = vi.hoisted(() => ({
@@ -11,6 +12,7 @@ const mocks = vi.hoisted(() => ({
         earliestDate: string | null;
         lastDate: string | null;
         scannedThrough: string | null;
+        incomplete: { from: string; through: string } | null;
         error: string | null;
       }) => Promise<void>
     >(),
@@ -18,7 +20,11 @@ const mocks = vi.hoisted(() => ({
   getQueryHistory: vi.fn(),
   getTrackedQueries: vi.fn(),
   getPerformance:
-    vi.fn<(input: GscPerformanceInput) => Promise<{ rows: unknown[] }>>(),
+    vi.fn<
+      (
+        input: GscPerformanceInput,
+      ) => Promise<{ siteUrl: string; rows: unknown[] }>
+    >(),
   isExpectedGrantFailure: vi.fn(),
 }));
 
@@ -41,6 +47,7 @@ function requestAt(index: number): GscPerformanceInput {
 
 // Search Console finalizes a day three days late, so "today" here means the
 // archive can reach 2026-06-27.
+const SITE = "sc-domain:a.test";
 const TODAY = new Date("2026-06-30T12:00:00.000Z");
 
 function performanceRow(date: string, query: string, position: number) {
@@ -58,12 +65,13 @@ beforeEach(() => {
   mocks.upsertDailyRows.mockResolvedValue(undefined);
   mocks.markRun.mockResolvedValue(undefined);
   mocks.isExpectedGrantFailure.mockReturnValue(false);
-  mocks.getPerformance.mockResolvedValue({ rows: [] });
+  mocks.getPerformance.mockResolvedValue({ siteUrl: SITE, rows: [] });
 });
 
 describe("backfill", () => {
   it("asks Google for the day dimension, or it would store one aggregate", async () => {
     mocks.getPerformance.mockResolvedValue({
+      siteUrl: SITE,
       rows: [performanceRow("2026-06-01", "seo aracı", 4.2)],
     });
 
@@ -77,6 +85,7 @@ describe("backfill", () => {
   it("stores the rows Google returned and records how far it reached", async () => {
     // Only the first chunk has data; the run still walks its whole budget.
     mocks.getPerformance.mockResolvedValueOnce({
+      siteUrl: SITE,
       rows: [
         performanceRow("2026-06-01", "seo aracı", 4.2),
         performanceRow("2026-06-02", "seo aracı", 3.8),
@@ -90,6 +99,7 @@ describe("backfill", () => {
 
     expect(mocks.upsertDailyRows).toHaveBeenCalledWith(
       "p1",
+      SITE,
       expect.arrayContaining([
         expect.objectContaining({ date: "2026-06-01", query: "seo aracı" }),
       ]),
@@ -191,6 +201,7 @@ describe("backfill", () => {
   it("keeps the days it already wrote when a fetch fails", async () => {
     mocks.getPerformance
       .mockResolvedValueOnce({
+        siteUrl: SITE,
         rows: [performanceRow("2026-03-08", "seo aracı", 4.2)],
       })
       .mockRejectedValueOnce(new Error("Search Console is unavailable"));
@@ -279,5 +290,50 @@ describe("empty windows", () => {
     // Null, not the end date: a property whose permission had not propagated
     // would otherwise be marked fully scanned and never looked at again.
     expect(run?.scannedThrough).toBeNull();
+  });
+
+  // A window that ran out of page budget holds only its top queries. It must
+  // not be recorded as archived: it is remembered and re-read one day at a time.
+  it("remembers a truncated window and re-reads it in single days", async () => {
+    const page = Array.from({ length: GSC_MAX_ROW_LIMIT }, (_, i) =>
+      performanceRow("2026-06-01", `q${i}`, 4),
+    );
+    // Twelve full pages exhaust the first window's budget.
+    for (let i = 0; i < 12; i += 1) {
+      mocks.getPerformance.mockResolvedValueOnce({ siteUrl: SITE, rows: page });
+    }
+
+    const outcome = await GscHistoryService.backfill({
+      projectId: "p1",
+      today: TODAY,
+    });
+
+    const first = requestAt(0);
+    const retry = requestAt(12);
+    expect(retry.startDate).toBe(first.startDate);
+    expect(retry.endDate).toBe(first.startDate);
+    expect(outcome.incomplete).toMatchObject({
+      through: requestAt(11).endDate,
+    });
+    expect(outcome.hasMore).toBe(true);
+    expect(mocks.markRun.mock.calls[0]?.[0].incomplete).not.toBeNull();
+  });
+
+  it("stops a run that sees the property change underneath it", async () => {
+    mocks.getPerformance
+      .mockResolvedValueOnce({ siteUrl: SITE, rows: [] })
+      .mockResolvedValueOnce({ siteUrl: "sc-domain:b.test", rows: [] });
+
+    const outcome = await GscHistoryService.backfill({
+      projectId: "p1",
+      today: TODAY,
+    });
+
+    expect(outcome.error).not.toBeNull();
+    expect(mocks.upsertDailyRows).not.toHaveBeenCalledWith(
+      "p1",
+      "sc-domain:b.test",
+      expect.anything(),
+    );
   });
 });

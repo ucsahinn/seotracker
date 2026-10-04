@@ -85,7 +85,7 @@ function buildUpdateProjectContextTool(author: ContextAuthor) {
     config: {
       title: "Update project context",
       description:
-        "Writes to a project's shared memory so the app and other agents see it. Send a list of patch ops; sections are prose (~4,000 chars max), competitors and key pages are curated shortlists (100 max each), and appendResearchLog records what has already been looked into so it is not repeated. Confirm facts with the user before storing them.",
+        "Writes to a project's shared memory so the app and other agents see it. Send a list of patch ops; sections are prose (~4,000 chars max), competitors and key pages are curated shortlists (100 max each), and appendResearchLog records what has already been looked into so it is not repeated. Writes immediately and the server enforces no approval step, so confirm facts with the user yourself before storing them.",
       inputSchema: updateInputSchema,
       outputSchema: contextOutputSchema,
       annotations: {

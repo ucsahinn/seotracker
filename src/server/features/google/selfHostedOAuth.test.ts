@@ -82,7 +82,7 @@ describe("self-hosted Google OAuth providers", () => {
   beforeEach(() => {
     mocks.getGoogleOAuthClientConfig.mockResolvedValue({
       clientId: "google-client-id",
-      clientSecret: "google-client-secret",
+      clientSecret: "fake-client-secret",
     });
     mocks.hasSelfHostedGoogleOAuthConfig.mockResolvedValue(true);
     mocks.selectLimit.mockResolvedValue([]);
@@ -134,8 +134,8 @@ describe("self-hosted Google OAuth providers", () => {
     mocks.fetch.mockResolvedValue(
       new Response(
         JSON.stringify({
-          access_token: "access-token",
-          refresh_token: "refresh-token",
+          access_token: "fake-access-token",
+          refresh_token: "fake-refresh-token",
           expires_in: 3600,
           scope: "openid analytics.readonly",
           id_token: idToken,
@@ -162,8 +162,8 @@ describe("self-hosted Google OAuth providers", () => {
         accountId: "google-account-1",
         providerId: "google-analytics",
         userId: "user-1",
-        accessToken: "access-token",
-        refreshToken: "refresh-token",
+        accessToken: "fake-access-token",
+        refreshToken: "fake-refresh-token",
       }),
     );
   });

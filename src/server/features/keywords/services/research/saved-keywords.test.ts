@@ -6,6 +6,8 @@ const mocks = vi.hoisted(() => ({
   removeAllTagsFromSavedKeywords: vi.fn(),
   removeSavedKeywords: vi.fn(),
   removeTagsFromSavedKeywords: vi.fn(),
+  updateSavedKeywordTag: vi.fn(),
+  deleteSavedKeywordTag: vi.fn(),
   replaceTagsForSavedKeywords: vi.fn(),
   saveKeywordsToProject: vi.fn(),
   upsertKeywordMetric: vi.fn(),
@@ -285,5 +287,60 @@ describe("saved keyword service", () => {
       }),
     ).rejects.toThrow("Replacement tags are required");
     expect(mocks.replaceTagsForSavedKeywords).not.toHaveBeenCalled();
+  });
+
+  it("answers a rename onto an existing tag name with CONFLICT", async () => {
+    mocks.updateSavedKeywordTag.mockRejectedValue(
+      new Error("Failed query: update ...", {
+        cause: new Error(
+          "UNIQUE constraint failed: saved_keyword_tags.project_id, saved_keyword_tags.normalized_name",
+        ),
+      }),
+    );
+    const { updateSavedKeywordTag } = await import("./saved-keywords");
+
+    await expect(
+      updateSavedKeywordTag({
+        projectId: "project_1",
+        tagId: "tag_1",
+        name: "Content",
+      }),
+    ).rejects.toMatchObject({ code: "CONFLICT" });
+  });
+
+  it("answers deleting an attached tag with CONFLICT", async () => {
+    mocks.deleteSavedKeywordTag.mockResolvedValue({
+      status: "in_use",
+      assignmentCount: 3,
+    });
+    const { deleteSavedKeywordTag } = await import("./saved-keywords");
+
+    await expect(
+      deleteSavedKeywordTag({ projectId: "project_1", tagId: "tag_1" }),
+    ).rejects.toMatchObject({ code: "CONFLICT" });
+  });
+
+  it("exports every row by walking the pages of the filtered list", async () => {
+    const entry = { row: savedKeywordRow, metric: null, tags: [] };
+    mocks.listSavedKeywordsByProject
+      .mockResolvedValueOnce({
+        totalCount: 501,
+        tags: [],
+        rows: Array.from({ length: 500 }, () => entry),
+      })
+      .mockResolvedValueOnce({ totalCount: 501, tags: [], rows: [entry] });
+    const { exportSavedKeywords } = await import("./saved-keywords");
+
+    const result = await exportSavedKeywords({
+      projectId: "project_1",
+      sort: "createdAt",
+      order: "desc",
+    });
+
+    expect(result.rows).toHaveLength(501);
+    expect(mocks.listSavedKeywordsByProject).toHaveBeenCalledTimes(2);
+    expect(mocks.listSavedKeywordsByProject).toHaveBeenLastCalledWith(
+      expect.objectContaining({ page: 2, pageSize: 500 }),
+    );
   });
 });

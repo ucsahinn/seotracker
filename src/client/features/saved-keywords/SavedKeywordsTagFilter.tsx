@@ -198,9 +198,10 @@ function TagFilterPopover({
             <button
               type="button"
               className="text-muted hover:text-base-content"
+              aria-label="Aramayı temizle"
               onClick={() => onQueryChange("")}
             >
-              <X className="size-3.5" />
+              <X className="size-3.5" aria-hidden />
             </button>
           ) : null}
         </label>

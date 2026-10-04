@@ -15,7 +15,8 @@ const mocks = vi.hoisted(() => ({
 }));
 
 vi.mock("@/lib/auth", () => ({
-  getAuth: () => ({ api: { getAccessToken: mocks.getAccessToken } }),
+  getGoogleGrantAuth: () =>
+    Promise.resolve({ api: { getAccessToken: mocks.getAccessToken } }),
 }));
 
 // Mocked for the same reason `@/lib/auth` is: the real module reaches the
@@ -225,15 +226,15 @@ describe("ga4Client admin API", () => {
     const dimensions = await client.listCustomDimensions("properties/11");
     const metrics = await client.listCustomMetrics("properties/11");
 
-    expect(streams[0]?.webStreamData?.measurementId).toBe("G-ABC123");
+    expect(streams.items[0]?.webStreamData?.measurementId).toBe("G-ABC123");
     expect(enhanced).toMatchObject({
       streamEnabled: true,
       siteSearchEnabled: false,
       searchQueryParameter: "",
     });
-    expect(keyEvents[0]?.eventName).toBe("purchase");
-    expect(dimensions[0]?.parameterName).toBe("content_type");
-    expect(metrics[0]?.parameterName).toBe("quality_score");
+    expect(keyEvents.items[0]?.eventName).toBe("purchase");
+    expect(dimensions.items[0]?.parameterName).toBe("content_type");
+    expect(metrics.items[0]?.parameterName).toBe("quality_score");
     expect(mocks.fetch.mock.calls.map((call) => requestUrl(call[0]))).toEqual([
       "https://analyticsadmin.googleapis.com/v1alpha/properties/11/dataStreams?pageSize=200",
       "https://analyticsadmin.googleapis.com/v1alpha/properties/11/dataStreams/22/enhancedMeasurementSettings",

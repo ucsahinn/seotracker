@@ -166,6 +166,9 @@ async function runDiscoveryPhase(
     return {
       robotsText: result.robotsText,
       seededCount,
+      // False means discovery stopped early: a page missing from the sitemap
+      // flag is then "unknown", not proven absent.
+      sitemapMembershipComplete: result.membershipComplete,
       sitemapProblems: result.sitemapProblems,
       robots: {
         status: result.robotsFetch.status,

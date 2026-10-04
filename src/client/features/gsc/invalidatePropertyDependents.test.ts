@@ -11,6 +11,7 @@ describe("invalidatePropertyDependents", () => {
       ["queryHistory", "p1", "kw", 28],
       ["ga4Overview", "p1", 28],
       ["quotaStatus", "p1", "ga4"],
+      ["cannibalization", "p1", "last28", undefined, undefined, "web"],
       ["searchOpportunities", "p2", 50, 28],
     ];
     for (const key of keys) client.setQueryData(key, 1);
@@ -20,6 +21,6 @@ describe("invalidatePropertyDependents", () => {
     const invalidated = keys.map(
       (key) => client.getQueryState(key)?.isInvalidated,
     );
-    expect(invalidated).toEqual([true, true, true, true, true, false]);
+    expect(invalidated).toEqual([true, true, true, true, true, true, false]);
   });
 });

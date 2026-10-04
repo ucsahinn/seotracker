@@ -3,7 +3,11 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import * as d1Schema from "@/db/d1/schema";
 import { d1Db } from "@/db/d1/client";
-import { createBaseAuthConfig } from "@/lib/auth-config";
+import {
+  createBaseAuthConfig,
+  type GoogleOAuthClient,
+} from "@/lib/auth-config";
+import { getGoogleOAuthClientConfig } from "@/server/features/google/oauth-config";
 
 /**
  * This install never signs anyone in: the user is resolved per request from the
@@ -30,9 +34,9 @@ function getAuthSecret() {
   return secret;
 }
 
-function createAuth() {
+function createAuth(client?: GoogleOAuthClient) {
   return betterAuth({
-    ...createBaseAuthConfig(),
+    ...createBaseAuthConfig(client),
     // Never read on the token path, but Better Auth requires a value.
     baseURL: "http://localhost",
     secret: getAuthSecret(),
@@ -53,4 +57,29 @@ export function getAuth() {
   authInstance = createAuth();
 
   return authInstance;
+}
+
+let googleGrantAuth: {
+  clientKey: string;
+  instance: ReturnType<typeof createAuth>;
+} | null = null;
+
+/**
+ * The instance to mint and refresh Google grant tokens with. Better Auth's
+ * refresh signs in with the provider's own client id and secret, so those must
+ * be the ones the operator stored in Settings, not only the environment's, or
+ * every refresh an hour after connecting fails with invalid_client. Rebuilt
+ * when the stored client changes; `getAuth` stays env-only for callers that
+ * need nothing but the encryption context.
+ */
+export async function getGoogleGrantAuth() {
+  const client = await getGoogleOAuthClientConfig();
+  if (!client) return getAuth();
+
+  const clientKey = `${client.clientId}
+${client.clientSecret}`;
+  if (googleGrantAuth?.clientKey !== clientKey) {
+    googleGrantAuth = { clientKey, instance: createAuth(client) };
+  }
+  return googleGrantAuth.instance;
 }

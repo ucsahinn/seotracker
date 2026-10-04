@@ -139,6 +139,14 @@ export async function fetchLighthouseResult(
   }
 }
 
+/** Every payload of an audit lives under this prefix, so deletion can sweep it. */
+export function lighthousePayloadPrefix(
+  projectId: string,
+  auditId: string,
+): string {
+  return `site-audit/${projectId}/${auditId}/`;
+}
+
 export async function storeLighthouseResult(input: {
   projectId: string;
   auditId: string;
@@ -149,7 +157,7 @@ export async function storeLighthouseResult(input: {
   }
 
   const { pageId, strategy } = input.fetched.result;
-  const key = `site-audit/${input.projectId}/${input.auditId}/${pageId}-${strategy}.json`;
+  const key = `${lighthousePayloadPrefix(input.projectId, input.auditId)}${pageId}-${strategy}.json`;
   const uploaded = await putTextToR2(key, input.fetched.payloadJson);
 
   return {

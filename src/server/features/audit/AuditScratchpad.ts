@@ -22,6 +22,8 @@ import { DurableObject, env } from "cloudflare:workers";
 import type { CrawlThrottleState } from "@/server/lib/audit/crawl-throttle";
 import {
   BROKEN_LINKS_SQL,
+  computeShortestDepths,
+  HAS_TRUNCATED_LINKS_SQL,
   REDIRECT_LINKS_SQL,
   ORPHAN_PAGES_SQL,
   SCRATCHPAD_SCHEMA_SQL,
@@ -67,8 +69,13 @@ interface ScratchpadPageRow {
 export interface ScratchpadPageLinksRow {
   pageId: string;
   url: string;
-  /** Same-origin link targets, already deduped by the page analyzer. */
+  /**
+   * Same-origin link targets, already deduped by the page analyzer. May be
+   * empty: a retry whose page lost every link must replace the old row.
+   */
   targets: string[];
+  /** The page had more internal links than the cap, so `targets` is a prefix. */
+  truncated: boolean;
 }
 
 interface RecordBatchInput {
@@ -222,6 +229,19 @@ export class AuditScratchpad extends DurableObject {
           page.url,
           JSON.stringify(page.targets),
         );
+        // Kept outside page_links so a scratchpad created before this table
+        // existed still takes the write (CREATE IF NOT EXISTS, no ALTER).
+        if (page.truncated) {
+          this.ctx.storage.sql.exec(
+            `INSERT OR REPLACE INTO truncated_links (page_id) VALUES (?)`,
+            page.pageId,
+          );
+        } else {
+          this.ctx.storage.sql.exec(
+            `DELETE FROM truncated_links WHERE page_id = ?`,
+            page.pageId,
+          );
+        }
       }
     }
     for (const found of input.discovered) {
@@ -261,7 +281,7 @@ export class AuditScratchpad extends DurableObject {
     brokenLinks: BrokenLinkRow[];
     redirectLinks: RedirectLinkRow[];
     orphanPages: OrphanPageRow[];
-    repairedDepths: Array<{ url: string; depth: number }>;
+    repairedDepths: Array<{ url: string; depth: number; exact: boolean }>;
   }> {
     // Only flag targets we actually crawled and saw fail — never inferred
     // from absence. Blocked targets (WAF challenges) are excluded: a 403
@@ -307,10 +327,12 @@ export class AuditScratchpad extends DurableObject {
 
     // A live 2xx page is an orphan when no OTHER crawled page links to it
     // and nothing redirects to it. Only meaningful on a completed crawl with
-    // a complete link graph — if the storage budget truncated link writes,
-    // "no inbound edge" is missing data, not evidence of orphanhood.
+    // a complete link graph — if the storage budget truncated link writes, or
+    // a page's link list was cut at the per-page cap, "no inbound edge" is
+    // missing data, not evidence of orphanhood.
     const linkGraphComplete =
-      this.ctx.storage.sql.databaseSize < LINK_STORAGE_BUDGET_BYTES;
+      this.ctx.storage.sql.databaseSize < LINK_STORAGE_BUDGET_BYTES &&
+      this.ctx.storage.sql.exec(HAS_TRUNCATED_LINKS_SQL).toArray().length === 0;
     const orphanPages =
       input.crawlCompleted && linkGraphComplete
         ? this.ctx.storage.sql
@@ -323,25 +345,26 @@ export class AuditScratchpad extends DurableObject {
         : [];
 
     /*
-     * Depths the frontier learned after the page row was already written.
+     * Shortest click depths from the retained link graph, handed back so the
+     * workflow can repair the page rows (and their `deep-page` findings).
      *
      * A page is leased with whatever depth the frontier knew at that moment,
-     * and sitemap seeds are inserted with depth NULL. `recordBatch` repairs
-     * the frontier when a link later reaches the same URL -- but the page
-     * row was persisted at lease time and never revisited, so on a
-     * sitemap-driven crawl most pages kept `crawl_depth` NULL. Measured on
-     * a real 212-page audit: 196 of them, 92%. The `deep-page` check skips
-     * a NULL depth, so it was silently off for almost the whole site.
-     *
-     * Handed back so the workflow can backfill the rows. Only non-NULL
-     * depths: a URL nothing ever linked to genuinely has no click path.
+     * and the frontier never revisits a depth it queued as NULL (a child of
+     * a sitemap-seeded page), so rows carry NULL or stale depths. `exact`
+     * says the graph was complete and the crawl finished: only then is a
+     * depth the shortest path rather than an upper bound.
      */
-    const repairedDepths = this.ctx.storage.sql
-      .exec<{
-        url: string;
-        depth: number;
-      }>(`SELECT url, depth FROM frontier WHERE depth IS NOT NULL`)
-      .toArray();
+    const shortest = computeShortestDepths(
+      (query, ...params) =>
+        this.ctx.storage.sql.exec(query, ...params).toArray(),
+      input.startUrl,
+    );
+    const exact =
+      shortest.complete && linkGraphComplete && input.crawlCompleted;
+    const repairedDepths = shortest.depths.map((entry) => ({
+      ...entry,
+      exact,
+    }));
 
     return { brokenLinks, redirectLinks, orphanPages, repairedDepths };
   }

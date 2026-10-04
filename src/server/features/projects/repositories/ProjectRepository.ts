@@ -191,6 +191,9 @@ async function restoreProject(projectId: string, organizationId: string) {
   }
 }
 
+// One conditional UPDATE so two concurrent archives of the last two projects
+// cannot both pass a separate count check: the count subquery and the write
+// run as a single statement, and the loser matches no row.
 async function archiveProject(projectId: string, organizationId: string) {
   const [row] = await db
     .update(projects)
@@ -200,13 +203,18 @@ async function archiveProject(projectId: string, organizationId: string) {
         eq(projects.id, projectId),
         eq(projects.organizationId, organizationId),
         isNull(projects.archivedAt),
+        sql`(select count(*) from ${projects} where ${projects.organizationId} = ${organizationId} and ${projects.archivedAt} is null) > 1`,
       ),
     )
     .returning({ id: projects.id });
+  if (row) return;
 
-  if (!row) {
+  // Nothing was written: either the project is not active in this org, or it
+  // is the org's only active project.
+  if (!(await getProjectForOrganization(projectId, organizationId))) {
     throw new AppError("NOT_FOUND");
   }
+  throw new AppError("CONFLICT", "Tek projenizi arşivleyemezsiniz.");
 }
 
 export const ProjectRepository = {

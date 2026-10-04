@@ -40,33 +40,42 @@ export function normalizeUrl(url: string, base?: string): string | null {
 }
 
 /**
- * A canonical key for URL equality checks that should survive the common
- * redirect patterns a site uses to reach its canonical form:
- *   - trailing-slash redirects   (/services -> /services/)
- *   - www <-> non-www            (www.example.com -> example.com)
- *   - http -> https upgrades
+ * Whether two URLs are the same URL, for canonical comparisons.
  *
- * Forces https, drops a leading "www.", lowercases the hostname, sorts query
- * params, and strips the fragment. Trailing slashes are intentionally left
- * intact so two genuinely different paths never collapse together; this key is
- * only for "is this effectively the same page as the start URL" comparisons
- * (e.g. picking the homepage for the Lighthouse sample), not for crawl dedup.
+ * Deliberately conservative: only differences that cannot change which page is
+ * meant are ignored (fragment, hostname case, default port, query-parameter
+ * order). http vs https, www vs apex and a trailing slash all stay different,
+ * because each can serve a different page and a canonical tag that points at
+ * the "other" form is a real disagreement worth reporting. Equivalence that a
+ * site only sometimes has must be derived from observed site behaviour, not
+ * assumed here. See `canonicalUrlKey` for the looser crawl-boundary key.
  */
-/**
- * Whether two URLs name the same page, ignoring a trailing slash.
- *
- * `canonicalUrlKey` deliberately keeps the slash, because for crawl
- * comparisons `/a` and `/a/` really can be two pages. For *canonical*
- * comparisons they cannot: a site that writes one and means the other is
- * agreeing with itself, and reporting that as a disagreement is a false
- * positive. Three call sites had comments claiming `canonicalUrlKey`
- * already folded it and it does not, so this is the rule they meant.
- */
-export function sameCanonicalTarget(a: string, b: string): boolean {
-  const fold = (url: string) => canonicalUrlKey(url).replace(/\/$/, "");
-  return fold(a) === fold(b);
+function strictUrlKey(url: string): string {
+  try {
+    const parsed = new URL(url);
+    parsed.hash = "";
+    parsed.searchParams.sort();
+    return parsed.toString();
+  } catch {
+    return url;
+  }
 }
 
+export function sameCanonicalTarget(a: string, b: string): boolean {
+  return strictUrlKey(a) === strictUrlKey(b);
+}
+
+/**
+ * A loose key for "is this effectively the same page" inside one crawl,
+ * surviving the redirect patterns a site uses to reach its canonical form
+ * (http -> https, www <-> apex): forces https, drops a leading "www.",
+ * lowercases the hostname, sorts query params and strips the fragment.
+ * Trailing slashes are kept.
+ *
+ * Crawl-boundary use only (picking the homepage for the Lighthouse sample,
+ * matching crawled pages to hreflang targets). Never use it to decide whether
+ * two canonical URLs agree; that is `sameCanonicalTarget`.
+ */
 export function canonicalUrlKey(url: string): string {
   try {
     const parsed = new URL(url);

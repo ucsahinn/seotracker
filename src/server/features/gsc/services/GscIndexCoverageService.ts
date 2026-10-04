@@ -1,7 +1,14 @@
-import { and, count, eq, gte, inArray } from "drizzle-orm";
+import { and, count, eq, gte, inArray, lt, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { executeInBatches } from "@/db/runBatch";
-import { auditPages, audits, gscUrlInspections } from "@/db/schema";
+import {
+  auditPages,
+  audits,
+  gscConnections,
+  gscInspectionAttempts,
+  gscUrlInspections,
+} from "@/db/schema";
+import { GscConnectionRepository } from "@/server/features/gsc/repositories/GscConnectionRepository";
 import {
   DAILY_QUOTA,
   isStale,
@@ -24,6 +31,95 @@ import { GscService } from "@/server/features/gsc/services/GscService";
  *
  * The decisions live in `../indexCoverage`; this module is the I/O around them.
  */
+
+type InspectionEntry = Awaited<
+  ReturnType<typeof GscService.inspectUrls>
+>["results"][number];
+
+/**
+ * Write one answer into the cache as an INSERT ... SELECT from the project's
+ * connection row for the property the answer came from. If the project was
+ * pointed at another property (or disconnected) while Google was answering,
+ * the SELECT is empty and nothing is written: a verdict for the old property
+ * must not land in the cache the switch just cleared.
+ */
+function upsertAnswer(
+  tx: typeof db,
+  input: {
+    projectId: string;
+    siteUrl: string;
+    checkedAt: string;
+    entry: InspectionEntry;
+  },
+) {
+  const { entry, checkedAt } = input;
+  const status = entry.result?.indexStatusResult;
+  const answer = {
+    verdict: status?.verdict ?? null,
+    coverageState: status?.coverageState ?? null,
+    robotsTxtState: status?.robotsTxtState ?? null,
+    indexingState: status?.indexingState ?? null,
+    pageFetchState: status?.pageFetchState ?? null,
+    lastCrawlTime: status?.lastCrawlTime ?? null,
+    googleCanonical: status?.googleCanonical ?? null,
+    userCanonical: status?.userCanonical ?? null,
+    richResultsVerdict: entry.result?.richResultsResult?.verdict ?? null,
+    inspectionLink: entry.result?.inspectionResultLink ?? null,
+    error: entry.error ?? null,
+    checkedAt,
+    lastAttemptAt: checkedAt,
+  };
+  const lit = <T>(value: T, name: string) => sql<T>`${value}`.as(name);
+  const connection = tx
+    .select({
+      projectId: lit(input.projectId, "project_id"),
+      url: lit(entry.url, "url"),
+      verdict: lit(answer.verdict, "verdict"),
+      coverageState: lit(answer.coverageState, "coverage_state"),
+      robotsTxtState: lit(answer.robotsTxtState, "robots_txt_state"),
+      indexingState: lit(answer.indexingState, "indexing_state"),
+      pageFetchState: lit(answer.pageFetchState, "page_fetch_state"),
+      lastCrawlTime: lit(answer.lastCrawlTime, "last_crawl_time"),
+      googleCanonical: lit(answer.googleCanonical, "google_canonical"),
+      userCanonical: lit(answer.userCanonical, "user_canonical"),
+      richResultsVerdict: lit(
+        answer.richResultsVerdict,
+        "rich_results_verdict",
+      ),
+      inspectionLink: lit(answer.inspectionLink, "inspection_link"),
+      error: lit(answer.error, "error"),
+      checkedAt: lit(answer.checkedAt, "checked_at"),
+      lastAttemptAt: lit(answer.lastAttemptAt, "last_attempt_at"),
+    })
+    .from(gscConnections)
+    .where(
+      and(
+        eq(gscConnections.projectId, input.projectId),
+        eq(gscConnections.siteUrl, input.siteUrl),
+      ),
+    );
+  /*
+   * A failed inspection carries no answer, with or without an error message:
+   * an entry with no result is a failure. Writing its nulls over the conflict
+   * would erase a verdict Google already gave, and refreshing `checkedAt`
+   * would present that old verdict as freshly observed. A failure on an
+   * already-stored URL therefore records only the error and the attempt time.
+   * A URL with nothing stored still gets the full row from the insert.
+   * Known wrinkle: for a first-ever failed inspection that row carries
+   * `checkedAt` = now, although the contract says "when Google last answered"
+   * and Google did not. Such a row is told apart by its null verdict and its
+   * error, not by `checkedAt`; do not read the timestamp as proof of an answer.
+   */
+  return tx
+    .insert(gscUrlInspections)
+    .select(connection)
+    .onConflictDoUpdate({
+      target: [gscUrlInspections.projectId, gscUrlInspections.url],
+      set: entry.result
+        ? answer
+        : { error: answer.error, lastAttemptAt: checkedAt },
+    });
+}
 
 /**
  * Only pages worth asking Google about: ones it could actually have indexed.
@@ -87,40 +183,41 @@ async function storedFor(
         inspectionLink: row.inspectionLink,
         error: row.error,
         checkedAt: row.checkedAt,
+        lastAttemptAt: row.lastAttemptAt,
       },
     ]),
   );
 }
 
 /**
- * How much of the day's quota this project has already spent.
+ * How much of the day's quota this project's property has already spent.
+ *
+ * Counted from the attempt ledger, not from the cache: every call Google
+ * served is one row, so a forced re-inspection of the same URL counts again
+ * and clearing the cache does not refund anything. Keyed by the property's
+ * site URL, which is the unit Google's allowance belongs to.
  *
  * A rolling 24 hours rather than a calendar day, because Google's quota day
  * rolls over on its own clock and guessing the boundary wrong would let a run
  * cross the line. Over any 24-hour window the count is at least as large as
  * the count since the real midnight, so the budget it produces is the safe
  * side of the truth.
- *
- * A URL re-inspected twice in the window counts once, since the row is
- * overwritten. That makes this a floor, which is why it is spent against
- * 2000 and not treated as an exact ledger.
  */
 export async function inspectionsInLastDay(
   projectId: string,
   now: Date,
 ): Promise<number> {
-  // Every write in this module stores an ISO stamp, so a string comparison
-  // orders them correctly. The column's SQLite default is the other shape
-  // ("2026-09-19 22:30:00"), which would sort as older and be missed -- an
-  // undercount, which spends quota rather than losing it.
+  const connection = await GscConnectionRepository.getByProjectId(projectId);
+  if (!connection) return 0;
+  // Every ledger row is an ISO stamp, so a string comparison orders them.
   const since = new Date(now.getTime() - 86_400_000).toISOString();
   const [row] = await db
     .select({ value: count() })
-    .from(gscUrlInspections)
+    .from(gscInspectionAttempts)
     .where(
       and(
-        eq(gscUrlInspections.projectId, projectId),
-        gte(gscUrlInspections.checkedAt, since),
+        eq(gscInspectionAttempts.siteUrl, connection.siteUrl),
+        gte(gscInspectionAttempts.attemptedAt, since),
       ),
     );
   return row?.value ?? 0;
@@ -214,47 +311,45 @@ export async function inspectAndRecord(input: {
   const checkedAt = now.toISOString();
 
   /*
+   * The ledger first, and for the property that was actually asked: Google
+   * has spent these inspections whatever happens to the cache below, and the
+   * project may have been pointed at another property while they ran.
+   */
+  if (siteUrl && results.length > 0) {
+    await executeInBatches(results, (tx) =>
+      tx
+        .insert(gscInspectionAttempts)
+        .values({ siteUrl, attemptedAt: checkedAt }),
+    );
+    await db
+      .delete(gscInspectionAttempts)
+      .where(
+        lt(
+          gscInspectionAttempts.attemptedAt,
+          new Date(now.getTime() - 86_400_000).toISOString(),
+        ),
+      );
+  }
+
+  /*
    * One D1 round trip per 100 rows instead of one per URL (up to 2000 a
    * day). Each statement is still a single-row upsert, so the bound
    * parameters stay per statement and the order is the order Google answered.
+   *
+   * Each upsert is an INSERT ... SELECT from the project's connection row
+   * for the property the answers came from. If the project was pointed at
+   * another property (or disconnected) while Google was answering, the
+   * SELECT is empty and nothing is written: a verdict for the old property
+   * must not land in the cache the switch just cleared.
    */
-  await executeInBatches(results, (tx, entry) => {
-    const status = entry.result?.indexStatusResult;
-    const values = {
+  await executeInBatches(results, (tx, entry) =>
+    upsertAnswer(tx, {
       projectId: input.projectId,
-      url: entry.url,
-      verdict: status?.verdict ?? null,
-      coverageState: status?.coverageState ?? null,
-      robotsTxtState: status?.robotsTxtState ?? null,
-      indexingState: status?.indexingState ?? null,
-      pageFetchState: status?.pageFetchState ?? null,
-      lastCrawlTime: status?.lastCrawlTime ?? null,
-      googleCanonical: status?.googleCanonical ?? null,
-      userCanonical: status?.userCanonical ?? null,
-      richResultsVerdict: entry.result?.richResultsResult?.verdict ?? null,
-      inspectionLink: entry.result?.inspectionResultLink ?? null,
-      error: entry.error ?? null,
+      siteUrl,
       checkedAt,
-    };
-    /*
-     * A failed inspection carries no answer, with or without an error
-     * message: an entry with no result is a failure. Writing its nulls over the
-     * conflict would erase a verdict Google already gave and restart the
-     * retry clock on a page that is not actually stale, so a failure on an
-     * already-stored URL only records the error and the attempt time. A URL
-     * with nothing stored still gets the full row from the insert.
-     */
-    const failed = !entry.result;
-    return tx
-      .insert(gscUrlInspections)
-      .values(values)
-      .onConflictDoUpdate({
-        target: [gscUrlInspections.projectId, gscUrlInspections.url],
-        set: failed
-          ? { error: values.error, checkedAt: values.checkedAt }
-          : values,
-      });
-  });
+      entry,
+    }),
+  );
 
   /*
    * Rethrown only after the loop above has persisted everything Google did

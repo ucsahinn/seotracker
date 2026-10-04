@@ -19,6 +19,11 @@ const PAGESPEED_ENDPOINT =
 // two parallel calls, which leaves room for two attempts each.
 const REQUEST_TIMEOUT_MS = 120_000;
 
+// Reading the body is a separate deadline, armed only once the read starts: a
+// report runs to several megabytes, and a stalled stream must not be able to
+// hold the parse queue (or the audit step) forever.
+const BODY_TIMEOUT_MS = 60_000;
+
 // Lighthouse localizes audit titles and descriptions, and those strings are
 // persisted verbatim into every stored issue. Pinning the locale keeps the same
 // finding worded the same way across runs.
@@ -55,11 +60,12 @@ export class PageSpeedError extends Error {
 }
 
 /**
- * One report body is parsed at a time per isolate. The raw payload runs to
+ * One report body is read and parsed at a time per isolate. The raw payload runs to
  * several megabytes and is held more than once while parsing, which is the
  * operation that used to exhaust the audit worker's memory. Requests still run
- * concurrently; only the parse is serialized, and workerd streams a body that
- * has not been read yet, so waiting siblings buffer nothing.
+ * concurrently; only the body read and parse are serialized, and workerd
+ * streams a body that has not been read yet, so waiting siblings buffer
+ * nothing. A run leaves the queue whether it succeeds, fails or times out.
  */
 let parseChain: Promise<unknown> = Promise.resolve();
 
@@ -172,15 +178,16 @@ export async function fetchPageSpeedReport(input: {
       { status: null, retryable: true },
     );
   } finally {
-    // Cleared once headers arrive: the body is read behind the parse lock, and
-    // a still-armed signal would abort an analysis that already succeeded while
-    // it waits its turn.
+    // The request deadline ends with the headers. The body gets its own
+    // deadline (readBody) that starts when the read does, after any wait for
+    // the parse lock; a signal still armed here would abort an analysis that
+    // already succeeded while it queues.
     clearTimeout(timeout);
   }
 
   if (!response.ok) {
     // Error bodies are small, so this read stays outside the parse lock.
-    const body = await response.json().catch(() => null);
+    const body = await readBody(response, controller).catch(() => null);
     throw classifyFailure(
       response.status,
       readPageSpeedApiError(response.status, body),
@@ -189,7 +196,37 @@ export async function fetchPageSpeedReport(input: {
   }
 
   return withParseLock(async () => {
-    const body = await response.json();
+    let body: unknown;
+    try {
+      body = await readBody(response, controller);
+    } catch (error) {
+      throw new PageSpeedError(
+        controller.signal.aborted
+          ? "PageSpeed Insights response timed out"
+          : `PageSpeed Insights response could not be read: ${
+              error instanceof Error
+                ? redactKey(error.message)
+                : "unknown error"
+            }`,
+        { status: response.status, retryable: true },
+      );
+    }
     return parsePageSpeedPayload(body, input);
   });
+}
+
+/**
+ * Read a JSON body under its own deadline. Aborting the request's controller
+ * cancels the underlying stream, so a stalled read ends instead of hanging.
+ */
+async function readBody(
+  response: Response,
+  controller: AbortController,
+): Promise<unknown> {
+  const timer = setTimeout(() => controller.abort(), BODY_TIMEOUT_MS);
+  try {
+    return await response.json();
+  } finally {
+    clearTimeout(timer);
+  }
 }

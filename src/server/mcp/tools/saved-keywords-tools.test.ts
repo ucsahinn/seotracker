@@ -70,6 +70,23 @@ describe("saved keyword MCP tools", () => {
     });
   });
 
+  it("reports the service's distinct count, not the submitted length", async () => {
+    mocks.saveKeywords.mockResolvedValue({
+      success: true,
+      savedKeywordIds: ["saved_1"],
+    });
+
+    const result = await saveKeywordsTool.handler(
+      { projectId: "project_1", keywords: ["Seo", "seo", "SEO"] },
+      toolContext,
+    );
+
+    expect(result.structuredContent).toMatchObject({
+      savedCount: 1,
+      submittedCount: 3,
+    });
+  });
+
   it("accepts and passes keyword metrics through save_keywords", async () => {
     mocks.saveKeywords.mockResolvedValue({
       success: true,

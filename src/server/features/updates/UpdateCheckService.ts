@@ -115,8 +115,10 @@ function isDue(checkedAt: string | null, lastStatus: number | null): boolean {
   if (Number.isNaN(age)) return true;
   // A failed attempt still counts as an attempt; backing off is what keeps a
   // rate-limited or offline install from spending the rest of its window.
-  const wait =
-    lastStatus === 200 || lastStatus === 304 ? TTL_MS : RETRY_AFTER_FAILURE_MS;
+  // 404 is the ordinary "no releases yet" answer, so it waits a day like 200
+  // and 304 do.
+  const answered = lastStatus !== null && !isFailedAttempt(lastStatus);
+  const wait = answered ? TTL_MS : RETRY_AFTER_FAILURE_MS;
   return age > wait;
 }
 
@@ -184,10 +186,12 @@ async function getStatus(options?: { force?: boolean }): Promise<UpdateStatus> {
         }),
       );
     }
+    // A 200 whose body is not a release is a failed attempt (status 0), not a
+    // confirmation of the cached tag.
     return statusFrom(
       await UpdateCheckRepository.save({
         checkedAt,
-        lastStatus: result.status,
+        lastStatus: result.status === 200 ? 0 : result.status,
       }),
     );
   } catch {

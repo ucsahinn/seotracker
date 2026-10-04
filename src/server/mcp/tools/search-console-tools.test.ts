@@ -6,6 +6,7 @@ import { makeToolContext } from "./tool-test-support";
 const mocks = vi.hoisted(() => ({
   getProjectForOrganization: vi.fn(),
   hasSelfHostedGoogleOAuthConfig: vi.fn(),
+  hasServiceAccount: vi.fn(),
   GscService: {
     getPerformance: vi.fn(),
     inspectUrls: vi.fn(),
@@ -16,6 +17,9 @@ const mocks = vi.hoisted(() => ({
 vi.mock("cloudflare:workers", () => ({ env: {} }));
 vi.mock("@/server/features/google/oauth-config", () => ({
   hasSelfHostedGoogleOAuthConfig: mocks.hasSelfHostedGoogleOAuthConfig,
+}));
+vi.mock("@/server/lib/googleServiceAccountToken", () => ({
+  hasServiceAccount: mocks.hasServiceAccount,
 }));
 vi.mock("@/server/features/projects/services/ProjectService", () => ({
   ProjectService: {
@@ -48,6 +52,7 @@ describe("search console MCP tools", () => {
       languageCode: "en",
     });
     mocks.hasSelfHostedGoogleOAuthConfig.mockResolvedValue(true);
+    mocks.hasServiceAccount.mockResolvedValue(false);
   });
 
   it("returns performance rows on success and passes filters through", async () => {
@@ -285,6 +290,7 @@ describe("inspect_urls", () => {
       languageCode: "en",
     });
     mocks.hasSelfHostedGoogleOAuthConfig.mockResolvedValue(true);
+    mocks.hasServiceAccount.mockResolvedValue(false);
   });
 
   it("inspects multiple URLs and reports partial failures inline", async () => {

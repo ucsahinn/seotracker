@@ -116,9 +116,11 @@ export function SavedKeywordsTable({
         enableSorting: false,
         meta: { cellClassName: "min-w-40 max-w-64" },
       }),
-      columnHelper.accessor("fetchedAt", {
+      // createdAt, not fetchedAt: fetchedAt comes from keyword_metrics, which
+      // nothing writes any more, so that column was blank on every row.
+      columnHelper.accessor("createdAt", {
         header: ({ column }) => (
-          <SortableHeader column={column} label="Veri tarihi" />
+          <SortableHeader column={column} label="Eklenme" />
         ),
         cell: ({ getValue }) => (
           <span className="text-xs text-muted">
@@ -223,7 +225,7 @@ function SavedKeywordsSkeleton() {
       <div className="skeleton h-4 w-48" />
       {Array.from({ length: 8 }).map((_, index) => (
         /* Seven columns, matching the table: select, Kelime, Ort. sıra, Amaç, Etiketler,
-           Veri tarihi, işlemler. It was a nine-column grid holding eight
+           Eklenme, işlemler. It was a nine-column grid holding eight
            children, so none of the bars lined up with what landed. */
         <div
           key={index}

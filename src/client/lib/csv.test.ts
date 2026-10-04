@@ -1,5 +1,27 @@
-import { describe, expect, it } from "vitest";
-import { buildCsv } from "./csv";
+import { describe, expect, it, vi } from "vitest";
+import { buildCsv, downloadCsv } from "./csv";
+
+describe("downloadCsv", () => {
+  it("starts the file with a UTF-8 BOM so Excel reads Turkish text", async () => {
+    let blob: Blob | undefined;
+    vi.stubGlobal("URL", {
+      createObjectURL: (value: Blob) => {
+        blob = value;
+        return "blob:test";
+      },
+      revokeObjectURL: () => {},
+    });
+    vi.stubGlobal("document", {
+      createElement: () => ({ click: () => {} }),
+    });
+
+    downloadCsv("x.csv", '"ş"');
+
+    const bytes = new Uint8Array(await blob!.arrayBuffer());
+    expect(Array.from(bytes.slice(0, 3))).toEqual([0xef, 0xbb, 0xbf]);
+    vi.unstubAllGlobals();
+  });
+});
 
 describe("buildCsv", () => {
   it("rounds decimal numbers to at most two places", () => {

@@ -1,4 +1,10 @@
-import { index, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import {
+  index,
+  integer,
+  sqliteTable,
+  text,
+  uniqueIndex,
+} from "drizzle-orm/sqlite-core";
 import { sql } from "drizzle-orm";
 import { projects } from "./app.schema";
 
@@ -63,5 +69,8 @@ export const reports = sqliteTable(
       table.id,
       table.sizeBytes,
     ),
+    // One title per project: the service's read-then-write check cannot stop
+    // two concurrent saves, and the audit report is found again by its title.
+    uniqueIndex("reports_project_title_idx").on(table.projectId, table.title),
   ],
 );

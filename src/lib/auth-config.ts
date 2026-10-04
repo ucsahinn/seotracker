@@ -5,7 +5,20 @@ import { orgAccessControl, orgRoles } from "@/lib/org-permissions";
 import { GA4_OAUTH_PROVIDER_ID, GA4_OAUTH_SCOPES } from "@/shared/ga4";
 import { GSC_OAUTH_PROVIDER_ID, GSC_OAUTH_SCOPES } from "@/shared/gsc";
 
-export function createBaseAuthConfig() {
+/** Credentials of the Google OAuth client the grants were issued to. */
+export type GoogleOAuthClient = { clientId: string; clientSecret: string };
+
+/**
+ * `client` is what token refresh signs in with, so it must be the client the
+ * operator stored in Settings (see `getGoogleGrantAuth`); the environment is
+ * only the fallback for installs that inject it from outside.
+ */
+export function createBaseAuthConfig(
+  client: GoogleOAuthClient = {
+    clientId: env.GOOGLE_CLIENT_ID?.trim() ?? "",
+    clientSecret: env.GOOGLE_CLIENT_SECRET?.trim() ?? "",
+  },
+) {
   return {
     ...baseAuthOptions,
     advanced: {
@@ -51,8 +64,8 @@ export function createBaseAuthConfig() {
         config: [
           {
             providerId: GSC_OAUTH_PROVIDER_ID,
-            clientId: env.GOOGLE_CLIENT_ID?.trim() ?? "",
-            clientSecret: env.GOOGLE_CLIENT_SECRET?.trim() ?? "",
+            clientId: client.clientId,
+            clientSecret: client.clientSecret,
             discoveryUrl:
               "https://accounts.google.com/.well-known/openid-configuration",
             scopes: [...GSC_OAUTH_SCOPES],
@@ -62,8 +75,8 @@ export function createBaseAuthConfig() {
           },
           {
             providerId: GA4_OAUTH_PROVIDER_ID,
-            clientId: env.GOOGLE_CLIENT_ID?.trim() ?? "",
-            clientSecret: env.GOOGLE_CLIENT_SECRET?.trim() ?? "",
+            clientId: client.clientId,
+            clientSecret: client.clientSecret,
             discoveryUrl:
               "https://accounts.google.com/.well-known/openid-configuration",
             scopes: [...GA4_OAUTH_SCOPES],

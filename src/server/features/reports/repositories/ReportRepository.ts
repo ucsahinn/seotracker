@@ -152,7 +152,8 @@ async function insertReport(params: {
     .values({ ...params, createdAt: now, updatedAt: now });
 }
 
-// Content only: `created_by` and `created_by_user_id` are stamped at create and
+// Content only, and true when a row was updated: the report may have been
+// deleted since the caller read it. `created_by` and `created_by_user_id` are stamped at create and
 // never re-stamped, so "created by" keeps meaning what it says after an agent
 // replaces the body.
 async function updateReportContent(params: {
@@ -164,8 +165,8 @@ async function updateReportContent(params: {
   skill: string | null;
   templateId: string | null;
   sizeBytes: number;
-}): Promise<void> {
-  await db
+}): Promise<boolean> {
+  const updated = await db
     .update(reports)
     .set({
       title: params.title,
@@ -181,7 +182,9 @@ async function updateReportContent(params: {
         eq(reports.id, params.reportId),
         eq(reports.projectId, params.projectId),
       ),
-    );
+    )
+    .returning({ id: reports.id });
+  return updated.length > 0;
 }
 
 // The share link's own read, and the second query here with no project id to

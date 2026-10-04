@@ -18,9 +18,12 @@ export function downloadBlob(blob: Blob, filename: string): void {
   }
 }
 
+/**
+ * CSV downloads get a UTF-8 byte order mark: without it Excel on a tr-TR
+ * machine reads the file as ANSI and shows mojibake for ç, ş, ğ, İ.
+ * Only downloads; clipboard text never goes through here.
+ */
 export function downloadFile(content: string, filename: string, mime: string) {
-  downloadBlob(
-    new Blob([content], { type: `${mime};charset=utf-8;` }),
-    filename,
-  );
+  const body = mime === "text/csv" ? `﻿${content}` : content;
+  downloadBlob(new Blob([body], { type: `${mime};charset=utf-8;` }), filename);
 }

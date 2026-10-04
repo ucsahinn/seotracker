@@ -4,6 +4,45 @@ Her sürümün notu burada, en yenisi en üstte.
 
 ## [Yayınlanmamış]
 
+## [2.2.1] — 2026-10-04
+
+Bu sürüm yalnızca hata temizliği: yeni özellik yok. Kodun tamamı bağımsız
+incelemelerden geçti, bulunan hatalar düzeltildi. Güncellerken veriniz
+korunur; veritabanı iki küçük adımla kendiliğinden güncellenir.
+
+### Önemli düzeltmeler
+
+- **Ayarlar'dan girdiğiniz Google istemcisi artık yenilemede de kullanılıyor.** Önceden Search Console ya da Analytics'i bağladıktan yaklaşık bir saat sonra bağlantı "yeniden bağlanın" diyordu; yenileme boş istemciyle yapılıyordu. Bu hata yalnızca istemciyi `.env` yerine Ayarlar'a girenleri etkiliyordu.
+- **İndirdiğiniz raporların güvenliği.** Raporu dosya olarak indirince, kötü niyetli biçimde yazılmış bir sayfa korumadan önce çalışabilirdi. İndirilen dosya artık her zaman kendi koruması en başta olacak şekilde açılır; rapor kaydetme denetimi de aynı kurallarla yeniden yazıldı.
+- **Taramada adres denetimi.** `www` ve çıplak alan adı artık taramadan önce ayrı ayrı doğrulanır. Adresin içine yazılmış kullanıcı adı ve parola reddedilir, kayıtlı eski adreslerde ekranda gizlenir. Büyük harfle yazılmış `HTTPS://` kabul edilir.
+- **Docker'da şifreleme anahtarı ve MCP şifresi.** İlk açılışta yarıda kalan bir yazma artık bozuk bir anahtar bırakmaz; var olan anahtarın üzerine hiçbir zaman yazılmaz. MCP şifresi başkalarınca okunamayacak biçimde oluşturulur.
+
+### Veri doğruluğu
+
+- Aynı sayfa için yeniden denenen denetim adımı artık önceki başarılı hız ölçümünü ezmez; yeniden başlatmada ya da yarıda kalan taramada sorun kayıtları yarım kalmaz.
+- Denetim silinirken iş hâlâ sürüyorsa ya da durumu öğrenilemiyorsa silme durdurulur; hız ölçümü dosyaları denetimle birlikte temizlenir.
+- Sayfaların ana sayfadan kaç tıkla ulaşıldığı artık bağlantı haritasından hesaplanır; bağlantısı kesilen sayfa ve çok bağlantılı sayfalar yanlış "yetim" sayılmaz.
+- Site haritasındaki her adres "haritada" olarak işaretlenir (önceden tarama sınırından sonrası işaretlenmiyordu). Çok büyük `robots.txt` artık "her şeye izin ver" sayılmaz.
+- Search Console mülkünü değiştirmek ya da Google hesabını kaldırmak artık yarım kalmaz; yalnızca o hesabın projelerinin verisi silinir.
+- URL denetim hakkı, önbellek satırı yerine yapılan her çağrıdan sayılır; zorla yeniden denetim ve önbelleği temizleme hakkı geri vermez. Başarısız bir denetim eski sonucun tarihini tazelemez.
+- Eksik kalan arşiv günleri işaretlenir ve sonraki çalışmada gün gün yeniden okunur.
+- Analytics kotası her yanıttan izlenir ve hesap/mülk değişince sıfırlanır; yönetici listeleri sayfalanır, eksik kalırsa "envanter eksik" yazar.
+- Aynı başlıklı iki rapor artık kaydedilemez (eski kopyaların başlığına kısa bir ek getirilir, hiçbir rapor silinmez). Denetim raporu başlığı denetimin tam kimliğini taşır.
+- Eşit görünen ama farklı adresler (`http`/`https`, `www`, sondaki eğik çizgi) canonical karşılaştırmasında artık farklı sayılır; bu, daha önce gizlenen gerçek uyuşmazlıkları gösterebilir.
+
+### Ekranlarda
+
+- Hata mesajları artık kendi cümlesiyle gelir: etiket kullanımda, aynı adlı etiket var, geçersiz alan adı gibi durumlarda "Beklenmeyen hata" yerine ne olduğunu söyler.
+- Kayıtlı kelimeler en son eklenene göre sıralanır, "Eklenme" sütunu vardır. CSV dosyaları Excel'de Türkçe karakterleri doğru gösterir.
+- Arka planda yenileme başarısız olunca açık formlardaki yazdıklarınız kaybolmaz; denetim silme hatası sessizce yutulmaz; Google bağlantısı değişince ilgili ekranlar eski veriyi tutmaz.
+- 500'den fazla sorguyu tek seferde kelime olarak kaydetmek çalışır. Küçük erişilebilirlik düzeltmeleri.
+- Ajan araçlarının açıklamaları artık sunucunun onay istemediğini açıkça söyler: kelime kaydetme ve proje bağlamı yazma araçları çağrıldığı anda çalışır, kullanıcıdan onay istemek ajanın işidir. "URL denetimi" aracı artık "salt okunur" işaretli değildir, çünkü sonuçları saklar ve günlük hakkınızı harcar.
+
+### Kapsam dışı bırakılanlar
+
+- Kota rezervasyonunun atomik olmaması, çok büyük denetim sonuçlarının sayfalanması ve bağımlılık uyarıları sonraki sürümlere bırakıldı.
+- Bağlantı anında adres sabitleme Cloudflare Workers'ta mümkün değil; adres denetimi bağlanmadan önce yapılan bir ön kontroldür.
+
 ## [2.2.0] — 2026-10-02
 
 Depoyu yeni indirenler için sıfırdan kurulum istemi geldi; bu sürüm ayrıca

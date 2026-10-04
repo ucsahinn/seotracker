@@ -20,6 +20,23 @@ describe("getStandardErrorMessage", () => {
   });
 });
 
+describe("getStandardErrorMessage fallback", () => {
+  it("prefers the caller's sentence over the generic internal-error text", () => {
+    expect(
+      getStandardErrorMessage(new Error("INTERNAL_ERROR"), "Etiket silinemedi"),
+    ).toBe("Etiket silinemedi");
+  });
+
+  it("shows CONFLICT and VALIDATION_ERROR detail from the server", () => {
+    const conflict = new Error("CONFLICT: Bu adda bir etiket zaten var.");
+
+    expect(getErrorCode(conflict)).toBe("CONFLICT");
+    expect(getStandardErrorMessage(conflict, "Etiket güncellenemedi")).toBe(
+      "Bu adda bir etiket zaten var.",
+    );
+  });
+});
+
 describe("coded error messages (CODE: detail)", () => {
   const coded = new Error(
     "AUTH_CONFIG_MISSING: TEAM_DOMAIN must be a full https URL like https://your-team.cloudflareaccess.com",

@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { LighthouseResult } from "@/server/lib/audit/types";
+import { lighthouseRepositoryMock } from "./lighthouse-test-support";
 
 const {
   fetchLighthouseResultMock,
@@ -29,7 +30,8 @@ const {
 }));
 
 // The real module reaches cloudflare:workers through r2.ts at import time.
-vi.mock("cloudflare:workers", () => ({ env: {} }));
+vi.mock("cloudflare:workers", () => ({ env: { KV: { put: vi.fn() } } }));
+
 // failedLighthouseFetch stays real — the failure-path test asserts on the
 // rows it builds.
 vi.mock("@/server/lib/audit/lighthouse", async (importOriginal) => {
@@ -61,10 +63,9 @@ vi.mock("@/server/features/audit/repositories/AuditRepository", () => ({
 vi.mock(
   "@/server/features/audit/repositories/AuditLighthouseRepository",
   () => ({
-    AuditLighthouseRepository: {
-      insertLighthouseResults: insertLighthouseResultsMock,
-      countResultsForPages: async () => ({ ok: 0, error: 4 }),
-    },
+    AuditLighthouseRepository: lighthouseRepositoryMock(
+      insertLighthouseResultsMock,
+    ),
   }),
 );
 vi.mock("@/server/features/audit/AuditScratchpad", () => ({

@@ -39,6 +39,11 @@ const CHUNK_DAYS = 30;
  */
 const ROWS_PER_REQUEST = GSC_MAX_ROW_LIMIT;
 const MAX_REQUESTS_PER_CHUNK = 12;
+/**
+ * A window re-read after overflowing is a single day, which cannot be split
+ * further, so it gets a deeper page budget instead.
+ */
+const MAX_REQUESTS_PER_RETRY_DAY = 36;
 /** Chunks per catch-up, so opening the page cannot stall for minutes. */
 const MAX_CHUNKS_PER_RUN = 4;
 
@@ -101,6 +106,12 @@ type BackfillOutcome = {
   rowsWritten: number;
   earliestDate: string | null;
   lastDate: string | null;
+  /**
+   * Days Google had more rows for than the page budget could read, still
+   * waiting to be re-read in smaller windows. The archive holds only their top
+   * queries until they clear.
+   */
+  incomplete: { from: string; through: string } | null;
   /** True when the archive still has older or newer days left to fetch. */
   hasMore: boolean;
   /** Setup is unfinished, which is not a sync failure and not worth an alert. */
@@ -125,10 +136,17 @@ async function fetchRange(
   projectId: string,
   startDate: string,
   endDate: string,
-): Promise<{ rows: GscDailyRow[]; truncated: boolean }> {
+  expectedSiteUrl: string | null,
+  maxRequests: number,
+): Promise<{
+  rows: GscDailyRow[];
+  truncated: boolean;
+  siteUrl: string | null;
+}> {
   const rows: GscDailyRow[] = [];
+  let siteUrl = expectedSiteUrl;
 
-  for (let page = 0; page < MAX_REQUESTS_PER_CHUNK; page += 1) {
+  for (let page = 0; page < maxRequests; page += 1) {
     const performance = await GscService.getPerformance({
       projectId,
       // The date dimension is what makes this an archive rather than a
@@ -140,6 +158,13 @@ async function fetchRange(
       startRow: page * ROWS_PER_REQUEST,
       dataState: "final",
     });
+
+    // Every page of a run must come from one property. A project pointed at
+    // another property mid-run would otherwise mix two properties' rows.
+    siteUrl ??= performance.siteUrl;
+    if (performance.siteUrl !== siteUrl) {
+      throw new Error("Search Console property changed during the run");
+    }
 
     for (const row of performance.rows) {
       const [date, query] = row.keys ?? [];
@@ -156,11 +181,100 @@ async function fetchRange(
 
     // A short page means Google has no more rows for this range.
     if (performance.rows.length < ROWS_PER_REQUEST) {
-      return { rows, truncated: false };
+      return { rows, truncated: false, siteUrl };
     }
   }
 
-  return { rows, truncated: true };
+  return { rows, truncated: true, siteUrl };
+}
+
+/**
+ * Where the forward sweep starts.
+ *
+ * Windows already looked at count even when they held no rows, so an empty
+ * stretch is not re-read on every page view. `resolveStart` still rewinds
+ * GSC_DATA_LAG_DAYS behind the newest stored day, and that rewind must win, so
+ * the scanned cursor only applies to an archive that has never held a row.
+ */
+function resolveCursor(
+  state: { lastDate: string | null; scannedThrough: string | null } | null,
+  today: Date,
+): string {
+  const dataCursor = resolveStart(state?.lastDate ?? null, today);
+  const scanCursor = state?.scannedThrough
+    ? addDays(state.scannedThrough, 1)
+    : null;
+  return scanCursor && scanCursor > dataCursor && state?.lastDate === null
+    ? scanCursor
+    : dataCursor;
+}
+
+/** Fold one fetched window into the run's totals. */
+function recordWindow(
+  outcome: BackfillOutcome,
+  window: {
+    rows: GscDailyRow[];
+    truncated: boolean;
+    start: string;
+    rangeEnd: string;
+    previousLastDate: string | null;
+  },
+): void {
+  const { rows, start, rangeEnd, previousLastDate } = window;
+  if (window.truncated) outcome.truncatedChunks += 1;
+  outcome.rowsWritten += rows.length;
+  const dates = new Set(rows.map((row) => row.date));
+  outcome.daysFetched += dates.size;
+  outcome.newDays += [...dates].filter(
+    (date) => !previousLastDate || date > previousLastDate,
+  ).length;
+  outcome.earliestDate =
+    outcome.earliestDate && outcome.earliestDate < start
+      ? outcome.earliestDate
+      : start;
+  outcome.lastDate =
+    outcome.lastDate && outcome.lastDate > rangeEnd
+      ? outcome.lastDate
+      : rangeEnd;
+}
+
+/**
+ * What is still partial after one retry day. A single day that still
+ * overflows is past what the page budget can read and cannot be split
+ * further, so it is reported through `truncatedChunks` and not retried forever.
+ */
+function remainingAfterRetry(
+  incomplete: { from: string; through: string },
+  rangeEnd: string,
+): { from: string; through: string } | null {
+  return rangeEnd >= incomplete.through
+    ? null
+    : { from: addDays(rangeEnd, 1), through: incomplete.through };
+}
+
+/**
+ * What a failed run reports. A revoked grant or an API outage stops the run,
+ * but the days already written stay; recording the reason keeps the UI honest
+ * about why the history is not growing.
+ *
+ * The reason is a phrase this app wrote, never the upstream message. This
+ * value is returned rather than thrown, so it bypasses the layer that strips
+ * error text - it used to print Google's raw English sentence straight into a
+ * Turkish page.
+ */
+function describeFailure(error: unknown): {
+  notConnected: boolean;
+  error: string | null;
+} {
+  if (error instanceof GscNotConnectedError) {
+    return { notConnected: true, error: null };
+  }
+  return {
+    notConnected: false,
+    error: isExpectedGrantFailure(error)
+      ? "Search Console bağlantısının yenilenmesi gerekiyor."
+      : "Search Console isteği başarısız oldu.",
+  };
 }
 
 /**
@@ -183,30 +297,30 @@ async function backfill(input: {
   const today = input.today ?? new Date();
   const state = await GscHistoryRepository.getArchiveState(input.projectId);
   const endDate = latestAvailableDate(today);
-  const dataCursor = resolveStart(state?.lastDate ?? null, today);
-  /*
-   * Windows already looked at, whether or not they held rows, so an empty
-   * stretch is not re-read on every page view. `resolveStart` still rewinds
-   * GSC_DATA_LAG_DAYS behind the newest stored day, and that rewind must win, so
-   * take whichever start is *earlier*.
-   */
-  const scanCursor = state?.scannedThrough
-    ? addDays(state.scannedThrough, 1)
-    : null;
-  let cursor =
-    scanCursor && scanCursor > dataCursor && state?.lastDate === null
-      ? scanCursor
-      : dataCursor;
+  let cursor = resolveCursor(state, today);
 
   const previousLastDate = state?.lastDate ?? null;
   /** The newest day this run reached, regardless of what it found. */
   let scannedThrough: string | null = state?.scannedThrough ?? null;
+  /*
+   * Days whose last read hit the page budget, so only their top queries are
+   * stored. They are re-read first, one day at a time, which is small enough
+   * for the budget; the forward cursors above have already moved past them,
+   * so "scanned through" and "completely archived" stay different claims.
+   */
+  let incomplete =
+    state?.incompleteFrom && state.incompleteThrough
+      ? { from: state.incompleteFrom, through: state.incompleteThrough }
+      : null;
+  /** The property every page of this run came from; null until Google answers. */
+  let siteUrl: string | null = null;
   const outcome: BackfillOutcome = {
     daysFetched: 0,
     newDays: 0,
     rowsWritten: 0,
     earliestDate: state?.earliestDate ?? null,
     lastDate: state?.lastDate ?? null,
+    incomplete,
     hasMore: false,
     notConnected: false,
     truncatedChunks: 0,
@@ -214,62 +328,64 @@ async function backfill(input: {
   };
 
   // Only reachable if the clock went backwards, since `lastDate <= endDate`.
-  if (cursor > endDate) return outcome;
+  if (cursor > endDate && !incomplete) return outcome;
 
   for (let chunk = 0; chunk < MAX_CHUNKS_PER_RUN; chunk += 1) {
-    if (cursor > endDate) break;
+    if (cursor > endDate && !incomplete) break;
 
-    const chunkEnd = addDays(cursor, CHUNK_DAYS - 1);
-    const rangeEnd = chunkEnd > endDate ? endDate : chunkEnd;
+    const retrying = incomplete !== null;
+    const start = incomplete ? incomplete.from : cursor;
+    const windowEnd = addDays(start, (retrying ? 1 : CHUNK_DAYS) - 1);
+    const limit = incomplete ? incomplete.through : endDate;
+    const rangeEnd = windowEnd > limit ? limit : windowEnd;
 
     try {
-      const { rows, truncated } = await fetchRange(
+      const fetched = await fetchRange(
         input.projectId,
-        cursor,
+        start,
         rangeEnd,
+        siteUrl,
+        retrying ? MAX_REQUESTS_PER_RETRY_DAY : MAX_REQUESTS_PER_CHUNK,
       );
+      const { rows, truncated } = fetched;
+      siteUrl = fetched.siteUrl;
 
-      await GscHistoryRepository.upsertDailyRows(input.projectId, rows);
-
-      if (truncated) outcome.truncatedChunks += 1;
-      outcome.rowsWritten += rows.length;
-      const dates = new Set(rows.map((row) => row.date));
-      outcome.daysFetched += dates.size;
-      outcome.newDays += [...dates].filter(
-        (date) => !previousLastDate || date > previousLastDate,
-      ).length;
-      outcome.earliestDate =
-        outcome.earliestDate && outcome.earliestDate < cursor
-          ? outcome.earliestDate
-          : cursor;
-      outcome.lastDate =
-        outcome.lastDate && outcome.lastDate > rangeEnd
-          ? outcome.lastDate
-          : rangeEnd;
-    } catch (error) {
-      // A revoked grant or an API outage stops this run, but the days already
-      // written stay. Recording the reason keeps the UI honest about why the
-      // history is not growing.
-      //
-      // The reason is a phrase this app wrote, never the upstream message.
-      // This value is returned rather than thrown, so it bypasses the layer
-      // that strips error text - it used to print Google's raw English
-      // sentence straight into a Turkish page.
-      if (error instanceof GscNotConnectedError) {
-        outcome.notConnected = true;
-      } else if (isExpectedGrantFailure(error)) {
-        outcome.error = "Search Console bağlantısının yenilenmesi gerekiyor.";
-      } else {
-        outcome.error = "Search Console isteği başarısız oldu.";
+      if (siteUrl) {
+        await GscHistoryRepository.upsertDailyRows(
+          input.projectId,
+          siteUrl,
+          rows,
+        );
       }
+
+      recordWindow(outcome, {
+        rows,
+        truncated,
+        start,
+        rangeEnd,
+        previousLastDate,
+      });
+
+      if (incomplete) {
+        incomplete = remainingAfterRetry(incomplete, rangeEnd);
+      } else {
+        // A multi-day window that overflowed can still be narrowed, so it is
+        // remembered rather than counted as archived.
+        if (truncated && rangeEnd > start) {
+          incomplete = { from: start, through: rangeEnd };
+        }
+        scannedThrough = rangeEnd;
+        cursor = addDays(rangeEnd, 1);
+      }
+    } catch (error) {
+      Object.assign(outcome, describeFailure(error));
       break;
     }
-
-    scannedThrough = rangeEnd;
-    cursor = addDays(rangeEnd, 1);
   }
 
-  outcome.hasMore = outcome.error === null && cursor <= endDate;
+  outcome.incomplete = incomplete;
+  outcome.hasMore =
+    outcome.error === null && (cursor <= endDate || incomplete !== null);
 
   /*
    * A first run that saw nothing writes down nothing.
@@ -301,6 +417,8 @@ async function backfill(input: {
 
   await GscHistoryRepository.markRun({
     projectId: input.projectId,
+    siteUrl,
+    incomplete,
     earliestDate: learnedNothing ? null : outcome.earliestDate,
     lastDate: learnedNothing ? null : outcome.lastDate,
     scannedThrough: sweptEverythingAndFoundNothing ? null : scannedThrough,
@@ -324,6 +442,9 @@ async function getStatus(projectId: string) {
     lastError: state?.lastError ?? null,
     /** How far the sweep has looked, so an empty archive can say so. */
     scannedThrough: state?.scannedThrough ?? null,
+    /** Days stored with only their top queries, until they are re-read. */
+    incompleteFrom: state?.incompleteFrom ?? null,
+    incompleteThrough: state?.incompleteThrough ?? null,
     rowCount,
   };
 }

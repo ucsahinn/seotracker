@@ -6,6 +6,7 @@ import {
 } from "@/server/lib/audit/lighthouse";
 import type { AuditConfig, LighthouseStrategy } from "@/server/lib/audit/types";
 import { selectLighthouseWork } from "@/server/workflows/siteAuditWorkflowLighthouseSelect";
+import { recordAuditHeartbeat } from "@/server/features/audit/auditHeartbeat";
 import { AuditLighthouseRepository } from "@/server/features/audit/repositories/AuditLighthouseRepository";
 import { AuditRepository } from "@/server/features/audit/repositories/AuditRepository";
 import {
@@ -51,9 +52,10 @@ type WaveContext = {
 /**
  * One pass over `checks`: fetch, store the raw payloads to R2, insert rows and
  * bump progress, then return only counts. Raw payloads are far over the 1MiB
- * step-result limit, so they never become step state. A retry re-runs the free
- * PageSpeed calls; rows have deterministic ids and R2 keys, so the writes are
- * idempotent.
+ * step-result limit, so they never become step state. A step retry reads back
+ * what an earlier attempt committed and only fetches the checks that are not
+ * stored as successes; rows have deterministic ids and R2 keys, and a stored
+ * success is never overwritten, so a retry can neither lose nor downgrade it.
  *
  * A check that hit the per-minute limit or a transient failure (network, 5xx)
  * is not stored unless this is the last pass (or the daily quota is gone, when
@@ -78,7 +80,6 @@ async function runPass(
   const persist = async (
     fetched: LighthouseFetched[],
     pending: Check[],
-    keepExisting: boolean,
   ): Promise<PassCounts> => {
     const results = await Promise.all(
       fetched.map((result) =>
@@ -92,20 +93,16 @@ async function runPass(
     await AuditLighthouseRepository.insertLighthouseResults(
       ctx.auditId,
       results,
-      { keepExisting },
     );
-    // The fallback may not know what a failed attempt already stored, so it
-    // reads the wave's counts back instead of trusting its own list.
-    let failed = results.filter((result) => result.errorMessage).length;
-    let completed = results.length - failed;
-    if (keepExisting) {
-      const stored = await AuditLighthouseRepository.countResultsForPages(
-        ctx.auditId,
-        wave.pageIds,
-      );
-      completed = wave.completed + stored.ok - prior.completed;
-      failed = wave.failed + stored.error - prior.failed;
-    }
+    // Progress comes from what is stored, never from this attempt's own list:
+    // an earlier attempt of the step may have committed rows (kept as they
+    // are) or been interrupted before it reported them.
+    const stored = await AuditLighthouseRepository.countResultsForPages(
+      ctx.auditId,
+      wave.pageIds,
+    );
+    const completed = wave.completed + stored.ok - prior.completed;
+    const failed = wave.failed + stored.error - prior.failed;
     await AuditRepository.updateAuditProgress(
       ctx.auditId,
       ctx.workflowInstanceId,
@@ -114,6 +111,7 @@ async function runPass(
         lighthouseFailed: prior.failed + failed,
       },
     );
+    await recordAuditHeartbeat(ctx.auditId);
     return {
       completed,
       failed,
@@ -124,8 +122,21 @@ async function runPass(
 
   try {
     return await step.do(name, LIGHTHOUSE_CHUNK_STEP, async () => {
+      // A retried attempt skips the checks an earlier attempt already stored
+      // as successes.
+      const succeeded = await AuditLighthouseRepository.getSucceededChecks(
+        ctx.auditId,
+        wave.pageIds,
+      );
+      const todo = checks.filter(
+        (check) =>
+          !succeeded.some(
+            (done) =>
+              done.pageId === check.pageId && done.strategy === check.strategy,
+          ),
+      );
       const fetched = await Promise.all(
-        checks.map(({ url, pageId, strategy }) =>
+        todo.map(({ url, pageId, strategy }) =>
           fetchLighthouseResult(url, pageId, strategy),
         ),
       );
@@ -136,8 +147,7 @@ async function runPass(
         waiting && Boolean(item?.rateLimited || item?.retryable);
       return persist(
         fetched.filter((item) => !isDeferred(item)),
-        checks.filter((_check, index) => isDeferred(fetched[index])),
-        false,
+        todo.filter((_check, index) => isDeferred(fetched[index])),
       );
     });
   } catch (error) {
@@ -150,8 +160,6 @@ async function runPass(
           failedLighthouseFetch(url, pageId, strategy, message),
         ),
         [],
-        // Some checks of this wave may already be stored as successes.
-        true,
       ),
     );
   }

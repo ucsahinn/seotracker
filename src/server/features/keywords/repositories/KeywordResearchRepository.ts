@@ -12,6 +12,7 @@ import {
 } from "drizzle-orm";
 import { db } from "@/db";
 import { runBatch } from "@/db/runBatch";
+import { AppError } from "@/server/lib/errors";
 import {
   keywordMetrics,
   savedKeywordTagAssignments,
@@ -269,6 +270,12 @@ async function listSavedKeywordsByProject(
   if (emptyTagNameMatch) {
     return { rows: [], totalCount: 0, tags };
   }
+  if (tagIds.length > MAX_TAG_FILTER) {
+    throw new AppError(
+      "VALIDATION_ERROR",
+      `En fazla ${MAX_TAG_FILTER} etikete göre filtreleyebilirsiniz.`,
+    );
+  }
 
   const where = buildSavedKeywordWhere({
     projectId: params.projectId,
@@ -365,6 +372,10 @@ async function listSavedKeywordRowsByKeywords(params: {
 // projectId filter.
 const QUERY_CHUNK_SIZE = 80;
 const DELETE_CHUNK_SIZE = 90;
+// The list query also binds up to 50 other values (project, search, 20 include
+// and 20 exclude terms, 6 numeric bounds, limit and offset), so the combined
+// tagIds + resolved tagNames filter gets the remaining 50 of D1's 100.
+const MAX_TAG_FILTER = 50;
 
 async function removeSavedKeywords(
   savedKeywordIds: string[],

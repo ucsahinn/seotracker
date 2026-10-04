@@ -1,4 +1,6 @@
 import { KeywordResearchRepository } from "@/server/features/keywords/repositories/KeywordResearchRepository";
+import { AppError, isUniqueConstraintError } from "@/server/lib/errors";
+import { formatNumber } from "@/shared/format";
 import { jsonCodec } from "@/shared/json";
 import type {
   DeleteSavedKeywordTagInput,
@@ -153,27 +155,37 @@ export async function getSavedKeywords(input: GetSavedKeywordsInput): Promise<{
   };
 }
 
+// An export has no page of its own; it reads the whole filtered set. Doing that
+// in one query would load every row and bind every id into the tag lookup at
+// once, so it walks the same stable ordering (sort, then id) page by page.
+const EXPORT_PAGE_SIZE = 500;
+
 export async function exportSavedKeywords(
   input: ExportSavedKeywordsInput,
 ): Promise<{ rows: SavedKeywordRow[] }> {
-  const result = await KeywordResearchRepository.listSavedKeywordsByProject({
-    projectId: input.projectId,
-    search: input.search,
-    includeTerms: input.includeTerms,
-    excludeTerms: input.excludeTerms,
-    minVolume: input.minVolume,
-    maxVolume: input.maxVolume,
-    minCpc: input.minCpc,
-    maxCpc: input.maxCpc,
-    minDifficulty: input.minDifficulty,
-    maxDifficulty: input.maxDifficulty,
-    tagIds: input.tagIds,
-    tagNames: input.tagNames,
-    sort: input.sort,
-    order: input.order,
-  });
-
-  return { rows: mapSavedKeywordRows(result.rows) };
+  const rows: SavedKeywordRow[] = [];
+  for (let page = 1; ; page++) {
+    const result = await KeywordResearchRepository.listSavedKeywordsByProject({
+      projectId: input.projectId,
+      search: input.search,
+      includeTerms: input.includeTerms,
+      excludeTerms: input.excludeTerms,
+      minVolume: input.minVolume,
+      maxVolume: input.maxVolume,
+      minCpc: input.minCpc,
+      maxCpc: input.maxCpc,
+      minDifficulty: input.minDifficulty,
+      maxDifficulty: input.maxDifficulty,
+      tagIds: input.tagIds,
+      tagNames: input.tagNames,
+      page,
+      pageSize: EXPORT_PAGE_SIZE,
+      sort: input.sort,
+      order: input.order,
+    });
+    rows.push(...mapSavedKeywordRows(result.rows));
+    if (result.rows.length < EXPORT_PAGE_SIZE) return { rows };
+  }
 }
 
 export async function updateSavedKeywordTags(
@@ -262,6 +274,16 @@ export async function updateSavedKeywordTag(input: UpdateSavedKeywordTagInput) {
     tagId: input.tagId,
     name: input.name,
     color: input.color,
+  }).catch((error: unknown) => {
+    // The (project, normalized name) unique index is the only one a rename can
+    // hit: another tag already normalizes to this name.
+    if (isUniqueConstraintError(error)) {
+      throw new AppError(
+        "CONFLICT",
+        "Bu adda bir etiket zaten var. Farklı bir ad seçin.",
+      );
+    }
+    throw error;
   });
   if (!updated) return { success: false as const };
   return {
@@ -281,19 +303,12 @@ export async function deleteSavedKeywordTag(input: DeleteSavedKeywordTagInput) {
     tagId: input.tagId,
   });
   if (result.status === "in_use") {
-    throw new TagInUseError(result.assignmentCount);
+    throw new AppError(
+      "CONFLICT",
+      `Etiket ${formatNumber(result.assignmentCount)} kelimeye bağlı. Önce bu kelimelerden kaldırıp tekrar deneyin.`,
+    );
   }
   return { success: result.status === "deleted" };
-}
-
-class TagInUseError extends Error {
-  readonly code = "TAG_IN_USE" as const;
-  constructor(readonly assignmentCount: number) {
-    super(
-      `Tag is attached to ${assignmentCount} keyword${assignmentCount === 1 ? "" : "s"}. Remove the tag from those keywords first.`,
-    );
-    this.name = "TagInUseError";
-  }
 }
 
 export async function removeSavedKeywords(

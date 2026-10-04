@@ -4,8 +4,9 @@ import { AUDIT_LIMITS } from "@/server/features/audit/services/audit-capacity";
 const mocks = vi.hoisted(() => ({
   createAudit: vi.fn(),
   getAuditForProject: vi.fn(),
-  getR2KeysForAudit: vi.fn(),
+  r2List: vi.fn(),
   r2Delete: vi.fn(),
+  workflowGet: vi.fn(),
   deleteAuditForProject: vi.fn(),
   getAuditUsageForOrganization: vi.fn(),
   workflowCreate: vi.fn(),
@@ -13,11 +14,11 @@ const mocks = vi.hoisted(() => ({
 
 vi.mock("cloudflare:workers", () => ({
   env: {
-    R2: { delete: mocks.r2Delete },
+    R2: { delete: mocks.r2Delete, list: mocks.r2List },
     AUDIT_ENGINE: { destroyScratchpad: vi.fn() },
     SITE_AUDIT_WORKFLOW: {
       create: mocks.workflowCreate,
-      get: vi.fn().mockRejectedValue(new Error("gone")),
+      get: mocks.workflowGet,
     },
   },
 }));
@@ -29,12 +30,6 @@ vi.mock("@/server/features/audit/repositories/AuditRepository", () => ({
     getAuditUsageForOrganization: mocks.getAuditUsageForOrganization,
   },
 }));
-vi.mock(
-  "@/server/features/audit/repositories/AuditLighthouseRepository",
-  () => ({
-    AuditLighthouseRepository: { getR2KeysForAudit: mocks.getR2KeysForAudit },
-  }),
-);
 vi.mock("@/server/features/lighthouse/pagespeed-config", () => ({
   getPageSpeedApiKey: vi.fn().mockResolvedValue("key"),
 }));
@@ -59,6 +54,7 @@ function start() {
 }
 
 beforeEach(() => {
+  mocks.workflowGet.mockRejectedValue(new Error("gone"));
   mocks.workflowCreate.mockResolvedValue(undefined);
   mocks.getAuditUsageForOrganization.mockResolvedValue({
     runningCount: 1,
@@ -109,21 +105,78 @@ describe("AuditService.remove", () => {
       id: "a1",
       status: "completed",
     });
-    mocks.getR2KeysForAudit.mockResolvedValue(["k1", "k2"]);
+    mocks.r2List
+      .mockResolvedValueOnce({ objects: [{ key: "k1" }, { key: "k2" }] })
+      .mockResolvedValue({ objects: [] });
   });
 
-  it("deletes the audit's Lighthouse payloads from R2 with its rows", async () => {
+  it("sweeps the audit's R2 prefix until it is empty, then deletes the rows", async () => {
     await AuditService.remove("a1", "p");
 
-    expect(mocks.deleteAuditForProject).toHaveBeenCalledWith("a1", "p");
+    expect(mocks.r2List).toHaveBeenCalledWith(
+      expect.objectContaining({ prefix: "site-audit/p/a1/" }),
+    );
     expect(mocks.r2Delete).toHaveBeenCalledWith(["k1", "k2"]);
+    expect(mocks.deleteAuditForProject).toHaveBeenCalledWith("a1", "p");
   });
 
-  it("still deletes the audit when R2 cannot be reached", async () => {
+  it("keeps the audit when its R2 payloads cannot be deleted", async () => {
     mocks.r2Delete.mockRejectedValue(new Error("r2 down"));
-    vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    vi.spyOn(console, "error").mockImplementation(() => undefined);
 
-    await expect(AuditService.remove("a1", "p")).resolves.toBeUndefined();
-    expect(mocks.deleteAuditForProject).toHaveBeenCalledTimes(1);
+    await expect(AuditService.remove("a1", "p")).rejects.toMatchObject({
+      code: "INTERNAL_ERROR",
+    });
+    expect(mocks.deleteAuditForProject).not.toHaveBeenCalled();
+  });
+
+  describe("a running audit", () => {
+    beforeEach(() => {
+      mocks.getAuditForProject.mockResolvedValue({
+        id: "a1",
+        status: "running",
+        workflowInstanceId: "a1",
+      });
+      vi.spyOn(console, "error").mockImplementation(() => undefined);
+    });
+
+    it("is not deleted while the workflow state cannot be verified", async () => {
+      mocks.workflowGet.mockRejectedValue(new Error("control plane timeout"));
+
+      await expect(AuditService.remove("a1", "p")).rejects.toMatchObject({
+        code: "CONFLICT",
+      });
+      expect(mocks.deleteAuditForProject).not.toHaveBeenCalled();
+    });
+
+    it("is not deleted when terminate fails and the status is unreadable or live", async () => {
+      const instance = {
+        terminate: vi.fn().mockRejectedValue(new Error("busy")),
+        status: vi.fn().mockRejectedValue(new Error("boom")),
+      };
+      mocks.workflowGet.mockResolvedValue(instance);
+      await expect(AuditService.remove("a1", "p")).rejects.toMatchObject({
+        code: "CONFLICT",
+      });
+
+      instance.status.mockResolvedValue({ status: "running" });
+      await expect(AuditService.remove("a1", "p")).rejects.toMatchObject({
+        code: "CONFLICT",
+      });
+      expect(mocks.deleteAuditForProject).not.toHaveBeenCalled();
+    });
+
+    it("is deleted once the instance is confirmed gone or terminal", async () => {
+      mocks.workflowGet.mockRejectedValueOnce(new Error("instance.not_found"));
+      await AuditService.remove("a1", "p");
+
+      mocks.workflowGet.mockResolvedValueOnce({
+        terminate: vi.fn().mockRejectedValue(new Error("already done")),
+        status: vi.fn().mockResolvedValue({ status: "complete" }),
+      });
+      await AuditService.remove("a1", "p");
+
+      expect(mocks.deleteAuditForProject).toHaveBeenCalledTimes(2);
+    });
   });
 });

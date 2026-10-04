@@ -13,6 +13,7 @@ import {
   type FrontierStats,
   type ScratchpadPageLinksRow,
 } from "@/server/features/audit/AuditScratchpad";
+import { recordAuditHeartbeat } from "@/server/features/audit/auditHeartbeat";
 import { AuditProgressKV } from "@/server/lib/audit/progress-kv";
 import {
   adjustCrawlWindow,
@@ -387,10 +388,13 @@ async function persistCrawledPages(input: {
     const childDepth = pageDepth === null ? null : pageDepth + 1;
 
     const targets: string[] = [];
+    let truncated = false;
     for (const link of page.links) {
       if (!link.isInternal) continue;
       if (targets.length < MAX_STORED_LINKS_PER_PAGE) {
         targets.push(link.targetUrl);
+      } else {
+        truncated = true;
       }
       if (
         discovered.size < MAX_DISCOVERED_PER_BATCH &&
@@ -400,9 +404,9 @@ async function persistCrawledPages(input: {
         discovered.set(link.targetUrl, childDepth);
       }
     }
-    if (targets.length > 0) {
-      links.push({ pageId: page.id, url: page.url, targets });
-    }
+    // Always recorded, even when empty: a retried page that lost every link
+    // must replace the row its earlier attempt wrote.
+    links.push({ pageId: page.id, url: page.url, targets, truncated });
 
     // Redirect targets continue the same navigation path: same depth.
     if (
@@ -431,6 +435,7 @@ async function persistCrawledPages(input: {
     pagesCrawled: stats.attempted,
     pagesTotal: Math.min(stats.seen, input.maxPages),
   });
+  await recordAuditHeartbeat(auditId);
   await AuditProgressKV.pushCrawledUrls(
     auditId,
     pages.map((page) => ({

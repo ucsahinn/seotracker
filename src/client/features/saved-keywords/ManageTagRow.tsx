@@ -1,5 +1,5 @@
 import { Pencil, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useId, useState } from "react";
 import {
   resolveTagColor,
   TAG_COLOR_KEYS,
@@ -34,6 +34,8 @@ export function ManageTagRow({
   onDelete: () => void;
   onCancel: () => void;
 }) {
+  const nameId = useId();
+  const colorLabelId = useId();
   const [name, setName] = useState(tag.name);
   const currentColor = resolveTagColor(tag);
   const [color, setColor] = useState<TagColorKey>(currentColor);
@@ -44,14 +46,17 @@ export function ManageTagRow({
   return (
     <div className="space-y-2 border-y border-base-300 bg-base-200/40 px-3 py-2.5">
       <div className="space-y-1">
-        <label className="text-[11px] font-semibold uppercase tracking-wide text-muted">
+        <label
+          htmlFor={nameId}
+          className="text-[11px] font-semibold uppercase tracking-wide text-muted"
+        >
           Yeniden adlandır
         </label>
         <div className="flex items-center gap-1.5">
-          <Pencil className="size-3 opacity-50" />
+          <Pencil className="size-3 opacity-50" aria-hidden />
           <input
+            id={nameId}
             value={name}
-            aria-label="Etiketi yeniden adlandır"
             onChange={(event) => setName(event.target.value)}
             className="min-w-0 flex-1 rounded-field border border-base-300 bg-base-100 px-2 py-1 text-sm outline-none focus:border-primary"
           />
@@ -59,10 +64,17 @@ export function ManageTagRow({
       </div>
 
       <div className="space-y-1">
-        <label className="text-[11px] font-semibold uppercase tracking-wide text-muted">
+        <span
+          id={colorLabelId}
+          className="text-[11px] font-semibold uppercase tracking-wide text-muted"
+        >
           Renk
-        </label>
-        <div className="flex flex-wrap items-center gap-1.5">
+        </span>
+        <div
+          role="group"
+          aria-labelledby={colorLabelId}
+          className="flex flex-wrap items-center gap-1.5"
+        >
           {TAG_COLOR_KEYS.map((key) => (
             <button
               key={key}

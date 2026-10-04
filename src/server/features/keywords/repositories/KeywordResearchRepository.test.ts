@@ -1,5 +1,6 @@
 import { sortBy } from "remeda";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { isUniqueConstraintError } from "@/server/lib/errors";
 import { normalizeKeyword } from "@/server/features/keywords/services/research/helpers";
 import { KeywordResearchRepository } from "./KeywordResearchRepository";
 
@@ -33,7 +34,7 @@ async function list(params: { search?: string; excludeTerms?: string[] }) {
 
 beforeEach(() => {
   testDb.database.exec(
-    "DELETE FROM saved_keywords; DELETE FROM keyword_metrics",
+    "DELETE FROM saved_keywords; DELETE FROM keyword_metrics; DELETE FROM saved_keyword_tags",
   );
 });
 
@@ -74,5 +75,35 @@ describe("saved keyword metrics", () => {
       { projectId: "p1" },
     );
     expect(rows[0]?.metric).toMatchObject({ intent: "informational" });
+  });
+});
+
+describe("saved keyword tag filter", () => {
+  it("refuses a combined tag filter that would overflow D1's bound parameters", async () => {
+    const tagIds = Array.from({ length: 51 }, (_, i) => `tag_${i}`);
+
+    await expect(
+      KeywordResearchRepository.listSavedKeywordsByProject({
+        projectId: "p1",
+        tagIds,
+      }),
+    ).rejects.toMatchObject({ code: "VALIDATION_ERROR" });
+  });
+});
+
+describe("saved keyword tag rename", () => {
+  it("surfaces a name collision as a unique-constraint error the service can recognise", async () => {
+    testDb.database.exec(`
+      INSERT INTO saved_keyword_tags (id, project_id, name, normalized_name)
+      VALUES ('t1', 'p1', 'Content', 'content'), ('t2', 'p1', 'Blog', 'blog')
+    `);
+
+    const rename = KeywordResearchRepository.updateSavedKeywordTag({
+      projectId: "p1",
+      tagId: "t2",
+      name: "CONTENT",
+    });
+
+    await expect(rename).rejects.toSatisfy(isUniqueConstraintError);
   });
 });

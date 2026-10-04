@@ -32,7 +32,7 @@ const inputSchema = {
     .max(20)
     .optional()
     .describe(
-      "Optional tags to attach to every saved keyword. Ask the user for explicit confirmation before using this, especially when saving many keywords or creating new tag names.",
+      "Optional tags to attach to every saved keyword. This server does not ask for approval: tags are written immediately, so ask the user for explicit confirmation yourself before using this, especially when saving many keywords or creating new tag names.",
     ),
   tagMode: z
     .enum(["append", "replace"])
@@ -51,11 +51,14 @@ export const saveKeywordsTool = {
   config: {
     title: "Save keywords",
     description:
-      "Save keywords to a project's saved-keywords list. Idempotent: re-saving an existing keyword is a no-op. If tags are provided, missing tags may be created. By default tags are appended; set tagMode=replace to remove existing tags from these saved keywords before applying the provided tags, which is useful for reorganizing keywords into page/topic clusters. Ask the user for confirmation before applying or replacing tags broadly.",
+      "Save keywords to a project's saved-keywords list. Idempotent: re-saving an existing keyword is a no-op. If tags are provided, missing tags may be created. By default tags are appended; set tagMode=replace to remove existing tags from these saved keywords before applying the provided tags, which is useful for reorganizing keywords into page/topic clusters. Writes immediately and the server enforces no approval step, so ask the user for confirmation yourself before applying or replacing tags broadly.",
     inputSchema,
     outputSchema: {
       projectId: z.string(),
+      // Distinct keywords (after case/whitespace folding) now present in the
+      // project, new or already saved; duplicates in the input collapse.
       savedCount: z.number(),
+      submittedCount: z.number(),
       keywords: z.array(z.string()),
       tags: z.array(z.string()),
       tagMode: z.enum(["append", "replace"]),
@@ -82,7 +85,7 @@ export const saveKeywordsTool = {
 
     const { locationCode, languageCode } = resolveMarket(args, context.project);
 
-    await KeywordResearchService.saveKeywords({
+    const { savedKeywordIds } = await KeywordResearchService.saveKeywords({
       projectId: args.projectId,
       keywords: args.keywords,
       metrics: args.metrics,
@@ -99,7 +102,7 @@ export const saveKeywordsTool = {
     const modeText = args.tagMode === "replace" ? " Replaced tags." : "";
 
     return mcpResponse({
-      text: `Saved ${args.keywords.length} keyword(s)${tagText} to project ${args.projectId}.${modeText}`,
+      text: `Saved ${savedKeywordIds.length} distinct keyword(s) from ${args.keywords.length} submitted${tagText} to project ${args.projectId}.${modeText}`,
       meta: buildProjectMeta(
         context,
         args.projectId,
@@ -107,7 +110,8 @@ export const saveKeywordsTool = {
       ),
       structuredContent: {
         projectId: args.projectId,
-        savedCount: args.keywords.length,
+        savedCount: savedKeywordIds.length,
+        submittedCount: args.keywords.length,
         keywords: args.keywords,
         tags: args.tags ?? [],
         tagMode: args.tagMode ?? "append",

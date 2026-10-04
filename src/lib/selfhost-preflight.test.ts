@@ -65,7 +65,7 @@ describe("runSelfhostPreflight", () => {
   it("accepts a PageSpeed key without inspecting its shape", () => {
     const result = runSelfhostPreflight({
       AUTH_MODE: "local_noauth",
-      PAGESPEED_API_KEY: "AIzaSyExample",
+      PAGESPEED_API_KEY: "any-value",
     });
 
     expect(itemFor(result, "PageSpeed")?.level).toBe("ok");
@@ -75,8 +75,8 @@ describe("runSelfhostPreflight", () => {
     const result = runSelfhostPreflight({
       AUTH_MODE: "local_noauth",
       GOOGLE_CLIENT_ID: "id",
-      GOOGLE_CLIENT_SECRET: "secret",
-      BETTER_AUTH_SECRET: "too-short",
+      GOOGLE_CLIENT_SECRET: "x",
+      BETTER_AUTH_SECRET: "short",
     });
 
     expect(itemFor(result, "Search Console")?.level).toBe("warn");

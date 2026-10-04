@@ -1,7 +1,7 @@
-import { and, asc, desc, eq, gte, lte, sql } from "drizzle-orm";
+import { and, asc, desc, eq, gte, lte, sql, type SQL } from "drizzle-orm";
 import { db } from "@/db";
 import { executeInBatches, runBatch } from "@/db/runBatch";
-import { gscArchiveState, gscQueryDaily } from "@/db/schema";
+import { gscArchiveState, gscConnections, gscQueryDaily } from "@/db/schema";
 
 export type GscDailyRow = {
   date: string;
@@ -21,12 +21,37 @@ async function getArchiveState(projectId: string) {
 }
 
 /**
+ * The project's connection row, when it still points at the property the data
+ * came from. Used as the SELECT of an INSERT ... SELECT, so a write for a
+ * property the project has since left matches nothing and is dropped by the
+ * database itself, atomically with the check. `siteUrl` null means the caller
+ * never got an answer from Google and has no property to hold the write to.
+ */
+function stillConnectedTo<T extends Record<string, SQL.Aliased>>(
+  tx: typeof db,
+  fields: T,
+  projectId: string,
+  siteUrl: string | null,
+) {
+  return tx
+    .select(fields)
+    .from(gscConnections)
+    .where(
+      and(
+        eq(gscConnections.projectId, projectId),
+        siteUrl === null ? undefined : eq(gscConnections.siteUrl, siteUrl),
+      ),
+    );
+}
+
+/**
  * Store one fetch's worth of daily rows. Conflicts overwrite: a re-fetched day
  * is the same day measured again, and Search Console revises recent days as
- * late data lands.
+ * late data lands. Dropped when the project no longer points at `siteUrl`.
  */
 async function upsertDailyRows(
   projectId: string,
+  siteUrl: string,
   rows: GscDailyRow[],
 ): Promise<void> {
   if (rows.length === 0) return;
@@ -35,7 +60,23 @@ async function upsertDailyRows(
   await executeInBatches(rows, (tx, row) =>
     tx
       .insert(gscQueryDaily)
-      .values({ projectId, ...row, fetchedAt })
+      .select(
+        stillConnectedTo(
+          tx,
+          {
+            projectId: sql<string>`${projectId}`.as("project_id"),
+            date: sql<string>`${row.date}`.as("date"),
+            query: sql<string>`${row.query}`.as("query"),
+            clicks: sql<number>`${row.clicks}`.as("clicks"),
+            impressions: sql<number>`${row.impressions}`.as("impressions"),
+            ctr: sql<number>`${row.ctr}`.as("ctr"),
+            position: sql<number>`${row.position}`.as("position"),
+            fetchedAt: sql<string>`${fetchedAt}`.as("fetched_at"),
+          },
+          projectId,
+          siteUrl,
+        ),
+      )
       .onConflictDoUpdate({
         target: [
           gscQueryDaily.projectId,
@@ -53,26 +94,49 @@ async function upsertDailyRows(
   );
 }
 
-/** Record how far the archive reaches, in the same write as the rows' outcome. */
+/**
+ * Record how far the archive reaches, in the same write as the rows' outcome.
+ * Dropped, like the rows, when the project no longer points at `siteUrl`.
+ */
 async function markRun(input: {
   projectId: string;
+  siteUrl: string | null;
   earliestDate: string | null;
   lastDate: string | null;
   scannedThrough: string | null;
+  /** Range still holding only the top queries; null when nothing is partial. */
+  incomplete: { from: string; through: string } | null;
   error: string | null;
 }): Promise<void> {
   const lastRunAt = new Date().toISOString();
   await runBatch((tx) => [
     tx
       .insert(gscArchiveState)
-      .values({
-        projectId: input.projectId,
-        earliestDate: input.earliestDate,
-        lastDate: input.lastDate,
-        scannedThrough: input.scannedThrough,
-        lastRunAt,
-        lastError: input.error,
-      })
+      .select(
+        stillConnectedTo(
+          tx,
+          {
+            projectId: sql<string>`${input.projectId}`.as("project_id"),
+            earliestDate: sql<string | null>`${input.earliestDate}`.as(
+              "earliest_date",
+            ),
+            lastDate: sql<string | null>`${input.lastDate}`.as("last_date"),
+            lastRunAt: sql<string>`${lastRunAt}`.as("last_run_at"),
+            lastError: sql<string | null>`${input.error}`.as("last_error"),
+            scannedThrough: sql<string | null>`${input.scannedThrough}`.as(
+              "scanned_through",
+            ),
+            incompleteFrom: sql<
+              string | null
+            >`${input.incomplete?.from ?? null}`.as("incomplete_from"),
+            incompleteThrough: sql<
+              string | null
+            >`${input.incomplete?.through ?? null}`.as("incomplete_through"),
+          },
+          input.projectId,
+          input.siteUrl,
+        ),
+      )
       .onConflictDoUpdate({
         target: gscArchiveState.projectId,
         set: {
@@ -82,6 +146,9 @@ async function markRun(input: {
           // Always the newer value: this cursor only moves forward, and a
           // null means "start over", which must also be written.
           scannedThrough: input.scannedThrough,
+          // Written as given: null is how a fully re-read range is cleared.
+          incompleteFrom: input.incomplete?.from ?? null,
+          incompleteThrough: input.incomplete?.through ?? null,
           lastRunAt,
           lastError: input.error,
         },

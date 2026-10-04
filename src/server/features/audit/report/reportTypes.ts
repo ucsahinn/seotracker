@@ -90,7 +90,7 @@ export type AuditReportInput = {
   lighthouseTotal?: number | null;
   /** The audit's status. Absent means completed (older callers, tests). */
   status?: "running" | "completed" | "failed" | null;
-  /** Short audit id, so two audits of one site on one day get distinct titles. */
+  /** Audit id, so two audits of one site on one day get distinct titles. */
   auditId?: string | null;
 };
 

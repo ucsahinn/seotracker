@@ -247,20 +247,19 @@ export const getAuditPagesTool = {
     if (!audit) {
       return noAuditsYet(context, args.projectId, { pages: [], total: 0 });
     }
-    const allPages = await AuditRepository.getPagesForAudit(audit.id);
-
-    const filtered = allPages.filter(
-      (page) =>
-        (!args.fetchClass || page.fetchClass === args.fetchClass) &&
-        (args.statusCode === undefined ||
-          page.statusCode === args.statusCode) &&
-        (!args.urlContains || page.url.includes(args.urlContains)),
-    );
     const limit = args.limit ?? 100;
-    const pages = filtered.slice(0, limit);
+    const { pages, total } = await AuditRepository.searchPagesForAudit(
+      audit.id,
+      {
+        fetchClass: args.fetchClass,
+        statusCode: args.statusCode,
+        urlContains: args.urlContains,
+        limit,
+      },
+    );
 
     const text = [
-      `Audit ${audit.id}: ${filtered.length} pages${filtered.length > limit ? ` (showing ${limit})` : ""}.`,
+      `Audit ${audit.id}: ${total} pages${total > limit ? ` (showing ${limit})` : ""}.`,
       ...pages
         .slice(0, 25)
         .map(
@@ -277,7 +276,7 @@ export const getAuditPagesTool = {
         args.projectId,
         auditPath(args.projectId, audit.id),
       ),
-      structuredContent: { pages, total: filtered.length },
+      structuredContent: { pages, total },
     });
   }),
 };

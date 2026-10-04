@@ -27,17 +27,20 @@ vi.mock("@/server/lib/ga4Client", () => ({
 describe("Ga4MeasurementHealthService", () => {
   beforeEach(() => {
     mocks.getByProjectId.mockResolvedValue(makeGa4Connection());
-    mocks.listDataStreams.mockResolvedValue([
-      {
-        name: "properties/123/dataStreams/456",
-        type: "WEB_DATA_STREAM",
-        displayName: "Website",
-        webStreamData: {
-          measurementId: "G-ABC123",
-          defaultUri: "https://example.com",
+    mocks.listDataStreams.mockResolvedValue({
+      complete: true,
+      items: [
+        {
+          name: "properties/123/dataStreams/456",
+          type: "WEB_DATA_STREAM",
+          displayName: "Website",
+          webStreamData: {
+            measurementId: "G-ABC123",
+            defaultUri: "https://example.com",
+          },
         },
-      },
-    ]);
+      ],
+    });
     mocks.getEnhancedMeasurementSettings.mockResolvedValue({
       streamEnabled: true,
       scrollsEnabled: true,
@@ -50,15 +53,18 @@ describe("Ga4MeasurementHealthService", () => {
       searchQueryParameter: "q",
       uriQueryParameter: "",
     });
-    mocks.listKeyEvents.mockResolvedValue([
-      {
-        eventName: "purchase",
-        countingMethod: "ONCE_PER_EVENT",
-        custom: false,
-      },
-    ]);
-    mocks.listCustomDimensions.mockResolvedValue([]);
-    mocks.listCustomMetrics.mockResolvedValue([]);
+    mocks.listKeyEvents.mockResolvedValue({
+      complete: true,
+      items: [
+        {
+          eventName: "purchase",
+          countingMethod: "ONCE_PER_EVENT",
+          custom: false,
+        },
+      ],
+    });
+    mocks.listCustomDimensions.mockResolvedValue({ complete: true, items: [] });
+    mocks.listCustomMetrics.mockResolvedValue({ complete: true, items: [] });
   });
 
   it("returns a read-only measurement inventory and actionable issues", async () => {
@@ -79,6 +85,15 @@ describe("Ga4MeasurementHealthService", () => {
       measurementId: "G-ABC123",
       enhancedMeasurement: { siteSearchEnabled: false },
     });
+  });
+
+  it("flags a truncated list instead of reporting it as the whole inventory", async () => {
+    mocks.listKeyEvents.mockResolvedValue({ complete: false, items: [] });
+    const result =
+      await Ga4MeasurementHealthService.getMeasurementHealth("project_1");
+    expect(result.incompleteLists).toEqual(["key_events"]);
+    expect(result.issues).toContain("inventory_incomplete");
+    expect(result.issues).not.toContain("no_key_events_configured");
   });
 
   it("returns a stable not-connected error before calling Google", async () => {

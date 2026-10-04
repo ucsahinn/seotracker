@@ -212,7 +212,7 @@ export function mapGa4ReportError(error: unknown): never {
 }
 
 async function resolveReportPage(input: {
-  client: ReturnType<typeof createGa4DataClient>;
+  client: Pick<ReturnType<typeof createGa4DataClient>, "runReport">;
   normalized: ReturnType<typeof normalizeGa4Response>;
   request: Parameters<ReturnType<typeof createGa4DataClient>["runReport"]>[0];
   fetchCompleteReport: boolean;
@@ -309,20 +309,34 @@ async function runReport(input: Ga4ReportInput, opts: { now?: Date } = {}) {
           offset: 0,
         })
       : null;
+    // Google sends the property quota with every report at no extra cost;
+    // record it at each response boundary so the meter keeps the latest
+    // reading, whichever request finished last. A response without it is
+    // ignored.
+    const quotaOwner = {
+      projectId: input.projectId,
+      propertyId: connection.propertyId,
+      ga4AccountId: connection.ga4AccountId,
+      connectedByUserId: connection.connectedByUserId,
+    };
+    const trackedClient = {
+      async runReport(report: typeof request) {
+        const response = await client.runReport(report);
+        recordGa4Quota(quotaOwner, response.propertyQuota ?? null);
+        return response;
+      },
+    };
     const [response, previousResponse] = await Promise.all([
-      client.runReport(request),
-      previousRequest ? client.runReport(previousRequest) : null,
+      trackedClient.runReport(request),
+      previousRequest ? trackedClient.runReport(previousRequest) : null,
     ]);
     const normalized = normalizeGa4Response(response, request);
-    // Google sends the property quota with every report at no extra cost;
-    // keep the latest for the quota meter. A response without it is ignored.
-    recordGa4Quota(input.projectId, normalized.quota);
     const previousNormalized =
       previousResponse && previousRequest
         ? normalizeGa4Response(previousResponse, previousRequest)
         : null;
     const { rows, rowCount, hasMore, nextOffset } = await resolveReportPage({
-      client,
+      client: trackedClient,
       normalized,
       request,
       fetchCompleteReport,

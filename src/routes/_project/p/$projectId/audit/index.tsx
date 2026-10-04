@@ -143,13 +143,26 @@ function AuditDetail({
     );
   }
 
-  if (statusQuery.isError) {
+  // Only without data: a failed background poll must not replace an audit
+  // that is already on screen.
+  if (statusQuery.isError && !statusQuery.data) {
+    const notFound = getErrorCode(statusQuery.error) === "NOT_FOUND";
     return (
       <PageShell width="reading">
-        <div className="alert alert-error">
-          <AlertCircle className="size-5" />
-          <span>Bu denetim yüklenemedi. Silinmiş olabilir.</span>
-        </div>
+        {notFound ? (
+          <div className="alert alert-error">
+            <AlertCircle className="size-5" />
+            <span>Bu denetim bulunamadı. Silinmiş olabilir.</span>
+          </div>
+        ) : (
+          <div className="rounded-box border border-base-300 bg-base-100">
+            <QueryErrorState
+              error={statusQuery.error}
+              onRetry={() => void statusQuery.refetch()}
+              title="Denetime bağlanılamadı"
+            />
+          </div>
+        )}
         <button className="btn btn-ghost btn-sm" onClick={onBack}>
           &larr; Tüm denetimler
         </button>

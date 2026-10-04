@@ -56,12 +56,12 @@ describe("parseServiceAccountKey", () => {
   });
 
   it("accepts a real key file and ignores the fields it does not need", () => {
+    const pem = "-----BEGIN PRIVATE KEY-----\nAAAA\n-----END PRIVATE KEY-----"; // gitleaks:allow
     const result = parseServiceAccountKey(
       JSON.stringify({
         type: "service_account",
         client_email: "seotracker@p.iam.gserviceaccount.com",
-        private_key:
-          "-----BEGIN PRIVATE KEY-----\nAAAA\n-----END PRIVATE KEY-----",
+        private_key: pem,
         project_id: "p",
         private_key_id: "ignored",
         client_x509_cert_url: "https://example.test/ignored",

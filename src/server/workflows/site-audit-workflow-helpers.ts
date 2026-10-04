@@ -1,6 +1,7 @@
 import type { CrawledPageResult } from "@/server/lib/audit/types";
 import type { PageFetchClass } from "@/shared/audit-fetch-class";
 import { sha256Hex } from "@/server/lib/audit/ids";
+import { assertPublicHostname } from "@/server/lib/audit/url-policy";
 import { normalizeUrl } from "@/server/lib/audit/url-utils";
 import type { CrawlThrottle } from "@/server/lib/audit/crawl-throttle";
 
@@ -103,6 +104,35 @@ async function fetchPage(url: string, throttle: CrawlThrottle) {
   }
 }
 
+/*
+ * isSameOrigin treats a www host and its apex as one site, but they are two
+ * DNS names. Every hostname the crawl contacts is checked once per isolate;
+ * only a passing answer is remembered, so a failed lookup is retried.
+ */
+const PUBLIC_HOST_TTL_MS = 60_000;
+const publicHosts = new Map<
+  string,
+  { check: Promise<void>; expiresAt: number }
+>();
+
+async function ensurePublicHost(url: string): Promise<boolean> {
+  const hostname = new URL(url).hostname;
+  let entry = publicHosts.get(hostname);
+  // A short lifetime, so a host whose DNS answer changes mid-audit is asked again.
+  if (!entry || entry.expiresAt < Date.now()) {
+    const check = assertPublicHostname(hostname);
+    entry = { check, expiresAt: Date.now() + PUBLIC_HOST_TTL_MS };
+    publicHosts.set(hostname, entry);
+    check.catch(() => publicHosts.delete(hostname));
+  }
+  try {
+    await entry.check;
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 /** Null leaves this URL deferred when the shared cooldown stops its fetch. */
 export async function crawlPage(
   url: string,
@@ -113,6 +143,19 @@ export async function crawlPage(
   const startTime = Date.now();
 
   try {
+    if (!(await ensurePublicHost(url))) {
+      return emptyPageResult({
+        url,
+        statusCode: 0,
+        fetchClass: "error",
+        redirectUrl: null,
+        responseTimeMs: 0,
+        xRobotsTag: null,
+        headerCanonicalUrl: null,
+        crawlDepth,
+        inSitemap,
+      });
+    }
     const fetched = await fetchPage(url, throttle);
     if (!fetched) return null;
     const { response, responseTimeMs, rateLimited } = fetched;

@@ -30,7 +30,9 @@ const searchSchema = z.object({
   device: z.enum(GSC_DEVICES).optional().catch(undefined),
   /* Arama türü; web varsayılan olduğu için URL'de yalnızca diğerleri görünür. */
   type: z.enum(SEARCH_PERFORMANCE_TYPES).optional().catch(undefined),
-  country: z.string().min(2).max(3).optional().catch(undefined),
+  // Alpha-3 only, like the server schema: a two-letter ?country=TR passed
+  // this route and then failed validation in every query behind it.
+  country: z.string().length(3).optional().catch(undefined),
   /* Free-text narrowing of the queries/pages table. In the URL so a link
      from a saved keyword lands on that keyword, and so a reload keeps it. */
   q: z.string().max(200).optional().catch(undefined),

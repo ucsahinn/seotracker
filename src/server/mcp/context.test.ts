@@ -39,7 +39,7 @@ describe("seotracker tool auth context", () => {
         {
           http: {
             authInfo: {
-              token: "access-token",
+              token: "fake-access-token",
               clientId: "client-1",
               scopes: ["mcp"],
             },

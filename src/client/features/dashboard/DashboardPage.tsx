@@ -48,7 +48,8 @@ export function DashboardPage({ projectId }: { projectId: string }) {
   const activation = activationQuery.data;
   const overview = overviewQuery.data;
 
-  if (activationQuery.isError) {
+  // Only when nothing is cached: a failed refetch keeps the dashboard.
+  if (activationQuery.isError && !activation) {
     return (
       <PageShell>
         <QueryErrorState

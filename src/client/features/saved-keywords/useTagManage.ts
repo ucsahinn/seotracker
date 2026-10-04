@@ -31,7 +31,7 @@ export function useTagManage(projectId: string) {
   }) => {
     markBusy(input.tagId, true);
     try {
-      await updateSavedKeywordTag({
+      const result = await updateSavedKeywordTag({
         data: {
           projectId,
           tagId: input.tagId,
@@ -40,7 +40,8 @@ export function useTagManage(projectId: string) {
         },
       });
       await invalidate();
-      toast.success("Etiket güncellendi");
+      if (result.success) toast.success("Etiket güncellendi");
+      else toast.error("Etiket güncellenemedi");
     } catch (error) {
       toast.error(getStandardErrorMessage(error, "Etiket güncellenemedi"));
     } finally {
@@ -51,17 +52,18 @@ export function useTagManage(projectId: string) {
   const deleteTag = async (tagId: string): Promise<boolean> => {
     markBusy(tagId, true);
     try {
-      await deleteSavedKeywordTag({ data: { projectId, tagId } });
+      const result = await deleteSavedKeywordTag({
+        data: { projectId, tagId },
+      });
       await invalidate();
+      if (!result.success) {
+        toast.error("Etiket silinemedi");
+        return false;
+      }
       toast.success("Etiket silindi");
       return true;
     } catch (error) {
-      toast.error(
-        getStandardErrorMessage(
-          error,
-          "Etiket silinemedi. Önce tüm kelimelerden kaldırıp tekrar deneyin.",
-        ),
-      );
+      toast.error(getStandardErrorMessage(error, "Etiket silinemedi"));
       return false;
     } finally {
       markBusy(tagId, false);

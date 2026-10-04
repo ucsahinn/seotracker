@@ -54,7 +54,10 @@ export type CoverageRow = {
   richResultsVerdict: string | null;
   inspectionLink: string | null;
   error: string | null;
+  /** When Google last answered. A failed attempt does not move it. */
   checkedAt: string | null;
+  /** When we last asked, answered or not. Absent on rows from before it was kept. */
+  lastAttemptAt?: string | null;
 };
 
 export type CoverageRowView = CoverageRow & {
@@ -118,17 +121,18 @@ export function blankRow(url: string): CoverageRow {
 }
 
 /**
- * Compare two URLs the way Google treats them. A declared `https://x/a/` and a
- * chosen `https://x/a` are the same page, and reporting that as a mismatch
- * would bury the real ones.
+ * Compare two URLs by identity, folding only what the URL standard itself
+ * treats as equal: scheme and host case, default ports, and the empty path
+ * versus "/". A trailing slash on a deeper path is NOT folded: servers may
+ * serve different pages at `/a` and `/a/`, and a canonical that points at the
+ * other form is exactly the disagreement this check exists to show.
  */
 function normalizeUrl(value: string): string {
   try {
     const url = new URL(value);
-    const path = url.pathname.replace(/\/+$/, "");
-    return `${url.protocol}//${url.host}${path}${url.search}`;
+    return `${url.protocol}//${url.host}${url.pathname}${url.search}`;
   } catch {
-    return value.replace(/\/+$/, "");
+    return value;
   }
 }
 
@@ -174,7 +178,11 @@ function parseStamp(value: string | null): number {
 function overdueRatio(row: CoverageRow | undefined, now: Date): number {
   // Never asked: the only genuinely unknown answer, so nothing outranks it.
   if (!row || !row.checkedAt) return Number.POSITIVE_INFINITY;
-  const ms = parseStamp(row.checkedAt);
+  // A failed attempt leaves the old verdict and its `checkedAt` alone, so the
+  // retry clock for an errored row runs from the attempt, not the old answer.
+  const ms = parseStamp(
+    row.error ? (row.lastAttemptAt ?? row.checkedAt) : row.checkedAt,
+  );
   if (Number.isNaN(ms)) return Number.POSITIVE_INFINITY;
   /*
    * An error used to return "due" unconditionally, with no age at all. That

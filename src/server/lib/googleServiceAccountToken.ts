@@ -30,7 +30,25 @@ const tokenResponseSchema = z.object({
 });
 
 type CachedToken = { token: string; expiresAt: number };
+/*
+ * Keyed by credential revision (the stored account's `updatedAt`) and scope.
+ * A token minted from a replaced key lives under the old revision's key, so
+ * it can never be served for the new one, and a mint that was already in
+ * flight when the account changed cannot repopulate the cache for it.
+ */
 const cache = new Map<string, CachedToken>();
+/** One mint per revision and scope at a time. */
+const inFlight = new Map<string, Promise<string>>();
+/** Bumped by `clearServiceAccountTokenCache`; a mint from before it is not cached. */
+let generation = 0;
+
+const NOT_CONFIGURED =
+  "Hizmet hesabı tanımlı değil ya da saklanan anahtar okunamıyor.";
+
+function cacheKey(revision: string, scope: string): string {
+  return `${revision}
+${scope}`;
+}
 
 class GoogleServiceAccountError extends Error {
   constructor(message: string, options?: { cause?: unknown }) {
@@ -84,17 +102,29 @@ export async function getServiceAccountToken(scope: string): Promise<string> {
     );
   }
 
-  const cached = cache.get(scope);
+  // The status read is a cheap, non-decrypting lookup of the revision, so a
+  // replaced credential is noticed even by an isolate that never saw it change.
+  const status = await GoogleServiceAccountRepository.getStatus();
+  if (!status) throw new GoogleServiceAccountError(NOT_CONFIGURED);
+
+  const key = cacheKey(status.updatedAt, scope);
+  const cached = cache.get(key);
   if (cached && cached.expiresAt - EXPIRY_MARGIN_MS > Date.now()) {
     return cached.token;
   }
+  const pending = inFlight.get(key);
+  if (pending) return pending;
 
+  const minting = mintToken(scope, generation).finally(() => {
+    if (inFlight.get(key) === minting) inFlight.delete(key);
+  });
+  inFlight.set(key, minting);
+  return minting;
+}
+
+async function mintToken(scope: string, startedIn: number): Promise<string> {
   const account = await GoogleServiceAccountRepository.get();
-  if (!account) {
-    throw new GoogleServiceAccountError(
-      "Hizmet hesabı tanımlı değil ya da saklanan anahtar okunamıyor.",
-    );
-  }
+  if (!account) throw new GoogleServiceAccountError(NOT_CONFIGURED);
 
   const assertion = await signAssertion(
     buildAssertionPayload({
@@ -142,10 +172,14 @@ export async function getServiceAccountToken(scope: string): Promise<string> {
     );
   }
 
-  cache.set(scope, {
-    token: body.data.access_token,
-    expiresAt: Date.now() + body.data.expires_in * 1000,
-  });
+  // Under the revision this mint actually used, and only if the cache was not
+  // cleared while the request was out.
+  if (startedIn === generation) {
+    cache.set(cacheKey(account.updatedAt, scope), {
+      token: body.data.access_token,
+      expiresAt: Date.now() + body.data.expires_in * 1000,
+    });
+  }
   return body.data.access_token;
 }
 
@@ -157,5 +191,7 @@ export async function getServiceAccountToken(scope: string): Promise<string> {
  * credential the operator just replaced.
  */
 export function clearServiceAccountTokenCache(): void {
+  generation += 1;
   cache.clear();
+  inFlight.clear();
 }

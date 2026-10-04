@@ -248,6 +248,10 @@ function useLaunchMutations({
       }
       toast.success("Denetim silindi");
     },
+    // The confirm modal has already closed; the row stays in the list, so the
+    // toast is the only signal that the delete did not happen.
+    onError: (error) =>
+      toast.error(getStandardErrorMessage(error, "Denetim silinemedi")),
   });
 
   return { startMutation, deleteMutation };

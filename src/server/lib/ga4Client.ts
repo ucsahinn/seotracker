@@ -1,6 +1,6 @@
 /* eslint-disable max-lines -- one client module per Google integration (gscClient precedent); GA4 spans the Admin and Data APIs */
 import { z } from "zod";
-import { getAuth } from "@/lib/auth";
+import { getGoogleGrantAuth } from "@/lib/auth";
 import {
   Ga4AdminApiError,
   Ga4DataApiError,
@@ -19,6 +19,8 @@ const GA4_ADMIN_ALPHA_API_BASE =
 const GOOGLE_USERINFO_URL = "https://openidconnect.googleapis.com/v1/userinfo";
 const GA4_DATA_API_BASE = "https://analyticsdata.googleapis.com/v1beta";
 const MAX_ACCOUNT_SUMMARY_PAGES = 100;
+/** Request budget per Admin list: 5 pages of 200 items. */
+const MAX_ADMIN_LIST_PAGES = 5;
 const MAX_ERROR_BODY_LENGTH = 8_000;
 const propertyIdSchema = z.string().regex(/^properties\/\d+$/);
 const dataStreamNameSchema = z
@@ -148,7 +150,9 @@ async function getGa4AccessToken(opts: {
 
   let result: { accessToken?: string } | undefined;
   try {
-    result = await getAuth().api.getAccessToken({
+    result = await (
+      await getGoogleGrantAuth()
+    ).api.getAccessToken({
       body: {
         providerId: GA4_OAUTH_PROVIDER_ID,
         userId: opts.userId,
@@ -225,6 +229,26 @@ export function createGa4AdminClient(opts: {
     return new URL(`${base}/${canonicalId}/${child}`);
   }
 
+  /**
+   * Follows nextPageToken up to a fixed request budget. `complete: false`
+   * means Google still had more pages: callers must not present `items` as
+   * the whole inventory.
+   */
+  async function listAll<T>(
+    url: URL,
+    parsePage: (data: unknown) => { items: T[]; nextPageToken?: string },
+  ): Promise<{ items: T[]; complete: boolean }> {
+    url.searchParams.set("pageSize", "200");
+    const items: T[] = [];
+    for (let page = 0; page < MAX_ADMIN_LIST_PAGES; page += 1) {
+      const parsed = parsePage(await request(url.toString()));
+      items.push(...parsed.items);
+      if (!parsed.nextPageToken) return { items, complete: true };
+      url.searchParams.set("pageToken", parsed.nextPageToken);
+    }
+    return { items, complete: false };
+  }
+
   return {
     async getUserInfoEmail(): Promise<string | null> {
       const data = z
@@ -276,11 +300,13 @@ export function createGa4AdminClient(opts: {
         propertyId,
         "dataStreams",
       );
-      url.searchParams.set("pageSize", "200");
-      const response = dataStreamsResponseSchema.parse(
-        await request(url.toString()),
-      );
-      return response.dataStreams ?? [];
+      return listAll(url, (data) => {
+        const page = dataStreamsResponseSchema.parse(data);
+        return {
+          items: page.dataStreams ?? [],
+          nextPageToken: page.nextPageToken,
+        };
+      });
     },
 
     async getEnhancedMeasurementSettings(streamName: string) {
@@ -294,11 +320,13 @@ export function createGa4AdminClient(opts: {
 
     async listKeyEvents(propertyId: string) {
       const url = propertyUrl(GA4_ADMIN_API_BASE, propertyId, "keyEvents");
-      url.searchParams.set("pageSize", "200");
-      const response = keyEventsResponseSchema.parse(
-        await request(url.toString()),
-      );
-      return response.keyEvents ?? [];
+      return listAll(url, (data) => {
+        const page = keyEventsResponseSchema.parse(data);
+        return {
+          items: page.keyEvents ?? [],
+          nextPageToken: page.nextPageToken,
+        };
+      });
     },
 
     async listCustomDimensions(propertyId: string) {
@@ -307,20 +335,24 @@ export function createGa4AdminClient(opts: {
         propertyId,
         "customDimensions",
       );
-      url.searchParams.set("pageSize", "200");
-      const response = customDimensionsResponseSchema.parse(
-        await request(url.toString()),
-      );
-      return response.customDimensions ?? [];
+      return listAll(url, (data) => {
+        const page = customDimensionsResponseSchema.parse(data);
+        return {
+          items: page.customDimensions ?? [],
+          nextPageToken: page.nextPageToken,
+        };
+      });
     },
 
     async listCustomMetrics(propertyId: string) {
       const url = propertyUrl(GA4_ADMIN_API_BASE, propertyId, "customMetrics");
-      url.searchParams.set("pageSize", "200");
-      const response = customMetricsResponseSchema.parse(
-        await request(url.toString()),
-      );
-      return response.customMetrics ?? [];
+      return listAll(url, (data) => {
+        const page = customMetricsResponseSchema.parse(data);
+        return {
+          items: page.customMetrics ?? [],
+          nextPageToken: page.nextPageToken,
+        };
+      });
     },
   };
 }

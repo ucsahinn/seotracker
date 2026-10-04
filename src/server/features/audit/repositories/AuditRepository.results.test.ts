@@ -86,3 +86,28 @@ describe("getAuditResultsForProject", () => {
     expect(ratio).toBeLessThan(0.1);
   });
 });
+
+describe("searchPagesForAudit", () => {
+  it("filters, orders by url and limits in SQL while counting every match", async () => {
+    const { pages, total } = await AuditRepository.searchPagesForAudit("a1", {
+      urlContains: "/19",
+      limit: 3,
+    });
+
+    expect(total).toBe(11);
+    expect(pages.map((page) => page.url)).toEqual([
+      "https://example.com/19",
+      "https://example.com/190",
+      "https://example.com/191",
+    ]);
+  });
+
+  it("matches the substring case-sensitively", async () => {
+    const { total } = await AuditRepository.searchPagesForAudit("a1", {
+      urlContains: "EXAMPLE.com/19",
+      limit: 10,
+    });
+
+    expect(total).toBe(0);
+  });
+});

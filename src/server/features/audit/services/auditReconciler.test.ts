@@ -5,13 +5,16 @@ import { reconcileRunningAudit, reconcileStaleAudits } from "./auditReconciler";
 const testDb = await vi.hoisted(async () =>
   (await import("@/server/test-support/sqlite-test-db")).createTestDb(),
 );
-const workflow = vi.hoisted(() => ({ status: vi.fn() }));
+const workflow = vi.hoisted(() => ({ status: vi.fn(), heartbeat: vi.fn() }));
 vi.mock("cloudflare:workers", () => ({
   env: {
     SITE_AUDIT_WORKFLOW: {
       get: async () => ({ status: workflow.status }),
     },
   },
+}));
+vi.mock("@/server/features/audit/auditHeartbeat", () => ({
+  getAuditHeartbeat: workflow.heartbeat,
 }));
 vi.mock("@/db", () => ({ db: testDb.db }));
 vi.mock("@/db/runBatch", () => testDb.runBatchModule);
@@ -42,21 +45,50 @@ function statusOf(id: string) {
 beforeEach(() => {
   testDb.database.exec("DELETE FROM audits");
   workflow.status.mockResolvedValue({ status: "running" });
+  workflow.heartbeat.mockResolvedValue(null);
 });
 
 describe("audit watchdog", () => {
-  // The module loaded a moment ago, so "now" is after this process booted.
-  it("fails an audit a previous process left running, however young", async () => {
-    insertRunning("zombie", 2);
-    insertRunning("mine", 0);
+  /** Run `body` with the clock `minutes` after this module booted. */
+  async function afterBoot(minutes: number, body: () => Promise<void>) {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(Date.now() + minutes * 60_000);
+    try {
+      await body();
+    } finally {
+      vi.useRealTimers();
+    }
+  }
 
-    await reconcileStaleAudits();
+  it("fails an audit from before this boot only once it has been silent since", async () => {
+    await afterBoot(46, async () => {
+      insertRunning("zombie", 60);
+      insertRunning("mine", 0);
+      await reconcileStaleAudits();
+    });
 
     expect(statusOf("zombie")).toMatchObject({
       status: "failed",
       error_code: "instance_lost",
     });
     expect(statusOf("mine")).toMatchObject({ status: "running" });
+  });
+
+  it("does not fail a pre-boot audit whose worker is still beating, or that is inside the window", async () => {
+    // Only this module reloaded: the audit worker never stopped.
+    await afterBoot(46, async () => {
+      insertRunning("alive", 60);
+      workflow.heartbeat.mockResolvedValue(Date.now() - 60_000);
+      await reconcileStaleAudits();
+    });
+    expect(statusOf("alive")).toMatchObject({ status: "running" });
+
+    await afterBoot(10, async () => {
+      insertRunning("young", 60);
+      workflow.heartbeat.mockResolvedValue(null);
+      await reconcileStaleAudits();
+    });
+    expect(statusOf("young")).toMatchObject({ status: "running" });
   });
 
   it("leaves a long-running audit of this process alone while its instance runs", async () => {
@@ -81,7 +113,11 @@ describe("audit watchdog", () => {
 
   it("does not let a late workflow finalize resurrect a failed audit", async () => {
     insertRunning("zombie", 2);
-    await reconcileStaleAudits();
+    await AuditRepository.failAudit("zombie", "zombie", {
+      errorCode: "instance_lost",
+      errorDetail: "x",
+      failedPhase: null,
+    });
 
     await AuditRepository.completeAudit("zombie", "zombie", {
       pagesCrawled: 3,

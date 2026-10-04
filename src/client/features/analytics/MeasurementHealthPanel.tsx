@@ -40,6 +40,10 @@ const ISSUE_COPY: Record<string, { title: string; fix: string }> = {
     title: "Anahtar olay tanımlı değil",
     fix: "Anahtar olay olmadan trafiğin sonuca dönüşüp dönüşmediği ölçülemez; her rapor oturum sayısında kalır.",
   },
+  inventory_incomplete: {
+    title: "Envanter eksik olabilir",
+    fix: "Google bu mülkün listelerinin tamamını tek seferde vermedi; sayımlar ve eksik bulgular tam sayılmamalı.",
+  },
 };
 
 const MEASUREMENT_TOGGLES = [
