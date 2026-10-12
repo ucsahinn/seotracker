@@ -4,6 +4,9 @@ Her sürümün notu burada, en yenisi en üstte.
 
 ## [Yayınlanmamış]
 
+- **README yenilendi.** Afiş, ürün içi ekran görüntüleri (`docs/images/`), özellik tablosu, akış şeması, hazır beceri ve MCP araç listesi, üç adımlı kurulum ve sık sorulanlar.
+- Site denetimindeki "Sorunlar ne kadar ciddi?" kartında sayılar kartın dışına taşıyordu; halka ile açıklama artık karta sığar, uzun açıklama kısaltılır.
+
 ## [2.2.1] — 2026-10-04
 
 Bu sürüm yalnızca hata temizliği: yeni özellik yok. Kodun tamamı bağımsız
