@@ -47,7 +47,7 @@
     <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
     <meta name="color-scheme" content="dark" />
     {{jsonld}}
-    <script src="/assets/docs.js?v=2.3.6" defer></script>
+    <script src="/assets/docs.js?v={{version}}" defer></script>
     <meta name="theme-color" content="#272c3b" />
     <style>
       @font-face {
@@ -705,6 +705,14 @@
       .pager-next {
         text-align: right;
       }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+      }
       article .code {
         position: relative;
       }
@@ -816,7 +824,7 @@
     </style>
   </head>
   <body>
-    <a class="skip" href="#icerik">İçeriğe geç</a>
+    <a class="skip" href="#icerik">{{t.skip}}</a>
     <header>
       <div class="wrap">
         <a class="brand" href="{{home}}"

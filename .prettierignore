@@ -14,5 +14,6 @@ worker-configuration.d.ts
 docker-entrypoint.sh
 # generated from docs/kb by scripts/build-site-docs.mjs
 site/docs/
+site/en/docs/
 # build output and download cache of the Windows package
 packaging/windows/out/

@@ -16,6 +16,7 @@ export const Route = createFileRoute("/_app/support")({
 function SupportPage() {
   const { diagnostics, installKind } = useSetupSnapshot();
   const windows = installKind === "windows";
+  const pending = installKind === null;
   const projectId =
     diagnostics.data?.projects.find((project) => !project.archivedAt)?.id ??
     null;
@@ -39,9 +40,15 @@ function SupportPage() {
       <ul className="space-y-3 text-sm text-muted">
         <li>
           <span className="font-medium text-base-content">
-            {windows ? "Günlükler" : "Konteyner günlüğü"}
+            {pending || windows ? "Günlükler" : "Konteyner günlüğü"}
           </span>{" "}
-          {windows ? (
+          {pending ? (
+            <>
+              {" "}
+              — Kurulum türü belirleniyor; bir saniye sonra buraya günlüklerin
+              yeri yazılır.
+            </>
+          ) : windows ? (
             <>
               — Görev çubuğundaki seowatcher simgesine sağ tıklayıp{" "}
               <strong>Günlükleri aç</strong> deyin. Açılış kontrolleri{" "}

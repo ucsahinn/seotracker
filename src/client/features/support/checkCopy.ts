@@ -66,14 +66,19 @@ export function describeCheck(
       return say(
         /ortam|environment/i.test(detail)
           ? "Google OAuth istemcisi ortam değişkenlerinden geliyor."
-          : googleReady
-            ? "Google erişimi tanımlı."
-            : "Google istemcisi Ayarlar'da tanımlı.",
+          : googleReady === null
+            ? "Google bağlantısı ayarı okunuyor."
+            : googleReady
+              ? "Google erişimi tanımlı."
+              : "Google istemcisi Ayarlar'da tanımlı.",
       );
     }
   }
 
   if (key === "pagespeed") {
+    if (check.status === "error") {
+      return say("PageSpeed anahtarı kontrol edilemedi. " + logs);
+    }
     if (check.status === "warn") {
       return say(
         "Anahtar yok. Hız ölçümü Google'ın anahtarsız kotasıyla çalışır ve çoğu zaman 429 ile yarım kalır. Tarama ve diğer SEO kontrolleri etkilenmez.",

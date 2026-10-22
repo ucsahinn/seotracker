@@ -93,7 +93,7 @@
       var e = 1 - Math.pow(1 - p, 3);
       el.textContent = fmt(num * e) + suffix;
       if (p < 1) requestAnimationFrame(step);
-      else el.textContent = target + suffix;
+      else el.textContent = fmt(num) + suffix;
     }
     requestAnimationFrame(step);
   }

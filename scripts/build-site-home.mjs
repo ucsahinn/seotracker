@@ -14,8 +14,9 @@
  *
  * A "segment" is the inner HTML of a leaf element (a paragraph, heading, list
  * item, button, table cell, svg label ...), so inline tags such as <a> or
- * <strong> stay inside one translatable sentence. Inline svg icons inside a
- * segment are replaced by ⟦svgN⟧ tokens so the translator never sees them.
+ * <strong> stay inside one translatable sentence. An inline <svg> counts as a
+ * block today (BLOCK below), so an icon splits a sentence into fragments; the
+ * ⟦svgN⟧ tokens only matter if that ever changes.
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -181,7 +182,7 @@ const RELEASE_LINE = new RegExp(
 function byRule(key) {
   const m = RELEASE_LINE.exec(key);
   return m
-    ? `${m[1]}, ${m[2]} ${EN_MONTHS[TR_MONTHS.indexOf(m[3])]} ${m[4]}`
+    ? `${m[1]}, ${EN_MONTHS[TR_MONTHS.indexOf(m[3])]} ${m[2]}, ${m[4]}`
     : null;
 }
 
@@ -333,12 +334,12 @@ function walkJson(node, fn, key = "") {
     for (const [k, v] of Object.entries(node)) walkJson(v, fn, k);
 }
 
-function mapJson(node, fn, key = "") {
-  if (typeof node === "string") return fn(node, key);
-  if (Array.isArray(node)) return node.map((n) => mapJson(n, fn, key));
+function mapJson(node, fn, key = "", parent = null) {
+  if (typeof node === "string") return fn(node, key, parent);
+  if (Array.isArray(node)) return node.map((n) => mapJson(n, fn, key, parent));
   if (node && typeof node === "object")
     return Object.fromEntries(
-      Object.entries(node).map(([k, v]) => [k, mapJson(v, fn, k)]),
+      Object.entries(node).map(([k, v]) => [k, mapJson(v, fn, k, node)]),
     );
   return node;
 }
@@ -403,10 +404,22 @@ function build() {
       if (!/application\/ld\+json/.test(tok)) return;
       const open = /^<script[^>]*>/.exec(tok)[0];
       const data = JSON.parse(tok.slice(open.length, -"</script>".length));
-      const translated = mapJson(data, (s, key) => {
+      const translated = mapJson(data, (s, key, parent) => {
         if (key === "inLanguage") return "en";
-        if (SKIP_JSON_KEYS.has(key)) return s;
-        if (s.startsWith(siteUrl))
+        // The site, its publisher and the app are one entity in both languages.
+        if (
+          key === "url" &&
+          parent &&
+          /^(WebSite|Organization|SoftwareApplication)$/.test(parent["@type"])
+        )
+          return s;
+        if (key === "priceCurrency") return "USD";
+        // Entities that are the same thing in both languages keep one id;
+        // everything else (the page, its breadcrumb, its FAQ) gets the /en/ id.
+        if (
+          s.startsWith(siteUrl) &&
+          !/#(website|app|author|organization|logo)$/.test(s)
+        )
           return (
             siteUrl +
             rewriteLinksToEnglish(`href="${s.slice(siteUrl.length)}"`).slice(
@@ -414,6 +427,7 @@ function build() {
               -1,
             )
           );
+        if (SKIP_JSON_KEYS.has(key)) return s;
         if (/^https?:\/\//.test(s) || /^[\d.]+$/.test(s)) return s;
         return tr(collapse(s));
       });
@@ -423,11 +437,15 @@ function build() {
     }
     if (tok.startsWith("<")) {
       let t = tok;
-      for (const a of attrEntries(tok))
-        t = t.replace(
-          `${a.name}="${a.value}"`,
-          `${a.name}="${tr(collapse(a.value))}"`,
-        );
+      for (const a of attrEntries(tok)) {
+        // " ay" -> " months": the counter glues the suffix to the number, so
+        // the leading space must survive the lookup.
+        const lead = /^\s*/.exec(a.value)[0];
+        const trail = /\s*$/.exec(a.value)[0];
+        const value =
+          lead + tr(collapse(a.value)).replace(/"/g, "&quot;") + trail;
+        t = t.replace(`${a.name}="${a.value}"`, () => `${a.name}="${value}"`);
+      }
       out[i] = t;
       return;
     }
@@ -456,16 +474,39 @@ function build() {
       'content="https://seowatcher.io/en/"',
     );
   page = rewriteLinksToEnglish(page);
-  // The language switch is the one link that goes the other way.
+  // The language switch is the one link that goes the other way. Prettier
+  // may have split the attributes over several lines, hence \s+.
   page = page
     .replace(
-      /href="\/en\/" lang="en" hreflang="en" data-lang-switch aria-label="[^"]*">EN</g,
+      /href="\/en\/"\s+lang="en"\s+hreflang="en"\s+data-lang-switch\s+aria-label="[^"]*"\s*>EN</g,
       'href="/" lang="tr" hreflang="tr" data-lang-switch aria-label="Dil: Türkçe">TR<',
     )
     .replace(
-      /href="\/en\/" lang="en" hreflang="en" data-lang-switch>English/g,
+      /href="\/en\/"\s+lang="en"\s+hreflang="en"\s+data-lang-switch\s*>English/g,
       'href="/" lang="tr" hreflang="tr" data-lang-switch>Türkçe',
     );
+  // "0 ₺" means nothing to an English reader; the tile simply says Free.
+  page = page.replace(
+    /<b\s+data-count="0"\s+data-suffix=" ₺"\s*>0 ₺<\/b>/g,
+    "<b>Free</b>",
+  );
+  // A silent miss here shipped a self-linking pill once: count the switches.
+  const switches = (page.match(/data-lang-switch/g) || []).length;
+  const backToTurkish = (
+    page.match(/href="\/" lang="tr" hreflang="tr" data-lang-switch/g) || []
+  ).length;
+  if (switches === 0 || backToTurkish !== switches)
+    throw new Error(
+      `language switch: ${backToTurkish} of ${switches} point back to Turkish`,
+    );
+  for (const leftover of [
+    "İçeriğe",
+    'aria-label="Language: English"',
+    'data-suffix="months"',
+    "0 ₺",
+  ])
+    if (page.includes(leftover))
+      throw new Error(`Turkish leftover in site/en/index.html: ${leftover}`);
   if (missing.length) {
     console.error(
       `site/en/index.html not written: ${missing.length} strings have no English entry in scripts/site-home.en.json:`,

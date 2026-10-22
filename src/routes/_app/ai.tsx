@@ -247,7 +247,7 @@ function AiPage() {
                    * reads as "no token", so a click inside that window
                    * would copy the wrong variant onto a protected install.
                    */
-                  disabled={connection.isPending}
+                  disabled={connection.data === undefined}
                   value={prompt}
                   label="Ajan kurulum istemini kopyala"
                   successMessage="Ajan kurulum istemi kopyalandı"
@@ -279,7 +279,7 @@ function AiPage() {
                 kullanıyorsanız genel istem yerine bunu yapıştırın.{" "}
                 <code>codex mcp add</code> ile bağlanır, becerileri{" "}
                 <code>~/.agents/skills</code> altına kopyalar ve{" "}
-                <code>whoami</code> ile doğrular. Gizli şifreyi sohbete yazmaz,
+                <code>whoami</code> ile doğrular. Parolayı sohbete yazmaz,
                 bilgisayarınızdan okur.
               </p>
               <ul className="mt-3 space-y-1 text-xs text-muted">
@@ -297,7 +297,7 @@ function AiPage() {
                   primary
                   // Same reason as the generic prompt: the auth wording
                   // depends on the first roundtrip.
-                  disabled={connection.isPending}
+                  disabled={connection.data === undefined}
                   value={codexPrompt}
                   label="Codex istemini kopyala"
                   successMessage="Codex istemi kopyalandı"
@@ -358,10 +358,12 @@ function AiPage() {
                         %LOCALAPPDATA%\seowatcher\mcp-token
                       </code>{" "}
                       (görev çubuğu menüsünde <strong>Veri klasörünü aç</strong>
-                      ). Komutla okumak için PowerShell:{" "}
+                      ). Panoya kopyalamak için PowerShell (değer ekrana
+                      yazılmaz):{" "}
                       <code className="font-mono text-muted">
                         (Get-Content
                         &quot;$env:LOCALAPPDATA\seowatcher\mcp-token&quot;).Trim()
+                        | Set-Clipboard
                       </code>
                       . Değeri sohbete ya da ekrana yazmayın.
                     </>

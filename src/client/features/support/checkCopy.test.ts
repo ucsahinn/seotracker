@@ -54,4 +54,22 @@ describe("describeCheck", () => {
     expect(result.text).toContain("Günlükleri aç");
     expect(result.text).not.toContain("docker");
   });
+
+  it("tells a Windows package user to repair instead of editing env files", () => {
+    const auth = describeCheck(
+      "auth",
+      { status: "error", detail: "AUTH_MODE missing" },
+      null,
+      "windows",
+    );
+    expect(auth.text).toContain("Kurulumu onar");
+    expect(auth.text).not.toContain("ENVIRONMENT.md");
+    const gsc = describeCheck(
+      "gsc",
+      { status: "warn", detail: "DISABLED: secret too short" },
+      null,
+      "windows",
+    );
+    expect(gsc.text).toContain("Kurulumu onar");
+  });
 });

@@ -2,6 +2,23 @@
 
 Her sürümün notu burada, en yenisi en üstte.
 
+## [2.3.7] — 2026-10-23
+
+Kurulum sihirbazının pencere başlığı sürümü yazar; İngilizce site ikinci
+incelemeden geçti.
+
+### Yenilikler
+
+- **Pencere başlığında sürüm.** Sihirbazın her sayfasının en üst satırı "seowatcher 2.3.7 - Kurulum yardımcısı" / "Setup - seowatcher 2.3.7" der.
+- **İngilizce site.** Dil düğmesi İngilizce ana sayfada Türkçeye döner; arayüzün Türkçe olduğu ekran turunda ve kurulum kartında söylenir; fiyat kutusu "Free" der; tarihler ABD biçiminde; yapısal verinin sayfa kimlikleri dile göre ayrı; on kadar cümle doğal İngilizceye yeniden yazıldı.
+
+### Düzeltmeler
+
+- Yardım ve sık sorunlar, kurulum türü henüz bilinmezken Docker ya da Windows varsaymaz; bilinene kadar nötr metin gösterir.
+- Ajan kurulumu'ndaki kopyalama düğmeleri bağlantı durumu okunana kadar kapalı; Windows'ta parola okuma komutu değeri ekrana yazmak yerine panoya kopyalar.
+- Sayaç sonundaki sayı ve İngilizce "months" eki doğru biçimlenir; kılavuzda kısa sayfalarda son başlık yanlışlıkla işaretlenmez.
+- Sürüm iş akışı etiket adını ortam değişkeninden okur.
+
 ## [2.3.6] — 2026-10-23
 
 Site iki dilli: Türkçe ana sayfa ve kılavuz artık İngilizce karşılığıyla

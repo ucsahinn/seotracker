@@ -47,7 +47,10 @@
       // At the very bottom the last heading is current even when its section
       // is too short to ever reach the top band.
       var doc = document.documentElement;
-      if (window.innerHeight + window.scrollY >= doc.scrollHeight - 2) {
+      if (
+        doc.scrollHeight > window.innerHeight + 2 &&
+        window.innerHeight + window.scrollY >= doc.scrollHeight - 2
+      ) {
         setCurrent(headings[headings.length - 1].id);
         return;
       }
@@ -113,11 +116,17 @@
       var btn = document.createElement("button");
       btn.type = "button";
       btn.className = "copy";
-      btn.setAttribute("aria-live", "polite");
+      // The announcement lives in its own hidden status element: a live
+      // region on a button whose name is an aria-label is read unreliably.
+      var status = document.createElement("span");
+      status.className = "sr-only";
+      status.setAttribute("role", "status");
+      status.setAttribute("aria-live", "polite");
       var setState = function (text, cls) {
         btn.textContent = text;
         btn.setAttribute("aria-label", labels.label + ": " + text);
         btn.className = "copy" + (cls ? " " + cls : "");
+        status.textContent = cls ? text : "";
       };
       setState(labels.copy, "");
       var timer = null;
@@ -141,6 +150,7 @@
       });
       box.classList.add("has-copy");
       box.appendChild(btn);
+      box.appendChild(status);
     });
   }
 })();

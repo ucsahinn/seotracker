@@ -41,8 +41,10 @@ jobs:
       - name: Version from tag
         id: version
         shell: pwsh
+        env:
+          REF_NAME: ${{ github.ref_name }}
         run: |
-          $ref = "${{ github.ref_name }}"
+          $ref = $env:REF_NAME
           $version = if ($ref -like "v*") { $ref.TrimStart("v") } else { (Get-Content package.json -Raw | ConvertFrom-Json).version }
           "version=$version" >> $env:GITHUB_OUTPUT
 
@@ -80,7 +82,7 @@ jobs:
           if (-not $ok) {
             Write-Host "---- server.log (tail)"; Get-Content (Join-Path $logs "server.log") -Tail 60 -ErrorAction SilentlyContinue
             Write-Host "---- migrate.log (tail)"; Get-Content (Join-Path $logs "migrate.log") -Tail 20 -ErrorAction SilentlyContinue
-            throw "app did not answer /api/health within 180 s"
+            throw "app did not answer /api/health within 6 min"
           }
           Write-Host "health ok"
           & $app --quit
@@ -96,8 +98,9 @@ jobs:
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
+          REF_NAME: ${{ github.ref_name }}
         run: |
-          $tag = "${{ github.ref_name }}"
+          $tag = $env:REF_NAME
           $file = Get-ChildItem packaging/windows/out -Filter "seowatcher-setup-*.exe" | Select-Object -First 1
           # A second copy under a fixed name, so the website can link
           # .../releases/latest/download/seowatcher-setup.exe without knowing

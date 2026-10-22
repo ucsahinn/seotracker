@@ -52,11 +52,10 @@ export function useSetupSnapshot() {
     diagnostics,
     update: update.data,
     /** Which install this is. Diagnostics answer first (no network); the
-     * update check is the fallback; "docker" only while both are unknown. */
+     * update check is the fallback; null while neither has answered, so no
+     * screen guesses Docker for a Windows user. */
     installKind:
-      diagnostics.data?.setup.installKind ??
-      update.data?.installKind ??
-      ("docker" as const),
+      diagnostics.data?.setup.installKind ?? update.data?.installKind ?? null,
     googleReady,
     isFetching,
     refresh,

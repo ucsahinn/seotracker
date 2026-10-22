@@ -231,6 +231,9 @@ function render(markdown, warn, locale) {
   return { html: html.join("\n"), toc };
 }
 
+const pkg = JSON.parse(
+  fs.readFileSync(path.join(root, "package.json"), "utf8"),
+);
 const shell = fs.readFileSync(
   path.join(root, "scripts", "site-docs-shell.html"),
   "utf8",
@@ -347,7 +350,11 @@ function seoTitle(locale, { title, slug, screen }) {
 // "2026-10-22" as people read it; the ISO form stays in the metadata.
 function readableDate(locale, iso) {
   const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
-  return m ? `${Number(m[3])} ${locale.months[Number(m[2]) - 1]} ${m[1]}` : iso;
+  if (!m) return iso;
+  const month = locale.months[Number(m[2]) - 1];
+  return locale.lang === "en"
+    ? `${month} ${Number(m[3])}, ${m[1]}`
+    : `${Number(m[3])} ${month} ${m[1]}`;
 }
 
 // Previous and next page in the navigation order, so a reader can walk the
@@ -406,6 +413,7 @@ function page(
     slug && editions[other.lang] ? docUrl(other, slug) : docUrl(other, "");
   const replacements = {
     "{{lang}}": locale.lang,
+    "{{version}}": pkg.version,
     "{{ogLocale}}": locale.ogLocale,
     "{{seotitle}}": escapeHtml(seoTitle(locale, { title, slug, screen })),
     "{{title}}": escapeHtml(title),
@@ -432,13 +440,19 @@ function page(
     "{{body}}": body,
   };
   for (const [k, v] of Object.entries(t)) replacements[`{{t.${k}}}`] = v;
+  // Chrome first, then the guard, then the content: a "{{x}}" inside a KB
+  // code sample must land on the page as is, and a "$&" in a page likewise
+  // (hence the function replacements).
+  const content = ["{{body}}", "{{nav}}", "{{toc}}", "{{pager}}", "{{jsonld}}"];
   let out = shell;
-  // Function replacements: a "$&" in a KB page must land on the page as is.
   for (const [k, v] of Object.entries(replacements))
-    out = out.replaceAll(k, () => v);
-  const left = /\{\{[a-zA-Z.]+\}\}/.exec(out);
+    if (!content.includes(k)) out = out.replaceAll(k, () => v);
+  const left = /\{\{[a-zA-Z.]+\}\}/.exec(
+    out.replace(/\{\{(body|nav|toc|pager|jsonld)\}\}/g, ""),
+  );
   if (left)
     throw new Error(`site-docs-shell.html: unknown placeholder ${left[0]}`);
+  for (const k of content) out = out.replaceAll(k, () => replacements[k]);
   return out;
 }
 
@@ -517,9 +531,6 @@ function main() {
 
   const urls = []; // { slug, lastmod: {tr, en} }
   const bySlug = new Map();
-  const pkg = JSON.parse(
-    fs.readFileSync(path.join(root, "package.json"), "utf8"),
-  );
   for (const locale of Object.values(locales)) {
     const docs = all[locale.lang];
     const outDir = path.join(siteDir, locale.kbSub, "docs");

@@ -68,7 +68,7 @@
     <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
     <meta name="color-scheme" content="dark" />
     <meta name="theme-color" content="#272c3b" />
-    <script src="/assets/site.js?v=2.3.6" defer></script>
+    <script src="/assets/site.js?v=2.3.7" defer></script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -76,7 +76,7 @@
           {
             "@type": "WebSite",
             "@id": "https://seowatcher.io/#website",
-            "url": "https://seowatcher.io/en/",
+            "url": "https://seowatcher.io/",
             "name": "seowatcher",
             "alternateName": ["seotracker"],
             "inLanguage": "en",
@@ -84,7 +84,7 @@
           },
           {
             "@type": "WebPage",
-            "@id": "https://seowatcher.io/#webpage",
+            "@id": "https://seowatcher.io/en/#webpage",
             "url": "https://seowatcher.io/en/",
             "name": "seowatcher: free SEO dashboard (Search Console + GA4)",
             "inLanguage": "en",
@@ -102,7 +102,7 @@
             "@type": "Organization",
             "@id": "https://seowatcher.io/#author",
             "name": "seowatcher",
-            "url": "https://seowatcher.io/en/",
+            "url": "https://seowatcher.io/",
             "logo": "https://seowatcher.io/assets/icon-256.png",
             "sameAs": ["https://github.com/ucsahinn/seotracker"]
           },
@@ -111,11 +111,11 @@
             "@id": "https://seowatcher.io/#app",
             "name": "seowatcher",
             "alternateName": "seotracker",
-            "url": "https://seowatcher.io/en/",
+            "url": "https://seowatcher.io/",
             "description": "A free, open-source (MIT) desktop SEO app that brings Google Search Console, Google Analytics 4, its own site crawler and PageSpeed Insights data into one dashboard. Installs on Windows 10/11; runs with Docker on Mac and Linux. Single-user, reachable only from your own computer.",
             "applicationCategory": "BusinessApplication",
             "operatingSystem": "Windows 10, Windows 11 (64-bit)",
-            "softwareVersion": "2.3.6",
+            "softwareVersion": "2.3.7",
             "datePublished": "2026-10-22",
             "fileSize": "81 MB",
             "inLanguage": "en",
@@ -127,7 +127,7 @@
             "offers": {
               "@type": "Offer",
               "price": "0",
-              "priceCurrency": "TRY",
+              "priceCurrency": "USD",
               "availability": "https://schema.org/InStock",
               "url": "https://seowatcher.io/en/#kurulum"
             },
@@ -152,13 +152,13 @@
               "url": "https://github.com/every-app/open-seo"
             },
             "sameAs": ["https://github.com/ucsahinn/seotracker"],
-            "mainEntityOfPage": { "@id": "https://seowatcher.io/#webpage" }
+            "mainEntityOfPage": { "@id": "https://seowatcher.io/en/#webpage" }
           },
           {
             "@type": "FAQPage",
-            "@id": "https://seowatcher.io/#faq",
+            "@id": "https://seowatcher.io/en/#faq",
             "inLanguage": "en",
-            "isPartOf": { "@id": "https://seowatcher.io/#webpage" },
+            "isPartOf": { "@id": "https://seowatcher.io/en/#webpage" },
             "mainEntity": [
               {
                 "@type": "Question",
@@ -170,7 +170,7 @@
               },
               {
                 "@type": "Question",
-                "name": "Windows shows an \"unrecognized app\" warning.",
+                "name": "Windows says it protected my PC. Is the installer safe?",
                 "acceptedAnswer": {
                   "@type": "Answer",
                   "text": "The installer isn't code-signed yet. On the SmartScreen screen, choose \"More info\" first, then \"Run anyway\". The file's fingerprint (SHA-256) is listed on each release's page if you want to compare it."
@@ -186,7 +186,7 @@
               },
               {
                 "@type": "Question",
-                "name": "Why do I need to create a key on Google's side?",
+                "name": "Why do I have to create a Google access key?",
                 "acceptedAnswer": {
                   "@type": "Answer",
                   "text": "Because the app isn't a cloud service. Your computer connects to Google directly, and Google wants to know who the connecting app belongs to. You do it once, and the app explains it step by step."
@@ -197,15 +197,15 @@
                 "name": "Are the numbers the same as in Search Console?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "They're read from the same source. Google delivers data about three days late and hides very rarely searched queries. The app shows the page total and the site total separately. The two may not match, and that isn't an error."
+                  "text": "They're read from the same source. Google's data lags by about three days and leaves out rarely searched queries. The app shows the page total and the site total separately. The two may not match, and that isn't an error."
                 }
               },
               {
                 "@type": "Question",
-                "name": "Can I use it without putting my site on the internet?",
+                "name": "Do I need to expose anything to the internet?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Yes, that's how it works anyway. The app opens only from your own computer and reads Search Console and Analytics data from Google. For the site audit, it only crawls the pages of the site you're auditing."
+                  "text": "No. The app opens only from your own computer and reads Search Console and Analytics data from Google. For the site audit, it only crawls the pages of the site you're auditing."
                 }
               }
             ]
@@ -1757,12 +1757,12 @@
           <a href="https://github.com/ucsahinn/seotracker">GitHub</a>
           <a
             class="lang"
-            href="/en/"
-            lang="en"
-            hreflang="en"
+            href="/"
+            lang="tr"
+            hreflang="tr"
             data-lang-switch
-            aria-label="Language: English"
-            >EN</a
+            aria-label="Dil: Türkçe"
+            >TR</a
           >
         </nav>
         <a
@@ -1800,13 +1800,12 @@
         <div class="wrap">
           <div class="hero-copy">
             <h1 id="h1" data-words>
-              Your site's Google data, on your own computer.
+              Your site's Google data, on your computer.
             </h1>
             <p class="lede">
-              Shows the numbers Google keeps about your site and the errors on
-              your site, all on one screen. Free and open source. Installs on
-              Windows from a single file. No sign-up, and your data never leaves
-              your computer.
+              See what Google knows about your site, and what is broken on it,
+              on one screen. Free and open source. Installs on Windows from a
+              single file. No account, and your data never leaves your computer.
             </p>
             <div class="cta">
               <a
@@ -2065,7 +2064,7 @@
       <section class="flow" aria-labelledby="h-kaynak">
         <div class="wrap">
           <h2 id="h-kaynak" class="reveal">
-            Reads your data from Google and sends it to no one.
+            It reads your data from Google and sends it nowhere.
           </h2>
           <div class="reveal" style="--d: 120">
             <svg
@@ -2132,12 +2131,13 @@
         <div class="wrap">
           <div class="section-head reveal">
             <h2 id="h-ekranlar">
-              Turns the numbers Search Console gives you into screens that tell
-              you what to do.
+              Search Console's numbers, turned into screens that tell you what
+              to do.
             </h2>
             <p class="lede">
-              The screens below are the app itself. The site and numbers are
-              examples.
+              These are the app's own screens. The interface is in Turkish; the
+              English guide names every screen and button. The site and the
+              numbers are examples.
             </p>
           </div>
           <div class="walk-grid">
@@ -2146,13 +2146,9 @@
                 <span class="n">01 Opportunities</span>
                 <h3>Which page should I work on this week?</h3>
                 <p>
-                  Sorts your pages that show up on Google into four groups:
-                  rarely clicked, close to climbing, already near the top, and
-                  buried deep. It writes which page to start with right next to
-                  it, so you don't have to guess.
-                  <a class="textlink" href="/en/docs/opportunities/"
-                    >Opportunities guide</a
-                  >.
+                  Sorts your pages into four groups: rarely clicked, close to
+                  page one, already near the top, and buried. Each page gets a
+                  suggested next step, so you don't have to guess.
                 </p>
                 <picture
                   ><source
@@ -2177,9 +2173,9 @@
                 <h3>See what's broken on your site without asking Google.</h3>
                 <p>
                   Crawls the site page by page and checks 95 things: broken
-                  links, missing or overly long titles, slow pages, addresses
-                  Google doesn't understand. Under every finding it says what to
-                  do, and you don't need a technical person.
+                  links, missing or overly long titles, slow pages, URLs Google
+                  can't read. Under every finding it says what to do, and no
+                  technical background needed.
                   <a class="textlink" href="/en/docs/site-audit/"
                     >Site audit guide</a
                   >.
@@ -2205,7 +2201,8 @@
               <article class="walk-step" data-step="3">
                 <span class="n">03 Search performance</span>
                 <h3>
-                  Clicks, impressions, rate and position; sixteen months back.
+                  Clicks, impressions, click-through rate and position; 16
+                  months back.
                 </h3>
                 <p>
                   You can look by query, page, country and device. A separate
@@ -2237,10 +2234,10 @@
                 <h3>Connect an AI assistant if you want.</h3>
                 <p>
                   Claude Code, Codex or Cursor can read the app's data. There
-                  are ready-made tasks for audits, drop investigations, monthly
-                  checks and reports. The setup text is ready on screen; you
-                  copy it and paste it into the assistant. If you don't use one,
-                  nothing is missing.
+                  are ready-made tasks for audits, traffic-drop investigations,
+                  monthly checks and reports. The setup text is ready on screen;
+                  you copy it and paste it into the assistant. The app works
+                  fully without one.
                   <a class="textlink" href="/en/docs/agent-setup/"
                     >Assistant setup guide</a
                   >.
@@ -2346,7 +2343,7 @@
           <div class="bento">
             <div class="tile t-wide reveal" data-spot style="--d: 0">
               <span class="big"
-                ><b data-count="16" data-suffix="months">16 months</b></span
+                ><b data-count="16" data-suffix=" months">16 months</b></span
               >
               <h3>Search history, from Search Console</h3>
               <p>
@@ -2382,9 +2379,8 @@
               <span class="big"><b data-count="95">95</b></span>
               <h3>A check on every page</h3>
               <p>
-                Broken links, missing or overly long titles, slow pages,
-                addresses Google doesn't understand. Under every finding it says
-                what to do.
+                Broken links, missing or overly long titles, slow pages, URLs
+                Google can't read. Under every finding it says what to do.
               </p>
             </div>
             <div class="tile t-third reveal" data-spot style="--d: 160">
@@ -2404,8 +2400,8 @@
             <div class="tile t-third reveal" data-spot style="--d: 280">
               <h3>Reports</h3>
               <p>
-                Single-file reports that open on a phone, print, and go by
-                email. Your assistant can write them if you like.
+                Single-file reports that open on a phone, print, and can be
+                emailed. Your assistant can write them if you like.
               </p>
             </div>
             <div class="tile t-wide reveal" data-spot style="--d: 340">
@@ -2414,7 +2410,7 @@
               <p>
                 If you connect Claude Code, Codex or Cursor, the assistant reads
                 your numbers, runs the audit and writes the report. It comes
-                with six ready-made tasks.
+                with 6 ready-made tasks.
               </p>
               <div class="row">
                 <span
@@ -2453,9 +2449,7 @@
               </div>
             </div>
             <div class="tile t-mid plain reveal" style="--d: 400">
-              <span class="big free"
-                ><b data-count="0" data-suffix=" ₺">0 ₺</b></span
-              >
+              <span class="big free"><b>Free</b></span>
               <h3>What it doesn't do</h3>
               <ul>
                 <li>
@@ -2537,12 +2531,14 @@
               <p class="big">Windows installer</p>
               <dl>
                 <dt>Version</dt>
-                <dd>2.3.6, 23 October 2026</dd>
+                <dd>2.3.7, October 23, 2026</dd>
                 <dt>Size</dt>
                 <dd>81 MB</dd>
                 <dt>Requirements</dt>
                 <dd>
-                  Windows 10 or 11, 64-bit. No Docker, Node or terminal needed.
+                  Windows 10 or 11, 64-bit. No Docker, Node or terminal. The
+                  app's interface is in Turkish; this site and the guide explain
+                  every screen in English.
                 </dd>
                 <dt>Verification</dt>
                 <dd>
@@ -2619,7 +2615,7 @@
             </div>
             <div class="row">
               <dt>Version</dt>
-              <dd>2.3.6, 23 October 2026</dd>
+              <dd>2.3.7, October 23, 2026</dd>
             </div>
             <div class="row">
               <dt>Download</dt>
@@ -2643,7 +2639,7 @@
               </dd>
             </div>
             <div class="row">
-              <dt>Derived from</dt>
+              <dt>Based on</dt>
               <dd>open-seo (every-app)</dd>
             </div>
             <div class="row">
@@ -2673,7 +2669,9 @@
               </div>
             </details>
             <details class="qa">
-              <summary>Windows shows an "unrecognized app" warning.</summary>
+              <summary>
+                Windows says it protected my PC. Is the installer safe?
+              </summary>
               <div class="qa-body">
                 <p>
                   The installer isn't code-signed yet. On the SmartScreen
@@ -2698,7 +2696,7 @@
               </div>
             </details>
             <details class="qa">
-              <summary>Why do I need to create a key on Google's side?</summary>
+              <summary>Why do I have to create a Google access key?</summary>
               <div class="qa-body">
                 <p>
                   Because the app isn't a cloud service. Your computer connects
@@ -2712,23 +2710,20 @@
               <summary>Are the numbers the same as in Search Console?</summary>
               <div class="qa-body">
                 <p>
-                  They're read from the same source. Google delivers data about
-                  three days late and hides very rarely searched queries. The
-                  app shows the page total and the site total separately. The
-                  two may not match, and that isn't an error.
+                  They're read from the same source. Google's data lags by about
+                  three days and leaves out rarely searched queries. The app
+                  shows the page total and the site total separately. The two
+                  may not match, and that isn't an error.
                 </p>
               </div>
             </details>
             <details class="qa">
-              <summary>
-                Can I use it without putting my site on the internet?
-              </summary>
+              <summary>Do I need to expose anything to the internet?</summary>
               <div class="qa-body">
                 <p>
-                  Yes, that's how it works anyway. The app opens only from your
-                  own computer and reads Search Console and Analytics data from
-                  Google. For the site audit, it only crawls the pages of the
-                  site you're auditing.
+                  No. The app opens only from your own computer and reads Search
+                  Console and Analytics data from Google. For the site audit, it
+                  only crawls the pages of the site you're auditing.
                 </p>
               </div>
             </details>
@@ -2743,8 +2738,8 @@
             Install it and start with today's data.
           </h2>
           <p class="reveal" style="--d: 100">
-            Search Console's sixteen months of history fill in the first times
-            you open the app. Connect today and you're looking at it today.
+            Search Console's 16 months of history load the first time you
+            connect. Connect today and see your data today.
           </p>
           <div class="cta reveal" style="--d: 200">
             <a

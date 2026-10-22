@@ -66,13 +66,16 @@ function Problem({ title, children }: { title: string; children: ReactNode }) {
  */
 export function CommonProblems({
   projectId,
-  installKind = "docker",
+  installKind = null,
 }: {
   projectId: string | null;
-  installKind?: "windows" | "docker";
+  /** null while the install kind is still unknown: no install-specific advice yet. */
+  installKind?: "windows" | "docker" | null;
 }) {
   const origin = useOrigin();
   const windows = installKind === "windows";
+  const pending = installKind === null;
+  const pendingNote = <p className="text-muted">Kurulum türü belirleniyor…</p>;
 
   return (
     <section
@@ -86,7 +89,9 @@ export function CommonProblems({
         Sık sorunlar
       </h2>
 
-      {windows ? (
+      {pending ? (
+        pendingNote
+      ) : windows ? (
         <Problem title="Sayfa açılmıyor ya da uygulama kapalı">
           <p>
             Görev çubuğundaki seowatcher simgesine bakın; üzerine gelince
@@ -131,7 +136,9 @@ export function CommonProblems({
             : "Port dolu (Bind for 127.0.0.1:3001 failed)"
         }
       >
-        {windows ? (
+        {pending ? (
+          pendingNote
+        ) : windows ? (
           <p>
             Windows paketi 3001 doluysa 3002 ile 3010 arasında boş bir numara
             seçer ve simgenin yazısında gösterir. Belirli bir numara
@@ -160,16 +167,18 @@ export function CommonProblems({
       </Problem>
 
       <Problem title="Ajanım uygulamaya bağlanamıyor (401)">
-        {windows ? (
+        {pending ? (
+          pendingNote
+        ) : windows ? (
           <p>
             Asistan bağlantısı bir parola (token) ister. Windows paketinde bu
             parola{" "}
             <code className="text-xs">%LOCALAPPDATA%\seowatcher\mcp-token</code>{" "}
-            dosyasındadır (<strong>Veri klasörünü aç</strong>). Komutla okumak
-            için PowerShell:{" "}
+            dosyasındadır (<strong>Veri klasörünü aç</strong>). Panoya
+            kopyalamak için PowerShell (değer ekrana yazılmaz):{" "}
             <Command
               value={
-                '(Get-Content "$env:LOCALAPPDATA\\seowatcher\\mcp-token").Trim()'
+                '(Get-Content "$env:LOCALAPPDATA\\seowatcher\\mcp-token").Trim() | Set-Clipboard'
               }
             />{" "}
             Değeri sohbete yazmayın.
@@ -192,7 +201,7 @@ export function CommonProblems({
         )}
         <p>
           Adres: <Command value={`${origin}/mcp`} /> İstemciniz{" "}
-          <code className="text-xs">Authorization: Bearer &lt;jeton&gt;</code>{" "}
+          <code className="text-xs">Authorization: Bearer &lt;token&gt;</code>{" "}
           başlığını göndermezse bağlantı 401 döner.
         </p>
         <p>
