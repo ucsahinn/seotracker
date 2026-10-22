@@ -2,8 +2,13 @@
 
 Her sürümün notu burada, en yenisi en üstte.
 
-## [Yayınlanmamış]
+## [2.3.0] — 2026-10-22
 
+Windows'a tek kurulum dosyasıyla kurulan ilk sürüm ve ürünün tanıtım sitesi.
+Docker kurulumu değişmedi; güncellerken veriniz korunur.
+
+- **Windows için tek tık kurulum.** `packaging/windows/`: Node 22, wrangler çalışma zamanı ve derlenmiş uygulama tek `.exe` içinde; tepsi uygulaması anahtarları üretir, migrasyonu çalıştırır, sunucuyu başlatır ve tarayıcıyı açar. Docker gerekmez. Her `v*` etiketinde GitHub Actions paketi üretip sürüme ekler (`seowatcher-setup.exe`).
+- **seowatcher.io sitesi.** `site/`: tek sayfa, statik, Cloudflare Pages'ten yayınlanır. Ürünün GitHub adı seotracker olarak kalır; seowatcher sitenin ve Windows paketinin adıdır.
 - **README yenilendi.** Afiş, ürün içi ekran görüntüleri (`docs/images/`), özellik tablosu, akış şeması, hazır beceri ve MCP araç listesi, üç adımlı kurulum ve sık sorulanlar.
 - Site denetimindeki "Sorunlar ne kadar ciddi?" kartında sayılar kartın dışına taşıyordu; halka ile açıklama artık karta sığar, uzun açıklama kısaltılır.
 

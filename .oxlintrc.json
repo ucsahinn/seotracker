@@ -11,7 +11,11 @@
     ".output",
     "src/routeTree.gen.ts",
     "worker-configuration.d.ts",
-    "scripts"
+    "scripts",
+    // Windows package helpers (Playwright is not a project dependency) and
+    // the static website: outside the app's type graph.
+    "packaging",
+    "site"
   ],
   "rules": {
     "react/react-in-jsx-scope": "off",

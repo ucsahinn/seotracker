@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-label="seowatcher">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#171c2a"/>
+      <stop offset="1" stop-color="#0f1219"/>
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="56" fill="url(#bg)"/>
+  <rect x="2" y="2" width="252" height="252" rx="54" fill="none" stroke="#ffffff" stroke-opacity="0.10" stroke-width="4"/>
+  <!-- eye: the watcher -->
+  <path d="M40 128 C70 78, 186 78, 216 128 C186 178, 70 178, 40 128 Z" fill="none" stroke="#f3f4f7" stroke-width="14" stroke-linejoin="round"/>
+  <circle cx="128" cy="128" r="34" fill="#5b8def"/>
+  <circle cx="128" cy="128" r="14" fill="#0f1219"/>
+  <!-- rising line: rank going up -->
+  <path d="M60 206 L96 182 L124 194 L196 150" fill="none" stroke="#5b8def" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M170 150 L196 150 L196 176" fill="none" stroke="#5b8def" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

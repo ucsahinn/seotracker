@@ -1,0 +1,1034 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>seowatcher — Sitenizin Google verisi, kendi bilgisayarınızda</title>
+    <meta
+      name="description"
+      content="Search Console, Analytics 4 ve site denetimi tek uygulamada. Windows'a tek tıkla kurulur; abonelik yok, hesap yok, veriniz bilgisayarınızda kalır."
+    />
+    <link rel="icon" href="assets/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="assets/icon-256.png" />
+    <link rel="canonical" href="https://seowatcher.io/" />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:title"
+      content="seowatcher — Sitenizin Google verisi, kendi bilgisayarınızda"
+    />
+    <meta
+      property="og:description"
+      content="Search Console, Analytics 4 ve site denetimi tek uygulamada. Abonelik yok, hesap yok, veriniz bilgisayarınızda kalır."
+    />
+    <meta
+      property="og:image"
+      content="https://seowatcher.io/assets/banner.svg"
+    />
+    <meta property="og:url" content="https://seowatcher.io/" />
+    <meta property="og:locale" content="tr_TR" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#0f1219" />
+    <style>
+      :root {
+        --bg: #0f1219;
+        --bg-2: #171c2a;
+        --card: #1b2030;
+        --fg: #f3f4f7;
+        --fg-2: #b6bccb;
+        --fg-3: #8f97a8;
+        --hairline: rgba(255, 255, 255, 0.09);
+        --accent: #5b8def;
+        --accent-ink: #0f1219;
+        --radius: 18px;
+        --radius-s: 10px;
+        --max: 1120px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font-family:
+          "Segoe UI",
+          Inter,
+          -apple-system,
+          system-ui,
+          Roboto,
+          Helvetica,
+          Arial,
+          sans-serif;
+        font-size: 17px;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        font-variant-numeric: tabular-nums;
+      }
+      a {
+        color: var(--fg);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+      img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+      }
+      .wrap {
+        max-width: var(--max);
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+      h1,
+      h2,
+      h3 {
+        margin: 0;
+        letter-spacing: -0.02em;
+        line-height: 1.15;
+        text-wrap: balance;
+      }
+      h1 {
+        font-size: clamp(34px, 5.6vw, 60px);
+        font-weight: 700;
+        letter-spacing: -0.03em;
+      }
+      h2 {
+        font-size: clamp(26px, 3.4vw, 36px);
+        font-weight: 650;
+      }
+      h3 {
+        font-size: 19px;
+        font-weight: 600;
+      }
+      p {
+        margin: 0;
+        text-wrap: pretty;
+      }
+      .muted {
+        color: var(--fg-2);
+      }
+      .subtle {
+        color: var(--fg-3);
+      }
+      .eyebrow {
+        font-size: 13px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--accent);
+        font-weight: 600;
+      }
+      section {
+        padding: 72px 0;
+      }
+      section + section {
+        border-top: 1px solid var(--hairline);
+      }
+      .section-head {
+        max-width: 640px;
+        margin-bottom: 36px;
+        display: grid;
+        gap: 12px;
+      }
+
+      /* nav */
+      header.nav {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: rgba(15, 18, 25, 0.86);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--hairline);
+      }
+      header.nav .wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 64px;
+        gap: 16px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+        font-size: 18px;
+        letter-spacing: -0.01em;
+      }
+      .brand img {
+        width: 28px;
+        height: 28px;
+        border-radius: 7px;
+      }
+      nav ul {
+        list-style: none;
+        display: flex;
+        gap: 22px;
+        margin: 0;
+        padding: 0;
+        align-items: center;
+        font-size: 15px;
+        color: var(--fg-2);
+      }
+      nav ul a {
+        color: var(--fg-2);
+      }
+      nav ul a:hover {
+        color: var(--fg);
+        text-decoration: none;
+      }
+      @media (max-width: 720px) {
+        nav ul li.hide-s {
+          display: none;
+        }
+      }
+
+      /* buttons */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 18px;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: 15px;
+        border: 1px solid var(--hairline);
+        color: var(--fg);
+        background: var(--card);
+        white-space: nowrap;
+      }
+      .btn:hover {
+        text-decoration: none;
+        border-color: rgba(255, 255, 255, 0.2);
+      }
+      .btn.primary {
+        background: var(--accent);
+        color: var(--accent-ink);
+        border-color: transparent;
+      }
+      .btn.primary:hover {
+        filter: brightness(1.06);
+      }
+      .btn svg {
+        width: 18px;
+        height: 18px;
+        flex: none;
+      }
+      .btn.small {
+        padding: 8px 14px;
+        font-size: 14px;
+      }
+
+      /* hero */
+      .hero {
+        padding: 84px 0 56px;
+        background:
+          radial-gradient(
+            60% 50% at 80% 20%,
+            rgba(91, 141, 239, 0.16),
+            transparent 70%
+          ),
+          linear-gradient(135deg, var(--bg), var(--bg-2));
+      }
+      .hero .wrap {
+        display: grid;
+        gap: 40px;
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .hero-copy {
+        display: grid;
+        gap: 22px;
+        max-width: 680px;
+      }
+      .hero-copy .lead {
+        font-size: clamp(18px, 2vw, 21px);
+        color: var(--fg-2);
+        max-width: 560px;
+      }
+      .cta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+      }
+      .cta-note {
+        font-size: 14px;
+        color: var(--fg-3);
+      }
+      .cta-note code {
+        font-family: ui-monospace, Consolas, Menlo, monospace;
+        font-size: 13px;
+        background: rgba(255, 255, 255, 0.06);
+        padding: 2px 6px;
+        border-radius: 6px;
+      }
+      .shot {
+        border-radius: var(--radius);
+        border: 1px solid var(--hairline);
+        overflow: hidden;
+        background: var(--card);
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+      }
+      .shot img {
+        width: 100%;
+      }
+      .pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .pill {
+        font-size: 13px;
+        color: var(--fg-2);
+        border: 1px solid var(--hairline);
+        border-radius: 999px;
+        padding: 5px 11px;
+      }
+
+      /* steps */
+      .steps {
+        display: grid;
+        gap: 18px;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        counter-reset: step;
+      }
+      .step {
+        background: var(--card);
+        border: 1px solid var(--hairline);
+        border-radius: var(--radius);
+        padding: 24px;
+        display: grid;
+        gap: 10px;
+        align-content: start;
+      }
+      .step::before {
+        counter-increment: step;
+        content: counter(step);
+        width: 34px;
+        height: 34px;
+        border-radius: 999px;
+        background: var(--accent);
+        color: var(--accent-ink);
+        font-weight: 700;
+        display: grid;
+        place-items: center;
+        font-size: 15px;
+      }
+      .step p {
+        color: var(--fg-2);
+        font-size: 15.5px;
+      }
+
+      /* features */
+      .grid {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--hairline);
+        border-radius: var(--radius);
+        padding: 22px;
+        display: grid;
+        gap: 8px;
+        align-content: start;
+      }
+      .card .ico {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        background: rgba(91, 141, 239, 0.14);
+        color: var(--accent);
+        display: grid;
+        place-items: center;
+        margin-bottom: 6px;
+      }
+      .card .ico svg {
+        width: 20px;
+        height: 20px;
+      }
+      .card p {
+        color: var(--fg-2);
+        font-size: 15.5px;
+      }
+
+      /* screenshots */
+      .shots {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      }
+      .shots figure {
+        margin: 0;
+        display: grid;
+        gap: 10px;
+      }
+      .shots figcaption {
+        font-size: 14px;
+        color: var(--fg-3);
+      }
+
+      /* honesty */
+      .not {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      }
+      .not div {
+        border-left: 2px solid var(--hairline);
+        padding-left: 16px;
+        color: var(--fg-2);
+        font-size: 15.5px;
+      }
+      .not strong {
+        color: var(--fg);
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      /* faq */
+      details {
+        border-top: 1px solid var(--hairline);
+        padding: 16px 0;
+      }
+      details:last-child {
+        border-bottom: 1px solid var(--hairline);
+      }
+      summary {
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 17px;
+        list-style: none;
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+      }
+      summary::-webkit-details-marker {
+        display: none;
+      }
+      summary::after {
+        content: "+";
+        color: var(--fg-3);
+        font-weight: 400;
+      }
+      details[open] summary::after {
+        content: "–";
+      }
+      details p {
+        margin-top: 10px;
+        color: var(--fg-2);
+        font-size: 15.5px;
+        max-width: 720px;
+      }
+      details code {
+        font-family: ui-monospace, Consolas, Menlo, monospace;
+        font-size: 14px;
+        background: rgba(255, 255, 255, 0.06);
+        padding: 2px 6px;
+        border-radius: 6px;
+      }
+
+      /* download band */
+      .band {
+        background: var(--bg-2);
+        border: 1px solid var(--hairline);
+        border-radius: var(--radius);
+        padding: 36px;
+        display: grid;
+        gap: 18px;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+      }
+      @media (max-width: 720px) {
+        .band {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      footer {
+        padding: 36px 0 60px;
+        border-top: 1px solid var(--hairline);
+        color: var(--fg-3);
+        font-size: 14px;
+      }
+      footer .wrap {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px 28px;
+        justify-content: space-between;
+      }
+      footer a {
+        color: var(--fg-2);
+      }
+    </style>
+  </head>
+  <body>
+    <header class="nav">
+      <div class="wrap">
+        <a class="brand" href="#"
+          ><img
+            src="assets/icon-256.png"
+            alt=""
+            width="28"
+            height="28"
+          />seowatcher</a
+        >
+        <nav aria-label="Sayfa">
+          <ul>
+            <li class="hide-s"><a href="#neler-yapar">Neler yapar</a></li>
+            <li class="hide-s"><a href="#ekranlar">Ekranlar</a></li>
+            <li class="hide-s"><a href="#sss">SSS</a></li>
+            <li>
+              <a href="https://github.com/ucsahinn/seotracker" rel="noopener"
+                >GitHub</a
+              >
+            </li>
+            <li>
+              <a
+                class="btn primary small"
+                href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+                >İndir</a
+              >
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="wrap">
+        <div class="hero-copy">
+          <span class="eyebrow">Ücretsiz · Açık kaynak · Türkçe</span>
+          <h1>Sitenizin Google verisi, kendi bilgisayarınızda.</h1>
+          <p class="lead">
+            Search Console, Analytics 4 ve 95 kurallık site denetimi tek
+            uygulamada. Abonelik yok, hesap yok. Verileriniz dışarı çıkmaz.
+          </p>
+          <div class="cta">
+            <a
+              class="btn primary"
+              href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M12 3v12" />
+                <path d="m7 10 5 5 5-5" />
+                <path d="M5 21h14" />
+              </svg>
+              Windows için indir
+            </a>
+            <a
+              class="btn"
+              href="https://github.com/ucsahinn/seotracker#kurulum"
+              rel="noopener"
+              >Docker ile kur</a
+            >
+          </div>
+          <p class="cta-note">
+            Windows 10/11, 64 bit. Tek kurulum dosyası; Docker, Node ya da
+            terminal gerekmez. Mac ve Linux için
+            <code>docker compose up -d</code>.
+          </p>
+          <div class="pills">
+            <span class="pill">Search Console</span>
+            <span class="pill">Analytics 4</span>
+            <span class="pill">95 denetim kuralı</span>
+            <span class="pill">PageSpeed</span>
+            <span class="pill">33 MCP aracı</span>
+            <span class="pill">MIT lisansı</span>
+          </div>
+        </div>
+        <div class="shot">
+          <img
+            src="assets/firsatlar-dark.png"
+            alt="seowatcher Fırsatlar ekranı: az tıklanan, yükselmeye yakın, ilk sıralarda ve derinde kalan sorgular"
+            width="1536"
+            height="960"
+            fetchpriority="high"
+          />
+        </div>
+      </div>
+    </section>
+
+    <section id="kurulum">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">Kurulum</span>
+          <h2>Üç adımda çalışır.</h2>
+          <p class="muted">
+            İlk ikisi iki dakika sürer. Üçüncüsü Google'ın Search Console
+            verisini üç gün geriden getirmesi kadar.
+          </p>
+        </div>
+        <div class="steps">
+          <div class="step">
+            <h3>İndirin ve çalıştırın</h3>
+            <p>
+              Kurulum dosyası uygulamayı kullanıcı klasörünüze kurar,
+              veritabanını hazırlar ve tarayıcıda
+              <code>127.0.0.1:3001</code> adresini açar. Görev çubuğundaki
+              simgeden açılır, kapanır, yeniden başlar.
+            </p>
+          </div>
+          <div class="step">
+            <h3>Google'a bağlayın</h3>
+            <p>
+              Google Cloud Console'da bir OAuth istemcisi oluşturun, kimliği ve
+              gizli anahtarı uygulamanın
+              <strong>Ayarlar → Google bağlantısı</strong> ekranına yapıştırın.
+              Adım adım rehber uygulamanın içinde.
+            </p>
+          </div>
+          <div class="step">
+            <h3>Projenizi oluşturun</h3>
+            <p>
+              Search Console mülkünüzü seçin. Panel, arama performansı,
+              fırsatlar ve dizin durumu kendiliğinden dolar; site denetimini tek
+              düğmeyle başlatırsınız.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="neler-yapar">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">Neler yapar</span>
+          <h2>Google'ın zaten bildiğini okunur hale getirir.</h2>
+          <p class="muted">
+            Üçüncü taraf veri satın almaz. Sitenizin kendi Search Console ve
+            Analytics verisi, kendi tarayıcısı ve PageSpeed ile çalışır.
+          </p>
+        </div>
+        <div class="grid">
+          <div class="card">
+            <div class="ico">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="11" cy="11" r="7" />
+                <path d="m20 20-3.5-3.5" />
+              </svg>
+            </div>
+            <h3>Arama performansı</h3>
+            <p>
+              Tıklama, gösterim, tıklanma oranı ve ortalama sıra; sorgu, sayfa,
+              ülke ve cihaza göre. 16 aya kadar geçmiş.
+            </p>
+          </div>
+          <div class="card">
+            <div class="ico">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M3 17l6-6 4 4 8-8" />
+                <path d="M14 7h7v7" />
+              </svg>
+            </div>
+            <h3>Fırsatlar</h3>
+            <p>
+              Az tıklanan, yükselmeye yakın (5-20. sıra), ilk sıralardaki ve
+              derinde kalan sorgular; her biri sahibi olması gereken sayfayla.
+            </p>
+          </div>
+          <div class="card">
+            <div class="ico">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M9 12l2 2 4-4" />
+                <path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z" />
+              </svg>
+            </div>
+            <h3>Site denetimi</h3>
+            <p>
+              Kendi tarayıcısı siteyi gezer, 95 kuralla kontrol eder: kırık
+              bağlantı, canonical, hreflang, başlık, yapısal veri, Core Web
+              Vitals. Her bulgunun düzeltme adımı var.
+            </p>
+          </div>
+          <div class="card">
+            <div class="ico">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M4 19V5" />
+                <path d="M4 19h16" />
+                <rect x="8" y="10" width="3" height="6" />
+                <rect x="14" y="7" width="3" height="9" />
+              </svg>
+            </div>
+            <h3>Analytics 4</h3>
+            <p>
+              Organik oturumlar, açılış sayfaları, anahtar olaylar, kanal
+              karşılaştırması ve ölçüm sağlığı: düşüş gerçek mi, etiket mi
+              koptu?
+            </p>
+          </div>
+          <div class="card">
+            <div class="ico">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="9" />
+                <path d="M3 12h18" />
+                <path d="M12 3a14 14 0 0 1 0 18" />
+                <path d="M12 3a14 14 0 0 0 0 18" />
+              </svg>
+            </div>
+            <h3>Dizin durumu</h3>
+            <p>
+              Google'ın her sayfa için kendi yanıtı: dizinde mi, neden değil, en
+              son ne zaman tarandı, hangi canonical'ı seçti. Kota göstergesiyle.
+            </p>
+          </div>
+          <div class="card">
+            <div class="ico">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M6 3h9l5 5v13H6z" />
+                <path d="M14 3v6h6" />
+                <path d="M9 13h7M9 17h7" />
+              </svg>
+            </div>
+            <h3>Raporlar</h3>
+            <p>
+              Denetim sonunda tek dosyalık HTML rapor; telefonda okunur, PDF'e
+              basılır. Şablonla haftalık eylem raporu, check-in, düşüş
+              incelemesi.
+            </p>
+          </div>
+          <div class="card">
+            <div class="ico">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="4" y="5" width="16" height="12" rx="3" />
+                <path d="M9 10h.01M15 10h.01" />
+                <path d="M12 2v3" />
+                <path d="M8 21h8" />
+              </svg>
+            </div>
+            <h3>Ajanınızla çalışır</h3>
+            <p>
+              Claude Code, Codex veya Cursor'a 33 MCP aracı ve 6 hazır beceri:
+              denetim, triage, check-in, rapor. Kurulum metni uygulamanın
+              içinde, tek kopyala.
+            </p>
+          </div>
+          <div class="card">
+            <div class="ico">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="3" y="11" width="18" height="10" rx="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg>
+            </div>
+            <h3>Veriniz sizde kalır</h3>
+            <p>
+              Yalnızca 127.0.0.1'i dinler. Dışarıya Google'a yaptığınız bağlantı
+              ve günde bir sürüm kontrolü gider. Token'lar diskte şifreli.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="ekranlar">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">Ekranlar</span>
+          <h2>Ürünün içinden.</h2>
+          <p class="muted">Görüntülerdeki site ve rakamlar örnektir.</p>
+        </div>
+        <div class="shots">
+          <figure>
+            <div class="shot">
+              <img
+                src="assets/panel-dark.png"
+                alt="Panel: tıklama, gösterim, dizin durumu ve son denetim özeti"
+                loading="lazy"
+                width="1536"
+                height="960"
+              />
+            </div>
+            <figcaption>Panel</figcaption>
+          </figure>
+          <figure>
+            <div class="shot">
+              <img
+                src="assets/site-denetimi-detay-dark.png"
+                alt="Site denetimi: puan halkası, bulgu listesi ve düzeltme adımları"
+                loading="lazy"
+                width="1536"
+                height="960"
+              />
+            </div>
+            <figcaption>Site denetimi</figcaption>
+          </figure>
+          <figure>
+            <div class="shot">
+              <img
+                src="assets/arama-performansi-dark.png"
+                alt="Arama performansı: sorgu ve sayfa tabloları, zaman serisi"
+                loading="lazy"
+                width="1536"
+                height="960"
+              />
+            </div>
+            <figcaption>Arama performansı</figcaption>
+          </figure>
+          <figure>
+            <div class="shot">
+              <img
+                src="assets/rapor-ornek-dark.png"
+                alt="Tek dosyalık HTML denetim raporu"
+                loading="lazy"
+                width="1536"
+                height="960"
+              />
+            </div>
+            <figcaption>Rapor</figcaption>
+          </figure>
+          <figure>
+            <div class="shot">
+              <img
+                src="assets/ajan-kurulumu-dark.png"
+                alt="Ajan kurulumu: MCP adresi, token ve kopyalanacak kurulum metni"
+                loading="lazy"
+                width="1536"
+                height="960"
+              />
+            </div>
+            <figcaption>Ajan kurulumu</figcaption>
+          </figure>
+          <figure>
+            <div class="shot">
+              <img
+                src="assets/firsatlar-dark.png"
+                alt="Fırsatlar: dört grupta sorgu listesi"
+                loading="lazy"
+                width="1536"
+                height="960"
+              />
+            </div>
+            <figcaption>Fırsatlar</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="ne-yapmaz">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">Ne yapmaz</span>
+          <h2>Dürüst sınırlar.</h2>
+        </div>
+        <div class="not">
+          <div>
+            <strong>Arama hacmi tahmin etmez.</strong>Google'ın size verdiği
+            gösterim sayısını gösterir; o gerçek talep, tahmin değil.
+          </div>
+          <div>
+            <strong>Backlink saymaz.</strong>Bu veri ücretli üçüncü taraf
+            dizinlerinden gelir; burada yok ve gelmeyecek.
+          </div>
+          <div>
+            <strong>Rakip sıralaması takip etmez.</strong>Yalnızca kendi
+            mülklerinizi okur. Rakip analizi için ajanınızın web aramasını
+            kullanın.
+          </div>
+          <div>
+            <strong>Bulutta çalışmaz.</strong>Tek kullanıcı, tek bilgisayar.
+            İnternete açacaksanız önüne kendi kimlik doğrulamanızı koyun.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="sss">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">SSS</span>
+          <h2>Sık sorulanlar</h2>
+        </div>
+        <details open>
+          <summary>Gerçekten ücretsiz mi?</summary>
+          <p>
+            Evet. MIT lisanslı açık kaynak; kaynak kodu GitHub'da. Kullandığı
+            Google API'leri (Search Console, Analytics Data, PageSpeed Insights)
+            de ücretsiz kotalarıyla çalışır.
+          </p>
+        </details>
+        <details>
+          <summary>Windows "tanınmayan uygulama" uyarısı veriyor.</summary>
+          <p>
+            Kurulum dosyası henüz kod imzalı değil. SmartScreen ekranında
+            <strong>Daha fazla bilgi → Yine de çalıştır</strong> deyin. Dosyanın
+            özeti her sürümün GitHub Releases sayfasında yazar.
+          </p>
+        </details>
+        <details>
+          <summary>Verilerim nerede duruyor?</summary>
+          <p>
+            Windows'ta <code>%LOCALAPPDATA%\seowatcher</code> klasöründe:
+            veritabanı, Google token'larını şifreleyen anahtar ve günlükler.
+            Uygulamayı kaldırmak bu klasöre dokunmaz; yedeklemek için
+            kopyalamanız yeter.
+          </p>
+        </details>
+        <details>
+          <summary>
+            Neden Google Cloud Console'dan OAuth istemcisi gerekiyor?
+          </summary>
+          <p>
+            Çünkü uygulama bir bulut hizmeti değil; sizin bilgisayarınız
+            doğrudan Google'a bağlanıyor ve Google, bağlanan uygulamanın kime
+            ait olduğunu bilmek istiyor. Bir kez yapılır, beş dakika sürer,
+            uygulamanın içinde adım adım anlatılır.
+          </p>
+        </details>
+        <details>
+          <summary>Sayılar Google Search Console'dakiyle aynı mı?</summary>
+          <p>
+            Aynı kaynaktan okunur, ancak Google veriyi yaklaşık üç gün geriden
+            verir ve çok az aranan sorguları gizler. Sayfa tablosunu toplamak
+            site toplamını vermez; uygulama bunu ayrı gösterir.
+          </p>
+        </details>
+        <details>
+          <summary>Mac veya Linux kullanıyorum.</summary>
+          <p>
+            Docker ile kurulur: depoyu indirin,
+            <code>docker compose up -d</code> deyin,
+            <code>localhost:3001</code> adresini açın. Ayrıntılar GitHub'daki
+            README'de.
+          </p>
+        </details>
+        <details>
+          <summary>seowatcher ile seotracker aynı şey mi?</summary>
+          <p>
+            Evet. Ürünün GitHub'daki adı seotracker; seowatcher bu sitenin ve
+            Windows paketinin adı. Kod, sürümler ve belgeler aynı depoda.
+          </p>
+        </details>
+      </div>
+    </section>
+
+    <section id="indir">
+      <div class="wrap">
+        <div class="band">
+          <div>
+            <h2>Beş dakikada kendi SEO panelinize bakın.</h2>
+            <p class="muted" style="margin-top: 8px">
+              Windows için tek kurulum dosyası. Mac ve Linux için Docker.
+            </p>
+          </div>
+          <div class="cta">
+            <a
+              class="btn primary"
+              href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+              >Windows için indir</a
+            >
+            <a
+              class="btn"
+              href="https://github.com/ucsahinn/seotracker/releases/latest"
+              rel="noopener"
+              >Tüm sürümler</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="wrap">
+        <span
+          >seowatcher · MIT lisansı ·
+          <a href="https://github.com/every-app/open-seo" rel="noopener"
+            >open-seo</a
+          >
+          tabanlı</span
+        >
+        <span>
+          <a href="https://github.com/ucsahinn/seotracker" rel="noopener"
+            >GitHub</a
+          >
+          ·
+          <a
+            href="https://github.com/ucsahinn/seotracker/tree/main/docs"
+            rel="noopener"
+            >Belgeler</a
+          >
+          ·
+          <a
+            href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"
+            rel="noopener"
+            >Sürüm notları</a
+          >
+          ·
+          <a href="https://github.com/ucsahinn/seotracker/issues" rel="noopener"
+            >Sorun bildir</a
+          >
+        </span>
+      </div>
+    </footer>
+  </body>
+</html>

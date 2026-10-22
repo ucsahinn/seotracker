@@ -1,0 +1,78 @@
+name: Windows package
+
+# Builds the one-click Windows installer (packaging/windows) and attaches it
+# to the GitHub release of the pushed tag. Also runnable by hand to get the
+# installer as a workflow artifact without cutting a release.
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: windows-package-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  package:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Version from tag
+        id: version
+        shell: pwsh
+        run: |
+          $ref = "${{ github.ref_name }}"
+          $version = if ($ref -like "v*") { $ref.TrimStart("v") } else { (Get-Content package.json -Raw | ConvertFrom-Json).version }
+          "version=$version" >> $env:GITHUB_OUTPUT
+
+      - name: Build package and installer
+        shell: pwsh
+        run: ./packaging/windows/build.ps1 -Version "${{ steps.version.outputs.version }}"
+
+      - name: Upload installer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: seowatcher-setup-${{ steps.version.outputs.version }}
+          path: packaging/windows/out/seowatcher-setup-*.exe
+          if-no-files-found: error
+
+      - name: Attach to release
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $tag = "${{ github.ref_name }}"
+          $file = Get-ChildItem packaging/windows/out -Filter "seowatcher-setup-*.exe" | Select-Object -First 1
+          # A second copy under a fixed name, so the website can link
+          # .../releases/latest/download/seowatcher-setup.exe without knowing
+          # the version.
+          $stable = Join-Path $file.DirectoryName "seowatcher-setup.exe"
+          Copy-Item $file.FullName $stable -Force
+          $sha = (Get-FileHash $file.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+          "$sha  $($file.Name)" | Set-Content -Encoding ascii (Join-Path $file.DirectoryName "SHA256SUMS.txt")
+          gh release view $tag 2>$null
+          if ($LASTEXITCODE -ne 0) {
+            gh release create $tag --draft --generate-notes --title $tag
+          }
+          gh release upload $tag $file.FullName $stable (Join-Path $file.DirectoryName "SHA256SUMS.txt") --clobber

@@ -1,0 +1,4 @@
+out/
+runtime/node_modules/
+# npm lockfile is intentional here (pnpm lockfile rules in the root .gitignore do not apply)
+!runtime/package-lock.json

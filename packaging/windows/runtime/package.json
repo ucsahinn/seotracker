@@ -1,0 +1,8 @@
+{
+  "name": "seowatcher-runtime",
+  "private": true,
+  "description": "Runtime for the Windows package: the built worker runs under wrangler dev (miniflare + workerd). Keep the wrangler version equal to the one in the repository root package.json.",
+  "dependencies": {
+    "wrangler": "4.105.0"
+  }
+}

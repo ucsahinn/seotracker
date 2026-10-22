@@ -18,7 +18,14 @@
   ],
   // badseo/ is the standalone broken-SEO fixture worker (own deps/config),
   // so it isn't part of the app's module graph.
-  "project": ["**/*.{js,mjs,ts,tsx}", "!src/routeTree.gen.ts", "!badseo/**"],
+  "project": [
+    "**/*.{js,mjs,ts,tsx}",
+    "!src/routeTree.gen.ts",
+    "!badseo/**",
+    // Windows package and website: not part of the app module graph.
+    "!packaging/**",
+    "!site/**",
+  ],
   // Disable Drizzle plugin - it tries to load drizzle.config.ts which imports cloudflare:workers
   "drizzle": false,
   "ignoreDependencies": [
