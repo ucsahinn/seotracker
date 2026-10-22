@@ -47,9 +47,9 @@
     <meta name="twitter:title" content="Google'a bağlanma | seowatcher kılavuzu" />
     <meta name="twitter:description" content="Search Console ve Analytics 4 verisini okumak için Google'dan bir kerelik erişim anahtarı alın, uygulamaya yapıştırın ve sitenizi seçin. Adım adım." />
     <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
-    <meta name="color-scheme" content="light" />
+    <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":"tr"},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/docs/google-baglantisi/#article","headline":"Google'a bağlanma","description":"Search Console ve Analytics 4 verisini okumak için Google'dan bir kerelik erişim anahtarı alın, uygulamaya yapıştırın ve sitenizi seçin. Adım adım.","url":"https://seowatcher.io/docs/google-baglantisi/","inLanguage":"tr","dateModified":"2026-10-22","articleSection":"Başlangıç","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/docs/google-baglantisi/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/docs/google-baglantisi/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/"},{"@type":"ListItem","position":2,"name":"Kılavuz","item":"https://seowatcher.io/docs/"},{"@type":"ListItem","position":3,"name":"Google'a bağlanma","item":"https://seowatcher.io/docs/google-baglantisi/"}]}]}</script>
-    <meta name="theme-color" content="#f8f9fb" />
+    <meta name="theme-color" content="#272c3b" />
     <style>
       @font-face {
         font-family: "Geist";
@@ -76,19 +76,22 @@
           U+2212, U+2215, U+FEFF, U+FFFD;
       }
       :root {
-        --bg: oklch(98.2% 0.004 240);
-        --bg-2: oklch(96% 0.008 240);
-        --bg-3: oklch(93.5% 0.012 240);
-        --fg: oklch(20% 0.025 262);
-        --muted: oklch(20% 0.025 262 / 0.76);
-        --subtle: oklch(20% 0.025 262 / 0.64);
-        --hairline: oklch(20% 0.03 262 / 0.1);
-        --hairline-strong: oklch(20% 0.03 262 / 0.18);
-        --glass: oklch(20% 0.03 262 / 0.035);
-        --accent: oklch(46% 0.2 262);
-        --accent-2: oklch(58% 0.19 262);
-        --accent-ink: oklch(99% 0 0);
-        --accent-link: oklch(46% 0.2 262);
+        --bg: oklch(25% 0.022 262);
+        --bg-2: oklch(29% 0.024 262);
+        --bg-3: oklch(33% 0.026 262);
+        --fg: oklch(97% 0.005 262);
+        --muted: oklch(97% 0.005 262 / 0.78);
+        --subtle: oklch(97% 0.005 262 / 0.66);
+        --hairline: oklch(100% 0 0 / 0.1);
+        --hairline-strong: oklch(100% 0 0 / 0.18);
+        --accent: oklch(74% 0.14 262);
+        --accent-2: oklch(83% 0.1 262);
+        --accent-ink: oklch(18% 0.03 262);
+        --glow: oklch(74% 0.14 262 / 0.3);
+        --glow-soft: oklch(74% 0.14 262 / 0.1);
+        --glass: oklch(100% 0 0 / 0.05);
+        --glass-edge: oklch(100% 0 0 / 0.12);
+        --accent-link: oklch(83% 0.1 262);
         --glow: oklch(46% 0.2 262 / 0.28);
         --glow-soft: oklch(46% 0.2 262 / 0.12);
         --ease: cubic-bezier(0.32, 0.72, 0, 1);
@@ -562,8 +565,8 @@
         padding: 18px 18px 20px;
         border: 1px solid var(--hairline);
         border-radius: 16px;
-        background: var(--bg);
-        box-shadow: 0 1px 2px oklch(20% 0.03 262 / 0.04);
+        background: var(--bg-2);
+        box-shadow: 0 1px 2px oklch(0% 0 0 / 0.2);
         transition:
           transform 500ms var(--spring),
           box-shadow 400ms var(--ease),
@@ -572,7 +575,7 @@
       ul.index li:hover {
         transform: translateY(-2px);
         border-color: var(--hairline-strong);
-        box-shadow: 0 14px 34px oklch(20% 0.03 262 / 0.1);
+        box-shadow: 0 14px 34px oklch(0% 0 0 / 0.35);
       }
       ul.index li a {
         font-weight: 600;
