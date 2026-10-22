@@ -52,6 +52,10 @@ tr.LaunchNow=seowatcher'ı şimdi başlat
 en.LaunchNow=Start seowatcher now
 tr.DesktopIcon=Masaüstüne kısayol ekle
 en.DesktopIcon=Create a desktop shortcut
+tr.VcRedist=Windows bileşeni kuruluyor (Microsoft Visual C++ çalışma zamanı)
+en.VcRedist=Installing a Windows component (Microsoft Visual C++ runtime)
+tr.VcRedistSkipped=Microsoft Visual C++ çalışma zamanı kurulamadı (yönetici izni verilmedi ya da kurulum başarısız oldu). seowatcher bu bileşen olmadan açılmaz. Uygulama ilk açılışta size tekrar kurmayı önerecek.
+en.VcRedistSkipped=The Microsoft Visual C++ runtime could not be installed (administrator permission was not given or the install failed). seowatcher does not start without it. The app will offer to install it again on first launch.
 
 [Tasks]
 Name: "autostart"; Description: "{cm:Autostart}"
@@ -94,4 +98,41 @@ begin
   if FileExists(Exe) then
     Exec(Exe, '--quit', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
   Result := '';
+end;
+
+// workerd.exe (the Workers runtime inside the app) links the Visual C++
+// 2015-2022 runtime dynamically. A clean Windows has none and an old one
+// crashes it with an access violation, so the bundled VC_redist.x64.exe is
+// run when the registry shows nothing newer than 14.40. It needs elevation,
+// so it goes through ShellExec with the runas verb: one UAC prompt. A refused
+// prompt does not fail the install; the launcher offers the same package
+// again on first start.
+const
+  VcRuntimeKey = 'SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x64';
+
+function VcRedistNeeded(): Boolean;
+var
+  Major, Minor: Cardinal;
+begin
+  Result := True;
+  if RegQueryDWordValue(HKLM64, VcRuntimeKey, 'Major', Major) and
+     RegQueryDWordValue(HKLM64, VcRuntimeKey, 'Minor', Minor) then
+    Result := (Major < 14) or ((Major = 14) and (Minor < 40));
+end;
+
+procedure CurStepChanged(CurStep: TSetupStep);
+var
+  Exe: String;
+  Code: Integer;
+  Ok: Boolean;
+begin
+  if CurStep <> ssPostInstall then Exit;
+  if not VcRedistNeeded() then Exit;
+  Exe := ExpandConstant('{app}\redist\VC_redist.x64.exe');
+  if not FileExists(Exe) then Exit;
+  WizardForm.StatusLabel.Caption := CustomMessage('VcRedist');
+  Ok := ShellExec('runas', Exe, '/install /quiet /norestart', '', SW_SHOW, ewWaitUntilTerminated, Code);
+  // 0 done, 3010 done but reboot wanted, 1638 a newer version is already there.
+  if (not Ok) or ((Code <> 0) and (Code <> 3010) and (Code <> 1638)) then
+    MsgBox(CustomMessage('VcRedistSkipped'), mbInformation, MB_OK);
 end;

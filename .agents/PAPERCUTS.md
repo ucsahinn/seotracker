@@ -93,3 +93,12 @@ the fixture server losing the CPU to a container build is enough to trip it on
 whichever fixtures happen to be crawled during the spike. Nothing to fix in the
 rule — it is measuring what it says it measures — but a harness failure that
 names only `slow-response` is worth re-running before believing.
+
+## 2026-10-22: Bash tool heredocs drop one level of backslashes
+
+A Python script passed through the Bash tool as a quoted heredoc
+(`python - <<'EOF'`) arrived with `\n` collapsed to `\n`, so a string meant to
+hold a literal backslash became a newline and the edit failed. Writing the
+script to a file with the Write tool and running `python file.py` avoids it.
+Not a repository bug, but it bit three edits in a row before the cause was
+clear.

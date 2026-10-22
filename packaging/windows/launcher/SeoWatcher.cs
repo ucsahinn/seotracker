@@ -83,6 +83,8 @@ namespace SeoWatcher
                     return 0;
                 }
 
+                LauncherLog.Write("start" + (silent ? " --silent" : ""));
+                foreach (var line in Diag.Summary().Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries)) LauncherLog.Write("  " + line);
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 using (var app = new TrayApp(silent))
@@ -110,6 +112,8 @@ namespace SeoWatcher
         public static readonly string LogDir = Path.Combine(DataRoot, "logs");
         public static readonly string ServerLog = Path.Combine(LogDir, "server.log");
         public static readonly string MigrateLog = Path.Combine(LogDir, "migrate.log");
+        public static readonly string LauncherLog = Path.Combine(LogDir, "launcher.log");
+        public static readonly string VcRedistExe = Path.Combine(ExeDir, "redist", "VC_redist.x64.exe");
         public static readonly string InstanceSecret = Path.Combine(DataRoot, "instance-secret");
         public static readonly string McpToken = Path.Combine(DataRoot, "mcp-token");
         public static readonly string ServerEnv = Path.Combine(DataRoot, "server.env");
@@ -118,6 +122,157 @@ namespace SeoWatcher
         public static string Version()
         {
             try { return File.ReadAllText(VersionFile).Trim(); } catch { return "?"; }
+        }
+    }
+
+    /// <summary>What the launcher knows about the machine. Written to
+    /// launcher.log at every start and copied to the clipboard on request, so a
+    /// bug report from a non-technical user carries the facts that matter:
+    /// Windows build, CPU, and the Visual C++ runtime workerd.exe depends on.</summary>
+    internal static class Diag
+    {
+        // workerd is built against a recent MSVC toolchain; runtimes older than
+        // 14.40 have been seen to crash it with an access violation on start.
+        public const int VcMinMinor = 40;
+
+        private static Microsoft.Win32.RegistryKey Hklm64(string subKey)
+        {
+            return Microsoft.Win32.RegistryKey.OpenBaseKey(Microsoft.Win32.RegistryHive.LocalMachine, Microsoft.Win32.RegistryView.Registry64).OpenSubKey(subKey);
+        }
+
+        public static string OsDescription()
+        {
+            try
+            {
+                using (var key = Hklm64(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion"))
+                {
+                    if (key == null) return Environment.OSVersion.VersionString;
+                    string name = key.GetValue("ProductName") as string ?? "Windows";
+                    string display = key.GetValue("DisplayVersion") as string ?? key.GetValue("ReleaseId") as string ?? "";
+                    string build = key.GetValue("CurrentBuild") as string ?? "";
+                    // Windows 11 still reports "Windows 10" here; the build number tells.
+                    int b;
+                    if (int.TryParse(build, out b) && b >= 22000) name = name.Replace("Windows 10", "Windows 11");
+                    object ubr = key.GetValue("UBR");
+                    return name + " " + display + " (" + build + (ubr != null ? "." + ubr : "") + ")";
+                }
+            }
+            catch { return Environment.OSVersion.VersionString; }
+        }
+
+        public static int OsBuild()
+        {
+            try
+            {
+                using (var key = Hklm64(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion"))
+                {
+                    int b;
+                    if (key != null && int.TryParse(key.GetValue("CurrentBuild") as string, out b)) return b;
+                }
+            }
+            catch { }
+            return 0;
+        }
+
+        public static string CpuName()
+        {
+            try
+            {
+                using (var key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(@"HARDWARE\DESCRIPTION\System\CentralProcessor\0"))
+                {
+                    return key == null ? "?" : ((key.GetValue("ProcessorNameString") as string) ?? "?").Trim();
+                }
+            }
+            catch { return "?"; }
+        }
+
+        /// <summary>Installed Visual C++ 2015-2022 x64 runtime, or null.</summary>
+        public static Version VcRuntime()
+        {
+            try
+            {
+                using (var key = Hklm64(@"SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x64"))
+                {
+                    if (key == null) return null;
+                    object installed = key.GetValue("Installed");
+                    if (installed == null || Convert.ToInt32(installed) == 0) return null;
+                    int major = Convert.ToInt32(key.GetValue("Major") ?? 0);
+                    int minor = Convert.ToInt32(key.GetValue("Minor") ?? 0);
+                    int bld = Convert.ToInt32(key.GetValue("Bld") ?? 0);
+                    return new Version(major, minor, bld);
+                }
+            }
+            catch { return null; }
+        }
+
+        public static bool VcRuntimeDllsPresent()
+        {
+            string sys = Environment.GetFolderPath(Environment.SpecialFolder.System);
+            return File.Exists(Path.Combine(sys, "vcruntime140.dll"))
+                && File.Exists(Path.Combine(sys, "vcruntime140_1.dll"))
+                && File.Exists(Path.Combine(sys, "msvcp140.dll"));
+        }
+
+        /// <summary>null when the runtime looks fine, otherwise one plain sentence.</summary>
+        public static string VcRuntimeProblem()
+        {
+            var v = VcRuntime();
+            if (v == null || !VcRuntimeDllsPresent()) return "Microsoft Visual C++ çalışma zamanı (2015-2022, x64) kurulu değil.";
+            if (v.Major < 14 || (v.Major == 14 && v.Minor < VcMinMinor)) return "Microsoft Visual C++ çalışma zamanı eski (" + v + "); en az 14." + VcMinMinor + " gerekir.";
+            return null;
+        }
+
+        public static string Summary()
+        {
+            var v = VcRuntime();
+            return "seowatcher " + Paths.Version() + "\r\n"
+                + "Windows: " + OsDescription() + (Environment.Is64BitOperatingSystem ? " x64" : " x86") + "\r\n"
+                + "CPU: " + CpuName() + "\r\n"
+                + "Visual C++ çalışma zamanı: " + (v == null ? "yok" : v.ToString()) + (VcRuntimeDllsPresent() ? "" : " (DLL eksik)") + "\r\n"
+                + "Kurulum: " + Paths.ExeDir + "\r\n"
+                + "Veri: " + Paths.DataRoot;
+        }
+
+        /// <summary>Everything a bug report needs, ready for the clipboard.</summary>
+        public static string Report()
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine(Summary());
+            sb.AppendLine();
+            foreach (var log in new[] { Paths.LauncherLog, Paths.MigrateLog, Paths.ServerLog })
+            {
+                sb.AppendLine("---- " + Path.GetFileName(log) + " (son 40 satır)");
+                try
+                {
+                    var lines = File.ReadAllLines(log);
+                    for (int i = Math.Max(0, lines.Length - 40); i < lines.Length; i++) sb.AppendLine(lines[i]);
+                }
+                catch { sb.AppendLine("(okunamadı)"); }
+                sb.AppendLine();
+            }
+            return sb.ToString();
+        }
+    }
+
+    /// <summary>launcher.log: what the tray app itself did, separate from the
+    /// server's own output. A start after it passes 1 MB truncates it.</summary>
+    internal static class LauncherLog
+    {
+        private static readonly object gate = new object();
+
+        public static void Write(string line)
+        {
+            lock (gate)
+            {
+                try
+                {
+                    Directory.CreateDirectory(Paths.LogDir);
+                    var info = new FileInfo(Paths.LauncherLog);
+                    if (info.Exists && info.Length > 1024 * 1024) info.Delete();
+                    File.AppendAllText(Paths.LauncherLog, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " " + line + "\r\n", new UTF8Encoding(false));
+                }
+                catch { }
+            }
         }
     }
 
@@ -338,6 +493,14 @@ namespace SeoWatcher
         private Process process;
         private StreamWriter log;
         private volatile bool stopping;
+        // Set when wrangler's output shows workerd (the Workers runtime) dying
+        // before it listens. On a clean Windows install this is almost always
+        // a missing or outdated Visual C++ 2015-2022 runtime.
+        private volatile bool runtimeCrashed;
+        public const string VcRedistUrl = "https://aka.ms/vs/17/release/vc_redist.x64.exe";
+        // Prefix of every failure the bundled Visual C++ package can fix; the
+        // tray app recognises it and offers to install that package.
+        public const string RuntimeCrashMessage = "Windows bileşeni eksik: ";
 
         public int Port { get; private set; }
 
@@ -380,6 +543,16 @@ namespace SeoWatcher
                 if (!File.Exists(Paths.WranglerJs)) throw new FileNotFoundException("wrangler bulunamadı", Paths.WranglerJs);
                 if (!File.Exists(Paths.MainConfig)) throw new FileNotFoundException("Uygulama paketi bulunamadı", Paths.MainConfig);
 
+                // Preflight: the two things a clean machine most often lacks.
+                int build = Diag.OsBuild();
+                if (build > 0 && build < 17763) throw new InvalidOperationException("Bu Windows sürümü çok eski (yapı " + build + "). Windows 10 1809, Windows 11 ya da Windows Server 2019 ve üstü gerekir.");
+                string vcProblem = Diag.VcRuntimeProblem();
+                if (vcProblem != null)
+                {
+                    LauncherLog.Write("preflight: " + vcProblem);
+                    throw new InvalidOperationException(RuntimeCrashMessage + vcProblem);
+                }
+
                 Emit(Status, "Anahtarlar hazırlanıyor");
                 string secret = Secrets.EnsureInstanceSecret();
                 string token = Secrets.EnsureMcpToken();
@@ -398,6 +571,7 @@ namespace SeoWatcher
                     throw new InvalidOperationException("Veritabanı güncellemesi başarısız (çıkış kodu " + migrateExit + "). Günlük: " + Paths.MigrateLog);
                 }
 
+                runtimeCrashed = false;
                 Emit(Status, "Sunucu başlatılıyor");
                 lock (gate)
                 {
@@ -415,7 +589,12 @@ namespace SeoWatcher
                         " --persist-to \"" + Paths.PersistDir + "\"" +
                         " --env-file \"" + Paths.ServerEnv + "\"" +
                         " --show-interactive-dev-session=false --log-level info",
-                        line => { if (line != null) SafeLog(line); });
+                        line =>
+                        {
+                            if (line == null) return;
+                            SafeLog(line);
+                            if (line.Contains("0xc0000005") || line.Contains("Workers runtime failed to start")) runtimeCrashed = true;
+                        });
                     job.Add(process);
                 }
 
@@ -428,6 +607,8 @@ namespace SeoWatcher
                     lock (gate) { p = process; }
                     if (p == null || p.HasExited)
                     {
+                        Thread.Sleep(300); // let the last stderr lines land before deciding why
+                        if (runtimeCrashed) throw new InvalidOperationException(RuntimeCrashMessage + "uygulamanın motoru başlar başlamaz kapandı (Visual C++ çalışma zamanı eksik ya da eski). Günlük: " + Paths.ServerLog);
                         throw new InvalidOperationException("Sunucu beklenmedik şekilde kapandı. Günlük: " + Paths.ServerLog);
                     }
                     if (Health(url))
@@ -442,6 +623,7 @@ namespace SeoWatcher
             catch (Exception ex)
             {
                 SafeLog("launcher error: " + ex.Message);
+                LauncherLog.Write("error: " + ex.Message);
                 Emit(Failed, ex.Message);
             }
         }
@@ -615,6 +797,9 @@ namespace SeoWatcher
             menu.Items.Add(new ToolStripMenuItem("Yeniden başlat", null, (s, e) => Restart()));
             menu.Items.Add(new ToolStripMenuItem("Günlükleri aç", null, (s, e) => OpenFolder(Paths.LogDir)));
             menu.Items.Add(new ToolStripMenuItem("Veri klasörünü aç", null, (s, e) => OpenFolder(Paths.DataRoot)));
+            menu.Items.Add(new ToolStripMenuItem("Tanı bilgisini kopyala", null, (s, e) => CopyDiagnostics()));
+            fixItem = new ToolStripMenuItem("Eksik Windows bileşenini kur", null, (s, e) => InstallVcRedist()) { Visible = false };
+            menu.Items.Add(fixItem);
             menu.Items.Add(autostartItem);
             menu.Items.Add(new ToolStripSeparator());
             menu.Items.Add(new ToolStripMenuItem("seowatcher " + Paths.Version()) { Enabled = false });
@@ -628,6 +813,7 @@ namespace SeoWatcher
                 Visible = true,
             };
             tray.DoubleClick += (s, e) => OpenApp();
+            tray.BalloonTipClicked += (s, e) => OnBalloonClicked();
 
             server.Status += s => Invoke(() => SetStatus(s));
             server.Ready += u => Invoke(() => OnReady(u));
@@ -692,7 +878,78 @@ namespace SeoWatcher
         private void OnFailed(string message)
         {
             SetStatus("Hata: " + message);
-            tray.ShowBalloonTip(10000, "seowatcher başlatılamadı", message, ToolTipIcon.Error);
+            needsVcRedist = message.StartsWith(Server.RuntimeCrashMessage, StringComparison.Ordinal);
+            fixItem.Visible = needsVcRedist;
+            if (needsVcRedist)
+            {
+                tray.ShowBalloonTip(20000, "seowatcher için bir Windows bileşeni gerekiyor",
+                    message + "\nBu baloncuğa tıklayın; paket kurulur, sonra uygulama kendiliğinden yeniden başlar.", ToolTipIcon.Warning);
+            }
+            else
+            {
+                tray.ShowBalloonTip(15000, "seowatcher başlatılamadı", message, ToolTipIcon.Error);
+            }
+        }
+
+        // A failure the bundled Visual C++ package can fix: clicking the balloon
+        // installs it. Any other balloon opens the app as before.
+        private bool needsVcRedist;
+        private ToolStripMenuItem fixItem;
+        private void OnBalloonClicked()
+        {
+            if (needsVcRedist) InstallVcRedist(); else OpenApp();
+        }
+
+        /// <summary>Runs the bundled VC_redist.x64.exe elevated (one UAC prompt)
+        /// and restarts the server when it finishes. Falls back to Microsoft's
+        /// download page when the package is not beside the launcher.</summary>
+        private void InstallVcRedist()
+        {
+            if (!File.Exists(Paths.VcRedistExe))
+            {
+                LauncherLog.Write("vcredist: bundled package missing, opening " + Server.VcRedistUrl);
+                Browser.Open(Server.VcRedistUrl);
+                return;
+            }
+            try
+            {
+                LauncherLog.Write("vcredist: installing " + Paths.VcRedistExe);
+                SetStatus("Windows bileşeni kuruluyor");
+                var psi = new ProcessStartInfo(Paths.VcRedistExe, "/install /passive /norestart") { UseShellExecute = true, Verb = "runas" };
+                var p = Process.Start(psi);
+                var worker = new Thread(() =>
+                {
+                    p.WaitForExit();
+                    LauncherLog.Write("vcredist: exit code " + p.ExitCode);
+                    Invoke(() =>
+                    {
+                        fixItem.Visible = false;
+                        needsVcRedist = false;
+                        Restart();
+                    });
+                }) { IsBackground = true };
+                worker.Start();
+            }
+            catch (Exception ex)
+            {
+                // Typically the UAC prompt was declined (Win32Exception 1223).
+                LauncherLog.Write("vcredist: " + ex.Message);
+                SetStatus("Hata: Windows bileşeni kurulamadı. Menüden tekrar deneyin.");
+                tray.ShowBalloonTip(10000, "Kurulum iptal edildi", "Yönetici izni verilmedi. Menüdeki \"Eksik Windows bileşenini kur\" ile yeniden deneyebilirsiniz.", ToolTipIcon.Warning);
+            }
+        }
+
+        private void CopyDiagnostics()
+        {
+            try
+            {
+                Clipboard.SetText(Diag.Report());
+                tray.ShowBalloonTip(5000, "Kopyalandı", "Tanı bilgisi panoya kopyalandı. GitHub'daki sorun kaydına yapıştırabilirsiniz.", ToolTipIcon.Info);
+            }
+            catch (Exception ex)
+            {
+                LauncherLog.Write("diag: " + ex.Message);
+            }
         }
 
         private void OpenApp()
@@ -702,6 +959,7 @@ namespace SeoWatcher
 
         private void Restart()
         {
+            LauncherLog.Write("restart");
             SetStatus("Yeniden başlatılıyor");
             server.Stop();
             openedOnce = true;

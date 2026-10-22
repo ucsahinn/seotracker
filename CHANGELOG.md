@@ -2,6 +2,23 @@
 
 Her sürümün notu burada, en yenisi en üstte.
 
+## [2.3.1] — 2026-10-22
+
+Windows paketi artık temiz bir bilgisayarda da açılıyor. Site ve kılavuz
+baştan sona sade Türkçeye çevrildi. Docker kurulumu değişmedi.
+
+### Düzeltmeler
+
+- **Temiz Windows'ta açılış.** Uygulamanın motoru (workerd) Microsoft Visual C++ 2015-2022 çalışma zamanını ister; paketi olmayan bir bilgisayarda "Workers runtime failed to start" ve 0xc0000005 hatasıyla kapanıyordu. Kurulum dosyası artık bu paketi taşır (`redist\VC_redist.x64.exe`, Microsoft'tan, SHA-256 doğrulamalı) ve eksikse bir kez yönetici izni isteyip kurar.
+- **Başlatıcı ön kontrol.** Açılışta Windows yapısı (en az 10.0.17763) ve Visual C++ sürümü (en az 14.40) kontrol edilir. Eksikse simge "Windows bileşeni eksik" der; baloncuğa tıklamak ya da menüdeki **Eksik Windows bileşenini kur** paketi kurup uygulamayı yeniden başlatır.
+- **Günlük ve tanı.** Yeni `launcher.log` her açılışta Windows sürümünü, işlemciyi ve Visual C++ sürümünü yazar. Menüdeki **Tanı bilgisini kopyala** bu bilgileri ve üç günlüğün son 40 satırını panoya alır.
+
+### Yenilikler
+
+- **Yeni logo.** Tek göz işareti, mavi iris, koyu zemin; site, sekme simgesi, Windows simgesi ve paylaşım görseli aynı işareti kullanır.
+- **Site ve kılavuz sade Türkçe.** Ana sayfa, 18 kılavuz sayfası, menüler ve düğmeler son kullanıcı için yeniden yazıldı: kısa cümleler, her teknik terim ilk geçtiği yerde açıklanır, "Belgeler" artık "Kılavuz".
+- **Site hareketi.** Koyu neon tema, sayaçlar, logo şeridi, akış şeması ve altbilgide tüm hareketi durduran bir düğme.
+
 ## [2.3.0] — 2026-10-22
 
 Windows'a tek kurulum dosyasıyla kurulan ilk sürüm ve ürünün tanıtım sitesi.

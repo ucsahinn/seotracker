@@ -10,12 +10,13 @@ Derlenmiş worker (`vite build` çıktısı) Docker'da olduğu gibi workerd içi
 çalışır; farkı, konteyner yerine `wrangler dev` ile başlatılmasıdır. Paket
 dört parçadan oluşur:
 
-| Parça               | Ne                                                                                         | Boyut   |
-| ------------------- | ------------------------------------------------------------------------------------------ | ------- |
-| `node\node.exe`     | Node.js 22 çalışma zamanı (nodejs.org'dan, SHA-256 doğrulamalı)                            | ~83 MB  |
-| `app\node_modules\` | yalnızca `wrangler` ve bağımlılıkları (miniflare, workerd)                                 | ~160 MB |
-| `app\dist\`         | derlenmiş ana worker, istemci ve denetim worker'ı + migrasyonlar                           | ~15 MB  |
-| `seowatcher.exe`    | tepsi uygulaması: anahtar üretir, migrasyon çalıştırır, sunucuyu başlatır, tarayıcıyı açar | 25 KB   |
+| Parça                      | Ne                                                                                         | Boyut   |
+| -------------------------- | ------------------------------------------------------------------------------------------ | ------- |
+| `node\node.exe`            | Node.js 22 çalışma zamanı (nodejs.org'dan, SHA-256 doğrulamalı)                            | ~83 MB  |
+| `redist\VC_redist.x64.exe` | Microsoft Visual C++ 2015-2022 çalışma zamanı (workerd bunu ister; yoksa kurulum kurar)    | ~25 MB  |
+| `app\node_modules\`        | yalnızca `wrangler` ve bağımlılıkları (miniflare, workerd)                                 | ~160 MB |
+| `app\dist\`                | derlenmiş ana worker, istemci ve denetim worker'ı + migrasyonlar                           | ~15 MB  |
+| `seowatcher.exe`           | tepsi uygulaması: anahtar üretir, migrasyon çalıştırır, sunucuyu başlatır, tarayıcıyı açar | 25 KB   |
 
 Veri `%LOCALAPPDATA%\seowatcher` altında durur: `data\` (D1, KV, R2, Durable
 Object durumu), `instance-secret` (Google token'larını şifreleyen anahtar; bir

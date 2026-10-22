@@ -26,6 +26,11 @@
 .PARAMETER NodeExe
   Path to an existing node.exe (64-bit) to bundle instead of downloading.
 
+.PARAMETER VcRedistExe
+  Path to an existing VC_redist.x64.exe to bundle instead of downloading.
+  workerd.exe links the Visual C++ 2015-2022 runtime dynamically; a clean
+  Windows has none, so the installer carries it and installs it when missing.
+
 .PARAMETER SkipAppBuild
   Reuse the existing dist\ instead of running vite build.
 
@@ -37,6 +42,7 @@ param(
   [string]$Version,
   [string]$NodeVersion = "22.23.2",
   [string]$NodeExe,
+  [string]$VcRedistExe,
   [switch]$SkipAppBuild,
   [switch]$NoInstaller
 )
@@ -156,6 +162,30 @@ if ($NodeExe) {
 }
 $nodeVersionOut = & (Join-Path $stage "node\node.exe") -v
 Write-Host "bundled node $nodeVersionOut"
+
+# 4b. Visual C++ runtime -----------------------------------------------------------
+# Pinned to one Microsoft download whose URL carries its own SHA-256; bump both
+# together. The launcher treats anything older than 14.40 as suspect.
+Step "vc redist"
+$vcVersion = "14.44.35211.0"
+$vcSha = "cc0ff0eb1dc3f5188ae6300faef32bf5beeba4bdd6e8e445a9184072096b713b"
+$vcUrl = "https://download.visualstudio.microsoft.com/download/pr/990c720a-46ce-4dc7-87b9-c2eb615d34b9/CC0FF0EB1DC3F5188AE6300FAEF32BF5BEEBA4BDD6E8E445A9184072096B713B/VC_redist.x64.exe"
+New-Item -ItemType Directory -Force (Join-Path $stage "redist") | Out-Null
+if ($VcRedistExe) {
+  if (-not (Test-Path $VcRedistExe)) { throw "VcRedistExe not found: $VcRedistExe" }
+  $vcFile = $VcRedistExe
+} else {
+  New-Item -ItemType Directory -Force $cache | Out-Null
+  $vcFile = Join-Path $cache "VC_redist.x64-$vcVersion.exe"
+  if (-not (Test-Path $vcFile)) {
+    Write-Host "downloading $vcUrl"
+    Invoke-WebRequest -Uri $vcUrl -OutFile $vcFile -UseBasicParsing
+  }
+}
+$vcActual = (Get-FileHash $vcFile -Algorithm SHA256).Hash.ToLowerInvariant()
+if ($vcActual -ne $vcSha) { throw "VC_redist.x64.exe checksum mismatch: expected $vcSha, got $vcActual" }
+Copy-Item $vcFile (Join-Path $stage "redist\VC_redist.x64.exe")
+Write-Host "bundled VC_redist.x64.exe $vcVersion"
 
 # 5. Launcher -------------------------------------------------------------------
 Step "launcher (csc)"
