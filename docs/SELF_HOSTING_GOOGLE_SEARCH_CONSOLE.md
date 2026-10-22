@@ -1,5 +1,7 @@
 # Kendi kurulumunuzda Google Search Console
 
+> **Windows paketi kullanıyorsanız:** yönlendirme adresleri `http://127.0.0.1:3001/api/gsc/oauth/callback` ve `http://127.0.0.1:3001/api/ga4/oauth/callback` biçimindedir (adres numarası değiştiyse yenisiyle); doğru iki adresi **Ayarlar → Google bağlantısı** ekranı gösterir. Şifreleme anahtarı `%LOCALAPPDATA%\seowatcher\instance-secret` dosyasıdır, Docker birimi değil. Ayrıntı: [kb/google-baglantisi.md](./kb/google-baglantisi.md).
+
 Google Search Console (GSC) bağlantısı, seotracker'ın gerçek tıklama, gösterim,
 sıra ve URL Inspection verilerinizi doğrudan Google'dan çekmesini sağlar.
 

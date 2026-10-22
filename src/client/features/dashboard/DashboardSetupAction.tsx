@@ -82,7 +82,10 @@ export function DashboardSetupAction({
                 typeof window === "undefined"
                   ? "http://localhost:3001"
                   : window.location.origin,
-                { tokenConfigured: connection.data?.tokenConfigured },
+                {
+                  tokenConfigured: connection.data?.tokenConfigured,
+                  installKind: connection.data?.installKind,
+                },
               )}
               label="Kurulum istemini kopyala"
               successMessage="Kurulum istemi kopyalandı"

@@ -38,7 +38,7 @@ Rozet **Kayıtlı** ya da **Kullanılmıyor** der. Kayıtlı hizmet hesabı, Goo
 
 Her kartın durumu **Yeterli**, **Azalıyor** (yüzde 70'ten sonra), **Neredeyse doldu** (yüzde 90'dan sonra) ya da **Bilinmiyor** olur.
 
-**Hakkında.** **Sürüm** satırı sürümü gösterir (v2.3.0 gibi). **Güncellemeleri kontrol et** anahtarı varsayılan olarak açıktır. Açıksa uygulama günde en çok bir kez GitHub'daki son sürümü sorar. Bu durumda **Şimdi kontrol et** düğmesi de görünür. Yeni sürüm varsa **Değişiklikler** bağlantısı ve Docker kurulumları için kopyalanacak komut çıkar: `git pull && docker compose up -d --build`. Windows paketinde yeni kurulum dosyasını indirmeniz yeter.
+**Hakkında.** **Sürüm** satırı sürümü gösterir (v2.3.0 gibi). **Güncellemeleri kontrol et** anahtarı varsayılan olarak açıktır. Açıksa uygulama günde en çok bir kez GitHub'daki son sürümü sorar. Bu durumda **Şimdi kontrol et** düğmesi de görünür. Yeni sürüm varsa **Değişiklikler** bağlantısı ve Docker kurulumları için kopyalanacak komut çıkar: `git pull && docker compose up -d --build`. Windows paketinde ise görev çubuğu simgesindeki **Güncelle** anlatılır; otomatik güncelleme açıksa yeni sürüm kendiliğinden kurulur.
 
 **Sürüm notları.** Her sürümde neyin değiştiğini listeler.
 

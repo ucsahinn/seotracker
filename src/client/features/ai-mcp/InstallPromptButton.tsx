@@ -32,6 +32,7 @@ export function InstallPromptButton({
       disabled={connection.isPending}
       value={getInstallPrompt(origin, {
         tokenConfigured: connection.data?.tokenConfigured,
+        installKind: connection.data?.installKind,
       })}
       label={primary ? "Kurulum istemini kopyala" : "Kurulum istemi"}
       successMessage="Kurulum istemi kopyalandı"

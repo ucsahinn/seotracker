@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { UpdateCheckService } from "@/server/features/updates/UpdateCheckService";
-import { getOptionalEnvValue } from "@/server/lib/runtime-env";
+import { getInstallKind } from "@/server/lib/install-kind";
 import { requireAuthenticatedContext } from "@/serverFunctions/middleware";
 
 /**
@@ -11,12 +11,7 @@ import { requireAuthenticatedContext } from "@/serverFunctions/middleware";
  * checkout updated with a docker compose command.
  */
 async function withInstallKind<T extends object>(status: T) {
-  const kind = await getOptionalEnvValue("INSTALL_KIND");
-  return {
-    ...status,
-    installKind:
-      kind === "windows" ? ("windows" as const) : ("docker" as const),
-  };
+  return { ...status, installKind: await getInstallKind() };
 }
 
 /**

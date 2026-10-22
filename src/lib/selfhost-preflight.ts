@@ -142,7 +142,7 @@ function checkOptionalFeatures(env: EnvRecord, items: PreflightItem[]): void {
       key: "gsc",
       name: "Search Console",
       level: "warn",
-      message: `Search Console and Analytics stay DISABLED: the instance key that encrypts their tokens is missing or shorter than ${MIN_BETTER_AUTH_SECRET_LENGTH} characters. In Docker the container generates one at startup, so seeing this means BETTER_AUTH_SECRET was set by hand to something too short.`,
+      message: `Search Console and Analytics stay DISABLED: the instance key that encrypts their tokens is missing or shorter than ${MIN_BETTER_AUTH_SECRET_LENGTH} characters. The container (Docker) or the launcher (Windows package) generates one at startup, so seeing this means BETTER_AUTH_SECRET was set by hand to something too short.`,
     });
     return;
   }

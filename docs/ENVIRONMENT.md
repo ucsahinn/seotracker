@@ -1,5 +1,7 @@
 # Ortam değişkenleri
 
+> **Windows paketi kullanıyorsanız:** bu dosya Docker kurulumunun `.env` değişkenlerini anlatır. Windows paketinde `.env` yoktur; başlatıcı her açılışta `%LOCALAPPDATA%\seowatcher\server.env` dosyasını kendisi yazar (elle düzenlemeyin). Google anahtarı ve PageSpeed anahtarı uygulamanın **Ayarlar** ekranına girilir; adres numarası `config.json` ile değişir. Ayrıntı: [kb/kurulum-windows.md](./kb/kurulum-windows.md).
+
 seotracker hiçbir yapılandırma olmadan çalışır. Aşağıdakilerin hiçbiri zorunlu
 değil; her biri yalnızca bir şeyi açar.
 

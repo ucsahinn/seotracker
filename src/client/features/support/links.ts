@@ -8,6 +8,8 @@ export const DOCS = {
   analytics: "SELF_HOSTING_GOOGLE_ANALYTICS.md",
   pageSpeed: "PAGESPEED_API_KEY.md",
   environment: "ENVIRONMENT.md",
+  windows: "kb/kurulum-windows.md",
+  troubleshooting: "kb/sorun-giderme.md",
 } as const;
 
 export function docsUrl(file: (typeof DOCS)[keyof typeof DOCS]): string {

@@ -64,8 +64,15 @@ function Problem({ title, children }: { title: string; children: ReactNode }) {
  * that is already in `docs/` and the screen that fixes it. Short on purpose:
  * a long list is a manual, and the repository already has the manual.
  */
-export function CommonProblems({ projectId }: { projectId: string | null }) {
+export function CommonProblems({
+  projectId,
+  installKind = "docker",
+}: {
+  projectId: string | null;
+  installKind?: "windows" | "docker";
+}) {
   const origin = useOrigin();
+  const windows = installKind === "windows";
 
   return (
     <section
@@ -79,30 +86,69 @@ export function CommonProblems({ projectId }: { projectId: string | null }) {
         Sık sorunlar
       </h2>
 
-      <Problem title="Sayfa açılmıyor ya da Docker kapalı">
-        <p>
-          Önce Docker Desktop&apos;ın çalıştığına bakın; Windows&apos;ta
-          tepsideki simge &quot;running&quot; demeli. Sonra durumu görün:{" "}
-          <Command value="docker compose ps" /> Durum <strong>healthy</strong>{" "}
-          olana kadar bekleyin; ilk açılış birkaç dakika sürebilir.
-        </p>
-        <p>
-          Hâlâ açılmıyorsa son günlük satırları nedeni yazar:{" "}
-          <Command value="docker compose logs --tail 50" />
-        </p>
-        <p>
-          <DocLink file={DOCS.docker}>Docker kurulum belgesi</DocLink>
-        </p>
-      </Problem>
+      {windows ? (
+        <Problem title="Sayfa açılmıyor ya da uygulama kapalı">
+          <p>
+            Görev çubuğundaki seowatcher simgesine bakın; üzerine gelince
+            &quot;Çalışıyor: http://127.0.0.1:3001/&quot; yazmalı. Simge yoksa
+            Başlat menüsünden seowatcher&apos;ı açın. Simgede &quot;Hata&quot;
+            yazıyorsa sağ tıklayıp <strong>Yeniden başlat</strong>, olmazsa{" "}
+            <strong>Kurulumu onar</strong> deyin.
+          </p>
+          <p>
+            Hâlâ açılmıyorsa <strong>Günlükleri aç</strong> ile{" "}
+            <code className="text-xs">launcher.log</code> ve{" "}
+            <code className="text-xs">server.log</code> dosyalarının son
+            satırlarına bakın; <strong>Sorunu bildir (GitHub)</strong> bunları
+            hazır bir kayda koyar.
+          </p>
+          <p>
+            <DocLink file={DOCS.windows}>Windows kurulum kılavuzu</DocLink>
+          </p>
+        </Problem>
+      ) : (
+        <Problem title="Sayfa açılmıyor ya da Docker kapalı">
+          <p>
+            Önce Docker Desktop&apos;ın çalıştığına bakın; Windows&apos;ta
+            tepsideki simge &quot;running&quot; demeli. Sonra durumu görün:{" "}
+            <Command value="docker compose ps" /> Durum <strong>healthy</strong>{" "}
+            olana kadar bekleyin; ilk açılış birkaç dakika sürebilir.
+          </p>
+          <p>
+            Hâlâ açılmıyorsa son günlük satırları nedeni yazar:{" "}
+            <Command value="docker compose logs --tail 50" />
+          </p>
+          <p>
+            <DocLink file={DOCS.docker}>Docker kurulum belgesi</DocLink>
+          </p>
+        </Problem>
+      )}
 
-      <Problem title="Port dolu (Bind for 127.0.0.1:3001 failed)">
-        <p>
-          3001 numaralı portu başka bir program kullanıyor. Proje klasöründe{" "}
-          <code className="text-xs">PORT=3002</code> satırı olan bir{" "}
-          <code className="text-xs">.env</code> dosyası oluşturup konteyneri
-          yeniden oluşturun:{" "}
-          <Command value="docker compose up -d --force-recreate seotracker" />
-        </p>
+      <Problem
+        title={
+          windows
+            ? "Adres numarası (port) dolu"
+            : "Port dolu (Bind for 127.0.0.1:3001 failed)"
+        }
+      >
+        {windows ? (
+          <p>
+            Windows paketi 3001 doluysa 3002 ile 3010 arasında boş bir numara
+            seçer ve simgenin yazısında gösterir. Belirli bir numara
+            istiyorsanız <strong>Veri klasörünü aç</strong> deyip{" "}
+            <code className="text-xs">config.json</code> içindeki{" "}
+            <code className="text-xs">&quot;port&quot;</code> değerini
+            değiştirin, sonra <strong>Yeniden başlat</strong> deyin.
+          </p>
+        ) : (
+          <p>
+            3001 numaralı portu başka bir program kullanıyor. Proje klasöründe{" "}
+            <code className="text-xs">PORT=3002</code> satırı olan bir{" "}
+            <code className="text-xs">.env</code> dosyası oluşturup konteyneri
+            yeniden oluşturun:{" "}
+            <Command value="docker compose up -d --force-recreate seotracker" />
+          </p>
+        )}
         <p>
           Port değişince Google&apos;a verdiğiniz yönlendirme adresleri de
           değişir; yenilerini{" "}
@@ -114,17 +160,35 @@ export function CommonProblems({ projectId }: { projectId: string | null }) {
       </Problem>
 
       <Problem title="Ajanım uygulamaya bağlanamıyor (401)">
-        <p>
-          MCP ucu varsayılan olarak bir jeton ister. Jeton ilk açılışta üretilir
-          ve veri biriminde durur; okumak için (PowerShell ve cmd):{" "}
-          <Command value="docker compose exec -T seotracker cat /app/.wrangler/mcp-token" />
-        </p>
-        <p>
-          Git Bash (Windows):{" "}
-          <Command value="MSYS_NO_PATHCONV=1 docker compose exec -T seotracker cat /app/.wrangler/mcp-token" />{" "}
-          Önek olmadan Git Bash yolu bozar ve jeton boş çıkar;
-          PowerShell&apos;de önek hata verir.
-        </p>
+        {windows ? (
+          <p>
+            Asistan bağlantısı bir şifre (token) ister. Windows paketinde bu
+            şifre{" "}
+            <code className="text-xs">%LOCALAPPDATA%\seowatcher\mcp-token</code>{" "}
+            dosyasındadır (<strong>Veri klasörünü aç</strong>). Komutla okumak
+            için PowerShell:{" "}
+            <Command
+              value={
+                '(Get-Content "$env:LOCALAPPDATA\\seowatcher\\mcp-token").Trim()'
+              }
+            />{" "}
+            Değeri sohbete yazmayın.
+          </p>
+        ) : (
+          <>
+            <p>
+              MCP ucu varsayılan olarak bir jeton ister. Jeton ilk açılışta
+              üretilir ve veri biriminde durur; okumak için (PowerShell ve cmd):{" "}
+              <Command value="docker compose exec -T seotracker cat /app/.wrangler/mcp-token" />
+            </p>
+            <p>
+              Git Bash (Windows):{" "}
+              <Command value="MSYS_NO_PATHCONV=1 docker compose exec -T seotracker cat /app/.wrangler/mcp-token" />{" "}
+              Önek olmadan Git Bash yolu bozar ve jeton boş çıkar;
+              PowerShell&apos;de önek hata verir.
+            </p>
+          </>
+        )}
         <p>
           Adres: <Command value={`${origin}/mcp`} /> İstemciniz{" "}
           <code className="text-xs">Authorization: Bearer &lt;jeton&gt;</code>{" "}
@@ -135,7 +199,9 @@ export function CommonProblems({ projectId }: { projectId: string | null }) {
             Ajan kurulumu sayfası
           </Link>{" "}
           istemciniz için hazır komutu verir.{" "}
-          <DocLink file={DOCS.docker}>Ayrıntılar</DocLink>
+          <DocLink file={windows ? DOCS.troubleshooting : DOCS.docker}>
+            Ayrıntılar
+          </DocLink>
         </p>
       </Problem>
 

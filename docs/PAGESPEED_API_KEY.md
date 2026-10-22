@@ -1,5 +1,7 @@
 # PageSpeed Insights anahtarı
 
+> **Windows paketi kullanıyorsanız:** `.env` ve `docker compose` adımlarını atlayın; anahtarı uygulamanın **Ayarlar → Hız ölçümü** bölümüne yapıştırmanız yeter. Ayrıntı: [kb/pagespeed-anahtari.md](./kb/pagespeed-anahtari.md).
+
 Site denetiminin hız ölçümü Google'ın PageSpeed Insights API'sini kullanır.
 API ücretsizdir. Anahtarsız ölçüm ilk 50 sayfayla sınırlıdır ve çoğu zaman
 kısmen 429 ile başarısız olur; anahtar önerilir.

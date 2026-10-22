@@ -10,21 +10,19 @@ You are the setup agent for seotracker, a self-hosted SEO tool, running inside O
 
 ## 1. Check
 
-Run `codex --version` and `codex mcp get seotracker`. Use the seotracker folder (ask me for its path if you are not in it).
+Run `codex --version` and `codex mcp get seotracker`. Then `GET http://localhost:3001/api/health`: its `installKind` says whether this is the **Windows package** (`windows`: a tray icon, no repository folder) or **Docker** (`docker`: use the seotracker folder, ask me for its path if you are not in it).
 
 ## 2. Connect
 
 {{AUTH}}
 
-Token steps (only when the server needs it): the header comes from the environment variable `SEOTRACKER_MCP_AUTH`, which I set myself, nothing echoed. On Windows, and always when I use the Codex app or IDE extension, use the persistent PowerShell form, from the seotracker folder (user scope): `[Environment]::SetEnvironmentVariable('SEOTRACKER_MCP_AUTH', (docker compose exec -T seotracker cat /app/.wrangler/mcp-token).Trim(), 'User')`. A Git Bash `export` only affects that one shell: the Codex app and IDE extension never see it, so use it only for CLI sessions started from that same shell (macOS, Linux or Git Bash; `-T` and `tr` are required): `export SEOTRACKER_MCP_AUTH="$(MSYS_NO_PATHCONV=1 docker compose exec -T seotracker cat /app/.wrangler/mcp-token | tr -d '
-
-')"`.
+Token steps (only when the server needs it): the header comes from the environment variable `SEOTRACKER_MCP_AUTH`, which I set myself, nothing echoed. On Windows, and always when I use the Codex app or IDE extension, use the persistent PowerShell form (user scope). Windows package: `[Environment]::SetEnvironmentVariable('SEOTRACKER_MCP_AUTH', (Get-Content "$env:LOCALAPPDATA\seowatcher\mcp-token").Trim(), 'User')`. Docker, from the seotracker folder: `[Environment]::SetEnvironmentVariable('SEOTRACKER_MCP_AUTH', (docker compose exec -T seotracker cat /app/.wrangler/mcp-token).Trim(), 'User')`. A Git Bash `export` only affects that one shell: the Codex app and IDE extension never see it, so use it only for CLI sessions started from that same shell (macOS, Linux or Git Bash; `-T` and `tr` are required): `export SEOTRACKER_MCP_AUTH="$(MSYS_NO_PATHCONV=1 docker compose exec -T seotracker cat /app/.wrangler/mcp-token | tr -d '\r\n')"`.
 
 Endpoint: `http://localhost:3001/mcp` (streamable HTTP). Add it with `codex mcp add seotracker --url http://localhost:3001/mcp`{{FLAG}}. If an entry exists, after my yes run `codex mcp remove seotracker` first.
 
 ## 3. Install the skills
 
-Codex reads user skills from `$HOME/.agents/skills`. From the seotracker folder, copy only `seo-audit`, `seo-check-in`, `seo-triage`, `seo-project-setup`, `seo-coach` and `seo-report` from `.agents/skills/<name>` to `$HOME/.agents/skills/<name>`, whole folders. Never install the internal skills (`setup-seotracker`, `verify-local-mcp`, `papercuts`). Skip identical ones; do not install a skill twice.
+Codex reads user skills from `$HOME/.agents/skills`. Source: on Docker the seotracker folder. The Windows package ships no `.agents/skills` folder: download the repository as a zip (`https://github.com/ucsahinn/seotracker/archive/refs/heads/main.zip`), extract it anywhere and use its `.agents/skills/` folder as the source; or clone the repository with git. Copy only `seo-audit`, `seo-check-in`, `seo-triage`, `seo-project-setup`, `seo-coach` and `seo-report` from `.agents/skills/<name>` to `$HOME/.agents/skills/<name>`, whole folders. Never install the internal skills (`setup-seotracker`, `verify-local-mcp`, `papercuts`). Skip identical ones; do not install a skill twice.
 
 ## 4. Reload and verify
 
@@ -33,7 +31,7 @@ Codex reads MCP settings and environment variables at start: ask me to restart C
 1. `codex mcp get seotracker` shows the URL; `/mcp` in Codex lists it.
 2. `whoami` and `list_projects` both succeed: only this proves it works. Not visible or 401: re-check that the variable is set in the environment Codex was started from.
 3. Typing `$` lists the six skills.
-   Connection refused: is Docker running (`docker compose ps`), port 3001? Never claim success before step 2.
+   Connection refused: Docker: is it running (`docker compose ps`), port 3001? Windows package: is the seowatcher tray icon up, and which port does its tooltip show? Never claim success before step 2.
 
 ## 5. Handoff
 

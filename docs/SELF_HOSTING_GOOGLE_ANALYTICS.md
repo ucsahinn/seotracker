@@ -1,5 +1,7 @@
 # Self-hosted Google Analytics
 
+> **Windows paketi kullanıyorsanız:** yönlendirme adresi `http://127.0.0.1:3001/api/ga4/oauth/callback` biçimindedir (adres numarası değiştiyse yenisiyle); **Ayarlar → Google bağlantısı** ekranı doğru adresi gösterir. Ayrıntı: [kb/google-baglantisi.md](./kb/google-baglantisi.md).
+
 Connecting Google Analytics lets seotracker bind a GA4 property to a project. The
 connection is optional and read-only.
 

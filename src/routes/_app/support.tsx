@@ -14,7 +14,8 @@ export const Route = createFileRoute("/_app/support")({
 });
 
 function SupportPage() {
-  const { diagnostics } = useSetupSnapshot();
+  const { diagnostics, installKind } = useSetupSnapshot();
+  const windows = installKind === "windows";
   const projectId =
     diagnostics.data?.projects.find((project) => !project.archivedAt)?.id ??
     null;
@@ -31,26 +32,37 @@ function SupportPage() {
 
       <SetupStatusPanel />
 
-      <CommonProblems projectId={projectId} />
+      <CommonProblems projectId={projectId} installKind={installKind} />
 
       <SystemLimitsSection />
 
       <ul className="space-y-3 text-sm text-muted">
         <li>
           <span className="font-medium text-base-content">
-            Konteyner günlüğü
+            {windows ? "Günlükler" : "Konteyner günlüğü"}
           </span>{" "}
-          — Açılış kontrolleri uygulama başlamadan önce buraya yazılır. Komut:{" "}
-          {/* One unit, so the copy button never lands on a line of its own. */}
-          <span className="inline-flex items-center gap-1 whitespace-nowrap align-middle">
-            <code className="text-xs">docker compose logs -f</code>
-            <CopyButton
-              iconOnly
-              value="docker compose logs -f"
-              label="Komutu kopyala"
-              successMessage="Komut kopyalandı"
-            />
-          </span>
+          {windows ? (
+            <>
+              — Görev çubuğundaki seowatcher simgesine sağ tıklayıp{" "}
+              <strong>Günlükleri aç</strong> deyin. Açılış kontrolleri{" "}
+              <code className="text-xs">launcher.log</code>, sunucu satırları{" "}
+              <code className="text-xs">server.log</code> dosyasındadır.
+            </>
+          ) : (
+            <>
+              — Açılış kontrolleri uygulama başlamadan önce buraya yazılır.
+              Komut:{" "}
+              <span className="inline-flex items-center gap-1 whitespace-nowrap align-middle">
+                <code className="text-xs">docker compose logs -f</code>
+                <CopyButton
+                  iconOnly
+                  value="docker compose logs -f"
+                  label="Komutu kopyala"
+                  successMessage="Komut kopyalandı"
+                />
+              </span>
+            </>
+          )}
         </li>
         <li>
           <span className="font-medium text-base-content">Sağlık ucu</span> —{" "}
@@ -69,9 +81,9 @@ function SupportPage() {
           <span className="font-medium text-base-content">
             Kurulum belgeleri
           </span>{" "}
-          — depodaki <code className="text-xs">docs/</code> dizini Docker,
-          Search Console, Analytics ve PageSpeed kurulumunu anlatır; üstteki
-          &quot;Belgeleri aç&quot; düğmesi oraya götürür.
+          — Windows paketi, Docker, Search Console, Analytics ve PageSpeed
+          kurulumu <code className="text-xs">docs/</code> altında ve kılavuzda
+          anlatılır; üstteki &quot;Belgeleri aç&quot; düğmesi oraya götürür.
         </li>
       </ul>
 

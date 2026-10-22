@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { ActivationRepository } from "@/server/features/activation/repositories/ActivationRepository";
+import { getInstallKind } from "@/server/lib/install-kind";
 import { getOptionalEnvValue } from "@/server/lib/runtime-env";
 import { requireAuthenticatedContext } from "@/serverFunctions/middleware";
 
@@ -36,5 +37,7 @@ export const getAgentConnection = createServerFn({ method: "POST" })
       tokenConfigured: Boolean(
         (await getOptionalEnvValue("MCP_TOKEN"))?.trim(),
       ),
+      /** Decides which install path the prompts and the token help describe. */
+      installKind: await getInstallKind(),
     };
   });

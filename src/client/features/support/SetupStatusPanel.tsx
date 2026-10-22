@@ -146,7 +146,7 @@ function StatusBody({
 }) {
   const checks = Object.entries(data.setup.checks).map(([key, check]) => ({
     key,
-    described: describeCheck(key, check, googleReady),
+    described: describeCheck(key, check, googleReady, data.setup.installKind),
   }));
   const problems = checks.filter(
     (check) => check.described.status !== "ok",

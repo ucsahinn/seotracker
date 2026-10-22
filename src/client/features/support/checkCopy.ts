@@ -26,8 +26,13 @@ export function describeCheck(
   key: string,
   check: { status: CheckStatus; detail?: string },
   googleReady: boolean | null,
+  installKind: "windows" | "docker" = "docker",
 ): DescribedCheck {
   const detail = check.detail ?? "";
+  const logs =
+    installKind === "windows"
+      ? "Görev çubuğu menüsünden Günlükleri aç deyip server.log dosyasına bakın; düzelmezse Kurulumu onar."
+      : "Ayrıntı için docker compose logs --tail 50 çıktısına bakın.";
   const say = (text: string, status: CheckStatus = check.status) =>
     spoken(text, status);
 
@@ -93,17 +98,13 @@ export function describeCheck(
   if (key === "database") {
     return check.status === "ok"
       ? say("Yerel veritabanı yanıt veriyor.")
-      : say(
-          "Veritabanı yanıt vermiyor. Ayrıntı için docker compose logs --tail 50 çıktısına bakın.",
-        );
+      : say("Veritabanı yanıt vermiyor. " + logs);
   }
 
   if (key === "runtime") {
     return check.status === "ok"
       ? say("Çalışma ortamı hazır.")
-      : say(
-          "Çalışma ortamında bir sorun var. docker compose logs --tail 50 çıktısına bakın.",
-        );
+      : say("Çalışma ortamında bir sorun var. " + logs);
   }
 
   // A check this screen has no sentence for: the server's own words beat

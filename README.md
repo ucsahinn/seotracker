@@ -212,6 +212,10 @@ Araç açıklamaları İngilizcedir; ajanlar okur. Ajan, sayfa metinlerinin ya d
 <details>
 <summary><b>Açılmıyor, ne yapayım?</b></summary>
 
+**Windows paketi:** görev çubuğundaki seowatcher simgesine bakın; üzerine gelince "Çalışıyor: http://127.0.0.1:3001/" yazmalı. Simge yoksa Başlat menüsünden açın. "Hata" yazıyorsa sağ tıklayıp **Yeniden başlat**, olmazsa **Kurulumu onar** deyin; **Günlükleri aç** ile `launcher.log` ve `server.log` nedeni yazar, **Sorunu bildir (GitHub)** bunları hazır bir kayda koyar.
+
+**Docker:**
+
 - Docker Desktop çalışıyor mu? Windows'ta tepsideki Docker simgesi "running" göstermeli.
 - `docker compose ps` çalıştırın ve durum **healthy** olana kadar bekleyin; ilk açılış birkaç dakika sürebilir.
 - Hâlâ açılmıyorsa son günlük satırlarına bakın: `docker compose logs --tail 50`
@@ -219,9 +223,11 @@ Araç açıklamaları İngilizcedir; ajanlar okur. Ajan, sayfa metinlerinin ya d
 </details>
 
 <details>
-<summary><b>"Bind for 127.0.0.1:3001 failed" diyor</b></summary>
+<summary><b>3001 numaralı adres (port) dolu</b></summary>
 
-Port başka bir program tarafından kullanılıyor. Proje klasöründe `PORT=3002` satırını içeren bir `.env` dosyası oluşturun. Windows'ta Not Defteri dosyayı sessizce `.env.txt` diye kaydedebilir; PowerShell ile oluşturmak güvenlidir:
+**Windows paketi:** 3001 doluysa uygulama 3002 ile 3010 arasında boş bir numara seçer ve simgenin yazısında gösterir. Belirli bir numara istiyorsanız **Veri klasörünü aç** deyip `config.json` içindeki `"port"` değerini değiştirin, sonra **Yeniden başlat** deyin. Numara değişince Google yönlendirme adreslerini de güncelleyin.
+
+**Docker ("Bind for 127.0.0.1:3001 failed"):** port başka bir program tarafından kullanılıyor. Proje klasöründe `PORT=3002` satırını içeren bir `.env` dosyası oluşturun. Windows'ta Not Defteri dosyayı sessizce `.env.txt` diye kaydedebilir; PowerShell ile oluşturmak güvenlidir:
 
 ```powershell
 Set-Content -Encoding ascii .env 'PORT=3002'
@@ -264,16 +270,17 @@ Search Console verisi yaklaşık 3 gün gecikmeli yayımlanır. Bu yüzden ekran
 
 ## 📚 Belgeler
 
-| Belge                                                                                   | Konu                                                          |
-| --------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| [`SELF_HOSTING_DOCKER.md`](./docs/SELF_HOSTING_DOCKER.md)                               | Docker ile kurulum, veri alanı, MCP kimlik doğrulaması        |
-| [`SELF_HOSTING_GOOGLE_SEARCH_CONSOLE.md`](./docs/SELF_HOSTING_GOOGLE_SEARCH_CONSOLE.md) | Google Cloud projesi ve OAuth istemcisi                       |
-| [`SELF_HOSTING_GOOGLE_ANALYTICS.md`](./docs/SELF_HOSTING_GOOGLE_ANALYTICS.md)           | Analytics 4 bağlantısı                                        |
-| [`PAGESPEED_API_KEY.md`](./docs/PAGESPEED_API_KEY.md)                                   | Ücretsiz PageSpeed anahtarı                                   |
-| [`ENVIRONMENT.md`](./docs/ENVIRONMENT.md)                                               | İsteğe bağlı ortam değişkenleri                               |
-| [`LOCAL_DEVELOPMENT.md`](./docs/LOCAL_DEVELOPMENT.md)                                   | Geliştirme ortamı                                             |
-| [`CHANGELOG.md`](./CHANGELOG.md)                                                        | Sürüm notları                                                 |
-| [`specs/`](./specs)                                                                     | Tasarım kayıtları: ne, nasıl, hangi alternatif neden kaybetti |
+| Belge                                                                                   | Konu                                                                     |
+| --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| [`kb/kurulum-windows.md`](./docs/kb/kurulum-windows.md)                                 | Windows paketi: kurulum, güncelleme, onarım, günlükler, kurumsal dağıtım |
+| [`SELF_HOSTING_DOCKER.md`](./docs/SELF_HOSTING_DOCKER.md)                               | Docker ile kurulum, veri alanı, MCP kimlik doğrulaması                   |
+| [`SELF_HOSTING_GOOGLE_SEARCH_CONSOLE.md`](./docs/SELF_HOSTING_GOOGLE_SEARCH_CONSOLE.md) | Google Cloud projesi ve OAuth istemcisi                                  |
+| [`SELF_HOSTING_GOOGLE_ANALYTICS.md`](./docs/SELF_HOSTING_GOOGLE_ANALYTICS.md)           | Analytics 4 bağlantısı                                                   |
+| [`PAGESPEED_API_KEY.md`](./docs/PAGESPEED_API_KEY.md)                                   | Ücretsiz PageSpeed anahtarı                                              |
+| [`ENVIRONMENT.md`](./docs/ENVIRONMENT.md)                                               | İsteğe bağlı ortam değişkenleri                                          |
+| [`LOCAL_DEVELOPMENT.md`](./docs/LOCAL_DEVELOPMENT.md)                                   | Geliştirme ortamı                                                        |
+| [`CHANGELOG.md`](./CHANGELOG.md)                                                        | Sürüm notları                                                            |
+| [`specs/`](./specs)                                                                     | Tasarım kayıtları: ne, nasıl, hangi alternatif neden kaybetti            |
 
 ---
 

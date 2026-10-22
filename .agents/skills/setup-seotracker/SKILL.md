@@ -18,6 +18,7 @@ You are the setup agent for seotracker, a self-hosted SEO tool. Goal: connect th
 
 - Name the client you run in (Claude Code, Codex, Cursor, VS Code Copilot, Gemini CLI, other) and its version. Ask only if you cannot tell.
 - Check whether a seotracker MCP entry and the skills already exist. Keep other integrations; avoid duplicates.
+- Find out how seotracker is installed: `GET http://localhost:3001/api/health` returns `installKind`: `windows` (the Windows package: a tray icon, data under `%LOCALAPPDATA%\seowatcher`, no repository folder) or `docker` (a git checkout run with `docker compose`; use the seotracker folder). The token and skill steps below name both.
 
 ## 2. Connect the MCP server
 
@@ -26,14 +27,18 @@ If the server answers 401, it needs the token: follow the token rules below.
 
 Endpoint: `http://localhost:3001/mcp` (HTTP transport). Use the client's own current command or file; check `--help` first.
 
-Token rules (only when the server needs it): the header is `Authorization: Bearer <token>`. The token lives in the container at `/app/.wrangler/mcp-token`. Never read it into your context: let the shell substitute it inside one command, and never print, echo, log or store it. The client redacts the header in its own output; if any output ever shows the value, tell me to rotate it. Verify afterwards with the client's `get` or `list` command AND a real tool call (`whoami`): "Connected" alone is not proof.
+Token rules (only when the server needs it): the header is `Authorization: Bearer <token>`. Docker: the token lives in the container at `/app/.wrangler/mcp-token`. Windows package: it is the file `%LOCALAPPDATA%\seowatcher\mcp-token`. Never read it into your context: let the shell substitute it inside one command, and never print, echo, log or store it. The client redacts the header in its own output; if any output ever shows the value, tell me to rotate it. Verify afterwards with the client's `get` or `list` command AND a real tool call (`whoami`): "Connected" alone is not proof.
 
 - Claude Code: `claude mcp add --transport http --scope user seotracker http://localhost:3001/mcp`. With a token, with my yes, run this single command in the seotracker folder. Git Bash (`-T` and `tr` are required: a TTY and `\r` corrupt the token; without `MSYS_NO_PATHCONV=1` the header is added EMPTY):
   `claude mcp add --transport http --scope user seotracker http://localhost:3001/mcp --header "Authorization: Bearer $(MSYS_NO_PATHCONV=1 docker compose exec -T seotracker cat /app/.wrangler/mcp-token | tr -d '\r\n')"`
   PowerShell 5.1:
   `$t = (docker compose exec -T seotracker cat /app/.wrangler/mcp-token).Trim(); claude mcp add --transport http --scope user seotracker http://localhost:3001/mcp --header "Authorization: Bearer $t"; Remove-Variable t`
+  Windows package, PowerShell:
+  `$t = (Get-Content "$env:LOCALAPPDATA\seowatcher\mcp-token").Trim(); claude mcp add --transport http --scope user seotracker http://localhost:3001/mcp --header "Authorization: Bearer $t"; Remove-Variable t`
+  Windows package, Git Bash:
+  `claude mcp add --transport http --scope user seotracker http://localhost:3001/mcp --header "Authorization: Bearer $(cat "$LOCALAPPDATA/seowatcher/mcp-token" | tr -d '\r\n')"`
   If an entry already exists, `claude mcp add` errors: after my yes, run `claude mcp remove seotracker -s user` first. If you cannot run shell commands, use the plain command with `--header "Authorization: Bearer <token>"` and leave `<token>` as a placeholder for me to replace myself.
-- Codex: `codex mcp add seotracker --url http://localhost:3001/mcp --bearer-token-env-var SEOTRACKER_MCP_AUTH`. I set the variable myself, as a persistent user variable (PowerShell, from the seotracker folder, nothing is echoed): `[Environment]::SetEnvironmentVariable('SEOTRACKER_MCP_AUTH', (docker compose exec -T seotracker cat /app/.wrangler/mcp-token).Trim(), 'User')`. Codex reads it at start, so restart it afterwards. Without a token, drop `--bearer-token-env-var`. Codex user skills live in `$HOME/.agents/skills`; a skill is invoked as `$seo-audit`.
+- Codex: `codex mcp add seotracker --url http://localhost:3001/mcp --bearer-token-env-var SEOTRACKER_MCP_AUTH`. I set the variable myself, as a persistent user variable (PowerShell, nothing is echoed). Docker, from the seotracker folder: `[Environment]::SetEnvironmentVariable('SEOTRACKER_MCP_AUTH', (docker compose exec -T seotracker cat /app/.wrangler/mcp-token).Trim(), 'User')`. Windows package: `[Environment]::SetEnvironmentVariable('SEOTRACKER_MCP_AUTH', (Get-Content "$env:LOCALAPPDATA\seowatcher\mcp-token").Trim(), 'User')`. Codex reads it at start, so restart it afterwards. Without a token, drop `--bearer-token-env-var`. Codex user skills live in `$HOME/.agents/skills`; a skill is invoked as `$seo-audit`.
 - Cursor: `.cursor/mcp.json` (project) or `~/.cursor/mcp.json` (global): `{"mcpServers":{"seotracker":{"url":"http://localhost:3001/mcp"}}}`. For a token add `"headers":{"Authorization":"Bearer ${env:SEOTRACKER_MCP_AUTH}"}`. Syntax not verified live and may have changed: read its docs first.
 - VS Code Copilot: `.vscode/mcp.json`: `{"servers":{"seotracker":{"type":"http","url":"http://localhost:3001/mcp"}}}`. For a token use an `inputs` entry (`promptString`, `password: true`) in a header. Syntax not verified live and may have changed: read its docs first.
 - Gemini CLI: `gemini mcp add --transport http --scope user seotracker http://localhost:3001/mcp`, plus `--header "Authorization: Bearer <token>"` if needed. Syntax not verified live and may have changed: run `gemini mcp add --help` first.
@@ -43,7 +48,7 @@ If I reach the instance through a tunnel or reverse proxy, use that hostname ins
 
 ## 3. Install the SEO skills
 
-The repository carries its skills under `.agents/skills/`. Install only the public ones: `seo-audit`, `seo-check-in`, `seo-triage`, `seo-project-setup`, `seo-coach`, `seo-report`.
+The repository carries its skills under `.agents/skills/`. Docker: that folder is the seotracker folder. The Windows package ships no `.agents/skills` folder: download the repository as a zip (`https://github.com/ucsahinn/seotracker/archive/refs/heads/main.zip`), extract it anywhere and use its `.agents/skills/` folder as the source; or clone the repository with git. Install only the public ones: `seo-audit`, `seo-check-in`, `seo-triage`, `seo-project-setup`, `seo-coach`, `seo-report`.
 
 - Install the six into the USER scope (or the client's equivalent) from the seotracker folder's `.agents/skills`, using this agent's own install flow (check its documentation if unsure). Never install the internal skills (`setup-seotracker`, `verify-local-mcp`, `papercuts`).
 - The repo's `.claude/skills` links are for contributors: do not count or copy them (they can show as project skills, or be empty text files on Windows). Do not install a skill twice.
@@ -62,7 +67,7 @@ Once the tools load, call these read-only tools:
 
 Failure branches:
 
-- Connection refused or timeout: is Docker running? `docker compose ps` in the seotracker folder, then check the port (default 3001) and the URL above.
+- Connection refused or timeout: Docker: is it running? `docker compose ps` in the seotracker folder. Windows package: is the seowatcher tray icon up, and which port does its tooltip show (3001, or 3002-3010 when 3001 was taken)? Then check the URL above.
 - 401: redo the token rules above. Do not retry blindly.
 - Server connected but no tools: reload or restart, then re-check.
 - Never claim verification before steps 1 and 2 succeed.

@@ -63,7 +63,7 @@ Daha kolay yol bu. Önce metni alın:
 1. Ekrandaki **Ajan kurulum istemini kopyala** düğmesine basın. Codex için ayrı düğme var.
 2. Metni asistanınıza yapıştırın. Asistan bağlantıyı kurar, "whoami" ve "list_projects" ile dener, şablonları yükler.
 
-**Kurulum istemi (sıfırdan kurulum)** ise Docker'dan Google bağlantısına kadar bütün kurulumu asistana yaptırır.
+**Kurulum istemi (sıfırdan kurulum)** ise kurulumun çalışmasından Google bağlantısına kadar bütün kurulumu asistana yaptırır; Windows paketini de Docker kurulumunu da tanır.
 
 ### Hazır görev şablonlarını yükleme
 

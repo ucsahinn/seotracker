@@ -68,7 +68,7 @@ function IndexRedirect() {
           <p className="text-error text-center">
             {getStandardErrorMessage(
               error,
-              "Beklenmeyen bir hata oluştu. Sunucu günlüklerine bakın.",
+              "Beklenmeyen bir hata oluştu. Yardım ekranındaki günlüklere bakın.",
             )}
           </p>
         </div>

@@ -238,7 +238,7 @@ async function hostnameResolvesToBlockedAddress(
   } catch (error) {
     throw new AppError(
       "CRAWL_TARGET_BLOCKED",
-      "Adresin nereye çözümlendiği doğrulanamadı, bu yüzden tarama başlatılmadı. Konteynerin cloudflare-dns.com adresine erişebildiğinden emin olun.",
+      "Adresin nereye çözümlendiği doğrulanamadı, bu yüzden tarama başlatılmadı. Uygulamanın cloudflare-dns.com adresine erişebildiğinden emin olun.",
       { reason: error instanceof Error ? error.message : "dns_lookup_failed" },
     );
   }

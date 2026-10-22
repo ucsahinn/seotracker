@@ -1,4 +1,5 @@
 import { count } from "drizzle-orm";
+import { getInstallKind, type InstallKind } from "@/server/lib/install-kind";
 import { version } from "../../../package.json";
 import { db } from "@/db";
 import { projects } from "@/db/schema";
@@ -17,6 +18,8 @@ type SetupCheck = {
 type SelfHostSetupStatus = {
   version: string;
   authMode: string;
+  /** "windows" for the Windows package, "docker" for everything else. */
+  installKind: InstallKind;
   checks: Record<string, SetupCheck>;
 };
 
@@ -109,5 +112,10 @@ export async function getSelfHostSetupStatus(options?: {
             };
   }
 
-  return { version, authMode: getAuthMode(env.AUTH_MODE), checks };
+  return {
+    version,
+    authMode: getAuthMode(env.AUTH_MODE),
+    installKind: await getInstallKind(),
+    checks,
+  };
 }

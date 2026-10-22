@@ -127,10 +127,12 @@ function AiPage() {
   const statusUnknown = connection.isError || connection.data === undefined;
   const prompt = getAgentSetupPrompt(origin, {
     tokenConfigured: connection.data?.tokenConfigured,
+    installKind: connection.data?.installKind,
   });
 
   const codexPrompt = getCodexSetupPrompt(origin, {
     tokenConfigured: connection.data?.tokenConfigured,
+    installKind: connection.data?.installKind,
   });
 
   return (
@@ -201,12 +203,13 @@ function AiPage() {
                 Kurulum istemi (sıfırdan kurulum)
               </h2>
               <p className="mt-2 text-sm leading-relaxed text-muted">
-                Depoyu yeni indirdiyseniz buradan başlayın. Bu istemi Claude
-                Code, Codex, Cursor gibi ajanınıza yapıştırın; Docker&apos;ı,
-                Google erişimini, PageSpeed anahtarını ve ilk projenizi sırayla
-                kontrol edip bitirir. Google Cloud&apos;daki tıklamaları ve
-                anahtar yapıştırmayı siz yaparsınız; anahtarlar sohbete değil,
-                yalnızca Ayarlar ekranına girilir.
+                Uygulamayı yeni kurduysanız buradan başlayın. Bu istemi Claude
+                Code, Codex, Cursor gibi ajanınıza yapıştırın; kurulumun
+                çalıştığını, Google erişimini, PageSpeed anahtarını ve ilk
+                projenizi sırayla kontrol edip bitirir. Windows paketini de
+                Docker kurulumunu da tanır. Google Cloud&apos;daki tıklamaları
+                ve anahtar yapıştırmayı siz yaparsınız; anahtarlar sohbete
+                değil, yalnızca Ayarlar ekranına girilir.
               </p>
               <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3 [&>button]:h-11 [&>button]:gap-2 [&>button]:text-sm">
                 <InstallPromptButton primary />
@@ -347,21 +350,40 @@ function AiPage() {
                   <code className="font-mono text-muted">
                     Authorization: Bearer &lt;token&gt;
                   </code>{" "}
-                  başlığını ekletin. Kendiniz bir değer vermediyseniz konteyner
-                  ilk açılışta bir tane üretti; okumak için (PowerShell ve cmd):{" "}
-                  {/* Komutla, ekranda değil: token'ı buraya basmak onu
+                  başlığını ekletin.{" "}
+                  {connection.data.installKind === "windows" ? (
+                    <>
+                      Windows paketinde token bir dosyadır:{" "}
+                      <code className="font-mono text-muted">
+                        %LOCALAPPDATA%\seowatcher\mcp-token
+                      </code>{" "}
+                      (görev çubuğu menüsünde <strong>Veri klasörünü aç</strong>
+                      ). Komutla okumak için PowerShell:{" "}
+                      <code className="font-mono text-muted">
+                        (Get-Content
+                        &quot;$env:LOCALAPPDATA\seowatcher\mcp-token&quot;).Trim()
+                      </code>
+                      . Değeri sohbete ya da ekrana yazmayın.
+                    </>
+                  ) : (
+                    <>
+                      Kendiniz bir değer vermediyseniz konteyner ilk açılışta
+                      bir tane üretti; okumak için (PowerShell ve cmd):{" "}
+                      {/* Komutla, ekranda değil: token'ı buraya basmak onu
                         tarayıcı geçmişine, ekran görüntülerine ve bu sayfayı
                         okuyan bir ajanın dökümüne düşürür. */}
-                  <code className="font-mono text-muted">
-                    docker compose exec -T seotracker cat
-                    /app/.wrangler/mcp-token
-                  </code>
-                  . Windows&apos;ta Git Bash için komutun başına{" "}
-                  <code className="font-mono text-muted">
-                    MSYS_NO_PATHCONV=1
-                  </code>{" "}
-                  ekleyin; yoksa token boş çıkar (PowerShell&apos;de bu önek
-                  hata verir).
+                      <code className="font-mono text-muted">
+                        docker compose exec -T seotracker cat
+                        /app/.wrangler/mcp-token
+                      </code>
+                      . Windows&apos;ta Git Bash için komutun başına{" "}
+                      <code className="font-mono text-muted">
+                        MSYS_NO_PATHCONV=1
+                      </code>{" "}
+                      ekleyin; yoksa token boş çıkar (PowerShell&apos;de bu önek
+                      hata verir).
+                    </>
+                  )}
                 </>
               ) : (
                 <>

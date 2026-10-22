@@ -6,7 +6,7 @@ const STANDARD_MESSAGES: Record<ErrorCode, string> = {
   UNAUTHENTICATED:
     "Oturumunuz doğrulanamadı. Sayfayı yenileyip tekrar deneyin.",
   AUTH_CONFIG_MISSING:
-    "Giriş ayarı eksik. Kurulum belgesine bakın: docs/SELF_HOSTING_DOCKER.md",
+    "Giriş ayarı eksik. Yardım ekranındaki kurulum belgelerine bakın.",
   FORBIDDEN: "Bu işlem için yetkiniz yok.",
   NOT_FOUND: "İstenen kayıt bulunamadı.",
   AUDIT_CAPACITY_REACHED:

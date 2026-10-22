@@ -129,7 +129,7 @@ function describeGscError(error: unknown): string {
   // Anything else is not Google's wording and can carry SQL or bound
   // parameters; the agent gets a generic line and the container log the detail.
   void captureServerError(error, { scope: "searchConsoleTools" });
-  return "Search Console could not be read because of an internal error. Check the container log.";
+  return "Search Console could not be read because of an internal error. Check the server log (Docker: `docker compose logs`; Windows package: %LOCALAPPDATA%\\seowatcher\\logs\\server.log).";
 }
 
 // ---------------------------------------------------------------------------
