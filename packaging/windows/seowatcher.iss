@@ -23,10 +23,17 @@ AppPublisher=seowatcher
 AppPublisherURL=https://seowatcher.io
 AppSupportURL=https://github.com/ucsahinn/seotracker
 AppUpdatesURL=https://github.com/ucsahinn/seotracker/releases
-DefaultDirName={localappdata}\Programs\seowatcher
+; {autopf} is Program Files for an all-users install (administrator, /ALLUSERS)
+; and %LOCALAPPDATA%\Programs for the default per-user install.
+DefaultDirName={autopf}\seowatcher
 DisableProgramGroupPage=yes
 DisableDirPage=yes
 PrivilegesRequired=lowest
+; Lets an administrator choose "all users" in the wizard or pass /ALLUSERS
+; from a deployment script (Intune, GPO, PDQ). Per-user stays the default.
+PrivilegesRequiredOverridesAllowed=dialog commandline
+; Always keep a setup log; it is copied next to the app's own logs at the end.
+SetupLogging=yes
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 OutputBaseFilename=seowatcher-setup-{#AppVersion}
@@ -86,11 +93,11 @@ Name: "desktopicon"; Description: "{cm:DesktopIcon}"; Flags: unchecked
 Source: "{#StageDir}\*"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs ignoreversion
 
 [Icons]
-Name: "{userprograms}\seowatcher"; Filename: "{app}\seowatcher.exe"
-Name: "{userdesktop}\seowatcher"; Filename: "{app}\seowatcher.exe"; Tasks: desktopicon
+Name: "{autoprograms}\seowatcher"; Filename: "{app}\seowatcher.exe"
+Name: "{autodesktop}\seowatcher"; Filename: "{app}\seowatcher.exe"; Tasks: desktopicon
 
 [Registry]
-Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "seowatcher"; ValueData: """{app}\seowatcher.exe"" --silent"; Flags: uninsdeletevalue; Tasks: autostart
+Root: HKA; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "seowatcher"; ValueData: """{app}\seowatcher.exe"" --silent"; Flags: uninsdeletevalue; Tasks: autostart
 
 [Run]
 Filename: "{app}\seowatcher.exe"; Description: "{cm:LaunchNow}"; Flags: nowait postinstall skipifsilent
@@ -144,12 +151,27 @@ begin
     Result := (Major < 14) or ((Major = 14) and (Minor < 40));
 end;
 
+procedure CopySetupLog();
+var
+  LogDir: String;
+begin
+  // The app's own logs live under %LOCALAPPDATA%\seowatcher\logs; the setup
+  // log goes next to them so "Tanı bilgisini kopyala" and a bug report see it.
+  LogDir := ExpandConstant('{localappdata}\seowatcher\logs');
+  if ForceDirectories(LogDir) then
+    FileCopy(ExpandConstant('{log}'), LogDir + '\setup.log', False);
+end;
+
 procedure CurStepChanged(CurStep: TSetupStep);
 var
   Exe: String;
   Code: Integer;
   Ok: Boolean;
 begin
+  if CurStep = ssDone then begin
+    CopySetupLog();
+    Exit;
+  end;
   if CurStep <> ssPostInstall then Exit;
   if not VcRedistNeeded() then Exit;
   Exe := ExpandConstant('{app}\redist\VC_redist.x64.exe');

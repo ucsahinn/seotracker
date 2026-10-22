@@ -60,6 +60,16 @@ Uygulama güncellemeyi kendisi yapar. Açılıştan iki dakika sonra ve her gün
 
 Verileriniz, Google bağlantınız ve ayarlarınız olduğu gibi kalır.
 
+### Kurumsal dağıtım
+
+Bir bilgisayardaki tüm kullanıcılar için kurmak ya da bir dağıtım aracıyla (Intune, GPO, PDQ) sessizce yüklemek isteyen BT ekipleri için:
+
+- **Tüm kullanıcılar için**: kurulum dosyasını yönetici olarak çalıştırın ve sihirbazda "tüm kullanıcılar" seçeneğini seçin. Uygulama `Program Files\seowatcher` altına kurulur; her kullanıcının verisi yine kendi `%LOCALAPPDATA%\seowatcher` klasöründe durur.
+- **Sessiz kurulum**: `seowatcher-setup.exe /VERYSILENT /NORESTART` (tek kullanıcı) ya da `seowatcher-setup.exe /VERYSILENT /ALLUSERS /NORESTART` (yönetici, tüm kullanıcılar). Sessiz kurulum bitince uygulama kendiliğinden açılır.
+- **Kurulum günlüğü**: her kurulum `%LOCALAPPDATA%\seowatcher\logs\setup.log` dosyasına yazılır; `/LOG="yol"` ile başka bir yer verebilirsiniz.
+- **Sessiz kaldırma**: `unins000.exe /VERYSILENT` (kurulum klasöründe).
+- **Doğrulama**: her sürüm yayımlanmadan önce temiz bir Windows makinesinde kurulur, açılır, sağlık adresi yanıt verene kadar beklenir ve kaldırılır; bu sınav geçmeden sürüm yayımlanmaz.
+
 ### Onarma
 
 Bir şey takılırsa simgeye sağ tıklayıp **Kurulumu onar** deyin. Uygulama geçici dosyaları temizler, paketin eksiksiz olduğunu kontrol eder, veritabanını yeniden kontrol eder ve açılır. Bir dosya eksikse söyler ve sürüm sayfasını açar; kurulum dosyasını yeniden çalıştırmanız yeter.

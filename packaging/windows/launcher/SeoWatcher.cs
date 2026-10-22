@@ -890,6 +890,7 @@ namespace SeoWatcher
 
         private void Run(Config cfg)
         {
+            var startedAt = DateTime.UtcNow;
             try
             {
                 Directory.CreateDirectory(Paths.PersistDir);
@@ -926,6 +927,7 @@ namespace SeoWatcher
                 Port = ChoosePort(cfg);
 
                 Emit(Status, "Veritabanı güncelleniyor");
+                LauncherLog.Write("port " + Port + ", data " + Paths.PersistDir);
                 int migrateExit = RunAndWait(
                     "\"" + Paths.WranglerJs + "\" d1 migrations apply DB --local" +
                     " -c \"" + Paths.MainConfig + "\"" +
@@ -989,6 +991,7 @@ namespace SeoWatcher
                     }
                     if (Health(url))
                     {
+                        LauncherLog.Write("ready: " + url + " (" + Math.Round((DateTime.UtcNow - startedAt).TotalSeconds, 1) + "s after start)");
                         Emit(Ready, url);
                         return;
                     }
@@ -1093,10 +1096,21 @@ namespace SeoWatcher
             psi.EnvironmentVariables["FORCE_COLOR"] = "0";
             psi.EnvironmentVariables["CI"] = "1";
             if (wranglerLogLevel != null) psi.EnvironmentVariables["WRANGLER_LOG"] = wranglerLogLevel;
-            var p = new Process { StartInfo = psi };
+            var p = new Process { StartInfo = psi, EnableRaisingEvents = true };
             p.OutputDataReceived += (s, e) => onLine(e.Data);
             p.ErrorDataReceived += (s, e) => onLine(e.Data);
+            var started = DateTime.UtcNow;
+            string what = arguments.IndexOf(" dev", StringComparison.Ordinal) >= 0 ? "server" : "migrate";
+            p.Exited += (s, e) =>
+            {
+                try
+                {
+                    LauncherLog.Write(what + ": node pid " + p.Id + " exited with " + p.ExitCode + " after " + Math.Round((DateTime.UtcNow - started).TotalSeconds, 1) + "s");
+                }
+                catch { }
+            };
             p.Start();
+            LauncherLog.Write(what + ": node pid " + p.Id + " started");
             p.BeginOutputReadLine();
             p.BeginErrorReadLine();
             return p;

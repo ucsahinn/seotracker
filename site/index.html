@@ -64,7 +64,7 @@
     <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
     <meta name="color-scheme" content="dark" />
     <meta name="theme-color" content="#272c3b" />
-    <script src="/assets/site.js?v=2.3.3" defer></script>
+    <script src="/assets/site.js?v=2.4.1" defer></script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -235,7 +235,7 @@
           U+2212, U+2215, U+FEFF, U+FFFD;
       }
 
-      /* Dark, deep, one electric accent that is allowed to glow. */
+      /* Slate surfaces, one soft cobalt accent, hairline separation, depth by shadow. */
       :root {
         --bg: oklch(25% 0.022 262);
         --bg-2: oklch(29% 0.024 262);
@@ -252,6 +252,9 @@
         --glow-soft: oklch(74% 0.14 262 / 0.1);
         --glass: oklch(100% 0 0 / 0.05);
         --glass-edge: oklch(100% 0 0 / 0.12);
+        --shadow-raise:
+          0 1px 0 oklch(100% 0 0 / 0.08) inset,
+          0 28px 60px -20px oklch(0% 0 0 / 0.55);
         --radius: 18px;
         --ease: cubic-bezier(0.32, 0.72, 0, 1);
         --spring: cubic-bezier(0.34, 1.4, 0.64, 1);
@@ -261,7 +264,7 @@
       }
       html {
         -webkit-text-size-adjust: 100%;
-        scroll-padding-top: 84px;
+        scroll-padding-top: 96px;
       }
       @media (prefers-reduced-motion: no-preference) {
         html {
@@ -278,6 +281,17 @@
         font-variant-numeric: tabular-nums;
         -webkit-font-smoothing: antialiased;
         overflow-x: clip;
+      }
+      /* Film grain, fixed, never scrolls, never catches the pointer. */
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 9;
+        pointer-events: none;
+        opacity: 0.045;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        mix-blend-mode: overlay;
       }
       img {
         display: block;
@@ -296,7 +310,8 @@
       dd,
       dt,
       ol,
-      ul {
+      ul,
+      figure {
         margin: 0;
       }
       :focus-visible {
@@ -307,7 +322,7 @@
         position: absolute;
         left: 16px;
         top: -48px;
-        z-index: 5;
+        z-index: 30;
         background: var(--accent);
         color: var(--accent-ink);
         padding: 8px 14px;
@@ -326,31 +341,43 @@
           width: calc(100% - 32px);
         }
       }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+      }
 
       h1 {
-        font-size: clamp(38px, 6vw, 72px);
+        font-size: clamp(40px, 5.6vw, 72px);
         line-height: 1;
         letter-spacing: -0.035em;
-        font-weight: 600;
+        font-weight: 640;
         text-wrap: balance;
       }
+      h1 .soft {
+        color: var(--muted);
+        font-weight: 500;
+      }
       h2 {
-        font-size: clamp(30px, 3.8vw, 48px);
-        line-height: 1.06;
-        letter-spacing: -0.03em;
-        font-weight: 600;
+        font-size: clamp(28px, 3.4vw, 44px);
+        line-height: 1.08;
+        letter-spacing: -0.028em;
+        font-weight: 620;
         text-wrap: balance;
         max-width: 24ch;
       }
       h3 {
-        font-size: 21px;
+        font-size: 20px;
         line-height: 1.3;
         letter-spacing: -0.015em;
         font-weight: 600;
       }
       .lede {
-        font-size: clamp(18px, 1.7vw, 21px);
-        line-height: 1.5;
+        font-size: clamp(17px, 1.6vw, 20px);
+        line-height: 1.55;
         color: var(--muted);
         max-width: 52ch;
         text-wrap: pretty;
@@ -366,23 +393,24 @@
         font-size: 0.94em;
       }
       section {
-        padding-block: clamp(64px, 8vw, 104px);
-        scroll-margin-top: 64px;
+        padding-block: clamp(64px, 8vw, 112px);
+        scroll-margin-top: 80px;
         position: relative;
       }
-      .glowtext {
-        color: var(--accent);
-        text-shadow: 0 0 24px var(--glow-soft);
+      .section-head {
+        display: grid;
+        gap: 14px;
+        margin-bottom: clamp(36px, 5vw, 64px);
       }
 
-      /* Word-by-word headline entrance. */
+      /* Entrance: headline word by word; blocks rise once. */
       [data-words].split .w {
         display: inline-block;
         opacity: 0;
-        transform: translateY(0.35em);
+        transform: translateY(0.3em);
         filter: blur(6px);
-        animation: word 900ms var(--ease) both;
-        animation-delay: calc(var(--i) * 60ms);
+        animation: word 800ms var(--ease) both;
+        animation-delay: calc(var(--i) * 55ms);
       }
       @keyframes word {
         to {
@@ -391,25 +419,17 @@
           filter: blur(0);
         }
       }
-
-      /* Reveal: blur to sharp, once. */
       .reveal {
         opacity: 0;
-        transform: translateY(26px);
-        filter: blur(10px);
+        transform: translateY(22px);
         transition:
-          opacity 900ms var(--ease),
-          transform 1100ms var(--ease),
-          filter 900ms var(--ease);
+          opacity 800ms var(--ease),
+          transform 1000ms var(--ease);
         transition-delay: calc(var(--d, 0) * 1ms);
-      }
-      .walk-item.reveal {
-        filter: none;
       }
       .reveal.in {
         opacity: 1;
         transform: none;
-        filter: blur(0);
       }
       @media (prefers-reduced-motion: reduce) {
         .reveal,
@@ -422,7 +442,7 @@
         }
       }
 
-      /* Buttons: a lit primary with a soft halo, a glass secondary; both lean toward the cursor. */
+      /* Buttons: a lit primary, a glass secondary; the arrow sits in its own island. */
       .btn {
         position: relative;
         display: inline-flex;
@@ -430,7 +450,7 @@
         justify-content: center;
         gap: 10px;
         min-height: 50px;
-        padding: 0 24px;
+        padding: 0 22px 0 24px;
         border-radius: 999px;
         font-weight: 580;
         font-size: 16px;
@@ -439,7 +459,6 @@
         border: 1px solid var(--glass-edge);
         background: var(--glass);
         color: var(--fg);
-        backdrop-filter: blur(10px);
         transition:
           transform 500ms var(--spring),
           box-shadow 400ms var(--ease),
@@ -448,7 +467,7 @@
         will-change: transform;
       }
       .btn:hover {
-        background: oklch(100% 0 0 / 0.08);
+        background: oklch(100% 0 0 / 0.09);
         border-color: oklch(100% 0 0 / 0.26);
       }
       .btn:active {
@@ -461,14 +480,12 @@
         border-color: transparent;
         box-shadow:
           0 0 0 1px oklch(100% 0 0 / 0.1) inset,
-          0 10px 30px var(--glow-soft),
-          0 0 48px var(--glow-soft);
+          0 10px 28px var(--glow-soft);
       }
       .btn.primary:hover {
         box-shadow:
           0 0 0 1px oklch(100% 0 0 / 0.14) inset,
-          0 14px 40px var(--glow),
-          0 0 72px var(--glow-soft);
+          0 14px 36px var(--glow);
       }
       .btn.small {
         min-height: 38px;
@@ -476,8 +493,8 @@
         font-size: 14px;
       }
       .btn .arrow {
-        width: 26px;
-        height: 26px;
+        width: 28px;
+        height: 28px;
         border-radius: 50%;
         background: oklch(0% 0 0 / 0.14);
         display: grid;
@@ -486,10 +503,10 @@
         transition: transform 400ms var(--spring);
       }
       .btn:hover .arrow {
-        transform: translateX(3px);
+        transform: translate(2px, -1px) scale(1.06);
       }
       .textlink {
-        color: var(--accent);
+        color: var(--accent-2);
         text-decoration: underline;
         text-decoration-color: color-mix(
           in oklab,
@@ -497,84 +514,238 @@
           transparent
         );
         text-underline-offset: 3px;
+        transition: text-decoration-color 300ms var(--ease);
       }
       .textlink:hover {
         text-decoration-color: var(--accent-2);
       }
 
-      header {
-        position: sticky;
-        top: 0;
-        z-index: 4;
-        transition:
-          background-color 400ms var(--ease),
-          border-color 400ms var(--ease);
-        border-bottom: 1px solid transparent;
+      /* Island navigation: a glass pill detached from the top edge. */
+      .island {
+        position: fixed;
+        top: 14px;
+        left: 0;
+        right: 0;
+        z-index: 20;
+        pointer-events: none;
       }
-      header.scrolled {
-        background: color-mix(in oklab, var(--bg) 70%, transparent);
-        backdrop-filter: blur(18px) saturate(1.4);
-        -webkit-backdrop-filter: blur(18px) saturate(1.4);
-        border-bottom-color: var(--hairline);
-      }
-      header .wrap {
+      .island .bar {
+        pointer-events: auto;
+        width: min(1180px, 100% - 24px);
+        margin-inline: auto;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        height: 66px;
         gap: 16px;
+        min-height: 58px;
+        padding: 6px 8px 6px 14px;
+        border-radius: 999px;
+        background: color-mix(in oklab, var(--bg) 72%, transparent);
+        border: 1px solid var(--hairline);
+        backdrop-filter: blur(18px) saturate(1.4);
+        -webkit-backdrop-filter: blur(18px) saturate(1.4);
+        box-shadow:
+          0 1px 0 oklch(100% 0 0 / 0.06) inset,
+          0 12px 40px -16px oklch(0% 0 0 / 0.6);
+        transition:
+          box-shadow 400ms var(--ease),
+          background-color 400ms var(--ease);
+      }
+      .island.scrolled .bar {
+        background: color-mix(in oklab, var(--bg-2) 84%, transparent);
+        box-shadow:
+          0 1px 0 oklch(100% 0 0 / 0.08) inset,
+          0 16px 44px -14px oklch(0% 0 0 / 0.7);
       }
       .brand {
         display: inline-flex;
         align-items: center;
         gap: 10px;
         font-weight: 650;
-        font-size: 18px;
+        font-size: 17px;
         letter-spacing: -0.01em;
       }
       .brand img {
         width: 28px;
         height: 28px;
         border-radius: 8px;
-        box-shadow: 0 0 18px var(--glow-soft);
+        box-shadow: 0 0 16px var(--glow-soft);
       }
-      .nav {
+      .links {
         display: flex;
         align-items: center;
-        gap: 26px;
+        gap: 4px;
+      }
+      .links a {
+        padding: 10px 14px;
+        border-radius: 999px;
         font-size: 15px;
         color: var(--muted);
+        transition:
+          color 300ms var(--ease),
+          background-color 300ms var(--ease);
       }
-      .nav a {
-        padding-block: 10px;
-        transition: color 300ms var(--ease);
-      }
-      .nav a:hover {
+      .links a:hover {
         color: var(--fg);
+        background: var(--glass);
       }
-      @media (max-width: 720px) {
-        .nav .hide {
+      .nav-toggle {
+        display: none;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        border: 1px solid var(--hairline);
+        background: var(--glass);
+        cursor: pointer;
+        place-items: center;
+      }
+      .nav-toggle i {
+        position: relative;
+        display: block;
+        width: 18px;
+        height: 2px;
+        background: var(--fg);
+        border-radius: 2px;
+        transition:
+          transform 400ms var(--spring),
+          background-color 200ms;
+      }
+      .nav-toggle i::before,
+      .nav-toggle i::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        width: 18px;
+        height: 2px;
+        background: var(--fg);
+        border-radius: 2px;
+        transition: transform 400ms var(--spring);
+      }
+      .nav-toggle i::before {
+        top: -6px;
+      }
+      .nav-toggle i::after {
+        top: 6px;
+      }
+      html.nav-open .nav-toggle i {
+        background: transparent;
+      }
+      html.nav-open .nav-toggle i::before {
+        transform: translateY(6px) rotate(45deg);
+      }
+      html.nav-open .nav-toggle i::after {
+        transform: translateY(-6px) rotate(-45deg);
+      }
+      .menu {
+        display: none;
+      }
+      @media (max-width: 860px) {
+        .links,
+        .island .cta {
           display: none;
         }
-        .nav {
-          gap: 14px;
+        .nav-toggle {
+          display: grid;
+        }
+        .menu {
+          display: grid;
+          position: fixed;
+          inset: 0;
+          z-index: 15;
+          padding: 110px 28px 40px;
+          background: color-mix(in oklab, var(--bg) 88%, transparent);
+          backdrop-filter: blur(24px);
+          -webkit-backdrop-filter: blur(24px);
+          align-content: start;
+          gap: 6px;
+          opacity: 0;
+          visibility: hidden;
+          transition:
+            opacity 320ms var(--ease),
+            visibility 0s 320ms;
+        }
+        html.nav-open .menu {
+          opacity: 1;
+          visibility: visible;
+          transition: opacity 320ms var(--ease);
+        }
+        html.nav-open {
+          overflow: hidden;
+        }
+        .menu a {
+          font-size: 30px;
+          font-weight: 600;
+          letter-spacing: -0.02em;
+          padding: 10px 0;
+          border-bottom: 1px solid var(--hairline);
+          opacity: 0;
+          transform: translateY(14px);
+          transition:
+            opacity 500ms var(--ease),
+            transform 600ms var(--ease);
+        }
+        html.nav-open .menu a {
+          opacity: 1;
+          transform: none;
+        }
+        html.nav-open .menu a:nth-child(1) {
+          transition-delay: 60ms;
+        }
+        html.nav-open .menu a:nth-child(2) {
+          transition-delay: 110ms;
+        }
+        html.nav-open .menu a:nth-child(3) {
+          transition-delay: 160ms;
+        }
+        html.nav-open .menu a:nth-child(4) {
+          transition-delay: 210ms;
+        }
+        html.nav-open .menu a:nth-child(5) {
+          transition-delay: 260ms;
+        }
+        .menu .btn {
+          margin-top: 18px;
+          justify-self: start;
+          font-size: 16px;
+          border-bottom: 0;
+          opacity: 0;
+        }
+        html.nav-open .menu .btn {
+          opacity: 1;
+          transition-delay: 320ms;
         }
       }
 
-      /* Hero: aurora behind, the product window in a glass tray in front. */
+      /* Hero: copy on the left, the product in two stacked frames on the right. */
       .hero {
-        padding-block: clamp(56px, 8vw, 110px) 0;
+        padding-top: clamp(120px, 14vw, 168px);
+        padding-bottom: clamp(40px, 6vw, 80px);
         overflow: clip;
         isolation: isolate;
       }
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: -2;
+        background-image:
+          linear-gradient(oklch(100% 0 0 / 0.035) 1px, transparent 1px),
+          linear-gradient(90deg, oklch(100% 0 0 / 0.035) 1px, transparent 1px);
+        background-size: 56px 56px;
+        -webkit-mask: radial-gradient(
+          70% 60% at 50% 30%,
+          #000,
+          transparent 90%
+        );
+        mask: radial-gradient(70% 60% at 50% 30%, #000, transparent 90%);
+      }
       .aurora {
         position: absolute;
-        inset: -20% -10% auto;
-        height: 120vh;
+        inset: -10% -10% auto;
+        height: 110vh;
         z-index: -1;
         pointer-events: none;
-        filter: blur(70px) saturate(1.2);
-        opacity: 0.9;
+        filter: blur(70px) saturate(1.1);
         contain: paint;
       }
       .aurora i {
@@ -583,72 +754,82 @@
         will-change: transform;
       }
       .aurora i:nth-child(1) {
-        width: 60vw;
-        height: 60vw;
-        left: -10vw;
-        top: 0;
+        width: 56vw;
+        height: 56vw;
+        left: -14vw;
+        top: -6vh;
         background: radial-gradient(
           circle,
           oklch(70% 0.12 262 / 0.3),
           transparent 60%
         );
-        animation: drift1 26s ease-in-out infinite alternate;
+        animation: drift1 28s ease-in-out infinite alternate;
       }
       .aurora i:nth-child(2) {
-        width: 50vw;
-        height: 50vw;
-        right: -8vw;
-        top: 10vh;
+        width: 46vw;
+        height: 46vw;
+        right: -10vw;
+        top: 6vh;
         background: radial-gradient(
           circle,
           oklch(72% 0.1 200 / 0.22),
           transparent 62%
         );
-        animation: drift2 32s ease-in-out infinite alternate;
-      }
-      .aurora i:nth-child(3) {
-        width: 40vw;
-        height: 40vw;
-        left: 30vw;
-        top: 30vh;
-        background: radial-gradient(
-          circle,
-          oklch(70% 0.1 300 / 0.18),
-          transparent 62%
-        );
-        animation: drift3 38s ease-in-out infinite alternate;
+        animation: drift2 34s ease-in-out infinite alternate;
       }
       @keyframes drift1 {
         to {
-          transform: translate(14vw, 12vh) scale(1.15);
+          transform: translate(10vw, 10vh) scale(1.12);
         }
       }
       @keyframes drift2 {
         to {
-          transform: translate(-12vw, 18vh) scale(0.9);
+          transform: translate(-10vw, 14vh) scale(0.92);
         }
       }
-      @keyframes drift3 {
-        to {
-          transform: translate(-18vw, -10vh) scale(1.2);
+      @media (prefers-reduced-motion: reduce) {
+        .aurora i {
+          animation: none;
         }
       }
       .hero .wrap {
         display: grid;
-        gap: 28px;
-      }
-      .hero h1 {
-        max-width: 18ch;
+        grid-template-columns: minmax(0, 1.02fr) minmax(0, 1fr);
+        gap: clamp(32px, 5vw, 72px);
+        align-items: center;
       }
       .hero-copy {
         display: grid;
         gap: 24px;
-        max-width: 54ch;
+        max-width: 56ch;
+      }
+      .hero h1 {
+        max-width: 14ch;
       }
       .cta {
         display: flex;
         flex-wrap: wrap;
         gap: 12px;
+      }
+      .proof {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px 22px;
+        font-size: 14.5px;
+        color: var(--subtle);
+      }
+      .proof span {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .proof span::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 10px var(--glow);
       }
       .phone-note {
         display: none;
@@ -661,29 +842,30 @@
           display: block;
         }
       }
-      .hero-shot {
-        margin-top: 36px;
-        perspective: 1600px;
+      @media (max-width: 640px) {
+        .cta .btn {
+          flex: 1 1 100%;
+        }
+        body::after {
+          display: none;
+        }
       }
-      .tray {
+      .stage {
+        position: relative;
+        perspective: 1800px;
         --rx: 0deg;
         --ry: 0deg;
-        transform: rotateX(var(--rx)) rotateY(var(--ry));
-        transition: transform 700ms var(--ease);
-        transform-style: preserve-3d;
       }
-      .window {
+      .frame {
         position: relative;
         background: oklch(100% 0 0 / 0.06);
         border-radius: calc(var(--radius) + 6px);
-        padding: 8px;
+        padding: 7px;
         border: 1px solid oklch(100% 0 0 / 0.16);
-        backdrop-filter: blur(12px);
-        box-shadow:
-          0 1px 0 oklch(100% 0 0 / 0.08) inset,
-          0 28px 60px -20px oklch(0% 0 0 / 0.55);
+        box-shadow: var(--shadow-raise);
+        transform-style: preserve-3d;
       }
-      .window::before {
+      .frame::before {
         content: "";
         position: absolute;
         inset: -1px;
@@ -692,8 +874,8 @@
         background: linear-gradient(
           135deg,
           oklch(100% 0 0 / 0.22),
-          transparent 40%,
-          transparent 60%,
+          transparent 42%,
+          transparent 62%,
           var(--glow-soft)
         );
         -webkit-mask:
@@ -703,28 +885,40 @@
         mask-composite: exclude;
         pointer-events: none;
       }
-      .window img {
+      .frame img {
         border-radius: var(--radius);
         width: 100%;
         background: var(--bg-2);
       }
-      .halo {
+      .stage .frame.main {
+        transform: rotateX(var(--rx)) rotateY(calc(var(--ry) - 7deg))
+          rotateX(2deg);
+        transition: transform 700ms var(--ease);
+      }
+      .stage .frame.card {
         position: absolute;
-        inset: 10% -5% -10%;
-        z-index: -1;
-        background: radial-gradient(
-          60% 50% at 50% 30%,
-          var(--glow),
-          transparent 70%
-        );
-        filter: blur(40px);
-        opacity: 0.22;
-        pointer-events: none;
+        right: -6%;
+        bottom: -12%;
+        width: 46%;
+        transform: rotateX(var(--rx)) rotateY(calc(var(--ry) - 4deg))
+          translateZ(60px) rotate(2deg);
+        transition: transform 700ms var(--ease);
+        box-shadow:
+          0 1px 0 oklch(100% 0 0 / 0.1) inset,
+          0 40px 80px -24px oklch(0% 0 0 / 0.7);
       }
       @media (prefers-reduced-motion: no-preference) {
-        .hero-shot {
-          animation: settle 1200ms var(--ease) both;
-          animation-delay: 380ms;
+        .hero-copy {
+          animation: rise 900ms var(--ease) both;
+          animation-delay: 240ms;
+        }
+        .stage .frame.main {
+          animation: settle 1100ms var(--ease) both;
+          animation-delay: 320ms;
+        }
+        .stage .frame.card {
+          animation: settleCard 1100ms var(--ease) both;
+          animation-delay: 560ms;
         }
         @keyframes rise {
           from {
@@ -738,33 +932,46 @@
         }
         @keyframes settle {
           from {
-            transform: translateY(40px) scale(0.98);
-            opacity: 0.001;
+            translate: 0 40px;
           }
           to {
-            transform: none;
+            translate: 0 0;
+          }
+        }
+        @keyframes settleCard {
+          from {
+            opacity: 0;
+            translate: 0 40px;
+          }
+          to {
             opacity: 1;
+            translate: 0 0;
           }
         }
       }
-      @media (prefers-reduced-motion: reduce) {
-        .aurora i {
-          animation: none;
+      @media (max-width: 900px) {
+        .hero .wrap {
+          grid-template-columns: 1fr;
+        }
+        .hero h1 {
+          max-width: 18ch;
+        }
+        .stage {
+          margin-top: 12px;
+          padding-bottom: 0;
+        }
+        .stage .frame.main {
+          transform: none;
+        }
+        .stage .frame.card {
+          display: none;
         }
       }
 
-      /* Logo marquee: the sources it reads and the assistants it talks to. One per page. */
+      /* Logo band. */
       .logos {
-        padding-block: 30px;
+        padding-block: 28px;
         border-block: 1px solid var(--hairline);
-      }
-      .sr-only {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        overflow: hidden;
-        clip: rect(0 0 0 0);
-        white-space: nowrap;
       }
       .marquee {
         overflow: hidden;
@@ -806,19 +1013,11 @@
         font-weight: 560;
         letter-spacing: -0.005em;
         white-space: nowrap;
-        transition: color 400ms var(--ease);
-      }
-      .marquee li:hover {
-        color: var(--fg);
       }
       .marquee img {
         width: 28px;
         height: 28px;
         opacity: 0.85;
-        transition: opacity 400ms var(--ease);
-      }
-      .marquee li:hover img {
-        opacity: 1;
       }
       @keyframes scroll {
         to {
@@ -842,94 +1041,310 @@
         }
       }
 
-      /* Numbers that count up. */
-      .stats .wrap {
+      /* Walkthrough: steps scroll, the screen stays and changes. */
+      .walk-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-        gap: 0 clamp(24px, 4vw, 56px);
-        border-top: 1px solid var(--hairline);
-      }
-      .stat {
-        padding: 28px 0 8px;
-      }
-      .stat b {
-        display: block;
-        font-size: clamp(34px, 3.6vw, 46px);
-        font-weight: 600;
-        letter-spacing: -0.035em;
-        line-height: 1;
-        color: var(--fg);
-      }
-      .stat.free b {
-        color: var(--accent);
-      }
-      .stat span {
-        display: block;
-        margin-top: 12px;
-        color: var(--muted);
-        font-size: 15.5px;
-        max-width: 28ch;
-        text-wrap: pretty;
-      }
-
-      /* Walkthrough. */
-      .walk-head {
-        display: grid;
-        gap: 16px;
-        margin-bottom: clamp(48px, 6vw, 88px);
-      }
-      .walk-list {
-        display: grid;
-        gap: clamp(64px, 9vw, 140px);
-        position: relative;
-      }
-      .walk-item {
-        display: grid;
-        grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
-        gap: clamp(28px, 5vw, 80px);
+        grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+        gap: clamp(32px, 5vw, 80px);
         align-items: start;
       }
-      .walk-item:nth-child(even) {
-        grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
-      }
-      .walk-item:nth-child(even) .walk-text {
-        order: 2;
-      }
-      .walk-text {
+      .walk-steps {
+        position: relative;
         display: grid;
-        gap: 12px;
-        padding-top: clamp(8px, 2vw, 28px);
       }
-      .walk-text p {
+      .walk-steps::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: var(--hairline);
+      }
+      .walk-steps::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 2px;
+        height: calc(var(--walk-progress, 0) * 100%);
+        background: var(--accent);
+        box-shadow: 0 0 12px var(--glow);
+        transition: height 500ms var(--ease);
+      }
+      .walk-step {
+        padding: 8px 0 8px 32px;
+        min-height: 56vh;
+        display: grid;
+        align-content: center;
+        gap: 12px;
+        opacity: 0.6;
+        transition: opacity 500ms var(--ease);
+      }
+      .walk-step.is-active {
+        opacity: 1;
+      }
+      .walk-step .n {
+        font-size: 15px;
+        letter-spacing: 0.01em;
         color: var(--muted);
-        max-width: 40ch;
+        font-weight: 600;
+      }
+      .walk-step p {
+        color: var(--fg);
+        opacity: 0.86;
+        max-width: 42ch;
         text-wrap: pretty;
       }
-      .walk-item .window {
-        perspective: 1200px;
+      .walk-step picture {
+        display: none;
       }
-      .walk-item .tray {
-        transform: perspective(1200px) rotateX(var(--rx)) rotateY(var(--ry));
+      .walk-stage {
+        position: sticky;
+        top: 104px;
+        aspect-ratio: 6 / 5;
       }
-      @media (max-width: 900px) {
-        .walk-item,
-        .walk-item:nth-child(even) {
+      .walk-shot {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        transform: translateY(14px) scale(0.985);
+        transition:
+          opacity 600ms var(--ease),
+          transform 800ms var(--ease);
+        pointer-events: none;
+      }
+      .walk-shot.is-active {
+        opacity: 1;
+        transform: none;
+        pointer-events: auto;
+      }
+      .walk-shot .frame {
+        height: 100%;
+      }
+      .walk-shot img {
+        height: 100%;
+        object-fit: cover;
+        object-position: top;
+        border-radius: var(--radius);
+      }
+      @media (max-width: 899px) {
+        .walk-grid {
           grid-template-columns: 1fr;
-          gap: 18px;
         }
-        .walk-item:nth-child(even) .walk-text {
-          order: 0;
+        .walk-stage {
+          display: none;
+        }
+        .walk-steps::before,
+        .walk-steps::after {
+          display: none;
+        }
+        .walk-step {
+          min-height: 0;
+          padding: 0;
+          opacity: 1;
+          margin-bottom: 44px;
+        }
+        .walk-step picture {
+          display: block;
+          margin-top: 10px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .walk-step {
+          opacity: 1;
         }
       }
 
-      /* Flow diagram: Google on the left, your computer in the middle, you and your assistant on the right. */
+      /* Bento: what it does, in tiles of unequal weight. */
+      .bento {
+        display: grid;
+        grid-template-columns: repeat(12, minmax(0, 1fr));
+        gap: 14px;
+      }
+      .tile {
+        position: relative;
+        overflow: hidden;
+        display: grid;
+        align-content: start;
+        gap: 10px;
+        padding: 26px;
+        border-radius: var(--radius);
+        background: var(--glass);
+        border: 1px solid var(--hairline);
+        transition:
+          border-color 400ms var(--ease),
+          transform 500ms var(--spring),
+          box-shadow 400ms var(--ease);
+      }
+      .tile::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          320px circle at var(--mx, -300px) var(--my, -300px),
+          oklch(100% 0 0 / 0.07),
+          transparent 60%
+        );
+        pointer-events: none;
+      }
+      .tile:hover {
+        border-color: var(--hairline-strong);
+        transform: translateY(-2px);
+        box-shadow: 0 24px 50px -24px oklch(0% 0 0 / 0.6);
+      }
+      .tile h3 {
+        font-size: 19px;
+      }
+      .tile p {
+        color: var(--muted);
+        font-size: 15.5px;
+        text-wrap: pretty;
+      }
+      .tile .big {
+        font-size: clamp(38px, 4vw, 54px);
+        font-weight: 620;
+        letter-spacing: -0.035em;
+        line-height: 1;
+      }
+      .tile .big.free {
+        color: var(--accent-2);
+      }
+      .tile .spark {
+        width: 100%;
+        height: auto;
+        margin-top: 6px;
+      }
+      .tile .spark path {
+        fill: none;
+        stroke: var(--accent);
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-dasharray: 600;
+        stroke-dashoffset: 600;
+      }
+      .tile .spark .area {
+        fill: url(#sparkFill);
+        stroke: none;
+        opacity: 0;
+        transition: opacity 900ms var(--ease) 600ms;
+      }
+      .reveal.in .spark path {
+        animation: draw 1800ms var(--ease) 200ms forwards;
+      }
+      .reveal.in .spark .area {
+        opacity: 1;
+      }
+      @keyframes draw {
+        to {
+          stroke-dashoffset: 0;
+        }
+      }
+      .tile .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 4px;
+      }
+      .tile .row img {
+        width: 22px;
+        height: 22px;
+        opacity: 0.85;
+      }
+      .tile .row span {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 12px 6px 8px;
+        border-radius: 999px;
+        border: 1px solid var(--hairline);
+        font-size: 13.5px;
+        color: var(--muted);
+      }
+      .tile ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 8px;
+        color: var(--muted);
+        font-size: 15px;
+      }
+      .tile ul li {
+        display: flex;
+        gap: 10px;
+        align-items: baseline;
+      }
+      .tile ul li::before {
+        content: "";
+        flex: none;
+        width: 14px;
+        height: 1px;
+        background: var(--hairline-strong);
+        transform: translateY(-4px);
+      }
+      .tile.plain {
+        background: transparent;
+        border-color: transparent;
+        border-left: 2px solid var(--accent);
+        border-radius: 0;
+        padding-left: 28px;
+      }
+      .tile.plain:hover {
+        transform: none;
+        box-shadow: none;
+        border-color: transparent;
+        border-left-color: var(--accent);
+      }
+      .tile.plain .big {
+        font-size: clamp(56px, 7vw, 92px);
+      }
+      .t-wide {
+        grid-column: span 7;
+      }
+      .t-mid {
+        grid-column: span 5;
+      }
+      .t-third {
+        grid-column: span 4;
+      }
+      @media (max-width: 960px) {
+        .t-wide,
+        .t-mid {
+          grid-column: span 6;
+        }
+        .t-third {
+          grid-column: span 6;
+        }
+      }
+      @media (max-width: 640px) {
+        .t-wide,
+        .t-mid,
+        .t-third {
+          grid-column: span 12;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .tile .spark path {
+          stroke-dashoffset: 0;
+          animation: none;
+        }
+        .tile .spark .area {
+          opacity: 1;
+        }
+        .tile:hover {
+          transform: none;
+        }
+      }
+
+      /* Flow diagram. */
       .flow {
         background: var(--bg-2);
         border-block: 1px solid var(--hairline);
       }
       .flow .wrap {
         display: grid;
-        gap: 40px;
+        gap: 36px;
       }
       .flow svg {
         width: 100%;
@@ -942,7 +1357,7 @@
       }
       .flow .node.core rect {
         stroke: var(--accent);
-        filter: drop-shadow(0 0 18px var(--glow));
+        filter: drop-shadow(0 0 14px var(--glow));
       }
       .flow text {
         font-family: Geist, system-ui, sans-serif;
@@ -994,35 +1409,7 @@
         text-wrap: pretty;
       }
 
-      .not .wrap {
-        display: grid;
-        gap: 30px;
-      }
-      .not dl {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 28px clamp(24px, 4vw, 64px);
-        max-width: 980px;
-      }
-      .not dl > div {
-        padding-top: 18px;
-        border-top: 1px solid var(--hairline);
-      }
-      .not dt {
-        font-weight: 600;
-        margin-bottom: 4px;
-      }
-      .not dd {
-        color: var(--muted);
-        text-wrap: pretty;
-      }
-      @media (max-width: 700px) {
-        .not dl {
-          grid-template-columns: 1fr;
-        }
-      }
-
-      /* Install: steps and one lit download card with a slowly turning border. */
+      /* Install: steps and a double-bezel download card with a slow conic sweep. */
       .install .wrap {
         display: grid;
         grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
@@ -1052,7 +1439,6 @@
         letter-spacing: -0.03em;
         color: var(--accent);
         line-height: 1;
-        text-shadow: 0 0 20px var(--glow-soft);
       }
       .steps h3 {
         margin-bottom: 6px;
@@ -1063,7 +1449,7 @@
       }
       .download {
         position: sticky;
-        top: 96px;
+        top: 100px;
         padding: 1px;
         border-radius: calc(var(--radius) + 2px);
         background: conic-gradient(
@@ -1143,21 +1529,7 @@
         }
       }
 
-      .maker {
-        max-width: 60ch;
-      }
-      .maker p {
-        font-size: clamp(20px, 2.2vw, 26px);
-        line-height: 1.4;
-        letter-spacing: -0.015em;
-        text-wrap: pretty;
-      }
-      .maker .who {
-        margin-top: 16px;
-        font-size: 15px;
-        color: var(--subtle);
-      }
-
+      /* Facts and questions. */
       .facts .wrap {
         display: grid;
         gap: 22px;
@@ -1184,34 +1556,57 @@
           grid-template-columns: 1fr;
         }
       }
-
       .faq .wrap {
         display: grid;
-        gap: 32px;
+        gap: 28px;
       }
-      .faq .qa {
+      .faq .list {
         display: grid;
-        grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-        gap: 8px clamp(24px, 4vw, 64px);
-        padding: 24px 0;
+        max-width: 860px;
+      }
+      .qa {
         border-top: 1px solid var(--hairline);
       }
-      .faq .qa:last-child {
+      .qa:last-child {
         border-bottom: 1px solid var(--hairline);
       }
-      .faq dt {
+      .qa summary {
+        list-style: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 20px 0;
         font-weight: 600;
+        font-size: 17px;
         text-wrap: balance;
       }
-      .faq dd {
-        color: var(--muted);
-        max-width: 62ch;
-        text-wrap: pretty;
+      .qa summary::-webkit-details-marker {
+        display: none;
       }
-      @media (max-width: 700px) {
-        .faq .qa {
-          grid-template-columns: 1fr;
-        }
+      .qa summary::after {
+        content: "";
+        flex: none;
+        width: 10px;
+        height: 10px;
+        border-right: 1.5px solid var(--muted);
+        border-bottom: 1.5px solid var(--muted);
+        transform: rotate(45deg);
+        transition: transform 400ms var(--spring);
+        margin-right: 6px;
+      }
+      .qa[open] summary::after {
+        transform: rotate(225deg);
+      }
+      .qa-body {
+        overflow: hidden;
+      }
+      .qa-body p {
+        color: var(--muted);
+        max-width: 64ch;
+        text-wrap: pretty;
+        padding-bottom: 20px;
       }
 
       .close {
@@ -1234,25 +1629,57 @@
         text-wrap: pretty;
       }
       .close .halo {
+        position: absolute;
         inset: auto -10% -30%;
-        height: 60%;
-        opacity: 0.6;
+        height: 70%;
+        z-index: -1;
+        background: radial-gradient(
+          60% 50% at 50% 50%,
+          var(--glow),
+          transparent 70%
+        );
+        filter: blur(40px);
+        opacity: 0.5;
+        pointer-events: none;
       }
 
       footer {
-        padding: 40px 0 64px;
-        font-size: 14.5px;
-        color: var(--muted);
+        padding: 56px 0 48px;
         border-top: 1px solid var(--hairline);
+        color: var(--muted);
+        font-size: 14.5px;
       }
-      footer .wrap {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        gap: 12px 32px;
+      footer .top {
+        display: grid;
+        grid-template-columns: minmax(0, 1.4fr) repeat(2, minmax(0, 1fr));
+        gap: 32px;
+        margin-bottom: 36px;
+      }
+      footer .top p {
+        max-width: 40ch;
+        text-wrap: pretty;
+      }
+      footer .col {
+        display: grid;
+        gap: 10px;
+        align-content: start;
+      }
+      footer .col b {
+        color: var(--fg);
+        font-weight: 600;
+        font-size: 13.5px;
+        letter-spacing: 0.02em;
       }
       footer a:hover {
         color: var(--fg);
+      }
+      footer .bottom {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 12px 24px;
+        padding-top: 24px;
+        border-top: 1px solid var(--hairline);
       }
       .still {
         font: inherit;
@@ -1270,10 +1697,10 @@
       html[data-still] *::after {
         animation-play-state: paused !important;
       }
-      footer .links {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 18px;
+      @media (max-width: 760px) {
+        footer .top {
+          grid-template-columns: 1fr;
+        }
       }
     </style>
     <noscript
@@ -1281,7 +1708,19 @@
         .reveal {
           opacity: 1;
           transform: none;
-          filter: none;
+        }
+        .walk-step {
+          opacity: 1;
+        }
+        .walk-shot[data-step="1"] {
+          opacity: 1;
+          transform: none;
+        }
+        .tile .spark path {
+          stroke-dashoffset: 0;
+        }
+        .tile .spark .area {
+          opacity: 1;
         }
       </style></noscript
     >
@@ -1289,8 +1728,8 @@
   <body>
     <a class="skip" href="#top">İçeriğe geç</a>
 
-    <header>
-      <div class="wrap">
+    <header class="island">
+      <div class="bar">
         <a class="brand" href="#top"
           ><img
             src="/assets/icon.svg"
@@ -1299,28 +1738,49 @@
             height="28"
           />seowatcher</a
         >
-        <nav class="nav" aria-label="Sayfa">
-          <a class="hide" href="#ekranlar">Ekranlar</a>
-          <a class="hide" href="#kurulum">Kurulum</a>
-          <a class="hide" href="/docs/">Kılavuz</a>
+        <nav class="links" aria-label="Sayfa">
+          <a href="#ekranlar">Ekranlar</a>
+          <a href="#neler">Neler yapar</a>
+          <a href="#kurulum">Kurulum</a>
+          <a href="/docs/">Kılavuz</a>
           <a href="https://github.com/ucsahinn/seotracker">GitHub</a>
-          <a
-            class="btn primary small"
-            href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
-            >Windows için indir</a
-          >
         </nav>
+        <a
+          class="btn primary small cta"
+          href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+          >Windows için indir</a
+        >
+        <button
+          class="nav-toggle"
+          data-nav-toggle
+          aria-controls="site-menu"
+          aria-expanded="false"
+          aria-label="Menü"
+        >
+          <i></i>
+        </button>
       </div>
+      <nav id="site-menu" class="menu" aria-label="Sayfa menüsü">
+        <a href="#ekranlar">Ekranlar</a>
+        <a href="#neler">Neler yapar</a>
+        <a href="#kurulum">Kurulum</a>
+        <a href="/docs/">Kılavuz</a>
+        <a href="https://github.com/ucsahinn/seotracker">GitHub</a>
+        <a
+          class="btn primary"
+          href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+          >Windows için indir</a
+        >
+      </nav>
     </header>
-
-    <main id="top">
+    <main id="top" tabindex="-1">
       <section class="hero" aria-labelledby="h1">
-        <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="aurora" aria-hidden="true"><i></i><i></i></div>
         <div class="wrap">
-          <h1 id="h1" data-words>
-            Sitenizin Google verisi, kendi bilgisayarınızda.
-          </h1>
           <div class="hero-copy">
+            <h1 id="h1" data-words>
+              Sitenizin Google verisi, kendi bilgisayarınızda.
+            </h1>
             <p class="lede">
               Google'ın siteniz için tuttuğu sayıları ve sitenizdeki hataları
               tek ekranda gösterir. Ücretsiz ve açık kaynak. Windows'a tek
@@ -1337,44 +1797,55 @@
               >
               <a class="btn" href="/docs/kurulum-docker/">Mac ve Linux için</a>
             </div>
+            <p class="proof">
+              <span>Ücretsiz, açık kaynak</span><span>Windows 10 ve 11</span
+              ><span>Abonelik yok</span>
+            </p>
             <p class="phone-note">
               Windows 10 veya 11 yüklü bir bilgisayara kurulur. Telefondan
               bakıyorsanız bu sayfayı kendinize gönderin, sonra bilgisayarda
               açın.
             </p>
           </div>
-          <div class="hero-shot">
-            <div class="tray" data-tilt="3">
-              <div class="halo" aria-hidden="true"></div>
-              <div class="window">
-                <picture>
-                  <source
-                    type="image/webp"
-                    media="(max-width: 640px)"
-                    srcset="
-                      /assets/hero-dark-m1.webp  560w,
-                      /assets/hero-dark-m.webp  1000w
-                    "
-                    sizes="100vw"
-                  />
-                  <source
-                    type="image/webp"
-                    srcset="
-                      /assets/hero-dark-1x.webp 1200w,
-                      /assets/hero-dark.webp    2400w
-                    "
-                    sizes="(max-width: 1200px) 100vw, 1140px"
-                  />
-                  <img
-                    src="/assets/hero-dark.png"
-                    alt="seowatcher paneli: son 28 günün tıklama ve gösterimi, sıradaki adımlar, son denetimde yeni çıkan ve düzelen bulgular"
-                    width="2400"
-                    height="1600"
-                    fetchpriority="high"
-                    decoding="async"
-                  />
-                </picture>
-              </div>
+          <div class="stage" data-tilt="3">
+            <div class="frame main">
+              <picture>
+                <source
+                  type="image/webp"
+                  media="(max-width: 640px)"
+                  srcset="
+                    /assets/hero-dark-m1.webp  560w,
+                    /assets/hero-dark-m.webp  1000w
+                  "
+                  sizes="100vw"
+                />
+                <source
+                  type="image/webp"
+                  srcset="
+                    /assets/hero-dark-1x.webp 1200w,
+                    /assets/hero-dark.webp    2400w
+                  "
+                  sizes="(max-width: 900px) 100vw, 560px"
+                />
+                <img
+                  src="/assets/hero-dark.png"
+                  alt="seowatcher paneli: son 28 günün tıklama ve gösterimi, sıradaki adımlar, son denetimde yeni çıkan ve düzelen bulgular"
+                  width="2400"
+                  height="1600"
+                  fetchpriority="high"
+                  decoding="async"
+                />
+              </picture>
+            </div>
+            <div class="frame card" aria-hidden="true">
+              <img
+                src="/assets/walk-firsatlar-dark-1x.webp"
+                alt=""
+                width="960"
+                height="800"
+                loading="lazy"
+                decoding="async"
+              />
             </div>
           </div>
         </div>
@@ -1388,8 +1859,8 @@
               <img
                 src="/assets/logos/w/googlesearchconsole.svg"
                 alt=""
-                width="24"
-                height="24"
+                width="28"
+                height="28"
                 loading="lazy"
               /><span>Google Search Console</span>
             </li>
@@ -1397,8 +1868,8 @@
               <img
                 src="/assets/logos/w/googleanalytics.svg"
                 alt=""
-                width="24"
-                height="24"
+                width="28"
+                height="28"
                 loading="lazy"
               /><span>Google Analytics 4</span>
             </li>
@@ -1406,8 +1877,8 @@
               <img
                 src="/assets/logos/w/pagespeedinsights.svg"
                 alt=""
-                width="24"
-                height="24"
+                width="28"
+                height="28"
                 loading="lazy"
               /><span>PageSpeed Insights</span>
             </li>
@@ -1415,8 +1886,8 @@
               <img
                 src="/assets/logos/w/claude.svg"
                 alt=""
-                width="24"
-                height="24"
+                width="28"
+                height="28"
                 loading="lazy"
               /><span>Claude Code</span>
             </li>
@@ -1424,8 +1895,8 @@
               <img
                 src="/assets/logos/w/openai.svg"
                 alt=""
-                width="24"
-                height="24"
+                width="28"
+                height="28"
                 loading="lazy"
               /><span>Codex (OpenAI)</span>
             </li>
@@ -1433,8 +1904,8 @@
               <img
                 src="/assets/logos/w/cursor.svg"
                 alt=""
-                width="24"
-                height="24"
+                width="28"
+                height="28"
                 loading="lazy"
               /><span>Cursor</span>
             </li>
@@ -1442,8 +1913,8 @@
               <img
                 src="/assets/logos/w/githubcopilot.svg"
                 alt=""
-                width="24"
-                height="24"
+                width="28"
+                height="28"
                 loading="lazy"
               /><span>GitHub Copilot</span>
             </li>
@@ -1451,8 +1922,8 @@
               <img
                 src="/assets/logos/w/googlegemini.svg"
                 alt=""
-                width="24"
-                height="24"
+                width="28"
+                height="28"
                 loading="lazy"
               /><span>Gemini CLI</span>
             </li>
@@ -1460,8 +1931,8 @@
               <img
                 src="/assets/logos/w/docker.svg"
                 alt=""
-                width="24"
-                height="24"
+                width="28"
+                height="28"
                 loading="lazy"
               /><span>Docker</span>
             </li>
@@ -1469,8 +1940,8 @@
               <img
                 src="/assets/logos/w/github.svg"
                 alt=""
-                width="24"
-                height="24"
+                width="28"
+                height="28"
                 loading="lazy"
               /><span>GitHub</span>
             </li>
@@ -1478,8 +1949,8 @@
               <img
                 src="/assets/logos/w/googlesearchconsole.svg"
                 alt=""
-                width="24"
-                height="24"
+                width="28"
+                height="28"
                 loading="lazy"
               /><span>Google Search Console</span>
             </li>
@@ -1487,8 +1958,8 @@
               <img
                 src="/assets/logos/w/googleanalytics.svg"
                 alt=""
-                width="24"
-                height="24"
+                width="28"
+                height="28"
                 loading="lazy"
               /><span>Google Analytics 4</span>
             </li>
@@ -1496,8 +1967,8 @@
               <img
                 src="/assets/logos/w/pagespeedinsights.svg"
                 alt=""
-                width="24"
-                height="24"
+                width="28"
+                height="28"
                 loading="lazy"
               /><span>PageSpeed Insights</span>
             </li>
@@ -1505,8 +1976,8 @@
               <img
                 src="/assets/logos/w/claude.svg"
                 alt=""
-                width="24"
-                height="24"
+                width="28"
+                height="28"
                 loading="lazy"
               /><span>Claude Code</span>
             </li>
@@ -1514,8 +1985,8 @@
               <img
                 src="/assets/logos/w/openai.svg"
                 alt=""
-                width="24"
-                height="24"
+                width="28"
+                height="28"
                 loading="lazy"
               /><span>Codex (OpenAI)</span>
             </li>
@@ -1523,8 +1994,8 @@
               <img
                 src="/assets/logos/w/cursor.svg"
                 alt=""
-                width="24"
-                height="24"
+                width="28"
+                height="28"
                 loading="lazy"
               /><span>Cursor</span>
             </li>
@@ -1532,8 +2003,8 @@
               <img
                 src="/assets/logos/w/githubcopilot.svg"
                 alt=""
-                width="24"
-                height="24"
+                width="28"
+                height="28"
                 loading="lazy"
               /><span>GitHub Copilot</span>
             </li>
@@ -1541,8 +2012,8 @@
               <img
                 src="/assets/logos/w/googlegemini.svg"
                 alt=""
-                width="24"
-                height="24"
+                width="28"
+                height="28"
                 loading="lazy"
               /><span>Gemini CLI</span>
             </li>
@@ -1550,8 +2021,8 @@
               <img
                 src="/assets/logos/w/docker.svg"
                 alt=""
-                width="24"
-                height="24"
+                width="28"
+                height="28"
                 loading="lazy"
               /><span>Docker</span>
             </li>
@@ -1559,8 +2030,8 @@
               <img
                 src="/assets/logos/w/github.svg"
                 alt=""
-                width="24"
-                height="24"
+                width="28"
+                height="28"
                 loading="lazy"
               /><span>GitHub</span>
             </li>
@@ -1568,43 +2039,14 @@
         </div>
       </div>
 
-      <section class="stats" aria-label="Sayılarla">
+      <section
+        class="walk"
+        id="ekranlar"
+        aria-labelledby="h-ekranlar"
+        data-walk
+      >
         <div class="wrap">
-          <div class="stat reveal" style="--d: 0" hidden>
-            <b data-count="0" data-live="downloads">0</b
-            ><span>indirme; GitHub sürüm sayfasından canlı sayılır</span>
-          </div>
-          <div class="stat reveal" style="--d: 0">
-            <b data-count="95">95</b
-            ><span
-              >kontrol: kırık bağlantı, eksik başlık, yavaş sayfa ve Google'ın
-              baktığı diğer her şey</span
-            >
-          </div>
-          <div class="stat reveal" style="--d: 90">
-            <b data-count="33">33</b
-            ><span
-              >araç: Claude Code, Codex ya da Cursor bağlarsanız asistan
-              sayılarınızı okur, denetimi çalıştırır, raporu yazar</span
-            >
-          </div>
-          <div class="stat reveal" style="--d: 180">
-            <b data-count="16" data-suffix=" ay">16 ay</b
-            ><span
-              >geriye arama geçmişi; uygulama kendi arşivini tuttukça daha da
-              geriye</span
-            >
-          </div>
-          <div class="stat reveal free" style="--d: 270">
-            <b data-count="0" data-suffix=" ₺">0 ₺</b
-            ><span>abonelik yok, üyelik yok, kart yok. Kodu açık</span>
-          </div>
-        </div>
-      </section>
-
-      <section class="walk" id="ekranlar" aria-labelledby="h-ekranlar">
-        <div class="wrap">
-          <div class="walk-head reveal">
+          <div class="section-head reveal">
             <h2 id="h-ekranlar">
               Search Console'un verdiği sayıları, ne yapacağınızı söyleyen
               ekranlara çevirir.
@@ -1613,9 +2055,10 @@
               Aşağıdaki ekranlar uygulamanın kendisi. Site ve sayılar örnek.
             </p>
           </div>
-          <div class="walk-list">
-            <article class="walk-item reveal">
-              <div class="walk-text">
+          <div class="walk-grid">
+            <div class="walk-steps">
+              <article class="walk-step is-active" data-step="1">
+                <span class="n">01 Fırsatlar</span>
                 <h3>Hangi sayfaya bu hafta dokunmalıyım?</h3>
                 <p>
                   Google'da görünen sayfalarınızı dört gruba ayırır: az
@@ -1626,41 +2069,26 @@
                     >Fırsatlar kılavuzu</a
                   >.
                 </p>
-              </div>
-              <div class="tray" data-tilt="5">
-                <div class="window">
-                  <picture>
-                    <source
-                      type="image/webp"
-                      media="(max-width: 640px)"
-                      srcset="
-                        /assets/walk-firsatlar-dark-m1.webp  560w,
-                        /assets/walk-firsatlar-dark-m.webp  1000w
-                      "
-                      sizes="100vw"
-                    />
-                    <source
-                      type="image/webp"
-                      srcset="
-                        /assets/walk-firsatlar-dark-1x.webp  960w,
-                        /assets/walk-firsatlar-dark.webp    1920w
-                      "
-                      sizes="(max-width: 900px) 100vw, 740px"
-                    />
-                    <img
-                      src="/assets/walk-firsatlar-dark.png"
-                      alt="Fırsatlar ekranı: dört grupta sorgu listesi, gösterim, sıra ve ilgili sayfa"
-                      width="1920"
-                      height="1600"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </picture>
-                </div>
-              </div>
-            </article>
-            <article class="walk-item reveal">
-              <div class="walk-text">
+                <picture
+                  ><source
+                    type="image/webp"
+                    srcset="
+                      /assets/walk-firsatlar-dark-m1.webp  560w,
+                      /assets/walk-firsatlar-dark-m.webp  1000w
+                    "
+                    sizes="100vw" />
+                  <img
+                    class="frame"
+                    src="/assets/walk-firsatlar-dark-m.webp"
+                    alt="Fırsatlar ekranı: dört grupta sayfa listesi, puan, sıra ve yapılacak iş"
+                    width="1000"
+                    height="1250"
+                    loading="lazy"
+                    decoding="async"
+                /></picture>
+              </article>
+              <article class="walk-step" data-step="2">
+                <span class="n">02 Site denetimi</span>
                 <h3>Sitede neyin bozuk olduğunu Google'a sormadan görün.</h3>
                 <p>
                   Siteyi sayfa sayfa gezer ve 95 şeye bakar: kırık bağlantı,
@@ -1671,41 +2099,26 @@
                     >Site denetimi kılavuzu</a
                   >.
                 </p>
-              </div>
-              <div class="tray" data-tilt="5">
-                <div class="window">
-                  <picture>
-                    <source
-                      type="image/webp"
-                      media="(max-width: 640px)"
-                      srcset="
-                        /assets/walk-denetim-dark-m1.webp  560w,
-                        /assets/walk-denetim-dark-m.webp  1000w
-                      "
-                      sizes="100vw"
-                    />
-                    <source
-                      type="image/webp"
-                      srcset="
-                        /assets/walk-denetim-dark-1x.webp  960w,
-                        /assets/walk-denetim-dark.webp    1920w
-                      "
-                      sizes="(max-width: 900px) 100vw, 740px"
-                    />
-                    <img
-                      src="/assets/walk-denetim-dark.png"
-                      alt="Site denetimi: puan halkası, önem sırasına göre bulgular ve düzeltme adımları"
-                      width="1920"
-                      height="1600"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </picture>
-                </div>
-              </div>
-            </article>
-            <article class="walk-item reveal">
-              <div class="walk-text">
+                <picture
+                  ><source
+                    type="image/webp"
+                    srcset="
+                      /assets/walk-denetim-dark-m1.webp  560w,
+                      /assets/walk-denetim-dark-m.webp  1000w
+                    "
+                    sizes="100vw" />
+                  <img
+                    class="frame"
+                    src="/assets/walk-denetim-dark-m.webp"
+                    alt="Site denetimi: puan halkası, önem sırasına göre bulgular ve düzeltme adımları"
+                    width="1000"
+                    height="1250"
+                    loading="lazy"
+                    decoding="async"
+                /></picture>
+              </article>
+              <article class="walk-step" data-step="3">
+                <span class="n">03 Arama performansı</span>
                 <h3>Tıklama, gösterim, oran ve sıra; on altı ay geriye.</h3>
                 <p>
                   Sorguya, sayfaya, ülkeye ve cihaza göre bakabilirsiniz. Aynı
@@ -1715,41 +2128,26 @@
                     >Arama performansı kılavuzu</a
                   >.
                 </p>
-              </div>
-              <div class="tray" data-tilt="5">
-                <div class="window">
-                  <picture>
-                    <source
-                      type="image/webp"
-                      media="(max-width: 640px)"
-                      srcset="
-                        /assets/walk-performans-dark-m1.webp  560w,
-                        /assets/walk-performans-dark-m.webp  1000w
-                      "
-                      sizes="100vw"
-                    />
-                    <source
-                      type="image/webp"
-                      srcset="
-                        /assets/walk-performans-dark-1x.webp  960w,
-                        /assets/walk-performans-dark.webp    1920w
-                      "
-                      sizes="(max-width: 900px) 100vw, 740px"
-                    />
-                    <img
-                      src="/assets/walk-performans-dark.png"
-                      alt="Arama performansı: tıklama zaman serisi ve sorgu tablosu"
-                      width="1920"
-                      height="1600"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </picture>
-                </div>
-              </div>
-            </article>
-            <article class="walk-item reveal">
-              <div class="walk-text">
+                <picture
+                  ><source
+                    type="image/webp"
+                    srcset="
+                      /assets/walk-performans-dark-m1.webp  560w,
+                      /assets/walk-performans-dark-m.webp  1000w
+                    "
+                    sizes="100vw" />
+                  <img
+                    class="frame"
+                    src="/assets/walk-performans-dark-m.webp"
+                    alt="Arama performansı: tıklama zaman serisi ve sorgu tablosu"
+                    width="1000"
+                    height="1250"
+                    loading="lazy"
+                    decoding="async"
+                /></picture>
+              </article>
+              <article class="walk-step" data-step="4">
+                <span class="n">04 Yapay zekâ asistanı</span>
                 <h3>İsterseniz bir yapay zekâ asistanı bağlayın.</h3>
                 <p>
                   Claude Code, Codex ya da Cursor uygulamanın verisini okur.
@@ -1760,39 +2158,240 @@
                     >Asistan kurulumu kılavuzu</a
                   >.
                 </p>
+                <picture
+                  ><source
+                    type="image/webp"
+                    srcset="
+                      /assets/walk-ajan-dark-m1.webp  560w,
+                      /assets/walk-ajan-dark-m.webp  1000w
+                    "
+                    sizes="100vw" />
+                  <img
+                    class="frame"
+                    src="/assets/walk-ajan-dark-m.webp"
+                    alt="Asistan kurulumu ekranı: bağlantı adresi, parola ve kopyalanacak kurulum metni"
+                    width="1000"
+                    height="1250"
+                    loading="lazy"
+                    decoding="async"
+                /></picture>
+              </article>
+            </div>
+            <div class="walk-stage" aria-hidden="true">
+              <picture class="walk-shot is-active" data-step="1"
+                ><div class="frame">
+                  <img
+                    src="/assets/walk-firsatlar-dark-1x.webp"
+                    srcset="
+                      /assets/walk-firsatlar-dark-1x.webp  960w,
+                      /assets/walk-firsatlar-dark.webp    1920w
+                    "
+                    sizes="(max-width: 1200px) 58vw, 680px"
+                    alt=""
+                    width="960"
+                    height="800"
+                    loading="lazy"
+                    decoding="async"
+                  /></div
+              ></picture>
+              <picture class="walk-shot" data-step="2"
+                ><div class="frame">
+                  <img
+                    src="/assets/walk-denetim-dark-1x.webp"
+                    srcset="
+                      /assets/walk-denetim-dark-1x.webp  960w,
+                      /assets/walk-denetim-dark.webp    1920w
+                    "
+                    sizes="(max-width: 1200px) 58vw, 680px"
+                    alt=""
+                    width="960"
+                    height="800"
+                    loading="lazy"
+                    decoding="async"
+                  /></div
+              ></picture>
+              <picture class="walk-shot" data-step="3"
+                ><div class="frame">
+                  <img
+                    src="/assets/walk-performans-dark-1x.webp"
+                    srcset="
+                      /assets/walk-performans-dark-1x.webp  960w,
+                      /assets/walk-performans-dark.webp    1920w
+                    "
+                    sizes="(max-width: 1200px) 58vw, 680px"
+                    alt=""
+                    width="960"
+                    height="800"
+                    loading="lazy"
+                    decoding="async"
+                  /></div
+              ></picture>
+              <picture class="walk-shot" data-step="4"
+                ><div class="frame">
+                  <img
+                    src="/assets/walk-ajan-dark-1x.webp"
+                    srcset="
+                      /assets/walk-ajan-dark-1x.webp  960w,
+                      /assets/walk-ajan-dark.webp    1920w
+                    "
+                    sizes="(max-width: 1200px) 58vw, 680px"
+                    alt=""
+                    width="960"
+                    height="800"
+                    loading="lazy"
+                    decoding="async"
+                  /></div
+              ></picture>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="neler" aria-labelledby="h-neler">
+        <div class="wrap">
+          <div class="section-head reveal">
+            <h2 id="h-neler">Neler yapar, neler yapmaz.</h2>
+            <p class="lede">
+              Yalnızca Google'ın size zaten verdiği veriyi okur. Tahmin satmaz.
+            </p>
+          </div>
+          <div class="bento">
+            <div class="tile t-wide reveal" data-spot style="--d: 0">
+              <span class="big"
+                ><b data-count="16" data-suffix=" ay">16 ay</b></span
+              >
+              <h3>Arama geçmişi, Search Console'dan</h3>
+              <p>
+                Tıklama, gösterim, oran ve sıra; sorguya, sayfaya, ülkeye ve
+                cihaza göre. Uygulama kendi arşivini tuttukça daha da geriye
+                gider.
+              </p>
+              <svg class="spark" viewBox="0 0 520 110" aria-hidden="true">
+                <defs>
+                  <linearGradient id="sparkFill" x1="0" y1="0" x2="0" y2="1">
+                    <stop
+                      offset="0"
+                      stop-color="oklch(74% 0.14 262)"
+                      stop-opacity="0.35"
+                    />
+                    <stop
+                      offset="1"
+                      stop-color="oklch(74% 0.14 262)"
+                      stop-opacity="0"
+                    />
+                  </linearGradient>
+                </defs>
+                <path
+                  class="area"
+                  d="M0 90 C 40 84, 70 70, 110 72 S 180 60, 220 50 S 290 56, 330 38 S 400 30, 440 22 S 500 14, 520 10 L 520 110 L 0 110 Z"
+                />
+                <path
+                  d="M0 90 C 40 84, 70 70, 110 72 S 180 60, 220 50 S 290 56, 330 38 S 400 30, 440 22 S 500 14, 520 10"
+                />
+              </svg>
+            </div>
+            <div class="tile t-mid reveal" data-spot style="--d: 80">
+              <span class="big"><b data-count="95">95</b></span>
+              <h3>Kontrol, her sayfada</h3>
+              <p>
+                Kırık bağlantı, eksik ya da çok uzun başlık, yavaş sayfa,
+                Google'ın anlamadığı adresler. Her bulgunun altında ne
+                yapacağınız yazar.
+              </p>
+            </div>
+            <div class="tile t-third reveal" data-spot style="--d: 160">
+              <h3>Dizin durumu</h3>
+              <p>
+                Google'ın her sayfanız için kendi cevabı: dizinde mi, neden
+                değil, en son ne zaman tarandı.
+              </p>
+            </div>
+            <div class="tile t-third reveal" data-spot style="--d: 220">
+              <h3>Fırsatlar</h3>
+              <p>
+                Sayfalarınız dört grupta, emek harcamaya değer olma sırasına
+                göre. Hangi sayfayla başlayacağınız yanında yazar.
+              </p>
+            </div>
+            <div class="tile t-third reveal" data-spot style="--d: 280">
+              <h3>Raporlar</h3>
+              <p>
+                Tek dosyalık raporlar; telefonda açılır, yazdırılır, e-postayla
+                gönderilir. İsterseniz asistanınız yazar.
+              </p>
+            </div>
+            <div class="tile t-wide reveal" data-spot style="--d: 340">
+              <span class="big"><b data-count="33">33</b></span>
+              <h3>Araç, asistanınız için</h3>
+              <p>
+                Claude Code, Codex ya da Cursor bağlarsanız asistan sayılarınızı
+                okur, denetimi çalıştırır, raporu yazar. Altı hazır görev ile
+                gelir.
+              </p>
+              <div class="row">
+                <span
+                  ><img
+                    src="/assets/logos/w/claude.svg"
+                    alt=""
+                    width="22"
+                    height="22"
+                    loading="lazy"
+                  />Claude Code</span
+                ><span
+                  ><img
+                    src="/assets/logos/w/openai.svg"
+                    alt=""
+                    width="22"
+                    height="22"
+                    loading="lazy"
+                  />Codex</span
+                ><span
+                  ><img
+                    src="/assets/logos/w/cursor.svg"
+                    alt=""
+                    width="22"
+                    height="22"
+                    loading="lazy"
+                  />Cursor</span
+                ><span
+                  ><img
+                    src="/assets/logos/w/googlegemini.svg"
+                    alt=""
+                    width="22"
+                    height="22"
+                    loading="lazy"
+                  />Gemini CLI</span
+                >
               </div>
-              <div class="tray" data-tilt="5">
-                <div class="window">
-                  <picture>
-                    <source
-                      type="image/webp"
-                      media="(max-width: 640px)"
-                      srcset="
-                        /assets/walk-ajan-dark-m1.webp  560w,
-                        /assets/walk-ajan-dark-m.webp  1000w
-                      "
-                      sizes="100vw"
-                    />
-                    <source
-                      type="image/webp"
-                      srcset="
-                        /assets/walk-ajan-dark-1x.webp  960w,
-                        /assets/walk-ajan-dark.webp    1920w
-                      "
-                      sizes="(max-width: 900px) 100vw, 740px"
-                    />
-                    <img
-                      src="/assets/walk-ajan-dark.png"
-                      alt="Ajan kurulumu ekranı: bağlantı adresi, token ve kopyalanacak kurulum metni"
-                      width="1920"
-                      height="1600"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </picture>
-                </div>
-              </div>
-            </article>
+            </div>
+            <div class="tile t-mid plain reveal" style="--d: 400">
+              <span class="big free"
+                ><b data-count="0" data-suffix=" ₺">0 ₺</b></span
+              >
+              <h3>Yapmadıkları da var</h3>
+              <ul>
+                <li>
+                  Arama hacmi tahmin etmez; gösterim sayısı Google'dan gelir.
+                </li>
+                <li>Size bağlantı veren siteleri (backlink) saymaz.</li>
+                <li>
+                  Rakip sıralaması izlemez; yalnızca kendi sitelerinizi okur.
+                </li>
+                <li>Bulutta çalışmaz; tek kullanıcı, tek bilgisayar.</li>
+              </ul>
+            </div>
+            <div
+              class="tile stat t-third reveal"
+              data-spot
+              style="--d: 460"
+              hidden
+            >
+              <span class="big"
+                ><b data-count="0" data-live="downloads">0</b></span
+              >
+              <h3>İndirme</h3>
+              <p>GitHub sürüm sayfasından canlı sayılır.</p>
+            </div>
           </div>
         </div>
       </section>
@@ -1857,41 +2456,6 @@
             başka hiçbir yere gitmez. Google erişim anahtarınız bilgisayarınızda
             şifreli durur.
           </p>
-        </div>
-      </section>
-
-      <section class="not" aria-labelledby="h-not">
-        <div class="wrap">
-          <h2 id="h-not" class="reveal">Yapmadığı işler</h2>
-          <dl>
-            <div class="reveal" style="--d: 0">
-              <dt>Arama hacmi tahmin etmez.</dt>
-              <dd>
-                Bir kelimenin ayda kaç kez arandığını tahmin etmez. Gösterim
-                sayısı Google'dan gelir, o gerçek.
-              </dd>
-            </div>
-            <div class="reveal" style="--d: 80">
-              <dt>Size bağlantı veren siteleri saymaz.</dt>
-              <dd>
-                Bu veriyi (backlink) ücretli servisler satar, seowatcher'da yok.
-              </dd>
-            </div>
-            <div class="reveal" style="--d: 160">
-              <dt>Rakip sıralaması izlemez.</dt>
-              <dd>
-                Yalnızca kendi sitelerinizi okur. Rakiplere bakmak için başka
-                bir araç gerekir.
-              </dd>
-            </div>
-            <div class="reveal" style="--d: 240">
-              <dt>Bulutta çalışmaz.</dt>
-              <dd>
-                Tek kullanıcı, tek bilgisayar. Başka yerden erişmek isterseniz
-                önüne kendiniz şifreli bir giriş koymanız gerekir.
-              </dd>
-            </div>
-          </dl>
         </div>
       </section>
 
@@ -1985,20 +2549,6 @@
         </div>
       </section>
 
-      <section aria-label="Yapanın notu">
-        <div class="wrap maker reveal">
-          <p>
-            Açık kaynak ve ücretsiz. Kodun tamamı GitHub'da; ne yaptığı, nasıl
-            yaptığı ve veriyi nereye yazdığı herkesin okuyabileceği yerde.
-          </p>
-          <p class="who">
-            <a class="textlink" href="https://github.com/ucsahinn/seotracker"
-              >Kaynak kodu ve sorun kayıtları GitHub'da</a
-            >
-          </p>
-        </div>
-      </section>
-
       <section class="facts" aria-labelledby="h-kisaca">
         <div class="wrap">
           <h2 id="h-kisaca" class="reveal">Kısaca</h2>
@@ -2082,62 +2632,77 @@
       <section class="faq" id="sorular" aria-labelledby="h-sss">
         <div class="wrap">
           <h2 id="h-sss" class="reveal">Sorular</h2>
-          <dl class="reveal" style="--d: 100">
-            <div class="qa">
-              <dt>Gerçekten ücretsiz mi?</dt>
-              <dd>
-                Evet. MIT lisanslı açık kaynak, kodun tamamı GitHub'da.
-                Google'ın servisleri de ücretsiz sınırlar içinde çalışır.
-              </dd>
-            </div>
-            <div class="qa">
-              <dt>Windows "tanınmayan uygulama" uyarısı veriyor.</dt>
-              <dd>
-                Kurulum dosyası henüz kod imzalı değil. SmartScreen ekranında
-                önce "Daha fazla bilgi"yi, sonra "Yine de çalıştır"ı seçin.
-                Dosyanın parmak izi (SHA-256) her sürümün sayfasında yazar,
-                isterseniz karşılaştırın.
-                <a class="textlink" href="/docs/sorun-giderme/">Sorun giderme</a
-                >.
-              </dd>
-            </div>
-            <div class="qa">
-              <dt>Verilerim nerede duruyor?</dt>
-              <dd>
-                <code>%LOCALAPPDATA%\seowatcher</code> klasöründe. Veritabanı,
-                Google erişim anahtarınız ve günlükler orada. Uygulamayı
-                kaldırmak bu klasöre dokunmaz, yedek almak için kopyalamanız
-                yeter.
-              </dd>
-            </div>
-            <div class="qa">
-              <dt>Neden Google tarafında bir anahtar oluşturmam gerekiyor?</dt>
-              <dd>
-                Çünkü uygulama bir bulut hizmeti değil. Bilgisayarınız doğrudan
-                Google'a bağlanıyor ve Google, bağlanan uygulamanın kime ait
-                olduğunu bilmek istiyor. Bir kez yapılır, uygulama içinde adım
-                adım anlatılır.
-              </dd>
-            </div>
-            <div class="qa">
-              <dt>Sayılar Search Console'dakiyle aynı mı?</dt>
-              <dd>
-                Aynı kaynaktan okunur. Google veriyi yaklaşık üç gün geriden
-                verir ve çok az aranan sorguları gizler. Uygulama sayfa
-                toplamını ve site toplamını ayrı gösterir. İkisi birbirini
-                tutmayabilir, bu bir hata değil.
-              </dd>
-            </div>
-            <div class="qa">
-              <dt>Sitemi internete açmadan kullanabilir miyim?</dt>
-              <dd>
-                Evet, zaten öyle çalışır. Uygulama yalnızca kendi
-                bilgisayarınızdan açılır, Search Console ve Analytics verilerini
-                Google'dan okur. Site denetimi için yalnızca denetlediğiniz
-                sitenin sayfalarını tarar.
-              </dd>
-            </div>
-          </dl>
+          <div class="list reveal" style="--d: 100">
+            <details class="qa">
+              <summary>Gerçekten ücretsiz mi?</summary>
+              <div class="qa-body">
+                <p>
+                  Evet. MIT lisanslı açık kaynak, kodun tamamı GitHub'da.
+                  Google'ın servisleri de ücretsiz sınırlar içinde çalışır.
+                </p>
+              </div>
+            </details>
+            <details class="qa">
+              <summary>Windows "tanınmayan uygulama" uyarısı veriyor.</summary>
+              <div class="qa-body">
+                <p>
+                  Kurulum dosyası henüz kod imzalı değil. SmartScreen ekranında
+                  önce "Daha fazla bilgi"yi, sonra "Yine de çalıştır"ı seçin.
+                  Dosyanın parmak izi (SHA-256) her sürümün sayfasında yazar,
+                  isterseniz karşılaştırın.
+                  <a class="textlink" href="/docs/sorun-giderme/"
+                    >Sorun giderme</a
+                  >.
+                </p>
+              </div>
+            </details>
+            <details class="qa">
+              <summary>Verilerim nerede duruyor?</summary>
+              <div class="qa-body">
+                <p>
+                  <code>%LOCALAPPDATA%\seowatcher</code> klasöründe. Veritabanı,
+                  Google erişim anahtarınız ve günlükler orada. Uygulamayı
+                  kaldırmak bu klasöre dokunmaz, yedek almak için kopyalamanız
+                  yeter.
+                </p>
+              </div>
+            </details>
+            <details class="qa">
+              <summary>
+                Neden Google tarafında bir anahtar oluşturmam gerekiyor?
+              </summary>
+              <div class="qa-body">
+                <p>
+                  Çünkü uygulama bir bulut hizmeti değil. Bilgisayarınız
+                  doğrudan Google'a bağlanıyor ve Google, bağlanan uygulamanın
+                  kime ait olduğunu bilmek istiyor. Bir kez yapılır, uygulama
+                  içinde adım adım anlatılır.
+                </p>
+              </div>
+            </details>
+            <details class="qa">
+              <summary>Sayılar Search Console'dakiyle aynı mı?</summary>
+              <div class="qa-body">
+                <p>
+                  Aynı kaynaktan okunur. Google veriyi yaklaşık üç gün geriden
+                  verir ve çok az aranan sorguları gizler. Uygulama sayfa
+                  toplamını ve site toplamını ayrı gösterir. İkisi birbirini
+                  tutmayabilir, bu bir hata değil.
+                </p>
+              </div>
+            </details>
+            <details class="qa">
+              <summary>Sitemi internete açmadan kullanabilir miyim?</summary>
+              <div class="qa-body">
+                <p>
+                  Evet, zaten öyle çalışır. Uygulama yalnızca kendi
+                  bilgisayarınızdan açılır, Search Console ve Analytics
+                  verilerini Google'dan okur. Site denetimi için yalnızca
+                  denetlediğiniz sitenin sayfalarını tarar.
+                </p>
+              </div>
+            </details>
+          </div>
         </div>
       </section>
 
@@ -2165,23 +2730,45 @@
 
     <footer>
       <div class="wrap">
-        <span
-          >seowatcher, MIT lisansı.
-          <a class="textlink" href="https://github.com/every-app/open-seo"
-            >open-seo</a
-          >
-          tabanlı. Logolar sahiplerinin markasıdır.</span
-        >
-        <span class="links">
-          <a href="/docs/">Kılavuz</a>
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a>
-          <a
-            href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"
-            >Sürüm notları</a
-          >
-          <a href="https://github.com/ucsahinn/seotracker/issues"
-            >Sorun bildir</a
-          >
+        <div class="top">
+          <div class="col">
+            <a class="brand" href="#top"
+              ><img
+                src="/assets/icon.svg"
+                alt=""
+                width="28"
+                height="28"
+              />seowatcher</a
+            >
+            <p>
+              Açık kaynak ve ücretsiz. Kodun tamamı GitHub'da; ne yaptığı, nasıl
+              yaptığı ve veriyi nereye yazdığı herkesin okuyabileceği yerde.
+              <a class="textlink" href="https://github.com/every-app/open-seo"
+                >open-seo</a
+              >
+              tabanlı. Logolar sahiplerinin markasıdır.
+            </p>
+          </div>
+          <div class="col">
+            <b>Ürün</b><a href="#ekranlar">Ekranlar</a
+            ><a href="#neler">Neler yapar</a><a href="#kurulum">Kurulum</a
+            ><a href="https://github.com/ucsahinn/seotracker/releases/latest"
+              >Sürümler</a
+            >
+          </div>
+          <div class="col">
+            <b>Yardım</b><a href="/docs/">Kılavuz</a
+            ><a href="/docs/sorun-giderme/">Sorun giderme</a
+            ><a href="https://github.com/ucsahinn/seotracker/issues"
+              >Sorun bildir</a
+            ><a
+              href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"
+              >Sürüm notları</a
+            >
+          </div>
+        </div>
+        <div class="bottom">
+          <span>seowatcher, MIT lisansı.</span>
           <button
             type="button"
             class="still"
@@ -2191,7 +2778,7 @@
           >
             Hareketi durdur
           </button>
-        </span>
+        </div>
       </div>
     </footer>
   </body>

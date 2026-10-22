@@ -187,6 +187,133 @@
     });
   }
 
+  // 5b. Island navigation: the toggle opens a full-screen menu on narrow
+  //     screens. Escape and any menu link close it; focus goes in and comes back.
+  var navToggle = document.querySelector("[data-nav-toggle]");
+  var menu =
+    navToggle &&
+    document.getElementById(
+      navToggle.getAttribute("aria-controls") || "site-menu",
+    );
+  if (navToggle && menu) {
+    var setMenu = function (open) {
+      document.documentElement.classList.toggle("nav-open", open);
+      navToggle.setAttribute("aria-expanded", open ? "true" : "false");
+      if (open) {
+        var first = menu.querySelector("a");
+        if (first) first.focus();
+      } else {
+        navToggle.focus();
+      }
+    };
+    navToggle.addEventListener("click", function () {
+      setMenu(!document.documentElement.classList.contains("nav-open"));
+    });
+    menu.addEventListener("click", function (e) {
+      if (e.target.closest("a")) setMenu(false);
+    });
+    document.addEventListener("keydown", function (e) {
+      if (
+        e.key === "Escape" &&
+        document.documentElement.classList.contains("nav-open")
+      )
+        setMenu(false);
+    });
+  }
+
+  // 5c. Scroll-pinned walkthrough: the step in the middle of the viewport is
+  //     the active one; the stage shows its screenshot and the rail fills.
+  var walk = document.querySelector("[data-walk]");
+  if (walk && "IntersectionObserver" in window) {
+    var steps = $$(".walk-step", walk);
+    var shots = $$(".walk-shot", walk);
+    var wide = window.matchMedia("(min-width: 900px)");
+    var walkIo = null;
+    var activate = function (step) {
+      var id = step.getAttribute("data-step");
+      steps.forEach(function (s) {
+        s.classList.toggle("is-active", s === step);
+      });
+      shots.forEach(function (s) {
+        s.classList.toggle("is-active", s.getAttribute("data-step") === id);
+      });
+      var index = steps.indexOf(step);
+      walk.style.setProperty(
+        "--walk-progress",
+        steps.length > 1 ? String(index / (steps.length - 1)) : "1",
+      );
+    };
+    var setupWalk = function () {
+      if (walkIo) {
+        walkIo.disconnect();
+        walkIo = null;
+      }
+      if (!wide.matches) {
+        steps.forEach(function (s) {
+          s.classList.remove("is-active");
+        });
+        walk.style.removeProperty("--walk-progress");
+        return;
+      }
+      if (steps[0]) activate(steps[0]);
+      walkIo = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) activate(e.target);
+          });
+        },
+        { rootMargin: "-45% 0px -45% 0px", threshold: 0 },
+      );
+      steps.forEach(function (s) {
+        walkIo.observe(s);
+      });
+    };
+    setupWalk();
+    if (wide.addEventListener) wide.addEventListener("change", setupWalk);
+    else if (wide.addListener) wide.addListener(setupWalk);
+  }
+
+  // 5d. Questions: <details> opens and closes with a height animation.
+  $$("details.qa").forEach(function (qa) {
+    var body = qa.querySelector(".qa-body");
+    var summary = qa.querySelector("summary");
+    if (!body || !summary || reduce || !body.animate) return;
+    var easing = "cubic-bezier(0.32, 0.72, 0, 1)";
+    var running = null;
+    summary.addEventListener("click", function (e) {
+      e.preventDefault();
+      if (running) running.cancel();
+      if (qa.open) {
+        var h = body.offsetHeight;
+        running = body.animate(
+          [
+            { height: h + "px", opacity: 1 },
+            { height: "0px", opacity: 0 },
+          ],
+          { duration: 280, easing: easing },
+        );
+        running.onfinish = function () {
+          qa.open = false;
+          running = null;
+          body.style.height = "";
+        };
+      } else {
+        qa.open = true;
+        var target = body.offsetHeight;
+        running = body.animate(
+          [
+            { height: "0px", opacity: 0 },
+            { height: target + "px", opacity: 1 },
+          ],
+          { duration: 320, easing: easing },
+        );
+        running.onfinish = function () {
+          running = null;
+        };
+      }
+    });
+  });
+
   if (reduce || !finePointer) return;
 
   // 6. Pointer-driven depth: the hero window tilts a little toward the cursor,
