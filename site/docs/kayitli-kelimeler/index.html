@@ -47,9 +47,9 @@
     <meta name="twitter:title" content="Kayıtlı kelimeler ekranı | seowatcher kılavuzu" />
     <meta name="twitter:description" content="Kaydettiğiniz aramaları burada etiketleyin, son 90 günlük ortalama sıralarını izleyin, CSV ya da E-Tablolar'a aktarın." />
     <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
-    <meta name="color-scheme" content="dark" />
+    <meta name="color-scheme" content="light" />
     <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":"tr"},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/docs/kayitli-kelimeler/#article","headline":"Kayıtlı kelimeler","description":"Kaydettiğiniz aramaları burada etiketleyin, son 90 günlük ortalama sıralarını izleyin, CSV ya da E-Tablolar'a aktarın.","url":"https://seowatcher.io/docs/kayitli-kelimeler/","inLanguage":"tr","dateModified":"2026-10-22","articleSection":"Ekranlar","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/docs/kayitli-kelimeler/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/docs/kayitli-kelimeler/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/"},{"@type":"ListItem","position":2,"name":"Kılavuz","item":"https://seowatcher.io/docs/"},{"@type":"ListItem","position":3,"name":"Kayıtlı kelimeler","item":"https://seowatcher.io/docs/kayitli-kelimeler/"}]}]}</script>
-    <meta name="theme-color" content="#0a0c12" />
+    <meta name="theme-color" content="#f8f9fb" />
     <style>
       @font-face {
         font-family: "Geist";
@@ -76,21 +76,21 @@
           U+2212, U+2215, U+FEFF, U+FFFD;
       }
       :root {
-        --bg: oklch(13% 0.012 265);
-        --bg-2: oklch(16.5% 0.014 265);
-        --bg-3: oklch(20% 0.016 265);
-        --fg: oklch(95% 0.005 265);
-        --muted: oklch(95% 0.005 265 / 0.74);
-        --subtle: oklch(95% 0.005 265 / 0.66);
-        --hairline: oklch(100% 0 0 / 0.08);
-        --hairline-strong: oklch(100% 0 0 / 0.16);
-        --glass: oklch(100% 0 0 / 0.05);
-        --accent: oklch(76% 0.17 250);
-        --accent-2: oklch(86% 0.13 250);
-        --accent-ink: oklch(12% 0.02 265);
-        --accent-link: oklch(86% 0.13 250);
-        --glow: oklch(76% 0.17 250 / 0.5);
-        --glow-soft: oklch(76% 0.17 250 / 0.18);
+        --bg: oklch(98.2% 0.004 240);
+        --bg-2: oklch(96% 0.008 240);
+        --bg-3: oklch(93.5% 0.012 240);
+        --fg: oklch(20% 0.025 262);
+        --muted: oklch(20% 0.025 262 / 0.76);
+        --subtle: oklch(20% 0.025 262 / 0.64);
+        --hairline: oklch(20% 0.03 262 / 0.1);
+        --hairline-strong: oklch(20% 0.03 262 / 0.18);
+        --glass: oklch(20% 0.03 262 / 0.035);
+        --accent: oklch(46% 0.2 262);
+        --accent-2: oklch(58% 0.19 262);
+        --accent-ink: oklch(99% 0 0);
+        --accent-link: oklch(46% 0.2 262);
+        --glow: oklch(46% 0.2 262 / 0.28);
+        --glow-soft: oklch(46% 0.2 262 / 0.12);
         --ease: cubic-bezier(0.32, 0.72, 0, 1);
         --spring: cubic-bezier(0.34, 1.4, 0.64, 1);
       }
@@ -544,6 +544,87 @@
       }
       article h2 {
         scroll-margin-top: 90px;
+      }
+
+      /* Light palette pass: the guide index as a card grid, softer tables, code chips. */
+      ul.index {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 14px;
+        padding: 0;
+        margin: 0 0 36px;
+        list-style: none;
+      }
+      ul.index li {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        padding: 18px 18px 20px;
+        border: 1px solid var(--hairline);
+        border-radius: 16px;
+        background: var(--bg);
+        box-shadow: 0 1px 2px oklch(20% 0.03 262 / 0.04);
+        transition:
+          transform 500ms var(--spring),
+          box-shadow 400ms var(--ease),
+          border-color 400ms var(--ease);
+      }
+      ul.index li:hover {
+        transform: translateY(-2px);
+        border-color: var(--hairline-strong);
+        box-shadow: 0 14px 34px oklch(20% 0.03 262 / 0.1);
+      }
+      ul.index li a {
+        font-weight: 600;
+        color: var(--fg);
+        text-decoration: none;
+      }
+      ul.index li a:hover {
+        color: var(--accent);
+      }
+      ul.index li span {
+        color: var(--muted);
+        font-size: 14.5px;
+        line-height: 1.45;
+      }
+      article table {
+        border: 1px solid var(--hairline);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      article th {
+        background: var(--bg-2);
+      }
+      article code {
+        background: var(--bg-2);
+        border: 1px solid var(--hairline);
+      }
+      article h2 {
+        padding-top: 8px;
+        border-top: 1px solid var(--hairline);
+      }
+      .side li.current a {
+        color: var(--accent);
+      }
+      article p,
+      article li {
+        font-size: 16px;
+        line-height: 1.65;
+      }
+      .side {
+        border-right: 1px solid var(--hairline);
+        padding-right: 16px;
+      }
+      .nav-group {
+        font-size: 13.5px;
+      }
+      .side li.current a {
+        color: var(--fg);
+        font-weight: 600;
+      }
+      article td:has(> :is(strong, b):only-child),
+      article td[align="right"] {
+        font-variant-numeric: tabular-nums;
       }
     </style>
   </head>
