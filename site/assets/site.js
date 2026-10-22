@@ -22,7 +22,7 @@
           }
         });
       },
-      { rootMargin: "0px 0px -8% 0px", threshold: 0.12 },
+      { rootMargin: "0px 0px 12% 0px", threshold: 0.01 },
     );
     items.forEach(function (el) {
       io.observe(el);
