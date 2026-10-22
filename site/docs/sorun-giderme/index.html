@@ -31,13 +31,24 @@
     />
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="seowatcher" />
-    <meta property="og:title" content="Sorun giderme" />
+    <meta property="og:title" content="Sorun giderme | seowatcher kılavuzu" />
     <meta property="og:description" content="En sık görülen sorunlar: belirti, sebep ve çözüm. Dolu adres numarası, Windows uyarısı, Google hataları, kota, takılan denetim, boş grafik, asistan 401." />
     <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="seowatcher: sitenizin Google verisi, kendi bilgisayarınızda"
+    />
+    <meta property="article:modified_time" content="2026-10-22" />
     <meta property="og:url" content="https://seowatcher.io/docs/sorun-giderme/" />
     <meta property="og:locale" content="tr_TR" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Sorun giderme | seowatcher kılavuzu" />
+    <meta name="twitter:description" content="En sık görülen sorunlar: belirti, sebep ve çözüm. Dolu adres numarası, Windows uyarısı, Google hataları, kota, takılan denetim, boş grafik, asistan 401." />
+    <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
     <meta name="color-scheme" content="light dark" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":"tr"},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Person","@id":"https://seowatcher.io/#author","name":"ucsahinn","url":"https://github.com/ucsahinn"},{"@type":"TechArticle","@id":"https://seowatcher.io/docs/sorun-giderme/#article","headline":"Sorun giderme","description":"En sık görülen sorunlar: belirti, sebep ve çözüm. Dolu adres numarası, Windows uyarısı, Google hataları, kota, takılan denetim, boş grafik, asistan 401.","url":"https://seowatcher.io/docs/sorun-giderme/","inLanguage":"tr","dateModified":"2026-10-22","articleSection":"Başvuru","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/docs/sorun-giderme/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/docs/sorun-giderme/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/"},{"@type":"ListItem","position":2,"name":"Kılavuz","item":"https://seowatcher.io/docs/"},{"@type":"ListItem","position":3,"name":"Sorun giderme","item":"https://seowatcher.io/docs/sorun-giderme/"}]}]}</script>
     <meta
       name="theme-color"
       media="(prefers-color-scheme: light)"
@@ -188,6 +199,9 @@
         gap: 24px;
         font-size: 15px;
         color: var(--muted);
+      }
+      .topnav a {
+        padding-block: 10px;
       }
       .topnav a:hover {
         color: var(--fg);
@@ -496,7 +510,7 @@
       <div class="wrap">
         <a class="brand" href="/"
           ><img
-            src="/assets/icon-256.png"
+            src="/assets/icon.svg"
             alt=""
             width="26"
             height="26"
@@ -516,7 +530,7 @@
         </nav>
       </div>
     </header>
-    <div class="wrap layout">
+    <main class="wrap layout">
       <aside class="side" aria-label="Kılavuz"><p class="nav-group">Başlangıç</p><ul><li><a href="/docs/kurulum-windows/">Windows'a kurulum</a></li><li><a href="/docs/kurulum-docker/">Docker ile kurulum</a></li><li><a href="/docs/google-baglantisi/">Google'a bağlanma</a></li><li><a href="/docs/pagespeed-anahtari/">PageSpeed anahtarı</a></li></ul><p class="nav-group">Ekranlar</p><ul><li><a href="/docs/panel/">Panel</a></li><li><a href="/docs/arama-performansi/">Arama performansı</a></li><li><a href="/docs/siralama-takibi/">Sıralama takibi</a></li><li><a href="/docs/firsatlar/">Fırsatlar</a></li><li><a href="/docs/kayitli-kelimeler/">Kayıtlı kelimeler</a></li><li><a href="/docs/analytics/">Analytics</a></li><li><a href="/docs/site-denetimi/">Site denetimi</a></li><li><a href="/docs/dizin-durumu/">Dizin durumu</a></li><li><a href="/docs/raporlar/">Raporlar ve şablonlar</a></li><li><a href="/docs/proje-bilgisi/">Proje bilgisi</a></li><li><a href="/docs/ayarlar/">Ayarlar</a></li></ul><p class="nav-group">Başvuru</p><ul><li><a href="/docs/denetim-kurallari/">Denetim kuralları</a></li><li><a href="/docs/ajan-kurulumu/">Ajan kurulumu</a></li><li class="current" aria-current="page"><a href="/docs/sorun-giderme/">Sorun giderme</a></li></ul></aside>
       <article id="icerik">
         <h1>Sorun giderme</h1><p class="lede">En sık görülen sorunlar: belirti, sebep ve çözüm. Dolu adres numarası, Windows uyarısı, Google hataları, kota, takılan denetim, boş grafik, asistan 401.</p><p>Bu sayfa, bir şey çalışmadığında ne yapacağınızı kısa kısa söyler. Önce uygulamada <strong>Yardım</strong> ekranındaki &quot;Kurulumunuzun durumu&quot; kartına bakın. Kart beş şeyi kontrol eder: giriş ve erişim, Google girişi, PageSpeed anahtarı, çalışma ortamı, veritabanı. &quot;N şey dikkat istiyor&quot; diyorsa yanındaki düğme sizi doğru ayara götürür. Aşağıdaki liste en sık görülenden en nadire doğru gider.</p>
@@ -532,6 +546,10 @@
 <p><strong>Belirti:</strong> Uygulama açılmıyor. Simgede &quot;Windows bileşeni eksik&quot; yazıyor ya da kayıtta &quot;Workers runtime failed to start&quot; ve &quot;0xc0000005&quot; geçiyor.</p>
 <p><strong>Sebep:</strong> Uygulamanın motoru Microsoft'un Visual C++ paketini (2015-2022, 64 bit) ister. Temiz bir Windows'ta bu paket yoktur ya da eskidir.</p>
 <p><strong>Çözüm:</strong> Çıkan baloncuğa tıklayın ya da simgeye sağ tıklayıp <strong>Eksik Windows bileşenini kur</strong> deyin. Windows bir kez yönetici izni sorar. Kurulum bitince uygulama kendiliğinden yeniden başlar. Paket elinizde yoksa Microsoft'un sayfasından indirin: <code>aka.ms/vs/17/release/vc_redist.x64.exe</code></p>
+<h3 id="simge-uygulamanin-motoru-coktu-diyor">Simge &quot;Uygulamanın motoru çöktü&quot; diyor</h3>
+<p><strong>Belirti:</strong> Uygulama açılmıyor. Kayıtta &quot;Workers runtime failed to start&quot; ve &quot;0xc0000005&quot; var ama Visual C++ paketi kurulu.</p>
+<p><strong>Sebep:</strong> Uygulamanın motoru (workerd) bu bilgisayarda bir sistem dosyasına takılıyor. Uygulama açılışta motoru tek başına dener; &quot;tek başına da başlayamıyor&quot; diyorsa sorun bilgisayardadır, &quot;tek başına çalışıyor&quot; diyorsa veri klasöründe ya da yapılandırmadadır.</p>
+<p><strong>Çözüm:</strong> Önce <strong>Kurulumu onar</strong> deyin. Düzelmezse simgeye sağ tıklayıp <strong>Sorunu bildir (GitHub)</strong> deyin: tanı bilgisi (Windows sürümü, işlemci, hatalı modül adı, çökme dökümü) kayda kendiliğinden eklenir, siz yalnızca gönderin. Çökme dökümleri <code>%LOCALAPPDATA%\seowatcher\logs\dumps</code> klasöründedir; isterseniz kayda ekleyin.</p>
 <h3 id="windows-bilgisayarinizi-korudu-diyor">Windows &quot;bilgisayarınızı korudu&quot; diyor</h3>
 <p><strong>Belirti:</strong> Kurulum dosyası açılmıyor, mavi bir uyarı ekranı çıkıyor.</p>
 <p><strong>Sebep:</strong> Dosya imzalı değil. Windows tanımadığı yayıncılara bu ekranı gösterir.</p>
@@ -600,7 +618,7 @@
         </p>
       </article>
       
-    </div>
+    </main>
     <footer>
       <div class="wrap">
         <span>seowatcher, MIT lisansı.</span>

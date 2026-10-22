@@ -15,6 +15,7 @@
  * authoring error and is printed as a warning.
  */
 import fs from "node:fs";
+import { execFileSync } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -238,13 +239,128 @@ const shell = fs.readFileSync(
   "utf8",
 );
 
-function page({ title, description, body, toc, slug, updated, nav }) {
+// Structured data for a guide page: what it is, where it sits, when it changed.
+// Truthful fields only: the author is the maintainer, dates come from front
+// matter, and the breadcrumb mirrors the visible path (Ana sayfa > Kılavuz > page).
+function jsonLd({ title, description, slug, updated, groupTitle }) {
+  const url = slug ? `${siteUrl}/docs/${slug}/` : `${siteUrl}/docs/`;
+  const crumbs = [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "seowatcher",
+      item: `${siteUrl}/`,
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Kılavuz",
+      item: `${siteUrl}/docs/`,
+    },
+  ];
+  if (slug)
+    crumbs.push({ "@type": "ListItem", position: 3, name: title, item: url });
+  const main = slug
+    ? {
+        "@type": "TechArticle",
+        "@id": `${url}#article`,
+        headline: title,
+        description,
+        url,
+        inLanguage: "tr",
+        dateModified: updated,
+        articleSection: groupTitle,
+        about: { "@id": `${siteUrl}/#app` },
+        author: { "@id": `${siteUrl}/#author` },
+        publisher: { "@id": `${siteUrl}/#author` },
+        isPartOf: { "@id": `${siteUrl}/#website` },
+        mainEntityOfPage: url,
+      }
+    : {
+        "@type": "CollectionPage",
+        "@id": `${url}#page`,
+        name: title,
+        description,
+        url,
+        inLanguage: "tr",
+        dateModified: updated,
+        about: { "@id": `${siteUrl}/#app` },
+        isPartOf: { "@id": `${siteUrl}/#website` },
+      };
+  const graph = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": `${siteUrl}/#website`,
+        url: `${siteUrl}/`,
+        name: "seowatcher",
+        inLanguage: "tr",
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": `${siteUrl}/#app`,
+        name: "seowatcher",
+        alternateName: "seotracker",
+        url: `${siteUrl}/`,
+      },
+      {
+        "@type": "Person",
+        "@id": `${siteUrl}/#author`,
+        name: "ucsahinn",
+        url: "https://github.com/ucsahinn",
+      },
+      main,
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${url}#breadcrumb`,
+        itemListElement: crumbs,
+      },
+    ],
+  };
+  // "</" cannot appear inside a script element; the data never contains it, but keep it safe.
+  return `<script type="application/ld+json">${JSON.stringify(graph).replaceAll("</", "<\\/")}</script>`;
+}
+
+// Last commit date of a source file, so sitemap lastmod, the visible "Son
+// güncelleme" line and dateModified all move only when the page really changed.
+function gitDate(file) {
+  try {
+    const out = execFileSync("git", ["log", "-1", "--format=%cs", "--", file], {
+      cwd: root,
+      encoding: "utf8",
+    }).trim();
+    return /^\d{4}-\d{2}-\d{2}$/.test(out) ? out : null;
+  } catch {
+    return null;
+  }
+}
+
+// <title> under 60 characters, over 30, brand last. Screen pages say "ekranı"
+// so "Panel | seowatcher" is not the whole title.
+function seoTitle({ title, slug, screen }) {
+  if (!slug) return "seowatcher kılavuzu: kurulum, ekranlar ve sorun giderme";
+  return `${screen ? title + " ekranı" : title} | seowatcher kılavuzu`;
+}
+
+function page({
+  title,
+  description,
+  body,
+  toc,
+  slug,
+  updated,
+  nav,
+  groupTitle,
+  screen,
+}) {
   const tocHtml = toc.length
     ? `<nav class="toc" aria-label="Bu sayfada"><p class="toc-label">Bu sayfada</p><ol>${toc
         .map((t) => `<li><a href="#${t.id}">${escapeHtml(t.text)}</a></li>`)
         .join("")}</ol></nav>`
     : "";
   return shell
+    .replaceAll("{{seotitle}}", escapeHtml(seoTitle({ title, slug, screen })))
     .replaceAll("{{title}}", escapeHtml(title))
     .replaceAll("{{description}}", escapeHtml(description))
     .replaceAll(
@@ -252,6 +368,10 @@ function page({ title, description, body, toc, slug, updated, nav }) {
       slug ? `${siteUrl}/docs/${slug}/` : `${siteUrl}/docs/`,
     )
     .replaceAll("{{updated}}", updated)
+    .replace(
+      "{{jsonld}}",
+      jsonLd({ title, description, slug, updated, groupTitle }),
+    )
     .replace("{{nav}}", nav)
     .replace("{{toc}}", tocHtml)
     .replace("{{body}}", body);
@@ -310,7 +430,10 @@ function main() {
     const { html, toc } = render(d.body, (w) =>
       warnings.push(`${d.file}: ${w}`),
     );
-    const updated = d.meta.updated || "2026-10-22";
+    const updated =
+      gitDate(path.join("docs", "kb", d.file)) ||
+      d.meta.updated ||
+      "2026-10-22";
     const out = page({
       title: d.meta.title,
       description: d.meta.description,
@@ -319,11 +442,20 @@ function main() {
       slug,
       updated,
       nav: navHtml(docs, slug),
+      groupTitle:
+        groups.find((g) => g.slugs.includes(slug))?.title ?? "Kılavuz",
+      screen: Boolean(d.meta.screen),
     });
     fs.mkdirSync(path.join(outDir, slug), { recursive: true });
     fs.writeFileSync(path.join(outDir, slug, "index.html"), out);
     urls.push({ loc: `${siteUrl}/docs/${slug}/`, lastmod: updated });
   }
+  const indexDate =
+    urls
+      .map((u) => u.lastmod)
+      .sort()
+      .pop() || "2026-10-22";
+  const homeDate = gitDate(path.join("site", "index.html")) || indexDate;
   // Index page: every group with its one-line descriptions.
   const indexBody = `<h1>Kılavuz</h1><p class="lede">Kurulumdan ilk rapora kadar her adım ve her ekran için kısa, sade bir anlatım. Uygulamanın adı GitHub'da seotracker, bu sitede seowatcher; ikisi aynı şey.</p>${groups
     .map((g) => {
@@ -348,15 +480,55 @@ function main() {
       body: indexBody,
       toc: [],
       slug: "",
-      updated: "2026-10-22",
+      updated: indexDate,
       nav: navHtml(docs, ""),
     }),
   );
-  urls.unshift({ loc: `${siteUrl}/docs/`, lastmod: "2026-10-22" });
+  urls.unshift({ loc: `${siteUrl}/docs/`, lastmod: indexDate });
 
-  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <url>\n    <loc>${siteUrl}/</loc>\n    <lastmod>2026-10-22</lastmod>\n  </url>\n${urls.map((u) => `  <url>\n    <loc>${u.loc}</loc>\n    <lastmod>${u.lastmod}</lastmod>\n  </url>`).join("\n")}\n</urlset>\n`;
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <url>\n    <loc>${siteUrl}/</loc>\n    <lastmod>${homeDate}</lastmod>\n  </url>\n${urls.map((u) => `  <url>\n    <loc>${u.loc}</loc>\n    <lastmod>${u.lastmod}</lastmod>\n  </url>`).join("\n")}\n</urlset>\n`;
   if (!process.env.OUT_DIR)
     fs.writeFileSync(path.join(root, "site", "sitemap.xml"), sitemap);
+
+  // llms.txt: the same facts the site states, in the plain-text shape AI
+  // assistants read. The guide list comes from front matter so it cannot drift.
+  const pkg = JSON.parse(
+    fs.readFileSync(path.join(root, "package.json"), "utf8"),
+  );
+  const llms = `# seowatcher
+
+> seowatcher (GitHub ve uygulama içi adı: seotracker), Google Search Console, Google Analytics 4, kendi site tarayıcısı ve PageSpeed Insights verisini tek panelde toplayan ücretsiz, açık kaynaklı (MIT) bir SEO uygulamasıdır. Windows 10/11 (64 bit) için tek kurulum dosyası vardır; Mac ve Linux'ta Docker ile çalışır. Tek kullanıcılıdır, yalnızca kullanıcının kendi bilgisayarından erişilir, veri o bilgisayarda kalır. Abonelik ve hesap yoktur.
+> English: seowatcher (also named seotracker) is a free, MIT-licensed, self-hosted SEO app that reads Google Search Console, Google Analytics 4, its own crawler and PageSpeed Insights. Windows 10/11 installer; Docker on macOS/Linux. Single user, localhost only, data stays on your machine. Derived from open-seo.
+
+Hızlı bilgiler: sürüm ${pkg.version}, 95 denetim kuralı, yapay zekâ asistanları için 33 MCP aracı ve 6 hazır görev, fiyat 0, lisans MIT. Arama hacmi tahmini, backlink sayımı ve rakip sıralaması yoktur. Kurulum dosyası 81 MB, kurulu hali 290 MB; Visual C++ çalışma zamanı pakete dahildir.
+
+## Ana bağlantılar
+- [Ana sayfa (Türkçe)](${siteUrl}/): ürün tanıtımı, ekran görüntüleri, kurulum, sık sorulanlar
+- [Kılavuz](${siteUrl}/docs/): kurulumdan ilk rapora kadar her adım ve her ekran
+- [Windows kurulum dosyası](https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe): SHA-256 özeti sürüm sayfasında
+- [Sürüm sayfası](https://github.com/ucsahinn/seotracker/releases/latest)
+
+${groups
+  .map(
+    (g) =>
+      `## Kılavuz: ${g.title}\n` +
+      g.slugs
+        .filter((s) => docs.has(s))
+        .map(
+          (s) =>
+            `- [${docs.get(s).meta.title}](${siteUrl}/docs/${s}/): ${docs.get(s).meta.description}`,
+        )
+        .join("\n"),
+  )
+  .join("\n\n")}
+
+## Kaynak ve notlar
+- [GitHub deposu ve README (Docker kurulumu)](https://github.com/ucsahinn/seotracker)
+- [Sürüm notları](https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md)
+- [open-seo, temel alınan proje](https://github.com/every-app/open-seo)
+`;
+  if (!process.env.OUT_DIR)
+    fs.writeFileSync(path.join(root, "site", "llms.txt"), llms);
   console.log(
     `${docs.size} docs pages written to site/docs, sitemap has ${urls.length + 1} urls`,
   );

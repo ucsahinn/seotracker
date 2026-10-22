@@ -39,7 +39,8 @@ LZMAUseSeparateProcess=yes
 WizardStyle=modern
 ShowLanguageDialog=auto
 CloseApplications=no
-MinVersion=10.0
+; Windows 10 1809 / Server 2019: older builds cannot run workerd.
+MinVersion=10.0.17763
 
 [Languages]
 Name: "tr"; MessagesFile: "compiler:Languages\Turkish.isl"
@@ -73,6 +74,9 @@ Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: 
 
 [Run]
 Filename: "{app}\seowatcher.exe"; Description: "{cm:LaunchNow}"; Flags: nowait postinstall skipifsilent
+; A silent run is an update started by the running app (Updater in
+; SeoWatcher.cs) or by an administrator script: bring the app back up.
+Filename: "{app}\seowatcher.exe"; Parameters: "--silent"; Flags: nowait skipifnotsilent
 
 [UninstallDelete]
 ; wrangler writes scratch files (.wrangler\tmp) beside the worker config at

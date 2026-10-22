@@ -37,8 +37,12 @@ Simgeye sağ tıklayın. Menüde şunlar var:
 - **seowatcher'ı aç**: uygulamayı tarayıcıda açar. Simgeye çift tıklamak da aynı işi yapar.
 - **Yeniden başlat**: uygulamayı kapatıp açar. Bir şey takılırsa ilk bunu deneyin.
 - **Günlükleri aç**: kayıt klasörünü açar. İçinde `launcher.log`, `server.log` ve `migrate.log` var.
-- **Tanı bilgisini kopyala**: Windows sürümü, işlemci ve son kayıt satırlarını panoya kopyalar. Sorun bildirirken yapıştırın.
+- **Tanı bilgisini kopyala**: Windows sürümü, işlemci, Visual C++ sürümü, motor denemesi, Windows olay günlüğündeki hatalı modül, çökme dökümleri ve son kayıt satırlarını panoya kopyalar.
+- **Sorunu bildir (GitHub)**: aynı bilgiyi panoya alır ve GitHub'da hazır doldurulmuş bir sorun kaydı açar. Bir cümleyle ne yaptığınızı ekleyip gönderin.
 - **Eksik Windows bileşenini kur**: yalnızca Visual C++ paketi eksikse görünür. Tıklayınca paketi kurar ve uygulamayı yeniden başlatır.
+- **Kurulumu onar**: geçici dosyaları temizler, paketi kontrol eder, uygulamayı yeniden açar.
+- **Güncelle**: yalnızca yeni sürüm varsa görünür.
+- **Güncellemeleri kendiliğinden kur**: işaretliyse yeni sürüm bulununca kendisi kurar.
 - **Veri klasörünü aç**: veritabanının ve anahtarların klasörünü açar.
 - **Windows ile başlat**: işaretliyse uygulama bilgisayar açılınca arka planda başlar.
 - **Çıkış**: uygulamayı tamamen kapatır. Kapalıyken tarayıcıdaki sayfa çalışmaz.
@@ -49,10 +53,16 @@ Uygulamayı ikinci kez başlatırsanız yeni kopya açılmaz. Yalnızca tarayıc
 
 ### Güncelleme
 
-1. Yeni sürümü aynı adresten indirin. Yeni sürüm çıkınca **Ayarlar → Hakkında** bölümü "X yayımlandı." diye haber verir.
-2. Kurulum dosyasını çalıştırın. Sihirbaz açık uygulamayı kendisi kapatır, dosyaları değiştirir ve yeniden başlatır.
+Uygulama güncellemeyi kendisi yapar. Açılıştan iki dakika sonra ve her gün bir kez GitHub'daki son sürüme bakar. Yeni sürüm varsa indirir, dosyanın parmak izini (SHA-256) sürüm sayfasındaki değerle karşılaştırır, sonra sessizce kurar ve yeniden açılır. Simgenin yazısı bu sırada "Güncelleme indiriliyor" ve "Güncelleme kuruluyor" olur.
+
+- Kendiliğinden kurulmasını istemiyorsanız menüden **Güncellemeleri kendiliğinden kur** işaretini kaldırın. O zaman yeni sürüm çıkınca bir baloncuk görürsünüz ve menüde **Güncelle** maddesi belirir.
+- Elle güncellemek için yeni kurulum dosyasını aynı adresten indirip çalıştırın. Sihirbaz açık uygulamayı kendisi kapatır, dosyaları değiştirir ve yeniden başlatır.
 
 Verileriniz, Google bağlantınız ve ayarlarınız olduğu gibi kalır.
+
+### Onarma
+
+Bir şey takılırsa simgeye sağ tıklayıp **Kurulumu onar** deyin. Uygulama geçici dosyaları temizler, paketin eksiksiz olduğunu kontrol eder, veritabanını yeniden kontrol eder ve açılır. Bir dosya eksikse söyler ve sürüm sayfasını açar; kurulum dosyasını yeniden çalıştırmanız yeter.
 
 ### Kaldırma
 

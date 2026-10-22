@@ -71,8 +71,20 @@ jobs:
           Copy-Item $file.FullName $stable -Force
           $sha = (Get-FileHash $file.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
           "$sha  $($file.Name)" | Set-Content -Encoding ascii (Join-Path $file.DirectoryName "SHA256SUMS.txt")
+          # Release notes come from the CHANGELOG block of this version, so the
+          # release is published (not a draft) with the same text the app shows
+          # under Ayarlar > Hakkinda. A draft would hide the installer from
+          # /releases/latest/download/... and from the app's own updater.
+          $version = $tag.TrimStart("v")
+          $changelog = Get-Content CHANGELOG.md -Raw -Encoding UTF8
+          $m = [regex]::Match($changelog, "(?s)## \[" + [regex]::Escape($version) + "\][^\n]*\n(.*?)(?=\n## \[|\z)")
+          $notes = if ($m.Success) { $m.Groups[1].Value.Trim() } else { "seowatcher $version" }
+          $notesFile = Join-Path $file.DirectoryName "notes.md"
+          [IO.File]::WriteAllText($notesFile, $notes, (New-Object Text.UTF8Encoding $false))
           gh release view $tag 2>$null
           if ($LASTEXITCODE -ne 0) {
-            gh release create $tag --draft --generate-notes --title $tag
+            gh release create $tag --title "v$version" --notes-file $notesFile --latest
+          } else {
+            gh release edit $tag --draft=false --latest --notes-file $notesFile
           }
           gh release upload $tag $file.FullName $stable (Join-Path $file.DirectoryName "SHA256SUMS.txt") --clobber

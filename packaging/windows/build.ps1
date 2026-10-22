@@ -187,6 +187,34 @@ if ($vcActual -ne $vcSha) { throw "VC_redist.x64.exe checksum mismatch: expected
 Copy-Item $vcFile (Join-Path $stage "redist\VC_redist.x64.exe")
 Write-Host "bundled VC_redist.x64.exe $vcVersion"
 
+# 4c. App-local VC++ runtime next to workerd.exe -----------------------------------
+# The Windows loader looks in the executable's own directory before System32, so
+# these three DLLs make the engine independent of whatever runtime the machine
+# has (old, missing, or a stale copy earlier on PATH) and of the UAC prompt the
+# redist installer needs. Microsoft's redistribution terms allow shipping them.
+# Taken from the Visual Studio redist folder when present (the canonical copy),
+# otherwise from System32 of the build machine; the versions are logged either way.
+Step "app-local CRT"
+$crtNames = @("vcruntime140.dll", "vcruntime140_1.dll", "msvcp140.dll")
+$crtDir = Get-ChildItem @(
+    "C:\Program Files\Microsoft Visual Studio\*\*\VC\Redist\MSVC\*\x64\Microsoft.VC143.CRT",
+    "C:\Program Files (x86)\Microsoft Visual Studio\*\*\VC\Redist\MSVC\*\x64\Microsoft.VC143.CRT"
+  ) -Directory -ErrorAction SilentlyContinue |
+  Where-Object { $dir = $_.FullName; @($crtNames | Where-Object { -not (Test-Path (Join-Path $dir $_)) }).Count -eq 0 } |
+  Sort-Object { [version]((Get-Item (Join-Path $_.FullName "vcruntime140.dll")).VersionInfo.FileVersion) } -Descending |
+  Select-Object -First 1
+$crtSource = if ($crtDir) { $crtDir.FullName } else { Join-Path $env:SystemRoot "System32" }
+$workerdDir = Join-Path $stage "app\node_modules\@cloudflare\workerd-windows-64\bin"
+if (-not (Test-Path (Join-Path $workerdDir "workerd.exe"))) { throw "workerd.exe not staged at $workerdDir" }
+foreach ($name in $crtNames) {
+  $src = Join-Path $crtSource $name
+  if (-not (Test-Path $src)) { throw "CRT DLL not found: $src" }
+  $ver = [version](Get-Item $src).VersionInfo.FileVersion
+  if ($ver -lt [version]"14.40") { throw "CRT DLL too old to bundle: $src ($ver)" }
+  Copy-Item $src (Join-Path $workerdDir $name)
+  Write-Host "app-local $name $ver (from $crtSource)"
+}
+
 # 5. Launcher -------------------------------------------------------------------
 Step "launcher (csc)"
 $csc = Get-ChildItem "C:\Windows\Microsoft.NET\Framework64\v4*\csc.exe" | Select-Object -First 1

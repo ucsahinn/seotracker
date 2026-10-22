@@ -31,6 +31,14 @@ Bu sayfa, bir şey çalışmadığında ne yapacağınızı kısa kısa söyler.
 
 **Çözüm:** Çıkan baloncuğa tıklayın ya da simgeye sağ tıklayıp **Eksik Windows bileşenini kur** deyin. Windows bir kez yönetici izni sorar. Kurulum bitince uygulama kendiliğinden yeniden başlar. Paket elinizde yoksa Microsoft'un sayfasından indirin: `aka.ms/vs/17/release/vc_redist.x64.exe`
 
+### Simge "Uygulamanın motoru çöktü" diyor
+
+**Belirti:** Uygulama açılmıyor. Kayıtta "Workers runtime failed to start" ve "0xc0000005" var ama Visual C++ paketi kurulu.
+
+**Sebep:** Uygulamanın motoru (workerd) bu bilgisayarda bir sistem dosyasına takılıyor. Uygulama açılışta motoru tek başına dener; "tek başına da başlayamıyor" diyorsa sorun bilgisayardadır, "tek başına çalışıyor" diyorsa veri klasöründe ya da yapılandırmadadır.
+
+**Çözüm:** Önce **Kurulumu onar** deyin. Düzelmezse simgeye sağ tıklayıp **Sorunu bildir (GitHub)** deyin: tanı bilgisi (Windows sürümü, işlemci, hatalı modül adı, çökme dökümü) kayda kendiliğinden eklenir, siz yalnızca gönderin. Çökme dökümleri `%LOCALAPPDATA%\seowatcher\logs\dumps` klasöründedir; isterseniz kayda ekleyin.
+
 ### Windows "bilgisayarınızı korudu" diyor
 
 **Belirti:** Kurulum dosyası açılmıyor, mavi bir uyarı ekranı çıkıyor.

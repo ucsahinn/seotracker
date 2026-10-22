@@ -2,6 +2,21 @@
 
 Her sürümün notu burada, en yenisi en üstte.
 
+## [2.3.2] — 2026-10-22
+
+Windows paketi kendini günceller ve onarır. Site canlı indirme sayısı gösterir,
+kılavuz sayfaları yapısal veri taşır.
+
+### Yenilikler
+
+- **Kendiliğinden güncelleme.** Başlatıcı açılıştan iki dakika sonra ve günde bir kez GitHub'daki son sürüme bakar; yeni sürümü indirir, SHA256SUMS.txt ile doğrular ve sessizce kurar. Kurulum bitince uygulama kendiliğinden açılır. Menüden **Güncellemeleri kendiliğinden kur** kapatılabilir; o zaman **Güncelle** maddesi ve bir baloncuk görünür. Ayar `config.json` içinde `autoUpdate`.
+- **Motorun kendi Visual C++ kopyası.** vcruntime140, vcruntime140_1 ve msvcp140 DLL'leri workerd.exe'nin yanında taşınır; Windows önce oradan yükler. Sistemdeki paket eski, eksik ya da PATH üzerinde bozuk bir kopya olsa da motor doğru sürümle açılır, yönetici izni gerekmez.
+- **Çökme tanısı.** Açılışta motor (workerd) tek başına küçük bir worker ile denenir; çökerse simge sebebi söyler. workerd için Windows otomatik mini çökme dökümü alır (`logs\dumps`), tanı bilgisine Windows olay günlüğündeki hatalı modül adı, CPU özellikleri, çalışma zamanı DLL sürümleri, DEP ilkesi ve PATH üzerindeki eski vcruntime kopyaları eklenir. Menüdeki **Sorunu bildir (GitHub)** bu bilgiyle hazır bir sorun kaydı açar.
+- **Kurulumu onar.** Menüdeki yeni madde wrangler'ın geçici dosyalarını siler, paketin eksiksiz olduğunu kontrol eder ve uygulamayı yeniden açar; eksik dosya varsa söyler ve sürüm sayfasını açar.
+- **Kurucu.** En düşük Windows sürümü 10.0.17763 (Windows 10 1809, Server 2019); sessiz kurulum (güncelleme) bitince uygulama kendisi başlar.
+- **Site: canlı indirme sayısı.** GitHub sürümlerindeki indirme sayıları toplanıp sayaçla gösterilir; bir saat önbellekte tutulur, JS kapalıysa kart gizli kalır. Logo şeridi yazısız, marka renkli ve 16 logolu.
+- **Site: SEO ve GEO.** Kılavuz sayfalarında TechArticle ve BreadcrumbList yapısal verisi, sosyal paylaşım etiketleri ve ana içerik işareti; başlıklar 30-60 karakter; sitemap tarihleri son commit'ten; llms.txt kılavuz listesiyle birlikte üretiliyor; ana sayfadan kılavuza derin bağlantılar; telefonda 560 px görseller; başlık çubuğunda vektör logo.
+
 ## [2.3.1] — 2026-10-22
 
 Windows paketi artık temiz bir bilgisayarda da açılıyor. Site ve kılavuz

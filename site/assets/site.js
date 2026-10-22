@@ -97,6 +97,57 @@
     requestAnimationFrame(step);
   }
 
+  // 3b. Live download count from GitHub releases (sum of every installer asset).
+  //     Cached for an hour per tab; the card stays hidden until a number exists.
+  var live = document.querySelector("[data-live=downloads]");
+  if (live && window.fetch) {
+    var card = live.closest(".stat");
+    var key = "seowatcher-downloads";
+    var showDownloads = function (n) {
+      if (!(n > 0)) return;
+      live.setAttribute("data-count", String(n));
+      live.removeAttribute("data-counted");
+      card.hidden = false;
+      if (reduce || card.classList.contains("in")) {
+        card.classList.add("in");
+        count(live);
+      }
+    };
+    var cached = null;
+    try {
+      var c = JSON.parse(sessionStorage.getItem(key));
+      if (c && Date.now() - c.t < 3600000) cached = c.n;
+    } catch (e) {}
+    if (cached !== null) showDownloads(cached);
+    else {
+      fetch(
+        "https://api.github.com/repos/ucsahinn/seotracker/releases?per_page=100",
+        { headers: { Accept: "application/vnd.github+json" } },
+      )
+        .then(function (r) {
+          return r.ok ? r.json() : null;
+        })
+        .then(function (releases) {
+          if (!releases) return;
+          var n = 0;
+          releases.forEach(function (rel) {
+            (rel.assets || []).forEach(function (a) {
+              if (/^seowatcher-setup.*\.exe$/.test(a.name))
+                n += a.download_count || 0;
+            });
+          });
+          try {
+            sessionStorage.setItem(
+              key,
+              JSON.stringify({ t: Date.now(), n: n }),
+            );
+          } catch (e) {}
+          showDownloads(n);
+        })
+        .catch(function () {});
+    }
+  }
+
   // 4. Header hairline once scrolled.
   var header = document.querySelector("header");
   if (header && "IntersectionObserver" in window) {

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Sıralama takibi | seowatcher kılavuzu</title>
+    <title>Sıralama takibi ekranı | seowatcher kılavuzu</title>
     <meta name="description" content="Aramalarınızın Google'daki ortalama sırasını gün gün görün. Veri bu bilgisayarda saklanır, Google'ın 16 aylık sınırından eskiye de bakarsınız." />
     <meta name="robots" content="max-image-preview:large" />
     <link rel="canonical" href="https://seowatcher.io/docs/siralama-takibi/" />
@@ -31,13 +31,24 @@
     />
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="seowatcher" />
-    <meta property="og:title" content="Sıralama takibi" />
+    <meta property="og:title" content="Sıralama takibi ekranı | seowatcher kılavuzu" />
     <meta property="og:description" content="Aramalarınızın Google'daki ortalama sırasını gün gün görün. Veri bu bilgisayarda saklanır, Google'ın 16 aylık sınırından eskiye de bakarsınız." />
     <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="seowatcher: sitenizin Google verisi, kendi bilgisayarınızda"
+    />
+    <meta property="article:modified_time" content="2026-10-22" />
     <meta property="og:url" content="https://seowatcher.io/docs/siralama-takibi/" />
     <meta property="og:locale" content="tr_TR" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Sıralama takibi ekranı | seowatcher kılavuzu" />
+    <meta name="twitter:description" content="Aramalarınızın Google'daki ortalama sırasını gün gün görün. Veri bu bilgisayarda saklanır, Google'ın 16 aylık sınırından eskiye de bakarsınız." />
+    <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
     <meta name="color-scheme" content="light dark" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":"tr"},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Person","@id":"https://seowatcher.io/#author","name":"ucsahinn","url":"https://github.com/ucsahinn"},{"@type":"TechArticle","@id":"https://seowatcher.io/docs/siralama-takibi/#article","headline":"Sıralama takibi","description":"Aramalarınızın Google'daki ortalama sırasını gün gün görün. Veri bu bilgisayarda saklanır, Google'ın 16 aylık sınırından eskiye de bakarsınız.","url":"https://seowatcher.io/docs/siralama-takibi/","inLanguage":"tr","dateModified":"2026-10-22","articleSection":"Ekranlar","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/docs/siralama-takibi/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/docs/siralama-takibi/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/"},{"@type":"ListItem","position":2,"name":"Kılavuz","item":"https://seowatcher.io/docs/"},{"@type":"ListItem","position":3,"name":"Sıralama takibi","item":"https://seowatcher.io/docs/siralama-takibi/"}]}]}</script>
     <meta
       name="theme-color"
       media="(prefers-color-scheme: light)"
@@ -188,6 +199,9 @@
         gap: 24px;
         font-size: 15px;
         color: var(--muted);
+      }
+      .topnav a {
+        padding-block: 10px;
       }
       .topnav a:hover {
         color: var(--fg);
@@ -496,7 +510,7 @@
       <div class="wrap">
         <a class="brand" href="/"
           ><img
-            src="/assets/icon-256.png"
+            src="/assets/icon.svg"
             alt=""
             width="26"
             height="26"
@@ -516,7 +530,7 @@
         </nav>
       </div>
     </header>
-    <div class="wrap layout">
+    <main class="wrap layout">
       <aside class="side" aria-label="Kılavuz"><p class="nav-group">Başlangıç</p><ul><li><a href="/docs/kurulum-windows/">Windows'a kurulum</a></li><li><a href="/docs/kurulum-docker/">Docker ile kurulum</a></li><li><a href="/docs/google-baglantisi/">Google'a bağlanma</a></li><li><a href="/docs/pagespeed-anahtari/">PageSpeed anahtarı</a></li></ul><p class="nav-group">Ekranlar</p><ul><li><a href="/docs/panel/">Panel</a></li><li><a href="/docs/arama-performansi/">Arama performansı</a></li><li class="current" aria-current="page"><a href="/docs/siralama-takibi/">Sıralama takibi</a></li><li><a href="/docs/firsatlar/">Fırsatlar</a></li><li><a href="/docs/kayitli-kelimeler/">Kayıtlı kelimeler</a></li><li><a href="/docs/analytics/">Analytics</a></li><li><a href="/docs/site-denetimi/">Site denetimi</a></li><li><a href="/docs/dizin-durumu/">Dizin durumu</a></li><li><a href="/docs/raporlar/">Raporlar ve şablonlar</a></li><li><a href="/docs/proje-bilgisi/">Proje bilgisi</a></li><li><a href="/docs/ayarlar/">Ayarlar</a></li></ul><p class="nav-group">Başvuru</p><ul><li><a href="/docs/denetim-kurallari/">Denetim kuralları</a></li><li><a href="/docs/ajan-kurulumu/">Ajan kurulumu</a></li><li><a href="/docs/sorun-giderme/">Sorun giderme</a></li></ul></aside>
       <article id="icerik">
         <h1>Sıralama takibi</h1><p class="lede">Aramalarınızın Google'daki ortalama sırasını gün gün görün. Veri bu bilgisayarda saklanır, Google'ın 16 aylık sınırından eskiye de bakarsınız.</p><p>Bu ekranda aramalarınızın zamanla yükselip düştüğünü görürsünüz. Google Search Console geçmişi 16 ayla sınırlar. Bir aramanın hangi gün kaç sıraya düştüğünü de göstermez.</p>
@@ -554,7 +568,7 @@
         </p>
       </article>
       <nav class="toc" aria-label="Bu sayfada"><p class="toc-label">Bu sayfada</p><ol><li><a href="#ekranda-neler-var">Ekranda neler var</a></li><li><a href="#nasil-kullanilir">Nasıl kullanılır</a></li><li><a href="#sayilar-nasil-hesaplanir">Sayılar nasıl hesaplanır</a></li><li><a href="#sik-sorulanlar">Sık sorulanlar</a></li><li><a href="#sinirlar">Sınırlar</a></li></ol></nav>
-    </div>
+    </main>
     <footer>
       <div class="wrap">
         <span>seowatcher, MIT lisansı.</span>

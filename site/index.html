@@ -3,10 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>
-      seowatcher: bilgisayarınızda çalışan ücretsiz SEO paneli (Search Console +
-      GA4)
-    </title>
+    <title>seowatcher: ücretsiz SEO paneli (Search Console + GA4)</title>
     <meta
       name="description"
       content="Search Console, Analytics 4 ve site denetimini tek uygulamada toplayan ücretsiz, açık kaynaklı SEO paneli. Windows'a kurulur, veriniz bilgisayarınızda kalır."
@@ -39,7 +36,7 @@
     <meta property="og:site_name" content="seowatcher" />
     <meta
       property="og:title"
-      content="seowatcher: bilgisayarınızda çalışan ücretsiz SEO paneli (Search Console + GA4)"
+      content="seowatcher: ücretsiz SEO paneli (Search Console + GA4)"
     />
     <meta
       property="og:description"
@@ -58,7 +55,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
-      content="seowatcher: bilgisayarınızda çalışan ücretsiz SEO paneli (Search Console + GA4)"
+      content="seowatcher: ücretsiz SEO paneli (Search Console + GA4)"
     />
     <meta
       name="twitter:description"
@@ -67,7 +64,7 @@
     <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
     <meta name="color-scheme" content="dark" />
     <meta name="theme-color" content="#0a0c12" />
-    <script src="/assets/site.js?v=2.3.2" defer></script>
+    <script src="/assets/site.js?v=2.3.3" defer></script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -85,7 +82,7 @@
             "@type": "WebPage",
             "@id": "https://seowatcher.io/#webpage",
             "url": "https://seowatcher.io/",
-            "name": "seowatcher: bilgisayarınızda çalışan ücretsiz SEO paneli (Search Console + GA4)",
+            "name": "seowatcher: ücretsiz SEO paneli (Search Console + GA4)",
             "inLanguage": "tr",
             "isPartOf": { "@id": "https://seowatcher.io/#website" },
             "about": { "@id": "https://seowatcher.io/#app" },
@@ -113,7 +110,7 @@
             "description": "Google Search Console, Google Analytics 4, kendi site tarama aracı ve PageSpeed Insights verisini tek panelde toplayan ücretsiz, açık kaynaklı (MIT) masaüstü SEO uygulaması. Windows 10/11'e kurulur; Mac ve Linux'ta Docker ile çalışır. Tek kullanıcılıdır, yalnızca kendi bilgisayarınızdan erişilir.",
             "applicationCategory": "BusinessApplication",
             "operatingSystem": "Windows 10, Windows 11 (64-bit)",
-            "softwareVersion": "2.3.1",
+            "softwareVersion": "2.3.2",
             "datePublished": "2026-10-22",
             "fileSize": "81 MB",
             "inLanguage": "tr",
@@ -548,6 +545,7 @@
         color: var(--muted);
       }
       .nav a {
+        padding-block: 10px;
         transition: color 300ms var(--ease);
       }
       .nav a:hover {
@@ -757,58 +755,64 @@
 
       /* Logo marquee: the sources it reads and the assistants it talks to. One per page. */
       .logos {
-        padding-block: 40px;
+        padding-block: 34px;
         border-block: 1px solid var(--hairline);
         background: var(--bg-2);
       }
-      .logos p {
-        text-align: center;
-        font-size: 14px;
-        color: var(--subtle);
-        margin-bottom: 22px;
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
       }
       .marquee {
         overflow: hidden;
         -webkit-mask: linear-gradient(
           90deg,
           transparent,
-          #000 12%,
-          #000 88%,
+          #000 10%,
+          #000 90%,
           transparent
         );
         mask: linear-gradient(
           90deg,
           transparent,
-          #000 12%,
-          #000 88%,
+          #000 10%,
+          #000 90%,
           transparent
         );
       }
       .marquee ul {
         display: flex;
-        gap: 56px;
+        align-items: center;
+        gap: 64px;
         width: max-content;
-        padding: 0;
+        padding: 0 32px;
         margin: 0;
         list-style: none;
-        animation: scroll 42s linear infinite;
+        animation: scroll 48s linear infinite;
       }
       .marquee:hover ul {
         animation-play-state: paused;
       }
       .marquee li {
         display: inline-flex;
-        align-items: center;
-        gap: 12px;
-        color: var(--muted);
-        font-weight: 560;
-        font-size: 16px;
-        white-space: nowrap;
+        flex: none;
       }
       .marquee img {
-        width: 26px;
-        height: 26px;
-        opacity: 0.85;
+        width: 34px;
+        height: 34px;
+        opacity: 0.92;
+        filter: drop-shadow(0 0 10px oklch(100% 0 0 / 0.08));
+        transition:
+          transform 500ms var(--spring),
+          opacity 300ms var(--ease);
+      }
+      .marquee li:hover img {
+        transform: translateY(-3px) scale(1.12);
+        opacity: 1;
       }
       @keyframes scroll {
         to {
@@ -821,6 +825,7 @@
           flex-wrap: wrap;
           width: auto;
           justify-content: center;
+          gap: 36px;
         }
         .marquee {
           mask: none;
@@ -834,7 +839,7 @@
       /* Numbers that count up. */
       .stats .wrap {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
         gap: 0 clamp(24px, 4vw, 56px);
         border-top: 1px solid var(--hairline);
       }
@@ -1274,7 +1279,7 @@
       <div class="wrap">
         <a class="brand" href="#top"
           ><img
-            src="/assets/icon-256.png"
+            src="/assets/icon.svg"
             alt=""
             width="28"
             height="28"
@@ -1332,7 +1337,11 @@
                   <source
                     type="image/webp"
                     media="(max-width: 640px)"
-                    srcset="/assets/hero-dark-m.webp"
+                    srcset="
+                      /assets/hero-dark-m1.webp  560w,
+                      /assets/hero-dark-m.webp  1000w
+                    "
+                    sizes="100vw"
                   />
                   <source
                     type="image/webp"
@@ -1357,153 +1366,299 @@
         </div>
       </section>
 
-      <div class="logos" aria-label="Birlikte çalıştığı araçlar">
-        <p>Birlikte çalıştığı araçlar</p>
+      <div class="logos">
+        <h2 class="sr-only">
+          Birlikte çalıştığı araçlar ve üzerine kurulduğu teknolojiler
+        </h2>
         <div class="marquee">
           <ul>
-            <li>
+            <li title="Google Search Console">
               <img
-                src="/assets/logos/googlesearchconsole.svg"
-                alt=""
-                width="26"
-                height="26"
-              />Google Search Console
+                src="/assets/logos/color/googlesearchconsole.svg"
+                alt="Google Search Console"
+                width="34"
+                height="34"
+                loading="lazy"
+              />
             </li>
-            <li>
+            <li title="Google Analytics 4">
               <img
-                src="/assets/logos/googleanalytics.svg"
-                alt=""
-                width="26"
-                height="26"
-              />Google Analytics 4
+                src="/assets/logos/color/googleanalytics.svg"
+                alt="Google Analytics 4"
+                width="34"
+                height="34"
+                loading="lazy"
+              />
             </li>
-            <li>
+            <li title="PageSpeed Insights">
               <img
-                src="/assets/logos/pagespeedinsights.svg"
-                alt=""
-                width="26"
-                height="26"
-              />PageSpeed Insights
+                src="/assets/logos/color/pagespeedinsights.svg"
+                alt="PageSpeed Insights"
+                width="34"
+                height="34"
+                loading="lazy"
+              />
             </li>
-            <li>
+            <li title="Lighthouse">
               <img
-                src="/assets/logos/claude.svg"
-                alt=""
-                width="26"
-                height="26"
-              />Claude Code
+                src="/assets/logos/color/lighthouse.svg"
+                alt="Lighthouse"
+                width="34"
+                height="34"
+                loading="lazy"
+              />
             </li>
-            <li>
+            <li title="Google Chrome">
+              <img
+                src="/assets/logos/color/googlechrome.svg"
+                alt="Google Chrome"
+                width="34"
+                height="34"
+                loading="lazy"
+              />
+            </li>
+            <li title="Claude Code">
+              <img
+                src="/assets/logos/color/claude.svg"
+                alt="Claude Code"
+                width="34"
+                height="34"
+                loading="lazy"
+              />
+            </li>
+            <li title="Cursor">
+              <img
+                src="/assets/logos/cursor.svg"
+                alt="Cursor"
+                width="34"
+                height="34"
+                loading="lazy"
+              />
+            </li>
+            <li title="GitHub Copilot">
+              <img
+                src="/assets/logos/githubcopilot.svg"
+                alt="GitHub Copilot"
+                width="34"
+                height="34"
+                loading="lazy"
+              />
+            </li>
+            <li title="Gemini CLI">
+              <img
+                src="/assets/logos/color/googlegemini.svg"
+                alt="Gemini CLI"
+                width="34"
+                height="34"
+                loading="lazy"
+              />
+            </li>
+            <li title="Docker">
+              <img
+                src="/assets/logos/color/docker.svg"
+                alt="Docker"
+                width="34"
+                height="34"
+                loading="lazy"
+              />
+            </li>
+            <li title="Cloudflare Workers">
+              <img
+                src="/assets/logos/color/cloudflare.svg"
+                alt="Cloudflare Workers"
+                width="34"
+                height="34"
+                loading="lazy"
+              />
+            </li>
+            <li title="Node.js">
+              <img
+                src="/assets/logos/color/nodedotjs.svg"
+                alt="Node.js"
+                width="34"
+                height="34"
+                loading="lazy"
+              />
+            </li>
+            <li title="SQLite">
+              <img
+                src="/assets/logos/color/sqlite.svg"
+                alt="SQLite"
+                width="34"
+                height="34"
+                loading="lazy"
+              />
+            </li>
+            <li title="TypeScript">
+              <img
+                src="/assets/logos/color/typescript.svg"
+                alt="TypeScript"
+                width="34"
+                height="34"
+                loading="lazy"
+              />
+            </li>
+            <li title="React">
+              <img
+                src="/assets/logos/color/react.svg"
+                alt="React"
+                width="34"
+                height="34"
+                loading="lazy"
+              />
+            </li>
+            <li title="GitHub">
+              <img
+                src="/assets/logos/github.svg"
+                alt="GitHub"
+                width="34"
+                height="34"
+                loading="lazy"
+              />
+            </li>
+            <li aria-hidden="true" title="Google Search Console">
+              <img
+                src="/assets/logos/color/googlesearchconsole.svg"
+                alt=""
+                width="34"
+                height="34"
+                loading="lazy"
+              />
+            </li>
+            <li aria-hidden="true" title="Google Analytics 4">
+              <img
+                src="/assets/logos/color/googleanalytics.svg"
+                alt=""
+                width="34"
+                height="34"
+                loading="lazy"
+              />
+            </li>
+            <li aria-hidden="true" title="PageSpeed Insights">
+              <img
+                src="/assets/logos/color/pagespeedinsights.svg"
+                alt=""
+                width="34"
+                height="34"
+                loading="lazy"
+              />
+            </li>
+            <li aria-hidden="true" title="Lighthouse">
+              <img
+                src="/assets/logos/color/lighthouse.svg"
+                alt=""
+                width="34"
+                height="34"
+                loading="lazy"
+              />
+            </li>
+            <li aria-hidden="true" title="Google Chrome">
+              <img
+                src="/assets/logos/color/googlechrome.svg"
+                alt=""
+                width="34"
+                height="34"
+                loading="lazy"
+              />
+            </li>
+            <li aria-hidden="true" title="Claude Code">
+              <img
+                src="/assets/logos/color/claude.svg"
+                alt=""
+                width="34"
+                height="34"
+                loading="lazy"
+              />
+            </li>
+            <li aria-hidden="true" title="Cursor">
               <img
                 src="/assets/logos/cursor.svg"
                 alt=""
-                width="26"
-                height="26"
-              />Cursor
+                width="34"
+                height="34"
+                loading="lazy"
+              />
             </li>
-            <li>
+            <li aria-hidden="true" title="GitHub Copilot">
               <img
                 src="/assets/logos/githubcopilot.svg"
                 alt=""
-                width="26"
-                height="26"
-              />GitHub Copilot
+                width="34"
+                height="34"
+                loading="lazy"
+              />
             </li>
-            <li>
+            <li aria-hidden="true" title="Gemini CLI">
               <img
-                src="/assets/logos/googlegemini.svg"
+                src="/assets/logos/color/googlegemini.svg"
                 alt=""
-                width="26"
-                height="26"
-              />Gemini CLI
+                width="34"
+                height="34"
+                loading="lazy"
+              />
             </li>
-            <li>
+            <li aria-hidden="true" title="Docker">
               <img
-                src="/assets/logos/docker.svg"
+                src="/assets/logos/color/docker.svg"
                 alt=""
-                width="26"
-                height="26"
-              />Docker
+                width="34"
+                height="34"
+                loading="lazy"
+              />
             </li>
-            <li>
+            <li aria-hidden="true" title="Cloudflare Workers">
               <img
-                src="/assets/logos/github.svg"
+                src="/assets/logos/color/cloudflare.svg"
                 alt=""
-                width="26"
-                height="26"
-              />GitHub
+                width="34"
+                height="34"
+                loading="lazy"
+              />
             </li>
-            <li aria-hidden="true">
+            <li aria-hidden="true" title="Node.js">
               <img
-                src="/assets/logos/googlesearchconsole.svg"
+                src="/assets/logos/color/nodedotjs.svg"
                 alt=""
-                width="26"
-                height="26"
-              />Google Search Console
+                width="34"
+                height="34"
+                loading="lazy"
+              />
             </li>
-            <li aria-hidden="true">
+            <li aria-hidden="true" title="SQLite">
               <img
-                src="/assets/logos/googleanalytics.svg"
+                src="/assets/logos/color/sqlite.svg"
                 alt=""
-                width="26"
-                height="26"
-              />Google Analytics 4
+                width="34"
+                height="34"
+                loading="lazy"
+              />
             </li>
-            <li aria-hidden="true">
+            <li aria-hidden="true" title="TypeScript">
               <img
-                src="/assets/logos/pagespeedinsights.svg"
+                src="/assets/logos/color/typescript.svg"
                 alt=""
-                width="26"
-                height="26"
-              />PageSpeed Insights
+                width="34"
+                height="34"
+                loading="lazy"
+              />
             </li>
-            <li aria-hidden="true">
+            <li aria-hidden="true" title="React">
               <img
-                src="/assets/logos/claude.svg"
+                src="/assets/logos/color/react.svg"
                 alt=""
-                width="26"
-                height="26"
-              />Claude Code
+                width="34"
+                height="34"
+                loading="lazy"
+              />
             </li>
-            <li aria-hidden="true">
-              <img
-                src="/assets/logos/cursor.svg"
-                alt=""
-                width="26"
-                height="26"
-              />Cursor
-            </li>
-            <li aria-hidden="true">
-              <img
-                src="/assets/logos/githubcopilot.svg"
-                alt=""
-                width="26"
-                height="26"
-              />GitHub Copilot
-            </li>
-            <li aria-hidden="true">
-              <img
-                src="/assets/logos/googlegemini.svg"
-                alt=""
-                width="26"
-                height="26"
-              />Gemini CLI
-            </li>
-            <li aria-hidden="true">
-              <img
-                src="/assets/logos/docker.svg"
-                alt=""
-                width="26"
-                height="26"
-              />Docker
-            </li>
-            <li aria-hidden="true">
+            <li aria-hidden="true" title="GitHub">
               <img
                 src="/assets/logos/github.svg"
                 alt=""
-                width="26"
-                height="26"
-              />GitHub
+                width="34"
+                height="34"
+                loading="lazy"
+              />
             </li>
           </ul>
         </div>
@@ -1511,6 +1666,10 @@
 
       <section class="stats" aria-label="Sayılarla">
         <div class="wrap">
+          <div class="stat reveal" style="--d: 0" hidden>
+            <b data-count="0" data-live="downloads">0</b
+            ><span>indirme; GitHub sürüm sayfasından canlı sayılır</span>
+          </div>
           <div class="stat reveal" style="--d: 0">
             <b data-count="95">95</b
             ><span
@@ -1559,6 +1718,9 @@
                   tıklananlar, yükselmeye yakın olanlar, zaten üstte olanlar ve
                   derinde kalanlar. Hangi sayfayla başlayacağınız yanında yazar,
                   tahmin etmezsiniz.
+                  <a class="textlink" href="/docs/firsatlar/"
+                    >Fırsatlar kılavuzu</a
+                  >.
                 </p>
               </div>
               <div class="tray" data-tilt="5">
@@ -1567,7 +1729,11 @@
                     <source
                       type="image/webp"
                       media="(max-width: 640px)"
-                      srcset="/assets/walk-firsatlar-dark-m.webp"
+                      srcset="
+                        /assets/walk-firsatlar-dark-m1.webp  560w,
+                        /assets/walk-firsatlar-dark-m.webp  1000w
+                      "
+                      sizes="100vw"
                     />
                     <source
                       type="image/webp"
@@ -1597,6 +1763,9 @@
                   eksik ya da çok uzun başlık, yavaş açılan sayfa, Google'ın
                   anlamadığı adresler. Her bulgunun altında ne yapacağınız
                   yazar, teknik biri gerekmez.
+                  <a class="textlink" href="/docs/site-denetimi/"
+                    >Site denetimi kılavuzu</a
+                  >.
                 </p>
               </div>
               <div class="tray" data-tilt="5">
@@ -1605,7 +1774,11 @@
                     <source
                       type="image/webp"
                       media="(max-width: 640px)"
-                      srcset="/assets/walk-denetim-dark-m.webp"
+                      srcset="
+                        /assets/walk-denetim-dark-m1.webp  560w,
+                        /assets/walk-denetim-dark-m.webp  1000w
+                      "
+                      sizes="100vw"
                     />
                     <source
                       type="image/webp"
@@ -1634,6 +1807,9 @@
                   Sorguya, sayfaya, ülkeye ve cihaza göre bakabilirsiniz. Aynı
                   sorguda iki sayfanızın yarıştığı yerleri de ayrı bir sekmede
                   gösterir.
+                  <a class="textlink" href="/docs/arama-performansi/"
+                    >Arama performansı kılavuzu</a
+                  >.
                 </p>
               </div>
               <div class="tray" data-tilt="5">
@@ -1642,7 +1818,11 @@
                     <source
                       type="image/webp"
                       media="(max-width: 640px)"
-                      srcset="/assets/walk-performans-dark-m.webp"
+                      srcset="
+                        /assets/walk-performans-dark-m1.webp  560w,
+                        /assets/walk-performans-dark-m.webp  1000w
+                      "
+                      sizes="100vw"
                     />
                     <source
                       type="image/webp"
@@ -1672,6 +1852,9 @@
                   Denetim, düşüş incelemesi, aylık kontrol ve rapor için hazır
                   görevler var. Kurulum metni ekranda hazır, kopyalayıp asistana
                   yapıştırırsınız. Kullanmazsanız hiçbir şey eksilmez.
+                  <a class="textlink" href="/docs/ajan-kurulumu/"
+                    >Asistan kurulumu kılavuzu</a
+                  >.
                 </p>
               </div>
               <div class="tray" data-tilt="5">
@@ -1680,7 +1863,11 @@
                     <source
                       type="image/webp"
                       media="(max-width: 640px)"
-                      srcset="/assets/walk-ajan-dark-m.webp"
+                      srcset="
+                        /assets/walk-ajan-dark-m1.webp  560w,
+                        /assets/walk-ajan-dark-m.webp  1000w
+                      "
+                      sizes="100vw"
                     />
                     <source
                       type="image/webp"
@@ -1816,6 +2003,9 @@
                     Dosyayı açın, <strong>Kur</strong> deyin. Uygulama kendini
                     hazırlar ve tarayıcınızda açılır. Sonra görev çubuğundaki
                     simgeden açıp kapatırsınız.
+                    <a class="textlink" href="/docs/kurulum-windows/"
+                      >Kurulum kılavuzu</a
+                    >.
                   </p>
                 </div>
               </li>
@@ -1850,7 +2040,7 @@
               <p class="big">Windows kurulum dosyası</p>
               <dl>
                 <dt>Sürüm</dt>
-                <dd>2.3.1, 22 Ekim 2026</dd>
+                <dd>2.3.2, 22 Ekim 2026</dd>
                 <dt>Boyut</dt>
                 <dd>81 MB</dd>
                 <dt>Gerekenler</dt>
@@ -1932,11 +2122,42 @@
             </div>
             <div class="row">
               <dt>Denetim</dt>
-              <dd>95 kural</dd>
+              <dd>
+                <a class="textlink" href="/docs/denetim-kurallari/">95 kural</a>
+              </dd>
             </div>
             <div class="row">
               <dt>Yapay zekâ bağlantısı</dt>
-              <dd>Asistanın kullanabildiği 33 araç, 6 hazır görev (MCP ile)</dd>
+              <dd>
+                <a class="textlink" href="/docs/ajan-kurulumu/"
+                  >33 araç, 6 hazır görev</a
+                >
+                (MCP ile)
+              </dd>
+            </div>
+            <div class="row">
+              <dt>Sürüm</dt>
+              <dd>2.3.2, 22 Ekim 2026</dd>
+            </div>
+            <div class="row">
+              <dt>İndirme</dt>
+              <dd>Windows kurulum dosyası 81 MB; kurulu hali 290 MB</dd>
+            </div>
+            <div class="row">
+              <dt>Kaynak kodu</dt>
+              <dd>
+                <a
+                  class="textlink"
+                  href="https://github.com/ucsahinn/seotracker"
+                  >github.com/ucsahinn/seotracker</a
+                >
+              </dd>
+            </div>
+            <div class="row">
+              <dt>Yapmadıkları</dt>
+              <dd>
+                Arama hacmi tahmini, backlink sayımı, rakip sıralaması, bulut
+              </dd>
             </div>
             <div class="row">
               <dt>Türetildiği proje</dt>
@@ -1972,6 +2193,8 @@
                 önce "Daha fazla bilgi"yi, sonra "Yine de çalıştır"ı seçin.
                 Dosyanın parmak izi (SHA-256) her sürümün sayfasında yazar,
                 isterseniz karşılaştırın.
+                <a class="textlink" href="/docs/sorun-giderme/">Sorun giderme</a
+                >.
               </dd>
             </div>
             <div class="qa">

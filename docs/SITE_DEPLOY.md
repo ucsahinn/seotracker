@@ -42,3 +42,23 @@ python -m http.server 8765 --directory site
 adresine gider. Bu dosya `.github/workflows/release-windows.yml` tarafından her
 `v*` etiketinde sürüme eklenir (sürüm numaralı kopyası ve SHA-256 özetiyle
 birlikte). Bağlantı, ilk Windows paketli sürüm yayınlanana kadar 404 döner.
+
+## Hosting: VPS gerekmez
+
+Site statiktir: HTML, CSS, bir JavaScript dosyası ve görseller. Sunucu tarafında
+hiçbir şey çalışmaz, veritabanı yoktur. Bu yüzden VPS boşa paradır; seçenekler:
+
+1. **Cloudflare Pages (önerilen, ücretsiz).** Depoyu bağlayın, çıktı klasörü
+   `site`, dal `main`. Dünya çapında önbellek, otomatik HTTPS, `_headers`
+   dosyasındaki güvenlik başlıkları ve önbellek süreleri olduğu gibi uygulanır.
+   Alan adını Hostinger'dan ya da Cloudflare Registrar'dan alın; Hostinger'dan
+   alırsanız ad sunucularını Cloudflare'in verdiği ikiliye çevirin, Pages
+   projesine özel alan adı olarak `seowatcher.io` ve `www.seowatcher.io`
+   ekleyin.
+2. **Hostinger web hosting (en ucuz paket yeter).** `site/` klasörünü
+   `public_html` içine yükleyin. `_headers` dosyası orada çalışmaz; aynı
+   başlıkları `.htaccess` ile vermeniz gerekir ve `*.pages.dev` için yazılmış
+   noindex satırları gereksizdir.
+
+Canlı indirme sayacı tarayıcıdan `api.github.com` adresine gider; CSP'de
+`connect-src https://api.github.com` bu yüzden açıktır.

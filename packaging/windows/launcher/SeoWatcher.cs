@@ -114,6 +114,7 @@ namespace SeoWatcher
         public static readonly string MigrateLog = Path.Combine(LogDir, "migrate.log");
         public static readonly string LauncherLog = Path.Combine(LogDir, "launcher.log");
         public static readonly string VcRedistExe = Path.Combine(ExeDir, "redist", "VC_redist.x64.exe");
+        public static readonly string WorkerdExe = Path.Combine(AppDir, "node_modules", "@cloudflare", "workerd-windows-64", "bin", "workerd.exe");
         public static readonly string InstanceSecret = Path.Combine(DataRoot, "instance-secret");
         public static readonly string McpToken = Path.Combine(DataRoot, "mcp-token");
         public static readonly string ServerEnv = Path.Combine(DataRoot, "server.env");
@@ -222,15 +223,225 @@ namespace SeoWatcher
             return null;
         }
 
+        [DllImport("kernel32.dll")]
+        private static extern bool IsProcessorFeaturePresent(int feature);
+        [DllImport("kernel32.dll")]
+        private static extern uint GetSystemDEPPolicy();
+
+        /// <summary>Instruction sets workerd's prebuilt binary needs (SSE4.2 and
+        /// CLMUL at least). Windows reports the newer flags only from 10 2004 on;
+        /// "?" means the OS could not say, not that the CPU lacks it.</summary>
+        private static string Flag(int id, string name)
+        {
+            try { return name + "=" + (IsProcessorFeaturePresent(id) ? "evet" : "?"); } catch { return name + "=?"; }
+        }
+
+        public static string CpuFeatures()
+        {
+            return Flag(36, "SSSE3") + " " + Flag(37, "SSE4.1") + " " + Flag(38, "SSE4.2") + " " + Flag(39, "AVX") + " " + Flag(40, "AVX2");
+        }
+
+        public static string DepPolicy()
+        {
+            try { return new[] { "AlwaysOff", "AlwaysOn", "OptIn", "OptOut" }[GetSystemDEPPolicy()]; } catch { return "?"; }
+        }
+
+        public static string Edition()
+        {
+            try
+            {
+                using (var key = Hklm64(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion"))
+                {
+                    return key == null ? "?" : ((key.GetValue("InstallationType") as string) ?? "?") + ", " + ((key.GetValue("EditionID") as string) ?? "?");
+                }
+            }
+            catch { return "?"; }
+        }
+
+        /// <summary>The VC++ runtime DLLs shipped next to workerd.exe (loaded first).</summary>
+        public static string EngineLocalDlls()
+        {
+            string dir = Path.GetDirectoryName(Paths.WorkerdExe);
+            var parts = new List<string>();
+            foreach (var name in new[] { "vcruntime140.dll", "vcruntime140_1.dll", "msvcp140.dll" })
+            {
+                string p = Path.Combine(dir, name);
+                try { parts.Add(name + "=" + (File.Exists(p) ? FileVersionInfo.GetVersionInfo(p).FileVersion : "yok")); }
+                catch { parts.Add(name + "=?"); }
+            }
+            return string.Join(" ", parts);
+        }
+
+        /// <summary>File versions of the three DLLs workerd.exe imports from the VC++ runtime.</summary>
+        public static string RuntimeDlls()
+        {
+            string sys = Environment.GetFolderPath(Environment.SpecialFolder.System);
+            var parts = new List<string>();
+            foreach (var name in new[] { "vcruntime140.dll", "vcruntime140_1.dll", "msvcp140.dll", "ucrtbase.dll" })
+            {
+                string p = Path.Combine(sys, name);
+                try { parts.Add(name + "=" + (File.Exists(p) ? FileVersionInfo.GetVersionInfo(p).FileVersion : "yok")); }
+                catch { parts.Add(name + "=?"); }
+            }
+            return string.Join(" ", parts);
+        }
+
+        public static bool IsAscii(string text)
+        {
+            foreach (char c in text) if (c > 127) return false;
+            return true;
+        }
+
+        // A one-service worker whose test() handler runs under `workerd test`:
+        // exercises the binary, V8 and module loading without wrangler, sockets or
+        // the data directory. Written next to the data so the path stays short.
+        private const string ProbeConfig =
+            "using Workerd = import \"/workerd/workerd.capnp\";\n"
+            + "const config :Workerd.Config = (\n"
+            + "  services = [ (name = \"probe\", worker = (\n"
+            + "    modules = [(name = \"probe.js\", esModule = \"export default { async test() { if (1 + 1 !== 2) throw new Error('math'); } };\")],\n"
+            + "    compatibilityDate = \"2026-01-01\"\n"
+            + "  )) ]\n"
+            + ");\n";
+
+        /// <summary>Runs the engine on its own, outside wrangler, with a minimal
+        /// worker. If this crashes too, the machine cannot run the engine at all; if
+        /// it passes, the crash comes from the configuration, the data directory or
+        /// the environment wrangler sets up. Returns "ok" or "hata: <detail>".</summary>
+        public static string WorkerdProbe()
+        {
+            if (!File.Exists(Paths.WorkerdExe)) return "hata: workerd.exe bulunamadı";
+            try
+            {
+                Directory.CreateDirectory(Paths.DataRoot);
+                string cfg = Path.Combine(Paths.DataRoot, "probe.capnp");
+                File.WriteAllText(cfg, ProbeConfig, new UTF8Encoding(false));
+                var psi = new ProcessStartInfo(Paths.WorkerdExe, "test \"" + cfg + "\"")
+                {
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                };
+                using (var p = Process.Start(psi))
+                {
+                    string stdout = p.StandardOutput.ReadToEnd().Trim();
+                    string stderr = p.StandardError.ReadToEnd().Trim();
+                    if (!p.WaitForExit(20000)) { try { p.Kill(); } catch { } return "hata: 20 saniyede yanıt vermedi"; }
+                    if (p.ExitCode == 0) return "ok";
+                    string detail = (stderr.Length > 0 ? stderr : stdout).Replace("\r", " ").Replace("\n", " ");
+                    if (detail.Length > 300) detail = detail.Substring(detail.Length - 300);
+                    return "hata: çıkış kodu 0x" + p.ExitCode.ToString("X8") + (detail.Length > 0 ? " " + detail : "");
+                }
+            }
+            catch (Exception ex)
+            {
+                return "hata: " + ex.Message;
+            }
+        }
+
+        public static readonly string DumpDir = Path.Combine(Paths.LogDir, "dumps");
+
+        /// <summary>Asks Windows Error Reporting for a minidump whenever workerd.exe
+        /// crashes. The per-user LocalDumps key needs no administrator; the dump
+        /// names the faulting module, which the stack in server.log does not.</summary>
+        public static void EnableEngineDumps()
+        {
+            try
+            {
+                Directory.CreateDirectory(DumpDir);
+                using (var key = Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\Windows Error Reporting\LocalDumps\workerd.exe"))
+                {
+                    key.SetValue("DumpFolder", DumpDir, RegistryValueKind.ExpandString);
+                    key.SetValue("DumpType", 1, RegistryValueKind.DWord);
+                    key.SetValue("DumpCount", 3, RegistryValueKind.DWord);
+                }
+            }
+            catch (Exception ex) { LauncherLog.Write("dumps: " + ex.Message); }
+        }
+
+        public static string Dumps()
+        {
+            try
+            {
+                if (!Directory.Exists(DumpDir)) return "yok";
+                var files = Directory.GetFiles(DumpDir, "*.dmp");
+                if (files.Length == 0) return "yok";
+                var parts = new List<string>();
+                foreach (var f in files) parts.Add(Path.GetFileName(f) + " (" + new FileInfo(f).Length / 1024 + " KB)");
+                return string.Join(", ", parts);
+            }
+            catch { return "?"; }
+        }
+
+        /// <summary>"Application Error" events for workerd.exe or node.exe, newest
+        /// first: Windows writes the faulting module name and offset there.</summary>
+        public static string FaultingModules()
+        {
+            var found = new List<string>();
+            try
+            {
+                var log = new EventLog("Application");
+                int count = log.Entries.Count;
+                for (int i = count - 1; i >= 0 && i >= count - 400 && found.Count < 3; i--)
+                {
+                    EventLogEntry e;
+                    try { e = log.Entries[i]; } catch { continue; }
+                    if (e.Source != "Application Error") continue;
+                    string msg = e.Message ?? "";
+                    if (msg.IndexOf("workerd.exe", StringComparison.OrdinalIgnoreCase) < 0 && msg.IndexOf("node.exe", StringComparison.OrdinalIgnoreCase) < 0) continue;
+                    var mod = System.Text.RegularExpressions.Regex.Match(msg, @"(?:Faulting module name|Hatalı modül adı)\s*:\s*([^,\r\n]+)");
+                    var code = System.Text.RegularExpressions.Regex.Match(msg, @"(?:Exception code|Özel durum kodu)\s*:\s*(0x[0-9a-fA-F]+)");
+                    var app = System.Text.RegularExpressions.Regex.Match(msg, @"(?:Faulting application name|Hatalı uygulama adı)\s*:\s*([^,\r\n]+)");
+                    found.Add(e.TimeGenerated.ToString("yyyy-MM-dd HH:mm") + " " + (app.Success ? app.Groups[1].Value.Trim() : "?")
+                        + " -> modül " + (mod.Success ? mod.Groups[1].Value.Trim() : "?") + (code.Success ? " kod " + code.Groups[1].Value : ""));
+                }
+            }
+            catch (Exception ex) { return "okunamadı: " + ex.Message; }
+            return found.Count == 0 ? "kayıt yok" : string.Join(" | ", found);
+        }
+
+        /// <summary>Copies of the VC++ runtime DLLs on PATH outside System32: an old
+        /// copy there can be loaded instead of the current one.</summary>
+        public static string StrayRuntimeDlls()
+        {
+            var hits = new List<string>();
+            try
+            {
+                string sys = Environment.GetFolderPath(Environment.SpecialFolder.System);
+                foreach (var dir in (Environment.GetEnvironmentVariable("PATH") ?? "").Split(';'))
+                {
+                    string d = dir.Trim();
+                    if (d.Length == 0 || string.Equals(d.TrimEnd('\\'), sys, StringComparison.OrdinalIgnoreCase)) continue;
+                    foreach (var name in new[] { "vcruntime140.dll", "msvcp140.dll", "vcruntime140_1.dll" })
+                    {
+                        string p = Path.Combine(d, name);
+                        if (File.Exists(p))
+                        {
+                            string ver = "?";
+                            try { ver = FileVersionInfo.GetVersionInfo(p).FileVersion; } catch { }
+                            hits.Add(p + " (" + ver + ")");
+                        }
+                    }
+                }
+            }
+            catch { }
+            return hits.Count == 0 ? "yok" : string.Join("; ", hits);
+        }
+
         public static string Summary()
         {
             var v = VcRuntime();
             return "seowatcher " + Paths.Version() + "\r\n"
                 + "Windows: " + OsDescription() + (Environment.Is64BitOperatingSystem ? " x64" : " x86") + "\r\n"
                 + "CPU: " + CpuName() + "\r\n"
+                + "Sürüm türü: " + Edition() + ", DEP: " + DepPolicy() + ", .NET: " + Environment.Version + "\r\n"
+                + "CPU özellikleri: " + CpuFeatures() + "\r\n"
                 + "Visual C++ çalışma zamanı: " + (v == null ? "yok" : v.ToString()) + (VcRuntimeDllsPresent() ? "" : " (DLL eksik)") + "\r\n"
-                + "Kurulum: " + Paths.ExeDir + "\r\n"
-                + "Veri: " + Paths.DataRoot;
+                + "Sistem DLL'leri: " + RuntimeDlls() + "\r\n"
+                + "Motor yanındaki DLL'ler: " + EngineLocalDlls() + "\r\n"
+                + "Kurulum: " + Paths.ExeDir + (IsAscii(Paths.ExeDir) ? "" : " (yolda ASCII dışı karakter var)") + "\r\n"
+                + "Veri: " + Paths.DataRoot + (IsAscii(Paths.DataRoot) ? "" : " (yolda ASCII dışı karakter var)");
         }
 
         /// <summary>Everything a bug report needs, ready for the clipboard.</summary>
@@ -238,6 +449,11 @@ namespace SeoWatcher
         {
             var sb = new System.Text.StringBuilder();
             sb.AppendLine(Summary());
+            sb.AppendLine("Motor denemesi (workerd test): " + WorkerdProbe());
+            sb.AppendLine("Windows olay günlüğü (hatalı modül): " + FaultingModules());
+            sb.AppendLine("Çökme dökümleri: " + Dumps() + (Directory.Exists(DumpDir) ? " (" + DumpDir + ")" : ""));
+            sb.AppendLine("PATH üzerinde başka vcruntime/msvcp kopyası: " + StrayRuntimeDlls());
+            if (Server.LastCommand != null) sb.AppendLine("Son komut: " + Server.LastCommand);
             sb.AppendLine();
             foreach (var log in new[] { Paths.LauncherLog, Paths.MigrateLog, Paths.ServerLog })
             {
@@ -281,6 +497,8 @@ namespace SeoWatcher
     internal sealed class Config
     {
         public int Port = 3001;
+        // Download and install a newer release by itself (verified by SHA-256).
+        public bool AutoUpdate = true;
 
         public static Config Load()
         {
@@ -296,6 +514,8 @@ namespace SeoWatcher
                     {
                         cfg.Port = port;
                     }
+                    var a = System.Text.RegularExpressions.Regex.Match(text, "\"autoUpdate\"\\s*:\\s*(true|false)");
+                    if (a.Success) cfg.AutoUpdate = a.Groups[1].Value == "true";
                 }
             }
             catch { }
@@ -305,7 +525,7 @@ namespace SeoWatcher
         public void Save()
         {
             Directory.CreateDirectory(Paths.DataRoot);
-            File.WriteAllText(Paths.ConfigFile, "{\n  \"port\": " + Port + "\n}\n", new UTF8Encoding(false));
+            File.WriteAllText(Paths.ConfigFile, "{\n  \"port\": " + Port + ",\n  \"autoUpdate\": " + (AutoUpdate ? "true" : "false") + "\n}\n", new UTF8Encoding(false));
         }
     }
 
@@ -318,6 +538,139 @@ namespace SeoWatcher
                 Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
             }
             catch { }
+        }
+    }
+
+    /// <summary>Keeps the install current without a package manager: asks
+    /// GitHub for the latest release, downloads the installer next to the data,
+    /// checks it against the published SHA256SUMS.txt and runs it silently. The
+    /// installer stops this instance, replaces the files and starts the new
+    /// launcher itself (see seowatcher.iss, the skipifnotsilent [Run] entry).</summary>
+    internal static class Updater
+    {
+        public const string Repo = "ucsahinn/seotracker";
+        public static readonly string UpdateDir = Path.Combine(Paths.DataRoot, "updates");
+
+        public static Version Current()
+        {
+            Version v;
+            return Version.TryParse(Paths.Version(), out v) ? v : new Version(0, 0, 0);
+        }
+
+        private static string Get(string url, int timeoutMs)
+        {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            var req = (HttpWebRequest)WebRequest.Create(url);
+            req.UserAgent = "seowatcher/" + Paths.Version();
+            req.Accept = "application/vnd.github+json, text/plain, */*";
+            req.Timeout = timeoutMs;
+            req.AllowAutoRedirect = true;
+            using (var resp = (HttpWebResponse)req.GetResponse())
+            using (var reader = new StreamReader(resp.GetResponseStream(), Encoding.UTF8))
+            {
+                return reader.ReadToEnd();
+            }
+        }
+
+        /// <summary>Latest release tag as a Version, or null when offline or unchanged.</summary>
+        public static Version CheckLatest()
+        {
+            try
+            {
+                string json = Get("https://api.github.com/repos/" + Repo + "/releases/latest", 10000);
+                var m = System.Text.RegularExpressions.Regex.Match(json, "\"tag_name\"\\s*:\\s*\"v?([0-9][0-9.]*)\"");
+                Version v;
+                if (m.Success && Version.TryParse(m.Groups[1].Value, out v))
+                {
+                    LauncherLog.Write("update: latest " + v + ", installed " + Current());
+                    return v;
+                }
+                LauncherLog.Write("update: could not read tag_name");
+            }
+            catch (Exception ex)
+            {
+                LauncherLog.Write("update: check failed: " + ex.Message);
+            }
+            return null;
+        }
+
+        /// <summary>Downloads seowatcher-setup-X.exe and verifies it. Returns the path.</summary>
+        public static string Download(Version v, Action<string> status)
+        {
+            string name = "seowatcher-setup-" + v + ".exe";
+            string baseUrl = "https://github.com/" + Repo + "/releases/download/v" + v + "/";
+            Directory.CreateDirectory(UpdateDir);
+            string file = Path.Combine(UpdateDir, name);
+            status("Güncelleme indiriliyor: " + v);
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            using (var client = new WebClient())
+            {
+                client.Headers[HttpRequestHeader.UserAgent] = "seowatcher/" + Paths.Version();
+                client.DownloadFile(baseUrl + name, file);
+            }
+            string sums = Get(baseUrl + "SHA256SUMS.txt", 15000);
+            var m = System.Text.RegularExpressions.Regex.Match(sums, "([0-9a-fA-F]{64})\\s+\\*?" + System.Text.RegularExpressions.Regex.Escape(name));
+            if (!m.Success) throw new InvalidOperationException("SHA256SUMS.txt içinde " + name + " yok");
+            string actual;
+            using (var sha = SHA256.Create())
+            using (var stream = File.OpenRead(file))
+            {
+                actual = BitConverter.ToString(sha.ComputeHash(stream)).Replace("-", "").ToLowerInvariant();
+            }
+            if (actual != m.Groups[1].Value.ToLowerInvariant())
+            {
+                try { File.Delete(file); } catch { }
+                throw new InvalidOperationException("İndirilen dosyanın SHA-256 özeti tutmuyor");
+            }
+            LauncherLog.Write("update: downloaded and verified " + file);
+            return file;
+        }
+
+        /// <summary>Starts the installer. It quits this instance itself.</summary>
+        public static void Install(string file)
+        {
+            LauncherLog.Write("update: installing " + file);
+            Process.Start(new ProcessStartInfo(file, "/SILENT /NORESTART /SUPPRESSMSGBOXES") { UseShellExecute = true });
+        }
+
+        public static void Cleanup()
+        {
+            try
+            {
+                if (!Directory.Exists(UpdateDir)) return;
+                foreach (var f in Directory.GetFiles(UpdateDir, "seowatcher-setup-*.exe"))
+                {
+                    if (f.EndsWith("seowatcher-setup-" + Paths.Version() + ".exe", StringComparison.OrdinalIgnoreCase)) File.Delete(f);
+                }
+            }
+            catch { }
+        }
+    }
+
+    /// <summary>"Kurulumu onar": the cheap, safe things that fix most stuck
+    /// installs: drop wrangler's scratch files, confirm the package is whole,
+    /// then the normal start path re-runs migrations and the preflight.</summary>
+    internal static class Repair
+    {
+        /// <summary>Returns a problem description, or null when the package is complete.</summary>
+        public static string Run()
+        {
+            foreach (var cfg in new[] { Paths.MainConfig, Paths.AuditConfig })
+            {
+                try
+                {
+                    string scratch = Path.Combine(Path.GetDirectoryName(cfg), ".wrangler");
+                    if (Directory.Exists(scratch)) Directory.Delete(scratch, true);
+                }
+                catch (Exception ex) { LauncherLog.Write("repair: " + ex.Message); }
+            }
+            var missing = new List<string>();
+            foreach (var f in new[] { Paths.NodeExe, Paths.WranglerJs, Paths.MainConfig, Paths.AuditConfig })
+            {
+                if (!File.Exists(f)) missing.Add(Path.GetFileName(f));
+            }
+            LauncherLog.Write("repair: scratch cleared, missing files: " + (missing.Count == 0 ? "none" : string.Join(", ", missing)));
+            return missing.Count == 0 ? null : "Kurulum eksik (" + string.Join(", ", missing) + "). Kurulum dosyasını yeniden çalıştırın.";
         }
     }
 
@@ -501,6 +854,10 @@ namespace SeoWatcher
         // Prefix of every failure the bundled Visual C++ package can fix; the
         // tray app recognises it and offers to install that package.
         public const string RuntimeCrashMessage = "Windows bileşeni eksik: ";
+        // Prefix of a crash the Visual C++ package cannot explain; the tray app
+        // offers a one-click GitHub report with the diagnostics attached.
+        public const string EngineCrashMessage = "Uygulamanın motoru çöktü: ";
+        public static volatile string LastCommand;
 
         public int Port { get; private set; }
 
@@ -547,10 +904,18 @@ namespace SeoWatcher
                 int build = Diag.OsBuild();
                 if (build > 0 && build < 17763) throw new InvalidOperationException("Bu Windows sürümü çok eski (yapı " + build + "). Windows 10 1809, Windows 11 ya da Windows Server 2019 ve üstü gerekir.");
                 string vcProblem = Diag.VcRuntimeProblem();
+                bool engineHasOwnCrt = File.Exists(Path.Combine(Path.GetDirectoryName(Paths.WorkerdExe), "vcruntime140.dll"));
                 if (vcProblem != null)
                 {
-                    LauncherLog.Write("preflight: " + vcProblem);
-                    throw new InvalidOperationException(RuntimeCrashMessage + vcProblem);
+                    LauncherLog.Write("preflight: " + vcProblem + (engineHasOwnCrt ? " (motor kendi kopyasını taşıyor, devam)" : ""));
+                    if (!engineHasOwnCrt) throw new InvalidOperationException(RuntimeCrashMessage + vcProblem);
+                }
+                Diag.EnableEngineDumps();
+                string probe = Diag.WorkerdProbe();
+                LauncherLog.Write("preflight: workerd " + probe);
+                if (!probe.StartsWith("ok"))
+                {
+                    throw new InvalidOperationException(EngineCrashMessage + "motor tek başına da başlayamıyor (" + probe + "). Menüden Sorunu bildir deyin; tanı bilgisi kayda eklenir.");
                 }
 
                 Emit(Status, "Anahtarlar hazırlanıyor");
@@ -608,7 +973,18 @@ namespace SeoWatcher
                     if (p == null || p.HasExited)
                     {
                         Thread.Sleep(300); // let the last stderr lines land before deciding why
-                        if (runtimeCrashed) throw new InvalidOperationException(RuntimeCrashMessage + "uygulamanın motoru başlar başlamaz kapandı (Visual C++ çalışma zamanı eksik ya da eski). Günlük: " + Paths.ServerLog);
+                        if (runtimeCrashed)
+                        {
+                            string after = Diag.WorkerdProbe();
+                            LauncherLog.Write("workerd probe after crash: " + after);
+                            LauncherLog.Write("event log: " + Diag.FaultingModules());
+                            LauncherLog.Write("dumps: " + Diag.Dumps());
+                            string vc = Diag.VcRuntimeProblem();
+                            if (vc != null) throw new InvalidOperationException(RuntimeCrashMessage + vc);
+                            throw new InvalidOperationException(EngineCrashMessage + (after.StartsWith("ok")
+                                ? "motor tek başına çalışıyor, sorun veri klasöründe ya da yapılandırmada. Önce Kurulumu onar deyin; düzelmezse Sorunu bildir."
+                                : "motor bu bilgisayarda tek başına da başlayamıyor (" + after + "). Menüden Sorunu bildir deyin."));
+                        }
                         throw new InvalidOperationException("Sunucu beklenmedik şekilde kapandı. Günlük: " + Paths.ServerLog);
                     }
                     if (Health(url))
@@ -708,6 +1084,7 @@ namespace SeoWatcher
                 StandardErrorEncoding = Encoding.UTF8,
             };
             psi.EnvironmentVariables["WRANGLER_SEND_METRICS"] = "false";
+            LastCommand = "\"" + psi.FileName + "\" " + psi.Arguments;
             // Plain text in the log files: no ANSI colour, no spinners.
             psi.EnvironmentVariables["NO_COLOR"] = "1";
             psi.EnvironmentVariables["FORCE_COLOR"] = "0";
@@ -773,6 +1150,11 @@ namespace SeoWatcher
         private readonly ToolStripMenuItem openItem;
         private readonly ToolStripMenuItem statusItem;
         private readonly ToolStripMenuItem autostartItem;
+        private readonly ToolStripMenuItem autoUpdateItem;
+        private readonly ToolStripMenuItem updateItem;
+        private readonly System.Threading.Timer updateTimer;
+        private Version available;
+        private bool updating;
         private readonly Server server = new Server();
         private readonly Config config = Config.Load();
         private readonly EventWaitHandle quitEvent;
@@ -790,6 +1172,8 @@ namespace SeoWatcher
             statusItem = new ToolStripMenuItem("Başlatılıyor…") { Enabled = false };
             autostartItem = new ToolStripMenuItem("Windows ile başlat", null, (s, e) => ToggleAutostart());
             autostartItem.Checked = Autostart.IsEnabled();
+            autoUpdateItem = new ToolStripMenuItem("Güncellemeleri kendiliğinden kur", null, (s, e) => ToggleAutoUpdate()) { Checked = config.AutoUpdate };
+            updateItem = new ToolStripMenuItem("Güncelleme var", null, (s, e) => StartUpdate()) { Visible = false };
 
             menu.Items.Add(openItem);
             menu.Items.Add(statusItem);
@@ -798,9 +1182,14 @@ namespace SeoWatcher
             menu.Items.Add(new ToolStripMenuItem("Günlükleri aç", null, (s, e) => OpenFolder(Paths.LogDir)));
             menu.Items.Add(new ToolStripMenuItem("Veri klasörünü aç", null, (s, e) => OpenFolder(Paths.DataRoot)));
             menu.Items.Add(new ToolStripMenuItem("Tanı bilgisini kopyala", null, (s, e) => CopyDiagnostics()));
+            menu.Items.Add(new ToolStripMenuItem("Sorunu bildir (GitHub)", null, (s, e) => ReportIssue()));
             fixItem = new ToolStripMenuItem("Eksik Windows bileşenini kur", null, (s, e) => InstallVcRedist()) { Visible = false };
             menu.Items.Add(fixItem);
+            menu.Items.Add(new ToolStripMenuItem("Kurulumu onar", null, (s, e) => RepairInstall()));
+            menu.Items.Add(updateItem);
+            menu.Items.Add(new ToolStripSeparator());
             menu.Items.Add(autostartItem);
+            menu.Items.Add(autoUpdateItem);
             menu.Items.Add(new ToolStripSeparator());
             menu.Items.Add(new ToolStripMenuItem("seowatcher " + Paths.Version()) { Enabled = false });
             menu.Items.Add(new ToolStripMenuItem("Çıkış", null, (s, e) => Quit()));
@@ -824,6 +1213,77 @@ namespace SeoWatcher
             ThreadPool.RegisterWaitForSingleObject(quitEvent, (state, timedOut) => Invoke(Quit), null, -1, true);
 
             server.Start(config);
+            Updater.Cleanup();
+            // First check two minutes after start (the server comes first), then daily.
+            updateTimer = new System.Threading.Timer(_ => CheckForUpdate(), null, TimeSpan.FromMinutes(2), TimeSpan.FromHours(24));
+        }
+
+        private void CheckForUpdate()
+        {
+            var latest = Updater.CheckLatest();
+            if (latest == null || latest <= Updater.Current()) return;
+            Invoke(() =>
+            {
+                available = latest;
+                updateItem.Text = "Güncelle: " + latest + " sürümü hazır";
+                updateItem.Visible = true;
+                if (config.AutoUpdate) StartUpdate();
+                else tray.ShowBalloonTip(10000, "Yeni sürüm: seowatcher " + latest, "Kurmak için bu baloncuğa tıklayın ya da menüden Güncelle deyin.", ToolTipIcon.Info);
+            });
+        }
+
+        private void StartUpdate()
+        {
+            if (updating || available == null) return;
+            updating = true;
+            var v = available;
+            updateItem.Enabled = false;
+            var worker = new Thread(() =>
+            {
+                try
+                {
+                    string file = Updater.Download(v, msg => Invoke(() => SetStatus(msg)));
+                    Invoke(() => SetStatus("Güncelleme kuruluyor: " + v));
+                    Updater.Install(file);
+                }
+                catch (Exception ex)
+                {
+                    LauncherLog.Write("update: failed: " + ex.Message);
+                    Invoke(() =>
+                    {
+                        updating = false;
+                        updateItem.Enabled = true;
+                        SetStatus(url != null ? "Çalışıyor: " + url : "Hata: güncelleme indirilemedi");
+                        tray.ShowBalloonTip(10000, "Güncelleme yapılamadı", ex.Message + " Daha sonra menüden tekrar deneyin.", ToolTipIcon.Warning);
+                    });
+                }
+            }) { IsBackground = true };
+            worker.Start();
+        }
+
+        private void ToggleAutoUpdate()
+        {
+            config.AutoUpdate = !config.AutoUpdate;
+            autoUpdateItem.Checked = config.AutoUpdate;
+            try { config.Save(); } catch (Exception ex) { LauncherLog.Write("config: " + ex.Message); }
+        }
+
+        private void RepairInstall()
+        {
+            LauncherLog.Write("repair requested");
+            SetStatus("Onarılıyor");
+            server.Stop();
+            string problem = Repair.Run();
+            if (problem != null)
+            {
+                SetStatus("Hata: " + problem);
+                tray.ShowBalloonTip(15000, "Kurulum eksik", problem, ToolTipIcon.Error);
+                Browser.Open("https://github.com/" + Updater.Repo + "/releases/latest");
+                return;
+            }
+            openedOnce = true;
+            url = null;
+            server.Start(Config.Load());
         }
 
         private static Icon LoadIcon()
@@ -879,11 +1339,17 @@ namespace SeoWatcher
         {
             SetStatus("Hata: " + message);
             needsVcRedist = message.StartsWith(Server.RuntimeCrashMessage, StringComparison.Ordinal);
+            needsReport = message.StartsWith(Server.EngineCrashMessage, StringComparison.Ordinal);
             fixItem.Visible = needsVcRedist;
             if (needsVcRedist)
             {
                 tray.ShowBalloonTip(20000, "seowatcher için bir Windows bileşeni gerekiyor",
                     message + "\nBu baloncuğa tıklayın; paket kurulur, sonra uygulama kendiliğinden yeniden başlar.", ToolTipIcon.Warning);
+            }
+            else if (needsReport)
+            {
+                tray.ShowBalloonTip(20000, "seowatcher başlatılamadı",
+                    message + "\nBu baloncuğa tıklayın: tanı bilgisi panoya kopyalanır ve GitHub'da hazır bir sorun kaydı açılır.", ToolTipIcon.Error);
             }
             else
             {
@@ -894,10 +1360,14 @@ namespace SeoWatcher
         // A failure the bundled Visual C++ package can fix: clicking the balloon
         // installs it. Any other balloon opens the app as before.
         private bool needsVcRedist;
+        private bool needsReport;
         private ToolStripMenuItem fixItem;
         private void OnBalloonClicked()
         {
-            if (needsVcRedist) InstallVcRedist(); else OpenApp();
+            if (needsVcRedist) InstallVcRedist();
+            else if (needsReport) ReportIssue();
+            else if (available != null && !updating) StartUpdate();
+            else OpenApp();
         }
 
         /// <summary>Runs the bundled VC_redist.x64.exe elevated (one UAC prompt)
@@ -937,6 +1407,18 @@ namespace SeoWatcher
                 SetStatus("Hata: Windows bileşeni kurulamadı. Menüden tekrar deneyin.");
                 tray.ShowBalloonTip(10000, "Kurulum iptal edildi", "Yönetici izni verilmedi. Menüdeki \"Eksik Windows bileşenini kur\" ile yeniden deneyebilirsiniz.", ToolTipIcon.Warning);
             }
+        }
+
+        /// <summary>Opens a GitHub issue form with the diagnostics in the body (and
+        /// on the clipboard, in case the URL is too long for the browser).</summary>
+        private void ReportIssue()
+        {
+            string report = Diag.Report();
+            try { Clipboard.SetText(report); } catch { }
+            string body = "Aşağıdaki tanı bilgisi uygulamanın \"Sorunu bildir\" menüsünden geldi. Ne yapmaya çalıştığınızı bir cümleyle ekleyin.\n\n```\n" + report + "\n```\n";
+            if (body.Length > 6000) body = body.Substring(0, 6000) + "\n```\n(kısaltıldı; tamamı panoda)\n";
+            string title = "seowatcher " + Paths.Version() + ": " + (statusItem.Text.Length > 80 ? statusItem.Text.Substring(0, 80) : statusItem.Text);
+            Browser.Open("https://github.com/" + Updater.Repo + "/issues/new?title=" + Uri.EscapeDataString(title) + "&body=" + Uri.EscapeDataString(body));
         }
 
         private void CopyDiagnostics()
@@ -986,6 +1468,7 @@ namespace SeoWatcher
 
         private void Quit()
         {
+            try { if (updateTimer != null) updateTimer.Dispose(); } catch { }
             tray.Visible = false;
             server.Stop();
             ExitThread();
