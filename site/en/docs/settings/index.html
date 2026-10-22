@@ -1,0 +1,1225 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Settings screen | seowatcher guide</title>
+    <meta
+      name="description"
+      content="Theme, Google access key, PageSpeed key, usage limits, version and update check. The one settings screen for the whole installation."
+    />
+    <meta name="robots" content="max-image-preview:large" />
+    <link rel="canonical" href="https://seowatcher.io/en/docs/settings/" />
+    <link
+      rel="alternate"
+      hreflang="tr"
+      href="https://seowatcher.io/docs/ayarlar/"
+    />
+    <link
+      rel="alternate"
+      hreflang="en"
+      href="https://seowatcher.io/en/docs/settings/"
+    />
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href="https://seowatcher.io/docs/ayarlar/"
+    />
+    <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link
+      rel="icon"
+      href="/assets/favicon-48.png"
+      type="image/png"
+      sizes="48x48"
+    />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <link
+      rel="preload"
+      href="/assets/fonts/geist-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/assets/fonts/geist-latin-ext-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="seowatcher" />
+    <meta property="og:title" content="Settings screen | seowatcher guide" />
+    <meta
+      property="og:description"
+      content="Theme, Google access key, PageSpeed key, usage limits, version and update check. The one settings screen for the whole installation."
+    />
+    <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="seowatcher" />
+    <meta property="article:modified_time" content="2026-10-22" />
+    <meta property="og:url" content="https://seowatcher.io/en/docs/settings/" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Settings screen | seowatcher guide" />
+    <meta
+      name="twitter:description"
+      content="Theme, Google access key, PageSpeed key, usage limits, version and update check. The one settings screen for the whole installation."
+    />
+    <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
+    <meta name="color-scheme" content="dark" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://seowatcher.io/#website",
+            "url": "https://seowatcher.io/",
+            "name": "seowatcher",
+            "inLanguage": ["tr", "en"]
+          },
+          {
+            "@type": "SoftwareApplication",
+            "@id": "https://seowatcher.io/#app",
+            "name": "seowatcher",
+            "alternateName": "seotracker",
+            "url": "https://seowatcher.io/"
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://seowatcher.io/#author",
+            "name": "seowatcher",
+            "url": "https://seowatcher.io/",
+            "logo": "https://seowatcher.io/assets/icon-256.png",
+            "sameAs": ["https://github.com/ucsahinn/seotracker"]
+          },
+          {
+            "@type": "TechArticle",
+            "@id": "https://seowatcher.io/en/docs/settings/#article",
+            "headline": "Settings",
+            "description": "Theme, Google access key, PageSpeed key, usage limits, version and update check. The one settings screen for the whole installation.",
+            "url": "https://seowatcher.io/en/docs/settings/",
+            "inLanguage": "en",
+            "dateModified": "2026-10-22",
+            "articleSection": "Screens",
+            "about": { "@id": "https://seowatcher.io/#app" },
+            "author": { "@id": "https://seowatcher.io/#author" },
+            "publisher": { "@id": "https://seowatcher.io/#author" },
+            "isPartOf": { "@id": "https://seowatcher.io/#website" },
+            "mainEntityOfPage": "https://seowatcher.io/en/docs/settings/"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://seowatcher.io/en/docs/settings/#breadcrumb",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "seowatcher",
+                "item": "https://seowatcher.io/en/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Guide",
+                "item": "https://seowatcher.io/en/docs/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Settings",
+                "item": "https://seowatcher.io/en/docs/settings/"
+              }
+            ]
+          }
+        ]
+      }
+    </script>
+    <script src="/assets/docs.js?v=2.3.6" defer></script>
+    <meta name="theme-color" content="#272c3b" />
+    <style>
+      @font-face {
+        font-family: "Geist";
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(/assets/fonts/geist-latin-ext-wght-normal.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+          U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+          U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: "Geist";
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(/assets/fonts/geist-latin-wght-normal.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+          U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+          U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      :root {
+        --bg: oklch(25% 0.022 262);
+        --bg-2: oklch(29% 0.024 262);
+        --bg-3: oklch(33% 0.026 262);
+        --fg: oklch(97% 0.005 262);
+        --muted: oklch(97% 0.005 262 / 0.78);
+        --subtle: oklch(97% 0.005 262 / 0.66);
+        --hairline: oklch(100% 0 0 / 0.1);
+        --hairline-strong: oklch(100% 0 0 / 0.18);
+        --accent: oklch(74% 0.14 262);
+        --accent-2: oklch(83% 0.1 262);
+        --accent-ink: oklch(18% 0.03 262);
+        --glow: oklch(74% 0.14 262 / 0.3);
+        --glow-soft: oklch(74% 0.14 262 / 0.1);
+        --glass: oklch(100% 0 0 / 0.05);
+        --glass-edge: oklch(100% 0 0 / 0.12);
+        --accent-link: oklch(83% 0.1 262);
+        --glow: oklch(46% 0.2 262 / 0.28);
+        --glow-soft: oklch(46% 0.2 262 / 0.12);
+        --ease: cubic-bezier(0.32, 0.72, 0, 1);
+        --spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
+        scroll-padding-top: 76px;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: Geist, "Segoe UI", system-ui, sans-serif;
+        font-size: 17px;
+        line-height: 1.6;
+        font-variant-numeric: tabular-nums;
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+        border-radius: 4px;
+      }
+      .skip {
+        position: absolute;
+        left: 16px;
+        top: -48px;
+        z-index: 5;
+        background: var(--accent);
+        color: var(--accent-ink);
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-weight: 600;
+      }
+      .skip:focus {
+        top: 12px;
+      }
+      .wrap {
+        width: min(1160px, 100% - 40px);
+        margin-inline: auto;
+      }
+      @media (max-width: 640px) {
+        .wrap {
+          width: calc(100% - 32px);
+        }
+      }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: color-mix(in oklab, var(--bg) 70%, transparent);
+        backdrop-filter: blur(18px) saturate(1.4);
+        -webkit-backdrop-filter: blur(18px) saturate(1.4);
+        border-bottom: 1px solid var(--hairline);
+      }
+      header .wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 60px;
+        gap: 16px;
+      }
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 600;
+        font-size: 17px;
+        letter-spacing: -0.01em;
+      }
+      .brand img {
+        width: 26px;
+        height: 26px;
+        border-radius: 7px;
+        box-shadow: 0 0 16px var(--glow-soft);
+      }
+      .brand span {
+        color: var(--subtle);
+        font-weight: 500;
+      }
+      .topnav {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        font-size: 15px;
+        color: var(--muted);
+      }
+      .topnav a {
+        padding-block: 10px;
+      }
+      .topnav .lang {
+        font-size: 12.5px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        padding: 4px 9px;
+        border: 1px solid var(--hairline);
+        border-radius: 999px;
+      }
+      article h2[tabindex]:focus {
+        outline: none;
+      }
+      .topnav a:hover {
+        color: var(--fg);
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        min-height: 36px;
+        padding: 0 14px;
+        border-radius: 999px;
+        font-weight: 560;
+        font-size: 14px;
+        background: var(--accent);
+        color: var(--accent-ink);
+        white-space: nowrap;
+        transition:
+          transform 320ms var(--ease),
+          filter 320ms var(--ease);
+      }
+      .btn:hover {
+        filter: saturate(1.06) brightness(1.05);
+        transform: translateY(-1px);
+      }
+      .btn:active {
+        transform: scale(0.98);
+      }
+      @media (max-width: 720px) {
+        .topnav .hide {
+          display: none;
+        }
+        .topnav {
+          gap: 14px;
+        }
+        .brand span {
+          display: none;
+        }
+      }
+      @media (max-width: 420px) {
+        /* "Download for Windows" plus the language pill is 3px too wide on a
+           390px phone; tighter spacing keeps the page from scrolling sideways. */
+        .topnav {
+          gap: 10px;
+        }
+        .topnav .btn {
+          padding: 0 11px;
+          font-size: 13px;
+        }
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 240px minmax(0, 1fr) 200px;
+        gap: clamp(32px, 4vw, 64px);
+        padding: 40px 0 96px;
+      }
+      .side {
+        position: sticky;
+        top: 84px;
+        align-self: start;
+        font-size: 15px;
+      }
+      .nav-group {
+        margin: 22px 0 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--subtle);
+      }
+      .nav-group:first-child {
+        margin-top: 0;
+      }
+      .side ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 2px;
+      }
+      .side li a {
+        display: block;
+        padding: 6px 10px;
+        margin-left: -10px;
+        border-radius: 8px;
+        color: var(--muted);
+        transition:
+          background-color 240ms var(--ease),
+          color 240ms var(--ease);
+      }
+      .side li a:hover {
+        background: var(--bg-2);
+        color: var(--fg);
+      }
+      .side li.current a {
+        background: var(--bg-2);
+        color: var(--fg);
+        font-weight: 600;
+      }
+      .toc {
+        position: sticky;
+        top: 84px;
+        align-self: start;
+        font-size: 14px;
+      }
+      .toc-label {
+        margin: 0 0 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--subtle);
+      }
+      .toc ol {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 6px;
+        border-left: 1px solid var(--hairline);
+      }
+      .toc a {
+        display: block;
+        padding-left: 12px;
+        color: var(--muted);
+      }
+      .toc a:hover {
+        color: var(--fg);
+      }
+      @media (max-width: 1100px) {
+        .layout {
+          grid-template-columns: 220px minmax(0, 1fr);
+        }
+        .toc {
+          display: none;
+        }
+      }
+      @media (max-width: 800px) {
+        .layout {
+          grid-template-columns: minmax(0, 1fr);
+          gap: 24px;
+        }
+        .side {
+          position: static;
+          border-bottom: 1px solid var(--hairline);
+          padding-bottom: 20px;
+        }
+      }
+
+      article {
+        max-width: 68ch;
+      }
+      article h1 {
+        font-size: clamp(30px, 4vw, 42px);
+        line-height: 1.08;
+        letter-spacing: -0.028em;
+        font-weight: 600;
+        margin: 0 0 14px;
+        text-wrap: balance;
+      }
+      article .lede {
+        font-size: 19px;
+        color: var(--muted);
+        margin: 0 0 32px;
+        text-wrap: pretty;
+      }
+      article h2 {
+        font-size: 24px;
+        letter-spacing: -0.02em;
+        margin: 44px 0 12px;
+        text-wrap: balance;
+      }
+      article h3 {
+        font-size: 18px;
+        letter-spacing: -0.012em;
+        margin: 28px 0 8px;
+      }
+      article p,
+      article li {
+        color: var(--muted);
+      }
+      article p {
+        margin: 0 0 16px;
+        text-wrap: pretty;
+      }
+      article strong {
+        color: var(--fg);
+        font-weight: 600;
+      }
+      article ul,
+      article ol {
+        margin: 0 0 18px;
+        padding-left: 22px;
+      }
+      article li {
+        margin: 0 0 8px;
+      }
+      article li::marker {
+        color: var(--subtle);
+      }
+      article a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      article a:hover {
+        text-decoration-color: var(--accent-link);
+      }
+      article code {
+        font-family: ui-monospace, Consolas, Menlo, monospace;
+        font-size: 0.9em;
+        background: var(--bg-2);
+        border: 1px solid var(--hairline);
+        padding: 1px 6px;
+        border-radius: 6px;
+        color: var(--fg);
+      }
+      article pre {
+        background: var(--bg-2);
+        border: 1px solid var(--hairline);
+        border-radius: 12px;
+        padding: 14px 16px;
+        overflow-x: auto;
+        margin: 0 0 18px;
+        font-size: 14.5px;
+        line-height: 1.5;
+      }
+      article pre code {
+        background: none;
+        border: 0;
+        padding: 0;
+      }
+      article blockquote {
+        margin: 0 0 18px;
+        padding: 2px 0 2px 18px;
+        border-left: 2px solid var(--accent);
+      }
+      article .tw {
+        overflow-x: auto;
+        margin: 0 0 22px;
+      }
+      article table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 15px;
+        min-width: 480px;
+      }
+      article th {
+        text-align: left;
+        font-weight: 600;
+        color: var(--fg);
+        padding: 0 16px 10px 0;
+        border-bottom: 1px solid var(--hairline-strong);
+        white-space: nowrap;
+      }
+      article td {
+        padding: 10px 16px 10px 0;
+        border-bottom: 1px solid var(--hairline);
+        vertical-align: top;
+        color: var(--muted);
+      }
+      article td:first-child {
+        color: var(--fg);
+      }
+      article .meta {
+        margin-top: 48px;
+        padding-top: 18px;
+        border-top: 1px solid var(--hairline);
+        font-size: 14px;
+        color: var(--subtle);
+      }
+      ul.index {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 24px;
+        display: grid;
+        gap: 10px;
+      }
+      ul.index li {
+        display: grid;
+        gap: 2px;
+        padding: 12px 0;
+        border-top: 1px solid var(--hairline);
+      }
+      ul.index li a {
+        font-weight: 600;
+        color: var(--fg);
+        text-decoration: none;
+      }
+      ul.index li a:hover {
+        text-decoration: underline;
+      }
+      ul.index li span {
+        color: var(--muted);
+        font-size: 15.5px;
+      }
+      footer {
+        padding: 32px 0 56px;
+        font-size: 14.5px;
+        color: var(--muted);
+        border-top: 1px solid var(--hairline);
+      }
+      footer .wrap {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 12px 32px;
+      }
+      footer a:hover {
+        color: var(--fg);
+      }
+
+      /* Premium pass: the same motion language as the landing page, restrained. */
+      @media (prefers-reduced-motion: no-preference) {
+        html {
+          scroll-behavior: smooth;
+        }
+        article {
+          animation: rise 700ms var(--ease) both;
+        }
+        .side,
+        .toc {
+          animation: rise 700ms var(--ease) both;
+          animation-delay: 120ms;
+        }
+        @keyframes rise {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: none;
+          }
+        }
+      }
+      a {
+        transition: color 300ms var(--ease);
+      }
+      .btn {
+        background: linear-gradient(180deg, var(--accent-2), var(--accent));
+        color: var(--accent-ink);
+        border: 0;
+        box-shadow:
+          0 0 0 1px oklch(100% 0 0 / 0.1) inset,
+          0 8px 24px var(--glow-soft);
+        transition:
+          transform 400ms var(--spring),
+          box-shadow 400ms var(--ease);
+      }
+      .btn:hover {
+        color: var(--accent-ink);
+        box-shadow:
+          0 0 0 1px oklch(100% 0 0 / 0.14) inset,
+          0 12px 32px var(--glow);
+        transform: translateY(-1px);
+      }
+      .side li a:hover,
+      .side li.current a {
+        background: var(--glass);
+      }
+      .side li.current a {
+        box-shadow: inset 2px 0 0 var(--accent);
+      }
+      ul.index li a {
+        color: var(--accent-link);
+      }
+      article h2 {
+        scroll-margin-top: 90px;
+      }
+
+      /* Light palette pass: the guide index as a card grid, softer tables, code chips. */
+      ul.index {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 14px;
+        padding: 0;
+        margin: 0 0 36px;
+        list-style: none;
+      }
+      ul.index li {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        padding: 18px 18px 20px;
+        border: 1px solid var(--hairline);
+        border-radius: 16px;
+        background: var(--bg-2);
+        box-shadow: 0 1px 2px oklch(0% 0 0 / 0.2);
+        transition:
+          transform 500ms var(--spring),
+          box-shadow 400ms var(--ease),
+          border-color 400ms var(--ease);
+      }
+      ul.index li:hover {
+        transform: translateY(-2px);
+        border-color: var(--hairline-strong);
+        box-shadow: 0 14px 34px oklch(0% 0 0 / 0.35);
+      }
+      ul.index li a {
+        font-weight: 600;
+        color: var(--fg);
+        text-decoration: none;
+      }
+      ul.index li a:hover {
+        color: var(--accent);
+      }
+      ul.index li span {
+        color: var(--muted);
+        font-size: 14.5px;
+        line-height: 1.45;
+      }
+      article table {
+        border: 1px solid var(--hairline);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      article th {
+        background: var(--bg-2);
+      }
+      article code {
+        background: var(--bg-2);
+        border: 1px solid var(--hairline);
+      }
+      article h2 {
+        padding-top: 8px;
+        border-top: 1px solid var(--hairline);
+      }
+      .side li.current a {
+        color: var(--accent);
+      }
+      article p,
+      article li {
+        font-size: 16px;
+        line-height: 1.65;
+      }
+      .side {
+        border-right: 1px solid var(--hairline);
+        padding-right: 16px;
+      }
+      .nav-group {
+        font-size: 13.5px;
+      }
+      .side li.current a {
+        color: var(--fg);
+        font-weight: 600;
+      }
+      article td:has(> :is(strong, b):only-child),
+      article td[align="right"] {
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* Guide pass: callouts, pager, copy buttons, mobile sidebar, tables. */
+      .callout {
+        position: relative;
+        padding: 12px 16px 12px 18px;
+        margin: 0 0 12px;
+        border-radius: 12px;
+        background: var(--glass);
+        border-left: 3px solid var(--hairline-strong);
+      }
+      .callout-belirti {
+        border-left-color: var(--subtle);
+      }
+      .callout-sebep {
+        border-left-color: var(--accent-2);
+      }
+      .callout-cozum {
+        border-left-color: var(--accent);
+        background: color-mix(in oklab, var(--accent) 10%, transparent);
+      }
+      .pager {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin: 44px 0 8px;
+      }
+      .pager a,
+      .pager .empty {
+        display: grid;
+        gap: 4px;
+        padding: 14px 16px;
+        border: 1px solid var(--hairline);
+        border-radius: 14px;
+        text-decoration: none;
+        color: var(--fg);
+        transition:
+          border-color 300ms var(--ease),
+          background-color 300ms var(--ease),
+          transform 500ms var(--spring);
+      }
+      .pager .empty {
+        border-color: transparent;
+      }
+      .pager a:hover {
+        border-color: var(--hairline-strong);
+        background: var(--glass);
+        transform: translateY(-1px);
+      }
+      .pager span {
+        font-size: 12.5px;
+        color: var(--subtle);
+      }
+      .pager-next {
+        text-align: right;
+      }
+      article .code {
+        position: relative;
+      }
+      article .code.has-copy pre {
+        padding-top: 38px;
+      }
+      article .code .copy {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        font: inherit;
+        font-size: 12.5px;
+        font-weight: 600;
+        color: var(--muted);
+        background: var(--glass);
+        border: 1px solid var(--hairline);
+        border-radius: 999px;
+        padding: 4px 10px;
+        cursor: pointer;
+        transition:
+          color 200ms var(--ease),
+          border-color 200ms var(--ease);
+      }
+      article .code .copy:hover,
+      article .code .copy:focus-visible,
+      article .code .copy.done {
+        color: var(--fg);
+        border-color: var(--hairline-strong);
+      }
+      .side-dd > summary {
+        display: none;
+      }
+      .toc a.current {
+        color: var(--fg);
+        font-weight: 600;
+      }
+      .toc a.current::before {
+        content: "";
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+        margin-right: 8px;
+        vertical-align: middle;
+        box-shadow: 0 0 8px var(--glow);
+      }
+      article .tw {
+        max-height: 70vh;
+        overflow: auto;
+      }
+      article thead th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
+      article tbody tr:nth-child(even) td {
+        background: oklch(100% 0 0 / 0.025);
+      }
+      article td.num {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+      @media (max-width: 800px) {
+        .side-dd > summary {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          cursor: pointer;
+          list-style: none;
+          padding: 12px 14px;
+          border: 1px solid var(--hairline);
+          border-radius: 12px;
+          font-weight: 600;
+        }
+        .side-dd > summary::-webkit-details-marker {
+          display: none;
+        }
+        .side-dd > summary::after {
+          content: "";
+          width: 9px;
+          height: 9px;
+          border-right: 1.5px solid var(--muted);
+          border-bottom: 1.5px solid var(--muted);
+          transform: rotate(45deg);
+          transition: transform 300ms var(--spring);
+        }
+        .side-dd[open] > summary::after {
+          transform: rotate(225deg);
+        }
+        .side-dd[open] > summary {
+          margin-bottom: 10px;
+        }
+        .side {
+          border-right: 0;
+          padding-right: 0;
+        }
+        .pager {
+          grid-template-columns: 1fr;
+        }
+        .pager-next {
+          text-align: left;
+        }
+      }
+      article code {
+        overflow-wrap: anywhere;
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip" href="#icerik">İçeriğe geç</a>
+    <header>
+      <div class="wrap">
+        <a class="brand" href="/en/"
+          ><img
+            src="/assets/icon.svg"
+            alt=""
+            width="26"
+            height="26"
+          />seowatcher <span>guide</span></a
+        >
+        <nav class="topnav" aria-label="Site">
+          <a class="hide" href="/en/">Home</a>
+          <a class="hide" href="/en/docs/">Guide</a>
+          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+            >GitHub</a
+          >
+          <a
+            class="lang"
+            href="/docs/ayarlar/"
+            lang="tr"
+            hreflang="tr"
+            aria-label="Dil: Türkçe"
+            >TR</a
+          >
+          <a
+            class="btn"
+            href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            >Download for Windows</a
+          >
+        </nav>
+      </div>
+    </header>
+    <main
+      class="wrap layout"
+      data-copy="Copy"
+      data-copied="Copied"
+      data-copy-failed="Copy failed"
+      data-copy-label="Copy code"
+    >
+      <aside class="side" aria-label="Guide">
+        <details class="side-dd" open>
+          <summary>Guide</summary>
+          <p class="nav-group">Getting started</p>
+          <ul>
+            <li><a href="/en/docs/install-windows/">Install on Windows</a></li>
+            <li>
+              <a href="/en/docs/install-docker/">Installing with Docker</a>
+            </li>
+            <li>
+              <a href="/en/docs/google-connection/">Connecting to Google</a>
+            </li>
+            <li><a href="/en/docs/pagespeed-key/">PageSpeed key</a></li>
+          </ul>
+          <p class="nav-group">Screens</p>
+          <ul>
+            <li><a href="/en/docs/projects/">Projects</a></li>
+            <li><a href="/en/docs/dashboard/">Dashboard</a></li>
+            <li>
+              <a href="/en/docs/search-performance/">Search performance</a>
+            </li>
+            <li><a href="/en/docs/rank-tracking/">Ranking tracking</a></li>
+            <li><a href="/en/docs/opportunities/">Opportunities</a></li>
+            <li><a href="/en/docs/saved-keywords/">Saved keywords</a></li>
+            <li><a href="/en/docs/analytics/">Analytics</a></li>
+            <li><a href="/en/docs/site-audit/">Site audit</a></li>
+            <li><a href="/en/docs/index-status/">Index status</a></li>
+            <li><a href="/en/docs/reports/">Reports and templates</a></li>
+            <li><a href="/en/docs/project-context/">Project info</a></li>
+            <li class="current" aria-current="page">
+              <a href="/en/docs/settings/">Settings</a>
+            </li>
+          </ul>
+          <p class="nav-group">Reference</p>
+          <ul>
+            <li><a href="/en/docs/help/">Help</a></li>
+            <li><a href="/en/docs/audit-rules/">Audit rules</a></li>
+            <li><a href="/en/docs/agent-setup/">Agent setup</a></li>
+            <li><a href="/en/docs/troubleshooting/">Troubleshooting</a></li>
+          </ul>
+        </details>
+      </aside>
+      <article id="icerik">
+        <h1>Settings</h1>
+        <p class="lede">
+          Theme, Google access key, PageSpeed key, usage limits, version and
+          update check. The one settings screen for the whole installation.
+        </p>
+        <p>
+          On this page you see where to manage the Google connection, the speed
+          key and updates.
+        </p>
+        <p>
+          <strong>Ayarlar</strong> (Settings) is the screen for everything that
+          concerns the whole installation. Settings for each project (name,
+          domain, Search Console and Analytics property) are on each project's
+          <strong>Proje ayarları</strong> (Project settings) page. Here you
+          manage the access key needed to connect to Google, the PageSpeed key,
+          the theme and the update check. On the left there are the sections
+          <strong>Görünüm</strong> (Appearance), <strong>Google</strong>,
+          <strong>Hizmet hesabı</strong> (Service account),
+          <strong>Hız ölçümü</strong> (Speed testing),
+          <strong>Sınırlar</strong> (Limits), <strong>Hakkında</strong> (About)
+          and <strong>Sürüm notları</strong> (Release notes). The title of each
+          section has a badge that tells you its status.
+        </p>
+        <h2 id="what-is-on-the-screen">What is on the screen</h2>
+        <p>
+          <strong>Görünüm</strong> (Appearance). For
+          <strong>Tema</strong> (Theme) there are the options Sistem (System),
+          Açık (Light) and Koyu (Dark). Your choice is stored in this browser.
+          In another browser or on another computer, you choose again.
+        </p>
+        <p>
+          <strong>Google.</strong> The badge is one of three values:
+          <strong>Kayıtlı</strong> (Saved),
+          <strong>Ortamdan geliyor</strong> (Comes from the environment; on a
+          Docker installation, it was given through the <code>.env</code> file)
+          or <strong>Eksik</strong> (Missing). The section shows the two
+          redirect addresses you will add to Google Cloud Console (Google's
+          developer panel). There are copy buttons next to them. You need to add
+          both. If you do not add the Analytics address, only Search Console
+          connects.
+        </p>
+        <p>
+          Fields: <strong>İstemci kimliği</strong> (Client ID) and
+          <strong>Gizli anahtar</strong> (Secret key). Both are details of the
+          access key you get from Google. Buttons:
+          <strong>Kaydet</strong> (Save), <strong>Vazgeç</strong> (Cancel),
+          <strong>Değiştir</strong> (Change) and <strong>Sil</strong> (Delete).
+          <strong>Sil</strong> (Delete) cuts the existing connections. The
+          step-by-step setup is in the Google connection guide.
+        </p>
+        <p>
+          <strong>Hizmet hesabı</strong> (Service account; the shorter way). A
+          service account is a robot account created in Google for the app. In
+          the <strong>JSON anahtar dosyası</strong> (JSON key file) field, you
+          paste the contents of the file you downloaded from Google Cloud. If
+          one is saved, the account's email address shows. The screen tells you
+          where to add this address:
+        </p>
+        <ul>
+          <li>
+            Search Console: &quot;Ayarlar → Kullanıcılar ve izinler → Kullanıcı
+            ekle&quot; (Settings → Users and permissions → Add user), permission
+            Full.
+          </li>
+          <li>
+            Analytics: &quot;Yönetici → Erişim yönetimi&quot; (Admin → Access
+            management), permission Viewer.
+          </li>
+        </ul>
+        <p>
+          The badge says <strong>Kayıtlı</strong> (Saved) or
+          <strong>Kullanılmıyor</strong> (Not in use). A saved service account
+          is preferred over the Google access key. Deleting removes the account
+          from the app, but it does not cancel the key in Google.
+        </p>
+        <p>
+          <strong>Hız ölçümü</strong> (Speed testing). There is an
+          <strong>API anahtarı</strong> (API key) field and an
+          <strong>Anahtarı test et</strong> (Test the key) button. The test
+          &quot;1 ölçüm harcar&quot; (uses 1 measurement), and you can press it
+          once every ten seconds. The badge says
+          <strong>Anahtar kayıtlı</strong> (Key saved),
+          <strong>Ortam anahtarı</strong> (Environment key) or
+          <strong>Anahtar eksik</strong> (Key missing). The details are in the
+          PageSpeed key guide.
+        </p>
+        <p>
+          <strong>Sınırlar</strong> (Limits). The &quot;Google ve sistem
+          sınırları&quot; (Google and system limits) cards show the following:
+        </p>
+        <ul>
+          <li>URL Inspection (Search Console): 2,000 per day.</li>
+          <li>PageSpeed Insights.</li>
+          <li>
+            GA4 (Google Analytics) daily and hourly quota units: 200,000 and
+            40,000 by default. Google does not publish this number. It only
+            tells you how much is left.
+          </li>
+          <li>Audit page limit: 10,000.</li>
+          <li>Reports per project: 10,000, templates: 10.</li>
+          <li>Largest report: 500,000 bytes.</li>
+        </ul>
+        <p>
+          The status of each card is <strong>Yeterli</strong> (Enough),
+          <strong>Azalıyor</strong> (Running low, after 70 percent),
+          <strong>Neredeyse doldu</strong> (Almost full, after 90 percent) or
+          <strong>Bilinmiyor</strong> (Unknown).
+        </p>
+        <p>
+          <strong>Hakkında</strong> (About). The
+          <strong>Sürüm</strong> (Version) row shows the version (like v2.3.0).
+          The <strong>Güncellemeleri kontrol et</strong> (Check for updates)
+          switch is on by default. When it is on, the app asks GitHub for the
+          latest version at most once a day. In that case, the
+          <strong>Şimdi kontrol et</strong> (Check now) button also shows. If
+          there is a new version, a <strong>Değişiklikler</strong> (Changes)
+          link appears, and for Docker installations a command to copy:
+          <code>git pull &amp;&amp; docker compose up -d --build</code>. For the
+          Windows package, it points to <strong>Güncelle</strong> (Update) on
+          the taskbar icon. If automatic update is on, the new version installs
+          by itself.
+        </p>
+        <p>
+          <strong>Sürüm notları</strong> (Release notes). It lists what changed
+          in each version.
+        </p>
+        <h2 id="how-to-use-it">How to use it</h2>
+        <ol>
+          <li>
+            On first setup, first enter the client ID and the secret key in the
+            <strong>Google</strong> section. Then enter the PageSpeed key in the
+            <strong>Hız ölçümü</strong> (Speed testing) section. When both are
+            saved, you go to the project and pick the property.
+          </li>
+          <li>
+            Once a month, look at the <strong>Sınırlar</strong> (Limits)
+            section. The quota you see as &quot;Azalıyor&quot; (Running low) is
+            most often the URL Inspection limit.
+          </li>
+          <li>
+            If there is a new version in the <strong>Hakkında</strong> (About)
+            section, update. The release notes tell you what changed. The update
+            check is the only connection from your computer to anywhere other
+            than Google. If you do not want it, turn the switch off.
+          </li>
+          <li>
+            If you need to change the Google access key (for example, a new
+            Cloud project), click <strong>Değiştir</strong> (Change) and paste
+            the new values. The existing connections do not work with the new
+            key. In the projects, you need to choose
+            <strong>Yeniden bağlan</strong> (Reconnect).
+          </li>
+        </ol>
+        <h2 id="frequently-asked-questions">Frequently asked questions</h2>
+        <p>
+          <strong>Why can't I see my secret key on the screen?</strong> The app
+          stores it encrypted and does not send it back to the browser. The
+          screen only shows that it is saved, and the ID.
+        </p>
+        <p>
+          <strong
+            >What if the value I gave in <code>.env</code> on Docker and the one
+            I entered on the screen conflict?</strong
+          >
+          The one entered on the screen wins. If you save a value while the
+          badge says &quot;Ortamdan geliyor&quot; (Comes from the environment),
+          that one is used from then on.
+        </p>
+        <p>
+          <strong>What does the update check send?</strong> It sends no data. It
+          reads GitHub's public list of releases. The request is anonymous.
+        </p>
+        <p>
+          <strong>Service account or Google access key?</strong> A service
+          account does not make you deal with the consent screen, and it does
+          not expire. In return, you need to give that account permission by
+          hand in Search Console and Analytics. In a single-person installation,
+          either works. If you often see &quot;süresi doldu&quot; (expired),
+          switch to a service account.
+        </p>
+        <h2 id="limits">Limits</h2>
+        <p>
+          The <strong>Ayarlar</strong> (Settings) screen does not change the
+          port number, the data folder or network settings. These are in
+          <code>config.json</code> in the Windows package and in the
+          <code>.env</code> file on Docker. There is no user and password
+          management, because the app is single-user. The quota cards are the
+          app's own count, not Google's real counter. URL inspections you make
+          by hand in Search Console do not show up here, but they use up
+          Google's limit.
+        </p>
+        <nav class="pager" aria-label="Previous and next page">
+          <a class="pager-prev" rel="prev" href="/en/docs/project-context/"
+            ><span>Previous</span><strong>Project info</strong></a
+          ><a class="pager-next" rel="next" href="/en/docs/help/"
+            ><span>Next</span><strong>Help</strong></a
+          >
+        </nav>
+        <p class="meta">
+          Last updated: 22 October 2026. Spotted a mistake?
+          <a href="https://github.com/ucsahinn/seotracker/issues"
+            >Report it on GitHub</a
+          >.
+        </p>
+      </article>
+      <nav class="toc" aria-label="On this page">
+        <p class="toc-label">On this page</p>
+        <ol>
+          <li><a href="#what-is-on-the-screen">What is on the screen</a></li>
+          <li><a href="#how-to-use-it">How to use it</a></li>
+          <li>
+            <a href="#frequently-asked-questions">Frequently asked questions</a>
+          </li>
+          <li><a href="#limits">Limits</a></li>
+        </ol>
+      </nav>
+    </main>
+    <footer>
+      <div class="wrap">
+        <span>seowatcher, MIT license.</span>
+        <span
+          ><a href="/en/">Home</a> &nbsp;
+          <a href="/docs/ayarlar/" lang="tr" hreflang="tr">Türkçe</a>
+          &nbsp;
+          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"
+            >Release notes</a
+          ></span
+        >
+      </div>
+    </footer>
+  </body>
+</html>

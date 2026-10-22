@@ -1,0 +1,2028 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Audit rules | seowatcher guide</title>
+    <meta
+      name="description"
+      content="The list of 95 rules the site audit checks. For each rule you find what it means and how to fix it."
+    />
+    <meta name="robots" content="max-image-preview:large" />
+    <link rel="canonical" href="https://seowatcher.io/en/docs/audit-rules/" />
+    <link
+      rel="alternate"
+      hreflang="tr"
+      href="https://seowatcher.io/docs/denetim-kurallari/"
+    />
+    <link
+      rel="alternate"
+      hreflang="en"
+      href="https://seowatcher.io/en/docs/audit-rules/"
+    />
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href="https://seowatcher.io/docs/denetim-kurallari/"
+    />
+    <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link
+      rel="icon"
+      href="/assets/favicon-48.png"
+      type="image/png"
+      sizes="48x48"
+    />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <link
+      rel="preload"
+      href="/assets/fonts/geist-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/assets/fonts/geist-latin-ext-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="seowatcher" />
+    <meta property="og:title" content="Audit rules | seowatcher guide" />
+    <meta
+      property="og:description"
+      content="The list of 95 rules the site audit checks. For each rule you find what it means and how to fix it."
+    />
+    <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="seowatcher" />
+    <meta property="article:modified_time" content="2026-10-22" />
+    <meta
+      property="og:url"
+      content="https://seowatcher.io/en/docs/audit-rules/"
+    />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Audit rules | seowatcher guide" />
+    <meta
+      name="twitter:description"
+      content="The list of 95 rules the site audit checks. For each rule you find what it means and how to fix it."
+    />
+    <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
+    <meta name="color-scheme" content="dark" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://seowatcher.io/#website",
+            "url": "https://seowatcher.io/",
+            "name": "seowatcher",
+            "inLanguage": ["tr", "en"]
+          },
+          {
+            "@type": "SoftwareApplication",
+            "@id": "https://seowatcher.io/#app",
+            "name": "seowatcher",
+            "alternateName": "seotracker",
+            "url": "https://seowatcher.io/"
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://seowatcher.io/#author",
+            "name": "seowatcher",
+            "url": "https://seowatcher.io/",
+            "logo": "https://seowatcher.io/assets/icon-256.png",
+            "sameAs": ["https://github.com/ucsahinn/seotracker"]
+          },
+          {
+            "@type": "TechArticle",
+            "@id": "https://seowatcher.io/en/docs/audit-rules/#article",
+            "headline": "Audit rules",
+            "description": "The list of 95 rules the site audit checks. For each rule you find what it means and how to fix it.",
+            "url": "https://seowatcher.io/en/docs/audit-rules/",
+            "inLanguage": "en",
+            "dateModified": "2026-10-22",
+            "articleSection": "Reference",
+            "about": { "@id": "https://seowatcher.io/#app" },
+            "author": { "@id": "https://seowatcher.io/#author" },
+            "publisher": { "@id": "https://seowatcher.io/#author" },
+            "isPartOf": { "@id": "https://seowatcher.io/#website" },
+            "mainEntityOfPage": "https://seowatcher.io/en/docs/audit-rules/"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://seowatcher.io/en/docs/audit-rules/#breadcrumb",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "seowatcher",
+                "item": "https://seowatcher.io/en/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Guide",
+                "item": "https://seowatcher.io/en/docs/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Audit rules",
+                "item": "https://seowatcher.io/en/docs/audit-rules/"
+              }
+            ]
+          }
+        ]
+      }
+    </script>
+    <script src="/assets/docs.js?v=2.3.6" defer></script>
+    <meta name="theme-color" content="#272c3b" />
+    <style>
+      @font-face {
+        font-family: "Geist";
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(/assets/fonts/geist-latin-ext-wght-normal.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+          U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+          U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: "Geist";
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(/assets/fonts/geist-latin-wght-normal.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+          U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+          U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      :root {
+        --bg: oklch(25% 0.022 262);
+        --bg-2: oklch(29% 0.024 262);
+        --bg-3: oklch(33% 0.026 262);
+        --fg: oklch(97% 0.005 262);
+        --muted: oklch(97% 0.005 262 / 0.78);
+        --subtle: oklch(97% 0.005 262 / 0.66);
+        --hairline: oklch(100% 0 0 / 0.1);
+        --hairline-strong: oklch(100% 0 0 / 0.18);
+        --accent: oklch(74% 0.14 262);
+        --accent-2: oklch(83% 0.1 262);
+        --accent-ink: oklch(18% 0.03 262);
+        --glow: oklch(74% 0.14 262 / 0.3);
+        --glow-soft: oklch(74% 0.14 262 / 0.1);
+        --glass: oklch(100% 0 0 / 0.05);
+        --glass-edge: oklch(100% 0 0 / 0.12);
+        --accent-link: oklch(83% 0.1 262);
+        --glow: oklch(46% 0.2 262 / 0.28);
+        --glow-soft: oklch(46% 0.2 262 / 0.12);
+        --ease: cubic-bezier(0.32, 0.72, 0, 1);
+        --spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
+        scroll-padding-top: 76px;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: Geist, "Segoe UI", system-ui, sans-serif;
+        font-size: 17px;
+        line-height: 1.6;
+        font-variant-numeric: tabular-nums;
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+        border-radius: 4px;
+      }
+      .skip {
+        position: absolute;
+        left: 16px;
+        top: -48px;
+        z-index: 5;
+        background: var(--accent);
+        color: var(--accent-ink);
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-weight: 600;
+      }
+      .skip:focus {
+        top: 12px;
+      }
+      .wrap {
+        width: min(1160px, 100% - 40px);
+        margin-inline: auto;
+      }
+      @media (max-width: 640px) {
+        .wrap {
+          width: calc(100% - 32px);
+        }
+      }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: color-mix(in oklab, var(--bg) 70%, transparent);
+        backdrop-filter: blur(18px) saturate(1.4);
+        -webkit-backdrop-filter: blur(18px) saturate(1.4);
+        border-bottom: 1px solid var(--hairline);
+      }
+      header .wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 60px;
+        gap: 16px;
+      }
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 600;
+        font-size: 17px;
+        letter-spacing: -0.01em;
+      }
+      .brand img {
+        width: 26px;
+        height: 26px;
+        border-radius: 7px;
+        box-shadow: 0 0 16px var(--glow-soft);
+      }
+      .brand span {
+        color: var(--subtle);
+        font-weight: 500;
+      }
+      .topnav {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        font-size: 15px;
+        color: var(--muted);
+      }
+      .topnav a {
+        padding-block: 10px;
+      }
+      .topnav .lang {
+        font-size: 12.5px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        padding: 4px 9px;
+        border: 1px solid var(--hairline);
+        border-radius: 999px;
+      }
+      article h2[tabindex]:focus {
+        outline: none;
+      }
+      .topnav a:hover {
+        color: var(--fg);
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        min-height: 36px;
+        padding: 0 14px;
+        border-radius: 999px;
+        font-weight: 560;
+        font-size: 14px;
+        background: var(--accent);
+        color: var(--accent-ink);
+        white-space: nowrap;
+        transition:
+          transform 320ms var(--ease),
+          filter 320ms var(--ease);
+      }
+      .btn:hover {
+        filter: saturate(1.06) brightness(1.05);
+        transform: translateY(-1px);
+      }
+      .btn:active {
+        transform: scale(0.98);
+      }
+      @media (max-width: 720px) {
+        .topnav .hide {
+          display: none;
+        }
+        .topnav {
+          gap: 14px;
+        }
+        .brand span {
+          display: none;
+        }
+      }
+      @media (max-width: 420px) {
+        /* "Download for Windows" plus the language pill is 3px too wide on a
+           390px phone; tighter spacing keeps the page from scrolling sideways. */
+        .topnav {
+          gap: 10px;
+        }
+        .topnav .btn {
+          padding: 0 11px;
+          font-size: 13px;
+        }
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 240px minmax(0, 1fr) 200px;
+        gap: clamp(32px, 4vw, 64px);
+        padding: 40px 0 96px;
+      }
+      .side {
+        position: sticky;
+        top: 84px;
+        align-self: start;
+        font-size: 15px;
+      }
+      .nav-group {
+        margin: 22px 0 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--subtle);
+      }
+      .nav-group:first-child {
+        margin-top: 0;
+      }
+      .side ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 2px;
+      }
+      .side li a {
+        display: block;
+        padding: 6px 10px;
+        margin-left: -10px;
+        border-radius: 8px;
+        color: var(--muted);
+        transition:
+          background-color 240ms var(--ease),
+          color 240ms var(--ease);
+      }
+      .side li a:hover {
+        background: var(--bg-2);
+        color: var(--fg);
+      }
+      .side li.current a {
+        background: var(--bg-2);
+        color: var(--fg);
+        font-weight: 600;
+      }
+      .toc {
+        position: sticky;
+        top: 84px;
+        align-self: start;
+        font-size: 14px;
+      }
+      .toc-label {
+        margin: 0 0 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--subtle);
+      }
+      .toc ol {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 6px;
+        border-left: 1px solid var(--hairline);
+      }
+      .toc a {
+        display: block;
+        padding-left: 12px;
+        color: var(--muted);
+      }
+      .toc a:hover {
+        color: var(--fg);
+      }
+      @media (max-width: 1100px) {
+        .layout {
+          grid-template-columns: 220px minmax(0, 1fr);
+        }
+        .toc {
+          display: none;
+        }
+      }
+      @media (max-width: 800px) {
+        .layout {
+          grid-template-columns: minmax(0, 1fr);
+          gap: 24px;
+        }
+        .side {
+          position: static;
+          border-bottom: 1px solid var(--hairline);
+          padding-bottom: 20px;
+        }
+      }
+
+      article {
+        max-width: 68ch;
+      }
+      article h1 {
+        font-size: clamp(30px, 4vw, 42px);
+        line-height: 1.08;
+        letter-spacing: -0.028em;
+        font-weight: 600;
+        margin: 0 0 14px;
+        text-wrap: balance;
+      }
+      article .lede {
+        font-size: 19px;
+        color: var(--muted);
+        margin: 0 0 32px;
+        text-wrap: pretty;
+      }
+      article h2 {
+        font-size: 24px;
+        letter-spacing: -0.02em;
+        margin: 44px 0 12px;
+        text-wrap: balance;
+      }
+      article h3 {
+        font-size: 18px;
+        letter-spacing: -0.012em;
+        margin: 28px 0 8px;
+      }
+      article p,
+      article li {
+        color: var(--muted);
+      }
+      article p {
+        margin: 0 0 16px;
+        text-wrap: pretty;
+      }
+      article strong {
+        color: var(--fg);
+        font-weight: 600;
+      }
+      article ul,
+      article ol {
+        margin: 0 0 18px;
+        padding-left: 22px;
+      }
+      article li {
+        margin: 0 0 8px;
+      }
+      article li::marker {
+        color: var(--subtle);
+      }
+      article a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      article a:hover {
+        text-decoration-color: var(--accent-link);
+      }
+      article code {
+        font-family: ui-monospace, Consolas, Menlo, monospace;
+        font-size: 0.9em;
+        background: var(--bg-2);
+        border: 1px solid var(--hairline);
+        padding: 1px 6px;
+        border-radius: 6px;
+        color: var(--fg);
+      }
+      article pre {
+        background: var(--bg-2);
+        border: 1px solid var(--hairline);
+        border-radius: 12px;
+        padding: 14px 16px;
+        overflow-x: auto;
+        margin: 0 0 18px;
+        font-size: 14.5px;
+        line-height: 1.5;
+      }
+      article pre code {
+        background: none;
+        border: 0;
+        padding: 0;
+      }
+      article blockquote {
+        margin: 0 0 18px;
+        padding: 2px 0 2px 18px;
+        border-left: 2px solid var(--accent);
+      }
+      article .tw {
+        overflow-x: auto;
+        margin: 0 0 22px;
+      }
+      article table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 15px;
+        min-width: 480px;
+      }
+      article th {
+        text-align: left;
+        font-weight: 600;
+        color: var(--fg);
+        padding: 0 16px 10px 0;
+        border-bottom: 1px solid var(--hairline-strong);
+        white-space: nowrap;
+      }
+      article td {
+        padding: 10px 16px 10px 0;
+        border-bottom: 1px solid var(--hairline);
+        vertical-align: top;
+        color: var(--muted);
+      }
+      article td:first-child {
+        color: var(--fg);
+      }
+      article .meta {
+        margin-top: 48px;
+        padding-top: 18px;
+        border-top: 1px solid var(--hairline);
+        font-size: 14px;
+        color: var(--subtle);
+      }
+      ul.index {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 24px;
+        display: grid;
+        gap: 10px;
+      }
+      ul.index li {
+        display: grid;
+        gap: 2px;
+        padding: 12px 0;
+        border-top: 1px solid var(--hairline);
+      }
+      ul.index li a {
+        font-weight: 600;
+        color: var(--fg);
+        text-decoration: none;
+      }
+      ul.index li a:hover {
+        text-decoration: underline;
+      }
+      ul.index li span {
+        color: var(--muted);
+        font-size: 15.5px;
+      }
+      footer {
+        padding: 32px 0 56px;
+        font-size: 14.5px;
+        color: var(--muted);
+        border-top: 1px solid var(--hairline);
+      }
+      footer .wrap {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 12px 32px;
+      }
+      footer a:hover {
+        color: var(--fg);
+      }
+
+      /* Premium pass: the same motion language as the landing page, restrained. */
+      @media (prefers-reduced-motion: no-preference) {
+        html {
+          scroll-behavior: smooth;
+        }
+        article {
+          animation: rise 700ms var(--ease) both;
+        }
+        .side,
+        .toc {
+          animation: rise 700ms var(--ease) both;
+          animation-delay: 120ms;
+        }
+        @keyframes rise {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: none;
+          }
+        }
+      }
+      a {
+        transition: color 300ms var(--ease);
+      }
+      .btn {
+        background: linear-gradient(180deg, var(--accent-2), var(--accent));
+        color: var(--accent-ink);
+        border: 0;
+        box-shadow:
+          0 0 0 1px oklch(100% 0 0 / 0.1) inset,
+          0 8px 24px var(--glow-soft);
+        transition:
+          transform 400ms var(--spring),
+          box-shadow 400ms var(--ease);
+      }
+      .btn:hover {
+        color: var(--accent-ink);
+        box-shadow:
+          0 0 0 1px oklch(100% 0 0 / 0.14) inset,
+          0 12px 32px var(--glow);
+        transform: translateY(-1px);
+      }
+      .side li a:hover,
+      .side li.current a {
+        background: var(--glass);
+      }
+      .side li.current a {
+        box-shadow: inset 2px 0 0 var(--accent);
+      }
+      ul.index li a {
+        color: var(--accent-link);
+      }
+      article h2 {
+        scroll-margin-top: 90px;
+      }
+
+      /* Light palette pass: the guide index as a card grid, softer tables, code chips. */
+      ul.index {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 14px;
+        padding: 0;
+        margin: 0 0 36px;
+        list-style: none;
+      }
+      ul.index li {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        padding: 18px 18px 20px;
+        border: 1px solid var(--hairline);
+        border-radius: 16px;
+        background: var(--bg-2);
+        box-shadow: 0 1px 2px oklch(0% 0 0 / 0.2);
+        transition:
+          transform 500ms var(--spring),
+          box-shadow 400ms var(--ease),
+          border-color 400ms var(--ease);
+      }
+      ul.index li:hover {
+        transform: translateY(-2px);
+        border-color: var(--hairline-strong);
+        box-shadow: 0 14px 34px oklch(0% 0 0 / 0.35);
+      }
+      ul.index li a {
+        font-weight: 600;
+        color: var(--fg);
+        text-decoration: none;
+      }
+      ul.index li a:hover {
+        color: var(--accent);
+      }
+      ul.index li span {
+        color: var(--muted);
+        font-size: 14.5px;
+        line-height: 1.45;
+      }
+      article table {
+        border: 1px solid var(--hairline);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      article th {
+        background: var(--bg-2);
+      }
+      article code {
+        background: var(--bg-2);
+        border: 1px solid var(--hairline);
+      }
+      article h2 {
+        padding-top: 8px;
+        border-top: 1px solid var(--hairline);
+      }
+      .side li.current a {
+        color: var(--accent);
+      }
+      article p,
+      article li {
+        font-size: 16px;
+        line-height: 1.65;
+      }
+      .side {
+        border-right: 1px solid var(--hairline);
+        padding-right: 16px;
+      }
+      .nav-group {
+        font-size: 13.5px;
+      }
+      .side li.current a {
+        color: var(--fg);
+        font-weight: 600;
+      }
+      article td:has(> :is(strong, b):only-child),
+      article td[align="right"] {
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* Guide pass: callouts, pager, copy buttons, mobile sidebar, tables. */
+      .callout {
+        position: relative;
+        padding: 12px 16px 12px 18px;
+        margin: 0 0 12px;
+        border-radius: 12px;
+        background: var(--glass);
+        border-left: 3px solid var(--hairline-strong);
+      }
+      .callout-belirti {
+        border-left-color: var(--subtle);
+      }
+      .callout-sebep {
+        border-left-color: var(--accent-2);
+      }
+      .callout-cozum {
+        border-left-color: var(--accent);
+        background: color-mix(in oklab, var(--accent) 10%, transparent);
+      }
+      .pager {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin: 44px 0 8px;
+      }
+      .pager a,
+      .pager .empty {
+        display: grid;
+        gap: 4px;
+        padding: 14px 16px;
+        border: 1px solid var(--hairline);
+        border-radius: 14px;
+        text-decoration: none;
+        color: var(--fg);
+        transition:
+          border-color 300ms var(--ease),
+          background-color 300ms var(--ease),
+          transform 500ms var(--spring);
+      }
+      .pager .empty {
+        border-color: transparent;
+      }
+      .pager a:hover {
+        border-color: var(--hairline-strong);
+        background: var(--glass);
+        transform: translateY(-1px);
+      }
+      .pager span {
+        font-size: 12.5px;
+        color: var(--subtle);
+      }
+      .pager-next {
+        text-align: right;
+      }
+      article .code {
+        position: relative;
+      }
+      article .code.has-copy pre {
+        padding-top: 38px;
+      }
+      article .code .copy {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        font: inherit;
+        font-size: 12.5px;
+        font-weight: 600;
+        color: var(--muted);
+        background: var(--glass);
+        border: 1px solid var(--hairline);
+        border-radius: 999px;
+        padding: 4px 10px;
+        cursor: pointer;
+        transition:
+          color 200ms var(--ease),
+          border-color 200ms var(--ease);
+      }
+      article .code .copy:hover,
+      article .code .copy:focus-visible,
+      article .code .copy.done {
+        color: var(--fg);
+        border-color: var(--hairline-strong);
+      }
+      .side-dd > summary {
+        display: none;
+      }
+      .toc a.current {
+        color: var(--fg);
+        font-weight: 600;
+      }
+      .toc a.current::before {
+        content: "";
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+        margin-right: 8px;
+        vertical-align: middle;
+        box-shadow: 0 0 8px var(--glow);
+      }
+      article .tw {
+        max-height: 70vh;
+        overflow: auto;
+      }
+      article thead th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
+      article tbody tr:nth-child(even) td {
+        background: oklch(100% 0 0 / 0.025);
+      }
+      article td.num {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+      @media (max-width: 800px) {
+        .side-dd > summary {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          cursor: pointer;
+          list-style: none;
+          padding: 12px 14px;
+          border: 1px solid var(--hairline);
+          border-radius: 12px;
+          font-weight: 600;
+        }
+        .side-dd > summary::-webkit-details-marker {
+          display: none;
+        }
+        .side-dd > summary::after {
+          content: "";
+          width: 9px;
+          height: 9px;
+          border-right: 1.5px solid var(--muted);
+          border-bottom: 1.5px solid var(--muted);
+          transform: rotate(45deg);
+          transition: transform 300ms var(--spring);
+        }
+        .side-dd[open] > summary::after {
+          transform: rotate(225deg);
+        }
+        .side-dd[open] > summary {
+          margin-bottom: 10px;
+        }
+        .side {
+          border-right: 0;
+          padding-right: 0;
+        }
+        .pager {
+          grid-template-columns: 1fr;
+        }
+        .pager-next {
+          text-align: left;
+        }
+      }
+      article code {
+        overflow-wrap: anywhere;
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip" href="#icerik">İçeriğe geç</a>
+    <header>
+      <div class="wrap">
+        <a class="brand" href="/en/"
+          ><img
+            src="/assets/icon.svg"
+            alt=""
+            width="26"
+            height="26"
+          />seowatcher <span>guide</span></a
+        >
+        <nav class="topnav" aria-label="Site">
+          <a class="hide" href="/en/">Home</a>
+          <a class="hide" href="/en/docs/">Guide</a>
+          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+            >GitHub</a
+          >
+          <a
+            class="lang"
+            href="/docs/denetim-kurallari/"
+            lang="tr"
+            hreflang="tr"
+            aria-label="Dil: Türkçe"
+            >TR</a
+          >
+          <a
+            class="btn"
+            href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            >Download for Windows</a
+          >
+        </nav>
+      </div>
+    </header>
+    <main
+      class="wrap layout"
+      data-copy="Copy"
+      data-copied="Copied"
+      data-copy-failed="Copy failed"
+      data-copy-label="Copy code"
+    >
+      <aside class="side" aria-label="Guide">
+        <details class="side-dd" open>
+          <summary>Guide</summary>
+          <p class="nav-group">Getting started</p>
+          <ul>
+            <li><a href="/en/docs/install-windows/">Install on Windows</a></li>
+            <li>
+              <a href="/en/docs/install-docker/">Installing with Docker</a>
+            </li>
+            <li>
+              <a href="/en/docs/google-connection/">Connecting to Google</a>
+            </li>
+            <li><a href="/en/docs/pagespeed-key/">PageSpeed key</a></li>
+          </ul>
+          <p class="nav-group">Screens</p>
+          <ul>
+            <li><a href="/en/docs/projects/">Projects</a></li>
+            <li><a href="/en/docs/dashboard/">Dashboard</a></li>
+            <li>
+              <a href="/en/docs/search-performance/">Search performance</a>
+            </li>
+            <li><a href="/en/docs/rank-tracking/">Ranking tracking</a></li>
+            <li><a href="/en/docs/opportunities/">Opportunities</a></li>
+            <li><a href="/en/docs/saved-keywords/">Saved keywords</a></li>
+            <li><a href="/en/docs/analytics/">Analytics</a></li>
+            <li><a href="/en/docs/site-audit/">Site audit</a></li>
+            <li><a href="/en/docs/index-status/">Index status</a></li>
+            <li><a href="/en/docs/reports/">Reports and templates</a></li>
+            <li><a href="/en/docs/project-context/">Project info</a></li>
+            <li><a href="/en/docs/settings/">Settings</a></li>
+          </ul>
+          <p class="nav-group">Reference</p>
+          <ul>
+            <li><a href="/en/docs/help/">Help</a></li>
+            <li class="current" aria-current="page">
+              <a href="/en/docs/audit-rules/">Audit rules</a>
+            </li>
+            <li><a href="/en/docs/agent-setup/">Agent setup</a></li>
+            <li><a href="/en/docs/troubleshooting/">Troubleshooting</a></li>
+          </ul>
+        </details>
+      </aside>
+      <article id="icerik">
+        <h1>Audit rules</h1>
+        <p class="lede">
+          The list of 95 rules the site audit checks. For each rule you find
+          what it means and how to fix it.
+        </p>
+        <p>
+          The site audit checks every page and the site as a whole with 95
+          rules. The rules fall into three groups.
+          <strong>Kritik</strong> (Critical, 10 rules): Google cannot see or
+          understand the page, so fix these first.
+          <strong>Uyarı</strong> (Warning, 48 rules): they slowly lower rankings
+          and clicks. <strong>Bilgi</strong> (Info, 37 rules): small chances to
+          improve. In the score, critical counts 40, warning 15 and info 3. The
+          number of pages a rule affects also counts toward the score.
+        </p>
+        <p>
+          The table gives the rule name shown on screen, what it means and the
+          first step to fix it. The full fix text is on the finding card on
+          screen. The last column is the rule ID, which shows up in the CSV file
+          and in assistant answers.
+        </p>
+        <h2 id="common-terms">Common terms</h2>
+        <ul>
+          <li>
+            <strong>canonical</strong>: a way to tell Google &quot;this is the
+            main address&quot;.
+          </li>
+          <li>
+            <strong>noindex</strong>: a tag that hides a page from search.
+          </li>
+          <li>
+            <strong>hreflang</strong>: the language version tag. It points to
+            the same page in other languages.
+          </li>
+          <li>
+            <strong>meta description</strong>: the grey summary under the title
+            in a search result.
+          </li>
+          <li>
+            <strong>structured data</strong> (JSON-LD): a hidden note that tells
+            Google what the page is (a product, an article and so on). It can
+            add extras to the search result, such as stars or an image (rich
+            result).
+          </li>
+          <li>
+            <strong>robots.txt</strong>: the file that tells Google which pages
+            it may visit. A &quot;Disallow&quot; line is a line that forbids.
+          </li>
+          <li>
+            <strong>sitemap</strong>: the list of pages on your site.
+            <strong>lastmod</strong>: the date the page last changed.
+          </li>
+          <li>
+            <strong>redirect</strong>: sending visitors of one address to
+            another address.
+          </li>
+          <li>
+            <strong>user agent</strong>: the name a browser or crawler gives
+            itself.
+          </li>
+          <li>
+            <strong>title</strong> (title tag): the title shown in the tab and
+            in search. <strong>H1</strong>: the main heading of the page.
+            <strong>alt text</strong>: a short text that says what an image
+            shows.
+          </li>
+          <li>
+            <strong>nofollow</strong>: a tag that says &quot;do not follow this
+            link&quot;. <strong>head</strong>: the top part of the page source.
+          </li>
+          <li>
+            <strong>LCP</strong>: how long the main content of the page takes to
+            appear. <strong>CLS</strong>: content shifting while the page loads.
+            <strong>INP</strong>: how long the page takes to respond to a click.
+          </li>
+          <li>
+            <strong>Lighthouse</strong>: Google's page measuring tool.
+            <strong>SSL certificate</strong>: the document that makes your site
+            https (a secure address).
+          </li>
+        </ul>
+        <h2 id="critical">Critical</h2>
+        <div class="tw">
+          <table>
+            <thead>
+              <tr>
+                <th>Rule</th>
+                <th>What it means</th>
+                <th>How to fix</th>
+                <th>ID</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Crawler was blocked</td>
+                <td>
+                  Your site's bot protection stopped the crawler. Google may be
+                  blocked too.
+                </td>
+                <td>
+                  In your firewall, allow the &quot;seotracker-audit&quot; user
+                  agent.
+                </td>
+                <td>blocked-page</td>
+              </tr>
+              <tr>
+                <td>Server error (5xx)</td>
+                <td>
+                  The page returns a server error. Google removes such pages
+                  from search.
+                </td>
+                <td>
+                  Find the error for this address in the server logs and fix it.
+                </td>
+                <td>server-error</td>
+              </tr>
+              <tr>
+                <td>robots.txt file returns a server error</td>
+                <td>
+                  If Google cannot read the file, it may stop crawling the site
+                  completely.
+                </td>
+                <td>
+                  Fix the error. Check that the robots.txt address opens
+                  normally.
+                </td>
+                <td>robots-txt-server-error</td>
+              </tr>
+              <tr>
+                <td>Start address is blocked by robots.txt</td>
+                <td>
+                  The address the crawl starts from is forbidden in robots.txt.
+                </td>
+                <td>
+                  If it should be crawled, delete the matching
+                  &quot;Disallow&quot; line.
+                </td>
+                <td>robots-txt-blocks-start-url</td>
+              </tr>
+              <tr>
+                <td>Page in the sitemap does not open</td>
+                <td>A page you told Google exists returns an error.</td>
+                <td>
+                  If the page should exist, fix the error. If not, remove it
+                  from the sitemap.
+                </td>
+                <td>sitemap-broken-page</td>
+              </tr>
+              <tr>
+                <td>A file the page needs is blocked by robots.txt</td>
+                <td>
+                  Google cannot reach the design or code file it needs to
+                  display the page.
+                </td>
+                <td>Delete the rule in robots.txt that covers these files.</td>
+                <td>blocked-resource</td>
+              </tr>
+              <tr>
+                <td>Insecure file on a secure page</td>
+                <td>
+                  A secure (https) page loads a file from an insecure (http)
+                  address. Browsers block this.
+                </td>
+                <td>Change the file's address so it starts with https.</td>
+                <td>mixed-content-resource</td>
+              </tr>
+              <tr>
+                <td>A hidden page is named as the main address</td>
+                <td>
+                  The page named as the main address is hidden from search. The
+                  two cancel each other out.
+                </td>
+                <td>
+                  Remove noindex from the target page, or make the main address
+                  the page's own address.
+                </td>
+                <td>canonical-to-noindex</td>
+              </tr>
+              <tr>
+                <td>Google treats the page as empty (soft 404)</td>
+                <td>
+                  Google treats the page as &quot;does not exist&quot; and keeps
+                  it out of search.
+                </td>
+                <td>
+                  If the page really does not exist, return a 404 or 410 error
+                  code. If it exists, add real content.
+                </td>
+                <td>google-soft-404</td>
+              </tr>
+              <tr>
+                <td>Google cannot crawl the page because of robots.txt</td>
+                <td>Google's answer: robots.txt blocks it.</td>
+                <td>
+                  Find and delete the &quot;Disallow&quot; line in robots.txt
+                  that covers this address.
+                </td>
+                <td>google-blocked-by-robots</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h2 id="warning">Warning</h2>
+        <div class="tw">
+          <table>
+            <thead>
+              <tr>
+                <th>Rule</th>
+                <th>What it means</th>
+                <th>How to fix</th>
+                <th>ID</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Hit the request limit (429)</td>
+                <td>
+                  The site told the crawler &quot;too many requests&quot;.
+                </td>
+                <td>
+                  Raise the request limit on the server, or exempt
+                  &quot;seotracker-audit&quot; from the limit.
+                </td>
+                <td>rate-limited-page</td>
+              </tr>
+              <tr>
+                <td>Crawl stopped early: request limit</td>
+                <td>The crawl stopped when the wait passed 30 minutes.</td>
+                <td>Restart the audit once the site's request limit resets.</td>
+                <td>crawl-rate-limited</td>
+              </tr>
+              <tr>
+                <td>Broken internal link</td>
+                <td>A link on your site goes to a page that does not open.</td>
+                <td>Point the link to the right address, or delete it.</td>
+                <td>broken-internal-link</td>
+              </tr>
+              <tr>
+                <td>Page returns an error when opened (4xx)</td>
+                <td>
+                  The page returns an error such as &quot;not found&quot;.
+                </td>
+                <td>
+                  If the page should exist, publish it again. If not, delete the
+                  links that go to it.
+                </td>
+                <td>broken-page</td>
+              </tr>
+              <tr>
+                <td>Redirect chain</td>
+                <td>
+                  The address redirects several times before it reaches the
+                  final page.
+                </td>
+                <td>
+                  Redirect the first address, and the links to it, straight to
+                  the final page.
+                </td>
+                <td>redirect-chain</td>
+              </tr>
+              <tr>
+                <td>Redirect loop</td>
+                <td>The address redirects to itself or in a circle.</td>
+                <td>Follow the redirect rules and break the loop.</td>
+                <td>redirect-loop</td>
+              </tr>
+              <tr>
+                <td>Page that no page links to</td>
+                <td>
+                  The page exists only in the sitemap. Google gives it little
+                  value.
+                </td>
+                <td>
+                  Link to it from the menu, from related posts or from a
+                  category page.
+                </td>
+                <td>orphan-page</td>
+              </tr>
+              <tr>
+                <td>robots.txt could not be reached</td>
+                <td>The file did not respond at all.</td>
+                <td>
+                  Open the robots.txt address in a browser and check that it
+                  responds.
+                </td>
+                <td>robots-txt-unreachable</td>
+              </tr>
+              <tr>
+                <td>robots.txt is over the 500 KB limit</td>
+                <td>Google does not read the end of the file.</td>
+                <td>Shorten the file.</td>
+                <td>robots-txt-truncated</td>
+              </tr>
+              <tr>
+                <td>Page in the sitemap redirects</td>
+                <td>
+                  The sitemap has an address that redirects to another address.
+                </td>
+                <td>Put the final address it redirects to in the sitemap.</td>
+                <td>sitemap-redirect-page</td>
+              </tr>
+              <tr>
+                <td>Address in the sitemap is blocked by robots.txt</td>
+                <td>
+                  The sitemap says &quot;come&quot;, robots.txt says &quot;do
+                  not come&quot;.
+                </td>
+                <td>
+                  If it should show up in search, remove the block. If not,
+                  delete it from the sitemap.
+                </td>
+                <td>sitemap-disallowed-page</td>
+              </tr>
+              <tr>
+                <td>Sitemap file is too large to read</td>
+                <td>The file is over the 10 MB limit.</td>
+                <td>Split the sitemap into parts.</td>
+                <td>sitemap-too-large</td>
+              </tr>
+              <tr>
+                <td>Sitemap has more than 50,000 addresses</td>
+                <td>Google accepts at most 50,000 addresses in one file.</td>
+                <td>
+                  Split the file into parts under 50,000. Join the parts with
+                  one main sitemap file.
+                </td>
+                <td>sitemap-too-many-urls</td>
+              </tr>
+              <tr>
+                <td>Sitemap has a lastmod date in the future</td>
+                <td>
+                  The date is later than today. Google stops trusting the dates.
+                </td>
+                <td>Check what generates the dates.</td>
+                <td>sitemap-lastmod-future</td>
+              </tr>
+              <tr>
+                <td>Page opens over insecure http</td>
+                <td>The page is not secure (https).</td>
+                <td>
+                  Ask your hosting company to turn on the free SSL certificate.
+                </td>
+                <td>not-https</td>
+              </tr>
+              <tr>
+                <td>Title tag is missing</td>
+                <td>The page has no title tag (title).</td>
+                <td>
+                  Add a title that describes the topic and is specific to the
+                  page. 50-60 characters is a good length.
+                </td>
+                <td>missing-title</td>
+              </tr>
+              <tr>
+                <td>Meta description is missing</td>
+                <td>The grey summary in the search result is missing.</td>
+                <td>
+                  Write a description that summarises the page and makes people
+                  click.
+                </td>
+                <td>missing-meta-description</td>
+              </tr>
+              <tr>
+                <td>Images without alt text</td>
+                <td>Nothing says what the images show.</td>
+                <td>
+                  Write a short alt text for every image that carries meaning.
+                </td>
+                <td>images-missing-alt</td>
+              </tr>
+              <tr>
+                <td>More than one title tag on the page</td>
+                <td>There are two title tags. Google picks one at random.</td>
+                <td>
+                  Search the page source for &quot;title&quot; and keep only
+                  one.
+                </td>
+                <td>multiple-titles</td>
+              </tr>
+              <tr>
+                <td>More than one different meta description on the page</td>
+                <td>There are two descriptions.</td>
+                <td>
+                  Search the page source for name=&quot;description&quot; and
+                  keep only one.
+                </td>
+                <td>multiple-meta-descriptions</td>
+              </tr>
+              <tr>
+                <td>Title tag is placeholder text</td>
+                <td>
+                  The title is something like &quot;Ana sayfa&quot; (Home page)
+                  or &quot;Untitled&quot;.
+                </td>
+                <td>
+                  Write your own title that describes the topic of the page.
+                </td>
+                <td>placeholder-title</td>
+              </tr>
+              <tr>
+                <td>Duplicate title</td>
+                <td>Several pages use the same title.</td>
+                <td>
+                  Give each page its own title that describes its own content.
+                </td>
+                <td>duplicate-title</td>
+              </tr>
+              <tr>
+                <td>Duplicate main heading (H1)</td>
+                <td>Several pages have the same main heading.</td>
+                <td>Write a different H1 for each page.</td>
+                <td>duplicate-h1</td>
+              </tr>
+              <tr>
+                <td>Duplicate meta description</td>
+                <td>Several pages use the same description.</td>
+                <td>
+                  Write each page its own description, or delete the repeated
+                  one.
+                </td>
+                <td>duplicate-meta-description</td>
+              </tr>
+              <tr>
+                <td>Duplicate page content</td>
+                <td>Two pages carry the same text.</td>
+                <td>
+                  Choose the main page. Link the other one to it with canonical.
+                </td>
+                <td>duplicate-content</td>
+              </tr>
+              <tr>
+                <td>Main address declarations contradict each other</td>
+                <td>
+                  The HTML and the server response name different main
+                  addresses.
+                </td>
+                <td>Choose one main address and state it in one place only.</td>
+                <td>canonical-conflict</td>
+              </tr>
+              <tr>
+                <td>Page named as the main address does not open</td>
+                <td>The page named as the main address returns an error.</td>
+                <td>
+                  Change the main address to a working page, or publish the
+                  target again.
+                </td>
+                <td>canonical-to-broken</td>
+              </tr>
+              <tr>
+                <td>A page that redirects is named as the main address</td>
+                <td>
+                  The main address is an address that redirects to another page.
+                </td>
+                <td>Make the main address the final page it redirects to.</td>
+                <td>canonical-to-redirect</td>
+              </tr>
+              <tr>
+                <td>Google sees a hide tag (noindex) on the page</td>
+                <td>Google's answer: it saw noindex on the page.</td>
+                <td>
+                  Compare the page source with what Google sees. A plugin or a
+                  template may be adding the tag.
+                </td>
+                <td>google-blocked-by-meta</td>
+              </tr>
+              <tr>
+                <td>Google chose a different main address</td>
+                <td>Google did not accept your main address.</td>
+                <td>
+                  Look at the address Google chose. Either make it the main
+                  address, or make the two pages clearly different.
+                </td>
+                <td>google-chose-different-canonical</td>
+              </tr>
+              <tr>
+                <td>Language version code (hreflang) is invalid</td>
+                <td>
+                  A code that does not exist was written, such as
+                  &quot;en-UK&quot;.
+                </td>
+                <td>
+                  Write the right code. For the United Kingdom it is
+                  &quot;en-GB&quot;.
+                </td>
+                <td>hreflang-invalid-code</td>
+              </tr>
+              <tr>
+                <td>
+                  Page does not list itself among the language versions
+                  (hreflang)
+                </td>
+                <td>The page lists the other languages but not itself.</td>
+                <td>
+                  Add the page's own address, with its own language code, to the
+                  list.
+                </td>
+                <td>hreflang-missing-self</td>
+              </tr>
+              <tr>
+                <td>Page turns off its links with a robots directive</td>
+                <td>The page has turned off following its links (nofollow).</td>
+                <td>
+                  If you want its links to be followed, delete the
+                  &quot;nofollow&quot; text.
+                </td>
+                <td>nofollow-page</td>
+              </tr>
+              <tr>
+                <td>
+                  Paginated page points to the first page as its main address
+                </td>
+                <td>
+                  Page 2 names page 1 as its main address. Google ignores page
+                  2.
+                </td>
+                <td>Make each page's main address its own address.</td>
+                <td>paginated-canonical-to-first-page</td>
+              </tr>
+              <tr>
+                <td>
+                  Language versions do not link back to each other (hreflang)
+                </td>
+                <td>Page A points to B but B does not point to A.</td>
+                <td>Add a hreflang line to page B that points to A.</td>
+                <td>hreflang-no-return-tag</td>
+              </tr>
+              <tr>
+                <td>
+                  Language version points to a page that does not open or is
+                  removed from the index
+                </td>
+                <td>
+                  The language version it points to returns an error or is
+                  hidden from search.
+                </td>
+                <td>
+                  Look at the address in the details. Fix it or take it off the
+                  list.
+                </td>
+                <td>hreflang-target-broken</td>
+              </tr>
+              <tr>
+                <td>
+                  Main address (canonical) points to another domain or to http
+                </td>
+                <td>
+                  The main address points to another site or to an insecure
+                  (http) address.
+                </td>
+                <td>
+                  Unless you did it on purpose, make the main address the page's
+                  own https address.
+                </td>
+                <td>canonical-cross-host-or-http</td>
+              </tr>
+              <tr>
+                <td>Structured data block is broken</td>
+                <td>The structured data block (JSON-LD) cannot be read.</td>
+                <td>
+                  Paste the block into a JSON checker. Usually there is an extra
+                  comma.
+                </td>
+                <td>structured-data-invalid-json</td>
+              </tr>
+              <tr>
+                <td>Google crawled it but did not index it</td>
+                <td>
+                  Google's answer: it did not find the content good enough.
+                </td>
+                <td>
+                  In Google's &quot;URL Inspection Tool&quot;, check for
+                  noindex, blocked files or content that looks empty.
+                </td>
+                <td>google-crawled-not-indexed</td>
+              </tr>
+              <tr>
+                <td>Google found it but has not crawled it yet</td>
+                <td>Google knows the address and has put it in the queue.</td>
+                <td>
+                  Waiting is usually enough. Link to it from pages that are
+                  crawled often.
+                </td>
+                <td>google-discovered-not-indexed</td>
+              </tr>
+              <tr>
+                <td>Google saw duplicate content and no main address is set</td>
+                <td>
+                  Google found a copy of the page and you did not set a main
+                  address.
+                </td>
+                <td>
+                  Add a canonical that points to the main address on every page
+                  in the group of copies.
+                </td>
+                <td>google-duplicate-no-canonical</td>
+              </tr>
+              <tr>
+                <td>Google does not know this address at all</td>
+                <td>The address has never reached Google.</td>
+                <td>
+                  Add it to the sitemap and submit the sitemap to Search
+                  Console.
+                </td>
+                <td>google-url-unknown</td>
+              </tr>
+              <tr>
+                <td>Google found an error in the structured data</td>
+                <td>
+                  A field is missing in the markup written for a rich result.
+                </td>
+                <td>
+                  Open the address in Google's Rich Results Test. It shows the
+                  missing field there.
+                </td>
+                <td>google-rich-results-invalid</td>
+              </tr>
+              <tr>
+                <td>Page declares main addresses that contradict each other</td>
+                <td>The page has more than one canonical tag.</td>
+                <td>
+                  Decide which one is right. Turn off the plugin that produces
+                  the other.
+                </td>
+                <td>multiple-canonical-tags</td>
+              </tr>
+              <tr>
+                <td>Main content of the page loads late (LCP)</td>
+                <td>The largest element arrives later than 4 seconds.</td>
+                <td>
+                  Look at the largest element in the PageSpeed report. It is
+                  usually an image. Make it smaller and convert it to WebP.
+                </td>
+                <td>cwv-lcp-poor</td>
+              </tr>
+              <tr>
+                <td>Content shifts while the page loads (CLS)</td>
+                <td>The shift score is greater than 0.25.</td>
+                <td>Give images and embedded boxes a width and a height.</td>
+                <td>cwv-cls-poor</td>
+              </tr>
+              <tr>
+                <td>Page responds slowly to clicks (INP)</td>
+                <td>
+                  The response to a click takes longer than 500 milliseconds.
+                </td>
+                <td>
+                  Find the pieces of code that tire the page most. Delay them or
+                  remove them.
+                </td>
+                <td>cwv-inp-poor</td>
+              </tr>
+              <tr>
+                <td>Google's SEO audit score is low</td>
+                <td>The Lighthouse SEO score is below 90.</td>
+                <td>
+                  Open the page in PageSpeed Insights. Look at the failed checks
+                  in the SEO section.
+                </td>
+                <td>lighthouse-seo-low</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h2 id="info">Info</h2>
+        <div class="tw">
+          <table>
+            <thead>
+              <tr>
+                <th>Rule</th>
+                <th>What it means</th>
+                <th>How to fix</th>
+                <th>ID</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Server response is slow</td>
+                <td>The server's first answer comes late.</td>
+                <td>
+                  Look at server and database time. Turn on caching (keeping
+                  ready copies).
+                </td>
+                <td>slow-response</td>
+              </tr>
+              <tr>
+                <td>
+                  Page in the sitemap points to another page as its main address
+                </td>
+                <td>The sitemap has an address that is a copy.</td>
+                <td>Keep only main addresses in the sitemap.</td>
+                <td>sitemap-canonicalized-page</td>
+              </tr>
+              <tr>
+                <td>Page in the sitemap is hidden from search results</td>
+                <td>The sitemap has a page that is hidden from search.</td>
+                <td>
+                  If it should show up in search, remove noindex. If not, delete
+                  it from the sitemap.
+                </td>
+                <td>sitemap-noindex-page</td>
+              </tr>
+              <tr>
+                <td>Page is too deep in the site structure</td>
+                <td>The page is many clicks away from the home page.</td>
+                <td>
+                  Shorten the path with links from categories, menus or featured
+                  lists.
+                </td>
+                <td>deep-page</td>
+              </tr>
+              <tr>
+                <td>Sitemap has no lastmod dates at all</td>
+                <td>Google does not know the last change date.</td>
+                <td>
+                  In the setting that generates the sitemap, turn on lastmod for
+                  every address.
+                </td>
+                <td>sitemap-lastmod-missing</td>
+              </tr>
+              <tr>
+                <td>Internal link goes to a redirect</td>
+                <td>
+                  The link goes to an old address and redirects from there.
+                </td>
+                <td>Replace the link with the new address it redirects to.</td>
+                <td>internal-link-to-redirect</td>
+              </tr>
+              <tr>
+                <td>Character encoding is not declared</td>
+                <td>Turkish characters may break in some browsers.</td>
+                <td>
+                  Add the line meta charset=&quot;utf-8&quot; at the start of
+                  the head section.
+                </td>
+                <td>missing-charset</td>
+              </tr>
+              <tr>
+                <td>Page address is too long</td>
+                <td>The address is long and hard to read.</td>
+                <td>Keep the address short and meaningful.</td>
+                <td>url-too-long</td>
+              </tr>
+              <tr>
+                <td>Address has capital letters or underscores</td>
+                <td>Two separate spellings of the same page can appear.</td>
+                <td>Write addresses in lowercase with hyphens.</td>
+                <td>url-uppercase-or-underscore</td>
+              </tr>
+              <tr>
+                <td>H1 heading is missing</td>
+                <td>The page has no main heading.</td>
+                <td>Add a single H1 that describes the topic.</td>
+                <td>missing-h1</td>
+              </tr>
+              <tr>
+                <td>More than one H1 heading</td>
+                <td>There is more than one main heading.</td>
+                <td>Keep a single H1. Make the others H2 or H3.</td>
+                <td>multiple-h1</td>
+              </tr>
+              <tr>
+                <td>Page has almost no text</td>
+                <td>
+                  The crawler found no text. The text may be loading later with
+                  JavaScript.
+                </td>
+                <td>Check in the page source whether the text shows up.</td>
+                <td>thin-content</td>
+              </tr>
+              <tr>
+                <td>Page has no links to anywhere else</td>
+                <td>A dead-end page: it goes nowhere else.</td>
+                <td>
+                  Add links to related pages, to the parent category or to the
+                  home page.
+                </td>
+                <td>no-outgoing-links</td>
+              </tr>
+              <tr>
+                <td>Title is too long</td>
+                <td>Google cuts off anything after 60 characters.</td>
+                <td>
+                  Shorten the title to 50-60 characters. Put the important words
+                  first.
+                </td>
+                <td>title-too-long</td>
+              </tr>
+              <tr>
+                <td>Title is too short</td>
+                <td>The title does not describe the page.</td>
+                <td>
+                  Write a title of 30-60 characters that says what you offer.
+                </td>
+                <td>title-too-short</td>
+              </tr>
+              <tr>
+                <td>Meta description is too long</td>
+                <td>Google cuts off anything after 160 characters.</td>
+                <td>
+                  Put the main message first and shorten it to 70-160
+                  characters.
+                </td>
+                <td>meta-description-too-long</td>
+              </tr>
+              <tr>
+                <td>Meta description is too short</td>
+                <td>The description gives no reason to click.</td>
+                <td>Write 70-160 characters that summarise the page.</td>
+                <td>meta-description-too-short</td>
+              </tr>
+              <tr>
+                <td>Heading levels are skipped</td>
+                <td>It jumps from H1 straight to H3.</td>
+                <td>Use headings in order: H1, H2, H3.</td>
+                <td>heading-order-skip</td>
+              </tr>
+              <tr>
+                <td>Mobile view tag (viewport) is missing</td>
+                <td>The page looks tiny on a phone.</td>
+                <td>Add the viewport line to the head section.</td>
+                <td>missing-viewport</td>
+              </tr>
+              <tr>
+                <td>Page language is not declared</td>
+                <td>
+                  It does not say what language the page is in (no lang on the
+                  html tag).
+                </td>
+                <td>For a Turkish page, write html lang=&quot;tr&quot;.</td>
+                <td>missing-lang</td>
+              </tr>
+              <tr>
+                <td>Images have no width and height</td>
+                <td>Content jumps while the page loads.</td>
+                <td>Write the real size of the image on every img tag.</td>
+                <td>images-missing-dimensions</td>
+              </tr>
+              <tr>
+                <td>Long text has no subheadings</td>
+                <td>The long post is one single block.</td>
+                <td>
+                  Split the text by topic. Give each section an H2 heading.
+                </td>
+                <td>no-subheadings</td>
+              </tr>
+              <tr>
+                <td>Image alt text is a file name</td>
+                <td>
+                  The alt text is something like &quot;IMG_1234.jpg&quot;.
+                </td>
+                <td>In the alt text, write what is in the image.</td>
+                <td>alt-is-filename</td>
+              </tr>
+              <tr>
+                <td>Image alt text is too long</td>
+                <td>The alt text is as long as a paragraph.</td>
+                <td>
+                  Describe the image in one sentence. About 125 characters is
+                  enough.
+                </td>
+                <td>alt-too-long</td>
+              </tr>
+              <tr>
+                <td>Main heading (H1) is too long</td>
+                <td>The H1 is as long as a paragraph.</td>
+                <td>Cut the H1 down to a short, one-sentence heading.</td>
+                <td>h1-too-long</td>
+              </tr>
+              <tr>
+                <td>Internal links without text</td>
+                <td>The link has no text or only an icon.</td>
+                <td>
+                  Add visible text or an aria-label (a name hidden for screen
+                  readers).
+                </td>
+                <td>empty-anchor-text</td>
+              </tr>
+              <tr>
+                <td>Meaningless link texts such as &quot;click here&quot;</td>
+                <td>The link text does not say where it goes.</td>
+                <td>
+                  Replace the link text with the topic of the target page.
+                </td>
+                <td>generic-anchor-text</td>
+              </tr>
+              <tr>
+                <td>Too many links on the page</td>
+                <td>The page has hundreds of links.</td>
+                <td>
+                  Limit the menu and the footer to the most important pages.
+                </td>
+                <td>too-many-links</td>
+              </tr>
+              <tr>
+                <td>Nofollow links to your own site's pages</td>
+                <td>A link to your own pages has nofollow.</td>
+                <td>Delete rel=&quot;nofollow&quot; from these links.</td>
+                <td>internal-nofollow-links</td>
+              </tr>
+              <tr>
+                <td>Page has no canonical (main address) tag</td>
+                <td>Google guesses the main address.</td>
+                <td>
+                  Add a canonical line to the head section that points to the
+                  page's own full address.
+                </td>
+                <td>missing-canonical</td>
+              </tr>
+              <tr>
+                <td>Page is hidden from search results (noindex)</td>
+                <td>
+                  The page is hidden from search, on purpose or by mistake.
+                </td>
+                <td>If it should show up in search, remove noindex.</td>
+                <td>noindex-page</td>
+              </tr>
+              <tr>
+                <td>Page points to another page as its main address</td>
+                <td>The page declares itself a copy.</td>
+                <td>
+                  If it should show up in search under its own name, make the
+                  main address its own address.
+                </td>
+                <td>canonicalized-page</td>
+              </tr>
+              <tr>
+                <td>Language versions have no default version (x-default)</td>
+                <td>
+                  There is no default version for visitors whose language does
+                  not match.
+                </td>
+                <td>Add an x-default line to the hreflang list.</td>
+                <td>hreflang-missing-x-default</td>
+              </tr>
+              <tr>
+                <td>Google's answer about some pages is out of date</td>
+                <td>Stored Google answers are older than 3 or 14 days.</td>
+                <td>
+                  On the <strong>Dizin durumu</strong> (Index status) tab, press
+                  the &quot;Google'da durumunu kontrol et&quot; (Check status on
+                  Google) button.
+                </td>
+                <td>stale-google-verdicts</td>
+              </tr>
+              <tr>
+                <td>Site has no social media sharing tags (Open Graph)</td>
+                <td>No image or title appears when it is shared.</td>
+                <td>
+                  In the template's head section, add og:title, og:description
+                  and an og:image of 1200x630 pixels.
+                </td>
+                <td>open-graph-missing-site</td>
+              </tr>
+              <tr>
+                <td>Site has no structured data at all</td>
+                <td>
+                  There is no chance of a rich result appearing in search.
+                </td>
+                <td>
+                  Start with markup that fits the page type (such as
+                  Organization, Product or Article).
+                </td>
+                <td>structured-data-missing-site</td>
+              </tr>
+              <tr>
+                <td>Google has not crawled this page for a long time</td>
+                <td>Google's last visit is older than 90 days.</td>
+                <td>
+                  Link to it from pages that are crawled often. Make sure the
+                  page is in the sitemap.
+                </td>
+                <td>google-crawl-stale</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h2 id="how-do-the-rules-work">How do the rules work?</h2>
+        <p>
+          Most rules run per page and list every page they affect. Some concern
+          the whole site and produce a single finding. These are the robots.txt
+          rules, the sitemap rules, &quot;Site has no social media sharing
+          tags&quot; and &quot;Site has no structured data at all&quot;.
+        </p>
+        <p>
+          Rules whose name starts with &quot;Google&quot; do not come from the
+          app's crawl. They are produced from the answers taken from Google on
+          the <strong>Dizin durumu</strong> (Index status) tab. If you have
+          never asked a question on that tab, these rules never run. The speed
+          rules (LCP, CLS, INP, SEO score) run only when &quot;Sayfa hızını da
+          ölç&quot; (Also measure page speed) is on, and they use the phone
+          measurement.
+        </p>
+        <nav class="pager" aria-label="Previous and next page">
+          <a class="pager-prev" rel="prev" href="/en/docs/help/"
+            ><span>Previous</span><strong>Help</strong></a
+          ><a class="pager-next" rel="next" href="/en/docs/agent-setup/"
+            ><span>Next</span><strong>Agent setup</strong></a
+          >
+        </nav>
+        <p class="meta">
+          Last updated: 22 October 2026. Spotted a mistake?
+          <a href="https://github.com/ucsahinn/seotracker/issues"
+            >Report it on GitHub</a
+          >.
+        </p>
+      </article>
+      <nav class="toc" aria-label="On this page">
+        <p class="toc-label">On this page</p>
+        <ol>
+          <li><a href="#common-terms">Common terms</a></li>
+          <li><a href="#critical">Critical</a></li>
+          <li><a href="#warning">Warning</a></li>
+          <li><a href="#info">Info</a></li>
+          <li><a href="#how-do-the-rules-work">How do the rules work?</a></li>
+        </ol>
+      </nav>
+    </main>
+    <footer>
+      <div class="wrap">
+        <span>seowatcher, MIT license.</span>
+        <span
+          ><a href="/en/">Home</a> &nbsp;
+          <a href="/docs/denetim-kurallari/" lang="tr" hreflang="tr">Türkçe</a>
+          &nbsp;
+          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"
+            >Release notes</a
+          ></span
+        >
+      </div>
+    </footer>
+  </body>
+</html>

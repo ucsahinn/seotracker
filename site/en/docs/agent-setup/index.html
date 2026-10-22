@@ -1,0 +1,1572 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Agent setup | seowatcher guide</title>
+    <meta
+      name="description"
+      content="Connect Claude Code, Codex or Cursor to the app. The address, the password, the 33 tools and 6 ready-made task templates, and which ones use up Google quota."
+    />
+    <meta name="robots" content="max-image-preview:large" />
+    <link rel="canonical" href="https://seowatcher.io/en/docs/agent-setup/" />
+    <link
+      rel="alternate"
+      hreflang="tr"
+      href="https://seowatcher.io/docs/ajan-kurulumu/"
+    />
+    <link
+      rel="alternate"
+      hreflang="en"
+      href="https://seowatcher.io/en/docs/agent-setup/"
+    />
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href="https://seowatcher.io/docs/ajan-kurulumu/"
+    />
+    <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link
+      rel="icon"
+      href="/assets/favicon-48.png"
+      type="image/png"
+      sizes="48x48"
+    />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <link
+      rel="preload"
+      href="/assets/fonts/geist-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/assets/fonts/geist-latin-ext-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="seowatcher" />
+    <meta property="og:title" content="Agent setup | seowatcher guide" />
+    <meta
+      property="og:description"
+      content="Connect Claude Code, Codex or Cursor to the app. The address, the password, the 33 tools and 6 ready-made task templates, and which ones use up Google quota."
+    />
+    <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="seowatcher" />
+    <meta property="article:modified_time" content="2026-10-22" />
+    <meta
+      property="og:url"
+      content="https://seowatcher.io/en/docs/agent-setup/"
+    />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Agent setup | seowatcher guide" />
+    <meta
+      name="twitter:description"
+      content="Connect Claude Code, Codex or Cursor to the app. The address, the password, the 33 tools and 6 ready-made task templates, and which ones use up Google quota."
+    />
+    <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
+    <meta name="color-scheme" content="dark" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://seowatcher.io/#website",
+            "url": "https://seowatcher.io/",
+            "name": "seowatcher",
+            "inLanguage": ["tr", "en"]
+          },
+          {
+            "@type": "SoftwareApplication",
+            "@id": "https://seowatcher.io/#app",
+            "name": "seowatcher",
+            "alternateName": "seotracker",
+            "url": "https://seowatcher.io/"
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://seowatcher.io/#author",
+            "name": "seowatcher",
+            "url": "https://seowatcher.io/",
+            "logo": "https://seowatcher.io/assets/icon-256.png",
+            "sameAs": ["https://github.com/ucsahinn/seotracker"]
+          },
+          {
+            "@type": "TechArticle",
+            "@id": "https://seowatcher.io/en/docs/agent-setup/#article",
+            "headline": "Agent setup",
+            "description": "Connect Claude Code, Codex or Cursor to the app. The address, the password, the 33 tools and 6 ready-made task templates, and which ones use up Google quota.",
+            "url": "https://seowatcher.io/en/docs/agent-setup/",
+            "inLanguage": "en",
+            "dateModified": "2026-10-22",
+            "articleSection": "Reference",
+            "about": { "@id": "https://seowatcher.io/#app" },
+            "author": { "@id": "https://seowatcher.io/#author" },
+            "publisher": { "@id": "https://seowatcher.io/#author" },
+            "isPartOf": { "@id": "https://seowatcher.io/#website" },
+            "mainEntityOfPage": "https://seowatcher.io/en/docs/agent-setup/"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://seowatcher.io/en/docs/agent-setup/#breadcrumb",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "seowatcher",
+                "item": "https://seowatcher.io/en/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Guide",
+                "item": "https://seowatcher.io/en/docs/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Agent setup",
+                "item": "https://seowatcher.io/en/docs/agent-setup/"
+              }
+            ]
+          }
+        ]
+      }
+    </script>
+    <script src="/assets/docs.js?v=2.3.6" defer></script>
+    <meta name="theme-color" content="#272c3b" />
+    <style>
+      @font-face {
+        font-family: "Geist";
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(/assets/fonts/geist-latin-ext-wght-normal.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+          U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+          U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: "Geist";
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(/assets/fonts/geist-latin-wght-normal.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+          U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+          U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      :root {
+        --bg: oklch(25% 0.022 262);
+        --bg-2: oklch(29% 0.024 262);
+        --bg-3: oklch(33% 0.026 262);
+        --fg: oklch(97% 0.005 262);
+        --muted: oklch(97% 0.005 262 / 0.78);
+        --subtle: oklch(97% 0.005 262 / 0.66);
+        --hairline: oklch(100% 0 0 / 0.1);
+        --hairline-strong: oklch(100% 0 0 / 0.18);
+        --accent: oklch(74% 0.14 262);
+        --accent-2: oklch(83% 0.1 262);
+        --accent-ink: oklch(18% 0.03 262);
+        --glow: oklch(74% 0.14 262 / 0.3);
+        --glow-soft: oklch(74% 0.14 262 / 0.1);
+        --glass: oklch(100% 0 0 / 0.05);
+        --glass-edge: oklch(100% 0 0 / 0.12);
+        --accent-link: oklch(83% 0.1 262);
+        --glow: oklch(46% 0.2 262 / 0.28);
+        --glow-soft: oklch(46% 0.2 262 / 0.12);
+        --ease: cubic-bezier(0.32, 0.72, 0, 1);
+        --spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
+        scroll-padding-top: 76px;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: Geist, "Segoe UI", system-ui, sans-serif;
+        font-size: 17px;
+        line-height: 1.6;
+        font-variant-numeric: tabular-nums;
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+        border-radius: 4px;
+      }
+      .skip {
+        position: absolute;
+        left: 16px;
+        top: -48px;
+        z-index: 5;
+        background: var(--accent);
+        color: var(--accent-ink);
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-weight: 600;
+      }
+      .skip:focus {
+        top: 12px;
+      }
+      .wrap {
+        width: min(1160px, 100% - 40px);
+        margin-inline: auto;
+      }
+      @media (max-width: 640px) {
+        .wrap {
+          width: calc(100% - 32px);
+        }
+      }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: color-mix(in oklab, var(--bg) 70%, transparent);
+        backdrop-filter: blur(18px) saturate(1.4);
+        -webkit-backdrop-filter: blur(18px) saturate(1.4);
+        border-bottom: 1px solid var(--hairline);
+      }
+      header .wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 60px;
+        gap: 16px;
+      }
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 600;
+        font-size: 17px;
+        letter-spacing: -0.01em;
+      }
+      .brand img {
+        width: 26px;
+        height: 26px;
+        border-radius: 7px;
+        box-shadow: 0 0 16px var(--glow-soft);
+      }
+      .brand span {
+        color: var(--subtle);
+        font-weight: 500;
+      }
+      .topnav {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        font-size: 15px;
+        color: var(--muted);
+      }
+      .topnav a {
+        padding-block: 10px;
+      }
+      .topnav .lang {
+        font-size: 12.5px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        padding: 4px 9px;
+        border: 1px solid var(--hairline);
+        border-radius: 999px;
+      }
+      article h2[tabindex]:focus {
+        outline: none;
+      }
+      .topnav a:hover {
+        color: var(--fg);
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        min-height: 36px;
+        padding: 0 14px;
+        border-radius: 999px;
+        font-weight: 560;
+        font-size: 14px;
+        background: var(--accent);
+        color: var(--accent-ink);
+        white-space: nowrap;
+        transition:
+          transform 320ms var(--ease),
+          filter 320ms var(--ease);
+      }
+      .btn:hover {
+        filter: saturate(1.06) brightness(1.05);
+        transform: translateY(-1px);
+      }
+      .btn:active {
+        transform: scale(0.98);
+      }
+      @media (max-width: 720px) {
+        .topnav .hide {
+          display: none;
+        }
+        .topnav {
+          gap: 14px;
+        }
+        .brand span {
+          display: none;
+        }
+      }
+      @media (max-width: 420px) {
+        /* "Download for Windows" plus the language pill is 3px too wide on a
+           390px phone; tighter spacing keeps the page from scrolling sideways. */
+        .topnav {
+          gap: 10px;
+        }
+        .topnav .btn {
+          padding: 0 11px;
+          font-size: 13px;
+        }
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 240px minmax(0, 1fr) 200px;
+        gap: clamp(32px, 4vw, 64px);
+        padding: 40px 0 96px;
+      }
+      .side {
+        position: sticky;
+        top: 84px;
+        align-self: start;
+        font-size: 15px;
+      }
+      .nav-group {
+        margin: 22px 0 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--subtle);
+      }
+      .nav-group:first-child {
+        margin-top: 0;
+      }
+      .side ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 2px;
+      }
+      .side li a {
+        display: block;
+        padding: 6px 10px;
+        margin-left: -10px;
+        border-radius: 8px;
+        color: var(--muted);
+        transition:
+          background-color 240ms var(--ease),
+          color 240ms var(--ease);
+      }
+      .side li a:hover {
+        background: var(--bg-2);
+        color: var(--fg);
+      }
+      .side li.current a {
+        background: var(--bg-2);
+        color: var(--fg);
+        font-weight: 600;
+      }
+      .toc {
+        position: sticky;
+        top: 84px;
+        align-self: start;
+        font-size: 14px;
+      }
+      .toc-label {
+        margin: 0 0 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--subtle);
+      }
+      .toc ol {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 6px;
+        border-left: 1px solid var(--hairline);
+      }
+      .toc a {
+        display: block;
+        padding-left: 12px;
+        color: var(--muted);
+      }
+      .toc a:hover {
+        color: var(--fg);
+      }
+      @media (max-width: 1100px) {
+        .layout {
+          grid-template-columns: 220px minmax(0, 1fr);
+        }
+        .toc {
+          display: none;
+        }
+      }
+      @media (max-width: 800px) {
+        .layout {
+          grid-template-columns: minmax(0, 1fr);
+          gap: 24px;
+        }
+        .side {
+          position: static;
+          border-bottom: 1px solid var(--hairline);
+          padding-bottom: 20px;
+        }
+      }
+
+      article {
+        max-width: 68ch;
+      }
+      article h1 {
+        font-size: clamp(30px, 4vw, 42px);
+        line-height: 1.08;
+        letter-spacing: -0.028em;
+        font-weight: 600;
+        margin: 0 0 14px;
+        text-wrap: balance;
+      }
+      article .lede {
+        font-size: 19px;
+        color: var(--muted);
+        margin: 0 0 32px;
+        text-wrap: pretty;
+      }
+      article h2 {
+        font-size: 24px;
+        letter-spacing: -0.02em;
+        margin: 44px 0 12px;
+        text-wrap: balance;
+      }
+      article h3 {
+        font-size: 18px;
+        letter-spacing: -0.012em;
+        margin: 28px 0 8px;
+      }
+      article p,
+      article li {
+        color: var(--muted);
+      }
+      article p {
+        margin: 0 0 16px;
+        text-wrap: pretty;
+      }
+      article strong {
+        color: var(--fg);
+        font-weight: 600;
+      }
+      article ul,
+      article ol {
+        margin: 0 0 18px;
+        padding-left: 22px;
+      }
+      article li {
+        margin: 0 0 8px;
+      }
+      article li::marker {
+        color: var(--subtle);
+      }
+      article a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      article a:hover {
+        text-decoration-color: var(--accent-link);
+      }
+      article code {
+        font-family: ui-monospace, Consolas, Menlo, monospace;
+        font-size: 0.9em;
+        background: var(--bg-2);
+        border: 1px solid var(--hairline);
+        padding: 1px 6px;
+        border-radius: 6px;
+        color: var(--fg);
+      }
+      article pre {
+        background: var(--bg-2);
+        border: 1px solid var(--hairline);
+        border-radius: 12px;
+        padding: 14px 16px;
+        overflow-x: auto;
+        margin: 0 0 18px;
+        font-size: 14.5px;
+        line-height: 1.5;
+      }
+      article pre code {
+        background: none;
+        border: 0;
+        padding: 0;
+      }
+      article blockquote {
+        margin: 0 0 18px;
+        padding: 2px 0 2px 18px;
+        border-left: 2px solid var(--accent);
+      }
+      article .tw {
+        overflow-x: auto;
+        margin: 0 0 22px;
+      }
+      article table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 15px;
+        min-width: 480px;
+      }
+      article th {
+        text-align: left;
+        font-weight: 600;
+        color: var(--fg);
+        padding: 0 16px 10px 0;
+        border-bottom: 1px solid var(--hairline-strong);
+        white-space: nowrap;
+      }
+      article td {
+        padding: 10px 16px 10px 0;
+        border-bottom: 1px solid var(--hairline);
+        vertical-align: top;
+        color: var(--muted);
+      }
+      article td:first-child {
+        color: var(--fg);
+      }
+      article .meta {
+        margin-top: 48px;
+        padding-top: 18px;
+        border-top: 1px solid var(--hairline);
+        font-size: 14px;
+        color: var(--subtle);
+      }
+      ul.index {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 24px;
+        display: grid;
+        gap: 10px;
+      }
+      ul.index li {
+        display: grid;
+        gap: 2px;
+        padding: 12px 0;
+        border-top: 1px solid var(--hairline);
+      }
+      ul.index li a {
+        font-weight: 600;
+        color: var(--fg);
+        text-decoration: none;
+      }
+      ul.index li a:hover {
+        text-decoration: underline;
+      }
+      ul.index li span {
+        color: var(--muted);
+        font-size: 15.5px;
+      }
+      footer {
+        padding: 32px 0 56px;
+        font-size: 14.5px;
+        color: var(--muted);
+        border-top: 1px solid var(--hairline);
+      }
+      footer .wrap {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 12px 32px;
+      }
+      footer a:hover {
+        color: var(--fg);
+      }
+
+      /* Premium pass: the same motion language as the landing page, restrained. */
+      @media (prefers-reduced-motion: no-preference) {
+        html {
+          scroll-behavior: smooth;
+        }
+        article {
+          animation: rise 700ms var(--ease) both;
+        }
+        .side,
+        .toc {
+          animation: rise 700ms var(--ease) both;
+          animation-delay: 120ms;
+        }
+        @keyframes rise {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: none;
+          }
+        }
+      }
+      a {
+        transition: color 300ms var(--ease);
+      }
+      .btn {
+        background: linear-gradient(180deg, var(--accent-2), var(--accent));
+        color: var(--accent-ink);
+        border: 0;
+        box-shadow:
+          0 0 0 1px oklch(100% 0 0 / 0.1) inset,
+          0 8px 24px var(--glow-soft);
+        transition:
+          transform 400ms var(--spring),
+          box-shadow 400ms var(--ease);
+      }
+      .btn:hover {
+        color: var(--accent-ink);
+        box-shadow:
+          0 0 0 1px oklch(100% 0 0 / 0.14) inset,
+          0 12px 32px var(--glow);
+        transform: translateY(-1px);
+      }
+      .side li a:hover,
+      .side li.current a {
+        background: var(--glass);
+      }
+      .side li.current a {
+        box-shadow: inset 2px 0 0 var(--accent);
+      }
+      ul.index li a {
+        color: var(--accent-link);
+      }
+      article h2 {
+        scroll-margin-top: 90px;
+      }
+
+      /* Light palette pass: the guide index as a card grid, softer tables, code chips. */
+      ul.index {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 14px;
+        padding: 0;
+        margin: 0 0 36px;
+        list-style: none;
+      }
+      ul.index li {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        padding: 18px 18px 20px;
+        border: 1px solid var(--hairline);
+        border-radius: 16px;
+        background: var(--bg-2);
+        box-shadow: 0 1px 2px oklch(0% 0 0 / 0.2);
+        transition:
+          transform 500ms var(--spring),
+          box-shadow 400ms var(--ease),
+          border-color 400ms var(--ease);
+      }
+      ul.index li:hover {
+        transform: translateY(-2px);
+        border-color: var(--hairline-strong);
+        box-shadow: 0 14px 34px oklch(0% 0 0 / 0.35);
+      }
+      ul.index li a {
+        font-weight: 600;
+        color: var(--fg);
+        text-decoration: none;
+      }
+      ul.index li a:hover {
+        color: var(--accent);
+      }
+      ul.index li span {
+        color: var(--muted);
+        font-size: 14.5px;
+        line-height: 1.45;
+      }
+      article table {
+        border: 1px solid var(--hairline);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      article th {
+        background: var(--bg-2);
+      }
+      article code {
+        background: var(--bg-2);
+        border: 1px solid var(--hairline);
+      }
+      article h2 {
+        padding-top: 8px;
+        border-top: 1px solid var(--hairline);
+      }
+      .side li.current a {
+        color: var(--accent);
+      }
+      article p,
+      article li {
+        font-size: 16px;
+        line-height: 1.65;
+      }
+      .side {
+        border-right: 1px solid var(--hairline);
+        padding-right: 16px;
+      }
+      .nav-group {
+        font-size: 13.5px;
+      }
+      .side li.current a {
+        color: var(--fg);
+        font-weight: 600;
+      }
+      article td:has(> :is(strong, b):only-child),
+      article td[align="right"] {
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* Guide pass: callouts, pager, copy buttons, mobile sidebar, tables. */
+      .callout {
+        position: relative;
+        padding: 12px 16px 12px 18px;
+        margin: 0 0 12px;
+        border-radius: 12px;
+        background: var(--glass);
+        border-left: 3px solid var(--hairline-strong);
+      }
+      .callout-belirti {
+        border-left-color: var(--subtle);
+      }
+      .callout-sebep {
+        border-left-color: var(--accent-2);
+      }
+      .callout-cozum {
+        border-left-color: var(--accent);
+        background: color-mix(in oklab, var(--accent) 10%, transparent);
+      }
+      .pager {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin: 44px 0 8px;
+      }
+      .pager a,
+      .pager .empty {
+        display: grid;
+        gap: 4px;
+        padding: 14px 16px;
+        border: 1px solid var(--hairline);
+        border-radius: 14px;
+        text-decoration: none;
+        color: var(--fg);
+        transition:
+          border-color 300ms var(--ease),
+          background-color 300ms var(--ease),
+          transform 500ms var(--spring);
+      }
+      .pager .empty {
+        border-color: transparent;
+      }
+      .pager a:hover {
+        border-color: var(--hairline-strong);
+        background: var(--glass);
+        transform: translateY(-1px);
+      }
+      .pager span {
+        font-size: 12.5px;
+        color: var(--subtle);
+      }
+      .pager-next {
+        text-align: right;
+      }
+      article .code {
+        position: relative;
+      }
+      article .code.has-copy pre {
+        padding-top: 38px;
+      }
+      article .code .copy {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        font: inherit;
+        font-size: 12.5px;
+        font-weight: 600;
+        color: var(--muted);
+        background: var(--glass);
+        border: 1px solid var(--hairline);
+        border-radius: 999px;
+        padding: 4px 10px;
+        cursor: pointer;
+        transition:
+          color 200ms var(--ease),
+          border-color 200ms var(--ease);
+      }
+      article .code .copy:hover,
+      article .code .copy:focus-visible,
+      article .code .copy.done {
+        color: var(--fg);
+        border-color: var(--hairline-strong);
+      }
+      .side-dd > summary {
+        display: none;
+      }
+      .toc a.current {
+        color: var(--fg);
+        font-weight: 600;
+      }
+      .toc a.current::before {
+        content: "";
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+        margin-right: 8px;
+        vertical-align: middle;
+        box-shadow: 0 0 8px var(--glow);
+      }
+      article .tw {
+        max-height: 70vh;
+        overflow: auto;
+      }
+      article thead th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
+      article tbody tr:nth-child(even) td {
+        background: oklch(100% 0 0 / 0.025);
+      }
+      article td.num {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+      @media (max-width: 800px) {
+        .side-dd > summary {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          cursor: pointer;
+          list-style: none;
+          padding: 12px 14px;
+          border: 1px solid var(--hairline);
+          border-radius: 12px;
+          font-weight: 600;
+        }
+        .side-dd > summary::-webkit-details-marker {
+          display: none;
+        }
+        .side-dd > summary::after {
+          content: "";
+          width: 9px;
+          height: 9px;
+          border-right: 1.5px solid var(--muted);
+          border-bottom: 1.5px solid var(--muted);
+          transform: rotate(45deg);
+          transition: transform 300ms var(--spring);
+        }
+        .side-dd[open] > summary::after {
+          transform: rotate(225deg);
+        }
+        .side-dd[open] > summary {
+          margin-bottom: 10px;
+        }
+        .side {
+          border-right: 0;
+          padding-right: 0;
+        }
+        .pager {
+          grid-template-columns: 1fr;
+        }
+        .pager-next {
+          text-align: left;
+        }
+      }
+      article code {
+        overflow-wrap: anywhere;
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip" href="#icerik">İçeriğe geç</a>
+    <header>
+      <div class="wrap">
+        <a class="brand" href="/en/"
+          ><img
+            src="/assets/icon.svg"
+            alt=""
+            width="26"
+            height="26"
+          />seowatcher <span>guide</span></a
+        >
+        <nav class="topnav" aria-label="Site">
+          <a class="hide" href="/en/">Home</a>
+          <a class="hide" href="/en/docs/">Guide</a>
+          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+            >GitHub</a
+          >
+          <a
+            class="lang"
+            href="/docs/ajan-kurulumu/"
+            lang="tr"
+            hreflang="tr"
+            aria-label="Dil: Türkçe"
+            >TR</a
+          >
+          <a
+            class="btn"
+            href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            >Download for Windows</a
+          >
+        </nav>
+      </div>
+    </header>
+    <main
+      class="wrap layout"
+      data-copy="Copy"
+      data-copied="Copied"
+      data-copy-failed="Copy failed"
+      data-copy-label="Copy code"
+    >
+      <aside class="side" aria-label="Guide">
+        <details class="side-dd" open>
+          <summary>Guide</summary>
+          <p class="nav-group">Getting started</p>
+          <ul>
+            <li><a href="/en/docs/install-windows/">Install on Windows</a></li>
+            <li>
+              <a href="/en/docs/install-docker/">Installing with Docker</a>
+            </li>
+            <li>
+              <a href="/en/docs/google-connection/">Connecting to Google</a>
+            </li>
+            <li><a href="/en/docs/pagespeed-key/">PageSpeed key</a></li>
+          </ul>
+          <p class="nav-group">Screens</p>
+          <ul>
+            <li><a href="/en/docs/projects/">Projects</a></li>
+            <li><a href="/en/docs/dashboard/">Dashboard</a></li>
+            <li>
+              <a href="/en/docs/search-performance/">Search performance</a>
+            </li>
+            <li><a href="/en/docs/rank-tracking/">Ranking tracking</a></li>
+            <li><a href="/en/docs/opportunities/">Opportunities</a></li>
+            <li><a href="/en/docs/saved-keywords/">Saved keywords</a></li>
+            <li><a href="/en/docs/analytics/">Analytics</a></li>
+            <li><a href="/en/docs/site-audit/">Site audit</a></li>
+            <li><a href="/en/docs/index-status/">Index status</a></li>
+            <li><a href="/en/docs/reports/">Reports and templates</a></li>
+            <li><a href="/en/docs/project-context/">Project info</a></li>
+            <li><a href="/en/docs/settings/">Settings</a></li>
+          </ul>
+          <p class="nav-group">Reference</p>
+          <ul>
+            <li><a href="/en/docs/help/">Help</a></li>
+            <li><a href="/en/docs/audit-rules/">Audit rules</a></li>
+            <li class="current" aria-current="page">
+              <a href="/en/docs/agent-setup/">Agent setup</a>
+            </li>
+            <li><a href="/en/docs/troubleshooting/">Troubleshooting</a></li>
+          </ul>
+        </details>
+      </aside>
+      <article id="icerik">
+        <h1>Agent setup</h1>
+        <p class="lede">
+          Connect Claude Code, Codex or Cursor to the app. The address, the
+          password, the 33 tools and 6 ready-made task templates, and which ones
+          use up Google quota.
+        </p>
+        <p>
+          By the end of this page your AI assistant will be connected to the app
+          and will have run its first command. Once connected, you can say
+          &quot;audit the site and write a report&quot;. The assistant reads
+          Search Console data, runs the audit and saves the report in the
+          <strong>Raporlar</strong> (Reports) screen. This connection is called
+          an assistant connection (MCP). It lets the assistant call the app's
+          tools (for example list_projects). Connecting is optional. If you skip
+          it, nothing is missing from the app.
+        </p>
+        <h2 id="what-you-need">What you need</h2>
+        <ul>
+          <li>A running app and a project connected to Search Console.</li>
+          <li>
+            One of Claude Code, Codex, Cursor, VS Code Copilot or Gemini CLI.
+            The app gives ready-made setup text for the first three.
+          </li>
+          <li>
+            The <strong>Ajan kurulumu</strong> (Agent setup) screen in the app.
+            It is in the left menu, under <strong>Yapay zekâ</strong> (AI).
+          </li>
+        </ul>
+        <h2 id="steps">Steps</h2>
+        <ol>
+          <li>
+            Open the <strong>Ajan kurulumu</strong> (Agent setup) screen. The
+            badge at the top says <strong>Henüz bağlanmadı</strong> (Not
+            connected yet) or <strong>Bağlandı</strong> (Connected). If
+            connected, it also shows text like &quot;Claude Code, last call 2
+            min ago&quot;. Below it you see the connection address and a copy
+            button: <code>http://127.0.0.1:3001/mcp</code> (<code
+              >localhost</code
+            >
+            on Docker).
+          </li>
+          <li>
+            Find the password. The app protects the connection from unauthorized
+            calls with a password, and it does not show the password on screen.
+            In the Windows package, the password is in the
+            <code>mcp-token</code> file in the data folder. From the taskbar
+            menu, choose <strong>Veri klasörünü aç</strong> (Open data folder).
+            On Docker, run this command:
+            <code
+              >docker compose exec -T seotracker cat
+              /app/.wrangler/mcp-token</code
+            >
+            (in Git Bash, put <code>MSYS_NO_PATHCONV=1</code> in front).
+          </li>
+          <li>Follow the section for your assistant.</li>
+        </ol>
+        <h3 id="claude-code">Claude Code</h3>
+        <p>
+          In the terminal (the command window), run the following. Replace
+          <code>&lt;parola&gt;</code> with your own password:
+        </p>
+        <div class="code">
+          <pre><code>claude mcp add --transport http --scope user seotracker http://127.0.0.1:3001/mcp --header &quot;Authorization: Bearer &lt;parola&gt;&quot;</code></pre>
+        </div>
+        <p>
+          Then type <code>/mcp</code> inside Claude Code and choose
+          <strong>Reconnect</strong>. You call the ready-made task templates
+          with a slash, like <code>/seo-audit</code>.
+        </p>
+        <h3 id="codex">Codex</h3>
+        <p>Run this command:</p>
+        <div class="code">
+          <pre><code>codex mcp add seotracker --url http://127.0.0.1:3001/mcp --bearer-token-env-var SEOTRACKER_MCP_AUTH</code></pre>
+        </div>
+        <p>
+          Then put the password in an environment variable (a setting your
+          computer remembers) named <code>SEOTRACKER_MCP_AUTH</code>. On
+          Windows, with PowerShell:
+          <code
+            >[Environment]::SetEnvironmentVariable('SEOTRACKER_MCP_AUTH',
+            '&lt;parola&gt;', 'User')</code
+          >. You call the templates like <code>$seo-audit</code>.
+        </p>
+        <h3 id="cursor">Cursor</h3>
+        <p>
+          Write this in the <code>.cursor/mcp.json</code> file in your project:
+        </p>
+        <div class="code">
+          <pre><code>{
+  &quot;mcpServers&quot;: {
+    &quot;seotracker&quot;: {
+      &quot;url&quot;: &quot;http://127.0.0.1:3001/mcp&quot;,
+      &quot;headers&quot;: { &quot;Authorization&quot;: &quot;Bearer ${env:SEOTRACKER_MCP_AUTH}&quot; }
+    }
+  }
+}</code></pre>
+        </div>
+        <p>
+          Set the environment variable the same way as for Codex. This setup has
+          not been tried on a Cursor installation yet. If your Cursor version
+          asks for a different field, check Cursor's documentation.
+        </p>
+        <h3 id="ready-made-setup-text">Ready-made setup text</h3>
+        <p>This is the easier way. First, get the text:</p>
+        <ol>
+          <li>
+            Press the <strong>Ajan kurulum istemini kopyala</strong> (Copy agent
+            setup prompt) button on the screen. There is a separate button for
+            Codex.
+          </li>
+          <li>
+            Paste the text into your assistant. The assistant sets up the
+            connection, tests it with &quot;whoami&quot; and
+            &quot;list_projects&quot;, and installs the templates.
+          </li>
+        </ol>
+        <p>
+          The <strong>Kurulum istemi (sıfırdan kurulum)</strong> (Setup prompt,
+          full setup) has the assistant do the whole setup for you, from getting
+          the app running to the Google connection. It knows both the Windows
+          package and the Docker setup.
+        </p>
+        <h3 id="installing-the-ready-made-task-templates">
+          Installing the ready-made task templates
+        </h3>
+        <p>
+          The <strong>Beceriler</strong> (Skills) tab describes the six
+          ready-made task templates. Tell the assistant &quot;install the
+          seotracker skills&quot;. The setup text knows where to copy them. To
+          update, press the <strong>Güncelleme istemini kopyala</strong> (Copy
+          update prompt) button.
+        </p>
+        <h2 id="tools">Tools</h2>
+        <p>
+          There are 33 tools in total. The &quot;Writes&quot; column shows the
+          tools that change data in the app. The &quot;Quota&quot; column shows
+          the tools that use up Google's daily allowance. Tools that write must
+          not be called without your approval. Well-built templates ask you
+          first, but the app does not.
+        </p>
+        <div class="tw">
+          <table>
+            <thead>
+              <tr>
+                <th>Tool</th>
+                <th>What it does</th>
+                <th>Writes</th>
+                <th>Quota</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>whoami</code></td>
+                <td>Tells you which installation and user you are.</td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><code>get_diagnostics</code></td>
+                <td>
+                  Gives the version, the setup checks, table counts, the last 25
+                  audits and the quota counters.
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><code>list_projects</code></td>
+                <td>
+                  Lists your projects. Every tool asks for a project number.
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><code>create_project</code></td>
+                <td>Creates a new project.</td>
+                <td>Yes</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><code>get_project_context</code></td>
+                <td>Reads the Proje bilgisi (Project info) screen.</td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><code>update_project_context</code></td>
+                <td>
+                  Changes the project info and adds a note to the research log.
+                </td>
+                <td>Yes</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><code>get_search_console_performance</code></td>
+                <td>
+                  Gives clicks, impressions, rate and position by query, page,
+                  country, device or date.
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><code>get_search_opportunities</code></td>
+                <td>
+                  Builds a list of opportunities from Search Console and
+                  Analytics.
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><code>get_cannibalization</code></td>
+                <td>
+                  Shows pages that compete with each other for the same search.
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><code>get_ranking_history</code></td>
+                <td>
+                  Gives the ranking archive on your computer. It keeps nothing
+                  older than 16 months.
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><code>get_index_coverage</code></td>
+                <td>
+                  Gives the Google index answers saved earlier. It does not ask
+                  Google.
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><code>inspect_urls</code></td>
+                <td>
+                  Asks Google for the status of pages, 10 addresses per call.
+                </td>
+                <td>Yes</td>
+                <td>2,000 per day, per property</td>
+              </tr>
+              <tr>
+                <td><code>get_sitemaps</code></td>
+                <td>Shows the sitemap status in Search Console.</td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><code>run_site_audit</code></td>
+                <td>Starts the site audit.</td>
+                <td>Yes</td>
+                <td>PageSpeed, if speed testing is on</td>
+              </tr>
+              <tr>
+                <td><code>get_audit_status</code></td>
+                <td>
+                  Says which stage the audit is at. It can mark a stuck audit as
+                  failed.
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><code>get_audit_issues</code></td>
+                <td>Gives the problems found, with steps to fix them.</td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><code>get_audit_pages</code></td>
+                <td>Lists the pages that were crawled.</td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><code>get_google_analytics_organic_overview</code></td>
+                <td>
+                  Gives a summary of visits from search and the previous period.
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><code>get_google_analytics_organic_landing_pages</code></td>
+                <td>
+                  Lists the first pages that visitors from search land on.
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><code>get_google_analytics_page_performance</code></td>
+                <td>Gives page views and engagement for pages.</td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><code>get_google_analytics_traffic_acquisition</code></td>
+                <td>
+                  Gives the split of visitors by channel, source and campaign.
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><code>get_google_analytics_key_events</code></td>
+                <td>Gives the events marked as key in Analytics.</td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><code>get_google_analytics_ecommerce_performance</code></td>
+                <td>Gives product sales.</td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><code>get_google_analytics_site_search</code></td>
+                <td>
+                  Gives the terms visitors typed into your site's search box.
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><code>get_google_analytics_audience_breakdown</code></td>
+                <td>
+                  Splits visitors by device, country, and new or returning.
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><code>get_google_analytics_measurement_health</code></td>
+                <td>
+                  Checks the measurement setup. It does not use report quota.
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><code>list_saved_keywords</code></td>
+                <td>Lists the keywords you saved.</td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><code>save_keywords</code></td>
+                <td>Saves keywords.</td>
+                <td>Yes</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><code>list_reports</code></td>
+                <td>Lists your reports.</td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><code>get_report</code></td>
+                <td>
+                  Reads a report. It can also give the HTML version if you ask.
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><code>save_report</code></td>
+                <td>Saves a report or updates an existing one.</td>
+                <td>Yes</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><code>list_report_templates</code></td>
+                <td>Reads the report templates.</td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><code>save_report_template</code></td>
+                <td>Saves a report template.</td>
+                <td>Yes</td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          The Analytics tools use Google's Analytics report allowance (200,000
+          units a day on a standard property). You can follow this allowance in
+          the app, in the Sınırlar (Limits) section of the
+          <strong>Ayarlar</strong> (Settings) screen.
+        </p>
+        <h2 id="ready-made-task-templates-skills">
+          Ready-made task templates (skills)
+        </h2>
+        <div class="tw">
+          <table>
+            <thead>
+              <tr>
+                <th>Template</th>
+                <th>When to use it</th>
+                <th>What it produces</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>seo-coach</code></td>
+                <td>
+                  When you ask &quot;what should I do&quot;. It explains the
+                  road ahead and suggests the next step.
+                </td>
+                <td>A chat, and a coaching note if needed</td>
+              </tr>
+              <tr>
+                <td><code>seo-project-setup</code></td>
+                <td>
+                  In a new project. It asks about your business, goal,
+                  competitors and key pages, and fills in the Proje bilgisi
+                  (Project info) screen.
+                </td>
+                <td>Filled-in project info, saved keywords</td>
+              </tr>
+              <tr>
+                <td><code>seo-audit</code></td>
+                <td>
+                  When you say &quot;audit the site&quot;. It runs the audit,
+                  combines it with Search Console and picks &quot;the one thing
+                  to do this week&quot;.
+                </td>
+                <td>A one-page audit report</td>
+              </tr>
+              <tr>
+                <td><code>seo-triage</code></td>
+                <td>
+                  When visits drop. It checks whether the drop is real, and
+                  where and when it happened.
+                </td>
+                <td>A drop review report</td>
+              </tr>
+              <tr>
+                <td><code>seo-check-in</code></td>
+                <td>
+                  Once a month. It compares this period with the previous one.
+                </td>
+                <td>A monthly check-in report; one builds up each month</td>
+              </tr>
+              <tr>
+                <td><code>seo-report</code></td>
+                <td>
+                  After the other templates finish. It writes and saves a
+                  single-file HTML report.
+                </td>
+                <td>
+                  A report in the <strong>Raporlar</strong> (Reports) screen
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h2 id="check">Check</h2>
+        <ul>
+          <li>
+            Tell the assistant &quot;call the whoami tool&quot;. It should tell
+            you the installation ID.
+          </li>
+          <li>
+            The badge on the <strong>Ajan kurulumu</strong> (Agent setup) screen
+            should say <strong>Bağlandı</strong> (Connected), and the time of
+            the last call should show.
+          </li>
+          <li>&quot;list_projects&quot; should list your projects.</li>
+        </ul>
+        <h2 id="frequently-asked-questions">Frequently asked questions</h2>
+        <p>
+          <strong>Does the assistant send my data outside?</strong> Your data
+          goes to whichever model the assistant uses. That depends on the
+          assistant's own privacy terms. The app only answers the connection on
+          your computer.
+        </p>
+        <p>
+          <strong>Does it work without a password?</strong> On Docker it works
+          with <code>MCP_TOKEN=off</code>. In the Windows package the password
+          is always on. On a connection without a password, any program on the
+          same computer can call the 33 tools.
+        </p>
+        <p>
+          <strong>Can the assistant use up my Google allowance?</strong>
+          <code>inspect_urls</code> and <code>run_site_audit</code> use it. The
+          templates ask about at most 20 addresses per task. They start an audit
+          only when you ask. Give your assistant the same limit.
+        </p>
+        <p>
+          <strong>Which assistant is better?</strong> It makes no difference,
+          the tools are the same. The setup text is ready for Claude Code, Codex
+          and Cursor. Other assistants work with the same address and password
+          if they support MCP.
+        </p>
+        <h2 id="if-something-goes-wrong">If something goes wrong</h2>
+        <ul>
+          <li>
+            <strong>The assistant gets a 401 error.</strong> The password is
+            wrong or is not being sent. Copy the value from the file again. Make
+            sure no line-break character is left at the end.
+          </li>
+          <li>
+            <strong>The connection is refused.</strong> The app is not running.
+            Check the taskbar icon, or the output of
+            <code>docker compose ps</code>.
+          </li>
+          <li>
+            <strong>The assistant says &quot;tool not found&quot;.</strong>
+            Reload the connection. In Claude Code, type <code>/mcp</code> and
+            choose <strong>Reconnect</strong>.
+          </li>
+          <li>
+            <strong>The templates do not show up.</strong> Paste the setup text
+            again. The templates are copied into the assistant's own folder
+            (<code>$HOME/.agents/skills</code> in Codex).
+          </li>
+        </ul>
+        <nav class="pager" aria-label="Previous and next page">
+          <a class="pager-prev" rel="prev" href="/en/docs/audit-rules/"
+            ><span>Previous</span><strong>Audit rules</strong></a
+          ><a class="pager-next" rel="next" href="/en/docs/troubleshooting/"
+            ><span>Next</span><strong>Troubleshooting</strong></a
+          >
+        </nav>
+        <p class="meta">
+          Last updated: 22 October 2026. Spotted a mistake?
+          <a href="https://github.com/ucsahinn/seotracker/issues"
+            >Report it on GitHub</a
+          >.
+        </p>
+      </article>
+      <nav class="toc" aria-label="On this page">
+        <p class="toc-label">On this page</p>
+        <ol>
+          <li><a href="#what-you-need">What you need</a></li>
+          <li><a href="#steps">Steps</a></li>
+          <li><a href="#tools">Tools</a></li>
+          <li>
+            <a href="#ready-made-task-templates-skills"
+              >Ready-made task templates (skills)</a
+            >
+          </li>
+          <li><a href="#check">Check</a></li>
+          <li>
+            <a href="#frequently-asked-questions">Frequently asked questions</a>
+          </li>
+          <li>
+            <a href="#if-something-goes-wrong">If something goes wrong</a>
+          </li>
+        </ol>
+      </nav>
+    </main>
+    <footer>
+      <div class="wrap">
+        <span>seowatcher, MIT license.</span>
+        <span
+          ><a href="/en/">Home</a> &nbsp;
+          <a href="/docs/ajan-kurulumu/" lang="tr" hreflang="tr">Türkçe</a>
+          &nbsp;
+          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"
+            >Release notes</a
+          ></span
+        >
+      </div>
+    </footer>
+  </body>
+</html>

@@ -3,59 +3,37 @@
  *
  *   node scripts/build-site-docs.mjs
  *
- * Reads every `docs/kb/*.md` (YAML frontmatter + Markdown), renders each one
- * to `site/docs/<slug>/index.html` with the site's own look, and writes the
- * index at `site/docs/index.html` plus the entries into `site/sitemap.xml`.
- * The output is committed: Cloudflare Pages serves the folder as is, with no
- * build step. Rerun after editing a KB file.
+ * Reads every `docs/kb/*.md` (Turkish, the primary language) and every
+ * `docs/kb/en/*.md` (its English edition, same file names), renders each one
+ * to `site/docs/<slug>/index.html` or `site/en/docs/<english-slug>/index.html`
+ * with the site's own look, writes the two guide indexes, the entries of both
+ * languages into `site/sitemap.xml` (with hreflang alternates) and
+ * `site/llms.txt`. The output is committed: Cloudflare Pages serves the folder
+ * as is, with no build step. Rerun after editing a KB file.
  *
  * The Markdown subset is deliberate: headings, paragraphs, ordered and
  * unordered lists (one level of nesting), tables, fenced code, inline code,
  * bold, italic, links, HTML comments (dropped). Anything else is a KB
- * authoring error and is printed as a warning.
+ * authoring error and is printed as a warning. A Turkish page without an
+ * English edition (or the reverse) is a warning too: the two guides are
+ * meant to stay in step.
  */
 import fs from "node:fs";
 import { execFileSync } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  docUrl,
+  enSlugs,
+  groups,
+  locales,
+  rewriteLinksToEnglish,
+} from "./site-locales.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const kbDir = process.env.KB_DIR || path.join(root, "docs", "kb");
-const outDir = process.env.OUT_DIR || path.join(root, "site", "docs");
+const kbRoot = process.env.KB_DIR || path.join(root, "docs", "kb");
+const siteDir = process.env.OUT_DIR || path.join(root, "site");
 const siteUrl = "https://seowatcher.io";
-
-const groups = [
-  {
-    title: "Başlangıç",
-    slugs: [
-      "kurulum-windows",
-      "kurulum-docker",
-      "google-baglantisi",
-      "pagespeed-anahtari",
-    ],
-  },
-  {
-    title: "Ekranlar",
-    slugs: [
-      "projeler",
-      "panel",
-      "arama-performansi",
-      "siralama-takibi",
-      "firsatlar",
-      "kayitli-kelimeler",
-      "analytics",
-      "site-denetimi",
-      "dizin-durumu",
-      "raporlar",
-      "proje-bilgisi",
-      "ayarlar",
-    ],
-  },
-  {
-    title: "Başvuru",
-    slugs: ["yardim", "denetim-kurallari", "ajan-kurulumu", "sorun-giderme"],
-  },
-];
 
 function escapeHtml(s) {
   return s
@@ -101,21 +79,24 @@ function inline(s) {
   return out;
 }
 
-function render(markdown, warn) {
+function render(markdown, warn, locale) {
   const src = markdown.replace(/<!--[\s\S]*?-->/g, "");
   const lines = src.split(/\r?\n/);
   const html = [];
   const toc = [];
   let i = 0;
   const para = [];
+  const calloutLabels = Object.keys(locale.callouts).join("|");
+  const calloutRe = new RegExp(`^<strong>(${calloutLabels}):<\\/strong>`);
   const flushPara = () => {
     if (para.length) {
       const text = inline(para.join(" "));
       // Troubleshooting entries open with a bold label; each kind gets its own
       // callout so a reader can scan symptom, cause and fix at a glance.
-      const kind = /^<strong>(Belirti|Sebep|Çözüm):<\/strong>/.exec(text);
-      const kinds = { Belirti: "belirti", Sebep: "sebep", Çözüm: "cozum" };
-      const cls = kind ? ` class="callout callout-${kinds[kind[1]]}"` : "";
+      const kind = calloutRe.exec(text);
+      const cls = kind
+        ? ` class="callout callout-${locale.callouts[kind[1]]}"`
+        : "";
       html.push(`<p${cls}>${text}</p>`);
       para.length = 0;
     }
@@ -147,7 +128,9 @@ function render(markdown, warn) {
         i += 1;
       }
       i += 1;
-      html.push(`<pre><code>${escapeHtml(code.join("\n"))}</code></pre>`);
+      html.push(
+        `<div class="code"><pre><code>${escapeHtml(code.join("\n"))}</code></pre></div>`,
+      );
       continue;
     }
     if (/^\|/.test(line)) {
@@ -253,23 +236,25 @@ const shell = fs.readFileSync(
   "utf8",
 );
 
+const absolute = (p) => `${siteUrl}${p}`;
+
 // Structured data for a guide page: what it is, where it sits, when it changed.
 // Truthful fields only: the author is the maintainer, dates come from front
-// matter, and the breadcrumb mirrors the visible path (Ana sayfa > Kılavuz > page).
-function jsonLd({ title, description, slug, updated, groupTitle }) {
-  const url = slug ? `${siteUrl}/docs/${slug}/` : `${siteUrl}/docs/`;
+// matter, and the breadcrumb mirrors the visible path (home > guide > page).
+function jsonLd(locale, { title, description, slug, updated, groupTitle }) {
+  const url = absolute(docUrl(locale, slug));
   const crumbs = [
     {
       "@type": "ListItem",
       position: 1,
       name: "seowatcher",
-      item: `${siteUrl}/`,
+      item: absolute(`${locale.base}/`),
     },
     {
       "@type": "ListItem",
       position: 2,
-      name: "Kılavuz",
-      item: `${siteUrl}/docs/`,
+      name: locale.t.guide,
+      item: absolute(docUrl(locale, "")),
     },
   ];
   if (slug)
@@ -281,7 +266,7 @@ function jsonLd({ title, description, slug, updated, groupTitle }) {
         headline: title,
         description,
         url,
-        inLanguage: "tr",
+        inLanguage: locale.lang,
         dateModified: updated,
         articleSection: groupTitle,
         about: { "@id": `${siteUrl}/#app` },
@@ -296,7 +281,7 @@ function jsonLd({ title, description, slug, updated, groupTitle }) {
         name: title,
         description,
         url,
-        inLanguage: "tr",
+        inLanguage: locale.lang,
         dateModified: updated,
         about: { "@id": `${siteUrl}/#app` },
         isPartOf: { "@id": `${siteUrl}/#website` },
@@ -309,7 +294,7 @@ function jsonLd({ title, description, slug, updated, groupTitle }) {
         "@id": `${siteUrl}/#website`,
         url: `${siteUrl}/`,
         name: "seowatcher",
-        inLanguage: "tr",
+        inLanguage: ["tr", "en"],
       },
       {
         "@type": "SoftwareApplication",
@@ -354,82 +339,110 @@ function gitDate(file) {
 
 // <title> under 60 characters, over 30, brand last. Screen pages say "ekranı"
 // so "Panel | seowatcher" is not the whole title.
-function seoTitle({ title, slug, screen }) {
-  if (!slug) return "seowatcher kılavuzu: kurulum, ekranlar ve sorun giderme";
-  return `${screen ? title + " ekranı" : title} | seowatcher kılavuzu`;
+function seoTitle(locale, { title, slug, screen }) {
+  if (!slug) return locale.t.guideTitle;
+  return `${screen ? title + locale.t.screenSuffix : title}${locale.t.titleSuffix}`;
 }
 
 // "2026-10-22" as people read it; the ISO form stays in the metadata.
-function turkishDate(iso) {
-  const months = [
-    "Ocak",
-    "Şubat",
-    "Mart",
-    "Nisan",
-    "Mayıs",
-    "Haziran",
-    "Temmuz",
-    "Ağustos",
-    "Eylül",
-    "Ekim",
-    "Kasım",
-    "Aralık",
-  ];
+function readableDate(locale, iso) {
   const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
-  return m ? `${Number(m[3])} ${months[Number(m[2]) - 1]} ${m[1]}` : iso;
+  return m ? `${Number(m[3])} ${locale.months[Number(m[2]) - 1]} ${m[1]}` : iso;
 }
 
 // Previous and next page in the navigation order, so a reader can walk the
 // whole guide without going back to the index.
-function pagerHtml(docs, slug) {
+function pagerHtml(locale, docs, slug) {
   const order = groups.flatMap((g) => g.slugs.filter((s) => docs.has(s)));
   const i = order.indexOf(slug);
   if (i < 0) return "";
   const link = (s, rel, label) =>
     s
-      ? `<a class="pager-${rel}" rel="${rel}" href="/docs/${s}/"><span>${label}</span><strong>${escapeHtml(docs.get(s).meta.title)}</strong></a>`
+      ? `<a class="pager-${rel}" rel="${rel}" href="${docUrl(locale, s)}"><span>${label}</span><strong>${escapeHtml(docs.get(s).meta.title)}</strong></a>`
       : `<span class="pager-${rel} empty"></span>`;
-  return `<nav class="pager" aria-label="Önceki ve sonraki sayfa">${link(order[i - 1], "prev", "Önceki")}${link(order[i + 1], "next", "Sonraki")}</nav>`;
+  return `<nav class="pager" aria-label="${locale.t.prevNext}">${link(order[i - 1], "prev", locale.t.prev)}${link(order[i + 1], "next", locale.t.next)}</nav>`;
 }
 
-function page({
-  title,
-  description,
-  body,
-  toc,
-  slug,
-  updated,
-  nav,
-  groupTitle,
-  screen,
-  pager = "",
-}) {
+// hreflang links of a page: both languages when both editions exist, Turkish
+// as the default for everyone else.
+function alternatesHtml(slug, editions) {
+  const links = [];
+  for (const locale of Object.values(locales)) {
+    if (slug && !editions[locale.lang]) continue;
+    links.push(
+      `<link rel="alternate" hreflang="${locale.lang}" href="${absolute(docUrl(locale, slug))}" />`,
+    );
+  }
+  links.push(
+    `<link rel="alternate" hreflang="x-default" href="${absolute(docUrl(locales.tr, slug))}" />`,
+  );
+  return links.join("\n    ");
+}
+
+function page(
+  locale,
+  {
+    title,
+    description,
+    body,
+    toc,
+    slug,
+    updated,
+    nav,
+    groupTitle,
+    screen,
+    pager = "",
+    editions,
+  },
+) {
+  const t = locale.t;
   const tocHtml = toc.length
-    ? `<nav class="toc" aria-label="Bu sayfada"><p class="toc-label">Bu sayfada</p><ol>${toc
-        .map((t) => `<li><a href="#${t.id}">${escapeHtml(t.text)}</a></li>`)
+    ? `<nav class="toc" aria-label="${t.onThisPage}"><p class="toc-label">${t.onThisPage}</p><ol>${toc
+        .map((x) => `<li><a href="#${x.id}">${escapeHtml(x.text)}</a></li>`)
         .join("")}</ol></nav>`
     : "";
-  return shell
-    .replaceAll("{{seotitle}}", escapeHtml(seoTitle({ title, slug, screen })))
-    .replaceAll("{{title}}", escapeHtml(title))
-    .replaceAll("{{description}}", escapeHtml(description))
-    .replaceAll(
-      "{{canonical}}",
-      slug ? `${siteUrl}/docs/${slug}/` : `${siteUrl}/docs/`,
-    )
-    .replaceAll("{{updatedText}}", turkishDate(updated))
-    .replaceAll("{{updated}}", updated)
-    .replace(
-      "{{jsonld}}",
-      jsonLd({ title, description, slug, updated, groupTitle }),
-    )
-    .replace("{{pager}}", pager)
-    .replace("{{nav}}", nav)
-    .replace("{{toc}}", tocHtml)
-    .replace("{{body}}", body);
+  const other = locale.lang === "tr" ? locales.en : locales.tr;
+  const switchHref =
+    slug && editions[other.lang] ? docUrl(other, slug) : docUrl(other, "");
+  const replacements = {
+    "{{lang}}": locale.lang,
+    "{{ogLocale}}": locale.ogLocale,
+    "{{seotitle}}": escapeHtml(seoTitle(locale, { title, slug, screen })),
+    "{{title}}": escapeHtml(title),
+    "{{description}}": escapeHtml(description),
+    "{{canonical}}": absolute(docUrl(locale, slug)),
+    "{{alternates}}": alternatesHtml(slug, editions),
+    "{{updatedText}}": readableDate(locale, updated),
+    "{{updated}}": updated,
+    "{{home}}": `${locale.base}/`,
+    "{{homeScreens}}": `${locale.base}/#ekranlar`,
+    "{{docsIndex}}": docUrl(locale, ""),
+    "{{switchHref}}": switchHref,
+    "{{switchLang}}": other.lang,
+    "{{jsonld}}": jsonLd(locale, {
+      title,
+      description,
+      slug,
+      updated,
+      groupTitle,
+    }),
+    "{{pager}}": pager,
+    "{{nav}}": nav,
+    "{{toc}}": tocHtml,
+    "{{body}}": body,
+  };
+  for (const [k, v] of Object.entries(t)) replacements[`{{t.${k}}}`] = v;
+  let out = shell;
+  // Function replacements: a "$&" in a KB page must land on the page as is.
+  for (const [k, v] of Object.entries(replacements))
+    out = out.replaceAll(k, () => v);
+  const left = /\{\{[a-zA-Z.]+\}\}/.exec(out);
+  if (left)
+    throw new Error(`site-docs-shell.html: unknown placeholder ${left[0]}`);
+  return out;
 }
 
-function navHtml(docs, current) {
+function navHtml(locale, docs, current) {
   return groups
     .map((g) => {
       const items = g.slugs
@@ -438,152 +451,240 @@ function navHtml(docs, current) {
           const d = docs.get(s);
           const cls =
             s === current ? ' class="current" aria-current="page"' : "";
-          return `<li${cls}><a href="/docs/${s}/">${escapeHtml(d.meta.title)}</a></li>`;
+          return `<li${cls}><a href="${docUrl(locale, s)}">${escapeHtml(d.meta.title)}</a></li>`;
         })
         .join("");
       return items
-        ? `<p class="nav-group">${escapeHtml(g.title)}</p><ul>${items}</ul>`
+        ? `<p class="nav-group">${escapeHtml(g.title[locale.lang])}</p><ul>${items}</ul>`
         : "";
     })
     .join("");
 }
 
-function main() {
-  if (!fs.existsSync(kbDir)) {
-    console.error(`no ${kbDir}`);
-    process.exit(1);
-  }
+function readDocs(locale, warnings) {
+  const dir = path.join(kbRoot, locale.kbSub);
   const docs = new Map();
-  const warnings = [];
+  if (!fs.existsSync(dir)) return docs;
   for (const file of fs
-    .readdirSync(kbDir)
+    .readdirSync(dir)
     .filter((f) => f.endsWith(".md") && f !== "README.md")) {
     const slug = file.replace(/\.md$/, "");
     const { meta, body } = parseFrontmatter(
-      fs.readFileSync(path.join(kbDir, file), "utf8"),
+      fs.readFileSync(path.join(dir, file), "utf8"),
     );
     if (!meta.title || !meta.description) {
-      warnings.push(`${file}: frontmatter needs title and description`);
+      warnings.push(
+        `${locale.lang}/${file}: frontmatter needs title and description`,
+      );
       continue;
     }
-    docs.set(slug, { meta, body, file });
+    if (locale.lang === "en" && !enSlugs[slug]) {
+      warnings.push(
+        `en/${file} has no English slug in scripts/site-locales.mjs`,
+      );
+      continue;
+    }
+    docs.set(slug, {
+      meta,
+      body,
+      file,
+      source: path.join("docs", "kb", locale.kbSub, file),
+    });
   }
+  return docs;
+}
+
+function main() {
+  if (!fs.existsSync(kbRoot)) {
+    console.error(`no ${kbRoot}`);
+    process.exit(1);
+  }
+  const warnings = [];
+  const all = Object.fromEntries(
+    Object.values(locales).map((l) => [l.lang, readDocs(l, warnings)]),
+  );
   const known = new Set(groups.flatMap((g) => g.slugs));
-  for (const slug of docs.keys())
+  for (const slug of all.tr.keys()) {
     if (!known.has(slug))
       warnings.push(
-        `${slug}.md is not in any group of scripts/build-site-docs.mjs`,
+        `${slug}.md is not in any group of scripts/site-locales.mjs`,
       );
-
-  fs.rmSync(outDir, { recursive: true, force: true });
-  fs.mkdirSync(outDir, { recursive: true });
-  const urls = [];
-  for (const [slug, d] of docs) {
-    const { html, toc } = render(d.body, (w) =>
-      warnings.push(`${d.file}: ${w}`),
-    );
-    const updated =
-      gitDate(path.join("docs", "kb", d.file)) ||
-      d.meta.updated ||
-      "2026-10-22";
-    const out = page({
-      title: d.meta.title,
-      description: d.meta.description,
-      body: `<h1>${escapeHtml(d.meta.title)}</h1><p class="lede">${escapeHtml(d.meta.description)}</p>${html}`,
-      toc,
-      slug,
-      updated,
-      nav: navHtml(docs, slug),
-      groupTitle:
-        groups.find((g) => g.slugs.includes(slug))?.title ?? "Kılavuz",
-      screen: Boolean(d.meta.screen),
-      pager: pagerHtml(docs, slug),
-    });
-    fs.mkdirSync(path.join(outDir, slug), { recursive: true });
-    fs.writeFileSync(path.join(outDir, slug, "index.html"), out);
-    urls.push({ loc: `${siteUrl}/docs/${slug}/`, lastmod: updated });
+    if (!all.en.has(slug))
+      warnings.push(`${slug}.md has no English edition in docs/kb/en/`);
   }
-  const indexDate =
-    urls
-      .map((u) => u.lastmod)
-      .sort()
-      .pop() || "2026-10-22";
-  const homeDate = gitDate(path.join("site", "index.html")) || indexDate;
-  // Index page: every group with its one-line descriptions.
-  const indexBody = `<h1>Kılavuz</h1><p class="lede">Kurulumdan ilk rapora kadar her adım ve her ekran için kısa, sade bir anlatım. Uygulamanın adı GitHub'da seotracker, bu sitede seowatcher; ikisi aynı şey.</p>${groups
-    .map((g) => {
-      const items = g.slugs
-        .filter((s) => docs.has(s))
-        .map(
-          (s) =>
-            `<li><a href="/docs/${s}/">${escapeHtml(docs.get(s).meta.title)}</a><span>${escapeHtml(docs.get(s).meta.description)}</span></li>`,
-        )
-        .join("");
-      return items
-        ? `<h2 id="${slugify(g.title)}">${escapeHtml(g.title)}</h2><ul class="index">${items}</ul>`
-        : "";
-    })
-    .join("")}`;
-  fs.writeFileSync(
-    path.join(outDir, "index.html"),
-    page({
-      title: "Kılavuz",
-      description:
-        "seowatcher kılavuzları: kurulum, her ekranın ne gösterdiği, Google bağlantısı, denetim kuralları, ajan kurulumu ve sorun giderme.",
-      body: indexBody,
-      toc: [],
-      slug: "",
-      updated: indexDate,
-      nav: navHtml(docs, ""),
-    }),
-  );
-  urls.unshift({ loc: `${siteUrl}/docs/`, lastmod: indexDate });
+  for (const slug of all.en.keys())
+    if (!all.tr.has(slug)) warnings.push(`en/${slug}.md has no Turkish source`);
 
-  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <url>\n    <loc>${siteUrl}/</loc>\n    <lastmod>${homeDate}</lastmod>\n  </url>\n${urls.map((u) => `  <url>\n    <loc>${u.loc}</loc>\n    <lastmod>${u.lastmod}</lastmod>\n  </url>`).join("\n")}\n</urlset>\n`;
-  if (!process.env.OUT_DIR)
-    fs.writeFileSync(path.join(root, "site", "sitemap.xml"), sitemap);
-
-  // llms.txt: the same facts the site states, in the plain-text shape AI
-  // assistants read. The guide list comes from front matter so it cannot drift.
+  const urls = []; // { slug, lastmod: {tr, en} }
+  const bySlug = new Map();
   const pkg = JSON.parse(
     fs.readFileSync(path.join(root, "package.json"), "utf8"),
   );
+  for (const locale of Object.values(locales)) {
+    const docs = all[locale.lang];
+    const outDir = path.join(siteDir, locale.kbSub, "docs");
+    fs.rmSync(outDir, { recursive: true, force: true });
+    fs.mkdirSync(outDir, { recursive: true });
+    for (const [slug, d] of docs) {
+      const editions = { tr: all.tr.has(slug), en: all.en.has(slug) };
+      const { html, toc } = render(
+        d.body,
+        (w) => warnings.push(`${locale.lang}/${d.file}: ${w}`),
+        locale,
+      );
+      const body = `<h1>${escapeHtml(d.meta.title)}</h1><p class="lede">${escapeHtml(d.meta.description)}</p>${html}`;
+      const updated = gitDate(d.source) || d.meta.updated || "2026-10-22";
+      const out = page(locale, {
+        title: d.meta.title,
+        description: d.meta.description,
+        body: locale.lang === "en" ? rewriteLinksToEnglish(body) : body,
+        toc,
+        slug,
+        updated,
+        nav: navHtml(locale, docs, slug),
+        groupTitle:
+          groups.find((g) => g.slugs.includes(slug))?.title[locale.lang] ??
+          locale.t.guide,
+        screen: Boolean(d.meta.screen),
+        pager: pagerHtml(locale, docs, slug),
+        editions,
+      });
+      const dirName = locale.lang === "en" ? enSlugs[slug] : slug;
+      fs.mkdirSync(path.join(outDir, dirName), { recursive: true });
+      fs.writeFileSync(path.join(outDir, dirName, "index.html"), out);
+      if (!bySlug.has(slug)) {
+        bySlug.set(slug, { slug, lastmod: {} });
+        urls.push(bySlug.get(slug));
+      }
+      bySlug.get(slug).lastmod[locale.lang] = updated;
+    }
+    const indexDate =
+      [...docs.values()]
+        .map((d) => gitDate(d.source) || d.meta.updated || "2026-10-22")
+        .sort()
+        .pop() || "2026-10-22";
+    // Index page: every group with its one-line descriptions.
+    const indexBody = `<h1>${locale.t.guide}</h1><p class="lede">${escapeHtml(locale.t.guideLede)}</p>${groups
+      .map((g) => {
+        const items = g.slugs
+          .filter((s) => docs.has(s))
+          .map(
+            (s) =>
+              `<li><a href="${docUrl(locale, s)}">${escapeHtml(docs.get(s).meta.title)}</a><span>${escapeHtml(docs.get(s).meta.description)}</span></li>`,
+          )
+          .join("");
+        return items
+          ? `<h2 id="${slugify(g.title[locale.lang])}">${escapeHtml(g.title[locale.lang])}</h2><ul class="index">${items}</ul>`
+          : "";
+      })
+      .join("")}`;
+    fs.writeFileSync(
+      path.join(outDir, "index.html"),
+      page(locale, {
+        title: locale.t.guide,
+        description: locale.t.guideDescription,
+        body: indexBody,
+        toc: [],
+        slug: "",
+        updated: indexDate,
+        nav: navHtml(locale, docs, ""),
+        editions: { tr: true, en: true },
+      }),
+    );
+    if (!bySlug.has("")) {
+      bySlug.set("", { slug: "", lastmod: {} });
+      urls.unshift(bySlug.get(""));
+    }
+    bySlug.get("").lastmod[locale.lang] = indexDate;
+  }
+
+  const homeDate =
+    gitDate(path.join("site", "index.html")) || bySlug.get("").lastmod.tr;
+  const entry = (loc, lastmod, alternates) =>
+    `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n${alternates
+      .map(
+        (a) =>
+          `    <xhtml:link rel="alternate" hreflang="${a.lang}" href="${a.href}" />`,
+      )
+      .join("\n")}\n  </url>`;
+  const homeAlternates = [
+    { lang: "tr", href: `${siteUrl}/` },
+    { lang: "en", href: `${siteUrl}/en/` },
+    { lang: "x-default", href: `${siteUrl}/` },
+  ];
+  const entries = [
+    entry(`${siteUrl}/`, homeDate, homeAlternates),
+    entry(`${siteUrl}/en/`, homeDate, homeAlternates),
+  ];
+  for (const u of urls) {
+    const langs = Object.keys(u.lastmod);
+    const alternates = langs.map((lang) => ({
+      lang,
+      href: absolute(docUrl(locales[lang], u.slug)),
+    }));
+    alternates.push({
+      lang: "x-default",
+      href: absolute(docUrl(locales.tr, u.slug)),
+    });
+    for (const lang of langs)
+      entries.push(
+        entry(
+          absolute(docUrl(locales[lang], u.slug)),
+          u.lastmod[lang],
+          alternates,
+        ),
+      );
+  }
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${entries.join("\n")}\n</urlset>\n`;
+  fs.writeFileSync(path.join(siteDir, "sitemap.xml"), sitemap);
+
+  // llms.txt: the same facts the site states, in the plain-text shape AI
+  // assistants read. The guide lists come from front matter so they cannot drift.
+  const guideList = (locale) =>
+    groups
+      .map((g) => {
+        const docs = all[locale.lang];
+        const items = g.slugs
+          .filter((s) => docs.has(s))
+          .map(
+            (s) =>
+              `- [${docs.get(s).meta.title}](${absolute(docUrl(locale, s))}): ${docs.get(s).meta.description}`,
+          )
+          .join("\n");
+        return items
+          ? `## ${locale.t.guide}: ${g.title[locale.lang]}\n${items}`
+          : "";
+      })
+      .filter(Boolean)
+      .join("\n\n");
   const llms = `# seowatcher
 
 > seowatcher (GitHub ve uygulama içi adı: seotracker), Google Search Console, Google Analytics 4, kendi site tarayıcısı ve PageSpeed Insights verisini tek panelde toplayan ücretsiz, açık kaynaklı (MIT) bir SEO uygulamasıdır. Windows 10/11 (64 bit) için tek kurulum dosyası vardır; Mac ve Linux'ta Docker ile çalışır. Tek kullanıcılıdır, yalnızca kullanıcının kendi bilgisayarından erişilir, veri o bilgisayarda kalır. Abonelik ve hesap yoktur.
-> English: seowatcher (also named seotracker) is a free, MIT-licensed, self-hosted SEO app that reads Google Search Console, Google Analytics 4, its own crawler and PageSpeed Insights. Windows 10/11 installer; Docker on macOS/Linux. Single user, localhost only, data stays on your machine. Derived from open-seo.
+> English: seowatcher (also named seotracker) is a free, MIT-licensed, self-hosted SEO app that reads Google Search Console, Google Analytics 4, its own crawler and PageSpeed Insights. Windows 10/11 installer; Docker on macOS/Linux. Single user, localhost only, data stays on your machine. Derived from open-seo. The app's interface is Turkish; the website and this guide exist in Turkish and English.
 
 Hızlı bilgiler: sürüm ${pkg.version}, 95 denetim kuralı, yapay zekâ asistanları için 33 MCP aracı ve 6 hazır görev, fiyat 0, lisans MIT. Arama hacmi tahmini, backlink sayımı ve rakip sıralaması yoktur. Kurulum dosyası 81 MB, kurulu hali 290 MB; Visual C++ çalışma zamanı pakete dahildir.
+Quick facts: version ${pkg.version}, 95 audit rules, 33 MCP tools and 6 ready-made tasks for AI assistants, price 0, MIT license. No search-volume estimates, backlink counts or competitor rankings. Installer 81 MB, installed 290 MB; the Visual C++ runtime is bundled.
 
 ## Ana bağlantılar
 - [Ana sayfa (Türkçe)](${siteUrl}/): ürün tanıtımı, ekran görüntüleri, kurulum, sık sorulanlar
-- [Kılavuz](${siteUrl}/docs/): kurulumdan ilk rapora kadar her adım ve her ekran
-- [Windows kurulum dosyası](https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe): SHA-256 özeti sürüm sayfasında
-- [Sürüm sayfası](https://github.com/ucsahinn/seotracker/releases/latest)
+- [Home page (English)](${siteUrl}/en/): product overview, screenshots, installation, FAQ
+- [Kılavuz (Türkçe)](${siteUrl}/docs/): kurulumdan ilk rapora kadar her adım ve her ekran
+- [Guide (English)](${siteUrl}/en/docs/): every step and every screen, from installation to the first report
+- [Windows kurulum dosyası / Windows installer](https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe): SHA-256 özeti sürüm sayfasında
+- [Sürüm sayfası / Releases](https://github.com/ucsahinn/seotracker/releases/latest)
 
-${groups
-  .map(
-    (g) =>
-      `## Kılavuz: ${g.title}\n` +
-      g.slugs
-        .filter((s) => docs.has(s))
-        .map(
-          (s) =>
-            `- [${docs.get(s).meta.title}](${siteUrl}/docs/${s}/): ${docs.get(s).meta.description}`,
-        )
-        .join("\n"),
-  )
-  .join("\n\n")}
+${guideList(locales.tr)}
+
+${guideList(locales.en)}
 
 ## Kaynak ve notlar
 - [GitHub deposu ve README (Docker kurulumu)](https://github.com/ucsahinn/seotracker)
 - [Sürüm notları](https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md)
 - [open-seo, temel alınan proje](https://github.com/every-app/open-seo)
 `;
-  if (!process.env.OUT_DIR)
-    fs.writeFileSync(path.join(root, "site", "llms.txt"), llms);
+  fs.writeFileSync(path.join(siteDir, "llms.txt"), llms);
   console.log(
-    `${docs.size} docs pages written to site/docs, sitemap has ${urls.length + 1} urls`,
+    `${all.tr.size} Turkish and ${all.en.size} English docs pages written, sitemap has ${entries.length} urls`,
   );
   for (const w of warnings) console.warn("warning:", w);
 }

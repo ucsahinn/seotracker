@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="tr">
+<html lang="{{lang}}">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -7,6 +7,7 @@
     <meta name="description" content="{{description}}" />
     <meta name="robots" content="max-image-preview:large" />
     <link rel="canonical" href="{{canonical}}" />
+    {{alternates}}
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
     <link
       rel="icon"
@@ -36,20 +37,17 @@
     <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta
-      property="og:image:alt"
-      content="seowatcher: sitenizin Google verisi, kendi bilgisayarınızda"
-    />
+    <meta property="og:image:alt" content="seowatcher" />
     <meta property="article:modified_time" content="{{updated}}" />
     <meta property="og:url" content="{{canonical}}" />
-    <meta property="og:locale" content="tr_TR" />
+    <meta property="og:locale" content="{{ogLocale}}" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="{{seotitle}}" />
     <meta name="twitter:description" content="{{description}}" />
     <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
     <meta name="color-scheme" content="dark" />
     {{jsonld}}
-    <script src="/assets/docs.js?v=2.4.1" defer></script>
+    <script src="/assets/docs.js?v=2.3.6" defer></script>
     <meta name="theme-color" content="#272c3b" />
     <style>
       @font-face {
@@ -191,6 +189,17 @@
       .topnav a {
         padding-block: 10px;
       }
+      .topnav .lang {
+        font-size: 12.5px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        padding: 4px 9px;
+        border: 1px solid var(--hairline);
+        border-radius: 999px;
+      }
+      article h2[tabindex]:focus {
+        outline: none;
+      }
       .topnav a:hover {
         color: var(--fg);
       }
@@ -225,6 +234,17 @@
         }
         .brand span {
           display: none;
+        }
+      }
+      @media (max-width: 420px) {
+        /* "Download for Windows" plus the language pill is 3px too wide on a
+           390px phone; tighter spacing keeps the page from scrolling sideways. */
+        .topnav {
+          gap: 10px;
+        }
+        .topnav .btn {
+          padding: 0 11px;
+          font-size: 13px;
         }
       }
 
@@ -685,13 +705,13 @@
       .pager-next {
         text-align: right;
       }
-      article pre {
+      article .code {
         position: relative;
       }
-      article pre.has-copy {
+      article .code.has-copy pre {
         padding-top: 38px;
       }
-      article pre .copy {
+      article .code .copy {
         position: absolute;
         top: 8px;
         right: 8px;
@@ -708,8 +728,9 @@
           color 200ms var(--ease),
           border-color 200ms var(--ease);
       }
-      article pre .copy:hover,
-      article pre .copy.done {
+      article .code .copy:hover,
+      article .code .copy:focus-visible,
+      article .code .copy.done {
         color: var(--fg);
         border-color: var(--hairline-strong);
       }
@@ -798,41 +819,55 @@
     <a class="skip" href="#icerik">İçeriğe geç</a>
     <header>
       <div class="wrap">
-        <a class="brand" href="/"
+        <a class="brand" href="{{home}}"
           ><img
             src="/assets/icon.svg"
             alt=""
             width="26"
             height="26"
-          />seowatcher <span>kılavuz</span></a
+          />seowatcher <span>{{t.guideLower}}</span></a
         >
-        <nav class="topnav" aria-label="Site">
-          <a class="hide" href="/#ekranlar">Ekranlar</a>
-          <a class="hide" href="/docs/">Kılavuz</a>
+        <nav class="topnav" aria-label="{{t.siteNav}}">
+          <a class="hide" href="{{home}}">{{t.home}}</a>
+          <a class="hide" href="{{docsIndex}}">{{t.guide}}</a>
           <a class="hide" href="https://github.com/ucsahinn/seotracker"
             >GitHub</a
           >
           <a
+            class="lang"
+            href="{{switchHref}}"
+            lang="{{switchLang}}"
+            hreflang="{{switchLang}}"
+            aria-label="{{t.switchLabel}}: {{t.switchTo}}"
+            >{{t.switchShort}}</a
+          >
+          <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
-            >Windows için indir</a
+            >{{t.downloadWindows}}</a
           >
         </nav>
       </div>
     </header>
-    <main class="wrap layout">
-      <aside class="side" aria-label="Kılavuz">
+    <main
+      class="wrap layout"
+      data-copy="{{t.copy}}"
+      data-copied="{{t.copied}}"
+      data-copy-failed="{{t.copyFailed}}"
+      data-copy-label="{{t.copyLabel}}"
+    >
+      <aside class="side" aria-label="{{t.guide}}">
         <details class="side-dd" open>
-          <summary>Kılavuz</summary>
+          <summary>{{t.guide}}</summary>
           {{nav}}
         </details>
       </aside>
       <article id="icerik">
         {{body}} {{pager}}
         <p class="meta">
-          Son güncelleme: {{updatedText}}. Bir hata görürseniz
+          {{t.updated}}: {{updatedText}}. {{t.reportIssue}}
           <a href="https://github.com/ucsahinn/seotracker/issues"
-            >GitHub'da bildirin</a
+            >{{t.reportLink}}</a
           >.
         </p>
       </article>
@@ -840,13 +875,20 @@
     </main>
     <footer>
       <div class="wrap">
-        <span>seowatcher, MIT lisansı.</span>
+        <span>{{t.license}}</span>
         <span
-          ><a href="/">Ana sayfa</a> &nbsp;
+          ><a href="{{home}}">{{t.home}}</a> &nbsp;
+          <a
+            href="{{switchHref}}"
+            lang="{{switchLang}}"
+            hreflang="{{switchLang}}"
+            >{{t.switchTo}}</a
+          >
+          &nbsp;
           <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
           <a
             href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"
-            >Sürüm notları</a
+            >{{t.releaseNotes}}</a
           ></span
         >
       </div>

@@ -44,6 +44,13 @@
     };
     var visible = {};
     var pick = function () {
+      // At the very bottom the last heading is current even when its section
+      // is too short to ever reach the top band.
+      var doc = document.documentElement;
+      if (window.innerHeight + window.scrollY >= doc.scrollHeight - 2) {
+        setCurrent(headings[headings.length - 1].id);
+        return;
+      }
       // The first heading in document order that is in the top band wins; when
       // none is, keep the last one that scrolled past the top.
       var inBand = headings.filter(function (h) {
@@ -71,6 +78,7 @@
     headings.forEach(function (h) {
       io.observe(h);
     });
+    window.addEventListener("scroll", pick, { passive: true });
     if (headings[0]) setCurrent(headings[0].id);
     tocLinks.forEach(function (a) {
       a.addEventListener("click", function (e) {
@@ -81,38 +89,58 @@
           behavior: reduce ? "auto" : "smooth",
           block: "start",
         });
+        if (!target.hasAttribute("tabindex"))
+          target.setAttribute("tabindex", "-1");
+        target.focus({ preventScroll: true });
         history.replaceState(null, "", a.getAttribute("href"));
       });
     });
   }
 
-  // 3. Copy button on every code block.
-  if (navigator.clipboard) {
-    $$("article pre").forEach(function (pre) {
-      var code = pre.querySelector("code");
+  // 3. Copy button on every code block. Labels come from the page (data-copy*
+  //    on <main>), so the same script serves both languages.
+  var main = document.querySelector("main");
+  if (navigator.clipboard && main) {
+    var labels = {
+      copy: main.getAttribute("data-copy") || "Copy",
+      copied: main.getAttribute("data-copied") || "Copied",
+      failed: main.getAttribute("data-copy-failed") || "Copy failed",
+      label: main.getAttribute("data-copy-label") || "Copy code",
+    };
+    $$("article .code").forEach(function (box) {
+      var code = box.querySelector("pre code");
       if (!code) return;
       var btn = document.createElement("button");
       btn.type = "button";
       btn.className = "copy";
-      btn.textContent = "Kopyala";
-      btn.setAttribute("aria-label", "Kodu kopyala");
+      btn.setAttribute("aria-live", "polite");
+      var setState = function (text, cls) {
+        btn.textContent = text;
+        btn.setAttribute("aria-label", labels.label + ": " + text);
+        btn.className = "copy" + (cls ? " " + cls : "");
+      };
+      setState(labels.copy, "");
+      var timer = null;
       btn.addEventListener("click", function () {
         navigator.clipboard.writeText(code.textContent).then(
           function () {
-            btn.textContent = "Kopyalandı";
-            btn.classList.add("done");
-            setTimeout(function () {
-              btn.textContent = "Kopyala";
-              btn.classList.remove("done");
+            setState(labels.copied, "done");
+            clearTimeout(timer);
+            timer = setTimeout(function () {
+              setState(labels.copy, "");
             }, 1600);
           },
           function () {
-            btn.textContent = "Kopyalanamadı";
+            setState(labels.failed, "failed");
+            clearTimeout(timer);
+            timer = setTimeout(function () {
+              setState(labels.copy, "");
+            }, 2400);
           },
         );
       });
-      pre.classList.add("has-copy");
-      pre.appendChild(btn);
+      box.classList.add("has-copy");
+      box.appendChild(btn);
     });
   }
 })();

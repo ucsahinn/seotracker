@@ -1,0 +1,1320 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Connecting to Google | seowatcher guide</title>
+    <meta
+      name="description"
+      content="To read Search Console and Analytics 4 data, get a one-time access key from Google, paste it into the app and choose your site. Step by step."
+    />
+    <meta name="robots" content="max-image-preview:large" />
+    <link
+      rel="canonical"
+      href="https://seowatcher.io/en/docs/google-connection/"
+    />
+    <link
+      rel="alternate"
+      hreflang="tr"
+      href="https://seowatcher.io/docs/google-baglantisi/"
+    />
+    <link
+      rel="alternate"
+      hreflang="en"
+      href="https://seowatcher.io/en/docs/google-connection/"
+    />
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href="https://seowatcher.io/docs/google-baglantisi/"
+    />
+    <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link
+      rel="icon"
+      href="/assets/favicon-48.png"
+      type="image/png"
+      sizes="48x48"
+    />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <link
+      rel="preload"
+      href="/assets/fonts/geist-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/assets/fonts/geist-latin-ext-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="seowatcher" />
+    <meta
+      property="og:title"
+      content="Connecting to Google | seowatcher guide"
+    />
+    <meta
+      property="og:description"
+      content="To read Search Console and Analytics 4 data, get a one-time access key from Google, paste it into the app and choose your site. Step by step."
+    />
+    <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="seowatcher" />
+    <meta property="article:modified_time" content="2026-10-22" />
+    <meta
+      property="og:url"
+      content="https://seowatcher.io/en/docs/google-connection/"
+    />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Connecting to Google | seowatcher guide"
+    />
+    <meta
+      name="twitter:description"
+      content="To read Search Console and Analytics 4 data, get a one-time access key from Google, paste it into the app and choose your site. Step by step."
+    />
+    <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
+    <meta name="color-scheme" content="dark" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://seowatcher.io/#website",
+            "url": "https://seowatcher.io/",
+            "name": "seowatcher",
+            "inLanguage": ["tr", "en"]
+          },
+          {
+            "@type": "SoftwareApplication",
+            "@id": "https://seowatcher.io/#app",
+            "name": "seowatcher",
+            "alternateName": "seotracker",
+            "url": "https://seowatcher.io/"
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://seowatcher.io/#author",
+            "name": "seowatcher",
+            "url": "https://seowatcher.io/",
+            "logo": "https://seowatcher.io/assets/icon-256.png",
+            "sameAs": ["https://github.com/ucsahinn/seotracker"]
+          },
+          {
+            "@type": "TechArticle",
+            "@id": "https://seowatcher.io/en/docs/google-connection/#article",
+            "headline": "Connecting to Google",
+            "description": "To read Search Console and Analytics 4 data, get a one-time access key from Google, paste it into the app and choose your site. Step by step.",
+            "url": "https://seowatcher.io/en/docs/google-connection/",
+            "inLanguage": "en",
+            "dateModified": "2026-10-22",
+            "articleSection": "Getting started",
+            "about": { "@id": "https://seowatcher.io/#app" },
+            "author": { "@id": "https://seowatcher.io/#author" },
+            "publisher": { "@id": "https://seowatcher.io/#author" },
+            "isPartOf": { "@id": "https://seowatcher.io/#website" },
+            "mainEntityOfPage": "https://seowatcher.io/en/docs/google-connection/"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://seowatcher.io/en/docs/google-connection/#breadcrumb",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "seowatcher",
+                "item": "https://seowatcher.io/en/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Guide",
+                "item": "https://seowatcher.io/en/docs/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Connecting to Google",
+                "item": "https://seowatcher.io/en/docs/google-connection/"
+              }
+            ]
+          }
+        ]
+      }
+    </script>
+    <script src="/assets/docs.js?v=2.3.6" defer></script>
+    <meta name="theme-color" content="#272c3b" />
+    <style>
+      @font-face {
+        font-family: "Geist";
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(/assets/fonts/geist-latin-ext-wght-normal.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+          U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+          U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: "Geist";
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(/assets/fonts/geist-latin-wght-normal.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+          U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+          U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      :root {
+        --bg: oklch(25% 0.022 262);
+        --bg-2: oklch(29% 0.024 262);
+        --bg-3: oklch(33% 0.026 262);
+        --fg: oklch(97% 0.005 262);
+        --muted: oklch(97% 0.005 262 / 0.78);
+        --subtle: oklch(97% 0.005 262 / 0.66);
+        --hairline: oklch(100% 0 0 / 0.1);
+        --hairline-strong: oklch(100% 0 0 / 0.18);
+        --accent: oklch(74% 0.14 262);
+        --accent-2: oklch(83% 0.1 262);
+        --accent-ink: oklch(18% 0.03 262);
+        --glow: oklch(74% 0.14 262 / 0.3);
+        --glow-soft: oklch(74% 0.14 262 / 0.1);
+        --glass: oklch(100% 0 0 / 0.05);
+        --glass-edge: oklch(100% 0 0 / 0.12);
+        --accent-link: oklch(83% 0.1 262);
+        --glow: oklch(46% 0.2 262 / 0.28);
+        --glow-soft: oklch(46% 0.2 262 / 0.12);
+        --ease: cubic-bezier(0.32, 0.72, 0, 1);
+        --spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
+        scroll-padding-top: 76px;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: Geist, "Segoe UI", system-ui, sans-serif;
+        font-size: 17px;
+        line-height: 1.6;
+        font-variant-numeric: tabular-nums;
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+        border-radius: 4px;
+      }
+      .skip {
+        position: absolute;
+        left: 16px;
+        top: -48px;
+        z-index: 5;
+        background: var(--accent);
+        color: var(--accent-ink);
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-weight: 600;
+      }
+      .skip:focus {
+        top: 12px;
+      }
+      .wrap {
+        width: min(1160px, 100% - 40px);
+        margin-inline: auto;
+      }
+      @media (max-width: 640px) {
+        .wrap {
+          width: calc(100% - 32px);
+        }
+      }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: color-mix(in oklab, var(--bg) 70%, transparent);
+        backdrop-filter: blur(18px) saturate(1.4);
+        -webkit-backdrop-filter: blur(18px) saturate(1.4);
+        border-bottom: 1px solid var(--hairline);
+      }
+      header .wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 60px;
+        gap: 16px;
+      }
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 600;
+        font-size: 17px;
+        letter-spacing: -0.01em;
+      }
+      .brand img {
+        width: 26px;
+        height: 26px;
+        border-radius: 7px;
+        box-shadow: 0 0 16px var(--glow-soft);
+      }
+      .brand span {
+        color: var(--subtle);
+        font-weight: 500;
+      }
+      .topnav {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        font-size: 15px;
+        color: var(--muted);
+      }
+      .topnav a {
+        padding-block: 10px;
+      }
+      .topnav .lang {
+        font-size: 12.5px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        padding: 4px 9px;
+        border: 1px solid var(--hairline);
+        border-radius: 999px;
+      }
+      article h2[tabindex]:focus {
+        outline: none;
+      }
+      .topnav a:hover {
+        color: var(--fg);
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        min-height: 36px;
+        padding: 0 14px;
+        border-radius: 999px;
+        font-weight: 560;
+        font-size: 14px;
+        background: var(--accent);
+        color: var(--accent-ink);
+        white-space: nowrap;
+        transition:
+          transform 320ms var(--ease),
+          filter 320ms var(--ease);
+      }
+      .btn:hover {
+        filter: saturate(1.06) brightness(1.05);
+        transform: translateY(-1px);
+      }
+      .btn:active {
+        transform: scale(0.98);
+      }
+      @media (max-width: 720px) {
+        .topnav .hide {
+          display: none;
+        }
+        .topnav {
+          gap: 14px;
+        }
+        .brand span {
+          display: none;
+        }
+      }
+      @media (max-width: 420px) {
+        /* "Download for Windows" plus the language pill is 3px too wide on a
+           390px phone; tighter spacing keeps the page from scrolling sideways. */
+        .topnav {
+          gap: 10px;
+        }
+        .topnav .btn {
+          padding: 0 11px;
+          font-size: 13px;
+        }
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 240px minmax(0, 1fr) 200px;
+        gap: clamp(32px, 4vw, 64px);
+        padding: 40px 0 96px;
+      }
+      .side {
+        position: sticky;
+        top: 84px;
+        align-self: start;
+        font-size: 15px;
+      }
+      .nav-group {
+        margin: 22px 0 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--subtle);
+      }
+      .nav-group:first-child {
+        margin-top: 0;
+      }
+      .side ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 2px;
+      }
+      .side li a {
+        display: block;
+        padding: 6px 10px;
+        margin-left: -10px;
+        border-radius: 8px;
+        color: var(--muted);
+        transition:
+          background-color 240ms var(--ease),
+          color 240ms var(--ease);
+      }
+      .side li a:hover {
+        background: var(--bg-2);
+        color: var(--fg);
+      }
+      .side li.current a {
+        background: var(--bg-2);
+        color: var(--fg);
+        font-weight: 600;
+      }
+      .toc {
+        position: sticky;
+        top: 84px;
+        align-self: start;
+        font-size: 14px;
+      }
+      .toc-label {
+        margin: 0 0 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--subtle);
+      }
+      .toc ol {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 6px;
+        border-left: 1px solid var(--hairline);
+      }
+      .toc a {
+        display: block;
+        padding-left: 12px;
+        color: var(--muted);
+      }
+      .toc a:hover {
+        color: var(--fg);
+      }
+      @media (max-width: 1100px) {
+        .layout {
+          grid-template-columns: 220px minmax(0, 1fr);
+        }
+        .toc {
+          display: none;
+        }
+      }
+      @media (max-width: 800px) {
+        .layout {
+          grid-template-columns: minmax(0, 1fr);
+          gap: 24px;
+        }
+        .side {
+          position: static;
+          border-bottom: 1px solid var(--hairline);
+          padding-bottom: 20px;
+        }
+      }
+
+      article {
+        max-width: 68ch;
+      }
+      article h1 {
+        font-size: clamp(30px, 4vw, 42px);
+        line-height: 1.08;
+        letter-spacing: -0.028em;
+        font-weight: 600;
+        margin: 0 0 14px;
+        text-wrap: balance;
+      }
+      article .lede {
+        font-size: 19px;
+        color: var(--muted);
+        margin: 0 0 32px;
+        text-wrap: pretty;
+      }
+      article h2 {
+        font-size: 24px;
+        letter-spacing: -0.02em;
+        margin: 44px 0 12px;
+        text-wrap: balance;
+      }
+      article h3 {
+        font-size: 18px;
+        letter-spacing: -0.012em;
+        margin: 28px 0 8px;
+      }
+      article p,
+      article li {
+        color: var(--muted);
+      }
+      article p {
+        margin: 0 0 16px;
+        text-wrap: pretty;
+      }
+      article strong {
+        color: var(--fg);
+        font-weight: 600;
+      }
+      article ul,
+      article ol {
+        margin: 0 0 18px;
+        padding-left: 22px;
+      }
+      article li {
+        margin: 0 0 8px;
+      }
+      article li::marker {
+        color: var(--subtle);
+      }
+      article a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      article a:hover {
+        text-decoration-color: var(--accent-link);
+      }
+      article code {
+        font-family: ui-monospace, Consolas, Menlo, monospace;
+        font-size: 0.9em;
+        background: var(--bg-2);
+        border: 1px solid var(--hairline);
+        padding: 1px 6px;
+        border-radius: 6px;
+        color: var(--fg);
+      }
+      article pre {
+        background: var(--bg-2);
+        border: 1px solid var(--hairline);
+        border-radius: 12px;
+        padding: 14px 16px;
+        overflow-x: auto;
+        margin: 0 0 18px;
+        font-size: 14.5px;
+        line-height: 1.5;
+      }
+      article pre code {
+        background: none;
+        border: 0;
+        padding: 0;
+      }
+      article blockquote {
+        margin: 0 0 18px;
+        padding: 2px 0 2px 18px;
+        border-left: 2px solid var(--accent);
+      }
+      article .tw {
+        overflow-x: auto;
+        margin: 0 0 22px;
+      }
+      article table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 15px;
+        min-width: 480px;
+      }
+      article th {
+        text-align: left;
+        font-weight: 600;
+        color: var(--fg);
+        padding: 0 16px 10px 0;
+        border-bottom: 1px solid var(--hairline-strong);
+        white-space: nowrap;
+      }
+      article td {
+        padding: 10px 16px 10px 0;
+        border-bottom: 1px solid var(--hairline);
+        vertical-align: top;
+        color: var(--muted);
+      }
+      article td:first-child {
+        color: var(--fg);
+      }
+      article .meta {
+        margin-top: 48px;
+        padding-top: 18px;
+        border-top: 1px solid var(--hairline);
+        font-size: 14px;
+        color: var(--subtle);
+      }
+      ul.index {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 24px;
+        display: grid;
+        gap: 10px;
+      }
+      ul.index li {
+        display: grid;
+        gap: 2px;
+        padding: 12px 0;
+        border-top: 1px solid var(--hairline);
+      }
+      ul.index li a {
+        font-weight: 600;
+        color: var(--fg);
+        text-decoration: none;
+      }
+      ul.index li a:hover {
+        text-decoration: underline;
+      }
+      ul.index li span {
+        color: var(--muted);
+        font-size: 15.5px;
+      }
+      footer {
+        padding: 32px 0 56px;
+        font-size: 14.5px;
+        color: var(--muted);
+        border-top: 1px solid var(--hairline);
+      }
+      footer .wrap {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 12px 32px;
+      }
+      footer a:hover {
+        color: var(--fg);
+      }
+
+      /* Premium pass: the same motion language as the landing page, restrained. */
+      @media (prefers-reduced-motion: no-preference) {
+        html {
+          scroll-behavior: smooth;
+        }
+        article {
+          animation: rise 700ms var(--ease) both;
+        }
+        .side,
+        .toc {
+          animation: rise 700ms var(--ease) both;
+          animation-delay: 120ms;
+        }
+        @keyframes rise {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: none;
+          }
+        }
+      }
+      a {
+        transition: color 300ms var(--ease);
+      }
+      .btn {
+        background: linear-gradient(180deg, var(--accent-2), var(--accent));
+        color: var(--accent-ink);
+        border: 0;
+        box-shadow:
+          0 0 0 1px oklch(100% 0 0 / 0.1) inset,
+          0 8px 24px var(--glow-soft);
+        transition:
+          transform 400ms var(--spring),
+          box-shadow 400ms var(--ease);
+      }
+      .btn:hover {
+        color: var(--accent-ink);
+        box-shadow:
+          0 0 0 1px oklch(100% 0 0 / 0.14) inset,
+          0 12px 32px var(--glow);
+        transform: translateY(-1px);
+      }
+      .side li a:hover,
+      .side li.current a {
+        background: var(--glass);
+      }
+      .side li.current a {
+        box-shadow: inset 2px 0 0 var(--accent);
+      }
+      ul.index li a {
+        color: var(--accent-link);
+      }
+      article h2 {
+        scroll-margin-top: 90px;
+      }
+
+      /* Light palette pass: the guide index as a card grid, softer tables, code chips. */
+      ul.index {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 14px;
+        padding: 0;
+        margin: 0 0 36px;
+        list-style: none;
+      }
+      ul.index li {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        padding: 18px 18px 20px;
+        border: 1px solid var(--hairline);
+        border-radius: 16px;
+        background: var(--bg-2);
+        box-shadow: 0 1px 2px oklch(0% 0 0 / 0.2);
+        transition:
+          transform 500ms var(--spring),
+          box-shadow 400ms var(--ease),
+          border-color 400ms var(--ease);
+      }
+      ul.index li:hover {
+        transform: translateY(-2px);
+        border-color: var(--hairline-strong);
+        box-shadow: 0 14px 34px oklch(0% 0 0 / 0.35);
+      }
+      ul.index li a {
+        font-weight: 600;
+        color: var(--fg);
+        text-decoration: none;
+      }
+      ul.index li a:hover {
+        color: var(--accent);
+      }
+      ul.index li span {
+        color: var(--muted);
+        font-size: 14.5px;
+        line-height: 1.45;
+      }
+      article table {
+        border: 1px solid var(--hairline);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      article th {
+        background: var(--bg-2);
+      }
+      article code {
+        background: var(--bg-2);
+        border: 1px solid var(--hairline);
+      }
+      article h2 {
+        padding-top: 8px;
+        border-top: 1px solid var(--hairline);
+      }
+      .side li.current a {
+        color: var(--accent);
+      }
+      article p,
+      article li {
+        font-size: 16px;
+        line-height: 1.65;
+      }
+      .side {
+        border-right: 1px solid var(--hairline);
+        padding-right: 16px;
+      }
+      .nav-group {
+        font-size: 13.5px;
+      }
+      .side li.current a {
+        color: var(--fg);
+        font-weight: 600;
+      }
+      article td:has(> :is(strong, b):only-child),
+      article td[align="right"] {
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* Guide pass: callouts, pager, copy buttons, mobile sidebar, tables. */
+      .callout {
+        position: relative;
+        padding: 12px 16px 12px 18px;
+        margin: 0 0 12px;
+        border-radius: 12px;
+        background: var(--glass);
+        border-left: 3px solid var(--hairline-strong);
+      }
+      .callout-belirti {
+        border-left-color: var(--subtle);
+      }
+      .callout-sebep {
+        border-left-color: var(--accent-2);
+      }
+      .callout-cozum {
+        border-left-color: var(--accent);
+        background: color-mix(in oklab, var(--accent) 10%, transparent);
+      }
+      .pager {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin: 44px 0 8px;
+      }
+      .pager a,
+      .pager .empty {
+        display: grid;
+        gap: 4px;
+        padding: 14px 16px;
+        border: 1px solid var(--hairline);
+        border-radius: 14px;
+        text-decoration: none;
+        color: var(--fg);
+        transition:
+          border-color 300ms var(--ease),
+          background-color 300ms var(--ease),
+          transform 500ms var(--spring);
+      }
+      .pager .empty {
+        border-color: transparent;
+      }
+      .pager a:hover {
+        border-color: var(--hairline-strong);
+        background: var(--glass);
+        transform: translateY(-1px);
+      }
+      .pager span {
+        font-size: 12.5px;
+        color: var(--subtle);
+      }
+      .pager-next {
+        text-align: right;
+      }
+      article .code {
+        position: relative;
+      }
+      article .code.has-copy pre {
+        padding-top: 38px;
+      }
+      article .code .copy {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        font: inherit;
+        font-size: 12.5px;
+        font-weight: 600;
+        color: var(--muted);
+        background: var(--glass);
+        border: 1px solid var(--hairline);
+        border-radius: 999px;
+        padding: 4px 10px;
+        cursor: pointer;
+        transition:
+          color 200ms var(--ease),
+          border-color 200ms var(--ease);
+      }
+      article .code .copy:hover,
+      article .code .copy:focus-visible,
+      article .code .copy.done {
+        color: var(--fg);
+        border-color: var(--hairline-strong);
+      }
+      .side-dd > summary {
+        display: none;
+      }
+      .toc a.current {
+        color: var(--fg);
+        font-weight: 600;
+      }
+      .toc a.current::before {
+        content: "";
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+        margin-right: 8px;
+        vertical-align: middle;
+        box-shadow: 0 0 8px var(--glow);
+      }
+      article .tw {
+        max-height: 70vh;
+        overflow: auto;
+      }
+      article thead th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
+      article tbody tr:nth-child(even) td {
+        background: oklch(100% 0 0 / 0.025);
+      }
+      article td.num {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+      @media (max-width: 800px) {
+        .side-dd > summary {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          cursor: pointer;
+          list-style: none;
+          padding: 12px 14px;
+          border: 1px solid var(--hairline);
+          border-radius: 12px;
+          font-weight: 600;
+        }
+        .side-dd > summary::-webkit-details-marker {
+          display: none;
+        }
+        .side-dd > summary::after {
+          content: "";
+          width: 9px;
+          height: 9px;
+          border-right: 1.5px solid var(--muted);
+          border-bottom: 1.5px solid var(--muted);
+          transform: rotate(45deg);
+          transition: transform 300ms var(--spring);
+        }
+        .side-dd[open] > summary::after {
+          transform: rotate(225deg);
+        }
+        .side-dd[open] > summary {
+          margin-bottom: 10px;
+        }
+        .side {
+          border-right: 0;
+          padding-right: 0;
+        }
+        .pager {
+          grid-template-columns: 1fr;
+        }
+        .pager-next {
+          text-align: left;
+        }
+      }
+      article code {
+        overflow-wrap: anywhere;
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip" href="#icerik">İçeriğe geç</a>
+    <header>
+      <div class="wrap">
+        <a class="brand" href="/en/"
+          ><img
+            src="/assets/icon.svg"
+            alt=""
+            width="26"
+            height="26"
+          />seowatcher <span>guide</span></a
+        >
+        <nav class="topnav" aria-label="Site">
+          <a class="hide" href="/en/">Home</a>
+          <a class="hide" href="/en/docs/">Guide</a>
+          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+            >GitHub</a
+          >
+          <a
+            class="lang"
+            href="/docs/google-baglantisi/"
+            lang="tr"
+            hreflang="tr"
+            aria-label="Dil: Türkçe"
+            >TR</a
+          >
+          <a
+            class="btn"
+            href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            >Download for Windows</a
+          >
+        </nav>
+      </div>
+    </header>
+    <main
+      class="wrap layout"
+      data-copy="Copy"
+      data-copied="Copied"
+      data-copy-failed="Copy failed"
+      data-copy-label="Copy code"
+    >
+      <aside class="side" aria-label="Guide">
+        <details class="side-dd" open>
+          <summary>Guide</summary>
+          <p class="nav-group">Getting started</p>
+          <ul>
+            <li><a href="/en/docs/install-windows/">Install on Windows</a></li>
+            <li>
+              <a href="/en/docs/install-docker/">Installing with Docker</a>
+            </li>
+            <li class="current" aria-current="page">
+              <a href="/en/docs/google-connection/">Connecting to Google</a>
+            </li>
+            <li><a href="/en/docs/pagespeed-key/">PageSpeed key</a></li>
+          </ul>
+          <p class="nav-group">Screens</p>
+          <ul>
+            <li><a href="/en/docs/projects/">Projects</a></li>
+            <li><a href="/en/docs/dashboard/">Dashboard</a></li>
+            <li>
+              <a href="/en/docs/search-performance/">Search performance</a>
+            </li>
+            <li><a href="/en/docs/rank-tracking/">Ranking tracking</a></li>
+            <li><a href="/en/docs/opportunities/">Opportunities</a></li>
+            <li><a href="/en/docs/saved-keywords/">Saved keywords</a></li>
+            <li><a href="/en/docs/analytics/">Analytics</a></li>
+            <li><a href="/en/docs/site-audit/">Site audit</a></li>
+            <li><a href="/en/docs/index-status/">Index status</a></li>
+            <li><a href="/en/docs/reports/">Reports and templates</a></li>
+            <li><a href="/en/docs/project-context/">Project info</a></li>
+            <li><a href="/en/docs/settings/">Settings</a></li>
+          </ul>
+          <p class="nav-group">Reference</p>
+          <ul>
+            <li><a href="/en/docs/help/">Help</a></li>
+            <li><a href="/en/docs/audit-rules/">Audit rules</a></li>
+            <li><a href="/en/docs/agent-setup/">Agent setup</a></li>
+            <li><a href="/en/docs/troubleshooting/">Troubleshooting</a></li>
+          </ul>
+        </details>
+      </aside>
+      <article id="icerik">
+        <h1>Connecting to Google</h1>
+        <p class="lede">
+          To read Search Console and Analytics 4 data, get a one-time access key
+          from Google, paste it into the app and choose your site. Step by step.
+        </p>
+        <p>
+          By the end of this page the app will be connected to Google on your
+          behalf and will read your site's data. For this, you get a
+          &quot;Google access key&quot; from Google once. It takes about ten
+          minutes, and you never have to do it again. There is also a shorter
+          way (a service account), at the end of the page.
+        </p>
+        <h2 id="what-you-need">What you need</h2>
+        <ul>
+          <li>
+            A site verified in Search Console (a property). If it is not
+            verified, the app cannot see it in the list.
+          </li>
+          <li>
+            For Analytics 4, at least &quot;Viewer&quot; permission on that
+            property. This is optional. Search Console alone is enough.
+          </li>
+          <li>
+            A Google account. Google Cloud Console (Google's developer page) is
+            free and does not ask for a card.
+          </li>
+          <li>
+            The app open. You will copy the two redirect addresses (the
+            addresses Google sends you back to the app from after you give
+            permission) from it.
+          </li>
+        </ul>
+        <h2 id="steps">Steps</h2>
+        <ol>
+          <li>
+            In the app, open <strong>Ayarlar → Google</strong> (Settings →
+            Google). You see two addresses. One ends with
+            <code>/api/gsc/oauth/callback</code> (Search Console), the other
+            with <code>/api/ga4/oauth/callback</code> (Analytics). In the
+            Windows package, the addresses start with
+            <code>http://127.0.0.1:3001</code>. On Docker, they start with
+            <code>http://localhost:3001</code>. Note both of them somewhere.
+          </li>
+          <li>
+            In the browser, go to <code>console.cloud.google.com</code>. In the
+            project picker at the top, choose <strong>Yeni proje</strong> (New
+            project). The name does not matter. You can write
+            &quot;seowatcher&quot;.
+          </li>
+          <li>
+            Open the <strong>API'ler ve Hizmetler → Kitaplık</strong> (APIs
+            &amp; Services → Library) page. Type
+            <strong>Google Search Console API</strong> in the search box, click
+            it and choose <strong>Etkinleştir</strong> (Enable). If you will
+            connect Analytics too, do the same for the
+            <strong>Google Analytics Admin API</strong> and the
+            <strong>Google Analytics Data API</strong>.
+          </li>
+          <li>
+            Open the
+            <strong>API'ler ve Hizmetler → OAuth izin ekranı</strong> (APIs
+            &amp; Services → OAuth consent screen) page. Choose
+            <strong>Harici</strong> (External) as the user type. Write any name
+            you like for the app name, and your own email address in the email
+            fields. The publishing status can stay &quot;Test&quot;.
+          </li>
+          <li>
+            On the same page, add your own Google account under
+            <strong>Test kullanıcıları</strong> (Test users). Google does not
+            need to approve anything else.
+          </li>
+          <li>
+            On the
+            <strong>API'ler ve Hizmetler → Kimlik bilgileri</strong> (APIs &amp;
+            Services → Credentials) page, choose
+            <strong>Kimlik bilgisi oluştur</strong> (Create credentials), then
+            choose <strong>OAuth istemci kimliği</strong> (OAuth client ID).
+            This is your Google access key.
+          </li>
+          <li>
+            Choose <strong>Web uygulaması</strong> (Web application) as the
+            application type.
+          </li>
+          <li>
+            Under
+            <strong>Yetkilendirilmiş yönlendirme URI'leri</strong> (Authorized
+            redirect URIs), add the two addresses from step 1. Do not put a
+            slash at the end. A one-character difference gives a
+            &quot;redirect_uri_mismatch&quot; (address does not match) error in
+            Google.
+          </li>
+          <li>
+            Choose <strong>Oluştur</strong> (Create). Google shows a client ID
+            and a secret key.
+          </li>
+          <li>
+            Go back to the app. In <strong>Ayarlar → Google</strong> (Settings →
+            Google), paste the ID that ends with
+            <code>.apps.googleusercontent.com</code> into the
+            <strong>İstemci kimliği</strong> (Client ID) field. Paste the key
+            that starts with <code>GOCSPX-</code> into the
+            <strong>Gizli anahtar</strong> (Secret key) field.
+          </li>
+          <li>
+            Choose <strong>Kaydet</strong> (Save). A &quot;Google istemcisi
+            kaydedildi&quot; (Google client saved) notice appears. You do not
+            need to restart. If you paste the ID into the wrong field, the app
+            warns you: &quot;Kimlik .apps.googleusercontent.com ile bitmeli.
+            Gizli anahtarı değil, istemci kimliğini yapıştırın.&quot; (The ID
+            must end with .apps.googleusercontent.com. Paste the client ID, not
+            the secret key.)
+          </li>
+          <li>
+            Go to your project:
+            <strong>Proje ayarları → Bağlantılar</strong> (Project settings →
+            Connections). On the <strong>Google Search Console</strong> card,
+            choose <strong>Bağlan</strong> (Connect).
+          </li>
+          <li>
+            On Google's permission screen, pick the account you added as a test
+            user and give permission. When you return to the app, a &quot;Search
+            Console bağlandı&quot; (Search Console connected) notice appears.
+          </li>
+          <li>
+            From the <strong>Mülk seç</strong> (Choose property) list, pick your
+            site and choose <strong>Mülkü kaydet</strong> (Save property). If
+            you pick a domain property, the card says &quot;Alan adı mülkü: tüm
+            alt alan adlarını ve http/https adreslerini kapsar.&quot; (Domain
+            property: covers all subdomains and http/https addresses.)
+          </li>
+          <li>
+            For Analytics, on the same screen, choose
+            <strong>Bağlan</strong> (Connect) on the
+            <strong>Google Analytics</strong> card, give permission and pick the
+            property. The two connections ask for separate permission. One does
+            not cover the other.
+          </li>
+        </ol>
+        <h3 id="a-shorter-way-a-service-account">
+          A shorter way: a service account
+        </h3>
+        <p>
+          A service account is a special account that connects to Google in your
+          place. You do not need the consent screen.
+        </p>
+        <ol>
+          <li>
+            In Google Cloud, create a service account and download its JSON key
+            file.
+          </li>
+          <li>
+            Paste the contents of the file into the
+            <strong>Ayarlar → Hizmet hesabı</strong> (Settings → Service
+            account) field in the app and save. The app shows the service
+            account's email address.
+          </li>
+          <li>
+            Add that address in Search Console with
+            <strong>Ayarlar → Kullanıcılar ve izinler → Kullanıcı ekle</strong>
+            (Settings → Users and permissions → Add user). Permission: Full.
+          </li>
+          <li>
+            In Analytics, add it with
+            <strong>Yönetici → Erişim yönetimi</strong> (Admin → Access
+            management). Permission: Viewer.
+          </li>
+        </ol>
+        <p>
+          If a service account is saved, the app prefers it. The &quot;Şu an
+          kullanılan&quot; (Currently in use) line on the
+          <strong>Ayarlar</strong> (Settings) screen tells you which one is
+          active.
+        </p>
+        <h2 id="check">Check</h2>
+        <ul>
+          <li>
+            On the <strong>Proje ayarları → Bağlantılar</strong> (Project
+            settings → Connections) cards, the badge should say
+            <strong>Bağlı</strong> (Connected).
+          </li>
+          <li>
+            The four number cards on the <strong>Panel</strong> (Dashboard)
+            screen should fill in within a few seconds. On a new site, the
+            numbers can be zero. This is not a connection error.
+          </li>
+          <li>
+            The badge in <strong>Ayarlar → Google</strong> (Settings → Google)
+            should say <strong>Kayıtlı</strong> (Saved).
+          </li>
+        </ul>
+        <h2 id="frequently-asked-questions">Frequently asked questions</h2>
+        <p>
+          <strong>Where is the secret key stored?</strong> In the database on
+          this computer, encrypted. The key that encrypts it is the
+          <code>instance-secret</code> file (in the data folder on Windows, in
+          the data volume on Docker). The key is never sent to the browser.
+        </p>
+        <p>
+          <strong
+            >Can I use the same access key in more than one project?</strong
+          >
+          Yes. One per installation is enough. Each project picks its own
+          property.
+        </p>
+        <p>
+          <strong>The connection dropped after a few days.</strong> For apps in
+          &quot;Test&quot; status, Google can limit the permission to seven
+          days. The card says &quot;Bağlantının süresi doldu&quot; (The
+          connection has expired). <strong>Yeniden bağlan</strong> (Reconnect)
+          is enough. The lasting fix is to move the consent screen to
+          &quot;Production&quot; or to switch to a service account.
+        </p>
+        <p>
+          <strong>What permissions does it ask for?</strong> Read-only for
+          Search Console (<code>webmasters.readonly</code>) and read-only for
+          Analytics (<code>analytics.readonly</code>). The app cannot change
+          anything in Google.
+        </p>
+        <h2 id="if-something-goes-wrong">If something goes wrong</h2>
+        <ul>
+          <li>
+            <strong>Google says &quot;redirect_uri_mismatch&quot;.</strong> The
+            redirect address in Cloud Console is not exactly the same as the one
+            in the app. Use the copy button on the
+            <strong>Ayarlar</strong> (Settings) screen. http versus https,
+            127.0.0.1 versus localhost, or a slash at the end is enough to cause
+            the error.
+          </li>
+          <li>
+            <strong
+              >A &quot;Google erişim anahtarı eksik&quot; (Google access key
+              missing) warning appears.</strong
+            >
+            Steps 10 and 11 were skipped, or saving failed. On the
+            <strong>Ayarlar</strong> (Settings) screen, the badge should say
+            <strong>Kayıtlı</strong> (Saved).
+          </li>
+          <li>
+            <strong>Google says &quot;access_denied&quot;.</strong> The account
+            you signed in with is not in the test users list on the consent
+            screen. Add the account to the list, or pick the right account.
+          </li>
+          <li>
+            <strong>The property list is empty.</strong> This account has no
+            verified site in Search Console and no Analytics permission. Verify
+            the site first.
+          </li>
+          <li>
+            <strong
+              >It says &quot;Bağlantısı tamamlanmadı&quot; (Connection not
+              completed) and &quot;state_mismatch&quot;.</strong
+            >
+            You opened the permission screen in two tabs, or you waited more
+            than ten minutes. Try again from the start in a single tab. If
+            browser cookies (small record files) are off, turn them on.
+          </li>
+          <li>
+            <strong
+              >It says &quot;Google hesabı zaten bağlı&quot; (Google account
+              already connected).</strong
+            >
+            The account was connected to another record earlier. Remove the old
+            one with <strong>Hesabı kaldır</strong> (Remove account) in the
+            property picker and connect again.
+          </li>
+          <li>
+            <strong>The connections dropped after an update.</strong> The
+            encryption key changed (on Docker,
+            <code>BETTER_AUTH_SECRET</code> was added or the data volume was
+            recreated). Choose <strong>Yeniden bağlan</strong> (Reconnect) on
+            the cards.
+          </li>
+        </ul>
+        <nav class="pager" aria-label="Previous and next page">
+          <a class="pager-prev" rel="prev" href="/en/docs/install-docker/"
+            ><span>Previous</span><strong>Installing with Docker</strong></a
+          ><a class="pager-next" rel="next" href="/en/docs/pagespeed-key/"
+            ><span>Next</span><strong>PageSpeed key</strong></a
+          >
+        </nav>
+        <p class="meta">
+          Last updated: 22 October 2026. Spotted a mistake?
+          <a href="https://github.com/ucsahinn/seotracker/issues"
+            >Report it on GitHub</a
+          >.
+        </p>
+      </article>
+      <nav class="toc" aria-label="On this page">
+        <p class="toc-label">On this page</p>
+        <ol>
+          <li><a href="#what-you-need">What you need</a></li>
+          <li><a href="#steps">Steps</a></li>
+          <li><a href="#check">Check</a></li>
+          <li>
+            <a href="#frequently-asked-questions">Frequently asked questions</a>
+          </li>
+          <li>
+            <a href="#if-something-goes-wrong">If something goes wrong</a>
+          </li>
+        </ol>
+      </nav>
+    </main>
+    <footer>
+      <div class="wrap">
+        <span>seowatcher, MIT license.</span>
+        <span
+          ><a href="/en/">Home</a> &nbsp;
+          <a href="/docs/google-baglantisi/" lang="tr" hreflang="tr">Türkçe</a>
+          &nbsp;
+          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"
+            >Release notes</a
+          ></span
+        >
+      </div>
+    </footer>
+  </body>
+</html>

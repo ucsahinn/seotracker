@@ -10,6 +10,9 @@
     />
     <meta name="robots" content="max-image-preview:large" />
     <link rel="canonical" href="https://seowatcher.io/" />
+    <link rel="alternate" hreflang="tr" href="https://seowatcher.io/" />
+    <link rel="alternate" hreflang="en" href="https://seowatcher.io/en/" />
+    <link rel="alternate" hreflang="x-default" href="https://seowatcher.io/" />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
     <link
       rel="icon"
@@ -52,6 +55,7 @@
     />
     <meta property="og:url" content="https://seowatcher.io/" />
     <meta property="og:locale" content="tr_TR" />
+    <meta property="og:locale:alternate" content="en_US" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
@@ -64,7 +68,7 @@
     <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
     <meta name="color-scheme" content="dark" />
     <meta name="theme-color" content="#272c3b" />
-    <script src="/assets/site.js?v=2.4.1" defer></script>
+    <script src="/assets/site.js?v=2.3.6" defer></script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -111,7 +115,7 @@
             "description": "Google Search Console, Google Analytics 4, kendi site tarama aracı ve PageSpeed Insights verisini tek panelde toplayan ücretsiz, açık kaynaklı (MIT) masaüstü SEO uygulaması. Windows 10/11'e kurulur; Mac ve Linux'ta Docker ile çalışır. Tek kullanıcılıdır, yalnızca kendi bilgisayarınızdan erişilir.",
             "applicationCategory": "BusinessApplication",
             "operatingSystem": "Windows 10, Windows 11 (64-bit)",
-            "softwareVersion": "2.3.5",
+            "softwareVersion": "2.3.6",
             "datePublished": "2026-10-22",
             "fileSize": "81 MB",
             "inLanguage": "tr",
@@ -584,6 +588,13 @@
         transition:
           color 300ms var(--ease),
           background-color 300ms var(--ease);
+      }
+      .links .lang {
+        font-size: 12.5px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        padding: 5px 10px;
+        border: 1px solid var(--hairline);
       }
       .links a:hover {
         color: var(--fg);
@@ -1744,6 +1755,15 @@
           <a href="#kurulum">Kurulum</a>
           <a href="/docs/">Kılavuz</a>
           <a href="https://github.com/ucsahinn/seotracker">GitHub</a>
+          <a
+            class="lang"
+            href="/en/"
+            lang="en"
+            hreflang="en"
+            data-lang-switch
+            aria-label="Language: English"
+            >EN</a
+          >
         </nav>
         <a
           class="btn primary small cta"
@@ -1766,6 +1786,7 @@
         <a href="#kurulum">Kurulum</a>
         <a href="/docs/">Kılavuz</a>
         <a href="https://github.com/ucsahinn/seotracker">GitHub</a>
+        <a href="/en/" lang="en" hreflang="en" data-lang-switch>English</a>
         <a
           class="btn primary"
           href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
@@ -2038,6 +2059,69 @@
           </ul>
         </div>
       </div>
+
+      <section class="flow" aria-labelledby="h-kaynak">
+        <div class="wrap">
+          <h2 id="h-kaynak" class="reveal">
+            Verinizi Google'dan okur, kimseye göndermez.
+          </h2>
+          <div class="reveal" style="--d: 120">
+            <svg
+              viewBox="0 0 1120 340"
+              role="img"
+              aria-label="Akış: Google Search Console, Analytics 4 ve PageSpeed verisi bilgisayarınızdaki seowatcher'a gelir; oradan siz ve isterseniz yapay zekâ asistanınız okur."
+            >
+              <g class="node">
+                <rect x="20" y="40" width="250" height="64" rx="14" />
+                <text x="48" y="78">Google Search Console</text>
+              </g>
+              <g class="node">
+                <rect x="20" y="138" width="250" height="64" rx="14" />
+                <text x="48" y="176">Google Analytics 4</text>
+              </g>
+              <g class="node">
+                <rect x="20" y="236" width="250" height="64" rx="14" />
+                <text x="48" y="274">PageSpeed Insights</text>
+              </g>
+              <path class="line" d="M270 72 C 360 72, 380 170, 450 170" />
+              <path class="line" d="M270 170 L 450 170" />
+              <path class="line" d="M270 268 C 360 268, 380 170, 450 170" />
+              <path class="pulse" d="M270 72 C 360 72, 380 170, 450 170" />
+              <path class="pulse" d="M270 170 L 450 170" />
+              <path class="pulse" d="M270 268 C 360 268, 380 170, 450 170" />
+              <g class="node core">
+                <rect x="450" y="118" width="230" height="104" rx="18" />
+                <text x="482" y="158" font-weight="600">seowatcher</text>
+                <text class="small" x="482" y="184">
+                  kendi bilgisayarınızda
+                </text>
+                <text class="small" x="482" y="204">127.0.0.1:3001</text>
+              </g>
+              <path class="line" d="M680 170 C 760 170, 780 90, 860 90" />
+              <path class="line" d="M680 170 C 760 170, 780 250, 860 250" />
+              <path class="pulse back" d="M680 170 C 760 170, 780 90, 860 90" />
+              <path
+                class="pulse back"
+                d="M680 170 C 760 170, 780 250, 860 250"
+              />
+              <g class="node">
+                <rect x="860" y="58" width="240" height="64" rx="14" />
+                <text x="888" y="96">Siz, tarayıcınızda</text>
+              </g>
+              <g class="node">
+                <rect x="860" y="218" width="240" height="64" rx="14" />
+                <text x="888" y="256">Yapay zekâ asistanınız</text>
+              </g>
+            </svg>
+          </div>
+          <p class="flow-note reveal" style="--d: 200">
+            Uygulama yalnızca kendi bilgisayarınızdan açılır. Dışarıda iki yerle
+            konuşur: Google ve denetlediğiniz sitenin sayfaları. Verileriniz
+            başka hiçbir yere gitmez. Google erişim anahtarınız bilgisayarınızda
+            şifreli durur.
+          </p>
+        </div>
+      </section>
 
       <section
         class="walk"
@@ -2396,69 +2480,6 @@
         </div>
       </section>
 
-      <section class="flow" aria-labelledby="h-kaynak">
-        <div class="wrap">
-          <h2 id="h-kaynak" class="reveal">
-            Verinizi Google'dan okur, kimseye göndermez.
-          </h2>
-          <div class="reveal" style="--d: 120">
-            <svg
-              viewBox="0 0 1120 340"
-              role="img"
-              aria-label="Akış: Google Search Console, Analytics 4 ve PageSpeed verisi bilgisayarınızdaki seowatcher'a gelir; oradan siz ve isterseniz yapay zekâ asistanınız okur."
-            >
-              <g class="node">
-                <rect x="20" y="40" width="250" height="64" rx="14" />
-                <text x="48" y="78">Google Search Console</text>
-              </g>
-              <g class="node">
-                <rect x="20" y="138" width="250" height="64" rx="14" />
-                <text x="48" y="176">Google Analytics 4</text>
-              </g>
-              <g class="node">
-                <rect x="20" y="236" width="250" height="64" rx="14" />
-                <text x="48" y="274">PageSpeed Insights</text>
-              </g>
-              <path class="line" d="M270 72 C 360 72, 380 170, 450 170" />
-              <path class="line" d="M270 170 L 450 170" />
-              <path class="line" d="M270 268 C 360 268, 380 170, 450 170" />
-              <path class="pulse" d="M270 72 C 360 72, 380 170, 450 170" />
-              <path class="pulse" d="M270 170 L 450 170" />
-              <path class="pulse" d="M270 268 C 360 268, 380 170, 450 170" />
-              <g class="node core">
-                <rect x="450" y="118" width="230" height="104" rx="18" />
-                <text x="482" y="158" font-weight="600">seowatcher</text>
-                <text class="small" x="482" y="184">
-                  kendi bilgisayarınızda
-                </text>
-                <text class="small" x="482" y="204">127.0.0.1:3001</text>
-              </g>
-              <path class="line" d="M680 170 C 760 170, 780 90, 860 90" />
-              <path class="line" d="M680 170 C 760 170, 780 250, 860 250" />
-              <path class="pulse back" d="M680 170 C 760 170, 780 90, 860 90" />
-              <path
-                class="pulse back"
-                d="M680 170 C 760 170, 780 250, 860 250"
-              />
-              <g class="node">
-                <rect x="860" y="58" width="240" height="64" rx="14" />
-                <text x="888" y="96">Siz, tarayıcınızda</text>
-              </g>
-              <g class="node">
-                <rect x="860" y="218" width="240" height="64" rx="14" />
-                <text x="888" y="256">Yapay zekâ asistanınız</text>
-              </g>
-            </svg>
-          </div>
-          <p class="flow-note reveal" style="--d: 200">
-            Uygulama yalnızca kendi bilgisayarınızdan açılır. Dışarıda iki yerle
-            konuşur: Google ve denetlediğiniz sitenin sayfaları. Verileriniz
-            başka hiçbir yere gitmez. Google erişim anahtarınız bilgisayarınızda
-            şifreli durur.
-          </p>
-        </div>
-      </section>
-
       <section class="install" id="kurulum" aria-labelledby="h-kurulum">
         <div class="wrap">
           <div>
@@ -2508,7 +2529,7 @@
               <p class="big">Windows kurulum dosyası</p>
               <dl>
                 <dt>Sürüm</dt>
-                <dd>2.3.5, 23 Ekim 2026</dd>
+                <dd>2.3.6, 23 Ekim 2026</dd>
                 <dt>Boyut</dt>
                 <dd>81 MB</dd>
                 <dt>Gerekenler</dt>
@@ -2591,7 +2612,7 @@
             </div>
             <div class="row">
               <dt>Sürüm</dt>
-              <dd>2.3.5, 23 Ekim 2026</dd>
+              <dd>2.3.6, 23 Ekim 2026</dd>
             </div>
             <div class="row">
               <dt>İndirme</dt>
@@ -2764,7 +2785,7 @@
             ><a
               href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"
               >Sürüm notları</a
-            >
+            ><a href="/en/" lang="en" hreflang="en" data-lang-switch>English</a>
           </div>
         </div>
         <div class="bottom">
@@ -2773,6 +2794,8 @@
             type="button"
             class="still"
             data-still-toggle
+            data-still-on="Hareketi başlat"
+            data-still-off="Hareketi durdur"
             aria-pressed="false"
             hidden
           >

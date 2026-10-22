@@ -5,6 +5,16 @@ sitesindeki `/docs/` sayfaları `node scripts/build-site-docs.mjs` ile bunlardan
 üretilir ve `site/docs/` altına yazılır. Bir kılavuzu değiştirince betiği yeniden
 çalıştırın.
 
+İngilizce sürüm `docs/kb/en/` altında, aynı dosya adlarıyla durur; aynı betik
+onları `site/en/docs/<ingilizce-slug>/` olarak üretir (slug eşlemesi
+`scripts/site-locales.mjs` içinde). Bir Türkçe sayfayı değiştirince İngilizcesini
+de güncelleyin; betik eşi olmayan sayfayı uyarı olarak yazar. Ana sayfanın
+İngilizcesi `scripts/site-home.en.json` çeviri tablosundan
+`node scripts/build-site-home.mjs build` ile üretilir (`pnpm run site:build`
+üçünü birden çalıştırır). İngilizce metinde uygulamanın ekran adları Türkçe
+kalır ve ilk geçtiği yerde parantez içinde İngilizcesi verilir, çünkü
+uygulamanın arayüzü Türkçedir.
+
 Her dosya YAML ön bilgisiyle başlar (`title`, `description`, ekran sayfalarında
 `screen` ve `route`, kılavuzlarda `kind`, hepsinde `updated`). Sonunda, sayfaya
 basılmayan bir HTML yorumu, metnin hangi kaynak dosyalara göre doğrulandığını

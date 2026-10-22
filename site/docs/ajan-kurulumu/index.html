@@ -7,6 +7,9 @@
     <meta name="description" content="Claude Code, Codex ya da Cursor'ı uygulamaya bağlayın. Adres, parola, 33 araç ve 6 hazır görev şablonu, hangisinin Google hakkı harcadığı." />
     <meta name="robots" content="max-image-preview:large" />
     <link rel="canonical" href="https://seowatcher.io/docs/ajan-kurulumu/" />
+    <link rel="alternate" hreflang="tr" href="https://seowatcher.io/docs/ajan-kurulumu/" />
+    <link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/agent-setup/" />
+    <link rel="alternate" hreflang="x-default" href="https://seowatcher.io/docs/ajan-kurulumu/" />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
     <link
       rel="icon"
@@ -36,10 +39,7 @@
     <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta
-      property="og:image:alt"
-      content="seowatcher: sitenizin Google verisi, kendi bilgisayarınızda"
-    />
+    <meta property="og:image:alt" content="seowatcher" />
     <meta property="article:modified_time" content="2026-10-23" />
     <meta property="og:url" content="https://seowatcher.io/docs/ajan-kurulumu/" />
     <meta property="og:locale" content="tr_TR" />
@@ -48,8 +48,8 @@
     <meta name="twitter:description" content="Claude Code, Codex ya da Cursor'ı uygulamaya bağlayın. Adres, parola, 33 araç ve 6 hazır görev şablonu, hangisinin Google hakkı harcadığı." />
     <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
     <meta name="color-scheme" content="dark" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":"tr"},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/docs/ajan-kurulumu/#article","headline":"Ajan kurulumu","description":"Claude Code, Codex ya da Cursor'ı uygulamaya bağlayın. Adres, parola, 33 araç ve 6 hazır görev şablonu, hangisinin Google hakkı harcadığı.","url":"https://seowatcher.io/docs/ajan-kurulumu/","inLanguage":"tr","dateModified":"2026-10-23","articleSection":"Başvuru","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/docs/ajan-kurulumu/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/docs/ajan-kurulumu/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/"},{"@type":"ListItem","position":2,"name":"Kılavuz","item":"https://seowatcher.io/docs/"},{"@type":"ListItem","position":3,"name":"Ajan kurulumu","item":"https://seowatcher.io/docs/ajan-kurulumu/"}]}]}</script>
-    <script src="/assets/docs.js?v=2.4.1" defer></script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/docs/ajan-kurulumu/#article","headline":"Ajan kurulumu","description":"Claude Code, Codex ya da Cursor'ı uygulamaya bağlayın. Adres, parola, 33 araç ve 6 hazır görev şablonu, hangisinin Google hakkı harcadığı.","url":"https://seowatcher.io/docs/ajan-kurulumu/","inLanguage":"tr","dateModified":"2026-10-23","articleSection":"Başvuru","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/docs/ajan-kurulumu/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/docs/ajan-kurulumu/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/"},{"@type":"ListItem","position":2,"name":"Kılavuz","item":"https://seowatcher.io/docs/"},{"@type":"ListItem","position":3,"name":"Ajan kurulumu","item":"https://seowatcher.io/docs/ajan-kurulumu/"}]}]}</script>
+    <script src="/assets/docs.js?v=2.3.6" defer></script>
     <meta name="theme-color" content="#272c3b" />
     <style>
       @font-face {
@@ -191,6 +191,17 @@
       .topnav a {
         padding-block: 10px;
       }
+      .topnav .lang {
+        font-size: 12.5px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        padding: 4px 9px;
+        border: 1px solid var(--hairline);
+        border-radius: 999px;
+      }
+      article h2[tabindex]:focus {
+        outline: none;
+      }
       .topnav a:hover {
         color: var(--fg);
       }
@@ -225,6 +236,17 @@
         }
         .brand span {
           display: none;
+        }
+      }
+      @media (max-width: 420px) {
+        /* "Download for Windows" plus the language pill is 3px too wide on a
+           390px phone; tighter spacing keeps the page from scrolling sideways. */
+        .topnav {
+          gap: 10px;
+        }
+        .topnav .btn {
+          padding: 0 11px;
+          font-size: 13px;
         }
       }
 
@@ -685,13 +707,13 @@
       .pager-next {
         text-align: right;
       }
-      article pre {
+      article .code {
         position: relative;
       }
-      article pre.has-copy {
+      article .code.has-copy pre {
         padding-top: 38px;
       }
-      article pre .copy {
+      article .code .copy {
         position: absolute;
         top: 8px;
         right: 8px;
@@ -708,8 +730,9 @@
           color 200ms var(--ease),
           border-color 200ms var(--ease);
       }
-      article pre .copy:hover,
-      article pre .copy.done {
+      article .code .copy:hover,
+      article .code .copy:focus-visible,
+      article .code .copy.done {
         color: var(--fg);
         border-color: var(--hairline-strong);
       }
@@ -807,10 +830,18 @@
           />seowatcher <span>kılavuz</span></a
         >
         <nav class="topnav" aria-label="Site">
-          <a class="hide" href="/#ekranlar">Ekranlar</a>
+          <a class="hide" href="/">Ana sayfa</a>
           <a class="hide" href="/docs/">Kılavuz</a>
           <a class="hide" href="https://github.com/ucsahinn/seotracker"
             >GitHub</a
+          >
+          <a
+            class="lang"
+            href="/en/docs/agent-setup/"
+            lang="en"
+            hreflang="en"
+            aria-label="Language: English"
+            >EN</a
           >
           <a
             class="btn"
@@ -820,7 +851,13 @@
         </nav>
       </div>
     </header>
-    <main class="wrap layout">
+    <main
+      class="wrap layout"
+      data-copy="Kopyala"
+      data-copied="Kopyalandı"
+      data-copy-failed="Kopyalanamadı"
+      data-copy-label="Kodu kopyala"
+    >
       <aside class="side" aria-label="Kılavuz">
         <details class="side-dd" open>
           <summary>Kılavuz</summary>
@@ -835,22 +872,22 @@
 <ol><li><strong>Ajan kurulumu</strong> ekranını açın. Üstteki rozet <strong>Henüz bağlanmadı</strong> ya da <strong>Bağlandı</strong> der. Bağlandıysa yanında &quot;Claude Code, son çağrı 2 dk önce&quot; gibi bir yazı olur. Altında bağlantı adresi ve kopyalama düğmesi var: <code>http://127.0.0.1:3001/mcp</code> (Docker'da <code>localhost</code>).</li><li>Parolayı bulun. Uygulama bağlantıyı izinsiz çağrılara karşı bir parolayla korur ve parolayı ekranda göstermez. Windows paketinde parola veri klasöründeki <code>mcp-token</code> dosyasındadır. Görev çubuğu menüsünden <strong>Veri klasörünü aç</strong> deyin. Docker'da şu komutu yazın: <code>docker compose exec -T seotracker cat /app/.wrangler/mcp-token</code> (Git Bash'te başına <code>MSYS_NO_PATHCONV=1</code> ekleyin).</li><li>Asistanınıza uygun bölümü izleyin.</li></ol>
 <h3 id="claude-code">Claude Code</h3>
 <p>Terminalde (komut penceresinde) şunu yazın. <code>&lt;parola&gt;</code> yerine kendi parolanızı koyun:</p>
-<pre><code>claude mcp add --transport http --scope user seotracker http://127.0.0.1:3001/mcp --header &quot;Authorization: Bearer &lt;parola&gt;&quot;</code></pre>
+<div class="code"><pre><code>claude mcp add --transport http --scope user seotracker http://127.0.0.1:3001/mcp --header &quot;Authorization: Bearer &lt;parola&gt;&quot;</code></pre></div>
 <p>Sonra Claude Code içinde <code>/mcp</code> yazın ve <strong>Reconnect</strong> deyin. Hazır görev şablonları <code>/seo-audit</code> gibi eğik çizgiyle çağrılır.</p>
 <h3 id="codex">Codex</h3>
 <p>Şu komutu yazın:</p>
-<pre><code>codex mcp add seotracker --url http://127.0.0.1:3001/mcp --bearer-token-env-var SEOTRACKER_MCP_AUTH</code></pre>
+<div class="code"><pre><code>codex mcp add seotracker --url http://127.0.0.1:3001/mcp --bearer-token-env-var SEOTRACKER_MCP_AUTH</code></pre></div>
 <p>Sonra <code>SEOTRACKER_MCP_AUTH</code> adlı ortam değişkenine (bilgisayarın hatırladığı ayar) parolayı yazın. Windows'ta PowerShell ile: <code>[Environment]::SetEnvironmentVariable('SEOTRACKER_MCP_AUTH', '&lt;parola&gt;', 'User')</code>. Şablonlar <code>$seo-audit</code> gibi çağrılır.</p>
 <h3 id="cursor">Cursor</h3>
 <p>Projenizdeki <code>.cursor/mcp.json</code> dosyasına şunu yazın:</p>
-<pre><code>{
+<div class="code"><pre><code>{
   &quot;mcpServers&quot;: {
     &quot;seotracker&quot;: {
       &quot;url&quot;: &quot;http://127.0.0.1:3001/mcp&quot;,
       &quot;headers&quot;: { &quot;Authorization&quot;: &quot;Bearer ${env:SEOTRACKER_MCP_AUTH}&quot; }
     }
   }
-}</code></pre>
+}</code></pre></div>
 <p>Ortam değişkenini Codex'teki gibi ayarlayın. Bu ayar bir Cursor kurulumunda henüz denenmedi. Cursor sürümünüz başka bir alan isterse Cursor'ın belgesine bakın.</p>
 <h3 id="hazir-kurulum-metni">Hazır kurulum metni</h3>
 <p>Daha kolay yol bu. Önce metni alın:</p>
@@ -887,6 +924,13 @@
         <span>seowatcher, MIT lisansı.</span>
         <span
           ><a href="/">Ana sayfa</a> &nbsp;
+          <a
+            href="/en/docs/agent-setup/"
+            lang="en"
+            hreflang="en"
+            >English</a
+          >
+          &nbsp;
           <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
           <a
             href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"

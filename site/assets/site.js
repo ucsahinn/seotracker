@@ -81,10 +81,11 @@
     var start = null,
       dur = 1400;
     function fmt(v) {
-      var s = v.toFixed(decimals).replace(".", ",");
-      var parts = s.split(",");
-      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-      return parts.join(",");
+      // Separators follow the page language: 1.085,5 in Turkish, 1,085.5 in English.
+      var tr = (document.documentElement.lang || "tr").indexOf("tr") === 0;
+      var parts = v.toFixed(decimals).split(".");
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, tr ? "." : ",");
+      return parts.join(tr ? "," : ".");
     }
     function step(t) {
       if (start === null) start = t;
@@ -174,7 +175,9 @@
     var apply = function (on) {
       document.documentElement.toggleAttribute("data-still", on);
       still.setAttribute("aria-pressed", String(on));
-      still.textContent = on ? "Hareketi başlat" : "Hareketi durdur";
+      still.textContent = on
+        ? still.getAttribute("data-still-on") || "Play motion"
+        : still.getAttribute("data-still-off") || "Pause motion";
     };
     still.hidden = false;
     apply(saved);

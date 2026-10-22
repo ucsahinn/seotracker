@@ -7,6 +7,9 @@
     <meta name="description" content="Tek dosyayla Windows'a kurun. İlk açılış, güncelleme, kaldırma, yedek alma ve adres numarası değiştirme. Docker ya da terminal gerekmez." />
     <meta name="robots" content="max-image-preview:large" />
     <link rel="canonical" href="https://seowatcher.io/docs/kurulum-windows/" />
+    <link rel="alternate" hreflang="tr" href="https://seowatcher.io/docs/kurulum-windows/" />
+    <link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/install-windows/" />
+    <link rel="alternate" hreflang="x-default" href="https://seowatcher.io/docs/kurulum-windows/" />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
     <link
       rel="icon"
@@ -36,10 +39,7 @@
     <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta
-      property="og:image:alt"
-      content="seowatcher: sitenizin Google verisi, kendi bilgisayarınızda"
-    />
+    <meta property="og:image:alt" content="seowatcher" />
     <meta property="article:modified_time" content="2026-10-23" />
     <meta property="og:url" content="https://seowatcher.io/docs/kurulum-windows/" />
     <meta property="og:locale" content="tr_TR" />
@@ -48,8 +48,8 @@
     <meta name="twitter:description" content="Tek dosyayla Windows'a kurun. İlk açılış, güncelleme, kaldırma, yedek alma ve adres numarası değiştirme. Docker ya da terminal gerekmez." />
     <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
     <meta name="color-scheme" content="dark" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":"tr"},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/docs/kurulum-windows/#article","headline":"Windows'a kurulum","description":"Tek dosyayla Windows'a kurun. İlk açılış, güncelleme, kaldırma, yedek alma ve adres numarası değiştirme. Docker ya da terminal gerekmez.","url":"https://seowatcher.io/docs/kurulum-windows/","inLanguage":"tr","dateModified":"2026-10-23","articleSection":"Başlangıç","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/docs/kurulum-windows/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/docs/kurulum-windows/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/"},{"@type":"ListItem","position":2,"name":"Kılavuz","item":"https://seowatcher.io/docs/"},{"@type":"ListItem","position":3,"name":"Windows'a kurulum","item":"https://seowatcher.io/docs/kurulum-windows/"}]}]}</script>
-    <script src="/assets/docs.js?v=2.4.1" defer></script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/docs/kurulum-windows/#article","headline":"Windows'a kurulum","description":"Tek dosyayla Windows'a kurun. İlk açılış, güncelleme, kaldırma, yedek alma ve adres numarası değiştirme. Docker ya da terminal gerekmez.","url":"https://seowatcher.io/docs/kurulum-windows/","inLanguage":"tr","dateModified":"2026-10-23","articleSection":"Başlangıç","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/docs/kurulum-windows/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/docs/kurulum-windows/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/"},{"@type":"ListItem","position":2,"name":"Kılavuz","item":"https://seowatcher.io/docs/"},{"@type":"ListItem","position":3,"name":"Windows'a kurulum","item":"https://seowatcher.io/docs/kurulum-windows/"}]}]}</script>
+    <script src="/assets/docs.js?v=2.3.6" defer></script>
     <meta name="theme-color" content="#272c3b" />
     <style>
       @font-face {
@@ -191,6 +191,17 @@
       .topnav a {
         padding-block: 10px;
       }
+      .topnav .lang {
+        font-size: 12.5px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        padding: 4px 9px;
+        border: 1px solid var(--hairline);
+        border-radius: 999px;
+      }
+      article h2[tabindex]:focus {
+        outline: none;
+      }
       .topnav a:hover {
         color: var(--fg);
       }
@@ -225,6 +236,17 @@
         }
         .brand span {
           display: none;
+        }
+      }
+      @media (max-width: 420px) {
+        /* "Download for Windows" plus the language pill is 3px too wide on a
+           390px phone; tighter spacing keeps the page from scrolling sideways. */
+        .topnav {
+          gap: 10px;
+        }
+        .topnav .btn {
+          padding: 0 11px;
+          font-size: 13px;
         }
       }
 
@@ -685,13 +707,13 @@
       .pager-next {
         text-align: right;
       }
-      article pre {
+      article .code {
         position: relative;
       }
-      article pre.has-copy {
+      article .code.has-copy pre {
         padding-top: 38px;
       }
-      article pre .copy {
+      article .code .copy {
         position: absolute;
         top: 8px;
         right: 8px;
@@ -708,8 +730,9 @@
           color 200ms var(--ease),
           border-color 200ms var(--ease);
       }
-      article pre .copy:hover,
-      article pre .copy.done {
+      article .code .copy:hover,
+      article .code .copy:focus-visible,
+      article .code .copy.done {
         color: var(--fg);
         border-color: var(--hairline-strong);
       }
@@ -807,10 +830,18 @@
           />seowatcher <span>kılavuz</span></a
         >
         <nav class="topnav" aria-label="Site">
-          <a class="hide" href="/#ekranlar">Ekranlar</a>
+          <a class="hide" href="/">Ana sayfa</a>
           <a class="hide" href="/docs/">Kılavuz</a>
           <a class="hide" href="https://github.com/ucsahinn/seotracker"
             >GitHub</a
+          >
+          <a
+            class="lang"
+            href="/en/docs/install-windows/"
+            lang="en"
+            hreflang="en"
+            aria-label="Language: English"
+            >EN</a
           >
           <a
             class="btn"
@@ -820,7 +851,13 @@
         </nav>
       </div>
     </header>
-    <main class="wrap layout">
+    <main
+      class="wrap layout"
+      data-copy="Kopyala"
+      data-copied="Kopyalandı"
+      data-copy-failed="Kopyalanamadı"
+      data-copy-label="Kodu kopyala"
+    >
       <aside class="side" aria-label="Kılavuz">
         <details class="side-dd" open>
           <summary>Kılavuz</summary>
@@ -862,9 +899,9 @@
 <p>Uygulama 3001 numarasını kullanır. Başka program onu tutuyorsa uygulama 3002 ile 3010 arasında boş ilk numarayı seçer. Seçtiğini <code>config.json</code> dosyasına yazar.</p>
 <p>Belirli bir numara istiyorsanız:</p>
 <ol><li>Uygulamayı kapatın.</li><li>Veri klasöründeki <code>config.json</code> dosyasını Not Defteri ile açın.</li><li>İçine şunu yazın:</li></ol>
-<pre><code>{
+<div class="code"><pre><code>{
   &quot;port&quot;: 3005
-}</code></pre>
+}</code></pre></div>
 <ol><li>Kaydedin ve uygulamayı başlatın.</li></ol>
 <p>Numara değişince Google'daki iki yönlendirme adresini de yeni numarayla güncelleyin. Bu adresler Google bağlantısı kılavuzunda anlatılıyor.</p>
 <h2 id="kontrol">Kontrol</h2>
@@ -891,6 +928,13 @@
         <span>seowatcher, MIT lisansı.</span>
         <span
           ><a href="/">Ana sayfa</a> &nbsp;
+          <a
+            href="/en/docs/install-windows/"
+            lang="en"
+            hreflang="en"
+            >English</a
+          >
+          &nbsp;
           <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
           <a
             href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"

@@ -7,6 +7,9 @@
     <meta name="description" content="Mac, Linux ve Windows'ta Docker ile kurun. Tek komut yeter, .env dosyası gerekmez. Verileriniz Docker'ın veri deposunda durur." />
     <meta name="robots" content="max-image-preview:large" />
     <link rel="canonical" href="https://seowatcher.io/docs/kurulum-docker/" />
+    <link rel="alternate" hreflang="tr" href="https://seowatcher.io/docs/kurulum-docker/" />
+    <link rel="alternate" hreflang="en" href="https://seowatcher.io/en/docs/install-docker/" />
+    <link rel="alternate" hreflang="x-default" href="https://seowatcher.io/docs/kurulum-docker/" />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
     <link
       rel="icon"
@@ -36,10 +39,7 @@
     <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta
-      property="og:image:alt"
-      content="seowatcher: sitenizin Google verisi, kendi bilgisayarınızda"
-    />
+    <meta property="og:image:alt" content="seowatcher" />
     <meta property="article:modified_time" content="2026-10-22" />
     <meta property="og:url" content="https://seowatcher.io/docs/kurulum-docker/" />
     <meta property="og:locale" content="tr_TR" />
@@ -48,8 +48,8 @@
     <meta name="twitter:description" content="Mac, Linux ve Windows'ta Docker ile kurun. Tek komut yeter, .env dosyası gerekmez. Verileriniz Docker'ın veri deposunda durur." />
     <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
     <meta name="color-scheme" content="dark" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":"tr"},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/docs/kurulum-docker/#article","headline":"Docker ile kurulum","description":"Mac, Linux ve Windows'ta Docker ile kurun. Tek komut yeter, .env dosyası gerekmez. Verileriniz Docker'ın veri deposunda durur.","url":"https://seowatcher.io/docs/kurulum-docker/","inLanguage":"tr","dateModified":"2026-10-22","articleSection":"Başlangıç","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/docs/kurulum-docker/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/docs/kurulum-docker/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/"},{"@type":"ListItem","position":2,"name":"Kılavuz","item":"https://seowatcher.io/docs/"},{"@type":"ListItem","position":3,"name":"Docker ile kurulum","item":"https://seowatcher.io/docs/kurulum-docker/"}]}]}</script>
-    <script src="/assets/docs.js?v=2.4.1" defer></script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/docs/kurulum-docker/#article","headline":"Docker ile kurulum","description":"Mac, Linux ve Windows'ta Docker ile kurun. Tek komut yeter, .env dosyası gerekmez. Verileriniz Docker'ın veri deposunda durur.","url":"https://seowatcher.io/docs/kurulum-docker/","inLanguage":"tr","dateModified":"2026-10-22","articleSection":"Başlangıç","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/docs/kurulum-docker/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/docs/kurulum-docker/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/"},{"@type":"ListItem","position":2,"name":"Kılavuz","item":"https://seowatcher.io/docs/"},{"@type":"ListItem","position":3,"name":"Docker ile kurulum","item":"https://seowatcher.io/docs/kurulum-docker/"}]}]}</script>
+    <script src="/assets/docs.js?v=2.3.6" defer></script>
     <meta name="theme-color" content="#272c3b" />
     <style>
       @font-face {
@@ -191,6 +191,17 @@
       .topnav a {
         padding-block: 10px;
       }
+      .topnav .lang {
+        font-size: 12.5px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        padding: 4px 9px;
+        border: 1px solid var(--hairline);
+        border-radius: 999px;
+      }
+      article h2[tabindex]:focus {
+        outline: none;
+      }
       .topnav a:hover {
         color: var(--fg);
       }
@@ -225,6 +236,17 @@
         }
         .brand span {
           display: none;
+        }
+      }
+      @media (max-width: 420px) {
+        /* "Download for Windows" plus the language pill is 3px too wide on a
+           390px phone; tighter spacing keeps the page from scrolling sideways. */
+        .topnav {
+          gap: 10px;
+        }
+        .topnav .btn {
+          padding: 0 11px;
+          font-size: 13px;
         }
       }
 
@@ -685,13 +707,13 @@
       .pager-next {
         text-align: right;
       }
-      article pre {
+      article .code {
         position: relative;
       }
-      article pre.has-copy {
+      article .code.has-copy pre {
         padding-top: 38px;
       }
-      article pre .copy {
+      article .code .copy {
         position: absolute;
         top: 8px;
         right: 8px;
@@ -708,8 +730,9 @@
           color 200ms var(--ease),
           border-color 200ms var(--ease);
       }
-      article pre .copy:hover,
-      article pre .copy.done {
+      article .code .copy:hover,
+      article .code .copy:focus-visible,
+      article .code .copy.done {
         color: var(--fg);
         border-color: var(--hairline-strong);
       }
@@ -807,10 +830,18 @@
           />seowatcher <span>kılavuz</span></a
         >
         <nav class="topnav" aria-label="Site">
-          <a class="hide" href="/#ekranlar">Ekranlar</a>
+          <a class="hide" href="/">Ana sayfa</a>
           <a class="hide" href="/docs/">Kılavuz</a>
           <a class="hide" href="https://github.com/ucsahinn/seotracker"
             >GitHub</a
+          >
+          <a
+            class="lang"
+            href="/en/docs/install-docker/"
+            lang="en"
+            hreflang="en"
+            aria-label="Language: English"
+            >EN</a
           >
           <a
             class="btn"
@@ -820,7 +851,13 @@
         </nav>
       </div>
     </header>
-    <main class="wrap layout">
+    <main
+      class="wrap layout"
+      data-copy="Kopyala"
+      data-copied="Kopyalandı"
+      data-copy-failed="Kopyalanamadı"
+      data-copy-label="Kodu kopyala"
+    >
       <aside class="side" aria-label="Kılavuz">
         <details class="side-dd" open>
           <summary>Kılavuz</summary>
@@ -833,28 +870,28 @@
 <ul><li>Docker Desktop (Mac, Windows) ya da Docker Engine ile Docker Compose (Linux).</li><li>Git. Yoksa GitHub sayfasındaki <strong>Code → Download ZIP</strong> de olur.</li><li>Yaklaşık 2 GB boş disk ve ilk derleme sırasında 2 GB boş bellek.</li></ul>
 <h2 id="adimlar">Adımlar</h2>
 <ol><li>Depoyu (proje dosyalarını) indirin ve klasörüne girin:</li></ol>
-<pre><code>git clone https://github.com/ucsahinn/seotracker.git
-cd seotracker</code></pre>
+<div class="code"><pre><code>git clone https://github.com/ucsahinn/seotracker.git
+cd seotracker</code></pre></div>
 <ol><li>Uygulamayı başlatın:</li></ol>
-<pre><code>docker compose up -d</code></pre>
+<div class="code"><pre><code>docker compose up -d</code></pre></div>
 <p>Hepsi bu kadar. <code>.env</code> dosyası gerekmez. Şifreleme anahtarı ve asistan parolası ilk açılışta kendiliğinden üretilir ve Docker'ın veri deposunda (birim) saklanır.</p>
 <ol><li>İlerlemeyi görmek isterseniz şunu yazın:</li></ol>
-<pre><code>docker compose logs -f</code></pre>
+<div class="code"><pre><code>docker compose logs -f</code></pre></div>
 <ol><li>Bekleyin. Günlükte &quot;Building client + server&quot; satırı ilk derlemedir. &quot;Ready&quot; ya da sağlık kontrolünün geçtiğini gösteren satırı görünce tarayıcıda <code>http://localhost:3001</code> adresini açın.</li></ol>
 <p>Sonraki adım Google bağlantısı kılavuzudur. Docker'da Google'a vereceğiniz iki yönlendirme adresi şunlardır:</p>
 <ul><li><code>http://localhost:3001/api/gsc/oauth/callback</code></li><li><code>http://localhost:3001/api/ga4/oauth/callback</code></li></ul>
 <h3 id="guncelleme">Güncelleme</h3>
 <p>Şu iki komutu yazın:</p>
-<pre><code>git pull
-docker compose up -d --build</code></pre>
+<div class="code"><pre><code>git pull
+docker compose up -d --build</code></pre></div>
 <p><strong>Ayarlar → Hakkında</strong> yeni sürümü haber verir ve bu iki komutu gösterir. Veriniz <code>seotracker_data</code> adlı veri deposunda kaldığı için güncelleme onu silmez.</p>
 <h3 id="durdurma-ve-kaldirma">Durdurma ve kaldırma</h3>
 <ul><li>Durdurmak: <code>docker compose stop</code></li><li>Yeniden başlatmak: <code>docker compose up -d</code></li><li>Kutuyu kaldırıp veriyi tutmak: <code>docker compose down</code></li><li>Veriyi de silmek: <code>docker compose down -v</code>. Bu komut veritabanını, Google bağlantılarını ve raporları kalıcı olarak siler.</li></ul>
 <h3 id="yedekleme">Yedekleme</h3>
 <p>Veriniz <code>seotracker_data</code> deposunda, kutunun içindeki <code>/app/.wrangler</code> yolundadır. Yedek almak için üç komutu sırayla yazın:</p>
-<pre><code>docker compose stop
+<div class="code"><pre><code>docker compose stop
 docker run --rm -v seotracker_data:/data -v &quot;$PWD&quot;:/backup alpine tar czf /backup/seotracker-yedek.tgz -C /data .
-docker compose up -d</code></pre>
+docker compose up -d</code></pre></div>
 <p>Geri yüklerken aynı komutta <code>tar czf</code> yerine <code>tar xzf</code> kullanın. Veri deposundaki <code>instance-secret</code> dosyası Google bağlantılarını şifreleyen anahtardır. O olmayan yedek, Google bağlantıları olmadan açılır.</p>
 <h3 id="ayarlar-istege-bagli">Ayarlar (isteğe bağlı)</h3>
 <p>Hiçbir ayar zorunlu değildir. Değiştirmek isterseniz proje klasörüne bir <code>.env</code> dosyası koyun. Sonra <code>docker compose up -d --force-recreate seotracker</code> yazın.</p>
@@ -882,6 +919,13 @@ docker compose up -d</code></pre>
         <span>seowatcher, MIT lisansı.</span>
         <span
           ><a href="/">Ana sayfa</a> &nbsp;
+          <a
+            href="/en/docs/install-docker/"
+            lang="en"
+            hreflang="en"
+            >English</a
+          >
+          &nbsp;
           <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
           <a
             href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"

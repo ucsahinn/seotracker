@@ -1,15 +1,18 @@
 # seowatcher
 
 > seowatcher (GitHub ve uygulama içi adı: seotracker), Google Search Console, Google Analytics 4, kendi site tarayıcısı ve PageSpeed Insights verisini tek panelde toplayan ücretsiz, açık kaynaklı (MIT) bir SEO uygulamasıdır. Windows 10/11 (64 bit) için tek kurulum dosyası vardır; Mac ve Linux'ta Docker ile çalışır. Tek kullanıcılıdır, yalnızca kullanıcının kendi bilgisayarından erişilir, veri o bilgisayarda kalır. Abonelik ve hesap yoktur.
-> English: seowatcher (also named seotracker) is a free, MIT-licensed, self-hosted SEO app that reads Google Search Console, Google Analytics 4, its own crawler and PageSpeed Insights. Windows 10/11 installer; Docker on macOS/Linux. Single user, localhost only, data stays on your machine. Derived from open-seo.
+> English: seowatcher (also named seotracker) is a free, MIT-licensed, self-hosted SEO app that reads Google Search Console, Google Analytics 4, its own crawler and PageSpeed Insights. Windows 10/11 installer; Docker on macOS/Linux. Single user, localhost only, data stays on your machine. Derived from open-seo. The app's interface is Turkish; the website and this guide exist in Turkish and English.
 
-Hızlı bilgiler: sürüm 2.3.5, 95 denetim kuralı, yapay zekâ asistanları için 33 MCP aracı ve 6 hazır görev, fiyat 0, lisans MIT. Arama hacmi tahmini, backlink sayımı ve rakip sıralaması yoktur. Kurulum dosyası 81 MB, kurulu hali 290 MB; Visual C++ çalışma zamanı pakete dahildir.
+Hızlı bilgiler: sürüm 2.3.6, 95 denetim kuralı, yapay zekâ asistanları için 33 MCP aracı ve 6 hazır görev, fiyat 0, lisans MIT. Arama hacmi tahmini, backlink sayımı ve rakip sıralaması yoktur. Kurulum dosyası 81 MB, kurulu hali 290 MB; Visual C++ çalışma zamanı pakete dahildir.
+Quick facts: version 2.3.6, 95 audit rules, 33 MCP tools and 6 ready-made tasks for AI assistants, price 0, MIT license. No search-volume estimates, backlink counts or competitor rankings. Installer 81 MB, installed 290 MB; the Visual C++ runtime is bundled.
 
 ## Ana bağlantılar
 - [Ana sayfa (Türkçe)](https://seowatcher.io/): ürün tanıtımı, ekran görüntüleri, kurulum, sık sorulanlar
-- [Kılavuz](https://seowatcher.io/docs/): kurulumdan ilk rapora kadar her adım ve her ekran
-- [Windows kurulum dosyası](https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe): SHA-256 özeti sürüm sayfasında
-- [Sürüm sayfası](https://github.com/ucsahinn/seotracker/releases/latest)
+- [Home page (English)](https://seowatcher.io/en/): product overview, screenshots, installation, FAQ
+- [Kılavuz (Türkçe)](https://seowatcher.io/docs/): kurulumdan ilk rapora kadar her adım ve her ekran
+- [Guide (English)](https://seowatcher.io/en/docs/): every step and every screen, from installation to the first report
+- [Windows kurulum dosyası / Windows installer](https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe): SHA-256 özeti sürüm sayfasında
+- [Sürüm sayfası / Releases](https://github.com/ucsahinn/seotracker/releases/latest)
 
 ## Kılavuz: Başlangıç
 - [Windows'a kurulum](https://seowatcher.io/docs/kurulum-windows/): Tek dosyayla Windows'a kurun. İlk açılış, güncelleme, kaldırma, yedek alma ve adres numarası değiştirme. Docker ya da terminal gerekmez.
@@ -36,6 +39,32 @@ Hızlı bilgiler: sürüm 2.3.5, 95 denetim kuralı, yapay zekâ asistanları i�
 - [Denetim kuralları](https://seowatcher.io/docs/denetim-kurallari/): Site denetiminin baktığı 95 kuralın listesi. Her kural için ne demek olduğunu ve nasıl düzelteceğinizi bulursunuz.
 - [Ajan kurulumu](https://seowatcher.io/docs/ajan-kurulumu/): Claude Code, Codex ya da Cursor'ı uygulamaya bağlayın. Adres, parola, 33 araç ve 6 hazır görev şablonu, hangisinin Google hakkı harcadığı.
 - [Sorun giderme](https://seowatcher.io/docs/sorun-giderme/): En sık görülen sorunlar: belirti, sebep ve çözüm. Dolu adres numarası, Windows uyarısı, Google hataları, kota, takılan denetim, boş grafik, asistan 401.
+
+## Guide: Getting started
+- [Install on Windows](https://seowatcher.io/en/docs/install-windows/): Install on Windows with a single file. First launch, update, uninstall, backup and changing the port number. No Docker or terminal needed.
+- [Installing with Docker](https://seowatcher.io/en/docs/install-docker/): Install with Docker on Mac, Linux and Windows. One command is enough, and no .env file is needed. Your data stays in Docker's data volume.
+- [Connecting to Google](https://seowatcher.io/en/docs/google-connection/): To read Search Console and Analytics 4 data, get a one-time access key from Google, paste it into the app and choose your site. Step by step.
+- [PageSpeed key](https://seowatcher.io/en/docs/pagespeed-key/): Get a free Google PageSpeed key to measure page speed and enter it in the app. Without a key, measurement stays limited to 50 pages.
+
+## Guide: Screens
+- [Projects](https://seowatcher.io/en/docs/projects/): Creating a new project, choosing the site and country, renaming, managing Google connections, and archiving and restoring a project.
+- [Dashboard](https://seowatcher.io/en/docs/dashboard/): The first screen you see when you open a project. The search numbers for the last 28 days, the latest audit summary and your to-do items in one place.
+- [Search performance](https://seowatcher.io/en/docs/search-performance/): See which searches you appear in on Google and how many people click. By query, page, country and device, up to 16 months back.
+- [Ranking tracking](https://seowatcher.io/en/docs/rank-tracking/): See the average Google position of your searches day by day. The data is stored on this computer, so you can look further back than Google's 16-month limit.
+- [Opportunities](https://seowatcher.io/en/docs/opportunities/): Tells you which of your pages to touch this week. It splits pages into four groups, scores them and writes the job to do for each.
+- [Saved keywords](https://seowatcher.io/en/docs/saved-keywords/): Tag the searches you have saved here, follow their average position over the last 90 days, and export to CSV or Sheets.
+- [Analytics](https://seowatcher.io/en/docs/analytics/): See what visitors from search do next. Google Analytics 4 reports, key events and whether your measurement is working properly.
+- [Site audit](https://seowatcher.io/en/docs/site-audit/): The app walks through your site page by page, checks it against 95 rules and puts the problems in order of importance. Each problem comes with what to do about it.
+- [Index status](https://seowatcher.io/en/docs/index-status/): Google's answer for each of your pages: is it in search, if not why, and when it last visited. You can ask at most 2,000 queries a day.
+- [Reports and templates](https://seowatcher.io/en/docs/reports/): The reports you download from an audit or have your assistant write are a single HTML file. It opens on a phone, can be printed and can be shared.
+- [Project info](https://seowatcher.io/en/docs/project-context/): The place where you write what is not written anywhere else about your site: a summary of the business, the goal, competitors, key pages. Your assistant reads it before starting work.
+- [Settings](https://seowatcher.io/en/docs/settings/): Theme, Google access key, PageSpeed key, usage limits, version and update check. The one settings screen for the whole installation.
+
+## Guide: Reference
+- [Help](https://seowatcher.io/en/docs/help/): The setup status card, quick actions, common problems and the diagnostics package you send when you report a problem.
+- [Audit rules](https://seowatcher.io/en/docs/audit-rules/): The list of 95 rules the site audit checks. For each rule you find what it means and how to fix it.
+- [Agent setup](https://seowatcher.io/en/docs/agent-setup/): Connect Claude Code, Codex or Cursor to the app. The address, the password, the 33 tools and 6 ready-made task templates, and which ones use up Google quota.
+- [Troubleshooting](https://seowatcher.io/en/docs/troubleshooting/): The most common problems: symptom, cause and fix. Port in use, the Windows warning, Google errors, quota, a stuck audit, empty charts, assistant 401.
 
 ## Kaynak ve notlar
 - [GitHub deposu ve README (Docker kurulumu)](https://github.com/ucsahinn/seotracker)

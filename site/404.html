@@ -4,22 +4,15 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex" />
-    <title>Sayfa bulunamadı | seowatcher</title>
+    <title>Sayfa bulunamadı / Page not found | seowatcher</title>
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
     <style>
       :root {
-        --bg: oklch(99.5% 0.0015 265);
-        --fg: oklch(23% 0.012 265);
-        --muted: oklch(23% 0.012 265 / 0.8);
-        --accent: oklch(42% 0.15 256);
-      }
-      @media (prefers-color-scheme: dark) {
-        :root {
-          --bg: oklch(17.5% 0.005 265);
-          --fg: oklch(93% 0.004 265);
-          --muted: oklch(93% 0.004 265 / 0.7);
-          --accent: oklch(80% 0.12 256);
-        }
+        --bg: oklch(25% 0.022 262);
+        --fg: oklch(97% 0.005 262);
+        --muted: oklch(97% 0.005 262 / 0.72);
+        --accent: oklch(83% 0.1 262);
+        --hairline: oklch(97% 0.005 262 / 0.1);
       }
       body {
         margin: 0;
@@ -31,8 +24,13 @@
       }
       main {
         max-width: 40rem;
-        margin: 20vh auto;
+        margin: 18vh auto;
         padding: 0 20px;
+      }
+      section + section {
+        margin-top: 40px;
+        padding-top: 32px;
+        border-top: 1px solid var(--hairline);
       }
       h1 {
         font-size: clamp(28px, 4vw, 40px);
@@ -52,12 +50,22 @@
   </head>
   <body>
     <main>
-      <h1>Bu sayfa yok.</h1>
-      <p>Adres yanlış yazılmış ya da sayfa taşınmış olabilir.</p>
-      <p>
-        <a href="/">Ana sayfaya dön</a> veya
-        <a href="/docs/">kılavuza bakın</a>.
-      </p>
+      <section>
+        <h1>Bu sayfa yok.</h1>
+        <p>Adres yanlış yazılmış ya da sayfa taşınmış olabilir.</p>
+        <p>
+          <a href="/">Ana sayfaya dön</a> veya
+          <a href="/docs/">kılavuza bakın</a>.
+        </p>
+      </section>
+      <section lang="en">
+        <h1>This page does not exist.</h1>
+        <p>The address may be mistyped, or the page may have moved.</p>
+        <p>
+          <a href="/en/">Back to the home page</a> or
+          <a href="/en/docs/">open the guide</a>.
+        </p>
+      </section>
     </main>
   </body>
 </html>
