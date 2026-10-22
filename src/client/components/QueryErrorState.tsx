@@ -28,7 +28,7 @@ export function QueryErrorState({
       title={title}
       description={getStandardErrorMessage(
         error,
-        "Bağlantı kurulamadı. Konteynerin çalıştığından emin olup tekrar deneyin.",
+        "Uygulamaya ulaşılamadı. Uygulamanın açık olduğunu kontrol edip yeniden deneyin.",
       )}
       compact={compact}
       action={

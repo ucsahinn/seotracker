@@ -37,6 +37,7 @@ const groups = [
   {
     title: "Ekranlar",
     slugs: [
+      "projeler",
       "panel",
       "arama-performansi",
       "siralama-takibi",
@@ -52,7 +53,7 @@ const groups = [
   },
   {
     title: "Başvuru",
-    slugs: ["denetim-kurallari", "ajan-kurulumu", "sorun-giderme"],
+    slugs: ["yardim", "denetim-kurallari", "ajan-kurulumu", "sorun-giderme"],
   },
 ];
 

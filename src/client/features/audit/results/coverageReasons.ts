@@ -24,8 +24,8 @@ const ROBOTS_TXT: Record<string, string> = {
 
 const INDEXING: Record<string, string> = {
   INDEXING_ALLOWED: "Dizine almaya izin var",
-  BLOCKED_BY_META_TAG: "noindex etiketi engelliyor",
-  BLOCKED_BY_HTTP_HEADER: "X-Robots-Tag başlığı engelliyor",
+  BLOCKED_BY_META_TAG: "Gizleme etiketi (noindex) engelliyor",
+  BLOCKED_BY_HTTP_HEADER: "Sunucu başlığı (X-Robots-Tag) engelliyor",
   BLOCKED_BY_ROBOTS_TXT: "robots.txt engelliyor",
   INDEXING_STATE_UNSPECIFIED: "Google henüz bakmadı",
 };

@@ -275,7 +275,7 @@ function AuditDetail({
             <p>
               Aşağıdaki sonuçlar durmadan önce taranan her şeyi kapsıyor.
               Yeniden denemek için yeni bir denetim başlatın. Tekrar ederse
-              hangi adımın düştüğünü konteyner günlüğünde görebilirsiniz.
+              Yardım ekranındaki tanılama paketini indirip sorun bildirin.
             </p>
           </div>
         </div>

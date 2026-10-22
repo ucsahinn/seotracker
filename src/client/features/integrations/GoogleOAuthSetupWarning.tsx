@@ -13,10 +13,10 @@ export function GoogleOAuthSetupWarning({
     <div className="alert alert-warning items-start text-sm">
       <AlertTriangle className="mt-0.5 size-4 shrink-0" />
       <div className="space-y-1">
-        <p className="font-medium">Google istemcisi tanımlı değil</p>
+        <p className="font-medium">Google erişim anahtarı eksik</p>
         <p className="text-muted">
-          {integrationName} bağlamadan önce Google istemci kimliğinizi ve gizli
-          anahtarınızı ya da bir hizmet hesabı anahtarını girin.
+          {integrationName} bağlamadan önce Google erişim anahtarınızı ya da bir
+          hizmet hesabı anahtarını girin.
         </p>
         <div className="flex flex-wrap items-center gap-3">
           <Link

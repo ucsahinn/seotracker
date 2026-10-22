@@ -84,7 +84,7 @@ export function DashboardMetrics({
   const hint = !connected
     ? "Search Console'u bağlayın"
     : shownTotals && !shownTotals.hasImpressions
-      ? "Bu dönemde gösterim yok — ayrıntılar"
+      ? "Bu dönemde gösterim yok. Nedenini görün"
       : DASHBOARD_RANGE_LABEL;
 
   const shown = shownTotals;

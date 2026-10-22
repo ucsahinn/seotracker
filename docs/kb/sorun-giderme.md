@@ -5,7 +5,7 @@ kind: sorun-giderme
 updated: 2026-10-22
 ---
 
-Bu sayfa, bir şey çalışmadığında ne yapacağınızı kısa kısa söyler. Önce uygulamada **Yardım** ekranındaki "Kurulumunuzun durumu" kartına bakın. Kart beş şeyi kontrol eder: giriş ve erişim, Google girişi, PageSpeed anahtarı, çalışma ortamı, veritabanı. "N şey dikkat istiyor" diyorsa yanındaki düğme sizi doğru ayara götürür. Aşağıdaki liste en sık görülenden en nadire doğru gider.
+Bu sayfa, bir şey çalışmadığında ne yapacağınızı kısa kısa söyler. Önce uygulamada **Yardım** ekranındaki "Kurulumunuzun durumu" kartına bakın. Kart dört şeyi kontrol eder: giriş ve erişim, Google girişi, PageSpeed anahtarı, veritabanı. "N şey dikkat istiyor" diyorsa yanındaki düğme sizi doğru ayara götürür. Aşağıdaki liste en sık görülenden en nadire doğru gider.
 
 ### Sayfa açılmıyor
 
@@ -55,9 +55,9 @@ Bu sayfa, bir şey çalışmadığında ne yapacağınızı kısa kısa söyler.
 
 **Çözüm:** **Ayarlar → Google** bölümündeki kopyalama düğmesiyle iki adresi alın. Cloud Console'da Google erişim anahtarının (OAuth istemcisinin) adres alanına yapıştırın. localhost ile 127.0.0.1, http ile https ya da sondaki eğik çizgi fark eder.
 
-### "Google istemcisi tanımlı değil"
+### "Google erişim anahtarı eksik"
 
-**Belirti:** Proje ayarlarında Entegrasyonlar sekmesi sarı uyarı gösteriyor.
+**Belirti:** Proje ayarlarında Bağlantılar sekmesi sarı uyarı gösteriyor.
 
 **Sebep:** **Ayarlar → Google** bölümüne istemci kimliği ve gizli anahtar girilmemiş. Ya da Docker'da şifreleme anahtarı 32 karakterden kısa.
 

@@ -63,7 +63,7 @@ export function GoogleOAuthClientSection() {
       setClientSecret("");
       setEditing(false);
       await invalidate();
-      toast.success("Google istemcisi kaydedildi");
+      toast.success("Google erişim anahtarı kaydedildi");
     },
     onError: (error) => toast.error(getStandardErrorMessage(error)),
   });
@@ -76,7 +76,7 @@ export function GoogleOAuthClientSection() {
       setEditing(false);
       setConfirmingClear(false);
       await invalidate();
-      toast.success("Google istemcisi silindi");
+      toast.success("Google erişim anahtarı silindi");
     },
     onError: (error) => {
       setConfirmingClear(false);
@@ -130,7 +130,7 @@ export function GoogleOAuthClientSection() {
       >
         <SettingsHeading
           title="Google bağlantısı"
-          help="Google Cloud Console'da bir proje açın, 'APIs & Services → Credentials' altından OAuth client ID oluşturun (tür: Web application), aşağıdaki iki yönlendirme adresini ekleyin ve verilen kimlik ile gizli anahtarı buraya yapıştırın. Search Console ve Analytics aynı istemciyi kullanır."
+          help="Google Cloud Console'da bir proje açın. 'APIs & Services → Credentials' altında 'OAuth client ID' oluşturun (tür: Web application). Aşağıdaki iki yönlendirme adresini ekleyin. Verilen kimliği ve gizli anahtarı buraya yapıştırın. Search Console ve Analytics aynı anahtarı kullanır."
         />
       </SectionHeaderRow>
       {credentialNote ? (
@@ -138,9 +138,9 @@ export function GoogleOAuthClientSection() {
       ) : null}
 
       <p className="text-sm text-muted">
-        Search Console ve Analytics, kendi Google Cloud projenizden aldığınız
-        bir OAuth istemcisiyle çalışır. Kimlik bilgilerini buraya girin; gizli
-        anahtar sunucuda şifrelenir ve bir daha tarayıcıya gönderilmez.{" "}
+        Uygulama Google'a sizin adınıza bağlanır. Bunun için Google'dan
+        aldığınız erişim anahtarını (OAuth istemcisi) buraya girersiniz. Gizli
+        kısmı şifrelenir ve bir daha tarayıcıya gönderilmez.{" "}
         <a
           href={CONSOLE_URL}
           target="_blank"
@@ -325,9 +325,9 @@ export function GoogleOAuthClientSection() {
 
       {confirmingClear ? (
         <ConfirmDeleteModal
-          title="Google istemcisi silinsin mi?"
-          detail="Kimlik ve gizli anahtar bu kurulumdan silinir. Mevcut Search Console ve Analytics bağlantıları yerinde kalır ama istemci yeniden girilene kadar çalışmaz."
-          confirmLabel="İstemciyi sil"
+          title="Google erişim anahtarı silinsin mi?"
+          detail="Kimlik ve gizli anahtar bu kurulumdan silinir. Mevcut Search Console ve Analytics bağlantıları yerinde kalır ama anahtar yeniden girilene kadar çalışmaz."
+          confirmLabel="Anahtarı sil"
           isPending={clear.isPending}
           onClose={() => setConfirmingClear(false)}
           onConfirm={() => clear.mutate()}

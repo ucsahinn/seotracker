@@ -34,7 +34,7 @@ export function describeCheck(
   if (key === "gsc") {
     if (/DISABLED/.test(detail)) {
       return say(
-        "Search Console ve Analytics kapalı: Google jetonlarını şifreleyen kurulum anahtarı (BETTER_AUTH_SECRET) eksik ya da çok kısa. Docker'da bunu konteyner kendisi üretir; elle kısa bir değer girdiyseniz silin.",
+        "Search Console ve Analytics kapalı. Google bağlantılarını şifreleyen gizli kurulum anahtarı (BETTER_AUTH_SECRET) eksik ya da çok kısa. Uygulama bu anahtarı kendisi üretir; elle kısa bir değer girdiyseniz silin.",
         "warn",
       );
     }
@@ -82,7 +82,7 @@ export function describeCheck(
     }
     if (/Reachable off localhost/.test(detail)) {
       return say(
-        "Bu kurulum parolasız ama localhost dışından erişime açık görünüyor: her sayfa yönetici olarak yanıt verir. Önüne kendi kimlik doğrulamanızı koyun ya da portu yalnızca 127.0.0.1'e bağlı tutun.",
+        "Bu kurulum parolasız ama dışarıdan erişime açık görünüyor; açan herkes yönetici olur. Önüne kendi şifreli girişinizi koyun ya da uygulamayı yalnızca bu bilgisayara (127.0.0.1) açık tutun.",
       );
     }
     return say(

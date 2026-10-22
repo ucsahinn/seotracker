@@ -103,14 +103,14 @@ export function MeasurementHealthPanel({ projectId }: { projectId: string }) {
         <EmptyState
           icon={Activity}
           title="Google Analytics bağlı değil"
-          description="Bu kontrol GA4 mülkünüzün ayarlarını okur. Proje ayarlarındaki Entegrasyonlar sekmesinden bağlayın."
+          description="Bu kontrol Analytics'teki sitenizin (GA4 mülkü) ayarlarını okur. Proje ayarlarındaki Bağlantılar sekmesinden bağlayın."
           action={
             <Link
               to="/p/$projectId/settings/integrations"
               params={{ projectId }}
               className="btn btn-sm"
             >
-              Entegrasyonlar
+              Bağlantılar
             </Link>
           }
         />

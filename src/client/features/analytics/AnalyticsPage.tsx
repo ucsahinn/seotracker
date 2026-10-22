@@ -360,7 +360,7 @@ export function AnalyticsPage({
                 <EmptyState
                   icon={BarChart3}
                   title="Google Analytics bağlı değil"
-                  description="Bu raporlar GA4 mülkünüzden gelir. Proje ayarlarındaki Entegrasyonlar sekmesinden bağlayın."
+                  description="Bu raporlar Analytics'teki sitenizden (GA4 mülkü) gelir. Proje ayarlarındaki Bağlantılar sekmesinden bağlayın."
                 />
               </div>
             ) : null}

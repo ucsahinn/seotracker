@@ -66,9 +66,9 @@ export function DashboardSetupAction({
         </p>
         <div className="flex flex-col gap-4 rounded-box border border-base-300 bg-base-200/25 p-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="text-sm font-medium">seotracker plugin</p>
+            <p className="text-sm font-medium">seotracker eklentisi</p>
             <p className="mt-1 text-xs text-muted">
-              MCP bağlantısı + SEO becerileri
+              Asistan bağlantısı (MCP) ve hazır SEO görevleri
             </p>
           </div>
           <div className="shrink-0 [&>button]:h-10 [&>button]:w-full [&>button]:gap-2 [&>button]:text-sm">

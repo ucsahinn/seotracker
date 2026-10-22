@@ -73,7 +73,7 @@ export function PageSpeedKeySection() {
       >
         <SettingsHeading
           title="Hız ölçümü"
-          help="Google Cloud Console'da PageSpeed Insights API'sini etkinleştirin, 'Credentials → Create credentials → API key' ile bir anahtar alın ve buraya yapıştırın. Ücretsiz. Anahtarsız da çalışır ama Google'ın anahtarsız kotası birkaç sayfadan sonra 429 döndürür."
+          help="Google Cloud Console'da PageSpeed Insights API'sini etkinleştirin, 'Credentials → Create credentials → API key' ile bir anahtar alın ve buraya yapıştırın. Ücretsiz. Anahtarsız da çalışır ama Google birkaç sayfadan sonra durdurur (429, çok fazla istek)."
         />
       </SectionHeaderRow>
 
@@ -203,7 +203,7 @@ export function PageSpeedKeySection() {
       {confirmingClear ? (
         <ConfirmDeleteModal
           title="PageSpeed anahtarı silinsin mi?"
-          detail="Anahtar bu kurulumdan silinir; hız ölçümü Google'ın anahtarsız kotasına döner ve gerçek bir sitede çoğu zaman 429 ile yarım kalır. İstediğiniz zaman yeniden girebilirsiniz."
+          detail="Anahtar bu kurulumdan silinir; hız ölçümü anahtarsız sınıra döner ve gerçek bir sitede çoğu zaman yarım kalır (429, çok fazla istek). İstediğiniz zaman yeniden girebilirsiniz."
           confirmLabel="Anahtarı sil"
           isPending={clear.isPending}
           onClose={() => setConfirmingClear(false)}

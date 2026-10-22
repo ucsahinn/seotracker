@@ -41,7 +41,7 @@ export function ForeignPropertyNotice({
           params={{ projectId }}
           className="link link-primary"
         >
-          Entegrasyonlar
+          Bağlantılar
         </Link>
       </div>
     </div>

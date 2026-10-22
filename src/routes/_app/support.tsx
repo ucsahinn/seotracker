@@ -24,7 +24,7 @@ function SupportPage() {
       <PageHeader
         eyebrow={<p className="text-sm font-medium text-muted">Yardım</p>}
         title="Nereye bakmalı"
-        description="Bu kurulum kendi bilgisayarınızda çalıştığı için sorunların izi hemen her zaman iki yerde olur: konteyner günlüğü ve sağlık ucu. Önce aşağıdaki duruma bakın."
+        description="Bu kurulum kendi bilgisayarınızda çalışır. Bir şey ters giderse önce aşağıdaki durum kartına bakın; çözüm çoğu zaman oradaki düğmenin arkasındadır."
       />
 
       <QuickActions />

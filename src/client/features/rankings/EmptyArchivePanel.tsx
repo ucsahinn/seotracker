@@ -14,7 +14,7 @@ export function EmptyArchivePanel({ projectId }: { projectId: string }) {
       <EmptyState
         icon={TrendingUp}
         title="Henüz hangi kelimeyle arandığınız bilinmiyor"
-        description="Bu ekran, sitenizin hangi aramalarda kaçıncı sırada çıktığını izler. Search Console kelime düzeyinde veri paylaşınca burada kendiliğinden birikir; az ziyaretçisi olan sitelerde bu birkaç hafta sürebilir. Bu sırada toplam tıklama ve gösterim rakamlarına Arama performansı'ndan bakabilirsiniz."
+        description="Bu ekran sitenizin hangi aramalarda kaçıncı sırada çıktığını izler. Search Console kelime düzeyinde veri verdikçe burada birikir. Az ziyaretçili sitelerde bu birkaç hafta sürebilir. Bu sırada toplam tıklama ve gösterime Arama performansı'ndan bakın."
         action={
           <Link
             to="/p/$projectId/search-performance"

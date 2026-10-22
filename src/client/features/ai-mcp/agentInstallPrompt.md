@@ -27,7 +27,7 @@ Service account (recommended):
 
 OAuth client (longer path, only if I prefer signing in with my own account): **MANUAL** consent screen (External, add myself as test user), then Credentials, OAuth client ID, Web application, with BOTH redirect URIs exactly (scheme, host, port; no trailing slash): `http://localhost:3001/api/gsc/oauth/callback` and `http://localhost:3001/api/ga4/oauth/callback` (the same two are shown under **Ayarlar → Google bağlantısı**, `/settings#google`). I paste client ID and secret there myself.
 
-Done when: **Ayarlar** shows the chosen credential as saved (the Google and Hizmet hesabı sections' badges). Failures: `redirect_uri_mismatch` = a URI is not byte-identical; `access_denied` = my account is not a test user; no properties listed = Analytics Admin API off or no access; "Google istemcisi tanımlı değil" = nothing saved yet.
+Done when: **Ayarlar** shows the chosen credential as saved (the Google and Hizmet hesabı sections' badges). Failures: `redirect_uri_mismatch` = a URI is not byte-identical; `access_denied` = my account is not a test user; no properties listed = Analytics Admin API off or no access; "Google erişim anahtarı eksik" = nothing saved yet.
 
 ## 3. PageSpeed key (recommended, optional)
 
@@ -36,7 +36,7 @@ Without a key, speed measurement is limited to 50 pages and often partly fails (
 
 ## 4. My project
 
-Ask for my site's domain. With my yes, create the project (sidebar project switcher, "Yeni proje") or select the existing one. In **Proje ayarları → Entegrasyonlar** (the "Proje ayarları" button in the project switcher), connect Search Console and Analytics: the buttons read **Bağlan** or **Mülk seç**; with the OAuth path I authorize my Google account, with the service account I only pick the property. Pick the property of my domain.
+Ask for my site's domain. With my yes, create the project (sidebar project switcher, "Yeni proje") or select the existing one. In **Proje ayarları → Bağlantılar** (the "Proje ayarları" button in the project switcher), connect Search Console and Analytics: the buttons read **Bağlan** or **Mülk seç**; with the OAuth path I authorize my Google account, with the service account I only pick the property. Pick the property of my domain.
 Done when both cards show a property. Failure: no property to pick = the e-mail was not added (phase 2 step 3) or the site is not verified in Search Console.
 
 ## 5. Connect my agent (MCP and skills)

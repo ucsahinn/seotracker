@@ -28,11 +28,11 @@ export function GoogleSetupBanner() {
       <AlertTriangle className="mt-0.5 size-4 shrink-0" aria-hidden />
       <div className="space-y-1">
         <p className="font-medium text-base-content">
-          Google istemcisi tanımlı değil
+          Google erişim anahtarı eksik
         </p>
         <p>
-          Search Console ve Analytics aynı OAuth istemcisini kullanır. İstemci
-          kimliğinizi girene kadar ikisi de bağlanamaz.
+          Search Console ve Analytics aynı Google erişim anahtarını kullanır.
+          Anahtarı girene kadar ikisi de bağlanamaz.
         </p>
         <div className="flex flex-wrap items-center gap-4 pt-1">
           <Link

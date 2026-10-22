@@ -231,7 +231,8 @@ function AiPage() {
                   </li>
                 ))}
                 <li className="text-xs text-muted">
-                  ya da herhangi bir MCP istemcisi
+                  ya da asistan bağlantısını (MCP) destekleyen başka bir
+                  uygulama
                 </li>
               </ul>
               <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3 [&>button]:h-11 [&>button]:gap-2 [&>button]:text-sm">
@@ -275,8 +276,8 @@ function AiPage() {
                 kullanıyorsanız genel istem yerine bunu yapıştırın.{" "}
                 <code>codex mcp add</code> ile bağlanır, becerileri{" "}
                 <code>~/.agents/skills</code> altına kopyalar ve{" "}
-                <code>whoami</code> ile doğrular. Token&apos;ı sohbete yazmaz;
-                bir ortam değişkeninden okunur.
+                <code>whoami</code> ile doğrular. Gizli şifreyi sohbete yazmaz,
+                bilgisayarınızdan okur.
               </p>
               <ul className="mt-3 space-y-1 text-xs text-muted">
                 {CLIENT_LINES.map(([client, line]) => (
@@ -327,8 +328,8 @@ function AiPage() {
             <div className="alert alert-warning mt-8 text-sm" role="alert">
               <ShieldAlert className="size-4 shrink-0" />
               <span>
-                Bu kurulum Cloudflare Access arkasında. Access uygulamanızda
-                Managed OAuth açılmadan MCP istemcileri bağlanamaz.
+                Bu kurulum Cloudflare Access arkasında. Asistanın bağlanabilmesi
+                için Access uygulamanızda Managed OAuth'u açın.
               </span>
             </div>
           ) : null}

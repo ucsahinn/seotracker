@@ -2,6 +2,16 @@
 
 Her sürümün notu burada, en yenisi en üstte.
 
+## [2.3.3] — 2026-10-22
+
+Ekran metinleri sadeleşti; kılavuza iki eksik ekran eklendi. Veri ve ayarlar
+değişmedi.
+
+### Yenilikler
+
+- **Sade Türkçe ekran metinleri.** Bağımsız bir dil denetiminin bulduğu 40 kadar mekanik ya da teknik ifade yeniden yazıldı: "Google istemcisi" yerine "Google erişim anahtarı", "Entegrasyonlar" sekmesi artık "Bağlantılar", "Ortamdan geliyor" yerine "Kurulum dosyasından geliyor", hata metinlerinde konteyner ve günlük yerine Yardım ekranındaki tanılama paketi, Lighthouse başlığında "Sayfa hızı sorunları", noindex ve X-Robots-Tag açıklamalı. Google'ın kendi ekran adları (mülk, OAuth client ID, redirect URI) parantez içinde korunur.
+- **Kılavuzda iki yeni sayfa.** "Projeler ve proje ayarları" (yeni proje, alan adı kuralları, Bağlantılar sekmesi, arşivleme ve geri alma) ve "Yardım ekranı" (durum kartının dört kontrolü, hızlı işlemler, tanılama paketi). Sorun giderme sayfasındaki kontrol sayısı ve denetim süreleri kaynak koda göre düzeltildi.
+
 ## [2.3.2] — 2026-10-22
 
 Windows paketi kendini günceller ve onarır. Site canlı indirme sayısı gösterir,

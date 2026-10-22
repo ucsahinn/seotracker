@@ -35,7 +35,7 @@ Docker kullanıyorsanız anahtarı `.env` dosyasında `PAGESPEED_API_KEY` olarak
 
 **Dakikalık sınıra takılırsam ne olur?** Uygulama bekler ve yeniden dener. Denetim yavaşlar ama sizin bir şey yapmanız gerekmez. Günlük sınır biterse ölçüm durur. O ana kadarki sonuçlar kalır. Ertesi gün yeni denetimde tamamlanır.
 
-**İki denetim aynı anda hız ölçerse?** Dakikalık sınırı paylaşırlar ve ikisi de iki kat yavaşlar. 212 sayfalık bir site tek başına 24 dakikada, başka bir denetimle birlikte 48 dakikada ölçüldü.
+**İki denetim aynı anda hız ölçerse?** Dakikalık sınırı paylaşırlar ve ikisi de iki kat yavaşlar. 212 sayfalık bir sitenin hız ölçümü tek başına yaklaşık 24 dakika, başka bir denetimle birlikte 48 dakika sürer; taramayla birlikte denetimin tamamı 35 dakikayı bulur.
 
 **Anahtar nerede saklanıyor?** Bu bilgisayardaki veritabanında, şifreli. Tarayıcıya geri gönderilmez. Ayarlar ekranı yalnızca "kayıtlı" bilgisini gösterir.
 

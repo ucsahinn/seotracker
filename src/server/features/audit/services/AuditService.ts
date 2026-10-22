@@ -285,7 +285,7 @@ async function remove(auditId: string, projectId: string) {
     if (!audit.workflowInstanceId) {
       throw new AppError(
         "CONFLICT",
-        "Çalışan denetimin iş akışı bilgisi bulunamadığı için silinemiyor.",
+        "Bu denetim şu an silinemiyor. Bitmesini bekleyip yeniden deneyin.",
       );
     }
 

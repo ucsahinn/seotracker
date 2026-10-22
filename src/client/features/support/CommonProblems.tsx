@@ -113,7 +113,7 @@ export function CommonProblems({ projectId }: { projectId: string | null }) {
         </p>
       </Problem>
 
-      <Problem title="Ajanım MCP'ye bağlanamıyor (401)">
+      <Problem title="Ajanım uygulamaya bağlanamıyor (401)">
         <p>
           MCP ucu varsayılan olarak bir jeton ister. Jeton ilk açılışta üretilir
           ve veri biriminde durur; okumak için (PowerShell ve cmd):{" "}

@@ -19,7 +19,11 @@ export function oauthClientBadge(
     return { tone: "success", label: "Kayıtlı", live: true };
   }
   if (status.source === "environment") {
-    return { tone: "success", label: "Ortamdan geliyor", live: true };
+    return {
+      tone: "success",
+      label: "Kurulum dosyasından geliyor",
+      live: true,
+    };
   }
   return { tone: "warning", label: "Eksik" };
 }
@@ -65,7 +69,11 @@ export function pageSpeedBadge(
     return { tone: "success", label: "Anahtar kayıtlı", live: true };
   }
   if (status.source === "environment") {
-    return { tone: "success", label: "Ortam anahtarı", live: true };
+    return {
+      tone: "success",
+      label: "Kurulum dosyasından geliyor",
+      live: true,
+    };
   }
   return { tone: "warning", label: "Anahtar eksik" };
 }

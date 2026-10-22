@@ -126,7 +126,7 @@ export function buildPagesColumns({
           const target = row.original.redirectUrl;
           return (
             <span className="text-xs text-muted">
-              → {target ? displayPath(target, canonicalHost) : "redirect"}
+              → {target ? displayPath(target, canonicalHost) : "yönlendirme"}
             </span>
           );
         }

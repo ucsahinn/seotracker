@@ -6,11 +6,11 @@ const STANDARD_MESSAGES: Record<ErrorCode, string> = {
   UNAUTHENTICATED:
     "Oturumunuz doğrulanamadı. Sayfayı yenileyip tekrar deneyin.",
   AUTH_CONFIG_MISSING:
-    "Kimlik doğrulama yapılandırılmamış. Kurulum adımları için docs/SELF_HOSTING_DOCKER.md dosyasına bakın.",
-  FORBIDDEN: "Bu kaynağa erişiminiz yok.",
+    "Giriş ayarı eksik. Kurulum belgesine bakın: docs/SELF_HOSTING_DOCKER.md",
+  FORBIDDEN: "Bu işlem için yetkiniz yok.",
   NOT_FOUND: "İstenen kayıt bulunamadı.",
   AUDIT_CAPACITY_REACHED:
-    "Denetim kapasitesi doldu: şu an çalışan denetimler bu kurulumun taşıyabileceği en fazla işi ayırdı. Çalışan denetimlerin bitmesini bekleyip tekrar deneyin; biten denetimler kapasiteyi tutmaz.",
+    "Şu an çok fazla denetim çalışıyor. Biri bitince yeniden deneyin.",
   AUDIT_PAGE_LIMIT_EXCEEDED: `Bir denetim en çok ${formatNumber(MAX_AUDIT_PAGES)} sayfa tarayabilir.`,
   AUDIT_ALREADY_RUNNING:
     "Aynı anda çalışabilecek denetim sayısına ulaştınız. Çalışan denetimlerden birinin bitmesini bekleyin ya da birini silin.",
@@ -19,9 +19,9 @@ const STANDARD_MESSAGES: Record<ErrorCode, string> = {
   RATE_LIMITED: "Çok fazla istek gönderildi. Biraz bekleyip tekrar deneyin.",
   UPSTREAM_UNAVAILABLE:
     "Veri kaynağı şu an yanıt vermiyor. Birazdan tekrar deneyin.",
-  CONFLICT: "Bu işlem mevcut bir kayıtla çakışıyor.",
+  CONFLICT: "Bu işlem var olan bir kayıtla çakışıyor.",
   INTERNAL_ERROR:
-    "Beklenmeyen bir hata oluştu. Ayrıntı için Docker günlüğüne bakın.",
+    "Beklenmeyen bir hata oluştu. Yardım ekranından tanılama paketini indirip sorun bildirin.",
 };
 
 // Setup errors cross the wire as "CODE: detail" (see toClientError) so the

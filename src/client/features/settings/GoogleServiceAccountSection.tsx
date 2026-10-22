@@ -107,7 +107,7 @@ export function GoogleServiceAccountSection() {
       >
         <SettingsHeading
           title="Hizmet hesabı (daha kısa yol)"
-          help="OAuth kurulumu onay ekranı, test kullanıcısı ve birebir eşleşen yönlendirme adresi ister; kurulum genelde bu üçünde takılır. Hizmet hesabı üçünü de atlar: Google Cloud'da bir hizmet hesabı açıp JSON anahtarını indirin, sonra o hesabın e-postasını Search Console mülkünüze bir meslektaşınızı ekler gibi ekleyin."
+          help="Erişim anahtarı yolu onay ekranı, test kullanıcısı ve birebir eşleşen yönlendirme adresi ister; kurulum çoğu zaman bu üçünde takılır. Hizmet hesabı üçünü de atlar: Google Cloud'da bir hizmet hesabı açıp JSON anahtar dosyasını indirin, sonra o hesabın e-postasını Search Console'a bir meslektaşınızı ekler gibi ekleyin."
         />
       </SectionHeaderRow>
       {stored ? (

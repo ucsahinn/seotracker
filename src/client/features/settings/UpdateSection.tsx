@@ -70,7 +70,7 @@ export function UpdateSection({ version }: { version: string }) {
       >
         <SettingsHeading
           title="Hakkında"
-          help="Bu kurulum bir git kopyası, yani güncelleme buradan yapılmaz: uygulama yeni sürümü fark eder ve çalıştırmanız gereken komutu verir. Kontrolü kapatırsanız GitHub'a hiç istek gitmez."
+          help="Uygulama yeni sürümü fark eder ve ne yapacağınızı söyler: Windows paketi güncellemeyi kendisi kurar, Docker'da verilen komutu çalıştırırsınız. Kontrolü kapatırsanız GitHub'a hiç istek gitmez."
         />
       </SectionHeaderRow>
 

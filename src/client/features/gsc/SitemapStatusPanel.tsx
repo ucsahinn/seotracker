@@ -81,7 +81,7 @@ export function SitemapStatusPanel({ projectId }: { projectId: string }) {
               params={{ projectId }}
               className="btn btn-sm"
             >
-              Entegrasyonlar
+              Bağlantılar
             </Link>
           }
         />

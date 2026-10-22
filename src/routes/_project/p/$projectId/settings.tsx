@@ -12,7 +12,7 @@ const tabs = [
   { to: "/p/$projectId/settings" as const, label: "Genel", exact: true },
   {
     to: "/p/$projectId/settings/integrations" as const,
-    label: "Entegrasyonlar",
+    label: "Bağlantılar",
   },
 ];
 

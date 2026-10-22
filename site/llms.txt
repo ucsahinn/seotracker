@@ -3,7 +3,7 @@
 > seowatcher (GitHub ve uygulama içi adı: seotracker), Google Search Console, Google Analytics 4, kendi site tarayıcısı ve PageSpeed Insights verisini tek panelde toplayan ücretsiz, açık kaynaklı (MIT) bir SEO uygulamasıdır. Windows 10/11 (64 bit) için tek kurulum dosyası vardır; Mac ve Linux'ta Docker ile çalışır. Tek kullanıcılıdır, yalnızca kullanıcının kendi bilgisayarından erişilir, veri o bilgisayarda kalır. Abonelik ve hesap yoktur.
 > English: seowatcher (also named seotracker) is a free, MIT-licensed, self-hosted SEO app that reads Google Search Console, Google Analytics 4, its own crawler and PageSpeed Insights. Windows 10/11 installer; Docker on macOS/Linux. Single user, localhost only, data stays on your machine. Derived from open-seo.
 
-Hızlı bilgiler: sürüm 2.3.2, 95 denetim kuralı, yapay zekâ asistanları için 33 MCP aracı ve 6 hazır görev, fiyat 0, lisans MIT. Arama hacmi tahmini, backlink sayımı ve rakip sıralaması yoktur. Kurulum dosyası 81 MB, kurulu hali 290 MB; Visual C++ çalışma zamanı pakete dahildir.
+Hızlı bilgiler: sürüm 2.3.3, 95 denetim kuralı, yapay zekâ asistanları için 33 MCP aracı ve 6 hazır görev, fiyat 0, lisans MIT. Arama hacmi tahmini, backlink sayımı ve rakip sıralaması yoktur. Kurulum dosyası 81 MB, kurulu hali 290 MB; Visual C++ çalışma zamanı pakete dahildir.
 
 ## Ana bağlantılar
 - [Ana sayfa (Türkçe)](https://seowatcher.io/): ürün tanıtımı, ekran görüntüleri, kurulum, sık sorulanlar
@@ -18,6 +18,7 @@ Hızlı bilgiler: sürüm 2.3.2, 95 denetim kuralı, yapay zekâ asistanları i�
 - [PageSpeed anahtarı](https://seowatcher.io/docs/pagespeed-anahtari/): Sayfa hızını ölçmek için ücretsiz Google PageSpeed anahtarı alın ve uygulamaya girin. Anahtarsız ölçüm 50 sayfayla sınırlı kalır.
 
 ## Kılavuz: Ekranlar
+- [Projeler](https://seowatcher.io/docs/projeler/): Yeni proje açma, siteyi ve ülkeyi seçme, adı değiştirme, Google bağlantılarını yönetme ve projeyi arşivleyip geri alma.
 - [Panel](https://seowatcher.io/docs/panel/): Projeyi açınca ilk gördüğünüz ekran. Son 28 günün arama sayıları, son denetim özeti ve yapılacak işler tek yerde.
 - [Arama performansı](https://seowatcher.io/docs/arama-performansi/): Google'da hangi aramalarda çıktığınızı ve kaç kişinin tıkladığını görün. Sorguya, sayfaya, ülkeye ve cihaza göre, 16 aya kadar geriye.
 - [Sıralama takibi](https://seowatcher.io/docs/siralama-takibi/): Aramalarınızın Google'daki ortalama sırasını gün gün görün. Veri bu bilgisayarda saklanır, Google'ın 16 aylık sınırından eskiye de bakarsınız.
@@ -31,6 +32,7 @@ Hızlı bilgiler: sürüm 2.3.2, 95 denetim kuralı, yapay zekâ asistanları i�
 - [Ayarlar](https://seowatcher.io/docs/ayarlar/): Tema, Google erişim anahtarı, PageSpeed anahtarı, kullanım sınırları, sürüm ve güncelleme kontrolü. Tüm kurulumun tek ayar ekranı.
 
 ## Kılavuz: Başvuru
+- [Yardım](https://seowatcher.io/docs/yardim/): Kurulumunuzun durumu kartı, hızlı işlemler, sık sorunlar ve sorun bildirirken göndereceğiniz tanılama paketi.
 - [Denetim kuralları](https://seowatcher.io/docs/denetim-kurallari/): Site denetiminin baktığı 95 kuralın listesi. Her kural için ne demek olduğunu ve nasıl düzelteceğinizi bulursunuz.
 - [Ajan kurulumu](https://seowatcher.io/docs/ajan-kurulumu/): Claude Code, Codex ya da Cursor'ı uygulamaya bağlayın. Adres, parola, 33 araç ve 6 hazır görev şablonu, hangisinin Google hakkı harcadığı.
 - [Sorun giderme](https://seowatcher.io/docs/sorun-giderme/): En sık görülen sorunlar: belirti, sebep ve çözüm. Dolu adres numarası, Windows uyarısı, Google hataları, kota, takılan denetim, boş grafik, asistan 401.

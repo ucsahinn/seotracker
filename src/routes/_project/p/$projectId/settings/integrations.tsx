@@ -29,7 +29,7 @@ function ProjectIntegrationsRoute() {
       <section id="search-console" className="scroll-mt-6 space-y-3">
         <SettingsHeading
           title="Search Console"
-          help="Bağlanmadan önce Ayarlar'da bir Google OAuth istemcisi ya da hizmet hesabı tanımlı olmalı. Bağlandıktan sonra hangi mülkü izleyeceğinizi seçersiniz; yeni doğrulanmış bir mülkte Google'ın veri döndürmesi birkaç gün sürebilir."
+          help="Önce Ayarlar'da Google erişim anahtarı ya da hizmet hesabı girin. Sonra izlenecek siteyi seçersiniz; Google buna mülk der. Yeni doğrulanmış bir sitede Google'ın veri vermesi birkaç gün sürebilir."
         />
         <SearchConsoleConnectionCard projectId={projectId} />
       </section>
@@ -40,7 +40,7 @@ function ProjectIntegrationsRoute() {
           heading={
             <SettingsHeading
               title="Analytics"
-              help="Search Console ile aynı Google istemcisini kullanır, ayrı bir kurulum gerekmez. Bağlandıktan sonra GA4 mülkünüzü seçersiniz; organik trafik panelde ve Analytics ekranında görünür."
+              help="Search Console ile aynı Google anahtarını kullanır, ayrı kurulum gerekmez. Bağlandıktan sonra Analytics'teki sitenizi (GA4 mülkü) seçersiniz; organik ziyaretler Panel'de ve Analytics ekranında görünür."
             />
           }
         />

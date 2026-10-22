@@ -52,7 +52,7 @@ Dilimler: 90 ve üstü çok iyi, 70 ve üstü iyi, 50 ve üstü orta, altı zay�
 
 **Tarama.** Uygulama sitenizi yormaz: aynı anda en çok iki istek gönderir. Site "çok fazla istek" (429) derse bekler. Toplam bekleme 30 dakikayı geçerse tarama durur.
 
-**Hız ölçümü.** 212 sayfalık bir sitede gerçek süre 35 dakikaydı. Günlük kota biterse ölçüm durur, o ana kadarki sonuçlar kalır. Şu durumlarda sorun yazılır:
+**Hız ölçümü.** 212 sayfalık bir sitede denetimin tamamı 35 dakika sürdü; bunun yaklaşık 24 dakikası hız ölçümüydü. Günlük kota biterse ölçüm durur, o ana kadarki sonuçlar kalır. Şu durumlarda sorun yazılır:
 
 - Ana içerik 4 saniyeden geç görünür (LCP).
 - İçerik 0,25'ten çok kayar (CLS).
