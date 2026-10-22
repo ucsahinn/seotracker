@@ -43,4 +43,15 @@ describe("describeCheck", () => {
       describeCheck("novel", { status: "warn", detail: "Something odd" }, null),
     ).toEqual({ status: "warn", text: "Something odd", foreign: true });
   });
+
+  it("sends a Windows package user to the tray menu, not to docker compose", () => {
+    const result = describeCheck(
+      "database",
+      { status: "error", detail: "D1 did not answer" },
+      null,
+      "windows",
+    );
+    expect(result.text).toContain("Günlükleri aç");
+    expect(result.text).not.toContain("docker");
+  });
 });

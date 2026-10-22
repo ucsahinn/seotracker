@@ -51,8 +51,12 @@ export function useSetupSnapshot() {
   return {
     diagnostics,
     update: update.data,
-    /** Which install this is; "docker" until the update query has answered. */
-    installKind: update.data?.installKind ?? ("docker" as const),
+    /** Which install this is. Diagnostics answer first (no network); the
+     * update check is the fallback; "docker" only while both are unknown. */
+    installKind:
+      diagnostics.data?.setup.installKind ??
+      update.data?.installKind ??
+      ("docker" as const),
     googleReady,
     isFetching,
     refresh,

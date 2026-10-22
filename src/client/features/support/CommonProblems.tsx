@@ -162,8 +162,8 @@ export function CommonProblems({
       <Problem title="Ajanım uygulamaya bağlanamıyor (401)">
         {windows ? (
           <p>
-            Asistan bağlantısı bir şifre (token) ister. Windows paketinde bu
-            şifre{" "}
+            Asistan bağlantısı bir parola (token) ister. Windows paketinde bu
+            parola{" "}
             <code className="text-xs">%LOCALAPPDATA%\seowatcher\mcp-token</code>{" "}
             dosyasındadır (<strong>Veri klasörünü aç</strong>). Komutla okumak
             için PowerShell:{" "}
@@ -177,14 +177,15 @@ export function CommonProblems({
         ) : (
           <>
             <p>
-              MCP ucu varsayılan olarak bir jeton ister. Jeton ilk açılışta
-              üretilir ve veri biriminde durur; okumak için (PowerShell ve cmd):{" "}
+              Asistan bağlantısı varsayılan olarak bir parola (token) ister.
+              Parola ilk açılışta üretilir ve veri biriminde durur; okumak için
+              (PowerShell ve cmd):{" "}
               <Command value="docker compose exec -T seotracker cat /app/.wrangler/mcp-token" />
             </p>
             <p>
               Git Bash (Windows):{" "}
               <Command value="MSYS_NO_PATHCONV=1 docker compose exec -T seotracker cat /app/.wrangler/mcp-token" />{" "}
-              Önek olmadan Git Bash yolu bozar ve jeton boş çıkar;
+              Önek olmadan Git Bash yolu bozar ve parola boş çıkar;
               PowerShell&apos;de önek hata verir.
             </p>
           </>

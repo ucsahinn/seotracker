@@ -20,6 +20,7 @@ concurrency:
 jobs:
   package:
     runs-on: windows-latest
+    timeout-minutes: 30
 
     steps:
       - name: Checkout
@@ -61,11 +62,14 @@ jobs:
         run: |
           $exe = Get-ChildItem packaging/windows/out -Filter "seowatcher-setup-*.exe" | Select-Object -First 1
           $log = Join-Path $env:RUNNER_TEMP "setup-smoke.log"
-          $p = Start-Process -FilePath $exe.FullName -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART /LOG=`"$log`"" -Wait -PassThru
+          # WaitForExit, not -Wait: a silent install relaunches the tray app as a
+          # child, and Start-Process -Wait waits for the whole process tree.
+          $p = Start-Process -FilePath $exe.FullName -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART /LOG=`"$log`"" -PassThru
+          if (-not $p.WaitForExit(600000)) { Get-Content $log -Tail 40; throw "installer still running after 10 min" }
           if ($p.ExitCode -ne 0) { Get-Content $log -Tail 40; throw "installer exit $($p.ExitCode)" }
           $app = Join-Path $env:LOCALAPPDATA "Programs\seowatcher\seowatcher.exe"
           if (-not (Test-Path $app)) { throw "launcher not installed at $app" }
-          Start-Process -FilePath $app -ArgumentList "--silent"
+          if (-not (Get-Process -Name seowatcher -ErrorAction SilentlyContinue)) { Start-Process -FilePath $app -ArgumentList "--silent" }
           $ok = $false
           foreach ($i in 1..60) {
             Start-Sleep -Seconds 3
@@ -81,7 +85,8 @@ jobs:
           Write-Host "health ok"
           & $app --quit
           $un = Get-ChildItem (Split-Path $app) -Filter "unins*.exe" | Select-Object -First 1
-          $u = Start-Process -FilePath $un.FullName -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART" -Wait -PassThru
+          $u = Start-Process -FilePath $un.FullName -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART" -PassThru
+          if (-not $u.WaitForExit(300000)) { throw "uninstaller still running after 5 min" }
           if ($u.ExitCode -ne 0) { throw "uninstaller exit $($u.ExitCode)" }
           if (Test-Path $app) { throw "launcher still present after uninstall" }
           Write-Host "install, start, health, quit, uninstall: all ok"

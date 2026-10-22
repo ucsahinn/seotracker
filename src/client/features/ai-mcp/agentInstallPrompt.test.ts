@@ -5,6 +5,10 @@ import { getInstallPrompt } from "./agentSetupPrompt";
 const ORIGIN = "http://localhost:3001";
 const open = getInstallPrompt(ORIGIN);
 const closed = getInstallPrompt(ORIGIN, { tokenConfigured: true });
+const windows = getInstallPrompt(ORIGIN, {
+  tokenConfigured: true,
+  installKind: "windows",
+});
 
 const toolsDir = "src/server/mcp/tools";
 const registered = readdirSync(toolsDir)
@@ -101,5 +105,12 @@ describe("install prompt", () => {
 
   it("stays compact enough for an agent to follow", () => {
     expect(closed.length).toBeLessThan(8000);
+    expect(windows.length).toBeLessThan(8000);
+  });
+
+  it("names the token file instead of the container on the Windows package", () => {
+    expect(windows).toContain("%LOCALAPPDATA%\\seowatcher\\mcp-token");
+    expect(windows).not.toContain("docker compose exec -T seotracker cat");
+    expect(windows).not.toMatch(/\{\{/);
   });
 });

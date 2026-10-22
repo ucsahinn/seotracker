@@ -353,7 +353,7 @@ function AiPage() {
                   başlığını ekletin.{" "}
                   {connection.data.installKind === "windows" ? (
                     <>
-                      Windows paketinde token bir dosyadır:{" "}
+                      Windows paketinde parola (token) bir dosyadır:{" "}
                       <code className="font-mono text-muted">
                         %LOCALAPPDATA%\seowatcher\mcp-token
                       </code>{" "}

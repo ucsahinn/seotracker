@@ -30,7 +30,16 @@ const prompts = {
   update: agentUpdatePrompt,
   codex: getCodexSetupPrompt(ORIGIN),
   codexWithToken: getCodexSetupPrompt(ORIGIN, { tokenConfigured: true }),
+  windows: getAgentSetupPrompt(ORIGIN, {
+    tokenConfigured: true,
+    installKind: "windows",
+  }),
+  codexWindows: getCodexSetupPrompt(ORIGIN, {
+    tokenConfigured: true,
+    installKind: "windows",
+  }),
 };
+const WINDOWS_TOKEN_FILE = "%LOCALAPPDATA%\\seowatcher\\mcp-token";
 
 describe("agent setup prompt", () => {
   it("copies the installer body without its internal skill metadata", () => {
@@ -64,6 +73,19 @@ describe("agent setup prompt", () => {
       "docker compose exec -T seotracker cat /app/.wrangler/mcp-token",
     );
     expect(closed).toContain("ONLY into the MCP client config");
+  });
+
+  // The Windows package has no container: an agent told to run docker compose
+  // there would stall on a command that cannot work.
+  it("reads the token from the data folder on the Windows package", () => {
+    for (const prompt of [prompts.windows, prompts.codexWindows]) {
+      expect(prompt).toContain(WINDOWS_TOKEN_FILE);
+      expect(prompt).not.toContain("{{");
+    }
+    expect(prompts.windows).not.toContain(NO_AUTH_SENTENCE);
+    expect(prompts.windows).toContain(
+      "Use those instead of any `docker compose exec`",
+    );
   });
 
   // A tool name that does not exist sends the agent guessing.

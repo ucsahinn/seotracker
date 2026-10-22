@@ -1333,7 +1333,7 @@ namespace SeoWatcher
         private void SetStatus(string text)
         {
             statusItem.Text = text;
-            tray.Text = Truncate("seowatcher: " + text, 63);
+            tray.Text = Truncate("seowatcher " + Paths.Version() + ": " + text, 63);
         }
 
         private void OnReady(string readyUrl)

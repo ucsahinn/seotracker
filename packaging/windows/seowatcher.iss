@@ -74,16 +74,19 @@ tr.VcRedistSkipped=Microsoft Visual C++ çalışma zamanı kurulamadı (yönetic
 en.VcRedistSkipped=The Microsoft Visual C++ runtime could not be installed (administrator permission was not given or the install failed). seowatcher does not start without it. The app will offer to install it again on first launch.
 
 [Messages]
+; Every wizard page carries the version in its bottom-left corner.
+tr.BeveledLabel=seowatcher {#AppVersion}
+en.BeveledLabel=seowatcher {#AppVersion}
 ; The default Inno texts are generic; these read like the product.
-tr.WelcomeLabel1=seowatcher kurulumuna hoş geldiniz
+tr.WelcomeLabel1=seowatcher {#AppVersion} kurulumuna hoş geldiniz
 tr.WelcomeLabel2=Sitenizin Google verisini kendi bilgisayarınızda okuyan ücretsiz SEO uygulaması kurulacak.%n%nKurulum yalnızca sizin kullanıcı hesabınıza yapılır, yönetici şifresi istemez ve iki dakika sürer.
 tr.FinishedHeadingLabel=Kurulum tamamlandı
-tr.FinishedLabel=seowatcher görev çubuğunda çalışacak ve tarayıcınızda açılacak.%n%nİlk açılış 20-30 saniye sürer. Sonra Google'ı bağlarsınız; uygulama adım adım gösterir.
+tr.FinishedLabel=seowatcher {#AppVersion} görev çubuğunda çalışacak ve tarayıcınızda açılacak.%n%nİlk açılış 20-30 saniye sürer. Sonra Google'ı bağlarsınız; uygulama adım adım gösterir.
 tr.ClickFinish=Bitirmek için Son'a tıklayın.
-en.WelcomeLabel1=Welcome to seowatcher
+en.WelcomeLabel1=Welcome to seowatcher {#AppVersion}
 en.WelcomeLabel2=This installs the free SEO app that reads your site's Google data on your own computer.%n%nIt installs for your user account only, needs no administrator password and takes about two minutes.
 en.FinishedHeadingLabel=Setup complete
-en.FinishedLabel=seowatcher will run from the taskbar tray and open in your browser.%n%nThe first start takes 20-30 seconds. Then you connect Google; the app walks you through it.
+en.FinishedLabel=seowatcher {#AppVersion} will run from the taskbar tray and open in your browser.%n%nThe first start takes 20-30 seconds. Then you connect Google; the app walks you through it.
 
 [Tasks]
 Name: "autostart"; Description: "{cm:Autostart}"

@@ -2,6 +2,24 @@
 
 Her sürümün notu burada, en yenisi en üstte.
 
+## [2.3.6] — 2026-10-23
+
+Site iki dilli: Türkçe ana sayfa ve kılavuz artık İngilizce karşılığıyla
+yayınlanır. Kurulum sihirbazı sürümü gösterir.
+
+### Yenilikler
+
+- **İngilizce site.** `seowatcher.io/en/` ana sayfası ve `/en/docs/` altında 20 kılavuz sayfası; her sayfa diğer dile `hreflang` ve üst menüdeki dil düğmesiyle bağlı, sitemap iki dili birlikte listeler, `llms.txt` iki dilde özet taşır. İngilizce metinde uygulamanın ekran adları Türkçe kalır ve yanına İngilizcesi yazılır, çünkü arayüz Türkçedir. Ana sayfanın İngilizcesi tek bir çeviri tablosundan (`scripts/site-home.en.json`) üretilir; tabloda karşılığı olmayan Türkçe cümle derlemeyi durdurur.
+- **Kurulum sihirbazında sürüm.** Karşılama ve bitiş sayfaları ile her sayfanın sol alt köşesi kurulan sürümü yazar; görev çubuğu simgesinin ipucu da sürümü gösterir.
+- **Ana sayfa.** "Verinizi Google'dan okur, kimseye göndermez" akış bölümü logo bandının hemen altına taşındı. Sayılar sayfanın diline göre biçimlenir.
+- **Kılavuz okuma.** Kopyala düğmesi geniş kod bloklarında yerinde kalır ve ekran okuyucuya durumunu söyler; içindekiler bağlantısı başlığa odak taşır; sayfanın sonunda son başlık işaretlenir.
+- **Yardım.** Kurulum türü önce tanılama verisinden okunur; Windows paketinde yükleme sırasında bile Docker metni görünmez. Kimlik doğrulama ve gizli anahtar uyarıları Windows paketinde "Kurulumu onar" adımını söyler. Asistan parolası her yerde aynı adla (parola) anılır.
+
+### Düzeltmeler
+
+- README rozeti sürümle birlikte güncellenir.
+- 404 sayfası iki dilli.
+
 ## [2.3.5] — 2026-10-23
 
 Windows paketi ile Docker kurulumu her yönergede eşit; kılavuz sayfaları daha
