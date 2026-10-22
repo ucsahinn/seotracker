@@ -40,7 +40,7 @@
       property="og:image:alt"
       content="seowatcher: sitenizin Google verisi, kendi bilgisayarınızda"
     />
-    <meta property="article:modified_time" content="2026-10-22" />
+    <meta property="article:modified_time" content="2026-10-23" />
     <meta property="og:url" content="https://seowatcher.io/docs/kurulum-windows/" />
     <meta property="og:locale" content="tr_TR" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -48,7 +48,8 @@
     <meta name="twitter:description" content="Tek dosyayla Windows'a kurun. İlk açılış, güncelleme, kaldırma, yedek alma ve adres numarası değiştirme. Docker ya da terminal gerekmez." />
     <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
     <meta name="color-scheme" content="dark" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":"tr"},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/docs/kurulum-windows/#article","headline":"Windows'a kurulum","description":"Tek dosyayla Windows'a kurun. İlk açılış, güncelleme, kaldırma, yedek alma ve adres numarası değiştirme. Docker ya da terminal gerekmez.","url":"https://seowatcher.io/docs/kurulum-windows/","inLanguage":"tr","dateModified":"2026-10-22","articleSection":"Başlangıç","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/docs/kurulum-windows/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/docs/kurulum-windows/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/"},{"@type":"ListItem","position":2,"name":"Kılavuz","item":"https://seowatcher.io/docs/"},{"@type":"ListItem","position":3,"name":"Windows'a kurulum","item":"https://seowatcher.io/docs/kurulum-windows/"}]}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":"tr"},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/docs/kurulum-windows/#article","headline":"Windows'a kurulum","description":"Tek dosyayla Windows'a kurun. İlk açılış, güncelleme, kaldırma, yedek alma ve adres numarası değiştirme. Docker ya da terminal gerekmez.","url":"https://seowatcher.io/docs/kurulum-windows/","inLanguage":"tr","dateModified":"2026-10-23","articleSection":"Başlangıç","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/docs/kurulum-windows/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/docs/kurulum-windows/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/"},{"@type":"ListItem","position":2,"name":"Kılavuz","item":"https://seowatcher.io/docs/"},{"@type":"ListItem","position":3,"name":"Windows'a kurulum","item":"https://seowatcher.io/docs/kurulum-windows/"}]}]}</script>
+    <script src="/assets/docs.js?v=2.4.1" defer></script>
     <meta name="theme-color" content="#272c3b" />
     <style>
       @font-face {
@@ -629,6 +630,168 @@
       article td[align="right"] {
         font-variant-numeric: tabular-nums;
       }
+
+      /* Guide pass: callouts, pager, copy buttons, mobile sidebar, tables. */
+      .callout {
+        position: relative;
+        padding: 12px 16px 12px 18px;
+        margin: 0 0 12px;
+        border-radius: 12px;
+        background: var(--glass);
+        border-left: 3px solid var(--hairline-strong);
+      }
+      .callout-belirti {
+        border-left-color: var(--subtle);
+      }
+      .callout-sebep {
+        border-left-color: var(--accent-2);
+      }
+      .callout-cozum {
+        border-left-color: var(--accent);
+        background: color-mix(in oklab, var(--accent) 10%, transparent);
+      }
+      .pager {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin: 44px 0 8px;
+      }
+      .pager a,
+      .pager .empty {
+        display: grid;
+        gap: 4px;
+        padding: 14px 16px;
+        border: 1px solid var(--hairline);
+        border-radius: 14px;
+        text-decoration: none;
+        color: var(--fg);
+        transition:
+          border-color 300ms var(--ease),
+          background-color 300ms var(--ease),
+          transform 500ms var(--spring);
+      }
+      .pager .empty {
+        border-color: transparent;
+      }
+      .pager a:hover {
+        border-color: var(--hairline-strong);
+        background: var(--glass);
+        transform: translateY(-1px);
+      }
+      .pager span {
+        font-size: 12.5px;
+        color: var(--subtle);
+      }
+      .pager-next {
+        text-align: right;
+      }
+      article pre {
+        position: relative;
+      }
+      article pre.has-copy {
+        padding-top: 38px;
+      }
+      article pre .copy {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        font: inherit;
+        font-size: 12.5px;
+        font-weight: 600;
+        color: var(--muted);
+        background: var(--glass);
+        border: 1px solid var(--hairline);
+        border-radius: 999px;
+        padding: 4px 10px;
+        cursor: pointer;
+        transition:
+          color 200ms var(--ease),
+          border-color 200ms var(--ease);
+      }
+      article pre .copy:hover,
+      article pre .copy.done {
+        color: var(--fg);
+        border-color: var(--hairline-strong);
+      }
+      .side-dd > summary {
+        display: none;
+      }
+      .toc a.current {
+        color: var(--fg);
+        font-weight: 600;
+      }
+      .toc a.current::before {
+        content: "";
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+        margin-right: 8px;
+        vertical-align: middle;
+        box-shadow: 0 0 8px var(--glow);
+      }
+      article .tw {
+        max-height: 70vh;
+        overflow: auto;
+      }
+      article thead th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
+      article tbody tr:nth-child(even) td {
+        background: oklch(100% 0 0 / 0.025);
+      }
+      article td.num {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+      @media (max-width: 800px) {
+        .side-dd > summary {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          cursor: pointer;
+          list-style: none;
+          padding: 12px 14px;
+          border: 1px solid var(--hairline);
+          border-radius: 12px;
+          font-weight: 600;
+        }
+        .side-dd > summary::-webkit-details-marker {
+          display: none;
+        }
+        .side-dd > summary::after {
+          content: "";
+          width: 9px;
+          height: 9px;
+          border-right: 1.5px solid var(--muted);
+          border-bottom: 1.5px solid var(--muted);
+          transform: rotate(45deg);
+          transition: transform 300ms var(--spring);
+        }
+        .side-dd[open] > summary::after {
+          transform: rotate(225deg);
+        }
+        .side-dd[open] > summary {
+          margin-bottom: 10px;
+        }
+        .side {
+          border-right: 0;
+          padding-right: 0;
+        }
+        .pager {
+          grid-template-columns: 1fr;
+        }
+        .pager-next {
+          text-align: left;
+        }
+      }
+      article code {
+        overflow-wrap: anywhere;
+      }
     </style>
   </head>
   <body>
@@ -658,7 +821,12 @@
       </div>
     </header>
     <main class="wrap layout">
-      <aside class="side" aria-label="Kılavuz"><p class="nav-group">Başlangıç</p><ul><li class="current" aria-current="page"><a href="/docs/kurulum-windows/">Windows'a kurulum</a></li><li><a href="/docs/kurulum-docker/">Docker ile kurulum</a></li><li><a href="/docs/google-baglantisi/">Google'a bağlanma</a></li><li><a href="/docs/pagespeed-anahtari/">PageSpeed anahtarı</a></li></ul><p class="nav-group">Ekranlar</p><ul><li><a href="/docs/projeler/">Projeler</a></li><li><a href="/docs/panel/">Panel</a></li><li><a href="/docs/arama-performansi/">Arama performansı</a></li><li><a href="/docs/siralama-takibi/">Sıralama takibi</a></li><li><a href="/docs/firsatlar/">Fırsatlar</a></li><li><a href="/docs/kayitli-kelimeler/">Kayıtlı kelimeler</a></li><li><a href="/docs/analytics/">Analytics</a></li><li><a href="/docs/site-denetimi/">Site denetimi</a></li><li><a href="/docs/dizin-durumu/">Dizin durumu</a></li><li><a href="/docs/raporlar/">Raporlar ve şablonlar</a></li><li><a href="/docs/proje-bilgisi/">Proje bilgisi</a></li><li><a href="/docs/ayarlar/">Ayarlar</a></li></ul><p class="nav-group">Başvuru</p><ul><li><a href="/docs/yardim/">Yardım</a></li><li><a href="/docs/denetim-kurallari/">Denetim kuralları</a></li><li><a href="/docs/ajan-kurulumu/">Ajan kurulumu</a></li><li><a href="/docs/sorun-giderme/">Sorun giderme</a></li></ul></aside>
+      <aside class="side" aria-label="Kılavuz">
+        <details class="side-dd" open>
+          <summary>Kılavuz</summary>
+          <p class="nav-group">Başlangıç</p><ul><li class="current" aria-current="page"><a href="/docs/kurulum-windows/">Windows'a kurulum</a></li><li><a href="/docs/kurulum-docker/">Docker ile kurulum</a></li><li><a href="/docs/google-baglantisi/">Google'a bağlanma</a></li><li><a href="/docs/pagespeed-anahtari/">PageSpeed anahtarı</a></li></ul><p class="nav-group">Ekranlar</p><ul><li><a href="/docs/projeler/">Projeler</a></li><li><a href="/docs/panel/">Panel</a></li><li><a href="/docs/arama-performansi/">Arama performansı</a></li><li><a href="/docs/siralama-takibi/">Sıralama takibi</a></li><li><a href="/docs/firsatlar/">Fırsatlar</a></li><li><a href="/docs/kayitli-kelimeler/">Kayıtlı kelimeler</a></li><li><a href="/docs/analytics/">Analytics</a></li><li><a href="/docs/site-denetimi/">Site denetimi</a></li><li><a href="/docs/dizin-durumu/">Dizin durumu</a></li><li><a href="/docs/raporlar/">Raporlar ve şablonlar</a></li><li><a href="/docs/proje-bilgisi/">Proje bilgisi</a></li><li><a href="/docs/ayarlar/">Ayarlar</a></li></ul><p class="nav-group">Başvuru</p><ul><li><a href="/docs/yardim/">Yardım</a></li><li><a href="/docs/denetim-kurallari/">Denetim kuralları</a></li><li><a href="/docs/ajan-kurulumu/">Ajan kurulumu</a></li><li><a href="/docs/sorun-giderme/">Sorun giderme</a></li></ul>
+        </details>
+      </aside>
       <article id="icerik">
         <h1>Windows'a kurulum</h1><p class="lede">Tek dosyayla Windows'a kurun. İlk açılış, güncelleme, kaldırma, yedek alma ve adres numarası değiştirme. Docker ya da terminal gerekmez.</p><p>Bu sayfanın sonunda uygulama bilgisayarınızda kurulu ve tarayıcıda açık olacak. Kurulum iki dakika sürer. Yalnızca sizin kullanıcı hesabınıza kurulur, yönetici şifresi istemez.</p>
 <h2 id="gerekenler">Gerekenler</h2>
@@ -676,6 +844,9 @@
 <p>Uygulama güncellemeyi kendisi yapar. Açılıştan iki dakika sonra ve her gün bir kez GitHub'daki son sürüme bakar. Yeni sürüm varsa indirir, dosyanın parmak izini (SHA-256) sürüm sayfasındaki değerle karşılaştırır, sonra sessizce kurar ve yeniden açılır. Simgenin yazısı bu sırada &quot;Güncelleme indiriliyor&quot; ve &quot;Güncelleme kuruluyor&quot; olur. Uygulama içindeki <strong>Ayarlar → Hakkında</strong> bölümü de yeni sürümü haber verir ve sizi simgedeki <strong>Güncelle</strong>'ye yönlendirir.</p>
 <ul><li>Kendiliğinden kurulmasını istemiyorsanız menüden <strong>Güncellemeleri kendiliğinden kur</strong> işaretini kaldırın. O zaman yeni sürüm çıkınca bir baloncuk görürsünüz ve menüde <strong>Güncelle</strong> maddesi belirir.</li><li>Elle güncellemek için yeni kurulum dosyasını aynı adresten indirip çalıştırın. Sihirbaz açık uygulamayı kendisi kapatır, dosyaları değiştirir ve yeniden başlatır.</li></ul>
 <p>Verileriniz, Google bağlantınız ve ayarlarınız olduğu gibi kalır.</p>
+<h3 id="kurumsal-dagitim">Kurumsal dağıtım</h3>
+<p>Bir bilgisayardaki tüm kullanıcılar için kurmak ya da bir dağıtım aracıyla (Intune, GPO, PDQ) sessizce yüklemek isteyen BT ekipleri için:</p>
+<ul><li><strong>Tüm kullanıcılar için</strong>: kurulum dosyasını yönetici olarak çalıştırın ve sihirbazda &quot;tüm kullanıcılar&quot; seçeneğini seçin. Uygulama <code>Program Files\seowatcher</code> altına kurulur; her kullanıcının verisi yine kendi <code>%LOCALAPPDATA%\seowatcher</code> klasöründe durur.</li><li><strong>Sessiz kurulum</strong>: <code>seowatcher-setup.exe /VERYSILENT /NORESTART</code> (tek kullanıcı) ya da <code>seowatcher-setup.exe /VERYSILENT /ALLUSERS /NORESTART</code> (yönetici, tüm kullanıcılar). Sessiz kurulum bitince uygulama kendiliğinden açılır.</li><li><strong>Kurulum günlüğü</strong>: her kurulum <code>%LOCALAPPDATA%\seowatcher\logs\setup.log</code> dosyasına yazılır; <code>/LOG=&quot;yol&quot;</code> ile başka bir yer verebilirsiniz.</li><li><strong>Sessiz kaldırma</strong>: <code>unins000.exe /VERYSILENT</code> (kurulum klasöründe).</li><li><strong>Doğrulama</strong>: her sürüm yayımlanmadan önce temiz bir Windows makinesinde kurulur, açılır, sağlık adresi yanıt verene kadar beklenir ve kaldırılır; bu sınav geçmeden sürüm yayımlanmaz.</li></ul>
 <h3 id="onarma">Onarma</h3>
 <p>Bir şey takılırsa simgeye sağ tıklayıp <strong>Kurulumu onar</strong> deyin. Uygulama geçici dosyaları temizler, paketin eksiksiz olduğunu kontrol eder, veritabanını yeniden kontrol eder ve açılır. Bir dosya eksikse söyler ve sürüm sayfasını açar; kurulum dosyasını yeniden çalıştırmanız yeter.</p>
 <h3 id="kaldirma">Kaldırma</h3>
@@ -705,9 +876,9 @@
 <p><strong>Docker sürümünden geçebilir miyim?</strong> Evet, ama veri kendiliğinden taşınmaz. Projeleri yeniden oluşturur, Google'ı yeniden bağlarsınız. Search Console arşivi ilk açılışta yeniden dolar.</p>
 <p><strong>Antivirüs uyarı verdi.</strong> Dosya imzasız olduğu için bazı antivirüsler uyarır. Dosyayı yalnızca GitHub sürüm sayfasından indirin ve SHA-256 özetini karşılaştırın.</p>
 <h2 id="sorun-cikarsa">Sorun çıkarsa</h2>
-<ul><li><strong>Simge &quot;Hata: Port 3001 ve sonraki 9 port dolu&quot; diyor.</strong> Başka program bu numaraları tutuyor. <code>config.json</code> dosyasına başka bir numara yazın.</li><li><strong>Simge &quot;Veritabanı güncellemesi başarısız&quot; diyor.</strong> <strong>Günlükleri aç</strong> deyin, <code>migrate.log</code> dosyasının son satırlarına bakın. Çoğu zaman disk doludur ya da klasör salt okunurdur.</li><li><strong>Simge &quot;Sunucu beklenmedik şekilde kapandı&quot; diyor.</strong> <code>server.log</code> dosyasının son satırları sebebi yazar. <strong>Yeniden başlat</strong> deneyin. Düzelmezse günlüğü GitHub'da bir sorun kaydıyla paylaşın.</li><li><strong>Tarayıcı açılmadı.</strong> Simgeye çift tıklayın ya da adresi elle yazın: <code>http://127.0.0.1:3001</code></li></ul>
+<ul><li><strong>Simge &quot;Hata: Port 3001 ve sonraki 9 port dolu&quot; diyor.</strong> Başka program bu numaraları tutuyor. <code>config.json</code> dosyasına başka bir numara yazın.</li><li><strong>Simge &quot;Veritabanı güncellemesi başarısız&quot; diyor.</strong> <strong>Günlükleri aç</strong> deyin, <code>migrate.log</code> dosyasının son satırlarına bakın. Çoğu zaman disk doludur ya da klasör salt okunurdur.</li><li><strong>Simge &quot;Sunucu beklenmedik şekilde kapandı&quot; diyor.</strong> <code>server.log</code> dosyasının son satırları sebebi yazar. <strong>Yeniden başlat</strong> deneyin. Düzelmezse günlüğü GitHub'da bir sorun kaydıyla paylaşın.</li><li><strong>Tarayıcı açılmadı.</strong> Simgeye çift tıklayın ya da adresi elle yazın: <code>http://127.0.0.1:3001</code></li></ul> <nav class="pager" aria-label="Önceki ve sonraki sayfa"><span class="pager-prev empty"></span><a class="pager-next" rel="next" href="/docs/kurulum-docker/"><span>Sonraki</span><strong>Docker ile kurulum</strong></a></nav>
         <p class="meta">
-          Son güncelleme: 22 Ekim 2026. Bir hata görürseniz
+          Son güncelleme: 23 Ekim 2026. Bir hata görürseniz
           <a href="https://github.com/ucsahinn/seotracker/issues"
             >GitHub'da bildirin</a
           >.

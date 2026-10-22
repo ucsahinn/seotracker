@@ -49,6 +49,7 @@
     <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":"tr"},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/docs/ayarlar/#article","headline":"Ayarlar","description":"Tema, Google erişim anahtarı, PageSpeed anahtarı, kullanım sınırları, sürüm ve güncelleme kontrolü. Tüm kurulumun tek ayar ekranı.","url":"https://seowatcher.io/docs/ayarlar/","inLanguage":"tr","dateModified":"2026-10-22","articleSection":"Ekranlar","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/docs/ayarlar/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/docs/ayarlar/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/"},{"@type":"ListItem","position":2,"name":"Kılavuz","item":"https://seowatcher.io/docs/"},{"@type":"ListItem","position":3,"name":"Ayarlar","item":"https://seowatcher.io/docs/ayarlar/"}]}]}</script>
+    <script src="/assets/docs.js?v=2.4.1" defer></script>
     <meta name="theme-color" content="#272c3b" />
     <style>
       @font-face {
@@ -629,6 +630,168 @@
       article td[align="right"] {
         font-variant-numeric: tabular-nums;
       }
+
+      /* Guide pass: callouts, pager, copy buttons, mobile sidebar, tables. */
+      .callout {
+        position: relative;
+        padding: 12px 16px 12px 18px;
+        margin: 0 0 12px;
+        border-radius: 12px;
+        background: var(--glass);
+        border-left: 3px solid var(--hairline-strong);
+      }
+      .callout-belirti {
+        border-left-color: var(--subtle);
+      }
+      .callout-sebep {
+        border-left-color: var(--accent-2);
+      }
+      .callout-cozum {
+        border-left-color: var(--accent);
+        background: color-mix(in oklab, var(--accent) 10%, transparent);
+      }
+      .pager {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin: 44px 0 8px;
+      }
+      .pager a,
+      .pager .empty {
+        display: grid;
+        gap: 4px;
+        padding: 14px 16px;
+        border: 1px solid var(--hairline);
+        border-radius: 14px;
+        text-decoration: none;
+        color: var(--fg);
+        transition:
+          border-color 300ms var(--ease),
+          background-color 300ms var(--ease),
+          transform 500ms var(--spring);
+      }
+      .pager .empty {
+        border-color: transparent;
+      }
+      .pager a:hover {
+        border-color: var(--hairline-strong);
+        background: var(--glass);
+        transform: translateY(-1px);
+      }
+      .pager span {
+        font-size: 12.5px;
+        color: var(--subtle);
+      }
+      .pager-next {
+        text-align: right;
+      }
+      article pre {
+        position: relative;
+      }
+      article pre.has-copy {
+        padding-top: 38px;
+      }
+      article pre .copy {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        font: inherit;
+        font-size: 12.5px;
+        font-weight: 600;
+        color: var(--muted);
+        background: var(--glass);
+        border: 1px solid var(--hairline);
+        border-radius: 999px;
+        padding: 4px 10px;
+        cursor: pointer;
+        transition:
+          color 200ms var(--ease),
+          border-color 200ms var(--ease);
+      }
+      article pre .copy:hover,
+      article pre .copy.done {
+        color: var(--fg);
+        border-color: var(--hairline-strong);
+      }
+      .side-dd > summary {
+        display: none;
+      }
+      .toc a.current {
+        color: var(--fg);
+        font-weight: 600;
+      }
+      .toc a.current::before {
+        content: "";
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+        margin-right: 8px;
+        vertical-align: middle;
+        box-shadow: 0 0 8px var(--glow);
+      }
+      article .tw {
+        max-height: 70vh;
+        overflow: auto;
+      }
+      article thead th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
+      article tbody tr:nth-child(even) td {
+        background: oklch(100% 0 0 / 0.025);
+      }
+      article td.num {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+      @media (max-width: 800px) {
+        .side-dd > summary {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          cursor: pointer;
+          list-style: none;
+          padding: 12px 14px;
+          border: 1px solid var(--hairline);
+          border-radius: 12px;
+          font-weight: 600;
+        }
+        .side-dd > summary::-webkit-details-marker {
+          display: none;
+        }
+        .side-dd > summary::after {
+          content: "";
+          width: 9px;
+          height: 9px;
+          border-right: 1.5px solid var(--muted);
+          border-bottom: 1.5px solid var(--muted);
+          transform: rotate(45deg);
+          transition: transform 300ms var(--spring);
+        }
+        .side-dd[open] > summary::after {
+          transform: rotate(225deg);
+        }
+        .side-dd[open] > summary {
+          margin-bottom: 10px;
+        }
+        .side {
+          border-right: 0;
+          padding-right: 0;
+        }
+        .pager {
+          grid-template-columns: 1fr;
+        }
+        .pager-next {
+          text-align: left;
+        }
+      }
+      article code {
+        overflow-wrap: anywhere;
+      }
     </style>
   </head>
   <body>
@@ -658,7 +821,12 @@
       </div>
     </header>
     <main class="wrap layout">
-      <aside class="side" aria-label="Kılavuz"><p class="nav-group">Başlangıç</p><ul><li><a href="/docs/kurulum-windows/">Windows'a kurulum</a></li><li><a href="/docs/kurulum-docker/">Docker ile kurulum</a></li><li><a href="/docs/google-baglantisi/">Google'a bağlanma</a></li><li><a href="/docs/pagespeed-anahtari/">PageSpeed anahtarı</a></li></ul><p class="nav-group">Ekranlar</p><ul><li><a href="/docs/projeler/">Projeler</a></li><li><a href="/docs/panel/">Panel</a></li><li><a href="/docs/arama-performansi/">Arama performansı</a></li><li><a href="/docs/siralama-takibi/">Sıralama takibi</a></li><li><a href="/docs/firsatlar/">Fırsatlar</a></li><li><a href="/docs/kayitli-kelimeler/">Kayıtlı kelimeler</a></li><li><a href="/docs/analytics/">Analytics</a></li><li><a href="/docs/site-denetimi/">Site denetimi</a></li><li><a href="/docs/dizin-durumu/">Dizin durumu</a></li><li><a href="/docs/raporlar/">Raporlar ve şablonlar</a></li><li><a href="/docs/proje-bilgisi/">Proje bilgisi</a></li><li class="current" aria-current="page"><a href="/docs/ayarlar/">Ayarlar</a></li></ul><p class="nav-group">Başvuru</p><ul><li><a href="/docs/yardim/">Yardım</a></li><li><a href="/docs/denetim-kurallari/">Denetim kuralları</a></li><li><a href="/docs/ajan-kurulumu/">Ajan kurulumu</a></li><li><a href="/docs/sorun-giderme/">Sorun giderme</a></li></ul></aside>
+      <aside class="side" aria-label="Kılavuz">
+        <details class="side-dd" open>
+          <summary>Kılavuz</summary>
+          <p class="nav-group">Başlangıç</p><ul><li><a href="/docs/kurulum-windows/">Windows'a kurulum</a></li><li><a href="/docs/kurulum-docker/">Docker ile kurulum</a></li><li><a href="/docs/google-baglantisi/">Google'a bağlanma</a></li><li><a href="/docs/pagespeed-anahtari/">PageSpeed anahtarı</a></li></ul><p class="nav-group">Ekranlar</p><ul><li><a href="/docs/projeler/">Projeler</a></li><li><a href="/docs/panel/">Panel</a></li><li><a href="/docs/arama-performansi/">Arama performansı</a></li><li><a href="/docs/siralama-takibi/">Sıralama takibi</a></li><li><a href="/docs/firsatlar/">Fırsatlar</a></li><li><a href="/docs/kayitli-kelimeler/">Kayıtlı kelimeler</a></li><li><a href="/docs/analytics/">Analytics</a></li><li><a href="/docs/site-denetimi/">Site denetimi</a></li><li><a href="/docs/dizin-durumu/">Dizin durumu</a></li><li><a href="/docs/raporlar/">Raporlar ve şablonlar</a></li><li><a href="/docs/proje-bilgisi/">Proje bilgisi</a></li><li class="current" aria-current="page"><a href="/docs/ayarlar/">Ayarlar</a></li></ul><p class="nav-group">Başvuru</p><ul><li><a href="/docs/yardim/">Yardım</a></li><li><a href="/docs/denetim-kurallari/">Denetim kuralları</a></li><li><a href="/docs/ajan-kurulumu/">Ajan kurulumu</a></li><li><a href="/docs/sorun-giderme/">Sorun giderme</a></li></ul>
+        </details>
+      </aside>
       <article id="icerik">
         <h1>Ayarlar</h1><p class="lede">Tema, Google erişim anahtarı, PageSpeed anahtarı, kullanım sınırları, sürüm ve güncelleme kontrolü. Tüm kurulumun tek ayar ekranı.</p><p>Bu sayfada Google bağlantısını, hız anahtarını ve güncellemeyi nereden yöneteceğinizi görürsünüz.</p>
 <p><strong>Ayarlar</strong>, tüm kurulumu ilgilendiren şeylerin ekranıdır. Proje başına ayarlar (ad, alan adı, Search Console ve Analytics mülkü) her projenin <strong>Proje ayarları</strong> sayfasındadır. Burada Google'a bağlanmak için gereken erişim anahtarını, PageSpeed anahtarını, temayı ve güncelleme kontrolünü yönetirsiniz. Solda <strong>Görünüm</strong>, <strong>Google</strong>, <strong>Hizmet hesabı</strong>, <strong>Hız ölçümü</strong>, <strong>Sınırlar</strong>, <strong>Hakkında</strong> ve <strong>Sürüm notları</strong> bölümleri var. Her bölümün başlığında durumunu söyleyen bir rozet durur.</p>
@@ -673,7 +841,7 @@
 <p><strong>Sınırlar.</strong> &quot;Google ve sistem sınırları&quot; kartları şunları gösterir:</p>
 <ul><li>URL Denetimi (Search Console): günde 2.000.</li><li>PageSpeed Insights.</li><li>GA4 (Google Analytics) günlük ve saatlik kota birimi: varsayılan 200.000 ve 40.000. Google bu sayıyı açıklamaz, yalnızca ne kadar kaldığını söyler.</li><li>Denetim sayfa sınırı: 10.000.</li><li>Proje başına rapor: 10.000, şablon: 10.</li><li>En büyük rapor: 500.000 bayt.</li></ul>
 <p>Her kartın durumu <strong>Yeterli</strong>, <strong>Azalıyor</strong> (yüzde 70'ten sonra), <strong>Neredeyse doldu</strong> (yüzde 90'dan sonra) ya da <strong>Bilinmiyor</strong> olur.</p>
-<p><strong>Hakkında.</strong> <strong>Sürüm</strong> satırı sürümü gösterir (v2.3.0 gibi). <strong>Güncellemeleri kontrol et</strong> anahtarı varsayılan olarak açıktır. Açıksa uygulama günde en çok bir kez GitHub'daki son sürümü sorar. Bu durumda <strong>Şimdi kontrol et</strong> düğmesi de görünür. Yeni sürüm varsa <strong>Değişiklikler</strong> bağlantısı ve Docker kurulumları için kopyalanacak komut çıkar: <code>git pull &amp;&amp; docker compose up -d --build</code>. Windows paketinde yeni kurulum dosyasını indirmeniz yeter.</p>
+<p><strong>Hakkında.</strong> <strong>Sürüm</strong> satırı sürümü gösterir (v2.3.0 gibi). <strong>Güncellemeleri kontrol et</strong> anahtarı varsayılan olarak açıktır. Açıksa uygulama günde en çok bir kez GitHub'daki son sürümü sorar. Bu durumda <strong>Şimdi kontrol et</strong> düğmesi de görünür. Yeni sürüm varsa <strong>Değişiklikler</strong> bağlantısı ve Docker kurulumları için kopyalanacak komut çıkar: <code>git pull &amp;&amp; docker compose up -d --build</code>. Windows paketinde ise görev çubuğu simgesindeki <strong>Güncelle</strong> anlatılır; otomatik güncelleme açıksa yeni sürüm kendiliğinden kurulur.</p>
 <p><strong>Sürüm notları.</strong> Her sürümde neyin değiştiğini listeler.</p>
 <h2 id="nasil-kullanilir">Nasıl kullanılır</h2>
 <ol><li>İlk kurulumda önce <strong>Google</strong> bölümüne istemci kimliğini ve gizli anahtarı girin. Sonra <strong>Hız ölçümü</strong> bölümüne PageSpeed anahtarını girin. İkisi kaydedilince projeye geçip mülkü seçersiniz.</li><li>Ayda bir <strong>Sınırlar</strong> bölümüne bakın. &quot;Azalıyor&quot; gördüğünüz kota çoğu zaman URL Denetimi sınırıdır.</li><li><strong>Hakkında</strong> bölümünde yeni sürüm varsa güncelleyin. Sürüm notları neyin değiştiğini söyler. Güncelleme kontrolü, bilgisayarınızdan Google dışına giden tek bağlantıdır. İstemezseniz anahtarı kapatın.</li><li>Google erişim anahtarını değiştirmeniz gerekirse (yeni Cloud projesi gibi) <strong>Değiştir</strong>'i tıklayın ve yeni değerleri yapıştırın. Mevcut bağlantılar yeni anahtarla çalışmaz. Projelerde <strong>Yeniden bağlan</strong> gerekir.</li></ol>
@@ -683,7 +851,7 @@
 <p><strong>Güncelleme kontrolü ne gönderiyor?</strong> Hiçbir veri göndermez. GitHub'ın herkese açık sürüm listesini okur. İstek anonimdir.</p>
 <p><strong>Hizmet hesabı mı, Google erişim anahtarı mı?</strong> Hizmet hesabı izin ekranıyla uğraştırmaz ve süresi dolmaz. Karşılığında Search Console ve Analytics'te o hesaba elle yetki vermeniz gerekir. Tek kişilik kurulumda ikisi de olur. Sık &quot;süresi doldu&quot; görüyorsanız hizmet hesabına geçin.</p>
 <h2 id="sinirlar">Sınırlar</h2>
-<p>Ayarlar ekranı adres numarasını (port), veri klasörünü ya da ağ ayarlarını değiştirmez. Bunlar Windows paketinde <code>config.json</code>, Docker'da <code>.env</code> dosyasındadır. Kullanıcı ve parola yönetimi yoktur, uygulama tek kullanıcılıdır. Kota kartları Google'ın gerçek sayacı değil, uygulamanın kendi sayımıdır. Search Console'da elle yaptığınız URL denetimleri burada görünmez ama Google'ın sınırını harcar.</p>
+<p>Ayarlar ekranı adres numarasını (port), veri klasörünü ya da ağ ayarlarını değiştirmez. Bunlar Windows paketinde <code>config.json</code>, Docker'da <code>.env</code> dosyasındadır. Kullanıcı ve parola yönetimi yoktur, uygulama tek kullanıcılıdır. Kota kartları Google'ın gerçek sayacı değil, uygulamanın kendi sayımıdır. Search Console'da elle yaptığınız URL denetimleri burada görünmez ama Google'ın sınırını harcar.</p> <nav class="pager" aria-label="Önceki ve sonraki sayfa"><a class="pager-prev" rel="prev" href="/docs/proje-bilgisi/"><span>Önceki</span><strong>Proje bilgisi</strong></a><a class="pager-next" rel="next" href="/docs/yardim/"><span>Sonraki</span><strong>Yardım</strong></a></nav>
         <p class="meta">
           Son güncelleme: 22 Ekim 2026. Bir hata görürseniz
           <a href="https://github.com/ucsahinn/seotracker/issues"

@@ -49,6 +49,7 @@
     <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":"tr"},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/docs/ajan-kurulumu/#article","headline":"Ajan kurulumu","description":"Claude Code, Codex ya da Cursor'ı uygulamaya bağlayın. Adres, parola, 33 araç ve 6 hazır görev şablonu, hangisinin Google hakkı harcadığı.","url":"https://seowatcher.io/docs/ajan-kurulumu/","inLanguage":"tr","dateModified":"2026-10-22","articleSection":"Başvuru","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/docs/ajan-kurulumu/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/docs/ajan-kurulumu/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/"},{"@type":"ListItem","position":2,"name":"Kılavuz","item":"https://seowatcher.io/docs/"},{"@type":"ListItem","position":3,"name":"Ajan kurulumu","item":"https://seowatcher.io/docs/ajan-kurulumu/"}]}]}</script>
+    <script src="/assets/docs.js?v=2.4.1" defer></script>
     <meta name="theme-color" content="#272c3b" />
     <style>
       @font-face {
@@ -629,6 +630,168 @@
       article td[align="right"] {
         font-variant-numeric: tabular-nums;
       }
+
+      /* Guide pass: callouts, pager, copy buttons, mobile sidebar, tables. */
+      .callout {
+        position: relative;
+        padding: 12px 16px 12px 18px;
+        margin: 0 0 12px;
+        border-radius: 12px;
+        background: var(--glass);
+        border-left: 3px solid var(--hairline-strong);
+      }
+      .callout-belirti {
+        border-left-color: var(--subtle);
+      }
+      .callout-sebep {
+        border-left-color: var(--accent-2);
+      }
+      .callout-cozum {
+        border-left-color: var(--accent);
+        background: color-mix(in oklab, var(--accent) 10%, transparent);
+      }
+      .pager {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin: 44px 0 8px;
+      }
+      .pager a,
+      .pager .empty {
+        display: grid;
+        gap: 4px;
+        padding: 14px 16px;
+        border: 1px solid var(--hairline);
+        border-radius: 14px;
+        text-decoration: none;
+        color: var(--fg);
+        transition:
+          border-color 300ms var(--ease),
+          background-color 300ms var(--ease),
+          transform 500ms var(--spring);
+      }
+      .pager .empty {
+        border-color: transparent;
+      }
+      .pager a:hover {
+        border-color: var(--hairline-strong);
+        background: var(--glass);
+        transform: translateY(-1px);
+      }
+      .pager span {
+        font-size: 12.5px;
+        color: var(--subtle);
+      }
+      .pager-next {
+        text-align: right;
+      }
+      article pre {
+        position: relative;
+      }
+      article pre.has-copy {
+        padding-top: 38px;
+      }
+      article pre .copy {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        font: inherit;
+        font-size: 12.5px;
+        font-weight: 600;
+        color: var(--muted);
+        background: var(--glass);
+        border: 1px solid var(--hairline);
+        border-radius: 999px;
+        padding: 4px 10px;
+        cursor: pointer;
+        transition:
+          color 200ms var(--ease),
+          border-color 200ms var(--ease);
+      }
+      article pre .copy:hover,
+      article pre .copy.done {
+        color: var(--fg);
+        border-color: var(--hairline-strong);
+      }
+      .side-dd > summary {
+        display: none;
+      }
+      .toc a.current {
+        color: var(--fg);
+        font-weight: 600;
+      }
+      .toc a.current::before {
+        content: "";
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+        margin-right: 8px;
+        vertical-align: middle;
+        box-shadow: 0 0 8px var(--glow);
+      }
+      article .tw {
+        max-height: 70vh;
+        overflow: auto;
+      }
+      article thead th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
+      article tbody tr:nth-child(even) td {
+        background: oklch(100% 0 0 / 0.025);
+      }
+      article td.num {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+      @media (max-width: 800px) {
+        .side-dd > summary {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          cursor: pointer;
+          list-style: none;
+          padding: 12px 14px;
+          border: 1px solid var(--hairline);
+          border-radius: 12px;
+          font-weight: 600;
+        }
+        .side-dd > summary::-webkit-details-marker {
+          display: none;
+        }
+        .side-dd > summary::after {
+          content: "";
+          width: 9px;
+          height: 9px;
+          border-right: 1.5px solid var(--muted);
+          border-bottom: 1.5px solid var(--muted);
+          transform: rotate(45deg);
+          transition: transform 300ms var(--spring);
+        }
+        .side-dd[open] > summary::after {
+          transform: rotate(225deg);
+        }
+        .side-dd[open] > summary {
+          margin-bottom: 10px;
+        }
+        .side {
+          border-right: 0;
+          padding-right: 0;
+        }
+        .pager {
+          grid-template-columns: 1fr;
+        }
+        .pager-next {
+          text-align: left;
+        }
+      }
+      article code {
+        overflow-wrap: anywhere;
+      }
     </style>
   </head>
   <body>
@@ -658,7 +821,12 @@
       </div>
     </header>
     <main class="wrap layout">
-      <aside class="side" aria-label="Kılavuz"><p class="nav-group">Başlangıç</p><ul><li><a href="/docs/kurulum-windows/">Windows'a kurulum</a></li><li><a href="/docs/kurulum-docker/">Docker ile kurulum</a></li><li><a href="/docs/google-baglantisi/">Google'a bağlanma</a></li><li><a href="/docs/pagespeed-anahtari/">PageSpeed anahtarı</a></li></ul><p class="nav-group">Ekranlar</p><ul><li><a href="/docs/projeler/">Projeler</a></li><li><a href="/docs/panel/">Panel</a></li><li><a href="/docs/arama-performansi/">Arama performansı</a></li><li><a href="/docs/siralama-takibi/">Sıralama takibi</a></li><li><a href="/docs/firsatlar/">Fırsatlar</a></li><li><a href="/docs/kayitli-kelimeler/">Kayıtlı kelimeler</a></li><li><a href="/docs/analytics/">Analytics</a></li><li><a href="/docs/site-denetimi/">Site denetimi</a></li><li><a href="/docs/dizin-durumu/">Dizin durumu</a></li><li><a href="/docs/raporlar/">Raporlar ve şablonlar</a></li><li><a href="/docs/proje-bilgisi/">Proje bilgisi</a></li><li><a href="/docs/ayarlar/">Ayarlar</a></li></ul><p class="nav-group">Başvuru</p><ul><li><a href="/docs/yardim/">Yardım</a></li><li><a href="/docs/denetim-kurallari/">Denetim kuralları</a></li><li class="current" aria-current="page"><a href="/docs/ajan-kurulumu/">Ajan kurulumu</a></li><li><a href="/docs/sorun-giderme/">Sorun giderme</a></li></ul></aside>
+      <aside class="side" aria-label="Kılavuz">
+        <details class="side-dd" open>
+          <summary>Kılavuz</summary>
+          <p class="nav-group">Başlangıç</p><ul><li><a href="/docs/kurulum-windows/">Windows'a kurulum</a></li><li><a href="/docs/kurulum-docker/">Docker ile kurulum</a></li><li><a href="/docs/google-baglantisi/">Google'a bağlanma</a></li><li><a href="/docs/pagespeed-anahtari/">PageSpeed anahtarı</a></li></ul><p class="nav-group">Ekranlar</p><ul><li><a href="/docs/projeler/">Projeler</a></li><li><a href="/docs/panel/">Panel</a></li><li><a href="/docs/arama-performansi/">Arama performansı</a></li><li><a href="/docs/siralama-takibi/">Sıralama takibi</a></li><li><a href="/docs/firsatlar/">Fırsatlar</a></li><li><a href="/docs/kayitli-kelimeler/">Kayıtlı kelimeler</a></li><li><a href="/docs/analytics/">Analytics</a></li><li><a href="/docs/site-denetimi/">Site denetimi</a></li><li><a href="/docs/dizin-durumu/">Dizin durumu</a></li><li><a href="/docs/raporlar/">Raporlar ve şablonlar</a></li><li><a href="/docs/proje-bilgisi/">Proje bilgisi</a></li><li><a href="/docs/ayarlar/">Ayarlar</a></li></ul><p class="nav-group">Başvuru</p><ul><li><a href="/docs/yardim/">Yardım</a></li><li><a href="/docs/denetim-kurallari/">Denetim kuralları</a></li><li class="current" aria-current="page"><a href="/docs/ajan-kurulumu/">Ajan kurulumu</a></li><li><a href="/docs/sorun-giderme/">Sorun giderme</a></li></ul>
+        </details>
+      </aside>
       <article id="icerik">
         <h1>Ajan kurulumu</h1><p class="lede">Claude Code, Codex ya da Cursor'ı uygulamaya bağlayın. Adres, parola, 33 araç ve 6 hazır görev şablonu, hangisinin Google hakkı harcadığı.</p><p>Bu sayfanın sonunda yapay zekâ asistanınız uygulamaya bağlı olacak ve ilk komutunu çalıştırmış olacak. Bağlayınca &quot;siteyi denetle ve bir rapor yaz&quot; diyebilirsiniz. Asistan Search Console verisini okur, denetimi çalıştırır, raporu <strong>Raporlar</strong> ekranına kaydeder. Bu bağlantının adı asistan bağlantısı (MCP). Asistan böylece uygulamanın araçlarını (örneğin list_projects) çağırabilir. Bağlamak zorunlu değildir. Bağlamazsanız uygulamadan hiçbir şey eksilmez.</p>
 <h2 id="gerekenler">Gerekenler</h2>
@@ -687,7 +855,7 @@
 <h3 id="hazir-kurulum-metni">Hazır kurulum metni</h3>
 <p>Daha kolay yol bu. Önce metni alın:</p>
 <ol><li>Ekrandaki <strong>Ajan kurulum istemini kopyala</strong> düğmesine basın. Codex için ayrı düğme var.</li><li>Metni asistanınıza yapıştırın. Asistan bağlantıyı kurar, &quot;whoami&quot; ve &quot;list_projects&quot; ile dener, şablonları yükler.</li></ol>
-<p><strong>Kurulum istemi (sıfırdan kurulum)</strong> ise Docker'dan Google bağlantısına kadar bütün kurulumu asistana yaptırır.</p>
+<p><strong>Kurulum istemi (sıfırdan kurulum)</strong> ise kurulumun çalışmasından Google bağlantısına kadar bütün kurulumu asistana yaptırır; Windows paketini de Docker kurulumunu da tanır.</p>
 <h3 id="hazir-gorev-sablonlarini-yukleme">Hazır görev şablonlarını yükleme</h3>
 <p><strong>Beceriler</strong> sekmesi altı hazır görev şablonunu anlatır. Asistana &quot;seotracker becerilerini kur&quot; deyin. Kurulum metni nereye kopyalanacağını bilir. Güncellemek için <strong>Güncelleme istemini kopyala</strong> düğmesine basın.</p>
 <h2 id="araclar">Araçlar</h2>
@@ -704,7 +872,7 @@
 <p><strong>Asistan Google hakkımı bitirebilir mi?</strong> <code>inspect_urls</code> ve <code>run_site_audit</code> harcar. Şablonlar görev başına en fazla 20 adres sorar. Denetimi yalnızca siz isteyince başlatırlar. Asistanınıza da aynı sınırı söyleyin.</p>
 <p><strong>Hangi asistan daha iyi?</strong> Fark etmez, araçlar aynı. Kurulum metni Claude Code, Codex ve Cursor için hazır. Öteki asistanlar MCP'yi destekliyorsa aynı adres ve parolayla çalışır.</p>
 <h2 id="sorun-cikarsa">Sorun çıkarsa</h2>
-<ul><li><strong>Asistan 401 hatası alıyor.</strong> Parola yanlış ya da gönderilmiyor. Dosyadaki değeri yeniden kopyalayın. Sonunda satır sonu karakteri kalmasın.</li><li><strong>Bağlantı reddediliyor.</strong> Uygulama kapalıdır. Görev çubuğu simgesine ya da <code>docker compose ps</code> çıktısına bakın.</li><li><strong>Asistan &quot;araç bulunamadı&quot; diyor.</strong> Bağlantıyı yeniden yükleyin. Claude Code'da <code>/mcp</code> yazıp <strong>Reconnect</strong> deyin.</li><li><strong>Şablonlar görünmüyor.</strong> Kurulum metnini yeniden yapıştırın. Şablonlar asistanın kendi klasörüne kopyalanır (Codex'te <code>$HOME/.agents/skills</code>).</li></ul>
+<ul><li><strong>Asistan 401 hatası alıyor.</strong> Parola yanlış ya da gönderilmiyor. Dosyadaki değeri yeniden kopyalayın. Sonunda satır sonu karakteri kalmasın.</li><li><strong>Bağlantı reddediliyor.</strong> Uygulama kapalıdır. Görev çubuğu simgesine ya da <code>docker compose ps</code> çıktısına bakın.</li><li><strong>Asistan &quot;araç bulunamadı&quot; diyor.</strong> Bağlantıyı yeniden yükleyin. Claude Code'da <code>/mcp</code> yazıp <strong>Reconnect</strong> deyin.</li><li><strong>Şablonlar görünmüyor.</strong> Kurulum metnini yeniden yapıştırın. Şablonlar asistanın kendi klasörüne kopyalanır (Codex'te <code>$HOME/.agents/skills</code>).</li></ul> <nav class="pager" aria-label="Önceki ve sonraki sayfa"><a class="pager-prev" rel="prev" href="/docs/denetim-kurallari/"><span>Önceki</span><strong>Denetim kuralları</strong></a><a class="pager-next" rel="next" href="/docs/sorun-giderme/"><span>Sonraki</span><strong>Sorun giderme</strong></a></nav>
         <p class="meta">
           Son güncelleme: 22 Ekim 2026. Bir hata görürseniz
           <a href="https://github.com/ucsahinn/seotracker/issues"

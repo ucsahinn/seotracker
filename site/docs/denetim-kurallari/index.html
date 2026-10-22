@@ -49,6 +49,7 @@
     <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":"tr"},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/docs/denetim-kurallari/#article","headline":"Denetim kuralları","description":"Site denetiminin baktığı 95 kuralın listesi. Her kural için ne demek olduğunu ve nasıl düzelteceğinizi bulursunuz.","url":"https://seowatcher.io/docs/denetim-kurallari/","inLanguage":"tr","dateModified":"2026-10-22","articleSection":"Başvuru","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/docs/denetim-kurallari/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/docs/denetim-kurallari/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/"},{"@type":"ListItem","position":2,"name":"Kılavuz","item":"https://seowatcher.io/docs/"},{"@type":"ListItem","position":3,"name":"Denetim kuralları","item":"https://seowatcher.io/docs/denetim-kurallari/"}]}]}</script>
+    <script src="/assets/docs.js?v=2.4.1" defer></script>
     <meta name="theme-color" content="#272c3b" />
     <style>
       @font-face {
@@ -629,6 +630,168 @@
       article td[align="right"] {
         font-variant-numeric: tabular-nums;
       }
+
+      /* Guide pass: callouts, pager, copy buttons, mobile sidebar, tables. */
+      .callout {
+        position: relative;
+        padding: 12px 16px 12px 18px;
+        margin: 0 0 12px;
+        border-radius: 12px;
+        background: var(--glass);
+        border-left: 3px solid var(--hairline-strong);
+      }
+      .callout-belirti {
+        border-left-color: var(--subtle);
+      }
+      .callout-sebep {
+        border-left-color: var(--accent-2);
+      }
+      .callout-cozum {
+        border-left-color: var(--accent);
+        background: color-mix(in oklab, var(--accent) 10%, transparent);
+      }
+      .pager {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin: 44px 0 8px;
+      }
+      .pager a,
+      .pager .empty {
+        display: grid;
+        gap: 4px;
+        padding: 14px 16px;
+        border: 1px solid var(--hairline);
+        border-radius: 14px;
+        text-decoration: none;
+        color: var(--fg);
+        transition:
+          border-color 300ms var(--ease),
+          background-color 300ms var(--ease),
+          transform 500ms var(--spring);
+      }
+      .pager .empty {
+        border-color: transparent;
+      }
+      .pager a:hover {
+        border-color: var(--hairline-strong);
+        background: var(--glass);
+        transform: translateY(-1px);
+      }
+      .pager span {
+        font-size: 12.5px;
+        color: var(--subtle);
+      }
+      .pager-next {
+        text-align: right;
+      }
+      article pre {
+        position: relative;
+      }
+      article pre.has-copy {
+        padding-top: 38px;
+      }
+      article pre .copy {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        font: inherit;
+        font-size: 12.5px;
+        font-weight: 600;
+        color: var(--muted);
+        background: var(--glass);
+        border: 1px solid var(--hairline);
+        border-radius: 999px;
+        padding: 4px 10px;
+        cursor: pointer;
+        transition:
+          color 200ms var(--ease),
+          border-color 200ms var(--ease);
+      }
+      article pre .copy:hover,
+      article pre .copy.done {
+        color: var(--fg);
+        border-color: var(--hairline-strong);
+      }
+      .side-dd > summary {
+        display: none;
+      }
+      .toc a.current {
+        color: var(--fg);
+        font-weight: 600;
+      }
+      .toc a.current::before {
+        content: "";
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+        margin-right: 8px;
+        vertical-align: middle;
+        box-shadow: 0 0 8px var(--glow);
+      }
+      article .tw {
+        max-height: 70vh;
+        overflow: auto;
+      }
+      article thead th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
+      article tbody tr:nth-child(even) td {
+        background: oklch(100% 0 0 / 0.025);
+      }
+      article td.num {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+      @media (max-width: 800px) {
+        .side-dd > summary {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          cursor: pointer;
+          list-style: none;
+          padding: 12px 14px;
+          border: 1px solid var(--hairline);
+          border-radius: 12px;
+          font-weight: 600;
+        }
+        .side-dd > summary::-webkit-details-marker {
+          display: none;
+        }
+        .side-dd > summary::after {
+          content: "";
+          width: 9px;
+          height: 9px;
+          border-right: 1.5px solid var(--muted);
+          border-bottom: 1.5px solid var(--muted);
+          transform: rotate(45deg);
+          transition: transform 300ms var(--spring);
+        }
+        .side-dd[open] > summary::after {
+          transform: rotate(225deg);
+        }
+        .side-dd[open] > summary {
+          margin-bottom: 10px;
+        }
+        .side {
+          border-right: 0;
+          padding-right: 0;
+        }
+        .pager {
+          grid-template-columns: 1fr;
+        }
+        .pager-next {
+          text-align: left;
+        }
+      }
+      article code {
+        overflow-wrap: anywhere;
+      }
     </style>
   </head>
   <body>
@@ -658,7 +821,12 @@
       </div>
     </header>
     <main class="wrap layout">
-      <aside class="side" aria-label="Kılavuz"><p class="nav-group">Başlangıç</p><ul><li><a href="/docs/kurulum-windows/">Windows'a kurulum</a></li><li><a href="/docs/kurulum-docker/">Docker ile kurulum</a></li><li><a href="/docs/google-baglantisi/">Google'a bağlanma</a></li><li><a href="/docs/pagespeed-anahtari/">PageSpeed anahtarı</a></li></ul><p class="nav-group">Ekranlar</p><ul><li><a href="/docs/projeler/">Projeler</a></li><li><a href="/docs/panel/">Panel</a></li><li><a href="/docs/arama-performansi/">Arama performansı</a></li><li><a href="/docs/siralama-takibi/">Sıralama takibi</a></li><li><a href="/docs/firsatlar/">Fırsatlar</a></li><li><a href="/docs/kayitli-kelimeler/">Kayıtlı kelimeler</a></li><li><a href="/docs/analytics/">Analytics</a></li><li><a href="/docs/site-denetimi/">Site denetimi</a></li><li><a href="/docs/dizin-durumu/">Dizin durumu</a></li><li><a href="/docs/raporlar/">Raporlar ve şablonlar</a></li><li><a href="/docs/proje-bilgisi/">Proje bilgisi</a></li><li><a href="/docs/ayarlar/">Ayarlar</a></li></ul><p class="nav-group">Başvuru</p><ul><li><a href="/docs/yardim/">Yardım</a></li><li class="current" aria-current="page"><a href="/docs/denetim-kurallari/">Denetim kuralları</a></li><li><a href="/docs/ajan-kurulumu/">Ajan kurulumu</a></li><li><a href="/docs/sorun-giderme/">Sorun giderme</a></li></ul></aside>
+      <aside class="side" aria-label="Kılavuz">
+        <details class="side-dd" open>
+          <summary>Kılavuz</summary>
+          <p class="nav-group">Başlangıç</p><ul><li><a href="/docs/kurulum-windows/">Windows'a kurulum</a></li><li><a href="/docs/kurulum-docker/">Docker ile kurulum</a></li><li><a href="/docs/google-baglantisi/">Google'a bağlanma</a></li><li><a href="/docs/pagespeed-anahtari/">PageSpeed anahtarı</a></li></ul><p class="nav-group">Ekranlar</p><ul><li><a href="/docs/projeler/">Projeler</a></li><li><a href="/docs/panel/">Panel</a></li><li><a href="/docs/arama-performansi/">Arama performansı</a></li><li><a href="/docs/siralama-takibi/">Sıralama takibi</a></li><li><a href="/docs/firsatlar/">Fırsatlar</a></li><li><a href="/docs/kayitli-kelimeler/">Kayıtlı kelimeler</a></li><li><a href="/docs/analytics/">Analytics</a></li><li><a href="/docs/site-denetimi/">Site denetimi</a></li><li><a href="/docs/dizin-durumu/">Dizin durumu</a></li><li><a href="/docs/raporlar/">Raporlar ve şablonlar</a></li><li><a href="/docs/proje-bilgisi/">Proje bilgisi</a></li><li><a href="/docs/ayarlar/">Ayarlar</a></li></ul><p class="nav-group">Başvuru</p><ul><li><a href="/docs/yardim/">Yardım</a></li><li class="current" aria-current="page"><a href="/docs/denetim-kurallari/">Denetim kuralları</a></li><li><a href="/docs/ajan-kurulumu/">Ajan kurulumu</a></li><li><a href="/docs/sorun-giderme/">Sorun giderme</a></li></ul>
+        </details>
+      </aside>
       <article id="icerik">
         <h1>Denetim kuralları</h1><p class="lede">Site denetiminin baktığı 95 kuralın listesi. Her kural için ne demek olduğunu ve nasıl düzelteceğinizi bulursunuz.</p><p>Site denetimi her sayfaya ve sitenin bütününe 95 kuralla bakar. Kurallar üç gruba ayrılır. <strong>Kritik</strong> (10 kural): Google sayfayı göremez ya da anlayamaz, önce bunları düzeltin. <strong>Uyarı</strong> (48 kural): sıralamayı ve tıklamayı yavaş yavaş düşürür. <strong>Bilgi</strong> (37 kural): küçük iyileştirme fırsatları. Puanda kritik 40, uyarı 15, bilgi 3 ağırlığındadır. Bir kuralın kaç sayfayı etkilediği de puana girer.</p>
 <p>Tabloda kuralın ekrandaki adı, ne demek olduğu ve düzeltmenin ilk adımı yazar. Tam düzeltme metni ekrandaki bulgu kartındadır. Son sütun, CSV dosyasında ve asistan cevaplarında görünen kural kimliğidir.</p>
@@ -672,7 +840,7 @@
 <div class="tw"><table><thead><tr><th>Kural</th><th>Ne demek</th><th>Nasıl düzeltilir</th><th>Kimlik</th></tr></thead><tbody><tr><td>Sunucu yanıtı yavaş</td><td>Sunucunun ilk cevabı geç geliyor.</td><td>Sunucu ve veritabanı süresine bakın. Önbelleği (hazır tutma) açın.</td><td>slow-response</td></tr><tr><td>Site haritasındaki sayfa, asıl adres olarak başka sayfayı gösteriyor</td><td>Haritada kopya bir adres var.</td><td>Haritada yalnızca asıl adresler kalsın.</td><td>sitemap-canonicalized-page</td></tr><tr><td>Site haritasındaki sayfa arama sonuçlarından gizlenmiş</td><td>Haritada aramadan gizli bir sayfa var.</td><td>Aramada çıkacaksa noindex'i kaldırın. Çıkmayacaksa haritadan silin.</td><td>sitemap-noindex-page</td></tr><tr><td>Sayfa site yapısında çok derinde</td><td>Sayfa ana sayfadan çok tıklama uzakta.</td><td>Kategori, menü ya da öne çıkan listelerden bağlantı verip yolu kısaltın.</td><td>deep-page</td></tr><tr><td>Site haritasında hiç lastmod tarihi yok</td><td>Google son değişiklik tarihini bilmiyor.</td><td>Haritayı üreten ayarda her adres için lastmod'u açın.</td><td>sitemap-lastmod-missing</td></tr><tr><td>İç bağlantı yönlendirmeye gidiyor</td><td>Bağlantı eski adrese gidiyor, oradan yönleniyor.</td><td>Bağlantıyı yönlenilen yeni adresle değiştirin.</td><td>internal-link-to-redirect</td></tr><tr><td>Karakter kodlaması belirtilmemiş</td><td>Türkçe karakterler bazı tarayıcılarda bozulabilir.</td><td>head bölümünün başına meta charset=&quot;utf-8&quot; satırını ekleyin.</td><td>missing-charset</td></tr><tr><td>Sayfa adresi çok uzun</td><td>Adres çok uzun, okunması zor.</td><td>Adresi kısa ve anlamlı tutun.</td><td>url-too-long</td></tr><tr><td>Adreste büyük harf ya da alt çizgi var</td><td>Aynı sayfanın iki ayrı yazımı oluşabilir.</td><td>Adresleri küçük harf ve tireyle yazın.</td><td>url-uppercase-or-underscore</td></tr><tr><td>H1 başlığı yok</td><td>Sayfanın ana başlığı yok.</td><td>Konuyu anlatan tek bir H1 ekleyin.</td><td>missing-h1</td></tr><tr><td>Birden çok H1 başlığı</td><td>Birden çok ana başlık var.</td><td>Tek H1 bırakın. Diğerlerini H2 ya da H3 yapın.</td><td>multiple-h1</td></tr><tr><td>Sayfada neredeyse hiç metin yok</td><td>Tarayıcı metin bulamadı. Metin sonradan JavaScript ile geliyor olabilir.</td><td>Sayfa kaynağında metnin görünüp görünmediğine bakın.</td><td>thin-content</td></tr><tr><td>Sayfadan başka hiçbir yere bağlantı yok</td><td>Çıkmaz sayfa: başka hiçbir yere gitmiyor.</td><td>İlgili sayfalara, üst kategoriye ya da ana sayfaya bağlantı ekleyin.</td><td>no-outgoing-links</td></tr><tr><td>Başlık çok uzun</td><td>Google 60 karakterden sonrasını keser.</td><td>Başlığı 50-60 karaktere indirin. Önemli kelimeleri başa koyun.</td><td>title-too-long</td></tr><tr><td>Başlık çok kısa</td><td>Başlık sayfayı anlatmıyor.</td><td>30-60 karakterlik, ne sunduğunuzu söyleyen bir başlık yazın.</td><td>title-too-short</td></tr><tr><td>Meta açıklama çok uzun</td><td>Google 160 karakterden sonrasını keser.</td><td>Ana mesajı başa alıp 70-160 karaktere indirin.</td><td>meta-description-too-long</td></tr><tr><td>Meta açıklama çok kısa</td><td>Açıklama tıklamak için bir neden vermiyor.</td><td>Sayfayı özetleyen 70-160 karakter yazın.</td><td>meta-description-too-short</td></tr><tr><td>Başlık seviyeleri atlanmış</td><td>H1'den doğrudan H3'e atlanmış.</td><td>Başlıkları sırayla kullanın: H1, H2, H3.</td><td>heading-order-skip</td></tr><tr><td>Mobil görünüm etiketi (viewport) yok</td><td>Telefonda sayfa küçücük görünür.</td><td>head bölümüne viewport satırını ekleyin.</td><td>missing-viewport</td></tr><tr><td>Sayfa dili belirtilmemiş</td><td>Sayfanın hangi dilde olduğu yazılmamış (html etiketinde lang yok).</td><td>Türkçe sayfa için html lang=&quot;tr&quot; yazın.</td><td>missing-lang</td></tr><tr><td>Görsellerde genişlik ve yükseklik yok</td><td>Sayfa yüklenirken içerik zıplar.</td><td>Her img etiketine görselin gerçek boyutunu yazın.</td><td>images-missing-dimensions</td></tr><tr><td>Uzun metinde alt başlık yok</td><td>Uzun yazı tek blok halinde.</td><td>Metni konularına bölün. Her bölüme H2 başlığı verin.</td><td>no-subheadings</td></tr><tr><td>Görselin alt metni bir dosya adı</td><td>Alt metin &quot;IMG_1234.jpg&quot; gibi.</td><td>Alt metne görselde ne olduğunu yazın.</td><td>alt-is-filename</td></tr><tr><td>Görsel alt metni çok uzun</td><td>Alt metin paragraf kadar uzun.</td><td>Görseli bir cümleyle anlatın. Yaklaşık 125 karakter yeter.</td><td>alt-too-long</td></tr><tr><td>Ana başlık (H1) çok uzun</td><td>H1 paragraf kadar uzun.</td><td>H1'i tek cümlelik kısa bir başlığa indirin.</td><td>h1-too-long</td></tr><tr><td>Metni olmayan iç bağlantılar</td><td>Bağlantıda yazı yok ya da yalnızca simge var.</td><td>Görünür bir yazı ya da aria-label (ekran okuyucular için gizli ad) ekleyin.</td><td>empty-anchor-text</td></tr><tr><td>&quot;Buraya tıklayın&quot; gibi anlamsız bağlantı metinleri</td><td>Bağlantı metni gideceği yeri anlatmıyor.</td><td>Bağlantı metnini hedef sayfanın konusuyla değiştirin.</td><td>generic-anchor-text</td></tr><tr><td>Sayfada çok fazla bağlantı</td><td>Sayfada yüzlerce bağlantı var.</td><td>Menüyü ve alt bilgiyi en önemli sayfalarla sınırlayın.</td><td>too-many-links</td></tr><tr><td>Kendi sitenizin sayfalarına nofollow bağlantılar</td><td>Kendi sayfalarınıza giden bir bağlantıda nofollow var.</td><td>Bu bağlantılardan rel=&quot;nofollow&quot; ifadesini silin.</td><td>internal-nofollow-links</td></tr><tr><td>Sayfada canonical (asıl adres) etiketi yok</td><td>Google asıl adresi tahmin eder.</td><td>head bölümüne, sayfanın kendi tam adresini gösteren canonical satırını ekleyin.</td><td>missing-canonical</td></tr><tr><td>Sayfa arama sonuçlarından gizlenmiş (noindex)</td><td>Sayfa bilerek ya da yanlışlıkla aramadan gizli.</td><td>Aramada çıkmalıysa noindex'i kaldırın.</td><td>noindex-page</td></tr><tr><td>Sayfa, asıl adres olarak başka bir sayfayı gösteriyor</td><td>Sayfa kendini kopya ilan ediyor.</td><td>Kendi adıyla aramada çıkacaksa asıl adresi kendi adresi yapın.</td><td>canonicalized-page</td></tr><tr><td>Dil sürümlerinde varsayılan sürüm (x-default) yok</td><td>Dili eşleşmeyen ziyaretçi için varsayılan sürüm yok.</td><td>hreflang listesine x-default satırını ekleyin.</td><td>hreflang-missing-x-default</td></tr><tr><td>Google'ın bazı sayfalar hakkındaki yanıtı eskimiş</td><td>Kayıtlı Google cevapları 3 ya da 14 günden eski.</td><td>Dizin durumu sekmesinde &quot;Google'da durumunu kontrol et&quot; düğmesine basın.</td><td>stale-google-verdicts</td></tr><tr><td>Sitede sosyal medya paylaşım etiketleri (Open Graph) yok</td><td>Paylaşılınca görsel ve başlık çıkmaz.</td><td>Şablonun head bölümüne og:title, og:description ve 1200x630 piksellik og:image ekleyin.</td><td>open-graph-missing-site</td></tr><tr><td>Sitede hiç yapısal veri yok</td><td>Aramada zengin sonuç görünme şansı yok.</td><td>Sayfa türüne uyan bir işaretle başlayın (Organization, Product, Article gibi).</td><td>structured-data-missing-site</td></tr><tr><td>Google bu sayfayı uzun süredir taramadı</td><td>Google'ın son ziyareti 90 günden eski.</td><td>Sık taranan sayfalardan bağlantı verin. Sayfanın site haritasında olduğundan emin olun.</td><td>google-crawl-stale</td></tr></tbody></table></div>
 <h2 id="kurallar-nasil-calisir">Kurallar nasıl çalışır?</h2>
 <p>Çoğu kural sayfa başına çalışır ve etkilediği her sayfayı listeler. Bazıları sitenin bütünüyle ilgilidir ve tek bir bulgu üretir. Bunlar robots.txt kuralları, site haritası kuralları, &quot;Sitede sosyal medya paylaşım etiketleri yok&quot; ve &quot;Sitede hiç yapısal veri yok&quot; kurallarıdır.</p>
-<p>Adı &quot;Google&quot; ile başlayan kurallar uygulamanın taramasından gelmez. Dizin durumu sekmesinde Google'dan alınan cevaplardan üretilir. O sekmede hiç soru sormadıysanız bu kurallar hiç çalışmaz. Hız kuralları (LCP, CLS, INP, SEO puanı) yalnızca &quot;Sayfa hızını da ölç&quot; açıkken ve telefon ölçümüne göre çalışır.</p>
+<p>Adı &quot;Google&quot; ile başlayan kurallar uygulamanın taramasından gelmez. Dizin durumu sekmesinde Google'dan alınan cevaplardan üretilir. O sekmede hiç soru sormadıysanız bu kurallar hiç çalışmaz. Hız kuralları (LCP, CLS, INP, SEO puanı) yalnızca &quot;Sayfa hızını da ölç&quot; açıkken ve telefon ölçümüne göre çalışır.</p> <nav class="pager" aria-label="Önceki ve sonraki sayfa"><a class="pager-prev" rel="prev" href="/docs/yardim/"><span>Önceki</span><strong>Yardım</strong></a><a class="pager-next" rel="next" href="/docs/ajan-kurulumu/"><span>Sonraki</span><strong>Ajan kurulumu</strong></a></nav>
         <p class="meta">
           Son güncelleme: 22 Ekim 2026. Bir hata görürseniz
           <a href="https://github.com/ucsahinn/seotracker/issues"

@@ -49,6 +49,7 @@
     <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":"tr"},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/docs/raporlar/#article","headline":"Raporlar ve şablonlar","description":"Denetimden indirdiğiniz ya da asistanınıza yazdırdığınız raporlar tek HTML dosyasıdır. Telefonda açılır, yazdırılır, paylaşılır.","url":"https://seowatcher.io/docs/raporlar/","inLanguage":"tr","dateModified":"2026-10-22","articleSection":"Ekranlar","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/docs/raporlar/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/docs/raporlar/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/"},{"@type":"ListItem","position":2,"name":"Kılavuz","item":"https://seowatcher.io/docs/"},{"@type":"ListItem","position":3,"name":"Raporlar ve şablonlar","item":"https://seowatcher.io/docs/raporlar/"}]}]}</script>
+    <script src="/assets/docs.js?v=2.4.1" defer></script>
     <meta name="theme-color" content="#272c3b" />
     <style>
       @font-face {
@@ -629,6 +630,168 @@
       article td[align="right"] {
         font-variant-numeric: tabular-nums;
       }
+
+      /* Guide pass: callouts, pager, copy buttons, mobile sidebar, tables. */
+      .callout {
+        position: relative;
+        padding: 12px 16px 12px 18px;
+        margin: 0 0 12px;
+        border-radius: 12px;
+        background: var(--glass);
+        border-left: 3px solid var(--hairline-strong);
+      }
+      .callout-belirti {
+        border-left-color: var(--subtle);
+      }
+      .callout-sebep {
+        border-left-color: var(--accent-2);
+      }
+      .callout-cozum {
+        border-left-color: var(--accent);
+        background: color-mix(in oklab, var(--accent) 10%, transparent);
+      }
+      .pager {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin: 44px 0 8px;
+      }
+      .pager a,
+      .pager .empty {
+        display: grid;
+        gap: 4px;
+        padding: 14px 16px;
+        border: 1px solid var(--hairline);
+        border-radius: 14px;
+        text-decoration: none;
+        color: var(--fg);
+        transition:
+          border-color 300ms var(--ease),
+          background-color 300ms var(--ease),
+          transform 500ms var(--spring);
+      }
+      .pager .empty {
+        border-color: transparent;
+      }
+      .pager a:hover {
+        border-color: var(--hairline-strong);
+        background: var(--glass);
+        transform: translateY(-1px);
+      }
+      .pager span {
+        font-size: 12.5px;
+        color: var(--subtle);
+      }
+      .pager-next {
+        text-align: right;
+      }
+      article pre {
+        position: relative;
+      }
+      article pre.has-copy {
+        padding-top: 38px;
+      }
+      article pre .copy {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        font: inherit;
+        font-size: 12.5px;
+        font-weight: 600;
+        color: var(--muted);
+        background: var(--glass);
+        border: 1px solid var(--hairline);
+        border-radius: 999px;
+        padding: 4px 10px;
+        cursor: pointer;
+        transition:
+          color 200ms var(--ease),
+          border-color 200ms var(--ease);
+      }
+      article pre .copy:hover,
+      article pre .copy.done {
+        color: var(--fg);
+        border-color: var(--hairline-strong);
+      }
+      .side-dd > summary {
+        display: none;
+      }
+      .toc a.current {
+        color: var(--fg);
+        font-weight: 600;
+      }
+      .toc a.current::before {
+        content: "";
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+        margin-right: 8px;
+        vertical-align: middle;
+        box-shadow: 0 0 8px var(--glow);
+      }
+      article .tw {
+        max-height: 70vh;
+        overflow: auto;
+      }
+      article thead th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
+      article tbody tr:nth-child(even) td {
+        background: oklch(100% 0 0 / 0.025);
+      }
+      article td.num {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+      @media (max-width: 800px) {
+        .side-dd > summary {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          cursor: pointer;
+          list-style: none;
+          padding: 12px 14px;
+          border: 1px solid var(--hairline);
+          border-radius: 12px;
+          font-weight: 600;
+        }
+        .side-dd > summary::-webkit-details-marker {
+          display: none;
+        }
+        .side-dd > summary::after {
+          content: "";
+          width: 9px;
+          height: 9px;
+          border-right: 1.5px solid var(--muted);
+          border-bottom: 1.5px solid var(--muted);
+          transform: rotate(45deg);
+          transition: transform 300ms var(--spring);
+        }
+        .side-dd[open] > summary::after {
+          transform: rotate(225deg);
+        }
+        .side-dd[open] > summary {
+          margin-bottom: 10px;
+        }
+        .side {
+          border-right: 0;
+          padding-right: 0;
+        }
+        .pager {
+          grid-template-columns: 1fr;
+        }
+        .pager-next {
+          text-align: left;
+        }
+      }
+      article code {
+        overflow-wrap: anywhere;
+      }
     </style>
   </head>
   <body>
@@ -658,7 +821,12 @@
       </div>
     </header>
     <main class="wrap layout">
-      <aside class="side" aria-label="Kılavuz"><p class="nav-group">Başlangıç</p><ul><li><a href="/docs/kurulum-windows/">Windows'a kurulum</a></li><li><a href="/docs/kurulum-docker/">Docker ile kurulum</a></li><li><a href="/docs/google-baglantisi/">Google'a bağlanma</a></li><li><a href="/docs/pagespeed-anahtari/">PageSpeed anahtarı</a></li></ul><p class="nav-group">Ekranlar</p><ul><li><a href="/docs/projeler/">Projeler</a></li><li><a href="/docs/panel/">Panel</a></li><li><a href="/docs/arama-performansi/">Arama performansı</a></li><li><a href="/docs/siralama-takibi/">Sıralama takibi</a></li><li><a href="/docs/firsatlar/">Fırsatlar</a></li><li><a href="/docs/kayitli-kelimeler/">Kayıtlı kelimeler</a></li><li><a href="/docs/analytics/">Analytics</a></li><li><a href="/docs/site-denetimi/">Site denetimi</a></li><li><a href="/docs/dizin-durumu/">Dizin durumu</a></li><li class="current" aria-current="page"><a href="/docs/raporlar/">Raporlar ve şablonlar</a></li><li><a href="/docs/proje-bilgisi/">Proje bilgisi</a></li><li><a href="/docs/ayarlar/">Ayarlar</a></li></ul><p class="nav-group">Başvuru</p><ul><li><a href="/docs/yardim/">Yardım</a></li><li><a href="/docs/denetim-kurallari/">Denetim kuralları</a></li><li><a href="/docs/ajan-kurulumu/">Ajan kurulumu</a></li><li><a href="/docs/sorun-giderme/">Sorun giderme</a></li></ul></aside>
+      <aside class="side" aria-label="Kılavuz">
+        <details class="side-dd" open>
+          <summary>Kılavuz</summary>
+          <p class="nav-group">Başlangıç</p><ul><li><a href="/docs/kurulum-windows/">Windows'a kurulum</a></li><li><a href="/docs/kurulum-docker/">Docker ile kurulum</a></li><li><a href="/docs/google-baglantisi/">Google'a bağlanma</a></li><li><a href="/docs/pagespeed-anahtari/">PageSpeed anahtarı</a></li></ul><p class="nav-group">Ekranlar</p><ul><li><a href="/docs/projeler/">Projeler</a></li><li><a href="/docs/panel/">Panel</a></li><li><a href="/docs/arama-performansi/">Arama performansı</a></li><li><a href="/docs/siralama-takibi/">Sıralama takibi</a></li><li><a href="/docs/firsatlar/">Fırsatlar</a></li><li><a href="/docs/kayitli-kelimeler/">Kayıtlı kelimeler</a></li><li><a href="/docs/analytics/">Analytics</a></li><li><a href="/docs/site-denetimi/">Site denetimi</a></li><li><a href="/docs/dizin-durumu/">Dizin durumu</a></li><li class="current" aria-current="page"><a href="/docs/raporlar/">Raporlar ve şablonlar</a></li><li><a href="/docs/proje-bilgisi/">Proje bilgisi</a></li><li><a href="/docs/ayarlar/">Ayarlar</a></li></ul><p class="nav-group">Başvuru</p><ul><li><a href="/docs/yardim/">Yardım</a></li><li><a href="/docs/denetim-kurallari/">Denetim kuralları</a></li><li><a href="/docs/ajan-kurulumu/">Ajan kurulumu</a></li><li><a href="/docs/sorun-giderme/">Sorun giderme</a></li></ul>
+        </details>
+      </aside>
       <article id="icerik">
         <h1>Raporlar ve şablonlar</h1><p class="lede">Denetimden indirdiğiniz ya da asistanınıza yazdırdığınız raporlar tek HTML dosyasıdır. Telefonda açılır, yazdırılır, paylaşılır.</p><p>Bu sayfada raporları nasıl alacağınızı, paylaşacağınızı ve şablonla nasıl tekrarlayacağınızı öğrenirsiniz.</p>
 <p><strong>Raporlar</strong> ekranı bu proje için üretilen her raporu tek listede tutar. Rapor iki yoldan oluşur. Site denetimi ekranındaki <strong>Raporu indir</strong> düğmesi uygulamanın kendi raporunu üretir. Yapay zekâ asistanınız ise araştırma yapıp bulduklarını rapor olarak kaydeder. Her rapor tek bir HTML dosyasıdır. İçinde betik (sayfada çalışan kod), dış kaynak ya da gömülü yazı tipi yoktur. Bu yüzden telefonda açılır, PDF olarak yazdırılır, e-postayla gönderilir. Uygulamada elle rapor yazacağınız bir editör yoktur. Raporu ya uygulama ya asistan yazar.</p>
@@ -683,7 +851,7 @@
 <p><strong>Bağlantıyı gönderdim, karşı taraf açamıyor.</strong> Bağlantı yalnızca bu bilgisayarda çalışır. Dosyayı <strong>HTML olarak indir</strong> ile gönderin.</p>
 <p><strong>Şablon yazarken neye dikkat edeyim?</strong> Şablon bir biçim tarifidir, bilgi kaynağı değildir. Bölümleri, tonu ve kime yazıldığını yazın. Sayı ya da iddia yazmayın. Asistan sayıları her seferinde veriden alır.</p>
 <h2 id="sinirlar">Sınırlar</h2>
-<p>Raporlar dışarıya yayınlanmaz, paylaşım dosya göndermekle olur. Raporun doğruluğu, yazanın okuduğu veriye bağlıdır. Asistan raporlarının sonundaki &quot;Bu rapor nasıl hazırlandı&quot; bölümü hangi aracın neyi söylediğini listeler. Şüphe duyduğunuz sayıyı oradan izleyin.</p>
+<p>Raporlar dışarıya yayınlanmaz, paylaşım dosya göndermekle olur. Raporun doğruluğu, yazanın okuduğu veriye bağlıdır. Asistan raporlarının sonundaki &quot;Bu rapor nasıl hazırlandı&quot; bölümü hangi aracın neyi söylediğini listeler. Şüphe duyduğunuz sayıyı oradan izleyin.</p> <nav class="pager" aria-label="Önceki ve sonraki sayfa"><a class="pager-prev" rel="prev" href="/docs/dizin-durumu/"><span>Önceki</span><strong>Dizin durumu</strong></a><a class="pager-next" rel="next" href="/docs/proje-bilgisi/"><span>Sonraki</span><strong>Proje bilgisi</strong></a></nav>
         <p class="meta">
           Son güncelleme: 22 Ekim 2026. Bir hata görürseniz
           <a href="https://github.com/ucsahinn/seotracker/issues"

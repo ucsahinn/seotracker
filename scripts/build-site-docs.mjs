@@ -110,7 +110,13 @@ function render(markdown, warn) {
   const para = [];
   const flushPara = () => {
     if (para.length) {
-      html.push(`<p>${inline(para.join(" "))}</p>`);
+      const text = inline(para.join(" "));
+      // Troubleshooting entries open with a bold label; each kind gets its own
+      // callout so a reader can scan symptom, cause and fix at a glance.
+      const kind = /^<strong>(Belirti|Sebep|Çözüm):<\/strong>/.exec(text);
+      const kinds = { Belirti: "belirti", Sebep: "sebep", Çözüm: "cozum" };
+      const cls = kind ? ` class="callout callout-${kinds[kind[1]]}"` : "";
+      html.push(`<p${cls}>${text}</p>`);
       para.length = 0;
     }
   };
@@ -161,7 +167,14 @@ function render(markdown, warn) {
       html.push(
         `<div class="tw"><table><thead><tr>${head.map((c) => `<th>${inline(c)}</th>`).join("")}</tr></thead><tbody>${body
           .map(
-            (r) => `<tr>${r.map((c) => `<td>${inline(c)}</td>`).join("")}</tr>`,
+            (r) =>
+              `<tr>${r
+                .map((c) =>
+                  /^[\d.,%\s+-]+$/.test(c) && /\d/.test(c)
+                    ? `<td class="num">${inline(c)}</td>`
+                    : `<td>${inline(c)}</td>`,
+                )
+                .join("")}</tr>`,
           )
           .join("")}</tbody></table></div>`,
       );
@@ -366,6 +379,19 @@ function turkishDate(iso) {
   return m ? `${Number(m[3])} ${months[Number(m[2]) - 1]} ${m[1]}` : iso;
 }
 
+// Previous and next page in the navigation order, so a reader can walk the
+// whole guide without going back to the index.
+function pagerHtml(docs, slug) {
+  const order = groups.flatMap((g) => g.slugs.filter((s) => docs.has(s)));
+  const i = order.indexOf(slug);
+  if (i < 0) return "";
+  const link = (s, rel, label) =>
+    s
+      ? `<a class="pager-${rel}" rel="${rel}" href="/docs/${s}/"><span>${label}</span><strong>${escapeHtml(docs.get(s).meta.title)}</strong></a>`
+      : `<span class="pager-${rel} empty"></span>`;
+  return `<nav class="pager" aria-label="Önceki ve sonraki sayfa">${link(order[i - 1], "prev", "Önceki")}${link(order[i + 1], "next", "Sonraki")}</nav>`;
+}
+
 function page({
   title,
   description,
@@ -376,6 +402,7 @@ function page({
   nav,
   groupTitle,
   screen,
+  pager = "",
 }) {
   const tocHtml = toc.length
     ? `<nav class="toc" aria-label="Bu sayfada"><p class="toc-label">Bu sayfada</p><ol>${toc
@@ -396,6 +423,7 @@ function page({
       "{{jsonld}}",
       jsonLd({ title, description, slug, updated, groupTitle }),
     )
+    .replace("{{pager}}", pager)
     .replace("{{nav}}", nav)
     .replace("{{toc}}", tocHtml)
     .replace("{{body}}", body);
@@ -469,6 +497,7 @@ function main() {
       groupTitle:
         groups.find((g) => g.slugs.includes(slug))?.title ?? "Kılavuz",
       screen: Boolean(d.meta.screen),
+      pager: pagerHtml(docs, slug),
     });
     fs.mkdirSync(path.join(outDir, slug), { recursive: true });
     fs.writeFileSync(path.join(outDir, slug, "index.html"), out);
