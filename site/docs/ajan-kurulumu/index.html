@@ -1,0 +1,584 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ajan kurulumu | seowatcher belgeleri</title>
+    <meta name="description" content="Claude Code, Codex ya da Cursor'ı uygulamaya bağlama. MCP adresi, parola, 33 aracın ve 6 hazır görev şablonunun listesi, hangi aracın Google kotası harcadığı." />
+    <meta name="robots" content="max-image-preview:large" />
+    <link rel="canonical" href="https://seowatcher.io/docs/ajan-kurulumu/" />
+    <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link
+      rel="icon"
+      href="/assets/favicon-48.png"
+      type="image/png"
+      sizes="48x48"
+    />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <link
+      rel="preload"
+      href="/assets/fonts/geist-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/assets/fonts/geist-latin-ext-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="seowatcher" />
+    <meta property="og:title" content="Ajan kurulumu" />
+    <meta property="og:description" content="Claude Code, Codex ya da Cursor'ı uygulamaya bağlama. MCP adresi, parola, 33 aracın ve 6 hazır görev şablonunun listesi, hangi aracın Google kotası harcadığı." />
+    <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
+    <meta property="og:url" content="https://seowatcher.io/docs/ajan-kurulumu/" />
+    <meta property="og:locale" content="tr_TR" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="color-scheme" content="light dark" />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: light)"
+      content="#fdfdfe"
+    />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: dark)"
+      content="#1a1b20"
+    />
+    <style>
+      @font-face {
+        font-family: "Geist";
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(/assets/fonts/geist-latin-ext-wght-normal.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+          U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+          U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: "Geist";
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(/assets/fonts/geist-latin-wght-normal.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+          U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+          U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      :root {
+        --bg: oklch(99.5% 0.0015 265);
+        --bg-2: oklch(97.2% 0.003 265);
+        --fg: oklch(23% 0.012 265);
+        --muted: oklch(23% 0.012 265 / 0.8);
+        --subtle: oklch(23% 0.012 265 / 0.68);
+        --hairline: oklch(0% 0 0 / 0.08);
+        --hairline-strong: oklch(0% 0 0 / 0.14);
+        --accent: oklch(54% 0.17 256);
+        --accent-ink: oklch(100% 0 0);
+        --accent-link: oklch(42% 0.15 256);
+        --ease: cubic-bezier(0.32, 0.72, 0, 1);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: oklch(17.5% 0.005 265);
+          --bg-2: oklch(13.2% 0.005 265);
+          --fg: oklch(93% 0.004 265);
+          --muted: oklch(93% 0.004 265 / 0.7);
+          --subtle: oklch(93% 0.004 265 / 0.56);
+          --hairline: oklch(100% 0 0 / 0.09);
+          --hairline-strong: oklch(100% 0 0 / 0.16);
+          --accent: oklch(70% 0.15 256);
+          --accent-ink: oklch(16% 0.01 265);
+          --accent-link: oklch(80% 0.12 256);
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
+        scroll-padding-top: 76px;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: Geist, "Segoe UI", system-ui, sans-serif;
+        font-size: 17px;
+        line-height: 1.6;
+        font-variant-numeric: tabular-nums;
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+        border-radius: 4px;
+      }
+      .skip {
+        position: absolute;
+        left: 16px;
+        top: -48px;
+        z-index: 5;
+        background: var(--accent);
+        color: var(--accent-ink);
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-weight: 600;
+      }
+      .skip:focus {
+        top: 12px;
+      }
+      .wrap {
+        width: min(1160px, 100% - 40px);
+        margin-inline: auto;
+      }
+      @media (max-width: 640px) {
+        .wrap {
+          width: calc(100% - 32px);
+        }
+      }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: color-mix(in oklab, var(--bg) 82%, transparent);
+        backdrop-filter: blur(14px) saturate(1.3);
+        -webkit-backdrop-filter: blur(14px) saturate(1.3);
+        border-bottom: 1px solid var(--hairline);
+      }
+      header .wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 60px;
+        gap: 16px;
+      }
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 600;
+        font-size: 17px;
+        letter-spacing: -0.01em;
+      }
+      .brand img {
+        width: 26px;
+        height: 26px;
+        border-radius: 7px;
+      }
+      .brand span {
+        color: var(--subtle);
+        font-weight: 500;
+      }
+      .topnav {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        font-size: 15px;
+        color: var(--muted);
+      }
+      .topnav a:hover {
+        color: var(--fg);
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        min-height: 36px;
+        padding: 0 14px;
+        border-radius: 999px;
+        font-weight: 560;
+        font-size: 14px;
+        background: var(--accent);
+        color: var(--accent-ink);
+        white-space: nowrap;
+        transition:
+          transform 320ms var(--ease),
+          filter 320ms var(--ease);
+      }
+      .btn:hover {
+        filter: saturate(1.06) brightness(1.05);
+        transform: translateY(-1px);
+      }
+      .btn:active {
+        transform: scale(0.98);
+      }
+      @media (max-width: 720px) {
+        .topnav .hide {
+          display: none;
+        }
+        .topnav {
+          gap: 14px;
+        }
+        .brand span {
+          display: none;
+        }
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 240px minmax(0, 1fr) 200px;
+        gap: clamp(32px, 4vw, 64px);
+        padding: 40px 0 96px;
+      }
+      .side {
+        position: sticky;
+        top: 84px;
+        align-self: start;
+        font-size: 15px;
+      }
+      .nav-group {
+        margin: 22px 0 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--subtle);
+      }
+      .nav-group:first-child {
+        margin-top: 0;
+      }
+      .side ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 2px;
+      }
+      .side li a {
+        display: block;
+        padding: 6px 10px;
+        margin-left: -10px;
+        border-radius: 8px;
+        color: var(--muted);
+        transition:
+          background-color 240ms var(--ease),
+          color 240ms var(--ease);
+      }
+      .side li a:hover {
+        background: var(--bg-2);
+        color: var(--fg);
+      }
+      .side li.current a {
+        background: var(--bg-2);
+        color: var(--fg);
+        font-weight: 600;
+      }
+      .toc {
+        position: sticky;
+        top: 84px;
+        align-self: start;
+        font-size: 14px;
+      }
+      .toc-label {
+        margin: 0 0 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--subtle);
+      }
+      .toc ol {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 6px;
+        border-left: 1px solid var(--hairline);
+      }
+      .toc a {
+        display: block;
+        padding-left: 12px;
+        color: var(--muted);
+      }
+      .toc a:hover {
+        color: var(--fg);
+      }
+      @media (max-width: 1100px) {
+        .layout {
+          grid-template-columns: 220px minmax(0, 1fr);
+        }
+        .toc {
+          display: none;
+        }
+      }
+      @media (max-width: 800px) {
+        .layout {
+          grid-template-columns: minmax(0, 1fr);
+          gap: 24px;
+        }
+        .side {
+          position: static;
+          border-bottom: 1px solid var(--hairline);
+          padding-bottom: 20px;
+        }
+      }
+
+      article {
+        max-width: 68ch;
+      }
+      article h1 {
+        font-size: clamp(30px, 4vw, 42px);
+        line-height: 1.08;
+        letter-spacing: -0.028em;
+        font-weight: 600;
+        margin: 0 0 14px;
+        text-wrap: balance;
+      }
+      article .lede {
+        font-size: 19px;
+        color: var(--muted);
+        margin: 0 0 32px;
+        text-wrap: pretty;
+      }
+      article h2 {
+        font-size: 24px;
+        letter-spacing: -0.02em;
+        margin: 44px 0 12px;
+        text-wrap: balance;
+      }
+      article h3 {
+        font-size: 18px;
+        letter-spacing: -0.012em;
+        margin: 28px 0 8px;
+      }
+      article p,
+      article li {
+        color: var(--muted);
+      }
+      article p {
+        margin: 0 0 16px;
+        text-wrap: pretty;
+      }
+      article strong {
+        color: var(--fg);
+        font-weight: 600;
+      }
+      article ul,
+      article ol {
+        margin: 0 0 18px;
+        padding-left: 22px;
+      }
+      article li {
+        margin: 0 0 8px;
+      }
+      article li::marker {
+        color: var(--subtle);
+      }
+      article a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      article a:hover {
+        text-decoration-color: var(--accent-link);
+      }
+      article code {
+        font-family: ui-monospace, Consolas, Menlo, monospace;
+        font-size: 0.9em;
+        background: var(--bg-2);
+        border: 1px solid var(--hairline);
+        padding: 1px 6px;
+        border-radius: 6px;
+        color: var(--fg);
+      }
+      article pre {
+        background: var(--bg-2);
+        border: 1px solid var(--hairline);
+        border-radius: 12px;
+        padding: 14px 16px;
+        overflow-x: auto;
+        margin: 0 0 18px;
+        font-size: 14.5px;
+        line-height: 1.5;
+      }
+      article pre code {
+        background: none;
+        border: 0;
+        padding: 0;
+      }
+      article blockquote {
+        margin: 0 0 18px;
+        padding: 2px 0 2px 18px;
+        border-left: 2px solid var(--accent);
+      }
+      article .tw {
+        overflow-x: auto;
+        margin: 0 0 22px;
+      }
+      article table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 15px;
+        min-width: 480px;
+      }
+      article th {
+        text-align: left;
+        font-weight: 600;
+        color: var(--fg);
+        padding: 0 16px 10px 0;
+        border-bottom: 1px solid var(--hairline-strong);
+        white-space: nowrap;
+      }
+      article td {
+        padding: 10px 16px 10px 0;
+        border-bottom: 1px solid var(--hairline);
+        vertical-align: top;
+        color: var(--muted);
+      }
+      article td:first-child {
+        color: var(--fg);
+      }
+      article .meta {
+        margin-top: 48px;
+        padding-top: 18px;
+        border-top: 1px solid var(--hairline);
+        font-size: 14px;
+        color: var(--subtle);
+      }
+      ul.index {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 24px;
+        display: grid;
+        gap: 10px;
+      }
+      ul.index li {
+        display: grid;
+        gap: 2px;
+        padding: 12px 0;
+        border-top: 1px solid var(--hairline);
+      }
+      ul.index li a {
+        font-weight: 600;
+        color: var(--fg);
+        text-decoration: none;
+      }
+      ul.index li a:hover {
+        text-decoration: underline;
+      }
+      ul.index li span {
+        color: var(--muted);
+        font-size: 15.5px;
+      }
+      footer {
+        padding: 32px 0 56px;
+        font-size: 14.5px;
+        color: var(--muted);
+        border-top: 1px solid var(--hairline);
+      }
+      footer .wrap {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 12px 32px;
+      }
+      footer a:hover {
+        color: var(--fg);
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip" href="#icerik">İçeriğe geç</a>
+    <header>
+      <div class="wrap">
+        <a class="brand" href="/"
+          ><img
+            src="/assets/icon-256.png"
+            alt=""
+            width="26"
+            height="26"
+          />seowatcher <span>belgeler</span></a
+        >
+        <nav class="topnav" aria-label="Site">
+          <a class="hide" href="/#ekranlar">Ekranlar</a>
+          <a class="hide" href="/docs/">Belgeler</a>
+          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+            >GitHub</a
+          >
+          <a
+            class="btn"
+            href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            >Windows için indir</a
+          >
+        </nav>
+      </div>
+    </header>
+    <div class="wrap layout">
+      <aside class="side" aria-label="Belgeler"><p class="nav-group">Başlangıç</p><ul><li><a href="/docs/kurulum-windows/">Windows'a kurulum</a></li><li><a href="/docs/kurulum-docker/">Docker ile kurulum</a></li><li><a href="/docs/google-baglantisi/">Google'a bağlanma</a></li><li><a href="/docs/pagespeed-anahtari/">PageSpeed anahtarı</a></li></ul><p class="nav-group">Ekranlar</p><ul><li><a href="/docs/panel/">Panel</a></li><li><a href="/docs/arama-performansi/">Arama performansı</a></li><li><a href="/docs/siralama-takibi/">Sıralama takibi</a></li><li><a href="/docs/firsatlar/">Fırsatlar</a></li><li><a href="/docs/kayitli-kelimeler/">Kayıtlı kelimeler</a></li><li><a href="/docs/analytics/">Analytics</a></li><li><a href="/docs/site-denetimi/">Site denetimi</a></li><li><a href="/docs/dizin-durumu/">Dizin durumu</a></li><li><a href="/docs/raporlar/">Raporlar ve şablonlar</a></li><li><a href="/docs/proje-bilgisi/">Proje bilgisi</a></li><li><a href="/docs/ayarlar/">Ayarlar</a></li></ul><p class="nav-group">Başvuru</p><ul><li><a href="/docs/denetim-kurallari/">Denetim kuralları</a></li><li class="current" aria-current="page"><a href="/docs/ajan-kurulumu/">Ajan kurulumu</a></li><li><a href="/docs/sorun-giderme/">Sorun giderme</a></li></ul></aside>
+      <article id="icerik">
+        <h1>Ajan kurulumu</h1><p class="lede">Claude Code, Codex ya da Cursor'ı uygulamaya bağlama. MCP adresi, parola, 33 aracın ve 6 hazır görev şablonunun listesi, hangi aracın Google kotası harcadığı.</p><p>Uygulamanın tüm verisi, bir yapay zekâ asistanının okuyabileceği biçimde de sunulur. Buna MCP denir: asistanınızın &quot;list_projects&quot;, &quot;get_audit_issues&quot; gibi adlandırılmış araçları çağırabildiği standart bir bağlantı. Bağlayınca &quot;siteyi denetle ve bir rapor yaz&quot; diyebilirsiniz; asistan Search Console verisini okur, denetimi çalıştırır, raporu Raporlar ekranına kaydeder. Bağlamak zorunlu değildir; bağlamazsanız uygulamadan hiçbir şey eksilmez. Bu sayfanın sonunda asistanınız bağlı ve ilk araç çağrısı yapılmış olacak.</p>
+<h2 id="gerekenler">Gerekenler</h2>
+<ul><li>Uygulama çalışıyor ve bir projede Search Console bağlı.</li><li>Claude Code, Codex, Cursor, VS Code Copilot ya da Gemini CLI'dan biri. Uygulama ilk üçü için hazır kurulum metni verir.</li><li>Uygulamanın <strong>Ajan kurulumu</strong> ekranı (sol menüde, Yapay zekâ bölümünde).</li></ul>
+<h2 id="adimlar">Adımlar</h2>
+<ol><li><strong>Ajan kurulumu</strong> ekranını açın. Üstte bağlantı durumu rozeti var: <strong>Henüz bağlanmadı</strong> ya da <strong>Bağlandı</strong> (&quot;Claude Code · son çağrı 2 dk önce&quot; gibi). Altında MCP adresi ve kopyalama düğmesi: <strong>http://127.0.0.1:3001/mcp</strong> (Docker'da localhost).</li><li>Parolayı bulun. Uygulama, MCP ucunu izinsiz çağrılara karşı bir parolayla korur ve bu parolayı ekranda göstermez; nerede olduğunu söyler. Windows paketinde veri klasöründeki <strong>mcp-token</strong> dosyasıdır (görev çubuğu menüsü → <strong>Veri klasörünü aç</strong>). Docker'da komut: <code>docker compose exec -T seotracker cat /app/.wrangler/mcp-token</code> (Git Bash'te başına MSYS_NO_PATHCONV=1).</li><li>Asistanınıza göre bağlayın.</li></ol>
+<h3 id="claude-code">Claude Code</h3>
+<p>Terminalde, parolayı kendi değerinizle değiştirerek:</p>
+<pre><code>claude mcp add --transport http --scope user seotracker http://127.0.0.1:3001/mcp --header &quot;Authorization: Bearer &lt;parola&gt;&quot;</code></pre>
+<p>Claude Code içinde <code>/mcp</code> yazıp <strong>Reconnect</strong> deyin. Beceriler <code>/seo-audit</code> gibi eğik çizgiyle çağrılır.</p>
+<h3 id="codex">Codex</h3>
+<pre><code>codex mcp add seotracker --url http://127.0.0.1:3001/mcp --bearer-token-env-var SEOTRACKER_MCP_AUTH</code></pre>
+<p>Sonra SEOTRACKER_MCP_AUTH ortam değişkenine parolayı yazın; Windows'ta PowerShell ile: <code>[Environment]::SetEnvironmentVariable('SEOTRACKER_MCP_AUTH', '&lt;parola&gt;', 'User')</code>. Beceriler <code>$seo-audit</code> gibi çağrılır.</p>
+<h3 id="cursor">Cursor</h3>
+<p>Projenizin .cursor/mcp.json dosyasına:</p>
+<pre><code>{
+  &quot;mcpServers&quot;: {
+    &quot;seotracker&quot;: {
+      &quot;url&quot;: &quot;http://127.0.0.1:3001/mcp&quot;,
+      &quot;headers&quot;: { &quot;Authorization&quot;: &quot;Bearer ${env:SEOTRACKER_MCP_AUTH}&quot; }
+    }
+  }
+}</code></pre>
+<p>ve ortam değişkenini Codex'teki gibi ayarlayın. Uygulama bu biçimi &quot;canlı doğrulanmadı&quot; diye işaretler; Cursor sürümünüz farklı bir alan isterse Cursor'ın belgesine bakın.</p>
+<ol><li>Hazır kurulum metnini kullanmak daha kolaydır: ekrandaki <strong>Ajan kurulum istemini kopyala</strong> (ya da Codex için ayrı düğme) metni panoya alır; asistanınıza yapıştırın, gerisini o yapar: bağlantıyı kurar, &quot;whoami&quot; ve &quot;list_projects&quot; araçlarıyla test eder, becerileri yükler. <strong>Kurulum istemi (sıfırdan kurulum)</strong> ise Docker'dan Google bağlantısına kadar bütün kurulumu asistana yaptırır.</li><li>Becerileri yükleyin. <strong>Beceriler</strong> sekmesi altı hazır görev şablonunu anlatır; asistana &quot;seotracker becerilerini kur&quot; demeniz yeter, kurulum metni nereye kopyalanacağını bilir. Güncellemek için <strong>Güncelleme istemini kopyala</strong>.</li></ol>
+<h2 id="araclar">Araçlar</h2>
+<p>Toplam 33 araç. &quot;Yazar&quot; sütunu uygulamadaki veriyi değiştirenleri, &quot;Kota&quot; sütunu Google'ın günlük sınırından harcayanları gösterir. Yazan araçlar sizin onayınız olmadan çağrılmamalı; iyi kurulmuş beceriler sorar, ama sunucu sormaz.</p>
+<div class="tw"><table><thead><tr><th>Araç</th><th>Ne yapar</th><th>Yazar</th><th>Kota</th></tr></thead><tbody><tr><td>whoami</td><td>Hangi kurulum ve kullanıcı olduğunu söyler</td><td></td><td></td></tr><tr><td>get_diagnostics</td><td>Sürüm, kurulum kontrolleri, tablo sayıları, son 25 denetim, kota sayaçları</td><td></td><td></td></tr><tr><td>list_projects</td><td>Projeleri listeler; her araç projectId ister</td><td></td><td></td></tr><tr><td>create_project</td><td>Yeni proje açar</td><td>Evet</td><td></td></tr><tr><td>get_project_context</td><td>Proje bilgisi ekranını okur</td><td></td><td></td></tr><tr><td>update_project_context</td><td>Proje bilgisini değiştirir, araştırma günlüğüne yazar</td><td>Evet</td><td></td></tr><tr><td>get_search_console_performance</td><td>Tıklama, gösterim, oran, sıra; sorgu, sayfa, ülke, cihaz, tarih boyutlarıyla</td><td></td><td></td></tr><tr><td>get_search_opportunities</td><td>Fırsatlar listesi (Search Console + Analytics)</td><td></td><td></td></tr><tr><td>get_cannibalization</td><td>Aynı sorguda yarışan sayfalar</td><td></td><td></td></tr><tr><td>get_ranking_history</td><td>Yerel sıralama arşivi, 16 aydan eskiye</td><td></td><td></td></tr><tr><td>get_index_coverage</td><td>Kayıtlı Google dizin cevapları; Google'a sormaz</td><td></td><td></td></tr><tr><td>inspect_urls</td><td>Google'a sayfa sorar; çağrı başına 10 adres</td><td>Evet</td><td>Günde 2.000, mülk başına</td></tr><tr><td>get_sitemaps</td><td>Search Console'daki site haritası durumu</td><td></td><td></td></tr><tr><td>run_site_audit</td><td>Denetim başlatır</td><td>Evet</td><td>PageSpeed, hız ölçümü açıksa</td></tr><tr><td>get_audit_status</td><td>Denetimin aşaması; takılan denetimi başarısız işaretleyebilir</td><td></td><td></td></tr><tr><td>get_audit_issues</td><td>Bulgular, düzeltme adımlarıyla</td><td></td><td></td></tr><tr><td>get_audit_pages</td><td>Taranan sayfalar</td><td></td><td></td></tr><tr><td>get_google_analytics_organic_overview</td><td>Organik oturum özeti ve önceki dönem</td><td></td><td></td></tr><tr><td>get_google_analytics_organic_landing_pages</td><td>Organik açılış sayfaları</td><td></td><td></td></tr><tr><td>get_google_analytics_page_performance</td><td>Sayfa görüntülenme ve etkileşim</td><td></td><td></td></tr><tr><td>get_google_analytics_traffic_acquisition</td><td>Kanal, kaynak ve kampanya kırılımı</td><td></td><td></td></tr><tr><td>get_google_analytics_key_events</td><td>Anahtar olaylar</td><td></td><td></td></tr><tr><td>get_google_analytics_ecommerce_performance</td><td>Ürün satışları</td><td></td><td></td></tr><tr><td>get_google_analytics_site_search</td><td>Site içi arama terimleri</td><td></td><td></td></tr><tr><td>get_google_analytics_audience_breakdown</td><td>Cihaz, ülke, yeni ve geri dönen</td><td></td><td></td></tr><tr><td>get_google_analytics_measurement_health</td><td>Ölçüm kurulumu kontrolü; rapor kotası harcamaz</td><td></td><td></td></tr><tr><td>list_saved_keywords</td><td>Kayıtlı kelimeler</td><td></td><td></td></tr><tr><td>save_keywords</td><td>Kelime kaydeder</td><td>Evet</td><td></td></tr><tr><td>list_reports</td><td>Raporları listeler</td><td></td><td></td></tr><tr><td>get_report</td><td>Bir raporu okur (özet, istenirse HTML)</td><td></td><td></td></tr><tr><td>save_report</td><td>Rapor kaydeder ya da günceller</td><td>Evet</td><td></td></tr><tr><td>list_report_templates</td><td>Şablonları okur</td><td></td><td></td></tr><tr><td>save_report_template</td><td>Şablon kaydeder</td><td>Evet</td><td></td></tr></tbody></table></div>
+<p>Analytics araçları Google'ın GA4 rapor kotasından (standart mülkte günde 200.000 belirteç) harcar; bu kota uygulamanın Ayarlar ekranındaki Sınırlar bölümünde izlenir.</p>
+<h2 id="beceriler">Beceriler</h2>
+<div class="tw"><table><thead><tr><th>Beceri</th><th>Ne zaman</th><th>Ne üretir</th></tr></thead><tbody><tr><td>seo-coach</td><td>&quot;Ne yapmalıyım&quot; diye sorduğunuzda; yolu anlatır, sonraki adımı önerir</td><td>Sohbet, gerekirse koçluk notu</td></tr><tr><td>seo-project-setup</td><td>Yeni projede; işi, hedefi, rakipleri, önemli sayfaları sorup Proje bilgisi ekranını doldurur</td><td>Dolu proje bilgisi, kayıtlı kelimeler</td></tr><tr><td>seo-audit</td><td>&quot;Siteyi denetle&quot; dediğinizde; denetimi çalıştırır, Search Console ile birleştirir, tek bir &quot;bu hafta yapılacak iş&quot; seçer</td><td>Tek sayfalık denetim raporu</td></tr><tr><td>seo-triage</td><td>Trafik düştüğünde; düşüş gerçek mi, nerede ve ne zaman</td><td>Düşüş incelemesi raporu</td></tr><tr><td>seo-check-in</td><td>Ayda bir; bu dönemle önceki dönemi karşılaştırır</td><td>Check-in raporu, seri halinde</td></tr><tr><td>seo-report</td><td>Diğer beceriler bitince; tek dosyalık HTML raporu yazar ve kaydeder</td><td>Raporlar ekranında rapor</td></tr></tbody></table></div>
+<h2 id="kontrol">Kontrol</h2>
+<ul><li>Asistana &quot;whoami aracını çağır&quot; deyin; kurulum kimliğini döndürmeli.</li><li><strong>Ajan kurulumu</strong> ekranındaki rozet <strong>Bağlandı</strong> olmalı ve son çağrı zamanı görünmeli.</li><li>&quot;list_projects&quot; projelerinizi listelemeli.</li></ul>
+<h2 id="sik-sorulanlar">Sık sorulanlar</h2>
+<p><strong>Asistan verimi dışarı gönderir mi?</strong> Asistan hangi modeli kullanıyorsa veri oraya gider; bu, asistanın kendi gizlilik sözleşmesine bağlıdır. Uygulama yalnızca yerel bağlantıya cevap verir.</p>
+<p><strong>Parola olmadan çalışır mı?</strong> Docker'da MCP_TOKEN=off ile evet; Windows paketinde parola her zaman açıktır. Parolasız uç, aynı bilgisayardaki her programın 33 aracı çağırabilmesi demektir.</p>
+<p><strong>Asistan Google kotamı bitirebilir mi?</strong> inspect_urls ve run_site_audit harcar. Beceriler görev başına en fazla 20 adres sorar ve denetimi yalnızca siz istediğinizde başlatır; asistanınıza da aynı sınırı söyleyin.</p>
+<p><strong>Hangi asistan daha iyi?</strong> Fark etmez; araçlar aynı. Kurulum metni Claude Code, Codex ve Cursor için hazır; diğerleri MCP'yi destekliyorsa aynı adres ve parolayla çalışır.</p>
+<h2 id="sorun-cikarsa">Sorun çıkarsa</h2>
+<ul><li><strong>Asistan 401 alıyor.</strong> Parola yanlış ya da gönderilmiyor. Dosyadaki değeri yeniden kopyalayın; sonundaki satır sonu karakterine dikkat edin.</li><li><strong>Bağlantı reddediliyor.</strong> Uygulama kapalıdır. Görev çubuğu simgesine (ya da <code>docker compose ps</code> çıktısına) bakın.</li><li><strong>Asistan &quot;araç bulunamadı&quot; diyor.</strong> Bağlantıyı yeniden yükleyin (Claude Code'da <code>/mcp</code> → Reconnect).</li><li><strong>Beceriler görünmüyor.</strong> Kurulum metnini yeniden yapıştırın; beceriler asistanın kendi beceri klasörüne kopyalanır (Codex'te $HOME/.agents/skills).</li></ul>
+        <p class="meta">
+          Son güncelleme: 2026-10-22. Bir hata görürseniz
+          <a href="https://github.com/ucsahinn/seotracker/issues"
+            >GitHub'da bildirin</a
+          >.
+        </p>
+      </article>
+      <nav class="toc" aria-label="Bu sayfada"><p class="toc-label">Bu sayfada</p><ol><li><a href="#gerekenler">Gerekenler</a></li><li><a href="#adimlar">Adımlar</a></li><li><a href="#araclar">Araçlar</a></li><li><a href="#beceriler">Beceriler</a></li><li><a href="#kontrol">Kontrol</a></li><li><a href="#sik-sorulanlar">Sık sorulanlar</a></li><li><a href="#sorun-cikarsa">Sorun çıkarsa</a></li></ol></nav>
+    </div>
+    <footer>
+      <div class="wrap">
+        <span>seowatcher, MIT lisansı.</span>
+        <span
+          ><a href="/">Ana sayfa</a> &nbsp;
+          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"
+            >Sürüm notları</a
+          ></span
+        >
+      </div>
+    </footer>
+  </body>
+</html>

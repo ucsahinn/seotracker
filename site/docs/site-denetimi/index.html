@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Site denetimi | seowatcher belgeleri</title>
+    <meta name="description" content="Uygulamanın kendi tarayıcısı sitenizi sayfa sayfa gezer, 95 kurala göre bakar, bulduğunu önem sırasına koyar ve her bulgunun altına ne yapacağınızı yazar." />
+    <meta name="robots" content="max-image-preview:large" />
+    <link rel="canonical" href="https://seowatcher.io/docs/site-denetimi/" />
+    <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link
+      rel="icon"
+      href="/assets/favicon-48.png"
+      type="image/png"
+      sizes="48x48"
+    />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <link
+      rel="preload"
+      href="/assets/fonts/geist-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/assets/fonts/geist-latin-ext-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="seowatcher" />
+    <meta property="og:title" content="Site denetimi" />
+    <meta property="og:description" content="Uygulamanın kendi tarayıcısı sitenizi sayfa sayfa gezer, 95 kurala göre bakar, bulduğunu önem sırasına koyar ve her bulgunun altına ne yapacağınızı yazar." />
+    <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
+    <meta property="og:url" content="https://seowatcher.io/docs/site-denetimi/" />
+    <meta property="og:locale" content="tr_TR" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="color-scheme" content="light dark" />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: light)"
+      content="#fdfdfe"
+    />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: dark)"
+      content="#1a1b20"
+    />
+    <style>
+      @font-face {
+        font-family: "Geist";
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(/assets/fonts/geist-latin-ext-wght-normal.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+          U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+          U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: "Geist";
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(/assets/fonts/geist-latin-wght-normal.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+          U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+          U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      :root {
+        --bg: oklch(99.5% 0.0015 265);
+        --bg-2: oklch(97.2% 0.003 265);
+        --fg: oklch(23% 0.012 265);
+        --muted: oklch(23% 0.012 265 / 0.8);
+        --subtle: oklch(23% 0.012 265 / 0.68);
+        --hairline: oklch(0% 0 0 / 0.08);
+        --hairline-strong: oklch(0% 0 0 / 0.14);
+        --accent: oklch(54% 0.17 256);
+        --accent-ink: oklch(100% 0 0);
+        --accent-link: oklch(42% 0.15 256);
+        --ease: cubic-bezier(0.32, 0.72, 0, 1);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: oklch(17.5% 0.005 265);
+          --bg-2: oklch(13.2% 0.005 265);
+          --fg: oklch(93% 0.004 265);
+          --muted: oklch(93% 0.004 265 / 0.7);
+          --subtle: oklch(93% 0.004 265 / 0.56);
+          --hairline: oklch(100% 0 0 / 0.09);
+          --hairline-strong: oklch(100% 0 0 / 0.16);
+          --accent: oklch(70% 0.15 256);
+          --accent-ink: oklch(16% 0.01 265);
+          --accent-link: oklch(80% 0.12 256);
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
+        scroll-padding-top: 76px;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: Geist, "Segoe UI", system-ui, sans-serif;
+        font-size: 17px;
+        line-height: 1.6;
+        font-variant-numeric: tabular-nums;
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+        border-radius: 4px;
+      }
+      .skip {
+        position: absolute;
+        left: 16px;
+        top: -48px;
+        z-index: 5;
+        background: var(--accent);
+        color: var(--accent-ink);
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-weight: 600;
+      }
+      .skip:focus {
+        top: 12px;
+      }
+      .wrap {
+        width: min(1160px, 100% - 40px);
+        margin-inline: auto;
+      }
+      @media (max-width: 640px) {
+        .wrap {
+          width: calc(100% - 32px);
+        }
+      }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: color-mix(in oklab, var(--bg) 82%, transparent);
+        backdrop-filter: blur(14px) saturate(1.3);
+        -webkit-backdrop-filter: blur(14px) saturate(1.3);
+        border-bottom: 1px solid var(--hairline);
+      }
+      header .wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 60px;
+        gap: 16px;
+      }
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 600;
+        font-size: 17px;
+        letter-spacing: -0.01em;
+      }
+      .brand img {
+        width: 26px;
+        height: 26px;
+        border-radius: 7px;
+      }
+      .brand span {
+        color: var(--subtle);
+        font-weight: 500;
+      }
+      .topnav {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        font-size: 15px;
+        color: var(--muted);
+      }
+      .topnav a:hover {
+        color: var(--fg);
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        min-height: 36px;
+        padding: 0 14px;
+        border-radius: 999px;
+        font-weight: 560;
+        font-size: 14px;
+        background: var(--accent);
+        color: var(--accent-ink);
+        white-space: nowrap;
+        transition:
+          transform 320ms var(--ease),
+          filter 320ms var(--ease);
+      }
+      .btn:hover {
+        filter: saturate(1.06) brightness(1.05);
+        transform: translateY(-1px);
+      }
+      .btn:active {
+        transform: scale(0.98);
+      }
+      @media (max-width: 720px) {
+        .topnav .hide {
+          display: none;
+        }
+        .topnav {
+          gap: 14px;
+        }
+        .brand span {
+          display: none;
+        }
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 240px minmax(0, 1fr) 200px;
+        gap: clamp(32px, 4vw, 64px);
+        padding: 40px 0 96px;
+      }
+      .side {
+        position: sticky;
+        top: 84px;
+        align-self: start;
+        font-size: 15px;
+      }
+      .nav-group {
+        margin: 22px 0 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--subtle);
+      }
+      .nav-group:first-child {
+        margin-top: 0;
+      }
+      .side ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 2px;
+      }
+      .side li a {
+        display: block;
+        padding: 6px 10px;
+        margin-left: -10px;
+        border-radius: 8px;
+        color: var(--muted);
+        transition:
+          background-color 240ms var(--ease),
+          color 240ms var(--ease);
+      }
+      .side li a:hover {
+        background: var(--bg-2);
+        color: var(--fg);
+      }
+      .side li.current a {
+        background: var(--bg-2);
+        color: var(--fg);
+        font-weight: 600;
+      }
+      .toc {
+        position: sticky;
+        top: 84px;
+        align-self: start;
+        font-size: 14px;
+      }
+      .toc-label {
+        margin: 0 0 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--subtle);
+      }
+      .toc ol {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 6px;
+        border-left: 1px solid var(--hairline);
+      }
+      .toc a {
+        display: block;
+        padding-left: 12px;
+        color: var(--muted);
+      }
+      .toc a:hover {
+        color: var(--fg);
+      }
+      @media (max-width: 1100px) {
+        .layout {
+          grid-template-columns: 220px minmax(0, 1fr);
+        }
+        .toc {
+          display: none;
+        }
+      }
+      @media (max-width: 800px) {
+        .layout {
+          grid-template-columns: minmax(0, 1fr);
+          gap: 24px;
+        }
+        .side {
+          position: static;
+          border-bottom: 1px solid var(--hairline);
+          padding-bottom: 20px;
+        }
+      }
+
+      article {
+        max-width: 68ch;
+      }
+      article h1 {
+        font-size: clamp(30px, 4vw, 42px);
+        line-height: 1.08;
+        letter-spacing: -0.028em;
+        font-weight: 600;
+        margin: 0 0 14px;
+        text-wrap: balance;
+      }
+      article .lede {
+        font-size: 19px;
+        color: var(--muted);
+        margin: 0 0 32px;
+        text-wrap: pretty;
+      }
+      article h2 {
+        font-size: 24px;
+        letter-spacing: -0.02em;
+        margin: 44px 0 12px;
+        text-wrap: balance;
+      }
+      article h3 {
+        font-size: 18px;
+        letter-spacing: -0.012em;
+        margin: 28px 0 8px;
+      }
+      article p,
+      article li {
+        color: var(--muted);
+      }
+      article p {
+        margin: 0 0 16px;
+        text-wrap: pretty;
+      }
+      article strong {
+        color: var(--fg);
+        font-weight: 600;
+      }
+      article ul,
+      article ol {
+        margin: 0 0 18px;
+        padding-left: 22px;
+      }
+      article li {
+        margin: 0 0 8px;
+      }
+      article li::marker {
+        color: var(--subtle);
+      }
+      article a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      article a:hover {
+        text-decoration-color: var(--accent-link);
+      }
+      article code {
+        font-family: ui-monospace, Consolas, Menlo, monospace;
+        font-size: 0.9em;
+        background: var(--bg-2);
+        border: 1px solid var(--hairline);
+        padding: 1px 6px;
+        border-radius: 6px;
+        color: var(--fg);
+      }
+      article pre {
+        background: var(--bg-2);
+        border: 1px solid var(--hairline);
+        border-radius: 12px;
+        padding: 14px 16px;
+        overflow-x: auto;
+        margin: 0 0 18px;
+        font-size: 14.5px;
+        line-height: 1.5;
+      }
+      article pre code {
+        background: none;
+        border: 0;
+        padding: 0;
+      }
+      article blockquote {
+        margin: 0 0 18px;
+        padding: 2px 0 2px 18px;
+        border-left: 2px solid var(--accent);
+      }
+      article .tw {
+        overflow-x: auto;
+        margin: 0 0 22px;
+      }
+      article table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 15px;
+        min-width: 480px;
+      }
+      article th {
+        text-align: left;
+        font-weight: 600;
+        color: var(--fg);
+        padding: 0 16px 10px 0;
+        border-bottom: 1px solid var(--hairline-strong);
+        white-space: nowrap;
+      }
+      article td {
+        padding: 10px 16px 10px 0;
+        border-bottom: 1px solid var(--hairline);
+        vertical-align: top;
+        color: var(--muted);
+      }
+      article td:first-child {
+        color: var(--fg);
+      }
+      article .meta {
+        margin-top: 48px;
+        padding-top: 18px;
+        border-top: 1px solid var(--hairline);
+        font-size: 14px;
+        color: var(--subtle);
+      }
+      ul.index {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 24px;
+        display: grid;
+        gap: 10px;
+      }
+      ul.index li {
+        display: grid;
+        gap: 2px;
+        padding: 12px 0;
+        border-top: 1px solid var(--hairline);
+      }
+      ul.index li a {
+        font-weight: 600;
+        color: var(--fg);
+        text-decoration: none;
+      }
+      ul.index li a:hover {
+        text-decoration: underline;
+      }
+      ul.index li span {
+        color: var(--muted);
+        font-size: 15.5px;
+      }
+      footer {
+        padding: 32px 0 56px;
+        font-size: 14.5px;
+        color: var(--muted);
+        border-top: 1px solid var(--hairline);
+      }
+      footer .wrap {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 12px 32px;
+      }
+      footer a:hover {
+        color: var(--fg);
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip" href="#icerik">İçeriğe geç</a>
+    <header>
+      <div class="wrap">
+        <a class="brand" href="/"
+          ><img
+            src="/assets/icon-256.png"
+            alt=""
+            width="26"
+            height="26"
+          />seowatcher <span>belgeler</span></a
+        >
+        <nav class="topnav" aria-label="Site">
+          <a class="hide" href="/#ekranlar">Ekranlar</a>
+          <a class="hide" href="/docs/">Belgeler</a>
+          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+            >GitHub</a
+          >
+          <a
+            class="btn"
+            href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            >Windows için indir</a
+          >
+        </nav>
+      </div>
+    </header>
+    <div class="wrap layout">
+      <aside class="side" aria-label="Belgeler"><p class="nav-group">Başlangıç</p><ul><li><a href="/docs/kurulum-windows/">Windows'a kurulum</a></li><li><a href="/docs/kurulum-docker/">Docker ile kurulum</a></li><li><a href="/docs/google-baglantisi/">Google'a bağlanma</a></li><li><a href="/docs/pagespeed-anahtari/">PageSpeed anahtarı</a></li></ul><p class="nav-group">Ekranlar</p><ul><li><a href="/docs/panel/">Panel</a></li><li><a href="/docs/arama-performansi/">Arama performansı</a></li><li><a href="/docs/siralama-takibi/">Sıralama takibi</a></li><li><a href="/docs/firsatlar/">Fırsatlar</a></li><li><a href="/docs/kayitli-kelimeler/">Kayıtlı kelimeler</a></li><li><a href="/docs/analytics/">Analytics</a></li><li class="current" aria-current="page"><a href="/docs/site-denetimi/">Site denetimi</a></li><li><a href="/docs/dizin-durumu/">Dizin durumu</a></li><li><a href="/docs/raporlar/">Raporlar ve şablonlar</a></li><li><a href="/docs/proje-bilgisi/">Proje bilgisi</a></li><li><a href="/docs/ayarlar/">Ayarlar</a></li></ul><p class="nav-group">Başvuru</p><ul><li><a href="/docs/denetim-kurallari/">Denetim kuralları</a></li><li><a href="/docs/ajan-kurulumu/">Ajan kurulumu</a></li><li><a href="/docs/sorun-giderme/">Sorun giderme</a></li></ul></aside>
+      <article id="icerik">
+        <h1>Site denetimi</h1><p class="lede">Uygulamanın kendi tarayıcısı sitenizi sayfa sayfa gezer, 95 kurala göre bakar, bulduğunu önem sırasına koyar ve her bulgunun altına ne yapacağınızı yazar.</p><p>Site denetimi, Google'a sormadan sitenizde neyin bozuk olduğunu söyleyen ekrandır. Uygulama kendi tarayıcısıyla sayfalarınızı gezer: kırık bağlantı, yönlendirme zinciri, eksik başlık, çelişen canonical, hreflang hatası, robots.txt ve site haritası sorunları, isterseniz sayfa hızı. Sonuç tek bir puan, önem sırasına konmuş bir bulgu listesi ve her bulgu için düzeltme adımıdır. Ekranın açıklaması da bunu söyler: &quot;Sitenizi kendi tarayıcımızla tarar; bulduğu sorunları önem sırasına göre listeler.&quot;</p>
+<h2 id="ekranda-neler-var">Ekranda neler var</h2>
+<p><strong>Yeni denetim başlat kartı.</strong> Üç alan. <strong>Taranacak site adresi</strong>: projenin alan adıyla dolu gelir. <strong>Kaç sayfa taransın?</strong> En az 10, en fazla 10.000, varsayılan 50; sınırı aşan sayfalar taranmaz. 500'ün üstünde bir sayı yazarsanız &quot;N sayfa taranacak. Bunda bir sakınca yok ama biraz zaman alabilir. Devam edilsin mi?&quot; diye sorar. <strong>Sayfa hızını da ölç</strong> anahtarı varsayılan olarak kapalıdır; açarsanız her sayfa Google Lighthouse ile telefonda ve bilgisayarda ölçülür, yani sayfa başına iki ölçüm. Kart altında süre tahmini yazar; PageSpeed anahtarınız yoksa hız ölçümü en fazla 50 sayfayla sınırlanır ve kart &quot;Tüm sayfaları ölçmek için Ayarlar'dan ücretsiz bir PageSpeed anahtarı ekleyin.&quot; der. Yanındaki kota kartı PageSpeed ve URL Denetimi sınırlarını gösterir.</p>
+<p><strong>Önceki denetimler.</strong> Sütunlar: <strong>Tarih</strong>, <strong>URL</strong>, <strong>Durum</strong> (Sürüyor, Bitti, Başarısız), <strong>Sayfa</strong>, <strong>Kritik</strong>, <strong>Uyarı</strong>, <strong>Lighthouse</strong>. Kritik ve uyarı sayıları yüz sayfa başına verilir, toplam parantezde; böylece 50 sayfalık bir denetimle 500 sayfalık bir denetim karşılaştırılabilir. Yanındaki ok, aynı siteye ait bir önceki denetime göre değişimi gösterir. Üstteki küçük grafik &quot;Denetim başına sayfa yoğunluğu&quot; eğilimidir. Satır menüsü: <strong>Görüntüle</strong>, <strong>Aynı ayarlarla yeniden başlat</strong>, <strong>Denetimi sil</strong> (sayfalar, sorunlar ve hız ölçümleri de silinir, geri alınamaz).</p>
+<p><strong>İlerleme kartı.</strong> Denetim sürerken aşamalar görünür: <strong>Keşif</strong>, <strong>Taranıyor</strong>, <strong>Hız ölçümü</strong>, <strong>Tamamlanıyor</strong>. &quot;~X kaldı&quot; tahmini yüzde 5 tamamlandıktan sonra çıkar. Altında &quot;Taranan sayfalar (n)&quot; listesi canlı akar; durum üç saniyede bir yenilenir.</p>
+<p><strong>Denetim ayrıntısı.</strong> Üstte alan adı, durum rozeti ve &quot;Site denetimi · 17 gün önce&quot; gibi bir zaman. Tarama eksik kaldıysa sarı bir uyarı: &quot;Denetim bu siteyi tamamen tarayamadı.&quot; (bot koruması engelledi), &quot;Denetim N sayfadan sonra erken durdu.&quot;, &quot;N sayfada engellendik.&quot;, &quot;Site N sayfada istek sınırı uyguladı.&quot; Sonuçlar yine de gösterilir. <strong>Raporu indir</strong> düğmesi tek dosyalık HTML raporu hem indirir hem Raporlar ekranına kaydeder; denetim sürerken çalışmaz.</p>
+<p><strong>Site puanı kartı.</strong> 0 ile 100 arası bir sayı, halka ve bir cümle: &quot;Çok iyi. Birkaç küçük iş kaldı.&quot; gibi. Altında en çok puan kazandıracak üç iş &quot;+N puan&quot; ile listelenir.</p>
+<p><strong>İki grafik.</strong> &quot;En çok sayfayı hangi sorun etkiliyor?&quot;: sorun türü başına etkilenen sayfa sayısı, en çok sekiz çubuk; bir çubuğa tıklayınca liste daralır. &quot;Sorunlar ne kadar ciddi?&quot;: bulgu sayısının kritik, uyarı ve bilgi dilimlerine dağılımı. Dilim açıklamaları: Kritik &quot;Google siteyi anlayamıyor&quot;, Uyarı &quot;Sıralamayı ve tıklamayı düşürür&quot;, Bilgi &quot;Küçük iyileştirme fırsatları&quot;.</p>
+<p><strong>Dört sekme.</strong> <strong>Sorunlu sayfalar (n)</strong>: bulgular, kritikten bilgiye. Her bulgu kartı açılınca önce &quot;neden önemli&quot; paragrafı, sonra <strong>Nasıl düzeltilir?</strong> kutusu, etkilenen sayfalar (onar onar, 20'den fazlaysa arama kutusu) ve üç düğme: <strong>URL'leri kopyala (n)</strong>, <strong>CSV indir</strong>, <strong>Sayfalar sekmesinde göster</strong>. Siteyi bütünüyle ilgilendiren bulgularda &quot;Bu sorun tek bir sayfayla değil, sitenin tamamıyla ilgili.&quot; notu çıkar. <strong>Sayfalar (n)</strong>: taranan her sayfa; sütunlar URL, Durum, Sorun, Başlık, H1, Kelime, Görsel, Bağlantı, Hız, Dizin, Derinlik, Harita; hızlı filtreler <strong>Dizine kapalı</strong>, <strong>Yavaş</strong> (1 saniyeden uzun), <strong>Alt metni eksik</strong>, <strong>Site haritasında yok</strong>. <strong>Dizin durumu</strong>: Google'ın her sayfa için kendi cevabı, ayrı kılavuzda anlatılır. <strong>Hız (n)</strong>: yalnızca hız ölçümü açıksa; sütunlar URL, Cihaz, Durum, Perf, A11y, SEO, LCP, CLS, INP, TTFB, Sorunlar; &quot;Sorunları gör&quot; bağlantısı o sayfanın Lighthouse bulgularını açar.</p>
+<p><strong>Dışa aktarma.</strong> Her sekmenin üstünde <strong>E-Tablolar'a aktar</strong>, <strong>CSV</strong>, <strong>JSON</strong>; satır sayısıyla birlikte ve uygulanan filtrelerle. Sorunlar CSV'sinin sütunları Önem, Sorun, Adres, Ayrıntı, Nasıl düzeltilir.</p>
+<h2 id="nasil-kullanilir">Nasıl kullanılır</h2>
+<ol><li>İlk denetimde sayfa sayısını 50'de bırakın, hız ölçümünü kapalı tutun. Bir iki dakikada biter ve sitenin genel halini gösterir.</li><li>Puan kartındaki üç &quot;+N puan&quot; maddesiyle başlayın; bunlar en az emekle en çok puan getiren işlerdir. Her birine tıklayınca ilgili bulgu kartı açılır.</li><li><strong>Sorunlu sayfalar</strong> sekmesinde kritik bulguları bitirmeden uyarılara geçmeyin. Kritik, Google'ın sayfayı görmesini engelleyen sorundur; uyarı, zamanla aşındıran.</li><li>Bulgu kartındaki <strong>URL'leri kopyala</strong> ile listeyi alıp site yöneticinize ya da ajanınıza verin; <strong>Nasıl düzeltilir?</strong> kutusu teknik olmayan dille yazılmıştır, olduğu gibi iletebilirsiniz.</li><li>Düzeltmeleri yaptıktan sonra <strong>Aynı ayarlarla yeniden başlat</strong> deyin. Panel'deki &quot;Son denetimde yeni çıkanlar&quot; ve &quot;Düzelenler&quot; kartı neyin kapandığını söyler.</li><li>Sitenin tamamını görmek istediğinizde sayfa sayısını yükseltin. Hız ölçümünü haftada bir, önemli sayfalar için açmak yeterlidir; her sayfa yaklaşık on saniye ve Google kotası harcar.</li></ol>
+<h2 id="sayilar-nasil-hesaplanir">Sayılar nasıl hesaplanır</h2>
+<p><strong>Puan.</strong> Her sorun türünün bir ağırlığı vardır: kritik 40, uyarı 15, bilgi 3. Türün maliyeti ağırlık çarpı (0,15 artı 0,85 çarpı etkilenen sayfa payı) ile bulunur; pay, etkilenen sayfa sayısının taranan sayfaya bölümüdür. Sitenin tamamını ilgilendiren bulgular (robots.txt, site haritası) tam pay sayılır. Puan, 100 eksi maliyetlerin toplamıdır, aşağı yuvarlanır ve sıfırın altına inmez. Tek bir bulgu bile varsa puan en fazla 99 olur; 100 yalnızca hiç bulgu olmayan sitede görünür. Bu yüzden &quot;+0,5 puan&quot; tek bir sayfadaki küçük bir bilgi bulgusudur, &quot;+40 puan&quot; ise her sayfayı etkileyen kritik bir sorun.</p>
+<p>Puan dilimleri: 90 ve üstü çok iyi, 70 ve üstü iyi, 50 ve üstü orta, altı zayıf. Halka 90'da yeşil, 50 ile 89 arasında sarı, altında kırmızıdır.</p>
+<p><strong>Tarama.</strong> Aynı anda en fazla iki istek, saniyede bir istekle başlar. Site 429 (çok fazla istek) dönerse 30 saniye bekler, her seferinde süreyi ikiye katlar, üç kez dener; toplam bekleme 30 dakikayı geçerse tarama durur ve &quot;Tarama erken durdu: istek sınırı&quot; bulgusu yazar. robots.txt'ye uyar; yalnızca aynı alan adındaki ve izin verilen bağlantıları kuyruğa alır. Site haritasını üç seviye derine kadar, en fazla 300 dosya okur. Kullanıcı aracısı &quot;seotracker-audit/1.0&quot; olarak görünür; güvenlik duvarınızda buna izin verirseniz &quot;engellendik&quot; uyarısı kalkar.</p>
+<p><strong>Hız ölçümü.</strong> Beşer sayfalık dalgalar halinde, dalga başına yaklaşık 50 saniye; 212 sayfalık bir sitede ölçülen gerçek süre 35 dakikaydı. Google'ın dakikalık sınırına takılırsa bekler ve yeniden dener; günlük kota biterse ölçüm durur, o ana kadarki sonuçlar kalır. Bulgular telefon ölçümünden üretilir. Eşikler: ana içerik 4 saniyeden geç (LCP), içerik kayması 0,25'ten çok (CLS), tıklamaya yanıt 500 milisaniyeden geç (INP), Lighthouse SEO puanı 90'ın altı.</p>
+<p><strong>Takılan denetim.</strong> 15 dakikadan uzun &quot;Sürüyor&quot; görünen bir denetimi uygulama kontrol eder; süreç yeniden başladıysa ya da 45 dakikadır nabız yoksa denetimi &quot;Başarısız&quot; olarak işaretler ve sebebini yazar. Panel, yedi günden eski denetimi &quot;bayat&quot; sayıp yenisini önerir.</p>
+<h2 id="sik-sorulanlar">Sık sorulanlar</h2>
+<p><strong>Denetim Google'ın gördüğünü mü gösteriyor?</strong> Hayır. Uygulamanın kendi tarayıcısı sayfayı açar ve HTML'e bakar. Google'ın cevabı <strong>Dizin durumu</strong> sekmesindedir.</p>
+<p><strong>Puan 98 ama hâlâ bulgu var, neden 100 değil?</strong> Tek bir bulgu bile puanı 99'da tutar. 100, hiç bulgusu olmayan sitedir.</p>
+<p><strong>Taranan sayfa sayısı site haritasından az.</strong> Sayfa sınırı dolmuş olabilir; &quot;Kaç sayfa taransın?&quot; değerini yükseltin. Ya da sayfalar birbirine bağlantı vermiyordur; tarayıcı yalnızca bağlantıları izler.</p>
+<p><strong>&quot;Engellendik&quot; uyarısı ne demek?</strong> Sitenizin bot koruması tarayıcıyı durdurmuş. Güvenlik duvarında &quot;seotracker-audit&quot; kullanıcı aracısına izin verin ya da taramayı sitenin IP'sinin tanıdığı bir ağdan yapın.</p>
+<p><strong>Hız ölçümü yarıda kaldı.</strong> Çoğu zaman PageSpeed anahtarı yoktur ya da Google günlük kotası bitmiştir. Ayarlar'daki kota kartı sebebini &quot;Kota doldu&quot;, &quot;Dakikalık sınır&quot; ya da &quot;Anahtar yok&quot; diye yazar.</p>
+<p><strong>Aynı anda kaç denetim çalışır?</strong> En fazla üç. İki denetim aynı anda hız ölçerse Google'ın dakikalık sınırını paylaşır ve ikisi de yavaşlar; sırayla çalıştırmak daha hızlıdır.</p>
+<h2 id="sinirlar">Sınırlar</h2>
+<p>Tarayıcı JavaScript'in sonradan ürettiği içeriği ve tek sayfa uygulamalarının istemci tarafı yönlendirmelerini görmeyebilir. Bir denetim en fazla 10.000 sayfa tarar. Hız ölçümü Google'ın laboratuvar ölçümüdür; gerçek kullanıcı verisi (CrUX) değildir. Denetim, sitenizde hiçbir şeyi değiştirmez; düzeltmeyi siz ya da ajanınız yaparsınız.</p>
+        <p class="meta">
+          Son güncelleme: 2026-10-22. Bir hata görürseniz
+          <a href="https://github.com/ucsahinn/seotracker/issues"
+            >GitHub'da bildirin</a
+          >.
+        </p>
+      </article>
+      <nav class="toc" aria-label="Bu sayfada"><p class="toc-label">Bu sayfada</p><ol><li><a href="#ekranda-neler-var">Ekranda neler var</a></li><li><a href="#nasil-kullanilir">Nasıl kullanılır</a></li><li><a href="#sayilar-nasil-hesaplanir">Sayılar nasıl hesaplanır</a></li><li><a href="#sik-sorulanlar">Sık sorulanlar</a></li><li><a href="#sinirlar">Sınırlar</a></li></ol></nav>
+    </div>
+    <footer>
+      <div class="wrap">
+        <span>seowatcher, MIT lisansı.</span>
+        <span
+          ><a href="/">Ana sayfa</a> &nbsp;
+          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"
+            >Sürüm notları</a
+          ></span
+        >
+      </div>
+    </footer>
+  </body>
+</html>

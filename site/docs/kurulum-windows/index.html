@@ -1,0 +1,579 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Windows'a kurulum | seowatcher belgeleri</title>
+    <meta name="description" content="Tek kurulum dosyasıyla kurma, ilk açılış, güncelleme, kaldırma, yedekleme ve port değiştirme. Docker, Node ya da terminal gerekmez." />
+    <meta name="robots" content="max-image-preview:large" />
+    <link rel="canonical" href="https://seowatcher.io/docs/kurulum-windows/" />
+    <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link
+      rel="icon"
+      href="/assets/favicon-48.png"
+      type="image/png"
+      sizes="48x48"
+    />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <link
+      rel="preload"
+      href="/assets/fonts/geist-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/assets/fonts/geist-latin-ext-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="seowatcher" />
+    <meta property="og:title" content="Windows'a kurulum" />
+    <meta property="og:description" content="Tek kurulum dosyasıyla kurma, ilk açılış, güncelleme, kaldırma, yedekleme ve port değiştirme. Docker, Node ya da terminal gerekmez." />
+    <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
+    <meta property="og:url" content="https://seowatcher.io/docs/kurulum-windows/" />
+    <meta property="og:locale" content="tr_TR" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="color-scheme" content="light dark" />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: light)"
+      content="#fdfdfe"
+    />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: dark)"
+      content="#1a1b20"
+    />
+    <style>
+      @font-face {
+        font-family: "Geist";
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(/assets/fonts/geist-latin-ext-wght-normal.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+          U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+          U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: "Geist";
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(/assets/fonts/geist-latin-wght-normal.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+          U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+          U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      :root {
+        --bg: oklch(99.5% 0.0015 265);
+        --bg-2: oklch(97.2% 0.003 265);
+        --fg: oklch(23% 0.012 265);
+        --muted: oklch(23% 0.012 265 / 0.8);
+        --subtle: oklch(23% 0.012 265 / 0.68);
+        --hairline: oklch(0% 0 0 / 0.08);
+        --hairline-strong: oklch(0% 0 0 / 0.14);
+        --accent: oklch(54% 0.17 256);
+        --accent-ink: oklch(100% 0 0);
+        --accent-link: oklch(42% 0.15 256);
+        --ease: cubic-bezier(0.32, 0.72, 0, 1);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: oklch(17.5% 0.005 265);
+          --bg-2: oklch(13.2% 0.005 265);
+          --fg: oklch(93% 0.004 265);
+          --muted: oklch(93% 0.004 265 / 0.7);
+          --subtle: oklch(93% 0.004 265 / 0.56);
+          --hairline: oklch(100% 0 0 / 0.09);
+          --hairline-strong: oklch(100% 0 0 / 0.16);
+          --accent: oklch(70% 0.15 256);
+          --accent-ink: oklch(16% 0.01 265);
+          --accent-link: oklch(80% 0.12 256);
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
+        scroll-padding-top: 76px;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: Geist, "Segoe UI", system-ui, sans-serif;
+        font-size: 17px;
+        line-height: 1.6;
+        font-variant-numeric: tabular-nums;
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+        border-radius: 4px;
+      }
+      .skip {
+        position: absolute;
+        left: 16px;
+        top: -48px;
+        z-index: 5;
+        background: var(--accent);
+        color: var(--accent-ink);
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-weight: 600;
+      }
+      .skip:focus {
+        top: 12px;
+      }
+      .wrap {
+        width: min(1160px, 100% - 40px);
+        margin-inline: auto;
+      }
+      @media (max-width: 640px) {
+        .wrap {
+          width: calc(100% - 32px);
+        }
+      }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: color-mix(in oklab, var(--bg) 82%, transparent);
+        backdrop-filter: blur(14px) saturate(1.3);
+        -webkit-backdrop-filter: blur(14px) saturate(1.3);
+        border-bottom: 1px solid var(--hairline);
+      }
+      header .wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 60px;
+        gap: 16px;
+      }
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 600;
+        font-size: 17px;
+        letter-spacing: -0.01em;
+      }
+      .brand img {
+        width: 26px;
+        height: 26px;
+        border-radius: 7px;
+      }
+      .brand span {
+        color: var(--subtle);
+        font-weight: 500;
+      }
+      .topnav {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        font-size: 15px;
+        color: var(--muted);
+      }
+      .topnav a:hover {
+        color: var(--fg);
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        min-height: 36px;
+        padding: 0 14px;
+        border-radius: 999px;
+        font-weight: 560;
+        font-size: 14px;
+        background: var(--accent);
+        color: var(--accent-ink);
+        white-space: nowrap;
+        transition:
+          transform 320ms var(--ease),
+          filter 320ms var(--ease);
+      }
+      .btn:hover {
+        filter: saturate(1.06) brightness(1.05);
+        transform: translateY(-1px);
+      }
+      .btn:active {
+        transform: scale(0.98);
+      }
+      @media (max-width: 720px) {
+        .topnav .hide {
+          display: none;
+        }
+        .topnav {
+          gap: 14px;
+        }
+        .brand span {
+          display: none;
+        }
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 240px minmax(0, 1fr) 200px;
+        gap: clamp(32px, 4vw, 64px);
+        padding: 40px 0 96px;
+      }
+      .side {
+        position: sticky;
+        top: 84px;
+        align-self: start;
+        font-size: 15px;
+      }
+      .nav-group {
+        margin: 22px 0 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--subtle);
+      }
+      .nav-group:first-child {
+        margin-top: 0;
+      }
+      .side ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 2px;
+      }
+      .side li a {
+        display: block;
+        padding: 6px 10px;
+        margin-left: -10px;
+        border-radius: 8px;
+        color: var(--muted);
+        transition:
+          background-color 240ms var(--ease),
+          color 240ms var(--ease);
+      }
+      .side li a:hover {
+        background: var(--bg-2);
+        color: var(--fg);
+      }
+      .side li.current a {
+        background: var(--bg-2);
+        color: var(--fg);
+        font-weight: 600;
+      }
+      .toc {
+        position: sticky;
+        top: 84px;
+        align-self: start;
+        font-size: 14px;
+      }
+      .toc-label {
+        margin: 0 0 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--subtle);
+      }
+      .toc ol {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 6px;
+        border-left: 1px solid var(--hairline);
+      }
+      .toc a {
+        display: block;
+        padding-left: 12px;
+        color: var(--muted);
+      }
+      .toc a:hover {
+        color: var(--fg);
+      }
+      @media (max-width: 1100px) {
+        .layout {
+          grid-template-columns: 220px minmax(0, 1fr);
+        }
+        .toc {
+          display: none;
+        }
+      }
+      @media (max-width: 800px) {
+        .layout {
+          grid-template-columns: minmax(0, 1fr);
+          gap: 24px;
+        }
+        .side {
+          position: static;
+          border-bottom: 1px solid var(--hairline);
+          padding-bottom: 20px;
+        }
+      }
+
+      article {
+        max-width: 68ch;
+      }
+      article h1 {
+        font-size: clamp(30px, 4vw, 42px);
+        line-height: 1.08;
+        letter-spacing: -0.028em;
+        font-weight: 600;
+        margin: 0 0 14px;
+        text-wrap: balance;
+      }
+      article .lede {
+        font-size: 19px;
+        color: var(--muted);
+        margin: 0 0 32px;
+        text-wrap: pretty;
+      }
+      article h2 {
+        font-size: 24px;
+        letter-spacing: -0.02em;
+        margin: 44px 0 12px;
+        text-wrap: balance;
+      }
+      article h3 {
+        font-size: 18px;
+        letter-spacing: -0.012em;
+        margin: 28px 0 8px;
+      }
+      article p,
+      article li {
+        color: var(--muted);
+      }
+      article p {
+        margin: 0 0 16px;
+        text-wrap: pretty;
+      }
+      article strong {
+        color: var(--fg);
+        font-weight: 600;
+      }
+      article ul,
+      article ol {
+        margin: 0 0 18px;
+        padding-left: 22px;
+      }
+      article li {
+        margin: 0 0 8px;
+      }
+      article li::marker {
+        color: var(--subtle);
+      }
+      article a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      article a:hover {
+        text-decoration-color: var(--accent-link);
+      }
+      article code {
+        font-family: ui-monospace, Consolas, Menlo, monospace;
+        font-size: 0.9em;
+        background: var(--bg-2);
+        border: 1px solid var(--hairline);
+        padding: 1px 6px;
+        border-radius: 6px;
+        color: var(--fg);
+      }
+      article pre {
+        background: var(--bg-2);
+        border: 1px solid var(--hairline);
+        border-radius: 12px;
+        padding: 14px 16px;
+        overflow-x: auto;
+        margin: 0 0 18px;
+        font-size: 14.5px;
+        line-height: 1.5;
+      }
+      article pre code {
+        background: none;
+        border: 0;
+        padding: 0;
+      }
+      article blockquote {
+        margin: 0 0 18px;
+        padding: 2px 0 2px 18px;
+        border-left: 2px solid var(--accent);
+      }
+      article .tw {
+        overflow-x: auto;
+        margin: 0 0 22px;
+      }
+      article table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 15px;
+        min-width: 480px;
+      }
+      article th {
+        text-align: left;
+        font-weight: 600;
+        color: var(--fg);
+        padding: 0 16px 10px 0;
+        border-bottom: 1px solid var(--hairline-strong);
+        white-space: nowrap;
+      }
+      article td {
+        padding: 10px 16px 10px 0;
+        border-bottom: 1px solid var(--hairline);
+        vertical-align: top;
+        color: var(--muted);
+      }
+      article td:first-child {
+        color: var(--fg);
+      }
+      article .meta {
+        margin-top: 48px;
+        padding-top: 18px;
+        border-top: 1px solid var(--hairline);
+        font-size: 14px;
+        color: var(--subtle);
+      }
+      ul.index {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 24px;
+        display: grid;
+        gap: 10px;
+      }
+      ul.index li {
+        display: grid;
+        gap: 2px;
+        padding: 12px 0;
+        border-top: 1px solid var(--hairline);
+      }
+      ul.index li a {
+        font-weight: 600;
+        color: var(--fg);
+        text-decoration: none;
+      }
+      ul.index li a:hover {
+        text-decoration: underline;
+      }
+      ul.index li span {
+        color: var(--muted);
+        font-size: 15.5px;
+      }
+      footer {
+        padding: 32px 0 56px;
+        font-size: 14.5px;
+        color: var(--muted);
+        border-top: 1px solid var(--hairline);
+      }
+      footer .wrap {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 12px 32px;
+      }
+      footer a:hover {
+        color: var(--fg);
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip" href="#icerik">İçeriğe geç</a>
+    <header>
+      <div class="wrap">
+        <a class="brand" href="/"
+          ><img
+            src="/assets/icon-256.png"
+            alt=""
+            width="26"
+            height="26"
+          />seowatcher <span>belgeler</span></a
+        >
+        <nav class="topnav" aria-label="Site">
+          <a class="hide" href="/#ekranlar">Ekranlar</a>
+          <a class="hide" href="/docs/">Belgeler</a>
+          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+            >GitHub</a
+          >
+          <a
+            class="btn"
+            href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            >Windows için indir</a
+          >
+        </nav>
+      </div>
+    </header>
+    <div class="wrap layout">
+      <aside class="side" aria-label="Belgeler"><p class="nav-group">Başlangıç</p><ul><li class="current" aria-current="page"><a href="/docs/kurulum-windows/">Windows'a kurulum</a></li><li><a href="/docs/kurulum-docker/">Docker ile kurulum</a></li><li><a href="/docs/google-baglantisi/">Google'a bağlanma</a></li><li><a href="/docs/pagespeed-anahtari/">PageSpeed anahtarı</a></li></ul><p class="nav-group">Ekranlar</p><ul><li><a href="/docs/panel/">Panel</a></li><li><a href="/docs/arama-performansi/">Arama performansı</a></li><li><a href="/docs/siralama-takibi/">Sıralama takibi</a></li><li><a href="/docs/firsatlar/">Fırsatlar</a></li><li><a href="/docs/kayitli-kelimeler/">Kayıtlı kelimeler</a></li><li><a href="/docs/analytics/">Analytics</a></li><li><a href="/docs/site-denetimi/">Site denetimi</a></li><li><a href="/docs/dizin-durumu/">Dizin durumu</a></li><li><a href="/docs/raporlar/">Raporlar ve şablonlar</a></li><li><a href="/docs/proje-bilgisi/">Proje bilgisi</a></li><li><a href="/docs/ayarlar/">Ayarlar</a></li></ul><p class="nav-group">Başvuru</p><ul><li><a href="/docs/denetim-kurallari/">Denetim kuralları</a></li><li><a href="/docs/ajan-kurulumu/">Ajan kurulumu</a></li><li><a href="/docs/sorun-giderme/">Sorun giderme</a></li></ul></aside>
+      <article id="icerik">
+        <h1>Windows'a kurulum</h1><p class="lede">Tek kurulum dosyasıyla kurma, ilk açılış, güncelleme, kaldırma, yedekleme ve port değiştirme. Docker, Node ya da terminal gerekmez.</p><p>Bu sayfanın sonunda uygulama bilgisayarınızda kurulu, görev çubuğunda simgesi var ve tarayıcıda açık olacak. Kurulum iki dakika sürer; Google bağlantısı ayrı bir kılavuzdur. Kurulum dosyası uygulamayı yalnızca sizin kullanıcı hesabınıza kurar, yönetici şifresi istemez ve bilgisayarınızın geri kalanına dokunmaz.</p>
+<h2 id="gerekenler">Gerekenler</h2>
+<ul><li>Windows 10 ya da 11, 64 bit.</li><li>Yaklaşık 300 MB boş disk alanı (kurulum dosyası 61 MB, kurulu hali 266 MB).</li><li>Bir internet tarayıcısı (Edge, Chrome, Firefox fark etmez).</li><li>Docker, Node, terminal ya da yönetici hakkı gerekmez.</li></ul>
+<h2 id="adimlar">Adımlar</h2>
+<h3 id="i-lk-kurulum">İlk kurulum</h3>
+<ol><li>GitHub'daki sürüm sayfasından <strong>seowatcher-setup.exe</strong> dosyasını indirin. Sabit adres: github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe</li><li>Dosyayı çalıştırın. Windows &quot;Windows bilgisayarınızı korudu&quot; uyarısı verirse <strong>Daha fazla bilgi</strong>, sonra <strong>Yine de çalıştır</strong> deyin. Dosya henüz kod imzalı olmadığı için bu uyarı normaldir; isterseniz dosyanın SHA-256 özetini sürüm sayfasındaki SHA256SUMS.txt ile karşılaştırın.</li><li>Kurulum sihirbazı dil olarak Türkçe'yi seçer. İki seçenek sorar: <strong>Windows açılınca seowatcher'ı başlat</strong> (işaretli gelir; açılışta arka planda başlasın istemiyorsanız kaldırın) ve <strong>Masaüstüne kısayol ekle</strong>.</li><li><strong>Kur</strong> deyin. Dosyalar kullanıcı klasörünüze (Programs altına) kopyalanır. Son ekranda <strong>seowatcher'ı şimdi başlat</strong> işaretlidir; <strong>Son</strong> deyince uygulama açılır.</li><li>İlk açılış 20-30 saniye sürer: görev çubuğunun sağındaki simgenin açıklaması sırayla &quot;Anahtarlar hazırlanıyor&quot;, &quot;Veritabanı güncelleniyor&quot;, &quot;Sunucu başlatılıyor&quot; olur. Bitince tarayıcınızda <strong>http://127.0.0.1:3001</strong> kendiliğinden açılır.</li><li>Açılan sayfa uygulamanın kendisidir. Sonraki adım Google bağlantısı: Google bağlantısı kılavuzuna geçin.</li></ol>
+<h3 id="gorev-cubugu-menusu">Görev çubuğu menüsü</h3>
+<p>Simgeye sağ tıklayınca şu menü açılır:</p>
+<ul><li><strong>seowatcher'ı aç</strong>: tarayıcıda uygulamayı açar. Simgeye çift tıklamak da aynı işi yapar.</li><li>Durum satırı: &quot;Çalışıyor: http://127.0.0.1:3001/&quot; ya da bir hata mesajı.</li><li><strong>Yeniden başlat</strong>: sunucuyu kapatıp yeniden açar; bir şey takıldığında ilk deneyeceğiniz şey.</li><li><strong>Günlükleri aç</strong>: günlük klasörünü açar (server.log ve migrate.log).</li><li><strong>Veri klasörünü aç</strong>: veritabanının ve anahtarların durduğu klasörü açar.</li><li><strong>Windows ile başlat</strong>: işaretliyse oturum açıldığında uygulama arka planda başlar ve tarayıcı açmaz.</li><li>Sürüm numarası.</li><li><strong>Çıkış</strong>: sunucuyu ve tüm alt süreçlerini kapatır. Uygulama kapalıyken tarayıcıdaki sayfa çalışmaz.</li></ul>
+<p>Uygulamayı ikinci kez başlatırsanız yeni bir kopya açılmaz; yalnızca tarayıcıda sayfa açılır.</p>
+<h3 id="guncelleme">Güncelleme</h3>
+<ol><li>Yeni sürümü aynı adresten indirin. Uygulama içindeki <strong>Ayarlar → Hakkında</strong> bölümü yeni sürüm çıktığında &quot;X yayımlandı.&quot; diye haber verir.</li><li>Kurulum dosyasını çalıştırın. Sihirbaz çalışan uygulamayı kendisi kapatır, dosyaları değiştirir ve yeniden başlatır.</li><li>Veriniz, Google bağlantınız ve ayarlarınız olduğu gibi kalır; hepsi kurulum klasörünün dışında, veri klasöründe durur.</li></ol>
+<h3 id="kaldirma">Kaldırma</h3>
+<ol><li>Windows <strong>Ayarlar → Uygulamalar → Yüklü uygulamalar</strong> listesinde <strong>seowatcher</strong>'ı bulun ve <strong>Kaldır</strong> deyin.</li><li>Kaldırıcı önce çalışan uygulamayı kapatır, sonra program dosyalarını, başlat menüsü kısayolunu ve &quot;Windows ile başlat&quot; kaydını siler.</li><li>Veri klasörüne dokunmaz. Veritabanınızı, Google bağlantınızı ve raporlarınızı silmek istiyorsanız veri klasörünü kendiniz silin (aşağıda).</li></ol>
+<h3 id="yedekleme-ve-geri-yukleme">Yedekleme ve geri yükleme</h3>
+<p>Her şey tek klasördedir: <strong>%LOCALAPPDATA%\seowatcher</strong>. Dosya Gezgini'nin adres çubuğuna bu adresi yazınca açılır; görev çubuğu menüsündeki <strong>Veri klasörünü aç</strong> da oraya gider. İçinde:</p>
+<ul><li>\<em>\</em>data\<em>\</em>: veritabanı (projeler, Search Console arşivi, denetimler, raporlar) ve diğer uygulama durumu.</li><li><strong>instance-secret</strong>: Google erişim anahtarlarını şifreleyen anahtar. Bu dosya kaybolursa Google bağlantılarını yeniden kurmanız gerekir.</li><li><strong>mcp-token</strong>: yapay zekâ asistanınızın uygulamaya bağlanırken kullandığı parola.</li><li><strong>server.env</strong>, <strong>config.json</strong>, \<em>\</em>logs\<em>\</em>.</li></ul>
+<p>Yedek almak için uygulamayı <strong>Çıkış</strong> ile kapatın ve klasörün tamamını kopyalayın. Geri yüklemek için uygulamayı kapatın, klasörü yerine koyun, uygulamayı başlatın. Başka bir bilgisayara taşırken de aynı yöntem çalışır; &quot;instance-secret&quot; dosyasını birlikte taşıdığınız sürece Google bağlantıları çalışmaya devam eder.</p>
+<h3 id="portu-degistirme">Portu değiştirme</h3>
+<p>Uygulama 3001 portunu kullanır. Başka bir program o portu tutuyorsa uygulama kendiliğinden 3002'den 3010'a kadar boş ilk portu seçer ve bunu <strong>config.json</strong> dosyasına yazar; tarayıcıda açılan adres de ona göre değişir. Belirli bir port istiyorsanız uygulamayı kapatın, veri klasöründeki config.json dosyasını Not Defteri ile açın ve şöyle yazın:</p>
+<pre><code>{
+  &quot;port&quot;: 3005
+}</code></pre>
+<p>Kaydedip uygulamayı başlatın. Port değişince Google OAuth yönlendirme adreslerini de (Google bağlantısı kılavuzundaki iki adres) yeni portla güncellemeniz gerekir.</p>
+<h2 id="kontrol">Kontrol</h2>
+<ul><li>Görev çubuğu simgesinin üzerine gelince &quot;seowatcher: Çalışıyor: http://127.0.0.1:3001/&quot; yazmalı.</li><li>Tarayıcıda http://127.0.0.1:3001/api/health adresi &quot;status&quot;:&quot;ok&quot; ile başlayan bir metin göstermeli.</li><li>Uygulama içinde <strong>Yardım</strong> ekranındaki &quot;Kurulumunuzun durumu&quot; kartı &quot;Her şey yolunda.&quot; demeli; Google bağlanmadan önce &quot;Google girişi&quot; satırı dikkat ister, bu normaldir.</li></ul>
+<h2 id="sik-sorulanlar">Sık sorulanlar</h2>
+<p><strong>Uygulama neden tarayıcıda açılıyor, kendi penceresi yok mu?</strong> Uygulama bilgisayarınızda küçük bir sunucu olarak çalışır; arayüzü tarayıcıdır. Bu sayede telefonunuzdan değil ama aynı bilgisayardaki her tarayıcıdan açabilirsiniz.</p>
+<p><strong>Bilgisayarı kapatınca ne olur?</strong> Uygulama da kapanır. &quot;Windows ile başlat&quot; işaretliyse bir sonraki açılışta arka planda başlar.</p>
+<p><strong>Başka bilgisayardan erişebilir miyim?</strong> Hayır, bilerek. Uygulama yalnızca 127.0.0.1 adresini dinler; internete ya da ağa açmak için önüne kendi kimlik doğrulamanızı koymanız gerekir ve bu paketin konusu değildir.</p>
+<p><strong>Docker sürümünden bu sürüme geçebilir miyim?</strong> Evet ama veri otomatik taşınmaz. Projelerinizi yeniden oluşturup Google'ı yeniden bağlamanız gerekir; Search Console arşivi ilk açılışta yeniden dolar.</p>
+<p><strong>Antivirüs uyarı verdi.</strong> Dosya imzasız olduğu için bazı antivirüsler tanımadıkları her yeni yürütülebilir dosyaya uyarı verir. Dosyayı yalnızca GitHub sürüm sayfasından indirin ve SHA-256 özetini karşılaştırın.</p>
+<h2 id="sorun-cikarsa">Sorun çıkarsa</h2>
+<ul><li><strong>Simge &quot;Hata: Port 3001 ve sonraki 9 port dolu&quot; diyor.</strong> Bir başka program bu portları tutuyor. config.json'a başka bir port yazın.</li><li><strong>Simge &quot;Veritabanı güncellemesi başarısız&quot; diyor.</strong> <strong>Günlükleri aç</strong> deyip migrate.log dosyasının son satırlarına bakın; çoğu zaman disk dolu ya da klasör salt okunurdur.</li><li><strong>Simge &quot;Sunucu beklenmedik şekilde kapandı&quot; diyor.</strong> server.log'un son satırları sebebi yazar. <strong>Yeniden başlat</strong> deneyin; düzelmezse günlüğü GitHub'da bir sorun kaydıyla paylaşın.</li><li><strong>Tarayıcı açılmadı.</strong> Simgeye çift tıklayın ya da adresi elle yazın: http://127.0.0.1:3001</li><li><strong>&quot;Windows bilgisayarınızı korudu&quot; ekranından geçemiyorum.</strong> Ekranda <strong>Daha fazla bilgi</strong> yazısına tıklayınca <strong>Yine de çalıştır</strong> düğmesi belirir.</li></ul>
+        <p class="meta">
+          Son güncelleme: 2026-10-22. Bir hata görürseniz
+          <a href="https://github.com/ucsahinn/seotracker/issues"
+            >GitHub'da bildirin</a
+          >.
+        </p>
+      </article>
+      <nav class="toc" aria-label="Bu sayfada"><p class="toc-label">Bu sayfada</p><ol><li><a href="#gerekenler">Gerekenler</a></li><li><a href="#adimlar">Adımlar</a></li><li><a href="#kontrol">Kontrol</a></li><li><a href="#sik-sorulanlar">Sık sorulanlar</a></li><li><a href="#sorun-cikarsa">Sorun çıkarsa</a></li></ol></nav>
+    </div>
+    <footer>
+      <div class="wrap">
+        <span>seowatcher, MIT lisansı.</span>
+        <span
+          ><a href="/">Ana sayfa</a> &nbsp;
+          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"
+            >Sürüm notları</a
+          ></span
+        >
+      </div>
+    </footer>
+  </body>
+</html>

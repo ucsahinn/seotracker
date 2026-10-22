@@ -1,0 +1,612 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sorun giderme | seowatcher belgeleri</title>
+    <meta name="description" content="En sık karşılaşılan on beş sorun, belirtisi, sebebi ve çözümüyle. Port dolu, SmartScreen, Google bağlantı hataları, kota, takılan denetim, boş grafikler, MCP 401." />
+    <meta name="robots" content="max-image-preview:large" />
+    <link rel="canonical" href="https://seowatcher.io/docs/sorun-giderme/" />
+    <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link
+      rel="icon"
+      href="/assets/favicon-48.png"
+      type="image/png"
+      sizes="48x48"
+    />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <link
+      rel="preload"
+      href="/assets/fonts/geist-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/assets/fonts/geist-latin-ext-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="seowatcher" />
+    <meta property="og:title" content="Sorun giderme" />
+    <meta property="og:description" content="En sık karşılaşılan on beş sorun, belirtisi, sebebi ve çözümüyle. Port dolu, SmartScreen, Google bağlantı hataları, kota, takılan denetim, boş grafikler, MCP 401." />
+    <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
+    <meta property="og:url" content="https://seowatcher.io/docs/sorun-giderme/" />
+    <meta property="og:locale" content="tr_TR" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="color-scheme" content="light dark" />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: light)"
+      content="#fdfdfe"
+    />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: dark)"
+      content="#1a1b20"
+    />
+    <style>
+      @font-face {
+        font-family: "Geist";
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(/assets/fonts/geist-latin-ext-wght-normal.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+          U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+          U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: "Geist";
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(/assets/fonts/geist-latin-wght-normal.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+          U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+          U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      :root {
+        --bg: oklch(99.5% 0.0015 265);
+        --bg-2: oklch(97.2% 0.003 265);
+        --fg: oklch(23% 0.012 265);
+        --muted: oklch(23% 0.012 265 / 0.8);
+        --subtle: oklch(23% 0.012 265 / 0.68);
+        --hairline: oklch(0% 0 0 / 0.08);
+        --hairline-strong: oklch(0% 0 0 / 0.14);
+        --accent: oklch(54% 0.17 256);
+        --accent-ink: oklch(100% 0 0);
+        --accent-link: oklch(42% 0.15 256);
+        --ease: cubic-bezier(0.32, 0.72, 0, 1);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: oklch(17.5% 0.005 265);
+          --bg-2: oklch(13.2% 0.005 265);
+          --fg: oklch(93% 0.004 265);
+          --muted: oklch(93% 0.004 265 / 0.7);
+          --subtle: oklch(93% 0.004 265 / 0.56);
+          --hairline: oklch(100% 0 0 / 0.09);
+          --hairline-strong: oklch(100% 0 0 / 0.16);
+          --accent: oklch(70% 0.15 256);
+          --accent-ink: oklch(16% 0.01 265);
+          --accent-link: oklch(80% 0.12 256);
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
+        scroll-padding-top: 76px;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: Geist, "Segoe UI", system-ui, sans-serif;
+        font-size: 17px;
+        line-height: 1.6;
+        font-variant-numeric: tabular-nums;
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+        border-radius: 4px;
+      }
+      .skip {
+        position: absolute;
+        left: 16px;
+        top: -48px;
+        z-index: 5;
+        background: var(--accent);
+        color: var(--accent-ink);
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-weight: 600;
+      }
+      .skip:focus {
+        top: 12px;
+      }
+      .wrap {
+        width: min(1160px, 100% - 40px);
+        margin-inline: auto;
+      }
+      @media (max-width: 640px) {
+        .wrap {
+          width: calc(100% - 32px);
+        }
+      }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: color-mix(in oklab, var(--bg) 82%, transparent);
+        backdrop-filter: blur(14px) saturate(1.3);
+        -webkit-backdrop-filter: blur(14px) saturate(1.3);
+        border-bottom: 1px solid var(--hairline);
+      }
+      header .wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 60px;
+        gap: 16px;
+      }
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 600;
+        font-size: 17px;
+        letter-spacing: -0.01em;
+      }
+      .brand img {
+        width: 26px;
+        height: 26px;
+        border-radius: 7px;
+      }
+      .brand span {
+        color: var(--subtle);
+        font-weight: 500;
+      }
+      .topnav {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        font-size: 15px;
+        color: var(--muted);
+      }
+      .topnav a:hover {
+        color: var(--fg);
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        min-height: 36px;
+        padding: 0 14px;
+        border-radius: 999px;
+        font-weight: 560;
+        font-size: 14px;
+        background: var(--accent);
+        color: var(--accent-ink);
+        white-space: nowrap;
+        transition:
+          transform 320ms var(--ease),
+          filter 320ms var(--ease);
+      }
+      .btn:hover {
+        filter: saturate(1.06) brightness(1.05);
+        transform: translateY(-1px);
+      }
+      .btn:active {
+        transform: scale(0.98);
+      }
+      @media (max-width: 720px) {
+        .topnav .hide {
+          display: none;
+        }
+        .topnav {
+          gap: 14px;
+        }
+        .brand span {
+          display: none;
+        }
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 240px minmax(0, 1fr) 200px;
+        gap: clamp(32px, 4vw, 64px);
+        padding: 40px 0 96px;
+      }
+      .side {
+        position: sticky;
+        top: 84px;
+        align-self: start;
+        font-size: 15px;
+      }
+      .nav-group {
+        margin: 22px 0 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--subtle);
+      }
+      .nav-group:first-child {
+        margin-top: 0;
+      }
+      .side ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 2px;
+      }
+      .side li a {
+        display: block;
+        padding: 6px 10px;
+        margin-left: -10px;
+        border-radius: 8px;
+        color: var(--muted);
+        transition:
+          background-color 240ms var(--ease),
+          color 240ms var(--ease);
+      }
+      .side li a:hover {
+        background: var(--bg-2);
+        color: var(--fg);
+      }
+      .side li.current a {
+        background: var(--bg-2);
+        color: var(--fg);
+        font-weight: 600;
+      }
+      .toc {
+        position: sticky;
+        top: 84px;
+        align-self: start;
+        font-size: 14px;
+      }
+      .toc-label {
+        margin: 0 0 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--subtle);
+      }
+      .toc ol {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 6px;
+        border-left: 1px solid var(--hairline);
+      }
+      .toc a {
+        display: block;
+        padding-left: 12px;
+        color: var(--muted);
+      }
+      .toc a:hover {
+        color: var(--fg);
+      }
+      @media (max-width: 1100px) {
+        .layout {
+          grid-template-columns: 220px minmax(0, 1fr);
+        }
+        .toc {
+          display: none;
+        }
+      }
+      @media (max-width: 800px) {
+        .layout {
+          grid-template-columns: minmax(0, 1fr);
+          gap: 24px;
+        }
+        .side {
+          position: static;
+          border-bottom: 1px solid var(--hairline);
+          padding-bottom: 20px;
+        }
+      }
+
+      article {
+        max-width: 68ch;
+      }
+      article h1 {
+        font-size: clamp(30px, 4vw, 42px);
+        line-height: 1.08;
+        letter-spacing: -0.028em;
+        font-weight: 600;
+        margin: 0 0 14px;
+        text-wrap: balance;
+      }
+      article .lede {
+        font-size: 19px;
+        color: var(--muted);
+        margin: 0 0 32px;
+        text-wrap: pretty;
+      }
+      article h2 {
+        font-size: 24px;
+        letter-spacing: -0.02em;
+        margin: 44px 0 12px;
+        text-wrap: balance;
+      }
+      article h3 {
+        font-size: 18px;
+        letter-spacing: -0.012em;
+        margin: 28px 0 8px;
+      }
+      article p,
+      article li {
+        color: var(--muted);
+      }
+      article p {
+        margin: 0 0 16px;
+        text-wrap: pretty;
+      }
+      article strong {
+        color: var(--fg);
+        font-weight: 600;
+      }
+      article ul,
+      article ol {
+        margin: 0 0 18px;
+        padding-left: 22px;
+      }
+      article li {
+        margin: 0 0 8px;
+      }
+      article li::marker {
+        color: var(--subtle);
+      }
+      article a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      article a:hover {
+        text-decoration-color: var(--accent-link);
+      }
+      article code {
+        font-family: ui-monospace, Consolas, Menlo, monospace;
+        font-size: 0.9em;
+        background: var(--bg-2);
+        border: 1px solid var(--hairline);
+        padding: 1px 6px;
+        border-radius: 6px;
+        color: var(--fg);
+      }
+      article pre {
+        background: var(--bg-2);
+        border: 1px solid var(--hairline);
+        border-radius: 12px;
+        padding: 14px 16px;
+        overflow-x: auto;
+        margin: 0 0 18px;
+        font-size: 14.5px;
+        line-height: 1.5;
+      }
+      article pre code {
+        background: none;
+        border: 0;
+        padding: 0;
+      }
+      article blockquote {
+        margin: 0 0 18px;
+        padding: 2px 0 2px 18px;
+        border-left: 2px solid var(--accent);
+      }
+      article .tw {
+        overflow-x: auto;
+        margin: 0 0 22px;
+      }
+      article table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 15px;
+        min-width: 480px;
+      }
+      article th {
+        text-align: left;
+        font-weight: 600;
+        color: var(--fg);
+        padding: 0 16px 10px 0;
+        border-bottom: 1px solid var(--hairline-strong);
+        white-space: nowrap;
+      }
+      article td {
+        padding: 10px 16px 10px 0;
+        border-bottom: 1px solid var(--hairline);
+        vertical-align: top;
+        color: var(--muted);
+      }
+      article td:first-child {
+        color: var(--fg);
+      }
+      article .meta {
+        margin-top: 48px;
+        padding-top: 18px;
+        border-top: 1px solid var(--hairline);
+        font-size: 14px;
+        color: var(--subtle);
+      }
+      ul.index {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 24px;
+        display: grid;
+        gap: 10px;
+      }
+      ul.index li {
+        display: grid;
+        gap: 2px;
+        padding: 12px 0;
+        border-top: 1px solid var(--hairline);
+      }
+      ul.index li a {
+        font-weight: 600;
+        color: var(--fg);
+        text-decoration: none;
+      }
+      ul.index li a:hover {
+        text-decoration: underline;
+      }
+      ul.index li span {
+        color: var(--muted);
+        font-size: 15.5px;
+      }
+      footer {
+        padding: 32px 0 56px;
+        font-size: 14.5px;
+        color: var(--muted);
+        border-top: 1px solid var(--hairline);
+      }
+      footer .wrap {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 12px 32px;
+      }
+      footer a:hover {
+        color: var(--fg);
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip" href="#icerik">İçeriğe geç</a>
+    <header>
+      <div class="wrap">
+        <a class="brand" href="/"
+          ><img
+            src="/assets/icon-256.png"
+            alt=""
+            width="26"
+            height="26"
+          />seowatcher <span>belgeler</span></a
+        >
+        <nav class="topnav" aria-label="Site">
+          <a class="hide" href="/#ekranlar">Ekranlar</a>
+          <a class="hide" href="/docs/">Belgeler</a>
+          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+            >GitHub</a
+          >
+          <a
+            class="btn"
+            href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            >Windows için indir</a
+          >
+        </nav>
+      </div>
+    </header>
+    <div class="wrap layout">
+      <aside class="side" aria-label="Belgeler"><p class="nav-group">Başlangıç</p><ul><li><a href="/docs/kurulum-windows/">Windows'a kurulum</a></li><li><a href="/docs/kurulum-docker/">Docker ile kurulum</a></li><li><a href="/docs/google-baglantisi/">Google'a bağlanma</a></li><li><a href="/docs/pagespeed-anahtari/">PageSpeed anahtarı</a></li></ul><p class="nav-group">Ekranlar</p><ul><li><a href="/docs/panel/">Panel</a></li><li><a href="/docs/arama-performansi/">Arama performansı</a></li><li><a href="/docs/siralama-takibi/">Sıralama takibi</a></li><li><a href="/docs/firsatlar/">Fırsatlar</a></li><li><a href="/docs/kayitli-kelimeler/">Kayıtlı kelimeler</a></li><li><a href="/docs/analytics/">Analytics</a></li><li><a href="/docs/site-denetimi/">Site denetimi</a></li><li><a href="/docs/dizin-durumu/">Dizin durumu</a></li><li><a href="/docs/raporlar/">Raporlar ve şablonlar</a></li><li><a href="/docs/proje-bilgisi/">Proje bilgisi</a></li><li><a href="/docs/ayarlar/">Ayarlar</a></li></ul><p class="nav-group">Başvuru</p><ul><li><a href="/docs/denetim-kurallari/">Denetim kuralları</a></li><li><a href="/docs/ajan-kurulumu/">Ajan kurulumu</a></li><li class="current" aria-current="page"><a href="/docs/sorun-giderme/">Sorun giderme</a></li></ul></aside>
+      <article id="icerik">
+        <h1>Sorun giderme</h1><p class="lede">En sık karşılaşılan on beş sorun, belirtisi, sebebi ve çözümüyle. Port dolu, SmartScreen, Google bağlantı hataları, kota, takılan denetim, boş grafikler, MCP 401.</p><p>Bir şey çalışmıyorsa önce uygulamanın <strong>Yardım</strong> ekranındaki &quot;Kurulumunuzun durumu&quot; kartına bakın; beş kontrol yapar (giriş ve erişim, Google girişi, PageSpeed anahtarı, çalışma ortamı, veritabanı) ve &quot;N şey dikkat istiyor&quot; diyorsa yanındaki düğme sizi doğru ayara götürür. Aşağıdaki liste en sık görülenden en nadire doğru sıralıdır.</p>
+<h3 id="sayfa-acilmiyor">Sayfa açılmıyor</h3>
+<p><strong>Belirti:</strong> Tarayıcı &quot;bağlantı reddedildi&quot; diyor.</p>
+<p><strong>Neden:</strong> Uygulama çalışmıyor.</p>
+<p><strong>Çözüm:</strong> Windows paketinde görev çubuğundaki simgeye bakın; yoksa Başlat menüsünden seowatcher'ı açın. Simge var ama &quot;Hata&quot; yazıyorsa sağ tıklayıp <strong>Yeniden başlat</strong> deyin. Docker'da <code>docker compose ps</code> ile durumun healthy olduğunu kontrol edin; değilse <code>docker compose up -d</code>.</p>
+<h3 id="port-dolu">Port dolu</h3>
+<p><strong>Belirti:</strong> Windows'ta simge &quot;Port 3001 ve sonraki 9 port dolu&quot; diyor; Docker'da &quot;Bind for 127.0.0.1:3001 failed&quot;.</p>
+<p><strong>Neden:</strong> Başka bir program aynı portu dinliyor.</p>
+<p><strong>Çözüm:</strong> Windows paketi normalde 3002'den 3010'a kadar boş bir port seçer; hepsi doluysa veri klasöründeki config.json'a başka bir port yazın. Docker'da PORT=3002 satırlı bir .env koyup <code>docker compose up -d --force-recreate seotracker</code>. Port değişince Google yönlendirme adreslerini de güncelleyin.</p>
+<h3 id="windows-bilgisayarinizi-korudu-diyor">Windows &quot;bilgisayarınızı korudu&quot; diyor</h3>
+<p><strong>Belirti:</strong> Kurulum dosyası açılmıyor, mavi SmartScreen ekranı.</p>
+<p><strong>Neden:</strong> Dosya kod imzalı değil; Windows tanımadığı yayıncılara bunu gösterir.</p>
+<p><strong>Çözüm:</strong> Ekranda <strong>Daha fazla bilgi</strong> yazısına tıklayın, <strong>Yine de çalıştır</strong> düğmesi belirir. Endişeniz varsa dosyanın SHA-256 özetini sürüm sayfasındaki SHA256SUMS.txt ile karşılaştırın.</p>
+<h3 id="google-redirect-uri-mismatch-diyor">Google &quot;redirect_uri_mismatch&quot; diyor</h3>
+<p><strong>Belirti:</strong> <strong>Bağlan</strong> deyince Google hata sayfası gösteriyor.</p>
+<p><strong>Neden:</strong> Cloud Console'daki yönlendirme adresi uygulamanınkiyle birebir aynı değil.</p>
+<p><strong>Çözüm:</strong> Ayarlar → Google bölümündeki kopyalama düğmesiyle iki adresi alıp Cloud Console'daki OAuth istemcisine yapıştırın. localhost ile 127.0.0.1, http ile https, sondaki eğik çizgi fark eder.</p>
+<h3 id="google-istemcisi-tanimli-degil">&quot;Google istemcisi tanımlı değil&quot;</h3>
+<p><strong>Belirti:</strong> Proje ayarlarında Entegrasyonlar sekmesi sarı uyarı gösteriyor.</p>
+<p><strong>Neden:</strong> Ayarlar → Google bölümüne istemci kimliği ve gizli anahtar girilmemiş, ya da Docker'da şifreleme anahtarı 32 karakterden kısa.</p>
+<p><strong>Çözüm:</strong> Google'a bağlanma kılavuzunun 6. adımı. Docker'da BETTER_AUTH_SECRET'ı elle verdiyseniz uzatın ya da boş bırakıp uygulamanın üretmesine izin verin.</p>
+<h3 id="google-access-denied-diyor">Google &quot;access_denied&quot; diyor</h3>
+<p><strong>Belirti:</strong> İzin ekranından sonra &quot;iptal edildi&quot; uyarısı.</p>
+<p><strong>Neden:</strong> Giriş yaptığınız Google hesabı, Cloud Console'daki izin ekranının test kullanıcıları listesinde değil.</p>
+<p><strong>Çözüm:</strong> OAuth izin ekranı → Test kullanıcıları bölümüne hesabı ekleyin, yeniden <strong>Bağlan</strong>.</p>
+<h3 id="baglantinin-suresi-doldu">Bağlantının süresi doldu</h3>
+<p><strong>Belirti:</strong> Entegrasyon kartında &quot;Bağlantının süresi doldu&quot;, veriler gelmiyor.</p>
+<p><strong>Neden:</strong> &quot;Test&quot; durumundaki OAuth uygulamalarında Google izni yedi günde düşürebilir; ya da şifreleme anahtarı değişmiş.</p>
+<p><strong>Çözüm:</strong> Kartta <strong>Yeniden bağlan</strong>. Sık tekrarlıyorsa izin ekranını üretime alın ya da hizmet hesabına geçin (Ayarlar → Hizmet hesabı).</p>
+<h3 id="sorgu-verisi-yok-grafikler-bos">Sorgu verisi yok, grafikler boş</h3>
+<p><strong>Belirti:</strong> Panel kartları sıfır, Arama performansı &quot;Bu dönem için henüz veri yok&quot;.</p>
+<p><strong>Neden:</strong> Üç olasılık: site yeni ve Google henüz gösterim vermiyor; Search Console üç gün gecikmeli ve seçili dönem çok kısa; yanlış mülk seçilmiş.</p>
+<p><strong>Çözüm:</strong> Dönemi <strong>Son 3 ay</strong> yapın. Proje ayarlarında mülkün doğru site olduğundan emin olun (alan adı mülkü tüm alt alanları kapsar, URL öneki mülkü kapsamaz). Yeni sitede sorgu satırı haftalar sonra gelebilir; sayfa tablosu daha önce dolar.</p>
+<h3 id="tablo-toplami-kartla-tutmuyor">Tablo toplamı kartla tutmuyor</h3>
+<p><strong>Belirti:</strong> Sayfa tablosundaki gösterimleri toplayınca karttaki sayıdan büyük çıkıyor.</p>
+<p><strong>Neden:</strong> Bu bir hata değil. Google aynı aramada çıkan her sayfayı ayrı sayar; kart site toplamıdır.</p>
+<p><strong>Çözüm:</strong> Toplamları karttan okuyun, tabloyu sayfa sayfa yorumlayın.</p>
+<h3 id="denetim-suruyor-diye-takildi">Denetim &quot;Sürüyor&quot; diye takıldı</h3>
+<p><strong>Belirti:</strong> Yarım saattir ilerleme yok.</p>
+<p><strong>Neden:</strong> Uygulama yeniden başlamış ya da işlem düşmüş olabilir.</p>
+<p><strong>Çözüm:</strong> Bekleyin; uygulama 15 dakikadan uzun &quot;sürüyor&quot; görünen denetimleri kontrol eder ve nabız yoksa &quot;Başarısız&quot; olarak kapatır, sebebini (instance_lost gibi) yazar. Sonra <strong>Aynı ayarlarla yeniden başlat</strong> deyin. İki denetimi aynı anda hız ölçümüyle başlatmayın; birbirini yavaşlatır.</p>
+<h3 id="denetim-engellendik-diyor">Denetim &quot;Engellendik&quot; diyor</h3>
+<p><strong>Belirti:</strong> Sarı uyarı: &quot;Denetim bu siteyi tamamen tarayamadı.&quot; ya da &quot;N sayfada engellendik.&quot;</p>
+<p><strong>Neden:</strong> Sitenin bot koruması (Cloudflare, güvenlik duvarı) tarayıcıyı durdurdu.</p>
+<p><strong>Çözüm:</strong> Güvenlik duvarında &quot;seotracker-audit&quot; kullanıcı aracısına izin verin ya da tarayıcının IP'sini beyaz listeye alın. Site sizin değilse yapacak şey yoktur; sonuçlar taranabilen sayfalarla sınırlı kalır.</p>
+<h3 id="hiz-olcumu-yarim-kaldi-ya-da-hic-yok">Hız ölçümü yarım kaldı ya da hiç yok</h3>
+<p><strong>Belirti:</strong> Hız sekmesi boş ya da çok az satır; kota kartı &quot;Kota doldu&quot;, &quot;Dakikalık sınır&quot; ya da &quot;Anahtar yok&quot; diyor.</p>
+<p><strong>Neden:</strong> PageSpeed anahtarı yok (en fazla 50 sayfa) ya da Google'ın günlük kotası bitmiş.</p>
+<p><strong>Çözüm:</strong> PageSpeed anahtarı kılavuzuna göre ücretsiz anahtar alın. Günlük kota bittiyse yarın yeni bir denetimde tamamlanır. Hız ölçümü denetim başlatılırken kapalıysa o denetim için geriye dönük yapılmaz.</p>
+<h3 id="url-denetimi-gunluk-sinira-ulasildi">URL Denetimi &quot;günlük sınıra ulaşıldı&quot;</h3>
+<p><strong>Belirti:</strong> Dizin durumu sekmesinde düğme çalışmıyor, &quot;Google'ın günlük 2.000 adres sınırına ulaşıldı&quot;.</p>
+<p><strong>Neden:</strong> Mülk başına günde 2.000 soru hakkı var; uygulama, ajanınız ve Search Console'da elle yaptığınız sorgular aynı havuzdan harcar.</p>
+<p><strong>Çözüm:</strong> Yarın devam edin. Uygulama yalnızca eskiyen cevapları yeniden sorar, kotanız boşa gitmez.</p>
+<h3 id="analytics-te-localhost-trafigi-gorunuyor">Analytics'te localhost trafiği görünüyor</h3>
+<p><strong>Belirti:</strong> Giriş sayfaları tablosunda Alan adı sütununda localhost ya da 127.0.0.1.</p>
+<p><strong>Neden:</strong> Sitenizin geliştirme kopyası da aynı Analytics etiketini yüklüyor.</p>
+<p><strong>Çözüm:</strong> Etiketi yalnızca gerçek alan adında yükletin (çoğu araçta &quot;alan adı kontrolü&quot; ayarı). Uygulama bu satırları otomatik ayıklamaz; o güne kadar Alan adı sütununa bakarak yorumlayın.</p>
+<h3 id="asistan-mcp-ye-baglanamiyor-401">Asistan MCP'ye bağlanamıyor (401)</h3>
+<p><strong>Belirti:</strong> Claude Code ya da Codex &quot;Unauthorized&quot; diyor.</p>
+<p><strong>Neden:</strong> Parola gönderilmiyor ya da yanlış.</p>
+<p><strong>Çözüm:</strong> Parolayı yeniden kopyalayın: Windows'ta veri klasöründeki mcp-token dosyası, Docker'da <code>docker compose exec -T seotracker cat /app/.wrangler/mcp-token</code>. Değerin sonundaki satır sonu karakterini silin. Claude Code'da <code>/mcp</code> → Reconnect.</p>
+<h3 id="docker-ilk-acilista-cok-uzun-suruyor-ya-da-unhealthy">Docker ilk açılışta çok uzun sürüyor ya da &quot;unhealthy&quot;</h3>
+<p><strong>Belirti:</strong> <code>docker compose ps</code> beş dakikadan sonra bile healthy demiyor.</p>
+<p><strong>Neden:</strong> İlk açılışta uygulama konteyner içinde derlenir ve yaklaşık 2 GB bellek ister; bellek yetmezse derleme düşer.</p>
+<p><strong>Çözüm:</strong> <code>docker compose logs --tail 50</code> son satırlara bakın. Bellek hatası varsa Docker Desktop'ın ayarlarından konteynerlere daha fazla bellek verin ve <code>docker compose up -d --build</code>.</p>
+<h3 id="veri-ve-gunlukler-nerede">Veri ve günlükler nerede</h3>
+<p>Windows paketinde her şey <strong>%LOCALAPPDATA%\seowatcher</strong> altında: data (veritabanı), logs\server.log ve logs\migrate.log, instance-secret, mcp-token, config.json. Görev çubuğu menüsündeki <strong>Günlükleri aç</strong> ve <strong>Veri klasörünü aç</strong> oraya gider. Docker'da veri <strong>seotracker_data</strong> biriminde (/app/.wrangler), günlük <code>docker compose logs -f</code> komutunda. Bir sorun bildirirken <strong>Yardım</strong> ekranındaki <strong>Tanılama paketi indir</strong> düğmesi sürüm, kurulum kontrolleri ve son 25 denetimi içeren, hiçbir sır içermeyen bir dosya üretir; onu GitHub'daki sorun kaydına ekleyin.</p>
+        <p class="meta">
+          Son güncelleme: 2026-10-22. Bir hata görürseniz
+          <a href="https://github.com/ucsahinn/seotracker/issues"
+            >GitHub'da bildirin</a
+          >.
+        </p>
+      </article>
+      
+    </div>
+    <footer>
+      <div class="wrap">
+        <span>seowatcher, MIT lisansı.</span>
+        <span
+          ><a href="/">Ana sayfa</a> &nbsp;
+          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"
+            >Sürüm notları</a
+          ></span
+        >
+      </div>
+    </footer>
+  </body>
+</html>

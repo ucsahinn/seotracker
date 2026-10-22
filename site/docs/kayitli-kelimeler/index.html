@@ -1,0 +1,566 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kayıtlı kelimeler | seowatcher belgeleri</title>
+    <meta name="description" content="Arama performansından kaydettiğiniz sorgular. Etiketleyin, Search Console'daki ortalama sıralarını izleyin, CSV ya da E-Tablolar'a aktarın." />
+    <meta name="robots" content="max-image-preview:large" />
+    <link rel="canonical" href="https://seowatcher.io/docs/kayitli-kelimeler/" />
+    <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link
+      rel="icon"
+      href="/assets/favicon-48.png"
+      type="image/png"
+      sizes="48x48"
+    />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <link
+      rel="preload"
+      href="/assets/fonts/geist-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/assets/fonts/geist-latin-ext-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="seowatcher" />
+    <meta property="og:title" content="Kayıtlı kelimeler" />
+    <meta property="og:description" content="Arama performansından kaydettiğiniz sorgular. Etiketleyin, Search Console'daki ortalama sıralarını izleyin, CSV ya da E-Tablolar'a aktarın." />
+    <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
+    <meta property="og:url" content="https://seowatcher.io/docs/kayitli-kelimeler/" />
+    <meta property="og:locale" content="tr_TR" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="color-scheme" content="light dark" />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: light)"
+      content="#fdfdfe"
+    />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: dark)"
+      content="#1a1b20"
+    />
+    <style>
+      @font-face {
+        font-family: "Geist";
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(/assets/fonts/geist-latin-ext-wght-normal.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+          U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+          U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: "Geist";
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(/assets/fonts/geist-latin-wght-normal.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+          U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+          U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      :root {
+        --bg: oklch(99.5% 0.0015 265);
+        --bg-2: oklch(97.2% 0.003 265);
+        --fg: oklch(23% 0.012 265);
+        --muted: oklch(23% 0.012 265 / 0.8);
+        --subtle: oklch(23% 0.012 265 / 0.68);
+        --hairline: oklch(0% 0 0 / 0.08);
+        --hairline-strong: oklch(0% 0 0 / 0.14);
+        --accent: oklch(54% 0.17 256);
+        --accent-ink: oklch(100% 0 0);
+        --accent-link: oklch(42% 0.15 256);
+        --ease: cubic-bezier(0.32, 0.72, 0, 1);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: oklch(17.5% 0.005 265);
+          --bg-2: oklch(13.2% 0.005 265);
+          --fg: oklch(93% 0.004 265);
+          --muted: oklch(93% 0.004 265 / 0.7);
+          --subtle: oklch(93% 0.004 265 / 0.56);
+          --hairline: oklch(100% 0 0 / 0.09);
+          --hairline-strong: oklch(100% 0 0 / 0.16);
+          --accent: oklch(70% 0.15 256);
+          --accent-ink: oklch(16% 0.01 265);
+          --accent-link: oklch(80% 0.12 256);
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
+        scroll-padding-top: 76px;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: Geist, "Segoe UI", system-ui, sans-serif;
+        font-size: 17px;
+        line-height: 1.6;
+        font-variant-numeric: tabular-nums;
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+        border-radius: 4px;
+      }
+      .skip {
+        position: absolute;
+        left: 16px;
+        top: -48px;
+        z-index: 5;
+        background: var(--accent);
+        color: var(--accent-ink);
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-weight: 600;
+      }
+      .skip:focus {
+        top: 12px;
+      }
+      .wrap {
+        width: min(1160px, 100% - 40px);
+        margin-inline: auto;
+      }
+      @media (max-width: 640px) {
+        .wrap {
+          width: calc(100% - 32px);
+        }
+      }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: color-mix(in oklab, var(--bg) 82%, transparent);
+        backdrop-filter: blur(14px) saturate(1.3);
+        -webkit-backdrop-filter: blur(14px) saturate(1.3);
+        border-bottom: 1px solid var(--hairline);
+      }
+      header .wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 60px;
+        gap: 16px;
+      }
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 600;
+        font-size: 17px;
+        letter-spacing: -0.01em;
+      }
+      .brand img {
+        width: 26px;
+        height: 26px;
+        border-radius: 7px;
+      }
+      .brand span {
+        color: var(--subtle);
+        font-weight: 500;
+      }
+      .topnav {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        font-size: 15px;
+        color: var(--muted);
+      }
+      .topnav a:hover {
+        color: var(--fg);
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        min-height: 36px;
+        padding: 0 14px;
+        border-radius: 999px;
+        font-weight: 560;
+        font-size: 14px;
+        background: var(--accent);
+        color: var(--accent-ink);
+        white-space: nowrap;
+        transition:
+          transform 320ms var(--ease),
+          filter 320ms var(--ease);
+      }
+      .btn:hover {
+        filter: saturate(1.06) brightness(1.05);
+        transform: translateY(-1px);
+      }
+      .btn:active {
+        transform: scale(0.98);
+      }
+      @media (max-width: 720px) {
+        .topnav .hide {
+          display: none;
+        }
+        .topnav {
+          gap: 14px;
+        }
+        .brand span {
+          display: none;
+        }
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 240px minmax(0, 1fr) 200px;
+        gap: clamp(32px, 4vw, 64px);
+        padding: 40px 0 96px;
+      }
+      .side {
+        position: sticky;
+        top: 84px;
+        align-self: start;
+        font-size: 15px;
+      }
+      .nav-group {
+        margin: 22px 0 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--subtle);
+      }
+      .nav-group:first-child {
+        margin-top: 0;
+      }
+      .side ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 2px;
+      }
+      .side li a {
+        display: block;
+        padding: 6px 10px;
+        margin-left: -10px;
+        border-radius: 8px;
+        color: var(--muted);
+        transition:
+          background-color 240ms var(--ease),
+          color 240ms var(--ease);
+      }
+      .side li a:hover {
+        background: var(--bg-2);
+        color: var(--fg);
+      }
+      .side li.current a {
+        background: var(--bg-2);
+        color: var(--fg);
+        font-weight: 600;
+      }
+      .toc {
+        position: sticky;
+        top: 84px;
+        align-self: start;
+        font-size: 14px;
+      }
+      .toc-label {
+        margin: 0 0 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--subtle);
+      }
+      .toc ol {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 6px;
+        border-left: 1px solid var(--hairline);
+      }
+      .toc a {
+        display: block;
+        padding-left: 12px;
+        color: var(--muted);
+      }
+      .toc a:hover {
+        color: var(--fg);
+      }
+      @media (max-width: 1100px) {
+        .layout {
+          grid-template-columns: 220px minmax(0, 1fr);
+        }
+        .toc {
+          display: none;
+        }
+      }
+      @media (max-width: 800px) {
+        .layout {
+          grid-template-columns: minmax(0, 1fr);
+          gap: 24px;
+        }
+        .side {
+          position: static;
+          border-bottom: 1px solid var(--hairline);
+          padding-bottom: 20px;
+        }
+      }
+
+      article {
+        max-width: 68ch;
+      }
+      article h1 {
+        font-size: clamp(30px, 4vw, 42px);
+        line-height: 1.08;
+        letter-spacing: -0.028em;
+        font-weight: 600;
+        margin: 0 0 14px;
+        text-wrap: balance;
+      }
+      article .lede {
+        font-size: 19px;
+        color: var(--muted);
+        margin: 0 0 32px;
+        text-wrap: pretty;
+      }
+      article h2 {
+        font-size: 24px;
+        letter-spacing: -0.02em;
+        margin: 44px 0 12px;
+        text-wrap: balance;
+      }
+      article h3 {
+        font-size: 18px;
+        letter-spacing: -0.012em;
+        margin: 28px 0 8px;
+      }
+      article p,
+      article li {
+        color: var(--muted);
+      }
+      article p {
+        margin: 0 0 16px;
+        text-wrap: pretty;
+      }
+      article strong {
+        color: var(--fg);
+        font-weight: 600;
+      }
+      article ul,
+      article ol {
+        margin: 0 0 18px;
+        padding-left: 22px;
+      }
+      article li {
+        margin: 0 0 8px;
+      }
+      article li::marker {
+        color: var(--subtle);
+      }
+      article a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      article a:hover {
+        text-decoration-color: var(--accent-link);
+      }
+      article code {
+        font-family: ui-monospace, Consolas, Menlo, monospace;
+        font-size: 0.9em;
+        background: var(--bg-2);
+        border: 1px solid var(--hairline);
+        padding: 1px 6px;
+        border-radius: 6px;
+        color: var(--fg);
+      }
+      article pre {
+        background: var(--bg-2);
+        border: 1px solid var(--hairline);
+        border-radius: 12px;
+        padding: 14px 16px;
+        overflow-x: auto;
+        margin: 0 0 18px;
+        font-size: 14.5px;
+        line-height: 1.5;
+      }
+      article pre code {
+        background: none;
+        border: 0;
+        padding: 0;
+      }
+      article blockquote {
+        margin: 0 0 18px;
+        padding: 2px 0 2px 18px;
+        border-left: 2px solid var(--accent);
+      }
+      article .tw {
+        overflow-x: auto;
+        margin: 0 0 22px;
+      }
+      article table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 15px;
+        min-width: 480px;
+      }
+      article th {
+        text-align: left;
+        font-weight: 600;
+        color: var(--fg);
+        padding: 0 16px 10px 0;
+        border-bottom: 1px solid var(--hairline-strong);
+        white-space: nowrap;
+      }
+      article td {
+        padding: 10px 16px 10px 0;
+        border-bottom: 1px solid var(--hairline);
+        vertical-align: top;
+        color: var(--muted);
+      }
+      article td:first-child {
+        color: var(--fg);
+      }
+      article .meta {
+        margin-top: 48px;
+        padding-top: 18px;
+        border-top: 1px solid var(--hairline);
+        font-size: 14px;
+        color: var(--subtle);
+      }
+      ul.index {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 24px;
+        display: grid;
+        gap: 10px;
+      }
+      ul.index li {
+        display: grid;
+        gap: 2px;
+        padding: 12px 0;
+        border-top: 1px solid var(--hairline);
+      }
+      ul.index li a {
+        font-weight: 600;
+        color: var(--fg);
+        text-decoration: none;
+      }
+      ul.index li a:hover {
+        text-decoration: underline;
+      }
+      ul.index li span {
+        color: var(--muted);
+        font-size: 15.5px;
+      }
+      footer {
+        padding: 32px 0 56px;
+        font-size: 14.5px;
+        color: var(--muted);
+        border-top: 1px solid var(--hairline);
+      }
+      footer .wrap {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 12px 32px;
+      }
+      footer a:hover {
+        color: var(--fg);
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip" href="#icerik">İçeriğe geç</a>
+    <header>
+      <div class="wrap">
+        <a class="brand" href="/"
+          ><img
+            src="/assets/icon-256.png"
+            alt=""
+            width="26"
+            height="26"
+          />seowatcher <span>belgeler</span></a
+        >
+        <nav class="topnav" aria-label="Site">
+          <a class="hide" href="/#ekranlar">Ekranlar</a>
+          <a class="hide" href="/docs/">Belgeler</a>
+          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+            >GitHub</a
+          >
+          <a
+            class="btn"
+            href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            >Windows için indir</a
+          >
+        </nav>
+      </div>
+    </header>
+    <div class="wrap layout">
+      <aside class="side" aria-label="Belgeler"><p class="nav-group">Başlangıç</p><ul><li><a href="/docs/kurulum-windows/">Windows'a kurulum</a></li><li><a href="/docs/kurulum-docker/">Docker ile kurulum</a></li><li><a href="/docs/google-baglantisi/">Google'a bağlanma</a></li><li><a href="/docs/pagespeed-anahtari/">PageSpeed anahtarı</a></li></ul><p class="nav-group">Ekranlar</p><ul><li><a href="/docs/panel/">Panel</a></li><li><a href="/docs/arama-performansi/">Arama performansı</a></li><li><a href="/docs/siralama-takibi/">Sıralama takibi</a></li><li><a href="/docs/firsatlar/">Fırsatlar</a></li><li class="current" aria-current="page"><a href="/docs/kayitli-kelimeler/">Kayıtlı kelimeler</a></li><li><a href="/docs/analytics/">Analytics</a></li><li><a href="/docs/site-denetimi/">Site denetimi</a></li><li><a href="/docs/dizin-durumu/">Dizin durumu</a></li><li><a href="/docs/raporlar/">Raporlar ve şablonlar</a></li><li><a href="/docs/proje-bilgisi/">Proje bilgisi</a></li><li><a href="/docs/ayarlar/">Ayarlar</a></li></ul><p class="nav-group">Başvuru</p><ul><li><a href="/docs/denetim-kurallari/">Denetim kuralları</a></li><li><a href="/docs/ajan-kurulumu/">Ajan kurulumu</a></li><li><a href="/docs/sorun-giderme/">Sorun giderme</a></li></ul></aside>
+      <article id="icerik">
+        <h1>Kayıtlı kelimeler</h1><p class="lede">Arama performansından kaydettiğiniz sorgular. Etiketleyin, Search Console'daki ortalama sıralarını izleyin, CSV ya da E-Tablolar'a aktarın.</p><p>Kayıtlı kelimeler, sizin seçtiğiniz sorguların listesidir. Uygulama kelime önermez; Arama performansı ya da Sıralama takibi ekranında bir satırın menüsünden <strong>Kelime olarak kaydet</strong> dediğinizde buraya düşer. Burada etiketlersiniz, gruplarsınız ve her kelimenin son 90 gündeki ortalama sırasını görürsünüz. Sıra bilgisi Sıralama takibi ekranının yerel arşivinden gelir; yani kaydetmek Google'da yeni bir takip başlatmaz, zaten toplanan veriyi bu kelimeler için süzer.</p>
+<h2 id="ekranda-neler-var">Ekranda neler var</h2>
+<p><strong>Üst çubuk.</strong> Açıklama satırı, <strong>E-Tablolar'a aktar</strong>, <strong>CSV indir</strong> ve <strong>Yenile</strong>. Altında &quot;{n} kayıtlı kelime&quot; sayısı.</p>
+<p><strong>Sıra dağılımı kartı.</strong> Kayıtlı kelimelerinizin kaçının 1-3, 4-10, 11-20 ve 21+ sırada olduğunu gösteren çubuklar; altında &quot;sıralar son 90 günün ortalaması&quot; notu. Arşivde kaydı olmayan kelimeler &quot;Verisi yok&quot; olarak sayılır; arşiv eksikse &quot;Bilinmiyor (arşiv kesildi)&quot; görürsünüz. <strong>İlk 10</strong> ve <strong>Sıra 11-20</strong> çipleri tabloyu o dilime daraltır. Henüz hiçbir kelimenin sırası yoksa &quot;Kelimelerinizin sırası henüz yok&quot; yazar.</p>
+<p><strong>Filtre paneli.</strong> <strong>Sonuçları filtrele</strong> altında <strong>İçersin</strong> ve <strong>İçermesin</strong> kutuları (kelime metninde arama), etiket filtresi (<strong>Etiket ara</strong>), ve <strong>Tümünü temizle</strong>. Hiç etiket yoksa &quot;Henüz etiket yok. Kelimeleri seçip etiket ekleyin.&quot; notu çıkar. Bir projede en fazla 50 etiket olabilir.</p>
+<p><strong>Tablo.</strong> Sütunlar: <strong>Kelime</strong>, <strong>Ort. sıra</strong> (veri yoksa üzerine gelince &quot;Search Console bu kelime için sıra kaydetmemiş&quot;), <strong>Amaç</strong>, <strong>Etiketler</strong>, <strong>Eklenme</strong>. Amaç sütunu kelimenin niyetini gösterir: Bilgi amaçlı, Ticari araştırma, İşlem odaklı, Yönlendirici ya da Bilinmiyor; kısa hali Bilgi, Ticari, İşlem, Gezinme, soru işareti. Satır menüsü: <strong>Kelimeyi kopyala</strong>, <strong>Arama performansında ara</strong>, <strong>Kelimeyi sil</strong>.</p>
+<p><strong>Toplu işlemler.</strong> Satırları işaretleyince üstte <strong>Kelimeleri kopyala</strong>, <strong>Etiketleri güncelle</strong> (etiket ekle ya da kaldır) ve silme düğmesi çıkar. Silme onayı &quot;kalıcı olarak silinecek. Bu geri alınamaz.&quot; uyarısını gösterir.</p>
+<p><strong>Boş durumlar.</strong> Hiç kelime yoksa &quot;Henüz kayıtlı kelime yok&quot; ve iki kısayol: <strong>Sorgulara göz at</strong> (Arama performansı) ve <strong>Sıralamayı aç</strong> (Sıralama takibi). Filtreler hiçbir satırı tutmuyorsa &quot;Bu filtrelere uyan kelime yok&quot;.</p>
+<h2 id="nasil-kullanilir">Nasıl kullanılır</h2>
+<ol><li>Arama performansı ekranında <strong>Sıra 5-20</strong> sekmesini açın, sizin için önemli beş on sorguyu satır menüsünden <strong>Kelime olarak kaydet</strong> ile işaretleyin. Para kazandıran sayfaların sorgularını seçmek, en çok gösterim alanları seçmekten daha işe yarar.</li><li>Buraya gelip seçili kelimeleri işaretleyin, <strong>Etiketleri güncelle</strong> ile &quot;ürün&quot;, &quot;blog&quot;, &quot;marka&quot; gibi etiketler verin. Etiketler sonraki ay karşılaştırmayı kolaylaştırır.</li><li>Ayda bir <strong>Sıra dağılımı</strong> kartına bakın. 11-20 dilimindeki kelimeler ilk sayfaya en yakın olanlardır; o kelimelerin sayfalarını Fırsatlar ekranında bulun.</li><li>Raporlamak için <strong>CSV indir</strong> ya da <strong>E-Tablolar'a aktar</strong>; dosya, uygulanan filtrelerle gelir.</li></ol>
+<h2 id="sayilar-nasil-hesaplanir">Sayılar nasıl hesaplanır</h2>
+<p>Kelimeler ve etiketler bu bilgisayardaki veritabanında durur. Ort. sıra, Sıralama takibi arşivinden son 90 gün için gösterimle ağırlıklandırılmış ortalamadır; eşleşme kelime metninin Türkçe küçük harfe çevrilmiş haliyle yapılır. Arşivden en çok gösterim alan 500 sorgu çekilir; kayıtlı kelimeniz bu 500'ün dışındaysa sırası &quot;bilinmiyor&quot; görünür.</p>
+<p>Amaç bilgisi kelime kaydedilirken birlikte geldiyse yazılır; sonradan hesaplanmaz. Liste 50, 100 ya da 250'lik sayfalara bölünür.</p>
+<h2 id="sik-sorulanlar">Sık sorulanlar</h2>
+<p><strong>Kelimeyi kaydettim, sıra neden boş?</strong> Arşiv o kelime için gün toplamamış olabilir. Sıralama takibi ekranını açıp arşivin dolmasını bekleyin, sonra burada <strong>Yenile</strong> deyin.</p>
+<p><strong>Google'da kendi aradığımda gördüğüm sıra farklı.</strong> Buradaki sıra 90 günlük ortalamadır; tek bir arama sonucuyla karşılaştırılamaz.</p>
+<p><strong>Arama hacmi sütunu nerede?</strong> Yok. Uygulama hacim tahmini yapmaz; gösterim sayısını Arama performansı ekranında görürsünüz.</p>
+<p><strong>Aynı kelimeyi iki kez kaydedebilir miyim?</strong> Hayır, liste aynı metni tek kayıt olarak tutar.</p>
+<p><strong>Etiketi silince kelimeler silinir mi?</strong> Hayır; etiket kalkar, kelimeler kalır.</p>
+<h2 id="sinirlar">Sınırlar</h2>
+<p>Bu ekran bir anahtar kelime araştırma aracı değildir; öneri üretmez, hacim ya da zorluk göstermez. Sıra bilgisi arşivle sınırlıdır: Google'ın gizlediği nadir sorguların sırası hiç gelmez. Veriler bu kurulumun veritabanındadır; yedeğini sizin almanız gerekir.</p>
+        <p class="meta">
+          Son güncelleme: 2026-10-22. Bir hata görürseniz
+          <a href="https://github.com/ucsahinn/seotracker/issues"
+            >GitHub'da bildirin</a
+          >.
+        </p>
+      </article>
+      <nav class="toc" aria-label="Bu sayfada"><p class="toc-label">Bu sayfada</p><ol><li><a href="#ekranda-neler-var">Ekranda neler var</a></li><li><a href="#nasil-kullanilir">Nasıl kullanılır</a></li><li><a href="#sayilar-nasil-hesaplanir">Sayılar nasıl hesaplanır</a></li><li><a href="#sik-sorulanlar">Sık sorulanlar</a></li><li><a href="#sinirlar">Sınırlar</a></li></ol></nav>
+    </div>
+    <footer>
+      <div class="wrap">
+        <span>seowatcher, MIT lisansı.</span>
+        <span
+          ><a href="/">Ana sayfa</a> &nbsp;
+          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"
+            >Sürüm notları</a
+          ></span
+        >
+      </div>
+    </footer>
+  </body>
+</html>

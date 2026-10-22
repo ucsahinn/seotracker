@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ayarlar | seowatcher belgeleri</title>
+    <meta name="description" content="Görünüm, Google istemcisi, hizmet hesabı, PageSpeed anahtarı, Google ve sistem sınırları, sürüm ve güncelleme kontrolü, sürüm notları. Kurulumun tek ayar ekranı." />
+    <meta name="robots" content="max-image-preview:large" />
+    <link rel="canonical" href="https://seowatcher.io/docs/ayarlar/" />
+    <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link
+      rel="icon"
+      href="/assets/favicon-48.png"
+      type="image/png"
+      sizes="48x48"
+    />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <link
+      rel="preload"
+      href="/assets/fonts/geist-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/assets/fonts/geist-latin-ext-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="seowatcher" />
+    <meta property="og:title" content="Ayarlar" />
+    <meta property="og:description" content="Görünüm, Google istemcisi, hizmet hesabı, PageSpeed anahtarı, Google ve sistem sınırları, sürüm ve güncelleme kontrolü, sürüm notları. Kurulumun tek ayar ekranı." />
+    <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
+    <meta property="og:url" content="https://seowatcher.io/docs/ayarlar/" />
+    <meta property="og:locale" content="tr_TR" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="color-scheme" content="light dark" />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: light)"
+      content="#fdfdfe"
+    />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: dark)"
+      content="#1a1b20"
+    />
+    <style>
+      @font-face {
+        font-family: "Geist";
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(/assets/fonts/geist-latin-ext-wght-normal.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+          U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+          U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: "Geist";
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(/assets/fonts/geist-latin-wght-normal.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+          U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+          U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      :root {
+        --bg: oklch(99.5% 0.0015 265);
+        --bg-2: oklch(97.2% 0.003 265);
+        --fg: oklch(23% 0.012 265);
+        --muted: oklch(23% 0.012 265 / 0.8);
+        --subtle: oklch(23% 0.012 265 / 0.68);
+        --hairline: oklch(0% 0 0 / 0.08);
+        --hairline-strong: oklch(0% 0 0 / 0.14);
+        --accent: oklch(54% 0.17 256);
+        --accent-ink: oklch(100% 0 0);
+        --accent-link: oklch(42% 0.15 256);
+        --ease: cubic-bezier(0.32, 0.72, 0, 1);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: oklch(17.5% 0.005 265);
+          --bg-2: oklch(13.2% 0.005 265);
+          --fg: oklch(93% 0.004 265);
+          --muted: oklch(93% 0.004 265 / 0.7);
+          --subtle: oklch(93% 0.004 265 / 0.56);
+          --hairline: oklch(100% 0 0 / 0.09);
+          --hairline-strong: oklch(100% 0 0 / 0.16);
+          --accent: oklch(70% 0.15 256);
+          --accent-ink: oklch(16% 0.01 265);
+          --accent-link: oklch(80% 0.12 256);
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
+        scroll-padding-top: 76px;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: Geist, "Segoe UI", system-ui, sans-serif;
+        font-size: 17px;
+        line-height: 1.6;
+        font-variant-numeric: tabular-nums;
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+        border-radius: 4px;
+      }
+      .skip {
+        position: absolute;
+        left: 16px;
+        top: -48px;
+        z-index: 5;
+        background: var(--accent);
+        color: var(--accent-ink);
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-weight: 600;
+      }
+      .skip:focus {
+        top: 12px;
+      }
+      .wrap {
+        width: min(1160px, 100% - 40px);
+        margin-inline: auto;
+      }
+      @media (max-width: 640px) {
+        .wrap {
+          width: calc(100% - 32px);
+        }
+      }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: color-mix(in oklab, var(--bg) 82%, transparent);
+        backdrop-filter: blur(14px) saturate(1.3);
+        -webkit-backdrop-filter: blur(14px) saturate(1.3);
+        border-bottom: 1px solid var(--hairline);
+      }
+      header .wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 60px;
+        gap: 16px;
+      }
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 600;
+        font-size: 17px;
+        letter-spacing: -0.01em;
+      }
+      .brand img {
+        width: 26px;
+        height: 26px;
+        border-radius: 7px;
+      }
+      .brand span {
+        color: var(--subtle);
+        font-weight: 500;
+      }
+      .topnav {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        font-size: 15px;
+        color: var(--muted);
+      }
+      .topnav a:hover {
+        color: var(--fg);
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        min-height: 36px;
+        padding: 0 14px;
+        border-radius: 999px;
+        font-weight: 560;
+        font-size: 14px;
+        background: var(--accent);
+        color: var(--accent-ink);
+        white-space: nowrap;
+        transition:
+          transform 320ms var(--ease),
+          filter 320ms var(--ease);
+      }
+      .btn:hover {
+        filter: saturate(1.06) brightness(1.05);
+        transform: translateY(-1px);
+      }
+      .btn:active {
+        transform: scale(0.98);
+      }
+      @media (max-width: 720px) {
+        .topnav .hide {
+          display: none;
+        }
+        .topnav {
+          gap: 14px;
+        }
+        .brand span {
+          display: none;
+        }
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 240px minmax(0, 1fr) 200px;
+        gap: clamp(32px, 4vw, 64px);
+        padding: 40px 0 96px;
+      }
+      .side {
+        position: sticky;
+        top: 84px;
+        align-self: start;
+        font-size: 15px;
+      }
+      .nav-group {
+        margin: 22px 0 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--subtle);
+      }
+      .nav-group:first-child {
+        margin-top: 0;
+      }
+      .side ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 2px;
+      }
+      .side li a {
+        display: block;
+        padding: 6px 10px;
+        margin-left: -10px;
+        border-radius: 8px;
+        color: var(--muted);
+        transition:
+          background-color 240ms var(--ease),
+          color 240ms var(--ease);
+      }
+      .side li a:hover {
+        background: var(--bg-2);
+        color: var(--fg);
+      }
+      .side li.current a {
+        background: var(--bg-2);
+        color: var(--fg);
+        font-weight: 600;
+      }
+      .toc {
+        position: sticky;
+        top: 84px;
+        align-self: start;
+        font-size: 14px;
+      }
+      .toc-label {
+        margin: 0 0 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--subtle);
+      }
+      .toc ol {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 6px;
+        border-left: 1px solid var(--hairline);
+      }
+      .toc a {
+        display: block;
+        padding-left: 12px;
+        color: var(--muted);
+      }
+      .toc a:hover {
+        color: var(--fg);
+      }
+      @media (max-width: 1100px) {
+        .layout {
+          grid-template-columns: 220px minmax(0, 1fr);
+        }
+        .toc {
+          display: none;
+        }
+      }
+      @media (max-width: 800px) {
+        .layout {
+          grid-template-columns: minmax(0, 1fr);
+          gap: 24px;
+        }
+        .side {
+          position: static;
+          border-bottom: 1px solid var(--hairline);
+          padding-bottom: 20px;
+        }
+      }
+
+      article {
+        max-width: 68ch;
+      }
+      article h1 {
+        font-size: clamp(30px, 4vw, 42px);
+        line-height: 1.08;
+        letter-spacing: -0.028em;
+        font-weight: 600;
+        margin: 0 0 14px;
+        text-wrap: balance;
+      }
+      article .lede {
+        font-size: 19px;
+        color: var(--muted);
+        margin: 0 0 32px;
+        text-wrap: pretty;
+      }
+      article h2 {
+        font-size: 24px;
+        letter-spacing: -0.02em;
+        margin: 44px 0 12px;
+        text-wrap: balance;
+      }
+      article h3 {
+        font-size: 18px;
+        letter-spacing: -0.012em;
+        margin: 28px 0 8px;
+      }
+      article p,
+      article li {
+        color: var(--muted);
+      }
+      article p {
+        margin: 0 0 16px;
+        text-wrap: pretty;
+      }
+      article strong {
+        color: var(--fg);
+        font-weight: 600;
+      }
+      article ul,
+      article ol {
+        margin: 0 0 18px;
+        padding-left: 22px;
+      }
+      article li {
+        margin: 0 0 8px;
+      }
+      article li::marker {
+        color: var(--subtle);
+      }
+      article a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      article a:hover {
+        text-decoration-color: var(--accent-link);
+      }
+      article code {
+        font-family: ui-monospace, Consolas, Menlo, monospace;
+        font-size: 0.9em;
+        background: var(--bg-2);
+        border: 1px solid var(--hairline);
+        padding: 1px 6px;
+        border-radius: 6px;
+        color: var(--fg);
+      }
+      article pre {
+        background: var(--bg-2);
+        border: 1px solid var(--hairline);
+        border-radius: 12px;
+        padding: 14px 16px;
+        overflow-x: auto;
+        margin: 0 0 18px;
+        font-size: 14.5px;
+        line-height: 1.5;
+      }
+      article pre code {
+        background: none;
+        border: 0;
+        padding: 0;
+      }
+      article blockquote {
+        margin: 0 0 18px;
+        padding: 2px 0 2px 18px;
+        border-left: 2px solid var(--accent);
+      }
+      article .tw {
+        overflow-x: auto;
+        margin: 0 0 22px;
+      }
+      article table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 15px;
+        min-width: 480px;
+      }
+      article th {
+        text-align: left;
+        font-weight: 600;
+        color: var(--fg);
+        padding: 0 16px 10px 0;
+        border-bottom: 1px solid var(--hairline-strong);
+        white-space: nowrap;
+      }
+      article td {
+        padding: 10px 16px 10px 0;
+        border-bottom: 1px solid var(--hairline);
+        vertical-align: top;
+        color: var(--muted);
+      }
+      article td:first-child {
+        color: var(--fg);
+      }
+      article .meta {
+        margin-top: 48px;
+        padding-top: 18px;
+        border-top: 1px solid var(--hairline);
+        font-size: 14px;
+        color: var(--subtle);
+      }
+      ul.index {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 24px;
+        display: grid;
+        gap: 10px;
+      }
+      ul.index li {
+        display: grid;
+        gap: 2px;
+        padding: 12px 0;
+        border-top: 1px solid var(--hairline);
+      }
+      ul.index li a {
+        font-weight: 600;
+        color: var(--fg);
+        text-decoration: none;
+      }
+      ul.index li a:hover {
+        text-decoration: underline;
+      }
+      ul.index li span {
+        color: var(--muted);
+        font-size: 15.5px;
+      }
+      footer {
+        padding: 32px 0 56px;
+        font-size: 14.5px;
+        color: var(--muted);
+        border-top: 1px solid var(--hairline);
+      }
+      footer .wrap {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 12px 32px;
+      }
+      footer a:hover {
+        color: var(--fg);
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip" href="#icerik">İçeriğe geç</a>
+    <header>
+      <div class="wrap">
+        <a class="brand" href="/"
+          ><img
+            src="/assets/icon-256.png"
+            alt=""
+            width="26"
+            height="26"
+          />seowatcher <span>belgeler</span></a
+        >
+        <nav class="topnav" aria-label="Site">
+          <a class="hide" href="/#ekranlar">Ekranlar</a>
+          <a class="hide" href="/docs/">Belgeler</a>
+          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+            >GitHub</a
+          >
+          <a
+            class="btn"
+            href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            >Windows için indir</a
+          >
+        </nav>
+      </div>
+    </header>
+    <div class="wrap layout">
+      <aside class="side" aria-label="Belgeler"><p class="nav-group">Başlangıç</p><ul><li><a href="/docs/kurulum-windows/">Windows'a kurulum</a></li><li><a href="/docs/kurulum-docker/">Docker ile kurulum</a></li><li><a href="/docs/google-baglantisi/">Google'a bağlanma</a></li><li><a href="/docs/pagespeed-anahtari/">PageSpeed anahtarı</a></li></ul><p class="nav-group">Ekranlar</p><ul><li><a href="/docs/panel/">Panel</a></li><li><a href="/docs/arama-performansi/">Arama performansı</a></li><li><a href="/docs/siralama-takibi/">Sıralama takibi</a></li><li><a href="/docs/firsatlar/">Fırsatlar</a></li><li><a href="/docs/kayitli-kelimeler/">Kayıtlı kelimeler</a></li><li><a href="/docs/analytics/">Analytics</a></li><li><a href="/docs/site-denetimi/">Site denetimi</a></li><li><a href="/docs/dizin-durumu/">Dizin durumu</a></li><li><a href="/docs/raporlar/">Raporlar ve şablonlar</a></li><li><a href="/docs/proje-bilgisi/">Proje bilgisi</a></li><li class="current" aria-current="page"><a href="/docs/ayarlar/">Ayarlar</a></li></ul><p class="nav-group">Başvuru</p><ul><li><a href="/docs/denetim-kurallari/">Denetim kuralları</a></li><li><a href="/docs/ajan-kurulumu/">Ajan kurulumu</a></li><li><a href="/docs/sorun-giderme/">Sorun giderme</a></li></ul></aside>
+      <article id="icerik">
+        <h1>Ayarlar</h1><p class="lede">Görünüm, Google istemcisi, hizmet hesabı, PageSpeed anahtarı, Google ve sistem sınırları, sürüm ve güncelleme kontrolü, sürüm notları. Kurulumun tek ayar ekranı.</p><p>Ayarlar, kurulumun tamamını ilgilendiren şeylerin ekranıdır; proje başına ayarlar (ad, alan adı, Search Console ve Analytics mülkü) ayrıca her projenin <strong>Proje ayarları</strong> sayfasındadır. Burada Google'a bağlanmak için gereken istemciyi, PageSpeed anahtarını, temayı ve güncelleme kontrolünü yönetirsiniz. Sol tarafta sabit bir bölüm listesi vardır: <strong>Görünüm</strong>, <strong>Google</strong>, <strong>Hizmet hesabı</strong>, <strong>Hız ölçümü</strong>, <strong>Sınırlar</strong>, <strong>Hakkında</strong>, <strong>Sürüm notları</strong>. Her bölümün başlığında durumunu söyleyen bir rozet durur.</p>
+<h2 id="ekranda-neler-var">Ekranda neler var</h2>
+<p><strong>Görünüm.</strong> <strong>Tema</strong>: Sistem, Açık, Koyu. Seçim bu tarayıcıda saklanır; başka bir tarayıcı ya da bilgisayarda ayrı seçilir.</p>
+<p><strong>Google.</strong> Rozet: <strong>Kayıtlı</strong>, <strong>Ortamdan geliyor</strong> (Docker .env ile verilmiş) ya da <strong>Eksik</strong>. Bölüm, Google Cloud Console'a ekleyeceğiniz iki yönlendirme adresini kopyalama düğmeleriyle gösterir ve &quot;ikisini de&quot; eklemeniz gerektiğini vurgular; Analytics adresi eksikse Search Console bağlanır ama Analytics bağlanmaz. Alanlar: <strong>İstemci kimliği</strong> ve <strong>Gizli anahtar</strong>; düğmeler <strong>Kaydet</strong>, <strong>Vazgeç</strong>, kayıt varsa <strong>Değiştir</strong> ve <strong>Sil</strong>. Silme, var olan bağlantıları koparır; &quot;Google istemcisi silinsin mi?&quot; diye sorar. Adım adım kurulum Google'a bağlanma kılavuzundadır.</p>
+<p><strong>Hizmet hesabı (daha kısa yol).</strong> <strong>JSON anahtar dosyası</strong> alanına Google Cloud'dan indirdiğiniz hizmet hesabı dosyasının içeriğini yapıştırırsınız. Kayıt varsa hesabın e-posta adresi ve onu Search Console'a (&quot;Ayarlar → Kullanıcılar ve izinler → Kullanıcı ekle&quot;, yetki Tam) ve Analytics'e (&quot;Yönetici → Erişim yönetimi&quot;, Görüntüleyen) nasıl ekleyeceğiniz yazar. Rozet <strong>Kayıtlı</strong> ya da <strong>Kullanılmıyor</strong>. Kayıtlı hizmet hesabı, OAuth istemcisine tercih edilir; &quot;Şu an kullanılan&quot; satırı hangisinin devrede olduğunu gösterir. Silmek uygulamadan kaldırır ama Google tarafındaki anahtarı iptal etmez; uygulama bunu hatırlatır.</p>
+<p><strong>Hız ölçümü.</strong> <strong>API anahtarı</strong> alanı, <strong>Anahtarı test et</strong> düğmesi (&quot;1 ölçüm harcar&quot;, on saniyede bir basılabilir). Rozet <strong>Anahtar kayıtlı</strong>, <strong>Ortam anahtarı</strong> ya da <strong>Anahtar eksik</strong>. Ayrıntı PageSpeed anahtarı kılavuzunda.</p>
+<p><strong>Sınırlar.</strong> &quot;Google ve sistem sınırları&quot; kartları: URL Denetimi (Search Console) günde 2.000, PageSpeed Insights, GA4 günlük ve saatlik belirteç (varsayılan 200.000 ve 40.000; Google yalnızca kalanı bildirir), denetim sayfa sınırı 10.000, proje başına rapor 10.000 ve şablon 10, en büyük rapor 500.000 bayt. Her kartın durumu <strong>Yeterli</strong>, <strong>Azalıyor</strong> (yüzde 70'ten sonra), <strong>Neredeyse doldu</strong> (yüzde 90'dan sonra) ya da <strong>Bilinmiyor</strong>.</p>
+<p><strong>Hakkında.</strong> <strong>Sürüm</strong> satırı (v2.3.0 gibi). <strong>Güncellemeleri kontrol et</strong> anahtarı varsayılan olarak açıktır; açıksa uygulama günde en fazla bir kez GitHub'daki son sürümü sorar ve <strong>Şimdi kontrol et</strong> düğmesi görünür. Yeni sürüm varsa &quot;X yayımlandı.&quot; satırı, <strong>Değişiklikler</strong> bağlantısı ve Docker kurulumları için kopyalanacak komut (<code>git pull &amp;&amp; docker compose up -d --build</code>) gösterilir; Windows paketinde yeni kurulum dosyasını indirmeniz yeter. Diğer durumlar: &quot;En güncel sürümü kullanıyorsunuz.&quot;, &quot;Güncelleme kontrolü kapalı; GitHub'a istek gitmiyor.&quot;, &quot;Son kontrolde GitHub'a ulaşılamadı.&quot;</p>
+<p><strong>Sürüm notları.</strong> Uygulamayla gelen değişiklik günlüğünün sürüm sürüm dökümü.</p>
+<h2 id="nasil-kullanilir">Nasıl kullanılır</h2>
+<ol><li>İlk kurulumda sırayla: <strong>Google</strong> bölümüne istemci kimliği ve gizli anahtar, <strong>Hız ölçümü</strong> bölümüne PageSpeed anahtarı. İkisi de kaydedilince projeye geçip mülk seçersiniz.</li><li>Ayda bir <strong>Sınırlar</strong> bölümüne bakın. &quot;Azalıyor&quot; gördüğünüz kota, o ayki denetim ve soru alışkanlığınızı anlatır; çoğu zaman URL Denetimi sınırıdır.</li><li><strong>Hakkında</strong> bölümünde yeni sürüm varsa güncelleyin; sürüm notları neyin değiştiğini söyler. Güncelleme kontrolü bilgisayarınızdan dışarıya giden tek &quot;Google dışı&quot; bağlantıdır; istemiyorsanız anahtarı kapatın.</li><li>Google istemcisini değiştirmeniz gerekirse (yeni Cloud projesi gibi) <strong>Değiştir</strong> deyin, yeni değerleri yapıştırın; mevcut bağlantılar yeni istemciyle çalışmaz, projelerde <strong>Yeniden bağlan</strong> gerekir.</li></ol>
+<h2 id="sik-sorulanlar">Sık sorulanlar</h2>
+<p><strong>Gizli anahtarımı ekranda neden göremiyorum?</strong> Sunucu onu şifreli saklar ve tarayıcıya geri göndermez. Ekran yalnızca kayıtlı olduğunu ve kimliği gösterir.</p>
+<p><strong>Docker'da .env ile verdiğim değerle ekrana girdiğim çakışırsa?</strong> Ekrana girilen kazanır; rozet &quot;Ortamdan geliyor&quot; iken bir değer kaydederseniz artık o kullanılır.</p>
+<p><strong>Tema neden bilgisayarımın diğer tarayıcısında farklı?</strong> Tema tarayıcıda saklanır, veritabanında değil.</p>
+<p><strong>Güncelleme kontrolü ne gönderiyor?</strong> Hiçbir veri göndermez; GitHub'ın herkese açık sürüm listesini okur. İstek anonimdir.</p>
+<p><strong>Hizmet hesabı mı OAuth mu?</strong> Hizmet hesabı izin ekranıyla hiç uğraştırmaz ve süresi dolmaz; bunun karşılığında Search Console ve Analytics'te o hesaba elle yetki vermeniz gerekir. Tek kişilik kurulumda ikisi de olur; sık &quot;süresi doldu&quot; görüyorsanız hizmet hesabına geçin.</p>
+<h2 id="sinirlar">Sınırlar</h2>
+<p>Ayarlar ekranı port, veri klasörü ya da ağ ayarlarını değiştirmez; bunlar Windows paketinde config.json, Docker'da .env dosyasındadır. Kullanıcı ve parola yönetimi yoktur; uygulama tek kullanıcılıdır. Kota kartları Google'ın gerçek sayacı değil, uygulamanın kendi sayımıdır; Search Console'da elle yaptığınız URL denetimleri burada görünmez ama Google'ın sınırını harcar.</p>
+        <p class="meta">
+          Son güncelleme: 2026-10-22. Bir hata görürseniz
+          <a href="https://github.com/ucsahinn/seotracker/issues"
+            >GitHub'da bildirin</a
+          >.
+        </p>
+      </article>
+      <nav class="toc" aria-label="Bu sayfada"><p class="toc-label">Bu sayfada</p><ol><li><a href="#ekranda-neler-var">Ekranda neler var</a></li><li><a href="#nasil-kullanilir">Nasıl kullanılır</a></li><li><a href="#sik-sorulanlar">Sık sorulanlar</a></li><li><a href="#sinirlar">Sınırlar</a></li></ol></nav>
+    </div>
+    <footer>
+      <div class="wrap">
+        <span>seowatcher, MIT lisansı.</span>
+        <span
+          ><a href="/">Ana sayfa</a> &nbsp;
+          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"
+            >Sürüm notları</a
+          ></span
+        >
+      </div>
+    </footer>
+  </body>
+</html>
