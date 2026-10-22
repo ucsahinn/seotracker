@@ -305,10 +305,12 @@ function jsonLd({ title, description, slug, updated, groupTitle }) {
         url: `${siteUrl}/`,
       },
       {
-        "@type": "Person",
+        "@type": "Organization",
         "@id": `${siteUrl}/#author`,
-        name: "ucsahinn",
-        url: "https://github.com/ucsahinn",
+        name: "seowatcher",
+        url: `${siteUrl}/`,
+        logo: `${siteUrl}/assets/icon-256.png`,
+        sameAs: ["https://github.com/ucsahinn/seotracker"],
       },
       main,
       {
@@ -343,6 +345,26 @@ function seoTitle({ title, slug, screen }) {
   return `${screen ? title + " ekranı" : title} | seowatcher kılavuzu`;
 }
 
+// "2026-10-22" as people read it; the ISO form stays in the metadata.
+function turkishDate(iso) {
+  const months = [
+    "Ocak",
+    "Şubat",
+    "Mart",
+    "Nisan",
+    "Mayıs",
+    "Haziran",
+    "Temmuz",
+    "Ağustos",
+    "Eylül",
+    "Ekim",
+    "Kasım",
+    "Aralık",
+  ];
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
+  return m ? `${Number(m[3])} ${months[Number(m[2]) - 1]} ${m[1]}` : iso;
+}
+
 function page({
   title,
   description,
@@ -367,6 +389,7 @@ function page({
       "{{canonical}}",
       slug ? `${siteUrl}/docs/${slug}/` : `${siteUrl}/docs/`,
     )
+    .replaceAll("{{updatedText}}", turkishDate(updated))
     .replaceAll("{{updated}}", updated)
     .replace(
       "{{jsonld}}",
