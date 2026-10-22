@@ -77,6 +77,9 @@ en.VcRedistSkipped=The Microsoft Visual C++ runtime could not be installed (admi
 ; Every wizard page carries the version in its bottom-left corner.
 tr.BeveledLabel=seowatcher {#AppVersion}
 en.BeveledLabel=seowatcher {#AppVersion}
+; The window title is the very top line of every page: it names the version too.
+tr.SetupWindowTitle=seowatcher {#AppVersion} - Kurulum yardımcısı
+en.SetupWindowTitle=Setup - seowatcher {#AppVersion}
 ; The default Inno texts are generic; these read like the product.
 tr.WelcomeLabel1=seowatcher {#AppVersion} kurulumuna hoş geldiniz
 tr.WelcomeLabel2=Sitenizin Google verisini kendi bilgisayarınızda okuyan ücretsiz SEO uygulaması kurulacak.%n%nKurulum yalnızca sizin kullanıcı hesabınıza yapılır, yönetici şifresi istemez ve iki dakika sürer.
