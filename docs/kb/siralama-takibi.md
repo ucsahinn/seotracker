@@ -1,64 +1,68 @@
 ---
 title: Sıralama takibi
-description: Sorgularınızın Google'daki ortalama sırası, bu bilgisayarda tutulan bir arşivden. Google'ın 16 aylık sınırından eskiye de bakarsınız.
+description: Aramalarınızın Google'daki ortalama sırasını gün gün görün. Veri bu bilgisayarda saklanır, Google'ın 16 aylık sınırından eskiye de bakarsınız.
 screen: Sıralama takibi
 route: /p/<proje>/rankings
 updated: 2026-10-22
 ---
 
-Search Console geçmişi 16 ayla sınırlar ve bir sorgunun hangi gün kaç sıraya düştüğünü göstermez. Sıralama takibi bunun için var: uygulama Search Console'dan gün gün sorgu verisini çeker, kendi veritabanına yazar ve o arşiv üzerinden sıra değişimini hesaplar. Arşiv bu bilgisayarda durur; bu yüzden ekran açıldıkça büyür ve zamanla Google'ın göstermediği kadar eskiye gider.
+Bu ekranda aramalarınızın zamanla yükselip düştüğünü görürsünüz. Google Search Console geçmişi 16 ayla sınırlar. Bir aramanın hangi gün kaç sıraya düştüğünü de göstermez.
+
+Uygulama bu veriyi gün gün çekip bu bilgisayarda saklar. Ekranı açtıkça arşiv büyür. Zamanla Google'ın göstermediği kadar eskiye gidersiniz.
 
 ## Ekranda neler var
 
 **Zaman aralığı.** 30 gün, 90 gün (varsayılan), 6 ay, 16 ay ve Arşivin tamamı. Aralık bugünden üç gün geriye kadar sayılır.
 
-**Arşiv durumu satırı.** "Arşiv {aralık} … {n} satır." biçiminde, arşivde kaç gün ve kaç satır olduğunu söyler. Ekran her açılışta eksik günleri Google'dan tamamlar; o sırada "Bu açılışta N gün eklendi." ya da "Kalan günler sonraki açılışta tamamlanacak." notu görürsünüz. Arşiv ilk kez dolarken bir açılış yetmeyebilir; bir sonraki açılış kaldığı yerden devam eder.
+**Arşiv durumu satırı.** Arşivde kaç gün ve kaç satır olduğunu söyler. Ekran her açılışta eksik günleri Google'dan tamamlar. "Bu açılışta N gün eklendi." yazarsa yeni gün gelmiştir. "Kalan günler sonraki açılışta tamamlanacak." yazarsa bir sonraki açılışta devam eder.
 
 **Sorgu içinde ara** kutusu listeyi daraltır.
 
-**Değişim filtreleri.** **Yükselenler** ve **Düşenler** (en az yarım sıra hareket edenler), **Şu an ilk 10'da**, **İlk 10'dan çıkanlar**. Hızlı çipler: **Gösterimi yüksek** (en az 100 gösterim) ve **Hiç tıklanmayan**.
+**Değişim filtreleri.** **Yükselenler** ve **Düşenler** en az yarım sıra oynayanları gösterir. **Şu an ilk 10'da** ve **İlk 10'dan çıkanlar** da var. Hızlı düğmeler: **Gösterimi yüksek** (en az 100 gösterim) ve **Hiç tıklanmayan**.
 
-**Sıra dağılımı.** 1-3, 4-10, 11-20 ve 21+ dilimlerinde kaç sorgunuz olduğunu gösteren çubuklar.
+**Sıra dağılımı.** 1-3, 4-10, 11-20 ve 21+ diliminde kaç aramanız olduğunu gösteren çubuklar.
 
 **Yükselenler ve düşenler.** İki kısa liste: "En çok yükselenler" ve "En çok düşenler".
 
-**Tablo.** Sütunlar: **Sorgu**, **Ort. sıra**, **Değişim**, **Gösterim**, **Tıklama**, **Gün**. Gün sütunu, sorgunun seçili aralıkta kaç gün veri ürettiğini söyler; 90 günlük aralıkta 3 gün görünen bir sorgu nadir aranıyordur. Değişim hücresinde "Yükseldi 2,4" ya da "Düştü 1,1" yazar; önceki dönemde veri yoksa "Önceki dönemde bu sorgu için veri yok." açıklaması çıkar. Satır menüsü: **Kelimeyi kopyala**, **Kayıtlı kelimelere ekle**, **Arama performansında ara**.
+**Tablo.** Sütunlar: **Sorgu**, **Ort. sıra**, **Değişim**, **Gösterim**, **Tıklama**, **Gün**. **Gün** sütunu aramanın seçili aralıkta kaç gün göründüğünü söyler. 90 günde yalnızca 3 gün görünen arama nadiren aranıyordur. Değişim hücresinde "Yükseldi 2,4" ya da "Düştü 1,1" yazar. Satır menüsü: **Kelimeyi kopyala**, **Kayıtlı kelimelere ekle**, **Arama performansında ara**.
 
-**Sorgu geçmişi.** Bir satıra tıklayınca o sorgunun gün gün sıra çizgisi, toplam tıklama ve gösterimi açılır; **Arama performansında aç** bağlantısı aynı sorguyu diğer ekranda gösterir.
+**Sorgu geçmişi.** Bir satıra tıklayınca o aramanın gün gün sıra çizgisi açılır. **Arama performansında aç** bağlantısı aynı aramayı diğer ekranda gösterir.
 
-**Boş durumlar.** Arşiv henüz boşsa "Henüz hangi kelimeyle arandığınız bilinmiyor" ve **Arama performansını aç** düğmesi görünür. Liste en çok gösterim alan 100 sorguyla sınırlıysa altında "Arşivde daha fazla sorgu var; bu liste en çok gösterim alan 100 tanesiyle sınırlı" notu çıkar.
+**Boş durumlar.** Arşiv boşsa "Henüz hangi kelimeyle arandığınız bilinmiyor" yazar ve **Arama performansını aç** düğmesi çıkar. Liste en çok gösterilen 100 aramayla sınırlıdır. Daha fazlası varsa altında bunu söyleyen bir not görürsünüz.
 
 ## Nasıl kullanılır
 
-1. Ekranı ilk kez açtığınızda arşiv durumu satırının "eklendi" demesini bekleyin. İlk doldurma 480 güne kadar geriye gider ve birkaç açılış sürebilir; her açılışta en fazla dört adet 30 günlük parça çekilir.
-2. Bir düşüş araştırıyorsanız **Düşenler** çipine basın, sonra **Gösterimi yüksek** ile önemsiz sorguları eleyin. Kalan listede en üstteki sorguya tıklayıp geçmiş grafiğinde düşüşün başladığı günü okuyun.
-3. Takip etmek istediğiniz sorguları satır menüsünden **Kayıtlı kelimelere ekle** ile işaretleyin; Kayıtlı kelimeler ekranı bu arşivden sıra çeker.
-4. Ayda bir **Yükselenler ve düşenler** kartına bakmak, bir check-in için yeterli özettir.
+1. Ekranı ilk kez açınca arşiv satırında "eklendi" yazmasını bekleyin.
+2. İlk doldurma 480 güne kadar geriye gider. Birkaç açılış sürebilir.
+3. Düşüş arıyorsanız **Düşenler** düğmesine basın. Sonra **Gösterimi yüksek** ile önemsizleri eleyin.
+4. En üstteki aramaya tıklayın. Geçmiş grafiğinde düşüşün başladığı günü okuyun.
+5. İzlemek istediğiniz aramaları **Kayıtlı kelimelere ekle** ile işaretleyin.
+6. Ayda bir "En çok yükselenler" ve "En çok düşenler" listelerine bakın. Genel durum için bu yeter.
 
 ## Sayılar nasıl hesaplanır
 
-Arşiv, Search Console'dan "tarih ve sorgu" boyutuyla, yalnızca kesinleşmiş (final) veriyle doldurulur. Her çekim üç gün geriye sarar; böylece Google'ın sonradan düzelttiği günler yeniden yazılır.
+Arşiv, yalnızca Google'ın kesinleştirdiği veriyle dolar. Her açılışta son üç gün yeniden çekilir, çünkü Google o günleri sonradan düzeltebilir. Böylece Google'ın sonradan düzelttiği günler yeniden yazılır.
 
-Tablodaki tıklama ve gösterim toplamdır. Ort. sıra, gösterimle ağırlıklandırılmış ortalamadır: sorgunun çok gösterim aldığı günler ortalamayı daha çok etkiler. Gün, veri olan gün sayısıdır.
+Tıklama ve gösterim toplamdır. **Ort. sıra**, çok gösterim alınan günleri daha çok sayar. **Gün**, verisi olan gün sayısıdır.
 
-Değişim, önceki dönemin ortalama sırasından bu dönemin ortalama sırası çıkarılarak bulunur; pozitif sayı yükseliş demektir. Önceki dönem aynı uzunluktadır ve hemen öncesinde biter; karşılaştırma için önceki dönemin en çok gösterim alan 5.000 sorgusu kullanılır.
+Değişim şöyle bulunur: önceki dönemin ortalama sırasından bu dönemin sırası çıkarılır. Pozitif sayı yükseliş demektir. Önceki dönem aynı uzunluktadır ve hemen öncesinde biter.
 
-Liste en çok gösterim alan 100 sorguyu getirir ve tarayıcıda 25, 50 ya da 100'lük sayfalara böler. Sunucu tarafında üst sınır 500 satır ve 1.825 gündür.
+Liste en çok gösterilen 100 aramayı getirir. Tarayıcıda 25, 50 ya da 100'lük sayfalara bölünür.
 
 ## Sık sorulanlar
 
-**Neden Search Console'daki rakamdan farklı?** Arşiv yalnızca kesinleşmiş günleri tutar ve bugünden üç gün geriye kadar gider; Search Console'da bugünü içeren bir aralık seçtiyseniz sayılar tutmaz.
+**Search Console'daki rakamdan neden farklı?** Arşiv yalnızca kesinleşmiş günleri tutar ve üç gün geriye kadar gider. Search Console'da bugünü içeren aralık seçtiyseniz sayılar tutmaz.
 
-**Sorgu listede var ama sıra geçmişi boş.** O sorgu seçili aralıkta çok az gün görünmüş olabilir; Gün sütununa bakın.
+**Arama listede var ama sıra geçmişi boş.** O arama az gün görünmüş olabilir. **Gün** sütununa bakın.
 
-**Arşiv neden hep aynı günde takılı kaldı?** Ekranı açmadıysanız arşiv dolmaz; uygulama arka planda çekmez. Ekranı açın, "eklendi" notunu bekleyin.
+**Arşiv neden aynı günde takılı?** Uygulama arka planda veri çekmez. Ekranı açın ve "eklendi" notunu bekleyin.
 
-**Rakibimin sırasını görebilir miyim?** Hayır. Search Console yalnızca kendi mülkünüzün sıralarını verir.
+**Rakibimin sırasını görebilir miyim?** Hayır. Search Console yalnızca kendi sitenizi verir.
 
-**Sıra 1,0 ne demek?** Dönem boyunca her gösterimde ilk sırada çıkmışsınız. Bir günde bile 3. sıraya düşseydiniz ortalama 1'in üstüne çıkardı.
+**Sıra 1,0 ne demek?** Dönem boyunca her gösterimde ilk sırada çıkmışsınız. Bir gün 3. sıraya düşseydiniz ortalama 1'in üstüne çıkardı.
 
 ## Sınırlar
 
-Arşiv yalnızca bu kurulumun gördüğü günleri içerir; uygulamayı yeni kurduysanız ilk açılışta en fazla 480 gün geriye gidebilir. Google'ın gizlediği nadir sorgular arşive de girmez. Yerel arşiv silinirse (Docker birimi ya da veri klasörü kaldırılırsa) geçmiş gider; yedeğini almak size düşer.
+Arşiv yalnızca bu kurulumun gördüğü günleri içerir. Yeni kurduysanız ilk açılışta en fazla 480 gün geriye gidebilir. Google'ın gizlediği nadir aramalar arşive de girmez. Arşiv silinirse (Docker birimi ya da veri klasörü kaldırılırsa) geçmiş gider. Yedeğini almak size düşer.
 
 <!-- Kaynaklar: src/routes/_project/p/$projectId/rankings.tsx; src/client/features/rankings/RankingsPage.tsx; TrackedQueriesTable.tsx; PositionChange.tsx; PositionBandBars.tsx; MoversCard.tsx; ArchiveStatus.tsx; EmptyArchivePanel.tsx; QueryHistoryCard.tsx; src/serverFunctions/gscHistory.ts; src/server/features/gsc/services/GscHistoryService.ts; src/server/features/gsc/repositories/GscHistoryRepository.ts; src/shared/rankingChange.ts; src/db/gsc-history.schema.ts -->

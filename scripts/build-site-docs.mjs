@@ -325,7 +325,7 @@ function main() {
     urls.push({ loc: `${siteUrl}/docs/${slug}/`, lastmod: updated });
   }
   // Index page: every group with its one-line descriptions.
-  const indexBody = `<h1>Belgeler</h1><p class="lede">Her ekran ve her iş için kılavuz. Uygulamanın adı GitHub'da seotracker, bu sitede seowatcher; ikisi aynı şey.</p>${groups
+  const indexBody = `<h1>Kılavuz</h1><p class="lede">Kurulumdan ilk rapora kadar her adım ve her ekran için kısa, sade bir anlatım. Uygulamanın adı GitHub'da seotracker, bu sitede seowatcher; ikisi aynı şey.</p>${groups
     .map((g) => {
       const items = g.slugs
         .filter((s) => docs.has(s))
@@ -342,7 +342,7 @@ function main() {
   fs.writeFileSync(
     path.join(outDir, "index.html"),
     page({
-      title: "Belgeler",
+      title: "Kılavuz",
       description:
         "seowatcher kılavuzları: kurulum, her ekranın ne gösterdiği, Google bağlantısı, denetim kuralları, ajan kurulumu ve sorun giderme.",
       body: indexBody,

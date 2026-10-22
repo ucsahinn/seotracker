@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Docker ile kurulum | seowatcher belgeleri</title>
-    <meta name="description" content="Mac, Linux ve Windows'ta Docker Compose ile kurma. Tek komut, .env gerekmez; veri bir Docker biriminde durur." />
+    <title>Docker ile kurulum | seowatcher kılavuzu</title>
+    <meta name="description" content="Mac, Linux ve Windows'ta Docker ile kurun. Tek komut yeter, .env dosyası gerekmez. Verileriniz Docker'ın veri deposunda durur." />
     <meta name="robots" content="max-image-preview:large" />
     <link rel="canonical" href="https://seowatcher.io/docs/kurulum-docker/" />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
@@ -32,7 +32,7 @@
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="seowatcher" />
     <meta property="og:title" content="Docker ile kurulum" />
-    <meta property="og:description" content="Mac, Linux ve Windows'ta Docker Compose ile kurma. Tek komut, .env gerekmez; veri bir Docker biriminde durur." />
+    <meta property="og:description" content="Mac, Linux ve Windows'ta Docker ile kurun. Tek komut yeter, .env dosyası gerekmez. Verileriniz Docker'ın veri deposunda durur." />
     <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
     <meta property="og:url" content="https://seowatcher.io/docs/kurulum-docker/" />
     <meta property="og:locale" content="tr_TR" />
@@ -504,7 +504,7 @@
         >
         <nav class="topnav" aria-label="Site">
           <a class="hide" href="/#ekranlar">Ekranlar</a>
-          <a class="hide" href="/docs/">Belgeler</a>
+          <a class="hide" href="/docs/">Kılavuz</a>
           <a class="hide" href="https://github.com/ucsahinn/seotracker"
             >GitHub</a
           >
@@ -517,46 +517,48 @@
       </div>
     </header>
     <div class="wrap layout">
-      <aside class="side" aria-label="Belgeler"><p class="nav-group">Başlangıç</p><ul><li><a href="/docs/kurulum-windows/">Windows'a kurulum</a></li><li class="current" aria-current="page"><a href="/docs/kurulum-docker/">Docker ile kurulum</a></li><li><a href="/docs/google-baglantisi/">Google'a bağlanma</a></li><li><a href="/docs/pagespeed-anahtari/">PageSpeed anahtarı</a></li></ul><p class="nav-group">Ekranlar</p><ul><li><a href="/docs/panel/">Panel</a></li><li><a href="/docs/arama-performansi/">Arama performansı</a></li><li><a href="/docs/siralama-takibi/">Sıralama takibi</a></li><li><a href="/docs/firsatlar/">Fırsatlar</a></li><li><a href="/docs/kayitli-kelimeler/">Kayıtlı kelimeler</a></li><li><a href="/docs/analytics/">Analytics</a></li><li><a href="/docs/site-denetimi/">Site denetimi</a></li><li><a href="/docs/dizin-durumu/">Dizin durumu</a></li><li><a href="/docs/raporlar/">Raporlar ve şablonlar</a></li><li><a href="/docs/proje-bilgisi/">Proje bilgisi</a></li><li><a href="/docs/ayarlar/">Ayarlar</a></li></ul><p class="nav-group">Başvuru</p><ul><li><a href="/docs/denetim-kurallari/">Denetim kuralları</a></li><li><a href="/docs/ajan-kurulumu/">Ajan kurulumu</a></li><li><a href="/docs/sorun-giderme/">Sorun giderme</a></li></ul></aside>
+      <aside class="side" aria-label="Kılavuz"><p class="nav-group">Başlangıç</p><ul><li><a href="/docs/kurulum-windows/">Windows'a kurulum</a></li><li class="current" aria-current="page"><a href="/docs/kurulum-docker/">Docker ile kurulum</a></li><li><a href="/docs/google-baglantisi/">Google'a bağlanma</a></li><li><a href="/docs/pagespeed-anahtari/">PageSpeed anahtarı</a></li></ul><p class="nav-group">Ekranlar</p><ul><li><a href="/docs/panel/">Panel</a></li><li><a href="/docs/arama-performansi/">Arama performansı</a></li><li><a href="/docs/siralama-takibi/">Sıralama takibi</a></li><li><a href="/docs/firsatlar/">Fırsatlar</a></li><li><a href="/docs/kayitli-kelimeler/">Kayıtlı kelimeler</a></li><li><a href="/docs/analytics/">Analytics</a></li><li><a href="/docs/site-denetimi/">Site denetimi</a></li><li><a href="/docs/dizin-durumu/">Dizin durumu</a></li><li><a href="/docs/raporlar/">Raporlar ve şablonlar</a></li><li><a href="/docs/proje-bilgisi/">Proje bilgisi</a></li><li><a href="/docs/ayarlar/">Ayarlar</a></li></ul><p class="nav-group">Başvuru</p><ul><li><a href="/docs/denetim-kurallari/">Denetim kuralları</a></li><li><a href="/docs/ajan-kurulumu/">Ajan kurulumu</a></li><li><a href="/docs/sorun-giderme/">Sorun giderme</a></li></ul></aside>
       <article id="icerik">
-        <h1>Docker ile kurulum</h1><p class="lede">Mac, Linux ve Windows'ta Docker Compose ile kurma. Tek komut, .env gerekmez; veri bir Docker biriminde durur.</p><p>Bu sayfanın sonunda uygulama bir Docker konteynerinde çalışıyor ve tarayıcıda http://localhost:3001 adresinde açık olacak. Windows kullanıyorsanız ve Docker kurulu değilse tek dosyalık Windows kurulumu çok daha kolaydır; bu sayfa Mac, Linux ve zaten Docker kullananlar içindir. İlk açılış, uygulama konteyner içinde derlendiği için birkaç dakika sürer; sonrakiler saniyeler.</p>
+        <h1>Docker ile kurulum</h1><p class="lede">Mac, Linux ve Windows'ta Docker ile kurun. Tek komut yeter, .env dosyası gerekmez. Verileriniz Docker'ın veri deposunda durur.</p><p>Bu sayfanın sonunda uygulama Docker'da (uygulamaları kapalı kutu içinde çalıştıran program) çalışıyor ve <code>http://localhost:3001</code> adresinde açık olacak. Windows kullanıyorsanız tek dosyalık Windows kurulumu çok daha kolaydır. Bu sayfa Mac, Linux ve zaten Docker kullananlar içindir. İlk açılış birkaç dakika sürer, çünkü uygulama kutunun (konteynerin) içinde derlenir. Sonrakiler saniyeler sürer.</p>
 <h2 id="gerekenler">Gerekenler</h2>
-<ul><li>Docker Desktop (Mac, Windows) ya da Docker Engine ile Docker Compose (Linux).</li><li>Depoyu indirmek için Git; yoksa GitHub sayfasındaki <strong>Code → Download ZIP</strong> de olur.</li><li>Yaklaşık 2 GB boş disk (imaj ve bağımlılıklar için) ve ilk derleme sırasında 2 GB boş bellek.</li></ul>
+<ul><li>Docker Desktop (Mac, Windows) ya da Docker Engine ile Docker Compose (Linux).</li><li>Git. Yoksa GitHub sayfasındaki <strong>Code → Download ZIP</strong> de olur.</li><li>Yaklaşık 2 GB boş disk ve ilk derleme sırasında 2 GB boş bellek.</li></ul>
 <h2 id="adimlar">Adımlar</h2>
-<ol><li>Depoyu alın ve klasöre girin:</li></ol>
+<ol><li>Depoyu (proje dosyalarını) indirin ve klasörüne girin:</li></ol>
 <pre><code>git clone https://github.com/ucsahinn/seotracker.git
 cd seotracker</code></pre>
-<ol><li>Başlatın:</li></ol>
+<ol><li>Uygulamayı başlatın:</li></ol>
 <pre><code>docker compose up -d</code></pre>
-<p>Hepsi bu. .env dosyası gerekmez; şifreleme anahtarı ve yapay zekâ bağlantı parolası ilk açılışta kendiliğinden üretilir ve Docker biriminde saklanır.</p>
-<ol><li>İlerlemeyi izlemek isterseniz:</li></ol>
+<p>Hepsi bu kadar. <code>.env</code> dosyası gerekmez. Şifreleme anahtarı ve asistan parolası ilk açılışta kendiliğinden üretilir ve Docker'ın veri deposunda (birim) saklanır.</p>
+<ol><li>İlerlemeyi görmek isterseniz şunu yazın:</li></ol>
 <pre><code>docker compose logs -f</code></pre>
-<p>Günlükte &quot;Building client + server&quot; satırını görürsünüz; bu ilk derlemedir. &quot;Ready&quot; ya da sağlık kontrolünün geçtiğini gösteren satırdan sonra tarayıcıda <strong>http://localhost:3001</strong> adresini açın.</p>
-<ol><li>Sonraki adım Google bağlantısı: Google bağlantısı kılavuzuna geçin. Docker'da Google yönlendirme adresleri <strong>http://localhost:3001/api/gsc/oauth/callback</strong> ve <strong>http://localhost:3001/api/ga4/oauth/callback</strong> olur.</li></ol>
+<ol><li>Bekleyin. Günlükte &quot;Building client + server&quot; satırı ilk derlemedir. &quot;Ready&quot; ya da sağlık kontrolünün geçtiğini gösteren satırı görünce tarayıcıda <code>http://localhost:3001</code> adresini açın.</li></ol>
+<p>Sonraki adım Google bağlantısı kılavuzudur. Docker'da Google'a vereceğiniz iki yönlendirme adresi şunlardır:</p>
+<ul><li><code>http://localhost:3001/api/gsc/oauth/callback</code></li><li><code>http://localhost:3001/api/ga4/oauth/callback</code></li></ul>
 <h3 id="guncelleme">Güncelleme</h3>
+<p>Şu iki komutu yazın:</p>
 <pre><code>git pull
 docker compose up -d --build</code></pre>
-<p>Uygulama içindeki <strong>Ayarlar → Hakkında</strong> yeni sürümü haber verir ve bu iki komutu kopyalamanız için gösterir. Veriniz <strong>seotracker_data</strong> adlı Docker biriminde kaldığı için güncelleme silmez.</p>
+<p><strong>Ayarlar → Hakkında</strong> yeni sürümü haber verir ve bu iki komutu gösterir. Veriniz <code>seotracker_data</code> adlı veri deposunda kaldığı için güncelleme onu silmez.</p>
 <h3 id="durdurma-ve-kaldirma">Durdurma ve kaldırma</h3>
-<p>Durdurmak: <code>docker compose stop</code>. Yeniden başlatmak: <code>docker compose up -d</code>. Konteyneri kaldırıp veriyi tutmak: <code>docker compose down</code>. Veriyi de silmek: <code>docker compose down -v</code> (bu, veritabanını, Google bağlantılarını ve raporları kalıcı olarak siler).</p>
+<ul><li>Durdurmak: <code>docker compose stop</code></li><li>Yeniden başlatmak: <code>docker compose up -d</code></li><li>Kutuyu kaldırıp veriyi tutmak: <code>docker compose down</code></li><li>Veriyi de silmek: <code>docker compose down -v</code>. Bu komut veritabanını, Google bağlantılarını ve raporları kalıcı olarak siler.</li></ul>
 <h3 id="yedekleme">Yedekleme</h3>
-<p>Veri <strong>seotracker_data</strong> biriminde, konteyner içindeki <strong>/app/.wrangler</strong> yolundadır. Yedek almak için konteyneri durdurup birimi bir arşive kopyalayın:</p>
+<p>Veriniz <code>seotracker_data</code> deposunda, kutunun içindeki <code>/app/.wrangler</code> yolundadır. Yedek almak için üç komutu sırayla yazın:</p>
 <pre><code>docker compose stop
 docker run --rm -v seotracker_data:/data -v &quot;$PWD&quot;:/backup alpine tar czf /backup/seotracker-yedek.tgz -C /data .
 docker compose up -d</code></pre>
-<p>Geri yüklerken aynı komutun tar xzf halini kullanın. Birimdeki <strong>instance-secret</strong> dosyası Google token'larını şifreleyen anahtardır; onsuz yedek, Google bağlantıları olmadan açılır.</p>
+<p>Geri yüklerken aynı komutta <code>tar czf</code> yerine <code>tar xzf</code> kullanın. Veri deposundaki <code>instance-secret</code> dosyası Google bağlantılarını şifreleyen anahtardır. O olmayan yedek, Google bağlantıları olmadan açılır.</p>
 <h3 id="ayarlar-istege-bagli">Ayarlar (isteğe bağlı)</h3>
-<p>Hiçbir ortam değişkeni zorunlu değildir. Değiştirmek isterseniz proje klasörüne bir .env dosyası koyun ve <code>docker compose up -d --force-recreate seotracker</code> deyin.</p>
-<div class="tw"><table><thead><tr><th>Değişken</th><th>Ne için</th></tr></thead><tbody><tr><td>PORT</td><td>Varsayılan 3001. Değiştirince Google yönlendirme adresleri de değişir</td></tr><tr><td>ALLOWED_HOST</td><td>Ters vekil sunucu arkasındaysanız dışarıdan görünen konak adı; boşsa yalnızca localhost</td></tr><tr><td>AUTH_MODE</td><td>local_noauth (varsayılan) ya da cloudflare_access</td></tr><tr><td>BETTER_AUTH_SECRET</td><td>Token şifreleme anahtarı; boş bırakın, uygulama üretir. Elle verirseniz en az 32 karakter olmalı ve bir daha değiştirmemelisiniz</td></tr><tr><td>GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET</td><td>Ayarlar ekranından girmenin alternatifi; ekrana girilen değer önceliklidir</td></tr><tr><td>PAGESPEED_API_KEY</td><td>Ayarlar ekranından girmenin alternatifi</td></tr><tr><td>MCP_TOKEN</td><td>Boş: ilk açılışta üretilir. &quot;off&quot;: parola istenmez. Başka bir değer: olduğu gibi kullanılır</td></tr></tbody></table></div>
+<p>Hiçbir ayar zorunlu değildir. Değiştirmek isterseniz proje klasörüne bir <code>.env</code> dosyası koyun. Sonra <code>docker compose up -d --force-recreate seotracker</code> yazın.</p>
+<div class="tw"><table><thead><tr><th>Ayar adı</th><th>Ne işe yarar</th></tr></thead><tbody><tr><td>PORT</td><td>Adres numarası, varsayılan 3001. Değişince Google yönlendirme adresleri de değişir</td></tr><tr><td>ALLOWED_HOST</td><td>Başka bir sunucunun arkasındaysanız dışarıdan görünen ad. Boşsa yalnızca localhost</td></tr><tr><td>AUTH_MODE</td><td><code>local_noauth</code> (varsayılan) ya da <code>cloudflare_access</code></td></tr><tr><td>BETTER_AUTH_SECRET</td><td>Şifreleme anahtarı. Boş bırakın, uygulama üretir. Elle verirseniz en az 32 karakter olsun, sonra değiştirmeyin</td></tr><tr><td>GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET</td><td>Ayarlar ekranına girmenin alternatifi. Ekrana girilen değer önceliklidir</td></tr><tr><td>PAGESPEED_API_KEY</td><td>Ayarlar ekranına girmenin alternatifi</td></tr><tr><td>MCP_TOKEN</td><td>Boşsa ilk açılışta üretilir. <code>off</code> yazarsanız parola istenmez. Başka değer olduğu gibi kullanılır</td></tr></tbody></table></div>
 <h2 id="kontrol">Kontrol</h2>
-<ul><li><code>docker compose ps</code> çıktısında durum <strong>healthy</strong> olmalı; ilk açılışta buna ulaşmak beş dakikaya kadar sürebilir.</li><li><code>curl http://127.0.0.1:3001/api/health</code> çıktısı &quot;status&quot;:&quot;ok&quot; ile başlamalı.</li><li>Tarayıcıda http://localhost:3001 açılmalı ve <strong>Yardım</strong> ekranındaki durum kartı &quot;Her şey yolunda.&quot; demeli (Google bağlanmadan önce &quot;Google girişi&quot; satırı dikkat ister, normaldir).</li></ul>
+<ul><li><code>docker compose ps</code> çıktısında durum <strong>healthy</strong> olmalı. İlk açılışta buna ulaşmak beş dakikaya kadar sürebilir.</li><li><code>curl http://127.0.0.1:3001/api/health</code> çıktısı &quot;status&quot;:&quot;ok&quot; ile başlamalı.</li><li>Tarayıcıda <code>http://localhost:3001</code> açılmalı. <strong>Yardım</strong> ekranındaki durum kartı &quot;Her şey yolunda.&quot; demeli. Google bağlanmadan önce &quot;Google girişi&quot; satırı dikkat ister. Bu normaldir.</li></ul>
 <h2 id="sik-sorulanlar">Sık sorulanlar</h2>
-<p><strong>Neden ilk açılış bu kadar uzun?</strong> Uygulama konteyner içinde derleniyor; yaklaşık 7.400 modül. Sonraki açılışlarda derleme atlanır.</p>
-<p><strong>.env.example nerede?</strong> Yok. Üst projeden gelen o dosya bu sürümde olmayan şeyleri anlatıyordu; tam liste yukarıdaki tabloda ve docs/ENVIRONMENT.md dosyasında.</p>
-<p><strong>İnternete açabilir miyim?</strong> Uygulama kimlik doğrulaması yapmaz; önüne kendi kimlik doğrulamanızı, bir ters vekil ya da tünel koymadan açmayın. ALLOWED_HOST'u ayarlayınca uygulama bunu sağlık kontrolünde uyarır.</p>
-<p><strong>Yapay zekâ asistanımın parolasını nereden alırım?</strong> Uygulamanın <strong>Ajan kurulumu</strong> ekranı komutu gösterir: <code>docker compose exec -T seotracker cat /app/.wrangler/mcp-token</code>. Git Bash kullanıyorsanız başına MSYS_NO_PATHCONV=1 ekleyin.</p>
+<p><strong>İlk açılış neden uzun?</strong> Uygulama kutunun içinde derlenir, yaklaşık 7.400 parça. Sonraki açılışlarda derleme atlanır.</p>
+<p><strong><code>.env.example</code> dosyası nerede?</strong> Yok. Üst projeden gelen o dosya bu sürümde olmayan şeyleri anlatıyordu. Tam liste yukarıdaki tabloda ve <code>docs/ENVIRONMENT.md</code> dosyasında.</p>
+<p><strong>İnternete açabilir miyim?</strong> Uygulama kimlik sormaz. Önüne kendi kimlik doğrulamanızı koymadan açmayın. <code>ALLOWED_HOST</code> ayarlarsanız uygulama sağlık kontrolünde sizi uyarır.</p>
+<p><strong>Asistanımın parolasını nereden alırım?</strong> Uygulamadaki <strong>Ajan kurulumu</strong> ekranı komutu gösterir: <code>docker compose exec -T seotracker cat /app/.wrangler/mcp-token</code>. Git Bash kullanıyorsanız başına <code>MSYS_NO_PATHCONV=1</code> ekleyin.</p>
 <h2 id="sorun-cikarsa">Sorun çıkarsa</h2>
-<ul><li><strong>&quot;Bind for 127.0.0.1:3001 failed&quot;</strong>: port dolu. Proje klasörüne PORT=3002 satırlı bir .env koyun ve konteyneri yeniden oluşturun. Windows'ta Not Defteri dosyayı .env.txt diye kaydedebilir; PowerShell ile <code>Set-Content -Encoding ascii .env 'PORT=3002'</code> güvenlidir.</li><li><strong>Durum &quot;unhealthy&quot;</strong>: <code>docker compose logs --tail 50</code> son satırları gösterir. Derleme sırasında bellek bittiyse Docker Desktop'a daha fazla bellek verin.</li><li><strong>Google bağlantısı &quot;yapılandırılmamış&quot; diyor</strong>: BETTER_AUTH_SECRET 32 karakterden kısaysa Google kapalı kalır. Elle verdiyseniz uzatın; vermediyseniz birimdeki instance-secret dosyasının bozulup bozulmadığına bakın.</li><li><strong>Güncellemeden sonra Google bağlantısı koptu</strong>: BETTER_AUTH_SECRET değişmiş ya da birim yeniden oluşturulmuştur. Proje ayarlarından <strong>Yeniden bağlan</strong> deyin.</li></ul>
+<ul><li><strong>&quot;Bind for 127.0.0.1:3001 failed&quot; yazıyor.</strong> Adres numarası dolu. Proje klasörüne <code>PORT=3002</code> satırlı bir <code>.env</code> koyun ve kutuyu yeniden oluşturun. Windows'ta Not Defteri dosyayı <code>.env.txt</code> diye kaydedebilir. PowerShell'de <code>Set-Content -Encoding ascii .env 'PORT=3002'</code> güvenlidir.</li><li><strong>Durum &quot;unhealthy&quot;.</strong> <code>docker compose logs --tail 50</code> son satırları gösterir. Derleme sırasında bellek bittiyse Docker Desktop'a daha fazla bellek verin.</li><li><strong>Google bağlantısı &quot;yapılandırılmamış&quot; diyor.</strong> <code>BETTER_AUTH_SECRET</code> 32 karakterden kısaysa Google kapalı kalır. Elle verdiyseniz uzatın. Vermediyseniz veri deposundaki <code>instance-secret</code> dosyası bozulmuş olabilir.</li><li><strong>Güncellemeden sonra Google bağlantısı koptu.</strong> <code>BETTER_AUTH_SECRET</code> değişmiş ya da veri deposu yeniden oluşturulmuştur. Proje ayarlarında <strong>Yeniden bağlan</strong> deyin.</li></ul>
         <p class="meta">
           Son güncelleme: 2026-10-22. Bir hata görürseniz
           <a href="https://github.com/ucsahinn/seotracker/issues"

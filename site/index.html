@@ -113,9 +113,9 @@
             "description": "Google Search Console, Google Analytics 4, kendi site tarama aracı ve PageSpeed Insights verisini tek panelde toplayan ücretsiz, açık kaynaklı (MIT) masaüstü SEO uygulaması. Windows 10/11'e kurulur; Mac ve Linux'ta Docker ile çalışır. Tek kullanıcılıdır, yalnızca kendi bilgisayarınızdan erişilir.",
             "applicationCategory": "BusinessApplication",
             "operatingSystem": "Windows 10, Windows 11 (64-bit)",
-            "softwareVersion": "2.3.0",
+            "softwareVersion": "2.3.1",
             "datePublished": "2026-10-22",
-            "fileSize": "61 MB",
+            "fileSize": "81 MB",
             "inLanguage": "tr",
             "downloadUrl": "https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe",
             "installUrl": "https://github.com/ucsahinn/seotracker#kurulum",
@@ -163,7 +163,7 @@
                 "name": "Gerçekten ücretsiz mi?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Evet. MIT lisanslı açık kaynak, kodun tamamı GitHub'da. Kullandığı Google servisleri (Search Console, Analytics Data, PageSpeed Insights) ücretsiz kotalarıyla çalışır."
+                  "text": "Evet. MIT lisanslı açık kaynak, kodun tamamı GitHub'da. Google'ın servisleri de ücretsiz sınırlar içinde çalışır."
                 }
               },
               {
@@ -171,7 +171,7 @@
                 "name": "Windows \"tanınmayan uygulama\" uyarısı veriyor.",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Kurulum dosyası henüz kod imzalı değil. SmartScreen ekranında önce \"Daha fazla bilgi\"yi, sonra \"Yine de çalıştır\"ı seçin. Dosyanın SHA-256 özeti her sürümün sayfasında yazar, isterseniz karşılaştırın."
+                  "text": "Kurulum dosyası henüz kod imzalı değil. SmartScreen ekranında önce \"Daha fazla bilgi\"yi, sonra \"Yine de çalıştır\"ı seçin. Dosyanın parmak izi (SHA-256) her sürümün sayfasında yazar, isterseniz karşılaştırın."
                 }
               },
               {
@@ -179,7 +179,7 @@
                 "name": "Verilerim nerede duruyor?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "%LOCALAPPDATA%\\seowatcher klasöründe. Veritabanı, Google erişim anahtarlarını şifreleyen anahtar ve günlükler orada. Uygulamayı kaldırmak bu klasöre dokunmaz, yedek almak için kopyalamanız yeter."
+                  "text": "%LOCALAPPDATA%\\seowatcher klasöründe. Veritabanı, Google erişim anahtarınız ve günlükler orada. Uygulamayı kaldırmak bu klasöre dokunmaz, yedek almak için kopyalamanız yeter."
                 }
               },
               {
@@ -1283,7 +1283,7 @@
         <nav class="nav" aria-label="Sayfa">
           <a class="hide" href="#ekranlar">Ekranlar</a>
           <a class="hide" href="#kurulum">Kurulum</a>
-          <a class="hide" href="/docs/">Belgeler</a>
+          <a class="hide" href="/docs/">Kılavuz</a>
           <a href="https://github.com/ucsahinn/seotracker">GitHub</a>
           <a
             class="btn primary small"
@@ -1303,10 +1303,10 @@
           </h1>
           <div class="hero-copy">
             <p class="lede">
-              seowatcher, Search Console, Analytics 4 ve site denetimini tek
-              ekranda toplayan ücretsiz, açık kaynaklı bir SEO uygulaması.
-              Windows'a tek dosyayla kurulur. Üye olmazsınız, verileriniz
-              bilgisayarınızdan çıkmaz.
+              Google'ın siteniz için tuttuğu sayıları ve sitenizdeki hataları
+              tek ekranda gösterir. Ücretsiz ve açık kaynak. Windows'a tek
+              dosyayla kurulur. Üye olmazsınız, verileriniz bilgisayarınızdan
+              çıkmaz.
             </p>
             <div class="cta">
               <a
@@ -1316,11 +1316,7 @@
                 >Windows için indir
                 <span class="arrow" aria-hidden="true">↓</span></a
               >
-              <a
-                class="btn"
-                href="https://github.com/ucsahinn/seotracker#kurulum"
-                >Docker ile kur</a
-              >
+              <a class="btn" href="/docs/kurulum-docker/">Mac ve Linux için</a>
             </div>
             <p class="phone-note">
               Windows 10 veya 11 yüklü bir bilgisayara kurulur. Telefondan
@@ -1518,27 +1514,27 @@
           <div class="stat reveal" style="--d: 0">
             <b data-count="95">95</b
             ><span
-              >denetim kuralı: kırık bağlantıdan hreflang'a, canonical'dan Core
-              Web Vitals'a</span
+              >kontrol: kırık bağlantı, eksik başlık, yavaş sayfa ve Google'ın
+              baktığı diğer her şey</span
             >
           </div>
           <div class="stat reveal" style="--d: 90">
             <b data-count="33">33</b
             ><span
-              >MCP aracı; yapay zekâ asistanınız veriyi okur, denetimi
-              çalıştırır, raporu yazar</span
+              >araç: Claude Code, Codex ya da Cursor bağlarsanız asistan
+              sayılarınızı okur, denetimi çalıştırır, raporu yazar</span
             >
           </div>
           <div class="stat reveal" style="--d: 180">
             <b data-count="16" data-suffix=" ay">16 ay</b
             ><span
-              >arama geçmişi Search Console'dan; yerel arşivle daha da
+              >geriye arama geçmişi; uygulama kendi arşivini tuttukça daha da
               geriye</span
             >
           </div>
           <div class="stat reveal" style="--d: 270">
             <b data-count="0" data-suffix=" ₺">0 ₺</b
-            ><span>abonelik, üyelik, kart. MIT lisanslı açık kaynak</span>
+            ><span>abonelik yok, üyelik yok, kart yok. Kodu açık</span>
           </div>
         </div>
       </section>
@@ -1559,7 +1555,7 @@
               <div class="walk-text">
                 <h3>Hangi sayfaya bu hafta dokunmalıyım?</h3>
                 <p>
-                  Search Console'daki sorgularınızı dört gruba ayırır: az
+                  Google'da görünen sayfalarınızı dört gruba ayırır: az
                   tıklananlar, yükselmeye yakın olanlar, zaten üstte olanlar ve
                   derinde kalanlar. Hangi sayfayla başlayacağınız yanında yazar,
                   tahmin etmezsiniz.
@@ -1597,10 +1593,10 @@
               <div class="walk-text">
                 <h3>Sitede neyin bozuk olduğunu Google'a sormadan görün.</h3>
                 <p>
-                  Siteyi sayfa sayfa gezer ve 95 kurala göre bakar: kırık
-                  bağlantı, canonical, hreflang, uzun başlık, yapısal veri, hız.
-                  Her bulgunun altında ne yapacağınız yazar, teknik biri
-                  gerekmez.
+                  Siteyi sayfa sayfa gezer ve 95 şeye bakar: kırık bağlantı,
+                  eksik ya da çok uzun başlık, yavaş açılan sayfa, Google'ın
+                  anlamadığı adresler. Her bulgunun altında ne yapacağınız
+                  yazar, teknik biri gerekmez.
                 </p>
               </div>
               <div class="tray" data-tilt="5">
@@ -1670,12 +1666,12 @@
             </article>
             <article class="walk-item reveal">
               <div class="walk-text">
-                <h3>İsterseniz Claude Code, Codex ya da Cursor'a bağlayın.</h3>
+                <h3>İsterseniz bir yapay zekâ asistanı bağlayın.</h3>
                 <p>
-                  Asistan uygulamanın verisini okur; denetim, düşüş incelemesi,
-                  aylık kontrol ve rapor için hazır görev şablonları (skills)
-                  var. Kurulum metni ekranda hazır, kopyalayıp yapıştırmanız
-                  yeter. Kullanmazsanız hiçbir şey eksilmez.
+                  Claude Code, Codex ya da Cursor uygulamanın verisini okur.
+                  Denetim, düşüş incelemesi, aylık kontrol ve rapor için hazır
+                  görevler var. Kurulum metni ekranda hazır, kopyalayıp asistana
+                  yapıştırırsınız. Kullanmazsanız hiçbir şey eksilmez.
                 </p>
               </div>
               <div class="tray" data-tilt="5">
@@ -1765,10 +1761,10 @@
             </svg>
           </div>
           <p class="flow-note reveal" style="--d: 200">
-            Uygulama yalnızca kendi bilgisayarınızdan açılır ve dışarıda iki
-            yerle konuşur: Google'ın servisleri ve denetlediğiniz sitenin
-            sayfaları. Verileriniz başka hiçbir yere gitmez. Google erişim
-            anahtarları diskte şifreli durur.
+            Uygulama yalnızca kendi bilgisayarınızdan açılır. Dışarıda iki yerle
+            konuşur: Google ve denetlediğiniz sitenin sayfaları. Verileriniz
+            başka hiçbir yere gitmez. Google erişim anahtarınız bilgisayarınızda
+            şifreli durur.
           </p>
         </div>
       </section>
@@ -1780,13 +1776,15 @@
             <div class="reveal" style="--d: 0">
               <dt>Arama hacmi tahmin etmez.</dt>
               <dd>
-                Gösterim sayısı Google'dan gelir. Anahtar kelime hacmi diye bir
-                tahmin sunmaz.
+                Bir kelimenin ayda kaç kez arandığını tahmin etmez. Gösterim
+                sayısı Google'dan gelir, o gerçek.
               </dd>
             </div>
             <div class="reveal" style="--d: 80">
-              <dt>Backlink saymaz.</dt>
-              <dd>Bu veriyi ücretli servisler satar, seowatcher'da yok.</dd>
+              <dt>Size bağlantı veren siteleri saymaz.</dt>
+              <dd>
+                Bu veriyi (backlink) ücretli servisler satar, seowatcher'da yok.
+              </dd>
             </div>
             <div class="reveal" style="--d: 160">
               <dt>Rakip sıralaması izlemez.</dt>
@@ -1798,8 +1796,8 @@
             <div class="reveal" style="--d: 240">
               <dt>Bulutta çalışmaz.</dt>
               <dd>
-                Tek kullanıcı, tek bilgisayar. İnternete açacaksanız önüne
-                kendiniz bir giriş katmanı koymalısınız.
+                Tek kullanıcı, tek bilgisayar. Başka yerden erişmek isterseniz
+                önüne kendiniz şifreli bir giriş koymanız gerekir.
               </dd>
             </div>
           </dl>
@@ -1815,10 +1813,9 @@
                 <div>
                   <h3>Kurulum dosyasını çalıştırın</h3>
                   <p>
-                    Uygulama kullanıcı klasörünüze kurulur, veritabanını
-                    hazırlar ve internet tarayıcınızda
-                    <code>127.0.0.1:3001</code> adresini açar. Sonrasında görev
-                    çubuğundaki simgeden açıp kapatırsınız.
+                    Dosyayı açın, <strong>Kur</strong> deyin. Uygulama kendini
+                    hazırlar ve tarayıcınızda açılır. Sonra görev çubuğundaki
+                    simgeden açıp kapatırsınız.
                   </p>
                 </div>
               </li>
@@ -1826,9 +1823,8 @@
                 <div>
                   <h3>Google'a bağlayın</h3>
                   <p>
-                    En uzun adım bu: Google tarafında bir kerelik bir erişim
-                    anahtarı (OAuth istemcisi) oluşturmanız gerekiyor. Uygulama
-                    ekranda adım adım gösterir. Anahtarı
+                    En uzun adım bu. Google'dan bir kez erişim anahtarı
+                    alırsınız, uygulama ekranda adım adım gösterir. Anahtarı
                     <strong>Ayarlar</strong>'a yapıştırırsınız, bir daha
                     uğraşmazsınız.
                     <a class="textlink" href="/docs/google-baglantisi/"
@@ -1841,8 +1837,8 @@
                 <div>
                   <h3>Projenizi oluşturun</h3>
                   <p>
-                    Search Console mülkünüzü seçin. Panel, arama performansı,
-                    fırsatlar ve dizin durumu kendiliğinden dolar. Denetimi tek
+                    Sitenizi seçin. Panel, arama sayıları, fırsatlar ve
+                    Google'ın dizin durumu kendiliğinden dolar. Denetimi tek
                     düğmeyle başlatırsınız.
                   </p>
                 </div>
@@ -1854,9 +1850,9 @@
               <p class="big">Windows kurulum dosyası</p>
               <dl>
                 <dt>Sürüm</dt>
-                <dd>2.3.0, 22 Ekim 2026</dd>
+                <dd>2.3.1, 22 Ekim 2026</dd>
                 <dt>Boyut</dt>
-                <dd>61 MB</dd>
+                <dd>81 MB</dd>
                 <dt>Gerekenler</dt>
                 <dd>
                   Windows 10 veya 11, 64 bit. Docker, Node ya da terminal
@@ -1867,7 +1863,7 @@
                   <a
                     class="textlink"
                     href="https://github.com/ucsahinn/seotracker/releases/latest"
-                    >SHA-256 özeti sürüm sayfasında</a
+                    >Dosyanın parmak izi (SHA-256) sürüm sayfasında</a
                   >
                 </dd>
               </dl>
@@ -1884,9 +1880,7 @@
                   seotracker, bu sitede ve kurulum dosyasında seowatcher.
                 </p>
                 <p>
-                  Mac ve Linux'ta Docker kullanın:
-                  <code>docker compose up -d</code> yazıp
-                  <code>localhost:3001</code> adresini açın.
+                  Mac ve Linux'ta Docker ile kurulur.
                   <a class="textlink" href="/docs/kurulum-docker/"
                     >Docker kılavuzu</a
                   >.
@@ -1932,8 +1926,8 @@
             <div class="row">
               <dt>Veri kaynakları</dt>
               <dd>
-                Google Search Console, Google Analytics 4, kendi site tarama
-                aracı (crawler), PageSpeed Insights
+                Google Search Console, Google Analytics 4, uygulamanın kendi
+                site tarayıcısı, PageSpeed Insights
               </dd>
             </div>
             <div class="row">
@@ -1942,14 +1936,14 @@
             </div>
             <div class="row">
               <dt>Yapay zekâ bağlantısı</dt>
-              <dd>33 MCP aracı, 6 hazır görev şablonu</dd>
+              <dd>Asistanın kullanabildiği 33 araç, 6 hazır görev (MCP ile)</dd>
             </div>
             <div class="row">
               <dt>Türetildiği proje</dt>
               <dd>open-seo (every-app)</dd>
             </div>
             <div class="row">
-              <dt>Belgeler</dt>
+              <dt>Kılavuz</dt>
               <dd>
                 <a class="textlink" href="/docs/"
                   >Her ekran ve iş için kılavuz</a
@@ -1968,8 +1962,7 @@
               <dt>Gerçekten ücretsiz mi?</dt>
               <dd>
                 Evet. MIT lisanslı açık kaynak, kodun tamamı GitHub'da.
-                Kullandığı Google servisleri (Search Console, Analytics Data,
-                PageSpeed Insights) ücretsiz kotalarıyla çalışır.
+                Google'ın servisleri de ücretsiz sınırlar içinde çalışır.
               </dd>
             </div>
             <div class="qa">
@@ -1977,17 +1970,17 @@
               <dd>
                 Kurulum dosyası henüz kod imzalı değil. SmartScreen ekranında
                 önce "Daha fazla bilgi"yi, sonra "Yine de çalıştır"ı seçin.
-                Dosyanın SHA-256 özeti her sürümün sayfasında yazar, isterseniz
-                karşılaştırın.
+                Dosyanın parmak izi (SHA-256) her sürümün sayfasında yazar,
+                isterseniz karşılaştırın.
               </dd>
             </div>
             <div class="qa">
               <dt>Verilerim nerede duruyor?</dt>
               <dd>
                 <code>%LOCALAPPDATA%\seowatcher</code> klasöründe. Veritabanı,
-                Google erişim anahtarlarını şifreleyen anahtar ve günlükler
-                orada. Uygulamayı kaldırmak bu klasöre dokunmaz, yedek almak
-                için kopyalamanız yeter.
+                Google erişim anahtarınız ve günlükler orada. Uygulamayı
+                kaldırmak bu klasöre dokunmaz, yedek almak için kopyalamanız
+                yeter.
               </dd>
             </div>
             <div class="qa">
@@ -2026,8 +2019,8 @@
         <div class="wrap">
           <h2 id="h-son" class="reveal">Kurun, bugünkü verinizle başlayın.</h2>
           <p class="reveal" style="--d: 100">
-            Search Console'un on altı aylık geçmişi kurulumdan hemen sonra
-            dolar. Beklemeniz gereken bir şey yok.
+            Search Console'un on altı aylık geçmişi ilk açılışlarda dolar. Bugün
+            bağlarsanız bugün bakarsınız.
           </p>
           <div class="cta reveal" style="--d: 200">
             <a
@@ -2037,9 +2030,7 @@
               >Windows için indir
               <span class="arrow" aria-hidden="true">↓</span></a
             >
-            <a class="btn" href="https://github.com/ucsahinn/seotracker#kurulum"
-              >Docker ile kur</a
-            >
+            <a class="btn" href="/docs/kurulum-docker/">Mac ve Linux için</a>
           </div>
         </div>
       </section>
@@ -2055,7 +2046,7 @@
           tabanlı. Logolar sahiplerinin markasıdır.</span
         >
         <span class="links">
-          <a href="/docs/">Belgeler</a>
+          <a href="/docs/">Kılavuz</a>
           <a href="https://github.com/ucsahinn/seotracker">GitHub</a>
           <a
             href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"

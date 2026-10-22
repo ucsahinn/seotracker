@@ -1,58 +1,67 @@
 ---
 title: Panel
-description: Projeyi açınca gördüğünüz ilk ekran. Son 28 günün arama sayıları, son denetimin özeti ve sıradaki adımlar tek yerde.
+description: Projeyi açınca ilk gördüğünüz ekran. Son 28 günün arama sayıları, son denetim özeti ve yapılacak işler tek yerde.
 screen: Panel
 route: /p/<proje>
 updated: 2026-10-22
 ---
 
-Panel, bir projeyi açtığınızda karşınıza çıkan ilk ekrandır. İki soruya cevap verir: Google'da bu hafta nasıl gidiyorum ve şimdi ne yapmalıyım? Sayılar Search Console'dan, denetim özeti uygulamanın kendi taramasından, trafik kartı Google Analytics'ten gelir. Sayfanın üstündeki **Yenile** düğmesi hepsini yeniden çeker; **Denetimi başlat** düğmesi sizi doğrudan denetim ekranına götürür.
+Bu ekranda sitenizin son durumunu görür, sıradaki işi öğrenirsiniz. Projeyi açınca ilk bu ekran gelir.
+
+Arama sayıları Google'ın Search Console aracından gelir. Ziyaretçi sayıları Google Analytics'ten gelir. Denetim özeti uygulamanın kendi site tarayıcısından gelir. Üstteki **Yenile** düğmesi hepsini yeniler. **Denetimi başlat** sizi denetim ekranına götürür.
 
 ## Ekranda neler var
 
-**Dört sayı kartı.** **Tıklama**, **Gösterim**, **Tıklama oranı** ve **Ortalama sıra**. Hepsi son 28 günü gösterir, altında "Son 28 gün" yazar. Her kartın yanında önceki 28 güne göre değişim oku vardır. Ortalama sıra kartında "küçük olan iyidir; 1, en üst sıra" notu durur, çünkü burada düşüş iyi haberdir ve ok ona göre renklenir. Search Console bağlı değilse kartlarda sayı yerine "Search Console'u bağlayın" yazar; dönemde hiç gösterim yoksa "Bu dönemde gösterim yok" görürsünüz.
+**Dört sayı kartı.** **Tıklama**, **Gösterim**, **Tıklama oranı** ve **Ortalama sıra**. Hepsi son 28 günü gösterir. Her kartta önceki 28 güne göre bir ok vardır. Ortalama sırada küçük sayı iyidir, 1 en üst sıradır. O yüzden düşüş iyi haberdir ve ok ona göre renklenir. Search Console bağlı değilse kartta "Search Console'u bağlayın" yazar.
 
-**Sıradaki adımlar.** Uygulamanın size önerdiği en fazla üç iş. Sıra şöyle: Search Console bağlı değilse **Search Console'u bağla**; hiç denetim yoksa ya da son denetim yedi günden eskiyse **Denetimi başlat**; kritik sorun varsa **Kritik sorunları gör**; sonra **Fırsatları aç** ve uyarı sayısına göre **Uyarıları gör**. Liste, o anki duruma göre değişir; iş bitince madde kaybolur.
+**Sıradaki adımlar.** Uygulamanın önerdiği en fazla üç iş. Öneriler şu sırayla gelir:
 
-**Son denetimde yeni çıkanlar ve Düzelenler.** Son iki denetimi karşılaştırır: hangi sorun türü kaç sayfada yeni ortaya çıktı, hangisi azaldı. "Son denetimin üzerinden N gün" satırı denetimin yaşını söyler. Düzelen bir şey yoksa "Düzelen sorun yok." yazar.
+- Search Console bağlı değilse **Search Console'u bağla**.
+- Hiç denetim yoksa ya da son denetim yedi günden eskiyse **Denetimi başlat**.
+- Ciddi sorun varsa **Kritik sorunları gör**.
+- Sonra **Fırsatları aç** ve **Uyarıları gör**.
 
-**Tıklama eğilimi.** Son 28 günün günlük tıklama çizgisi. Üstünde "tıklama, son 28 gün" toplamı ve "önceki döneme göre" değişim. Dörtten az günün verisi varsa grafik çizilmez. **Sorguları aç** bağlantısı sizi Arama performansı ekranına götürür.
+İş bitince madde listeden kalkar.
 
-**Sıra 5-20 arası sorgular.** Google'da 5 ile 20. sıra arasında çıkan, yani bir itişle ilk sayfaya ya da üst sıralara taşınabilecek sorguların ilk dördü. Henüz böyle sorgu yoksa "Şu an 5. ile 20. sıra arasında yer alan sorgu yok" yazar. **Tümünü gör** tam listeyi açar.
+**Son denetimde yeni çıkanlar ve Düzelenler.** Son iki denetimi karşılaştırır. Hangi sorun kaç sayfada yeni çıktı, hangisi azaldı, görürsünüz. Düzelen bir şey yoksa "Düzelen sorun yok." yazar.
 
-**Site denetimi kartı.** Son denetimin özeti: kaç sayfa tarandı, ne zaman, en çok görülen üç sorun türü ve en çok sorunu olan beş sayfa. Denetim sürerken "Denetim sürüyor, sonuçlar bittiğinde görünecek." görürsünüz; kart beş saniyede bir kendini yeniler. Hiç sorun yoksa "Sorun bulunamadı, siteniz sağlıklı görünüyor." yazar. Önem düzeylerinin yanındaki küçük yardım ikonu üç seviyeyi açıklar: kritik "aramada görünürlüğü doğrudan bozan sorunlar", uyarı "sıralamayı zamanla aşındıran, ama acil olmayan sorunlar", bilgi "fırsat niteliğinde küçük iyileştirmeler".
+**Tıklama eğilimi.** Son 28 günün günlük tıklama çizgisi. Dörtten az günün verisi varsa çizgi çizilmez. **Sorguları aç** bağlantısı Arama performansı ekranına gider.
 
-**Organik trafik kartı.** Google Analytics bağlıysa görünür. **Oturum**, **Aktif kullanıcı**, **Etkileşim oranı** ve **Anahtar olay** sayılarını yalnızca organik arama kanalı için verir. Sitede satış ölçülüyorsa **Organik gelir** ve **Sipariş** kartları da eklenir. **Raporlar** bağlantısı Analytics ekranına, **Yönet** bağlantısı proje ayarlarına gider.
+**Sıra 5-20 arası sorgular.** Google'da 5 ile 20. sıra arasında çıkan ilk dört arama. Biraz emekle bunlar ilk sayfaya ya da üst sıralara çıkabilir. **Tümünü gör** tam listeyi açar.
+
+**Site denetimi kartı.** Kaç sayfa tarandığını, en sık üç sorunu ve en sorunlu beş sayfayı gösterir. Denetim sürerken kart beş saniyede bir yenilenir. Soru işareti simgesi üç önem düzeyini anlatır:
+
+- Kritik: aramada görünmenizi doğrudan bozar.
+- Uyarı: sıralamayı zamanla aşındırır, ama acil değildir.
+- Bilgi: küçük iyileştirme fırsatlarıdır.
+
+**Organik trafik kartı.** Google Analytics bağlıysa görünür. Aramadan gelenler için **Oturum**, **Aktif kullanıcı**, **Etkileşim oranı** ve **Anahtar olay** sayılarını verir. Sitede satış ölçülüyorsa **Organik gelir** ve **Sipariş** de eklenir.
 
 ## Nasıl kullanılır
 
-1. Haftada bir açın, dört kartın yanındaki oklara bakın. Tıklama ve gösterim düşmüşse önce Search Console'un üç günlük gecikmesini aklınıza getirin; son günler henüz eksiktir.
-2. **Sıradaki adımlar** kutusundaki ilk maddeyi yapın. Kutu boşsa o hafta yapılacak acil bir şey yoktur.
-3. Son denetim yedi günden eskiyse **Denetimi başlat** ile yeni bir tarama açın. Sonuç gelince "Son denetimde yeni çıkanlar" bölümü hangi sorunun yeni olduğunu söyler.
-4. **Sıra 5-20 arası sorgular** kartındaki sorgulara tıklayıp o sayfanın başlığını ve açıklamasını gözden geçirin; en ucuz kazanç genellikle oradadır.
+1. Haftada bir açın ve dört karttaki oklara bakın.
+2. **Sıradaki adımlar** kutusundaki ilk işi yapın. Kutu boşsa acil iş yoktur.
+3. Son denetim yedi günden eskiyse **Denetimi başlat** deyin.
+4. **Sıra 5-20 arası sorgular** kartındaki sayfaların başlığını ve açıklamasını gözden geçirin. En kolay kazanç genelde buradadır.
 
 ## Sayılar nasıl hesaplanır
 
-Dört kart tek bir Search Console raporundan gelir. Pencere bugünden üç gün geriye kadar olan 28 gündür; Google veriyi üç gün gecikmeli verdiği için aralık bugünde bitmez. Önceki dönem, aynı uzunlukta ve bu pencerenin hemen öncesidir. Değişim, (bu dönem eksi önceki dönem) bölü önceki dönem olarak hesaplanır; önceki dönem sıfırsa ok gösterilmez.
+Dört kart tek bir Search Console raporundan gelir. Google veriyi üç gün geç verir. Bu yüzden 28 günlük aralık bugünde değil, üç gün öncesinde biter. Önceki dönem, bu aralığın hemen öncesindeki 28 gündür. Önceki dönem sıfırsa ok gösterilmez.
 
-Tıklama ve gösterim toplamdır. Tıklama oranı, tıklamanın gösterime bölümüdür. Ortalama sıra, gösterimle ağırlıklandırılmış ortalamadır: çok gösterim alan sorgular ortalamayı daha çok etkiler. Bu dört sayı tarih boyutundan toplandığı için gerçek site toplamıdır. Buna karşılık Arama performansı ekranındaki sorgu ya da sayfa tablosunun satırlarını toplamak site toplamını vermez; Google aynı aramada çıkan her sayfayı ayrı sayar.
-
-Organik trafik kartı, Google Analytics'te "Organic Search" kanal grubunu süzer ve mülkün saat diliminde dünle biten 28 günü alır. Analytics verisi bir gün gecikmeli gelir.
+Ortalama sıra, çok gösterim alan aramaları daha çok sayar. Bu dört sayı gerçek site toplamıdır. Arama performansı ekranındaki tablo satırlarını toplarsanız fazla çıkar. Google aynı aramada çıkan her sayfayı ayrı sayar.
 
 ## Sık sorulanlar
 
-**Bugünün verisi neden yok?** Search Console son üç günü henüz vermez. Panel bu yüzden pencereyi üç gün geriden bitirir; eksik değil, Google'ın çalışma biçimi böyle.
+**Bugünün verisi neden yok?** Google son üç günü henüz vermez. Bu bir eksik değildir.
 
-**Ortalama sıra arttı, bu iyi mi?** Hayır. Sıra bir sıralamadır: 3'ten 7'ye çıkmak düşmek demektir. Kartın yanındaki ok bunu bildiği için kırmızıya döner.
+**Ortalama sıra arttı, iyi mi?** Hayır. 3'ten 7'ye çıkmak düşmek demektir. Ok bu yüzden kırmızıya döner.
 
-**Search Console'daki toplamla aynı mı?** Evet, aynı rapordan okunur. Fark görürseniz tarih aralığına bakın; Search Console'da bugünü de içeren bir aralık seçilmiş olabilir.
+**Denetim kartı Google'ın gördüğünü mü gösterir?** Hayır. Uygulamanın kendi taramasının bulduklarını gösterir. Google'ın hangi sayfayı kaydettiği denetim ekranındaki **Dizin durumu** sekmesindedir.
 
-**Denetim kartı Google'ın dizinini mi gösteriyor?** Hayır. Denetim, uygulamanın kendi tarayıcısının sitede bulduklarıdır. Google'ın bir sayfayı dizine alıp almadığı denetim ekranındaki **Dizin durumu** sekmesinde görünür.
-
-**Organik trafik kartı görünmüyor.** Proje ayarlarında Google Analytics bağlı değildir. Bağlamak isteğe bağlıdır; Search Console tek başına da yeter.
+**Organik trafik kartı yok.** Proje ayarlarında Google Analytics bağlı değildir. Bağlamak isteğe bağlıdır.
 
 ## Sınırlar
 
-Panel arama hacmi, backlink ya da rakip sırası göstermez; bu veriler uygulamada yoktur. Sayılar Google'ın verdiği kadardır: çok az aranan sorgular Search Console'da gizlenir, Analytics çerez onayına bağlı olarak eksik ölçebilir. Panel bir özet ekranıdır; satır satır incelemek için ilgili ekrana geçersiniz.
+Panel arama hacmi, backlink (başka sitelerden size gelen bağlantı) ya da rakip sırası göstermez. Bu veriler uygulamada yok. Çok az aranan sorgular Search Console'da gizlenir. Ayrıntı için ilgili ekrana geçersiniz.
 
 <!-- Kaynaklar: src/routes/_project/p/$projectId/index.tsx; src/client/features/dashboard/DashboardPage.tsx; DashboardMetrics.tsx; SearchInsights.tsx; DashboardCards.tsx; SeverityBar.tsx; Ga4Card.tsx; NextStepsCard.tsx; AuditFreshnessCard.tsx; src/client/features/dashboard/dashboardGscReport.ts; src/server/features/dashboard/services/DashboardService.ts; src/server/features/gsc/searchPerformanceReport.ts; src/shared/dataFreshness.ts; src/shared/delta.ts -->

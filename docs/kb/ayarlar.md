@@ -1,50 +1,66 @@
 ---
 title: Ayarlar
-description: Görünüm, Google istemcisi, hizmet hesabı, PageSpeed anahtarı, Google ve sistem sınırları, sürüm ve güncelleme kontrolü, sürüm notları. Kurulumun tek ayar ekranı.
+description: Tema, Google erişim anahtarı, PageSpeed anahtarı, kullanım sınırları, sürüm ve güncelleme kontrolü. Tüm kurulumun tek ayar ekranı.
 screen: Ayarlar
 route: /settings
 updated: 2026-10-22
 ---
 
-Ayarlar, kurulumun tamamını ilgilendiren şeylerin ekranıdır; proje başına ayarlar (ad, alan adı, Search Console ve Analytics mülkü) ayrıca her projenin **Proje ayarları** sayfasındadır. Burada Google'a bağlanmak için gereken istemciyi, PageSpeed anahtarını, temayı ve güncelleme kontrolünü yönetirsiniz. Sol tarafta sabit bir bölüm listesi vardır: **Görünüm**, **Google**, **Hizmet hesabı**, **Hız ölçümü**, **Sınırlar**, **Hakkında**, **Sürüm notları**. Her bölümün başlığında durumunu söyleyen bir rozet durur.
+Bu sayfada Google bağlantısını, hız anahtarını ve güncellemeyi nereden yöneteceğinizi görürsünüz.
+
+**Ayarlar**, tüm kurulumu ilgilendiren şeylerin ekranıdır. Proje başına ayarlar (ad, alan adı, Search Console ve Analytics mülkü) her projenin **Proje ayarları** sayfasındadır. Burada Google'a bağlanmak için gereken erişim anahtarını, PageSpeed anahtarını, temayı ve güncelleme kontrolünü yönetirsiniz. Solda **Görünüm**, **Google**, **Hizmet hesabı**, **Hız ölçümü**, **Sınırlar**, **Hakkında** ve **Sürüm notları** bölümleri var. Her bölümün başlığında durumunu söyleyen bir rozet durur.
 
 ## Ekranda neler var
 
-**Görünüm.** **Tema**: Sistem, Açık, Koyu. Seçim bu tarayıcıda saklanır; başka bir tarayıcı ya da bilgisayarda ayrı seçilir.
+**Görünüm.** **Tema** için Sistem, Açık ve Koyu seçeneği var. Seçim bu tarayıcıda saklanır. Başka bir tarayıcıda ya da bilgisayarda ayrıca seçersiniz.
 
-**Google.** Rozet: **Kayıtlı**, **Ortamdan geliyor** (Docker .env ile verilmiş) ya da **Eksik**. Bölüm, Google Cloud Console'a ekleyeceğiniz iki yönlendirme adresini kopyalama düğmeleriyle gösterir ve "ikisini de" eklemeniz gerektiğini vurgular; Analytics adresi eksikse Search Console bağlanır ama Analytics bağlanmaz. Alanlar: **İstemci kimliği** ve **Gizli anahtar**; düğmeler **Kaydet**, **Vazgeç**, kayıt varsa **Değiştir** ve **Sil**. Silme, var olan bağlantıları koparır; "Google istemcisi silinsin mi?" diye sorar. Adım adım kurulum Google'a bağlanma kılavuzundadır.
+**Google.** Rozet üç değerden biridir: **Kayıtlı**, **Ortamdan geliyor** (Docker kurulumunda `.env` dosyasıyla verilmiş) ya da **Eksik**. Bölüm, Google Cloud Console'a (Google'ın geliştirici paneli) ekleyeceğiniz iki yönlendirme adresini gösterir. Yanlarında kopyalama düğmeleri vardır. İkisini de eklemeniz gerekir. Analytics adresini eklemezseniz yalnızca Search Console bağlanır.
 
-**Hizmet hesabı (daha kısa yol).** **JSON anahtar dosyası** alanına Google Cloud'dan indirdiğiniz hizmet hesabı dosyasının içeriğini yapıştırırsınız. Kayıt varsa hesabın e-posta adresi ve onu Search Console'a ("Ayarlar → Kullanıcılar ve izinler → Kullanıcı ekle", yetki Tam) ve Analytics'e ("Yönetici → Erişim yönetimi", Görüntüleyen) nasıl ekleyeceğiniz yazar. Rozet **Kayıtlı** ya da **Kullanılmıyor**. Kayıtlı hizmet hesabı, OAuth istemcisine tercih edilir; "Şu an kullanılan" satırı hangisinin devrede olduğunu gösterir. Silmek uygulamadan kaldırır ama Google tarafındaki anahtarı iptal etmez; uygulama bunu hatırlatır.
+Alanlar: **İstemci kimliği** ve **Gizli anahtar**. İkisi de Google'dan aldığınız erişim anahtarının bilgisidir. Düğmeler: **Kaydet**, **Vazgeç**, **Değiştir** ve **Sil**. **Sil** var olan bağlantıları koparır. Adım adım kurulum Google'a bağlanma kılavuzundadır.
 
-**Hız ölçümü.** **API anahtarı** alanı, **Anahtarı test et** düğmesi ("1 ölçüm harcar", on saniyede bir basılabilir). Rozet **Anahtar kayıtlı**, **Ortam anahtarı** ya da **Anahtar eksik**. Ayrıntı PageSpeed anahtarı kılavuzunda.
+**Hizmet hesabı (daha kısa yol).** Hizmet hesabı, Google'da uygulama için açılan bir robot hesaptır. **JSON anahtar dosyası** alanına, Google Cloud'dan indirdiğiniz dosyanın içeriğini yapıştırırsınız. Kayıt varsa hesabın e-posta adresi görünür. Ekran bu adresi nereye ekleyeceğinizi yazar:
 
-**Sınırlar.** "Google ve sistem sınırları" kartları: URL Denetimi (Search Console) günde 2.000, PageSpeed Insights, GA4 günlük ve saatlik belirteç (varsayılan 200.000 ve 40.000; Google yalnızca kalanı bildirir), denetim sayfa sınırı 10.000, proje başına rapor 10.000 ve şablon 10, en büyük rapor 500.000 bayt. Her kartın durumu **Yeterli**, **Azalıyor** (yüzde 70'ten sonra), **Neredeyse doldu** (yüzde 90'dan sonra) ya da **Bilinmiyor**.
+- Search Console: "Ayarlar → Kullanıcılar ve izinler → Kullanıcı ekle", yetki Tam.
+- Analytics: "Yönetici → Erişim yönetimi", yetki Görüntüleyen.
 
-**Hakkında.** **Sürüm** satırı (v2.3.0 gibi). **Güncellemeleri kontrol et** anahtarı varsayılan olarak açıktır; açıksa uygulama günde en fazla bir kez GitHub'daki son sürümü sorar ve **Şimdi kontrol et** düğmesi görünür. Yeni sürüm varsa "X yayımlandı." satırı, **Değişiklikler** bağlantısı ve Docker kurulumları için kopyalanacak komut (`git pull && docker compose up -d --build`) gösterilir; Windows paketinde yeni kurulum dosyasını indirmeniz yeter. Diğer durumlar: "En güncel sürümü kullanıyorsunuz.", "Güncelleme kontrolü kapalı; GitHub'a istek gitmiyor.", "Son kontrolde GitHub'a ulaşılamadı."
+Rozet **Kayıtlı** ya da **Kullanılmıyor** der. Kayıtlı hizmet hesabı, Google erişim anahtarına tercih edilir. Silmek hesabı uygulamadan kaldırır ama Google'daki anahtarı iptal etmez.
 
-**Sürüm notları.** Uygulamayla gelen değişiklik günlüğünün sürüm sürüm dökümü.
+**Hız ölçümü.** **API anahtarı** alanı ve **Anahtarı test et** düğmesi var. Test "1 ölçüm harcar", on saniyede bir basabilirsiniz. Rozet **Anahtar kayıtlı**, **Ortam anahtarı** ya da **Anahtar eksik** der. Ayrıntı PageSpeed anahtarı kılavuzundadır.
+
+**Sınırlar.** "Google ve sistem sınırları" kartları şunları gösterir:
+
+- URL Denetimi (Search Console): günde 2.000.
+- PageSpeed Insights.
+- GA4 (Google Analytics) günlük ve saatlik kota birimi: varsayılan 200.000 ve 40.000. Google bu sayıyı açıklamaz, yalnızca ne kadar kaldığını söyler.
+- Denetim sayfa sınırı: 10.000.
+- Proje başına rapor: 10.000, şablon: 10.
+- En büyük rapor: 500.000 bayt.
+
+Her kartın durumu **Yeterli**, **Azalıyor** (yüzde 70'ten sonra), **Neredeyse doldu** (yüzde 90'dan sonra) ya da **Bilinmiyor** olur.
+
+**Hakkında.** **Sürüm** satırı sürümü gösterir (v2.3.0 gibi). **Güncellemeleri kontrol et** anahtarı varsayılan olarak açıktır. Açıksa uygulama günde en çok bir kez GitHub'daki son sürümü sorar. Bu durumda **Şimdi kontrol et** düğmesi de görünür. Yeni sürüm varsa **Değişiklikler** bağlantısı ve Docker kurulumları için kopyalanacak komut çıkar: `git pull && docker compose up -d --build`. Windows paketinde yeni kurulum dosyasını indirmeniz yeter.
+
+**Sürüm notları.** Her sürümde neyin değiştiğini listeler.
 
 ## Nasıl kullanılır
 
-1. İlk kurulumda sırayla: **Google** bölümüne istemci kimliği ve gizli anahtar, **Hız ölçümü** bölümüne PageSpeed anahtarı. İkisi de kaydedilince projeye geçip mülk seçersiniz.
-2. Ayda bir **Sınırlar** bölümüne bakın. "Azalıyor" gördüğünüz kota, o ayki denetim ve soru alışkanlığınızı anlatır; çoğu zaman URL Denetimi sınırıdır.
-3. **Hakkında** bölümünde yeni sürüm varsa güncelleyin; sürüm notları neyin değiştiğini söyler. Güncelleme kontrolü bilgisayarınızdan dışarıya giden tek "Google dışı" bağlantıdır; istemiyorsanız anahtarı kapatın.
-4. Google istemcisini değiştirmeniz gerekirse (yeni Cloud projesi gibi) **Değiştir** deyin, yeni değerleri yapıştırın; mevcut bağlantılar yeni istemciyle çalışmaz, projelerde **Yeniden bağlan** gerekir.
+1. İlk kurulumda önce **Google** bölümüne istemci kimliğini ve gizli anahtarı girin. Sonra **Hız ölçümü** bölümüne PageSpeed anahtarını girin. İkisi kaydedilince projeye geçip mülkü seçersiniz.
+2. Ayda bir **Sınırlar** bölümüne bakın. "Azalıyor" gördüğünüz kota çoğu zaman URL Denetimi sınırıdır.
+3. **Hakkında** bölümünde yeni sürüm varsa güncelleyin. Sürüm notları neyin değiştiğini söyler. Güncelleme kontrolü, bilgisayarınızdan Google dışına giden tek bağlantıdır. İstemezseniz anahtarı kapatın.
+4. Google erişim anahtarını değiştirmeniz gerekirse (yeni Cloud projesi gibi) **Değiştir**'i tıklayın ve yeni değerleri yapıştırın. Mevcut bağlantılar yeni anahtarla çalışmaz. Projelerde **Yeniden bağlan** gerekir.
 
 ## Sık sorulanlar
 
-**Gizli anahtarımı ekranda neden göremiyorum?** Sunucu onu şifreli saklar ve tarayıcıya geri göndermez. Ekran yalnızca kayıtlı olduğunu ve kimliği gösterir.
+**Gizli anahtarımı ekranda neden göremiyorum?** Uygulama onu şifreli saklar ve tarayıcıya geri göndermez. Ekran yalnızca kayıtlı olduğunu ve kimliği gösterir.
 
-**Docker'da .env ile verdiğim değerle ekrana girdiğim çakışırsa?** Ekrana girilen kazanır; rozet "Ortamdan geliyor" iken bir değer kaydederseniz artık o kullanılır.
+**Docker'da `.env` ile verdiğim değerle ekrana girdiğim çakışırsa?** Ekrana girilen kazanır. Rozet "Ortamdan geliyor" iken bir değer kaydederseniz artık o kullanılır.
 
-**Tema neden bilgisayarımın diğer tarayıcısında farklı?** Tema tarayıcıda saklanır, veritabanında değil.
+**Güncelleme kontrolü ne gönderiyor?** Hiçbir veri göndermez. GitHub'ın herkese açık sürüm listesini okur. İstek anonimdir.
 
-**Güncelleme kontrolü ne gönderiyor?** Hiçbir veri göndermez; GitHub'ın herkese açık sürüm listesini okur. İstek anonimdir.
-
-**Hizmet hesabı mı OAuth mu?** Hizmet hesabı izin ekranıyla hiç uğraştırmaz ve süresi dolmaz; bunun karşılığında Search Console ve Analytics'te o hesaba elle yetki vermeniz gerekir. Tek kişilik kurulumda ikisi de olur; sık "süresi doldu" görüyorsanız hizmet hesabına geçin.
+**Hizmet hesabı mı, Google erişim anahtarı mı?** Hizmet hesabı izin ekranıyla uğraştırmaz ve süresi dolmaz. Karşılığında Search Console ve Analytics'te o hesaba elle yetki vermeniz gerekir. Tek kişilik kurulumda ikisi de olur. Sık "süresi doldu" görüyorsanız hizmet hesabına geçin.
 
 ## Sınırlar
 
-Ayarlar ekranı port, veri klasörü ya da ağ ayarlarını değiştirmez; bunlar Windows paketinde config.json, Docker'da .env dosyasındadır. Kullanıcı ve parola yönetimi yoktur; uygulama tek kullanıcılıdır. Kota kartları Google'ın gerçek sayacı değil, uygulamanın kendi sayımıdır; Search Console'da elle yaptığınız URL denetimleri burada görünmez ama Google'ın sınırını harcar.
+Ayarlar ekranı adres numarasını (port), veri klasörünü ya da ağ ayarlarını değiştirmez. Bunlar Windows paketinde `config.json`, Docker'da `.env` dosyasındadır. Kullanıcı ve parola yönetimi yoktur, uygulama tek kullanıcılıdır. Kota kartları Google'ın gerçek sayacı değil, uygulamanın kendi sayımıdır. Search Console'da elle yaptığınız URL denetimleri burada görünmez ama Google'ın sınırını harcar.
 
 <!-- Kaynaklar: src/routes/_app/settings.tsx; src/routes/_app/settings/index.tsx; src/client/features/settings/SettingsIndex.tsx; sectionStatus.ts; ThemeSection.tsx; GoogleOAuthClientSection.tsx; GoogleServiceAccountSection.tsx; PageSpeedKeySection.tsx; UpdateSection.tsx; WhatsNewSection.tsx; src/client/features/quotas/*; src/server/features/updates/UpdateCheckService.ts; src/server/features/quotas/QuotaService.ts; src/server/lib/secretBox.ts -->

@@ -39,7 +39,20 @@ listeler.
 
 ## Yazım kuralları
 
-Doğal Türkçe, "siz" dili, kısa cümleler. Uzun tire ve orta nokta yok. Uygulamanın
-ekranda gördüğünüz etiketleri kalın ve birebir. Sayı, sınır ya da Google davranışı
-yalnızca kaynak kodda ya da Google'ın belgesinde görülüyorsa yazılır; emin
-olunmayan şey yazılmaz.
+Okur, sitesi olan ama SEO ya da yazılım bilmeyen biridir. Sayfayı açınca ilk
+bakışta ne yapacağını anlamalıdır.
+
+- Önce ne yapacağı, sonra kısaca neden. Cümle en çok 15 kelime, paragraf en çok
+  3 cümle.
+- "Siz" dili, şimdiki zaman, etken çatı. "Yapılmaktadır" yok, "yaparsınız" var.
+- Her teknik terim ilk geçtiği yerde parantez içinde iki üç kelimeyle açıklanır:
+  canonical (Google'a "asıl adres bu" demenin yolu), adres numarası (port).
+  OAuth istemcisi "Google erişim anahtarı", MCP "asistan bağlantısı" diye geçer.
+- Türkçesi olan kelimenin Türkçesi. Dosya adı, komut ve adres yalnızca kullanıcı
+  yazacaksa geçer ve `kod` biçiminde yazılır.
+- Uygulamanın ekrandaki etiketleri kalın ve birebir. Adımlar numaralı, her adım
+  bir fiille başlar. Başlıklar okurun kendi sorusu ya da düz ifade.
+- Her sayfa tek cümleyle açılır: bu sayfadan ne elde edeceksiniz.
+- Uzun tire, orta nokta, ünlem, emoji yok. Sayı, sınır ya da Google davranışı
+  yalnızca kaynak kodda ya da Google'ın belgesinde görülüyorsa yazılır; emin
+  olunmayan şey yazılmaz.
