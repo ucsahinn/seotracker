@@ -31,6 +31,14 @@ ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 OutputBaseFilename=seowatcher-setup-{#AppVersion}
 SetupIconFile=icon\seowatcher.ico
+WizardImageFile=icon\wizard-large.bmp
+WizardSmallImageFile=icon\wizard-small.bmp
+WizardImageStretch=no
+; Inno 6 hides the welcome page by default; ours carries the product panel
+; and the two-line explanation, so show it. 120% gives the copy room.
+DisableWelcomePage=no
+WizardSizePercent=120
+ShowTasksTreeLines=no
 UninstallDisplayIcon={app}\seowatcher.exe
 UninstallDisplayName=seowatcher
 Compression=lzma2/ultra64
@@ -57,6 +65,18 @@ tr.VcRedist=Windows bileşeni kuruluyor (Microsoft Visual C++ çalışma zamanı
 en.VcRedist=Installing a Windows component (Microsoft Visual C++ runtime)
 tr.VcRedistSkipped=Microsoft Visual C++ çalışma zamanı kurulamadı (yönetici izni verilmedi ya da kurulum başarısız oldu). seowatcher bu bileşen olmadan açılmaz. Uygulama ilk açılışta size tekrar kurmayı önerecek.
 en.VcRedistSkipped=The Microsoft Visual C++ runtime could not be installed (administrator permission was not given or the install failed). seowatcher does not start without it. The app will offer to install it again on first launch.
+
+[Messages]
+; The default Inno texts are generic; these read like the product.
+tr.WelcomeLabel1=seowatcher kurulumuna hoş geldiniz
+tr.WelcomeLabel2=Sitenizin Google verisini kendi bilgisayarınızda okuyan ücretsiz SEO uygulaması kurulacak.%n%nKurulum yalnızca sizin kullanıcı hesabınıza yapılır, yönetici şifresi istemez ve iki dakika sürer.
+tr.FinishedHeadingLabel=Kurulum tamamlandı
+tr.FinishedLabel=seowatcher görev çubuğunda çalışacak ve tarayıcınızda açılacak.%n%nİlk açılış 20-30 saniye sürer. Sonra Google'ı bağlarsınız; uygulama adım adım gösterir.
+tr.ClickFinish=Bitirmek için Son'a tıklayın.
+en.WelcomeLabel1=Welcome to seowatcher
+en.WelcomeLabel2=This installs the free SEO app that reads your site's Google data on your own computer.%n%nIt installs for your user account only, needs no administrator password and takes about two minutes.
+en.FinishedHeadingLabel=Setup complete
+en.FinishedLabel=seowatcher will run from the taskbar tray and open in your browser.%n%nThe first start takes 20-30 seconds. Then you connect Google; the app walks you through it.
 
 [Tasks]
 Name: "autostart"; Description: "{cm:Autostart}"

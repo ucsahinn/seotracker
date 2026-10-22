@@ -1010,6 +1010,9 @@ namespace SeoWatcher
             sb.Append("AUTH_MODE=local_noauth\n");
             sb.Append("BETTER_AUTH_SECRET=").Append(secret).Append('\n');
             sb.Append("MCP_TOKEN=").Append(token).Append('\n');
+            // Lets the app tell the Windows package from Docker: Ayarlar > Hakkında
+            // then describes the tray updater instead of a docker compose command.
+            sb.Append("INSTALL_KIND=windows\n");
             File.WriteAllText(Paths.ServerEnv, sb.ToString(), new UTF8Encoding(false));
         }
 

@@ -24,10 +24,10 @@ const UPDATE_COMMAND = "git pull && docker compose up -d --build";
 /**
  * Version, and whether a newer one has been released.
  *
- * There is nothing to install from here: this install is a git checkout, so
- * updating is a command the operator runs. The app's job is to notice, say
- * so once, and hand over the exact line — not to pretend it can update
- * itself.
+ * There is nothing to install from here. On Docker the install is a git
+ * checkout, so updating is a command the operator runs; the app's job is to
+ * notice, say so once, and hand over the exact line. The Windows package has
+ * its own updater in the tray app, so there the copy points at the tray icon.
  */
 export function UpdateSection({ version }: { version: string }) {
   const queryClient = useQueryClient();
@@ -96,20 +96,32 @@ export function UpdateSection({ version }: { version: string }) {
               <ExternalLink className="size-3" />
             </a>
           </div>
-          {/* The whole update, in one line they can paste. */}
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <code className="min-w-0 truncate font-mono text-sm text-muted">
-              {UPDATE_COMMAND}
-            </code>
-            <CopyButton
-              value={UPDATE_COMMAND}
-              successMessage="Güncelleme komutu kopyalandı"
-            />
-          </div>
-          <p className="text-xs text-subtle">
-            Proje klasöründe çalıştırın. Verileriniz Docker biriminde (
-            <code>seotracker_data</code>) kalır, güncelleme onu silmez.
-          </p>
+          {status.installKind === "windows" ? (
+            <p className="text-xs text-subtle">
+              Windows paketi güncellemeyi kendisi kurar: görev çubuğundaki
+              seowatcher simgesi yeni sürümü indirir, doğrular ve sessizce
+              kurar. Hemen kurmak için simgeye sağ tıklayıp{" "}
+              <strong>Güncelle</strong> deyin. Verileriniz ve Google bağlantınız
+              olduğu gibi kalır.
+            </p>
+          ) : (
+            <>
+              {/* The whole update, in one line they can paste. */}
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <code className="min-w-0 truncate font-mono text-sm text-muted">
+                  {UPDATE_COMMAND}
+                </code>
+                <CopyButton
+                  value={UPDATE_COMMAND}
+                  successMessage="Güncelleme komutu kopyalandı"
+                />
+              </div>
+              <p className="text-xs text-subtle">
+                Proje klasöründe çalıştırın. Verileriniz Docker biriminde (
+                <code>seotracker_data</code>) kalır, güncelleme onu silmez.
+              </p>
+            </>
+          )}
         </div>
       ) : null}
 

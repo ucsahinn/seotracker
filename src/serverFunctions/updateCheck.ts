@@ -1,7 +1,23 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { UpdateCheckService } from "@/server/features/updates/UpdateCheckService";
+import { getOptionalEnvValue } from "@/server/lib/runtime-env";
 import { requireAuthenticatedContext } from "@/serverFunctions/middleware";
+
+/**
+ * How this install was set up decides what "update" means on the Settings
+ * page: the Windows package (its launcher writes INSTALL_KIND=windows into
+ * server.env) updates itself from the tray icon, everything else is a git
+ * checkout updated with a docker compose command.
+ */
+async function withInstallKind<T extends object>(status: T) {
+  const kind = await getOptionalEnvValue("INSTALL_KIND");
+  return {
+    ...status,
+    installKind:
+      kind === "windows" ? ("windows" as const) : ("docker" as const),
+  };
+}
 
 /**
  * Served from the cached answer, refreshing in the same request only when the
@@ -10,14 +26,18 @@ import { requireAuthenticatedContext } from "@/serverFunctions/middleware";
  */
 export const getUpdateStatus = createServerFn({ method: "POST" })
   .middleware(requireAuthenticatedContext)
-  .handler(async () => UpdateCheckService.getStatus());
+  .handler(async () => withInstallKind(await UpdateCheckService.getStatus()));
 
 /** The explicit button, which ignores the day-old rule. */
 export const checkForUpdateNow = createServerFn({ method: "POST" })
   .middleware(requireAuthenticatedContext)
-  .handler(async () => UpdateCheckService.getStatus({ force: true }));
+  .handler(async () =>
+    withInstallKind(await UpdateCheckService.getStatus({ force: true })),
+  );
 
 export const setUpdateCheckEnabled = createServerFn({ method: "POST" })
   .middleware(requireAuthenticatedContext)
   .validator(z.object({ enabled: z.boolean() }))
-  .handler(async ({ data }) => UpdateCheckService.setEnabled(data.enabled));
+  .handler(async ({ data }) =>
+    withInstallKind(await UpdateCheckService.setEnabled(data.enabled)),
+  );

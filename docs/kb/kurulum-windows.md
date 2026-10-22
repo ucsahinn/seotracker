@@ -53,7 +53,7 @@ Uygulamayı ikinci kez başlatırsanız yeni kopya açılmaz. Yalnızca tarayıc
 
 ### Güncelleme
 
-Uygulama güncellemeyi kendisi yapar. Açılıştan iki dakika sonra ve her gün bir kez GitHub'daki son sürüme bakar. Yeni sürüm varsa indirir, dosyanın parmak izini (SHA-256) sürüm sayfasındaki değerle karşılaştırır, sonra sessizce kurar ve yeniden açılır. Simgenin yazısı bu sırada "Güncelleme indiriliyor" ve "Güncelleme kuruluyor" olur.
+Uygulama güncellemeyi kendisi yapar. Açılıştan iki dakika sonra ve her gün bir kez GitHub'daki son sürüme bakar. Yeni sürüm varsa indirir, dosyanın parmak izini (SHA-256) sürüm sayfasındaki değerle karşılaştırır, sonra sessizce kurar ve yeniden açılır. Simgenin yazısı bu sırada "Güncelleme indiriliyor" ve "Güncelleme kuruluyor" olur. Uygulama içindeki **Ayarlar → Hakkında** bölümü de yeni sürümü haber verir ve sizi simgedeki **Güncelle**'ye yönlendirir.
 
 - Kendiliğinden kurulmasını istemiyorsanız menüden **Güncellemeleri kendiliğinden kur** işaretini kaldırın. O zaman yeni sürüm çıkınca bir baloncuk görürsünüz ve menüde **Güncelle** maddesi belirir.
 - Elle güncellemek için yeni kurulum dosyasını aynı adresten indirip çalıştırın. Sihirbaz açık uygulamayı kendisi kapatır, dosyaları değiştirir ve yeniden başlatır.

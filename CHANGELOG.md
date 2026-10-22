@@ -2,6 +2,15 @@
 
 Her sürümün notu burada, en yenisi en üstte.
 
+## [2.3.4] — 2026-10-22
+
+Windows paketinin kurulum sihirbazı ve uygulama içindeki güncelleme bilgisi.
+
+### Yenilikler
+
+- **Ayarlar → Hakkında Windows'u tanır.** Başlatıcı `server.env` içine `INSTALL_KIND=windows` yazar; yeni sürüm çıktığında Docker komutu yerine görev çubuğu simgesindeki **Güncelle** anlatılır. Docker kurulumunda komut aynen durur.
+- **Kurulum sihirbazı.** Logolu karşılama ve bitiş panelleri, ürünü anlatan Türkçe ve İngilizce karşılama ve bitiş metinleri.
+
 ## [2.3.3] — 2026-10-22
 
 Ekran metinleri sadeleşti; kılavuza iki eksik ekran eklendi. Veri ve ayarlar
