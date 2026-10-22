@@ -2,6 +2,24 @@
 
 Her sürümün notu burada, en yenisi en üstte.
 
+## [2.3.5] — 2026-10-23
+
+Windows paketi ile Docker kurulumu her yönergede eşit; kılavuz sayfaları daha
+rahat okunur.
+
+### Yenilikler
+
+- **Her yönerge iki kurulumu da tanır.** Uygulama kurulum türünü (`windows` ya da `docker`) `/api/health` üzerinden bildirir. Yardım ekranındaki günlük yolu ve sık sorunlar, Ajan kurulumu'ndaki token yardımı ve açılış kontrollerinin açıklamaları Windows paketinde görev çubuğu menüsünü, `%LOCALAPPDATA%\seowatcher` klasörünü ve `config.json` dosyasını; Docker'da `docker compose` komutlarını anlatır.
+- **Ajan istemleri kurulum türünü kendisi bulur.** Kurulum, Claude Code, Codex ve güncelleme istemleri ile setup-seotracker becerisi `/api/health`'ten türü okur; Windows'ta token dosyası, günlükler, port seçimi ve beceriler için depo zip'i anlatılır. Docker yolu olduğu gibi kalır.
+- **Kılavuz sayfaları.** Telefonda katlanan yan menü, kaydırdıkça izleyen içindekiler, kod bloklarında kopyala düğmesi, önceki/sonraki bağlantıları, "Belirti / Sebep / Çözüm" kutuları ve sağa yaslı sayı sütunları.
+- **Belgeler.** README, ENVIRONMENT, PageSpeed, Search Console ve Analytics belgelerinde Windows paketi notu; Windows kılavuzu README'nin belge tablosunda.
+
+### Düzeltmeler
+
+- Codex kurulum istemindeki `tr -d '
+'` kaçışı iki gerçek satır sonuna dönüşmüştü; Git Bash yolunda token sonundaki `
+` silinmiyordu.
+
 ## [2.3.4] — 2026-10-22
 
 Windows paketinin kurulum sihirbazı ve uygulama içindeki güncelleme bilgisi.
