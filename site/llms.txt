@@ -1,0 +1,17 @@
+# seowatcher
+
+> seowatcher (GitHub ve uygulama içi adı: seotracker), Google Search Console, Google Analytics 4, kendi site tarayıcısı ve PageSpeed Insights verisini tek panelde toplayan ücretsiz, açık kaynaklı (MIT) bir SEO uygulamasıdır. Windows 10/11 (64 bit) için kurulum dosyası vardır; Mac ve Linux'ta Docker ile çalışır. Tek kullanıcılıdır, yalnızca kullanıcının kendi bilgisayarından erişilir, veri o bilgisayarda kalır. Abonelik ve hesap yoktur.
+> English: seowatcher (also named seotracker) is a free, MIT-licensed, self-hosted SEO app that reads Google Search Console, Google Analytics 4, its own crawler and PageSpeed Insights. Windows 10/11 installer; Docker on macOS/Linux. Single user, localhost only, data stays on your machine. Derived from open-seo.
+
+Hızlı bilgiler: sürüm 2.3.0 (22 Ekim 2026), 95 denetim kuralı, yapay zekâ asistanları için 33 MCP aracı ve 6 hazır beceri, fiyat 0, lisans MIT. Arama hacmi tahmini, backlink sayımı ve rakip sıralaması yoktur.
+
+## Ana bağlantılar
+- [Ana sayfa (Türkçe)](https://seowatcher.io/): ürün tanıtımı, ekran görüntüleri, kurulum, sık sorulanlar
+- [Belgeler](https://seowatcher.io/docs/): her ekran ve özellik için kılavuzlar
+- [Windows kurulum dosyası](https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe): 61 MB, SHA-256 özeti sürüm sayfasında
+- [Sürüm sayfası](https://github.com/ucsahinn/seotracker/releases/latest)
+
+## Kaynak ve notlar
+- [GitHub deposu ve README (Docker kurulumu)](https://github.com/ucsahinn/seotracker)
+- [Sürüm notları](https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md)
+- [open-seo, temel alınan proje](https://github.com/every-app/open-seo)

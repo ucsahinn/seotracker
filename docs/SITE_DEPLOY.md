@@ -1,6 +1,6 @@
 # seowatcher.io
 
-Ürünün tanıtım sitesi: tek sayfa, statik, Türkçe. Betik yok, dış kaynak yok;
+Ürünün tanıtım sitesi `site/` klasöründe: statik, Türkçe. Dış kaynak yok;
 `index.html` ile `assets/` klasöründen ibaret. Görseller README'dekilerle aynı
 dosyalar (`docs/images/`), simge `packaging/windows/icon/` kaynağından.
 
