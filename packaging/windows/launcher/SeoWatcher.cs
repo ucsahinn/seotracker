@@ -444,24 +444,29 @@ namespace SeoWatcher
                 + "Veri: " + Paths.DataRoot + (IsAscii(Paths.DataRoot) ? "" : " (yolda ASCII dışı karakter var)");
         }
 
-        /// <summary>Everything a bug report needs, ready for the clipboard.</summary>
+        /// <summary>Everything a bug report needs, ready for the clipboard.
+        /// Nothing personal: user name, site names, e-mails, property ids and
+        /// secret-looking values are masked, and only the last 25 log lines
+        /// of each file are included.</summary>
         public static string Report()
         {
             var sb = new System.Text.StringBuilder();
+            sb.AppendLine("Bu rapor kişisel veri içermesin diye maskelenmiştir (kullanıcı adı, site adları, e-postalar, anahtarlar). Göndermeden önce yine de göz atın.");
+            sb.AppendLine();
             sb.AppendLine(Summary());
             sb.AppendLine("Motor denemesi (workerd test): " + WorkerdProbe());
             sb.AppendLine("Windows olay günlüğü (hatalı modül): " + FaultingModules());
-            sb.AppendLine("Çökme dökümleri: " + Dumps() + (Directory.Exists(DumpDir) ? " (" + DumpDir + ")" : ""));
+            sb.AppendLine("Çökme dökümleri: " + Dumps());
             sb.AppendLine("PATH üzerinde başka vcruntime/msvcp kopyası: " + StrayRuntimeDlls());
             if (Server.LastCommand != null) sb.AppendLine("Son komut: " + Server.LastCommand);
             sb.AppendLine();
             foreach (var log in new[] { Paths.LauncherLog, Paths.MigrateLog, Paths.ServerLog })
             {
-                sb.AppendLine("---- " + Path.GetFileName(log) + " (son 40 satır)");
+                sb.AppendLine("---- " + Path.GetFileName(log) + " (son 25 satır)");
                 try
                 {
                     var lines = File.ReadAllLines(log);
-                    for (int i = Math.Max(0, lines.Length - 40); i < lines.Length; i++) sb.AppendLine(lines[i]);
+                    for (int i = Math.Max(0, lines.Length - 25); i < lines.Length; i++) sb.AppendLine(lines[i]);
                 }
                 catch { sb.AppendLine("(okunamadı)"); }
                 sb.AppendLine();
@@ -469,15 +474,29 @@ namespace SeoWatcher
             return Scrub(sb.ToString());
         }
 
+        private static readonly string[] PublicHosts = { "127.0.0.1", "localhost", "github.com", "api.github.com", "googleapis.com", "google.com", "seowatcher.io", "microsoft.com", "cloudflare-dns.com" };
+
         /// <summary>The report goes to the clipboard and into a public GitHub
-        /// issue: the user name in paths and anything that looks like a bearer
-        /// token or a secret assignment is masked before it leaves the machine.</summary>
+        /// issue, so it is scrubbed before it leaves the machine.</summary>
         private static string Scrub(string text)
         {
+            var R = System.Text.RegularExpressions.Regex.Replace;
             string profile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             if (!string.IsNullOrEmpty(profile)) text = text.Replace(profile, "%USERPROFILE%");
-            text = System.Text.RegularExpressions.Regex.Replace(text, @"(?i)(bearer\s+)[A-Za-z0-9_\-]{8,}", "$1<gizli>");
-            text = System.Text.RegularExpressions.Regex.Replace(text, @"(?i)\b(MCP_TOKEN|BETTER_AUTH_SECRET|GOOGLE_CLIENT_SECRET|PAGESPEED_API_KEY)\s*[:=]\s*\S+", "$1=<gizli>");
+            text = R(text, @"(?i)(bearer\s+)[A-Za-z0-9_\-]{8,}", "$1<gizli>");
+            text = R(text, @"(?i)\b(MCP_TOKEN|BETTER_AUTH_SECRET|GOOGLE_CLIENT_SECRET|GOOGLE_CLIENT_ID|PAGESPEED_API_KEY|CLIENT_SECRET|API_KEY|TOKEN)\s*[:=]\s*\S+", "$1=<gizli>");
+            text = R(text, @"[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}", "<e-posta>");
+            text = R(text, @"properties/\d+", "properties/<mülk>");
+            text = R(text, @"sc-domain:[^\s""',;]+", "sc-domain:<site>");
+            // Host names: anything that is not a public service of the app is a user's site.
+            text = System.Text.RegularExpressions.Regex.Replace(text, @"(?i)\b(?:https?://)?((?:[a-z0-9\-]+\.)+[a-z]{2,})(?=[/:\s""'),;]|$)", m =>
+            {
+                string host = m.Groups[1].Value.ToLowerInvariant();
+                foreach (var ok in PublicHosts) if (host == ok || host.EndsWith("." + ok)) return m.Value;
+                return m.Value.Replace(m.Groups[1].Value, "<site>");
+            });
+            // Long opaque strings (keys, ids) that survived the named patterns.
+            text = R(text, @"(?<![A-Za-z0-9/+=_\-])[A-Za-z0-9_\-]{32,}(?![A-Za-z0-9/+=_\-])", "<gizli>");
             return text;
         }
     }
