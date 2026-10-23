@@ -33,7 +33,7 @@ kurulumu değişmedi, güncellerken veriniz korunur.
 - **İki dilli site.** `seowatcher.io/en/` ana sayfası ve `/en/docs/` altında 20 kılavuz sayfası; her sayfa diğer dile `hreflang` ve dil düğmesiyle bağlı, sitemap iki dili birlikte listeler, `llms.txt` iki dilde. Ana sayfanın İngilizcesi tek bir çeviri tablosundan (`scripts/site-home.en.json`) üretilir; karşılığı olmayan Türkçe cümle derlemeyi durdurur. 404 sayfası iki dilli.
 - **Sade Türkçe kılavuz.** 20 sayfa son kullanıcı için yeniden yazıldı: kısa cümleler, her teknik terim ilk geçtiği yerde açıklanır, sihirbazın gerçek düğme adları (**Yalnızca ben**, **Bitti**), hizmet hesabı yolu adım adım, "Belirti / Sebep / Çözüm" kutuları. Yeni sayfalar: "Projeler ve proje ayarları", "Yardım ekranı".
 - **Kılavuz ekranı.** Gruplu sol menü, seçili sayfada vurgu çizgisi, telefonda katlanan menü, kaydırdıkça izleyen içindekiler, kod bloklarında kopyala düğmesi, önceki/sonraki bağlantıları.
-- **Yeni görünüm ve logo.** Siyah zemin, tek turuncu vurgu; logo bir kadran ve ibre (izleme fikri), site, sekme simgesi, Windows simgesi, kurulum sihirbazı ve paylaşım görseli aynı işareti kullanır.
+- **Yeni görünüm ve logo.** Siyah zemin, tek turuncu vurgu; logo alev turuncusu bir göz, dikey yarık gözbebeğiyle (her şeyi gören göz), site, sekme simgesi, Windows simgesi, kurulum sihirbazı ve paylaşım görseli aynı işareti kullanır.
 - **Ana sayfa.** Canlı indirme sayısı, logo bandının altında "Verinizi Google'dan okur, kimseye göndermez" akışı, hareketi durduran düğme. Kılavuz sayfalarında TechArticle ve BreadcrumbList yapısal verisi, sosyal paylaşım etiketleri.
 
 ### Yayın hattı
