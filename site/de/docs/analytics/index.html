@@ -1,0 +1,1601 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Analytics | seowatcher-Anleitung</title>
+    <meta
+      name="description"
+      content="Sie sehen, was Besucher aus der Suche danach auf der Website tun. Hier finden Sie Berichte aus Google Analytics 4, Schlüsselereignisse und die Prüfung, ob die Messung zuverlässig läuft."
+    />
+    <meta name="robots" content="max-image-preview:large" />
+    <link rel="canonical" href="https://seowatcher.io/de/docs/analytics/" />
+    <link
+      rel="alternate"
+      hreflang="tr"
+      href="https://seowatcher.io/docs/analytics/"
+    />
+    <link
+      rel="alternate"
+      hreflang="en"
+      href="https://seowatcher.io/en/docs/analytics/"
+    />
+    <link
+      rel="alternate"
+      hreflang="de"
+      href="https://seowatcher.io/de/docs/analytics/"
+    />
+    <link
+      rel="alternate"
+      hreflang="fr"
+      href="https://seowatcher.io/fr/docs/analytics/"
+    />
+    <link
+      rel="alternate"
+      hreflang="it"
+      href="https://seowatcher.io/it/docs/analytics/"
+    />
+    <link
+      rel="alternate"
+      hreflang="pt"
+      href="https://seowatcher.io/pt/docs/analytics/"
+    />
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href="https://seowatcher.io/docs/analytics/"
+    />
+    <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link
+      rel="icon"
+      href="/assets/favicon-48.png"
+      type="image/png"
+      sizes="48x48"
+    />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <link
+      rel="preload"
+      href="/assets/fonts/geist-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/assets/fonts/geist-latin-ext-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="seowatcher" />
+    <meta property="og:title" content="Analytics | seowatcher-Anleitung" />
+    <meta
+      property="og:description"
+      content="Sie sehen, was Besucher aus der Suche danach auf der Website tun. Hier finden Sie Berichte aus Google Analytics 4, Schlüsselereignisse und die Prüfung, ob die Messung zuverlässig läuft."
+    />
+    <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="seowatcher" />
+    <meta property="article:modified_time" content="2026-10-23" />
+    <meta
+      property="og:url"
+      content="https://seowatcher.io/de/docs/analytics/"
+    />
+    <meta property="og:locale" content="de_DE" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Analytics | seowatcher-Anleitung" />
+    <meta
+      name="twitter:description"
+      content="Sie sehen, was Besucher aus der Suche danach auf der Website tun. Hier finden Sie Berichte aus Google Analytics 4, Schlüsselereignisse und die Prüfung, ob die Messung zuverlässig läuft."
+    />
+    <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
+    <meta name="color-scheme" content="dark" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://seowatcher.io/#website",
+            "url": "https://seowatcher.io/",
+            "name": "seowatcher",
+            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"]
+          },
+          {
+            "@type": "SoftwareApplication",
+            "@id": "https://seowatcher.io/#app",
+            "name": "seowatcher",
+            "alternateName": "seotracker",
+            "url": "https://seowatcher.io/"
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://seowatcher.io/#author",
+            "name": "seowatcher",
+            "url": "https://seowatcher.io/",
+            "logo": "https://seowatcher.io/assets/icon-256.png",
+            "sameAs": ["https://github.com/ucsahinn/seotracker"]
+          },
+          {
+            "@type": "TechArticle",
+            "@id": "https://seowatcher.io/de/docs/analytics/#article",
+            "headline": "Analytics",
+            "description": "Sie sehen, was Besucher aus der Suche danach auf der Website tun. Hier finden Sie Berichte aus Google Analytics 4, Schlüsselereignisse und die Prüfung, ob die Messung zuverlässig läuft.",
+            "url": "https://seowatcher.io/de/docs/analytics/",
+            "inLanguage": "de",
+            "dateModified": "2026-10-23",
+            "articleSection": "Bildschirme",
+            "about": { "@id": "https://seowatcher.io/#app" },
+            "author": { "@id": "https://seowatcher.io/#author" },
+            "publisher": { "@id": "https://seowatcher.io/#author" },
+            "isPartOf": { "@id": "https://seowatcher.io/#website" },
+            "mainEntityOfPage": "https://seowatcher.io/de/docs/analytics/"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://seowatcher.io/de/docs/analytics/#breadcrumb",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "seowatcher",
+                "item": "https://seowatcher.io/de/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Anleitung",
+                "item": "https://seowatcher.io/de/docs/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Analytics",
+                "item": "https://seowatcher.io/de/docs/analytics/"
+              }
+            ]
+          }
+        ]
+      }
+    </script>
+    <script src="/assets/docs.js?v=2.4.0" defer></script>
+    <meta name="theme-color" content="#272c3b" />
+    <style>
+      @font-face {
+        font-family: "Geist";
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(/assets/fonts/geist-latin-ext-wght-normal.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+          U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+          U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: "Geist";
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(/assets/fonts/geist-latin-wght-normal.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+          U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+          U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      :root {
+        --bg: oklch(14% 0.008 60);
+        --bg-2: oklch(18% 0.009 60);
+        --bg-3: oklch(22% 0.01 60);
+        --fg: oklch(97% 0.006 80);
+        --muted: oklch(97% 0.006 80 / 0.78);
+        --subtle: oklch(97% 0.006 80 / 0.66);
+        --hairline: oklch(100% 0 0 / 0.1);
+        --hairline-strong: oklch(100% 0 0 / 0.18);
+        --accent: oklch(72% 0.19 52);
+        --accent-2: oklch(80% 0.15 68);
+        --accent-ink: oklch(16% 0.03 55);
+        --glass: oklch(100% 0 0 / 0.05);
+        --glass-edge: oklch(100% 0 0 / 0.12);
+        --accent-link: oklch(80% 0.15 68);
+        --glow: oklch(72% 0.19 52 / 0.28);
+        --glow-soft: oklch(72% 0.19 52 / 0.12);
+        --ease: cubic-bezier(0.32, 0.72, 0, 1);
+        --spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+      }
+      /* Dot field: a quiet grid of points over the whole page, and a soft
+         ember light that follows the pointer. Fixed, never scrolls, never
+         catches the pointer. Two layers: the dim field everyone sees, and the
+         lit field clipped to a circle around the pointer (--mx/--my from
+         site.js, lerped so it trails rather than snaps). Touch devices, the
+         "stop motion" toggle and reduced motion keep only the dim field. */
+      .dots,
+      .dots::before {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        background-image: radial-gradient(
+          oklch(100% 0 0 / 0.16) 1px,
+          transparent 1.5px
+        );
+        background-size: 26px 26px;
+        background-position: 13px 13px;
+      }
+      .dots {
+        opacity: 0.4;
+        mask-image: linear-gradient(
+          180deg,
+          oklch(0% 0 0 / 0.9),
+          oklch(0% 0 0 / 0.35) 40%,
+          oklch(0% 0 0 / 0.55)
+        );
+      }
+      .dots::before {
+        content: "";
+        background-image: radial-gradient(
+          var(--accent) 1.5px,
+          transparent 2.1px
+        );
+        opacity: 0;
+        mask-image: radial-gradient(
+          420px circle at var(--mx, 50%) var(--my, 30%),
+          oklch(0% 0 0) 0%,
+          oklch(0% 0 0 / 0.5) 45%,
+          transparent 72%
+        );
+        transition: opacity 600ms var(--ease);
+      }
+      .dots.live::before {
+        opacity: 1;
+      }
+      @media (hover: none), (prefers-reduced-motion: reduce) {
+        .dots::before {
+          display: none;
+        }
+      }
+      [data-still] .dots::before {
+        display: none;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
+        scroll-padding-top: 76px;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: Geist, "Segoe UI", system-ui, sans-serif;
+        font-size: 17px;
+        line-height: 1.6;
+        font-variant-numeric: tabular-nums;
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+        border-radius: 4px;
+      }
+      .skip {
+        position: absolute;
+        left: 16px;
+        top: -48px;
+        z-index: 5;
+        background: var(--accent);
+        color: var(--accent-ink);
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-weight: 600;
+      }
+      .skip:focus {
+        top: 12px;
+      }
+      .wrap {
+        width: min(1160px, 100% - 40px);
+        margin-inline: auto;
+      }
+      @media (max-width: 640px) {
+        .wrap {
+          width: calc(100% - 32px);
+        }
+      }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: color-mix(in oklab, var(--bg) 70%, transparent);
+        backdrop-filter: blur(18px) saturate(1.4);
+        -webkit-backdrop-filter: blur(18px) saturate(1.4);
+        border-bottom: 1px solid var(--hairline);
+      }
+      header .wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 60px;
+        gap: 16px;
+      }
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 600;
+        font-size: 17px;
+        letter-spacing: -0.01em;
+      }
+      .brand img {
+        width: 26px;
+        height: 26px;
+        border-radius: 7px;
+        box-shadow: 0 0 16px var(--glow-soft);
+      }
+      .brand span {
+        color: var(--subtle);
+        font-weight: 500;
+      }
+      .topnav {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        font-size: 15px;
+        color: var(--muted);
+      }
+      .topnav a {
+        padding-block: 10px;
+      }
+      /* Language menu: the current flag opens a list of editions. */
+      .langs {
+        position: relative;
+      }
+      .langs summary {
+        list-style: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 5px 10px;
+        border: 1px solid var(--hairline);
+        border-radius: 999px;
+        font-size: 12.5px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        cursor: pointer;
+        color: var(--muted);
+        transition:
+          color 300ms var(--ease),
+          background-color 300ms var(--ease);
+      }
+      .langs summary::-webkit-details-marker {
+        display: none;
+      }
+      .langs summary:hover,
+      .langs[open] summary {
+        color: var(--fg);
+        background: var(--glass);
+      }
+      .langs ul {
+        position: absolute;
+        right: 0;
+        top: calc(100% + 8px);
+        margin: 0;
+        padding: 6px;
+        list-style: none;
+        min-width: 172px;
+        background: var(--bg-2);
+        border: 1px solid var(--hairline-strong);
+        border-radius: 14px;
+        box-shadow: var(--shadow-raise, 0 24px 48px -20px oklch(0% 0 0 / 0.6));
+        z-index: 40;
+      }
+      .langs li a,
+      .langrow a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 10px;
+        border-radius: 9px;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0;
+        color: var(--muted);
+        text-decoration: none;
+        white-space: nowrap;
+      }
+      .langs li a:hover,
+      .langrow a:hover {
+        color: var(--fg);
+        background: var(--glass);
+      }
+      .langs li a[aria-current],
+      .langrow a[aria-current] {
+        color: var(--fg);
+      }
+      .langs li a[aria-current]::after {
+        content: "";
+        margin-left: auto;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+      }
+      .flag {
+        display: inline-flex;
+        width: 20px;
+        height: 14px;
+        border-radius: 3px;
+        overflow: hidden;
+        box-shadow: 0 0 0 1px oklch(100% 0 0 / 0.12);
+        flex: none;
+      }
+      .flag svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+      .langrow {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2px 6px;
+      }
+      article h2[tabindex]:focus {
+        outline: none;
+      }
+      .topnav a:hover {
+        color: var(--fg);
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        min-height: 36px;
+        padding: 0 14px;
+        border-radius: 999px;
+        font-weight: 560;
+        font-size: 14px;
+        background: var(--accent);
+        color: var(--accent-ink);
+        white-space: nowrap;
+        transition:
+          transform 320ms var(--ease),
+          filter 320ms var(--ease);
+      }
+      .btn:hover {
+        filter: saturate(1.06) brightness(1.05);
+        transform: translateY(-1px);
+      }
+      .btn:active {
+        transform: scale(0.98);
+      }
+      @media (max-width: 720px) {
+        .topnav .hide {
+          display: none;
+        }
+        .topnav {
+          gap: 14px;
+        }
+        .brand span {
+          display: none;
+        }
+      }
+      .topnav .btn .short {
+        display: none;
+      }
+      @media (max-width: 520px) {
+        .topnav .btn .short {
+          display: inline;
+        }
+      }
+      @media (max-width: 520px) {
+        /* "Für Windows herunterladen" plus the flag menu does not fit a 390px
+           phone; the flag alone and a tighter button keep the page from
+           scrolling sideways. */
+        .topnav {
+          gap: 8px;
+        }
+        .topnav .btn {
+          padding: 0 10px;
+          font-size: 13px;
+        }
+        .langs summary {
+          padding: 5px 7px;
+        }
+        .langs summary .code {
+          display: none;
+        }
+        .topnav .btn .long {
+          display: none;
+        }
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 252px minmax(0, 1fr) 208px;
+        gap: clamp(32px, 4vw, 64px);
+        padding: 40px 0 96px;
+      }
+      .toc {
+        position: sticky;
+        top: 84px;
+        align-self: start;
+        font-size: 14px;
+      }
+      .toc-label {
+        margin: 0 0 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--subtle);
+      }
+      .toc ol {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 6px;
+        border-left: 1px solid var(--hairline);
+      }
+      .toc a {
+        display: block;
+        padding-left: 12px;
+        color: var(--muted);
+      }
+      .toc a:hover {
+        color: var(--fg);
+      }
+      @media (max-width: 1100px) {
+        .layout {
+          grid-template-columns: 220px minmax(0, 1fr);
+        }
+        .toc {
+          display: none;
+        }
+      }
+      @media (max-width: 800px) {
+        .layout {
+          grid-template-columns: minmax(0, 1fr);
+          gap: 24px;
+        }
+        .side {
+          position: static;
+          border-bottom: 1px solid var(--hairline);
+          padding-bottom: 20px;
+        }
+      }
+
+      article {
+        max-width: 68ch;
+      }
+      article h1 {
+        font-size: clamp(30px, 4vw, 42px);
+        line-height: 1.08;
+        letter-spacing: -0.028em;
+        font-weight: 600;
+        margin: 0 0 14px;
+        text-wrap: balance;
+        width: fit-content;
+        background: linear-gradient(
+          100deg,
+          var(--fg) 0%,
+          oklch(94% 0.03 78) 58%,
+          var(--accent-2) 100%
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      article .lede {
+        font-size: 19px;
+        color: var(--muted);
+        margin: 0 0 32px;
+        text-wrap: pretty;
+      }
+      article h2 {
+        font-size: 24px;
+        letter-spacing: -0.02em;
+        margin: 44px 0 12px;
+        text-wrap: balance;
+      }
+      article h3 {
+        font-size: 18px;
+        letter-spacing: -0.012em;
+        margin: 28px 0 8px;
+      }
+      article p,
+      article li {
+        color: var(--muted);
+      }
+      article p {
+        margin: 0 0 16px;
+        text-wrap: pretty;
+      }
+      article strong {
+        color: var(--fg);
+        font-weight: 600;
+      }
+      article ul,
+      article ol {
+        margin: 0 0 18px;
+        padding-left: 22px;
+      }
+      article li {
+        margin: 0 0 8px;
+      }
+      article li::marker {
+        color: var(--subtle);
+      }
+      article a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      article a:hover {
+        text-decoration-color: var(--accent-link);
+      }
+      article code {
+        font-family: ui-monospace, Consolas, Menlo, monospace;
+        font-size: 0.9em;
+        background: var(--bg-2);
+        border: 1px solid var(--hairline);
+        padding: 1px 6px;
+        border-radius: 6px;
+        color: var(--fg);
+      }
+      article pre {
+        background: var(--bg-2);
+        border: 1px solid var(--hairline);
+        border-radius: 12px;
+        padding: 14px 16px;
+        overflow-x: auto;
+        margin: 0 0 18px;
+        font-size: 14.5px;
+        line-height: 1.5;
+      }
+      article pre code {
+        background: none;
+        border: 0;
+        padding: 0;
+      }
+      article blockquote {
+        margin: 0 0 18px;
+        padding: 2px 0 2px 18px;
+        border-left: 2px solid var(--accent);
+      }
+      article .tw {
+        overflow-x: auto;
+        margin: 0 0 22px;
+      }
+      article table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 15px;
+        min-width: 480px;
+      }
+      article th {
+        text-align: left;
+        font-weight: 600;
+        color: var(--fg);
+        padding: 0 16px 10px 0;
+        border-bottom: 1px solid var(--hairline-strong);
+        white-space: nowrap;
+      }
+      article td {
+        padding: 10px 16px 10px 0;
+        border-bottom: 1px solid var(--hairline);
+        vertical-align: top;
+        color: var(--muted);
+      }
+      article td:first-child {
+        color: var(--fg);
+      }
+      article .meta {
+        margin-top: 48px;
+        padding-top: 18px;
+        border-top: 1px solid var(--hairline);
+        font-size: 14px;
+        color: var(--subtle);
+      }
+      ul.index {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 24px;
+        display: grid;
+        gap: 10px;
+      }
+      ul.index li {
+        display: grid;
+        gap: 2px;
+        padding: 12px 0;
+        border-top: 1px solid var(--hairline);
+      }
+      ul.index li a {
+        font-weight: 600;
+        color: var(--fg);
+        text-decoration: none;
+      }
+      ul.index li a:hover {
+        text-decoration: underline;
+      }
+      ul.index li span {
+        color: var(--muted);
+        font-size: 15.5px;
+      }
+      footer {
+        padding: 32px 0 56px;
+        font-size: 14.5px;
+        color: var(--muted);
+        border-top: 1px solid var(--hairline);
+      }
+      footer .wrap {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 12px 32px;
+      }
+      footer a {
+        display: inline-block;
+        padding-block: 4px;
+      }
+      footer a:hover {
+        color: var(--fg);
+      }
+
+      /* Premium pass: the same motion language as the landing page, restrained. */
+      @media (prefers-reduced-motion: no-preference) {
+        html {
+          scroll-behavior: smooth;
+        }
+        article {
+          animation: rise 700ms var(--ease) both;
+        }
+        .side,
+        .toc {
+          animation: rise 700ms var(--ease) both;
+          animation-delay: 120ms;
+        }
+        @keyframes rise {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: none;
+          }
+        }
+      }
+      a {
+        transition: color 300ms var(--ease);
+      }
+      .btn {
+        background: linear-gradient(180deg, var(--accent-2), var(--accent));
+        color: var(--accent-ink);
+        border: 0;
+        box-shadow:
+          0 0 0 1px oklch(100% 0 0 / 0.1) inset,
+          0 8px 24px var(--glow-soft);
+        transition:
+          transform 400ms var(--spring),
+          box-shadow 400ms var(--ease);
+      }
+      .btn:hover {
+        color: var(--accent-ink);
+        box-shadow:
+          0 0 0 1px oklch(100% 0 0 / 0.14) inset,
+          0 12px 32px var(--glow);
+        transform: translateY(-1px);
+      }
+      ul.index li a {
+        color: var(--accent-link);
+      }
+      article h2 {
+        scroll-margin-top: 90px;
+      }
+
+      /* Light palette pass: the guide index as a card grid, softer tables, code chips. */
+      ul.index {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 14px;
+        padding: 0;
+        margin: 0 0 36px;
+        list-style: none;
+      }
+      ul.index li {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        padding: 18px 18px 20px;
+        border: 1px solid var(--hairline);
+        border-radius: 16px;
+        background: var(--bg-2);
+        box-shadow: 0 1px 2px oklch(0% 0 0 / 0.2);
+        transition:
+          transform 500ms var(--spring),
+          box-shadow 400ms var(--ease),
+          border-color 400ms var(--ease);
+      }
+      ul.index li:hover {
+        transform: translateY(-2px);
+        border-color: var(--hairline-strong);
+        box-shadow: 0 14px 34px oklch(0% 0 0 / 0.35);
+      }
+      ul.index li a {
+        font-weight: 600;
+        color: var(--fg);
+        text-decoration: none;
+      }
+      ul.index li a:hover {
+        color: var(--accent);
+      }
+      ul.index li span {
+        color: var(--muted);
+        font-size: 14.5px;
+        line-height: 1.45;
+      }
+      article table {
+        border: 1px solid var(--hairline);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      article th {
+        background: var(--bg-2);
+      }
+      article code {
+        background: var(--bg-2);
+        border: 1px solid var(--hairline);
+      }
+      article h2 {
+        padding-top: 8px;
+        border-top: 1px solid var(--hairline);
+      }
+      article p,
+      article li {
+        font-size: 16px;
+        line-height: 1.65;
+      }
+      article td:has(> :is(strong, b):only-child),
+      article td[align="right"] {
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* Guide pass: callouts, pager, copy buttons, mobile sidebar, tables. */
+      .callout {
+        position: relative;
+        padding: 12px 16px 12px 18px;
+        margin: 0 0 12px;
+        border-radius: 12px;
+        background: linear-gradient(var(--glass), var(--glass)), var(--bg);
+        border-left: 3px solid var(--hairline-strong);
+      }
+      .callout-belirti {
+        border-left-color: var(--subtle);
+      }
+      .callout-sebep {
+        border-left-color: var(--accent-2);
+      }
+      .callout-cozum {
+        border-left-color: var(--accent);
+        background: color-mix(in oklab, var(--accent) 10%, transparent);
+      }
+      .pager {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin: 44px 0 8px;
+      }
+      .pager a,
+      .pager .empty {
+        display: grid;
+        gap: 4px;
+        padding: 14px 16px;
+        border: 1px solid var(--hairline);
+        border-radius: 14px;
+        text-decoration: none;
+        color: var(--fg);
+        transition:
+          border-color 300ms var(--ease),
+          background-color 300ms var(--ease),
+          transform 500ms var(--spring);
+      }
+      .pager .empty {
+        border-color: transparent;
+      }
+      .pager a:hover {
+        border-color: var(--hairline-strong);
+        background: var(--glass);
+        transform: translateY(-1px);
+      }
+      .pager span {
+        font-size: 12.5px;
+        color: var(--subtle);
+      }
+      .pager-next {
+        text-align: right;
+      }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+      }
+      article .code {
+        position: relative;
+      }
+      article .code.has-copy pre {
+        padding-top: 38px;
+      }
+      article .code .copy {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        font: inherit;
+        font-size: 12.5px;
+        font-weight: 600;
+        color: var(--muted);
+        background: var(--glass);
+        border: 1px solid var(--hairline);
+        border-radius: 999px;
+        padding: 4px 10px;
+        cursor: pointer;
+        transition:
+          color 200ms var(--ease),
+          border-color 200ms var(--ease);
+      }
+      article .code .copy:hover,
+      article .code .copy:focus-visible,
+      article .code .copy.done {
+        color: var(--fg);
+        border-color: var(--hairline-strong);
+      }
+      .side-dd > summary {
+        display: none;
+      }
+      .side {
+        position: sticky;
+        top: 84px;
+        align-self: start;
+        max-height: calc(100vh - 100px);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-width: thin;
+        scrollbar-color: var(--hairline-strong) transparent;
+        padding: 2px 18px 24px 0;
+        border-right: 1px solid var(--hairline);
+        font-size: 14.5px;
+      }
+      .nav-group {
+        margin: 26px 0 8px;
+        padding-left: 12px;
+        font-size: 12.5px;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+        color: var(--subtle);
+      }
+      .nav-group:first-child {
+        margin-top: 0;
+      }
+      .side ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 1px;
+      }
+      .side li a {
+        position: relative;
+        display: block;
+        padding: 7px 12px;
+        border-radius: 9px;
+        color: var(--muted);
+        line-height: 1.35;
+        transition:
+          background-color 220ms var(--ease),
+          color 220ms var(--ease);
+      }
+      .side li a::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 9px;
+        bottom: 9px;
+        width: 2px;
+        border-radius: 2px;
+        background: var(--accent);
+        opacity: 0;
+        transition: opacity 220ms var(--ease);
+      }
+      .side li a:hover {
+        color: var(--fg);
+        background: var(--bg-2);
+      }
+      .side li.current a {
+        color: var(--fg);
+        font-weight: 600;
+        background: var(--glass);
+      }
+      .side li.current a::before {
+        opacity: 1;
+      }
+      .side li a:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 1px;
+      }
+      .toc {
+        font-size: 13.5px;
+      }
+      .toc-label {
+        font-size: 12.5px;
+        padding-left: 12px;
+      }
+      .toc ol {
+        gap: 4px;
+      }
+      .toc a {
+        padding: 3px 0 3px 12px;
+        line-height: 1.4;
+        transition: color 220ms var(--ease);
+      }
+      .toc a.current::before {
+        display: none;
+      }
+      .toc a.current {
+        box-shadow: inset 2px 0 0 var(--accent);
+        margin-left: -1px;
+      }
+      .toc a.current {
+        color: var(--fg);
+        font-weight: 600;
+      }
+      .toc a.current::before {
+        content: "";
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+        margin-right: 8px;
+        vertical-align: middle;
+        box-shadow: 0 0 8px var(--glow);
+      }
+      article .tw {
+        max-height: 70vh;
+        overflow: auto;
+      }
+      article thead th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
+      article tbody tr:nth-child(even) td {
+        background: oklch(100% 0 0 / 0.025);
+      }
+      article td.num {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+      @media (max-width: 800px) {
+        .side-dd > summary {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          cursor: pointer;
+          list-style: none;
+          padding: 12px 14px;
+          border: 1px solid var(--hairline);
+          border-radius: 12px;
+          font-weight: 600;
+        }
+        .side-dd > summary::-webkit-details-marker {
+          display: none;
+        }
+        .side-dd > summary::after {
+          content: "";
+          width: 9px;
+          height: 9px;
+          border-right: 1.5px solid var(--muted);
+          border-bottom: 1.5px solid var(--muted);
+          transform: rotate(45deg);
+          transition: transform 300ms var(--spring);
+        }
+        .side-dd[open] > summary::after {
+          transform: rotate(225deg);
+        }
+        .side-dd[open] > summary {
+          margin-bottom: 10px;
+        }
+        .side {
+          position: static;
+          max-height: none;
+          overflow: visible;
+          border-right: 0;
+          padding-right: 0;
+        }
+        .pager {
+          grid-template-columns: 1fr;
+        }
+        .pager-next {
+          text-align: left;
+        }
+      }
+      article code {
+        overflow-wrap: anywhere;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="dots" aria-hidden="true"></div>
+    <a class="skip" href="#icerik">Zum Inhalt springen</a>
+    <header>
+      <div class="wrap">
+        <a class="brand" href="/de/"
+          ><img
+            src="/assets/icon.svg"
+            alt=""
+            width="26"
+            height="26"
+          />seowatcher <span>Anleitung</span></a
+        >
+        <nav class="topnav" aria-label="Website">
+          <a class="hide" href="/de/">Startseite</a>
+          <a class="hide" href="/de/docs/">Anleitung</a>
+          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+            >GitHub</a
+          >
+          <details class="langs">
+            <summary aria-label="Sprache: Deutsch">
+              <span class="flag"
+                ><svg viewBox="0 0 20 14" aria-hidden="true">
+                  <rect width="20" height="14" fill="#000" />
+                  <rect y="4.67" width="20" height="4.67" fill="#dd0000" />
+                  <rect
+                    y="9.33"
+                    width="20"
+                    height="4.67"
+                    fill="#ffce00"
+                  /></svg></span
+              ><span class="code">DE</span>
+            </summary>
+            <ul>
+              <li>
+                <a href="/docs/analytics/" lang="tr" hreflang="tr"
+                  ><span class="flag"
+                    ><svg viewBox="0 0 20 14" aria-hidden="true">
+                      <rect width="20" height="14" fill="#e30a17" />
+                      <circle cx="7.6" cy="7" r="3.4" fill="#fff" />
+                      <circle cx="8.4" cy="7" r="2.7" fill="#e30a17" />
+                      <polygon
+                        fill="#fff"
+                        points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"
+                      /></svg></span
+                  >Türkçe</a
+                >
+              </li>
+              <li>
+                <a href="/en/docs/analytics/" lang="en" hreflang="en"
+                  ><span class="flag"
+                    ><svg viewBox="0 0 20 14" aria-hidden="true">
+                      <rect width="20" height="14" fill="#012169" />
+                      <path
+                        d="M0 0L20 14M20 0L0 14"
+                        stroke="#fff"
+                        stroke-width="2.6"
+                      />
+                      <path
+                        d="M0 0L20 14M20 0L0 14"
+                        stroke="#c8102e"
+                        stroke-width="0.9"
+                      />
+                      <path
+                        d="M10 0V14M0 7H20"
+                        stroke="#fff"
+                        stroke-width="3.6"
+                      />
+                      <path
+                        d="M10 0V14M0 7H20"
+                        stroke="#c8102e"
+                        stroke-width="2"
+                      /></svg></span
+                  >English</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/de/docs/analytics/"
+                  lang="de"
+                  hreflang="de"
+                  aria-current="page"
+                  ><span class="flag"
+                    ><svg viewBox="0 0 20 14" aria-hidden="true">
+                      <rect width="20" height="14" fill="#000" />
+                      <rect y="4.67" width="20" height="4.67" fill="#dd0000" />
+                      <rect
+                        y="9.33"
+                        width="20"
+                        height="4.67"
+                        fill="#ffce00"
+                      /></svg></span
+                  >Deutsch</a
+                >
+              </li>
+              <li>
+                <a href="/fr/docs/analytics/" lang="fr" hreflang="fr"
+                  ><span class="flag"
+                    ><svg viewBox="0 0 20 14" aria-hidden="true">
+                      <rect width="20" height="14" fill="#fff" />
+                      <rect width="6.67" height="14" fill="#0055a4" />
+                      <rect
+                        x="13.33"
+                        width="6.67"
+                        height="14"
+                        fill="#ef4135"
+                      /></svg></span
+                  >Français</a
+                >
+              </li>
+              <li>
+                <a href="/it/docs/analytics/" lang="it" hreflang="it"
+                  ><span class="flag"
+                    ><svg viewBox="0 0 20 14" aria-hidden="true">
+                      <rect width="20" height="14" fill="#fff" />
+                      <rect width="6.67" height="14" fill="#009246" />
+                      <rect
+                        x="13.33"
+                        width="6.67"
+                        height="14"
+                        fill="#ce2b37"
+                      /></svg></span
+                  >Italiano</a
+                >
+              </li>
+              <li>
+                <a href="/pt/docs/analytics/" lang="pt" hreflang="pt"
+                  ><span class="flag"
+                    ><svg viewBox="0 0 20 14" aria-hidden="true">
+                      <rect width="20" height="14" fill="#ff0000" />
+                      <rect width="8" height="14" fill="#006600" />
+                      <circle cx="8" cy="7" r="2.6" fill="#ffcc00" />
+                      <circle
+                        cx="8"
+                        cy="7"
+                        r="1.5"
+                        fill="#ff0000"
+                      /></svg></span
+                  >Português</a
+                >
+              </li>
+            </ul>
+          </details>
+          <a
+            class="btn"
+            href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            ><span class="long">Für Windows herunterladen</span
+            ><span class="short">Download</span></a
+          >
+        </nav>
+      </div>
+    </header>
+    <main
+      class="wrap layout"
+      data-copy="Kopieren"
+      data-copied="Kopiert"
+      data-copy-failed="Kopieren fehlgeschlagen"
+      data-copy-label="Code kopieren"
+    >
+      <aside class="side" aria-label="Anleitung">
+        <details class="side-dd" open>
+          <summary>Anleitung</summary>
+          <p class="nav-group">Erste Schritte</p>
+          <ul>
+            <li>
+              <a href="/de/docs/installation-windows/"
+                >Installation unter Windows</a
+              >
+            </li>
+            <li>
+              <a href="/de/docs/installation-docker/"
+                >Installation mit Docker</a
+              >
+            </li>
+            <li>
+              <a href="/de/docs/google-verbindung/">Mit Google verbinden</a>
+            </li>
+            <li>
+              <a href="/de/docs/pagespeed-schluessel/">PageSpeed-Schlüssel</a>
+            </li>
+          </ul>
+          <p class="nav-group">Bildschirme</p>
+          <ul>
+            <li><a href="/de/docs/projekte/">Projekte</a></li>
+            <li><a href="/de/docs/uebersicht/">Übersicht (Panel)</a></li>
+            <li><a href="/de/docs/suchleistung/">Suchleistung</a></li>
+            <li>
+              <a href="/de/docs/ranking-verfolgung/">Ranking-Verfolgung</a>
+            </li>
+            <li><a href="/de/docs/chancen/">Chancen</a></li>
+            <li>
+              <a href="/de/docs/gespeicherte-suchbegriffe/"
+                >Gespeicherte Suchbegriffe</a
+              >
+            </li>
+            <li class="current" aria-current="page">
+              <a href="/de/docs/analytics/">Analytics</a>
+            </li>
+            <li><a href="/de/docs/website-audit/">Website-Audit</a></li>
+            <li><a href="/de/docs/indexstatus/">Indexstatus</a></li>
+            <li><a href="/de/docs/berichte/">Berichte und Vorlagen</a></li>
+            <li><a href="/de/docs/projektinfo/">Projektinfo</a></li>
+            <li><a href="/de/docs/einstellungen/">Einstellungen</a></li>
+          </ul>
+          <p class="nav-group">Nachschlagen</p>
+          <ul>
+            <li><a href="/de/docs/hilfe/">Hilfe</a></li>
+            <li><a href="/de/docs/audit-regeln/">Audit-Regeln</a></li>
+            <li>
+              <a href="/de/docs/assistent-einrichten/">Assistent einrichten</a>
+            </li>
+            <li><a href="/de/docs/fehlerbehebung/">Fehlerbehebung</a></li>
+          </ul>
+        </details>
+      </aside>
+      <article id="icerik">
+        <h1>Analytics</h1>
+        <p class="lede">
+          Sie sehen, was Besucher aus der Suche danach auf der Website tun. Hier
+          finden Sie Berichte aus Google Analytics 4, Schlüsselereignisse und
+          die Prüfung, ob die Messung zuverlässig läuft.
+        </p>
+        <p>
+          Hier sehen Sie, was die Personen, die auf Ihre Website kommen, danach
+          tun. Die Search Console erzählt Ihnen, was bei Google passiert.
+          Analytics erzählt, was der Besucher auf der Website macht.
+        </p>
+        <p>
+          Sie sehen sieben Berichte aus Ihrem Google-Analytics-4-Konto. Der
+          Bildschirm zeigt standardmäßig nur Besucher aus der Suche (organische
+          Suche). Ein achter Reiter prüft die Messung selbst. Er sieht nach, ob
+          der Zähler läuft und ob ein Schlüsselereignis definiert ist.
+        </p>
+        <h2 id="was-auf-dem-bildschirm-zu-sehen-ist">
+          Was auf dem Bildschirm zu sehen ist
+        </h2>
+        <p>
+          <strong>Reiter.</strong>
+          <strong>Giriş sayfaları</strong> (Einstiegsseiten),
+          <strong>Sayfa performansı</strong> (Seitenleistung),
+          <strong>Trafik kaynakları</strong> (Trafficquellen),
+          <strong>Anahtar olaylar</strong> (Schlüsselereignisse),
+          <strong>E-ticaret</strong> (E-Commerce),
+          <strong>Site içi arama</strong> (Websitesuche),
+          <strong>Kitle dağılımı</strong> (Zielgruppenverteilung) und
+          <strong>Ölçüm durumu</strong> (Messungsstatus). Unter jedem Reiter
+          steht eine kurze Frage. Eine Einstiegsseite ist die Seite, auf der ein
+          Besucher zuerst auf die Website kommt. Ein Schlüsselereignis ist eine
+          Handlung, die Sie für wichtig erklärt haben.
+        </p>
+        <p>
+          <strong>Steuerelemente.</strong> Bei <strong>Dönem</strong> (Zeitraum)
+          wählen Sie Letzte 7 Tage, Letzte 28 Tage oder Letzte 3 Monate. Bei
+          <strong>Kanal</strong> wählen Sie Organische Suche (Standard) oder
+          Gesamter Traffic. <strong>Satır</strong> (Zeilen) steht für 50, 100
+          oder 200. Im Reiter Zielgruppe wählen Sie
+          <strong>Cihaz</strong> (Gerät), <strong>Ülke</strong> (Land) und
+          <strong>Yeni / geri dönen</strong> (Neu / wiederkehrend). Im Reiter
+          Traffic wählen Sie <strong>Kanal grubu</strong> (Kanalgruppe),
+          <strong>Kaynak / ortam</strong> (Quelle / Medium) und
+          <strong>Kampanya</strong> (Kampagne). Die Auswahl wird in die
+          Adressleiste geschrieben.
+        </p>
+        <p>
+          <strong>Bereich Organische Sitzungen.</strong> Er steht im Reiter
+          Giriş sayfaları über der Tabelle. Eine Sitzung ist ein ganzer Besuch.
+          Der Bereich hat eine Linie der täglichen Sitzungen sowie die Karten
+          <strong>Oturum</strong> (Sitzungen) und
+          <strong>Etkileşim oranı</strong> (Interaktionsrate). Wird Umsatz
+          gemessen, erscheint auch <strong>Organik gelir</strong> (Organischer
+          Umsatz). Alle zeigen auch die Veränderung gegenüber dem vorherigen
+          Zeitraum.
+        </p>
+        <p>
+          <strong>Tabelle.</strong> Die Spalten hängen vom Bericht ab. Zum
+          Beispiel <strong>Alan adı</strong> (Domain),
+          <strong>Giriş sayfası</strong> (Einstiegsseite),
+          <strong>Sayfa</strong> (Seite), <strong>Olay</strong> (Ereignis),
+          <strong>Kanal</strong>, <strong>Cihaz</strong>, <strong>Ülke</strong>,
+          <strong>Ürün</strong> (Produkt),
+          <strong>Arama terimi</strong> (Suchbegriff). Die Messwerte sind:
+          <strong>Oturum</strong>, <strong>Aktif kullanıcı</strong> (Aktive
+          Nutzer), <strong>Etkileşim oranı</strong>,
+          <strong>Anahtar olay</strong> (Schlüsselereignis),
+          <strong>Gelir</strong> (Umsatz),
+          <strong>Görüntülenme</strong> (Aufrufe). Ist kein Schlüsselereignis
+          definiert, steht dort immer 0.
+        </p>
+        <p>
+          <strong>Zeile unter der Tabelle.</strong> Sie nennt, wie viele Zeilen
+          angezeigt werden. Hat Google die Daten stichprobenartig erhoben, steht
+          dort „örneklenmiş“ (Stichprobe). Wurden Zeilen aus Datenschutzgründen
+          zurückgehalten, kommt „eşik altı satırlar gizlendi“ (Zeilen unter dem
+          Schwellenwert ausgeblendet) hinzu.
+        </p>
+        <p>
+          <strong>Schnellfilter.</strong> <strong>Sadece organik</strong> (Nur
+          organisch), <strong>Etkileşimi düşük</strong> (Niedrige Interaktion;
+          unter 50 Prozent), <strong>Dönüşümü olan</strong> (Mit Conversions),
+          <strong>Geliri olan</strong> (Mit Umsatz),
+          <strong>Etkileşim süresi düşük</strong> (Kurze Interaktionsdauer),
+          <strong>Trafiği yüksek, dönüşümü düşük</strong> (Viel Traffic, wenig
+          Conversions).
+        </p>
+        <p>
+          <strong>Zusammenfassungskarten.</strong> Die Reiter
+          Schlüsselereignisse, E-Commerce und Websitesuche haben jeweils eigene
+          Zusammenfassungskarten.
+        </p>
+        <p>
+          <strong>Reiter Messungsstatus.</strong> Er hat vier Karten:
+          <strong>Web veri akışı</strong> (Web-Datenstream),
+          <strong>Anahtar olay</strong> (Schlüsselereignis),
+          <strong>Özel boyut</strong> (Benutzerdefinierte Dimension),
+          <strong>Bulgu</strong> (Befund). Ein Befund kann einer von diesen
+          sein: „Web veri akışı yok“ (Kein Web-Datenstream), „Gelişmiş ölçüm
+          kapalı“ (Erweiterte Messung ausgeschaltet), „Site içi arama
+          ölçülmüyor“ (Websitesuche wird nicht gemessen), „Anahtar olay tanımlı
+          değil“ (Kein Schlüsselereignis definiert), „Envanter eksik olabilir“
+          (Das Inventar ist möglicherweise unvollständig). Die sieben Optionen
+          der erweiterten Messung erscheinen einzeln: Scrollen, Ausgehende
+          Klicks, Websitesuche, Video, Dateidownload, Formular, Seitenwechsel.
+          Gibt es kein Problem, steht dort „Ölçüm kurulumunda eksik bulunamadı.“
+          (In der Messung wurde nichts Fehlendes gefunden.)
+        </p>
+        <p>
+          <strong>Leere Zustände.</strong> Gibt es keine Daten, steht dort „Bu
+          dönemde veri yok“ (In diesem Zeitraum keine Daten), und zwei
+          Abkürzungen erscheinen: <strong>Tüm trafiğe bak</strong> (Gesamten
+          Traffic ansehen),
+          <strong>Ölçüm durumunu kontrol et</strong> (Messungsstatus prüfen).
+          Ist Analytics nicht verbunden, steht dort „Google Analytics bağlı
+          değil“ (Google Analytics ist nicht verbunden).
+        </p>
+        <h2 id="so-gehen-sie-vor">So gehen Sie vor</h2>
+        <ol>
+          <li>
+            Sehen Sie zuerst in den Reiter <strong>Ölçüm durumu</strong>. Steht
+            dort „Anahtar olay tanımlı değil“, bleiben die Conversion-Spalten
+            immer null. Definieren Sie zuerst in Analytics ein
+            Schlüsselereignis.
+          </li>
+          <li>
+            Sehen Sie im Reiter <strong>Giriş sayfaları</strong> auf die Spalte
+            <strong>Alan adı</strong>. Sehen Sie localhost oder 127.0.0.1,
+            sendet eine Testwebsite auf Ihrem eigenen Computer Daten. Diese
+            Zeilen sind keine echten Besuche. Die App filtert das nicht für Sie
+            heraus.
+          </li>
+          <li>
+            Ist der Traffic gesunken, öffnen Sie den Reiter
+            <strong>Trafik kaynakları</strong> mit <strong>Kanal grubu</strong>.
+            Ist nur die Suche gesunken, liegt das Problem bei der Suche. Ist
+            jeder Kanal gesunken, liegt das Problem bei der Messung oder auf der
+            Website.
+          </li>
+          <li>
+            Die Schaltfläche
+            <strong>Trafiği yüksek, dönüşümü düşük</strong> zeigt Stellen, an
+            denen Google Besucher schickt, die Seite sie aber nicht halten kann.
+            Was zu tun ist, finden Sie auf dem Bildschirm Fırsatlar (Chancen).
+          </li>
+        </ol>
+        <h2 id="wie-die-zahlen-berechnet-werden">
+          Wie die Zahlen berechnet werden
+        </h2>
+        <p>
+          Der Zeitraum endet in der Zeitzone des Kontos gestern. Analytics
+          liefert die Daten einen Tag später. Ist „Organische Suche“ gewählt,
+          werden nur Besuche von Google oder einer anderen Suchmaschine gezählt.
+        </p>
+        <p>
+          Jeder Bericht fragt höchstens 200 Zeilen an. Der Messungsstatus liest
+          die Analytics-Einstellungen und verbraucht kein Berichtskontingent.
+          Ist das Berichtskontingent aufgebraucht, sehen Sie den Fehler „Google
+          Analytics reporting quota is exhausted.“ (Das Berichtskontingent von
+          Analytics ist aufgebraucht). Ihr Kontingent verfolgen Sie im Abschnitt
+          Grenzen unter <strong>Ayarlar</strong> (Einstellungen).
+        </p>
+        <h2 id="h-ufige-fragen">Häufige Fragen</h2>
+        <p>
+          <strong
+            >Warum weicht die Zahl der Sitzungen von den Klicks in der Search
+            Console ab?</strong
+          >
+          Beide zählen Verschiedenes. Die Search Console zählt Klicks bei
+          Google. Analytics zählt Sitzungen auf der Website. Besucher, die der
+          Cookie-Abfrage nicht zustimmen, tauchen in Analytics gar nicht auf.
+        </p>
+        <p>
+          <strong>Die Zeilenzahl bleibt bei 200 stehen.</strong> Pro Abruf
+          werden höchstens 200 Zeilen angefordert. Verkürzen Sie den Zeitraum
+          oder ändern Sie die Aufschlüsselung.
+        </p>
+        <p>
+          <strong>Warum ist das Kontingent aufgebraucht?</strong> Ein
+          Standardkonto erhält 200.000 Tokens (Kontingenteinheiten) pro Tag und
+          40.000 pro Stunde. Jeder Bericht verbraucht einige Tokens.
+          Wiederholtes Klicken auf <strong>Yenile</strong> (Aktualisieren) zehrt
+          das Kontingent auf.
+        </p>
+        <h2 id="grenzen">Grenzen</h2>
+        <p>
+          Was Analytics nicht misst, kann auch dieser Bildschirm nicht zeigen.
+          Dazu gehören Besuche ohne Cookie-Zustimmung, nicht definierte
+          Schlüsselereignisse und eine ausgeschaltete erweiterte Messung. Der
+          Bildschirm filtert Localhost-Traffic nicht von selbst heraus.
+          Analytics und Search Console berichten in unterschiedlichen Zeitzonen.
+          Tägliche Zuordnungen können sich um einen Tag verschieben.
+        </p>
+        <nav class="pager" aria-label="Vorherige und nächste Seite">
+          <a
+            class="pager-prev"
+            rel="prev"
+            href="/de/docs/gespeicherte-suchbegriffe/"
+            ><span>Zurück</span><strong>Gespeicherte Suchbegriffe</strong></a
+          ><a class="pager-next" rel="next" href="/de/docs/website-audit/"
+            ><span>Weiter</span><strong>Website-Audit</strong></a
+          >
+        </nav>
+        <p class="meta">
+          Zuletzt aktualisiert: 23 Oktober 2026. Fehler entdeckt?
+          <a href="https://github.com/ucsahinn/seotracker/issues"
+            >Auf GitHub melden</a
+          >.
+        </p>
+      </article>
+      <nav class="toc" aria-label="Auf dieser Seite">
+        <p class="toc-label">Auf dieser Seite</p>
+        <ol>
+          <li>
+            <a href="#was-auf-dem-bildschirm-zu-sehen-ist"
+              >Was auf dem Bildschirm zu sehen ist</a
+            >
+          </li>
+          <li><a href="#so-gehen-sie-vor">So gehen Sie vor</a></li>
+          <li>
+            <a href="#wie-die-zahlen-berechnet-werden"
+              >Wie die Zahlen berechnet werden</a
+            >
+          </li>
+          <li><a href="#h-ufige-fragen">Häufige Fragen</a></li>
+          <li><a href="#grenzen">Grenzen</a></li>
+        </ol>
+      </nav>
+    </main>
+    <footer>
+      <div class="wrap">
+        <span>seowatcher, MIT-Lizenz.</span>
+        <span
+          ><a href="/de/">Startseite</a> &nbsp;
+          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"
+            >Versionshinweise</a
+          ></span
+        >
+      </div>
+    </footer>
+  </body>
+</html>

@@ -27,9 +27,11 @@
     <!-- the mark: the all-seeing eye -->
     <g transform="translate(72 58) scale(0.1875)">
       <rect width="256" height="256" rx="48" fill="#0c0b0a"/>
-      <path d="M24 128 Q128 36 232 128 Q128 220 24 128 Z" fill="#ff8a2a"/>
-      <path d="M24 128 Q128 36 232 128 Q128 220 24 128 Z" fill="none" stroke="#c84708" stroke-width="9" stroke-linejoin="round"/>
-      <path d="M128 58 Q146 128 128 198 Q110 128 128 58 Z" fill="#0c0b0a"/>
+      <path d="M26 128 Q128 34 230 128 Q128 222 26 128 Z" fill="#241d19"/>
+      <circle cx="128" cy="128" r="54" fill="#ff8a1f"/>
+      <path d="M26 128 Q128 34 230 128 Q128 222 26 128 Z" fill="none" stroke="#ff8a1f" stroke-width="12" stroke-linejoin="round"/>
+      <path d="M128 84 Q141 128 128 172 Q115 128 128 84 Z" fill="#0c0b0a"/>
+      <circle cx="148" cy="108" r="9" fill="#fff4e0"/>
     </g>
     <text x="132" y="92" font-size="30" font-weight="700" fill="#f7f3ef" letter-spacing="-0.4">seowatcher</text>
     <text x="300" y="92" font-size="16" fill="#a0948a">seotracker</text>

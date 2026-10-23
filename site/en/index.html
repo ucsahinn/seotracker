@@ -60,6 +60,10 @@
     <meta property="og:url" content="https://seowatcher.io/en/" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:locale:alternate" content="tr_TR" />
+    <meta property="og:locale:alternate" content="de_DE" />
+    <meta property="og:locale:alternate" content="fr_FR" />
+    <meta property="og:locale:alternate" content="it_IT" />
+    <meta property="og:locale:alternate" content="pt_PT" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
@@ -206,7 +210,7 @@
               },
               {
                 "@type": "Question",
-                "name": "Do I need to expose anything to the internet?",
+                "name": "Can I use it without exposing my site to the internet?",
                 "acceptedAnswer": {
                   "@type": "Answer",
                   "text": "Yes, that is how it already works. The app opens only from your own computer and reads Search Console and Analytics data from Google. During an audit it crawls only the pages of the site you are auditing."
@@ -1056,7 +1060,9 @@
       }
       .frame {
         position: relative;
-        background: oklch(100% 0 0 / 0.06);
+        background:
+          linear-gradient(oklch(100% 0 0 / 0.06), oklch(100% 0 0 / 0.06)),
+          var(--bg);
         border-radius: calc(var(--radius) + 6px);
         padding: 7px;
         border: 1px solid oklch(100% 0 0 / 0.16);
@@ -1368,7 +1374,7 @@
         gap: 10px;
         padding: 26px;
         border-radius: var(--radius);
-        background: var(--glass);
+        background: linear-gradient(var(--glass), var(--glass)), var(--bg);
         border: 1px solid var(--hairline);
         transition:
           border-color 400ms var(--ease),
@@ -2013,6 +2019,67 @@
                   >English</a
                 >
               </li>
+              <li>
+                <a href="/de/" lang="de" hreflang="de"
+                  ><span class="flag"
+                    ><svg viewBox="0 0 20 14" aria-hidden="true">
+                      <rect width="20" height="14" fill="#000" />
+                      <rect y="4.67" width="20" height="4.67" fill="#dd0000" />
+                      <rect
+                        y="9.33"
+                        width="20"
+                        height="4.67"
+                        fill="#ffce00"
+                      /></svg></span
+                  >Deutsch</a
+                >
+              </li>
+              <li>
+                <a href="/fr/" lang="fr" hreflang="fr"
+                  ><span class="flag"
+                    ><svg viewBox="0 0 20 14" aria-hidden="true">
+                      <rect width="20" height="14" fill="#fff" />
+                      <rect width="6.67" height="14" fill="#0055a4" />
+                      <rect
+                        x="13.33"
+                        width="6.67"
+                        height="14"
+                        fill="#ef4135"
+                      /></svg></span
+                  >Français</a
+                >
+              </li>
+              <li>
+                <a href="/it/" lang="it" hreflang="it"
+                  ><span class="flag"
+                    ><svg viewBox="0 0 20 14" aria-hidden="true">
+                      <rect width="20" height="14" fill="#fff" />
+                      <rect width="6.67" height="14" fill="#009246" />
+                      <rect
+                        x="13.33"
+                        width="6.67"
+                        height="14"
+                        fill="#ce2b37"
+                      /></svg></span
+                  >Italiano</a
+                >
+              </li>
+              <li>
+                <a href="/pt/" lang="pt" hreflang="pt"
+                  ><span class="flag"
+                    ><svg viewBox="0 0 20 14" aria-hidden="true">
+                      <rect width="20" height="14" fill="#ff0000" />
+                      <rect width="8" height="14" fill="#006600" />
+                      <circle cx="8" cy="7" r="2.6" fill="#ffcc00" />
+                      <circle
+                        cx="8"
+                        cy="7"
+                        r="1.5"
+                        fill="#ff0000"
+                      /></svg></span
+                  >Português</a
+                >
+              </li>
             </ul>
           </details>
         </nav>
@@ -2070,6 +2137,50 @@
                   stroke-width="2"
                 /></svg></span
             >English</a
+          ><a href="/de/" lang="de" hreflang="de"
+            ><span class="flag"
+              ><svg viewBox="0 0 20 14" aria-hidden="true">
+                <rect width="20" height="14" fill="#000" />
+                <rect y="4.67" width="20" height="4.67" fill="#dd0000" />
+                <rect
+                  y="9.33"
+                  width="20"
+                  height="4.67"
+                  fill="#ffce00"
+                /></svg></span
+            >Deutsch</a
+          ><a href="/fr/" lang="fr" hreflang="fr"
+            ><span class="flag"
+              ><svg viewBox="0 0 20 14" aria-hidden="true">
+                <rect width="20" height="14" fill="#fff" />
+                <rect width="6.67" height="14" fill="#0055a4" />
+                <rect
+                  x="13.33"
+                  width="6.67"
+                  height="14"
+                  fill="#ef4135"
+                /></svg></span
+            >Français</a
+          ><a href="/it/" lang="it" hreflang="it"
+            ><span class="flag"
+              ><svg viewBox="0 0 20 14" aria-hidden="true">
+                <rect width="20" height="14" fill="#fff" />
+                <rect width="6.67" height="14" fill="#009246" />
+                <rect
+                  x="13.33"
+                  width="6.67"
+                  height="14"
+                  fill="#ce2b37"
+                /></svg></span
+            >Italiano</a
+          ><a href="/pt/" lang="pt" hreflang="pt"
+            ><span class="flag"
+              ><svg viewBox="0 0 20 14" aria-hidden="true">
+                <rect width="20" height="14" fill="#ff0000" />
+                <rect width="8" height="14" fill="#006600" />
+                <circle cx="8" cy="7" r="2.6" fill="#ffcc00" />
+                <circle cx="8" cy="7" r="1.5" fill="#ff0000" /></svg></span
+            >Português</a
           >
         </nav>
         <a
@@ -3015,7 +3126,9 @@
               </div>
             </details>
             <details class="qa">
-              <summary>Do I need to expose anything to the internet?</summary>
+              <summary>
+                Can I use it without exposing my site to the internet?
+              </summary>
               <div class="qa-body">
                 <p>
                   Yes, that is how it already works. The app opens only from
@@ -3126,6 +3239,50 @@
                       stroke-width="2"
                     /></svg></span
                 >English</a
+              ><a href="/de/" lang="de" hreflang="de"
+                ><span class="flag"
+                  ><svg viewBox="0 0 20 14" aria-hidden="true">
+                    <rect width="20" height="14" fill="#000" />
+                    <rect y="4.67" width="20" height="4.67" fill="#dd0000" />
+                    <rect
+                      y="9.33"
+                      width="20"
+                      height="4.67"
+                      fill="#ffce00"
+                    /></svg></span
+                >Deutsch</a
+              ><a href="/fr/" lang="fr" hreflang="fr"
+                ><span class="flag"
+                  ><svg viewBox="0 0 20 14" aria-hidden="true">
+                    <rect width="20" height="14" fill="#fff" />
+                    <rect width="6.67" height="14" fill="#0055a4" />
+                    <rect
+                      x="13.33"
+                      width="6.67"
+                      height="14"
+                      fill="#ef4135"
+                    /></svg></span
+                >Français</a
+              ><a href="/it/" lang="it" hreflang="it"
+                ><span class="flag"
+                  ><svg viewBox="0 0 20 14" aria-hidden="true">
+                    <rect width="20" height="14" fill="#fff" />
+                    <rect width="6.67" height="14" fill="#009246" />
+                    <rect
+                      x="13.33"
+                      width="6.67"
+                      height="14"
+                      fill="#ce2b37"
+                    /></svg></span
+                >Italiano</a
+              ><a href="/pt/" lang="pt" hreflang="pt"
+                ><span class="flag"
+                  ><svg viewBox="0 0 20 14" aria-hidden="true">
+                    <rect width="20" height="14" fill="#ff0000" />
+                    <rect width="8" height="14" fill="#006600" />
+                    <circle cx="8" cy="7" r="2.6" fill="#ffcc00" />
+                    <circle cx="8" cy="7" r="1.5" fill="#ff0000" /></svg></span
+                >Português</a
               >
             </nav>
           </div>

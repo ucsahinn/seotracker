@@ -1,0 +1,2489 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Règles d'audit | Guide seowatcher</title>
+    <meta
+      name="description"
+      content="La liste complète des 95 règles que l'audit du site contrôle. Vous lisez ici ce que signifie chaque règle et comment la corriger."
+    />
+    <meta name="robots" content="max-image-preview:large" />
+    <link
+      rel="canonical"
+      href="https://seowatcher.io/fr/docs/regles-d-audit/"
+    />
+    <link
+      rel="alternate"
+      hreflang="tr"
+      href="https://seowatcher.io/docs/denetim-kurallari/"
+    />
+    <link
+      rel="alternate"
+      hreflang="en"
+      href="https://seowatcher.io/en/docs/audit-rules/"
+    />
+    <link
+      rel="alternate"
+      hreflang="de"
+      href="https://seowatcher.io/de/docs/audit-regeln/"
+    />
+    <link
+      rel="alternate"
+      hreflang="fr"
+      href="https://seowatcher.io/fr/docs/regles-d-audit/"
+    />
+    <link
+      rel="alternate"
+      hreflang="it"
+      href="https://seowatcher.io/it/docs/regole-del-controllo/"
+    />
+    <link
+      rel="alternate"
+      hreflang="pt"
+      href="https://seowatcher.io/pt/docs/regras-de-auditoria/"
+    />
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href="https://seowatcher.io/docs/denetim-kurallari/"
+    />
+    <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link
+      rel="icon"
+      href="/assets/favicon-48.png"
+      type="image/png"
+      sizes="48x48"
+    />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <link
+      rel="preload"
+      href="/assets/fonts/geist-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/assets/fonts/geist-latin-ext-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="seowatcher" />
+    <meta property="og:title" content="Règles d'audit | Guide seowatcher" />
+    <meta
+      property="og:description"
+      content="La liste complète des 95 règles que l'audit du site contrôle. Vous lisez ici ce que signifie chaque règle et comment la corriger."
+    />
+    <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="seowatcher" />
+    <meta property="article:modified_time" content="2026-10-23" />
+    <meta
+      property="og:url"
+      content="https://seowatcher.io/fr/docs/regles-d-audit/"
+    />
+    <meta property="og:locale" content="fr_FR" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Règles d'audit | Guide seowatcher" />
+    <meta
+      name="twitter:description"
+      content="La liste complète des 95 règles que l'audit du site contrôle. Vous lisez ici ce que signifie chaque règle et comment la corriger."
+    />
+    <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
+    <meta name="color-scheme" content="dark" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://seowatcher.io/#website",
+            "url": "https://seowatcher.io/",
+            "name": "seowatcher",
+            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"]
+          },
+          {
+            "@type": "SoftwareApplication",
+            "@id": "https://seowatcher.io/#app",
+            "name": "seowatcher",
+            "alternateName": "seotracker",
+            "url": "https://seowatcher.io/"
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://seowatcher.io/#author",
+            "name": "seowatcher",
+            "url": "https://seowatcher.io/",
+            "logo": "https://seowatcher.io/assets/icon-256.png",
+            "sameAs": ["https://github.com/ucsahinn/seotracker"]
+          },
+          {
+            "@type": "TechArticle",
+            "@id": "https://seowatcher.io/fr/docs/regles-d-audit/#article",
+            "headline": "Règles d'audit",
+            "description": "La liste complète des 95 règles que l'audit du site contrôle. Vous lisez ici ce que signifie chaque règle et comment la corriger.",
+            "url": "https://seowatcher.io/fr/docs/regles-d-audit/",
+            "inLanguage": "fr",
+            "dateModified": "2026-10-23",
+            "articleSection": "Référence",
+            "about": { "@id": "https://seowatcher.io/#app" },
+            "author": { "@id": "https://seowatcher.io/#author" },
+            "publisher": { "@id": "https://seowatcher.io/#author" },
+            "isPartOf": { "@id": "https://seowatcher.io/#website" },
+            "mainEntityOfPage": "https://seowatcher.io/fr/docs/regles-d-audit/"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://seowatcher.io/fr/docs/regles-d-audit/#breadcrumb",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "seowatcher",
+                "item": "https://seowatcher.io/fr/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Guide",
+                "item": "https://seowatcher.io/fr/docs/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Règles d'audit",
+                "item": "https://seowatcher.io/fr/docs/regles-d-audit/"
+              }
+            ]
+          }
+        ]
+      }
+    </script>
+    <script src="/assets/docs.js?v=2.4.0" defer></script>
+    <meta name="theme-color" content="#272c3b" />
+    <style>
+      @font-face {
+        font-family: "Geist";
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(/assets/fonts/geist-latin-ext-wght-normal.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+          U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+          U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: "Geist";
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(/assets/fonts/geist-latin-wght-normal.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+          U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+          U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      :root {
+        --bg: oklch(14% 0.008 60);
+        --bg-2: oklch(18% 0.009 60);
+        --bg-3: oklch(22% 0.01 60);
+        --fg: oklch(97% 0.006 80);
+        --muted: oklch(97% 0.006 80 / 0.78);
+        --subtle: oklch(97% 0.006 80 / 0.66);
+        --hairline: oklch(100% 0 0 / 0.1);
+        --hairline-strong: oklch(100% 0 0 / 0.18);
+        --accent: oklch(72% 0.19 52);
+        --accent-2: oklch(80% 0.15 68);
+        --accent-ink: oklch(16% 0.03 55);
+        --glass: oklch(100% 0 0 / 0.05);
+        --glass-edge: oklch(100% 0 0 / 0.12);
+        --accent-link: oklch(80% 0.15 68);
+        --glow: oklch(72% 0.19 52 / 0.28);
+        --glow-soft: oklch(72% 0.19 52 / 0.12);
+        --ease: cubic-bezier(0.32, 0.72, 0, 1);
+        --spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+      }
+      /* Dot field: a quiet grid of points over the whole page, and a soft
+         ember light that follows the pointer. Fixed, never scrolls, never
+         catches the pointer. Two layers: the dim field everyone sees, and the
+         lit field clipped to a circle around the pointer (--mx/--my from
+         site.js, lerped so it trails rather than snaps). Touch devices, the
+         "stop motion" toggle and reduced motion keep only the dim field. */
+      .dots,
+      .dots::before {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        background-image: radial-gradient(
+          oklch(100% 0 0 / 0.16) 1px,
+          transparent 1.5px
+        );
+        background-size: 26px 26px;
+        background-position: 13px 13px;
+      }
+      .dots {
+        opacity: 0.4;
+        mask-image: linear-gradient(
+          180deg,
+          oklch(0% 0 0 / 0.9),
+          oklch(0% 0 0 / 0.35) 40%,
+          oklch(0% 0 0 / 0.55)
+        );
+      }
+      .dots::before {
+        content: "";
+        background-image: radial-gradient(
+          var(--accent) 1.5px,
+          transparent 2.1px
+        );
+        opacity: 0;
+        mask-image: radial-gradient(
+          420px circle at var(--mx, 50%) var(--my, 30%),
+          oklch(0% 0 0) 0%,
+          oklch(0% 0 0 / 0.5) 45%,
+          transparent 72%
+        );
+        transition: opacity 600ms var(--ease);
+      }
+      .dots.live::before {
+        opacity: 1;
+      }
+      @media (hover: none), (prefers-reduced-motion: reduce) {
+        .dots::before {
+          display: none;
+        }
+      }
+      [data-still] .dots::before {
+        display: none;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
+        scroll-padding-top: 76px;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: Geist, "Segoe UI", system-ui, sans-serif;
+        font-size: 17px;
+        line-height: 1.6;
+        font-variant-numeric: tabular-nums;
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+        border-radius: 4px;
+      }
+      .skip {
+        position: absolute;
+        left: 16px;
+        top: -48px;
+        z-index: 5;
+        background: var(--accent);
+        color: var(--accent-ink);
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-weight: 600;
+      }
+      .skip:focus {
+        top: 12px;
+      }
+      .wrap {
+        width: min(1160px, 100% - 40px);
+        margin-inline: auto;
+      }
+      @media (max-width: 640px) {
+        .wrap {
+          width: calc(100% - 32px);
+        }
+      }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: color-mix(in oklab, var(--bg) 70%, transparent);
+        backdrop-filter: blur(18px) saturate(1.4);
+        -webkit-backdrop-filter: blur(18px) saturate(1.4);
+        border-bottom: 1px solid var(--hairline);
+      }
+      header .wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 60px;
+        gap: 16px;
+      }
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 600;
+        font-size: 17px;
+        letter-spacing: -0.01em;
+      }
+      .brand img {
+        width: 26px;
+        height: 26px;
+        border-radius: 7px;
+        box-shadow: 0 0 16px var(--glow-soft);
+      }
+      .brand span {
+        color: var(--subtle);
+        font-weight: 500;
+      }
+      .topnav {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        font-size: 15px;
+        color: var(--muted);
+      }
+      .topnav a {
+        padding-block: 10px;
+      }
+      /* Language menu: the current flag opens a list of editions. */
+      .langs {
+        position: relative;
+      }
+      .langs summary {
+        list-style: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 5px 10px;
+        border: 1px solid var(--hairline);
+        border-radius: 999px;
+        font-size: 12.5px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        cursor: pointer;
+        color: var(--muted);
+        transition:
+          color 300ms var(--ease),
+          background-color 300ms var(--ease);
+      }
+      .langs summary::-webkit-details-marker {
+        display: none;
+      }
+      .langs summary:hover,
+      .langs[open] summary {
+        color: var(--fg);
+        background: var(--glass);
+      }
+      .langs ul {
+        position: absolute;
+        right: 0;
+        top: calc(100% + 8px);
+        margin: 0;
+        padding: 6px;
+        list-style: none;
+        min-width: 172px;
+        background: var(--bg-2);
+        border: 1px solid var(--hairline-strong);
+        border-radius: 14px;
+        box-shadow: var(--shadow-raise, 0 24px 48px -20px oklch(0% 0 0 / 0.6));
+        z-index: 40;
+      }
+      .langs li a,
+      .langrow a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 10px;
+        border-radius: 9px;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0;
+        color: var(--muted);
+        text-decoration: none;
+        white-space: nowrap;
+      }
+      .langs li a:hover,
+      .langrow a:hover {
+        color: var(--fg);
+        background: var(--glass);
+      }
+      .langs li a[aria-current],
+      .langrow a[aria-current] {
+        color: var(--fg);
+      }
+      .langs li a[aria-current]::after {
+        content: "";
+        margin-left: auto;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+      }
+      .flag {
+        display: inline-flex;
+        width: 20px;
+        height: 14px;
+        border-radius: 3px;
+        overflow: hidden;
+        box-shadow: 0 0 0 1px oklch(100% 0 0 / 0.12);
+        flex: none;
+      }
+      .flag svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+      .langrow {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2px 6px;
+      }
+      article h2[tabindex]:focus {
+        outline: none;
+      }
+      .topnav a:hover {
+        color: var(--fg);
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        min-height: 36px;
+        padding: 0 14px;
+        border-radius: 999px;
+        font-weight: 560;
+        font-size: 14px;
+        background: var(--accent);
+        color: var(--accent-ink);
+        white-space: nowrap;
+        transition:
+          transform 320ms var(--ease),
+          filter 320ms var(--ease);
+      }
+      .btn:hover {
+        filter: saturate(1.06) brightness(1.05);
+        transform: translateY(-1px);
+      }
+      .btn:active {
+        transform: scale(0.98);
+      }
+      @media (max-width: 720px) {
+        .topnav .hide {
+          display: none;
+        }
+        .topnav {
+          gap: 14px;
+        }
+        .brand span {
+          display: none;
+        }
+      }
+      .topnav .btn .short {
+        display: none;
+      }
+      @media (max-width: 520px) {
+        .topnav .btn .short {
+          display: inline;
+        }
+      }
+      @media (max-width: 520px) {
+        /* "Für Windows herunterladen" plus the flag menu does not fit a 390px
+           phone; the flag alone and a tighter button keep the page from
+           scrolling sideways. */
+        .topnav {
+          gap: 8px;
+        }
+        .topnav .btn {
+          padding: 0 10px;
+          font-size: 13px;
+        }
+        .langs summary {
+          padding: 5px 7px;
+        }
+        .langs summary .code {
+          display: none;
+        }
+        .topnav .btn .long {
+          display: none;
+        }
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 252px minmax(0, 1fr) 208px;
+        gap: clamp(32px, 4vw, 64px);
+        padding: 40px 0 96px;
+      }
+      .toc {
+        position: sticky;
+        top: 84px;
+        align-self: start;
+        font-size: 14px;
+      }
+      .toc-label {
+        margin: 0 0 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--subtle);
+      }
+      .toc ol {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 6px;
+        border-left: 1px solid var(--hairline);
+      }
+      .toc a {
+        display: block;
+        padding-left: 12px;
+        color: var(--muted);
+      }
+      .toc a:hover {
+        color: var(--fg);
+      }
+      @media (max-width: 1100px) {
+        .layout {
+          grid-template-columns: 220px minmax(0, 1fr);
+        }
+        .toc {
+          display: none;
+        }
+      }
+      @media (max-width: 800px) {
+        .layout {
+          grid-template-columns: minmax(0, 1fr);
+          gap: 24px;
+        }
+        .side {
+          position: static;
+          border-bottom: 1px solid var(--hairline);
+          padding-bottom: 20px;
+        }
+      }
+
+      article {
+        max-width: 68ch;
+      }
+      article h1 {
+        font-size: clamp(30px, 4vw, 42px);
+        line-height: 1.08;
+        letter-spacing: -0.028em;
+        font-weight: 600;
+        margin: 0 0 14px;
+        text-wrap: balance;
+        width: fit-content;
+        background: linear-gradient(
+          100deg,
+          var(--fg) 0%,
+          oklch(94% 0.03 78) 58%,
+          var(--accent-2) 100%
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      article .lede {
+        font-size: 19px;
+        color: var(--muted);
+        margin: 0 0 32px;
+        text-wrap: pretty;
+      }
+      article h2 {
+        font-size: 24px;
+        letter-spacing: -0.02em;
+        margin: 44px 0 12px;
+        text-wrap: balance;
+      }
+      article h3 {
+        font-size: 18px;
+        letter-spacing: -0.012em;
+        margin: 28px 0 8px;
+      }
+      article p,
+      article li {
+        color: var(--muted);
+      }
+      article p {
+        margin: 0 0 16px;
+        text-wrap: pretty;
+      }
+      article strong {
+        color: var(--fg);
+        font-weight: 600;
+      }
+      article ul,
+      article ol {
+        margin: 0 0 18px;
+        padding-left: 22px;
+      }
+      article li {
+        margin: 0 0 8px;
+      }
+      article li::marker {
+        color: var(--subtle);
+      }
+      article a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      article a:hover {
+        text-decoration-color: var(--accent-link);
+      }
+      article code {
+        font-family: ui-monospace, Consolas, Menlo, monospace;
+        font-size: 0.9em;
+        background: var(--bg-2);
+        border: 1px solid var(--hairline);
+        padding: 1px 6px;
+        border-radius: 6px;
+        color: var(--fg);
+      }
+      article pre {
+        background: var(--bg-2);
+        border: 1px solid var(--hairline);
+        border-radius: 12px;
+        padding: 14px 16px;
+        overflow-x: auto;
+        margin: 0 0 18px;
+        font-size: 14.5px;
+        line-height: 1.5;
+      }
+      article pre code {
+        background: none;
+        border: 0;
+        padding: 0;
+      }
+      article blockquote {
+        margin: 0 0 18px;
+        padding: 2px 0 2px 18px;
+        border-left: 2px solid var(--accent);
+      }
+      article .tw {
+        overflow-x: auto;
+        margin: 0 0 22px;
+      }
+      article table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 15px;
+        min-width: 480px;
+      }
+      article th {
+        text-align: left;
+        font-weight: 600;
+        color: var(--fg);
+        padding: 0 16px 10px 0;
+        border-bottom: 1px solid var(--hairline-strong);
+        white-space: nowrap;
+      }
+      article td {
+        padding: 10px 16px 10px 0;
+        border-bottom: 1px solid var(--hairline);
+        vertical-align: top;
+        color: var(--muted);
+      }
+      article td:first-child {
+        color: var(--fg);
+      }
+      article .meta {
+        margin-top: 48px;
+        padding-top: 18px;
+        border-top: 1px solid var(--hairline);
+        font-size: 14px;
+        color: var(--subtle);
+      }
+      ul.index {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 24px;
+        display: grid;
+        gap: 10px;
+      }
+      ul.index li {
+        display: grid;
+        gap: 2px;
+        padding: 12px 0;
+        border-top: 1px solid var(--hairline);
+      }
+      ul.index li a {
+        font-weight: 600;
+        color: var(--fg);
+        text-decoration: none;
+      }
+      ul.index li a:hover {
+        text-decoration: underline;
+      }
+      ul.index li span {
+        color: var(--muted);
+        font-size: 15.5px;
+      }
+      footer {
+        padding: 32px 0 56px;
+        font-size: 14.5px;
+        color: var(--muted);
+        border-top: 1px solid var(--hairline);
+      }
+      footer .wrap {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 12px 32px;
+      }
+      footer a {
+        display: inline-block;
+        padding-block: 4px;
+      }
+      footer a:hover {
+        color: var(--fg);
+      }
+
+      /* Premium pass: the same motion language as the landing page, restrained. */
+      @media (prefers-reduced-motion: no-preference) {
+        html {
+          scroll-behavior: smooth;
+        }
+        article {
+          animation: rise 700ms var(--ease) both;
+        }
+        .side,
+        .toc {
+          animation: rise 700ms var(--ease) both;
+          animation-delay: 120ms;
+        }
+        @keyframes rise {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: none;
+          }
+        }
+      }
+      a {
+        transition: color 300ms var(--ease);
+      }
+      .btn {
+        background: linear-gradient(180deg, var(--accent-2), var(--accent));
+        color: var(--accent-ink);
+        border: 0;
+        box-shadow:
+          0 0 0 1px oklch(100% 0 0 / 0.1) inset,
+          0 8px 24px var(--glow-soft);
+        transition:
+          transform 400ms var(--spring),
+          box-shadow 400ms var(--ease);
+      }
+      .btn:hover {
+        color: var(--accent-ink);
+        box-shadow:
+          0 0 0 1px oklch(100% 0 0 / 0.14) inset,
+          0 12px 32px var(--glow);
+        transform: translateY(-1px);
+      }
+      ul.index li a {
+        color: var(--accent-link);
+      }
+      article h2 {
+        scroll-margin-top: 90px;
+      }
+
+      /* Light palette pass: the guide index as a card grid, softer tables, code chips. */
+      ul.index {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 14px;
+        padding: 0;
+        margin: 0 0 36px;
+        list-style: none;
+      }
+      ul.index li {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        padding: 18px 18px 20px;
+        border: 1px solid var(--hairline);
+        border-radius: 16px;
+        background: var(--bg-2);
+        box-shadow: 0 1px 2px oklch(0% 0 0 / 0.2);
+        transition:
+          transform 500ms var(--spring),
+          box-shadow 400ms var(--ease),
+          border-color 400ms var(--ease);
+      }
+      ul.index li:hover {
+        transform: translateY(-2px);
+        border-color: var(--hairline-strong);
+        box-shadow: 0 14px 34px oklch(0% 0 0 / 0.35);
+      }
+      ul.index li a {
+        font-weight: 600;
+        color: var(--fg);
+        text-decoration: none;
+      }
+      ul.index li a:hover {
+        color: var(--accent);
+      }
+      ul.index li span {
+        color: var(--muted);
+        font-size: 14.5px;
+        line-height: 1.45;
+      }
+      article table {
+        border: 1px solid var(--hairline);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      article th {
+        background: var(--bg-2);
+      }
+      article code {
+        background: var(--bg-2);
+        border: 1px solid var(--hairline);
+      }
+      article h2 {
+        padding-top: 8px;
+        border-top: 1px solid var(--hairline);
+      }
+      article p,
+      article li {
+        font-size: 16px;
+        line-height: 1.65;
+      }
+      article td:has(> :is(strong, b):only-child),
+      article td[align="right"] {
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* Guide pass: callouts, pager, copy buttons, mobile sidebar, tables. */
+      .callout {
+        position: relative;
+        padding: 12px 16px 12px 18px;
+        margin: 0 0 12px;
+        border-radius: 12px;
+        background: linear-gradient(var(--glass), var(--glass)), var(--bg);
+        border-left: 3px solid var(--hairline-strong);
+      }
+      .callout-belirti {
+        border-left-color: var(--subtle);
+      }
+      .callout-sebep {
+        border-left-color: var(--accent-2);
+      }
+      .callout-cozum {
+        border-left-color: var(--accent);
+        background: color-mix(in oklab, var(--accent) 10%, transparent);
+      }
+      .pager {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin: 44px 0 8px;
+      }
+      .pager a,
+      .pager .empty {
+        display: grid;
+        gap: 4px;
+        padding: 14px 16px;
+        border: 1px solid var(--hairline);
+        border-radius: 14px;
+        text-decoration: none;
+        color: var(--fg);
+        transition:
+          border-color 300ms var(--ease),
+          background-color 300ms var(--ease),
+          transform 500ms var(--spring);
+      }
+      .pager .empty {
+        border-color: transparent;
+      }
+      .pager a:hover {
+        border-color: var(--hairline-strong);
+        background: var(--glass);
+        transform: translateY(-1px);
+      }
+      .pager span {
+        font-size: 12.5px;
+        color: var(--subtle);
+      }
+      .pager-next {
+        text-align: right;
+      }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+      }
+      article .code {
+        position: relative;
+      }
+      article .code.has-copy pre {
+        padding-top: 38px;
+      }
+      article .code .copy {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        font: inherit;
+        font-size: 12.5px;
+        font-weight: 600;
+        color: var(--muted);
+        background: var(--glass);
+        border: 1px solid var(--hairline);
+        border-radius: 999px;
+        padding: 4px 10px;
+        cursor: pointer;
+        transition:
+          color 200ms var(--ease),
+          border-color 200ms var(--ease);
+      }
+      article .code .copy:hover,
+      article .code .copy:focus-visible,
+      article .code .copy.done {
+        color: var(--fg);
+        border-color: var(--hairline-strong);
+      }
+      .side-dd > summary {
+        display: none;
+      }
+      .side {
+        position: sticky;
+        top: 84px;
+        align-self: start;
+        max-height: calc(100vh - 100px);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-width: thin;
+        scrollbar-color: var(--hairline-strong) transparent;
+        padding: 2px 18px 24px 0;
+        border-right: 1px solid var(--hairline);
+        font-size: 14.5px;
+      }
+      .nav-group {
+        margin: 26px 0 8px;
+        padding-left: 12px;
+        font-size: 12.5px;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+        color: var(--subtle);
+      }
+      .nav-group:first-child {
+        margin-top: 0;
+      }
+      .side ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 1px;
+      }
+      .side li a {
+        position: relative;
+        display: block;
+        padding: 7px 12px;
+        border-radius: 9px;
+        color: var(--muted);
+        line-height: 1.35;
+        transition:
+          background-color 220ms var(--ease),
+          color 220ms var(--ease);
+      }
+      .side li a::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 9px;
+        bottom: 9px;
+        width: 2px;
+        border-radius: 2px;
+        background: var(--accent);
+        opacity: 0;
+        transition: opacity 220ms var(--ease);
+      }
+      .side li a:hover {
+        color: var(--fg);
+        background: var(--bg-2);
+      }
+      .side li.current a {
+        color: var(--fg);
+        font-weight: 600;
+        background: var(--glass);
+      }
+      .side li.current a::before {
+        opacity: 1;
+      }
+      .side li a:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 1px;
+      }
+      .toc {
+        font-size: 13.5px;
+      }
+      .toc-label {
+        font-size: 12.5px;
+        padding-left: 12px;
+      }
+      .toc ol {
+        gap: 4px;
+      }
+      .toc a {
+        padding: 3px 0 3px 12px;
+        line-height: 1.4;
+        transition: color 220ms var(--ease);
+      }
+      .toc a.current::before {
+        display: none;
+      }
+      .toc a.current {
+        box-shadow: inset 2px 0 0 var(--accent);
+        margin-left: -1px;
+      }
+      .toc a.current {
+        color: var(--fg);
+        font-weight: 600;
+      }
+      .toc a.current::before {
+        content: "";
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+        margin-right: 8px;
+        vertical-align: middle;
+        box-shadow: 0 0 8px var(--glow);
+      }
+      article .tw {
+        max-height: 70vh;
+        overflow: auto;
+      }
+      article thead th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
+      article tbody tr:nth-child(even) td {
+        background: oklch(100% 0 0 / 0.025);
+      }
+      article td.num {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+      @media (max-width: 800px) {
+        .side-dd > summary {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          cursor: pointer;
+          list-style: none;
+          padding: 12px 14px;
+          border: 1px solid var(--hairline);
+          border-radius: 12px;
+          font-weight: 600;
+        }
+        .side-dd > summary::-webkit-details-marker {
+          display: none;
+        }
+        .side-dd > summary::after {
+          content: "";
+          width: 9px;
+          height: 9px;
+          border-right: 1.5px solid var(--muted);
+          border-bottom: 1.5px solid var(--muted);
+          transform: rotate(45deg);
+          transition: transform 300ms var(--spring);
+        }
+        .side-dd[open] > summary::after {
+          transform: rotate(225deg);
+        }
+        .side-dd[open] > summary {
+          margin-bottom: 10px;
+        }
+        .side {
+          position: static;
+          max-height: none;
+          overflow: visible;
+          border-right: 0;
+          padding-right: 0;
+        }
+        .pager {
+          grid-template-columns: 1fr;
+        }
+        .pager-next {
+          text-align: left;
+        }
+      }
+      article code {
+        overflow-wrap: anywhere;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="dots" aria-hidden="true"></div>
+    <a class="skip" href="#icerik">Passer au contenu</a>
+    <header>
+      <div class="wrap">
+        <a class="brand" href="/fr/"
+          ><img
+            src="/assets/icon.svg"
+            alt=""
+            width="26"
+            height="26"
+          />seowatcher <span>guide</span></a
+        >
+        <nav class="topnav" aria-label="Site">
+          <a class="hide" href="/fr/">Accueil</a>
+          <a class="hide" href="/fr/docs/">Guide</a>
+          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+            >GitHub</a
+          >
+          <details class="langs">
+            <summary aria-label="Langue: Français">
+              <span class="flag"
+                ><svg viewBox="0 0 20 14" aria-hidden="true">
+                  <rect width="20" height="14" fill="#fff" />
+                  <rect width="6.67" height="14" fill="#0055a4" />
+                  <rect
+                    x="13.33"
+                    width="6.67"
+                    height="14"
+                    fill="#ef4135"
+                  /></svg></span
+              ><span class="code">FR</span>
+            </summary>
+            <ul>
+              <li>
+                <a href="/docs/denetim-kurallari/" lang="tr" hreflang="tr"
+                  ><span class="flag"
+                    ><svg viewBox="0 0 20 14" aria-hidden="true">
+                      <rect width="20" height="14" fill="#e30a17" />
+                      <circle cx="7.6" cy="7" r="3.4" fill="#fff" />
+                      <circle cx="8.4" cy="7" r="2.7" fill="#e30a17" />
+                      <polygon
+                        fill="#fff"
+                        points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"
+                      /></svg></span
+                  >Türkçe</a
+                >
+              </li>
+              <li>
+                <a href="/en/docs/audit-rules/" lang="en" hreflang="en"
+                  ><span class="flag"
+                    ><svg viewBox="0 0 20 14" aria-hidden="true">
+                      <rect width="20" height="14" fill="#012169" />
+                      <path
+                        d="M0 0L20 14M20 0L0 14"
+                        stroke="#fff"
+                        stroke-width="2.6"
+                      />
+                      <path
+                        d="M0 0L20 14M20 0L0 14"
+                        stroke="#c8102e"
+                        stroke-width="0.9"
+                      />
+                      <path
+                        d="M10 0V14M0 7H20"
+                        stroke="#fff"
+                        stroke-width="3.6"
+                      />
+                      <path
+                        d="M10 0V14M0 7H20"
+                        stroke="#c8102e"
+                        stroke-width="2"
+                      /></svg></span
+                  >English</a
+                >
+              </li>
+              <li>
+                <a href="/de/docs/audit-regeln/" lang="de" hreflang="de"
+                  ><span class="flag"
+                    ><svg viewBox="0 0 20 14" aria-hidden="true">
+                      <rect width="20" height="14" fill="#000" />
+                      <rect y="4.67" width="20" height="4.67" fill="#dd0000" />
+                      <rect
+                        y="9.33"
+                        width="20"
+                        height="4.67"
+                        fill="#ffce00"
+                      /></svg></span
+                  >Deutsch</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/fr/docs/regles-d-audit/"
+                  lang="fr"
+                  hreflang="fr"
+                  aria-current="page"
+                  ><span class="flag"
+                    ><svg viewBox="0 0 20 14" aria-hidden="true">
+                      <rect width="20" height="14" fill="#fff" />
+                      <rect width="6.67" height="14" fill="#0055a4" />
+                      <rect
+                        x="13.33"
+                        width="6.67"
+                        height="14"
+                        fill="#ef4135"
+                      /></svg></span
+                  >Français</a
+                >
+              </li>
+              <li>
+                <a href="/it/docs/regole-del-controllo/" lang="it" hreflang="it"
+                  ><span class="flag"
+                    ><svg viewBox="0 0 20 14" aria-hidden="true">
+                      <rect width="20" height="14" fill="#fff" />
+                      <rect width="6.67" height="14" fill="#009246" />
+                      <rect
+                        x="13.33"
+                        width="6.67"
+                        height="14"
+                        fill="#ce2b37"
+                      /></svg></span
+                  >Italiano</a
+                >
+              </li>
+              <li>
+                <a href="/pt/docs/regras-de-auditoria/" lang="pt" hreflang="pt"
+                  ><span class="flag"
+                    ><svg viewBox="0 0 20 14" aria-hidden="true">
+                      <rect width="20" height="14" fill="#ff0000" />
+                      <rect width="8" height="14" fill="#006600" />
+                      <circle cx="8" cy="7" r="2.6" fill="#ffcc00" />
+                      <circle
+                        cx="8"
+                        cy="7"
+                        r="1.5"
+                        fill="#ff0000"
+                      /></svg></span
+                  >Português</a
+                >
+              </li>
+            </ul>
+          </details>
+          <a
+            class="btn"
+            href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            ><span class="long">Télécharger pour Windows</span
+            ><span class="short">Télécharger</span></a
+          >
+        </nav>
+      </div>
+    </header>
+    <main
+      class="wrap layout"
+      data-copy="Copier"
+      data-copied="Copié"
+      data-copy-failed="La copie a échoué"
+      data-copy-label="Copier le code"
+    >
+      <aside class="side" aria-label="Guide">
+        <details class="side-dd" open>
+          <summary>Guide</summary>
+          <p class="nav-group">Pour démarrer</p>
+          <ul>
+            <li>
+              <a href="/fr/docs/installation-windows/"
+                >Installation sous Windows</a
+              >
+            </li>
+            <li>
+              <a href="/fr/docs/installation-docker/"
+                >Installation avec Docker</a
+              >
+            </li>
+            <li><a href="/fr/docs/connexion-google/">Connexion à Google</a></li>
+            <li><a href="/fr/docs/cle-pagespeed/">Clé PageSpeed</a></li>
+          </ul>
+          <p class="nav-group">Les écrans</p>
+          <ul>
+            <li><a href="/fr/docs/projets/">Projets</a></li>
+            <li><a href="/fr/docs/tableau-de-bord/">Tableau de bord</a></li>
+            <li>
+              <a href="/fr/docs/performance-de-recherche/"
+                >Performance de recherche</a
+              >
+            </li>
+            <li>
+              <a href="/fr/docs/suivi-du-classement/">Suivi du classement</a>
+            </li>
+            <li><a href="/fr/docs/opportunites/">Opportunités</a></li>
+            <li>
+              <a href="/fr/docs/mots-cles-enregistres/"
+                >Mots-clés enregistrés</a
+              >
+            </li>
+            <li><a href="/fr/docs/analytics/">Analytics</a></li>
+            <li><a href="/fr/docs/audit-du-site/">Audit du site</a></li>
+            <li><a href="/fr/docs/etat-de-l-index/">État de l'index</a></li>
+            <li><a href="/fr/docs/rapports/">Rapports et modèles</a></li>
+            <li><a href="/fr/docs/infos-du-projet/">Infos du projet</a></li>
+            <li><a href="/fr/docs/parametres/">Paramètres</a></li>
+          </ul>
+          <p class="nav-group">Référence</p>
+          <ul>
+            <li><a href="/fr/docs/aide/">Aide</a></li>
+            <li class="current" aria-current="page">
+              <a href="/fr/docs/regles-d-audit/">Règles d'audit</a>
+            </li>
+            <li>
+              <a href="/fr/docs/installation-assistant/"
+                >Installation de l'assistant</a
+              >
+            </li>
+            <li><a href="/fr/docs/depannage/">Dépannage</a></li>
+          </ul>
+        </details>
+      </aside>
+      <article id="icerik">
+        <h1>Règles d'audit</h1>
+        <p class="lede">
+          La liste complète des 95 règles que l'audit du site contrôle. Vous
+          lisez ici ce que signifie chaque règle et comment la corriger.
+        </p>
+        <p>
+          L'audit du site examine chaque page et l'ensemble du site avec 95
+          règles. Les règles se répartissent en trois groupes.
+          <strong>Kritik</strong> (Critique, 10 règles) : Google ne peut pas
+          voir ou comprendre la page, corrigez-les d'abord.
+          <strong>Uyarı</strong> (Avertissement, 48 règles) : elles font baisser
+          peu à peu le classement et les clics. <strong>Bilgi</strong> (Info, 37
+          règles) : ce sont de petites occasions d'amélioration. Dans le score,
+          le poids d'une règle critique est de 40, celui d'un avertissement de
+          15 et celui d'une info de 3. Le nombre de pages touchées par une règle
+          compte aussi dans le score.
+        </p>
+        <p>
+          Dans le tableau, vous voyez le nom de chaque règle tel qu'il apparaît
+          à l'écran, ce qu'elle signifie et la première étape de la correction.
+          Le texte complet de la correction se trouve dans la carte du constat,
+          à l'écran. La dernière colonne est l'identifiant de la règle, que vous
+          voyez dans le fichier CSV et dans les réponses de l'assistant.
+        </p>
+        <h2 id="termes-fr-quents">Termes fréquents</h2>
+        <ul>
+          <li>
+            <strong>canonical</strong> : la façon de dire à Google « voici
+            l'adresse principale ».
+          </li>
+          <li>
+            <strong>noindex</strong> : la balise qui cache la page de la
+            recherche.
+          </li>
+          <li>
+            <strong>hreflang</strong> : la balise de version linguistique. Elle
+            indique les équivalents de la page dans d'autres langues.
+          </li>
+          <li>
+            <strong>méta-description</strong> : le résumé gris sous le titre
+            dans un résultat de recherche.
+          </li>
+          <li>
+            <strong>données structurées</strong> (JSON-LD) : une note cachée qui
+            dit à Google ce qu'est la page (produit, article, par exemple). Elle
+            peut faire apparaître dans la recherche des éléments en plus, comme
+            des étoiles ou une image (résultat enrichi).
+          </li>
+          <li>
+            <strong>robots.txt</strong> : le fichier qui dit à Google à quelles
+            pages il peut accéder. La ligne « Disallow » est la ligne qui pose
+            une interdiction.
+          </li>
+          <li>
+            <strong>plan du site</strong> (sitemap) : la liste des pages de
+            votre site. <strong>lastmod</strong> : la date de dernière
+            modification de la page.
+          </li>
+          <li>
+            <strong>redirection</strong> : envoyer vers une autre adresse ceux
+            qui arrivent à une adresse.
+          </li>
+          <li>
+            <strong>agent utilisateur</strong> (user agent) : le nom sous lequel
+            un navigateur ou un robot se présente.
+          </li>
+          <li>
+            <strong>title</strong> (balise de titre) : le titre qui apparaît
+            dans l'onglet et dans la recherche. <strong>H1</strong> : le titre
+            principal de la page. <strong>texte alternatif</strong> (alt) : un
+            court texte qui décrit ce que montre l'image.
+          </li>
+          <li>
+            <strong>nofollow</strong> : la balise qui dit « ne suis pas ce lien
+            ». <strong>head</strong> : la partie haute du code source de la
+            page.
+          </li>
+          <li>
+            <strong>LCP</strong> : le temps d'affichage du contenu principal de
+            la page. <strong>CLS</strong> : le décalage du contenu pendant le
+            chargement. <strong>INP</strong> : le temps de réponse à un clic.
+          </li>
+          <li>
+            <strong>Lighthouse</strong> : l'outil de mesure des pages de Google.
+            <strong>Certificat SSL</strong> : le document qui fait de votre site
+            un site en https (adresse sécurisée).
+          </li>
+        </ul>
+        <h2 id="kritik-critique">Kritik (Critique)</h2>
+        <div class="tw">
+          <table>
+            <thead>
+              <tr>
+                <th>Règle</th>
+                <th>Ce que cela signifie</th>
+                <th>Comment corriger</th>
+                <th>Identifiant</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Le robot d'exploration a été bloqué</td>
+                <td>
+                  La protection anti-bots de votre site a arrêté l'explorateur.
+                  Google peut être bloqué aussi.
+                </td>
+                <td>
+                  Dans le pare-feu, autorisez l'agent utilisateur «
+                  seotracker-audit ».
+                </td>
+                <td>blocked-page</td>
+              </tr>
+              <tr>
+                <td>Erreur de serveur (5xx)</td>
+                <td>
+                  La page renvoie une erreur de serveur. Google retire de la
+                  recherche les pages de ce genre.
+                </td>
+                <td>
+                  Trouvez l'erreur de cette adresse dans les journaux du serveur
+                  et corrigez-la.
+                </td>
+                <td>server-error</td>
+              </tr>
+              <tr>
+                <td>Le fichier robots.txt renvoie une erreur de serveur</td>
+                <td>
+                  Si Google ne peut pas lire le fichier, il peut renoncer
+                  complètement à explorer le site.
+                </td>
+                <td>
+                  Corrigez l'erreur. Vérifiez que l'adresse de robots.txt
+                  s'ouvre normalement.
+                </td>
+                <td>robots-txt-server-error</td>
+              </tr>
+              <tr>
+                <td>L'adresse de départ est bloquée par robots.txt</td>
+                <td>
+                  L'adresse par laquelle l'exploration commence est interdite
+                  dans robots.txt.
+                </td>
+                <td>
+                  Si elle doit être explorée, supprimez la ligne « Disallow »
+                  correspondante.
+                </td>
+                <td>robots-txt-blocks-start-url</td>
+              </tr>
+              <tr>
+                <td>Une page du plan du site ne s'ouvre pas</td>
+                <td>
+                  Une page que vous signalez à Google comme existante renvoie
+                  une erreur.
+                </td>
+                <td>
+                  Si la page doit exister, corrigez l'erreur. Sinon, retirez-la
+                  du plan du site.
+                </td>
+                <td>sitemap-broken-page</td>
+              </tr>
+              <tr>
+                <td>
+                  Un fichier dont la page a besoin est bloqué par robots.txt
+                </td>
+                <td>
+                  Google ne peut pas accéder au fichier de style ou de code
+                  nécessaire pour afficher la page.
+                </td>
+                <td>
+                  Dans robots.txt, supprimez la règle qui couvre ces fichiers.
+                </td>
+                <td>blocked-resource</td>
+              </tr>
+              <tr>
+                <td>Ressource non sécurisée sur une page sécurisée</td>
+                <td>
+                  Une page sécurisée (https) charge un fichier depuis une
+                  adresse non sécurisée (http). Les navigateurs le bloquent.
+                </td>
+                <td>
+                  Changez l'adresse du fichier pour qu'elle commence par https.
+                </td>
+                <td>mixed-content-resource</td>
+              </tr>
+              <tr>
+                <td>Une page cachée est indiquée comme adresse principale</td>
+                <td>
+                  La page indiquée comme adresse principale est cachée de la
+                  recherche. Les deux s'annulent.
+                </td>
+                <td>
+                  Retirez le noindex de la page cible, ou faites de l'adresse
+                  principale l'adresse de la page même.
+                </td>
+                <td>canonical-to-noindex</td>
+              </tr>
+              <tr>
+                <td>Google considère la page comme vide (soft 404)</td>
+                <td>
+                  Google considère que la page « n'existe pas » et ne la prend
+                  pas dans la recherche.
+                </td>
+                <td>
+                  Si la page n'existe vraiment pas, renvoyez un code d'erreur
+                  404 ou 410. Si elle existe, mettez du vrai contenu.
+                </td>
+                <td>google-soft-404</td>
+              </tr>
+              <tr>
+                <td>
+                  Google ne peut pas explorer la page à cause de robots.txt
+                </td>
+                <td>La réponse de Google : robots.txt bloque.</td>
+                <td>
+                  Trouvez dans robots.txt la ligne « Disallow » qui couvre cette
+                  adresse et supprimez-la.
+                </td>
+                <td>google-blocked-by-robots</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h2 id="uyari-avertissement">Uyarı (Avertissement)</h2>
+        <div class="tw">
+          <table>
+            <thead>
+              <tr>
+                <th>Règle</th>
+                <th>Ce que cela signifie</th>
+                <th>Comment corriger</th>
+                <th>Identifiant</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Bloqué par la limite de requêtes (429)</td>
+                <td>Le site a dit à l'explorateur « trop de requêtes ».</td>
+                <td>
+                  Relevez la limite de requêtes sur le serveur, ou laissez «
+                  seotracker-audit » hors de la limite.
+                </td>
+                <td>rate-limited-page</td>
+              </tr>
+              <tr>
+                <td>Exploration arrêtée tôt : limite de requêtes</td>
+                <td>
+                  L'exploration s'est arrêtée quand l'attente a dépassé 30
+                  minutes.
+                </td>
+                <td>
+                  Relancez l'audit quand la limite de requêtes du site est
+                  réinitialisée.
+                </td>
+                <td>crawl-rate-limited</td>
+              </tr>
+              <tr>
+                <td>Lien interne cassé</td>
+                <td>
+                  Un lien de votre site mène à une page qui ne s'ouvre pas.
+                </td>
+                <td>Dirigez le lien vers la bonne adresse, ou supprimez-le.</td>
+                <td>broken-internal-link</td>
+              </tr>
+              <tr>
+                <td>La page renvoie une erreur à l'ouverture (4xx)</td>
+                <td>La page renvoie une erreur de type « introuvable ».</td>
+                <td>
+                  Si la page doit exister, republiez-la. Sinon, supprimez les
+                  liens qui y mènent.
+                </td>
+                <td>broken-page</td>
+              </tr>
+              <tr>
+                <td>Chaîne de redirections</td>
+                <td>
+                  L'adresse est redirigée plusieurs fois avant d'arriver à la
+                  page finale.
+                </td>
+                <td>
+                  Redirigez la première adresse, et ceux qui la lient,
+                  directement vers la page finale.
+                </td>
+                <td>redirect-chain</td>
+              </tr>
+              <tr>
+                <td>Boucle de redirections</td>
+                <td>L'adresse se redirige vers elle-même ou en cercle.</td>
+                <td>Suivez les règles de redirection et cassez la boucle.</td>
+                <td>redirect-loop</td>
+              </tr>
+              <tr>
+                <td>Page qui ne reçoit de lien d'aucune page</td>
+                <td>
+                  La page n'existe que dans le plan du site. Google ne lui
+                  accorde pas de valeur.
+                </td>
+                <td>
+                  Faites un lien depuis le menu, depuis des articles liés ou
+                  depuis la page de catégorie.
+                </td>
+                <td>orphan-page</td>
+              </tr>
+              <tr>
+                <td>robots.txt inaccessible</td>
+                <td>Le fichier n'a jamais répondu.</td>
+                <td>
+                  Ouvrez l'adresse de robots.txt dans le navigateur et vérifiez
+                  qu'elle répond.
+                </td>
+                <td>robots-txt-unreachable</td>
+              </tr>
+              <tr>
+                <td>robots.txt dépasse la limite de 500 Ko</td>
+                <td>Google ne lit pas la fin du fichier.</td>
+                <td>Raccourcissez le fichier.</td>
+                <td>robots-txt-truncated</td>
+              </tr>
+              <tr>
+                <td>Une page du plan du site redirige</td>
+                <td>
+                  Le plan contient une adresse qui redirige vers une autre.
+                </td>
+                <td>
+                  Écrivez dans le plan l'adresse finale vers laquelle elle
+                  redirige.
+                </td>
+                <td>sitemap-redirect-page</td>
+              </tr>
+              <tr>
+                <td>L'adresse du plan du site est bloquée par robots.txt</td>
+                <td>Le plan dit « viens », robots.txt dit « ne viens pas ».</td>
+                <td>
+                  Si elle doit apparaître dans la recherche, levez le blocage.
+                  Sinon, retirez-la du plan.
+                </td>
+                <td>sitemap-disallowed-page</td>
+              </tr>
+              <tr>
+                <td>Le fichier du plan du site est trop gros pour être lu</td>
+                <td>Le fichier dépasse la limite de 10 Mo.</td>
+                <td>Découpez le plan en plusieurs parties.</td>
+                <td>sitemap-too-large</td>
+              </tr>
+              <tr>
+                <td>Le plan du site contient plus de 50 000 adresses</td>
+                <td>Google accepte au plus 50 000 adresses par fichier.</td>
+                <td>
+                  Découpez le fichier en parties de moins de 50 000. Reliez les
+                  parties par un fichier de plan principal.
+                </td>
+                <td>sitemap-too-many-urls</td>
+              </tr>
+              <tr>
+                <td>Le plan du site contient un lastmod daté du futur</td>
+                <td>
+                  La date est postérieure à aujourd'hui. Google cesse de se fier
+                  aux dates.
+                </td>
+                <td>Vérifiez l'endroit qui produit les dates.</td>
+                <td>sitemap-lastmod-future</td>
+              </tr>
+              <tr>
+                <td>La page s'ouvre en http, non sécurisé</td>
+                <td>La page n'est pas sécurisée (https).</td>
+                <td>
+                  Demandez à votre hébergeur d'activer le certificat SSL
+                  gratuit.
+                </td>
+                <td>not-https</td>
+              </tr>
+              <tr>
+                <td>Pas de balise de titre</td>
+                <td>La page n'a pas de balise de titre (title).</td>
+                <td>
+                  Ajoutez un titre propre à la page, qui dit de quoi elle parle.
+                  50 à 60 caractères est une bonne mesure.
+                </td>
+                <td>missing-title</td>
+              </tr>
+              <tr>
+                <td>Pas de méta-description</td>
+                <td>Le résumé gris du résultat de recherche est absent.</td>
+                <td>
+                  Écrivez une description qui résume la page et donne envie de
+                  cliquer.
+                </td>
+                <td>missing-meta-description</td>
+              </tr>
+              <tr>
+                <td>Images sans texte alternatif</td>
+                <td>Ce que montrent les images n'est pas écrit.</td>
+                <td>
+                  Écrivez un court texte alternatif pour chaque image qui a un
+                  sens.
+                </td>
+                <td>images-missing-alt</td>
+              </tr>
+              <tr>
+                <td>Plusieurs balises de titre (title) dans la page</td>
+                <td>
+                  Il y a deux balises de titre. Google en choisit une au hasard.
+                </td>
+                <td>
+                  Cherchez « title » dans le code source de la page et n'en
+                  gardez qu'une.
+                </td>
+                <td>multiple-titles</td>
+              </tr>
+              <tr>
+                <td>Plusieurs méta-descriptions différentes dans la page</td>
+                <td>Il y a deux descriptions.</td>
+                <td>
+                  Cherchez name=&quot;description&quot; dans le code source de
+                  la page et n'en gardez qu'une.
+                </td>
+                <td>multiple-meta-descriptions</td>
+              </tr>
+              <tr>
+                <td>La balise de titre est un texte provisoire</td>
+                <td>Le titre est du genre « Accueil » ou « Untitled ».</td>
+                <td>
+                  Écrivez votre propre titre, qui dit de quoi parle la page.
+                </td>
+                <td>placeholder-title</td>
+              </tr>
+              <tr>
+                <td>Titre dupliqué</td>
+                <td>Plusieurs pages utilisent le même titre.</td>
+                <td>
+                  Écrivez pour chaque page un titre distinct qui décrit son
+                  propre contenu.
+                </td>
+                <td>duplicate-title</td>
+              </tr>
+              <tr>
+                <td>Titre principal (H1) dupliqué</td>
+                <td>Plusieurs pages ont le même titre principal.</td>
+                <td>Écrivez le H1 de chaque page séparément.</td>
+                <td>duplicate-h1</td>
+              </tr>
+              <tr>
+                <td>Méta-description dupliquée</td>
+                <td>Plusieurs pages utilisent la même description.</td>
+                <td>
+                  Écrivez pour chaque page sa propre description, ou supprimez
+                  celle qui se répète.
+                </td>
+                <td>duplicate-meta-description</td>
+              </tr>
+              <tr>
+                <td>Contenu de page dupliqué</td>
+                <td>Deux pages portent le même texte.</td>
+                <td>
+                  Choisissez la page principale. Reliez l'autre à elle avec un
+                  canonical.
+                </td>
+                <td>duplicate-content</td>
+              </tr>
+              <tr>
+                <td>Les déclarations d'adresse principale se contredisent</td>
+                <td>
+                  Le HTML et la réponse du serveur indiquent des adresses
+                  principales différentes.
+                </td>
+                <td>
+                  Choisissez une seule adresse principale et ne l'indiquez qu'à
+                  un seul endroit.
+                </td>
+                <td>canonical-conflict</td>
+              </tr>
+              <tr>
+                <td>
+                  La page indiquée comme adresse principale ne s'ouvre pas
+                </td>
+                <td>
+                  La page indiquée comme adresse principale renvoie une erreur.
+                </td>
+                <td>
+                  Dirigez l'adresse principale vers une page qui fonctionne, ou
+                  republiez la cible.
+                </td>
+                <td>canonical-to-broken</td>
+              </tr>
+              <tr>
+                <td>
+                  Une page qui redirige est indiquée comme adresse principale
+                </td>
+                <td>
+                  L'adresse principale est une adresse qui redirige vers une
+                  autre page.
+                </td>
+                <td>
+                  Faites de la page finale vers laquelle elle redirige l'adresse
+                  principale.
+                </td>
+                <td>canonical-to-redirect</td>
+              </tr>
+              <tr>
+                <td>Google voit une balise qui cache la page (noindex)</td>
+                <td>La réponse de Google : il a vu un noindex dans la page.</td>
+                <td>
+                  Comparez le code source de la page avec ce que voit Google. Un
+                  plugin ou un modèle ajoute peut-être la balise.
+                </td>
+                <td>google-blocked-by-meta</td>
+              </tr>
+              <tr>
+                <td>
+                  Google a choisi une autre adresse comme adresse principale
+                </td>
+                <td>Google n'a pas aimé votre adresse principale.</td>
+                <td>
+                  Regardez l'adresse choisie par Google. Faites-en l'adresse
+                  principale, ou distinguez les deux pages.
+                </td>
+                <td>google-chose-different-canonical</td>
+              </tr>
+              <tr>
+                <td>Code de version linguistique (hreflang) invalide</td>
+                <td>Un code qui n'existe pas, comme « en-UK », a été écrit.</td>
+                <td>Écrivez le bon code. Pour le Royaume-Uni, « en-GB ».</td>
+                <td>hreflang-invalid-code</td>
+              </tr>
+              <tr>
+                <td>
+                  Entre les versions linguistiques, la page ne se liste pas
+                  elle-même (hreflang)
+                </td>
+                <td>La page liste les autres langues mais pas elle-même.</td>
+                <td>
+                  Ajoutez à la liste l'adresse de la page elle-même, avec son
+                  propre code de langue.
+                </td>
+                <td>hreflang-missing-self</td>
+              </tr>
+              <tr>
+                <td>La page désactive ses liens avec une directive robots</td>
+                <td>La page a désactivé le suivi de ses liens (nofollow).</td>
+                <td>
+                  Si vous voulez que ses liens soient suivis, supprimez le texte
+                  « nofollow ».
+                </td>
+                <td>nofollow-page</td>
+              </tr>
+              <tr>
+                <td>
+                  Page paginée qui indique la première page comme adresse
+                  principale
+                </td>
+                <td>
+                  La page 2 indique la page 1 comme adresse principale. Google
+                  ignore la page 2.
+                </td>
+                <td>
+                  Faites de l'adresse de chaque page sa propre adresse
+                  principale.
+                </td>
+                <td>paginated-canonical-to-first-page</td>
+              </tr>
+              <tr>
+                <td>Version linguistique non réciproque (hreflang)</td>
+                <td>La page A indique B, mais B n'indique pas A.</td>
+                <td>Ajoutez à la page B une ligne hreflang qui indique A.</td>
+                <td>hreflang-no-return-tag</td>
+              </tr>
+              <tr>
+                <td>
+                  La version linguistique indique une page qui ne s'ouvre pas ou
+                  qui est retirée de l'index
+                </td>
+                <td>
+                  La version linguistique indiquée renvoie une erreur ou est
+                  cachée de la recherche.
+                </td>
+                <td>
+                  Regardez l'adresse dans le détail. Corrigez-la ou retirez-la
+                  de la liste.
+                </td>
+                <td>hreflang-target-broken</td>
+              </tr>
+              <tr>
+                <td>
+                  L'adresse principale (canonical) indique un autre nom de
+                  domaine ou du http
+                </td>
+                <td>
+                  L'adresse principale indique un autre site ou une adresse non
+                  sécurisée (http).
+                </td>
+                <td>
+                  Si ce n'est pas voulu, faites de l'adresse principale
+                  l'adresse https de la page même.
+                </td>
+                <td>canonical-cross-host-or-http</td>
+              </tr>
+              <tr>
+                <td>Bloc de données structurées cassé</td>
+                <td>Le bloc de données structurées (JSON-LD) est illisible.</td>
+                <td>
+                  Collez le bloc dans un vérificateur JSON. Il s'agit souvent
+                  d'une virgule en trop.
+                </td>
+                <td>structured-data-invalid-json</td>
+              </tr>
+              <tr>
+                <td>Google a exploré mais n'a pas indexé</td>
+                <td>
+                  La réponse de Google : il n'a pas trouvé le contenu suffisant.
+                </td>
+                <td>
+                  Dans l'« outil d'inspection d'URL » de Google, voyez s'il y a
+                  un noindex, un fichier bloqué ou un contenu qui paraît vide.
+                </td>
+                <td>google-crawled-not-indexed</td>
+              </tr>
+              <tr>
+                <td>Google a découvert mais n'a pas encore exploré</td>
+                <td>Google connaît l'adresse et l'a mise en file d'attente.</td>
+                <td>
+                  Le plus souvent, attendre suffit. Faites un lien depuis des
+                  pages souvent explorées.
+                </td>
+                <td>google-discovered-not-indexed</td>
+              </tr>
+              <tr>
+                <td>
+                  Google a vu du contenu dupliqué, aucune adresse principale
+                  indiquée
+                </td>
+                <td>
+                  Google a trouvé une page copie, et vous n'avez pas indiqué
+                  d'adresse principale.
+                </td>
+                <td>
+                  Dans chaque page du groupe de copies, ajoutez un canonical qui
+                  indique l'adresse principale.
+                </td>
+                <td>google-duplicate-no-canonical</td>
+              </tr>
+              <tr>
+                <td>Google ne connaît pas du tout cette adresse</td>
+                <td>L'adresse n'est jamais parvenue à Google.</td>
+                <td>
+                  Ajoutez-la au plan du site et envoyez le plan à Search
+                  Console.
+                </td>
+                <td>google-url-unknown</td>
+              </tr>
+              <tr>
+                <td>Google a trouvé une erreur dans les données structurées</td>
+                <td>
+                  Il manque un champ dans le balisage écrit pour le résultat
+                  enrichi.
+                </td>
+                <td>
+                  Ouvrez l'adresse dans le Test des résultats enrichis de
+                  Google. Il y montre le champ manquant.
+                </td>
+                <td>google-rich-results-invalid</td>
+              </tr>
+              <tr>
+                <td>
+                  La page déclare des adresses principales contradictoires
+                </td>
+                <td>La page contient plusieurs balises canonical.</td>
+                <td>
+                  Décidez laquelle est la bonne. Désactivez le plugin qui
+                  produit l'autre.
+                </td>
+                <td>multiple-canonical-tags</td>
+              </tr>
+              <tr>
+                <td>Le contenu principal de la page se charge tard (LCP)</td>
+                <td>Le plus grand élément arrive après plus de 4 secondes.</td>
+                <td>
+                  Regardez le plus grand élément dans le rapport PageSpeed.
+                  C'est souvent une image. Réduisez-la et convertissez-la au
+                  format WebP.
+                </td>
+                <td>cwv-lcp-poor</td>
+              </tr>
+              <tr>
+                <td>
+                  Le contenu se décale pendant le chargement de la page (CLS)
+                </td>
+                <td>Le score de décalage dépasse 0,25.</td>
+                <td>
+                  Donnez une largeur et une hauteur aux images et aux cadres
+                  intégrés.
+                </td>
+                <td>cwv-cls-poor</td>
+              </tr>
+              <tr>
+                <td>La page répond tard aux clics (INP)</td>
+                <td>La réponse à un clic prend plus de 500 millisecondes.</td>
+                <td>
+                  Trouvez les morceaux de code qui fatiguent le plus la page.
+                  Différez-les ou retirez-les.
+                </td>
+                <td>cwv-inp-poor</td>
+              </tr>
+              <tr>
+                <td>Le score d'audit SEO de Google est faible</td>
+                <td>Le score SEO de Lighthouse est inférieur à 90.</td>
+                <td>
+                  Ouvrez la page dans PageSpeed Insights. Regardez les contrôles
+                  échoués dans la section SEO.
+                </td>
+                <td>lighthouse-seo-low</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h2 id="bilgi-info">Bilgi (Info)</h2>
+        <div class="tw">
+          <table>
+            <thead>
+              <tr>
+                <th>Règle</th>
+                <th>Ce que cela signifie</th>
+                <th>Comment corriger</th>
+                <th>Identifiant</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Réponse du serveur lente</td>
+                <td>La première réponse du serveur arrive tard.</td>
+                <td>
+                  Regardez le temps du serveur et de la base de données. Activez
+                  le cache (mise en réserve).
+                </td>
+                <td>slow-response</td>
+              </tr>
+              <tr>
+                <td>
+                  Une page du plan du site indique une autre page comme adresse
+                  principale
+                </td>
+                <td>Le plan contient une adresse en copie.</td>
+                <td>
+                  Que seules les adresses principales restent dans le plan.
+                </td>
+                <td>sitemap-canonicalized-page</td>
+              </tr>
+              <tr>
+                <td>
+                  Une page du plan du site est cachée des résultats de recherche
+                </td>
+                <td>Le plan contient une page cachée de la recherche.</td>
+                <td>
+                  Si elle doit apparaître, retirez le noindex. Sinon, retirez-la
+                  du plan.
+                </td>
+                <td>sitemap-noindex-page</td>
+              </tr>
+              <tr>
+                <td>Page trop profonde dans la structure du site</td>
+                <td>La page est à beaucoup de clics de l'accueil.</td>
+                <td>
+                  Raccourcissez le chemin avec des liens depuis une catégorie,
+                  le menu ou des listes en vedette.
+                </td>
+                <td>deep-page</td>
+              </tr>
+              <tr>
+                <td>Aucune date lastmod dans le plan du site</td>
+                <td>Google ne connaît pas la date de dernière modification.</td>
+                <td>
+                  Dans le réglage qui produit le plan, activez lastmod pour
+                  chaque adresse.
+                </td>
+                <td>sitemap-lastmod-missing</td>
+              </tr>
+              <tr>
+                <td>Un lien interne mène à une redirection</td>
+                <td>
+                  Le lien va vers une ancienne adresse, qui redirige ensuite.
+                </td>
+                <td>
+                  Remplacez le lien par la nouvelle adresse vers laquelle elle
+                  redirige.
+                </td>
+                <td>internal-link-to-redirect</td>
+              </tr>
+              <tr>
+                <td>Encodage des caractères non précisé</td>
+                <td>
+                  Les caractères turcs peuvent s'abîmer dans certains
+                  navigateurs.
+                </td>
+                <td>
+                  Ajoutez la ligne meta charset=&quot;utf-8&quot; au début de la
+                  section head.
+                </td>
+                <td>missing-charset</td>
+              </tr>
+              <tr>
+                <td>L'adresse de la page est trop longue</td>
+                <td>L'adresse est trop longue, difficile à lire.</td>
+                <td>Gardez l'adresse courte et parlante.</td>
+                <td>url-too-long</td>
+              </tr>
+              <tr>
+                <td>Majuscule ou tiret bas dans l'adresse</td>
+                <td>
+                  Deux écritures différentes d'une même page peuvent apparaître.
+                </td>
+                <td>Écrivez les adresses en minuscules et avec des tirets.</td>
+                <td>url-uppercase-or-underscore</td>
+              </tr>
+              <tr>
+                <td>Pas de titre H1</td>
+                <td>La page n'a pas de titre principal.</td>
+                <td>Ajoutez un seul H1 qui dit de quoi parle la page.</td>
+                <td>missing-h1</td>
+              </tr>
+              <tr>
+                <td>Plusieurs titres H1</td>
+                <td>Il y a plusieurs titres principaux.</td>
+                <td>Ne gardez qu'un H1. Transformez les autres en H2 ou H3.</td>
+                <td>multiple-h1</td>
+              </tr>
+              <tr>
+                <td>Presque aucun texte dans la page</td>
+                <td>
+                  L'explorateur n'a trouvé aucun texte. Le texte arrive
+                  peut-être plus tard par JavaScript.
+                </td>
+                <td>
+                  Regardez si le texte apparaît dans le code source de la page.
+                </td>
+                <td>thin-content</td>
+              </tr>
+              <tr>
+                <td>Aucun lien de la page vers un autre endroit</td>
+                <td>Page en impasse : elle ne mène nulle part ailleurs.</td>
+                <td>
+                  Ajoutez des liens vers des pages liées, vers la catégorie
+                  parente ou vers l'accueil.
+                </td>
+                <td>no-outgoing-links</td>
+              </tr>
+              <tr>
+                <td>Titre trop long</td>
+                <td>Google coupe après 60 caractères.</td>
+                <td>
+                  Ramenez le titre à 50-60 caractères. Mettez les mots
+                  importants au début.
+                </td>
+                <td>title-too-long</td>
+              </tr>
+              <tr>
+                <td>Titre trop court</td>
+                <td>Le titre ne décrit pas la page.</td>
+                <td>
+                  Écrivez un titre de 30 à 60 caractères qui dit ce que vous
+                  proposez.
+                </td>
+                <td>title-too-short</td>
+              </tr>
+              <tr>
+                <td>Méta-description trop longue</td>
+                <td>Google coupe après 160 caractères.</td>
+                <td>
+                  Mettez le message principal au début et ramenez-la à 70-160
+                  caractères.
+                </td>
+                <td>meta-description-too-long</td>
+              </tr>
+              <tr>
+                <td>Méta-description trop courte</td>
+                <td>La description ne donne aucune raison de cliquer.</td>
+                <td>Écrivez 70 à 160 caractères qui résument la page.</td>
+                <td>meta-description-too-short</td>
+              </tr>
+              <tr>
+                <td>Niveaux de titres sautés</td>
+                <td>On est passé directement de H1 à H3.</td>
+                <td>Utilisez les titres dans l'ordre : H1, H2, H3.</td>
+                <td>heading-order-skip</td>
+              </tr>
+              <tr>
+                <td>Pas de balise d'affichage mobile (viewport)</td>
+                <td>Sur un téléphone, la page apparaît minuscule.</td>
+                <td>Ajoutez la ligne viewport à la section head.</td>
+                <td>missing-viewport</td>
+              </tr>
+              <tr>
+                <td>Langue de la page non précisée</td>
+                <td>
+                  La langue de la page n'est pas écrite (pas de lang dans la
+                  balise html).
+                </td>
+                <td>
+                  Pour une page en turc, écrivez html lang=&quot;tr&quot;.
+                </td>
+                <td>missing-lang</td>
+              </tr>
+              <tr>
+                <td>Pas de largeur ni de hauteur sur les images</td>
+                <td>Le contenu saute pendant le chargement de la page.</td>
+                <td>
+                  Écrivez la vraie taille de l'image dans chaque balise img.
+                </td>
+                <td>images-missing-dimensions</td>
+              </tr>
+              <tr>
+                <td>Pas de sous-titres dans un long texte</td>
+                <td>Le long texte forme un seul bloc.</td>
+                <td>
+                  Découpez le texte par sujets. Donnez à chaque partie un titre
+                  H2.
+                </td>
+                <td>no-subheadings</td>
+              </tr>
+              <tr>
+                <td>Le texte alternatif de l'image est un nom de fichier</td>
+                <td>Le texte alternatif est du genre « IMG_1234.jpg ».</td>
+                <td>
+                  Dans le texte alternatif, écrivez ce qu'il y a dans l'image.
+                </td>
+                <td>alt-is-filename</td>
+              </tr>
+              <tr>
+                <td>Texte alternatif d'image trop long</td>
+                <td>Le texte alternatif est long comme un paragraphe.</td>
+                <td>
+                  Décrivez l'image en une phrase. Environ 125 caractères
+                  suffisent.
+                </td>
+                <td>alt-too-long</td>
+              </tr>
+              <tr>
+                <td>Titre principal (H1) trop long</td>
+                <td>Le H1 est long comme un paragraphe.</td>
+                <td>Ramenez le H1 à un titre court d'une seule phrase.</td>
+                <td>h1-too-long</td>
+              </tr>
+              <tr>
+                <td>Liens internes sans texte</td>
+                <td>Le lien n'a pas de texte, ou seulement une icône.</td>
+                <td>
+                  Ajoutez un texte visible ou un aria-label (un nom caché pour
+                  les lecteurs d'écran).
+                </td>
+                <td>empty-anchor-text</td>
+              </tr>
+              <tr>
+                <td>Textes de lien sans sens, comme « cliquez ici »</td>
+                <td>Le texte du lien ne dit pas où il mène.</td>
+                <td>
+                  Remplacez le texte du lien par le sujet de la page cible.
+                </td>
+                <td>generic-anchor-text</td>
+              </tr>
+              <tr>
+                <td>Trop de liens dans la page</td>
+                <td>La page contient des centaines de liens.</td>
+                <td>
+                  Limitez le menu et le pied de page aux pages les plus
+                  importantes.
+                </td>
+                <td>too-many-links</td>
+              </tr>
+              <tr>
+                <td>Liens nofollow vers les pages de votre propre site</td>
+                <td>Un lien vers vos propres pages porte nofollow.</td>
+                <td>Supprimez rel=&quot;nofollow&quot; de ces liens.</td>
+                <td>internal-nofollow-links</td>
+              </tr>
+              <tr>
+                <td>
+                  Pas de balise canonical (adresse principale) dans la page
+                </td>
+                <td>Google devine l'adresse principale.</td>
+                <td>
+                  Dans la section head, ajoutez la ligne canonical qui indique
+                  l'adresse complète de la page elle-même.
+                </td>
+                <td>missing-canonical</td>
+              </tr>
+              <tr>
+                <td>Page cachée des résultats de recherche (noindex)</td>
+                <td>
+                  La page est cachée de la recherche, exprès ou par erreur.
+                </td>
+                <td>
+                  Si elle doit apparaître dans la recherche, retirez le noindex.
+                </td>
+                <td>noindex-page</td>
+              </tr>
+              <tr>
+                <td>La page indique une autre page comme adresse principale</td>
+                <td>La page se déclare elle-même comme une copie.</td>
+                <td>
+                  Si elle doit apparaître dans la recherche sous son propre nom,
+                  faites de son adresse l'adresse principale.
+                </td>
+                <td>canonicalized-page</td>
+              </tr>
+              <tr>
+                <td>
+                  Pas de version par défaut (x-default) dans les versions
+                  linguistiques
+                </td>
+                <td>
+                  Il n'y a pas de version par défaut pour un visiteur dont la
+                  langue ne correspond pas.
+                </td>
+                <td>Ajoutez la ligne x-default à la liste hreflang.</td>
+                <td>hreflang-missing-x-default</td>
+              </tr>
+              <tr>
+                <td>La réponse de Google sur certaines pages est périmée</td>
+                <td>
+                  Les réponses de Google enregistrées ont plus de 3 ou de 14
+                  jours.
+                </td>
+                <td>
+                  Dans l'onglet État de l'index, cliquez sur « Google'da
+                  durumunu kontrol et ».
+                </td>
+                <td>stale-google-verdicts</td>
+              </tr>
+              <tr>
+                <td>
+                  Pas de balises de partage sur les réseaux sociaux (Open Graph)
+                  sur le site
+                </td>
+                <td>Au partage, ni image ni titre n'apparaissent.</td>
+                <td>
+                  Dans la section head du modèle, ajoutez og:title,
+                  og:description et une og:image de 1200x630 pixels.
+                </td>
+                <td>open-graph-missing-site</td>
+              </tr>
+              <tr>
+                <td>Aucune donnée structurée sur le site</td>
+                <td>
+                  Aucune chance de voir apparaître un résultat enrichi dans la
+                  recherche.
+                </td>
+                <td>
+                  Commencez par un balisage adapté au type de page
+                  (Organization, Product, Article, par exemple).
+                </td>
+                <td>structured-data-missing-site</td>
+              </tr>
+              <tr>
+                <td>Google n'a pas exploré cette page depuis longtemps</td>
+                <td>La dernière visite de Google date de plus de 90 jours.</td>
+                <td>
+                  Faites un lien depuis des pages souvent explorées. Vérifiez
+                  que la page est dans le plan du site.
+                </td>
+                <td>google-crawl-stale</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h2 id="comment-les-r-gles-fonctionnent">
+          Comment les règles fonctionnent
+        </h2>
+        <p>
+          La plupart des règles s'appliquent page par page et listent chaque
+          page qu'elles touchent. Certaines concernent le site dans son ensemble
+          et ne produisent qu'un seul constat. Ce sont les règles de robots.txt,
+          les règles du plan du site, « Pas de balises de partage sur les
+          réseaux sociaux sur le site » et « Aucune donnée structurée sur le
+          site ».
+        </p>
+        <p>
+          Les règles dont le nom commence par « Google » ne viennent pas de
+          l'exploration de l'application. Elles découlent des réponses obtenues
+          de Google dans l'onglet État de l'index. Si vous n'avez posé aucune
+          question dans cet onglet, ces règles ne s'appliquent jamais. Les
+          règles de vitesse (LCP, CLS, INP, score SEO) ne s'appliquent que
+          lorsque « Sayfa hızını da ölç » (Mesurer aussi la vitesse des pages)
+          est activé, et selon la mesure sur téléphone.
+        </p>
+        <nav class="pager" aria-label="Page précédente et suivante">
+          <a class="pager-prev" rel="prev" href="/fr/docs/aide/"
+            ><span>Précédent</span><strong>Aide</strong></a
+          ><a
+            class="pager-next"
+            rel="next"
+            href="/fr/docs/installation-assistant/"
+            ><span>Suivant</span><strong>Installation de l'assistant</strong></a
+          >
+        </nav>
+        <p class="meta">
+          Dernière mise à jour: 23 octobre 2026. Vous voyez une erreur ?
+          <a href="https://github.com/ucsahinn/seotracker/issues"
+            >Signalez-la sur GitHub</a
+          >.
+        </p>
+      </article>
+      <nav class="toc" aria-label="Sur cette page">
+        <p class="toc-label">Sur cette page</p>
+        <ol>
+          <li><a href="#termes-fr-quents">Termes fréquents</a></li>
+          <li><a href="#kritik-critique">Kritik (Critique)</a></li>
+          <li><a href="#uyari-avertissement">Uyarı (Avertissement)</a></li>
+          <li><a href="#bilgi-info">Bilgi (Info)</a></li>
+          <li>
+            <a href="#comment-les-r-gles-fonctionnent"
+              >Comment les règles fonctionnent</a
+            >
+          </li>
+        </ol>
+      </nav>
+    </main>
+    <footer>
+      <div class="wrap">
+        <span>seowatcher, licence MIT.</span>
+        <span
+          ><a href="/fr/">Accueil</a> &nbsp;
+          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"
+            >Notes de version</a
+          ></span
+        >
+      </div>
+    </footer>
+  </body>
+</html>

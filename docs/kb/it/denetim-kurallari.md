@@ -1,0 +1,143 @@
+---
+title: Regole del controllo
+description: L'elenco completo delle 95 regole che il controllo del sito verifica. Qui si legge che cosa significa ogni regola e come correggerla.
+updated: 2026-10-22
+---
+
+Il controllo del sito esamina ogni pagina e il sito nel suo insieme con 95 regole. Le regole si dividono in tre gruppi. **Kritik** (Critico, 10 regole) indica i casi in cui Google non riesce a vedere o a capire la pagina: da correggere per primi. **Uyarı** (Avviso, 48 regole) fa calare a poco a poco le posizioni e i clic. **Bilgi** (Informazione, 37 regole) sono piccole occasioni di miglioramento. Nel punteggio il peso è 40 per le regole critiche, 15 per gli avvisi, 3 per le informazioni. Conta anche quante pagine una regola interessa.
+
+Nella tabella si vedono, per ogni regola, il nome mostrato nella schermata, che cosa significa e il primo passo per correggerla. Il testo completo della correzione sta nella scheda del rilievo nella schermata. L'ultima colonna è l'identificativo della regola, che compare nel file CSV e nelle risposte dell'assistente.
+
+## Termini ricorrenti
+
+- **canonical**: il modo per dire a Google "questo è l'indirizzo principale".
+- **noindex**: l'etichetta che nasconde la pagina dalla ricerca.
+- **hreflang**: l'etichetta della versione linguistica. Indica la corrispondente della pagina in altre lingue.
+- **meta description**: il breve riassunto grigio sotto il titolo nel risultato di ricerca.
+- **dati strutturati** (JSON-LD): una nota nascosta che dice a Google che cosa è la pagina (un prodotto, un articolo). Può far comparire nella ricerca elementi in più, come stelle o immagini (risultato arricchito).
+- **robots.txt**: il file che dice a Google a quali pagine può accedere. La riga "Disallow" è la riga che impone un divieto.
+- **mappa del sito**: l'elenco delle pagine del sito. **lastmod**: la data dell'ultima modifica della pagina.
+- **reindirizzamento**: mandare a un altro indirizzo chi arriva a un certo indirizzo.
+- **user agent**: il nome con cui il programma di navigazione si presenta.
+- **title** (etichetta del titolo): il titolo che compare nella scheda e nella ricerca. **H1**: il titolo principale della pagina. **testo alternativo (alt)**: breve testo che descrive che cosa mostra un'immagine.
+- **nofollow**: l'etichetta che dice "non seguire questo collegamento". **head**: la parte alta del codice sorgente della pagina.
+- **LCP**: il tempo con cui compare il contenuto principale della pagina. **CLS**: lo spostamento del contenuto durante il caricamento. **INP**: il tempo di risposta a un clic.
+- **Lighthouse**: lo strumento di Google per misurare le pagine. **certificato SSL**: il documento che rende https (indirizzo sicuro) il sito.
+
+## Critico
+
+| Regola | Che cosa significa | Come si corregge | ID |
+| --- | --- | --- | --- |
+| Crawler bloccato | La protezione anti-bot del sito ha fermato il crawler. Anche Google potrebbe essere bloccato. | Nel firewall consentire lo user agent "seotracker-audit". | blocked-page |
+| Errore del server (5xx) | La pagina dà un errore del server. Google toglie queste pagine dalla ricerca. | Trovare l'errore di questo indirizzo nei registri del server e risolverlo. | server-error |
+| Il file robots.txt dà un errore del server | Se Google non riesce a leggere il file, può smettere del tutto di scansionare il sito. | Risolvere l'errore. Controllare che l'indirizzo di robots.txt si apra normalmente. | robots-txt-server-error |
+| L'indirizzo di partenza è bloccato da robots.txt | L'indirizzo da cui parte la scansione è vietato in robots.txt. | Se deve essere scansionato, eliminare la riga "Disallow" corrispondente. | robots-txt-blocks-start-url |
+| La pagina nella mappa del sito non si apre | La pagina che si è segnalata a Google con "questa pagina esiste" dà un errore. | Se la pagina deve esistere, risolvere l'errore. Altrimenti toglierla dalla mappa del sito. | sitemap-broken-page |
+| Un file necessario alla pagina è bloccato da robots.txt | Google non riesce ad accedere al file di grafica o di codice necessario per mostrare la pagina. | Eliminare in robots.txt la regola che comprende questi file. | blocked-resource |
+| Risorsa non sicura in una pagina sicura | Una pagina sicura (https) carica un file da un indirizzo non sicuro (http). I browser lo bloccano. | Cambiare l'indirizzo del file in modo che inizi con https. | mixed-content-resource |
+| Come indirizzo principale è indicata una pagina nascosta | La pagina indicata come indirizzo principale è nascosta dalla ricerca. Le due indicazioni si annullano a vicenda. | Togliere noindex dalla pagina di destinazione oppure rendere l'indirizzo principale quello della pagina stessa. | canonical-to-noindex |
+| Google considera la pagina vuota (soft 404) | Google considera la pagina "inesistente" e non la include nella ricerca. | Se la pagina non esiste davvero, restituire il codice di errore 404 o 410. Se esiste, metterci contenuto reale. | google-soft-404 |
+| Google non può scansionare la pagina a causa di robots.txt | La risposta di Google: robots.txt la blocca. | Trovare in robots.txt la riga "Disallow" che comprende questo indirizzo ed eliminarla. | google-blocked-by-robots |
+
+## Avviso
+
+| Regola | Che cosa significa | Come si corregge | ID |
+| --- | --- | --- | --- |
+| Limite di richieste raggiunto (429) | Il sito ha detto al crawler "troppe richieste". | Alzare il limite di richieste sul server oppure escludere "seotracker-audit" dal limite. | rate-limited-page |
+| Scansione interrotta in anticipo: limite di richieste | La scansione si è fermata perché l'attesa ha superato i 30 minuti. | Riavviare il controllo quando il limite di richieste del sito si è azzerato. | crawl-rate-limited |
+| Collegamento interno rotto | Un collegamento del sito porta a una pagina che non si apre. | Correggere il collegamento con l'indirizzo giusto oppure eliminarlo. | broken-internal-link |
+| La pagina dà un errore all'apertura (4xx) | La pagina dà un errore come "non trovata". | Se la pagina deve esistere, ripubblicarla. Altrimenti eliminare i collegamenti che vi portano. | broken-page |
+| Catena di reindirizzamenti | L'indirizzo viene reindirizzato più volte prima di arrivare alla pagina finale. | Reindirizzare il primo indirizzo, e chi lo collega, direttamente alla pagina finale. | redirect-chain |
+| Ciclo di reindirizzamenti | L'indirizzo viene reindirizzato a se stesso o a un altro in cerchio. | Seguire le regole di reindirizzamento e rompere il ciclo. | redirect-loop |
+| Pagina che non riceve collegamenti da nessuna pagina | La pagina esiste solo nella mappa del sito. Google non le dà valore. | Inserire un collegamento dal menu, da articoli correlati o dalla pagina della categoria. | orphan-page |
+| robots.txt non raggiungibile | Il file non ha risposto affatto. | Aprire nel browser l'indirizzo di robots.txt e controllare che risponda. | robots-txt-unreachable |
+| robots.txt supera il limite di 500 KB | Google non legge la fine del file. | Accorciare il file. | robots-txt-truncated |
+| La pagina nella mappa del sito è reindirizzata | Nella mappa c'è un indirizzo che viene reindirizzato a un altro. | Scrivere nella mappa l'indirizzo finale del reindirizzamento. | sitemap-redirect-page |
+| L'indirizzo nella mappa del sito è bloccato da robots.txt | La mappa dice "vieni", robots.txt dice "non venire". | Se deve comparire nella ricerca, togliere il blocco. Altrimenti eliminarlo dalla mappa. | sitemap-disallowed-page |
+| Il file della mappa del sito è troppo grande per essere letto | Il file supera il limite di 10 MB. | Dividere la mappa in parti. | sitemap-too-large |
+| La mappa del sito contiene più di 50.000 indirizzi | Google accetta al massimo 50.000 indirizzi per file. | Dividere il file in parti sotto i 50.000. Collegare le parti con un file di mappa principale. | sitemap-too-many-urls |
+| La mappa del sito ha un lastmod con data futura | La data è successiva a oggi. Google smette di fidarsi delle date. | Controllare il punto in cui le date vengono generate. | sitemap-lastmod-future |
+| La pagina si apre con http, non sicuro | La pagina non è sicura (https). | Far attivare dal fornitore di hosting il certificato SSL gratuito. | not-https |
+| Etichetta del titolo mancante | La pagina non ha l'etichetta del titolo (title). | Aggiungere un titolo specifico per la pagina, che descriva l'argomento. 50-60 caratteri è una buona misura. | missing-title |
+| Meta description mancante | Manca il riassunto grigio nel risultato di ricerca. | Scrivere una descrizione che riassuma la pagina e inviti a cliccare. | missing-meta-description |
+| Immagini senza testo alternativo | Non è scritto che cosa mostrano le immagini. | Scrivere un breve testo alternativo per ogni immagine significativa. | images-missing-alt |
+| Più etichette del titolo (title) nella pagina | Ci sono due etichette del titolo. Google ne sceglie una a caso. | Cercare "title" nel codice sorgente della pagina e lasciarne una sola. | multiple-titles |
+| Più meta description diverse tra loro nella pagina | Ci sono due descrizioni. | Cercare name="description" nel codice sorgente della pagina e lasciarne una sola. | multiple-meta-descriptions |
+| L'etichetta del titolo è un testo segnaposto | Il titolo è come "Ana sayfa" (Home) o "Untitled". | Scrivere un titolo proprio che descriva l'argomento della pagina. | placeholder-title |
+| Titolo duplicato | Più pagine usano lo stesso titolo. | Scrivere per ogni pagina un titolo diverso, che ne descriva il contenuto. | duplicate-title |
+| Titolo principale (H1) duplicato | Più pagine hanno lo stesso titolo principale. | Scrivere l'H1 di ogni pagina in modo diverso. | duplicate-h1 |
+| Meta description duplicata | Più pagine usano la stessa descrizione. | Scrivere per ogni pagina la propria descrizione oppure eliminare quella ripetuta. | duplicate-meta-description |
+| Contenuto della pagina duplicato | Due pagine hanno lo stesso testo. | Scegliere la pagina principale. Collegare l'altra a questa con canonical. | duplicate-content |
+| Le indicazioni dell'indirizzo principale sono in contraddizione | L'HTML e la risposta del server indicano indirizzi principali diversi. | Scegliere un solo indirizzo principale e indicarlo in un solo punto. | canonical-conflict |
+| La pagina indicata come indirizzo principale non si apre | La pagina indicata come indirizzo principale dà un errore. | Cambiare l'indirizzo principale con una pagina funzionante oppure ripubblicare la destinazione. | canonical-to-broken |
+| Come indirizzo principale è indicata una pagina che reindirizza | L'indirizzo principale è un indirizzo che viene reindirizzato a un'altra pagina. | Rendere indirizzo principale la pagina finale del reindirizzamento. | canonical-to-redirect |
+| Google vede nella pagina l'etichetta di esclusione (noindex) | La risposta di Google: ha visto noindex nella pagina. | Confrontare il codice sorgente della pagina con quello che vede Google. Un plugin o un modello potrebbe aggiungere l'etichetta. | google-blocked-by-meta |
+| Google ha scelto un altro indirizzo come principale | A Google non è piaciuto l'indirizzo principale indicato. | Guardare l'indirizzo scelto da Google. Renderlo principale oppure distinguere le due pagine. | google-chose-different-canonical |
+| Codice della versione linguistica (hreflang) non valido | È scritto un codice inesistente come "en-UK". | Scrivere il codice giusto. Per il Regno Unito "en-GB". | hreflang-invalid-code |
+| Tra le versioni linguistiche la pagina non elenca se stessa (hreflang) | La pagina elenca le altre lingue ma non se stessa. | Aggiungere all'elenco l'indirizzo della pagina stessa, con il suo codice lingua. | hreflang-missing-self |
+| La pagina disattiva i propri collegamenti con una direttiva robots | La pagina ha disattivato il seguito dei propri collegamenti (nofollow). | Se si vuole che i collegamenti siano seguiti, eliminare il testo "nofollow". | nofollow-page |
+| Una pagina numerata indica come indirizzo principale la prima pagina | La pagina 2 indica la pagina 1 come indirizzo principale. Google ignora la pagina 2. | Rendere l'indirizzo principale di ogni pagina il proprio indirizzo. | paginated-canonical-to-first-page |
+| Versione linguistica non collegata reciprocamente (hreflang) | La pagina A indica B, ma B non indica A. | Aggiungere alla pagina B una riga hreflang che indichi A. | hreflang-no-return-tag |
+| La versione linguistica indica una pagina che non si apre o è stata tolta dall'indice | La versione linguistica indicata dà un errore o è nascosta dalla ricerca. | Guardare l'indirizzo nel dettaglio. Correggerlo oppure toglierlo dall'elenco. | hreflang-target-broken |
+| L'indirizzo principale (canonical) indica un altro dominio o http | L'indirizzo principale indica un altro sito o un indirizzo non sicuro (http). | Se non è voluto, rendere l'indirizzo principale l'indirizzo https della pagina stessa. | canonical-cross-host-or-http |
+| Blocco di dati strutturati danneggiato | Il blocco di dati strutturati (JSON-LD) non si legge. | Incollare il blocco in un verificatore JSON. Di solito c'è una virgola in più. | structured-data-invalid-json |
+| Google ha scansionato ma non ha indicizzato | La risposta di Google: il contenuto non è sufficiente. | Nello "Strumento Controllo URL" di Google verificare se ci sono noindex, file bloccati o contenuto che appare vuoto. | google-crawled-not-indexed |
+| Google l'ha scoperta ma non ancora scansionata | Google conosce l'indirizzo e l'ha messo in coda. | Spesso basta attendere. Inserire un collegamento dalle pagine scansionate più spesso. | google-discovered-not-indexed |
+| Google ha visto contenuto duplicato e non è indicato l'indirizzo principale | Google ha trovato una pagina copia e non è stato indicato un indirizzo principale. | Aggiungere a ogni pagina del gruppo di copie un canonical che indichi l'indirizzo principale. | google-duplicate-no-canonical |
+| Google non conosce affatto questo indirizzo | L'indirizzo non è mai arrivato a Google. | Aggiungerlo alla mappa del sito e inviare la mappa a Search Console. | google-url-unknown |
+| Google ha trovato un errore nei dati strutturati | Nel marcatore scritto per il risultato arricchito manca un campo. | Aprire l'indirizzo nel Test dei risultati multimediali di Google. Lì indica il campo mancante. | google-rich-results-invalid |
+| La pagina indica indirizzi principali in contraddizione tra loro | Nella pagina ci sono più etichette canonical. | Decidere quale è giusta. Disattivare il plugin che genera le altre. | multiple-canonical-tags |
+| Il contenuto principale della pagina si carica tardi (LCP) | L'elemento più grande arriva dopo più di 4 secondi. | Nel report PageSpeed guardare l'elemento più grande. Di solito è un'immagine. Ridurla e convertirla in WebP. | cwv-lcp-poor |
+| Durante il caricamento il contenuto si sposta (CLS) | Il punteggio di spostamento è superiore a 0,25. | Dare larghezza e altezza alle immagini e ai riquadri incorporati. | cwv-cls-poor |
+| La pagina risponde tardi ai clic (INP) | La risposta a un clic richiede più di 500 millisecondi. | Trovare le parti di codice che appesantiscono di più la pagina. Rimandarle o toglierle. | cwv-inp-poor |
+| Il punteggio SEO di Google è basso | Il punteggio SEO di Lighthouse è inferiore a 90. | Aprire la pagina in PageSpeed Insights. Nella sezione SEO guardare i controlli non superati. | lighthouse-seo-low |
+
+## Informazione
+
+| Regola | Che cosa significa | Come si corregge | ID |
+| --- | --- | --- | --- |
+| Risposta del server lenta | La prima risposta del server arriva tardi. | Controllare i tempi del server e del database. Attivare la cache (conservazione di dati già pronti). | slow-response |
+| La pagina nella mappa del sito indica un'altra pagina come indirizzo principale | Nella mappa c'è un indirizzo duplicato. | Nella mappa devono restare solo gli indirizzi principali. | sitemap-canonicalized-page |
+| La pagina nella mappa del sito è nascosta dai risultati di ricerca | Nella mappa c'è una pagina nascosta dalla ricerca. | Se deve comparire nella ricerca, togliere noindex. Altrimenti eliminarla dalla mappa. | sitemap-noindex-page |
+| La pagina è troppo in profondità nella struttura del sito | La pagina è lontana molti clic dalla home page. | Accorciare il percorso con collegamenti da categorie, menu o elenchi in evidenza. | deep-page |
+| Nella mappa del sito non c'è nessuna data lastmod | Google non conosce la data dell'ultima modifica. | Nell'impostazione che genera la mappa, attivare lastmod per ogni indirizzo. | sitemap-lastmod-missing |
+| Un collegamento interno porta a un reindirizzamento | Il collegamento va a un vecchio indirizzo, che poi reindirizza. | Sostituire il collegamento con il nuovo indirizzo di destinazione. | internal-link-to-redirect |
+| Codifica dei caratteri non indicata | I caratteri turchi possono rovinarsi in alcuni browser. | All'inizio della sezione head aggiungere la riga meta charset="utf-8". | missing-charset |
+| L'indirizzo della pagina è troppo lungo | L'indirizzo è troppo lungo e difficile da leggere. | Tenere l'indirizzo breve e significativo. | url-too-long |
+| Nell'indirizzo ci sono lettere maiuscole o trattini bassi | Si possono creare due grafie diverse della stessa pagina. | Scrivere gli indirizzi in minuscolo e con i trattini. | url-uppercase-or-underscore |
+| Titolo H1 mancante | La pagina non ha il titolo principale. | Aggiungere un solo H1 che descriva l'argomento. | missing-h1 |
+| Più titoli H1 | Ci sono più titoli principali. | Lasciare un solo H1. Trasformare gli altri in H2 o H3. | multiple-h1 |
+| Nella pagina c'è quasi nessun testo | Il crawler non ha trovato testo. Il testo potrebbe arrivare dopo, con JavaScript. | Controllare nel codice sorgente della pagina se il testo è visibile. | thin-content |
+| Dalla pagina non parte nessun collegamento | Pagina senza uscita: non porta da nessuna parte. | Aggiungere collegamenti alle pagine correlate, alla categoria superiore o alla home page. | no-outgoing-links |
+| Titolo troppo lungo | Google taglia dopo i 60 caratteri. | Portare il titolo a 50-60 caratteri. Mettere all'inizio le parole importanti. | title-too-long |
+| Titolo troppo corto | Il titolo non descrive la pagina. | Scrivere un titolo di 30-60 caratteri che dica che cosa si offre. | title-too-short |
+| Meta description troppo lunga | Google taglia dopo i 160 caratteri. | Mettere all'inizio il messaggio principale e portarla a 70-160 caratteri. | meta-description-too-long |
+| Meta description troppo corta | La descrizione non dà un motivo per cliccare. | Scrivere 70-160 caratteri che riassumano la pagina. | meta-description-too-short |
+| Livelli dei titoli saltati | Si è saltati da H1 direttamente a H3. | Usare i titoli in ordine: H1, H2, H3. | heading-order-skip |
+| Etichetta della visualizzazione mobile (viewport) mancante | Sul telefono la pagina appare minuscola. | Aggiungere la riga viewport nella sezione head. | missing-viewport |
+| Lingua della pagina non indicata | Non è scritto in quale lingua è la pagina (manca lang nell'etichetta html). | Per una pagina in turco scrivere html lang="tr". | missing-lang |
+| Nelle immagini mancano larghezza e altezza | Durante il caricamento il contenuto salta. | In ogni etichetta img scrivere le dimensioni reali dell'immagine. | images-missing-dimensions |
+| Nessun sottotitolo in un testo lungo | Il testo lungo è un unico blocco. | Dividere il testo per argomenti. Dare a ogni parte un titolo H2. | no-subheadings |
+| Il testo alternativo dell'immagine è un nome di file | Il testo alternativo è come "IMG_1234.jpg". | Nel testo alternativo scrivere che cosa c'è nell'immagine. | alt-is-filename |
+| Testo alternativo dell'immagine troppo lungo | Il testo alternativo è lungo come un paragrafo. | Descrivere l'immagine con una frase. Bastano circa 125 caratteri. | alt-too-long |
+| Titolo principale (H1) troppo lungo | L'H1 è lungo come un paragrafo. | Ridurre l'H1 a un breve titolo di una frase. | h1-too-long |
+| Collegamenti interni senza testo | Il collegamento non ha testo oppure ha solo un'icona. | Aggiungere un testo visibile o un aria-label (nome nascosto per i lettori di schermo). | empty-anchor-text |
+| Testi dei collegamenti privi di significato come "Clicca qui" | Il testo del collegamento non dice dove porta. | Sostituire il testo del collegamento con l'argomento della pagina di destinazione. | generic-anchor-text |
+| Troppi collegamenti nella pagina | Nella pagina ci sono centinaia di collegamenti. | Limitare menu e piè di pagina alle pagine più importanti. | too-many-links |
+| Collegamenti nofollow verso le pagine del proprio sito | Un collegamento verso le proprie pagine ha nofollow. | Eliminare da questi collegamenti l'espressione rel="nofollow". | internal-nofollow-links |
+| Nella pagina manca l'etichetta canonical (indirizzo principale) | Google tira a indovinare l'indirizzo principale. | Nella sezione head aggiungere la riga canonical che indica l'indirizzo completo della pagina stessa. | missing-canonical |
+| La pagina è nascosta dai risultati di ricerca (noindex) | La pagina è nascosta dalla ricerca, di proposito o per errore. | Se deve comparire nella ricerca, togliere noindex. | noindex-page |
+| La pagina indica un'altra pagina come indirizzo principale | La pagina si dichiara una copia. | Se deve comparire nella ricerca con il proprio nome, rendere l'indirizzo principale il proprio indirizzo. | canonicalized-page |
+| Nelle versioni linguistiche manca la versione predefinita (x-default) | Per chi ha una lingua che non corrisponde non c'è una versione predefinita. | Aggiungere all'elenco hreflang la riga x-default. | hreflang-missing-x-default |
+| La risposta di Google su alcune pagine è invecchiata | Le risposte di Google registrate hanno più di 3 o 14 giorni. | Nella scheda Stato dell'indice premere il pulsante "Google'da durumunu kontrol et" (Controlla lo stato su Google). | stale-google-verdicts |
+| Il sito non ha etichette per la condivisione sui social (Open Graph) | Quando viene condiviso, non compaiono immagine e titolo. | Nella sezione head del modello aggiungere og:title, og:description e og:image di 1200x630 pixel. | open-graph-missing-site |
+| Il sito non ha alcun dato strutturato | Nella ricerca non c'è alcuna possibilità di risultato arricchito. | Cominciare con un marcatore adatto al tipo di pagina (come Organization, Product, Article). | structured-data-missing-site |
+| Google non scansiona questa pagina da molto tempo | L'ultima visita di Google risale a più di 90 giorni fa. | Inserire collegamenti dalle pagine scansionate più spesso. Verificare che la pagina sia nella mappa del sito. | google-crawl-stale |
+
+## Come funzionano le regole
+
+La maggior parte delle regole agisce per pagina ed elenca ogni pagina che interessa. Alcune riguardano il sito nel suo insieme e producono un solo rilievo. Sono le regole su robots.txt, quelle sulla mappa del sito, "Il sito non ha etichette per la condivisione sui social" e "Il sito non ha alcun dato strutturato".
+
+Le regole il cui nome inizia con "Google" non vengono dalla scansione dell'app. Nascono dalle risposte ottenute da Google nella scheda Stato dell'indice. Se in quella scheda non è mai stata posta alcuna domanda, queste regole non agiscono mai. Le regole sulla velocità (LCP, CLS, INP, punteggio SEO) agiscono solo quando "Sayfa hızını da ölç" (Misura anche la velocità delle pagine) è attivo, e in base alla misurazione su telefono.
+
+<!-- Kaynaklar: src/shared/audit-issues/crawl.ts (31 kural); content.ts (26); indexing.ts (34); speed.ts (4); src/shared/auditScore.ts; src/server/lib/audit/google-verdict-checks.ts -->

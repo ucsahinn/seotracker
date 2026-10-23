@@ -1060,7 +1060,9 @@
       }
       .frame {
         position: relative;
-        background: oklch(100% 0 0 / 0.06);
+        background:
+          linear-gradient(oklch(100% 0 0 / 0.06), oklch(100% 0 0 / 0.06)),
+          var(--bg);
         border-radius: calc(var(--radius) + 6px);
         padding: 7px;
         border: 1px solid oklch(100% 0 0 / 0.16);
@@ -1372,7 +1374,7 @@
         gap: 10px;
         padding: 26px;
         border-radius: var(--radius);
-        background: var(--glass);
+        background: linear-gradient(var(--glass), var(--glass)), var(--bg);
         border: 1px solid var(--hairline);
         transition:
           border-color 400ms var(--ease),

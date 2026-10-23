@@ -209,12 +209,14 @@ function cutLangBlocks(html) {
 }
 function putLangBlocks(html, locale) {
   const hrefFor = (l) => `${l.base}/`;
+  // The edition being built is available even before its file exists.
+  const available = (l) => l.lang === locale.lang || hasHome(l);
   return html
     .replaceAll("<!--LANGMENU-->", () =>
-      langMenuHtml(locale, hrefFor, { available: hasHome }),
+      langMenuHtml(locale, hrefFor, { available }),
     )
     .replaceAll("<!--LANGROW-->", () =>
-      langRowHtml(locale, hrefFor, { available: hasHome }),
+      langRowHtml(locale, hrefFor, { available }),
     );
 }
 

@@ -98,12 +98,14 @@
     var suffix = el.getAttribute("data-suffix") || "";
     var start = null,
       dur = 1400;
+    // Separators follow the page language (1.085,5 in Turkish and German,
+    // 1,085.5 in English, 1 085,5 in French).
+    var nf = new Intl.NumberFormat(document.documentElement.lang || "tr", {
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals,
+    });
     function fmt(v) {
-      // Separators follow the page language: 1.085,5 in Turkish, 1,085.5 in English.
-      var tr = (document.documentElement.lang || "tr").indexOf("tr") === 0;
-      var parts = v.toFixed(decimals).split(".");
-      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, tr ? "." : ",");
-      return parts.join(tr ? "," : ".");
+      return nf.format(v);
     }
     function step(t) {
       if (start === null) start = t;
@@ -122,8 +124,10 @@
   if (live && window.fetch) {
     var card = live.closest(".stat");
     var key = "seowatcher-downloads";
+    // A small number reads as "nobody uses this"; the card waits until the
+    // count says something.
     var showDownloads = function (n) {
-      if (!(n > 0)) return;
+      if (!(n >= 100)) return;
       live.setAttribute("data-count", String(n));
       live.removeAttribute("data-counted");
       card.hidden = false;
