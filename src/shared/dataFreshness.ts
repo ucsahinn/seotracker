@@ -36,7 +36,7 @@ export function describeWindow(
   endDate: string,
   formatDate: (value: string) => string,
 ): string {
-  return `${formatDate(startDate)} – ${formatDate(endDate)} · Search Console verisi ${GSC_DATA_LAG_DAYS} gün gecikmeli gelir, bu yüzden aralık bugünde bitmez.`;
+  return `${formatDate(startDate)} – ${formatDate(endDate)}. Search Console verisi ${GSC_DATA_LAG_DAYS} gün geriden gelir, bu yüzden son gün bugün olmaz.`;
 }
 
 /**

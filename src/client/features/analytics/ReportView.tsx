@@ -115,7 +115,7 @@ export function ReportView({
       />
 
       <p className="text-xs text-muted">
-        {result.propertyDisplayName ?? "GA4 mülkü"} ·{" "}
+        {result.propertyDisplayName ?? "Analytics mülkü"} ·{" "}
         {formatDate(result.dateRange.startDate)} –{" "}
         {formatDate(result.dateRange.endDate)} ·{" "}
         {result.rowCount < result.totalRowCount
@@ -169,9 +169,8 @@ export function ReportView({
           })}
           {chips.length > 0 ? (
             <HelpTip label="Hızlı filtreler">
-              Sayılar, listelenen tüm satırlar üzerinden hesaplanır. Birden
-              fazla filtre seçerseniz bir satırın hepsini birden sağlaması
-              gerekir.
+              Sayılar, listelenen tüm satırlara göre hesaplanır. Birden fazla
+              filtre seçerseniz satırın hepsine uyması gerekir.
             </HelpTip>
           ) : null}
           {isFiltered ? (
@@ -230,7 +229,7 @@ export function ReportView({
           <EmptyState
             icon={FilterX}
             title="Bu filtrelere uyan satır yok"
-            description="Seçtiğiniz filtrelerin birleşimi hiçbir satırla eşleşmiyor."
+            description="Seçtiğiniz filtrelerle hiçbir satır eşleşmiyor."
             action={
               <button
                 type="button"

@@ -187,7 +187,7 @@ export function IssuesView({
                 <span
                   className={`size-1.5 rounded-full ${SEVERITY_DOT[section.severity]}`}
                 />
-                <span className="text-[11px] font-semibold uppercase tracking-wider text-muted">
+                <span className="text-xs font-semibold text-muted">
                   {SEVERITY_LABEL[section.severity]}
                 </span>
               </div>

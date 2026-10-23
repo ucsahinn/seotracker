@@ -105,7 +105,7 @@ export function OpportunitiesPage({
     <PageShell>
       <PageHeader
         title="Fırsatlar"
-        description="Google'da görünen sayfalarınız, emek harcamaya değer olma sırasına göre."
+        description="Google'da görünen sayfalarınız, üzerinde çalışmaya en değer olandan başlayarak."
         /* Beside the title because they re-query everything below, the same
            place Rankings puts its window. Shown whenever the data came back
            ok, so the empty state keeps its way to widen the period. */
@@ -128,7 +128,11 @@ export function OpportunitiesPage({
         }
       />
 
-      <Intro />
+      <Intro
+        collapsedByDefault={
+          query.data !== undefined && query.data.status !== "ok"
+        }
+      />
 
       {query.isPending ? (
         <div className="space-y-4" aria-busy>
@@ -150,7 +154,7 @@ export function OpportunitiesPage({
           stale={query.isPlaceholderData}
         />
       ) : (
-        <NotReady projectId={projectId} missing={query.data.status} />
+        <NotReady projectId={projectId} />
       )}
     </PageShell>
   );
@@ -335,7 +339,7 @@ function Report({
           value={formatNumber(shown.length)}
           hint={
             filtered
-              ? `Süzgece uyan · ${formatNumber(data.rowCount)} satır içinde`
+              ? `Filtreye uyan · ${formatNumber(data.rowCount)} satır içinde`
               : data.truncated.candidates
                 ? `${formatNumber(data.totalCandidateRows)} aday sayfanın en iyileri`
                 : `Tüm aday sayfalar (${formatNumber(data.totalCandidateRows)})`
@@ -432,15 +436,15 @@ function Report({
               ? "dönüşüm tanımlı olmadığı için etkileşim oranına"
               : "etkileşim oranına"
             : "dönüşümlere"}{" "}
-          göre hesaplandı.
+          göre hesaplanır.
         </p>
         <p>
           <span className="font-medium text-base-content">
             Analytics&apos;te karşılığı yok ne demek?
           </span>{" "}
           Analytics o sayfaya hiç ziyaret görmemiş ya da adresi farklı yazılmış
-          olabilir. Bu sayfalar da puanlanır; iş değerinde haksız yere sıfır
-          almamaları için nötr bir orta değer verilir.
+          olabilir. Bu sayfalar da puanlanır. İş değerinde haksız yere sıfır
+          almasınlar diye ortada bir değer verilir.
         </p>
       </div>
     </div>

@@ -36,7 +36,7 @@ describe("coverageReasons", () => {
     ).toEqual([
       "robots.txt izin veriyor",
       "Dizine almaya izin var",
-      "Sayfa başarıyla alındı",
+      "Sayfa alındı",
     ]);
   });
 

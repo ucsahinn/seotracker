@@ -21,9 +21,10 @@ export function SystemLimitsSection({ id }: { id?: string }) {
         <h2 className="flex items-center gap-1.5 text-base font-semibold">
           Google ve sistem sınırları
           <HelpTip label="Google ve sistem sınırları">
-            Search Console, GA4 ve PageSpeed&apos;in günlük sınırları ile
+            Search Console, GA4 ve PageSpeed&apos;in günlük sınırları, bir de
             denetim ve rapor üst sınırları. Rakamlar uygulamanın kendi kaydından
-            gelir; Google&apos;a ek istek gitmez. Sınırlar proje bazında okunur.
+            gelir, Google&apos;a ek istek gitmez. Sınırlar proje başına
+            gösterilir.
           </HelpTip>
         </h2>
         {projectId ? <WorstStateBadge projectId={projectId} /> : null}
@@ -35,8 +36,8 @@ export function SystemLimitsSection({ id }: { id?: string }) {
           title={isError ? "Projeler okunamadı" : "Henüz bir proje yok"}
           description={
             isError
-              ? "Sınırlar proje bazında gösterilir; proje listesi yüklenince burada görünür."
-              : "Sınırlar proje bazında gösterilir. Bir proje oluşturunca burada görünür."
+              ? "Sınırlar proje başına gösterilir. Proje listesi yüklenince burada görünür."
+              : "Sınırlar proje başına gösterilir. Bir proje oluşturunca burada görünür."
           }
           compact
         />

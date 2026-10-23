@@ -51,8 +51,8 @@ export function PositionBandBars({
       <div className="flex items-center gap-1.5">
         <h2 className="text-sm font-medium">Sıra dağılımı</h2>
         <HelpTip label="Sıra dağılımı">
-          Takip edilen sorguların ortalama sırasına göre kaç gruba ayrıldığını
-          gösterir. Bir çubuğa tıklayarak tabloyu o gruba daraltın.
+          Takip edilen sorgular ortalama sırasına göre gruplanır. Bir çubuğa
+          tıklayınca tablo o gruba daralır.
         </HelpTip>
       </div>
       <p className="mt-0.5 text-xs text-muted">

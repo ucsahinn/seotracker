@@ -98,7 +98,7 @@ export function CannibalizationTable({
         }
         description={
           (data?.queriesAnalyzed ?? 0) === 0
-            ? "Search Console bu dönem için sorgu döndürmedi, bu yüzden karşılaştırılacak bir şey yoktu. Daha geniş bir tarih aralığı deneyin."
+            ? "Search Console bu dönem için sorgu vermedi, karşılaştırılacak bir şey yok. Daha geniş bir tarih aralığı deneyin."
             : data?.truncated
               ? `İncelenen ${formatNumber(data.queriesAnalyzed)} sorguda çakışma yok. Ancak Search Console satır sınırına takıldık, yani bakamadığımız sorgular kaldı.`
               : `İncelenen ${formatNumber(data.queriesAnalyzed)} sorgunun hiçbirinde iki sayfanız birbiriyle yarışmıyor.`
@@ -209,7 +209,7 @@ function QueryRow({
           className="hidden shrink-0 text-xs text-muted sm:inline"
           title="Google'ın tercih ettiği sayfa dışında kalan gösterim payı"
         >
-          {formatPercent(row.splitShare, 0)} bölünme
+          {formatPercent(row.splitShare, 0)} pay dışında
         </span>
         <span className="w-20 shrink-0 text-right text-xs text-muted">
           {formatNumber(row.impressions)} gösterim

@@ -239,9 +239,9 @@ function AuditDetail({
           <div className="space-y-1">
             <p className="font-medium">Denetim bu siteyi tamamen tarayamadı.</p>
             <p>
-              Sitenin bot koruması tarayıcımızı engelledi ve bunu aşmanın bir
-              yolu şu an yok. Kendi makinenizde çalışan masaüstü tarayıcılar
-              genellikle geçebiliyor:{" "}
+              Sitenin bot koruması tarayıcımızı engelledi ve şu an aşmanın bir
+              yolu yok. Bilgisayarınızda çalışan masaüstü tarayıcılar genelde
+              geçer. Şunları deneyin:{" "}
               <a
                 className="link link-primary"
                 href="https://github.com/PhialsBasement/LibreCrawl"
@@ -273,9 +273,9 @@ function AuditDetail({
               Denetim {partialPageCount} sayfadan sonra erken durdu.
             </p>
             <p>
-              Aşağıdaki sonuçlar durmadan önce taranan her şeyi kapsıyor.
-              Yeniden denemek için yeni bir denetim başlatın. Tekrar ederse
-              Yardım ekranındaki tanılama paketini indirip sorun bildirin.
+              Aşağıdaki sonuçlar, tarama durmadan önce bakılan her şeyi içerir.
+              Yeniden denemek için yeni bir denetim başlatın. Yine olursa
+              Yardım&apos;dan tanılama paketini indirip sorunu bildirin.
             </p>
           </div>
         </div>

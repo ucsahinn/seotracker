@@ -65,7 +65,7 @@ export function buildContextHealth(input: HealthInput): HealthItem[] {
       detail:
         input.competitorCount > 0
           ? `${input.competitorCount} rakip kayıtlı.`
-          : "Kayıtlı rakip yok; ajanlar kimle yarıştığınızı bilmeden öneri yapar.",
+          : "Rakip yok. Ajan, kimle yarıştığınızı bilmeden öneri yapar.",
       target: { kind: "anchor", id: "context-competitors" },
       actionLabel: "Rakip ekle",
     },
@@ -76,7 +76,7 @@ export function buildContextHealth(input: HealthInput): HealthItem[] {
       detail:
         input.keyPageCount > 0
           ? `${input.keyPageCount} önemli sayfa kayıtlı.`
-          : "Önemli sayfa işaretlenmemiş; hangi sayfaların kazanç getirdiği belli değil.",
+          : "Önemli sayfa işaretlenmemiş. Hangi sayfaların kazanç getirdiği belli değil.",
       target: { kind: "anchor", id: "context-key-pages" },
       actionLabel: "Sayfa ekle",
     },
@@ -93,7 +93,7 @@ export function buildContextHealth(input: HealthInput): HealthItem[] {
     },
     {
       id: "analytics",
-      label: "Google Analytics",
+      label: "Analytics",
       state: input.analytics,
       detail:
         input.analytics === "done"
@@ -109,7 +109,7 @@ export function buildContextHealth(input: HealthInput): HealthItem[] {
       detail:
         input.pageSpeed === "done"
           ? "Anahtar tanımlı. Hız ölçümleri kota sorunu olmadan çalışır."
-          : "Anahtar yok. Hız ölçümü Google'ın ortak kotasına düşer ve çoğu zaman 429 ile durur.",
+          : "Anahtar yok. Hız ölçümü Google'ın ortak kotasına takılıyor ve çoğu zaman yarıda kalır.",
       target: { kind: "settings" },
       actionLabel: "Anahtar gir",
     },

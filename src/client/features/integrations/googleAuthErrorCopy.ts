@@ -31,14 +31,14 @@ export function googleAuthErrorCopy(
       return {
         title: "Google hesabı zaten bağlı",
         description: providerLabel
-          ? `Bu Google hesabı başka bir kayıtta bağlı görünüyor. ${providerLabel} mülk seçicisini açıp hesabın yanındaki Hesabı kaldır ile çözün, sonra buradan yeniden bağlayın.`
-          : "Bu Google hesabı başka bir kayıtta bağlı görünüyor. Ayarlar'daki mülk seçicisinden hesabı kaldırıp yeniden bağlayın.",
+          ? `Bu Google hesabı zaten başka bir kayıtta bağlı görünüyor. ${providerLabel} mülk seçicisini açıp hesabın yanındaki "Hesabı kaldır"a basın, sonra yeniden bağlayın.`
+          : "Bu Google hesabı zaten başka bir kayıtta bağlı görünüyor. Ayarlar'daki mülk seçicisinden hesabı kaldırıp yeniden bağlayın.",
       };
     default:
       return {
         title: `${what} tamamlanmadı`,
         description:
-          "Google ile konuşurken bir şeyler ters gitti. Yeniden deneyin; sürerse günlüklerde hatanın ayrıntısı olur (Yardım ekranı).",
+          "Google ile konuşurken bir şeyler ters gitti. Yeniden deneyin. Sürerse hatanın ayrıntısı Yardım ekranındaki günlüklerde.",
       };
   }
 }

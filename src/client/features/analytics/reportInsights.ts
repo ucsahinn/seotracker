@@ -128,7 +128,7 @@ const CHIP_DEFS: ChipDef[] = [
       if (mid === null) return null;
       const bar = mid / 2;
       return {
-        hint: `Kullanıcı başına etkileşim süresi, bu listenin ortancasının (${formatDuration(mid * 1000)}) yarısından, yani ${formatDuration(bar * 1000)} değerinden kısa olan sayfalar.`,
+        hint: `Kullanıcı başına etkileşim süresi ${formatDuration(bar * 1000)} altında kalan sayfalar (listenin ortancası ${formatDuration(mid * 1000)}, yarısı ${formatDuration(bar * 1000)}).`,
         test: (row) => {
           const dwell = dwellPerUser(row);
           return dwell !== null && dwell < bar;
@@ -168,7 +168,7 @@ const CHIP_DEFS: ChipDef[] = [
         };
       }
       return {
-        hint: `Oturumu listenin ortancasına (${formatCount(midSessions)}) eşit ya da üstünde olup oturum başına anahtar olay oranı ortancanın (${formatPercent(midRate)}) altında kalan, ya da hiç olay getirmeyen sayfalar.`,
+        hint: `Oturumu ortancanın (${formatCount(midSessions)}) üstünde ama oturum başına anahtar olay oranı ortancanın (${formatPercent(midRate)}) altında kalan sayfalar, bir de hiç olay getirmeyenler.`,
         test: (row) => {
           const sessions = numeric(row, "sessions");
           const rate = numeric(row, "sessionKeyEventRate");

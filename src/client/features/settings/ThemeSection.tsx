@@ -1,6 +1,5 @@
 import { Monitor, Moon, Sun } from "lucide-react";
 import * as React from "react";
-import { SettingsHeading } from "@/client/components/HelpTip";
 import { type ThemePreference, useThemePreference } from "@/client/lib/theme";
 
 const THEME_OPTIONS: {
@@ -34,10 +33,13 @@ export function ThemeSection() {
 
   return (
     <section id="gorunum" className="scroll-mt-16 space-y-3">
-      <SettingsHeading
-        title="Görünüm"
-        help="Sistem, işletim sisteminizin açık/koyu tercihini izler. Seçim bu tarayıcıda saklanır; başka bir cihazda ayrı seçilir."
-      />
+      <div className="space-y-1">
+        <h2 className="text-base font-semibold">Görünüm</h2>
+        <p className="text-sm text-muted">
+          Sistem, işletim sisteminizin açık ya da koyu tercihini izler. Seçim bu
+          tarayıcıda saklanır, başka bir cihazda ayrı seçilir.
+        </p>
+      </div>
       <div className="flex items-center justify-between gap-6">
         <span className="text-sm">Tema</span>
         <div

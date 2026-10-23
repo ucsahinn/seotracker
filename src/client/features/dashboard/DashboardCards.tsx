@@ -204,7 +204,7 @@ function RunningAuditCard({
           <div className="mt-4 space-y-2 border-t border-base-300 pt-3">
             {/* The card named issue types and never pages, yet opening a page
               is always the next move. Worst severity first, then count. */}
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted">
+            <h3 className="text-xs font-medium text-muted">
               En çok sorunu olan sayfalar
             </h3>
             <ul className="space-y-1">

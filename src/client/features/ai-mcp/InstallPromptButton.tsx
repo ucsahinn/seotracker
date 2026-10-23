@@ -12,11 +12,7 @@ import { getInstallPrompt } from "./agentSetupPrompt";
  * would copy the wrong variant onto a protected install. The query key is the
  * Ajan kurulumu page's, so both screens share one request.
  */
-export function InstallPromptButton({
-  primary = false,
-}: {
-  primary?: boolean;
-}) {
+export function InstallPromptButton({ label }: { label: string }) {
   const connection = useQuery({
     queryKey: ["agentConnection"],
     queryFn: () => getAgentConnection(),
@@ -28,14 +24,13 @@ export function InstallPromptButton({
 
   return (
     <CopyButton
-      primary={primary}
       disabled={connection.isPending}
       value={getInstallPrompt(origin, {
         tokenConfigured: connection.data?.tokenConfigured,
         installKind: connection.data?.installKind,
       })}
-      label={primary ? "Kurulum istemini kopyala" : "Kurulum istemi"}
-      successMessage="Kurulum istemi kopyalandı"
+      label={label}
+      successMessage="Kurulum komutu kopyalandı"
       onCopy={() => captureClientEvent("mcp:install_prompt_copy")}
     />
   );

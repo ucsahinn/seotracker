@@ -1,4 +1,3 @@
-import type * as React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
@@ -18,93 +17,97 @@ type Props = {
   launchForm: ReturnType<typeof useLaunchController>["launchForm"];
   commitMaxPagesInput: () => number;
   maxPagesLimit: number;
-  /** Lets the empty history state move focus to the address field. */
-  urlInputRef: React.Ref<HTMLInputElement>;
 };
 
 export function LaunchFormCard({
   commitMaxPagesInput,
   launchForm,
   maxPagesLimit,
-  urlInputRef,
 }: Props) {
   return (
-    <section className="space-y-4 rounded-box border border-base-300 bg-base-100 p-4">
-      <div className="space-y-4">
-        <h2 className="text-sm font-semibold">Yeni denetim başlat</h2>
+    <section className="rounded-box border border-base-300 bg-base-100">
+      {/* One card, rows split by hairlines: the page-count and speed options
+          used to sit in two bordered boxes inside this one. */}
+      <form
+        className="divide-y divide-[var(--hairline)]"
+        onSubmit={(event) => {
+          event.preventDefault();
+          void launchForm.handleSubmit();
+        }}
+      >
+        <div className="space-y-3 p-4">
+          <h2 className="text-sm font-semibold">Yeni denetim başlat</h2>
 
-        <form
-          className="grid grid-cols-1 gap-3 lg:grid-cols-12 lg:items-center"
-          onSubmit={(event) => {
-            event.preventDefault();
-            void launchForm.handleSubmit();
-          }}
-        >
-          <launchForm.Field name="url">
-            {(field) => {
-              const urlError = getFieldError(field.state.meta.errors);
+          <div className="grid grid-cols-1 gap-3 lg:grid-cols-12 lg:items-center">
+            <launchForm.Field name="url">
+              {(field) => {
+                const urlError = getFieldError(field.state.meta.errors);
 
-              return (
-                <label
-                  className={`input input-bordered w-full lg:col-span-9 ${urlError ? "input-error" : ""}`}
-                >
-                  <input
-                    ref={urlInputRef}
-                    // A placeholder is not a label: it disappears on the
-                    // first keystroke and is never announced as a name.
-                    aria-label="Taranacak site adresi"
-                    /*
-                     * The error lives outside the form element, so without
-                     * these a screen-reader user submitted, focus stayed on
-                     * a field that still announced as valid, and the message
-                     * sat in an unannounced region they never reached.
-                     */
-                    aria-invalid={urlError ? true : undefined}
-                    aria-describedby={urlError ? "launch-url-error" : undefined}
-                    placeholder="https://example.com"
-                    value={field.state.value}
-                    onChange={(event) => {
-                      field.handleChange(event.target.value);
-                      if (launchForm.state.errorMap.onSubmit) {
-                        launchForm.setErrorMap({ onSubmit: undefined });
+                return (
+                  <label
+                    className={`input input-bordered w-full lg:col-span-9 ${urlError ? "input-error" : ""}`}
+                  >
+                    <input
+                      // A placeholder is not a label: it disappears on the
+                      // first keystroke and is never announced as a name.
+                      aria-label="Taranacak site adresi"
+                      /*
+                       * The error lives outside the form element, so without
+                       * these a screen-reader user submitted, focus stayed on
+                       * a field that still announced as valid, and the message
+                       * sat in an unannounced region they never reached.
+                       */
+                      aria-invalid={urlError ? true : undefined}
+                      aria-describedby={
+                        urlError ? "launch-url-error" : undefined
                       }
-                    }}
-                  />
-                </label>
-              );
-            }}
-          </launchForm.Field>
+                      placeholder="https://example.com"
+                      value={field.state.value}
+                      onChange={(event) => {
+                        field.handleChange(event.target.value);
+                        if (launchForm.state.errorMap.onSubmit) {
+                          launchForm.setErrorMap({ onSubmit: undefined });
+                        }
+                      }}
+                    />
+                  </label>
+                );
+              }}
+            </launchForm.Field>
 
-          <launchForm.Subscribe selector={(state) => state.isSubmitting}>
-            {(isSubmitting) => (
-              <button
-                type="submit"
-                className="btn btn-primary btn-sm w-full lg:col-span-3"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className="size-4 animate-spin" /> Başlatılıyor…
-                  </>
-                ) : (
-                  "Denetimi başlat"
-                )}
-              </button>
-            )}
-          </launchForm.Subscribe>
-
-          <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:col-span-12 lg:items-start">
-            <LaunchOptions
-              launchForm={launchForm}
-              commitMaxPagesInput={commitMaxPagesInput}
-              maxPagesLimit={maxPagesLimit}
-            />
-            <LighthouseOptions launchForm={launchForm} />
+            <launchForm.Subscribe selector={(state) => state.isSubmitting}>
+              {(isSubmitting) => (
+                <button
+                  type="submit"
+                  className="btn btn-primary btn-sm w-full lg:col-span-3"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="size-4 animate-spin" /> Başlatılıyor…
+                    </>
+                  ) : (
+                    "Denetimi başlat"
+                  )}
+                </button>
+              )}
+            </launchForm.Subscribe>
           </div>
-        </form>
 
-        <LaunchErrors launchForm={launchForm} />
-      </div>
+          <LaunchErrors launchForm={launchForm} />
+        </div>
+
+        <div className="px-4 py-3">
+          <LaunchOptions
+            launchForm={launchForm}
+            commitMaxPagesInput={commitMaxPagesInput}
+            maxPagesLimit={maxPagesLimit}
+          />
+        </div>
+        <div className="px-4 py-3">
+          <LighthouseOptions launchForm={launchForm} />
+        </div>
+      </form>
     </section>
   );
 }
@@ -113,16 +116,11 @@ function LaunchOptions({
   launchForm,
   commitMaxPagesInput,
   maxPagesLimit,
-}: Omit<Props, "urlInputRef">) {
+}: Props) {
   return (
-    <div className="rounded-box border border-base-300 bg-base-200/20 p-3 space-y-2">
-      {/* Not a <label>: it wraps nothing and carries no htmlFor, so it
-          named no control. The field below gets its own name. */}
-      <p className="text-xs font-medium uppercase tracking-wide text-muted">
-        Kaç sayfa taransın?
-      </p>
+    <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
       <div className="flex items-center gap-2">
-        <span className="text-sm text-muted" aria-hidden>
+        <span className="text-sm" aria-hidden>
           En fazla
         </span>
         <launchForm.Field name="maxPagesInput">
@@ -146,10 +144,12 @@ function LaunchOptions({
             />
           )}
         </launchForm.Field>
+        <span className="text-sm" aria-hidden>
+          sayfa tara
+        </span>
       </div>
       <p className="text-xs text-muted">
         {MIN_PAGES} ile {formatNumber(maxPagesLimit)} arasında bir sayı girin.
-        Sınırı aşan sayfalar taranmaz.
       </p>
     </div>
   );
@@ -175,8 +175,8 @@ function LighthouseEstimate({ maxPages }: { maxPages: number }) {
     <div className="space-y-1">
       <p className="text-xs text-muted">
         {hasKey
-          ? `Taranan her sayfanın hızı telefonda ve bilgisayarda ölçülür. En çok ${formatNumber(pages)} sayfa, yani ${formatNumber(checks)} ölçüm; hız aşaması en az yaklaşık ${formatNumber(minutes)} dakika sürer; Google sınırına takılırsa daha uzun sürer.`
-          : `PageSpeed anahtarı yok: Google'ın ücretsiz kotası çok küçük olduğu için en çok ${formatNumber(UNKEYED_LIGHTHOUSE_PAGE_CAP)} sayfa (${formatNumber(UNKEYED_LIGHTHOUSE_PAGE_CAP * LIGHTHOUSE_CHECKS_PER_PAGE)} ölçüm) ölçülür; hız aşaması en az yaklaşık ${formatNumber(minutes)} dakika sürer, Google sınırına takılırsa daha uzun sürer.`}
+          ? `Taranan her sayfanın hızı telefonda ve bilgisayarda ölçülür. En çok ${formatNumber(pages)} sayfa, yani ${formatNumber(checks)} ölçüm. Hız aşaması en az yaklaşık ${formatNumber(minutes)} dakika sürer, Google sınırına takılırsa daha uzun.`
+          : `PageSpeed anahtarınız yok. Google'ın ücretsiz kotası küçük olduğu için en çok ${formatNumber(UNKEYED_LIGHTHOUSE_PAGE_CAP)} sayfa (${formatNumber(UNKEYED_LIGHTHOUSE_PAGE_CAP * LIGHTHOUSE_CHECKS_PER_PAGE)} ölçüm) ölçülür. Hız aşaması en az yaklaşık ${formatNumber(minutes)} dakika sürer, Google sınırına takılırsa daha uzun sürer.`}
       </p>
       {hasKey ? null : (
         <p className="text-xs text-muted">
@@ -193,7 +193,7 @@ function LighthouseEstimate({ maxPages }: { maxPages: number }) {
 
 function LighthouseOptions({ launchForm }: Pick<Props, "launchForm">) {
   return (
-    <div className="rounded-box border border-base-300 bg-base-200/20 p-3 space-y-2">
+    <div className="space-y-2">
       <label className="label cursor-pointer justify-start gap-2 p-0">
         <launchForm.Field name="runLighthouse">
           {(field) => (
@@ -208,13 +208,14 @@ function LighthouseOptions({ launchForm }: Pick<Props, "launchForm">) {
         {/* `HelpTip`, not `title` on a span: a title on a non-interactive
             element is mouse-hover only, so a keyboard user never saw the
             explanation. */}
-        <span className="text-sm font-medium text-muted">
+        <span className="text-sm">
           Sayfa hızını da ölç{" "}
           <HelpTip label="Hız ölçümü">
             Google Lighthouse ile taranan her sayfanın telefonda ve bilgisayarda
             ne kadar hızlı açıldığını ölçer, yavaşlatan sorunları listeler.
           </HelpTip>
         </span>
+        <span className="text-xs text-muted">Daha uzun sürer.</span>
       </label>
 
       <launchForm.Subscribe

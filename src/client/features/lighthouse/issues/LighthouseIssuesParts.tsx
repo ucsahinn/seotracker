@@ -229,7 +229,7 @@ function ExportMenu({
               }}
             >
               <Sheet className="size-4" />
-              E-Tablolar&apos;da aç — {categoryPhrase.subject}
+              {categoryPhrase.subject} E-Tablolar&apos;da aç
             </button>
           </li>
           <li>
@@ -241,7 +241,7 @@ function ExportMenu({
               }}
             >
               <Sheet className="size-4" />
-              E-Tablolar&apos;da aç — işlem gerektiren tüm sorunlar
+              İşlem gerektiren tüm sorunları E-Tablolar&apos;da aç
             </button>
           </li>
           <li className="menu-title">

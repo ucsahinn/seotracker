@@ -64,7 +64,7 @@ describe("DimensionTable sorting", () => {
       />,
     );
 
-    expect(screen.getByText(/bu liste tam değil/i)).toBeDefined();
+    expect(screen.getByText(/liste tam değil/i)).toBeDefined();
   });
 
   /*

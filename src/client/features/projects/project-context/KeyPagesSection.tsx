@@ -71,7 +71,7 @@ export function KeyPagesSection({
     >
       <SectionHeader
         title="Önemli sayfalar"
-        hint="Siteyi taşıyan sayfaların kısa listesi — tam bir envanter değil."
+        hint="Sitenin en önemli sayfaları. Tam liste olması gerekmez."
         action={
           <button
             type="button"

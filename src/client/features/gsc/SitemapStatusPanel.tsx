@@ -92,9 +92,9 @@ export function SitemapStatusPanel({ projectId }: { projectId: string }) {
   if (query.data.status === "forbidden") {
     return (
       <div className="rounded-box border border-base-300 bg-base-100 p-4 text-sm text-muted">
-        Google bu mülkün site haritalarını listelemeyi reddetti. Search
-        Console&apos;da site haritası gönderme yetkisi olmayan bir hesap, mülke
-        erişebiliyor olsa da bu listeyi göremeyebilir.
+        Google bu mülkün site haritalarını vermedi. Hesabınızın Search
+        Console&apos;da site haritası gönderme yetkisi yoksa, mülke erişseniz
+        bile bu listeyi göremezsiniz.
       </div>
     );
   }
@@ -110,7 +110,7 @@ export function SitemapStatusPanel({ projectId }: { projectId: string }) {
           compact
           icon={FileText}
           title="Gönderilmiş site haritası yok"
-          description="Google site haritası olmadan da sayfa bulur, ancak site haritası hangi sayfaları önemsediğinizi Google'a doğrudan söylemenin yoludur."
+          description="Google site haritası olmadan da sayfa bulur. Ama site haritası, hangi sayfaları önemsediğinizi ona doğrudan söylemenin yoludur."
         />
       </div>
     );

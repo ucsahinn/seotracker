@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Pencil } from "lucide-react";
-import { formatCount, formatDate } from "@/client/lib/format";
+import { formatCount } from "@/client/lib/format";
 import { getProjectContext } from "@/serverFunctions/projectContext";
 import {
   PROJECT_CONTEXT_SECTION_KEYS,
@@ -13,11 +13,11 @@ import { ContextHealthCard } from "./ContextHealthCard";
 import { CompetitorsSection } from "./CompetitorsSection";
 import { FillWithAgentCard } from "./FillWithAgentCard";
 import { KeyPagesSection } from "./KeyPagesSection";
+import { ResearchLog } from "./ResearchLog";
 import {
   ConfirmDeleteButton,
   EmptyListNote,
   FormActions,
-  listClass,
   Provenance,
   RowActions,
   SectionHeader,
@@ -25,10 +25,10 @@ import {
   useContextUpdate,
   type ProjectContextData,
 } from "./shared";
+import { PageHeader } from "@/client/components/PageShell";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
-import { RefreshButton } from "@/client/components/RefreshButton";
+import { PageActions, RefreshButton } from "@/client/components/RefreshButton";
 import { SECTION_HINTS, SECTION_PLACEHOLDERS } from "./sectionCopy";
-import { SectionCompleteness } from "./SectionCompleteness";
 
 export function ProjectContextPage({
   projectId,
@@ -47,16 +47,41 @@ export function ProjectContextPage({
     staleTime: 0,
   });
 
+  // The lead is the project's own name for what the page is, and the refresh
+  // sits top right like every other screen. The project name is not repeated
+  // here: the switcher above the menu already shows it.
+  const header = (
+    <PageHeader
+      title="Proje bilgisi"
+      description="Ajanınızın bu proje hakkında bildikleri. Ajan işe başlamadan önce burayı okur, öğrendiklerini buraya yazar. Yanlış bir şey görürseniz düzeltin."
+      actions={
+        contextQuery.data ? (
+          <PageActions>
+            <RefreshButton
+              onRefresh={() => void contextQuery.refetch()}
+              isFetching={contextQuery.isFetching}
+              dataUpdatedAt={contextQuery.dataUpdatedAt}
+              shortcut
+            />
+          </PageActions>
+        ) : undefined
+      }
+    />
+  );
+
   if (contextQuery.isPending) {
     return (
-      <div className="space-y-6" aria-busy>
-        {Array.from({ length: 4 }, (_, index) => (
-          <div key={index} className="space-y-2">
-            <div className="skeleton h-3 w-32" />
-            <div className="skeleton h-20" />
-          </div>
-        ))}
-      </div>
+      <>
+        {header}
+        <div className="space-y-6" aria-busy>
+          {Array.from({ length: 4 }, (_, index) => (
+            <div key={index} className="space-y-2">
+              <div className="skeleton h-3 w-32" />
+              <div className="skeleton h-20" />
+            </div>
+          ))}
+        </div>
+      </>
     );
   }
 
@@ -65,67 +90,57 @@ export function ProjectContextPage({
   const context = contextQuery.data;
   if (!context) {
     return (
-      <div className="rounded-box border border-base-300 bg-base-100">
-        <QueryErrorState
-          error={contextQuery.error}
-          onRetry={() => void contextQuery.refetch()}
-          title="Proje bilgisi yüklenemedi"
-        />
-      </div>
+      <>
+        {header}
+        <div className="rounded-box border border-base-300 bg-base-100">
+          <QueryErrorState
+            error={contextQuery.error}
+            onRetry={() => void contextQuery.refetch()}
+            title="Proje bilgisi yüklenemedi"
+          />
+        </div>
+      </>
     );
   }
 
   return (
     // key remounts the whole page when the project switches under it, so no
     // draft, open form, or edit state can carry over to another project.
-    <div key={projectId} className="space-y-8">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <p className="max-w-prose text-sm text-muted">
-          Claude Code ve bağladığınız diğer MCP istemcilerinin bu proje hakkında
-          bildikleri. Ajanlar işe başlamadan önce burayı okur, öğrendiklerini
-          buraya yazar. Yanlış bir şey görürseniz kendiniz düzeltin.
-        </p>
-        <RefreshButton
-          onRefresh={() => void contextQuery.refetch()}
-          isFetching={contextQuery.isFetching}
-          dataUpdatedAt={contextQuery.dataUpdatedAt}
-          shortcut
+    <>
+      {header}
+      <div key={projectId} className="space-y-8">
+        <ContextHealthCard projectId={projectId} context={context} />
+
+        <FillWithAgentCard
+          projectName={projectName}
+          projectId={projectId}
+          domain={domain}
+          missingSections={context.missingSections}
+          competitorCount={context.competitors.length}
+          keyPageCount={context.keyPages.length}
         />
+
+        <ProseSections
+          projectId={projectId}
+          sections={context.sections}
+          missingSections={context.missingSections}
+        />
+
+        <CompetitorsSection
+          projectId={projectId}
+          competitors={context.competitors}
+        />
+
+        <KeyPagesSection projectId={projectId} keyPages={context.keyPages} />
+
+        <CustomSections
+          projectId={projectId}
+          customSections={context.customSections}
+        />
+
+        <ResearchLog projectId={projectId} researchLog={context.researchLog} />
       </div>
-
-      <SectionCompleteness context={context} />
-
-      <ContextHealthCard projectId={projectId} context={context} />
-
-      <FillWithAgentCard
-        projectName={projectName}
-        projectId={projectId}
-        domain={domain}
-        missingSections={context.missingSections}
-        competitorCount={context.competitors.length}
-        keyPageCount={context.keyPages.length}
-      />
-
-      <ProseSections
-        projectId={projectId}
-        sections={context.sections}
-        missingSections={context.missingSections}
-      />
-
-      <CompetitorsSection
-        projectId={projectId}
-        competitors={context.competitors}
-      />
-
-      <KeyPagesSection projectId={projectId} keyPages={context.keyPages} />
-
-      <CustomSections
-        projectId={projectId}
-        customSections={context.customSections}
-      />
-
-      <ResearchLog projectId={projectId} researchLog={context.researchLog} />
-    </div>
+    </>
   );
 }
 
@@ -184,9 +199,8 @@ function ProseSections({
     <form onSubmit={handleSubmit} className="space-y-5">
       {missingSections.length === PROJECT_CONTEXT_SECTION_KEYS.length ? (
         <EmptyListNote>
-          Henüz hiçbir şey yazılmamış. Elinizden geldiğince doldurun, ya da
-          bağladığınız ajandan sitenizden bir taslak çıkarmasını isteyip
-          doğruluğunu onaylayın.
+          Henüz boş. Kendiniz doldurabilir ya da ajanınıza sitenizden taslak
+          çıkarttırıp onaylayabilirsiniz.
         </EmptyListNote>
       ) : null}
 
@@ -379,57 +393,5 @@ function CustomSectionForm({
         onCancel={onCancel}
       />
     </form>
-  );
-}
-
-function ResearchLog({
-  projectId,
-  researchLog,
-}: {
-  projectId: string;
-  researchLog: ProjectContextData["researchLog"];
-}) {
-  const update = useContextUpdate(projectId);
-
-  return (
-    <section className="space-y-3">
-      <SectionHeader
-        title="Araştırma günlüğü"
-        hint="Neye bakıldığının kaydı, aynı araştırmanın iki kez yapılmaması için."
-      />
-
-      {researchLog.length === 0 ? (
-        <EmptyListNote>
-          Henüz kayıt yok. Bağladığınız ajan bir araştırma yaptıkça buraya
-          yazar.
-        </EmptyListNote>
-      ) : (
-        <ul className={listClass}>
-          {researchLog.map((entry) => (
-            <li
-              key={entry.id}
-              className="flex items-start justify-between gap-3 p-3"
-            >
-              <div className="min-w-0 space-y-0.5">
-                <p className="text-sm text-muted">{entry.summary}</p>
-                <div className="flex flex-wrap items-baseline gap-x-2 text-xs text-muted">
-                  <span>{formatDate(entry.entryDate)}</span>
-                  <Provenance by={entry.createdBy} />
-                </div>
-              </div>
-              <RowActions>
-                <ConfirmDeleteButton
-                  label={`${formatDate(entry.entryDate)} tarihli kaydı sil`}
-                  pending={update.isPending}
-                  onConfirm={() =>
-                    update.mutate([{ removeResearchLog: [entry.id] }])
-                  }
-                />
-              </RowActions>
-            </li>
-          ))}
-        </ul>
-      )}
-    </section>
   );
 }

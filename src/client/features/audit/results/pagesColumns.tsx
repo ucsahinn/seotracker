@@ -173,7 +173,7 @@ export function buildPagesColumns({
         <SortableHeader
           column={column}
           label="Görsel"
-          helpText="Sayfadaki görsel sayısı. Uyarı renkli sayı, açıklaması (alt metni) eksik görselleri gösterir."
+          helpText="Sayfadaki görsel sayısı. Renkli sayı, alt metni (açıklaması) eksik görsellerin sayısıdır."
         />
       ),
       cell: ({ row }) => {
@@ -203,7 +203,7 @@ export function buildPagesColumns({
         <SortableHeader
           column={column}
           label="Bağlantı"
-          helpText="Site içi · dışarıya giden bağlantı sayısı. Bu sayfadan çıkan bağlantılar: önce site içi, sonra dışarı. Site içi bağlantısı olmayan bir sayfa, kendi sitesinin geri kalanına yol açmıyor demektir."
+          helpText="Bu sayfadan çıkan bağlantılar. Önce site içi, sonra dışarı giden sayısı yazar. Site içi bağlantısı olmayan sayfa, sitenin geri kalanına yönlendirmiyor demektir."
         />
       ),
       cell: ({ row }) => {

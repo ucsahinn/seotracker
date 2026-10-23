@@ -46,9 +46,7 @@ describe("tab summaries", () => {
       />,
     );
     expect(screen.queryByRole("list")).toBeNull();
-    expect(
-      screen.getByRole("button", { name: /Tıklama alanlar/ }),
-    ).toBeDefined();
+    expect(screen.getByRole("button", { name: /Tıklanan/ })).toBeDefined();
   });
 
   it("says why when a tab has no rows", () => {

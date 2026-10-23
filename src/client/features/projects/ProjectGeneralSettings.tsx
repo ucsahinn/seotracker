@@ -137,15 +137,15 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
     <section className="space-y-3">
       <SettingsHeading
         title="Temel bilgiler"
-        help="Site adresi, denetimin nereden başlayacağını belirler. Ülke ve dil, Search Console verisinin hangi pazar için okunacağını; yanlış seçilirse sayılar doğru ama sizinle ilgisiz olur."
+        help="Site adresi, denetimin nereden başlayacağını belirler. Ülke ve dil, Search Console verisinin hangi pazar için okunacağını belirler. Yanlış seçerseniz sayılar doğru olur ama sizinle ilgisiz kalır."
       />
       <form onSubmit={handleSubmit} className="space-y-4">
         <label className="flex flex-col gap-1.5 text-sm">
           <span className="flex items-center gap-1.5 font-medium">
             Ad
             <HelpTip label="Ad">
-              Yalnızca sizin için: proje değiştiricide ve raporların başlığında
-              görünür. Google&apos;a gönderilmez.
+              Yalnızca sizin içindir. Proje değiştiricide ve raporların
+              başlığında görünür, Google&apos;a gitmez.
             </HelpTip>
           </span>
           <input
@@ -162,8 +162,8 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
           <span className="flex items-center gap-1.5 font-medium">
             Alan adı <span className="text-muted">(isteğe bağlı)</span>
             <HelpTip label="Alan adı">
-              Denetimin başlangıç adresi buradan gelir ve Search Console mülkünü
-              eşleştirmekte kullanılır. Protokolsüz yazın: example.com.
+              Denetim bu adresten başlar, Search Console mülkü de bununla
+              eşleştirilir. https:// olmadan yazın, örneğin example.com.
             </HelpTip>
           </span>
           <input
@@ -226,7 +226,7 @@ function DangerSection({
     <section className="space-y-3 border-t border-base-300 pt-8">
       <SettingsHeading
         title="Projeyi arşivle"
-        help="Arşivlenen proje kenar çubuğundan kalkar ama hiçbir verisi silinmez: denetimler, kelimeler ve raporlar durur, geri alınca aynen döner."
+        help="Arşivlenen proje kenar çubuğundan kalkar ama hiçbir verisi silinmez. Denetimler, kelimeler ve raporlar durur, geri alınca aynen döner."
       />
 
       {confirming ? (

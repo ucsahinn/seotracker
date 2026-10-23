@@ -14,7 +14,6 @@ type LaunchViewProps = {
 };
 
 export function LaunchView({ projectId, onAuditStarted }: LaunchViewProps) {
-  const urlInputRef = React.useRef<HTMLInputElement>(null);
   const controller = useLaunchController({ projectId, onAuditStarted });
   const history = controller.historyQuery.data ?? [];
   /*
@@ -32,7 +31,7 @@ export function LaunchView({ projectId, onAuditStarted }: LaunchViewProps) {
     <PageShell>
       <PageHeader
         title="Site denetimi"
-        description="Sitenizi kendi tarayıcımızla tarar; bulduğu sorunları önem sırasına göre listeler."
+        description="Sitenizi tarar, bulduğu sorunları önem sırasına göre sıralar."
         actions={
           <PageActions>
             <RefreshButton
@@ -45,18 +44,24 @@ export function LaunchView({ projectId, onAuditStarted }: LaunchViewProps) {
         }
       />
 
-      <div className="grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]">
-        <LaunchFormCard
-          launchForm={controller.launchForm}
-          commitMaxPagesInput={controller.commitMaxPagesInput}
-          maxPagesLimit={controller.maxPagesLimit}
-          urlInputRef={urlInputRef}
-        />
-        <QuotaCard
-          projectId={projectId}
-          kinds={["pagespeed", "url_inspection"]}
-        />
-      </div>
+      <LaunchFormCard
+        launchForm={controller.launchForm}
+        commitMaxPagesInput={controller.commitMaxPagesInput}
+        maxPagesLimit={controller.maxPagesLimit}
+      />
+
+      {/* Quotas are reference, not the task: closed, so the history starts
+          right under the form. */}
+      <details className="-mt-2">
+        <summary className="link cursor-pointer text-sm">Kotalar</summary>
+        <div className="mt-3">
+          <QuotaCard
+            projectId={projectId}
+            kinds={["pagespeed", "url_inspection"]}
+            title="Güncel durum"
+          />
+        </div>
+      </details>
 
       <AuditHistorySection
         projectId={projectId}
@@ -69,7 +74,6 @@ export function LaunchView({ projectId, onAuditStarted }: LaunchViewProps) {
         }
         onRerun={controller.rerunAudit}
         isRerunPending={controller.isStarting}
-        onStartFirst={() => urlInputRef.current?.focus()}
       />
 
       {pendingDelete ? (

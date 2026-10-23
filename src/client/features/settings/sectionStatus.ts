@@ -56,7 +56,10 @@ export function activeCredentialNote(
   active: "service_account" | "oauth" | null,
 ): string | null {
   if (active === null) return null;
-  const names = { service_account: "hizmet hesabı", oauth: "OAuth istemcisi" };
+  const names = {
+    service_account: "hizmet hesabı",
+    oauth: "Google erişim anahtarı",
+  };
   if (active === self) return `Şu an kullanılan: ${names[self]}`;
   return `Şu an kullanılmıyor (${names[active]} öncelikli): ${names[self]}`;
 }

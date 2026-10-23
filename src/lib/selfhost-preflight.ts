@@ -52,7 +52,7 @@ function checkAuthMode(env: EnvRecord, items: PreflightItem[]): void {
       name: "AUTH_MODE",
       level: "ok",
       message:
-        "Parolasız tek kullanıcı kipi. Önüne kendi kimlik doğrulamanızı koymadan internete açmayın.",
+        "Giriş yok: uygulama yalnızca bu bilgisayarda kullanılır. İnternete açacaksanız önüne kendi girişinizi koyun.",
     });
     return;
   }

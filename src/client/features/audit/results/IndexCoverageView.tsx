@@ -84,7 +84,7 @@ export function IndexCoverageView({
     onSuccess: async (result) => {
       if (result.status === "needs_gsc") {
         toast.error(
-          "Search Console bağlı değil. Google'da durumunu kontrol etmeden önce bağlamanız gerekiyor.",
+          "Search Console bağlı değil. Sayfaların Google'daki durumunu görmek için önce bağlayın.",
         );
         return;
       }
@@ -98,7 +98,7 @@ export function IndexCoverageView({
          */
         if (result.quotaRemaining === 0) {
           toast.error(
-            `Google'ın günlük 2.000 adres sınırına ulaşıldı. ${formatNumber(result.remaining)} sayfa bekliyor; sınır birkaç saat içinde yenilenir.`,
+            `Google'ın günlük 2.000 adres sınırı doldu. ${formatNumber(result.remaining)} sayfa sırada, sınır birkaç saat içinde yenilenir.`,
           );
         } else {
           toast.success("Tüm sayfalar güncel, sorulacak bir şey yok.");
@@ -163,7 +163,7 @@ export function IndexCoverageView({
       <EmptyState
         icon={SearchCheck}
         title="Sorulacak sayfa yok"
-        description="Bu denetimde Google'ın dizine alabileceği bir sayfa bulunmadı."
+        description="Bu denetimde Google'ın dizine alabileceği bir sayfa yok."
       />
     );
   }
@@ -198,17 +198,17 @@ export function IndexCoverageView({
           animateTo={{ value: data.due, format: formatNumber }}
           hint={
             data.lastCheckedAt
-              ? `Google'a henüz hiç sorulmamış sayfalar. Son kontrol ${formatDateTime(data.lastCheckedAt)}`
-              : "Google'a henüz hiç sorulmamış sayfalar. Henüz hiç kontrol edilmedi."
+              ? `Google'a hiç sorulmamış sayfalar. Son kontrol ${formatDateTime(data.lastCheckedAt)}`
+              : "Google'a hiç sorulmamış sayfalar. Henüz kontrol yapılmadı."
           }
         />
       </MetricRow>
 
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm text-muted">
-          Google, günde en fazla 2.000 adresin durumunu sormanıza izin verir.
-          Her seferde 25 sayfa kontrol edilir: önce hiç sorulmamışlar, sonra
-          Google&apos;ın dizine almadıkları.
+          Google günde en çok 2.000 adres sormanıza izin verir. Her seferde 25
+          sayfa kontrol edilir. Önce hiç sorulmamış olanlara, sonra
+          Google&apos;ın dizine almadıklarına bakılır.
         </p>
         <button
           type="button"

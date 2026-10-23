@@ -33,7 +33,10 @@ import {
   type MoveId,
 } from "@/client/features/rankings/rankingMoves";
 import { ArchiveStatus } from "@/client/features/rankings/ArchiveStatus";
-import { EmptyArchivePanel } from "@/client/features/rankings/EmptyArchivePanel";
+import {
+  EmptyArchivePanel,
+  NotConnectedPanel,
+} from "@/client/features/rankings/EmptyArchivePanel";
 import {
   compareTracked,
   type SortKey,
@@ -164,8 +167,12 @@ export function RankingsPage({
   const narrowed =
     band !== undefined || chip !== undefined || move !== undefined;
   const hasChange = fetched.some((row) => row.delta !== null);
+  const notConnected = sync.data?.notConnected === true;
   const archiveEmpty =
     sync.data?.rowCount === 0 && !sync.data.notConnected && !sync.data.error;
+  // The range tabs, search box and table filter rows that exist; with no
+  // connection or an empty archive they are chrome around nothing.
+  const hasData = !notConnected && !archiveEmpty;
   const searching = search.trim() !== "";
   const emptyTitle = searching
     ? "Aramanıza uyan sorgu yok"
@@ -194,53 +201,55 @@ export function RankingsPage({
     <PageShell>
       <PageHeader
         title="Sıralama takibi"
-        description="Sorgularınızın Google'daki ortalama sırası. Arşiv bu bilgisayarda saklandığı için Google'ın 16 aylık sınırından daha eskiye de bakabilirsiniz."
+        description="Sorgularınızın Google'daki ortalama sırası. Arşiv bu bilgisayarda tutulduğu için Google'ın 16 aylık sınırından daha eskiye de bakabilirsiniz."
         /* A pick-one filter, not tabs: it re-queries the one table below
            rather than swapping between panels, so there is no panel for
            `aria-controls` to point at. */
         actions={
-          <PageActions>
-            <RefreshButton
-              {...refresh}
-              onRefresh={() => {
-                // Catch the archive up first: the table reads what the sync
-                // just stored, so refetching both at once shows stale rows.
-                void sync
-                  .refetch()
-                  .then(() =>
-                    Promise.all([
-                      tracked.refetch(),
-                      selected === null ? null : history.refetch(),
-                    ]),
-                  );
-              }}
-              shortcut
-            />
-            <div
-              role="radiogroup"
-              aria-label="Zaman aralığı"
-              className="tabs tabs-border"
-            >
-              {RANKING_WINDOWS.map((option) => (
-                <button
-                  key={option.days}
-                  type="button"
-                  role="radio"
-                  aria-checked={days === option.days}
-                  className={`tab ${days === option.days ? "tab-active" : ""}`}
-                  onClick={() => onDaysChange(option.days)}
-                >
-                  {option.label}
-                </button>
-              ))}
-            </div>
-          </PageActions>
+          hasData ? (
+            <PageActions>
+              <RefreshButton
+                {...refresh}
+                onRefresh={() => {
+                  // Catch the archive up first: the table reads what the sync
+                  // just stored, so refetching both at once shows stale rows.
+                  void sync
+                    .refetch()
+                    .then(() =>
+                      Promise.all([
+                        tracked.refetch(),
+                        selected === null ? null : history.refetch(),
+                      ]),
+                    );
+                }}
+                shortcut
+              />
+              <div
+                role="radiogroup"
+                aria-label="Zaman aralığı"
+                className="tabs tabs-border"
+              >
+                {RANKING_WINDOWS.map((option) => (
+                  <button
+                    key={option.days}
+                    type="button"
+                    role="radio"
+                    aria-checked={days === option.days}
+                    className={`tab ${days === option.days ? "tab-active" : ""}`}
+                    onClick={() => onDaysChange(option.days)}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            </PageActions>
+          ) : null
         }
       />
 
-      <ArchiveStatus sync={sync} />
+      {notConnected ? null : <ArchiveStatus sync={sync} />}
 
-      {tracked.data ? (
+      {tracked.data && hasData ? (
         <p className="text-xs text-muted">
           {describeWindow(
             tracked.data.range.startDate,
@@ -255,17 +264,19 @@ export function RankingsPage({
           <MoversCard rows={fetched} onPick={setSelected} />
         ) : (
           <p className="rounded-box border border-base-300 bg-base-100 px-4 py-3 text-sm text-muted">
-            Değişim gösterilemiyor: arşivde önceki dönem (
+            Değişim gösterilemiyor. Arşivde önceki dönem (
             {formatDate(tracked.data.previousRange.startDate)} –{" "}
             {formatDate(tracked.data.previousRange.endDate)}) için bu sorgulara
-            ait kayıt yok. Karşılaştırma, aynı uzunluktaki iki dönemde de verisi
-            olan sorgular için yapılır; daha kısa bir aralık seçin ya da arşiv
-            birikmeye devam etsin.
+            ait kayıt yok. Karşılaştırma, iki dönemde de verisi olan sorgular
+            için yapılır. Daha kısa bir aralık seçin ya da arşivin dolmasını
+            bekleyin.
           </p>
         )
       ) : null}
 
-      {archiveEmpty ? (
+      {notConnected ? (
+        <NotConnectedPanel projectId={projectId} />
+      ) : archiveEmpty ? (
         <EmptyArchivePanel projectId={projectId} />
       ) : (
         <>
@@ -320,7 +331,7 @@ export function RankingsPage({
                         label: "Şu an ilk 10'da",
                         icon: Trophy,
                         count: moveCounts.top10,
-                        hint: "Şimdi ortalama 10 veya daha iyi sırada olan sorgular; yeni yükselip ilk 10'a girenler de dahildir. Yalnızca önceki dönemde de verisi olanlar sayılır; üstteki çubuk ise şu anki tüm sorguları sayar.",
+                        hint: "Şimdi ortalama sırası 10 ya da daha iyi olan sorgular, ilk 10'a yeni girenler dahil. Önceki dönemde de verisi olanlar sayılır. Üstteki çubuk ise şu anki tüm sorguları sayar.",
                       },
                       {
                         id: "lost",
@@ -385,7 +396,7 @@ export function RankingsPage({
             ) : null}
             {tracked.data?.truncated ? (
               <p className="border-t border-base-300 px-4 py-2 text-xs text-muted">
-                Arşivde daha fazla sorgu var; bu liste en çok gösterim alan{" "}
+                Arşivde daha fazla sorgu var. Bu liste en çok gösterim alan{" "}
                 {formatNumber(fetched.length)} tanesiyle sınırlı. Aralığı
                 daraltarak farklı sorguları görebilirsiniz.
               </p>

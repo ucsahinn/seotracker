@@ -18,6 +18,8 @@ import { formatCount, formatPercent } from "@/shared/format";
  *   state      "running" | "done" | "warning" | "error" (icon + word + colour)
  *   indeterminate  unknown length; static tinted bar under reduced motion
  *   showCount  prints "N / M"; showPercent (default true) prints "%NN"
+ *   showState  default true; false drops the icon and state word beside the
+ *              count, for a bar whose label already says everything
  *   eta        free text such as "yaklaşık 2 dk kaldı"
  *   valueText  override the Turkish aria-valuetext
  * Motion is CSS only (transform scaleX); under reduced motion the root gets
@@ -67,6 +69,7 @@ export function ProgressBar({
   indeterminate = false,
   showCount = false,
   showPercent = true,
+  showState = true,
   eta,
   valueText,
 }: {
@@ -77,6 +80,7 @@ export function ProgressBar({
   indeterminate?: boolean;
   showCount?: boolean;
   showPercent?: boolean;
+  showState?: boolean;
   eta?: string;
   valueText?: string;
 }) {
@@ -102,8 +106,12 @@ export function ProgressBar({
           {label}
         </span>
         <span className={`flex items-center gap-1 tabular-nums ${INK[state]}`}>
-          <StateIcon state={state} />
-          <span>{STATE_TEXT[state]}</span>
+          {showState ? (
+            <>
+              <StateIcon state={state} />
+              <span>{STATE_TEXT[state]}</span>
+            </>
+          ) : null}
           {unknown ? null : (
             <span className="text-muted">
               {showCount ? ` ${count}` : ""}

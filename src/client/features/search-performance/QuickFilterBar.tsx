@@ -40,7 +40,7 @@ const CHIPS: Partial<Record<QuickFilterId, ChipDef>> = {
     hint: `İlk sayfada olup ${formatCount(LOW_CTR_MIN_IMPRESSIONS)} veya daha fazla gösterim alan ve tıklama oranı ${formatPercent(LOW_CTR_THRESHOLD, 0)} altında kalan satırlar. Başlığı ve açıklamayı iyileştirmeye değer.`,
   },
   hasClicks: {
-    label: "Tıklama alanlar",
+    label: "Tıklanan",
     icon: MousePointerClick,
     hint: "En az bir tıklama almış satırlar.",
   },

@@ -239,9 +239,9 @@ export function SearchTrendPanel({ daily }: { daily: DailyRow[] }) {
         </div>
       ) : (
         <p className="px-4 py-6 text-sm text-muted">
-          Bu dönemde hiç gösterim yok, çizilecek bir değişim de yok. Search
-          Console sayfalarınızı arama sonuçlarında göstermeye başladığında
-          burada günlük dağılım çıkar.
+          Bu dönemde hiç gösterim yok, grafik boş. Search Console sayfalarınızı
+          arama sonuçlarında göstermeye başlayınca günlük dağılım burada
+          görünür.
         </p>
       )}
     </section>

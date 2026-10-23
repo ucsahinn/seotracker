@@ -24,9 +24,8 @@ function SupportPage() {
   return (
     <PageShell width="reading">
       <PageHeader
-        eyebrow={<p className="text-sm font-medium text-muted">Yardım</p>}
-        title="Nereye bakmalı"
-        description="Bu kurulum kendi bilgisayarınızda çalışır. Bir şey ters giderse önce aşağıdaki durum kartına bakın; çözüm çoğu zaman oradaki düğmenin arkasındadır."
+        title="Yardım"
+        description="Bir şey ters giderse önce aşağıdaki duruma bakın. Çözüm çoğu zaman satırın yanındaki düğmededir."
       />
 
       <QuickActions />
@@ -44,21 +43,19 @@ function SupportPage() {
           </span>{" "}
           {pending ? (
             <>
-              {" "}
-              — Kurulum türü belirleniyor; bir saniye sonra buraya günlüklerin
-              yeri yazılır.
+              Kurulum türü anlaşılıyor. Günlüklerin yeri birazdan burada
+              görünür.
             </>
           ) : windows ? (
             <>
-              — Görev çubuğundaki seowatcher simgesine sağ tıklayıp{" "}
+              Görev çubuğundaki seowatcher simgesine sağ tıklayıp{" "}
               <strong>Günlükleri aç</strong> deyin. Açılış kontrolleri{" "}
               <code className="text-xs">launcher.log</code>, sunucu satırları{" "}
               <code className="text-xs">server.log</code> dosyasındadır.
             </>
           ) : (
             <>
-              — Açılış kontrolleri uygulama başlamadan önce buraya yazılır.
-              Komut:{" "}
+              Açılış kontrolleri uygulama başlamadan önce yazılır. Komut:{" "}
               <span className="inline-flex items-center gap-1 whitespace-nowrap align-middle">
                 <code className="text-xs">docker compose logs -f</code>
                 <CopyButton
@@ -72,7 +69,7 @@ function SupportPage() {
           )}
         </li>
         <li>
-          <span className="font-medium text-base-content">Sağlık ucu</span> —{" "}
+          <span className="font-medium text-base-content">Sağlık adresi:</span>{" "}
           <a
             href="/api/health"
             target="_blank"
@@ -88,9 +85,9 @@ function SupportPage() {
           <span className="font-medium text-base-content">
             Kurulum belgeleri
           </span>{" "}
-          — Windows paketi, Docker, Search Console, Analytics ve PageSpeed
-          kurulumu <code className="text-xs">docs/</code> altında ve kılavuzda
-          anlatılır; üstteki &quot;Kılavuzu aç&quot; düğmesi oraya götürür.
+          Windows paketi, Docker, Search Console, Analytics ve PageSpeed
+          kurulumu kılavuzda anlatılıyor. Üstteki &quot;Kılavuzu aç&quot;
+          düğmesi sizi oraya götürür.
         </li>
       </ul>
 
@@ -100,14 +97,15 @@ function SupportPage() {
       >
         <h2 className="text-sm font-semibold">Sorun bildirmek için</h2>
         <p className="max-w-prose text-sm text-muted">
-          Üstteki &quot;Tanılama paketi indir&quot; düğmesi tek bir arşiv verir:
-          sürüm, kurulum kontrolleri, tablo büyüklükleri, bağlı Google mülkleri,
-          son denetimlerin durumu ve bu sekmede yakalanan tarayıcı hataları.
-          İçinde gizli değer yok; parolalar ve anahtarlar toplanmaz, yalnızca
-          ayarlı olup olmadıkları yazılır. Kısa bir not yeterliyse durum
-          panelindeki &quot;Özeti kopyala&quot; düğmesi aynı özeti metin olarak
-          verir. Arşivdeki <code className="text-xs">README.txt</code> ne
-          olduğunu ve neyin sizi tanımladığını satır satır anlatır.
+          Üstteki &quot;Tanılama paketi indir&quot; düğmesi tek bir arşiv
+          indirir. İçinde sürüm, kurulum kontrolleri, tablo büyüklükleri, bağlı
+          Google mülkleri, son denetimlerin durumu ve bu sekmede yakalanan
+          tarayıcı hataları var. Gizli değer yok. Parolalar ve anahtarlar
+          toplanmaz, yalnızca ayarlı olup olmadıkları yazılır. Kısa bir not
+          yeterliyse durum panelindeki &quot;Özeti kopyala&quot; düğmesi aynı
+          özeti metin olarak verir. Arşivdeki{" "}
+          <code className="text-xs">README.txt</code> içindekileri ve sizi
+          tanımlayan şeyleri satır satır anlatır.
         </p>
       </section>
 
@@ -118,7 +116,7 @@ function SupportPage() {
           rel="noreferrer"
           className="link link-primary inline-flex items-center gap-1.5 text-sm"
         >
-          Bu çatal GitHub&apos;da
+          Proje GitHub&apos;da
           <ExternalLink className="size-3.5" />
         </a>
         <a

@@ -1,4 +1,3 @@
-import { SettingsHeading } from "@/client/components/HelpTip";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CheckCircle2, ExternalLink } from "lucide-react";
 import * as React from "react";
@@ -105,10 +104,9 @@ export function GoogleServiceAccountSection() {
       <SectionHeaderRow
         badge={statusQuery.isError ? UNREADABLE : serviceAccountBadge(status)}
       >
-        <SettingsHeading
-          title="Hizmet hesabı (daha kısa yol)"
-          help="Erişim anahtarı yolu onay ekranı, test kullanıcısı ve birebir eşleşen yönlendirme adresi ister; kurulum çoğu zaman bu üçünde takılır. Hizmet hesabı üçünü de atlar: Google Cloud'da bir hizmet hesabı açıp JSON anahtar dosyasını indirin, sonra o hesabın e-postasını Search Console'a bir meslektaşınızı ekler gibi ekleyin."
-        />
+        <h2 className="text-base font-semibold">
+          Hizmet hesabı (daha kısa yol)
+        </h2>
       </SectionHeaderRow>
       {stored ? (
         <p className="text-xs font-medium text-muted">
@@ -120,11 +118,11 @@ export function GoogleServiceAccountSection() {
       ) : null}
 
       <p className="text-sm text-muted">
-        Yukarıdaki OAuth istemcisi yerine bunu kullanabilirsiniz. Hizmet
+        Yukarıdaki Google erişim anahtarı yerine bunu kullanabilirsiniz. Hizmet
         hesabında izin ekranı, test kullanıcısı ve yönlendirme adresi adımları
-        yok: hesabı oluşturup JSON anahtarını buraya yapıştırın, sonra hesabın
-        e-posta adresini Search Console&apos;da mülkünüze kullanıcı olarak
-        ekleyin.{" "}
+        yok. Google Cloud&apos;da hesabı açıp JSON dosyasını indirin ve buraya
+        yapıştırın, sonra hesabın e-posta adresini Search Console&apos;da
+        mülkünüze, bir meslektaşınızı eklermiş gibi kullanıcı olarak ekleyin.{" "}
         <a
           href={SERVICE_ACCOUNT_URL}
           target="_blank"
@@ -209,9 +207,12 @@ export function GoogleServiceAccountSection() {
       ) : null}
 
       {showForm ? (
-        <div className="space-y-2">
-          <label className="block text-sm" htmlFor="service-account-key">
-            JSON anahtar dosyası
+        <div className="space-y-1.5">
+          <label
+            className="block text-sm font-medium"
+            htmlFor="service-account-key"
+          >
+            Hizmet hesabı dosyası (JSON)
           </label>
           <textarea
             id="service-account-key"
@@ -222,10 +223,10 @@ export function GoogleServiceAccountSection() {
             value={keyJson}
             onChange={(event) => setKeyJson(event.target.value)}
           />
-          <div className="flex gap-2">
+          <div className="flex gap-2 pt-3.5">
             <button
               type="button"
-              className="btn btn-primary btn-sm"
+              className="btn btn-primary btn-sm disabled:border-[var(--control-border)] disabled:bg-base-200 disabled:text-muted disabled:opacity-100"
               disabled={keyJson.trim() === "" || save.isPending}
               onClick={() => save.mutate()}
             >

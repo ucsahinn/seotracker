@@ -68,7 +68,7 @@ export function OrganicTrendPanel({
         <div>
           <h2 className="text-sm font-medium">Organik oturumlar</h2>
           <p className="mt-0.5 text-xs text-muted">
-            Seçtiğiniz aralıkta, günlere dağılmış.
+            Seçtiğiniz aralık, gün gün.
           </p>
         </div>
         <div className="flex items-center gap-4">
@@ -113,7 +113,7 @@ export function OrganicTrendPanel({
       ) : (
         /* A flat line along zero is a shape that looks like an answer. */
         <p className="px-4 py-6 text-sm text-muted">
-          Bu aralıkta organik oturum yok, çizilecek bir değişim de yok.
+          Bu aralıkta organik oturum yok, grafik boş.
         </p>
       )}
     </section>

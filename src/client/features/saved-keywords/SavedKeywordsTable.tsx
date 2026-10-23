@@ -8,7 +8,9 @@ import {
   type SortingState,
 } from "@tanstack/react-table";
 import { Link } from "@tanstack/react-router";
-import { BarChart3, Bookmark } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { Bookmark } from "lucide-react";
+import { gscConnectionOptions } from "@/client/features/integrations/googleConnectionQueries";
 import { formatDecimal } from "@/client/lib/format";
 import { useMemo } from "react";
 import {
@@ -84,7 +86,7 @@ export function SavedKeywordsTable({
       // useful ones off the side of the table.
       columnHelper.display({
         id: "position",
-        header: () => "Ort. sıra",
+        header: () => "Ortalama sıra",
         cell: ({ row }) => {
           const position = positionOf(row.original.keyword, positions);
           return position === null ? (
@@ -179,7 +181,7 @@ export function SavedKeywordsTable({
   return (
     <AppDataTable
       table={table}
-      caption="Kayıtlı anahtar kelimeler"
+      caption="Kayıtlı kelimeler"
       className="table table-sm"
       isLoading={isLoading}
       loading={<SavedKeywordsSkeleton />}
@@ -247,6 +249,9 @@ function SavedKeywordsEmptyState({
   projectId: string;
   hasActiveFilters: boolean;
 }) {
+  // The query screen is a dead end until Search Console is connected, so the
+  // one next action depends on the connection.
+  const connection = useQuery(gscConnectionOptions(projectId));
   if (hasActiveFilters) {
     return (
       <EmptyState
@@ -256,13 +261,22 @@ function SavedKeywordsEmptyState({
       />
     );
   }
+  const notConnected = connection.data?.connected === false;
   return (
     <EmptyState
       icon={Bookmark}
       title="Henüz kayıtlı kelime yok"
-      description="Arama performansının Sorgular sekmesinde bir ya da birkaç sorguyu seçip “Kelime olarak kaydet” deyin. Kaydettikleriniz burada etiketlenir, ortalama sırasıyla listelenir ve dışa aktarılır."
+      description="Arama performansı ekranında bir ya da birkaç sorguyu seçip “Kelime olarak kaydet” deyin. Kaydettikleriniz burada etiketlenir, sıralamayla birlikte listelenir ve dışa aktarılır."
       action={
-        <div className="flex flex-wrap justify-center gap-2">
+        connection.isPending ? undefined : notConnected ? (
+          <Link
+            to="/p/$projectId/settings/integrations"
+            params={{ projectId }}
+            className="btn btn-primary btn-sm"
+          >
+            Search Console&apos;u bağla
+          </Link>
+        ) : (
           <Link
             to="/p/$projectId/search-performance"
             params={{ projectId }}
@@ -272,15 +286,7 @@ function SavedKeywordsEmptyState({
             <SearchIcon className="size-4" aria-hidden />
             Sorgulara göz at
           </Link>
-          <Link
-            to="/p/$projectId/rankings"
-            params={{ projectId }}
-            className="btn btn-ghost btn-sm gap-1.5"
-          >
-            <BarChart3 className="size-4" aria-hidden />
-            Sıralamayı aç
-          </Link>
-        </div>
+        )
       }
     />
   );

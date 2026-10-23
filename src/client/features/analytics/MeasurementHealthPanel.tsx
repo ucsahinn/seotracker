@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "@tanstack/react-router";
-import { Activity, Check, X } from "lucide-react";
-import { EmptyState } from "@/client/components/EmptyState";
+import { Check, X } from "lucide-react";
+import { AnalyticsNotConnected } from "@/client/features/analytics/AnalyticsNotConnected";
 import { MetricRow, MetricTile } from "@/client/components/MetricTile";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { HelpTip } from "@/client/components/HelpTip";
@@ -42,7 +41,7 @@ const ISSUE_COPY: Record<string, { title: string; fix: string }> = {
   },
   inventory_incomplete: {
     title: "Envanter eksik olabilir",
-    fix: "Google bu mülkün listelerinin tamamını tek seferde vermedi; sayımlar ve eksik bulgular tam sayılmamalı.",
+    fix: 'Google bu mülkün listesini eksik verdi. Sayımlara ve "eksik yok" sonucuna tam güvenmeyin.',
   },
 };
 
@@ -98,24 +97,7 @@ export function MeasurementHealthPanel({ projectId }: { projectId: string }) {
   }
 
   if (query.data.status === "needs_ga4") {
-    return (
-      <div className="rounded-box border border-base-300 bg-base-100">
-        <EmptyState
-          icon={Activity}
-          title="Google Analytics bağlı değil"
-          description="Bu kontrol Analytics'teki sitenizin (GA4 mülkü) ayarlarını okur. Proje ayarlarındaki Bağlantılar sekmesinden bağlayın."
-          action={
-            <Link
-              to="/p/$projectId/settings/integrations"
-              params={{ projectId }}
-              className="btn btn-sm"
-            >
-              Bağlantılar
-            </Link>
-          }
-        />
-      </div>
-    );
+    return <AnalyticsNotConnected projectId={projectId} />;
   }
 
   const health = query.data;
@@ -173,7 +155,7 @@ export function MeasurementHealthPanel({ projectId }: { projectId: string }) {
       {health.issues.length === 0 ? (
         <div className="flex items-center gap-2 rounded-box border border-base-300 bg-base-100 p-4 text-sm text-muted">
           <Check className="size-4 text-success" />
-          Ölçüm kurulumunda eksik bulunamadı.
+          Ölçüm kurulumunda eksik yok.
         </div>
       ) : (
         <ul className="space-y-2">

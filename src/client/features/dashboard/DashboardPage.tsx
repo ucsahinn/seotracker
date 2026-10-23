@@ -81,38 +81,48 @@ export function DashboardPage({ projectId }: { projectId: string }) {
 
   const gscConnected = activation.gsc.connected;
   const ga4Connected = activation.ga4.connected;
+  const hasAudit = overview?.audit != null;
+  const googleMissing = googleConfigured === false;
 
   const cards = [
-    {
-      key: "audit",
-      hasData: overview?.audit != null,
-      /*
-       * A failed overview is not an operator who has never run an audit.
-       * `overview` is undefined on error just as it is before the first
-       * audit, so this card used to answer a 500 with "tarayın" and a button
-       * -- inviting someone with a week of audits to spend a fresh crawl.
-       */
-      node: overviewQuery.isError ? (
-        <div className="rounded-box border border-base-300 bg-base-100 shadow-[var(--shadow-raise)]">
-          <QueryErrorState
-            error={overviewQuery.error}
-            onRetry={() => void overviewQuery.refetch()}
-            title="Denetim özeti yüklenemedi"
-          />
-        </div>
-      ) : (
-        <AuditHealthCard
-          projectId={projectId}
-          audit={overview?.audit ?? null}
-        />
-      ),
-    },
+    // Without an audit the card was a third "Denetimi başlat": "Sıradaki
+    // adımlar" already carries that one ask. A failed overview still gets its
+    // error card, so the failure is not mistaken for "no audit yet".
+    ...(hasAudit || overviewQuery.isError
+      ? [
+          {
+            key: "audit",
+            hasData: hasAudit,
+            /*
+             * A failed overview is not an operator who has never run an audit.
+             * `overview` is undefined on error just as it is before the first
+             * audit, so this card used to answer a 500 with "tarayın" and a
+             * button -- inviting someone with a week of audits to spend a
+             * fresh crawl.
+             */
+            node: overviewQuery.isError ? (
+              <div className="rounded-box border border-base-300 bg-base-100 shadow-[var(--shadow-raise)]">
+                <QueryErrorState
+                  error={overviewQuery.error}
+                  onRetry={() => void overviewQuery.refetch()}
+                  title="Denetim özeti yüklenemedi"
+                />
+              </div>
+            ) : (
+              <AuditHealthCard
+                projectId={projectId}
+                audit={overview?.audit ?? null}
+              />
+            ),
+          },
+        ]
+      : []),
     // Connected, the Search Console numbers are already in the metric row, so
     // the card would only repeat them. Disconnected, it is the thing that runs
     // the whole OAuth flow, so it has to be on the page - unless there is no
     // OAuth client yet, in which case the banner above already says so and a
     // card that cannot connect is just a second copy of the same warning.
-    ...(gscConnected || googleConfigured === false
+    ...(gscConnected || googleMissing
       ? []
       : [
           {
@@ -121,8 +131,7 @@ export function DashboardPage({ projectId }: { projectId: string }) {
             node: <GscCard projectId={projectId} />,
           },
         ]),
-    ...((ga4Connected || !activation.ga4.cardDismissedAt) &&
-    googleConfigured !== false
+    ...((ga4Connected || !activation.ga4.cardDismissedAt) && !googleMissing
       ? [
           {
             key: "ga4",
@@ -140,19 +149,29 @@ export function DashboardPage({ projectId }: { projectId: string }) {
         description={activation.domain ?? undefined}
         actions={
           <PageActions>
-            <RefreshButton {...refresh} shortcut />
-            <Link
-              to="/p/$projectId/audit"
-              params={{ projectId }}
-              className="btn btn-primary btn-sm"
-            >
-              Denetimi başlat
-            </Link>
+            <RefreshButton
+              {...refresh}
+              // "Güncellendi" is a claim about data; with no Search Console and
+              // no audit there is nothing on the page that could be current.
+              dataUpdatedAt={
+                gscConnected || hasAudit ? refresh.dataUpdatedAt : 0
+              }
+              shortcut
+            />
+            {hasAudit ? (
+              <Link
+                to="/p/$projectId/audit"
+                params={{ projectId }}
+                className="btn btn-primary btn-sm"
+              >
+                Denetimi başlat
+              </Link>
+            ) : null}
           </PageActions>
         }
       />
 
-      {googleConfigured === false ? <GoogleSetupBanner /> : null}
+      {googleMissing ? <GoogleSetupBanner /> : null}
 
       <DashboardMetrics projectId={projectId} connected={gscConnected} />
 
@@ -165,6 +184,7 @@ export function DashboardPage({ projectId }: { projectId: string }) {
       <NextStepsCard
         projectId={projectId}
         gscConnected={gscConnected}
+        googleMissing={googleMissing}
         audit={overview?.audit ?? null}
       />
 
@@ -174,18 +194,20 @@ export function DashboardPage({ projectId }: { projectId: string }) {
 
       {/* Cards with data sort before setup pitches and empty states. A lone
           card takes the full width rather than leaving half the row empty. */}
-      <Reveal
-        className={`grid items-start gap-5 ${
-          cards.length > 1 ? "lg:grid-cols-2" : ""
-        }`}
-        stepMs={60}
-      >
-        {sort(cards, (a, b) => Number(b.hasData) - Number(a.hasData)).map(
-          (card) => (
-            <Fragment key={card.key}>{card.node}</Fragment>
-          ),
-        )}
-      </Reveal>
+      {cards.length > 0 ? (
+        <Reveal
+          className={`grid items-start gap-5 ${
+            cards.length > 1 ? "lg:grid-cols-2" : ""
+          }`}
+          stepMs={60}
+        >
+          {sort(cards, (a, b) => Number(b.hasData) - Number(a.hasData)).map(
+            (card) => (
+              <Fragment key={card.key}>{card.node}</Fragment>
+            ),
+          )}
+        </Reveal>
+      ) : null}
 
       {/* Setup last. It is the one thing on this page you finish and never
           look at again, so it does not get the top of the screen. */}
@@ -193,6 +215,7 @@ export function DashboardPage({ projectId }: { projectId: string }) {
         key={projectId}
         projectId={projectId}
         activation={activation}
+        firstStepsDone={gscConnected && hasAudit}
       />
     </PageShell>
   );

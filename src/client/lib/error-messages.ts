@@ -8,20 +8,20 @@ const STANDARD_MESSAGES: Record<ErrorCode, string> = {
   AUTH_CONFIG_MISSING:
     "Giriş ayarı eksik. Yardım ekranındaki kurulum belgelerine bakın.",
   FORBIDDEN: "Bu işlem için yetkiniz yok.",
-  NOT_FOUND: "İstenen kayıt bulunamadı.",
+  NOT_FOUND: "Kayıt bulunamadı.",
   AUDIT_CAPACITY_REACHED:
     "Şu an çok fazla denetim çalışıyor. Biri bitince yeniden deneyin.",
   AUDIT_PAGE_LIMIT_EXCEEDED: `Bir denetim en çok ${formatNumber(MAX_AUDIT_PAGES)} sayfa tarayabilir.`,
   AUDIT_ALREADY_RUNNING:
-    "Aynı anda çalışabilecek denetim sayısına ulaştınız. Çalışan denetimlerden birinin bitmesini bekleyin ya da birini silin.",
+    "Aynı anda çalışabilecek denetim sayısına ulaştınız. Biri bitene kadar bekleyin ya da çalışan birini silin.",
   VALIDATION_ERROR: "Girdiğiniz bilgileri kontrol edip tekrar deneyin.",
   CRAWL_TARGET_BLOCKED: "Güvenlik nedeniyle bu adres taranamaz.",
   RATE_LIMITED: "Çok fazla istek gönderildi. Biraz bekleyip tekrar deneyin.",
   UPSTREAM_UNAVAILABLE:
     "Veri kaynağı şu an yanıt vermiyor. Birazdan tekrar deneyin.",
-  CONFLICT: "Bu işlem var olan bir kayıtla çakışıyor.",
+  CONFLICT: "Bu, zaten var olan bir kayıtla çakışıyor.",
   INTERNAL_ERROR:
-    "Beklenmeyen bir hata oluştu. Yardım ekranından tanılama paketini indirip sorun bildirin.",
+    "Bir şeyler ters gitti. Yardım ekranından tanılama paketini indirip sorunu bildirin.",
 };
 
 // Setup errors cross the wire as "CODE: detail" (see toClientError) so the

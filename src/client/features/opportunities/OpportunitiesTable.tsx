@@ -123,7 +123,7 @@ export function OpportunitiesTable({
           <EmptyState
             compact
             icon={Target}
-            title="Bu süzgece uyan sayfa yok"
+            title="Bu filtreye uyan sayfa yok"
             description="Seçtiğiniz tür ya da hızlı filtre bu dönemde hiçbir sayfayla eşleşmedi. Filtreleri kaldırın ya da dönemi genişletin."
             action={
               onReset ? (

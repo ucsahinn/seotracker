@@ -25,16 +25,15 @@ export function ForeignPropertyNotice({
       <AlertTriangle className="size-5 shrink-0" aria-hidden />
       <div className="space-y-1 text-sm">
         <p className="font-medium">
-          Bu denetim {auditedHost} adresine ait, Search Console bağlantısı ise{" "}
-          {propertyHost} mülküne.
+          Bu denetim {auditedHost} sitesine ait, ama Search Console bağlantınız{" "}
+          {propertyHost} mülküne bağlı.
         </p>
         <p>
-          Aşağıdaki site haritaları {propertyHost} hakkında; bu denetimin
-          sayfalarıyla ilgili değil. Google&apos;a sorma da kapatıldı, çünkü bu
-          sayfalar o mülkün içinde değil ve sorulan her adres günlük kotadan
-          boşa harcanırdı. {auditedHost} için Google verisi görmek istiyorsanız
-          bu siteyi kendi projesine alın ve kendi Search Console mülküne
-          bağlayın.
+          Aşağıdaki site haritaları {propertyHost} mülküne ait, bu denetimin
+          sayfalarıyla ilgisi yok. Google&apos;a sorma da kapalı, çünkü bu
+          sayfalar o mülkte değil ve sorulan her adres günlük kotadan boşuna
+          giderdi. {auditedHost} için Google verisi görmek istiyorsanız siteyi
+          ayrı bir proje olarak ekleyip kendi Search Console mülküne bağlayın.
         </p>
         <Link
           to="/p/$projectId/settings/integrations"

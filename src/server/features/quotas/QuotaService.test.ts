@@ -111,7 +111,7 @@ describe("getQuotaStatus", () => {
       limit: null,
       state: "critical",
     });
-    expect(item?.detail).toContain("Anahtar yok");
+    expect(item?.detail).toContain("PageSpeed anahtarı yok");
     expect(item?.detail).toContain("dakikalık sınıra takıldı");
     expect(item?.detail).toContain("başlayan denetimlere");
   });

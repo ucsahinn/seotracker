@@ -72,7 +72,7 @@ export function Stat({
         : "";
   return (
     <div>
-      <p className="text-xs font-medium uppercase tracking-wider text-muted">
+      <p className="text-xs font-medium text-muted">
         {help ? <HeaderHelpLabel label={label} helpText={help} /> : label}
       </p>
       <p className={`text-2xl font-semibold tabular-nums ${toneClass}`}>

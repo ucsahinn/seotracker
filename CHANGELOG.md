@@ -2,6 +2,18 @@
 
 Her sürümün notu burada, en yenisi en üstte.
 
+## [2.3.15] — 2026-10-23
+
+Uygulama ekranları baştan sona elden geçti.
+
+### Yenilikler
+
+- **Daha sade uygulama.** Yan menüdeki sahte hesap satırı gitti; Yardım ve Ayarlar menünün altında. Menü grupları yeniden adlandırıldı (Arama ve site, Ajan). Panel her işi bir kez ister; kurulum listesi gerekmedikçe kapalı. Her ekranın boş hali tek bir sonraki adımı söyler (Search Console'u bağla, Analytics'i bağla, denetimi başlat).
+- **Ajan kurulumu tek kart.** Claude Code / Codex / Diğer seçimi ve tek "Kurulum komutunu kopyala" düğmesi; sıfırdan kurulum ve beceri güncelleme ikincil.
+- **Ayarlar.** Google bağlantısı üç adımlı liste; alanlar ve devre dışı Kaydet okunur; sürüm notları liste olarak.
+- **Doğal Türkçe.** 160'tan fazla ekran metni mekanik ifadelerden arındırıldı; terimler tek: Google erişim anahtarı, parola (token), adres numarası (port), filtre, ortanca, Analytics mülkü.
+- **Görev çubuğu.** Menüde her zaman duran tek **Güncelle** maddesi: tıklayınca kontrol eder, yeni sürüm varsa kurar, yoksa "Güncel" der.
+
 ## [2.3.14] — 2026-10-23
 
 Kurulum dosyası sürümünü taşır.

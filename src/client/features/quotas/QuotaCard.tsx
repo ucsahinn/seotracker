@@ -69,7 +69,7 @@ function QuotaBody({ query }: { query: ReturnType<typeof useQuotaStatus> }) {
       <EmptyState
         icon={Gauge}
         title="Gösterilecek sınır yok"
-        description="Bu bölüm için izlenen bir kota bulunmuyor."
+        description="Bu bölümde izlenen bir kota yok."
         compact
       />
     );

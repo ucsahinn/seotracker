@@ -32,9 +32,9 @@ function statValue(
   value: number | null,
   format: (value: number) => string,
 ): string {
-  // "--", matching MetricTile: two absence glyphs on one screen for the
+  // "–", matching MetricTile: two absence glyphs on one screen for the
   // same meaning is a detail the reader has to resolve for no reason.
-  return value === null ? "--" : format(value);
+  return value === null ? "–" : format(value);
 }
 
 function statDelta(current: number | null, previous: number | null) {

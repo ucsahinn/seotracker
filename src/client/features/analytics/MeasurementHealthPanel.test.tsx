@@ -82,7 +82,9 @@ describe("MeasurementHealthPanel", () => {
 
     mount();
 
-    expect(await screen.findByText(/eksik bulunamadı/i)).toBeDefined();
+    expect(
+      await screen.findByText(/Ölçüm kurulumunda eksik yok/i),
+    ).toBeDefined();
   });
 
   it("shows how each key event is counted and any app streams", async () => {

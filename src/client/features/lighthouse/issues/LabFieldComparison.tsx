@@ -58,7 +58,7 @@ export function LabFieldComparison({
           ? "Test ortamında sitenizin hızı ziyaretçilerinkinden iyi çıkıyor. Google sıralamada sağdaki sütunu kullanır."
           : pessimistic > 0
             ? "Gerçek ziyaretçiler sitenizi test ortamından daha hızlı görüyor. Google sıralamada sağdaki sütunu kullanır."
-            : "İki ölçüm örtüşüyor; laboratuvar puanı ziyaretçilerin gördüğünü temsil ediyor."}
+            : "İki ölçüm birbirini tutuyor. Laboratuvar puanı ziyaretçilerin gördüğüne yakın."}
       </p>
       <table className="mt-3 table table-sm">
         <thead>
@@ -116,7 +116,7 @@ function GapLabel({
     return (
       <span className="inline-flex items-center gap-1 text-xs text-muted">
         <Minus aria-hidden className="size-3" />
-        Örtüşüyor
+        Tutuyor
       </span>
     );
   }

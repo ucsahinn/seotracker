@@ -81,11 +81,7 @@ export function DashboardMetrics({
    * are a newly verified property and Search Console's two-to-three day
    * lag, and both are worth naming.
    */
-  const hint = !connected
-    ? "Search Console'u bağlayın"
-    : shownTotals && !shownTotals.hasImpressions
-      ? "Bu dönemde gösterim yok. Nedenini görün"
-      : DASHBOARD_RANGE_LABEL;
+  const noImpressions = shownTotals && !shownTotals.hasImpressions;
 
   const shown = shownTotals;
   /*
@@ -97,10 +93,6 @@ export function DashboardMetrics({
       ? fractionalChange(pick(report.totals), pick(report.prevTotals))
       : null;
   /*
-   * Every tile carries the window and is itself a link to the screen behind
-   * its number; the first one also says why when there is nothing to show.
-   */
-  /*
    * Derived from the range the server resolved, not written out again. The
    * literal "Son 28 gün" appeared three times in this file against a query
    * that named its window once -- so changing the window would have left
@@ -109,6 +101,19 @@ export function DashboardMetrics({
   const period = report
     ? `${formatDate(report.range.startDate)} – ${formatDate(report.range.endDate)}`
     : undefined;
+
+  /*
+   * One hint rule for all four tiles. Not connected: the same short line on
+   * each, because the banner or "Sıradaki adımlar" above already carries the
+   * ask and the tile is itself the link. Connected: the window, or on every tile
+   * the plain fact that the window had no impressions.
+   */
+  const hintFor = (fallback: string | undefined) =>
+    !connected
+      ? "Bağlanınca görünür"
+      : noImpressions
+        ? "Bu dönemde gösterim yok"
+        : (fallback ?? DASHBOARD_RANGE_LABEL);
 
   const searchPerformance: MetricTileHref = {
     to: "/p/$projectId/search-performance",
@@ -123,7 +128,7 @@ export function DashboardMetrics({
         value={shown?.clicks ?? null}
         animateTo={count(report?.totals.clicks, formatCount)}
         delta={delta((totals) => totals.clicks)}
-        hint={hint}
+        hint={hintFor(period)}
       />
       <MetricTile
         label="Gösterim"
@@ -131,7 +136,7 @@ export function DashboardMetrics({
         value={shown?.impressions ?? null}
         animateTo={count(report?.totals.impressions, formatCount)}
         delta={delta((totals) => totals.impressions)}
-        hint={period}
+        hint={hintFor(period)}
       />
       <MetricTile
         label="Tıklama oranı"
@@ -139,7 +144,7 @@ export function DashboardMetrics({
         value={shown?.ctr ?? null}
         animateTo={count(report?.totals.ctr, (n) => formatPercent(n))}
         delta={delta((totals) => totals.ctr)}
-        hint={period}
+        hint={hintFor(period)}
       />
       <MetricTile
         label="Ortalama sıra"
@@ -150,16 +155,16 @@ export function DashboardMetrics({
         // Position 3 is better than position 8, so a fall is the good direction.
         inverted
         hint={
-          period
-            ? `${period} · küçük olan iyidir; 1, en üst sıra`
-            : "Küçük olan iyidir; 1, en üst sıra"
+          connected && !noImpressions
+            ? `${period ?? DASHBOARD_RANGE_LABEL} · düşük sayı daha iyi: 1, listenin en üstü demek`
+            : hintFor(undefined)
         }
       />
     </MetricRow>
   );
 }
 
-/** The count-up props, only when there is a number (tiles show "--" otherwise). */
+/** The count-up props, only when there is a number (tiles show "–" otherwise). */
 function count(value: number | undefined, format: (n: number) => string) {
   return value === undefined ? undefined : { value, format };
 }

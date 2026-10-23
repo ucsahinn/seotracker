@@ -133,7 +133,7 @@ export function CommonProblems({
         title={
           windows
             ? "Adres numarası (port) dolu"
-            : "Port dolu (Bind for 127.0.0.1:3001 failed)"
+            : "Adres numarası (port) dolu (Bind for 127.0.0.1:3001 failed)"
         }
       >
         {pending ? (
@@ -149,16 +149,16 @@ export function CommonProblems({
           </p>
         ) : (
           <p>
-            3001 numaralı portu başka bir program kullanıyor. Proje klasöründe{" "}
-            <code className="text-xs">PORT=3002</code> satırı olan bir{" "}
-            <code className="text-xs">.env</code> dosyası oluşturup konteyneri
-            yeniden oluşturun:{" "}
+            3001 numaralı adresi (port) başka bir program kullanıyor. Proje
+            klasöründe <code className="text-xs">PORT=3002</code> satırı olan
+            bir <code className="text-xs">.env</code> dosyası oluşturup
+            konteyneri yeniden oluşturun:{" "}
             <Command value="docker compose up -d --force-recreate seotracker" />
           </p>
         )}
         <p>
-          Port değişince Google&apos;a verdiğiniz yönlendirme adresleri de
-          değişir; yenilerini{" "}
+          Adres numarası (port) değişince Google&apos;a verdiğiniz yönlendirme
+          adresleri de değişir. Yenilerini{" "}
           <Link to="/settings" hash="google" className={linkClass}>
             Ayarlar&apos;daki Google bölümünden
           </Link>{" "}
@@ -166,12 +166,12 @@ export function CommonProblems({
         </p>
       </Problem>
 
-      <Problem title="Ajanım uygulamaya bağlanamıyor (401)">
+      <Problem title="Ajanım bağlanamıyor (401)">
         {pending ? (
           pendingNote
         ) : windows ? (
           <p>
-            Asistan bağlantısı bir parola (token) ister. Windows paketinde bu
+            Ajan bağlantısı bir parola (token) ister. Windows paketinde bu
             parola{" "}
             <code className="text-xs">%LOCALAPPDATA%\seowatcher\mcp-token</code>{" "}
             dosyasındadır (<strong>Veri klasörünü aç</strong>). Panoya
@@ -187,9 +187,9 @@ export function CommonProblems({
         ) : (
           <>
             <p>
-              Asistan bağlantısı varsayılan olarak bir parola (token) ister.
-              Parola ilk açılışta üretilir ve veri biriminde durur; okumak için
-              (PowerShell ve cmd):{" "}
+              Ajan bağlantısı varsayılan olarak bir parola ister. Parola ilk
+              açılışta üretilir ve veri biriminde durur; okumak için (PowerShell
+              ve cmd):{" "}
               <Command value="docker compose exec -T seotracker cat /app/.wrangler/mcp-token" />
             </p>
             <p>
@@ -201,7 +201,7 @@ export function CommonProblems({
           </>
         )}
         <p>
-          Adres: <Command value={`${origin}/mcp`} /> İstemciniz{" "}
+          Adres: <Command value={`${origin}/mcp`} /> Aracınız{" "}
           <code className="text-xs">Authorization: Bearer &lt;token&gt;</code>{" "}
           başlığını göndermezse bağlantı 401 döner.
         </p>
@@ -209,14 +209,14 @@ export function CommonProblems({
           <Link to="/ai" className={linkClass}>
             Ajan kurulumu sayfası
           </Link>{" "}
-          istemciniz için hazır komutu verir.{" "}
+          aracınız için hazır komutu verir.{" "}
           <DocLink file={windows ? DOCS.troubleshooting : DOCS.docker}>
             Ayrıntılar
           </DocLink>
         </p>
       </Problem>
 
-      <Problem title="PageSpeed 429 mu, günlük kota mı?">
+      <Problem title="Hız ölçümü yarım kalıyor (429)">
         <p>
           <strong>429 / &quot;çok fazla istek&quot;</strong> genellikle anahtar
           girilmediğini gösterir: Google&apos;ın anahtarsız kotası birkaç
@@ -246,7 +246,7 @@ export function CommonProblems({
           olmanız gerekir; eklemeden veri gelmez.
         </p>
         <p>
-          Mülk yeni doğrulandıysa Google&apos;ın veri döndürmesi birkaç gün
+          Mülk yeni doğrulandıysa Google&apos;ın veri vermesi birkaç gün
           sürebilir.{" "}
           {projectId ? (
             <Link

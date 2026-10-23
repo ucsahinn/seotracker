@@ -16,9 +16,16 @@ import { DashboardSetupAction } from "./DashboardSetupAction";
 export function DashboardOnboarding({
   projectId,
   activation,
+  firstStepsDone = false,
 }: {
   projectId: string;
   activation: DashboardActivation;
+  /**
+   * Search Console is connected and a first audit exists, which are the two
+   * steps "Sıradaki adımlar" leads with. Until then this list stays folded:
+   * it repeated the same asks one screen below.
+   */
+  firstStepsDone?: boolean;
 }) {
   const queryClient = useQueryClient();
   const [selected, setSelected] = useState<DashboardSetupStep | null>(() =>
@@ -27,6 +34,7 @@ export function DashboardOnboarding({
       ? "gsc"
       : null,
   );
+  const [open, setOpen] = useState(firstStepsDone || selected !== null);
   const dismiss = useMutation({
     mutationFn: ({
       step,
@@ -64,27 +72,34 @@ export function DashboardOnboarding({
   if (remaining.length === 0) return null;
 
   return (
-    <section
+    <details
       aria-label="Kurulum listesi"
-      className="overflow-hidden rounded-box border border-base-300 bg-base-100"
+      open={open}
+      onToggle={(event) => setOpen(event.currentTarget.open)}
+      className="group/setup overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-[var(--shadow-raise)]"
     >
-      <header className="border-b border-base-300 px-5 py-5 sm:px-6">
-        <h2 className="text-lg font-semibold">Çalışma alanınızı kurun</h2>
-        {/* Describes what is left, not a fixed script: the old copy named
+      <summary className="flex cursor-pointer list-none items-center gap-3 px-5 py-3.5 [&::-webkit-details-marker]:hidden">
+        <span className="min-w-0 flex-1">
+          <h2 className="text-sm font-semibold leading-tight">
+            Çalışma alanınızı kurun
+          </h2>
+          {/* Describes what is left, not a fixed script: the old copy named
             two steps that were already done and one ("ilk denetimi
             çalıştırın") that is not in `setupSteps` at all. */}
-        <p className="mt-1 text-sm text-muted">
-          {remaining.length === 1
-            ? "Bir adım kaldı."
-            : `${remaining.length} adım kaldı.`}{" "}
-          Hepsi isteğe bağlı; atladığınız bir adımı sonra geri alabilirsiniz.
-        </p>
-      </header>
+          <span className="mt-0.5 block text-xs text-muted">
+            {remaining.length === 1
+              ? "Bir adım kaldı."
+              : `${remaining.length} adım kaldı.`}{" "}
+            Hepsi isteğe bağlı, istediğiniz zaman dönebilirsiniz.
+          </span>
+        </span>
+        <ChevronRight className="size-4 shrink-0 text-muted transition-transform group-open/setup:rotate-90" />
+      </summary>
       {remaining.map((item) => {
         const active = selected === item.id;
         const Icon = item.icon;
         return (
-          <div key={item.id} className="border-b border-base-300">
+          <div key={item.id} className="border-t border-base-300">
             <button
               type="button"
               aria-expanded={active}
@@ -96,29 +111,24 @@ export function DashboardOnboarding({
                     step: item.id,
                   });
               }}
-              className={`flex w-full items-center gap-3 px-5 py-4 text-left sm:px-6 ${active ? "bg-primary/5" : "hover:bg-base-200/50"}`}
+              className={`flex w-full items-center gap-3 px-5 py-3.5 text-left ${active ? "bg-primary/5" : "hover:bg-base-200/50"}`}
             >
               <span className="flex size-8 shrink-0 items-center justify-center rounded-field bg-base-200">
                 <Icon className="size-4" />
               </span>
               <span className="min-w-0 flex-1">
                 <span className="block text-sm font-medium">{item.label}</span>
-                <span className="mt-1 hidden text-xs text-muted sm:block">
+                <span className="mt-0.5 hidden text-xs text-muted sm:block">
                   {item.detail}
                 </span>
               </span>
-              {item.id === "domain" && (
-                <span className="hidden text-xs text-primary sm:block">
-                  Buradan başlayın
-                </span>
-              )}
               <ChevronRight
                 className={`size-4 shrink-0 text-muted transition-transform ${active ? "rotate-90" : ""}`}
               />
             </button>
             <div id={`setup-${item.id}`} hidden={!active}>
               {active && (
-                <div className="space-y-5 px-5 py-5 sm:px-6">
+                <div className="space-y-5 px-5 py-5">
                   <DashboardSetupAction
                     step={item.id}
                     projectId={projectId}
@@ -146,11 +156,11 @@ export function DashboardOnboarding({
       })}
       {deferred.length > 0 && (
         <details className="group border-t border-base-300">
-          <summary className="flex cursor-pointer list-none items-center gap-2 px-5 py-4 text-sm text-muted sm:px-6 [&::-webkit-details-marker]:hidden">
+          <summary className="flex cursor-pointer list-none items-center gap-2 px-5 py-3.5 text-sm text-muted [&::-webkit-details-marker]:hidden">
             <ChevronRight className="size-4 transition-transform group-open:rotate-90" />
             {deferred.length} adım sonraya bırakıldı
           </summary>
-          <ul className="space-y-1 px-5 pb-4 sm:px-6">
+          <ul className="space-y-1 px-5 pb-4">
             {deferred.map((item) => (
               <li
                 key={item.id}
@@ -175,12 +185,12 @@ export function DashboardOnboarding({
       )}
       {completed.length > 0 && (
         <details className="group border-t border-base-300">
-          <summary className="flex cursor-pointer list-none items-center gap-2 px-5 py-4 text-sm sm:px-6 [&::-webkit-details-marker]:hidden">
+          <summary className="flex cursor-pointer list-none items-center gap-2 px-5 py-3.5 text-sm [&::-webkit-details-marker]:hidden">
             <Check className="size-4 text-success" />
             {completed.length} tamamlandı
             <ChevronRight className="ml-auto size-4 text-muted transition-transform group-open:rotate-90" />
           </summary>
-          <ul className="space-y-3 px-5 pb-5 sm:px-6">
+          <ul className="space-y-3 px-5 pb-5">
             {completed.map((item) => (
               <li
                 key={item.id}
@@ -193,6 +203,6 @@ export function DashboardOnboarding({
           </ul>
         </details>
       )}
-    </section>
+    </details>
   );
 }

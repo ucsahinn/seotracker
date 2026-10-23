@@ -88,16 +88,16 @@ export function ReportsList({
       <EmptyState
         icon={FileText}
         title="Henüz rapor yok"
-        description="İlk raporu iki yoldan alabilirsiniz: ajanınıza yazdırın ya da Site denetimi ekranından indirin. Aşağıdaki iki kutu anlatıyor."
+        description="Rapor iki yoldan alınır: ajanınıza yazdırın ya da Site denetimi ekranından indirin."
         action={
-          <div className="flex flex-wrap items-center justify-center gap-2">
+          <div className="flex flex-wrap items-center justify-center gap-4">
             <CopyButton
               primary
               value={reportRequestPrompt(projectId)}
-              label="Yeni rapor iste"
-              successMessage="İstem kopyalandı, ajanınıza yapıştırın"
+              label="Rapor komutunu kopyala"
+              successMessage="Komut kopyalandı. Ajanınıza yapıştırın"
             />
-            <Link to="/ai" className="btn btn-ghost btn-sm">
+            <Link to="/ai" className="link text-sm">
               Ajan kurulumunu aç
             </Link>
           </div>
@@ -229,7 +229,7 @@ export function ReportsList({
                 <tr>
                   {header("title", "Rapor")}
                   {header("kind", "Tür", "hidden md:table-cell")}
-                  {header("createdAt", "Oluşturulma", "hidden md:table-cell")}
+                  {header("createdAt", "Oluşturuldu", "hidden md:table-cell")}
                   {header("sizeBytes", "Boyut", "hidden lg:table-cell")}
                   <th>
                     <span className="sr-only">İşlemler</span>

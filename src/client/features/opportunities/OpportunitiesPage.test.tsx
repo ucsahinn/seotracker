@@ -170,7 +170,7 @@ describe("OpportunitiesPage", () => {
   it("remembers a collapsed intro, and survives unavailable storage", async () => {
     getSearchOpportunities.mockResolvedValue(report(rows));
     const first = renderPage();
-    const toggle = screen.getByRole("button", { name: /Bu ekran ne işe/ });
+    const toggle = screen.getByRole("button", { name: /Burası ne işe/ });
     expect(toggle.getAttribute("aria-expanded")).toBe("true");
 
     fireEvent.click(toggle);
@@ -180,9 +180,26 @@ describe("OpportunitiesPage", () => {
     renderPage();
     expect(
       screen
-        .getByRole("button", { name: /Bu ekran ne işe/ })
+        .getByRole("button", { name: /Burası ne işe/ })
         .getAttribute("aria-expanded"),
     ).toBe("false");
+  });
+
+  it("starts the intro closed and names both sources when nothing is connected", async () => {
+    getSearchOpportunities.mockResolvedValue({ status: "needs_gsc" });
+    renderPage();
+
+    expect(
+      await screen.findByText(
+        "Fırsatlar için Search Console ve Analytics gerekir",
+      ),
+    ).toBeDefined();
+    expect(
+      screen
+        .getByRole("button", { name: /Burası ne işe/ })
+        .getAttribute("aria-expanded"),
+    ).toBe("false");
+    expect(screen.getByText("Bağlantıları ayarla")).toBeDefined();
   });
 
   it("stays open and usable when storage throws", async () => {
@@ -197,7 +214,7 @@ describe("OpportunitiesPage", () => {
       removeItem: () => undefined,
     });
     renderPage();
-    const toggle = screen.getByRole("button", { name: /Bu ekran ne işe/ });
+    const toggle = screen.getByRole("button", { name: /Burası ne işe/ });
     expect(toggle.getAttribute("aria-expanded")).toBe("true");
     fireEvent.click(toggle);
     expect(toggle.getAttribute("aria-expanded")).toBe("false");

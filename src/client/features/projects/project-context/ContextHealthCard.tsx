@@ -70,26 +70,22 @@ export function ContextHealthCard({
       aria-labelledby="context-health-title"
       className="rounded-box border border-base-300 bg-base-100 p-4"
     >
-      <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h2 id="context-health-title" className="text-sm font-medium">
-          Kurulum durumu
-        </h2>
-        <span className="text-xs tabular-nums text-muted">
-          {done} / {total} tamam
-        </span>
-      </div>
+      <h2 id="context-health-title" className="text-sm font-semibold">
+        Kurulum durumu
+      </h2>
       <p className="mt-0.5 text-xs text-muted">
-        Ajanların ve bu aracın sağlıklı çalışması için gerekenler. Eksik olan
-        her satırın yanındaki düğme sizi düzelteceğiniz yere götürür.
+        Ajanların ve uygulamanın düzgün çalışması için gerekenler. Eksik satırın
+        yanındaki düğme sizi düzeltebileceğiniz yere götürür.
       </p>
       <div className="mt-3">
+        {/* The one progress indicator on the page. No state word: "Uyarı" next
+            to a count of what is left to do is not a warning about anything. */}
         <ProgressBar
-          label="Kurulum ilerlemesi"
+          label={`${done} / ${total} tamam`}
           value={done}
           max={total}
           state={done === total ? "done" : "warning"}
-          showCount
-          showPercent={false}
+          showState={false}
         />
       </div>
       <ul className="mt-3 divide-y divide-base-300">
@@ -156,7 +152,7 @@ function HealthRow({
       <div className="min-w-0 flex-1">
         <p className="text-sm font-medium">
           {item.label}
-          <span className="sr-only"> — {STATE_WORD[item.state]}</span>
+          <span className="sr-only">, {STATE_WORD[item.state]}</span>
         </p>
         <p className="text-xs text-muted">{detail}</p>
       </div>

@@ -219,7 +219,7 @@ function ReportDetailPage() {
                   </dd>
                 </div>
                 <div className="flex items-baseline gap-1.5">
-                  <dt className="text-muted">Oluşturulma</dt>
+                  <dt className="text-muted">Oluşturuldu</dt>
                   <dd title={formatRelativeTime(report.createdAt)}>
                     {formatDateTime(report.createdAt)}
                   </dd>
@@ -229,7 +229,7 @@ function ReportDetailPage() {
                   <dd>{formatBytes(report.sizeBytes)}</dd>
                 </div>
                 <div className="flex items-baseline gap-1.5">
-                  <dt className="text-muted">Güncellenme</dt>
+                  <dt className="text-muted">Güncellendi</dt>
                   <dd title={formatDateTime(report.updatedAt)}>
                     {formatRelativeTime(report.updatedAt)}
                   </dd>

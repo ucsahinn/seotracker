@@ -132,7 +132,7 @@ export function SearchConsoleConnectionCard({
         connectionQuery.isPending || (connectionQuery.isError && !connection)
           ? undefined
           : selfHostedNeedsSetup
-            ? "setup_required"
+            ? undefined
             : connected
               ? "connected"
               : "disconnected"

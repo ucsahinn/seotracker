@@ -179,12 +179,12 @@ export function SearchPerformancePage({
       });
       exportDimensionRows(dimension, data.rows, report.range, target);
     } catch (error) {
-      toast.error(getStandardErrorMessage(error, "Dışa aktarma başarısız"));
+      toast.error(getStandardErrorMessage(error, "Dışa aktarılamadı"));
     }
   };
 
   return (
-    <PageShell>
+    <PageShell width={report?.connected ? "wide" : "reading"}>
       <PageHeader
         title="Arama performansı"
         description="Google Search Console'dan gelen tıklama, gösterim, tıklama oranı ve ortalama sıra."
@@ -215,9 +215,7 @@ export function SearchPerformancePage({
           />
         </div>
       ) : !report?.connected ? (
-        <div className="max-w-2xl">
-          <SearchConsoleConnectionCard projectId={projectId} />
-        </div>
+        <SearchConsoleConnectionCard projectId={projectId} />
       ) : (
         /* The previous report stays up while a new range, device or country
            loads; dimmed and aria-busy so it is not mistaken for the answer. */
@@ -314,7 +312,7 @@ export function SearchPerformancePage({
             <p className="border-b border-base-300 px-4 py-2.5 text-sm text-muted">
               {TAB_HINTS[tab]}
               {tab === "cannibalization" && range === "last_7_days"
-                ? " 7 günlük seçim bu analizde 28 güne genişletilir; gösterilen tarih aralığı aşağıda yazar."
+                ? " Bu analiz için 7 günlük seçim 28 güne çıkarılır. Gerçek tarih aralığı aşağıda yazar."
                 : null}
             </p>
 

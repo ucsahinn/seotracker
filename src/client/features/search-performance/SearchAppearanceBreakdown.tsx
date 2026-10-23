@@ -22,7 +22,7 @@ export function SearchAppearanceBreakdown({
   return (
     <DonutCard
       title="Arama görünümü"
-      description={`Sonuçlarınızın Google'da hangi özel biçimlerle göründüğü (${unit} sayısına göre). Google bu kırılımı başka bir ölçüyle birleştirmez.`}
+      description={`Sonuçlarınızın Google'da hangi özel biçimlerle göründüğü (${unit} sayısına göre). Google bu dökümü başka bir ölçüyle birleştirmez.`}
       totalLabel={unit}
       height={144}
       segments={segments}

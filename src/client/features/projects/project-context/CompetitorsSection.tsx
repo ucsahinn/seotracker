@@ -214,7 +214,7 @@ function CompetitorForm({
         type="text"
         value={draft.notes}
         onChange={(event) => setDraft({ ...draft, notes: event.target.value })}
-        placeholder="Neden önemliler — örn. her karşılaştırma aramasında önde (isteğe bağlı)"
+        placeholder="Neden önemliler? Örn. her karşılaştırma aramasında önde (isteğe bağlı)"
         maxLength={500}
         className="input input-bordered input-sm w-full"
         aria-label="Rakip notları"

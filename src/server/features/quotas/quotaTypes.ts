@@ -18,7 +18,7 @@ export type QuotaState = "ok" | "warn" | "critical" | "unknown";
 export type QuotaUnit =
   | "sorgu"
   | "ölçüm"
-  | "belirteç"
+  | "puan"
   | "sayfa"
   | "rapor"
   | "şablon"

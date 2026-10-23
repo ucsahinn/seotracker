@@ -1,4 +1,3 @@
-import { HelpTip, SettingsHeading } from "@/client/components/HelpTip";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CheckCircle2, ExternalLink } from "lucide-react";
 import * as React from "react";
@@ -71,17 +70,14 @@ export function PageSpeedKeySection() {
       <SectionHeaderRow
         badge={statusQuery.isError ? UNREADABLE : pageSpeedBadge(status)}
       >
-        <SettingsHeading
-          title="Hız ölçümü"
-          help="Google Cloud Console'da PageSpeed Insights API'sini etkinleştirin, 'Credentials → Create credentials → API key' ile bir anahtar alın ve buraya yapıştırın. Ücretsiz. Anahtarsız da çalışır ama Google birkaç sayfadan sonra durdurur (429, çok fazla istek)."
-        />
+        <h2 className="text-base font-semibold">Hız ölçümü</h2>
       </SectionHeaderRow>
 
       <p className="text-sm text-muted">
         Denetimin Lighthouse aşaması Google PageSpeed Insights&apos;ı kullanır.
         Anahtarsız da çalışır, ama Google&apos;ın anahtarsız kotası birkaç
-        sayfadan sonra "çok fazla istek" (429) hatası verir; gerçek bir sitede
-        hız ölçümünün büyük kısmı boş kalır. Anahtar ücretsiz.{" "}
+        sayfadan sonra &quot;çok fazla istek&quot; (429) hatası verir. Gerçek
+        bir sitede hız ölçümünün büyük kısmı boş kalır. Anahtar ücretsiz.{" "}
         <a
           href={KEY_URL}
           target="_blank"
@@ -152,20 +148,18 @@ export function PageSpeedKeySection() {
 
       {showForm ? (
         <form
-          className="space-y-3"
+          className="space-y-5"
           onSubmit={(event) => {
             event.preventDefault();
             if (canSave) save.mutate();
           }}
         >
-          <label className="form-control w-full">
-            <span className="label-text flex items-center gap-1.5 text-sm">
-              API anahtarı
-              <HelpTip label="API anahtarı">
-                Google Cloud Console → Credentials → Create credentials → API
-                key. Önce aynı projede PageSpeed Insights API&apos;sini
-                etkinleştirmeniz gerekir, yoksa anahtar 403 döndürür.
-              </HelpTip>
+          <label className="block w-full space-y-1.5">
+            <span className="block text-sm font-medium">API anahtarı</span>
+            <span className="block text-xs text-muted">
+              Google Cloud Console → Credentials → Create credentials → API key.
+              Önce aynı projede PageSpeed Insights API&apos;sini etkinleştirin,
+              yoksa anahtar 403 hatası verir.
             </span>
             <input
               type="password"
@@ -180,7 +174,7 @@ export function PageSpeedKeySection() {
           <div className="flex gap-2">
             <button
               type="submit"
-              className="btn btn-primary btn-sm"
+              className="btn btn-primary btn-sm disabled:border-[var(--control-border)] disabled:bg-base-200 disabled:text-muted disabled:opacity-100"
               disabled={!canSave}
             >
               Kaydet

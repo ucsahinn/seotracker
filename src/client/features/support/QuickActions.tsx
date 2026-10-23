@@ -1,6 +1,5 @@
 import { Link } from "@tanstack/react-router";
 import { BookOpen, Bot, Globe, ScrollText } from "lucide-react";
-import { InstallPromptButton } from "@/client/features/ai-mcp/InstallPromptButton";
 import { RefreshButton } from "@/client/components/RefreshButton";
 import { DiagnosticsBundleButton } from "./DiagnosticsBundleButton";
 import { DOCS_INDEX_URL, SITE_URL } from "./links";
@@ -11,7 +10,7 @@ import { useSetupSnapshot } from "./useSetupSnapshot";
  *
  * Every entry is a real destination or action that already exists: recheck,
  * download the archive, open the docs, read the release notes, set up an
- * agent. Nothing here is a shortcut to something that is not built.
+ * agent. Every button is the same `btn-sm`, so the row reads as one. Nothing here is a shortcut to something that is not built.
  */
 export function QuickActions() {
   const { diagnostics, isFetching, refresh } = useSetupSnapshot();
@@ -53,7 +52,6 @@ export function QuickActions() {
         <ScrollText className="size-4" aria-hidden />
         Sürüm notları
       </Link>
-      <InstallPromptButton />
       <Link to="/ai" className="btn btn-sm gap-1.5">
         <Bot className="size-4" aria-hidden />
         Ajan kurulumu

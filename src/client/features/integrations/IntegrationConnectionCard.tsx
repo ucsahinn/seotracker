@@ -44,8 +44,8 @@ function ConnectionStatusPill({
   if (status === "connected") {
     return <StatusPill tone="success" label="Bağlı" />;
   }
-  if (status === "setup_required") {
-    return <StatusPill tone="warning" label="Kurulum gerekli" />;
-  }
+  // "setup_required" says nothing the setup banner beside it does not, so it
+  // gets no pill of its own.
+  if (status === "setup_required") return null;
   return <StatusPill tone="neutral" label="Bağlı değil" />;
 }

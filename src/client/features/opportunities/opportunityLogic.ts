@@ -44,7 +44,7 @@ export const KIND_COPY = {
   },
   deep: {
     label: "Derinde kalan",
-    hint: "20. sıranın gerisinde ama aramaya karşılık gelen bir talep var. Genişletme ya da birleştirme kararı gerekir.",
+    hint: "20. sıranın gerisinde ama bu arama için bir talep var. Sayfayı genişletip genişletmeyeceğinize ya da başka bir sayfayla birleştirip birleştirmeyeceğinize karar verin.",
     color: "color-mix(in oklab, var(--color-base-content) 45%, transparent)",
     todo: [
       "Sayfa gerçekten bu konunun cevabı mı? Değilse hangi bölümler eksik, yazın.",
@@ -92,7 +92,7 @@ export function explainRow(row: OpportunityRow): string {
     const gap =
       row.ctrGap === null
         ? ""
-        : `, sitenizde bu sıradaki sayfaların medyanından ${formatDecimal(Math.abs(row.ctrGap) * 100)} yüzde puan daha düşük`;
+        : `, sitenizde bu sıradaki sayfaların ortancasından ${formatDecimal(Math.abs(row.ctrGap) * 100)} yüzde puan daha düşük`;
     return `Ortalama ${position}. sırada ${impressions} kez gösterildi ama yalnızca ${clicks} tıklama aldı (tıklama oranı ${formatPercent(row.ctr)}${gap}).${ga4}`;
   }
   if (row.kind === "top") {
@@ -125,12 +125,12 @@ function level(fraction: number): "yüksek" | "orta" | "düşük" {
 const PART_SENTENCE = {
   demand: {
     yüksek: "Bu sayfa için arama talebi yüksek.",
-    orta: "Arama talebi orta düzeyde.",
+    orta: "Arama talebi orta.",
     düşük: "Arama talebi düşük.",
   },
   businessValue: {
     yüksek: "Sitenize gelen ziyaretçiler bu sayfada değerli işlemler yapıyor.",
-    orta: "İş değeri orta düzeyde.",
+    orta: "İş değeri orta.",
     düşük: "Ziyaretçilerin bu sayfada yaptığı işlem az.",
   },
   reachability: {

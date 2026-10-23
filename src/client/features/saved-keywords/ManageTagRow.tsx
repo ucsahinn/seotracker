@@ -46,10 +46,7 @@ export function ManageTagRow({
   return (
     <div className="space-y-2 border-y border-base-300 bg-base-200/40 px-3 py-2.5">
       <div className="space-y-1">
-        <label
-          htmlFor={nameId}
-          className="text-[11px] font-semibold uppercase tracking-wide text-muted"
-        >
+        <label htmlFor={nameId} className="text-xs font-semibold text-muted">
           Yeniden adlandır
         </label>
         <div className="flex items-center gap-1.5">
@@ -64,10 +61,7 @@ export function ManageTagRow({
       </div>
 
       <div className="space-y-1">
-        <span
-          id={colorLabelId}
-          className="text-[11px] font-semibold uppercase tracking-wide text-muted"
-        >
+        <span id={colorLabelId} className="text-xs font-semibold text-muted">
           Renk
         </span>
         <div

@@ -15,8 +15,8 @@ export function GoogleOAuthSetupWarning({
       <div className="space-y-1">
         <p className="font-medium">Google erişim anahtarı eksik</p>
         <p className="text-muted">
-          {integrationName} bağlamadan önce Google erişim anahtarınızı ya da bir
-          hizmet hesabı anahtarını girin.
+          {integrationName} için önce Ayarlar'a Google erişim anahtarınızı
+          girin.
         </p>
         <div className="flex flex-wrap items-center gap-3">
           <Link
@@ -24,7 +24,7 @@ export function GoogleOAuthSetupWarning({
             hash="google"
             className="font-medium underline underline-offset-2"
           >
-            Ayarlar'da gir
+            Ayarlar'ı aç
           </Link>
           <SafeExternalLink
             url={docsUrl}

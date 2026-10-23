@@ -37,16 +37,16 @@ export function SavedKeywordsFilterPanel({
         <TermsTokenInput
           form={form}
           name="include"
-          label="İçersin"
+          label="İçeren"
           variant="include"
-          placeholder="Şunu içermeli… örn. denetim"
+          placeholder="örn. denetim"
         />
         <TermsTokenInput
           form={form}
           name="exclude"
-          label="İçermesin"
+          label="İçermeyen"
           variant="exclude"
-          placeholder="Şunu içermemeli… örn. iş ilanı"
+          placeholder="örn. iş ilanı"
         />
       </div>
 
@@ -111,9 +111,7 @@ function TermsTokenInput({
         >
           <Icon className="size-2.5" />
         </span>
-        <p className="text-[11px] font-semibold uppercase tracking-wide text-muted">
-          {label}
-        </p>
+        <p className="text-xs font-semibold text-muted">{label}</p>
       </div>
       <form.Field name={name}>
         {(field) => {

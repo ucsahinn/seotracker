@@ -1,35 +1,37 @@
-import { ClipboardCheck, Sparkles } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
-/** Says in two short cards where the reports on this screen come from. */
+/**
+ * Says where the reports on this screen come from. Collapsed: it is reference
+ * for the first visit, and it used to sit open under the one action that
+ * already answers it.
+ */
 export function ReportKindsHelp() {
   return (
-    <div className="grid gap-3 sm:grid-cols-2">
-      <div className="card-lift flex gap-3 rounded-box border border-base-300 bg-base-100 p-4">
-        <Sparkles aria-hidden className="mt-0.5 size-5 shrink-0 text-muted" />
+    <details className="group rounded-box border border-[var(--hairline)] bg-base-100 px-4 py-3">
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-2 text-sm font-medium">
+        Nasıl çalışır?
+        <ChevronDown
+          aria-hidden
+          className="size-4 text-muted transition-transform group-open:rotate-180"
+        />
+      </summary>
+      <div className="mt-3 grid gap-4 sm:grid-cols-2">
         <div className="space-y-1">
           <h2 className="text-sm font-semibold">Ajanın yazdığı raporlar</h2>
           <p className="text-sm text-muted">
-            Claude Code ya da Codex, Site denetimi, Dönem karşılaştırması gibi
-            bir beceriyle projenizi inceler ve sonucu rapor olarak buraya
-            kaydeder. &ldquo;Yeni rapor iste&rdquo; düğmesi bunun için ajana
-            yapıştıracağınız metni kopyalar.
+            Claude Code ya da Codex projenizi inceler ve raporu buraya kaydeder.
+            &ldquo;Rapor komutunu kopyala&rdquo; ajanınıza yapıştıracağınız
+            komutu kopyalar.
           </p>
         </div>
-      </div>
-      <div className="card-lift flex gap-3 rounded-box border border-base-300 bg-base-100 p-4">
-        <ClipboardCheck
-          aria-hidden
-          className="mt-0.5 size-5 shrink-0 text-muted"
-        />
         <div className="space-y-1">
           <h2 className="text-sm font-semibold">Site denetimi raporu</h2>
           <p className="text-sm text-muted">
-            Site denetimi ekranındaki &ldquo;Raporu indir&rdquo; düğmesi,
-            denetim sonucunu hem bilgisayarınıza indirir hem de burada saklar.
-            Ajan gerekmez.
+            Site denetimi ekranındaki &ldquo;Raporu indir&rdquo; hem
+            bilgisayarınıza indirir hem burada saklar. Ajan gerekmez.
           </p>
         </div>
       </div>
-    </div>
+    </details>
   );
 }

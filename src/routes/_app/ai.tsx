@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { formatDateTime, formatRelativeTime } from "@/client/lib/format";
 import { getAgentConnection } from "@/serverFunctions/agentConnection";
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { ShieldAlert } from "lucide-react";
 import { getAuthMode } from "@/lib/auth-mode";
 import { captureClientEvent } from "@/client/lib/observability";
@@ -16,13 +16,6 @@ import {
 } from "@/client/features/ai-mcp/agentSetupPrompt";
 import { CopyButton } from "@/client/components/CopyButton";
 import { InstallPromptButton } from "@/client/features/ai-mcp/InstallPromptButton";
-import {
-  ClaudeIcon,
-  GrokIcon,
-  HermesIcon,
-  OpenAIIcon,
-  OpenClawIcon,
-} from "@/client/features/ai-mcp/AgentIcons";
 
 // The public skills shipped under .agents/skills/. Everything that needed a
 // paid data provider went with the features behind it.
@@ -38,34 +31,41 @@ const SKILLS = [
   ],
   [
     "seo-check-in",
-    "Bu dönemi öncekiyle karşılaştırır: ne değişti, ne zaman değişti, önemli mi.",
+    "Bu dönemi öncekiyle karşılaştırır. Ne değişti, ne zaman değişti, önemli mi, söyler.",
   ],
   [
     "seo-triage",
-    "Trafik düştüyse önce şunu netleştirir: düşüş gerçek mi, nerede ve ne zaman oldu.",
+    "Trafik düştüyse önce şuna bakar. Düşüş gerçek mi, nerede ve ne zaman oldu?",
   ],
   [
     "seo-report",
     "Yukarıdakilerden birinin sonucunu Raporlar sayfasına kaydeder.",
   ],
 ];
-// How each client invokes a skill, shown beside the setup buttons.
-const CLIENT_LINES = [
-  ["Claude Code", "Genel istem; beceriler /seo-audit gibi çağrılır."],
-  ["Codex", "Codex istemi; beceriler $seo-audit gibi çağrılır."],
-  ["Diğerleri", "Genel istem; beceriyi istemcinizin kendi yoluyla çağırın."],
-];
+// What the segmented control offers, and how each agent invokes a skill.
+// Claude Code and "Diğer" copy the same general prompt; only the hint differs.
+const AGENT_CHOICES = [
+  {
+    id: "claude",
+    label: "Claude Code",
+    hint: "Becerileri /seo-audit diye çağırırsınız.",
+  },
+  {
+    id: "codex",
+    label: "Codex",
+    hint: "Komut, Codex'in kendi bağlama adımlarını kullanır. Becerileri $seo-audit diye çağırırsınız.",
+  },
+  {
+    id: "other",
+    label: "Diğer",
+    hint: "Genel komut. Beceriyi aracınızın kendi yöntemiyle çağırın.",
+  },
+] as const;
+type AgentChoice = (typeof AGENT_CHOICES)[number]["id"];
 const AI_TABS = [
   { id: "setup", label: "Ajanınızı kurun" },
   { id: "skills", label: "Beceriler" },
 ] as const;
-const AGENTS = [
-  { name: "Claude Code", Icon: ClaudeIcon },
-  { name: "ChatGPT", Icon: OpenAIIcon },
-  { name: "Grok Bot", Icon: GrokIcon },
-  { name: "Hermes", Icon: HermesIcon },
-  { name: "OpenClaw", Icon: OpenClawIcon },
-];
 
 export const Route = createFileRoute("/_app/ai")({
   component: AiPage,
@@ -78,6 +78,7 @@ function AiPage() {
       : window.location.origin;
   const mcpUrl = `${origin}/mcp`;
   const [tab, setTab] = useState<"setup" | "skills">("setup");
+  const [agent, setAgent] = useState<AgentChoice>("claude");
   /*
    * Two states, and the past tense is deliberate. The integration cards say
    * "Bağlı" because a credential is sitting in a row; MCP here is stateless
@@ -134,6 +135,8 @@ function AiPage() {
     tokenConfigured: connection.data?.tokenConfigured,
     installKind: connection.data?.installKind,
   });
+  const choice = AGENT_CHOICES.find((item) => item.id === agent);
+  const isCodex = agent === "codex";
 
   return (
     <PageShell width="reading">
@@ -144,7 +147,7 @@ function AiPage() {
           internal spacing, not the shell's. */}
       <PageHeader
         title="Ajan kurulumu"
-        description="seotracker'ı kullanmanın en güçlü yolu, zaten kullandığınız yapay zeka ajanı. Bir kez kurun, sonra istediğinizi sorun."
+        description="seotracker'ı yapay zeka ajanınızla kullanabilirsiniz. Bir kez bağlayın, sonra ne istiyorsanız ona sorun."
         actions={
           /* `aria-live` is not decoration: the operator tabs away, pastes
                the prompt into their agent, and tabs back — the query refetches
@@ -198,46 +201,39 @@ function AiPage() {
       {tab === "setup" ? (
         <TabPanel group="ai" value="setup">
           <div className="enter mt-6 space-y-5">
-            <section className="rounded-box border border-base-300 bg-base-100 p-4">
-              <h2 className="text-sm font-semibold">
-                Kurulum istemi (sıfırdan kurulum)
-              </h2>
+            <section className="rounded-box border border-base-300 bg-base-100 p-5">
+              <h2 className="text-base font-semibold">Ajanınızı bağlayın</h2>
               <p className="mt-2 text-sm leading-relaxed text-muted">
-                Uygulamayı yeni kurduysanız buradan başlayın. Bu istemi Claude
-                Code, Codex, Cursor gibi ajanınıza yapıştırın; kurulumun
-                çalıştığını, Google erişimini, PageSpeed anahtarını ve ilk
-                projenizi sırayla kontrol edip bitirir. Windows paketini de
-                Docker kurulumunu da tanır. Google Cloud&apos;daki tıklamaları
-                ve anahtar yapıştırmayı siz yaparsınız; anahtarlar sohbete
-                değil, yalnızca Ayarlar ekranına girilir.
+                Komutu ajanınıza yapıştırın. Ajan seotracker&apos;ı bağlar, SEO
+                becerilerini kurar, elle yapacağınız adımlarda size yol
+                gösterir.
               </p>
-              <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3 [&>button]:h-11 [&>button]:gap-2 [&>button]:text-sm">
-                <InstallPromptButton primary />
-              </div>
-            </section>
-
-            <section className="rounded-box border border-base-300 bg-base-100 p-4">
-              <h2 className="text-sm font-semibold">Ajanınızı kurun</h2>
-              <p className="mt-2 text-sm leading-relaxed text-muted">
-                Ajan kurulum istemini ajanınıza yapıştırın; seotracker&apos;ı
-                bağlayıp SEO becerilerini kuracak. Elle yapmanız gereken
-                adımlarda size yol gösterir.
-              </p>
-              <ul className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
-                {AGENTS.map(({ name, Icon }) => (
-                  <li
-                    key={name}
-                    className="flex items-center gap-1.5 text-xs text-muted"
+              <div
+                className="join mt-4"
+                role="radiogroup"
+                aria-label="Hangi ajanı kullanıyorsunuz?"
+              >
+                {AGENT_CHOICES.map((item) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    role="radio"
+                    aria-checked={item.id === agent}
+                    className={`btn join-item btn-sm ${
+                      item.id === agent ? "btn-active" : ""
+                    }`}
+                    onClick={() => setAgent(item.id)}
                   >
-                    <Icon className="size-4" />
-                    {name}
-                  </li>
+                    {item.label}
+                  </button>
                 ))}
-                <li className="text-xs text-muted">
-                  ya da asistan bağlantısını (MCP) destekleyen başka bir
-                  uygulama
-                </li>
-              </ul>
+              </div>
+              <p className="mt-2 text-xs text-muted">
+                {choice?.hint}
+                {isCodex
+                  ? " Ajan bağlantıyı kurar, becerileri kopyalar ve doğrular. Parolayı sohbete yazmaz, bilgisayarınızdan okur."
+                  : ""}
+              </p>
               <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3 [&>button]:h-11 [&>button]:gap-2 [&>button]:text-sm">
                 <CopyButton
                   primary
@@ -248,10 +244,16 @@ function AiPage() {
                    * would copy the wrong variant onto a protected install.
                    */
                   disabled={connection.data === undefined}
-                  value={prompt}
-                  label="Ajan kurulum istemini kopyala"
-                  successMessage="Ajan kurulum istemi kopyalandı"
-                  onCopy={() => captureClientEvent("mcp:setup_prompt_copy")}
+                  value={isCodex ? codexPrompt : prompt}
+                  label="Kurulum komutunu kopyala"
+                  successMessage="Kurulum komutu kopyalandı"
+                  onCopy={() =>
+                    captureClientEvent(
+                      isCodex
+                        ? "mcp:codex_prompt_copy"
+                        : "mcp:setup_prompt_copy",
+                    )
+                  }
                 />
               </div>
               <p className="mt-5 border-t border-base-300 pt-4 text-sm leading-relaxed text-muted">
@@ -262,68 +264,48 @@ function AiPage() {
                       it rather than next to the badge that reports it. */}
                 {lastCallAt ? null : (
                   <>
-                    Ajanınız ilk aracı çağırdığında yukarıdaki durum
-                    güncellenir.
+                    Ajanınız seotracker&apos;a ilk kez istek attığında
+                    yukarıdaki durum değişir.
                   </>
                 )}
               </p>
+              <p className="mt-2 text-xs text-muted">
+                Claude Code, Codex, Cursor, ChatGPT ve MCP destekleyen diğer
+                uygulamalarla çalışır.
+              </p>
             </section>
 
             <section className="rounded-box border border-base-300 bg-base-100 p-4">
-              <h2 className="flex items-center gap-2 text-sm font-semibold">
-                <OpenAIIcon className="size-4" />
-                Codex için kurulum istemi
-              </h2>
+              <h2 className="text-sm font-semibold">Sıfırdan kurulum</h2>
               <p className="mt-2 text-sm leading-relaxed text-muted">
-                Codex (komut satırı, uygulama veya IDE eklentisi)
-                kullanıyorsanız genel istem yerine bunu yapıştırın.{" "}
-                <code>codex mcp add</code> ile bağlanır, becerileri{" "}
-                <code>~/.agents/skills</code> altına kopyalar ve{" "}
-                <code>whoami</code> ile doğrular. Parolayı sohbete yazmaz,
-                bilgisayarınızdan okur.
+                Yeni kurduysanız buradan başlayın. Ajanınız kurulumu, Google
+                bağlantısını, PageSpeed anahtarını ve ilk projenizi sırayla
+                kontrol eder. Windows paketini de Docker&apos;ı da tanır. Google
+                Cloud&apos;daki adımları siz yaparsınız. Anahtarlar sohbete
+                değil, yalnızca Ayarlar&apos;a girilir.
               </p>
-              <ul className="mt-3 space-y-1 text-xs text-muted">
-                {CLIENT_LINES.map(([client, line]) => (
-                  <li key={client}>
-                    <span className="font-medium text-base-content">
-                      {client}:
-                    </span>{" "}
-                    {line}
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3 [&>button]:h-11 [&>button]:gap-2 [&>button]:text-sm">
-                <CopyButton
-                  primary
-                  // Same reason as the generic prompt: the auth wording
-                  // depends on the first roundtrip.
-                  disabled={connection.data === undefined}
-                  value={codexPrompt}
-                  label="Codex istemini kopyala"
-                  successMessage="Codex istemi kopyalandı"
-                  onCopy={() => captureClientEvent("mcp:codex_prompt_copy")}
-                />
+              <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-3">
+                <InstallPromptButton label="Sıfırdan kurulum komutunu kopyala" />
               </div>
             </section>
 
-            <section className="rounded-box border border-base-300 bg-base-100 p-4">
-              <h2 className="text-sm font-semibold">
-                Becerilerinizi güncelleyin
-              </h2>
-              <p className="mt-2 text-sm leading-relaxed text-muted">
-                Ajanınızı daha önce kurduysanız güncelleme istemini yapıştırın;
-                en güncel becerileri alırken bağlantı ayarlarınız ve kişisel
-                düzenlemeleriniz korunur.
-              </p>
-              <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3 [&>button]:h-11 [&>button]:gap-2 [&>button]:text-sm">
-                <CopyButton
-                  primary
-                  value={agentUpdatePrompt}
-                  label="Güncelleme istemini kopyala"
-                  successMessage="Güncelleme istemi kopyalandı"
-                  onCopy={() => captureClientEvent("mcp:update_prompt_copy")}
-                />
+            <section className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 rounded-box border border-base-300 bg-base-100 p-4">
+              <div className="min-w-0 flex-1 basis-72">
+                <h2 className="text-sm font-semibold">
+                  Becerileri güncelleyin
+                </h2>
+                <p className="mt-1 text-sm leading-relaxed text-muted">
+                  Ajanınızı daha önce kurduysanız güncelleme komutunu
+                  yapıştırın. Beceriler yenilenir, bağlantı ayarlarınız ve kendi
+                  düzenlemeleriniz olduğu gibi kalır.
+                </p>
               </div>
+              <CopyButton
+                value={agentUpdatePrompt}
+                label="Güncelleme komutunu kopyala"
+                successMessage="Güncelleme komutu kopyalandı"
+                onCopy={() => captureClientEvent("mcp:update_prompt_copy")}
+              />
             </section>
           </div>
 
@@ -331,88 +313,97 @@ function AiPage() {
             <div className="alert alert-warning mt-8 text-sm" role="alert">
               <ShieldAlert className="size-4 shrink-0" />
               <span>
-                Bu kurulum Cloudflare Access arkasında. Asistanın bağlanabilmesi
-                için Access uygulamanızda Managed OAuth'u açın.
+                Bu kurulum Cloudflare Access arkasında. Ajanın bağlanabilmesi
+                için Access uygulamanızda Managed OAuth&apos;u açın.
               </span>
             </div>
           ) : null}
 
-          <div className="mt-10 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-t border-base-300 pt-5 text-xs text-muted">
-            <span>
-              Bu kurulumun MCP adresi:{" "}
-              <code className="font-mono text-muted">{mcpUrl}</code>.{" "}
+          <details className="mt-8 rounded-box border border-base-300 bg-base-100 text-sm">
+            <summary className="cursor-pointer select-none px-4 py-3 font-medium">
+              Elle bağlamak istiyorsanız
+            </summary>
+            <div className="space-y-4 border-t border-base-300 px-4 py-4 text-muted">
+              <div className="space-y-1.5">
+                <p>Bu kurulumun MCP adresi:</p>
+                <div className="flex items-center gap-2">
+                  <CodeLine>{mcpUrl}</CodeLine>
+                  <CopyButton
+                    value={mcpUrl}
+                    successMessage="MCP adresi kopyalandı"
+                    onCopy={() => captureClientEvent("mcp:setup_url_copy")}
+                  />
+                </div>
+              </div>
               {connection.data === undefined ? null : connection.data
                   .tokenConfigured ? (
-                <>
-                  Bu adres{" "}
-                  <code className="font-mono text-muted">MCP_TOKEN</code> ile
-                  korunuyor; istemciye{" "}
-                  <code className="font-mono text-muted">
-                    Authorization: Bearer &lt;token&gt;
-                  </code>{" "}
-                  başlığını ekletin.{" "}
+                <div className="space-y-3">
+                  <p>
+                    Bu adres <code>MCP_TOKEN</code> ile, yani bir parola (token)
+                    ile korunuyor. Aracınıza şu başlığı ekletin:
+                  </p>
+                  <CodeLine>Authorization: Bearer &lt;token&gt;</CodeLine>
                   {connection.data.installKind === "windows" ? (
                     <>
-                      Windows paketinde parola (token) bir dosyadır:{" "}
-                      <code className="font-mono text-muted">
-                        %LOCALAPPDATA%\seowatcher\mcp-token
-                      </code>{" "}
-                      (görev çubuğu menüsünde <strong>Veri klasörünü aç</strong>
-                      ). Panoya kopyalamak için PowerShell (değer ekrana
-                      yazılmaz):{" "}
-                      <code className="font-mono text-muted">
+                      <p>
+                        Windows paketinde parola bir dosyadır (görev çubuğu
+                        menüsünde <strong>Veri klasörünü aç</strong>):
+                      </p>
+                      <CodeLine>%LOCALAPPDATA%\seowatcher\mcp-token</CodeLine>
+                      <p>
+                        Panoya kopyalamak için PowerShell (değer ekrana
+                        yazılmaz):
+                      </p>
+                      <CodeLine>
                         (Get-Content
                         &quot;$env:LOCALAPPDATA\seowatcher\mcp-token&quot;).Trim()
                         | Set-Clipboard
-                      </code>
-                      . Değeri sohbete ya da ekrana yazmayın; yapıştırdıktan
-                      sonra panoyu temizleyin (Win+V, Tümünü temizle).
+                      </CodeLine>
+                      <p>
+                        Değeri sohbete ya da ekrana yazmayın. Yapıştırdıktan
+                        sonra panoyu temizleyin (Win+V, Tümünü temizle).
+                      </p>
                     </>
                   ) : (
                     <>
-                      Kendiniz bir değer vermediyseniz konteyner ilk açılışta
-                      bir tane üretti; okumak için (PowerShell ve cmd):{" "}
-                      {/* Komutla, ekranda değil: token'ı buraya basmak onu
+                      {/* Komutla, ekranda değil: parolayı buraya basmak onu
                         tarayıcı geçmişine, ekran görüntülerine ve bu sayfayı
                         okuyan bir ajanın dökümüne düşürür. */}
-                      <code className="font-mono text-muted">
+                      <p>
+                        Kendiniz belirlemediyseniz uygulama ilk açılışta bir
+                        parola üretir. Okumak için (PowerShell ve cmd):
+                      </p>
+                      <CodeLine>
                         docker compose exec -T seotracker cat
                         /app/.wrangler/mcp-token
-                      </code>
-                      . Windows&apos;ta Git Bash için komutun başına{" "}
-                      <code className="font-mono text-muted">
-                        MSYS_NO_PATHCONV=1
-                      </code>{" "}
-                      ekleyin; yoksa token boş çıkar (PowerShell&apos;de bu önek
-                      hata verir).
+                      </CodeLine>
+                      <p>
+                        Windows&apos;ta Git Bash için komutun başına{" "}
+                        <code>MSYS_NO_PATHCONV=1</code> ekleyin, yoksa parola
+                        boş çıkar (PowerShell&apos;de bu önek hata verir).
+                      </p>
                     </>
                   )}
-                </>
+                </div>
               ) : (
-                <>
-                  Bu adres kimlik doğrulaması istemez; makinenizdeki başka bir
-                  sürecin araçları çalıştırmasını engellemek isterseniz{" "}
-                  <code className="font-mono text-muted">MCP_TOKEN</code>{" "}
-                  ayarlayın ve istemciye{" "}
-                  <code className="font-mono text-muted">
-                    Authorization: Bearer …
-                  </code>{" "}
-                  başlığını ekletin.
-                </>
+                <div className="space-y-3">
+                  <p>
+                    Bu adres parola istemez. Bilgisayarınızdaki başka bir
+                    programın araçları çalıştırmasını önlemek için{" "}
+                    <code>MCP_TOKEN</code> adıyla bir parola ayarlayın ve
+                    aracınıza şu başlığı ekletin:
+                  </p>
+                  <CodeLine>Authorization: Bearer …</CodeLine>
+                </div>
               )}
-            </span>
-            <CopyButton
-              value={mcpUrl}
-              successMessage="MCP adresi kopyalandı"
-              onCopy={() => captureClientEvent("mcp:setup_url_copy")}
-            />
-          </div>
+            </div>
+          </details>
         </TabPanel>
       ) : (
         <TabPanel group="ai" value="skills" className="mt-6">
           <p className="text-sm text-muted">
-            Kurulum istemi bunları kurar. Kısa bir yanıt yerine tam bir çıktı
-            istediğinizde beceriyi adıyla çağırın.
+            Kurulum komutu bunları kurar. Kısa cevap yerine tam bir çıktı
+            istiyorsanız beceriyi adıyla çağırın.
           </p>
           <ul className="mt-5 space-y-3 text-sm sm:space-y-2">
             {SKILLS.map(([name, blurb]) => (
@@ -438,5 +429,14 @@ function AiPage() {
         </TabPanel>
       )}
     </PageShell>
+  );
+}
+
+/** A command or header the operator copies by hand: mono, wraps, never clipped. */
+function CodeLine({ children }: { children: ReactNode }) {
+  return (
+    <code className="block min-w-0 flex-1 whitespace-pre-wrap break-all rounded-field border border-base-300 bg-base-200 px-3 py-2 font-mono text-xs text-base-content">
+      {children}
+    </code>
   );
 }

@@ -35,7 +35,7 @@ export function useSavedKeywordMutations({
       toast.success(`${result.deletedCount} kelime kaldırıldı`);
     },
     onError: (error) => {
-      onRemoveFailed(getStandardErrorMessage(error, "Kaldırma başarısız."));
+      onRemoveFailed(getStandardErrorMessage(error, "Kelimeler kaldırılamadı"));
     },
   });
 

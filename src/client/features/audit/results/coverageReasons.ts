@@ -31,10 +31,10 @@ const INDEXING: Record<string, string> = {
 };
 
 const PAGE_FETCH: Record<string, string> = {
-  SUCCESSFUL: "Sayfa başarıyla alındı",
+  SUCCESSFUL: "Sayfa alındı",
   SOFT_404: "Boş sayfa, hata vermeden açılıyor (soft 404)",
   BLOCKED_ROBOTS_TXT: "robots.txt engelledi",
-  NOT_FOUND: "404 bulunamadı",
+  NOT_FOUND: "404, sayfa yok",
   ACCESS_DENIED: "401 yetkisiz",
   ACCESS_FORBIDDEN: "403 yasak",
   SERVER_ERROR: "Sunucu hatası",

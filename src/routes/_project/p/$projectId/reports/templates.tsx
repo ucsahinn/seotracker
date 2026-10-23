@@ -80,7 +80,7 @@ function ReportTemplatesPage() {
 
       <PageHeader
         title="Rapor şablonları"
-        description="Şablon, ajanınıza raporu nasıl yazacağını anlatan kayıtlı bir tariftir: kim okuyacak, hangi bölümler olacak, hangi dille yazılacak. Ajan rapor yazarken uygun olanı seçer."
+        description="Şablon, ajanınıza raporu nasıl yazacağını söyler. Kim okuyacak, hangi bölümler olacak, hangi dilde yazılacak, hepsi burada durur. Ajan rapor yazarken uygun olanı seçer."
         actions={
           <button
             type="button"

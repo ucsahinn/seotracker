@@ -165,8 +165,8 @@ export function SearchInsights({
         >
           {striking.length === 0 ? (
             <p className="text-sm text-muted">
-              Şu an 5. ile 20. sıra arasında yer alan sorgu yok. Sıralamaya
-              girdikçe en kolay kazanılacak olanlar burada listelenir.
+              Şu an 5. ile 20. sıra arasında sorgu yok. Sorgular bu aralığa
+              girdikçe burada listelenir.
             </p>
           ) : (
             <ul className="space-y-1">

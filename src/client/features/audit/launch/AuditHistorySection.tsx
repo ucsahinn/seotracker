@@ -32,14 +32,11 @@ export function AuditHistorySection({
   onRetry,
   onDelete,
   onRerun,
-  onStartFirst,
   isRerunPending = false,
 }: {
   projectId: string;
   history: Awaited<ReturnType<typeof getAuditHistory>>;
   isLoading: boolean;
-  /** Moves focus to the address field of the launch form above. */
-  onStartFirst: () => void;
   error?: unknown;
   onRetry?: () => void;
   onDelete: (auditId: string) => void;
@@ -76,16 +73,7 @@ export function AuditHistorySection({
         <EmptyState
           icon={ScanSearch}
           title="Henüz denetim yok"
-          description="Denetim geçmişi, ilk taramadan sonra burada listelenir. İlk denetimi yukarıdaki formdan başlatın."
-          action={
-            <button
-              type="button"
-              className="btn btn-primary btn-sm"
-              onClick={onStartFirst}
-            >
-              Site adresini gir
-            </button>
-          }
+          description="Henüz denetim yapılmadı. Yukarıya site adresinizi yazıp başlatın; geçmiş burada listelenir."
         />
       </section>
     );

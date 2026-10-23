@@ -233,7 +233,8 @@ function SavedKeywordsPage() {
     setPositionFilter(null);
     setPage(1);
   };
-
+  // Empty store: no toolbar, count or pager, the empty state has the action.
+  const showChrome = hasActiveFilters || totalCount > 0 || listError.isError;
   return (
     <PageShell>
       <SavedKeywordsHeader
@@ -267,30 +268,32 @@ function SavedKeywordsPage() {
       />
 
       <div className="overflow-hidden rounded-box border border-base-300 bg-base-100">
-        <SavedKeywordsFilters
-          filtersForm={filters.filtersForm}
-          activeFilterCount={filters.activeFilterCount}
-          showFilters={showFilters}
-          onToggleFilters={() => setShowFilters((v) => !v)}
-          onResetAllFilters={handleClearAllFilters}
-          availableTags={availableTags}
-          selectedTagIds={selectedTagIds}
-          busyTagIds={tagManage.busyTagIds}
-          onToggleTagFilter={(tagId) => {
-            setSelectedTagIds((current) =>
-              current.includes(tagId)
-                ? current.filter((id) => id !== tagId)
-                : [...current, tagId],
-            );
-            setPage(1);
-          }}
-          onClearTagSelection={() => {
-            setSelectedTagIds([]);
-            setPage(1);
-          }}
-          onUpdateTag={(input) => void tagManage.updateTag(input)}
-          onDeleteTag={(tagId) => void handleDeleteTag(tagId)}
-        />
+        {showChrome ? (
+          <SavedKeywordsFilters
+            filtersForm={filters.filtersForm}
+            activeFilterCount={filters.activeFilterCount}
+            showFilters={showFilters}
+            onToggleFilters={() => setShowFilters((v) => !v)}
+            onResetAllFilters={handleClearAllFilters}
+            availableTags={availableTags}
+            selectedTagIds={selectedTagIds}
+            busyTagIds={tagManage.busyTagIds}
+            onToggleTagFilter={(tagId) => {
+              setSelectedTagIds((current) =>
+                current.includes(tagId)
+                  ? current.filter((id) => id !== tagId)
+                  : [...current, tagId],
+              );
+              setPage(1);
+            }}
+            onClearTagSelection={() => {
+              setSelectedTagIds([]);
+              setPage(1);
+            }}
+            onUpdateTag={(input) => void tagManage.updateTag(input)}
+            onDeleteTag={(tagId) => void handleDeleteTag(tagId)}
+          />
+        ) : null}
 
         <div
           className={`space-y-3 p-4 transition-opacity ${
@@ -298,14 +301,12 @@ function SavedKeywordsPage() {
           }`}
           aria-busy={stale}
         >
-          {removeError ? (
-            <RemoveSavedKeywordsError message={removeError} />
-          ) : null}
+          {removeError && <RemoveSavedKeywordsError message={removeError} />}
           {/* Hidden on error: `totalCount` falls back to 0, so this line
               read "0 kayıtlı kelime" directly above the failure notice --
               and the export button beside it disables itself on the same
               zero, which looks like an empty store rather than a failure. */}
-          {listError.isError ? null : (
+          {listError.isError || !showChrome ? null : (
             <SavedKeywordsStatus
               totalCount={totalCount}
               isFetching={isFetching && !loadingList}
@@ -349,25 +350,22 @@ function SavedKeywordsPage() {
           )}
         </div>
 
-        {/*
-         * The shared component, not a fork of it. The fork had already lost
-         * one of its fixes in the copy -- the wrap that keeps the next-page
-         * button reachable on a phone -- which is the argument against
-         * forks generally.
-         */}
-        <TablePagination
-          page={page}
-          pageSize={pageSize}
-          pageSizes={SAVED_KEYWORD_PAGE_SIZES}
-          totalCount={totalCount}
-          hasNextPage={page * pageSize < totalCount}
-          isLoading={isFetching}
-          onPageChange={setPage}
-          onPageSizeChange={(nextPageSize) => {
-            setPageSize(nextPageSize);
-            setPage(1);
-          }}
-        />
+        {/* The shared pager, not a fork: the fork had already lost a fix. */}
+        {showChrome ? (
+          <TablePagination
+            page={page}
+            pageSize={pageSize}
+            pageSizes={SAVED_KEYWORD_PAGE_SIZES}
+            totalCount={totalCount}
+            hasNextPage={page * pageSize < totalCount}
+            isLoading={isFetching}
+            onPageChange={setPage}
+            onPageSizeChange={(nextPageSize) => {
+              setPageSize(nextPageSize);
+              setPage(1);
+            }}
+          />
+        ) : null}
       </div>
 
       <SavedKeywordsBulkActionBar

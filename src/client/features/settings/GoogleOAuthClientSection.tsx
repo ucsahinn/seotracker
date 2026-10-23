@@ -1,4 +1,3 @@
-import { HelpTip, SettingsHeading } from "@/client/components/HelpTip";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CheckCircle2, ExternalLink } from "lucide-react";
 import * as React from "react";
@@ -128,60 +127,68 @@ export function GoogleOAuthClientSection() {
       <SectionHeaderRow
         badge={statusQuery.isError ? UNREADABLE : oauthClientBadge(status)}
       >
-        <SettingsHeading
-          title="Google bağlantısı"
-          help="Google Cloud Console'da bir proje açın. 'APIs & Services → Credentials' altında 'OAuth client ID' oluşturun (tür: Web application). Aşağıdaki iki yönlendirme adresini ekleyin. Verilen kimliği ve gizli anahtarı buraya yapıştırın. Search Console ve Analytics aynı anahtarı kullanır."
-        />
+        <h2 className="text-base font-semibold">Google bağlantısı</h2>
       </SectionHeaderRow>
       {credentialNote ? (
         <p className="text-xs font-medium text-muted">{credentialNote}</p>
       ) : null}
 
       <p className="text-sm text-muted">
-        Uygulama Google'a sizin adınıza bağlanır. Bunun için Google'dan
-        aldığınız erişim anahtarını (OAuth istemcisi) buraya girersiniz. Gizli
-        kısmı şifrelenir ve bir daha tarayıcıya gönderilmez.{" "}
-        <a
-          href={CONSOLE_URL}
-          target="_blank"
-          rel="noreferrer noopener"
-          className="inline-flex items-center gap-1 font-medium underline underline-offset-2"
-        >
-          <span lang="en">Google Cloud Console</span>
-          <ExternalLink className="size-3" />
-        </a>
+        Uygulama Google&apos;a sizin adınıza bağlanır. Bunun için
+        Google&apos;dan aldığınız erişim anahtarını (OAuth client ID) buraya
+        girin. Gizli kısmı şifrelenir ve bir daha tarayıcıya gönderilmez. Search
+        Console ve Analytics aynı anahtarı kullanır.
       </p>
 
-      <div className="rounded-box border border-base-300 bg-base-200/40 p-3">
-        <p className="text-sm text-muted">
-          İstemciyi oluştururken <strong>Yetkili yönlendirme adresleri</strong>{" "}
-          (<span lang="en">Authorized redirect URIs</span>) alanına{" "}
-          <strong>ikisini de</strong> tam olarak ekleyin. Bir karakter farkı
-          bile Google&apos;ın <code>redirect_uri_mismatch</code> vermesine yol
-          açar; Analytics&apos;inkini eklemezseniz Search Console bağlanır ama
-          Analytics bağlanmaz.
-        </p>
-        {redirectUris.map((uri) => (
-          <div
-            key={uri.value}
-            className="mt-2 flex flex-wrap items-center justify-between gap-2"
+      <ol className="list-decimal space-y-4 pl-5 text-sm marker:text-subtle">
+        <li className="pl-1">
+          <a
+            href={CONSOLE_URL}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="inline-flex items-center gap-1 font-medium underline underline-offset-2"
           >
-            <code className="min-w-0 truncate font-mono text-sm text-muted">
-              {uri.value}
-            </code>
-            <CopyButton
-              value={uri.value}
-              successMessage={`${uri.label} yönlendirme adresi kopyalandı`}
-            />
+            <span lang="en">Google Cloud Console</span>
+            <ExternalLink className="size-3" />
+          </a>
+          &apos;da bir OAuth client oluşturun (tür:{" "}
+          <span lang="en">Web application</span>).
+        </li>
+        <li className="space-y-2 pl-1">
+          <p>
+            Şu iki adresi <strong>Yetkili yönlendirme adresleri</strong> (
+            <span lang="en">Authorized redirect URIs</span>) alanına ekleyin.
+          </p>
+          <p className="text-xs text-muted">
+            Adresler harfi harfine aynı olmalı, aksi halde Google{" "}
+            <code>redirect_uri_mismatch</code> hatası verir. İkisini de ekleyin:
+            biri Search Console, biri Analytics için.
+          </p>
+          <div className="space-y-2 rounded-box border border-base-300 bg-base-200/40 p-3">
+            {redirectUris.map((uri) => (
+              <div
+                key={uri.value}
+                className="flex flex-wrap items-center justify-between gap-2"
+              >
+                <code className="min-w-0 truncate font-mono text-sm text-muted">
+                  {uri.value}
+                </code>
+                <CopyButton
+                  value={uri.value}
+                  successMessage={`${uri.label} yönlendirme adresi kopyalandı`}
+                />
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </li>
+        <li className="pl-1">Kimliği ve gizli anahtarı aşağıya yazın.</li>
+      </ol>
 
       {statusQuery.isPending ? <div className="skeleton h-10 w-full" /> : null}
 
       {statusQuery.isError ? (
         <p role="alert" className="text-sm text-[var(--ink-error)]">
-          İstemci durumu okunamadı.{" "}
+          Google erişim anahtarının durumu okunamadı.{" "}
           <button
             type="button"
             className="link"
@@ -240,18 +247,16 @@ export function GoogleOAuthClientSection() {
 
       {showForm ? (
         <form
-          className="space-y-3"
+          className="space-y-5"
           onSubmit={(event) => {
             event.preventDefault();
             if (canSave) save.mutate();
           }}
         >
-          <label className="form-control w-full">
-            <span className="label-text flex items-center gap-1.5 text-sm">
-              İstemci kimliği
-              <HelpTip label="İstemci kimliği">
-                {`Google Cloud Console → APIs & Services → Credentials listesinde OAuth 2.0 Client IDs altında görünür. ${CLIENT_ID_SUFFIX} ile biter ve gizli değildir.`}
-              </HelpTip>
+          <label className="block w-full space-y-1.5">
+            <span className="block text-sm font-medium">İstemci kimliği</span>
+            <span className="block text-xs text-muted">
+              {`Google Cloud Console'da APIs & Services → Credentials listesinde, OAuth 2.0 Client IDs altında görünür. ${CLIENT_ID_SUFFIX} ile biter, gizli değildir.`}
             </span>
             <input
               type="text"
@@ -278,15 +283,13 @@ export function GoogleOAuthClientSection() {
             ) : null}
           </label>
 
-          <label className="form-control w-full">
-            <span className="label-text flex items-center gap-1.5 text-sm">
-              Gizli anahtar
-              <HelpTip label="Gizli anahtar">
-                Aynı istemciyi açtığınızda sağdaki panelde. Google onu yalnızca
-                oluşturma anında tam gösterir; kaçırdıysanız yeni bir gizli
-                anahtar üretin. Burada sunucuda şifrelenir ve bir daha
-                tarayıcıya gönderilmez.
-              </HelpTip>
+          <label className="block w-full space-y-1.5">
+            <span className="block text-sm font-medium">Gizli anahtar</span>
+            <span className="block text-xs text-muted">
+              Aynı OAuth client&apos;ı açınca sağdaki panelde. Google bunu
+              yalnızca oluşturduğunuz anda tam gösterir. Kaçırdıysanız yeni bir
+              gizli anahtar üretin. Burada sunucuda şifrelenir, bir daha
+              tarayıcıya gönderilmez.
             </span>
             <input
               type="password"
@@ -302,7 +305,7 @@ export function GoogleOAuthClientSection() {
           <div className="flex gap-2">
             <button
               type="submit"
-              className="btn btn-sm btn-primary"
+              className="btn btn-sm btn-primary disabled:border-[var(--control-border)] disabled:bg-base-200 disabled:text-muted disabled:opacity-100"
               disabled={!canSave || save.isPending}
             >
               Kaydet

@@ -108,31 +108,34 @@ export function SetupStatusPanel() {
 function VersionLine({ version, update }: { version: string; update: Update }) {
   if (update?.updateAvailable) {
     return (
-      <Link
-        to="/settings"
-        hash="guncelleme"
-        className="link link-primary inline-flex items-center gap-1"
-      >
-        <ArrowUpCircle className="size-3.5" aria-hidden />
-        Sürüm {version}, yeni sürüm {update.latestVersion} var
-      </Link>
+      <>
+        Sürümünüz v{version}.{" "}
+        <Link
+          to="/settings"
+          hash="guncelleme"
+          className="link link-primary inline-flex items-center gap-1"
+        >
+          <ArrowUpCircle className="size-3.5" aria-hidden />
+          Yeni sürüm {update.latestVersion} çıktı
+        </Link>
+      </>
     );
   }
   if (update?.enabled && update.outcome === "error") {
     return (
       <>
-        Sürüm {version}. Güncelleme kontrolü başarısız oldu; son bilinen sürüm{" "}
-        {update.latestVersion}.
+        Sürümünüz v{version}. Güncelleme kontrolü başarısız oldu; son bilinen
+        sürüm {update.latestVersion}.
       </>
     );
   }
   if (update?.enabled && update.outcome === "ok") {
-    return <>Sürüm {version}, güncel.</>;
+    return <>Sürümünüz v{version}, güncel.</>;
   }
   if (update && !update.enabled) {
-    return <>Sürüm {version}. Güncelleme kontrolü kapalı.</>;
+    return <>Sürümünüz v{version}. Güncelleme kontrolü kapalı.</>;
   }
-  return <>Sürüm {version}.</>;
+  return <>Sürümünüz v{version}.</>;
 }
 
 function StatusBody({
@@ -185,9 +188,11 @@ function StatusBody({
                   ? "1 şey dikkat istiyor."
                   : `${problems} şey dikkat istiyor.`}
             </p>
+            <p className="mt-1 text-sm">
+              <VersionLine version={data.version} update={update} />
+            </p>
             <p className="mt-0.5 text-xs text-muted">
-              <VersionLine version={data.version} update={update} /> Kontrol:{" "}
-              {formatDateTime(data.generatedAt)}.
+              Son kontrol: {formatDateTime(data.generatedAt)}
             </p>
           </div>
         </div>
@@ -256,9 +261,9 @@ function StatusBody({
                   key={project.id}
                   className="flex flex-wrap items-center justify-between gap-2 text-sm"
                 >
-                  <span className="min-w-0">
+                  <span className="flex min-w-0 flex-wrap items-baseline gap-x-3 gap-y-0.5">
                     <span className="font-medium">{project.name}</span>
-                    <span className="ml-2 text-xs text-muted">
+                    <span className="text-xs text-muted">
                       Search Console {state.gsc ? "bağlı" : "bağlı değil"} ·
                       Analytics {state.ga4 ? "bağlı" : "bağlı değil"}
                     </span>

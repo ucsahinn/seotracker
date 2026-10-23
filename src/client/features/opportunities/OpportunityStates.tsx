@@ -31,14 +31,20 @@ function writeCollapsed(collapsed: boolean): void {
  * effect rather than the initial state so server and client render the same
  * markup.
  */
-export function Intro() {
-  const [open, setOpen] = useState(true);
+export function Intro({ collapsedByDefault }: { collapsedByDefault: boolean }) {
+  const [stored, setStored] = useState(true);
+  // Set once the operator has used the toggle; until then a screen with
+  // nothing connected starts closed, so the empty state below is the first
+  // thing read.
+  const [touched, setTouched] = useState(false);
   useEffect(() => {
-    setOpen(!readCollapsed());
+    setStored(!readCollapsed());
   }, []);
+  const open = touched ? stored : stored && !collapsedByDefault;
   const toggle = () => {
     writeCollapsed(open);
-    setOpen(!open);
+    setStored(!open);
+    setTouched(true);
   };
   return (
     <section className="rounded-box border border-base-300 bg-base-100 p-4 shadow-[var(--shadow-raise)]">
@@ -49,7 +55,7 @@ export function Intro() {
         onClick={toggle}
         className="flex w-full items-center justify-between gap-2 text-left text-sm font-semibold"
       >
-        Bu ekran ne işe yarar?
+        Burası ne işe yarar?
         <ChevronDown
           aria-hidden
           className={`size-4 text-muted transition-transform ${open ? "rotate-180" : ""}`}
@@ -57,11 +63,10 @@ export function Intro() {
       </button>
       {open ? (
         <p id="opportunities-intro" className="mt-2 text-sm text-muted">
-          Google&apos;ın sayfalarınızı gösterdiği ama yeterince tıklanmayan ya
-          da birkaç basamak yükselirse çok daha fazla ziyaretçi getirecek
-          sayfaları burada topluyoruz; her satır üzerinde çalışmaya değer bir
-          sayfa. Bir satıra tıklayın: neden listede olduğunu ve ne yapmanız
-          gerektiğini görürsünüz.
+          Google&apos;ın sayfanızı gösterdiği ama az tıklandığı ya da birkaç
+          basamak yükselince çok daha fazla ziyaretçi getirecek sayfaları burada
+          topluyoruz. Bir satıra tıklayınca nedenini ve ne yapmanız gerektiğini
+          görürsünüz.
         </p>
       ) : null}
     </section>
@@ -70,36 +75,23 @@ export function Intro() {
 
 /**
  * This screen needs both Search Console and Analytics, so "not connected" is
- * the expected first state rather than a failure. The server says which one is
- * missing; this used to guess by matching the error text, which never worked
- * because the message reaching the client is a generic one.
+ * the expected first state rather than a failure. The server reports only the
+ * first missing source, so the copy names both and does not guess.
  */
-export function NotReady({
-  projectId,
-  missing,
-}: {
-  projectId: string;
-  missing: "needs_ga4" | "needs_gsc";
-}) {
-  const needsGa4 = missing === "needs_ga4";
-
+export function NotReady({ projectId }: { projectId: string }) {
   return (
     <div className="rounded-box border border-base-300 bg-base-100">
       <EmptyState
         icon={Target}
-        title={
-          needsGa4
-            ? "Google Analytics bağlı değil"
-            : "Search Console bağlı değil"
-        }
-        description="Bu ekran iki kaynağı birleştirir: sıralamalar Search Console'dan, sayfaların ne kazandırdığı Analytics'ten gelir. İkisi de bağlı olmadan fırsatlar puanlanamaz."
+        title="Fırsatlar için Search Console ve Analytics gerekir"
+        description="Sıralamalar Search Console'dan, sayfaların kazandırdığı Analytics'ten gelir. İkisini de bağlayınca fırsatlar puanlanır."
         action={
           <Link
             to="/p/$projectId/settings/integrations"
             params={{ projectId }}
             className="btn btn-primary btn-sm"
           >
-            Bağlantıları aç
+            Bağlantıları ayarla
           </Link>
         }
       />
@@ -130,8 +122,8 @@ export function NoOpportunities({
     return (
       <EmptyState
         icon={Target}
-        title="Search Console bu dönem için veri döndürmedi"
-        description={`${period} aralığında hiçbir sayfanız arama sonuçlarında görünmedi. Mülk yeni bağlandıysa Google'ın veriyi doldurması birkaç gün sürer.`}
+        title="Search Console bu dönem için veri vermedi"
+        description={`${period} aralığında hiçbir sayfanız arama sonuçlarında görünmedi. Mülkü yeni bağladıysanız Google'ın veriyi doldurması birkaç gün sürer.`}
       />
     );
   }

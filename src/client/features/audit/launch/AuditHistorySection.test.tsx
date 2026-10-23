@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { AuditHistorySection } from "./AuditHistorySection";
 
@@ -33,10 +33,7 @@ const audit = (id: string, startedAt: string, critical: number) => ({
   issues: { critical, warning: 0, info: 0 },
 });
 
-function renderSection(
-  history: ReturnType<typeof audit>[],
-  onStartFirst = vi.fn(),
-) {
+function renderSection(history: ReturnType<typeof audit>[]) {
   render(
     <AuditHistorySection
       projectId="p1"
@@ -44,10 +41,8 @@ function renderSection(
       isLoading={false}
       onDelete={vi.fn()}
       onRerun={vi.fn()}
-      onStartFirst={onStartFirst}
     />,
   );
-  return onStartFirst;
 }
 
 describe("AuditHistorySection", () => {
@@ -78,11 +73,12 @@ describe("AuditHistorySection", () => {
     );
   });
 
-  it("explains the empty state and offers the next step", () => {
-    const onStartFirst = renderSection([]);
+  it("explains the empty state without a second primary action", () => {
+    renderSection([]);
 
-    expect(screen.getByText(/yukarıdaki formdan başlatın/)).toBeTruthy();
-    fireEvent.click(screen.getByRole("button", { name: "Site adresini gir" }));
-    expect(onStartFirst).toHaveBeenCalledOnce();
+    expect(screen.getByText(/Henüz denetim yapılmadı/)).toBeTruthy();
+    expect(
+      screen.queryByRole("button", { name: "Site adresini gir" }),
+    ).toBeNull();
   });
 });

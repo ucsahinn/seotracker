@@ -92,8 +92,8 @@ export function AuditTrendChart({ history }: { history: HistoryRow[] }) {
       {!anyFindings ? (
         <p className="px-2 pt-3 text-sm text-muted">
           Bu {formatCount(points.length)} denetimin hiçbirinde kritik sorun ya
-          da uyarı çıkmadı. Çizilecek bir değişim yok; bilgi düzeyindeki
-          bulgular aşağıdaki denetimlerin kendi sayfalarında.
+          da uyarı çıkmadı, grafik boş. Bilgi düzeyindeki bulgular denetimlerin
+          kendi sayfalarında.
         </p>
       ) : (
         <Chart
@@ -201,7 +201,7 @@ function summarise(first: Point, last: Point, total: number) {
 
   const delta = series.to - series.from;
   const direction = delta === 0 ? "değişmedi" : delta < 0 ? "azaldı" : "arttı";
-  return `${formatCount(total)} denetim. Yüz sayfa başına ${series.label} ${formatDate(first.date)} tarihinde ${formatDecimal(series.from)} iken ${formatDate(last.date)} tarihinde ${formatDecimal(series.to)}; ${direction}.`;
+  return `${formatCount(total)} denetim. Yüz sayfa başına ${series.label}, ${formatDate(first.date)} tarihinde ${formatDecimal(series.from)} idi, ${formatDate(last.date)} tarihinde ${formatDecimal(series.to)} oldu (${direction}).`;
 }
 
 function roundTenth(value: number): number {

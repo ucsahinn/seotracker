@@ -37,7 +37,7 @@ export function DiagnosticsBundleButton() {
         `seotracker-tanilama-${server.generatedAt.slice(0, 10)}.zip`,
       );
     },
-    onSuccess: () => toast.success("Tanılama paketi indirildi."),
+    onSuccess: () => toast.success("Tanılama paketi indirildi"),
     onError: (error) =>
       toast.error(getStandardErrorMessage(error, "Paket oluşturulamadı")),
   });
@@ -80,9 +80,9 @@ Oluşturulma: ${generatedAt}
   browser.json       Tarayıcı ve ekran bilgisi.
 
 İçinde OLMAYAN şeyler
-  Hiçbir gizli değer yok: Google erişim ve yenileme anahtarları, istemci
-  gizli anahtarı, PageSpeed API anahtarı, asistan parolası (MCP token) ve oturum çerezleri
-  toplanmıyor. Yalnızca her birinin yapılandırılmış olup olmadığı yazıyor.
+  Gizli değer yok: Google erişim ve yenileme anahtarları, Google erişim
+  anahtarının gizli kısmı, PageSpeed API anahtarı, ajan parolası (MCP token)
+  ve oturum çerezleri toplanmaz. Yalnızca her birinin ayarlı olup olmadığı yazar.
   Taranan sayfaların içeriği de yok, yalnızca sayıları var.
 
 İçinde OLAN, sizi tanımlayan şeyler

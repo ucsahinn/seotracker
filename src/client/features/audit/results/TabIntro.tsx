@@ -6,13 +6,13 @@ import type { AuditTab } from "@/types/schemas/audit";
  */
 const INTRO: Record<AuditTab, string> = {
   issues:
-    "Sitenizde düzeltmeniz gereken her şey, önem sırasıyla. Bir satıra tıklayın: neden önemli olduğunu, nasıl düzelteceğinizi ve hangi sayfaların etkilendiğini adresleriyle görün.",
+    "Sitenizde düzeltmeniz gereken her şey, önem sırasına göre. Bir satıra tıklayın. Neden önemli olduğunu, nasıl düzelteceğinizi ve hangi sayfaların etkilendiğini adresleriyle görürsünüz.",
   pages:
     "Taranan her sayfa ve sunucunun ona verdiği yanıt. Hatalı, yavaş ya da derinde kalmış sayfaları buradan bulun.",
   index:
     "Google bu sayfaları gerçekten dizinine almış mı? Almadıysa nedenini burada görürsünüz.",
   performance:
-    "Sayfalarınız telefonda ve bilgisayarda ne kadar hızlı açılıyor? Google'ın kullandığı Lighthouse ölçümüyle.",
+    "Sayfalarınız telefonda ve bilgisayarda ne kadar hızlı açılıyor? Ölçüm, Google'ın kullandığı Lighthouse ile yapılır.",
 };
 
 export function TabIntro({ tab }: { tab: AuditTab }) {

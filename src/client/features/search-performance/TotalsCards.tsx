@@ -81,7 +81,7 @@ export function TotalsCards({ report }: { report: Report }) {
       />
       <MetricTile
         label="Ortalama sıra"
-        hint="Küçük olan iyidir; 1, sonuçların en üstü demek."
+        hint="Düşük sayı daha iyi: 1, listenin en üstü demek."
         value={shown.position}
         animateTo={{ value: totals.position, format: (n) => formatDecimal(n) }}
         delta={

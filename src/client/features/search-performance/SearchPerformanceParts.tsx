@@ -254,7 +254,7 @@ export function DimensionTable({
                   ? "Hızlı filtreyi kaldırarak tüm satırlara dönün."
                   : hasActiveFilter
                     ? "Arama türü, cihaz ya da ülke filtresini genişletmeyi deneyin."
-                    : "Search Console verisi birkaç gün gecikmeli gelir; mülk yeni bağlandıysa birkaç gün sürebilir."
+                    : "Search Console verisi birkaç gün gecikmeli gelir. Mülkü yeni bağladıysanız biraz daha beklemeniz gerekebilir."
             }
             action={clearButton ?? undefined}
           />
@@ -274,8 +274,8 @@ export function DimensionTable({
           />
           {truncated ? (
             <p className="border-t border-base-300 px-4 py-2 text-xs text-muted">
-              Google&apos;ın tek çağrıda döndürdüğü üst sınıra ulaşıldı, bu
-              yüzden bu liste tam değil. Daraltmak için filtreleri kullanın.
+              Google tek seferde en fazla bu kadar satır verir ve sınıra
+              ulaşıldı, liste tam değil. Daraltmak için filtreleri kullanın.
             </p>
           ) : null}
         </>
@@ -405,7 +405,7 @@ export function StrikingDistanceTable({
       <div className="p-4">
         <AppDataTable
           table={table}
-          caption="Eşiğe yakın sorgular"
+          caption="Sıra 5-20 arası sorgular"
           className="table table-zebra table-sm"
           wrapperClassName="overflow-x-auto"
         />

@@ -65,7 +65,7 @@ export function OpportunityKinds({
                 : "border-base-300 bg-base-100 enabled:hover:border-primary/40"
             }`}
           >
-            <span className="text-xs uppercase tracking-wide text-muted">
+            <span className="text-xs text-muted">
               {kind.label}
               {entry.pages === 0
                 ? null

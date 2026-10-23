@@ -67,7 +67,7 @@ describe("LabFieldComparison", () => {
 
     const cls = screen.getByRole("row", { name: /CLS/ });
     expect(cls.textContent).toContain("0,020");
-    expect(cls.textContent).toContain("Örtüşüyor");
+    expect(cls.textContent).toContain("Tutuyor");
   });
 
   it("renders nothing when one of the two sides is missing", () => {

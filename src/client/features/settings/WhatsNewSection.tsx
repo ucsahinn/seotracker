@@ -1,7 +1,6 @@
 import { ChevronRight } from "lucide-react";
 import * as React from "react";
 import { formatDate } from "@/client/lib/format";
-import { SettingsHeading } from "@/client/components/HelpTip";
 import { CopyButton } from "@/client/components/CopyButton";
 import {
   CHANGELOG_ENTRIES,
@@ -30,10 +29,14 @@ export function WhatsNewSection({ version }: { version: string }) {
 
   return (
     <section id="surum-notlari" className="scroll-mt-16 space-y-3">
-      <SettingsHeading
-        title="Sürüm notları"
-        help="Bu sürümde neyin değiştiği. Metin depodaki CHANGELOG.md dosyasından okunur, yani yayımlananla aynıdır."
-      />
+      <div className="space-y-1">
+        <h2 className="text-base font-semibold">Sürüm notları</h2>
+        <p className="text-sm text-muted">
+          Bu sürümde neyin değiştiği. Metin depodaki{" "}
+          <code className="text-xs">CHANGELOG.md</code> dosyasından okunur, yani
+          yayımlananla aynıdır.
+        </p>
+      </div>
 
       <div className="divide-y divide-base-300 overflow-hidden rounded-box border border-base-300">
         {CHANGELOG_ENTRIES.map((entry) => (
@@ -108,7 +111,7 @@ function ReleaseNotes({
         ) : null}
         {isRunning ? (
           <span className="rounded-full border border-base-300 px-2 py-0.5 text-[11px] text-muted">
-            çalışan sürüm
+            Kurulu sürüm
           </span>
         ) : null}
       </button>
@@ -122,10 +125,10 @@ function ReleaseNotes({
           ) : null}
           {entry.sections.map((section) => (
             <div key={section.heading} className="space-y-1.5">
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-muted">
+              <h3 className="text-sm font-medium text-muted">
                 {section.heading}
               </h3>
-              <ul className="space-y-2 pl-4">
+              <ul className="list-disc space-y-2 pl-5 marker:text-subtle">
                 {section.items.map((item, index) =>
                   item.code ? (
                     <li key={index} className="max-w-prose list-none">
@@ -144,7 +147,7 @@ function ReleaseNotes({
                   ) : (
                     <li
                       key={index}
-                      className="max-w-prose list-disc text-sm leading-relaxed marker:text-subtle"
+                      className="max-w-prose text-sm leading-relaxed"
                     >
                       <InlineText text={item.text} />
                     </li>

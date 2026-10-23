@@ -1,4 +1,4 @@
-import { HelpTip, SettingsHeading } from "@/client/components/HelpTip";
+import { HelpTip } from "@/client/components/HelpTip";
 import { SITE_URL } from "@/client/features/support/links";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -41,17 +41,17 @@ export function UpdateSection({ version }: { version: string }) {
     onSuccess: (result) => {
       queryClient.setQueryData(STATUS_KEY, result);
       if (result.outcome === "unreachable") {
-        toast.error("GitHub'a ulaşılamadı.");
+        toast.error("GitHub'a ulaşılamadı");
       } else if (result.outcome === "error") {
         toast.error(
-          `GitHub'a ulaşılamadı; son bilinen sürüm ${result.latestVersion}.`,
+          `GitHub'a ulaşılamadı; son bilinen sürüm ${result.latestVersion}`,
         );
       } else if (result.outcome === "no_releases") {
-        toast.success("Henüz yayımlanmış bir sürüm yok.");
+        toast.success("Henüz yayımlanmış bir sürüm yok");
       } else if (result.updateAvailable) {
         toast.success(`Yeni sürüm: ${result.latestVersion}`);
       } else {
-        toast.success("En güncel sürümü kullanıyorsunuz.");
+        toast.success("En güncel sürümü kullanıyorsunuz");
       }
     },
     onError: (error) => toast.error(getStandardErrorMessage(error)),
@@ -69,11 +69,17 @@ export function UpdateSection({ version }: { version: string }) {
       <SectionHeaderRow
         badge={statusQuery.isError ? UNREADABLE : updateBadge(status)}
       >
-        <SettingsHeading
-          title="Hakkında"
-          help="Uygulama yeni sürümü fark eder ve ne yapacağınızı söyler: Windows paketi güncellemeyi kendisi kurar, Docker'da verilen komutu çalıştırırsınız. Docker'da kontrolü kapatırsanız GitHub'a istek gitmez; Windows paketinde görev çubuğu uygulaması günde bir kez GitHub'a bakar, kendiliğinden kurmayı ise menüdeki Güncellemeleri kendiliğinden kur seçeneği belirler."
-        />
+        <h2 className="text-base font-semibold">Hakkında</h2>
       </SectionHeaderRow>
+
+      <p className="text-sm text-muted">
+        Uygulama yeni sürümü fark eder ve ne yapacağınızı söyler. Windows paketi
+        güncellemeyi kendisi kurar, Docker&apos;da verilen komutu siz
+        çalıştırırsınız. Docker&apos;da kontrolü kapatırsanız GitHub&apos;a
+        istek gitmez. Windows paketinde görev çubuğu uygulaması günde bir kez
+        GitHub&apos;a bakar. Kendiliğinden kurup kurmayacağını menüdeki{" "}
+        <strong>Güncellemeleri kendiliğinden kur</strong> seçeneği belirler.
+      </p>
 
       <div className="flex items-center justify-between gap-6">
         <span className="text-sm">Sürüm</span>
@@ -167,7 +173,7 @@ export function UpdateSection({ version }: { version: string }) {
           {status.lastSuccessAt
             ? ` (son başarılı kontrol: ${formatDateTime(status.lastSuccessAt)})`
             : ""}
-          ; güncel olup olmadığınız doğrulanamadı.
+          ; güncel olup olmadığı doğrulanamadı.
         </p>
       ) : null}
 
@@ -213,10 +219,10 @@ export function UpdateSection({ version }: { version: string }) {
       {/* Said plainly, because it is an outbound request the operator did not
           ask for individually and can switch off. */}
       <p className="text-xs text-subtle">
-        Açıkken günde bir kez GitHub&apos;a bağlanıp bu deponun en son sürüm
-        etiketini sorar. GitHub bu istekte ağınızın genel IP adresini ve
-        uygulama adı ile sürümünüzü görür; siteleriniz, Google hesabınız ya da
-        denetimlerinizle ilgili hiçbir şey gönderilmez.
+        Kontrol açıkken uygulama günde bir kez GitHub&apos;a bağlanıp en son
+        sürümü sorar. GitHub bu istekte yalnızca genel IP adresinizi, uygulama
+        adını ve sürümü görür; siteleriniz, Google hesabınız ya da
+        denetimleriniz gönderilmez.
         {status?.checkedAt
           ? ` Son kontrol: ${formatDateTime(status.checkedAt)}.`
           : ""}

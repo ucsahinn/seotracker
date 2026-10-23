@@ -7,7 +7,7 @@ import {
 describe("getStandardErrorMessage", () => {
   it("maps known error codes to standard copy", () => {
     expect(getStandardErrorMessage(new Error("NOT_FOUND"))).toBe(
-      "İstenen kayıt bulunamadı.",
+      "Kayıt bulunamadı.",
     );
   });
 

@@ -18,8 +18,8 @@ export const setupSteps: {
   },
   {
     id: "project",
-    label: "Birden fazla siteniz mi var?",
-    detail: "Başka bir proje oluşturun, ya da siteleri ajanınıza kurdurun.",
+    label: "Başka sitelerinizi de ekleyin",
+    detail: "Her site için ayrı proje açın.",
     icon: FolderPlus,
   },
   {
@@ -41,7 +41,7 @@ export const setupSteps: {
   {
     id: "context",
     label: "Projeyi anlatın",
-    detail: "Ajanınız ve raporlarınız bu siteyi neyin ilgilendirdiğini bilsin.",
+    detail: "Ajanınız ve raporlarınız siteyi tanısın.",
     icon: BookOpen,
   },
 ];

@@ -61,7 +61,7 @@ export function TrackedQueriesTable({
           <th className="text-right" aria-sort={sorting.ariaSort("position")}>
             <SortableHeader
               column={sorting.column("position", false)}
-              label="Ort. sıra"
+              label="Ortalama sıra"
               align="right"
             />
           </th>
@@ -69,7 +69,7 @@ export function TrackedQueriesTable({
             <SortableHeader
               column={sorting.column("delta")}
               label="Değişim"
-              helpText="Bir önceki, aynı uzunluktaki dönemin ortalama sırasıyla karşılaştırılır. Sıra numarası küçüldüyse (örn. 12'den 8'e) kelime yukarı çıkmıştır ve yeşil 'Yükseldi' görünür; büyüdüyse kırmızı 'Düştü' görünür."
+              helpText="Bir önceki, aynı uzunluktaki dönemle karşılaştırılır. Sıra numarası küçüldüyse (12'den 8'e gibi) kelime yükselmiştir ve yeşil “Yükseldi” yazar. Büyüdüyse kırmızı “Düştü” yazar."
               align="right"
             />
           </th>

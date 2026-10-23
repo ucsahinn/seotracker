@@ -102,7 +102,7 @@ export function ReportTemplatesList({
               <th aria-sort={sorting.ariaSort("updatedAt")}>
                 <SortableHeader
                   column={sorting.column("updatedAt")}
-                  label="Güncellenme"
+                  label="Güncellendi"
                 />
               </th>
               <th>

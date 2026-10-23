@@ -39,17 +39,24 @@ type Step = {
   to: string;
   params?: Record<string, string>;
   search?: Record<string, string>;
+  /** One short verb. The title already says what the step is about. */
   cta: string;
-  tone: "urgent" | "normal";
 };
 
 export function NextStepsCard({
   projectId,
   gscConnected,
+  googleMissing = false,
   audit,
 }: {
   projectId: string;
   gscConnected: boolean;
+  /**
+   * The Google access key is not entered yet. The banner above already asks
+   * for it, and Search Console cannot be connected before it, so the step
+   * would be a second copy of the same ask.
+   */
+  googleMissing?: boolean;
   audit: {
     auditId: string;
     status: "running" | "completed" | "failed";
@@ -57,19 +64,29 @@ export function NextStepsCard({
     severityTotals: { critical: number; warning: number; info: number };
   } | null;
 }) {
-  const steps = buildSteps({ projectId, gscConnected, audit }).slice(0, SHOWN);
+  const steps = buildSteps({
+    projectId,
+    gscConnected,
+    googleMissing,
+    audit,
+  }).slice(0, SHOWN);
+
+  // Nothing left but the thing the banner already says: no card of its own.
+  if (googleMissing && steps.length === 0) return null;
 
   return (
-    <section className="overflow-hidden rounded-box border border-base-300 bg-base-100">
-      <div className="border-b border-base-300 px-4 py-3">
-        <h2 className="text-sm font-medium">Sıradaki adımlar</h2>
+    <section className="overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-[var(--shadow-raise)]">
+      <div className="border-b border-base-300 px-5 py-3.5">
+        <h2 className="text-sm font-semibold leading-tight">
+          Sıradaki adımlar
+        </h2>
         <p className="mt-0.5 text-xs text-muted">
-          Sitenizin verisine bakarak, en hızlı kazanç veren işten başlayarak.
+          En hızlı kazandıracak işten başlayın.
         </p>
       </div>
 
       {steps.length === 0 ? (
-        <p className="flex items-center gap-2 px-4 py-6 text-sm text-muted">
+        <p className="flex items-center gap-2 px-5 py-6 text-sm text-muted">
           <CheckCircle2
             aria-hidden
             className="size-4 text-[var(--ink-success)]"
@@ -89,20 +106,19 @@ export function NextStepsCard({
                  * this is the one list on the dashboard whose entire purpose
                  * is to be clicked.
                  */
-                className="group flex items-center gap-3 px-4 py-3 transition-colors hover:bg-base-200/40"
+                className="group flex items-center gap-3 px-5 py-3.5 transition-colors hover:bg-base-200/40"
               >
                 <span
                   aria-hidden
                   /*
-                   * `attention` breathes a ring twice and stops. Looping it
-                   * would make the whole dashboard shimmer the moment a
-                   * critical finding exists, which teaches the reader to stop
-                   * seeing it -- so it is a nudge, not an alarm.
+                   * Neutral circles, the accent only on the step to take
+                   * first: red belongs to severity, and a column of three
+                   * coloured circles says "everything is urgent".
                    */
                   className={`flex size-8 shrink-0 items-center justify-center rounded-full ${
-                    step.tone === "urgent"
-                      ? "attention bg-error/10 text-[var(--ink-error)]"
-                      : "bg-primary/10 text-primary"
+                    index === 0
+                      ? "bg-primary/10 text-primary"
+                      : "bg-base-200 text-muted"
                   }`}
                 >
                   <step.icon className="size-4" />
@@ -115,7 +131,7 @@ export function NextStepsCard({
                     {step.detail}
                   </span>
                 </span>
-                <span className="flex shrink-0 items-center gap-1 text-xs text-muted transition-colors group-hover:text-base-content">
+                <span className="flex shrink-0 items-center gap-1 text-sm text-muted transition-colors group-hover:text-base-content">
                   {step.cta}
                   <ArrowRight
                     aria-hidden
@@ -134,10 +150,12 @@ export function NextStepsCard({
 function buildSteps({
   projectId,
   gscConnected,
+  googleMissing,
   audit,
 }: {
   projectId: string;
   gscConnected: boolean;
+  googleMissing: boolean;
   audit: {
     auditId: string;
     status: "running" | "completed" | "failed";
@@ -153,17 +171,16 @@ function buildSteps({
    * show: rankings, opportunities and the whole search side are empty until
    * it is connected, and connecting it is free and takes a minute.
    */
-  if (!gscConnected) {
+  if (!gscConnected && !googleMissing) {
     steps.push({
       key: "gsc",
       icon: Link2,
       title: "Search Console'u bağlayın",
       detail:
-        "Hangi kelimede kaçıncı sırada olduğunuzu ancak Google'ın kendi verisi söyler. Ücretsiz.",
+        "Hangi kelimede kaçıncı sırada olduğunuzu yalnızca Google bilir. Bağlantı ücretsiz.",
       to: "/p/$projectId/settings/integrations",
       params,
-      cta: "Search Console'u bağla",
-      tone: "urgent",
+      cta: "Bağla",
     });
   }
 
@@ -172,12 +189,10 @@ function buildSteps({
       key: "first-audit",
       icon: Radar,
       title: "İlk denetimi başlatın",
-      detail:
-        "Sitenizi kendi tarayıcımızla tarar; teknik sorunları önem sırasına göre listeler.",
+      detail: "Sitenizi tarar, teknik sorunları önem sırasına göre listeler.",
       to: "/p/$projectId/audit",
       params,
-      cta: "Denetimi başlat",
-      tone: "urgent",
+      cta: "Başlat",
     });
     return steps;
   }
@@ -192,8 +207,7 @@ function buildSteps({
       to: "/p/$projectId/audit",
       params,
       search: { auditId: audit.auditId, tab: "issues" },
-      cta: "Kritik sorunları gör",
-      tone: "urgent",
+      cta: "Gör",
     });
   }
 
@@ -203,11 +217,10 @@ function buildSteps({
       icon: Search,
       title: "Fırsatlara bakın",
       detail:
-        "Sıraya göre değil, üzerinde çalışmanın değerine göre sıralanmış sayfalarınız.",
+        "Sayfalarınız, sıralarına göre değil, üzerinde çalışmaya ne kadar değdiğine göre sıralı.",
       to: "/p/$projectId/opportunities",
       params,
-      cta: "Fırsatları aç",
-      tone: "normal",
+      cta: "Aç",
     });
   }
 
@@ -224,8 +237,7 @@ function buildSteps({
       detail: `Son denetim ${formatRelativeTime(audit.startedAt)}. Bu ekrandaki sayılar o denetimden geliyor.`,
       to: "/p/$projectId/audit",
       params,
-      cta: "Yeniden denetle",
-      tone: "normal",
+      cta: "Başlat",
     });
   }
 
@@ -238,8 +250,7 @@ function buildSteps({
       to: "/p/$projectId/audit",
       params,
       search: { auditId: audit.auditId, tab: "issues" },
-      cta: "Uyarıları gör",
-      tone: "normal",
+      cta: "Gör",
     });
   }
 

@@ -46,12 +46,12 @@ describe("QuotaMeter", () => {
           limit: null,
           remaining: 1_900_000,
           state: "unknown",
-          unit: "belirteç",
+          unit: "puan",
         })}
       />,
     );
     expect(screen.queryByRole("meter")).toBeNull();
-    expect(screen.getByText("Kalan: 1.900.000 belirteç")).toBeTruthy();
+    expect(screen.getByText("Kalan: 1.900.000 puan")).toBeTruthy();
   });
 });
 

@@ -200,8 +200,7 @@ function buildPerformanceColumns({
       cell: ({ row }) => {
         const isFailed = isLighthouseFailure(row.original);
         const failureMessage =
-          row.original.errorMessage ??
-          "Hız ölçümü hiçbir kategori puanı döndürmedi";
+          row.original.errorMessage ?? "Hız ölçümü hiç puan vermedi";
         return isFailed ? (
           <span
             className={`badge text-xs ${severityChip.error}`}
@@ -274,7 +273,7 @@ function buildPerformanceColumns({
         <SortableHeader
           column={column}
           label="CLS"
-          helpText="Sayfanın oynama miktarı"
+          helpText="Sayfanın ne kadar kaydığı"
         />
       ),
       cell: ({ getValue }) => {

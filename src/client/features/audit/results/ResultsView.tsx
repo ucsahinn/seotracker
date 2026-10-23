@@ -152,9 +152,9 @@ export function ResultsView({
         <CrawlWarning
           headline={`${formatCount(blockedCount)} sayfada engellendik.`}
         >
-          Sitenin bot koruması tarayıcımızı durdurdu, bu yüzden o sayfalar
-          denetlenemedi. Bunun için henüz bir çözümümüz yok. Masaüstü
-          tarayıcılar kendi makinenizden çalıştığı için genelde geçebiliyor:{" "}
+          Sitenin bot koruması tarayıcımızı durdurdu, o sayfalar denetlenemedi.
+          Henüz bir çözümümüz yok. Masaüstü tarayıcılar sizin bilgisayarınızdan
+          çalıştığı için genelde geçer. Şunları deneyin:{" "}
           <a
             className="link link-primary"
             href="https://github.com/PhialsBasement/LibreCrawl"
@@ -172,7 +172,7 @@ export function ResultsView({
           >
             Screaming Frog
           </a>{" "}
-          (500 adrese kadar ücretsiz) deneyin.
+          (500 adrese kadar ücretsiz).
         </CrawlWarning>
       )}
 
@@ -185,7 +185,7 @@ export function ResultsView({
           }
         >
           {crawlStopped
-            ? "İstenen bekleme süresi denetim süresini aştı, bazı adresler ziyaret edilmedi. Bu rapor eksiktir. "
+            ? "İstenen bekleme süresi denetim süresini aştı, bazı adresler ziyaret edilmedi. Bu rapor eksik. "
             : 'Sunucunun "çok fazla istek" (429) yanıtı verdiği sayfalar denetlenemedi. '}
           İstek sınırı sıfırlandıktan sonra denetimi yeniden başlatın, ya da
           site sahibinden "seotracker-audit" tarayıcısına izin vermesini
@@ -258,7 +258,7 @@ export function ResultsView({
                     askDisabledReason={
                       property.covered
                         ? undefined
-                        : `Bu denetim ${property.auditedHost} adresine ait, bağlı mülk ise ${property.propertyHost ?? "başka bir mülk"}. Sormak kotayı boşa harcardı.`
+                        : `Bu denetim ${property.auditedHost} sitesine ait, bağlı mülk ise ${property.propertyHost ?? "başka bir mülk"}. Sorarsak kota boşa giderdi.`
                     }
                   />
                 </div>

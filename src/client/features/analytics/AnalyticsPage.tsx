@@ -1,7 +1,5 @@
 import { useIsFetching, useQuery, useQueryClient } from "@tanstack/react-query";
-import { BarChart3 } from "lucide-react";
 import * as React from "react";
-import { EmptyState } from "@/client/components/EmptyState";
 import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { PageActions, RefreshButton } from "@/client/components/RefreshButton";
 import { QuotaCard } from "@/client/features/quotas/QuotaCard";
@@ -10,6 +8,8 @@ import { TabPanel, Tabs } from "@/client/components/Tabs";
 import { OrganicTrendPanel } from "@/client/features/analytics/OrganicTrendPanel";
 import { ReportView } from "@/client/features/analytics/ReportView";
 import { MeasurementHealthPanel } from "@/client/features/analytics/MeasurementHealthPanel";
+import { AnalyticsNotConnected } from "@/client/features/analytics/AnalyticsNotConnected";
+import { ga4ConnectionOptions } from "@/client/features/integrations/googleConnectionQueries";
 import { getGa4Report } from "@/serverFunctions/ga4Reports";
 import {
   GA4_REPORT_KINDS,
@@ -130,6 +130,11 @@ export function AnalyticsPage({
   const [acquisition, setAcquisition] =
     React.useState<AcquisitionBreakdown>("channel_group");
 
+  // Asked first: with no property there is nothing to filter, tab through or
+  // measure, so the whole screen becomes the one connect step.
+  const connection = useQuery(ga4ConnectionOptions(projectId));
+  const notConnected = connection.data?.connected === false;
+
   const reportQuery = useQuery({
     queryKey: [
       "ga4Report",
@@ -153,7 +158,7 @@ export function AnalyticsPage({
           acquisitionBreakdown: acquisition,
         },
       }),
-    enabled: view !== HEALTH,
+    enabled: view !== HEALTH && !notConnected,
   });
   const result = reportQuery.data;
 
@@ -177,13 +182,25 @@ export function AnalyticsPage({
     });
   };
 
+  if (notConnected) {
+    return (
+      <PageShell>
+        <PageHeader
+          title="Analytics"
+          description="Ziyaretçiler siteye hangi sayfadan giriyor, orada ne yapıyor."
+        />
+        <AnalyticsNotConnected projectId={projectId} />
+      </PageShell>
+    );
+  }
+
   return (
     <PageShell>
       <PageHeader
-        title="Analytics raporları"
+        title="Analytics"
         description={
           view === HEALTH
-            ? "Analytics gerçekten ölçüyor mu? Mülkünüzün kurulum ayarlarını okur; rapor kotanızdan harcamaz."
+            ? "Analytics gerçekten ölçüyor mu? Mülkünüzün kurulum ayarlarını okur, rapor kotanızdan harcamaz."
             : REPORT_QUESTIONS[kind]
         }
         actions={
@@ -220,7 +237,7 @@ export function AnalyticsPage({
         {view === HEALTH ? null : (
           <div className="flex flex-wrap items-center gap-2">
             <label className="flex items-center gap-2 text-xs text-muted">
-              <span className="whitespace-nowrap">Satır</span>
+              <span className="whitespace-nowrap">Satır sayısı</span>
               <select
                 className="select select-bordered select-sm w-20"
                 value={rowLimit}
@@ -356,13 +373,7 @@ export function AnalyticsPage({
             ) : null}
 
             {result?.status === "needs_ga4" ? (
-              <div className="rounded-box border border-base-300 bg-base-100">
-                <EmptyState
-                  icon={BarChart3}
-                  title="Google Analytics bağlı değil"
-                  description="Bu raporlar Analytics'teki sitenizden (GA4 mülkü) gelir. Proje ayarlarındaki Bağlantılar sekmesinden bağlayın."
-                />
-              </div>
+              <AnalyticsNotConnected projectId={projectId} />
             ) : null}
 
             {result?.status === "ok" ? (
@@ -381,7 +392,9 @@ export function AnalyticsPage({
         )}
       </TabPanel>
 
-      <QuotaCard projectId={projectId} kinds={["ga4"]} />
+      {connection.data?.connected ? (
+        <QuotaCard projectId={projectId} kinds={["ga4"]} />
+      ) : null}
     </PageShell>
   );
 }

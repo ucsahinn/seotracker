@@ -68,7 +68,7 @@ export function DashboardSetupAction({
           <div>
             <p className="text-sm font-medium">seotracker eklentisi</p>
             <p className="mt-1 text-xs text-muted">
-              Asistan bağlantısı (MCP) ve hazır SEO görevleri
+              Ajan bağlantısı (MCP) ve hazır SEO görevleri
             </p>
           </div>
           <div className="shrink-0 [&>button]:h-10 [&>button]:w-full [&>button]:gap-2 [&>button]:text-sm">
@@ -143,8 +143,8 @@ export function DashboardSetupAction({
       <div className="space-y-4">
         <p className="text-sm leading-relaxed text-muted">
           Her sitenin araştırmasını, sıralamalarını ve bağlantılarını kendi
-          projesinde tutun. Yan menüdeki proje değiştiriciden → Yeni proje ile
-          istediğiniz zaman ekleyebilirsiniz.
+          projesinde tutun. Yan menüdeki proje değiştiriciden "Yeni proje"
+          diyerek istediğiniz zaman ekleyebilirsiniz.
         </p>
         <button
           type="button"

@@ -45,7 +45,7 @@ function ReportsPage() {
     <PageShell>
       <PageHeader
         title="Raporlar"
-        description="Projeniz için hazırlanmış SEO raporları. Her raporu buradan açabilir, indirebilir ya da silebilirsiniz."
+        description="Hazırlanan raporlar. Her raporu açabilir, indirebilir ya da silebilirsiniz."
         actions={
           <PageActions>
             <RefreshButton
@@ -59,14 +59,14 @@ function ReportsPage() {
               <CopyButton
                 primary
                 value={reportRequestPrompt(projectId)}
-                label="Yeni rapor iste"
-                successMessage="İstem kopyalandı, ajanınıza yapıştırın"
+                label="Rapor komutunu kopyala"
+                successMessage="Komut kopyalandı. Ajanınıza yapıştırın"
               />
             )}
             <Link
               to="/p/$projectId/reports/templates"
               params={{ projectId }}
-              className="btn btn-ghost btn-sm"
+              className="btn btn-outline btn-sm"
             >
               Şablonlar
             </Link>

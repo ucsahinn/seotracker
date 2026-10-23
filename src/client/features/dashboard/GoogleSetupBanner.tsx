@@ -31,15 +31,16 @@ export function GoogleSetupBanner() {
           Google erişim anahtarı eksik
         </p>
         <p>
-          Search Console ve Analytics aynı Google erişim anahtarını kullanır.
-          Anahtarı girene kadar ikisi de bağlanamaz.
+          Search Console ve Analytics aynı erişim anahtarını kullanır. Önce onu
+          Ayarlar'a girin.
         </p>
         <div className="flex flex-wrap items-center gap-4 pt-1">
           <Link
             to="/settings"
+            hash="google"
             className="font-medium text-base-content underline underline-offset-2"
           >
-            İstemci kimliğini Ayarlar'a girin
+            Google erişim anahtarını Ayarlar'a girin
           </Link>
           <SafeExternalLink
             url={GSC_SELF_HOSTED_SETUP_DOCS_URL}

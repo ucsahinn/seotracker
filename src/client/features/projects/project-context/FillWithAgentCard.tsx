@@ -44,7 +44,9 @@ export function FillWithAgentCard({
           <Sparkles className="mt-0.5 size-4 shrink-0 text-muted" aria-hidden />
           <div className="min-w-0 space-y-1">
             <h2 className="text-sm font-medium text-base-content">
-              {isEmpty ? "Ajanınıza doldurtun" : "Ajanınıza gözden geçirtin"}
+              {isEmpty
+                ? "Ajanınıza doldurtabilirsiniz"
+                : "Ajanınıza gözden geçirtin"}
             </h2>
             <p className="max-w-prose text-sm text-muted">
               {isEmpty

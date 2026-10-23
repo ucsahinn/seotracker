@@ -92,7 +92,7 @@ export function useLaunchController({
 
       if (effectiveMaxPages > 500) {
         const confirmed = window.confirm(
-          `${formatNumber(effectiveMaxPages)} sayfa taranacak. Bunda bir sakınca yok ama biraz zaman alabilir. Devam edilsin mi?`,
+          `${formatNumber(effectiveMaxPages)} sayfa taranacak. Biraz zaman alabilir. Devam edelim mi?`,
         );
         if (!confirmed) {
           return;

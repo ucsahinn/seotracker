@@ -2,9 +2,10 @@ import { PageHeader, PageShell } from "@/client/components/PageShell";
 import * as React from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ChevronRight, FolderPlus, Plus } from "lucide-react";
+import { FolderPlus, Plus } from "lucide-react";
 import { PageActions, RefreshButton } from "@/client/components/RefreshButton";
 import { EmptyState } from "@/client/components/EmptyState";
+import { StatusPill } from "@/client/components/StatusPill";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { toast } from "sonner";
 import {
@@ -39,7 +40,7 @@ function ProjectsPage() {
     <PageShell width="reading">
       <PageHeader
         title="Projeler"
-        description="Her projenin kendi Search Console bağlantısı, arama performansı verisi ve site denetimleri olur."
+        description="Her projenin kendi Search Console bağlantısı, arama verisi ve site denetimleri vardır."
         actions={
           <PageActions>
             <RefreshButton
@@ -82,26 +83,35 @@ function ProjectsPage() {
       ) : (
         <ul className="divide-y divide-base-300 overflow-hidden rounded-box border border-base-300">
           {projects.map((project) => (
-            <li key={project.id}>
+            <li
+              key={project.id}
+              className="flex items-center gap-3 transition-colors hover:bg-base-200/40"
+            >
+              {/* The row opens the project; the action on the right is the
+                  one thing worth doing from this list, kept as a sibling
+                  because a link cannot sit inside a link. */}
+              <Link
+                to="/p/$projectId"
+                params={{ projectId: project.id }}
+                className="flex min-w-0 flex-1 flex-col p-3"
+              >
+                <span className="flex items-center gap-2">
+                  <span className="truncate font-medium">{project.name}</span>
+                  {/* With one project "active" is not information. */}
+                  {projects.length > 1 && project.id === currentProjectId ? (
+                    <StatusPill tone="neutral" label="Etkin" />
+                  ) : null}
+                </span>
+                <span className="truncate text-xs text-muted">
+                  {project.domain ?? "Site eklenmedi"}
+                </span>
+              </Link>
               <Link
                 to="/p/$projectId/settings"
                 params={{ projectId: project.id }}
-                className="flex items-center justify-between gap-3 p-3 transition-colors hover:bg-base-200/40"
+                className="btn btn-ghost btn-sm mr-2 shrink-0"
               >
-                <span className="flex min-w-0 flex-col">
-                  <span className="flex items-center gap-2">
-                    <span className="truncate font-medium">{project.name}</span>
-                    {project.id === currentProjectId ? (
-                      <span className="shrink-0 rounded-full bg-base-300/70 px-1.5 py-0.5 text-xs font-medium uppercase tracking-wide text-muted">
-                        Etkin
-                      </span>
-                    ) : null}
-                  </span>
-                  <span className="truncate text-xs text-muted">
-                    {project.domain ?? "Site belirlenmemiş"}
-                  </span>
-                </span>
-                <ChevronRight className="size-4 shrink-0 text-muted" />
+                {project.domain ? "Ayarlar" : "Site ekle"}
               </Link>
             </li>
           ))}
@@ -153,7 +163,7 @@ function ArchivedProjects() {
                 {project.name}
               </span>
               <span className="truncate text-xs text-muted">
-                {project.domain ?? "Site belirlenmemiş"}
+                {project.domain ?? "Site eklenmedi"}
               </span>
             </span>
             <button

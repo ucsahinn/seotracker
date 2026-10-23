@@ -162,7 +162,7 @@ export function QueriesSummary({
     return (
       <Card
         title={title}
-        description="Bu filtrelerle Search Console sorgu döndürmedi, bu yüzden dağılım çizilemiyor."
+        description="Bu filtrelerle Search Console sorgu vermedi, bu yüzden dağılım çizilemiyor."
       />
     );
   }
@@ -192,7 +192,7 @@ export function PagesSummary({
     return (
       <Card
         title={title}
-        description="Bu filtrelerle Search Console sayfa döndürmedi, bu yüzden dağılım çizilemiyor."
+        description="Bu filtrelerle Search Console sayfa vermedi, bu yüzden dağılım çizilemiyor."
       />
     );
   }
@@ -222,7 +222,7 @@ export function StrikingSummary({
   rows,
   ...selection
 }: { rows: Row[] } & Selection) {
-  const title = "Eşiğe yakın fırsat";
+  const title = "Sıra 5-20 fırsatı";
   if (rows.length === 0) {
     return (
       <Card
@@ -241,7 +241,7 @@ export function StrikingSummary({
       <Bars
         buckets={buckets}
         selection={selection}
-        summary={`Eşiğe yakın ${formatCount(rows.length)} sorgunun ${formatCount(impressions)} gösterimi, sıra 5-10 ve 11-20 olarak bölünmüş.`}
+        summary={`Sıra 5-20 arasındaki ${formatCount(rows.length)} sorgunun ${formatCount(impressions)} gösterimi, sıra 5-10 ve 11-20 olarak bölünmüş.`}
       />
       <Chips rows={rows} ids={STRIKING_CHIPS} selection={selection} />
     </Card>
@@ -291,7 +291,7 @@ export function CannibalizationSummary({
         title={title}
         description={
           data.queriesAnalyzed === 0
-            ? "Search Console bu dönem için sorgu döndürmedi, bu yüzden karşılaştırılacak bir şey yok."
+            ? "Search Console bu dönem için sorgu vermedi, bu yüzden karşılaştırılacak bir şey yok."
             : "Hiçbir sorguda iki sayfanız birbiriyle yarışmıyor, bu yüzden özetlenecek bir şey yok."
         }
       />

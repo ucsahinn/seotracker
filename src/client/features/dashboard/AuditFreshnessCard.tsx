@@ -22,7 +22,7 @@ export function AuditFreshnessCard({ projectId }: { projectId: string }) {
   if (freshness.isError) {
     return (
       <p className="text-sm text-muted">
-        Denetim tazeliği okunamadı.{" "}
+        Son denetimin ne kadar eski olduğu okunamadı.{" "}
         <button
           type="button"
           className="link link-hover text-primary"
@@ -116,9 +116,7 @@ function IssueDeltaList({
 }) {
   return (
     <div className="space-y-2">
-      <h3 className="text-xs font-semibold uppercase tracking-wide text-muted">
-        {title}
-      </h3>
+      <h3 className="text-xs font-medium text-muted">{title}</h3>
       {items.length === 0 ? (
         <p className="text-sm text-muted">{emptyLabel}</p>
       ) : (

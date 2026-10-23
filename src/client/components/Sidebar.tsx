@@ -1,16 +1,12 @@
 import { Link } from "@tanstack/react-router";
 import type { LinkOptions } from "@tanstack/react-router";
 import { type ComponentType } from "react";
-import { CircleHelp, Settings, User, X } from "lucide-react";
+import { CircleHelp, Settings, X } from "lucide-react";
 import {
   connectNavGroup,
   getProjectNavGroups,
 } from "@/client/navigation/items";
 import { ProjectSwitcher } from "@/client/features/projects/ProjectSwitcher";
-import { ThemePreferenceMenuItems } from "@/client/components/ThemePreferenceMenuItems";
-import { closeDropdown } from "@/client/lib/dropdown";
-import { useQuery } from "@tanstack/react-query";
-import { getCurrentUser } from "@/serverFunctions/currentUser";
 
 interface SidebarProps {
   projectId: string | null;
@@ -19,13 +15,15 @@ interface SidebarProps {
 }
 
 const navItemBaseClass =
-  "relative flex items-center gap-2.5 rounded-field px-3 py-2 text-sm text-muted";
+  "flex items-center gap-2.5 rounded-field px-3 py-2 text-sm text-muted";
 
 // Hover uses a lighter tint than the active background (bg-base-300/50) so a
 // hovered item next to the active one stays visually distinct instead of
 // merging into a single block.
 const navItemClass = `${navItemBaseClass} transition-colors hover:bg-base-300/30 hover:text-base-content`;
 
+// The fill alone marks the active item; a bar on top of it said the same thing
+// twice.
 const navItemActiveProps = {
   // Keep the active tint on hover so the active item does not fall back to the
   // lighter hover background of navItemClass.
@@ -52,15 +50,8 @@ function SidebarNavLink({
       className={navItemClass}
       activeProps={navItemActiveProps}
     >
-      {({ isActive }: { isActive: boolean }) => (
-        <>
-          {isActive ? (
-            <div className="nav-active-bar absolute left-0 top-1 bottom-1 w-[3px] rounded-r-full bg-primary" />
-          ) : null}
-          <Icon className="h-4 w-4 shrink-0" />
-          <span className="truncate">{label}</span>
-        </>
-      )}
+      <Icon className="h-4 w-4 shrink-0" />
+      <span className="truncate">{label}</span>
     </Link>
   );
 }
@@ -103,10 +94,12 @@ export function Sidebar({ projectId, onNavigate, onClose }: SidebarProps) {
         className="min-h-0 flex-1 overflow-y-auto px-2 py-2"
       >
         {navGroups.map((group) => (
-          <div key={group.label} className="mb-1">
-            <div className="px-3 pb-1 pt-3 text-xs font-semibold uppercase tracking-wider text-subtle">
-              {group.label}
-            </div>
+          <div key={group.label ?? "top"} className="mb-1">
+            {group.label ? (
+              <div className="px-3 pb-1 pt-3 text-xs font-semibold uppercase tracking-wider text-subtle">
+                {group.label}
+              </div>
+            ) : null}
             {group.items.map((item) => {
               const { icon, label, ...linkProps } = item;
               return (
@@ -129,23 +122,6 @@ export function Sidebar({ projectId, onNavigate, onClose }: SidebarProps) {
 }
 
 function SidebarFooter({ onNavigate }: { onNavigate?: () => void }) {
-  /*
-   * `staleTime: Infinity` because the identity cannot change without a
-   * reload: there is no sign-in, and the auth mode resolves it per request
-   * from a header this session cannot alter.
-   */
-  const user = useQuery({
-    queryKey: ["currentUser"],
-    queryFn: () => getCurrentUser(),
-    staleTime: Infinity,
-  });
-  const email = user.data?.email;
-
-  const closeMenu = () => {
-    closeDropdown();
-    onNavigate?.();
-  };
-
   return (
     <div className="shrink-0 border-t border-base-300 px-2 py-2 pb-safe">
       <SidebarNavLink
@@ -154,41 +130,12 @@ function SidebarFooter({ onNavigate }: { onNavigate?: () => void }) {
         onNavigate={onNavigate}
         linkProps={{ to: "/support" }}
       />
-
-      {email ? (
-        <div className="dropdown dropdown-top w-full">
-          <button
-            type="button"
-            tabIndex={0}
-            className={`${navItemClass} w-full`}
-            aria-label="Hesap menüsünü aç"
-          >
-            <User className="h-4 w-4 shrink-0" />
-            <span className="truncate" data-ph-mask>
-              {email}
-            </span>
-          </button>
-          <ul
-            tabIndex={0}
-            className="dropdown-content z-30 menu mb-1 w-56 rounded-box border border-base-300 bg-base-100 p-2 shadow-lg"
-          >
-            <li>
-              <Link to="/settings" onClick={closeMenu}>
-                <Settings className="h-4 w-4" />
-                Ayarlar
-              </Link>
-            </li>
-            <ThemePreferenceMenuItems />
-          </ul>
-        </div>
-      ) : (
-        <SidebarNavLink
-          icon={Settings}
-          label="Ayarlar"
-          onNavigate={onNavigate}
-          linkProps={{ to: "/settings" }}
-        />
-      )}
+      <SidebarNavLink
+        icon={Settings}
+        label="Ayarlar"
+        onNavigate={onNavigate}
+        linkProps={{ to: "/settings" }}
+      />
     </div>
   );
 }

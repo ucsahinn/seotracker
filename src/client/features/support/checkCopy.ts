@@ -47,25 +47,25 @@ export function describeCheck(
     }
     if (/Only one of/.test(detail)) {
       return say(
-        "GOOGLE_CLIENT_ID ve GOOGLE_CLIENT_SECRET'ten yalnızca biri tanımlı. İkisi birden gerekir; ya da ikisini de boş bırakıp istemciyi Ayarlar'dan girin.",
+        "GOOGLE_CLIENT_ID ve GOOGLE_CLIENT_SECRET'ten yalnızca biri tanımlı. İkisi de gerekir. Ya da ikisini de boş bırakıp Google erişim anahtarını Ayarlar'dan girin.",
         "warn",
       );
     }
     if (check.status === "ok" && googleReady === false) {
       return say(
-        "Google istemcisi ya da hizmet hesabı henüz girilmedi. Girmeden Search Console ve Analytics bağlanamaz.",
+        "Google erişim anahtarı ya da hizmet hesabı henüz girilmedi. Girmeden Search Console ve Analytics bağlanamaz.",
         "warn",
       );
     }
     if (check.status === "ok") {
       return say(
         /ortam|environment/i.test(detail)
-          ? "Google OAuth istemcisi ortam değişkenlerinden geliyor."
+          ? "Google erişim anahtarı ortam değişkenlerinden geliyor."
           : googleReady === null
-            ? "Google bağlantısı ayarı okunuyor."
+            ? "Google bağlantı ayarı okunuyor."
             : googleReady
-              ? "Google erişimi tanımlı."
-              : "Google istemcisi Ayarlar'da tanımlı.",
+              ? "Google erişimi hazır."
+              : "Google erişim anahtarı Ayarlar'da kayıtlı.",
       );
     }
   }
@@ -88,19 +88,19 @@ export function describeCheck(
 
   if (key === "auth") {
     if (check.status === "ok") {
-      return detail.startsWith("Parolasız")
+      return detail.startsWith("Giriş yok")
         ? say(detail)
-        : say("Kimlik doğrulama ayarlı.");
+        : say("Giriş koruması ayarlı.");
     }
     if (/Reachable off localhost/.test(detail)) {
       return say(
-        "Bu kurulum parolasız ama dışarıdan erişime açık görünüyor; açan herkes yönetici olur. Önüne kendi şifreli girişinizi koyun ya da uygulamayı yalnızca bu bilgisayara (127.0.0.1) açık tutun.",
+        "Bu kurulum parolasız ama dışarıdan erişime açık görünüyor; açan herkes yönetici olur. Önüne kendi giriş korumanızı koyun ya da uygulamayı yalnızca bu bilgisayara (127.0.0.1) açık tutun.",
       );
     }
     return say(
       installKind === "windows"
-        ? "Kimlik doğrulama ayarı eksik ya da geçersiz. Görev çubuğu menüsünden Kurulumu onar deyin; düzelmezse Sorunu bildir."
-        : "Kimlik doğrulama ayarı eksik ya da geçersiz. AUTH_MODE, TEAM_DOMAIN ve POLICY_AUD değerlerini docs/ENVIRONMENT.md'ye göre kontrol edin.",
+        ? "Giriş ayarı eksik ya da geçersiz. Görev çubuğu menüsünden Kurulumu onar deyin; düzelmezse Sorunu bildir."
+        : "Giriş ayarı eksik ya da geçersiz. AUTH_MODE, TEAM_DOMAIN ve POLICY_AUD değerlerini docs/ENVIRONMENT.md'ye göre kontrol edin.",
     );
   }
 

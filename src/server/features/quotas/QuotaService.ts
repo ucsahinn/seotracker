@@ -57,7 +57,7 @@ function pageSpeedDetail(
 ): string {
   const key = keySource
     ? "Anahtar tanımlı."
-    : `Anahtar yok: anahtarsız denetimde en çok ${formatNumber(UNKEYED_LIGHTHOUSE_PAGE_CAP)} sayfa ölçülür.`;
+    : `PageSpeed anahtarı yok: denetimde en fazla ${formatNumber(UNKEYED_LIGHTHOUSE_PAGE_CAP)} sayfanın hızı ölçülür. Anahtarı Ayarlar > Hız ölçümü bölümünden girebilirsiniz.`;
   const events: string[] = [];
   if (usage.quotaEvents > 0) {
     events.push(
@@ -114,7 +114,7 @@ function ga4Item(input: {
     id,
     kind: "ga4" as const,
     label,
-    unit: "belirteç" as const,
+    unit: "puan" as const,
     source: "Google yanıtındaki son kota bilgisi",
     updatedAt: seenAt,
   };
@@ -128,7 +128,7 @@ function ga4Item(input: {
         "Uygulama yeniden başladığından ya da GA4 bağlantısı değiştiğinden beri bu bağlantıyla GA4 raporu çalışmadı; sayaç bir rapor çalışınca dolar.",
     };
   }
-  const lastCost = `Son istek: ${formatNumber(pair.consumed)} belirteç.`;
+  const lastCost = `Son istek: ${formatNumber(pair.consumed)} puan.`;
   // Above the assumed ceiling this is not a standard property: show what is
   // left and draw no bar, since a bar needs a real denominator.
   if (pair.remaining > ceiling) {
@@ -155,7 +155,7 @@ function ga4Items(snapshot: Ga4QuotaSnapshot | null): QuotaItem[] {
   return [
     ga4Item({
       id: "ga4_daily",
-      label: "GA4 Data API: günlük belirteç",
+      label: "Analytics (GA4) günlük kota puanı",
       windowLabel: "günlük",
       ceiling: GA4_STANDARD_CEILING.daily,
       pair: snapshot?.tokensPerDay ?? null,
@@ -163,7 +163,7 @@ function ga4Items(snapshot: Ga4QuotaSnapshot | null): QuotaItem[] {
     }),
     ga4Item({
       id: "ga4_hourly",
-      label: "GA4 Data API: saatlik belirteç",
+      label: "Analytics (GA4) saatlik kota puanı",
       windowLabel: "saatlik",
       ceiling: GA4_STANDARD_CEILING.hourly,
       pair: snapshot?.tokensPerHour ?? null,

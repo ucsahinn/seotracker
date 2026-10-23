@@ -322,9 +322,7 @@ function TextFilter({
 
   return (
     <label className="form-control gap-1.5">
-      <span className="text-[11px] font-semibold uppercase tracking-wide text-muted">
-        {label}
-      </span>
+      <span className="text-xs font-semibold text-muted">{label}</span>
       <input
         className="input input-bordered input-sm w-full bg-base-100"
         type={type}
@@ -351,9 +349,7 @@ function RangeFilter({
 }) {
   return (
     <div className="space-y-2 rounded-box border border-base-300 bg-base-100 p-2.5">
-      <p className="text-[11px] font-semibold uppercase tracking-wide text-muted">
-        {label}
-      </p>
+      <p className="text-xs font-semibold text-muted">{label}</p>
       {/*
        * Named individually. The heading above is a <p> that labels nothing,
        * and the placeholders are the only other text -- so with five of
@@ -395,9 +391,7 @@ function SelectFilter<T extends string>({
 }) {
   return (
     <label className="form-control gap-1.5">
-      <span className="text-[11px] font-semibold uppercase tracking-wide text-muted">
-        {label}
-      </span>
+      <span className="text-xs font-semibold text-muted">{label}</span>
       <select
         className="select select-bordered select-sm w-full bg-base-100"
         value={value}

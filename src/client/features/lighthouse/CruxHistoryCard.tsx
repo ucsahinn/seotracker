@@ -96,7 +96,7 @@ export function CruxHistoryCard({ url }: { url: string }) {
         />
       ) : data?.status === "no_key" ? (
         <Message
-          text="Bu geçmiş için Google anahtarı gerekiyor; PageSpeed anahtarıyla aynı."
+          text="Bu geçmiş için PageSpeed anahtarı gerekiyor."
           action={
             <Link to="/settings" className="btn btn-xs">
               Ayarlar&apos;a git
@@ -138,9 +138,9 @@ function Trends({ series }: { series: CruxSeries[] }) {
   return (
     <>
       <p className="mt-1 text-xs leading-relaxed text-muted">
-        Her nokta, o haftada biten 28 günlük pencerenin ziyaretçilerin yüzde
-        75&apos;inin gördüğü değerdir (p75). Kesikli çizgiler iyi ve zayıf
-        sınırlarıdır.
+        Her nokta, o haftada biten 28 günde ziyaretçilerin yüzde 75&apos;inin
+        gördüğü değerdir (p75). Kesikli çizgiler iyi ile zayıf arasındaki
+        sınırlardır.
       </p>
       <ul className="mt-3 grid gap-3 sm:grid-cols-3">
         {items.map(({ entry, summary }) => (

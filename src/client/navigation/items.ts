@@ -6,11 +6,11 @@ import {
   ClipboardCheck,
   FileText,
   LayoutDashboard,
+  Search,
   Target,
   TrendingUp,
 } from "lucide-react";
 import { linkOptions } from "@tanstack/react-router";
-import { GoogleGlyphMuted } from "@/client/features/gsc/GoogleGlyph";
 
 const projectNavItems = [
   {
@@ -44,7 +44,7 @@ const projectNavItems = [
   {
     to: "/p/$projectId/search-performance" as const,
     label: "Arama performansı",
-    icon: GoogleGlyphMuted,
+    icon: Search,
   },
   {
     to: "/p/$projectId/audit" as const,
@@ -63,7 +63,7 @@ const projectNavItems = [
   },
 ] as const;
 
-// Project-independent. Rendered inside the project "AI" group when a project
+// Project-independent. Rendered inside the project "Ajan" group when a project
 // is selected, and on its own (connectNavGroup) when none is.
 const aiNavItem = linkOptions({
   to: "/ai" as const,
@@ -72,9 +72,9 @@ const aiNavItem = linkOptions({
 });
 
 // Shown only when no project is selected; with a project, Agent setup lives in
-// the "AI" group below.
+// the "Ajan" group below.
 export const connectNavGroup = {
-  label: "Yapay zeka",
+  label: "Ajan",
   items: [aiNavItem],
 };
 
@@ -88,8 +88,9 @@ function getProjectNavItems(projectId: string) {
   );
 }
 
-// Grouped by scope: "My Site" is this project's own domain — every data source
-// here is free and tied to a site you verified yourself.
+// Grouped by scope: "Arama ve site" is this project's own domain — every data
+// source here is free and tied to a site you verified yourself. Panel stands
+// alone at the top with no heading: a heading over one item says nothing.
 export function getProjectNavGroups(projectId: string) {
   const all = getProjectNavItems(projectId);
   const byPath = (path: (typeof projectNavItems)[number]["to"]) =>
@@ -97,11 +98,11 @@ export function getProjectNavGroups(projectId: string) {
 
   return [
     {
-      label: "Genel",
+      label: null,
       items: [byPath("/p/$projectId")],
     },
     {
-      label: "Sitem",
+      label: "Arama ve site",
       items: [
         byPath("/p/$projectId/search-performance"),
         byPath("/p/$projectId/rankings"),
@@ -112,7 +113,7 @@ export function getProjectNavGroups(projectId: string) {
       ],
     },
     {
-      label: "Yapay zeka",
+      label: "Ajan",
       items: [
         byPath("/p/$projectId/reports"),
         byPath("/p/$projectId/context"),

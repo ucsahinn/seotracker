@@ -15,7 +15,8 @@ export function strikingEmptyCopy({
   if (filtered) {
     return {
       title: "Bu gruba uyan sorgu yok",
-      description: "Seçimi kaldırarak tüm eşiğe yakın sorgulara dönün.",
+      description:
+        "Seçimi kaldırarak sıra 5-20 arasındaki tüm sorgulara dönün.",
     };
   }
   if (hasQueryData) {

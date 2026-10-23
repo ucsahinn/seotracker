@@ -13,8 +13,8 @@ export function EmptyArchivePanel({ projectId }: { projectId: string }) {
     <section className="rounded-box border border-base-300 bg-base-100">
       <EmptyState
         icon={TrendingUp}
-        title="Henüz hangi kelimeyle arandığınız bilinmiyor"
-        description="Bu ekran sitenizin hangi aramalarda kaçıncı sırada çıktığını izler. Search Console kelime düzeyinde veri verdikçe burada birikir. Az ziyaretçili sitelerde bu birkaç hafta sürebilir. Bu sırada toplam tıklama ve gösterime Arama performansı'ndan bakın."
+        title="Hangi kelimelerle arandığınız henüz görünmüyor"
+        description="Sitenizin hangi aramalarda kaçıncı sırada çıktığını burada izlersiniz. Search Console kelime bazında veri verdikçe birikir. Az ziyaretçisi olan sitelerde birkaç hafta sürebilir. O zamana kadar toplam tıklama ve gösterime Arama performansı'ndan bakın."
         action={
           <Link
             to="/p/$projectId/search-performance"
@@ -22,6 +22,31 @@ export function EmptyArchivePanel({ projectId }: { projectId: string }) {
             className="btn btn-sm btn-outline"
           >
             Arama performansını aç
+          </Link>
+        }
+      />
+    </section>
+  );
+}
+
+/**
+ * Search Console is not connected, so "pick a wider range" would be wrong
+ * advice. One sentence and the one action that fills the screen.
+ */
+export function NotConnectedPanel({ projectId }: { projectId: string }) {
+  return (
+    <section className="rounded-box border border-base-300 bg-base-100">
+      <EmptyState
+        icon={TrendingUp}
+        title="Henüz sıralama verisi yok"
+        description="Search Console'u bağlayınca geçmiş günler kendiliğinden birikir."
+        action={
+          <Link
+            to="/p/$projectId/settings/integrations"
+            params={{ projectId }}
+            className="btn btn-sm btn-primary"
+          >
+            Search Console&apos;u bağla
           </Link>
         }
       />

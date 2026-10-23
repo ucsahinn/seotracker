@@ -54,7 +54,7 @@ export function MetricTile({
   /** Lower is better, as with an average search position. */
   inverted = false,
 }: {
-  /** A node so a Latin brand word can carry lang="en": uppercasing it under lang="tr" turns "Analytics" into "ANALYTİCS". */
+  /** A node so a Latin brand word can carry lang="en". */
   label: React.ReactNode;
   value: string | null;
   delta?: MetricDelta;
@@ -68,11 +68,9 @@ export function MetricTile({
   const flash = useFlashOnChange(flashKey === undefined ? value : flashKey);
   const body = (
     <>
-      <p className="truncate text-xs font-medium uppercase tracking-wider text-muted">
-        {label}
-      </p>
+      <p className="truncate text-xs font-medium text-muted">{label}</p>
       {value === null ? (
-        <p className="text-2xl font-semibold text-subtle">--</p>
+        <p className="text-2xl font-semibold text-subtle">–</p>
       ) : (
         <div className="flex items-baseline gap-2">
           {/* Remounted by the key when a refetch changes the number, so the

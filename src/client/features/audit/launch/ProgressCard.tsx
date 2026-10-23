@@ -13,7 +13,7 @@ import {
 import { getCrawlProgress } from "@/serverFunctions/audit";
 
 const PHASE_LABEL: Record<string, string> = {
-  discovery: "Keşif",
+  discovery: "Sayfa bulma",
   crawling: "Taranıyor",
   lighthouse: "Hız ölçümü",
   finalizing: "Tamamlanıyor",
@@ -22,7 +22,7 @@ const PHASE_LABEL: Record<string, string> = {
 /** Step list for the phases this audit will actually go through. */
 function phaseSteps(withLighthouse: boolean) {
   return [
-    { key: "discovery", label: "Keşif" },
+    { key: "discovery", label: "Sayfa bulma" },
     { key: "crawling", label: "Tarama" },
     ...(withLighthouse ? [{ key: "lighthouse", label: "Hız ölçümü" }] : []),
     { key: "finalizing", label: "Tamamlanıyor" },

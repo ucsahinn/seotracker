@@ -27,7 +27,7 @@ const SEGMENTS: {
     key: "info",
     label: "Bilgi",
     fill: "bg-base-content/30",
-    hint: "Fırsat niteliğinde küçük iyileştirmeler.",
+    hint: "Küçük iyileştirme fırsatları.",
   },
 ];
 

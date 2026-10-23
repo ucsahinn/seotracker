@@ -126,7 +126,7 @@ export function SavedKeywordsSummary({
               params={{ projectId }}
               className="link link-primary"
             >
-              entegrasyon ayarlarından
+              Bağlantılar sekmesinden
             </Link>{" "}
             bakabilirsiniz.
           </p>
@@ -164,7 +164,7 @@ export function SavedKeywordsSummary({
 
       <DonutCard
         title="Sıra dağılımı"
-        description="Bir gruba tıklayınca tablo yalnızca o gruptaki anahtar kelimeleri gösterir."
+        description="Bir gruba tıklayınca tablo yalnızca o gruptaki kelimeleri gösterir."
         segments={segments}
         totalLabel="kelime"
         summary={donutSummary(segments, "kelime")}

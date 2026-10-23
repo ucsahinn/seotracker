@@ -43,7 +43,7 @@ const DESCRIPTIONS: Record<
   commercial: {
     label: INTENT_LABELS.commercial,
     description:
-      "Arayan kişi satın almadan önce seçenekleri inceliyor. Karşılaştırma, alternatif ve ürün odaklı sayfalar için satın alma niyeti sayın.",
+      "Arayan kişi satın almadan önce seçenekleri inceliyor. Karşılaştırma, alternatif ve ürün sayfaları bu aramaya uyar.",
   },
   transactional: {
     label: INTENT_LABELS.transactional,
@@ -53,7 +53,7 @@ const DESCRIPTIONS: Record<
   navigational: {
     label: INTENT_LABELS.navigational,
     description:
-      "Arayan kişi belirli bir siteyi, markayı ya da sayfayı arıyor. Bu aramalar genellikle beklenen hedefe birebir karşılık gelmeyi ödüllendirir.",
+      "Arayan kişi belirli bir siteyi, markayı ya da sayfayı arıyor. Bu aramalarda beklenen siteyle birebir eşleşen sayfa öne çıkar.",
   },
   unknown: {
     label: INTENT_LABELS.unknown,

@@ -23,7 +23,7 @@ const COPY: Partial<Record<Ga4ReportKindName, Copy>> = {
     icon: Target,
     title: "Bu dönemde anahtar olay kaydı yok",
     because:
-      "Mülkte hiçbir olay anahtar olay olarak işaretlenmemiş olabilir ya da işaretlenen olaylar bu aralıkta hiç gerçekleşmemiş olabilir.",
+      "Mülkte hiçbir olay anahtar olay işaretli olmayabilir ya da işaretli olaylar bu aralıkta hiç olmamış olabilir.",
     help: {
       label: "Anahtar olay nasıl tanımlanır",
       url: "https://support.google.com/analytics/answer/9267568",
@@ -33,7 +33,7 @@ const COPY: Partial<Record<Ga4ReportKindName, Copy>> = {
     icon: ShoppingCart,
     title: "Bu dönemde ürün verisi yok",
     because:
-      "Mülk e-ticaret olayı (ürün görüntüleme, sepete ekleme, satın alma) göndermiyor olabilir. Mağazası olmayan bir site için bu beklenen bir durumdur.",
+      "Mülk e-ticaret olayı (ürün görüntüleme, sepete ekleme, satın alma) göndermiyor olabilir. Mağazası olmayan bir sitede bu normal.",
     help: {
       label: "GA4 e-ticaret ölçümü",
       url: "https://developers.google.com/analytics/devguides/collection/ga4/ecommerce",
@@ -43,7 +43,7 @@ const COPY: Partial<Record<Ga4ReportKindName, Copy>> = {
     icon: Search,
     title: "Bu dönemde site içi arama kaydı yok",
     because:
-      "Sitede arama kutusu yoksa ya da site içi arama ölçümü kapalıysa bu rapor boş kalır. Açık olsa bile aranan terimler henüz yoksa da boş görünür.",
+      "Sitede arama kutusu yoksa ya da site içi arama ölçümü kapalıysa bu rapor boş kalır. Açıkken de kimse bir şey aramadıysa boştur.",
     help: {
       label: "Gelişmiş ölçüm ve site içi arama",
       url: "https://support.google.com/analytics/answer/9216061",
@@ -86,8 +86,8 @@ export function ReportEmptyState({
         title="Bu dönemde veri yok"
         description={
           emptyReason
-            ? `Google bir satır döndürmedi (${emptyReason}).`
-            : "Google bu aralık için satır döndürmedi. Mülk yeni bağlandıysa veriler birkaç gün sonra görünür."
+            ? `Google hiç satır vermedi (${emptyReason}).`
+            : "Google bu aralık için satır vermedi. Mülkü yeni bağladıysanız veri birkaç gün sonra görünür."
         }
       />
     );
