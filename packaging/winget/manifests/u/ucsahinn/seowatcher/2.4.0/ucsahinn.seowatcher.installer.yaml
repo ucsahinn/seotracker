@@ -16,6 +16,6 @@ ReleaseDate: 2026-10-23
 Installers:
   - Architecture: x64
     InstallerUrl: https://github.com/ucsahinn/seotracker/releases/download/v2.4.0/seowatcher-setup-2.4.0.exe
-    InstallerSha256: 5DE6B7C51C91E09CD03EA2C4E202A8029E9298657F508026F73BB0921C5FD710
+    InstallerSha256: BBB97299AAC4E9D608B44B2442CE14D96E08F994DEA8068D7FA6BB8D258F4C30
 ManifestType: installer
 ManifestVersion: 1.6.0
