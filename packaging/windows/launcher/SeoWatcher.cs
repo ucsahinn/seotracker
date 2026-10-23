@@ -38,6 +38,9 @@ namespace SeoWatcher
         internal const string AppName = "seowatcher";
         internal const string MutexName = "Local\\seowatcher-launcher";
         internal const string QuitEventName = "Local\\seowatcher-quit";
+        // Set by a second launch (Start menu, desktop shortcut) so the running
+        // instance opens the app itself: it knows whether the server is ready.
+        internal const string OpenEventName = "Local\\seowatcher-open";
 
         [STAThread]
         private static int Main(string[] args)
@@ -47,8 +50,10 @@ namespace SeoWatcher
 
             if (quit)
             {
-                // Used by the uninstaller and by "Yeniden başlat": ask the
-                // running instance to stop and wait for it to let go of the mutex.
+                // Used by the installer and the uninstaller: ask the running
+                // instance to stop and wait until it lets go of the mutex. It
+                // stops node and workerd before releasing it, so the package
+                // files are free once this returns 0.
                 try
                 {
                     using (var ev = EventWaitHandle.OpenExisting(QuitEventName))
@@ -56,11 +61,11 @@ namespace SeoWatcher
                         ev.Set();
                     }
                 }
-                catch (WaitHandleCannotBeOpenedException)
+                catch (Exception)
                 {
                     return 0;
                 }
-                for (int i = 0; i < 100; i++)
+                for (int i = 0; i < 300; i++)
                 {
                     bool createdNew;
                     using (var probe = new Mutex(false, MutexName, out createdNew))
@@ -77,7 +82,20 @@ namespace SeoWatcher
             {
                 if (!isFirstInstance)
                 {
-                    // Second launch: just bring the app up in the browser.
+                    // A second start at sign-in (a Run entry for all users and
+                    // one for this user) must not pop up a browser.
+                    if (silent) return 0;
+                    // Otherwise the running instance opens the app: it waits
+                    // for the server instead of showing a page that is not up.
+                    try
+                    {
+                        using (var ev = EventWaitHandle.OpenExisting(OpenEventName))
+                        {
+                            ev.Set();
+                            return 0;
+                        }
+                    }
+                    catch (Exception) { }
                     var cfg = Config.Load();
                     Browser.Open("http://127.0.0.1:" + cfg.Port + "/");
                     return 0;
@@ -465,8 +483,20 @@ namespace SeoWatcher
                 sb.AppendLine("---- " + Path.GetFileName(log) + " (son 25 satır)");
                 try
                 {
-                    var lines = File.ReadAllLines(log);
-                    for (int i = Math.Max(0, lines.Length - 25); i < lines.Length; i++) sb.AppendLine(lines[i]);
+                    // server.log is open for writing while the server runs:
+                    // File.ReadAllLines would fail on the sharing mode.
+                    var lines = new List<string>();
+                    using (var stream = new FileStream(log, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete))
+                    using (var reader = new StreamReader(stream, Encoding.UTF8))
+                    {
+                        string line;
+                        while ((line = reader.ReadLine()) != null)
+                        {
+                            lines.Add(line);
+                            if (lines.Count > 25) lines.RemoveAt(0);
+                        }
+                    }
+                    foreach (var line in lines) sb.AppendLine(line);
                 }
                 catch { sb.AppendLine("(okunamadı)"); }
                 sb.AppendLine();
@@ -512,8 +542,32 @@ namespace SeoWatcher
         }
     }
 
+    /// <summary>Size limits for the three log files. A file over its limit is
+    /// moved to name.old.log (replacing the previous one), so the last two
+    /// generations are always there for a bug report.</summary>
+    internal static class LogFile
+    {
+        public static string OldPath(string path)
+        {
+            return Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path) + ".old.log");
+        }
+
+        public static void Rotate(string path, long maxBytes)
+        {
+            try
+            {
+                var info = new FileInfo(path);
+                if (!info.Exists || info.Length <= maxBytes) return;
+                string old = OldPath(path);
+                if (File.Exists(old)) File.Delete(old);
+                File.Move(path, old);
+            }
+            catch { }
+        }
+    }
+
     /// <summary>launcher.log: what the tray app itself did, separate from the
-    /// server's own output. A start after it passes 1 MB truncates it.</summary>
+    /// server's own output. Rotated at 1 MB.</summary>
     internal static class LauncherLog
     {
         private static readonly object gate = new object();
@@ -525,8 +579,7 @@ namespace SeoWatcher
                 try
                 {
                     Directory.CreateDirectory(Paths.LogDir);
-                    var info = new FileInfo(Paths.LauncherLog);
-                    if (info.Exists && info.Length > 1024 * 1024) info.Delete();
+                    LogFile.Rotate(Paths.LauncherLog, 1024 * 1024);
                     File.AppendAllText(Paths.LauncherLog, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " " + line + "\r\n", new UTF8Encoding(false));
                 }
                 catch { }
@@ -534,13 +587,18 @@ namespace SeoWatcher
         }
     }
 
-    /// <summary>config.json: only the port for now. Hand-written JSON on purpose:
-    /// no serializer dependency, one integer field.</summary>
+    /// <summary>config.json: the port, the auto-update switch and the version
+    /// that last ran. Hand-written JSON on purpose: no serializer dependency,
+    /// three flat fields. Every change re-reads the file first, so a port the
+    /// user typed in while the app runs is not overwritten.</summary>
     internal sealed class Config
     {
-        public int Port = 3001;
+        public const int DefaultPort = 3001;
+        public int Port = DefaultPort;
         // Download and install a newer release by itself (verified by SHA-256).
         public bool AutoUpdate = true;
+        // The version that ran last; a lower one means an update just finished.
+        public string LastVersion;
 
         public static Config Load()
         {
@@ -558,6 +616,8 @@ namespace SeoWatcher
                     }
                     var a = System.Text.RegularExpressions.Regex.Match(text, "\"autoUpdate\"\\s*:\\s*(true|false)");
                     if (a.Success) cfg.AutoUpdate = a.Groups[1].Value == "true";
+                    var v = System.Text.RegularExpressions.Regex.Match(text, "\"lastVersion\"\\s*:\\s*\"([0-9.]{1,32})\"");
+                    if (v.Success) cfg.LastVersion = v.Groups[1].Value;
                 }
             }
             catch { }
@@ -567,7 +627,27 @@ namespace SeoWatcher
         public void Save()
         {
             Directory.CreateDirectory(Paths.DataRoot);
-            File.WriteAllText(Paths.ConfigFile, "{\n  \"port\": " + Port + ",\n  \"autoUpdate\": " + (AutoUpdate ? "true" : "false") + "\n}\n", new UTF8Encoding(false));
+            string text = "{\n  \"port\": " + Port + ",\n  \"autoUpdate\": " + (AutoUpdate ? "true" : "false")
+                + (LastVersion != null ? ",\n  \"lastVersion\": \"" + LastVersion + "\"" : "") + "\n}\n";
+            // Written next to the file and swapped in, so a crash or a full disk
+            // cannot leave a half-written config.json behind.
+            string tmp = Paths.ConfigFile + ".tmp";
+            File.WriteAllText(tmp, text, new UTF8Encoding(false));
+            if (File.Exists(Paths.ConfigFile))
+            {
+                try { File.Replace(tmp, Paths.ConfigFile, null); return; }
+                catch (IOException) { File.Delete(Paths.ConfigFile); }
+            }
+            File.Move(tmp, Paths.ConfigFile);
+        }
+
+        /// <summary>Re-reads config.json, applies one change and writes it back.</summary>
+        public static Config Update(Action<Config> change)
+        {
+            var cfg = Load();
+            change(cfg);
+            cfg.Save();
+            return cfg;
         }
     }
 
@@ -579,31 +659,39 @@ namespace SeoWatcher
             {
                 Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
             }
-            catch { }
+            catch (Exception ex) { LauncherLog.Write("browser: " + ex.Message); }
         }
+    }
+
+    /// <summary>A release the updater may install: the version and whether
+    /// the release carries the Windows installer and SHA256SUMS.txt.</summary>
+    internal sealed class Release
+    {
+        public Version Version;
+        public bool HasInstaller;
+    }
+
+    /// <summary>A download whose content failed verification; never retried
+    /// automatically, and the message says so.</summary>
+    internal sealed class UpdateVerifyException : Exception
+    {
+        public UpdateVerifyException(string message) : base(message) { }
     }
 
     /// <summary>Keeps the install current without a package manager: asks
     /// GitHub for the latest release, downloads the installer next to the data,
     /// checks it against the published SHA256SUMS.txt and runs it silently. The
     /// installer stops this instance, replaces the files and starts the new
-    /// launcher itself (see seowatcher.iss, the skipifnotsilent [Run] entry).</summary>
-    /// <summary>WebClient with a request timeout, so a stalled download cannot
-    /// leave the updater waiting until the next restart.</summary>
-    internal sealed class TimedWebClient : WebClient
-    {
-        protected override WebRequest GetWebRequest(Uri address)
-        {
-            var request = base.GetWebRequest(address);
-            if (request != null) request.Timeout = 120000;
-            return request;
-        }
-    }
-
+    /// launcher itself (see seowatcher.iss, the skipifnotsilent [Run] entry).
+    ///
+    /// Every URL is built here from the fixed repository and a parsed version
+    /// number; nothing from the API response is ever fetched. Redirects may
+    /// only land on GitHub's own hosts over HTTPS.</summary>
     internal static class Updater
     {
         public const string Repo = "ucsahinn/seotracker";
         public static readonly string UpdateDir = Path.Combine(Paths.DataRoot, "updates");
+        private const long MaxInstallerBytes = 500L * 1024 * 1024;
 
         public static Version Current()
         {
@@ -611,90 +699,201 @@ namespace SeoWatcher
             return Version.TryParse(Paths.Version(), out v) ? v : new Version(0, 0, 0);
         }
 
-        private static string Get(string url, int timeoutMs)
+        public static string InstallerName(Version v)
+        {
+            return "seowatcher-setup-" + v + ".exe";
+        }
+
+        public static string ReleasePage(Version v)
+        {
+            return "https://github.com/" + Repo + "/releases/" + (v == null ? "latest" : "tag/v" + v);
+        }
+
+        /// <summary>Installed by the setup program (an uninstaller sits next to
+        /// the launcher), not run from a build folder. Only then may an update
+        /// replace it.</summary>
+        public static bool IsInstalled()
+        {
+            return File.Exists(Path.Combine(Paths.ExeDir, "unins000.exe"));
+        }
+
+        /// <summary>A per-user install under %LOCALAPPDATA%: the update needs
+        /// no administrator, so it may run without asking.</summary>
+        public static bool IsPerUserInstall()
+        {
+            string local = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData).TrimEnd('\\') + "\\";
+            return IsInstalled() && Paths.ExeDir.StartsWith(local, StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool TrustedHost(Uri uri)
+        {
+            if (uri == null || uri.Scheme != Uri.UriSchemeHttps) return false;
+            string host = uri.Host.ToLowerInvariant();
+            return host == "github.com" || host == "api.github.com" || host.EndsWith(".githubusercontent.com");
+        }
+
+        private static HttpWebRequest Request(string url, int timeoutMs)
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             var req = (HttpWebRequest)WebRequest.Create(url);
             req.UserAgent = "seowatcher/" + Paths.Version();
-            req.Accept = "application/vnd.github+json, text/plain, */*";
+            req.Accept = "application/vnd.github+json, application/octet-stream, text/plain, */*";
             req.Timeout = timeoutMs;
+            req.ReadWriteTimeout = 60000;
             req.AllowAutoRedirect = true;
-            using (var resp = (HttpWebResponse)req.GetResponse())
-            using (var reader = new StreamReader(resp.GetResponseStream(), Encoding.UTF8))
-            {
-                return reader.ReadToEnd();
-            }
+            req.MaximumAutomaticRedirections = 5;
+            return req;
         }
 
-        /// <summary>Latest release tag as a Version, or null when offline or unchanged.</summary>
-        public static Version CheckLatest()
+        private static string Get(string url, int timeoutMs)
         {
-            try
+            using (var resp = (HttpWebResponse)Request(url, timeoutMs).GetResponse())
             {
-                string json = Get("https://api.github.com/repos/" + Repo + "/releases/latest", 10000);
-                var m = System.Text.RegularExpressions.Regex.Match(json, "\"tag_name\"\\s*:\\s*\"v?([0-9][0-9.]*)\"");
-                Version v;
-                if (m.Success && Version.TryParse(m.Groups[1].Value, out v))
+                if (!TrustedHost(resp.ResponseUri)) throw new UpdateVerifyException("Beklenmeyen adrese yönlendirildi: " + resp.ResponseUri.Host);
+                using (var reader = new StreamReader(resp.GetResponseStream(), Encoding.UTF8))
                 {
-                    LauncherLog.Write("update: latest " + v + ", installed " + Current());
-                    return v;
+                    return reader.ReadToEnd();
                 }
-                LauncherLog.Write("update: could not read tag_name");
             }
-            catch (Exception ex)
-            {
-                LauncherLog.Write("update: check failed: " + ex.Message);
-            }
-            return null;
         }
 
-        /// <summary>Downloads seowatcher-setup-X.exe and verifies it. Returns the path.</summary>
-        public static string Download(Version v, Action<string> status)
+        /// <summary>One plain Turkish sentence for a failed request.</summary>
+        public static string Describe(Exception ex)
         {
-            string name = "seowatcher-setup-" + v + ".exe";
-            string baseUrl = "https://github.com/" + Repo + "/releases/download/v" + v + "/";
-            Directory.CreateDirectory(UpdateDir);
-            string file = Path.Combine(UpdateDir, name);
-            status("Güncelleme indiriliyor: " + v);
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            using (var client = new TimedWebClient())
+            if (ex is UpdateVerifyException) return ex.Message;
+            var web = ex as WebException;
+            if (web != null)
             {
-                client.Headers[HttpRequestHeader.UserAgent] = "seowatcher/" + Paths.Version();
-                client.DownloadFile(baseUrl + name, file);
+                var resp = web.Response as HttpWebResponse;
+                if (resp != null)
+                {
+                    int code = (int)resp.StatusCode;
+                    if (code == 403 || code == 429) return "GitHub şu an çok fazla istek alıyor. Bir saat sonra tekrar deneyin.";
+                    if (code == 404) return "Sürüm dosyası GitHub'da bulunamadı. Biraz sonra tekrar deneyin.";
+                    return "GitHub beklenmedik bir yanıt verdi (" + code + "). Biraz sonra tekrar deneyin.";
+                }
+                if (web.Status == WebExceptionStatus.Timeout) return "GitHub zamanında yanıt vermedi. İnternet bağlantınızı kontrol edip tekrar deneyin.";
             }
-            string sums = Get(baseUrl + "SHA256SUMS.txt", 15000);
-            var m = System.Text.RegularExpressions.Regex.Match(sums, "([0-9a-fA-F]{64})\\s+\\*?" + System.Text.RegularExpressions.Regex.Escape(name));
-            if (!m.Success) throw new InvalidOperationException("SHA256SUMS.txt içinde " + name + " yok");
-            string actual;
+            if (ex is IOException || ex is UnauthorizedAccessException) return "Güncelleme dosyası diske yazılamadı (" + ex.Message + ").";
+            return "GitHub'a ulaşılamadı. İnternet bağlantınızı kontrol edip tekrar deneyin.";
+        }
+
+        /// <summary>The latest published release. Throws on network errors;
+        /// Describe turns the exception into a sentence.</summary>
+        public static Release CheckLatest()
+        {
+            string json = Get("https://api.github.com/repos/" + Repo + "/releases/latest", 15000);
+            var m = System.Text.RegularExpressions.Regex.Match(json, "\"tag_name\"\\s*:\\s*\"v?([0-9]+\\.[0-9]+\\.[0-9]+)\"");
+            Version v;
+            if (!m.Success || !Version.TryParse(m.Groups[1].Value, out v))
+            {
+                throw new UpdateVerifyException("GitHub'daki son sürümün numarası okunamadı.");
+            }
+            // The tag can exist before the Windows job has attached the files
+            // (a release without them is not one this updater can install).
+            bool hasInstaller = System.Text.RegularExpressions.Regex.IsMatch(json, "\"name\"\\s*:\\s*\"" + System.Text.RegularExpressions.Regex.Escape(InstallerName(v)) + "\"");
+            bool hasSums = System.Text.RegularExpressions.Regex.IsMatch(json, "\"name\"\\s*:\\s*\"SHA256SUMS\\.txt\"");
+            LauncherLog.Write("update: latest " + v + ", installed " + Current() + (hasInstaller && hasSums ? "" : ", installer or SHA256SUMS.txt not attached"));
+            return new Release { Version = v, HasInstaller = hasInstaller && hasSums };
+        }
+
+        public static string Sha256(string file)
+        {
             using (var sha = SHA256.Create())
             using (var stream = File.OpenRead(file))
             {
-                actual = BitConverter.ToString(sha.ComputeHash(stream)).Replace("-", "").ToLowerInvariant();
+                return BitConverter.ToString(sha.ComputeHash(stream)).Replace("-", "").ToLowerInvariant();
             }
-            if (actual != m.Groups[1].Value.ToLowerInvariant())
+        }
+
+        /// <summary>Downloads seowatcher-setup-X.exe, verifies it against the
+        /// release's SHA256SUMS.txt and returns its path. The file is written as
+        /// .part and only renamed once the hash matches, so a broken or
+        /// tampered download never sits under the installer's name.</summary>
+        public static string Download(Version v, Action<int> progress)
+        {
+            string name = InstallerName(v);
+            string baseUrl = "https://github.com/" + Repo + "/releases/download/v" + v + "/";
+            Directory.CreateDirectory(UpdateDir);
+            string file = Path.Combine(UpdateDir, name);
+            string part = file + ".part";
+
+            string sums = Get(baseUrl + "SHA256SUMS.txt", 15000);
+            var m = System.Text.RegularExpressions.Regex.Match(sums, "(?im)^([0-9a-f]{64})\\s+\\*?" + System.Text.RegularExpressions.Regex.Escape(name) + "\\s*$");
+            if (!m.Success) throw new UpdateVerifyException("Sürümün SHA256SUMS.txt dosyasında " + name + " yok; güncelleme kurulmadı.");
+            string expected = m.Groups[1].Value.ToLowerInvariant();
+
+            // A verified copy from an earlier attempt (the installer did not run
+            // or was cancelled) is reused instead of downloading 80 MB again.
+            if (File.Exists(file))
             {
-                try { File.Delete(file); } catch { }
-                throw new InvalidOperationException("İndirilen dosyanın SHA-256 özeti tutmuyor");
+                if (Sha256(file) == expected) { LauncherLog.Write("update: reusing verified " + file); return file; }
+                File.Delete(file);
+            }
+
+            try
+            {
+                using (var resp = (HttpWebResponse)Request(baseUrl + name, 30000).GetResponse())
+                {
+                    if (!TrustedHost(resp.ResponseUri)) throw new UpdateVerifyException("İndirme beklenmeyen bir adrese yönlendirildi (" + resp.ResponseUri.Host + "); güncelleme kurulmadı.");
+                    long total = resp.ContentLength;
+                    if (total > MaxInstallerBytes) throw new UpdateVerifyException("İndirilecek dosya beklenenden çok büyük; güncelleme kurulmadı.");
+                    using (var input = resp.GetResponseStream())
+                    using (var output = new FileStream(part, FileMode.Create, FileAccess.Write, FileShare.None))
+                    {
+                        var buffer = new byte[81920];
+                        long done = 0;
+                        int lastPercent = -1;
+                        int read;
+                        while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
+                        {
+                            output.Write(buffer, 0, read);
+                            done += read;
+                            if (done > MaxInstallerBytes) throw new UpdateVerifyException("İndirilen dosya beklenenden çok büyük; güncelleme kurulmadı.");
+                            if (total > 0)
+                            {
+                                int percent = (int)(done * 100 / total);
+                                if (percent != lastPercent) { lastPercent = percent; progress(percent); }
+                            }
+                        }
+                    }
+                }
+                if (Sha256(part) != expected)
+                {
+                    throw new UpdateVerifyException("İndirilen dosyanın SHA-256 özeti sürüm sayfasındakiyle tutmuyor; güncelleme kurulmadı.");
+                }
+                File.Move(part, file);
+            }
+            finally
+            {
+                try { if (File.Exists(part)) File.Delete(part); } catch { }
             }
             LauncherLog.Write("update: downloaded and verified " + file);
             return file;
         }
 
-        /// <summary>Starts the installer. It quits this instance itself.</summary>
-        public static void Install(string file)
+        /// <summary>Starts the installer. It stops this instance itself and
+        /// starts the new version when it is done; if it exits while this
+        /// instance still runs, the update did not happen.</summary>
+        public static Process Install(string file)
         {
             LauncherLog.Write("update: installing " + file);
-            Process.Start(new ProcessStartInfo(file, "/SILENT /NORESTART /SUPPRESSMSGBOXES") { UseShellExecute = true });
+            return Process.Start(new ProcessStartInfo(file, "/SILENT /SP- /SUPPRESSMSGBOXES /NORESTART") { UseShellExecute = true });
         }
 
+        /// <summary>Removes downloaded installers and partial downloads. Called
+        /// well after start: right after an update the installer that started
+        /// this instance may still be running from this folder.</summary>
         public static void Cleanup()
         {
             try
             {
                 if (!Directory.Exists(UpdateDir)) return;
-                foreach (var f in Directory.GetFiles(UpdateDir, "seowatcher-setup-*.exe"))
+                foreach (var f in Directory.GetFiles(UpdateDir))
                 {
-                    if (f.EndsWith("seowatcher-setup-" + Paths.Version() + ".exe", StringComparison.OrdinalIgnoreCase)) File.Delete(f);
+                    string n = Path.GetFileName(f);
+                    if (!n.StartsWith("seowatcher-setup-", StringComparison.OrdinalIgnoreCase)) continue;
+                    try { File.Delete(f); } catch { }
                 }
             }
             catch { }
@@ -702,12 +901,13 @@ namespace SeoWatcher
     }
 
     /// <summary>"Kurulumu onar": the cheap, safe things that fix most stuck
-    /// installs: drop wrangler's scratch files, confirm the package is whole,
-    /// then the normal start path re-runs migrations and the preflight.</summary>
+    /// installs: drop wrangler's scratch files and the engine probe, confirm
+    /// the package is whole, then the normal start path re-runs the
+    /// migrations and the preflight.</summary>
     internal static class Repair
     {
-        /// <summary>Returns a problem description, or null when the package is complete.</summary>
-        public static string Run()
+        /// <summary>Returns the missing package files, empty when it is complete.</summary>
+        public static List<string> Run()
         {
             foreach (var cfg in new[] { Paths.MainConfig, Paths.AuditConfig })
             {
@@ -718,13 +918,14 @@ namespace SeoWatcher
                 }
                 catch (Exception ex) { LauncherLog.Write("repair: " + ex.Message); }
             }
+            try { File.Delete(Path.Combine(Paths.DataRoot, "probe.capnp")); } catch { }
             var missing = new List<string>();
-            foreach (var f in new[] { Paths.NodeExe, Paths.WranglerJs, Paths.MainConfig, Paths.AuditConfig })
+            foreach (var f in new[] { Paths.NodeExe, Paths.WranglerJs, Paths.MainConfig, Paths.AuditConfig, Paths.WorkerdExe })
             {
                 if (!File.Exists(f)) missing.Add(Path.GetFileName(f));
             }
             LauncherLog.Write("repair: scratch cleared, missing files: " + (missing.Count == 0 ? "none" : string.Join(", ", missing)));
-            return missing.Count == 0 ? null : "Kurulum eksik (" + string.Join(", ", missing) + "). Kurulum dosyasını yeniden çalıştırın.";
+            return missing;
         }
     }
 
@@ -820,14 +1021,28 @@ namespace SeoWatcher
             }
         }
 
-        public void Add(Process process)
+        public bool Add(Process process)
         {
-            AssignProcessToJobObject(handle, process.Handle);
+            return handle != IntPtr.Zero && AssignProcessToJobObject(handle, process.Handle);
         }
 
-        public void KillAll()
+        /// <summary>Terminates every process in the job and waits until they
+        /// are gone (termination is asynchronous): until then node.exe and
+        /// workerd.exe still hold the port and their files.</summary>
+        public void KillAllAndWait(int timeoutMs)
         {
-            if (handle != IntPtr.Zero) TerminateJobObject(handle, 0);
+            if (handle == IntPtr.Zero) return;
+            TerminateJobObject(handle, 0);
+            var until = DateTime.UtcNow.AddMilliseconds(timeoutMs);
+            while (DateTime.UtcNow < until)
+            {
+                var info = new JOBOBJECT_BASIC_ACCOUNTING_INFORMATION();
+                int returned;
+                if (!QueryInformationJobObject(handle, JobObjectBasicAccountingInformation, out info, Marshal.SizeOf(typeof(JOBOBJECT_BASIC_ACCOUNTING_INFORMATION)), out returned)) return;
+                if (info.ActiveProcesses == 0) return;
+                Thread.Sleep(50);
+            }
+            LauncherLog.Write("job: processes still running after " + timeoutMs + " ms");
         }
 
         public void Dispose()
@@ -839,7 +1054,24 @@ namespace SeoWatcher
             }
         }
 
+        private const int JobObjectBasicAccountingInformation = 1;
         private const int JobObjectExtendedLimitInformation = 9;
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct JOBOBJECT_BASIC_ACCOUNTING_INFORMATION
+        {
+            public long TotalUserTime;
+            public long TotalKernelTime;
+            public long ThisPeriodTotalUserTime;
+            public long ThisPeriodTotalKernelTime;
+            public uint TotalPageFaultCount;
+            public uint TotalProcesses;
+            public uint ActiveProcesses;
+            public uint TotalTerminatedProcesses;
+        }
+
+        [DllImport("kernel32.dll")]
+        private static extern bool QueryInformationJobObject(IntPtr job, int infoClass, out JOBOBJECT_BASIC_ACCOUNTING_INFORMATION info, int length, out int returned);
         private const uint JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE = 0x2000;
 
         [StructLayout(LayoutKind.Sequential)]
@@ -891,18 +1123,25 @@ namespace SeoWatcher
     }
 
     /// <summary>Starts, watches and stops the server. Runs on a worker thread;
-    /// reports back through events marshalled to the UI by TrayApp.</summary>
+    /// reports back through events marshalled to the UI by TrayApp.
+    ///
+    /// Every start gets a generation number and Stop moves it on, so a start
+    /// that is still migrating when the user restarts can never start a
+    /// second server or report a stale failure.</summary>
     internal sealed class Server
     {
         public event Action<string> Status;
         public event Action<string> Ready;
         public event Action<string> Failed;
+        // The server answered once and then went away on its own.
+        public event Action<string> Crashed;
 
         private readonly object gate = new object();
+        private int generation;
         private KillOnCloseJob job;
         private Process process;
         private StreamWriter log;
-        private volatile bool stopping;
+        private long logBytes;
         // Set when wrangler's output shows workerd (the Workers runtime) dying
         // before it listens. On a clean Windows install this is almost always
         // a missing or outdated Visual C++ 2015-2022 runtime.
@@ -915,48 +1154,63 @@ namespace SeoWatcher
         // offers a one-click GitHub report with the diagnostics attached.
         public const string EngineCrashMessage = "Uygulamanın motoru çöktü: ";
         public static volatile string LastCommand;
+        private const long ServerLogMax = 5 * 1024 * 1024;
+        private static readonly TimeSpan MigrateTimeout = TimeSpan.FromMinutes(15);
 
         public int Port { get; private set; }
+        public int ConfiguredPort { get; private set; }
 
         public void Start(Config cfg)
         {
-            stopping = false;
-            var thread = new Thread(() => Run(cfg)) { IsBackground = true, Name = "seowatcher-server" };
+            int gen;
+            lock (gate) { gen = ++generation; }
+            var thread = new Thread(() => Run(cfg, gen)) { IsBackground = true, Name = "seowatcher-server" };
             thread.Start();
         }
 
+        /// <summary>Stops the server and waits (up to 10 s) until node and
+        /// workerd are gone, so the port and the package files are free when
+        /// this returns.</summary>
         public void Stop()
         {
-            stopping = true;
+            KillOnCloseJob oldJob;
+            StreamWriter oldLog;
             lock (gate)
             {
-                if (job != null)
-                {
-                    job.KillAll();
-                    job.Dispose();
-                    job = null;
-                }
+                generation++;
+                oldJob = job;
+                job = null;
                 process = null;
-                if (log != null)
-                {
-                    try { log.Flush(); log.Dispose(); } catch { }
-                    log = null;
-                }
+                oldLog = log;
+                log = null;
+            }
+            if (oldJob != null)
+            {
+                oldJob.KillAllAndWait(10000);
+                oldJob.Dispose();
+            }
+            if (oldLog != null)
+            {
+                try { oldLog.Flush(); oldLog.Dispose(); } catch { }
             }
         }
 
-        private void Run(Config cfg)
+        private bool IsCurrent(int gen)
+        {
+            lock (gate) { return gen == generation; }
+        }
+
+        private void Run(Config cfg, int gen)
         {
             var startedAt = DateTime.UtcNow;
             try
             {
                 Directory.CreateDirectory(Paths.PersistDir);
                 Directory.CreateDirectory(Paths.LogDir);
-                TrimLog(Paths.ServerLog, 5 * 1024 * 1024);
 
-                if (!File.Exists(Paths.NodeExe)) throw new FileNotFoundException("Node çalışma zamanı bulunamadı", Paths.NodeExe);
-                if (!File.Exists(Paths.WranglerJs)) throw new FileNotFoundException("wrangler bulunamadı", Paths.WranglerJs);
-                if (!File.Exists(Paths.MainConfig)) throw new FileNotFoundException("Uygulama paketi bulunamadı", Paths.MainConfig);
+                if (!File.Exists(Paths.NodeExe)) throw new FileNotFoundException("Kurulum eksik: Node çalışma zamanı bulunamadı. Menüden Kurulumu onar deyin.", Paths.NodeExe);
+                if (!File.Exists(Paths.WranglerJs)) throw new FileNotFoundException("Kurulum eksik: wrangler bulunamadı. Menüden Kurulumu onar deyin.", Paths.WranglerJs);
+                if (!File.Exists(Paths.MainConfig)) throw new FileNotFoundException("Kurulum eksik: uygulama paketi bulunamadı. Menüden Kurulumu onar deyin.", Paths.MainConfig);
 
                 // Preflight: the two things a clean machine most often lacks.
                 int build = Diag.OsBuild();
@@ -975,34 +1229,50 @@ namespace SeoWatcher
                 {
                     throw new InvalidOperationException(EngineCrashMessage + "motor tek başına da başlayamıyor (" + probe + "). Menüden Sorunu bildir deyin; tanı bilgisi kayda eklenir.");
                 }
+                if (!IsCurrent(gen)) return;
 
-                Emit(Status, "Anahtarlar hazırlanıyor");
+                Emit(gen, Status, "Anahtarlar hazırlanıyor");
                 string secret = Secrets.EnsureInstanceSecret();
                 string token = Secrets.EnsureMcpToken();
                 WriteServerEnv(secret, token);
 
-                Port = ChoosePort(cfg);
+                ConfiguredPort = cfg.Port;
+                Port = ChoosePort(cfg.Port, gen);
+                if (!IsCurrent(gen)) return;
 
-                Emit(Status, "Veritabanı güncelleniyor");
-                LauncherLog.Write("port " + Port + ", data " + Paths.PersistDir);
+                KillOnCloseJob runJob;
+                lock (gate)
+                {
+                    if (gen != generation) return;
+                    job = new KillOnCloseJob();
+                    runJob = job;
+                }
+
+                Emit(gen, Status, "Veritabanı güncelleniyor");
+                LauncherLog.Write("port " + Port + (Port != cfg.Port ? " (" + cfg.Port + " is taken)" : "") + ", data " + Paths.PersistDir);
                 int migrateExit = RunAndWait(
                     "\"" + Paths.WranglerJs + "\" d1 migrations apply DB --local" +
                     " -c \"" + Paths.MainConfig + "\"" +
                     " --persist-to \"" + Paths.PersistDir + "\"",
-                    Paths.MigrateLog);
+                    Paths.MigrateLog, runJob, gen);
+                if (!IsCurrent(gen)) return;
+                if (migrateExit == int.MinValue)
+                {
+                    throw new TimeoutException("Veritabanı güncellemesi " + (int)MigrateTimeout.TotalMinutes + " dakikada bitmedi. Yeniden başlat deyin; olmazsa Günlükleri aç ile migrate.log dosyasına bakın.");
+                }
                 if (migrateExit != 0)
                 {
                     throw new InvalidOperationException("Veritabanı güncellemesi başarısız (çıkış kodu " + migrateExit + "). Yeniden başlat deyin; olmazsa Günlükleri aç ile migrate.log dosyasına bakın.");
                 }
 
                 runtimeCrashed = false;
-                Emit(Status, "Sunucu başlatılıyor");
+                Emit(gen, Status, "Sunucu başlatılıyor");
+                Process started;
                 lock (gate)
                 {
-                    if (stopping) return;
-                    job = new KillOnCloseJob();
-                    log = new StreamWriter(new FileStream(Paths.ServerLog, FileMode.Append, FileAccess.Write, FileShare.Read), new UTF8Encoding(false));
-                    log.AutoFlush = true;
+                    if (gen != generation) return;
+                    LogFile.Rotate(Paths.ServerLog, ServerLogMax);
+                    log = OpenServerLog();
                     log.WriteLine("---- " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " seowatcher " + Paths.Version() + " starting on port " + Port);
 
                     process = StartNode(
@@ -1020,18 +1290,19 @@ namespace SeoWatcher
                             if (line.Contains("0xc0000005") || line.Contains("Workers runtime failed to start")) runtimeCrashed = true;
                         });
                     job.Add(process);
+                    started = process;
                 }
 
                 string url = "http://127.0.0.1:" + Port + "/";
                 var deadline = DateTime.UtcNow.AddSeconds(120);
+                bool ready = false;
                 while (DateTime.UtcNow < deadline)
                 {
-                    if (stopping) return;
-                    Process p;
-                    lock (gate) { p = process; }
-                    if (p == null || p.HasExited)
+                    if (!IsCurrent(gen)) return;
+                    if (started.HasExited)
                     {
                         Thread.Sleep(300); // let the last stderr lines land before deciding why
+                        if (!IsCurrent(gen)) return;
                         if (runtimeCrashed)
                         {
                             string after = Diag.WorkerdProbe();
@@ -1048,20 +1319,50 @@ namespace SeoWatcher
                     }
                     if (Health(url))
                     {
-                        LauncherLog.Write("ready: " + url + " (" + Math.Round((DateTime.UtcNow - startedAt).TotalSeconds, 1) + "s after start)");
-                        Emit(Ready, url);
-                        return;
+                        ready = true;
+                        break;
                     }
                     Thread.Sleep(1000);
                 }
-                throw new TimeoutException("Sunucu 120 saniyede yanıt vermedi. Yeniden başlat deyin; olmazsa Günlükleri aç ile server.log dosyasına bakın.");
+                if (!ready)
+                {
+                    throw new TimeoutException("Sunucu 120 saniyede yanıt vermedi. Yeniden başlat deyin; olmazsa Günlükleri aç ile server.log dosyasına bakın.");
+                }
+                if (!IsCurrent(gen)) return;
+                LauncherLog.Write("ready: " + url + " (" + Math.Round((DateTime.UtcNow - startedAt).TotalSeconds, 1) + "s after start)");
+                Emit(gen, Ready, url);
+
+                // Watch the running server: an exit nobody asked for is a crash,
+                // and the tray app decides whether to start it again.
+                while (!started.WaitForExit(1000))
+                {
+                    if (!IsCurrent(gen)) return;
+                }
+                Thread.Sleep(300);
+                if (!IsCurrent(gen)) return;
+                int code = 0;
+                try { code = started.ExitCode; } catch { }
+                LauncherLog.Write("server stopped by itself (exit " + code + ")");
+                SafeLog("launcher: server stopped by itself (exit " + code + ")");
+                Emit(gen, Crashed, "Sunucu kendiliğinden kapandı (çıkış kodu " + code + ").");
             }
             catch (Exception ex)
             {
+                if (!IsCurrent(gen)) return;
                 SafeLog("launcher error: " + ex.Message);
                 LauncherLog.Write("error: " + ex.Message);
-                Emit(Failed, ex.Message);
+                Emit(gen, Failed, ex.Message);
             }
+        }
+
+        /// <summary>Opens server.log for appending; call with gate held.</summary>
+        private StreamWriter OpenServerLog()
+        {
+            var stream = new FileStream(Paths.ServerLog, FileMode.Append, FileAccess.Write, FileShare.ReadWrite | FileShare.Delete);
+            logBytes = stream.Length;
+            var w = new StreamWriter(stream, new UTF8Encoding(false));
+            w.AutoFlush = true;
+            return w;
         }
 
         private void WriteServerEnv(string secret, string token)
@@ -1077,22 +1378,23 @@ namespace SeoWatcher
         }
 
         /// <summary>The configured port, unless another program holds it; then
-        /// the next free one up to +9, saved so the next start is stable.</summary>
-        private static int ChoosePort(Config cfg)
+        /// the next free one up to +9 for this run only. The fallback is not
+        /// saved: the Google redirect addresses name the configured port, so
+        /// the next start goes back to it as soon as it is free. Right after a
+        /// restart or an update the previous server may still be letting go of
+        /// the port, so it is given three seconds first.</summary>
+        private int ChoosePort(int configured, int gen)
         {
-            for (int candidate = cfg.Port; candidate < cfg.Port + 10; candidate++)
+            var until = DateTime.UtcNow.AddSeconds(3);
+            while (!PortFree(configured) && DateTime.UtcNow < until && IsCurrent(gen))
             {
-                if (PortFree(candidate))
-                {
-                    if (candidate != cfg.Port)
-                    {
-                        cfg.Port = candidate;
-                        cfg.Save();
-                    }
-                    return candidate;
-                }
+                Thread.Sleep(500);
             }
-            throw new InvalidOperationException(cfg.Port + " ve sonraki 9 adres numarası (port) dolu. Veri klasöründeki config.json içindeki \"port\" değerini değiştirin.");
+            for (int candidate = configured; candidate < configured + 10 && candidate < 65536; candidate++)
+            {
+                if (PortFree(candidate)) return candidate;
+            }
+            throw new InvalidOperationException(configured + " ve sonraki 9 adres numarası (port) dolu. Veri klasöründeki config.json içindeki \"port\" değerini değiştirip Yeniden başlat deyin.");
         }
 
         private static bool PortFree(int port)
@@ -1147,6 +1449,9 @@ namespace SeoWatcher
                 StandardErrorEncoding = Encoding.UTF8,
             };
             psi.EnvironmentVariables["WRANGLER_SEND_METRICS"] = "false";
+            // wrangler's own debug logs go next to ours (it removes files older
+            // than 30 days itself) instead of the roaming profile.
+            psi.EnvironmentVariables["WRANGLER_LOG_PATH"] = Path.Combine(Paths.LogDir, "wrangler");
             LastCommand = "\"" + psi.FileName + "\" " + psi.Arguments;
             // Plain text in the log files: no ANSI colour, no spinners.
             psi.EnvironmentVariables["NO_COLOR"] = "1";
@@ -1158,8 +1463,11 @@ namespace SeoWatcher
             p.ErrorDataReceived += (s, e) => onLine(e.Data);
             var started = DateTime.UtcNow;
             string what = arguments.IndexOf(" dev", StringComparison.Ordinal) >= 0 ? "server" : "migrate";
+            int exitLogged = 0;
             p.Exited += (s, e) =>
             {
+                // Exited can fire twice when WaitForExit runs at the same time.
+                if (Interlocked.Exchange(ref exitLogged, 1) != 0) return;
                 try
                 {
                     LauncherLog.Write(what + ": node pid " + p.Id + " exited with " + p.ExitCode + " after " + Math.Round((DateTime.UtcNow - started).TotalSeconds, 1) + "s");
@@ -1173,17 +1481,29 @@ namespace SeoWatcher
             return p;
         }
 
-        private int RunAndWait(string arguments, string logPath)
+        /// <summary>Runs one wrangler command inside the job (so Stop and a
+        /// quitting launcher end it too). Returns its exit code, or
+        /// int.MinValue when it ran past the timeout and was stopped.</summary>
+        private int RunAndWait(string arguments, string logPath, KillOnCloseJob runJob, int gen)
         {
-            TrimLog(logPath, 1024 * 1024);
-            using (var writer = new StreamWriter(new FileStream(logPath, FileMode.Append, FileAccess.Write, FileShare.Read), new UTF8Encoding(false)))
+            LogFile.Rotate(logPath, 1024 * 1024);
+            using (var writer = new StreamWriter(new FileStream(logPath, FileMode.Append, FileAccess.Write, FileShare.ReadWrite | FileShare.Delete), new UTF8Encoding(false)))
             {
                 writer.AutoFlush = true;
                 writer.WriteLine("---- " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                 // "error": the migration command otherwise re-prints the whole
                 // migration table after every file, about a megabyte per run.
-                var p = StartNode(arguments, line => { if (line != null) { lock (writer) writer.WriteLine(line); } }, "error");
-                p.WaitForExit();
+                var p = StartNode(arguments, line => { if (line != null) { lock (writer) { try { writer.WriteLine(line); } catch { } } } }, "error");
+                // Stop may have closed the job a moment ago: then end it here.
+                if (!runJob.Add(p) && !IsCurrent(gen)) { try { p.Kill(); } catch { } }
+                if (!p.WaitForExit((int)MigrateTimeout.TotalMilliseconds))
+                {
+                    try { p.Kill(); } catch { }
+                    p.WaitForExit(5000);
+                    lock (writer) { writer.WriteLine("launcher: stopped after " + MigrateTimeout.TotalMinutes + " minutes"); }
+                    return int.MinValue;
+                }
+                p.WaitForExit(); // drains the redirected output
                 return p.ExitCode;
             }
         }
@@ -1197,22 +1517,27 @@ namespace SeoWatcher
             {
                 if (log == null) return;
                 // wrangler colours some lines regardless of NO_COLOR; the log is a file.
-                try { log.WriteLine(AnsiEscape.Replace(line, "")); } catch { }
+                try
+                {
+                    string clean = AnsiEscape.Replace(line, "");
+                    log.WriteLine(clean);
+                    // A server that runs for weeks logs every request: start a
+                    // fresh file once this one passes the limit.
+                    logBytes += clean.Length + 2;
+                    if (logBytes > ServerLogMax)
+                    {
+                        log.Dispose();
+                        LogFile.Rotate(Paths.ServerLog, ServerLogMax);
+                        log = OpenServerLog();
+                    }
+                }
+                catch { }
             }
         }
 
-        private static void TrimLog(string path, long maxBytes)
+        private void Emit(int gen, Action<string> handler, string value)
         {
-            try
-            {
-                var info = new FileInfo(path);
-                if (info.Exists && info.Length > maxBytes) info.Delete();
-            }
-            catch { }
-        }
-
-        private static void Emit(Action<string> handler, string value)
-        {
+            if (!IsCurrent(gen)) return;
             var h = handler;
             if (h != null) h(value);
         }
@@ -1221,80 +1546,351 @@ namespace SeoWatcher
     internal sealed class TrayApp : ApplicationContext
     {
         private readonly NotifyIcon tray;
+        // Owns a window handle on the UI thread from the start, so worker
+        // threads can always marshal to it (the menu has no handle until it is
+        // first opened).
+        private readonly Control ui;
         private readonly ToolStripMenuItem openItem;
         private readonly ToolStripMenuItem statusItem;
+        private readonly ToolStripMenuItem fixItem;
+        private readonly ToolStripMenuItem updateItem;
+        private readonly ToolStripMenuItem restartItem;
+        private readonly ToolStripMenuItem repairItem;
+        private readonly ToolStripMenuItem copyDiagItem;
+        private readonly ToolStripMenuItem reportItem;
         private readonly ToolStripMenuItem autostartItem;
         private readonly ToolStripMenuItem autoUpdateItem;
-        private readonly ToolStripMenuItem updateItem;
         private readonly System.Threading.Timer updateTimer;
-        private Version available;
-        private bool updating;
         private readonly Server server = new Server();
-        private readonly Config config = Config.Load();
         private readonly EventWaitHandle quitEvent;
+        private readonly EventWaitHandle openEvent;
         private readonly bool silent;
-        private bool openedOnce;
+        private readonly Version updatedFrom;
+
+        // Server state, as the menu and the tooltip show it.
+        private string serverStatus = "Başlatılıyor…";
         private string url;
+        private string failure;
+        private bool openedOnce;
+        private bool openWhenReady;
+        private bool repairing;
+        private bool preparingReport;
+        private bool vcInstalling;
+        private bool quitting;
+        private readonly List<DateTime> crashes = new List<DateTime>();
+
+        // Update state.
+        private Version available;
+        private bool checking;
+        private string updatePhase;      // null, or what the update item says while busy
+        private DateTime lastCheck = DateTime.MinValue;
+        private Version notifiedVersion; // balloons for a found or failed update: once per version
+        private bool cleanedUpdates;
+
+        private Action balloonClick;
 
         public TrayApp(bool silent)
         {
             this.silent = silent;
+            ui = new Control();
+            ui.CreateControl();
+            var handle = ui.Handle; // forces the handle now, on this thread
 
-            var menu = new ContextMenuStrip();
+            var config = Config.Load();
+            Version previous, current = Updater.Current();
+            if (config.LastVersion != null && Version.TryParse(config.LastVersion, out previous) && previous < current) updatedFrom = previous;
+            if (config.LastVersion != Paths.Version() && Paths.Version() != "?")
+            {
+                try { Config.Update(c => c.LastVersion = Paths.Version()); } catch (Exception ex) { LauncherLog.Write("config: " + ex.Message); }
+            }
+
+            var menu = new ContextMenuStrip { ShowItemToolTips = true };
             openItem = new ToolStripMenuItem("seowatcher'ı aç", null, (s, e) => OpenApp());
             openItem.Font = new Font(openItem.Font, FontStyle.Bold);
-            statusItem = new ToolStripMenuItem("Başlatılıyor…") { Enabled = false };
-            autostartItem = new ToolStripMenuItem("Windows açılınca başlat", null, (s, e) => ToggleAutostart());
-            autostartItem.Checked = Autostart.IsEnabled();
-            autoUpdateItem = new ToolStripMenuItem("Güncellemeleri kendiliğinden kur", null, (s, e) => ToggleAutoUpdate()) { Checked = config.AutoUpdate };
+            statusItem = new ToolStripMenuItem(serverStatus) { Enabled = false };
+            fixItem = new ToolStripMenuItem("Eksik Windows bileşenini kur", null, (s, e) => InstallVcRedist()) { Visible = false };
             updateItem = new ToolStripMenuItem("Güncelle", null, (s, e) => UpdateClicked());
+            restartItem = new ToolStripMenuItem("Yeniden başlat", null, (s, e) => Restart());
+            autostartItem = new ToolStripMenuItem("Windows açılınca başlat", null, (s, e) => ToggleAutostart());
+            autoUpdateItem = new ToolStripMenuItem("Güncellemeleri kendiliğinden kur", null, (s, e) => ToggleAutoUpdate()) { Checked = config.AutoUpdate };
+            repairItem = new ToolStripMenuItem("Kurulumu onar", null, (s, e) => RepairInstall());
+            copyDiagItem = new ToolStripMenuItem("Tanı bilgisini kopyala", null, (s, e) => PrepareReport(false));
+            reportItem = new ToolStripMenuItem("Sorunu bildir (GitHub)", null, (s, e) => PrepareReport(true));
 
+            // Grouped: use the app, settings, troubleshooting, about and exit.
             menu.Items.Add(openItem);
             menu.Items.Add(statusItem);
             menu.Items.Add(new ToolStripSeparator());
-            menu.Items.Add(new ToolStripMenuItem("Yeniden başlat", null, (s, e) => Restart()));
-            menu.Items.Add(new ToolStripMenuItem("Günlükleri aç", null, (s, e) => OpenFolder(Paths.LogDir)));
-            menu.Items.Add(new ToolStripMenuItem("Veri klasörünü aç", null, (s, e) => OpenFolder(Paths.DataRoot)));
-            menu.Items.Add(new ToolStripMenuItem("Tanı bilgisini kopyala", null, (s, e) => CopyDiagnostics()));
-            menu.Items.Add(new ToolStripMenuItem("Sorunu bildir (GitHub)", null, (s, e) => ReportIssue()));
-            fixItem = new ToolStripMenuItem("Eksik Windows bileşenini kur", null, (s, e) => InstallVcRedist()) { Visible = false };
             menu.Items.Add(fixItem);
-            menu.Items.Add(new ToolStripMenuItem("Kurulumu onar", null, (s, e) => RepairInstall()));
             menu.Items.Add(updateItem);
+            menu.Items.Add(restartItem);
             menu.Items.Add(new ToolStripSeparator());
             menu.Items.Add(autostartItem);
             menu.Items.Add(autoUpdateItem);
             menu.Items.Add(new ToolStripSeparator());
+            menu.Items.Add(repairItem);
+            menu.Items.Add(copyDiagItem);
+            menu.Items.Add(reportItem);
+            menu.Items.Add(new ToolStripMenuItem("Günlükleri aç", null, (s, e) => OpenFolder(Paths.LogDir)));
+            menu.Items.Add(new ToolStripMenuItem("Veri klasörünü aç", null, (s, e) => OpenFolder(Paths.DataRoot)));
+            menu.Items.Add(new ToolStripSeparator());
             menu.Items.Add(new ToolStripMenuItem("seowatcher " + Paths.Version()) { Enabled = false });
             menu.Items.Add(new ToolStripMenuItem("Çıkış", null, (s, e) => Quit()));
+            // Settings can change outside the menu (the installer, regedit,
+            // config.json): read them again every time the menu opens.
+            menu.Opening += (s, e) => RefreshSettings();
 
             tray = new NotifyIcon
             {
                 Icon = LoadIcon(),
-                Text = "seowatcher " + Paths.Version() + ": Başlatılıyor…",
+                Text = "seowatcher " + Paths.Version() + ": " + serverStatus,
                 ContextMenuStrip = menu,
                 Visible = true,
             };
             tray.DoubleClick += (s, e) => OpenApp();
-            tray.BalloonTipClicked += (s, e) => OnBalloonClicked();
+            tray.BalloonTipClicked += (s, e) =>
+            {
+                var action = balloonClick;
+                balloonClick = null;
+                if (action != null) action(); else OpenApp();
+            };
 
-            server.Status += s => Invoke(() => SetStatus(s));
+            server.Status += s => Invoke(() => SetServerStatus(s));
             server.Ready += u => Invoke(() => OnReady(u));
             server.Failed += m => Invoke(() => OnFailed(m));
+            server.Crashed += m => Invoke(() => OnCrashed(m));
 
             bool createdNew;
             quitEvent = new EventWaitHandle(false, EventResetMode.ManualReset, Program.QuitEventName, out createdNew);
             ThreadPool.RegisterWaitForSingleObject(quitEvent, (state, timedOut) => Invoke(Quit), null, -1, true);
+            openEvent = new EventWaitHandle(false, EventResetMode.AutoReset, Program.OpenEventName, out createdNew);
+            ThreadPool.RegisterWaitForSingleObject(openEvent, (state, timedOut) => Invoke(() =>
+            {
+                LauncherLog.Write("open requested by a second start");
+                OpenApp();
+            }), null, -1, false);
 
+            Autostart.Repair();
+            RefreshSettings();
+            RefreshUpdateItem();
             server.Start(config);
-            Updater.Cleanup();
-            // First check two minutes after start (the server comes first), then daily.
-            updateTimer = new System.Threading.Timer(_ => CheckForUpdate(), null, TimeSpan.FromMinutes(2), TimeSpan.FromHours(24));
+            // First check two minutes after start (the server comes first), then
+            // once a day. The timer ticks hourly and compares wall-clock time, so
+            // a laptop that sleeps through the night still checks daily, and a
+            // check that failed (offline) is retried an hour later.
+            updateTimer = new System.Threading.Timer(_ => Invoke(UpdateTick), null, TimeSpan.FromMinutes(2), TimeSpan.FromHours(1));
         }
 
-        private void CheckForUpdate()
+        // ---- Balloons -------------------------------------------------------
+
+        /// <summary>Shows a balloon. onClick runs if the user clicks this one;
+        /// without it a click opens the app.</summary>
+        private void Balloon(string title, string text, ToolTipIcon icon, int timeoutMs, Action onClick)
         {
-            CheckForUpdate(false);
+            balloonClick = onClick;
+            if (text.Length > 250) text = text.Substring(0, 249) + "…";
+            if (title.Length > 60) title = title.Substring(0, 59) + "…";
+            try { tray.ShowBalloonTip(timeoutMs, title, text, icon); } catch { }
+        }
+
+        // ---- Status ---------------------------------------------------------
+
+        private void SetServerStatus(string text)
+        {
+            serverStatus = text;
+            ShowStatus();
+        }
+
+        private void ShowStatus()
+        {
+            string text = updatePhase != null && url != null ? updatePhase : serverStatus;
+            statusItem.Text = Truncate(text, 70);
+            statusItem.ToolTipText = text.Length > 70 ? text : null;
+            tray.Text = Truncate("seowatcher " + Paths.Version() + ": " + text, 63);
+        }
+
+        private void RefreshServerItems()
+        {
+            repairItem.Enabled = !repairing;
+            repairItem.Text = repairing ? "Onarılıyor…" : "Kurulumu onar";
+            restartItem.Enabled = !repairing;
+            copyDiagItem.Enabled = !preparingReport;
+            reportItem.Enabled = !preparingReport;
+            fixItem.Enabled = !vcInstalling;
+        }
+
+        private void OnReady(string readyUrl)
+        {
+            url = readyUrl;
+            failure = null;
+            repairing = false;
+            RefreshServerItems();
+            SetServerStatus("Çalışıyor: " + readyUrl);
+            bool portMoved = server.Port != server.ConfiguredPort;
+            if (openWhenReady || (!openedOnce && !silent))
+            {
+                openWhenReady = false;
+                openedOnce = true;
+                OpenApp();
+            }
+            else if (!openedOnce)
+            {
+                openedOnce = true;
+                if (updatedFrom != null)
+                {
+                    var v = Updater.Current();
+                    Balloon("seowatcher " + Paths.Version() + " sürümüne güncellendi", "Verileriniz ve ayarlarınız olduğu gibi duruyor. Yenilikleri görmek için bu baloncuğa tıklayın.", ToolTipIcon.Info, 8000,
+                        () => Browser.Open(Updater.ReleasePage(v)));
+                }
+                else if (!portMoved)
+                {
+                    Balloon("seowatcher hazır", readyUrl + " adresinde çalışıyor. Açmak için simgeye çift tıklayın.", ToolTipIcon.Info, 4000, null);
+                }
+            }
+            if (portMoved)
+            {
+                Balloon(server.ConfiguredPort + " numarası dolu, " + server.Port + " kullanılıyor",
+                    "Başka bir program " + server.ConfiguredPort + " numarasını (port) kullanıyor. Google girişi " + server.ConfiguredPort + " için ayarlıysa o programı kapatıp Yeniden başlat deyin.",
+                    ToolTipIcon.Warning, 10000, null);
+            }
+        }
+
+        private void OnFailed(string message)
+        {
+            url = null;
+            failure = message;
+            repairing = false;
+            openWhenReady = false;
+            RefreshServerItems();
+            SetServerStatus("Hata: " + message);
+            bool needsVcRedist = message.StartsWith(Server.RuntimeCrashMessage, StringComparison.Ordinal);
+            bool needsReport = message.StartsWith(Server.EngineCrashMessage, StringComparison.Ordinal);
+            fixItem.Visible = needsVcRedist;
+            if (needsVcRedist)
+            {
+                Balloon("seowatcher için bir Windows bileşeni gerekiyor",
+                    message + "\nKurmak için bu baloncuğa tıklayın; uygulama sonra kendiliğinden yeniden başlar.", ToolTipIcon.Warning, 20000, InstallVcRedist);
+            }
+            else if (needsReport)
+            {
+                Balloon("seowatcher başlatılamadı",
+                    message + "\nBildirmek için bu baloncuğa tıklayın: tanı bilgisi panoya kopyalanır ve GitHub'da bir sorun kaydı taslağı açılır.", ToolTipIcon.Error, 20000, () => PrepareReport(true));
+            }
+            else
+            {
+                Balloon("seowatcher başlatılamadı", message, ToolTipIcon.Error, 15000, null);
+            }
+        }
+
+        /// <summary>The server ran and then stopped on its own. Up to three
+        /// times in ten minutes it is started again by itself; after that it
+        /// stays down and says so, instead of looping.</summary>
+        private void OnCrashed(string message)
+        {
+            url = null;
+            var now = DateTime.UtcNow;
+            crashes.RemoveAll(t => now - t > TimeSpan.FromMinutes(10));
+            crashes.Add(now);
+            if (crashes.Count <= 3)
+            {
+                LauncherLog.Write("restarting after crash " + crashes.Count + "/3");
+                Balloon("seowatcher yeniden başlatılıyor", "Sunucu beklenmedik şekilde kapandı ve kendiliğinden yeniden açılıyor. Açık sayfayı birkaç saniye sonra yenileyin.", ToolTipIcon.Warning, 6000, null);
+                StartServer("Yeniden başlatılıyor");
+                return;
+            }
+            OnFailed("Sunucu 10 dakikada üç kez kapandı. Kurulumu onar deyin; düzelmezse Sorunu bildir.");
+        }
+
+        // ---- Server actions ---------------------------------------------------
+
+        private void StartServer(string status)
+        {
+            url = null;
+            failure = null;
+            fixItem.Visible = false;
+            SetServerStatus(status);
+            server.Stop();
+            server.Start(Config.Load());
+        }
+
+        private void Restart()
+        {
+            LauncherLog.Write("restart");
+            crashes.Clear();
+            StartServer("Yeniden başlatılıyor");
+        }
+
+        private void RepairInstall()
+        {
+            if (repairing) return;
+            LauncherLog.Write("repair requested");
+            repairing = true;
+            crashes.Clear();
+            url = null;
+            failure = null;
+            RefreshServerItems();
+            SetServerStatus("Onarılıyor");
+            var worker = new Thread(() =>
+            {
+                server.Stop();
+                var missing = Repair.Run();
+                if (missing.Count == 0)
+                {
+                    Invoke(() => server.Start(Config.Load()));
+                    return;
+                }
+                // Files are gone from the install folder: put the same version
+                // back with its own verified installer. Data is not touched.
+                string problem = "Kurulum eksik (" + string.Join(", ", missing) + ").";
+                Version v = Updater.Current();
+                if (Updater.IsInstalled() && v > new Version(0, 0, 0))
+                {
+                    try
+                    {
+                        Invoke(() => SetServerStatus("Onarılıyor: kurulum dosyası indiriliyor"));
+                        string file = Updater.Download(v, p => Invoke(() => SetServerStatus("Onarılıyor: kurulum dosyası indiriliyor (%" + p + ")")));
+                        Invoke(() => SetServerStatus("Onarılıyor: yeniden kuruluyor"));
+                        var setup = Updater.Install(file);
+                        WatchInstaller(setup, v);
+                        return;
+                    }
+                    catch (Exception ex)
+                    {
+                        LauncherLog.Write("repair: reinstall failed: " + ex.Message);
+                    }
+                }
+                Invoke(() =>
+                {
+                    repairing = false;
+                    RefreshServerItems();
+                    failure = problem;
+                    SetServerStatus("Hata: " + problem);
+                    Balloon("Kurulum eksik", problem + " Sürüm sayfası açıldı: kurulum dosyasını indirip çalıştırın. Verileriniz silinmez.", ToolTipIcon.Error, 15000, null);
+                    Browser.Open(Updater.ReleasePage(null));
+                });
+            }) { IsBackground = true, Name = "seowatcher-repair" };
+            worker.Start();
+        }
+
+        // ---- Updates ------------------------------------------------------------
+
+        private void RefreshUpdateItem()
+        {
+            if (updatePhase != null) { updateItem.Text = updatePhase; updateItem.Enabled = false; }
+            else if (checking) { updateItem.Text = "Kontrol ediliyor…"; updateItem.Enabled = false; }
+            else if (available != null) { updateItem.Text = "Güncelle: " + available + " sürümü hazır"; updateItem.Enabled = true; }
+            else { updateItem.Text = "Güncelle"; updateItem.Enabled = true; }
+            ShowStatus();
+        }
+
+        private void UpdateTick()
+        {
+            if (!cleanedUpdates && updatePhase == null)
+            {
+                cleanedUpdates = true;
+                new Thread(Updater.Cleanup) { IsBackground = true }.Start();
+            }
+            if (DateTime.UtcNow - lastCheck >= TimeSpan.FromHours(24)) CheckForUpdate(false);
         }
 
         /// <summary>Menu item: the same check, but it always answers, and a
@@ -1302,108 +1898,354 @@ namespace SeoWatcher
         /// because the user just asked for it.</summary>
         private void UpdateClicked()
         {
-            if (available != null && !updating) { StartUpdate(); return; }
-            if (updating) return;
-            updateItem.Enabled = false;
-            updateItem.Text = "Kontrol ediliyor…";
-            new Thread(() =>
-            {
-                try { CheckForUpdate(true); }
-                finally
-                {
-                    Invoke(() =>
-                    {
-                        if (available == null) updateItem.Text = "Güncelle";
-                        updateItem.Enabled = true;
-                    });
-                }
-            }) { IsBackground = true }.Start();
+            if (updatePhase != null || checking) return;
+            if (available != null) { StartUpdate(true); return; }
+            CheckForUpdate(true);
         }
 
         private void CheckForUpdate(bool manual)
         {
-            Version latest = null;
-            try { latest = Updater.CheckLatest(); }
-            catch (Exception ex) { LauncherLog.Write("update: check failed: " + ex.Message); }
-            if (latest == null)
+            if (checking || updatePhase != null) return;
+            checking = true;
+            RefreshUpdateItem();
+            new Thread(() =>
             {
-                if (manual) Invoke(() => tray.ShowBalloonTip(6000, "Kontrol edilemedi", "GitHub'a ulaşılamadı. İnternet bağlantınızı kontrol edip tekrar deneyin.", ToolTipIcon.Warning));
-                return;
-            }
-            if (latest <= Updater.Current())
-            {
-                if (manual) Invoke(() => tray.ShowBalloonTip(6000, "Güncel", "seowatcher " + Paths.Version() + " en son sürüm.", ToolTipIcon.Info));
-                return;
-            }
-            Invoke(() =>
-            {
-                available = latest;
-                updateItem.Text = "Güncelle: " + latest + " sürümü hazır";
-                if (config.AutoUpdate || manual) StartUpdate();
-                else tray.ShowBalloonTip(10000, "Yeni sürüm: seowatcher " + latest, "Kurmak için bu baloncuğa tıklayın ya da menüden Güncelle deyin.", ToolTipIcon.Info);
-            });
+                Release latest = null;
+                string problem = null;
+                try { latest = Updater.CheckLatest(); }
+                catch (Exception ex)
+                {
+                    LauncherLog.Write("update: check failed: " + ex.Message);
+                    problem = Updater.Describe(ex);
+                }
+                Invoke(() => OnChecked(latest, problem, manual));
+            }) { IsBackground = true, Name = "seowatcher-update-check" }.Start();
         }
 
-        private void StartUpdate()
+        private void OnChecked(Release latest, string problem, bool manual)
         {
-            if (updating || available == null) return;
-            updating = true;
+            checking = false;
+            if (latest == null)
+            {
+                RefreshUpdateItem();
+                if (manual) Balloon("Güncelleme denetlenemedi", problem, ToolTipIcon.Warning, 8000, null);
+                return;
+            }
+            lastCheck = DateTime.UtcNow;
+            var current = Updater.Current();
+            if (latest.Version <= current)
+            {
+                available = null;
+                RefreshUpdateItem();
+                if (manual)
+                {
+                    Balloon("Güncel", latest.Version == current
+                        ? "seowatcher " + Paths.Version() + " en son sürüm."
+                        : "Kurulu sürüm (" + Paths.Version() + ") yayımlanan son sürümden (" + latest.Version + ") yeni.", ToolTipIcon.Info, 6000, null);
+                }
+                return;
+            }
+            if (!latest.HasInstaller)
+            {
+                // Published, but the Windows files are not attached yet.
+                RefreshUpdateItem();
+                if (manual) Balloon("Yeni sürüm hazırlanıyor", "seowatcher " + latest.Version + " yayımlandı ama Windows kurulum dosyası henüz eklenmedi. Biraz sonra tekrar deneyin.", ToolTipIcon.Info, 8000, null);
+                lastCheck = DateTime.UtcNow - TimeSpan.FromHours(23); // look again in an hour
+                return;
+            }
+            available = latest.Version;
+            RefreshUpdateItem();
+            if (manual) { StartUpdate(true); return; }
+            if (Autoinstall()) { StartUpdate(false); return; }
+            if (!Equals(notifiedVersion, available))
+            {
+                notifiedVersion = available;
+                string text = Updater.IsPerUserInstall()
+                    ? "Kurmak için bu baloncuğa tıklayın ya da menüden Güncelle deyin."
+                    : "Bu kurulum tüm kullanıcılar için yapılmış; güncellemek yönetici izni ister. Kurmak için bu baloncuğa tıklayın.";
+                var v = available;
+                Balloon("Yeni sürüm: seowatcher " + v, text, ToolTipIcon.Info, 10000, () => StartUpdate(true));
+            }
+        }
+
+        /// <summary>Install without asking: switched on, and an install that
+        /// needs no administrator (an all-users install would raise a UAC
+        /// prompt out of nowhere).</summary>
+        private bool Autoinstall()
+        {
+            return Config.Load().AutoUpdate && Updater.IsPerUserInstall();
+        }
+
+        private void StartUpdate(bool manual)
+        {
+            if (updatePhase != null || available == null) return;
+            if (!Updater.IsInstalled())
+            {
+                // A build folder, not an installed copy: there is nothing the
+                // installer could replace in place.
+                Browser.Open(Updater.ReleasePage(available));
+                return;
+            }
             var v = available;
-            updateItem.Enabled = false;
+            updatePhase = "Güncelleme indiriliyor: " + v;
+            RefreshUpdateItem();
             var worker = new Thread(() =>
             {
                 try
                 {
-                    string file = Updater.Download(v, msg => Invoke(() => SetStatus(msg)));
-                    Invoke(() => SetStatus("Güncelleme kuruluyor: " + v));
-                    Updater.Install(file);
+                    string file = Updater.Download(v, p => Invoke(() =>
+                    {
+                        if (updatePhase == null) return;
+                        updatePhase = "Güncelleme indiriliyor: " + v + " (%" + p + ")";
+                        RefreshUpdateItem();
+                    }));
+                    Invoke(() => { updatePhase = "Güncelleme kuruluyor: " + v; RefreshUpdateItem(); });
+                    var setup = Updater.Install(file);
+                    WatchInstaller(setup, v);
                 }
                 catch (Exception ex)
                 {
                     LauncherLog.Write("update: failed: " + ex.Message);
+                    string why = ex is UpdateVerifyException
+                        ? ex.Message + " Kurulum dosyasını sürüm sayfasından indirebilirsiniz."
+                        : Updater.Describe(ex) + " Kurulu sürüm çalışmaya devam ediyor.";
                     Invoke(() =>
                     {
-                        updating = false;
-                        updateItem.Enabled = true;
-                        SetStatus(url != null ? "Çalışıyor: " + url : "Hata: güncelleme indirilemedi");
-                        LauncherLog.Write("update: failed: " + ex.Message);
-                        string why = ex.Message.Contains("SHA-256") || ex.Message.Contains("SHA256SUMS")
-                            ? "İndirilen dosya doğrulanamadı, kurulmadı. Kurulum dosyasını sürüm sayfasından indirin."
-                            : "Güncelleme indirilemedi. İnternet bağlantınızı kontrol edip menüden Güncelle ile tekrar deneyin; kurulu sürüm çalışmaya devam ediyor.";
-                        tray.ShowBalloonTip(10000, "Güncelleme yapılamadı", why, ToolTipIcon.Warning);
+                        updatePhase = null;
+                        RefreshUpdateItem();
+                        // An automatic attempt retries in an hour; it says so once.
+                        if (manual || !Equals(notifiedVersion, v))
+                        {
+                            notifiedVersion = v;
+                            Balloon("Güncelleme yapılamadı", why, ToolTipIcon.Warning, 10000,
+                                ex is UpdateVerifyException ? (Action)(() => Browser.Open(Updater.ReleasePage(v))) : null);
+                        }
+                        if (!manual) lastCheck = DateTime.UtcNow - TimeSpan.FromHours(23);
                     });
                 }
-            }) { IsBackground = true };
+            }) { IsBackground = true, Name = "seowatcher-update" };
             worker.Start();
+        }
+
+        /// <summary>The installer stops this instance when it gets going. If it
+        /// exits while this instance still runs, it did not install: it was
+        /// cancelled, refused administrator permission, or failed.</summary>
+        private void WatchInstaller(Process setup, Version v)
+        {
+            if (setup == null) return;
+            setup.WaitForExit();
+            int code = -1;
+            try { code = setup.ExitCode; } catch { }
+            LauncherLog.Write("update: installer exited with " + code + " while this instance still runs");
+            Invoke(() =>
+            {
+                if (quitting) return;
+                updatePhase = null;
+                RefreshUpdateItem();
+                if (repairing)
+                {
+                    repairing = false;
+                    RefreshServerItems();
+                    server.Start(Config.Load());
+                }
+                Balloon("Güncelleme kurulmadı", "Kurulum yarıda kaldı ya da iptal edildi (kod " + code + "). Menüden Güncelle ile tekrar deneyebilirsiniz; kurulu sürüm çalışmaya devam ediyor.", ToolTipIcon.Warning, 10000, null);
+            });
         }
 
         private void ToggleAutoUpdate()
         {
-            config.AutoUpdate = !config.AutoUpdate;
-            autoUpdateItem.Checked = config.AutoUpdate;
-            try { config.Save(); } catch (Exception ex) { LauncherLog.Write("config: " + ex.Message); }
+            try
+            {
+                var cfg = Config.Update(c => c.AutoUpdate = !c.AutoUpdate);
+                autoUpdateItem.Checked = cfg.AutoUpdate;
+                LauncherLog.Write("auto update " + (cfg.AutoUpdate ? "on" : "off"));
+                if (cfg.AutoUpdate && available != null && Updater.IsPerUserInstall()) StartUpdate(false);
+            }
+            catch (Exception ex)
+            {
+                LauncherLog.Write("config: " + ex.Message);
+                Balloon("Ayar kaydedilemedi", "config.json yazılamadı: " + ex.Message, ToolTipIcon.Warning, 8000, null);
+            }
         }
 
-        private void RepairInstall()
+        // ---- Settings -------------------------------------------------------------
+
+        private void RefreshSettings()
         {
-            LauncherLog.Write("repair requested");
-            SetStatus("Onarılıyor");
-            server.Stop();
-            string problem = Repair.Run();
-            if (problem != null)
+            autoUpdateItem.Checked = Config.Load().AutoUpdate;
+            bool machine = Autostart.IsEnabledForAllUsers();
+            autostartItem.Checked = machine || Autostart.IsEnabled();
+            // Set for every user by an administrator install: only an
+            // administrator can change it, so it is shown but not clickable.
+            autostartItem.Enabled = !machine;
+            autostartItem.ToolTipText = machine ? "Yönetici bu bilgisayardaki herkes için açtı; yalnızca yönetici kapatabilir." : null;
+        }
+
+        private void ToggleAutostart()
+        {
+            try
             {
-                SetStatus("Hata: " + problem);
-                tray.ShowBalloonTip(15000, "Kurulum eksik", problem, ToolTipIcon.Error);
-                Browser.Open("https://github.com/" + Updater.Repo + "/releases/latest");
+                bool enable = !Autostart.IsEnabled();
+                Autostart.Set(enable);
+                LauncherLog.Write("autostart " + (enable ? "on" : "off"));
+            }
+            catch (Exception ex)
+            {
+                LauncherLog.Write("autostart: " + ex.Message);
+                Balloon("Ayar değiştirilemedi", "Windows başlangıç kaydı yazılamadı: " + ex.Message, ToolTipIcon.Warning, 8000, null);
+            }
+            RefreshSettings();
+        }
+
+        // ---- Visual C++ runtime -----------------------------------------------------
+
+        /// <summary>Runs the bundled VC_redist.x64.exe elevated (one UAC prompt)
+        /// and restarts the server when it finishes. Falls back to Microsoft's
+        /// download page when the package is not beside the launcher.</summary>
+        private void InstallVcRedist()
+        {
+            if (vcInstalling) return;
+            if (!File.Exists(Paths.VcRedistExe))
+            {
+                LauncherLog.Write("vcredist: bundled package missing, opening " + Server.VcRedistUrl);
+                Browser.Open(Server.VcRedistUrl);
+                Balloon("Paket bulunamadı", "Microsoft'un indirme sayfası açıldı. Paketi indirip kurduktan sonra menüden Yeniden başlat deyin.", ToolTipIcon.Info, 10000, null);
                 return;
             }
-            openedOnce = true;
-            url = null;
-            server.Start(Config.Load());
+            Process p;
+            try
+            {
+                LauncherLog.Write("vcredist: installing " + Paths.VcRedistExe);
+                p = Process.Start(new ProcessStartInfo(Paths.VcRedistExe, "/install /passive /norestart") { UseShellExecute = true, Verb = "runas" });
+            }
+            catch (Exception ex)
+            {
+                // Typically the UAC prompt was declined (Win32Exception 1223).
+                LauncherLog.Write("vcredist: " + ex.Message);
+                Balloon("Kurulum iptal edildi", "Yönetici izni verilmedi. Menüdeki \"Eksik Windows bileşenini kur\" ile yeniden deneyebilirsiniz.", ToolTipIcon.Warning, 10000, null);
+                return;
+            }
+            vcInstalling = true;
+            RefreshServerItems();
+            SetServerStatus("Windows bileşeni kuruluyor");
+            new Thread(() =>
+            {
+                int code = -1;
+                try { p.WaitForExit(); code = p.ExitCode; } catch { }
+                LauncherLog.Write("vcredist: exit code " + code);
+                Invoke(() =>
+                {
+                    vcInstalling = false;
+                    RefreshServerItems();
+                    // 0 done, 3010 done but a reboot is wanted, 1638 a newer one is there.
+                    if (code == 0 || code == 3010 || code == 1638)
+                    {
+                        fixItem.Visible = false;
+                        Restart();
+                    }
+                    else
+                    {
+                        SetServerStatus("Hata: Windows bileşeni kurulamadı (kod " + code + ").");
+                        Balloon("Windows bileşeni kurulamadı", "Kurulum kod " + code + " ile bitti. Menüdeki \"Eksik Windows bileşenini kur\" ile tekrar deneyin ya da paketi Microsoft'un sayfasından indirin.", ToolTipIcon.Warning, 12000, null);
+                    }
+                });
+            }) { IsBackground = true }.Start();
+        }
+
+        // ---- Diagnostics ------------------------------------------------------------
+
+        /// <summary>The report runs the engine probe and reads the event log,
+        /// which can take seconds: it is built off the UI thread, then put on
+        /// the clipboard (and, for a report, into a GitHub issue draft).</summary>
+        private void PrepareReport(bool openIssue)
+        {
+            if (preparingReport) return;
+            preparingReport = true;
+            RefreshServerItems();
+            string status = Diag.MaskProfile(serverStatus);
+            new Thread(() =>
+            {
+                string report;
+                try { report = Diag.Report(); }
+                catch (Exception ex) { report = "Tanı bilgisi hazırlanamadı: " + ex.Message; }
+                Invoke(() =>
+                {
+                    preparingReport = false;
+                    RefreshServerItems();
+                    bool copied = CopyToClipboard(report);
+                    if (openIssue) OpenIssue(report, status, copied);
+                    else if (copied) Balloon("Kopyalandı", "Tanı bilgisi panoya kopyalandı. GitHub'daki sorun kaydına Ctrl+V ile yapıştırabilirsiniz.", ToolTipIcon.Info, 5000, null);
+                    else Balloon("Kopyalanamadı", "Pano şu an başka bir program tarafından kullanılıyor. Birkaç saniye sonra tekrar deneyin.", ToolTipIcon.Warning, 5000, null);
+                });
+            }) { IsBackground = true, Name = "seowatcher-report" }.Start();
+        }
+
+        private static bool CopyToClipboard(string text)
+        {
+            try
+            {
+                // Retries for half a second while another program holds the clipboard.
+                Clipboard.SetDataObject(text, true, 5, 100);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LauncherLog.Write("clipboard: " + ex.Message);
+                return false;
+            }
+        }
+
+        /// <summary>Opens a GitHub issue form with the diagnostics in the body (and
+        /// on the clipboard, in case the URL is too long for the browser).</summary>
+        private static void OpenIssue(string report, string status, bool copied)
+        {
+            // The whole report is on the clipboard; the URL carries only the
+            // first part, because a long query string makes GitHub answer 404
+            // and some browsers refuse it. The "sorun" template adds the
+            // questions; a body in the URL replaces the template's own body.
+            string head = report.Length > 2000 ? report.Substring(0, 2000) + (copied ? "\n(kısaltıldı; tamamı panoda, Ctrl+V ile yapıştırın)" : "\n(kısaltıldı; tamamı için menüden Tanı bilgisini kopyala deyin)") : report;
+            string body = "**Ne yapmaya çalışıyordunuz?**\n(bir iki cümle)\n\n**Tanı bilgisi** (menüden kopyalandı; gözden geçirin)\n\n```\n" + head + "\n```\n";
+            string title = "seowatcher " + Paths.Version() + ": " + (status.Length > 80 ? status.Substring(0, 80) : status);
+            Browser.Open("https://github.com/" + Updater.Repo + "/issues/new?template=sorun.md&title=" + Uri.EscapeDataString(title) + "&body=" + Uri.EscapeDataString(body));
+        }
+
+        // ---- Shell ------------------------------------------------------------------
+
+        /// <summary>Double-click, the bold menu item and a second launch. Opens
+        /// the browser once the server answers; while it is still starting, it
+        /// says so and opens it when ready; after a failure it repeats why.</summary>
+        private void OpenApp()
+        {
+            if (url != null)
+            {
+                Browser.Open(url);
+                return;
+            }
+            if (failure != null)
+            {
+                Balloon("seowatcher çalışmıyor", failure, ToolTipIcon.Error, 10000, null);
+                return;
+            }
+            if (!openWhenReady)
+            {
+                openWhenReady = true;
+                Balloon("seowatcher açılıyor", "Hazır olunca tarayıcıda kendiliğinden açılacak. İlk açılış 20-30 saniye sürebilir.", ToolTipIcon.Info, 5000, null);
+            }
         }
 
         private static Icon LoadIcon()
         {
+            // The small icon at the size the taskbar uses for this DPI (16, 20,
+            // 24 px...): a 32 px icon scaled down looks blurred in the tray.
+            try
+            {
+                var small = new IntPtr[1];
+                if (ExtractIconEx(Application.ExecutablePath, 0, null, small, 1) > 0 && small[0] != IntPtr.Zero)
+                {
+                    return Icon.FromHandle(small[0]);
+                }
+            }
+            catch { }
             try
             {
                 var icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
@@ -1413,171 +2255,16 @@ namespace SeoWatcher
             return SystemIcons.Application;
         }
 
+        [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
+        private static extern uint ExtractIconEx(string file, int index, IntPtr[] large, IntPtr[] small, uint count);
+
         private void Invoke(Action action)
         {
             try
             {
-                if (tray.ContextMenuStrip.IsHandleCreated)
-                {
-                    tray.ContextMenuStrip.BeginInvoke(action);
-                }
-                else
-                {
-                    action();
-                }
+                if (!ui.IsDisposed && ui.IsHandleCreated) ui.BeginInvoke(action);
             }
             catch { }
-        }
-
-        private void SetStatus(string text)
-        {
-            statusItem.Text = text;
-            tray.Text = Truncate("seowatcher " + Paths.Version() + ": " + text, 63);
-        }
-
-        private void OnReady(string readyUrl)
-        {
-            url = readyUrl;
-            SetStatus("Çalışıyor: " + readyUrl);
-            if (!openedOnce && !silent)
-            {
-                openedOnce = true;
-                OpenApp();
-            }
-            else if (!openedOnce)
-            {
-                openedOnce = true;
-                tray.ShowBalloonTip(4000, "seowatcher hazır", readyUrl + " adresinde çalışıyor. Simgeye çift tıklayarak açın.", ToolTipIcon.Info);
-            }
-        }
-
-        private void OnFailed(string message)
-        {
-            SetStatus("Hata: " + message);
-            needsVcRedist = message.StartsWith(Server.RuntimeCrashMessage, StringComparison.Ordinal);
-            needsReport = message.StartsWith(Server.EngineCrashMessage, StringComparison.Ordinal);
-            fixItem.Visible = needsVcRedist;
-            if (needsVcRedist)
-            {
-                tray.ShowBalloonTip(20000, "seowatcher için bir Windows bileşeni gerekiyor",
-                    message + "\nBu baloncuğa tıklayın; paket kurulur, sonra uygulama kendiliğinden yeniden başlar.", ToolTipIcon.Warning);
-            }
-            else if (needsReport)
-            {
-                tray.ShowBalloonTip(20000, "seowatcher başlatılamadı",
-                    message + "\nBu baloncuğa tıklayın: tanı bilgisi panoya kopyalanır ve GitHub'da herkese açık bir sorun kaydı taslağı açılır; göndermeden önce gözden geçirin.", ToolTipIcon.Error);
-            }
-            else
-            {
-                tray.ShowBalloonTip(15000, "seowatcher başlatılamadı", message, ToolTipIcon.Error);
-            }
-        }
-
-        // A failure the bundled Visual C++ package can fix: clicking the balloon
-        // installs it. Any other balloon opens the app as before.
-        private bool needsVcRedist;
-        private bool needsReport;
-        private ToolStripMenuItem fixItem;
-        private void OnBalloonClicked()
-        {
-            if (needsVcRedist) InstallVcRedist();
-            else if (needsReport) ReportIssue();
-            else if (available != null && !updating) StartUpdate();
-            else OpenApp();
-        }
-
-        /// <summary>Runs the bundled VC_redist.x64.exe elevated (one UAC prompt)
-        /// and restarts the server when it finishes. Falls back to Microsoft's
-        /// download page when the package is not beside the launcher.</summary>
-        private void InstallVcRedist()
-        {
-            if (!File.Exists(Paths.VcRedistExe))
-            {
-                LauncherLog.Write("vcredist: bundled package missing, opening " + Server.VcRedistUrl);
-                Browser.Open(Server.VcRedistUrl);
-                tray.ShowBalloonTip(10000, "Paket bulunamadı", "Microsoft'un indirme sayfası açıldı. Paketi indirip kurduktan sonra menüden Yeniden başlat deyin.", ToolTipIcon.Info);
-                return;
-            }
-            try
-            {
-                LauncherLog.Write("vcredist: installing " + Paths.VcRedistExe);
-                SetStatus("Windows bileşeni kuruluyor");
-                var psi = new ProcessStartInfo(Paths.VcRedistExe, "/install /passive /norestart") { UseShellExecute = true, Verb = "runas" };
-                var p = Process.Start(psi);
-                var worker = new Thread(() =>
-                {
-                    p.WaitForExit();
-                    LauncherLog.Write("vcredist: exit code " + p.ExitCode);
-                    Invoke(() =>
-                    {
-                        fixItem.Visible = false;
-                        needsVcRedist = false;
-                        Restart();
-                    });
-                }) { IsBackground = true };
-                worker.Start();
-            }
-            catch (Exception ex)
-            {
-                // Typically the UAC prompt was declined (Win32Exception 1223).
-                LauncherLog.Write("vcredist: " + ex.Message);
-                SetStatus("Hata: Windows bileşeni kurulamadı. Menüden tekrar deneyin.");
-                tray.ShowBalloonTip(10000, "Kurulum iptal edildi", "Yönetici izni verilmedi. Menüdeki \"Eksik Windows bileşenini kur\" ile yeniden deneyebilirsiniz.", ToolTipIcon.Warning);
-            }
-        }
-
-        /// <summary>Opens a GitHub issue form with the diagnostics in the body (and
-        /// on the clipboard, in case the URL is too long for the browser).</summary>
-        private void ReportIssue()
-        {
-            string report = Diag.Report();
-            bool copied = true;
-            try { Clipboard.SetText(report); } catch { copied = false; }
-            // The whole report is on the clipboard; the URL carries only the
-            // first part, because a long query string makes GitHub answer 404
-            // and some browsers refuse it. The "sorun" template adds the
-            // questions; a body in the URL replaces the template's own body.
-            string head = report.Length > 2000 ? report.Substring(0, 2000) + (copied ? "\n(kısaltıldı; tamamı panoda, Ctrl+V ile yapıştırın)" : "\n(kısaltıldı; tamamı için menüden Tanı bilgisini kopyala deyin)") : report;
-            string body = "**Ne yapmaya çalışıyordunuz?**\n(bir iki cümle)\n\n**Tanı bilgisi** (menüden kopyalandı; gözden geçirin)\n\n```\n" + head + "\n```\n";
-            string status = Diag.MaskProfile(statusItem.Text);
-            string title = "seowatcher " + Paths.Version() + ": " + (status.Length > 80 ? status.Substring(0, 80) : status);
-            Browser.Open("https://github.com/" + Updater.Repo + "/issues/new?template=sorun.md&title=" + Uri.EscapeDataString(title) + "&body=" + Uri.EscapeDataString(body));
-        }
-
-        private void CopyDiagnostics()
-        {
-            try
-            {
-                Clipboard.SetText(Diag.Report());
-                tray.ShowBalloonTip(5000, "Kopyalandı", "Tanı bilgisi panoya kopyalandı. GitHub'daki sorun kaydına yapıştırabilirsiniz.", ToolTipIcon.Info);
-            }
-            catch (Exception ex)
-            {
-                LauncherLog.Write("diag: " + ex.Message);
-                tray.ShowBalloonTip(5000, "Kopyalanamadı", "Pano şu an başka bir program tarafından kullanılıyor. Birkaç saniye sonra tekrar deneyin.", ToolTipIcon.Warning);
-            }
-        }
-
-        private void OpenApp()
-        {
-            Browser.Open(url ?? ("http://127.0.0.1:" + config.Port + "/"));
-        }
-
-        private void Restart()
-        {
-            LauncherLog.Write("restart");
-            SetStatus("Yeniden başlatılıyor");
-            server.Stop();
-            openedOnce = true;
-            url = null;
-            server.Start(Config.Load());
-        }
-
-        private void ToggleAutostart()
-        {
-            bool enable = !Autostart.IsEnabled();
-            Autostart.Set(enable);
-            autostartItem.Checked = Autostart.IsEnabled();
         }
 
         private static void OpenFolder(string path)
@@ -1590,13 +2277,16 @@ namespace SeoWatcher
             catch (Exception ex)
             {
                 LauncherLog.Write("open folder: " + ex.Message);
-                // Static helper, no tray handle here: fall back to the shell's own opener.
+                // Fall back to the shell's own opener.
                 try { Process.Start(new ProcessStartInfo(path) { UseShellExecute = true }); } catch { }
             }
         }
 
         private void Quit()
         {
+            if (quitting) return;
+            quitting = true;
+            LauncherLog.Write("quit");
             try { if (updateTimer != null) updateTimer.Dispose(); } catch { }
             tray.Visible = false;
             server.Stop();
@@ -1615,14 +2305,24 @@ namespace SeoWatcher
                 server.Stop();
                 tray.Dispose();
                 quitEvent.Dispose();
+                openEvent.Dispose();
+                ui.Dispose();
             }
             base.Dispose(disposing);
         }
     }
 
+    /// <summary>"Windows açılınca başlat": the HKCU Run value, quoted path
+    /// plus --silent (no browser at sign-in). The installer writes the same
+    /// value; an all-users install writes it under HKLM instead.</summary>
     internal static class Autostart
     {
         private const string RunKey = "Software\\Microsoft\\Windows\\CurrentVersion\\Run";
+
+        private static string Command()
+        {
+            return "\"" + Application.ExecutablePath + "\" --silent";
+        }
 
         public static bool IsEnabled()
         {
@@ -1632,20 +2332,47 @@ namespace SeoWatcher
             }
         }
 
+        public static bool IsEnabledForAllUsers()
+        {
+            try
+            {
+                using (var hklm = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64))
+                using (var key = hklm.OpenSubKey(RunKey, false))
+                {
+                    return key != null && key.GetValue(Program.AppName) != null;
+                }
+            }
+            catch { return false; }
+        }
+
         public static void Set(bool enabled)
         {
             using (var key = Registry.CurrentUser.CreateSubKey(RunKey))
             {
                 if (key == null) return;
-                if (enabled)
+                if (enabled) key.SetValue(Program.AppName, Command());
+                else key.DeleteValue(Program.AppName, false);
+            }
+        }
+
+        /// <summary>A value left by an install in another folder would start a
+        /// launcher that is not there any more: point it at this one.</summary>
+        public static void Repair()
+        {
+            try
+            {
+                using (var key = Registry.CurrentUser.OpenSubKey(RunKey, true))
                 {
-                    key.SetValue(Program.AppName, "\"" + Application.ExecutablePath + "\" --silent");
-                }
-                else
-                {
-                    key.DeleteValue(Program.AppName, false);
+                    if (key == null) return;
+                    var value = key.GetValue(Program.AppName) as string;
+                    if (value != null && !string.Equals(value, Command(), StringComparison.OrdinalIgnoreCase) && Updater.IsInstalled())
+                    {
+                        key.SetValue(Program.AppName, Command());
+                        LauncherLog.Write("autostart: pointed the Run value at " + Application.ExecutablePath);
+                    }
                 }
             }
+            catch (Exception ex) { LauncherLog.Write("autostart: " + ex.Message); }
         }
     }
 }

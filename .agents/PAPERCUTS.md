@@ -102,3 +102,7 @@ hold a literal backslash became a newline and the edit failed. Writing the
 script to a file with the Write tool and running `python file.py` avoids it.
 Not a repository bug, but it bit three edits in a row before the cause was
 clear.
+
+- npx.cmd wrangler fails under Git Bash with "'C:\Program' is not recognized" (path with spaces); `pnpm exec wrangler` works.
+
+- 2026-10-23: Bash tool heredocs collapse one level of backslashes, which silently corrupted a scripted C# edit (packaging/windows). Write edit scripts with the Write tool instead.

@@ -2,7 +2,7 @@
 title: Sorun giderme
 description: Sık görülen sorunlar belirti, sebep ve çözümle: dolu adres numarası, Windows uyarısı, Google hataları, kota, takılan denetim, boş grafik, 401.
 kind: sorun-giderme
-updated: 2026-10-22
+updated: 2026-10-23
 ---
 
 Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuzun durumu" kartına bakın. Kart giriş ve erişimi, Google girişini, PageSpeed anahtarını ve veritabanını kontrol eder. "N şey dikkat istiyor" diyorsa yanındaki düğme sizi doğru ayara götürür. Aşağıdaki sorunlar en sık görülenden en nadire doğru sıralıdır.
@@ -21,7 +21,7 @@ Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuz
 
 **Sebep:** Başka bir program aynı adres numarasını kullanıyor.
 
-**Çözüm:** Windows paketi normalde 3002 ile 3010 arasında boş bir numara seçer. Hepsi doluysa veri klasöründeki `config.json` dosyasına başka bir numara yazın. Docker'da içinde `PORT=3002` satırı olan bir `.env` dosyası koyun ve `docker compose up -d --force-recreate seotracker` komutunu çalıştırın. Numara değişince Google yönlendirme adreslerini de güncelleyin.
+**Çözüm:** Windows paketi normalde 3002 ile 3010 arasında boş bir numara seçer, bunu bir baloncukla söyler ve yalnızca o açılış için kullanır. 3001 boşalınca **Yeniden başlat** deyin, uygulama 3001'e döner. Hepsi doluysa veri klasöründeki `config.json` dosyasına başka bir numara yazın. Docker'da içinde `PORT=3002` satırı olan bir `.env` dosyası koyun ve `docker compose up -d --force-recreate seotracker` komutunu çalıştırın. Numara değişince Google yönlendirme adreslerini de güncelleyin.
 
 ## Simge "Windows bileşeni eksik" diyor
 
@@ -33,11 +33,11 @@ Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuz
 
 ## Yönetici izni verilmedi
 
-**Belirti:** Kurulum sırasında Visual C++ için izin istendi, **Hayır** dediniz ve uygulama başlamadı.
+**Belirti:** Kurulum sırasında Visual C++ için izin istendi, **Hayır** dediniz. Kurulum "Microsoft Visual C++ çalışma zamanı kurulamadı" dedi.
 
-**Sebep:** Gereken Windows bileşeni kurulamadı.
+**Sebep:** Gereken Windows bileşeni kurulamadı. Uygulama gereken dosyaların bir kopyasını yanında taşıdığı için çoğu bilgisayarda yine de açılır.
 
-**Çözüm:** Görev çubuğundaki simgeye sağ tıklayın (simge görünmüyorsa ^ okuna tıklayın). **Eksik Windows bileşenini kur** deyin ve bu kez izin verin. Ya da bileşeni `https://aka.ms/vs/17/release/vc_redist.x64.exe` adresinden indirip kurun.
+**Çözüm:** Uygulama açıldıysa bir şey yapmanız gerekmez. Açılmadıysa görev çubuğundaki simgeye sağ tıklayın (simge görünmüyorsa ^ okuna tıklayın). **Eksik Windows bileşenini kur** deyin ve bu kez izin verin. Ya da bileşeni `https://aka.ms/vs/17/release/vc_redist.x64.exe` adresinden indirip kurun.
 
 ## Simge "Uygulamanın motoru çöktü" diyor
 
@@ -161,7 +161,7 @@ Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuz
 
 ## Veriler ve günlükler nerede?
 
-Windows'ta her şey `%LOCALAPPDATA%\seowatcher` klasöründedir: `data` (veritabanı), `logs\server.log`, `logs\migrate.log`, `instance-secret`, `mcp-token`, `config.json`. Görev çubuğu menüsündeki **Günlükleri aç** ve **Veri klasörünü aç** oraya götürür.
+Windows'ta her şey `%LOCALAPPDATA%\seowatcher` klasöründedir: `data` (veritabanı), `logs\launcher.log`, `logs\server.log`, `logs\migrate.log`, `instance-secret`, `mcp-token`, `config.json`. Günlük dosyası büyüyünce (`server.log` 5 MB, diğerleri 1 MB) eskisi `server.old.log` gibi bir adla yanında kalır, yenisi baştan başlar. `logs\wrangler` klasöründe motorun kendi ayrıntılı kayıtları durur; 30 günden eskileri kendiliğinden silinir. Görev çubuğu menüsündeki **Günlükleri aç** ve **Veri klasörünü aç** oraya götürür.
 
 Docker'da veri `seotracker_data` deposunda (`/app/.wrangler`) durur. Günlükleri `docker compose logs -f` komutuyla görürsünüz.
 
@@ -172,8 +172,12 @@ Sorun bildirirken **Yardım** ekranındaki **Tanılama paketi indir** düğmesin
 Görev çubuğu simgesinde çıkan uyarılar ve ne yapacağınız:
 
 - **"Sunucu 120 saniyede yanıt vermedi".** Menüden **Yeniden başlat** deyin. Olmazsa **Günlükleri aç** deyip `server.log` dosyasının son satırlarına bakın.
-- **"Kurulum eksik".** Kurulum dosyasını yeniden çalıştırın.
-- **"Güncelleme yapılamadı".** İnternet bağlantınızı kontrol edin ve menüden **Güncelle** ile tekrar deneyin. Kurulu sürüm çalışmaya devam eder.
+- **"seowatcher yeniden başlatılıyor".** Sunucu kendiliğinden kapandı, uygulama onu yeniden açıyor. Açık sayfayı birkaç saniye sonra yenileyin.
+- **"Sunucu 10 dakikada üç kez kapandı".** Uygulama yeniden açmayı bıraktı. **Kurulumu onar** deyin, düzelmezse **Sorunu bildir (GitHub)**.
+- **"Kurulum eksik".** **Kurulumu onar** eksik dosyaları kurulum dosyasını indirerek geri koyar. İnternet yoksa sürüm sayfası açılır; kurulum dosyasını indirip çalıştırın.
+- **"3001 numarası dolu, 3002 kullanılıyor".** Başka bir program 3001'i tutuyor. Google'a bağlanırken hata alırsanız o programı kapatıp **Yeniden başlat** deyin.
+- **"Güncelleme denetlenemedi" ya da "Güncelleme yapılamadı".** Baloncuk sebebini söyler. "GitHub'a ulaşılamadı" diyorsa internet bağlantınızı kontrol edin. "GitHub şu an çok fazla istek alıyor" diyorsa bir saat sonra tekrar deneyin. Parmak izi tutmadı diyorsa kurulum dosyasını sürüm sayfasından indirin. Her durumda kurulu sürüm çalışmaya devam eder.
+- **"Güncelleme kurulmadı".** Kurulum penceresi kapatıldı ya da yönetici izni verilmedi. Menüden **Güncelle** ile tekrar deneyin.
 - **"Windows bileşeni kurulamadı".** Menüden **Eksik Windows bileşenini kur** deyin.
 
 <!-- Kaynaklar: src/routes/_app/support.tsx; src/client/features/support/CommonProblems.tsx; SetupStatusPanel.tsx; DiagnosticsBundleButton.tsx; src/client/features/integrations/googleAuthErrorCopy.ts; src/server/features/audit/services/auditReconciler.ts; src/server/features/gsc/indexCoverage.ts; src/server/features/ga4/services/Ga4ReportEnhancements.ts; packaging/windows/launcher/SeoWatcher.cs; docs/SELF_HOSTING_DOCKER.md; README.md -->

@@ -2,7 +2,7 @@
 title: Windows'a kurulum
 description: Windows'a tek dosyayla kurarsınız, Docker ya da terminal gerekmez. Güncelleme, kaldırma, yedek alma ve adres numarasını değiştirme de aynı sayfada.
 kind: nasil-yapilir
-updated: 2026-10-22
+updated: 2026-10-23
 ---
 
 Bu sayfayı bitirince uygulama bilgisayarınızda kurulu ve tarayıcıda açık olur. Kurulum iki dakika sürer. Yalnızca sizin kullanıcı hesabınıza kurulur, yönetici izni gerekmez.
@@ -35,33 +35,38 @@ Sonraki adım: Google'a bağlanma kılavuzu.
 
 ### Görev çubuğu menüsü
 
-Simgeye sağ tıklayın. Simge görünmüyorsa görev çubuğundaki ^ okuna tıklayın. Menüde şunlar var:
+Simgeye sağ tıklayın. Simge görünmüyorsa görev çubuğundaki ^ okuna tıklayın. Menü dört bölümdür. En üstte uygulamayı açma ve durum satırı, sonra güncelleme ile yeniden başlatma, sonra iki ayar, en altta sorun giderme maddeleri durur.
 
-- **seowatcher'ı aç**: uygulamayı tarayıcıda açar. Simgeye çift tıklamak da aynı işi yapar.
-- **Yeniden başlat**: uygulamayı kapatıp açar. Bir şey takılırsa ilk bunu deneyin.
-- **Günlükleri aç**: kayıt klasörünü açar. İçinde `launcher.log`, `server.log` ve `migrate.log` var.
-- **Tanı bilgisini kopyala**: Windows sürümünü, işlemciyi, Visual C++ sürümünü, motor denemesini, Windows olay günlüğündeki hatalı modülü, çökme dökümlerini ve son kayıt satırlarını panoya kopyalar. Sorun bildirirken işinize yarar.
-- **Sorunu bildir (GitHub)**: aynı bilgiyi panoya alır ve GitHub'da hazır doldurulmuş bir sorun kaydı açar. Ne yaparken olduğunu bir cümleyle ekleyip gönderin.
+- **seowatcher'ı aç**: uygulamayı tarayıcıda açar. Simgeye çift tıklamak da aynı işi yapar. Uygulama henüz açılıyorsa "seowatcher açılıyor" baloncuğu çıkar, hazır olunca tarayıcı kendiliğinden açılır.
+- Durum satırı: "Çalışıyor: http://127.0.0.1:3001/", "Veritabanı güncelleniyor" ya da hata yazısı. Tıklanmaz. Yazı uzunsa fareyi üstünde tutunca tamamı görünür.
 - **Eksik Windows bileşenini kur**: yalnızca Visual C++ paketi eksikse görünür. Tıklayınca paketi kurar ve uygulamayı yeniden başlatır.
-- **Kurulumu onar**: geçici dosyaları temizler, paketi kontrol eder, uygulamayı yeniden açar.
-- **Güncelle**: menüde her zaman durur. Tıklayınca hemen GitHub'a bakar; yeni sürüm varsa indirip kurar, yoksa "Güncel" der. Yeni sürüm daha önce bulunmuşsa madde "Güncelle: X.Y.Z sürümü hazır" yazar (sürüm numarası örnektir).
+- **Güncelle**: menüde her zaman durur. Tıklayınca hemen GitHub'a bakar; yeni sürüm varsa indirip kurar, yoksa "Güncel" der. Bakarken madde "Kontrol ediliyor…", indirirken "Güncelleme indiriliyor: X.Y.Z (%45)" yazar ve tıklanmaz. Yeni sürüm daha önce bulunmuşsa madde "Güncelle: X.Y.Z sürümü hazır" yazar (sürüm numaraları örnektir).
+- **Yeniden başlat**: uygulamayı kapatıp açar. Bir şey takılırsa ilk bunu deneyin.
+- **Windows açılınca başlat**: işaretliyse uygulama bilgisayar açılınca arka planda başlar. Bilgisayardaki herkes için kurulumda bu ayarı yönetici açtıysa madde işaretli ve gri görünür, yalnızca yönetici kapatabilir.
 - **Güncellemeleri kendiliğinden kur**: işaretliyse yeni sürüm bulununca kendisi kurar.
+- **Kurulumu onar**: geçici dosyaları temizler, paketin eksiksiz olduğunu kontrol eder, uygulamayı yeniden açar. Onarırken madde "Onarılıyor…" yazar.
+- **Tanı bilgisini kopyala**: Windows sürümünü, işlemciyi, Visual C++ sürümünü, motor denemesini, Windows olay günlüğündeki hatalı modülü, çökme dökümlerini ve son kayıt satırlarını panoya kopyalar. Bilgi birkaç saniyede hazırlanır, sonra "Kopyalandı" baloncuğu çıkar. Sorun bildirirken işinize yarar.
+- **Sorunu bildir (GitHub)**: aynı bilgiyi panoya alır ve GitHub'da hazır doldurulmuş bir sorun kaydı açar. Ne yaparken olduğunu bir cümleyle ekleyip gönderin.
+- **Günlükleri aç**: kayıt klasörünü açar. İçinde `launcher.log`, `server.log` ve `migrate.log` var.
 - **Veri klasörünü aç**: veritabanının ve anahtarların klasörünü açar.
-- **Windows açılınca başlat**: işaretliyse uygulama bilgisayar açılınca arka planda başlar.
+- Sürüm numarası: kurulu sürüm. Tıklanmaz.
 - **Çıkış**: uygulamayı tamamen kapatır. Kapalıyken tarayıcıdaki sayfa çalışmaz.
 
-Menüde ayrıca bir durum satırı ("Çalışıyor: http://127.0.0.1:3001/" ya da hata yazısı) ve sürüm numarası görünür.
+Uygulamayı ikinci kez başlatırsanız (Başlat menüsünden ya da masaüstü kısayolundan) yeni kopya açılmaz. Açık olan uygulama tarayıcıda sayfayı açar; henüz hazır değilse hazır olunca açar.
 
-Uygulamayı ikinci kez başlatırsanız yeni kopya açılmaz. Yalnızca tarayıcıda sayfa açılır.
+Sunucu çalışırken kendiliğinden kapanırsa uygulama onu yeniden açar ve "seowatcher yeniden başlatılıyor" baloncuğunu gösterir. On dakikada üç kez kapanırsa yeniden açmayı bırakır ve durum satırında "Sunucu 10 dakikada üç kez kapandı" yazar. O zaman **Kurulumu onar** deyin.
 
 ### Güncelleme
 
-Uygulama güncellemeyi kendisi yapar. Açıldıktan iki dakika sonra ve her gün bir kez GitHub'daki son sürüme bakar. Yeni sürüm varsa indirir, dosyanın parmak izini (SHA-256) sürüm sayfasındaki değerle karşılaştırır, sessizce kurar ve yeniden açılır. Bu sırada simgenin yazısı "Güncelleme indiriliyor" ve "Güncelleme kuruluyor" olur. **Ayarlar → Hakkında** bölümü de yeni sürümü haber verir ve sizi simgedeki **Güncelle** maddesine yönlendirir.
+Uygulama güncellemeyi kendisi yapar. Açıldıktan iki dakika sonra ve her gün bir kez GitHub'daki son sürüme bakar. Yeni sürüm varsa indirir, dosyanın parmak izini (SHA-256) sürüm sayfasındaki değerle karşılaştırır, sessizce kurar ve yeniden açılır. Bu sırada simgenin yazısı "Güncelleme indiriliyor" ve "Güncelleme kuruluyor" olur, kısa bir kurulum penceresi görünür. Uygulama yeniden açılınca "seowatcher X.Y.Z sürümüne güncellendi" baloncuğu çıkar; tıklarsanız yeniliklerin listesi açılır. **Ayarlar → Hakkında** bölümü de yeni sürümü haber verir ve sizi simgedeki **Güncelle** maddesine yönlendirir.
 
-- Kendiliğinden kurulmasını istemiyorsanız menüden **Güncellemeleri kendiliğinden kur** işaretini kaldırın. O zaman yeni sürüm çıkınca bir baloncuk görürsünüz ve menüde **Güncelle** maddesi belirir.
-- Elle güncellemek için yeni kurulum dosyasını aynı adresten indirip çalıştırın. Sihirbaz açık uygulamayı kendisi kapatır, dosyaları değiştirir ve yeniden başlatır.
+- Kendiliğinden kurulmasını istemiyorsanız menüden **Güncellemeleri kendiliğinden kur** işaretini kaldırın. O zaman yeni sürüm çıkınca bir kez baloncuk görürsünüz ve menüdeki madde "Güncelle: X.Y.Z sürümü hazır" olur. Kurmak için baloncuğa ya da maddeye tıklayın.
+- İnternet yoksa ya da GitHub o an yanıt vermezse uygulama bir saat sonra yeniden dener. Kendiliğinden yapılan denemelerde aynı sürüm için yalnızca bir kez uyarır.
+- İndirilen dosyanın parmak izi tutmazsa güncelleme kurulmaz, kurulu sürüm çalışmaya devam eder.
+- Bilgisayardaki herkes için yapılmış kurulumda güncelleme yönetici izni ister. Bu yüzden orada kendiliğinden kurulmaz. Yeni sürüm çıkınca baloncuk görürsünüz; tıklayınca Windows yönetici izni sorar.
+- Elle güncellemek için yeni kurulum dosyasını aynı adresten indirip çalıştırın. Sihirbaz açık uygulamayı kendisi kapatır, dosyaları değiştirir ve yeniden başlatır. Sihirbazdaki **Windows açılınca seowatcher'ı başlat** kutusu menüdeki güncel ayarınızı gösterir.
 
-Verileriniz, Google bağlantınız ve ayarlarınız olduğu gibi kalır.
+Verileriniz, Google bağlantınız ve ayarlarınız olduğu gibi kalır. Kendiliğinden yapılan güncelleme **Windows açılınca başlat** ayarına dokunmaz.
 
 ### Kurumsal dağıtım
 
@@ -75,14 +80,16 @@ Bir bilgisayardaki tüm kullanıcılar için kurmak ya da bir dağıtım aracıy
 
 ### Onarma
 
-Bir şey takılırsa simgeye sağ tıklayıp **Kurulumu onar** deyin (simge görünmüyorsa görev çubuğundaki ^ okuna tıklayın). Uygulama geçici dosyaları temizler, paketin eksiksiz olduğunu ve veritabanının sağlam olduğunu kontrol eder, sonra açılır. Bir dosya eksikse bunu söyler ve sürüm sayfasını açar. O durumda kurulum dosyasını yeniden çalıştırmanız yeter.
+Bir şey takılırsa simgeye sağ tıklayıp **Kurulumu onar** deyin (simge görünmüyorsa görev çubuğundaki ^ okuna tıklayın). Uygulama geçici dosyaları temizler ve paketin eksiksiz olduğunu kontrol eder. Sonra açılırken veritabanı güncellemesini yeniden çalıştırır.
+
+Paketten bir dosya silinmişse (örneğin antivirüs programı karantinaya aldıysa) uygulama kurulu sürümün kurulum dosyasını GitHub'dan indirir, parmak izini doğrular ve kendini yeniden kurar. Verilerinize dokunmaz. İnternet yoksa "Kurulum eksik" der ve sürüm sayfasını açar. O durumda kurulum dosyasını indirip çalıştırmanız yeter.
 
 ### Kaldırma
 
 1. Windows **Ayarlar → Uygulamalar → Yüklü uygulamalar** listesinde **seowatcher**'ı bulun.
 2. **Kaldır** deyin.
 
-Kaldırma işlemi programı, başlat menüsü kısayolunu ve **Windows açılınca başlat** kaydını siler. Veri klasörüne dokunmaz. Veritabanınızı, Google bağlantınızı ve raporlarınızı da silmek istiyorsanız veri klasörünü kendiniz silin.
+Kaldırma işlemi programı, başlat menüsü kısayolunu, **Windows açılınca başlat** kaydını (menüden açtıysanız onu da) ve indirilmiş güncelleme dosyalarını siler. Veri klasörüne dokunmaz; kaldırma penceresi de bunu söyler. Veritabanınızı, Google bağlantınızı ve raporlarınızı da silmek istiyorsanız veri klasörünü kendiniz silin.
 
 ### Veriler nerede, nasıl yedeklenir?
 
@@ -102,7 +109,7 @@ Geri yüklemek için uygulamayı kapatın, klasörü yerine koyun, uygulamayı b
 
 ### Adres numarasını (portu) değiştirme
 
-Uygulama 3001 numarasını kullanır. Başka bir program o numarayı kullanıyorsa 3002 ile 3010 arasındaki ilk boş numarayı seçer ve `config.json` dosyasına yazar.
+Uygulama 3001 numarasını kullanır. Başka bir program o numarayı kullanıyorsa 3002 ile 3010 arasındaki ilk boş numarayı yalnızca o açılış için seçer ve "3001 numarası dolu, 3002 kullanılıyor" baloncuğunu gösterir. Bu numarayı kaydetmez. 3001 boşalınca bir sonraki açılışta yine 3001'i kullanır, çünkü Google'daki yönlendirme adresleri bu numarayı yazar.
 
 Belirli bir numara istiyorsanız:
 
@@ -116,7 +123,7 @@ Belirli bir numara istiyorsanız:
 }
 ```
 
-4. Kaydedin ve uygulamayı başlatın.
+4. Kaydedin ve uygulamayı başlatın. Dosyada başka satırlar da varsa (`autoUpdate` gibi) onları silmeyin, yalnızca `port` değerini değiştirin.
 
 Numara değişince Google'daki iki yönlendirme adresini de yeni numarayla güncelleyin. Bu adresler Google'a bağlanma kılavuzunda anlatılıyor.
 
@@ -144,7 +151,8 @@ Simge görünmüyorsa görev çubuğundaki ^ okuna tıklayın.
 
 - **Simge "Hata: 3001 ve sonraki 9 adres numarası (port) dolu" diyor.** Başka program bu numaraları tutuyor. `config.json` dosyasına başka bir numara yazın.
 - **Simge "Veritabanı güncellemesi başarısız" diyor.** **Günlükleri aç** deyin, `migrate.log` dosyasının son satırlarına bakın. Çoğunlukla disk dolmuştur ya da klasör salt okunurdur.
-- **Simge "Sunucu beklenmedik şekilde kapandı" diyor.** `server.log` dosyasının son satırları sebebi yazar. **Yeniden başlat** deneyin. Düzelmezse günlüğü GitHub'da bir sorun kaydıyla paylaşın.
+- **Simge "Sunucu beklenmedik şekilde kapandı" ya da "Sunucu 10 dakikada üç kez kapandı" diyor.** `server.log` dosyasının son satırları sebebi yazar. **Yeniden başlat** deneyin, olmazsa **Kurulumu onar** deyin. Düzelmezse **Sorunu bildir (GitHub)** deyin.
+- **Simge "Veritabanı güncellemesi 15 dakikada bitmedi" diyor.** Veritabanı dosyası başka bir program tarafından kilitlenmiş olabilir (yedekleme ya da eşitleme programı). O programı durdurup **Yeniden başlat** deyin.
 - **Tarayıcı açılmadı.** Simgeye çift tıklayın ya da adresi elle yazın: `http://127.0.0.1:3001`
 
 <!-- Kaynaklar: packaging/windows/README.md; packaging/windows/launcher/SeoWatcher.cs (menü, port seçimi, dosyalar); packaging/windows/seowatcher.iss (kurulum yeri, görevler, kaldırma); .github/workflows/release-windows.yml (SHA256SUMS) -->
