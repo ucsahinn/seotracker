@@ -7,7 +7,7 @@ updated: 2026-10-22
 
 Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuzun durumu" kartına bakın. Kart giriş ve erişimi, Google girişini, PageSpeed anahtarını ve veritabanını kontrol eder. "N şey dikkat istiyor" diyorsa yanındaki düğme sizi doğru ayara götürür. Aşağıdaki sorunlar en sık görülenden en nadire doğru sıralı.
 
-### Sayfa açılmıyor
+## Sayfa açılmıyor
 
 **Belirti:** Tarayıcı "bağlantı reddedildi" diyor.
 
@@ -15,7 +15,7 @@ Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuz
 
 **Çözüm:** Windows'ta görev çubuğundaki simgeye bakın. Simge görünmüyorsa görev çubuğundaki ^ okuna tıklayın. Yoksa Başlat menüsünden seowatcher'ı açın. Simgede "Hata" yazıyorsa sağ tıklayıp **Yeniden başlat** deyin. Docker'da `docker compose ps` yazın. Durum healthy değilse `docker compose up -d` yazın.
 
-### Adres numarası (port) dolu
+## Adres numarası (port) dolu
 
 **Belirti:** Windows'ta simge "3001 ve sonraki 9 adres numarası (port) dolu" diyor. Docker'da "Bind for 127.0.0.1:3001 failed" yazıyor.
 
@@ -23,7 +23,7 @@ Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuz
 
 **Çözüm:** Windows paketi normalde 3002 ile 3010 arasında boş bir numara seçer. Hepsi doluysa veri klasöründeki `config.json` dosyasına başka bir numara yazın. Docker'da `PORT=3002` satırlı bir `.env` koyun ve `docker compose up -d --force-recreate seotracker` yazın. Numara değişince Google yönlendirme adreslerini de güncelleyin.
 
-### Simge "Windows bileşeni eksik" diyor
+## Simge "Windows bileşeni eksik" diyor
 
 **Belirti:** Uygulama açılmıyor. Simgede "Windows bileşeni eksik" yazıyor ya da kayıtta "Workers runtime failed to start" ve "0xc0000005" geçiyor.
 
@@ -31,7 +31,7 @@ Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuz
 
 **Çözüm:** Çıkan baloncuğa tıklayın ya da simgeye sağ tıklayıp **Eksik Windows bileşenini kur** deyin. Windows bir kez yönetici izni sorar. Kurulum bitince uygulama kendiliğinden yeniden başlar. Paket elinizde yoksa Microsoft'un sayfasından indirin: `https://aka.ms/vs/17/release/vc_redist.x64.exe`
 
-### Yönetici izni verilmedi
+## Yönetici izni verilmedi
 
 **Belirti:** Kurulum sırasında Visual C++ için izin istendi, **Hayır** dediniz ve uygulama başlamadı.
 
@@ -39,7 +39,7 @@ Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuz
 
 **Çözüm:** Görev çubuğundaki simgeye sağ tıklayın (simge görünmüyorsa ^ okuna tıklayın). **Eksik Windows bileşenini kur** deyin ve bu kez izin verin. Ya da bileşeni `https://aka.ms/vs/17/release/vc_redist.x64.exe` adresinden indirip kurun.
 
-### Simge "Uygulamanın motoru çöktü" diyor
+## Simge "Uygulamanın motoru çöktü" diyor
 
 **Belirti:** Uygulama açılmıyor. Kayıtta "Workers runtime failed to start" ve "0xc0000005" var ama Visual C++ paketi kurulu.
 
@@ -47,7 +47,7 @@ Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuz
 
 **Çözüm:** Önce **Kurulumu onar** deyin. Düzelmezse simgeye sağ tıklayıp **Sorunu bildir (GitHub)** deyin. Tanı bilgisi (Windows sürümü, işlemci, hatalı modül adı, çökme dökümü) kayda kendiliğinden eklenir, siz yalnızca gönderin. Çökme dökümleri `%LOCALAPPDATA%\seowatcher\logs\dumps` klasöründedir. İsterseniz onları da kayda ekleyin.
 
-### Windows "bilgisayarınızı korudu" diyor
+## Windows "bilgisayarınızı korudu" diyor
 
 **Belirti:** Kurulum dosyası açılmıyor, mavi bir uyarı ekranı çıkıyor.
 
@@ -55,7 +55,7 @@ Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuz
 
 **Çözüm:** Ekrandaki **Daha fazla bilgi** yazısına tıklayın. **Yine de çalıştır** düğmesi belirir. Endişeniz varsa dosyanın SHA-256 özetini (parmak izini) sürüm sayfasındaki `SHA256SUMS.txt` ile karşılaştırın.
 
-### Google "redirect_uri_mismatch" diyor
+## Google "redirect_uri_mismatch" diyor
 
 **Belirti:** **Bağlan** deyince Google bir hata sayfası gösteriyor.
 
@@ -63,7 +63,7 @@ Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuz
 
 **Çözüm:** **Ayarlar → Google** bölümündeki kopyalama düğmesiyle iki adresi alın. Cloud Console'da Google erişim anahtarının (OAuth istemcisinin) adres alanına yapıştırın. localhost ile 127.0.0.1, http ile https ya da sondaki eğik çizgi fark eder.
 
-### "Google erişim anahtarı eksik"
+## "Google erişim anahtarı eksik"
 
 **Belirti:** Proje ayarlarında Bağlantılar sekmesi sarı uyarı gösteriyor.
 
@@ -71,7 +71,7 @@ Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuz
 
 **Çözüm:** Google'a bağlanma kılavuzunun 10 ve 11. adımlarını yapın. Docker'da `BETTER_AUTH_SECRET` değerini elle verdiyseniz uzatın. Boş bırakırsanız uygulama kendisi üretir.
 
-### Google "access_denied" diyor
+## Google "access_denied" diyor
 
 **Belirti:** İzin ekranından sonra "iptal edildi" uyarısı çıkıyor.
 
@@ -79,7 +79,7 @@ Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuz
 
 **Çözüm:** Cloud Console'da **OAuth izin ekranı → Test kullanıcıları** bölümüne hesabı ekleyin. Sonra yeniden **Bağlan** deyin.
 
-### Bağlantının süresi doldu
+## Bağlantının süresi doldu
 
 **Belirti:** Bağlantılar kartında "Bağlantının süresi doldu" yazıyor, veri gelmiyor.
 
@@ -87,7 +87,7 @@ Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuz
 
 **Çözüm:** Kartta **Yeniden bağlan** deyin. Sık tekrarlıyorsa izin ekranını üretime alın ya da hizmet hesabına geçin (**Ayarlar → Hizmet hesabı**).
 
-### Sorgu verisi yok, grafikler boş
+## Sorgu verisi yok, grafikler boş
 
 **Belirti:** Panel kartları sıfır. Arama performansı "Bu dönem için henüz veri yok" diyor.
 
@@ -95,7 +95,7 @@ Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuz
 
 **Çözüm:** Dönemi **Son 3 ay** yapın. Proje ayarlarında mülkün doğru site olduğuna bakın. Alan adı mülkü tüm alt alan adlarını kapsar, URL öneki mülkü kapsamaz. Yeni sitede sorgu satırları haftalar sonra gelebilir. Sayfa tablosu daha önce dolar.
 
-### Tablo toplamı kartla tutmuyor
+## Tablo toplamı kartla tutmuyor
 
 **Belirti:** Sayfa tablosundaki gösterimleri toplayınca karttaki sayıdan büyük çıkıyor.
 
@@ -103,7 +103,7 @@ Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuz
 
 **Çözüm:** Toplamı karttan okuyun. Tabloyu sayfa sayfa yorumlayın.
 
-### Denetim "Sürüyor" diye takıldı
+## Denetim "Sürüyor" diye takıldı
 
 **Belirti:** Yarım saattir ilerleme yok.
 
@@ -111,7 +111,7 @@ Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuz
 
 **Çözüm:** Bekleyin. Uygulama 15 dakikadan uzun "sürüyor" görünen denetimi kontrol eder. Yaşam belirtisi yoksa "Başarısız" diye kapatır ve sebebini yazar. Sonra **Aynı ayarlarla yeniden başlat** deyin. İki denetimi aynı anda hız ölçümüyle başlatmayın, birbirini yavaşlatır.
 
-### Denetim "Engellendik" diyor
+## Denetim "Engellendik" diyor
 
 **Belirti:** Sarı uyarı çıkıyor: "Denetim bu siteyi tamamen tarayamadı." ya da "N sayfada engellendik."
 
@@ -119,7 +119,7 @@ Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuz
 
 **Çözüm:** Güvenlik duvarında `seotracker-audit` adlı kullanıcı aracısına izin verin ya da bilgisayarınızın ağ adresini (IP) izinli listeye alın. Site sizin değilse yapacak bir şey yok. Sonuçlar taranabilen sayfalarla sınırlı kalır.
 
-### Hız ölçümü yarım kaldı ya da hiç yok
+## Hız ölçümü yarım kaldı ya da hiç yok
 
 **Belirti:** Hız sekmesi boş ya da çok az satır var. Kota kartı "Kota doldu", "Dakikalık sınır" ya da "Anahtar yok" diyor.
 
@@ -127,7 +127,7 @@ Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuz
 
 **Çözüm:** PageSpeed anahtarı kılavuzuna göre ücretsiz anahtar alın. Günlük hak bittiyse yarın yeni denetimde tamamlanır. Denetim başlarken hız ölçümü kapalıysa o denetim için sonradan ölçülmez.
 
-### URL Denetimi "günlük sınıra ulaşıldı"
+## URL Denetimi "günlük sınıra ulaşıldı"
 
 **Belirti:** Dizin durumu sekmesinde düğme çalışmıyor. "Google'ın günlük 2.000 adres sınırına ulaşıldı" yazıyor.
 
@@ -135,7 +135,7 @@ Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuz
 
 **Çözüm:** Yarın devam edin. Uygulama yalnızca eskiyen cevapları yeniden sorar, hakkınız boşa gitmez.
 
-### Analytics'te localhost trafiği görünüyor
+## Analytics'te localhost trafiği görünüyor
 
 **Belirti:** Giriş sayfaları tablosunda Alan adı sütununda localhost ya da 127.0.0.1 yazıyor.
 
@@ -143,7 +143,7 @@ Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuz
 
 **Çözüm:** Etiketi yalnızca gerçek alan adında yüklenecek şekilde ayarlayın. Çoğu araçta "alan adı kontrolü" seçeneği vardır. Uygulama bu satırları kendiliğinden ayıklamaz. O zamana kadar Alan adı sütununa bakarak okuyun.
 
-### Asistan bağlanamıyor (401)
+## Asistan bağlanamıyor (401)
 
 **Belirti:** Claude Code ya da Codex "Unauthorized" diyor.
 
@@ -151,7 +151,7 @@ Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuz
 
 **Çözüm:** Parolayı yeniden kopyalayın. Windows'ta veri klasöründeki `mcp-token` dosyasındadır. Docker'da `docker compose exec -T seotracker cat /app/.wrangler/mcp-token` yazın. Değerin sonundaki satır sonu karakterini silin. Terminal kullanmak istemezseniz dosyayı Not Defteri ile açın, satırın tamamını seçip kopyalayın. Satır sonu bırakmayın. Claude Code'da `/mcp` yazıp **Reconnect** deyin.
 
-### Docker ilk açılışta çok uzun sürüyor ya da "unhealthy"
+## Docker ilk açılışta çok uzun sürüyor ya da "unhealthy"
 
 **Belirti:** `docker compose ps` beş dakikadan sonra bile healthy demiyor.
 
@@ -159,7 +159,7 @@ Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuz
 
 **Çözüm:** `docker compose logs --tail 50` yazıp son satırlara bakın. Bellek hatası varsa Docker Desktop ayarlarından kutulara daha fazla bellek verin. Sonra `docker compose up -d --build` yazın.
 
-### Veriler ve günlükler nerede?
+## Veriler ve günlükler nerede?
 
 Windows'ta her şey `%LOCALAPPDATA%\seowatcher` klasöründedir: `data` (veritabanı), `logs\server.log`, `logs\migrate.log`, `instance-secret`, `mcp-token`, `config.json`. Görev çubuğu menüsündeki **Günlükleri aç** ve **Veri klasörünü aç** oraya götürür.
 

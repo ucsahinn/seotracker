@@ -479,7 +479,7 @@ function build() {
   page = page
     .replace(
       /href="\/en\/"\s+lang="en"\s+hreflang="en"\s+data-lang-switch\s+aria-label="[^"]*"\s*>EN</g,
-      'href="/" lang="tr" hreflang="tr" data-lang-switch aria-label="Dil: Türkçe">TR<',
+      'href="/" lang="tr" hreflang="tr" data-lang-switch aria-label="TR, Türkçe">TR<',
     )
     .replace(
       /href="\/en\/"\s+lang="en"\s+hreflang="en"\s+data-lang-switch\s*>English/g,

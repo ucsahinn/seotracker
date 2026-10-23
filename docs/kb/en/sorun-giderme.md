@@ -9,7 +9,7 @@ The app's interface is in Turkish. This guide gives every button and screen name
 
 This page tells you briefly what to do when something does not work. First, look at the "Kurulumunuzun durumu" (Your installation status) card on the **Yardım** (Help) screen in the app. The card checks four things: sign-in and access, Google sign-in, the PageSpeed key, and the database. If it says "N şey dikkat istiyor" (N things need attention), the button next to it takes you to the right setting. The list below goes from the most common problem to the rarest.
 
-### The page does not open
+## The page does not open
 
 **Symptom:** The browser says "connection refused".
 
@@ -17,7 +17,7 @@ This page tells you briefly what to do when something does not work. First, look
 
 **Fix:** On Windows, look for the icon in the taskbar. If the icon is not visible, click the ^ arrow on the taskbar. If it is not there, open seowatcher from the Start menu. If the icon says "Hata" (Error), right-click it and choose **Yeniden başlat** (Restart). On Docker, run `docker compose ps`. If the status is not healthy, run `docker compose up -d`.
 
-### The port number is in use
+## The port number is in use
 
 **Symptom:** On Windows, the icon says "3001 ve sonraki 9 adres numarası (port) dolu" (3001 and the next 9 ports are in use). On Docker, you see "Bind for 127.0.0.1:3001 failed".
 
@@ -25,7 +25,7 @@ This page tells you briefly what to do when something does not work. First, look
 
 **Fix:** The Windows package normally picks a free number between 3002 and 3010. If they are all in use, write a different number in the `config.json` file in the data folder. On Docker, create a `.env` file with the line `PORT=3002` and run `docker compose up -d --force-recreate seotracker`. When the number changes, update the Google redirect addresses too.
 
-### The icon says "Windows bileşeni eksik"
+## The icon says "Windows bileşeni eksik"
 
 **Symptom:** The app does not open. The icon says "Windows bileşeni eksik" (Windows component missing), or the log shows "Workers runtime failed to start" and "0xc0000005".
 
@@ -33,7 +33,7 @@ This page tells you briefly what to do when something does not work. First, look
 
 **Fix:** Click the balloon that appears, or right-click the icon (if the icon is not visible, click the ^ arrow on the taskbar) and choose **Eksik Windows bileşenini kur** (Install the missing Windows component). Windows asks for administrator permission once. When the installation finishes, the app restarts by itself. If you do not have the package, download it from Microsoft's page: `https://aka.ms/vs/17/release/vc_redist.x64.exe`
 
-### Administrator permission was refused
+## Administrator permission was refused
 
 **Symptom:** The installer asked for permission to install Visual C++, you clicked No, and the app does not start.
 
@@ -41,7 +41,7 @@ This page tells you briefly what to do when something does not work. First, look
 
 **Fix:** In the tray menu, choose **Eksik Windows bileşenini kur** (Install the missing Windows component) and allow it this time. If the icon is not visible, click the ^ arrow on the taskbar. Or install the component yourself from `https://aka.ms/vs/17/release/vc_redist.x64.exe`.
 
-### The icon says "Uygulamanın motoru çöktü"
+## The icon says "Uygulamanın motoru çöktü"
 
 **Symptom:** The app does not open. The log has "Workers runtime failed to start" and "0xc0000005", but the Visual C++ package is installed.
 
@@ -49,7 +49,7 @@ This page tells you briefly what to do when something does not work. First, look
 
 **Fix:** First choose **Kurulumu onar** (Repair installation). If that does not help, right-click the icon and choose **Sorunu bildir (GitHub)** (Report the problem, GitHub). The diagnostic information (Windows version, processor, the name of the faulty module, the crash dump) is added to the report automatically, and you only send it. The crash dumps are in the `%LOCALAPPDATA%\seowatcher\logs\dumps` folder. You can attach them to the report if you like.
 
-### Windows says "protected your PC"
+## Windows says "protected your PC"
 
 **Symptom:** The setup file does not open, and a blue warning screen appears.
 
@@ -57,7 +57,7 @@ This page tells you briefly what to do when something does not work. First, look
 
 **Fix:** Click the **More info** text on the screen (on a Turkish Windows: "Daha fazla bilgi"). The **Run anyway** button (Turkish: "Yine de çalıştır") appears. If you are worried, compare the file's SHA-256 digest (its fingerprint) with `SHA256SUMS.txt` on the release page.
 
-### Google says "redirect_uri_mismatch"
+## Google says "redirect_uri_mismatch"
 
 **Symptom:** When you choose **Bağlan** (Connect), Google shows an error page.
 
@@ -65,7 +65,7 @@ This page tells you briefly what to do when something does not work. First, look
 
 **Fix:** In the app, go to **Ayarlar → Google** (Settings → Google) and copy both addresses with the copy buttons. Paste them into the address field of the Google access key (the OAuth client) in Cloud Console. localhost versus 127.0.0.1, http versus https, or a slash at the end all make a difference.
 
-### "Google erişim anahtarı eksik"
+## "Google erişim anahtarı eksik"
 
 **Symptom:** In the project settings, the Bağlantılar (Connections) tab shows a yellow warning saying "Google erişim anahtarı eksik" (Google access key missing).
 
@@ -73,7 +73,7 @@ This page tells you briefly what to do when something does not work. First, look
 
 **Fix:** Do steps 10 and 11 of the Google connection guide. On Docker, if you set `BETTER_AUTH_SECRET` by hand, make it longer. If you leave it empty, the app creates one itself.
 
-### Google says "access_denied"
+## Google says "access_denied"
 
 **Symptom:** After the permission screen, an "iptal edildi" (cancelled) warning appears.
 
@@ -81,7 +81,7 @@ This page tells you briefly what to do when something does not work. First, look
 
 **Fix:** In Cloud Console, add the account under **OAuth izin ekranı → Test kullanıcıları** (OAuth consent screen → Test users). Then choose **Bağlan** (Connect) again.
 
-### The connection has expired
+## The connection has expired
 
 **Symptom:** The integration card says "Bağlantının süresi doldu" (The connection has expired) and no data comes in.
 
@@ -89,7 +89,7 @@ This page tells you briefly what to do when something does not work. First, look
 
 **Fix:** On the card, choose **Yeniden bağlan** (Reconnect). If it keeps happening, move the consent screen to production, or switch to a service account (**Ayarlar → Hizmet hesabı**, Settings → Service account).
 
-### There is no query data and the charts are empty
+## There is no query data and the charts are empty
 
 **Symptom:** The Panel (Dashboard) cards are zero. Arama performansı (Search performance) says "Bu dönem için henüz veri yok" (There is no data for this period yet).
 
@@ -97,7 +97,7 @@ This page tells you briefly what to do when something does not work. First, look
 
 **Fix:** Set the period to **Son 3 ay** (Last 3 months). In the project settings, check that the property is the right site. A domain property covers all subdomains, but a URL-prefix property does not. On a new site, query rows can take weeks to arrive. The page table fills earlier.
 
-### The table total does not match the card
+## The table total does not match the card
 
 **Symptom:** When you add up the impressions in the page table, the result is larger than the number on the card.
 
@@ -105,7 +105,7 @@ This page tells you briefly what to do when something does not work. First, look
 
 **Fix:** Read the total from the card. Read the table page by page.
 
-### An audit is stuck on "Sürüyor"
+## An audit is stuck on "Sürüyor"
 
 **Symptom:** There has been no progress for half an hour.
 
@@ -113,7 +113,7 @@ This page tells you briefly what to do when something does not work. First, look
 
 **Fix:** Wait. The app checks any audit that has looked "sürüyor" (in progress) for more than 15 minutes. If there are no signs of life, it closes the audit as "Başarısız" (Failed) and writes the reason. Then choose **Aynı ayarlarla yeniden başlat** (Restart with the same settings). Do not start two audits with speed testing at the same time. They slow each other down.
 
-### The audit says "Engellendik"
+## The audit says "Engellendik"
 
 **Symptom:** A yellow warning appears: "Denetim bu siteyi tamamen tarayamadı." (The audit could not crawl this site fully.) or "N sayfada engellendik." (We were blocked on N pages.)
 
@@ -121,7 +121,7 @@ This page tells you briefly what to do when something does not work. First, look
 
 **Fix:** In the firewall, allow the user agent named `seotracker-audit`, or add your computer's network address (IP) to the allow list. If the site is not yours, there is nothing you can do. The results stay limited to the pages that could be crawled.
 
-### Speed testing is incomplete or missing
+## Speed testing is incomplete or missing
 
 **Symptom:** The Hız (Speed) tab is empty or has very few rows. The quota card says "Kota doldu" (Quota used up), "Dakikalık sınır" (Per-minute limit) or "Anahtar yok" (No key).
 
@@ -129,7 +129,7 @@ This page tells you briefly what to do when something does not work. First, look
 
 **Fix:** Get a free key by following the PageSpeed key guide. If the daily allowance has run out, it completes in a new audit tomorrow. If speed testing was off when the audit started, it is not measured afterwards for that audit.
 
-### URL Inspection says "daily limit reached"
+## URL Inspection says "daily limit reached"
 
 **Symptom:** In the Dizin durumu (Index status) tab, the button does not work. It says "Google'ın günlük 2.000 adres sınırına ulaşıldı" (Google's daily limit of 2,000 addresses has been reached).
 
@@ -137,7 +137,7 @@ This page tells you briefly what to do when something does not work. First, look
 
 **Fix:** Continue tomorrow. The app only asks again for answers that have gone stale, so your allowance is not wasted.
 
-### Localhost traffic shows up in Analytics
+## Localhost traffic shows up in Analytics
 
 **Symptom:** In the landing pages table, the Alan adı (Domain) column shows localhost or 127.0.0.1.
 
@@ -145,7 +145,7 @@ This page tells you briefly what to do when something does not work. First, look
 
 **Fix:** Set the tag to load only on the real domain. Most tools have a "domain check" option. The app does not filter these rows out by itself. Until then, read the table with the Alan adı (Domain) column in view.
 
-### The assistant cannot connect (401)
+## The assistant cannot connect (401)
 
 **Symptom:** Claude Code or Codex says "Unauthorized".
 
@@ -153,7 +153,7 @@ This page tells you briefly what to do when something does not work. First, look
 
 **Fix:** Copy the password again. On Windows, it is in the `mcp-token` file in the data folder. On Docker, run `docker compose exec -T seotracker cat /app/.wrangler/mcp-token`. Delete the line-break character at the end of the value. Without a terminal: open the file in Notepad, select the whole line and copy it; do not include a line break. In Claude Code, type `/mcp` and choose **Reconnect**.
 
-### Docker takes very long on first start or is "unhealthy"
+## Docker takes very long on first start or is "unhealthy"
 
 **Symptom:** `docker compose ps` still does not say healthy after five minutes.
 
@@ -161,7 +161,7 @@ This page tells you briefly what to do when something does not work. First, look
 
 **Fix:** Run `docker compose logs --tail 50` and look at the last lines. If there is a memory error, give the containers more memory in the Docker Desktop settings. Then run `docker compose up -d --build`.
 
-### Where are my data and logs?
+## Where are my data and logs?
 
 On Windows, everything is in the `%LOCALAPPDATA%\seowatcher` folder: `data` (the database), `logs\server.log`, `logs\migrate.log`, `instance-secret`, `mcp-token`, `config.json`. **Günlükleri aç** (Open logs) and **Veri klasörünü aç** (Open data folder) in the taskbar menu take you there.
 

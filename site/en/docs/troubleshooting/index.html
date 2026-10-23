@@ -881,7 +881,7 @@
             href="/docs/sorun-giderme/"
             lang="tr"
             hreflang="tr"
-            aria-label="Dil: Türkçe"
+            aria-label="TR, Türkçe"
             >TR</a
           >
           <a
@@ -908,83 +908,83 @@
       <article id="icerik">
         <h1>Troubleshooting</h1><p class="lede">The most common problems: symptom, cause and fix. Port in use, the Windows warning, Google errors, quota, a stuck audit, empty charts, assistant 401.</p><p>The app's interface is in Turkish. This guide gives every button and screen name in Turkish with its English meaning in brackets.</p>
 <p>This page tells you briefly what to do when something does not work. First, look at the &quot;Kurulumunuzun durumu&quot; (Your installation status) card on the <strong>Yardım</strong> (Help) screen in the app. The card checks four things: sign-in and access, Google sign-in, the PageSpeed key, and the database. If it says &quot;N şey dikkat istiyor&quot; (N things need attention), the button next to it takes you to the right setting. The list below goes from the most common problem to the rarest.</p>
-<h3 id="the-page-does-not-open">The page does not open</h3>
+<h2 id="the-page-does-not-open">The page does not open</h2>
 <p class="callout callout-belirti"><strong>Symptom:</strong> The browser says &quot;connection refused&quot;.</p>
 <p class="callout callout-sebep"><strong>Cause:</strong> The app is not running.</p>
 <p class="callout callout-cozum"><strong>Fix:</strong> On Windows, look for the icon in the taskbar. If the icon is not visible, click the ^ arrow on the taskbar. If it is not there, open seowatcher from the Start menu. If the icon says &quot;Hata&quot; (Error), right-click it and choose <strong>Yeniden başlat</strong> (Restart). On Docker, run <code>docker compose ps</code>. If the status is not healthy, run <code>docker compose up -d</code>.</p>
-<h3 id="the-port-number-is-in-use">The port number is in use</h3>
+<h2 id="the-port-number-is-in-use">The port number is in use</h2>
 <p class="callout callout-belirti"><strong>Symptom:</strong> On Windows, the icon says &quot;3001 ve sonraki 9 adres numarası (port) dolu&quot; (3001 and the next 9 ports are in use). On Docker, you see &quot;Bind for 127.0.0.1:3001 failed&quot;.</p>
 <p class="callout callout-sebep"><strong>Cause:</strong> Another program is using the same port number.</p>
 <p class="callout callout-cozum"><strong>Fix:</strong> The Windows package normally picks a free number between 3002 and 3010. If they are all in use, write a different number in the <code>config.json</code> file in the data folder. On Docker, create a <code>.env</code> file with the line <code>PORT=3002</code> and run <code>docker compose up -d --force-recreate seotracker</code>. When the number changes, update the Google redirect addresses too.</p>
-<h3 id="the-icon-says-windows-bileseni-eksik">The icon says &quot;Windows bileşeni eksik&quot;</h3>
+<h2 id="the-icon-says-windows-bileseni-eksik">The icon says &quot;Windows bileşeni eksik&quot;</h2>
 <p class="callout callout-belirti"><strong>Symptom:</strong> The app does not open. The icon says &quot;Windows bileşeni eksik&quot; (Windows component missing), or the log shows &quot;Workers runtime failed to start&quot; and &quot;0xc0000005&quot;.</p>
 <p class="callout callout-sebep"><strong>Cause:</strong> The app's engine needs Microsoft's Visual C++ package (2015-2022, 64-bit). On a clean Windows, this package is missing or out of date.</p>
 <p class="callout callout-cozum"><strong>Fix:</strong> Click the balloon that appears, or right-click the icon (if the icon is not visible, click the ^ arrow on the taskbar) and choose <strong>Eksik Windows bileşenini kur</strong> (Install the missing Windows component). Windows asks for administrator permission once. When the installation finishes, the app restarts by itself. If you do not have the package, download it from Microsoft's page: <code>https://aka.ms/vs/17/release/vc_redist.x64.exe</code></p>
-<h3 id="administrator-permission-was-refused">Administrator permission was refused</h3>
+<h2 id="administrator-permission-was-refused">Administrator permission was refused</h2>
 <p class="callout callout-belirti"><strong>Symptom:</strong> The installer asked for permission to install Visual C++, you clicked No, and the app does not start.</p>
 <p class="callout callout-sebep"><strong>Cause:</strong> The Visual C++ component was not installed.</p>
 <p class="callout callout-cozum"><strong>Fix:</strong> In the tray menu, choose <strong>Eksik Windows bileşenini kur</strong> (Install the missing Windows component) and allow it this time. If the icon is not visible, click the ^ arrow on the taskbar. Or install the component yourself from <code>https://aka.ms/vs/17/release/vc_redist.x64.exe</code>.</p>
-<h3 id="the-icon-says-uygulamanin-motoru-coktu">The icon says &quot;Uygulamanın motoru çöktü&quot;</h3>
+<h2 id="the-icon-says-uygulamanin-motoru-coktu">The icon says &quot;Uygulamanın motoru çöktü&quot;</h2>
 <p class="callout callout-belirti"><strong>Symptom:</strong> The app does not open. The log has &quot;Workers runtime failed to start&quot; and &quot;0xc0000005&quot;, but the Visual C++ package is installed.</p>
 <p class="callout callout-sebep"><strong>Cause:</strong> The app's engine (workerd) gets stuck on a system file on this computer. At startup, the app tries the engine on its own. If it says it cannot start on its own either, the problem is on the computer. If it says it works on its own, the problem is in the data folder or the configuration.</p>
 <p class="callout callout-cozum"><strong>Fix:</strong> First choose <strong>Kurulumu onar</strong> (Repair installation). If that does not help, right-click the icon and choose <strong>Sorunu bildir (GitHub)</strong> (Report the problem, GitHub). The diagnostic information (Windows version, processor, the name of the faulty module, the crash dump) is added to the report automatically, and you only send it. The crash dumps are in the <code>%LOCALAPPDATA%\seowatcher\logs\dumps</code> folder. You can attach them to the report if you like.</p>
-<h3 id="windows-says-protected-your-pc">Windows says &quot;protected your PC&quot;</h3>
+<h2 id="windows-says-protected-your-pc">Windows says &quot;protected your PC&quot;</h2>
 <p class="callout callout-belirti"><strong>Symptom:</strong> The setup file does not open, and a blue warning screen appears.</p>
 <p class="callout callout-sebep"><strong>Cause:</strong> The file is not signed. Windows shows this screen for publishers it does not know.</p>
 <p class="callout callout-cozum"><strong>Fix:</strong> Click the <strong>More info</strong> text on the screen (on a Turkish Windows: &quot;Daha fazla bilgi&quot;). The <strong>Run anyway</strong> button (Turkish: &quot;Yine de çalıştır&quot;) appears. If you are worried, compare the file's SHA-256 digest (its fingerprint) with <code>SHA256SUMS.txt</code> on the release page.</p>
-<h3 id="google-says-redirect-uri-mismatch">Google says &quot;redirect_uri_mismatch&quot;</h3>
+<h2 id="google-says-redirect-uri-mismatch">Google says &quot;redirect_uri_mismatch&quot;</h2>
 <p class="callout callout-belirti"><strong>Symptom:</strong> When you choose <strong>Bağlan</strong> (Connect), Google shows an error page.</p>
 <p class="callout callout-sebep"><strong>Cause:</strong> The redirect address in Google Cloud Console is not exactly the same as the one in the app.</p>
 <p class="callout callout-cozum"><strong>Fix:</strong> In the app, go to <strong>Ayarlar → Google</strong> (Settings → Google) and copy both addresses with the copy buttons. Paste them into the address field of the Google access key (the OAuth client) in Cloud Console. localhost versus 127.0.0.1, http versus https, or a slash at the end all make a difference.</p>
-<h3 id="google-erisim-anahtari-eksik">&quot;Google erişim anahtarı eksik&quot;</h3>
+<h2 id="google-erisim-anahtari-eksik">&quot;Google erişim anahtarı eksik&quot;</h2>
 <p class="callout callout-belirti"><strong>Symptom:</strong> In the project settings, the Bağlantılar (Connections) tab shows a yellow warning saying &quot;Google erişim anahtarı eksik&quot; (Google access key missing).</p>
 <p class="callout callout-sebep"><strong>Cause:</strong> The client ID and the secret key have not been entered in <strong>Ayarlar → Google</strong>. Or, on Docker, the encryption key is shorter than 32 characters.</p>
 <p class="callout callout-cozum"><strong>Fix:</strong> Do steps 10 and 11 of the Google connection guide. On Docker, if you set <code>BETTER_AUTH_SECRET</code> by hand, make it longer. If you leave it empty, the app creates one itself.</p>
-<h3 id="google-says-access-denied">Google says &quot;access_denied&quot;</h3>
+<h2 id="google-says-access-denied">Google says &quot;access_denied&quot;</h2>
 <p class="callout callout-belirti"><strong>Symptom:</strong> After the permission screen, an &quot;iptal edildi&quot; (cancelled) warning appears.</p>
 <p class="callout callout-sebep"><strong>Cause:</strong> The Google account you signed in with is not in the test users list on the consent screen.</p>
 <p class="callout callout-cozum"><strong>Fix:</strong> In Cloud Console, add the account under <strong>OAuth izin ekranı → Test kullanıcıları</strong> (OAuth consent screen → Test users). Then choose <strong>Bağlan</strong> (Connect) again.</p>
-<h3 id="the-connection-has-expired">The connection has expired</h3>
+<h2 id="the-connection-has-expired">The connection has expired</h2>
 <p class="callout callout-belirti"><strong>Symptom:</strong> The integration card says &quot;Bağlantının süresi doldu&quot; (The connection has expired) and no data comes in.</p>
 <p class="callout callout-sebep"><strong>Cause:</strong> For apps in &quot;Test&quot; status, Google can drop the permission after seven days. The encryption key may also have changed.</p>
 <p class="callout callout-cozum"><strong>Fix:</strong> On the card, choose <strong>Yeniden bağlan</strong> (Reconnect). If it keeps happening, move the consent screen to production, or switch to a service account (<strong>Ayarlar → Hizmet hesabı</strong>, Settings → Service account).</p>
-<h3 id="there-is-no-query-data-and-the-charts-are-empty">There is no query data and the charts are empty</h3>
+<h2 id="there-is-no-query-data-and-the-charts-are-empty">There is no query data and the charts are empty</h2>
 <p class="callout callout-belirti"><strong>Symptom:</strong> The Panel (Dashboard) cards are zero. Arama performansı (Search performance) says &quot;Bu dönem için henüz veri yok&quot; (There is no data for this period yet).</p>
 <p class="callout callout-sebep"><strong>Cause:</strong> There are three possibilities. The site is new and Google is not giving impressions yet. Or Search Console is three days behind and the selected period is too short. Or the wrong property is selected.</p>
 <p class="callout callout-cozum"><strong>Fix:</strong> Set the period to <strong>Son 3 ay</strong> (Last 3 months). In the project settings, check that the property is the right site. A domain property covers all subdomains, but a URL-prefix property does not. On a new site, query rows can take weeks to arrive. The page table fills earlier.</p>
-<h3 id="the-table-total-does-not-match-the-card">The table total does not match the card</h3>
+<h2 id="the-table-total-does-not-match-the-card">The table total does not match the card</h2>
 <p class="callout callout-belirti"><strong>Symptom:</strong> When you add up the impressions in the page table, the result is larger than the number on the card.</p>
 <p class="callout callout-sebep"><strong>Cause:</strong> This is not a bug. Google counts each page that appears in the same search separately. The card is the site total.</p>
 <p class="callout callout-cozum"><strong>Fix:</strong> Read the total from the card. Read the table page by page.</p>
-<h3 id="an-audit-is-stuck-on-suruyor">An audit is stuck on &quot;Sürüyor&quot;</h3>
+<h2 id="an-audit-is-stuck-on-suruyor">An audit is stuck on &quot;Sürüyor&quot;</h2>
 <p class="callout callout-belirti"><strong>Symptom:</strong> There has been no progress for half an hour.</p>
 <p class="callout callout-sebep"><strong>Cause:</strong> The app may have restarted, or the job may have dropped.</p>
 <p class="callout callout-cozum"><strong>Fix:</strong> Wait. The app checks any audit that has looked &quot;sürüyor&quot; (in progress) for more than 15 minutes. If there are no signs of life, it closes the audit as &quot;Başarısız&quot; (Failed) and writes the reason. Then choose <strong>Aynı ayarlarla yeniden başlat</strong> (Restart with the same settings). Do not start two audits with speed testing at the same time. They slow each other down.</p>
-<h3 id="the-audit-says-engellendik">The audit says &quot;Engellendik&quot;</h3>
+<h2 id="the-audit-says-engellendik">The audit says &quot;Engellendik&quot;</h2>
 <p class="callout callout-belirti"><strong>Symptom:</strong> A yellow warning appears: &quot;Denetim bu siteyi tamamen tarayamadı.&quot; (The audit could not crawl this site fully.) or &quot;N sayfada engellendik.&quot; (We were blocked on N pages.)</p>
 <p class="callout callout-sebep"><strong>Cause:</strong> The site's bot protection (Cloudflare or a firewall) stopped the app's site crawler.</p>
 <p class="callout callout-cozum"><strong>Fix:</strong> In the firewall, allow the user agent named <code>seotracker-audit</code>, or add your computer's network address (IP) to the allow list. If the site is not yours, there is nothing you can do. The results stay limited to the pages that could be crawled.</p>
-<h3 id="speed-testing-is-incomplete-or-missing">Speed testing is incomplete or missing</h3>
+<h2 id="speed-testing-is-incomplete-or-missing">Speed testing is incomplete or missing</h2>
 <p class="callout callout-belirti"><strong>Symptom:</strong> The Hız (Speed) tab is empty or has very few rows. The quota card says &quot;Kota doldu&quot; (Quota used up), &quot;Dakikalık sınır&quot; (Per-minute limit) or &quot;Anahtar yok&quot; (No key).</p>
 <p class="callout callout-sebep"><strong>Cause:</strong> There is no PageSpeed key (at most 50 pages are measured). Or Google's daily allowance has run out.</p>
 <p class="callout callout-cozum"><strong>Fix:</strong> Get a free key by following the PageSpeed key guide. If the daily allowance has run out, it completes in a new audit tomorrow. If speed testing was off when the audit started, it is not measured afterwards for that audit.</p>
-<h3 id="url-inspection-says-daily-limit-reached">URL Inspection says &quot;daily limit reached&quot;</h3>
+<h2 id="url-inspection-says-daily-limit-reached">URL Inspection says &quot;daily limit reached&quot;</h2>
 <p class="callout callout-belirti"><strong>Symptom:</strong> In the Dizin durumu (Index status) tab, the button does not work. It says &quot;Google'ın günlük 2.000 adres sınırına ulaşıldı&quot; (Google's daily limit of 2,000 addresses has been reached).</p>
 <p class="callout callout-sebep"><strong>Cause:</strong> There is an allowance of 2,000 questions per day per property. The app, your assistant and the checks you make by hand in Search Console all use the same pool.</p>
 <p class="callout callout-cozum"><strong>Fix:</strong> Continue tomorrow. The app only asks again for answers that have gone stale, so your allowance is not wasted.</p>
-<h3 id="localhost-traffic-shows-up-in-analytics">Localhost traffic shows up in Analytics</h3>
+<h2 id="localhost-traffic-shows-up-in-analytics">Localhost traffic shows up in Analytics</h2>
 <p class="callout callout-belirti"><strong>Symptom:</strong> In the landing pages table, the Alan adı (Domain) column shows localhost or 127.0.0.1.</p>
 <p class="callout callout-sebep"><strong>Cause:</strong> A test copy of your site loads the same Analytics tag.</p>
 <p class="callout callout-cozum"><strong>Fix:</strong> Set the tag to load only on the real domain. Most tools have a &quot;domain check&quot; option. The app does not filter these rows out by itself. Until then, read the table with the Alan adı (Domain) column in view.</p>
-<h3 id="the-assistant-cannot-connect-401">The assistant cannot connect (401)</h3>
+<h2 id="the-assistant-cannot-connect-401">The assistant cannot connect (401)</h2>
 <p class="callout callout-belirti"><strong>Symptom:</strong> Claude Code or Codex says &quot;Unauthorized&quot;.</p>
 <p class="callout callout-sebep"><strong>Cause:</strong> The password is not being sent, or it is wrong.</p>
 <p class="callout callout-cozum"><strong>Fix:</strong> Copy the password again. On Windows, it is in the <code>mcp-token</code> file in the data folder. On Docker, run <code>docker compose exec -T seotracker cat /app/.wrangler/mcp-token</code>. Delete the line-break character at the end of the value. Without a terminal: open the file in Notepad, select the whole line and copy it; do not include a line break. In Claude Code, type <code>/mcp</code> and choose <strong>Reconnect</strong>.</p>
-<h3 id="docker-takes-very-long-on-first-start-or-is-unhealthy">Docker takes very long on first start or is &quot;unhealthy&quot;</h3>
+<h2 id="docker-takes-very-long-on-first-start-or-is-unhealthy">Docker takes very long on first start or is &quot;unhealthy&quot;</h2>
 <p class="callout callout-belirti"><strong>Symptom:</strong> <code>docker compose ps</code> still does not say healthy after five minutes.</p>
 <p class="callout callout-sebep"><strong>Cause:</strong> On first start, the app is built inside the box (the container) and needs about 2 GB of memory. If memory is not enough, the build fails.</p>
 <p class="callout callout-cozum"><strong>Fix:</strong> Run <code>docker compose logs --tail 50</code> and look at the last lines. If there is a memory error, give the containers more memory in the Docker Desktop settings. Then run <code>docker compose up -d --build</code>.</p>
-<h3 id="where-are-my-data-and-logs">Where are my data and logs?</h3>
+<h2 id="where-are-my-data-and-logs">Where are my data and logs?</h2>
 <p>On Windows, everything is in the <code>%LOCALAPPDATA%\seowatcher</code> folder: <code>data</code> (the database), <code>logs\server.log</code>, <code>logs\migrate.log</code>, <code>instance-secret</code>, <code>mcp-token</code>, <code>config.json</code>. <strong>Günlükleri aç</strong> (Open logs) and <strong>Veri klasörünü aç</strong> (Open data folder) in the taskbar menu take you there.</p>
 <p>On Docker, the data is in the <code>seotracker_data</code> volume (<code>/app/.wrangler</code>). You see the logs with the <code>docker compose logs -f</code> command.</p>
 <p>When you report a problem, press the <strong>Tanılama paketi indir</strong> (Download diagnostics bundle) button on the <strong>Yardım</strong> (Help) screen. The file has the version, the setup checks and the last 25 audits. It has no secrets. Attach the file to the issue on GitHub.</p>
@@ -998,7 +998,7 @@
           >.
         </p>
       </article>
-      <nav class="toc" aria-label="On this page"><p class="toc-label">On this page</p><ol><li><a href="#launcher-messages">Launcher messages</a></li></ol></nav>
+      <nav class="toc" aria-label="On this page"><p class="toc-label">On this page</p><ol><li><a href="#the-page-does-not-open">The page does not open</a></li><li><a href="#the-port-number-is-in-use">The port number is in use</a></li><li><a href="#the-icon-says-windows-bileseni-eksik">The icon says &quot;Windows bileşeni eksik&quot;</a></li><li><a href="#administrator-permission-was-refused">Administrator permission was refused</a></li><li><a href="#the-icon-says-uygulamanin-motoru-coktu">The icon says &quot;Uygulamanın motoru çöktü&quot;</a></li><li><a href="#windows-says-protected-your-pc">Windows says &quot;protected your PC&quot;</a></li><li><a href="#google-says-redirect-uri-mismatch">Google says &quot;redirect_uri_mismatch&quot;</a></li><li><a href="#google-erisim-anahtari-eksik">&quot;Google erişim anahtarı eksik&quot;</a></li><li><a href="#google-says-access-denied">Google says &quot;access_denied&quot;</a></li><li><a href="#the-connection-has-expired">The connection has expired</a></li><li><a href="#there-is-no-query-data-and-the-charts-are-empty">There is no query data and the charts are empty</a></li><li><a href="#the-table-total-does-not-match-the-card">The table total does not match the card</a></li><li><a href="#an-audit-is-stuck-on-suruyor">An audit is stuck on &quot;Sürüyor&quot;</a></li><li><a href="#the-audit-says-engellendik">The audit says &quot;Engellendik&quot;</a></li><li><a href="#speed-testing-is-incomplete-or-missing">Speed testing is incomplete or missing</a></li><li><a href="#url-inspection-says-daily-limit-reached">URL Inspection says &quot;daily limit reached&quot;</a></li><li><a href="#localhost-traffic-shows-up-in-analytics">Localhost traffic shows up in Analytics</a></li><li><a href="#the-assistant-cannot-connect-401">The assistant cannot connect (401)</a></li><li><a href="#docker-takes-very-long-on-first-start-or-is-unhealthy">Docker takes very long on first start or is &quot;unhealthy&quot;</a></li><li><a href="#where-are-my-data-and-logs">Where are my data and logs?</a></li><li><a href="#launcher-messages">Launcher messages</a></li></ol></nav>
     </main>
     <footer>
       <div class="wrap">
