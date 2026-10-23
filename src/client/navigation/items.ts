@@ -12,6 +12,12 @@ import {
 } from "lucide-react";
 import { linkOptions } from "@tanstack/react-router";
 
+/*
+ * Labels and group headings are Turkish source strings, not display text:
+ * they are evaluated at import time, before the locale is known, so the
+ * Sidebar passes each one through t() where it renders. Their English lives
+ * in src/shared/i18n/en/app.ts.
+ */
 const projectNavItems = [
   {
     to: "/p/$projectId" as const,

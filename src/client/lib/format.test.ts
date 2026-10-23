@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { formatCount, formatDay, formatPercent } from "@/client/lib/format";
+import {
+  formatCount,
+  formatDay,
+  formatMoney,
+  formatPercent,
+} from "@/client/lib/format";
+import { setLocale } from "@/shared/i18n";
 
 describe("format", () => {
   /*
@@ -21,5 +27,19 @@ describe("format", () => {
 
   it("rounds counts rather than printing a fractional click", () => {
     expect(formatCount(1234.6)).toBe("1.235");
+  });
+
+  /*
+   * In English the percent sign moves and the separators swap, but the
+   * currency stays the property's: lira must not turn into "TRY 1,235".
+   */
+  it("follows the UI language, keeping the property's currency", () => {
+    setLocale("en");
+    try {
+      expect(formatPercent(0.034)).toBe("3.4%");
+      expect(formatMoney(1234.5, "TRY")).toBe("₺1,235");
+    } finally {
+      setLocale("tr");
+    }
   });
 });

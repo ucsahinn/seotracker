@@ -7,6 +7,7 @@ import {
   getProjectNavGroups,
 } from "@/client/navigation/items";
 import { ProjectSwitcher } from "@/client/features/projects/ProjectSwitcher";
+import { t } from "@/shared/i18n";
 
 interface SidebarProps {
   projectId: string | null;
@@ -76,7 +77,7 @@ export function Sidebar({ projectId, onNavigate, onClose }: SidebarProps) {
             type="button"
             onClick={onClose}
             className="btn btn-ghost btn-sm btn-circle"
-            aria-label="Kenar çubuğunu kapat"
+            aria-label={t("Kenar çubuğunu kapat")}
           >
             <X className="h-5 w-5" />
           </button>
@@ -91,14 +92,14 @@ export function Sidebar({ projectId, onNavigate, onClose }: SidebarProps) {
       </div>
 
       <nav
-        aria-label="Ana gezinme"
+        aria-label={t("Ana gezinme")}
         className="min-h-0 flex-1 overflow-y-auto px-2 py-2"
       >
         {navGroups.map((group) => (
           <div key={group.label ?? "top"} className="mb-1">
             {group.label ? (
               <div className="px-3 pb-1 pt-3 text-xs font-semibold uppercase tracking-wider text-subtle">
-                {group.label}
+                {t(group.label)}
               </div>
             ) : null}
             {group.items.map((item) => {
@@ -107,7 +108,9 @@ export function Sidebar({ projectId, onNavigate, onClose }: SidebarProps) {
                 <SidebarNavLink
                   key={linkProps.to}
                   icon={icon}
-                  label={label}
+                  // Nav labels are Turkish module-level constants; translate
+                  // them here, at render, where the locale is known.
+                  label={t(label)}
                   onNavigate={onNavigate}
                   linkProps={linkProps}
                 />
@@ -127,13 +130,13 @@ function SidebarFooter({ onNavigate }: { onNavigate?: () => void }) {
     <div className="shrink-0 border-t border-base-300 px-2 py-2 pb-safe">
       <SidebarNavLink
         icon={CircleHelp}
-        label="Yardım"
+        label={t("Yardım")}
         onNavigate={onNavigate}
         linkProps={{ to: "/support" }}
       />
       <SidebarNavLink
         icon={Settings}
-        label="Ayarlar"
+        label={t("Ayarlar")}
         onNavigate={onNavigate}
         linkProps={{ to: "/settings" }}
       />

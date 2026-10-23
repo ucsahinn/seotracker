@@ -19,6 +19,7 @@ import appCss from "@/client/styles/app.css?url";
 import { Toaster } from "sonner";
 import { queryClient } from "@/client/tanstack-db";
 import { startClientLog } from "@/client/lib/clientLog";
+import { getLocale } from "@/shared/i18n";
 
 // Capture Google link error params before the router starts — a route loader
 // redirect would otherwise replace the URL and lose them. See googleLinkError.ts.
@@ -111,10 +112,13 @@ function RootDocument({ children }: { children: React.ReactNode }) {
     import.meta.env.DEV && import.meta.env.VITE_SHOW_DEVTOOLS !== "false";
 
   return (
-    // lang="tr" is not decoration: CSS text-transform: uppercase follows the
-    // document language, and without it every uppercased label with a dotless
-    // i comes out wrong ("BILGI" instead of "BİLGİ").
-    <html lang="tr" suppressHydrationWarning translate="no">
+    // lang is not decoration: CSS text-transform: uppercase follows the
+    // document language, and without lang="tr" every uppercased Turkish label
+    // with a dotless i comes out wrong ("BILGI" instead of "BİLGİ"); English
+    // needs lang="en" for the opposite reason. It follows the request's locale,
+    // and the browser reads its own locale back from this attribute before
+    // hydrating (src/shared/i18n.ts), so the two renders cannot disagree.
+    <html lang={getLocale()} suppressHydrationWarning translate="no">
       <head>
         <script
           dangerouslySetInnerHTML={{ __html: themePreferenceInitScript }}

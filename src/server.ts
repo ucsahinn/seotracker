@@ -8,6 +8,7 @@ import { requestWithPublicOrigin } from "@/server/mcp/public-origin";
 import { MCP_ROUTE } from "@/server/mcp/context";
 import { handleSelfHostedMcpRequest } from "@/server/mcp/transport";
 import { enableDemoGoogle } from "@/server/dev/demoGoogle";
+import { resolveLocale, setLocale } from "@/shared/i18n";
 
 const startHandler = createStartHandler(defaultStreamHandler);
 
@@ -50,9 +51,22 @@ function fetch(
   const publicRequest = requestWithPublicOrigin(request);
   const pathname = new URL(publicRequest.url).pathname;
 
+  /*
+   * The UI language for this request, set before anything renders. It is one
+   * module-level value rather than per-request state: sound only because this
+   * is a single-user local app (see src/shared/i18n.ts). Agents always get
+   * Turkish, as they did before the app spoke English.
+   */
   if (pathname === MCP_ROUTE) {
+    setLocale("tr");
     return handleSelfHostedMcpRequest(publicRequest, authMode, env, ctx);
   }
+  setLocale(
+    resolveLocale(
+      request.headers.get("cookie"),
+      request.headers.get("accept-language"),
+    ),
+  );
 
   return appFetch(request);
 }

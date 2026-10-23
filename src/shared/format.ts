@@ -3,44 +3,70 @@
  *
  * The locale used to be whatever the browser happened to be set to, and in a
  * few files it was pinned to en-US outright, so the same audit could say
- * "Sep 19" in one card and "19.09.2026" in another. This install has one
- * operator and one language; pinning the locale here makes the whole app
- * agree, and makes a wrong format a one-line fix.
+ * "Sep 19" in one card and "19.09.2026" in another. Keeping every format here
+ * makes the whole app agree, and makes a wrong format a one-line fix.
+ *
+ * The locale follows the UI language (`getLocale()` from `@/shared/i18n`):
+ * tr-TR for Turkish, en-US for English. Formatters are built on first use and
+ * cached per locale, because the locale is set per request on the server and
+ * is not known when this module loads.
  */
-const LOCALE = "tr-TR";
+import { getLocale, type Locale } from "@/shared/i18n";
 
-const numberFormatter = new Intl.NumberFormat(LOCALE);
-const dayFormatter = new Intl.DateTimeFormat(LOCALE, {
-  day: "numeric",
-  month: "short",
-});
-const dateFormatter = new Intl.DateTimeFormat(LOCALE, {
-  day: "numeric",
-  month: "short",
-  year: "numeric",
-});
-const dateTimeFormatter = new Intl.DateTimeFormat(LOCALE, {
-  day: "numeric",
-  month: "short",
+const INTL_LOCALE: Record<Locale, string> = { tr: "tr-TR", en: "en-US" };
+
+const numberFormats = new Map<string, Intl.NumberFormat>();
+const dateFormats = new Map<string, Intl.DateTimeFormat>();
+
+/*
+ * One formatter per locale and options, built on first use. The options are
+ * small literal objects, so their JSON is a stable cache key.
+ */
+function numberFormat(options: Intl.NumberFormatOptions = {}) {
+  const locale = INTL_LOCALE[getLocale()];
+  const key = `${locale}|${JSON.stringify(options)}`;
+  let formatter = numberFormats.get(key);
+  if (!formatter) {
+    formatter = new Intl.NumberFormat(locale, options);
+    numberFormats.set(key, formatter);
+  }
+  return formatter;
+}
+
+function dateFormat(options: Intl.DateTimeFormatOptions) {
+  const locale = INTL_LOCALE[getLocale()];
+  const key = `${locale}|${JSON.stringify(options)}`;
+  let formatter = dateFormats.get(key);
+  if (!formatter) {
+    formatter = new Intl.DateTimeFormat(locale, options);
+    dateFormats.set(key, formatter);
+  }
+  return formatter;
+}
+
+const DAY: Intl.DateTimeFormatOptions = { day: "numeric", month: "short" };
+const DATE: Intl.DateTimeFormatOptions = { ...DAY, year: "numeric" };
+const DATE_TIME: Intl.DateTimeFormatOptions = {
+  ...DAY,
   hour: "2-digit",
   minute: "2-digit",
-});
+};
 
 export function formatNumber(value: number): string {
-  return numberFormatter.format(value);
+  return numberFormat().format(value);
 }
 
 /** Whole things: clicks, impressions, sessions, pages. */
 export function formatCount(value: number): string {
-  return numberFormatter.format(Math.round(value));
+  return numberFormat().format(Math.round(value));
 }
 
 /** One decimal, for rates and averages that would read as noise at more. */
 export function formatDecimal(value: number, digits = 1): string {
-  return value.toLocaleString(LOCALE, {
+  return numberFormat({
     minimumFractionDigits: digits,
     maximumFractionDigits: digits,
-  });
+  }).format(value);
 }
 
 /**
@@ -52,7 +78,7 @@ export function formatDecimal(value: number, digits = 1): string {
  */
 export function formatDuration(ms: number): string {
   if (ms < 1000) return `${formatNumber(Math.round(ms))} ms`;
-  return `${formatDecimal(ms / 1000)} sn`;
+  return `${formatDecimal(ms / 1000)} ${getLocale() === "en" ? "s" : "sn"}`;
 }
 
 /** A byte size a person reads. Binary units, because that is what the tools report. */
@@ -64,13 +90,18 @@ export function formatDuration(ms: number): string {
  * guess. An unknown or malformed code falls back to the plain number rather
  * than throwing: `Intl` rejects anything that is not a valid ISO 4217 code,
  * and a screen is not the place to find that out.
+ *
+ * The currency is the property's, whatever the UI language: Turkish lira is
+ * "₺1.235" in Turkish and "₺1,235" in English. `narrowSymbol` is what keeps
+ * the ₺ in en-US, which would otherwise write "TRY 1,235".
  */
 export function formatMoney(value: number, currency: string | null): string {
   if (!currency) return formatDecimal(value, 2);
   try {
-    return new Intl.NumberFormat(LOCALE, {
+    return numberFormat({
       style: "currency",
       currency,
+      currencyDisplay: "narrowSymbol",
       maximumFractionDigits: 0,
     }).format(value);
   } catch {
@@ -88,12 +119,18 @@ export function formatBytes(bytes: number): string {
   return `${formatNumber(Math.round(bytes))} B`;
 }
 
+/** "%3,4" in Turkish, "3.4%" in English: the sign's side is the locale's. */
 export function formatPercent(fraction: number, digits = 1): string {
-  return `%${formatDecimal(fraction * 100, digits)}`;
+  return numberFormat({
+    style: "percent",
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits,
+  }).format(fraction);
 }
 
 /**
- * A relative change, as a delta badge shows it: "+%8,8", "-%0,4".
+ * A relative change, as a delta badge shows it: "+%8,8", "-%0,4" (English
+ * "+8.8%", "-0.4%").
  *
  * One rule for every delta. The dashboard said "%9" and Search performance
  * "+%8,8" for the same number, because each screen rounded and signed on its
@@ -105,7 +142,7 @@ export function formatSignedPercent(fraction: number): string | null {
   if (!Number.isFinite(fraction)) return null;
   const magnitude = formatDecimal(Math.abs(fraction) * 100);
   if (magnitude === formatDecimal(0)) return null;
-  return `${fraction > 0 ? "+" : "-"}%${magnitude}`;
+  return `${fraction > 0 ? "+" : "-"}${formatPercent(Math.abs(fraction))}`;
 }
 
 /**
@@ -155,7 +192,17 @@ function safe(value: string, formatter: Intl.DateTimeFormat): string {
  * sees; anything outside it falls back to the code, which is still better
  * than a wrong country name.
  */
-const regionNames = new Intl.DisplayNames([LOCALE], { type: "region" });
+const regionNamesByLocale = new Map<string, Intl.DisplayNames>();
+
+function regionNames(): Intl.DisplayNames {
+  const locale = INTL_LOCALE[getLocale()];
+  let names = regionNamesByLocale.get(locale);
+  if (!names) {
+    names = new Intl.DisplayNames([locale], { type: "region" });
+    regionNamesByLocale.set(locale, names);
+  }
+  return names;
+}
 
 /** Built lazily: `Intl.supportedValuesOf` is cheap but not free. */
 let alpha3ToAlpha2: Map<string, string> | null = null;
@@ -270,33 +317,33 @@ export function formatCountry(code: string): string {
   const alpha2 = upper.length === 2 ? upper : alpha2Of(upper);
   if (!alpha2) return upper;
   try {
-    return regionNames.of(alpha2) ?? upper;
+    return regionNames().of(alpha2) ?? upper;
   } catch {
     return upper;
   }
 }
 
-/** The region (ISO-3166 alpha-2) in Turkish; `fallback` when the runtime has no name. */
+/** The region (ISO-3166 alpha-2) in the UI language; `fallback` when the runtime has no name. */
 export function formatRegionName(alpha2: string, fallback: string): string {
   try {
-    return regionNames.of(alpha2) ?? fallback;
+    return regionNames().of(alpha2) ?? fallback;
   } catch {
     return fallback;
   }
 }
 
 export function formatDay(value: string): string {
-  return safe(value, dayFormatter);
+  return safe(value, dateFormat(DAY));
 }
 
 /** "19 Eyl 2026" */
 export function formatDate(value: string): string {
-  return safe(value, dateFormatter);
+  return safe(value, dateFormat(DATE));
 }
 
 /** "19 Eyl 16:07" */
 export function formatDateTime(value: string): string {
-  return safe(value, dateTimeFormatter);
+  return safe(value, dateFormat(DATE_TIME));
 }
 
 const RELATIVE_UNITS: [Intl.RelativeTimeFormatUnit, number][] = [
@@ -307,21 +354,23 @@ const RELATIVE_UNITS: [Intl.RelativeTimeFormatUnit, number][] = [
   ["minute", 60 * 1000],
 ];
 
-/** "3 saat önce"; "az önce" under a minute. */
+/** "3 saat önce" / "3 hours ago"; "az önce" / "just now" under a minute. */
 export function formatRelativeTime(value: string): string {
   const then = parse(value);
   if (Number.isNaN(then)) return "";
   const diff = then - Date.now();
   const absolute = Math.abs(diff);
-  const formatter = new Intl.RelativeTimeFormat(LOCALE, { numeric: "auto" });
+  const formatter = new Intl.RelativeTimeFormat(INTL_LOCALE[getLocale()], {
+    numeric: "auto",
+  });
   for (const [unit, ms] of RELATIVE_UNITS) {
     if (absolute >= ms) return formatter.format(Math.round(diff / ms), unit);
   }
-  return "az önce";
+  return getLocale() === "en" ? "just now" : "az önce";
 }
 
 /**
- * Counts inside English text that agents read, not the Turkish UI.
+ * Counts inside English text that agents read, whatever the UI language.
  *
  * Deliberately not called `formatCount`: both existed under that name, one
  * pinned to en-US and one to tr-TR, and the collision is how a number ended
