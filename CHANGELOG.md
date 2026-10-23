@@ -2,6 +2,15 @@
 
 Her sürümün notu burada, en yenisi en üstte.
 
+## [2.3.14] — 2026-10-23
+
+Kurulum dosyası sürümünü taşır.
+
+### Yenilikler
+
+- **Dosyada sürüm.** Kurulum dosyasının Özellikler → Ayrıntılar sekmesi "2.3.14.0" ve "seowatcher 2.3.14 kurulumu" yazar; sitedeki indirme düğmeleri sürümlü dosya adına gider (`seowatcher-setup-2.3.14.exe`). Sabit adlı kopya sürüm sayfasında durmaya devam eder.
+- **Sürüm betiği.** `node scripts/bump-version.mjs x.y.z` paket, README, ana sayfa ve sürüm notu taslağını tek seferde günceller.
+
 ## [2.3.13] — 2026-10-23
 
 Görev çubuğu menüsünde her zaman görünen **Güncellemeleri kontrol et**.

@@ -37,6 +37,13 @@ SetupLogging=yes
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 OutputBaseFilename=seowatcher-setup-{#AppVersion}
+; Explorer "Details" and the UAC prompt show these; the file version must be numeric.
+VersionInfoVersion={#AppVersion}.0
+VersionInfoProductVersion={#AppVersion}
+VersionInfoProductName=seowatcher
+VersionInfoDescription=seowatcher {#AppVersion} kurulumu
+VersionInfoCompany=seowatcher
+VersionInfoCopyright=MIT License
 SetupIconFile=icon\seowatcher.ico
 WizardImageFile=icon\wizard-large.bmp
 WizardSmallImageFile=icon\wizard-small.bmp
