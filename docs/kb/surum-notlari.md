@@ -1,10 +1,10 @@
 ---
 title: Sürüm notları
-description: seowatcher 2.4.2'de neler değişti. Windows'ta tek dosyayla kurulum, kendini güncelleyen uygulama, sade ekranlar ve altı dilde site.
+description: seowatcher 2.4.3'de neler değişti. Windows'ta tek dosyayla kurulum, kendini güncelleyen uygulama, sade ekranlar ve altı dilde site.
 updated: 2026-10-23
 ---
 
-Son sürüm **2.4.2**, 23 Ekim 2026. Güncellerken veriniz korunur. Windows paketi yeni sürümü kendisi kurar.
+Son sürüm **2.4.3**, 23 Ekim 2026. Güncellerken veriniz korunur. Windows paketi yeni sürümü kendisi kurar.
 
 ## Öne çıkanlar
 
@@ -12,6 +12,8 @@ Son sürüm **2.4.2**, 23 Ekim 2026. Güncellerken veriniz korunur. Windows pake
 - **Kendini günceller.** Yeni sürümü indirir, doğrular ve sessizce kurar. Görev çubuğundaki **Güncelle** maddesiyle istediğiniz an kendiniz de güncelleyebilirsiniz.
 - **Daha sade ekranlar.** Verisi olmayan her ekran tek bir sonraki adımı gösterir. Menüler ve metinler Türkçe yeniden yazıldı.
 - **Yeni görünüm.** Siyah zemin, turuncu vurgu ve göz logosu. Uygulama ve site artık aynı görünür.
+- Ajan kurulumunda ilk kez kuranlar için "Sıfırdan kurulum" en üstte.
+- Güncelle maddesi kontrol, indirme yüzdesi ve kurulum aşamasını gösterir.
 
 ## Windows
 

@@ -2,7 +2,7 @@
 
 Her sürümün notu burada, en yenisi en üstte.
 
-## [2.4.2] — 2026-10-23
+## [2.4.3] — 2026-10-23
 
 Windows'ta tek dosyayla kurulan, kendini güncelleyen ve takıldığında kendini
 onaran bir uygulama. Ekranlar sadeleşti, site altı dile çıktı. 2.3.0'dan
@@ -18,14 +18,18 @@ güncellerken veriniz korunur.
 
 ### Windows
 
+- **Güncelleme adım adım.** Güncelle maddesi kontrol, indirme yüzdesi ve kurulum aşamasını gösterir; her hata kendi nedenini söyler.
+- **Kendini toparlar.** Sunucu kapanırsa uygulama kendini yeniden başlatır; günlükler büyümez, tanı raporu çalışırken de tam okunur.
 - **Temiz bilgisayarda açılış.** Uygulamanın motoru Microsoft Visual C++ çalışma zamanını ister. Kurulum dosyası bunu taşır, eksikse bir kez izin isteyip kurar; motorun yanında kendi kopyası da durur.
 - **Güncelle.** Görev çubuğu menüsünde her zaman durur. Tıklayınca hemen bakar; yeni sürüm varsa kurar, yoksa "Güncel" der. Otomatik kurulum menüden kapatılabilir.
-- **Kurulumu onar.** Geçici dosyaları siler, paketi kontrol eder ve uygulamayı yeniden açar.
+- **Kurulumu onar.** Geçici dosyaları siler, veritabanı güncellemesini yeniden çalıştırır, eksik dosyaları doğrulanmış kurulum dosyasından yeniden kurar ve uygulamayı açar.
 - **Sorunu bildir.** Hazır bir sorun kaydı açar. Tanı bilgisinde kullanıcı adı, site adları, e-postalar ve kimlikler maskelenir.
-- **Kurulum dosyası sürümünü taşır.** Dosya adı `seowatcher-setup-2.4.0.exe`; sihirbazın her sayfası kurulan sürümü yazar ve kaldırmanın verinizi silmediğini söyler.
+- **Kurulum dosyası sürümünü taşır.** Dosya adı sürümü taşır (`seowatcher-setup-2.4.3.exe`); sihirbazın her sayfası kurulan sürümü yazar ve kaldırmanın verinizi silmediğini söyler.
 
 ### Uygulama
 
+- **İlk kurulum öne çıktı.** Ajan kurulumunda, hiç bağlanmamış kurulumda "Sıfırdan kurulum" en üstte ve tek ana düğme.
+- **Her işlem geri bildirim verir.** Kaydetme, silme ve bağlantı işlemleri beklerken, bitince ve hata olunca ne olduğunu söyler; bağlantı kesme ve silme önce onay ister.
 - **Siteyle aynı görünüm.** Koyu tema varsayılan; açık tema sıcak gri ve yanık turuncu. Uygulamanın adı seowatcher, logosu göz.
 - **Yan menü.** Sahte hesap satırı kaldırıldı; gruplar "Arama ve site" ve "Ajan", Yardım ve Ayarlar altta.
 - **Ajan kurulumu.** Claude Code, Codex ya da diğerleri için tek kart ve tek "Kurulum komutunu kopyala" düğmesi.

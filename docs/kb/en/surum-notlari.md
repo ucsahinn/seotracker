@@ -1,10 +1,10 @@
 ---
 title: Release notes
-description: What changed in seowatcher 2.4.2. One-file install on Windows, an app that updates itself, simpler screens and a site in six languages.
+description: What changed in seowatcher 2.4.3. One-file install on Windows, an app that updates itself, simpler screens and a site in six languages.
 updated: 2026-10-23
 ---
 
-The latest release is **2.4.2**, October 23, 2026. Your data is kept when you update; the Windows package installs new versions on its own.
+The latest release is **2.4.3**, October 23, 2026. Your data is kept when you update; the Windows package installs new versions on its own.
 
 ## Highlights
 
@@ -12,6 +12,8 @@ The latest release is **2.4.2**, October 23, 2026. Your data is kept when you up
 - **Updates itself.** It downloads the new version, verifies it and installs it quietly. **Güncelle** (Update) in the taskbar menu is always one click away.
 - **Simpler screens.** Every empty screen shows one next step, and the menus and texts read naturally.
 - **A new face.** Black surfaces, an orange accent and the eye logo; the app and the site now look the same.
+- In Agent setup, "Sıfırdan kurulum" (Fresh install) now comes first for first-time users.
+- The Update item shows the check, the download percentage and the install step.
 
 ## Windows
 

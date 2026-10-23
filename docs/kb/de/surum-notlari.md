@@ -1,10 +1,10 @@
 ---
 title: Versionshinweise
-description: Neu in seowatcher 2.4.2: Windows-Installation mit einer Datei, Selbstaktualisierung, schlichtere Bildschirme und eine Website in sechs Sprachen.
+description: Neu in seowatcher 2.4.3: Windows-Installation mit einer Datei, Selbstaktualisierung, schlichtere Bildschirme und eine Website in sechs Sprachen.
 updated: 2026-10-23
 ---
 
-Die neueste Version ist **2.4.2** vom 23. Oktober 2026. Beim Aktualisieren bleiben Ihre Daten erhalten; das Windows-Paket installiert neue Versionen selbst.
+Die neueste Version ist **2.4.3** vom 23. Oktober 2026. Beim Aktualisieren bleiben Ihre Daten erhalten; das Windows-Paket installiert neue Versionen selbst.
 
 ## Das Wichtigste
 
@@ -12,6 +12,8 @@ Die neueste Version ist **2.4.2** vom 23. Oktober 2026. Beim Aktualisieren bleib
 - **Aktualisiert sich selbst.** Sie lädt die neue Version herunter, prüft sie und installiert sie im Hintergrund. **Güncelle** (Aktualisieren) steht im Taskleistenmenü jederzeit bereit.
 - **Schlichtere Bildschirme.** Jeder leere Bildschirm zeigt genau einen nächsten Schritt; Menüs und Texte wurden sprachlich überarbeitet.
 - **Neues Aussehen.** Schwarze Flächen, ein orangefarbener Akzent und das Augen-Logo; App und Website sehen jetzt gleich aus.
+- In der Assistenten-Einrichtung steht „Sıfırdan kurulum“ (Neuinstallation) für Erstnutzer jetzt ganz oben.
+- Der Eintrag Güncelle zeigt Prüfung, Download-Prozent und Installation.
 
 ## Windows
 

@@ -1,10 +1,10 @@
 ---
 title: Notas da versão
-description: O que mudou no seowatcher 2.4.2: instalação com um só arquivo no Windows, um aplicativo que se atualiza sozinho, telas mais simples e site em seis idiomas.
+description: O que mudou no seowatcher 2.4.3: instalação com um só arquivo no Windows, um aplicativo que se atualiza sozinho, telas mais simples e site em seis idiomas.
 updated: 2026-10-23
 ---
 
-A versão mais recente é a **2.4.2**, de 23 de outubro de 2026. Seus dados são mantidos na atualização; o pacote do Windows instala as novas versões sozinho.
+A versão mais recente é a **2.4.3**, de 23 de outubro de 2026. Seus dados são mantidos na atualização; o pacote do Windows instala as novas versões sozinho.
 
 ## Destaques
 
@@ -12,6 +12,8 @@ A versão mais recente é a **2.4.2**, de 23 de outubro de 2026. Seus dados são
 - **Atualiza-se sozinho.** Baixa a nova versão, verifica e instala em segundo plano. **Güncelle** (Atualizar) no menu da barra de tarefas está sempre a um clique.
 - **Telas mais simples.** Cada tela vazia mostra um único próximo passo; menus e textos foram reescritos para ficar mais claros.
 - **Um novo visual.** Fundo preto, destaque laranja e o logo de olho; o aplicativo e o site agora têm a mesma aparência.
+- Na configuração do agente, "Sıfırdan kurulum" (Instalação do zero) agora vem primeiro para quem instala pela primeira vez.
+- O item Güncelle mostra a verificação, a porcentagem do download e a instalação.
 
 ## Windows
 
