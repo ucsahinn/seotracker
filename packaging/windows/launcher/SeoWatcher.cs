@@ -1459,10 +1459,14 @@ namespace SeoWatcher
         {
             string report = Diag.Report();
             try { Clipboard.SetText(report); } catch { }
-            string body = "Aşağıdaki tanı bilgisi uygulamanın \"Sorunu bildir\" menüsünden geldi. Ne yapmaya çalıştığınızı bir cümleyle ekleyin.\n\n```\n" + report + "\n```\n";
-            if (body.Length > 6000) body = body.Substring(0, 6000) + "\n```\n(kısaltıldı; tamamı panoda)\n";
+            // The whole report is on the clipboard; the URL carries only the
+            // first part, because a long query string makes GitHub answer 404
+            // and some browsers refuse it. The "sorun" template adds the
+            // questions; a body in the URL replaces the template's own body.
+            string head = report.Length > 2000 ? report.Substring(0, 2000) + "\n(kısaltıldı; tamamı panoda, Ctrl+V ile yapıştırın)" : report;
+            string body = "**Ne yapmaya çalışıyordunuz?**\n(bir iki cümle)\n\n**Tanı bilgisi** (menüden kopyalandı; gözden geçirin)\n\n```\n" + head + "\n```\n";
             string title = "seowatcher " + Paths.Version() + ": " + (statusItem.Text.Length > 80 ? statusItem.Text.Substring(0, 80) : statusItem.Text);
-            Browser.Open("https://github.com/" + Updater.Repo + "/issues/new?title=" + Uri.EscapeDataString(title) + "&body=" + Uri.EscapeDataString(body));
+            Browser.Open("https://github.com/" + Updater.Repo + "/issues/new?template=sorun.md&title=" + Uri.EscapeDataString(title) + "&body=" + Uri.EscapeDataString(body));
         }
 
         private void CopyDiagnostics()

@@ -49,7 +49,7 @@
     <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/en/docs/site-audit/#article","headline":"Site audit","description":"The app walks through your site page by page, checks it against 95 rules and puts the problems in order of importance. Each problem comes with what to do about it.","url":"https://seowatcher.io/en/docs/site-audit/","inLanguage":"en","dateModified":"2026-10-23","articleSection":"Screens","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/en/docs/site-audit/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/en/docs/site-audit/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/en/"},{"@type":"ListItem","position":2,"name":"Guide","item":"https://seowatcher.io/en/docs/"},{"@type":"ListItem","position":3,"name":"Site audit","item":"https://seowatcher.io/en/docs/site-audit/"}]}]}</script>
-    <script src="/assets/docs.js?v=2.3.8" defer></script>
+    <script src="/assets/docs.js?v=2.3.9" defer></script>
     <meta name="theme-color" content="#272c3b" />
     <style>
       @font-face {
@@ -252,50 +252,9 @@
 
       .layout {
         display: grid;
-        grid-template-columns: 240px minmax(0, 1fr) 200px;
+        grid-template-columns: 252px minmax(0, 1fr) 208px;
         gap: clamp(32px, 4vw, 64px);
         padding: 40px 0 96px;
-      }
-      .side {
-        position: sticky;
-        top: 84px;
-        align-self: start;
-        font-size: 15px;
-      }
-      .nav-group {
-        margin: 22px 0 8px;
-        font-size: 13px;
-        font-weight: 600;
-        color: var(--subtle);
-      }
-      .nav-group:first-child {
-        margin-top: 0;
-      }
-      .side ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        display: grid;
-        gap: 2px;
-      }
-      .side li a {
-        display: block;
-        padding: 6px 10px;
-        margin-left: -10px;
-        border-radius: 8px;
-        color: var(--muted);
-        transition:
-          background-color 240ms var(--ease),
-          color 240ms var(--ease);
-      }
-      .side li a:hover {
-        background: var(--bg-2);
-        color: var(--fg);
-      }
-      .side li.current a {
-        background: var(--bg-2);
-        color: var(--fg);
-        font-weight: 600;
       }
       .toc {
         position: sticky;
@@ -558,13 +517,6 @@
           0 12px 32px var(--glow);
         transform: translateY(-1px);
       }
-      .side li a:hover,
-      .side li.current a {
-        background: var(--glass);
-      }
-      .side li.current a {
-        box-shadow: inset 2px 0 0 var(--accent);
-      }
       ul.index li a {
         color: var(--accent-link);
       }
@@ -629,24 +581,10 @@
         padding-top: 8px;
         border-top: 1px solid var(--hairline);
       }
-      .side li.current a {
-        color: var(--accent);
-      }
       article p,
       article li {
         font-size: 16px;
         line-height: 1.65;
-      }
-      .side {
-        border-right: 1px solid var(--hairline);
-        padding-right: 16px;
-      }
-      .nav-group {
-        font-size: 13.5px;
-      }
-      .side li.current a {
-        color: var(--fg);
-        font-weight: 600;
       }
       article td:has(> :is(strong, b):only-child),
       article td[align="right"] {
@@ -747,6 +685,98 @@
       .side-dd > summary {
         display: none;
       }
+      .side {
+        position: sticky;
+        top: 84px;
+        align-self: start;
+        max-height: calc(100vh - 100px);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-width: thin;
+        scrollbar-color: var(--hairline-strong) transparent;
+        padding: 2px 18px 24px 0;
+        border-right: 1px solid var(--hairline);
+        font-size: 14.5px;
+      }
+      .nav-group {
+        margin: 26px 0 8px;
+        padding-left: 12px;
+        font-size: 12.5px;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+        color: var(--subtle);
+      }
+      .nav-group:first-child {
+        margin-top: 0;
+      }
+      .side ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 1px;
+      }
+      .side li a {
+        position: relative;
+        display: block;
+        padding: 7px 12px;
+        border-radius: 9px;
+        color: var(--muted);
+        line-height: 1.35;
+        transition:
+          background-color 220ms var(--ease),
+          color 220ms var(--ease);
+      }
+      .side li a::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 9px;
+        bottom: 9px;
+        width: 2px;
+        border-radius: 2px;
+        background: var(--accent);
+        opacity: 0;
+        transition: opacity 220ms var(--ease);
+      }
+      .side li a:hover {
+        color: var(--fg);
+        background: var(--bg-2);
+      }
+      .side li.current a {
+        color: var(--fg);
+        font-weight: 600;
+        background: var(--glass);
+      }
+      .side li.current a::before {
+        opacity: 1;
+      }
+      .side li a:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 1px;
+      }
+      .toc {
+        font-size: 13.5px;
+      }
+      .toc-label {
+        font-size: 12.5px;
+        padding-left: 12px;
+      }
+      .toc ol {
+        gap: 4px;
+      }
+      .toc a {
+        padding: 3px 0 3px 12px;
+        line-height: 1.4;
+        transition: color 220ms var(--ease);
+      }
+      .toc a.current::before {
+        display: none;
+      }
+      .toc a.current {
+        box-shadow: inset 2px 0 0 var(--accent);
+        margin-left: -1px;
+      }
       .toc a.current {
         color: var(--fg);
         font-weight: 600;
@@ -810,6 +840,9 @@
           margin-bottom: 10px;
         }
         .side {
+          position: static;
+          max-height: none;
+          overflow: visible;
           border-right: 0;
           padding-right: 0;
         }

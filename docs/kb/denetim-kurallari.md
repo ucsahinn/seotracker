@@ -1,12 +1,12 @@
 ---
 title: Denetim kuralları
-description: Site denetiminin baktığı 95 kuralın listesi. Her kural için ne demek olduğunu ve nasıl düzelteceğinizi bulursunuz.
+description: Site denetiminin baktığı 95 kuralın tam listesi. Her kuralın ne demek olduğunu ve nasıl düzelteceğinizi buradan okursunuz.
 updated: 2026-10-22
 ---
 
-Site denetimi her sayfaya ve sitenin bütününe 95 kuralla bakar. Kurallar üç gruba ayrılır. **Kritik** (10 kural): Google sayfayı göremez ya da anlayamaz, önce bunları düzeltin. **Uyarı** (48 kural): sıralamayı ve tıklamayı yavaş yavaş düşürür. **Bilgi** (37 kural): küçük iyileştirme fırsatları. Puanda kritik 40, uyarı 15, bilgi 3 ağırlığındadır. Bir kuralın kaç sayfayı etkilediği de puana girer.
+Site denetimi her sayfaya ve sitenin bütününe 95 kuralla bakar. Kurallar üç gruba ayrılır. **Kritik** (10 kural) Google'ın sayfayı göremediği ya da anlayamadığı durumlardır, önce bunları düzeltin. **Uyarı** (48 kural) sıralamayı ve tıklamayı yavaş yavaş düşürür. **Bilgi** (37 kural) küçük iyileştirme fırsatlarıdır. Puanda kritik 40, uyarı 15, bilgi 3 ağırlığındadır. Bir kuralın kaç sayfayı etkilediği de puana girer.
 
-Tabloda kuralın ekrandaki adı, ne demek olduğu ve düzeltmenin ilk adımı yazar. Tam düzeltme metni ekrandaki bulgu kartındadır. Son sütun, CSV dosyasında ve asistan cevaplarında görünen kural kimliğidir.
+Tabloda her kuralın ekrandaki adını, ne demek olduğunu ve düzeltmenin ilk adımını görürsünüz. Tam düzeltme metni ekrandaki bulgu kartındadır. Son sütun, CSV dosyasında ve asistan cevaplarında görünen kural kimliğidir.
 
 ## Sık geçen sözler
 
@@ -138,6 +138,6 @@ Tabloda kuralın ekrandaki adı, ne demek olduğu ve düzeltmenin ilk adımı ya
 
 Çoğu kural sayfa başına çalışır ve etkilediği her sayfayı listeler. Bazıları sitenin bütünüyle ilgilidir ve tek bir bulgu üretir. Bunlar robots.txt kuralları, site haritası kuralları, "Sitede sosyal medya paylaşım etiketleri yok" ve "Sitede hiç yapısal veri yok" kurallarıdır.
 
-Adı "Google" ile başlayan kurallar uygulamanın taramasından gelmez. Dizin durumu sekmesinde Google'dan alınan cevaplardan üretilir. O sekmede hiç soru sormadıysanız bu kurallar hiç çalışmaz. Hız kuralları (LCP, CLS, INP, SEO puanı) yalnızca "Sayfa hızını da ölç" açıkken ve telefon ölçümüne göre çalışır.
+Adı "Google" ile başlayan kurallar uygulamanın taramasından gelmez. Dizin durumu sekmesinde Google'dan alınan cevaplardan çıkar. O sekmede hiç soru sormadıysanız bu kurallar hiç çalışmaz. Hız kuralları (LCP, CLS, INP, SEO puanı) yalnızca "Sayfa hızını da ölç" açıkken ve telefon ölçümüne göre çalışır.
 
 <!-- Kaynaklar: src/shared/audit-issues/crawl.ts (31 kural); content.ts (26); indexing.ts (34); speed.ts (4); src/shared/auditScore.ts; src/server/lib/audit/google-verdict-checks.ts -->

@@ -5,7 +5,7 @@ kind: nasil-yapilir
 updated: 2026-10-22
 ---
 
-Bu sayfanın sonunda uygulama Docker'da (uygulamaları kapalı kutu içinde çalıştıran program) çalışıyor ve `http://localhost:3001` adresinde açık olacak. Windows kullanıyorsanız tek dosyalık Windows kurulumu çok daha kolaydır. Bu sayfa Mac, Linux ve zaten Docker kullananlar içindir. İlk açılış birkaç dakika sürer, çünkü uygulama kutunun (konteynerin) içinde derlenir. Sonrakiler saniyeler sürer.
+Sonunda uygulama Docker'da (uygulamaları kapalı kutu içinde çalıştıran program) çalışacak ve `http://localhost:3001` adresinde açık olacak. Windows kullanıyorsanız tek dosyalık Windows kurulumu çok daha kolay. Bu yol Mac, Linux ve zaten Docker kullananlar için. İlk açılış birkaç dakika sürer, çünkü uygulama kutunun (konteynerin) içinde derlenir. Sonrakiler saniyeler sürer.
 
 ## Gerekenler
 
@@ -38,7 +38,7 @@ docker compose logs -f
 
 4. Bekleyin. Günlükte "Building client + server" satırı ilk derlemedir. `docker compose ps` çıktısında durum **healthy** olana kadar bekleyin, sonra tarayıcıda `http://localhost:3001` adresini açın.
 
-Sonraki adım Google bağlantısı kılavuzudur. Docker'da Google'a vereceğiniz iki yönlendirme adresi şunlardır:
+Sıradaki adım Google bağlantısı kılavuzu. Docker'da Google'a vereceğiniz iki yönlendirme adresi şunlar:
 
 - `http://localhost:3001/api/gsc/oauth/callback`
 - `http://localhost:3001/api/ga4/oauth/callback`
@@ -71,11 +71,11 @@ docker run --rm -v seotracker_data:/data -v "$PWD":/backup alpine tar czf /backu
 docker compose up -d
 ```
 
-Geri yüklerken aynı komutta `tar czf` yerine `tar xzf` kullanın. Veri deposundaki `instance-secret` dosyası Google bağlantılarını şifreleyen anahtardır. O olmayan yedek, Google bağlantıları olmadan açılır.
+Geri yüklerken aynı komutta `tar czf` yerine `tar xzf` kullanın. Veri deposundaki `instance-secret` dosyası Google bağlantılarını şifreleyen anahtardır. Yedekte o dosya yoksa uygulama açılır ama Google bağlantıları gelmez.
 
 ### Ayarlar (isteğe bağlı)
 
-Hiçbir ayar zorunlu değildir. Değiştirmek isterseniz proje klasörüne bir `.env` dosyası koyun. Sonra `docker compose up -d --force-recreate seotracker` yazın.
+Hiçbir ayar zorunlu değil. Değiştirmek isterseniz proje klasörüne bir `.env` dosyası koyun. Sonra `docker compose up -d --force-recreate seotracker` yazın.
 
 | Ayar adı                               | Ne işe yarar                                                                                                   |
 | -------------------------------------- | -------------------------------------------------------------------------------------------------------------- |

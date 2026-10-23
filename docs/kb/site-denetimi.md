@@ -1,14 +1,14 @@
 ---
 title: Site denetimi
-description: Uygulama sitenizi sayfa sayfa gezer, 95 kurala göre bakar ve sorunları önem sırasına koyar. Her sorunun yanında ne yapacağınız yazar.
+description: Uygulama sitenizi sayfa sayfa gezer, 95 kurala göre kontrol eder ve sorunları önem sırasına dizer. Her sorunun yanında ne yapmanız gerektiği yazar.
 screen: Site denetimi
 route: /p/<proje>/audit
 updated: 2026-10-22
 ---
 
-Bu sayfada sitenizdeki sorunları nasıl bulup düzelteceğinizi öğrenirsiniz.
+Sitenizdeki sorunları nasıl bulacağınızı ve düzelteceğinizi burada öğrenirsiniz.
 
-Uygulama sitenizi kendi tarayıcısıyla gezer (sayfaları tek tek açıp okuyan program). Kırık bağlantıları, eksik başlıkları ve yavaş sayfaları arar. Sonunda bir puan ve önem sırasına konmuş bir sorun listesi alırsınız. Her sorunun altında nasıl düzelteceğiniz yazar.
+Uygulama sitenizi kendi tarayıcısıyla gezer (sayfaları tek tek açıp okuyan program). Kırık bağlantıları, eksik başlıkları ve yavaş sayfaları arar. Sonunda bir puan ve önem sırasına dizilmiş bir sorun listesi alırsınız. Her sorunun altında nasıl düzelteceğiniz yazar.
 
 ## Ekranda neler var
 
@@ -20,7 +20,7 @@ Uygulama sitenizi kendi tarayıcısıyla gezer (sayfaları tek tek açıp okuyan
 
 PageSpeed anahtarınız (Google'ın hız ölçümü için verdiği ücretsiz kod) yoksa hız ölçümü en çok 50 sayfayla sınırlanır. Tümünü ölçmek için **Ayarlar**'dan ücretsiz bir anahtar ekleyin.
 
-**Önceki denetimler.** Her denetimin tarihi, durumu, sayfa sayısı ve sorun sayıları listelenir. Sorun sayıları yüz sayfa başınadır. Böylece 50 ve 500 sayfalık denetimleri karşılaştırabilirsiniz. Satır menüsündeki **Denetimi sil** her şeyi siler, geri alınamaz.
+**Önceki denetimler.** Her denetimin tarihi, durumu, sayfa sayısı ve sorun sayıları listelenir. Sorun sayıları yüz sayfa başınadır. Böylece 50 ve 500 sayfalık denetimleri karşılaştırabilirsiniz. Satır menüsündeki **Denetimi sil** her şeyi siler ve geri alınamaz.
 
 **Denetim ayrıntısı.** Tarama eksik kalırsa sarı bir uyarı çıkar. Örneğin "Denetim bu siteyi tamamen tarayamadı." (bot koruması engelledi). Sonuçlar yine de gösterilir. **Raporu indir** tek dosyalık HTML raporu indirir ve **Raporlar** ekranına kaydeder.
 
@@ -46,13 +46,13 @@ PageSpeed anahtarınız (Google'ın hız ölçümü için verdiği ücretsiz kod
 
 ## Sayılar nasıl hesaplanır
 
-**Puan.** Her sorunun ağırlığı var: kritik 40, uyarı 15, bilgi 3. Sorun ne kadar çok sayfayı etkilerse puandan o kadar çok düşer. Puan 100'den başlar, sıfırın altına inmez. Tek bir sorun bile varsa puan en çok 99 olur.
+**Puan.** Her sorunun ağırlığı farklıdır: kritik 40, uyarı 15, bilgi 3. Sorun ne kadar çok sayfayı etkilerse puandan o kadar çok düşer. Puan 100'den başlar, sıfırın altına inmez. Tek bir sorun bile varsa puan en çok 99 olur.
 
-Dilimler: 90 ve üstü çok iyi, 70 ve üstü iyi, 50 ve üstü orta, altı zayıf.
+Puan aralıkları şöyle: 90 ve üstü çok iyi, 70 ve üstü iyi, 50 ve üstü orta, altı zayıf.
 
-**Tarama.** Uygulama sitenizi yormaz: aynı anda en çok iki istek gönderir. Site "çok fazla istek" (429) derse bekler. Toplam bekleme 30 dakikayı geçerse tarama durur.
+**Tarama.** Uygulama sitenizi yormaz. Aynı anda en çok iki istek gönderir. Site "çok fazla istek" (429) derse bekler. Toplam bekleme 30 dakikayı geçerse tarama durur.
 
-**Hız ölçümü.** 212 sayfalık bir sitede denetimin tamamı 35 dakika sürdü; bunun yaklaşık 24 dakikası hız ölçümüydü. Günlük kota biterse ölçüm durur, o ana kadarki sonuçlar kalır. Şu durumlarda sorun yazılır:
+**Hız ölçümü.** 212 sayfalık bir sitede denetimin tamamı 35 dakika sürdü. Bunun yaklaşık 24 dakikası hız ölçümüydü. Günlük kota biterse ölçüm durur, o ana kadarki sonuçlar kalır. Şu durumlarda sorun yazılır:
 
 - Ana içerik 4 saniyeden geç görünür (LCP).
 - İçerik 0,25'ten çok kayar (CLS).

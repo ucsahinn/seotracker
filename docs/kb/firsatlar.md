@@ -1,14 +1,14 @@
 ---
 title: Fırsatlar
-description: Bu hafta hangi sayfanıza dokunmanız gerektiğini söyler. Sayfaları dört gruba ayırır, puanlar ve her biri için yapılacak işi yazar.
+description: Bu hafta hangi sayfanıza el atmanız gerektiğini söyler. Sayfaları dört gruba ayırır, puan verir ve her biri için ne yapacağınızı yazar.
 screen: Fırsatlar
 route: /p/<proje>/opportunities
 updated: 2026-10-22
 ---
 
-Bu ekranda bu hafta hangi sayfanıza dokunmanız gerektiğini görürsünüz.
+Bu hafta hangi sayfanıza dokunmanız gerektiğini burada görürsünüz.
 
-Uygulama Search Console'daki her sayfanızı alır. Google Analytics'teki karşılığıyla eşler. Her sayfaya 0 ile 100 arasında bir puan verir. Bu puan Google'ın ölçüsü değildir. Uygulamanın "bu sayfada çalışmak ne kadar mantıklı" tahminidir. Ekran hem Search Console hem Analytics ister. Biri bağlı değilse uyarı ve **Bağlantıları aç** düğmesi çıkar.
+Uygulama Search Console'daki her sayfanızı Google Analytics'teki karşılığıyla eşler. Sonra her sayfaya 0 ile 100 arasında puan verir. Bu puan Google'ın ölçüsü değildir. Uygulamanın "bu sayfada çalışmaya değer mi" tahminidir. Ekran hem Search Console'u hem Analytics'i ister. Biri bağlı değilse bir uyarı ve **Bağlantıları aç** düğmesi çıkar.
 
 ## Ekranda neler var
 
@@ -29,15 +29,15 @@ Uygulama Search Console'daki her sayfanızı alır. Google Analytics'teki karş�
 
 **Hızlı filtreler.** **Analytics'te karşılığı olanlar**, **Analytics'te karşılığı yok**, **En çok gösterim alan 10**.
 
-**"Fırsat nerede toplanıyor?" kartı.** Gruplara göre gösterim ya da tıklama dağılımını gösterir.
+**"Fırsat nerede toplanıyor?" kartı.** Gösterimlerin ya da tıklamaların gruplara nasıl dağıldığını gösterir.
 
-**Tablo.** Sütunlar: **Puan**, **Sayfa**, **Sıra**, **Gösterim**, **Tıklama**, **Tıklama oranı**, **Oturum**. Oturum, siteye yapılan ziyaret sayısıdır. Analytics'ten gelir.
+**Tablo.** Sütunlar şunlar: **Puan**, **Sayfa**, **Sıra**, **Gösterim**, **Tıklama**, **Tıklama oranı**, **Oturum**. Oturum, sitenize yapılan ziyaretlerin sayısıdır ve Analytics'ten gelir.
 
-**Ayrıntı paneli.** Bir satıra tıklayınca açılır. "Ne yapmalı?" listesi burada. Puanın üç parçası da var: **Talep**, **İş değeri**, **Yükselme kolaylığı**. Her biri yüksek, orta ya da düşüktür. Düğmeler: **Arama performansında aç**, **Adresi kopyala**, **Sayfayı aç**.
+**Ayrıntı paneli.** Bir satıra tıklayınca açılır. "Ne yapmalı?" listesi burada durur. Puanın üç parçasını da görürsünüz: **Talep**, **İş değeri**, **Yükselme kolaylığı**. Her biri yüksek, orta ya da düşük çıkar. Alttaki düğmeler: **Arama performansında aç**, **Adresi kopyala**, **Sayfayı aç**.
 
 ## Nasıl kullanılır
 
-1. **Son 28 gün** ile başlayın. En üstteki satır "önce buna bak" denen sayfadır.
+1. **Son 28 gün** ile başlayın. En üstteki satır, önce bakmanız gereken sayfadır.
 2. **Az tıklanan** grubundan ilk iki sayfayı alın. Google'da iyi yerdeler ama tıklanmıyorlar. Başlık ve açıklamayı düzeltin. Yarım saatlik iştir.
 3. **Yükselmeye yakın** grubunda puanı yüksek sayfalara bakın. Bir bölüm ekleyin, siteden iki üç iç bağlantı verin.
 4. **Analytics'te karşılığı yok** düğmesi, Google'ın gösterdiği ama Analytics'in ziyaret görmediği sayfaları ayırır. Çoğunlukla adres farkıdır (sondaki eğik çizgi, www). Bazen sayfa gerçekten tıklanmıyordur.
@@ -45,11 +45,11 @@ Uygulama Search Console'daki her sayfanızı alır. Google Analytics'teki karş�
 
 ## Sayılar nasıl hesaplanır
 
-Aralık, Search Console'un üç günlük gecikmesi kadar geriden biter. Search Console'dan en fazla 1.000 satır, Analytics'ten de en fazla 1.000 satır alınır. İki liste alan adı ve yola göre eşleşir. Adresin sonundaki eğik çizgi sayılmaz. 1.000 satıra ulaşılırsa tablonun altında not çıkar.
+Aralık, Search Console'un üç günlük gecikmesi kadar geride biter. Search Console'dan en fazla 1.000 satır, Analytics'ten de en fazla 1.000 satır alınır. İki liste alan adı ve yola göre eşleşir. Adresin sonundaki eğik çizgi sayılmaz. 1.000 satıra ulaşılırsa tablonun altında not çıkar.
 
-Gösterimi sıfırdan büyük her sayfa adaydır. Grup, sıraya ve beklenen tıklama oranına göre seçilir. Beklenen oran, aynı sıra aralığındaki sayfalarınızın tipik tıklama oranıdır. Dilimler: 1-3, 3-5, 5-10, 10-20 ve 20-50. Bir dilim için en az 10 gösterimli üç sayfa gerekir. Sırası 20 ve üstü olup oranı beklenenin yarısından düşük sayfa "Az tıklanan" olur.
+Gösterimi sıfırdan büyük her sayfa adaydır. Grup, sıraya ve beklenen tıklama oranına göre seçilir. Beklenen oran, aynı sıra aralığındaki sayfalarınızın tipik tıklama oranıdır. Sıra dilimleri şunlar: 1-3, 3-5, 5-10, 10-20 ve 20-50. Bir dilim için en az 10 gösterimli üç sayfa gerekir. Sırası 20 ve üstü olup oranı beklenenin yarısından düşük sayfa "Az tıklanan" olur.
 
-Puan şöyle hesaplanır: yüzde 50 talep, yüzde 30 iş değeri, yüzde 20 yükselme kolaylığı. Talep gösterime dayanır. Sıra ne kadar iyiyse yükselmesi o kadar kolay sayılır. İş değeri, Analytics'teki anahtar olay oranıdır. Anahtar olay, sizin önemli saydığınız harekettir. Hiçbir sayfada yoksa etkileşim oranı kullanılır. Analytics'te karşılığı olmayan sayfaya iş değeri için orta puan verilir. Puan yalnızca sitenizin kendi sayfalarını birbiriyle kıyaslar.
+Puan şöyle çıkar: yüzde 50 talep, yüzde 30 iş değeri, yüzde 20 yükselme kolaylığı. Talep gösterime dayanır. Sıra ne kadar iyiyse yükselmesi o kadar kolay sayılır. İş değeri, Analytics'teki anahtar olay oranıdır. Anahtar olay, sizin önemli saydığınız harekettir. Hiçbir sayfada yoksa etkileşim oranı kullanılır. Analytics'te karşılığı olmayan sayfaya iş değeri için orta puan verilir. Puan yalnızca sitenizin kendi sayfalarını birbiriyle kıyaslar.
 
 ## Sık sorulanlar
 

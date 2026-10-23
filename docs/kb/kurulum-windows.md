@@ -1,19 +1,19 @@
 ---
 title: Windows'a kurulum
-description: Tek dosyayla Windows'a kurun. İlk açılış, güncelleme, kaldırma, yedek alma ve adres numarası değiştirme. Docker ya da terminal gerekmez.
+description: Windows'a tek dosyayla kurarsınız, Docker ya da terminal gerekmez. Güncelleme, kaldırma, yedek alma ve adres numarasını değiştirme de aynı sayfada.
 kind: nasil-yapilir
 updated: 2026-10-22
 ---
 
-Bu sayfanın sonunda uygulama bilgisayarınızda kurulu ve tarayıcıda açık olacak. Kurulum iki dakika sürer. Yalnızca sizin kullanıcı hesabınıza kurulur, yönetici izni gerekmez (yalnızca Visual C++ bileşeni eksikse bir kez sorulur).
+Sonunda uygulama bilgisayarınızda kurulu ve tarayıcıda açık olacak. Kurulum iki dakika sürer. Yalnızca sizin kullanıcı hesabınıza kurulur, yönetici izni gerekmez. Visual C++ bileşeni eksikse bir kez izin sorulur.
 
 ## Gerekenler
 
 - Windows 10 ya da 11 (64 bit).
 - Yaklaşık 350 MB boş yer. Kurulum dosyası 81 MB, kurulu hali 290 MB.
 - Edge, Chrome ya da Firefox gibi bir tarayıcı.
-- Docker, Node ya da terminal (komut penceresi) gerekmez. Yönetici hakkı da gerekmez; yalnızca Visual C++ bileşeni eksikse bir kez sorulur.
-- Uygulamanın motoru Microsoft'un Visual C++ paketine ihtiyaç duyar. Bilgisayarda yoksa kurulum bunu kendisi kurar ve bu sırada bir kez yönetici izni sorar. Yalnızca sizin hesabınıza kurulan uygulama `%LOCALAPPDATA%\Programs\seowatcher` klasörüne gider.
+- Docker, Node ya da terminal (komut penceresi) gerekmez. Yönetici hakkı da gerekmez, yalnızca Visual C++ bileşeni eksikse bir kez sorulur.
+- Uygulamanın motoru Microsoft'un Visual C++ paketini ister. Bilgisayarda yoksa kurulum onu kendisi kurar ve bir kez yönetici izni sorar. Uygulama `%LOCALAPPDATA%\Programs\seowatcher` klasörüne kurulur.
 
 ## Adımlar
 
@@ -24,14 +24,14 @@ Bu sayfanın sonunda uygulama bilgisayarınızda kurulu ve tarayıcıda açık o
 3. Windows "Windows bilgisayarınızı korudu" derse **Daha fazla bilgi**, sonra **Yine de çalıştır** deyin. Dosya henüz imzalı değil, Windows yayıncıyı tanımıyor. Bu uyarı normaldir.
 4. İsterseniz dosyanın SHA-256 özetini (dosyanın parmak izi) sürüm sayfasındaki `SHA256SUMS.txt` ile karşılaştırın.
 5. Hoş geldiniz sayfasında **Sonraki** deyin.
-6. "Kim için kurulsun" sorusunda **Yalnızca ben** seçeneğini seçin. Önerilen budur: kurulum yalnızca sizin hesabınıza yapılır. **Tüm kullanıcılar** seçeneği yönetici izni ister.
+6. "Kim için kurulsun" sorusunda **Yalnızca ben** seçeneğini seçin. Önerilen budur, kurulum yalnızca sizin hesabınıza yapılır. **Tüm kullanıcılar** seçeneği yönetici izni ister.
 7. İki seçeneğe bakın: **Windows açılınca seowatcher'ı başlat** ve **Masaüstüne kısayol ekle**. İlki işaretli gelir. Arka planda başlamasını istemiyorsanız işareti kaldırın. Sonra **Sonraki** deyin.
 8. **Kur** deyin.
 9. Son sayfada **seowatcher'ı şimdi başlat** kutusu var. İşaretli bırakın ve **Bitti** deyin. Uygulama açılır.
 10. Bekleyin. İlk açılış 20-30 saniye sürer. Görev çubuğundaki simgenin yazısı sırayla "Anahtarlar hazırlanıyor", "Veritabanı güncelleniyor", "Sunucu başlatılıyor" olur. Simge görünmüyorsa görev çubuğundaki ^ okuna tıklayın. Hazır olunca bir "seowatcher hazır" baloncuğu çıkar (ilk açılışta görürsünüz).
-11. Tarayıcıda `http://127.0.0.1:3001` kendiliğinden açılır. Bu, bilgisayarınızın kendi adresi (127.0.0.1) ve adres numarasıdır (port: 3001).
+11. Tarayıcıda `http://127.0.0.1:3001` kendiliğinden açılır. Adresteki 127.0.0.1 bilgisayarınızın kendisidir, 3001 ise adres numarasıdır (port).
 
-Sonraki adım Google bağlantısı kılavuzudur.
+Sıradaki adım Google bağlantısı kılavuzu.
 
 ### Görev çubuğu menüsü
 
@@ -40,7 +40,7 @@ Simgeye sağ tıklayın. Simge görünmüyorsa görev çubuğundaki ^ okuna tık
 - **seowatcher'ı aç**: uygulamayı tarayıcıda açar. Simgeye çift tıklamak da aynı işi yapar.
 - **Yeniden başlat**: uygulamayı kapatıp açar. Bir şey takılırsa ilk bunu deneyin.
 - **Günlükleri aç**: kayıt klasörünü açar. İçinde `launcher.log`, `server.log` ve `migrate.log` var.
-- **Tanı bilgisini kopyala**: Windows sürümü, işlemci, Visual C++ sürümü, motor denemesi, Windows olay günlüğündeki hatalı modül, çökme dökümleri ve son kayıt satırlarını panoya kopyalar.
+- **Tanı bilgisini kopyala**: Windows sürümünü, işlemciyi, Visual C++ sürümünü, motor denemesini, Windows olay günlüğündeki hatalı modülü, çökme dökümlerini ve son kayıt satırlarını panoya kopyalar.
 - **Sorunu bildir (GitHub)**: aynı bilgiyi panoya alır ve GitHub'da hazır doldurulmuş bir sorun kaydı açar. Bir cümleyle ne yaptığınızı ekleyip gönderin.
 - **Eksik Windows bileşenini kur**: yalnızca Visual C++ paketi eksikse görünür. Tıklayınca paketi kurar ve uygulamayı yeniden başlatır.
 - **Kurulumu onar**: geçici dosyaları temizler, paketi kontrol eder, uygulamayı yeniden açar.
@@ -65,17 +65,17 @@ Verileriniz, Google bağlantınız ve ayarlarınız olduğu gibi kalır.
 
 ### Kurumsal dağıtım
 
-Bir bilgisayardaki tüm kullanıcılar için kurmak ya da bir dağıtım aracıyla (Intune, GPO, PDQ) sessizce yüklemek isteyen BT ekipleri için:
+Bir bilgisayardaki tüm kullanıcılar için kurmak ya da bir dağıtım aracıyla (Intune, GPO, PDQ) sessizce yüklemek isteyen BT ekipleri için notlar:
 
 - **Tüm kullanıcılar için**: kurulum dosyasını yönetici olarak çalıştırın ve sihirbazda "tüm kullanıcılar" seçeneğini seçin. Uygulama `C:\Program Files\seowatcher` altına kurulur (tek kullanıcı kurulumunda klasör `%LOCALAPPDATA%\Programs\seowatcher` olur); her kullanıcının verisi yine kendi `%LOCALAPPDATA%\seowatcher` klasöründe durur.
 - **Sessiz kurulum**: `seowatcher-setup.exe /VERYSILENT /NORESTART` (tek kullanıcı) ya da `seowatcher-setup.exe /VERYSILENT /ALLUSERS /NORESTART` (yönetici, tüm kullanıcılar). Sessiz kurulum bitince uygulama kendiliğinden açılır.
-- **Kurulum günlüğü**: her kurulum `%LOCALAPPDATA%\seowatcher\logs\setup.log` dosyasına yazılır; `/LOG="yol"` ile başka bir yer verebilirsiniz.
+- **Kurulum günlüğü**: her kurulum `%LOCALAPPDATA%\seowatcher\logs\setup.log` dosyasına yazılır. `/LOG="yol"` ile başka bir yer verebilirsiniz.
 - **Sessiz kaldırma**: `unins000.exe /VERYSILENT` (kurulum klasöründe: `%LOCALAPPDATA%\Programs\seowatcher` ya da tüm kullanıcılar kurulumunda `C:\Program Files\seowatcher`).
-- **Doğrulama**: her sürüm yayımlanmadan önce temiz bir Windows makinesinde kurulur, açılır, sağlık adresi yanıt verene kadar beklenir ve kaldırılır; bu sınav geçmeden sürüm yayımlanmaz.
+- **Doğrulama**: her sürüm yayımlanmadan önce temiz bir Windows makinesinde kurulur, açılır, sağlık adresi yanıt verene kadar beklenir ve kaldırılır. Bu sınavı geçmeyen sürüm yayımlanmaz.
 
 ### Onarma
 
-Bir şey takılırsa simgeye sağ tıklayıp **Kurulumu onar** deyin (simge görünmüyorsa görev çubuğundaki ^ okuna tıklayın). Uygulama geçici dosyaları temizler, paketin eksiksiz olduğunu kontrol eder, veritabanını yeniden kontrol eder ve açılır. Bir dosya eksikse söyler ve sürüm sayfasını açar; kurulum dosyasını yeniden çalıştırmanız yeter.
+Bir şey takılırsa simgeye sağ tıklayıp **Kurulumu onar** deyin (simge görünmüyorsa görev çubuğundaki ^ okuna tıklayın). Uygulama geçici dosyaları temizler, paketin eksiksiz olduğunu kontrol eder, veritabanını yeniden kontrol eder ve açılır. Bir dosya eksikse söyler ve sürüm sayfasını açar. Kurulum dosyasını yeniden çalıştırmanız yeter.
 
 ### Kaldırma
 
@@ -122,7 +122,7 @@ Numara değişince Google'daki iki yönlendirme adresini de yeni numarayla günc
 
 ## Kontrol
 
-- Görev çubuğu simgesinin üzerine gelince "seowatcher 2.3.7: Çalışıyor: http://127.0.0.1:3001/" yazmalı. Baştaki sürüm numarası sizin kurduğunuz sürümdür, 2.3.7 örnektir.
+- Görev çubuğu simgesinin üzerine gelince "seowatcher 2.3.7: Çalışıyor: http://127.0.0.1:3001/" yazmalı. Baştaki sürüm numarası sizin kurduğunuz sürümdür. 2.3.7 örnektir.
 - Tarayıcıda `http://127.0.0.1:3001/api/health` adresi "status":"ok" ile başlayan bir yazı göstermeli.
 - **Yardım** ekranındaki "Kurulumunuzun durumu" kartı "Her şey yolunda." demeli. Google bağlanmadan önce "Google girişi" satırı dikkat ister. Bu normaldir.
 

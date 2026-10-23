@@ -1,12 +1,12 @@
 ---
 title: Yardım
-description: Kurulumunuzun durumu kartı, hızlı işlemler, sık sorunlar ve sorun bildirirken göndereceğiniz tanılama paketi.
+description: Bir şey ters giderse önce buraya bakın. Kurulumunuzu kontrol eder, sık sorunların çözümünü gösterir ve sorun bildirirken göndereceğiniz dosyayı hazırlar.
 screen: Yardım
 route: /support
 updated: 2026-10-22
 ---
 
-Bir şey ters gittiğinde ilk bakacağınız yer burasıdır. Ekran kurulumunuzu kontrol eder, eksiği söyler ve sizi doğru ayara götürür.
+Bir şey ters giderse ilk buraya bakın. Bu ekran kurulumunuzu kontrol eder, eksiği söyler ve sizi doğru ayara götürür.
 
 ## Ekranda neler var
 
@@ -19,26 +19,26 @@ Bir şey ters gittiğinde ilk bakacağınız yer burasıdır. Ekran kurulumunuzu
 - **Kurulum istemini kopyala**: yapay zekâ asistanınıza (uygulamada "ajan") yapıştıracağınız kurulum metnini kopyalar.
 - **Ajan kurulumu**: asistan bağlantısı ekranına gider.
 
-**Kurulumunuzun durumu.** Kart dört şeye bakar: **Giriş ve erişim**, **Google girişi**, **PageSpeed anahtarı**, **Veritabanı**. Üstte "Her şey yolunda." ya da "N şey dikkat istiyor." yazar; altında sürüm satırı ("Sürüm X, güncel." ya da "yeni sürüm Y var") ve son kontrol zamanı görünür. Sorunlu satırın yanında sizi ilgili ayara götüren bir düğme çıkar: **Ayarları aç** ya da **Anahtar gir**. **Özeti kopyala** kartın metnini panoya alır.
+**Kurulumunuzun durumu.** Kart dört şeye bakar: **Giriş ve erişim**, **Google girişi**, **PageSpeed anahtarı**, **Veritabanı**. Üstte "Her şey yolunda." ya da "N şey dikkat istiyor." yazar. Altında sürüm satırı ("Sürüm X, güncel." ya da "yeni sürüm Y var") ve son kontrol zamanı görünür. Sorunlu satırın yanındaki düğme sizi ilgili ayara götürür: **Ayarları aç** ya da **Anahtar gir**. **Özeti kopyala** kartın metnini panoya alır.
 
-**Projeler.** Her projenin Search Console ve Analytics bağlantısının durumu; **Bağlantıları aç** düğmesi sizi proje ayarlarına götürür.
+**Projeler.** Her projenin Search Console ve Analytics bağlantısının durumu görünür. **Bağlantıları aç** sizi proje ayarlarına götürür.
 
-**Sık sorunlar.** Beş açılır başlık: sayfa açılmıyor, adres numarası (port) dolu, asistan bağlanamıyor (401), PageSpeed sınırı, sorgu verisi yok. Her birinin içinde ne yapacağınız ve ilgili ayarın bağlantısı vardır.
+**Sık sorunlar.** Beş açılır başlık var: sayfa açılmıyor, adres numarası (port) dolu, asistan bağlanamıyor (401), PageSpeed sınırı, sorgu verisi yok. Her birinde ne yapacağınız ve ilgili ayarın bağlantısı yazar.
 
-**Google ve sistem sınırları.** **Sınırları göster** ile Google'ın günlük sınırlarının o anki durumunu görürsünüz.
+**Google ve sistem sınırları.** **Sınırları göster** deyince Google'ın günlük sınırlarında şu an nerede olduğunuzu görürsünüz.
 
-**Alt liste.** Kayıt dosyalarına ve sağlık adresine (`/api/health`) giden kısayollar. Windows paketinde kayıtlar görev çubuğu menüsündeki **Günlükleri aç** ile açılır; Docker'da **Komutu kopyala** ile verilen komut kullanılır.
+**Alt liste.** Kayıt dosyalarına ve sağlık adresine (`/api/health`) giden kısayollar var. Windows paketinde kayıtları görev çubuğu menüsündeki **Günlükleri aç** ile açarsınız. Docker'da **Komutu kopyala** ile verilen komutu kullanırsınız.
 
 ## Nasıl kullanılır
 
 1. Bir şey çalışmıyorsa önce bu ekranı açın ve karttaki uyarıyı okuyun.
-2. Uyarının yanındaki düğmeye basın; sizi doğru ayara götürür. Ayarı yapın, geri dönüp **Durumu yeniden kontrol et** deyin.
+2. Uyarının yanındaki düğmeye basın, sizi doğru ayara götürür. Ayarı yapın, geri dönüp **Durumu yeniden kontrol et** deyin.
 3. Kart "Her şey yolunda." diyor ama sorun sürüyorsa **Sık sorunlar** başlıklarına bakın.
 4. Yine çözülmezse **Tanılama paketi indir** deyin ve dosyayı GitHub'daki sorun kaydına ekleyin. Windows paketinde görev çubuğu menüsündeki **Sorunu bildir (GitHub)** aynı işi tek tıkla yapar.
 
 ## Sık sorulanlar
 
-**"Google girişi" satırı neden sarı?** Henüz Google erişim anahtarı girilmemiştir. Google bağlanmadan bu satır sarı kalır; Google'a bağlanma kılavuzunu izleyin.
+**"Google girişi" satırı neden sarı?** Henüz Google erişim anahtarı girilmemiştir. Google bağlanmadan bu satır sarı kalır. Google'a bağlanma kılavuzunu izleyin.
 
 **"Giriş ve erişim" satırında "parolasız tek kullanıcı" yazıyor.** Bu normaldir. Uygulama yalnızca kendi bilgisayarınızdan açılır. Dışarıya açmak isterseniz önüne kendi şifreli girişinizi koymanız gerekir.
 
@@ -46,6 +46,6 @@ Bir şey ters gittiğinde ilk bakacağınız yer burasıdır. Ekran kurulumunuzu
 
 ## Sınırlar
 
-Ekran yalnızca kurulumun kendisini kontrol eder. Sitenizdeki bir sorunu bulmak için Site denetimi, Google tarafındaki bir sorunu görmek için Dizin durumu ekranına bakın.
+Bu ekran yalnızca kurulumun kendisini kontrol eder. Sitenizdeki bir sorunu bulmak için Site denetimi, Google tarafındaki bir sorunu görmek için Dizin durumu ekranına bakın.
 
 <!-- Kaynaklar: src/routes/_app/support.tsx; src/client/features/support/QuickActions.tsx; src/client/features/support/SetupStatusPanel.tsx; src/client/features/support/checkCopy.ts; src/client/features/support/CommonProblems.tsx; src/client/features/support/SystemLimitsSection.tsx; src/server/lib/setup-status.ts -->

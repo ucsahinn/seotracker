@@ -2,6 +2,17 @@
 
 Her sürümün notu burada, en yenisi en üstte.
 
+## [2.3.9] — 2026-10-23
+
+"Sorunu bildir" düzeldi; kılavuz daha rahat okunur, metinler daha doğal.
+
+### Yenilikler
+
+- **Sorunu bildir çalışıyor.** Depoda sorun kayıtları kapalıydı, açıldı; görev çubuğu menüsündeki **Sorunu bildir (GitHub)** artık Türkçe bir sorun şablonunu açar. Tanı bilgisinin tamamı panoda kalır, adres kısa tutulur.
+- **Kılavuz sol menüsü.** Gruplar, seçili sayfada vurgu çizgisi, uzun listede kendi kaydırma alanı, "Bu sayfada" bölümü sadeleşti.
+- **Doğal Türkçe.** 20 kılavuz sayfası ve ana sayfa metinleri mekanik ifadelerden arındırıldı; anlam ve sayılar aynı, cümleler kısa ve insan diliyle.
+- **Üretici tarihleri.** Henüz commit'lenmemiş bir sayfanın tarihi o günün tarihi olur; üretilen çıktı commit'ten sonra değişmez.
+
 ## [2.3.8] — 2026-10-23
 
 Güvenlik ve ilk kurulum denetimlerinin bulguları: yayın hattı yetki ayrımıyla

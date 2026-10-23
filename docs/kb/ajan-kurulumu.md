@@ -1,11 +1,11 @@
 ---
 title: Ajan kurulumu
-description: Claude Code, Codex ya da Cursor'ı uygulamaya bağlayın. Adres, parola, 33 araç ve 6 hazır görev şablonu, hangisinin Google hakkı harcadığı.
+description: Claude Code, Codex ya da Cursor'ı uygulamaya bağlarsınız. Adresi, parolayı, 33 aracı, 6 hazır görev şablonunu ve hangisinin Google hakkı harcadığını burada bulursunuz.
 kind: nasil-yapilir
 updated: 2026-10-22
 ---
 
-Bu sayfanın sonunda yapay zekâ asistanınız uygulamaya bağlı olacak ve ilk komutunu çalıştırmış olacak. Bağlayınca "siteyi denetle ve bir rapor yaz" diyebilirsiniz. Asistan Search Console verisini okur, denetimi çalıştırır, raporu **Raporlar** ekranına kaydeder. Bu bağlantının adı asistan bağlantısı (MCP). Asistan böylece uygulamanın araçlarını (örneğin list_projects) çağırabilir. Bağlamak zorunlu değildir. Bağlamazsanız uygulamadan hiçbir şey eksilmez.
+Sonunda yapay zekâ asistanınız uygulamaya bağlı olacak ve ilk komutunu çalıştırmış olacak. Bağlayınca "siteyi denetle ve bir rapor yaz" diyebilirsiniz. Asistan Search Console verisini okur, denetimi çalıştırır, raporu **Raporlar** ekranına kaydeder. Bu bağlantının adı asistan bağlantısı (MCP). Asistan onunla uygulamanın araçlarını (örneğin list_projects) çağırır. Bağlamak zorunlu değil. Bağlamazsanız uygulamadan hiçbir şey eksilmez.
 
 ## Gerekenler
 
@@ -58,20 +58,20 @@ Ortam değişkenini Codex'teki gibi ayarlayın. Bu ayar bir Cursor kurulumunda h
 
 ### Hazır kurulum metni
 
-Daha kolay yol bu. Önce metni alın:
+Daha kolay yol bu. Metni şöyle alın:
 
 1. Ekrandaki **Ajan kurulum istemini kopyala** düğmesine basın. Codex için ayrı düğme var.
 2. Metni asistanınıza yapıştırın. Asistan bağlantıyı kurar, "whoami" ve "list_projects" ile dener, şablonları yükler.
 
-**Kurulum istemi (sıfırdan kurulum)** ise kurulumun çalışmasından Google bağlantısına kadar bütün kurulumu asistana yaptırır; Windows paketini de Docker kurulumunu da tanır.
+**Kurulum istemi (sıfırdan kurulum)** ise uygulamanın çalışmasından Google bağlantısına kadar her şeyi asistana yaptırır. Windows paketini de Docker kurulumunu da tanır.
 
 ### Hazır görev şablonlarını yükleme
 
-**Beceriler** sekmesi altı hazır görev şablonunu anlatır. Asistana "seotracker becerilerini kur" deyin. Kurulum metni nereye kopyalanacağını bilir. Güncellemek için **Güncelleme istemini kopyala** düğmesine basın.
+**Beceriler** sekmesi altı hazır görev şablonunu listeler. Asistana "seotracker becerilerini kur" deyin. Kurulum metni nereye kopyalanacağını bilir. Güncellemek için **Güncelleme istemini kopyala** düğmesine basın.
 
 ## Araçlar
 
-Toplam 33 araç. "Yazar" sütunu uygulamadaki veriyi değiştirenleri gösterir. "Kota" sütunu Google'ın günlük hakkından harcayanları gösterir. Yazan araçlar sizin onayınız olmadan çağrılmamalı. İyi kurulmuş şablonlar sorar, ama uygulama sormaz.
+Toplam 33 araç var. "Yazar" sütunu uygulamadaki veriyi değiştirenleri, "Kota" sütunu Google'ın günlük hakkından harcayanları işaretler. Yazan araçlar sizin onayınız olmadan çağrılmamalı. İyi kurulmuş şablonlar sorar, ama uygulama sormaz.
 
 | Araç                                         | Ne yapar                                                                                    | Yazar | Kota                         |
 | -------------------------------------------- | ------------------------------------------------------------------------------------------- | ----- | ---------------------------- |

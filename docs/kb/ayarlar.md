@@ -1,14 +1,14 @@
 ---
 title: Ayarlar
-description: Tema, Google erişim anahtarı, PageSpeed anahtarı, kullanım sınırları, sürüm ve güncelleme kontrolü. Tüm kurulumun tek ayar ekranı.
+description: Temayı, Google erişim anahtarını, PageSpeed anahtarını, kullanım sınırlarını ve güncelleme kontrolünü buradan yönetirsiniz. Bütün kurulum için tek ayar ekranıdır.
 screen: Ayarlar
 route: /settings
 updated: 2026-10-22
 ---
 
-Bu sayfada Google bağlantısını, hız anahtarını ve güncellemeyi nereden yöneteceğinizi görürsünüz.
+Google bağlantısını, hız anahtarını ve güncellemeyi nereden yöneteceğinizi burada görürsünüz.
 
-**Ayarlar**, tüm kurulumu ilgilendiren şeylerin ekranıdır. Proje başına ayarlar (ad, alan adı, Search Console ve Analytics mülkü) her projenin **Proje ayarları** sayfasındadır. Burada Google'a bağlanmak için gereken erişim anahtarını, PageSpeed anahtarını, temayı ve güncelleme kontrolünü yönetirsiniz. Solda **Görünüm**, **Google**, **Hizmet hesabı**, **Hız ölçümü**, **Sınırlar**, **Hakkında** ve **Sürüm notları** bölümleri var. Her bölümün başlığında durumunu söyleyen bir rozet durur.
+**Ayarlar** ekranında bütün kurulumu ilgilendiren şeyleri ayarlarsınız. Projeye özel ayarlar (ad, alan adı, Search Console ve Analytics mülkü) her projenin **Proje ayarları** sayfasında durur. Burada Google'a bağlanmak için gereken erişim anahtarını, PageSpeed anahtarını, temayı ve güncelleme kontrolünü yönetirsiniz. Solda **Görünüm**, **Google**, **Hizmet hesabı**, **Hız ölçümü**, **Sınırlar**, **Hakkında** ve **Sürüm notları** bölümleri var. Her bölümün başlığında durumunu gösteren bir rozet bulunur.
 
 ## Ekranda neler var
 
@@ -16,18 +16,18 @@ Bu sayfada Google bağlantısını, hız anahtarını ve güncellemeyi nereden y
 
 **Google.** Rozet üç değerden biridir: **Kayıtlı**, **Ortamdan geliyor** (Docker kurulumunda `.env` dosyasıyla verilmiş) ya da **Eksik**. Bölüm, Google Cloud Console'a (Google'ın geliştirici paneli) ekleyeceğiniz iki yönlendirme adresini gösterir. Yanlarında kopyalama düğmeleri vardır. İkisini de eklemeniz gerekir. Analytics adresini eklemezseniz yalnızca Search Console bağlanır.
 
-Alanlar: **İstemci kimliği** ve **Gizli anahtar**. İkisi de Google'dan aldığınız erişim anahtarının bilgisidir. Düğmeler: **Kaydet**, **Vazgeç**, **Değiştir** ve **Sil**. **Sil** var olan bağlantıları koparır. Adım adım kurulum Google'a bağlanma kılavuzundadır.
+İki alan var: **İstemci kimliği** ve **Gizli anahtar**. İkisi de Google'dan aldığınız erişim anahtarının parçasıdır. Düğmeler şunlar: **Kaydet**, **Vazgeç**, **Değiştir** ve **Sil**. **Sil** var olan bağlantıları koparır. Adım adım kurulumu Google'a bağlanma kılavuzunda bulursunuz.
 
 **Hizmet hesabı (daha kısa yol).** Hizmet hesabı, Google'da uygulama için açılan bir robot hesaptır. **JSON anahtar dosyası** alanına, Google Cloud'dan indirdiğiniz dosyanın içeriğini yapıştırırsınız. Kayıt varsa hesabın e-posta adresi görünür. Ekran bu adresi nereye ekleyeceğinizi yazar:
 
 - Search Console: "Ayarlar → Kullanıcılar ve izinler → Kullanıcı ekle", yetki Tam.
 - Analytics: "Yönetici → Erişim yönetimi", yetki Görüntüleyen.
 
-Rozet **Kayıtlı** ya da **Kullanılmıyor** der. Kayıtlı hizmet hesabı, Google erişim anahtarına tercih edilir. Silmek hesabı uygulamadan kaldırır ama Google'daki anahtarı iptal etmez.
+Rozet **Kayıtlı** ya da **Kullanılmıyor** yazar. Kayıtlı bir hizmet hesabı varsa uygulama onu Google erişim anahtarına tercih eder. Silmek hesabı uygulamadan kaldırır ama Google'daki anahtarı iptal etmez.
 
-**Hız ölçümü.** **API anahtarı** alanı ve **Anahtarı test et** düğmesi var. Test "1 ölçüm harcar", on saniyede bir basabilirsiniz. Rozet **Anahtar kayıtlı**, **Ortam anahtarı** ya da **Anahtar eksik** der. Ayrıntı PageSpeed anahtarı kılavuzundadır.
+**Hız ölçümü.** **API anahtarı** alanı ve **Anahtarı test et** düğmesi var. Test "1 ölçüm harcar". Ona on saniyede bir basabilirsiniz. Rozet **Anahtar kayıtlı**, **Ortam anahtarı** ya da **Anahtar eksik** yazar. Ayrıntıyı PageSpeed anahtarı kılavuzunda bulursunuz.
 
-**Sınırlar.** "Google ve sistem sınırları" kartları şunları gösterir:
+**Sınırlar.** "Google ve sistem sınırları" kartlarında şunlar var:
 
 - URL Denetimi (Search Console): günde 2.000.
 - PageSpeed Insights.
@@ -38,7 +38,7 @@ Rozet **Kayıtlı** ya da **Kullanılmıyor** der. Kayıtlı hizmet hesabı, Goo
 
 Her kartın durumu **Yeterli**, **Azalıyor** (yüzde 70'ten sonra), **Neredeyse doldu** (yüzde 90'dan sonra) ya da **Bilinmiyor** olur.
 
-**Hakkında.** **Sürüm** satırı sürümü gösterir (v2.3.0 gibi). **Güncellemeleri kontrol et** anahtarı varsayılan olarak açıktır. Açıksa uygulama günde en çok bir kez GitHub'daki son sürümü sorar. Bu durumda **Şimdi kontrol et** düğmesi de görünür. Yeni sürüm varsa **Değişiklikler** bağlantısı ve Docker kurulumları için kopyalanacak komut çıkar: `git pull && docker compose up -d --build`. Windows paketinde ise görev çubuğu simgesindeki **Güncelle** anlatılır; otomatik güncelleme açıksa yeni sürüm kendiliğinden kurulur.
+**Hakkında.** **Sürüm** satırı sürümü gösterir (v2.3.0 gibi). **Güncellemeleri kontrol et** anahtarı varsayılan olarak açıktır. Açıksa uygulama günde en çok bir kez GitHub'daki son sürümü sorar. Bu durumda **Şimdi kontrol et** düğmesi de görünür. Yeni sürüm varsa **Değişiklikler** bağlantısı çıkar. Docker kurulumları için kopyalayacağınız komut da çıkar: `git pull && docker compose up -d --build`. Windows paketinde ekran sizi görev çubuğu simgesindeki **Güncelle**'ye yönlendirir. Otomatik güncelleme açıksa yeni sürüm kendiliğinden kurulur.
 
 **Sürüm notları.** Her sürümde neyin değiştiğini listeler.
 

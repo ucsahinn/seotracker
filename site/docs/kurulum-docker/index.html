@@ -40,7 +40,7 @@
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="seowatcher" />
-    <meta property="article:modified_time" content="2026-10-22" />
+    <meta property="article:modified_time" content="2026-10-23" />
     <meta property="og:url" content="https://seowatcher.io/docs/kurulum-docker/" />
     <meta property="og:locale" content="tr_TR" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -48,8 +48,8 @@
     <meta name="twitter:description" content="Mac, Linux ve Windows'ta Docker ile kurun. Tek komut yeter, .env dosyası gerekmez. Verileriniz Docker'ın veri deposunda durur." />
     <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
     <meta name="color-scheme" content="dark" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/docs/kurulum-docker/#article","headline":"Docker ile kurulum","description":"Mac, Linux ve Windows'ta Docker ile kurun. Tek komut yeter, .env dosyası gerekmez. Verileriniz Docker'ın veri deposunda durur.","url":"https://seowatcher.io/docs/kurulum-docker/","inLanguage":"tr","dateModified":"2026-10-22","articleSection":"Başlangıç","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/docs/kurulum-docker/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/docs/kurulum-docker/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/"},{"@type":"ListItem","position":2,"name":"Kılavuz","item":"https://seowatcher.io/docs/"},{"@type":"ListItem","position":3,"name":"Docker ile kurulum","item":"https://seowatcher.io/docs/kurulum-docker/"}]}]}</script>
-    <script src="/assets/docs.js?v=2.3.8" defer></script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/docs/kurulum-docker/#article","headline":"Docker ile kurulum","description":"Mac, Linux ve Windows'ta Docker ile kurun. Tek komut yeter, .env dosyası gerekmez. Verileriniz Docker'ın veri deposunda durur.","url":"https://seowatcher.io/docs/kurulum-docker/","inLanguage":"tr","dateModified":"2026-10-23","articleSection":"Başlangıç","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/docs/kurulum-docker/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/docs/kurulum-docker/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/"},{"@type":"ListItem","position":2,"name":"Kılavuz","item":"https://seowatcher.io/docs/"},{"@type":"ListItem","position":3,"name":"Docker ile kurulum","item":"https://seowatcher.io/docs/kurulum-docker/"}]}]}</script>
+    <script src="/assets/docs.js?v=2.3.9" defer></script>
     <meta name="theme-color" content="#272c3b" />
     <style>
       @font-face {
@@ -252,50 +252,9 @@
 
       .layout {
         display: grid;
-        grid-template-columns: 240px minmax(0, 1fr) 200px;
+        grid-template-columns: 252px minmax(0, 1fr) 208px;
         gap: clamp(32px, 4vw, 64px);
         padding: 40px 0 96px;
-      }
-      .side {
-        position: sticky;
-        top: 84px;
-        align-self: start;
-        font-size: 15px;
-      }
-      .nav-group {
-        margin: 22px 0 8px;
-        font-size: 13px;
-        font-weight: 600;
-        color: var(--subtle);
-      }
-      .nav-group:first-child {
-        margin-top: 0;
-      }
-      .side ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        display: grid;
-        gap: 2px;
-      }
-      .side li a {
-        display: block;
-        padding: 6px 10px;
-        margin-left: -10px;
-        border-radius: 8px;
-        color: var(--muted);
-        transition:
-          background-color 240ms var(--ease),
-          color 240ms var(--ease);
-      }
-      .side li a:hover {
-        background: var(--bg-2);
-        color: var(--fg);
-      }
-      .side li.current a {
-        background: var(--bg-2);
-        color: var(--fg);
-        font-weight: 600;
       }
       .toc {
         position: sticky;
@@ -558,13 +517,6 @@
           0 12px 32px var(--glow);
         transform: translateY(-1px);
       }
-      .side li a:hover,
-      .side li.current a {
-        background: var(--glass);
-      }
-      .side li.current a {
-        box-shadow: inset 2px 0 0 var(--accent);
-      }
       ul.index li a {
         color: var(--accent-link);
       }
@@ -629,24 +581,10 @@
         padding-top: 8px;
         border-top: 1px solid var(--hairline);
       }
-      .side li.current a {
-        color: var(--accent);
-      }
       article p,
       article li {
         font-size: 16px;
         line-height: 1.65;
-      }
-      .side {
-        border-right: 1px solid var(--hairline);
-        padding-right: 16px;
-      }
-      .nav-group {
-        font-size: 13.5px;
-      }
-      .side li.current a {
-        color: var(--fg);
-        font-weight: 600;
       }
       article td:has(> :is(strong, b):only-child),
       article td[align="right"] {
@@ -747,6 +685,98 @@
       .side-dd > summary {
         display: none;
       }
+      .side {
+        position: sticky;
+        top: 84px;
+        align-self: start;
+        max-height: calc(100vh - 100px);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-width: thin;
+        scrollbar-color: var(--hairline-strong) transparent;
+        padding: 2px 18px 24px 0;
+        border-right: 1px solid var(--hairline);
+        font-size: 14.5px;
+      }
+      .nav-group {
+        margin: 26px 0 8px;
+        padding-left: 12px;
+        font-size: 12.5px;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+        color: var(--subtle);
+      }
+      .nav-group:first-child {
+        margin-top: 0;
+      }
+      .side ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 1px;
+      }
+      .side li a {
+        position: relative;
+        display: block;
+        padding: 7px 12px;
+        border-radius: 9px;
+        color: var(--muted);
+        line-height: 1.35;
+        transition:
+          background-color 220ms var(--ease),
+          color 220ms var(--ease);
+      }
+      .side li a::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 9px;
+        bottom: 9px;
+        width: 2px;
+        border-radius: 2px;
+        background: var(--accent);
+        opacity: 0;
+        transition: opacity 220ms var(--ease);
+      }
+      .side li a:hover {
+        color: var(--fg);
+        background: var(--bg-2);
+      }
+      .side li.current a {
+        color: var(--fg);
+        font-weight: 600;
+        background: var(--glass);
+      }
+      .side li.current a::before {
+        opacity: 1;
+      }
+      .side li a:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 1px;
+      }
+      .toc {
+        font-size: 13.5px;
+      }
+      .toc-label {
+        font-size: 12.5px;
+        padding-left: 12px;
+      }
+      .toc ol {
+        gap: 4px;
+      }
+      .toc a {
+        padding: 3px 0 3px 12px;
+        line-height: 1.4;
+        transition: color 220ms var(--ease);
+      }
+      .toc a.current::before {
+        display: none;
+      }
+      .toc a.current {
+        box-shadow: inset 2px 0 0 var(--accent);
+        margin-left: -1px;
+      }
       .toc a.current {
         color: var(--fg);
         font-weight: 600;
@@ -810,6 +840,9 @@
           margin-bottom: 10px;
         }
         .side {
+          position: static;
+          max-height: none;
+          overflow: visible;
           border-right: 0;
           padding-right: 0;
         }
@@ -873,7 +906,7 @@
         </details>
       </aside>
       <article id="icerik">
-        <h1>Docker ile kurulum</h1><p class="lede">Mac, Linux ve Windows'ta Docker ile kurun. Tek komut yeter, .env dosyası gerekmez. Verileriniz Docker'ın veri deposunda durur.</p><p>Bu sayfanın sonunda uygulama Docker'da (uygulamaları kapalı kutu içinde çalıştıran program) çalışıyor ve <code>http://localhost:3001</code> adresinde açık olacak. Windows kullanıyorsanız tek dosyalık Windows kurulumu çok daha kolaydır. Bu sayfa Mac, Linux ve zaten Docker kullananlar içindir. İlk açılış birkaç dakika sürer, çünkü uygulama kutunun (konteynerin) içinde derlenir. Sonrakiler saniyeler sürer.</p>
+        <h1>Docker ile kurulum</h1><p class="lede">Mac, Linux ve Windows'ta Docker ile kurun. Tek komut yeter, .env dosyası gerekmez. Verileriniz Docker'ın veri deposunda durur.</p><p>Sonunda uygulama Docker'da (uygulamaları kapalı kutu içinde çalıştıran program) çalışacak ve <code>http://localhost:3001</code> adresinde açık olacak. Windows kullanıyorsanız tek dosyalık Windows kurulumu çok daha kolay. Bu yol Mac, Linux ve zaten Docker kullananlar için. İlk açılış birkaç dakika sürer, çünkü uygulama kutunun (konteynerin) içinde derlenir. Sonrakiler saniyeler sürer.</p>
 <h2 id="gerekenler">Gerekenler</h2>
 <ul><li>Docker Desktop (Mac, Windows) ya da Docker Engine ile Docker Compose (Linux). Windows'ta Docker Desktop için WSL 2 (Windows içinde Linux çalıştıran bileşen) ve sanallaştırmanın (virtualization) açık olması gerekir.</li><li>Git. Yoksa GitHub sayfasındaki <strong>Code → Download ZIP</strong> de olur.</li><li>Yaklaşık 2 GB boş disk ve ilk derleme sırasında 2 GB boş bellek.</li></ul>
 <h2 id="adimlar">Adımlar</h2>
@@ -886,7 +919,7 @@ cd seotracker</code></pre></div>
 <ol><li>İlerlemeyi görmek isterseniz şunu yazın:</li></ol>
 <div class="code"><pre><code>docker compose logs -f</code></pre></div>
 <ol><li>Bekleyin. Günlükte &quot;Building client + server&quot; satırı ilk derlemedir. <code>docker compose ps</code> çıktısında durum <strong>healthy</strong> olana kadar bekleyin, sonra tarayıcıda <code>http://localhost:3001</code> adresini açın.</li></ol>
-<p>Sonraki adım Google bağlantısı kılavuzudur. Docker'da Google'a vereceğiniz iki yönlendirme adresi şunlardır:</p>
+<p>Sıradaki adım Google bağlantısı kılavuzu. Docker'da Google'a vereceğiniz iki yönlendirme adresi şunlar:</p>
 <ul><li><code>http://localhost:3001/api/gsc/oauth/callback</code></li><li><code>http://localhost:3001/api/ga4/oauth/callback</code></li></ul>
 <h3 id="guncelleme">Güncelleme</h3>
 <p>Şu iki komutu yazın:</p>
@@ -900,9 +933,9 @@ docker compose up -d --build</code></pre></div>
 <div class="code"><pre><code>docker compose stop
 docker run --rm -v seotracker_data:/data -v &quot;$PWD&quot;:/backup alpine tar czf /backup/seotracker-yedek.tgz -C /data .
 docker compose up -d</code></pre></div>
-<p>Geri yüklerken aynı komutta <code>tar czf</code> yerine <code>tar xzf</code> kullanın. Veri deposundaki <code>instance-secret</code> dosyası Google bağlantılarını şifreleyen anahtardır. O olmayan yedek, Google bağlantıları olmadan açılır.</p>
+<p>Geri yüklerken aynı komutta <code>tar czf</code> yerine <code>tar xzf</code> kullanın. Veri deposundaki <code>instance-secret</code> dosyası Google bağlantılarını şifreleyen anahtardır. Yedekte o dosya yoksa uygulama açılır ama Google bağlantıları gelmez.</p>
 <h3 id="ayarlar-istege-bagli">Ayarlar (isteğe bağlı)</h3>
-<p>Hiçbir ayar zorunlu değildir. Değiştirmek isterseniz proje klasörüne bir <code>.env</code> dosyası koyun. Sonra <code>docker compose up -d --force-recreate seotracker</code> yazın.</p>
+<p>Hiçbir ayar zorunlu değil. Değiştirmek isterseniz proje klasörüne bir <code>.env</code> dosyası koyun. Sonra <code>docker compose up -d --force-recreate seotracker</code> yazın.</p>
 <div class="tw"><table><thead><tr><th>Ayar adı</th><th>Ne işe yarar</th></tr></thead><tbody><tr><td>PORT</td><td>Adres numarası, varsayılan 3001. Değişince Google yönlendirme adresleri de değişir</td></tr><tr><td>ALLOWED_HOST</td><td>Başka bir sunucunun arkasındaysanız dışarıdan görünen ad. Boşsa yalnızca localhost</td></tr><tr><td>AUTH_MODE</td><td><code>local_noauth</code> (varsayılan) ya da <code>cloudflare_access</code></td></tr><tr><td>BETTER_AUTH_SECRET</td><td>Şifreleme anahtarı. Boş bırakın, uygulama üretir. Elle verirseniz en az 32 karakter olsun, sonra değiştirmeyin</td></tr><tr><td>GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET</td><td>Ayarlar ekranına girmenin alternatifi. Ekrana girilen değer önceliklidir</td></tr><tr><td>PAGESPEED_API_KEY</td><td>Ayarlar ekranına girmenin alternatifi</td></tr><tr><td>MCP_TOKEN</td><td>Boşsa ilk açılışta üretilir. <code>off</code> yazarsanız parola istenmez. Başka değer olduğu gibi kullanılır</td></tr></tbody></table></div>
 <h2 id="kontrol">Kontrol</h2>
 <ul><li><code>docker compose ps</code> çıktısında durum <strong>healthy</strong> olmalı. İlk açılışta buna ulaşmak beş dakikaya kadar sürebilir.</li><li><code>curl.exe http://127.0.0.1:3001/api/health</code> (Windows'ta; Mac ve Linux'ta <code>curl</code>) çıktısı &quot;status&quot;:&quot;ok&quot; ile başlamalı. Bu adresi tarayıcıda da açabilirsiniz.</li><li>Tarayıcıda <code>http://localhost:3001</code> açılmalı. <strong>Yardım</strong> ekranındaki durum kartı &quot;Her şey yolunda.&quot; demeli. Google bağlanmadan önce &quot;Google girişi&quot; satırı dikkat ister. Bu normaldir.</li></ul>
@@ -914,7 +947,7 @@ docker compose up -d</code></pre></div>
 <h2 id="sorun-cikarsa">Sorun çıkarsa</h2>
 <ul><li><strong>&quot;Bind for 127.0.0.1:3001 failed&quot; yazıyor.</strong> Adres numarası dolu. Proje klasörüne <code>PORT=3002</code> satırlı bir <code>.env</code> koyun ve kutuyu yeniden oluşturun. Windows'ta Not Defteri dosyayı <code>.env.txt</code> diye kaydedebilir. PowerShell'de <code>Set-Content -Encoding ascii .env 'PORT=3002'</code> güvenlidir.</li><li><strong>Durum &quot;unhealthy&quot;.</strong> <code>docker compose logs --tail 50</code> son satırları gösterir. Derleme sırasında bellek bittiyse Docker Desktop'a daha fazla bellek verin.</li><li><strong>Google bağlantısı &quot;yapılandırılmamış&quot; diyor.</strong> <code>BETTER_AUTH_SECRET</code> 32 karakterden kısaysa Google kapalı kalır. Elle verdiyseniz uzatın. Vermediyseniz veri deposundaki <code>instance-secret</code> dosyası bozulmuş olabilir.</li><li><strong>Güncellemeden sonra Google bağlantısı koptu.</strong> <code>BETTER_AUTH_SECRET</code> değişmiş ya da veri deposu yeniden oluşturulmuştur. Proje ayarlarında <strong>Yeniden bağlan</strong> deyin.</li></ul> <nav class="pager" aria-label="Önceki ve sonraki sayfa"><a class="pager-prev" rel="prev" href="/docs/kurulum-windows/"><span>Önceki</span><strong>Windows'a kurulum</strong></a><a class="pager-next" rel="next" href="/docs/google-baglantisi/"><span>Sonraki</span><strong>Google'a bağlanma</strong></a></nav>
         <p class="meta">
-          Son güncelleme: 22 Ekim 2026. Bir hata görürseniz
+          Son güncelleme: 23 Ekim 2026. Bir hata görürseniz
           <a href="https://github.com/ucsahinn/seotracker/issues"
             >GitHub'da bildirin</a
           >.

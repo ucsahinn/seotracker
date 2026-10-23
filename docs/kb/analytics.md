@@ -1,24 +1,24 @@
 ---
 title: Analytics
-description: Siteye aramadan gelenlerin sonra ne yaptığını görün. Google Analytics 4 raporları, anahtar olaylar ve ölçümün sağlam çalışıp çalışmadığı.
+description: Aramadan gelenlerin sitede sonra ne yaptığını görürsünüz. Google Analytics 4 raporlarına, anahtar olaylara ve ölçümün sağlam çalışıp çalışmadığına buradan bakarsınız.
 screen: Analytics
 route: /p/<proje>/analytics
 updated: 2026-10-22
 ---
 
-Bu ekranda siteye gelen kişilerin sonra ne yaptığını görürsünüz. Search Console Google'da ne olduğunu söyler. Analytics ise ziyaretçinin sitede yaptıklarını söyler.
+Siteye gelen kişilerin sonra ne yaptığını burada görürsünüz. Search Console size Google'da ne olduğunu anlatır. Analytics ise ziyaretçinin sitede ne yaptığını anlatır.
 
-Ekran Google Analytics 4 hesabınızdaki yedi raporu gösterir. Varsayılan olarak yalnızca aramadan gelenleri (organik arama) süzer. Sekizinci sekme ölçümün kendisini kontrol eder: sayaç çalışıyor mu, anahtar olay tanımlı mı?
+Google Analytics 4 hesabınızdaki yedi raporu görürsünüz. Ekran varsayılan olarak yalnızca aramadan gelenleri (organik arama) gösterir. Sekizinci sekme ölçümün kendisini kontrol eder. Sayaç çalışıyor mu, anahtar olay tanımlı mı, ona bakar.
 
 ## Ekranda neler var
 
 **Sekmeler.** **Giriş sayfaları**, **Sayfa performansı**, **Trafik kaynakları**, **Anahtar olaylar**, **E-ticaret**, **Site içi arama**, **Kitle dağılımı** ve **Ölçüm durumu**. Her sekmenin altında kısa bir soru yazar. Giriş sayfası, ziyaretçinin siteye ilk girdiği sayfadır. Anahtar olay, sizin önemli saydığınız harekettir.
 
-**Kontroller.** **Dönem**: Son 7 gün, Son 28 gün, Son 3 ay. **Kanal**: Organik arama (varsayılan) ya da Tüm trafik. **Satır**: 50, 100, 200. Kitle sekmesinde **Cihaz**, **Ülke**, **Yeni / geri dönen** seçilir. Trafik sekmesinde **Kanal grubu**, **Kaynak / ortam**, **Kampanya** seçilir. Seçimler adres çubuğuna yazılır.
+**Kontroller.** **Dönem** için Son 7 gün, Son 28 gün ya da Son 3 ay seçilir. **Kanal** için Organik arama (varsayılan) ya da Tüm trafik seçilir. **Satır** 50, 100 ya da 200'dür. Kitle sekmesinde **Cihaz**, **Ülke** ve **Yeni / geri dönen** seçilir. Trafik sekmesinde **Kanal grubu**, **Kaynak / ortam** ve **Kampanya** seçilir. Seçimler adres çubuğuna yazılır.
 
-**Organik oturumlar paneli.** Giriş sayfaları sekmesinde tablonun üstündedir. Oturum, bir ziyaretin tamamıdır. Panelde günlük oturum çizgisi, **Oturum** ve **Etkileşim oranı** kartları var. Gelir ölçülüyorsa **Organik gelir** de görünür. Hepsinde önceki döneme göre değişim vardır.
+**Organik oturumlar paneli.** Giriş sayfaları sekmesinde tablonun üstündedir. Oturum, bir ziyaretin tamamıdır. Panelde günlük oturum çizgisi, **Oturum** ve **Etkileşim oranı** kartları var. Gelir ölçülüyorsa **Organik gelir** de görünür. Hepsi önceki döneme göre değişimi de gösterir.
 
-**Tablo.** Sütunlar rapora göre değişir. Örnekler: **Alan adı**, **Giriş sayfası**, **Sayfa**, **Olay**, **Kanal**, **Cihaz**, **Ülke**, **Ürün**, **Arama terimi**. Ölçüler: **Oturum**, **Aktif kullanıcı**, **Etkileşim oranı**, **Anahtar olay**, **Gelir**, **Görüntülenme**. Anahtar olay tanımlı değilse hep 0 görünür.
+**Tablo.** Sütunlar rapora göre değişir. Örneğin **Alan adı**, **Giriş sayfası**, **Sayfa**, **Olay**, **Kanal**, **Cihaz**, **Ülke**, **Ürün**, **Arama terimi**. Ölçüler de şunlar: **Oturum**, **Aktif kullanıcı**, **Etkileşim oranı**, **Anahtar olay**, **Gelir**, **Görüntülenme**. Anahtar olay tanımlı değilse hep 0 görünür.
 
 **Tablo altı satırı.** Kaç satır gösterildiğini yazar. Google veriyi örneklediyse "örneklenmiş", gizlilik nedeniyle satır sakladıysa "eşik altı satırlar gizlendi" eklenir.
 
@@ -26,22 +26,22 @@ Ekran Google Analytics 4 hesabınızdaki yedi raporu gösterir. Varsayılan olar
 
 **Özet kartları.** Anahtar olaylar, e-ticaret ve site içi arama sekmelerinin kendi özet kartları vardır.
 
-**Ölçüm durumu sekmesi.** Dört kart: **Web veri akışı**, **Anahtar olay**, **Özel boyut**, **Bulgu**. Bulgular şunlar olabilir: "Web veri akışı yok", "Gelişmiş ölçüm kapalı", "Site içi arama ölçülmüyor", "Anahtar olay tanımlı değil", "Envanter eksik olabilir". Gelişmiş ölçümün yedi seçeneği tek tek görünür: Kaydırma, Dış bağlantı, Site içi arama, Video, Dosya indirme, Form, Sayfa geçişleri. Sorun yoksa "Ölçüm kurulumunda eksik bulunamadı." yazar.
+**Ölçüm durumu sekmesi.** Dört kart var: **Web veri akışı**, **Anahtar olay**, **Özel boyut**, **Bulgu**. Bulgu şunlardan biri olabilir: "Web veri akışı yok", "Gelişmiş ölçüm kapalı", "Site içi arama ölçülmüyor", "Anahtar olay tanımlı değil", "Envanter eksik olabilir". Gelişmiş ölçümün yedi seçeneği tek tek görünür: Kaydırma, Dış bağlantı, Site içi arama, Video, Dosya indirme, Form, Sayfa geçişleri. Sorun yoksa "Ölçüm kurulumunda eksik bulunamadı." yazar.
 
-**Boş durumlar.** "Bu dönemde veri yok" yazar ve iki kısayol gelir: **Tüm trafiğe bak**, **Ölçüm durumunu kontrol et**. Analytics bağlı değilse "Google Analytics bağlı değil" yazar.
+**Boş durumlar.** Veri yoksa "Bu dönemde veri yok" yazar ve iki kısayol çıkar: **Tüm trafiğe bak**, **Ölçüm durumunu kontrol et**. Analytics bağlı değilse "Google Analytics bağlı değil" yazar.
 
 ## Nasıl kullanılır
 
 1. Önce **Ölçüm durumu** sekmesine bakın. "Anahtar olay tanımlı değil" yazıyorsa dönüşüm sütunları hep sıfır kalır. Önce Analytics'te bir anahtar olay tanımlayın.
 2. **Giriş sayfaları** sekmesinde **Alan adı** sütununa bakın. localhost ya da 127.0.0.1 görürseniz, kendi bilgisayarınızdaki deneme sitesi veri gönderiyor demektir. O satırlar gerçek ziyaret değildir. Uygulama bunu sizin yerinize ayıklamaz.
 3. Trafik düştüyse **Trafik kaynakları** sekmesini **Kanal grubu** ile açın. Düşüş yalnızca aramadaysa sorun aramadadır. Her kanalda düştüyse ölçümde ya da sitede sorun vardır.
-4. **Trafiği yüksek, dönüşümü düşük** düğmesi şunu gösterir: Google ziyaretçi gönderiyor ama sayfa onları tutmuyor. Yapılacak işi Fırsatlar ekranında bulursunuz.
+4. **Trafiği yüksek, dönüşümü düşük** düğmesi, Google'ın ziyaretçi gönderdiği ama sayfanın onları tutamadığı yerleri gösterir. Yapılacak işi Fırsatlar ekranında bulursunuz.
 
 ## Sayılar nasıl hesaplanır
 
 Aralık, hesabın saat diliminde dünle biter. Analytics veriyi bir gün geç verir. "Organik arama" seçiliyse yalnızca Google ya da başka bir arama motorundan gelen ziyaretler sayılır.
 
-Her rapor en fazla 200 satır ister. Ölçüm durumu Analytics ayarlarını okur ve rapor kotasından harcamaz. Rapor kotası biterse "Google Analytics reporting quota is exhausted." (Analytics rapor hakkı bitti) hatası görürsünüz. Kotalar **Ayarlar**'daki sınırlar bölümünde izlenir.
+Her rapor en fazla 200 satır ister. Ölçüm durumu Analytics ayarlarını okur ve rapor kotasından harcamaz. Rapor kotası biterse "Google Analytics reporting quota is exhausted." (Analytics rapor hakkı bitti) hatası görürsünüz. Kotanızı **Ayarlar**'daki sınırlar bölümünden izlersiniz.
 
 ## Sık sorulanlar
 

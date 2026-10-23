@@ -1,11 +1,11 @@
 ---
 title: Google'a bağlanma
-description: Search Console ve Analytics 4 verisini okumak için Google'dan bir kerelik erişim anahtarı alın, uygulamaya yapıştırın ve sitenizi seçin. Adım adım.
+description: Google'dan bir kez erişim anahtarı alırsınız, uygulamaya yapıştırırsınız, sitenizi seçersiniz. Search Console ve Analytics 4 verisi böyle gelir.
 kind: nasil-yapilir
 updated: 2026-10-22
 ---
 
-Bu sayfanın sonunda uygulama Google'a sizin adınıza bağlanacak ve sitenizin verisini okuyacak. Bunun için Google'dan bir kez "Google erişim anahtarı" alırsınız. Bu yaklaşık on dakika sürer, bir daha uğraşmazsınız. Çoğu kişi için önerilen, daha kısa bir yol da var (hizmet hesabı), sayfanın sonunda.
+Sonunda uygulama Google'a sizin adınıza bağlanacak ve sitenizin verisini okuyacak. Bunun için Google'dan bir kez "Google erişim anahtarı" alırsınız. Yaklaşık on dakika sürer, bir daha uğraşmazsınız. Daha kısa bir yol da var (hizmet hesabı), sayfanın sonunda. Çoğu kişiye o önerilir.
 
 ## Gerekenler
 
@@ -35,7 +35,7 @@ Bu sayfanın sonunda uygulama Google'a sizin adınıza bağlanacak ve sitenizin 
 
 ### Daha kısa yol: hizmet hesabı
 
-Hizmet hesabı, Google'a sizin yerinize bağlanan özel bir hesaptır. İzin ekranı ve yönlendirme adresi gerekmez. Çoğu kişi için önerilen yol budur. Yukarıdaki yolu, uygulamaya kendi Google hesabınızla giriş yapmayı tercih edenler seçer.
+Hizmet hesabı, Google'a sizin yerinize bağlanan özel bir hesaptır. İzin ekranı ve yönlendirme adresi gerekmez. Çoğu kişi için önerilen yol budur. Uygulamaya kendi Google hesabınızla giriş yapmak istiyorsanız yukarıdaki yolu izleyin.
 
 1. `console.cloud.google.com` adresini açın. Aynı Cloud projesinde 3. adımdaki API'lerin açık olduğundan emin olun. **IAM ve Yönetici → Hizmet hesapları** sayfasına gidin.
 2. **Hizmet hesabı oluştur** deyin. Bir ad verin. Rol adımlarını atlayıp hesabı oluşturun.
@@ -45,7 +45,7 @@ Hizmet hesabı, Google'a sizin yerinize bağlanan özel bir hesaptır. İzin ekr
 6. Search Console'da **Ayarlar → Kullanıcılar ve izinler → Kullanıcı ekle** deyin. Bu e-posta adresini yazın, izin olarak **Tam** seçin.
 7. Analytics kullanacaksanız Google Analytics'te mülkün **Yönetici → Erişim yönetimi** bölümünü açın. Aynı e-posta adresini **Görüntüleyen** izniyle ekleyin.
 
-Kayıtlı hizmet hesabı varsa uygulama onu tercih eder. **Ayarlar** ekranındaki "Şu an kullanılan" satırı hangisinin devrede olduğunu söyler.
+Kayıtlı bir hizmet hesabı varsa uygulama onu kullanır. **Ayarlar** ekranındaki "Şu an kullanılan" satırı hangisinin devrede olduğunu söyler.
 
 ## Kontrol
 

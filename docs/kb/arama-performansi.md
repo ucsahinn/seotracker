@@ -1,24 +1,24 @@
 ---
 title: Arama performansı
-description: Google'da hangi aramalarda çıktığınızı ve kaç kişinin tıkladığını görün. Sorguya, sayfaya, ülkeye ve cihaza göre, 16 aya kadar geriye.
+description: Google'da hangi aramalarda çıktığınızı ve kaç kişinin tıkladığını burada görürsünüz. Sorguya, sayfaya, ülkeye ya da cihaza bakabilir, 16 ay geriye gidebilirsiniz.
 screen: Arama performansı
 route: /p/<proje>/search-performance
 updated: 2026-10-22
 ---
 
-Bu ekranda Google'da hangi aramalarda çıktığınızı ve kaç kişinin tıkladığını görürsünüz. Veri doğrudan Google Search Console'dan gelir. Uygulama hiçbir sayıyı tahmin etmez.
+Google'da hangi aramalarda çıktığınızı ve kaç kişinin tıkladığını burada görürsünüz. Sayılar doğrudan Search Console'dan gelir. Uygulama hiçbirini tahmin etmez.
 
-Seçtiğiniz filtreler adres çubuğuna yazılır. Görünümü bağlantı olarak paylaşabilir ya da yer imine ekleyebilirsiniz.
+Seçtiğiniz filtreler adres çubuğuna yazılır. İsterseniz o görünümü bağlantı olarak paylaşır ya da yer imine eklersiniz.
 
 ## Ekranda neler var
 
-**Filtreler.** **Dönem**: Son 7 gün, Son 28 gün (varsayılan), Son 3 ay. **Arama türü**: Web, Görsel, Video, Haber. **Cihaz**: Tüm cihazlar, Mobil, Bilgisayar, Tablet. **Ülke** listesinde Google'ın o dönemde bildirdiği ülkeler olur. **Mülkü değiştir** bağlantısı proje ayarlarına gider.
+**Filtreler.** **Dönem**: Son 7 gün, Son 28 gün (varsayılan), Son 3 ay. **Arama türü**: Web, Görsel, Video, Haber. **Cihaz**: Tüm cihazlar, Mobil, Bilgisayar, Tablet. **Ülke** listesinde Google'ın o dönem için bildirdiği ülkeler çıkar. **Mülkü değiştir** sizi proje ayarlarına götürür.
 
-**Dört toplam kartı.** **Tıklama**, **Gösterim**, **Tıklama oranı** (gösterimlerin yüzde kaçı tıklandı) ve **Ortalama sıra**. Ortalama sırada küçük sayı iyidir, 1 en üst sıradır. Her kartta önceki döneme göre değişim görünür.
+**Dört toplam kartı.** **Tıklama**, **Gösterim**, **Tıklama oranı** (gösterimlerin yüzde kaçı tıklandı) ve **Ortalama sıra**. Ortalama sırada küçük sayı iyidir, 1 en üst sıradır. Her kart, önceki döneme göre ne kadar değiştiğini de gösterir.
 
-**Günlük değişim grafiği.** Toplamların günlere dağılımı. Üstteki düğmelerle dört ölçü arasında geçersiniz.
+**Günlük değişim grafiği.** Toplamları gün gün gösterir. Üstteki düğmelerle dört ölçü arasında geçiş yaparsınız.
 
-**Cihazlar, Ülkeler, Arama görünümü.** Üç küçük kart. Ülkelerde ilk altısı görünür. Arama görünümü zengin sonuç türlerini listeler. Zengin sonuç, aramada ürün ya da video gibi ek bilgiyle çıkan sonuçtur. İlk beşi görünür, gerisi "Diğer görünümler" altında toplanır.
+**Cihazlar, Ülkeler, Arama görünümü.** Üç küçük karttır. Ülkelerde ilk altısı görünür. Arama görünümü zengin sonuç türlerini sayar. Zengin sonuç, aramada ürün ya da video gibi ek bilgiyle çıkan sonuçtur. İlk beşi açıktır, gerisi "Diğer görünümler" altında toplanır.
 
 **Dört sekme.**
 
@@ -27,11 +27,11 @@ Seçtiğiniz filtreler adres çubuğuna yazılır. Görünümü bağlantı olara
 - **Sayfalar**: sayfalara göre tablo.
 - **Sayfa çakışmaları**: aynı aramada birden fazla sayfanızın yarıştığı durumlar.
 
-**Hızlı filtreler.** **İlk 10'da**, **Hiç tıklanmayan**, **Tıklama oranı düşük**, **Tıklama alanlar**, **Sıra 5-10**, **Sıra 11-20**. Tıklama oranı düşük demek şudur: ilk sayfada, en az 100 gösterim, oran yüzde 2'nin altında.
+**Hızlı filtreler.** **İlk 10'da**, **Hiç tıklanmayan**, **Tıklama oranı düşük**, **Tıklama alanlar**, **Sıra 5-10**, **Sıra 11-20**. Tıklama oranı düşük, ilk sayfada çıkan, en az 100 gösterim alan ve oranı yüzde 2'nin altında kalan sorgu demektir.
 
-**Satır menüsü.** Her satırın sağındaki üç nokta: **Sayfayı yeni sekmede aç**, **Adresi kopyala**, **Kelimeyi kopyala**, **Kelime olarak kaydet**. Kaydettikleriniz Kayıtlı kelimeler ekranına gider.
+**Satır menüsü.** Her satırın sağındaki üç noktada şunlar var: **Sayfayı yeni sekmede aç**, **Adresi kopyala**, **Kelimeyi kopyala**, **Kelime olarak kaydet**. Kaydettikleriniz Kayıtlı kelimeler ekranına gider.
 
-**Dışa aktarma.** **E-Tablolar'a aktar** ve **CSV indir**. Görünen tabloyu, filtrelerle birlikte alır. Çakışma sekmesinde dışa aktarma yoktur.
+**Dışa aktarma.** **E-Tablolar'a aktar** ve **CSV indir**. Ekrandaki tabloyu filtreleriyle birlikte indirir. Sayfa çakışmaları sekmesinde bu düğmeler yok.
 
 ## Nasıl kullanılır
 
@@ -43,7 +43,7 @@ Seçtiğiniz filtreler adres çubuğuna yazılır. Görünümü bağlantı olara
 
 ## Sayılar nasıl hesaplanır
 
-Google veriyi üç gün geç verir. Aralık bu yüzden bugünde değil, üç gün öncesinde biter. Önceki dönem aynı uzunlukta olup bu aralığın hemen öncesindedir. Tıklama ve gösterim değişimi yüzde olarak, tıklama oranı değişimi puan olarak gösterilir.
+Google veriyi üç gün geç verir. Aralık bu yüzden bugünde değil, üç gün öncesinde biter. Önceki dönem, aynı uzunlukta ve bu aralığın hemen öncesindeki dönemdir. Tıklama ve gösterimdeki değişimi yüzde, tıklama oranındaki değişimi puan olarak görürsünüz.
 
 Toplam kartları gerçek site toplamıdır. Tablolar ise aynı aramada çıkan her sayfayı ayrı sayar. Sayfa tablosunu toplarsanız karttan büyük sayı bulursunuz. Bu hata değildir.
 

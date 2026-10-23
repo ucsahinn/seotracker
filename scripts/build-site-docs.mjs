@@ -330,6 +330,13 @@ function jsonLd(locale, { title, description, slug, updated, groupTitle }) {
 // güncelleme" line and dateModified all move only when the page really changed.
 function gitDate(file) {
   try {
+    const dirty = execFileSync("git", ["status", "--porcelain", "--", file], {
+      cwd: root,
+      encoding: "utf8",
+    }).trim();
+    // Edited but not committed yet: the commit that follows is dated today,
+    // so the page built before it already carries the right date.
+    if (dirty) return new Date().toISOString().slice(0, 10);
     const out = execFileSync("git", ["log", "-1", "--format=%cs", "--", file], {
       cwd: root,
       encoding: "utf8",

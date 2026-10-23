@@ -1,14 +1,14 @@
 ---
 title: Dizin durumu
-description: Google'ın her sayfanız için cevabı: aramada mı, değilse neden, en son ne zaman geldi. Günde en çok 2.000 sorgu sorulabilir.
+description: Google her sayfanızı aramaya almış mı, almadıysa neden, en son ne zaman uğramış? Günde en çok 2.000 sorgu sorabilirsiniz.
 screen: Site denetimi, Dizin durumu sekmesi
 route: /p/<proje>/audit?auditId=<denetim>&tab=index
 updated: 2026-10-22
 ---
 
-Bu sayfada Google'ın hangi sayfalarınızı aramaya aldığını nasıl öğreneceğinizi görürsünüz.
+Google'ın hangi sayfalarınızı aramaya aldığını burada öğrenirsiniz.
 
-Site denetimi sayfanın açılabildiğini söyler. Google'ın onu gerçekten dizine (Google'ın sayfa listesine) alıp almadığını söyleyemez. **Dizin durumu** sekmesi bunu Google'a sorar ve cevabı kaydeder. Cevaplar bu bilgisayarda saklanır. Aynı soru tekrar tekrar sorulmaz, yalnızca eskiyen cevaplar yeniden sorulur. Bu önemlidir, çünkü Google her mülk (Search Console'daki site kaydınız) için günde 2.000 soru hakkı verir. Uygulama ve asistanınız bu hakkı paylaşır.
+Site denetimi, sayfanın açılıp açılmadığını söyler. Google'ın sayfayı gerçekten dizine (Google'ın sayfa listesine) alıp almadığını söyleyemez. **Dizin durumu** sekmesi bunu Google'a sorar ve cevabı bu bilgisayarda saklar. Aynı soruyu tekrar tekrar sormaz, yalnızca eskiyen cevapları yeniden sorar. Bu önemli, çünkü Google her mülk (Search Console'daki site kaydınız) için günde 2.000 soru hakkı verir. Uygulama ve asistanınız bu hakkı paylaşır.
 
 ## Ekranda neler var
 
@@ -18,15 +18,15 @@ Site denetimi sayfanın açılabildiğini söyler. Google'ın onu gerçekten diz
 - **Dizinde değil**: Google baktı ama almadı.
 - **Yanıt bekleyen**: henüz sorulmadı ya da cevap alınamadı.
 
-**Özet kutuları.** Kaç sayfa soruldu, kaçı dizinde, kaçı değil, kaçı bekliyor gösterilir. "Google'ın farklı adresi seçtiği sayfalar" kutusu, Google'ın sizin bildirdiğiniz canonical'dan (asıl adres bildirimi) başka bir adres seçtiği sayfaları sayar. "Bu denetimde henüz sorulmamış" kutusu sorulacak sayfa sayısıdır.
+**Özet kutuları.** Kaç sayfanın sorulduğunu, kaçının dizinde olduğunu, kaçının olmadığını ve kaçının beklediğini görürsünüz. "Google'ın farklı adresi seçtiği sayfalar" kutusu, Google'ın bildirdiğiniz canonical'dan (asıl adres bildirimi) farklı bir adres seçtiği sayfaları sayar. "Bu denetimde henüz sorulmamış" kutusu, sorulmayı bekleyen sayfa sayısıdır.
 
-**Google'da durumunu kontrol et düğmesi.** Her basışta en çok 25 sayfa sorar. En uzun süredir cevaplanmayanlar önce gelir. Günlük sınır dolarsa "Google'ın günlük 2.000 adres sınırına ulaşıldı" uyarısı çıkar. Search Console bağlı değilse düğme kapalıdır. Denetlenen alan adı bağlı mülkün içinde değilse de kapalıdır.
+**Google'da durumunu kontrol et düğmesi.** Her basışta en çok 25 sayfa sorar. Önce en uzun süredir cevap almayanları sorar. Günlük sınır dolarsa "Google'ın günlük 2.000 adres sınırına ulaşıldı" uyarısı çıkar. Search Console bağlı değilse düğme kapalıdır. Denetlenen alan adı bağlı mülkün içinde değilse de kapalıdır.
 
-**Tablo.** Sütunlar: **Sayfa**, **Durum**, **Sebep**, **Google'ın seçtiği adres**, **Google'ın son ziyareti**. Durum hücresinde "Google'da", "Kontrol edilmedi", "Yanıt alınamadı", "Hata" ya da Google'ın kendi durumunun Türkçesi görünür. Toplam 18 durum Türkçeye çevrilidir. Örnekler:
+**Tablo.** Sütunlar şunlar: **Sayfa**, **Durum**, **Sebep**, **Google'ın seçtiği adres**, **Google'ın son ziyareti**. Durum hücresinde "Google'da", "Kontrol edilmedi", "Yanıt alınamadı", "Hata" ya da Google'ın kendi durumunun Türkçesi yazar. Toplam 18 durumun Türkçesi var. Birkaç örnek:
 
 - "Keşfedildi, henüz taranmadı"
 - "'noindex' etiketiyle dışlandı" (sayfa aramadan gizlenmiş)
-- "robots.txt engelliyor" (robots.txt: Google'a hangi sayfalara girebileceğini söyleyen dosya)
+- "robots.txt engelliyor" (robots.txt, Google'a hangi sayfalara girebileceğini söyleyen dosyadır)
 - "Yumuşak 404" (sayfa var ama Google boş sayıyor)
 - "Google bu adresi bilmiyor"
 

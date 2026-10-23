@@ -1,11 +1,11 @@
 ---
 title: Sorun giderme
-description: En sık görülen sorunlar: belirti, sebep ve çözüm. Dolu adres numarası, Windows uyarısı, Google hataları, kota, takılan denetim, boş grafik, asistan 401.
+description: En sık görülen sorunları belirti, sebep ve çözümle anlatır. Dolu adres numarası, Windows uyarısı, Google hataları, kota, takılan denetim, boş grafik ve asistan 401 burada.
 kind: sorun-giderme
 updated: 2026-10-22
 ---
 
-Bu sayfa, bir şey çalışmadığında ne yapacağınızı kısa kısa söyler. Önce uygulamada **Yardım** ekranındaki "Kurulumunuzun durumu" kartına bakın. Kart dört şeyi kontrol eder: giriş ve erişim, Google girişi, PageSpeed anahtarı, veritabanı. "N şey dikkat istiyor" diyorsa yanındaki düğme sizi doğru ayara götürür. Aşağıdaki liste en sık görülenden en nadire doğru gider.
+Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuzun durumu" kartına bakın. Kart giriş ve erişimi, Google girişini, PageSpeed anahtarını ve veritabanını kontrol eder. "N şey dikkat istiyor" diyorsa yanındaki düğme sizi doğru ayara götürür. Aşağıdaki sorunlar en sık görülenden en nadire doğru sıralı.
 
 ### Sayfa açılmıyor
 
@@ -43,9 +43,9 @@ Bu sayfa, bir şey çalışmadığında ne yapacağınızı kısa kısa söyler.
 
 **Belirti:** Uygulama açılmıyor. Kayıtta "Workers runtime failed to start" ve "0xc0000005" var ama Visual C++ paketi kurulu.
 
-**Sebep:** Uygulamanın motoru (workerd) bu bilgisayarda bir sistem dosyasına takılıyor. Uygulama açılışta motoru tek başına dener; "tek başına da başlayamıyor" diyorsa sorun bilgisayardadır, "tek başına çalışıyor" diyorsa veri klasöründe ya da yapılandırmadadır.
+**Sebep:** Uygulamanın motoru (workerd) bu bilgisayarda bir sistem dosyasına takılıyor. Uygulama açılışta motoru tek başına dener. "Tek başına da başlayamıyor" diyorsa sorun bilgisayardadır. "Tek başına çalışıyor" diyorsa sorun veri klasöründe ya da yapılandırmadadır.
 
-**Çözüm:** Önce **Kurulumu onar** deyin. Düzelmezse simgeye sağ tıklayıp **Sorunu bildir (GitHub)** deyin: tanı bilgisi (Windows sürümü, işlemci, hatalı modül adı, çökme dökümü) kayda kendiliğinden eklenir, siz yalnızca gönderin. Çökme dökümleri `%LOCALAPPDATA%\seowatcher\logs\dumps` klasöründedir; isterseniz kayda ekleyin.
+**Çözüm:** Önce **Kurulumu onar** deyin. Düzelmezse simgeye sağ tıklayıp **Sorunu bildir (GitHub)** deyin. Tanı bilgisi (Windows sürümü, işlemci, hatalı modül adı, çökme dökümü) kayda kendiliğinden eklenir, siz yalnızca gönderin. Çökme dökümleri `%LOCALAPPDATA%\seowatcher\logs\dumps` klasöründedir. İsterseniz onları da kayda ekleyin.
 
 ### Windows "bilgisayarınızı korudu" diyor
 
@@ -109,7 +109,7 @@ Bu sayfa, bir şey çalışmadığında ne yapacağınızı kısa kısa söyler.
 
 **Sebep:** Uygulama yeniden başlamış ya da işlem düşmüş olabilir.
 
-**Çözüm:** Bekleyin. Uygulama 15 dakikadan uzun "sürüyor" görünen denetimi kontrol eder. Yaşam belirtisi yoksa "Başarısız" diye kapatır ve sebebini yazar . Sonra **Aynı ayarlarla yeniden başlat** deyin. İki denetimi aynı anda hız ölçümüyle başlatmayın, birbirini yavaşlatır.
+**Çözüm:** Bekleyin. Uygulama 15 dakikadan uzun "sürüyor" görünen denetimi kontrol eder. Yaşam belirtisi yoksa "Başarısız" diye kapatır ve sebebini yazar. Sonra **Aynı ayarlarla yeniden başlat** deyin. İki denetimi aynı anda hız ölçümüyle başlatmayın, birbirini yavaşlatır.
 
 ### Denetim "Engellendik" diyor
 
@@ -149,7 +149,7 @@ Bu sayfa, bir şey çalışmadığında ne yapacağınızı kısa kısa söyler.
 
 **Sebep:** Parola gönderilmiyor ya da yanlış.
 
-**Çözüm:** Parolayı yeniden kopyalayın. Windows'ta veri klasöründeki `mcp-token` dosyasındadır. Docker'da `docker compose exec -T seotracker cat /app/.wrangler/mcp-token` yazın. Değerin sonundaki satır sonu karakterini silin. Terminal kullanmak istemezseniz: dosyayı Not Defteri ile açın, satırın tamamını seçip kopyalayın; satır sonu bırakmayın. Claude Code'da `/mcp` yazıp **Reconnect** deyin.
+**Çözüm:** Parolayı yeniden kopyalayın. Windows'ta veri klasöründeki `mcp-token` dosyasındadır. Docker'da `docker compose exec -T seotracker cat /app/.wrangler/mcp-token` yazın. Değerin sonundaki satır sonu karakterini silin. Terminal kullanmak istemezseniz dosyayı Not Defteri ile açın, satırın tamamını seçip kopyalayın. Satır sonu bırakmayın. Claude Code'da `/mcp` yazıp **Reconnect** deyin.
 
 ### Docker ilk açılışta çok uzun sürüyor ya da "unhealthy"
 
@@ -169,7 +169,7 @@ Sorun bildirirken **Yardım** ekranındaki **Tanılama paketi indir** düğmesin
 
 ## Başlatıcı uyarıları
 
-Görev çubuğu simgesinden çıkan uyarılar ve çözümleri:
+Görev çubuğu simgesinde çıkan uyarılar ve ne yapacağınız:
 
 - **"Sunucu 120 saniyede yanıt vermedi".** Menüden **Yeniden başlat** deyin. Olmazsa **Günlükleri aç** deyip `server.log` dosyasının son satırlarına bakın.
 - **"Kurulum eksik".** Kurulum dosyasını yeniden çalıştırın.
