@@ -2,6 +2,15 @@
 
 Her sürümün notu burada, en yenisi en üstte.
 
+## [2.3.10] — 2026-10-23
+
+Tanı raporu kişisel veri taşımaz.
+
+### Yenilikler
+
+- **Maskelenmiş tanı raporu.** "Tanı bilgisini kopyala" ve "Sorunu bildir" çıktısında kullanıcı adı, site alan adları, e-postalar, Search Console ve Analytics mülk kimlikleri ve anahtar görünümlü değerler maskelenir; günlük kuyruğu 25 satıra indi; raporun başı bunu söyler.
+- **winget.** Paket bildirimleri hazır (`packaging/winget`); Windows Paket Yöneticisi'ne gönderim ayrı bir adımdır.
+
 ## [2.3.9] — 2026-10-23
 
 "Sorunu bildir" düzeldi; kılavuz daha rahat okunur, metinler daha doğal.
