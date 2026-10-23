@@ -1,4 +1,5 @@
 import { HelpTip, SettingsHeading } from "@/client/components/HelpTip";
+import { SITE_URL } from "@/client/features/support/links";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   ArrowUpCircle,
@@ -77,6 +78,18 @@ export function UpdateSection({ version }: { version: string }) {
       <div className="flex items-center justify-between gap-6">
         <span className="text-sm">Sürüm</span>
         <span className="font-mono text-sm text-muted">v{version}</span>
+      </div>
+      <div className="flex items-center justify-between gap-6">
+        <span className="text-sm">Site ve kılavuz</span>
+        <a
+          href={SITE_URL}
+          target="_blank"
+          rel="noreferrer noopener"
+          className="inline-flex items-center gap-1 text-sm font-medium underline underline-offset-2"
+        >
+          seowatcher.io
+          <ExternalLink className="size-3" />
+        </a>
       </div>
 
       {status?.updateAvailable ? (

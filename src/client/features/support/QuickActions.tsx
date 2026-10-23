@@ -1,9 +1,9 @@
 import { Link } from "@tanstack/react-router";
-import { BookOpen, Bot, ScrollText } from "lucide-react";
+import { BookOpen, Bot, Globe, ScrollText } from "lucide-react";
 import { InstallPromptButton } from "@/client/features/ai-mcp/InstallPromptButton";
 import { RefreshButton } from "@/client/components/RefreshButton";
 import { DiagnosticsBundleButton } from "./DiagnosticsBundleButton";
-import { DOCS_INDEX_URL } from "./links";
+import { DOCS_INDEX_URL, SITE_URL } from "./links";
 import { useSetupSnapshot } from "./useSetupSnapshot";
 
 /**
@@ -36,7 +36,17 @@ export function QuickActions() {
         className="btn btn-sm gap-1.5"
       >
         <BookOpen className="size-4" aria-hidden />
-        Belgeleri aç
+        Kılavuzu aç
+        <span className="sr-only"> (yeni sekmede açılır)</span>
+      </a>
+      <a
+        href={SITE_URL}
+        target="_blank"
+        rel="noreferrer noopener"
+        className="btn btn-sm gap-1.5"
+      >
+        <Globe className="size-4" aria-hidden />
+        seowatcher.io
         <span className="sr-only"> (yeni sekmede açılır)</span>
       </a>
       <Link to="/settings" hash="surum-notlari" className="btn btn-sm gap-1.5">

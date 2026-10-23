@@ -22,4 +22,4 @@ export const GSC_SERVICE_ACCOUNT_SCOPE =
   "https://www.googleapis.com/auth/webmasters.readonly";
 
 export const GSC_SELF_HOSTED_SETUP_DOCS_URL =
-  "https://github.com/ucsahinn/seotracker/blob/main/docs/kb/google-baglantisi.md";
+  "https://seowatcher.io/docs/google-baglantisi/";

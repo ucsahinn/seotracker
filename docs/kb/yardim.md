@@ -14,7 +14,8 @@ Bir şey ters giderse ilk buraya bakın. Bu ekran kurulumunuzu kontrol eder, eks
 
 - **Durumu yeniden kontrol et**: aşağıdaki kartı tazeler.
 - **Tanılama paketi indir**: sorun bildirirken göndereceğiniz dosyayı indirir. İçinde gizli değer yoktur.
-- **Belgeleri aç**: GitHub'daki belgeleri açar.
+- **Kılavuzu aç**: seowatcher.io'daki kılavuzu açar.
+- **seowatcher.io**: uygulamanın sitesini açar; indirme sayfası ve kılavuz oradadır.
 - **Sürüm notları**: Ayarlar'daki sürüm notlarına gider.
 - **Kurulum istemini kopyala**: yapay zekâ asistanınıza (uygulamada "ajan") yapıştıracağınız kurulum metnini kopyalar.
 - **Ajan kurulumu**: asistan bağlantısı ekranına gider.

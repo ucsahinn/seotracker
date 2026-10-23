@@ -16,7 +16,8 @@ This is the first place to look when something goes wrong. The screen checks you
 
 - **Durumu yeniden kontrol et** (Check status again): refreshes the card below.
 - **Tanılama paketi indir** (Download diagnostics package): downloads the file you send when you report a problem. It contains no secret values.
-- **Belgeleri aç** (Open docs): opens the docs on GitHub.
+- **Kılavuzu aç** (Open the guide): opens the guide on seowatcher.io.
+- **seowatcher.io**: opens the app's website, where the download page and the guide live.
 - **Sürüm notları** (Release notes): goes to the release notes in Ayarlar (Settings).
 - **Kurulum istemini kopyala** (Copy setup prompt): copies the setup text you paste into your AI assistant (called an "agent" in the app).
 - **Ajan kurulumu** (Agent setup): goes to the assistant connection screen.

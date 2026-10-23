@@ -6,7 +6,7 @@ import { SystemLimitsSection } from "@/client/features/quotas/SystemLimitsSectio
 import { CommonProblems } from "@/client/features/support/CommonProblems";
 import { QuickActions } from "@/client/features/support/QuickActions";
 import { SetupStatusPanel } from "@/client/features/support/SetupStatusPanel";
-import { REPO_URL } from "@/client/features/support/links";
+import { REPO_URL, SITE_URL } from "@/client/features/support/links";
 import { useSetupSnapshot } from "@/client/features/support/useSetupSnapshot";
 
 export const Route = createFileRoute("/_app/support")({
@@ -90,7 +90,7 @@ function SupportPage() {
           </span>{" "}
           — Windows paketi, Docker, Search Console, Analytics ve PageSpeed
           kurulumu <code className="text-xs">docs/</code> altında ve kılavuzda
-          anlatılır; üstteki &quot;Belgeleri aç&quot; düğmesi oraya götürür.
+          anlatılır; üstteki &quot;Kılavuzu aç&quot; düğmesi oraya götürür.
         </li>
       </ul>
 
@@ -119,6 +119,15 @@ function SupportPage() {
           className="link link-primary inline-flex items-center gap-1.5 text-sm"
         >
           Bu çatal GitHub&apos;da
+          <ExternalLink className="size-3.5" />
+        </a>
+        <a
+          href={SITE_URL}
+          target="_blank"
+          rel="noreferrer"
+          className="link link-primary ml-5 inline-flex items-center gap-1.5 text-sm"
+        >
+          seowatcher.io
           <ExternalLink className="size-3.5" />
         </a>
       </div>

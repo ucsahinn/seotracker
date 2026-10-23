@@ -2,6 +2,14 @@
 
 Her sürümün notu burada, en yenisi en üstte.
 
+## [2.3.12] — 2026-10-23
+
+Uygulama siteye bağlanır.
+
+### Yenilikler
+
+- **seowatcher.io düğmesi.** Yardım'daki hızlı işlemlere ve Ayarlar → Hakkında'ya sitenin bağlantısı eklendi. "Kılavuzu aç" ve sık sorunlardaki kılavuz bağlantıları artık GitHub'daki ham dosyalar yerine sitedeki resimli kılavuza gider; paneldeki Google kurulum düğmesi de öyle.
+
 ## [2.3.11] — 2026-10-23
 
 Windows tarafında menü, uyarı ve kılavuz tutarlılığı.
