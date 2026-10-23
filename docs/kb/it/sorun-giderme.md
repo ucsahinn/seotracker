@@ -2,7 +2,7 @@
 title: Risoluzione dei problemi
 description: I problemi più comuni, con sintomo, causa e soluzione: porta occupata, avviso di Windows, errori di Google, quota, controllo bloccato, assistente 401.
 kind: sorun-giderme
-updated: 2026-10-22
+updated: 2026-10-23
 ---
 
 L'interfaccia dell'app è in turco. In questa guida ogni nome di pulsante e di schermata è riportato in turco, con il significato italiano tra parentesi.
@@ -23,7 +23,7 @@ Se qualcosa non funziona, guardare prima nell'app la scheda "Kurulumunuzun durum
 
 **Causa:** Un altro programma usa lo stesso numero di porta.
 
-**Soluzione:** Il pacchetto Windows di norma sceglie un numero libero tra 3002 e 3010. Se sono tutti occupati, scrivere un altro numero nel file `config.json` della cartella dei dati. Con Docker mettere un `.env` con la riga `PORT=3002` e scrivere `docker compose up -d --force-recreate seotracker`. Quando il numero cambia, aggiornare anche gli indirizzi di reindirizzamento di Google.
+**Soluzione:** Il pacchetto Windows di norma sceglie un numero libero tra 3002 e 3010, lo comunica con un fumetto e lo usa solo per quell'avvio. Quando la 3001 torna libera, scegliere **Yeniden başlat** e l'app torna alla 3001. Se sono tutti occupati, scrivere un altro numero nel file `config.json` della cartella dei dati. Con Docker mettere un `.env` con la riga `PORT=3002` e scrivere `docker compose up -d --force-recreate seotracker`. Quando il numero cambia, aggiornare anche gli indirizzi di reindirizzamento di Google.
 
 ## L'icona dice "Windows bileşeni eksik"
 
@@ -35,11 +35,11 @@ Se qualcosa non funziona, guardare prima nell'app la scheda "Kurulumunuzun durum
 
 ## Il permesso di amministratore non è stato dato
 
-**Sintomo:** Durante l'installazione è stato chiesto il permesso per Visual C++, è stato scelto **Hayır** (No) e l'app non si è avviata.
+**Sintomo:** Durante l'installazione è stato chiesto il permesso per Visual C++, è stato scelto **Hayır** (No). L'installazione ha riportato "Microsoft Visual C++ çalışma zamanı kurulamadı" (Non è stato possibile installare il runtime Microsoft Visual C++).
 
-**Causa:** Il componente di Windows necessario non è stato installato.
+**Causa:** Il componente di Windows necessario non è stato installato. Poiché l'app porta con sé una copia dei file che le servono, sulla maggior parte dei computer si avvia comunque.
 
-**Soluzione:** Fare clic con il tasto destro sull'icona nella barra delle applicazioni (se non si vede, fare clic sulla freccia ^). Scegliere **Eksik Windows bileşenini kur** e questa volta dare il permesso. Oppure scaricare e installare il componente da `https://aka.ms/vs/17/release/vc_redist.x64.exe`.
+**Soluzione:** Se l'app si è avviata, non serve fare nulla. Altrimenti fare clic con il tasto destro sull'icona nella barra delle applicazioni (se non si vede, fare clic sulla freccia ^). Scegliere **Eksik Windows bileşenini kur** e questa volta dare il permesso. Oppure scaricare e installare il componente da `https://aka.ms/vs/17/release/vc_redist.x64.exe`.
 
 ## L'icona dice "Uygulamanın motoru çöktü"
 
@@ -163,7 +163,7 @@ Se qualcosa non funziona, guardare prima nell'app la scheda "Kurulumunuzun durum
 
 ## Dove sono i dati e i registri?
 
-In Windows tutto è nella cartella `%LOCALAPPDATA%\seowatcher`: `data` (il database), `logs\server.log`, `logs\migrate.log`, `instance-secret`, `mcp-token`, `config.json`. Le voci **Günlükleri aç** (Apri i registri) e **Veri klasörünü aç** (Apri la cartella dei dati) del menu della barra delle applicazioni portano lì.
+In Windows tutto è nella cartella `%LOCALAPPDATA%\seowatcher`: `data` (il database), `logs\launcher.log`, `logs\server.log`, `logs\migrate.log`, `instance-secret`, `mcp-token`, `config.json`. Quando un file di registro diventa troppo grande (`server.log` 5 MB, gli altri 1 MB), quello vecchio resta accanto con un nome come `server.old.log` e ne inizia uno nuovo. La cartella `logs\wrangler` contiene i registri dettagliati del motore; i file più vecchi di 30 giorni vengono eliminati automaticamente. Le voci **Günlükleri aç** (Apri i registri) e **Veri klasörünü aç** (Apri la cartella dei dati) del menu della barra delle applicazioni portano lì.
 
 Con Docker i dati stanno nel volume `seotracker_data` (`/app/.wrangler`). I registri si vedono con il comando `docker compose logs -f`.
 
@@ -174,8 +174,12 @@ Quando si segnala un problema, premere il pulsante **Tanılama paketi indir** (S
 Gli avvisi che compaiono nell'icona della barra delle applicazioni e che cosa fare:
 
 - **"Sunucu 120 saniyede yanıt vermedi" (Il server non ha risposto in 120 secondi).** Dal menu scegliere **Yeniden başlat**. Se non basta, scegliere **Günlükleri aç** e guardare le ultime righe di `server.log`.
-- **"Kurulum eksik" (Installazione incompleta).** Eseguire di nuovo il file di installazione.
-- **"Güncelleme yapılamadı" (Aggiornamento non riuscito).** Controllare la connessione a Internet e riprovare dal menu con **Güncelle** (Aggiorna). La versione installata continua a funzionare.
+- **"seowatcher yeniden başlatılıyor" (seowatcher si sta riavviando).** Il server si è chiuso da solo e l'app lo sta riaprendo. Aggiornare la pagina aperta dopo qualche secondo.
+- **"Sunucu 10 dakikada üç kez kapandı" (Il server si è chiuso tre volte in 10 minuti).** L'app ha smesso di riaprirlo. Scegliere **Kurulumu onar** e, se non basta, **Sorunu bildir (GitHub)**.
+- **"Kurulum eksik" (Installazione incompleta).** **Kurulumu onar** rimette i file mancanti scaricando il file di installazione. Se non c'è internet, si apre la pagina delle versioni; scaricare il file di installazione ed eseguirlo.
+- **"3001 numarası dolu, 3002 kullanılıyor" (La porta 3001 è occupata, si usa la 3002).** Un altro programma occupa la 3001. Se si riceve un errore collegandosi a Google, chiudere quel programma e scegliere **Yeniden başlat**.
+- **"Güncelleme denetlenemedi" (Impossibile controllare l'aggiornamento) oppure "Güncelleme yapılamadı" (Aggiornamento non riuscito).** Il fumetto indica il motivo. Se dice "GitHub'a ulaşılamadı" (GitHub non raggiungibile), controllare la connessione a Internet. Se dice "GitHub şu an çok fazla istek alıyor" (GitHub sta ricevendo troppe richieste in questo momento), riprovare tra un'ora. Se l'impronta non corrisponde, scaricare il file di installazione dalla pagina delle versioni. In ogni caso la versione installata continua a funzionare.
+- **"Güncelleme kurulmadı" (Aggiornamento non installato).** La finestra di installazione è stata chiusa oppure non è stato dato il permesso di amministratore. Riprovare dal menu con **Güncelle**.
 - **"Windows bileşeni kurulamadı" (Componente di Windows non installato).** Dal menu scegliere **Eksik Windows bileşenini kur**.
 
 <!-- Kaynaklar: src/routes/_app/support.tsx; src/client/features/support/CommonProblems.tsx; SetupStatusPanel.tsx; DiagnosticsBundleButton.tsx; src/client/features/integrations/googleAuthErrorCopy.ts; src/server/features/audit/services/auditReconciler.ts; src/server/features/gsc/indexCoverage.ts; src/server/features/ga4/services/Ga4ReportEnhancements.ts; packaging/windows/launcher/SeoWatcher.cs; docs/SELF_HOSTING_DOCKER.md; README.md -->

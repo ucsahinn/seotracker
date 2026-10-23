@@ -1568,10 +1568,12 @@
         </p>
         <p class="callout callout-cozum">
           <strong>Solução:</strong> O pacote Windows normalmente escolhe um
-          número livre entre 3002 e 3010. Se todos estiverem em uso, escreva
-          outro número no arquivo <code>config.json</code> da pasta de dados. No
-          Docker, crie um arquivo <code>.env</code> com a linha
-          <code>PORT=3002</code> e execute
+          número livre entre 3002 e 3010, avisa com um balão e o usa só nessa
+          inicialização. Quando a 3001 ficar livre, escolha
+          <strong>Yeniden başlat</strong> e o aplicativo volta à 3001. Se todos
+          estiverem em uso, escreva outro número no arquivo
+          <code>config.json</code> da pasta de dados. No Docker, crie um arquivo
+          <code>.env</code> com a linha <code>PORT=3002</code> e execute
           <code>docker compose up -d --force-recreate seotracker</code>. Quando
           o número muda, atualize também os endereços de redirecionamento do
           Google.
@@ -1605,13 +1607,18 @@
         </h2>
         <p class="callout callout-belirti">
           <strong>Sintoma:</strong> O instalador pediu permissão para instalar o
-          Visual C++, você clicou em Não e o aplicativo não inicia.
+          Visual C++, você clicou em Não. O instalador avisou &quot;Microsoft
+          Visual C++ çalışma zamanı kurulamadı&quot; (Não foi possível instalar
+          o runtime do Microsoft Visual C++).
         </p>
         <p class="callout callout-sebep">
           <strong>Causa:</strong> O componente Visual C++ não foi instalado.
+          Como o aplicativo traz uma cópia dos arquivos de que precisa, ele
+          inicia mesmo assim na maioria dos computadores.
         </p>
         <p class="callout callout-cozum">
-          <strong>Solução:</strong> No menu da bandeja, escolha
+          <strong>Solução:</strong> Se o aplicativo iniciou, você não precisa
+          fazer nada. Se não, no menu da bandeja, escolha
           <strong>Eksik Windows bileşenini kur</strong> (Instalar o componente
           do Windows que falta) e permita desta vez. Se o ícone não aparecer,
           clique na seta ^ da barra de tarefas. Ou instale você mesmo o
@@ -1922,9 +1929,14 @@
         </h2>
         <p>
           No Windows, tudo fica na pasta <code>%LOCALAPPDATA%\seowatcher</code>:
-          <code>data</code> (o banco de dados), <code>logs\server.log</code>,
-          <code>logs\migrate.log</code>, <code>instance-secret</code>,
-          <code>mcp-token</code>, <code>config.json</code>.
+          <code>data</code> (o banco de dados), <code>logs\launcher.log</code>,
+          <code>logs\server.log</code>, <code>logs\migrate.log</code>,
+          <code>instance-secret</code>, <code>mcp-token</code>,
+          <code>config.json</code>. Quando um arquivo de registro cresce demais
+          (<code>server.log</code> 5 MB, os outros 1 MB), o antigo fica ao lado
+          com um nome como <code>server.old.log</code> e um novo começa do zero.
+          A pasta <code>logs\wrangler</code> guarda os registros detalhados do
+          motor; arquivos com mais de 30 dias são apagados automaticamente.
           <strong>Günlükleri aç</strong> (Abrir os registros) e
           <strong>Veri klasörünü aç</strong> (Abrir a pasta de dados), no menu
           da barra de tarefas, levam você até lá.
@@ -1956,14 +1968,46 @@
             <code>server.log</code>.
           </li>
           <li>
-            <strong>&quot;Kurulum eksik&quot;</strong> (Instalação incompleta):
-            execute o instalador de novo.
+            <strong>&quot;seowatcher yeniden başlatılıyor&quot;</strong> (o
+            seowatcher está reiniciando): o servidor fechou sozinho e o
+            aplicativo o está reabrindo. Atualize a página aberta depois de
+            alguns segundos.
           </li>
           <li>
+            <strong>&quot;Sunucu 10 dakikada üç kez kapandı&quot;</strong> (O
+            servidor fechou três vezes em 10 minutos): o aplicativo parou de
+            reabri-lo. Escolha <strong>Kurulumu onar</strong> e, se não
+            resolver, <strong>Sorunu bildir (GitHub)</strong>.
+          </li>
+          <li>
+            <strong>&quot;Kurulum eksik&quot;</strong> (Instalação incompleta):
+            <strong>Kurulumu onar</strong> devolve os arquivos que faltam
+            baixando o instalador. Se não houver internet, a página de versões
+            abre; baixe o instalador e execute-o.
+          </li>
+          <li>
+            <strong>&quot;3001 numarası dolu, 3002 kullanılıyor&quot;</strong>
+            (A porta 3001 está em uso, usando a 3002): outro programa está
+            usando a 3001. Se você receber um erro ao conectar ao Google, feche
+            esse programa e escolha <strong>Yeniden başlat</strong>.
+          </li>
+          <li>
+            <strong>&quot;Güncelleme denetlenemedi&quot;</strong> (Não foi
+            possível verificar a atualização) ou
             <strong>&quot;Güncelleme yapılamadı&quot;</strong> (A atualização
-            falhou): confira a sua conexão e tente de novo em
-            <strong>Güncelle</strong> (Atualizar). A versão instalada continua
-            funcionando.
+            falhou): o balão diz o motivo. Se disser &quot;GitHub'a
+            ulaşılamadı&quot; (não foi possível acessar o GitHub), confira a sua
+            conexão com a internet. Se disser &quot;GitHub şu an çok fazla istek
+            alıyor&quot; (o GitHub está recebendo requisições demais agora),
+            tente de novo em uma hora. Se a impressão digital não coincidir,
+            baixe o instalador na página de versões. Em qualquer caso, a versão
+            instalada continua funcionando.
+          </li>
+          <li>
+            <strong>&quot;Güncelleme kurulmadı&quot;</strong> (A atualização não
+            foi instalada): a janela de instalação foi fechada ou a permissão de
+            administrador não foi dada. Tente de novo em
+            <strong>Güncelle</strong> no menu.
           </li>
           <li>
             <strong>&quot;Windows bileşeni kurulamadı&quot;</strong> (Não foi

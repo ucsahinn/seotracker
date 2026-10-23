@@ -1625,37 +1625,25 @@
         <h3 id="menu-in-der-taskleiste">Menü in der Taskleiste</h3>
         <p>
           Klicken Sie mit der rechten Maustaste auf das Symbol. Ist es nicht zu
-          sehen, klicken Sie in der Taskleiste auf den Pfeil ^. Das Menü enthält
-          diese Einträge:
+          sehen, klicken Sie in der Taskleiste auf den Pfeil ^. Das Menü hat
+          vier Abschnitte: Ganz oben stehen das Öffnen der App und die
+          Statuszeile, danach Update und Neustart, danach zwei Einstellungen,
+          ganz unten die Einträge zur Fehlerbehebung.
         </p>
         <ul>
           <li>
             <strong>seowatcher'ı aç</strong> (seowatcher öffnen): öffnet die App
-            im Browser. Ein Doppelklick auf das Symbol tut dasselbe.
+            im Browser. Ein Doppelklick auf das Symbol tut dasselbe. Startet die
+            App noch, erscheint die Sprechblase „seowatcher açılıyor“
+            (seowatcher startet); sobald sie bereit ist, öffnet sich der Browser
+            von selbst.
           </li>
           <li>
-            <strong>Yeniden başlat</strong> (Neu starten): schließt die App und
-            öffnet sie wieder. Wenn etwas hängt, versuchen Sie zuerst diesen
-            Eintrag.
-          </li>
-          <li>
-            <strong>Günlükleri aç</strong> (Protokolle öffnen): öffnet den
-            Ordner mit den Protokolldateien. Darin liegen
-            <code>launcher.log</code>, <code>server.log</code> und
-            <code>migrate.log</code>.
-          </li>
-          <li>
-            <strong>Tanı bilgisini kopyala</strong> (Diagnoseinformationen
-            kopieren): kopiert die Windows-Version, den Prozessor, die
-            Visual-C++-Version, einen Testlauf des Programmkerns, das
-            fehlerhafte Modul aus dem Windows-Ereignisprotokoll, Absturzabbilder
-            und die letzten Protokollzeilen in die Zwischenablage.
-          </li>
-          <li>
-            <strong>Sorunu bildir (GitHub)</strong> (Problem melden (GitHub)):
-            legt dieselben Angaben in die Zwischenablage und öffnet auf GitHub
-            einen vorausgefüllten Fehlerbericht. Ergänzen Sie in einem Satz, was
-            Sie getan haben, und senden Sie ihn ab.
+            Statuszeile: „Çalışıyor: http://127.0.0.1:3001/“ (Läuft:
+            http://127.0.0.1:3001/), „Veritabanı güncelleniyor“ (Datenbank wird
+            aktualisiert) oder ein Fehlertext. Sie ist nicht anklickbar. Ist der
+            Text lang, sehen Sie ihn vollständig, wenn Sie die Maus darüber
+            halten.
           </li>
           <li>
             <strong>Eksik Windows bileşenini kur</strong> (Fehlende
@@ -1664,16 +1652,28 @@
             die App neu.
           </li>
           <li>
-            <strong>Kurulumu onar</strong> (Installation reparieren): löscht
-            temporäre Dateien, prüft das Paket und öffnet die App neu.
-          </li>
-          <li>
             <strong>Güncelle</strong> (Aktualisieren): steht immer im Menü. Ein
             Klick prüft sofort auf GitHub. Gibt es eine neue Version, wird sie
             heruntergeladen und installiert, sonst erscheint „Güncel“ (Aktuell).
-            Wurde bereits eine neue Version gefunden und ist sie bereit, lautet
-            der Eintrag „Güncelle: X.Y.Z sürümü hazır“ (Aktualisieren: Version
-            X.Y.Z ist bereit); die Versionsnummer ist ein Beispiel.
+            Beim Prüfen lautet der Eintrag „Kontrol ediliyor…“ (Wird geprüft…),
+            beim Herunterladen „Güncelleme indiriliyor: X.Y.Z (%45)“ (Update
+            wird heruntergeladen: X.Y.Z (45 %)); dann ist er nicht anklickbar.
+            Wurde bereits eine neue Version gefunden, lautet der Eintrag
+            „Güncelle: X.Y.Z sürümü hazır“ (Aktualisieren: Version X.Y.Z ist
+            bereit); die Versionsnummern sind Beispiele.
+          </li>
+          <li>
+            <strong>Yeniden başlat</strong> (Neu starten): schließt die App und
+            öffnet sie wieder. Wenn etwas hängt, versuchen Sie zuerst diesen
+            Eintrag.
+          </li>
+          <li>
+            <strong>Windows açılınca başlat</strong> (Mit Windows starten): ist
+            der Eintrag angekreuzt, startet die App beim Einschalten des
+            Computers im Hintergrund. Hat ein Administrator diese Einstellung
+            bei einer Installation für alle Benutzer des Computers aktiviert,
+            ist der Eintrag angekreuzt und grau; nur ein Administrator kann ihn
+            ausschalten.
           </li>
           <li>
             <strong>Güncellemeleri kendiliğinden kur</strong> (Updates
@@ -1681,14 +1681,37 @@
             die App eine neue Version selbst, sobald sie eine findet.
           </li>
           <li>
+            <strong>Kurulumu onar</strong> (Installation reparieren): löscht
+            temporäre Dateien, prüft, ob das Paket vollständig ist, und öffnet
+            die App neu. Während der Reparatur lautet der Eintrag „Onarılıyor…“
+            (Wird repariert…).
+          </li>
+          <li>
+            <strong>Tanı bilgisini kopyala</strong> (Diagnoseinformationen
+            kopieren): kopiert die Windows-Version, den Prozessor, die
+            Visual-C++-Version, einen Testlauf des Programmkerns, das
+            fehlerhafte Modul aus dem Windows-Ereignisprotokoll, Absturzabbilder
+            und die letzten Protokollzeilen in die Zwischenablage. Die Angaben
+            sind nach einigen Sekunden bereit, dann erscheint die Sprechblase
+            „Kopyalandı“ (Kopiert). Das hilft Ihnen beim Melden eines Problems.
+          </li>
+          <li>
+            <strong>Sorunu bildir (GitHub)</strong> (Problem melden (GitHub)):
+            legt dieselben Angaben in die Zwischenablage und öffnet auf GitHub
+            einen vorausgefüllten Fehlerbericht. Ergänzen Sie in einem Satz, was
+            Sie getan haben, und senden Sie ihn ab.
+          </li>
+          <li>
+            <strong>Günlükleri aç</strong> (Protokolle öffnen): öffnet den
+            Ordner mit den Protokolldateien. Darin liegen
+            <code>launcher.log</code>, <code>server.log</code> und
+            <code>migrate.log</code>.
+          </li>
+          <li>
             <strong>Veri klasörünü aç</strong> (Datenordner öffnen): öffnet den
             Ordner mit der Datenbank und den Schlüsseln.
           </li>
-          <li>
-            <strong>Windows açılınca başlat</strong> (Mit Windows starten): ist
-            der Eintrag angekreuzt, startet die App beim Einschalten des
-            Computers im Hintergrund.
-          </li>
+          <li>Versionsnummer: die installierte Version. Nicht anklickbar.</li>
           <li>
             <strong>Çıkış</strong> (Beenden): schließt die App vollständig.
             Solange sie geschlossen ist, funktioniert die Seite im Browser
@@ -1696,13 +1719,19 @@
           </li>
         </ul>
         <p>
-          Im Menü sehen Sie außerdem eine Statuszeile („Çalışıyor:
-          http://127.0.0.1:3001/“ (Läuft: http://127.0.0.1:3001/) oder einen
-          Fehlertext) und die Versionsnummer.
+          Starten Sie die App ein zweites Mal (über das Startmenü oder die
+          Desktop-Verknüpfung), öffnet sich keine neue Kopie. Die bereits
+          laufende App öffnet die Seite im Browser; ist sie noch nicht bereit,
+          öffnet sie die Seite, sobald sie bereit ist.
         </p>
         <p>
-          Starten Sie die App ein zweites Mal, öffnet sich keine neue Kopie,
-          sondern nur die Seite im Browser.
+          Beendet sich der Server im laufenden Betrieb von selbst, startet die
+          App ihn neu und zeigt die Sprechblase „seowatcher yeniden
+          başlatılıyor“ (seowatcher wird neu gestartet). Beendet er sich dreimal
+          innerhalb von zehn Minuten, gibt die App das Neustarten auf und
+          schreibt in die Statuszeile „Sunucu 10 dakikada üç kez kapandı“ (Der
+          Server wurde in 10 Minuten dreimal beendet). Wählen Sie dann
+          <strong>Kurulumu onar</strong>.
         </p>
         <h3 id="update">Update</h3>
         <p>
@@ -1712,7 +1741,11 @@
           Fingerabdruck der Datei (SHA-256) mit dem Wert auf der Versionsseite,
           installiert sie im Hintergrund und startet neu. Der Text am Symbol
           lautet dabei „Güncelleme indiriliyor“ (Update wird heruntergeladen)
-          und „Güncelleme kuruluyor“ (Update wird installiert). Auch der Bereich
+          und „Güncelleme kuruluyor“ (Update wird installiert); kurz erscheint
+          ein kleines Installationsfenster. Startet die App wieder, erscheint
+          die Sprechblase „seowatcher X.Y.Z sürümüne güncellendi“ (seowatcher
+          wurde auf Version X.Y.Z aktualisiert); ein Klick darauf öffnet die
+          Liste der Neuerungen. Auch der Bereich
           <strong>Ayarlar → Hakkında</strong> (Einstellungen → Über) in der App
           zeigt die neue Version an und verweist auf
           <strong>Güncelle</strong> am Symbol.
@@ -1721,17 +1754,42 @@
           <li>
             Soll die App nicht selbst installieren, entfernen Sie im Menü das
             Häkchen bei <strong>Güncellemeleri kendiliğinden kur</strong>.
-            Erscheint dann eine neue Version, sehen Sie eine Sprechblase, und im
-            Menü erscheint der Eintrag <strong>Güncelle</strong>.
+            Erscheint dann eine neue Version, sehen Sie einmal eine Sprechblase,
+            und der Menüeintrag lautet „Güncelle: X.Y.Z sürümü hazır“
+            (Aktualisieren: Version X.Y.Z ist bereit). Klicken Sie zum
+            Installieren auf die Sprechblase oder den Eintrag.
+          </li>
+          <li>
+            Gibt es keine Internetverbindung oder antwortet GitHub gerade nicht,
+            versucht es die App nach einer Stunde erneut. Bei automatischen
+            Versuchen warnt sie pro Version nur einmal.
+          </li>
+          <li>
+            Stimmt der Fingerabdruck der heruntergeladenen Datei nicht, wird das
+            Update nicht installiert, und die installierte Version läuft weiter.
+          </li>
+          <li>
+            Bei einer Installation für alle Benutzer des Computers braucht das
+            Update Administratorrechte. Deshalb installiert die App dort nicht
+            automatisch. Erscheint eine neue Version, sehen Sie eine
+            Sprechblase; ein Klick darauf lässt Windows nach der
+            Administratorerlaubnis fragen.
           </li>
           <li>
             Für ein manuelles Update laden Sie die neue Installationsdatei von
             derselben Adresse herunter und führen sie aus. Der Assistent
             schließt die laufende App selbst, ersetzt die Dateien und startet
-            sie neu.
+            sie neu. Das Kontrollkästchen
+            <strong>Windows açılınca seowatcher'ı başlat</strong> (seowatcher
+            mit Windows starten) im Assistenten zeigt Ihre aktuelle Einstellung
+            aus dem Menü.
           </li>
         </ul>
-        <p>Daten, Google-Verbindung und Einstellungen bleiben erhalten.</p>
+        <p>
+          Daten, Google-Verbindung und Einstellungen bleiben erhalten. Ein
+          automatisches Update lässt die Einstellung
+          <strong>Windows açılınca başlat</strong> unberührt.
+        </p>
         <h3 id="verteilung-im-unternehmen">Verteilung im Unternehmen</h3>
         <p>
           Hinweise für IT-Teams, die für alle Benutzer eines Computers oder mit
@@ -1783,10 +1841,18 @@
           Wenn etwas hängt, klicken Sie mit der rechten Maustaste auf das Symbol
           und wählen Sie <strong>Kurulumu onar</strong> (Installation
           reparieren); ist das Symbol nicht zu sehen, klicken Sie in der
-          Taskleiste auf den Pfeil ^. Die App löscht temporäre Dateien, prüft,
-          ob das Paket vollständig ist, prüft die Datenbank erneut und öffnet
-          sich wieder. Fehlt eine Datei, meldet sie das und öffnet die
-          Versionsseite; führen Sie dann die Installationsdatei erneut aus.
+          Taskleiste auf den Pfeil ^. Die App löscht temporäre Dateien und
+          prüft, ob das Paket vollständig ist. Beim anschließenden Start führt
+          sie das Datenbank-Update erneut aus.
+        </p>
+        <p>
+          Wurde eine Datei aus dem Paket gelöscht (zum Beispiel, weil ein
+          Virenschutzprogramm sie in Quarantäne verschoben hat), lädt die App
+          die Installationsdatei der installierten Version von GitHub herunter,
+          prüft den Fingerabdruck und installiert sich neu. Ihre Daten bleiben
+          unberührt. Gibt es keine Internetverbindung, meldet sie „Kurulum
+          eksik“ (Installation unvollständig) und öffnet die Versionsseite;
+          laden Sie dann die Installationsdatei herunter und führen Sie sie aus.
         </p>
         <h3 id="deinstallation">Deinstallation</h3>
         <ol>
@@ -1800,9 +1866,12 @@
         </ol>
         <p>
           Das Deinstallationsprogramm entfernt das Programm, die Verknüpfung im
-          Startmenü und den Eintrag „Mit Windows starten“. Den Datenordner lässt
-          es unberührt. Möchten Sie auch Datenbank, Google-Verbindung und
-          Berichte löschen, löschen Sie den Datenordner selbst.
+          Startmenü und den Eintrag „Mit Windows starten“ (auch wenn Sie ihn
+          über das Menü eingeschaltet haben) und heruntergeladene
+          Update-Dateien. Den Datenordner lässt es unberührt; das
+          Deinstallationsfenster sagt das ebenfalls. Möchten Sie auch Datenbank,
+          Google-Verbindung und Berichte löschen, löschen Sie den Datenordner
+          selbst.
         </p>
         <h3 id="wo-liegen-die-daten-und-wie-sichere-ich-sie">
           Wo liegen die Daten, und wie sichere ich sie?
@@ -1848,8 +1917,12 @@
         <h3 id="portnummer-andern">Portnummer ändern</h3>
         <p>
           Die App verwendet die Nummer 3001. Belegt ein anderes Programm diese
-          Nummer, wählt die App die erste freie zwischen 3002 und 3010. Die
-          gewählte Nummer schreibt sie in die Datei <code>config.json</code>.
+          Nummer, wählt die App die erste freie zwischen 3002 und 3010, aber nur
+          für diesen einen Start, und zeigt die Sprechblase „3001 numarası dolu,
+          3002 kullanılıyor“ (Port 3001 ist belegt, 3002 wird verwendet). Die
+          Nummer wird nicht gespeichert. Sobald 3001 wieder frei ist, verwendet
+          die App beim nächsten Start wieder 3001, weil die
+          Weiterleitungsadressen bei Google diese Nummer enthalten.
         </p>
         <p>Wenn Sie eine bestimmte Nummer möchten:</p>
         <ol>
@@ -1866,7 +1939,11 @@
 }</code></pre>
         </div>
         <ol>
-          <li>Speichern Sie die Datei und starten Sie die App.</li>
+          <li>
+            Speichern Sie die Datei und starten Sie die App. Stehen in der Datei
+            weitere Zeilen (zum Beispiel <code>autoUpdate</code>), löschen Sie
+            diese nicht; ändern Sie nur den Wert von <code>port</code>.
+          </li>
         </ol>
         <p>
           Ändert sich die Nummer, tragen Sie sie auch in den beiden
@@ -1952,12 +2029,23 @@
           <li>
             <strong
               >Das Symbol zeigt „Sunucu beklenmedik şekilde kapandı“ (Der Server
-              wurde unerwartet beendet).</strong
+              wurde unerwartet beendet) oder „Sunucu 10 dakikada üç kez kapandı“
+              (Der Server wurde in 10 Minuten dreimal beendet).</strong
             >
             Die letzten Zeilen von <code>server.log</code> nennen den Grund.
-            Versuchen Sie <strong>Yeniden başlat</strong> (Neu starten). Hilft
-            das nicht, hängen Sie das Protokoll an einen Fehlerbericht auf
-            GitHub an.
+            Versuchen Sie <strong>Yeniden başlat</strong> (Neu starten), und
+            wenn das nicht hilft, <strong>Kurulumu onar</strong> (Installation
+            reparieren). Hilft auch das nicht, wählen Sie
+            <strong>Sorunu bildir (GitHub)</strong> (Problem melden (GitHub)).
+          </li>
+          <li>
+            <strong
+              >Das Symbol zeigt „Veritabanı güncellemesi 15 dakikada bitmedi“
+              (Das Datenbank-Update war nach 15 Minuten nicht fertig).</strong
+            >
+            Möglicherweise sperrt ein anderes Programm die Datenbankdatei (ein
+            Backup- oder Synchronisierungsprogramm). Beenden Sie dieses Programm
+            und wählen Sie <strong>Yeniden başlat</strong>.
           </li>
           <li>
             <strong>Der Browser hat sich nicht geöffnet.</strong> Doppelklicken

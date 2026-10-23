@@ -1590,10 +1590,12 @@
         </p>
         <p class="callout callout-cozum">
           <strong>Soluzione:</strong> Il pacchetto Windows di norma sceglie un
-          numero libero tra 3002 e 3010. Se sono tutti occupati, scrivere un
-          altro numero nel file <code>config.json</code> della cartella dei
-          dati. Con Docker mettere un <code>.env</code> con la riga
-          <code>PORT=3002</code> e scrivere
+          numero libero tra 3002 e 3010, lo comunica con un fumetto e lo usa
+          solo per quell'avvio. Quando la 3001 torna libera, scegliere
+          <strong>Yeniden başlat</strong> e l'app torna alla 3001. Se sono tutti
+          occupati, scrivere un altro numero nel file
+          <code>config.json</code> della cartella dei dati. Con Docker mettere
+          un <code>.env</code> con la riga <code>PORT=3002</code> e scrivere
           <code>docker compose up -d --force-recreate seotracker</code>. Quando
           il numero cambia, aggiornare anche gli indirizzi di reindirizzamento
           di Google.
@@ -1626,19 +1628,22 @@
         </h2>
         <p class="callout callout-belirti">
           <strong>Sintomo:</strong> Durante l'installazione è stato chiesto il
-          permesso per Visual C++, è stato scelto <strong>Hayır</strong> (No) e
-          l'app non si è avviata.
+          permesso per Visual C++, è stato scelto <strong>Hayır</strong> (No).
+          L'installazione ha riportato &quot;Microsoft Visual C++ çalışma zamanı
+          kurulamadı&quot; (Non è stato possibile installare il runtime
+          Microsoft Visual C++).
         </p>
         <p class="callout callout-sebep">
           <strong>Causa:</strong> Il componente di Windows necessario non è
-          stato installato.
+          stato installato. Poiché l'app porta con sé una copia dei file che le
+          servono, sulla maggior parte dei computer si avvia comunque.
         </p>
         <p class="callout callout-cozum">
-          <strong>Soluzione:</strong> Fare clic con il tasto destro sull'icona
-          nella barra delle applicazioni (se non si vede, fare clic sulla
-          freccia ^). Scegliere <strong>Eksik Windows bileşenini kur</strong> e
-          questa volta dare il permesso. Oppure scaricare e installare il
-          componente da
+          <strong>Soluzione:</strong> Se l'app si è avviata, non serve fare
+          nulla. Altrimenti fare clic con il tasto destro sull'icona nella barra
+          delle applicazioni (se non si vede, fare clic sulla freccia ^).
+          Scegliere <strong>Eksik Windows bileşenini kur</strong> e questa volta
+          dare il permesso. Oppure scaricare e installare il componente da
           <code>https://aka.ms/vs/17/release/vc_redist.x64.exe</code>.
         </p>
         <h2 id="l-icona-dice-uygulamanin-motoru-coktu">
@@ -1940,9 +1945,15 @@
         <p>
           In Windows tutto è nella cartella
           <code>%LOCALAPPDATA%\seowatcher</code>: <code>data</code> (il
-          database), <code>logs\server.log</code>,
-          <code>logs\migrate.log</code>, <code>instance-secret</code>,
-          <code>mcp-token</code>, <code>config.json</code>. Le voci
+          database), <code>logs\launcher.log</code>,
+          <code>logs\server.log</code>, <code>logs\migrate.log</code>,
+          <code>instance-secret</code>, <code>mcp-token</code>,
+          <code>config.json</code>. Quando un file di registro diventa troppo
+          grande (<code>server.log</code> 5 MB, gli altri 1 MB), quello vecchio
+          resta accanto con un nome come <code>server.old.log</code> e ne inizia
+          uno nuovo. La cartella <code>logs\wrangler</code> contiene i registri
+          dettagliati del motore; i file più vecchi di 30 giorni vengono
+          eliminati automaticamente. Le voci
           <strong>Günlükleri aç</strong> (Apri i registri) e
           <strong>Veri klasörünü aç</strong> (Apri la cartella dei dati) del
           menu della barra delle applicazioni portano lì.
@@ -1976,18 +1987,60 @@
           </li>
           <li>
             <strong
-              >&quot;Kurulum eksik&quot; (Installazione incompleta).</strong
+              >&quot;seowatcher yeniden başlatılıyor&quot; (seowatcher si sta
+              riavviando).</strong
             >
-            Eseguire di nuovo il file di installazione.
+            Il server si è chiuso da solo e l'app lo sta riaprendo. Aggiornare
+            la pagina aperta dopo qualche secondo.
           </li>
           <li>
             <strong
-              >&quot;Güncelleme yapılamadı&quot; (Aggiornamento non
-              riuscito).</strong
+              >&quot;Sunucu 10 dakikada üç kez kapandı&quot; (Il server si è
+              chiuso tre volte in 10 minuti).</strong
             >
-            Controllare la connessione a Internet e riprovare dal menu con
-            <strong>Güncelle</strong> (Aggiorna). La versione installata
-            continua a funzionare.
+            L'app ha smesso di riaprirlo. Scegliere
+            <strong>Kurulumu onar</strong> e, se non basta,
+            <strong>Sorunu bildir (GitHub)</strong>.
+          </li>
+          <li>
+            <strong
+              >&quot;Kurulum eksik&quot; (Installazione incompleta).</strong
+            >
+            <strong>Kurulumu onar</strong> rimette i file mancanti scaricando il
+            file di installazione. Se non c'è internet, si apre la pagina delle
+            versioni; scaricare il file di installazione ed eseguirlo.
+          </li>
+          <li>
+            <strong
+              >&quot;3001 numarası dolu, 3002 kullanılıyor&quot; (La porta 3001
+              è occupata, si usa la 3002).</strong
+            >
+            Un altro programma occupa la 3001. Se si riceve un errore
+            collegandosi a Google, chiudere quel programma e scegliere
+            <strong>Yeniden başlat</strong>.
+          </li>
+          <li>
+            <strong
+              >&quot;Güncelleme denetlenemedi&quot; (Impossibile controllare
+              l'aggiornamento) oppure &quot;Güncelleme yapılamadı&quot;
+              (Aggiornamento non riuscito).</strong
+            >
+            Il fumetto indica il motivo. Se dice &quot;GitHub'a
+            ulaşılamadı&quot; (GitHub non raggiungibile), controllare la
+            connessione a Internet. Se dice &quot;GitHub şu an çok fazla istek
+            alıyor&quot; (GitHub sta ricevendo troppe richieste in questo
+            momento), riprovare tra un'ora. Se l'impronta non corrisponde,
+            scaricare il file di installazione dalla pagina delle versioni. In
+            ogni caso la versione installata continua a funzionare.
+          </li>
+          <li>
+            <strong
+              >&quot;Güncelleme kurulmadı&quot; (Aggiornamento non
+              installato).</strong
+            >
+            La finestra di installazione è stata chiusa oppure non è stato dato
+            il permesso di amministratore. Riprovare dal menu con
+            <strong>Güncelle</strong>.
           </li>
           <li>
             <strong

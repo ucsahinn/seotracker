@@ -2,7 +2,7 @@
 title: Troubleshooting
 description: The most common problems: symptom, cause and fix. Port in use, the Windows warning, Google errors, quota, a stuck audit, empty charts, assistant 401.
 kind: sorun-giderme
-updated: 2026-10-22
+updated: 2026-10-23
 ---
 
 The app's interface is in Turkish. This guide gives every button and screen name in Turkish, with its English meaning in brackets.
@@ -23,7 +23,7 @@ This guide covers what to do when something does not work. First, check the "Kur
 
 **Cause:** Another program is using the same port number.
 
-**Fix:** The Windows package normally picks a free number between 3002 and 3010. If they are all in use, write a different number in the `config.json` file in the data folder. On Docker, create a `.env` file with the line `PORT=3002` and run `docker compose up -d --force-recreate seotracker`. When the number changes, update the Google redirect addresses too.
+**Fix:** The Windows package normally picks a free number between 3002 and 3010, tells you in a balloon, and uses it only for that one start. When 3001 is free again, choose **Yeniden başlat** and the app returns to 3001. If they are all in use, write a different number in the `config.json` file in the data folder. On Docker, create a `.env` file with the line `PORT=3002` and run `docker compose up -d --force-recreate seotracker`. When the number changes, update the Google redirect addresses too.
 
 ## The icon says "Windows bileşeni eksik"
 
@@ -35,11 +35,11 @@ This guide covers what to do when something does not work. First, check the "Kur
 
 ## Administrator permission was refused
 
-**Symptom:** The installer asked for permission to install Visual C++, you clicked No, and the app does not start.
+**Symptom:** The installer asked for permission to install Visual C++, you clicked No. The installer said "Microsoft Visual C++ çalışma zamanı kurulamadı" (The Microsoft Visual C++ runtime could not be installed).
 
-**Cause:** The Visual C++ component was not installed.
+**Cause:** The Visual C++ component was not installed. Because the app carries a copy of the files it needs, it still starts on most computers.
 
-**Fix:** In the tray menu, choose **Eksik Windows bileşenini kur** (Install the missing Windows component) and allow it this time. If the icon is not visible, click the ^ arrow on the taskbar. Or install the component yourself from `https://aka.ms/vs/17/release/vc_redist.x64.exe`.
+**Fix:** If the app started, you do not need to do anything. If it did not, in the tray menu, choose **Eksik Windows bileşenini kur** (Install the missing Windows component) and allow it this time. If the icon is not visible, click the ^ arrow on the taskbar. Or install the component yourself from `https://aka.ms/vs/17/release/vc_redist.x64.exe`.
 
 ## The icon says "Uygulamanın motoru çöktü"
 
@@ -163,7 +163,7 @@ This guide covers what to do when something does not work. First, check the "Kur
 
 ## Where are my data and logs?
 
-On Windows, everything is in the `%LOCALAPPDATA%\seowatcher` folder: `data` (the database), `logs\server.log`, `logs\migrate.log`, `instance-secret`, `mcp-token`, `config.json`. **Günlükleri aç** (Open logs) and **Veri klasörünü aç** (Open data folder) in the taskbar menu take you there.
+On Windows, everything is in the `%LOCALAPPDATA%\seowatcher` folder: `data` (the database), `logs\launcher.log`, `logs\server.log`, `logs\migrate.log`, `instance-secret`, `mcp-token`, `config.json`. When a log file grows too large (`server.log` 5 MB, the others 1 MB), the old one stays beside it under a name like `server.old.log` and a new one starts from the beginning. The `logs\wrangler` folder holds the engine's own detailed logs; files older than 30 days are deleted automatically. **Günlükleri aç** (Open logs) and **Veri klasörünü aç** (Open data folder) in the taskbar menu take you there.
 
 On Docker, the data is in the `seotracker_data` volume (`/app/.wrangler`). You see the logs with the `docker compose logs -f` command.
 
@@ -174,8 +174,12 @@ When you report a problem, press the **Tanılama paketi indir** (Download diagno
 These messages appear on the Windows icon or in a dialog. The Windows launcher is the small program that starts the app.
 
 - **"Sunucu 120 saniyede yanıt vermedi"** (The server did not answer within 120 seconds): choose **Yeniden başlat** (Restart). If that fails, choose **Günlükleri aç** (Open logs) and read `server.log`.
-- **"Kurulum eksik"** (Installation incomplete): run the installer again.
-- **"Güncelleme yapılamadı"** (Update failed): check your connection and retry from **Güncelle** (Update). The installed version keeps running.
+- **"seowatcher yeniden başlatılıyor"** (seowatcher is restarting): the server closed by itself and the app is reopening it. Refresh the open page after a few seconds.
+- **"Sunucu 10 dakikada üç kez kapandı"** (The server closed three times in 10 minutes): the app has stopped reopening it. Choose **Kurulumu onar**, and if that does not help, **Sorunu bildir (GitHub)**.
+- **"Kurulum eksik"** (Installation incomplete): **Kurulumu onar** puts the missing files back by downloading the installer. If there is no internet, the releases page opens; download the installer and run it.
+- **"3001 numarası dolu, 3002 kullanılıyor"** (Port 3001 is in use, using 3002): another program holds 3001. If you get an error when connecting to Google, close that program and choose **Yeniden başlat**.
+- **"Güncelleme denetlenemedi"** (The update could not be checked) or **"Güncelleme yapılamadı"** (Update failed): the balloon gives the reason. If it says "GitHub'a ulaşılamadı" (GitHub could not be reached), check your internet connection. If it says "GitHub şu an çok fazla istek alıyor" (GitHub is getting too many requests right now), try again in an hour. If the fingerprint did not match, download the installer from the releases page. In every case the installed version keeps running.
+- **"Güncelleme kurulmadı"** (The update was not installed): the installer window was closed, or administrator permission was not given. Try again from **Güncelle** in the menu.
 - **"Windows bileşeni kurulamadı"** (The Windows component could not be installed): choose **Eksik Windows bileşenini kur** (Install the missing Windows component) from the menu.
 
 <!-- Kaynaklar: src/routes/_app/support.tsx; src/client/features/support/CommonProblems.tsx; SetupStatusPanel.tsx; DiagnosticsBundleButton.tsx; src/client/features/integrations/googleAuthErrorCopy.ts; src/server/features/audit/services/auditReconciler.ts; src/server/features/gsc/indexCoverage.ts; src/server/features/ga4/services/Ga4ReportEnhancements.ts; packaging/windows/launcher/SeoWatcher.cs; docs/SELF_HOSTING_DOCKER.md; README.md -->

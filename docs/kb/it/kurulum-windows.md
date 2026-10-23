@@ -2,7 +2,7 @@
 title: Installazione su Windows
 description: Si installa su Windows con un solo file, senza Docker né terminale. Nella stessa pagina: aggiornamento, disinstallazione, copia di sicurezza, porta.
 kind: nasil-yapilir
-updated: 2026-10-22
+updated: 2026-10-23
 ---
 
 L'interfaccia dell'app è in turco. In questa guida ogni nome di pulsante e di schermata è riportato in turco, con il significato italiano tra parentesi.
@@ -37,33 +37,38 @@ Il passaggio successivo è la guida al collegamento con Google.
 
 ### Menu della barra delle applicazioni
 
-Fare clic con il tasto destro sull'icona. Se non si vede, fare clic sulla freccia ^ nella barra delle applicazioni. Nel menu ci sono queste voci:
+Fare clic con il tasto destro sull'icona. Se non si vede, fare clic sulla freccia ^ nella barra delle applicazioni. Il menu è diviso in quattro parti. In alto ci sono l'apertura dell'app e la riga di stato, poi l'aggiornamento e il riavvio, poi due impostazioni, e in fondo le voci per la risoluzione dei problemi.
 
-- **seowatcher'ı aç** (Apri seowatcher): apre l'app nel browser. Un doppio clic sull'icona fa la stessa cosa.
-- **Yeniden başlat** (Riavvia): chiude e riapre l'app. Se qualcosa si blocca, provare prima questa voce.
+- **seowatcher'ı aç** (Apri seowatcher): apre l'app nel browser. Un doppio clic sull'icona fa lo stesso. Se l'app si sta ancora avviando, compare il fumetto "seowatcher açılıyor" (seowatcher si sta avviando) e il browser si apre da solo quando è pronta.
+- Riga di stato: "Çalışıyor: http://127.0.0.1:3001/" (In esecuzione: http://127.0.0.1:3001/), "Veritabanı güncelleniyor" (Aggiornamento del database) oppure un messaggio di errore. Non si può fare clic. Se il testo è lungo, tenere il mouse sopra per vederlo per intero.
+- **Eksik Windows bileşenini kur** (Installa il componente Windows mancante): compare solo se manca il pacchetto Visual C++. Un clic installa il pacchetto e riavvia l'app.
+- **Güncelle** (Aggiorna): è sempre nel menu. Un clic controlla subito GitHub. Se c'è una nuova versione la scarica e la installa, altrimenti dice "Güncel" (Aggiornato). Durante il controllo la voce riporta "Kontrol ediliyor…" (Controllo in corso…), durante lo scaricamento "Güncelleme indiriliyor: X.Y.Z (%45)" (Scaricamento dell'aggiornamento: X.Y.Z (45%)); in quel momento non si può fare clic. Quando una nuova versione è già stata trovata, la voce riporta "Güncelle: X.Y.Z sürümü hazır" (Aggiorna: la versione X.Y.Z è pronta); i numeri di versione sono esempi.
+- **Yeniden başlat** (Riavvia): chiude l'app e la riapre. Se qualcosa si blocca, provare prima questa voce.
+- **Windows açılınca başlat** (Avvia all'avvio di Windows): se è spuntata, l'app parte in secondo piano all'accensione del computer. Se un amministratore ha attivato questa impostazione durante un'installazione per tutti gli utenti del computer, la voce è spuntata e disattivata (grigia), e solo un amministratore può toglierla.
+- **Güncellemeleri kendiliğinden kur** (Installa gli aggiornamenti automaticamente): se è spuntata, l'app installa da sola una nuova versione quando ne trova una.
+- **Kurulumu onar** (Ripara l'installazione): elimina i file temporanei, controlla che il pacchetto sia completo e riapre l'app. Durante la riparazione la voce riporta "Onarılıyor…" (Riparazione in corso…).
+- **Tanı bilgisini kopyala** (Copia le informazioni di diagnostica): copia negli appunti la versione di Windows, il processore, la versione di Visual C++, una prova del motore, il modulo difettoso del registro eventi di Windows, i file di dump dei crash e le ultime righe del registro. Le informazioni sono pronte in pochi secondi, poi compare il fumetto "Kopyalandı" (Copiato). Torna utile quando si segnala un problema.
+- **Sorunu bildir (GitHub)** (Segnala un problema (GitHub)): mette le stesse informazioni negli appunti e apre su GitHub una segnalazione già compilata. Aggiungere una frase su ciò che si stava facendo e inviarla.
 - **Günlükleri aç** (Apri i registri): apre la cartella dei registri. Contiene `launcher.log`, `server.log` e `migrate.log`.
-- **Tanı bilgisini kopyala** (Copia le informazioni diagnostiche): copia negli appunti la versione di Windows, il processore, la versione di Visual C++, l'esito di un test del motore, il modulo che ha dato errore nel registro eventi di Windows, i file di dump degli arresti anomali e le ultime righe dei registri.
-- **Sorunu bildir (GitHub)** (Segnala un problema su GitHub): copia le stesse informazioni negli appunti e apre su GitHub una segnalazione già compilata. Aggiungere una frase su ciò che si stava facendo e inviare.
-- **Eksik Windows bileşenini kur** (Installa il componente di Windows mancante): compare solo se manca il pacchetto Visual C++. Con un clic installa il pacchetto e riavvia l'app.
-- **Kurulumu onar** (Ripara l'installazione): elimina i file temporanei, controlla il pacchetto e riapre l'app.
-- **Güncelle** (Aggiorna): è sempre presente nel menu. Con un clic controlla subito GitHub; se c'è una versione nuova la scarica e la installa, altrimenti risponde "Güncel" (Aggiornato). Se una versione nuova è già stata trovata, la voce diventa "Güncelle: X.Y.Z sürümü hazır" (Aggiorna: versione X.Y.Z pronta); il numero di versione è un esempio.
-- **Güncellemeleri kendiliğinden kur** (Installa gli aggiornamenti automaticamente): se è spuntata, la nuova versione viene installata da sola quando è trovata.
-- **Veri klasörünü aç** (Apri la cartella dei dati): apre la cartella del database e delle chiavi.
-- **Windows açılınca başlat** (Avvia all'avvio di Windows): se è spuntata, l'app parte in secondo piano all'accensione del computer.
-- **Çıkış** (Esci): chiude l'app del tutto. Con l'app chiusa, la pagina nel browser non funziona.
+- **Veri klasörünü aç** (Apri la cartella dei dati): apre la cartella con il database e le chiavi.
+- Numero di versione: la versione installata. Non si può fare clic.
+- **Çıkış** (Esci): chiude completamente l'app. Finché è chiusa, la pagina nel browser non funziona.
 
-Nel menu compaiono anche una riga di stato ("Çalışıyor: http://127.0.0.1:3001/" (In funzione) oppure il testo di un errore) e il numero di versione.
+Se si avvia l'app una seconda volta (dal menu Start o dal collegamento sul desktop), non si apre una seconda copia. L'app già aperta apre la pagina nel browser; se non è ancora pronta, la apre appena lo è.
 
-Se si avvia l'app una seconda volta, non si apre una nuova copia: si apre soltanto la pagina nel browser.
+Se il server si chiude da solo mentre è in esecuzione, l'app lo riapre e mostra il fumetto "seowatcher yeniden başlatılıyor" (seowatcher si sta riavviando). Se si chiude tre volte in dieci minuti, l'app smette di riaprirlo e la riga di stato riporta "Sunucu 10 dakikada üç kez kapandı" (Il server si è chiuso tre volte in 10 minuti). In quel caso scegliere **Kurulumu onar**.
 
 ### Aggiornamento
 
-L'app si aggiorna da sola. Due minuti dopo l'avvio, e poi una volta al giorno, controlla su GitHub l'ultima versione. Se ce n'è una nuova, la scarica, confronta l'impronta del file (SHA-256) con il valore indicato nella pagina della versione, la installa in silenzio e si riapre. In quel momento il testo dell'icona diventa "Güncelleme indiriliyor" (Download dell'aggiornamento) e "Güncelleme kuruluyor" (Installazione dell'aggiornamento). Anche la sezione **Ayarlar → Hakkında** (Impostazioni → Informazioni) dell'app segnala la nuova versione e rimanda a **Güncelle** (Aggiorna) nell'icona.
+L'app si aggiorna da sola. Due minuti dopo l'apertura, e poi una volta al giorno, controlla su GitHub l'ultima versione. Se ce n'è una nuova, la scarica, confronta l'impronta del file (SHA-256) con il valore indicato nella pagina delle versioni, la installa in silenzio e si riapre. In questa fase il testo dell'icona riporta "Güncelleme indiriliyor" (Scaricamento dell'aggiornamento) e "Güncelleme kuruluyor" (Installazione dell'aggiornamento), e per un attimo compare una piccola finestra di installazione. Quando l'app si riapre, compare il fumetto "seowatcher X.Y.Z sürümüne güncellendi" (seowatcher è stato aggiornato alla versione X.Y.Z); un clic apre l'elenco delle novità. Anche la sezione **Ayarlar → Hakkında** (Impostazioni → Informazioni) dell'app segnala la nuova versione e rimanda alla voce **Güncelle** dell'icona.
 
-- Se non si vuole l'installazione automatica, togliere la spunta da **Güncellemeleri kendiliğinden kur** nel menu. Quando esce una versione nuova compare un fumetto e nel menu appare la voce **Güncelle**.
-- Per aggiornare a mano, scaricare dallo stesso indirizzo il nuovo file di installazione ed eseguirlo. La procedura guidata chiude da sé l'app aperta, sostituisce i file e la riavvia.
+- Se non si vuole che si installi da sola, togliere la spunta a **Güncellemeleri kendiliğinden kur** nel menu. Quando esce una nuova versione si vede allora un fumetto una sola volta, e la voce del menu riporta "Güncelle: X.Y.Z sürümü hazır" (Aggiorna: la versione X.Y.Z è pronta). Per installare, fare clic sul fumetto o sulla voce.
+- Se non c'è internet, o GitHub in quel momento non risponde, l'app riprova dopo un'ora. Nei tentativi automatici avvisa una sola volta per ogni versione.
+- Se l'impronta del file scaricato non corrisponde, l'aggiornamento non viene installato e la versione installata continua a funzionare.
+- Un'installazione per tutti gli utenti del computer richiede i permessi di amministratore per aggiornarsi, perciò lì l'app non si installa da sola. Quando esce una nuova versione si vede un fumetto; facendo clic, Windows chiede il permesso di amministratore.
+- Per aggiornare a mano, scaricare dallo stesso indirizzo il nuovo file di installazione ed eseguirlo. La procedura guidata chiude da sé l'app aperta, sostituisce i file e la riavvia. La casella **Windows açılınca seowatcher'ı başlat** (Avvia seowatcher all'avvio di Windows) della procedura mostra l'impostazione attuale del menu.
 
-I dati, il collegamento con Google e le impostazioni restano come sono.
+I dati, il collegamento con Google e le impostazioni restano come sono. Un aggiornamento automatico non tocca l'impostazione **Windows açılınca başlat**.
 
 ### Distribuzione aziendale
 
@@ -77,14 +82,16 @@ Note per i team IT che vogliono installare per tutti gli utenti di un computer o
 
 ### Riparazione
 
-Se qualcosa si blocca, fare clic con il tasto destro sull'icona e scegliere **Kurulumu onar** (Ripara l'installazione); se l'icona non si vede, fare clic sulla freccia ^ nella barra delle applicazioni. L'app elimina i file temporanei, controlla che il pacchetto sia completo, ricontrolla il database e si apre. Se manca un file, lo segnala e apre la pagina delle versioni. Basta eseguire di nuovo il file di installazione.
+Se qualcosa si blocca, fare clic con il tasto destro sull'icona e scegliere **Kurulumu onar** (Ripara l'installazione); se l'icona non si vede, fare clic sulla freccia ^ nella barra delle applicazioni. L'app elimina i file temporanei e controlla che il pacchetto sia completo. Poi, aprendosi, esegue di nuovo l'aggiornamento del database.
+
+Se un file del pacchetto è stato eliminato (per esempio messo in quarantena da un antivirus), l'app scarica da GitHub il file di installazione della versione installata, ne verifica l'impronta e si reinstalla. I dati non vengono toccati. Se non c'è internet, riporta "Kurulum eksik" (Installazione incompleta) e apre la pagina delle versioni. Basta allora scaricare il file di installazione ed eseguirlo.
 
 ### Disinstallazione
 
 1. In Windows, nell'elenco **Ayarlar → Uygulamalar → Yüklü uygulamalar** (Impostazioni → App → App installate), cercare **seowatcher**.
 2. Scegliere **Kaldır** (Disinstalla).
 
-Il programma di disinstallazione elimina il programma, il collegamento nel menu Start e la voce "avvia con Windows". Non tocca la cartella dei dati. Per eliminare anche il database, il collegamento con Google e i report, cancellare a mano la cartella dei dati.
+Il programma di disinstallazione elimina il programma, il collegamento nel menu Start la voce "avvia con Windows" (anche se è stata attivata dal menu) e i file di aggiornamento scaricati. Non tocca la cartella dei dati, e la finestra di disinstallazione lo dice. Per eliminare anche il database, il collegamento con Google e i report, cancellare a mano la cartella dei dati.
 
 ### Dove sono i dati e come si fa la copia di sicurezza
 
@@ -104,7 +111,7 @@ Per ripristinare, chiudere l'app, rimettere la cartella al suo posto e avviare l
 
 ### Cambiare il numero di porta
 
-L'app usa il numero 3001. Se un altro programma lo occupa, l'app sceglie il primo numero libero tra 3002 e 3010 e lo scrive nel file `config.json`.
+L'app usa il numero 3001. Se un altro programma lo occupa, l'app sceglie il primo numero libero tra 3002 e 3010 solo per quell'avvio e mostra il fumetto "3001 numarası dolu, 3002 kullanılıyor" (La porta 3001 è occupata, si usa la 3002). Non salva questo numero. Quando la 3001 torna libera, all'avvio successivo l'app usa di nuovo la 3001, perché gli indirizzi di reindirizzamento su Google contengono questo numero.
 
 Per un numero preciso:
 
@@ -118,7 +125,7 @@ Per un numero preciso:
 }
 ```
 
-4. Salvare e avviare l'app.
+4. Salvare e avviare l'app. Se nel file ci sono altre righe (come `autoUpdate`), non cancellarle; cambiare solo il valore di `port`.
 
 Quando il numero cambia, aggiornare con il nuovo numero anche i due indirizzi di reindirizzamento su Google. Sono descritti nella guida al collegamento con Google.
 
@@ -146,7 +153,8 @@ Se l'icona non si vede, fare clic sulla freccia ^ nella barra delle applicazioni
 
 - **L'icona dice "Hata: 3001 ve sonraki 9 adres numarası (port) dolu" (Errore: la porta 3001 e le 9 successive sono occupate).** Un altro programma occupa questi numeri. Scrivere un altro numero nel file `config.json`.
 - **L'icona dice "Veritabanı güncellemesi başarısız" (Aggiornamento del database non riuscito).** Scegliere **Günlükleri aç** e guardare le ultime righe del file `migrate.log`. Spesso il disco è pieno oppure la cartella è di sola lettura.
-- **L'icona dice "Sunucu beklenmedik şekilde kapandı" (Il server si è chiuso in modo imprevisto).** Le ultime righe di `server.log` ne indicano la causa. Provare **Yeniden başlat**. Se non si risolve, condividere il registro con una segnalazione su GitHub.
+- **L'icona dice "Sunucu beklenmedik şekilde kapandı" (Il server si è chiuso in modo imprevisto) oppure "Sunucu 10 dakikada üç kez kapandı" (Il server si è chiuso tre volte in 10 minuti).** Le ultime righe di `server.log` ne indicano la causa. Provare **Yeniden başlat** e, se non basta, **Kurulumu onar**. Se non si risolve nemmeno così, scegliere **Sorunu bildir (GitHub)**.
+- **L'icona dice "Veritabanı güncellemesi 15 dakikada bitmedi" (L'aggiornamento del database non è terminato in 15 minuti).** Un altro programma potrebbe aver bloccato il file del database (un programma di backup o di sincronizzazione). Fermare quel programma e scegliere **Yeniden başlat**.
 - **Il browser non si è aperto.** Fare doppio clic sull'icona oppure scrivere a mano l'indirizzo: `http://127.0.0.1:3001`
 
 <!-- Kaynaklar: packaging/windows/README.md; packaging/windows/launcher/SeoWatcher.cs (menü, port seçimi, dosyalar); packaging/windows/seowatcher.iss (kurulum yeri, görevler, kaldırma); .github/workflows/release-windows.yml (SHA256SUMS) -->

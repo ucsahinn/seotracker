@@ -1562,11 +1562,13 @@
         </p>
         <p class="callout callout-cozum">
           <strong>Lösung:</strong> Das Windows-Paket wählt normalerweise eine
-          freie Nummer zwischen 3002 und 3010. Sind alle belegt, schreiben Sie
-          eine andere Nummer in die Datei <code>config.json</code> im
-          Datenordner. Legen Sie bei Docker eine <code>.env</code> mit der Zeile
-          <code>PORT=3002</code> an und geben Sie
-          <code>docker compose up -d --force-recreate seotracker</code> ein.
+          freie Nummer zwischen 3002 und 3010, nennt sie in einer Sprechblase
+          und nutzt sie nur für diesen einen Start. Ist 3001 wieder frei, wählen
+          Sie <strong>Yeniden başlat</strong>, und die App kehrt zu 3001 zurück.
+          Sind alle belegt, schreiben Sie eine andere Nummer in die Datei
+          <code>config.json</code> im Datenordner. Legen Sie bei Docker eine
+          <code>.env</code> mit der Zeile <code>PORT=3002</code> an und geben
+          Sie <code>docker compose up -d --force-recreate seotracker</code> ein.
           Ändert sich die Nummer, aktualisieren Sie auch die
           Weiterleitungsadressen bei Google.
         </p>
@@ -1598,18 +1600,22 @@
         </h2>
         <p class="callout callout-belirti">
           <strong>Symptom:</strong> Bei der Installation wurde für Visual C++ um
-          Erlaubnis gebeten, Sie haben <strong>Hayır</strong> (Nein) gewählt,
-          und die App ist nicht gestartet.
+          Erlaubnis gebeten, Sie haben <strong>Hayır</strong> (Nein) gewählt.
+          Die Installation meldete „Microsoft Visual C++ çalışma zamanı
+          kurulamadı“ (Die Microsoft-Visual-C++-Laufzeit konnte nicht
+          installiert werden).
         </p>
         <p class="callout callout-sebep">
           <strong>Ursache:</strong> Die benötigte Windows-Komponente konnte
-          nicht installiert werden.
+          nicht installiert werden. Da die App eine Kopie der nötigen Dateien
+          mitbringt, startet sie auf den meisten Computern trotzdem.
         </p>
         <p class="callout callout-cozum">
-          <strong>Lösung:</strong> Klicken Sie mit der rechten Maustaste auf das
-          Symbol in der Taskleiste (ist es nicht zu sehen, klicken Sie auf den
-          Pfeil ^). Wählen Sie <strong>Eksik Windows bileşenini kur</strong> und
-          erlauben Sie es diesmal. Oder laden Sie die Komponente von
+          <strong>Lösung:</strong> Ist die App gestartet, müssen Sie nichts tun.
+          Wenn nicht, klicken Sie mit der rechten Maustaste auf das Symbol in
+          der Taskleiste (ist es nicht zu sehen, klicken Sie auf den Pfeil ^).
+          Wählen Sie <strong>Eksik Windows bileşenini kur</strong> und erlauben
+          Sie es diesmal. Oder laden Sie die Komponente von
           <code>https://aka.ms/vs/17/release/vc_redist.x64.exe</code> herunter
           und installieren Sie sie.
         </p>
@@ -1927,11 +1933,18 @@
         <p>
           Unter Windows liegt alles im Ordner
           <code>%LOCALAPPDATA%\seowatcher</code>: <code>data</code> (Datenbank),
-          <code>logs\server.log</code>, <code>logs\migrate.log</code>,
-          <code>instance-secret</code>, <code>mcp-token</code>,
-          <code>config.json</code>. <strong>Günlükleri aç</strong> (Protokolle
-          öffnen) und <strong>Veri klasörünü aç</strong> (Datenordner öffnen) im
-          Menü der Taskleiste führen dorthin.
+          <code>logs\launcher.log</code>, <code>logs\server.log</code>,
+          <code>logs\migrate.log</code>, <code>instance-secret</code>,
+          <code>mcp-token</code>, <code>config.json</code>. Wird eine
+          Protokolldatei zu groß (<code>server.log</code> 5 MB, die übrigen 1
+          MB), bleibt die alte Datei unter einem Namen wie
+          <code>server.old.log</code> daneben liegen, und eine neue beginnt von
+          vorn. Im Ordner <code>logs\wrangler</code> liegen die ausführlichen
+          Protokolle des Programmkerns; Dateien, die älter als 30 Tage sind,
+          werden automatisch gelöscht.
+          <strong>Günlükleri aç</strong> (Protokolle öffnen) und
+          <strong>Veri klasörünü aç</strong> (Datenordner öffnen) im Menü der
+          Taskleiste führen dorthin.
         </p>
         <p>
           Bei Docker liegen die Daten im Datenspeicher
@@ -1963,16 +1976,60 @@
             letzten Zeilen von <code>server.log</code> an.
           </li>
           <li>
-            <strong>„Kurulum eksik“ (Installation unvollständig).</strong>
-            Führen Sie die Installationsdatei erneut aus.
+            <strong
+              >„seowatcher yeniden başlatılıyor“ (seowatcher wird neu
+              gestartet).</strong
+            >
+            Der Server hat sich von selbst beendet, und die App startet ihn neu.
+            Laden Sie die geöffnete Seite nach einigen Sekunden neu.
           </li>
           <li>
             <strong
-              >„Güncelleme yapılamadı“ (Das Update war nicht möglich).</strong
+              >„Sunucu 10 dakikada üç kez kapandı“ (Der Server wurde in 10
+              Minuten dreimal beendet).</strong
             >
-            Prüfen Sie Ihre Internetverbindung und versuchen Sie es im Menü mit
-            <strong>Güncelle</strong> (Aktualisieren) noch einmal. Die
-            installierte Version läuft weiter.
+            Die App startet ihn nicht mehr neu. Wählen Sie
+            <strong>Kurulumu onar</strong>, und wenn das nicht hilft,
+            <strong>Sorunu bildir (GitHub)</strong>.
+          </li>
+          <li>
+            <strong>„Kurulum eksik“ (Installation unvollständig).</strong>
+            <strong>Kurulumu onar</strong> legt fehlende Dateien zurück, indem
+            es die Installationsdatei herunterlädt. Ohne Internetverbindung
+            öffnet sich die Versionsseite; laden Sie die Installationsdatei
+            herunter und führen Sie sie aus.
+          </li>
+          <li>
+            <strong
+              >„3001 numarası dolu, 3002 kullanılıyor“ (Port 3001 ist belegt,
+              3002 wird verwendet).</strong
+            >
+            Ein anderes Programm belegt 3001. Erhalten Sie beim Verbinden mit
+            Google einen Fehler, beenden Sie dieses Programm und wählen Sie
+            <strong>Yeniden başlat</strong>.
+          </li>
+          <li>
+            <strong
+              >„Güncelleme denetlenemedi“ (Das Update konnte nicht geprüft
+              werden) oder „Güncelleme yapılamadı“ (Das Update war nicht
+              möglich).</strong
+            >
+            Die Sprechblase nennt den Grund. Heißt es „GitHub'a ulaşılamadı“
+            (GitHub war nicht erreichbar), prüfen Sie Ihre Internetverbindung.
+            Heißt es „GitHub şu an çok fazla istek alıyor“ (GitHub erhält gerade
+            zu viele Anfragen), versuchen Sie es in einer Stunde noch einmal.
+            Stimmt der Fingerabdruck nicht, laden Sie die Installationsdatei von
+            der Versionsseite herunter. In jedem Fall läuft die installierte
+            Version weiter.
+          </li>
+          <li>
+            <strong
+              >„Güncelleme kurulmadı“ (Das Update wurde nicht
+              installiert).</strong
+            >
+            Das Installationsfenster wurde geschlossen, oder die
+            Administratorerlaubnis wurde nicht erteilt. Versuchen Sie es im Menü
+            mit <strong>Güncelle</strong> noch einmal.
           </li>
           <li>
             <strong

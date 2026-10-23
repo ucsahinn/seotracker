@@ -2,7 +2,7 @@
 title: Solução de problemas
 description: Problemas mais comuns, com sintoma, causa e solução: porta em uso, aviso do Windows, erros do Google, cota, auditoria travada, gráficos vazios, erro 401.
 kind: sorun-giderme
-updated: 2026-10-22
+updated: 2026-10-23
 ---
 
 A interface do aplicativo está em turco. Este guia mostra cada botão e cada nome de tela em turco, com o significado em português entre parênteses.
@@ -23,7 +23,7 @@ Esta página diz, em poucas palavras, o que fazer quando algo não funciona. Pri
 
 **Causa:** Outro programa está usando o mesmo número de porta.
 
-**Solução:** O pacote Windows normalmente escolhe um número livre entre 3002 e 3010. Se todos estiverem em uso, escreva outro número no arquivo `config.json` da pasta de dados. No Docker, crie um arquivo `.env` com a linha `PORT=3002` e execute `docker compose up -d --force-recreate seotracker`. Quando o número muda, atualize também os endereços de redirecionamento do Google.
+**Solução:** O pacote Windows normalmente escolhe um número livre entre 3002 e 3010, avisa com um balão e o usa só nessa inicialização. Quando a 3001 ficar livre, escolha **Yeniden başlat** e o aplicativo volta à 3001. Se todos estiverem em uso, escreva outro número no arquivo `config.json` da pasta de dados. No Docker, crie um arquivo `.env` com a linha `PORT=3002` e execute `docker compose up -d --force-recreate seotracker`. Quando o número muda, atualize também os endereços de redirecionamento do Google.
 
 ## O ícone diz "Windows bileşeni eksik"
 
@@ -35,11 +35,11 @@ Esta página diz, em poucas palavras, o que fazer quando algo não funciona. Pri
 
 ## A permissão de administrador foi recusada
 
-**Sintoma:** O instalador pediu permissão para instalar o Visual C++, você clicou em Não e o aplicativo não inicia.
+**Sintoma:** O instalador pediu permissão para instalar o Visual C++, você clicou em Não. O instalador avisou "Microsoft Visual C++ çalışma zamanı kurulamadı" (Não foi possível instalar o runtime do Microsoft Visual C++).
 
-**Causa:** O componente Visual C++ não foi instalado.
+**Causa:** O componente Visual C++ não foi instalado. Como o aplicativo traz uma cópia dos arquivos de que precisa, ele inicia mesmo assim na maioria dos computadores.
 
-**Solução:** No menu da bandeja, escolha **Eksik Windows bileşenini kur** (Instalar o componente do Windows que falta) e permita desta vez. Se o ícone não aparecer, clique na seta ^ da barra de tarefas. Ou instale você mesmo o componente em `https://aka.ms/vs/17/release/vc_redist.x64.exe`.
+**Solução:** Se o aplicativo iniciou, você não precisa fazer nada. Se não, no menu da bandeja, escolha **Eksik Windows bileşenini kur** (Instalar o componente do Windows que falta) e permita desta vez. Se o ícone não aparecer, clique na seta ^ da barra de tarefas. Ou instale você mesmo o componente em `https://aka.ms/vs/17/release/vc_redist.x64.exe`.
 
 ## O ícone diz "Uygulamanın motoru çöktü"
 
@@ -163,7 +163,7 @@ Esta página diz, em poucas palavras, o que fazer quando algo não funciona. Pri
 
 ## Onde estão os meus dados e os registros?
 
-No Windows, tudo fica na pasta `%LOCALAPPDATA%\seowatcher`: `data` (o banco de dados), `logs\server.log`, `logs\migrate.log`, `instance-secret`, `mcp-token`, `config.json`. **Günlükleri aç** (Abrir os registros) e **Veri klasörünü aç** (Abrir a pasta de dados), no menu da barra de tarefas, levam você até lá.
+No Windows, tudo fica na pasta `%LOCALAPPDATA%\seowatcher`: `data` (o banco de dados), `logs\launcher.log`, `logs\server.log`, `logs\migrate.log`, `instance-secret`, `mcp-token`, `config.json`. Quando um arquivo de registro cresce demais (`server.log` 5 MB, os outros 1 MB), o antigo fica ao lado com um nome como `server.old.log` e um novo começa do zero. A pasta `logs\wrangler` guarda os registros detalhados do motor; arquivos com mais de 30 dias são apagados automaticamente. **Günlükleri aç** (Abrir os registros) e **Veri klasörünü aç** (Abrir a pasta de dados), no menu da barra de tarefas, levam você até lá.
 
 No Docker, os dados estão no volume `seotracker_data` (`/app/.wrangler`). Você vê os registros com o comando `docker compose logs -f`.
 
@@ -174,8 +174,12 @@ Ao relatar um problema, clique no botão **Tanılama paketi indir** (Baixar o pa
 Estas mensagens aparecem no ícone do Windows ou em uma caixa de diálogo. O iniciador do Windows é o pequeno programa que inicia o aplicativo.
 
 - **"Sunucu 120 saniyede yanıt vermedi"** (O servidor não respondeu em 120 segundos): escolha **Yeniden başlat** (Reiniciar). Se falhar, escolha **Günlükleri aç** (Abrir os registros) e leia o `server.log`.
-- **"Kurulum eksik"** (Instalação incompleta): execute o instalador de novo.
-- **"Güncelleme yapılamadı"** (A atualização falhou): confira a sua conexão e tente de novo em **Güncelle** (Atualizar). A versão instalada continua funcionando.
+- **"seowatcher yeniden başlatılıyor"** (o seowatcher está reiniciando): o servidor fechou sozinho e o aplicativo o está reabrindo. Atualize a página aberta depois de alguns segundos.
+- **"Sunucu 10 dakikada üç kez kapandı"** (O servidor fechou três vezes em 10 minutos): o aplicativo parou de reabri-lo. Escolha **Kurulumu onar** e, se não resolver, **Sorunu bildir (GitHub)**.
+- **"Kurulum eksik"** (Instalação incompleta): **Kurulumu onar** devolve os arquivos que faltam baixando o instalador. Se não houver internet, a página de versões abre; baixe o instalador e execute-o.
+- **"3001 numarası dolu, 3002 kullanılıyor"** (A porta 3001 está em uso, usando a 3002): outro programa está usando a 3001. Se você receber um erro ao conectar ao Google, feche esse programa e escolha **Yeniden başlat**.
+- **"Güncelleme denetlenemedi"** (Não foi possível verificar a atualização) ou **"Güncelleme yapılamadı"** (A atualização falhou): o balão diz o motivo. Se disser "GitHub'a ulaşılamadı" (não foi possível acessar o GitHub), confira a sua conexão com a internet. Se disser "GitHub şu an çok fazla istek alıyor" (o GitHub está recebendo requisições demais agora), tente de novo em uma hora. Se a impressão digital não coincidir, baixe o instalador na página de versões. Em qualquer caso, a versão instalada continua funcionando.
+- **"Güncelleme kurulmadı"** (A atualização não foi instalada): a janela de instalação foi fechada ou a permissão de administrador não foi dada. Tente de novo em **Güncelle** no menu.
 - **"Windows bileşeni kurulamadı"** (Não foi possível instalar o componente do Windows): escolha **Eksik Windows bileşenini kur** (Instalar o componente do Windows que falta) no menu.
 
 <!-- Kaynaklar: src/routes/_app/support.tsx; src/client/features/support/CommonProblems.tsx; SetupStatusPanel.tsx; DiagnosticsBundleButton.tsx; src/client/features/integrations/googleAuthErrorCopy.ts; src/server/features/audit/services/auditReconciler.ts; src/server/features/gsc/indexCoverage.ts; src/server/features/ga4/services/Ga4ReportEnhancements.ts; packaging/windows/launcher/SeoWatcher.cs; docs/SELF_HOSTING_DOCKER.md; README.md -->

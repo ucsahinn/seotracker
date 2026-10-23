@@ -2,7 +2,7 @@
 title: Dépannage
 description: Problèmes fréquents par symptôme, cause et solution : port occupé, alerte Windows, erreurs Google, quota, audit bloqué, graphiques vides, assistant 401.
 kind: sorun-giderme
-updated: 2026-10-22
+updated: 2026-10-23
 ---
 
 L'interface de l'application est en turc. Ce guide donne chaque nom de bouton et d'écran en turc, suivi de sa traduction française entre parenthèses.
@@ -23,7 +23,7 @@ Si quelque chose ne fonctionne pas, regardez d'abord la carte « Kurulumunuzun d
 
 **Cause :** Un autre programme utilise le même numéro de port.
 
-**Solution :** Le paquet Windows choisit normalement un numéro libre entre 3002 et 3010. Si tous sont pris, écrivez un autre numéro dans le fichier `config.json` du dossier de données. Avec Docker, placez un fichier `.env` contenant la ligne `PORT=3002` et tapez `docker compose up -d --force-recreate seotracker`. Quand le numéro change, mettez aussi à jour les adresses de redirection Google.
+**Solution :** Le paquet Windows choisit normalement un numéro libre entre 3002 et 3010, vous l'indique dans une bulle et ne l'utilise que pour ce démarrage. Quand le 3001 est de nouveau libre, cliquez sur **Yeniden başlat** et l'application revient au 3001. Si tous sont pris, écrivez un autre numéro dans le fichier `config.json` du dossier de données. Avec Docker, placez un fichier `.env` contenant la ligne `PORT=3002` et tapez `docker compose up -d --force-recreate seotracker`. Quand le numéro change, mettez aussi à jour les adresses de redirection Google.
 
 ## L'icône indique « Windows bileşeni eksik »
 
@@ -35,11 +35,11 @@ Si quelque chose ne fonctionne pas, regardez d'abord la carte « Kurulumunuzun d
 
 ## L'autorisation d'administrateur n'a pas été donnée
 
-**Symptôme :** Pendant l'installation, l'autorisation pour Visual C++ a été demandée, vous avez répondu **Hayır** (Non) et l'application n'a pas démarré.
+**Symptôme :** Pendant l'installation, l'autorisation pour Visual C++ a été demandée, vous avez répondu **Hayır** (Non). L'installation a affiché « Microsoft Visual C++ çalışma zamanı kurulamadı » (L'environnement d'exécution Microsoft Visual C++ n'a pas pu être installé).
 
-**Cause :** Le composant Windows nécessaire n'a pas pu être installé.
+**Cause :** Le composant Windows nécessaire n'a pas pu être installé. Comme l'application embarque une copie des fichiers dont elle a besoin, elle démarre quand même sur la plupart des ordinateurs.
 
-**Solution :** Faites un clic droit sur l'icône de la barre des tâches (si elle n'est pas visible, cliquez sur la flèche ^). Choisissez **Eksik Windows bileşenini kur** et donnez cette fois l'autorisation. Ou téléchargez et installez le composant depuis l'adresse `https://aka.ms/vs/17/release/vc_redist.x64.exe`.
+**Solution :** Si l'application a démarré, vous n'avez rien à faire. Sinon, faites un clic droit sur l'icône de la barre des tâches (si elle n'est pas visible, cliquez sur la flèche ^). Choisissez **Eksik Windows bileşenini kur** et donnez cette fois l'autorisation. Ou téléchargez et installez le composant depuis l'adresse `https://aka.ms/vs/17/release/vc_redist.x64.exe`.
 
 ## L'icône indique « Uygulamanın motoru çöktü »
 
@@ -163,7 +163,7 @@ Si quelque chose ne fonctionne pas, regardez d'abord la carte « Kurulumunuzun d
 
 ## Où sont les données et les journaux ?
 
-Sous Windows, tout est dans le dossier `%LOCALAPPDATA%\seowatcher` : `data` (la base de données), `logs\server.log`, `logs\migrate.log`, `instance-secret`, `mcp-token`, `config.json`. **Günlükleri aç** (Ouvrir les journaux) et **Veri klasörünü aç** (Ouvrir le dossier de données), dans le menu de la barre des tâches, y mènent.
+Sous Windows, tout est dans le dossier `%LOCALAPPDATA%\seowatcher` : `data` (la base de données), `logs\launcher.log`, `logs\server.log`, `logs\migrate.log`, `instance-secret`, `mcp-token`, `config.json`. Quand un fichier journal devient trop gros (`server.log` 5 Mo, les autres 1 Mo), l'ancien reste à côté sous un nom comme `server.old.log` et un nouveau repart de zéro. Le dossier `logs\wrangler` contient les journaux détaillés du moteur ; les fichiers de plus de 30 jours sont supprimés automatiquement. **Günlükleri aç** (Ouvrir les journaux) et **Veri klasörünü aç** (Ouvrir le dossier de données), dans le menu de la barre des tâches, y mènent.
 
 Avec Docker, les données sont dans le volume `seotracker_data` (`/app/.wrangler`). Vous voyez les journaux avec la commande `docker compose logs -f`.
 
@@ -174,8 +174,12 @@ Quand vous signalez un problème, cliquez sur le bouton **Tanılama paketi indir
 Les avertissements qui apparaissent sur l'icône de la barre des tâches et ce qu'il faut faire :
 
 - **« Sunucu 120 saniyede yanıt vermedi » (Le serveur n'a pas répondu en 120 secondes).** Dans le menu, cliquez sur **Yeniden başlat**. Sinon, cliquez sur **Günlükleri aç** et regardez les dernières lignes de `server.log`.
-- **« Kurulum eksik » (Installation incomplète).** Relancez le fichier d'installation.
-- **« Güncelleme yapılamadı » (La mise à jour n'a pas pu être faite).** Vérifiez votre connexion internet et réessayez avec **Güncelle** (Mettre à jour) dans le menu. La version installée continue de fonctionner.
+- **« seowatcher yeniden başlatılıyor » (seowatcher redémarre).** Le serveur s'est arrêté tout seul et l'application le relance. Actualisez la page ouverte après quelques secondes.
+- **« Sunucu 10 dakikada üç kez kapandı » (Le serveur s'est arrêté trois fois en 10 minutes).** L'application a cessé de le relancer. Cliquez sur **Kurulumu onar** et, si cela ne règle rien, sur **Sorunu bildir (GitHub)**.
+- **« Kurulum eksik » (Installation incomplète).** **Kurulumu onar** remet les fichiers manquants en téléchargeant le fichier d'installation. S'il n'y a pas d'internet, la page des versions s'ouvre ; téléchargez le fichier d'installation et lancez-le.
+- **« 3001 numarası dolu, 3002 kullanılıyor » (Le port 3001 est occupé, utilisation du 3002).** Un autre programme occupe le 3001. Si vous obtenez une erreur en vous connectant à Google, fermez ce programme et cliquez sur **Yeniden başlat**.
+- **« Güncelleme denetlenemedi » (La mise à jour n'a pas pu être vérifiée) ou « Güncelleme yapılamadı » (La mise à jour n'a pas pu être faite).** La bulle donne la cause. Si elle dit « GitHub'a ulaşılamadı » (GitHub est inaccessible), vérifiez votre connexion internet. Si elle dit « GitHub şu an çok fazla istek alıyor » (GitHub reçoit trop de requêtes en ce moment), réessayez dans une heure. Si l'empreinte ne correspond pas, téléchargez le fichier d'installation depuis la page des versions. Dans tous les cas, la version installée continue de fonctionner.
+- **« Güncelleme kurulmadı » (La mise à jour n'a pas été installée).** La fenêtre d'installation a été fermée ou l'autorisation d'administrateur n'a pas été donnée. Réessayez avec **Güncelle** dans le menu.
 - **« Windows bileşeni kurulamadı » (Le composant Windows n'a pas pu être installé).** Dans le menu, cliquez sur **Eksik Windows bileşenini kur**.
 
 <!-- Kaynaklar: src/routes/_app/support.tsx; src/client/features/support/CommonProblems.tsx; SetupStatusPanel.tsx; DiagnosticsBundleButton.tsx; src/client/features/integrations/googleAuthErrorCopy.ts; src/server/features/audit/services/auditReconciler.ts; src/server/features/gsc/indexCoverage.ts; src/server/features/ga4/services/Ga4ReportEnhancements.ts; packaging/windows/launcher/SeoWatcher.cs; docs/SELF_HOSTING_DOCKER.md; README.md -->

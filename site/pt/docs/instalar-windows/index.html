@@ -1629,17 +1629,79 @@
         <p>O próximo passo é o guia da conexão com o Google.</p>
         <h3 id="menu-da-barra-de-tarefas">Menu da barra de tarefas</h3>
         <p>
-          Clique com o botão direito no ícone (se ele não aparecer, clique na
-          seta ^ da barra de tarefas). O menu tem estes itens:
+          Clique com o botão direito no ícone (se ele não estiver visível,
+          clique na seta ^ da barra de tarefas). O menu tem quatro partes. No
+          topo ficam a abertura do aplicativo e a linha de status, depois a
+          atualização e a reinicialização, depois duas configurações e, no fim,
+          os itens de solução de problemas.
         </p>
         <ul>
           <li>
             <strong>seowatcher'ı aç</strong> (Abrir o seowatcher): abre o
-            aplicativo no navegador. Dar um duplo clique no ícone faz o mesmo.
+            aplicativo no navegador. Um duplo clique no ícone faz o mesmo. Se o
+            aplicativo ainda estiver iniciando, aparece o balão &quot;seowatcher
+            açılıyor&quot; (o seowatcher está iniciando), e o navegador abre
+            sozinho quando ele estiver pronto.
+          </li>
+          <li>
+            Linha de status: &quot;Çalışıyor: http://127.0.0.1:3001/&quot; (Em
+            execução: http://127.0.0.1:3001/), &quot;Veritabanı
+            güncelleniyor&quot; (Atualizando o banco de dados) ou um texto de
+            erro. Ela não é clicável. Se o texto for longo, deixe o mouse sobre
+            ele para vê-lo inteiro.
+          </li>
+          <li>
+            <strong>Eksik Windows bileşenini kur</strong> (Instalar o componente
+            do Windows que falta): aparece só se o pacote Visual C++ estiver
+            faltando. Ao clicar, ele instala o pacote e reinicia o aplicativo.
+          </li>
+          <li>
+            <strong>Güncelle</strong> (Atualizar): fica sempre no menu. Ao
+            clicar, ele consulta o GitHub na hora. Se houver uma versão nova,
+            baixa e instala; senão diz &quot;Güncel&quot; (Atualizado). Durante
+            a consulta o item mostra &quot;Kontrol ediliyor…&quot;
+            (Verificando…) e, durante o download, &quot;Güncelleme indiriliyor:
+            X.Y.Z (%45)&quot; (Baixando a atualização: X.Y.Z (45%)); nessa hora
+            ele não é clicável. Quando uma versão nova já foi encontrada, o item
+            mostra &quot;Güncelle: X.Y.Z sürümü hazır&quot; (Atualizar: a versão
+            X.Y.Z está pronta); os números de versão são exemplos.
           </li>
           <li>
             <strong>Yeniden başlat</strong> (Reiniciar): fecha o aplicativo e o
             abre de novo. Se algo travar, tente isto primeiro.
+          </li>
+          <li>
+            <strong>Windows açılınca başlat</strong> (Iniciar com o Windows): se
+            estiver marcado, o aplicativo inicia em segundo plano quando o
+            computador liga. Se um administrador ativou essa configuração numa
+            instalação para todos os usuários do computador, o item aparece
+            marcado e em cinza, e só um administrador pode desmarcá-lo.
+          </li>
+          <li>
+            <strong>Güncellemeleri kendiliğinden kur</strong> (Instalar as
+            atualizações automaticamente): se estiver marcado, o aplicativo
+            instala sozinho uma versão nova quando a encontra.
+          </li>
+          <li>
+            <strong>Kurulumu onar</strong> (Reparar a instalação): limpa os
+            arquivos temporários, verifica se o pacote está completo e abre o
+            aplicativo de novo. Durante o reparo, o item mostra
+            &quot;Onarılıyor…&quot; (Reparando…).
+          </li>
+          <li>
+            <strong>Tanı bilgisini kopyala</strong> (Copiar informações de
+            diagnóstico): copia para a área de transferência a versão do
+            Windows, o processador, a versão do Visual C++, um teste do motor, o
+            módulo com falha do log de eventos do Windows, os arquivos de
+            despejo de falhas e as últimas linhas do registro. As informações
+            ficam prontas em alguns segundos, e então aparece o balão
+            &quot;Kopyalandı&quot; (Copiado). Isso ajuda ao relatar um problema.
+          </li>
+          <li>
+            <strong>Sorunu bildir (GitHub)</strong> (Relatar um problema
+            (GitHub)): coloca as mesmas informações na área de transferência e
+            abre no GitHub um relato já preenchido. Acrescente uma frase sobre o
+            que você estava fazendo e envie.
           </li>
           <li>
             <strong>Günlükleri aç</strong> (Abrir os registros): abre a pasta de
@@ -1647,93 +1709,85 @@
             <code>server.log</code> e <code>migrate.log</code>.
           </li>
           <li>
-            <strong>Tanı bilgisini kopyala</strong> (Copiar informações de
-            diagnóstico): copia para a área de transferência a versão do
-            Windows, o processador, a versão do Visual C++, um teste do motor, o
-            módulo com falha no log de eventos do Windows, os despejos de falha
-            e as últimas linhas do registro.
-          </li>
-          <li>
-            <strong>Sorunu bildir (GitHub)</strong> (Relatar um problema no
-            GitHub): coloca as mesmas informações na área de transferência e
-            abre no GitHub um relato já preenchido. Acrescente uma frase sobre o
-            que você fez e envie.
-          </li>
-          <li>
-            <strong>Eksik Windows bileşenini kur</strong> (Instalar o componente
-            do Windows que falta): aparece só se o pacote Visual C++ estiver
-            ausente. Ao clicar, ele instala o pacote e reinicia o aplicativo.
-          </li>
-          <li>
-            <strong>Kurulumu onar</strong> (Reparar a instalação): limpa os
-            arquivos temporários, verifica o pacote e reabre o aplicativo.
-          </li>
-          <li>
-            <strong>Güncelle</strong> (Atualizar): está sempre no menu. Clique
-            para consultar o GitHub na hora; se houver uma versão nova, ela é
-            baixada e instalada. Se não houver, aparece &quot;Güncel&quot;
-            (atualizado). Quando uma atualização já está pronta, o item mostra
-            &quot;Güncelle: X.Y.Z sürümü hazır&quot; (Atualizar: a versão X.Y.Z
-            está pronta), com o número da versão nova no lugar de X.Y.Z.
-          </li>
-          <li>
-            <strong>Güncellemeleri kendiliğinden kur</strong> (Instalar as
-            atualizações automaticamente): se estiver marcado, o aplicativo
-            instala sozinho a versão nova quando a encontra.
-          </li>
-          <li>
             <strong>Veri klasörünü aç</strong> (Abrir a pasta de dados): abre a
             pasta com o banco de dados e as chaves.
           </li>
-          <li>
-            <strong>Windows açılınca başlat</strong> (Iniciar com o Windows): se
-            estiver marcado, o aplicativo inicia em segundo plano quando o
-            computador liga.
-          </li>
+          <li>Número da versão: a versão instalada. Não é clicável.</li>
           <li>
             <strong>Çıkış</strong> (Sair): fecha o aplicativo por completo.
-            Enquanto ele estiver fechado, a página aberta no navegador não
-            funciona.
+            Enquanto ele estiver fechado, a página no navegador não funciona.
           </li>
         </ul>
         <p>
-          O menu mostra ainda uma linha de estado (&quot;Çalışıyor:
-          http://127.0.0.1:3001/&quot; (Em execução: http://127.0.0.1:3001/) ou
-          um texto de erro) e o número da versão.
+          Se você iniciar o aplicativo uma segunda vez (pelo menu Iniciar ou
+          pelo atalho da área de trabalho), nenhuma segunda cópia é aberta. O
+          aplicativo que já está aberto abre a página no navegador; se ainda não
+          estiver pronto, ele a abre quando estiver.
         </p>
         <p>
-          Se você iniciar o aplicativo uma segunda vez, nenhuma cópia nova abre.
-          Só a página se abre no navegador.
+          Se o servidor fechar sozinho durante o uso, o aplicativo o abre de
+          novo e mostra o balão &quot;seowatcher yeniden başlatılıyor&quot; (o
+          seowatcher está reiniciando). Se ele fechar três vezes em dez minutos,
+          o aplicativo para de reabri-lo e a linha de status mostra &quot;Sunucu
+          10 dakikada üç kez kapandı&quot; (O servidor fechou três vezes em 10
+          minutos). Nesse caso, clique em <strong>Kurulumu onar</strong>.
         </p>
         <h3 id="atualizacao">Atualização</h3>
         <p>
-          O aplicativo se atualiza sozinho. Dois minutos depois de abrir, e uma
-          vez por dia, ele consulta no GitHub a versão mais recente. Se houver
-          uma versão nova, ele a baixa, compara a impressão digital do arquivo
-          (SHA-256) com o valor da página de versões, instala em silêncio e
-          reabre. Nesse intervalo, o texto do ícone mostra &quot;Güncelleme
-          indiriliyor&quot; (Baixando a atualização) e &quot;Güncelleme
-          kuruluyor&quot; (Instalando a atualização). A seção
-          <strong>Ayarlar → Hakkında</strong> (Configurações → Sobre), dentro do
-          aplicativo, também avisa da versão nova e leva você até
-          <strong>Güncelle</strong> no ícone.
+          O aplicativo se atualiza sozinho. Dois minutos depois de abrir, e
+          depois uma vez por dia, ele consulta no GitHub a última versão. Se
+          houver uma versão nova, ele a baixa, compara a impressão digital do
+          arquivo (SHA-256) com o valor da página de versões, instala em
+          silêncio e reabre. Nesse meio tempo, o texto do ícone mostra
+          &quot;Güncelleme indiriliyor&quot; (Baixando a atualização) e
+          &quot;Güncelleme kuruluyor&quot; (Instalando a atualização), e uma
+          pequena janela de instalação aparece rapidamente. Quando o aplicativo
+          reabre, aparece o balão &quot;seowatcher X.Y.Z sürümüne
+          güncellendi&quot; (o seowatcher foi atualizado para a versão X.Y.Z);
+          ao clicar nele, abre-se a lista de novidades. A seção
+          <strong>Ayarlar → Hakkında</strong> (Configurações → Sobre) do
+          aplicativo também avisa da versão nova e leva você ao item
+          <strong>Güncelle</strong> do ícone.
         </p>
         <ul>
           <li>
-            Se não quiser a instalação automática, desmarque
-            <strong>Güncellemeleri kendiliğinden kur</strong> no menu. Assim,
-            quando sair uma versão nova, você vê um balão e o item
-            <strong>Güncelle</strong> aparece no menu.
+            Se você não quiser que ele instale sozinho, desmarque
+            <strong>Güncellemeleri kendiliğinden kur</strong> no menu. Quando
+            sair uma versão nova, você verá um balão uma única vez, e o item do
+            menu passará a mostrar &quot;Güncelle: X.Y.Z sürümü hazır&quot;
+            (Atualizar: a versão X.Y.Z está pronta). Para instalar, clique no
+            balão ou no item.
+          </li>
+          <li>
+            Se não houver internet, ou se o GitHub não responder naquele
+            momento, o aplicativo tenta de novo uma hora depois. Nas tentativas
+            automáticas, ele avisa só uma vez por versão.
+          </li>
+          <li>
+            Se a impressão digital do arquivo baixado não coincidir, a
+            atualização não é instalada e a versão instalada continua
+            funcionando.
+          </li>
+          <li>
+            Uma instalação para todos os usuários do computador precisa de
+            permissão de administrador para atualizar, então o aplicativo não se
+            instala sozinho nesse caso. Quando sair uma versão nova, você verá
+            um balão; ao clicar nele, o Windows pede a permissão de
+            administrador.
           </li>
           <li>
             Para atualizar manualmente, baixe o novo instalador no mesmo
             endereço e execute-o. O assistente fecha o aplicativo em execução,
-            troca os arquivos e o inicia de novo.
+            troca os arquivos e o inicia de novo. A caixa
+            <strong>Iniciar o seowatcher quando o Windows iniciar</strong> (em
+            turco: &quot;Windows açılınca seowatcher'ı başlat&quot;) do
+            assistente mostra a configuração atual do menu.
           </li>
         </ul>
         <p>
           Seus dados, sua conexão com o Google e suas configurações continuam
-          como estavam.
+          como estão. Uma atualização automática não mexe na configuração
+          <strong>Windows açılınca başlat</strong>.
         </p>
         <h3 id="implantacao-em-empresas">Implantação em empresas</h3>
         <p>
@@ -1781,11 +1835,18 @@
         <h3 id="reparo">Reparo</h3>
         <p>
           Se algo travar, clique com o botão direito no ícone e em
-          <strong>Kurulumu onar</strong> (Reparar a instalação). O aplicativo
-          limpa os arquivos temporários, verifica se o pacote está completo,
-          confere o banco de dados de novo e abre. Se faltar um arquivo, ele
-          avisa e abre a página de versões. Basta executar o instalador outra
-          vez.
+          <strong>Kurulumu onar</strong> (Reparar a instalação); se o ícone não
+          estiver visível, clique na seta ^ da barra de tarefas. O aplicativo
+          limpa os arquivos temporários e verifica se o pacote está completo.
+          Depois, ao abrir, ele executa de novo a atualização do banco de dados.
+        </p>
+        <p>
+          Se um arquivo do pacote tiver sido apagado (por exemplo, colocado em
+          quarentena por um antivírus), o aplicativo baixa do GitHub o
+          instalador da versão instalada, verifica a impressão digital e se
+          reinstala. Seus dados não são tocados. Se não houver internet, ele
+          avisa &quot;Kurulum eksik&quot; (Instalação incompleta) e abre a
+          página de versões. Basta então baixar o instalador e executá-lo.
         </p>
         <h3 id="desinstalacao">Desinstalação</h3>
         <ol>
@@ -1798,10 +1859,12 @@
           <li>Clique em <strong>Kaldır</strong> (Desinstalar).</li>
         </ol>
         <p>
-          O desinstalador remove o programa, o atalho do menu Iniciar e o
-          registro de &quot;iniciar com o Windows&quot;. Ele não mexe na pasta
-          de dados. Se você também quiser apagar o banco de dados, a conexão com
-          o Google e os relatórios, apague a pasta de dados por conta própria.
+          O desinstalador remove o programa, o atalho do menu Iniciar o registro
+          de &quot;iniciar com o Windows&quot; (inclusive se você o ativou pelo
+          menu) e os arquivos de atualização baixados. Ele não mexe na pasta de
+          dados, e a janela de desinstalação também avisa isso. Se você também
+          quiser apagar o banco de dados, a conexão com o Google e os
+          relatórios, apague a pasta de dados por conta própria.
         </p>
         <h3 id="onde-ficam-os-dados-e-como-fazer-backup">
           Onde ficam os dados e como fazer backup?
@@ -1845,8 +1908,12 @@
         <h3 id="trocar-o-numero-da-porta">Trocar o número da porta</h3>
         <p>
           O aplicativo usa o número 3001. Se outro programa o estiver usando, o
-          aplicativo escolhe o primeiro número livre de 3002 a 3010. Ele grava o
-          número escolhido no arquivo <code>config.json</code>.
+          aplicativo escolhe o primeiro número livre de 3002 a 3010, mas só para
+          essa inicialização, e mostra o balão &quot;3001 numarası dolu, 3002
+          kullanılıyor&quot; (A porta 3001 está em uso, usando a 3002). Ele não
+          grava esse número. Quando a 3001 ficar livre, o aplicativo volta a
+          usar a 3001 na próxima inicialização, porque os endereços de
+          redirecionamento no Google contêm esse número.
         </p>
         <p>Se você quiser um número específico:</p>
         <ol>
@@ -1863,7 +1930,11 @@
 }</code></pre>
         </div>
         <ol>
-          <li>Salve e inicie o aplicativo.</li>
+          <li>
+            Salve e inicie o aplicativo. Se o arquivo tiver outras linhas (como
+            <code>autoUpdate</code>), não as apague; troque apenas o valor de
+            <code>port</code>.
+          </li>
         </ol>
         <p>
           Quando o número muda, atualize também no Google os dois endereços de
@@ -1944,11 +2015,26 @@
           <li>
             <strong
               >O ícone diz &quot;Sunucu beklenmedik şekilde kapandı&quot; (O
-              servidor fechou de forma inesperada).</strong
+              servidor fechou de forma inesperada) ou &quot;Sunucu 10 dakikada
+              üç kez kapandı&quot; (O servidor fechou três vezes em 10
+              minutos).</strong
             >
             As últimas linhas de <code>server.log</code> dão o motivo. Tente
-            <strong>Yeniden başlat</strong> (Reiniciar). Se não resolver,
-            compartilhe o registro em um relato no GitHub.
+            <strong>Yeniden başlat</strong> (Reiniciar) e, se não resolver,
+            <strong>Kurulumu onar</strong> (Reparar a instalação). Se ainda
+            assim não resolver, clique em
+            <strong>Sorunu bildir (GitHub)</strong> (Relatar um problema
+            (GitHub)).
+          </li>
+          <li>
+            <strong
+              >O ícone diz &quot;Veritabanı güncellemesi 15 dakikada
+              bitmedi&quot; (A atualização do banco de dados não terminou em 15
+              minutos).</strong
+            >
+            Outro programa pode ter bloqueado o arquivo do banco de dados (um
+            programa de backup ou de sincronização). Pare esse programa e clique
+            em <strong>Yeniden başlat</strong>.
           </li>
           <li>
             <strong>O navegador não abriu.</strong> Dê um duplo clique no ícone
