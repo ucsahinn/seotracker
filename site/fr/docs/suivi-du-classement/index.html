@@ -49,6 +49,7 @@
       href="https://seowatcher.io/docs/siralama-takibi/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -184,7 +185,7 @@
       }
     </script>
     <script src="/assets/docs.js?v=2.4.1" defer></script>
-    <meta name="theme-color" content="#272c3b" />
+    <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
         font-family: "Geist";
@@ -774,6 +775,95 @@
       footer a:hover {
         color: var(--fg);
       }
+      /* The one ask on the page: quiet, one line, the accent only on the link. */
+      footer .star {
+        flex-basis: 100%;
+        margin: 0 0 4px;
+        text-wrap: pretty;
+      }
+      footer .star a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      footer .star a:hover {
+        color: var(--accent-link);
+        text-decoration-color: var(--accent-link);
+      }
+
+      /* Headings enter as they scroll into view. docs.js adds .hx (and .in
+         once seen) only when motion is allowed, so without script, under
+         reduced motion and with "stop motion" on, they are simply there.
+         h1 wipes in from the left, h2 rises while an amber stroke draws
+         along its rule, h3 rises a little. */
+      article .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease),
+          clip-path 760ms var(--ease),
+          filter 620ms var(--ease);
+      }
+      article h1.hx {
+        clip-path: inset(-10% 100% -10% 0);
+        filter: blur(6px);
+      }
+      article h2.hx,
+      article h3.hx {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      article h3.hx {
+        transform: translateY(6px);
+      }
+      article h2.hx {
+        position: relative;
+      }
+      article h2.hx::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 56px;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 700ms var(--ease) 160ms;
+      }
+      article .hx.in {
+        opacity: 1;
+        transform: none;
+      }
+      article h1.hx.in {
+        clip-path: inset(-10% 0 -10% 0);
+        filter: none;
+      }
+      article h2.hx.in::before {
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        article .hx,
+        article h2.hx::before {
+          opacity: 1;
+          transform: none;
+          clip-path: none;
+          filter: none;
+          transition: none;
+        }
+      }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
 
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
@@ -1218,7 +1308,11 @@
         <nav class="topnav" aria-label="Site">
           <a class="hide" href="/fr/">Accueil</a>
           <a class="hide" href="/fr/docs/">Guide</a>
-          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+          <a
+            class="hide"
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub</a
           >
           <details class="langs">
@@ -1245,7 +1339,7 @@
                       <circle cx="8.4" cy="7" r="2.7" fill="#e30a17" />
                       <polygon
                         fill="#fff"
-                        points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"
+                        points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"
                       /></svg></span
                   >Türkçe</a
                 >
@@ -1268,12 +1362,12 @@
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#fff"
-                        stroke-width="3.6"
+                        stroke-width="4.2"
                       />
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#c8102e"
-                        stroke-width="2"
+                        stroke-width="2.6"
                       /></svg></span
                   >English</a
                 >
@@ -1354,6 +1448,8 @@
           <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            target="_blank"
+            rel="noopener noreferrer"
             ><span class="long">Télécharger pour Windows</span
             ><span class="short">Télécharger</span></a
           >
@@ -1410,7 +1506,7 @@
             <li><a href="/fr/docs/infos-du-projet/">Infos du projet</a></li>
             <li><a href="/fr/docs/parametres/">Paramètres</a></li>
           </ul>
-          <p class="nav-group">Référence</p>
+          <p class="nav-group">Aide et référence</p>
           <ul>
             <li><a href="/fr/docs/aide/">Aide</a></li>
             <li><a href="/fr/docs/regles-d-audit/">Règles d'audit</a></li>
@@ -1433,9 +1529,9 @@
         </p>
         <p>
           Vous voyez comment vos recherches montent et descendent au fil du
-          temps. Google Search Console limite l'historique à 16 mois. Il
-          n'indique pas non plus quel jour une recherche est tombée à quelle
-          position.
+          temps. Google Search Console limite l'historique à 16 mois. Il ne
+          montre pas non plus à quelle position se trouvait une recherche tel ou
+          tel jour.
         </p>
         <p>
           L'application récupère ces données jour par jour et les conserve sur
@@ -1466,8 +1562,8 @@
         <p>
           <strong>Filtres de variation.</strong>
           <strong>Yükselenler</strong> (En hausse) et
-          <strong>Düşenler</strong> (En baisse) montrent ceux qui ont bougé d'au
-          moins une demi-position. Il y a aussi
+          <strong>Düşenler</strong> (En baisse) montrent les recherches qui ont
+          bougé d'au moins une demi-position. Il y a aussi
           <strong>Şu an ilk 10'da</strong> (Actuellement dans le top 10) et
           <strong>İlk 10'dan çıkanlar</strong> (Sortis du top 10). Deux boutons
           rapides s'y ajoutent : <strong>Gösterimi yüksek</strong> (Beaucoup
@@ -1534,7 +1630,7 @@
             l'historique, lisez le jour où la baisse a commencé.
           </li>
           <li>
-            Marquez les recherches que vous voulez suivre avec
+            Enregistrez les recherches que vous voulez suivre avec
             <strong>Kayıtlı kelimelere ekle</strong>.
           </li>
           <li>
@@ -1564,7 +1660,7 @@
           termine juste avant cette période.
         </p>
         <p>
-          La liste apporte les 100 recherches les plus affichées. Dans le
+          La liste reprend les 100 recherches les plus affichées. Dans le
           navigateur, elle est découpée en pages de 25, 50 ou 100.
         </p>
         <h2 id="questions-frequentes">Questions fréquentes</h2>
@@ -1605,12 +1701,11 @@
         <h2 id="limites">Limites</h2>
         <p>
           Les archives ne contiennent que les jours vus par cette installation.
-          Si vous venez d'installer l'application, vous pouvez remonter au plus
-          de 480 jours à la première ouverture. Les recherches rares que Google
-          masque n'entrent pas non plus dans les archives. Si les archives sont
-          supprimées, l'historique disparaît. Supprimer le volume Docker ou le
-          dossier de données en est un exemple. C'est à vous d'en faire une
-          sauvegarde.
+          Si vous venez d'installer l'application, la première ouverture remonte
+          au plus à 480 jours. Les recherches rares que Google masque n'entrent
+          pas non plus dans les archives. Si les archives sont supprimées (le
+          volume Docker ou le dossier de données, par exemple), l'historique
+          disparaît. C'est à vous d'en faire une sauvegarde.
         </p>
         <nav class="pager" aria-label="Page précédente et suivante">
           <a
@@ -1624,7 +1719,10 @@
         </nav>
         <p class="meta">
           Dernière mise à jour: 23 octobre 2026. Vous voyez une erreur ?
-          <a href="https://github.com/ucsahinn/seotracker/issues"
+          <a
+            href="https://github.com/ucsahinn/seotracker/issues"
+            target="_blank"
+            rel="noopener noreferrer"
             >Signalez-la sur GitHub</a
           >.
         </p>
@@ -1646,10 +1744,25 @@
     </main>
     <footer>
       <div class="wrap">
+        <p class="star">
+          Une étoile aide d'autres personnes à trouver un outil gratuit.
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Ajouter une étoile sur GitHub</a
+          >
+        </p>
         <span>seowatcher, licence MIT.</span>
         <span
           ><a href="/fr/">Accueil</a> &nbsp;
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          &nbsp;
           <a href="/fr/docs/notes-de-version/">Notes de version</a></span
         >
       </div>

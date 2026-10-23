@@ -1,12 +1,10 @@
 ---
 title: Einstellungen
-description: Hier verwalten Sie das Design, den Google-Zugangsschlüssel, den PageSpeed-Schlüssel, die Nutzungsgrenzen und die Update-Prüfung. Es ist der eine Einstellungsbildschirm für die gesamte Installation.
+description: Design, Google-Zugangsschlüssel, PageSpeed-Schlüssel, Nutzungsgrenzen und Update-Prüfung, gültig für die gesamte Installation.
 screen: Ayarlar
 route: /settings
 updated: 2026-10-22
 ---
-
-Hier sehen Sie, wo Sie die Google-Verbindung, den Geschwindigkeitsschlüssel und das Update verwalten.
 
 Auf dem Bildschirm **Ayarlar** (Einstellungen) stellen Sie alles ein, was die gesamte Installation betrifft. Einstellungen, die nur ein Projekt betreffen (Name, Domain, Property in der Search Console und in Analytics), stehen auf der Seite **Proje ayarları** (Projekteinstellungen) jedes Projekts. Hier verwalten Sie den Zugangsschlüssel für die Verbindung mit Google, den PageSpeed-Schlüssel, das Design und die Update-Prüfung. Links gibt es die Bereiche **Görünüm** (Darstellung), **Google**, **Hizmet hesabı** (Dienstkonto), **Hız ölçümü** (Geschwindigkeitsmessung), **Sınırlar** (Grenzen), **Hakkında** (Über) und **Sürüm notları** (Versionshinweise). In der Überschrift jedes Bereichs steht ein Kennzeichen, das seinen Zustand zeigt.
 
@@ -18,7 +16,7 @@ Auf dem Bildschirm **Ayarlar** (Einstellungen) stellen Sie alles ein, was die ge
 
 Es gibt zwei Felder: **İstemci kimliği** (Client-ID) und **Gizli anahtar** (Geheimer Schlüssel). Beide sind Teile des Zugangsschlüssels, den Sie von Google erhalten. Die Schaltflächen sind: **Kaydet** (Speichern), **Vazgeç** (Abbrechen), **Değiştir** (Ändern) und **Sil** (Löschen). **Sil** trennt bestehende Verbindungen. Die Einrichtung Schritt für Schritt finden Sie in der Anleitung zur Google-Verbindung.
 
-**Dienstkonto (der kürzere Weg).** Ein Dienstkonto ist ein Roboterkonto, das bei Google für die App angelegt wird. In das Feld **JSON anahtar dosyası** (JSON-Schlüsseldatei) fügen Sie den Inhalt der Datei ein, die Sie aus Google Cloud heruntergeladen haben. Ist es gespeichert, sehen Sie die E-Mail-Adresse des Kontos. Der Bildschirm sagt, wo Sie diese Adresse eintragen:
+**Dienstkonto (der kürzere Weg).** Ein Dienstkonto ist ein technisches Konto, das bei Google für die App angelegt wird. In das Feld **JSON anahtar dosyası** (JSON-Schlüsseldatei) fügen Sie den Inhalt der Datei ein, die Sie aus Google Cloud heruntergeladen haben. Ist es gespeichert, sehen Sie die E-Mail-Adresse des Kontos. Der Bildschirm nennt, wo Sie diese Adresse eintragen:
 
 - Search Console: „Ayarlar → Kullanıcılar ve izinler → Kullanıcı ekle“ (Einstellungen → Nutzer und Berechtigungen → Nutzer hinzufügen), Berechtigung Tam (Voll).
 - Analytics: „Yönetici → Erişim yönetimi“ (Verwaltung → Zugriffsverwaltung), Berechtigung Görüntüleyen (Betrachter).
@@ -31,7 +29,7 @@ Das Kennzeichen lautet **Kayıtlı** oder **Kullanılmıyor** (Wird nicht verwen
 
 - URL-Prüfung (Search Console): 2.000 pro Tag.
 - PageSpeed Insights.
-- GA4 (Google Analytics), tägliche und stündliche Kontingenteinheiten: standardmäßig 200.000 und 40.000. Google gibt diese Zahl nicht bekannt, es sagt nur, wie viel übrig ist.
+- GA4 (Google Analytics), tägliche und stündliche Kontingenteinheiten: standardmäßig 200.000 und 40.000. Google nennt nicht den Verbrauch, sondern nur, wie viel übrig ist.
 - Seitengrenze pro Audit: 10.000.
 - Berichte pro Projekt: 10.000, Vorlagen: 10.
 - Größter Bericht: 500.000 Byte.
@@ -47,20 +45,20 @@ Der Zustand jeder Karte ist **Yeterli** (Ausreichend), **Azalıyor** (Wird knapp
 1. Tragen Sie bei der ersten Einrichtung zuerst im Bereich **Google** die Client-ID und den geheimen Schlüssel ein. Tragen Sie dann im Bereich **Hız ölçümü** den PageSpeed-Schlüssel ein. Sind beide gespeichert, wechseln Sie ins Projekt und wählen die Property.
 2. Sehen Sie einmal im Monat in den Bereich **Sınırlar**. Das Kontingent, das „Azalıyor“ zeigt, ist meist die Grenze der URL-Prüfung.
 3. Gibt es im Bereich **Hakkında** eine neue Version, aktualisieren Sie. Die Versionshinweise sagen, was sich geändert hat. Die Update-Prüfung ist die einzige Verbindung Ihres Computers nach außen, die nicht zu Google führt. Wollen Sie das nicht, schalten Sie den Schalter aus.
-4. Müssen Sie den Google-Zugangsschlüssel ändern (zum Beispiel bei einem neuen Cloud-Projekt), klicken Sie auf **Değiştir** und fügen die neuen Werte ein. Bestehende Verbindungen funktionieren mit dem neuen Schlüssel nicht. In den Projekten ist **Yeniden bağlan** (Neu verbinden) nötig.
+4. Müssen Sie den Google-Zugangsschlüssel ändern (zum Beispiel bei einem neuen Cloud-Projekt), klicken Sie auf **Değiştir** und fügen die neuen Werte ein. Bestehende Verbindungen funktionieren mit dem neuen Schlüssel nicht; in den Projekten müssen Sie **Yeniden bağlan** (Neu verbinden) wählen.
 
 ## Häufige Fragen
 
 **Warum sehe ich meinen geheimen Schlüssel nicht auf dem Bildschirm?** Die App speichert ihn verschlüsselt und sendet ihn nicht an den Browser zurück. Der Bildschirm zeigt nur, dass er gespeichert ist, und die Client-ID.
 
-**Was gilt, wenn der Wert aus `.env` bei Docker und der auf dem Bildschirm eingegebene kollidieren?** Der auf dem Bildschirm eingegebene gewinnt. Speichern Sie einen Wert, während das Kennzeichen „Ortamdan geliyor“ zeigt, wird ab dann dieser verwendet.
+**Welcher Wert gilt, wenn `.env` (Docker) und der Bildschirm unterschiedliche Angaben enthalten?** Der Wert vom Bildschirm hat Vorrang. Speichern Sie einen Wert, während das Kennzeichen „Ortamdan geliyor“ zeigt, wird ab dann dieser verwendet.
 
 **Was sendet die Update-Prüfung?** Sie sendet keine Daten. Sie liest die öffentliche Versionsliste von GitHub. Die Anfrage ist anonym.
 
-**Dienstkonto oder Google-Zugangsschlüssel?** Das Dienstkonto erspart Ihnen den Freigabebildschirm und läuft nicht ab. Dafür müssen Sie diesem Konto in der Search Console und in Analytics von Hand die Berechtigung geben. Für eine Installation mit einer Person geht beides. Sehen Sie oft „süresi doldu“ (abgelaufen), wechseln Sie zum Dienstkonto.
+**Dienstkonto oder Google-Zugangsschlüssel?** Das Dienstkonto erspart Ihnen den Zustimmungsbildschirm und läuft nicht ab. Dafür müssen Sie diesem Konto in der Search Console und in Analytics von Hand die Berechtigung geben. Für eine Installation mit einer Person geht beides. Sehen Sie oft „süresi doldu“ (abgelaufen), wechseln Sie zum Dienstkonto.
 
 ## Grenzen
 
-Der Bildschirm Ayarlar ändert nicht die Portnummer, den Datenordner oder Netzwerkeinstellungen. Diese stehen beim Windows-Paket in `config.json`, bei Docker in der Datei `.env`. Eine Verwaltung von Benutzern und Passwörtern gibt es nicht, die App ist für eine Person gedacht. Die Kontingentkarten sind nicht Googles echter Zähler, sondern die eigene Zählung der App. URL-Prüfungen, die Sie in der Search Console von Hand vornehmen, erscheinen hier nicht, verbrauchen aber Googles Grenze.
+Der Bildschirm **Ayarlar** ändert nicht die Portnummer, den Datenordner oder Netzwerkeinstellungen. Diese stehen beim Windows-Paket in `config.json`, bei Docker in der Datei `.env`. Eine Verwaltung von Benutzern und Passwörtern gibt es nicht, die App ist für eine Person gedacht. Die Kontingentkarten sind nicht Googles echter Zähler, sondern die eigene Zählung der App. URL-Prüfungen, die Sie in der Search Console von Hand vornehmen, erscheinen hier nicht, verbrauchen aber Googles Grenze.
 
 <!-- Kaynaklar: src/routes/_app/settings.tsx; src/routes/_app/settings/index.tsx; src/client/features/settings/SettingsIndex.tsx; sectionStatus.ts; ThemeSection.tsx; GoogleOAuthClientSection.tsx; GoogleServiceAccountSection.tsx; PageSpeedKeySection.tsx; UpdateSection.tsx; WhatsNewSection.tsx; src/client/features/quotas/*; src/server/features/updates/UpdateCheckService.ts; src/server/features/quotas/QuotaService.ts; src/server/lib/secretBox.ts -->

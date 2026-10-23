@@ -6,7 +6,7 @@
     <title>Risoluzione dei problemi | guida di seowatcher</title>
     <meta
       name="description"
-      content="Descrive i problemi più comuni con sintomo, causa e soluzione. Porta occupata, avviso di Windows, errori di Google, quota, controllo bloccato, grafici vuoti e assistente 401 sono qui."
+      content="I problemi più comuni, con sintomo, causa e soluzione: porta occupata, avviso di Windows, errori di Google, quota, controllo bloccato, assistente 401."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -49,6 +49,7 @@
       href="https://seowatcher.io/docs/sorun-giderme/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -78,7 +79,7 @@
     />
     <meta
       property="og:description"
-      content="Descrive i problemi più comuni con sintomo, causa e soluzione. Porta occupata, avviso di Windows, errori di Google, quota, controllo bloccato, grafici vuoti e assistente 401 sono qui."
+      content="I problemi più comuni, con sintomo, causa e soluzione: porta occupata, avviso di Windows, errori di Google, quota, controllo bloccato, assistente 401."
     />
     <meta
       property="og:image"
@@ -88,7 +89,7 @@
     <meta property="og:image:height" content="630" />
     <meta
       property="og:image:alt"
-      content="Guida di seowatcher: installazione, schermate e risoluzione dei problemi"
+      content="Guida di seowatcher: installazione, schermate, problemi"
     />
     <meta property="article:modified_time" content="2026-10-23" />
     <meta
@@ -108,7 +109,7 @@
     />
     <meta
       name="twitter:description"
-      content="Descrive i problemi più comuni con sintomo, causa e soluzione. Porta occupata, avviso di Windows, errori di Google, quota, controllo bloccato, grafici vuoti e assistente 401 sono qui."
+      content="I problemi più comuni, con sintomo, causa e soluzione: porta occupata, avviso di Windows, errori di Google, quota, controllo bloccato, assistente 401."
     />
     <meta
       name="twitter:image"
@@ -145,11 +146,11 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/it/docs/risoluzione-problemi/#article",
             "headline": "Risoluzione dei problemi",
-            "description": "Descrive i problemi più comuni con sintomo, causa e soluzione. Porta occupata, avviso di Windows, errori di Google, quota, controllo bloccato, grafici vuoti e assistente 401 sono qui.",
+            "description": "I problemi più comuni, con sintomo, causa e soluzione: porta occupata, avviso di Windows, errori di Google, quota, controllo bloccato, assistente 401.",
             "url": "https://seowatcher.io/it/docs/risoluzione-problemi/",
             "inLanguage": "it",
             "dateModified": "2026-10-23",
-            "articleSection": "Riferimento",
+            "articleSection": "Aiuto e riferimento",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
             "publisher": { "@id": "https://seowatcher.io/#author" },
@@ -184,7 +185,7 @@
       }
     </script>
     <script src="/assets/docs.js?v=2.4.1" defer></script>
-    <meta name="theme-color" content="#272c3b" />
+    <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
         font-family: "Geist";
@@ -774,6 +775,95 @@
       footer a:hover {
         color: var(--fg);
       }
+      /* The one ask on the page: quiet, one line, the accent only on the link. */
+      footer .star {
+        flex-basis: 100%;
+        margin: 0 0 4px;
+        text-wrap: pretty;
+      }
+      footer .star a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      footer .star a:hover {
+        color: var(--accent-link);
+        text-decoration-color: var(--accent-link);
+      }
+
+      /* Headings enter as they scroll into view. docs.js adds .hx (and .in
+         once seen) only when motion is allowed, so without script, under
+         reduced motion and with "stop motion" on, they are simply there.
+         h1 wipes in from the left, h2 rises while an amber stroke draws
+         along its rule, h3 rises a little. */
+      article .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease),
+          clip-path 760ms var(--ease),
+          filter 620ms var(--ease);
+      }
+      article h1.hx {
+        clip-path: inset(-10% 100% -10% 0);
+        filter: blur(6px);
+      }
+      article h2.hx,
+      article h3.hx {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      article h3.hx {
+        transform: translateY(6px);
+      }
+      article h2.hx {
+        position: relative;
+      }
+      article h2.hx::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 56px;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 700ms var(--ease) 160ms;
+      }
+      article .hx.in {
+        opacity: 1;
+        transform: none;
+      }
+      article h1.hx.in {
+        clip-path: inset(-10% 0 -10% 0);
+        filter: none;
+      }
+      article h2.hx.in::before {
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        article .hx,
+        article h2.hx::before {
+          opacity: 1;
+          transform: none;
+          clip-path: none;
+          filter: none;
+          transition: none;
+        }
+      }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
 
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
@@ -1218,7 +1308,11 @@
         <nav class="topnav" aria-label="Sito">
           <a class="hide" href="/it/">Home</a>
           <a class="hide" href="/it/docs/">Guida</a>
-          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+          <a
+            class="hide"
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub</a
           >
           <details class="langs">
@@ -1245,7 +1339,7 @@
                       <circle cx="8.4" cy="7" r="2.7" fill="#e30a17" />
                       <polygon
                         fill="#fff"
-                        points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"
+                        points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"
                       /></svg></span
                   >Türkçe</a
                 >
@@ -1268,12 +1362,12 @@
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#fff"
-                        stroke-width="3.6"
+                        stroke-width="4.2"
                       />
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#c8102e"
-                        stroke-width="2"
+                        stroke-width="2.6"
                       /></svg></span
                   >English</a
                 >
@@ -1348,6 +1442,8 @@
           <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            target="_blank"
+            rel="noopener noreferrer"
             ><span class="long">Scarica per Windows</span
             ><span class="short">Scarica</span></a
           >
@@ -1416,7 +1512,7 @@
             </li>
             <li><a href="/it/docs/impostazioni/">Impostazioni</a></li>
           </ul>
-          <p class="nav-group">Riferimento</p>
+          <p class="nav-group">Aiuto e riferimento</p>
           <ul>
             <li><a href="/it/docs/aiuto/">Aiuto</a></li>
             <li>
@@ -1432,16 +1528,16 @@
                 >Risoluzione dei problemi</a
               >
             </li>
-            <li><a href="/it/docs/note-di-rilascio/">Note di rilascio</a></li>
+            <li><a href="/it/docs/note-di-rilascio/">Note di versione</a></li>
           </ul>
         </details>
       </aside>
       <article id="icerik" data-page="sorun-giderme">
         <h1>Risoluzione dei problemi</h1>
         <p class="lede">
-          Descrive i problemi più comuni con sintomo, causa e soluzione. Porta
-          occupata, avviso di Windows, errori di Google, quota, controllo
-          bloccato, grafici vuoti e assistente 401 sono qui.
+          I problemi più comuni, con sintomo, causa e soluzione: porta occupata,
+          avviso di Windows, errori di Google, quota, controllo bloccato,
+          assistente 401.
         </p>
         <p>
           L'interfaccia dell'app è in turco. In questa guida ogni nome di
@@ -1550,9 +1646,9 @@
         </p>
         <p class="callout callout-sebep">
           <strong>Causa:</strong> Il motore dell'app (workerd) si blocca su un
-          file di sistema di questo computer. All'avvio l'app prova il motore da
-          solo. Se dice &quot;Tek başına da başlayamıyor&quot; (Non riesce a
-          partire nemmeno da solo), il problema è nel computer. Se dice
+          file di sistema di questo computer. All'avvio l'app prova il motore
+          separatamente. Se dice &quot;Tek başına da başlayamıyor&quot; (Non
+          riesce a partire nemmeno da solo), il problema è nel computer. Se dice
           &quot;Tek başına çalışıyor&quot; (Da solo funziona), il problema è
           nella cartella dei dati o nella configurazione.
         </p>
@@ -1560,11 +1656,11 @@
           <strong>Soluzione:</strong> Per prima cosa scegliere
           <strong>Kurulumu onar</strong> (Ripara l'installazione). Se non si
           risolve, fare clic con il tasto destro sull'icona e scegliere
-          <strong>Sorunu bildir (GitHub)</strong> (Segnala un problema
-          (GitHub)). Le informazioni diagnostiche (versione di Windows,
-          processore, nome del modulo difettoso, dump di arresto anomalo)
-          vengono aggiunte da sole alla segnalazione: basta inviarla. I dump di
-          arresto anomalo sono nella cartella
+          <strong>Sorunu bildir (GitHub)</strong> (Segnala un problema su
+          GitHub). Le informazioni diagnostiche (versione di Windows,
+          processore, nome del modulo che ha dato errore, file di dump degli
+          arresti anomali) vengono aggiunte da sole alla segnalazione: basta
+          inviarla. I file di dump sono nella cartella
           <code>%LOCALAPPDATA%\seowatcher\logs\dumps</code>. Volendo, aggiungere
           anche quelli alla segnalazione.
         </p>
@@ -1706,7 +1802,7 @@
           l'operazione può essersi interrotta.
         </p>
         <p class="callout callout-cozum">
-          <strong>Soluzione:</strong> Attendere. L'app controlla i controlli che
+          <strong>Soluzione:</strong> Attendere. L'app verifica i controlli che
           risultano &quot;sürüyor&quot; (in corso) da più di 15 minuti. Se non
           c'è segno di vita, li chiude come &quot;Başarısız&quot; (Fallito) e ne
           scrive il motivo. Poi scegliere
@@ -1751,8 +1847,8 @@
           <strong>Soluzione:</strong> Ottenere una chiave gratuita seguendo la
           guida alla chiave PageSpeed. Se il limite giornaliero è finito, si
           completa domani con un nuovo controllo. Se all'avvio del controllo la
-          misurazione della velocità era disattivata, quel controllo non viene
-          misurato dopo.
+          misurazione della velocità era disattivata, quel controllo non può più
+          essere misurato in seguito.
         </p>
         <h2 id="il-controllo-url-dice-limite-giornaliero-raggiunto">
           Il controllo URL dice &quot;limite giornaliero raggiunto&quot;
@@ -1780,15 +1876,14 @@
           nella colonna Alan adı (Dominio) c'è scritto localhost o 127.0.0.1.
         </p>
         <p class="callout callout-sebep">
-          <strong>Causa:</strong> Anche la copia di prova del sito carica la
-          stessa etichetta di Analytics.
+          <strong>Causa:</strong> Anche la copia di prova del sito carica lo
+          stesso tag di Analytics.
         </p>
         <p class="callout callout-cozum">
-          <strong>Soluzione:</strong> Impostare l'etichetta in modo che si
-          carichi solo sul dominio reale. Nella maggior parte degli strumenti
-          c'è un'opzione di &quot;controllo del dominio&quot;. L'app non filtra
-          da sola queste righe. Fino ad allora, leggere guardando la colonna
-          Alan adı.
+          <strong>Soluzione:</strong> Impostare il tag in modo che si carichi
+          solo sul dominio reale. Nella maggior parte degli strumenti c'è
+          un'opzione di &quot;controllo del dominio&quot;. L'app non filtra da
+          sola queste righe. Nel frattempo, controllare la colonna Alan adı.
         </p>
         <h2 id="l-assistente-non-riesce-a-collegarsi-401">
           L'assistente non riesce a collegarsi (401)
@@ -1814,8 +1909,8 @@
           scrivere <code>/mcp</code> e scegliere
           <strong>Reconnect</strong> (Ricollega).
         </p>
-        <h2 id="docker-impiega-moltissimo-al-primo-avvio-oppure-e-unhealthy">
-          Docker impiega moltissimo al primo avvio oppure è
+        <h2 id="docker-e-molto-lento-al-primo-avvio-oppure-risulta-unhealthy">
+          Docker è molto lento al primo avvio oppure risulta
           &quot;unhealthy&quot;
         </h2>
         <p class="callout callout-belirti">
@@ -1823,9 +1918,9 @@
           healthy nemmeno dopo cinque minuti.
         </p>
         <p class="callout callout-sebep">
-          <strong>Causa:</strong> Al primo avvio l'app viene compilata dentro la
-          scatola (il container) e richiede circa 2 GB di memoria. Se la memoria
-          non basta, la compilazione cade.
+          <strong>Causa:</strong> Al primo avvio l'app viene compilata dentro il
+          container e richiede circa 2 GB di memoria. Se la memoria non basta,
+          la compilazione cade.
         </p>
         <p class="callout callout-cozum">
           <strong>Soluzione:</strong> Scrivere
@@ -1905,12 +2000,15 @@
             ><span>Precedente</span
             ><strong>Configurazione dell'assistente</strong></a
           ><a class="pager-next" rel="next" href="/it/docs/note-di-rilascio/"
-            ><span>Successiva</span><strong>Note di rilascio</strong></a
+            ><span>Successiva</span><strong>Note di versione</strong></a
           >
         </nav>
         <p class="meta">
           Ultimo aggiornamento: 23 ottobre 2026. Se si nota un errore,
-          <a href="https://github.com/ucsahinn/seotracker/issues"
+          <a
+            href="https://github.com/ucsahinn/seotracker/issues"
+            target="_blank"
+            rel="noopener noreferrer"
             >segnalarlo su GitHub</a
           >.
         </p>
@@ -2004,8 +2102,8 @@
           </li>
           <li>
             <a
-              href="#docker-impiega-moltissimo-al-primo-avvio-oppure-e-unhealthy"
-              >Docker impiega moltissimo al primo avvio oppure è
+              href="#docker-e-molto-lento-al-primo-avvio-oppure-risulta-unhealthy"
+              >Docker è molto lento al primo avvio oppure risulta
               &quot;unhealthy&quot;</a
             >
           </li>
@@ -2020,10 +2118,25 @@
     </main>
     <footer>
       <div class="wrap">
+        <p class="star">
+          Una stella aiuta altre persone a trovare uno strumento gratuito.
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Aggiungi una stella su GitHub</a
+          >
+        </p>
         <span>seowatcher, licenza MIT.</span>
         <span
           ><a href="/it/">Home</a> &nbsp;
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          &nbsp;
           <a href="/it/docs/note-di-rilascio/">Note di versione</a></span
         >
       </div>

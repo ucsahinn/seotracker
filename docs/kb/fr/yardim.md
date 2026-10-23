@@ -41,9 +41,9 @@ Si quelque chose ne va pas, regardez d'abord ici. Cet écran contrôle votre ins
 
 ## Questions fréquentes
 
-**Pourquoi la ligne « Google girişi » est-elle jaune ?** La clé d'accès Google n'a pas encore été saisie. Tant que Google n'est pas connecté, cette ligne reste jaune. Suivez le guide de la connexion à Google.
+**Pourquoi la ligne « Google girişi » est-elle jaune ?** La clé d'accès Google n'a pas encore été saisie : la ligne reste jaune tant que Google n'est pas connecté. Suivez le guide de la connexion à Google.
 
-**La ligne « Giriş ve erişim » indique « parolasız tek kullanıcı » (utilisateur unique sans mot de passe).** C'est normal. L'application ne s'ouvre que depuis votre propre ordinateur. Si vous voulez l'ouvrir vers l'extérieur, vous devez placer devant elle votre propre accès protégé par mot de passe.
+**La ligne « Giriş ve erişim » indique « parolasız tek kullanıcı » (utilisateur unique sans mot de passe).** C'est normal. L'application ne s'ouvre que depuis votre propre ordinateur. Pour l'ouvrir depuis l'extérieur, vous devez placer devant elle votre propre accès protégé par mot de passe.
 
 **Que contient le paquet de diagnostic ?** La version, les contrôles d'installation, le nombre de lignes des tables et le résumé des derniers audits. Il n'y a ni clé Google, ni mot de passe, ni donnée personnelle.
 

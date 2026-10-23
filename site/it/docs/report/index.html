@@ -46,6 +46,7 @@
       href="https://seowatcher.io/docs/raporlar/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -85,7 +86,7 @@
     <meta property="og:image:height" content="630" />
     <meta
       property="og:image:alt"
-      content="Guida di seowatcher: installazione, schermate e risoluzione dei problemi"
+      content="Guida di seowatcher: installazione, schermate, problemi"
     />
     <meta property="article:modified_time" content="2026-10-23" />
     <meta property="og:url" content="https://seowatcher.io/it/docs/report/" />
@@ -178,7 +179,7 @@
       }
     </script>
     <script src="/assets/docs.js?v=2.4.1" defer></script>
-    <meta name="theme-color" content="#272c3b" />
+    <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
         font-family: "Geist";
@@ -768,6 +769,95 @@
       footer a:hover {
         color: var(--fg);
       }
+      /* The one ask on the page: quiet, one line, the accent only on the link. */
+      footer .star {
+        flex-basis: 100%;
+        margin: 0 0 4px;
+        text-wrap: pretty;
+      }
+      footer .star a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      footer .star a:hover {
+        color: var(--accent-link);
+        text-decoration-color: var(--accent-link);
+      }
+
+      /* Headings enter as they scroll into view. docs.js adds .hx (and .in
+         once seen) only when motion is allowed, so without script, under
+         reduced motion and with "stop motion" on, they are simply there.
+         h1 wipes in from the left, h2 rises while an amber stroke draws
+         along its rule, h3 rises a little. */
+      article .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease),
+          clip-path 760ms var(--ease),
+          filter 620ms var(--ease);
+      }
+      article h1.hx {
+        clip-path: inset(-10% 100% -10% 0);
+        filter: blur(6px);
+      }
+      article h2.hx,
+      article h3.hx {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      article h3.hx {
+        transform: translateY(6px);
+      }
+      article h2.hx {
+        position: relative;
+      }
+      article h2.hx::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 56px;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 700ms var(--ease) 160ms;
+      }
+      article .hx.in {
+        opacity: 1;
+        transform: none;
+      }
+      article h1.hx.in {
+        clip-path: inset(-10% 0 -10% 0);
+        filter: none;
+      }
+      article h2.hx.in::before {
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        article .hx,
+        article h2.hx::before {
+          opacity: 1;
+          transform: none;
+          clip-path: none;
+          filter: none;
+          transition: none;
+        }
+      }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
 
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
@@ -1212,7 +1302,11 @@
         <nav class="topnav" aria-label="Sito">
           <a class="hide" href="/it/">Home</a>
           <a class="hide" href="/it/docs/">Guida</a>
-          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+          <a
+            class="hide"
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub</a
           >
           <details class="langs">
@@ -1239,7 +1333,7 @@
                       <circle cx="8.4" cy="7" r="2.7" fill="#e30a17" />
                       <polygon
                         fill="#fff"
-                        points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"
+                        points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"
                       /></svg></span
                   >Türkçe</a
                 >
@@ -1262,12 +1356,12 @@
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#fff"
-                        stroke-width="3.6"
+                        stroke-width="4.2"
                       />
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#c8102e"
-                        stroke-width="2"
+                        stroke-width="2.6"
                       /></svg></span
                   >English</a
                 >
@@ -1342,6 +1436,8 @@
           <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            target="_blank"
+            rel="noopener noreferrer"
             ><span class="long">Scarica per Windows</span
             ><span class="short">Scarica</span></a
           >
@@ -1412,7 +1508,7 @@
             </li>
             <li><a href="/it/docs/impostazioni/">Impostazioni</a></li>
           </ul>
-          <p class="nav-group">Riferimento</p>
+          <p class="nav-group">Aiuto e riferimento</p>
           <ul>
             <li><a href="/it/docs/aiuto/">Aiuto</a></li>
             <li>
@@ -1428,7 +1524,7 @@
                 >Risoluzione dei problemi</a
               >
             </li>
-            <li><a href="/it/docs/note-di-rilascio/">Note di rilascio</a></li>
+            <li><a href="/it/docs/note-di-rilascio/">Note di versione</a></li>
           </ul>
         </details>
       </aside>
@@ -1440,7 +1536,7 @@
           e-mail.
         </p>
         <p>
-          Qui si trova come ottenere il report, a chi inviarlo e come ripeterlo
+          Qui si vede come ottenere un report, come inviarlo e come ripeterlo
           con un modello.
         </p>
         <p>
@@ -1452,9 +1548,8 @@
           una ricerca e salva ciò che trova come report. Ogni report è un solo
           file HTML. Non contiene script (codice che gira nella pagina), risorse
           esterne né caratteri incorporati. Per questo si apre sul telefono, si
-          stampa in PDF, si invia per e-mail. Nell'app non c'è un editor per
-          scrivere i report a mano. Il report lo scrive l'app oppure
-          l'assistente.
+          stampa in PDF, si invia per e-mail. Nell'app non c'è un editor: il
+          report lo scrive l'app oppure l'assistente.
         </p>
         <h2 id="cosa-c-e-nella-schermata">Cosa c'è nella schermata</h2>
         <p>
@@ -1581,8 +1676,8 @@
         </p>
         <p>
           <strong>Si può modificare il report?</strong> Nell'app no. Dire
-          all'assistente &quot;cambia questa sezione&quot; e lui aggiorna il
-          report.
+          all'assistente &quot;cambia questa sezione&quot;: il report verrà
+          aggiornato.
         </p>
         <p>
           <strong
@@ -1621,7 +1716,10 @@
         </nav>
         <p class="meta">
           Ultimo aggiornamento: 23 ottobre 2026. Se si nota un errore,
-          <a href="https://github.com/ucsahinn/seotracker/issues"
+          <a
+            href="https://github.com/ucsahinn/seotracker/issues"
+            target="_blank"
+            rel="noopener noreferrer"
             >segnalarlo su GitHub</a
           >.
         </p>
@@ -1643,10 +1741,25 @@
     </main>
     <footer>
       <div class="wrap">
+        <p class="star">
+          Una stella aiuta altre persone a trovare uno strumento gratuito.
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Aggiungi una stella su GitHub</a
+          >
+        </p>
         <span>seowatcher, licenza MIT.</span>
         <span
           ><a href="/it/">Home</a> &nbsp;
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          &nbsp;
           <a href="/it/docs/note-di-rilascio/">Note di versione</a></span
         >
       </div>

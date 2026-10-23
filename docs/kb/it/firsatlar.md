@@ -20,12 +20,12 @@ L'app abbina ogni pagina di Search Console alla sua corrispondente in Google Ana
 
 | Gruppo                                    | Che cosa significa                                                                                               | Che cosa fare                                                                                       |
 | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| **Az tıklanan** (Poco cliccate)           | Nelle prime 20 posizioni. La percentuale di clic è meno della metà di quella delle pagine nella stessa posizione | Riscrivere titolo e descrizione. Il testo che compare nella ricerca non attira                      |
+| **Az tıklanan** (Poco cliccate)           | Nelle prime 20 posizioni. La percentuale di clic è meno della metà di quella delle pagine nella stessa posizione | Riscrivere titolo e descrizione. Il testo mostrato nella ricerca non invoglia a cliccare            |
 | **Yükselmeye yakın** (Vicine a salire)    | Posizione tra 4 e 20                                                                                             | Ampliare il contenuto, aggiungere collegamenti interni. Può salire di una o due posizioni           |
-| **İlk sıralarda** (Nelle prime posizioni) | Nelle prime 3 posizioni                                                                                          | Mantenerla. Tenere la pagina aggiornata e assicurarsi che non si rovini                             |
+| **İlk sıralarda** (Nelle prime posizioni) | Nelle prime 3 posizioni                                                                                          | Mantenere la posizione: tenere la pagina aggiornata e controllare che non peggiori                  |
 | **Derinde kalan** (Rimaste in fondo)      | Oltre la 20ª posizione                                                                                           | Chiedersi se la pagina risponde davvero a quella ricerca. La pagina giusta potrebbe essere un'altra |
 
-Un collegamento interno è un collegamento che si inserisce nel proprio sito da una pagina all'altra.
+Un collegamento interno porta da una pagina all'altra dello stesso sito.
 
 **Filtri rapidi.** **Analytics'te karşılığı olanlar** (Con corrispondenza in Analytics), **Analytics'te karşılığı yok**, **En çok gösterim alan 10** (Le 10 più mostrate).
 
@@ -47,7 +47,7 @@ Un collegamento interno è un collegamento che si inserisce nel proprio sito da 
 
 L'intervallo termina con il ritardo di tre giorni di Search Console. Da Search Console si prendono al massimo 1.000 righe e da Analytics al massimo 1.000 righe. I due elenchi vengono abbinati per nome di dominio e percorso. La barra finale dell'indirizzo non conta. Se si raggiungono le 1.000 righe, sotto la tabella compare una nota.
 
-Ogni pagina con impressioni maggiori di zero è una candidata. Il gruppo viene scelto in base alla posizione e alla percentuale di clic attesa. La percentuale attesa è la percentuale di clic tipica delle pagine del sito nella stessa fascia di posizione. Le fasce di posizione sono 1-3, 3-5, 5-10, 10-20 e 20-50. Per una fascia servono almeno tre pagine con 10 impressioni. Una pagina in posizione 20 o oltre e con una percentuale inferiore alla metà di quella attesa entra in "Az tıklanan".
+Ogni pagina con impressioni maggiori di zero è una candidata. Il gruppo viene scelto in base alla posizione e alla percentuale di clic attesa. La percentuale attesa è la percentuale di clic tipica delle pagine del sito nella stessa fascia di posizione. Le fasce di posizione sono 1-3, 3-5, 5-10, 10-20 e 20-50. Per una fascia servono almeno tre pagine con 10 impressioni. Una pagina nelle prime 20 posizioni e con una percentuale di clic inferiore alla metà di quella attesa entra in "Az tıklanan".
 
 Il punteggio si ottiene così: 50 per cento domanda, 30 per cento valore per l'attività, 20 per cento facilità di salita. La domanda si basa sulle impressioni. Più la posizione è buona, più facile si considera la salita. Il valore per l'attività è la percentuale di eventi chiave in Analytics. Un evento chiave è un'azione che si considera importante. Se non ce n'è in nessuna pagina, si usa la percentuale di coinvolgimento. A una pagina senza corrispondenza in Analytics si assegna un punteggio medio per il valore per l'attività. Il punteggio confronta tra loro soltanto le pagine del sito.
 

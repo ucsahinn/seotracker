@@ -5,7 +5,7 @@ kind: nasil-yapilir
 updated: 2026-10-22
 ---
 
-À la fin, l'application tournera dans Docker (un programme qui fait fonctionner les applications dans des boîtes fermées) et sera ouverte à l'adresse `http://localhost:3001`. Si vous utilisez Windows, l'installation Windows en un seul fichier est bien plus simple. Cette voie s'adresse aux utilisateurs de Mac et de Linux, et à ceux qui utilisent déjà Docker. Le premier démarrage prend quelques minutes, car l'application est compilée à l'intérieur de la boîte (le conteneur). Les suivants ne prennent que quelques secondes.
+À la fin, l'application tournera dans Docker (un programme qui fait tourner chaque application dans un conteneur isolé) et sera ouverte à l'adresse `http://localhost:3001`. Si vous utilisez Windows, l'installation Windows en un seul fichier est bien plus simple. Cette voie s'adresse aux utilisateurs de Mac et de Linux, et à ceux qui utilisent déjà Docker. Le premier démarrage prend quelques minutes, car l'application est compilée à l'intérieur du conteneur. Les suivants ne prennent que quelques secondes.
 
 ## Ce qu'il vous faut
 
@@ -58,12 +58,12 @@ docker compose up -d --build
 
 - Arrêter : `docker compose stop`
 - Redémarrer : `docker compose up -d`
-- Supprimer la boîte en gardant les données : `docker compose down`
+- Supprimer le conteneur en gardant les données : `docker compose down`
 - Supprimer aussi les données : `docker compose down -v`. Cette commande efface définitivement la base de données, les connexions à Google et les rapports.
 
 ### Sauvegarde
 
-Vos données sont dans le volume `seotracker_data`, au chemin `/app/.wrangler` à l'intérieur de la boîte. Pour faire une sauvegarde, tapez ces trois commandes dans l'ordre :
+Vos données sont dans le volume `seotracker_data`, au chemin `/app/.wrangler` à l'intérieur du conteneur. Pour faire une sauvegarde, tapez ces trois commandes dans l'ordre :
 
 ```sh
 docker compose stop
@@ -95,7 +95,7 @@ Aucun réglage n'est obligatoire. Si vous voulez en changer, placez un fichier `
 
 ## Questions fréquentes
 
-**Pourquoi le premier démarrage est-il long ?** L'application est compilée à l'intérieur de la boîte. Aux démarrages suivants, la compilation est sautée.
+**Pourquoi le premier démarrage est-il long ?** L'application est compilée à l'intérieur du conteneur. Aux démarrages suivants, la compilation est sautée.
 
 **Où est le fichier `.env.example` ?** Il n'existe pas. Ce fichier, hérité du projet d'origine, décrivait des choses absentes de cette version. La liste complète est dans le tableau ci-dessus et dans le fichier `docs/ENVIRONMENT.md`.
 
@@ -105,7 +105,7 @@ Aucun réglage n'est obligatoire. Si vous voulez en changer, placez un fichier `
 
 ## En cas de problème
 
-- **« Bind for 127.0.0.1:3001 failed » s'affiche.** Le numéro de port est occupé. Placez dans le dossier du projet un fichier `.env` contenant la ligne `PORT=3002`, puis recréez la boîte. Sous Windows, le Bloc-notes peut enregistrer le fichier sous le nom `.env.txt`. Dans PowerShell, `Set-Content -Encoding ascii .env 'PORT=3002'` est sûr.
+- **« Bind for 127.0.0.1:3001 failed » s'affiche.** Le numéro de port est déjà utilisé. Placez dans le dossier du projet un fichier `.env` contenant la ligne `PORT=3002`, puis recréez le conteneur. Sous Windows, le Bloc-notes peut enregistrer le fichier sous le nom `.env.txt`. Dans PowerShell, `Set-Content -Encoding ascii .env 'PORT=3002'` est sûr.
 - **L'état est « unhealthy ».** `docker compose logs --tail 50` affiche les dernières lignes. Si la mémoire s'est épuisée pendant la compilation, donnez plus de mémoire à Docker Desktop.
 - **La connexion à Google indique « yapılandırılmamış » (non configurée).** Si `BETTER_AUTH_SECRET` fait moins de 32 caractères, Google reste désactivé. Si vous l'avez fourni, rallongez-le. Sinon, le fichier `instance-secret` du volume est peut-être abîmé.
 - **La connexion à Google a sauté après une mise à jour.** `BETTER_AUTH_SECRET` a changé ou le volume a été recréé. Dans les paramètres du projet, cliquez sur **Yeniden bağlan** (Se reconnecter).

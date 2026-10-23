@@ -15,6 +15,7 @@
     <link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/docs/configuracoes/" />
     <link rel="alternate" hreflang="x-default" href="https://seowatcher.io/docs/ayarlar/" />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -59,7 +60,7 @@
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en","de","fr","it","pt"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/docs/ayarlar/#article","headline":"Ayarlar","description":"Temayı, Google erişim anahtarını, PageSpeed anahtarını, kullanım sınırlarını ve güncelleme kontrolünü buradan yönetirsiniz. Bütün kurulum için tek ayar ekranıdır.","url":"https://seowatcher.io/docs/ayarlar/","inLanguage":"tr","dateModified":"2026-10-23","articleSection":"Ekranlar","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/docs/ayarlar/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/docs/ayarlar/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/"},{"@type":"ListItem","position":2,"name":"Kılavuz","item":"https://seowatcher.io/docs/"},{"@type":"ListItem","position":3,"name":"Ayarlar","item":"https://seowatcher.io/docs/ayarlar/"}]}]}</script>
     <script src="/assets/docs.js?v=2.4.1" defer></script>
-    <meta name="theme-color" content="#272c3b" />
+    <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
         font-family: "Geist";
@@ -649,6 +650,95 @@
       footer a:hover {
         color: var(--fg);
       }
+      /* The one ask on the page: quiet, one line, the accent only on the link. */
+      footer .star {
+        flex-basis: 100%;
+        margin: 0 0 4px;
+        text-wrap: pretty;
+      }
+      footer .star a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      footer .star a:hover {
+        color: var(--accent-link);
+        text-decoration-color: var(--accent-link);
+      }
+
+      /* Headings enter as they scroll into view. docs.js adds .hx (and .in
+         once seen) only when motion is allowed, so without script, under
+         reduced motion and with "stop motion" on, they are simply there.
+         h1 wipes in from the left, h2 rises while an amber stroke draws
+         along its rule, h3 rises a little. */
+      article .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease),
+          clip-path 760ms var(--ease),
+          filter 620ms var(--ease);
+      }
+      article h1.hx {
+        clip-path: inset(-10% 100% -10% 0);
+        filter: blur(6px);
+      }
+      article h2.hx,
+      article h3.hx {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      article h3.hx {
+        transform: translateY(6px);
+      }
+      article h2.hx {
+        position: relative;
+      }
+      article h2.hx::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 56px;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 700ms var(--ease) 160ms;
+      }
+      article .hx.in {
+        opacity: 1;
+        transform: none;
+      }
+      article h1.hx.in {
+        clip-path: inset(-10% 0 -10% 0);
+        filter: none;
+      }
+      article h2.hx.in::before {
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        article .hx,
+        article h2.hx::before {
+          opacity: 1;
+          transform: none;
+          clip-path: none;
+          filter: none;
+          transition: none;
+        }
+      }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
 
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
@@ -1093,13 +1183,19 @@
         <nav class="topnav" aria-label="Site">
           <a class="hide" href="/">Ana sayfa</a>
           <a class="hide" href="/docs/">Kılavuz</a>
-          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+          <a
+            class="hide"
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub</a
           >
-          <details class="langs"><summary aria-label="Dil: Türkçe"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"/></svg></span><span class="code">TR</span></summary><ul><li><a href="/docs/ayarlar/" lang="tr" hreflang="tr" aria-current="page"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"/></svg></span>Türkçe</a></li><li><a href="/en/docs/settings/" lang="en" hreflang="en"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="3.6"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2"/></svg></span>English</a></li><li><a href="/de/docs/einstellungen/" lang="de" hreflang="de"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg></span>Deutsch</a></li><li><a href="/fr/docs/parametres/" lang="fr" hreflang="fr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg></span>Français</a></li><li><a href="/it/docs/impostazioni/" lang="it" hreflang="it"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg></span>Italiano</a></li><li><a href="/pt/docs/configuracoes/" lang="pt" hreflang="pt"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#ff0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.6" fill="#ffcc00"/><circle cx="8" cy="7" r="1.5" fill="#ff0000"/></svg></span>Português</a></li></ul></details>
+          <details class="langs"><summary aria-label="Dil: Türkçe"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"/></svg></span><span class="code">TR</span></summary><ul><li><a href="/docs/ayarlar/" lang="tr" hreflang="tr" aria-current="page"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"/></svg></span>Türkçe</a></li><li><a href="/en/docs/settings/" lang="en" hreflang="en"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2.6"/></svg></span>English</a></li><li><a href="/de/docs/einstellungen/" lang="de" hreflang="de"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg></span>Deutsch</a></li><li><a href="/fr/docs/parametres/" lang="fr" hreflang="fr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg></span>Français</a></li><li><a href="/it/docs/impostazioni/" lang="it" hreflang="it"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg></span>Italiano</a></li><li><a href="/pt/docs/configuracoes/" lang="pt" hreflang="pt"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#ff0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.6" fill="#ffcc00"/><circle cx="8" cy="7" r="1.5" fill="#ff0000"/></svg></span>Português</a></li></ul></details>
           <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            target="_blank"
+            rel="noopener noreferrer"
             ><span class="long">Windows için indir</span
             ><span class="short">İndir</span></a
           >
@@ -1116,7 +1212,7 @@
       <aside class="side" aria-label="Kılavuz">
         <details class="side-dd" open>
           <summary>Kılavuz</summary>
-          <p class="nav-group">Başlangıç</p><ul><li><a href="/docs/kurulum-windows/">Windows'a kurulum</a></li><li><a href="/docs/kurulum-docker/">Docker ile kurulum</a></li><li><a href="/docs/google-baglantisi/">Google'a bağlanma</a></li><li><a href="/docs/pagespeed-anahtari/">PageSpeed anahtarı</a></li></ul><p class="nav-group">Ekranlar</p><ul><li><a href="/docs/projeler/">Projeler</a></li><li><a href="/docs/panel/">Panel</a></li><li><a href="/docs/arama-performansi/">Arama performansı</a></li><li><a href="/docs/siralama-takibi/">Sıralama takibi</a></li><li><a href="/docs/firsatlar/">Fırsatlar</a></li><li><a href="/docs/kayitli-kelimeler/">Kayıtlı kelimeler</a></li><li><a href="/docs/analytics/">Analytics</a></li><li><a href="/docs/site-denetimi/">Site denetimi</a></li><li><a href="/docs/dizin-durumu/">Dizin durumu</a></li><li><a href="/docs/raporlar/">Raporlar ve şablonlar</a></li><li><a href="/docs/proje-bilgisi/">Proje bilgisi</a></li><li class="current" aria-current="page"><a href="/docs/ayarlar/">Ayarlar</a></li></ul><p class="nav-group">Başvuru</p><ul><li><a href="/docs/yardim/">Yardım</a></li><li><a href="/docs/denetim-kurallari/">Denetim kuralları</a></li><li><a href="/docs/ajan-kurulumu/">Ajan kurulumu</a></li><li><a href="/docs/sorun-giderme/">Sorun giderme</a></li><li><a href="/docs/surum-notlari/">Sürüm notları</a></li></ul>
+          <p class="nav-group">Başlangıç</p><ul><li><a href="/docs/kurulum-windows/">Windows'a kurulum</a></li><li><a href="/docs/kurulum-docker/">Docker ile kurulum</a></li><li><a href="/docs/google-baglantisi/">Google'a bağlanma</a></li><li><a href="/docs/pagespeed-anahtari/">PageSpeed anahtarı</a></li></ul><p class="nav-group">Ekranlar</p><ul><li><a href="/docs/projeler/">Projeler</a></li><li><a href="/docs/panel/">Panel</a></li><li><a href="/docs/arama-performansi/">Arama performansı</a></li><li><a href="/docs/siralama-takibi/">Sıralama takibi</a></li><li><a href="/docs/firsatlar/">Fırsatlar</a></li><li><a href="/docs/kayitli-kelimeler/">Kayıtlı kelimeler</a></li><li><a href="/docs/analytics/">Analytics</a></li><li><a href="/docs/site-denetimi/">Site denetimi</a></li><li><a href="/docs/dizin-durumu/">Dizin durumu</a></li><li><a href="/docs/raporlar/">Raporlar ve şablonlar</a></li><li><a href="/docs/proje-bilgisi/">Proje bilgisi</a></li><li class="current" aria-current="page"><a href="/docs/ayarlar/">Ayarlar</a></li></ul><p class="nav-group">Yardım ve başvuru</p><ul><li><a href="/docs/yardim/">Yardım</a></li><li><a href="/docs/denetim-kurallari/">Denetim kuralları</a></li><li><a href="/docs/ajan-kurulumu/">Ajan kurulumu</a></li><li><a href="/docs/sorun-giderme/">Sorun giderme</a></li><li><a href="/docs/surum-notlari/">Sürüm notları</a></li></ul>
         </details>
       </aside>
       <article id="icerik" data-page="ayarlar">
@@ -1126,27 +1222,30 @@
 <p><strong>Görünüm.</strong> <strong>Tema</strong> için Sistem, Açık ve Koyu seçeneği var. Seçim bu tarayıcıda saklanır. Başka bir tarayıcıda ya da bilgisayarda ayrıca seçersiniz.</p>
 <p><strong>Google.</strong> Rozet üç değerden biridir: <strong>Kayıtlı</strong>, <strong>Ortamdan geliyor</strong> (Docker kurulumunda <code>.env</code> dosyasıyla verilmiş) ya da <strong>Eksik</strong>. Bölüm, Google Cloud Console'a (Google'ın geliştirici paneli) ekleyeceğiniz iki yönlendirme adresini gösterir. Yanlarında kopyalama düğmeleri vardır. İkisini de eklemeniz gerekir. Analytics adresini eklemezseniz yalnızca Search Console bağlanır.</p>
 <p>İki alan var: <strong>İstemci kimliği</strong> ve <strong>Gizli anahtar</strong>. İkisi de Google'dan aldığınız erişim anahtarının parçasıdır. Düğmeler şunlar: <strong>Kaydet</strong>, <strong>Vazgeç</strong>, <strong>Değiştir</strong> ve <strong>Sil</strong>. <strong>Sil</strong> var olan bağlantıları koparır. Adım adım kurulumu Google'a bağlanma kılavuzunda bulursunuz.</p>
-<p><strong>Hizmet hesabı (daha kısa yol).</strong> Hizmet hesabı, Google'da uygulama için açılan bir robot hesaptır. <strong>JSON anahtar dosyası</strong> alanına, Google Cloud'dan indirdiğiniz dosyanın içeriğini yapıştırırsınız. Kayıt varsa hesabın e-posta adresi görünür. Ekran bu adresi nereye ekleyeceğinizi yazar:</p>
+<p><strong>Hizmet hesabı (daha kısa yol).</strong> Hizmet hesabı, uygulamanın kullanması için Google'da açılan bir robot hesaptır. <strong>JSON anahtar dosyası</strong> alanına, Google Cloud'dan indirdiğiniz dosyanın içeriğini yapıştırırsınız. Kayıt varsa hesabın e-posta adresi görünür. Ekran bu adresi nereye ekleyeceğinizi de yazar:</p>
 <ul><li>Search Console: &quot;Ayarlar → Kullanıcılar ve izinler → Kullanıcı ekle&quot;, yetki Tam.</li><li>Analytics: &quot;Yönetici → Erişim yönetimi&quot;, yetki Görüntüleyen.</li></ul>
 <p>Rozet <strong>Kayıtlı</strong> ya da <strong>Kullanılmıyor</strong> yazar. Kayıtlı bir hizmet hesabı varsa uygulama onu Google erişim anahtarına tercih eder. Silmek hesabı uygulamadan kaldırır ama Google'daki anahtarı iptal etmez.</p>
 <p><strong>Hız ölçümü.</strong> <strong>API anahtarı</strong> alanı ve <strong>Anahtarı test et</strong> düğmesi var. Test &quot;1 ölçüm harcar&quot;. Ona on saniyede bir basabilirsiniz. Rozet <strong>Anahtar kayıtlı</strong>, <strong>Ortam anahtarı</strong> ya da <strong>Anahtar eksik</strong> yazar. Ayrıntıyı PageSpeed anahtarı kılavuzunda bulursunuz.</p>
 <p><strong>Sınırlar.</strong> &quot;Google ve sistem sınırları&quot; kartlarında şunlar var:</p>
-<ul><li>URL Denetimi (Search Console): günde 2.000.</li><li>PageSpeed Insights.</li><li>GA4 (Google Analytics) günlük ve saatlik kota birimi: varsayılan 200.000 ve 40.000. Google bu sayıyı açıklamaz, yalnızca ne kadar kaldığını söyler.</li><li>Denetim sayfa sınırı: 10.000.</li><li>Proje başına rapor: 10.000, şablon: 10.</li><li>En büyük rapor: 500.000 bayt.</li></ul>
+<ul><li>URL Denetimi (Search Console): günde 2.000.</li><li>PageSpeed Insights.</li><li>GA4 (Google Analytics) günlük ve saatlik kota birimi: varsayılan 200.000 ve 40.000. Google bu sayıyı açıklamaz, yalnızca ne kadarının kaldığını bildirir.</li><li>Denetim sayfa sınırı: 10.000.</li><li>Proje başına rapor: 10.000, şablon: 10.</li><li>En büyük rapor: 500.000 bayt.</li></ul>
 <p>Her kartın durumu <strong>Yeterli</strong>, <strong>Azalıyor</strong> (yüzde 70'ten sonra), <strong>Neredeyse doldu</strong> (yüzde 90'dan sonra) ya da <strong>Bilinmiyor</strong> olur.</p>
-<p><strong>Hakkında.</strong> <strong>Sürüm</strong> satırı sürümü gösterir (v2.3.0 gibi). <strong>Güncellemeleri kontrol et</strong> anahtarı varsayılan olarak açıktır. Açıksa uygulama günde en çok bir kez GitHub'daki son sürümü sorar. Bu durumda <strong>Şimdi kontrol et</strong> düğmesi de görünür. Yeni sürüm varsa <strong>Değişiklikler</strong> bağlantısı çıkar. Docker kurulumları için kopyalayacağınız komut da çıkar: <code>git pull &amp;&amp; docker compose up -d --build</code>. Windows paketinde ekran sizi görev çubuğu simgesindeki <strong>Güncelle</strong>'ye yönlendirir. Otomatik güncelleme açıksa yeni sürüm kendiliğinden kurulur.</p>
+<p><strong>Hakkında.</strong> <strong>Sürüm</strong> satırı sürümü gösterir (v2.3.0 gibi). <strong>Güncellemeleri kontrol et</strong> anahtarı varsayılan olarak açıktır. Açıksa uygulama günde en çok bir kez GitHub'daki son sürümü sorar. Bu durumda <strong>Şimdi kontrol et</strong> düğmesi de görünür. Yeni sürüm varsa <strong>Değişiklikler</strong> bağlantısı çıkar. Docker kurulumları için kopyalayacağınız komut da çıkar: <code>git pull &amp;&amp; docker compose up -d --build</code>. Windows paketinde ekran sizi görev çubuğu simgesindeki <strong>Güncelle</strong> maddesine yönlendirir. Otomatik güncelleme açıksa yeni sürüm kendiliğinden kurulur.</p>
 <p><strong>Sürüm notları.</strong> Her sürümde neyin değiştiğini listeler.</p>
 <h2 id="nasil-kullanilir">Nasıl kullanılır</h2>
-<ol><li>İlk kurulumda önce <strong>Google</strong> bölümüne istemci kimliğini ve gizli anahtarı girin. Sonra <strong>Hız ölçümü</strong> bölümüne PageSpeed anahtarını girin. İkisi kaydedilince projeye geçip mülkü seçersiniz.</li><li>Ayda bir <strong>Sınırlar</strong> bölümüne bakın. &quot;Azalıyor&quot; gördüğünüz kota çoğu zaman URL Denetimi sınırıdır.</li><li><strong>Hakkında</strong> bölümünde yeni sürüm varsa güncelleyin. Sürüm notları neyin değiştiğini söyler. Güncelleme kontrolü, bilgisayarınızdan Google dışına giden tek bağlantıdır. İstemezseniz anahtarı kapatın.</li><li>Google erişim anahtarını değiştirmeniz gerekirse (yeni Cloud projesi gibi) <strong>Değiştir</strong>'i tıklayın ve yeni değerleri yapıştırın. Mevcut bağlantılar yeni anahtarla çalışmaz. Projelerde <strong>Yeniden bağlan</strong> gerekir.</li></ol>
+<ol><li>İlk kurulumda önce <strong>Google</strong> bölümüne istemci kimliğini ve gizli anahtarı girin. Sonra <strong>Hız ölçümü</strong> bölümüne PageSpeed anahtarını girin. İkisi kaydedilince projeye geçip mülkü seçersiniz.</li><li>Ayda bir <strong>Sınırlar</strong> bölümüne bakın. &quot;Azalıyor&quot; gördüğünüz kota çoğu zaman URL Denetimi sınırıdır.</li><li><strong>Hakkında</strong> bölümünde yeni sürüm varsa güncelleyin. Sürüm notları neyin değiştiğini söyler. Google'ın dışına giden tek bağlantı güncelleme kontrolüdür. İstemezseniz anahtarı kapatın.</li><li>Google erişim anahtarını değiştirmeniz gerekirse (yeni Cloud projesi gibi) <strong>Değiştir</strong>'i tıklayın ve yeni değerleri yapıştırın. Mevcut bağlantılar yeni anahtarla çalışmaz. Projelerde <strong>Yeniden bağlan</strong> gerekir.</li></ol>
 <h2 id="sik-sorulanlar">Sık sorulanlar</h2>
 <p><strong>Gizli anahtarımı ekranda neden göremiyorum?</strong> Uygulama onu şifreli saklar ve tarayıcıya geri göndermez. Ekran yalnızca kayıtlı olduğunu ve kimliği gösterir.</p>
 <p><strong>Docker'da <code>.env</code> ile verdiğim değerle ekrana girdiğim çakışırsa?</strong> Ekrana girilen kazanır. Rozet &quot;Ortamdan geliyor&quot; iken bir değer kaydederseniz artık o kullanılır.</p>
 <p><strong>Güncelleme kontrolü ne gönderiyor?</strong> Hiçbir veri göndermez. GitHub'ın herkese açık sürüm listesini okur. İstek anonimdir.</p>
-<p><strong>Hizmet hesabı mı, Google erişim anahtarı mı?</strong> Hizmet hesabı izin ekranıyla uğraştırmaz ve süresi dolmaz. Karşılığında Search Console ve Analytics'te o hesaba elle yetki vermeniz gerekir. Tek kişilik kurulumda ikisi de olur. Sık &quot;süresi doldu&quot; görüyorsanız hizmet hesabına geçin.</p>
+<p><strong>Hizmet hesabı mı, Google erişim anahtarı mı?</strong> Hizmet hesabı sizi izin ekranıyla uğraştırmaz ve süresi dolmaz. Karşılığında Search Console ve Analytics'te o hesaba elle yetki vermeniz gerekir. Tek kişilik kurulumda ikisi de olur. Sık &quot;süresi doldu&quot; görüyorsanız hizmet hesabına geçin.</p>
 <h2 id="sinirlar">Sınırlar</h2>
 <p>Ayarlar ekranı adres numarasını (port), veri klasörünü ya da ağ ayarlarını değiştirmez. Bunlar Windows paketinde <code>config.json</code>, Docker'da <code>.env</code> dosyasındadır. Kullanıcı ve parola yönetimi yoktur, uygulama tek kullanıcılıdır. Kota kartları Google'ın gerçek sayacı değil, uygulamanın kendi sayımıdır. Search Console'da elle yaptığınız URL denetimleri burada görünmez ama Google'ın sınırını harcar.</p> <nav class="pager" aria-label="Önceki ve sonraki sayfa"><a class="pager-prev" rel="prev" href="/docs/proje-bilgisi/"><span>Önceki</span><strong>Proje bilgisi</strong></a><a class="pager-next" rel="next" href="/docs/yardim/"><span>Sonraki</span><strong>Yardım</strong></a></nav>
         <p class="meta">
           Son güncelleme: 23 Ekim 2026. Bir hata görürseniz
-          <a href="https://github.com/ucsahinn/seotracker/issues"
+          <a
+            href="https://github.com/ucsahinn/seotracker/issues"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub'da bildirin</a
           >.
         </p>
@@ -1155,10 +1254,25 @@
     </main>
     <footer>
       <div class="wrap">
+        <p class="star">
+          Bir yıldız, başkalarının da bu ücretsiz aracı bulmasına yardım eder.
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub'da yıldız verin</a
+          >
+        </p>
         <span>seowatcher, MIT lisansı.</span>
         <span
           ><a href="/">Ana sayfa</a> &nbsp;
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          &nbsp;
           <a href="/docs/surum-notlari/">Sürüm notları</a></span
         >
       </div>

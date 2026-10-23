@@ -7,13 +7,13 @@ updated: 2026-10-22
 
 A interface do aplicativo está em turco. Este guia mostra cada botão e cada nome de tela em turco, com o significado em português entre parênteses.
 
-Ao fim desta página, o aplicativo estará conectado ao Google em seu nome e lerá os dados do seu site. Para isso, você pega uma "chave de acesso do Google" uma única vez. Leva cerca de dez minutos e você nunca precisa repetir. Há também um caminho mais curto (uma conta de serviço), no fim da página. Para a maioria das pessoas, esse caminho mais curto é o recomendado.
+Ao fim desta página, o aplicativo estará conectado ao Google em seu nome e lerá os dados do seu site. Para isso, você pega uma "chave de acesso do Google" uma única vez. Leva cerca de dez minutos e você nunca precisa repetir. Há também um caminho mais curto, com uma conta de serviço, no fim da página.
 
 ## O que você precisa
 
 - Um site verificado no Search Console (uma propriedade). Se não estiver verificado, o aplicativo não o vê na lista.
 - Para o Analytics 4, pelo menos a permissão de "Leitor" nessa propriedade. É opcional. O Search Console sozinho basta.
-- Uma conta Google. O Google Cloud Console (a página de desenvolvedores do Google) é gratuito e não pede cartão.
+- Uma conta Google. O Google Cloud Console (o painel de desenvolvedores do Google) é gratuito e não pede cartão.
 - O aplicativo aberto. Você vai copiar dele os dois endereços de redirecionamento (os endereços para os quais o Google devolve você ao aplicativo depois que você dá a permissão).
 
 ## Passos
@@ -70,7 +70,7 @@ Se uma conta de serviço estiver salva, o aplicativo dá preferência a ela. A l
 - **Aparece o aviso "Google erişim anahtarı eksik" (falta a chave de acesso do Google).** Os passos 10 e 11 foram pulados ou o salvamento falhou. Na tela **Ayarlar** (Configurações), o selo deve dizer **Kayıtlı** (Salvo).
 - **O Google diz "access_denied".** A conta com que você entrou não está na lista de usuários de teste da tela de consentimento. Adicione a conta à lista ou escolha a conta certa.
 - **A lista de propriedades está vazia.** Esta conta não tem nenhum site verificado no Search Console nem permissão no Analytics. Verifique o site primeiro.
-- **Aparece "Bağlantısı tamamlanmadı" (Conexão não concluída) e "state_mismatch".** Você abriu a tela de permissão em duas abas ou esperou mais de dez minutos. Tente de novo desde o início, em uma única aba. Se os cookies do navegador (pequenos arquivos de registro) estiverem desativados, ative-os.
+- **Aparece "Bağlantısı tamamlanmadı" (Conexão não concluída) e "state_mismatch".** Você abriu a tela de permissão em duas abas ou esperou mais de dez minutos. Tente de novo desde o início, em uma única aba. Se os cookies do navegador (pequenos arquivos que os sites guardam no navegador) estiverem desativados, ative-os.
 - **Aparece "Google hesabı zaten bağlı" (A conta Google já está conectada).** A conta já foi conectada a outro registro. Remova o antigo com **Hesabı kaldır** (Remover conta) no seletor de propriedades e conecte de novo.
 - **As conexões caíram depois de uma atualização.** A chave de criptografia mudou (no Docker, `BETTER_AUTH_SECRET` foi adicionada ou o volume de dados foi recriado). Escolha **Yeniden bağlan** (Reconectar) nos cartões.
 

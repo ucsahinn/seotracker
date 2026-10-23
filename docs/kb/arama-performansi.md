@@ -18,7 +18,7 @@ Seçtiğiniz filtreler adres çubuğuna yazılır. İsterseniz o görünümü ba
 
 **Günlük değişim grafiği.** Toplamları gün gün gösterir. Üstteki düğmelerle dört ölçü arasında geçiş yaparsınız.
 
-**Cihazlar, Ülkeler, Arama görünümü.** Üç küçük karttır. Ülkelerde ilk altısı görünür. Arama görünümü zengin sonuç türlerini sayar. Zengin sonuç, aramada ürün ya da video gibi ek bilgiyle çıkan sonuçtur. İlk beşi açıktır, gerisi "Diğer görünümler" altında toplanır.
+**Cihazlar, Ülkeler, Arama görünümü.** Üç küçük karttır. Ülkelerde ilk altısı görünür. Arama görünümü zengin sonuç türlerini sayar. Zengin sonuç, aramada ürün ya da video gibi ek bilgiyle çıkan sonuçtur. İlk beşi görünür, gerisi "Diğer görünümler" altında toplanır.
 
 **Dört sekme.**
 
@@ -31,12 +31,12 @@ Seçtiğiniz filtreler adres çubuğuna yazılır. İsterseniz o görünümü ba
 
 **Satır menüsü.** Her satırın sağındaki üç noktada şunlar var: **Sayfayı yeni sekmede aç**, **Adresi kopyala**, **Kelimeyi kopyala**, **Kelime olarak kaydet**. Kaydettikleriniz Kayıtlı kelimeler ekranına gider.
 
-**Dışa aktarma.** **E-Tablolar'a aktar** ve **CSV indir**. Ekrandaki tabloyu filtreleriyle birlikte indirir. Sayfa çakışmaları sekmesinde bu düğmeler yok.
+**Dışa aktarma.** **E-Tablolar'a aktar** ve **CSV indir** düğmeleri ekrandaki tabloyu filtreleriyle birlikte dışa aktarır. Sayfa çakışmaları sekmesinde bu düğmeler yoktur.
 
 ## Nasıl kullanılır
 
 1. **Son 28 gün** ile başlayın. Büyük bir düşüş varsa **Son 3 ay** seçin. Grafikte düşüşün hangi gün başladığını görün.
-2. **Sıra 5-20** sekmesini açın. Google sizi zaten gösteriyor ama kimse tıklamıyor. En çok gösterilen ilk üç sorgunun sayfasını açın. Başlığı ve ilk paragrafı o aramaya göre düzeltin.
+2. **Sıra 5-20** sekmesini açın. Google sizi zaten gösteriyor ama az kişi tıklıyor. En çok gösterilen ilk üç sorgunun sayfasını açın. Başlığı ve ilk paragrafı o aramaya göre düzeltin.
 3. **Sorgular** sekmesinde **Tıklama oranı düşük** düğmesine basın. Sıranız iyi ama tıklayan yok. Sorun büyük ihtimalle başlık ve açıklamadadır.
 4. Bir sayfanın hangi aramalarda çıktığını görmek için **Sayfalar** sekmesinde **Arama performansında ara** deyin.
 5. İzlemek istediğiniz sorguları **Kelime olarak kaydet** ile işaretleyin.
@@ -45,7 +45,7 @@ Seçtiğiniz filtreler adres çubuğuna yazılır. İsterseniz o görünümü ba
 
 Google veriyi üç gün geç verir. Aralık bu yüzden bugünde değil, üç gün öncesinde biter. Önceki dönem, aynı uzunlukta ve bu aralığın hemen öncesindeki dönemdir. Tıklama ve gösterimdeki değişimi yüzde, tıklama oranındaki değişimi puan olarak görürsünüz.
 
-Toplam kartları gerçek site toplamıdır. Tablolar ise aynı aramada çıkan her sayfayı ayrı sayar. Sayfa tablosunu toplarsanız karttan büyük sayı bulursunuz. Bu hata değildir.
+Toplam kartları sitenin gerçek toplamıdır. Tablolar ise aynı aramada çıkan her sayfayı ayrı sayar. Sayfa tablosunu toplarsanız karttan büyük bir sayı bulursunuz. Bu hata değildir.
 
 Google tek seferde en fazla 1.000 satır verir. Tablo altında "bu liste tam değil" notu varsa liste kesilmiştir. Sıra 5-20 listesi en fazla 100 satırdır.
 
@@ -65,6 +65,6 @@ Google tek seferde en fazla 1.000 satır verir. Tablo altında "bu liste tam de�
 
 ## Sınırlar
 
-Discover ve Google Haberler türleri yok. Arama hacmi ve rakip sırası da yok. Veri 16 aydan eskiye gitmez. Daha eskisi için Sıralama takibi ekranındaki arşive bakın.
+Discover ve Google Haberler arama türleri yer almaz. Arama hacmi ve rakip sırası da yoktur. Veri 16 aydan eskiye gitmez. Daha eskisi için Sıralama takibi ekranındaki arşive bakın.
 
 <!-- Kaynaklar: src/routes/_project/p/$projectId/search-performance.tsx; src/client/features/search-performance/SearchPerformancePage.tsx; SearchFilters.tsx; TotalsCards.tsx; SearchTrendChart.tsx; CountryBreakdown.tsx; QuickFilterBar.tsx; quickFilters.ts; tabBuckets.ts; TabSummaries.tsx; SearchPerformanceColumns.tsx; CannibalizationTable.tsx; src/serverFunctions/searchPerformance.ts; src/server/features/gsc/searchPerformanceReport.ts; src/server/features/gsc/cannibalization.ts; src/server/features/gsc/services/CannibalizationService.ts; src/shared/dataFreshness.ts -->

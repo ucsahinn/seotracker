@@ -15,6 +15,7 @@
     <link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/docs/configuracoes/" />
     <link rel="alternate" hreflang="x-default" href="https://seowatcher.io/docs/ayarlar/" />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -59,7 +60,7 @@
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en","de","fr","it","pt"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/en/docs/settings/#article","headline":"Settings","description":"Theme, Google access key, PageSpeed key, usage limits, version and update check. The one settings screen for the whole installation.","url":"https://seowatcher.io/en/docs/settings/","inLanguage":"en","dateModified":"2026-10-23","articleSection":"Screens","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/en/docs/settings/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/en/docs/settings/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/en/"},{"@type":"ListItem","position":2,"name":"Guide","item":"https://seowatcher.io/en/docs/"},{"@type":"ListItem","position":3,"name":"Settings","item":"https://seowatcher.io/en/docs/settings/"}]}]}</script>
     <script src="/assets/docs.js?v=2.4.1" defer></script>
-    <meta name="theme-color" content="#272c3b" />
+    <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
         font-family: "Geist";
@@ -649,6 +650,95 @@
       footer a:hover {
         color: var(--fg);
       }
+      /* The one ask on the page: quiet, one line, the accent only on the link. */
+      footer .star {
+        flex-basis: 100%;
+        margin: 0 0 4px;
+        text-wrap: pretty;
+      }
+      footer .star a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      footer .star a:hover {
+        color: var(--accent-link);
+        text-decoration-color: var(--accent-link);
+      }
+
+      /* Headings enter as they scroll into view. docs.js adds .hx (and .in
+         once seen) only when motion is allowed, so without script, under
+         reduced motion and with "stop motion" on, they are simply there.
+         h1 wipes in from the left, h2 rises while an amber stroke draws
+         along its rule, h3 rises a little. */
+      article .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease),
+          clip-path 760ms var(--ease),
+          filter 620ms var(--ease);
+      }
+      article h1.hx {
+        clip-path: inset(-10% 100% -10% 0);
+        filter: blur(6px);
+      }
+      article h2.hx,
+      article h3.hx {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      article h3.hx {
+        transform: translateY(6px);
+      }
+      article h2.hx {
+        position: relative;
+      }
+      article h2.hx::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 56px;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 700ms var(--ease) 160ms;
+      }
+      article .hx.in {
+        opacity: 1;
+        transform: none;
+      }
+      article h1.hx.in {
+        clip-path: inset(-10% 0 -10% 0);
+        filter: none;
+      }
+      article h2.hx.in::before {
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        article .hx,
+        article h2.hx::before {
+          opacity: 1;
+          transform: none;
+          clip-path: none;
+          filter: none;
+          transition: none;
+        }
+      }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
 
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
@@ -1093,13 +1183,19 @@
         <nav class="topnav" aria-label="Site">
           <a class="hide" href="/en/">Home</a>
           <a class="hide" href="/en/docs/">Guide</a>
-          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+          <a
+            class="hide"
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub</a
           >
-          <details class="langs"><summary aria-label="Language: English"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="3.6"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2"/></svg></span><span class="code">EN</span></summary><ul><li><a href="/docs/ayarlar/" lang="tr" hreflang="tr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"/></svg></span>Türkçe</a></li><li><a href="/en/docs/settings/" lang="en" hreflang="en" aria-current="page"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="3.6"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2"/></svg></span>English</a></li><li><a href="/de/docs/einstellungen/" lang="de" hreflang="de"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg></span>Deutsch</a></li><li><a href="/fr/docs/parametres/" lang="fr" hreflang="fr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg></span>Français</a></li><li><a href="/it/docs/impostazioni/" lang="it" hreflang="it"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg></span>Italiano</a></li><li><a href="/pt/docs/configuracoes/" lang="pt" hreflang="pt"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#ff0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.6" fill="#ffcc00"/><circle cx="8" cy="7" r="1.5" fill="#ff0000"/></svg></span>Português</a></li></ul></details>
+          <details class="langs"><summary aria-label="Language: English"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2.6"/></svg></span><span class="code">EN</span></summary><ul><li><a href="/docs/ayarlar/" lang="tr" hreflang="tr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"/></svg></span>Türkçe</a></li><li><a href="/en/docs/settings/" lang="en" hreflang="en" aria-current="page"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2.6"/></svg></span>English</a></li><li><a href="/de/docs/einstellungen/" lang="de" hreflang="de"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg></span>Deutsch</a></li><li><a href="/fr/docs/parametres/" lang="fr" hreflang="fr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg></span>Français</a></li><li><a href="/it/docs/impostazioni/" lang="it" hreflang="it"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg></span>Italiano</a></li><li><a href="/pt/docs/configuracoes/" lang="pt" hreflang="pt"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#ff0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.6" fill="#ffcc00"/><circle cx="8" cy="7" r="1.5" fill="#ff0000"/></svg></span>Português</a></li></ul></details>
           <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            target="_blank"
+            rel="noopener noreferrer"
             ><span class="long">Download for Windows</span
             ><span class="short">Download</span></a
           >
@@ -1116,37 +1212,40 @@
       <aside class="side" aria-label="Guide">
         <details class="side-dd" open>
           <summary>Guide</summary>
-          <p class="nav-group">Getting started</p><ul><li><a href="/en/docs/install-windows/">Install on Windows</a></li><li><a href="/en/docs/install-docker/">Installing with Docker</a></li><li><a href="/en/docs/google-connection/">Connecting to Google</a></li><li><a href="/en/docs/pagespeed-key/">PageSpeed key</a></li></ul><p class="nav-group">Screens</p><ul><li><a href="/en/docs/projects/">Projects</a></li><li><a href="/en/docs/dashboard/">Dashboard</a></li><li><a href="/en/docs/search-performance/">Search performance</a></li><li><a href="/en/docs/rank-tracking/">Ranking tracking</a></li><li><a href="/en/docs/opportunities/">Opportunities</a></li><li><a href="/en/docs/saved-keywords/">Saved keywords</a></li><li><a href="/en/docs/analytics/">Analytics</a></li><li><a href="/en/docs/site-audit/">Site audit</a></li><li><a href="/en/docs/index-status/">Index status</a></li><li><a href="/en/docs/reports/">Reports and templates</a></li><li><a href="/en/docs/project-context/">Project info</a></li><li class="current" aria-current="page"><a href="/en/docs/settings/">Settings</a></li></ul><p class="nav-group">Reference</p><ul><li><a href="/en/docs/help/">Help</a></li><li><a href="/en/docs/audit-rules/">Audit rules</a></li><li><a href="/en/docs/agent-setup/">Agent setup</a></li><li><a href="/en/docs/troubleshooting/">Troubleshooting</a></li><li><a href="/en/docs/release-notes/">Release notes</a></li></ul>
+          <p class="nav-group">Getting started</p><ul><li><a href="/en/docs/install-windows/">Install on Windows</a></li><li><a href="/en/docs/install-docker/">Installing with Docker</a></li><li><a href="/en/docs/google-connection/">Connecting to Google</a></li><li><a href="/en/docs/pagespeed-key/">PageSpeed key</a></li></ul><p class="nav-group">Screens</p><ul><li><a href="/en/docs/projects/">Projects</a></li><li><a href="/en/docs/dashboard/">Dashboard</a></li><li><a href="/en/docs/search-performance/">Search performance</a></li><li><a href="/en/docs/rank-tracking/">Ranking tracking</a></li><li><a href="/en/docs/opportunities/">Opportunities</a></li><li><a href="/en/docs/saved-keywords/">Saved keywords</a></li><li><a href="/en/docs/analytics/">Analytics</a></li><li><a href="/en/docs/site-audit/">Site audit</a></li><li><a href="/en/docs/index-status/">Index status</a></li><li><a href="/en/docs/reports/">Reports and templates</a></li><li><a href="/en/docs/project-context/">Project info</a></li><li class="current" aria-current="page"><a href="/en/docs/settings/">Settings</a></li></ul><p class="nav-group">Help and reference</p><ul><li><a href="/en/docs/help/">Help</a></li><li><a href="/en/docs/audit-rules/">Audit rules</a></li><li><a href="/en/docs/agent-setup/">Agent setup</a></li><li><a href="/en/docs/troubleshooting/">Troubleshooting</a></li><li><a href="/en/docs/release-notes/">Release notes</a></li></ul>
         </details>
       </aside>
       <article id="icerik" data-page="ayarlar">
-        <h1>Settings</h1><p class="lede">Theme, Google access key, PageSpeed key, usage limits, version and update check. The one settings screen for the whole installation.</p><p>On this page you see where to manage the Google connection, the speed key and updates.</p>
-<p><strong>Ayarlar</strong> (Settings) is the screen for everything that concerns the whole installation. Settings for each project (name, domain, Search Console and Analytics property) are on each project's <strong>Proje ayarları</strong> (Project settings) page. Here you manage the access key needed to connect to Google, the PageSpeed key, the theme and the update check. On the left there are the sections <strong>Görünüm</strong> (Appearance), <strong>Google</strong>, <strong>Hizmet hesabı</strong> (Service account), <strong>Hız ölçümü</strong> (Speed testing), <strong>Sınırlar</strong> (Limits), <strong>Hakkında</strong> (About) and <strong>Sürüm notları</strong> (Release notes). The title of each section has a badge that tells you its status.</p>
+        <h1>Settings</h1><p class="lede">Theme, Google access key, PageSpeed key, usage limits, version and update check. The one settings screen for the whole installation.</p><p>This screen holds the settings that apply to the whole installation: the Google connection, the PageSpeed key, the theme and updates.</p>
+<p><strong>Ayarlar</strong> (Settings) covers the whole installation. Settings for a single project (name, domain, Search Console and Analytics property) are on that project's <strong>Proje ayarları</strong> (Project settings) page. Here you manage the access key for connecting to Google, the PageSpeed key, the theme and the update check. The sections on the left are <strong>Görünüm</strong> (Appearance), <strong>Google</strong>, <strong>Hizmet hesabı</strong> (Service account), <strong>Hız ölçümü</strong> (Speed testing), <strong>Sınırlar</strong> (Limits), <strong>Hakkında</strong> (About) and <strong>Sürüm notları</strong> (Release notes). Each section title has a badge showing its status.</p>
 <h2 id="what-is-on-the-screen">What is on the screen</h2>
 <p><strong>Görünüm</strong> (Appearance). For <strong>Tema</strong> (Theme) there are the options Sistem (System), Açık (Light) and Koyu (Dark). Your choice is stored in this browser. In another browser or on another computer, you choose again.</p>
-<p><strong>Google.</strong> The badge is one of three values: <strong>Kayıtlı</strong> (Saved), <strong>Ortamdan geliyor</strong> (Comes from the environment; on a Docker installation, it was given through the <code>.env</code> file) or <strong>Eksik</strong> (Missing). The section shows the two redirect addresses you will add to Google Cloud Console (Google's developer panel). There are copy buttons next to them. You need to add both. If you do not add the Analytics address, only Search Console connects.</p>
-<p>Fields: <strong>İstemci kimliği</strong> (Client ID) and <strong>Gizli anahtar</strong> (Secret key). Both are details of the access key you get from Google. Buttons: <strong>Kaydet</strong> (Save), <strong>Vazgeç</strong> (Cancel), <strong>Değiştir</strong> (Change) and <strong>Sil</strong> (Delete). <strong>Sil</strong> (Delete) cuts the existing connections. The step-by-step setup is in the Google connection guide.</p>
-<p><strong>Hizmet hesabı</strong> (Service account; the shorter way). A service account is a robot account created in Google for the app. In the <strong>JSON anahtar dosyası</strong> (JSON key file) field, you paste the contents of the file you downloaded from Google Cloud. If one is saved, the account's email address shows. The screen tells you where to add this address:</p>
+<p><strong>Google.</strong> The badge is one of three values: <strong>Kayıtlı</strong> (Saved), <strong>Ortamdan geliyor</strong> (Comes from the environment; on a Docker installation, the value was set in the <code>.env</code> file) or <strong>Eksik</strong> (Missing). The section shows the two redirect addresses to add in Google Cloud Console (Google's developer console), each with a copy button. Add both: without the Analytics address, only Search Console connects.</p>
+<p>Fields: <strong>İstemci kimliği</strong> (Client ID) and <strong>Gizli anahtar</strong> (Secret key). Both come from the access key you create at Google. Buttons: <strong>Kaydet</strong> (Save), <strong>Vazgeç</strong> (Cancel), <strong>Değiştir</strong> (Change) and <strong>Sil</strong> (Delete). <strong>Sil</strong> (Delete) disconnects the existing connections. The step-by-step setup is in the Google connection guide.</p>
+<p><strong>Hizmet hesabı</strong> (Service account; the shorter route). A service account is an account in Google Cloud that belongs to the app instead of a person. Paste the contents of the key file you downloaded from Google Cloud into the <strong>JSON anahtar dosyası</strong> (JSON key file) field. If one is saved, the account's email address is shown. Add that address in these places:</p>
 <ul><li>Search Console: &quot;Ayarlar → Kullanıcılar ve izinler → Kullanıcı ekle&quot; (Settings → Users and permissions → Add user), permission Full.</li><li>Analytics: &quot;Yönetici → Erişim yönetimi&quot; (Admin → Access management), permission Viewer.</li></ul>
-<p>The badge says <strong>Kayıtlı</strong> (Saved) or <strong>Kullanılmıyor</strong> (Not in use). A saved service account is preferred over the Google access key. Deleting removes the account from the app, but it does not cancel the key in Google.</p>
-<p><strong>Hız ölçümü</strong> (Speed testing). There is an <strong>API anahtarı</strong> (API key) field and an <strong>Anahtarı test et</strong> (Test the key) button. The test &quot;1 ölçüm harcar&quot; (uses 1 measurement), and you can press it once every ten seconds. The badge says <strong>Anahtar kayıtlı</strong> (Key saved), <strong>Ortam anahtarı</strong> (Environment key) or <strong>Anahtar eksik</strong> (Key missing). The details are in the PageSpeed key guide.</p>
-<p><strong>Sınırlar</strong> (Limits). The &quot;Google ve sistem sınırları&quot; (Google and system limits) cards show the following:</p>
-<ul><li>URL Inspection (Search Console): 2,000 per day.</li><li>PageSpeed Insights.</li><li>GA4 (Google Analytics) daily and hourly quota units: 200,000 and 40,000 by default. Google does not publish this number. It only tells you how much is left.</li><li>Audit page limit: 10,000.</li><li>Reports per project: 10,000, templates: 10.</li><li>Largest report: 500,000 bytes.</li></ul>
+<p>The badge says <strong>Kayıtlı</strong> (Saved) or <strong>Kullanılmıyor</strong> (Not in use). A saved service account is preferred over the Google access key. Deleting removes the account from the app but does not revoke the key in Google.</p>
+<p><strong>Hız ölçümü</strong> (Speed testing). The section has an <strong>API anahtarı</strong> (API key) field and an <strong>Anahtarı test et</strong> (Test the key) button. The test &quot;1 ölçüm harcar&quot; (uses 1 measurement), and you can press it once every ten seconds. The badge says <strong>Anahtar kayıtlı</strong> (Key saved), <strong>Ortam anahtarı</strong> (Environment key) or <strong>Anahtar eksik</strong> (Key missing). The details are in the PageSpeed key guide.</p>
+<p><strong>Sınırlar</strong> (Limits). The &quot;Google ve sistem sınırları&quot; (Google and system limits) cards show:</p>
+<ul><li>URL Inspection (Search Console): 2,000 per day.</li><li>PageSpeed Insights.</li><li>GA4 (Google Analytics) daily and hourly quota units: 200,000 and 40,000 by default. Google does not publish the exact figure; it only reports how much is left.</li><li>Audit page limit: 10,000.</li><li>Reports per project: 10,000, templates: 10.</li><li>Largest report: 500,000 bytes.</li></ul>
 <p>The status of each card is <strong>Yeterli</strong> (Enough), <strong>Azalıyor</strong> (Running low, after 70 percent), <strong>Neredeyse doldu</strong> (Almost full, after 90 percent) or <strong>Bilinmiyor</strong> (Unknown).</p>
-<p><strong>Hakkında</strong> (About). The <strong>Sürüm</strong> (Version) row shows the version (like v2.3.0). The <strong>Güncellemeleri kontrol et</strong> (Check for updates) switch is on by default. When it is on, the app asks GitHub for the latest version at most once a day. In that case, the <strong>Şimdi kontrol et</strong> (Check now) button also shows. If there is a new version, a <strong>Değişiklikler</strong> (Changes) link appears, and for Docker installations a command to copy: <code>git pull &amp;&amp; docker compose up -d --build</code>. For the Windows package, it points to <strong>Güncelle</strong> (Update) on the taskbar icon. If automatic update is on, the new version installs by itself.</p>
+<p><strong>Hakkında</strong> (About). The <strong>Sürüm</strong> (Version) row shows the installed version (for example v2.3.0). The <strong>Güncellemeleri kontrol et</strong> (Check for updates) switch is on by default. When it is on, the app asks GitHub for the latest version at most once a day. The <strong>Şimdi kontrol et</strong> (Check now) button then appears too. If there is a new version, a <strong>Değişiklikler</strong> (Changes) link appears, and for Docker installations a command you can copy: <code>git pull &amp;&amp; docker compose up -d --build</code>. For the Windows package, it points to <strong>Güncelle</strong> (Update) on the taskbar icon. If automatic update is on, the new version installs by itself.</p>
 <p><strong>Sürüm notları</strong> (Release notes). It lists what changed in each version.</p>
 <h2 id="how-to-use-it">How to use it</h2>
-<ol><li>On first setup, first enter the client ID and the secret key in the <strong>Google</strong> section. Then enter the PageSpeed key in the <strong>Hız ölçümü</strong> (Speed testing) section. When both are saved, you go to the project and pick the property.</li><li>Once a month, look at the <strong>Sınırlar</strong> (Limits) section. The quota you see as &quot;Azalıyor&quot; (Running low) is most often the URL Inspection limit.</li><li>If there is a new version in the <strong>Hakkında</strong> (About) section, update. The release notes tell you what changed. The update check is the only connection from your computer to anywhere other than Google. If you do not want it, turn the switch off.</li><li>If you need to change the Google access key (for example, a new Cloud project), click <strong>Değiştir</strong> (Change) and paste the new values. The existing connections do not work with the new key. In the projects, you need to choose <strong>Yeniden bağlan</strong> (Reconnect).</li></ol>
+<ol><li>On first setup, enter the client ID and the secret key in the <strong>Google</strong> section, then the PageSpeed key in the <strong>Hız ölçümü</strong> (Speed testing) section. When both are saved, open the project and pick the property.</li><li>Once a month, check the <strong>Sınırlar</strong> (Limits) section. The quota that shows as &quot;Azalıyor&quot; (Running low) is most often the URL Inspection limit.</li><li>If the <strong>Hakkında</strong> (About) section shows a new version, update; the release notes say what changed. The update check is the only connection from your computer to anywhere other than Google. If you do not want it, turn the switch off.</li><li>To change the Google access key (for example, after creating a new Cloud project), click <strong>Değiştir</strong> (Change) and paste the new values. Existing connections do not work with the new key, so choose <strong>Yeniden bağlan</strong> (Reconnect) in each project.</li></ol>
 <h2 id="frequently-asked-questions">Frequently asked questions</h2>
-<p><strong>Why can't I see my secret key on the screen?</strong> The app stores it encrypted and does not send it back to the browser. The screen only shows that it is saved, and the ID.</p>
-<p><strong>What if the value I gave in <code>.env</code> on Docker and the one I entered on the screen conflict?</strong> The one entered on the screen wins. If you save a value while the badge says &quot;Ortamdan geliyor&quot; (Comes from the environment), that one is used from then on.</p>
+<p><strong>Why can't I see my secret key on the screen?</strong> The app stores it encrypted and never sends it back to the browser. The screen shows only that it is saved, and the ID.</p>
+<p><strong>What if the value I gave in <code>.env</code> on Docker and the one I entered on the screen conflict?</strong> The value entered on the screen wins. If you save a value while the badge says &quot;Ortamdan geliyor&quot; (Comes from the environment), that value is used from then on.</p>
 <p><strong>What does the update check send?</strong> It sends no data. It reads GitHub's public list of releases. The request is anonymous.</p>
-<p><strong>Service account or Google access key?</strong> A service account does not make you deal with the consent screen, and it does not expire. In return, you need to give that account permission by hand in Search Console and Analytics. In a single-person installation, either works. If you often see &quot;süresi doldu&quot; (expired), switch to a service account.</p>
+<p><strong>Service account or Google access key?</strong> A service account needs no consent screen and does not expire, but you must grant that account access by hand in Search Console and Analytics. For a single-person installation either works. If you often see &quot;süresi doldu&quot; (expired), switch to a service account.</p>
 <h2 id="limits">Limits</h2>
-<p>The <strong>Ayarlar</strong> (Settings) screen does not change the port number, the data folder or network settings. These are in <code>config.json</code> in the Windows package and in the <code>.env</code> file on Docker. There is no user and password management, because the app is single-user. The quota cards are the app's own count, not Google's real counter. URL inspections you make by hand in Search Console do not show up here, but they use up Google's limit.</p> <nav class="pager" aria-label="Previous and next page"><a class="pager-prev" rel="prev" href="/en/docs/project-context/"><span>Previous</span><strong>Project info</strong></a><a class="pager-next" rel="next" href="/en/docs/help/"><span>Next</span><strong>Help</strong></a></nav>
+<p><strong>Ayarlar</strong> (Settings) does not change the port number, the data folder or network settings. Those live in <code>config.json</code> in the Windows package and in the <code>.env</code> file on Docker. There is no user or password management because the app is single-user. The quota cards are the app's own count, not Google's real counter. URL inspections you run by hand in Search Console do not show up here, but they count against Google's limit.</p> <nav class="pager" aria-label="Previous and next page"><a class="pager-prev" rel="prev" href="/en/docs/project-context/"><span>Previous</span><strong>Project info</strong></a><a class="pager-next" rel="next" href="/en/docs/help/"><span>Next</span><strong>Help</strong></a></nav>
         <p class="meta">
           Last updated: October 23, 2026. Spotted a mistake?
-          <a href="https://github.com/ucsahinn/seotracker/issues"
+          <a
+            href="https://github.com/ucsahinn/seotracker/issues"
+            target="_blank"
+            rel="noopener noreferrer"
             >Report it on GitHub</a
           >.
         </p>
@@ -1155,10 +1254,25 @@
     </main>
     <footer>
       <div class="wrap">
+        <p class="star">
+          A star helps other people find a free tool.
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Star it on GitHub</a
+          >
+        </p>
         <span>seowatcher, MIT license.</span>
         <span
           ><a href="/en/">Home</a> &nbsp;
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          &nbsp;
           <a href="/en/docs/release-notes/">Release notes</a></span
         >
       </div>

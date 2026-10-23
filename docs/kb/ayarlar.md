@@ -18,7 +18,7 @@ Google bağlantısını, hız anahtarını ve güncellemeyi nereden yöneteceği
 
 İki alan var: **İstemci kimliği** ve **Gizli anahtar**. İkisi de Google'dan aldığınız erişim anahtarının parçasıdır. Düğmeler şunlar: **Kaydet**, **Vazgeç**, **Değiştir** ve **Sil**. **Sil** var olan bağlantıları koparır. Adım adım kurulumu Google'a bağlanma kılavuzunda bulursunuz.
 
-**Hizmet hesabı (daha kısa yol).** Hizmet hesabı, Google'da uygulama için açılan bir robot hesaptır. **JSON anahtar dosyası** alanına, Google Cloud'dan indirdiğiniz dosyanın içeriğini yapıştırırsınız. Kayıt varsa hesabın e-posta adresi görünür. Ekran bu adresi nereye ekleyeceğinizi yazar:
+**Hizmet hesabı (daha kısa yol).** Hizmet hesabı, uygulamanın kullanması için Google'da açılan bir robot hesaptır. **JSON anahtar dosyası** alanına, Google Cloud'dan indirdiğiniz dosyanın içeriğini yapıştırırsınız. Kayıt varsa hesabın e-posta adresi görünür. Ekran bu adresi nereye ekleyeceğinizi de yazar:
 
 - Search Console: "Ayarlar → Kullanıcılar ve izinler → Kullanıcı ekle", yetki Tam.
 - Analytics: "Yönetici → Erişim yönetimi", yetki Görüntüleyen.
@@ -31,14 +31,14 @@ Rozet **Kayıtlı** ya da **Kullanılmıyor** yazar. Kayıtlı bir hizmet hesab�
 
 - URL Denetimi (Search Console): günde 2.000.
 - PageSpeed Insights.
-- GA4 (Google Analytics) günlük ve saatlik kota birimi: varsayılan 200.000 ve 40.000. Google bu sayıyı açıklamaz, yalnızca ne kadar kaldığını söyler.
+- GA4 (Google Analytics) günlük ve saatlik kota birimi: varsayılan 200.000 ve 40.000. Google bu sayıyı açıklamaz, yalnızca ne kadarının kaldığını bildirir.
 - Denetim sayfa sınırı: 10.000.
 - Proje başına rapor: 10.000, şablon: 10.
 - En büyük rapor: 500.000 bayt.
 
 Her kartın durumu **Yeterli**, **Azalıyor** (yüzde 70'ten sonra), **Neredeyse doldu** (yüzde 90'dan sonra) ya da **Bilinmiyor** olur.
 
-**Hakkında.** **Sürüm** satırı sürümü gösterir (v2.3.0 gibi). **Güncellemeleri kontrol et** anahtarı varsayılan olarak açıktır. Açıksa uygulama günde en çok bir kez GitHub'daki son sürümü sorar. Bu durumda **Şimdi kontrol et** düğmesi de görünür. Yeni sürüm varsa **Değişiklikler** bağlantısı çıkar. Docker kurulumları için kopyalayacağınız komut da çıkar: `git pull && docker compose up -d --build`. Windows paketinde ekran sizi görev çubuğu simgesindeki **Güncelle**'ye yönlendirir. Otomatik güncelleme açıksa yeni sürüm kendiliğinden kurulur.
+**Hakkında.** **Sürüm** satırı sürümü gösterir (v2.3.0 gibi). **Güncellemeleri kontrol et** anahtarı varsayılan olarak açıktır. Açıksa uygulama günde en çok bir kez GitHub'daki son sürümü sorar. Bu durumda **Şimdi kontrol et** düğmesi de görünür. Yeni sürüm varsa **Değişiklikler** bağlantısı çıkar. Docker kurulumları için kopyalayacağınız komut da çıkar: `git pull && docker compose up -d --build`. Windows paketinde ekran sizi görev çubuğu simgesindeki **Güncelle** maddesine yönlendirir. Otomatik güncelleme açıksa yeni sürüm kendiliğinden kurulur.
 
 **Sürüm notları.** Her sürümde neyin değiştiğini listeler.
 
@@ -46,7 +46,7 @@ Her kartın durumu **Yeterli**, **Azalıyor** (yüzde 70'ten sonra), **Neredeyse
 
 1. İlk kurulumda önce **Google** bölümüne istemci kimliğini ve gizli anahtarı girin. Sonra **Hız ölçümü** bölümüne PageSpeed anahtarını girin. İkisi kaydedilince projeye geçip mülkü seçersiniz.
 2. Ayda bir **Sınırlar** bölümüne bakın. "Azalıyor" gördüğünüz kota çoğu zaman URL Denetimi sınırıdır.
-3. **Hakkında** bölümünde yeni sürüm varsa güncelleyin. Sürüm notları neyin değiştiğini söyler. Güncelleme kontrolü, bilgisayarınızdan Google dışına giden tek bağlantıdır. İstemezseniz anahtarı kapatın.
+3. **Hakkında** bölümünde yeni sürüm varsa güncelleyin. Sürüm notları neyin değiştiğini söyler. Google'ın dışına giden tek bağlantı güncelleme kontrolüdür. İstemezseniz anahtarı kapatın.
 4. Google erişim anahtarını değiştirmeniz gerekirse (yeni Cloud projesi gibi) **Değiştir**'i tıklayın ve yeni değerleri yapıştırın. Mevcut bağlantılar yeni anahtarla çalışmaz. Projelerde **Yeniden bağlan** gerekir.
 
 ## Sık sorulanlar
@@ -57,7 +57,7 @@ Her kartın durumu **Yeterli**, **Azalıyor** (yüzde 70'ten sonra), **Neredeyse
 
 **Güncelleme kontrolü ne gönderiyor?** Hiçbir veri göndermez. GitHub'ın herkese açık sürüm listesini okur. İstek anonimdir.
 
-**Hizmet hesabı mı, Google erişim anahtarı mı?** Hizmet hesabı izin ekranıyla uğraştırmaz ve süresi dolmaz. Karşılığında Search Console ve Analytics'te o hesaba elle yetki vermeniz gerekir. Tek kişilik kurulumda ikisi de olur. Sık "süresi doldu" görüyorsanız hizmet hesabına geçin.
+**Hizmet hesabı mı, Google erişim anahtarı mı?** Hizmet hesabı sizi izin ekranıyla uğraştırmaz ve süresi dolmaz. Karşılığında Search Console ve Analytics'te o hesaba elle yetki vermeniz gerekir. Tek kişilik kurulumda ikisi de olur. Sık "süresi doldu" görüyorsanız hizmet hesabına geçin.
 
 ## Sınırlar
 

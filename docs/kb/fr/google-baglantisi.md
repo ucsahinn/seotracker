@@ -7,7 +7,7 @@ updated: 2026-10-22
 
 L'interface de l'application est en turc. Ce guide donne chaque nom de bouton et d'écran en turc, suivi de sa traduction française entre parenthèses.
 
-À la fin, l'application sera connectée à Google en votre nom et lira les données de votre site. Pour cela, vous obtenez une fois une « clé d'accès Google » chez Google. Cela prend environ dix minutes et vous n'aurez plus à y revenir. Il existe aussi une voie plus courte (un compte de service), à la fin de la page. C'est celle qu'on recommande à la plupart des gens.
+À la fin, l'application sera connectée à Google en votre nom et lira les données de votre site. Pour cela, vous obtenez une fois une « clé d'accès Google » chez Google. Cela prend environ dix minutes et vous n'aurez plus à y revenir. Une voie plus courte, le compte de service, est décrite à la fin de la page ; elle convient à la plupart des gens.
 
 ## Ce qu'il vous faut
 
@@ -22,7 +22,7 @@ L'interface de l'application est en turc. Ce guide donne chaque nom de bouton et
 2. Dans le navigateur, allez à l'adresse `console.cloud.google.com`. Dans le sélecteur de projet en haut, choisissez **Yeni proje** (Nouveau projet). Le nom n'a pas d'importance, vous pouvez écrire « seowatcher ».
 3. Ouvrez la page **API'ler ve Hizmetler → Kitaplık** (API et services → Bibliothèque). Dans la zone de recherche, tapez **Google Search Console API**, cliquez dessus et choisissez **Etkinleştir** (Activer). Si vous voulez aussi connecter Analytics, faites la même chose pour **Google Analytics Admin API** et **Google Analytics Data API**.
 4. Ouvrez la page **API'ler ve Hizmetler → OAuth izin ekranı** (API et services → Écran de consentement OAuth). Comme type d'utilisateur, choisissez **Harici** (Externe). Pour le nom de l'application, mettez le nom de votre choix ; dans les champs d'e-mail, écrivez votre propre adresse. L'état de publication peut rester « Test ».
-5. Sur la même page, ajoutez votre propre compte Google dans la section **Test kullanıcıları** (Utilisateurs de test). Google n'a pas besoin de donner une autre approbation.
+5. Sur la même page, ajoutez votre propre compte Google dans la section **Test kullanıcıları** (Utilisateurs de test). Aucune autre validation de la part de Google n'est nécessaire.
 6. Sur la page **API'ler ve Hizmetler → Kimlik bilgileri** (API et services → Identifiants), cliquez sur **Kimlik bilgisi oluştur** (Créer des identifiants), puis choisissez **OAuth istemci kimliği** (ID client OAuth). C'est votre clé d'accès Google.
 7. Comme type d'application, choisissez **Web uygulaması** (Application Web).
 8. Dans la section **Yetkilendirilmiş yönlendirme URI'leri** (URI de redirection autorisés), ajoutez les deux adresses de l'étape 1. Ne mettez pas de barre oblique à la fin. Un seul caractère de différence provoque chez Google l'erreur « redirect_uri_mismatch » (l'adresse ne correspond pas).
@@ -67,7 +67,7 @@ Si un compte de service est enregistré, l'application l'utilise. La ligne « Ş
 
 ## En cas de problème
 
-- **Google affiche « redirect_uri_mismatch ».** L'adresse de redirection dans Cloud Console n'est pas strictement identique à celle de l'application. Utilisez le bouton de copie de l'écran **Ayarlar**. Http au lieu de https, 127.0.0.1 au lieu de localhost, ou une barre oblique finale suffisent à provoquer l'erreur.
+- **Google affiche « redirect_uri_mismatch ».** L'adresse de redirection dans Cloud Console n'est pas strictement identique à celle de l'application. Utilisez le bouton de copie de l'écran **Ayarlar**. http au lieu de https, 127.0.0.1 au lieu de localhost, ou une barre oblique finale suffisent à provoquer l'erreur.
 - **L'avertissement « Google erişim anahtarı eksik » (Clé d'accès Google manquante) s'affiche.** Les étapes 10 et 11 ont été sautées ou l'enregistrement a échoué. Dans l'écran **Ayarlar**, le badge doit indiquer **Kayıtlı**.
 - **Google affiche « access_denied ».** Le compte avec lequel vous vous êtes connecté ne figure pas dans la liste des utilisateurs de test de l'écran de consentement. Ajoutez le compte à la liste ou choisissez le bon compte.
 - **La liste des propriétés est vide.** Ce compte n'a pas de site vérifié dans Search Console ni d'autorisation Analytics. Vérifiez d'abord le site.

@@ -63,11 +63,14 @@
         el.getAttribute("data-count") + (el.getAttribute("data-suffix") || "");
     });
   } else {
+    // A title that wipes in is clipped to nothing until it is shown, and the
+    // observer counts the clipped box, so it would never be "visible": its
+    // parent is watched in its place. Each watched element lists what it shows.
     var io = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (e) {
           if (e.isIntersecting) {
-            show(e.target);
+            (e.target.__reveal || []).forEach(show);
             io.unobserve(e.target);
           }
         });
@@ -75,15 +78,14 @@
       { rootMargin: "0px 0px 10% 0px", threshold: 0.01 },
     );
     revealables.forEach(function (el) {
-      io.observe(el);
+      var watched = el.matches("h2.reveal") ? el.parentElement : el;
+      (watched.__reveal = watched.__reveal || []).push(el);
+      io.observe(watched);
     });
     requestAnimationFrame(function () {
       revealables.forEach(function (el) {
         var r = el.getBoundingClientRect();
-        if (r.top < window.innerHeight && r.bottom > 0) {
-          show(el);
-          io.unobserve(el);
-        }
+        if (r.top < window.innerHeight && r.bottom > 0) show(el);
       });
     });
   }
@@ -118,16 +120,45 @@
     requestAnimationFrame(step);
   }
 
-  // 3b. Live download count from GitHub releases (sum of every installer asset).
-  //     Cached for an hour per tab; the card stays hidden until a number exists.
+  // 2b. Smaller headings (cards, steps, questions) get their own entrance: a
+  //     short rise, and on h3 an amber stroke that draws in underneath. The
+  //     class is added here, so without script they are simply there; under
+  //     reduced motion the final state is set at once.
+  var minor = $$("main h3, main .qa summary");
+  if (reduce || !("IntersectionObserver" in window)) {
+    minor.forEach(function (el) {
+      el.classList.add("hx", "in");
+    });
+  } else {
+    var minorIo = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          e.target.classList.add("in");
+          minorIo.unobserve(e.target);
+        });
+      },
+      { rootMargin: "0px 0px -6% 0px", threshold: 0 },
+    );
+    var q = 0;
+    minor.forEach(function (el) {
+      el.classList.add("hx");
+      // Questions in one list follow each other by a beat.
+      if (el.tagName === "SUMMARY")
+        el.style.setProperty("--hd", String((q++ % 8) * 50));
+      minorIo.observe(el);
+    });
+  }
+
+  // 3b. Live download count: every download of every asset of every release,
+  //     summed over all pages of the releases API. Cached for an hour per
+  //     tab; the card stays hidden until there is a number above zero.
   var live = document.querySelector("[data-live=downloads]");
   if (live && window.fetch) {
     var card = live.closest(".stat");
     var key = "seowatcher-downloads";
-    // A small number reads as "nobody uses this"; the card waits until the
-    // count says something.
     var showDownloads = function (n) {
-      if (!(n >= 100)) return;
+      if (!(n > 0)) return;
       live.setAttribute("data-count", String(n));
       live.removeAttribute("data-counted");
       card.hidden = false;
@@ -143,22 +174,34 @@
     } catch (e) {}
     if (cached !== null) showDownloads(cached);
     else {
-      fetch(
-        "https://api.github.com/repos/ucsahinn/seotracker/releases?per_page=100",
-        { headers: { Accept: "application/vnd.github+json" } },
-      )
-        .then(function (r) {
-          return r.ok ? r.json() : null;
-        })
-        .then(function (releases) {
-          if (!releases) return;
-          var n = 0;
-          releases.forEach(function (rel) {
-            (rel.assets || []).forEach(function (a) {
-              if (/^seowatcher-setup.*\.exe$/.test(a.name))
-                n += a.download_count || 0;
+      var perPage = 100;
+      // Resolves to the running total, or null when any page fails (a partial
+      // sum would undercount, so nothing is shown and nothing is cached).
+      var sumFrom = function (page, total) {
+        return fetch(
+          "https://api.github.com/repos/ucsahinn/seotracker/releases?per_page=" +
+            perPage +
+            "&page=" +
+            page,
+          { headers: { Accept: "application/vnd.github+json" } },
+        )
+          .then(function (r) {
+            return r.ok ? r.json() : null;
+          })
+          .then(function (releases) {
+            if (!Array.isArray(releases)) return null;
+            releases.forEach(function (rel) {
+              (rel.assets || []).forEach(function (a) {
+                total += a.download_count || 0;
+              });
             });
+            // A short page is the last one.
+            return releases.length < perPage ? total : sumFrom(page + 1, total);
           });
+      };
+      sumFrom(1, 0)
+        .then(function (n) {
+          if (n === null) return;
           try {
             sessionStorage.setItem(
               key,

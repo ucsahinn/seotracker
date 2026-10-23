@@ -1,6 +1,6 @@
 ---
-title: Note di rilascio
-description: Cosa cambia in seowatcher 2.4.1. Installazione con un solo file su Windows, un'app che si aggiorna da sola, schermate più semplici e un sito in sei lingue.
+title: Note di versione
+description: Che cosa cambia in seowatcher 2.4.1: installazione con un solo file su Windows, aggiornamento automatico, schermate più semplici, sito in sei lingue.
 updated: 2026-10-23
 ---
 
@@ -17,7 +17,7 @@ L'ultima versione è la **2.4.1**, del 23 ottobre 2026. I dati restano intatti d
 
 - **Avvio su un computer nuovo.** Il programma di installazione include il runtime Microsoft Visual C++ e, se manca, lo installa una volta con il consenso dell'utente.
 - **Aggiorna.** Sempre nel menu della barra delle applicazioni. Installa la nuova versione se c'è, altrimenti indica «Güncel» (Aggiornata).
-- **Ripara installazione.** Elimina i file temporanei, controlla il pacchetto e riapre l'app.
+- **Ripara l'installazione.** Elimina i file temporanei, controlla il pacchetto e riapre l'app.
 - **Segnala un problema.** Apre una segnalazione già compilata. Nomi utente, nomi dei siti e indirizzi e-mail vengono mascherati.
 - **Programma di installazione con versione.** Il nome del file e la procedura guidata mostrano la versione installata.
 
@@ -25,7 +25,7 @@ L'ultima versione è la **2.4.1**, del 23 ottobre 2026. I dati restano intatti d
 
 - **Menu laterale.** I gruppi si chiamano «Arama ve site» (Ricerca e sito) e «Ajan» (Assistente); Aiuto e Impostazioni sono in basso.
 - **Configurazione dell'assistente.** Una sola scheda e un solo pulsante di copia per Claude Code, Codex o qualsiasi altro assistente.
-- **Impostazioni.** Il collegamento a Google è spiegato in tre passi; il tema è scuro per impostazione predefinita.
+- **Impostazioni.** Il collegamento a Google è spiegato in tre passaggi; il tema è scuro per impostazione predefinita.
 - **Riconosce entrambe le installazioni.** L'aiuto e le istruzioni per l'assistente descrivono la barra delle applicazioni su Windows e i comandi `docker compose` su Docker.
 
 ## Sito e guida
@@ -35,7 +35,7 @@ L'ultima versione è la **2.4.1**, del 23 ottobre 2026. I dati restano intatti d
 
 ## Correzioni
 
-- Il link di download sul sito puntava al tag di versione sbagliato.
+- Il collegamento per il download sul sito puntava al tag di versione sbagliato.
 - Su Git Bash il comando di configurazione di Codex non rimuoveva l'a capo alla fine della password.
 - In una scheda del controllo del sito i numeri uscivano dal riquadro.
 

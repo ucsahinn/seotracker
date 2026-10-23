@@ -1,6 +1,6 @@
 ---
 title: Aiuto
-description: Se qualcosa va storto, guardare prima qui. Controlla l'installazione, mostra le soluzioni ai problemi comuni e prepara il file da inviare quando si segnala un problema.
+description: Se qualcosa va storto, guardare prima qui: controlla l'installazione, propone soluzioni ai problemi comuni e prepara il file per la segnalazione.
 screen: Yardım
 route: /support
 updated: 2026-10-22
@@ -22,11 +22,11 @@ Se qualcosa va storto, guardare prima qui. La schermata controlla l'installazion
 - **Kurulum istemini kopyala** (Copia il testo di configurazione): copia il testo di configurazione da incollare nell'assistente di intelligenza artificiale (nell'app chiamato "ajan").
 - **Ajan kurulumu** (Configurazione dell'assistente): porta alla schermata del collegamento con l'assistente.
 
-**Kurulumunuzun durumu** (Stato dell'installazione). La scheda controlla quattro cose: **Giriş ve erişim** (Accesso), **Google girişi** (Accesso a Google), **PageSpeed anahtarı** (Chiave PageSpeed), **Veritabanı** (Database). In alto c'è scritto "Her şey yolunda." (Tutto a posto.) oppure "N şey dikkat istiyor." (N cose richiedono attenzione.). Sotto compaiono la riga della versione ("Sürüm X, güncel." (Versione X, aggiornata.) oppure "yeni sürüm Y var" (c'è una nuova versione Y)) e l'ora dell'ultimo controllo. Il pulsante accanto a una riga con problemi porta all'impostazione giusta: **Ayarları aç** (Apri le impostazioni) oppure **Anahtar gir** (Inserisci la chiave). **Özeti kopyala** (Copia il riepilogo) mette il testo della scheda negli appunti.
+**Kurulumunuzun durumu** (Stato dell'installazione). La scheda controlla quattro cose: **Giriş ve erişim** (Accesso), **Google girişi** (Accesso a Google), **PageSpeed anahtarı** (Chiave PageSpeed), **Veritabanı** (Database). In alto c'è scritto "Her şey yolunda." (Tutto a posto.) oppure "N şey dikkat istiyor." (N cose richiedono attenzione.). Sotto compaiono la riga della versione, "Sürüm X, güncel." (Versione X, aggiornata) oppure "yeni sürüm Y var" (c'è una nuova versione Y), e l'ora dell'ultimo controllo. Il pulsante accanto a una riga con problemi porta all'impostazione giusta: **Ayarları aç** (Apri le impostazioni) oppure **Anahtar gir** (Inserisci la chiave). **Özeti kopyala** (Copia il riepilogo) mette il testo della scheda negli appunti.
 
 **Projeler** (Progetti). Si vede lo stato del collegamento di ogni progetto con Search Console e Analytics. **Bağlantıları aç** (Apri i collegamenti) porta alle impostazioni del progetto.
 
-**Sık sorunlar** (Problemi comuni). Ci sono cinque titoli espandibili: la pagina non si apre, il numero di porta è occupato, l'assistente non riesce a collegarsi (401), il limite di PageSpeed, nessun dato sulle query. In ciascuno è scritto che cosa fare, con il collegamento all'impostazione corrispondente.
+**Sık sorunlar** (Problemi comuni). Ci sono cinque voci espandibili: la pagina non si apre, il numero di porta è occupato, l'assistente non riesce a collegarsi (401), il limite di PageSpeed, nessun dato sulle query. In ciascuno è scritto che cosa fare, con il collegamento all'impostazione corrispondente.
 
 **Google ve sistem sınırları** (Limiti di Google e del sistema). Con **Sınırları göster** (Mostra i limiti) si vede a che punto si è dei limiti giornalieri di Google.
 
@@ -37,7 +37,7 @@ Se qualcosa va storto, guardare prima qui. La schermata controlla l'installazion
 1. Se qualcosa non funziona, aprire prima questa schermata e leggere l'avviso nella scheda.
 2. Premere il pulsante accanto all'avviso: porta all'impostazione giusta. Fare la modifica, tornare e scegliere **Durumu yeniden kontrol et**.
 3. Se la scheda dice "Her şey yolunda." ma il problema continua, guardare i titoli di **Sık sorunlar**.
-4. Se ancora non si risolve, scegliere **Tanılama paketi indir** e aggiungere il file alla segnalazione su GitHub. Nel pacchetto Windows, **Sorunu bildir (GitHub)** (Segnala un problema (GitHub)) nel menu della barra delle applicazioni fa lo stesso con un solo clic.
+4. Se ancora non si risolve, scegliere **Tanılama paketi indir** e aggiungere il file alla segnalazione su GitHub. Nel pacchetto Windows, **Sorunu bildir (GitHub)** (Segnala un problema su GitHub) nel menu della barra delle applicazioni fa lo stesso con un solo clic.
 
 ## Domande frequenti
 

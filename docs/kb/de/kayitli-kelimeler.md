@@ -1,6 +1,6 @@
 ---
 title: Gespeicherte Suchbegriffe
-description: Sie speichern wichtige Suchanfragen hier, versehen sie mit Etiketten und sehen ihre durchschnittliche Position der letzten 90 Tage. Auf Wunsch exportieren Sie sie als CSV oder an Google Tabellen.
+description: Wichtige Suchanfragen speichern, mit Etiketten versehen und ihre Durchschnittsposition der letzten 90 Tage sehen. Export als CSV oder an Google Tabellen.
 screen: Kayıtlı kelimeler
 route: /p/<proje>/saved
 updated: 2026-10-22
@@ -8,7 +8,7 @@ updated: 2026-10-22
 
 Sie sammeln die Suchanfragen, die Ihnen wichtig sind, versehen sie mit Etiketten und verfolgen ihre Position.
 
-Die App schlägt Ihnen keine Suchbegriffe vor. Auf dem Bildschirm Arama performansı (Suchleistung) oder Sıralama takibi (Ranking-Verfolgung) wählen Sie im Menü einer Zeile **Kelime olarak kaydet** (Als Suchbegriff speichern), und der Begriff landet hier. Hier sehen Sie für jeden Begriff die durchschnittliche Position der letzten 90 Tage. Die Position stammt aus dem Archiv der Ranking-Verfolgung. Das Speichern startet bei Google keine neue Verfolgung. Es filtert die ohnehin gesammelten Daten für diese Begriffe.
+Die App schlägt Ihnen keine Suchbegriffe vor. Auf dem Bildschirm **Arama performansı** (Suchleistung) oder **Sıralama takibi** (Ranking-Verfolgung) wählen Sie im Menü einer Zeile **Kelime olarak kaydet** (Als Suchbegriff speichern), und der Begriff landet hier. Hier sehen Sie für jeden Begriff die durchschnittliche Position der letzten 90 Tage. Die Position stammt aus dem Archiv der Ranking-Verfolgung. Das Speichern startet bei Google keine neue Verfolgung. Es filtert die ohnehin gesammelten Daten für diese Begriffe.
 
 ## Was auf dem Bildschirm zu sehen ist
 
@@ -34,9 +34,9 @@ In der Tabelle erscheinen die Kurzformen: Bilgi (Info), Ticari (Kommerziell), İ
 
 ## So gehen Sie vor
 
-1. Öffnen Sie auf dem Bildschirm Arama performansı den Reiter **Sıra 5-20** (Position 5 bis 20). Markieren Sie fünf, zehn Suchanfragen, die Sie für wichtig halten, mit **Kelime olarak kaydet**. Wählen Sie die Suchanfragen der Seiten, die Geld bringen. Das nützt genauso viel, wie die am häufigsten angezeigten Suchanfragen zu wählen.
+1. Öffnen Sie auf dem Bildschirm **Arama performansı** den Reiter **Sıra 5-20** (Position 5 bis 20). Speichern Sie fünf bis zehn Suchanfragen, die Sie für wichtig halten, mit **Kelime olarak kaydet**. Wählen Sie auch Suchanfragen von Seiten, die Umsatz bringen; sie sind ebenso nützlich wie die am häufigsten angezeigten.
 2. Kommen Sie hierher und markieren Sie die Suchbegriffe. Vergeben Sie mit **Etiketleri güncelle** Etiketten wie „ürün“ (Produkt), „blog“ oder „marka“ (Marke). Das erleichtert den Vergleich im nächsten Monat.
-3. Sehen Sie einmal im Monat auf die Karte **Sıra dağılımı** (Positionsverteilung). Die Suchbegriffe im Bereich 11-20 sind der ersten Seite am nächsten. Suchen Sie deren Seiten auf dem Bildschirm Fırsatlar (Chancen).
+3. Sehen Sie einmal im Monat auf die Karte **Sıra dağılımı** (Positionsverteilung). Die Suchbegriffe im Bereich 11-20 sind der ersten Seite am nächsten. Deren Seiten finden Sie auf dem Bildschirm **Fırsatlar** (Chancen).
 4. Für einen Bericht wählen Sie **CSV indir** oder **E-Tablolar'a aktar**. Die Datei enthält die Filter, die Sie angewendet haben.
 
 ## Wie die Zahlen berechnet werden
@@ -49,11 +49,11 @@ Die Angabe zur Absicht wird nur eingetragen, wenn sie beim Speichern des Suchbeg
 
 ## Häufige Fragen
 
-**Ich habe den Suchbegriff gespeichert, warum ist die Position leer?** Das Archiv hat für diesen Begriff vielleicht noch keine Tage gesammelt. Öffnen Sie den Bildschirm Ranking-Verfolgung und warten Sie, bis sich das Archiv füllt. Klicken Sie dann hier auf **Yenile**.
+**Ich habe den Suchbegriff gespeichert. Warum ist die Position leer?** Das Archiv hat für diesen Begriff vielleicht noch keine Tage gesammelt. Öffnen Sie den Bildschirm **Sıralama takibi** und warten Sie, bis sich das Archiv füllt. Klicken Sie dann hier auf **Yenile**.
 
 **Wenn ich bei Google suche, ist meine Position anders.** Die Position hier ist der Durchschnitt von 90 Tagen. Sie lässt sich nicht mit einer einzelnen Suche vergleichen.
 
-**Wo ist die Spalte Suchvolumen?** Es gibt sie nicht. Die App schätzt kein Volumen. Die Zahl der Impressionen sehen Sie auf dem Bildschirm Suchleistung.
+**Wo ist die Spalte Suchvolumen?** Es gibt sie nicht. Die App schätzt kein Volumen. Die Zahl der Impressionen sehen Sie auf dem Bildschirm **Arama performansı** (Suchleistung).
 
 **Kann ich denselben Suchbegriff zweimal speichern?** Nein. Derselbe Text ergibt nur einen Eintrag.
 
@@ -61,6 +61,6 @@ Die Angabe zur Absicht wird nur eingetragen, wenn sie beim Speichern des Suchbeg
 
 ## Grenzen
 
-Dieser Bildschirm ist kein Werkzeug zur Suchbegriff-Recherche. Er schlägt keine Begriffe vor und zeigt weder Volumen noch Schwierigkeit. Die Positionsangabe ist auf die Tage begrenzt, die das Archiv abdeckt. Die Positionen seltener Suchanfragen, die Google ausblendet, kommen nie an. Die Daten liegen in der Datenbank dieser Installation, die Sicherung müssen Sie selbst anlegen.
+Dieser Bildschirm ist kein Werkzeug zur Suchbegriff-Recherche. Er schlägt keine Begriffe vor und zeigt weder Volumen noch Schwierigkeit. Die Positionsangabe ist auf die Tage begrenzt, die das Archiv abdeckt. Die Positionen seltener Suchanfragen, die Google ausblendet, erreichen die App nie. Die Daten liegen in der Datenbank dieser Installation, die Sicherung müssen Sie selbst anlegen.
 
 <!-- Kaynaklar: src/routes/_project/p/$projectId/saved.tsx; src/client/features/saved-keywords/SavedKeywordsHeader.tsx; SavedKeywordsTable.tsx; SavedKeywordsFilterPanel.tsx; SavedKeywordsTagFilter.tsx; SavedKeywordsSummary.tsx; SavedKeywordsModals.tsx; useSavedKeywordPositions.ts; savedKeywordPositions.ts; src/client/components/IntentBadge.tsx; src/server/features/keywords/repositories/KeywordResearchRepository.ts; src/server/features/keywords/services/research/saved-keywords.ts -->

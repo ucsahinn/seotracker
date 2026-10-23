@@ -6,7 +6,7 @@ route: /support
 updated: 2026-10-22
 ---
 
-The app's interface is in Turkish. This guide gives every button and screen name in Turkish with its English meaning in brackets.
+The app's interface is in Turkish. This guide gives every button and screen name in Turkish, with its English meaning in brackets.
 
 This is the first place to look when something goes wrong. The screen checks your setup, tells you what is missing and takes you to the right setting.
 
@@ -26,7 +26,7 @@ This is the first place to look when something goes wrong. The screen checks you
 
 **Projeler** (Projects). The status of each project's Search Console and Analytics connection. The **Bağlantıları aç** (Open connections) button takes you to the project settings.
 
-**Sık sorunlar** (Common problems). Five collapsible headings: the page does not open, the port number is in use, the assistant cannot connect (401), the PageSpeed limit, and no query data. Each one has what to do and a link to the matching setting.
+**Sık sorunlar** (Common problems). Five collapsible items: the page does not open, the port number is in use, the assistant cannot connect (401), the PageSpeed limit, and no query data. Each gives what to do and a link to the matching setting.
 
 **Google ve sistem sınırları** (Google and system limits). With **Sınırları göster** (Show limits) you see the current state of Google's daily limits.
 
@@ -36,14 +36,14 @@ This is the first place to look when something goes wrong. The screen checks you
 
 1. If something does not work, open this screen first and read the warning on the card.
 2. Press the button next to the warning. It takes you to the right setting. Make the change, come back and click **Durumu yeniden kontrol et**.
-3. If the card says "Her şey yolunda." but the problem continues, look at the **Sık sorunlar** headings.
+3. If the card says "Her şey yolunda." but the problem continues, check the **Sık sorunlar** items.
 4. If it is still not solved, click **Tanılama paketi indir** and attach the file to the issue on GitHub. In the Windows package, **Sorunu bildir (GitHub)** (Report a problem (GitHub)) in the taskbar menu does the same in one click.
 
 ## Frequently asked questions
 
 **Why is the "Google girişi" row yellow?** No Google access key has been entered yet. The row stays yellow until Google is connected. Follow the guide for connecting to Google.
 
-**The "Giriş ve erişim" row says "parolasız tek kullanıcı" (single user, no password).** This is normal. The app opens only from your own computer. If you want to open it to the outside, you need to put your own password-protected sign-in in front of it.
+**The "Giriş ve erişim" row says "parolasız tek kullanıcı" (single user, no password).** This is expected. The app opens only from your own computer. To open it to the outside, put your own password-protected sign-in in front of it.
 
 **What is in the diagnostics package?** The version, the setup checks, table counts and a summary of the latest audits. It has no Google keys, passwords or personal data.
 

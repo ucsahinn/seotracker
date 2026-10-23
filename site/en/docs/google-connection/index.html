@@ -15,6 +15,7 @@
     <link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/docs/conexao-google/" />
     <link rel="alternate" hreflang="x-default" href="https://seowatcher.io/docs/google-baglantisi/" />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -59,7 +60,7 @@
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en","de","fr","it","pt"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/en/docs/google-connection/#article","headline":"Connecting to Google","description":"To read Search Console and Analytics 4 data, get a one-time access key from Google, paste it into the app and choose your site. Step by step.","url":"https://seowatcher.io/en/docs/google-connection/","inLanguage":"en","dateModified":"2026-10-23","articleSection":"Getting started","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/en/docs/google-connection/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/en/docs/google-connection/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/en/"},{"@type":"ListItem","position":2,"name":"Guide","item":"https://seowatcher.io/en/docs/"},{"@type":"ListItem","position":3,"name":"Connecting to Google","item":"https://seowatcher.io/en/docs/google-connection/"}]}]}</script>
     <script src="/assets/docs.js?v=2.4.1" defer></script>
-    <meta name="theme-color" content="#272c3b" />
+    <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
         font-family: "Geist";
@@ -649,6 +650,95 @@
       footer a:hover {
         color: var(--fg);
       }
+      /* The one ask on the page: quiet, one line, the accent only on the link. */
+      footer .star {
+        flex-basis: 100%;
+        margin: 0 0 4px;
+        text-wrap: pretty;
+      }
+      footer .star a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      footer .star a:hover {
+        color: var(--accent-link);
+        text-decoration-color: var(--accent-link);
+      }
+
+      /* Headings enter as they scroll into view. docs.js adds .hx (and .in
+         once seen) only when motion is allowed, so without script, under
+         reduced motion and with "stop motion" on, they are simply there.
+         h1 wipes in from the left, h2 rises while an amber stroke draws
+         along its rule, h3 rises a little. */
+      article .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease),
+          clip-path 760ms var(--ease),
+          filter 620ms var(--ease);
+      }
+      article h1.hx {
+        clip-path: inset(-10% 100% -10% 0);
+        filter: blur(6px);
+      }
+      article h2.hx,
+      article h3.hx {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      article h3.hx {
+        transform: translateY(6px);
+      }
+      article h2.hx {
+        position: relative;
+      }
+      article h2.hx::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 56px;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 700ms var(--ease) 160ms;
+      }
+      article .hx.in {
+        opacity: 1;
+        transform: none;
+      }
+      article h1.hx.in {
+        clip-path: inset(-10% 0 -10% 0);
+        filter: none;
+      }
+      article h2.hx.in::before {
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        article .hx,
+        article h2.hx::before {
+          opacity: 1;
+          transform: none;
+          clip-path: none;
+          filter: none;
+          transition: none;
+        }
+      }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
 
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
@@ -1093,13 +1183,19 @@
         <nav class="topnav" aria-label="Site">
           <a class="hide" href="/en/">Home</a>
           <a class="hide" href="/en/docs/">Guide</a>
-          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+          <a
+            class="hide"
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub</a
           >
-          <details class="langs"><summary aria-label="Language: English"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="3.6"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2"/></svg></span><span class="code">EN</span></summary><ul><li><a href="/docs/google-baglantisi/" lang="tr" hreflang="tr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"/></svg></span>Türkçe</a></li><li><a href="/en/docs/google-connection/" lang="en" hreflang="en" aria-current="page"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="3.6"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2"/></svg></span>English</a></li><li><a href="/de/docs/google-verbindung/" lang="de" hreflang="de"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg></span>Deutsch</a></li><li><a href="/fr/docs/connexion-google/" lang="fr" hreflang="fr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg></span>Français</a></li><li><a href="/it/docs/collegamento-google/" lang="it" hreflang="it"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg></span>Italiano</a></li><li><a href="/pt/docs/conexao-google/" lang="pt" hreflang="pt"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#ff0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.6" fill="#ffcc00"/><circle cx="8" cy="7" r="1.5" fill="#ff0000"/></svg></span>Português</a></li></ul></details>
+          <details class="langs"><summary aria-label="Language: English"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2.6"/></svg></span><span class="code">EN</span></summary><ul><li><a href="/docs/google-baglantisi/" lang="tr" hreflang="tr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"/></svg></span>Türkçe</a></li><li><a href="/en/docs/google-connection/" lang="en" hreflang="en" aria-current="page"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2.6"/></svg></span>English</a></li><li><a href="/de/docs/google-verbindung/" lang="de" hreflang="de"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg></span>Deutsch</a></li><li><a href="/fr/docs/connexion-google/" lang="fr" hreflang="fr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg></span>Français</a></li><li><a href="/it/docs/collegamento-google/" lang="it" hreflang="it"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg></span>Italiano</a></li><li><a href="/pt/docs/conexao-google/" lang="pt" hreflang="pt"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#ff0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.6" fill="#ffcc00"/><circle cx="8" cy="7" r="1.5" fill="#ff0000"/></svg></span>Português</a></li></ul></details>
           <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            target="_blank"
+            rel="noopener noreferrer"
             ><span class="long">Download for Windows</span
             ><span class="short">Download</span></a
           >
@@ -1116,32 +1212,35 @@
       <aside class="side" aria-label="Guide">
         <details class="side-dd" open>
           <summary>Guide</summary>
-          <p class="nav-group">Getting started</p><ul><li><a href="/en/docs/install-windows/">Install on Windows</a></li><li><a href="/en/docs/install-docker/">Installing with Docker</a></li><li class="current" aria-current="page"><a href="/en/docs/google-connection/">Connecting to Google</a></li><li><a href="/en/docs/pagespeed-key/">PageSpeed key</a></li></ul><p class="nav-group">Screens</p><ul><li><a href="/en/docs/projects/">Projects</a></li><li><a href="/en/docs/dashboard/">Dashboard</a></li><li><a href="/en/docs/search-performance/">Search performance</a></li><li><a href="/en/docs/rank-tracking/">Ranking tracking</a></li><li><a href="/en/docs/opportunities/">Opportunities</a></li><li><a href="/en/docs/saved-keywords/">Saved keywords</a></li><li><a href="/en/docs/analytics/">Analytics</a></li><li><a href="/en/docs/site-audit/">Site audit</a></li><li><a href="/en/docs/index-status/">Index status</a></li><li><a href="/en/docs/reports/">Reports and templates</a></li><li><a href="/en/docs/project-context/">Project info</a></li><li><a href="/en/docs/settings/">Settings</a></li></ul><p class="nav-group">Reference</p><ul><li><a href="/en/docs/help/">Help</a></li><li><a href="/en/docs/audit-rules/">Audit rules</a></li><li><a href="/en/docs/agent-setup/">Agent setup</a></li><li><a href="/en/docs/troubleshooting/">Troubleshooting</a></li><li><a href="/en/docs/release-notes/">Release notes</a></li></ul>
+          <p class="nav-group">Getting started</p><ul><li><a href="/en/docs/install-windows/">Install on Windows</a></li><li><a href="/en/docs/install-docker/">Installing with Docker</a></li><li class="current" aria-current="page"><a href="/en/docs/google-connection/">Connecting to Google</a></li><li><a href="/en/docs/pagespeed-key/">PageSpeed key</a></li></ul><p class="nav-group">Screens</p><ul><li><a href="/en/docs/projects/">Projects</a></li><li><a href="/en/docs/dashboard/">Dashboard</a></li><li><a href="/en/docs/search-performance/">Search performance</a></li><li><a href="/en/docs/rank-tracking/">Ranking tracking</a></li><li><a href="/en/docs/opportunities/">Opportunities</a></li><li><a href="/en/docs/saved-keywords/">Saved keywords</a></li><li><a href="/en/docs/analytics/">Analytics</a></li><li><a href="/en/docs/site-audit/">Site audit</a></li><li><a href="/en/docs/index-status/">Index status</a></li><li><a href="/en/docs/reports/">Reports and templates</a></li><li><a href="/en/docs/project-context/">Project info</a></li><li><a href="/en/docs/settings/">Settings</a></li></ul><p class="nav-group">Help and reference</p><ul><li><a href="/en/docs/help/">Help</a></li><li><a href="/en/docs/audit-rules/">Audit rules</a></li><li><a href="/en/docs/agent-setup/">Agent setup</a></li><li><a href="/en/docs/troubleshooting/">Troubleshooting</a></li><li><a href="/en/docs/release-notes/">Release notes</a></li></ul>
         </details>
       </aside>
       <article id="icerik" data-page="google-baglantisi">
-        <h1>Connecting to Google</h1><p class="lede">To read Search Console and Analytics 4 data, get a one-time access key from Google, paste it into the app and choose your site. Step by step.</p><p>The app's interface is in Turkish. This guide gives every button and screen name in Turkish with its English meaning in brackets.</p>
-<p>By the end of this page the app will be connected to Google on your behalf and will read your site's data. For this, you get a &quot;Google access key&quot; from Google once. It takes about ten minutes, and you never have to do it again. There is also a shorter way (a service account), at the end of the page. That shorter way is the recommended one for most people.</p>
+        <h1>Connecting to Google</h1><p class="lede">To read Search Console and Analytics 4 data, get a one-time access key from Google, paste it into the app and choose your site. Step by step.</p><p>The app's interface is in Turkish. This guide gives every button and screen name in Turkish, with its English meaning in brackets.</p>
+<p>This guide connects the app to your Google account so it can read your site's data. For that you create a &quot;Google access key&quot; once; it takes about ten minutes and you never repeat it. There is also a shorter route, a service account, at the end of the guide, and it is the recommended one for most people.</p>
 <h2 id="what-you-need">What you need</h2>
-<ul><li>A site verified in Search Console (a property). If it is not verified, the app cannot see it in the list.</li><li>For Analytics 4, at least &quot;Viewer&quot; permission on that property. This is optional. Search Console alone is enough.</li><li>A Google account. Google Cloud Console (Google's developer page) is free and does not ask for a card.</li><li>The app open. You will copy the two redirect addresses (the addresses Google sends you back to the app from after you give permission) from it.</li></ul>
+<ul><li>A site verified in Search Console (a property). If it is not verified, the app cannot see it in the list.</li><li>For Analytics 4, at least &quot;Viewer&quot; permission on that property. This is optional. Search Console alone is enough.</li><li>A Google account. Google Cloud Console (Google's developer console) is free and does not ask for a card.</li><li>The app open, so you can copy the two redirect addresses from it (the addresses Google sends you back to once you give permission).</li></ul>
 <h2 id="steps">Steps</h2>
-<ol><li>In the app, open <strong>Ayarlar → Google</strong> (Settings → Google). You see two addresses. One ends with <code>/api/gsc/oauth/callback</code> (Search Console), the other with <code>/api/ga4/oauth/callback</code> (Analytics). In the Windows package, the addresses start with <code>http://127.0.0.1:3001</code>. On Docker, they start with <code>http://localhost:3001</code>. Note both of them somewhere.</li><li>In the browser, go to <code>console.cloud.google.com</code>. In the project picker at the top, choose <strong>Yeni proje</strong> (New project). The name does not matter. You can write &quot;seowatcher&quot;.</li><li>Open the <strong>API'ler ve Hizmetler → Kitaplık</strong> (APIs &amp; Services → Library) page. Type <strong>Google Search Console API</strong> in the search box, click it and choose <strong>Etkinleştir</strong> (Enable). If you will connect Analytics too, do the same for the <strong>Google Analytics Admin API</strong> and the <strong>Google Analytics Data API</strong>.</li><li>Open the <strong>API'ler ve Hizmetler → OAuth izin ekranı</strong> (APIs &amp; Services → OAuth consent screen) page. Choose <strong>Harici</strong> (External) as the user type. Write any name you like for the app name, and your own email address in the email fields. The publishing status can stay &quot;Test&quot;.</li><li>On the same page, add your own Google account under <strong>Test kullanıcıları</strong> (Test users). Google does not need to approve anything else.</li><li>On the <strong>API'ler ve Hizmetler → Kimlik bilgileri</strong> (APIs &amp; Services → Credentials) page, choose <strong>Kimlik bilgisi oluştur</strong> (Create credentials), then choose <strong>OAuth istemci kimliği</strong> (OAuth client ID). This is your Google access key.</li><li>Choose <strong>Web uygulaması</strong> (Web application) as the application type.</li><li>Under <strong>Yetkilendirilmiş yönlendirme URI'leri</strong> (Authorized redirect URIs), add the two addresses from step 1. Do not put a slash at the end. A one-character difference gives a &quot;redirect_uri_mismatch&quot; (address does not match) error in Google.</li><li>Choose <strong>Oluştur</strong> (Create). Google shows a client ID and a secret key.</li><li>Go back to the app. In <strong>Ayarlar → Google</strong> (Settings → Google), paste the ID that ends with <code>.apps.googleusercontent.com</code> into the <strong>İstemci kimliği</strong> (Client ID) field. Paste the key that starts with <code>GOCSPX-</code> into the <strong>Gizli anahtar</strong> (Secret key) field.</li><li>Choose <strong>Kaydet</strong> (Save). A &quot;Google erişim anahtarı kaydedildi&quot; (Google access key saved) notice appears. You do not need to restart. If you paste the ID into the wrong field, the app warns you: &quot;Kimlik .apps.googleusercontent.com ile bitmeli. Gizli anahtarı değil, istemci kimliğini yapıştırın.&quot; (The ID must end with .apps.googleusercontent.com. Paste the client ID, not the secret key.)</li><li>If you have no project yet, create one first with <strong>Yeni proje</strong> (New project). See <a href="/en/docs/projects/">Projects</a>.</li><li>Go to your project: <strong>Proje ayarları → Bağlantılar</strong> (Project settings → Connections). On the <strong>Google Search Console</strong> card, choose <strong>Bağlan</strong> (Connect).</li><li>On Google's permission screen, pick the account you added as a test user and give permission. When you return to the app, a &quot;Search Console bağlandı&quot; (Search Console connected) notice appears.</li><li>From the <strong>Mülk seç</strong> (Choose property) list, pick your site and choose <strong>Mülkü kaydet</strong> (Save property). If you pick a domain property, the card says &quot;Alan adı mülkü: tüm alt alan adlarını ve http/https adreslerini kapsar.&quot; (Domain property: covers all subdomains and http/https addresses.)</li><li>For Analytics, on the same screen, choose <strong>Bağlan</strong> (Connect) on the <strong>Google Analytics</strong> card, give permission and pick the property. The two connections ask for separate permission. One does not cover the other.</li></ol>
-<h3 id="a-shorter-way-a-service-account">A shorter way: a service account</h3>
-<p>A service account is a special account that connects to Google in your place. You do not need the consent screen. This path is the recommended one for most people. The OAuth path above is for those who prefer signing in with their own Google account.</p>
-<ol><li>Go to <code>console.cloud.google.com</code> and open <strong>IAM &amp; Admin → Service Accounts</strong> (in a Turkish console: <strong>IAM ve Yönetici → Hizmet hesapları</strong>). Make sure the same Cloud project has the APIs from step 3 enabled.</li><li>Click <strong>Create service account</strong>. Give it a name, for example &quot;seowatcher&quot;. Skip the role steps and click <strong>Done</strong>.</li><li>On the new account's row, open <strong>Keys → Add key → Create new key</strong>, choose <strong>JSON</strong> and confirm. A file downloads. Keep it private.</li><li>In seowatcher, open <strong>Ayarlar → Hizmet hesabı</strong> (Settings → Service account). Paste the contents of the whole file and save. The screen shows the service account's e-mail address. Copy it.</li><li>In Search Console, open <strong>Settings → Users and permissions → Add user</strong>. Enter that e-mail address and choose the permission <strong>Full</strong>.</li><li>For Analytics, in Google Analytics open the property's <strong>Admin → Access management</strong>. Add the same e-mail address as <strong>Viewer</strong>.</li></ol>
+<ol><li>In the app, open <strong>Ayarlar → Google</strong> (Settings → Google). You see two addresses. One ends with <code>/api/gsc/oauth/callback</code> (Search Console), the other with <code>/api/ga4/oauth/callback</code> (Analytics). In the Windows package, the addresses start with <code>http://127.0.0.1:3001</code>. On Docker, they start with <code>http://localhost:3001</code>. Keep both addresses at hand.</li><li>In the browser, go to <code>console.cloud.google.com</code>. In the project picker at the top, choose <strong>Yeni proje</strong> (New project). Any name works, for example &quot;seowatcher&quot;.</li><li>Open the <strong>API'ler ve Hizmetler → Kitaplık</strong> (APIs &amp; Services → Library) page. Type <strong>Google Search Console API</strong> in the search box, click it and choose <strong>Etkinleştir</strong> (Enable). If you will connect Analytics too, do the same for the <strong>Google Analytics Admin API</strong> and the <strong>Google Analytics Data API</strong>.</li><li>Open the <strong>API'ler ve Hizmetler → OAuth izin ekranı</strong> (APIs &amp; Services → OAuth consent screen) page. Choose <strong>Harici</strong> (External) as the user type. Enter any app name and your own email address in the email fields. The publishing status can stay &quot;Test&quot;.</li><li>On the same page, add your own Google account under <strong>Test kullanıcıları</strong> (Test users). No Google review is needed.</li><li>On the <strong>API'ler ve Hizmetler → Kimlik bilgileri</strong> (APIs &amp; Services → Credentials) page, choose <strong>Kimlik bilgisi oluştur</strong> (Create credentials), then choose <strong>OAuth istemci kimliği</strong> (OAuth client ID). This is your Google access key.</li><li>Choose <strong>Web uygulaması</strong> (Web application) as the application type.</li><li>Under <strong>Yetkilendirilmiş yönlendirme URI'leri</strong> (Authorized redirect URIs), add the two addresses from step 1. Do not put a slash at the end. Even a one-character difference causes a &quot;redirect_uri_mismatch&quot; error in Google (the address does not match).</li><li>Choose <strong>Oluştur</strong> (Create). Google shows a client ID and a secret key.</li><li>Go back to the app. In <strong>Ayarlar → Google</strong> (Settings → Google), paste the ID that ends with <code>.apps.googleusercontent.com</code> into the <strong>İstemci kimliği</strong> (Client ID) field. Paste the key that starts with <code>GOCSPX-</code> into the <strong>Gizli anahtar</strong> (Secret key) field.</li><li>Choose <strong>Kaydet</strong> (Save). A &quot;Google erişim anahtarı kaydedildi&quot; (Google access key saved) notice appears. You do not need to restart. If you paste the ID into the wrong field, the app warns you: &quot;Kimlik .apps.googleusercontent.com ile bitmeli. Gizli anahtarı değil, istemci kimliğini yapıştırın.&quot; (The ID must end with .apps.googleusercontent.com. Paste the client ID, not the secret key.)</li><li>If you have no project yet, create one first with <strong>Yeni proje</strong> (New project). See <a href="/en/docs/projects/">Projects</a>.</li><li>Go to your project: <strong>Proje ayarları → Bağlantılar</strong> (Project settings → Connections). On the <strong>Google Search Console</strong> card, choose <strong>Bağlan</strong> (Connect).</li><li>On Google's permission screen, pick the account you added as a test user and give permission. When you return to the app, a &quot;Search Console bağlandı&quot; (Search Console connected) notice appears.</li><li>From the <strong>Mülk seç</strong> (Choose property) list, pick your site and choose <strong>Mülkü kaydet</strong> (Save property). If you pick a domain property, the card says &quot;Alan adı mülkü: tüm alt alan adlarını ve http/https adreslerini kapsar.&quot; (Domain property: covers all subdomains and http/https addresses.)</li><li>For Analytics, on the same screen, choose <strong>Bağlan</strong> (Connect) on the <strong>Google Analytics</strong> card, give permission and pick the property. Each connection asks for its own permission; one does not cover the other.</li></ol>
+<h3 id="a-shorter-route-a-service-account">A shorter route: a service account</h3>
+<p>A service account is a special account that connects to Google in your place, so you need no consent screen. This route is recommended for most people; the OAuth route above is for those who prefer signing in with their own Google account.</p>
+<ol><li>Go to <code>console.cloud.google.com</code> and open <strong>IAM &amp; Admin → Service Accounts</strong> (in a Turkish console: <strong>IAM ve Yönetici → Hizmet hesapları</strong>). Make sure the same Cloud project has the APIs from step 3 enabled.</li><li>Click <strong>Create service account</strong>. Give it a name, for example &quot;seowatcher&quot;. Skip the role steps and click <strong>Done</strong>.</li><li>On the new account's row, open <strong>Keys → Add key → Create new key</strong>, choose <strong>JSON</strong> and confirm. A file downloads. Keep it private.</li><li>In seowatcher, open <strong>Ayarlar → Hizmet hesabı</strong> (Settings → Service account). Paste the contents of the whole file and save. The screen shows the service account's email address. Copy it.</li><li>In Search Console, open <strong>Settings → Users and permissions → Add user</strong>. Enter that email address and choose the permission <strong>Full</strong>.</li><li>For Analytics, in Google Analytics open the property's <strong>Admin → Access management</strong>. Add the same email address as <strong>Viewer</strong>.</li></ol>
 <p>If a service account is saved, the app prefers it. The &quot;Şu an kullanılan&quot; (Currently in use) line on the <strong>Ayarlar</strong> (Settings) screen tells you which one is active.</p>
 <h2 id="check">Check</h2>
-<ul><li>On the <strong>Proje ayarları → Bağlantılar</strong> (Project settings → Connections) cards, the badge should say <strong>Bağlı</strong> (Connected).</li><li>The four number cards on the <strong>Panel</strong> (Dashboard) screen should fill in within a few seconds. On a new site, the numbers can be zero. This is not a connection error.</li><li>The badge in <strong>Ayarlar → Google</strong> (Settings → Google) should say <strong>Kayıtlı</strong> (Saved).</li></ul>
+<ul><li>On the <strong>Proje ayarları → Bağlantılar</strong> (Project settings → Connections) cards, the badge should say <strong>Bağlı</strong> (Connected).</li><li>The four number cards on the <strong>Panel</strong> (Dashboard) screen should fill in within a few seconds. On a new site the numbers can be zero, which is not a connection error.</li><li>The badge in <strong>Ayarlar → Google</strong> (Settings → Google) should say <strong>Kayıtlı</strong> (Saved).</li></ul>
 <h2 id="frequently-asked-questions">Frequently asked questions</h2>
-<p><strong>Where is the secret key stored?</strong> In the database on this computer, encrypted. The key that encrypts it is the <code>instance-secret</code> file (in the data folder on Windows, in the data volume on Docker). The key is never sent to the browser.</p>
+<p><strong>Where is the secret key stored?</strong> In the database on this computer, encrypted. The encryption key is the <code>instance-secret</code> file (in the data folder on Windows, in the data volume on Docker) and is never sent to the browser.</p>
 <p><strong>Can I use the same access key in more than one project?</strong> Yes. One per installation is enough. Each project picks its own property.</p>
-<p><strong>The connection dropped after a few days.</strong> For apps in &quot;Test&quot; status, Google can limit the permission to seven days. The card says &quot;Bağlantının süresi doldu&quot; (The connection has expired). <strong>Yeniden bağlan</strong> (Reconnect) is enough. The lasting fix is to move the consent screen to &quot;Production&quot; or to switch to a service account.</p>
+<p><strong>The connection dropped after a few days.</strong> For apps in &quot;Test&quot; status, Google can expire the permission after seven days. The card then says &quot;Bağlantının süresi doldu&quot; (The connection has expired). Choosing <strong>Yeniden bağlan</strong> (Reconnect) fixes it for now. The lasting fix is to move the consent screen to &quot;Production&quot; or to switch to a service account.</p>
 <p><strong>What permissions does it ask for?</strong> Read-only for Search Console (<code>webmasters.readonly</code>) and read-only for Analytics (<code>analytics.readonly</code>). The app cannot change anything in Google.</p>
 <h2 id="if-something-goes-wrong">If something goes wrong</h2>
-<ul><li><strong>Google says &quot;redirect_uri_mismatch&quot;.</strong> The redirect address in Cloud Console is not exactly the same as the one in the app. Use the copy button on the <strong>Ayarlar</strong> (Settings) screen. http versus https, 127.0.0.1 versus localhost, or a slash at the end is enough to cause the error.</li><li><strong>A &quot;Google erişim anahtarı eksik&quot; (Google access key missing) warning appears.</strong> Steps 10 and 11 were skipped, or saving failed. On the <strong>Ayarlar</strong> (Settings) screen, the badge should say <strong>Kayıtlı</strong> (Saved).</li><li><strong>Google says &quot;access_denied&quot;.</strong> The account you signed in with is not in the test users list on the consent screen. Add the account to the list, or pick the right account.</li><li><strong>The property list is empty.</strong> This account has no verified site in Search Console and no Analytics permission. Verify the site first.</li><li><strong>It says &quot;Bağlantısı tamamlanmadı&quot; (Connection not completed) and &quot;state_mismatch&quot;.</strong> You opened the permission screen in two tabs, or you waited more than ten minutes. Try again from the start in a single tab. If browser cookies (small record files) are off, turn them on.</li><li><strong>It says &quot;Google hesabı zaten bağlı&quot; (Google account already connected).</strong> The account was connected to another record earlier. Remove the old one with <strong>Hesabı kaldır</strong> (Remove account) in the property picker and connect again.</li><li><strong>The connections dropped after an update.</strong> The encryption key changed (on Docker, <code>BETTER_AUTH_SECRET</code> was added or the data volume was recreated). Choose <strong>Yeniden bağlan</strong> (Reconnect) on the cards.</li></ul> <nav class="pager" aria-label="Previous and next page"><a class="pager-prev" rel="prev" href="/en/docs/install-docker/"><span>Previous</span><strong>Installing with Docker</strong></a><a class="pager-next" rel="next" href="/en/docs/pagespeed-key/"><span>Next</span><strong>PageSpeed key</strong></a></nav>
+<ul><li><strong>Google says &quot;redirect_uri_mismatch&quot;.</strong> The redirect address in Cloud Console is not exactly the same as the one in the app. Use the copy button on the <strong>Ayarlar</strong> (Settings) screen. Any of these causes the error: http instead of https, 127.0.0.1 instead of localhost, or a slash at the end.</li><li><strong>A &quot;Google erişim anahtarı eksik&quot; (Google access key missing) warning appears.</strong> Steps 10 and 11 were skipped, or saving failed. On the <strong>Ayarlar</strong> (Settings) screen, the badge should say <strong>Kayıtlı</strong> (Saved).</li><li><strong>Google says &quot;access_denied&quot;.</strong> The account you signed in with is not in the test users list on the consent screen. Add the account to the list, or pick the right account.</li><li><strong>The property list is empty.</strong> This account has no verified site in Search Console and no Analytics permission. Verify the site first.</li><li><strong>It says &quot;Bağlantısı tamamlanmadı&quot; (Connection not completed) and &quot;state_mismatch&quot;.</strong> You opened the permission screen in two tabs, or you waited more than ten minutes. Start again in a single tab. If cookies (small files that sites store in your browser) are turned off, turn them on.</li><li><strong>It says &quot;Google hesabı zaten bağlı&quot; (Google account already connected).</strong> The account is already linked to another record. Remove the old one with <strong>Hesabı kaldır</strong> (Remove account) in the property picker and connect again.</li><li><strong>The connections dropped after an update.</strong> The encryption key changed (on Docker, <code>BETTER_AUTH_SECRET</code> was added or the data volume was recreated). Choose <strong>Yeniden bağlan</strong> (Reconnect) on the cards.</li></ul> <nav class="pager" aria-label="Previous and next page"><a class="pager-prev" rel="prev" href="/en/docs/install-docker/"><span>Previous</span><strong>Installing with Docker</strong></a><a class="pager-next" rel="next" href="/en/docs/pagespeed-key/"><span>Next</span><strong>PageSpeed key</strong></a></nav>
         <p class="meta">
           Last updated: October 23, 2026. Spotted a mistake?
-          <a href="https://github.com/ucsahinn/seotracker/issues"
+          <a
+            href="https://github.com/ucsahinn/seotracker/issues"
+            target="_blank"
+            rel="noopener noreferrer"
             >Report it on GitHub</a
           >.
         </p>
@@ -1150,10 +1249,25 @@
     </main>
     <footer>
       <div class="wrap">
+        <p class="star">
+          A star helps other people find a free tool.
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Star it on GitHub</a
+          >
+        </p>
         <span>seowatcher, MIT license.</span>
         <span
           ><a href="/en/">Home</a> &nbsp;
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          &nbsp;
           <a href="/en/docs/release-notes/">Release notes</a></span
         >
       </div>

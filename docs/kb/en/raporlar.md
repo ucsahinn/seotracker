@@ -6,19 +6,19 @@ route: /p/<proje>/reports
 updated: 2026-10-22
 ---
 
-On this page you learn how to get reports, how to share them and how to repeat them with a template.
+This guide covers getting reports, sharing them and repeating them with a template.
 
-The **Raporlar** (Reports) screen keeps every report made for this project in one list. A report comes from one of two ways. The **Raporu indir** (Download report) button on the **Site denetimi** (Site audit) screen makes the app's own report. Your AI assistant does research and saves what it finds as a report. Each report is a single HTML file. It has no script (code that runs on the page), no outside resources and no embedded fonts. So it opens on a phone, can be printed as a PDF and can be sent by email. There is no editor in the app where you write a report by hand. Either the app or the assistant writes the report.
+The **Raporlar** (Reports) screen keeps every report made for this project in one list. A report comes from one of two sources. The **Raporu indir** (Download report) button on the **Site denetimi** (Site audit) screen makes the app's own report. Your AI assistant can research a topic and save its findings as a report. Each report is a single HTML file with no scripts (code that runs on the page), external resources or embedded fonts, so it opens on a phone, can be printed as a PDF and can be sent by email. The app has no editor for writing a report by hand: the app or the assistant writes it.
 
 ## What is on the screen
 
-**Top bar.** The **Yeni rapor iste** (Request a new report) button copies a text to the clipboard that you paste to your assistant.
+**Top bar.** The **Yeni rapor iste** (Request a new report) button copies a ready-made request to the clipboard, which you paste into your assistant.
 
 **Filters.** Tümü (All), Son 7 gün (Last 7 days), Şablonla yazılan (Written with a template), Beceriyle yazılan (Written with a skill). There is also a search box.
 
-**Table.** It has the **Rapor** (Report), **Tür** (Type), **Oluşturulma** (Created) and **Boyut** (Size) columns. **Tür** tells you which job produced the report. For example, "Site denetimi raporu" (Site audit report) is the app itself. For reports written with a template, the template's name appears.
+**Table.** It has the **Rapor** (Report), **Tür** (Type), **Oluşturulma** (Created) and **Boyut** (Size) columns. **Tür** tells you where the report came from. For example, "Site denetimi raporu" (Site audit report) is made by the app itself. For reports written with a template, the template's name appears.
 
-**Report page.** The report opens in its own safe frame. Buttons: **HTML olarak indir** (Download as HTML), copy link and print. The link opens only on this installation. There is no access from outside.
+**Report page.** The report opens in its own isolated frame. Buttons: **HTML olarak indir** (Download as HTML), copy link and print. The link works only on this installation, with no access from outside.
 
 **Report templates.** You reach them from the menu or from the Raporlar screen. A template is a saved recipe that tells your assistant how to write the report: who will read it, which sections it will have, which language it will be written in. Fields:
 
@@ -30,25 +30,25 @@ A project can have at most 10 templates. Deleting a template does not delete the
 
 ## How to use it
 
-1. For your first report, click **Raporu indir** on the Site denetimi screen. The report downloads to your computer and lands in this list. It starts with the section "Bu hafta yapılacak N şey" (N things to do this week).
+1. For your first report, click **Raporu indir** on the Site denetimi screen. The report downloads to your computer and also appears in this list. It starts with the section "Bu hafta yapılacak N şey" (N things to do this week).
 2. If you work with an assistant, click **Yeni rapor iste**. Paste the copied text into Claude Code, Codex or Cursor. The assistant asks which report you want, reads the data and saves the report here.
 3. If you want the same report every month, write a template. In the instruction, write the reader ("the person who runs the site, does not know SEO"), the sections, the order and the tone. If you ask for the template by name, the assistant applies it.
-4. To share, click **HTML olarak indir** and send the file. The person who receives it opens the file in a browser. Copying the link works only on the same computer.
-5. Do not delete old reports. In the next conversation, the assistant reads the summary of the previous report and compares.
+4. To share, click **HTML olarak indir** and send the file. The recipient opens the file in a browser. A copied link works only on the same computer.
+5. Keep old reports: in the next conversation, the assistant reads the previous report's summary and compares.
 
 ## How the numbers are calculated
 
-The audit report is laid out for A4 print. It has these sections: contents, "Bu hafta yapılacak N şey", problems, speed measurement, Google index status and sitemap. The index status section uses only saved answers and does not ask new questions.
+The audit report is laid out for A4 print and contains these sections: contents, "Bu hafta yapılacak N şey", problems, speed measurement, Google index status and sitemap. The index status section uses only saved answers and does not ask new questions.
 
-The lists are limited: 50 addresses per problem, 300 pages, 50 speed rows, 3,000 addresses in the appendix. If the file goes over 400 KB, the lists get shorter.
+The lists are limited: 50 addresses per problem, 300 pages, 50 speed rows, 3,000 addresses in the appendix. If the file goes over 400 KB, the lists are shortened.
 
 A report can be at most 500,000 bytes (under 80 KB is recommended). The title is at most 120 characters and is unique in the project. The summary is at most 2,500 characters. A second report with the same title is not accepted. A project can have at most 10,000 reports, and the installation has 5 GB of space in total.
 
-Security: When saving, files that contain a script, an iframe (a box that embeds another page in a page), a form, an external style, an event handler (like onclick), a javascript: link or an automatic redirect are rejected. When a report is opened, it is also shown in a closed box, with no network access. So a report cannot send anything outside without you knowing.
+For security, when a report is saved, files that contain a script, an iframe (a box that embeds one page inside another), a form, an external style, an event handler (like onclick), a javascript: link or an automatic redirect are rejected. When a report is opened, it is also shown in a sealed frame with no network access, so a report cannot send anything out without you knowing.
 
 ## Frequently asked questions
 
-**Who wrote the report?** The **Tür** column tells you. "Site denetimi raporu" is the app's, the others are the assistant's. The report page also shows who saved it.
+**Who wrote the report?** The **Tür** column tells you. "Site denetimi raporu" comes from the app; all others come from the assistant. The report page also shows who saved it.
 
 **Can I edit the report?** Not in the app. Tell the assistant "change this section", and the assistant updates the report.
 
@@ -58,6 +58,6 @@ Security: When saving, files that contain a script, an iframe (a box that embeds
 
 ## Limits
 
-Reports are not published to the outside. Sharing happens by sending the file. A report is only as accurate as the data its writer read. The "Bu rapor nasıl hazırlandı" (How this report was prepared) section at the end of assistant reports lists which tool said what. Trace a number you doubt from there.
+Reports are never published online; you share them by sending the file. A report is only as accurate as the data its writer read. The "Bu rapor nasıl hazırlandı" (How this report was prepared) section at the end of assistant reports lists which tool supplied which information. Trace a number you doubt from there.
 
 <!-- Kaynaklar: src/routes/_project/p/$projectId/reports/index.tsx; reports/$reportId.tsx; reports/templates.tsx; src/client/features/reports/ReportsList.tsx; reportStats.ts; reportRequestPrompt.ts; src/server/features/reports/services/ReportService.ts; src/types/schemas/reports.ts; src/types/schemas/report-templates.ts; src/routes/r/$reportId.ts; src/shared/report-sandbox.ts; src/server/features/audit/report/buildAuditReportHtml.ts -->

@@ -26,7 +26,7 @@ Este é o primeiro lugar a olhar quando algo dá errado. A tela confere a sua in
 
 **Projeler** (Projetos). O estado da conexão de cada projeto com o Search Console e o Analytics. O botão **Bağlantıları aç** (Abrir as conexões) leva às configurações do projeto.
 
-**Sık sorunlar** (Problemas comuns). Cinco títulos recolhíveis: a página não abre, o número da porta está em uso, o assistente não consegue se conectar (401), o limite do PageSpeed e ausência de dados de consultas. Cada um tem o que fazer e um link para a configuração correspondente.
+**Sık sorunlar** (Problemas comuns). Cinco títulos recolhíveis: a página não abre, o número da porta está em uso, o assistente não consegue se conectar (401), o limite do PageSpeed e a falta de dados de consultas. Cada um tem o que fazer e um link para a configuração correspondente.
 
 **Google ve sistem sınırları** (Limites do Google e do sistema). Com **Sınırları göster** (Mostrar os limites), você vê o estado atual dos limites diários do Google.
 
@@ -37,7 +37,7 @@ Este é o primeiro lugar a olhar quando algo dá errado. A tela confere a sua in
 1. Se algo não funciona, abra esta tela primeiro e leia o aviso do cartão.
 2. Clique no botão ao lado do aviso. Ele leva você à configuração certa. Faça a mudança, volte e clique em **Durumu yeniden kontrol et**.
 3. Se o cartão disser "Her şey yolunda." mas o problema continuar, olhe os títulos de **Sık sorunlar**.
-4. Se ainda não resolver, clique em **Tanılama paketi indir** e anexe o arquivo ao relato no GitHub. No pacote Windows, **Sorunu bildir (GitHub)** (Relatar um problema (GitHub)), no menu da barra de tarefas, faz o mesmo com um clique.
+4. Se ainda não resolver, clique em **Tanılama paketi indir** e anexe o arquivo ao relato no GitHub. No pacote Windows, **Sorunu bildir (GitHub)** (Relatar um problema no GitHub), no menu da barra de tarefas, faz o mesmo com um clique.
 
 ## Perguntas frequentes
 

@@ -15,6 +15,7 @@
     <link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/docs/instalar-docker/" />
     <link rel="alternate" hreflang="x-default" href="https://seowatcher.io/docs/kurulum-docker/" />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -59,7 +60,7 @@
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en","de","fr","it","pt"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/docs/kurulum-docker/#article","headline":"Docker ile kurulum","description":"Mac, Linux ve Windows'ta Docker ile kurun. Tek komut yeter, .env dosyası gerekmez. Verileriniz Docker'ın veri deposunda durur.","url":"https://seowatcher.io/docs/kurulum-docker/","inLanguage":"tr","dateModified":"2026-10-23","articleSection":"Başlangıç","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/docs/kurulum-docker/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/docs/kurulum-docker/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/"},{"@type":"ListItem","position":2,"name":"Kılavuz","item":"https://seowatcher.io/docs/"},{"@type":"ListItem","position":3,"name":"Docker ile kurulum","item":"https://seowatcher.io/docs/kurulum-docker/"}]}]}</script>
     <script src="/assets/docs.js?v=2.4.1" defer></script>
-    <meta name="theme-color" content="#272c3b" />
+    <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
         font-family: "Geist";
@@ -649,6 +650,95 @@
       footer a:hover {
         color: var(--fg);
       }
+      /* The one ask on the page: quiet, one line, the accent only on the link. */
+      footer .star {
+        flex-basis: 100%;
+        margin: 0 0 4px;
+        text-wrap: pretty;
+      }
+      footer .star a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      footer .star a:hover {
+        color: var(--accent-link);
+        text-decoration-color: var(--accent-link);
+      }
+
+      /* Headings enter as they scroll into view. docs.js adds .hx (and .in
+         once seen) only when motion is allowed, so without script, under
+         reduced motion and with "stop motion" on, they are simply there.
+         h1 wipes in from the left, h2 rises while an amber stroke draws
+         along its rule, h3 rises a little. */
+      article .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease),
+          clip-path 760ms var(--ease),
+          filter 620ms var(--ease);
+      }
+      article h1.hx {
+        clip-path: inset(-10% 100% -10% 0);
+        filter: blur(6px);
+      }
+      article h2.hx,
+      article h3.hx {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      article h3.hx {
+        transform: translateY(6px);
+      }
+      article h2.hx {
+        position: relative;
+      }
+      article h2.hx::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 56px;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 700ms var(--ease) 160ms;
+      }
+      article .hx.in {
+        opacity: 1;
+        transform: none;
+      }
+      article h1.hx.in {
+        clip-path: inset(-10% 0 -10% 0);
+        filter: none;
+      }
+      article h2.hx.in::before {
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        article .hx,
+        article h2.hx::before {
+          opacity: 1;
+          transform: none;
+          clip-path: none;
+          filter: none;
+          transition: none;
+        }
+      }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
 
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
@@ -1093,13 +1183,19 @@
         <nav class="topnav" aria-label="Site">
           <a class="hide" href="/">Ana sayfa</a>
           <a class="hide" href="/docs/">Kılavuz</a>
-          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+          <a
+            class="hide"
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub</a
           >
-          <details class="langs"><summary aria-label="Dil: Türkçe"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"/></svg></span><span class="code">TR</span></summary><ul><li><a href="/docs/kurulum-docker/" lang="tr" hreflang="tr" aria-current="page"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"/></svg></span>Türkçe</a></li><li><a href="/en/docs/install-docker/" lang="en" hreflang="en"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="3.6"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2"/></svg></span>English</a></li><li><a href="/de/docs/installation-docker/" lang="de" hreflang="de"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg></span>Deutsch</a></li><li><a href="/fr/docs/installation-docker/" lang="fr" hreflang="fr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg></span>Français</a></li><li><a href="/it/docs/installazione-docker/" lang="it" hreflang="it"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg></span>Italiano</a></li><li><a href="/pt/docs/instalar-docker/" lang="pt" hreflang="pt"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#ff0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.6" fill="#ffcc00"/><circle cx="8" cy="7" r="1.5" fill="#ff0000"/></svg></span>Português</a></li></ul></details>
+          <details class="langs"><summary aria-label="Dil: Türkçe"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"/></svg></span><span class="code">TR</span></summary><ul><li><a href="/docs/kurulum-docker/" lang="tr" hreflang="tr" aria-current="page"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"/></svg></span>Türkçe</a></li><li><a href="/en/docs/install-docker/" lang="en" hreflang="en"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2.6"/></svg></span>English</a></li><li><a href="/de/docs/installation-docker/" lang="de" hreflang="de"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg></span>Deutsch</a></li><li><a href="/fr/docs/installation-docker/" lang="fr" hreflang="fr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg></span>Français</a></li><li><a href="/it/docs/installazione-docker/" lang="it" hreflang="it"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg></span>Italiano</a></li><li><a href="/pt/docs/instalar-docker/" lang="pt" hreflang="pt"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#ff0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.6" fill="#ffcc00"/><circle cx="8" cy="7" r="1.5" fill="#ff0000"/></svg></span>Português</a></li></ul></details>
           <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            target="_blank"
+            rel="noopener noreferrer"
             ><span class="long">Windows için indir</span
             ><span class="short">İndir</span></a
           >
@@ -1116,11 +1212,11 @@
       <aside class="side" aria-label="Kılavuz">
         <details class="side-dd" open>
           <summary>Kılavuz</summary>
-          <p class="nav-group">Başlangıç</p><ul><li><a href="/docs/kurulum-windows/">Windows'a kurulum</a></li><li class="current" aria-current="page"><a href="/docs/kurulum-docker/">Docker ile kurulum</a></li><li><a href="/docs/google-baglantisi/">Google'a bağlanma</a></li><li><a href="/docs/pagespeed-anahtari/">PageSpeed anahtarı</a></li></ul><p class="nav-group">Ekranlar</p><ul><li><a href="/docs/projeler/">Projeler</a></li><li><a href="/docs/panel/">Panel</a></li><li><a href="/docs/arama-performansi/">Arama performansı</a></li><li><a href="/docs/siralama-takibi/">Sıralama takibi</a></li><li><a href="/docs/firsatlar/">Fırsatlar</a></li><li><a href="/docs/kayitli-kelimeler/">Kayıtlı kelimeler</a></li><li><a href="/docs/analytics/">Analytics</a></li><li><a href="/docs/site-denetimi/">Site denetimi</a></li><li><a href="/docs/dizin-durumu/">Dizin durumu</a></li><li><a href="/docs/raporlar/">Raporlar ve şablonlar</a></li><li><a href="/docs/proje-bilgisi/">Proje bilgisi</a></li><li><a href="/docs/ayarlar/">Ayarlar</a></li></ul><p class="nav-group">Başvuru</p><ul><li><a href="/docs/yardim/">Yardım</a></li><li><a href="/docs/denetim-kurallari/">Denetim kuralları</a></li><li><a href="/docs/ajan-kurulumu/">Ajan kurulumu</a></li><li><a href="/docs/sorun-giderme/">Sorun giderme</a></li><li><a href="/docs/surum-notlari/">Sürüm notları</a></li></ul>
+          <p class="nav-group">Başlangıç</p><ul><li><a href="/docs/kurulum-windows/">Windows'a kurulum</a></li><li class="current" aria-current="page"><a href="/docs/kurulum-docker/">Docker ile kurulum</a></li><li><a href="/docs/google-baglantisi/">Google'a bağlanma</a></li><li><a href="/docs/pagespeed-anahtari/">PageSpeed anahtarı</a></li></ul><p class="nav-group">Ekranlar</p><ul><li><a href="/docs/projeler/">Projeler</a></li><li><a href="/docs/panel/">Panel</a></li><li><a href="/docs/arama-performansi/">Arama performansı</a></li><li><a href="/docs/siralama-takibi/">Sıralama takibi</a></li><li><a href="/docs/firsatlar/">Fırsatlar</a></li><li><a href="/docs/kayitli-kelimeler/">Kayıtlı kelimeler</a></li><li><a href="/docs/analytics/">Analytics</a></li><li><a href="/docs/site-denetimi/">Site denetimi</a></li><li><a href="/docs/dizin-durumu/">Dizin durumu</a></li><li><a href="/docs/raporlar/">Raporlar ve şablonlar</a></li><li><a href="/docs/proje-bilgisi/">Proje bilgisi</a></li><li><a href="/docs/ayarlar/">Ayarlar</a></li></ul><p class="nav-group">Yardım ve başvuru</p><ul><li><a href="/docs/yardim/">Yardım</a></li><li><a href="/docs/denetim-kurallari/">Denetim kuralları</a></li><li><a href="/docs/ajan-kurulumu/">Ajan kurulumu</a></li><li><a href="/docs/sorun-giderme/">Sorun giderme</a></li><li><a href="/docs/surum-notlari/">Sürüm notları</a></li></ul>
         </details>
       </aside>
       <article id="icerik" data-page="kurulum-docker">
-        <h1>Docker ile kurulum</h1><p class="lede">Mac, Linux ve Windows'ta Docker ile kurun. Tek komut yeter, .env dosyası gerekmez. Verileriniz Docker'ın veri deposunda durur.</p><p>Sonunda uygulama Docker'da (uygulamaları kapalı kutu içinde çalıştıran program) çalışacak ve <code>http://localhost:3001</code> adresinde açık olacak. Windows kullanıyorsanız tek dosyalık Windows kurulumu çok daha kolay. Bu yol Mac, Linux ve zaten Docker kullananlar için. İlk açılış birkaç dakika sürer, çünkü uygulama kutunun (konteynerin) içinde derlenir. Sonrakiler saniyeler sürer.</p>
+        <h1>Docker ile kurulum</h1><p class="lede">Mac, Linux ve Windows'ta Docker ile kurun. Tek komut yeter, .env dosyası gerekmez. Verileriniz Docker'ın veri deposunda durur.</p><p>Bu sayfayı bitirince uygulama Docker'da (uygulamaları kapalı kutu içinde çalıştıran program) çalışır ve <code>http://localhost:3001</code> adresinde açılır. Windows kullanıyorsanız tek dosyalık Windows kurulumu çok daha kolay. Bu yol Mac, Linux ve zaten Docker kullananlar için. İlk açılış birkaç dakika sürer, çünkü uygulama kutunun (konteynerin) içinde derlenir. Sonraki açılışlar saniyeler sürer.</p>
 <h2 id="gerekenler">Gerekenler</h2>
 <ul><li>Docker Desktop (Mac, Windows) ya da Docker Engine ile Docker Compose (Linux). Windows'ta Docker Desktop için WSL 2 (Windows içinde Linux çalıştıran bileşen) ve sanallaştırmanın (virtualization) açık olması gerekir.</li><li>Git. Yoksa GitHub sayfasındaki <strong>Code → Download ZIP</strong> de olur.</li><li>Yaklaşık 2 GB boş disk ve ilk derleme sırasında 2 GB boş bellek.</li></ul>
 <h2 id="adimlar">Adımlar</h2>
@@ -1129,40 +1225,43 @@
 cd seotracker</code></pre></div>
 <ol><li>Uygulamayı başlatın:</li></ol>
 <div class="code"><pre><code>docker compose up -d</code></pre></div>
-<p>Hepsi bu kadar. <code>.env</code> dosyası gerekmez. Şifreleme anahtarı ve asistan parolası ilk açılışta kendiliğinden üretilir ve Docker'ın veri deposunda (birim) saklanır.</p>
+<p>Başka bir şey gerekmez, <code>.env</code> dosyası da yok. Şifreleme anahtarı ve asistan parolası ilk açılışta kendiliğinden üretilir ve Docker'ın veri deposunda (birim) saklanır.</p>
 <ol><li>İlerlemeyi görmek isterseniz şunu yazın:</li></ol>
 <div class="code"><pre><code>docker compose logs -f</code></pre></div>
 <ol><li>Bekleyin. Günlükte &quot;Building client + server&quot; satırı ilk derlemedir. <code>docker compose ps</code> çıktısında durum <strong>healthy</strong> olana kadar bekleyin, sonra tarayıcıda <code>http://localhost:3001</code> adresini açın.</li></ol>
-<p>Sıradaki adım Google bağlantısı kılavuzu. Docker'da Google'a vereceğiniz iki yönlendirme adresi şunlar:</p>
+<p>Sonraki adım: Google'a bağlanma kılavuzu. Docker'da Google'a vereceğiniz iki yönlendirme adresi şunlar:</p>
 <ul><li><code>http://localhost:3001/api/gsc/oauth/callback</code></li><li><code>http://localhost:3001/api/ga4/oauth/callback</code></li></ul>
 <h3 id="guncelleme">Güncelleme</h3>
-<p>Şu iki komutu yazın:</p>
+<p>Şu iki komutu çalıştırın:</p>
 <div class="code"><pre><code>git pull
 docker compose up -d --build</code></pre></div>
-<p><strong>Ayarlar → Hakkında</strong> yeni sürümü haber verir ve bu iki komutu gösterir. Veriniz <code>seotracker_data</code> adlı veri deposunda kaldığı için güncelleme onu silmez.</p>
+<p><strong>Ayarlar → Hakkında</strong> yeni sürümü haber verir ve bu iki komutu gösterir. Veriniz <code>seotracker_data</code> adlı veri deposunda durduğu için güncelleme onu silmez.</p>
 <h3 id="durdurma-ve-kaldirma">Durdurma ve kaldırma</h3>
-<ul><li>Durdurmak: <code>docker compose stop</code></li><li>Yeniden başlatmak: <code>docker compose up -d</code></li><li>Kutuyu kaldırıp veriyi tutmak: <code>docker compose down</code></li><li>Veriyi de silmek: <code>docker compose down -v</code>. Bu komut veritabanını, Google bağlantılarını ve raporları kalıcı olarak siler.</li></ul>
+<ul><li>Durdurmak için: <code>docker compose stop</code></li><li>Yeniden başlatmak için: <code>docker compose up -d</code></li><li>Kutuyu kaldırıp veriyi korumak için: <code>docker compose down</code></li><li>Veriyi de silmek için: <code>docker compose down -v</code>. Bu komut veritabanını, Google bağlantılarını ve raporları kalıcı olarak siler.</li></ul>
 <h3 id="yedekleme">Yedekleme</h3>
-<p>Veriniz <code>seotracker_data</code> deposunda, kutunun içindeki <code>/app/.wrangler</code> yolundadır. Yedek almak için üç komutu sırayla yazın:</p>
+<p>Veriniz <code>seotracker_data</code> deposunda, kutunun içindeki <code>/app/.wrangler</code> yolundadır. Yedek almak için üç komutu sırayla çalıştırın:</p>
 <div class="code"><pre><code>docker compose stop
 docker run --rm -v seotracker_data:/data -v &quot;$PWD&quot;:/backup alpine tar czf /backup/seotracker-yedek.tgz -C /data .
 docker compose up -d</code></pre></div>
 <p>Geri yüklerken aynı komutta <code>tar czf</code> yerine <code>tar xzf</code> kullanın. Veri deposundaki <code>instance-secret</code> dosyası Google bağlantılarını şifreleyen anahtardır. Yedekte o dosya yoksa uygulama açılır ama Google bağlantıları gelmez.</p>
 <h3 id="ayarlar-istege-bagli">Ayarlar (isteğe bağlı)</h3>
-<p>Hiçbir ayar zorunlu değil. Değiştirmek isterseniz proje klasörüne bir <code>.env</code> dosyası koyun. Sonra <code>docker compose up -d --force-recreate seotracker</code> yazın.</p>
+<p>Hiçbir ayar zorunlu değil. Değiştirmek isterseniz proje klasörüne bir <code>.env</code> dosyası koyun. Sonra <code>docker compose up -d --force-recreate seotracker</code> komutunu çalıştırın.</p>
 <div class="tw"><table><thead><tr><th>Ayar adı</th><th>Ne işe yarar</th></tr></thead><tbody><tr><td>PORT</td><td>Adres numarası, varsayılan 3001. Değişince Google yönlendirme adresleri de değişir</td></tr><tr><td>ALLOWED_HOST</td><td>Başka bir sunucunun arkasındaysanız dışarıdan görünen ad. Boşsa yalnızca localhost</td></tr><tr><td>AUTH_MODE</td><td><code>local_noauth</code> (varsayılan) ya da <code>cloudflare_access</code></td></tr><tr><td>BETTER_AUTH_SECRET</td><td>Şifreleme anahtarı. Boş bırakın, uygulama üretir. Elle verirseniz en az 32 karakter olsun, sonra değiştirmeyin</td></tr><tr><td>GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET</td><td>Ayarlar ekranına girmenin alternatifi. Ekrana girilen değer önceliklidir</td></tr><tr><td>PAGESPEED_API_KEY</td><td>Ayarlar ekranına girmenin alternatifi</td></tr><tr><td>MCP_TOKEN</td><td>Boşsa ilk açılışta üretilir. <code>off</code> yazarsanız parola istenmez. Başka değer olduğu gibi kullanılır</td></tr></tbody></table></div>
 <h2 id="kontrol">Kontrol</h2>
-<ul><li><code>docker compose ps</code> çıktısında durum <strong>healthy</strong> olmalı. İlk açılışta buna ulaşmak beş dakikaya kadar sürebilir.</li><li><code>curl.exe http://127.0.0.1:3001/api/health</code> (Windows'ta; Mac ve Linux'ta <code>curl</code>) çıktısı &quot;status&quot;:&quot;ok&quot; ile başlamalı. Bu adresi tarayıcıda da açabilirsiniz.</li><li>Tarayıcıda <code>http://localhost:3001</code> açılmalı. <strong>Yardım</strong> ekranındaki durum kartı &quot;Her şey yolunda.&quot; demeli. Google bağlanmadan önce &quot;Google girişi&quot; satırı dikkat ister. Bu normaldir.</li></ul>
+<ul><li><code>docker compose ps</code> çıktısında durum <strong>healthy</strong> olmalı. İlk açılışta buna ulaşmak beş dakikaya kadar sürebilir.</li><li><code>curl.exe http://127.0.0.1:3001/api/health</code> (Windows'ta; Mac ve Linux'ta <code>curl</code>) çıktısı &quot;status&quot;:&quot;ok&quot; ile başlamalı. Bu adresi tarayıcıda da açabilirsiniz.</li><li>Tarayıcıda <code>http://localhost:3001</code> açılmalı. <strong>Yardım</strong> ekranındaki durum kartı &quot;Her şey yolunda.&quot; demeli. Google'a bağlanmadan önce &quot;Google girişi&quot; satırı uyarı gösterir. Bu normaldir.</li></ul>
 <h2 id="sik-sorulanlar">Sık sorulanlar</h2>
-<p><strong>İlk açılış neden uzun?</strong> Uygulama kutunun içinde derlenir. Sonraki açılışlarda derleme atlanır.</p>
-<p><strong><code>.env.example</code> dosyası nerede?</strong> Yok. Üst projeden gelen o dosya bu sürümde olmayan şeyleri anlatıyordu. Tam liste yukarıdaki tabloda ve <code>docs/ENVIRONMENT.md</code> dosyasında.</p>
-<p><strong>İnternete açabilir miyim?</strong> Uygulama kimlik sormaz. Önüne kendi kimlik doğrulamanızı koymadan açmayın. <code>ALLOWED_HOST</code> ayarlarsanız uygulama sağlık kontrolünde sizi uyarır.</p>
+<p><strong>İlk açılış neden uzun sürüyor?</strong> Uygulama kutunun içinde derlenir. Sonraki açılışlarda derleme atlanır.</p>
+<p><strong><code>.env.example</code> dosyası nerede?</strong> Yok. Üst projeden gelen o dosya bu sürümde bulunmayan özellikleri anlatıyordu. Tam liste yukarıdaki tabloda ve <code>docs/ENVIRONMENT.md</code> dosyasında.</p>
+<p><strong>İnternete açabilir miyim?</strong> Uygulama kimlik sormaz. Önüne kendi kimlik doğrulamanızı koymadan internete açmayın. <code>ALLOWED_HOST</code> ayarlarsanız uygulama sağlık kontrolünde sizi uyarır.</p>
 <p><strong>Asistanımın parolasını nereden alırım?</strong> Uygulamadaki <strong>Ajan kurulumu</strong> ekranı komutu gösterir: <code>docker compose exec -T seotracker cat /app/.wrangler/mcp-token</code>. Git Bash kullanıyorsanız başına <code>MSYS_NO_PATHCONV=1</code> ekleyin.</p>
 <h2 id="sorun-cikarsa">Sorun çıkarsa</h2>
-<ul><li><strong>&quot;Bind for 127.0.0.1:3001 failed&quot; yazıyor.</strong> Adres numarası dolu. Proje klasörüne <code>PORT=3002</code> satırlı bir <code>.env</code> koyun ve kutuyu yeniden oluşturun. Windows'ta Not Defteri dosyayı <code>.env.txt</code> diye kaydedebilir. PowerShell'de <code>Set-Content -Encoding ascii .env 'PORT=3002'</code> güvenlidir.</li><li><strong>Durum &quot;unhealthy&quot;.</strong> <code>docker compose logs --tail 50</code> son satırları gösterir. Derleme sırasında bellek bittiyse Docker Desktop'a daha fazla bellek verin.</li><li><strong>Google bağlantısı &quot;yapılandırılmamış&quot; diyor.</strong> <code>BETTER_AUTH_SECRET</code> 32 karakterden kısaysa Google kapalı kalır. Elle verdiyseniz uzatın. Vermediyseniz veri deposundaki <code>instance-secret</code> dosyası bozulmuş olabilir.</li><li><strong>Güncellemeden sonra Google bağlantısı koptu.</strong> <code>BETTER_AUTH_SECRET</code> değişmiş ya da veri deposu yeniden oluşturulmuştur. Proje ayarlarında <strong>Yeniden bağlan</strong> deyin.</li></ul> <nav class="pager" aria-label="Önceki ve sonraki sayfa"><a class="pager-prev" rel="prev" href="/docs/kurulum-windows/"><span>Önceki</span><strong>Windows'a kurulum</strong></a><a class="pager-next" rel="next" href="/docs/google-baglantisi/"><span>Sonraki</span><strong>Google'a bağlanma</strong></a></nav>
+<ul><li><strong>&quot;Bind for 127.0.0.1:3001 failed&quot; yazıyor.</strong> Adres numarası (port) başka bir programda kullanılıyor. Proje klasörüne <code>PORT=3002</code> satırlı bir <code>.env</code> koyun ve kutuyu yeniden oluşturun. Windows'ta Not Defteri dosyayı <code>.env.txt</code> adıyla kaydedebilir. PowerShell'de <code>Set-Content -Encoding ascii .env 'PORT=3002'</code> güvenlidir.</li><li><strong>Durum &quot;unhealthy&quot;.</strong> <code>docker compose logs --tail 50</code> son satırları gösterir. Derleme sırasında bellek bittiyse Docker Desktop'a daha fazla bellek verin.</li><li><strong>Google bağlantısı &quot;yapılandırılmamış&quot; diyor.</strong> <code>BETTER_AUTH_SECRET</code> 32 karakterden kısaysa Google kapalı kalır. Elle verdiyseniz uzatın. Vermediyseniz veri deposundaki <code>instance-secret</code> dosyası bozulmuş olabilir.</li><li><strong>Güncellemeden sonra Google bağlantısı koptu.</strong> <code>BETTER_AUTH_SECRET</code> değişmiş ya da veri deposu yeniden oluşturulmuş olabilir. Proje ayarlarında <strong>Yeniden bağlan</strong> deyin.</li></ul> <nav class="pager" aria-label="Önceki ve sonraki sayfa"><a class="pager-prev" rel="prev" href="/docs/kurulum-windows/"><span>Önceki</span><strong>Windows'a kurulum</strong></a><a class="pager-next" rel="next" href="/docs/google-baglantisi/"><span>Sonraki</span><strong>Google'a bağlanma</strong></a></nav>
         <p class="meta">
           Son güncelleme: 23 Ekim 2026. Bir hata görürseniz
-          <a href="https://github.com/ucsahinn/seotracker/issues"
+          <a
+            href="https://github.com/ucsahinn/seotracker/issues"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub'da bildirin</a
           >.
         </p>
@@ -1171,10 +1270,25 @@ docker compose up -d</code></pre></div>
     </main>
     <footer>
       <div class="wrap">
+        <p class="star">
+          Bir yıldız, başkalarının da bu ücretsiz aracı bulmasına yardım eder.
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub'da yıldız verin</a
+          >
+        </p>
         <span>seowatcher, MIT lisansı.</span>
         <span
           ><a href="/">Ana sayfa</a> &nbsp;
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          &nbsp;
           <a href="/docs/surum-notlari/">Sürüm notları</a></span
         >
       </div>

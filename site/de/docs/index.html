@@ -24,6 +24,7 @@
       href="https://seowatcher.io/docs/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -146,7 +147,7 @@
       }
     </script>
     <script src="/assets/docs.js?v=2.4.1" defer></script>
-    <meta name="theme-color" content="#272c3b" />
+    <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
         font-family: "Geist";
@@ -736,6 +737,95 @@
       footer a:hover {
         color: var(--fg);
       }
+      /* The one ask on the page: quiet, one line, the accent only on the link. */
+      footer .star {
+        flex-basis: 100%;
+        margin: 0 0 4px;
+        text-wrap: pretty;
+      }
+      footer .star a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      footer .star a:hover {
+        color: var(--accent-link);
+        text-decoration-color: var(--accent-link);
+      }
+
+      /* Headings enter as they scroll into view. docs.js adds .hx (and .in
+         once seen) only when motion is allowed, so without script, under
+         reduced motion and with "stop motion" on, they are simply there.
+         h1 wipes in from the left, h2 rises while an amber stroke draws
+         along its rule, h3 rises a little. */
+      article .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease),
+          clip-path 760ms var(--ease),
+          filter 620ms var(--ease);
+      }
+      article h1.hx {
+        clip-path: inset(-10% 100% -10% 0);
+        filter: blur(6px);
+      }
+      article h2.hx,
+      article h3.hx {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      article h3.hx {
+        transform: translateY(6px);
+      }
+      article h2.hx {
+        position: relative;
+      }
+      article h2.hx::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 56px;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 700ms var(--ease) 160ms;
+      }
+      article .hx.in {
+        opacity: 1;
+        transform: none;
+      }
+      article h1.hx.in {
+        clip-path: inset(-10% 0 -10% 0);
+        filter: none;
+      }
+      article h2.hx.in::before {
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        article .hx,
+        article h2.hx::before {
+          opacity: 1;
+          transform: none;
+          clip-path: none;
+          filter: none;
+          transition: none;
+        }
+      }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
 
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
@@ -1180,7 +1270,11 @@
         <nav class="topnav" aria-label="Website">
           <a class="hide" href="/de/">Startseite</a>
           <a class="hide" href="/de/docs/">Anleitung</a>
-          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+          <a
+            class="hide"
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub</a
           >
           <details class="langs">
@@ -1207,7 +1301,7 @@
                       <circle cx="8.4" cy="7" r="2.7" fill="#e30a17" />
                       <polygon
                         fill="#fff"
-                        points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"
+                        points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"
                       /></svg></span
                   >Türkçe</a
                 >
@@ -1230,12 +1324,12 @@
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#fff"
-                        stroke-width="3.6"
+                        stroke-width="4.2"
                       />
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#c8102e"
-                        stroke-width="2"
+                        stroke-width="2.6"
                       /></svg></span
                   >English</a
                 >
@@ -1306,6 +1400,8 @@
           <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            target="_blank"
+            rel="noopener noreferrer"
             ><span class="long">Für Windows herunterladen</span
             ><span class="short">Download</span></a
           >
@@ -1362,7 +1458,7 @@
             <li><a href="/de/docs/projektinfo/">Projektinfo</a></li>
             <li><a href="/de/docs/einstellungen/">Einstellungen</a></li>
           </ul>
-          <p class="nav-group">Nachschlagen</p>
+          <p class="nav-group">Hilfe und Nachschlagen</p>
           <ul>
             <li><a href="/de/docs/hilfe/">Hilfe</a></li>
             <li><a href="/de/docs/audit-regeln/">Audit-Regeln</a></li>
@@ -1378,8 +1474,8 @@
         <h1>Anleitung</h1>
         <p class="lede">
           Jeder Schritt und jeder Bildschirm, von der Installation bis zum
-          ersten Bericht, kurz und einfach erklärt. Die App heißt auf GitHub
-          seotracker und auf dieser Website seowatcher; beide sind dieselbe App.
+          ersten Bericht, kurz erklärt. Die App heißt auf GitHub seotracker und
+          auf dieser Website seowatcher; beide sind dieselbe App.
         </p>
         <h2 id="erste-schritte">Erste Schritte</h2>
         <ul class="index">
@@ -1387,34 +1483,33 @@
             <a href="/de/docs/installation-windows/"
               >Installation unter Windows</a
             ><span
-              >Sie installieren seowatcher mit einer einzigen Datei, Docker oder
-              ein Terminal brauchen Sie nicht. Update, Deinstallation, Sicherung
-              und Änderung der Portnummer stehen auf derselben Seite.</span
+              >seowatcher mit einer einzigen Datei installieren, ohne Docker und
+              ohne Terminal. Dazu Update, Deinstallation, Sicherung und
+              Portnummer.</span
             >
           </li>
           <li>
             <a href="/de/docs/installation-docker/">Installation mit Docker</a
             ><span
-              >Installieren Sie die App mit Docker unter Mac, Linux und Windows.
-              Ein einziger Befehl genügt, eine .env-Datei brauchen Sie nicht.
-              Ihre Daten liegen im Datenspeicher von Docker.</span
+              >App mit Docker unter Mac, Linux und Windows installieren: ein
+              Befehl, keine .env-Datei. Die Daten liegen im Datenspeicher von
+              Docker.</span
             >
           </li>
           <li>
             <a href="/de/docs/google-verbindung/">Mit Google verbinden</a
             ><span
-              >Sie holen sich einmalig einen Zugangsschlüssel bei Google, fügen
-              ihn in die App ein und wählen Ihre Website. So kommen die Daten
-              aus Search Console und Analytics 4 in die App.</span
+              >Zugangsschlüssel bei Google holen, in die App einfügen und die
+              Website wählen. So kommen Search Console und Analytics 4 in die
+              App.</span
             >
           </li>
           <li>
             <a href="/de/docs/pagespeed-schluessel/">PageSpeed-Schlüssel</a
             ><span
-              >Um die Seitengeschwindigkeit messen zu können, holen Sie sich
-              einen kostenlosen Google-PageSpeed-Schlüssel und tragen ihn in die
-              App ein. Ohne Schlüssel bleibt die Messung auf 50 Seiten
-              begrenzt.</span
+              >Kostenlosen Google-PageSpeed-Schlüssel holen und in die App
+              eintragen. Ohne Schlüssel misst ein Audit höchstens 50
+              Seiten.</span
             >
           </li>
         </ul>
@@ -1423,116 +1518,109 @@
           <li>
             <a href="/de/docs/projekte/">Projekte</a
             ><span
-              >Sie legen Projekte an, wählen Website und Land, ändern den Namen
-              und verwalten die Google-Verbindung. Ein Projekt können Sie
-              archivieren und wiederherstellen.</span
+              >Projekte anlegen, Website und Land wählen, Namen ändern,
+              Google-Verbindung verwalten, Projekte archivieren und
+              wiederherstellen.</span
             >
           </li>
           <li>
             <a href="/de/docs/uebersicht/">Übersicht (Panel)</a
             ><span
-              >Das ist der erste Bildschirm, den Sie nach dem Öffnen eines
-              Projekts sehen. Die Suchzahlen der letzten 28 Tage, die
-              Zusammenfassung des letzten Audits und Ihre anstehenden Aufgaben
-              stehen hier an einem Ort.</span
+              >Der erste Bildschirm eines Projekts: Suchzahlen der letzten 28
+              Tage, Zusammenfassung des letzten Audits und anstehende
+              Aufgaben.</span
             >
           </li>
           <li>
             <a href="/de/docs/suchleistung/">Suchleistung</a
             ><span
-              >Hier sehen Sie, bei welchen Suchen Sie bei Google erscheinen und
-              wie viele Personen klicken. Sie können nach Suchanfrage, Seite,
-              Land oder Gerät auswerten und bis zu 16 Monate zurückgehen.</span
+              >Bei welchen Suchen Ihre Website bei Google erscheint und wie oft
+              geklickt wird, nach Suchanfrage, Seite, Land oder Gerät, bis zu 16
+              Monate zurück.</span
             >
           </li>
           <li>
             <a href="/de/docs/ranking-verfolgung/">Ranking-Verfolgung</a
             ><span
-              >Sie sehen die durchschnittliche Google-Position Ihrer
-              Suchanfragen Tag für Tag. Weil die Daten auf diesem Computer
-              gespeichert werden, können Sie auch weiter zurückblicken als
-              Googles 16-Monate-Grenze.</span
+              >Durchschnittliche Google-Position Ihrer Suchanfragen Tag für Tag,
+              auch über Googles 16-Monate-Grenze hinaus, weil die Daten auf
+              Ihrem Computer liegen.</span
             >
           </li>
           <li>
             <a href="/de/docs/chancen/">Chancen</a
             ><span
-              >Die App sagt Ihnen, welche Ihrer Seiten Sie diese Woche anpacken
-              sollten. Sie teilt die Seiten in vier Gruppen, vergibt Punkte und
-              schreibt zu jeder Seite die nächste Aufgabe.</span
+              >Welche Ihrer Seiten Sie diese Woche anpacken sollten: vier
+              Gruppen, ein Punktwert und zu jeder Seite die nächste
+              Aufgabe.</span
             >
           </li>
           <li>
             <a href="/de/docs/gespeicherte-suchbegriffe/"
               >Gespeicherte Suchbegriffe</a
             ><span
-              >Sie speichern wichtige Suchanfragen hier, versehen sie mit
-              Etiketten und sehen ihre durchschnittliche Position der letzten 90
-              Tage. Auf Wunsch exportieren Sie sie als CSV oder an Google
-              Tabellen.</span
+              >Wichtige Suchanfragen speichern, mit Etiketten versehen und ihre
+              Durchschnittsposition der letzten 90 Tage sehen. Export als CSV
+              oder an Google Tabellen.</span
             >
           </li>
           <li>
             <a href="/de/docs/analytics/">Analytics</a
             ><span
-              >Sie sehen, was Besucher aus der Suche danach auf der Website tun.
-              Hier finden Sie Berichte aus Google Analytics 4,
-              Schlüsselereignisse und die Prüfung, ob die Messung zuverlässig
-              läuft.</span
+              >Was Besucher aus der Suche danach auf der Website tun: Berichte
+              aus Google Analytics 4, Schlüsselereignisse und die Prüfung der
+              Messung.</span
             >
           </li>
           <li>
             <a href="/de/docs/website-audit/">Website-Audit</a
             ><span
-              >Die App geht Ihre Website Seite für Seite durch, prüft sie anhand
-              von 95 Regeln und sortiert die Probleme nach Wichtigkeit. Zu jedem
-              Problem steht, was Sie tun sollten.</span
+              >Die App prüft Ihre Website Seite für Seite anhand von 95 Regeln
+              und sortiert die Probleme nach Wichtigkeit. Zu jedem steht, was zu
+              tun ist.</span
             >
           </li>
           <li>
             <a href="/de/docs/indexstatus/">Indexstatus</a
             ><span
-              >Hat Google jede Ihrer Seiten in die Suche aufgenommen, wenn
-              nicht, warum nicht, und wann war es zuletzt da? Sie können
-              höchstens 2.000 Abfragen pro Tag stellen.</span
+              >Ob Google Ihre Seiten in die Suche aufgenommen hat, warum nicht
+              und wann es zuletzt vorbeikam. Höchstens 2.000 Abfragen pro
+              Tag.</span
             >
           </li>
           <li>
             <a href="/de/docs/berichte/">Berichte und Vorlagen</a
             ><span
-              >Jeder Bericht, den Sie aus einem Audit herunterladen oder von
-              Ihrem Assistenten schreiben lassen, ist eine einzelne HTML-Datei.
-              Sie öffnen sie auf dem Smartphone, drucken sie oder senden sie per
-              E-Mail.</span
+              >Jeder Bericht ist eine einzelne HTML-Datei: auf dem Smartphone
+              öffnen, drucken oder per E-Mail senden. Mit Vorlagen wiederholen
+              Sie ihn.</span
             >
           </li>
           <li>
             <a href="/de/docs/projektinfo/">Projektinfo</a
             ><span
-              >Hier schreiben Sie auf, was die App von allein nicht wissen kann:
-              was Sie tun, Ihr Ziel, Ihre Wettbewerber, Ihre wichtigen Seiten.
-              Ihr Assistent liest dies, bevor er mit der Arbeit beginnt.</span
+              >Was die App nicht von allein wissen kann: Ihr Geschäft, Ihr Ziel,
+              Ihre Wettbewerber, Ihre wichtigen Seiten. Ihr Assistent liest es,
+              bevor er arbeitet.</span
             >
           </li>
           <li>
             <a href="/de/docs/einstellungen/">Einstellungen</a
             ><span
-              >Hier verwalten Sie das Design, den Google-Zugangsschlüssel, den
-              PageSpeed-Schlüssel, die Nutzungsgrenzen und die Update-Prüfung.
-              Es ist der eine Einstellungsbildschirm für die gesamte
+              >Design, Google-Zugangsschlüssel, PageSpeed-Schlüssel,
+              Nutzungsgrenzen und Update-Prüfung, gültig für die gesamte
               Installation.</span
             >
           </li>
         </ul>
-        <h2 id="nachschlagen">Nachschlagen</h2>
+        <h2 id="hilfe-und-nachschlagen">Hilfe und Nachschlagen</h2>
         <ul class="index">
           <li>
             <a href="/de/docs/hilfe/">Hilfe</a
             ><span
-              >Wenn etwas schiefgeht, sehen Sie zuerst hier nach. Der Bildschirm
-              prüft Ihre Installation, zeigt Lösungen für häufige Probleme und
-              bereitet die Datei vor, die Sie bei einer Problemmeldung
-              senden.</span
+              >Der Bildschirm prüft Ihre Installation, zeigt Lösungen für
+              häufige Probleme und bereitet die Datei für eine Problemmeldung
+              vor.</span
             >
           </li>
           <li>
@@ -1546,32 +1634,34 @@
           <li>
             <a href="/de/docs/assistent-einrichten/">Assistent einrichten</a
             ><span
-              >Sie verbinden Claude Code, Codex oder Cursor mit der App. Hier
-              finden Sie die Adresse, das Passwort, die 33 Werkzeuge, die 6
-              fertigen Aufgabenvorlagen und welche davon Google-Kontingent
-              verbrauchen.</span
+              >Claude Code, Codex oder Cursor mit der App verbinden: Adresse,
+              Passwort, 33 Werkzeuge, 6 fertige Aufgabenvorlagen und
+              Google-Kontingent.</span
             >
           </li>
           <li>
             <a href="/de/docs/fehlerbehebung/">Fehlerbehebung</a
             ><span
-              >Die häufigsten Probleme mit Symptom, Ursache und Lösung. Belegte
-              Portnummer, Windows-Warnung, Google-Fehler, Kontingent, hängendes
-              Audit, leere Diagramme und Assistent 401 stehen hier.</span
+              >Häufige Probleme mit Symptom, Ursache und Lösung: Port,
+              Windows-Warnung, Google-Fehler, Kontingent, hängendes Audit, leere
+              Diagramme, Assistent 401.</span
             >
           </li>
           <li>
             <a href="/de/docs/versionshinweise/">Versionshinweise</a
             ><span
-              >Was sich in seowatcher 2.4.1 geändert hat. Installation mit einer
-              Datei unter Windows, eine App, die sich selbst aktualisiert,
-              schlichtere Bildschirme und eine Website in sechs Sprachen.</span
+              >Neu in seowatcher 2.4.1: Windows-Installation mit einer Datei,
+              Selbstaktualisierung, schlichtere Bildschirme und eine Website in
+              sechs Sprachen.</span
             >
           </li>
         </ul>
         <p class="meta">
           Zuletzt aktualisiert: 23 Oktober 2026. Fehler entdeckt?
-          <a href="https://github.com/ucsahinn/seotracker/issues"
+          <a
+            href="https://github.com/ucsahinn/seotracker/issues"
+            target="_blank"
+            rel="noopener noreferrer"
             >Auf GitHub melden</a
           >.
         </p>
@@ -1579,10 +1669,25 @@
     </main>
     <footer>
       <div class="wrap">
+        <p class="star">
+          Ein Stern hilft anderen, ein kostenloses Werkzeug zu finden.
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Auf GitHub mit einem Stern markieren</a
+          >
+        </p>
         <span>seowatcher, MIT-Lizenz.</span>
         <span
           ><a href="/de/">Startseite</a> &nbsp;
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          &nbsp;
           <a href="/de/docs/versionshinweise/">Versionshinweise</a></span
         >
       </div>

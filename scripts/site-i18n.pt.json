@@ -25,7 +25,7 @@
   "groups": {
     "Başlangıç": "Primeiros passos",
     "Ekranlar": "Telas",
-    "Başvuru": "Referência"
+    "Başvuru": "Ajuda e referência"
   },
   "slugs": {
     "kurulum-windows": "instalar-windows",
@@ -54,7 +54,7 @@
     "guide": "Guia",
     "guideTitle": "Guia do seowatcher: instalação, telas e solução de problemas",
     "guideDescription": "Guias do seowatcher: instalação, o que cada tela mostra, a conexão com o Google, as regras de auditoria, a configuração do agente e a solução de problemas.",
-    "guideLede": "Um passo a passo curto e simples de cada etapa e de cada tela, da instalação ao primeiro relatório. O aplicativo se chama seotracker no GitHub e seowatcher neste site; são a mesma coisa.",
+    "guideLede": "Um passo a passo curto de cada etapa e de cada tela, da instalação ao primeiro relatório. O aplicativo se chama seotracker no GitHub e seowatcher neste site; é o mesmo programa.",
     "screenSuffix": "",
     "titleSuffix": " | Guia do seowatcher",
     "onThisPage": "Nesta página",
@@ -82,6 +82,8 @@
     "switchShort": "TR",
     "copyFailed": "Não foi possível copiar",
     "language": "Idioma",
-    "free": "Gratuito"
+    "free": "Gratuito",
+    "starWhy": "Uma estrela ajuda outras pessoas a encontrar uma ferramenta gratuita.",
+    "starLink": "Dê uma estrela no GitHub"
   }
 }

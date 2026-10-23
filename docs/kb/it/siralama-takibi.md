@@ -1,14 +1,14 @@
 ---
 title: Monitoraggio delle posizioni
-description: Si vede giorno per giorno la posizione media delle ricerche su Google. Poiché i dati sono conservati su questo computer, si può guardare anche più indietro del limite di 16 mesi di Google.
+description: La posizione media delle ricerche su Google, giorno per giorno. I dati restano sul computer, quindi si può guardare oltre i 16 mesi di Google.
 screen: Sıralama takibi
 route: /p/<proje>/rankings
 updated: 2026-10-22
 ---
 
-Qui si vede come le ricerche salgono e scendono nel tempo. Google Search Console limita lo storico a 16 mesi. Non mostra nemmeno in quale giorno una ricerca è scesa a quale posizione.
+Qui si vede come le ricerche salgono e scendono nel tempo. Google Search Console limita lo storico a 16 mesi. Non mostra nemmeno in quale giorno una ricerca è scesa e a quale posizione.
 
-L'app scarica questi dati giorno per giorno e li conserva su questo computer. Più si apre la schermata, più l'archivio cresce. Col tempo si arriva più indietro di quanto Google mostri.
+L'app scarica questi dati giorno per giorno e li conserva su questo computer. Più si apre la schermata, più l'archivio cresce. Col tempo si può guardare più indietro di quanto permetta Google.
 
 ## Cosa c'è nella schermata
 
@@ -28,12 +28,12 @@ La casella **Sorgu içinde ara** (Cerca nelle query) restringe l'elenco.
 
 **Storico della query.** Facendo clic su una riga si apre la linea giornaliera delle posizioni di quella ricerca. Il collegamento **Arama performansında aç** (Apri nelle prestazioni di ricerca) mostra la stessa ricerca nell'altra schermata.
 
-**Stati vuoti.** Se l'archivio è vuoto, la schermata scrive "Henüz hangi kelimeyle arandığınız bilinmiyor" (Non si sa ancora con quali parole la si cerca) e compare il pulsante **Arama performansını aç** (Apri le prestazioni di ricerca). L'elenco è limitato alle 100 ricerche più mostrate. Se ce ne sono di più, sotto compare una nota che lo dice.
+**Stati vuoti.** Se l'archivio è vuoto, la schermata scrive "Henüz hangi kelimeyle arandığınız bilinmiyor" (Non è ancora noto con quali parole viene cercato il sito) e compare il pulsante **Arama performansını aç** (Apri le prestazioni di ricerca). L'elenco è limitato alle 100 ricerche più mostrate. Se ce ne sono di più, sotto compare una nota che lo dice.
 
 ## Come si usa
 
 1. Alla prima apertura della schermata, attendere che nella riga dell'archivio compaia "eklendi" (aggiunti).
-2. Il primo riempimento risale fino a 480 giorni. Può richiedere alcune aperture.
+2. Il primo caricamento arriva fino a 480 giorni indietro. Può richiedere alcune aperture.
 3. Per cercare un calo, premere **Düşenler**. Poi con **Gösterimi yüksek** eliminare le ricerche irrilevanti.
 4. Fare clic sulla ricerca più in alto. Nel grafico dello storico leggere il giorno in cui è iniziato il calo.
 5. Segnare le ricerche da seguire con **Kayıtlı kelimelere ekle**.
@@ -59,7 +59,7 @@ L'elenco porta le 100 ricerche più mostrate. Nel browser è diviso in pagine da
 
 **Si può vedere la posizione di un concorrente?** No. Search Console fornisce solo i dati del proprio sito.
 
-**Che cosa significa posizione 1,0?** Che nel periodo si è comparsi sempre al primo posto a ogni impressione. Se un giorno si fosse scesi alla 3ª posizione, la media sarebbe salita sopra 1.
+**Che cosa significa posizione 1,0?** Che nel periodo il sito è comparso sempre al primo posto. Se un giorno fosse sceso alla 3ª posizione, la media sarebbe salita sopra 1.
 
 ## Limiti
 

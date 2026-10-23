@@ -220,6 +220,21 @@ function putLangBlocks(html, locale) {
     );
 }
 
+// Links that leave the site open in a new tab. The attributes are set by
+// rule on every edition, never translated: they are dropped before the page
+// is read, so a translation key does not change when a link gains them, and
+// added back to every external link of the built page.
+const NEW_TAB = ' target="_blank" rel="noopener noreferrer"';
+const dropNewTab = (html) =>
+  html.replace(/\s+target="_blank"\s+rel="noopener noreferrer"/g, "");
+function addNewTab(html) {
+  return html.replace(/<a\b[^>]*>/g, (tag) => {
+    const m = /\bhref="(https?:\/\/[^"]+)"/.exec(tag);
+    if (!m || /^https?:\/\/(www\.)?seowatcher\.io(\/|$)/.test(m[1])) return tag;
+    return tag.replace(m[0], () => m[0] + NEW_TAB);
+  });
+}
+
 const hasLetters = (s) => /[A-Za-zÇĞİÖŞÜçğıöşü]/.test(s);
 const collapse = (s) => s.replace(/\s+/g, " ").trim();
 // Text alone decides: tags and svg tokens are stripped before the brand check,
@@ -388,7 +403,7 @@ function readMap(lang) {
 }
 
 function extract(lang) {
-  const html = cutLangBlocks(fs.readFileSync(srcFile, "utf8"));
+  const html = dropNewTab(cutLangBlocks(fs.readFileSync(srcFile, "utf8")));
   const keys = collect(html);
   const old = readMap(lang);
   const next = {};
@@ -406,7 +421,7 @@ function extract(lang) {
 
 function build(locale, { strict = true } = {}) {
   const lang = locale.lang;
-  const html = cutLangBlocks(fs.readFileSync(srcFile, "utf8"));
+  const html = dropNewTab(cutLangBlocks(fs.readFileSync(srcFile, "utf8")));
   const map = readMap(lang);
   const outFile = outFileOf(lang);
   const missing = [];
@@ -524,19 +539,9 @@ function build(locale, { strict = true } = {}) {
     "https://seowatcher.io/assets/og.png",
     `https://seowatcher.io/assets/og-${lang}.png`,
   );
-  page = putLangBlocks(page, locale);
-  // "0 ₺" means nothing abroad; the tile simply says Free in that language.
-  page = page.replace(
-    /<b\s+data-count="0"\s+data-suffix=" ₺"\s*>0 ₺<\/b>/g,
-    `<b>${locale.t.free}</b>`,
-  );
+  page = addNewTab(putLangBlocks(page, locale));
   if (!page.includes(`<details class="langs">`))
     throw new Error("language menu missing from the built page");
-  for (const leftover of ["İçeriğe", 'data-suffix="months"', "0 ₺"])
-    if (page.includes(leftover))
-      throw new Error(
-        `Turkish leftover in site/${lang}/index.html: ${leftover}`,
-      );
   if (missing.length) {
     const msg = `site/${lang}/index.html not written: ${missing.length} strings have no entry in scripts/site-home.${lang}.json`;
     if (!strict) {
@@ -547,16 +552,49 @@ function build(locale, { strict = true } = {}) {
     for (const k of missing) console.error("  " + k);
     process.exit(1);
   }
+  // Checked once every string has an entry: an untranslated string is
+  // reported above as missing, this catches a translation that kept the lira.
+  for (const leftover of ["İçeriğe", 'data-suffix="months"', "₺"])
+    if (page.includes(leftover))
+      throw new Error(
+        `Turkish leftover in site/${lang}/index.html: ${leftover}`,
+      );
   fs.mkdirSync(path.dirname(outFile), { recursive: true });
   fs.writeFileSync(outFile, page);
   console.log(`site/${lang}/index.html written (${segments.length} segments)`);
   return true;
 }
 
+/**
+ * The Turkish home is hand-written, but its flag menu and flag rows are not:
+ * they are regenerated on every build from the editions on disk, so a new
+ * edition shows up in the Turkish menu too and the menu can never go stale.
+ * Prettier formats the result so the hand-written file stays in its style.
+ */
+async function refreshTurkishLangBlocks() {
+  const src = fs.readFileSync(srcFile, "utf8");
+  const blocks = src.match(LANG_BLOCK) || [];
+  if (!blocks.some((b) => b.startsWith("<details")))
+    throw new Error("language menu missing from site/index.html");
+  const prettier = await import("prettier");
+  const options = (await prettier.resolveConfig(srcFile)) || {};
+  // The same rule as the editions: every link that leaves the site gets its
+  // new-tab attributes here, so the hand-written page cannot miss one.
+  const next = await prettier.format(
+    addNewTab(putLangBlocks(dropNewTab(cutLangBlocks(src)), locales.tr)),
+    { ...options, filepath: srcFile },
+  );
+  if (next === src) return;
+  fs.writeFileSync(srcFile, next);
+  console.log("site/index.html language menu refreshed");
+}
+
 const mode = process.argv[2];
 if (mode === "extract") extract(langArg || "en");
-else if (mode === "build" && langArg) build(locales[langArg]);
-else if (mode === "build") {
+else if (mode === "build" && langArg) {
+  build(locales[langArg]);
+  await refreshTurkishLangBlocks();
+} else if (mode === "build") {
   // Every table on disk; an unfinished one is skipped with a warning so the
   // finished editions still build.
   for (const locale of Object.values(locales)) {
@@ -564,6 +602,8 @@ else if (mode === "build") {
       continue;
     build(locale, { strict: false });
   }
+  // After the editions, so one written just now is already listed.
+  await refreshTurkishLangBlocks();
 } else {
   console.error("usage: node scripts/build-site-home.mjs extract|build");
   process.exit(2);

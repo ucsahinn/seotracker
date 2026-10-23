@@ -6,7 +6,7 @@ route: /p/<proje>/audit
 updated: 2026-10-22
 ---
 
-Qui si impara come trovare e correggere i problemi del sito.
+Qui si trovano i problemi del sito e si vede come correggerli.
 
 L'app visita il sito con il proprio crawler (il programma che apre e legge le pagine una per una). Cerca collegamenti rotti, titoli mancanti e pagine lente. Alla fine si ottiene un punteggio e un elenco di problemi ordinati per gravità. Sotto ogni problema è scritto come correggerlo.
 
@@ -20,7 +20,7 @@ L'app visita il sito con il proprio crawler (il programma che apre e legge le pa
 
 Senza la chiave PageSpeed (il codice gratuito che Google dà per la misurazione della velocità), la misurazione è limitata a 50 pagine al massimo. Per misurarle tutte, aggiungere una chiave gratuita in **Ayarlar** (Impostazioni).
 
-**Controlli precedenti.** Di ogni controllo sono elencati data, stato, numero di pagine e numero di problemi. I numeri dei problemi sono ogni cento pagine, così si possono confrontare controlli da 50 e da 500 pagine. **Denetimi sil** (Elimina il controllo) nel menu della riga elimina tutto e non si può annullare.
+**Controlli precedenti.** Di ogni controllo sono elencati data, stato, numero di pagine e numero di problemi. Il numero di problemi è riferito a ogni cento pagine, così si possono confrontare controlli da 50 e da 500 pagine. **Denetimi sil** (Elimina il controllo) nel menu della riga elimina tutto e non si può annullare.
 
 **Dettaglio del controllo.** Se la scansione resta incompleta, compare un avviso giallo. Per esempio "Denetim bu siteyi tamamen tarayamadı." (Il controllo non è riuscito a scansionare tutto il sito.), perché la protezione anti-bot lo ha bloccato. I risultati vengono comunque mostrati. **Raporu indir** (Scarica il report) scarica un report HTML in un solo file e lo salva nella schermata **Raporlar** (Report).
 

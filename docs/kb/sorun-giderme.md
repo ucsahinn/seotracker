@@ -5,7 +5,7 @@ kind: sorun-giderme
 updated: 2026-10-22
 ---
 
-Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuzun durumu" kartına bakın. Kart giriş ve erişimi, Google girişini, PageSpeed anahtarını ve veritabanını kontrol eder. "N şey dikkat istiyor" diyorsa yanındaki düğme sizi doğru ayara götürür. Aşağıdaki sorunlar en sık görülenden en nadire doğru sıralı.
+Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuzun durumu" kartına bakın. Kart giriş ve erişimi, Google girişini, PageSpeed anahtarını ve veritabanını kontrol eder. "N şey dikkat istiyor" diyorsa yanındaki düğme sizi doğru ayara götürür. Aşağıdaki sorunlar en sık görülenden en nadire doğru sıralıdır.
 
 ## Sayfa açılmıyor
 
@@ -13,7 +13,7 @@ Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuz
 
 **Sebep:** Uygulama çalışmıyor.
 
-**Çözüm:** Windows'ta görev çubuğundaki simgeye bakın. Simge görünmüyorsa görev çubuğundaki ^ okuna tıklayın. Yoksa Başlat menüsünden seowatcher'ı açın. Simgede "Hata" yazıyorsa sağ tıklayıp **Yeniden başlat** deyin. Docker'da `docker compose ps` yazın. Durum healthy değilse `docker compose up -d` yazın.
+**Çözüm:** Windows'ta görev çubuğundaki simgeye bakın. Simge görünmüyorsa görev çubuğundaki ^ okuna tıklayın. Yoksa Başlat menüsünden seowatcher'ı açın. Simgede "Hata" yazıyorsa sağ tıklayıp **Yeniden başlat** deyin. Docker'da `docker compose ps` komutunu çalıştırın. Durum healthy değilse `docker compose up -d` komutunu çalıştırın.
 
 ## Adres numarası (port) dolu
 
@@ -21,7 +21,7 @@ Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuz
 
 **Sebep:** Başka bir program aynı adres numarasını kullanıyor.
 
-**Çözüm:** Windows paketi normalde 3002 ile 3010 arasında boş bir numara seçer. Hepsi doluysa veri klasöründeki `config.json` dosyasına başka bir numara yazın. Docker'da `PORT=3002` satırlı bir `.env` koyun ve `docker compose up -d --force-recreate seotracker` yazın. Numara değişince Google yönlendirme adreslerini de güncelleyin.
+**Çözüm:** Windows paketi normalde 3002 ile 3010 arasında boş bir numara seçer. Hepsi doluysa veri klasöründeki `config.json` dosyasına başka bir numara yazın. Docker'da içinde `PORT=3002` satırı olan bir `.env` dosyası koyun ve `docker compose up -d --force-recreate seotracker` komutunu çalıştırın. Numara değişince Google yönlendirme adreslerini de güncelleyin.
 
 ## Simge "Windows bileşeni eksik" diyor
 
@@ -61,7 +61,7 @@ Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuz
 
 **Sebep:** Google Cloud Console'daki yönlendirme adresi uygulamadakiyle bire bir aynı değil.
 
-**Çözüm:** **Ayarlar → Google** bölümündeki kopyalama düğmesiyle iki adresi alın. Cloud Console'da Google erişim anahtarının (OAuth istemcisinin) adres alanına yapıştırın. localhost ile 127.0.0.1, http ile https ya da sondaki eğik çizgi fark eder.
+**Çözüm:** **Ayarlar → Google** bölümündeki kopyalama düğmesiyle iki adresi alın. Cloud Console'da Google erişim anahtarının (OAuth istemcisinin) adres alanına yapıştırın. localhost ile 127.0.0.1, http ile https ya da sondaki eğik çizgi farkı bu hataya yol açar.
 
 ## "Google erişim anahtarı eksik"
 
@@ -69,7 +69,7 @@ Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuz
 
 **Sebep:** **Ayarlar → Google** bölümüne istemci kimliği ve gizli anahtar girilmemiş. Ya da Docker'da şifreleme anahtarı 32 karakterden kısa.
 
-**Çözüm:** Google'a bağlanma kılavuzunun 10 ve 11. adımlarını yapın. Docker'da `BETTER_AUTH_SECRET` değerini elle verdiyseniz uzatın. Boş bırakırsanız uygulama kendisi üretir.
+**Çözüm:** Google'a bağlanma kılavuzunun 10. ve 11. adımlarını yapın. Docker'da `BETTER_AUTH_SECRET` değerini elle verdiyseniz uzatın. Boş bırakırsanız uygulama kendisi üretir.
 
 ## Google "access_denied" diyor
 
@@ -83,7 +83,7 @@ Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuz
 
 **Belirti:** Bağlantılar kartında "Bağlantının süresi doldu" yazıyor, veri gelmiyor.
 
-**Sebep:** Google "Test" durumundaki uygulamalarda izni yedi günde düşürebilir. Şifreleme anahtarı değişmiş de olabilir.
+**Sebep:** Google, "Test" durumundaki uygulamalarda izni yedi gün sonra düşürebilir. Şifreleme anahtarı değişmiş de olabilir.
 
 **Çözüm:** Kartta **Yeniden bağlan** deyin. Sık tekrarlıyorsa izin ekranını üretime alın ya da hizmet hesabına geçin (**Ayarlar → Hizmet hesabı**).
 
@@ -123,9 +123,9 @@ Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuz
 
 **Belirti:** Hız sekmesi boş ya da çok az satır var. Kota kartı "Kota doldu", "Dakikalık sınır" ya da "Anahtar yok" diyor.
 
-**Sebep:** PageSpeed anahtarı yok (en fazla 50 sayfa ölçülür). Ya da Google'ın günlük hakkı bitmiş.
+**Sebep:** PageSpeed anahtarı yok (en fazla 50 sayfa ölçülür). Ya da Google'ın günlük hakkı dolmuş.
 
-**Çözüm:** PageSpeed anahtarı kılavuzuna göre ücretsiz anahtar alın. Günlük hak bittiyse yarın yeni denetimde tamamlanır. Denetim başlarken hız ölçümü kapalıysa o denetim için sonradan ölçülmez.
+**Çözüm:** PageSpeed anahtarı kılavuzuna göre ücretsiz anahtar alın. Günlük hak dolduysa kalanı yarın yapacağınız yeni denetimde ölçülür. Denetim başlarken hız ölçümü kapalıysa o denetim için sonradan ölçülmez.
 
 ## URL Denetimi "günlük sınıra ulaşıldı"
 
@@ -133,7 +133,7 @@ Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuz
 
 **Sebep:** Mülk başına günde 2.000 soru hakkı var. Uygulama, asistanınız ve Search Console'da elle yaptığınız sorgular aynı havuzdan harcar.
 
-**Çözüm:** Yarın devam edin. Uygulama yalnızca eskiyen cevapları yeniden sorar, hakkınız boşa gitmez.
+**Çözüm:** Yarın devam edin. Uygulama yalnızca eskiyen yanıtları yeniden sorar, hakkınız boşa gitmez.
 
 ## Analytics'te localhost trafiği görünüyor
 
@@ -149,7 +149,7 @@ Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuz
 
 **Sebep:** Parola gönderilmiyor ya da yanlış.
 
-**Çözüm:** Parolayı yeniden kopyalayın. Windows'ta veri klasöründeki `mcp-token` dosyasındadır. Docker'da `docker compose exec -T seotracker cat /app/.wrangler/mcp-token` yazın. Değerin sonundaki satır sonu karakterini silin. Terminal kullanmak istemezseniz dosyayı Not Defteri ile açın, satırın tamamını seçip kopyalayın. Satır sonu bırakmayın. Claude Code'da `/mcp` yazıp **Reconnect** deyin.
+**Çözüm:** Parolayı yeniden kopyalayın. Windows'ta veri klasöründeki `mcp-token` dosyasındadır. Docker'da `docker compose exec -T seotracker cat /app/.wrangler/mcp-token` komutunu çalıştırın. Değerin sonundaki satır sonu karakterini silin. Terminal kullanmak istemezseniz dosyayı Not Defteri ile açın, satırın tamamını seçip kopyalayın. Satır sonu bırakmayın. Claude Code'da `/mcp` yazıp **Reconnect** deyin.
 
 ## Docker ilk açılışta çok uzun sürüyor ya da "unhealthy"
 
@@ -157,7 +157,7 @@ Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuz
 
 **Sebep:** İlk açılışta uygulama kutunun (konteynerin) içinde derlenir ve yaklaşık 2 GB bellek ister. Bellek yetmezse derleme düşer.
 
-**Çözüm:** `docker compose logs --tail 50` yazıp son satırlara bakın. Bellek hatası varsa Docker Desktop ayarlarından kutulara daha fazla bellek verin. Sonra `docker compose up -d --build` yazın.
+**Çözüm:** `docker compose logs --tail 50` komutunu çalıştırıp son satırlara bakın. Bellek hatası varsa Docker Desktop ayarlarından kutulara daha fazla bellek verin. Sonra `docker compose up -d --build` komutunu çalıştırın.
 
 ## Veriler ve günlükler nerede?
 
@@ -165,7 +165,7 @@ Windows'ta her şey `%LOCALAPPDATA%\seowatcher` klasöründedir: `data` (veritab
 
 Docker'da veri `seotracker_data` deposunda (`/app/.wrangler`) durur. Günlükleri `docker compose logs -f` komutuyla görürsünüz.
 
-Sorun bildirirken **Yardım** ekranındaki **Tanılama paketi indir** düğmesine basın. Dosyada sürüm, kurulum kontrolleri ve son 25 denetim var, hiçbir sır yok. Dosyayı GitHub'daki sorun kaydına ekleyin.
+Sorun bildirirken **Yardım** ekranındaki **Tanılama paketi indir** düğmesine basın. Dosyada sürüm, kurulum kontrolleri ve son 25 denetim var, hiçbir gizli değer yok. Dosyayı GitHub'daki sorun kaydına ekleyin.
 
 ## Başlatıcı uyarıları
 

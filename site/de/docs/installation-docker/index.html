@@ -6,7 +6,7 @@
     <title>Installation mit Docker | seowatcher-Anleitung</title>
     <meta
       name="description"
-      content="Installieren Sie die App mit Docker unter Mac, Linux und Windows. Ein einziger Befehl genügt, eine .env-Datei brauchen Sie nicht. Ihre Daten liegen im Datenspeicher von Docker."
+      content="App mit Docker unter Mac, Linux und Windows installieren: ein Befehl, keine .env-Datei. Die Daten liegen im Datenspeicher von Docker."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -49,6 +49,7 @@
       href="https://seowatcher.io/docs/kurulum-docker/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -78,7 +79,7 @@
     />
     <meta
       property="og:description"
-      content="Installieren Sie die App mit Docker unter Mac, Linux und Windows. Ein einziger Befehl genügt, eine .env-Datei brauchen Sie nicht. Ihre Daten liegen im Datenspeicher von Docker."
+      content="App mit Docker unter Mac, Linux und Windows installieren: ein Befehl, keine .env-Datei. Die Daten liegen im Datenspeicher von Docker."
     />
     <meta
       property="og:image"
@@ -108,7 +109,7 @@
     />
     <meta
       name="twitter:description"
-      content="Installieren Sie die App mit Docker unter Mac, Linux und Windows. Ein einziger Befehl genügt, eine .env-Datei brauchen Sie nicht. Ihre Daten liegen im Datenspeicher von Docker."
+      content="App mit Docker unter Mac, Linux und Windows installieren: ein Befehl, keine .env-Datei. Die Daten liegen im Datenspeicher von Docker."
     />
     <meta
       name="twitter:image"
@@ -145,7 +146,7 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/de/docs/installation-docker/#article",
             "headline": "Installation mit Docker",
-            "description": "Installieren Sie die App mit Docker unter Mac, Linux und Windows. Ein einziger Befehl genügt, eine .env-Datei brauchen Sie nicht. Ihre Daten liegen im Datenspeicher von Docker.",
+            "description": "App mit Docker unter Mac, Linux und Windows installieren: ein Befehl, keine .env-Datei. Die Daten liegen im Datenspeicher von Docker.",
             "url": "https://seowatcher.io/de/docs/installation-docker/",
             "inLanguage": "de",
             "dateModified": "2026-10-23",
@@ -184,7 +185,7 @@
       }
     </script>
     <script src="/assets/docs.js?v=2.4.1" defer></script>
-    <meta name="theme-color" content="#272c3b" />
+    <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
         font-family: "Geist";
@@ -774,6 +775,95 @@
       footer a:hover {
         color: var(--fg);
       }
+      /* The one ask on the page: quiet, one line, the accent only on the link. */
+      footer .star {
+        flex-basis: 100%;
+        margin: 0 0 4px;
+        text-wrap: pretty;
+      }
+      footer .star a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      footer .star a:hover {
+        color: var(--accent-link);
+        text-decoration-color: var(--accent-link);
+      }
+
+      /* Headings enter as they scroll into view. docs.js adds .hx (and .in
+         once seen) only when motion is allowed, so without script, under
+         reduced motion and with "stop motion" on, they are simply there.
+         h1 wipes in from the left, h2 rises while an amber stroke draws
+         along its rule, h3 rises a little. */
+      article .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease),
+          clip-path 760ms var(--ease),
+          filter 620ms var(--ease);
+      }
+      article h1.hx {
+        clip-path: inset(-10% 100% -10% 0);
+        filter: blur(6px);
+      }
+      article h2.hx,
+      article h3.hx {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      article h3.hx {
+        transform: translateY(6px);
+      }
+      article h2.hx {
+        position: relative;
+      }
+      article h2.hx::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 56px;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 700ms var(--ease) 160ms;
+      }
+      article .hx.in {
+        opacity: 1;
+        transform: none;
+      }
+      article h1.hx.in {
+        clip-path: inset(-10% 0 -10% 0);
+        filter: none;
+      }
+      article h2.hx.in::before {
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        article .hx,
+        article h2.hx::before {
+          opacity: 1;
+          transform: none;
+          clip-path: none;
+          filter: none;
+          transition: none;
+        }
+      }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
 
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
@@ -1218,7 +1308,11 @@
         <nav class="topnav" aria-label="Website">
           <a class="hide" href="/de/">Startseite</a>
           <a class="hide" href="/de/docs/">Anleitung</a>
-          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+          <a
+            class="hide"
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub</a
           >
           <details class="langs">
@@ -1245,7 +1339,7 @@
                       <circle cx="8.4" cy="7" r="2.7" fill="#e30a17" />
                       <polygon
                         fill="#fff"
-                        points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"
+                        points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"
                       /></svg></span
                   >Türkçe</a
                 >
@@ -1268,12 +1362,12 @@
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#fff"
-                        stroke-width="3.6"
+                        stroke-width="4.2"
                       />
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#c8102e"
-                        stroke-width="2"
+                        stroke-width="2.6"
                       /></svg></span
                   >English</a
                 >
@@ -1348,6 +1442,8 @@
           <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            target="_blank"
+            rel="noopener noreferrer"
             ><span class="long">Für Windows herunterladen</span
             ><span class="short">Download</span></a
           >
@@ -1404,7 +1500,7 @@
             <li><a href="/de/docs/projektinfo/">Projektinfo</a></li>
             <li><a href="/de/docs/einstellungen/">Einstellungen</a></li>
           </ul>
-          <p class="nav-group">Nachschlagen</p>
+          <p class="nav-group">Hilfe und Nachschlagen</p>
           <ul>
             <li><a href="/de/docs/hilfe/">Hilfe</a></li>
             <li><a href="/de/docs/audit-regeln/">Audit-Regeln</a></li>
@@ -1419,18 +1515,17 @@
       <article id="icerik" data-page="kurulum-docker">
         <h1>Installation mit Docker</h1>
         <p class="lede">
-          Installieren Sie die App mit Docker unter Mac, Linux und Windows. Ein
-          einziger Befehl genügt, eine .env-Datei brauchen Sie nicht. Ihre Daten
-          liegen im Datenspeicher von Docker.
+          App mit Docker unter Mac, Linux und Windows installieren: ein Befehl,
+          keine .env-Datei. Die Daten liegen im Datenspeicher von Docker.
         </p>
         <p>
           Am Ende läuft die App in Docker (einem Programm, das Anwendungen in
-          einer abgeschlossenen Box ausführt) und ist unter
+          abgeschlossenen Containern ausführt) und ist unter
           <code>http://localhost:3001</code> geöffnet. Unter Windows ist die
           Installation mit einer einzigen Datei deutlich einfacher. Dieser Weg
           ist für Mac, Linux und alle, die Docker ohnehin nutzen. Der erste
-          Start dauert einige Minuten, weil die App in der Box (dem Container)
-          gebaut wird. Spätere Starts dauern nur Sekunden.
+          Start dauert einige Minuten, weil die App im Container gebaut wird.
+          Spätere Starts dauern nur Sekunden.
         </p>
         <h2 id="voraussetzungen">Voraussetzungen</h2>
         <ul>
@@ -1438,11 +1533,11 @@
             Docker Desktop (Mac, Windows) oder Docker Engine mit Docker Compose
             (Linux). Für Docker Desktop unter Windows müssen WSL 2 (die
             Komponente, die Linux innerhalb von Windows ausführt) und die
-            Virtualisierung (virtualization) eingeschaltet sein.
+            Virtualisierung eingeschaltet sein.
           </li>
           <li>
-            Git. Ohne Git geht auch <strong>Code → Download ZIP</strong> auf der
-            GitHub-Seite.
+            Git. Statt Git genügt auch <strong>Code → Download ZIP</strong> auf
+            der GitHub-Seite.
           </li>
           <li>
             Etwa 2 GB freier Speicherplatz und 2 GB freier Arbeitsspeicher
@@ -1482,16 +1577,15 @@ cd seotracker</code></pre>
         </div>
         <ol>
           <li>
-            Warten Sie. Die Zeile „Building client + server“ im Protokoll ist
-            der erste Bau. Warten Sie, bis der Status in der Ausgabe von
+            Die Zeile „Building client + server“ im Protokoll zeigt den ersten
+            Bau. Warten Sie, bis der Status in der Ausgabe von
             <code>docker compose ps</code> <strong>healthy</strong> lautet, und
             öffnen Sie dann im Browser <code>http://localhost:3001</code>.
           </li>
         </ol>
         <p>
-          Der nächste Schritt ist die Anleitung zur Google-Verbindung. Bei
-          Docker sind dies die beiden Weiterleitungsadressen, die Sie Google
-          geben:
+          Weiter geht es mit der Anleitung zur Google-Verbindung. Bei Docker
+          geben Sie Google diese beiden Weiterleitungsadressen an:
         </p>
         <ul>
           <li><code>http://localhost:3001/api/gsc/oauth/callback</code></li>
@@ -1514,7 +1608,8 @@ docker compose up -d --build</code></pre>
           <li>Anhalten: <code>docker compose stop</code></li>
           <li>Neu starten: <code>docker compose up -d</code></li>
           <li>
-            Box entfernen, Daten behalten: <code>docker compose down</code>
+            Container entfernen, Daten behalten:
+            <code>docker compose down</code>
           </li>
           <li>
             Auch die Daten löschen: <code>docker compose down -v</code>. Dieser
@@ -1524,9 +1619,9 @@ docker compose up -d --build</code></pre>
         </ul>
         <h3 id="sicherung">Sicherung</h3>
         <p>
-          Ihre Daten liegen im Datenspeicher <code>seotracker_data</code>, in
-          der Box unter dem Pfad <code>/app/.wrangler</code>. Für eine Sicherung
-          geben Sie die drei Befehle nacheinander ein:
+          Ihre Daten liegen im Datenspeicher <code>seotracker_data</code>, im
+          Container unter dem Pfad <code>/app/.wrangler</code>. Für eine
+          Sicherung geben Sie die drei Befehle nacheinander ein:
         </p>
         <div class="code">
           <pre><code>docker compose stop
@@ -1587,8 +1682,9 @@ docker compose up -d</code></pre>
               <tr>
                 <td>GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET</td>
                 <td>
-                  Alternative zur Eingabe auf dem Bildschirm Ayarlar. Ein auf
-                  dem Bildschirm eingegebener Wert hat Vorrang
+                  Alternative zur Eingabe auf dem Bildschirm
+                  <strong>Ayarlar</strong>. Ein auf dem Bildschirm eingegebener
+                  Wert hat Vorrang
                 </td>
               </tr>
               <tr>
@@ -1621,17 +1717,18 @@ docker compose up -d</code></pre>
             auch im Browser öffnen.
           </li>
           <li>
-            Im Browser muss <code>http://localhost:3001</code> sich öffnen. Die
-            Statuskarte auf dem Bildschirm <strong>Yardım</strong> (Hilfe)
-            sollte „Her şey yolunda.“ (Alles in Ordnung.) anzeigen. Bevor Google
-            verbunden ist, verlangt die Zeile „Google girişi“ (Google-Anmeldung)
-            Aufmerksamkeit. Das ist normal.
+            Im Browser muss sich <code>http://localhost:3001</code> öffnen
+            lassen. Die Statuskarte auf dem Bildschirm
+            <strong>Yardım</strong> (Hilfe) sollte „Her şey yolunda.“ (Alles in
+            Ordnung.) anzeigen. Solange Google nicht verbunden ist, ist die
+            Zeile „Google girişi“ (Google-Anmeldung) als „braucht
+            Aufmerksamkeit“ markiert. Das ist normal.
           </li>
         </ul>
         <h2 id="haufige-fragen">Häufige Fragen</h2>
         <p>
           <strong>Warum dauert der erste Start so lange?</strong> Die App wird
-          in der Box gebaut. Bei späteren Starts entfällt der Bau.
+          im Container gebaut. Bei späteren Starts entfällt der Bau.
         </p>
         <p>
           <strong>Wo ist die Datei <code>.env.example</code>?</strong> Es gibt
@@ -1640,10 +1737,10 @@ docker compose up -d</code></pre>
           der Tabelle oben und in der Datei <code>docs/ENVIRONMENT.md</code>.
         </p>
         <p>
-          <strong>Kann ich die App ins Internet öffnen?</strong> Die App fragt
-          nicht nach einer Anmeldung. Öffnen Sie sie nicht, ohne eine eigene
-          Anmeldung davorzusetzen. Setzen Sie <code>ALLOWED_HOST</code>, warnt
-          die App Sie bei der Gesundheitsprüfung.
+          <strong>Kann ich die App im Internet erreichbar machen?</strong> Die
+          App verlangt keine Anmeldung. Machen Sie sie nur erreichbar, wenn Sie
+          selbst eine Anmeldung davorschalten. Setzen Sie
+          <code>ALLOWED_HOST</code>, warnt die App bei der Gesundheitsprüfung.
         </p>
         <p>
           <strong>Woher bekomme ich das Passwort meines Assistenten?</strong>
@@ -1661,8 +1758,9 @@ docker compose up -d</code></pre>
             <strong>Es erscheint „Bind for 127.0.0.1:3001 failed“.</strong> Die
             Portnummer ist belegt. Legen Sie im Projektordner eine
             <code>.env</code> mit der Zeile <code>PORT=3002</code> an und
-            erstellen Sie die Box neu. Unter Windows kann der Editor (Notepad)
-            die Datei als <code>.env.txt</code> speichern. In PowerShell ist
+            erstellen Sie den Container neu. Unter Windows kann der Editor
+            (Notepad) die Datei als <code>.env.txt</code> speichern. In
+            PowerShell ist
             <code>Set-Content -Encoding ascii .env 'PORT=3002'</code> sicher.
           </li>
           <li>
@@ -1678,7 +1776,7 @@ docker compose up -d</code></pre>
             >
             Ist <code>BETTER_AUTH_SECRET</code> kürzer als 32 Zeichen, bleibt
             Google ausgeschaltet. Haben Sie ihn von Hand angegeben, verlängern
-            Sie ihn. Haben Sie das nicht, ist vielleicht die Datei
+            Sie ihn. Haben Sie ihn nicht angegeben, ist vielleicht die Datei
             <code>instance-secret</code> im Datenspeicher beschädigt.
           </li>
           <li>
@@ -1698,7 +1796,10 @@ docker compose up -d</code></pre>
         </nav>
         <p class="meta">
           Zuletzt aktualisiert: 23 Oktober 2026. Fehler entdeckt?
-          <a href="https://github.com/ucsahinn/seotracker/issues"
+          <a
+            href="https://github.com/ucsahinn/seotracker/issues"
+            target="_blank"
+            rel="noopener noreferrer"
             >Auf GitHub melden</a
           >.
         </p>
@@ -1718,10 +1819,25 @@ docker compose up -d</code></pre>
     </main>
     <footer>
       <div class="wrap">
+        <p class="star">
+          Ein Stern hilft anderen, ein kostenloses Werkzeug zu finden.
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Auf GitHub mit einem Stern markieren</a
+          >
+        </p>
         <span>seowatcher, MIT-Lizenz.</span>
         <span
           ><a href="/de/">Startseite</a> &nbsp;
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          &nbsp;
           <a href="/de/docs/versionshinweise/">Versionshinweise</a></span
         >
       </div>

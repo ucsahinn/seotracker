@@ -6,7 +6,7 @@
     <title>seowatcher: a free SEO panel for Search Console and GA4</title>
     <meta
       name="description"
-      content="Search Console, Analytics 4 and a site audit in one app. Free and open source; installs on Windows, and your data stays on your computer."
+      content="Search Console, Analytics 4 and a site audit in one app. Free, open source. Installs on Windows, and your data stays on your computer."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link rel="canonical" href="https://seowatcher.io/en/" />
@@ -18,6 +18,7 @@
     <link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/" />
     <link rel="alternate" hreflang="x-default" href="https://seowatcher.io/" />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -58,7 +59,7 @@
     <meta property="og:image:height" content="630" />
     <meta
       property="og:image:alt"
-      content="Your own site's SEO data on your own computer, with seowatcher"
+      content="seowatcher dashboard: your site's SEO data on your computer"
     />
     <meta property="og:url" content="https://seowatcher.io/en/" />
     <meta property="og:locale" content="en_US" />
@@ -81,7 +82,7 @@
       content="https://seowatcher.io/assets/og-en.png"
     />
     <meta name="color-scheme" content="dark" />
-    <meta name="theme-color" content="#131110" />
+    <meta name="theme-color" content="#0c0b0a" />
     <script src="/assets/site.js?v=2.4.1" defer></script>
     <script type="application/ld+json">
       {
@@ -149,7 +150,7 @@
               "Google Search Console data: queries, pages, positions, index status",
               "Google Analytics 4 data: organic visits, landing pages, measurement health",
               "Site audit with 95 rules",
-              "Opportunities: sorts queries into four groups",
+              "Opportunities: sorts pages into four groups",
               "33 MCP tools for AI assistants"
             ],
             "screenshot": [
@@ -179,15 +180,15 @@
                 "name": "Is it really free?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Yes. It is an MIT-licensed open source project, and all of the code is on GitHub. The Google services it uses stay within their free usage limits."
+                  "text": "Yes. It is an MIT-licensed, open source project. All of the code is on GitHub. The Google services it uses stay within their free usage limits."
                 }
               },
               {
                 "@type": "Question",
-                "name": "Windows says it protected my PC. Is the installer safe?",
+                "name": "Why does Windows warn about an \"unrecognized app\"?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "The installer is not code-signed yet, which is why Windows warns you. On the SmartScreen screen click \"More info\", then \"Run anyway\". The file's fingerprint (SHA-256) is printed on every release page; compare it if you like."
+                  "text": "The installer does not have a digital signature yet, so Windows warns you. On the SmartScreen screen, click \"More info\", then \"Run anyway\". If you like, compare the file's fingerprint (SHA-256) with the value on the release page."
                 }
               },
               {
@@ -195,7 +196,7 @@
                 "name": "Where is my data kept?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "In the %LOCALAPPDATA%\\seowatcher folder. The database, your Google access key and the logs are there. Uninstalling the app leaves this folder alone; to make a backup, just copy it."
+                  "text": "In the %LOCALAPPDATA%\\seowatcher folder. The database, your Google access key and the logs are kept there. Uninstalling the app leaves this folder alone. To make a backup, just copy the folder."
                 }
               },
               {
@@ -203,7 +204,7 @@
                 "name": "Why do I have to create an access key at Google?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "seowatcher is not a cloud service; it runs on your computer and connects to Google directly. Google wants to know who owns the app that is connecting. You do this once, and the app shows the steps on screen."
+                  "text": "seowatcher is not a cloud service. It runs on your computer and connects to Google directly. Google wants to know who owns the app that is connecting. You do this once. The app shows the steps on screen."
                 }
               },
               {
@@ -211,15 +212,15 @@
                 "name": "Are the numbers the same as in Search Console?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "They come from the same source, but the totals may not match. Google delivers data about three days late and hides rarely searched queries. The app shows the page total and the site total separately; the two differing is not a bug."
+                  "text": "The numbers come from the same source, but the totals may not match. Google delivers data about three days late and hides rarely searched queries. The app shows the page total and the site total separately. A difference between the two is not a bug."
                 }
               },
               {
                 "@type": "Question",
-                "name": "Can I use it without exposing my site to the internet?",
+                "name": "Do I need to make the app reachable from the internet?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Yes, that is how it already works. The app opens only from your own computer and reads Search Console and Analytics data from Google. During an audit it crawls only the pages of the site you are auditing."
+                  "text": "No. The app opens only from your own computer. It reads Search Console and Analytics data from Google. During an audit it crawls only the pages of the site you are auditing."
                 }
               }
             ]
@@ -546,9 +547,59 @@
         opacity: 1;
         transform: none;
       }
+      /* Smaller headings (cards, steps, questions): site.js adds .hx, and .in
+         once seen. A short rise; on h3 an amber stroke draws in underneath
+         and fades once drawn, so the resting page looks as before. */
+      .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease);
+        transition-delay: calc(var(--hd, 0) * 1ms);
+      }
+      .hx:not(.in) {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      h3.hx {
+        position: relative;
+      }
+      h3.hx::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -6px;
+        width: 36px;
+        height: 2px;
+        border-radius: 2px;
+        background: var(--accent);
+        opacity: 0;
+        transform-origin: left;
+        pointer-events: none;
+      }
+      h3.hx.in::after {
+        animation: stroke 1200ms var(--ease) 160ms both;
+      }
+      @keyframes stroke {
+        0% {
+          opacity: 1;
+          transform: scaleX(0);
+        }
+        55% {
+          opacity: 1;
+          transform: scaleX(1);
+        }
+        100% {
+          opacity: 0;
+          transform: scaleX(1);
+        }
+      }
       @media (prefers-reduced-motion: reduce) {
         .reveal,
-        [data-words].split .w {
+        h2.reveal,
+        h2.reveal.in,
+        [data-words].split .w,
+        .hx,
+        .hx:not(.in) {
           opacity: 1;
           transform: none;
           filter: none;
@@ -556,6 +607,23 @@
           transition: none;
           animation: none;
         }
+        h3.hx::after {
+          display: none;
+        }
+      }
+      /* "Hareketi durdur": every heading is simply there. */
+      html[data-still] [data-words].split .w,
+      html[data-still] h2.reveal,
+      html[data-still] .hx {
+        opacity: 1;
+        transform: none;
+        filter: none;
+        clip-path: none;
+        transition: none;
+        animation: none;
+      }
+      html[data-still] h3.hx::after {
+        display: none;
       }
 
       /* Buttons: a lit primary, a glass secondary; the arrow sits in its own island. */
@@ -1420,6 +1488,17 @@
       .tile .big.free {
         color: var(--accent-2);
       }
+      /* The price says what "free" covers, then the honest limits follow. */
+      .tile .free-note {
+        color: var(--fg);
+        max-width: 34ch;
+        padding-bottom: 18px;
+        margin-bottom: 4px;
+        border-bottom: 1px solid var(--hairline);
+      }
+      .close .star {
+        font-size: 15px;
+      }
       .tile .spark {
         width: 100%;
         height: auto;
@@ -1511,6 +1590,13 @@
       }
       .t-wide {
         grid-column: span 7;
+      }
+      /* The free / limits column is tall; it spans the tools card and the
+         download card beside it so neither stretches into an empty box. */
+      @media (min-width: 961px) {
+        .t-mid.plain {
+          grid-row: span 2;
+        }
       }
       .t-mid {
         grid-column: span 5;
@@ -1966,7 +2052,12 @@
           <a href="#neler">What it does</a>
           <a href="#kurulum">Install</a>
           <a href="/en/docs/">Guide</a>
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a>
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
           <details class="langs">
             <summary aria-label="Language: English">
               <span class="flag"
@@ -1982,11 +2073,11 @@
                     stroke="#c8102e"
                     stroke-width="0.9"
                   />
-                  <path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="3.6" />
+                  <path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2" />
                   <path
                     d="M10 0V14M0 7H20"
                     stroke="#c8102e"
-                    stroke-width="2"
+                    stroke-width="2.6"
                   /></svg></span
               ><span class="code">EN</span>
             </summary>
@@ -2000,7 +2091,7 @@
                       <circle cx="8.4" cy="7" r="2.7" fill="#e30a17" />
                       <polygon
                         fill="#fff"
-                        points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"
+                        points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"
                       /></svg></span
                   >Türkçe</a
                 >
@@ -2023,12 +2114,12 @@
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#fff"
-                        stroke-width="3.6"
+                        stroke-width="4.2"
                       />
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#c8102e"
-                        stroke-width="2"
+                        stroke-width="2.6"
                       /></svg></span
                   >English</a
                 >
@@ -2100,6 +2191,8 @@
         <a
           class="btn primary small cta"
           href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.1/seowatcher-setup-2.4.1.exe"
+          target="_blank"
+          rel="noopener noreferrer"
           >Download for Windows</a
         >
         <button
@@ -2117,7 +2210,12 @@
         <a href="#neler">What it does</a>
         <a href="#kurulum">Install</a>
         <a href="/en/docs/">Guide</a>
-        <a href="https://github.com/ucsahinn/seotracker">GitHub</a>
+        <a
+          href="https://github.com/ucsahinn/seotracker"
+          target="_blank"
+          rel="noopener noreferrer"
+          >GitHub</a
+        >
         <nav class="langrow" aria-label="Language">
           <a href="/" lang="tr" hreflang="tr"
             ><span class="flag"
@@ -2127,7 +2225,7 @@
                 <circle cx="8.4" cy="7" r="2.7" fill="#e30a17" />
                 <polygon
                   fill="#fff"
-                  points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"
+                  points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"
                 /></svg></span
             >Türkçe</a
           ><a href="/en/" lang="en" hreflang="en" aria-current="page"
@@ -2144,11 +2242,11 @@
                   stroke="#c8102e"
                   stroke-width="0.9"
                 />
-                <path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="3.6" />
+                <path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2" />
                 <path
                   d="M10 0V14M0 7H20"
                   stroke="#c8102e"
-                  stroke-width="2"
+                  stroke-width="2.6"
                 /></svg></span
             >English</a
           ><a href="/de/" lang="de" hreflang="de"
@@ -2200,6 +2298,8 @@
         <a
           class="btn primary"
           href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.1/seowatcher-setup-2.4.1.exe"
+          target="_blank"
+          rel="noopener noreferrer"
           >Download for Windows</a
         >
       </nav>
@@ -2214,7 +2314,7 @@
             </h1>
             <p class="lede">
               The numbers Google keeps for your site and the errors on it, on
-              one screen. Free and open source; installs on Windows from a
+              one screen. Free and open source. Installs on Windows from a
               single file. No account, and your data never leaves your computer.
             </p>
             <div class="cta">
@@ -2222,6 +2322,8 @@
                 class="btn primary"
                 data-magnet
                 href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.1/seowatcher-setup-2.4.1.exe"
+                target="_blank"
+                rel="noopener noreferrer"
                 >Download for Windows
                 <span class="arrow" aria-hidden="true">↓</span></a
               >
@@ -2479,7 +2581,7 @@
             <svg
               viewBox="0 0 1120 340"
               role="img"
-              aria-label="Flow: Google Search Console, Analytics 4 and PageSpeed data comes into seowatcher on your computer; from there you read it, and your AI assistant can too if you want."
+              aria-label="How it flows: Google Search Console, Analytics 4 and PageSpeed data flows into seowatcher on your computer; you read it there, and so can your AI assistant if you connect one."
             >
               <g class="node">
                 <rect x="20" y="40" width="250" height="64" rx="14" />
@@ -2523,10 +2625,10 @@
             </svg>
           </div>
           <p class="flow-note reveal" style="--d: 200">
-            The app opens only from your own computer. It connects to just two
-            places outside: Google and the pages of the site you audit. Your
-            data goes nowhere else, and your Google access key is stored
-            encrypted on your computer.
+            The app opens only from your own computer. It connects to just three
+            places: Google, the pages of the site you audit, and GitHub to check
+            for updates. Your data goes nowhere else. Your Google access key is
+            stored encrypted on your computer.
           </p>
         </div>
       </section>
@@ -2544,7 +2646,7 @@
               do.
             </h2>
             <p class="lede">
-              These are the app's real screens; only the site and the numbers
+              These are the app's real screens. Only the site and the numbers
               are examples.
             </p>
           </div>
@@ -2556,7 +2658,7 @@
                 <p>
                   It sorts the pages Google shows into four groups: rarely
                   clicked, close to rising, already at the top, and buried deep.
-                  Where to start is written next to each page, so there is no
+                  What to do is written next to each page, so there is no
                   guessing.
                   <a class="textlink" href="/en/docs/opportunities/"
                     >Opportunities guide</a
@@ -2588,8 +2690,8 @@
                 <p>
                   It walks your site page by page and checks it against 95
                   rules: broken links, missing or overlong titles, slow pages,
-                  addresses Google cannot make sense of. Under every finding it
-                  says what to do, no technical help needed.
+                  pages Google has not indexed. Under every finding it says what
+                  to do, no technical help needed.
                   <a class="textlink" href="/en/docs/site-audit/"
                     >Site audit guide</a
                   >.
@@ -2615,7 +2717,8 @@
               <article class="walk-step" data-step="3">
                 <span class="n">03 Search performance</span>
                 <h3>
-                  Sixteen months of clicks, impressions, rate and position.
+                  Sixteen months of clicks, impressions, click rate and
+                  position.
                 </h3>
                 <p>
                   Look at it by query, page, country and device. The places
@@ -2636,7 +2739,7 @@
                   <img
                     class="frame"
                     src="/assets/walk-performans-dark-m.webp"
-                    alt="Search performance: clicks time series and query table"
+                    alt="Search performance: clicks over time and query table"
                     width="1000"
                     height="1250"
                     loading="lazy"
@@ -2653,7 +2756,7 @@
                   screen; copy it and paste it into your assistant. If you never
                   connect one, the app loses nothing.
                   <a class="textlink" href="/en/docs/agent-setup/"
-                    >Assistant setup guide</a
+                    >Agent setup guide</a
                   >.
                 </p>
                 <picture
@@ -2667,7 +2770,7 @@
                   <img
                     class="frame"
                     src="/assets/walk-ajan-dark-m.webp"
-                    alt="Assistant setup screen: connection address, password and the setup text to copy"
+                    alt="Agent setup screen: connection address, password and the setup text to copy"
                     width="1000"
                     height="1250"
                     loading="lazy"
@@ -2763,9 +2866,9 @@
               >
               <h3>Search history, from Search Console</h3>
               <p>
-                Clicks, impressions, rate and position, by query, page, country
-                and device. The app also builds its own archive, so over time
-                you can look further back.
+                Clicks, impressions, click rate and position, by query, page,
+                country and device. The app also builds its own archive, so over
+                time you can look further back.
               </p>
               <svg class="spark" viewBox="0 0 520 110" aria-hidden="true">
                 <defs>
@@ -2795,8 +2898,8 @@
               <span class="big"><b data-count="95">95</b></span>
               <h3>An audit of every page</h3>
               <p>
-                Broken links, missing or overly long titles, slow pages, URLs
-                Google can't read. Under every finding it says what to do.
+                Broken links, missing or overly long titles, slow pages, pages
+                Google has not indexed. Under every finding it says what to do.
               </p>
             </div>
             <div class="tile t-third reveal" data-spot style="--d: 160">
@@ -2817,7 +2920,7 @@
               <h3>Reports</h3>
               <p>
                 A report is a single file. Open it on a phone, print it, send it
-                by e-mail. Your assistant can prepare it if you like.
+                by email. Your assistant can prepare it if you like.
               </p>
             </div>
             <div class="tile t-wide reveal" data-spot style="--d: 340">
@@ -2865,7 +2968,11 @@
               </div>
             </div>
             <div class="tile t-mid plain reveal" style="--d: 400">
-              <span class="big free"><b>Free</b></span>
+              <p class="big free">Free</p>
+              <p class="free-note">
+                No subscription, no setup fee. No card details, no account. Open
+                source under the MIT license.
+              </p>
               <h3>What it doesn't do</h3>
               <ul>
                 <li>
@@ -2877,14 +2984,16 @@
                   It doesn't count the sites that link to you (backlinks).
                 </li>
                 <li>
-                  It doesn't track competitor rankings; it only reads your own
-                  sites.
+                  It doesn't track competitor rankings. It only reads your own
+                  site.
                 </li>
                 <li>
                   It does not run in the cloud; one user, one computer. (Coming
                   soon, free: opening it from a phone or tablet on your home
                   network.)
                 </li>
+                <li>No mobile app yet. (Coming soon.)</li>
+                <li>No browser extension yet. (Coming soon.)</li>
               </ul>
             </div>
             <div
@@ -2896,8 +3005,8 @@
               <span class="big"
                 ><b data-count="0" data-live="downloads">0</b></span
               >
-              <h3>Download</h3>
-              <p>Counted live from the GitHub release page.</p>
+              <h3>Downloads</h3>
+              <p>Read live from the GitHub release page.</p>
             </div>
           </div>
         </div>
@@ -2927,8 +3036,8 @@
                   <p>
                     This is the longest step, but you do it only once. You get
                     an access key from Google; the app shows every step on
-                    screen. Paste the key into
-                    <strong>Ayarlar</strong> (Settings) and you are done.
+                    screen. Paste the key into the
+                    <strong>Ayarlar</strong> (Settings) screen and you are done.
                     <a class="textlink" href="/en/docs/google-connection/"
                       >Step-by-step guide</a
                     >.
@@ -2957,15 +3066,17 @@
                 <dd>81 MB</dd>
                 <dt>Requirements</dt>
                 <dd>
-                  Windows 10 or 11, 64-bit. No Docker, Node or terminal. The
-                  app's interface is in Turkish; this site and the guide explain
-                  every screen in English.
+                  Windows 10 or 11, 64-bit. No Docker, Node or terminal needed.
+                  The app's interface is in Turkish; this site and the guide
+                  explain every screen in English.
                 </dd>
                 <dt>Verification</dt>
                 <dd>
                   <a
                     class="textlink"
                     href="https://github.com/ucsahinn/seotracker/releases/latest"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     >The file's fingerprint (SHA-256) is on the release page</a
                   >
                 </dd>
@@ -2974,6 +3085,8 @@
                 class="btn primary"
                 data-magnet
                 href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.1/seowatcher-setup-2.4.1.exe"
+                target="_blank"
+                rel="noopener noreferrer"
                 >Download for Windows
                 <span class="arrow" aria-hidden="true">↓</span></a
               >
@@ -3001,7 +3114,7 @@
             seowatcher is a free, MIT-licensed SEO app that shows Google Search
             Console, Google Analytics 4, its own site crawler and PageSpeed
             Insights in one panel. It installs on Windows 10 and 11 from a
-            single file and runs with Docker on Mac and Linux; your data stays
+            single file. On Mac and Linux it runs with Docker. Your data stays
             on your computer. Its GitHub repository is called seotracker.
           </p>
           <dl class="reveal" style="--d: 100">
@@ -3045,7 +3158,7 @@
             </div>
             <div class="row">
               <dt>Size</dt>
-              <dd>The Windows installer is 81 MB; installed, it is 290 MB</dd>
+              <dd>Windows installer 81 MB, 290 MB once installed</dd>
             </div>
             <div class="row">
               <dt>Source code</dt>
@@ -3053,6 +3166,8 @@
                 <a
                   class="textlink"
                   href="https://github.com/ucsahinn/seotracker"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   >github.com/ucsahinn/seotracker</a
                 >
               </dd>
@@ -3072,7 +3187,7 @@
               <dt>Guide</dt>
               <dd>
                 <a class="textlink" href="/en/docs/"
-                  >A guide for every screen and every step</a
+                  >Every screen and every step explained</a
                 >
               </dd>
             </div>
@@ -3088,7 +3203,7 @@
               <summary>Is it really free?</summary>
               <div class="qa-body">
                 <p>
-                  Yes. It is an MIT-licensed open source project, and all of the
+                  Yes. It is an MIT-licensed, open source project. All of the
                   code is on GitHub. The Google services it uses stay within
                   their free usage limits.
                 </p>
@@ -3096,14 +3211,14 @@
             </details>
             <details class="qa">
               <summary>
-                Windows says it protected my PC. Is the installer safe?
+                Why does Windows warn about an "unrecognized app"?
               </summary>
               <div class="qa-body">
                 <p>
-                  The installer is not code-signed yet, which is why Windows
-                  warns you. On the SmartScreen screen click "More info", then
-                  "Run anyway". The file's fingerprint (SHA-256) is printed on
-                  every release page; compare it if you like.
+                  The installer does not have a digital signature yet, so
+                  Windows warns you. On the SmartScreen screen, click "More
+                  info", then "Run anyway". If you like, compare the file's
+                  fingerprint (SHA-256) with the value on the release page.
                   <a class="textlink" href="/en/docs/troubleshooting/"
                     >Troubleshooting</a
                   >.
@@ -3115,9 +3230,9 @@
               <div class="qa-body">
                 <p>
                   In the <code>%LOCALAPPDATA%\seowatcher</code> folder. The
-                  database, your Google access key and the logs are there.
-                  Uninstalling the app leaves this folder alone; to make a
-                  backup, just copy it.
+                  database, your Google access key and the logs are kept there.
+                  Uninstalling the app leaves this folder alone. To make a
+                  backup, just copy the folder.
                 </p>
               </div>
             </details>
@@ -3127,10 +3242,10 @@
               </summary>
               <div class="qa-body">
                 <p>
-                  seowatcher is not a cloud service; it runs on your computer
+                  seowatcher is not a cloud service. It runs on your computer
                   and connects to Google directly. Google wants to know who owns
-                  the app that is connecting. You do this once, and the app
-                  shows the steps on screen.
+                  the app that is connecting. You do this once. The app shows
+                  the steps on screen.
                 </p>
               </div>
             </details>
@@ -3138,23 +3253,23 @@
               <summary>Are the numbers the same as in Search Console?</summary>
               <div class="qa-body">
                 <p>
-                  They come from the same source, but the totals may not match.
-                  Google delivers data about three days late and hides rarely
-                  searched queries. The app shows the page total and the site
-                  total separately; the two differing is not a bug.
+                  The numbers come from the same source, but the totals may not
+                  match. Google delivers data about three days late and hides
+                  rarely searched queries. The app shows the page total and the
+                  site total separately. A difference between the two is not a
+                  bug.
                 </p>
               </div>
             </details>
             <details class="qa">
               <summary>
-                Can I use it without exposing my site to the internet?
+                Do I need to make the app reachable from the internet?
               </summary>
               <div class="qa-body">
                 <p>
-                  Yes, that is how it already works. The app opens only from
-                  your own computer and reads Search Console and Analytics data
-                  from Google. During an audit it crawls only the pages of the
-                  site you are auditing.
+                  No. The app opens only from your own computer. It reads Search
+                  Console and Analytics data from Google. During an audit it
+                  crawls only the pages of the site you are auditing.
                 </p>
               </div>
             </details>
@@ -3166,22 +3281,34 @@
         <div class="halo" aria-hidden="true"></div>
         <div class="wrap">
           <h2 id="h-son" class="reveal">
-            Install it today, start with today's data.
+            Install it today, see your history today.
           </h2>
           <p class="reveal" style="--d: 100">
-            Search Console's sixteen months of history load into the app on
-            first launch. Connect today and you can look today.
+            Search Console's sixteen months of history load into the app once
+            you connect. You can look the same day.
           </p>
           <div class="cta reveal" style="--d: 200">
             <a
               class="btn primary"
               data-magnet
               href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.1/seowatcher-setup-2.4.1.exe"
+              target="_blank"
+              rel="noopener noreferrer"
               >Download for Windows
               <span class="arrow" aria-hidden="true">↓</span></a
             >
             <a class="btn" href="/en/docs/install-docker/">For Mac and Linux</a>
           </div>
+          <p class="star reveal" style="--d: 300">
+            A star helps other people find a free tool.
+            <a
+              class="textlink"
+              href="https://github.com/ucsahinn/seotracker"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Star it on GitHub</a
+            >
+          </p>
         </div>
       </section>
     </main>
@@ -3201,7 +3328,11 @@
             <p>
               Open source and free. All of the code is on GitHub; anyone can
               read and check what it does. Built on
-              <a class="textlink" href="https://github.com/every-app/open-seo"
+              <a
+                class="textlink"
+                href="https://github.com/every-app/open-seo"
+                target="_blank"
+                rel="noopener noreferrer"
                 >open-seo</a
               >. Logos belong to their owners.
             </p>
@@ -3209,14 +3340,20 @@
           <div class="col">
             <b>Product</b><a href="#ekranlar">Screens</a
             ><a href="#neler">What it does</a><a href="#kurulum">Install</a
-            ><a href="https://github.com/ucsahinn/seotracker/releases/latest"
+            ><a
+              href="https://github.com/ucsahinn/seotracker/releases/latest"
+              target="_blank"
+              rel="noopener noreferrer"
               >Releases</a
             >
           </div>
           <div class="col">
             <b>Help</b><a href="/en/docs/">Guide</a
             ><a href="/en/docs/troubleshooting/">Troubleshooting</a
-            ><a href="https://github.com/ucsahinn/seotracker/issues"
+            ><a
+              href="https://github.com/ucsahinn/seotracker/issues"
+              target="_blank"
+              rel="noopener noreferrer"
               >Report a problem</a
             ><a href="/en/docs/release-notes/">Release notes</a>
             <nav class="langrow" aria-label="Language">
@@ -3228,7 +3365,7 @@
                     <circle cx="8.4" cy="7" r="2.7" fill="#e30a17" />
                     <polygon
                       fill="#fff"
-                      points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"
+                      points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"
                     /></svg></span
                 >Türkçe</a
               ><a href="/en/" lang="en" hreflang="en" aria-current="page"
@@ -3248,12 +3385,12 @@
                     <path
                       d="M10 0V14M0 7H20"
                       stroke="#fff"
-                      stroke-width="3.6"
+                      stroke-width="4.2"
                     />
                     <path
                       d="M10 0V14M0 7H20"
                       stroke="#c8102e"
-                      stroke-width="2"
+                      stroke-width="2.6"
                     /></svg></span
                 >English</a
               ><a href="/de/" lang="de" hreflang="de"

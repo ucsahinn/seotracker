@@ -1,6 +1,6 @@
 ---
 title: Opportunités
-description: Il vous dit sur quelle page intervenir cette semaine. Il répartit les pages en quatre groupes, leur donne un score et écrit ce qu'il faut faire pour chacune.
+description: L'écran désigne la page à travailler cette semaine. Il classe les pages en quatre groupes, leur donne un score et dit quoi faire pour chacune.
 screen: Fırsatlar
 route: /p/<proje>/opportunities
 updated: 2026-10-22
@@ -22,7 +22,7 @@ L'application associe chacune de vos pages dans Search Console à son équivalen
 | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
 | **Az tıklanan** (Peu cliquées)           | Dans les 20 premières positions. Le taux de clic est inférieur à la moitié de celui de vos pages à la même position | Réécrivez le titre et la description. Le texte affiché dans la recherche n'attire pas             |
 | **Yükselmeye yakın** (Proches de monter) | Position entre 4 et 20                                                                                              | Développez le contenu, ajoutez des liens internes. Cela peut gagner une ou deux places            |
-| **İlk sıralarda** (Aux premières places) | Dans les 3 premières positions                                                                                      | Préservez. Gardez la page à jour et assurez-vous qu'elle ne se dégrade pas                        |
+| **İlk sıralarda** (Aux premières places) | Dans les 3 premières positions                                                                                      | Maintenez cette place. Gardez la page à jour et vérifiez qu'elle ne recule pas                    |
 | **Derinde kalan** (Enfouies)             | Après la 20e position                                                                                               | Demandez-vous si la page répond vraiment à cette recherche. La bonne page est peut-être une autre |
 
 Un lien interne est un lien que vous placez, sur votre site, d'une page vers une autre.
@@ -31,14 +31,14 @@ Un lien interne est un lien que vous placez, sur votre site, d'une page vers une
 
 **Carte « Fırsat nerede toplanıyor? » (Où se concentre l'opportunité ?).** Elle montre comment les impressions ou les clics se répartissent entre les groupes.
 
-**Tableau.** Les colonnes sont : **Puan** (Score), **Sayfa** (Page), **Sıra** (Position), **Gösterim** (Impressions), **Tıklama** (Clics), **Tıklama oranı** (Taux de clic), **Oturum** (Sessions). Une session est le nombre de visites sur votre site, et elle vient d'Analytics.
+**Tableau.** Les colonnes sont : **Puan** (Score), **Sayfa** (Page), **Sıra** (Position), **Gösterim** (Impressions), **Tıklama** (Clics), **Tıklama oranı** (Taux de clic), **Oturum** (Sessions). Une session est une visite de votre site ; ce chiffre vient d'Analytics.
 
-**Panneau de détail.** Il s'ouvre quand vous cliquez sur une ligne. La liste « Ne yapmalı? » (Que faire ?) s'y trouve. Vous voyez aussi les trois composantes du score : **Talep** (Demande), **İş değeri** (Valeur business), **Yükselme kolaylığı** (Facilité de progression). Chacune ressort élevée, moyenne ou faible. Les boutons du bas : **Arama performansında aç** (Ouvrir dans la performance de recherche), **Adresi kopyala** (Copier l'adresse), **Sayfayı aç** (Ouvrir la page).
+**Panneau de détail.** Il s'ouvre quand vous cliquez sur une ligne. La liste « Ne yapmalı? » (Que faire ?) s'y trouve. Vous voyez aussi les trois composantes du score : **Talep** (Demande), **İş değeri** (Valeur commerciale), **Yükselme kolaylığı** (Facilité de progression). Chacune ressort élevée, moyenne ou faible. Les boutons du bas : **Arama performansında aç** (Ouvrir dans la performance de recherche), **Adresi kopyala** (Copier l'adresse), **Sayfayı aç** (Ouvrir la page).
 
 ## Comment l'utiliser
 
 1. Commencez par **Son 28 gün** (28 derniers jours). La ligne tout en haut est la page à regarder en premier.
-2. Dans le groupe **Az tıklanan**, prenez les deux premières pages. Elles sont bien placées sur Google mais personne ne clique. Corrigez le titre et la description. C'est un travail d'une demi-heure.
+2. Dans le groupe **Az tıklanan**, prenez les deux premières pages. Elles sont bien placées sur Google, mais peu de gens cliquent. Corrigez le titre et la description. C'est un travail d'une demi-heure.
 3. Dans le groupe **Yükselmeye yakın**, regardez les pages au score élevé. Ajoutez une section, placez deux ou trois liens internes depuis le site.
 4. Le bouton **Analytics'te karşılığı yok** isole les pages que Google affiche mais qu'Analytics ne voit pas visitées. Le plus souvent, c'est une différence d'adresse (barre oblique finale, www). Parfois, la page n'est vraiment pas cliquée.
 5. Ne touchez pas plus de trois ou quatre pages par semaine.
@@ -47,9 +47,9 @@ Un lien interne est un lien que vous placez, sur votre site, d'une page vers une
 
 La période se termine avec le retard de trois jours de Search Console. On prend au plus 1 000 lignes de Search Console et au plus 1 000 lignes d'Analytics. Les deux listes sont associées par nom de domaine et chemin. La barre oblique à la fin de l'adresse n'est pas comptée. Si la limite de 1 000 lignes est atteinte, une note apparaît sous le tableau.
 
-Toute page ayant plus de zéro impression est candidate. Le groupe est choisi selon la position et le taux de clic attendu. Le taux attendu est le taux de clic typique de vos pages dans la même tranche de positions. Les tranches de positions sont : 1-3, 3-5, 5-10, 10-20 et 20-50. Une tranche exige au moins trois pages ayant 10 impressions chacune. Une page en position 20 ou au-delà, dont le taux est inférieur à la moitié du taux attendu, devient « Az tıklanan ».
+Toute page ayant plus de zéro impression est candidate. Le groupe est choisi selon la position et le taux de clic attendu. Le taux attendu est le taux de clic typique de vos pages dans la même tranche de positions. Les tranches de positions sont : 1-3, 3-5, 5-10, 10-20 et 20-50. Une tranche exige au moins trois pages ayant 10 impressions chacune. Une page classée dans les 20 premières positions, dont le taux est inférieur à la moitié du taux attendu, devient « Az tıklanan ».
 
-Le score se compose ainsi : 50 pour cent de demande, 30 pour cent de valeur business, 20 pour cent de facilité de progression. La demande repose sur les impressions. Mieux la position est bonne, plus la progression est considérée comme facile. La valeur business est le taux d'événements clés d'Analytics. Un événement clé est une action que vous jugez importante. Si aucune page n'en a, on utilise le taux d'engagement. Une page sans équivalent dans Analytics reçoit un score moyen pour la valeur business. Le score compare uniquement les pages de votre propre site entre elles.
+Le score se compose ainsi : 50 pour cent de demande, 30 pour cent de valeur commerciale, 20 pour cent de facilité de progression. La demande repose sur les impressions. Mieux la position est bonne, plus la progression est considérée comme facile. La valeur commerciale est le taux d'événements clés d'Analytics. Un événement clé est une action que vous jugez importante. Si aucune page n'en a, on utilise le taux d'engagement. Une page sans équivalent dans Analytics reçoit un score moyen pour la valeur commerciale. Le score compare uniquement les pages de votre propre site entre elles.
 
 ## Questions fréquentes
 

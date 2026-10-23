@@ -6,7 +6,7 @@ route: /p/<proje>/reports
 updated: 2026-10-22
 ---
 
-Vous trouvez ici comment obtenir un rapport, à qui l'envoyer et comment le répéter avec un modèle.
+Cet écran explique comment obtenir un rapport, l'envoyer et le refaire à chaque période avec un modèle.
 
 Chaque rapport préparé pour ce projet se trouve dans une seule liste, dans l'écran **Raporlar** (Rapports). Un rapport arrive de deux façons. Le bouton **Raporu indir** (Télécharger le rapport) de l'écran Audit du site produit le rapport propre à l'application. Votre assistant IA peut aussi faire des recherches et enregistrer ses trouvailles sous forme de rapport. Chaque rapport est un seul fichier HTML. Il ne contient ni script (du code qui s'exécute dans la page), ni ressource externe, ni police intégrée. C'est pourquoi il s'ouvre sur un téléphone, s'imprime en PDF et s'envoie par e-mail. L'application n'a pas d'éditeur pour écrire un rapport à la main. Le rapport est écrit soit par l'application, soit par l'assistant.
 
@@ -23,7 +23,7 @@ Chaque rapport préparé pour ce projet se trouve dans une seule liste, dans l'�
 **Modèles de rapport.** Vous y accédez par le menu ou par l'écran Rapports. Un modèle est une recette enregistrée qui explique à votre assistant comment rédiger le rapport. Vous dites qui lira le rapport, quelles sections il contiendra et dans quelle langue il sera écrit. Il y a trois champs :
 
 - **Ad** (Nom) fait 80 caractères au plus et doit être unique dans le projet.
-- **Açıklama** (Description) fait 200 caractères au plus. Écrivez en une phrase quand utiliser le modèle.
+- **Açıklama** (Description) fait 200 caractères au plus. Dites en une phrase quand utiliser le modèle.
 - **Yönerge** (Consigne) fait 3 000 caractères au plus.
 
 Un projet peut avoir 10 modèles au plus. Si vous supprimez un modèle, les rapports produits avec lui ne sont pas supprimés.
@@ -32,7 +32,7 @@ Un projet peut avoir 10 modèles au plus. Si vous supprimez un modèle, les rapp
 
 1. Pour un premier rapport, cliquez sur **Raporu indir** dans l'écran Audit du site. Le rapport est téléchargé sur votre ordinateur et arrive dans cette liste. Il commence par la section « Bu hafta yapılacak N şey » (N choses à faire cette semaine).
 2. Si vous travaillez avec un assistant, cliquez sur **Yeni rapor iste**. Collez le texte copié dans Claude Code, Codex ou Cursor. L'assistant vous demande quel rapport vous voulez, lit les données et enregistre le rapport ici.
-3. Si vous voulez le même rapport chaque mois, écrivez un modèle. Dans la consigne, indiquez le lecteur (« la personne qui gère le site, ne connaît pas le SEO »), les sections, l'ordre et le ton. Quand vous demandez le modèle par son nom, l'assistant l'applique.
+3. Si vous voulez le même rapport chaque mois, écrivez un modèle. Dans la consigne, indiquez le lecteur (« une personne qui gère le site et ne connaît pas le SEO »), les sections, l'ordre et le ton. Quand vous demandez le modèle par son nom, l'assistant l'applique.
 4. Pour partager, cliquez sur **HTML olarak indir** et envoyez le fichier. Le destinataire ouvre le fichier dans un navigateur. Copier le lien ne sert que sur le même ordinateur.
 5. Ne supprimez pas les anciens rapports. À la conversation suivante, l'assistant lit le résumé du rapport précédent et compare.
 

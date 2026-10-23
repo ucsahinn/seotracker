@@ -15,6 +15,7 @@
     <link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/docs/" />
     <link rel="alternate" hreflang="x-default" href="https://seowatcher.io/docs/" />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -59,7 +60,7 @@
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en","de","fr","it","pt"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"CollectionPage","@id":"https://seowatcher.io/en/docs/#page","name":"Guide","description":"seowatcher guides: installation, what every screen shows, the Google connection, audit rules, agent setup and troubleshooting.","url":"https://seowatcher.io/en/docs/","inLanguage":"en","dateModified":"2026-10-23","about":{"@id":"https://seowatcher.io/#app"},"isPartOf":{"@id":"https://seowatcher.io/#website"}},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/en/docs/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/en/"},{"@type":"ListItem","position":2,"name":"Guide","item":"https://seowatcher.io/en/docs/"}]}]}</script>
     <script src="/assets/docs.js?v=2.4.1" defer></script>
-    <meta name="theme-color" content="#272c3b" />
+    <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
         font-family: "Geist";
@@ -649,6 +650,95 @@
       footer a:hover {
         color: var(--fg);
       }
+      /* The one ask on the page: quiet, one line, the accent only on the link. */
+      footer .star {
+        flex-basis: 100%;
+        margin: 0 0 4px;
+        text-wrap: pretty;
+      }
+      footer .star a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      footer .star a:hover {
+        color: var(--accent-link);
+        text-decoration-color: var(--accent-link);
+      }
+
+      /* Headings enter as they scroll into view. docs.js adds .hx (and .in
+         once seen) only when motion is allowed, so without script, under
+         reduced motion and with "stop motion" on, they are simply there.
+         h1 wipes in from the left, h2 rises while an amber stroke draws
+         along its rule, h3 rises a little. */
+      article .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease),
+          clip-path 760ms var(--ease),
+          filter 620ms var(--ease);
+      }
+      article h1.hx {
+        clip-path: inset(-10% 100% -10% 0);
+        filter: blur(6px);
+      }
+      article h2.hx,
+      article h3.hx {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      article h3.hx {
+        transform: translateY(6px);
+      }
+      article h2.hx {
+        position: relative;
+      }
+      article h2.hx::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 56px;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 700ms var(--ease) 160ms;
+      }
+      article .hx.in {
+        opacity: 1;
+        transform: none;
+      }
+      article h1.hx.in {
+        clip-path: inset(-10% 0 -10% 0);
+        filter: none;
+      }
+      article h2.hx.in::before {
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        article .hx,
+        article h2.hx::before {
+          opacity: 1;
+          transform: none;
+          clip-path: none;
+          filter: none;
+          transition: none;
+        }
+      }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
 
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
@@ -1093,13 +1183,19 @@
         <nav class="topnav" aria-label="Site">
           <a class="hide" href="/en/">Home</a>
           <a class="hide" href="/en/docs/">Guide</a>
-          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+          <a
+            class="hide"
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub</a
           >
-          <details class="langs"><summary aria-label="Language: English"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="3.6"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2"/></svg></span><span class="code">EN</span></summary><ul><li><a href="/docs/" lang="tr" hreflang="tr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"/></svg></span>Türkçe</a></li><li><a href="/en/docs/" lang="en" hreflang="en" aria-current="page"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="3.6"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2"/></svg></span>English</a></li><li><a href="/de/docs/" lang="de" hreflang="de"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg></span>Deutsch</a></li><li><a href="/fr/docs/" lang="fr" hreflang="fr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg></span>Français</a></li><li><a href="/it/docs/" lang="it" hreflang="it"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg></span>Italiano</a></li><li><a href="/pt/docs/" lang="pt" hreflang="pt"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#ff0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.6" fill="#ffcc00"/><circle cx="8" cy="7" r="1.5" fill="#ff0000"/></svg></span>Português</a></li></ul></details>
+          <details class="langs"><summary aria-label="Language: English"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2.6"/></svg></span><span class="code">EN</span></summary><ul><li><a href="/docs/" lang="tr" hreflang="tr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"/></svg></span>Türkçe</a></li><li><a href="/en/docs/" lang="en" hreflang="en" aria-current="page"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2.6"/></svg></span>English</a></li><li><a href="/de/docs/" lang="de" hreflang="de"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg></span>Deutsch</a></li><li><a href="/fr/docs/" lang="fr" hreflang="fr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg></span>Français</a></li><li><a href="/it/docs/" lang="it" hreflang="it"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg></span>Italiano</a></li><li><a href="/pt/docs/" lang="pt" hreflang="pt"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#ff0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.6" fill="#ffcc00"/><circle cx="8" cy="7" r="1.5" fill="#ff0000"/></svg></span>Português</a></li></ul></details>
           <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            target="_blank"
+            rel="noopener noreferrer"
             ><span class="long">Download for Windows</span
             ><span class="short">Download</span></a
           >
@@ -1116,14 +1212,17 @@
       <aside class="side" aria-label="Guide">
         <details class="side-dd" open>
           <summary>Guide</summary>
-          <p class="nav-group">Getting started</p><ul><li><a href="/en/docs/install-windows/">Install on Windows</a></li><li><a href="/en/docs/install-docker/">Installing with Docker</a></li><li><a href="/en/docs/google-connection/">Connecting to Google</a></li><li><a href="/en/docs/pagespeed-key/">PageSpeed key</a></li></ul><p class="nav-group">Screens</p><ul><li><a href="/en/docs/projects/">Projects</a></li><li><a href="/en/docs/dashboard/">Dashboard</a></li><li><a href="/en/docs/search-performance/">Search performance</a></li><li><a href="/en/docs/rank-tracking/">Ranking tracking</a></li><li><a href="/en/docs/opportunities/">Opportunities</a></li><li><a href="/en/docs/saved-keywords/">Saved keywords</a></li><li><a href="/en/docs/analytics/">Analytics</a></li><li><a href="/en/docs/site-audit/">Site audit</a></li><li><a href="/en/docs/index-status/">Index status</a></li><li><a href="/en/docs/reports/">Reports and templates</a></li><li><a href="/en/docs/project-context/">Project info</a></li><li><a href="/en/docs/settings/">Settings</a></li></ul><p class="nav-group">Reference</p><ul><li><a href="/en/docs/help/">Help</a></li><li><a href="/en/docs/audit-rules/">Audit rules</a></li><li><a href="/en/docs/agent-setup/">Agent setup</a></li><li><a href="/en/docs/troubleshooting/">Troubleshooting</a></li><li><a href="/en/docs/release-notes/">Release notes</a></li></ul>
+          <p class="nav-group">Getting started</p><ul><li><a href="/en/docs/install-windows/">Install on Windows</a></li><li><a href="/en/docs/install-docker/">Installing with Docker</a></li><li><a href="/en/docs/google-connection/">Connecting to Google</a></li><li><a href="/en/docs/pagespeed-key/">PageSpeed key</a></li></ul><p class="nav-group">Screens</p><ul><li><a href="/en/docs/projects/">Projects</a></li><li><a href="/en/docs/dashboard/">Dashboard</a></li><li><a href="/en/docs/search-performance/">Search performance</a></li><li><a href="/en/docs/rank-tracking/">Ranking tracking</a></li><li><a href="/en/docs/opportunities/">Opportunities</a></li><li><a href="/en/docs/saved-keywords/">Saved keywords</a></li><li><a href="/en/docs/analytics/">Analytics</a></li><li><a href="/en/docs/site-audit/">Site audit</a></li><li><a href="/en/docs/index-status/">Index status</a></li><li><a href="/en/docs/reports/">Reports and templates</a></li><li><a href="/en/docs/project-context/">Project info</a></li><li><a href="/en/docs/settings/">Settings</a></li></ul><p class="nav-group">Help and reference</p><ul><li><a href="/en/docs/help/">Help</a></li><li><a href="/en/docs/audit-rules/">Audit rules</a></li><li><a href="/en/docs/agent-setup/">Agent setup</a></li><li><a href="/en/docs/troubleshooting/">Troubleshooting</a></li><li><a href="/en/docs/release-notes/">Release notes</a></li></ul>
         </details>
       </aside>
       <article id="icerik" data-page="index">
-        <h1>Guide</h1><p class="lede">A short, plain walkthrough of every step and every screen, from installation to the first report. The app is called seotracker on GitHub and seowatcher on this site; they are the same thing.</p><h2 id="getting-started">Getting started</h2><ul class="index"><li><a href="/en/docs/install-windows/">Install on Windows</a><span>Install on Windows with a single file. First launch, update, uninstall, backup and changing the port number. No Docker or terminal needed.</span></li><li><a href="/en/docs/install-docker/">Installing with Docker</a><span>Install with Docker on Mac, Linux and Windows. One command is enough, and no .env file is needed. Your data stays in Docker's data volume.</span></li><li><a href="/en/docs/google-connection/">Connecting to Google</a><span>To read Search Console and Analytics 4 data, get a one-time access key from Google, paste it into the app and choose your site. Step by step.</span></li><li><a href="/en/docs/pagespeed-key/">PageSpeed key</a><span>Get a free Google PageSpeed key to measure page speed and enter it in the app. Without a key, measurement stays limited to 50 pages.</span></li></ul><h2 id="screens">Screens</h2><ul class="index"><li><a href="/en/docs/projects/">Projects</a><span>Creating a new project, choosing the site and country, renaming, managing Google connections, and archiving and restoring a project.</span></li><li><a href="/en/docs/dashboard/">Dashboard</a><span>The first screen you see when you open a project. The search numbers for the last 28 days, the latest audit summary and your to-do items in one place.</span></li><li><a href="/en/docs/search-performance/">Search performance</a><span>See which searches you appear in on Google and how many people click. By query, page, country and device, up to 16 months back.</span></li><li><a href="/en/docs/rank-tracking/">Ranking tracking</a><span>See the average Google position of your searches day by day. The data is stored on this computer, so you can look further back than Google's 16-month limit.</span></li><li><a href="/en/docs/opportunities/">Opportunities</a><span>Tells you which of your pages to touch this week. It splits pages into four groups, scores them and writes the job to do for each.</span></li><li><a href="/en/docs/saved-keywords/">Saved keywords</a><span>Tag the searches you have saved here, follow their average position over the last 90 days, and export to CSV or Sheets.</span></li><li><a href="/en/docs/analytics/">Analytics</a><span>See what visitors from search do next. Google Analytics 4 reports, key events and whether your measurement is working properly.</span></li><li><a href="/en/docs/site-audit/">Site audit</a><span>The app walks through your site page by page, checks it against 95 rules and puts the problems in order of importance. Each problem comes with what to do about it.</span></li><li><a href="/en/docs/index-status/">Index status</a><span>Google's answer for each of your pages: is it in search, if not why, and when it last visited. You can ask at most 2,000 queries a day.</span></li><li><a href="/en/docs/reports/">Reports and templates</a><span>The reports you download from an audit or have your assistant write are a single HTML file. It opens on a phone, can be printed and can be shared.</span></li><li><a href="/en/docs/project-context/">Project info</a><span>The place where you write what is not written anywhere else about your site: a summary of the business, the goal, competitors, key pages. Your assistant reads it before starting work.</span></li><li><a href="/en/docs/settings/">Settings</a><span>Theme, Google access key, PageSpeed key, usage limits, version and update check. The one settings screen for the whole installation.</span></li></ul><h2 id="reference">Reference</h2><ul class="index"><li><a href="/en/docs/help/">Help</a><span>The setup status card, quick actions, common problems and the diagnostics package you send when you report a problem.</span></li><li><a href="/en/docs/audit-rules/">Audit rules</a><span>The list of 95 rules the site audit checks. For each rule you find what it means and how to fix it.</span></li><li><a href="/en/docs/agent-setup/">Agent setup</a><span>Connect Claude Code, Codex or Cursor to the app. The address, the password, the 33 tools and 6 ready-made task templates, and which ones use up Google quota.</span></li><li><a href="/en/docs/troubleshooting/">Troubleshooting</a><span>The most common problems: symptom, cause and fix. Port in use, the Windows warning, Google errors, quota, a stuck audit, empty charts, assistant 401.</span></li><li><a href="/en/docs/release-notes/">Release notes</a><span>What changed in seowatcher 2.4.1. One-file install on Windows, an app that updates itself, simpler screens and a site in six languages.</span></li></ul> 
+        <h1>Guide</h1><p class="lede">A short, plain walkthrough of every step and every screen, from installation to the first report. The app is called seowatcher here and seotracker on GitHub; they are the same thing.</p><h2 id="getting-started">Getting started</h2><ul class="index"><li><a href="/en/docs/install-windows/">Install on Windows</a><span>Install on Windows with a single file. First launch, update, uninstall, backup and changing the port number. No Docker or terminal needed.</span></li><li><a href="/en/docs/install-docker/">Installing with Docker</a><span>Install with Docker on Mac, Linux and Windows. One command is enough, and no .env file is needed. Your data stays in Docker's data volume.</span></li><li><a href="/en/docs/google-connection/">Connecting to Google</a><span>To read Search Console and Analytics 4 data, get a one-time access key from Google, paste it into the app and choose your site. Step by step.</span></li><li><a href="/en/docs/pagespeed-key/">PageSpeed key</a><span>Get a free Google PageSpeed key to measure page speed and enter it in the app. Without a key, measurement stays limited to 50 pages.</span></li></ul><h2 id="screens">Screens</h2><ul class="index"><li><a href="/en/docs/projects/">Projects</a><span>Creating a new project, choosing the site and country, renaming, managing Google connections, and archiving and restoring a project.</span></li><li><a href="/en/docs/dashboard/">Dashboard</a><span>The first screen you see when you open a project. The search numbers for the last 28 days, the latest audit summary and your to-do items in one place.</span></li><li><a href="/en/docs/search-performance/">Search performance</a><span>See which searches you appear in on Google and how many people click. By query, page, country and device, up to 16 months back.</span></li><li><a href="/en/docs/rank-tracking/">Ranking tracking</a><span>See the average Google position of your searches day by day. The data is stored on this computer, so you can look further back than Google's 16-month limit.</span></li><li><a href="/en/docs/opportunities/">Opportunities</a><span>Tells you which of your pages to touch this week. It splits pages into four groups, scores them and writes the job to do for each.</span></li><li><a href="/en/docs/saved-keywords/">Saved keywords</a><span>Tag the searches you have saved here, follow their average position over the last 90 days, and export to CSV or Sheets.</span></li><li><a href="/en/docs/analytics/">Analytics</a><span>See what visitors from search do next. Google Analytics 4 reports, key events and whether your measurement is working properly.</span></li><li><a href="/en/docs/site-audit/">Site audit</a><span>The app walks through your site page by page, checks it against 95 rules and puts the problems in order of importance. Each problem comes with what to do about it.</span></li><li><a href="/en/docs/index-status/">Index status</a><span>Google's answer for each of your pages: is it in search, if not why, and when it last visited. You can ask at most 2,000 queries a day.</span></li><li><a href="/en/docs/reports/">Reports and templates</a><span>The reports you download from an audit or have your assistant write are a single HTML file. It opens on a phone, can be printed and can be shared.</span></li><li><a href="/en/docs/project-context/">Project info</a><span>The place where you write what is not written anywhere else about your site: a summary of the business, the goal, competitors, key pages. Your assistant reads it before starting work.</span></li><li><a href="/en/docs/settings/">Settings</a><span>Theme, Google access key, PageSpeed key, usage limits, version and update check. The one settings screen for the whole installation.</span></li></ul><h2 id="help-and-reference">Help and reference</h2><ul class="index"><li><a href="/en/docs/help/">Help</a><span>The setup status card, quick actions, common problems and the diagnostics package you send when you report a problem.</span></li><li><a href="/en/docs/audit-rules/">Audit rules</a><span>The list of 95 rules the site audit checks. For each rule you find what it means and how to fix it.</span></li><li><a href="/en/docs/agent-setup/">Agent setup</a><span>Connect Claude Code, Codex or Cursor to the app. The address, the password, the 33 tools and 6 ready-made task templates, and which ones use up Google quota.</span></li><li><a href="/en/docs/troubleshooting/">Troubleshooting</a><span>The most common problems: symptom, cause and fix. Port in use, the Windows warning, Google errors, quota, a stuck audit, empty charts, assistant 401.</span></li><li><a href="/en/docs/release-notes/">Release notes</a><span>What changed in seowatcher 2.4.1. One-file install on Windows, an app that updates itself, simpler screens and a site in six languages.</span></li></ul> 
         <p class="meta">
           Last updated: October 23, 2026. Spotted a mistake?
-          <a href="https://github.com/ucsahinn/seotracker/issues"
+          <a
+            href="https://github.com/ucsahinn/seotracker/issues"
+            target="_blank"
+            rel="noopener noreferrer"
             >Report it on GitHub</a
           >.
         </p>
@@ -1132,10 +1231,25 @@
     </main>
     <footer>
       <div class="wrap">
+        <p class="star">
+          A star helps other people find a free tool.
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Star it on GitHub</a
+          >
+        </p>
         <span>seowatcher, MIT license.</span>
         <span
           ><a href="/en/">Home</a> &nbsp;
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          &nbsp;
           <a href="/en/docs/release-notes/">Release notes</a></span
         >
       </div>

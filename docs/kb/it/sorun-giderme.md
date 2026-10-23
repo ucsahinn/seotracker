@@ -1,6 +1,6 @@
 ---
 title: Risoluzione dei problemi
-description: Descrive i problemi più comuni con sintomo, causa e soluzione. Porta occupata, avviso di Windows, errori di Google, quota, controllo bloccato, grafici vuoti e assistente 401 sono qui.
+description: I problemi più comuni, con sintomo, causa e soluzione: porta occupata, avviso di Windows, errori di Google, quota, controllo bloccato, assistente 401.
 kind: sorun-giderme
 updated: 2026-10-22
 ---
@@ -45,9 +45,9 @@ Se qualcosa non funziona, guardare prima nell'app la scheda "Kurulumunuzun durum
 
 **Sintomo:** L'app non si apre. Nel registro ci sono "Workers runtime failed to start" e "0xc0000005", ma il pacchetto Visual C++ è installato.
 
-**Causa:** Il motore dell'app (workerd) si blocca su un file di sistema di questo computer. All'avvio l'app prova il motore da solo. Se dice "Tek başına da başlayamıyor" (Non riesce a partire nemmeno da solo), il problema è nel computer. Se dice "Tek başına çalışıyor" (Da solo funziona), il problema è nella cartella dei dati o nella configurazione.
+**Causa:** Il motore dell'app (workerd) si blocca su un file di sistema di questo computer. All'avvio l'app prova il motore separatamente. Se dice "Tek başına da başlayamıyor" (Non riesce a partire nemmeno da solo), il problema è nel computer. Se dice "Tek başına çalışıyor" (Da solo funziona), il problema è nella cartella dei dati o nella configurazione.
 
-**Soluzione:** Per prima cosa scegliere **Kurulumu onar** (Ripara l'installazione). Se non si risolve, fare clic con il tasto destro sull'icona e scegliere **Sorunu bildir (GitHub)** (Segnala un problema (GitHub)). Le informazioni diagnostiche (versione di Windows, processore, nome del modulo difettoso, dump di arresto anomalo) vengono aggiunte da sole alla segnalazione: basta inviarla. I dump di arresto anomalo sono nella cartella `%LOCALAPPDATA%\seowatcher\logs\dumps`. Volendo, aggiungere anche quelli alla segnalazione.
+**Soluzione:** Per prima cosa scegliere **Kurulumu onar** (Ripara l'installazione). Se non si risolve, fare clic con il tasto destro sull'icona e scegliere **Sorunu bildir (GitHub)** (Segnala un problema su GitHub). Le informazioni diagnostiche (versione di Windows, processore, nome del modulo che ha dato errore, file di dump degli arresti anomali) vengono aggiunte da sole alla segnalazione: basta inviarla. I file di dump sono nella cartella `%LOCALAPPDATA%\seowatcher\logs\dumps`. Volendo, aggiungere anche quelli alla segnalazione.
 
 ## Windows dice "ha protetto il PC"
 
@@ -111,7 +111,7 @@ Se qualcosa non funziona, guardare prima nell'app la scheda "Kurulumunuzun durum
 
 **Causa:** L'app può essere stata riavviata oppure l'operazione può essersi interrotta.
 
-**Soluzione:** Attendere. L'app controlla i controlli che risultano "sürüyor" (in corso) da più di 15 minuti. Se non c'è segno di vita, li chiude come "Başarısız" (Fallito) e ne scrive il motivo. Poi scegliere **Aynı ayarlarla yeniden başlat** (Riavvia con le stesse impostazioni). Non avviare due controlli con la misurazione della velocità nello stesso momento: si rallentano a vicenda.
+**Soluzione:** Attendere. L'app verifica i controlli che risultano "sürüyor" (in corso) da più di 15 minuti. Se non c'è segno di vita, li chiude come "Başarısız" (Fallito) e ne scrive il motivo. Poi scegliere **Aynı ayarlarla yeniden başlat** (Riavvia con le stesse impostazioni). Non avviare due controlli con la misurazione della velocità nello stesso momento: si rallentano a vicenda.
 
 ## Il controllo dice "Engellendik"
 
@@ -127,7 +127,7 @@ Se qualcosa non funziona, guardare prima nell'app la scheda "Kurulumunuzun durum
 
 **Causa:** Manca la chiave PageSpeed (si misurano al massimo 50 pagine). Oppure il limite giornaliero di Google è finito.
 
-**Soluzione:** Ottenere una chiave gratuita seguendo la guida alla chiave PageSpeed. Se il limite giornaliero è finito, si completa domani con un nuovo controllo. Se all'avvio del controllo la misurazione della velocità era disattivata, quel controllo non viene misurato dopo.
+**Soluzione:** Ottenere una chiave gratuita seguendo la guida alla chiave PageSpeed. Se il limite giornaliero è finito, si completa domani con un nuovo controllo. Se all'avvio del controllo la misurazione della velocità era disattivata, quel controllo non può più essere misurato in seguito.
 
 ## Il controllo URL dice "limite giornaliero raggiunto"
 
@@ -141,9 +141,9 @@ Se qualcosa non funziona, guardare prima nell'app la scheda "Kurulumunuzun durum
 
 **Sintomo:** Nella tabella delle pagine di ingresso, nella colonna Alan adı (Dominio) c'è scritto localhost o 127.0.0.1.
 
-**Causa:** Anche la copia di prova del sito carica la stessa etichetta di Analytics.
+**Causa:** Anche la copia di prova del sito carica lo stesso tag di Analytics.
 
-**Soluzione:** Impostare l'etichetta in modo che si carichi solo sul dominio reale. Nella maggior parte degli strumenti c'è un'opzione di "controllo del dominio". L'app non filtra da sola queste righe. Fino ad allora, leggere guardando la colonna Alan adı.
+**Soluzione:** Impostare il tag in modo che si carichi solo sul dominio reale. Nella maggior parte degli strumenti c'è un'opzione di "controllo del dominio". L'app non filtra da sola queste righe. Nel frattempo, controllare la colonna Alan adı.
 
 ## L'assistente non riesce a collegarsi (401)
 
@@ -153,11 +153,11 @@ Se qualcosa non funziona, guardare prima nell'app la scheda "Kurulumunuzun durum
 
 **Soluzione:** Copiare di nuovo la password. In Windows è nel file `mcp-token` nella cartella dei dati. Con Docker scrivere `docker compose exec -T seotracker cat /app/.wrangler/mcp-token`. Eliminare il carattere di fine riga alla fine del valore. Per non usare il terminale, aprire il file con il Blocco note, selezionare tutta la riga e copiarla. Non lasciare il fine riga. In Claude Code scrivere `/mcp` e scegliere **Reconnect** (Ricollega).
 
-## Docker impiega moltissimo al primo avvio oppure è "unhealthy"
+## Docker è molto lento al primo avvio oppure risulta "unhealthy"
 
 **Sintomo:** `docker compose ps` non dice healthy nemmeno dopo cinque minuti.
 
-**Causa:** Al primo avvio l'app viene compilata dentro la scatola (il container) e richiede circa 2 GB di memoria. Se la memoria non basta, la compilazione cade.
+**Causa:** Al primo avvio l'app viene compilata dentro il container e richiede circa 2 GB di memoria. Se la memoria non basta, la compilazione cade.
 
 **Soluzione:** Scrivere `docker compose logs --tail 50` e guardare le ultime righe. Se c'è un errore di memoria, dare più memoria ai container dalle impostazioni di Docker Desktop. Poi scrivere `docker compose up -d --build`.
 

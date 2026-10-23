@@ -27,17 +27,17 @@ Os filtros que você escolhe são gravados na barra de endereços. Você pode co
 - **Sayfalar** (Páginas): uma tabela por página.
 - **Sayfa çakışmaları** (Sobreposição de páginas): casos em que mais de uma das suas páginas competem na mesma busca.
 
-**Filtros rápidos.** **İlk 10'da** (Entre as 10 primeiras), **Hiç tıklanmayan** (Nunca clicadas), **Tıklama oranı düşük** (Taxa de cliques baixa), **Tıklama alanlar** (Com cliques), **Sıra 5-10** (Posição 5-10), **Sıra 11-20** (Posição 11-20). Taxa de cliques baixa significa isto: na primeira página, pelo menos 100 impressões, taxa abaixo de 2%.
+**Filtros rápidos.** **İlk 10'da** (Entre as 10 primeiras), **Hiç tıklanmayan** (Nunca clicadas), **Tıklama oranı düşük** (Taxa de cliques baixa), **Tıklama alanlar** (Com cliques), **Sıra 5-10** (Posição 5-10), **Sıra 11-20** (Posição 11-20). Taxa de cliques baixa significa uma busca na primeira página, com pelo menos 100 impressões e taxa abaixo de 2%.
 
 **Menu da linha.** Os três pontos à direita de cada linha: **Sayfayı yeni sekmede aç** (Abrir a página em nova aba), **Adresi kopyala** (Copiar o endereço), **Kelimeyi kopyala** (Copiar a palavra), **Kelime olarak kaydet** (Salvar como palavra). O que você salva vai para a tela Kayıtlı kelimeler (Palavras salvas).
 
-**Exportação.** **E-Tablolar'a aktar** (Exportar para o Planilhas) e **CSV indir** (Baixar CSV). Leva a tabela visível, com os filtros. A aba de sobreposição não tem exportação.
+**Exportação.** **E-Tablolar'a aktar** (Exportar para o Planilhas) e **CSV indir** (Baixar CSV). Exporta a tabela visível, com os filtros aplicados. A aba de sobreposição não tem exportação.
 
 ## Como usar
 
 1. Comece com **Son 28 gün**. Se houver uma queda grande, escolha **Son 3 ay**. No gráfico, veja em que dia a queda começou.
-2. Abra a aba **Sıra 5-20**. O Google já mostra você, mas ninguém clica. Abra a página das três consultas mais exibidas. Corrija o título e o primeiro parágrafo para essa busca.
-3. Na aba **Sorgular**, clique no botão **Tıklama oranı düşük**. Sua posição é boa, mas ninguém clica. O problema provavelmente está no título e na descrição.
+2. Abra a aba **Sıra 5-20**. O Google já mostra você, mas poucas pessoas clicam. Abra a página das três consultas mais exibidas. Corrija o título e o primeiro parágrafo para essa busca.
+3. Na aba **Sorgular**, clique no botão **Tıklama oranı düşük**. Sua posição é boa, mas poucas pessoas clicam. O problema provavelmente está no título e na descrição.
 4. Para ver em quais buscas uma página aparece, escolha **Arama performansında ara** (Buscar em Desempenho de busca) na aba **Sayfalar**.
 5. Marque as consultas que você quer acompanhar com **Kelime olarak kaydet**.
 

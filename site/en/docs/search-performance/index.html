@@ -15,6 +15,7 @@
     <link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/docs/desempenho-de-busca/" />
     <link rel="alternate" hreflang="x-default" href="https://seowatcher.io/docs/arama-performansi/" />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -59,7 +60,7 @@
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en","de","fr","it","pt"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/en/docs/search-performance/#article","headline":"Search performance","description":"See which searches you appear in on Google and how many people click. By query, page, country and device, up to 16 months back.","url":"https://seowatcher.io/en/docs/search-performance/","inLanguage":"en","dateModified":"2026-10-23","articleSection":"Screens","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/en/docs/search-performance/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/en/docs/search-performance/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/en/"},{"@type":"ListItem","position":2,"name":"Guide","item":"https://seowatcher.io/en/docs/"},{"@type":"ListItem","position":3,"name":"Search performance","item":"https://seowatcher.io/en/docs/search-performance/"}]}]}</script>
     <script src="/assets/docs.js?v=2.4.1" defer></script>
-    <meta name="theme-color" content="#272c3b" />
+    <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
         font-family: "Geist";
@@ -649,6 +650,95 @@
       footer a:hover {
         color: var(--fg);
       }
+      /* The one ask on the page: quiet, one line, the accent only on the link. */
+      footer .star {
+        flex-basis: 100%;
+        margin: 0 0 4px;
+        text-wrap: pretty;
+      }
+      footer .star a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      footer .star a:hover {
+        color: var(--accent-link);
+        text-decoration-color: var(--accent-link);
+      }
+
+      /* Headings enter as they scroll into view. docs.js adds .hx (and .in
+         once seen) only when motion is allowed, so without script, under
+         reduced motion and with "stop motion" on, they are simply there.
+         h1 wipes in from the left, h2 rises while an amber stroke draws
+         along its rule, h3 rises a little. */
+      article .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease),
+          clip-path 760ms var(--ease),
+          filter 620ms var(--ease);
+      }
+      article h1.hx {
+        clip-path: inset(-10% 100% -10% 0);
+        filter: blur(6px);
+      }
+      article h2.hx,
+      article h3.hx {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      article h3.hx {
+        transform: translateY(6px);
+      }
+      article h2.hx {
+        position: relative;
+      }
+      article h2.hx::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 56px;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 700ms var(--ease) 160ms;
+      }
+      article .hx.in {
+        opacity: 1;
+        transform: none;
+      }
+      article h1.hx.in {
+        clip-path: inset(-10% 0 -10% 0);
+        filter: none;
+      }
+      article h2.hx.in::before {
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        article .hx,
+        article h2.hx::before {
+          opacity: 1;
+          transform: none;
+          clip-path: none;
+          filter: none;
+          transition: none;
+        }
+      }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
 
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
@@ -1093,13 +1183,19 @@
         <nav class="topnav" aria-label="Site">
           <a class="hide" href="/en/">Home</a>
           <a class="hide" href="/en/docs/">Guide</a>
-          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+          <a
+            class="hide"
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub</a
           >
-          <details class="langs"><summary aria-label="Language: English"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="3.6"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2"/></svg></span><span class="code">EN</span></summary><ul><li><a href="/docs/arama-performansi/" lang="tr" hreflang="tr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"/></svg></span>Türkçe</a></li><li><a href="/en/docs/search-performance/" lang="en" hreflang="en" aria-current="page"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="3.6"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2"/></svg></span>English</a></li><li><a href="/de/docs/suchleistung/" lang="de" hreflang="de"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg></span>Deutsch</a></li><li><a href="/fr/docs/performance-de-recherche/" lang="fr" hreflang="fr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg></span>Français</a></li><li><a href="/it/docs/prestazioni-di-ricerca/" lang="it" hreflang="it"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg></span>Italiano</a></li><li><a href="/pt/docs/desempenho-de-busca/" lang="pt" hreflang="pt"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#ff0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.6" fill="#ffcc00"/><circle cx="8" cy="7" r="1.5" fill="#ff0000"/></svg></span>Português</a></li></ul></details>
+          <details class="langs"><summary aria-label="Language: English"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2.6"/></svg></span><span class="code">EN</span></summary><ul><li><a href="/docs/arama-performansi/" lang="tr" hreflang="tr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"/></svg></span>Türkçe</a></li><li><a href="/en/docs/search-performance/" lang="en" hreflang="en" aria-current="page"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2.6"/></svg></span>English</a></li><li><a href="/de/docs/suchleistung/" lang="de" hreflang="de"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg></span>Deutsch</a></li><li><a href="/fr/docs/performance-de-recherche/" lang="fr" hreflang="fr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg></span>Français</a></li><li><a href="/it/docs/prestazioni-di-ricerca/" lang="it" hreflang="it"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg></span>Italiano</a></li><li><a href="/pt/docs/desempenho-de-busca/" lang="pt" hreflang="pt"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#ff0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.6" fill="#ffcc00"/><circle cx="8" cy="7" r="1.5" fill="#ff0000"/></svg></span>Português</a></li></ul></details>
           <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            target="_blank"
+            rel="noopener noreferrer"
             ><span class="long">Download for Windows</span
             ><span class="short">Download</span></a
           >
@@ -1116,40 +1212,43 @@
       <aside class="side" aria-label="Guide">
         <details class="side-dd" open>
           <summary>Guide</summary>
-          <p class="nav-group">Getting started</p><ul><li><a href="/en/docs/install-windows/">Install on Windows</a></li><li><a href="/en/docs/install-docker/">Installing with Docker</a></li><li><a href="/en/docs/google-connection/">Connecting to Google</a></li><li><a href="/en/docs/pagespeed-key/">PageSpeed key</a></li></ul><p class="nav-group">Screens</p><ul><li><a href="/en/docs/projects/">Projects</a></li><li><a href="/en/docs/dashboard/">Dashboard</a></li><li class="current" aria-current="page"><a href="/en/docs/search-performance/">Search performance</a></li><li><a href="/en/docs/rank-tracking/">Ranking tracking</a></li><li><a href="/en/docs/opportunities/">Opportunities</a></li><li><a href="/en/docs/saved-keywords/">Saved keywords</a></li><li><a href="/en/docs/analytics/">Analytics</a></li><li><a href="/en/docs/site-audit/">Site audit</a></li><li><a href="/en/docs/index-status/">Index status</a></li><li><a href="/en/docs/reports/">Reports and templates</a></li><li><a href="/en/docs/project-context/">Project info</a></li><li><a href="/en/docs/settings/">Settings</a></li></ul><p class="nav-group">Reference</p><ul><li><a href="/en/docs/help/">Help</a></li><li><a href="/en/docs/audit-rules/">Audit rules</a></li><li><a href="/en/docs/agent-setup/">Agent setup</a></li><li><a href="/en/docs/troubleshooting/">Troubleshooting</a></li><li><a href="/en/docs/release-notes/">Release notes</a></li></ul>
+          <p class="nav-group">Getting started</p><ul><li><a href="/en/docs/install-windows/">Install on Windows</a></li><li><a href="/en/docs/install-docker/">Installing with Docker</a></li><li><a href="/en/docs/google-connection/">Connecting to Google</a></li><li><a href="/en/docs/pagespeed-key/">PageSpeed key</a></li></ul><p class="nav-group">Screens</p><ul><li><a href="/en/docs/projects/">Projects</a></li><li><a href="/en/docs/dashboard/">Dashboard</a></li><li class="current" aria-current="page"><a href="/en/docs/search-performance/">Search performance</a></li><li><a href="/en/docs/rank-tracking/">Ranking tracking</a></li><li><a href="/en/docs/opportunities/">Opportunities</a></li><li><a href="/en/docs/saved-keywords/">Saved keywords</a></li><li><a href="/en/docs/analytics/">Analytics</a></li><li><a href="/en/docs/site-audit/">Site audit</a></li><li><a href="/en/docs/index-status/">Index status</a></li><li><a href="/en/docs/reports/">Reports and templates</a></li><li><a href="/en/docs/project-context/">Project info</a></li><li><a href="/en/docs/settings/">Settings</a></li></ul><p class="nav-group">Help and reference</p><ul><li><a href="/en/docs/help/">Help</a></li><li><a href="/en/docs/audit-rules/">Audit rules</a></li><li><a href="/en/docs/agent-setup/">Agent setup</a></li><li><a href="/en/docs/troubleshooting/">Troubleshooting</a></li><li><a href="/en/docs/release-notes/">Release notes</a></li></ul>
         </details>
       </aside>
       <article id="icerik" data-page="arama-performansi">
-        <h1>Search performance</h1><p class="lede">See which searches you appear in on Google and how many people click. By query, page, country and device, up to 16 months back.</p><p>On this screen you see which searches you appear in on Google and how many people click. The data comes straight from Google Search Console. The app does not estimate any number.</p>
-<p>The filters you choose are written to the address bar. You can share the view as a link or bookmark it.</p>
+        <h1>Search performance</h1><p class="lede">See which searches you appear in on Google and how many people click. By query, page, country and device, up to 16 months back.</p><p>This screen shows which searches your site appears in on Google and how many people click. The data comes straight from Google Search Console; the app estimates nothing.</p>
+<p>Your filters are kept in the page address, so you can share the view as a link or bookmark it.</p>
 <h2 id="what-is-on-the-screen">What is on the screen</h2>
-<p><strong>Filters.</strong> <strong>Dönem</strong> (Period): Son 7 gün, Son 28 gün (default), Son 3 ay (last 7 days, last 28 days, last 3 months). <strong>Arama türü</strong> (Search type): Web, Görsel (Image), Video, Haber (News). <strong>Cihaz</strong> (Device): Tüm cihazlar (All devices), Mobil (Mobile), Bilgisayar (Computer), Tablet. The <strong>Ülke</strong> (Country) list has the countries Google reported in that period. The <strong>Mülkü değiştir</strong> (Change property) link goes to the project settings.</p>
-<p><strong>Four total cards.</strong> <strong>Tıklama</strong> (Clicks), <strong>Gösterim</strong> (Impressions), <strong>Tıklama oranı</strong> (Click rate) (what percent of impressions were clicked) and <strong>Ortalama sıra</strong> (Average position). In average position, a small number is good, and 1 is the top position. Each card shows the change compared with the previous period.</p>
-<p><strong>Daily change chart.</strong> The totals spread over days. You switch between the four measures with the buttons above it.</p>
-<p><strong>Cihazlar, Ülkeler, Arama görünümü</strong> (Devices, Countries, Search appearance). Three small cards. In countries, the first six are shown. Search appearance lists the rich result types. A rich result is a result that appears in search with extra information such as a product or a video. The first five are shown, and the rest are collected under &quot;Diğer görünümler&quot; (Other appearances).</p>
+<p><strong>Filters.</strong> <strong>Dönem</strong> (Period): Son 7 gün, Son 28 gün (default), Son 3 ay (last 7 days, last 28 days, last 3 months). <strong>Arama türü</strong> (Search type): Web, Görsel (Image), Video, Haber (News). <strong>Cihaz</strong> (Device): Tüm cihazlar (All devices), Mobil (Mobile), Bilgisayar (Computer), Tablet. The <strong>Ülke</strong> (Country) list contains the countries Google reported in that period. The <strong>Mülkü değiştir</strong> (Change property) link opens the project settings.</p>
+<p><strong>Four total cards.</strong> <strong>Tıklama</strong> (Clicks), <strong>Gösterim</strong> (Impressions), <strong>Tıklama oranı</strong> (Click rate; the percentage of impressions that were clicked) and <strong>Ortalama sıra</strong> (Average position). For average position, a lower number is better, and 1 is the top position. Each card shows the change from the previous period.</p>
+<p><strong>Daily change chart.</strong> The totals broken down by day. The buttons above it switch between the four measures.</p>
+<p><strong>Cihazlar, Ülkeler, Arama görünümü</strong> (Devices, Countries, Search appearance). Three small cards. Countries shows the top six. Search appearance lists rich result types; a rich result is a search result with extra information, such as a product or a video. It shows the top five and groups the rest under &quot;Diğer görünümler&quot; (Other appearances).</p>
 <p><strong>Four tabs.</strong></p>
-<ul><li><strong>Sıra 5-20 (N)</strong> (Position 5-20): the most shown queries that appear on Google between position 5 and 20.</li><li><strong>Sorgular</strong> (Queries): a table by search.</li><li><strong>Sayfalar</strong> (Pages): a table by page.</li><li><strong>Sayfa çakışmaları</strong> (Page overlaps): cases where more than one of your pages compete in the same search.</li></ul>
-<p><strong>Quick filters.</strong> <strong>İlk 10'da</strong> (In the top 10), <strong>Hiç tıklanmayan</strong> (Never clicked), <strong>Tıklama oranı düşük</strong> (Low click rate), <strong>Tıklama alanlar</strong> (With clicks), <strong>Sıra 5-10</strong> (Position 5-10), <strong>Sıra 11-20</strong> (Position 11-20). Low click rate means this: on the first page, at least 100 impressions, rate under 2%.</p>
-<p><strong>Row menu.</strong> The three dots at the right of each row: <strong>Sayfayı yeni sekmede aç</strong> (Open page in new tab), <strong>Adresi kopyala</strong> (Copy address), <strong>Kelimeyi kopyala</strong> (Copy word), <strong>Kelime olarak kaydet</strong> (Save as word). What you save goes to the Kayıtlı kelimeler (Saved words) screen.</p>
-<p><strong>Export.</strong> <strong>E-Tablolar'a aktar</strong> (Export to Sheets) and <strong>CSV indir</strong> (Download CSV). It takes the visible table, with the filters. The overlaps tab has no export.</p>
+<ul><li><strong>Sıra 5-20 (N)</strong> (Position 5-20): queries that appear on Google between position 5 and 20, most shown first.</li><li><strong>Sorgular</strong> (Queries): a table by search.</li><li><strong>Sayfalar</strong> (Pages): a table by page.</li><li><strong>Sayfa çakışmaları</strong> (Page overlaps): searches in which more than one of your pages compete.</li></ul>
+<p><strong>Quick filters.</strong> <strong>İlk 10'da</strong> (In the top 10), <strong>Hiç tıklanmayan</strong> (Never clicked), <strong>Tıklama oranı düşük</strong> (Low click rate), <strong>Tıklama alanlar</strong> (With clicks), <strong>Sıra 5-10</strong> (Position 5-10), <strong>Sıra 11-20</strong> (Position 11-20). Low click rate means a query on the first page of results with at least 100 impressions and a click rate under 2%.</p>
+<p><strong>Row menu.</strong> The three dots at the right of each row: <strong>Sayfayı yeni sekmede aç</strong> (Open page in new tab), <strong>Adresi kopyala</strong> (Copy address), <strong>Kelimeyi kopyala</strong> (Copy keyword), <strong>Kelime olarak kaydet</strong> (Save as keyword). Saved keywords go to the <strong>Kayıtlı kelimeler</strong> (Saved keywords) screen.</p>
+<p><strong>Export.</strong> <strong>E-Tablolar'a aktar</strong> (Export to Sheets) and <strong>CSV indir</strong> (Download CSV). Both export the visible table with your filters applied. The overlaps tab has no export.</p>
 <h2 id="how-to-use-it">How to use it</h2>
-<ol><li>Start with <strong>Son 28 gün</strong>. If there is a big drop, choose <strong>Son 3 ay</strong>. In the chart, see which day the drop started.</li><li>Open the <strong>Sıra 5-20</strong> tab. Google already shows you, but nobody clicks. Open the page for the first three most shown queries. Fix the title and the first paragraph for that search.</li><li>In the <strong>Sorgular</strong> tab, press the <strong>Tıklama oranı düşük</strong> button. Your position is good, but nobody clicks. The problem is most likely in the title and description.</li><li>To see which searches a page appears in, say <strong>Arama performansında ara</strong> (Search in Search performance) in the <strong>Sayfalar</strong> tab.</li><li>Mark the queries you want to follow with <strong>Kelime olarak kaydet</strong>.</li></ol>
+<ol><li>Start with <strong>Son 28 gün</strong>. If there is a big drop, switch to <strong>Son 3 ay</strong> and check the chart for the day the drop started.</li><li>Open the <strong>Sıra 5-20</strong> tab. These are queries where Google already shows you but few people click. Open the page for each of the three most shown queries and improve its title and first paragraph for that search.</li><li>In the <strong>Sorgular</strong> tab, press the <strong>Tıklama oranı düşük</strong> button. Your position is good but few people click, so the cause is most likely the title and description.</li><li>To see which searches a page appears in, use <strong>Arama performansında ara</strong> (Search in Search performance) in the <strong>Sayfalar</strong> tab.</li><li>Save the queries you want to follow with <strong>Kelime olarak kaydet</strong>.</li></ol>
 <h2 id="how-the-numbers-are-calculated">How the numbers are calculated</h2>
-<p>Google gives data three days late. So the range ends three days before today, not on today. The previous period has the same length and comes right before this range. The change in clicks and impressions is shown as a percentage, and the change in click rate is shown in points.</p>
-<p>The total cards are the real site totals. The tables count every page that appears in the same search separately. If you add up the page table, you get a number larger than the card. This is not an error.</p>
-<p>Google gives at most 1,000 rows at a time. If there is a note under the table saying &quot;bu liste tam değil&quot; (this list is not complete), the list was cut. The Position 5-20 list has at most 100 rows.</p>
-<p>The overlap analysis looks at 28 days. It examines only searches with at least 100 impressions. For a page to take part, it needs at least 10 impressions and a 20% share. The page Google shows the most is counted as the &quot;preferred&quot; one.</p>
+<p>Google delivers data three days late, so the range ends three days before today. The previous period has the same length and ends where this range begins. Changes in clicks and impressions are shown as a percentage, and the change in click rate in percentage points.</p>
+<p>The total cards show the real site totals. The tables count each page that appears for the same search separately, so adding up the page table gives a number larger than the card. This is not an error.</p>
+<p>Google returns at most 1,000 rows at a time. If a note under the table says &quot;bu liste tam değil&quot; (this list is not complete), the list was cut off. The Position 5-20 list has at most 100 rows.</p>
+<p>The overlap analysis looks at 28 days. It examines only searches with at least 100 impressions. A page takes part only if it has at least 10 impressions and a 20% share. The page Google shows most is counted as the &quot;preferred&quot; one.</p>
 <h2 id="frequently-asked-questions">Frequently asked questions</h2>
-<p><strong>Why are the last three days empty?</strong> Google has not given those days yet. Look again in a few days.</p>
-<p><strong>The table total does not match the card.</strong> This is normal. The card is the site total.</p>
-<p><strong>My position is different when I search on Google.</strong> The position here is the average for the period. It does not reflect a single search.</p>
-<p><strong>The query I searched for is not in the list.</strong> Google hides queries that are searched very rarely. On small sites there may be no query rows at all.</p>
-<p><strong>If there is an overlap, should I merge the pages?</strong> Most of the time, no. First decide which page you want to answer. Then point the internal links to that page.</p>
+<p><strong>Why are the last three days empty?</strong> Google has not delivered those days yet. Check again in a few days.</p>
+<p><strong>The table total does not match the card.</strong> This is expected. The card shows the site total.</p>
+<p><strong>My position is different when I search on Google.</strong> The position here is an average for the period, not the result of a single search.</p>
+<p><strong>The query I searched for is not in the list.</strong> Google hides queries that are searched very rarely, and small sites may have no query rows at all.</p>
+<p><strong>If there is an overlap, should I merge the pages?</strong> Usually not. First decide which page should answer the search, then point your internal links to it.</p>
 <h2 id="limits">Limits</h2>
-<p>The Discover and Google News types are not there. Search volume and competitor positions are not there either. The data does not go further back than 16 months. For older data, look at the archive on the Sıralama takibi (Ranking tracking) screen.</p> <nav class="pager" aria-label="Previous and next page"><a class="pager-prev" rel="prev" href="/en/docs/dashboard/"><span>Previous</span><strong>Dashboard</strong></a><a class="pager-next" rel="next" href="/en/docs/rank-tracking/"><span>Next</span><strong>Ranking tracking</strong></a></nav>
+<p>This screen has no Discover or Google News data, no search volume and no competitor positions. The data goes back at most 16 months. For older data, see the archive on the Sıralama takibi (Ranking tracking) screen.</p> <nav class="pager" aria-label="Previous and next page"><a class="pager-prev" rel="prev" href="/en/docs/dashboard/"><span>Previous</span><strong>Dashboard</strong></a><a class="pager-next" rel="next" href="/en/docs/rank-tracking/"><span>Next</span><strong>Ranking tracking</strong></a></nav>
         <p class="meta">
           Last updated: October 23, 2026. Spotted a mistake?
-          <a href="https://github.com/ucsahinn/seotracker/issues"
+          <a
+            href="https://github.com/ucsahinn/seotracker/issues"
+            target="_blank"
+            rel="noopener noreferrer"
             >Report it on GitHub</a
           >.
         </p>
@@ -1158,10 +1257,25 @@
     </main>
     <footer>
       <div class="wrap">
+        <p class="star">
+          A star helps other people find a free tool.
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Star it on GitHub</a
+          >
+        </p>
         <span>seowatcher, MIT license.</span>
         <span
           ><a href="/en/">Home</a> &nbsp;
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          &nbsp;
           <a href="/en/docs/release-notes/">Release notes</a></span
         >
       </div>

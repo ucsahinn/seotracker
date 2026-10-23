@@ -15,6 +15,7 @@
     <link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/docs/oportunidades/" />
     <link rel="alternate" hreflang="x-default" href="https://seowatcher.io/docs/firsatlar/" />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -59,7 +60,7 @@
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en","de","fr","it","pt"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/en/docs/opportunities/#article","headline":"Opportunities","description":"Tells you which of your pages to touch this week. It splits pages into four groups, scores them and writes the job to do for each.","url":"https://seowatcher.io/en/docs/opportunities/","inLanguage":"en","dateModified":"2026-10-23","articleSection":"Screens","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/en/docs/opportunities/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/en/docs/opportunities/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/en/"},{"@type":"ListItem","position":2,"name":"Guide","item":"https://seowatcher.io/en/docs/"},{"@type":"ListItem","position":3,"name":"Opportunities","item":"https://seowatcher.io/en/docs/opportunities/"}]}]}</script>
     <script src="/assets/docs.js?v=2.4.1" defer></script>
-    <meta name="theme-color" content="#272c3b" />
+    <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
         font-family: "Geist";
@@ -649,6 +650,95 @@
       footer a:hover {
         color: var(--fg);
       }
+      /* The one ask on the page: quiet, one line, the accent only on the link. */
+      footer .star {
+        flex-basis: 100%;
+        margin: 0 0 4px;
+        text-wrap: pretty;
+      }
+      footer .star a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      footer .star a:hover {
+        color: var(--accent-link);
+        text-decoration-color: var(--accent-link);
+      }
+
+      /* Headings enter as they scroll into view. docs.js adds .hx (and .in
+         once seen) only when motion is allowed, so without script, under
+         reduced motion and with "stop motion" on, they are simply there.
+         h1 wipes in from the left, h2 rises while an amber stroke draws
+         along its rule, h3 rises a little. */
+      article .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease),
+          clip-path 760ms var(--ease),
+          filter 620ms var(--ease);
+      }
+      article h1.hx {
+        clip-path: inset(-10% 100% -10% 0);
+        filter: blur(6px);
+      }
+      article h2.hx,
+      article h3.hx {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      article h3.hx {
+        transform: translateY(6px);
+      }
+      article h2.hx {
+        position: relative;
+      }
+      article h2.hx::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 56px;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 700ms var(--ease) 160ms;
+      }
+      article .hx.in {
+        opacity: 1;
+        transform: none;
+      }
+      article h1.hx.in {
+        clip-path: inset(-10% 0 -10% 0);
+        filter: none;
+      }
+      article h2.hx.in::before {
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        article .hx,
+        article h2.hx::before {
+          opacity: 1;
+          transform: none;
+          clip-path: none;
+          filter: none;
+          transition: none;
+        }
+      }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
 
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
@@ -1093,13 +1183,19 @@
         <nav class="topnav" aria-label="Site">
           <a class="hide" href="/en/">Home</a>
           <a class="hide" href="/en/docs/">Guide</a>
-          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+          <a
+            class="hide"
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub</a
           >
-          <details class="langs"><summary aria-label="Language: English"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="3.6"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2"/></svg></span><span class="code">EN</span></summary><ul><li><a href="/docs/firsatlar/" lang="tr" hreflang="tr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"/></svg></span>Türkçe</a></li><li><a href="/en/docs/opportunities/" lang="en" hreflang="en" aria-current="page"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="3.6"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2"/></svg></span>English</a></li><li><a href="/de/docs/chancen/" lang="de" hreflang="de"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg></span>Deutsch</a></li><li><a href="/fr/docs/opportunites/" lang="fr" hreflang="fr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg></span>Français</a></li><li><a href="/it/docs/opportunita/" lang="it" hreflang="it"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg></span>Italiano</a></li><li><a href="/pt/docs/oportunidades/" lang="pt" hreflang="pt"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#ff0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.6" fill="#ffcc00"/><circle cx="8" cy="7" r="1.5" fill="#ff0000"/></svg></span>Português</a></li></ul></details>
+          <details class="langs"><summary aria-label="Language: English"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2.6"/></svg></span><span class="code">EN</span></summary><ul><li><a href="/docs/firsatlar/" lang="tr" hreflang="tr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"/></svg></span>Türkçe</a></li><li><a href="/en/docs/opportunities/" lang="en" hreflang="en" aria-current="page"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2.6"/></svg></span>English</a></li><li><a href="/de/docs/chancen/" lang="de" hreflang="de"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg></span>Deutsch</a></li><li><a href="/fr/docs/opportunites/" lang="fr" hreflang="fr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg></span>Français</a></li><li><a href="/it/docs/opportunita/" lang="it" hreflang="it"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg></span>Italiano</a></li><li><a href="/pt/docs/oportunidades/" lang="pt" hreflang="pt"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#ff0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.6" fill="#ffcc00"/><circle cx="8" cy="7" r="1.5" fill="#ff0000"/></svg></span>Português</a></li></ul></details>
           <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            target="_blank"
+            rel="noopener noreferrer"
             ><span class="long">Download for Windows</span
             ><span class="short">Download</span></a
           >
@@ -1116,37 +1212,40 @@
       <aside class="side" aria-label="Guide">
         <details class="side-dd" open>
           <summary>Guide</summary>
-          <p class="nav-group">Getting started</p><ul><li><a href="/en/docs/install-windows/">Install on Windows</a></li><li><a href="/en/docs/install-docker/">Installing with Docker</a></li><li><a href="/en/docs/google-connection/">Connecting to Google</a></li><li><a href="/en/docs/pagespeed-key/">PageSpeed key</a></li></ul><p class="nav-group">Screens</p><ul><li><a href="/en/docs/projects/">Projects</a></li><li><a href="/en/docs/dashboard/">Dashboard</a></li><li><a href="/en/docs/search-performance/">Search performance</a></li><li><a href="/en/docs/rank-tracking/">Ranking tracking</a></li><li class="current" aria-current="page"><a href="/en/docs/opportunities/">Opportunities</a></li><li><a href="/en/docs/saved-keywords/">Saved keywords</a></li><li><a href="/en/docs/analytics/">Analytics</a></li><li><a href="/en/docs/site-audit/">Site audit</a></li><li><a href="/en/docs/index-status/">Index status</a></li><li><a href="/en/docs/reports/">Reports and templates</a></li><li><a href="/en/docs/project-context/">Project info</a></li><li><a href="/en/docs/settings/">Settings</a></li></ul><p class="nav-group">Reference</p><ul><li><a href="/en/docs/help/">Help</a></li><li><a href="/en/docs/audit-rules/">Audit rules</a></li><li><a href="/en/docs/agent-setup/">Agent setup</a></li><li><a href="/en/docs/troubleshooting/">Troubleshooting</a></li><li><a href="/en/docs/release-notes/">Release notes</a></li></ul>
+          <p class="nav-group">Getting started</p><ul><li><a href="/en/docs/install-windows/">Install on Windows</a></li><li><a href="/en/docs/install-docker/">Installing with Docker</a></li><li><a href="/en/docs/google-connection/">Connecting to Google</a></li><li><a href="/en/docs/pagespeed-key/">PageSpeed key</a></li></ul><p class="nav-group">Screens</p><ul><li><a href="/en/docs/projects/">Projects</a></li><li><a href="/en/docs/dashboard/">Dashboard</a></li><li><a href="/en/docs/search-performance/">Search performance</a></li><li><a href="/en/docs/rank-tracking/">Ranking tracking</a></li><li class="current" aria-current="page"><a href="/en/docs/opportunities/">Opportunities</a></li><li><a href="/en/docs/saved-keywords/">Saved keywords</a></li><li><a href="/en/docs/analytics/">Analytics</a></li><li><a href="/en/docs/site-audit/">Site audit</a></li><li><a href="/en/docs/index-status/">Index status</a></li><li><a href="/en/docs/reports/">Reports and templates</a></li><li><a href="/en/docs/project-context/">Project info</a></li><li><a href="/en/docs/settings/">Settings</a></li></ul><p class="nav-group">Help and reference</p><ul><li><a href="/en/docs/help/">Help</a></li><li><a href="/en/docs/audit-rules/">Audit rules</a></li><li><a href="/en/docs/agent-setup/">Agent setup</a></li><li><a href="/en/docs/troubleshooting/">Troubleshooting</a></li><li><a href="/en/docs/release-notes/">Release notes</a></li></ul>
         </details>
       </aside>
       <article id="icerik" data-page="firsatlar">
-        <h1>Opportunities</h1><p class="lede">Tells you which of your pages to touch this week. It splits pages into four groups, scores them and writes the job to do for each.</p><p>On this screen you see which of your pages to touch this week.</p>
-<p>The app takes every page of yours in Search Console. It matches each one with its counterpart in Google Analytics. It gives each page a score from 0 to 100. This score is not a Google measure. It is the app's estimate of &quot;how worthwhile it is to work on this page&quot;. The screen needs both Search Console and Analytics. If one is not connected, a warning and a <strong>Bağlantıları aç</strong> (Open connections) button appear.</p>
+        <h1>Opportunities</h1><p class="lede">Tells you which of your pages to touch this week. It splits pages into four groups, scores them and writes the job to do for each.</p><p>This screen shows which of your pages to work on this week.</p>
+<p>The app takes every page of yours from Search Console, matches each with its counterpart in Google Analytics and gives it a score from 0 to 100. The score is not a Google measure; it is the app's estimate of how worthwhile it is to work on the page. The screen needs both Search Console and Analytics. If one is not connected, a warning and a <strong>Bağlantıları aç</strong> (Open connections) button appear.</p>
 <h2 id="what-is-on-the-screen">What is on the screen</h2>
-<p><strong>Top bar.</strong> <strong>Dönem</strong> (Period) (Son 7 gün, Son 28 gün, Son 90 gün: last 7, 28 and 90 days), <strong>Satır sayısı</strong> (Number of rows) (25, 50, 100) and <strong>Yenile</strong> (Refresh).</p>
+<p><strong>Top bar.</strong> <strong>Dönem</strong> (Period: Son 7 gün, Son 28 gün, Son 90 gün, meaning last 7, 28 and 90 days), <strong>Satır sayısı</strong> (Number of rows: 25, 50, 100) and <strong>Yenile</strong> (Refresh).</p>
 <p><strong>Summary cards.</strong> <strong>Listelenen</strong> (Listed), <strong>Analytics'te karşılığı var</strong> (Has a match in Analytics), <strong>Analytics'te karşılığı yok</strong> (Has no match in Analytics) and <strong>En yüksek puan</strong> (Highest score).</p>
-<p><strong>Four groups.</strong> Every page falls into one of four groups. The group name appears on the row as a label.</p>
-<div class="tw"><table><thead><tr><th>Group</th><th>What it means</th><th>What to do</th></tr></thead><tbody><tr><td><strong>Az tıklanan</strong> (Rarely clicked)</td><td>In the top 20. Click rate is less than half of your other pages at the same position</td><td>Rewrite the title and description. The text shown in search does not attract clicks</td></tr><tr><td><strong>Yükselmeye yakın</strong> (Close to rising)</td><td>Position 4 to 20</td><td>Expand the content, add internal links. It can rise a position or two</td></tr><tr><td><strong>İlk sıralarda</strong> (At the top)</td><td>In the top 3</td><td>Keep it. Keep the page up to date and make sure it does not break</td></tr><tr><td><strong>Derinde kalan</strong> (Stuck deep)</td><td>After position 20</td><td>Think about whether the page really answers that search. The right page may be a different one</td></tr></tbody></table></div>
-<p>An internal link is a link you give from one page of your site to another.</p>
+<p><strong>Four groups.</strong> Every page falls into one of four groups, and the group name appears as a label on its row.</p>
+<div class="tw"><table><thead><tr><th>Group</th><th>What it means</th><th>What to do</th></tr></thead><tbody><tr><td><strong>Az tıklanan</strong> (Rarely clicked)</td><td>In the top 20, with a click rate below half that of your other pages at the same position</td><td>Rewrite the title and description; the text shown in search does not attract clicks</td></tr><tr><td><strong>Yükselmeye yakın</strong> (Close to rising)</td><td>Position 4 to 20</td><td>Expand the content and add internal links; it can rise a position or two</td></tr><tr><td><strong>İlk sıralarda</strong> (At the top)</td><td>In the top 3</td><td>Leave it as it is, keep the page up to date and make sure it does not break</td></tr><tr><td><strong>Derinde kalan</strong> (Stuck deep)</td><td>After position 20</td><td>Ask whether the page really answers that search; a different page may be the right one</td></tr></tbody></table></div>
+<p>An internal link is a link from one page of your site to another.</p>
 <p><strong>Quick filters.</strong> <strong>Analytics'te karşılığı olanlar</strong> (With a match in Analytics), <strong>Analytics'te karşılığı yok</strong>, <strong>En çok gösterim alan 10</strong> (Top 10 by impressions).</p>
-<p><strong>The &quot;Fırsat nerede toplanıyor?&quot; (Where is the opportunity gathering?) card.</strong> Shows the spread of impressions or clicks by group.</p>
-<p><strong>Table.</strong> Columns: <strong>Puan</strong> (Score), <strong>Sayfa</strong> (Page), <strong>Sıra</strong> (Position), <strong>Gösterim</strong> (Impressions), <strong>Tıklama</strong> (Clicks), <strong>Tıklama oranı</strong> (Click rate), <strong>Oturum</strong> (Sessions). A session is a visit to the site. It comes from Analytics.</p>
-<p><strong>Detail panel.</strong> It opens when you click a row. The &quot;Ne yapmalı?&quot; (What to do?) list is here. The three parts of the score are here too: <strong>Talep</strong> (Demand), <strong>İş değeri</strong> (Business value), <strong>Yükselme kolaylığı</strong> (Ease of rising). Each is high, medium or low. Buttons: <strong>Arama performansında aç</strong> (Open in Search performance), <strong>Adresi kopyala</strong> (Copy address), <strong>Sayfayı aç</strong> (Open page).</p>
+<p><strong>The &quot;Fırsat nerede toplanıyor?&quot; (Where is the opportunity?) card.</strong> It shows how impressions or clicks are distributed across the groups.</p>
+<p><strong>Table.</strong> Columns: <strong>Puan</strong> (Score), <strong>Sayfa</strong> (Page), <strong>Sıra</strong> (Position), <strong>Gösterim</strong> (Impressions), <strong>Tıklama</strong> (Clicks), <strong>Tıklama oranı</strong> (Click rate), <strong>Oturum</strong> (Sessions). A session is one visit to the site, and the figure comes from Analytics.</p>
+<p><strong>Detail panel.</strong> It opens when you click a row and contains the &quot;Ne yapmalı?&quot; (What to do?) list and the three parts of the score: <strong>Talep</strong> (Demand), <strong>İş değeri</strong> (Business value), <strong>Yükselme kolaylığı</strong> (Ease of rising). Each is rated high, medium or low. Buttons: <strong>Arama performansında aç</strong> (Open in Search performance), <strong>Adresi kopyala</strong> (Copy address), <strong>Sayfayı aç</strong> (Open page).</p>
 <h2 id="how-to-use-it">How to use it</h2>
-<ol><li>Start with <strong>Son 28 gün</strong>. The top row is the page that says &quot;look at this first&quot;.</li><li>Take the first two pages from the <strong>Az tıklanan</strong> group. They rank well on Google but are not clicked. Fix the title and description. It is half an hour of work.</li><li>In the <strong>Yükselmeye yakın</strong> group, look at pages with a high score. Add a section, and give two or three internal links from the site.</li><li>The <strong>Analytics'te karşılığı yok</strong> button separates the pages that Google shows but where Analytics sees no visits. Most often it is an address difference (a trailing slash, www). Sometimes the page really is not clicked.</li><li>Touch at most three or four pages a week.</li></ol>
+<ol><li>Start with <strong>Son 28 gün</strong>. The top row is the page to look at first.</li><li>Take the first two pages from the <strong>Az tıklanan</strong> group. They rank well on Google but are rarely clicked. Fix the title and description; it is about half an hour of work.</li><li>In the <strong>Yükselmeye yakın</strong> group, look at pages with a high score. Add a section and link to the page from two or three other pages of the site.</li><li>The <strong>Analytics'te karşılığı yok</strong> button isolates pages that Google shows but for which Analytics records no visits. Most often the cause is an address difference (a trailing slash, www); sometimes the page really is not clicked.</li><li>Work on at most three or four pages a week.</li></ol>
 <h2 id="how-the-numbers-are-calculated">How the numbers are calculated</h2>
-<p>The range ends as far back as Search Console's three-day delay. Up to 1,000 rows are taken from Search Console and up to 1,000 rows from Analytics. The two lists are matched by domain name and path. A trailing slash on the address does not count. If 1,000 rows are reached, a note appears under the table.</p>
-<p>Every page with more than zero impressions is a candidate. The group is chosen by position and by expected click rate. The expected rate is the typical click rate of your pages in the same position range. The bands are 1-3, 3-5, 5-10, 10-20 and 20-50. A band needs at least three pages with 10 impressions each. A page at position 20 or below, with a rate under half of the expected one, becomes &quot;Az tıklanan&quot;.</p>
-<p>The score is calculated like this: 50% demand, 30% business value, 20% ease of rising. Demand is based on impressions. The better the position, the easier it is counted to rise. Business value is the key event rate in Analytics. A key event is an action you count as important. If no page has one, the engagement rate is used. A page with no match in Analytics gets a middle score for business value. The score only compares your own site's pages with each other.</p>
+<p>The range ends three days before today because of Search Console's delay. Up to 1,000 rows are taken from Search Console and up to 1,000 rows from Analytics. The two lists are matched by domain name and path. A trailing slash is ignored. If the 1,000-row limit is reached, a note appears under the table.</p>
+<p>Every page with more than zero impressions is a candidate. The group depends on position and expected click rate. The expected rate is the typical click rate of your own pages in the same position band. The bands are 1-3, 3-5, 5-10, 10-20 and 20-50, and a band needs at least three pages with 10 impressions each. A page in the top 20 whose rate is under half the expected one becomes &quot;Az tıklanan&quot;.</p>
+<p>The score is 50% demand, 30% business value and 20% ease of rising. Demand is based on impressions. The better the position, the easier the page is assumed to rise. Business value is the key event rate in Analytics; a key event is an action you count as important. If no page has one, the engagement rate is used instead. A page with no match in Analytics gets a middle score for business value. The score compares only your own pages with each other.</p>
 <h2 id="frequently-asked-questions">Frequently asked questions</h2>
-<p><strong>Is a page with a score of 80 twice as important as one with 60?</strong> No. 80 means &quot;look first&quot;, 60 means &quot;look later&quot;.</p>
-<p><strong>What does &quot;Analytics'te karşılığı yok&quot; mean?</strong> The address format may be different, or the page may never have been clicked.</p>
-<p><strong>Why did the list become empty with 7 days?</strong> In seven days most pages stay under 10 impressions. So the expected rate cannot be calculated. For most sites, 28 days is right.</p>
+<p><strong>Is a page with a score of 80 twice as important as one with 60?</strong> No. 80 means &quot;look first&quot; and 60 means &quot;look later&quot;.</p>
+<p><strong>What does &quot;Analytics'te karşılığı yok&quot; mean?</strong> The address format may differ, or the page may never have been clicked.</p>
+<p><strong>Why did the list become empty with 7 days?</strong> In seven days most pages stay under 10 impressions, so the expected rate cannot be calculated. For most sites 28 days is right.</p>
 <h2 id="limits">Limits</h2>
-<p>The screen does not use search volume or competitor positions. Demand is only your own impressions. Search Console and Analytics may report in different time zones. Daily matches can shift by one day. The score does not know the quality of the content. The final decision is yours.</p> <nav class="pager" aria-label="Previous and next page"><a class="pager-prev" rel="prev" href="/en/docs/rank-tracking/"><span>Previous</span><strong>Ranking tracking</strong></a><a class="pager-next" rel="next" href="/en/docs/saved-keywords/"><span>Next</span><strong>Saved keywords</strong></a></nav>
+<p>The screen uses no search volume or competitor positions; demand is only your own impressions. Search Console and Analytics may use different time zones, so day-by-day comparisons can be off by one day. The score cannot judge the quality of the content. The final decision is yours.</p> <nav class="pager" aria-label="Previous and next page"><a class="pager-prev" rel="prev" href="/en/docs/rank-tracking/"><span>Previous</span><strong>Ranking tracking</strong></a><a class="pager-next" rel="next" href="/en/docs/saved-keywords/"><span>Next</span><strong>Saved keywords</strong></a></nav>
         <p class="meta">
           Last updated: October 23, 2026. Spotted a mistake?
-          <a href="https://github.com/ucsahinn/seotracker/issues"
+          <a
+            href="https://github.com/ucsahinn/seotracker/issues"
+            target="_blank"
+            rel="noopener noreferrer"
             >Report it on GitHub</a
           >.
         </p>
@@ -1155,10 +1254,25 @@
     </main>
     <footer>
       <div class="wrap">
+        <p class="star">
+          A star helps other people find a free tool.
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Star it on GitHub</a
+          >
+        </p>
         <span>seowatcher, MIT license.</span>
         <span
           ><a href="/en/">Home</a> &nbsp;
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          &nbsp;
           <a href="/en/docs/release-notes/">Release notes</a></span
         >
       </div>

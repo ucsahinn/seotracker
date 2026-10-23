@@ -15,6 +15,7 @@
     <link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/docs/status-de-indexacao/" />
     <link rel="alternate" hreflang="x-default" href="https://seowatcher.io/docs/dizin-durumu/" />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -59,7 +60,7 @@
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en","de","fr","it","pt"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/en/docs/index-status/#article","headline":"Index status","description":"Google's answer for each of your pages: is it in search, if not why, and when it last visited. You can ask at most 2,000 queries a day.","url":"https://seowatcher.io/en/docs/index-status/","inLanguage":"en","dateModified":"2026-10-23","articleSection":"Screens","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/en/docs/index-status/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/en/docs/index-status/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/en/"},{"@type":"ListItem","position":2,"name":"Guide","item":"https://seowatcher.io/en/docs/"},{"@type":"ListItem","position":3,"name":"Index status","item":"https://seowatcher.io/en/docs/index-status/"}]}]}</script>
     <script src="/assets/docs.js?v=2.4.1" defer></script>
-    <meta name="theme-color" content="#272c3b" />
+    <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
         font-family: "Geist";
@@ -649,6 +650,95 @@
       footer a:hover {
         color: var(--fg);
       }
+      /* The one ask on the page: quiet, one line, the accent only on the link. */
+      footer .star {
+        flex-basis: 100%;
+        margin: 0 0 4px;
+        text-wrap: pretty;
+      }
+      footer .star a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      footer .star a:hover {
+        color: var(--accent-link);
+        text-decoration-color: var(--accent-link);
+      }
+
+      /* Headings enter as they scroll into view. docs.js adds .hx (and .in
+         once seen) only when motion is allowed, so without script, under
+         reduced motion and with "stop motion" on, they are simply there.
+         h1 wipes in from the left, h2 rises while an amber stroke draws
+         along its rule, h3 rises a little. */
+      article .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease),
+          clip-path 760ms var(--ease),
+          filter 620ms var(--ease);
+      }
+      article h1.hx {
+        clip-path: inset(-10% 100% -10% 0);
+        filter: blur(6px);
+      }
+      article h2.hx,
+      article h3.hx {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      article h3.hx {
+        transform: translateY(6px);
+      }
+      article h2.hx {
+        position: relative;
+      }
+      article h2.hx::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 56px;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 700ms var(--ease) 160ms;
+      }
+      article .hx.in {
+        opacity: 1;
+        transform: none;
+      }
+      article h1.hx.in {
+        clip-path: inset(-10% 0 -10% 0);
+        filter: none;
+      }
+      article h2.hx.in::before {
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        article .hx,
+        article h2.hx::before {
+          opacity: 1;
+          transform: none;
+          clip-path: none;
+          filter: none;
+          transition: none;
+        }
+      }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
 
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
@@ -1093,13 +1183,19 @@
         <nav class="topnav" aria-label="Site">
           <a class="hide" href="/en/">Home</a>
           <a class="hide" href="/en/docs/">Guide</a>
-          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+          <a
+            class="hide"
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub</a
           >
-          <details class="langs"><summary aria-label="Language: English"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="3.6"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2"/></svg></span><span class="code">EN</span></summary><ul><li><a href="/docs/dizin-durumu/" lang="tr" hreflang="tr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"/></svg></span>Türkçe</a></li><li><a href="/en/docs/index-status/" lang="en" hreflang="en" aria-current="page"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="3.6"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2"/></svg></span>English</a></li><li><a href="/de/docs/indexstatus/" lang="de" hreflang="de"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg></span>Deutsch</a></li><li><a href="/fr/docs/etat-de-l-index/" lang="fr" hreflang="fr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg></span>Français</a></li><li><a href="/it/docs/stato-indice/" lang="it" hreflang="it"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg></span>Italiano</a></li><li><a href="/pt/docs/status-de-indexacao/" lang="pt" hreflang="pt"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#ff0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.6" fill="#ffcc00"/><circle cx="8" cy="7" r="1.5" fill="#ff0000"/></svg></span>Português</a></li></ul></details>
+          <details class="langs"><summary aria-label="Language: English"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2.6"/></svg></span><span class="code">EN</span></summary><ul><li><a href="/docs/dizin-durumu/" lang="tr" hreflang="tr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"/></svg></span>Türkçe</a></li><li><a href="/en/docs/index-status/" lang="en" hreflang="en" aria-current="page"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2.6"/></svg></span>English</a></li><li><a href="/de/docs/indexstatus/" lang="de" hreflang="de"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg></span>Deutsch</a></li><li><a href="/fr/docs/etat-de-l-index/" lang="fr" hreflang="fr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg></span>Français</a></li><li><a href="/it/docs/stato-indice/" lang="it" hreflang="it"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg></span>Italiano</a></li><li><a href="/pt/docs/status-de-indexacao/" lang="pt" hreflang="pt"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#ff0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.6" fill="#ffcc00"/><circle cx="8" cy="7" r="1.5" fill="#ff0000"/></svg></span>Português</a></li></ul></details>
           <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            target="_blank"
+            rel="noopener noreferrer"
             ><span class="long">Download for Windows</span
             ><span class="short">Download</span></a
           >
@@ -1116,37 +1212,40 @@
       <aside class="side" aria-label="Guide">
         <details class="side-dd" open>
           <summary>Guide</summary>
-          <p class="nav-group">Getting started</p><ul><li><a href="/en/docs/install-windows/">Install on Windows</a></li><li><a href="/en/docs/install-docker/">Installing with Docker</a></li><li><a href="/en/docs/google-connection/">Connecting to Google</a></li><li><a href="/en/docs/pagespeed-key/">PageSpeed key</a></li></ul><p class="nav-group">Screens</p><ul><li><a href="/en/docs/projects/">Projects</a></li><li><a href="/en/docs/dashboard/">Dashboard</a></li><li><a href="/en/docs/search-performance/">Search performance</a></li><li><a href="/en/docs/rank-tracking/">Ranking tracking</a></li><li><a href="/en/docs/opportunities/">Opportunities</a></li><li><a href="/en/docs/saved-keywords/">Saved keywords</a></li><li><a href="/en/docs/analytics/">Analytics</a></li><li><a href="/en/docs/site-audit/">Site audit</a></li><li class="current" aria-current="page"><a href="/en/docs/index-status/">Index status</a></li><li><a href="/en/docs/reports/">Reports and templates</a></li><li><a href="/en/docs/project-context/">Project info</a></li><li><a href="/en/docs/settings/">Settings</a></li></ul><p class="nav-group">Reference</p><ul><li><a href="/en/docs/help/">Help</a></li><li><a href="/en/docs/audit-rules/">Audit rules</a></li><li><a href="/en/docs/agent-setup/">Agent setup</a></li><li><a href="/en/docs/troubleshooting/">Troubleshooting</a></li><li><a href="/en/docs/release-notes/">Release notes</a></li></ul>
+          <p class="nav-group">Getting started</p><ul><li><a href="/en/docs/install-windows/">Install on Windows</a></li><li><a href="/en/docs/install-docker/">Installing with Docker</a></li><li><a href="/en/docs/google-connection/">Connecting to Google</a></li><li><a href="/en/docs/pagespeed-key/">PageSpeed key</a></li></ul><p class="nav-group">Screens</p><ul><li><a href="/en/docs/projects/">Projects</a></li><li><a href="/en/docs/dashboard/">Dashboard</a></li><li><a href="/en/docs/search-performance/">Search performance</a></li><li><a href="/en/docs/rank-tracking/">Ranking tracking</a></li><li><a href="/en/docs/opportunities/">Opportunities</a></li><li><a href="/en/docs/saved-keywords/">Saved keywords</a></li><li><a href="/en/docs/analytics/">Analytics</a></li><li><a href="/en/docs/site-audit/">Site audit</a></li><li class="current" aria-current="page"><a href="/en/docs/index-status/">Index status</a></li><li><a href="/en/docs/reports/">Reports and templates</a></li><li><a href="/en/docs/project-context/">Project info</a></li><li><a href="/en/docs/settings/">Settings</a></li></ul><p class="nav-group">Help and reference</p><ul><li><a href="/en/docs/help/">Help</a></li><li><a href="/en/docs/audit-rules/">Audit rules</a></li><li><a href="/en/docs/agent-setup/">Agent setup</a></li><li><a href="/en/docs/troubleshooting/">Troubleshooting</a></li><li><a href="/en/docs/release-notes/">Release notes</a></li></ul>
         </details>
       </aside>
       <article id="icerik" data-page="dizin-durumu">
-        <h1>Index status</h1><p class="lede">Google's answer for each of your pages: is it in search, if not why, and when it last visited. You can ask at most 2,000 queries a day.</p><p>On this page you see how to find out which of your pages Google has put into search.</p>
-<p>The site audit tells you a page can be opened. It cannot tell you whether Google has really added it to its index (Google's list of pages). The <strong>Dizin durumu</strong> (Index status) tab asks Google this and saves the answer. The answers are stored on this computer. The same question is not asked again and again. Only answers that have gone stale are asked again. This matters because Google gives 2,000 questions a day for each property (your site's record in Search Console). The app and your assistant share this allowance.</p>
+        <h1>Index status</h1><p class="lede">Google's answer for each of your pages: is it in search, if not why, and when it last visited. You can ask at most 2,000 queries a day.</p><p>This tab shows which of your pages Google has put into search.</p>
+<p>The site audit tells you a page can be opened, but not whether Google has added it to its index (Google's list of pages). The <strong>Dizin durumu</strong> (Index status) tab asks Google and saves the answer on this computer. A page is asked about again only when its answer has gone stale. This matters because Google allows 2,000 questions a day per property (your site's record in Search Console), and the app and your assistant share that allowance.</p>
 <h2 id="what-is-on-the-screen">What is on the screen</h2>
-<p><strong>The &quot;Google bu sayfalarla ne yapmış?&quot; (What has Google done with these pages?) ring.</strong> The crawled pages are split into three groups:</p>
-<ul><li><strong>Google'da</strong> (In Google): can appear in search.</li><li><strong>Dizinde değil</strong> (Not in the index): Google looked but did not take it.</li><li><strong>Yanıt bekleyen</strong> (Waiting for an answer): not asked yet, or no answer could be received.</li></ul>
-<p><strong>Summary boxes.</strong> They show how many pages were asked, how many are in the index, how many are not, and how many are waiting. The &quot;Google'ın farklı adresi seçtiği sayfalar&quot; (Pages where Google chose a different address) box counts the pages where Google chose an address other than the canonical (the notice that says which address is the main one) you declared. The &quot;Bu denetimde henüz sorulmamış&quot; (Not yet asked in this audit) box is the number of pages left to ask.</p>
-<p><strong>The &quot;Google'da durumunu kontrol et&quot; (Check status in Google) button.</strong> Each press asks about at most 25 pages. The pages that have gone longest without an answer come first. If the daily limit is full, the warning &quot;Google'ın günlük 2.000 adres sınırına ulaşıldı&quot; (Google's daily limit of 2,000 addresses was reached) appears. If Search Console is not connected, the button is disabled. It is also disabled if the audited domain is not inside the connected property.</p>
-<p><strong>Table.</strong> Columns: <strong>Sayfa</strong> (Page), <strong>Durum</strong> (Status), <strong>Sebep</strong> (Reason), <strong>Google'ın seçtiği adres</strong> (Address Google chose), <strong>Google'ın son ziyareti</strong> (Google's last visit). The status cell shows &quot;Google'da&quot;, &quot;Kontrol edilmedi&quot; (Not checked), &quot;Yanıt alınamadı&quot; (No answer received), &quot;Hata&quot; (Error), or the Turkish version of Google's own status. In total, 18 statuses are translated into Turkish. Examples:</p>
-<ul><li>&quot;Keşfedildi, henüz taranmadı&quot; (Discovered, not yet crawled)</li><li>&quot;'noindex' etiketiyle dışlandı&quot; (Excluded by the 'noindex' tag) (the page is hidden from search)</li><li>&quot;robots.txt engelliyor&quot; (robots.txt blocks it) (robots.txt: the file that tells Google which pages it may enter)</li><li>&quot;Yumuşak 404&quot; (Soft 404) (the page exists but Google counts it as empty)</li><li>&quot;Google bu adresi bilmiyor&quot; (Google does not know this address)</li></ul>
+<p><strong>The &quot;Google bu sayfalarla ne yapmış?&quot; (What has Google done with these pages?) chart.</strong> This donut chart splits the crawled pages into three groups:</p>
+<ul><li><strong>Google'da</strong> (In Google): can appear in search.</li><li><strong>Dizinde değil</strong> (Not in the index): Google looked at the page but did not add it.</li><li><strong>Yanıt bekleyen</strong> (Waiting for an answer): not asked yet, or no answer could be received.</li></ul>
+<p><strong>Summary boxes.</strong> They show how many pages were asked about, how many are in the index, how many are not and how many are waiting. The &quot;Google'ın farklı adresi seçtiği sayfalar&quot; (Pages where Google chose a different address) box counts pages where Google chose a different address from the canonical you declared (the tag that names a page's main address). The &quot;Bu denetimde henüz sorulmamış&quot; (Not yet asked in this audit) box shows how many pages are left to ask about.</p>
+<p><strong>The &quot;Google'da durumunu kontrol et&quot; (Check status in Google) button.</strong> Each press asks about at most 25 pages, starting with those that have gone longest without an answer. When the daily limit is used up, the warning &quot;Google'ın günlük 2.000 adres sınırına ulaşıldı&quot; (Google's daily limit of 2,000 addresses was reached) appears. The button is disabled if Search Console is not connected or if the audited domain is outside the connected property.</p>
+<p><strong>Table.</strong> Columns: <strong>Sayfa</strong> (Page), <strong>Durum</strong> (Status), <strong>Sebep</strong> (Reason), <strong>Google'ın seçtiği adres</strong> (Address Google chose), <strong>Google'ın son ziyareti</strong> (Google's last visit). The status cell shows &quot;Google'da&quot;, &quot;Kontrol edilmedi&quot; (Not checked), &quot;Yanıt alınamadı&quot; (No answer received), &quot;Hata&quot; (Error), or the Turkish version of Google's own status. The app translates 18 statuses into Turkish. Examples:</p>
+<ul><li>&quot;Keşfedildi, henüz taranmadı&quot; (Discovered, not yet crawled)</li><li>&quot;'noindex' etiketiyle dışlandı&quot; (Excluded by the 'noindex' tag) (the page is kept out of search)</li><li>&quot;robots.txt engelliyor&quot; (robots.txt blocks it) (robots.txt is the file that tells Google which pages it may visit)</li><li>&quot;Yumuşak 404&quot; (Soft 404) (the page exists but Google treats it as empty)</li><li>&quot;Google bu adresi bilmiyor&quot; (Google does not know this address)</li></ul>
 <p>You can download the table as CSV.</p>
 <h2 id="how-to-use-it">How to use it</h2>
-<ol><li>When the audit finishes, open the tab. If the &quot;Yanıt bekleyen&quot; number is high, press <strong>Google'da durumunu kontrol et</strong>. Each press moves 25 pages forward. On a small site, a few presses are enough.</li><li>Look at the &quot;Dizinde değil&quot; group first. The <strong>Sebep</strong> column is Google's reason, and it often tells you what to do. If it says &quot;robots.txt engelliyor&quot;, remove the block. If it says &quot;'noindex' etiketiyle dışlandı&quot;, delete the tag. If it says &quot;Keşfedildi, henüz taranmadı&quot;, waiting is usually enough.</li><li>Add important pages that say &quot;Google bu adresi bilmiyor&quot; to the sitemap. Submit the sitemap to Search Console. For the three or four most important pages, click &quot;Dizine eklenmesini iste&quot; (Request indexing) by hand in Search Console.</li><li>If the &quot;Google'ın farklı adresi seçtiği sayfalar&quot; box is not zero, look at the <strong>Google'ın seçtiği adres</strong> column. Google did not like the main address you declared. Either fix yours, or make the one Google chose the main address.</li><li>Press again after a few days. Only stale answers are asked again, so your quota is not wasted.</li></ol>
+<ol><li>When the audit finishes, open the tab. If the &quot;Yanıt bekleyen&quot; number is high, press <strong>Google'da durumunu kontrol et</strong>. Each press covers 25 more pages, so a few presses are enough for a small site.</li><li>Look at the &quot;Dizinde değil&quot; group first. The <strong>Sebep</strong> column gives Google's reason, which often tells you what to do. If it says &quot;robots.txt engelliyor&quot;, remove the block. If it says &quot;'noindex' etiketiyle dışlandı&quot;, remove the tag. If it says &quot;Keşfedildi, henüz taranmadı&quot;, waiting is usually enough.</li><li>Add important pages that say &quot;Google bu adresi bilmiyor&quot; to your sitemap and submit the sitemap to Search Console. For the three or four most important pages, also click &quot;Dizine eklenmesini iste&quot; (Request indexing) by hand in Search Console.</li><li>If the &quot;Google'ın farklı adresi seçtiği sayfalar&quot; box is not zero, look at the <strong>Google'ın seçtiği adres</strong> column. Google disagrees with the main address you declared. Either correct yours or make the address Google chose the main one.</li><li>Press again after a few days. Only stale answers are asked again, so your quota is not wasted.</li></ol>
 <h2 id="how-the-numbers-are-calculated">How the numbers are calculated</h2>
 <p>If Google says &quot;indexed&quot;, the page counts as &quot;Google'da&quot;. If it says &quot;not indexed&quot; or &quot;unknown&quot;, the page counts as &quot;Dizinde değil&quot;. If there is no answer, the page is &quot;Yanıt bekleyen&quot;.</p>
-<p>An answer counts as old after a set time and is asked again. For a page in the index, this time is 14 days. For a page not in the index, or an answer with an error, it is 3 days. A page that has never been asked is always ready to be asked. The daily limit is calculated from the number of questions in the last 24 hours. The app counts only its own questions. Queries you make by hand in Search Console do not enter this counter, but they do count against Google's real limit.</p>
-<p>A canonical mismatch means that the address Google chose and the address you declared are different. A difference of a trailing slash also counts.</p>
+<p>An answer is treated as stale after a set time and is asked about again: 14 days for a page in the index, 3 days for a page not in the index or an answer with an error. A page that has never been asked about is always eligible. The daily limit is calculated from the number of questions in the last 24 hours. The app counts only its own questions; queries you run by hand in Search Console are not in this counter, but they do count against Google's real limit.</p>
+<p>A canonical mismatch means the address Google chose differs from the one you declared, even by a trailing slash.</p>
 <p>If Google's last crawl is older than 90 days, the audit reports the problem &quot;Google bu sayfayı uzun süredir taramadı&quot; (Google has not crawled this page for a long time). Stale answers are collected into a single problem, &quot;Google'ın bazı sayfalar hakkındaki yanıtı eskimiş&quot; (Google's answer about some pages is out of date).</p>
 <h2 id="frequently-asked-questions">Frequently asked questions</h2>
-<p><strong>Why is the button disabled?</strong> There can be three reasons. Search Console is not connected. There are no pages left to ask. Or the domain you audited is not inside the connected property. This happens if you audited another site.</p>
-<p><strong>Whose is the 2,000 limit?</strong> The property's. Two projects connected to the same property and your assistant spend from the same pool.</p>
-<p><strong>What should I do for a page that says &quot;Keşfedildi, henüz taranmadı&quot;?</strong> Most of the time, nothing. On new sites, Google can make pages wait for weeks. Linking to the page from pages of the site that are crawled often speeds it up.</p>
-<p><strong>Does this tab tell Google about new pages?</strong> No, it only asks. To tell Google, there is the sitemap and &quot;Dizine eklenmesini iste&quot; in Search Console.</p>
+<p><strong>Why is the button disabled?</strong> There are three possible reasons: Search Console is not connected, there are no pages left to ask about, or the audited domain is outside the connected property (for example, because you audited another site).</p>
+<p><strong>What does the 2,000 limit apply to?</strong> The property. Two projects connected to the same property, and your assistant, spend from the same pool.</p>
+<p><strong>What should I do for a page that says &quot;Keşfedildi, henüz taranmadı&quot;?</strong> Usually nothing. On new sites Google can leave pages waiting for weeks. Linking to the page from pages that Google crawls often speeds it up.</p>
+<p><strong>Does this tab tell Google about new pages?</strong> No, it only asks. To tell Google about a page, use the sitemap and &quot;Dizine eklenmesini iste&quot; in Search Console.</p>
 <h2 id="limits">Limits</h2>
-<p>The answers are only as good as what Google gives. Google can leave some fields empty. You cannot go over 2,000 questions a day. Asking about a 10,000-page site completely takes five days. The tab asks only about crawled pages. Addresses that were not part of the audit do not appear in the list.</p> <nav class="pager" aria-label="Previous and next page"><a class="pager-prev" rel="prev" href="/en/docs/site-audit/"><span>Previous</span><strong>Site audit</strong></a><a class="pager-next" rel="next" href="/en/docs/reports/"><span>Next</span><strong>Reports and templates</strong></a></nav>
+<p>The answers are only as good as what Google returns, and Google can leave some fields empty. You cannot go over 2,000 questions a day, so covering a 10,000-page site takes five days. The tab asks only about crawled pages; addresses that were not part of the audit do not appear in the list.</p> <nav class="pager" aria-label="Previous and next page"><a class="pager-prev" rel="prev" href="/en/docs/site-audit/"><span>Previous</span><strong>Site audit</strong></a><a class="pager-next" rel="next" href="/en/docs/reports/"><span>Next</span><strong>Reports and templates</strong></a></nav>
         <p class="meta">
           Last updated: October 23, 2026. Spotted a mistake?
-          <a href="https://github.com/ucsahinn/seotracker/issues"
+          <a
+            href="https://github.com/ucsahinn/seotracker/issues"
+            target="_blank"
+            rel="noopener noreferrer"
             >Report it on GitHub</a
           >.
         </p>
@@ -1155,10 +1254,25 @@
     </main>
     <footer>
       <div class="wrap">
+        <p class="star">
+          A star helps other people find a free tool.
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Star it on GitHub</a
+          >
+        </p>
         <span>seowatcher, MIT license.</span>
         <span
           ><a href="/en/">Home</a> &nbsp;
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          &nbsp;
           <a href="/en/docs/release-notes/">Release notes</a></span
         >
       </div>

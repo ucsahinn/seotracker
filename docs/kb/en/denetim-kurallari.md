@@ -4,7 +4,7 @@ description: The list of 95 rules the site audit checks. For each rule you find 
 updated: 2026-10-22
 ---
 
-The site audit checks every page and the site as a whole with 95 rules. The rules fall into three groups. **Kritik** (Critical, 10 rules): Google cannot see or understand the page, so fix these first. **Uyarı** (Warning, 48 rules): they slowly lower rankings and clicks. **Bilgi** (Info, 37 rules): small chances to improve. In the score, critical counts 40, warning 15 and info 3. The number of pages a rule affects also counts toward the score.
+The site audit checks every page, and the site as a whole, against 95 rules in three groups. **Kritik** (Critical, 10 rules): Google cannot see or understand the page, so fix these first. **Uyarı** (Warning, 48 rules): they slowly lower rankings and clicks. **Bilgi** (Info, 37 rules): small opportunities to improve. In the score, critical counts 40, warning 15 and info 3, and the number of pages a rule affects counts too.
 
 The table gives the rule name shown on screen, what it means and the first step to fix it. The full fix text is on the finding card on screen. The last column is the rule ID, which shows up in the CSV file and in assistant answers.
 
@@ -13,16 +13,16 @@ The table gives the rule name shown on screen, what it means and the first step 
 - **canonical**: a way to tell Google "this is the main address".
 - **noindex**: a tag that hides a page from search.
 - **hreflang**: the language version tag. It points to the same page in other languages.
-- **meta description**: the grey summary under the title in a search result.
+- **meta description**: the gray summary under the title in a search result.
 - **structured data** (JSON-LD): a hidden note that tells Google what the page is (a product, an article and so on). It can add extras to the search result, such as stars or an image (rich result).
-- **robots.txt**: the file that tells Google which pages it may visit. A "Disallow" line is a line that forbids.
+- **robots.txt**: the file that tells Google which pages it may visit. A "Disallow" line forbids access.
 - **sitemap**: the list of pages on your site. **lastmod**: the date the page last changed.
-- **redirect**: sending visitors of one address to another address.
+- **redirect**: sending visitors from one address to another.
 - **user agent**: the name a browser or crawler gives itself.
 - **title** (title tag): the title shown in the tab and in search. **H1**: the main heading of the page. **alt text**: a short text that says what an image shows.
 - **nofollow**: a tag that says "do not follow this link". **head**: the top part of the page source.
 - **LCP**: how long the main content of the page takes to appear. **CLS**: content shifting while the page loads. **INP**: how long the page takes to respond to a click.
-- **Lighthouse**: Google's page measuring tool. **SSL certificate**: the document that makes your site https (a secure address).
+- **Lighthouse**: Google's page-testing tool. **SSL certificate**: the document that makes your site https (a secure address).
 
 ## Critical
 
@@ -59,7 +59,7 @@ The table gives the rule name shown on screen, what it means and the first step 
 | Sitemap has a lastmod date in the future                                          | The date is later than today. Google stops trusting the dates.               | Check what generates the dates.                                                                                      | sitemap-lastmod-future            |
 | Page opens over insecure http                                                     | The page is not secure (https).                                              | Ask your hosting company to turn on the free SSL certificate.                                                        | not-https                         |
 | Title tag is missing                                                              | The page has no title tag (title).                                           | Add a title that describes the topic and is specific to the page. 50-60 characters is a good length.                 | missing-title                     |
-| Meta description is missing                                                       | The grey summary in the search result is missing.                            | Write a description that summarises the page and makes people click.                                                 | missing-meta-description          |
+| Meta description is missing                                                       | The gray summary in the search result is missing.                            | Write a description that summarizes the page and makes people click.                                                 | missing-meta-description          |
 | Images without alt text                                                           | Nothing says what the images show.                                           | Write a short alt text for every image that carries meaning.                                                         | images-missing-alt                |
 | More than one title tag on the page                                               | There are two title tags. Google picks one at random.                        | Search the page source for "title" and keep only one.                                                                | multiple-titles                   |
 | More than one different meta description on the page                              | There are two descriptions.                                                  | Search the page source for name="description" and keep only one.                                                     | multiple-meta-descriptions        |
@@ -89,7 +89,7 @@ The table gives the rule name shown on screen, what it means and the first step 
 | Page declares main addresses that contradict each other                           | The page has more than one canonical tag.                                    | Decide which one is right. Turn off the plugin that produces the other.                                              | multiple-canonical-tags           |
 | Main content of the page loads late (LCP)                                         | The largest element arrives later than 4 seconds.                            | Look at the largest element in the PageSpeed report. It is usually an image. Make it smaller and convert it to WebP. | cwv-lcp-poor                      |
 | Content shifts while the page loads (CLS)                                         | The shift score is greater than 0.25.                                        | Give images and embedded boxes a width and a height.                                                                 | cwv-cls-poor                      |
-| Page responds slowly to clicks (INP)                                              | The response to a click takes longer than 500 milliseconds.                  | Find the pieces of code that tire the page most. Delay them or remove them.                                          | cwv-inp-poor                      |
+| Page responds slowly to clicks (INP)                                              | The response to a click takes longer than 500 milliseconds.                  | Find the scripts that slow the page most. Delay them or remove them.                                                 | cwv-inp-poor                      |
 | Google's SEO audit score is low                                                   | The Lighthouse SEO score is below 90.                                        | Open the page in PageSpeed Insights. Look at the failed checks in the SEO section.                                   | lighthouse-seo-low                |
 
 ## Info
@@ -112,7 +112,7 @@ The table gives the rule name shown on screen, what it means and the first step 
 | Title is too long                                              | Google cuts off anything after 60 characters.                             | Shorten the title to 50-60 characters. Put the important words first.                                                  | title-too-long               |
 | Title is too short                                             | The title does not describe the page.                                     | Write a title of 30-60 characters that says what you offer.                                                            | title-too-short              |
 | Meta description is too long                                   | Google cuts off anything after 160 characters.                            | Put the main message first and shorten it to 70-160 characters.                                                        | meta-description-too-long    |
-| Meta description is too short                                  | The description gives no reason to click.                                 | Write 70-160 characters that summarise the page.                                                                       | meta-description-too-short   |
+| Meta description is too short                                  | The description gives no reason to click.                                 | Write 70-160 characters that summarize the page.                                                                       | meta-description-too-short   |
 | Heading levels are skipped                                     | It jumps from H1 straight to H3.                                          | Use headings in order: H1, H2, H3.                                                                                     | heading-order-skip           |
 | Mobile view tag (viewport) is missing                          | The page looks tiny on a phone.                                           | Add the viewport line to the head section.                                                                             | missing-viewport             |
 | Page language is not declared                                  | It does not say what language the page is in (no lang on the html tag).   | For a Turkish page, write html lang="tr".                                                                              | missing-lang                 |
@@ -131,7 +131,7 @@ The table gives the rule name shown on screen, what it means and the first step 
 | Language versions have no default version (x-default)          | There is no default version for visitors whose language does not match.   | Add an x-default line to the hreflang list.                                                                            | hreflang-missing-x-default   |
 | Google's answer about some pages is out of date                | Stored Google answers are older than 3 or 14 days.                        | On the **Dizin durumu** (Index status) tab, press the "Google'da durumunu kontrol et" (Check status on Google) button. | stale-google-verdicts        |
 | Site has no social media sharing tags (Open Graph)             | No image or title appears when it is shared.                              | In the template's head section, add og:title, og:description and an og:image of 1200x630 pixels.                       | open-graph-missing-site      |
-| Site has no structured data at all                             | There is no chance of a rich result appearing in search.                  | Start with markup that fits the page type (such as Organization, Product or Article).                                  | structured-data-missing-site |
+| Site has no structured data at all                             | A rich result cannot appear in search.                                    | Start with markup that fits the page type (such as Organization, Product or Article).                                  | structured-data-missing-site |
 | Google has not crawled this page for a long time               | Google's last visit is older than 90 days.                                | Link to it from pages that are crawled often. Make sure the page is in the sitemap.                                    | google-crawl-stale           |
 
 ## How do the rules work?

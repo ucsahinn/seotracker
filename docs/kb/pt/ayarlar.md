@@ -1,14 +1,14 @@
 ---
 title: Configurações
-description: Tema, chave de acesso do Google, chave do PageSpeed, limites de uso, versão e verificação de atualização. A tela única de configurações de toda a instalação.
+description: Tema, chave de acesso do Google, chave do PageSpeed, limites de uso, versão e verificação de atualização. As configurações que valem para toda a instalação.
 screen: Ayarlar
 route: /settings
 updated: 2026-10-22
 ---
 
-Nesta página você vê onde gerenciar a conexão com o Google, a chave de velocidade e as atualizações.
+Esta página mostra onde gerenciar a conexão com o Google, a chave de velocidade e as atualizações.
 
-**Ayarlar** (Configurações) é a tela de tudo o que diz respeito à instalação inteira. As configurações de cada projeto (nome, domínio, propriedade do Search Console e do Analytics) ficam na página **Proje ayarları** (Configurações do projeto) de cada projeto. Aqui você gerencia a chave de acesso necessária para se conectar ao Google, a chave do PageSpeed, o tema e a verificação de atualização. À esquerda há as seções **Görünüm** (Aparência), **Google**, **Hizmet hesabı** (Conta de serviço), **Hız ölçümü** (Medição de velocidade), **Sınırlar** (Limites), **Hakkında** (Sobre) e **Sürüm notları** (Notas de versão). O título de cada seção tem um selo que indica o estado dela.
+**Ayarlar** (Configurações) é a tela do que vale para a instalação inteira. As configurações de cada projeto (nome, domínio, propriedade do Search Console e do Analytics) ficam na página **Proje ayarları** (Configurações do projeto) de cada projeto. Aqui você gerencia a chave de acesso necessária para se conectar ao Google, a chave do PageSpeed, o tema e a verificação de atualização. À esquerda há as seções **Görünüm** (Aparência), **Google**, **Hizmet hesabı** (Conta de serviço), **Hız ölçümü** (Medição de velocidade), **Sınırlar** (Limites), **Hakkında** (Sobre) e **Sürüm notları** (Notas de versão). O título de cada seção tem um selo que indica o estado dela.
 
 ## O que há na tela
 
@@ -18,7 +18,7 @@ Nesta página você vê onde gerenciar a conexão com o Google, a chave de veloc
 
 Campos: **İstemci kimliği** (ID do cliente) e **Gizli anahtar** (Chave secreta). Ambos são detalhes da chave de acesso que você obtém do Google. Botões: **Kaydet** (Salvar), **Vazgeç** (Cancelar), **Değiştir** (Alterar) e **Sil** (Excluir). **Sil** corta as conexões existentes. A configuração passo a passo está no guia da conexão com o Google.
 
-**Hizmet hesabı** (Conta de serviço; o caminho mais curto). Uma conta de serviço é uma conta de robô criada no Google para o aplicativo. No campo **JSON anahtar dosyası** (Arquivo de chave JSON), você cola o conteúdo do arquivo que baixou do Google Cloud. Se uma estiver salva, o endereço de e-mail da conta aparece. A tela informa onde adicionar esse endereço:
+**Hizmet hesabı** (Conta de serviço; o caminho mais curto). Uma conta de serviço é uma conta criada no Google para o aplicativo usar, não para uma pessoa. No campo **JSON anahtar dosyası** (Arquivo de chave JSON), você cola o conteúdo do arquivo que baixou do Google Cloud. Se uma estiver salva, o endereço de e-mail da conta aparece. A tela informa onde adicionar esse endereço:
 
 - Search Console: "Ayarlar → Kullanıcılar ve izinler → Kullanıcı ekle" (Configurações → Usuários e permissões → Adicionar usuário), permissão Full.
 - Analytics: "Yönetici → Erişim yönetimi" (Administrador → Gerenciamento de acesso), permissão Viewer.
@@ -36,9 +36,9 @@ O selo diz **Kayıtlı** (Salvo) ou **Kullanılmıyor** (Não utilizada). Uma co
 - Relatórios por projeto: 10.000; modelos: 10.
 - Maior relatório: 500.000 bytes.
 
-O estado de cada cartão é **Yeterli** (Suficiente), **Azalıyor** (Acabando, depois de 70 por cento), **Neredeyse doldu** (Quase cheio, depois de 90 por cento) ou **Bilinmiyor** (Desconhecido).
+O estado de cada cartão é **Yeterli** (Suficiente), **Azalıyor** (Acabando, a partir de 70%), **Neredeyse doldu** (Quase cheio, a partir de 90%) ou **Bilinmiyor** (Desconhecido).
 
-**Hakkında** (Sobre). A linha **Sürüm** (Versão) mostra a versão (como v2.3.0). A chave **Güncellemeleri kontrol et** (Verificar atualizações) vem ligada por padrão. Quando está ligada, o aplicativo pergunta ao GitHub a versão mais recente no máximo uma vez por dia. Nesse caso, o botão **Şimdi kontrol et** (Verificar agora) também aparece. Se houver uma versão nova, aparece um link **Değişiklikler** (Alterações) e, para instalações Docker, um comando para copiar: `git pull && docker compose up -d --build`. Para o pacote Windows, ele aponta para **Güncelle** (Atualizar) no ícone da barra de tarefas. Se a atualização automática estiver ligada, a versão nova se instala sozinha.
+**Hakkında** (Sobre). A linha **Sürüm** (Versão) mostra a versão (como v2.3.0). A opção **Güncellemeleri kontrol et** (Verificar atualizações) vem ligada por padrão. Quando está ligada, o aplicativo pergunta ao GitHub a versão mais recente no máximo uma vez por dia. Nesse caso, o botão **Şimdi kontrol et** (Verificar agora) também aparece. Se houver uma versão nova, aparece um link **Değişiklikler** (Alterações) e, para instalações Docker, um comando para copiar: `git pull && docker compose up -d --build`. Para o pacote Windows, ele aponta para **Güncelle** (Atualizar) no ícone da barra de tarefas. Se a atualização automática estiver ligada, a versão nova se instala sozinha.
 
 **Sürüm notları** (Notas de versão). Lista o que mudou em cada versão.
 
@@ -46,7 +46,7 @@ O estado de cada cartão é **Yeterli** (Suficiente), **Azalıyor** (Acabando, d
 
 1. Na primeira configuração, informe primeiro o ID do cliente e a chave secreta na seção **Google**. Depois informe a chave do PageSpeed na seção **Hız ölçümü** (Medição de velocidade). Quando as duas estiverem salvas, vá ao projeto e escolha a propriedade.
 2. Uma vez por mês, olhe a seção **Sınırlar** (Limites). A cota que você vê como "Azalıyor" (Acabando) costuma ser o limite de URL Inspection.
-3. Se houver uma versão nova na seção **Hakkında** (Sobre), atualize. As notas de versão dizem o que mudou. A verificação de atualização é a única conexão do seu computador com algum lugar que não seja o Google. Se você não a quiser, desligue a chave.
+3. Se houver uma versão nova na seção **Hakkında** (Sobre), atualize. As notas de versão dizem o que mudou. A verificação de atualização é a única conexão do seu computador com algum lugar que não seja o Google. Se você não a quiser, desligue essa opção.
 4. Se precisar trocar a chave de acesso do Google (por exemplo, um novo projeto do Cloud), clique em **Değiştir** (Alterar) e cole os valores novos. As conexões existentes não funcionam com a chave nova. Nos projetos, você precisa escolher **Yeniden bağlan** (Reconectar).
 
 ## Perguntas frequentes

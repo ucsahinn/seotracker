@@ -6,7 +6,7 @@
     <title>Fehlerbehebung | seowatcher-Anleitung</title>
     <meta
       name="description"
-      content="Die häufigsten Probleme mit Symptom, Ursache und Lösung. Belegte Portnummer, Windows-Warnung, Google-Fehler, Kontingent, hängendes Audit, leere Diagramme und Assistent 401 stehen hier."
+      content="Häufige Probleme mit Symptom, Ursache und Lösung: Port, Windows-Warnung, Google-Fehler, Kontingent, hängendes Audit, leere Diagramme, Assistent 401."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -49,6 +49,7 @@
       href="https://seowatcher.io/docs/sorun-giderme/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -75,7 +76,7 @@
     <meta property="og:title" content="Fehlerbehebung | seowatcher-Anleitung" />
     <meta
       property="og:description"
-      content="Die häufigsten Probleme mit Symptom, Ursache und Lösung. Belegte Portnummer, Windows-Warnung, Google-Fehler, Kontingent, hängendes Audit, leere Diagramme und Assistent 401 stehen hier."
+      content="Häufige Probleme mit Symptom, Ursache und Lösung: Port, Windows-Warnung, Google-Fehler, Kontingent, hängendes Audit, leere Diagramme, Assistent 401."
     />
     <meta
       property="og:image"
@@ -105,7 +106,7 @@
     />
     <meta
       name="twitter:description"
-      content="Die häufigsten Probleme mit Symptom, Ursache und Lösung. Belegte Portnummer, Windows-Warnung, Google-Fehler, Kontingent, hängendes Audit, leere Diagramme und Assistent 401 stehen hier."
+      content="Häufige Probleme mit Symptom, Ursache und Lösung: Port, Windows-Warnung, Google-Fehler, Kontingent, hängendes Audit, leere Diagramme, Assistent 401."
     />
     <meta
       name="twitter:image"
@@ -142,11 +143,11 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/de/docs/fehlerbehebung/#article",
             "headline": "Fehlerbehebung",
-            "description": "Die häufigsten Probleme mit Symptom, Ursache und Lösung. Belegte Portnummer, Windows-Warnung, Google-Fehler, Kontingent, hängendes Audit, leere Diagramme und Assistent 401 stehen hier.",
+            "description": "Häufige Probleme mit Symptom, Ursache und Lösung: Port, Windows-Warnung, Google-Fehler, Kontingent, hängendes Audit, leere Diagramme, Assistent 401.",
             "url": "https://seowatcher.io/de/docs/fehlerbehebung/",
             "inLanguage": "de",
             "dateModified": "2026-10-23",
-            "articleSection": "Nachschlagen",
+            "articleSection": "Hilfe und Nachschlagen",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
             "publisher": { "@id": "https://seowatcher.io/#author" },
@@ -181,7 +182,7 @@
       }
     </script>
     <script src="/assets/docs.js?v=2.4.1" defer></script>
-    <meta name="theme-color" content="#272c3b" />
+    <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
         font-family: "Geist";
@@ -771,6 +772,95 @@
       footer a:hover {
         color: var(--fg);
       }
+      /* The one ask on the page: quiet, one line, the accent only on the link. */
+      footer .star {
+        flex-basis: 100%;
+        margin: 0 0 4px;
+        text-wrap: pretty;
+      }
+      footer .star a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      footer .star a:hover {
+        color: var(--accent-link);
+        text-decoration-color: var(--accent-link);
+      }
+
+      /* Headings enter as they scroll into view. docs.js adds .hx (and .in
+         once seen) only when motion is allowed, so without script, under
+         reduced motion and with "stop motion" on, they are simply there.
+         h1 wipes in from the left, h2 rises while an amber stroke draws
+         along its rule, h3 rises a little. */
+      article .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease),
+          clip-path 760ms var(--ease),
+          filter 620ms var(--ease);
+      }
+      article h1.hx {
+        clip-path: inset(-10% 100% -10% 0);
+        filter: blur(6px);
+      }
+      article h2.hx,
+      article h3.hx {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      article h3.hx {
+        transform: translateY(6px);
+      }
+      article h2.hx {
+        position: relative;
+      }
+      article h2.hx::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 56px;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 700ms var(--ease) 160ms;
+      }
+      article .hx.in {
+        opacity: 1;
+        transform: none;
+      }
+      article h1.hx.in {
+        clip-path: inset(-10% 0 -10% 0);
+        filter: none;
+      }
+      article h2.hx.in::before {
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        article .hx,
+        article h2.hx::before {
+          opacity: 1;
+          transform: none;
+          clip-path: none;
+          filter: none;
+          transition: none;
+        }
+      }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
 
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
@@ -1215,7 +1305,11 @@
         <nav class="topnav" aria-label="Website">
           <a class="hide" href="/de/">Startseite</a>
           <a class="hide" href="/de/docs/">Anleitung</a>
-          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+          <a
+            class="hide"
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub</a
           >
           <details class="langs">
@@ -1242,7 +1336,7 @@
                       <circle cx="8.4" cy="7" r="2.7" fill="#e30a17" />
                       <polygon
                         fill="#fff"
-                        points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"
+                        points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"
                       /></svg></span
                   >Türkçe</a
                 >
@@ -1265,12 +1359,12 @@
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#fff"
-                        stroke-width="3.6"
+                        stroke-width="4.2"
                       />
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#c8102e"
-                        stroke-width="2"
+                        stroke-width="2.6"
                       /></svg></span
                   >English</a
                 >
@@ -1345,6 +1439,8 @@
           <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            target="_blank"
+            rel="noopener noreferrer"
             ><span class="long">Für Windows herunterladen</span
             ><span class="short">Download</span></a
           >
@@ -1401,7 +1497,7 @@
             <li><a href="/de/docs/projektinfo/">Projektinfo</a></li>
             <li><a href="/de/docs/einstellungen/">Einstellungen</a></li>
           </ul>
-          <p class="nav-group">Nachschlagen</p>
+          <p class="nav-group">Hilfe und Nachschlagen</p>
           <ul>
             <li><a href="/de/docs/hilfe/">Hilfe</a></li>
             <li><a href="/de/docs/audit-regeln/">Audit-Regeln</a></li>
@@ -1418,9 +1514,9 @@
       <article id="icerik" data-page="sorun-giderme">
         <h1>Fehlerbehebung</h1>
         <p class="lede">
-          Die häufigsten Probleme mit Symptom, Ursache und Lösung. Belegte
-          Portnummer, Windows-Warnung, Google-Fehler, Kontingent, hängendes
-          Audit, leere Diagramme und Assistent 401 stehen hier.
+          Häufige Probleme mit Symptom, Ursache und Lösung: Port,
+          Windows-Warnung, Google-Fehler, Kontingent, hängendes Audit, leere
+          Diagramme, Assistent 401.
         </p>
         <p>
           Die Oberfläche der App ist auf Türkisch. Diese Anleitung nennt jede
@@ -1484,9 +1580,9 @@
           stehen „Workers runtime failed to start“ und „0xc0000005“.
         </p>
         <p class="callout callout-sebep">
-          <strong>Ursache:</strong> Der Motor der App benötigt das
-          Visual-C++-Paket von Microsoft (2015-2022, 64 Bit). Auf einem frisch
-          installierten Windows fehlt dieses Paket oder ist veraltet.
+          <strong>Ursache:</strong> Die App benötigt das Visual-C++-Paket von
+          Microsoft (2015-2022, 64 Bit). Auf einem frisch installierten Windows
+          fehlt dieses Paket oder ist veraltet.
         </p>
         <p class="callout callout-cozum">
           <strong>Lösung:</strong> Klicken Sie auf die erscheinende Sprechblase
@@ -1518,8 +1614,11 @@
           <code>https://aka.ms/vs/17/release/vc_redist.x64.exe</code> herunter
           und installieren Sie sie.
         </p>
-        <h2 id="das-symbol-meldet-uygulamanin-motoru-coktu">
-          Das Symbol meldet „Uygulamanın motoru çöktü“
+        <h2
+          id="das-symbol-meldet-uygulamanin-motoru-coktu-der-programmkern-ist-abgesturzt"
+        >
+          Das Symbol meldet „Uygulamanın motoru çöktü“ (Der Programmkern ist
+          abgestürzt)
         </h2>
         <p class="callout callout-belirti">
           <strong>Symptom:</strong> Die App öffnet sich nicht. Im Protokoll
@@ -1527,12 +1626,12 @@
           Visual-C++-Paket ist installiert.
         </p>
         <p class="callout callout-sebep">
-          <strong>Ursache:</strong> Der Motor der App (workerd) bleibt auf
-          diesem Computer an einer Systemdatei hängen. Die App probiert den
-          Motor beim Start allein aus. Sagt sie „Tek başına da başlayamıyor“
-          (Startet auch allein nicht), liegt das Problem am Computer. Sagt sie
-          „Tek başına çalışıyor“ (Läuft allein), liegt das Problem im
-          Datenordner oder in der Konfiguration.
+          <strong>Ursache:</strong> Der Programmkern der App (workerd) bleibt
+          auf diesem Computer an einer Systemdatei hängen. Die App testet ihn
+          beim Start einzeln. Sagt sie „Tek başına da başlayamıyor“ (Startet
+          auch allein nicht), liegt das Problem am Computer. Sagt sie „Tek
+          başına çalışıyor“ (Läuft allein), liegt das Problem im Datenordner
+          oder in der Konfiguration.
         </p>
         <p class="callout callout-cozum">
           <strong>Lösung:</strong> Wählen Sie zuerst
@@ -1545,8 +1644,8 @@
           Ordner <code>%LOCALAPPDATA%\seowatcher\logs\dumps</code>. Wenn Sie
           möchten, hängen Sie sie auch an die Meldung an.
         </p>
-        <h2 id="windows-meldet-der-computer-wurde-geschutzt">
-          Windows meldet „Der Computer wurde geschützt“
+        <h2 id="windows-meldet-der-computer-wurde-durch-windows-geschutzt">
+          Windows meldet „Der Computer wurde durch Windows geschützt“
         </h2>
         <p class="callout callout-belirti">
           <strong>Symptom:</strong> Die Installationsdatei öffnet sich nicht, es
@@ -1580,9 +1679,9 @@
           Kopierschaltfläche im Bereich
           <strong>Ayarlar → Google</strong> (Einstellungen → Google). Fügen Sie
           sie in der Cloud Console in das Adressfeld des
-          Google-Zugangsschlüssels (des OAuth-Clients) ein. Localhost statt
-          127.0.0.1, http statt https oder ein Schrägstrich am Ende machen den
-          Unterschied.
+          Google-Zugangsschlüssels (des OAuth-Clients) ein. Schon localhost
+          statt 127.0.0.1, http statt https oder ein Schrägstrich am Ende lösen
+          den Fehler aus.
         </p>
         <h2 id="google-erisim-anahtari-eksik">
           „Google erişim anahtarı eksik“
@@ -1605,13 +1704,13 @@
         </p>
         <h2 id="google-meldet-access-denied">Google meldet „access_denied“</h2>
         <p class="callout callout-belirti">
-          <strong>Symptom:</strong> Nach dem Freigabebildschirm erscheint die
+          <strong>Symptom:</strong> Nach dem Zustimmungsbildschirm erscheint die
           Meldung „iptal edildi“ (abgebrochen).
         </p>
         <p class="callout callout-sebep">
           <strong>Ursache:</strong> Das Google-Konto, mit dem Sie sich
           angemeldet haben, steht nicht in der Liste der Testnutzer auf dem
-          Freigabebildschirm.
+          Zustimmungsbildschirm.
         </p>
         <p class="callout callout-cozum">
           <strong>Lösung:</strong> Fügen Sie das Konto in der Cloud Console
@@ -1636,8 +1735,9 @@
         <p class="callout callout-cozum">
           <strong>Lösung:</strong> Klicken Sie auf der Karte auf
           <strong>Yeniden bağlan</strong> (Neu verbinden). Wiederholt sich das
-          oft, stellen Sie den Freigabebildschirm auf Produktion oder wechseln
-          Sie zum Dienstkonto (<strong>Ayarlar → Hizmet hesabı</strong>).
+          oft, stellen Sie den Zustimmungsbildschirm auf Produktion oder
+          wechseln Sie zum Dienstkonto (<strong>Ayarlar → Hizmet hesabı</strong
+          >).
         </p>
         <h2 id="keine-suchanfragedaten-die-diagramme-sind-leer">
           Keine Suchanfragedaten, die Diagramme sind leer
@@ -1670,11 +1770,11 @@
         </p>
         <p class="callout callout-sebep">
           <strong>Ursache:</strong> Das ist kein Fehler. Google zählt jede
-          Seite, die bei derselben Suche erscheint, einzeln. Die Karte ist die
+          Seite, die bei derselben Suche erscheint, einzeln. Die Karte zeigt die
           Summe der Website.
         </p>
         <p class="callout callout-cozum">
-          <strong>Lösung:</strong> Lesen Sie die Summe von der Karte ab. Deuten
+          <strong>Lösung:</strong> Lesen Sie die Summe von der Karte ab. Lesen
           Sie die Tabelle Seite für Seite.
         </p>
         <h2 id="das-audit-hangt-bei-suruyor-lauft">
@@ -1695,7 +1795,7 @@
           den Grund. Klicken Sie dann auf
           <strong>Aynı ayarlarla yeniden başlat</strong> (Mit denselben
           Einstellungen neu starten). Starten Sie nicht zwei Audits gleichzeitig
-          mit Geschwindigkeitsmessung, sie bremsen sich gegenseitig.
+          mit Geschwindigkeitsmessung, weil sie sich gegenseitig bremsen.
         </p>
         <h2 id="das-audit-meldet-engellendik-wir-wurden-blockiert">
           Das Audit meldet „Engellendik“ (Wir wurden blockiert)
@@ -1735,9 +1835,10 @@
         <p class="callout callout-cozum">
           <strong>Lösung:</strong> Holen Sie sich nach der Anleitung zum
           PageSpeed-Schlüssel einen kostenlosen Schlüssel. Ist das
-          Tageskontingent aufgebraucht, wird es morgen in einem neuen Audit
-          vervollständigt. War die Geschwindigkeitsmessung beim Start des Audits
-          ausgeschaltet, wird sie für dieses Audit nicht nachgeholt.
+          Tageskontingent aufgebraucht, können Sie die Messung morgen in einem
+          neuen Audit vervollständigen. War die Geschwindigkeitsmessung beim
+          Start des Audits ausgeschaltet, wird sie für dieses Audit nicht
+          nachgeholt.
         </p>
         <h2 id="url-prufung-tagesgrenze-erreicht">
           URL-Prüfung: „Tagesgrenze erreicht“
@@ -1755,7 +1856,7 @@
         </p>
         <p class="callout callout-cozum">
           <strong>Lösung:</strong> Machen Sie morgen weiter. Die App fragt nur
-          veraltete Antworten neu ab, Ihr Kontingent geht nicht verloren.
+          veraltete Antworten neu ab, es wird also kein Kontingent verschwendet.
         </p>
         <h2 id="in-analytics-erscheint-localhost-traffic">
           In Analytics erscheint Localhost-Traffic
@@ -1772,8 +1873,8 @@
           <strong>Lösung:</strong> Stellen Sie das Tag so ein, dass es nur auf
           der echten Domain geladen wird. In den meisten Werkzeugen gibt es
           dafür die Option „Domainprüfung“. Die App filtert diese Zeilen nicht
-          von selbst heraus. Bis dahin lesen Sie die Tabelle mit Blick auf die
-          Spalte Alan adı.
+          von selbst heraus. Bis dahin beachten Sie in der Tabelle die Spalte
+          Alan adı.
         </p>
         <h2 id="der-assistent-kann-sich-nicht-verbinden-401">
           Der Assistent kann sich nicht verbinden (401)
@@ -1794,11 +1895,11 @@
             >docker compose exec -T seotracker cat
             /app/.wrangler/mcp-token</code
           >
-          ein. Löschen Sie das Zeilenende-Zeichen am Ende des Wertes. Möchten
-          Sie kein Terminal benutzen, öffnen Sie die Datei mit dem Editor
-          (Notepad), markieren die ganze Zeile und kopieren sie. Lassen Sie kein
-          Zeilenende stehen. Geben Sie in Claude Code <code>/mcp</code> ein und
-          wählen Sie <strong>Reconnect</strong>.
+          ein. Entfernen Sie den Zeilenumbruch am Ende des Wertes. Möchten Sie
+          kein Terminal benutzen, öffnen Sie die Datei mit dem Editor (Notepad),
+          markieren die ganze Zeile und kopieren sie. Achten Sie darauf, dass
+          kein Zeilenumbruch mitkopiert wird. Geben Sie in Claude Code
+          <code>/mcp</code> ein und wählen Sie <strong>Reconnect</strong>.
         </p>
         <h2
           id="docker-braucht-beim-ersten-start-sehr-lange-oder-meldet-unhealthy"
@@ -1810,16 +1911,16 @@
           nach fünf Minuten nicht healthy.
         </p>
         <p class="callout callout-sebep">
-          <strong>Ursache:</strong> Beim ersten Start wird die App in der Box
-          (dem Container) gebaut und braucht etwa 2 GB Arbeitsspeicher. Reicht
-          der Arbeitsspeicher nicht, bricht der Bau ab.
+          <strong>Ursache:</strong> Beim ersten Start wird die App im Container
+          gebaut und braucht etwa 2 GB Arbeitsspeicher. Reicht der
+          Arbeitsspeicher nicht, bricht der Bau ab.
         </p>
         <p class="callout callout-cozum">
           <strong>Lösung:</strong> Geben Sie
           <code>docker compose logs --tail 50</code> ein und sehen Sie sich die
-          letzten Zeilen an. Gibt es einen Speicherfehler, geben Sie den Boxen
-          in den Einstellungen von Docker Desktop mehr Arbeitsspeicher. Geben
-          Sie dann <code>docker compose up -d --build</code> ein.
+          letzten Zeilen an. Gibt es einen Speicherfehler, geben Sie Docker
+          Desktop in den Einstellungen mehr Arbeitsspeicher. Geben Sie dann
+          <code>docker compose up -d --build</code> ein.
         </p>
         <h2 id="wo-liegen-daten-und-protokolle">
           Wo liegen Daten und Protokolle?
@@ -1891,7 +1992,10 @@
         </nav>
         <p class="meta">
           Zuletzt aktualisiert: 23 Oktober 2026. Fehler entdeckt?
-          <a href="https://github.com/ucsahinn/seotracker/issues"
+          <a
+            href="https://github.com/ucsahinn/seotracker/issues"
+            target="_blank"
+            rel="noopener noreferrer"
             >Auf GitHub melden</a
           >.
         </p>
@@ -1918,13 +2022,15 @@
             >
           </li>
           <li>
-            <a href="#das-symbol-meldet-uygulamanin-motoru-coktu"
-              >Das Symbol meldet „Uygulamanın motoru çöktü“</a
+            <a
+              href="#das-symbol-meldet-uygulamanin-motoru-coktu-der-programmkern-ist-abgesturzt"
+              >Das Symbol meldet „Uygulamanın motoru çöktü“ (Der Programmkern
+              ist abgestürzt)</a
             >
           </li>
           <li>
-            <a href="#windows-meldet-der-computer-wurde-geschutzt"
-              >Windows meldet „Der Computer wurde geschützt“</a
+            <a href="#windows-meldet-der-computer-wurde-durch-windows-geschutzt"
+              >Windows meldet „Der Computer wurde durch Windows geschützt“</a
             >
           </li>
           <li>
@@ -2006,10 +2112,25 @@
     </main>
     <footer>
       <div class="wrap">
+        <p class="star">
+          Ein Stern hilft anderen, ein kostenloses Werkzeug zu finden.
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Auf GitHub mit einem Stern markieren</a
+          >
+        </p>
         <span>seowatcher, MIT-Lizenz.</span>
         <span
           ><a href="/de/">Startseite</a> &nbsp;
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          &nbsp;
           <a href="/de/docs/versionshinweise/">Versionshinweise</a></span
         >
       </div>

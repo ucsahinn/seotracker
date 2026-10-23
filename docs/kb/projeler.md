@@ -6,7 +6,7 @@ route: /projects, /p/{proje}/settings
 updated: 2026-10-22
 ---
 
-Proje açar, ayarlarını değiştirir, gerekirse kaldırırsınız. Her site bir projedir. Her projenin kendi Google bağlantısı, kendi denetimleri ve kendi raporları olur.
+Proje açar, ayarlarını değiştirir, gerekirse arşivlersiniz. Her site bir projedir. Her projenin kendi Google bağlantısı, kendi denetimleri ve kendi raporları olur.
 
 ## Ekranda neler var
 
@@ -32,7 +32,7 @@ Proje açar, ayarlarını değiştirir, gerekirse kaldırırsınız. Her site bi
 
 ### Google bağlantısını değiştirme
 
-**Bağlantılar** sekmesindeki kartta **Mülkü veya hesabı değiştir**'e basın. Başka bir site (Google'ın deyişiyle "mülk") ya da başka bir Google hesabı seçebilirsiniz. **Bağlantıyı kes** yalnızca bu projenin bağlantısını kaldırır. Google hesabınız kayıtlı kalır, onay da sorulmaz. Bir Google hesabını tamamen kaldırmak için seçim penceresindeki **Hesabı kaldır**'ı kullanın. Pencere hangi projelerin etkileneceğini size söyler.
+**Bağlantılar** sekmesindeki kartta **Mülkü veya hesabı değiştir**'e basın. Başka bir site (Google'ın deyişiyle "mülk") ya da başka bir Google hesabı seçebilirsiniz. **Bağlantıyı kes** yalnızca bu projenin bağlantısını kaldırır. Google hesabınız kayıtlı kalır, onay da sorulmaz. Bir Google hesabını tamamen kaldırmak için seçim penceresindeki **Hesabı kaldır**'ı kullanın. Pencere hangi projelerin etkileneceğini gösterir.
 
 ### Projeyi arşivleme
 
@@ -40,7 +40,7 @@ Projeler silinmez, arşivlenir. **Genel** sekmesinin altındaki **Projeyi arşiv
 
 ## Sayılar nasıl hesaplanır
 
-Bu ekranda sayı yok. Alan adı kaydedilirken şu kurallar işler: boşluklar ve büyük harfler temizlenir, adres gerçek bir alan adı olmalıdır (IP adresi, `localhost` ya da uydurma uzantı kabul edilmez). Hatalı girerseniz "Geçerli bir alan adı girin, örneğin acme.com." uyarısı çıkar.
+Bu ekranda sayı yok. Alan adı kaydedilirken şu kurallar geçerlidir: boşluklar ve büyük harfler temizlenir, adres gerçek bir alan adı olmalıdır (IP adresi, `localhost` ya da uydurma uzantı kabul edilmez). Hatalı girerseniz "Geçerli bir alan adı girin, örneğin acme.com." uyarısı çıkar.
 
 ## Sık sorulanlar
 
@@ -48,7 +48,7 @@ Bu ekranda sayı yok. Alan adı kaydedilirken şu kurallar işler: boşluklar ve
 
 **Bir projeye iki site bağlayabilir miyim?** Hayır. Bir projede bir Search Console mülkü ve bir Analytics mülkü olur. İkinci site için ikinci bir proje açın.
 
-**"Default" adında bir proje var, nedir?** Uygulama ilk açılışta boş bir proje oluşturur, ekranlar açılabilsin diye. Adını değiştirip kullanabilirsiniz. İsterseniz yeni proje açıp onu arşivleyin.
+**"Default" adında bir proje var, nedir?** Uygulama ekranlar açılabilsin diye ilk açılışta boş bir proje oluşturur. Adını değiştirip kullanabilirsiniz. İsterseniz yeni proje açıp onu arşivleyin.
 
 **Yanlış ülke seçtim.** Genel sekmesinden değiştirin. Kaydettiğiniz kelimelerin sıraları o andan sonra yeni ülkeye göre izlenir.
 

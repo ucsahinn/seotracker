@@ -5,7 +5,7 @@ kind: nasil-yapilir
 updated: 2026-10-22
 ---
 
-Ao fim desta página, o aplicativo estará rodando no Docker (um programa que executa aplicativos dentro de uma caixa fechada) e aberto em `http://localhost:3001`. Se você usa Windows, a instalação de arquivo único para Windows é bem mais fácil. Esta página é para Mac, Linux e para quem já usa Docker. A primeira inicialização leva alguns minutos, porque o aplicativo é construído dentro da caixa (o contêiner). As inicializações seguintes levam segundos.
+Ao fim desta página, o aplicativo estará rodando no Docker (um programa que executa aplicativos em contêineres isolados) e aberto em `http://localhost:3001`. Se você usa Windows, o instalador de arquivo único é bem mais fácil. Esta página é para Mac, Linux e para quem já usa Docker. A primeira inicialização leva alguns minutos, porque o aplicativo é construído dentro do contêiner. As inicializações seguintes levam segundos.
 
 ## O que você precisa
 
@@ -59,12 +59,12 @@ docker compose up -d --build
 
 - Para parar: `docker compose stop`
 - Para iniciar de novo: `docker compose up -d`
-- Para remover a caixa e manter os dados: `docker compose down`
+- Para remover o contêiner e manter os dados: `docker compose down`
 - Para apagar também os dados: `docker compose down -v`. Este comando apaga de forma permanente o banco de dados, as conexões com o Google e os relatórios.
 
 ### Backup
 
-Seus dados estão no volume `seotracker_data`, no caminho `/app/.wrangler` dentro da caixa. Para fazer um backup, execute estes três comandos, nesta ordem:
+Seus dados estão no volume `seotracker_data`, no caminho `/app/.wrangler` dentro do contêiner. Para fazer um backup, execute estes três comandos, nesta ordem:
 
 ```sh
 docker compose stop
@@ -72,7 +72,7 @@ docker run --rm -v seotracker_data:/data -v "$PWD":/backup alpine tar czf /backu
 docker compose up -d
 ```
 
-Para restaurar, use `tar xzf` no lugar de `tar czf` no mesmo comando. O arquivo `instance-secret`, no volume de dados, é a chave que criptografa as conexões com o Google. Um backup sem ele abre sem as conexões com o Google.
+Para restaurar, use `tar xzf` no lugar de `tar czf` no mesmo comando. O arquivo `instance-secret`, no volume de dados, é a chave que criptografa as conexões com o Google. Sem ele, o backup é restaurado sem as conexões com o Google.
 
 ### Configurações (opcional)
 
@@ -81,7 +81,7 @@ Nenhuma configuração é obrigatória. Se quiser mudar algo, coloque um arquivo
 | Nome da configuração                   | O que faz                                                                                                                                    |
 | -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | PORT                                   | O número da porta, 3001 por padrão. Quando ele muda, os endereços de redirecionamento do Google também mudam                                 |
-| ALLOWED_HOST                           | O nome visto de fora, se você estiver atrás de outro servidor. Se estiver vazio, só localhost                                                |
+| ALLOWED_HOST                           | O nome pelo qual o aplicativo é acessado de fora, se houver outro servidor na frente. Se estiver vazio, só localhost                         |
 | AUTH_MODE                              | `local_noauth` (padrão) ou `cloudflare_access`                                                                                               |
 | BETTER_AUTH_SECRET                     | A chave de criptografia. Deixe vazia e o aplicativo cria uma. Se você a definir à mão, use pelo menos 32 caracteres e depois não a altere    |
 | GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET | Uma alternativa a informá-los na tela **Ayarlar** (Configurações). O valor informado na tela tem prioridade                                  |
@@ -96,7 +96,7 @@ Nenhuma configuração é obrigatória. Se quiser mudar algo, coloque um arquivo
 
 ## Perguntas frequentes
 
-**Por que a primeira inicialização demora?** O aplicativo é construído dentro da caixa. Nas inicializações seguintes, a construção é pulada.
+**Por que a primeira inicialização demora?** O aplicativo é construído dentro do contêiner. Nas inicializações seguintes, a construção é pulada.
 
 **Onde está o arquivo `.env.example`?** Não há nenhum. Esse arquivo, herdado do projeto de origem, descrevia coisas que não existem nesta versão. A lista completa está na tabela acima e no arquivo `docs/ENVIRONMENT.md`.
 
@@ -106,7 +106,7 @@ Nenhuma configuração é obrigatória. Se quiser mudar algo, coloque um arquivo
 
 ## Se algo der errado
 
-- **Aparece "Bind for 127.0.0.1:3001 failed".** O número da porta está em uso. Coloque na pasta do projeto um arquivo `.env` com a linha `PORT=3002` e recrie a caixa. No Windows, o Bloco de Notas pode salvar o arquivo como `.env.txt`. No PowerShell, `Set-Content -Encoding ascii .env 'PORT=3002'` é seguro.
+- **Aparece "Bind for 127.0.0.1:3001 failed".** O número da porta está em uso. Coloque na pasta do projeto um arquivo `.env` com a linha `PORT=3002` e recrie o contêiner. No Windows, o Bloco de Notas pode salvar o arquivo como `.env.txt`. No PowerShell, `Set-Content -Encoding ascii .env 'PORT=3002'` é seguro.
 - **O estado é "unhealthy".** `docker compose logs --tail 50` mostra as últimas linhas. Se a memória acabou durante a construção, dê mais memória ao Docker Desktop.
 - **A conexão com o Google diz "yapılandırılmamış" (não configurada).** Se `BETTER_AUTH_SECRET` tiver menos de 32 caracteres, o Google fica desligado. Se você a definiu à mão, deixe-a mais longa. Se não definiu, o arquivo `instance-secret` no volume de dados pode estar danificado.
 - **A conexão com o Google caiu depois de uma atualização.** `BETTER_AUTH_SECRET` mudou ou o volume de dados foi recriado. Escolha **Yeniden bağlan** (Reconectar) nas configurações do projeto.

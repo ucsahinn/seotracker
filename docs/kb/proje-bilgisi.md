@@ -16,7 +16,7 @@ Google'ın bilmediği şeyleri **Proje bilgisi** ekranına yazarsınız. Ne satt
 
 **Özel bölümler.** Dört bölüme sığmayan bir konu varsa kendi başlığınızı açarsınız. En çok 20 özel bölüm açabilirsiniz, başlık en çok 120 karakter olur.
 
-**Rakipler.** Alan adını yazmak zorunludur. Ad ve not yazmak size kalmış. En çok 100 rakip ekleyebilirsiniz, not en çok 500 karakter olur. Uygulama rakibin verisini çekmez. Liste sizin ve asistanınızın hatırlaması için var.
+**Rakipler.** Alan adını yazmak zorunludur. Ad ve not isteğe bağlıdır. En çok 100 rakip ekleyebilirsiniz, not en çok 500 karakter olur. Uygulama rakibin verisini çekmez. Liste sizin ve asistanınızın hatırlaması için var.
 
 **Önemli sayfalar.** Her sayfa için adres, rol, konu ve not yazarsınız. Roller şunlar:
 
@@ -41,7 +41,7 @@ En çok 100 sayfa ekleyebilirsiniz. Adresler https ile başlayacak şekilde düz
 
 ## Sayılar nasıl hesaplanır
 
-Bu ekranda hesaplanan bir sayı yok, yalnızca sınırlar var. Onları yukarıda yazdık.
+Bu ekranda hesaplanan bir sayı yok, yalnızca sınırlar var. Sınırlar yukarıda yazıyor.
 
 Asistan tek seferde en çok 50 değişiklik yapabilir. Her değişiklik hemen yazılır, size onay sorulmaz. Bu yüzden asistanınıza "yazmadan önce bana sor" demeyi alışkanlık edinin. İyi kurulmuş asistan becerileri zaten sorar.
 
@@ -49,13 +49,13 @@ Asistan tek seferde en çok 50 değişiklik yapabilir. Her değişiklik hemen ya
 
 ## Sık sorulanlar
 
-**Asistan yanlış bir şey yazmış, ne yapayım?** Bölümü açıp düzeltin. Son güncelleyen olarak sizin adınız görünür. Asistan bir sonraki okuyuşta sizin halinizi görür.
+**Asistan yanlış bir şey yazmış, ne yapayım?** Bölümü açıp düzeltin. Son güncelleyen olarak sizin adınız görünür. Asistan bir sonraki okuyuşta sizin düzeltmenizi görür.
 
 **Rakip ekledim, verisi gelmedi.** Gelmez. Uygulama rakip verisi çekmez. Liste, asistanın web araması yaparken nelere bakacağını bilmesi için var.
 
 **Günlükteki not kayboldu.** 90 günden eski notlar silinir. Kalıcı bilgiyi bölümlere taşıyın. Günlük geçici bir defterdir.
 
-**Bu bilgiler Google'a gider mi?** Hayır. Bu bilgiler bu bilgisayarda kalır. Yalnızca bağladığınız asistan okur.
+**Bu bilgiler Google'a gider mi?** Hayır. Bilgiler bu bilgisayarda kalır. Yalnızca bağladığınız asistan okur.
 
 ## Sınırlar
 

@@ -15,6 +15,7 @@
     <link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/docs/palavras-chave-salvas/" />
     <link rel="alternate" hreflang="x-default" href="https://seowatcher.io/docs/kayitli-kelimeler/" />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -59,7 +60,7 @@
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en","de","fr","it","pt"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/en/docs/saved-keywords/#article","headline":"Saved keywords","description":"Tag the searches you have saved here, follow their average position over the last 90 days, and export to CSV or Sheets.","url":"https://seowatcher.io/en/docs/saved-keywords/","inLanguage":"en","dateModified":"2026-10-23","articleSection":"Screens","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/en/docs/saved-keywords/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/en/docs/saved-keywords/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/en/"},{"@type":"ListItem","position":2,"name":"Guide","item":"https://seowatcher.io/en/docs/"},{"@type":"ListItem","position":3,"name":"Saved keywords","item":"https://seowatcher.io/en/docs/saved-keywords/"}]}]}</script>
     <script src="/assets/docs.js?v=2.4.1" defer></script>
-    <meta name="theme-color" content="#272c3b" />
+    <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
         font-family: "Geist";
@@ -649,6 +650,95 @@
       footer a:hover {
         color: var(--fg);
       }
+      /* The one ask on the page: quiet, one line, the accent only on the link. */
+      footer .star {
+        flex-basis: 100%;
+        margin: 0 0 4px;
+        text-wrap: pretty;
+      }
+      footer .star a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      footer .star a:hover {
+        color: var(--accent-link);
+        text-decoration-color: var(--accent-link);
+      }
+
+      /* Headings enter as they scroll into view. docs.js adds .hx (and .in
+         once seen) only when motion is allowed, so without script, under
+         reduced motion and with "stop motion" on, they are simply there.
+         h1 wipes in from the left, h2 rises while an amber stroke draws
+         along its rule, h3 rises a little. */
+      article .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease),
+          clip-path 760ms var(--ease),
+          filter 620ms var(--ease);
+      }
+      article h1.hx {
+        clip-path: inset(-10% 100% -10% 0);
+        filter: blur(6px);
+      }
+      article h2.hx,
+      article h3.hx {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      article h3.hx {
+        transform: translateY(6px);
+      }
+      article h2.hx {
+        position: relative;
+      }
+      article h2.hx::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 56px;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 700ms var(--ease) 160ms;
+      }
+      article .hx.in {
+        opacity: 1;
+        transform: none;
+      }
+      article h1.hx.in {
+        clip-path: inset(-10% 0 -10% 0);
+        filter: none;
+      }
+      article h2.hx.in::before {
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        article .hx,
+        article h2.hx::before {
+          opacity: 1;
+          transform: none;
+          clip-path: none;
+          filter: none;
+          transition: none;
+        }
+      }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
 
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
@@ -1093,13 +1183,19 @@
         <nav class="topnav" aria-label="Site">
           <a class="hide" href="/en/">Home</a>
           <a class="hide" href="/en/docs/">Guide</a>
-          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+          <a
+            class="hide"
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub</a
           >
-          <details class="langs"><summary aria-label="Language: English"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="3.6"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2"/></svg></span><span class="code">EN</span></summary><ul><li><a href="/docs/kayitli-kelimeler/" lang="tr" hreflang="tr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"/></svg></span>Türkçe</a></li><li><a href="/en/docs/saved-keywords/" lang="en" hreflang="en" aria-current="page"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="3.6"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2"/></svg></span>English</a></li><li><a href="/de/docs/gespeicherte-suchbegriffe/" lang="de" hreflang="de"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg></span>Deutsch</a></li><li><a href="/fr/docs/mots-cles-enregistres/" lang="fr" hreflang="fr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg></span>Français</a></li><li><a href="/it/docs/parole-chiave-salvate/" lang="it" hreflang="it"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg></span>Italiano</a></li><li><a href="/pt/docs/palavras-chave-salvas/" lang="pt" hreflang="pt"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#ff0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.6" fill="#ffcc00"/><circle cx="8" cy="7" r="1.5" fill="#ff0000"/></svg></span>Português</a></li></ul></details>
+          <details class="langs"><summary aria-label="Language: English"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2.6"/></svg></span><span class="code">EN</span></summary><ul><li><a href="/docs/kayitli-kelimeler/" lang="tr" hreflang="tr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"/></svg></span>Türkçe</a></li><li><a href="/en/docs/saved-keywords/" lang="en" hreflang="en" aria-current="page"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2.6"/></svg></span>English</a></li><li><a href="/de/docs/gespeicherte-suchbegriffe/" lang="de" hreflang="de"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg></span>Deutsch</a></li><li><a href="/fr/docs/mots-cles-enregistres/" lang="fr" hreflang="fr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg></span>Français</a></li><li><a href="/it/docs/parole-chiave-salvate/" lang="it" hreflang="it"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg></span>Italiano</a></li><li><a href="/pt/docs/palavras-chave-salvas/" lang="pt" hreflang="pt"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#ff0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.6" fill="#ffcc00"/><circle cx="8" cy="7" r="1.5" fill="#ff0000"/></svg></span>Português</a></li></ul></details>
           <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            target="_blank"
+            rel="noopener noreferrer"
             ><span class="long">Download for Windows</span
             ><span class="short">Download</span></a
           >
@@ -1116,38 +1212,41 @@
       <aside class="side" aria-label="Guide">
         <details class="side-dd" open>
           <summary>Guide</summary>
-          <p class="nav-group">Getting started</p><ul><li><a href="/en/docs/install-windows/">Install on Windows</a></li><li><a href="/en/docs/install-docker/">Installing with Docker</a></li><li><a href="/en/docs/google-connection/">Connecting to Google</a></li><li><a href="/en/docs/pagespeed-key/">PageSpeed key</a></li></ul><p class="nav-group">Screens</p><ul><li><a href="/en/docs/projects/">Projects</a></li><li><a href="/en/docs/dashboard/">Dashboard</a></li><li><a href="/en/docs/search-performance/">Search performance</a></li><li><a href="/en/docs/rank-tracking/">Ranking tracking</a></li><li><a href="/en/docs/opportunities/">Opportunities</a></li><li class="current" aria-current="page"><a href="/en/docs/saved-keywords/">Saved keywords</a></li><li><a href="/en/docs/analytics/">Analytics</a></li><li><a href="/en/docs/site-audit/">Site audit</a></li><li><a href="/en/docs/index-status/">Index status</a></li><li><a href="/en/docs/reports/">Reports and templates</a></li><li><a href="/en/docs/project-context/">Project info</a></li><li><a href="/en/docs/settings/">Settings</a></li></ul><p class="nav-group">Reference</p><ul><li><a href="/en/docs/help/">Help</a></li><li><a href="/en/docs/audit-rules/">Audit rules</a></li><li><a href="/en/docs/agent-setup/">Agent setup</a></li><li><a href="/en/docs/troubleshooting/">Troubleshooting</a></li><li><a href="/en/docs/release-notes/">Release notes</a></li></ul>
+          <p class="nav-group">Getting started</p><ul><li><a href="/en/docs/install-windows/">Install on Windows</a></li><li><a href="/en/docs/install-docker/">Installing with Docker</a></li><li><a href="/en/docs/google-connection/">Connecting to Google</a></li><li><a href="/en/docs/pagespeed-key/">PageSpeed key</a></li></ul><p class="nav-group">Screens</p><ul><li><a href="/en/docs/projects/">Projects</a></li><li><a href="/en/docs/dashboard/">Dashboard</a></li><li><a href="/en/docs/search-performance/">Search performance</a></li><li><a href="/en/docs/rank-tracking/">Ranking tracking</a></li><li><a href="/en/docs/opportunities/">Opportunities</a></li><li class="current" aria-current="page"><a href="/en/docs/saved-keywords/">Saved keywords</a></li><li><a href="/en/docs/analytics/">Analytics</a></li><li><a href="/en/docs/site-audit/">Site audit</a></li><li><a href="/en/docs/index-status/">Index status</a></li><li><a href="/en/docs/reports/">Reports and templates</a></li><li><a href="/en/docs/project-context/">Project info</a></li><li><a href="/en/docs/settings/">Settings</a></li></ul><p class="nav-group">Help and reference</p><ul><li><a href="/en/docs/help/">Help</a></li><li><a href="/en/docs/audit-rules/">Audit rules</a></li><li><a href="/en/docs/agent-setup/">Agent setup</a></li><li><a href="/en/docs/troubleshooting/">Troubleshooting</a></li><li><a href="/en/docs/release-notes/">Release notes</a></li></ul>
         </details>
       </aside>
       <article id="icerik" data-page="kayitli-kelimeler">
-        <h1>Saved keywords</h1><p class="lede">Tag the searches you have saved here, follow their average position over the last 90 days, and export to CSV or Sheets.</p><p>On this screen you collect the searches you care about, tag them and follow their positions.</p>
-<p>The app does not suggest keywords. On the Arama performansı (Search performance) or Sıralama takibi (Rank tracking) screen, you choose <strong>Kelime olarak kaydet</strong> (Save as keyword) from a row's menu. The keyword lands here. Here you see each keyword's average position over the last 90 days. The position comes from the Sıralama takibi (Rank tracking) archive. Saving does not start a new tracking job in Google. It filters data that is already collected for these keywords.</p>
+        <h1>Saved keywords</h1><p class="lede">Tag the searches you have saved here, follow their average position over the last 90 days, and export to CSV or Sheets.</p><p>This screen holds the searches you care about, with their tags and positions.</p>
+<p>The app does not suggest keywords. On the <strong>Arama performansı</strong> (Search performance) or <strong>Sıralama takibi</strong> (Ranking tracking) screen, choose <strong>Kelime olarak kaydet</strong> (Save as keyword) from a row's menu, and the keyword appears here with its average position over the last 90 days. The position comes from the Sıralama takibi archive. Saving does not start a new tracking job at Google; it filters data that has already been collected for these keywords.</p>
 <h2 id="what-is-on-the-screen">What is on the screen</h2>
-<p><strong>Top bar.</strong> A description line, <strong>E-Tablolar'a aktar</strong> (Export to Sheets), <strong>CSV indir</strong> (Download CSV) and <strong>Yenile</strong> (Refresh). Below it, it says &quot;{n} kayıtlı kelime&quot; ({n} saved keywords).</p>
-<p><strong>Position distribution card.</strong> Bars showing how many of your keywords are in positions 1-3, 4-10, 11-20 and 21+. Below it there is a note: &quot;sıralar son 90 günün ortalaması&quot; (positions are the average of the last 90 days). A keyword with no record in the archive counts as &quot;Verisi yok&quot; (No data). If the archive is incomplete, you see &quot;Bilinmiyor (arşiv kesildi)&quot; (Unknown, archive cut off). The <strong>İlk 10</strong> (Top 10) and <strong>Sıra 11-20</strong> (Position 11-20) buttons narrow the table to that slice.</p>
-<p><strong>Filter panel.</strong> Under <strong>Sonuçları filtrele</strong> (Filter results) there are the <strong>İçersin</strong> (Contains) and <strong>İçermesin</strong> (Does not contain) boxes. These search for text inside the keyword. For tags, <strong>Etiket ara</strong> (Search tags) is used. <strong>Tümünü temizle</strong> (Clear all) resets everything. A project can have at most 50 tags.</p>
-<p><strong>Table.</strong> Columns: <strong>Kelime</strong> (Keyword), <strong>Ort. sıra</strong> (Avg. position), <strong>Amaç</strong> (Intent), <strong>Etiketler</strong> (Tags), <strong>Eklenme</strong> (Added). If the position is empty, hovering over it says &quot;Search Console bu kelime için sıra kaydetmemiş&quot; (Search Console has not recorded a position for this keyword). The <strong>Amaç</strong> (Intent) column shows what the person searching for the keyword wants:</p>
+<p><strong>Top bar.</strong> A description line, <strong>E-Tablolar'a aktar</strong> (Export to Sheets), <strong>CSV indir</strong> (Download CSV) and <strong>Yenile</strong> (Refresh). A line below shows the count: &quot;{n} kayıtlı kelime&quot; ({n} saved keywords).</p>
+<p><strong>Position distribution card.</strong> Bars show how many of your keywords are in positions 1-3, 4-10, 11-20 and 21+. A note below says &quot;sıralar son 90 günün ortalaması&quot; (positions are the average of the last 90 days). A keyword with no record in the archive counts as &quot;Verisi yok&quot; (No data). If the archive is incomplete, you see &quot;Bilinmiyor (arşiv kesildi)&quot; (Unknown, archive cut off). The <strong>İlk 10</strong> (Top 10) and <strong>Sıra 11-20</strong> (Position 11-20) buttons narrow the table to that slice.</p>
+<p><strong>Filter panel.</strong> Under <strong>Sonuçları filtrele</strong> (Filter results) there are the <strong>İçersin</strong> (Contains) and <strong>İçermesin</strong> (Does not contain) boxes. These match text inside the keyword. <strong>Etiket ara</strong> (Search tags) filters by tag. <strong>Tümünü temizle</strong> (Clear all) resets everything. A project can have at most 50 tags.</p>
+<p><strong>Table.</strong> Columns: <strong>Kelime</strong> (Keyword), <strong>Ort. sıra</strong> (Avg. position), <strong>Amaç</strong> (Intent), <strong>Etiketler</strong> (Tags), <strong>Eklenme</strong> (Added). If the position is empty, hovering over it shows &quot;Search Console bu kelime için sıra kaydetmemiş&quot; (Search Console has not recorded a position for this keyword). The <strong>Amaç</strong> (Intent) column shows what the person searching for the keyword wants:</p>
 <ul><li>Bilgi amaçlı (Informational): wants to learn.</li><li>Ticari araştırma (Commercial research): will compare and choose.</li><li>İşlem odaklı (Transactional): ready to buy.</li><li>Yönlendirici (Navigational): looking for a specific site.</li><li>Bilinmiyor (Unknown): not clear.</li></ul>
-<p>The short forms are Bilgi, Ticari, İşlem, Gezinme and a question mark. The row menu: <strong>Kelimeyi kopyala</strong> (Copy keyword), <strong>Arama performansında ara</strong> (Search in Search performance), <strong>Kelimeyi sil</strong> (Delete keyword).</p>
-<p><strong>Bulk actions.</strong> When you tick rows, <strong>Kelimeleri kopyala</strong> (Copy keywords), <strong>Etiketleri güncelle</strong> (Update tags) and a delete button appear at the top. Before deleting, a warning comes up: &quot;kalıcı olarak silinecek. Bu geri alınamaz.&quot; (will be permanently deleted. This cannot be undone.)</p>
-<p><strong>Empty states.</strong> If there are no keywords at all, it says &quot;Henüz kayıtlı kelime yok&quot; (No saved keywords yet). Two shortcuts appear: <strong>Sorgulara göz at</strong> (Browse queries) and <strong>Sıralamayı aç</strong> (Open rank tracking). If no keyword matches the filter, it says &quot;Bu filtrelere uyan kelime yok&quot; (No keyword matches these filters).</p>
+<p>In the table, intent appears as a short badge: Bilgi, Ticari, İşlem, Gezinme or a question mark. The row menu: <strong>Kelimeyi kopyala</strong> (Copy keyword), <strong>Arama performansında ara</strong> (Search in Search performance), <strong>Kelimeyi sil</strong> (Delete keyword).</p>
+<p><strong>Bulk actions.</strong> When you select rows, <strong>Kelimeleri kopyala</strong> (Copy keywords), <strong>Etiketleri güncelle</strong> (Update tags) and a delete button appear at the top. Before deleting, a warning appears: &quot;kalıcı olarak silinecek. Bu geri alınamaz.&quot; (will be permanently deleted. This cannot be undone.)</p>
+<p><strong>Empty states.</strong> If there are no keywords at all, the screen says &quot;Henüz kayıtlı kelime yok&quot; (No saved keywords yet) and offers two shortcuts: <strong>Sorgulara göz at</strong> (Browse queries) and <strong>Sıralamayı aç</strong> (Open rank tracking). If no keyword matches the filters, it says &quot;Bu filtrelere uyan kelime yok&quot; (No keyword matches these filters).</p>
 <h2 id="how-to-use-it">How to use it</h2>
-<ol><li>In Arama performansı (Search performance), open the <strong>Sıra 5-20</strong> (Position 5-20) tab. Mark five or ten searches you find important with <strong>Kelime olarak kaydet</strong> (Save as keyword). Pick the searches for the pages that earn you money. This is as useful as picking the most shown ones.</li><li>Come here and tick the keywords. With <strong>Etiketleri güncelle</strong> (Update tags), give tags like &quot;ürün&quot; (product), &quot;blog&quot; and &quot;marka&quot; (brand). It makes comparing next month easier.</li><li>Once a month, look at the <strong>Sıra dağılımı</strong> (Position distribution) card. The keywords in the 11-20 slice are the closest to the first page. Find the pages for those keywords in the Fırsatlar (Opportunities) screen.</li><li>For a report, choose <strong>CSV indir</strong> (Download CSV) or <strong>E-Tablolar'a aktar</strong> (Export to Sheets). The file comes with the filters you applied.</li></ol>
+<ol><li>In <strong>Arama performansı</strong> (Search performance), open the <strong>Sıra 5-20</strong> (Position 5-20) tab. Save five or ten important searches with <strong>Kelime olarak kaydet</strong> (Save as keyword). Include searches for the pages that earn you money; they matter as much as the most shown ones.</li><li>Come here and select the keywords. With <strong>Etiketleri güncelle</strong> (Update tags), add tags such as &quot;ürün&quot; (product), &quot;blog&quot; and &quot;marka&quot; (brand). Tags make next month's comparison easier.</li><li>Once a month, check the <strong>Sıra dağılımı</strong> (Position distribution) card. The keywords in the 11-20 slice are the closest to the first page. Find the pages for those keywords on the <strong>Fırsatlar</strong> (Opportunities) screen.</li><li>For a report, choose <strong>CSV indir</strong> (Download CSV) or <strong>E-Tablolar'a aktar</strong> (Export to Sheets). The file respects the filters you applied.</li></ol>
 <h2 id="how-the-numbers-are-calculated">How the numbers are calculated</h2>
-<p>Keywords and tags are in the database on this computer. <strong>Ort. sıra</strong> (Avg. position) is calculated from the Sıralama takibi (Rank tracking) archive for the last 90 days. Days with many impressions affect the average more. Upper and lower case are not told apart.</p>
+<p>Keywords and tags are stored in the database on this computer. <strong>Ort. sıra</strong> (Avg. position) is calculated from the Sıralama takibi (Ranking tracking) archive for the last 90 days. Days with many impressions affect the average more. Upper and lower case are treated as the same.</p>
 <p>The 500 most shown searches are pulled from the archive. If your saved keyword is outside these 500, its position shows as &quot;bilinmiyor&quot; (unknown).</p>
-<p>The intent information is written if it came when the keyword was saved. It is not calculated afterwards. The list is split into pages of 50, 100 or 250.</p>
+<p>Intent is stored only if it was available when the keyword was saved; it is not calculated afterwards. The list is split into pages of 50, 100 or 250.</p>
 <h2 id="frequently-asked-questions">Frequently asked questions</h2>
-<p><strong>I saved the keyword, so why is the position empty?</strong> The archive may not have collected days for that keyword yet. Open the Sıralama takibi (Rank tracking) screen and wait for the archive to fill. Then choose <strong>Yenile</strong> (Refresh) here.</p>
-<p><strong>My position is different when I search in Google.</strong> The position here is the average of 90 days. It cannot be compared with a single search.</p>
-<p><strong>Where is the search volume column?</strong> There is none. The app does not estimate volume. You see the number of impressions in the Arama performansı (Search performance) screen.</p>
+<p><strong>Why is the position empty for a keyword I just saved?</strong> The archive may not have collected days for that keyword yet. Open the <strong>Sıralama takibi</strong> (Ranking tracking) screen and wait for the archive to fill, then choose <strong>Yenile</strong> (Refresh) here.</p>
+<p><strong>My position is different when I search in Google.</strong> The position here is a 90-day average, so it cannot be compared with a single search.</p>
+<p><strong>Where is the search volume column?</strong> There is none, because the app does not estimate volume. Impression counts are on the <strong>Arama performansı</strong> (Search performance) screen.</p>
 <p><strong>Can I save the same keyword twice?</strong> No. The same text becomes one record.</p>
-<p><strong>If I delete a tag, are the keywords deleted?</strong> No. The tag goes away, and the keywords stay.</p>
+<p><strong>If I delete a tag, are the keywords deleted?</strong> No. Only the tag is removed; the keywords stay.</p>
 <h2 id="limits">Limits</h2>
-<p>This screen is not a keyword research tool. It does not produce suggestions, and it does not show volume or difficulty. Position information is limited to the archive. The positions of rare searches that Google hides never arrive. The data is in this installation's database. You need to make the backup yourself.</p> <nav class="pager" aria-label="Previous and next page"><a class="pager-prev" rel="prev" href="/en/docs/opportunities/"><span>Previous</span><strong>Opportunities</strong></a><a class="pager-next" rel="next" href="/en/docs/analytics/"><span>Next</span><strong>Analytics</strong></a></nav>
+<p>This screen is not a keyword research tool: it makes no suggestions and shows no volume or difficulty. Position information is limited to the archive, and positions of rare searches that Google hides never arrive. The data is in this installation's database, and backing it up is up to you.</p> <nav class="pager" aria-label="Previous and next page"><a class="pager-prev" rel="prev" href="/en/docs/opportunities/"><span>Previous</span><strong>Opportunities</strong></a><a class="pager-next" rel="next" href="/en/docs/analytics/"><span>Next</span><strong>Analytics</strong></a></nav>
         <p class="meta">
           Last updated: October 23, 2026. Spotted a mistake?
-          <a href="https://github.com/ucsahinn/seotracker/issues"
+          <a
+            href="https://github.com/ucsahinn/seotracker/issues"
+            target="_blank"
+            rel="noopener noreferrer"
             >Report it on GitHub</a
           >.
         </p>
@@ -1156,10 +1255,25 @@
     </main>
     <footer>
       <div class="wrap">
+        <p class="star">
+          A star helps other people find a free tool.
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Star it on GitHub</a
+          >
+        </p>
         <span>seowatcher, MIT license.</span>
         <span
           ><a href="/en/">Home</a> &nbsp;
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          &nbsp;
           <a href="/en/docs/release-notes/">Release notes</a></span
         >
       </div>

@@ -5,9 +5,9 @@ kind: sorun-giderme
 updated: 2026-10-22
 ---
 
-The app's interface is in Turkish. This guide gives every button and screen name in Turkish with its English meaning in brackets.
+The app's interface is in Turkish. This guide gives every button and screen name in Turkish, with its English meaning in brackets.
 
-This page tells you briefly what to do when something does not work. First, look at the "Kurulumunuzun durumu" (Your installation status) card on the **Yardım** (Help) screen in the app. The card checks four things: sign-in and access, Google sign-in, the PageSpeed key, and the database. If it says "N şey dikkat istiyor" (N things need attention), the button next to it takes you to the right setting. The list below goes from the most common problem to the rarest.
+This guide covers what to do when something does not work. First, check the "Kurulumunuzun durumu" (Your installation status) card on the **Yardım** (Help) screen in the app. The card checks four things: sign-in and access, Google sign-in, the PageSpeed key, and the database. If it says "N şey dikkat istiyor" (N things need attention), the button next to it takes you to the right setting. The sections below run from the most common problem to the rarest.
 
 ## The page does not open
 
@@ -15,7 +15,7 @@ This page tells you briefly what to do when something does not work. First, look
 
 **Cause:** The app is not running.
 
-**Fix:** On Windows, look for the icon in the taskbar. If the icon is not visible, click the ^ arrow on the taskbar. If it is not there, open seowatcher from the Start menu. If the icon says "Hata" (Error), right-click it and choose **Yeniden başlat** (Restart). On Docker, run `docker compose ps`. If the status is not healthy, run `docker compose up -d`.
+**Fix:** On Windows, check the taskbar for the icon. If the icon is not visible, click the ^ arrow on the taskbar. If it is not there, open seowatcher from the Start menu. If the icon says "Hata" (Error), right-click it and choose **Yeniden başlat** (Restart). On Docker, run `docker compose ps`. If the status is not healthy, run `docker compose up -d`.
 
 ## The port number is in use
 
@@ -45,9 +45,9 @@ This page tells you briefly what to do when something does not work. First, look
 
 **Symptom:** The app does not open. The log has "Workers runtime failed to start" and "0xc0000005", but the Visual C++ package is installed.
 
-**Cause:** The app's engine (workerd) gets stuck on a system file on this computer. At startup, the app tries the engine on its own. If it says it cannot start on its own either, the problem is on the computer. If it says it works on its own, the problem is in the data folder or the configuration.
+**Cause:** The app's engine (workerd) gets stuck on a system file on this computer. At startup, the app tests the engine by itself. If that test fails too, the problem is on the computer; if it passes, the problem is in the data folder or the configuration.
 
-**Fix:** First choose **Kurulumu onar** (Repair installation). If that does not help, right-click the icon and choose **Sorunu bildir (GitHub)** (Report the problem, GitHub). The diagnostic information (Windows version, processor, the name of the faulty module, the crash dump) is added to the report automatically, and you only send it. The crash dumps are in the `%LOCALAPPDATA%\seowatcher\logs\dumps` folder. You can attach them to the report if you like.
+**Fix:** First choose **Kurulumu onar** (Repair installation). If that does not help, right-click the icon and choose **Sorunu bildir (GitHub)** (Report the problem, GitHub). The diagnostic information (Windows version, processor, the name of the faulty module, the crash dump) is added to the report automatically, so you only need to send it. The crash dumps are in the `%LOCALAPPDATA%\seowatcher\logs\dumps` folder, and you can attach them to the report too.
 
 ## Windows says "protected your PC"
 
@@ -55,7 +55,7 @@ This page tells you briefly what to do when something does not work. First, look
 
 **Cause:** The file is not signed. Windows shows this screen for publishers it does not know.
 
-**Fix:** Click the **More info** text on the screen (on a Turkish Windows: "Daha fazla bilgi"). The **Run anyway** button (Turkish: "Yine de çalıştır") appears. If you are worried, compare the file's SHA-256 digest (its fingerprint) with `SHA256SUMS.txt` on the release page.
+**Fix:** Click the **More info** text on the screen (on a Turkish Windows: "Daha fazla bilgi"). The **Run anyway** button (Turkish: "Yine de çalıştır") appears. To be sure, compare the file's SHA-256 digest (its fingerprint) with `SHA256SUMS.txt` on the release page.
 
 ## Google says "redirect_uri_mismatch"
 
@@ -63,11 +63,11 @@ This page tells you briefly what to do when something does not work. First, look
 
 **Cause:** The redirect address in Google Cloud Console is not exactly the same as the one in the app.
 
-**Fix:** In the app, go to **Ayarlar → Google** (Settings → Google) and copy both addresses with the copy buttons. Paste them into the address field of the Google access key (the OAuth client) in Cloud Console. localhost versus 127.0.0.1, http versus https, or a slash at the end all make a difference.
+**Fix:** In the app, go to **Ayarlar → Google** (Settings → Google) and copy both addresses with the copy buttons. Paste them into the address field of the Google access key (the OAuth client) in Cloud Console. Any difference matters: localhost instead of 127.0.0.1, http instead of https, or a slash at the end.
 
 ## "Google erişim anahtarı eksik"
 
-**Symptom:** In the project settings, the Bağlantılar (Connections) tab shows a yellow warning saying "Google erişim anahtarı eksik" (Google access key missing).
+**Symptom:** In the project settings, the **Bağlantılar** (Connections) tab shows a yellow warning saying "Google erişim anahtarı eksik" (Google access key missing).
 
 **Cause:** The client ID and the secret key have not been entered in **Ayarlar → Google**. Or, on Docker, the encryption key is shorter than 32 characters.
 
@@ -75,7 +75,7 @@ This page tells you briefly what to do when something does not work. First, look
 
 ## Google says "access_denied"
 
-**Symptom:** After the permission screen, an "iptal edildi" (cancelled) warning appears.
+**Symptom:** After the permission screen, an "iptal edildi" (canceled) warning appears.
 
 **Cause:** The Google account you signed in with is not in the test users list on the consent screen.
 
@@ -85,7 +85,7 @@ This page tells you briefly what to do when something does not work. First, look
 
 **Symptom:** The integration card says "Bağlantının süresi doldu" (The connection has expired) and no data comes in.
 
-**Cause:** For apps in "Test" status, Google can drop the permission after seven days. The encryption key may also have changed.
+**Cause:** For apps in "Test" status, Google can expire the permission after seven days. The encryption key may also have changed.
 
 **Fix:** On the card, choose **Yeniden bağlan** (Reconnect). If it keeps happening, move the consent screen to production, or switch to a service account (**Ayarlar → Hizmet hesabı**, Settings → Service account).
 
@@ -93,7 +93,7 @@ This page tells you briefly what to do when something does not work. First, look
 
 **Symptom:** The Panel (Dashboard) cards are zero. Arama performansı (Search performance) says "Bu dönem için henüz veri yok" (There is no data for this period yet).
 
-**Cause:** There are three possibilities. The site is new and Google is not giving impressions yet. Or Search Console is three days behind and the selected period is too short. Or the wrong property is selected.
+**Cause:** There are three possible causes: the site is new and Google has not shown it yet; Search Console is three days behind and the selected period is too short; or the wrong property is selected.
 
 **Fix:** Set the period to **Son 3 ay** (Last 3 months). In the project settings, check that the property is the right site. A domain property covers all subdomains, but a URL-prefix property does not. On a new site, query rows can take weeks to arrive. The page table fills earlier.
 
@@ -111,7 +111,7 @@ This page tells you briefly what to do when something does not work. First, look
 
 **Cause:** The app may have restarted, or the job may have dropped.
 
-**Fix:** Wait. The app checks any audit that has looked "sürüyor" (in progress) for more than 15 minutes. If there are no signs of life, it closes the audit as "Başarısız" (Failed) and writes the reason. Then choose **Aynı ayarlarla yeniden başlat** (Restart with the same settings). Do not start two audits with speed testing at the same time. They slow each other down.
+**Fix:** Wait. The app checks any audit that has shown "sürüyor" (in progress) for more than 15 minutes. If there are no signs of life, it closes the audit as "Başarısız" (Failed) and records the reason. Then choose **Aynı ayarlarla yeniden başlat** (Restart with the same settings). Do not start two audits with speed testing at the same time. They slow each other down.
 
 ## The audit says "Engellendik"
 
@@ -119,7 +119,7 @@ This page tells you briefly what to do when something does not work. First, look
 
 **Cause:** The site's bot protection (Cloudflare or a firewall) stopped the app's site crawler.
 
-**Fix:** In the firewall, allow the user agent named `seotracker-audit`, or add your computer's network address (IP) to the allow list. If the site is not yours, there is nothing you can do. The results stay limited to the pages that could be crawled.
+**Fix:** In the firewall, allow the user agent named `seotracker-audit`, or add your computer's network address (IP) to the allow list. If the site is not yours, you cannot fix this. The results stay limited to the pages that could be crawled.
 
 ## Speed testing is incomplete or missing
 
@@ -127,13 +127,13 @@ This page tells you briefly what to do when something does not work. First, look
 
 **Cause:** There is no PageSpeed key (at most 50 pages are measured). Or Google's daily allowance has run out.
 
-**Fix:** Get a free key by following the PageSpeed key guide. If the daily allowance has run out, it completes in a new audit tomorrow. If speed testing was off when the audit started, it is not measured afterwards for that audit.
+**Fix:** Get a free key by following the PageSpeed key guide. If the daily allowance has run out, a new audit tomorrow completes the measurement. If speed testing was off when an audit started, that audit is never measured afterwards.
 
 ## URL Inspection says "daily limit reached"
 
 **Symptom:** In the Dizin durumu (Index status) tab, the button does not work. It says "Google'ın günlük 2.000 adres sınırına ulaşıldı" (Google's daily limit of 2,000 addresses has been reached).
 
-**Cause:** There is an allowance of 2,000 questions per day per property. The app, your assistant and the checks you make by hand in Search Console all use the same pool.
+**Cause:** Google allows 2,000 questions per day per property. The app, your assistant and the checks you make by hand in Search Console all use the same pool.
 
 **Fix:** Continue tomorrow. The app only asks again for answers that have gone stale, so your allowance is not wasted.
 
@@ -143,7 +143,7 @@ This page tells you briefly what to do when something does not work. First, look
 
 **Cause:** A test copy of your site loads the same Analytics tag.
 
-**Fix:** Set the tag to load only on the real domain. Most tools have a "domain check" option. The app does not filter these rows out by itself. Until then, read the table with the Alan adı (Domain) column in view.
+**Fix:** Set the tag to load only on the real domain. Most tools have a "domain check" option. The app does not filter these rows out, so until you fix the tag, read the table with the **Alan adı** (Domain) column in view.
 
 ## The assistant cannot connect (401)
 
@@ -151,15 +151,15 @@ This page tells you briefly what to do when something does not work. First, look
 
 **Cause:** The password is not being sent, or it is wrong.
 
-**Fix:** Copy the password again. On Windows, it is in the `mcp-token` file in the data folder. On Docker, run `docker compose exec -T seotracker cat /app/.wrangler/mcp-token`. Delete the line-break character at the end of the value. Without a terminal: open the file in Notepad, select the whole line and copy it; do not include a line break. In Claude Code, type `/mcp` and choose **Reconnect**.
+**Fix:** Copy the password again. On Windows, it is in the `mcp-token` file in the data folder. On Docker, run `docker compose exec -T seotracker cat /app/.wrangler/mcp-token`. Remove the line break at the end of the value. Without a terminal: open the file in Notepad, select the whole line and copy it; do not include a line break. In Claude Code, type `/mcp` and choose **Reconnect**.
 
 ## Docker takes very long on first start or is "unhealthy"
 
 **Symptom:** `docker compose ps` still does not say healthy after five minutes.
 
-**Cause:** On first start, the app is built inside the box (the container) and needs about 2 GB of memory. If memory is not enough, the build fails.
+**Cause:** On first start, the app is built inside the container and needs about 2 GB of memory. If memory is not enough, the build fails.
 
-**Fix:** Run `docker compose logs --tail 50` and look at the last lines. If there is a memory error, give the containers more memory in the Docker Desktop settings. Then run `docker compose up -d --build`.
+**Fix:** Run `docker compose logs --tail 50` and check the last lines. If there is a memory error, give the containers more memory in the Docker Desktop settings. Then run `docker compose up -d --build`.
 
 ## Where are my data and logs?
 

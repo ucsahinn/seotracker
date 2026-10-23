@@ -9,8 +9,8 @@ Ao fim desta página, a sua chave gratuita do PageSpeed estará obtida, informad
 
 ## O que você precisa
 
-- Uma conta Google e um projeto no Google Cloud Console (a página de desenvolvedores do Google). Se você abriu um projeto para a conexão com o Google, o mesmo serve.
-- Não é preciso cartão nem pagamento. A API do PageSpeed Insights (a porta de entrada do serviço) é gratuita.
+- Uma conta Google e um projeto no Google Cloud Console (o painel de desenvolvedores do Google). Se você abriu um projeto para a conexão com o Google, o mesmo serve.
+- Não é preciso cartão nem pagamento. A API do PageSpeed Insights é gratuita.
 
 ## Passos
 
@@ -19,7 +19,7 @@ Ao fim desta página, a sua chave gratuita do PageSpeed estará obtida, informad
 3. Escolha **API'ler ve Hizmetler → Kimlik bilgileri → Kimlik bilgisi oluştur → API anahtarı** (APIs e serviços → Credenciais → Criar credenciais → Chave de API). Aparece uma chave que começa com "AIza". Copie-a.
 4. Opcional, mas recomendado: escolha **Anahtarı kısıtla** (Restringir a chave). Na restrição de API, selecione somente a **PageSpeed Insights API**. Se o seu assistente de IA também for consultar o histórico de dados de usuários reais (CrUX), adicione também a **Chrome UX Report API**.
 5. No aplicativo, abra **Ayarlar → Hız ölçümü** (Configurações → Medição de velocidade). Cole a chave no campo **API anahtarı** (Chave de API). Escolha **Kaydet** (Salvar). Aparece o aviso "PageSpeed anahtarı kaydedildi" (Chave do PageSpeed salva). Não é preciso reiniciar.
-6. Na mesma seção, clique no botão **Anahtarı test et** (Testar a chave). O aplicativo faz uma medição real para example.com (usa 1 medição). A resposta esperada: "Anahtar çalışıyor: Google PageSpeed Insights ölçümü kabul etti." (A chave funciona: o Google PageSpeed Insights aceitou a medição.)
+6. Na mesma seção, clique no botão **Anahtarı test et** (Testar a chave). O aplicativo faz uma medição real para example.com (usa 1 medição). A resposta esperada é "Anahtar çalışıyor: Google PageSpeed Insights ölçümü kabul etti." (A chave funciona: o Google PageSpeed Insights aceitou a medição.)
 
 Se você usa Docker, também pode informar a chave no arquivo `.env` como `PAGESPEED_API_KEY`. A tela Ayarlar é mais fácil, e o valor informado nela tem prioridade.
 
@@ -35,7 +35,7 @@ Se você usa Docker, também pode informar a chave no arquivo `.env` como `PAGES
 
 **O que acontece se eu atingir o limite por minuto?** O aplicativo espera e tenta de novo. A auditoria fica mais lenta, mas você não precisa fazer nada. Se o limite diário acabar, a medição para. Os resultados até aquele ponto ficam guardados. O restante é concluído em uma nova auditoria no dia seguinte.
 
-**E se duas auditorias medirem a velocidade ao mesmo tempo?** Elas dividem o limite por minuto, e as duas ficam duas vezes mais lentas. A medição de velocidade de um site com 212 páginas leva cerca de 24 minutos sozinha e 48 minutos junto com outra auditoria; com o rastreamento, a auditoria inteira chega a 35 minutos.
+**E se duas auditorias medirem a velocidade ao mesmo tempo?** Elas dividem o limite por minuto, e cada uma leva o dobro do tempo. A medição de velocidade de um site com 212 páginas leva cerca de 24 minutos sozinha e 48 minutos junto com outra auditoria; com o rastreamento, a auditoria inteira chega a 35 minutos.
 
 **Onde a chave fica guardada?** No banco de dados deste computador, criptografada. Ela não é devolvida ao navegador. A tela Ayarlar mostra apenas a informação "salva".
 

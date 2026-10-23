@@ -15,6 +15,7 @@
     <link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/docs/instalar-windows/" />
     <link rel="alternate" hreflang="x-default" href="https://seowatcher.io/docs/kurulum-windows/" />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -59,7 +60,7 @@
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en","de","fr","it","pt"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/docs/kurulum-windows/#article","headline":"Windows'a kurulum","description":"Windows'a tek dosyayla kurarsınız, Docker ya da terminal gerekmez. Güncelleme, kaldırma, yedek alma ve adres numarasını değiştirme de aynı sayfada.","url":"https://seowatcher.io/docs/kurulum-windows/","inLanguage":"tr","dateModified":"2026-10-23","articleSection":"Başlangıç","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/docs/kurulum-windows/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/docs/kurulum-windows/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/"},{"@type":"ListItem","position":2,"name":"Kılavuz","item":"https://seowatcher.io/docs/"},{"@type":"ListItem","position":3,"name":"Windows'a kurulum","item":"https://seowatcher.io/docs/kurulum-windows/"}]}]}</script>
     <script src="/assets/docs.js?v=2.4.1" defer></script>
-    <meta name="theme-color" content="#272c3b" />
+    <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
         font-family: "Geist";
@@ -649,6 +650,95 @@
       footer a:hover {
         color: var(--fg);
       }
+      /* The one ask on the page: quiet, one line, the accent only on the link. */
+      footer .star {
+        flex-basis: 100%;
+        margin: 0 0 4px;
+        text-wrap: pretty;
+      }
+      footer .star a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      footer .star a:hover {
+        color: var(--accent-link);
+        text-decoration-color: var(--accent-link);
+      }
+
+      /* Headings enter as they scroll into view. docs.js adds .hx (and .in
+         once seen) only when motion is allowed, so without script, under
+         reduced motion and with "stop motion" on, they are simply there.
+         h1 wipes in from the left, h2 rises while an amber stroke draws
+         along its rule, h3 rises a little. */
+      article .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease),
+          clip-path 760ms var(--ease),
+          filter 620ms var(--ease);
+      }
+      article h1.hx {
+        clip-path: inset(-10% 100% -10% 0);
+        filter: blur(6px);
+      }
+      article h2.hx,
+      article h3.hx {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      article h3.hx {
+        transform: translateY(6px);
+      }
+      article h2.hx {
+        position: relative;
+      }
+      article h2.hx::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 56px;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 700ms var(--ease) 160ms;
+      }
+      article .hx.in {
+        opacity: 1;
+        transform: none;
+      }
+      article h1.hx.in {
+        clip-path: inset(-10% 0 -10% 0);
+        filter: none;
+      }
+      article h2.hx.in::before {
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        article .hx,
+        article h2.hx::before {
+          opacity: 1;
+          transform: none;
+          clip-path: none;
+          filter: none;
+          transition: none;
+        }
+      }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
 
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
@@ -1093,13 +1183,19 @@
         <nav class="topnav" aria-label="Site">
           <a class="hide" href="/">Ana sayfa</a>
           <a class="hide" href="/docs/">Kılavuz</a>
-          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+          <a
+            class="hide"
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub</a
           >
-          <details class="langs"><summary aria-label="Dil: Türkçe"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"/></svg></span><span class="code">TR</span></summary><ul><li><a href="/docs/kurulum-windows/" lang="tr" hreflang="tr" aria-current="page"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"/></svg></span>Türkçe</a></li><li><a href="/en/docs/install-windows/" lang="en" hreflang="en"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="3.6"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2"/></svg></span>English</a></li><li><a href="/de/docs/installation-windows/" lang="de" hreflang="de"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg></span>Deutsch</a></li><li><a href="/fr/docs/installation-windows/" lang="fr" hreflang="fr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg></span>Français</a></li><li><a href="/it/docs/installazione-windows/" lang="it" hreflang="it"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg></span>Italiano</a></li><li><a href="/pt/docs/instalar-windows/" lang="pt" hreflang="pt"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#ff0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.6" fill="#ffcc00"/><circle cx="8" cy="7" r="1.5" fill="#ff0000"/></svg></span>Português</a></li></ul></details>
+          <details class="langs"><summary aria-label="Dil: Türkçe"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"/></svg></span><span class="code">TR</span></summary><ul><li><a href="/docs/kurulum-windows/" lang="tr" hreflang="tr" aria-current="page"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"/></svg></span>Türkçe</a></li><li><a href="/en/docs/install-windows/" lang="en" hreflang="en"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2.6"/></svg></span>English</a></li><li><a href="/de/docs/installation-windows/" lang="de" hreflang="de"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg></span>Deutsch</a></li><li><a href="/fr/docs/installation-windows/" lang="fr" hreflang="fr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg></span>Français</a></li><li><a href="/it/docs/installazione-windows/" lang="it" hreflang="it"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg></span>Italiano</a></li><li><a href="/pt/docs/instalar-windows/" lang="pt" hreflang="pt"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#ff0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.6" fill="#ffcc00"/><circle cx="8" cy="7" r="1.5" fill="#ff0000"/></svg></span>Português</a></li></ul></details>
           <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            target="_blank"
+            rel="noopener noreferrer"
             ><span class="long">Windows için indir</span
             ><span class="short">İndir</span></a
           >
@@ -1116,63 +1212,66 @@
       <aside class="side" aria-label="Kılavuz">
         <details class="side-dd" open>
           <summary>Kılavuz</summary>
-          <p class="nav-group">Başlangıç</p><ul><li class="current" aria-current="page"><a href="/docs/kurulum-windows/">Windows'a kurulum</a></li><li><a href="/docs/kurulum-docker/">Docker ile kurulum</a></li><li><a href="/docs/google-baglantisi/">Google'a bağlanma</a></li><li><a href="/docs/pagespeed-anahtari/">PageSpeed anahtarı</a></li></ul><p class="nav-group">Ekranlar</p><ul><li><a href="/docs/projeler/">Projeler</a></li><li><a href="/docs/panel/">Panel</a></li><li><a href="/docs/arama-performansi/">Arama performansı</a></li><li><a href="/docs/siralama-takibi/">Sıralama takibi</a></li><li><a href="/docs/firsatlar/">Fırsatlar</a></li><li><a href="/docs/kayitli-kelimeler/">Kayıtlı kelimeler</a></li><li><a href="/docs/analytics/">Analytics</a></li><li><a href="/docs/site-denetimi/">Site denetimi</a></li><li><a href="/docs/dizin-durumu/">Dizin durumu</a></li><li><a href="/docs/raporlar/">Raporlar ve şablonlar</a></li><li><a href="/docs/proje-bilgisi/">Proje bilgisi</a></li><li><a href="/docs/ayarlar/">Ayarlar</a></li></ul><p class="nav-group">Başvuru</p><ul><li><a href="/docs/yardim/">Yardım</a></li><li><a href="/docs/denetim-kurallari/">Denetim kuralları</a></li><li><a href="/docs/ajan-kurulumu/">Ajan kurulumu</a></li><li><a href="/docs/sorun-giderme/">Sorun giderme</a></li><li><a href="/docs/surum-notlari/">Sürüm notları</a></li></ul>
+          <p class="nav-group">Başlangıç</p><ul><li class="current" aria-current="page"><a href="/docs/kurulum-windows/">Windows'a kurulum</a></li><li><a href="/docs/kurulum-docker/">Docker ile kurulum</a></li><li><a href="/docs/google-baglantisi/">Google'a bağlanma</a></li><li><a href="/docs/pagespeed-anahtari/">PageSpeed anahtarı</a></li></ul><p class="nav-group">Ekranlar</p><ul><li><a href="/docs/projeler/">Projeler</a></li><li><a href="/docs/panel/">Panel</a></li><li><a href="/docs/arama-performansi/">Arama performansı</a></li><li><a href="/docs/siralama-takibi/">Sıralama takibi</a></li><li><a href="/docs/firsatlar/">Fırsatlar</a></li><li><a href="/docs/kayitli-kelimeler/">Kayıtlı kelimeler</a></li><li><a href="/docs/analytics/">Analytics</a></li><li><a href="/docs/site-denetimi/">Site denetimi</a></li><li><a href="/docs/dizin-durumu/">Dizin durumu</a></li><li><a href="/docs/raporlar/">Raporlar ve şablonlar</a></li><li><a href="/docs/proje-bilgisi/">Proje bilgisi</a></li><li><a href="/docs/ayarlar/">Ayarlar</a></li></ul><p class="nav-group">Yardım ve başvuru</p><ul><li><a href="/docs/yardim/">Yardım</a></li><li><a href="/docs/denetim-kurallari/">Denetim kuralları</a></li><li><a href="/docs/ajan-kurulumu/">Ajan kurulumu</a></li><li><a href="/docs/sorun-giderme/">Sorun giderme</a></li><li><a href="/docs/surum-notlari/">Sürüm notları</a></li></ul>
         </details>
       </aside>
       <article id="icerik" data-page="kurulum-windows">
-        <h1>Windows'a kurulum</h1><p class="lede">Windows'a tek dosyayla kurarsınız, Docker ya da terminal gerekmez. Güncelleme, kaldırma, yedek alma ve adres numarasını değiştirme de aynı sayfada.</p><p>Sonunda uygulama bilgisayarınızda kurulu ve tarayıcıda açık olacak. Kurulum iki dakika sürer. Yalnızca sizin kullanıcı hesabınıza kurulur, yönetici izni gerekmez. Visual C++ bileşeni eksikse bir kez izin sorulur.</p>
+        <h1>Windows'a kurulum</h1><p class="lede">Windows'a tek dosyayla kurarsınız, Docker ya da terminal gerekmez. Güncelleme, kaldırma, yedek alma ve adres numarasını değiştirme de aynı sayfada.</p><p>Bu sayfayı bitirince uygulama bilgisayarınızda kurulu ve tarayıcıda açık olur. Kurulum iki dakika sürer. Yalnızca sizin kullanıcı hesabınıza kurulur, yönetici izni gerekmez.</p>
 <h2 id="gerekenler">Gerekenler</h2>
-<ul><li>Windows 10 ya da 11 (64 bit).</li><li>Yaklaşık 350 MB boş yer. Kurulum dosyası 81 MB, kurulu hali 290 MB.</li><li>Edge, Chrome ya da Firefox gibi bir tarayıcı.</li><li>Docker, Node ya da terminal (komut penceresi) gerekmez. Yönetici hakkı da gerekmez, yalnızca Visual C++ bileşeni eksikse bir kez sorulur.</li><li>Uygulamanın motoru Microsoft'un Visual C++ paketini ister. Bilgisayarda yoksa kurulum onu kendisi kurar ve bir kez yönetici izni sorar. Uygulama <code>%LOCALAPPDATA%\Programs\seowatcher</code> klasörüne kurulur.</li></ul>
+<ul><li>Windows 10 ya da 11 (64 bit).</li><li>Yaklaşık 350 MB boş yer. Kurulum dosyası 81 MB, kurulu hali 290 MB.</li><li>Edge, Chrome ya da Firefox gibi bir tarayıcı.</li><li>Docker, Node ya da terminal (komut penceresi) gerekmez.</li><li>Microsoft'un Visual C++ paketi. Bilgisayarda yoksa kurulum onu kendisi kurar ve bir kez yönetici izni sorar. Uygulama <code>%LOCALAPPDATA%\Programs\seowatcher</code> klasörüne kurulur.</li></ul>
 <h2 id="adimlar">Adımlar</h2>
 <h3 id="ilk-kurulum">İlk kurulum</h3>
-<ol><li>GitHub sürüm sayfasından <strong>seowatcher-setup.exe</strong> dosyasını indirin. Sabit adres: <code>github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe</code></li><li>Dosyaya çift tıklayın.</li><li>Windows &quot;Windows bilgisayarınızı korudu&quot; derse <strong>Daha fazla bilgi</strong>, sonra <strong>Yine de çalıştır</strong> deyin. Dosya henüz imzalı değil, Windows yayıncıyı tanımıyor. Bu uyarı normaldir.</li><li>İsterseniz dosyanın SHA-256 özetini (dosyanın parmak izi) sürüm sayfasındaki <code>SHA256SUMS.txt</code> ile karşılaştırın.</li><li>Hoş geldiniz sayfasında <strong>Sonraki</strong> deyin.</li><li>&quot;Kim için kurulsun&quot; sorusunda <strong>Yalnızca ben</strong> seçeneğini seçin. Önerilen budur, kurulum yalnızca sizin hesabınıza yapılır. <strong>Tüm kullanıcılar</strong> seçeneği yönetici izni ister.</li><li>İki seçeneğe bakın: <strong>Windows açılınca seowatcher'ı başlat</strong> ve <strong>Masaüstüne kısayol ekle</strong>. İlki işaretli gelir. Arka planda başlamasını istemiyorsanız işareti kaldırın. Sonra <strong>Sonraki</strong> deyin.</li><li><strong>Kur</strong> deyin.</li><li>Son sayfada <strong>seowatcher'ı şimdi başlat</strong> kutusu var. İşaretli bırakın ve <strong>Bitti</strong> deyin. Uygulama açılır.</li><li>Bekleyin. İlk açılış 20-30 saniye sürer. Görev çubuğundaki simgenin yazısı sırayla &quot;Anahtarlar hazırlanıyor&quot;, &quot;Veritabanı güncelleniyor&quot;, &quot;Sunucu başlatılıyor&quot; olur. Simge görünmüyorsa görev çubuğundaki ^ okuna tıklayın. Hazır olunca tarayıcınız kendiliğinden açılır. Windows açılışında otomatik başladığında ise tarayıcı açılmaz, &quot;seowatcher hazır&quot; baloncuğu çıkar.</li><li>Tarayıcıda <code>http://127.0.0.1:3001</code> kendiliğinden açılır. Adresteki 127.0.0.1 bilgisayarınızın kendisidir, 3001 ise adres numarasıdır (port).</li></ol>
-<p>Sıradaki adım Google bağlantısı kılavuzu.</p>
+<ol><li>GitHub sürüm sayfasından <strong>seowatcher-setup.exe</strong> dosyasını indirin. Sabit adres: <code>github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe</code></li><li>Dosyaya çift tıklayın.</li><li>Windows &quot;Windows bilgisayarınızı korudu&quot; derse <strong>Daha fazla bilgi</strong>, sonra <strong>Yine de çalıştır</strong> deyin. Dosya henüz imzalı olmadığı için Windows yayıncıyı tanımıyor. Uyarı normaldir.</li><li>İsterseniz dosyanın SHA-256 özetini (dosyanın parmak izi) sürüm sayfasındaki <code>SHA256SUMS.txt</code> ile karşılaştırın.</li><li>Hoş geldiniz sayfasında <strong>Sonraki</strong> deyin.</li><li>&quot;Kim için kurulsun&quot; sorusunda <strong>Yalnızca ben</strong> seçeneğini seçin. Önerilen budur ve yalnızca sizin hesabınıza kurar. <strong>Tüm kullanıcılar</strong> seçeneği yönetici izni ister.</li><li>Şu iki seçeneğe bakın: <strong>Windows açılınca seowatcher'ı başlat</strong> ve <strong>Masaüstüne kısayol ekle</strong>. İlki işaretli gelir. Uygulamanın arka planda başlamasını istemiyorsanız işareti kaldırın. Sonra <strong>Sonraki</strong> deyin.</li><li><strong>Kur</strong> deyin.</li><li>Son sayfada <strong>seowatcher'ı şimdi başlat</strong> kutusu var. İşaretli bırakın ve <strong>Bitti</strong> deyin. Uygulama açılır.</li><li>Bekleyin. İlk açılış 20-30 saniye sürer. Bu sürede görev çubuğundaki simgenin yazısı sırayla &quot;Anahtarlar hazırlanıyor&quot;, &quot;Veritabanı güncelleniyor&quot;, &quot;Sunucu başlatılıyor&quot; olur. Simge görünmüyorsa görev çubuğundaki ^ okuna tıklayın. Hazır olunca tarayıcı kendiliğinden açılır. Uygulama Windows açılışında başlıyorsa tarayıcı açılmaz, &quot;seowatcher hazır&quot; baloncuğu çıkar.</li><li>Tarayıcıda <code>http://127.0.0.1:3001</code> açılır. Adresteki 127.0.0.1 bilgisayarınızın kendisidir, 3001 ise adres numarasıdır (port).</li></ol>
+<p>Sonraki adım: Google'a bağlanma kılavuzu.</p>
 <h3 id="gorev-cubugu-menusu">Görev çubuğu menüsü</h3>
 <p>Simgeye sağ tıklayın. Simge görünmüyorsa görev çubuğundaki ^ okuna tıklayın. Menüde şunlar var:</p>
-<ul><li><strong>seowatcher'ı aç</strong>: uygulamayı tarayıcıda açar. Simgeye çift tıklamak da aynı işi yapar.</li><li><strong>Yeniden başlat</strong>: uygulamayı kapatıp açar. Bir şey takılırsa ilk bunu deneyin.</li><li><strong>Günlükleri aç</strong>: kayıt klasörünü açar. İçinde <code>launcher.log</code>, <code>server.log</code> ve <code>migrate.log</code> var.</li><li><strong>Tanı bilgisini kopyala</strong>: Windows sürümünü, işlemciyi, Visual C++ sürümünü, motor denemesini, Windows olay günlüğündeki hatalı modülü, çökme dökümlerini ve son kayıt satırlarını panoya kopyalar.</li><li><strong>Sorunu bildir (GitHub)</strong>: aynı bilgiyi panoya alır ve GitHub'da hazır doldurulmuş bir sorun kaydı açar. Bir cümleyle ne yaptığınızı ekleyip gönderin.</li><li><strong>Eksik Windows bileşenini kur</strong>: yalnızca Visual C++ paketi eksikse görünür. Tıklayınca paketi kurar ve uygulamayı yeniden başlatır.</li><li><strong>Kurulumu onar</strong>: geçici dosyaları temizler, paketi kontrol eder, uygulamayı yeniden açar.</li><li><strong>Güncelle</strong>: menüde her zaman durur. Tıklayınca hemen GitHub'a bakar; yeni sürüm varsa indirip kurar, yoksa &quot;Güncel&quot; der. Yeni sürüm zaten bulunmuşsa madde Hazır olduğunda tam yazısı &quot;Güncelle: X.Y.Z sürümü hazır&quot; biçimindedir (sürüm numarası örnektir).</li><li><strong>Güncellemeleri kendiliğinden kur</strong>: işaretliyse yeni sürüm bulununca kendisi kurar.</li><li><strong>Veri klasörünü aç</strong>: veritabanının ve anahtarların klasörünü açar.</li><li><strong>Windows açılınca başlat</strong>: işaretliyse uygulama bilgisayar açılınca arka planda başlar.</li><li><strong>Çıkış</strong>: uygulamayı tamamen kapatır. Kapalıyken tarayıcıdaki sayfa çalışmaz.</li></ul>
+<ul><li><strong>seowatcher'ı aç</strong>: uygulamayı tarayıcıda açar. Simgeye çift tıklamak da aynı işi yapar.</li><li><strong>Yeniden başlat</strong>: uygulamayı kapatıp açar. Bir şey takılırsa ilk bunu deneyin.</li><li><strong>Günlükleri aç</strong>: kayıt klasörünü açar. İçinde <code>launcher.log</code>, <code>server.log</code> ve <code>migrate.log</code> var.</li><li><strong>Tanı bilgisini kopyala</strong>: Windows sürümünü, işlemciyi, Visual C++ sürümünü, motor denemesini, Windows olay günlüğündeki hatalı modülü, çökme dökümlerini ve son kayıt satırlarını panoya kopyalar. Sorun bildirirken işinize yarar.</li><li><strong>Sorunu bildir (GitHub)</strong>: aynı bilgiyi panoya alır ve GitHub'da hazır doldurulmuş bir sorun kaydı açar. Ne yaparken olduğunu bir cümleyle ekleyip gönderin.</li><li><strong>Eksik Windows bileşenini kur</strong>: yalnızca Visual C++ paketi eksikse görünür. Tıklayınca paketi kurar ve uygulamayı yeniden başlatır.</li><li><strong>Kurulumu onar</strong>: geçici dosyaları temizler, paketi kontrol eder, uygulamayı yeniden açar.</li><li><strong>Güncelle</strong>: menüde her zaman durur. Tıklayınca hemen GitHub'a bakar; yeni sürüm varsa indirip kurar, yoksa &quot;Güncel&quot; der. Yeni sürüm daha önce bulunmuşsa madde &quot;Güncelle: X.Y.Z sürümü hazır&quot; yazar (sürüm numarası örnektir).</li><li><strong>Güncellemeleri kendiliğinden kur</strong>: işaretliyse yeni sürüm bulununca kendisi kurar.</li><li><strong>Veri klasörünü aç</strong>: veritabanının ve anahtarların klasörünü açar.</li><li><strong>Windows açılınca başlat</strong>: işaretliyse uygulama bilgisayar açılınca arka planda başlar.</li><li><strong>Çıkış</strong>: uygulamayı tamamen kapatır. Kapalıyken tarayıcıdaki sayfa çalışmaz.</li></ul>
 <p>Menüde ayrıca bir durum satırı (&quot;Çalışıyor: http://127.0.0.1:3001/&quot; ya da hata yazısı) ve sürüm numarası görünür.</p>
 <p>Uygulamayı ikinci kez başlatırsanız yeni kopya açılmaz. Yalnızca tarayıcıda sayfa açılır.</p>
 <h3 id="guncelleme">Güncelleme</h3>
-<p>Uygulama güncellemeyi kendisi yapar. Açılıştan iki dakika sonra ve her gün bir kez GitHub'daki son sürüme bakar. Yeni sürüm varsa indirir, dosyanın parmak izini (SHA-256) sürüm sayfasındaki değerle karşılaştırır, sonra sessizce kurar ve yeniden açılır. Simgenin yazısı bu sırada &quot;Güncelleme indiriliyor&quot; ve &quot;Güncelleme kuruluyor&quot; olur. Uygulama içindeki <strong>Ayarlar → Hakkında</strong> bölümü de yeni sürümü haber verir ve sizi simgedeki <strong>Güncelle</strong>'ye yönlendirir.</p>
+<p>Uygulama güncellemeyi kendisi yapar. Açıldıktan iki dakika sonra ve her gün bir kez GitHub'daki son sürüme bakar. Yeni sürüm varsa indirir, dosyanın parmak izini (SHA-256) sürüm sayfasındaki değerle karşılaştırır, sessizce kurar ve yeniden açılır. Bu sırada simgenin yazısı &quot;Güncelleme indiriliyor&quot; ve &quot;Güncelleme kuruluyor&quot; olur. <strong>Ayarlar → Hakkında</strong> bölümü de yeni sürümü haber verir ve sizi simgedeki <strong>Güncelle</strong> maddesine yönlendirir.</p>
 <ul><li>Kendiliğinden kurulmasını istemiyorsanız menüden <strong>Güncellemeleri kendiliğinden kur</strong> işaretini kaldırın. O zaman yeni sürüm çıkınca bir baloncuk görürsünüz ve menüde <strong>Güncelle</strong> maddesi belirir.</li><li>Elle güncellemek için yeni kurulum dosyasını aynı adresten indirip çalıştırın. Sihirbaz açık uygulamayı kendisi kapatır, dosyaları değiştirir ve yeniden başlatır.</li></ul>
 <p>Verileriniz, Google bağlantınız ve ayarlarınız olduğu gibi kalır.</p>
 <h3 id="kurumsal-dagitim">Kurumsal dağıtım</h3>
-<p>Bir bilgisayardaki tüm kullanıcılar için kurmak ya da bir dağıtım aracıyla (Intune, GPO, PDQ) sessizce yüklemek isteyen BT ekipleri için notlar:</p>
-<ul><li><strong>Tüm kullanıcılar için</strong>: kurulum dosyasını yönetici olarak çalıştırın ve sihirbazda &quot;tüm kullanıcılar&quot; seçeneğini seçin. Uygulama <code>C:\Program Files\seowatcher</code> altına kurulur (tek kullanıcı kurulumunda klasör <code>%LOCALAPPDATA%\Programs\seowatcher</code> olur); her kullanıcının verisi yine kendi <code>%LOCALAPPDATA%\seowatcher</code> klasöründe durur.</li><li><strong>Sessiz kurulum</strong>: <code>seowatcher-setup.exe /VERYSILENT /NORESTART</code> (tek kullanıcı) ya da <code>seowatcher-setup.exe /VERYSILENT /ALLUSERS /NORESTART</code> (yönetici, tüm kullanıcılar). Sessiz kurulum bitince uygulama kendiliğinden açılır.</li><li><strong>Kurulum günlüğü</strong>: her kurulum <code>%LOCALAPPDATA%\seowatcher\logs\setup.log</code> dosyasına yazılır. <code>/LOG=&quot;yol&quot;</code> ile başka bir yer verebilirsiniz.</li><li><strong>Sessiz kaldırma</strong>: <code>unins000.exe /VERYSILENT</code> (kurulum klasöründe: <code>%LOCALAPPDATA%\Programs\seowatcher</code> ya da tüm kullanıcılar kurulumunda <code>C:\Program Files\seowatcher</code>).</li><li><strong>Doğrulama</strong>: her sürüm yayımlanmadan önce temiz bir Windows makinesinde kurulur, açılır, sağlık adresi yanıt verene kadar beklenir ve kaldırılır. Bu sınavı geçmeyen sürüm yayımlanmaz.</li></ul>
+<p>Bir bilgisayardaki tüm kullanıcılar için kurmak ya da bir dağıtım aracıyla (Intune, GPO, PDQ) sessizce yüklemek isteyen BT ekipleri için:</p>
+<ul><li><strong>Tüm kullanıcılar için</strong>: kurulum dosyasını yönetici olarak çalıştırın ve sihirbazda &quot;tüm kullanıcılar&quot; seçeneğini seçin. Uygulama <code>C:\Program Files\seowatcher</code> altına kurulur (tek kullanıcı kurulumunda klasör <code>%LOCALAPPDATA%\Programs\seowatcher</code> olur); her kullanıcının verisi yine kendi <code>%LOCALAPPDATA%\seowatcher</code> klasöründe durur.</li><li><strong>Sessiz kurulum</strong>: <code>seowatcher-setup.exe /VERYSILENT /NORESTART</code> (tek kullanıcı) ya da <code>seowatcher-setup.exe /VERYSILENT /ALLUSERS /NORESTART</code> (yönetici, tüm kullanıcılar). Sessiz kurulum bitince uygulama kendiliğinden açılır.</li><li><strong>Kurulum günlüğü</strong>: her kurulum <code>%LOCALAPPDATA%\seowatcher\logs\setup.log</code> dosyasına yazılır. <code>/LOG=&quot;yol&quot;</code> ile başka bir yer verebilirsiniz.</li><li><strong>Sessiz kaldırma</strong>: <code>unins000.exe /VERYSILENT</code> (kurulum klasöründe: <code>%LOCALAPPDATA%\Programs\seowatcher</code> ya da tüm kullanıcılar kurulumunda <code>C:\Program Files\seowatcher</code>).</li><li><strong>Doğrulama</strong>: her sürüm yayımlanmadan önce temiz bir Windows makinesinde kurulur, açılır, sağlık adresi yanıt verene kadar beklenir ve kaldırılır. Bu sınavı geçemeyen sürüm yayımlanmaz.</li></ul>
 <h3 id="onarma">Onarma</h3>
-<p>Bir şey takılırsa simgeye sağ tıklayıp <strong>Kurulumu onar</strong> deyin (simge görünmüyorsa görev çubuğundaki ^ okuna tıklayın). Uygulama geçici dosyaları temizler, paketin eksiksiz olduğunu kontrol eder, veritabanını yeniden kontrol eder ve açılır. Bir dosya eksikse söyler ve sürüm sayfasını açar. Kurulum dosyasını yeniden çalıştırmanız yeter.</p>
+<p>Bir şey takılırsa simgeye sağ tıklayıp <strong>Kurulumu onar</strong> deyin (simge görünmüyorsa görev çubuğundaki ^ okuna tıklayın). Uygulama geçici dosyaları temizler, paketin eksiksiz olduğunu ve veritabanının sağlam olduğunu kontrol eder, sonra açılır. Bir dosya eksikse bunu söyler ve sürüm sayfasını açar. O durumda kurulum dosyasını yeniden çalıştırmanız yeter.</p>
 <h3 id="kaldirma">Kaldırma</h3>
 <ol><li>Windows <strong>Ayarlar → Uygulamalar → Yüklü uygulamalar</strong> listesinde <strong>seowatcher</strong>'ı bulun.</li><li><strong>Kaldır</strong> deyin.</li></ol>
-<p>Kaldırıcı programı, başlat menüsü kısayolunu ve &quot;Windows ile başlat&quot; kaydını siler. Veri klasörüne dokunmaz. Veritabanınızı, Google bağlantınızı ve raporlarınızı da silmek istiyorsanız veri klasörünü kendiniz silin.</p>
+<p>Kaldırma işlemi programı, başlat menüsü kısayolunu ve <strong>Windows açılınca başlat</strong> kaydını siler. Veri klasörüne dokunmaz. Veritabanınızı, Google bağlantınızı ve raporlarınızı da silmek istiyorsanız veri klasörünü kendiniz silin.</p>
 <h3 id="veriler-nerede-nasil-yedeklenir">Veriler nerede, nasıl yedeklenir?</h3>
-<p>Her şey tek klasördedir: <code>%LOCALAPPDATA%\seowatcher</code>. Bu yazıyı Dosya Gezgini'nin adres çubuğuna yazın. <strong>Veri klasörünü aç</strong> menüsü de oraya gider. İçinde şunlar var:</p>
-<ul><li><code>data</code>: veritabanı (projeler, Search Console arşivi, denetimler, raporlar).</li><li><code>instance-secret</code>: Google erişim anahtarlarını şifreleyen anahtar. Kaybolursa Google bağlantılarını baştan kurarsınız.</li><li><code>mcp-token</code>: yapay zekâ asistanınızın uygulamaya bağlanırken kullandığı parola.</li><li><code>server.env</code>, <code>config.json</code>, <code>logs</code>.</li></ul>
+<p>Her şey tek klasördedir: <code>%LOCALAPPDATA%\seowatcher</code>. Bu yolu Dosya Gezgini'nin adres çubuğuna yazarak açabilirsiniz. <strong>Veri klasörünü aç</strong> menü maddesi de oraya gider. İçinde şunlar var:</p>
+<ul><li><code>data</code>: veritabanı (projeler, Search Console arşivi, denetimler, raporlar).</li><li><code>instance-secret</code>: Google erişim anahtarlarını şifreleyen anahtar. Kaybederseniz Google bağlantılarını baştan kurarsınız.</li><li><code>mcp-token</code>: yapay zekâ asistanınızın uygulamaya bağlanırken kullandığı parola.</li><li><code>server.env</code>, <code>config.json</code>, <code>logs</code>.</li></ul>
 <p>Yedek almak için:</p>
 <ol><li>Uygulamayı <strong>Çıkış</strong> ile kapatın.</li><li>Klasörün tamamını kopyalayın.</li></ol>
-<p>Geri yüklemek için uygulamayı kapatın, klasörü yerine koyun, uygulamayı başlatın. Başka bilgisayara taşımak da aynıdır. <code>instance-secret</code> dosyasını da götürürseniz Google bağlantıları çalışmaya devam eder.</p>
+<p>Geri yüklemek için uygulamayı kapatın, klasörü yerine koyun, uygulamayı başlatın. Başka bilgisayara taşımak da aynı yoldur. <code>instance-secret</code> dosyasını da götürürseniz Google bağlantıları çalışmaya devam eder.</p>
 <h3 id="adres-numarasini-portu-degistirme">Adres numarasını (portu) değiştirme</h3>
-<p>Uygulama 3001 numarasını kullanır. Başka program onu tutuyorsa uygulama 3002 ile 3010 arasında boş ilk numarayı seçer. Seçtiğini <code>config.json</code> dosyasına yazar.</p>
+<p>Uygulama 3001 numarasını kullanır. Başka bir program o numarayı kullanıyorsa 3002 ile 3010 arasındaki ilk boş numarayı seçer ve <code>config.json</code> dosyasına yazar.</p>
 <p>Belirli bir numara istiyorsanız:</p>
 <ol><li>Uygulamayı kapatın.</li><li>Veri klasöründeki <code>config.json</code> dosyasını Not Defteri ile açın.</li><li>İçine şunu yazın:</li></ol>
 <div class="code"><pre><code>{
   &quot;port&quot;: 3005
 }</code></pre></div>
 <ol><li>Kaydedin ve uygulamayı başlatın.</li></ol>
-<p>Numara değişince Google'daki iki yönlendirme adresini de yeni numarayla güncelleyin. Bu adresler Google bağlantısı kılavuzunda anlatılıyor.</p>
+<p>Numara değişince Google'daki iki yönlendirme adresini de yeni numarayla güncelleyin. Bu adresler Google'a bağlanma kılavuzunda anlatılıyor.</p>
 <h2 id="kontrol">Kontrol</h2>
-<ul><li>Görev çubuğu simgesinin üzerine gelince &quot;seowatcher X.Y.Z: Çalışıyor: http://127.0.0.1:3001/&quot; yazmalı. Baştaki sürüm numarası sizin kurduğunuz sürümdür. 2.3.7 örnektir.</li><li>Tarayıcıda <code>http://127.0.0.1:3001/api/health</code> adresi &quot;status&quot;:&quot;ok&quot; ile başlayan bir yazı göstermeli.</li><li><strong>Yardım</strong> ekranındaki &quot;Kurulumunuzun durumu&quot; kartı &quot;Her şey yolunda.&quot; demeli. Google bağlanmadan önce &quot;Google girişi&quot; satırı dikkat ister. Bu normaldir.</li></ul>
+<ul><li>Fareyi görev çubuğu simgesinin üzerine getirince &quot;seowatcher X.Y.Z: Çalışıyor: http://127.0.0.1:3001/&quot; yazmalı. Baştaki sürüm numarası kurduğunuz sürümdür. 2.3.7 örnektir.</li><li>Tarayıcıda <code>http://127.0.0.1:3001/api/health</code> adresi &quot;status&quot;:&quot;ok&quot; ile başlayan bir yazı göstermeli.</li><li><strong>Yardım</strong> ekranındaki &quot;Kurulumunuzun durumu&quot; kartı &quot;Her şey yolunda.&quot; demeli. Google'a bağlanmadan önce &quot;Google girişi&quot; satırı uyarı gösterir. Bu normaldir.</li></ul>
 <h2 id="sik-sorulanlar">Sık sorulanlar</h2>
-<p><strong>Neden tarayıcıda açılıyor?</strong> Uygulama bilgisayarınızda küçük bir sunucu gibi çalışır. Ekranı tarayıcıdır.</p>
-<p><strong>Bilgisayarı kapatınca ne olur?</strong> Uygulama da kapanır. &quot;Windows ile başlat&quot; işaretliyse bir sonraki açılışta kendiliğinden başlar.</p>
+<p><strong>Neden tarayıcıda açılıyor?</strong> Uygulama bilgisayarınızda küçük bir sunucu gibi çalışır. Ekranı tarayıcı gösterir.</p>
+<p><strong>Bilgisayarı kapatınca ne olur?</strong> Uygulama da kapanır. <strong>Windows açılınca başlat</strong> işaretliyse bir sonraki açılışta kendiliğinden başlar.</p>
 <p><strong>Başka bilgisayardan açabilir miyim?</strong> Hayır, bilerek böyle. Uygulama yalnızca 127.0.0.1 adresini dinler. İnternete açmak için önüne kendi kimlik doğrulamanızı koymanız gerekir.</p>
 <p><strong>Docker sürümünden geçebilir miyim?</strong> Evet, ama veri kendiliğinden taşınmaz. Projeleri yeniden oluşturur, Google'ı yeniden bağlarsınız. Search Console arşivi ilk açılışta yeniden dolar.</p>
-<p><strong>Antivirüs uyarı verdi.</strong> Dosya imzasız olduğu için bazı antivirüsler uyarır. Dosyayı yalnızca GitHub sürüm sayfasından indirin ve SHA-256 özetini karşılaştırın.</p>
+<p><strong>Antivirüs uyarı verdi.</strong> Dosya imzasız olduğu için bazı antivirüs programları uyarır. Dosyayı yalnızca GitHub sürüm sayfasından indirin ve SHA-256 özetini karşılaştırın.</p>
 <h2 id="sorun-cikarsa">Sorun çıkarsa</h2>
 <p>Simge görünmüyorsa görev çubuğundaki ^ okuna tıklayın.</p>
-<ul><li><strong>Simge &quot;Hata: 3001 ve sonraki 9 adres numarası (port) dolu&quot; diyor.</strong> Başka program bu numaraları tutuyor. <code>config.json</code> dosyasına başka bir numara yazın.</li><li><strong>Simge &quot;Veritabanı güncellemesi başarısız&quot; diyor.</strong> <strong>Günlükleri aç</strong> deyin, <code>migrate.log</code> dosyasının son satırlarına bakın. Çoğu zaman disk doludur ya da klasör salt okunurdur.</li><li><strong>Simge &quot;Sunucu beklenmedik şekilde kapandı&quot; diyor.</strong> <code>server.log</code> dosyasının son satırları sebebi yazar. <strong>Yeniden başlat</strong> deneyin. Düzelmezse günlüğü GitHub'da bir sorun kaydıyla paylaşın.</li><li><strong>Tarayıcı açılmadı.</strong> Simgeye çift tıklayın ya da adresi elle yazın: <code>http://127.0.0.1:3001</code></li></ul> <nav class="pager" aria-label="Önceki ve sonraki sayfa"><span class="pager-prev empty"></span><a class="pager-next" rel="next" href="/docs/kurulum-docker/"><span>Sonraki</span><strong>Docker ile kurulum</strong></a></nav>
+<ul><li><strong>Simge &quot;Hata: 3001 ve sonraki 9 adres numarası (port) dolu&quot; diyor.</strong> Başka program bu numaraları tutuyor. <code>config.json</code> dosyasına başka bir numara yazın.</li><li><strong>Simge &quot;Veritabanı güncellemesi başarısız&quot; diyor.</strong> <strong>Günlükleri aç</strong> deyin, <code>migrate.log</code> dosyasının son satırlarına bakın. Çoğunlukla disk dolmuştur ya da klasör salt okunurdur.</li><li><strong>Simge &quot;Sunucu beklenmedik şekilde kapandı&quot; diyor.</strong> <code>server.log</code> dosyasının son satırları sebebi yazar. <strong>Yeniden başlat</strong> deneyin. Düzelmezse günlüğü GitHub'da bir sorun kaydıyla paylaşın.</li><li><strong>Tarayıcı açılmadı.</strong> Simgeye çift tıklayın ya da adresi elle yazın: <code>http://127.0.0.1:3001</code></li></ul> <nav class="pager" aria-label="Önceki ve sonraki sayfa"><span class="pager-prev empty"></span><a class="pager-next" rel="next" href="/docs/kurulum-docker/"><span>Sonraki</span><strong>Docker ile kurulum</strong></a></nav>
         <p class="meta">
           Son güncelleme: 23 Ekim 2026. Bir hata görürseniz
-          <a href="https://github.com/ucsahinn/seotracker/issues"
+          <a
+            href="https://github.com/ucsahinn/seotracker/issues"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub'da bildirin</a
           >.
         </p>
@@ -1181,10 +1280,25 @@
     </main>
     <footer>
       <div class="wrap">
+        <p class="star">
+          Bir yıldız, başkalarının da bu ücretsiz aracı bulmasına yardım eder.
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub'da yıldız verin</a
+          >
+        </p>
         <span>seowatcher, MIT lisansı.</span>
         <span
           ><a href="/">Ana sayfa</a> &nbsp;
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          &nbsp;
           <a href="/docs/surum-notlari/">Sürüm notları</a></span
         >
       </div>

@@ -6,7 +6,7 @@ route: /p/<proje>/rankings
 updated: 2026-10-22
 ---
 
-Aramalarınızın zamanla nasıl yükselip düştüğünü görürsünüz. Google Search Console geçmişi 16 ayla sınırlar. Bir aramanın hangi gün kaç sıraya düştüğünü de göstermez.
+Aramalarınızın zamanla nasıl yükselip düştüğünü görürsünüz. Google Search Console geçmişi 16 ayla sınırlar. Bir aramanın hangi gün kaçıncı sırada olduğunu da göstermez.
 
 Uygulama bu veriyi gün gün çekip bu bilgisayarda saklar. Ekranı açtıkça arşiv büyür. Zamanla Google'ın göstermediği kadar eskiye gidersiniz.
 
@@ -14,7 +14,7 @@ Uygulama bu veriyi gün gün çekip bu bilgisayarda saklar. Ekranı açtıkça a
 
 **Zaman aralığı.** Seçenekler 30 gün, 90 gün (varsayılan), 6 ay, 16 ay ve Arşivin tamamı. Aralık bugünden üç gün geriye kadar sayılır.
 
-**Arşiv durumu satırı.** Arşivde kaç gün ve kaç satır olduğunu söyler. Ekran her açılışta eksik günleri Google'dan tamamlar. "Bu açılışta N gün eklendi." yazarsa yeni gün gelmiştir. "Kalan günler sonraki açılışta tamamlanacak." yazarsa iş bir sonraki açılışta devam eder.
+**Arşiv durumu satırı.** Arşivde kaç gün ve kaç satır olduğunu gösterir. Ekran her açılışta eksik günleri Google'dan tamamlar. "Bu açılışta N gün eklendi." yazıyorsa arşive yeni gün girmiştir. "Kalan günler sonraki açılışta tamamlanacak." yazıyorsa iş bir sonraki açılışta devam eder.
 
 **Sorgu içinde ara** kutusu listeyi daraltır.
 
@@ -24,7 +24,7 @@ Uygulama bu veriyi gün gün çekip bu bilgisayarda saklar. Ekranı açtıkça a
 
 **Yükselenler ve düşenler.** İki kısa liste görürsünüz: "En çok yükselenler" ve "En çok düşenler".
 
-**Tablo.** Sütunlar şunlar: **Sorgu**, **Ort. sıra**, **Değişim**, **Gösterim**, **Tıklama**, **Gün**. **Gün** sütunu aramanın seçili aralıkta kaç gün göründüğünü söyler. 90 günde yalnızca 3 gün görünen arama nadiren aranıyordur. Değişim hücresinde "Yükseldi 2,4" ya da "Düştü 1,1" yazar. Satır menüsünde üç seçenek var: **Kelimeyi kopyala**, **Kayıtlı kelimelere ekle**, **Arama performansında ara**.
+**Tablo.** Sütunlar şunlar: **Sorgu**, **Ort. sıra**, **Değişim**, **Gösterim**, **Tıklama**, **Gün**. **Gün** sütunu aramanın seçili aralıkta kaç gün göründüğünü söyler. 90 günde yalnızca 3 gün görünen arama, nadir aranan bir aramadır. Değişim hücresinde "Yükseldi 2,4" ya da "Düştü 1,1" yazar. Satır menüsünde üç seçenek var: **Kelimeyi kopyala**, **Kayıtlı kelimelere ekle**, **Arama performansında ara**.
 
 **Sorgu geçmişi.** Bir satıra tıklayınca o aramanın gün gün sıra çizgisi açılır. **Arama performansında aç** bağlantısı aynı aramayı diğer ekranda gösterir.
 
@@ -43,7 +43,7 @@ Uygulama bu veriyi gün gün çekip bu bilgisayarda saklar. Ekranı açtıkça a
 
 Arşiv yalnızca Google'ın kesinleştirdiği veriyle dolar. Her açılışta son üç gün yeniden çekilir, çünkü Google o günleri sonradan düzeltebilir. Böylece düzeltilen günler arşive yeniden yazılır.
 
-Tıklama ve gösterim toplamdır. **Ort. sıra**, çok gösterim alınan günleri daha çok sayar. **Gün**, verisi olan gün sayısıdır.
+Tıklama ve gösterim toplamdır. **Ort. sıra** hesabında çok gösterim alınan günlerin ağırlığı daha fazladır. **Gün**, verisi olan gün sayısıdır.
 
 Değişimi şöyle buluruz: önceki dönemin ortalama sırasından bu dönemin sırasını çıkarırız. Sonuç pozitifse yükselmişsinizdir. Önceki dönem aynı uzunluktadır ve bu dönemin hemen öncesinde biter.
 
@@ -63,6 +63,6 @@ Liste en çok gösterilen 100 aramayı getirir. Tarayıcıda 25, 50 ya da 100'l�
 
 ## Sınırlar
 
-Arşiv yalnızca bu kurulumun gördüğü günleri içerir. Yeni kurduysanız ilk açılışta en fazla 480 gün geriye gidebilirsiniz. Google'ın gizlediği nadir aramalar arşive de girmez. Arşiv silinirse geçmiş gider. Docker birimini ya da veri klasörünü kaldırmak bunun bir örneğidir. Yedeğini almak size düşer.
+Arşiv yalnızca bu kurulumun gördüğü günleri içerir. Yeni kurduysanız ilk açılışta en fazla 480 gün geriye gidebilirsiniz. Google'ın gizlediği nadir aramalar arşive de girmez. Arşiv silinirse geçmiş gider. Docker veri deposunu ya da veri klasörünü silmek buna örnektir. Yedek almak size kalır.
 
 <!-- Kaynaklar: src/routes/_project/p/$projectId/rankings.tsx; src/client/features/rankings/RankingsPage.tsx; TrackedQueriesTable.tsx; PositionChange.tsx; PositionBandBars.tsx; MoversCard.tsx; ArchiveStatus.tsx; EmptyArchivePanel.tsx; QueryHistoryCard.tsx; src/serverFunctions/gscHistory.ts; src/server/features/gsc/services/GscHistoryService.ts; src/server/features/gsc/repositories/GscHistoryRepository.ts; src/shared/rankingChange.ts; src/db/gsc-history.schema.ts -->

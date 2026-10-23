@@ -1,14 +1,14 @@
 ---
 title: Indexstatus
-description: Hat Google jede Ihrer Seiten in die Suche aufgenommen, wenn nicht, warum nicht, und wann war es zuletzt da? Sie können höchstens 2.000 Abfragen pro Tag stellen.
+description: Ob Google Ihre Seiten in die Suche aufgenommen hat, warum nicht und wann es zuletzt vorbeikam. Höchstens 2.000 Abfragen pro Tag.
 screen: Site denetimi, Dizin durumu sekmesi
 route: /p/<proje>/audit?auditId=<denetim>&tab=index
 updated: 2026-10-22
 ---
 
-Hier erfahren Sie, welche Ihrer Seiten Google in die Suche aufgenommen hat.
+Dieser Reiter zeigt, welche Ihrer Seiten Google in die Suche aufgenommen hat.
 
-Das Website-Audit sagt, ob sich eine Seite öffnen lässt. Es kann nicht sagen, ob Google die Seite tatsächlich in den Index (Googles Liste der Seiten) aufgenommen hat. Der Reiter **Dizin durumu** (Indexstatus) fragt Google danach und speichert die Antwort auf diesem Computer. Dieselbe Frage wird nicht immer wieder gestellt, es werden nur veraltete Antworten neu abgefragt. Das ist wichtig, denn Google erlaubt pro Property (Ihren Website-Eintrag in der Search Console) 2.000 Fragen am Tag. Die App und Ihr Assistent teilen sich dieses Kontingent.
+Das Website-Audit sagt, ob sich eine Seite öffnen lässt. Es kann nicht sagen, ob Google die Seite tatsächlich in den Index (Googles Liste der Seiten) aufgenommen hat. Der Reiter **Dizin durumu** (Indexstatus) fragt Google danach und speichert die Antwort auf diesem Computer. Dieselbe Frage wird nicht ständig wiederholt; nur veraltete Antworten werden neu abgefragt. Das ist wichtig, weil Google erlaubt pro Property (Ihren Website-Eintrag in der Search Console) 2.000 Fragen am Tag. Die App und Ihr Assistent teilen sich dieses Kontingent.
 
 ## Was auf dem Bildschirm zu sehen ist
 
@@ -18,7 +18,7 @@ Das Website-Audit sagt, ob sich eine Seite öffnen lässt. Es kann nicht sagen, 
 - **Dizinde değil** (Nicht im Index): Google hat sie angesehen, aber nicht aufgenommen.
 - **Yanıt bekleyen** (Antwort ausstehend): noch nicht gefragt oder keine Antwort erhalten.
 
-**Zusammenfassungskästen.** Sie sehen, bei wie vielen Seiten nachgefragt wurde, wie viele im Index sind, wie viele nicht und wie viele warten. Der Kasten „Google'ın farklı adresi seçtiği sayfalar“ (Seiten, bei denen Google eine andere Adresse gewählt hat) zählt die Seiten, bei denen Google eine andere Adresse gewählt hat als den von Ihnen gemeldeten Canonical (die Meldung der Hauptadresse). Der Kasten „Bu denetimde henüz sorulmamış“ (In diesem Audit noch nicht gefragt) ist die Zahl der Seiten, die auf ihre Abfrage warten.
+**Zusammenfassungskästen.** Sie sehen, bei wie vielen Seiten nachgefragt wurde, wie viele im Index sind, wie viele nicht und wie viele warten. Der Kasten „Google'ın farklı adresi seçtiği sayfalar“ (Seiten, bei denen Google eine andere Adresse gewählt hat) zählt die Seiten, bei denen Google eine andere Adresse gewählt hat als den von Ihnen gemeldeten Canonical (die Hauptadresse einer Seite). Der Kasten „Bu denetimde henüz sorulmamış“ (In diesem Audit noch nicht gefragt) ist die Zahl der Seiten, die auf ihre Abfrage warten.
 
 **Schaltfläche „Google'da durumunu kontrol et“ (Status bei Google prüfen).** Bei jedem Klick werden höchstens 25 Seiten abgefragt. Zuerst kommen die, die am längsten keine Antwort erhalten haben. Ist die Tagesgrenze erreicht, erscheint die Warnung „Google'ın günlük 2.000 adres sınırına ulaşıldı“ (Googles Tagesgrenze von 2.000 Adressen ist erreicht). Ist die Search Console nicht verbunden, ist die Schaltfläche deaktiviert. Sie ist auch deaktiviert, wenn die geprüfte Domain nicht zur verbundenen Property gehört.
 
@@ -36,9 +36,9 @@ Die Tabelle können Sie als CSV herunterladen.
 
 1. Öffnen Sie den Reiter, wenn das Audit fertig ist. Ist die Zahl bei „Yanıt bekleyen“ hoch, klicken Sie auf **Google'da durumunu kontrol et**. Bei jedem Klick kommen 25 Seiten voran. Bei einer kleinen Website genügen wenige Klicks.
 2. Sehen Sie zuerst in die Gruppe „Dizinde değil“. Die Spalte **Sebep** ist Googles Begründung und sagt oft, was zu tun ist. Bei „robots.txt engelliyor“ heben Sie die Sperre auf. Bei „'noindex' etiketiyle dışlandı“ löschen Sie das Tag. Bei „Keşfedildi, henüz taranmadı“ genügt meist Abwarten.
-3. Nehmen Sie wichtige Seiten, bei denen „Google bu adresi bilmiyor“ steht, in die Sitemap (die Karte Ihrer Website) auf. Senden Sie die Sitemap an die Search Console. Für drei, fünf besonders wichtige Seiten wählen Sie in der Search Console von Hand „Dizine eklenmesini iste“ (Indexierung beantragen).
-4. Ist der Kasten „Google'ın farklı adresi seçtiği sayfalar“ nicht null, sehen Sie in die Spalte **Google'ın seçtiği adres**. Google mag die von Ihnen gemeldete Hauptadresse nicht. Korrigieren Sie entweder Ihre Adresse oder machen Sie die von Google gewählte zur Hauptadresse.
-5. Klicken Sie nach einigen Tagen erneut. Nur veraltete Antworten werden neu abgefragt, Ihr Kontingent geht nicht verloren.
+3. Nehmen Sie wichtige Seiten, bei denen „Google bu adresi bilmiyor“ steht, in die Sitemap (die Karte Ihrer Website) auf. Senden Sie die Sitemap an die Search Console. Für drei bis fünf besonders wichtige Seiten wählen Sie in der Search Console von Hand „Dizine eklenmesini iste“ (Indexierung beantragen).
+4. Ist der Kasten „Google'ın farklı adresi seçtiği sayfalar“ nicht null, sehen Sie in die Spalte **Google'ın seçtiği adres**. Google folgt der von Ihnen gemeldeten Hauptadresse nicht. Korrigieren Sie entweder Ihre Adresse oder machen Sie die von Google gewählte zur Hauptadresse.
+5. Klicken Sie nach einigen Tagen erneut. Nur veraltete Antworten werden neu abgefragt, es wird also kein Kontingent verschwendet.
 
 ## Wie die Zahlen berechnet werden
 
@@ -54,7 +54,7 @@ Liegt Googles letzter Crawl länger als 90 Tage zurück, trägt das Audit das Pr
 
 **Warum ist die Schaltfläche deaktiviert?** Es gibt drei mögliche Gründe. Die Search Console ist nicht verbunden. Es ist keine Seite mehr abzufragen. Oder die geprüfte Domain gehört nicht zur verbundenen Property. Das passiert, wenn Sie eine andere Website geprüft haben.
 
-**Wem gehört die Grenze von 2.000?** Der Property. Zwei Projekte, die mit derselben Property verbunden sind, und Ihr Assistent verbrauchen aus demselben Vorrat.
+**Für wen gilt die Grenze von 2.000?** Für die Property. Zwei Projekte, die mit derselben Property verbunden sind, und Ihr Assistent verbrauchen aus demselben Vorrat.
 
 **Was soll ich bei einer Seite mit „Keşfedildi, henüz taranmadı“ tun?** Meist nichts. Bei neuen Websites kann Google wochenlang warten. Ein Link von einer häufig gecrawlten Seite Ihrer Website beschleunigt den Vorgang.
 

@@ -6,7 +6,7 @@
     <title>Website-Audit | seowatcher-Anleitung</title>
     <meta
       name="description"
-      content="Die App geht Ihre Website Seite für Seite durch, prüft sie anhand von 95 Regeln und sortiert die Probleme nach Wichtigkeit. Zu jedem Problem steht, was Sie tun sollten."
+      content="Die App prüft Ihre Website Seite für Seite anhand von 95 Regeln und sortiert die Probleme nach Wichtigkeit. Zu jedem steht, was zu tun ist."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link rel="canonical" href="https://seowatcher.io/de/docs/website-audit/" />
@@ -46,6 +46,7 @@
       href="https://seowatcher.io/docs/site-denetimi/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -72,7 +73,7 @@
     <meta property="og:title" content="Website-Audit | seowatcher-Anleitung" />
     <meta
       property="og:description"
-      content="Die App geht Ihre Website Seite für Seite durch, prüft sie anhand von 95 Regeln und sortiert die Probleme nach Wichtigkeit. Zu jedem Problem steht, was Sie tun sollten."
+      content="Die App prüft Ihre Website Seite für Seite anhand von 95 Regeln und sortiert die Probleme nach Wichtigkeit. Zu jedem steht, was zu tun ist."
     />
     <meta
       property="og:image"
@@ -99,7 +100,7 @@
     <meta name="twitter:title" content="Website-Audit | seowatcher-Anleitung" />
     <meta
       name="twitter:description"
-      content="Die App geht Ihre Website Seite für Seite durch, prüft sie anhand von 95 Regeln und sortiert die Probleme nach Wichtigkeit. Zu jedem Problem steht, was Sie tun sollten."
+      content="Die App prüft Ihre Website Seite für Seite anhand von 95 Regeln und sortiert die Probleme nach Wichtigkeit. Zu jedem steht, was zu tun ist."
     />
     <meta
       name="twitter:image"
@@ -136,7 +137,7 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/de/docs/website-audit/#article",
             "headline": "Website-Audit",
-            "description": "Die App geht Ihre Website Seite für Seite durch, prüft sie anhand von 95 Regeln und sortiert die Probleme nach Wichtigkeit. Zu jedem Problem steht, was Sie tun sollten.",
+            "description": "Die App prüft Ihre Website Seite für Seite anhand von 95 Regeln und sortiert die Probleme nach Wichtigkeit. Zu jedem steht, was zu tun ist.",
             "url": "https://seowatcher.io/de/docs/website-audit/",
             "inLanguage": "de",
             "dateModified": "2026-10-23",
@@ -175,7 +176,7 @@
       }
     </script>
     <script src="/assets/docs.js?v=2.4.1" defer></script>
-    <meta name="theme-color" content="#272c3b" />
+    <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
         font-family: "Geist";
@@ -765,6 +766,95 @@
       footer a:hover {
         color: var(--fg);
       }
+      /* The one ask on the page: quiet, one line, the accent only on the link. */
+      footer .star {
+        flex-basis: 100%;
+        margin: 0 0 4px;
+        text-wrap: pretty;
+      }
+      footer .star a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      footer .star a:hover {
+        color: var(--accent-link);
+        text-decoration-color: var(--accent-link);
+      }
+
+      /* Headings enter as they scroll into view. docs.js adds .hx (and .in
+         once seen) only when motion is allowed, so without script, under
+         reduced motion and with "stop motion" on, they are simply there.
+         h1 wipes in from the left, h2 rises while an amber stroke draws
+         along its rule, h3 rises a little. */
+      article .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease),
+          clip-path 760ms var(--ease),
+          filter 620ms var(--ease);
+      }
+      article h1.hx {
+        clip-path: inset(-10% 100% -10% 0);
+        filter: blur(6px);
+      }
+      article h2.hx,
+      article h3.hx {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      article h3.hx {
+        transform: translateY(6px);
+      }
+      article h2.hx {
+        position: relative;
+      }
+      article h2.hx::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 56px;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 700ms var(--ease) 160ms;
+      }
+      article .hx.in {
+        opacity: 1;
+        transform: none;
+      }
+      article h1.hx.in {
+        clip-path: inset(-10% 0 -10% 0);
+        filter: none;
+      }
+      article h2.hx.in::before {
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        article .hx,
+        article h2.hx::before {
+          opacity: 1;
+          transform: none;
+          clip-path: none;
+          filter: none;
+          transition: none;
+        }
+      }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
 
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
@@ -1209,7 +1299,11 @@
         <nav class="topnav" aria-label="Website">
           <a class="hide" href="/de/">Startseite</a>
           <a class="hide" href="/de/docs/">Anleitung</a>
-          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+          <a
+            class="hide"
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub</a
           >
           <details class="langs">
@@ -1236,7 +1330,7 @@
                       <circle cx="8.4" cy="7" r="2.7" fill="#e30a17" />
                       <polygon
                         fill="#fff"
-                        points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"
+                        points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"
                       /></svg></span
                   >Türkçe</a
                 >
@@ -1259,12 +1353,12 @@
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#fff"
-                        stroke-width="3.6"
+                        stroke-width="4.2"
                       />
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#c8102e"
-                        stroke-width="2"
+                        stroke-width="2.6"
                       /></svg></span
                   >English</a
                 >
@@ -1339,6 +1433,8 @@
           <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            target="_blank"
+            rel="noopener noreferrer"
             ><span class="long">Für Windows herunterladen</span
             ><span class="short">Download</span></a
           >
@@ -1397,7 +1493,7 @@
             <li><a href="/de/docs/projektinfo/">Projektinfo</a></li>
             <li><a href="/de/docs/einstellungen/">Einstellungen</a></li>
           </ul>
-          <p class="nav-group">Nachschlagen</p>
+          <p class="nav-group">Hilfe und Nachschlagen</p>
           <ul>
             <li><a href="/de/docs/hilfe/">Hilfe</a></li>
             <li><a href="/de/docs/audit-regeln/">Audit-Regeln</a></li>
@@ -1412,20 +1508,16 @@
       <article id="icerik" data-page="site-denetimi">
         <h1>Website-Audit</h1>
         <p class="lede">
-          Die App geht Ihre Website Seite für Seite durch, prüft sie anhand von
-          95 Regeln und sortiert die Probleme nach Wichtigkeit. Zu jedem Problem
-          steht, was Sie tun sollten.
+          Die App prüft Ihre Website Seite für Seite anhand von 95 Regeln und
+          sortiert die Probleme nach Wichtigkeit. Zu jedem steht, was zu tun
+          ist.
         </p>
         <p>
-          Hier erfahren Sie, wie Sie die Probleme Ihrer Website finden und
-          beheben.
-        </p>
-        <p>
-          Die App geht Ihre Website mit ihrem eigenen Crawler durch (einem
-          Programm, das Seiten einzeln öffnet und liest). Sie sucht nach
-          defekten Links, fehlenden Titeln und langsamen Seiten. Am Ende
-          erhalten Sie eine Punktzahl und eine nach Wichtigkeit sortierte
-          Problemliste. Unter jedem Problem steht, wie Sie es beheben.
+          Die App geht Ihre Website mit ihrem eigenen Crawler durch, einem
+          Programm, das Seiten einzeln öffnet und liest. Sie sucht nach defekten
+          Links, fehlenden Titeln und langsamen Seiten. Am Ende erhalten Sie
+          eine Punktzahl und eine nach Wichtigkeit sortierte Problemliste. Unter
+          jedem Problem steht, wie Sie es beheben.
         </p>
         <h2 id="was-auf-dem-bildschirm-zu-sehen-ist">
           Was auf dem Bildschirm zu sehen ist
@@ -1437,7 +1529,7 @@
         <ul>
           <li>
             <strong>Taranacak site adresi</strong> (Zu crawlende Adresse): Die
-            Domain Ihres Projekts ist schon eingetragen.
+            Domain Ihres Projekts ist bereits eingetragen.
           </li>
           <li>
             <strong>Kaç sayfa taransın?</strong> (Wie viele Seiten sollen
@@ -1446,8 +1538,8 @@
           </li>
           <li>
             <strong>Sayfa hızını da ölç</strong> (Seitengeschwindigkeit auch
-            messen): Standardmäßig ausgeschaltet. Schalten Sie es ein, wird jede
-            Seite auf dem Smartphone und auf dem Computer gemessen. Die Messung
+            messen): standardmäßig ausgeschaltet. Eingeschaltet wird jede Seite
+            auf dem Smartphone und auf dem Computer gemessen. Die Messung
             übernimmt Google Lighthouse (Googles Werkzeug zur Seitenmessung).
           </li>
         </ul>
@@ -1462,17 +1554,17 @@
         <p>
           <strong>Frühere Audits (Önceki denetimler).</strong> Datum, Status,
           Seitenzahl und Problemzahlen jedes Audits werden aufgelistet. Die
-          Problemzahlen gelten pro hundert Seiten. So können Sie Audits mit 50
-          und mit 500 Seiten vergleichen. <strong>Denetimi sil</strong> (Audit
-          löschen) im Zeilenmenü löscht alles und lässt sich nicht rückgängig
-          machen.
+          Problemzahlen sind auf hundert Seiten umgerechnet. So können Sie
+          Audits mit 50 und mit 500 Seiten vergleichen.
+          <strong>Denetimi sil</strong> (Audit löschen) im Zeilenmenü löscht
+          alles und lässt sich nicht rückgängig machen.
         </p>
         <p>
           <strong>Audit-Details.</strong> Bleibt der Crawl unvollständig,
           erscheint eine gelbe Warnung. Zum Beispiel „Denetim bu siteyi tamamen
           tarayamadı.“ (Das Audit konnte diese Website nicht vollständig
-          crawlen; der Bot-Schutz hat es blockiert). Die Ergebnisse werden
-          trotzdem angezeigt. <strong>Raporu indir</strong> (Bericht
+          crawlen), etwa weil der Bot-Schutz es blockiert hat. Die Ergebnisse
+          werden trotzdem angezeigt. <strong>Raporu indir</strong> (Bericht
           herunterladen) lädt den Bericht als einzelne HTML-Datei herunter und
           speichert ihn auf dem Bildschirm <strong>Raporlar</strong> (Berichte).
         </p>
@@ -1516,8 +1608,8 @@
         <ol>
           <li>
             Lassen Sie beim ersten Audit die Seitenzahl bei 50. Lassen Sie die
-            Geschwindigkeitsmessung ausgeschaltet. In ein, zwei Minuten ist es
-            fertig.
+            Geschwindigkeitsmessung ausgeschaltet. Nach ein bis zwei Minuten ist
+            das Audit fertig.
           </li>
           <li>
             Beginnen Sie mit den drei „+N puan“-Aufgaben auf der
@@ -1531,8 +1623,8 @@
           </li>
           <li>
             Kopieren Sie die Liste mit <strong>URL'leri kopyala</strong> und
-            geben Sie sie Ihrer Website-Betreuung. Den Kasten
-            <strong>Nasıl düzeltilir?</strong> können Sie unverändert
+            geben Sie sie an die Person weiter, die Ihre Website betreut. Den
+            Kasten <strong>Nasıl düzeltilir?</strong> können Sie unverändert
             weitergeben.
           </li>
           <li>
@@ -1590,8 +1682,8 @@
           <strong>Dizin durumu</strong>.
         </p>
         <p>
-          <strong>Die Punktzahl ist 98, warum nicht 100?</strong> Schon ein
-          einziges Problem hält die Punktzahl bei 99.
+          <strong>Die Punktzahl ist 98. Warum nicht 100?</strong> Schon ein
+          einziges Problem begrenzt die Punktzahl auf 99.
         </p>
         <p>
           <strong
@@ -1631,7 +1723,10 @@
         </nav>
         <p class="meta">
           Zuletzt aktualisiert: 23 Oktober 2026. Fehler entdeckt?
-          <a href="https://github.com/ucsahinn/seotracker/issues"
+          <a
+            href="https://github.com/ucsahinn/seotracker/issues"
+            target="_blank"
+            rel="noopener noreferrer"
             >Auf GitHub melden</a
           >.
         </p>
@@ -1657,10 +1752,25 @@
     </main>
     <footer>
       <div class="wrap">
+        <p class="star">
+          Ein Stern hilft anderen, ein kostenloses Werkzeug zu finden.
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Auf GitHub mit einem Stern markieren</a
+          >
+        </p>
         <span>seowatcher, MIT-Lizenz.</span>
         <span
           ><a href="/de/">Startseite</a> &nbsp;
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          &nbsp;
           <a href="/de/docs/versionshinweise/">Versionshinweise</a></span
         >
       </div>

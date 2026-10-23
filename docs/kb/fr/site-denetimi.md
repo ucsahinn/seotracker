@@ -6,9 +6,9 @@ route: /p/<proje>/audit
 updated: 2026-10-22
 ---
 
-Vous apprenez ici comment trouver et corriger les problèmes de votre site.
+Cet écran trouve les problèmes de votre site et vous dit comment les corriger.
 
-L'application parcourt votre site avec son propre explorateur (un programme qui ouvre les pages une à une et les lit). Elle cherche les liens cassés, les titres manquants et les pages lentes. À la fin, vous obtenez un score et une liste de problèmes classés par ordre d'importance. Sous chaque problème, la façon de le corriger est écrite.
+L'application parcourt votre site avec son propre explorateur (un programme qui ouvre les pages une à une et les lit). Elle cherche les liens cassés, les titres manquants et les pages lentes. À la fin, vous obtenez un score et une liste de problèmes classés par ordre d'importance. Sous chaque problème, la correction est expliquée.
 
 ## Ce que l'écran affiche
 
@@ -22,7 +22,7 @@ Si vous n'avez pas de clé PageSpeed (le code gratuit que Google fournit pour la
 
 **Audits précédents.** La date, l'état, le nombre de pages et le nombre de problèmes de chaque audit sont listés. Les nombres de problèmes sont ramenés à cent pages. Vous pouvez ainsi comparer des audits de 50 et de 500 pages. **Denetimi sil** (Supprimer l'audit), dans le menu de ligne, supprime tout et est irréversible.
 
-**Détail de l'audit.** Si l'exploration reste incomplète, un avertissement jaune apparaît. Par exemple « Denetim bu siteyi tamamen tarayamadı. » (L'audit n'a pas pu explorer entièrement ce site.) (la protection anti-bots l'a bloqué). Les résultats s'affichent quand même. **Raporu indir** (Télécharger le rapport) télécharge le rapport HTML en un seul fichier et l'enregistre dans l'écran **Raporlar** (Rapports).
+**Détail de l'audit.** Si l'exploration reste incomplète, un avertissement jaune apparaît. Par exemple « Denetim bu siteyi tamamen tarayamadı. » (L'audit n'a pas pu explorer entièrement ce site), souvent parce que la protection anti-bots l'a bloqué. Les résultats s'affichent quand même. **Raporu indir** (Télécharger le rapport) télécharge le rapport HTML en un seul fichier et l'enregistre dans l'écran **Raporlar** (Rapports).
 
 **Score du site.** Vous voyez un nombre de 0 à 100. En dessous, les trois actions qui rapporteront le plus de points sont écrites avec « +N puan » (+N points).
 
@@ -50,7 +50,7 @@ Si vous n'avez pas de clé PageSpeed (le code gratuit que Google fournit pour la
 
 Les tranches de score sont les suivantes : 90 et plus, très bien ; 70 et plus, bien ; 50 et plus, moyen ; en dessous, faible.
 
-**Exploration.** L'application ne fatigue pas votre site. Elle envoie au plus deux requêtes à la fois. Si le site répond « trop de requêtes » (429), elle attend. Si l'attente totale dépasse 30 minutes, l'exploration s'arrête.
+**Exploration.** L'application ménage votre site. Elle envoie au plus deux requêtes à la fois. Si le site répond « trop de requêtes » (429), elle attend. Si l'attente totale dépasse 30 minutes, l'exploration s'arrête.
 
 **Mesure de vitesse.** Sur un site de 212 pages, l'audit complet a duré 35 minutes. Environ 24 minutes étaient consacrées à la mesure de vitesse. Si le quota quotidien est atteint, la mesure s'arrête et les résultats obtenus jusque-là sont conservés. Un problème est signalé dans les cas suivants :
 
@@ -73,6 +73,6 @@ Les tranches de score sont les suivantes : 90 et plus, très bien ; 70 et plus, 
 
 ## Limites
 
-L'explorateur peut ne pas voir le contenu ajouté après coup par JavaScript (du code qui s'exécute dans la page). Un audit explore au plus 10 000 pages. La mesure de vitesse est une mesure de laboratoire de Google, pas des données de vrais visiteurs. L'audit ne modifie rien sur votre site. La correction, c'est vous ou votre assistant qui la faites.
+L'explorateur peut ne pas voir le contenu ajouté après coup par JavaScript (du code qui s'exécute dans la page). Un audit explore au plus 10 000 pages. La mesure de vitesse est une mesure de laboratoire de Google, pas des données de vrais visiteurs. L'audit ne modifie rien sur votre site. La correction, c'est à vous ou à votre assistant de la faire.
 
 <!-- Kaynaklar: src/client/features/audit/launch/LaunchView.tsx; LaunchFormCard.tsx; useLaunchController.ts; AuditHistorySection.tsx; ProgressCard.tsx; ResultsView.tsx; ResultsTables.tsx; TabIntro.tsx; ScoreCard.tsx; IssueWorkloadChart.tsx; SeverityDonut.tsx; IssueCard.tsx; DownloadReportButton.tsx; export.ts; src/shared/auditScore.ts; src/shared/audit-limits.ts; src/shared/audit-issues/speed.ts; src/server/lib/audit/crawl-window.ts; crawl-throttle.ts; src/server/features/audit/services/auditReconciler.ts; src/server/features/audit/report/buildAuditReportHtml.ts -->

@@ -15,6 +15,7 @@
     <link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/docs/relatorios/" />
     <link rel="alternate" hreflang="x-default" href="https://seowatcher.io/docs/raporlar/" />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -59,7 +60,7 @@
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en","de","fr","it","pt"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/en/docs/reports/#article","headline":"Reports and templates","description":"The reports you download from an audit or have your assistant write are a single HTML file. It opens on a phone, can be printed and can be shared.","url":"https://seowatcher.io/en/docs/reports/","inLanguage":"en","dateModified":"2026-10-23","articleSection":"Screens","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/en/docs/reports/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/en/docs/reports/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/en/"},{"@type":"ListItem","position":2,"name":"Guide","item":"https://seowatcher.io/en/docs/"},{"@type":"ListItem","position":3,"name":"Reports and templates","item":"https://seowatcher.io/en/docs/reports/"}]}]}</script>
     <script src="/assets/docs.js?v=2.4.1" defer></script>
-    <meta name="theme-color" content="#272c3b" />
+    <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
         font-family: "Geist";
@@ -649,6 +650,95 @@
       footer a:hover {
         color: var(--fg);
       }
+      /* The one ask on the page: quiet, one line, the accent only on the link. */
+      footer .star {
+        flex-basis: 100%;
+        margin: 0 0 4px;
+        text-wrap: pretty;
+      }
+      footer .star a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      footer .star a:hover {
+        color: var(--accent-link);
+        text-decoration-color: var(--accent-link);
+      }
+
+      /* Headings enter as they scroll into view. docs.js adds .hx (and .in
+         once seen) only when motion is allowed, so without script, under
+         reduced motion and with "stop motion" on, they are simply there.
+         h1 wipes in from the left, h2 rises while an amber stroke draws
+         along its rule, h3 rises a little. */
+      article .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease),
+          clip-path 760ms var(--ease),
+          filter 620ms var(--ease);
+      }
+      article h1.hx {
+        clip-path: inset(-10% 100% -10% 0);
+        filter: blur(6px);
+      }
+      article h2.hx,
+      article h3.hx {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      article h3.hx {
+        transform: translateY(6px);
+      }
+      article h2.hx {
+        position: relative;
+      }
+      article h2.hx::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 56px;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 700ms var(--ease) 160ms;
+      }
+      article .hx.in {
+        opacity: 1;
+        transform: none;
+      }
+      article h1.hx.in {
+        clip-path: inset(-10% 0 -10% 0);
+        filter: none;
+      }
+      article h2.hx.in::before {
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        article .hx,
+        article h2.hx::before {
+          opacity: 1;
+          transform: none;
+          clip-path: none;
+          filter: none;
+          transition: none;
+        }
+      }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
 
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
@@ -1093,13 +1183,19 @@
         <nav class="topnav" aria-label="Site">
           <a class="hide" href="/en/">Home</a>
           <a class="hide" href="/en/docs/">Guide</a>
-          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+          <a
+            class="hide"
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub</a
           >
-          <details class="langs"><summary aria-label="Language: English"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="3.6"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2"/></svg></span><span class="code">EN</span></summary><ul><li><a href="/docs/raporlar/" lang="tr" hreflang="tr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"/></svg></span>Türkçe</a></li><li><a href="/en/docs/reports/" lang="en" hreflang="en" aria-current="page"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="3.6"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2"/></svg></span>English</a></li><li><a href="/de/docs/berichte/" lang="de" hreflang="de"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg></span>Deutsch</a></li><li><a href="/fr/docs/rapports/" lang="fr" hreflang="fr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg></span>Français</a></li><li><a href="/it/docs/report/" lang="it" hreflang="it"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg></span>Italiano</a></li><li><a href="/pt/docs/relatorios/" lang="pt" hreflang="pt"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#ff0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.6" fill="#ffcc00"/><circle cx="8" cy="7" r="1.5" fill="#ff0000"/></svg></span>Português</a></li></ul></details>
+          <details class="langs"><summary aria-label="Language: English"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2.6"/></svg></span><span class="code">EN</span></summary><ul><li><a href="/docs/raporlar/" lang="tr" hreflang="tr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"/></svg></span>Türkçe</a></li><li><a href="/en/docs/reports/" lang="en" hreflang="en" aria-current="page"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2.6"/></svg></span>English</a></li><li><a href="/de/docs/berichte/" lang="de" hreflang="de"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg></span>Deutsch</a></li><li><a href="/fr/docs/rapports/" lang="fr" hreflang="fr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg></span>Français</a></li><li><a href="/it/docs/report/" lang="it" hreflang="it"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg></span>Italiano</a></li><li><a href="/pt/docs/relatorios/" lang="pt" hreflang="pt"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#ff0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.6" fill="#ffcc00"/><circle cx="8" cy="7" r="1.5" fill="#ff0000"/></svg></span>Português</a></li></ul></details>
           <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            target="_blank"
+            rel="noopener noreferrer"
             ><span class="long">Download for Windows</span
             ><span class="short">Download</span></a
           >
@@ -1116,37 +1212,40 @@
       <aside class="side" aria-label="Guide">
         <details class="side-dd" open>
           <summary>Guide</summary>
-          <p class="nav-group">Getting started</p><ul><li><a href="/en/docs/install-windows/">Install on Windows</a></li><li><a href="/en/docs/install-docker/">Installing with Docker</a></li><li><a href="/en/docs/google-connection/">Connecting to Google</a></li><li><a href="/en/docs/pagespeed-key/">PageSpeed key</a></li></ul><p class="nav-group">Screens</p><ul><li><a href="/en/docs/projects/">Projects</a></li><li><a href="/en/docs/dashboard/">Dashboard</a></li><li><a href="/en/docs/search-performance/">Search performance</a></li><li><a href="/en/docs/rank-tracking/">Ranking tracking</a></li><li><a href="/en/docs/opportunities/">Opportunities</a></li><li><a href="/en/docs/saved-keywords/">Saved keywords</a></li><li><a href="/en/docs/analytics/">Analytics</a></li><li><a href="/en/docs/site-audit/">Site audit</a></li><li><a href="/en/docs/index-status/">Index status</a></li><li class="current" aria-current="page"><a href="/en/docs/reports/">Reports and templates</a></li><li><a href="/en/docs/project-context/">Project info</a></li><li><a href="/en/docs/settings/">Settings</a></li></ul><p class="nav-group">Reference</p><ul><li><a href="/en/docs/help/">Help</a></li><li><a href="/en/docs/audit-rules/">Audit rules</a></li><li><a href="/en/docs/agent-setup/">Agent setup</a></li><li><a href="/en/docs/troubleshooting/">Troubleshooting</a></li><li><a href="/en/docs/release-notes/">Release notes</a></li></ul>
+          <p class="nav-group">Getting started</p><ul><li><a href="/en/docs/install-windows/">Install on Windows</a></li><li><a href="/en/docs/install-docker/">Installing with Docker</a></li><li><a href="/en/docs/google-connection/">Connecting to Google</a></li><li><a href="/en/docs/pagespeed-key/">PageSpeed key</a></li></ul><p class="nav-group">Screens</p><ul><li><a href="/en/docs/projects/">Projects</a></li><li><a href="/en/docs/dashboard/">Dashboard</a></li><li><a href="/en/docs/search-performance/">Search performance</a></li><li><a href="/en/docs/rank-tracking/">Ranking tracking</a></li><li><a href="/en/docs/opportunities/">Opportunities</a></li><li><a href="/en/docs/saved-keywords/">Saved keywords</a></li><li><a href="/en/docs/analytics/">Analytics</a></li><li><a href="/en/docs/site-audit/">Site audit</a></li><li><a href="/en/docs/index-status/">Index status</a></li><li class="current" aria-current="page"><a href="/en/docs/reports/">Reports and templates</a></li><li><a href="/en/docs/project-context/">Project info</a></li><li><a href="/en/docs/settings/">Settings</a></li></ul><p class="nav-group">Help and reference</p><ul><li><a href="/en/docs/help/">Help</a></li><li><a href="/en/docs/audit-rules/">Audit rules</a></li><li><a href="/en/docs/agent-setup/">Agent setup</a></li><li><a href="/en/docs/troubleshooting/">Troubleshooting</a></li><li><a href="/en/docs/release-notes/">Release notes</a></li></ul>
         </details>
       </aside>
       <article id="icerik" data-page="raporlar">
-        <h1>Reports and templates</h1><p class="lede">The reports you download from an audit or have your assistant write are a single HTML file. It opens on a phone, can be printed and can be shared.</p><p>On this page you learn how to get reports, how to share them and how to repeat them with a template.</p>
-<p>The <strong>Raporlar</strong> (Reports) screen keeps every report made for this project in one list. A report comes from one of two ways. The <strong>Raporu indir</strong> (Download report) button on the <strong>Site denetimi</strong> (Site audit) screen makes the app's own report. Your AI assistant does research and saves what it finds as a report. Each report is a single HTML file. It has no script (code that runs on the page), no outside resources and no embedded fonts. So it opens on a phone, can be printed as a PDF and can be sent by email. There is no editor in the app where you write a report by hand. Either the app or the assistant writes the report.</p>
+        <h1>Reports and templates</h1><p class="lede">The reports you download from an audit or have your assistant write are a single HTML file. It opens on a phone, can be printed and can be shared.</p><p>This guide covers getting reports, sharing them and repeating them with a template.</p>
+<p>The <strong>Raporlar</strong> (Reports) screen keeps every report made for this project in one list. A report comes from one of two sources. The <strong>Raporu indir</strong> (Download report) button on the <strong>Site denetimi</strong> (Site audit) screen makes the app's own report. Your AI assistant can research a topic and save its findings as a report. Each report is a single HTML file with no scripts (code that runs on the page), external resources or embedded fonts, so it opens on a phone, can be printed as a PDF and can be sent by email. The app has no editor for writing a report by hand: the app or the assistant writes it.</p>
 <h2 id="what-is-on-the-screen">What is on the screen</h2>
-<p><strong>Top bar.</strong> The <strong>Yeni rapor iste</strong> (Request a new report) button copies a text to the clipboard that you paste to your assistant.</p>
+<p><strong>Top bar.</strong> The <strong>Yeni rapor iste</strong> (Request a new report) button copies a ready-made request to the clipboard, which you paste into your assistant.</p>
 <p><strong>Filters.</strong> Tümü (All), Son 7 gün (Last 7 days), Şablonla yazılan (Written with a template), Beceriyle yazılan (Written with a skill). There is also a search box.</p>
-<p><strong>Table.</strong> It has the <strong>Rapor</strong> (Report), <strong>Tür</strong> (Type), <strong>Oluşturulma</strong> (Created) and <strong>Boyut</strong> (Size) columns. <strong>Tür</strong> tells you which job produced the report. For example, &quot;Site denetimi raporu&quot; (Site audit report) is the app itself. For reports written with a template, the template's name appears.</p>
-<p><strong>Report page.</strong> The report opens in its own safe frame. Buttons: <strong>HTML olarak indir</strong> (Download as HTML), copy link and print. The link opens only on this installation. There is no access from outside.</p>
+<p><strong>Table.</strong> It has the <strong>Rapor</strong> (Report), <strong>Tür</strong> (Type), <strong>Oluşturulma</strong> (Created) and <strong>Boyut</strong> (Size) columns. <strong>Tür</strong> tells you where the report came from. For example, &quot;Site denetimi raporu&quot; (Site audit report) is made by the app itself. For reports written with a template, the template's name appears.</p>
+<p><strong>Report page.</strong> The report opens in its own isolated frame. Buttons: <strong>HTML olarak indir</strong> (Download as HTML), copy link and print. The link works only on this installation, with no access from outside.</p>
 <p><strong>Report templates.</strong> You reach them from the menu or from the Raporlar screen. A template is a saved recipe that tells your assistant how to write the report: who will read it, which sections it will have, which language it will be written in. Fields:</p>
 <ul><li><strong>Ad</strong> (Name): at most 80 characters, unique in the project.</li><li><strong>Açıklama</strong> (Description): at most 200 characters. One sentence that says when to use it.</li><li><strong>Yönerge</strong> (Instruction): at most 3,000 characters.</li></ul>
 <p>A project can have at most 10 templates. Deleting a template does not delete the reports made from it.</p>
 <h2 id="how-to-use-it">How to use it</h2>
-<ol><li>For your first report, click <strong>Raporu indir</strong> on the Site denetimi screen. The report downloads to your computer and lands in this list. It starts with the section &quot;Bu hafta yapılacak N şey&quot; (N things to do this week).</li><li>If you work with an assistant, click <strong>Yeni rapor iste</strong>. Paste the copied text into Claude Code, Codex or Cursor. The assistant asks which report you want, reads the data and saves the report here.</li><li>If you want the same report every month, write a template. In the instruction, write the reader (&quot;the person who runs the site, does not know SEO&quot;), the sections, the order and the tone. If you ask for the template by name, the assistant applies it.</li><li>To share, click <strong>HTML olarak indir</strong> and send the file. The person who receives it opens the file in a browser. Copying the link works only on the same computer.</li><li>Do not delete old reports. In the next conversation, the assistant reads the summary of the previous report and compares.</li></ol>
+<ol><li>For your first report, click <strong>Raporu indir</strong> on the Site denetimi screen. The report downloads to your computer and also appears in this list. It starts with the section &quot;Bu hafta yapılacak N şey&quot; (N things to do this week).</li><li>If you work with an assistant, click <strong>Yeni rapor iste</strong>. Paste the copied text into Claude Code, Codex or Cursor. The assistant asks which report you want, reads the data and saves the report here.</li><li>If you want the same report every month, write a template. In the instruction, write the reader (&quot;the person who runs the site, does not know SEO&quot;), the sections, the order and the tone. If you ask for the template by name, the assistant applies it.</li><li>To share, click <strong>HTML olarak indir</strong> and send the file. The recipient opens the file in a browser. A copied link works only on the same computer.</li><li>Keep old reports: in the next conversation, the assistant reads the previous report's summary and compares.</li></ol>
 <h2 id="how-the-numbers-are-calculated">How the numbers are calculated</h2>
-<p>The audit report is laid out for A4 print. It has these sections: contents, &quot;Bu hafta yapılacak N şey&quot;, problems, speed measurement, Google index status and sitemap. The index status section uses only saved answers and does not ask new questions.</p>
-<p>The lists are limited: 50 addresses per problem, 300 pages, 50 speed rows, 3,000 addresses in the appendix. If the file goes over 400 KB, the lists get shorter.</p>
+<p>The audit report is laid out for A4 print and contains these sections: contents, &quot;Bu hafta yapılacak N şey&quot;, problems, speed measurement, Google index status and sitemap. The index status section uses only saved answers and does not ask new questions.</p>
+<p>The lists are limited: 50 addresses per problem, 300 pages, 50 speed rows, 3,000 addresses in the appendix. If the file goes over 400 KB, the lists are shortened.</p>
 <p>A report can be at most 500,000 bytes (under 80 KB is recommended). The title is at most 120 characters and is unique in the project. The summary is at most 2,500 characters. A second report with the same title is not accepted. A project can have at most 10,000 reports, and the installation has 5 GB of space in total.</p>
-<p>Security: When saving, files that contain a script, an iframe (a box that embeds another page in a page), a form, an external style, an event handler (like onclick), a javascript: link or an automatic redirect are rejected. When a report is opened, it is also shown in a closed box, with no network access. So a report cannot send anything outside without you knowing.</p>
+<p>For security, when a report is saved, files that contain a script, an iframe (a box that embeds one page inside another), a form, an external style, an event handler (like onclick), a javascript: link or an automatic redirect are rejected. When a report is opened, it is also shown in a sealed frame with no network access, so a report cannot send anything out without you knowing.</p>
 <h2 id="frequently-asked-questions">Frequently asked questions</h2>
-<p><strong>Who wrote the report?</strong> The <strong>Tür</strong> column tells you. &quot;Site denetimi raporu&quot; is the app's, the others are the assistant's. The report page also shows who saved it.</p>
+<p><strong>Who wrote the report?</strong> The <strong>Tür</strong> column tells you. &quot;Site denetimi raporu&quot; comes from the app; all others come from the assistant. The report page also shows who saved it.</p>
 <p><strong>Can I edit the report?</strong> Not in the app. Tell the assistant &quot;change this section&quot;, and the assistant updates the report.</p>
 <p><strong>I sent the link, and the other person cannot open it.</strong> The link works only on this computer. Send the file with <strong>HTML olarak indir</strong>.</p>
 <p><strong>What should I watch for when writing a template?</strong> A template is a format recipe, not a source of information. Write the sections, the tone and who it is written for. Do not write numbers or claims. The assistant takes the numbers from the data every time.</p>
 <h2 id="limits">Limits</h2>
-<p>Reports are not published to the outside. Sharing happens by sending the file. A report is only as accurate as the data its writer read. The &quot;Bu rapor nasıl hazırlandı&quot; (How this report was prepared) section at the end of assistant reports lists which tool said what. Trace a number you doubt from there.</p> <nav class="pager" aria-label="Previous and next page"><a class="pager-prev" rel="prev" href="/en/docs/index-status/"><span>Previous</span><strong>Index status</strong></a><a class="pager-next" rel="next" href="/en/docs/project-context/"><span>Next</span><strong>Project info</strong></a></nav>
+<p>Reports are never published online; you share them by sending the file. A report is only as accurate as the data its writer read. The &quot;Bu rapor nasıl hazırlandı&quot; (How this report was prepared) section at the end of assistant reports lists which tool supplied which information. Trace a number you doubt from there.</p> <nav class="pager" aria-label="Previous and next page"><a class="pager-prev" rel="prev" href="/en/docs/index-status/"><span>Previous</span><strong>Index status</strong></a><a class="pager-next" rel="next" href="/en/docs/project-context/"><span>Next</span><strong>Project info</strong></a></nav>
         <p class="meta">
           Last updated: October 23, 2026. Spotted a mistake?
-          <a href="https://github.com/ucsahinn/seotracker/issues"
+          <a
+            href="https://github.com/ucsahinn/seotracker/issues"
+            target="_blank"
+            rel="noopener noreferrer"
             >Report it on GitHub</a
           >.
         </p>
@@ -1155,10 +1254,25 @@
     </main>
     <footer>
       <div class="wrap">
+        <p class="star">
+          A star helps other people find a free tool.
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Star it on GitHub</a
+          >
+        </p>
         <span>seowatcher, MIT license.</span>
         <span
           ><a href="/en/">Home</a> &nbsp;
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          &nbsp;
           <a href="/en/docs/release-notes/">Release notes</a></span
         >
       </div>

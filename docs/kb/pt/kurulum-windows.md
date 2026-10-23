@@ -32,7 +32,7 @@ Ao fim desta página, o aplicativo estará instalado no seu computador e aberto 
    4. Clique em **Instalar** (em um Windows em turco: **Kur**).
    5. A última página tem a caixa **Iniciar o seowatcher agora**. Deixe-a marcada e clique em **Concluir** (em um Windows em turco: **Bitti**). O aplicativo abre.
 6. Aguarde. A primeira abertura leva de 20 a 30 segundos. Procure o ícone do seowatcher na área de notificação (a bandeja do sistema), à direita da barra de tarefas. Se o ícone não aparecer, clique na seta ^ da barra de tarefas. O texto do ícone muda em sequência para "Anahtarlar hazırlanıyor" (Preparando as chaves), "Veritabanı güncelleniyor" (Atualizando o banco de dados) e "Sunucu başlatılıyor" (Iniciando o servidor). Quando estiver pronto, o navegador abre sozinho. Quando o Windows inicia o aplicativo automaticamente, o navegador não abre; aparece um balão "seowatcher hazır" (o seowatcher está pronto).
-7. O endereço `http://127.0.0.1:3001` abre sozinho no navegador. É o endereço do próprio computador (127.0.0.1) e o número da porta (port: 3001).
+7. O endereço `http://127.0.0.1:3001` abre sozinho no navegador. O 127.0.0.1 é o seu próprio computador e o 3001 é o número da porta.
 
 O próximo passo é o guia da conexão com o Google.
 
@@ -44,10 +44,10 @@ Clique com o botão direito no ícone (se ele não aparecer, clique na seta ^ da
 - **Yeniden başlat** (Reiniciar): fecha o aplicativo e o abre de novo. Se algo travar, tente isto primeiro.
 - **Günlükleri aç** (Abrir os registros): abre a pasta de registros. Nela ficam `launcher.log`, `server.log` e `migrate.log`.
 - **Tanı bilgisini kopyala** (Copiar informações de diagnóstico): copia para a área de transferência a versão do Windows, o processador, a versão do Visual C++, um teste do motor, o módulo com falha no log de eventos do Windows, os despejos de falha e as últimas linhas do registro.
-- **Sorunu bildir (GitHub)** (Relatar um problema (GitHub)): coloca as mesmas informações na área de transferência e abre no GitHub um relato já preenchido. Acrescente uma frase sobre o que você fez e envie.
+- **Sorunu bildir (GitHub)** (Relatar um problema no GitHub): coloca as mesmas informações na área de transferência e abre no GitHub um relato já preenchido. Acrescente uma frase sobre o que você fez e envie.
 - **Eksik Windows bileşenini kur** (Instalar o componente do Windows que falta): aparece só se o pacote Visual C++ estiver ausente. Ao clicar, ele instala o pacote e reinicia o aplicativo.
 - **Kurulumu onar** (Reparar a instalação): limpa os arquivos temporários, verifica o pacote e reabre o aplicativo.
-- **Güncelle** (Atualizar): está sempre no menu. Clique para consultar o GitHub na hora; se houver uma versão nova, ela é baixada e instalada. Se não houver, aparece "Güncel" (atualizado). Quando uma atualização já está pronta, o item mostra "Güncelle: X.Y.Z sürümü hazır" (Atualizar: a versão 2.3.8 está pronta); o número é o da versão nova.
+- **Güncelle** (Atualizar): está sempre no menu. Clique para consultar o GitHub na hora; se houver uma versão nova, ela é baixada e instalada. Se não houver, aparece "Güncel" (atualizado). Quando uma atualização já está pronta, o item mostra "Güncelle: X.Y.Z sürümü hazır" (Atualizar: a versão X.Y.Z está pronta), com o número da versão nova no lugar de X.Y.Z.
 - **Güncellemeleri kendiliğinden kur** (Instalar as atualizações automaticamente): se estiver marcado, o aplicativo instala sozinho a versão nova quando a encontra.
 - **Veri klasörünü aç** (Abrir a pasta de dados): abre a pasta com o banco de dados e as chaves.
 - **Windows açılınca başlat** (Iniciar com o Windows): se estiver marcado, o aplicativo inicia em segundo plano quando o computador liga.
@@ -74,7 +74,7 @@ Para equipes de TI que querem instalar para todos os usuários de um computador,
 - **Instalação silenciosa**: `seowatcher-setup.exe /VERYSILENT /NORESTART` (um usuário) ou `seowatcher-setup.exe /VERYSILENT /ALLUSERS /NORESTART` (administrador, todos os usuários). Quando a instalação silenciosa termina, o aplicativo abre sozinho.
 - **Registro da instalação**: cada instalação grava em `%LOCALAPPDATA%\seowatcher\logs\setup.log`. Com `/LOG="caminho"` você indica outro local.
 - **Desinstalação silenciosa**: `unins000.exe /VERYSILENT` (na pasta de instalação: `%LOCALAPPDATA%\Programs\seowatcher` na instalação por usuário, `C:\Program Files\seowatcher` para todos os usuários).
-- **Verificação**: antes de publicar cada versão, ela é instalada em uma máquina Windows limpa, aberta, aguardada até o endereço de verificação de saúde responder, e desinstalada. Uma versão só é publicada depois de passar nesse teste.
+- **Verificação**: antes de publicar cada versão, ela é instalada em um Windows limpo, aberta, testada até o endereço de verificação de saúde responder e desinstalada. Uma versão só é publicada depois de passar nesse teste.
 
 ### Reparo
 
@@ -101,7 +101,7 @@ Para fazer um backup:
 1. Feche o aplicativo com **Çıkış** (Sair).
 2. Copie a pasta inteira.
 
-Para restaurar, feche o aplicativo, coloque a pasta de volta no lugar e inicie o aplicativo. Mudar para outro computador funciona do mesmo jeito. Se você levar também o arquivo `instance-secret`, as conexões com o Google continuam funcionando.
+Para restaurar, feche o aplicativo, coloque a pasta de volta no lugar e inicie o aplicativo. Para mudar para outro computador, faça o mesmo. Se você levar também o arquivo `instance-secret`, as conexões com o Google continuam funcionando.
 
 ### Trocar o número da porta
 
@@ -133,11 +133,11 @@ Quando o número muda, atualize também no Google os dois endereços de redireci
 
 **Por que ele abre no navegador?** O aplicativo roda no seu computador como um pequeno servidor. O navegador é a tela dele.
 
-**O que acontece quando eu desligo o computador?** O aplicativo também fecha. Se "Windows ile başlat" (Iniciar com o Windows) estiver marcado, ele inicia sozinho na próxima vez que o computador ligar.
+**O que acontece quando eu desligo o computador?** O aplicativo também fecha. Se **Windows açılınca başlat** (Iniciar com o Windows) estiver marcado, ele inicia sozinho na próxima vez que o computador ligar.
 
 **Posso abri-lo de outro computador?** Não, e isso é de propósito. O aplicativo escuta apenas o endereço 127.0.0.1. Para abri-lo para a internet, você precisa colocar sua própria autenticação na frente.
 
-**Posso migrar da versão Docker?** Sim, mas os dados não se movem sozinhos. Você cria os projetos de novo e conecta o Google de novo. O arquivo do Search Console se enche outra vez na primeira abertura.
+**Posso migrar da versão Docker?** Sim, mas os dados não se movem sozinhos. Você cria os projetos de novo e conecta o Google de novo. O arquivo do Search Console é preenchido de novo na primeira abertura.
 
 **Meu antivírus deu um aviso.** Como o arquivo não tem assinatura digital, alguns antivírus avisam. Baixe o arquivo somente da página de versões do GitHub e compare o hash SHA-256.
 

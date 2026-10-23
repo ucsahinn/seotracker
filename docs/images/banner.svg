@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="400" viewBox="0 0 1280 400" role="img" aria-label="seotracker: kendi sitenizin SEO'su, kendi bilgisayarınızda">
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="400" viewBox="0 0 1280 400" role="img" aria-label="seowatcher: kendi sitenizin SEO'su, kendi bilgisayarınızda">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#0f0d0c"/>
@@ -14,6 +14,18 @@
     <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
       <feGaussianBlur stdDeviation="16"/>
     </filter>
+    <linearGradient id="bn-tile" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1b1816"/>
+      <stop offset="1" stop-color="#0c0b0a"/>
+    </linearGradient>
+    <radialGradient id="bn-iris" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ffd27a"/>
+      <stop offset="0.45" stop-color="#ff8a1f"/>
+      <stop offset="1" stop-color="#d9480f"/>
+    </radialGradient>
+    <clipPath id="bn-eye">
+      <path d="M26 128 Q128 34 230 128 Q128 222 26 128 Z"/>
+    </clipPath>
   </defs>
 
   <!-- surface -->
@@ -25,16 +37,18 @@
   <g font-family="'Segoe UI', Inter, -apple-system, system-ui, Roboto, Helvetica, Arial, sans-serif">
     <!-- wordmark -->
     <!-- the mark: the all-seeing eye -->
-    <g transform="translate(72 58) scale(0.1875)">
-      <rect width="256" height="256" rx="48" fill="#0c0b0a"/>
+    <g transform="translate(72 55) scale(0.203125)">
+      <rect width="256" height="256" rx="48" fill="url(#bn-tile)"/>
       <path d="M26 128 Q128 34 230 128 Q128 222 26 128 Z" fill="#241d19"/>
-      <circle cx="128" cy="128" r="54" fill="#ff8a1f"/>
+      <g clip-path="url(#bn-eye)">
+        <circle cx="128" cy="128" r="54" fill="url(#bn-iris)"/>
+      </g>
       <path d="M26 128 Q128 34 230 128 Q128 222 26 128 Z" fill="none" stroke="#ff8a1f" stroke-width="12" stroke-linejoin="round"/>
       <path d="M128 84 Q141 128 128 172 Q115 128 128 84 Z" fill="#0c0b0a"/>
       <circle cx="148" cy="108" r="9" fill="#fff4e0"/>
     </g>
-    <text x="132" y="92" font-size="30" font-weight="700" fill="#f7f3ef" letter-spacing="-0.4">seowatcher</text>
-    <text x="300" y="92" font-size="16" fill="#a0948a">seotracker</text>
+    <text x="138" y="92" font-size="30" font-weight="700" fill="#f7f3ef" letter-spacing="-0.4">seowatcher</text>
+    <text x="312" y="92" font-size="16" fill="#a0948a">GitHub: seotracker</text>
 
     <!-- headline -->
     <text x="72" y="190" font-size="56" font-weight="700" fill="#f9f5f1" letter-spacing="-1.6">Kendi sitenizin SEO'su,</text>

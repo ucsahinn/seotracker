@@ -6,7 +6,7 @@ route: /p/<proje>/context
 updated: 2026-10-22
 ---
 
-Nesta página você aprende a contar ao seu assistente sobre o seu site uma única vez, sem repetir.
+Esta página explica como contar ao seu assistente sobre o seu site uma única vez.
 
 A tela **Proje bilgisi** (Informações do projeto) é onde você escreve o que o Google não sabe. Você escreve o que vende, qual é o objetivo agora, quem é o seu concorrente, quais páginas dão dinheiro e como você quer que as coisas sejam escritas. Você ou o seu assistente de IA (a tela diz "ajan", agente) preenchem a tela. O assistente a lê antes de começar o trabalho e escreve aqui o que aprende. Se você vir algo errado, corrija você mesmo. Ela é útil mesmo que você não use um assistente. Daqui a seis meses, a resposta para "por que nos concentramos nesta página" estará aqui.
 

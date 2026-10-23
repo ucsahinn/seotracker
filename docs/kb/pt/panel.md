@@ -12,7 +12,7 @@ Os números de busca vêm da ferramenta Search Console, do Google. Os números d
 
 ## O que há na tela
 
-**Quatro cartões de números.** **Tıklama** (Cliques), **Gösterim** (Impressões), **Tıklama oranı** (Taxa de cliques) e **Ortalama sıra** (Posição média). Todos mostram os últimos 28 dias. Cada cartão tem uma seta que compara com os 28 dias anteriores. Na posição média, um número pequeno é bom, e 1 é a primeira posição. Portanto, uma queda é uma boa notícia, e a seta tem a cor correspondente. Se o Search Console não estiver conectado, o cartão diz "Search Console'u bağlayın" (Conecte o Search Console).
+**Quatro cartões de números.** **Tıklama** (Cliques), **Gösterim** (Impressões), **Tıklama oranı** (Taxa de cliques) e **Ortalama sıra** (Posição média). Todos mostram os últimos 28 dias. Cada cartão tem uma seta que compara com os 28 dias anteriores. Na posição média, um número pequeno é bom, e 1 é a primeira posição. Portanto, se o número cai, é uma boa notícia, e a seta tem a cor correspondente. Se o Search Console não estiver conectado, o cartão diz "Search Console'u bağlayın" (Conecte o Search Console).
 
 **Sıradaki adımlar** (Próximos passos). Até três tarefas que o aplicativo sugere. As sugestões vêm nesta ordem:
 
@@ -27,20 +27,20 @@ Quando uma tarefa é concluída, o item sai da lista.
 
 **Tıklama eğilimi** (Tendência de cliques). A linha diária de cliques dos últimos 28 dias. Se houver dados de menos de quatro dias, nenhuma linha é desenhada. O link **Sorguları aç** (Abrir as consultas) leva à tela Arama performansı (Desempenho de busca).
 
-**Sıra 5-20 arası sorgular** (Consultas nas posições 5 a 20). As quatro primeiras buscas que aparecem entre as posições 5 e 20 no Google. Com um pouco de trabalho, elas podem chegar à primeira página ou às primeiras posições. **Tümünü gör** (Ver tudo) abre a lista completa.
+**Sıra 5-20 arası sorgular** (Consultas nas posições 5 a 20). As quatro primeiras buscas que aparecem entre as posições 5 e 20 no Google. Com um pouco de trabalho, elas podem chegar à primeira página. **Tümünü gör** (Ver tudo) abre a lista completa.
 
 Cartão **Site denetimi** (Auditoria do site). Mostra quantas páginas foram rastreadas, os três problemas mais comuns e as cinco páginas com mais problemas. Enquanto uma auditoria está em andamento, o cartão se atualiza a cada cinco segundos. O ícone de ponto de interrogação explica os três níveis de gravidade:
 
 - Crítico: prejudica diretamente a sua presença na busca.
 - Aviso: desgasta as posições com o tempo, mas não é urgente.
-- Informação: pequenas chances de melhoria.
+- Informação: pequenas oportunidades de melhoria.
 
 Cartão **Organik trafik** (Tráfego orgânico). Aparece se o Google Analytics estiver conectado. Para os visitantes que vieram da busca, mostra **Oturum** (Sessões), **Aktif kullanıcı** (Usuários ativos), **Etkileşim oranı** (Taxa de engajamento) e **Anahtar olay** (Eventos-chave). Se o site mede vendas, são acrescentados também **Organik gelir** (Receita orgânica) e **Sipariş** (Pedidos).
 
 ## Como usar
 
 1. Abra uma vez por semana e olhe as setas dos quatro cartões.
-2. Faça a primeira tarefa da caixa **Sıradaki adımlar**. Se a caixa estiver vazia, não há nada urgente.
+2. Faça a primeira tarefa da lista **Sıradaki adımlar**. Se a lista estiver vazia, não há nada urgente.
 3. Se a última auditoria tiver mais de sete dias, clique em **Denetimi başlat**.
 4. Revise o título e a descrição das páginas no cartão **Sıra 5-20 arası sorgular**. Os ganhos mais fáceis costumam estar aqui.
 
@@ -48,7 +48,7 @@ Cartão **Organik trafik** (Tráfego orgânico). Aparece se o Google Analytics e
 
 Os quatro cartões vêm de um único relatório do Search Console. O Google entrega os dados com três dias de atraso. Por isso, o período de 28 dias termina três dias atrás, não hoje. O período anterior são os 28 dias imediatamente antes desse intervalo. Se o período anterior for zero, nenhuma seta é mostrada.
 
-A posição média dá mais peso às buscas com muitas impressões. Esses quatro números são os totais reais do site. Se você somar as linhas da tabela na tela Arama performansı, obtém mais. O Google conta separadamente cada página que aparece na mesma busca.
+A posição média dá mais peso às buscas com muitas impressões. Esses quatro números são os totais reais do site. Se você somar as linhas da tabela na tela Arama performansı, obtém um número maior. O Google conta separadamente cada página que aparece na mesma busca.
 
 ## Perguntas frequentes
 

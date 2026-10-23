@@ -1,6 +1,6 @@
 ---
 title: Installazione su Windows
-description: Si installa su Windows con un solo file, senza Docker né terminale. Nella stessa pagina: aggiornamento, disinstallazione, copia di sicurezza e cambio del numero di porta.
+description: Si installa su Windows con un solo file, senza Docker né terminale. Nella stessa pagina: aggiornamento, disinstallazione, copia di sicurezza, porta.
 kind: nasil-yapilir
 updated: 2026-10-22
 ---
@@ -33,7 +33,7 @@ Al termine l'app sarà installata sul computer e aperta nel browser. L'installaz
 10. Attendere. Il primo avvio dura 20-30 secondi. Il testo dell'icona nella barra delle applicazioni cambia in ordine: "Anahtarlar hazırlanıyor" (Preparazione delle chiavi), "Veritabanı güncelleniyor" (Aggiornamento del database), "Sunucu başlatılıyor" (Avvio del server). Se l'icona non si vede, fare clic sulla freccia ^ nella barra delle applicazioni. Quando è tutto pronto, il browser si apre da solo. Se invece l'app parte con Windows, il browser non si apre e compare un fumetto "seowatcher hazır" (seowatcher è pronto).
 11. Nel browser si apre da solo `http://127.0.0.1:3001`. 127.0.0.1 è il computer stesso, 3001 è il numero di porta (l'indirizzo interno del servizio).
 
-Il passo successivo è la guida alla connessione con Google.
+Il passaggio successivo è la guida al collegamento con Google.
 
 ### Menu della barra delle applicazioni
 
@@ -42,11 +42,11 @@ Fare clic con il tasto destro sull'icona. Se non si vede, fare clic sulla frecci
 - **seowatcher'ı aç** (Apri seowatcher): apre l'app nel browser. Un doppio clic sull'icona fa la stessa cosa.
 - **Yeniden başlat** (Riavvia): chiude e riapre l'app. Se qualcosa si blocca, provare prima questa voce.
 - **Günlükleri aç** (Apri i registri): apre la cartella dei registri. Contiene `launcher.log`, `server.log` e `migrate.log`.
-- **Tanı bilgisini kopyala** (Copia le informazioni diagnostiche): copia negli appunti la versione di Windows, il processore, la versione di Visual C++, la prova del motore, il modulo con errore nel registro eventi di Windows, i dump di arresto anomalo e le ultime righe dei registri.
-- **Sorunu bildir (GitHub)** (Segnala un problema (GitHub)): copia le stesse informazioni negli appunti e apre su GitHub una segnalazione già compilata. Aggiungere una frase su ciò che si stava facendo e inviare.
+- **Tanı bilgisini kopyala** (Copia le informazioni diagnostiche): copia negli appunti la versione di Windows, il processore, la versione di Visual C++, l'esito di un test del motore, il modulo che ha dato errore nel registro eventi di Windows, i file di dump degli arresti anomali e le ultime righe dei registri.
+- **Sorunu bildir (GitHub)** (Segnala un problema su GitHub): copia le stesse informazioni negli appunti e apre su GitHub una segnalazione già compilata. Aggiungere una frase su ciò che si stava facendo e inviare.
 - **Eksik Windows bileşenini kur** (Installa il componente di Windows mancante): compare solo se manca il pacchetto Visual C++. Con un clic installa il pacchetto e riavvia l'app.
 - **Kurulumu onar** (Ripara l'installazione): elimina i file temporanei, controlla il pacchetto e riapre l'app.
-- **Güncelle** (Aggiorna): è sempre presente nel menu. Con un clic controlla subito GitHub; se c'è una versione nuova la scarica e la installa, altrimenti risponde "Güncel" (Aggiornato). Se una versione nuova è già stata trovata, il testo completo della voce quando è pronta è "Güncelle: X.Y.Z sürümü hazır" (Aggiorna: versione X.Y.Z pronta). Il numero di versione è un esempio.
+- **Güncelle** (Aggiorna): è sempre presente nel menu. Con un clic controlla subito GitHub; se c'è una versione nuova la scarica e la installa, altrimenti risponde "Güncel" (Aggiornato). Se una versione nuova è già stata trovata, la voce diventa "Güncelle: X.Y.Z sürümü hazır" (Aggiorna: versione X.Y.Z pronta); il numero di versione è un esempio.
 - **Güncellemeleri kendiliğinden kur** (Installa gli aggiornamenti automaticamente): se è spuntata, la nuova versione viene installata da sola quando è trovata.
 - **Veri klasörünü aç** (Apri la cartella dei dati): apre la cartella del database e delle chiavi.
 - **Windows açılınca başlat** (Avvia all'avvio di Windows): se è spuntata, l'app parte in secondo piano all'accensione del computer.
@@ -63,7 +63,7 @@ L'app si aggiorna da sola. Due minuti dopo l'avvio, e poi una volta al giorno, c
 - Se non si vuole l'installazione automatica, togliere la spunta da **Güncellemeleri kendiliğinden kur** nel menu. Quando esce una versione nuova compare un fumetto e nel menu appare la voce **Güncelle**.
 - Per aggiornare a mano, scaricare dallo stesso indirizzo il nuovo file di installazione ed eseguirlo. La procedura guidata chiude da sé l'app aperta, sostituisce i file e la riavvia.
 
-I dati, la connessione con Google e le impostazioni restano com'erano.
+I dati, il collegamento con Google e le impostazioni restano come sono.
 
 ### Distribuzione aziendale
 
@@ -71,7 +71,7 @@ Note per i team IT che vogliono installare per tutti gli utenti di un computer o
 
 - **Per tutti gli utenti**: eseguire il file di installazione come amministratore e scegliere nella procedura l'opzione "tutti gli utenti". L'app viene installata in `C:\Program Files\seowatcher` (con l'installazione per un solo utente la cartella è `%LOCALAPPDATA%\Programs\seowatcher`); i dati di ogni utente restano comunque nella sua cartella `%LOCALAPPDATA%\seowatcher`.
 - **Installazione silenziosa**: `seowatcher-setup.exe /VERYSILENT /NORESTART` (un solo utente) oppure `seowatcher-setup.exe /VERYSILENT /ALLUSERS /NORESTART` (amministratore, tutti gli utenti). Al termine dell'installazione silenziosa l'app si avvia da sola.
-- **Registro dell'installazione**: ogni installazione scrive nel file `%LOCALAPPDATA%\seowatcher\logs\setup.log`. Con `/LOG="yol"` si può indicare un altro percorso.
+- **Registro dell'installazione**: ogni installazione scrive nel file `%LOCALAPPDATA%\seowatcher\logs\setup.log`. Con `/LOG="yol"` (yol significa percorso) si può indicare un altro file.
 - **Disinstallazione silenziosa**: `unins000.exe /VERYSILENT` (nella cartella di installazione: `%LOCALAPPDATA%\Programs\seowatcher`, oppure `C:\Program Files\seowatcher` se è stata fatta per tutti gli utenti).
 - **Verifica**: prima della pubblicazione, ogni versione viene installata su un Windows pulito, avviata, attesa finché l'indirizzo di stato non risponde, e infine disinstallata. Una versione che non supera questa prova non viene pubblicata.
 
@@ -84,14 +84,14 @@ Se qualcosa si blocca, fare clic con il tasto destro sull'icona e scegliere **Ku
 1. In Windows, nell'elenco **Ayarlar → Uygulamalar → Yüklü uygulamalar** (Impostazioni → App → App installate), cercare **seowatcher**.
 2. Scegliere **Kaldır** (Disinstalla).
 
-Il programma di disinstallazione elimina il programma, il collegamento nel menu Start e la voce "avvia con Windows". Non tocca la cartella dei dati. Per eliminare anche il database, la connessione con Google e i report, cancellare da sé la cartella dei dati.
+Il programma di disinstallazione elimina il programma, il collegamento nel menu Start e la voce "avvia con Windows". Non tocca la cartella dei dati. Per eliminare anche il database, il collegamento con Google e i report, cancellare a mano la cartella dei dati.
 
 ### Dove sono i dati e come si fa la copia di sicurezza
 
 Tutto si trova in una sola cartella: `%LOCALAPPDATA%\seowatcher`. Scrivere questo testo nella barra degli indirizzi di Esplora file. Anche la voce di menu **Veri klasörünü aç** (Apri la cartella dei dati) porta lì. Dentro ci sono:
 
 - `data`: il database (progetti, archivio di Search Console, controlli, report).
-- `instance-secret`: la chiave che cifra gli accessi a Google. Se si perde, la connessione con Google va rifatta da capo.
+- `instance-secret`: la chiave che cifra gli accessi a Google. Se si perde, il collegamento con Google va rifatto da capo.
 - `mcp-token`: la password che l'assistente di intelligenza artificiale usa per collegarsi all'app.
 - `server.env`, `config.json`, `logs`.
 
@@ -100,7 +100,7 @@ Per fare la copia di sicurezza:
 1. Chiudere l'app con **Çıkış** (Esci).
 2. Copiare l'intera cartella.
 
-Per ripristinare, chiudere l'app, rimettere la cartella al suo posto e avviare l'app. Lo spostamento su un altro computer funziona allo stesso modo. Portando anche il file `instance-secret`, le connessioni con Google continuano a funzionare.
+Per ripristinare, chiudere l'app, rimettere la cartella al suo posto e avviare l'app. Lo spostamento su un altro computer funziona allo stesso modo. Portando anche il file `instance-secret`, i collegamenti con Google continuano a funzionare.
 
 ### Cambiare il numero di porta
 
@@ -120,23 +120,23 @@ Per un numero preciso:
 
 4. Salvare e avviare l'app.
 
-Quando il numero cambia, aggiornare con il nuovo numero anche i due indirizzi di reindirizzamento su Google. Sono descritti nella guida alla connessione con Google.
+Quando il numero cambia, aggiornare con il nuovo numero anche i due indirizzi di reindirizzamento su Google. Sono descritti nella guida al collegamento con Google.
 
 ## Verifica
 
 - Passando il mouse sull'icona nella barra delle applicazioni deve comparire "seowatcher X.Y.Z: Çalışıyor: http://127.0.0.1:3001/". Il numero iniziale è la versione installata. 2.3.7 è un esempio.
 - Nel browser l'indirizzo `http://127.0.0.1:3001/api/health` deve mostrare un testo che inizia con "status":"ok".
-- Nella schermata **Yardım** (Aiuto) la scheda "Kurulumunuzun durumu" (Stato dell'installazione) deve dire "Her şey yolunda." (Tutto a posto.). Prima del collegamento con Google, la riga "Google girişi" (Accesso a Google) richiede attenzione. È normale.
+- Nella schermata **Yardım** (Aiuto) la scheda "Kurulumunuzun durumu" (Stato dell'installazione) deve dire "Her şey yolunda." (Tutto a posto.). Finché Google non è collegato, la riga "Google girişi" (Accesso a Google) segnala un problema. È normale.
 
 ## Domande frequenti
 
 **Perché si apre nel browser?** L'app funziona sul computer come un piccolo server. Il suo schermo è il browser.
 
-**Che cosa succede se si spegne il computer?** Si chiude anche l'app. Se **Windows açılınca başlat** è spuntata, alla prossima accensione parte da sola.
+**Che cosa succede se si spegne il computer?** Si chiude anche l'app. Se **Windows açılınca başlat** (Avvia all'avvio di Windows) è spuntata, alla prossima accensione parte da sola.
 
 **Si può aprire da un altro computer?** No, ed è voluto. L'app ascolta solo l'indirizzo 127.0.0.1. Per aprirla a Internet bisogna metterle davanti una propria autenticazione.
 
-**Si può passare dalla versione Docker?** Sì, ma i dati non vengono spostati da soli. I progetti si ricreano e Google si ricollega. L'archivio di Search Console si riempie di nuovo al primo avvio.
+**Si può passare dalla versione Docker a questa?** Sì, ma i dati non vengono spostati da soli. I progetti si ricreano e Google si ricollega. L'archivio di Search Console si riempie di nuovo al primo avvio.
 
 **L'antivirus ha dato un avviso.** Poiché il file non è firmato, alcuni antivirus segnalano un avviso. Scaricare il file solo dalla pagina delle versioni su GitHub e confrontare l'impronta SHA-256.
 

@@ -6,7 +6,7 @@
     <title>Status de indexação | Guia do seowatcher</title>
     <meta
       name="description"
-      content="A resposta do Google para cada uma das suas páginas: se está na busca, se não está por quê, e quando ele a visitou pela última vez. Você pode fazer no máximo 2.000 consultas por dia."
+      content="A resposta do Google para cada uma das suas páginas: se está indexada, por que não está e quando ele a visitou pela última vez. O limite é de 2.000 consultas por dia."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -49,6 +49,7 @@
       href="https://seowatcher.io/docs/dizin-durumu/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -78,7 +79,7 @@
     />
     <meta
       property="og:description"
-      content="A resposta do Google para cada uma das suas páginas: se está na busca, se não está por quê, e quando ele a visitou pela última vez. Você pode fazer no máximo 2.000 consultas por dia."
+      content="A resposta do Google para cada uma das suas páginas: se está indexada, por que não está e quando ele a visitou pela última vez. O limite é de 2.000 consultas por dia."
     />
     <meta
       property="og:image"
@@ -108,7 +109,7 @@
     />
     <meta
       name="twitter:description"
-      content="A resposta do Google para cada uma das suas páginas: se está na busca, se não está por quê, e quando ele a visitou pela última vez. Você pode fazer no máximo 2.000 consultas por dia."
+      content="A resposta do Google para cada uma das suas páginas: se está indexada, por que não está e quando ele a visitou pela última vez. O limite é de 2.000 consultas por dia."
     />
     <meta
       name="twitter:image"
@@ -145,7 +146,7 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/pt/docs/status-de-indexacao/#article",
             "headline": "Status de indexação",
-            "description": "A resposta do Google para cada uma das suas páginas: se está na busca, se não está por quê, e quando ele a visitou pela última vez. Você pode fazer no máximo 2.000 consultas por dia.",
+            "description": "A resposta do Google para cada uma das suas páginas: se está indexada, por que não está e quando ele a visitou pela última vez. O limite é de 2.000 consultas por dia.",
             "url": "https://seowatcher.io/pt/docs/status-de-indexacao/",
             "inLanguage": "pt",
             "dateModified": "2026-10-23",
@@ -184,7 +185,7 @@
       }
     </script>
     <script src="/assets/docs.js?v=2.4.1" defer></script>
-    <meta name="theme-color" content="#272c3b" />
+    <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
         font-family: "Geist";
@@ -774,6 +775,95 @@
       footer a:hover {
         color: var(--fg);
       }
+      /* The one ask on the page: quiet, one line, the accent only on the link. */
+      footer .star {
+        flex-basis: 100%;
+        margin: 0 0 4px;
+        text-wrap: pretty;
+      }
+      footer .star a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      footer .star a:hover {
+        color: var(--accent-link);
+        text-decoration-color: var(--accent-link);
+      }
+
+      /* Headings enter as they scroll into view. docs.js adds .hx (and .in
+         once seen) only when motion is allowed, so without script, under
+         reduced motion and with "stop motion" on, they are simply there.
+         h1 wipes in from the left, h2 rises while an amber stroke draws
+         along its rule, h3 rises a little. */
+      article .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease),
+          clip-path 760ms var(--ease),
+          filter 620ms var(--ease);
+      }
+      article h1.hx {
+        clip-path: inset(-10% 100% -10% 0);
+        filter: blur(6px);
+      }
+      article h2.hx,
+      article h3.hx {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      article h3.hx {
+        transform: translateY(6px);
+      }
+      article h2.hx {
+        position: relative;
+      }
+      article h2.hx::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 56px;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 700ms var(--ease) 160ms;
+      }
+      article .hx.in {
+        opacity: 1;
+        transform: none;
+      }
+      article h1.hx.in {
+        clip-path: inset(-10% 0 -10% 0);
+        filter: none;
+      }
+      article h2.hx.in::before {
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        article .hx,
+        article h2.hx::before {
+          opacity: 1;
+          transform: none;
+          clip-path: none;
+          filter: none;
+          transition: none;
+        }
+      }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
 
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
@@ -1218,7 +1308,11 @@
         <nav class="topnav" aria-label="Site">
           <a class="hide" href="/pt/">Início</a>
           <a class="hide" href="/pt/docs/">Guia</a>
-          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+          <a
+            class="hide"
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub</a
           >
           <details class="langs">
@@ -1241,7 +1335,7 @@
                       <circle cx="8.4" cy="7" r="2.7" fill="#e30a17" />
                       <polygon
                         fill="#fff"
-                        points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"
+                        points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"
                       /></svg></span
                   >Türkçe</a
                 >
@@ -1264,12 +1358,12 @@
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#fff"
-                        stroke-width="3.6"
+                        stroke-width="4.2"
                       />
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#c8102e"
-                        stroke-width="2"
+                        stroke-width="2.6"
                       /></svg></span
                   >English</a
                 >
@@ -1344,6 +1438,8 @@
           <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            target="_blank"
+            rel="noopener noreferrer"
             ><span class="long">Baixar para Windows</span
             ><span class="short">Download</span></a
           >
@@ -1400,7 +1496,7 @@
             </li>
             <li><a href="/pt/docs/configuracoes/">Configurações</a></li>
           </ul>
-          <p class="nav-group">Referência</p>
+          <p class="nav-group">Ajuda e referência</p>
           <ul>
             <li><a href="/pt/docs/ajuda/">Ajuda</a></li>
             <li>
@@ -1419,12 +1515,12 @@
       <article id="icerik" data-page="dizin-durumu">
         <h1>Status de indexação</h1>
         <p class="lede">
-          A resposta do Google para cada uma das suas páginas: se está na busca,
-          se não está por quê, e quando ele a visitou pela última vez. Você pode
-          fazer no máximo 2.000 consultas por dia.
+          A resposta do Google para cada uma das suas páginas: se está indexada,
+          por que não está e quando ele a visitou pela última vez. O limite é de
+          2.000 consultas por dia.
         </p>
         <p>
-          Nesta página você vê como descobrir quais das suas páginas o Google
+          Esta página mostra como descobrir quais das suas páginas o Google
           colocou na busca.
         </p>
         <p>
@@ -1433,7 +1529,7 @@
           lista de páginas do Google). A aba
           <strong>Dizin durumu</strong> (Status de indexação) pergunta isso ao
           Google e guarda a resposta. As respostas ficam guardadas neste
-          computador. A mesma pergunta não é feita de novo e de novo. Só as
+          computador. A mesma pergunta não é repetida sem necessidade. Só as
           respostas que ficaram velhas são perguntadas outra vez. Isso importa
           porque o Google concede 2.000 perguntas por dia para cada propriedade
           (o registro do seu site no Search Console). O aplicativo e o seu
@@ -1456,8 +1552,8 @@
             não a incluiu.
           </li>
           <li>
-            <strong>Yanıt bekleyen</strong> (Aguardando resposta): ainda não foi
-            perguntado, ou não foi possível receber resposta.
+            <strong>Yanıt bekleyen</strong> (Aguardando resposta): a página
+            ainda não foi consultada, ou o Google não deu resposta.
           </li>
         </ul>
         <p>
@@ -1465,10 +1561,10 @@
           consultadas, quantas estão no índice, quantas não estão e quantas
           aguardam. A caixa &quot;Google'ın farklı adresi seçtiği sayfalar&quot;
           (Páginas em que o Google escolheu outro endereço) conta as páginas em
-          que o Google escolheu um endereço diferente do canônico (o aviso que
-          diz qual endereço é o principal) que você declarou. A caixa &quot;Bu
-          denetimde henüz sorulmamış&quot; (Ainda não consultadas nesta
-          auditoria) é o número de páginas que faltam consultar.
+          que o Google escolheu um endereço diferente do canônico que você
+          declarou (a etiqueta que diz qual é o endereço principal da página). A
+          caixa &quot;Bu denetimde henüz sorulmamış&quot; (Ainda não consultadas
+          nesta auditoria) é o número de páginas que faltam consultar.
         </p>
         <p>
           <strong
@@ -1501,7 +1597,7 @@
           </li>
           <li>
             &quot;'noindex' etiketiyle dışlandı&quot; (Excluída pela etiqueta
-            'noindex') (a página é ocultada da busca)
+            'noindex') (a página fica fora da busca)
           </li>
           <li>
             &quot;robots.txt engelliyor&quot; (O robots.txt bloqueia)
@@ -1544,9 +1640,8 @@
           <li>
             Se a caixa &quot;Google'ın farklı adresi seçtiği sayfalar&quot; não
             for zero, olhe a coluna <strong>Google'ın seçtiği adres</strong>. O
-            Google não gostou do endereço principal que você declarou. Ou
-            corrija o seu, ou faça do endereço que o Google escolheu o endereço
-            principal.
+            Google preferiu outro endereço. Corrija o seu endereço principal ou
+            adote o que o Google escolheu.
           </li>
           <li>
             Clique de novo depois de alguns dias. Só as respostas velhas são
@@ -1629,7 +1724,10 @@
         </nav>
         <p class="meta">
           Última atualização: 23 de outubro de 2026. Viu algum erro?
-          <a href="https://github.com/ucsahinn/seotracker/issues"
+          <a
+            href="https://github.com/ucsahinn/seotracker/issues"
+            target="_blank"
+            rel="noopener noreferrer"
             >Relate no GitHub</a
           >.
         </p>
@@ -1651,10 +1749,25 @@
     </main>
     <footer>
       <div class="wrap">
+        <p class="star">
+          Uma estrela ajuda outras pessoas a encontrar uma ferramenta gratuita.
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Dê uma estrela no GitHub</a
+          >
+        </p>
         <span>seowatcher, licença MIT.</span>
         <span
           ><a href="/pt/">Início</a> &nbsp;
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          &nbsp;
           <a href="/pt/docs/notas-da-versao/">Notas de versão</a></span
         >
       </div>

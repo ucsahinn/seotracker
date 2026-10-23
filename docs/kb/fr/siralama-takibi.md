@@ -6,7 +6,7 @@ route: /p/<proje>/rankings
 updated: 2026-10-22
 ---
 
-Vous voyez comment vos recherches montent et descendent au fil du temps. Google Search Console limite l'historique à 16 mois. Il n'indique pas non plus quel jour une recherche est tombée à quelle position.
+Vous voyez comment vos recherches montent et descendent au fil du temps. Google Search Console limite l'historique à 16 mois. Il ne montre pas non plus à quelle position se trouvait une recherche tel ou tel jour.
 
 L'application récupère ces données jour par jour et les conserve sur cet ordinateur. Chaque fois que vous ouvrez l'écran, les archives grossissent. Avec le temps, vous remontez plus loin que ce que Google montre.
 
@@ -18,7 +18,7 @@ L'application récupère ces données jour par jour et les conserve sur cet ordi
 
 La zone **Sorgu içinde ara** (Chercher dans les requêtes) réduit la liste.
 
-**Filtres de variation.** **Yükselenler** (En hausse) et **Düşenler** (En baisse) montrent ceux qui ont bougé d'au moins une demi-position. Il y a aussi **Şu an ilk 10'da** (Actuellement dans le top 10) et **İlk 10'dan çıkanlar** (Sortis du top 10). Deux boutons rapides s'y ajoutent : **Gösterimi yüksek** (Beaucoup d'impressions, au moins 100 impressions) et **Hiç tıklanmayan** (Jamais cliquées).
+**Filtres de variation.** **Yükselenler** (En hausse) et **Düşenler** (En baisse) montrent les recherches qui ont bougé d'au moins une demi-position. Il y a aussi **Şu an ilk 10'da** (Actuellement dans le top 10) et **İlk 10'dan çıkanlar** (Sortis du top 10). Deux boutons rapides s'y ajoutent : **Gösterimi yüksek** (Beaucoup d'impressions, au moins 100 impressions) et **Hiç tıklanmayan** (Jamais cliquées).
 
 **Répartition des positions.** Les barres montrent combien de vos recherches se trouvent dans les tranches 1-3, 4-10, 11-20 et 21+.
 
@@ -36,7 +36,7 @@ La zone **Sorgu içinde ara** (Chercher dans les requêtes) réduit la liste.
 2. Le premier remplissage remonte jusqu'à 480 jours. Cela peut demander quelques ouvertures.
 3. Si vous cherchez une baisse, cliquez sur le bouton **Düşenler**. Écartez ensuite les cas sans importance avec **Gösterimi yüksek**.
 4. Cliquez sur la recherche tout en haut. Dans le graphique de l'historique, lisez le jour où la baisse a commencé.
-5. Marquez les recherches que vous voulez suivre avec **Kayıtlı kelimelere ekle**.
+5. Enregistrez les recherches que vous voulez suivre avec **Kayıtlı kelimelere ekle**.
 6. Une fois par mois, regardez les listes « En çok yükselenler » et « En çok düşenler ». Cela suffit pour avoir une vue d'ensemble.
 
 ## Comment les chiffres sont calculés
@@ -47,7 +47,7 @@ Les clics et les impressions sont des totaux. **Ort. sıra** donne plus de poids
 
 La variation se calcule ainsi : on soustrait la position moyenne de cette période de celle de la période précédente. Si le résultat est positif, vous avez monté. La période précédente a la même durée et se termine juste avant cette période.
 
-La liste apporte les 100 recherches les plus affichées. Dans le navigateur, elle est découpée en pages de 25, 50 ou 100.
+La liste reprend les 100 recherches les plus affichées. Dans le navigateur, elle est découpée en pages de 25, 50 ou 100.
 
 ## Questions fréquentes
 
@@ -63,6 +63,6 @@ La liste apporte les 100 recherches les plus affichées. Dans le navigateur, ell
 
 ## Limites
 
-Les archives ne contiennent que les jours vus par cette installation. Si vous venez d'installer l'application, vous pouvez remonter au plus de 480 jours à la première ouverture. Les recherches rares que Google masque n'entrent pas non plus dans les archives. Si les archives sont supprimées, l'historique disparaît. Supprimer le volume Docker ou le dossier de données en est un exemple. C'est à vous d'en faire une sauvegarde.
+Les archives ne contiennent que les jours vus par cette installation. Si vous venez d'installer l'application, la première ouverture remonte au plus à 480 jours. Les recherches rares que Google masque n'entrent pas non plus dans les archives. Si les archives sont supprimées (le volume Docker ou le dossier de données, par exemple), l'historique disparaît. C'est à vous d'en faire une sauvegarde.
 
 <!-- Kaynaklar: src/routes/_project/p/$projectId/rankings.tsx; src/client/features/rankings/RankingsPage.tsx; TrackedQueriesTable.tsx; PositionChange.tsx; PositionBandBars.tsx; MoversCard.tsx; ArchiveStatus.tsx; EmptyArchivePanel.tsx; QueryHistoryCard.tsx; src/serverFunctions/gscHistory.ts; src/server/features/gsc/services/GscHistoryService.ts; src/server/features/gsc/repositories/GscHistoryRepository.ts; src/shared/rankingChange.ts; src/db/gsc-history.schema.ts -->

@@ -10,7 +10,7 @@ La dernière version est la **2.4.1**, du 23 octobre 2026. Vos données sont con
 
 - **S'ouvre sur tous les ordinateurs.** Le composant Windows manquant est fourni avec le programme d'installation : l'application démarre du premier coup, même sur une machine neuve.
 - **Se met à jour seule.** Elle télécharge la nouvelle version, la vérifie et l'installe en silence. **Güncelle** (Mettre à jour) reste à un clic dans le menu de la barre des tâches.
-- **Des écrans plus simples.** Chaque écran vide indique une seule étape suivante ; menus et textes se lisent naturellement.
+- **Des écrans plus simples.** Chaque écran vide indique une seule étape suivante ; menus et textes sont plus clairs.
 - **Un nouveau visage.** Fond noir, accent orange et logo en forme d'œil ; l'application et le site ont désormais la même apparence.
 
 ## Windows
@@ -26,7 +26,7 @@ La dernière version est la **2.4.1**, du 23 octobre 2026. Vos données sont con
 - **Menu latéral.** Les groupes s'appellent « Arama ve site » (Recherche et site) et « Ajan » (Assistant) ; Aide et Paramètres sont en bas.
 - **Configuration de l'assistant.** Une seule carte et un seul bouton de copie pour Claude Code, Codex ou tout autre assistant.
 - **Paramètres.** La connexion Google est expliquée en trois étapes ; le thème est sombre par défaut.
-- **Connaît les deux installations.** L'aide et les instructions de l'assistant décrivent la barre des tâches sous Windows et les commandes `docker compose` sous Docker.
+- **Aide adaptée à chaque installation.** L'aide et les instructions de l'assistant décrivent la barre des tâches sous Windows et les commandes `docker compose` sous Docker.
 
 ## Site et guide
 

@@ -1,6 +1,6 @@
 ---
 title: Ranking-Verfolgung
-description: Sie sehen die durchschnittliche Google-Position Ihrer Suchanfragen Tag für Tag. Weil die Daten auf diesem Computer gespeichert werden, können Sie auch weiter zurückblicken als Googles 16-Monate-Grenze.
+description: Durchschnittliche Google-Position Ihrer Suchanfragen Tag für Tag, auch über Googles 16-Monate-Grenze hinaus, weil die Daten auf Ihrem Computer liegen.
 screen: Sıralama takibi
 route: /p/<proje>/rankings
 updated: 2026-10-22
@@ -24,11 +24,11 @@ Das Feld **Sorgu içinde ara** (In Suchanfragen suchen) grenzt die Liste ein.
 
 **Aufsteiger und Absteiger.** Sie sehen zwei kurze Listen: „En çok yükselenler“ (Größte Aufsteiger) und „En çok düşenler“ (Größte Absteiger).
 
-**Tabelle.** Die Spalten sind: **Sorgu** (Suchanfrage), **Ort. sıra** (Durchschn. Position), **Değişim** (Veränderung), **Gösterim** (Impressionen), **Tıklama** (Klicks), **Gün** (Tage). Die Spalte **Gün** sagt, an wie vielen Tagen des gewählten Zeitraums die Suchanfrage erschien. Eine Suchanfrage, die in 90 Tagen nur an 3 Tagen erscheint, wird selten gesucht. In der Zelle Veränderung steht „Yükseldi 2,4“ (Gestiegen 2,4) oder „Düştü 1,1“ (Gefallen 1,1). Das Zeilenmenü hat drei Einträge: **Kelimeyi kopyala** (Suchbegriff kopieren), **Kayıtlı kelimelere ekle** (Zu gespeicherten Suchbegriffen hinzufügen), **Arama performansında ara** (In der Suchleistung suchen).
+**Tabelle.** Die Spalten sind: **Sorgu** (Suchanfrage), **Ort. sıra** (Durchschn. Position), **Değişim** (Veränderung), **Gösterim** (Impressionen), **Tıklama** (Klicks), **Gün** (Tage). Die Spalte **Gün** zeigt, an wie vielen Tagen des gewählten Zeitraums die Suchanfrage erschien. Eine Suchanfrage, die in 90 Tagen nur an 3 Tagen erscheint, wird selten gesucht. In der Zelle Veränderung steht „Yükseldi 2,4“ (Gestiegen 2,4) oder „Düştü 1,1“ (Gefallen 1,1). Das Zeilenmenü hat drei Einträge: **Kelimeyi kopyala** (Suchbegriff kopieren), **Kayıtlı kelimelere ekle** (Zu gespeicherten Suchbegriffen hinzufügen), **Arama performansında ara** (In der Suchleistung suchen).
 
 **Suchanfrage-Verlauf.** Ein Klick auf eine Zeile öffnet die Positionslinie dieser Suchanfrage Tag für Tag. Der Link **Arama performansında aç** (In der Suchleistung öffnen) zeigt dieselbe Suchanfrage auf dem anderen Bildschirm.
 
-**Leere Zustände.** Ist das Archiv leer, steht dort „Henüz hangi kelimeyle arandığınız bilinmiyor“ (Noch ist nicht bekannt, mit welchen Suchbegriffen man Sie findet), und die Schaltfläche **Arama performansını aç** (Suchleistung öffnen) erscheint. Die Liste ist auf die 100 am häufigsten angezeigten Suchanfragen begrenzt. Gibt es mehr, steht darunter ein Hinweis.
+**Leeres Archiv.** Ist das Archiv leer, steht dort „Henüz hangi kelimeyle arandığınız bilinmiyor“ (Noch ist nicht bekannt, mit welchen Suchbegriffen man Sie findet), und die Schaltfläche **Arama performansını aç** (Suchleistung öffnen) erscheint. Die Liste ist auf die 100 am häufigsten angezeigten Suchanfragen begrenzt. Gibt es mehr, steht darunter ein Hinweis.
 
 ## So gehen Sie vor
 
@@ -45,7 +45,7 @@ Das Archiv füllt sich nur mit Daten, die Google endgültig festgelegt hat. Bei 
 
 Klicks und Impressionen sind Summen. **Ort. sıra** gewichtet Tage mit vielen Impressionen stärker. **Gün** ist die Zahl der Tage mit Daten.
 
-Die Veränderung ergibt sich so: Wir ziehen die Position dieses Zeitraums von der Durchschnittsposition des vorherigen Zeitraums ab. Ist das Ergebnis positiv, sind Sie gestiegen. Der vorherige Zeitraum ist gleich lang und endet unmittelbar vor diesem Zeitraum.
+Die Veränderung ist die Durchschnittsposition des vorherigen Zeitraums minus die Position dieses Zeitraums. Ist das Ergebnis positiv, sind Sie gestiegen. Der vorherige Zeitraum ist gleich lang und endet unmittelbar vor diesem Zeitraum.
 
 Die Liste enthält die 100 am häufigsten angezeigten Suchanfragen. Im Browser wird sie in Seiten zu 25, 50 oder 100 Zeilen aufgeteilt.
 
@@ -63,6 +63,6 @@ Die Liste enthält die 100 am häufigsten angezeigten Suchanfragen. Im Browser w
 
 ## Grenzen
 
-Das Archiv enthält nur die Tage, die diese Installation gesehen hat. Haben Sie die App gerade erst installiert, können Sie beim ersten Öffnen höchstens 480 Tage zurückgehen. Seltene Suchanfragen, die Google ausblendet, gelangen auch nicht ins Archiv. Wird das Archiv gelöscht, ist der Verlauf weg. Ein Beispiel dafür ist das Entfernen des Docker-Datenspeichers oder des Datenordners. Eine Sicherung müssen Sie selbst anlegen.
+Das Archiv enthält nur die Tage, die diese Installation gesehen hat. Haben Sie die App gerade erst installiert, können Sie beim ersten Öffnen höchstens 480 Tage zurückgehen. Seltene Suchanfragen, die Google ausblendet, gelangen auch nicht ins Archiv. Wird das Archiv gelöscht, ist der Verlauf weg. Das geschieht zum Beispiel, wenn Sie den Docker-Datenspeicher oder den Datenordner entfernen. Eine Sicherung müssen Sie selbst anlegen.
 
 <!-- Kaynaklar: src/routes/_project/p/$projectId/rankings.tsx; src/client/features/rankings/RankingsPage.tsx; TrackedQueriesTable.tsx; PositionChange.tsx; PositionBandBars.tsx; MoversCard.tsx; ArchiveStatus.tsx; EmptyArchivePanel.tsx; QueryHistoryCard.tsx; src/serverFunctions/gscHistory.ts; src/server/features/gsc/services/GscHistoryService.ts; src/server/features/gsc/repositories/GscHistoryRepository.ts; src/shared/rankingChange.ts; src/db/gsc-history.schema.ts -->

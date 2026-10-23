@@ -15,6 +15,7 @@
     <link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/docs/relatorios/" />
     <link rel="alternate" hreflang="x-default" href="https://seowatcher.io/docs/raporlar/" />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -59,7 +60,7 @@
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en","de","fr","it","pt"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/docs/raporlar/#article","headline":"Raporlar ve şablonlar","description":"Denetimden indirdiğiniz ya da asistanınıza yazdırdığınız her rapor tek bir HTML dosyasıdır. Telefonda açarsınız, yazdırırsınız, e-postayla gönderirsiniz.","url":"https://seowatcher.io/docs/raporlar/","inLanguage":"tr","dateModified":"2026-10-23","articleSection":"Ekranlar","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/docs/raporlar/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/docs/raporlar/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/"},{"@type":"ListItem","position":2,"name":"Kılavuz","item":"https://seowatcher.io/docs/"},{"@type":"ListItem","position":3,"name":"Raporlar ve şablonlar","item":"https://seowatcher.io/docs/raporlar/"}]}]}</script>
     <script src="/assets/docs.js?v=2.4.1" defer></script>
-    <meta name="theme-color" content="#272c3b" />
+    <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
         font-family: "Geist";
@@ -649,6 +650,95 @@
       footer a:hover {
         color: var(--fg);
       }
+      /* The one ask on the page: quiet, one line, the accent only on the link. */
+      footer .star {
+        flex-basis: 100%;
+        margin: 0 0 4px;
+        text-wrap: pretty;
+      }
+      footer .star a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      footer .star a:hover {
+        color: var(--accent-link);
+        text-decoration-color: var(--accent-link);
+      }
+
+      /* Headings enter as they scroll into view. docs.js adds .hx (and .in
+         once seen) only when motion is allowed, so without script, under
+         reduced motion and with "stop motion" on, they are simply there.
+         h1 wipes in from the left, h2 rises while an amber stroke draws
+         along its rule, h3 rises a little. */
+      article .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease),
+          clip-path 760ms var(--ease),
+          filter 620ms var(--ease);
+      }
+      article h1.hx {
+        clip-path: inset(-10% 100% -10% 0);
+        filter: blur(6px);
+      }
+      article h2.hx,
+      article h3.hx {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      article h3.hx {
+        transform: translateY(6px);
+      }
+      article h2.hx {
+        position: relative;
+      }
+      article h2.hx::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 56px;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 700ms var(--ease) 160ms;
+      }
+      article .hx.in {
+        opacity: 1;
+        transform: none;
+      }
+      article h1.hx.in {
+        clip-path: inset(-10% 0 -10% 0);
+        filter: none;
+      }
+      article h2.hx.in::before {
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        article .hx,
+        article h2.hx::before {
+          opacity: 1;
+          transform: none;
+          clip-path: none;
+          filter: none;
+          transition: none;
+        }
+      }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
 
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
@@ -1093,13 +1183,19 @@
         <nav class="topnav" aria-label="Site">
           <a class="hide" href="/">Ana sayfa</a>
           <a class="hide" href="/docs/">Kılavuz</a>
-          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+          <a
+            class="hide"
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub</a
           >
-          <details class="langs"><summary aria-label="Dil: Türkçe"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"/></svg></span><span class="code">TR</span></summary><ul><li><a href="/docs/raporlar/" lang="tr" hreflang="tr" aria-current="page"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"/></svg></span>Türkçe</a></li><li><a href="/en/docs/reports/" lang="en" hreflang="en"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="3.6"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2"/></svg></span>English</a></li><li><a href="/de/docs/berichte/" lang="de" hreflang="de"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg></span>Deutsch</a></li><li><a href="/fr/docs/rapports/" lang="fr" hreflang="fr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg></span>Français</a></li><li><a href="/it/docs/report/" lang="it" hreflang="it"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg></span>Italiano</a></li><li><a href="/pt/docs/relatorios/" lang="pt" hreflang="pt"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#ff0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.6" fill="#ffcc00"/><circle cx="8" cy="7" r="1.5" fill="#ff0000"/></svg></span>Português</a></li></ul></details>
+          <details class="langs"><summary aria-label="Dil: Türkçe"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"/></svg></span><span class="code">TR</span></summary><ul><li><a href="/docs/raporlar/" lang="tr" hreflang="tr" aria-current="page"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"/></svg></span>Türkçe</a></li><li><a href="/en/docs/reports/" lang="en" hreflang="en"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2.6"/></svg></span>English</a></li><li><a href="/de/docs/berichte/" lang="de" hreflang="de"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg></span>Deutsch</a></li><li><a href="/fr/docs/rapports/" lang="fr" hreflang="fr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg></span>Français</a></li><li><a href="/it/docs/report/" lang="it" hreflang="it"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg></span>Italiano</a></li><li><a href="/pt/docs/relatorios/" lang="pt" hreflang="pt"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#ff0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.6" fill="#ffcc00"/><circle cx="8" cy="7" r="1.5" fill="#ff0000"/></svg></span>Português</a></li></ul></details>
           <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            target="_blank"
+            rel="noopener noreferrer"
             ><span class="long">Windows için indir</span
             ><span class="short">İndir</span></a
           >
@@ -1116,16 +1212,16 @@
       <aside class="side" aria-label="Kılavuz">
         <details class="side-dd" open>
           <summary>Kılavuz</summary>
-          <p class="nav-group">Başlangıç</p><ul><li><a href="/docs/kurulum-windows/">Windows'a kurulum</a></li><li><a href="/docs/kurulum-docker/">Docker ile kurulum</a></li><li><a href="/docs/google-baglantisi/">Google'a bağlanma</a></li><li><a href="/docs/pagespeed-anahtari/">PageSpeed anahtarı</a></li></ul><p class="nav-group">Ekranlar</p><ul><li><a href="/docs/projeler/">Projeler</a></li><li><a href="/docs/panel/">Panel</a></li><li><a href="/docs/arama-performansi/">Arama performansı</a></li><li><a href="/docs/siralama-takibi/">Sıralama takibi</a></li><li><a href="/docs/firsatlar/">Fırsatlar</a></li><li><a href="/docs/kayitli-kelimeler/">Kayıtlı kelimeler</a></li><li><a href="/docs/analytics/">Analytics</a></li><li><a href="/docs/site-denetimi/">Site denetimi</a></li><li><a href="/docs/dizin-durumu/">Dizin durumu</a></li><li class="current" aria-current="page"><a href="/docs/raporlar/">Raporlar ve şablonlar</a></li><li><a href="/docs/proje-bilgisi/">Proje bilgisi</a></li><li><a href="/docs/ayarlar/">Ayarlar</a></li></ul><p class="nav-group">Başvuru</p><ul><li><a href="/docs/yardim/">Yardım</a></li><li><a href="/docs/denetim-kurallari/">Denetim kuralları</a></li><li><a href="/docs/ajan-kurulumu/">Ajan kurulumu</a></li><li><a href="/docs/sorun-giderme/">Sorun giderme</a></li><li><a href="/docs/surum-notlari/">Sürüm notları</a></li></ul>
+          <p class="nav-group">Başlangıç</p><ul><li><a href="/docs/kurulum-windows/">Windows'a kurulum</a></li><li><a href="/docs/kurulum-docker/">Docker ile kurulum</a></li><li><a href="/docs/google-baglantisi/">Google'a bağlanma</a></li><li><a href="/docs/pagespeed-anahtari/">PageSpeed anahtarı</a></li></ul><p class="nav-group">Ekranlar</p><ul><li><a href="/docs/projeler/">Projeler</a></li><li><a href="/docs/panel/">Panel</a></li><li><a href="/docs/arama-performansi/">Arama performansı</a></li><li><a href="/docs/siralama-takibi/">Sıralama takibi</a></li><li><a href="/docs/firsatlar/">Fırsatlar</a></li><li><a href="/docs/kayitli-kelimeler/">Kayıtlı kelimeler</a></li><li><a href="/docs/analytics/">Analytics</a></li><li><a href="/docs/site-denetimi/">Site denetimi</a></li><li><a href="/docs/dizin-durumu/">Dizin durumu</a></li><li class="current" aria-current="page"><a href="/docs/raporlar/">Raporlar ve şablonlar</a></li><li><a href="/docs/proje-bilgisi/">Proje bilgisi</a></li><li><a href="/docs/ayarlar/">Ayarlar</a></li></ul><p class="nav-group">Yardım ve başvuru</p><ul><li><a href="/docs/yardim/">Yardım</a></li><li><a href="/docs/denetim-kurallari/">Denetim kuralları</a></li><li><a href="/docs/ajan-kurulumu/">Ajan kurulumu</a></li><li><a href="/docs/sorun-giderme/">Sorun giderme</a></li><li><a href="/docs/surum-notlari/">Sürüm notları</a></li></ul>
         </details>
       </aside>
       <article id="icerik" data-page="raporlar">
         <h1>Raporlar ve şablonlar</h1><p class="lede">Denetimden indirdiğiniz ya da asistanınıza yazdırdığınız her rapor tek bir HTML dosyasıdır. Telefonda açarsınız, yazdırırsınız, e-postayla gönderirsiniz.</p><p>Raporu nasıl alacağınızı, kime göndereceğinizi ve şablonla nasıl tekrarlayacağınızı burada bulursunuz.</p>
-<p>Bu proje için hazırlanan her rapor <strong>Raporlar</strong> ekranında tek listede durur. Rapor iki yoldan çıkar. Site denetimi ekranındaki <strong>Raporu indir</strong> düğmesi uygulamanın kendi raporunu üretir. Yapay zekâ asistanınız da araştırma yapıp bulduklarını rapor olarak kaydeder. Her rapor tek bir HTML dosyasıdır. İçinde betik (sayfada çalışan kod), dış kaynak ya da gömülü yazı tipi yoktur. Bu yüzden telefonda açılır, PDF olarak yazdırılır, e-postayla gönderilir. Uygulamada elle rapor yazabileceğiniz bir editör yok. Raporu ya uygulama ya asistan yazar.</p>
+<p>Bu proje için hazırlanan her rapor <strong>Raporlar</strong> ekranında tek listede durur. Rapor iki yolla oluşur. Site denetimi ekranındaki <strong>Raporu indir</strong> düğmesi uygulamanın kendi raporunu üretir. Yapay zekâ asistanınız da araştırma yapıp bulduklarını rapor olarak kaydeder. Her rapor tek bir HTML dosyasıdır. İçinde betik (sayfada çalışan kod), dış kaynak ya da gömülü yazı tipi yoktur. Bu yüzden telefonda açılır, PDF olarak yazdırılır, e-postayla gönderilir. Uygulamada elle rapor yazabileceğiniz bir editör yok. Raporu ya uygulama ya asistan yazar.</p>
 <h2 id="ekranda-neler-var">Ekranda neler var</h2>
 <p><strong>Üst çubuk.</strong> <strong>Yeni rapor iste</strong> düğmesi, asistanınıza yapıştıracağınız bir metni panoya kopyalar.</p>
-<p><strong>Filtreler.</strong> Tümü, Son 7 gün, Şablonla yazılan ve Beceriyle yazılan filtreleri var. Bir de arama kutusu çıkar.</p>
-<p><strong>Tablo.</strong> Sütunlar <strong>Rapor</strong>, <strong>Tür</strong>, <strong>Oluşturulma</strong> ve <strong>Boyut</strong>. <strong>Tür</strong> sütunu raporu hangi işin ürettiğini söyler. Örneğin &quot;Site denetimi raporu&quot; uygulamanın kendisidir. Şablonla yazılan raporlarda şablonun adını görürsünüz.</p>
+<p><strong>Filtreler.</strong> Tümü, Son 7 gün, Şablonla yazılan ve Beceriyle yazılan filtreleri var. Bir de arama kutusu var.</p>
+<p><strong>Tablo.</strong> Sütunlar <strong>Rapor</strong>, <strong>Tür</strong>, <strong>Oluşturulma</strong> ve <strong>Boyut</strong>. <strong>Tür</strong> sütunu raporu hangi işin ürettiğini söyler. Örneğin &quot;Site denetimi raporu&quot; uygulamanın kendi raporudur. Şablonla yazılan raporlarda şablonun adını görürsünüz.</p>
 <p><strong>Rapor sayfası.</strong> Rapor kendi güvenli çerçevesinde açılır. Üç düğme var: <strong>HTML olarak indir</strong>, bağlantıyı kopyala ve yazdır. Bağlantı yalnızca bu kurulumda açılır, dışarıdan kimse erişemez.</p>
 <p><strong>Rapor şablonları.</strong> Menüden ya da Raporlar ekranından ulaşırsınız. Şablon, asistanınıza raporu nasıl yazacağını anlatan kayıtlı bir tariftir. Raporu kimin okuyacağını, hangi bölümlerin olacağını ve hangi dille yazılacağını söylersiniz. Üç alan var:</p>
 <ul><li><strong>Ad</strong> en çok 80 karakter olur ve projede tek olmalıdır.</li><li><strong>Açıklama</strong> en çok 200 karakter olur. Şablonun ne zaman kullanılacağını tek cümleyle yazın.</li><li><strong>Yönerge</strong> en çok 3.000 karakter olur.</li></ul>
@@ -1134,19 +1230,22 @@
 <ol><li>İlk rapor için Site denetimi ekranında <strong>Raporu indir</strong>'i tıklayın. Rapor bilgisayarınıza iner ve bu listeye düşer. &quot;Bu hafta yapılacak N şey&quot; bölümüyle başlar.</li><li>Asistanla çalışıyorsanız <strong>Yeni rapor iste</strong>'yi tıklayın. Kopyalanan metni Claude Code'a, Codex'e ya da Cursor'a yapıştırın. Asistan hangi raporu istediğinizi sorar, veriyi okur, raporu buraya kaydeder.</li><li>Her ay aynı raporu istiyorsanız bir şablon yazın. Yönergeye okuyucuyu (&quot;siteyi işleten kişi, SEO bilmiyor&quot;), bölümleri, sırayı ve tonu yazın. Şablonu adıyla istediğinizde asistan onu uygular.</li><li>Paylaşmak için <strong>HTML olarak indir</strong>'i tıklayıp dosyayı gönderin. Alan kişi dosyayı tarayıcıda açar. Bağlantıyı kopyalamak yalnızca aynı bilgisayarda işe yarar.</li><li>Eski raporları silmeyin. Asistan bir sonraki görüşmede önceki raporun özetini okuyup karşılaştırır.</li></ol>
 <h2 id="sayilar-nasil-hesaplanir">Sayılar nasıl hesaplanır</h2>
 <p>Denetim raporu A4 baskıya göre dizilir. İçindekiler, &quot;Bu hafta yapılacak N şey&quot;, sorunlar, hız ölçümü, Google dizin durumu ve site haritası bölümleri var. Dizin durumu bölümü yalnızca kayıtlı cevapları kullanır, Google'a yeni soru sormaz.</p>
-<p>Listelerin sınırı var: sorun başına 50 adres, 300 sayfa, 50 hız satırı, ekte 3.000 adres. Dosya 400 KB'ı aşarsa listeler kısalır.</p>
+<p>Listelerin sınırı var: sorun başına 50 adres, 300 sayfa, 50 hız satırı, ekte 3.000 adres. Dosya 400 KB'yi aşarsa listeler kısalır.</p>
 <p>Bir rapor en çok 500.000 bayt olabilir (80 KB altı önerilir). Başlık en çok 120 karakterdir ve projede tektir. Özet en çok 2.500 karakterdir. Aynı başlıkla ikinci rapor kabul edilmez. Projede en çok 10.000 rapor tutulur, kurulumda da toplam 5 GB yer ayrılır.</p>
-<p>Güvenlik açısından, içinde betik, iframe (sayfaya başka sayfa gömen kutu), form, dış stil, olay işleyici (onclick gibi), javascript: bağlantısı ya da otomatik yönlendirme olan dosyalar kaydedilirken reddedilir. Rapor açılırken de kapalı bir kutuda ve ağ erişimi olmadan gösterilir. Yani rapor sizden habersiz dışarıya bir şey gönderemez.</p>
+<p>Güvenlik için, içinde betik, iframe (sayfaya başka sayfa gömen kutu), form, dış stil, olay işleyici (onclick gibi), javascript: bağlantısı ya da otomatik yönlendirme olan dosyalar kaydedilirken reddedilir. Rapor açılırken de kapalı bir kutuda ve ağ erişimi olmadan gösterilir. Yani rapor sizden habersiz dışarıya bir şey gönderemez.</p>
 <h2 id="sik-sorulanlar">Sık sorulanlar</h2>
 <p><strong>Raporu kim yazdı?</strong> <strong>Tür</strong> sütununa bakın. &quot;Site denetimi raporu&quot; uygulamanındır, diğerlerini asistan yazmıştır. Rapor sayfasında da kimin kaydettiği görünür.</p>
 <p><strong>Raporu düzenleyebilir miyim?</strong> Uygulamada düzenleyemezsiniz. Asistana &quot;şu bölümü değiştir&quot; deyin, o raporu günceller.</p>
 <p><strong>Bağlantıyı gönderdim, karşı taraf açamıyor.</strong> Bağlantı yalnızca bu bilgisayarda çalışır. Dosyayı <strong>HTML olarak indir</strong> ile gönderin.</p>
 <p><strong>Şablon yazarken neye dikkat edeyim?</strong> Şablon bir biçim tarifidir, bilgi kaynağı değildir. Bölümleri, tonu ve raporun kime yazıldığını yazın. Sayı ya da iddia yazmayın. Asistan sayıları her seferinde veriden alır.</p>
 <h2 id="sinirlar">Sınırlar</h2>
-<p>Raporlar dışarıya yayınlanmaz. Paylaşmak için dosyayı gönderirsiniz. Raporun doğruluğu, onu yazanın okuduğu veriye bağlıdır. Asistan raporlarının sonunda &quot;Bu rapor nasıl hazırlandı&quot; bölümü bulunur. Hangi aracın neyi söylediğini orada görürsünüz. Şüphe duyduğunuz bir sayının kaynağını oradan izleyin.</p> <nav class="pager" aria-label="Önceki ve sonraki sayfa"><a class="pager-prev" rel="prev" href="/docs/dizin-durumu/"><span>Önceki</span><strong>Dizin durumu</strong></a><a class="pager-next" rel="next" href="/docs/proje-bilgisi/"><span>Sonraki</span><strong>Proje bilgisi</strong></a></nav>
+<p>Raporlar dışarıya yayımlanmaz. Paylaşmak için dosyayı gönderirsiniz. Raporun doğruluğu, onu yazanın okuduğu veriye bağlıdır. Asistan raporlarının sonunda &quot;Bu rapor nasıl hazırlandı&quot; bölümü bulunur. Hangi aracın neyi söylediğini orada görürsünüz. Şüphe duyduğunuz bir sayının kaynağını oradan izleyin.</p> <nav class="pager" aria-label="Önceki ve sonraki sayfa"><a class="pager-prev" rel="prev" href="/docs/dizin-durumu/"><span>Önceki</span><strong>Dizin durumu</strong></a><a class="pager-next" rel="next" href="/docs/proje-bilgisi/"><span>Sonraki</span><strong>Proje bilgisi</strong></a></nav>
         <p class="meta">
           Son güncelleme: 23 Ekim 2026. Bir hata görürseniz
-          <a href="https://github.com/ucsahinn/seotracker/issues"
+          <a
+            href="https://github.com/ucsahinn/seotracker/issues"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub'da bildirin</a
           >.
         </p>
@@ -1155,10 +1254,25 @@
     </main>
     <footer>
       <div class="wrap">
+        <p class="star">
+          Bir yıldız, başkalarının da bu ücretsiz aracı bulmasına yardım eder.
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub'da yıldız verin</a
+          >
+        </p>
         <span>seowatcher, MIT lisansı.</span>
         <span
           ><a href="/">Ana sayfa</a> &nbsp;
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          &nbsp;
           <a href="/docs/surum-notlari/">Sürüm notları</a></span
         >
       </div>

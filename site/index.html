@@ -6,7 +6,7 @@
     <title>seowatcher: Search Console ve GA4 için ücretsiz SEO paneli</title>
     <meta
       name="description"
-      content="Search Console, Analytics 4 ve site denetimi tek uygulamada. Ücretsiz ve açık kaynak; Windows'a kurulur, verileriniz bilgisayarınızda kalır."
+      content="Search Console, Analytics 4 ve site denetimi tek uygulamada. Ücretsiz, açık kaynak. Windows'a kurulur, verileriniz bilgisayarınızda kalır."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link rel="canonical" href="https://seowatcher.io/" />
@@ -18,6 +18,7 @@
     <link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/" />
     <link rel="alternate" hreflang="x-default" href="https://seowatcher.io/" />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -55,7 +56,7 @@
     <meta property="og:image:height" content="630" />
     <meta
       property="og:image:alt"
-      content="seowatcher ile kendi sitenizin SEO verisi, kendi bilgisayarınızda"
+      content="seowatcher paneli: sitenizin SEO verisi bilgisayarınızda"
     />
     <meta property="og:url" content="https://seowatcher.io/" />
     <meta property="og:locale" content="tr_TR" />
@@ -75,7 +76,7 @@
     />
     <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
     <meta name="color-scheme" content="dark" />
-    <meta name="theme-color" content="#131110" />
+    <meta name="theme-color" content="#0c0b0a" />
     <script src="/assets/site.js?v=2.4.1" defer></script>
     <script type="application/ld+json">
       {
@@ -143,7 +144,7 @@
               "Google Search Console verisi: sorgular, sayfalar, sıralar, dizin durumu",
               "Google Analytics 4 verisi: organik ziyaretler, açılış sayfaları, ölçüm sağlığı",
               "95 kurallı site denetimi",
-              "Fırsatlar: sorguları dört gruba ayırır",
+              "Fırsatlar: sayfaları dört gruba ayırır",
               "Yapay zekâ asistanları için 33 MCP aracı"
             ],
             "screenshot": [
@@ -173,15 +174,15 @@
                 "name": "Gerçekten ücretsiz mi?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Evet. MIT lisanslı açık kaynak bir proje, kodun tamamı GitHub'da. Kullandığı Google servisleri de ücretsiz kullanım sınırları içinde kalır."
+                  "text": "Evet. MIT lisanslı, açık kaynak bir proje. Kodun tamamı GitHub'da. Kullandığı Google servisleri de ücretsiz kullanım sınırları içinde kalır."
                 }
               },
               {
                 "@type": "Question",
-                "name": "Windows \"tanınmayan uygulama\" uyarısı veriyor.",
+                "name": "Windows neden \"tanınmayan uygulama\" uyarısı veriyor?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Kurulum dosyası henüz kod imzalı değil, Windows bu yüzden uyarıyor. SmartScreen ekranında önce \"Daha fazla bilgi\"ye, sonra \"Yine de çalıştır\"a tıklayın. Dosyanın parmak izi (SHA-256) her sürümün sayfasında yazar; isterseniz karşılaştırabilirsiniz."
+                  "text": "Kurulum dosyasının henüz dijital imzası yok, bu yüzden Windows uyarıyor. SmartScreen ekranında önce \"Daha fazla bilgi\"ye, sonra \"Yine de çalıştır\"a tıklayın. İsterseniz dosyanın parmak izini (SHA-256) sürüm sayfasındaki değerle karşılaştırın."
                 }
               },
               {
@@ -189,7 +190,7 @@
                 "name": "Verilerim nerede duruyor?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "%LOCALAPPDATA%\\seowatcher klasöründe. Veritabanı, Google erişim anahtarınız ve günlükler orada. Uygulamayı kaldırmak bu klasöre dokunmaz, yedek almak için kopyalamanız yeter."
+                  "text": "%LOCALAPPDATA%\\seowatcher klasöründe. Veritabanı, Google erişim anahtarınız ve günlükler orada durur. Uygulamayı kaldırmak bu klasöre dokunmaz. Yedek almak için klasörü kopyalamanız yeter."
                 }
               },
               {
@@ -197,7 +198,7 @@
                 "name": "Neden Google'da bir erişim anahtarı oluşturmam gerekiyor?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "seowatcher bir bulut hizmeti değil; bilgisayarınızda çalışır ve doğrudan Google'a bağlanır. Google da bağlanan uygulamanın kime ait olduğunu bilmek ister. Bunu bir kez yaparsınız, uygulama adımları ekranda gösterir."
+                  "text": "seowatcher bir bulut hizmeti değildir. Bilgisayarınızda çalışır ve doğrudan Google'a bağlanır. Google, bağlanan uygulamanın kime ait olduğunu bilmek ister. Bunu bir kez yaparsınız. Adımları uygulama ekranda gösterir."
                 }
               },
               {
@@ -205,15 +206,15 @@
                 "name": "Sayılar Search Console'dakiyle aynı mı?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Aynı kaynaktan okunur, ama toplamlar birbirini tutmayabilir. Google veriyi yaklaşık üç gün geriden verir ve çok az aranan sorguları gizler. Uygulama sayfa toplamını ve site toplamını ayrı gösterir; ikisinin farklı çıkması bir hata değildir."
+                  "text": "Sayılar aynı kaynaktan gelir ama toplamlar tutmayabilir. Google veriyi yaklaşık üç gün geriden verir ve çok az aranan sorguları gizler. Uygulama sayfa toplamını ve site toplamını ayrı gösterir. İkisinin farklı çıkması hata değildir."
                 }
               },
               {
                 "@type": "Question",
-                "name": "Sitemi internete açmadan kullanabilir miyim?",
+                "name": "Uygulamayı internete açmam gerekir mi?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Evet, zaten öyle çalışır. Uygulama yalnızca kendi bilgisayarınızdan açılır, Search Console ve Analytics verilerini Google'dan okur. Denetim sırasında ise yalnızca denetlediğiniz sitenin sayfalarını tarar."
+                  "text": "Hayır. Uygulama yalnızca kendi bilgisayarınızdan açılır. Search Console ve Analytics verilerini Google'dan okur. Denetim sırasında yalnızca denetlediğiniz sitenin sayfalarını tarar."
                 }
               }
             ]
@@ -540,9 +541,59 @@
         opacity: 1;
         transform: none;
       }
+      /* Smaller headings (cards, steps, questions): site.js adds .hx, and .in
+         once seen. A short rise; on h3 an amber stroke draws in underneath
+         and fades once drawn, so the resting page looks as before. */
+      .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease);
+        transition-delay: calc(var(--hd, 0) * 1ms);
+      }
+      .hx:not(.in) {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      h3.hx {
+        position: relative;
+      }
+      h3.hx::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -6px;
+        width: 36px;
+        height: 2px;
+        border-radius: 2px;
+        background: var(--accent);
+        opacity: 0;
+        transform-origin: left;
+        pointer-events: none;
+      }
+      h3.hx.in::after {
+        animation: stroke 1200ms var(--ease) 160ms both;
+      }
+      @keyframes stroke {
+        0% {
+          opacity: 1;
+          transform: scaleX(0);
+        }
+        55% {
+          opacity: 1;
+          transform: scaleX(1);
+        }
+        100% {
+          opacity: 0;
+          transform: scaleX(1);
+        }
+      }
       @media (prefers-reduced-motion: reduce) {
         .reveal,
-        [data-words].split .w {
+        h2.reveal,
+        h2.reveal.in,
+        [data-words].split .w,
+        .hx,
+        .hx:not(.in) {
           opacity: 1;
           transform: none;
           filter: none;
@@ -550,6 +601,23 @@
           transition: none;
           animation: none;
         }
+        h3.hx::after {
+          display: none;
+        }
+      }
+      /* "Hareketi durdur": every heading is simply there. */
+      html[data-still] [data-words].split .w,
+      html[data-still] h2.reveal,
+      html[data-still] .hx {
+        opacity: 1;
+        transform: none;
+        filter: none;
+        clip-path: none;
+        transition: none;
+        animation: none;
+      }
+      html[data-still] h3.hx::after {
+        display: none;
       }
 
       /* Buttons: a lit primary, a glass secondary; the arrow sits in its own island. */
@@ -1414,6 +1482,17 @@
       .tile .big.free {
         color: var(--accent-2);
       }
+      /* The price says what "free" covers, then the honest limits follow. */
+      .tile .free-note {
+        color: var(--fg);
+        max-width: 34ch;
+        padding-bottom: 18px;
+        margin-bottom: 4px;
+        border-bottom: 1px solid var(--hairline);
+      }
+      .close .star {
+        font-size: 15px;
+      }
       .tile .spark {
         width: 100%;
         height: auto;
@@ -1505,6 +1584,13 @@
       }
       .t-wide {
         grid-column: span 7;
+      }
+      /* The free / limits column is tall; it spans the tools card and the
+         download card beside it so neither stretches into an empty box. */
+      @media (min-width: 961px) {
+        .t-mid.plain {
+          grid-row: span 2;
+        }
       }
       .t-mid {
         grid-column: span 5;
@@ -1960,7 +2046,12 @@
           <a href="#neler">Neler yapar</a>
           <a href="#kurulum">Kurulum</a>
           <a href="/docs/">Kılavuz</a>
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a>
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
           <details class="langs">
             <summary aria-label="Dil: Türkçe">
               <span class="flag"
@@ -1970,7 +2061,7 @@
                   <circle cx="8.4" cy="7" r="2.7" fill="#e30a17" />
                   <polygon
                     fill="#fff"
-                    points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"
+                    points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"
                   /></svg></span
               ><span class="code">TR</span>
             </summary>
@@ -1984,7 +2075,7 @@
                       <circle cx="8.4" cy="7" r="2.7" fill="#e30a17" />
                       <polygon
                         fill="#fff"
-                        points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"
+                        points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"
                       /></svg></span
                   >Türkçe</a
                 >
@@ -2007,14 +2098,75 @@
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#fff"
-                        stroke-width="3.6"
+                        stroke-width="4.2"
                       />
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#c8102e"
-                        stroke-width="2"
+                        stroke-width="2.6"
                       /></svg></span
                   >English</a
+                >
+              </li>
+              <li>
+                <a href="/de/" lang="de" hreflang="de"
+                  ><span class="flag"
+                    ><svg viewBox="0 0 20 14" aria-hidden="true">
+                      <rect width="20" height="14" fill="#000" />
+                      <rect y="4.67" width="20" height="4.67" fill="#dd0000" />
+                      <rect
+                        y="9.33"
+                        width="20"
+                        height="4.67"
+                        fill="#ffce00"
+                      /></svg></span
+                  >Deutsch</a
+                >
+              </li>
+              <li>
+                <a href="/fr/" lang="fr" hreflang="fr"
+                  ><span class="flag"
+                    ><svg viewBox="0 0 20 14" aria-hidden="true">
+                      <rect width="20" height="14" fill="#fff" />
+                      <rect width="6.67" height="14" fill="#0055a4" />
+                      <rect
+                        x="13.33"
+                        width="6.67"
+                        height="14"
+                        fill="#ef4135"
+                      /></svg></span
+                  >Français</a
+                >
+              </li>
+              <li>
+                <a href="/it/" lang="it" hreflang="it"
+                  ><span class="flag"
+                    ><svg viewBox="0 0 20 14" aria-hidden="true">
+                      <rect width="20" height="14" fill="#fff" />
+                      <rect width="6.67" height="14" fill="#009246" />
+                      <rect
+                        x="13.33"
+                        width="6.67"
+                        height="14"
+                        fill="#ce2b37"
+                      /></svg></span
+                  >Italiano</a
+                >
+              </li>
+              <li>
+                <a href="/pt/" lang="pt" hreflang="pt"
+                  ><span class="flag"
+                    ><svg viewBox="0 0 20 14" aria-hidden="true">
+                      <rect width="20" height="14" fill="#ff0000" />
+                      <rect width="8" height="14" fill="#006600" />
+                      <circle cx="8" cy="7" r="2.6" fill="#ffcc00" />
+                      <circle
+                        cx="8"
+                        cy="7"
+                        r="1.5"
+                        fill="#ff0000"
+                      /></svg></span
+                  >Português</a
                 >
               </li>
             </ul>
@@ -2023,6 +2175,8 @@
         <a
           class="btn primary small cta"
           href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.1/seowatcher-setup-2.4.1.exe"
+          target="_blank"
+          rel="noopener noreferrer"
           >Windows için indir</a
         >
         <button
@@ -2040,7 +2194,12 @@
         <a href="#neler">Neler yapar</a>
         <a href="#kurulum">Kurulum</a>
         <a href="/docs/">Kılavuz</a>
-        <a href="https://github.com/ucsahinn/seotracker">GitHub</a>
+        <a
+          href="https://github.com/ucsahinn/seotracker"
+          target="_blank"
+          rel="noopener noreferrer"
+          >GitHub</a
+        >
         <nav class="langrow" aria-label="Dil">
           <a href="/" lang="tr" hreflang="tr" aria-current="page"
             ><span class="flag"
@@ -2050,7 +2209,7 @@
                 <circle cx="8.4" cy="7" r="2.7" fill="#e30a17" />
                 <polygon
                   fill="#fff"
-                  points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"
+                  points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"
                 /></svg></span
             >Türkçe</a
           ><a href="/en/" lang="en" hreflang="en"
@@ -2067,18 +2226,64 @@
                   stroke="#c8102e"
                   stroke-width="0.9"
                 />
-                <path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="3.6" />
+                <path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2" />
                 <path
                   d="M10 0V14M0 7H20"
                   stroke="#c8102e"
-                  stroke-width="2"
+                  stroke-width="2.6"
                 /></svg></span
             >English</a
+          ><a href="/de/" lang="de" hreflang="de"
+            ><span class="flag"
+              ><svg viewBox="0 0 20 14" aria-hidden="true">
+                <rect width="20" height="14" fill="#000" />
+                <rect y="4.67" width="20" height="4.67" fill="#dd0000" />
+                <rect
+                  y="9.33"
+                  width="20"
+                  height="4.67"
+                  fill="#ffce00"
+                /></svg></span
+            >Deutsch</a
+          ><a href="/fr/" lang="fr" hreflang="fr"
+            ><span class="flag"
+              ><svg viewBox="0 0 20 14" aria-hidden="true">
+                <rect width="20" height="14" fill="#fff" />
+                <rect width="6.67" height="14" fill="#0055a4" />
+                <rect
+                  x="13.33"
+                  width="6.67"
+                  height="14"
+                  fill="#ef4135"
+                /></svg></span
+            >Français</a
+          ><a href="/it/" lang="it" hreflang="it"
+            ><span class="flag"
+              ><svg viewBox="0 0 20 14" aria-hidden="true">
+                <rect width="20" height="14" fill="#fff" />
+                <rect width="6.67" height="14" fill="#009246" />
+                <rect
+                  x="13.33"
+                  width="6.67"
+                  height="14"
+                  fill="#ce2b37"
+                /></svg></span
+            >Italiano</a
+          ><a href="/pt/" lang="pt" hreflang="pt"
+            ><span class="flag"
+              ><svg viewBox="0 0 20 14" aria-hidden="true">
+                <rect width="20" height="14" fill="#ff0000" />
+                <rect width="8" height="14" fill="#006600" />
+                <circle cx="8" cy="7" r="2.6" fill="#ffcc00" />
+                <circle cx="8" cy="7" r="1.5" fill="#ff0000" /></svg></span
+            >Português</a
           >
         </nav>
         <a
           class="btn primary"
           href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.1/seowatcher-setup-2.4.1.exe"
+          target="_blank"
+          rel="noopener noreferrer"
           >Windows için indir</a
         >
       </nav>
@@ -2093,7 +2298,7 @@
             </h1>
             <p class="lede">
               Google'ın siteniz için tuttuğu sayılar ve sitenizdeki hatalar tek
-              ekranda. Ücretsiz ve açık kaynak; Windows'a tek dosyayla kurulur.
+              ekranda. Ücretsiz ve açık kaynak. Windows'a tek dosyayla kurulur.
               Üyelik yok, verileriniz bilgisayarınızdan çıkmaz.
             </p>
             <div class="cta">
@@ -2101,6 +2306,8 @@
                 class="btn primary"
                 data-magnet
                 href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.1/seowatcher-setup-2.4.1.exe"
+                target="_blank"
+                rel="noopener noreferrer"
                 >Windows için indir
                 <span class="arrow" aria-hidden="true">↓</span></a
               >
@@ -2402,10 +2609,10 @@
             </svg>
           </div>
           <p class="flow-note reveal" style="--d: 200">
-            Uygulama yalnızca kendi bilgisayarınızdan açılır. Dışarıda yalnızca
-            iki yere bağlanır, Google'a ve denetlediğiniz sitenin sayfalarına.
-            Verileriniz başka hiçbir yere gitmez. Google erişim anahtarınız
-            bilgisayarınızda şifreli saklanır.
+            Uygulama yalnızca kendi bilgisayarınızdan açılır. Yalnızca üç yere
+            bağlanır: Google'a, denetlediğiniz sitenin sayfalarına ve güncelleme
+            kontrolü için GitHub'a. Verileriniz başka hiçbir yere gitmez. Google
+            erişim anahtarınız bilgisayarınızda şifreli saklanır.
           </p>
         </div>
       </section>
@@ -2423,7 +2630,7 @@
               çevirir.
             </h2>
             <p class="lede">
-              Aşağıdakiler uygulamanın gerçek ekranları; yalnızca site ve
+              Aşağıdakiler uygulamanın gerçek ekranlarıdır. Yalnızca site ve
               sayılar örnektir.
             </p>
           </div>
@@ -2435,8 +2642,8 @@
                 <p>
                   Google'da görünen sayfalarınızı dört gruba ayırır: az
                   tıklananlar, yükselmeye yakın olanlar, zaten üstte olanlar ve
-                  derinde kalanlar. Nereden başlayacağınız her sayfanın yanında
-                  yazar, tahmin yürütmezsiniz.
+                  derinde kalanlar. Ne yapacağınız her sayfanın yanında yazar,
+                  tahmin yürütmezsiniz.
                   <a class="textlink" href="/docs/firsatlar/"
                     >Fırsatlar kılavuzu</a
                   >.
@@ -2467,7 +2674,7 @@
                 <p>
                   Siteyi sayfa sayfa gezer, 95 kurala göre denetler: kırık
                   bağlantı, eksik ya da çok uzun başlık, yavaş açılan sayfa,
-                  Google'ın anlamadığı adresler. Her bulgunun altında ne
+                  Google'ın dizine almadığı sayfalar. Her bulgunun altında ne
                   yapacağınız yazar, teknik biri gerekmez.
                   <a class="textlink" href="/docs/site-denetimi/"
                     >Site denetimi kılavuzu</a
@@ -2530,7 +2737,7 @@
                   kopyalayıp asistana yapıştırmanız yeter. Bağlamazsanız
                   uygulamadan hiçbir şey eksilmez.
                   <a class="textlink" href="/docs/ajan-kurulumu/"
-                    >Asistan kurulumu kılavuzu</a
+                    >Ajan kurulumu kılavuzu</a
                   >.
                 </p>
                 <picture
@@ -2544,7 +2751,7 @@
                   <img
                     class="frame"
                     src="/assets/walk-ajan-dark-m.webp"
-                    alt="Asistan kurulumu ekranı: bağlantı adresi, parola ve kopyalanacak kurulum metni"
+                    alt="Ajan kurulumu ekranı: bağlantı adresi, parola ve kopyalanacak kurulum metni"
                     width="1000"
                     height="1250"
                     loading="lazy"
@@ -2670,7 +2877,7 @@
               <h3>Her sayfanın denetimi</h3>
               <p>
                 Kırık bağlantı, eksik ya da çok uzun başlık, yavaş sayfa,
-                Google'ın anlamadığı adresler. Her bulgunun altında ne
+                Google'ın dizine almadığı sayfalar. Her bulgunun altında ne
                 yapacağınız yazar.
               </p>
             </div>
@@ -2740,23 +2947,25 @@
               </div>
             </div>
             <div class="tile t-mid plain reveal" style="--d: 400">
-              <span class="big free"
-                ><b data-count="0" data-suffix=" ₺">0 ₺</b></span
-              >
+              <p class="big free">Ücretsiz</p>
+              <p class="free-note">
+                Abonelik yok, kurulum ücreti yok. Kart bilgisi istenmez, hesap
+                açılmaz. MIT lisanslı açık kaynak.
+              </p>
               <h3>Yapmadıkları da var</h3>
               <ul>
                 <li>
-                  Arama hacmi tahmin etmez. Gösterim sayıları Google'dan gelir.
-                  (Yakında: gösterimlerden yaklaşık talep, ücretsiz.)
+                  Arama hacmini tahmin etmez. Gösterim sayıları Google'dan
+                  gelir. (Yakında: gösterimlerden yaklaşık talep, ücretsiz.)
                 </li>
                 <li>Size bağlantı veren siteleri (backlink) saymaz.</li>
-                <li>
-                  Rakip sıralaması izlemez; yalnızca kendi sitelerinizi okur.
-                </li>
+                <li>Rakip sıralaması izlemez. Yalnızca kendi sitenizi okur.</li>
                 <li>
                   Bulutta çalışmaz; tek kullanıcı, tek bilgisayar. (Yakında: ev
                   ağınızdaki telefon ve tabletten açma, ücretsiz.)
                 </li>
+                <li>Mobil uygulaması henüz yok. (Yakında.)</li>
+                <li>Tarayıcı eklentisi henüz yok. (Yakında.)</li>
               </ul>
             </div>
             <div
@@ -2768,8 +2977,8 @@
               <span class="big"
                 ><b data-count="0" data-live="downloads">0</b></span
               >
-              <h3>İndirme</h3>
-              <p>GitHub sürüm sayfasından canlı sayılır.</p>
+              <h3>İndirme sayısı</h3>
+              <p>GitHub sürüm sayfasından canlı okunur.</p>
             </div>
           </div>
         </div>
@@ -2799,8 +3008,8 @@
                   <p>
                     En uzun adım bu, ama yalnızca bir kez yapılır. Google'dan
                     erişim anahtarını alırsınız; uygulama ekranda adım adım
-                    gösterir. Anahtarı <strong>Ayarlar</strong>'a
-                    yapıştırdığınızda iş biter.
+                    gösterir. Anahtarı <strong>Ayarlar</strong> ekranına
+                    yapıştırınca iş biter.
                     <a class="textlink" href="/docs/google-baglantisi/"
                       >Adım adım kılavuz</a
                     >.
@@ -2837,6 +3046,8 @@
                   <a
                     class="textlink"
                     href="https://github.com/ucsahinn/seotracker/releases/latest"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     >Dosyanın parmak izi (SHA-256) sürüm sayfasında</a
                   >
                 </dd>
@@ -2845,6 +3056,8 @@
                 class="btn primary"
                 data-magnet
                 href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.1/seowatcher-setup-2.4.1.exe"
+                target="_blank"
+                rel="noopener noreferrer"
                 >Windows için indir
                 <span class="arrow" aria-hidden="true">↓</span></a
               >
@@ -2872,7 +3085,7 @@
             seowatcher, Google Search Console, Google Analytics 4, kendi site
             tarayıcısı ve PageSpeed Insights verisini tek panelde gösteren
             ücretsiz, MIT lisanslı bir SEO uygulamasıdır. Windows 10 ve 11'e tek
-            dosyayla kurulur, Mac ve Linux'ta Docker ile çalışır; veriniz
+            dosyayla kurulur. Mac ve Linux'ta Docker ile çalışır. Veriniz
             bilgisayarınızda kalır. GitHub deposunun adı seotracker'dır.
           </p>
           <dl class="reveal" style="--d: 100">
@@ -2916,7 +3129,7 @@
             </div>
             <div class="row">
               <dt>Boyut</dt>
-              <dd>Windows kurulum dosyası 81 MB; kurulu hali 290 MB</dd>
+              <dd>Windows kurulum dosyası 81 MB, kurulu hali 290 MB</dd>
             </div>
             <div class="row">
               <dt>Kaynak kodu</dt>
@@ -2924,6 +3137,8 @@
                 <a
                   class="textlink"
                   href="https://github.com/ucsahinn/seotracker"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   >github.com/ucsahinn/seotracker</a
                 >
               </dd>
@@ -2943,7 +3158,7 @@
               <dt>Kılavuz</dt>
               <dd>
                 <a class="textlink" href="/docs/"
-                  >Her ekran ve her adım için kılavuz</a
+                  >Her ekran ve her adım anlatılır</a
                 >
               </dd>
             </div>
@@ -2959,21 +3174,22 @@
               <summary>Gerçekten ücretsiz mi?</summary>
               <div class="qa-body">
                 <p>
-                  Evet. MIT lisanslı açık kaynak bir proje, kodun tamamı
+                  Evet. MIT lisanslı, açık kaynak bir proje. Kodun tamamı
                   GitHub'da. Kullandığı Google servisleri de ücretsiz kullanım
                   sınırları içinde kalır.
                 </p>
               </div>
             </details>
             <details class="qa">
-              <summary>Windows "tanınmayan uygulama" uyarısı veriyor.</summary>
+              <summary>
+                Windows neden "tanınmayan uygulama" uyarısı veriyor?
+              </summary>
               <div class="qa-body">
                 <p>
-                  Kurulum dosyası henüz kod imzalı değil, Windows bu yüzden
+                  Kurulum dosyasının henüz dijital imzası yok, bu yüzden Windows
                   uyarıyor. SmartScreen ekranında önce "Daha fazla bilgi"ye,
-                  sonra "Yine de çalıştır"a tıklayın. Dosyanın parmak izi
-                  (SHA-256) her sürümün sayfasında yazar; isterseniz
-                  karşılaştırabilirsiniz.
+                  sonra "Yine de çalıştır"a tıklayın. İsterseniz dosyanın parmak
+                  izini (SHA-256) sürüm sayfasındaki değerle karşılaştırın.
                   <a class="textlink" href="/docs/sorun-giderme/"
                     >Sorun giderme</a
                   >.
@@ -2985,9 +3201,9 @@
               <div class="qa-body">
                 <p>
                   <code>%LOCALAPPDATA%\seowatcher</code> klasöründe. Veritabanı,
-                  Google erişim anahtarınız ve günlükler orada. Uygulamayı
-                  kaldırmak bu klasöre dokunmaz, yedek almak için kopyalamanız
-                  yeter.
+                  Google erişim anahtarınız ve günlükler orada durur. Uygulamayı
+                  kaldırmak bu klasöre dokunmaz. Yedek almak için klasörü
+                  kopyalamanız yeter.
                 </p>
               </div>
             </details>
@@ -2997,10 +3213,10 @@
               </summary>
               <div class="qa-body">
                 <p>
-                  seowatcher bir bulut hizmeti değil; bilgisayarınızda çalışır
-                  ve doğrudan Google'a bağlanır. Google da bağlanan uygulamanın
-                  kime ait olduğunu bilmek ister. Bunu bir kez yaparsınız,
-                  uygulama adımları ekranda gösterir.
+                  seowatcher bir bulut hizmeti değildir. Bilgisayarınızda
+                  çalışır ve doğrudan Google'a bağlanır. Google, bağlanan
+                  uygulamanın kime ait olduğunu bilmek ister. Bunu bir kez
+                  yaparsınız. Adımları uygulama ekranda gösterir.
                 </p>
               </div>
             </details>
@@ -3008,21 +3224,21 @@
               <summary>Sayılar Search Console'dakiyle aynı mı?</summary>
               <div class="qa-body">
                 <p>
-                  Aynı kaynaktan okunur, ama toplamlar birbirini tutmayabilir.
+                  Sayılar aynı kaynaktan gelir ama toplamlar tutmayabilir.
                   Google veriyi yaklaşık üç gün geriden verir ve çok az aranan
                   sorguları gizler. Uygulama sayfa toplamını ve site toplamını
-                  ayrı gösterir; ikisinin farklı çıkması bir hata değildir.
+                  ayrı gösterir. İkisinin farklı çıkması hata değildir.
                 </p>
               </div>
             </details>
             <details class="qa">
-              <summary>Sitemi internete açmadan kullanabilir miyim?</summary>
+              <summary>Uygulamayı internete açmam gerekir mi?</summary>
               <div class="qa-body">
                 <p>
-                  Evet, zaten öyle çalışır. Uygulama yalnızca kendi
-                  bilgisayarınızdan açılır, Search Console ve Analytics
-                  verilerini Google'dan okur. Denetim sırasında ise yalnızca
-                  denetlediğiniz sitenin sayfalarını tarar.
+                  Hayır. Uygulama yalnızca kendi bilgisayarınızdan açılır.
+                  Search Console ve Analytics verilerini Google'dan okur.
+                  Denetim sırasında yalnızca denetlediğiniz sitenin sayfalarını
+                  tarar.
                 </p>
               </div>
             </details>
@@ -3034,22 +3250,34 @@
         <div class="halo" aria-hidden="true"></div>
         <div class="wrap">
           <h2 id="h-son" class="reveal">
-            Bugün kurun, bugünkü verinizle başlayın.
+            Bugün kurun, geçmiş verinizi bugün görün.
           </h2>
           <p class="reveal" style="--d: 100">
-            Search Console'un on altı aylık geçmişi ilk açılışta uygulamaya
-            yüklenir. Bugün bağlarsanız, bugün bakabilirsiniz.
+            Search Console'un on altı aylık geçmişi, bağladıktan sonra
+            uygulamaya yüklenir. Bağladığınız gün bakabilirsiniz.
           </p>
           <div class="cta reveal" style="--d: 200">
             <a
               class="btn primary"
               data-magnet
               href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.1/seowatcher-setup-2.4.1.exe"
+              target="_blank"
+              rel="noopener noreferrer"
               >Windows için indir
               <span class="arrow" aria-hidden="true">↓</span></a
             >
             <a class="btn" href="/docs/kurulum-docker/">Mac ve Linux için</a>
           </div>
+          <p class="star reveal" style="--d: 300">
+            Bir yıldız, başkalarının da bu ücretsiz aracı bulmasına yardım eder.
+            <a
+              class="textlink"
+              href="https://github.com/ucsahinn/seotracker"
+              target="_blank"
+              rel="noopener noreferrer"
+              >GitHub'da yıldız verin</a
+            >
+          </p>
         </div>
       </section>
     </main>
@@ -3069,7 +3297,11 @@
             <p>
               Açık kaynak ve ücretsiz. Kodun tamamı GitHub'da; ne yaptığını
               herkes okuyup denetleyebilir.
-              <a class="textlink" href="https://github.com/every-app/open-seo"
+              <a
+                class="textlink"
+                href="https://github.com/every-app/open-seo"
+                target="_blank"
+                rel="noopener noreferrer"
                 >open-seo</a
               >
               üzerine kurulmuştur. Logolar sahiplerinin markasıdır.
@@ -3078,14 +3310,20 @@
           <div class="col">
             <b>Ürün</b><a href="#ekranlar">Ekranlar</a
             ><a href="#neler">Neler yapar</a><a href="#kurulum">Kurulum</a
-            ><a href="https://github.com/ucsahinn/seotracker/releases/latest"
+            ><a
+              href="https://github.com/ucsahinn/seotracker/releases/latest"
+              target="_blank"
+              rel="noopener noreferrer"
               >Sürümler</a
             >
           </div>
           <div class="col">
             <b>Yardım</b><a href="/docs/">Kılavuz</a
             ><a href="/docs/sorun-giderme/">Sorun giderme</a
-            ><a href="https://github.com/ucsahinn/seotracker/issues"
+            ><a
+              href="https://github.com/ucsahinn/seotracker/issues"
+              target="_blank"
+              rel="noopener noreferrer"
               >Sorun bildir</a
             ><a href="/docs/surum-notlari/">Sürüm notları</a>
             <nav class="langrow" aria-label="Dil">
@@ -3097,7 +3335,7 @@
                     <circle cx="8.4" cy="7" r="2.7" fill="#e30a17" />
                     <polygon
                       fill="#fff"
-                      points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"
+                      points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"
                     /></svg></span
                 >Türkçe</a
               ><a href="/en/" lang="en" hreflang="en"
@@ -3117,14 +3355,58 @@
                     <path
                       d="M10 0V14M0 7H20"
                       stroke="#fff"
-                      stroke-width="3.6"
+                      stroke-width="4.2"
                     />
                     <path
                       d="M10 0V14M0 7H20"
                       stroke="#c8102e"
-                      stroke-width="2"
+                      stroke-width="2.6"
                     /></svg></span
                 >English</a
+              ><a href="/de/" lang="de" hreflang="de"
+                ><span class="flag"
+                  ><svg viewBox="0 0 20 14" aria-hidden="true">
+                    <rect width="20" height="14" fill="#000" />
+                    <rect y="4.67" width="20" height="4.67" fill="#dd0000" />
+                    <rect
+                      y="9.33"
+                      width="20"
+                      height="4.67"
+                      fill="#ffce00"
+                    /></svg></span
+                >Deutsch</a
+              ><a href="/fr/" lang="fr" hreflang="fr"
+                ><span class="flag"
+                  ><svg viewBox="0 0 20 14" aria-hidden="true">
+                    <rect width="20" height="14" fill="#fff" />
+                    <rect width="6.67" height="14" fill="#0055a4" />
+                    <rect
+                      x="13.33"
+                      width="6.67"
+                      height="14"
+                      fill="#ef4135"
+                    /></svg></span
+                >Français</a
+              ><a href="/it/" lang="it" hreflang="it"
+                ><span class="flag"
+                  ><svg viewBox="0 0 20 14" aria-hidden="true">
+                    <rect width="20" height="14" fill="#fff" />
+                    <rect width="6.67" height="14" fill="#009246" />
+                    <rect
+                      x="13.33"
+                      width="6.67"
+                      height="14"
+                      fill="#ce2b37"
+                    /></svg></span
+                >Italiano</a
+              ><a href="/pt/" lang="pt" hreflang="pt"
+                ><span class="flag"
+                  ><svg viewBox="0 0 20 14" aria-hidden="true">
+                    <rect width="20" height="14" fill="#ff0000" />
+                    <rect width="8" height="14" fill="#006600" />
+                    <circle cx="8" cy="7" r="2.6" fill="#ffcc00" />
+                    <circle cx="8" cy="7" r="1.5" fill="#ff0000" /></svg></span
+                >Português</a
               >
             </nav>
           </div>

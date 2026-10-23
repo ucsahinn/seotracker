@@ -6,9 +6,9 @@ route: /settings
 updated: 2026-10-22
 ---
 
-Vous voyez ici où gérer la connexion à Google, la clé de vitesse et la mise à jour.
+Cet écran regroupe la connexion à Google, la clé de vitesse et la mise à jour.
 
-Dans l'écran **Ayarlar** (Paramètres), vous réglez ce qui concerne toute l'installation. Les réglages propres à un projet (nom, nom de domaine, propriété Search Console et Analytics) se trouvent dans la page **Proje ayarları** (Paramètres du projet) de chaque projet. Ici, vous gérez la clé d'accès nécessaire pour se connecter à Google, la clé PageSpeed, le thème et la vérification des mises à jour. À gauche, il y a les sections **Görünüm** (Apparence), **Google**, **Hizmet hesabı** (Compte de service), **Hız ölçümü** (Mesure de la vitesse), **Sınırlar** (Limites), **Hakkında** (À propos) et **Sürüm notları** (Notes de version). Le titre de chaque section porte un badge qui indique son état.
+Dans l'écran **Ayarlar** (Paramètres), vous réglez ce qui concerne toute l'installation. Les réglages propres à un projet (nom, nom de domaine, propriété Search Console et Analytics) se trouvent dans la page **Proje ayarları** (Paramètres du projet) de chaque projet. Ici, vous gérez la clé d'accès qui permet de se connecter à Google, la clé PageSpeed, le thème et la vérification des mises à jour. À gauche, il y a les sections **Görünüm** (Apparence), **Google**, **Hizmet hesabı** (Compte de service), **Hız ölçümü** (Mesure de la vitesse), **Sınırlar** (Limites), **Hakkında** (À propos) et **Sürüm notları** (Notes de version). Le titre de chaque section porte un badge qui indique son état.
 
 ## Ce que l'écran affiche
 
@@ -36,7 +36,7 @@ Le badge indique **Kayıtlı** (Enregistré) ou **Kullanılmıyor** (Inutilisé)
 - Rapports par projet : 10 000, modèles : 10.
 - Plus gros rapport : 500 000 octets.
 
-L'état de chaque carte est **Yeterli** (Suffisant), **Azalıyor** (En baisse, au-delà de 70 pour cent), **Neredeyse doldu** (Presque plein, au-delà de 90 pour cent) ou **Bilinmiyor** (Inconnu).
+L'état de chaque carte est **Yeterli** (Suffisant), **Azalıyor** (Diminue, au-delà de 70 pour cent), **Neredeyse doldu** (Presque plein, au-delà de 90 pour cent) ou **Bilinmiyor** (Inconnu).
 
 **Hakkında.** La ligne **Sürüm** (Version) affiche la version (comme v2.3.0). L'interrupteur **Güncellemeleri kontrol et** (Vérifier les mises à jour) est activé par défaut. Quand il est activé, l'application demande à GitHub la dernière version au plus une fois par jour. Dans ce cas, le bouton **Şimdi kontrol et** (Vérifier maintenant) apparaît aussi. S'il y a une nouvelle version, le lien **Değişiklikler** (Modifications) apparaît. Pour les installations Docker, la commande à copier apparaît aussi : `git pull && docker compose up -d --build`. Avec le paquet Windows, l'écran vous renvoie vers **Güncelle** (Mettre à jour) sur l'icône de la barre des tâches. Si la mise à jour automatique est activée, la nouvelle version s'installe toute seule.
 
@@ -46,7 +46,7 @@ L'état de chaque carte est **Yeterli** (Suffisant), **Azalıyor** (En baisse, a
 
 1. À la première installation, saisissez d'abord l'identifiant client et la clé secrète dans la section **Google**. Saisissez ensuite la clé PageSpeed dans la section **Hız ölçümü**. Une fois les deux enregistrées, vous passez au projet et choisissez la propriété.
 2. Une fois par mois, regardez la section **Sınırlar**. Le quota que vous voyez « Azalıyor » est le plus souvent la limite de l'inspection d'URL.
-3. Si une nouvelle version apparaît dans **Hakkında**, mettez à jour. Les notes de version disent ce qui a changé. La vérification des mises à jour est la seule connexion de votre ordinateur qui sort vers autre chose que Google. Si vous n'en voulez pas, désactivez l'interrupteur.
+3. Si une nouvelle version apparaît dans **Hakkında**, mettez à jour. Les notes de version disent ce qui a changé. La vérification des mises à jour est la seule connexion sortante de l'application vers autre chose que Google. Si vous n'en voulez pas, désactivez l'interrupteur.
 4. Si vous devez changer la clé d'accès Google (par exemple pour un nouveau projet Cloud), cliquez sur **Değiştir** et collez les nouvelles valeurs. Les connexions existantes ne fonctionnent pas avec la nouvelle clé. Dans les projets, il faut **Yeniden bağlan** (Se reconnecter).
 
 ## Questions fréquentes

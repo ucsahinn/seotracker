@@ -1,6 +1,6 @@
 ---
 title: Progetti
-description: Si crea un progetto, si sceglie il sito e il paese, si cambia il nome e si gestisce il collegamento con Google. Un progetto si può anche archiviare e ripristinare.
+description: Si crea un progetto, si sceglie sito e paese, si cambia il nome e si gestisce il collegamento con Google. Un progetto si può archiviare e ripristinare.
 screen: Projeler, Proje ayarları
 route: /projects, /p/{proje}/settings
 updated: 2026-10-22

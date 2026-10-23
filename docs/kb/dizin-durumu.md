@@ -8,7 +8,7 @@ updated: 2026-10-22
 
 Google'ın hangi sayfalarınızı aramaya aldığını burada öğrenirsiniz.
 
-Site denetimi, sayfanın açılıp açılmadığını söyler. Google'ın sayfayı gerçekten dizine (Google'ın sayfa listesine) alıp almadığını söyleyemez. **Dizin durumu** sekmesi bunu Google'a sorar ve cevabı bu bilgisayarda saklar. Aynı soruyu tekrar tekrar sormaz, yalnızca eskiyen cevapları yeniden sorar. Bu önemli, çünkü Google her mülk (Search Console'daki site kaydınız) için günde 2.000 soru hakkı verir. Uygulama ve asistanınız bu hakkı paylaşır.
+Site denetimi, sayfanın açılıp açılmadığını gösterir. Google'ın sayfayı gerçekten dizine (Google'ın sayfa listesine) alıp almadığını gösteremez. **Dizin durumu** sekmesi bunu Google'a sorar ve yanıtı bu bilgisayarda saklar. Aynı soruyu tekrar tekrar sormaz, yalnızca eskiyen yanıtları yeniden sorar. Bu önemlidir, çünkü Google her mülk (Search Console'daki site kaydınız) için günde 2.000 soru hakkı verir. Uygulama ve asistanınız bu hakkı paylaşır.
 
 ## Ekranda neler var
 
@@ -20,7 +20,7 @@ Site denetimi, sayfanın açılıp açılmadığını söyler. Google'ın sayfay
 
 **Özet kutuları.** Kaç sayfanın sorulduğunu, kaçının dizinde olduğunu, kaçının olmadığını ve kaçının beklediğini görürsünüz. "Google'ın farklı adresi seçtiği sayfalar" kutusu, Google'ın bildirdiğiniz canonical'dan (asıl adres bildirimi) farklı bir adres seçtiği sayfaları sayar. "Bu denetimde henüz sorulmamış" kutusu, sorulmayı bekleyen sayfa sayısıdır.
 
-**Google'da durumunu kontrol et düğmesi.** Her basışta en çok 25 sayfa sorar. Önce en uzun süredir cevap almayanları sorar. Günlük sınır dolarsa "Google'ın günlük 2.000 adres sınırına ulaşıldı" uyarısı çıkar. Search Console bağlı değilse düğme kapalıdır. Denetlenen alan adı bağlı mülkün içinde değilse de kapalıdır.
+**Google'da durumunu kontrol et düğmesi.** Her basışta en çok 25 sayfa sorar. Önce en uzun süredir yanıtı alınmayanları sorar. Günlük sınır dolarsa "Google'ın günlük 2.000 adres sınırına ulaşıldı" uyarısı çıkar. Search Console bağlı değilse düğme kapalıdır. Denetlenen alan adı bağlı mülkün içinde değilse de kapalıdır.
 
 **Tablo.** Sütunlar şunlar: **Sayfa**, **Durum**, **Sebep**, **Google'ın seçtiği adres**, **Google'ın son ziyareti**. Durum hücresinde "Google'da", "Kontrol edilmedi", "Yanıt alınamadı", "Hata" ya da Google'ın kendi durumunun Türkçesi yazar. Toplam 18 durumun Türkçesi var. Birkaç örnek:
 
@@ -62,6 +62,6 @@ Google'ın son taraması 90 günden eskiyse denetim "Google bu sayfayı uzun sü
 
 ## Sınırlar
 
-Cevaplar Google'ın verdiği kadardır. Google bazı alanları boş bırakabilir. Günde 2.000 soruyu geçemezsiniz. 10.000 sayfalık bir siteyi tamamen sormak beş gün sürer. Sekme yalnızca taranan sayfaları sorar. Denetime girmeyen adresler listede görünmez.
+Cevaplar Google'ın verdiği kadardır. Google bazı alanları boş bırakabilir. Günde 2.000 sorudan fazlasını soramazsınız. 10.000 sayfalık bir siteyi tamamen sormak beş gün sürer. Sekme yalnızca taranan sayfaları sorar. Denetime girmeyen adresler listede görünmez.
 
 <!-- Kaynaklar: src/client/features/audit/IndexCoverageView.tsx; CoverageTable.tsx; CoverageVerdictDonut.tsx; coverageBuckets.ts; coverageReasons.ts; export.ts; src/server/features/gsc/indexCoverage.ts; src/server/lib/audit/google-verdict-checks.ts; src/shared/gsc-coverage-states.ts; src/db/gsc-inspection.schema.ts; src/server/features/quotas/QuotaService.ts -->

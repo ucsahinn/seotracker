@@ -6,7 +6,7 @@
     <title>État de l'index | Guide seowatcher</title>
     <meta
       name="description"
-      content="Google a-t-il mis chacune de vos pages dans la recherche, sinon pourquoi, et quand est-il passé pour la dernière fois ? Vous pouvez poser au plus 2 000 questions par jour."
+      content="Google a-t-il mis chacune de vos pages dans la recherche, sinon pourquoi, et quand les a-t-il explorées pour la dernière fois ? Vous pouvez l'interroger sur 2 000 pages par jour au plus."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -49,6 +49,7 @@
       href="https://seowatcher.io/docs/dizin-durumu/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -75,7 +76,7 @@
     <meta property="og:title" content="État de l'index | Guide seowatcher" />
     <meta
       property="og:description"
-      content="Google a-t-il mis chacune de vos pages dans la recherche, sinon pourquoi, et quand est-il passé pour la dernière fois ? Vous pouvez poser au plus 2 000 questions par jour."
+      content="Google a-t-il mis chacune de vos pages dans la recherche, sinon pourquoi, et quand les a-t-il explorées pour la dernière fois ? Vous pouvez l'interroger sur 2 000 pages par jour au plus."
     />
     <meta
       property="og:image"
@@ -102,7 +103,7 @@
     <meta name="twitter:title" content="État de l'index | Guide seowatcher" />
     <meta
       name="twitter:description"
-      content="Google a-t-il mis chacune de vos pages dans la recherche, sinon pourquoi, et quand est-il passé pour la dernière fois ? Vous pouvez poser au plus 2 000 questions par jour."
+      content="Google a-t-il mis chacune de vos pages dans la recherche, sinon pourquoi, et quand les a-t-il explorées pour la dernière fois ? Vous pouvez l'interroger sur 2 000 pages par jour au plus."
     />
     <meta
       name="twitter:image"
@@ -139,7 +140,7 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/fr/docs/etat-de-l-index/#article",
             "headline": "État de l'index",
-            "description": "Google a-t-il mis chacune de vos pages dans la recherche, sinon pourquoi, et quand est-il passé pour la dernière fois ? Vous pouvez poser au plus 2 000 questions par jour.",
+            "description": "Google a-t-il mis chacune de vos pages dans la recherche, sinon pourquoi, et quand les a-t-il explorées pour la dernière fois ? Vous pouvez l'interroger sur 2 000 pages par jour au plus.",
             "url": "https://seowatcher.io/fr/docs/etat-de-l-index/",
             "inLanguage": "fr",
             "dateModified": "2026-10-23",
@@ -178,7 +179,7 @@
       }
     </script>
     <script src="/assets/docs.js?v=2.4.1" defer></script>
-    <meta name="theme-color" content="#272c3b" />
+    <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
         font-family: "Geist";
@@ -768,6 +769,95 @@
       footer a:hover {
         color: var(--fg);
       }
+      /* The one ask on the page: quiet, one line, the accent only on the link. */
+      footer .star {
+        flex-basis: 100%;
+        margin: 0 0 4px;
+        text-wrap: pretty;
+      }
+      footer .star a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      footer .star a:hover {
+        color: var(--accent-link);
+        text-decoration-color: var(--accent-link);
+      }
+
+      /* Headings enter as they scroll into view. docs.js adds .hx (and .in
+         once seen) only when motion is allowed, so without script, under
+         reduced motion and with "stop motion" on, they are simply there.
+         h1 wipes in from the left, h2 rises while an amber stroke draws
+         along its rule, h3 rises a little. */
+      article .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease),
+          clip-path 760ms var(--ease),
+          filter 620ms var(--ease);
+      }
+      article h1.hx {
+        clip-path: inset(-10% 100% -10% 0);
+        filter: blur(6px);
+      }
+      article h2.hx,
+      article h3.hx {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      article h3.hx {
+        transform: translateY(6px);
+      }
+      article h2.hx {
+        position: relative;
+      }
+      article h2.hx::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 56px;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 700ms var(--ease) 160ms;
+      }
+      article .hx.in {
+        opacity: 1;
+        transform: none;
+      }
+      article h1.hx.in {
+        clip-path: inset(-10% 0 -10% 0);
+        filter: none;
+      }
+      article h2.hx.in::before {
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        article .hx,
+        article h2.hx::before {
+          opacity: 1;
+          transform: none;
+          clip-path: none;
+          filter: none;
+          transition: none;
+        }
+      }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
 
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
@@ -1212,7 +1302,11 @@
         <nav class="topnav" aria-label="Site">
           <a class="hide" href="/fr/">Accueil</a>
           <a class="hide" href="/fr/docs/">Guide</a>
-          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+          <a
+            class="hide"
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub</a
           >
           <details class="langs">
@@ -1239,7 +1333,7 @@
                       <circle cx="8.4" cy="7" r="2.7" fill="#e30a17" />
                       <polygon
                         fill="#fff"
-                        points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"
+                        points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"
                       /></svg></span
                   >Türkçe</a
                 >
@@ -1262,12 +1356,12 @@
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#fff"
-                        stroke-width="3.6"
+                        stroke-width="4.2"
                       />
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#c8102e"
-                        stroke-width="2"
+                        stroke-width="2.6"
                       /></svg></span
                   >English</a
                 >
@@ -1342,6 +1436,8 @@
           <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            target="_blank"
+            rel="noopener noreferrer"
             ><span class="long">Télécharger pour Windows</span
             ><span class="short">Télécharger</span></a
           >
@@ -1400,7 +1496,7 @@
             <li><a href="/fr/docs/infos-du-projet/">Infos du projet</a></li>
             <li><a href="/fr/docs/parametres/">Paramètres</a></li>
           </ul>
-          <p class="nav-group">Référence</p>
+          <p class="nav-group">Aide et référence</p>
           <ul>
             <li><a href="/fr/docs/aide/">Aide</a></li>
             <li><a href="/fr/docs/regles-d-audit/">Règles d'audit</a></li>
@@ -1418,20 +1514,20 @@
         <h1>État de l'index</h1>
         <p class="lede">
           Google a-t-il mis chacune de vos pages dans la recherche, sinon
-          pourquoi, et quand est-il passé pour la dernière fois ? Vous pouvez
-          poser au plus 2 000 questions par jour.
+          pourquoi, et quand les a-t-il explorées pour la dernière fois ? Vous
+          pouvez l'interroger sur 2 000 pages par jour au plus.
         </p>
-        <p>Vous apprenez ici quelles pages Google a mises dans la recherche.</p>
+        <p>Cet onglet dit quelles pages Google a mises dans la recherche.</p>
         <p>
           L'audit du site dit si la page s'ouvre. Il ne peut pas dire si Google
           a vraiment pris la page dans son index (la liste des pages de Google).
           L'onglet <strong>Dizin durumu</strong> (État de l'index) pose la
           question à Google et conserve la réponse sur cet ordinateur. Il ne
-          pose pas la même question encore et encore : il ne repose que les
-          réponses devenues anciennes. C'est important, car Google accorde 2 000
-          questions par jour pour chaque propriété (l'enregistrement de votre
-          site dans Search Console). L'application et votre assistant se
-          partagent ce quota.
+          repose pas sans cesse la même question : seules les réponses anciennes
+          sont redemandées. C'est important, car Google accorde 2 000 questions
+          par jour pour chaque propriété (l'enregistrement de votre site dans
+          Search Console). L'application et votre assistant se partagent ce
+          quota.
         </p>
         <h2 id="ce-que-l-ecran-affiche">Ce que l'écran affiche</h2>
         <p>
@@ -1487,8 +1583,8 @@
           <strong>Google'ın son ziyareti</strong> (Dernière visite de Google).
           La cellule d'état indique « Google'da » (Dans Google), « Kontrol
           edilmedi » (Non vérifiée), « Yanıt alınamadı » (Pas de réponse), «
-          Hata » (Erreur), ou la version turque de l'état propre à Google. Il y
-          a la version turque de 18 états au total. Quelques exemples :
+          Hata » (Erreur), ou l'un des 18 états de Google, affiché en turc.
+          Quelques exemples :
         </p>
         <ul>
           <li>
@@ -1537,7 +1633,7 @@
           <li>
             Si l'encadré « Google'ın farklı adresi seçtiği sayfalar » n'est pas
             à zéro, regardez la colonne
-            <strong>Google'ın seçtiği adres</strong>. Google n'a pas aimé
+            <strong>Google'ın seçtiği adres</strong>. Google n'a pas retenu
             l'adresse principale que vous avez déclarée. Corrigez la vôtre, ou
             faites de l'adresse choisie par Google l'adresse principale.
           </li>
@@ -1556,15 +1652,14 @@
           bekleyen ».
         </p>
         <p>
-          Une réponse est considérée comme ancienne après un certain temps et
-          est reposée. Pour une page dans l'index, ce délai est de 14 jours.
-          Pour une réponse « pas dans l'index » ou en erreur, il est de 3 jours.
-          Une page jamais interrogée est toujours prête à l'être. La limite
+          Une réponse devient ancienne après un certain délai ; elle est alors
+          redemandée. Pour une page dans l'index, ce délai est de 14 jours. Pour
+          une réponse « pas dans l'index » ou en erreur, il est de 3 jours. Une
+          page jamais interrogée est toujours prête à l'être. La limite
           quotidienne est calculée avec le nombre de questions des 24 dernières
           heures. L'application ne compte que ses propres questions. Les
           requêtes que vous faites à la main dans Search Console n'entrent pas
-          dans ce compteur, mais elles se déduisent de la vraie limite de
-          Google.
+          dans ce compteur, mais elles comptent dans la vraie limite de Google.
         </p>
         <p>
           Un décalage d'adresse principale signifie que l'adresse choisie par
@@ -1607,9 +1702,9 @@
         </p>
         <h2 id="limites">Limites</h2>
         <p>
-          Les réponses valent ce que Google donne. Google peut laisser certains
-          champs vides. Vous ne pouvez pas dépasser 2 000 questions par jour.
-          Interroger entièrement un site de 10 000 pages prend cinq jours.
+          Les réponses sont celles de Google, rien de plus. Google peut laisser
+          certains champs vides. Vous ne pouvez pas dépasser 2 000 questions par
+          jour. Interroger entièrement un site de 10 000 pages prend cinq jours.
           L'onglet n'interroge que les pages explorées. Les adresses qui
           n'entrent pas dans l'audit n'apparaissent pas dans la liste.
         </p>
@@ -1622,7 +1717,10 @@
         </nav>
         <p class="meta">
           Dernière mise à jour: 23 octobre 2026. Vous voyez une erreur ?
-          <a href="https://github.com/ucsahinn/seotracker/issues"
+          <a
+            href="https://github.com/ucsahinn/seotracker/issues"
+            target="_blank"
+            rel="noopener noreferrer"
             >Signalez-la sur GitHub</a
           >.
         </p>
@@ -1644,10 +1742,25 @@
     </main>
     <footer>
       <div class="wrap">
+        <p class="star">
+          Une étoile aide d'autres personnes à trouver un outil gratuit.
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Ajouter une étoile sur GitHub</a
+          >
+        </p>
         <span>seowatcher, licence MIT.</span>
         <span
           ><a href="/fr/">Accueil</a> &nbsp;
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          &nbsp;
           <a href="/fr/docs/notes-de-version/">Notes de version</a></span
         >
       </div>

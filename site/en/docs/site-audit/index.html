@@ -15,6 +15,7 @@
     <link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/docs/auditoria-do-site/" />
     <link rel="alternate" hreflang="x-default" href="https://seowatcher.io/docs/site-denetimi/" />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -59,7 +60,7 @@
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en","de","fr","it","pt"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/en/docs/site-audit/#article","headline":"Site audit","description":"The app walks through your site page by page, checks it against 95 rules and puts the problems in order of importance. Each problem comes with what to do about it.","url":"https://seowatcher.io/en/docs/site-audit/","inLanguage":"en","dateModified":"2026-10-23","articleSection":"Screens","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/en/docs/site-audit/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/en/docs/site-audit/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/en/"},{"@type":"ListItem","position":2,"name":"Guide","item":"https://seowatcher.io/en/docs/"},{"@type":"ListItem","position":3,"name":"Site audit","item":"https://seowatcher.io/en/docs/site-audit/"}]}]}</script>
     <script src="/assets/docs.js?v=2.4.1" defer></script>
-    <meta name="theme-color" content="#272c3b" />
+    <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
         font-family: "Geist";
@@ -649,6 +650,95 @@
       footer a:hover {
         color: var(--fg);
       }
+      /* The one ask on the page: quiet, one line, the accent only on the link. */
+      footer .star {
+        flex-basis: 100%;
+        margin: 0 0 4px;
+        text-wrap: pretty;
+      }
+      footer .star a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      footer .star a:hover {
+        color: var(--accent-link);
+        text-decoration-color: var(--accent-link);
+      }
+
+      /* Headings enter as they scroll into view. docs.js adds .hx (and .in
+         once seen) only when motion is allowed, so without script, under
+         reduced motion and with "stop motion" on, they are simply there.
+         h1 wipes in from the left, h2 rises while an amber stroke draws
+         along its rule, h3 rises a little. */
+      article .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease),
+          clip-path 760ms var(--ease),
+          filter 620ms var(--ease);
+      }
+      article h1.hx {
+        clip-path: inset(-10% 100% -10% 0);
+        filter: blur(6px);
+      }
+      article h2.hx,
+      article h3.hx {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      article h3.hx {
+        transform: translateY(6px);
+      }
+      article h2.hx {
+        position: relative;
+      }
+      article h2.hx::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 56px;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 700ms var(--ease) 160ms;
+      }
+      article .hx.in {
+        opacity: 1;
+        transform: none;
+      }
+      article h1.hx.in {
+        clip-path: inset(-10% 0 -10% 0);
+        filter: none;
+      }
+      article h2.hx.in::before {
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        article .hx,
+        article h2.hx::before {
+          opacity: 1;
+          transform: none;
+          clip-path: none;
+          filter: none;
+          transition: none;
+        }
+      }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
 
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
@@ -1093,13 +1183,19 @@
         <nav class="topnav" aria-label="Site">
           <a class="hide" href="/en/">Home</a>
           <a class="hide" href="/en/docs/">Guide</a>
-          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+          <a
+            class="hide"
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub</a
           >
-          <details class="langs"><summary aria-label="Language: English"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="3.6"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2"/></svg></span><span class="code">EN</span></summary><ul><li><a href="/docs/site-denetimi/" lang="tr" hreflang="tr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"/></svg></span>Türkçe</a></li><li><a href="/en/docs/site-audit/" lang="en" hreflang="en" aria-current="page"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="3.6"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2"/></svg></span>English</a></li><li><a href="/de/docs/website-audit/" lang="de" hreflang="de"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg></span>Deutsch</a></li><li><a href="/fr/docs/audit-du-site/" lang="fr" hreflang="fr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg></span>Français</a></li><li><a href="/it/docs/controllo-del-sito/" lang="it" hreflang="it"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg></span>Italiano</a></li><li><a href="/pt/docs/auditoria-do-site/" lang="pt" hreflang="pt"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#ff0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.6" fill="#ffcc00"/><circle cx="8" cy="7" r="1.5" fill="#ff0000"/></svg></span>Português</a></li></ul></details>
+          <details class="langs"><summary aria-label="Language: English"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2.6"/></svg></span><span class="code">EN</span></summary><ul><li><a href="/docs/site-denetimi/" lang="tr" hreflang="tr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"/></svg></span>Türkçe</a></li><li><a href="/en/docs/site-audit/" lang="en" hreflang="en" aria-current="page"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2.6"/></svg></span>English</a></li><li><a href="/de/docs/website-audit/" lang="de" hreflang="de"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg></span>Deutsch</a></li><li><a href="/fr/docs/audit-du-site/" lang="fr" hreflang="fr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg></span>Français</a></li><li><a href="/it/docs/controllo-del-sito/" lang="it" hreflang="it"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg></span>Italiano</a></li><li><a href="/pt/docs/auditoria-do-site/" lang="pt" hreflang="pt"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#ff0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.6" fill="#ffcc00"/><circle cx="8" cy="7" r="1.5" fill="#ff0000"/></svg></span>Português</a></li></ul></details>
           <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            target="_blank"
+            rel="noopener noreferrer"
             ><span class="long">Download for Windows</span
             ><span class="short">Download</span></a
           >
@@ -1116,29 +1212,29 @@
       <aside class="side" aria-label="Guide">
         <details class="side-dd" open>
           <summary>Guide</summary>
-          <p class="nav-group">Getting started</p><ul><li><a href="/en/docs/install-windows/">Install on Windows</a></li><li><a href="/en/docs/install-docker/">Installing with Docker</a></li><li><a href="/en/docs/google-connection/">Connecting to Google</a></li><li><a href="/en/docs/pagespeed-key/">PageSpeed key</a></li></ul><p class="nav-group">Screens</p><ul><li><a href="/en/docs/projects/">Projects</a></li><li><a href="/en/docs/dashboard/">Dashboard</a></li><li><a href="/en/docs/search-performance/">Search performance</a></li><li><a href="/en/docs/rank-tracking/">Ranking tracking</a></li><li><a href="/en/docs/opportunities/">Opportunities</a></li><li><a href="/en/docs/saved-keywords/">Saved keywords</a></li><li><a href="/en/docs/analytics/">Analytics</a></li><li class="current" aria-current="page"><a href="/en/docs/site-audit/">Site audit</a></li><li><a href="/en/docs/index-status/">Index status</a></li><li><a href="/en/docs/reports/">Reports and templates</a></li><li><a href="/en/docs/project-context/">Project info</a></li><li><a href="/en/docs/settings/">Settings</a></li></ul><p class="nav-group">Reference</p><ul><li><a href="/en/docs/help/">Help</a></li><li><a href="/en/docs/audit-rules/">Audit rules</a></li><li><a href="/en/docs/agent-setup/">Agent setup</a></li><li><a href="/en/docs/troubleshooting/">Troubleshooting</a></li><li><a href="/en/docs/release-notes/">Release notes</a></li></ul>
+          <p class="nav-group">Getting started</p><ul><li><a href="/en/docs/install-windows/">Install on Windows</a></li><li><a href="/en/docs/install-docker/">Installing with Docker</a></li><li><a href="/en/docs/google-connection/">Connecting to Google</a></li><li><a href="/en/docs/pagespeed-key/">PageSpeed key</a></li></ul><p class="nav-group">Screens</p><ul><li><a href="/en/docs/projects/">Projects</a></li><li><a href="/en/docs/dashboard/">Dashboard</a></li><li><a href="/en/docs/search-performance/">Search performance</a></li><li><a href="/en/docs/rank-tracking/">Ranking tracking</a></li><li><a href="/en/docs/opportunities/">Opportunities</a></li><li><a href="/en/docs/saved-keywords/">Saved keywords</a></li><li><a href="/en/docs/analytics/">Analytics</a></li><li class="current" aria-current="page"><a href="/en/docs/site-audit/">Site audit</a></li><li><a href="/en/docs/index-status/">Index status</a></li><li><a href="/en/docs/reports/">Reports and templates</a></li><li><a href="/en/docs/project-context/">Project info</a></li><li><a href="/en/docs/settings/">Settings</a></li></ul><p class="nav-group">Help and reference</p><ul><li><a href="/en/docs/help/">Help</a></li><li><a href="/en/docs/audit-rules/">Audit rules</a></li><li><a href="/en/docs/agent-setup/">Agent setup</a></li><li><a href="/en/docs/troubleshooting/">Troubleshooting</a></li><li><a href="/en/docs/release-notes/">Release notes</a></li></ul>
         </details>
       </aside>
       <article id="icerik" data-page="site-denetimi">
-        <h1>Site audit</h1><p class="lede">The app walks through your site page by page, checks it against 95 rules and puts the problems in order of importance. Each problem comes with what to do about it.</p><p>On this page you learn how to find the problems on your site and fix them.</p>
-<p>The app walks through your site with its own crawler (a program that opens and reads pages one by one). It looks for broken links, missing titles and slow pages. At the end you get a score and a list of problems in order of importance. Under each problem it says how to fix it.</p>
+        <h1>Site audit</h1><p class="lede">The app walks through your site page by page, checks it against 95 rules and puts the problems in order of importance. Each problem comes with what to do about it.</p><p>This screen finds the problems on your site and tells you how to fix them.</p>
+<p>The app walks through your site with its own crawler (a program that opens and reads pages one by one). It looks for broken links, missing titles and slow pages. At the end you get a score and a list of problems ranked by importance, each with instructions for fixing it.</p>
 <h2 id="what-is-on-the-screen">What is on the screen</h2>
-<p><strong>The &quot;Yeni denetim başlat&quot; (Start a new audit) card.</strong> It has three fields.</p>
-<ul><li><strong>Taranacak site adresi</strong> (Site address to crawl): your project's domain name is filled in for you.</li><li><strong>Kaç sayfa taransın?</strong> (How many pages to crawl?): at least 10, at most 10,000, 50 by default. If you type a number above 500, the app asks you to confirm.</li><li><strong>Sayfa hızını da ölç</strong> (Also measure page speed): off by default. If you turn it on, every page is measured on a phone and on a computer. Google Lighthouse (Google's page measuring tool) does the measuring.</li></ul>
-<p>If you have no PageSpeed key (the free code Google gives you for speed measurement), speed measurement is limited to 50 pages. To measure all pages, add a free key in <strong>Ayarlar</strong> (Settings).</p>
-<p><strong>Previous audits.</strong> Each audit is listed with its date, status, page count and problem counts. The problem counts are per hundred pages. This lets you compare a 50-page audit with a 500-page one. <strong>Denetimi sil</strong> (Delete audit) in the row menu deletes everything and cannot be undone.</p>
-<p><strong>Audit details.</strong> If the crawl is incomplete, a yellow warning appears. For example: &quot;Denetim bu siteyi tamamen tarayamadı.&quot; (The audit could not crawl this site completely.) (a bot protection blocked it). The results are still shown. <strong>Raporu indir</strong> (Download report) downloads a single-file HTML report and saves it to the <strong>Raporlar</strong> (Reports) screen.</p>
-<p><strong>Site score.</strong> You see a number from 0 to 100. Under it, the three jobs that would earn the most points are listed as &quot;+N puan&quot; (+N points).</p>
+<p><strong>The &quot;Yeni denetim başlat&quot; (Start a new audit) card.</strong> It has three fields:</p>
+<ul><li><strong>Taranacak site adresi</strong> (Site address to crawl): your project's domain name is filled in for you.</li><li><strong>Kaç sayfa taransın?</strong> (How many pages to crawl?): at least 10, at most 10,000, 50 by default. If you type a number above 500, the app asks you to confirm.</li><li><strong>Sayfa hızını da ölç</strong> (Also measure page speed): off by default. If you turn it on, every page is measured on a phone and on a computer. Google Lighthouse (Google's page-testing tool) does the measuring.</li></ul>
+<p>If you have no PageSpeed key (a free code Google issues for speed measurement), speed measurement is limited to 50 pages. To measure all pages, add a free key in <strong>Ayarlar</strong> (Settings).</p>
+<p><strong>Previous audits.</strong> Each audit is listed with its date, status, page count and problem counts. Problem counts are shown per hundred pages, so you can compare a 50-page audit with a 500-page one. <strong>Denetimi sil</strong> (Delete audit) in the row menu deletes everything and cannot be undone.</p>
+<p><strong>Audit details.</strong> If the crawl is incomplete, a yellow warning appears. For example: &quot;Denetim bu siteyi tamamen tarayamadı.&quot; (The audit could not crawl this site completely), usually because bot protection blocked it. The results are still shown. <strong>Raporu indir</strong> (Download report) downloads a single-file HTML report and saves it to the <strong>Raporlar</strong> (Reports) screen.</p>
+<p><strong>Site score.</strong> A number from 0 to 100. Under it, the three jobs that would earn the most points are listed as &quot;+N puan&quot; (+N points).</p>
 <p><strong>Two charts.</strong> One shows which problem affects the most pages. The other shows how serious the problems are.</p>
 <p><strong>Four tabs.</strong></p>
-<ul><li><strong>Sorunlu sayfalar</strong> (Pages with problems): open a card to see the cause and the <strong>Nasıl düzeltilir?</strong> (How to fix it?) box. Buttons: <strong>URL'leri kopyala</strong> (Copy URLs), <strong>CSV indir</strong> (Download CSV), <strong>Sayfalar sekmesinde göster</strong> (Show in the Pages tab).</li><li><strong>Sayfalar</strong> (Pages): every crawled page. Quick filters: <strong>Dizine kapalı</strong> (Closed to indexing), <strong>Yavaş</strong> (Slow) (longer than 1 second), <strong>Alt metni eksik</strong> (Alt text missing), <strong>Site haritasında yok</strong> (Not in the sitemap).</li><li><strong>Dizin durumu</strong> (Index status): Google's answer for each page. It is explained in a separate guide.</li><li><strong>Hız</strong> (Speed): only visible if speed measurement is on.</li></ul>
+<ul><li><strong>Sorunlu sayfalar</strong> (Pages with problems): open a card to see the cause and the <strong>Nasıl düzeltilir?</strong> (How to fix it?) box. Buttons: <strong>URL'leri kopyala</strong> (Copy URLs), <strong>CSV indir</strong> (Download CSV), <strong>Sayfalar sekmesinde göster</strong> (Show in the Pages tab).</li><li><strong>Sayfalar</strong> (Pages): every crawled page. Quick filters: <strong>Dizine kapalı</strong> (Closed to indexing), <strong>Yavaş</strong> (Slow) (longer than 1 second), <strong>Alt metni eksik</strong> (Alt text missing), <strong>Site haritasında yok</strong> (Not in the sitemap).</li><li><strong>Dizin durumu</strong> (Index status): Google's answer for each page. It is explained in a separate guide.</li><li><strong>Hız</strong> (Speed): visible only when speed measurement is on.</li></ul>
 <h2 id="how-to-use-it">How to use it</h2>
-<ol><li>In your first audit, leave the page count at 50. Keep speed measurement off. It finishes in a minute or two.</li><li>Start with the three &quot;+N puan&quot; jobs on the score card. They bring the most points for the least work.</li><li>In the <strong>Sorunlu sayfalar</strong> tab, finish the critical problems first. A critical problem stops Google from seeing the page.</li><li>Use <strong>URL'leri kopyala</strong> to take the list and give it to your site administrator. You can pass on the <strong>Nasıl düzeltilir?</strong> box as it is.</li><li>After you fix things, click <strong>Aynı ayarlarla yeniden başlat</strong> (Restart with the same settings). On the dashboard, the &quot;Düzelenler&quot; (Fixed) card shows what was closed.</li><li>Turn speed measurement on once a week, for your important pages. Each page takes about ten seconds and uses Google quota.</li></ol>
+<ol><li>In your first audit, leave the page count at 50. Keep speed measurement off. It finishes in a minute or two.</li><li>Start with the three &quot;+N puan&quot; jobs on the score card. They earn the most points for the least work.</li><li>In the <strong>Sorunlu sayfalar</strong> tab, finish the critical problems first. A critical problem stops Google from seeing the page.</li><li>Use <strong>URL'leri kopyala</strong> to copy the list and hand it to your site administrator. The <strong>Nasıl düzeltilir?</strong> box can be passed on as it is.</li><li>After you fix things, click <strong>Aynı ayarlarla yeniden başlat</strong> (Restart with the same settings). On the dashboard, the &quot;Düzelenler&quot; (Fixed) card shows what was closed.</li><li>Once a week, turn speed measurement on for your important pages. Each page takes about ten seconds and uses Google quota.</li></ol>
 <h2 id="how-the-numbers-are-calculated">How the numbers are calculated</h2>
 <p><strong>Score.</strong> Each problem has a weight: critical 40, warning 15, info 3. The more pages a problem affects, the more it takes off the score. The score starts at 100 and never goes below zero. If even one problem exists, the score is at most 99.</p>
 <p>Bands: 90 and above is very good, 70 and above is good, 50 and above is average, below that is weak.</p>
 <p><strong>Crawl.</strong> The app does not strain your site: it sends at most two requests at the same time. If the site says &quot;too many requests&quot; (429), it waits. If the total wait goes over 30 minutes, the crawl stops.</p>
-<p><strong>Speed measurement.</strong> On a site with 212 pages, the whole audit took 35 minutes; about 24 minutes of that was speed measurement. If the daily quota runs out, measurement stops and the results up to that point stay. A problem is reported in these cases:</p>
+<p><strong>Speed measurement.</strong> On a site with 212 pages, the whole audit took 35 minutes, about 24 of them for speed measurement. If the daily quota runs out, measurement stops and the results up to that point are kept. A problem is reported in these cases:</p>
 <ul><li>The main content appears later than 4 seconds (LCP).</li><li>Content shifts more than 0.25 (CLS).</li><li>The response to a click takes longer than 500 milliseconds (INP).</li><li>The Lighthouse SEO score is below 90.</li></ul>
 <h2 id="frequently-asked-questions">Frequently asked questions</h2>
 <p><strong>Does the audit show what Google sees?</strong> No. The app's crawler reads the page itself. Google's answer is in the <strong>Dizin durumu</strong> tab.</p>
@@ -1150,7 +1246,10 @@
 <p>The crawler may not see content that JavaScript (code that runs on the page) adds later. One audit crawls at most 10,000 pages. Speed measurement is Google's lab measurement, not real visitor data. The audit changes nothing on your site. You or your assistant make the fixes.</p> <nav class="pager" aria-label="Previous and next page"><a class="pager-prev" rel="prev" href="/en/docs/analytics/"><span>Previous</span><strong>Analytics</strong></a><a class="pager-next" rel="next" href="/en/docs/index-status/"><span>Next</span><strong>Index status</strong></a></nav>
         <p class="meta">
           Last updated: October 23, 2026. Spotted a mistake?
-          <a href="https://github.com/ucsahinn/seotracker/issues"
+          <a
+            href="https://github.com/ucsahinn/seotracker/issues"
+            target="_blank"
+            rel="noopener noreferrer"
             >Report it on GitHub</a
           >.
         </p>
@@ -1159,10 +1258,25 @@
     </main>
     <footer>
       <div class="wrap">
+        <p class="star">
+          A star helps other people find a free tool.
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Star it on GitHub</a
+          >
+        </p>
         <span>seowatcher, MIT license.</span>
         <span
           ><a href="/en/">Home</a> &nbsp;
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          &nbsp;
           <a href="/en/docs/release-notes/">Release notes</a></span
         >
       </div>

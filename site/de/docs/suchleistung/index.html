@@ -6,7 +6,7 @@
     <title>Suchleistung | seowatcher-Anleitung</title>
     <meta
       name="description"
-      content="Hier sehen Sie, bei welchen Suchen Sie bei Google erscheinen und wie viele Personen klicken. Sie können nach Suchanfrage, Seite, Land oder Gerät auswerten und bis zu 16 Monate zurückgehen."
+      content="Bei welchen Suchen Ihre Website bei Google erscheint und wie oft geklickt wird, nach Suchanfrage, Seite, Land oder Gerät, bis zu 16 Monate zurück."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link rel="canonical" href="https://seowatcher.io/de/docs/suchleistung/" />
@@ -46,6 +46,7 @@
       href="https://seowatcher.io/docs/arama-performansi/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -72,7 +73,7 @@
     <meta property="og:title" content="Suchleistung | seowatcher-Anleitung" />
     <meta
       property="og:description"
-      content="Hier sehen Sie, bei welchen Suchen Sie bei Google erscheinen und wie viele Personen klicken. Sie können nach Suchanfrage, Seite, Land oder Gerät auswerten und bis zu 16 Monate zurückgehen."
+      content="Bei welchen Suchen Ihre Website bei Google erscheint und wie oft geklickt wird, nach Suchanfrage, Seite, Land oder Gerät, bis zu 16 Monate zurück."
     />
     <meta
       property="og:image"
@@ -99,7 +100,7 @@
     <meta name="twitter:title" content="Suchleistung | seowatcher-Anleitung" />
     <meta
       name="twitter:description"
-      content="Hier sehen Sie, bei welchen Suchen Sie bei Google erscheinen und wie viele Personen klicken. Sie können nach Suchanfrage, Seite, Land oder Gerät auswerten und bis zu 16 Monate zurückgehen."
+      content="Bei welchen Suchen Ihre Website bei Google erscheint und wie oft geklickt wird, nach Suchanfrage, Seite, Land oder Gerät, bis zu 16 Monate zurück."
     />
     <meta
       name="twitter:image"
@@ -136,7 +137,7 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/de/docs/suchleistung/#article",
             "headline": "Suchleistung",
-            "description": "Hier sehen Sie, bei welchen Suchen Sie bei Google erscheinen und wie viele Personen klicken. Sie können nach Suchanfrage, Seite, Land oder Gerät auswerten und bis zu 16 Monate zurückgehen.",
+            "description": "Bei welchen Suchen Ihre Website bei Google erscheint und wie oft geklickt wird, nach Suchanfrage, Seite, Land oder Gerät, bis zu 16 Monate zurück.",
             "url": "https://seowatcher.io/de/docs/suchleistung/",
             "inLanguage": "de",
             "dateModified": "2026-10-23",
@@ -175,7 +176,7 @@
       }
     </script>
     <script src="/assets/docs.js?v=2.4.1" defer></script>
-    <meta name="theme-color" content="#272c3b" />
+    <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
         font-family: "Geist";
@@ -765,6 +766,95 @@
       footer a:hover {
         color: var(--fg);
       }
+      /* The one ask on the page: quiet, one line, the accent only on the link. */
+      footer .star {
+        flex-basis: 100%;
+        margin: 0 0 4px;
+        text-wrap: pretty;
+      }
+      footer .star a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      footer .star a:hover {
+        color: var(--accent-link);
+        text-decoration-color: var(--accent-link);
+      }
+
+      /* Headings enter as they scroll into view. docs.js adds .hx (and .in
+         once seen) only when motion is allowed, so without script, under
+         reduced motion and with "stop motion" on, they are simply there.
+         h1 wipes in from the left, h2 rises while an amber stroke draws
+         along its rule, h3 rises a little. */
+      article .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease),
+          clip-path 760ms var(--ease),
+          filter 620ms var(--ease);
+      }
+      article h1.hx {
+        clip-path: inset(-10% 100% -10% 0);
+        filter: blur(6px);
+      }
+      article h2.hx,
+      article h3.hx {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      article h3.hx {
+        transform: translateY(6px);
+      }
+      article h2.hx {
+        position: relative;
+      }
+      article h2.hx::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 56px;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 700ms var(--ease) 160ms;
+      }
+      article .hx.in {
+        opacity: 1;
+        transform: none;
+      }
+      article h1.hx.in {
+        clip-path: inset(-10% 0 -10% 0);
+        filter: none;
+      }
+      article h2.hx.in::before {
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        article .hx,
+        article h2.hx::before {
+          opacity: 1;
+          transform: none;
+          clip-path: none;
+          filter: none;
+          transition: none;
+        }
+      }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
 
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
@@ -1209,7 +1299,11 @@
         <nav class="topnav" aria-label="Website">
           <a class="hide" href="/de/">Startseite</a>
           <a class="hide" href="/de/docs/">Anleitung</a>
-          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+          <a
+            class="hide"
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub</a
           >
           <details class="langs">
@@ -1236,7 +1330,7 @@
                       <circle cx="8.4" cy="7" r="2.7" fill="#e30a17" />
                       <polygon
                         fill="#fff"
-                        points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"
+                        points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"
                       /></svg></span
                   >Türkçe</a
                 >
@@ -1259,12 +1353,12 @@
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#fff"
-                        stroke-width="3.6"
+                        stroke-width="4.2"
                       />
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#c8102e"
-                        stroke-width="2"
+                        stroke-width="2.6"
                       /></svg></span
                   >English</a
                 >
@@ -1345,6 +1439,8 @@
           <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            target="_blank"
+            rel="noopener noreferrer"
             ><span class="long">Für Windows herunterladen</span
             ><span class="short">Download</span></a
           >
@@ -1403,7 +1499,7 @@
             <li><a href="/de/docs/projektinfo/">Projektinfo</a></li>
             <li><a href="/de/docs/einstellungen/">Einstellungen</a></li>
           </ul>
-          <p class="nav-group">Nachschlagen</p>
+          <p class="nav-group">Hilfe und Nachschlagen</p>
           <ul>
             <li><a href="/de/docs/hilfe/">Hilfe</a></li>
             <li><a href="/de/docs/audit-regeln/">Audit-Regeln</a></li>
@@ -1418,14 +1514,14 @@
       <article id="icerik" data-page="arama-performansi">
         <h1>Suchleistung</h1>
         <p class="lede">
-          Hier sehen Sie, bei welchen Suchen Sie bei Google erscheinen und wie
-          viele Personen klicken. Sie können nach Suchanfrage, Seite, Land oder
-          Gerät auswerten und bis zu 16 Monate zurückgehen.
+          Bei welchen Suchen Ihre Website bei Google erscheint und wie oft
+          geklickt wird, nach Suchanfrage, Seite, Land oder Gerät, bis zu 16
+          Monate zurück.
         </p>
         <p>
           Hier sehen Sie, bei welchen Suchen Sie bei Google erscheinen und wie
           viele Personen klicken. Die Zahlen kommen direkt aus der Search
-          Console. Die App schätzt keine davon.
+          Console. Die App schätzt nichts.
         </p>
         <p>
           Die gewählten Filter werden in die Adressleiste geschrieben. Wenn Sie
@@ -1501,9 +1597,9 @@
           enthalten: <strong>Sayfayı yeni sekmede aç</strong> (Seite in neuem
           Reiter öffnen), <strong>Adresi kopyala</strong> (Adresse kopieren),
           <strong>Kelimeyi kopyala</strong> (Suchbegriff kopieren),
-          <strong>Kelime olarak kaydet</strong> (Als Suchbegriff speichern). Was
-          Sie speichern, landet auf dem Bildschirm Kayıtlı kelimeler
-          (Gespeicherte Suchbegriffe).
+          <strong>Kelime olarak kaydet</strong> (Als Suchbegriff speichern).
+          Gespeicherte Suchbegriffe finden Sie auf dem Bildschirm
+          <strong>Kayıtlı kelimeler</strong>.
         </p>
         <p>
           <strong>Export.</strong> <strong>E-Tablolar'a aktar</strong> (An
@@ -1522,15 +1618,15 @@
           </li>
           <li>
             Öffnen Sie den Reiter <strong>Sıra 5-20</strong>. Google zeigt Sie
-            schon, aber niemand klickt. Öffnen Sie die Seiten der drei am
-            häufigsten angezeigten Suchanfragen. Passen Sie Titel und ersten
+            bereits an, aber kaum jemand klickt. Öffnen Sie die Seiten der drei
+            am häufigsten angezeigten Suchanfragen. Passen Sie Titel und ersten
             Absatz an diese Suche an.
           </li>
           <li>
             Klicken Sie im Reiter <strong>Sorgular</strong> auf
             <strong>Tıklama oranı düşük</strong>. Ihre Position ist gut, aber
-            niemand klickt. Das Problem liegt sehr wahrscheinlich bei Titel und
-            Beschreibung.
+            kaum jemand klickt. Das Problem liegt sehr wahrscheinlich bei Titel
+            und Beschreibung.
           </li>
           <li>
             Um zu sehen, bei welchen Suchen eine Seite erscheint, wählen Sie im
@@ -1562,8 +1658,8 @@
         <p>
           Google liefert pro Abruf höchstens 1.000 Zeilen. Steht unter der
           Tabelle der Hinweis „bu liste tam değil“ (diese Liste ist nicht
-          vollständig), wurde die Liste abgeschnitten. Die Liste Sıra 5-20 hat
-          höchstens 100 Zeilen.
+          vollständig), wurde die Liste abgeschnitten. Die Liste
+          <strong>Sıra 5-20</strong> hat höchstens 100 Zeilen.
         </p>
         <p>
           Die Überschneidungsanalyse betrachtet 28 Tage. Sie untersucht nur
@@ -1579,7 +1675,7 @@
         </p>
         <p>
           <strong>Die Tabellensumme stimmt nicht mit der Karte überein.</strong>
-          Das ist normal. Die Karte ist die Summe der Website.
+          Das ist normal: Die Karte zeigt die Summe der Website.
         </p>
         <p>
           <strong>Wenn ich bei Google suche, ist meine Position anders.</strong>
@@ -1601,10 +1697,11 @@
         </p>
         <h2 id="grenzen">Grenzen</h2>
         <p>
-          Die Typen Discover und Google News gibt es nicht. Suchvolumen und
+          Die Typen Discover und Google News fehlen. Suchvolumen und
           Wettbewerberpositionen gibt es ebenfalls nicht. Die Daten reichen
           nicht weiter als 16 Monate zurück. Für Älteres sehen Sie im Archiv auf
-          dem Bildschirm Sıralama takibi (Ranking-Verfolgung) nach.
+          dem Bildschirm <strong>Sıralama takibi</strong> (Ranking-Verfolgung)
+          nach.
         </p>
         <nav class="pager" aria-label="Vorherige und nächste Seite">
           <a class="pager-prev" rel="prev" href="/de/docs/uebersicht/"
@@ -1615,7 +1712,10 @@
         </nav>
         <p class="meta">
           Zuletzt aktualisiert: 23 Oktober 2026. Fehler entdeckt?
-          <a href="https://github.com/ucsahinn/seotracker/issues"
+          <a
+            href="https://github.com/ucsahinn/seotracker/issues"
+            target="_blank"
+            rel="noopener noreferrer"
             >Auf GitHub melden</a
           >.
         </p>
@@ -1641,10 +1741,25 @@
     </main>
     <footer>
       <div class="wrap">
+        <p class="star">
+          Ein Stern hilft anderen, ein kostenloses Werkzeug zu finden.
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Auf GitHub mit einem Stern markieren</a
+          >
+        </p>
         <span>seowatcher, MIT-Lizenz.</span>
         <span
           ><a href="/de/">Startseite</a> &nbsp;
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          &nbsp;
           <a href="/de/docs/versionshinweise/">Versionshinweise</a></span
         >
       </div>

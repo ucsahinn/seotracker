@@ -1,14 +1,14 @@
 ---
 title: État de l'index
-description: Google a-t-il mis chacune de vos pages dans la recherche, sinon pourquoi, et quand est-il passé pour la dernière fois ? Vous pouvez poser au plus 2 000 questions par jour.
+description: Google a-t-il mis chacune de vos pages dans la recherche, sinon pourquoi, et quand les a-t-il explorées pour la dernière fois ? Vous pouvez l'interroger sur 2 000 pages par jour au plus.
 screen: Site denetimi, Dizin durumu sekmesi
 route: /p/<proje>/audit?auditId=<denetim>&tab=index
 updated: 2026-10-22
 ---
 
-Vous apprenez ici quelles pages Google a mises dans la recherche.
+Cet onglet dit quelles pages Google a mises dans la recherche.
 
-L'audit du site dit si la page s'ouvre. Il ne peut pas dire si Google a vraiment pris la page dans son index (la liste des pages de Google). L'onglet **Dizin durumu** (État de l'index) pose la question à Google et conserve la réponse sur cet ordinateur. Il ne pose pas la même question encore et encore : il ne repose que les réponses devenues anciennes. C'est important, car Google accorde 2 000 questions par jour pour chaque propriété (l'enregistrement de votre site dans Search Console). L'application et votre assistant se partagent ce quota.
+L'audit du site dit si la page s'ouvre. Il ne peut pas dire si Google a vraiment pris la page dans son index (la liste des pages de Google). L'onglet **Dizin durumu** (État de l'index) pose la question à Google et conserve la réponse sur cet ordinateur. Il ne repose pas sans cesse la même question : seules les réponses anciennes sont redemandées. C'est important, car Google accorde 2 000 questions par jour pour chaque propriété (l'enregistrement de votre site dans Search Console). L'application et votre assistant se partagent ce quota.
 
 ## Ce que l'écran affiche
 
@@ -22,7 +22,7 @@ L'audit du site dit si la page s'ouvre. Il ne peut pas dire si Google a vraiment
 
 **Bouton « Google'da durumunu kontrol et » (Vérifier l'état dans Google).** À chaque clic, il interroge 25 pages au maximum. Il commence par celles qui n'ont pas reçu de réponse depuis le plus longtemps. Si la limite quotidienne est atteinte, l'avertissement « Google'ın günlük 2.000 adres sınırına ulaşıldı » (La limite quotidienne de 2 000 adresses de Google est atteinte) apparaît. Si Search Console n'est pas connecté, le bouton est désactivé. Il l'est aussi si le nom de domaine audité n'est pas dans la propriété connectée.
 
-**Tableau.** Les colonnes sont : **Sayfa** (Page), **Durum** (État), **Sebep** (Raison), **Google'ın seçtiği adres** (Adresse choisie par Google), **Google'ın son ziyareti** (Dernière visite de Google). La cellule d'état indique « Google'da » (Dans Google), « Kontrol edilmedi » (Non vérifiée), « Yanıt alınamadı » (Pas de réponse), « Hata » (Erreur), ou la version turque de l'état propre à Google. Il y a la version turque de 18 états au total. Quelques exemples :
+**Tableau.** Les colonnes sont : **Sayfa** (Page), **Durum** (État), **Sebep** (Raison), **Google'ın seçtiği adres** (Adresse choisie par Google), **Google'ın son ziyareti** (Dernière visite de Google). La cellule d'état indique « Google'da » (Dans Google), « Kontrol edilmedi » (Non vérifiée), « Yanıt alınamadı » (Pas de réponse), « Hata » (Erreur), ou l'un des 18 états de Google, affiché en turc. Quelques exemples :
 
 - « Keşfedildi, henüz taranmadı » (Découverte, pas encore explorée)
 - « 'noindex' etiketiyle dışlandı » (Exclue par la balise « noindex » : la page est cachée de la recherche)
@@ -37,14 +37,14 @@ Vous pouvez télécharger le tableau en CSV.
 1. Quand l'audit est terminé, ouvrez l'onglet. Si le nombre « Yanıt bekleyen » est élevé, cliquez sur **Google'da durumunu kontrol et**. Chaque clic fait avancer de 25 pages. Sur un petit site, quelques clics suffisent.
 2. Regardez d'abord le groupe « Dizinde değil ». La colonne **Sebep** donne la justification de Google et, le plus souvent, elle dit ce qu'il faut faire. Si c'est « robots.txt engelliyor », levez le blocage. Si c'est « 'noindex' etiketiyle dışlandı », supprimez la balise. Si c'est « Keşfedildi, henüz taranmadı », attendre suffit généralement.
 3. Ajoutez au plan du site (sitemap) les pages importantes qui indiquent « Google bu adresi bilmiyor ». Envoyez le plan à Search Console. Pour trois ou quatre pages très importantes, cliquez à la main sur « Demander l'indexation » (« Dizine eklenmesini iste » dans la version turque) dans Search Console.
-4. Si l'encadré « Google'ın farklı adresi seçtiği sayfalar » n'est pas à zéro, regardez la colonne **Google'ın seçtiği adres**. Google n'a pas aimé l'adresse principale que vous avez déclarée. Corrigez la vôtre, ou faites de l'adresse choisie par Google l'adresse principale.
+4. Si l'encadré « Google'ın farklı adresi seçtiği sayfalar » n'est pas à zéro, regardez la colonne **Google'ın seçtiği adres**. Google n'a pas retenu l'adresse principale que vous avez déclarée. Corrigez la vôtre, ou faites de l'adresse choisie par Google l'adresse principale.
 5. Recliquez quelques jours plus tard. Seules les réponses devenues anciennes sont reposées, et votre quota n'est pas gaspillé.
 
 ## Comment les chiffres sont calculés
 
 Si Google répond « dans l'index », la page est comptée « Google'da ». S'il répond « pas dans l'index » ou « indéterminé », elle est comptée « Dizinde değil ». S'il n'y a pas de réponse, la page devient « Yanıt bekleyen ».
 
-Une réponse est considérée comme ancienne après un certain temps et est reposée. Pour une page dans l'index, ce délai est de 14 jours. Pour une réponse « pas dans l'index » ou en erreur, il est de 3 jours. Une page jamais interrogée est toujours prête à l'être. La limite quotidienne est calculée avec le nombre de questions des 24 dernières heures. L'application ne compte que ses propres questions. Les requêtes que vous faites à la main dans Search Console n'entrent pas dans ce compteur, mais elles se déduisent de la vraie limite de Google.
+Une réponse devient ancienne après un certain délai ; elle est alors redemandée. Pour une page dans l'index, ce délai est de 14 jours. Pour une réponse « pas dans l'index » ou en erreur, il est de 3 jours. Une page jamais interrogée est toujours prête à l'être. La limite quotidienne est calculée avec le nombre de questions des 24 dernières heures. L'application ne compte que ses propres questions. Les requêtes que vous faites à la main dans Search Console n'entrent pas dans ce compteur, mais elles comptent dans la vraie limite de Google.
 
 Un décalage d'adresse principale signifie que l'adresse choisie par Google est différente de celle que vous avez déclarée. Une différence de barre oblique finale compte aussi.
 
@@ -62,6 +62,6 @@ Si la dernière exploration de Google date de plus de 90 jours, l'audit écrit l
 
 ## Limites
 
-Les réponses valent ce que Google donne. Google peut laisser certains champs vides. Vous ne pouvez pas dépasser 2 000 questions par jour. Interroger entièrement un site de 10 000 pages prend cinq jours. L'onglet n'interroge que les pages explorées. Les adresses qui n'entrent pas dans l'audit n'apparaissent pas dans la liste.
+Les réponses sont celles de Google, rien de plus. Google peut laisser certains champs vides. Vous ne pouvez pas dépasser 2 000 questions par jour. Interroger entièrement un site de 10 000 pages prend cinq jours. L'onglet n'interroge que les pages explorées. Les adresses qui n'entrent pas dans l'audit n'apparaissent pas dans la liste.
 
 <!-- Kaynaklar: src/client/features/audit/IndexCoverageView.tsx; CoverageTable.tsx; CoverageVerdictDonut.tsx; coverageBuckets.ts; coverageReasons.ts; export.ts; src/server/features/gsc/indexCoverage.ts; src/server/lib/audit/google-verdict-checks.ts; src/shared/gsc-coverage-states.ts; src/db/gsc-inspection.schema.ts; src/server/features/quotas/QuotaService.ts -->

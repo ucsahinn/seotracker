@@ -6,7 +6,7 @@ route: /p/<proje>/audit
 updated: 2026-10-22
 ---
 
-Nesta página você aprende a encontrar os problemas do seu site e a corrigi-los.
+Esta página explica como encontrar os problemas do seu site e corrigi-los.
 
 O aplicativo percorre o seu site com o seu próprio rastreador (um programa que abre e lê as páginas uma a uma). Ele procura links quebrados, títulos ausentes e páginas lentas. No fim, você recebe uma pontuação e uma lista de problemas em ordem de importância. Sob cada problema, ele diz como corrigir.
 
@@ -18,11 +18,11 @@ O aplicativo percorre o seu site com o seu próprio rastreador (um programa que 
 - **Kaç sayfa taransın?** (Quantas páginas rastrear?): no mínimo 10, no máximo 10.000, 50 por padrão. Se você digitar um número acima de 500, o aplicativo pede confirmação.
 - **Sayfa hızını da ölç** (Medir também a velocidade das páginas): desligado por padrão. Se você ligar, cada página é medida no celular e no computador. Quem faz a medição é o Google Lighthouse (a ferramenta do Google que mede páginas).
 
-Se você não tem uma chave do PageSpeed (o código gratuito que o Google fornece para medir velocidade), a medição de velocidade fica limitada a 50 páginas. Para medir todas as páginas, adicione uma chave gratuita em **Ayarlar** (Configurações).
+Se você não tem uma chave do PageSpeed (a chave gratuita que o Google fornece para medir velocidade), a medição de velocidade fica limitada a 50 páginas. Para medir todas as páginas, adicione uma chave gratuita em **Ayarlar** (Configurações).
 
 **Auditorias anteriores.** Cada auditoria é listada com a data, o estado, o número de páginas e a contagem de problemas. A contagem de problemas é por cem páginas. Isso permite comparar uma auditoria de 50 páginas com uma de 500. **Denetimi sil** (Excluir auditoria), no menu da linha, apaga tudo e não pode ser desfeito.
 
-**Detalhes da auditoria.** Se o rastreamento estiver incompleto, aparece um aviso amarelo. Por exemplo: "Denetim bu siteyi tamamen tarayamadı." (A auditoria não conseguiu rastrear este site por completo.) (uma proteção contra robôs o bloqueou). Os resultados continuam sendo mostrados. **Raporu indir** (Baixar o relatório) baixa um relatório HTML de arquivo único e o salva na tela **Raporlar** (Relatórios).
+**Detalhes da auditoria.** Se o rastreamento estiver incompleto, aparece um aviso amarelo. Por exemplo: "Denetim bu siteyi tamamen tarayamadı." (A auditoria não conseguiu rastrear este site por completo.), quando uma proteção contra robôs bloqueia o rastreador. Os resultados continuam sendo mostrados. **Raporu indir** (Baixar o relatório) baixa um relatório HTML de arquivo único e o salva na tela **Raporlar** (Relatórios).
 
 **Pontuação do site.** Você vê um número de 0 a 100. Abaixo dele, os três trabalhos que dariam mais pontos aparecem como "+N puan" (+N pontos).
 

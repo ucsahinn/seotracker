@@ -49,6 +49,7 @@
       href="https://seowatcher.io/docs/kurulum-docker/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -88,7 +89,7 @@
     <meta property="og:image:height" content="630" />
     <meta
       property="og:image:alt"
-      content="Guida di seowatcher: installazione, schermate e risoluzione dei problemi"
+      content="Guida di seowatcher: installazione, schermate, problemi"
     />
     <meta property="article:modified_time" content="2026-10-23" />
     <meta
@@ -184,7 +185,7 @@
       }
     </script>
     <script src="/assets/docs.js?v=2.4.1" defer></script>
-    <meta name="theme-color" content="#272c3b" />
+    <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
         font-family: "Geist";
@@ -774,6 +775,95 @@
       footer a:hover {
         color: var(--fg);
       }
+      /* The one ask on the page: quiet, one line, the accent only on the link. */
+      footer .star {
+        flex-basis: 100%;
+        margin: 0 0 4px;
+        text-wrap: pretty;
+      }
+      footer .star a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      footer .star a:hover {
+        color: var(--accent-link);
+        text-decoration-color: var(--accent-link);
+      }
+
+      /* Headings enter as they scroll into view. docs.js adds .hx (and .in
+         once seen) only when motion is allowed, so without script, under
+         reduced motion and with "stop motion" on, they are simply there.
+         h1 wipes in from the left, h2 rises while an amber stroke draws
+         along its rule, h3 rises a little. */
+      article .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease),
+          clip-path 760ms var(--ease),
+          filter 620ms var(--ease);
+      }
+      article h1.hx {
+        clip-path: inset(-10% 100% -10% 0);
+        filter: blur(6px);
+      }
+      article h2.hx,
+      article h3.hx {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      article h3.hx {
+        transform: translateY(6px);
+      }
+      article h2.hx {
+        position: relative;
+      }
+      article h2.hx::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 56px;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 700ms var(--ease) 160ms;
+      }
+      article .hx.in {
+        opacity: 1;
+        transform: none;
+      }
+      article h1.hx.in {
+        clip-path: inset(-10% 0 -10% 0);
+        filter: none;
+      }
+      article h2.hx.in::before {
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        article .hx,
+        article h2.hx::before {
+          opacity: 1;
+          transform: none;
+          clip-path: none;
+          filter: none;
+          transition: none;
+        }
+      }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
 
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
@@ -1218,7 +1308,11 @@
         <nav class="topnav" aria-label="Sito">
           <a class="hide" href="/it/">Home</a>
           <a class="hide" href="/it/docs/">Guida</a>
-          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+          <a
+            class="hide"
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub</a
           >
           <details class="langs">
@@ -1245,7 +1339,7 @@
                       <circle cx="8.4" cy="7" r="2.7" fill="#e30a17" />
                       <polygon
                         fill="#fff"
-                        points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"
+                        points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"
                       /></svg></span
                   >Türkçe</a
                 >
@@ -1268,12 +1362,12 @@
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#fff"
-                        stroke-width="3.6"
+                        stroke-width="4.2"
                       />
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#c8102e"
-                        stroke-width="2"
+                        stroke-width="2.6"
                       /></svg></span
                   >English</a
                 >
@@ -1348,6 +1442,8 @@
           <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            target="_blank"
+            rel="noopener noreferrer"
             ><span class="long">Scarica per Windows</span
             ><span class="short">Scarica</span></a
           >
@@ -1416,7 +1512,7 @@
             </li>
             <li><a href="/it/docs/impostazioni/">Impostazioni</a></li>
           </ul>
-          <p class="nav-group">Riferimento</p>
+          <p class="nav-group">Aiuto e riferimento</p>
           <ul>
             <li><a href="/it/docs/aiuto/">Aiuto</a></li>
             <li>
@@ -1432,7 +1528,7 @@
                 >Risoluzione dei problemi</a
               >
             </li>
-            <li><a href="/it/docs/note-di-rilascio/">Note di rilascio</a></li>
+            <li><a href="/it/docs/note-di-rilascio/">Note di versione</a></li>
           </ul>
         </details>
       </aside>
@@ -1444,12 +1540,12 @@
         </p>
         <p>
           Al termine l'app sarà in funzione in Docker (il programma che esegue
-          le applicazioni dentro una scatola isolata) e aperta all'indirizzo
-          <code>http://localhost:3001</code>. Chi usa Windows trova molto più
-          semplice l'installazione con un solo file. Questa strada è per chi usa
-          Mac o Linux e per chi usa già Docker. Il primo avvio richiede alcuni
-          minuti, perché l'app viene compilata dentro la scatola (il container).
-          I successivi richiedono pochi secondi.
+          le applicazioni in ambienti isolati, detti container) e aperta
+          all'indirizzo <code>http://localhost:3001</code>. Chi usa Windows
+          trova molto più semplice l'installazione con un solo file. Questa
+          strada è per chi usa Mac o Linux e per chi usa già Docker. Il primo
+          avvio richiede alcuni minuti, perché l'app viene compilata dentro il
+          container. I successivi richiedono pochi secondi.
         </p>
         <h2 id="cosa-serve">Cosa serve</h2>
         <ul>
@@ -1506,8 +1602,8 @@ cd seotracker</code></pre>
           </li>
         </ol>
         <p>
-          Il passo successivo è la guida alla connessione con Google. Con
-          Docker, i due indirizzi di reindirizzamento da dare a Google sono
+          Il passaggio successivo è la guida al collegamento con Google. Con
+          Docker i due indirizzi di reindirizzamento da dare a Google sono
           questi:
         </p>
         <ul>
@@ -1531,19 +1627,19 @@ docker compose up -d --build</code></pre>
           <li>Per fermare: <code>docker compose stop</code></li>
           <li>Per riavviare: <code>docker compose up -d</code></li>
           <li>
-            Per rimuovere la scatola conservando i dati:
+            Per rimuovere il container conservando i dati:
             <code>docker compose down</code>
           </li>
           <li>
             Per cancellare anche i dati: <code>docker compose down -v</code>.
-            Questo comando elimina in modo permanente il database, le
-            connessioni con Google e i report.
+            Questo comando elimina in modo permanente il database, i
+            collegamenti con Google e i report.
           </li>
         </ul>
         <h3 id="copia-di-sicurezza">Copia di sicurezza</h3>
         <p>
           I dati sono nel volume <code>seotracker_data</code>, al percorso
-          <code>/app/.wrangler</code> dentro la scatola. Per la copia di
+          <code>/app/.wrangler</code> dentro il container. Per la copia di
           sicurezza, scrivere in ordine tre comandi:
         </p>
         <div class="code">
@@ -1554,9 +1650,9 @@ docker compose up -d</code></pre>
         <p>
           Per ripristinare, nello stesso comando usare <code>tar xzf</code> al
           posto di <code>tar czf</code>. Il file
-          <code>instance-secret</code> nel volume è la chiave che cifra le
-          connessioni con Google. Se manca dalla copia, l'app si apre ma le
-          connessioni con Google non tornano.
+          <code>instance-secret</code> nel volume è la chiave che cifra i
+          collegamenti con Google. Se manca dalla copia, l'app si apre ma i
+          collegamenti con Google vanno rifatti.
         </p>
         <h3 id="impostazioni-facoltative">Impostazioni (facoltative)</h3>
         <p>
@@ -1618,7 +1714,7 @@ docker compose up -d</code></pre>
                 <td>
                   Se è vuoto, viene generato al primo avvio. Con
                   <code>off</code> non viene chiesta la password. Qualsiasi
-                  altro valore è usato com'è
+                  altro valore è usato così com'è
                 </td>
               </tr>
             </tbody>
@@ -1641,15 +1737,15 @@ docker compose up -d</code></pre>
           <li>
             Nel browser deve aprirsi <code>http://localhost:3001</code>. La
             scheda di stato nella schermata <strong>Yardım</strong> (Aiuto) deve
-            dire &quot;Her şey yolunda.&quot; (Tutto a posto.). Prima del
-            collegamento con Google, la riga &quot;Google girişi&quot; (Accesso
-            a Google) richiede attenzione. È normale.
+            dire &quot;Her şey yolunda.&quot; (Tutto a posto.). Finché Google
+            non è collegato, la riga &quot;Google girişi&quot; (Accesso a
+            Google) segnala un problema. È normale.
           </li>
         </ul>
         <h2 id="domande-frequenti">Domande frequenti</h2>
         <p>
           <strong>Perché il primo avvio è lungo?</strong> L'app viene compilata
-          dentro la scatola. Negli avvii successivi la compilazione viene
+          dentro il container. Negli avvii successivi la compilazione viene
           saltata.
         </p>
         <p>
@@ -1659,8 +1755,8 @@ docker compose up -d</code></pre>
           file <code>docs/ENVIRONMENT.md</code>.
         </p>
         <p>
-          <strong>Si può aprire a Internet?</strong> L'app non chiede l'identità
-          a nessuno. Non aprirla senza mettere davanti una propria
+          <strong>Si può aprire a Internet?</strong> L'app non chiede a nessuno
+          di identificarsi. Non aprirla senza mettere davanti una propria
           autenticazione. Se si imposta <code>ALLOWED_HOST</code>, l'app lo
           segnala nel controllo di stato.
         </p>
@@ -1680,7 +1776,7 @@ docker compose up -d</code></pre>
             <strong>Compare &quot;Bind for 127.0.0.1:3001 failed&quot;.</strong>
             Il numero di porta è occupato. Mettere nella cartella del progetto
             un file <code>.env</code> con la riga <code>PORT=3002</code> e
-            ricreare la scatola. Su Windows il Blocco note può salvare il file
+            ricreare il container. Su Windows il Blocco note può salvare il file
             come <code>.env.txt</code>. In PowerShell,
             <code>Set-Content -Encoding ascii .env 'PORT=3002'</code> è sicuro.
           </li>
@@ -1692,8 +1788,8 @@ docker compose up -d</code></pre>
           </li>
           <li>
             <strong
-              >La connessione con Google dice &quot;yapılandırılmamış&quot; (non
-              configurata).</strong
+              >Il collegamento con Google dice &quot;yapılandırılmamış&quot;
+              (non configurata).</strong
             >
             Se <code>BETTER_AUTH_SECRET</code> è più corta di 32 caratteri,
             Google resta disattivato. Se la si è indicata a mano, allungarla.
@@ -1702,8 +1798,8 @@ docker compose up -d</code></pre>
           </li>
           <li>
             <strong
-              >Dopo l'aggiornamento la connessione con Google si è
-              interrotta.</strong
+              >Dopo l'aggiornamento il collegamento con Google si è
+              interrotto.</strong
             >
             <code>BETTER_AUTH_SECRET</code> è cambiata oppure il volume è stato
             ricreato. Nelle impostazioni del progetto scegliere
@@ -1722,7 +1818,10 @@ docker compose up -d</code></pre>
         </nav>
         <p class="meta">
           Ultimo aggiornamento: 23 ottobre 2026. Se si nota un errore,
-          <a href="https://github.com/ucsahinn/seotracker/issues"
+          <a
+            href="https://github.com/ucsahinn/seotracker/issues"
+            target="_blank"
+            rel="noopener noreferrer"
             >segnalarlo su GitHub</a
           >.
         </p>
@@ -1740,10 +1839,25 @@ docker compose up -d</code></pre>
     </main>
     <footer>
       <div class="wrap">
+        <p class="star">
+          Una stella aiuta altre persone a trovare uno strumento gratuito.
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Aggiungi una stella su GitHub</a
+          >
+        </p>
         <span>seowatcher, licenza MIT.</span>
         <span
           ><a href="/it/">Home</a> &nbsp;
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          &nbsp;
           <a href="/it/docs/note-di-rilascio/">Note di versione</a></span
         >
       </div>

@@ -53,6 +53,6 @@ Chaque rapport demande 200 lignes au maximum. L'état de la mesure lit les régl
 
 ## Limites
 
-Ce que Analytics ne mesure pas, cet écran ne peut pas l'afficher non plus. Cela inclut les visites sans accord pour les cookies, les événements clés non définis et la mesure améliorée désactivée. L'écran n'écarte pas tout seul le trafic localhost. Analytics et Search Console rapportent dans des fuseaux horaires différents. Les correspondances quotidiennes peuvent se décaler d'un jour.
+Ce qu'Analytics ne mesure pas, cet écran ne peut pas l'afficher non plus. Cela inclut les visites sans accord pour les cookies, les événements clés non définis et la mesure améliorée désactivée. L'écran n'écarte pas tout seul le trafic localhost. Analytics et Search Console rapportent dans des fuseaux horaires différents. Les correspondances quotidiennes peuvent se décaler d'un jour.
 
 <!-- Kaynaklar: src/routes/_project/p/$projectId/analytics.tsx; src/client/features/analytics/AnalyticsPage.tsx; ReportView.tsx; ReportTable.tsx; ReportEmptyState.tsx; OrganicTrendPanel.tsx; MeasurementHealthPanel.tsx; metricHelp.ts; reportInsights.ts; reportKpis.ts; src/shared/ga4-reports.ts; src/server/features/ga4/services/Ga4ReportDefinitions.ts; Ga4ReportingService.ts; Ga4ReportEnhancements.ts; src/serverFunctions/ga4Reports.ts; src/serverFunctions/ga4MeasurementHealth.ts -->

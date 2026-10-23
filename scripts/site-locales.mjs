@@ -74,7 +74,7 @@ export const groups = [
   },
   {
     key: "Başvuru",
-    title: { tr: "Başvuru", en: "Reference" },
+    title: { tr: "Yardım ve başvuru", en: "Help and reference" },
     slugs: [
       "yardim",
       "denetim-kurallari",
@@ -122,9 +122,9 @@ export const locales = {
       guide: "Kılavuz",
       guideTitle: "seowatcher kılavuzu: kurulum, ekranlar ve sorun giderme",
       guideDescription:
-        "seowatcher kılavuzları: kurulum, her ekranın ne gösterdiği, Google bağlantısı, denetim kuralları, ajan kurulumu ve sorun giderme.",
+        "seowatcher kılavuzu: kurulum, her ekranın ne gösterdiği, Google'a bağlanma, denetim kuralları, ajan kurulumu ve sorun giderme.",
       guideLede:
-        "Kurulumdan ilk rapora kadar her adım ve her ekran kısa ve sade anlatılır. Uygulama GitHub'da seotracker, bu sitede seowatcher adıyla geçer; ikisi aynı uygulamadır.",
+        "Kurulumdan ilk rapora kadar her adım ve her ekran anlatılır. Uygulamanın adı bu sitede seowatcher, GitHub'da seotracker'dır. İkisi aynı uygulamadır.",
       screenSuffix: " ekranı",
       titleSuffix: " | seowatcher kılavuzu",
       onThisPage: "Bu sayfada",
@@ -181,7 +181,7 @@ export const locales = {
       guideDescription:
         "seowatcher guides: installation, what every screen shows, the Google connection, audit rules, agent setup and troubleshooting.",
       guideLede:
-        "A short, plain walkthrough of every step and every screen, from installation to the first report. The app is called seotracker on GitHub and seowatcher on this site; they are the same thing.",
+        "A short, plain walkthrough of every step and every screen, from installation to the first report. The app is called seowatcher here and seotracker on GitHub; they are the same thing.",
       screenSuffix: " screen",
       titleSuffix: " | seowatcher guide",
       onThisPage: "On this page",
@@ -210,13 +210,24 @@ export const locales = {
   },
 };
 
-// The translated editions: one JSON per language, written by the translator.
-const FALLBACK_FREE = {
-  de: "Kostenlos",
-  fr: "Gratuit",
-  it: "Gratis",
-  pt: "Grátis",
+// Chrome strings added after the tables above went out for translation. An
+// edition's own value wins; English fills the gap until a translator adds one
+// to `site-i18n.<lang>.json`.
+const lateT = {
+  tr: {
+    starWhy:
+      "Bir yıldız, başkalarının da bu ücretsiz aracı bulmasına yardım eder.",
+    starLink: "GitHub'da yıldız verin",
+  },
+  en: {
+    starWhy: "A star helps other people find a free tool.",
+    starLink: "Star it on GitHub",
+  },
 };
+for (const [lang, t] of Object.entries(lateT))
+  locales[lang].t = { ...t, ...locales[lang].t };
+
+// The translated editions: one JSON per language, written by the translator.
 for (const file of fs.readdirSync(path.join(root, "scripts"))) {
   const m = /^site-i18n\.([a-z]{2})\.json$/.exec(file);
   if (!m || locales[m[1]]) continue;
@@ -234,7 +245,7 @@ for (const file of fs.readdirSync(path.join(root, "scripts"))) {
   for (const k of ["switchLabel", "switchTo", "switchHref", "switchShort"])
     delete t[k];
   if (!data.t?.language) t.language = data.t?.switchLabel || t.language;
-  if (!data.t?.free) t.free = FALLBACK_FREE[lang] || t.free;
+
   locales[lang] = {
     lang,
     name: data.name || lang.toUpperCase(),
@@ -308,8 +319,8 @@ export const rewriteLinksToEnglish = (html) => rewriteLinks(html, locales.en);
 
 /** Small flags, 20x14, drawn with a few shapes each so they stay crisp. */
 export const flags = {
-  tr: '<svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"/></svg>',
-  en: '<svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="3.6"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2"/></svg>',
+  tr: '<svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"/></svg>',
+  en: '<svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2.6"/></svg>',
   de: '<svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg>',
   fr: '<svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg>',
   it: '<svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg>',

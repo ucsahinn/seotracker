@@ -47,7 +47,7 @@ Esta página diz, em poucas palavras, o que fazer quando algo não funciona. Pri
 
 **Causa:** O motor do aplicativo (workerd) trava em um arquivo de sistema deste computador. Na inicialização, o aplicativo testa o motor sozinho. Se ele disser que o motor também não inicia sozinho, o problema está no computador. Se disser que funciona sozinho, o problema está na pasta de dados ou na configuração.
 
-**Solução:** Primeiro escolha **Kurulumu onar** (Reparar a instalação). Se isso não ajudar, clique com o botão direito no ícone e escolha **Sorunu bildir (GitHub)** (Relatar o problema, GitHub). As informações de diagnóstico (versão do Windows, processador, nome do módulo com falha, despejo de falha) são adicionadas ao relato automaticamente, e você só o envia. Os despejos de falha ficam na pasta `%LOCALAPPDATA%\seowatcher\logs\dumps`. Você pode anexá-los ao relato, se quiser.
+**Solução:** Primeiro escolha **Kurulumu onar** (Reparar a instalação). Se isso não ajudar, clique com o botão direito no ícone e escolha **Sorunu bildir (GitHub)** (Relatar um problema no GitHub). As informações de diagnóstico (versão do Windows, processador, nome do módulo com falha, despejo de falha) são adicionadas ao relato automaticamente, e você só o envia. Os despejos de falha ficam na pasta `%LOCALAPPDATA%\seowatcher\logs\dumps`. Você pode anexá-los ao relato, se quiser.
 
 ## O Windows diz "protegeu o computador"
 
@@ -157,7 +157,7 @@ Esta página diz, em poucas palavras, o que fazer quando algo não funciona. Pri
 
 **Sintoma:** `docker compose ps` ainda não diz healthy depois de cinco minutos.
 
-**Causa:** Na primeira inicialização, o aplicativo é construído dentro da caixa (o contêiner) e precisa de cerca de 2 GB de memória. Se a memória não bastar, a construção falha.
+**Causa:** Na primeira inicialização, o aplicativo é construído dentro do contêiner e precisa de cerca de 2 GB de memória. Se a memória não bastar, a construção falha.
 
 **Solução:** Execute `docker compose logs --tail 50` e olhe as últimas linhas. Se houver um erro de memória, dê mais memória aos contêineres nas configurações do Docker Desktop. Depois execute `docker compose up -d --build`.
 

@@ -34,7 +34,7 @@ Le tableau affiche leurs formes courtes : Bilgi, Ticari, İşlem, Gezinme et un 
 
 ## Comment l'utiliser
 
-1. Dans Performance de recherche, ouvrez l'onglet **Sıra 5-20**. Marquez cinq ou dix recherches que vous jugez importantes avec **Kelime olarak kaydet**. Choisissez les recherches des pages qui rapportent de l'argent. C'est aussi utile que de choisir les recherches les plus affichées.
+1. Dans Performance de recherche, ouvrez l'onglet **Sıra 5-20**. Enregistrez cinq ou dix recherches que vous jugez importantes avec **Kelime olarak kaydet**. Choisissez aussi les recherches des pages qui rapportent de l'argent, pas seulement les plus affichées.
 2. Venez ici et cochez les mots. Avec **Etiketleri güncelle**, donnez des étiquettes comme « ürün » (produit), « blog », « marka » (marque). Cela facilite la comparaison le mois prochain.
 3. Une fois par mois, regardez la carte **Sıra dağılımı** (Répartition des positions). Les mots de la tranche 11-20 sont les plus proches de la première page. Retrouvez les pages de ces mots dans l'écran Opportunités.
 4. Pour un rapport, cliquez sur **CSV indir** ou **E-Tablolar'a aktar**. Le fichier arrive avec les filtres que vous avez appliqués.

@@ -1,19 +1,28 @@
 {
-  "name": "seotracker",
-  "short_name": "seotracker",
+  "name": "seowatcher",
+  "short_name": "seowatcher",
+  "description": "Search Console, Analytics 4 ve site denetimi tek uygulamada.",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "/android-chrome-512x512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/android-chrome-512x512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
-  "theme_color": "#141210",
-  "background_color": "#141210",
+  "theme_color": "#0c0b0a",
+  "background_color": "#0c0b0a",
   "display": "standalone"
 }

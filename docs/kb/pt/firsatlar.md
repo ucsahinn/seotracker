@@ -1,14 +1,14 @@
 ---
 title: Oportunidades
-description: Diz quais das suas páginas você deve mexer esta semana. Divide as páginas em quatro grupos, dá uma pontuação a cada uma e escreve o trabalho a fazer.
+description: Mostra em quais das suas páginas você deve mexer esta semana. Divide as páginas em quatro grupos, dá uma pontuação a cada uma e escreve o trabalho a fazer.
 screen: Fırsatlar
 route: /p/<proje>/opportunities
 updated: 2026-10-22
 ---
 
-Nesta tela você vê quais das suas páginas deve mexer esta semana.
+Esta tela mostra em quais páginas você deve mexer esta semana.
 
-O aplicativo pega todas as suas páginas no Search Console. Ele combina cada uma com a página correspondente no Google Analytics. Dá a cada página uma pontuação de 0 a 100. Essa pontuação não é uma medida do Google. É a estimativa do aplicativo de "quanto vale a pena trabalhar nesta página". A tela precisa do Search Console e do Analytics. Se um deles não estiver conectado, aparecem um aviso e o botão **Bağlantıları aç** (Abrir as conexões).
+O aplicativo lê todas as suas páginas no Search Console, combina cada uma com a página correspondente no Google Analytics e dá a cada página uma pontuação de 0 a 100. Essa pontuação não é uma medida do Google. É a estimativa do aplicativo de quanto vale a pena trabalhar nesta página. A tela precisa do Search Console e do Analytics. Se um deles não estiver conectado, aparecem um aviso e o botão **Bağlantıları aç** (Abrir as conexões).
 
 ## O que há na tela
 
@@ -18,12 +18,12 @@ O aplicativo pega todas as suas páginas no Search Console. Ele combina cada uma
 
 **Quatro grupos.** Cada página cai em um de quatro grupos. O nome do grupo aparece na linha como um rótulo.
 
-| Grupo                                  | O que significa                                                                                       | O que fazer                                                                      |
-| -------------------------------------- | ----------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| **Az tıklanan** (Pouco clicadas)       | Entre as 20 primeiras. A taxa de cliques é menos da metade da de suas outras páginas na mesma posição | Reescreva o título e a descrição. O texto exibido na busca não atrai cliques     |
-| **Yükselmeye yakın** (Perto de subir)  | Posição 4 a 20                                                                                        | Amplie o conteúdo e adicione links internos. Pode subir uma ou duas posições     |
-| **İlk sıralarda** (No topo)            | Entre as 3 primeiras                                                                                  | Mantenha. Deixe a página atualizada e garanta que ela não quebre                 |
-| **Derinde kalan** (Presas lá no fundo) | Depois da posição 20                                                                                  | Pense se a página realmente responde a essa busca. A página certa pode ser outra |
+| Grupo                                 | O que significa                                                                                       | O que fazer                                                                      |
+| ------------------------------------- | ----------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| **Az tıklanan** (Pouco clicadas)      | Entre as 20 primeiras. A taxa de cliques é menos da metade da de suas outras páginas na mesma posição | Reescreva o título e a descrição. O texto exibido na busca não atrai cliques     |
+| **Yükselmeye yakın** (Perto de subir) | Posição 4 a 20                                                                                        | Amplie o conteúdo e adicione links internos. Pode subir uma ou duas posições     |
+| **İlk sıralarda** (No topo)           | Entre as 3 primeiras                                                                                  | Mantenha. Deixe a página atualizada e garanta que ela não quebre                 |
+| **Derinde kalan** (Enterradas)        | Depois da posição 20                                                                                  | Pense se a página realmente responde a essa busca. A página certa pode ser outra |
 
 Um link interno é um link que você coloca de uma página do seu site para outra.
 
@@ -37,7 +37,7 @@ Um link interno é um link que você coloca de uma página do seu site para outr
 
 ## Como usar
 
-1. Comece com **Son 28 gün**. A linha do topo é a página que diz "olhe esta primeiro".
+1. Comece com **Son 28 gün**. A linha do topo é a página que o aplicativo manda olhar primeiro.
 2. Pegue as duas primeiras páginas do grupo **Az tıklanan**. Elas estão bem posicionadas no Google, mas não são clicadas. Corrija o título e a descrição. É meia hora de trabalho.
 3. No grupo **Yükselmeye yakın**, olhe as páginas com pontuação alta. Acrescente uma seção e coloque dois ou três links internos no site.
 4. O botão **Analytics'te karşılığı yok** separa as páginas que o Google mostra, mas em que o Analytics não vê visitas. Na maioria das vezes é uma diferença de endereço (uma barra no fim, o www). Às vezes a página realmente não é clicada.

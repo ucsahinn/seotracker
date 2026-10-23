@@ -18,12 +18,12 @@ Uygulama Search Console'daki her sayfanızı Google Analytics'teki karşılığ�
 
 **Dört grup.** Her sayfa dört gruptan birine girer. Grubun adı satırda etiket olarak görünür.
 
-| Grup                 | Ne demek                                                                  | Ne yapmalı                                                                        |
-| -------------------- | ------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| **Az tıklanan**      | İlk 20 sırada. Tıklanma oranı, aynı sıradaki sayfalarınızın yarısından az | Başlığı ve açıklamayı yeniden yazın. Aramada görünen metin çekmiyor               |
-| **Yükselmeye yakın** | Sıra 4 ile 20 arası                                                       | İçeriği genişletin, iç bağlantı verin. Bir iki sıra yükseltebilir                 |
-| **İlk sıralarda**    | İlk 3 sırada                                                              | Koruyun. Sayfayı güncel tutun, bozulmadığından emin olun                          |
-| **Derinde kalan**    | 20. sıradan sonra                                                         | Sayfa o aramaya gerçekten cevap veriyor mu, düşünün. Doğru sayfa başkası olabilir |
+| Grup                 | Ne demek                                                                 | Ne yapmalı                                                                        |
+| -------------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------------------- |
+| **Az tıklanan**      | İlk 20 sırada. Tıklama oranı, aynı sıradaki sayfalarınızın yarısından az | Başlığı ve açıklamayı yeniden yazın. Aramada görünen metin dikkat çekmiyor        |
+| **Yükselmeye yakın** | Sıra 4 ile 20 arası                                                      | İçeriği genişletin, iç bağlantı verin. Sayfa bir iki sıra yükselebilir            |
+| **İlk sıralarda**    | İlk 3 sırada                                                             | Koruyun. Sayfayı güncel tutun, bozulmadığından emin olun                          |
+| **Derinde kalan**    | 20. sıradan sonra                                                        | Sayfa o aramaya gerçekten cevap veriyor mu, düşünün. Doğru sayfa başkası olabilir |
 
 İç bağlantı, sitenizde bir sayfadan diğerine verdiğiniz bağlantıdır.
 
@@ -33,7 +33,7 @@ Uygulama Search Console'daki her sayfanızı Google Analytics'teki karşılığ�
 
 **Tablo.** Sütunlar şunlar: **Puan**, **Sayfa**, **Sıra**, **Gösterim**, **Tıklama**, **Tıklama oranı**, **Oturum**. Oturum, sitenize yapılan ziyaretlerin sayısıdır ve Analytics'ten gelir.
 
-**Ayrıntı paneli.** Bir satıra tıklayınca açılır. "Ne yapmalı?" listesi burada durur. Puanın üç parçasını da görürsünüz: **Talep**, **İş değeri**, **Yükselme kolaylığı**. Her biri yüksek, orta ya da düşük çıkar. Alttaki düğmeler: **Arama performansında aç**, **Adresi kopyala**, **Sayfayı aç**.
+**Ayrıntı paneli.** Bir satıra tıklayınca açılır. "Ne yapmalı?" listesi burada durur. Puanın üç parçasını da görürsünüz: **Talep**, **İş değeri**, **Yükselme kolaylığı**. Her biri yüksek, orta ya da düşük çıkar. Alttaki düğmeler şunlardır: **Arama performansında aç**, **Adresi kopyala**, **Sayfayı aç**.
 
 ## Nasıl kullanılır
 
@@ -47,9 +47,9 @@ Uygulama Search Console'daki her sayfanızı Google Analytics'teki karşılığ�
 
 Aralık, Search Console'un üç günlük gecikmesi kadar geride biter. Search Console'dan en fazla 1.000 satır, Analytics'ten de en fazla 1.000 satır alınır. İki liste alan adı ve yola göre eşleşir. Adresin sonundaki eğik çizgi sayılmaz. 1.000 satıra ulaşılırsa tablonun altında not çıkar.
 
-Gösterimi sıfırdan büyük her sayfa adaydır. Grup, sıraya ve beklenen tıklama oranına göre seçilir. Beklenen oran, aynı sıra aralığındaki sayfalarınızın tipik tıklama oranıdır. Sıra dilimleri şunlar: 1-3, 3-5, 5-10, 10-20 ve 20-50. Bir dilim için en az 10 gösterimli üç sayfa gerekir. Sırası 20 ve üstü olup oranı beklenenin yarısından düşük sayfa "Az tıklanan" olur.
+Gösterimi sıfırdan büyük her sayfa adaydır. Grup, sıraya ve beklenen tıklama oranına göre seçilir. Beklenen oran, aynı sıra aralığındaki sayfalarınızın tipik tıklama oranıdır. Sıra dilimleri şunlar: 1-3, 3-5, 5-10, 10-20 ve 20-50. Bir dilim için en az 10 gösterimli üç sayfa gerekir. Sırası ilk 20 içinde olup oranı beklenenin yarısından düşük sayfa "Az tıklanan" olur.
 
-Puan şöyle çıkar: yüzde 50 talep, yüzde 30 iş değeri, yüzde 20 yükselme kolaylığı. Talep gösterime dayanır. Sıra ne kadar iyiyse yükselmesi o kadar kolay sayılır. İş değeri, Analytics'teki anahtar olay oranıdır. Anahtar olay, sizin önemli saydığınız harekettir. Hiçbir sayfada yoksa etkileşim oranı kullanılır. Analytics'te karşılığı olmayan sayfaya iş değeri için orta puan verilir. Puan yalnızca sitenizin kendi sayfalarını birbiriyle kıyaslar.
+Puan şöyle çıkar: yüzde 50 talep, yüzde 30 iş değeri, yüzde 20 yükselme kolaylığı. Talep gösterime dayanır. Sıra ne kadar iyiyse yükselmesi o kadar kolay sayılır. İş değeri, Analytics'teki anahtar olay oranıdır. Anahtar olay, sizin önemli saydığınız harekettir. Hiçbir sayfada anahtar olay yoksa etkileşim oranı kullanılır. Analytics'te karşılığı olmayan sayfaya iş değeri için orta puan verilir. Puan yalnızca sitenizin kendi sayfalarını birbiriyle kıyaslar.
 
 ## Sık sorulanlar
 

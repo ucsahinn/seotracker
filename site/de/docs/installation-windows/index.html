@@ -6,7 +6,7 @@
     <title>Installation unter Windows | seowatcher-Anleitung</title>
     <meta
       name="description"
-      content="Sie installieren seowatcher mit einer einzigen Datei, Docker oder ein Terminal brauchen Sie nicht. Update, Deinstallation, Sicherung und Änderung der Portnummer stehen auf derselben Seite."
+      content="seowatcher mit einer einzigen Datei installieren, ohne Docker und ohne Terminal. Dazu Update, Deinstallation, Sicherung und Portnummer."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -49,6 +49,7 @@
       href="https://seowatcher.io/docs/kurulum-windows/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -78,7 +79,7 @@
     />
     <meta
       property="og:description"
-      content="Sie installieren seowatcher mit einer einzigen Datei, Docker oder ein Terminal brauchen Sie nicht. Update, Deinstallation, Sicherung und Änderung der Portnummer stehen auf derselben Seite."
+      content="seowatcher mit einer einzigen Datei installieren, ohne Docker und ohne Terminal. Dazu Update, Deinstallation, Sicherung und Portnummer."
     />
     <meta
       property="og:image"
@@ -108,7 +109,7 @@
     />
     <meta
       name="twitter:description"
-      content="Sie installieren seowatcher mit einer einzigen Datei, Docker oder ein Terminal brauchen Sie nicht. Update, Deinstallation, Sicherung und Änderung der Portnummer stehen auf derselben Seite."
+      content="seowatcher mit einer einzigen Datei installieren, ohne Docker und ohne Terminal. Dazu Update, Deinstallation, Sicherung und Portnummer."
     />
     <meta
       name="twitter:image"
@@ -145,7 +146,7 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/de/docs/installation-windows/#article",
             "headline": "Installation unter Windows",
-            "description": "Sie installieren seowatcher mit einer einzigen Datei, Docker oder ein Terminal brauchen Sie nicht. Update, Deinstallation, Sicherung und Änderung der Portnummer stehen auf derselben Seite.",
+            "description": "seowatcher mit einer einzigen Datei installieren, ohne Docker und ohne Terminal. Dazu Update, Deinstallation, Sicherung und Portnummer.",
             "url": "https://seowatcher.io/de/docs/installation-windows/",
             "inLanguage": "de",
             "dateModified": "2026-10-23",
@@ -184,7 +185,7 @@
       }
     </script>
     <script src="/assets/docs.js?v=2.4.1" defer></script>
-    <meta name="theme-color" content="#272c3b" />
+    <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
         font-family: "Geist";
@@ -774,6 +775,95 @@
       footer a:hover {
         color: var(--fg);
       }
+      /* The one ask on the page: quiet, one line, the accent only on the link. */
+      footer .star {
+        flex-basis: 100%;
+        margin: 0 0 4px;
+        text-wrap: pretty;
+      }
+      footer .star a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      footer .star a:hover {
+        color: var(--accent-link);
+        text-decoration-color: var(--accent-link);
+      }
+
+      /* Headings enter as they scroll into view. docs.js adds .hx (and .in
+         once seen) only when motion is allowed, so without script, under
+         reduced motion and with "stop motion" on, they are simply there.
+         h1 wipes in from the left, h2 rises while an amber stroke draws
+         along its rule, h3 rises a little. */
+      article .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease),
+          clip-path 760ms var(--ease),
+          filter 620ms var(--ease);
+      }
+      article h1.hx {
+        clip-path: inset(-10% 100% -10% 0);
+        filter: blur(6px);
+      }
+      article h2.hx,
+      article h3.hx {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      article h3.hx {
+        transform: translateY(6px);
+      }
+      article h2.hx {
+        position: relative;
+      }
+      article h2.hx::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 56px;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 700ms var(--ease) 160ms;
+      }
+      article .hx.in {
+        opacity: 1;
+        transform: none;
+      }
+      article h1.hx.in {
+        clip-path: inset(-10% 0 -10% 0);
+        filter: none;
+      }
+      article h2.hx.in::before {
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        article .hx,
+        article h2.hx::before {
+          opacity: 1;
+          transform: none;
+          clip-path: none;
+          filter: none;
+          transition: none;
+        }
+      }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
 
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
@@ -1218,7 +1308,11 @@
         <nav class="topnav" aria-label="Website">
           <a class="hide" href="/de/">Startseite</a>
           <a class="hide" href="/de/docs/">Anleitung</a>
-          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+          <a
+            class="hide"
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub</a
           >
           <details class="langs">
@@ -1245,7 +1339,7 @@
                       <circle cx="8.4" cy="7" r="2.7" fill="#e30a17" />
                       <polygon
                         fill="#fff"
-                        points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"
+                        points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"
                       /></svg></span
                   >Türkçe</a
                 >
@@ -1268,12 +1362,12 @@
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#fff"
-                        stroke-width="3.6"
+                        stroke-width="4.2"
                       />
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#c8102e"
-                        stroke-width="2"
+                        stroke-width="2.6"
                       /></svg></span
                   >English</a
                 >
@@ -1351,6 +1445,8 @@
           <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            target="_blank"
+            rel="noopener noreferrer"
             ><span class="long">Für Windows herunterladen</span
             ><span class="short">Download</span></a
           >
@@ -1407,7 +1503,7 @@
             <li><a href="/de/docs/projektinfo/">Projektinfo</a></li>
             <li><a href="/de/docs/einstellungen/">Einstellungen</a></li>
           </ul>
-          <p class="nav-group">Nachschlagen</p>
+          <p class="nav-group">Hilfe und Nachschlagen</p>
           <ul>
             <li><a href="/de/docs/hilfe/">Hilfe</a></li>
             <li><a href="/de/docs/audit-regeln/">Audit-Regeln</a></li>
@@ -1422,9 +1518,8 @@
       <article id="icerik" data-page="kurulum-windows">
         <h1>Installation unter Windows</h1>
         <p class="lede">
-          Sie installieren seowatcher mit einer einzigen Datei, Docker oder ein
-          Terminal brauchen Sie nicht. Update, Deinstallation, Sicherung und
-          Änderung der Portnummer stehen auf derselben Seite.
+          seowatcher mit einer einzigen Datei installieren, ohne Docker und ohne
+          Terminal. Dazu Update, Deinstallation, Sicherung und Portnummer.
         </p>
         <p>
           Die Oberfläche der App ist auf Türkisch. Diese Anleitung nennt jede
@@ -1433,10 +1528,8 @@
         </p>
         <p>
           Am Ende ist die App auf Ihrem Computer installiert und im Browser
-          geöffnet. Die Installation dauert zwei Minuten. Sie wird nur für Ihr
-          eigenes Benutzerkonto eingerichtet und braucht keine
-          Administratorrechte. Fehlt die Komponente Visual C++, werden Sie
-          einmal um Erlaubnis gefragt.
+          geöffnet. Die Installation dauert zwei Minuten und gilt nur für Ihr
+          eigenes Benutzerkonto. Administratorrechte sind nicht nötig.
         </p>
         <h2 id="voraussetzungen">Voraussetzungen</h2>
         <ul>
@@ -1447,14 +1540,13 @@
           </li>
           <li>Ein Browser wie Edge, Chrome oder Firefox.</li>
           <li>
-            Sie brauchen weder Docker noch Node noch ein Terminal
-            (Eingabeaufforderung). Auch Administratorrechte sind nicht nötig;
-            nur wenn die Komponente Visual C++ fehlt, werden Sie einmal gefragt.
+            Docker, Node oder ein Terminal (Eingabeaufforderung) brauchen Sie
+            nicht.
           </li>
           <li>
-            Der Motor der App benötigt das Visual-C++-Paket von Microsoft. Fehlt
-            es auf dem Computer, installiert das Setup es selbst und fragt
-            einmal nach der Administratorerlaubnis. Die App wird in den Ordner
+            Die App benötigt das Visual-C++-Paket von Microsoft. Fehlt es auf
+            dem Computer, installiert das Setup es selbst und fragt dafür einmal
+            nach der Administratorerlaubnis. Die App wird in den Ordner
             <code>%LOCALAPPDATA%\Programs\seowatcher</code> installiert.
           </li>
         </ul>
@@ -1488,45 +1580,43 @@
           <li>
             Bei der Frage „Für wen soll installiert werden?“ wählen Sie
             <strong>Yalnızca ben</strong> (Nur für mich). Das ist die empfohlene
-            Wahl, die Installation gilt dann nur für Ihr Konto. Die Option
+            Wahl; die Installation gilt dann nur für Ihr Konto. Die Option
             <strong>Tüm kullanıcılar</strong> (Alle Benutzer) verlangt
             Administratorrechte.
           </li>
           <li>
-            Sehen Sie sich die beiden Optionen an:
+            Der Assistent bietet zwei Optionen an:
             <strong>Windows açılınca seowatcher'ı başlat</strong> (seowatcher
             mit Windows starten) und
             <strong>Masaüstüne kısayol ekle</strong> (Verknüpfung auf dem
-            Desktop anlegen). Die erste ist vorausgewählt. Wenn die App nicht im
-            Hintergrund starten soll, entfernen Sie das Häkchen. Klicken Sie
-            dann auf <strong>Sonraki</strong> (Weiter).
+            Desktop anlegen). Die erste ist vorausgewählt. Soll die App nicht
+            automatisch im Hintergrund starten, entfernen Sie das Häkchen.
+            Klicken Sie dann auf <strong>Sonraki</strong> (Weiter).
           </li>
           <li>Klicken Sie auf <strong>Kur</strong> (Installieren).</li>
           <li>
             Auf der letzten Seite finden Sie das Kästchen
             <strong>seowatcher'ı şimdi başlat</strong> (seowatcher jetzt
             starten). Lassen Sie es angekreuzt und klicken Sie auf
-            <strong>Bitti</strong> (Fertig). Die App öffnet sich.
+            <strong>Bitti</strong> (Fertig).
           </li>
           <li>
-            Warten Sie. Der erste Start dauert 20 bis 30 Sekunden. Der Text am
-            Symbol in der Taskleiste wechselt nacheinander zu „Anahtarlar
-            hazırlanıyor“ (Schlüssel werden vorbereitet), „Veritabanı
-            güncelleniyor“ (Datenbank wird aktualisiert) und „Sunucu
-            başlatılıyor“ (Server wird gestartet). Ist das Symbol nicht zu
-            sehen, klicken Sie in der Taskleiste auf den Pfeil ^. Sobald alles
-            bereit ist, öffnet sich Ihr Browser von selbst. Startet die App
-            automatisch mit Windows, öffnet sich der Browser nicht; stattdessen
-            erscheint die Sprechblase „seowatcher hazır“ (seowatcher ist
-            bereit).
+            Der erste Start dauert 20 bis 30 Sekunden. Der Text am Symbol in der
+            Taskleiste wechselt nacheinander zu „Anahtarlar hazırlanıyor“
+            (Schlüssel werden vorbereitet), „Veritabanı güncelleniyor“
+            (Datenbank wird aktualisiert) und „Sunucu başlatılıyor“ (Server wird
+            gestartet). Ist das Symbol nicht zu sehen, klicken Sie in der
+            Taskleiste auf den Pfeil ^. Sobald alles bereit ist, öffnet sich Ihr
+            Browser. Startet die App automatisch mit Windows, öffnet sich der
+            Browser nicht; stattdessen erscheint die Sprechblase „seowatcher
+            hazır“ (seowatcher ist bereit).
           </li>
           <li>
-            Im Browser öffnet sich <code>http://127.0.0.1:3001</code> von
-            selbst. 127.0.0.1 ist die Adresse Ihres eigenen Computers, 3001 ist
-            die Portnummer (Port).
+            Der Browser zeigt <code>http://127.0.0.1:3001</code>. 127.0.0.1 ist
+            die Adresse Ihres eigenen Computers, 3001 ist die Portnummer (Port).
           </li>
         </ol>
-        <p>Der nächste Schritt ist die Anleitung zur Google-Verbindung.</p>
+        <p>Weiter geht es mit der Anleitung zur Google-Verbindung.</p>
         <h3 id="menu-in-der-taskleiste">Menü in der Taskleiste</h3>
         <p>
           Klicken Sie mit der rechten Maustaste auf das Symbol. Ist es nicht zu
@@ -1540,7 +1630,8 @@
           </li>
           <li>
             <strong>Yeniden başlat</strong> (Neu starten): schließt die App und
-            öffnet sie wieder. Wenn etwas hängt, versuchen Sie zuerst das.
+            öffnet sie wieder. Wenn etwas hängt, versuchen Sie zuerst diesen
+            Eintrag.
           </li>
           <li>
             <strong>Günlükleri aç</strong> (Protokolle öffnen): öffnet den
@@ -1551,9 +1642,9 @@
           <li>
             <strong>Tanı bilgisini kopyala</strong> (Diagnoseinformationen
             kopieren): kopiert die Windows-Version, den Prozessor, die
-            Visual-C++-Version, einen Probelauf des Motors, das fehlerhafte
-            Modul aus dem Windows-Ereignisprotokoll, Absturzabbilder und die
-            letzten Protokollzeilen in die Zwischenablage.
+            Visual-C++-Version, einen Testlauf des Programmkerns, das
+            fehlerhafte Modul aus dem Windows-Ereignisprotokoll, Absturzabbilder
+            und die letzten Protokollzeilen in die Zwischenablage.
           </li>
           <li>
             <strong>Sorunu bildir (GitHub)</strong> (Problem melden (GitHub)):
@@ -1573,7 +1664,7 @@
           </li>
           <li>
             <strong>Güncelle</strong> (Aktualisieren): steht immer im Menü. Ein
-            Klick prüft sofort GitHub; gibt es eine neue Version, wird sie
+            Klick prüft sofort auf GitHub. Gibt es eine neue Version, wird sie
             heruntergeladen und installiert, sonst erscheint „Güncel“ (Aktuell).
             Wurde bereits eine neue Version gefunden und ist sie bereit, lautet
             der Eintrag „Güncelle: X.Y.Z sürümü hazır“ (Aktualisieren: Version
@@ -1581,7 +1672,7 @@
           </li>
           <li>
             <strong>Güncellemeleri kendiliğinden kur</strong> (Updates
-            automatisch installieren): Ist der Eintrag angekreuzt, installiert
+            automatisch installieren): ist der Eintrag angekreuzt, installiert
             die App eine neue Version selbst, sobald sie eine findet.
           </li>
           <li>
@@ -1589,7 +1680,7 @@
             Ordner mit der Datenbank und den Schlüsseln.
           </li>
           <li>
-            <strong>Windows açılınca başlat</strong> (Mit Windows starten): Ist
+            <strong>Windows açılınca başlat</strong> (Mit Windows starten): ist
             der Eintrag angekreuzt, startet die App beim Einschalten des
             Computers im Hintergrund.
           </li>
@@ -1605,20 +1696,20 @@
           Fehlertext) und die Versionsnummer.
         </p>
         <p>
-          Starten Sie die App ein zweites Mal, öffnet sich keine neue Kopie. Es
-          öffnet sich nur die Seite im Browser.
+          Starten Sie die App ein zweites Mal, öffnet sich keine neue Kopie,
+          sondern nur die Seite im Browser.
         </p>
         <h3 id="update">Update</h3>
         <p>
-          Die App aktualisiert sich selbst. Zwei Minuten nach dem Start und
+          Die App aktualisiert sich selbst: Zwei Minuten nach dem Start und
           danach einmal pro Tag prüft sie auf GitHub, ob es eine neuere Version
-          gibt. Gibt es eine, lädt sie sie herunter, vergleicht den
+          gibt. Findet sie eine, lädt sie diese herunter, vergleicht den
           Fingerabdruck der Datei (SHA-256) mit dem Wert auf der Versionsseite,
-          installiert sie dann im Hintergrund und startet neu. Der Text am
-          Symbol lautet dabei „Güncelleme indiriliyor“ (Update wird
-          heruntergeladen) und „Güncelleme kuruluyor“ (Update wird installiert).
-          Auch der Bereich <strong>Ayarlar → Hakkında</strong> (Einstellungen →
-          Über) in der App weist auf die neue Version hin und verweist Sie auf
+          installiert sie im Hintergrund und startet neu. Der Text am Symbol
+          lautet dabei „Güncelleme indiriliyor“ (Update wird heruntergeladen)
+          und „Güncelleme kuruluyor“ (Update wird installiert). Auch der Bereich
+          <strong>Ayarlar → Hakkında</strong> (Einstellungen → Über) in der App
+          zeigt die neue Version an und verweist auf
           <strong>Güncelle</strong> am Symbol.
         </p>
         <ul>
@@ -1626,7 +1717,7 @@
             Soll die App nicht selbst installieren, entfernen Sie im Menü das
             Häkchen bei <strong>Güncellemeleri kendiliğinden kur</strong>.
             Erscheint dann eine neue Version, sehen Sie eine Sprechblase, und im
-            Menü taucht der Eintrag <strong>Güncelle</strong> auf.
+            Menü erscheint der Eintrag <strong>Güncelle</strong>.
           </li>
           <li>
             Für ein manuelles Update laden Sie die neue Installationsdatei von
@@ -1635,15 +1726,12 @@
             sie neu.
           </li>
         </ul>
-        <p>
-          Ihre Daten, Ihre Google-Verbindung und Ihre Einstellungen bleiben
-          unverändert.
-        </p>
+        <p>Daten, Google-Verbindung und Einstellungen bleiben erhalten.</p>
         <h3 id="verteilung-im-unternehmen">Verteilung im Unternehmen</h3>
         <p>
-          Hinweise für IT-Teams, die für alle Benutzer eines Computers
-          installieren oder mit einem Verteilungswerkzeug (Intune, GPO, PDQ) im
-          Hintergrund installieren möchten:
+          Hinweise für IT-Teams, die für alle Benutzer eines Computers oder mit
+          einem Verteilungswerkzeug (Intune, GPO, PDQ) unbeaufsichtigt
+          installieren:
         </p>
         <ul>
           <li>
@@ -1661,14 +1749,14 @@
             <code>seowatcher-setup.exe /VERYSILENT /NORESTART</code> (ein
             Benutzer) oder
             <code>seowatcher-setup.exe /VERYSILENT /ALLUSERS /NORESTART</code>
-            (Administrator, alle Benutzer). Ist die stille Installation fertig,
-            öffnet sich die App von selbst.
+            (Administrator, alle Benutzer). Nach der stillen Installation
+            startet die App von selbst.
           </li>
           <li>
             <strong>Installationsprotokoll</strong>: Jede Installation schreibt
             in die Datei <code>%LOCALAPPDATA%\seowatcher\logs\setup.log</code>.
-            Mit <code>/LOG=&quot;yol&quot;</code> können Sie einen anderen Ort
-            angeben.
+            Mit <code>/LOG=&quot;yol&quot;</code> (yol = Pfad) geben Sie einen
+            anderen Ort an.
           </li>
           <li>
             <strong>Stille Deinstallation</strong>:
@@ -1679,10 +1767,10 @@
           </li>
           <li>
             <strong>Prüfung</strong>: Vor der Veröffentlichung wird jede Version
-            auf einem sauberen Windows-Rechner installiert, geöffnet, so lange
-            beobachtet, bis die Statusadresse (health) antwortet, und wieder
-            deinstalliert. Eine Version, die diese Prüfung nicht besteht, wird
-            nicht veröffentlicht.
+            auf einem sauberen Windows-Rechner installiert und gestartet. Sobald
+            die Statusadresse (health) antwortet, wird sie wieder deinstalliert.
+            Besteht eine Version diese Prüfung nicht, wird sie nicht
+            veröffentlicht.
           </li>
         </ul>
         <h3 id="reparieren">Reparieren</h3>
@@ -1692,9 +1780,8 @@
           reparieren); ist das Symbol nicht zu sehen, klicken Sie in der
           Taskleiste auf den Pfeil ^. Die App löscht temporäre Dateien, prüft,
           ob das Paket vollständig ist, prüft die Datenbank erneut und öffnet
-          sich. Fehlt eine Datei, sagt sie es Ihnen und öffnet die
-          Versionsseite. Dann genügt es, die Installationsdatei erneut
-          auszuführen.
+          sich wieder. Fehlt eine Datei, meldet sie das und öffnet die
+          Versionsseite; führen Sie dann die Installationsdatei erneut aus.
         </p>
         <h3 id="deinstallation">Deinstallation</h3>
         <ol>
@@ -1709,28 +1796,28 @@
         <p>
           Das Deinstallationsprogramm entfernt das Programm, die Verknüpfung im
           Startmenü und den Eintrag „Mit Windows starten“. Den Datenordner lässt
-          es unberührt. Wenn Sie auch Ihre Datenbank, Ihre Google-Verbindung und
-          Ihre Berichte löschen möchten, löschen Sie den Datenordner selbst.
+          es unberührt. Möchten Sie auch Datenbank, Google-Verbindung und
+          Berichte löschen, löschen Sie den Datenordner selbst.
         </p>
         <h3 id="wo-liegen-die-daten-und-wie-sichere-ich-sie">
           Wo liegen die Daten, und wie sichere ich sie?
         </h3>
         <p>
           Alles liegt in einem einzigen Ordner:
-          <code>%LOCALAPPDATA%\seowatcher</code>. Tippen Sie diesen Text in die
-          Adresszeile des Datei-Explorers. Das Menü
-          <strong>Veri klasörünü aç</strong> (Datenordner öffnen) führt
-          ebenfalls dorthin. Darin liegen:
+          <code>%LOCALAPPDATA%\seowatcher</code>. Geben Sie diesen Pfad in die
+          Adresszeile des Datei-Explorers ein; auch der Menüeintrag
+          <strong>Veri klasörünü aç</strong> (Datenordner öffnen) führt dorthin.
+          Darin liegen:
         </p>
         <ul>
           <li>
             <code>data</code>: die Datenbank (Projekte, Search-Console-Archiv,
-            Prüfungen, Berichte).
+            Audits, Berichte).
           </li>
           <li>
             <code>instance-secret</code>: der Schlüssel, der die
             Google-Zugangsschlüssel verschlüsselt. Geht er verloren, müssen Sie
-            die Google-Verbindungen von Grund auf neu einrichten.
+            die Google-Verbindungen neu einrichten.
           </li>
           <li>
             <code>mcp-token</code>: das Passwort, mit dem sich Ihr KI-Assistent
@@ -1748,15 +1835,15 @@
         </ol>
         <p>
           Zum Wiederherstellen schließen Sie die App, legen den Ordner an seinen
-          Platz zurück und starten die App. Der Umzug auf einen anderen Computer
-          läuft genauso. Nehmen Sie auch die Datei
-          <code>instance-secret</code> mit, funktionieren die
-          Google-Verbindungen weiter.
+          Platz zurück und starten die App erneut. Der Umzug auf einen anderen
+          Computer funktioniert genauso. Kopieren Sie
+          <code>instance-secret</code> mit, bleiben die Google-Verbindungen
+          erhalten.
         </p>
         <h3 id="portnummer-andern">Portnummer ändern</h3>
         <p>
-          Die App verwendet die Nummer 3001. Belegt ein anderes Programm sie,
-          wählt die App die erste freie Nummer zwischen 3002 und 3010. Die
+          Die App verwendet die Nummer 3001. Belegt ein anderes Programm diese
+          Nummer, wählt die App die erste freie zwischen 3002 und 3010. Die
           gewählte Nummer schreibt sie in die Datei <code>config.json</code>.
         </p>
         <p>Wenn Sie eine bestimmte Nummer möchten:</p>
@@ -1777,18 +1864,17 @@
           <li>Speichern Sie die Datei und starten Sie die App.</li>
         </ol>
         <p>
-          Ändert sich die Nummer, aktualisieren Sie auch die beiden
-          Weiterleitungsadressen bei Google mit der neuen Nummer. Diese Adressen
-          sind in der Anleitung zur Google-Verbindung beschrieben.
+          Ändert sich die Nummer, tragen Sie sie auch in den beiden
+          Weiterleitungsadressen bei Google ein. Die Adressen stehen in der
+          Anleitung zur Google-Verbindung.
         </p>
         <h2 id="kontrolle">Kontrolle</h2>
         <ul>
           <li>
             Fahren Sie mit der Maus über das Symbol in der Taskleiste. Es sollte
             „seowatcher X.Y.Z: Çalışıyor: http://127.0.0.1:3001/“ (seowatcher
-            X.Y.Z: Läuft: http://127.0.0.1:3001/) erscheinen. Die Versionsnummer
-            am Anfang ist die Version, die Sie installiert haben. 2.3.7 ist ein
-            Beispiel.
+            X.Y.Z: Läuft: http://127.0.0.1:3001/) erscheinen. Die Zahl am Anfang
+            ist Ihre installierte Version; 2.3.7 ist nur ein Beispiel.
           </li>
           <li>
             Im Browser sollte die Adresse
@@ -1798,39 +1884,40 @@
           <li>
             Auf dem Bildschirm <strong>Yardım</strong> (Hilfe) sollte die Karte
             „Kurulumunuzun durumu“ (Zustand Ihrer Installation) „Her şey
-            yolunda.“ (Alles in Ordnung.) anzeigen. Bevor Google verbunden ist,
-            verlangt die Zeile „Google girişi“ (Google-Anmeldung)
-            Aufmerksamkeit. Das ist normal.
+            yolunda.“ (Alles in Ordnung.) anzeigen. Solange Google nicht
+            verbunden ist, ist die Zeile „Google girişi“ (Google-Anmeldung) als
+            „braucht Aufmerksamkeit“ markiert. Das ist normal.
           </li>
         </ul>
         <h2 id="haufige-fragen">Häufige Fragen</h2>
         <p>
           <strong>Warum öffnet sich die App im Browser?</strong> Die App läuft
-          auf Ihrem Computer wie ein kleiner Server. Der Browser ist ihr
-          Bildschirm.
+          auf Ihrem Computer wie ein kleiner Server, und der Browser dient als
+          ihr Bildschirm.
         </p>
         <p>
           <strong>Was passiert, wenn ich den Computer ausschalte?</strong> Dann
-          schließt sich auch die App. Ist „Windows ile başlat“ (Mit Windows
-          starten) angekreuzt, startet sie beim nächsten Einschalten von selbst.
+          schließt sich auch die App. Ist
+          <strong>Windows açılınca başlat</strong> (Mit Windows starten)
+          angekreuzt, startet sie beim nächsten Einschalten von selbst.
         </p>
         <p>
           <strong>Kann ich sie von einem anderen Computer aus öffnen?</strong>
           Nein, das ist Absicht. Die App hört nur auf die Adresse 127.0.0.1.
-          Wollen Sie sie ins Internet öffnen, müssen Sie eine eigene Anmeldung
-          davorsetzen.
+          Wollen Sie sie im Internet erreichbar machen, müssen Sie selbst eine
+          Anmeldung davorschalten.
         </p>
         <p>
           <strong>Kann ich von der Docker-Version wechseln?</strong> Ja, aber
           die Daten ziehen nicht von selbst um. Sie legen die Projekte neu an
-          und verbinden Google neu. Das Search-Console-Archiv füllt sich beim
+          und verbinden Google erneut. Das Search-Console-Archiv füllt sich beim
           ersten Start wieder.
         </p>
         <p>
-          <strong>Mein Virenschutz hat eine Warnung ausgegeben.</strong> Weil
-          die Datei nicht signiert ist, warnen manche Virenschutzprogramme.
-          Laden Sie die Datei nur von der GitHub-Seite mit den Versionen
-          herunter und vergleichen Sie die SHA-256-Prüfsumme.
+          <strong>Mein Virenschutz hat eine Warnung ausgegeben.</strong> Da die
+          Datei nicht signiert ist, warnen manche Virenschutzprogramme. Laden
+          Sie die Datei nur von der GitHub-Seite mit den Versionen herunter und
+          vergleichen Sie die SHA-256-Prüfsumme.
         </p>
         <h2 id="wenn-etwas-nicht-klappt">Wenn etwas nicht klappt</h2>
         <p>
@@ -1854,8 +1941,8 @@
             >
             Klicken Sie auf <strong>Günlükleri aç</strong> (Protokolle öffnen)
             und sehen Sie sich die letzten Zeilen von
-            <code>migrate.log</code> an. Meist ist die Festplatte voll, oder der
-            Ordner ist schreibgeschützt.
+            <code>migrate.log</code> an. Meist ist die Festplatte voll oder der
+            Ordner schreibgeschützt.
           </li>
           <li>
             <strong
@@ -1864,8 +1951,8 @@
             >
             Die letzten Zeilen von <code>server.log</code> nennen den Grund.
             Versuchen Sie <strong>Yeniden başlat</strong> (Neu starten). Hilft
-            das nicht, teilen Sie das Protokoll in einem Fehlerbericht auf
-            GitHub.
+            das nicht, hängen Sie das Protokoll an einen Fehlerbericht auf
+            GitHub an.
           </li>
           <li>
             <strong>Der Browser hat sich nicht geöffnet.</strong> Doppelklicken
@@ -1881,7 +1968,10 @@
         </nav>
         <p class="meta">
           Zuletzt aktualisiert: 23 Oktober 2026. Fehler entdeckt?
-          <a href="https://github.com/ucsahinn/seotracker/issues"
+          <a
+            href="https://github.com/ucsahinn/seotracker/issues"
+            target="_blank"
+            rel="noopener noreferrer"
             >Auf GitHub melden</a
           >.
         </p>
@@ -1901,10 +1991,25 @@
     </main>
     <footer>
       <div class="wrap">
+        <p class="star">
+          Ein Stern hilft anderen, ein kostenloses Werkzeug zu finden.
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Auf GitHub mit einem Stern markieren</a
+          >
+        </p>
         <span>seowatcher, MIT-Lizenz.</span>
         <span
           ><a href="/de/">Startseite</a> &nbsp;
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          &nbsp;
           <a href="/de/docs/versionshinweise/">Versionshinweise</a></span
         >
       </div>

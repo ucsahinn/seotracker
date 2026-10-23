@@ -1,17 +1,17 @@
 ---
 title: Configurar o agente
-description: Conecte o Claude Code, o Codex ou o Cursor ao aplicativo. O endereço, a senha, as 33 ferramentas e os 6 modelos de tarefa prontos, e quais deles gastam a cota do Google.
+description: Conecte o Claude Code, o Codex ou o Cursor ao aplicativo. O endereço, a senha, as 33 ferramentas, os 6 modelos de tarefa prontos e quais deles gastam a cota do Google.
 kind: nasil-yapilir
 updated: 2026-10-22
 ---
 
-Ao fim desta página, o seu assistente de IA estará conectado ao aplicativo e terá executado o primeiro comando. Depois de conectado, você pode dizer "audite o site e escreva um relatório". O assistente lê os dados do Search Console, executa a auditoria e salva o relatório na tela **Raporlar** (Relatórios). Essa conexão se chama conexão do assistente (MCP). Ela permite que o assistente chame as ferramentas do aplicativo (por exemplo, list_projects). Conectar é opcional. Se você pular isto, não falta nada no aplicativo.
+Ao fim desta página, o seu assistente de IA estará conectado ao aplicativo e terá executado o primeiro comando. Depois de conectado, você pode dizer "audite o site e escreva um relatório". O assistente lê os dados do Search Console, executa a auditoria e salva o relatório na tela **Raporlar** (Relatórios). Essa conexão se chama conexão do assistente (MCP). Ela permite que o assistente chame as ferramentas do aplicativo (por exemplo, list_projects). Conectar é opcional. Se você pular esta etapa, o aplicativo continua completo.
 
 ## O que você precisa
 
 - Um aplicativo em execução e um projeto conectado ao Search Console.
 - Um destes: Claude Code, Codex, Cursor, VS Code Copilot ou Gemini CLI. O aplicativo fornece textos de configuração prontos para os três primeiros.
-- A tela **Ajan kurulumu** (Configuração do agente) do aplicativo. Ela fica no menu da esquerda, em **Yapay zeka** (IA).
+- A tela **Ajan kurulumu** (Configuração do agente) do aplicativo. Ela fica no menu da esquerda, no grupo **Ajan** (Agente).
 
 ## Passos
 
@@ -58,7 +58,7 @@ Defina a variável de ambiente do mesmo modo que no Codex. Esta configuração a
 
 ### Texto de configuração pronto
 
-Este é o caminho mais fácil. Primeiro, pegue o texto:
+Este é o caminho mais fácil:
 
 1. Clique no botão **Ajan kurulum istemini kopyala** (Copiar o prompt de configuração do agente) na tela. Há um botão separado para o Codex.
 2. Cole o texto no seu assistente. O assistente configura a conexão, a testa com "whoami" e "list_projects" e instala os modelos.
@@ -75,7 +75,7 @@ São 33 ferramentas no total. A coluna "Grava" mostra as ferramentas que alteram
 
 | Ferramenta                                   | O que faz                                                                                                                    | Grava | Cota                                                 |
 | -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ----- | ---------------------------------------------------- |
-| `whoami`                                     | Diz qual instalação e qual usuário você é.                                                                                   |       |                                                      |
+| `whoami`                                     | Informa qual é a instalação e quem está conectado.                                                                           |       |                                                      |
 | `get_diagnostics`                            | Informa a versão, as verificações da instalação, as contagens das tabelas, as últimas 25 auditorias e os contadores de cota. |       |                                                      |
 | `list_projects`                              | Lista os seus projetos. Toda ferramenta pede um número de projeto.                                                           |       |                                                      |
 | `create_project`                             | Cria um projeto novo.                                                                                                        | Sim   |                                                      |
@@ -84,7 +84,7 @@ São 33 ferramentas no total. A coluna "Grava" mostra as ferramentas que alteram
 | `get_search_console_performance`             | Informa cliques, impressões, taxa e posição por consulta, página, país, dispositivo ou data.                                 |       |                                                      |
 | `get_search_opportunities`                   | Monta uma lista de oportunidades a partir do Search Console e do Analytics.                                                  |       |                                                      |
 | `get_cannibalization`                        | Mostra páginas que competem entre si pela mesma busca.                                                                       |       |                                                      |
-| `get_ranking_history`                        | Informa o arquivo de posições no seu computador. Não guarda nada com mais de 16 meses.                                       |       |                                                      |
+| `get_ranking_history`                        | Informa o arquivo de posições no seu computador. Ele também guarda dados mais antigos que o limite de 16 meses do Google.    |       |                                                      |
 | `get_index_coverage`                         | Informa as respostas do índice do Google salvas antes. Não pergunta ao Google.                                               |       |                                                      |
 | `inspect_urls`                               | Pergunta ao Google o status das páginas, 10 endereços por chamada.                                                           | Sim   | 2.000 por dia, por propriedade                       |
 | `get_sitemaps`                               | Mostra o estado do mapa do site no Search Console.                                                                           |       |                                                      |
@@ -134,7 +134,7 @@ As ferramentas do Analytics usam a cota de relatórios do Google Analytics (200.
 
 **Funciona sem senha?** No Docker, funciona com `MCP_TOKEN=off`. No pacote Windows, a senha está sempre ligada. Em uma conexão sem senha, qualquer programa no mesmo computador pode chamar as 33 ferramentas.
 
-**O assistente pode esgotar a minha cota do Google?** `inspect_urls` e `run_site_audit` a usam. Os modelos consultam no máximo 20 endereços por tarefa. Eles só iniciam uma auditoria quando você pede. Dê ao seu assistente o mesmo limite.
+**O assistente pode esgotar a minha cota do Google?** `inspect_urls` e `run_site_audit` a usam. Os modelos consultam no máximo 20 endereços por tarefa. Eles só iniciam uma auditoria quando você pede. Aplique o mesmo limite ao seu assistente.
 
 **Qual assistente é melhor?** Não faz diferença, as ferramentas são as mesmas. O texto de configuração está pronto para o Claude Code, o Codex e o Cursor. Outros assistentes funcionam com o mesmo endereço e a mesma senha, se oferecerem suporte a MCP.
 

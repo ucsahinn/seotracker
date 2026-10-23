@@ -18,7 +18,7 @@ O aplicativo puxa esses dados dia a dia e os guarda neste computador. O arquivo 
 
 A caixa **Sorgu içinde ara** (Buscar nas consultas) restringe a lista.
 
-**Filtros de variação.** **Yükselenler** (Em alta) e **Düşenler** (Em queda) mostram as que se moveram pelo menos meia posição. Há também **Şu an ilk 10'da** (Entre as 10 primeiras agora) e **İlk 10'dan çıkanlar** (Saíram das 10 primeiras). Botões rápidos: **Gösterimi yüksek** (Muitas impressões) (pelo menos 100 impressões) e **Hiç tıklanmayan** (Nunca clicadas).
+**Filtros de variação.** **Yükselenler** (Em alta) e **Düşenler** (Em queda) mostram as buscas que se moveram pelo menos meia posição. Há também **Şu an ilk 10'da** (Entre as 10 primeiras agora) e **İlk 10'dan çıkanlar** (Saíram das 10 primeiras). Botões rápidos: **Gösterimi yüksek** (Muitas impressões) (pelo menos 100 impressões) e **Hiç tıklanmayan** (Nunca clicadas).
 
 **Distribuição de posições.** Barras que mostram quantas das suas buscas caem nas faixas 1-3, 4-10, 11-20 e 21+.
 

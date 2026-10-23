@@ -1,6 +1,6 @@
 ---
 title: Übersicht (Panel)
-description: Das ist der erste Bildschirm, den Sie nach dem Öffnen eines Projekts sehen. Die Suchzahlen der letzten 28 Tage, die Zusammenfassung des letzten Audits und Ihre anstehenden Aufgaben stehen hier an einem Ort.
+description: Der erste Bildschirm eines Projekts: Suchzahlen der letzten 28 Tage, Zusammenfassung des letzten Audits und anstehende Aufgaben.
 screen: Panel
 route: /p/<proje>
 updated: 2026-10-22
@@ -25,13 +25,13 @@ Ist eine Aufgabe erledigt, verschwindet der Eintrag aus der Liste.
 
 **Neu im letzten Audit und Behobenes.** Die Karte vergleicht die beiden letzten Audits. Sie sehen, welches Problem auf wie vielen Seiten neu aufgetreten ist und welches weniger geworden ist. Gibt es nichts Behobenes, steht dort „Düzelen sorun yok.“ (Keine behobenen Probleme.)
 
-**Klickverlauf.** Die täglichen Klicks der letzten 28 Tage sehen Sie als Linie. Liegen Daten für weniger als vier Tage vor, wird keine Linie gezeichnet. Der Link **Sorguları aç** (Suchanfragen öffnen) führt Sie zum Bildschirm Arama performansı (Suchleistung).
+**Klickverlauf.** Die täglichen Klicks der letzten 28 Tage sehen Sie als Linie. Liegen Daten für weniger als vier Tage vor, wird keine Linie gezeichnet. Der Link **Sorguları aç** (Suchanfragen öffnen) führt Sie zum Bildschirm **Arama performansı** (Suchleistung).
 
 **Suchanfragen auf Position 5 bis 20.** Hier stehen Ihre ersten vier Suchanfragen, mit denen Sie bei Google auf Position 5 bis 20 erscheinen. Mit etwas Arbeit können sie auf die erste Seite oder auf die oberen Positionen steigen. **Tümünü gör** (Alle ansehen) öffnet die vollständige Liste.
 
 **Karte Website-Audit.** Die Karte zeigt, wie viele Seiten gecrawlt wurden, die drei häufigsten Probleme und die fünf Seiten mit den meisten Problemen. Läuft ein Audit, aktualisiert sich die Karte alle fünf Sekunden. Das Fragezeichen-Symbol erklärt die drei Schweregrade:
 
-- Kritisch: stört direkt, dass Sie in der Suche erscheinen.
+- Kritisch: beeinträchtigt direkt, ob Sie in der Suche erscheinen.
 - Warnung: schwächt die Platzierung mit der Zeit, ist aber nicht dringend.
 - Hinweis: kleine Chancen zur Verbesserung.
 
@@ -46,19 +46,19 @@ Ist eine Aufgabe erledigt, verschwindet der Eintrag aus der Liste.
 
 ## Wie die Zahlen berechnet werden
 
-Die vier Karten stammen aus einem einzigen Bericht der Search Console. Google liefert die Daten mit drei Tagen Verzögerung. Deshalb endet der 28-Tage-Zeitraum nicht heute, sondern drei Tage davor. Der Vergleichszeitraum sind die 28 Tage unmittelbar vor diesem Zeitraum. Ist der Vergleichszeitraum null, wird kein Pfeil angezeigt.
+Die vier Karten stammen aus einem einzigen Bericht der Search Console. Google liefert die Daten mit drei Tagen Verzögerung. Deshalb endet der 28-Tage-Zeitraum nicht heute, sondern drei Tage davor. Der Vergleichszeitraum sind die 28 Tage unmittelbar vor diesem Zeitraum. Ist der Wert im Vergleichszeitraum null, wird kein Pfeil angezeigt.
 
-Die Durchschnittsposition gewichtet Suchanfragen mit vielen Impressionen stärker. Diese vier Zahlen sind die tatsächlichen Summen der Website. Addieren Sie die Tabellenzeilen auf dem Bildschirm Arama performansı, kommt ein größerer Wert heraus, weil Google jede Seite, die bei derselben Suche erscheint, einzeln zählt.
+Die Durchschnittsposition gewichtet Suchanfragen mit vielen Impressionen stärker. Diese vier Zahlen sind die tatsächlichen Summen der Website. Addieren Sie die Tabellenzeilen auf dem Bildschirm **Arama performansı**, kommt ein größerer Wert heraus, weil Google jede Seite, die bei derselben Suche erscheint, einzeln zählt.
 
 ## Häufige Fragen
 
-**Warum fehlen die Daten von heute?** Google liefert die letzten drei Tage noch nicht. Es fehlt nichts, warten Sie einfach.
+**Warum fehlen die Daten von heute?** Google liefert die letzten drei Tage noch nicht. Es fehlt nichts; warten Sie einfach ab.
 
 **Die Durchschnittsposition ist gestiegen. Ist das gut?** Nein. Von 3 auf 7 zu kommen, bedeutet einen Abstieg. Deshalb wird der Pfeil rot.
 
 **Zeigt die Audit-Karte, was Google sieht?** Nein. Sie zeigt, was der eigene Crawl der App gefunden hat. Welche Seite Google gespeichert hat, sehen Sie im Reiter **Dizin durumu** (Indexstatus) auf dem Audit-Bildschirm.
 
-**Die Karte Organischer Traffic fehlt.** In den Projekteinstellungen ist Google Analytics nicht verbunden. Ob Sie es verbinden, entscheiden Sie.
+**Die Karte Organischer Traffic fehlt.** In den Projekteinstellungen ist Google Analytics nicht verbunden. Die Verbindung ist freiwillig.
 
 ## Grenzen
 

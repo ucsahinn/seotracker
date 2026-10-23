@@ -1,6 +1,6 @@
 ---
 title: Parole chiave salvate
-description: Qui si salvano le ricerche che contano, le si etichetta e si guarda la loro posizione media degli ultimi 90 giorni. Si possono esportare in CSV o nei fogli di calcolo.
+description: Si salvano le ricerche che contano, le si etichetta e si guarda la loro posizione media negli ultimi 90 giorni. Esportazione in CSV.
 screen: Kayıtlı kelimeler
 route: /p/<proje>/saved
 updated: 2026-10-22
@@ -34,7 +34,7 @@ Nella tabella compaiono le forme brevi: Bilgi, Ticari, İşlem, Gezinme e un pun
 
 ## Come si usa
 
-1. In Arama performansı aprire la scheda **Sıra 5-20**. Segnare con **Kelime olarak kaydet** cinque o dieci ricerche che si ritengono importanti. Scegliere le ricerche delle pagine che fanno guadagnare. Servono quanto scegliere le ricerche più mostrate.
+1. In Arama performansı aprire la scheda **Sıra 5-20**. Segnare con **Kelime olarak kaydet** cinque o dieci ricerche che si ritengono importanti. Scegliere anche le ricerche delle pagine che fanno guadagnare: sono utili quanto quelle più mostrate.
 2. Venire qui e selezionare le parole. Con **Etiketleri güncelle** assegnare etichette come "ürün" (prodotto), "blog" o "marka" (marchio). Il mese prossimo il confronto sarà più facile.
 3. Una volta al mese guardare la scheda **Sıra dağılımı** (Distribuzione delle posizioni). Le parole nella fascia 11-20 sono le più vicine alla prima pagina. Trovare le pagine di quelle parole nella schermata Fırsatlar (Opportunità).
 4. Per un report, scegliere **CSV indir** o **E-Tablolar'a aktar**. Il file arriva con i filtri applicati.

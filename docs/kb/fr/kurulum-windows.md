@@ -7,15 +7,15 @@ updated: 2026-10-22
 
 L'interface de l'application est en turc. Ce guide donne chaque nom de bouton et d'écran en turc, suivi de sa traduction française entre parenthèses.
 
-À la fin de cette page, l'application sera installée sur votre ordinateur et ouverte dans le navigateur. L'installation dure deux minutes. Elle s'installe uniquement pour votre propre compte utilisateur et ne demande aucun droit d'administrateur. Une autorisation n'est demandée qu'une seule fois, si le composant Visual C++ est absent.
+À la fin de cette page, l'application sera installée et ouverte dans votre navigateur. Comptez deux minutes. Elle s'installe pour votre seul compte utilisateur, sans droits d'administrateur. Une autorisation n'est demandée qu'une fois, si le composant Visual C++ est absent.
 
 ## Ce qu'il vous faut
 
 - Windows 10 ou 11 (64 bits).
 - Environ 350 Mo d'espace libre. Le fichier d'installation fait 81 Mo et l'application installée 290 Mo.
 - Un navigateur tel qu'Edge, Chrome ou Firefox.
-- Vous n'avez besoin ni de Docker, ni de Node, ni d'un terminal (fenêtre de commandes). Les droits d'administrateur ne sont pas nécessaires non plus : une autorisation n'est demandée qu'une fois, si le composant Visual C++ manque.
-- Le moteur de l'application a besoin du paquet Visual C++ de Microsoft. S'il est absent de l'ordinateur, l'installation l'ajoute elle-même et demande une fois l'autorisation d'un administrateur. L'application est installée dans le dossier `%LOCALAPPDATA%\Programs\seowatcher`.
+- Ni Docker, ni Node, ni terminal (fenêtre de commandes) ne sont nécessaires.
+- Le moteur de l'application a besoin du paquet Visual C++ de Microsoft. S'il manque, l'installation l'ajoute et demande une fois l'autorisation d'un administrateur. Le dossier d'installation est `%LOCALAPPDATA%\Programs\seowatcher`.
 
 ## Étapes
 
@@ -31,7 +31,7 @@ L'interface de l'application est en turc. Ce guide donne chaque nom de bouton et
 8. Cliquez sur **Kur** (Installer).
 9. Sur la dernière page, une case **seowatcher'ı şimdi başlat** (Lancer seowatcher maintenant) est présente. Laissez-la cochée et cliquez sur **Bitti** (Terminé). L'application s'ouvre.
 10. Patientez. Le premier lancement dure 20 à 30 secondes. Le texte de l'icône dans la barre des tâches devient tour à tour « Anahtarlar hazırlanıyor » (Préparation des clés), « Veritabanı güncelleniyor » (Mise à jour de la base de données) et « Sunucu başlatılıyor » (Démarrage du serveur). Si l'icône n'est pas visible, cliquez sur la flèche ^ de la barre des tâches. Quand tout est prêt, votre navigateur s'ouvre tout seul. Si l'application démarre automatiquement avec Windows, le navigateur ne s'ouvre pas : une bulle « seowatcher hazır » (seowatcher est prêt) apparaît à la place.
-11. L'adresse `http://127.0.0.1:3001` s'ouvre toute seule dans le navigateur. Dans cette adresse, 127.0.0.1 désigne votre ordinateur lui-même et 3001 est le numéro de porte (le port).
+11. L'adresse `http://127.0.0.1:3001` s'ouvre toute seule dans le navigateur. Dans cette adresse, 127.0.0.1 désigne votre ordinateur lui-même et 3001 est le numéro de port.
 
 L'étape suivante est le guide de la connexion à Google.
 
@@ -120,7 +120,7 @@ Si vous voulez un numéro précis :
 
 4. Enregistrez, puis démarrez l'application.
 
-Quand le numéro change, mettez aussi à jour avec le nouveau numéro les deux adresses de redirection chez Google. Ces adresses sont expliquées dans le guide de la connexion à Google.
+Quand le numéro change, mettez aussi à jour, avec le nouveau numéro, les deux adresses de redirection chez Google. Ces adresses sont expliquées dans le guide de la connexion à Google.
 
 ## Vérification
 
@@ -132,7 +132,7 @@ Quand le numéro change, mettez aussi à jour avec le nouveau numéro les deux a
 
 **Pourquoi l'application s'ouvre-t-elle dans le navigateur ?** L'application fonctionne sur votre ordinateur comme un petit serveur. Son écran, c'est le navigateur.
 
-**Que se passe-t-il quand j'éteins l'ordinateur ?** L'application se ferme aussi. Si « Windows ile başlat » (Démarrer avec Windows) est coché, elle redémarre toute seule à l'allumage suivant.
+**Que se passe-t-il quand j'éteins l'ordinateur ?** L'application se ferme aussi. Si **Windows açılınca başlat** (Démarrer avec Windows) est coché, elle redémarre toute seule à l'allumage suivant.
 
 **Puis-je l'ouvrir depuis un autre ordinateur ?** Non, et c'est voulu. L'application n'écoute que l'adresse 127.0.0.1. Pour l'ouvrir sur internet, vous devez placer devant elle votre propre authentification.
 

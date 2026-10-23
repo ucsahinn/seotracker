@@ -6,7 +6,7 @@
     <title>Configurazione dell'assistente | guida di seowatcher</title>
     <meta
       name="description"
-      content="Si collega Claude Code, Codex o Cursor all'app. Qui si trovano l'indirizzo, la password, i 33 strumenti, i 6 modelli di attività pronti e quali consumano il limite di Google."
+      content="Si collega Claude Code, Codex o Cursor all'app: indirizzo, password, 33 strumenti, 6 attività pronte e quali consumano il limite di Google."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -49,6 +49,7 @@
       href="https://seowatcher.io/docs/ajan-kurulumu/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -78,7 +79,7 @@
     />
     <meta
       property="og:description"
-      content="Si collega Claude Code, Codex o Cursor all'app. Qui si trovano l'indirizzo, la password, i 33 strumenti, i 6 modelli di attività pronti e quali consumano il limite di Google."
+      content="Si collega Claude Code, Codex o Cursor all'app: indirizzo, password, 33 strumenti, 6 attività pronte e quali consumano il limite di Google."
     />
     <meta
       property="og:image"
@@ -88,7 +89,7 @@
     <meta property="og:image:height" content="630" />
     <meta
       property="og:image:alt"
-      content="Guida di seowatcher: installazione, schermate e risoluzione dei problemi"
+      content="Guida di seowatcher: installazione, schermate, problemi"
     />
     <meta property="article:modified_time" content="2026-10-23" />
     <meta
@@ -108,7 +109,7 @@
     />
     <meta
       name="twitter:description"
-      content="Si collega Claude Code, Codex o Cursor all'app. Qui si trovano l'indirizzo, la password, i 33 strumenti, i 6 modelli di attività pronti e quali consumano il limite di Google."
+      content="Si collega Claude Code, Codex o Cursor all'app: indirizzo, password, 33 strumenti, 6 attività pronte e quali consumano il limite di Google."
     />
     <meta
       name="twitter:image"
@@ -145,11 +146,11 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/it/docs/configurazione-assistente/#article",
             "headline": "Configurazione dell'assistente",
-            "description": "Si collega Claude Code, Codex o Cursor all'app. Qui si trovano l'indirizzo, la password, i 33 strumenti, i 6 modelli di attività pronti e quali consumano il limite di Google.",
+            "description": "Si collega Claude Code, Codex o Cursor all'app: indirizzo, password, 33 strumenti, 6 attività pronte e quali consumano il limite di Google.",
             "url": "https://seowatcher.io/it/docs/configurazione-assistente/",
             "inLanguage": "it",
             "dateModified": "2026-10-23",
-            "articleSection": "Riferimento",
+            "articleSection": "Aiuto e riferimento",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
             "publisher": { "@id": "https://seowatcher.io/#author" },
@@ -184,7 +185,7 @@
       }
     </script>
     <script src="/assets/docs.js?v=2.4.1" defer></script>
-    <meta name="theme-color" content="#272c3b" />
+    <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
         font-family: "Geist";
@@ -774,6 +775,95 @@
       footer a:hover {
         color: var(--fg);
       }
+      /* The one ask on the page: quiet, one line, the accent only on the link. */
+      footer .star {
+        flex-basis: 100%;
+        margin: 0 0 4px;
+        text-wrap: pretty;
+      }
+      footer .star a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      footer .star a:hover {
+        color: var(--accent-link);
+        text-decoration-color: var(--accent-link);
+      }
+
+      /* Headings enter as they scroll into view. docs.js adds .hx (and .in
+         once seen) only when motion is allowed, so without script, under
+         reduced motion and with "stop motion" on, they are simply there.
+         h1 wipes in from the left, h2 rises while an amber stroke draws
+         along its rule, h3 rises a little. */
+      article .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease),
+          clip-path 760ms var(--ease),
+          filter 620ms var(--ease);
+      }
+      article h1.hx {
+        clip-path: inset(-10% 100% -10% 0);
+        filter: blur(6px);
+      }
+      article h2.hx,
+      article h3.hx {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      article h3.hx {
+        transform: translateY(6px);
+      }
+      article h2.hx {
+        position: relative;
+      }
+      article h2.hx::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 56px;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 700ms var(--ease) 160ms;
+      }
+      article .hx.in {
+        opacity: 1;
+        transform: none;
+      }
+      article h1.hx.in {
+        clip-path: inset(-10% 0 -10% 0);
+        filter: none;
+      }
+      article h2.hx.in::before {
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        article .hx,
+        article h2.hx::before {
+          opacity: 1;
+          transform: none;
+          clip-path: none;
+          filter: none;
+          transition: none;
+        }
+      }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
 
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
@@ -1218,7 +1308,11 @@
         <nav class="topnav" aria-label="Sito">
           <a class="hide" href="/it/">Home</a>
           <a class="hide" href="/it/docs/">Guida</a>
-          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+          <a
+            class="hide"
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub</a
           >
           <details class="langs">
@@ -1245,7 +1339,7 @@
                       <circle cx="8.4" cy="7" r="2.7" fill="#e30a17" />
                       <polygon
                         fill="#fff"
-                        points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"
+                        points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"
                       /></svg></span
                   >Türkçe</a
                 >
@@ -1268,12 +1362,12 @@
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#fff"
-                        stroke-width="3.6"
+                        stroke-width="4.2"
                       />
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#c8102e"
-                        stroke-width="2"
+                        stroke-width="2.6"
                       /></svg></span
                   >English</a
                 >
@@ -1351,6 +1445,8 @@
           <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            target="_blank"
+            rel="noopener noreferrer"
             ><span class="long">Scarica per Windows</span
             ><span class="short">Scarica</span></a
           >
@@ -1419,7 +1515,7 @@
             </li>
             <li><a href="/it/docs/impostazioni/">Impostazioni</a></li>
           </ul>
-          <p class="nav-group">Riferimento</p>
+          <p class="nav-group">Aiuto e riferimento</p>
           <ul>
             <li><a href="/it/docs/aiuto/">Aiuto</a></li>
             <li>
@@ -1435,27 +1531,26 @@
                 >Risoluzione dei problemi</a
               >
             </li>
-            <li><a href="/it/docs/note-di-rilascio/">Note di rilascio</a></li>
+            <li><a href="/it/docs/note-di-rilascio/">Note di versione</a></li>
           </ul>
         </details>
       </aside>
       <article id="icerik" data-page="ajan-kurulumu">
         <h1>Configurazione dell'assistente</h1>
         <p class="lede">
-          Si collega Claude Code, Codex o Cursor all'app. Qui si trovano
-          l'indirizzo, la password, i 33 strumenti, i 6 modelli di attività
-          pronti e quali consumano il limite di Google.
+          Si collega Claude Code, Codex o Cursor all'app: indirizzo, password,
+          33 strumenti, 6 attività pronte e quali consumano il limite di Google.
         </p>
         <p>
           Al termine l'assistente di intelligenza artificiale sarà collegato
           all'app e avrà eseguito il suo primo comando. Una volta collegato, si
           può dire &quot;controlla il sito e scrivi un report&quot;.
           L'assistente legge i dati di Search Console, esegue il controllo e
-          salva il report nella schermata <strong>Raporlar</strong> (Report).
-          Questo collegamento si chiama collegamento dell'assistente (MCP). Con
-          esso l'assistente richiama gli strumenti dell'app (per esempio
-          list_projects). Collegarlo non è obbligatorio. Se non lo si collega,
-          all'app non manca nulla.
+          salva il report nella schermata <strong>Raporlar</strong> (Report). Il
+          collegamento avviene tramite MCP, il protocollo con cui l'assistente
+          richiama gli strumenti dell'app (per esempio list_projects).
+          Collegarlo non è obbligatorio. Se non lo si collega, all'app non manca
+          nulla.
         </p>
         <h2 id="cosa-serve">Cosa serve</h2>
         <ul>
@@ -1467,8 +1562,8 @@
           </li>
           <li>
             La schermata <strong>Ajan kurulumu</strong> (Configurazione
-            dell'assistente) dell'app. Nel menu a sinistra, nella sezione Yapay
-            zeka (Intelligenza artificiale).
+            dell'assistente) dell'app. Nel menu a sinistra, nel gruppo
+            <strong>Ajan</strong> (Assistente).
           </li>
         </ul>
         <h2 id="passaggi">Passaggi</h2>
@@ -1503,15 +1598,16 @@
         <h3 id="claude-code">Claude Code</h3>
         <p>
           Nel terminale (la finestra dei comandi) scrivere quanto segue. Al
-          posto di <code>&lt;parola&gt;</code> mettere la propria password:
+          posto di <code>&lt;parola&gt;</code> (in turco &quot;password&quot;)
+          mettere la propria password:
         </p>
         <div class="code">
           <pre><code>claude mcp add --transport http --scope user seotracker http://127.0.0.1:3001/mcp --header &quot;Authorization: Bearer &lt;parola&gt;&quot;</code></pre>
         </div>
         <p>
           Poi, dentro Claude Code, scrivere <code>/mcp</code> e scegliere
-          <strong>Reconnect</strong> (Ricollega). I modelli di attività pronti
-          si richiamano con la barra, come <code>/seo-audit</code>.
+          <strong>Reconnect</strong> (Ricollega). Le attività pronte si
+          richiamano con la barra, come <code>/seo-audit</code>.
         </p>
         <h3 id="codex">Codex</h3>
         <p>Scrivere questo comando:</p>
@@ -1525,7 +1621,7 @@
           <code
             >[Environment]::SetEnvironmentVariable('SEOTRACKER_MCP_AUTH',
             '&lt;parola&gt;', 'User')</code
-          >. I modelli si richiamano come <code>$seo-audit</code>.
+          >. Le attività si richiamano come <code>$seo-audit</code>.
         </p>
         <h3 id="cursor">Cursor</h3>
         <p>
@@ -1561,7 +1657,7 @@
           <li>
             Incollare il testo nell'assistente. L'assistente imposta il
             collegamento, lo prova con &quot;whoami&quot; e
-            &quot;list_projects&quot; e carica i modelli.
+            &quot;list_projects&quot; e carica le attività pronte.
           </li>
         </ol>
         <p>
@@ -1569,12 +1665,10 @@
           fare all'assistente tutto, dall'avvio dell'app al collegamento con
           Google. Riconosce sia il pacchetto Windows sia l'installazione Docker.
         </p>
-        <h3 id="caricare-i-modelli-di-attivita-pronti">
-          Caricare i modelli di attività pronti
-        </h3>
+        <h3 id="caricare-le-attivita-pronte">Caricare le attività pronte</h3>
         <p>
-          La scheda <strong>Beceriler</strong> (Skill) elenca i sei modelli di
-          attività pronti. Dire all'assistente &quot;installa le skill di
+          La scheda <strong>Beceriler</strong> (Skill) elenca le sei attività
+          pronte. Dire all'assistente &quot;installa le skill di
           seotracker&quot;. Il testo di configurazione sa dove copiarle. Per
           aggiornarle, premere il pulsante
           <strong>Güncelleme istemini kopyala</strong> (Copia il testo di
@@ -1586,7 +1680,7 @@
           quelli che modificano i dati dell'app, la colonna &quot;Quota&quot;
           quelli che consumano il limite giornaliero di Google. Gli strumenti
           che scrivono non dovrebbero essere richiamati senza l'approvazione
-          dell'utente. I modelli ben configurati lo chiedono, ma l'app no.
+          dell'utente. Le attività ben configurate lo chiedono, ma l'app no.
         </p>
         <div class="tw">
           <table>
@@ -1676,8 +1770,8 @@
               <tr>
                 <td><code>get_ranking_history</code></td>
                 <td>
-                  Fornisce l'archivio delle posizioni sul computer, non conserva
-                  oltre i 16 mesi.
+                  Fornisce l'archivio delle posizioni sul computer, che conserva
+                  anche i dati più vecchi del limite di 16 mesi di Google.
                 </td>
                 <td></td>
                 <td></td>
@@ -1762,8 +1856,8 @@
               <tr>
                 <td><code>get_google_analytics_traffic_acquisition</code></td>
                 <td>
-                  Fornisce la distribuzione dei visitatori per canale, sorgente
-                  e campagna.
+                  Fornisce la distribuzione dei visitatori per canale, origine e
+                  campagna.
                 </td>
                 <td></td>
                 <td></td>
@@ -1863,14 +1957,12 @@
           quota si segue nell'app, nella sezione Limiti della schermata
           <strong>Ayarlar</strong> (Impostazioni).
         </p>
-        <h2 id="modelli-di-attivita-pronti-skill">
-          Modelli di attività pronti (skill)
-        </h2>
+        <h2 id="attivita-pronte-skill">Attività pronte (skill)</h2>
         <div class="tw">
           <table>
             <thead>
               <tr>
-                <th>Modello</th>
+                <th>Attività</th>
                 <th>Quando si usa</th>
                 <th>Che cosa produce</th>
               </tr>
@@ -1924,7 +2016,7 @@
               <tr>
                 <td><code>seo-report</code></td>
                 <td>
-                  Dopo gli altri modelli. Scrive e salva un report HTML in un
+                  Dopo le altre attività. Scrive e salva un report HTML in un
                   solo file.
                 </td>
                 <td>Un report nella schermata <strong>Raporlar</strong></td>
@@ -1948,9 +2040,9 @@
         <h2 id="domande-frequenti">Domande frequenti</h2>
         <p>
           <strong>L'assistente invia i dati all'esterno?</strong> I dati vanno
-          al modello che l'assistente usa. Dipende dalle condizioni di privacy
-          dell'assistente stesso. L'app risponde soltanto al collegamento sul
-          proprio computer.
+          al modello di intelligenza artificiale che l'assistente usa. Dipende
+          dalle condizioni di privacy dell'assistente stesso. L'app risponde
+          soltanto al collegamento sul proprio computer.
         </p>
         <p>
           <strong>Funziona senza password?</strong> Con Docker funziona con
@@ -1960,8 +2052,8 @@
         </p>
         <p>
           <strong>L'assistente può esaurire il limite di Google?</strong> Lo
-          consumano <code>inspect_urls</code> e <code>run_site_audit</code>. I
-          modelli chiedono al massimo 20 indirizzi per attività. Avviano il
+          consumano <code>inspect_urls</code> e <code>run_site_audit</code>. Le
+          attività chiedono al massimo 20 indirizzi ciascuna. Avviano il
           controllo solo quando lo si chiede. Dare la stessa regola anche al
           proprio assistente.
         </p>
@@ -1991,8 +2083,8 @@
             <code>/mcp</code> e scegliere <strong>Reconnect</strong>.
           </li>
           <li>
-            <strong>I modelli non compaiono.</strong> Incollare di nuovo il
-            testo di configurazione. I modelli vengono copiati nella cartella
+            <strong>Le attività non compaiono.</strong> Incollare di nuovo il
+            testo di configurazione. Vengono copiate nella cartella
             dell'assistente (in Codex <code>$HOME/.agents/skills</code>).
           </li>
         </ul>
@@ -2008,7 +2100,10 @@
         </nav>
         <p class="meta">
           Ultimo aggiornamento: 23 ottobre 2026. Se si nota un errore,
-          <a href="https://github.com/ucsahinn/seotracker/issues"
+          <a
+            href="https://github.com/ucsahinn/seotracker/issues"
+            target="_blank"
+            rel="noopener noreferrer"
             >segnalarlo su GitHub</a
           >.
         </p>
@@ -2019,11 +2114,7 @@
           <li><a href="#cosa-serve">Cosa serve</a></li>
           <li><a href="#passaggi">Passaggi</a></li>
           <li><a href="#strumenti">Strumenti</a></li>
-          <li>
-            <a href="#modelli-di-attivita-pronti-skill"
-              >Modelli di attività pronti (skill)</a
-            >
-          </li>
+          <li><a href="#attivita-pronte-skill">Attività pronte (skill)</a></li>
           <li><a href="#verifica">Verifica</a></li>
           <li><a href="#domande-frequenti">Domande frequenti</a></li>
           <li><a href="#se-qualcosa-non-va">Se qualcosa non va</a></li>
@@ -2032,10 +2123,25 @@
     </main>
     <footer>
       <div class="wrap">
+        <p class="star">
+          Una stella aiuta altre persone a trovare uno strumento gratuito.
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Aggiungi una stella su GitHub</a
+          >
+        </p>
         <span>seowatcher, licenza MIT.</span>
         <span
           ><a href="/it/">Home</a> &nbsp;
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          &nbsp;
           <a href="/it/docs/note-di-rilascio/">Note di versione</a></span
         >
       </div>

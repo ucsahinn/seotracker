@@ -15,6 +15,7 @@
     <link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/docs/configurar-agente/" />
     <link rel="alternate" hreflang="x-default" href="https://seowatcher.io/docs/ajan-kurulumu/" />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -57,9 +58,9 @@
     <meta name="twitter:description" content="Connect Claude Code, Codex or Cursor to the app. The address, the password, the 33 tools and 6 ready-made task templates, and which ones use up Google quota." />
     <meta name="twitter:image" content="https://seowatcher.io/assets/og-en.png" />
     <meta name="color-scheme" content="dark" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en","de","fr","it","pt"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/en/docs/agent-setup/#article","headline":"Agent setup","description":"Connect Claude Code, Codex or Cursor to the app. The address, the password, the 33 tools and 6 ready-made task templates, and which ones use up Google quota.","url":"https://seowatcher.io/en/docs/agent-setup/","inLanguage":"en","dateModified":"2026-10-23","articleSection":"Reference","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/en/docs/agent-setup/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/en/docs/agent-setup/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/en/"},{"@type":"ListItem","position":2,"name":"Guide","item":"https://seowatcher.io/en/docs/"},{"@type":"ListItem","position":3,"name":"Agent setup","item":"https://seowatcher.io/en/docs/agent-setup/"}]}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en","de","fr","it","pt"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/en/docs/agent-setup/#article","headline":"Agent setup","description":"Connect Claude Code, Codex or Cursor to the app. The address, the password, the 33 tools and 6 ready-made task templates, and which ones use up Google quota.","url":"https://seowatcher.io/en/docs/agent-setup/","inLanguage":"en","dateModified":"2026-10-23","articleSection":"Help and reference","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/en/docs/agent-setup/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/en/docs/agent-setup/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/en/"},{"@type":"ListItem","position":2,"name":"Guide","item":"https://seowatcher.io/en/docs/"},{"@type":"ListItem","position":3,"name":"Agent setup","item":"https://seowatcher.io/en/docs/agent-setup/"}]}]}</script>
     <script src="/assets/docs.js?v=2.4.1" defer></script>
-    <meta name="theme-color" content="#272c3b" />
+    <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
         font-family: "Geist";
@@ -649,6 +650,95 @@
       footer a:hover {
         color: var(--fg);
       }
+      /* The one ask on the page: quiet, one line, the accent only on the link. */
+      footer .star {
+        flex-basis: 100%;
+        margin: 0 0 4px;
+        text-wrap: pretty;
+      }
+      footer .star a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      footer .star a:hover {
+        color: var(--accent-link);
+        text-decoration-color: var(--accent-link);
+      }
+
+      /* Headings enter as they scroll into view. docs.js adds .hx (and .in
+         once seen) only when motion is allowed, so without script, under
+         reduced motion and with "stop motion" on, they are simply there.
+         h1 wipes in from the left, h2 rises while an amber stroke draws
+         along its rule, h3 rises a little. */
+      article .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease),
+          clip-path 760ms var(--ease),
+          filter 620ms var(--ease);
+      }
+      article h1.hx {
+        clip-path: inset(-10% 100% -10% 0);
+        filter: blur(6px);
+      }
+      article h2.hx,
+      article h3.hx {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      article h3.hx {
+        transform: translateY(6px);
+      }
+      article h2.hx {
+        position: relative;
+      }
+      article h2.hx::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 56px;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 700ms var(--ease) 160ms;
+      }
+      article .hx.in {
+        opacity: 1;
+        transform: none;
+      }
+      article h1.hx.in {
+        clip-path: inset(-10% 0 -10% 0);
+        filter: none;
+      }
+      article h2.hx.in::before {
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        article .hx,
+        article h2.hx::before {
+          opacity: 1;
+          transform: none;
+          clip-path: none;
+          filter: none;
+          transition: none;
+        }
+      }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
 
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
@@ -1093,13 +1183,19 @@
         <nav class="topnav" aria-label="Site">
           <a class="hide" href="/en/">Home</a>
           <a class="hide" href="/en/docs/">Guide</a>
-          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+          <a
+            class="hide"
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub</a
           >
-          <details class="langs"><summary aria-label="Language: English"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="3.6"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2"/></svg></span><span class="code">EN</span></summary><ul><li><a href="/docs/ajan-kurulumu/" lang="tr" hreflang="tr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"/></svg></span>Türkçe</a></li><li><a href="/en/docs/agent-setup/" lang="en" hreflang="en" aria-current="page"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="3.6"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2"/></svg></span>English</a></li><li><a href="/de/docs/assistent-einrichten/" lang="de" hreflang="de"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg></span>Deutsch</a></li><li><a href="/fr/docs/installation-assistant/" lang="fr" hreflang="fr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg></span>Français</a></li><li><a href="/it/docs/configurazione-assistente/" lang="it" hreflang="it"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg></span>Italiano</a></li><li><a href="/pt/docs/configurar-agente/" lang="pt" hreflang="pt"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#ff0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.6" fill="#ffcc00"/><circle cx="8" cy="7" r="1.5" fill="#ff0000"/></svg></span>Português</a></li></ul></details>
+          <details class="langs"><summary aria-label="Language: English"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2.6"/></svg></span><span class="code">EN</span></summary><ul><li><a href="/docs/ajan-kurulumu/" lang="tr" hreflang="tr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"/></svg></span>Türkçe</a></li><li><a href="/en/docs/agent-setup/" lang="en" hreflang="en" aria-current="page"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2.6"/></svg></span>English</a></li><li><a href="/de/docs/assistent-einrichten/" lang="de" hreflang="de"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg></span>Deutsch</a></li><li><a href="/fr/docs/installation-assistant/" lang="fr" hreflang="fr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg></span>Français</a></li><li><a href="/it/docs/configurazione-assistente/" lang="it" hreflang="it"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg></span>Italiano</a></li><li><a href="/pt/docs/configurar-agente/" lang="pt" hreflang="pt"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#ff0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.6" fill="#ffcc00"/><circle cx="8" cy="7" r="1.5" fill="#ff0000"/></svg></span>Português</a></li></ul></details>
           <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            target="_blank"
+            rel="noopener noreferrer"
             ><span class="long">Download for Windows</span
             ><span class="short">Download</span></a
           >
@@ -1116,23 +1212,23 @@
       <aside class="side" aria-label="Guide">
         <details class="side-dd" open>
           <summary>Guide</summary>
-          <p class="nav-group">Getting started</p><ul><li><a href="/en/docs/install-windows/">Install on Windows</a></li><li><a href="/en/docs/install-docker/">Installing with Docker</a></li><li><a href="/en/docs/google-connection/">Connecting to Google</a></li><li><a href="/en/docs/pagespeed-key/">PageSpeed key</a></li></ul><p class="nav-group">Screens</p><ul><li><a href="/en/docs/projects/">Projects</a></li><li><a href="/en/docs/dashboard/">Dashboard</a></li><li><a href="/en/docs/search-performance/">Search performance</a></li><li><a href="/en/docs/rank-tracking/">Ranking tracking</a></li><li><a href="/en/docs/opportunities/">Opportunities</a></li><li><a href="/en/docs/saved-keywords/">Saved keywords</a></li><li><a href="/en/docs/analytics/">Analytics</a></li><li><a href="/en/docs/site-audit/">Site audit</a></li><li><a href="/en/docs/index-status/">Index status</a></li><li><a href="/en/docs/reports/">Reports and templates</a></li><li><a href="/en/docs/project-context/">Project info</a></li><li><a href="/en/docs/settings/">Settings</a></li></ul><p class="nav-group">Reference</p><ul><li><a href="/en/docs/help/">Help</a></li><li><a href="/en/docs/audit-rules/">Audit rules</a></li><li class="current" aria-current="page"><a href="/en/docs/agent-setup/">Agent setup</a></li><li><a href="/en/docs/troubleshooting/">Troubleshooting</a></li><li><a href="/en/docs/release-notes/">Release notes</a></li></ul>
+          <p class="nav-group">Getting started</p><ul><li><a href="/en/docs/install-windows/">Install on Windows</a></li><li><a href="/en/docs/install-docker/">Installing with Docker</a></li><li><a href="/en/docs/google-connection/">Connecting to Google</a></li><li><a href="/en/docs/pagespeed-key/">PageSpeed key</a></li></ul><p class="nav-group">Screens</p><ul><li><a href="/en/docs/projects/">Projects</a></li><li><a href="/en/docs/dashboard/">Dashboard</a></li><li><a href="/en/docs/search-performance/">Search performance</a></li><li><a href="/en/docs/rank-tracking/">Ranking tracking</a></li><li><a href="/en/docs/opportunities/">Opportunities</a></li><li><a href="/en/docs/saved-keywords/">Saved keywords</a></li><li><a href="/en/docs/analytics/">Analytics</a></li><li><a href="/en/docs/site-audit/">Site audit</a></li><li><a href="/en/docs/index-status/">Index status</a></li><li><a href="/en/docs/reports/">Reports and templates</a></li><li><a href="/en/docs/project-context/">Project info</a></li><li><a href="/en/docs/settings/">Settings</a></li></ul><p class="nav-group">Help and reference</p><ul><li><a href="/en/docs/help/">Help</a></li><li><a href="/en/docs/audit-rules/">Audit rules</a></li><li class="current" aria-current="page"><a href="/en/docs/agent-setup/">Agent setup</a></li><li><a href="/en/docs/troubleshooting/">Troubleshooting</a></li><li><a href="/en/docs/release-notes/">Release notes</a></li></ul>
         </details>
       </aside>
       <article id="icerik" data-page="ajan-kurulumu">
-        <h1>Agent setup</h1><p class="lede">Connect Claude Code, Codex or Cursor to the app. The address, the password, the 33 tools and 6 ready-made task templates, and which ones use up Google quota.</p><p>By the end of this page your AI assistant will be connected to the app and will have run its first command. Once connected, you can say &quot;audit the site and write a report&quot;. The assistant reads Search Console data, runs the audit and saves the report in the <strong>Raporlar</strong> (Reports) screen. This connection is called an assistant connection (MCP). It lets the assistant call the app's tools (for example list_projects). Connecting is optional. If you skip it, nothing is missing from the app.</p>
+        <h1>Agent setup</h1><p class="lede">Connect Claude Code, Codex or Cursor to the app. The address, the password, the 33 tools and 6 ready-made task templates, and which ones use up Google quota.</p><p>This guide connects your AI assistant to the app and runs its first command. Once connected, you can say &quot;audit the site and write a report&quot;. The assistant reads Search Console data, runs the audit and saves the report in the <strong>Raporlar</strong> (Reports) screen. This connection is called an assistant connection (MCP); it lets the assistant call the app's tools (for example list_projects). Connecting is optional, and the app is complete without it.</p>
 <h2 id="what-you-need">What you need</h2>
-<ul><li>A running app and a project connected to Search Console.</li><li>One of Claude Code, Codex, Cursor, VS Code Copilot or Gemini CLI. The app gives ready-made setup text for the first three.</li><li>The <strong>Ajan kurulumu</strong> (Agent setup) screen in the app. It is in the left menu, under <strong>Yapay zeka</strong> (AI).</li></ul>
+<ul><li>A running app and a project connected to Search Console.</li><li>One of Claude Code, Codex, Cursor, VS Code Copilot or Gemini CLI. The app gives ready-made setup text for the first three.</li><li>The <strong>Ajan kurulumu</strong> (Agent setup) screen in the app. It is in the left menu, under <strong>Ajan</strong> (Agent).</li></ul>
 <h2 id="steps">Steps</h2>
-<ol><li>Open the <strong>Ajan kurulumu</strong> (Agent setup) screen. The badge at the top says <strong>Henüz bağlanmadı</strong> (Not connected yet) or <strong>Bağlandı</strong> (Connected). If connected, it also shows text like &quot;Claude Code, last call 2 min ago&quot;. Below it you see the connection address and a copy button: <code>http://127.0.0.1:3001/mcp</code> (<code>localhost</code> on Docker).</li><li>Find the password. The app protects the connection from unauthorized calls with a password, and it does not show the password on screen. In the Windows package, the password is in the <code>mcp-token</code> file in the data folder. From the taskbar menu, choose <strong>Veri klasörünü aç</strong> (Open data folder). On Docker, run this command: <code>docker compose exec -T seotracker cat /app/.wrangler/mcp-token</code> (in Git Bash, put <code>MSYS_NO_PATHCONV=1</code> in front).</li><li>Follow the section for your assistant.</li></ol>
+<ol><li>Open the <strong>Ajan kurulumu</strong> (Agent setup) screen. The badge at the top says <strong>Henüz bağlanmadı</strong> (Not connected yet) or <strong>Bağlandı</strong> (Connected). If connected, it also shows text like &quot;Claude Code, last call 2 min ago&quot;. Below it you see the connection address and a copy button: <code>http://127.0.0.1:3001/mcp</code> (<code>localhost</code> on Docker).</li><li>Find the password. The app protects the connection against unauthorized calls with a password, which is not shown on screen. In the Windows package, the password is in the <code>mcp-token</code> file in the data folder. From the taskbar menu, choose <strong>Veri klasörünü aç</strong> (Open data folder). On Docker, run this command: <code>docker compose exec -T seotracker cat /app/.wrangler/mcp-token</code> (in Git Bash, put <code>MSYS_NO_PATHCONV=1</code> in front).</li><li>Follow the section for your assistant.</li></ol>
 <h3 id="claude-code">Claude Code</h3>
 <p>In the terminal (the command window), run the following. Replace <code>&lt;parola&gt;</code> with your own password:</p>
 <div class="code"><pre><code>claude mcp add --transport http --scope user seotracker http://127.0.0.1:3001/mcp --header &quot;Authorization: Bearer &lt;parola&gt;&quot;</code></pre></div>
-<p>Then type <code>/mcp</code> inside Claude Code and choose <strong>Reconnect</strong>. You call the ready-made task templates with a slash, like <code>/seo-audit</code>.</p>
+<p>Then type <code>/mcp</code> inside Claude Code and choose <strong>Reconnect</strong>. Call the ready-made task templates with a slash, for example <code>/seo-audit</code>.</p>
 <h3 id="codex">Codex</h3>
 <p>Run this command:</p>
 <div class="code"><pre><code>codex mcp add seotracker --url http://127.0.0.1:3001/mcp --bearer-token-env-var SEOTRACKER_MCP_AUTH</code></pre></div>
-<p>Then put the password in an environment variable (a setting your computer remembers) named <code>SEOTRACKER_MCP_AUTH</code>. On Windows, with PowerShell: <code>[Environment]::SetEnvironmentVariable('SEOTRACKER_MCP_AUTH', '&lt;parola&gt;', 'User')</code>. You call the templates like <code>$seo-audit</code>.</p>
+<p>Then put the password in an environment variable (a setting your computer remembers) named <code>SEOTRACKER_MCP_AUTH</code>. On Windows, with PowerShell: <code>[Environment]::SetEnvironmentVariable('SEOTRACKER_MCP_AUTH', '&lt;parola&gt;', 'User')</code>. Call the templates like <code>$seo-audit</code>.</p>
 <h3 id="cursor">Cursor</h3>
 <p>Write this in the <code>.cursor/mcp.json</code> file in your project:</p>
 <div class="code"><pre><code>{
@@ -1145,29 +1241,32 @@
 }</code></pre></div>
 <p>Set the environment variable the same way as for Codex. This setup has not been tried on a Cursor installation yet. If your Cursor version asks for a different field, check Cursor's documentation.</p>
 <h3 id="ready-made-setup-text">Ready-made setup text</h3>
-<p>This is the easier way. First, get the text:</p>
+<p>This is the easier route. First, copy the text:</p>
 <ol><li>Press the <strong>Ajan kurulum istemini kopyala</strong> (Copy agent setup prompt) button on the screen. There is a separate button for Codex.</li><li>Paste the text into your assistant. The assistant sets up the connection, tests it with &quot;whoami&quot; and &quot;list_projects&quot;, and installs the templates.</li></ol>
 <p>The <strong>Kurulum istemi (sıfırdan kurulum)</strong> (Setup prompt, full setup) has the assistant do the whole setup for you, from getting the app running to the Google connection. It knows both the Windows package and the Docker setup.</p>
 <h3 id="installing-the-ready-made-task-templates">Installing the ready-made task templates</h3>
 <p>The <strong>Beceriler</strong> (Skills) tab describes the six ready-made task templates. Tell the assistant &quot;install the seotracker skills&quot;. The setup text knows where to copy them. To update, press the <strong>Güncelleme istemini kopyala</strong> (Copy update prompt) button.</p>
 <h2 id="tools">Tools</h2>
-<p>There are 33 tools in total. The &quot;Writes&quot; column shows the tools that change data in the app. The &quot;Quota&quot; column shows the tools that use up Google's daily allowance. Tools that write must not be called without your approval. Well-built templates ask you first, but the app does not.</p>
-<div class="tw"><table><thead><tr><th>Tool</th><th>What it does</th><th>Writes</th><th>Quota</th></tr></thead><tbody><tr><td><code>whoami</code></td><td>Tells you which installation and user you are.</td><td></td><td></td></tr><tr><td><code>get_diagnostics</code></td><td>Gives the version, the setup checks, table counts, the last 25 audits and the quota counters.</td><td></td><td></td></tr><tr><td><code>list_projects</code></td><td>Lists your projects. Every tool asks for a project number.</td><td></td><td></td></tr><tr><td><code>create_project</code></td><td>Creates a new project.</td><td>Yes</td><td></td></tr><tr><td><code>get_project_context</code></td><td>Reads the Proje bilgisi (Project info) screen.</td><td></td><td></td></tr><tr><td><code>update_project_context</code></td><td>Changes the project info and adds a note to the research log.</td><td>Yes</td><td></td></tr><tr><td><code>get_search_console_performance</code></td><td>Gives clicks, impressions, rate and position by query, page, country, device or date.</td><td></td><td></td></tr><tr><td><code>get_search_opportunities</code></td><td>Builds a list of opportunities from Search Console and Analytics.</td><td></td><td></td></tr><tr><td><code>get_cannibalization</code></td><td>Shows pages that compete with each other for the same search.</td><td></td><td></td></tr><tr><td><code>get_ranking_history</code></td><td>Gives the ranking archive on your computer. It keeps nothing older than 16 months.</td><td></td><td></td></tr><tr><td><code>get_index_coverage</code></td><td>Gives the Google index answers saved earlier. It does not ask Google.</td><td></td><td></td></tr><tr><td><code>inspect_urls</code></td><td>Asks Google for the status of pages, 10 addresses per call.</td><td>Yes</td><td>2,000 per day, per property</td></tr><tr><td><code>get_sitemaps</code></td><td>Shows the sitemap status in Search Console.</td><td></td><td></td></tr><tr><td><code>run_site_audit</code></td><td>Starts the site audit.</td><td>Yes</td><td>PageSpeed, if speed testing is on</td></tr><tr><td><code>get_audit_status</code></td><td>Says which stage the audit is at. It can mark a stuck audit as failed.</td><td></td><td></td></tr><tr><td><code>get_audit_issues</code></td><td>Gives the problems found, with steps to fix them.</td><td></td><td></td></tr><tr><td><code>get_audit_pages</code></td><td>Lists the pages that were crawled.</td><td></td><td></td></tr><tr><td><code>get_google_analytics_organic_overview</code></td><td>Gives a summary of visits from search and the previous period.</td><td></td><td></td></tr><tr><td><code>get_google_analytics_organic_landing_pages</code></td><td>Lists the first pages that visitors from search land on.</td><td></td><td></td></tr><tr><td><code>get_google_analytics_page_performance</code></td><td>Gives page views and engagement for pages.</td><td></td><td></td></tr><tr><td><code>get_google_analytics_traffic_acquisition</code></td><td>Gives the split of visitors by channel, source and campaign.</td><td></td><td></td></tr><tr><td><code>get_google_analytics_key_events</code></td><td>Gives the events marked as key in Analytics.</td><td></td><td></td></tr><tr><td><code>get_google_analytics_ecommerce_performance</code></td><td>Gives product sales.</td><td></td><td></td></tr><tr><td><code>get_google_analytics_site_search</code></td><td>Gives the terms visitors typed into your site's search box.</td><td></td><td></td></tr><tr><td><code>get_google_analytics_audience_breakdown</code></td><td>Splits visitors by device, country, and new or returning.</td><td></td><td></td></tr><tr><td><code>get_google_analytics_measurement_health</code></td><td>Checks the measurement setup. It does not use report quota.</td><td></td><td></td></tr><tr><td><code>list_saved_keywords</code></td><td>Lists the keywords you saved.</td><td></td><td></td></tr><tr><td><code>save_keywords</code></td><td>Saves keywords.</td><td>Yes</td><td></td></tr><tr><td><code>list_reports</code></td><td>Lists your reports.</td><td></td><td></td></tr><tr><td><code>get_report</code></td><td>Reads a report. It can also give the HTML version if you ask.</td><td></td><td></td></tr><tr><td><code>save_report</code></td><td>Saves a report or updates an existing one.</td><td>Yes</td><td></td></tr><tr><td><code>list_report_templates</code></td><td>Reads the report templates.</td><td></td><td></td></tr><tr><td><code>save_report_template</code></td><td>Saves a report template.</td><td>Yes</td><td></td></tr></tbody></table></div>
+<p>There are 33 tools in total. The &quot;Writes&quot; column shows the tools that change data in the app. The &quot;Quota&quot; column shows the tools that use up Google's daily allowance. Do not let the assistant call a tool that writes without your approval. Well-built templates ask you first, but the app does not.</p>
+<div class="tw"><table><thead><tr><th>Tool</th><th>What it does</th><th>Writes</th><th>Quota</th></tr></thead><tbody><tr><td><code>whoami</code></td><td>Tells you which installation and user you are.</td><td></td><td></td></tr><tr><td><code>get_diagnostics</code></td><td>Gives the version, the setup checks, table counts, the last 25 audits and the quota counters.</td><td></td><td></td></tr><tr><td><code>list_projects</code></td><td>Lists your projects. Every tool asks for a project number.</td><td></td><td></td></tr><tr><td><code>create_project</code></td><td>Creates a new project.</td><td>Yes</td><td></td></tr><tr><td><code>get_project_context</code></td><td>Reads the Proje bilgisi (Project info) screen.</td><td></td><td></td></tr><tr><td><code>update_project_context</code></td><td>Changes the project info and adds a note to the research log.</td><td>Yes</td><td></td></tr><tr><td><code>get_search_console_performance</code></td><td>Gives clicks, impressions, rate and position by query, page, country, device or date.</td><td></td><td></td></tr><tr><td><code>get_search_opportunities</code></td><td>Builds a list of opportunities from Search Console and Analytics.</td><td></td><td></td></tr><tr><td><code>get_cannibalization</code></td><td>Shows pages that compete with each other for the same search.</td><td></td><td></td></tr><tr><td><code>get_ranking_history</code></td><td>Gives the ranking archive on your computer. It also keeps data older than Google's 16-month limit.</td><td></td><td></td></tr><tr><td><code>get_index_coverage</code></td><td>Gives the Google index answers saved earlier. It does not ask Google.</td><td></td><td></td></tr><tr><td><code>inspect_urls</code></td><td>Asks Google for the status of pages, 10 addresses per call.</td><td>Yes</td><td>2,000 per day, per property</td></tr><tr><td><code>get_sitemaps</code></td><td>Shows the sitemap status in Search Console.</td><td></td><td></td></tr><tr><td><code>run_site_audit</code></td><td>Starts the site audit.</td><td>Yes</td><td>PageSpeed, if speed testing is on</td></tr><tr><td><code>get_audit_status</code></td><td>Says which stage the audit is at. It can mark a stuck audit as failed.</td><td></td><td></td></tr><tr><td><code>get_audit_issues</code></td><td>Gives the problems found, with steps to fix them.</td><td></td><td></td></tr><tr><td><code>get_audit_pages</code></td><td>Lists the pages that were crawled.</td><td></td><td></td></tr><tr><td><code>get_google_analytics_organic_overview</code></td><td>Gives a summary of visits from search and the previous period.</td><td></td><td></td></tr><tr><td><code>get_google_analytics_organic_landing_pages</code></td><td>Lists the first pages that visitors from search land on.</td><td></td><td></td></tr><tr><td><code>get_google_analytics_page_performance</code></td><td>Gives page views and engagement for pages.</td><td></td><td></td></tr><tr><td><code>get_google_analytics_traffic_acquisition</code></td><td>Gives the split of visitors by channel, source and campaign.</td><td></td><td></td></tr><tr><td><code>get_google_analytics_key_events</code></td><td>Gives the events marked as key in Analytics.</td><td></td><td></td></tr><tr><td><code>get_google_analytics_ecommerce_performance</code></td><td>Gives product sales.</td><td></td><td></td></tr><tr><td><code>get_google_analytics_site_search</code></td><td>Gives the terms visitors typed into your site's search box.</td><td></td><td></td></tr><tr><td><code>get_google_analytics_audience_breakdown</code></td><td>Splits visitors by device, country, and new or returning.</td><td></td><td></td></tr><tr><td><code>get_google_analytics_measurement_health</code></td><td>Checks the measurement setup. It does not use report quota.</td><td></td><td></td></tr><tr><td><code>list_saved_keywords</code></td><td>Lists the keywords you saved.</td><td></td><td></td></tr><tr><td><code>save_keywords</code></td><td>Saves keywords.</td><td>Yes</td><td></td></tr><tr><td><code>list_reports</code></td><td>Lists your reports.</td><td></td><td></td></tr><tr><td><code>get_report</code></td><td>Reads a report. It can also give the HTML version if you ask.</td><td></td><td></td></tr><tr><td><code>save_report</code></td><td>Saves a report or updates an existing one.</td><td>Yes</td><td></td></tr><tr><td><code>list_report_templates</code></td><td>Reads the report templates.</td><td></td><td></td></tr><tr><td><code>save_report_template</code></td><td>Saves a report template.</td><td>Yes</td><td></td></tr></tbody></table></div>
 <p>The Analytics tools use Google's Analytics report allowance (200,000 units a day on a standard property). You can follow this allowance in the app, in the Sınırlar (Limits) section of the <strong>Ayarlar</strong> (Settings) screen.</p>
 <h2 id="ready-made-task-templates-skills">Ready-made task templates (skills)</h2>
 <div class="tw"><table><thead><tr><th>Template</th><th>When to use it</th><th>What it produces</th></tr></thead><tbody><tr><td><code>seo-coach</code></td><td>When you ask &quot;what should I do&quot;. It explains the road ahead and suggests the next step.</td><td>A chat, and a coaching note if needed</td></tr><tr><td><code>seo-project-setup</code></td><td>In a new project. It asks about your business, goal, competitors and key pages, and fills in the Proje bilgisi (Project info) screen.</td><td>Filled-in project info, saved keywords</td></tr><tr><td><code>seo-audit</code></td><td>When you say &quot;audit the site&quot;. It runs the audit, combines it with Search Console and picks &quot;the one thing to do this week&quot;.</td><td>A one-page audit report</td></tr><tr><td><code>seo-triage</code></td><td>When visits drop. It checks whether the drop is real, and where and when it happened.</td><td>A drop review report</td></tr><tr><td><code>seo-check-in</code></td><td>Once a month. It compares this period with the previous one.</td><td>A monthly check-in report; one builds up each month</td></tr><tr><td><code>seo-report</code></td><td>After the other templates finish. It writes and saves a single-file HTML report.</td><td>A report in the <strong>Raporlar</strong> (Reports) screen</td></tr></tbody></table></div>
 <h2 id="check">Check</h2>
 <ul><li>Tell the assistant &quot;call the whoami tool&quot;. It should tell you the installation ID.</li><li>The badge on the <strong>Ajan kurulumu</strong> (Agent setup) screen should say <strong>Bağlandı</strong> (Connected), and the time of the last call should show.</li><li>&quot;list_projects&quot; should list your projects.</li></ul>
 <h2 id="frequently-asked-questions">Frequently asked questions</h2>
-<p><strong>Does the assistant send my data outside?</strong> Your data goes to whichever model the assistant uses. That depends on the assistant's own privacy terms. The app only answers the connection on your computer.</p>
+<p><strong>Does the assistant send my data outside?</strong> Your data goes to whichever model the assistant uses. That depends on the assistant's own privacy terms. The app itself only answers connections on your computer.</p>
 <p><strong>Does it work without a password?</strong> On Docker it works with <code>MCP_TOKEN=off</code>. In the Windows package the password is always on. On a connection without a password, any program on the same computer can call the 33 tools.</p>
-<p><strong>Can the assistant use up my Google allowance?</strong> <code>inspect_urls</code> and <code>run_site_audit</code> use it. The templates ask about at most 20 addresses per task. They start an audit only when you ask. Give your assistant the same limit.</p>
-<p><strong>Which assistant is better?</strong> It makes no difference, the tools are the same. The setup text is ready for Claude Code, Codex and Cursor. Other assistants work with the same address and password if they support MCP.</p>
+<p><strong>Can the assistant use up my Google allowance?</strong> <code>inspect_urls</code> and <code>run_site_audit</code> use it. The templates ask about at most 20 addresses per task. They start an audit only when you ask. Set the same limit for any other assistant.</p>
+<p><strong>Which assistant is better?</strong> It makes no difference; the tools are the same. The setup text is ready for Claude Code, Codex and Cursor. Other assistants work with the same address and password if they support MCP.</p>
 <h2 id="if-something-goes-wrong">If something goes wrong</h2>
-<ul><li><strong>The assistant gets a 401 error.</strong> The password is wrong or is not being sent. Copy the value from the file again. Make sure no line-break character is left at the end.</li><li><strong>The connection is refused.</strong> The app is not running. Check the taskbar icon, or the output of <code>docker compose ps</code>.</li><li><strong>The assistant says &quot;tool not found&quot;.</strong> Reload the connection. In Claude Code, type <code>/mcp</code> and choose <strong>Reconnect</strong>.</li><li><strong>The templates do not show up.</strong> Paste the setup text again. The templates are copied into the assistant's own folder (<code>$HOME/.agents/skills</code> in Codex).</li></ul> <nav class="pager" aria-label="Previous and next page"><a class="pager-prev" rel="prev" href="/en/docs/audit-rules/"><span>Previous</span><strong>Audit rules</strong></a><a class="pager-next" rel="next" href="/en/docs/troubleshooting/"><span>Next</span><strong>Troubleshooting</strong></a></nav>
+<ul><li><strong>The assistant gets a 401 error.</strong> The password is wrong or is not being sent. Copy the value from the file again. Make sure no line break is left at the end.</li><li><strong>The connection is refused.</strong> The app is not running. Check the taskbar icon, or the output of <code>docker compose ps</code>.</li><li><strong>The assistant says &quot;tool not found&quot;.</strong> Reload the connection. In Claude Code, type <code>/mcp</code> and choose <strong>Reconnect</strong>.</li><li><strong>The templates do not show up.</strong> Paste the setup text again. The templates are copied into the assistant's own folder (<code>$HOME/.agents/skills</code> in Codex).</li></ul> <nav class="pager" aria-label="Previous and next page"><a class="pager-prev" rel="prev" href="/en/docs/audit-rules/"><span>Previous</span><strong>Audit rules</strong></a><a class="pager-next" rel="next" href="/en/docs/troubleshooting/"><span>Next</span><strong>Troubleshooting</strong></a></nav>
         <p class="meta">
           Last updated: October 23, 2026. Spotted a mistake?
-          <a href="https://github.com/ucsahinn/seotracker/issues"
+          <a
+            href="https://github.com/ucsahinn/seotracker/issues"
+            target="_blank"
+            rel="noopener noreferrer"
             >Report it on GitHub</a
           >.
         </p>
@@ -1176,10 +1275,25 @@
     </main>
     <footer>
       <div class="wrap">
+        <p class="star">
+          A star helps other people find a free tool.
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Star it on GitHub</a
+          >
+        </p>
         <span>seowatcher, MIT license.</span>
         <span
           ><a href="/en/">Home</a> &nbsp;
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          &nbsp;
           <a href="/en/docs/release-notes/">Release notes</a></span
         >
       </div>

@@ -6,7 +6,7 @@ route: /p/<proje>
 updated: 2026-10-22
 ---
 
-Vous y voyez l'état le plus récent de votre site et vous apprenez quoi faire ensuite. C'est le premier écran qui s'affiche quand vous ouvrez le projet.
+Vous y voyez l'état le plus récent de votre site et ce qu'il faut faire ensuite.
 
 Les chiffres de recherche viennent de l'outil Search Console de Google. Les chiffres de visiteurs viennent de Google Analytics. Le résumé de l'audit vient de l'explorateur de site propre à l'application. Le bouton **Yenile** (Actualiser), en haut, actualise le tout. **Denetimi başlat** (Lancer l'audit) vous mène à l'écran de l'audit.
 
@@ -27,7 +27,7 @@ Quand vous avez terminé une tâche, elle disparaît de la liste.
 
 **Tendance des clics.** Vous voyez les clics quotidiens des 28 derniers jours sous la forme d'une courbe. S'il y a moins de quatre jours de données, la courbe n'est pas tracée. Le lien **Sorguları aç** (Ouvrir les requêtes) vous mène à l'écran Performance de recherche.
 
-**Requêtes en position 5 à 20.** Vos quatre premières recherches qui apparaissent entre la 5e et la 20e place sur Google se trouvent ici. Avec un peu d'effort, elles peuvent monter en première page ou aux premières places. **Tümünü gör** (Tout voir) ouvre la liste complète.
+**Requêtes en position 5 à 20.** Les quatre premières requêtes qui apparaissent entre la 5e et la 20e place sur Google se trouvent ici. Avec un peu d'effort, elles peuvent monter en première page ou aux premières places. **Tümünü gör** (Tout voir) ouvre la liste complète.
 
 **Carte Audit du site.** La carte indique combien de pages ont été explorées, les trois problèmes les plus fréquents et les cinq pages les plus problématiques. Pendant un audit, la carte s'actualise toutes les cinq secondes. L'icône en point d'interrogation explique les trois niveaux de gravité :
 
@@ -42,7 +42,7 @@ Quand vous avez terminé une tâche, elle disparaît de la liste.
 1. Ouvrez-le une fois par semaine et regardez les flèches des quatre cartes.
 2. Faites la première tâche de la zone **Sıradaki adımlar** (Prochaines étapes). Si la zone est vide, il n'y a rien d'urgent.
 3. Si le dernier audit a plus de sept jours, cliquez sur **Denetimi başlat**.
-4. Regardez de nouveau le titre et la description des pages de la carte **Sıra 5-20 arası sorgular** (Requêtes en position 5 à 20). Le gain le plus facile se trouve généralement ici.
+4. Relisez le titre et la description des pages de la carte **Sıra 5-20 arası sorgular** (Requêtes en position 5 à 20). Le gain le plus facile se trouve généralement ici.
 
 ## Comment les chiffres sont calculés
 
@@ -52,13 +52,13 @@ La position moyenne donne plus de poids aux recherches qui reçoivent beaucoup d
 
 ## Questions fréquentes
 
-**Pourquoi n'y a-t-il pas les données d'aujourd'hui ?** Google ne fournit pas encore les trois derniers jours. Il n'y a pas de manque, patientez.
+**Pourquoi n'y a-t-il pas les données d'aujourd'hui ?** Google ne fournit pas encore les trois derniers jours. Rien ne manque : patientez.
 
 **La position moyenne a augmenté, est-ce bien ?** Non. Passer de 3 à 7, c'est reculer. C'est pourquoi la flèche devient rouge.
 
 **La carte d'audit montre-t-elle ce que Google voit ?** Non. Elle montre ce qu'a trouvé l'exploration de l'application elle-même. Pour savoir quelle page Google a enregistrée, regardez l'onglet **Dizin durumu** (État de l'index) de l'écran d'audit.
 
-**Il n'y a pas de carte Trafic organique.** Google Analytics n'est pas connecté dans les paramètres du projet. C'est à vous de le connecter.
+**Il n'y a pas de carte Trafic organique.** Google Analytics n'est pas connecté. Connectez-le dans l'onglet **Bağlantılar** des paramètres du projet.
 
 ## Limites
 

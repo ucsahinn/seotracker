@@ -18,7 +18,7 @@ The latest release is **2.4.1**, October 23, 2026. Your data is kept when you up
 - **Starts on a clean computer.** The installer carries the Microsoft Visual C++ runtime and installs it once, with permission, if it is missing.
 - **Update.** Always in the taskbar menu. It installs a new version if there is one and says "Güncel" (Up to date) if not.
 - **Repair installation.** Clears temporary files, checks the package and opens the app again.
-- **Report a problem.** Opens a ready issue. User names, site names and e-mail addresses are masked.
+- **Report a problem.** Opens a pre-filled issue. User names, site names and email addresses are masked.
 - **Versioned installer.** The file name and the setup wizard show the version being installed.
 
 ## The app
@@ -26,7 +26,7 @@ The latest release is **2.4.1**, October 23, 2026. Your data is kept when you up
 - **Side menu.** The groups are "Arama ve site" (Search and site) and "Ajan" (Agent); Help and Settings sit at the bottom.
 - **Agent setup.** One card and one copy button for Claude Code, Codex or any other assistant.
 - **Settings.** The Google connection is explained in three steps; the theme is dark by default.
-- **Knows both installs.** Help and the agent instructions describe the taskbar on Windows and the `docker compose` commands on Docker.
+- **Both installs covered.** Help and the agent instructions describe the taskbar on Windows and the `docker compose` commands on Docker.
 
 ## Site and guide
 

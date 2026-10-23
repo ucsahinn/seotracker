@@ -1,6 +1,6 @@
 ---
 title: Projekte
-description: Sie legen Projekte an, wählen Website und Land, ändern den Namen und verwalten die Google-Verbindung. Ein Projekt können Sie archivieren und wiederherstellen.
+description: Projekte anlegen, Website und Land wählen, Namen ändern, Google-Verbindung verwalten, Projekte archivieren und wiederherstellen.
 screen: Projeler, Proje ayarları
 route: /projects, /p/{proje}/settings
 updated: 2026-10-22
@@ -32,13 +32,13 @@ Sie legen Projekte an, ändern ihre Einstellungen und entfernen sie bei Bedarf. 
 
 ### Google-Verbindung ändern
 
-Klicken Sie auf der Karte im Reiter **Bağlantılar** auf **Mülkü veya hesabı değiştir** (Property oder Konto wechseln). Sie können eine andere Website (bei Google „Property“, auf Türkisch „mülk“) oder ein anderes Google-Konto wählen. **Bağlantıyı kes** (Verbindung trennen) entfernt nur die Verbindung dieses Projekts. Ihr Google-Konto bleibt gespeichert, und es wird nicht nachgefragt. Um ein Google-Konto vollständig zu entfernen, nutzen Sie **Hesabı kaldır** (Konto entfernen) im Auswahlfenster. Das Fenster sagt Ihnen, welche Projekte betroffen sind.
+Klicken Sie auf der Karte im Reiter **Bağlantılar** auf **Mülkü veya hesabı değiştir** (Property oder Konto wechseln). Sie können eine andere Website (bei Google „Property“, auf Türkisch „mülk“) oder ein anderes Google-Konto wählen. **Bağlantıyı kes** (Verbindung trennen) entfernt nur die Verbindung dieses Projekts. Ihr Google-Konto bleibt gespeichert, und die App fragt nicht nach. Um ein Google-Konto vollständig zu entfernen, nutzen Sie **Hesabı kaldır** (Konto entfernen) im Auswahlfenster. Das Fenster nennt die betroffenen Projekte.
 
 ### Projekt archivieren
 
 Projekte werden nicht gelöscht, sondern archiviert. Die Schaltfläche **Projeyi arşivle** unten im Reiter **Genel** nimmt das Projekt aus der Liste. Audits, Suchbegriffe und Berichte bleiben unverändert erhalten. **Geri al** auf der Seite Projeler holt das Projekt genau so zurück, wie es war. Haben Sie nur ein einziges Projekt, können Sie es nicht archivieren.
 
-## Wie die Zahlen berechnet werden
+## Regeln für die Domain-Eingabe
 
 Auf diesem Bildschirm gibt es keine Zahlen. Beim Speichern der Domain gelten diese Regeln: Leerzeichen und Großbuchstaben werden bereinigt, und die Adresse muss eine echte Domain sein (IP-Adressen, `localhost` oder erfundene Endungen werden nicht angenommen). Bei einer falschen Eingabe erscheint die Warnung „Geçerli bir alan adı girin, örneğin acme.com.“ (Geben Sie eine gültige Domain ein, zum Beispiel acme.com.).
 
@@ -48,12 +48,12 @@ Auf diesem Bildschirm gibt es keine Zahlen. Beim Speichern der Domain gelten die
 
 **Kann ich einem Projekt zwei Websites zuordnen?** Nein. Ein Projekt hat eine Search-Console-Property und eine Analytics-Property. Legen Sie für die zweite Website ein zweites Projekt an.
 
-**Es gibt ein Projekt namens „Default“. Was ist das?** Beim ersten Start legt die App ein leeres Projekt an, damit sich die Bildschirme öffnen lassen. Sie können es umbenennen und verwenden. Oder Sie legen ein neues Projekt an und archivieren dieses.
+**Es gibt ein Projekt namens „Default“. Was ist das?** Beim ersten Start legt die App ein leeres Projekt an, damit sich die Bildschirme öffnen lassen. Sie können es umbenennen und weiterverwenden oder ein neues Projekt anlegen und dieses archivieren.
 
 **Ich habe das falsche Land gewählt.** Ändern Sie es im Reiter Genel. Die Positionen Ihrer gespeicherten Suchbegriffe werden ab diesem Zeitpunkt für das neue Land verfolgt.
 
 ## Grenzen
 
-Die Zahl der Projekte ist nicht begrenzt. Ein Projekt anzulegen, startet nichts. Daten kommen erst, wenn Google verbunden ist. Haben Sie keine Domain eingegeben, tippen Sie die Adresse beim Start eines Audits von Hand ein.
+Die Zahl der Projekte ist nicht begrenzt. Ein neues Projekt startet nichts; Daten kommen erst, wenn Google verbunden ist. Haben Sie keine Domain eingegeben, tippen Sie die Adresse beim Start eines Audits von Hand ein.
 
 <!-- Kaynaklar: src/routes/_app/projects.tsx; src/routes/_app/index.tsx; src/client/features/projects/CreateProjectModal.tsx; src/client/features/projects/ProjectGeneralSettings.tsx; src/client/features/projects/ProjectSwitcher.tsx; src/routes/_project/p/$projectId/settings.tsx; src/routes/_project/p/$projectId/settings/integrations.tsx; src/client/features/integrations/*; src/server/lib/domainUtils.ts; src/server/features/projects/services/projects.ts -->

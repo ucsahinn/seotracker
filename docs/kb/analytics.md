@@ -8,11 +8,11 @@ updated: 2026-10-22
 
 Siteye gelen kişilerin sonra ne yaptığını burada görürsünüz. Search Console size Google'da ne olduğunu anlatır. Analytics ise ziyaretçinin sitede ne yaptığını anlatır.
 
-Google Analytics 4 hesabınızdaki yedi raporu görürsünüz. Ekran varsayılan olarak yalnızca aramadan gelenleri (organik arama) gösterir. Sekizinci sekme ölçümün kendisini kontrol eder. Sayaç çalışıyor mu, anahtar olay tanımlı mı, ona bakar.
+Google Analytics 4 hesabınızdaki yedi raporu görürsünüz. Ekran varsayılan olarak yalnızca aramadan gelenleri (organik arama) gösterir. Sekizinci sekme ölçümün kendisini denetler: sayaç çalışıyor mu, anahtar olay tanımlı mı.
 
 ## Ekranda neler var
 
-**Sekmeler.** **Giriş sayfaları**, **Sayfa performansı**, **Trafik kaynakları**, **Anahtar olaylar**, **E-ticaret**, **Site içi arama**, **Kitle dağılımı** ve **Ölçüm durumu**. Her sekmenin altında kısa bir soru yazar. Giriş sayfası, ziyaretçinin siteye ilk girdiği sayfadır. Anahtar olay, sizin önemli saydığınız harekettir.
+**Sekmeler.** **Giriş sayfaları**, **Sayfa performansı**, **Trafik kaynakları**, **Anahtar olaylar**, **E-ticaret**, **Site içi arama**, **Kitle dağılımı** ve **Ölçüm durumu**. Her sekmenin altında kısa bir soru durur. Giriş sayfası, ziyaretçinin siteye ilk girdiği sayfadır. Anahtar olay, sizin önemli saydığınız harekettir.
 
 **Kontroller.** **Dönem** için Son 7 gün, Son 28 gün ya da Son 3 ay seçilir. **Kanal** için Organik arama (varsayılan) ya da Tüm trafik seçilir. **Satır** 50, 100 ya da 200'dür. Kitle sekmesinde **Cihaz**, **Ülke** ve **Yeni / geri dönen** seçilir. Trafik sekmesinde **Kanal grubu**, **Kaynak / ortam** ve **Kampanya** seçilir. Seçimler adres çubuğuna yazılır.
 
@@ -41,7 +41,7 @@ Google Analytics 4 hesabınızdaki yedi raporu görürsünüz. Ekran varsayılan
 
 Aralık, hesabın saat diliminde dünle biter. Analytics veriyi bir gün geç verir. "Organik arama" seçiliyse yalnızca Google ya da başka bir arama motorundan gelen ziyaretler sayılır.
 
-Her rapor en fazla 200 satır ister. Ölçüm durumu Analytics ayarlarını okur ve rapor kotasından harcamaz. Rapor kotası biterse "Google Analytics reporting quota is exhausted." (Analytics rapor hakkı bitti) hatası görürsünüz. Kotanızı **Ayarlar**'daki sınırlar bölümünden izlersiniz.
+Her rapor en fazla 200 satır ister. Ölçüm durumu Analytics ayarlarını okur ve rapor kotasından harcamaz. Rapor kotası dolarsa "Google Analytics reporting quota is exhausted." (Analytics rapor hakkı doldu) hatasını görürsünüz. Kotanızı **Ayarlar** ekranındaki sınırlar bölümünden izlersiniz.
 
 ## Sık sorulanlar
 
@@ -49,7 +49,7 @@ Her rapor en fazla 200 satır ister. Ölçüm durumu Analytics ayarlarını okur
 
 **Satır sayısı 200'de kaldı.** Tek seferde en fazla 200 satır istenir. Dönemi kısaltın ya da kırılımı değiştirin.
 
-**Kota neden bitti?** Standart hesapta günde 200.000, saatte 40.000 belirteç (kota birimi) verilir. Her rapor birkaç belirteç harcar. **Yenile**'ye art arda basmak kotayı eritir.
+**Kota neden doldu?** Standart hesapta günde 200.000, saatte 40.000 belirteç (kota birimi) verilir. Her rapor birkaç belirteç harcar. **Yenile**'ye art arda basmak kotayı tüketir.
 
 ## Sınırlar
 

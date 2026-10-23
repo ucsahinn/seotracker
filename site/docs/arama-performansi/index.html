@@ -15,6 +15,7 @@
     <link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/docs/desempenho-de-busca/" />
     <link rel="alternate" hreflang="x-default" href="https://seowatcher.io/docs/arama-performansi/" />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -59,7 +60,7 @@
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en","de","fr","it","pt"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/docs/arama-performansi/#article","headline":"Arama performansı","description":"Google'da hangi aramalarda çıktığınızı ve kaç kişinin tıkladığını burada görürsünüz. Sorguya, sayfaya, ülkeye ya da cihaza bakabilir, 16 ay geriye gidebilirsiniz.","url":"https://seowatcher.io/docs/arama-performansi/","inLanguage":"tr","dateModified":"2026-10-23","articleSection":"Ekranlar","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/docs/arama-performansi/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/docs/arama-performansi/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/"},{"@type":"ListItem","position":2,"name":"Kılavuz","item":"https://seowatcher.io/docs/"},{"@type":"ListItem","position":3,"name":"Arama performansı","item":"https://seowatcher.io/docs/arama-performansi/"}]}]}</script>
     <script src="/assets/docs.js?v=2.4.1" defer></script>
-    <meta name="theme-color" content="#272c3b" />
+    <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
         font-family: "Geist";
@@ -649,6 +650,95 @@
       footer a:hover {
         color: var(--fg);
       }
+      /* The one ask on the page: quiet, one line, the accent only on the link. */
+      footer .star {
+        flex-basis: 100%;
+        margin: 0 0 4px;
+        text-wrap: pretty;
+      }
+      footer .star a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      footer .star a:hover {
+        color: var(--accent-link);
+        text-decoration-color: var(--accent-link);
+      }
+
+      /* Headings enter as they scroll into view. docs.js adds .hx (and .in
+         once seen) only when motion is allowed, so without script, under
+         reduced motion and with "stop motion" on, they are simply there.
+         h1 wipes in from the left, h2 rises while an amber stroke draws
+         along its rule, h3 rises a little. */
+      article .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease),
+          clip-path 760ms var(--ease),
+          filter 620ms var(--ease);
+      }
+      article h1.hx {
+        clip-path: inset(-10% 100% -10% 0);
+        filter: blur(6px);
+      }
+      article h2.hx,
+      article h3.hx {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      article h3.hx {
+        transform: translateY(6px);
+      }
+      article h2.hx {
+        position: relative;
+      }
+      article h2.hx::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 56px;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 700ms var(--ease) 160ms;
+      }
+      article .hx.in {
+        opacity: 1;
+        transform: none;
+      }
+      article h1.hx.in {
+        clip-path: inset(-10% 0 -10% 0);
+        filter: none;
+      }
+      article h2.hx.in::before {
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        article .hx,
+        article h2.hx::before {
+          opacity: 1;
+          transform: none;
+          clip-path: none;
+          filter: none;
+          transition: none;
+        }
+      }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
 
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
@@ -1093,13 +1183,19 @@
         <nav class="topnav" aria-label="Site">
           <a class="hide" href="/">Ana sayfa</a>
           <a class="hide" href="/docs/">Kılavuz</a>
-          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+          <a
+            class="hide"
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub</a
           >
-          <details class="langs"><summary aria-label="Dil: Türkçe"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"/></svg></span><span class="code">TR</span></summary><ul><li><a href="/docs/arama-performansi/" lang="tr" hreflang="tr" aria-current="page"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"/></svg></span>Türkçe</a></li><li><a href="/en/docs/search-performance/" lang="en" hreflang="en"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="3.6"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2"/></svg></span>English</a></li><li><a href="/de/docs/suchleistung/" lang="de" hreflang="de"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg></span>Deutsch</a></li><li><a href="/fr/docs/performance-de-recherche/" lang="fr" hreflang="fr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg></span>Français</a></li><li><a href="/it/docs/prestazioni-di-ricerca/" lang="it" hreflang="it"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg></span>Italiano</a></li><li><a href="/pt/docs/desempenho-de-busca/" lang="pt" hreflang="pt"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#ff0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.6" fill="#ffcc00"/><circle cx="8" cy="7" r="1.5" fill="#ff0000"/></svg></span>Português</a></li></ul></details>
+          <details class="langs"><summary aria-label="Dil: Türkçe"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"/></svg></span><span class="code">TR</span></summary><ul><li><a href="/docs/arama-performansi/" lang="tr" hreflang="tr" aria-current="page"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"/></svg></span>Türkçe</a></li><li><a href="/en/docs/search-performance/" lang="en" hreflang="en"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2.6"/></svg></span>English</a></li><li><a href="/de/docs/suchleistung/" lang="de" hreflang="de"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg></span>Deutsch</a></li><li><a href="/fr/docs/performance-de-recherche/" lang="fr" hreflang="fr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg></span>Français</a></li><li><a href="/it/docs/prestazioni-di-ricerca/" lang="it" hreflang="it"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg></span>Italiano</a></li><li><a href="/pt/docs/desempenho-de-busca/" lang="pt" hreflang="pt"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#ff0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.6" fill="#ffcc00"/><circle cx="8" cy="7" r="1.5" fill="#ff0000"/></svg></span>Português</a></li></ul></details>
           <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            target="_blank"
+            rel="noopener noreferrer"
             ><span class="long">Windows için indir</span
             ><span class="short">İndir</span></a
           >
@@ -1116,7 +1212,7 @@
       <aside class="side" aria-label="Kılavuz">
         <details class="side-dd" open>
           <summary>Kılavuz</summary>
-          <p class="nav-group">Başlangıç</p><ul><li><a href="/docs/kurulum-windows/">Windows'a kurulum</a></li><li><a href="/docs/kurulum-docker/">Docker ile kurulum</a></li><li><a href="/docs/google-baglantisi/">Google'a bağlanma</a></li><li><a href="/docs/pagespeed-anahtari/">PageSpeed anahtarı</a></li></ul><p class="nav-group">Ekranlar</p><ul><li><a href="/docs/projeler/">Projeler</a></li><li><a href="/docs/panel/">Panel</a></li><li class="current" aria-current="page"><a href="/docs/arama-performansi/">Arama performansı</a></li><li><a href="/docs/siralama-takibi/">Sıralama takibi</a></li><li><a href="/docs/firsatlar/">Fırsatlar</a></li><li><a href="/docs/kayitli-kelimeler/">Kayıtlı kelimeler</a></li><li><a href="/docs/analytics/">Analytics</a></li><li><a href="/docs/site-denetimi/">Site denetimi</a></li><li><a href="/docs/dizin-durumu/">Dizin durumu</a></li><li><a href="/docs/raporlar/">Raporlar ve şablonlar</a></li><li><a href="/docs/proje-bilgisi/">Proje bilgisi</a></li><li><a href="/docs/ayarlar/">Ayarlar</a></li></ul><p class="nav-group">Başvuru</p><ul><li><a href="/docs/yardim/">Yardım</a></li><li><a href="/docs/denetim-kurallari/">Denetim kuralları</a></li><li><a href="/docs/ajan-kurulumu/">Ajan kurulumu</a></li><li><a href="/docs/sorun-giderme/">Sorun giderme</a></li><li><a href="/docs/surum-notlari/">Sürüm notları</a></li></ul>
+          <p class="nav-group">Başlangıç</p><ul><li><a href="/docs/kurulum-windows/">Windows'a kurulum</a></li><li><a href="/docs/kurulum-docker/">Docker ile kurulum</a></li><li><a href="/docs/google-baglantisi/">Google'a bağlanma</a></li><li><a href="/docs/pagespeed-anahtari/">PageSpeed anahtarı</a></li></ul><p class="nav-group">Ekranlar</p><ul><li><a href="/docs/projeler/">Projeler</a></li><li><a href="/docs/panel/">Panel</a></li><li class="current" aria-current="page"><a href="/docs/arama-performansi/">Arama performansı</a></li><li><a href="/docs/siralama-takibi/">Sıralama takibi</a></li><li><a href="/docs/firsatlar/">Fırsatlar</a></li><li><a href="/docs/kayitli-kelimeler/">Kayıtlı kelimeler</a></li><li><a href="/docs/analytics/">Analytics</a></li><li><a href="/docs/site-denetimi/">Site denetimi</a></li><li><a href="/docs/dizin-durumu/">Dizin durumu</a></li><li><a href="/docs/raporlar/">Raporlar ve şablonlar</a></li><li><a href="/docs/proje-bilgisi/">Proje bilgisi</a></li><li><a href="/docs/ayarlar/">Ayarlar</a></li></ul><p class="nav-group">Yardım ve başvuru</p><ul><li><a href="/docs/yardim/">Yardım</a></li><li><a href="/docs/denetim-kurallari/">Denetim kuralları</a></li><li><a href="/docs/ajan-kurulumu/">Ajan kurulumu</a></li><li><a href="/docs/sorun-giderme/">Sorun giderme</a></li><li><a href="/docs/surum-notlari/">Sürüm notları</a></li></ul>
         </details>
       </aside>
       <article id="icerik" data-page="arama-performansi">
@@ -1126,17 +1222,17 @@
 <p><strong>Filtreler.</strong> <strong>Dönem</strong>: Son 7 gün, Son 28 gün (varsayılan), Son 3 ay. <strong>Arama türü</strong>: Web, Görsel, Video, Haber. <strong>Cihaz</strong>: Tüm cihazlar, Mobil, Bilgisayar, Tablet. <strong>Ülke</strong> listesinde Google'ın o dönem için bildirdiği ülkeler çıkar. <strong>Mülkü değiştir</strong> sizi proje ayarlarına götürür.</p>
 <p><strong>Dört toplam kartı.</strong> <strong>Tıklama</strong>, <strong>Gösterim</strong>, <strong>Tıklama oranı</strong> (gösterimlerin yüzde kaçı tıklandı) ve <strong>Ortalama sıra</strong>. Ortalama sırada küçük sayı iyidir, 1 en üst sıradır. Her kart, önceki döneme göre ne kadar değiştiğini de gösterir.</p>
 <p><strong>Günlük değişim grafiği.</strong> Toplamları gün gün gösterir. Üstteki düğmelerle dört ölçü arasında geçiş yaparsınız.</p>
-<p><strong>Cihazlar, Ülkeler, Arama görünümü.</strong> Üç küçük karttır. Ülkelerde ilk altısı görünür. Arama görünümü zengin sonuç türlerini sayar. Zengin sonuç, aramada ürün ya da video gibi ek bilgiyle çıkan sonuçtur. İlk beşi açıktır, gerisi &quot;Diğer görünümler&quot; altında toplanır.</p>
+<p><strong>Cihazlar, Ülkeler, Arama görünümü.</strong> Üç küçük karttır. Ülkelerde ilk altısı görünür. Arama görünümü zengin sonuç türlerini sayar. Zengin sonuç, aramada ürün ya da video gibi ek bilgiyle çıkan sonuçtur. İlk beşi görünür, gerisi &quot;Diğer görünümler&quot; altında toplanır.</p>
 <p><strong>Dört sekme.</strong></p>
 <ul><li><strong>Sıra 5-20 (N)</strong>: Google'da 5 ile 20. sıra arasında çıkan, en çok gösterilen sorgular.</li><li><strong>Sorgular</strong>: aramalara göre tablo.</li><li><strong>Sayfalar</strong>: sayfalara göre tablo.</li><li><strong>Sayfa çakışmaları</strong>: aynı aramada birden fazla sayfanızın yarıştığı durumlar.</li></ul>
 <p><strong>Hızlı filtreler.</strong> <strong>İlk 10'da</strong>, <strong>Hiç tıklanmayan</strong>, <strong>Tıklama oranı düşük</strong>, <strong>Tıklama alanlar</strong>, <strong>Sıra 5-10</strong>, <strong>Sıra 11-20</strong>. Tıklama oranı düşük, ilk sayfada çıkan, en az 100 gösterim alan ve oranı yüzde 2'nin altında kalan sorgu demektir.</p>
 <p><strong>Satır menüsü.</strong> Her satırın sağındaki üç noktada şunlar var: <strong>Sayfayı yeni sekmede aç</strong>, <strong>Adresi kopyala</strong>, <strong>Kelimeyi kopyala</strong>, <strong>Kelime olarak kaydet</strong>. Kaydettikleriniz Kayıtlı kelimeler ekranına gider.</p>
-<p><strong>Dışa aktarma.</strong> <strong>E-Tablolar'a aktar</strong> ve <strong>CSV indir</strong>. Ekrandaki tabloyu filtreleriyle birlikte indirir. Sayfa çakışmaları sekmesinde bu düğmeler yok.</p>
+<p><strong>Dışa aktarma.</strong> <strong>E-Tablolar'a aktar</strong> ve <strong>CSV indir</strong> düğmeleri ekrandaki tabloyu filtreleriyle birlikte dışa aktarır. Sayfa çakışmaları sekmesinde bu düğmeler yoktur.</p>
 <h2 id="nasil-kullanilir">Nasıl kullanılır</h2>
-<ol><li><strong>Son 28 gün</strong> ile başlayın. Büyük bir düşüş varsa <strong>Son 3 ay</strong> seçin. Grafikte düşüşün hangi gün başladığını görün.</li><li><strong>Sıra 5-20</strong> sekmesini açın. Google sizi zaten gösteriyor ama kimse tıklamıyor. En çok gösterilen ilk üç sorgunun sayfasını açın. Başlığı ve ilk paragrafı o aramaya göre düzeltin.</li><li><strong>Sorgular</strong> sekmesinde <strong>Tıklama oranı düşük</strong> düğmesine basın. Sıranız iyi ama tıklayan yok. Sorun büyük ihtimalle başlık ve açıklamadadır.</li><li>Bir sayfanın hangi aramalarda çıktığını görmek için <strong>Sayfalar</strong> sekmesinde <strong>Arama performansında ara</strong> deyin.</li><li>İzlemek istediğiniz sorguları <strong>Kelime olarak kaydet</strong> ile işaretleyin.</li></ol>
+<ol><li><strong>Son 28 gün</strong> ile başlayın. Büyük bir düşüş varsa <strong>Son 3 ay</strong> seçin. Grafikte düşüşün hangi gün başladığını görün.</li><li><strong>Sıra 5-20</strong> sekmesini açın. Google sizi zaten gösteriyor ama az kişi tıklıyor. En çok gösterilen ilk üç sorgunun sayfasını açın. Başlığı ve ilk paragrafı o aramaya göre düzeltin.</li><li><strong>Sorgular</strong> sekmesinde <strong>Tıklama oranı düşük</strong> düğmesine basın. Sıranız iyi ama tıklayan yok. Sorun büyük ihtimalle başlık ve açıklamadadır.</li><li>Bir sayfanın hangi aramalarda çıktığını görmek için <strong>Sayfalar</strong> sekmesinde <strong>Arama performansında ara</strong> deyin.</li><li>İzlemek istediğiniz sorguları <strong>Kelime olarak kaydet</strong> ile işaretleyin.</li></ol>
 <h2 id="sayilar-nasil-hesaplanir">Sayılar nasıl hesaplanır</h2>
 <p>Google veriyi üç gün geç verir. Aralık bu yüzden bugünde değil, üç gün öncesinde biter. Önceki dönem, aynı uzunlukta ve bu aralığın hemen öncesindeki dönemdir. Tıklama ve gösterimdeki değişimi yüzde, tıklama oranındaki değişimi puan olarak görürsünüz.</p>
-<p>Toplam kartları gerçek site toplamıdır. Tablolar ise aynı aramada çıkan her sayfayı ayrı sayar. Sayfa tablosunu toplarsanız karttan büyük sayı bulursunuz. Bu hata değildir.</p>
+<p>Toplam kartları sitenin gerçek toplamıdır. Tablolar ise aynı aramada çıkan her sayfayı ayrı sayar. Sayfa tablosunu toplarsanız karttan büyük bir sayı bulursunuz. Bu hata değildir.</p>
 <p>Google tek seferde en fazla 1.000 satır verir. Tablo altında &quot;bu liste tam değil&quot; notu varsa liste kesilmiştir. Sıra 5-20 listesi en fazla 100 satırdır.</p>
 <p>Çakışma analizi 28 güne bakar. Yalnızca en az 100 gösterim alan aramaları inceler. Bir sayfanın katılması için en az 10 gösterim ve yüzde 20 pay gerekir. Google'ın en çok gösterdiği sayfa &quot;tercih edilen&quot; sayılır.</p>
 <h2 id="sik-sorulanlar">Sık sorulanlar</h2>
@@ -1146,10 +1242,13 @@
 <p><strong>Aradığım sorgu listede yok.</strong> Google çok az aranan sorguları gizler. Küçük sitelerde sorgu satırı hiç olmayabilir.</p>
 <p><strong>Çakışma varsa sayfaları birleştireyim mi?</strong> Çoğu zaman hayır. Önce hangi sayfanın cevap vermesini istediğinize karar verin. Sonra iç bağlantıları o sayfaya yöneltin.</p>
 <h2 id="sinirlar">Sınırlar</h2>
-<p>Discover ve Google Haberler türleri yok. Arama hacmi ve rakip sırası da yok. Veri 16 aydan eskiye gitmez. Daha eskisi için Sıralama takibi ekranındaki arşive bakın.</p> <nav class="pager" aria-label="Önceki ve sonraki sayfa"><a class="pager-prev" rel="prev" href="/docs/panel/"><span>Önceki</span><strong>Panel</strong></a><a class="pager-next" rel="next" href="/docs/siralama-takibi/"><span>Sonraki</span><strong>Sıralama takibi</strong></a></nav>
+<p>Discover ve Google Haberler arama türleri yer almaz. Arama hacmi ve rakip sırası da yoktur. Veri 16 aydan eskiye gitmez. Daha eskisi için Sıralama takibi ekranındaki arşive bakın.</p> <nav class="pager" aria-label="Önceki ve sonraki sayfa"><a class="pager-prev" rel="prev" href="/docs/panel/"><span>Önceki</span><strong>Panel</strong></a><a class="pager-next" rel="next" href="/docs/siralama-takibi/"><span>Sonraki</span><strong>Sıralama takibi</strong></a></nav>
         <p class="meta">
           Son güncelleme: 23 Ekim 2026. Bir hata görürseniz
-          <a href="https://github.com/ucsahinn/seotracker/issues"
+          <a
+            href="https://github.com/ucsahinn/seotracker/issues"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub'da bildirin</a
           >.
         </p>
@@ -1158,10 +1257,25 @@
     </main>
     <footer>
       <div class="wrap">
+        <p class="star">
+          Bir yıldız, başkalarının da bu ücretsiz aracı bulmasına yardım eder.
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub'da yıldız verin</a
+          >
+        </p>
         <span>seowatcher, MIT lisansı.</span>
         <span
           ><a href="/">Ana sayfa</a> &nbsp;
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          &nbsp;
           <a href="/docs/surum-notlari/">Sürüm notları</a></span
         >
       </div>

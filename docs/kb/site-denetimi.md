@@ -18,7 +18,7 @@ Uygulama sitenizi kendi tarayıcısıyla gezer (sayfaları tek tek açıp okuyan
 - **Kaç sayfa taransın?**: en az 10, en çok 10.000, varsayılan 50. 500'den büyük sayı yazarsanız uygulama onay ister.
 - **Sayfa hızını da ölç**: varsayılan olarak kapalıdır. Açarsanız her sayfa telefonda ve bilgisayarda ölçülür. Ölçümü Google Lighthouse (Google'ın sayfa ölçüm aracı) yapar.
 
-PageSpeed anahtarınız (Google'ın hız ölçümü için verdiği ücretsiz kod) yoksa hız ölçümü en çok 50 sayfayla sınırlanır. Tümünü ölçmek için **Ayarlar**'dan ücretsiz bir anahtar ekleyin.
+PageSpeed anahtarınız (Google'ın hız ölçümü için verdiği ücretsiz kod) yoksa hız ölçümü en çok 50 sayfayla sınırlanır. Tümünü ölçmek için **Ayarlar** ekranından ücretsiz bir anahtar ekleyin.
 
 **Önceki denetimler.** Her denetimin tarihi, durumu, sayfa sayısı ve sorun sayıları listelenir. Sorun sayıları yüz sayfa başınadır. Böylece 50 ve 500 sayfalık denetimleri karşılaştırabilirsiniz. Satır menüsündeki **Denetimi sil** her şeyi siler ve geri alınamaz.
 
@@ -32,7 +32,7 @@ PageSpeed anahtarınız (Google'ın hız ölçümü için verdiği ücretsiz kod
 
 - **Sorunlu sayfalar**: kartı açınca nedeni ve **Nasıl düzeltilir?** kutusunu görürsünüz. Düğmeler: **URL'leri kopyala**, **CSV indir**, **Sayfalar sekmesinde göster**.
 - **Sayfalar**: taranan her sayfa. Hızlı filtreler: **Dizine kapalı**, **Yavaş** (1 saniyeden uzun), **Alt metni eksik**, **Site haritasında yok**.
-- **Dizin durumu**: Google'ın her sayfa için cevabı. Ayrı kılavuzda anlatılır.
+- **Dizin durumu**: Google'ın her sayfa için yanıtı. Ayrı kılavuzda anlatılır.
 - **Hız**: yalnızca hız ölçümü açıksa görünür.
 
 ## Nasıl kullanılır
@@ -52,7 +52,7 @@ Puan aralıkları şöyle: 90 ve üstü çok iyi, 70 ve üstü iyi, 50 ve üstü
 
 **Tarama.** Uygulama sitenizi yormaz. Aynı anda en çok iki istek gönderir. Site "çok fazla istek" (429) derse bekler. Toplam bekleme 30 dakikayı geçerse tarama durur.
 
-**Hız ölçümü.** 212 sayfalık bir sitede denetimin tamamı 35 dakika sürdü. Bunun yaklaşık 24 dakikası hız ölçümüydü. Günlük kota biterse ölçüm durur, o ana kadarki sonuçlar kalır. Şu durumlarda sorun yazılır:
+**Hız ölçümü.** 212 sayfalık bir sitede denetimin tamamı 35 dakika sürdü. Bunun yaklaşık 24 dakikası hız ölçümüydü. Günlük kota dolarsa ölçüm durur, o ana kadarki sonuçlar kalır. Şu durumlarda sorun yazılır:
 
 - Ana içerik 4 saniyeden geç görünür (LCP).
 - İçerik 0,25'ten çok kayar (CLS).
@@ -61,13 +61,13 @@ Puan aralıkları şöyle: 90 ve üstü çok iyi, 70 ve üstü iyi, 50 ve üstü
 
 ## Sık sorulanlar
 
-**Denetim Google'ın gördüğünü mü gösterir?** Hayır. Uygulamanın tarayıcısı sayfayı kendi okur. Google'ın cevabı **Dizin durumu** sekmesindedir.
+**Denetim Google'ın gördüğünü mü gösterir?** Hayır. Uygulamanın tarayıcısı sayfayı kendi okur. Google'ın yanıtı **Dizin durumu** sekmesindedir.
 
 **Puan 98, neden 100 değil?** Tek bir sorun bile puanı 99'da tutar.
 
 **"Engellendik" uyarısı ne demek?** Sitenizin bot koruması tarayıcıyı durdurmuş. Güvenlik duvarında "seotracker-audit" adına izin verin.
 
-**Hız ölçümü yarıda kaldı.** Genelde PageSpeed anahtarı yoktur ya da günlük kota bitmiştir. **Ayarlar**'daki kota kartı nedeni yazar.
+**Hız ölçümü yarıda kaldı.** Genelde PageSpeed anahtarı yoktur ya da günlük kota dolmuştur. **Ayarlar** ekranındaki kota kartı nedeni yazar.
 
 **Aynı anda kaç denetim çalışır?** En çok üç. Hız ölçen iki denetim birbirini yavaşlatır.
 

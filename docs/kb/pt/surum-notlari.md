@@ -10,7 +10,7 @@ A versão mais recente é a **2.4.1**, de 23 de outubro de 2026. Seus dados são
 
 - **Abre em qualquer computador.** O componente do Windows que faltava vem junto com o instalador, então o aplicativo abre de primeira mesmo em um computador recém-formatado.
 - **Atualiza-se sozinho.** Baixa a nova versão, verifica e instala em segundo plano. **Güncelle** (Atualizar) no menu da barra de tarefas está sempre a um clique.
-- **Telas mais simples.** Cada tela vazia mostra um único próximo passo; menus e textos têm leitura natural.
+- **Telas mais simples.** Cada tela vazia mostra um único próximo passo; menus e textos foram reescritos para ficar mais claros.
 - **Um novo visual.** Fundo preto, destaque laranja e o logo de olho; o aplicativo e o site agora têm a mesma aparência.
 
 ## Windows

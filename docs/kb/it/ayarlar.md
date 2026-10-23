@@ -1,12 +1,12 @@
 ---
 title: Impostazioni
-description: Da qui si gestiscono il tema, la chiave di accesso a Google, la chiave PageSpeed, i limiti d'uso e il controllo degli aggiornamenti. È l'unica schermata di impostazioni per l'intera installazione.
+description: Tema, chiave di accesso a Google, chiave PageSpeed, limiti d'uso e aggiornamenti. È l'unica schermata di impostazioni dell'intera installazione.
 screen: Ayarlar
 route: /settings
 updated: 2026-10-22
 ---
 
-Qui si vede dove gestire il collegamento con Google, la chiave per la velocità e l'aggiornamento.
+Qui si gestiscono il collegamento con Google, la chiave per la misurazione della velocità e gli aggiornamenti.
 
 Nella schermata **Ayarlar** (Impostazioni) si regola ciò che riguarda l'intera installazione. Le impostazioni specifiche del progetto (nome, dominio, proprietà di Search Console e di Analytics) stanno nella pagina **Proje ayarları** (Impostazioni del progetto) di ciascun progetto. Qui si gestiscono la chiave di accesso necessaria per collegarsi a Google, la chiave PageSpeed, il tema e il controllo degli aggiornamenti. A sinistra ci sono le sezioni **Görünüm** (Aspetto), **Google**, **Hizmet hesabı** (Account di servizio), **Hız ölçümü** (Misurazione della velocità), **Sınırlar** (Limiti), **Hakkında** (Informazioni) e **Sürüm notları** (Note di versione). Nel titolo di ogni sezione c'è un badge che ne mostra lo stato.
 
@@ -36,9 +36,9 @@ Il badge dice **Kayıtlı** (Registrato) oppure **Kullanılmıyor** (Non in uso)
 - Report per progetto: 10.000, modelli: 10.
 - Report più grande: 500.000 byte.
 
-Lo stato di ogni scheda è **Yeterli** (Sufficiente), **Azalıyor** (In calo, oltre il 70 per cento), **Neredeyse doldu** (Quasi esaurito, oltre il 90 per cento) oppure **Bilinmiyor** (Sconosciuto).
+Lo stato di ogni scheda è **Yeterli** (Sufficiente), **Azalıyor** (In esaurimento, oltre il 70 per cento usato), **Neredeyse doldu** (Quasi esaurito, oltre il 90 per cento usato) oppure **Bilinmiyor** (Sconosciuto).
 
-**Hakkında.** La riga **Sürüm** (Versione) mostra la versione (come v2.3.0). L'interruttore **Güncellemeleri kontrol et** (Controlla gli aggiornamenti) è attivo per impostazione predefinita. Se è attivo, l'app chiede a GitHub l'ultima versione al massimo una volta al giorno. In tal caso compare anche il pulsante **Şimdi kontrol et** (Controlla ora). Se c'è una versione nuova, compare il collegamento **Değişiklikler** (Modifiche). Per le installazioni Docker compare anche il comando da copiare: `git pull && docker compose up -d --build`. Nel pacchetto Windows la schermata rimanda a **Güncelle** (Aggiorna) nell'icona della barra delle applicazioni. Se l'aggiornamento automatico è attivo, la nuova versione si installa da sola.
+**Hakkında.** La riga **Sürüm** (Versione) mostra la versione (per esempio v2.3.0). L'interruttore **Güncellemeleri kontrol et** (Controlla gli aggiornamenti) è attivo per impostazione predefinita. Se è attivo, l'app chiede a GitHub l'ultima versione al massimo una volta al giorno. In tal caso compare anche il pulsante **Şimdi kontrol et** (Controlla ora). Se c'è una versione nuova, compare il collegamento **Değişiklikler** (Modifiche). Per le installazioni Docker compare anche il comando da copiare: `git pull && docker compose up -d --build`. Nel pacchetto Windows la schermata rimanda a **Güncelle** (Aggiorna) nell'icona della barra delle applicazioni. Se l'aggiornamento automatico è attivo, la nuova versione si installa da sola.
 
 **Sürüm notları.** Elenca che cosa è cambiato in ogni versione.
 
@@ -46,7 +46,7 @@ Lo stato di ogni scheda è **Yeterli** (Sufficiente), **Azalıyor** (In calo, ol
 
 1. Alla prima installazione, inserire nella sezione **Google** l'ID client e la chiave segreta. Poi inserire la chiave PageSpeed nella sezione **Hız ölçümü**. Una volta salvate entrambe, si passa al progetto e si sceglie la proprietà.
 2. Una volta al mese guardare la sezione **Sınırlar**. La quota che si vede "Azalıyor" è di solito il limite del controllo URL.
-3. Nella sezione **Hakkında**, se c'è una versione nuova, aggiornare. Le note di versione dicono che cosa è cambiato. Il controllo degli aggiornamenti è l'unica connessione che dal computer esce verso un posto diverso da Google. Per non usarla, disattivare l'interruttore.
+3. Nella sezione **Hakkında**, se c'è una versione nuova, aggiornare. Le note di versione dicono che cosa è cambiato. Il controllo degli aggiornamenti è l'unico collegamento in uscita dal computer verso un indirizzo diverso da Google. Per non usarla, disattivare l'interruttore.
 4. Se bisogna cambiare la chiave di accesso a Google (per esempio con un nuovo progetto Cloud), fare clic su **Değiştir** e incollare i nuovi valori. I collegamenti esistenti non funzionano con la nuova chiave. Nei progetti serve **Yeniden bağlan** (Ricollega).
 
 ## Domande frequenti

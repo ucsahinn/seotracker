@@ -6,7 +6,7 @@
     <title>Ranking-Verfolgung | seowatcher-Anleitung</title>
     <meta
       name="description"
-      content="Sie sehen die durchschnittliche Google-Position Ihrer Suchanfragen Tag für Tag. Weil die Daten auf diesem Computer gespeichert werden, können Sie auch weiter zurückblicken als Googles 16-Monate-Grenze."
+      content="Durchschnittliche Google-Position Ihrer Suchanfragen Tag für Tag, auch über Googles 16-Monate-Grenze hinaus, weil die Daten auf Ihrem Computer liegen."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -49,6 +49,7 @@
       href="https://seowatcher.io/docs/siralama-takibi/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -78,7 +79,7 @@
     />
     <meta
       property="og:description"
-      content="Sie sehen die durchschnittliche Google-Position Ihrer Suchanfragen Tag für Tag. Weil die Daten auf diesem Computer gespeichert werden, können Sie auch weiter zurückblicken als Googles 16-Monate-Grenze."
+      content="Durchschnittliche Google-Position Ihrer Suchanfragen Tag für Tag, auch über Googles 16-Monate-Grenze hinaus, weil die Daten auf Ihrem Computer liegen."
     />
     <meta
       property="og:image"
@@ -108,7 +109,7 @@
     />
     <meta
       name="twitter:description"
-      content="Sie sehen die durchschnittliche Google-Position Ihrer Suchanfragen Tag für Tag. Weil die Daten auf diesem Computer gespeichert werden, können Sie auch weiter zurückblicken als Googles 16-Monate-Grenze."
+      content="Durchschnittliche Google-Position Ihrer Suchanfragen Tag für Tag, auch über Googles 16-Monate-Grenze hinaus, weil die Daten auf Ihrem Computer liegen."
     />
     <meta
       name="twitter:image"
@@ -145,7 +146,7 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/de/docs/ranking-verfolgung/#article",
             "headline": "Ranking-Verfolgung",
-            "description": "Sie sehen die durchschnittliche Google-Position Ihrer Suchanfragen Tag für Tag. Weil die Daten auf diesem Computer gespeichert werden, können Sie auch weiter zurückblicken als Googles 16-Monate-Grenze.",
+            "description": "Durchschnittliche Google-Position Ihrer Suchanfragen Tag für Tag, auch über Googles 16-Monate-Grenze hinaus, weil die Daten auf Ihrem Computer liegen.",
             "url": "https://seowatcher.io/de/docs/ranking-verfolgung/",
             "inLanguage": "de",
             "dateModified": "2026-10-23",
@@ -184,7 +185,7 @@
       }
     </script>
     <script src="/assets/docs.js?v=2.4.1" defer></script>
-    <meta name="theme-color" content="#272c3b" />
+    <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
         font-family: "Geist";
@@ -774,6 +775,95 @@
       footer a:hover {
         color: var(--fg);
       }
+      /* The one ask on the page: quiet, one line, the accent only on the link. */
+      footer .star {
+        flex-basis: 100%;
+        margin: 0 0 4px;
+        text-wrap: pretty;
+      }
+      footer .star a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      footer .star a:hover {
+        color: var(--accent-link);
+        text-decoration-color: var(--accent-link);
+      }
+
+      /* Headings enter as they scroll into view. docs.js adds .hx (and .in
+         once seen) only when motion is allowed, so without script, under
+         reduced motion and with "stop motion" on, they are simply there.
+         h1 wipes in from the left, h2 rises while an amber stroke draws
+         along its rule, h3 rises a little. */
+      article .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease),
+          clip-path 760ms var(--ease),
+          filter 620ms var(--ease);
+      }
+      article h1.hx {
+        clip-path: inset(-10% 100% -10% 0);
+        filter: blur(6px);
+      }
+      article h2.hx,
+      article h3.hx {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      article h3.hx {
+        transform: translateY(6px);
+      }
+      article h2.hx {
+        position: relative;
+      }
+      article h2.hx::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 56px;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 700ms var(--ease) 160ms;
+      }
+      article .hx.in {
+        opacity: 1;
+        transform: none;
+      }
+      article h1.hx.in {
+        clip-path: inset(-10% 0 -10% 0);
+        filter: none;
+      }
+      article h2.hx.in::before {
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        article .hx,
+        article h2.hx::before {
+          opacity: 1;
+          transform: none;
+          clip-path: none;
+          filter: none;
+          transition: none;
+        }
+      }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
 
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
@@ -1218,7 +1308,11 @@
         <nav class="topnav" aria-label="Website">
           <a class="hide" href="/de/">Startseite</a>
           <a class="hide" href="/de/docs/">Anleitung</a>
-          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+          <a
+            class="hide"
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub</a
           >
           <details class="langs">
@@ -1245,7 +1339,7 @@
                       <circle cx="8.4" cy="7" r="2.7" fill="#e30a17" />
                       <polygon
                         fill="#fff"
-                        points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"
+                        points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"
                       /></svg></span
                   >Türkçe</a
                 >
@@ -1268,12 +1362,12 @@
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#fff"
-                        stroke-width="3.6"
+                        stroke-width="4.2"
                       />
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#c8102e"
-                        stroke-width="2"
+                        stroke-width="2.6"
                       /></svg></span
                   >English</a
                 >
@@ -1354,6 +1448,8 @@
           <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            target="_blank"
+            rel="noopener noreferrer"
             ><span class="long">Für Windows herunterladen</span
             ><span class="short">Download</span></a
           >
@@ -1410,7 +1506,7 @@
             <li><a href="/de/docs/projektinfo/">Projektinfo</a></li>
             <li><a href="/de/docs/einstellungen/">Einstellungen</a></li>
           </ul>
-          <p class="nav-group">Nachschlagen</p>
+          <p class="nav-group">Hilfe und Nachschlagen</p>
           <ul>
             <li><a href="/de/docs/hilfe/">Hilfe</a></li>
             <li><a href="/de/docs/audit-regeln/">Audit-Regeln</a></li>
@@ -1425,9 +1521,9 @@
       <article id="icerik" data-page="siralama-takibi">
         <h1>Ranking-Verfolgung</h1>
         <p class="lede">
-          Sie sehen die durchschnittliche Google-Position Ihrer Suchanfragen Tag
-          für Tag. Weil die Daten auf diesem Computer gespeichert werden, können
-          Sie auch weiter zurückblicken als Googles 16-Monate-Grenze.
+          Durchschnittliche Google-Position Ihrer Suchanfragen Tag für Tag, auch
+          über Googles 16-Monate-Grenze hinaus, weil die Daten auf Ihrem
+          Computer liegen.
         </p>
         <p>
           Sie sehen, wie Ihre Suchanfragen im Lauf der Zeit steigen und fallen.
@@ -1489,7 +1585,7 @@
           <strong>Değişim</strong> (Veränderung),
           <strong>Gösterim</strong> (Impressionen),
           <strong>Tıklama</strong> (Klicks), <strong>Gün</strong> (Tage). Die
-          Spalte <strong>Gün</strong> sagt, an wie vielen Tagen des gewählten
+          Spalte <strong>Gün</strong> zeigt, an wie vielen Tagen des gewählten
           Zeitraums die Suchanfrage erschien. Eine Suchanfrage, die in 90 Tagen
           nur an 3 Tagen erscheint, wird selten gesucht. In der Zelle
           Veränderung steht „Yükseldi 2,4“ (Gestiegen 2,4) oder „Düştü 1,1“
@@ -1507,11 +1603,11 @@
           zeigt dieselbe Suchanfrage auf dem anderen Bildschirm.
         </p>
         <p>
-          <strong>Leere Zustände.</strong> Ist das Archiv leer, steht dort
-          „Henüz hangi kelimeyle arandığınız bilinmiyor“ (Noch ist nicht
-          bekannt, mit welchen Suchbegriffen man Sie findet), und die
-          Schaltfläche <strong>Arama performansını aç</strong> (Suchleistung
-          öffnen) erscheint. Die Liste ist auf die 100 am häufigsten angezeigten
+          <strong>Leeres Archiv.</strong> Ist das Archiv leer, steht dort „Henüz
+          hangi kelimeyle arandığınız bilinmiyor“ (Noch ist nicht bekannt, mit
+          welchen Suchbegriffen man Sie findet), und die Schaltfläche
+          <strong>Arama performansını aç</strong> (Suchleistung öffnen)
+          erscheint. Die Liste ist auf die 100 am häufigsten angezeigten
           Suchanfragen begrenzt. Gibt es mehr, steht darunter ein Hinweis.
         </p>
         <h2 id="so-gehen-sie-vor">So gehen Sie vor</h2>
@@ -1557,10 +1653,10 @@
           stärker. <strong>Gün</strong> ist die Zahl der Tage mit Daten.
         </p>
         <p>
-          Die Veränderung ergibt sich so: Wir ziehen die Position dieses
-          Zeitraums von der Durchschnittsposition des vorherigen Zeitraums ab.
-          Ist das Ergebnis positiv, sind Sie gestiegen. Der vorherige Zeitraum
-          ist gleich lang und endet unmittelbar vor diesem Zeitraum.
+          Die Veränderung ist die Durchschnittsposition des vorherigen Zeitraums
+          minus die Position dieses Zeitraums. Ist das Ergebnis positiv, sind
+          Sie gestiegen. Der vorherige Zeitraum ist gleich lang und endet
+          unmittelbar vor diesem Zeitraum.
         </p>
         <p>
           Die Liste enthält die 100 am häufigsten angezeigten Suchanfragen. Im
@@ -1603,9 +1699,9 @@
           Haben Sie die App gerade erst installiert, können Sie beim ersten
           Öffnen höchstens 480 Tage zurückgehen. Seltene Suchanfragen, die
           Google ausblendet, gelangen auch nicht ins Archiv. Wird das Archiv
-          gelöscht, ist der Verlauf weg. Ein Beispiel dafür ist das Entfernen
-          des Docker-Datenspeichers oder des Datenordners. Eine Sicherung müssen
-          Sie selbst anlegen.
+          gelöscht, ist der Verlauf weg. Das geschieht zum Beispiel, wenn Sie
+          den Docker-Datenspeicher oder den Datenordner entfernen. Eine
+          Sicherung müssen Sie selbst anlegen.
         </p>
         <nav class="pager" aria-label="Vorherige und nächste Seite">
           <a class="pager-prev" rel="prev" href="/de/docs/suchleistung/"
@@ -1616,7 +1712,10 @@
         </nav>
         <p class="meta">
           Zuletzt aktualisiert: 23 Oktober 2026. Fehler entdeckt?
-          <a href="https://github.com/ucsahinn/seotracker/issues"
+          <a
+            href="https://github.com/ucsahinn/seotracker/issues"
+            target="_blank"
+            rel="noopener noreferrer"
             >Auf GitHub melden</a
           >.
         </p>
@@ -1642,10 +1741,25 @@
     </main>
     <footer>
       <div class="wrap">
+        <p class="star">
+          Ein Stern hilft anderen, ein kostenloses Werkzeug zu finden.
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Auf GitHub mit einem Stern markieren</a
+          >
+        </p>
         <span>seowatcher, MIT-Lizenz.</span>
         <span
           ><a href="/de/">Startseite</a> &nbsp;
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          &nbsp;
           <a href="/de/docs/versionshinweise/">Versionshinweise</a></span
         >
       </div>

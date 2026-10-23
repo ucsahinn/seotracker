@@ -15,7 +15,7 @@ Bir şey ters giderse ilk buraya bakın. Bu ekran kurulumunuzu kontrol eder, eks
 - **Durumu yeniden kontrol et**: aşağıdaki kartı tazeler.
 - **Tanılama paketi indir**: sorun bildirirken göndereceğiniz dosyayı indirir. İçinde gizli değer yoktur.
 - **Kılavuzu aç**: seowatcher.io'daki kılavuzu açar.
-- **seowatcher.io**: uygulamanın sitesini açar; indirme sayfası ve kılavuz oradadır.
+- **seowatcher.io**: uygulamanın sitesini açar. İndirme sayfası ve kılavuz oradadır.
 - **Sürüm notları**: Ayarlar'daki sürüm notlarına gider.
 - **Kurulum istemini kopyala**: yapay zekâ asistanınıza (uygulamada "ajan") yapıştıracağınız kurulum metnini kopyalar.
 - **Ajan kurulumu**: asistan bağlantısı ekranına gider.
@@ -39,7 +39,7 @@ Bir şey ters giderse ilk buraya bakın. Bu ekran kurulumunuzu kontrol eder, eks
 
 ## Sık sorulanlar
 
-**"Google girişi" satırı neden sarı?** Henüz Google erişim anahtarı girilmemiştir. Google bağlanmadan bu satır sarı kalır. Google'a bağlanma kılavuzunu izleyin.
+**"Google girişi" satırı neden sarı?** Henüz Google erişim anahtarı girilmemiştir. Google'a bağlanana kadar bu satır sarı kalır. Google'a bağlanma kılavuzunu izleyin.
 
 **"Giriş ve erişim" satırında "parolasız tek kullanıcı" yazıyor.** Bu normaldir. Uygulama yalnızca kendi bilgisayarınızdan açılır. Dışarıya açmak isterseniz önüne kendi şifreli girişinizi koymanız gerekir.
 

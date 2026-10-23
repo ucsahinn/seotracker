@@ -4,15 +4,15 @@ description: L'elenco completo delle 95 regole che il controllo del sito verific
 updated: 2026-10-22
 ---
 
-Il controllo del sito esamina ogni pagina e il sito nel suo insieme con 95 regole. Le regole si dividono in tre gruppi. **Kritik** (Critico, 10 regole) indica i casi in cui Google non riesce a vedere o a capire la pagina: da correggere per primi. **Uyarı** (Avviso, 48 regole) fa calare a poco a poco le posizioni e i clic. **Bilgi** (Informazione, 37 regole) sono piccole occasioni di miglioramento. Nel punteggio il peso è 40 per le regole critiche, 15 per gli avvisi, 3 per le informazioni. Conta anche quante pagine una regola interessa.
+Il controllo del sito esamina ogni pagina e il sito nel suo insieme con 95 regole. Le regole si dividono in tre gruppi. **Kritik** (Critico, 10 regole): Google non riesce a vedere o a capire la pagina, da correggere per primi. **Uyarı** (Avviso, 48 regole): fanno calare a poco a poco posizioni e clic. **Bilgi** (Informazione, 37 regole): piccole occasioni di miglioramento. Nel punteggio il peso è 40 per le regole critiche, 15 per gli avvisi, 3 per le informazioni. Conta anche quante pagine una regola interessa.
 
-Nella tabella si vedono, per ogni regola, il nome mostrato nella schermata, che cosa significa e il primo passo per correggerla. Il testo completo della correzione sta nella scheda del rilievo nella schermata. L'ultima colonna è l'identificativo della regola, che compare nel file CSV e nelle risposte dell'assistente.
+Nella tabella si vedono, per ogni regola, il nome mostrato nella schermata, che cosa significa e il primo passo per correggerla. Il testo completo della correzione sta nella scheda del problema nella schermata. L'ultima colonna è l'identificativo della regola, che compare nel file CSV e nelle risposte dell'assistente.
 
 ## Termini ricorrenti
 
 - **canonical**: il modo per dire a Google "questo è l'indirizzo principale".
 - **noindex**: l'etichetta che nasconde la pagina dalla ricerca.
-- **hreflang**: l'etichetta della versione linguistica. Indica la corrispondente della pagina in altre lingue.
+- **hreflang**: l'etichetta della versione linguistica. Indica la versione della stessa pagina in un'altra lingua.
 - **meta description**: il breve riassunto grigio sotto il titolo nel risultato di ricerca.
 - **dati strutturati** (JSON-LD): una nota nascosta che dice a Google che cosa è la pagina (un prodotto, un articolo). Può far comparire nella ricerca elementi in più, come stelle o immagini (risultato arricchito).
 - **robots.txt**: il file che dice a Google a quali pagine può accedere. La riga "Disallow" è la riga che impone un divieto.
@@ -22,7 +22,7 @@ Nella tabella si vedono, per ogni regola, il nome mostrato nella schermata, che 
 - **title** (etichetta del titolo): il titolo che compare nella scheda e nella ricerca. **H1**: il titolo principale della pagina. **testo alternativo (alt)**: breve testo che descrive che cosa mostra un'immagine.
 - **nofollow**: l'etichetta che dice "non seguire questo collegamento". **head**: la parte alta del codice sorgente della pagina.
 - **LCP**: il tempo con cui compare il contenuto principale della pagina. **CLS**: lo spostamento del contenuto durante il caricamento. **INP**: il tempo di risposta a un clic.
-- **Lighthouse**: lo strumento di Google per misurare le pagine. **certificato SSL**: il documento che rende https (indirizzo sicuro) il sito.
+- **Lighthouse**: lo strumento di Google per misurare le pagine. **certificato SSL**: il certificato che permette al sito di usare https (indirizzo sicuro).
 
 ## Critico
 
@@ -72,7 +72,7 @@ Nella tabella si vedono, per ogni regola, il nome mostrato nella schermata, che 
 | La pagina indicata come indirizzo principale non si apre                              | La pagina indicata come indirizzo principale dà un errore.                           | Cambiare l'indirizzo principale con una pagina funzionante oppure ripubblicare la destinazione.                                 | canonical-to-broken               |
 | Come indirizzo principale è indicata una pagina che reindirizza                       | L'indirizzo principale è un indirizzo che viene reindirizzato a un'altra pagina.     | Rendere indirizzo principale la pagina finale del reindirizzamento.                                                             | canonical-to-redirect             |
 | Google vede nella pagina l'etichetta di esclusione (noindex)                          | La risposta di Google: ha visto noindex nella pagina.                                | Confrontare il codice sorgente della pagina con quello che vede Google. Un plugin o un modello potrebbe aggiungere l'etichetta. | google-blocked-by-meta            |
-| Google ha scelto un altro indirizzo come principale                                   | A Google non è piaciuto l'indirizzo principale indicato.                             | Guardare l'indirizzo scelto da Google. Renderlo principale oppure distinguere le due pagine.                                    | google-chose-different-canonical  |
+| Google ha scelto un altro indirizzo come principale                                   | Google non ha accettato l'indirizzo principale indicato.                             | Guardare l'indirizzo scelto da Google. Renderlo principale oppure distinguere le due pagine.                                    | google-chose-different-canonical  |
 | Codice della versione linguistica (hreflang) non valido                               | È scritto un codice inesistente come "en-UK".                                        | Scrivere il codice giusto. Per il Regno Unito "en-GB".                                                                          | hreflang-invalid-code             |
 | Tra le versioni linguistiche la pagina non elenca se stessa (hreflang)                | La pagina elenca le altre lingue ma non se stessa.                                   | Aggiungere all'elenco l'indirizzo della pagina stessa, con il suo codice lingua.                                                | hreflang-missing-self             |
 | La pagina disattiva i propri collegamenti con una direttiva robots                    | La pagina ha disattivato il seguito dei propri collegamenti (nofollow).              | Se si vuole che i collegamenti siano seguiti, eliminare il testo "nofollow".                                                    | nofollow-page                     |
@@ -125,7 +125,7 @@ Nella tabella si vedono, per ogni regola, il nome mostrato nella schermata, che 
 | Testi dei collegamenti privi di significato come "Clicca qui"                   | Il testo del collegamento non dice dove porta.                                    | Sostituire il testo del collegamento con l'argomento della pagina di destinazione.                                 | generic-anchor-text          |
 | Troppi collegamenti nella pagina                                                | Nella pagina ci sono centinaia di collegamenti.                                   | Limitare menu e piè di pagina alle pagine più importanti.                                                          | too-many-links               |
 | Collegamenti nofollow verso le pagine del proprio sito                          | Un collegamento verso le proprie pagine ha nofollow.                              | Eliminare da questi collegamenti l'espressione rel="nofollow".                                                     | internal-nofollow-links      |
-| Nella pagina manca l'etichetta canonical (indirizzo principale)                 | Google tira a indovinare l'indirizzo principale.                                  | Nella sezione head aggiungere la riga canonical che indica l'indirizzo completo della pagina stessa.               | missing-canonical            |
+| Nella pagina manca l'etichetta canonical (indirizzo principale)                 | Google deve indovinare l'indirizzo principale.                                    | Nella sezione head aggiungere la riga canonical che indica l'indirizzo completo della pagina stessa.               | missing-canonical            |
 | La pagina è nascosta dai risultati di ricerca (noindex)                         | La pagina è nascosta dalla ricerca, di proposito o per errore.                    | Se deve comparire nella ricerca, togliere noindex.                                                                 | noindex-page                 |
 | La pagina indica un'altra pagina come indirizzo principale                      | La pagina si dichiara una copia.                                                  | Se deve comparire nella ricerca con il proprio nome, rendere l'indirizzo principale il proprio indirizzo.          | canonicalized-page           |
 | Nelle versioni linguistiche manca la versione predefinita (x-default)           | Per chi ha una lingua che non corrisponde non c'è una versione predefinita.       | Aggiungere all'elenco hreflang la riga x-default.                                                                  | hreflang-missing-x-default   |
@@ -136,7 +136,7 @@ Nella tabella si vedono, per ogni regola, il nome mostrato nella schermata, che 
 
 ## Come funzionano le regole
 
-La maggior parte delle regole agisce per pagina ed elenca ogni pagina che interessa. Alcune riguardano il sito nel suo insieme e producono un solo rilievo. Sono le regole su robots.txt, quelle sulla mappa del sito, "Il sito non ha etichette per la condivisione sui social" e "Il sito non ha alcun dato strutturato".
+La maggior parte delle regole agisce per pagina ed elenca ogni pagina che interessa. Alcune riguardano il sito nel suo insieme e producono un solo problema. Sono le regole su robots.txt, quelle sulla mappa del sito, "Il sito non ha etichette per la condivisione sui social" e "Il sito non ha alcun dato strutturato".
 
 Le regole il cui nome inizia con "Google" non vengono dalla scansione dell'app. Nascono dalle risposte ottenute da Google nella scheda Stato dell'indice. Se in quella scheda non è mai stata posta alcuna domanda, queste regole non agiscono mai. Le regole sulla velocità (LCP, CLS, INP, punteggio SEO) agiscono solo quando "Sayfa hızını da ölç" (Misura anche la velocità delle pagine) è attivo, e in base alla misurazione su telefono.
 

@@ -5,7 +5,7 @@ kind: nasil-yapilir
 updated: 2026-10-22
 ---
 
-Sonunda uygulama Docker'da (uygulamaları kapalı kutu içinde çalıştıran program) çalışacak ve `http://localhost:3001` adresinde açık olacak. Windows kullanıyorsanız tek dosyalık Windows kurulumu çok daha kolay. Bu yol Mac, Linux ve zaten Docker kullananlar için. İlk açılış birkaç dakika sürer, çünkü uygulama kutunun (konteynerin) içinde derlenir. Sonrakiler saniyeler sürer.
+Bu sayfayı bitirince uygulama Docker'da (uygulamaları kapalı kutu içinde çalıştıran program) çalışır ve `http://localhost:3001` adresinde açılır. Windows kullanıyorsanız tek dosyalık Windows kurulumu çok daha kolay. Bu yol Mac, Linux ve zaten Docker kullananlar için. İlk açılış birkaç dakika sürer, çünkü uygulama kutunun (konteynerin) içinde derlenir. Sonraki açılışlar saniyeler sürer.
 
 ## Gerekenler
 
@@ -28,7 +28,7 @@ cd seotracker
 docker compose up -d
 ```
 
-Hepsi bu kadar. `.env` dosyası gerekmez. Şifreleme anahtarı ve asistan parolası ilk açılışta kendiliğinden üretilir ve Docker'ın veri deposunda (birim) saklanır.
+Başka bir şey gerekmez, `.env` dosyası da yok. Şifreleme anahtarı ve asistan parolası ilk açılışta kendiliğinden üretilir ve Docker'ın veri deposunda (birim) saklanır.
 
 3. İlerlemeyi görmek isterseniz şunu yazın:
 
@@ -38,32 +38,32 @@ docker compose logs -f
 
 4. Bekleyin. Günlükte "Building client + server" satırı ilk derlemedir. `docker compose ps` çıktısında durum **healthy** olana kadar bekleyin, sonra tarayıcıda `http://localhost:3001` adresini açın.
 
-Sıradaki adım Google bağlantısı kılavuzu. Docker'da Google'a vereceğiniz iki yönlendirme adresi şunlar:
+Sonraki adım: Google'a bağlanma kılavuzu. Docker'da Google'a vereceğiniz iki yönlendirme adresi şunlar:
 
 - `http://localhost:3001/api/gsc/oauth/callback`
 - `http://localhost:3001/api/ga4/oauth/callback`
 
 ### Güncelleme
 
-Şu iki komutu yazın:
+Şu iki komutu çalıştırın:
 
 ```sh
 git pull
 docker compose up -d --build
 ```
 
-**Ayarlar → Hakkında** yeni sürümü haber verir ve bu iki komutu gösterir. Veriniz `seotracker_data` adlı veri deposunda kaldığı için güncelleme onu silmez.
+**Ayarlar → Hakkında** yeni sürümü haber verir ve bu iki komutu gösterir. Veriniz `seotracker_data` adlı veri deposunda durduğu için güncelleme onu silmez.
 
 ### Durdurma ve kaldırma
 
-- Durdurmak: `docker compose stop`
-- Yeniden başlatmak: `docker compose up -d`
-- Kutuyu kaldırıp veriyi tutmak: `docker compose down`
-- Veriyi de silmek: `docker compose down -v`. Bu komut veritabanını, Google bağlantılarını ve raporları kalıcı olarak siler.
+- Durdurmak için: `docker compose stop`
+- Yeniden başlatmak için: `docker compose up -d`
+- Kutuyu kaldırıp veriyi korumak için: `docker compose down`
+- Veriyi de silmek için: `docker compose down -v`. Bu komut veritabanını, Google bağlantılarını ve raporları kalıcı olarak siler.
 
 ### Yedekleme
 
-Veriniz `seotracker_data` deposunda, kutunun içindeki `/app/.wrangler` yolundadır. Yedek almak için üç komutu sırayla yazın:
+Veriniz `seotracker_data` deposunda, kutunun içindeki `/app/.wrangler` yolundadır. Yedek almak için üç komutu sırayla çalıştırın:
 
 ```sh
 docker compose stop
@@ -75,7 +75,7 @@ Geri yüklerken aynı komutta `tar czf` yerine `tar xzf` kullanın. Veri deposun
 
 ### Ayarlar (isteğe bağlı)
 
-Hiçbir ayar zorunlu değil. Değiştirmek isterseniz proje klasörüne bir `.env` dosyası koyun. Sonra `docker compose up -d --force-recreate seotracker` yazın.
+Hiçbir ayar zorunlu değil. Değiştirmek isterseniz proje klasörüne bir `.env` dosyası koyun. Sonra `docker compose up -d --force-recreate seotracker` komutunu çalıştırın.
 
 | Ayar adı                               | Ne işe yarar                                                                                                   |
 | -------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
@@ -91,23 +91,23 @@ Hiçbir ayar zorunlu değil. Değiştirmek isterseniz proje klasörüne bir `.en
 
 - `docker compose ps` çıktısında durum **healthy** olmalı. İlk açılışta buna ulaşmak beş dakikaya kadar sürebilir.
 - `curl.exe http://127.0.0.1:3001/api/health` (Windows'ta; Mac ve Linux'ta `curl`) çıktısı "status":"ok" ile başlamalı. Bu adresi tarayıcıda da açabilirsiniz.
-- Tarayıcıda `http://localhost:3001` açılmalı. **Yardım** ekranındaki durum kartı "Her şey yolunda." demeli. Google bağlanmadan önce "Google girişi" satırı dikkat ister. Bu normaldir.
+- Tarayıcıda `http://localhost:3001` açılmalı. **Yardım** ekranındaki durum kartı "Her şey yolunda." demeli. Google'a bağlanmadan önce "Google girişi" satırı uyarı gösterir. Bu normaldir.
 
 ## Sık sorulanlar
 
-**İlk açılış neden uzun?** Uygulama kutunun içinde derlenir. Sonraki açılışlarda derleme atlanır.
+**İlk açılış neden uzun sürüyor?** Uygulama kutunun içinde derlenir. Sonraki açılışlarda derleme atlanır.
 
-**`.env.example` dosyası nerede?** Yok. Üst projeden gelen o dosya bu sürümde olmayan şeyleri anlatıyordu. Tam liste yukarıdaki tabloda ve `docs/ENVIRONMENT.md` dosyasında.
+**`.env.example` dosyası nerede?** Yok. Üst projeden gelen o dosya bu sürümde bulunmayan özellikleri anlatıyordu. Tam liste yukarıdaki tabloda ve `docs/ENVIRONMENT.md` dosyasında.
 
-**İnternete açabilir miyim?** Uygulama kimlik sormaz. Önüne kendi kimlik doğrulamanızı koymadan açmayın. `ALLOWED_HOST` ayarlarsanız uygulama sağlık kontrolünde sizi uyarır.
+**İnternete açabilir miyim?** Uygulama kimlik sormaz. Önüne kendi kimlik doğrulamanızı koymadan internete açmayın. `ALLOWED_HOST` ayarlarsanız uygulama sağlık kontrolünde sizi uyarır.
 
 **Asistanımın parolasını nereden alırım?** Uygulamadaki **Ajan kurulumu** ekranı komutu gösterir: `docker compose exec -T seotracker cat /app/.wrangler/mcp-token`. Git Bash kullanıyorsanız başına `MSYS_NO_PATHCONV=1` ekleyin.
 
 ## Sorun çıkarsa
 
-- **"Bind for 127.0.0.1:3001 failed" yazıyor.** Adres numarası dolu. Proje klasörüne `PORT=3002` satırlı bir `.env` koyun ve kutuyu yeniden oluşturun. Windows'ta Not Defteri dosyayı `.env.txt` diye kaydedebilir. PowerShell'de `Set-Content -Encoding ascii .env 'PORT=3002'` güvenlidir.
+- **"Bind for 127.0.0.1:3001 failed" yazıyor.** Adres numarası (port) başka bir programda kullanılıyor. Proje klasörüne `PORT=3002` satırlı bir `.env` koyun ve kutuyu yeniden oluşturun. Windows'ta Not Defteri dosyayı `.env.txt` adıyla kaydedebilir. PowerShell'de `Set-Content -Encoding ascii .env 'PORT=3002'` güvenlidir.
 - **Durum "unhealthy".** `docker compose logs --tail 50` son satırları gösterir. Derleme sırasında bellek bittiyse Docker Desktop'a daha fazla bellek verin.
 - **Google bağlantısı "yapılandırılmamış" diyor.** `BETTER_AUTH_SECRET` 32 karakterden kısaysa Google kapalı kalır. Elle verdiyseniz uzatın. Vermediyseniz veri deposundaki `instance-secret` dosyası bozulmuş olabilir.
-- **Güncellemeden sonra Google bağlantısı koptu.** `BETTER_AUTH_SECRET` değişmiş ya da veri deposu yeniden oluşturulmuştur. Proje ayarlarında **Yeniden bağlan** deyin.
+- **Güncellemeden sonra Google bağlantısı koptu.** `BETTER_AUTH_SECRET` değişmiş ya da veri deposu yeniden oluşturulmuş olabilir. Proje ayarlarında **Yeniden bağlan** deyin.
 
 <!-- Kaynaklar: docs/SELF_HOSTING_DOCKER.md; docs/ENVIRONMENT.md; compose.yaml; docker-entrypoint.sh; src/lib/selfhost-preflight.ts; src/routes/_app/ai.tsx -->

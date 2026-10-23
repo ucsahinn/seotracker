@@ -15,6 +15,7 @@
     <link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/docs/configurar-agente/" />
     <link rel="alternate" hreflang="x-default" href="https://seowatcher.io/docs/ajan-kurulumu/" />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -57,9 +58,9 @@
     <meta name="twitter:description" content="Claude Code, Codex ya da Cursor'ı uygulamaya bağlarsınız. Adresi, parolayı, 33 aracı, 6 hazır görev şablonunu ve hangisinin Google hakkı harcadığını burada bulursunuz." />
     <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
     <meta name="color-scheme" content="dark" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en","de","fr","it","pt"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/docs/ajan-kurulumu/#article","headline":"Ajan kurulumu","description":"Claude Code, Codex ya da Cursor'ı uygulamaya bağlarsınız. Adresi, parolayı, 33 aracı, 6 hazır görev şablonunu ve hangisinin Google hakkı harcadığını burada bulursunuz.","url":"https://seowatcher.io/docs/ajan-kurulumu/","inLanguage":"tr","dateModified":"2026-10-23","articleSection":"Başvuru","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/docs/ajan-kurulumu/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/docs/ajan-kurulumu/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/"},{"@type":"ListItem","position":2,"name":"Kılavuz","item":"https://seowatcher.io/docs/"},{"@type":"ListItem","position":3,"name":"Ajan kurulumu","item":"https://seowatcher.io/docs/ajan-kurulumu/"}]}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en","de","fr","it","pt"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/docs/ajan-kurulumu/#article","headline":"Ajan kurulumu","description":"Claude Code, Codex ya da Cursor'ı uygulamaya bağlarsınız. Adresi, parolayı, 33 aracı, 6 hazır görev şablonunu ve hangisinin Google hakkı harcadığını burada bulursunuz.","url":"https://seowatcher.io/docs/ajan-kurulumu/","inLanguage":"tr","dateModified":"2026-10-23","articleSection":"Yardım ve başvuru","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/docs/ajan-kurulumu/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/docs/ajan-kurulumu/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/"},{"@type":"ListItem","position":2,"name":"Kılavuz","item":"https://seowatcher.io/docs/"},{"@type":"ListItem","position":3,"name":"Ajan kurulumu","item":"https://seowatcher.io/docs/ajan-kurulumu/"}]}]}</script>
     <script src="/assets/docs.js?v=2.4.1" defer></script>
-    <meta name="theme-color" content="#272c3b" />
+    <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
         font-family: "Geist";
@@ -649,6 +650,95 @@
       footer a:hover {
         color: var(--fg);
       }
+      /* The one ask on the page: quiet, one line, the accent only on the link. */
+      footer .star {
+        flex-basis: 100%;
+        margin: 0 0 4px;
+        text-wrap: pretty;
+      }
+      footer .star a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      footer .star a:hover {
+        color: var(--accent-link);
+        text-decoration-color: var(--accent-link);
+      }
+
+      /* Headings enter as they scroll into view. docs.js adds .hx (and .in
+         once seen) only when motion is allowed, so without script, under
+         reduced motion and with "stop motion" on, they are simply there.
+         h1 wipes in from the left, h2 rises while an amber stroke draws
+         along its rule, h3 rises a little. */
+      article .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease),
+          clip-path 760ms var(--ease),
+          filter 620ms var(--ease);
+      }
+      article h1.hx {
+        clip-path: inset(-10% 100% -10% 0);
+        filter: blur(6px);
+      }
+      article h2.hx,
+      article h3.hx {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      article h3.hx {
+        transform: translateY(6px);
+      }
+      article h2.hx {
+        position: relative;
+      }
+      article h2.hx::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 56px;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 700ms var(--ease) 160ms;
+      }
+      article .hx.in {
+        opacity: 1;
+        transform: none;
+      }
+      article h1.hx.in {
+        clip-path: inset(-10% 0 -10% 0);
+        filter: none;
+      }
+      article h2.hx.in::before {
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        article .hx,
+        article h2.hx::before {
+          opacity: 1;
+          transform: none;
+          clip-path: none;
+          filter: none;
+          transition: none;
+        }
+      }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
 
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
@@ -1093,13 +1183,19 @@
         <nav class="topnav" aria-label="Site">
           <a class="hide" href="/">Ana sayfa</a>
           <a class="hide" href="/docs/">Kılavuz</a>
-          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+          <a
+            class="hide"
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub</a
           >
-          <details class="langs"><summary aria-label="Dil: Türkçe"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"/></svg></span><span class="code">TR</span></summary><ul><li><a href="/docs/ajan-kurulumu/" lang="tr" hreflang="tr" aria-current="page"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"/></svg></span>Türkçe</a></li><li><a href="/en/docs/agent-setup/" lang="en" hreflang="en"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="3.6"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2"/></svg></span>English</a></li><li><a href="/de/docs/assistent-einrichten/" lang="de" hreflang="de"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg></span>Deutsch</a></li><li><a href="/fr/docs/installation-assistant/" lang="fr" hreflang="fr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg></span>Français</a></li><li><a href="/it/docs/configurazione-assistente/" lang="it" hreflang="it"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg></span>Italiano</a></li><li><a href="/pt/docs/configurar-agente/" lang="pt" hreflang="pt"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#ff0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.6" fill="#ffcc00"/><circle cx="8" cy="7" r="1.5" fill="#ff0000"/></svg></span>Português</a></li></ul></details>
+          <details class="langs"><summary aria-label="Dil: Türkçe"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"/></svg></span><span class="code">TR</span></summary><ul><li><a href="/docs/ajan-kurulumu/" lang="tr" hreflang="tr" aria-current="page"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"/></svg></span>Türkçe</a></li><li><a href="/en/docs/agent-setup/" lang="en" hreflang="en"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2.6"/></svg></span>English</a></li><li><a href="/de/docs/assistent-einrichten/" lang="de" hreflang="de"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg></span>Deutsch</a></li><li><a href="/fr/docs/installation-assistant/" lang="fr" hreflang="fr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg></span>Français</a></li><li><a href="/it/docs/configurazione-assistente/" lang="it" hreflang="it"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg></span>Italiano</a></li><li><a href="/pt/docs/configurar-agente/" lang="pt" hreflang="pt"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#ff0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.6" fill="#ffcc00"/><circle cx="8" cy="7" r="1.5" fill="#ff0000"/></svg></span>Português</a></li></ul></details>
           <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            target="_blank"
+            rel="noopener noreferrer"
             ><span class="long">Windows için indir</span
             ><span class="short">İndir</span></a
           >
@@ -1116,21 +1212,21 @@
       <aside class="side" aria-label="Kılavuz">
         <details class="side-dd" open>
           <summary>Kılavuz</summary>
-          <p class="nav-group">Başlangıç</p><ul><li><a href="/docs/kurulum-windows/">Windows'a kurulum</a></li><li><a href="/docs/kurulum-docker/">Docker ile kurulum</a></li><li><a href="/docs/google-baglantisi/">Google'a bağlanma</a></li><li><a href="/docs/pagespeed-anahtari/">PageSpeed anahtarı</a></li></ul><p class="nav-group">Ekranlar</p><ul><li><a href="/docs/projeler/">Projeler</a></li><li><a href="/docs/panel/">Panel</a></li><li><a href="/docs/arama-performansi/">Arama performansı</a></li><li><a href="/docs/siralama-takibi/">Sıralama takibi</a></li><li><a href="/docs/firsatlar/">Fırsatlar</a></li><li><a href="/docs/kayitli-kelimeler/">Kayıtlı kelimeler</a></li><li><a href="/docs/analytics/">Analytics</a></li><li><a href="/docs/site-denetimi/">Site denetimi</a></li><li><a href="/docs/dizin-durumu/">Dizin durumu</a></li><li><a href="/docs/raporlar/">Raporlar ve şablonlar</a></li><li><a href="/docs/proje-bilgisi/">Proje bilgisi</a></li><li><a href="/docs/ayarlar/">Ayarlar</a></li></ul><p class="nav-group">Başvuru</p><ul><li><a href="/docs/yardim/">Yardım</a></li><li><a href="/docs/denetim-kurallari/">Denetim kuralları</a></li><li class="current" aria-current="page"><a href="/docs/ajan-kurulumu/">Ajan kurulumu</a></li><li><a href="/docs/sorun-giderme/">Sorun giderme</a></li><li><a href="/docs/surum-notlari/">Sürüm notları</a></li></ul>
+          <p class="nav-group">Başlangıç</p><ul><li><a href="/docs/kurulum-windows/">Windows'a kurulum</a></li><li><a href="/docs/kurulum-docker/">Docker ile kurulum</a></li><li><a href="/docs/google-baglantisi/">Google'a bağlanma</a></li><li><a href="/docs/pagespeed-anahtari/">PageSpeed anahtarı</a></li></ul><p class="nav-group">Ekranlar</p><ul><li><a href="/docs/projeler/">Projeler</a></li><li><a href="/docs/panel/">Panel</a></li><li><a href="/docs/arama-performansi/">Arama performansı</a></li><li><a href="/docs/siralama-takibi/">Sıralama takibi</a></li><li><a href="/docs/firsatlar/">Fırsatlar</a></li><li><a href="/docs/kayitli-kelimeler/">Kayıtlı kelimeler</a></li><li><a href="/docs/analytics/">Analytics</a></li><li><a href="/docs/site-denetimi/">Site denetimi</a></li><li><a href="/docs/dizin-durumu/">Dizin durumu</a></li><li><a href="/docs/raporlar/">Raporlar ve şablonlar</a></li><li><a href="/docs/proje-bilgisi/">Proje bilgisi</a></li><li><a href="/docs/ayarlar/">Ayarlar</a></li></ul><p class="nav-group">Yardım ve başvuru</p><ul><li><a href="/docs/yardim/">Yardım</a></li><li><a href="/docs/denetim-kurallari/">Denetim kuralları</a></li><li class="current" aria-current="page"><a href="/docs/ajan-kurulumu/">Ajan kurulumu</a></li><li><a href="/docs/sorun-giderme/">Sorun giderme</a></li><li><a href="/docs/surum-notlari/">Sürüm notları</a></li></ul>
         </details>
       </aside>
       <article id="icerik" data-page="ajan-kurulumu">
-        <h1>Ajan kurulumu</h1><p class="lede">Claude Code, Codex ya da Cursor'ı uygulamaya bağlarsınız. Adresi, parolayı, 33 aracı, 6 hazır görev şablonunu ve hangisinin Google hakkı harcadığını burada bulursunuz.</p><p>Sonunda yapay zekâ asistanınız uygulamaya bağlı olacak ve ilk komutunu çalıştırmış olacak. Bağlayınca &quot;siteyi denetle ve bir rapor yaz&quot; diyebilirsiniz. Asistan Search Console verisini okur, denetimi çalıştırır, raporu <strong>Raporlar</strong> ekranına kaydeder. Bu bağlantının adı asistan bağlantısı (MCP). Asistan onunla uygulamanın araçlarını (örneğin list_projects) çağırır. Bağlamak zorunlu değil. Bağlamazsanız uygulamadan hiçbir şey eksilmez.</p>
+        <h1>Ajan kurulumu</h1><p class="lede">Claude Code, Codex ya da Cursor'ı uygulamaya bağlarsınız. Adresi, parolayı, 33 aracı, 6 hazır görev şablonunu ve hangisinin Google hakkı harcadığını burada bulursunuz.</p><p>Bu sayfayı bitirince yapay zekâ asistanınız uygulamaya bağlanır ve ilk komutunu çalıştırır. Bağlayınca &quot;siteyi denetle ve bir rapor yaz&quot; diyebilirsiniz. Asistan Search Console verisini okur, denetimi çalıştırır, raporu <strong>Raporlar</strong> ekranına kaydeder. Bu bağlantının adı asistan bağlantısı (MCP). Asistan onunla uygulamanın araçlarını (örneğin list_projects) çağırır. Bağlamak zorunlu değil. Bağlamazsanız uygulamadan hiçbir şey eksilmez.</p>
 <h2 id="gerekenler">Gerekenler</h2>
-<ul><li>Çalışan uygulama ve Search Console bağlı bir proje.</li><li>Claude Code, Codex, Cursor, VS Code Copilot ya da Gemini CLI'dan biri. Uygulama ilk üçü için hazır kurulum metni verir.</li><li>Uygulamada <strong>Ajan kurulumu</strong> ekranı. Sol menüde Yapay zeka bölümünde.</li></ul>
+<ul><li>Çalışan uygulama ve Search Console bağlı bir proje.</li><li>Claude Code, Codex, Cursor, VS Code Copilot ya da Gemini CLI'dan biri. Uygulama ilk üçü için hazır kurulum metni verir.</li><li>Uygulamada <strong>Ajan kurulumu</strong> ekranı. Sol menüde <strong>Ajan</strong> grubunda durur.</li></ul>
 <h2 id="adimlar">Adımlar</h2>
-<ol><li><strong>Ajan kurulumu</strong> ekranını açın. Üstteki rozet <strong>Henüz bağlanmadı</strong> ya da <strong>Bağlandı</strong> der. Bağlandıysa yanında &quot;Claude Code, son çağrı 2 dk önce&quot; gibi bir yazı olur. Altında bağlantı adresi ve kopyalama düğmesi var: <code>http://127.0.0.1:3001/mcp</code> (Docker'da <code>localhost</code>).</li><li>Parolayı bulun. Uygulama bağlantıyı izinsiz çağrılara karşı bir parolayla korur ve parolayı ekranda göstermez. Windows paketinde parola veri klasöründeki <code>mcp-token</code> dosyasındadır. Görev çubuğu menüsünden <strong>Veri klasörünü aç</strong> deyin. Docker'da şu komutu yazın: <code>docker compose exec -T seotracker cat /app/.wrangler/mcp-token</code> (Git Bash'te başına <code>MSYS_NO_PATHCONV=1</code> ekleyin).</li><li>Asistanınıza uygun bölümü izleyin.</li></ol>
+<ol><li><strong>Ajan kurulumu</strong> ekranını açın. Üstteki rozet <strong>Henüz bağlanmadı</strong> ya da <strong>Bağlandı</strong> der. Bağlandıysa yanında &quot;Claude Code, son çağrı 2 dk önce&quot; gibi bir yazı olur. Altında bağlantı adresi ve kopyalama düğmesi var: <code>http://127.0.0.1:3001/mcp</code> (Docker'da <code>localhost</code>).</li><li>Parolayı bulun. Uygulama bağlantıyı izinsiz çağrılara karşı bir parolayla korur ve parolayı ekranda göstermez. Windows paketinde parola veri klasöründeki <code>mcp-token</code> dosyasındadır. Görev çubuğu menüsünden <strong>Veri klasörünü aç</strong> deyin. Docker'da şu komutu çalıştırın: <code>docker compose exec -T seotracker cat /app/.wrangler/mcp-token</code> (Git Bash'te başına <code>MSYS_NO_PATHCONV=1</code> ekleyin).</li><li>Asistanınıza uygun bölümü izleyin.</li></ol>
 <h3 id="claude-code">Claude Code</h3>
-<p>Terminalde (komut penceresinde) şunu yazın. <code>&lt;parola&gt;</code> yerine kendi parolanızı koyun:</p>
+<p>Terminalde (komut penceresinde) şu komutu çalıştırın. <code>&lt;parola&gt;</code> yerine kendi parolanızı koyun:</p>
 <div class="code"><pre><code>claude mcp add --transport http --scope user seotracker http://127.0.0.1:3001/mcp --header &quot;Authorization: Bearer &lt;parola&gt;&quot;</code></pre></div>
 <p>Sonra Claude Code içinde <code>/mcp</code> yazın ve <strong>Reconnect</strong> deyin. Hazır görev şablonları <code>/seo-audit</code> gibi eğik çizgiyle çağrılır.</p>
 <h3 id="codex">Codex</h3>
-<p>Şu komutu yazın:</p>
+<p>Şu komutu çalıştırın:</p>
 <div class="code"><pre><code>codex mcp add seotracker --url http://127.0.0.1:3001/mcp --bearer-token-env-var SEOTRACKER_MCP_AUTH</code></pre></div>
 <p>Sonra <code>SEOTRACKER_MCP_AUTH</code> adlı ortam değişkenine (bilgisayarın hatırladığı ayar) parolayı yazın. Windows'ta PowerShell ile: <code>[Environment]::SetEnvironmentVariable('SEOTRACKER_MCP_AUTH', '&lt;parola&gt;', 'User')</code>. Şablonlar <code>$seo-audit</code> gibi çağrılır.</p>
 <h3 id="cursor">Cursor</h3>
@@ -1143,31 +1239,34 @@
     }
   }
 }</code></pre></div>
-<p>Ortam değişkenini Codex'teki gibi ayarlayın. Bu ayar bir Cursor kurulumunda henüz denenmedi. Cursor sürümünüz başka bir alan isterse Cursor'ın belgesine bakın.</p>
+<p>Ortam değişkenini Codex'teki gibi ayarlayın. Bu ayarı gerçek bir Cursor kurulumunda henüz denemedik. Cursor sürümünüz başka bir alan isterse Cursor'ın belgesine bakın.</p>
 <h3 id="hazir-kurulum-metni">Hazır kurulum metni</h3>
-<p>Daha kolay yol bu. Metni şöyle alın:</p>
+<p>Daha kolay yol budur. Metni şöyle alın:</p>
 <ol><li>Ekrandaki <strong>Ajan kurulum istemini kopyala</strong> düğmesine basın. Codex için ayrı düğme var.</li><li>Metni asistanınıza yapıştırın. Asistan bağlantıyı kurar, &quot;whoami&quot; ve &quot;list_projects&quot; ile dener, şablonları yükler.</li></ol>
 <p><strong>Kurulum istemi (sıfırdan kurulum)</strong> ise uygulamanın çalışmasından Google bağlantısına kadar her şeyi asistana yaptırır. Windows paketini de Docker kurulumunu da tanır.</p>
 <h3 id="hazir-gorev-sablonlarini-yukleme">Hazır görev şablonlarını yükleme</h3>
 <p><strong>Beceriler</strong> sekmesi altı hazır görev şablonunu listeler. Asistana &quot;seotracker becerilerini kur&quot; deyin. Kurulum metni nereye kopyalanacağını bilir. Güncellemek için <strong>Güncelleme istemini kopyala</strong> düğmesine basın.</p>
 <h2 id="araclar">Araçlar</h2>
 <p>Toplam 33 araç var. &quot;Yazar&quot; sütunu uygulamadaki veriyi değiştirenleri, &quot;Kota&quot; sütunu Google'ın günlük hakkından harcayanları işaretler. Yazan araçlar sizin onayınız olmadan çağrılmamalı. İyi kurulmuş şablonlar sorar, ama uygulama sormaz.</p>
-<div class="tw"><table><thead><tr><th>Araç</th><th>Ne yapar</th><th>Yazar</th><th>Kota</th></tr></thead><tbody><tr><td><code>whoami</code></td><td>Hangi kurulum ve kullanıcı olduğunuzu söyler.</td><td></td><td></td></tr><tr><td><code>get_diagnostics</code></td><td>Sürümü, kurulum kontrollerini, tablo sayılarını, son 25 denetimi ve kota sayaçlarını verir.</td><td></td><td></td></tr><tr><td><code>list_projects</code></td><td>Projelerinizi sıralar. Her araç bir proje numarası ister.</td><td></td><td></td></tr><tr><td><code>create_project</code></td><td>Yeni proje açar.</td><td>Evet</td><td></td></tr><tr><td><code>get_project_context</code></td><td>Proje bilgisi ekranını okur.</td><td></td><td></td></tr><tr><td><code>update_project_context</code></td><td>Proje bilgisini değiştirir ve araştırma günlüğüne not düşer.</td><td>Evet</td><td></td></tr><tr><td><code>get_search_console_performance</code></td><td>Tıklama, gösterim, oran ve sırayı sorgu, sayfa, ülke, cihaz ya da tarihe göre verir.</td><td></td><td></td></tr><tr><td><code>get_search_opportunities</code></td><td>Search Console ve Analytics'ten fırsat listesi çıkarır.</td><td></td><td></td></tr><tr><td><code>get_cannibalization</code></td><td>Aynı aramada birbiriyle yarışan sayfaları gösterir.</td><td></td><td></td></tr><tr><td><code>get_ranking_history</code></td><td>Bilgisayarınızdaki sıralama arşivini verir, 16 aydan eskiyi tutmaz.</td><td></td><td></td></tr><tr><td><code>get_index_coverage</code></td><td>Daha önce kaydedilmiş Google dizin cevaplarını verir, Google'a sormaz.</td><td></td><td></td></tr><tr><td><code>inspect_urls</code></td><td>Google'a sayfaların durumunu sorar, çağrı başına 10 adres.</td><td>Evet</td><td>Günde 2.000, mülk başına</td></tr><tr><td><code>get_sitemaps</code></td><td>Search Console'daki site haritası durumunu gösterir.</td><td></td><td></td></tr><tr><td><code>run_site_audit</code></td><td>Site denetimini başlatır.</td><td>Evet</td><td>PageSpeed, hız ölçümü açıksa</td></tr><tr><td><code>get_audit_status</code></td><td>Denetimin hangi aşamada olduğunu söyler, takılan denetimi başarısız işaretleyebilir.</td><td></td><td></td></tr><tr><td><code>get_audit_issues</code></td><td>Bulunan sorunları düzeltme adımlarıyla verir.</td><td></td><td></td></tr><tr><td><code>get_audit_pages</code></td><td>Taranan sayfaları sıralar.</td><td></td><td></td></tr><tr><td><code>get_google_analytics_organic_overview</code></td><td>Aramadan gelen ziyaretlerin özetini ve önceki dönemi verir.</td><td></td><td></td></tr><tr><td><code>get_google_analytics_organic_landing_pages</code></td><td>Aramadan gelenlerin ilk girdiği sayfaları sıralar.</td><td></td><td></td></tr><tr><td><code>get_google_analytics_page_performance</code></td><td>Sayfaların görüntülenme ve etkileşimini verir.</td><td></td><td></td></tr><tr><td><code>get_google_analytics_traffic_acquisition</code></td><td>Ziyaretçilerin kanal, kaynak ve kampanyaya göre dağılımını verir.</td><td></td><td></td></tr><tr><td><code>get_google_analytics_key_events</code></td><td>Analytics'te anahtar olarak işaretlenen olayları verir.</td><td></td><td></td></tr><tr><td><code>get_google_analytics_ecommerce_performance</code></td><td>Ürün satışlarını verir.</td><td></td><td></td></tr><tr><td><code>get_google_analytics_site_search</code></td><td>Ziyaretçilerin sitenizdeki arama kutusuna yazdığı terimleri verir.</td><td></td><td></td></tr><tr><td><code>get_google_analytics_audience_breakdown</code></td><td>Ziyaretçileri cihaz, ülke, yeni ve geri dönen diye ayırır.</td><td></td><td></td></tr><tr><td><code>get_google_analytics_measurement_health</code></td><td>Ölçüm kurulumunu kontrol eder, rapor hakkı harcamaz.</td><td></td><td></td></tr><tr><td><code>list_saved_keywords</code></td><td>Kaydettiğiniz kelimeleri sıralar.</td><td></td><td></td></tr><tr><td><code>save_keywords</code></td><td>Kelime kaydeder.</td><td>Evet</td><td></td></tr><tr><td><code>list_reports</code></td><td>Raporlarınızı sıralar.</td><td></td><td></td></tr><tr><td><code>get_report</code></td><td>Bir raporu okur, istenirse HTML halini de verir.</td><td></td><td></td></tr><tr><td><code>save_report</code></td><td>Rapor kaydeder ya da var olanı günceller.</td><td>Evet</td><td></td></tr><tr><td><code>list_report_templates</code></td><td>Rapor şablonlarını okur.</td><td></td><td></td></tr><tr><td><code>save_report_template</code></td><td>Rapor şablonu kaydeder.</td><td>Evet</td><td></td></tr></tbody></table></div>
+<div class="tw"><table><thead><tr><th>Araç</th><th>Ne yapar</th><th>Yazar</th><th>Kota</th></tr></thead><tbody><tr><td><code>whoami</code></td><td>Hangi kurulum ve kullanıcı olduğunuzu söyler.</td><td></td><td></td></tr><tr><td><code>get_diagnostics</code></td><td>Sürümü, kurulum kontrollerini, tablo sayılarını, son 25 denetimi ve kota sayaçlarını verir.</td><td></td><td></td></tr><tr><td><code>list_projects</code></td><td>Projelerinizi sıralar. Her araç bir proje numarası ister.</td><td></td><td></td></tr><tr><td><code>create_project</code></td><td>Yeni proje açar.</td><td>Evet</td><td></td></tr><tr><td><code>get_project_context</code></td><td>Proje bilgisi ekranını okur.</td><td></td><td></td></tr><tr><td><code>update_project_context</code></td><td>Proje bilgisini değiştirir ve araştırma günlüğüne not düşer.</td><td>Evet</td><td></td></tr><tr><td><code>get_search_console_performance</code></td><td>Tıklama, gösterim, oran ve sırayı sorgu, sayfa, ülke, cihaz ya da tarihe göre verir.</td><td></td><td></td></tr><tr><td><code>get_search_opportunities</code></td><td>Search Console ve Analytics'ten fırsat listesi çıkarır.</td><td></td><td></td></tr><tr><td><code>get_cannibalization</code></td><td>Aynı aramada birbiriyle yarışan sayfaları gösterir.</td><td></td><td></td></tr><tr><td><code>get_ranking_history</code></td><td>Bilgisayarınızdaki sıralama arşivini verir; Google'ın 16 aylık sınırından eskisini de tutar.</td><td></td><td></td></tr><tr><td><code>get_index_coverage</code></td><td>Daha önce kaydedilmiş Google dizin cevaplarını verir, Google'a sormaz.</td><td></td><td></td></tr><tr><td><code>inspect_urls</code></td><td>Google'a sayfaların durumunu sorar, çağrı başına 10 adres.</td><td>Evet</td><td>Günde 2.000, mülk başına</td></tr><tr><td><code>get_sitemaps</code></td><td>Search Console'daki site haritası durumunu gösterir.</td><td></td><td></td></tr><tr><td><code>run_site_audit</code></td><td>Site denetimini başlatır.</td><td>Evet</td><td>PageSpeed, hız ölçümü açıksa</td></tr><tr><td><code>get_audit_status</code></td><td>Denetimin hangi aşamada olduğunu söyler, takılan denetimi başarısız işaretleyebilir.</td><td></td><td></td></tr><tr><td><code>get_audit_issues</code></td><td>Bulunan sorunları düzeltme adımlarıyla verir.</td><td></td><td></td></tr><tr><td><code>get_audit_pages</code></td><td>Taranan sayfaları sıralar.</td><td></td><td></td></tr><tr><td><code>get_google_analytics_organic_overview</code></td><td>Aramadan gelen ziyaretlerin özetini ve önceki dönemi verir.</td><td></td><td></td></tr><tr><td><code>get_google_analytics_organic_landing_pages</code></td><td>Aramadan gelenlerin ilk girdiği sayfaları sıralar.</td><td></td><td></td></tr><tr><td><code>get_google_analytics_page_performance</code></td><td>Sayfaların görüntülenme ve etkileşimini verir.</td><td></td><td></td></tr><tr><td><code>get_google_analytics_traffic_acquisition</code></td><td>Ziyaretçilerin kanal, kaynak ve kampanyaya göre dağılımını verir.</td><td></td><td></td></tr><tr><td><code>get_google_analytics_key_events</code></td><td>Analytics'te anahtar olarak işaretlenen olayları verir.</td><td></td><td></td></tr><tr><td><code>get_google_analytics_ecommerce_performance</code></td><td>Ürün satışlarını verir.</td><td></td><td></td></tr><tr><td><code>get_google_analytics_site_search</code></td><td>Ziyaretçilerin sitenizdeki arama kutusuna yazdığı terimleri verir.</td><td></td><td></td></tr><tr><td><code>get_google_analytics_audience_breakdown</code></td><td>Ziyaretçileri cihaz, ülke, yeni ve geri dönen diye ayırır.</td><td></td><td></td></tr><tr><td><code>get_google_analytics_measurement_health</code></td><td>Ölçüm kurulumunu kontrol eder, rapor hakkı harcamaz.</td><td></td><td></td></tr><tr><td><code>list_saved_keywords</code></td><td>Kaydettiğiniz kelimeleri sıralar.</td><td></td><td></td></tr><tr><td><code>save_keywords</code></td><td>Kelime kaydeder.</td><td>Evet</td><td></td></tr><tr><td><code>list_reports</code></td><td>Raporlarınızı sıralar.</td><td></td><td></td></tr><tr><td><code>get_report</code></td><td>Bir raporu okur, istenirse HTML halini de verir.</td><td></td><td></td></tr><tr><td><code>save_report</code></td><td>Rapor kaydeder ya da var olanı günceller.</td><td>Evet</td><td></td></tr><tr><td><code>list_report_templates</code></td><td>Rapor şablonlarını okur.</td><td></td><td></td></tr><tr><td><code>save_report_template</code></td><td>Rapor şablonu kaydeder.</td><td>Evet</td><td></td></tr></tbody></table></div>
 <p>Analytics araçları Google'ın Analytics rapor hakkından harcar (standart mülkte günde 200.000 birim). Bu hakkı uygulamada <strong>Ayarlar</strong> ekranındaki Sınırlar bölümünden izlersiniz.</p>
 <h2 id="hazir-gorev-sablonlari-beceriler">Hazır görev şablonları (beceriler)</h2>
-<div class="tw"><table><thead><tr><th>Şablon</th><th>Ne zaman kullanılır</th><th>Ne üretir</th></tr></thead><tbody><tr><td><code>seo-coach</code></td><td>&quot;Ne yapmalıyım&quot; diye sorunca. Yolu anlatır, sonraki adımı önerir.</td><td>Sohbet, gerekirse koçluk notu</td></tr><tr><td><code>seo-project-setup</code></td><td>Yeni projede. İşinizi, hedefinizi, rakiplerinizi, önemli sayfalarınızı sorar, Proje bilgisi ekranını doldurur.</td><td>Dolu proje bilgisi, kayıtlı kelimeler</td></tr><tr><td><code>seo-audit</code></td><td>&quot;Siteyi denetle&quot; deyince. Denetimi çalıştırır, Search Console ile birleştirir, &quot;bu hafta yapılacak tek iş&quot;i seçer.</td><td>Tek sayfalık denetim raporu</td></tr><tr><td><code>seo-triage</code></td><td>Ziyaret düşünce. Düşüşün gerçek olup olmadığına, nerede ve ne zaman olduğuna bakar.</td><td>Düşüş incelemesi raporu</td></tr><tr><td><code>seo-check-in</code></td><td>Ayda bir. Bu dönemi öncekiyle karşılaştırır.</td><td>Aylık kontrol raporu; her ay bir tane birikir</td></tr><tr><td><code>seo-report</code></td><td>Öteki şablonlar bitince. Tek dosyalık HTML rapor yazar ve kaydeder.</td><td><strong>Raporlar</strong> ekranında rapor</td></tr></tbody></table></div>
+<div class="tw"><table><thead><tr><th>Şablon</th><th>Ne zaman kullanılır</th><th>Ne üretir</th></tr></thead><tbody><tr><td><code>seo-coach</code></td><td>&quot;Ne yapmalıyım&quot; diye sorunca. Yolu anlatır, sonraki adımı önerir.</td><td>Sohbet, gerekirse koçluk notu</td></tr><tr><td><code>seo-project-setup</code></td><td>Yeni projede. İşinizi, hedefinizi, rakiplerinizi, önemli sayfalarınızı sorar, Proje bilgisi ekranını doldurur.</td><td>Dolu proje bilgisi, kayıtlı kelimeler</td></tr><tr><td><code>seo-audit</code></td><td>&quot;Siteyi denetle&quot; deyince. Denetimi çalıştırır, Search Console ile birleştirir, &quot;bu hafta yapılacak tek iş&quot;i seçer.</td><td>Tek sayfalık denetim raporu</td></tr><tr><td><code>seo-triage</code></td><td>Ziyaret düşünce. Düşüşün gerçek olup olmadığına, nerede ve ne zaman olduğuna bakar.</td><td>Düşüş incelemesi raporu</td></tr><tr><td><code>seo-check-in</code></td><td>Ayda bir. Bu dönemi öncekiyle karşılaştırır.</td><td>Aylık kontrol raporu, her ay bir tane birikir</td></tr><tr><td><code>seo-report</code></td><td>Öteki şablonlar bitince. Tek dosyalık HTML rapor yazar ve kaydeder.</td><td><strong>Raporlar</strong> ekranında rapor</td></tr></tbody></table></div>
 <h2 id="kontrol">Kontrol</h2>
 <ul><li>Asistana &quot;whoami aracını çağır&quot; deyin. Kurulum kimliğini söylemeli.</li><li><strong>Ajan kurulumu</strong> ekranındaki rozet <strong>Bağlandı</strong> demeli ve son çağrı zamanı görünmeli.</li><li>&quot;list_projects&quot; projelerinizi sıralamalı.</li></ul>
 <h2 id="sik-sorulanlar">Sık sorulanlar</h2>
 <p><strong>Asistan verimi dışarı gönderir mi?</strong> Asistan hangi modeli kullanıyorsa veri oraya gider. Bu, asistanın kendi gizlilik şartlarına bağlıdır. Uygulama yalnızca bilgisayarınızdaki bağlantıya cevap verir.</p>
 <p><strong>Parolasız çalışır mı?</strong> Docker'da <code>MCP_TOKEN=off</code> ile çalışır. Windows paketinde parola her zaman açıktır. Parolasız bağlantıda aynı bilgisayardaki her program 33 aracı çağırabilir.</p>
-<p><strong>Asistan Google hakkımı bitirebilir mi?</strong> <code>inspect_urls</code> ve <code>run_site_audit</code> harcar. Şablonlar görev başına en fazla 20 adres sorar. Denetimi yalnızca siz isteyince başlatırlar. Asistanınıza da aynı sınırı söyleyin.</p>
+<p><strong>Asistan Google hakkımı tüketebilir mi?</strong> <code>inspect_urls</code> ve <code>run_site_audit</code> harcar. Şablonlar görev başına en fazla 20 adres sorar. Denetimi yalnızca siz isteyince başlatırlar. Asistanınıza da aynı sınırı hatırlatın.</p>
 <p><strong>Hangi asistan daha iyi?</strong> Fark etmez, araçlar aynı. Kurulum metni Claude Code, Codex ve Cursor için hazır. Öteki asistanlar MCP'yi destekliyorsa aynı adres ve parolayla çalışır.</p>
 <h2 id="sorun-cikarsa">Sorun çıkarsa</h2>
-<ul><li><strong>Asistan 401 hatası alıyor.</strong> Parola yanlış ya da gönderilmiyor. Dosyadaki değeri yeniden kopyalayın. Sonunda satır sonu karakteri kalmasın.</li><li><strong>Bağlantı reddediliyor.</strong> Uygulama kapalıdır. Görev çubuğu simgesine ya da <code>docker compose ps</code> çıktısına bakın.</li><li><strong>Asistan &quot;araç bulunamadı&quot; diyor.</strong> Bağlantıyı yeniden yükleyin. Claude Code'da <code>/mcp</code> yazıp <strong>Reconnect</strong> deyin.</li><li><strong>Şablonlar görünmüyor.</strong> Kurulum metnini yeniden yapıştırın. Şablonlar asistanın kendi klasörüne kopyalanır (Codex'te <code>$HOME/.agents/skills</code>).</li></ul> <nav class="pager" aria-label="Önceki ve sonraki sayfa"><a class="pager-prev" rel="prev" href="/docs/denetim-kurallari/"><span>Önceki</span><strong>Denetim kuralları</strong></a><a class="pager-next" rel="next" href="/docs/sorun-giderme/"><span>Sonraki</span><strong>Sorun giderme</strong></a></nav>
+<ul><li><strong>Asistan 401 hatası alıyor.</strong> Parola yanlış ya da gönderilmiyor. Dosyadaki değeri yeniden kopyalayın. Sonunda satır sonu karakteri kalmasın.</li><li><strong>Bağlantı reddediliyor.</strong> Uygulama kapalı olabilir. Görev çubuğu simgesine ya da <code>docker compose ps</code> çıktısına bakın.</li><li><strong>Asistan &quot;araç bulunamadı&quot; diyor.</strong> Bağlantıyı yeniden yükleyin. Claude Code'da <code>/mcp</code> yazıp <strong>Reconnect</strong> deyin.</li><li><strong>Şablonlar görünmüyor.</strong> Kurulum metnini yeniden yapıştırın. Şablonlar asistanın kendi klasörüne kopyalanır (Codex'te <code>$HOME/.agents/skills</code>).</li></ul> <nav class="pager" aria-label="Önceki ve sonraki sayfa"><a class="pager-prev" rel="prev" href="/docs/denetim-kurallari/"><span>Önceki</span><strong>Denetim kuralları</strong></a><a class="pager-next" rel="next" href="/docs/sorun-giderme/"><span>Sonraki</span><strong>Sorun giderme</strong></a></nav>
         <p class="meta">
           Son güncelleme: 23 Ekim 2026. Bir hata görürseniz
-          <a href="https://github.com/ucsahinn/seotracker/issues"
+          <a
+            href="https://github.com/ucsahinn/seotracker/issues"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub'da bildirin</a
           >.
         </p>
@@ -1176,10 +1275,25 @@
     </main>
     <footer>
       <div class="wrap">
+        <p class="star">
+          Bir yıldız, başkalarının da bu ücretsiz aracı bulmasına yardım eder.
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub'da yıldız verin</a
+          >
+        </p>
         <span>seowatcher, MIT lisansı.</span>
         <span
           ><a href="/">Ana sayfa</a> &nbsp;
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          &nbsp;
           <a href="/docs/surum-notlari/">Sürüm notları</a></span
         >
       </div>

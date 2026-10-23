@@ -6,62 +6,62 @@ route: /p/<proje>
 updated: 2026-10-22
 ---
 
-On this screen you see the latest state of your site and learn what to do next. It is the first screen you get when you open a project.
+This is the first screen of a project. It shows the current state of your site and what to do next.
 
-The search numbers come from Google's Search Console tool. The visitor numbers come from Google Analytics. The audit summary comes from the app's own site crawler. The **Yenile** (Refresh) button at the top refreshes all of them. **Denetimi başlat** (Start audit) takes you to the audit screen.
+The search numbers come from Google Search Console. The visitor numbers come from Google Analytics. The audit summary comes from the app's own site crawler. The **Yenile** (Refresh) button at the top refreshes all of them. **Denetimi başlat** (Start audit) takes you to the audit screen.
 
 ## What is on the screen
 
-**Four number cards.** **Tıklama** (Clicks), **Gösterim** (Impressions), **Tıklama oranı** (Click-through rate) and **Ortalama sıra** (Average position). All show the last 28 days. Each card has an arrow that compares with the previous 28 days. For average position, a small number is good, and 1 is the top position. So a drop is good news, and the arrow is coloured to match. If Search Console is not connected, the card says "Search Console'u bağlayın" (Connect Search Console).
+**Four number cards.** **Tıklama** (Clicks), **Gösterim** (Impressions), **Tıklama oranı** (Click rate) and **Ortalama sıra** (Average position). All four cover the last 28 days, and each card has an arrow comparing it with the previous 28 days. For average position a lower number is better, and 1 is the top position, so a falling number is good news and the arrow color reflects that. If Search Console is not connected, the card says "Search Console'u bağlayın" (Connect Search Console).
 
-**Sıradaki adımlar** (Next steps). Up to three tasks the app suggests. The suggestions come in this order:
+**Sıradaki adımlar** (Next steps). Up to three tasks the app suggests, in this order of priority:
 
-- If Search Console is not connected, **Search Console'u bağla** (Connect Search Console).
-- If there is no audit, or the latest audit is older than seven days, **Denetimi başlat**.
-- If there is a serious problem, **Kritik sorunları gör** (See critical issues).
-- Then **Fırsatları aç** (Open opportunities) and **Uyarıları gör** (See warnings).
+- Search Console is not connected: **Search Console'u bağla** (Connect Search Console).
+- There is no audit, or the latest one is older than seven days: **Denetimi başlat**.
+- There is a serious problem: **Kritik sorunları gör** (See critical issues).
+- After that: **Fırsatları aç** (Open opportunities) and **Uyarıları gör** (See warnings).
 
-When a task is done, the item leaves the list.
+When a task is done, it leaves the list.
 
-**New in the latest audit and Düzelenler (Fixed).** It compares the last two audits. You see which issue appeared on how many pages, and which one dropped. If nothing was fixed, it says "Düzelen sorun yok." (No issues fixed.).
+**New in the latest audit and Düzelenler (Fixed).** This compares the last two audits and shows which issues appeared, on how many pages, and which were fixed. If nothing was fixed, it says "Düzelen sorun yok." (No issues fixed).
 
-**Tıklama eğilimi** (Click trend). The daily click line for the last 28 days. If there is data for fewer than four days, no line is drawn. The **Sorguları aç** (Open queries) link goes to the Arama performansı (Search performance) screen.
+**Tıklama eğilimi** (Click trend). A line chart of daily clicks for the last 28 days. With fewer than four days of data, no line is drawn. The **Sorguları aç** (Open queries) link opens the **Arama performansı** (Search performance) screen.
 
-**Sıra 5-20 arası sorgular** (Queries ranking 5-20). The first four searches that show up between positions 5 and 20 on Google. With a little work, these can reach the first page or the top positions. **Tümünü gör** (See all) opens the full list.
+**Sıra 5-20 arası sorgular** (Queries ranking 5-20). The top four searches that appear between positions 5 and 20 on Google. With a little work, these can reach the first page or the top positions. **Tümünü gör** (See all) opens the full list.
 
 **Site denetimi** (Site audit) card. It shows how many pages were crawled, the three most common issues and the five pages with the most issues. While an audit is running, the card refreshes every five seconds. The question mark icon explains the three severity levels:
 
-- Critical: directly breaks your showing up in search.
-- Warning: wears down rankings over time, but is not urgent.
-- Info: small chances to improve.
+- Critical: directly harms your visibility in search.
+- Warning: wears down rankings over time but is not urgent.
+- Info: small opportunities to improve.
 
-**Organik trafik** (Organic traffic) card. It shows up if Google Analytics is connected. For visitors who came from search, it gives **Oturum** (Sessions), **Aktif kullanıcı** (Active users), **Etkileşim oranı** (Engagement rate) and **Anahtar olay** (Key events). If the site measures sales, **Organik gelir** (Organic revenue) and **Sipariş** (Orders) are added too.
+**Organik trafik** (Organic traffic) card. It appears when Google Analytics is connected. For visitors who came from search, it shows **Oturum** (Sessions), **Aktif kullanıcı** (Active users), **Etkileşim oranı** (Engagement rate) and **Anahtar olay** (Key events). If the site measures sales, **Organik gelir** (Organic revenue) and **Sipariş** (Orders) are added too.
 
 ## How to use it
 
-1. Open it once a week and look at the arrows on the four cards.
-2. Do the first task in the **Sıradaki adımlar** box. If the box is empty, there is nothing urgent.
+1. Open it once a week and check the arrows on the four cards.
+2. Do the first task in the **Sıradaki adımlar** box. If the box is empty, nothing is urgent.
 3. If the latest audit is older than seven days, click **Denetimi başlat**.
-4. Review the title and description of the pages on the **Sıra 5-20 arası sorgular** card. The easiest gains are usually here.
+4. Review the titles and descriptions of the pages on the **Sıra 5-20 arası sorgular** card; the easiest gains are usually here.
 
 ## How the numbers are calculated
 
-The four cards come from a single Search Console report. Google gives the data three days late. So the 28-day range ends three days ago, not today. The previous period is the 28 days right before this range. If the previous period is zero, no arrow is shown.
+The four cards come from a single Search Console report. Google delivers data three days late, so the 28-day range ends three days before today. The previous period is the 28 days right before this range. If the previous period is zero, no arrow is shown.
 
-Average position counts searches with many impressions more. These four numbers are the real site totals. If you add up the table rows on the Arama performansı screen, you get more. Google counts every page that shows up in the same search separately.
+Average position gives more weight to searches with many impressions. These four numbers are the real site totals. Adding up the table rows on the **Arama performansı** screen gives a larger number, because Google counts each page that appears for the same search separately.
 
 ## Frequently asked questions
 
-**Why is there no data for today?** Google does not give the last three days yet. This is not a gap.
+**Why is there no data for today?** Google has not delivered the last three days yet. This is not a fault.
 
-**Average position went up. Is that good?** No. Going from 3 to 7 means dropping. This is why the arrow turns red.
+**Average position went up. Is that good?** No. Going from 3 to 7 is a drop, which is why the arrow turns red.
 
-**Does the audit card show what Google sees?** No. It shows what the app's own crawl found. Which pages Google has recorded is on the **Dizin durumu** (Index status) tab on the audit screen.
+**Does the audit card show what Google sees?** No. It shows what the app's own crawl found. Which pages Google has indexed is on the **Dizin durumu** (Index status) tab on the audit screen.
 
 **There is no Organik trafik card.** Google Analytics is not connected in the project settings. Connecting it is optional.
 
 ## Limits
 
-The Dashboard does not show search volume, backlinks (links to you from other sites) or competitor positions. This data is not in the app. Queries that are searched very rarely are hidden in Search Console. For details you go to the matching screen.
+The Dashboard does not show search volume, backlinks (links to you from other sites) or competitor positions. This data is not in the app. Search Console hides queries that are searched very rarely. For details, open the matching screen.
 
 <!-- Kaynaklar: src/routes/_project/p/$projectId/index.tsx; src/client/features/dashboard/DashboardPage.tsx; DashboardMetrics.tsx; SearchInsights.tsx; DashboardCards.tsx; SeverityBar.tsx; Ga4Card.tsx; NextStepsCard.tsx; AuditFreshnessCard.tsx; src/client/features/dashboard/dashboardGscReport.ts; src/server/features/dashboard/services/DashboardService.ts; src/server/features/gsc/searchPerformanceReport.ts; src/shared/dataFreshness.ts; src/shared/delta.ts -->

@@ -9,6 +9,33 @@
     return Array.prototype.slice.call((root || document).querySelectorAll(s));
   };
 
+  // 0. The "stop motion" choice made on the home page holds here too.
+  var still = false;
+  try {
+    still = localStorage.getItem("seowatcher-still") === "1";
+  } catch (e) {}
+  if (still) document.documentElement.setAttribute("data-still", "");
+
+  // 0b. Article headings enter once, as they scroll into view. The class is
+  //     added here, so without script (or without motion) they never hide.
+  if (!reduce && !still && "IntersectionObserver" in window) {
+    var heads = $$("article h1, article h2, article h3");
+    var headIo = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          e.target.classList.add("in");
+          headIo.unobserve(e.target);
+        });
+      },
+      { rootMargin: "0px 0px -6% 0px", threshold: 0 },
+    );
+    heads.forEach(function (h) {
+      h.classList.add("hx");
+      headIo.observe(h);
+    });
+  }
+
   // 1. The sidebar is a disclosure on narrow screens, always open on wide ones.
   var side = document.querySelector("details.side-dd");
   var narrow = window.matchMedia("(max-width: 800px)");

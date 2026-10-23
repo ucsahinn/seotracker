@@ -1,6 +1,6 @@
 ---
 title: Pannello
-description: È la prima schermata che si vede aprendo il progetto. I numeri di ricerca degli ultimi 28 giorni, il riepilogo dell'ultimo controllo e le cose da fare stanno qui.
+description: La prima schermata del progetto: numeri di ricerca degli ultimi 28 giorni, riepilogo dell'ultimo controllo e prossimi passi.
 screen: Panel
 route: /p/<proje>
 updated: 2026-10-22
@@ -39,7 +39,7 @@ Quando il compito è fatto, la voce sparisce dall'elenco.
 
 ## Come si usa
 
-1. Aprirlo una volta alla settimana e guardare le frecce nelle quattro schede.
+1. Aprire il Panel una volta alla settimana e guardare le frecce nelle quattro schede.
 2. Fare la prima cosa nel riquadro **Sıradaki adımlar** (Prossimi passi). Se il riquadro è vuoto, non ci sono lavori urgenti.
 3. Se l'ultimo controllo ha più di sette giorni, scegliere **Denetimi başlat**.
 4. Rivedere titolo e descrizione delle pagine nella scheda **Sıra 5-20 arası sorgular** (Query in posizione 5-20). Qui di solito c'è il guadagno più facile.
@@ -58,7 +58,7 @@ La posizione media dà più peso alle ricerche con molte impressioni. Questi qua
 
 **La scheda del controllo mostra ciò che vede Google?** No. Mostra ciò che ha trovato la scansione dell'app. Quali pagine Google ha registrato si vede nella scheda **Dizin durumu** (Stato dell'indice) della schermata del controllo.
 
-**La scheda del traffico organico non c'è.** In Impostazioni del progetto Google Analytics non è collegato. Collegarlo è una scelta dell'utente.
+**La scheda del traffico organico non c'è.** Google Analytics non è collegato nelle impostazioni del progetto. Collegarlo è facoltativo.
 
 ## Limiti
 

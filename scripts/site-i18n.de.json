@@ -25,7 +25,7 @@
   "groups": {
     "Başlangıç": "Erste Schritte",
     "Ekranlar": "Bildschirme",
-    "Başvuru": "Nachschlagen"
+    "Başvuru": "Hilfe und Nachschlagen"
   },
   "slugs": {
     "kurulum-windows": "installation-windows",
@@ -54,7 +54,7 @@
     "guide": "Anleitung",
     "guideTitle": "seowatcher-Anleitung: Installation, Bildschirme und Fehlerbehebung",
     "guideDescription": "seowatcher-Anleitungen: Installation, was jeder Bildschirm zeigt, die Google-Verbindung, Audit-Regeln, Einrichtung des Assistenten und Fehlerbehebung.",
-    "guideLede": "Jeder Schritt und jeder Bildschirm, von der Installation bis zum ersten Bericht, kurz und einfach erklärt. Die App heißt auf GitHub seotracker und auf dieser Website seowatcher; beide sind dieselbe App.",
+    "guideLede": "Jeder Schritt und jeder Bildschirm, von der Installation bis zum ersten Bericht, kurz erklärt. Die App heißt auf GitHub seotracker und auf dieser Website seowatcher; beide sind dieselbe App.",
     "screenSuffix": "",
     "titleSuffix": " | seowatcher-Anleitung",
     "onThisPage": "Auf dieser Seite",
@@ -78,6 +78,8 @@
     "license": "seowatcher, MIT-Lizenz.",
     "releaseNotes": "Versionshinweise",
     "copyFailed": "Kopieren fehlgeschlagen",
-    "free": "Kostenlos"
+    "free": "Kostenlos",
+    "starWhy": "Ein Stern hilft anderen, ein kostenloses Werkzeug zu finden.",
+    "starLink": "Auf GitHub mit einem Stern markieren"
   }
 }

@@ -26,7 +26,7 @@ A tela mostra sete relatórios da sua conta do Google Analytics 4. Por padrão, 
 
 **Cartões de resumo.** As abas de eventos-chave, comércio eletrônico e busca no site têm seus próprios cartões de resumo.
 
-**Aba de estado da medição.** Quatro cartões: **Web veri akışı** (Fluxo de dados da web), **Anahtar olay** (Evento-chave), **Özel boyut** (Dimensão personalizada), **Bulgu** (Constatação). As constatações podem ser estas: "Web veri akışı yok" (Não há fluxo de dados da web), "Gelişmiş ölçüm kapalı" (A medição aprimorada está desativada), "Site içi arama ölçülmüyor" (A busca no site não é medida), "Anahtar olay tanımlı değil" (Nenhum evento-chave definido), "Envanter eksik olabilir" (O inventário pode estar incompleto). As sete opções da medição aprimorada são mostradas uma a uma: Kaydırma (Rolagens), Dış bağlantı (Cliques de saída), Site içi arama (Busca no site), Video (Vídeo), Dosya indirme (Downloads de arquivos), Form (Formulário), Sayfa geçişleri (Mudanças de página). Se não houver problema, aparece "Ölçüm kurulumunda eksik bulunamadı." (Nenhuma lacuna foi encontrada na configuração da medição.)
+**Aba de estado da medição.** Quatro cartões: **Web veri akışı** (Fluxo de dados da web), **Anahtar olay** (Evento-chave), **Özel boyut** (Dimensão personalizada), **Bulgu** (Achado). Os achados possíveis são: "Web veri akışı yok" (Não há fluxo de dados da web), "Gelişmiş ölçüm kapalı" (A medição aprimorada está desativada), "Site içi arama ölçülmüyor" (A busca no site não é medida), "Anahtar olay tanımlı değil" (Nenhum evento-chave definido), "Envanter eksik olabilir" (O inventário pode estar incompleto). As sete opções da medição aprimorada são mostradas uma a uma: Kaydırma (Rolagens), Dış bağlantı (Cliques de saída), Site içi arama (Busca no site), Video (Vídeo), Dosya indirme (Downloads de arquivos), Form (Formulário), Sayfa geçişleri (Mudanças de página). Se não houver problema, aparece "Ölçüm kurulumunda eksik bulunamadı." (Nenhuma lacuna foi encontrada na configuração da medição.)
 
 **Estados vazios.** Aparece "Bu dönemde veri yok" (Sem dados neste período) e são oferecidos dois atalhos: **Tüm trafiğe bak** (Ver todo o tráfego), **Ölçüm durumunu kontrol et** (Verificar o estado da medição). Se o Analytics não estiver conectado, aparece "Google Analytics bağlı değil" (O Google Analytics não está conectado).
 
@@ -35,7 +35,7 @@ A tela mostra sete relatórios da sua conta do Google Analytics 4. Por padrão, 
 1. Olhe primeiro a aba **Ölçüm durumu**. Se ela disser "Anahtar olay tanımlı değil", as colunas de conversão ficam em zero. Primeiro defina um evento-chave no Analytics.
 2. Na aba **Giriş sayfaları**, olhe a coluna **Alan adı**. Se você vir localhost ou 127.0.0.1, um site de teste no seu próprio computador está enviando dados. Essas linhas não são visitas reais. O aplicativo não filtra isso para você.
 3. Se o tráfego caiu, abra a aba **Trafik kaynakları** com **Kanal grubu**. Se a queda for só na busca, o problema está na busca. Se caiu em todos os canais, há um problema na medição ou no site.
-4. O botão **Trafiği yüksek, dönüşümü düşük** mostra isto: o Google envia visitantes, mas a página não os retém. O trabalho a fazer está na tela Fırsatlar (Oportunidades).
+4. O botão **Trafiği yüksek, dönüşümü düşük** mostra as páginas para as quais o Google envia visitantes, mas que não os retêm. O trabalho a fazer está na tela Fırsatlar (Oportunidades).
 
 ## Como os números são calculados
 

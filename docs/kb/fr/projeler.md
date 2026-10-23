@@ -38,9 +38,9 @@ Dans la carte de l'onglet **Bağlantılar**, cliquez sur **Mülkü veya hesabı 
 
 Les projets ne sont pas supprimés, ils sont archivés. Le bouton **Projeyi arşivle** en bas de l'onglet **Genel** retire le projet de la liste. Les audits, les mots-clés et les rapports restent tels quels. **Geri al** dans la page Projeler remet le projet exactement comme il était. Si vous n'avez qu'un seul projet, vous ne pouvez pas l'archiver.
 
-## Comment les chiffres sont calculés
+## Règles du nom de domaine
 
-Cet écran n'a pas de chiffres. Lors de l'enregistrement du nom de domaine, ces règles s'appliquent : les espaces et les majuscules sont nettoyés, et l'adresse doit être un vrai nom de domaine (une adresse IP, `localhost` ou une extension inventée ne sont pas acceptées). Si vous saisissez une valeur incorrecte, l'avertissement « Geçerli bir alan adı girin, örneğin acme.com. » (Saisissez un nom de domaine valide, par exemple acme.com.) apparaît.
+Cet écran n'a pas de chiffres. À l'enregistrement du nom de domaine, ces règles s'appliquent : les espaces et les majuscules sont nettoyés, et l'adresse doit être un vrai nom de domaine (une adresse IP, `localhost` ou une extension inventée ne sont pas acceptées). Si vous saisissez une valeur incorrecte, l'avertissement « Geçerli bir alan adı girin, örneğin acme.com. » (Saisissez un nom de domaine valide, par exemple acme.com.) apparaît.
 
 ## Questions fréquentes
 

@@ -6,7 +6,7 @@
     <title>Installazione su Windows | guida di seowatcher</title>
     <meta
       name="description"
-      content="Si installa su Windows con un solo file, senza Docker né terminale. Nella stessa pagina: aggiornamento, disinstallazione, copia di sicurezza e cambio del numero di porta."
+      content="Si installa su Windows con un solo file, senza Docker né terminale. Nella stessa pagina: aggiornamento, disinstallazione, copia di sicurezza, porta."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -49,6 +49,7 @@
       href="https://seowatcher.io/docs/kurulum-windows/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -78,7 +79,7 @@
     />
     <meta
       property="og:description"
-      content="Si installa su Windows con un solo file, senza Docker né terminale. Nella stessa pagina: aggiornamento, disinstallazione, copia di sicurezza e cambio del numero di porta."
+      content="Si installa su Windows con un solo file, senza Docker né terminale. Nella stessa pagina: aggiornamento, disinstallazione, copia di sicurezza, porta."
     />
     <meta
       property="og:image"
@@ -88,7 +89,7 @@
     <meta property="og:image:height" content="630" />
     <meta
       property="og:image:alt"
-      content="Guida di seowatcher: installazione, schermate e risoluzione dei problemi"
+      content="Guida di seowatcher: installazione, schermate, problemi"
     />
     <meta property="article:modified_time" content="2026-10-23" />
     <meta
@@ -108,7 +109,7 @@
     />
     <meta
       name="twitter:description"
-      content="Si installa su Windows con un solo file, senza Docker né terminale. Nella stessa pagina: aggiornamento, disinstallazione, copia di sicurezza e cambio del numero di porta."
+      content="Si installa su Windows con un solo file, senza Docker né terminale. Nella stessa pagina: aggiornamento, disinstallazione, copia di sicurezza, porta."
     />
     <meta
       name="twitter:image"
@@ -145,7 +146,7 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/it/docs/installazione-windows/#article",
             "headline": "Installazione su Windows",
-            "description": "Si installa su Windows con un solo file, senza Docker né terminale. Nella stessa pagina: aggiornamento, disinstallazione, copia di sicurezza e cambio del numero di porta.",
+            "description": "Si installa su Windows con un solo file, senza Docker né terminale. Nella stessa pagina: aggiornamento, disinstallazione, copia di sicurezza, porta.",
             "url": "https://seowatcher.io/it/docs/installazione-windows/",
             "inLanguage": "it",
             "dateModified": "2026-10-23",
@@ -184,7 +185,7 @@
       }
     </script>
     <script src="/assets/docs.js?v=2.4.1" defer></script>
-    <meta name="theme-color" content="#272c3b" />
+    <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
         font-family: "Geist";
@@ -774,6 +775,95 @@
       footer a:hover {
         color: var(--fg);
       }
+      /* The one ask on the page: quiet, one line, the accent only on the link. */
+      footer .star {
+        flex-basis: 100%;
+        margin: 0 0 4px;
+        text-wrap: pretty;
+      }
+      footer .star a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      footer .star a:hover {
+        color: var(--accent-link);
+        text-decoration-color: var(--accent-link);
+      }
+
+      /* Headings enter as they scroll into view. docs.js adds .hx (and .in
+         once seen) only when motion is allowed, so without script, under
+         reduced motion and with "stop motion" on, they are simply there.
+         h1 wipes in from the left, h2 rises while an amber stroke draws
+         along its rule, h3 rises a little. */
+      article .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease),
+          clip-path 760ms var(--ease),
+          filter 620ms var(--ease);
+      }
+      article h1.hx {
+        clip-path: inset(-10% 100% -10% 0);
+        filter: blur(6px);
+      }
+      article h2.hx,
+      article h3.hx {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      article h3.hx {
+        transform: translateY(6px);
+      }
+      article h2.hx {
+        position: relative;
+      }
+      article h2.hx::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 56px;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 700ms var(--ease) 160ms;
+      }
+      article .hx.in {
+        opacity: 1;
+        transform: none;
+      }
+      article h1.hx.in {
+        clip-path: inset(-10% 0 -10% 0);
+        filter: none;
+      }
+      article h2.hx.in::before {
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        article .hx,
+        article h2.hx::before {
+          opacity: 1;
+          transform: none;
+          clip-path: none;
+          filter: none;
+          transition: none;
+        }
+      }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
 
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
@@ -1218,7 +1308,11 @@
         <nav class="topnav" aria-label="Sito">
           <a class="hide" href="/it/">Home</a>
           <a class="hide" href="/it/docs/">Guida</a>
-          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+          <a
+            class="hide"
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub</a
           >
           <details class="langs">
@@ -1245,7 +1339,7 @@
                       <circle cx="8.4" cy="7" r="2.7" fill="#e30a17" />
                       <polygon
                         fill="#fff"
-                        points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"
+                        points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"
                       /></svg></span
                   >Türkçe</a
                 >
@@ -1268,12 +1362,12 @@
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#fff"
-                        stroke-width="3.6"
+                        stroke-width="4.2"
                       />
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#c8102e"
-                        stroke-width="2"
+                        stroke-width="2.6"
                       /></svg></span
                   >English</a
                 >
@@ -1348,6 +1442,8 @@
           <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            target="_blank"
+            rel="noopener noreferrer"
             ><span class="long">Scarica per Windows</span
             ><span class="short">Scarica</span></a
           >
@@ -1416,7 +1512,7 @@
             </li>
             <li><a href="/it/docs/impostazioni/">Impostazioni</a></li>
           </ul>
-          <p class="nav-group">Riferimento</p>
+          <p class="nav-group">Aiuto e riferimento</p>
           <ul>
             <li><a href="/it/docs/aiuto/">Aiuto</a></li>
             <li>
@@ -1432,7 +1528,7 @@
                 >Risoluzione dei problemi</a
               >
             </li>
-            <li><a href="/it/docs/note-di-rilascio/">Note di rilascio</a></li>
+            <li><a href="/it/docs/note-di-rilascio/">Note di versione</a></li>
           </ul>
         </details>
       </aside>
@@ -1441,7 +1537,7 @@
         <p class="lede">
           Si installa su Windows con un solo file, senza Docker né terminale.
           Nella stessa pagina: aggiornamento, disinstallazione, copia di
-          sicurezza e cambio del numero di porta.
+          sicurezza, porta.
         </p>
         <p>
           L'interfaccia dell'app è in turco. In questa guida ogni nome di
@@ -1543,7 +1639,7 @@
             (l'indirizzo interno del servizio).
           </li>
         </ol>
-        <p>Il passo successivo è la guida alla connessione con Google.</p>
+        <p>Il passaggio successivo è la guida al collegamento con Google.</p>
         <h3 id="menu-della-barra-delle-applicazioni">
           Menu della barra delle applicazioni
         </h3>
@@ -1569,15 +1665,15 @@
           <li>
             <strong>Tanı bilgisini kopyala</strong> (Copia le informazioni
             diagnostiche): copia negli appunti la versione di Windows, il
-            processore, la versione di Visual C++, la prova del motore, il
-            modulo con errore nel registro eventi di Windows, i dump di arresto
-            anomalo e le ultime righe dei registri.
+            processore, la versione di Visual C++, l'esito di un test del
+            motore, il modulo che ha dato errore nel registro eventi di Windows,
+            i file di dump degli arresti anomali e le ultime righe dei registri.
           </li>
           <li>
-            <strong>Sorunu bildir (GitHub)</strong> (Segnala un problema
-            (GitHub)): copia le stesse informazioni negli appunti e apre su
-            GitHub una segnalazione già compilata. Aggiungere una frase su ciò
-            che si stava facendo e inviare.
+            <strong>Sorunu bildir (GitHub)</strong> (Segnala un problema su
+            GitHub): copia le stesse informazioni negli appunti e apre su GitHub
+            una segnalazione già compilata. Aggiungere una frase su ciò che si
+            stava facendo e inviare.
           </li>
           <li>
             <strong>Eksik Windows bileşenini kur</strong> (Installa il
@@ -1592,10 +1688,9 @@
             <strong>Güncelle</strong> (Aggiorna): è sempre presente nel menu.
             Con un clic controlla subito GitHub; se c'è una versione nuova la
             scarica e la installa, altrimenti risponde &quot;Güncel&quot;
-            (Aggiornato). Se una versione nuova è già stata trovata, il testo
-            completo della voce quando è pronta è &quot;Güncelle: X.Y.Z sürümü
-            hazır&quot; (Aggiorna: versione X.Y.Z pronta). Il numero di versione
-            è un esempio.
+            (Aggiornato). Se una versione nuova è già stata trovata, la voce
+            diventa &quot;Güncelle: X.Y.Z sürümü hazır&quot; (Aggiorna: versione
+            X.Y.Z pronta); il numero di versione è un esempio.
           </li>
           <li>
             <strong>Güncellemeleri kendiliğinden kur</strong> (Installa gli
@@ -1652,7 +1747,8 @@
           </li>
         </ul>
         <p>
-          I dati, la connessione con Google e le impostazioni restano com'erano.
+          I dati, il collegamento con Google e le impostazioni restano come
+          sono.
         </p>
         <h3 id="distribuzione-aziendale">Distribuzione aziendale</h3>
         <p>
@@ -1683,7 +1779,8 @@
             <strong>Registro dell'installazione</strong>: ogni installazione
             scrive nel file
             <code>%LOCALAPPDATA%\seowatcher\logs\setup.log</code>. Con
-            <code>/LOG=&quot;yol&quot;</code> si può indicare un altro percorso.
+            <code>/LOG=&quot;yol&quot;</code> (yol significa percorso) si può
+            indicare un altro file.
           </li>
           <li>
             <strong>Disinstallazione silenziosa</strong>:
@@ -1722,8 +1819,8 @@
         <p>
           Il programma di disinstallazione elimina il programma, il collegamento
           nel menu Start e la voce &quot;avvia con Windows&quot;. Non tocca la
-          cartella dei dati. Per eliminare anche il database, la connessione con
-          Google e i report, cancellare da sé la cartella dei dati.
+          cartella dei dati. Per eliminare anche il database, il collegamento
+          con Google e i report, cancellare a mano la cartella dei dati.
         </p>
         <h3 id="dove-sono-i-dati-e-come-si-fa-la-copia-di-sicurezza">
           Dove sono i dati e come si fa la copia di sicurezza
@@ -1742,7 +1839,7 @@
           </li>
           <li>
             <code>instance-secret</code>: la chiave che cifra gli accessi a
-            Google. Se si perde, la connessione con Google va rifatta da capo.
+            Google. Se si perde, il collegamento con Google va rifatto da capo.
           </li>
           <li>
             <code>mcp-token</code>: la password che l'assistente di intelligenza
@@ -1761,8 +1858,8 @@
         <p>
           Per ripristinare, chiudere l'app, rimettere la cartella al suo posto e
           avviare l'app. Lo spostamento su un altro computer funziona allo
-          stesso modo. Portando anche il file <code>instance-secret</code>, le
-          connessioni con Google continuano a funzionare.
+          stesso modo. Portando anche il file <code>instance-secret</code>, i
+          collegamenti con Google continuano a funzionare.
         </p>
         <h3 id="cambiare-il-numero-di-porta">Cambiare il numero di porta</h3>
         <p>
@@ -1789,8 +1886,8 @@
         </ol>
         <p>
           Quando il numero cambia, aggiornare con il nuovo numero anche i due
-          indirizzi di reindirizzamento su Google. Sono descritti nella guida
-          alla connessione con Google.
+          indirizzi di reindirizzamento su Google. Sono descritti nella guida al
+          collegamento con Google.
         </p>
         <h2 id="verifica">Verifica</h2>
         <ul>
@@ -1808,9 +1905,9 @@
           <li>
             Nella schermata <strong>Yardım</strong> (Aiuto) la scheda
             &quot;Kurulumunuzun durumu&quot; (Stato dell'installazione) deve
-            dire &quot;Her şey yolunda.&quot; (Tutto a posto.). Prima del
-            collegamento con Google, la riga &quot;Google girişi&quot; (Accesso
-            a Google) richiede attenzione. È normale.
+            dire &quot;Her şey yolunda.&quot; (Tutto a posto.). Finché Google
+            non è collegato, la riga &quot;Google girişi&quot; (Accesso a
+            Google) segnala un problema. È normale.
           </li>
         </ul>
         <h2 id="domande-frequenti">Domande frequenti</h2>
@@ -1820,8 +1917,9 @@
         </p>
         <p>
           <strong>Che cosa succede se si spegne il computer?</strong> Si chiude
-          anche l'app. Se <strong>Windows açılınca başlat</strong> è spuntata,
-          alla prossima accensione parte da sola.
+          anche l'app. Se <strong>Windows açılınca başlat</strong> (Avvia
+          all'avvio di Windows) è spuntata, alla prossima accensione parte da
+          sola.
         </p>
         <p>
           <strong>Si può aprire da un altro computer?</strong> No, ed è voluto.
@@ -1829,10 +1927,10 @@
           bisogna metterle davanti una propria autenticazione.
         </p>
         <p>
-          <strong>Si può passare dalla versione Docker?</strong> Sì, ma i dati
-          non vengono spostati da soli. I progetti si ricreano e Google si
-          ricollega. L'archivio di Search Console si riempie di nuovo al primo
-          avvio.
+          <strong>Si può passare dalla versione Docker a questa?</strong> Sì, ma
+          i dati non vengono spostati da soli. I progetti si ricreano e Google
+          si ricollega. L'archivio di Search Console si riempie di nuovo al
+          primo avvio.
         </p>
         <p>
           <strong>L'antivirus ha dato un avviso.</strong> Poiché il file non è
@@ -1890,7 +1988,10 @@
         </nav>
         <p class="meta">
           Ultimo aggiornamento: 23 ottobre 2026. Se si nota un errore,
-          <a href="https://github.com/ucsahinn/seotracker/issues"
+          <a
+            href="https://github.com/ucsahinn/seotracker/issues"
+            target="_blank"
+            rel="noopener noreferrer"
             >segnalarlo su GitHub</a
           >.
         </p>
@@ -1908,10 +2009,25 @@
     </main>
     <footer>
       <div class="wrap">
+        <p class="star">
+          Una stella aiuta altre persone a trovare uno strumento gratuito.
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Aggiungi una stella su GitHub</a
+          >
+        </p>
         <span>seowatcher, licenza MIT.</span>
         <span
           ><a href="/it/">Home</a> &nbsp;
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          &nbsp;
           <a href="/it/docs/note-di-rilascio/">Note di versione</a></span
         >
       </div>

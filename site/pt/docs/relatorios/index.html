@@ -46,6 +46,7 @@
       href="https://seowatcher.io/docs/raporlar/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -181,7 +182,7 @@
       }
     </script>
     <script src="/assets/docs.js?v=2.4.1" defer></script>
-    <meta name="theme-color" content="#272c3b" />
+    <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
         font-family: "Geist";
@@ -771,6 +772,95 @@
       footer a:hover {
         color: var(--fg);
       }
+      /* The one ask on the page: quiet, one line, the accent only on the link. */
+      footer .star {
+        flex-basis: 100%;
+        margin: 0 0 4px;
+        text-wrap: pretty;
+      }
+      footer .star a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      footer .star a:hover {
+        color: var(--accent-link);
+        text-decoration-color: var(--accent-link);
+      }
+
+      /* Headings enter as they scroll into view. docs.js adds .hx (and .in
+         once seen) only when motion is allowed, so without script, under
+         reduced motion and with "stop motion" on, they are simply there.
+         h1 wipes in from the left, h2 rises while an amber stroke draws
+         along its rule, h3 rises a little. */
+      article .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease),
+          clip-path 760ms var(--ease),
+          filter 620ms var(--ease);
+      }
+      article h1.hx {
+        clip-path: inset(-10% 100% -10% 0);
+        filter: blur(6px);
+      }
+      article h2.hx,
+      article h3.hx {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      article h3.hx {
+        transform: translateY(6px);
+      }
+      article h2.hx {
+        position: relative;
+      }
+      article h2.hx::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 56px;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 700ms var(--ease) 160ms;
+      }
+      article .hx.in {
+        opacity: 1;
+        transform: none;
+      }
+      article h1.hx.in {
+        clip-path: inset(-10% 0 -10% 0);
+        filter: none;
+      }
+      article h2.hx.in::before {
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        article .hx,
+        article h2.hx::before {
+          opacity: 1;
+          transform: none;
+          clip-path: none;
+          filter: none;
+          transition: none;
+        }
+      }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
 
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
@@ -1215,7 +1305,11 @@
         <nav class="topnav" aria-label="Site">
           <a class="hide" href="/pt/">Início</a>
           <a class="hide" href="/pt/docs/">Guia</a>
-          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+          <a
+            class="hide"
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub</a
           >
           <details class="langs">
@@ -1238,7 +1332,7 @@
                       <circle cx="8.4" cy="7" r="2.7" fill="#e30a17" />
                       <polygon
                         fill="#fff"
-                        points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"
+                        points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"
                       /></svg></span
                   >Türkçe</a
                 >
@@ -1261,12 +1355,12 @@
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#fff"
-                        stroke-width="3.6"
+                        stroke-width="4.2"
                       />
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#c8102e"
-                        stroke-width="2"
+                        stroke-width="2.6"
                       /></svg></span
                   >English</a
                 >
@@ -1341,6 +1435,8 @@
           <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            target="_blank"
+            rel="noopener noreferrer"
             ><span class="long">Baixar para Windows</span
             ><span class="short">Download</span></a
           >
@@ -1399,7 +1495,7 @@
             </li>
             <li><a href="/pt/docs/configuracoes/">Configurações</a></li>
           </ul>
-          <p class="nav-group">Referência</p>
+          <p class="nav-group">Ajuda e referência</p>
           <ul>
             <li><a href="/pt/docs/ajuda/">Ajuda</a></li>
             <li>
@@ -1423,7 +1519,7 @@
           impresso e pode ser compartilhado.
         </p>
         <p>
-          Nesta página você aprende a obter relatórios, a compartilhá-los e a
+          Esta página explica como obter relatórios, compartilhá-los e
           repeti-los com um modelo.
         </p>
         <p>
@@ -1461,7 +1557,7 @@
         </p>
         <p>
           <strong>Página do relatório.</strong> O relatório abre em um quadro
-          seguro próprio. Botões: <strong>HTML olarak indir</strong> (Baixar
+          isolado e seguro. Botões: <strong>HTML olarak indir</strong> (Baixar
           como HTML), copiar o link e imprimir. O link só abre nesta instalação.
           Não há acesso de fora.
         </p>
@@ -1542,13 +1638,13 @@
           relatórios, e a instalação tem 5 GB de espaço no total.
         </p>
         <p>
-          Segurança: ao salvar, são recusados os arquivos que contêm um script,
-          um iframe (uma caixa que embute uma página dentro de outra), um
-          formulário, um estilo externo, um manipulador de evento (como
-          onclick), um link javascript: ou um redirecionamento automático.
-          Quando um relatório é aberto, ele também é mostrado em uma caixa
-          fechada, sem acesso à rede. Assim, um relatório não pode enviar nada
-          para fora sem que você saiba.
+          Por segurança, ao salvar, o aplicativo recusa os arquivos que contêm
+          um script, um iframe (uma caixa que embute uma página dentro de
+          outra), um formulário, um estilo externo, um manipulador de evento
+          (como onclick), um link javascript: ou um redirecionamento automático.
+          Ao ser aberto, o relatório também é mostrado em um quadro isolado, sem
+          acesso à rede. Assim, um relatório não pode enviar nada para fora sem
+          que você saiba.
         </p>
         <h2 id="perguntas-frequentes">Perguntas frequentes</h2>
         <p>
@@ -1559,8 +1655,7 @@
         </p>
         <p>
           <strong>Posso editar o relatório?</strong> Não no aplicativo. Diga ao
-          assistente &quot;mude esta seção&quot;, e o assistente atualiza o
-          relatório.
+          assistente &quot;mude esta seção&quot;, e ele atualiza o relatório.
         </p>
         <p>
           <strong>Enviei o link e a outra pessoa não consegue abrir.</strong> O
@@ -1570,8 +1665,8 @@
         <p>
           <strong>No que devo prestar atenção ao escrever um modelo?</strong> Um
           modelo é uma receita de formato, não uma fonte de informação. Escreva
-          as seções, o tom e para quem é escrito. Não escreva números nem
-          afirmações. O assistente pega os números dos dados todas as vezes.
+          as seções, o tom e o público. Não escreva números nem afirmações. O
+          assistente pega os números dos dados todas as vezes.
         </p>
         <h2 id="limites">Limites</h2>
         <p>
@@ -1579,8 +1674,8 @@
           enviando o arquivo. Um relatório é tão exato quanto os dados que o seu
           autor leu. A seção &quot;Bu rapor nasıl hazırlandı&quot; (Como este
           relatório foi preparado), no fim dos relatórios do assistente, lista
-          qual ferramenta disse o quê. Rastreie por ali um número de que você
-          duvide.
+          qual ferramenta disse o quê. Use essa lista para rastrear a origem de
+          um número de que você duvide.
         </p>
         <nav class="pager" aria-label="Página anterior e seguinte">
           <a class="pager-prev" rel="prev" href="/pt/docs/status-de-indexacao/"
@@ -1594,7 +1689,10 @@
         </nav>
         <p class="meta">
           Última atualização: 23 de outubro de 2026. Viu algum erro?
-          <a href="https://github.com/ucsahinn/seotracker/issues"
+          <a
+            href="https://github.com/ucsahinn/seotracker/issues"
+            target="_blank"
+            rel="noopener noreferrer"
             >Relate no GitHub</a
           >.
         </p>
@@ -1616,10 +1714,25 @@
     </main>
     <footer>
       <div class="wrap">
+        <p class="star">
+          Uma estrela ajuda outras pessoas a encontrar uma ferramenta gratuita.
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Dê uma estrela no GitHub</a
+          >
+        </p>
         <span>seowatcher, licença MIT.</span>
         <span
           ><a href="/pt/">Início</a> &nbsp;
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          &nbsp;
           <a href="/pt/docs/notas-da-versao/">Notas de versão</a></span
         >
       </div>

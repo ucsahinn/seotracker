@@ -86,8 +86,12 @@ function inline(s) {
   out = out.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
   out = out.replace(/(^|[^*])\*([^*\n]+)\*(?!\*)/g, "$1<em>$2</em>");
   out = out.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_, t, href) => {
-    const external = /^https?:\/\//.test(href);
-    return `<a href="${href}"${external ? ' rel="noopener"' : ""}>${t}</a>`;
+    // A link that leaves the site opens in a new tab; the site's own pages,
+    // anchors and language switches stay in this one.
+    const external =
+      /^https?:\/\//.test(href) &&
+      !/^https?:\/\/(www\.)?seowatcher\.io(\/|$)/.test(href);
+    return `<a href="${href}"${external ? ' target="_blank" rel="noopener noreferrer"' : ""}>${t}</a>`;
   });
   return out;
 }

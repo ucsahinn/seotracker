@@ -1,6 +1,6 @@
 ---
 title: Collegamento con Google
-description: Si ottiene una volta una chiave di accesso da Google, la si incolla nell'app e si sceglie il sito. Così arrivano i dati di Search Console e di Analytics 4.
+description: Si ottiene una volta una chiave di accesso da Google, la si incolla nell'app e si sceglie il sito. Arrivano così i dati di Search Console e Analytics 4.
 kind: nasil-yapilir
 updated: 2026-10-22
 ---
@@ -25,7 +25,7 @@ Al termine l'app sarà collegata a Google a nome dell'utente e leggerà i dati d
 5. Nella stessa pagina, nella sezione **Test kullanıcıları** (Utenti di test), aggiungere il proprio account Google. Google non richiede un'ulteriore approvazione.
 6. Nella pagina **API'ler ve Hizmetler → Kimlik bilgileri** (API e servizi → Credenziali) scegliere **Kimlik bilgisi oluştur** (Crea credenziali) e poi **OAuth istemci kimliği** (ID client OAuth). È la chiave di accesso a Google.
 7. Come tipo di applicazione scegliere **Web uygulaması** (Applicazione web).
-8. Nella sezione **Yetkilendirilmiş yönlendirme URI'leri** (URI di reindirizzamento autorizzati) aggiungere i due indirizzi del passaggio 1. Non mettere la barra finale. Basta un carattere di differenza perché Google dia l'errore "redirect_uri_mismatch" (l'indirizzo non corrisponde).
+8. Nella sezione **Yetkilendirilmiş yönlendirme URI'leri** (URI di reindirizzamento autorizzati) aggiungere i due indirizzi del passaggio 1. Non aggiungere la barra finale. Basta un carattere di differenza perché Google dia l'errore "redirect_uri_mismatch" (l'indirizzo non corrisponde).
 9. Scegliere **Oluştur** (Crea). Google mostra un ID client e una chiave segreta.
 10. Tornare all'app. In **Ayarlar → Google**, nel campo **İstemci kimliği** (ID client) incollare l'ID che termina con `.apps.googleusercontent.com`. Nel campo **Gizli anahtar** (Chiave segreta) incollare la chiave che inizia con `GOCSPX-`.
 11. Scegliere **Kaydet** (Salva). Compare l'avviso "Google erişim anahtarı kaydedildi" (Chiave di accesso a Google salvata). Non serve riavviare. Se l'ID viene incollato nel campo sbagliato, l'app avvisa: "Kimlik .apps.googleusercontent.com ile bitmeli. Gizli anahtarı değil, istemci kimliğini yapıştırın." (L'ID deve terminare con .apps.googleusercontent.com. Incollare l'ID client, non la chiave segreta.)
@@ -61,7 +61,7 @@ Se è registrato un account di servizio, l'app usa quello. La riga "Şu an kulla
 
 **Si può usare la stessa chiave di accesso in più progetti?** Sì. Ne basta una per installazione. Ogni progetto sceglie la propria proprietà.
 
-**Dopo qualche giorno il collegamento è caduto.** Nelle app in stato "Test", Google può limitare il permesso a sette giorni. La scheda dice "Bağlantının süresi doldu" (Il collegamento è scaduto). Basta **Yeniden bağlan** (Ricollega). La soluzione definitiva è portare la schermata di consenso in "Üretim" (Produzione) oppure passare all'account di servizio.
+**Dopo qualche giorno il collegamento è caduto.** Nelle app in stato "Test", Google può limitare il permesso a sette giorni. La scheda dice "Bağlantının süresi doldu" (Il collegamento è scaduto). Basta scegliere **Yeniden bağlan** (Ricollega). La soluzione definitiva è portare la schermata di consenso in "Üretim" (Produzione) oppure passare all'account di servizio.
 
 **Quali permessi richiede?** Per Search Console solo lettura (`webmasters.readonly`), per Analytics solo lettura (`analytics.readonly`). L'app non può cambiare nulla su Google.
 
@@ -71,7 +71,7 @@ Se è registrato un account di servizio, l'app usa quello. La riga "Şu an kulla
 - **Compare l'avviso "Google erişim anahtarı eksik" (Chiave di accesso a Google mancante).** I passaggi 10 e 11 sono stati saltati oppure il salvataggio non è riuscito. Nella schermata **Ayarlar** il badge deve dire **Kayıtlı**.
 - **Google dice "access_denied".** L'account usato per l'accesso non è nell'elenco degli utenti di test della schermata di consenso. Aggiungerlo all'elenco oppure scegliere l'account giusto.
 - **L'elenco delle proprietà è vuoto.** Questo account non ha un sito verificato in Search Console né un permesso in Analytics. Verificare prima il sito.
-- **Compaiono "Bağlantısı tamamlanmadı" (Collegamento non completato) e "state_mismatch".** La schermata di consenso è stata aperta in due schede, oppure si è aspettato più di dieci minuti. Riprovare da capo in una sola scheda. Se i cookie del browser (piccoli file di memoria) sono disattivati, attivarli.
+- **Compaiono "Bağlantısı tamamlanmadı" (Collegamento non completato) e "state_mismatch".** La schermata di consenso è stata aperta in due schede, oppure si è aspettato più di dieci minuti. Riprovare da capo in una sola scheda. Se i cookie del browser (piccoli file che i siti salvano nel browser) sono disattivati, attivarli.
 - **Compare "Google hesabı zaten bağlı" (L'account Google è già collegato).** L'account era già stato collegato a un'altra voce. Con **Hesabı kaldır** (Rimuovi l'account) nel selettore delle proprietà togliere il vecchio e ricollegare.
 - **Dopo un aggiornamento i collegamenti si sono interrotti.** La chiave di cifratura è cambiata (con Docker è stato aggiunto `BETTER_AUTH_SECRET` oppure il volume di dati è stato ricreato). Nelle schede scegliere **Yeniden bağlan**.
 

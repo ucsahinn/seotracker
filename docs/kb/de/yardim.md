@@ -1,6 +1,6 @@
 ---
 title: Hilfe
-description: Wenn etwas schiefgeht, sehen Sie zuerst hier nach. Der Bildschirm prüft Ihre Installation, zeigt Lösungen für häufige Probleme und bereitet die Datei vor, die Sie bei einer Problemmeldung senden.
+description: Der Bildschirm prüft Ihre Installation, zeigt Lösungen für häufige Probleme und bereitet die Datei für eine Problemmeldung vor.
 screen: Yardım
 route: /support
 updated: 2026-10-22
@@ -43,12 +43,12 @@ Wenn etwas schiefgeht, sehen Sie zuerst hier nach. Dieser Bildschirm prüft Ihre
 
 **Warum ist die Zeile „Google girişi“ gelb?** Es wurde noch kein Google-Zugangsschlüssel eingetragen. Solange Google nicht verbunden ist, bleibt die Zeile gelb. Folgen Sie der Anleitung zur Google-Verbindung.
 
-**In der Zeile „Giriş ve erişim“ steht „parolasız tek kullanıcı“ (ein Benutzer ohne Passwort).** Das ist normal. Die App öffnet sich nur von Ihrem eigenen Computer aus. Wollen Sie sie nach außen öffnen, müssen Sie eine eigene gesicherte Anmeldung davorsetzen.
+**In der Zeile „Giriş ve erişim“ steht „parolasız tek kullanıcı“ (ein Benutzer ohne Passwort).** Das ist normal. Die App öffnet sich nur von Ihrem eigenen Computer aus. Wollen Sie sie im Netz erreichbar machen, müssen Sie selbst eine gesicherte Anmeldung davorschalten.
 
 **Was steht im Diagnosepaket?** Die Version, die Installationsprüfungen, Tabellenzahlen und eine Zusammenfassung der letzten Audits. Google-Schlüssel, Passwörter und persönliche Daten sind nicht enthalten.
 
 ## Grenzen
 
-Dieser Bildschirm prüft nur die Installation selbst. Ein Problem auf Ihrer Website finden Sie mit dem Bildschirm Site denetimi (Website-Audit), ein Problem auf der Seite von Google mit dem Bildschirm Dizin durumu (Indexstatus).
+Dieser Bildschirm prüft nur die Installation selbst. Ein Problem auf Ihrer Website finden Sie mit dem Bildschirm **Site denetimi** (Website-Audit), ein Problem auf Googles Seite mit dem Bildschirm **Dizin durumu** (Indexstatus).
 
 <!-- Kaynaklar: src/routes/_app/support.tsx; src/client/features/support/QuickActions.tsx; src/client/features/support/SetupStatusPanel.tsx; src/client/features/support/checkCopy.ts; src/client/features/support/CommonProblems.tsx; src/client/features/support/SystemLimitsSection.tsx; src/server/lib/setup-status.ts -->

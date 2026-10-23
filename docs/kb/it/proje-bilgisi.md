@@ -1,6 +1,6 @@
 ---
 title: Informazioni sul progetto
-description: Qui si scrive ciò che l'app non può sapere da sola: che attività si svolge, l'obiettivo, i concorrenti, le pagine importanti. L'assistente legge questa schermata prima di mettersi al lavoro.
+description: Qui si scrive ciò che l'app non può sapere: attività, obiettivo, concorrenti, pagine importanti. L'assistente la legge prima di lavorare.
 screen: Proje bilgisi
 route: /p/<proje>/context
 updated: 2026-10-22
@@ -8,7 +8,7 @@ updated: 2026-10-22
 
 Il sito si racconta all'assistente una volta sola, poi non serve più ripeterlo.
 
-Nella schermata **Proje bilgisi** (Informazioni sul progetto) si scrive ciò che Google non sa. Si racconta che cosa si vende, qual è l'obiettivo attuale, chi è il concorrente, quali pagine fanno guadagnare e come si desidera che si scriva. La schermata la può compilare l'utente, ma anche l'assistente di intelligenza artificiale (nella schermata compare come "ajan"). L'assistente la legge prima di cominciare e vi scrive ciò che impara. Se si nota qualcosa di sbagliato, lo si corregge di persona. Serve anche a chi non usa un assistente. Se tra sei mesi ci si chiede "perché ci eravamo concentrati su questa pagina", la risposta sarà qui.
+Nella schermata **Proje bilgisi** (Informazioni sul progetto) si scrive ciò che Google non sa. Si racconta che cosa si vende, qual è l'obiettivo attuale, chi sono i concorrenti, quali pagine fanno guadagnare e come si desidera che si scriva. La schermata può essere compilata dall'utente o dall'assistente di intelligenza artificiale (nella schermata compare come "ajan"). L'assistente la legge prima di cominciare e vi scrive ciò che impara. Se si nota qualcosa di sbagliato, lo si corregge di persona. Serve anche a chi non usa un assistente. Se tra sei mesi ci si chiede "perché ci eravamo concentrati su questa pagina", la risposta sarà qui.
 
 ## Cosa c'è nella schermata
 
@@ -25,11 +25,11 @@ Nella schermata **Proje bilgisi** (Informazioni sul progetto) si scrive ciò che
 - **Dönüşüm sayfası** (Pagina di conversione): la pagina che fa guadagnare o che contiene un modulo.
 - **Diğer** (Altro).
 
-Si possono aggiungere al massimo 100 pagine. Gli indirizzi vengono corretti in modo da iniziare con https.
+Si possono aggiungere al massimo 100 pagine. Gli indirizzi vengono completati in modo che inizino con https.
 
 **Registro delle ricerche.** L'assistente lascia note datate del tipo "ho cercato questo, è uscito questo". Queste note le scrive soltanto l'assistente e ognuna è al massimo di 1.000 caratteri. Volendo, le si può eliminare. Le note si cancellano da sole dopo 90 giorni. Nella schermata si vedono le 20 più recenti.
 
-**Scheda dell'assistente.** Nella scheda ci sono due testi pronti: "Ajanınıza doldurtun" (Fate compilare all'assistente) e "Ajanınıza gözden geçirtin" (Fate rivedere all'assistente). Premendo **İstemi kopyala** (Copia il testo) lo si incolla nell'assistente. Se il progetto è vuoto, il primo testo chiede all'assistente di porre all'utente alcune domande e poi di compilare le sezioni.
+**Scheda dell'assistente.** Nella scheda ci sono due testi pronti: "Ajanınıza doldurtun" (Far compilare all'assistente) e "Ajanınıza gözden geçirtin" (Far rivedere all'assistente). Premendo **İstemi kopyala** (Copia il testo) lo si incolla nell'assistente. Se il progetto è vuoto, il primo testo chiede all'assistente di porre all'utente alcune domande e poi di compilare le sezioni.
 
 ## Come si usa
 

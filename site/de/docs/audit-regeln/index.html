@@ -46,6 +46,7 @@
       href="https://seowatcher.io/docs/denetim-kurallari/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -140,7 +141,7 @@
             "url": "https://seowatcher.io/de/docs/audit-regeln/",
             "inLanguage": "de",
             "dateModified": "2026-10-23",
-            "articleSection": "Nachschlagen",
+            "articleSection": "Hilfe und Nachschlagen",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
             "publisher": { "@id": "https://seowatcher.io/#author" },
@@ -175,7 +176,7 @@
       }
     </script>
     <script src="/assets/docs.js?v=2.4.1" defer></script>
-    <meta name="theme-color" content="#272c3b" />
+    <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
         font-family: "Geist";
@@ -765,6 +766,95 @@
       footer a:hover {
         color: var(--fg);
       }
+      /* The one ask on the page: quiet, one line, the accent only on the link. */
+      footer .star {
+        flex-basis: 100%;
+        margin: 0 0 4px;
+        text-wrap: pretty;
+      }
+      footer .star a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      footer .star a:hover {
+        color: var(--accent-link);
+        text-decoration-color: var(--accent-link);
+      }
+
+      /* Headings enter as they scroll into view. docs.js adds .hx (and .in
+         once seen) only when motion is allowed, so without script, under
+         reduced motion and with "stop motion" on, they are simply there.
+         h1 wipes in from the left, h2 rises while an amber stroke draws
+         along its rule, h3 rises a little. */
+      article .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease),
+          clip-path 760ms var(--ease),
+          filter 620ms var(--ease);
+      }
+      article h1.hx {
+        clip-path: inset(-10% 100% -10% 0);
+        filter: blur(6px);
+      }
+      article h2.hx,
+      article h3.hx {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      article h3.hx {
+        transform: translateY(6px);
+      }
+      article h2.hx {
+        position: relative;
+      }
+      article h2.hx::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 56px;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 700ms var(--ease) 160ms;
+      }
+      article .hx.in {
+        opacity: 1;
+        transform: none;
+      }
+      article h1.hx.in {
+        clip-path: inset(-10% 0 -10% 0);
+        filter: none;
+      }
+      article h2.hx.in::before {
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        article .hx,
+        article h2.hx::before {
+          opacity: 1;
+          transform: none;
+          clip-path: none;
+          filter: none;
+          transition: none;
+        }
+      }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
 
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
@@ -1209,7 +1299,11 @@
         <nav class="topnav" aria-label="Website">
           <a class="hide" href="/de/">Startseite</a>
           <a class="hide" href="/de/docs/">Anleitung</a>
-          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+          <a
+            class="hide"
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub</a
           >
           <details class="langs">
@@ -1236,7 +1330,7 @@
                       <circle cx="8.4" cy="7" r="2.7" fill="#e30a17" />
                       <polygon
                         fill="#fff"
-                        points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"
+                        points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"
                       /></svg></span
                   >Türkçe</a
                 >
@@ -1259,12 +1353,12 @@
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#fff"
-                        stroke-width="3.6"
+                        stroke-width="4.2"
                       />
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#c8102e"
-                        stroke-width="2"
+                        stroke-width="2.6"
                       /></svg></span
                   >English</a
                 >
@@ -1339,6 +1433,8 @@
           <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            target="_blank"
+            rel="noopener noreferrer"
             ><span class="long">Für Windows herunterladen</span
             ><span class="short">Download</span></a
           >
@@ -1395,7 +1491,7 @@
             <li><a href="/de/docs/projektinfo/">Projektinfo</a></li>
             <li><a href="/de/docs/einstellungen/">Einstellungen</a></li>
           </ul>
-          <p class="nav-group">Nachschlagen</p>
+          <p class="nav-group">Hilfe und Nachschlagen</p>
           <ul>
             <li><a href="/de/docs/hilfe/">Hilfe</a></li>
             <li class="current" aria-current="page">
@@ -1431,7 +1527,7 @@
         <p>
           In der Tabelle sehen Sie zu jeder Regel ihren Namen auf dem
           Bildschirm, was sie bedeutet und den ersten Schritt zur Behebung. Der
-          vollständige Behebungstext steht auf der Befundkarte auf dem
+          vollständige Behebungstext steht auf der Problemkarte auf dem
           Bildschirm. Die letzte Spalte ist die Regelkennung, die in der
           CSV-Datei und in den Antworten des Assistenten erscheint.
         </p>
@@ -1469,8 +1565,8 @@
             <strong>lastmod</strong>: das Datum der letzten Änderung der Seite.
           </li>
           <li>
-            <strong>Weiterleitung</strong>: alle, die an einer Adresse ankommen,
-            an eine andere Adresse schicken.
+            <strong>Weiterleitung</strong>: schickt alle, die an einer Adresse
+            ankommen, automatisch an eine andere Adresse.
           </li>
           <li>
             <strong>User-Agent</strong>: der Name, mit dem sich ein Browser oder
@@ -1600,7 +1696,7 @@
                 <td>Als Hauptadresse wird eine versteckte Seite angegeben</td>
                 <td>
                   Die Seite, die als Hauptadresse angegeben ist, ist vor der
-                  Suche versteckt. Beide heben sich gegenseitig auf.
+                  Suche versteckt. Beide widersprechen sich.
                 </td>
                 <td>
                   Entfernen Sie das noindex auf der Zielseite oder machen Sie
@@ -1764,7 +1860,7 @@
               <tr>
                 <td>Sitemap-Datei ist zu groß zum Lesen</td>
                 <td>Die Datei überschreitet die Grenze von 10 MB.</td>
-                <td>Teilen Sie die Sitemap in Teile.</td>
+                <td>Teilen Sie die Sitemap auf.</td>
                 <td>sitemap-too-large</td>
               </tr>
               <tr>
@@ -1773,8 +1869,9 @@
                   Google akzeptiert in einer Datei höchstens 50.000 Adressen.
                 </td>
                 <td>
-                  Teilen Sie die Datei in Teile unter 50.000. Verbinden Sie die
-                  Teile mit einer übergeordneten Sitemap-Datei.
+                  Teilen Sie die Datei in Teile mit je weniger als 50.000
+                  Adressen auf. Verbinden Sie die Teile mit einer übergeordneten
+                  Sitemap-Datei.
                 </td>
                 <td>sitemap-too-many-urls</td>
               </tr>
@@ -1782,9 +1879,9 @@
                 <td>Die Sitemap enthält ein lastmod in der Zukunft</td>
                 <td>
                   Das Datum liegt in der Zukunft. Google hört dann auf, den
-                  Daten zu vertrauen.
+                  Datumsangaben zu vertrauen.
                 </td>
-                <td>Prüfen Sie die Stelle, die die Daten erzeugt.</td>
+                <td>Prüfen Sie, was die Datumsangaben erzeugt.</td>
                 <td>sitemap-lastmod-future</td>
               </tr>
               <tr>
@@ -1865,7 +1962,7 @@
               <tr>
                 <td>Doppelte Hauptüberschrift (H1)</td>
                 <td>Die Hauptüberschrift mehrerer Seiten ist dieselbe.</td>
-                <td>Schreiben Sie das H1 jeder Seite einzeln.</td>
+                <td>Geben Sie jeder Seite ein eigenes H1.</td>
                 <td>duplicate-h1</td>
               </tr>
               <tr>
@@ -1881,8 +1978,8 @@
                 <td>Doppelter Seiteninhalt</td>
                 <td>Zwei Seiten tragen denselben Text.</td>
                 <td>
-                  Wählen Sie die Hauptseite. Verbinden Sie die andere mit einem
-                  canonical mit ihr.
+                  Wählen Sie die Hauptseite. Verweisen Sie bei der anderen mit
+                  einem canonical auf sie.
                 </td>
                 <td>duplicate-content</td>
               </tr>
@@ -1936,7 +2033,7 @@
               </tr>
               <tr>
                 <td>Google hat eine andere Adresse als Hauptadresse gewählt</td>
-                <td>Google mochte Ihre Hauptadresse nicht.</td>
+                <td>Google ist Ihrer Hauptadresse nicht gefolgt.</td>
                 <td>
                   Sehen Sie sich die von Google gewählte Adresse an. Machen Sie
                   sie entweder zur Hauptadresse oder trennen Sie die beiden
@@ -2143,7 +2240,7 @@
                 </td>
                 <td>
                   Finden Sie die Codeteile, die die Seite am meisten belasten.
-                  Verschieben Sie sie oder entfernen Sie sie.
+                  Verschieben Sie sie auf später oder entfernen Sie sie.
                 </td>
                 <td>cwv-inp-poor</td>
               </tr>
@@ -2235,7 +2332,8 @@
               <tr>
                 <td>Zeichenkodierung ist nicht angegeben</td>
                 <td>
-                  Türkische Zeichen können in manchen Browsern kaputtgehen.
+                  Sonderzeichen (etwa türkische Buchstaben) können in manchen
+                  Browsern kaputtgehen.
                 </td>
                 <td>
                   Fügen Sie am Anfang des head-Bereichs die Zeile meta
@@ -2291,8 +2389,8 @@
                 <td>thin-content</td>
               </tr>
               <tr>
-                <td>Von der Seite führt kein Link irgendwohin</td>
-                <td>Sackgassen-Seite: Sie führt nirgendwohin.</td>
+                <td>Von der Seite führt kein Link weg</td>
+                <td>Eine Sackgasse: Von dieser Seite führt kein Weg weiter.</td>
                 <td>
                   Fügen Sie Links zu passenden Seiten, zur übergeordneten
                   Kategorie oder zur Startseite hinzu.
@@ -2354,8 +2452,8 @@
                   html-Tag fehlt lang).
                 </td>
                 <td>
-                  Schreiben Sie für eine türkische Seite html
-                  lang=&quot;tr&quot;.
+                  Schreiben Sie den Sprachcode Ihrer Seite, für eine türkische
+                  Seite html lang=&quot;tr&quot;.
                 </td>
                 <td>missing-lang</td>
               </tr>
@@ -2435,7 +2533,7 @@
               </tr>
               <tr>
                 <td>Kein canonical-Tag (Hauptadresse) auf der Seite</td>
-                <td>Google rät die Hauptadresse.</td>
+                <td>Google muss die Hauptadresse selbst erraten.</td>
                 <td>
                   Fügen Sie im head-Bereich die canonical-Zeile hinzu, die auf
                   die eigene vollständige Adresse der Seite zeigt.
@@ -2527,19 +2625,19 @@
         <h2 id="wie-die-regeln-funktionieren">Wie die Regeln funktionieren</h2>
         <p>
           Die meisten Regeln laufen pro Seite und listen jede Seite auf, die sie
-          betreffen. Einige betreffen die Website als Ganzes und erzeugen einen
-          einzigen Befund. Das sind die Regeln zur robots.txt, die Regeln zur
+          betreffen. Einige betreffen die Website als Ganzes und erzeugen ein
+          einziges Problem. Das sind die Regeln zur robots.txt, die Regeln zur
           Sitemap sowie „Auf der Website fehlen Tags für das Teilen in sozialen
           Medien“ und „Die Website hat gar keine strukturierten Daten“.
         </p>
         <p>
           Regeln, deren Name mit „Google“ beginnt, stammen nicht aus dem Crawl
           der App. Sie entstehen aus den Antworten, die im Reiter Dizin durumu
-          von Google geholt werden. Haben Sie in diesem Reiter noch keine Fragen
-          gestellt, laufen diese Regeln gar nicht. Die Geschwindigkeitsregeln
-          (LCP, CLS, INP, SEO-Wert) laufen nur, wenn „Sayfa hızını da ölç“
-          (Seitengeschwindigkeit auch messen) eingeschaltet ist, und zwar nach
-          der Messung auf dem Smartphone.
+          von Google geholt werden. Haben Sie in diesem Reiter noch keine
+          Abfrage gestartet, laufen diese Regeln nicht. Die
+          Geschwindigkeitsregeln (LCP, CLS, INP, SEO-Wert) laufen nur, wenn
+          „Sayfa hızını da ölç“ (Seitengeschwindigkeit auch messen)
+          eingeschaltet ist, und zwar nach der Messung auf dem Smartphone.
         </p>
         <nav class="pager" aria-label="Vorherige und nächste Seite">
           <a class="pager-prev" rel="prev" href="/de/docs/hilfe/"
@@ -2553,7 +2651,10 @@
         </nav>
         <p class="meta">
           Zuletzt aktualisiert: 23 Oktober 2026. Fehler entdeckt?
-          <a href="https://github.com/ucsahinn/seotracker/issues"
+          <a
+            href="https://github.com/ucsahinn/seotracker/issues"
+            target="_blank"
+            rel="noopener noreferrer"
             >Auf GitHub melden</a
           >.
         </p>
@@ -2575,10 +2676,25 @@
     </main>
     <footer>
       <div class="wrap">
+        <p class="star">
+          Ein Stern hilft anderen, ein kostenloses Werkzeug zu finden.
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Auf GitHub mit einem Stern markieren</a
+          >
+        </p>
         <span>seowatcher, MIT-Lizenz.</span>
         <span
           ><a href="/de/">Startseite</a> &nbsp;
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          &nbsp;
           <a href="/de/docs/versionshinweise/">Versionshinweise</a></span
         >
       </div>

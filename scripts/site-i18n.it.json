@@ -25,7 +25,7 @@
   "groups": {
     "Başlangıç": "Per iniziare",
     "Ekranlar": "Schermate",
-    "Başvuru": "Riferimento"
+    "Başvuru": "Aiuto e riferimento"
   },
   "slugs": {
     "kurulum-windows": "installazione-windows",
@@ -52,8 +52,8 @@
   },
   "t": {
     "guide": "Guida",
-    "guideTitle": "Guida di seowatcher: installazione, schermate e risoluzione dei problemi",
-    "guideDescription": "Guide di seowatcher: installazione, che cosa mostra ogni schermata, collegamento con Google, regole del controllo, configurazione dell'assistente e risoluzione dei problemi.",
+    "guideTitle": "Guida di seowatcher: installazione, schermate, problemi",
+    "guideDescription": "Guide di seowatcher: installazione, schermate, collegamento con Google, regole del controllo, assistente e risoluzione dei problemi.",
     "guideLede": "Ogni passaggio e ogni schermata, dall'installazione al primo report, spiegati in modo breve e semplice. L'app si chiama seotracker su GitHub e seowatcher su questo sito; è la stessa app.",
     "screenSuffix": "",
     "titleSuffix": " | guida di seowatcher",
@@ -78,6 +78,8 @@
     "downloadWindows": "Scarica per Windows",
     "license": "seowatcher, licenza MIT.",
     "releaseNotes": "Note di versione",
-    "copyFailed": "Copia non riuscita"
+    "copyFailed": "Copia non riuscita",
+    "starWhy": "Una stella aiuta altre persone a trovare uno strumento gratuito.",
+    "starLink": "Aggiungi una stella su GitHub"
   }
 }

@@ -34,14 +34,14 @@ Tabloda bunların kısa halleri görünür: Bilgi, Ticari, İşlem, Gezinme ve s
 
 ## Nasıl kullanılır
 
-1. Arama performansında **Sıra 5-20** sekmesini açın. Önemli bulduğunuz beş on aramayı **Kelime olarak kaydet** ile işaretleyin. Para kazandıran sayfaların aramalarını seçin. Bunlar, en çok gösterilen aramaları seçmek kadar işe yarar.
-2. Buraya gelip kelimeleri işaretleyin. **Etiketleri güncelle** ile "ürün", "blog", "marka" gibi etiketler verin. Gelecek ay karşılaştırmak kolaylaşır.
+1. Arama performansında **Sıra 5-20** sekmesini açın. Önemli bulduğunuz beş on aramayı **Kelime olarak kaydet** ile işaretleyin. Para kazandıran sayfaların aramalarını seçin. Bunlar, en çok gösterilen aramalar kadar işe yarar.
+2. Buraya gelip kelimeleri işaretleyin. **Etiketleri güncelle** ile "ürün", "blog", "marka" gibi etiketler verin. Gelecek ay karşılaştırma yapmak kolaylaşır.
 3. Ayda bir **Sıra dağılımı** kartına bakın. 11-20 dilimindeki kelimeler ilk sayfaya en yakın olanlardır. O kelimelerin sayfalarını Fırsatlar ekranında bulun.
 4. Rapor için **CSV indir** ya da **E-Tablolar'a aktar** deyin. Dosya, uyguladığınız filtrelerle gelir.
 
 ## Sayılar nasıl hesaplanır
 
-Kelimeler ve etiketler bu bilgisayardaki veritabanında durur. **Ort. sıra**, Sıralama takibi arşivinden son 90 gün için hesaplanır. Çok gösterim alınan günler ortalamayı daha çok etkiler. Büyük küçük harf farkı sayılmaz.
+Kelimeler ve etiketler bu bilgisayardaki veritabanında durur. **Ort. sıra**, Sıralama takibi arşivinden son 90 gün için hesaplanır. Çok gösterim alınan günler ortalamayı daha çok etkiler. Büyük ve küçük harf farkı sayılmaz.
 
 Arşivden en çok gösterilen 500 arama çekilir. Kayıtlı kelimeniz bu 500'ün dışındaysa sırası "bilinmiyor" görünür.
 
@@ -61,6 +61,6 @@ Amaç bilgisi, kelime kaydedilirken geldiyse yazılır. Sonradan hesaplanmaz. Li
 
 ## Sınırlar
 
-Bu ekran kelime araştırma aracı değildir. Kelime önermez, hacim ya da zorluk göstermez. Sıra bilgisi arşivin kapsadığı günlerle sınırlıdır. Google'ın gizlediği nadir aramaların sırası hiç gelmez. Veriler bu kurulumun veritabanında durur, yedeğini sizin almanız gerekir.
+Bu ekran kelime araştırma aracı değildir. Kelime önermez, hacim ya da zorluk göstermez. Sıra bilgisi arşivin kapsadığı günlerle sınırlıdır. Google'ın gizlediği nadir aramaların sırası hiç gelmez. Veriler bu kurulumun veritabanında durur. Yedek almak size kalır.
 
 <!-- Kaynaklar: src/routes/_project/p/$projectId/saved.tsx; src/client/features/saved-keywords/SavedKeywordsHeader.tsx; SavedKeywordsTable.tsx; SavedKeywordsFilterPanel.tsx; SavedKeywordsTagFilter.tsx; SavedKeywordsSummary.tsx; SavedKeywordsModals.tsx; useSavedKeywordPositions.ts; savedKeywordPositions.ts; src/client/components/IntentBadge.tsx; src/server/features/keywords/repositories/KeywordResearchRepository.ts; src/server/features/keywords/services/research/saved-keywords.ts -->

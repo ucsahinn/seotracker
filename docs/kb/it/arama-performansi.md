@@ -1,6 +1,6 @@
 ---
 title: Prestazioni di ricerca
-description: Qui si vede per quali ricerche il sito compare su Google e quante persone cliccano. Si può guardare per query, pagina, paese o dispositivo e tornare indietro fino a 16 mesi.
+description: Per quali ricerche il sito compare su Google e quante persone cliccano. Per query, pagina, paese o dispositivo, fino a 16 mesi indietro.
 screen: Arama performansı
 route: /p/<proje>/search-performance
 updated: 2026-10-22
@@ -27,7 +27,7 @@ I filtri scelti vengono scritti nella barra degli indirizzi. Volendo, si può co
 - **Sayfalar** (Pagine): tabella per pagine.
 - **Sayfa çakışmaları** (Sovrapposizioni tra pagine): casi in cui più pagine del sito competono per la stessa ricerca.
 
-**Filtri rapidi.** **İlk 10'da** (Nei primi 10), **Hiç tıklanmayan** (Mai cliccate), **Tıklama oranı düşük** (Percentuale di clic bassa), **Tıklama alanlar** (Con clic), **Sıra 5-10** (Posizione 5-10), **Sıra 11-20** (Posizione 11-20). Percentuale di clic bassa indica una query che compare nella prima pagina, ha almeno 100 impressioni e una percentuale inferiore al 2 per cento.
+**Filtri rapidi.** **İlk 10'da** (Nei primi 10), **Hiç tıklanmayan** (Mai cliccate), **Tıklama oranı düşük** (Percentuale di clic bassa), **Tıklama alanlar** (Con clic), **Sıra 5-10** (Posizione 5-10), **Sıra 11-20** (Posizione 11-20). Il filtro **Tıklama oranı düşük** seleziona le query che compaiono nella prima pagina, hanno almeno 100 impressioni e una percentuale di clic inferiore al 2 per cento.
 
 **Menu della riga.** I tre puntini a destra di ogni riga contengono: **Sayfayı yeni sekmede aç** (Apri la pagina in una nuova scheda), **Adresi kopyala** (Copia l'indirizzo), **Kelimeyi kopyala** (Copia la parola), **Kelime olarak kaydet** (Salva come parola chiave). Ciò che si salva va nella schermata Kayıtlı kelimeler (Parole chiave salvate).
 
@@ -36,7 +36,7 @@ I filtri scelti vengono scritti nella barra degli indirizzi. Volendo, si può co
 ## Come si usa
 
 1. Iniziare con **Son 28 gün**. Se c'è un calo forte, scegliere **Son 3 ay**. Nel grafico si vede da quale giorno è iniziato il calo.
-2. Aprire la scheda **Sıra 5-20**. Google già mostra il sito, ma nessuno clicca. Aprire la pagina delle prime tre query più mostrate. Correggere il titolo e il primo paragrafo in base a quella ricerca.
+2. Aprire la scheda **Sıra 5-20**. Google mostra già il sito, ma quasi nessuno clicca. Per ciascuna delle prime tre query più mostrate, aprire la pagina corrispondente. Correggere il titolo e il primo paragrafo in base a quella ricerca.
 3. Nella scheda **Sorgular** premere **Tıklama oranı düşük**. La posizione è buona, ma nessuno clicca. Il problema è con ogni probabilità nel titolo e nella descrizione.
 4. Per vedere in quali ricerche compare una pagina, nella scheda **Sayfalar** scegliere **Arama performansında ara** (Cerca nelle prestazioni di ricerca).
 5. Segnare le query da seguire con **Kelime olarak kaydet**.

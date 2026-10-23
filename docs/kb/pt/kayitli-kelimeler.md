@@ -1,6 +1,6 @@
 ---
 title: Palavras-chave salvas
-description: Marque com etiquetas as buscas que você salvou aqui, acompanhe a posição média delas nos últimos 90 dias e exporte para CSV ou Planilhas.
+description: Organize com etiquetas as buscas que você salvou, acompanhe a posição média delas nos últimos 90 dias e exporte para CSV ou Planilhas.
 screen: Kayıtlı kelimeler
 route: /p/<proje>/saved
 updated: 2026-10-22
@@ -8,7 +8,7 @@ updated: 2026-10-22
 
 Nesta tela você reúne as buscas que importam para você, as marca com etiquetas e acompanha as posições delas.
 
-O aplicativo não sugere palavras-chave. Na tela Arama performansı (Desempenho de busca) ou Sıralama takibi (Acompanhamento de posições), você escolhe **Kelime olarak kaydet** (Salvar como palavra-chave) no menu de uma linha. A palavra-chave vem parar aqui. Aqui você vê a posição média de cada palavra-chave nos últimos 90 dias. A posição vem do arquivo de Sıralama takibi. Salvar não inicia um novo acompanhamento no Google. Apenas filtra dados já coletados para essas palavras-chave.
+O aplicativo não sugere palavras-chave. Na tela Arama performansı (Desempenho de busca) ou Sıralama takibi (Acompanhamento de posições), você escolhe **Kelime olarak kaydet** (Salvar como palavra-chave) no menu de uma linha. A palavra-chave aparece aqui, com a posição média dos últimos 90 dias. A posição vem do arquivo de Sıralama takibi. Salvar não inicia um novo acompanhamento no Google; apenas filtra dados já coletados para essas palavras-chave.
 
 ## O que há na tela
 
@@ -34,7 +34,7 @@ As formas curtas são Bilgi, Ticari, İşlem, Gezinme e um ponto de interrogaç�
 
 ## Como usar
 
-1. Em Arama performansı (Desempenho de busca), abra a aba **Sıra 5-20** (Posição 5-20). Marque cinco ou dez buscas que você considera importantes com **Kelime olarak kaydet** (Salvar como palavra-chave). Escolha as buscas das páginas que dão dinheiro. Isso é tão útil quanto escolher as mais exibidas.
+1. Em Arama performansı (Desempenho de busca), abra a aba **Sıra 5-20** (Posição 5-20). Marque cinco ou dez buscas que você considera importantes com **Kelime olarak kaydet** (Salvar como palavra-chave). Inclua também as buscas das páginas que trazem receita, não só as mais exibidas.
 2. Venha para cá e marque as palavras-chave. Com **Etiketleri güncelle** (Atualizar as etiquetas), dê etiquetas como "ürün" (produto), "blog" e "marka" (marca). Isso facilita a comparação no mês seguinte.
 3. Uma vez por mês, olhe o cartão **Sıra dağılımı** (Distribuição de posições). As palavras-chave da faixa 11-20 são as mais próximas da primeira página. Encontre as páginas dessas palavras-chave na tela Fırsatlar (Oportunidades).
 4. Para um relatório, escolha **CSV indir** (Baixar CSV) ou **E-Tablolar'a aktar** (Exportar para o Planilhas). O arquivo vem com os filtros que você aplicou.
@@ -45,7 +45,7 @@ As palavras-chave e as etiquetas estão no banco de dados deste computador. **Or
 
 As 500 buscas mais exibidas são puxadas do arquivo. Se a sua palavra-chave salva estiver fora dessas 500, a posição dela aparece como "bilinmiyor" (desconhecida).
 
-A informação de intenção é gravada se veio quando a palavra-chave foi salva. Ela não é calculada depois. A lista é dividida em páginas de 50, 100 ou 250.
+A intenção só é gravada se vier junto quando a palavra-chave é salva. Ela não é calculada depois. A lista é dividida em páginas de 50, 100 ou 250.
 
 ## Perguntas frequentes
 

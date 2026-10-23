@@ -6,7 +6,7 @@
     <title>Chancen | seowatcher-Anleitung</title>
     <meta
       name="description"
-      content="Die App sagt Ihnen, welche Ihrer Seiten Sie diese Woche anpacken sollten. Sie teilt die Seiten in vier Gruppen, vergibt Punkte und schreibt zu jeder Seite die nächste Aufgabe."
+      content="Welche Ihrer Seiten Sie diese Woche anpacken sollten: vier Gruppen, ein Punktwert und zu jeder Seite die nächste Aufgabe."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link rel="canonical" href="https://seowatcher.io/de/docs/chancen/" />
@@ -46,6 +46,7 @@
       href="https://seowatcher.io/docs/firsatlar/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -72,7 +73,7 @@
     <meta property="og:title" content="Chancen | seowatcher-Anleitung" />
     <meta
       property="og:description"
-      content="Die App sagt Ihnen, welche Ihrer Seiten Sie diese Woche anpacken sollten. Sie teilt die Seiten in vier Gruppen, vergibt Punkte und schreibt zu jeder Seite die nächste Aufgabe."
+      content="Welche Ihrer Seiten Sie diese Woche anpacken sollten: vier Gruppen, ein Punktwert und zu jeder Seite die nächste Aufgabe."
     />
     <meta
       property="og:image"
@@ -96,7 +97,7 @@
     <meta name="twitter:title" content="Chancen | seowatcher-Anleitung" />
     <meta
       name="twitter:description"
-      content="Die App sagt Ihnen, welche Ihrer Seiten Sie diese Woche anpacken sollten. Sie teilt die Seiten in vier Gruppen, vergibt Punkte und schreibt zu jeder Seite die nächste Aufgabe."
+      content="Welche Ihrer Seiten Sie diese Woche anpacken sollten: vier Gruppen, ein Punktwert und zu jeder Seite die nächste Aufgabe."
     />
     <meta
       name="twitter:image"
@@ -133,7 +134,7 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/de/docs/chancen/#article",
             "headline": "Chancen",
-            "description": "Die App sagt Ihnen, welche Ihrer Seiten Sie diese Woche anpacken sollten. Sie teilt die Seiten in vier Gruppen, vergibt Punkte und schreibt zu jeder Seite die nächste Aufgabe.",
+            "description": "Welche Ihrer Seiten Sie diese Woche anpacken sollten: vier Gruppen, ein Punktwert und zu jeder Seite die nächste Aufgabe.",
             "url": "https://seowatcher.io/de/docs/chancen/",
             "inLanguage": "de",
             "dateModified": "2026-10-23",
@@ -172,7 +173,7 @@
       }
     </script>
     <script src="/assets/docs.js?v=2.4.1" defer></script>
-    <meta name="theme-color" content="#272c3b" />
+    <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
         font-family: "Geist";
@@ -762,6 +763,95 @@
       footer a:hover {
         color: var(--fg);
       }
+      /* The one ask on the page: quiet, one line, the accent only on the link. */
+      footer .star {
+        flex-basis: 100%;
+        margin: 0 0 4px;
+        text-wrap: pretty;
+      }
+      footer .star a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      footer .star a:hover {
+        color: var(--accent-link);
+        text-decoration-color: var(--accent-link);
+      }
+
+      /* Headings enter as they scroll into view. docs.js adds .hx (and .in
+         once seen) only when motion is allowed, so without script, under
+         reduced motion and with "stop motion" on, they are simply there.
+         h1 wipes in from the left, h2 rises while an amber stroke draws
+         along its rule, h3 rises a little. */
+      article .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease),
+          clip-path 760ms var(--ease),
+          filter 620ms var(--ease);
+      }
+      article h1.hx {
+        clip-path: inset(-10% 100% -10% 0);
+        filter: blur(6px);
+      }
+      article h2.hx,
+      article h3.hx {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      article h3.hx {
+        transform: translateY(6px);
+      }
+      article h2.hx {
+        position: relative;
+      }
+      article h2.hx::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 56px;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 700ms var(--ease) 160ms;
+      }
+      article .hx.in {
+        opacity: 1;
+        transform: none;
+      }
+      article h1.hx.in {
+        clip-path: inset(-10% 0 -10% 0);
+        filter: none;
+      }
+      article h2.hx.in::before {
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        article .hx,
+        article h2.hx::before {
+          opacity: 1;
+          transform: none;
+          clip-path: none;
+          filter: none;
+          transition: none;
+        }
+      }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
 
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
@@ -1206,7 +1296,11 @@
         <nav class="topnav" aria-label="Website">
           <a class="hide" href="/de/">Startseite</a>
           <a class="hide" href="/de/docs/">Anleitung</a>
-          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+          <a
+            class="hide"
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub</a
           >
           <details class="langs">
@@ -1233,7 +1327,7 @@
                       <circle cx="8.4" cy="7" r="2.7" fill="#e30a17" />
                       <polygon
                         fill="#fff"
-                        points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"
+                        points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"
                       /></svg></span
                   >Türkçe</a
                 >
@@ -1256,12 +1350,12 @@
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#fff"
-                        stroke-width="3.6"
+                        stroke-width="4.2"
                       />
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#c8102e"
-                        stroke-width="2"
+                        stroke-width="2.6"
                       /></svg></span
                   >English</a
                 >
@@ -1336,6 +1430,8 @@
           <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            target="_blank"
+            rel="noopener noreferrer"
             ><span class="long">Für Windows herunterladen</span
             ><span class="short">Download</span></a
           >
@@ -1394,7 +1490,7 @@
             <li><a href="/de/docs/projektinfo/">Projektinfo</a></li>
             <li><a href="/de/docs/einstellungen/">Einstellungen</a></li>
           </ul>
-          <p class="nav-group">Nachschlagen</p>
+          <p class="nav-group">Hilfe und Nachschlagen</p>
           <ul>
             <li><a href="/de/docs/hilfe/">Hilfe</a></li>
             <li><a href="/de/docs/audit-regeln/">Audit-Regeln</a></li>
@@ -1409,12 +1505,11 @@
       <article id="icerik" data-page="firsatlar">
         <h1>Chancen</h1>
         <p class="lede">
-          Die App sagt Ihnen, welche Ihrer Seiten Sie diese Woche anpacken
-          sollten. Sie teilt die Seiten in vier Gruppen, vergibt Punkte und
-          schreibt zu jeder Seite die nächste Aufgabe.
+          Welche Ihrer Seiten Sie diese Woche anpacken sollten: vier Gruppen,
+          ein Punktwert und zu jeder Seite die nächste Aufgabe.
         </p>
         <p>
-          Hier sehen Sie, welche Ihrer Seiten Sie diese Woche anfassen sollten.
+          Hier sehen Sie, welche Ihrer Seiten Sie diese Woche anpacken sollten.
         </p>
         <p>
           Die App ordnet jede Ihrer Seiten aus der Search Console der
@@ -1460,12 +1555,13 @@
               <tr>
                 <td><strong>Az tıklanan</strong> (Selten geklickt)</td>
                 <td>
-                  In den ersten 20 Positionen. Die Klickrate liegt unter der
-                  Hälfte Ihrer Seiten auf derselben Position
+                  Auf den ersten 20 Positionen. Die Klickrate liegt unter der
+                  Hälfte dessen, was Ihre Seiten auf derselben Position
+                  erreichen
                 </td>
                 <td>
-                  Schreiben Sie Titel und Beschreibung neu. Der Text, der in der
-                  Suche erscheint, zieht nicht
+                  Schreiben Sie Titel und Beschreibung neu. Der in der Suche
+                  angezeigte Text weckt kein Interesse
                 </td>
               </tr>
               <tr>
@@ -1480,7 +1576,7 @@
                 <td><strong>İlk sıralarda</strong> (Ganz oben)</td>
                 <td>In den ersten 3 Positionen</td>
                 <td>
-                  Halten Sie die Seite aktuell und stellen Sie sicher, dass
+                  Halten Sie die Seite aktuell und achten Sie darauf, dass
                   nichts kaputtgeht
                 </td>
               </tr>
@@ -1496,8 +1592,8 @@
           </table>
         </div>
         <p>
-          Ein interner Link ist ein Link, den Sie auf Ihrer Website von einer
-          Seite zur anderen setzen.
+          Ein interner Link führt von einer Seite Ihrer Website zu einer
+          anderen.
         </p>
         <p>
           <strong>Schnellfilter.</strong>
@@ -1546,32 +1642,32 @@
           <li>
             Nehmen Sie aus der Gruppe <strong>Az tıklanan</strong> die ersten
             zwei Seiten. Sie stehen bei Google gut, werden aber nicht geklickt.
-            Korrigieren Sie Titel und Beschreibung. Das ist eine Arbeit von
-            einer halben Stunde.
+            Korrigieren Sie Titel und Beschreibung. Das dauert etwa eine halbe
+            Stunde.
           </li>
           <li>
             Sehen Sie sich in der Gruppe <strong>Yükselmeye yakın</strong> die
             Seiten mit hohem Wert an. Ergänzen Sie einen Abschnitt und setzen
-            Sie zwei, drei interne Links von anderen Seiten.
+            Sie zwei bis drei interne Links von anderen Seiten.
           </li>
           <li>
-            Die Schaltfläche <strong>Analytics'te karşılığı yok</strong> sondert
-            Seiten aus, die Google anzeigt, bei denen Analytics aber keine
+            Die Schaltfläche <strong>Analytics'te karşılığı yok</strong> zeigt
+            nur Seiten, die Google anzeigt, bei denen Analytics aber keine
             Besuche sieht. Meist liegt es an der Schreibweise der Adresse
             (Schrägstrich am Ende, www). Manchmal wird die Seite wirklich nicht
             geklickt.
           </li>
-          <li>Fassen Sie pro Woche höchstens drei, vier Seiten an.</li>
+          <li>Fassen Sie pro Woche höchstens drei bis vier Seiten an.</li>
         </ol>
         <h2 id="wie-die-zahlen-berechnet-werden">
           Wie die Zahlen berechnet werden
         </h2>
         <p>
-          Der Zeitraum endet um die dreitägige Verzögerung der Search Console
-          früher. Aus der Search Console werden höchstens 1.000 Zeilen
-          abgerufen, aus Analytics ebenfalls höchstens 1.000 Zeilen. Beide
-          Listen werden nach Domain und Pfad zugeordnet. Ein Schrägstrich am
-          Ende der Adresse zählt nicht. Wird die Grenze von 1.000 Zeilen
+          Der Zeitraum endet drei Tage vor heute, weil die Search Console ihre
+          Daten verzögert liefert. Aus der Search Console werden höchstens 1.000
+          Zeilen abgerufen, aus Analytics ebenfalls höchstens 1.000 Zeilen.
+          Beide Listen werden nach Domain und Pfad zugeordnet. Ein Schrägstrich
+          am Ende der Adresse zählt nicht. Wird die Grenze von 1.000 Zeilen
           erreicht, steht unter der Tabelle ein Hinweis.
         </p>
         <p>
@@ -1580,19 +1676,21 @@
           Rate ist die typische Klickrate Ihrer Seiten im selben
           Positionsbereich. Die Bereiche sind: 1-3, 3-5, 5-10, 10-20 und 20-50.
           Für einen Bereich braucht es mindestens drei Seiten mit je 10
-          Impressionen. Eine Seite mit Position 20 oder schlechter, deren Rate
-          unter der Hälfte des Erwarteten liegt, kommt in „Az tıklanan“.
+          Impressionen. Eine Seite, die unter den ersten 20 Positionen liegt und
+          deren Rate unter der Hälfte des Erwarteten liegt, kommt in „Az
+          tıklanan“.
         </p>
         <p>
           Der Wert setzt sich so zusammen: 50 Prozent Nachfrage, 30 Prozent
           Geschäftswert, 20 Prozent Aufstiegschance. Die Nachfrage beruht auf
-          den Impressionen. Je besser die Position, desto leichter gilt der
-          Aufstieg. Der Geschäftswert ist der Anteil der Schlüsselereignisse in
-          Analytics. Ein Schlüsselereignis ist eine Handlung, die Sie für
-          wichtig erklärt haben. Gibt es auf keiner Seite eines, wird die
-          Interaktionsrate verwendet. Eine Seite ohne Entsprechung in Analytics
-          bekommt für den Geschäftswert einen mittleren Wert. Der Wert
-          vergleicht nur die eigenen Seiten Ihrer Website miteinander.
+          den Impressionen. Je besser die Position, desto leichter wird der
+          Aufstieg eingeschätzt. Der Geschäftswert ist der Anteil der
+          Schlüsselereignisse in Analytics. Ein Schlüsselereignis ist eine
+          Handlung, die Sie für wichtig erklärt haben. Gibt es auf keiner Seite
+          eines, wird die Interaktionsrate verwendet. Eine Seite ohne
+          Entsprechung in Analytics bekommt für den Geschäftswert einen
+          mittleren Wert. Der Wert vergleicht nur die eigenen Seiten Ihrer
+          Website miteinander.
         </p>
         <h2 id="haufige-fragen">Häufige Fragen</h2>
         <p>
@@ -1633,7 +1731,10 @@
         </nav>
         <p class="meta">
           Zuletzt aktualisiert: 23 Oktober 2026. Fehler entdeckt?
-          <a href="https://github.com/ucsahinn/seotracker/issues"
+          <a
+            href="https://github.com/ucsahinn/seotracker/issues"
+            target="_blank"
+            rel="noopener noreferrer"
             >Auf GitHub melden</a
           >.
         </p>
@@ -1659,10 +1760,25 @@
     </main>
     <footer>
       <div class="wrap">
+        <p class="star">
+          Ein Stern hilft anderen, ein kostenloses Werkzeug zu finden.
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Auf GitHub mit einem Stern markieren</a
+          >
+        </p>
         <span>seowatcher, MIT-Lizenz.</span>
         <span
           ><a href="/de/">Startseite</a> &nbsp;
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          &nbsp;
           <a href="/de/docs/versionshinweise/">Versionshinweise</a></span
         >
       </div>

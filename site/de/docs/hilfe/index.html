@@ -6,7 +6,7 @@
     <title>Hilfe | seowatcher-Anleitung</title>
     <meta
       name="description"
-      content="Wenn etwas schiefgeht, sehen Sie zuerst hier nach. Der Bildschirm prüft Ihre Installation, zeigt Lösungen für häufige Probleme und bereitet die Datei vor, die Sie bei einer Problemmeldung senden."
+      content="Der Bildschirm prüft Ihre Installation, zeigt Lösungen für häufige Probleme und bereitet die Datei für eine Problemmeldung vor."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link rel="canonical" href="https://seowatcher.io/de/docs/hilfe/" />
@@ -46,6 +46,7 @@
       href="https://seowatcher.io/docs/yardim/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -72,7 +73,7 @@
     <meta property="og:title" content="Hilfe | seowatcher-Anleitung" />
     <meta
       property="og:description"
-      content="Wenn etwas schiefgeht, sehen Sie zuerst hier nach. Der Bildschirm prüft Ihre Installation, zeigt Lösungen für häufige Probleme und bereitet die Datei vor, die Sie bei einer Problemmeldung senden."
+      content="Der Bildschirm prüft Ihre Installation, zeigt Lösungen für häufige Probleme und bereitet die Datei für eine Problemmeldung vor."
     />
     <meta
       property="og:image"
@@ -96,7 +97,7 @@
     <meta name="twitter:title" content="Hilfe | seowatcher-Anleitung" />
     <meta
       name="twitter:description"
-      content="Wenn etwas schiefgeht, sehen Sie zuerst hier nach. Der Bildschirm prüft Ihre Installation, zeigt Lösungen für häufige Probleme und bereitet die Datei vor, die Sie bei einer Problemmeldung senden."
+      content="Der Bildschirm prüft Ihre Installation, zeigt Lösungen für häufige Probleme und bereitet die Datei für eine Problemmeldung vor."
     />
     <meta
       name="twitter:image"
@@ -133,11 +134,11 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/de/docs/hilfe/#article",
             "headline": "Hilfe",
-            "description": "Wenn etwas schiefgeht, sehen Sie zuerst hier nach. Der Bildschirm prüft Ihre Installation, zeigt Lösungen für häufige Probleme und bereitet die Datei vor, die Sie bei einer Problemmeldung senden.",
+            "description": "Der Bildschirm prüft Ihre Installation, zeigt Lösungen für häufige Probleme und bereitet die Datei für eine Problemmeldung vor.",
             "url": "https://seowatcher.io/de/docs/hilfe/",
             "inLanguage": "de",
             "dateModified": "2026-10-23",
-            "articleSection": "Nachschlagen",
+            "articleSection": "Hilfe und Nachschlagen",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
             "publisher": { "@id": "https://seowatcher.io/#author" },
@@ -172,7 +173,7 @@
       }
     </script>
     <script src="/assets/docs.js?v=2.4.1" defer></script>
-    <meta name="theme-color" content="#272c3b" />
+    <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
         font-family: "Geist";
@@ -762,6 +763,95 @@
       footer a:hover {
         color: var(--fg);
       }
+      /* The one ask on the page: quiet, one line, the accent only on the link. */
+      footer .star {
+        flex-basis: 100%;
+        margin: 0 0 4px;
+        text-wrap: pretty;
+      }
+      footer .star a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      footer .star a:hover {
+        color: var(--accent-link);
+        text-decoration-color: var(--accent-link);
+      }
+
+      /* Headings enter as they scroll into view. docs.js adds .hx (and .in
+         once seen) only when motion is allowed, so without script, under
+         reduced motion and with "stop motion" on, they are simply there.
+         h1 wipes in from the left, h2 rises while an amber stroke draws
+         along its rule, h3 rises a little. */
+      article .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease),
+          clip-path 760ms var(--ease),
+          filter 620ms var(--ease);
+      }
+      article h1.hx {
+        clip-path: inset(-10% 100% -10% 0);
+        filter: blur(6px);
+      }
+      article h2.hx,
+      article h3.hx {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      article h3.hx {
+        transform: translateY(6px);
+      }
+      article h2.hx {
+        position: relative;
+      }
+      article h2.hx::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 56px;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 700ms var(--ease) 160ms;
+      }
+      article .hx.in {
+        opacity: 1;
+        transform: none;
+      }
+      article h1.hx.in {
+        clip-path: inset(-10% 0 -10% 0);
+        filter: none;
+      }
+      article h2.hx.in::before {
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        article .hx,
+        article h2.hx::before {
+          opacity: 1;
+          transform: none;
+          clip-path: none;
+          filter: none;
+          transition: none;
+        }
+      }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
 
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
@@ -1206,7 +1296,11 @@
         <nav class="topnav" aria-label="Website">
           <a class="hide" href="/de/">Startseite</a>
           <a class="hide" href="/de/docs/">Anleitung</a>
-          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+          <a
+            class="hide"
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub</a
           >
           <details class="langs">
@@ -1233,7 +1327,7 @@
                       <circle cx="8.4" cy="7" r="2.7" fill="#e30a17" />
                       <polygon
                         fill="#fff"
-                        points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"
+                        points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"
                       /></svg></span
                   >Türkçe</a
                 >
@@ -1256,12 +1350,12 @@
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#fff"
-                        stroke-width="3.6"
+                        stroke-width="4.2"
                       />
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#c8102e"
-                        stroke-width="2"
+                        stroke-width="2.6"
                       /></svg></span
                   >English</a
                 >
@@ -1336,6 +1430,8 @@
           <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            target="_blank"
+            rel="noopener noreferrer"
             ><span class="long">Für Windows herunterladen</span
             ><span class="short">Download</span></a
           >
@@ -1392,7 +1488,7 @@
             <li><a href="/de/docs/projektinfo/">Projektinfo</a></li>
             <li><a href="/de/docs/einstellungen/">Einstellungen</a></li>
           </ul>
-          <p class="nav-group">Nachschlagen</p>
+          <p class="nav-group">Hilfe und Nachschlagen</p>
           <ul>
             <li class="current" aria-current="page">
               <a href="/de/docs/hilfe/">Hilfe</a>
@@ -1409,9 +1505,8 @@
       <article id="icerik" data-page="yardim">
         <h1>Hilfe</h1>
         <p class="lede">
-          Wenn etwas schiefgeht, sehen Sie zuerst hier nach. Der Bildschirm
-          prüft Ihre Installation, zeigt Lösungen für häufige Probleme und
-          bereitet die Datei vor, die Sie bei einer Problemmeldung senden.
+          Der Bildschirm prüft Ihre Installation, zeigt Lösungen für häufige
+          Probleme und bereitet die Datei für eine Problemmeldung vor.
         </p>
         <p>
           Die Oberfläche der App ist auf Türkisch. Diese Anleitung nennt jede
@@ -1540,8 +1635,8 @@
             Benutzer ohne Passwort).</strong
           >
           Das ist normal. Die App öffnet sich nur von Ihrem eigenen Computer
-          aus. Wollen Sie sie nach außen öffnen, müssen Sie eine eigene
-          gesicherte Anmeldung davorsetzen.
+          aus. Wollen Sie sie im Netz erreichbar machen, müssen Sie selbst eine
+          gesicherte Anmeldung davorschalten.
         </p>
         <p>
           <strong>Was steht im Diagnosepaket?</strong> Die Version, die
@@ -1552,9 +1647,10 @@
         <h2 id="grenzen">Grenzen</h2>
         <p>
           Dieser Bildschirm prüft nur die Installation selbst. Ein Problem auf
-          Ihrer Website finden Sie mit dem Bildschirm Site denetimi
-          (Website-Audit), ein Problem auf der Seite von Google mit dem
-          Bildschirm Dizin durumu (Indexstatus).
+          Ihrer Website finden Sie mit dem Bildschirm
+          <strong>Site denetimi</strong> (Website-Audit), ein Problem auf
+          Googles Seite mit dem Bildschirm
+          <strong>Dizin durumu</strong> (Indexstatus).
         </p>
         <nav class="pager" aria-label="Vorherige und nächste Seite">
           <a class="pager-prev" rel="prev" href="/de/docs/einstellungen/"
@@ -1565,7 +1661,10 @@
         </nav>
         <p class="meta">
           Zuletzt aktualisiert: 23 Oktober 2026. Fehler entdeckt?
-          <a href="https://github.com/ucsahinn/seotracker/issues"
+          <a
+            href="https://github.com/ucsahinn/seotracker/issues"
+            target="_blank"
+            rel="noopener noreferrer"
             >Auf GitHub melden</a
           >.
         </p>
@@ -1586,10 +1685,25 @@
     </main>
     <footer>
       <div class="wrap">
+        <p class="star">
+          Ein Stern hilft anderen, ein kostenloses Werkzeug zu finden.
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Auf GitHub mit einem Stern markieren</a
+          >
+        </p>
         <span>seowatcher, MIT-Lizenz.</span>
         <span
           ><a href="/de/">Startseite</a> &nbsp;
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          &nbsp;
           <a href="/de/docs/versionshinweise/">Versionshinweise</a></span
         >
       </div>

@@ -1,6 +1,6 @@
 ---
 title: Analytics
-description: Si vede che cosa fanno sul sito le persone arrivate dalla ricerca. Qui si guardano i rapporti di Google Analytics 4, gli eventi chiave e se la misurazione funziona bene.
+description: Che cosa fanno sul sito le persone arrivate dalla ricerca: rapporti di Google Analytics 4, eventi chiave e stato della misurazione.
 screen: Analytics
 route: /p/<proje>/analytics
 updated: 2026-10-22
@@ -8,13 +8,13 @@ updated: 2026-10-22
 
 Qui si vede che cosa fanno dopo le persone che arrivano sul sito. Search Console racconta che cosa succede su Google. Analytics racconta che cosa fa il visitatore sul sito.
 
-Si vedono sette rapporti dell'account di Google Analytics 4. Per impostazione predefinita la schermata mostra solo chi arriva dalla ricerca (ricerca organica). L'ottava scheda controlla la misurazione stessa: se il contatore funziona e se è definito un evento chiave.
+Ci sono sette rapporti di Google Analytics 4. Per impostazione predefinita la schermata mostra solo chi arriva dalla ricerca (ricerca organica). L'ottava scheda controlla la misurazione stessa: se il contatore funziona e se è definito un evento chiave.
 
 ## Cosa c'è nella schermata
 
-**Schede.** **Giriş sayfaları** (Pagine di ingresso), **Sayfa performansı** (Prestazioni delle pagine), **Trafik kaynakları** (Sorgenti di traffico), **Anahtar olaylar** (Eventi chiave), **E-ticaret** (E-commerce), **Site içi arama** (Ricerca nel sito), **Kitle dağılımı** (Distribuzione del pubblico) e **Ölçüm durumu** (Stato della misurazione). Sotto ogni scheda c'è una breve domanda. La pagina di ingresso è la prima pagina in cui il visitatore entra nel sito. L'evento chiave è un'azione che si considera importante.
+**Schede.** **Giriş sayfaları** (Pagine di ingresso), **Sayfa performansı** (Prestazioni delle pagine), **Trafik kaynakları** (Origini del traffico), **Anahtar olaylar** (Eventi chiave), **E-ticaret** (E-commerce), **Site içi arama** (Ricerca nel sito), **Kitle dağılımı** (Distribuzione del pubblico) e **Ölçüm durumu** (Stato della misurazione). Sotto ogni scheda c'è una breve domanda. La pagina di ingresso è la prima pagina in cui il visitatore entra nel sito. L'evento chiave è un'azione che si considera importante.
 
-**Controlli.** In **Dönem** (Periodo) si sceglie Son 7 gün (Ultimi 7 giorni), Son 28 gün (Ultimi 28 giorni) o Son 3 ay (Ultimi 3 mesi). In **Kanal** (Canale) si sceglie Organik arama (Ricerca organica, predefinito) o Tüm trafik (Tutto il traffico). **Satır** (Righe) è 50, 100 o 200. Nella scheda del pubblico si scelgono **Cihaz** (Dispositivo), **Ülke** (Paese) e **Yeni / geri dönen** (Nuovi / di ritorno). Nella scheda del traffico si scelgono **Kanal grubu** (Gruppo di canali), **Kaynak / ortam** (Sorgente / mezzo) e **Kampanya** (Campagna). Le scelte vengono scritte nella barra degli indirizzi.
+**Controlli.** In **Dönem** (Periodo) si sceglie Son 7 gün (Ultimi 7 giorni), Son 28 gün (Ultimi 28 giorni) o Son 3 ay (Ultimi 3 mesi). In **Kanal** (Canale) si sceglie Organik arama (Ricerca organica, predefinito) o Tüm trafik (Tutto il traffico). **Satır** (Righe) è 50, 100 o 200. Nella scheda del pubblico si scelgono **Cihaz** (Dispositivo), **Ülke** (Paese) e **Yeni / geri dönen** (Nuovi / di ritorno). Nella scheda del traffico si scelgono **Kanal grubu** (Gruppo di canali), **Kaynak / ortam** (Origine / mezzo) e **Kampanya** (Campagna). Le scelte vengono scritte nella barra degli indirizzi.
 
 **Pannello delle sessioni organiche.** Nella scheda Pagine di ingresso sta sopra la tabella. Una sessione è una visita intera. Il pannello ha la linea delle sessioni giornaliere e le schede **Oturum** (Sessioni) ed **Etkileşim oranı** (Percentuale di coinvolgimento). Se si misurano i ricavi, compare anche **Organik gelir** (Ricavi organici). Tutte mostrano anche la variazione rispetto al periodo precedente.
 
@@ -26,7 +26,7 @@ Si vedono sette rapporti dell'account di Google Analytics 4. Per impostazione pr
 
 **Schede di riepilogo.** Le schede Eventi chiave, E-commerce e Ricerca nel sito hanno ciascuna le proprie schede di riepilogo.
 
-**Scheda Stato della misurazione.** Ci sono quattro schede: **Web veri akışı** (Flusso di dati web), **Anahtar olay**, **Özel boyut** (Dimensione personalizzata), **Bulgu** (Rilievo). Il rilievo può essere uno di questi: "Web veri akışı yok" (Nessun flusso di dati web), "Gelişmiş ölçüm kapalı" (Misurazione avanzata disattivata), "Site içi arama ölçülmüyor" (La ricerca nel sito non è misurata), "Anahtar olay tanımlı değil" (Nessun evento chiave definito), "Envanter eksik olabilir" (L'inventario potrebbe essere incompleto). Le sette opzioni della misurazione avanzata compaiono una per una: Kaydırma (Scorrimento), Dış bağlantı (Collegamento esterno), Site içi arama (Ricerca nel sito), Video, Dosya indirme (Download di file), Form (Modulo), Sayfa geçişleri (Cambi di pagina). Se non ci sono problemi, scrive "Ölçüm kurulumunda eksik bulunamadı." (Nessuna mancanza trovata nella configurazione della misurazione.).
+**Scheda Stato della misurazione.** Ci sono quattro schede: **Web veri akışı** (Flusso di dati web), **Anahtar olay**, **Özel boyut** (Dimensione personalizzata), **Bulgu** (Problema rilevato). Il problema rilevato può essere uno di questi: "Web veri akışı yok" (Nessun flusso di dati web), "Gelişmiş ölçüm kapalı" (Misurazione avanzata disattivata), "Site içi arama ölçülmüyor" (La ricerca nel sito non è misurata), "Anahtar olay tanımlı değil" (Nessun evento chiave definito), "Envanter eksik olabilir" (L'inventario potrebbe essere incompleto). Le sette opzioni della misurazione avanzata compaiono una per una: Kaydırma (Scorrimento), Dış bağlantı (Collegamento esterno), Site içi arama (Ricerca nel sito), Video, Dosya indirme (Download di file), Form (Modulo), Sayfa geçişleri (Cambi di pagina). Se non ci sono problemi, scrive "Ölçüm kurulumunda eksik bulunamadı." (Nessuna mancanza trovata nella configurazione della misurazione.).
 
 **Stati vuoti.** Se non ci sono dati, la schermata scrive "Bu dönemde veri yok" (Nessun dato in questo periodo) e compaiono due scorciatoie: **Tüm trafiğe bak** (Guarda tutto il traffico), **Ölçüm durumunu kontrol et** (Controlla lo stato della misurazione). Se Analytics non è collegato, scrive "Google Analytics bağlı değil" (Google Analytics non è collegato).
 

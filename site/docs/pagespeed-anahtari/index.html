@@ -15,6 +15,7 @@
     <link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/docs/chave-pagespeed/" />
     <link rel="alternate" hreflang="x-default" href="https://seowatcher.io/docs/pagespeed-anahtari/" />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -59,7 +60,7 @@
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en","de","fr","it","pt"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/docs/pagespeed-anahtari/#article","headline":"PageSpeed anahtarı","description":"Sayfa hızını ölçebilmek için ücretsiz bir Google PageSpeed anahtarı alıp uygulamaya girersiniz. Anahtarsız ölçüm 50 sayfada kalır.","url":"https://seowatcher.io/docs/pagespeed-anahtari/","inLanguage":"tr","dateModified":"2026-10-23","articleSection":"Başlangıç","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/docs/pagespeed-anahtari/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/docs/pagespeed-anahtari/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/"},{"@type":"ListItem","position":2,"name":"Kılavuz","item":"https://seowatcher.io/docs/"},{"@type":"ListItem","position":3,"name":"PageSpeed anahtarı","item":"https://seowatcher.io/docs/pagespeed-anahtari/"}]}]}</script>
     <script src="/assets/docs.js?v=2.4.1" defer></script>
-    <meta name="theme-color" content="#272c3b" />
+    <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
         font-family: "Geist";
@@ -649,6 +650,95 @@
       footer a:hover {
         color: var(--fg);
       }
+      /* The one ask on the page: quiet, one line, the accent only on the link. */
+      footer .star {
+        flex-basis: 100%;
+        margin: 0 0 4px;
+        text-wrap: pretty;
+      }
+      footer .star a {
+        color: var(--accent-link);
+        text-decoration: underline;
+        text-decoration-color: color-mix(
+          in oklab,
+          var(--accent-link) 35%,
+          transparent
+        );
+        text-underline-offset: 3px;
+      }
+      footer .star a:hover {
+        color: var(--accent-link);
+        text-decoration-color: var(--accent-link);
+      }
+
+      /* Headings enter as they scroll into view. docs.js adds .hx (and .in
+         once seen) only when motion is allowed, so without script, under
+         reduced motion and with "stop motion" on, they are simply there.
+         h1 wipes in from the left, h2 rises while an amber stroke draws
+         along its rule, h3 rises a little. */
+      article .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease),
+          clip-path 760ms var(--ease),
+          filter 620ms var(--ease);
+      }
+      article h1.hx {
+        clip-path: inset(-10% 100% -10% 0);
+        filter: blur(6px);
+      }
+      article h2.hx,
+      article h3.hx {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      article h3.hx {
+        transform: translateY(6px);
+      }
+      article h2.hx {
+        position: relative;
+      }
+      article h2.hx::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 56px;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 700ms var(--ease) 160ms;
+      }
+      article .hx.in {
+        opacity: 1;
+        transform: none;
+      }
+      article h1.hx.in {
+        clip-path: inset(-10% 0 -10% 0);
+        filter: none;
+      }
+      article h2.hx.in::before {
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        article .hx,
+        article h2.hx::before {
+          opacity: 1;
+          transform: none;
+          clip-path: none;
+          filter: none;
+          transition: none;
+        }
+      }
+      html[data-still] article .hx,
+      html[data-still] article h2.hx::before {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        filter: none;
+        transition: none;
+      }
 
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
@@ -1093,13 +1183,19 @@
         <nav class="topnav" aria-label="Site">
           <a class="hide" href="/">Ana sayfa</a>
           <a class="hide" href="/docs/">Kılavuz</a>
-          <a class="hide" href="https://github.com/ucsahinn/seotracker"
+          <a
+            class="hide"
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub</a
           >
-          <details class="langs"><summary aria-label="Dil: Türkçe"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"/></svg></span><span class="code">TR</span></summary><ul><li><a href="/docs/pagespeed-anahtari/" lang="tr" hreflang="tr" aria-current="page"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"/></svg></span>Türkçe</a></li><li><a href="/en/docs/pagespeed-key/" lang="en" hreflang="en"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="3.6"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2"/></svg></span>English</a></li><li><a href="/de/docs/pagespeed-schluessel/" lang="de" hreflang="de"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg></span>Deutsch</a></li><li><a href="/fr/docs/cle-pagespeed/" lang="fr" hreflang="fr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg></span>Français</a></li><li><a href="/it/docs/chiave-pagespeed/" lang="it" hreflang="it"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg></span>Italiano</a></li><li><a href="/pt/docs/chave-pagespeed/" lang="pt" hreflang="pt"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#ff0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.6" fill="#ffcc00"/><circle cx="8" cy="7" r="1.5" fill="#ff0000"/></svg></span>Português</a></li></ul></details>
+          <details class="langs"><summary aria-label="Dil: Türkçe"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"/></svg></span><span class="code">TR</span></summary><ul><li><a href="/docs/pagespeed-anahtari/" lang="tr" hreflang="tr" aria-current="page"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"/></svg></span>Türkçe</a></li><li><a href="/en/docs/pagespeed-key/" lang="en" hreflang="en"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2.6"/></svg></span>English</a></li><li><a href="/de/docs/pagespeed-schluessel/" lang="de" hreflang="de"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg></span>Deutsch</a></li><li><a href="/fr/docs/cle-pagespeed/" lang="fr" hreflang="fr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg></span>Français</a></li><li><a href="/it/docs/chiave-pagespeed/" lang="it" hreflang="it"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg></span>Italiano</a></li><li><a href="/pt/docs/chave-pagespeed/" lang="pt" hreflang="pt"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#ff0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.6" fill="#ffcc00"/><circle cx="8" cy="7" r="1.5" fill="#ff0000"/></svg></span>Português</a></li></ul></details>
           <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
+            target="_blank"
+            rel="noopener noreferrer"
             ><span class="long">Windows için indir</span
             ><span class="short">İndir</span></a
           >
@@ -1116,29 +1212,32 @@
       <aside class="side" aria-label="Kılavuz">
         <details class="side-dd" open>
           <summary>Kılavuz</summary>
-          <p class="nav-group">Başlangıç</p><ul><li><a href="/docs/kurulum-windows/">Windows'a kurulum</a></li><li><a href="/docs/kurulum-docker/">Docker ile kurulum</a></li><li><a href="/docs/google-baglantisi/">Google'a bağlanma</a></li><li class="current" aria-current="page"><a href="/docs/pagespeed-anahtari/">PageSpeed anahtarı</a></li></ul><p class="nav-group">Ekranlar</p><ul><li><a href="/docs/projeler/">Projeler</a></li><li><a href="/docs/panel/">Panel</a></li><li><a href="/docs/arama-performansi/">Arama performansı</a></li><li><a href="/docs/siralama-takibi/">Sıralama takibi</a></li><li><a href="/docs/firsatlar/">Fırsatlar</a></li><li><a href="/docs/kayitli-kelimeler/">Kayıtlı kelimeler</a></li><li><a href="/docs/analytics/">Analytics</a></li><li><a href="/docs/site-denetimi/">Site denetimi</a></li><li><a href="/docs/dizin-durumu/">Dizin durumu</a></li><li><a href="/docs/raporlar/">Raporlar ve şablonlar</a></li><li><a href="/docs/proje-bilgisi/">Proje bilgisi</a></li><li><a href="/docs/ayarlar/">Ayarlar</a></li></ul><p class="nav-group">Başvuru</p><ul><li><a href="/docs/yardim/">Yardım</a></li><li><a href="/docs/denetim-kurallari/">Denetim kuralları</a></li><li><a href="/docs/ajan-kurulumu/">Ajan kurulumu</a></li><li><a href="/docs/sorun-giderme/">Sorun giderme</a></li><li><a href="/docs/surum-notlari/">Sürüm notları</a></li></ul>
+          <p class="nav-group">Başlangıç</p><ul><li><a href="/docs/kurulum-windows/">Windows'a kurulum</a></li><li><a href="/docs/kurulum-docker/">Docker ile kurulum</a></li><li><a href="/docs/google-baglantisi/">Google'a bağlanma</a></li><li class="current" aria-current="page"><a href="/docs/pagespeed-anahtari/">PageSpeed anahtarı</a></li></ul><p class="nav-group">Ekranlar</p><ul><li><a href="/docs/projeler/">Projeler</a></li><li><a href="/docs/panel/">Panel</a></li><li><a href="/docs/arama-performansi/">Arama performansı</a></li><li><a href="/docs/siralama-takibi/">Sıralama takibi</a></li><li><a href="/docs/firsatlar/">Fırsatlar</a></li><li><a href="/docs/kayitli-kelimeler/">Kayıtlı kelimeler</a></li><li><a href="/docs/analytics/">Analytics</a></li><li><a href="/docs/site-denetimi/">Site denetimi</a></li><li><a href="/docs/dizin-durumu/">Dizin durumu</a></li><li><a href="/docs/raporlar/">Raporlar ve şablonlar</a></li><li><a href="/docs/proje-bilgisi/">Proje bilgisi</a></li><li><a href="/docs/ayarlar/">Ayarlar</a></li></ul><p class="nav-group">Yardım ve başvuru</p><ul><li><a href="/docs/yardim/">Yardım</a></li><li><a href="/docs/denetim-kurallari/">Denetim kuralları</a></li><li><a href="/docs/ajan-kurulumu/">Ajan kurulumu</a></li><li><a href="/docs/sorun-giderme/">Sorun giderme</a></li><li><a href="/docs/surum-notlari/">Sürüm notları</a></li></ul>
         </details>
       </aside>
       <article id="icerik" data-page="pagespeed-anahtari">
-        <h1>PageSpeed anahtarı</h1><p class="lede">Sayfa hızını ölçebilmek için ücretsiz bir Google PageSpeed anahtarı alıp uygulamaya girersiniz. Anahtarsız ölçüm 50 sayfada kalır.</p><p>Bu sayfayı bitirdiğinizde ücretsiz PageSpeed anahtarınızı almış, uygulamaya girmiş ve denemiş olacaksınız. Beş dakika sürer. Site denetimindeki &quot;Sayfa hızını da ölç&quot; seçeneği her sayfayı Google'ın PageSpeed Insights servisiyle telefonda ve bilgisayarda ölçer. Google bu servisi anahtarsız da verir ama hakkı çok azdır. Birkaç sayfadan sonra &quot;429, çok fazla istek&quot; cevabı gelir. Bu yüzden uygulama anahtarsız denetimde ölçümü en fazla 50 sayfayla sınırlar. Ücretsiz anahtar bu sınırı kaldırır.</p>
+        <h1>PageSpeed anahtarı</h1><p class="lede">Sayfa hızını ölçebilmek için ücretsiz bir Google PageSpeed anahtarı alıp uygulamaya girersiniz. Anahtarsız ölçüm 50 sayfada kalır.</p><p>Bu sayfayı bitirince ücretsiz PageSpeed anahtarınızı almış, uygulamaya girmiş ve denemiş olursunuz. Beş dakika sürer. Site denetimindeki &quot;Sayfa hızını da ölç&quot; seçeneği her sayfayı Google'ın PageSpeed Insights servisiyle telefonda ve bilgisayarda ölçer. Google bu servisi anahtarsız da verir ama izin verdiği istek sayısı çok azdır. Birkaç sayfadan sonra &quot;429, çok fazla istek&quot; cevabı gelir. Bu yüzden uygulama anahtarsız denetimde ölçümü en fazla 50 sayfayla sınırlar. Ücretsiz anahtar bu sınırı kaldırır.</p>
 <h2 id="gerekenler">Gerekenler</h2>
 <ul><li>Bir Google hesabı ve Google Cloud Console'da (Google'ın geliştirici sayfası) bir proje. Google bağlantısı için proje açtıysanız aynısı olur.</li><li>Kart ya da ücret gerekmez. PageSpeed Insights API (servise erişim kapısı) ücretsizdir.</li></ul>
 <h2 id="adimlar">Adımlar</h2>
-<ol><li><code>console.cloud.google.com</code> adresinde projenizi seçin.</li><li><strong>API'ler ve Hizmetler → Kitaplık</strong> sayfasını açın. <strong>PageSpeed Insights API</strong> diye aratın ve <strong>Etkinleştir</strong> deyin. Bu adımı atlarsanız anahtarınız olur ama her istek 403 ile reddedilir.</li><li><strong>API'ler ve Hizmetler → Kimlik bilgileri → Kimlik bilgisi oluştur → API anahtarı</strong> deyin. &quot;AIza&quot; ile başlayan anahtar görünür. Kopyalayın.</li><li>İsteğe bağlı ama önerilir: <strong>Anahtarı kısıtla</strong> deyin. API kısıtlamasında yalnızca <strong>PageSpeed Insights API</strong>'yi seçin. Yapay zekâ asistanınız gerçek kullanıcı verisinin (CrUX) geçmişine de bakacaksa <strong>Chrome UX Report API</strong>'yi de ekleyin.</li><li>Uygulamada <strong>Ayarlar → Hız ölçümü</strong> bölümünü açın. <strong>API anahtarı</strong> alanına anahtarı yapıştırın. <strong>Kaydet</strong> deyin. &quot;PageSpeed anahtarı kaydedildi&quot; bildirimi gelir. Yeniden başlatmak gerekmez.</li><li>Aynı bölümde <strong>Anahtarı test et</strong> düğmesine basın. Uygulama example.com için tek bir gerçek ölçüm yapar (1 ölçüm harcar). Şu cevabı görmelisiniz: &quot;Anahtar çalışıyor: Google PageSpeed Insights ölçümü kabul etti.&quot;</li></ol>
-<p>Docker kullanıyorsanız anahtarı <code>.env</code> dosyasında <code>PAGESPEED_API_KEY</code> olarak da verebilirsiniz. Ayarlar ekranı daha kolaydır ve oraya girilen değer önceliklidir.</p>
+<ol><li><code>console.cloud.google.com</code> adresinde projenizi seçin.</li><li><strong>API'ler ve Hizmetler → Kitaplık</strong> sayfasını açın. <strong>PageSpeed Insights API</strong> diye aratın ve <strong>Etkinleştir</strong> deyin. Bu adımı atlarsanız anahtarınız olur ama Google her isteği 403 ile reddeder.</li><li><strong>API'ler ve Hizmetler → Kimlik bilgileri → Kimlik bilgisi oluştur → API anahtarı</strong> deyin. &quot;AIza&quot; ile başlayan anahtar görünür. Kopyalayın.</li><li>İsteğe bağlı ama önerilir: <strong>Anahtarı kısıtla</strong> deyin. API kısıtlamasında yalnızca <strong>PageSpeed Insights API</strong>'yi seçin. Yapay zekâ asistanınız gerçek kullanıcı verisinin (CrUX) geçmişine de bakacaksa <strong>Chrome UX Report API</strong>'yi de ekleyin.</li><li>Uygulamada <strong>Ayarlar → Hız ölçümü</strong> bölümünü açın. <strong>API anahtarı</strong> alanına anahtarı yapıştırın. <strong>Kaydet</strong> deyin. &quot;PageSpeed anahtarı kaydedildi&quot; bildirimi gelir. Yeniden başlatmak gerekmez.</li><li>Aynı bölümde <strong>Anahtarı test et</strong> düğmesine basın. Uygulama example.com için tek bir gerçek ölçüm yapar (1 ölçüm harcar). Şu yanıtı görmelisiniz: &quot;Anahtar çalışıyor: Google PageSpeed Insights ölçümü kabul etti.&quot;</li></ol>
+<p>Docker kullanıyorsanız anahtarı <code>.env</code> dosyasında <code>PAGESPEED_API_KEY</code> olarak da verebilirsiniz. Ayarlar ekranı daha kolaydır, üstelik oraya girilen değer önceliklidir.</p>
 <h2 id="kontrol">Kontrol</h2>
 <ul><li><strong>Ayarlar → Hız ölçümü</strong> rozeti <strong>Anahtar kayıtlı</strong> demeli.</li><li>Site denetimi başlatma kartında &quot;Sayfa hızını da ölç&quot; açıkken süre tahmini artık &quot;en çok 50 sayfa&quot; sınırından söz etmemeli.</li><li><strong>Ayarlar → Sınırlar</strong> bölümündeki &quot;PageSpeed Insights&quot; kartı &quot;Anahtar tanımlı&quot; demeli.</li></ul>
 <h2 id="sik-sorulanlar">Sık sorulanlar</h2>
 <p><strong>Hak (kota) ne kadar?</strong> Google resmi bir sayı vermez, zamanla da değiştirir. Gerçek değeri Cloud Console'da <strong>API'ler ve Hizmetler → Kotalar</strong> bölümünde görürsünüz. Pratikte dakikalık bir sınır ve günlük bir sınır vardır. Her sayfa iki ölçüm harcar: telefon ve bilgisayar.</p>
-<p><strong>Dakikalık sınıra takılırsam ne olur?</strong> Uygulama bekler ve yeniden dener. Denetim yavaşlar ama sizin bir şey yapmanız gerekmez. Günlük sınır biterse ölçüm durur. O ana kadarki sonuçlar kalır. Ertesi gün yeni denetimde tamamlanır.</p>
-<p><strong>İki denetim aynı anda hız ölçerse?</strong> Dakikalık sınırı paylaşırlar ve ikisi de iki kat yavaşlar. 212 sayfalık bir sitenin hız ölçümü tek başına yaklaşık 24 dakika, başka bir denetimle birlikte 48 dakika sürer. Tarama dahil denetimin tamamı 35 dakikayı bulur.</p>
+<p><strong>Dakikalık sınıra takılırsam ne olur?</strong> Uygulama bekler ve yeniden dener. Denetim yavaşlar ama sizin bir şey yapmanız gerekmez. Günlük sınır dolarsa ölçüm durur. O ana kadarki sonuçlar kalır. Kalanı ertesi gün yapacağınız yeni denetimde ölçülür.</p>
+<p><strong>İki denetim aynı anda hız ölçerse ne olur?</strong> Dakikalık sınırı paylaşırlar ve ikisi de iki kat yavaşlar. 212 sayfalık bir sitenin hız ölçümü tek başına yaklaşık 24 dakika, başka bir denetimle birlikte 48 dakika sürer. Tarama dahil denetimin tamamı 35 dakikayı bulur.</p>
 <p><strong>Anahtar nerede saklanıyor?</strong> Bu bilgisayardaki veritabanında, şifreli. Tarayıcıya geri gönderilmez. Ayarlar ekranı yalnızca &quot;kayıtlı&quot; bilgisini gösterir.</p>
-<p><strong>Anahtar olmadan hiç ölçüm yapılmaz mı?</strong> Yapılır, 50 sayfaya kadar. Çoğu zaman bir kısmı 429 ile başarısız olur. Küçük site için yeterli olabilir. 50 sayfadan büyük siteler için anahtar gerekir.</p>
+<p><strong>Anahtar olmadan hiç ölçüm yapılmaz mı?</strong> Yapılır, 50 sayfaya kadar. Ama çoğu zaman bir kısmı 429 ile başarısız olur. Küçük bir site için yeterli olabilir. 50 sayfadan büyük siteler için anahtar gerekir.</p>
 <h2 id="sorun-cikarsa">Sorun çıkarsa</h2>
-<ul><li><strong>Test &quot;restricted&quot; ya da 403 diyor.</strong> 2. adım eksik. PageSpeed Insights API açık değil ya da anahtar başka bir API'ye kısıtlanmış.</li><li><strong>Test &quot;invalid_key&quot; diyor.</strong> Anahtar eksik kopyalanmış. Cloud Console'dan yeniden kopyalayın. Uygulama anahtarın biçimine bakmaz, yalnızca Google'ın kabul edip etmediğini söyler.</li><li><strong>Test &quot;quota_exhausted&quot; diyor.</strong> Bugünkü hak bitmiş. Yarın tekrar deneyin ya da Cloud Console'da kotaya bakın.</li><li><strong>Denetimde hız sütunu boş.</strong> Denetim başlarken &quot;Sayfa hızını da ölç&quot; kapalıydı. Yeni denetimde açın. Eski denetim sonradan ölçülmez.</li><li><strong>Kota kartı &quot;Anahtar yok&quot; diyor ama anahtar girdim.</strong> Sayfayı yenileyin. Kart son 24 saatin denetimlerine bakar. Yeni anahtar bir sonraki denetimde devreye girer.</li></ul> <nav class="pager" aria-label="Önceki ve sonraki sayfa"><a class="pager-prev" rel="prev" href="/docs/google-baglantisi/"><span>Önceki</span><strong>Google'a bağlanma</strong></a><a class="pager-next" rel="next" href="/docs/projeler/"><span>Sonraki</span><strong>Projeler</strong></a></nav>
+<ul><li><strong>Test &quot;restricted&quot; ya da 403 diyor.</strong> 2. adım atlanmış. PageSpeed Insights API etkin değil ya da anahtar başka bir API'ye kısıtlanmış.</li><li><strong>Test &quot;invalid_key&quot; diyor.</strong> Anahtarın bir kısmı kopyalanmamış. Cloud Console'dan yeniden kopyalayın. Uygulama anahtarın biçimine bakmaz, yalnızca Google'ın kabul edip etmediğini bildirir.</li><li><strong>Test &quot;quota_exhausted&quot; diyor.</strong> Bugünkü hak dolmuş. Yarın tekrar deneyin ya da Cloud Console'da kotaya bakın.</li><li><strong>Denetimde hız sütunu boş.</strong> Denetim başlarken &quot;Sayfa hızını da ölç&quot; kapalıydı. Yeni denetimde açın. Eski denetim sonradan ölçülmez.</li><li><strong>Kota kartı &quot;Anahtar yok&quot; diyor ama anahtar girdim.</strong> Sayfayı yenileyin. Kart son 24 saatin denetimlerine bakar. Yeni anahtar bir sonraki denetimde devreye girer.</li></ul> <nav class="pager" aria-label="Önceki ve sonraki sayfa"><a class="pager-prev" rel="prev" href="/docs/google-baglantisi/"><span>Önceki</span><strong>Google'a bağlanma</strong></a><a class="pager-next" rel="next" href="/docs/projeler/"><span>Sonraki</span><strong>Projeler</strong></a></nav>
         <p class="meta">
           Son güncelleme: 23 Ekim 2026. Bir hata görürseniz
-          <a href="https://github.com/ucsahinn/seotracker/issues"
+          <a
+            href="https://github.com/ucsahinn/seotracker/issues"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub'da bildirin</a
           >.
         </p>
@@ -1147,10 +1246,25 @@
     </main>
     <footer>
       <div class="wrap">
+        <p class="star">
+          Bir yıldız, başkalarının da bu ücretsiz aracı bulmasına yardım eder.
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub'da yıldız verin</a
+          >
+        </p>
         <span>seowatcher, MIT lisansı.</span>
         <span
           ><a href="/">Ana sayfa</a> &nbsp;
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          &nbsp;
           <a href="/docs/surum-notlari/">Sürüm notları</a></span
         >
       </div>

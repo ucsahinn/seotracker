@@ -5,7 +5,7 @@ kind: nasil-yapilir
 updated: 2026-10-22
 ---
 
-À la fin de cette page, vous aurez obtenu votre clé PageSpeed gratuite, vous l'aurez saisie dans l'application et vous l'aurez essayée. Cela prend cinq minutes. L'option « Sayfa hızını da ölç » (Mesurer aussi la vitesse des pages) de l'audit du site mesure chaque page avec le service PageSpeed Insights de Google, sur téléphone et sur ordinateur. Google fournit ce service même sans clé, mais le quota est très faible. Après quelques pages, la réponse « 429, trop de requêtes » arrive. C'est pourquoi, pour un audit sans clé, l'application limite la mesure à 50 pages au maximum. La clé gratuite lève cette limite.
+À la fin de cette page, vous aurez obtenu votre clé PageSpeed gratuite, vous l'aurez saisie dans l'application et vous l'aurez essayée. Cela prend cinq minutes. L'option « Sayfa hızını da ölç » (Mesurer aussi la vitesse des pages) de l'audit du site mesure chaque page avec le service PageSpeed Insights de Google, sur téléphone et sur ordinateur. Google fournit ce service même sans clé, mais le quota est très faible. Après quelques pages, Google répond « 429 » (trop de requêtes). C'est pourquoi, pour un audit sans clé, l'application limite la mesure à 50 pages au maximum. La clé gratuite lève cette limite.
 
 ## Ce qu'il vous faut
 

@@ -6,7 +6,7 @@
     <title>seowatcher: strumento SEO gratuito per Search Console e GA4</title>
     <meta
       name="description"
-      content="Search Console, Analytics 4 e controllo del sito in un'unica app. Gratuita e open source; per Windows, i dati restano sul computer."
+      content="Search Console, Analytics 4 e controllo del sito in un'unica app. Gratuita, open source. Per Windows, i dati restano sul computer."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link rel="canonical" href="https://seowatcher.io/it/" />
@@ -18,6 +18,7 @@
     <link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/" />
     <link rel="alternate" hreflang="x-default" href="https://seowatcher.io/" />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link
       rel="icon"
       href="/assets/favicon-48.png"
@@ -58,7 +59,7 @@
     <meta property="og:image:height" content="630" />
     <meta
       property="og:image:alt"
-      content="I dati SEO del proprio sito, sul proprio computer, con seowatcher"
+      content="Pannello di seowatcher: i dati SEO del sito sul proprio computer"
     />
     <meta property="og:url" content="https://seowatcher.io/it/" />
     <meta property="og:locale" content="it_IT" />
@@ -81,7 +82,7 @@
       content="https://seowatcher.io/assets/og-it.png"
     />
     <meta name="color-scheme" content="dark" />
-    <meta name="theme-color" content="#131110" />
+    <meta name="theme-color" content="#0c0b0a" />
     <script src="/assets/site.js?v=2.4.1" defer></script>
     <script type="application/ld+json">
       {
@@ -149,7 +150,7 @@
               "Dati di Google Search Console: query, pagine, posizioni, stato dell'indice",
               "Dati di Google Analytics 4: visite organiche, pagine di ingresso, stato della misurazione",
               "Controllo del sito con 95 regole",
-              "Opportunità: divide le query in quattro gruppi",
+              "Opportunità: divide le pagine in quattro gruppi",
               "33 strumenti MCP per gli assistenti di intelligenza artificiale"
             ],
             "screenshot": [
@@ -179,15 +180,15 @@
                 "name": "È davvero gratuito?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Sì. È un progetto open source con licenza MIT e tutto il codice è su GitHub. Anche i servizi Google che usa restano entro i limiti di utilizzo gratuito."
+                  "text": "Sì. È un progetto open source con licenza MIT. Tutto il codice è su GitHub. Anche i servizi Google che usa restano entro i limiti di utilizzo gratuito."
                 }
               },
               {
                 "@type": "Question",
-                "name": "Windows dice di aver protetto il PC. Il programma di installazione è sicuro?",
+                "name": "Perché Windows mostra l'avviso \"app non riconosciuta\"?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Il file di installazione non è ancora firmato digitalmente, ed è per questo che Windows avvisa. Nella schermata SmartScreen fare clic prima su \"Maggiori informazioni\", poi su \"Esegui comunque\". L'impronta del file (SHA-256) è scritta nella pagina di ogni versione; si può confrontare."
+                  "text": "Il file di installazione non ha ancora una firma digitale, per questo Windows avvisa. Nella schermata SmartScreen fare clic prima su \"Maggiori informazioni\", poi su \"Esegui comunque\". Se si vuole, si può confrontare l'impronta del file (SHA-256) con il valore indicato nella pagina della versione."
                 }
               },
               {
@@ -195,7 +196,7 @@
                 "name": "Dove sono conservati i dati?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Nella cartella %LOCALAPPDATA%\\seowatcher. Lì ci sono il database, la chiave di accesso a Google e i registri. Disinstallare l'app non tocca questa cartella; per fare una copia di sicurezza basta copiarla."
+                  "text": "Nella cartella %LOCALAPPDATA%\\seowatcher. Lì ci sono il database, la chiave di accesso a Google e i registri. Disinstallare l'app non tocca questa cartella. Per fare una copia di sicurezza basta copiare la cartella."
                 }
               },
               {
@@ -203,7 +204,7 @@
                 "name": "Perché bisogna creare una chiave di accesso su Google?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "seowatcher non è un servizio cloud; gira sul computer e si collega direttamente a Google. Google vuole sapere a chi appartiene l'app che si collega. Lo si fa una volta sola e l'app mostra i passaggi nella schermata."
+                  "text": "seowatcher non è un servizio cloud. Gira sul computer e si collega direttamente a Google. Google vuole sapere a chi appartiene l'app che si collega. Lo si fa una volta sola. L'app mostra i passaggi nella schermata."
                 }
               },
               {
@@ -211,15 +212,15 @@
                 "name": "I numeri sono gli stessi di Search Console?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Vengono dalla stessa fonte, ma i totali possono non coincidere. Google fornisce i dati con circa tre giorni di ritardo e nasconde le query cercate pochissimo. L'app mostra separatamente il totale delle pagine e il totale del sito; una differenza tra i due non è un errore."
+                  "text": "I numeri vengono dalla stessa fonte, ma i totali possono non coincidere. Google fornisce i dati con circa tre giorni di ritardo e nasconde le query cercate pochissimo. L'app mostra separatamente il totale delle pagine e il totale del sito. Una differenza tra i due non è un errore."
                 }
               },
               {
                 "@type": "Question",
-                "name": "Si può usare senza esporre il sito a Internet?",
+                "name": "Bisogna rendere l'app raggiungibile da Internet?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Sì, anzi funziona già così. L'app si apre solo dal proprio computer e legge da Google i dati di Search Console e di Analytics. Durante un controllo scansiona soltanto le pagine del sito controllato."
+                  "text": "No. L'app si apre solo dal proprio computer. Legge da Google i dati di Search Console e di Analytics. Durante un controllo scansiona soltanto le pagine del sito controllato."
                 }
               }
             ]
@@ -546,9 +547,59 @@
         opacity: 1;
         transform: none;
       }
+      /* Smaller headings (cards, steps, questions): site.js adds .hx, and .in
+         once seen. A short rise; on h3 an amber stroke draws in underneath
+         and fades once drawn, so the resting page looks as before. */
+      .hx {
+        transition:
+          opacity 520ms var(--ease),
+          transform 620ms var(--ease);
+        transition-delay: calc(var(--hd, 0) * 1ms);
+      }
+      .hx:not(.in) {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      h3.hx {
+        position: relative;
+      }
+      h3.hx::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -6px;
+        width: 36px;
+        height: 2px;
+        border-radius: 2px;
+        background: var(--accent);
+        opacity: 0;
+        transform-origin: left;
+        pointer-events: none;
+      }
+      h3.hx.in::after {
+        animation: stroke 1200ms var(--ease) 160ms both;
+      }
+      @keyframes stroke {
+        0% {
+          opacity: 1;
+          transform: scaleX(0);
+        }
+        55% {
+          opacity: 1;
+          transform: scaleX(1);
+        }
+        100% {
+          opacity: 0;
+          transform: scaleX(1);
+        }
+      }
       @media (prefers-reduced-motion: reduce) {
         .reveal,
-        [data-words].split .w {
+        h2.reveal,
+        h2.reveal.in,
+        [data-words].split .w,
+        .hx,
+        .hx:not(.in) {
           opacity: 1;
           transform: none;
           filter: none;
@@ -556,6 +607,23 @@
           transition: none;
           animation: none;
         }
+        h3.hx::after {
+          display: none;
+        }
+      }
+      /* "Hareketi durdur": every heading is simply there. */
+      html[data-still] [data-words].split .w,
+      html[data-still] h2.reveal,
+      html[data-still] .hx {
+        opacity: 1;
+        transform: none;
+        filter: none;
+        clip-path: none;
+        transition: none;
+        animation: none;
+      }
+      html[data-still] h3.hx::after {
+        display: none;
       }
 
       /* Buttons: a lit primary, a glass secondary; the arrow sits in its own island. */
@@ -1420,6 +1488,17 @@
       .tile .big.free {
         color: var(--accent-2);
       }
+      /* The price says what "free" covers, then the honest limits follow. */
+      .tile .free-note {
+        color: var(--fg);
+        max-width: 34ch;
+        padding-bottom: 18px;
+        margin-bottom: 4px;
+        border-bottom: 1px solid var(--hairline);
+      }
+      .close .star {
+        font-size: 15px;
+      }
       .tile .spark {
         width: 100%;
         height: auto;
@@ -1511,6 +1590,13 @@
       }
       .t-wide {
         grid-column: span 7;
+      }
+      /* The free / limits column is tall; it spans the tools card and the
+         download card beside it so neither stretches into an empty box. */
+      @media (min-width: 961px) {
+        .t-mid.plain {
+          grid-row: span 2;
+        }
       }
       .t-mid {
         grid-column: span 5;
@@ -1966,7 +2052,12 @@
           <a href="#neler">Che cosa fa</a>
           <a href="#kurulum">Installazione</a>
           <a href="/it/docs/">Guida</a>
-          <a href="https://github.com/ucsahinn/seotracker">GitHub</a>
+          <a
+            href="https://github.com/ucsahinn/seotracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
           <details class="langs">
             <summary aria-label="Lingua: Italiano">
               <span class="flag"
@@ -1991,7 +2082,7 @@
                       <circle cx="8.4" cy="7" r="2.7" fill="#e30a17" />
                       <polygon
                         fill="#fff"
-                        points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"
+                        points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"
                       /></svg></span
                   >Türkçe</a
                 >
@@ -2014,12 +2105,12 @@
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#fff"
-                        stroke-width="3.6"
+                        stroke-width="4.2"
                       />
                       <path
                         d="M10 0V14M0 7H20"
                         stroke="#c8102e"
-                        stroke-width="2"
+                        stroke-width="2.6"
                       /></svg></span
                   >English</a
                 >
@@ -2091,6 +2182,8 @@
         <a
           class="btn primary small cta"
           href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.1/seowatcher-setup-2.4.1.exe"
+          target="_blank"
+          rel="noopener noreferrer"
           >Scarica per Windows</a
         >
         <button
@@ -2108,7 +2201,12 @@
         <a href="#neler">Che cosa fa</a>
         <a href="#kurulum">Installazione</a>
         <a href="/it/docs/">Guida</a>
-        <a href="https://github.com/ucsahinn/seotracker">GitHub</a>
+        <a
+          href="https://github.com/ucsahinn/seotracker"
+          target="_blank"
+          rel="noopener noreferrer"
+          >GitHub</a
+        >
         <nav class="langrow" aria-label="Lingua">
           <a href="/" lang="tr" hreflang="tr"
             ><span class="flag"
@@ -2118,7 +2216,7 @@
                 <circle cx="8.4" cy="7" r="2.7" fill="#e30a17" />
                 <polygon
                   fill="#fff"
-                  points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"
+                  points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"
                 /></svg></span
             >Türkçe</a
           ><a href="/en/" lang="en" hreflang="en"
@@ -2135,11 +2233,11 @@
                   stroke="#c8102e"
                   stroke-width="0.9"
                 />
-                <path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="3.6" />
+                <path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2" />
                 <path
                   d="M10 0V14M0 7H20"
                   stroke="#c8102e"
-                  stroke-width="2"
+                  stroke-width="2.6"
                 /></svg></span
             >English</a
           ><a href="/de/" lang="de" hreflang="de"
@@ -2191,6 +2289,8 @@
         <a
           class="btn primary"
           href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.1/seowatcher-setup-2.4.1.exe"
+          target="_blank"
+          rel="noopener noreferrer"
           >Scarica per Windows</a
         >
       </nav>
@@ -2205,7 +2305,7 @@
             </h1>
             <p class="lede">
               I numeri che Google conserva sul sito e gli errori del sito, in
-              un'unica schermata. Gratuito e open source; si installa su Windows
+              un'unica schermata. Gratuito e open source. Si installa su Windows
               con un solo file. Nessun account, e i dati non lasciano il
               computer.
             </p>
@@ -2214,6 +2314,8 @@
                 class="btn primary"
                 data-magnet
                 href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.1/seowatcher-setup-2.4.1.exe"
+                target="_blank"
+                rel="noopener noreferrer"
                 >Scarica per Windows
                 <span class="arrow" aria-hidden="true">↓</span></a
               >
@@ -2517,10 +2619,11 @@
             </svg>
           </div>
           <p class="flow-note reveal" style="--d: 200">
-            L'app si apre solo dal proprio computer. All'esterno si collega
-            soltanto a due posti: a Google e alle pagine del sito che si
-            controlla. I dati non vanno da nessun'altra parte. La chiave di
-            accesso a Google è conservata cifrata sul computer.
+            L'app si apre solo dal proprio computer. Si collega soltanto a tre
+            posti: a Google, alle pagine del sito che si controlla e a GitHub,
+            per verificare gli aggiornamenti. I dati non vanno da nessun'altra
+            parte. La chiave di accesso a Google è conservata cifrata sul
+            computer.
           </p>
         </div>
       </section>
@@ -2538,8 +2641,8 @@
               cosa fare.
             </h2>
             <p class="lede">
-              Le schermate qui sotto sono quelle reali dell'app; solo il sito e
-              i numeri sono esempi.
+              Queste sono le schermate reali dell'app. Solo il sito e i numeri
+              sono esempi.
             </p>
           </div>
           <div class="walk-grid">
@@ -2549,9 +2652,9 @@
                 <h3>Su quale pagina conviene lavorare questa settimana?</h3>
                 <p>
                   Divide le pagine che Google mostra in quattro gruppi: poco
-                  cliccate, vicine a salire, già in alto e rimaste in fondo. Da
-                  dove cominciare è scritto accanto a ogni pagina, senza dover
-                  fare congetture.
+                  cliccate, vicine a salire, già in alto e rimaste in fondo. Che
+                  cosa fare è scritto accanto a ogni pagina, senza dover fare
+                  congetture.
                   <a class="textlink" href="/it/docs/opportunita/"
                     >Guida alle Opportunità</a
                   >.
@@ -2582,8 +2685,8 @@
                 <p>
                   Visita il sito pagina per pagina e lo controlla con 95 regole:
                   collegamenti rotti, titoli mancanti o troppo lunghi, pagine
-                  lente, indirizzi che Google non capisce. Sotto ogni rilievo è
-                  scritto che cosa fare, non serve un tecnico.
+                  lente, pagine che Google non ha indicizzato. Sotto ogni
+                  rilievo è scritto che cosa fare, non serve un tecnico.
                   <a class="textlink" href="/it/docs/controllo-del-sito/"
                     >Guida al controllo del sito</a
                   >.
@@ -2599,7 +2702,7 @@
                   <img
                     class="frame"
                     src="/assets/walk-denetim-dark-m.webp"
-                    alt="Controllo del sito: anello del punteggio, rilievi in ordine di gravità e passaggi di correzione"
+                    alt="Controllo del sito: anello del punteggio, problemi in ordine di gravità e passaggi di correzione"
                     width="1000"
                     height="1250"
                     loading="lazy"
@@ -2640,7 +2743,7 @@
               <article class="walk-step" data-step="4">
                 <span class="n">04 Assistente di intelligenza artificiale</span>
                 <h3>
-                  Se si vuole, collegare un assistente di intelligenza
+                  Si può collegare anche un assistente di intelligenza
                   artificiale.
                 </h3>
                 <p>
@@ -2791,8 +2894,8 @@
               <h3>Il controllo di ogni pagina</h3>
               <p>
                 Collegamenti rotti, titoli mancanti o troppo lunghi, pagine
-                lente, indirizzi che Google non legge. Sotto ogni rilievo è
-                scritto che cosa fare.
+                lente, pagine che Google non ha indicizzato. Sotto ogni rilievo
+                è scritto che cosa fare.
               </p>
             </div>
             <div class="tile t-third reveal" data-spot style="--d: 160">
@@ -2861,7 +2964,11 @@
               </div>
             </div>
             <div class="tile t-mid plain reveal" style="--d: 400">
-              <span class="big free"><b>Gratuito</b></span>
+              <p class="big free">Gratuito</p>
+              <p class="free-note">
+                Nessun abbonamento, nessun costo di installazione. Nessuna carta
+                di credito, nessun account. Open source con licenza MIT.
+              </p>
               <h3>Che cosa non fa</h3>
               <ul>
                 <li>
@@ -2871,12 +2978,16 @@
                 </li>
                 <li>Non conta i siti che rimandano al sito (backlink).</li>
                 <li>
-                  Non monitora le posizioni dei concorrenti; legge soltanto i
-                  propri siti.
+                  Non monitora le posizioni dei concorrenti. Legge soltanto il
+                  proprio sito.
                 </li>
                 <li>
                   Non gira nel cloud; un utente, un computer. (In arrivo,
                   gratuito: apertura da telefono e tablet nella rete di casa.)
+                </li>
+                <li>L'app per smartphone non c'è ancora. (In arrivo.)</li>
+                <li>
+                  L'estensione per il browser non c'è ancora. (In arrivo.)
                 </li>
               </ul>
             </div>
@@ -2889,10 +3000,8 @@
               <span class="big"
                 ><b data-count="0" data-live="downloads">0</b></span
               >
-              <h3>Download</h3>
-              <p>
-                Conteggio in tempo reale dalla pagina delle versioni di GitHub.
-              </p>
+              <h3>Numero di download</h3>
+              <p>Letto in tempo reale dalla pagina delle versioni di GitHub.</p>
             </div>
           </div>
         </div>
@@ -2907,9 +3016,10 @@
                 <div>
                   <h3>Eseguire il file di installazione</h3>
                   <p>
-                    Aprire il file e premere <strong>Installa</strong>. L'app si
-                    prepara da sola e si apre nel browser. Poi la si apre e la
-                    si chiude dall'icona nella barra delle applicazioni.
+                    Aprire il file e premere <strong>Kur</strong> (Installa).
+                    L'app si prepara da sola e si apre nel browser. Poi la si
+                    apre e la si chiude dall'icona nella barra delle
+                    applicazioni.
                     <a class="textlink" href="/it/docs/installazione-windows/"
                       >Guida all'installazione</a
                     >.
@@ -2922,9 +3032,9 @@
                   <p>
                     È il passaggio più lungo, ma si fa una volta sola. Si
                     ottiene da Google una chiave di accesso; l'app mostra ogni
-                    passaggio nella schermata. Incollare la chiave in
-                    <strong>Ayarlar</strong> (Impostazioni) e il lavoro è
-                    finito.
+                    passaggio nella schermata. Basta incollare la chiave nella
+                    schermata <strong>Ayarlar</strong> (Impostazioni) e il
+                    lavoro è finito.
                     <a class="textlink" href="/it/docs/collegamento-google/"
                       >Guida passo per passo</a
                     >.
@@ -2953,7 +3063,7 @@
                 <dd>81 MB</dd>
                 <dt>Requisiti</dt>
                 <dd>
-                  Windows 10 o 11, 64 bit. Non servono Docker, Node né il
+                  Windows 10 o 11, 64 bit. Non servono né Docker, né Node, né il
                   terminale. L'interfaccia dell'app è in turco; questo sito e la
                   guida spiegano ogni schermata in italiano.
                 </dd>
@@ -2962,6 +3072,8 @@
                   <a
                     class="textlink"
                     href="https://github.com/ucsahinn/seotracker/releases/latest"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     >L'impronta del file (SHA-256) è nella pagina della
                     versione</a
                   >
@@ -2971,6 +3083,8 @@
                 class="btn primary"
                 data-magnet
                 href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.1/seowatcher-setup-2.4.1.exe"
+                target="_blank"
+                rel="noopener noreferrer"
                 >Scarica per Windows
                 <span class="arrow" aria-hidden="true">↓</span></a
               >
@@ -2998,7 +3112,7 @@
             seowatcher è un'app SEO gratuita con licenza MIT che riunisce Google
             Search Console, Google Analytics 4, un proprio crawler del sito e
             PageSpeed Insights in un unico pannello. Si installa su Windows 10 e
-            11 con un solo file e funziona con Docker su Mac e Linux; i dati
+            11 con un solo file. Su Mac e Linux funziona con Docker. I dati
             restano sul computer. Il suo repository GitHub si chiama seotracker.
           </p>
           <dl class="reveal" style="--d: 100">
@@ -3045,8 +3159,8 @@
             <div class="row">
               <dt>Dimensione</dt>
               <dd>
-                Il file di installazione per Windows è di 81 MB; installato, 290
-                MB
+                File di installazione per Windows 81 MB, 290 MB una volta
+                installato
               </dd>
             </div>
             <div class="row">
@@ -3055,6 +3169,8 @@
                 <a
                   class="textlink"
                   href="https://github.com/ucsahinn/seotracker"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   >github.com/ucsahinn/seotracker</a
                 >
               </dd>
@@ -3075,7 +3191,7 @@
               <dt>Guida</dt>
               <dd>
                 <a class="textlink" href="/it/docs/"
-                  >Una guida per ogni schermata e ogni passaggio</a
+                  >Ogni schermata e ogni passaggio spiegati</a
                 >
               </dd>
             </div>
@@ -3091,24 +3207,23 @@
               <summary>È davvero gratuito?</summary>
               <div class="qa-body">
                 <p>
-                  Sì. È un progetto open source con licenza MIT e tutto il
-                  codice è su GitHub. Anche i servizi Google che usa restano
-                  entro i limiti di utilizzo gratuito.
+                  Sì. È un progetto open source con licenza MIT. Tutto il codice
+                  è su GitHub. Anche i servizi Google che usa restano entro i
+                  limiti di utilizzo gratuito.
                 </p>
               </div>
             </details>
             <details class="qa">
               <summary>
-                Windows dice di aver protetto il PC. Il programma di
-                installazione è sicuro?
+                Perché Windows mostra l'avviso "app non riconosciuta"?
               </summary>
               <div class="qa-body">
                 <p>
-                  Il file di installazione non è ancora firmato digitalmente, ed
-                  è per questo che Windows avvisa. Nella schermata SmartScreen
-                  fare clic prima su "Maggiori informazioni", poi su "Esegui
-                  comunque". L'impronta del file (SHA-256) è scritta nella
-                  pagina di ogni versione; si può confrontare.
+                  Il file di installazione non ha ancora una firma digitale, per
+                  questo Windows avvisa. Nella schermata SmartScreen fare clic
+                  prima su "Maggiori informazioni", poi su "Esegui comunque". Se
+                  si vuole, si può confrontare l'impronta del file (SHA-256) con
+                  il valore indicato nella pagina della versione.
                   <a class="textlink" href="/it/docs/risoluzione-problemi/"
                     >Risoluzione dei problemi</a
                   >.
@@ -3121,8 +3236,8 @@
                 <p>
                   Nella cartella <code>%LOCALAPPDATA%\seowatcher</code>. Lì ci
                   sono il database, la chiave di accesso a Google e i registri.
-                  Disinstallare l'app non tocca questa cartella; per fare una
-                  copia di sicurezza basta copiarla.
+                  Disinstallare l'app non tocca questa cartella. Per fare una
+                  copia di sicurezza basta copiare la cartella.
                 </p>
               </div>
             </details>
@@ -3132,10 +3247,10 @@
               </summary>
               <div class="qa-body">
                 <p>
-                  seowatcher non è un servizio cloud; gira sul computer e si
+                  seowatcher non è un servizio cloud. Gira sul computer e si
                   collega direttamente a Google. Google vuole sapere a chi
-                  appartiene l'app che si collega. Lo si fa una volta sola e
-                  l'app mostra i passaggi nella schermata.
+                  appartiene l'app che si collega. Lo si fa una volta sola.
+                  L'app mostra i passaggi nella schermata.
                 </p>
               </div>
             </details>
@@ -3143,22 +3258,23 @@
               <summary>I numeri sono gli stessi di Search Console?</summary>
               <div class="qa-body">
                 <p>
-                  Vengono dalla stessa fonte, ma i totali possono non
+                  I numeri vengono dalla stessa fonte, ma i totali possono non
                   coincidere. Google fornisce i dati con circa tre giorni di
                   ritardo e nasconde le query cercate pochissimo. L'app mostra
-                  separatamente il totale delle pagine e il totale del sito; una
+                  separatamente il totale delle pagine e il totale del sito. Una
                   differenza tra i due non è un errore.
                 </p>
               </div>
             </details>
             <details class="qa">
-              <summary>Si può usare senza esporre il sito a Internet?</summary>
+              <summary>
+                Bisogna rendere l'app raggiungibile da Internet?
+              </summary>
               <div class="qa-body">
                 <p>
-                  Sì, anzi funziona già così. L'app si apre solo dal proprio
-                  computer e legge da Google i dati di Search Console e di
-                  Analytics. Durante un controllo scansiona soltanto le pagine
-                  del sito controllato.
+                  No. L'app si apre solo dal proprio computer. Legge da Google i
+                  dati di Search Console e di Analytics. Durante un controllo
+                  scansiona soltanto le pagine del sito controllato.
                 </p>
               </div>
             </details>
@@ -3170,17 +3286,19 @@
         <div class="halo" aria-hidden="true"></div>
         <div class="wrap">
           <h2 id="h-son" class="reveal">
-            Installare oggi, partire con i dati di oggi.
+            Installare oggi, vedere lo storico già oggi.
           </h2>
           <p class="reveal" style="--d: 100">
             I sedici mesi di storico di Search Console vengono caricati nell'app
-            al primo avvio. Collegando oggi, si può guardare oggi.
+            dopo il collegamento. Si possono consultare il giorno stesso.
           </p>
           <div class="cta reveal" style="--d: 200">
             <a
               class="btn primary"
               data-magnet
               href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.1/seowatcher-setup-2.4.1.exe"
+              target="_blank"
+              rel="noopener noreferrer"
               >Scarica per Windows
               <span class="arrow" aria-hidden="true">↓</span></a
             >
@@ -3188,6 +3306,16 @@
               >Per Mac e Linux</a
             >
           </div>
+          <p class="star reveal" style="--d: 300">
+            Una stella aiuta altre persone a trovare uno strumento gratuito.
+            <a
+              class="textlink"
+              href="https://github.com/ucsahinn/seotracker"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Aggiungi una stella su GitHub</a
+            >
+          </p>
         </div>
       </section>
     </main>
@@ -3207,7 +3335,11 @@
             <p>
               Open source e gratuito. Tutto il codice è su GitHub; chiunque può
               leggere e verificare che cosa fa. Basato su
-              <a class="textlink" href="https://github.com/every-app/open-seo"
+              <a
+                class="textlink"
+                href="https://github.com/every-app/open-seo"
+                target="_blank"
+                rel="noopener noreferrer"
                 >open-seo</a
               >. I loghi appartengono ai rispettivi proprietari.
             </p>
@@ -3215,7 +3347,10 @@
           <div class="col">
             <b>Prodotto</b><a href="#ekranlar">Schermate</a
             ><a href="#neler">Che cosa fa</a><a href="#kurulum">Installazione</a
-            ><a href="https://github.com/ucsahinn/seotracker/releases/latest"
+            ><a
+              href="https://github.com/ucsahinn/seotracker/releases/latest"
+              target="_blank"
+              rel="noopener noreferrer"
               >Versioni</a
             >
           </div>
@@ -3223,7 +3358,10 @@
             <b>Aiuto</b><a href="/it/docs/">Guida</a
             ><a href="/it/docs/risoluzione-problemi/"
               >Risoluzione dei problemi</a
-            ><a href="https://github.com/ucsahinn/seotracker/issues"
+            ><a
+              href="https://github.com/ucsahinn/seotracker/issues"
+              target="_blank"
+              rel="noopener noreferrer"
               >Segnala un problema</a
             ><a href="/it/docs/note-di-rilascio/">Note di versione</a>
             <nav class="langrow" aria-label="Lingua">
@@ -3235,7 +3373,7 @@
                     <circle cx="8.4" cy="7" r="2.7" fill="#e30a17" />
                     <polygon
                       fill="#fff"
-                      points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"
+                      points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"
                     /></svg></span
                 >Türkçe</a
               ><a href="/en/" lang="en" hreflang="en"
@@ -3255,12 +3393,12 @@
                     <path
                       d="M10 0V14M0 7H20"
                       stroke="#fff"
-                      stroke-width="3.6"
+                      stroke-width="4.2"
                     />
                     <path
                       d="M10 0V14M0 7H20"
                       stroke="#c8102e"
-                      stroke-width="2"
+                      stroke-width="2.6"
                     /></svg></span
                 >English</a
               ><a href="/de/" lang="de" hreflang="de"

@@ -6,7 +6,7 @@ route: /p/<proje>/search-performance
 updated: 2026-10-22
 ---
 
-Vous voyez ici dans quelles recherches vous apparaissez sur Google et combien de personnes cliquent. Les chiffres viennent directement de Search Console. L'application n'en estime aucun.
+Cet écran liste les recherches où votre site apparaît sur Google et le nombre de clics obtenus. Les chiffres viennent directement de Search Console. L'application n'en estime aucun.
 
 Les filtres que vous choisissez sont inscrits dans la barre d'adresse. Si vous le souhaitez, vous pouvez partager cette vue sous forme de lien ou l'ajouter à vos favoris.
 
@@ -36,10 +36,10 @@ Les filtres que vous choisissez sont inscrits dans la barre d'adresse. Si vous l
 ## Comment l'utiliser
 
 1. Commencez par **Son 28 gün**. S'il y a une grosse baisse, choisissez **Son 3 ay**. Regardez dans le graphique quel jour la baisse a commencé.
-2. Ouvrez l'onglet **Sıra 5-20**. Google vous affiche déjà, mais personne ne clique. Ouvrez la page des trois premières requêtes les plus affichées. Corrigez le titre et le premier paragraphe en fonction de cette recherche.
-3. Dans l'onglet **Sorgular**, cliquez sur le bouton **Tıklama oranı düşük**. Votre position est bonne, mais personne ne clique. Le problème est très probablement dans le titre et la description.
+2. Ouvrez l'onglet **Sıra 5-20**. Google vous affiche déjà, mais peu de gens cliquent. Pour chacune des trois premières requêtes, ouvrez la page concernée. Corrigez le titre et le premier paragraphe en fonction de cette recherche.
+3. Dans l'onglet **Sorgular**, cliquez sur le bouton **Tıklama oranı düşük**. Votre position est bonne, mais peu de gens cliquent. Le problème est très probablement dans le titre et la description.
 4. Pour voir dans quelles recherches une page apparaît, cliquez sur **Arama performansında ara** (Chercher dans la performance de recherche) dans l'onglet **Sayfalar**.
-5. Marquez les requêtes que vous voulez suivre avec **Kelime olarak kaydet**.
+5. Enregistrez les requêtes que vous voulez suivre avec **Kelime olarak kaydet**.
 
 ## Comment les chiffres sont calculés
 
@@ -65,6 +65,6 @@ L'analyse de concurrence entre pages porte sur 28 jours. Elle n'examine que les 
 
 ## Limites
 
-Les types Discover et Google Actualités n'existent pas. Il n'y a ni volume de recherche ni position de concurrents. Les données ne remontent pas au-delà de 16 mois. Pour plus ancien, regardez les archives dans l'écran Suivi du classement.
+Les types Discover et Google Actualités ne sont pas disponibles. Il n'y a ni volume de recherche ni position de concurrents. Les données ne remontent pas au-delà de 16 mois. Pour plus ancien, regardez les archives dans l'écran Suivi du classement.
 
 <!-- Kaynaklar: src/routes/_project/p/$projectId/search-performance.tsx; src/client/features/search-performance/SearchPerformancePage.tsx; SearchFilters.tsx; TotalsCards.tsx; SearchTrendChart.tsx; CountryBreakdown.tsx; QuickFilterBar.tsx; quickFilters.ts; tabBuckets.ts; TabSummaries.tsx; SearchPerformanceColumns.tsx; CannibalizationTable.tsx; src/serverFunctions/searchPerformance.ts; src/server/features/gsc/searchPerformanceReport.ts; src/server/features/gsc/cannibalization.ts; src/server/features/gsc/services/CannibalizationService.ts; src/shared/dataFreshness.ts -->

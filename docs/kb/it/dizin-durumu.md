@@ -1,6 +1,6 @@
 ---
 title: Stato dell'indice
-description: Google ha incluso ogni pagina nella ricerca? Se no, perché, e quando è passato l'ultima volta? Si possono fare al massimo 2.000 richieste al giorno.
+description: Google ha incluso ogni pagina nella ricerca? Se no, perché, e quando l'ha visitata l'ultima volta? Si possono fare al massimo 2.000 richieste al giorno.
 screen: Site denetimi, Dizin durumu sekmesi
 route: /p/<proje>/audit?auditId=<denetim>&tab=index
 updated: 2026-10-22
@@ -8,17 +8,17 @@ updated: 2026-10-22
 
 Qui si scopre quali pagine del sito Google ha incluso nella ricerca.
 
-Il controllo del sito dice se la pagina si apre. Non può dire se Google l'ha davvero inserita nel proprio indice (l'elenco delle pagine di Google). La scheda **Dizin durumu** (Stato dell'indice) lo chiede a Google e conserva la risposta su questo computer. Non pone la stessa domanda più volte: richiede solo le risposte invecchiate. È importante, perché Google concede 2.000 richieste al giorno per ogni proprietà (la registrazione del sito in Search Console). L'app e l'assistente dell'utente si dividono questo limite.
+Il controllo del sito dice se la pagina si apre. Non può dire se Google l'ha davvero inserita nel proprio indice (l'elenco delle pagine di Google). La scheda **Dizin durumu** (Stato dell'indice) lo chiede a Google e conserva la risposta su questo computer. Non pone la stessa domanda più volte: richiede solo le risposte invecchiate. Conta, perché Google concede 2.000 richieste al giorno per ogni proprietà (la registrazione del sito in Search Console). L'app e l'assistente dell'utente si dividono questo limite.
 
 ## Cosa c'è nella schermata
 
 **Anello "Google bu sayfalarla ne yapmış?" (Che cosa ha fatto Google con queste pagine?).** Le pagine scansionate sono divise in tre gruppi:
 
-- **Google'da** (Su Google): può comparire nella ricerca.
+- **Google'da** (Su Google): la pagina può comparire nella ricerca.
 - **Dizinde değil** (Non nell'indice): Google l'ha guardata ma non l'ha inclusa.
 - **Yanıt bekleyen** (In attesa di risposta): non ancora richiesta, oppure risposta non ottenuta.
 
-**Riquadri di riepilogo.** Si vede per quante pagine è stata fatta la richiesta, quante sono nell'indice, quante no e quante sono in attesa. Il riquadro "Google'ın farklı adresi seçtiği sayfalar" (Pagine per cui Google ha scelto un indirizzo diverso) conta le pagine per cui Google ha scelto un indirizzo diverso dal canonical (la dichiarazione dell'indirizzo principale) indicato dall'utente. Il riquadro "Bu denetimde henüz sorulmamış" (Non ancora richieste in questo controllo) è il numero di pagine in attesa di essere richieste.
+**Riquadri di riepilogo.** Si vede per quante pagine è stata fatta la richiesta, quante sono nell'indice, quante no e quante sono in attesa. Il riquadro "Google'ın farklı adresi seçtiği sayfalar" (Pagine per cui Google ha scelto un indirizzo diverso) conta le pagine per cui l'indirizzo scelto da Google differisce dal canonical (l'indirizzo principale dichiarato dall'utente). Il riquadro "Bu denetimde henüz sorulmamış" (Non ancora richieste in questo controllo) è il numero di pagine in attesa di essere richieste.
 
 **Pulsante "Google'da durumunu kontrol et" (Controlla lo stato su Google).** A ogni pressione chiede al massimo 25 pagine. Chiede prima quelle che non ricevono risposta da più tempo. Se il limite giornaliero si esaurisce, compare l'avviso "Google'ın günlük 2.000 adres sınırına ulaşıldı" (Raggiunto il limite giornaliero di 2.000 indirizzi di Google). Se Search Console non è collegato, il pulsante è disattivato. È disattivato anche se il dominio controllato non appartiene alla proprietà collegata.
 
@@ -37,7 +37,7 @@ La tabella si può scaricare come CSV.
 1. Quando il controllo è finito, aprire la scheda. Se il numero "Yanıt bekleyen" è alto, premere **Google'da durumunu kontrol et**. A ogni pressione si avanza di 25 pagine. In un sito piccolo bastano poche pressioni.
 2. Guardare prima il gruppo "Dizinde değil". La colonna **Sebep** è la motivazione di Google e spesso dice che cosa fare. Se è "robots.txt engelliyor", togliere il blocco. Se è "'noindex' etiketiyle dışlandı", eliminare l'etichetta. Se è "Keşfedildi, henüz taranmadı", di solito basta attendere.
 3. Aggiungere alla mappa del sito le pagine importanti per cui Google dice "Google bu adresi bilmiyor". Inviare la mappa a Search Console. Per tre o cinque pagine molto importanti, in Search Console scegliere a mano "Dizine eklenmesini iste" (Richiedi l'indicizzazione).
-4. Se il riquadro "Google'ın farklı adresi seçtiği sayfalar" non è zero, guardare la colonna **Google'ın seçtiği adres**. A Google non è piaciuto l'indirizzo principale dichiarato dall'utente. Correggere il proprio oppure rendere principale quello scelto da Google.
+4. Se il riquadro "Google'ın farklı adresi seçtiği sayfalar" non è zero, guardare la colonna **Google'ın seçtiği adres**. Google non ha accettato l'indirizzo principale dichiarato dall'utente. Correggere il proprio oppure rendere principale quello scelto da Google.
 5. Premere di nuovo dopo qualche giorno. Vengono richieste di nuovo solo le risposte invecchiate, quindi la quota non va sprecata.
 
 ## Come si calcolano i numeri

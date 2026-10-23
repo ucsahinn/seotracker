@@ -6,9 +6,9 @@ route: /p/<proje>/reports
 updated: 2026-10-22
 ---
 
-Qui si trova come ottenere il report, a chi inviarlo e come ripeterlo con un modello.
+Qui si vede come ottenere un report, come inviarlo e come ripeterlo con un modello.
 
-Ogni report preparato per questo progetto sta in un unico elenco nella schermata **Raporlar** (Report). Un report nasce in due modi. Il pulsante **Raporu indir** (Scarica il report) della schermata Site denetimi (Controllo del sito) produce il report proprio dell'app. L'assistente di intelligenza artificiale, invece, fa una ricerca e salva ciò che trova come report. Ogni report è un solo file HTML. Non contiene script (codice che gira nella pagina), risorse esterne né caratteri incorporati. Per questo si apre sul telefono, si stampa in PDF, si invia per e-mail. Nell'app non c'è un editor per scrivere i report a mano. Il report lo scrive l'app oppure l'assistente.
+Ogni report preparato per questo progetto sta in un unico elenco nella schermata **Raporlar** (Report). Un report nasce in due modi. Il pulsante **Raporu indir** (Scarica il report) della schermata Site denetimi (Controllo del sito) produce il report proprio dell'app. L'assistente di intelligenza artificiale, invece, fa una ricerca e salva ciò che trova come report. Ogni report è un solo file HTML. Non contiene script (codice che gira nella pagina), risorse esterne né caratteri incorporati. Per questo si apre sul telefono, si stampa in PDF, si invia per e-mail. Nell'app non c'è un editor: il report lo scrive l'app oppure l'assistente.
 
 ## Cosa c'è nella schermata
 
@@ -50,7 +50,7 @@ Per sicurezza, i file che contengono script, iframe (un riquadro che incorpora u
 
 **Chi ha scritto il report?** Guardare la colonna **Tür**. "Site denetimi raporu" è dell'app, gli altri li ha scritti l'assistente. Anche nella pagina del report si vede chi l'ha salvato.
 
-**Si può modificare il report?** Nell'app no. Dire all'assistente "cambia questa sezione" e lui aggiorna il report.
+**Si può modificare il report?** Nell'app no. Dire all'assistente "cambia questa sezione": il report verrà aggiornato.
 
 **Il collegamento è stato inviato, ma l'altra persona non riesce ad aprirlo.** Il collegamento funziona solo su questo computer. Inviare il file con **HTML olarak indir**.
 

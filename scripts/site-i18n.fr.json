@@ -18,14 +18,14 @@
   ],
   "dateOrder": "dmy",
   "callouts": {
-    "Symptôme": "belirti",
-    "Cause": "sebep",
-    "Solution": "cozum"
+    "Symptôme ": "belirti",
+    "Cause ": "sebep",
+    "Solution ": "cozum"
   },
   "groups": {
     "Başlangıç": "Pour démarrer",
     "Ekranlar": "Les écrans",
-    "Başvuru": "Référence"
+    "Başvuru": "Aide et référence"
   },
   "slugs": {
     "kurulum-windows": "installation-windows",
@@ -54,7 +54,7 @@
     "guide": "Guide",
     "guideTitle": "Guide seowatcher : installation, écrans et dépannage",
     "guideDescription": "Les guides de seowatcher : l'installation, ce que montre chaque écran, la connexion à Google, les règles d'audit, l'installation de l'assistant et le dépannage.",
-    "guideLede": "Chaque étape et chaque écran, de l'installation jusqu'au premier rapport, expliqués de façon courte et simple. L'application s'appelle seotracker sur GitHub et seowatcher sur ce site ; c'est la même application. Son interface est en turc : le guide donne les noms turcs avec leur traduction française.",
+    "guideLede": "Chaque étape et chaque écran, de l'installation au premier rapport, expliqués simplement. L'application s'appelle seotracker sur GitHub et seowatcher sur ce site ; c'est la même application. Son interface est en turc : le guide donne les noms turcs avec leur traduction française.",
     "screenSuffix": "",
     "titleSuffix": " | Guide seowatcher",
     "onThisPage": "Sur cette page",
@@ -82,6 +82,8 @@
     "switchLabel": "Language",
     "switchTo": "English",
     "switchHref": "/en/docs/",
-    "switchShort": "EN"
+    "switchShort": "EN",
+    "starWhy": "Une étoile aide d'autres personnes à trouver un outil gratuit.",
+    "starLink": "Ajouter une étoile sur GitHub"
   }
 }

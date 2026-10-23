@@ -1,14 +1,14 @@
 ---
 title: Analytics
-description: Sie sehen, was Besucher aus der Suche danach auf der Website tun. Hier finden Sie Berichte aus Google Analytics 4, Schlüsselereignisse und die Prüfung, ob die Messung zuverlässig läuft.
+description: Was Besucher aus der Suche danach auf der Website tun: Berichte aus Google Analytics 4, Schlüsselereignisse und die Prüfung der Messung.
 screen: Analytics
 route: /p/<proje>/analytics
 updated: 2026-10-22
 ---
 
-Hier sehen Sie, was die Personen, die auf Ihre Website kommen, danach tun. Die Search Console erzählt Ihnen, was bei Google passiert. Analytics erzählt, was der Besucher auf der Website macht.
+Hier sehen Sie, was die Personen, die auf Ihre Website kommen, danach tun. Die Search Console zeigt, was bei Google passiert; Analytics zeigt, was Besucher auf der Website tun.
 
-Sie sehen sieben Berichte aus Ihrem Google-Analytics-4-Konto. Der Bildschirm zeigt standardmäßig nur Besucher aus der Suche (organische Suche). Ein achter Reiter prüft die Messung selbst. Er sieht nach, ob der Zähler läuft und ob ein Schlüsselereignis definiert ist.
+Sie sehen sieben Berichte aus Ihrem Google-Analytics-4-Konto. Der Bildschirm zeigt standardmäßig nur Besucher aus der Suche (organische Suche). Ein achter Reiter prüft die Messung selbst. Er prüft, ob der Zähler läuft und ob ein Schlüsselereignis definiert ist.
 
 ## Was auf dem Bildschirm zu sehen ist
 
@@ -34,22 +34,22 @@ Sie sehen sieben Berichte aus Ihrem Google-Analytics-4-Konto. Der Bildschirm zei
 
 1. Sehen Sie zuerst in den Reiter **Ölçüm durumu**. Steht dort „Anahtar olay tanımlı değil“, bleiben die Conversion-Spalten immer null. Definieren Sie zuerst in Analytics ein Schlüsselereignis.
 2. Sehen Sie im Reiter **Giriş sayfaları** auf die Spalte **Alan adı**. Sehen Sie localhost oder 127.0.0.1, sendet eine Testwebsite auf Ihrem eigenen Computer Daten. Diese Zeilen sind keine echten Besuche. Die App filtert das nicht für Sie heraus.
-3. Ist der Traffic gesunken, öffnen Sie den Reiter **Trafik kaynakları** mit **Kanal grubu**. Ist nur die Suche gesunken, liegt das Problem bei der Suche. Ist jeder Kanal gesunken, liegt das Problem bei der Messung oder auf der Website.
-4. Die Schaltfläche **Trafiği yüksek, dönüşümü düşük** zeigt Stellen, an denen Google Besucher schickt, die Seite sie aber nicht halten kann. Was zu tun ist, finden Sie auf dem Bildschirm Fırsatlar (Chancen).
+3. Ist der Traffic gesunken, öffnen Sie den Reiter **Trafik kaynakları** mit **Kanal grubu**. Ist nur der Suchkanal gesunken, liegt die Ursache bei der Suche. Ist jeder Kanal gesunken, liegt das Problem bei der Messung oder auf der Website.
+4. Die Schaltfläche **Trafiği yüksek, dönüşümü düşük** zeigt Stellen, an denen Google Besucher schickt, die Seite sie aber nicht halten kann. Was zu tun ist, steht auf dem Bildschirm **Fırsatlar** (Chancen).
 
 ## Wie die Zahlen berechnet werden
 
 Der Zeitraum endet in der Zeitzone des Kontos gestern. Analytics liefert die Daten einen Tag später. Ist „Organische Suche“ gewählt, werden nur Besuche von Google oder einer anderen Suchmaschine gezählt.
 
-Jeder Bericht fragt höchstens 200 Zeilen an. Der Messungsstatus liest die Analytics-Einstellungen und verbraucht kein Berichtskontingent. Ist das Berichtskontingent aufgebraucht, sehen Sie den Fehler „Google Analytics reporting quota is exhausted.“ (Das Berichtskontingent von Analytics ist aufgebraucht). Ihr Kontingent verfolgen Sie im Abschnitt Grenzen unter **Ayarlar** (Einstellungen).
+Jeder Bericht fragt höchstens 200 Zeilen an. Der Messungsstatus liest die Analytics-Einstellungen und verbraucht kein Berichtskontingent. Ist das Berichtskontingent aufgebraucht, sehen Sie den Fehler „Google Analytics reporting quota is exhausted.“ (Das Berichtskontingent von Analytics ist aufgebraucht). Ihr Kontingent sehen Sie unter **Ayarlar → Sınırlar** (Einstellungen → Grenzen).
 
 ## Häufige Fragen
 
-**Warum weicht die Zahl der Sitzungen von den Klicks in der Search Console ab?** Beide zählen Verschiedenes. Die Search Console zählt Klicks bei Google. Analytics zählt Sitzungen auf der Website. Besucher, die der Cookie-Abfrage nicht zustimmen, tauchen in Analytics gar nicht auf.
+**Warum weicht die Zahl der Sitzungen von den Klicks in der Search Console ab?** Beide zählen Unterschiedliches. Die Search Console zählt Klicks bei Google. Analytics zählt Sitzungen auf der Website. Besucher, die der Cookie-Abfrage nicht zustimmen, tauchen in Analytics gar nicht auf.
 
 **Die Zeilenzahl bleibt bei 200 stehen.** Pro Abruf werden höchstens 200 Zeilen angefordert. Verkürzen Sie den Zeitraum oder ändern Sie die Aufschlüsselung.
 
-**Warum ist das Kontingent aufgebraucht?** Ein Standardkonto erhält 200.000 Tokens (Kontingenteinheiten) pro Tag und 40.000 pro Stunde. Jeder Bericht verbraucht einige Tokens. Wiederholtes Klicken auf **Yenile** (Aktualisieren) zehrt das Kontingent auf.
+**Warum ist das Kontingent aufgebraucht?** Ein Standardkonto erhält 200.000 Tokens (Kontingenteinheiten) pro Tag und 40.000 pro Stunde. Jeder Bericht verbraucht einige Tokens. Wiederholtes Klicken auf **Yenile** (Aktualisieren) verbraucht das Kontingent.
 
 ## Grenzen
 

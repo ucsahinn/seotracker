@@ -5,13 +5,13 @@ kind: nasil-yapilir
 updated: 2026-10-22
 ---
 
-À la fin, votre assistant IA sera connecté à l'application et aura exécuté sa première commande. Une fois connecté, vous pouvez dire « audite le site et écris un rapport ». L'assistant lit les données de Search Console, lance l'audit et enregistre le rapport dans l'écran **Raporlar** (Rapports). Cette connexion s'appelle la connexion de l'assistant (MCP). L'assistant s'en sert pour appeler les outils de l'application (par exemple list_projects). Se connecter n'est pas obligatoire. Si vous ne connectez rien, l'application ne perd rien.
+À la fin, votre assistant IA sera connecté à l'application et aura exécuté sa première commande. Une fois connecté, vous pouvez dire « audite le site et écris un rapport ». L'assistant lit les données de Search Console, lance l'audit et enregistre le rapport dans l'écran **Raporlar** (Rapports). Cette connexion repose sur MCP : l'assistant s'en sert pour appeler les outils de l'application (par exemple list_projects). Elle est facultative : sans elle, l'application reste entièrement utilisable.
 
 ## Ce qu'il vous faut
 
 - L'application en marche et un projet relié à Search Console.
 - L'un de ces assistants : Claude Code, Codex, Cursor, VS Code Copilot ou Gemini CLI. L'application fournit un texte d'installation prêt pour les trois premiers.
-- L'écran **Ajan kurulumu** (Installation de l'assistant) de l'application. Il se trouve dans la section Yapay zeka (Intelligence artificielle) du menu de gauche.
+- L'écran **Ajan kurulumu** (Installation de l'assistant) de l'application. Il se trouve dans le groupe **Ajan** (Assistant) du menu de gauche.
 
 ## Étapes
 
@@ -63,7 +63,7 @@ C'est la voie la plus simple. Obtenez le texte ainsi :
 1. Cliquez sur le bouton **Ajan kurulum istemini kopyala** (Copier la consigne d'installation de l'assistant) à l'écran. Il existe un bouton séparé pour Codex.
 2. Collez le texte dans votre assistant. L'assistant établit la connexion, l'essaie avec « whoami » et « list_projects », puis charge les modèles.
 
-La **consigne d'installation (installation depuis zéro)** fait tout faire à l'assistant, du fonctionnement de l'application jusqu'à la connexion Google. Elle reconnaît aussi bien le paquet Windows que l'installation Docker.
+La **consigne d'installation** (version « depuis zéro ») confie tout à l'assistant, du fonctionnement de l'application jusqu'à la connexion Google. Elle reconnaît le paquet Windows comme l'installation Docker.
 
 ### Charger les modèles de tâches prêts à l'emploi
 
@@ -71,43 +71,43 @@ L'onglet **Beceriler** (Compétences) liste les six modèles de tâches prêts �
 
 ## Outils
 
-Il y a 33 outils au total. La colonne « Écrit » marque ceux qui modifient des données de l'application, la colonne « Quota » ceux qui consomment le quota quotidien de Google. Les outils qui écrivent ne doivent pas être appelés sans votre accord. Les modèles bien construits demandent, mais l'application, elle, ne demande pas.
+Il y a 33 outils au total. La colonne « Écrit » marque ceux qui modifient des données de l'application, la colonne « Quota » ceux qui consomment le quota quotidien de Google. Les outils qui écrivent ne doivent pas être appelés sans votre accord. Les modèles bien construits demandent votre accord ; l'application, elle, ne le demande pas.
 
-| Outil                                        | Ce qu'il fait                                                                                                                     | Écrit | Quota                                          |
-| -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ----- | ---------------------------------------------- |
-| `whoami`                                     | Dit quelle installation et quel utilisateur vous êtes.                                                                            |       |                                                |
-| `get_diagnostics`                            | Donne la version, les contrôles d'installation, le nombre de lignes des tables, les 25 derniers audits et les compteurs de quota. |       |                                                |
-| `list_projects`                              | Liste vos projets. Chaque outil demande un numéro de projet.                                                                      |       |                                                |
-| `create_project`                             | Crée un nouveau projet.                                                                                                           | Oui   |                                                |
-| `get_project_context`                        | Lit l'écran Infos du projet.                                                                                                      |       |                                                |
-| `update_project_context`                     | Modifie les infos du projet et laisse une note dans le journal de recherche.                                                      | Oui   |                                                |
-| `get_search_console_performance`             | Donne clics, impressions, taux et position par requête, page, pays, appareil ou date.                                             |       |                                                |
-| `get_search_opportunities`                   | Établit la liste des opportunités à partir de Search Console et d'Analytics.                                                      |       |                                                |
-| `get_cannibalization`                        | Montre les pages qui se concurrencent sur la même recherche.                                                                      |       |                                                |
-| `get_ranking_history`                        | Donne les archives de classement de votre ordinateur, ne garde rien de plus ancien que 16 mois.                                   |       |                                                |
-| `get_index_coverage`                         | Donne les réponses d'index Google déjà enregistrées, sans interroger Google.                                                      |       |                                                |
-| `inspect_urls`                               | Demande à Google l'état des pages, 10 adresses par appel.                                                                         | Oui   | 2 000 par jour, par propriété                  |
-| `get_sitemaps`                               | Affiche l'état des plans du site dans Search Console.                                                                             |       |                                                |
-| `run_site_audit`                             | Lance l'audit du site.                                                                                                            | Oui   | PageSpeed, si la mesure de vitesse est activée |
-| `get_audit_status`                           | Dit à quelle étape en est l'audit, peut marquer comme échoué un audit bloqué.                                                     |       |                                                |
-| `get_audit_issues`                           | Donne les problèmes trouvés avec les étapes de correction.                                                                        |       |                                                |
-| `get_audit_pages`                            | Liste les pages explorées.                                                                                                        |       |                                                |
-| `get_google_analytics_organic_overview`      | Donne le résumé des visites venues de la recherche et la période précédente.                                                      |       |                                                |
-| `get_google_analytics_organic_landing_pages` | Liste les pages où arrivent d'abord les visiteurs venus de la recherche.                                                          |       |                                                |
-| `get_google_analytics_page_performance`      | Donne les vues et l'engagement des pages.                                                                                         |       |                                                |
-| `get_google_analytics_traffic_acquisition`   | Donne la répartition des visiteurs par canal, source et campagne.                                                                 |       |                                                |
-| `get_google_analytics_key_events`            | Donne les événements marqués comme clés dans Analytics.                                                                           |       |                                                |
-| `get_google_analytics_ecommerce_performance` | Donne les ventes de produits.                                                                                                     |       |                                                |
-| `get_google_analytics_site_search`           | Donne les termes que les visiteurs tapent dans la zone de recherche de votre site.                                                |       |                                                |
-| `get_google_analytics_audience_breakdown`    | Répartit les visiteurs par appareil, pays, nouveaux et récurrents.                                                                |       |                                                |
-| `get_google_analytics_measurement_health`    | Contrôle la configuration de la mesure, ne consomme pas le quota de rapports.                                                     |       |                                                |
-| `list_saved_keywords`                        | Liste les mots que vous avez enregistrés.                                                                                         |       |                                                |
-| `save_keywords`                              | Enregistre des mots.                                                                                                              | Oui   |                                                |
-| `list_reports`                               | Liste vos rapports.                                                                                                               |       |                                                |
-| `get_report`                                 | Lit un rapport, et donne aussi sa version HTML si on le demande.                                                                  |       |                                                |
-| `save_report`                                | Enregistre un rapport ou met à jour un rapport existant.                                                                          | Oui   |                                                |
-| `list_report_templates`                      | Lit les modèles de rapport.                                                                                                       |       |                                                |
-| `save_report_template`                       | Enregistre un modèle de rapport.                                                                                                  | Oui   |                                                |
+| Outil                                        | Ce qu'il fait                                                                                                                             | Écrit | Quota                                          |
+| -------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ----- | ---------------------------------------------- |
+| `whoami`                                     | Indique quelle installation et quel utilisateur vous utilisez.                                                                            |       |                                                |
+| `get_diagnostics`                            | Donne la version, les contrôles d'installation, le nombre de lignes des tables, les 25 derniers audits et les compteurs de quota.         |       |                                                |
+| `list_projects`                              | Liste vos projets. Chaque outil demande un numéro de projet.                                                                              |       |                                                |
+| `create_project`                             | Crée un nouveau projet.                                                                                                                   | Oui   |                                                |
+| `get_project_context`                        | Lit l'écran Infos du projet.                                                                                                              |       |                                                |
+| `update_project_context`                     | Modifie les infos du projet et laisse une note dans le journal de recherche.                                                              | Oui   |                                                |
+| `get_search_console_performance`             | Donne clics, impressions, taux et position par requête, page, pays, appareil ou date.                                                     |       |                                                |
+| `get_search_opportunities`                   | Établit la liste des opportunités à partir de Search Console et d'Analytics.                                                              |       |                                                |
+| `get_cannibalization`                        | Montre les pages qui se concurrencent sur la même recherche.                                                                              |       |                                                |
+| `get_ranking_history`                        | Donne les archives de classement de votre ordinateur ; elles gardent aussi les données plus anciennes que la limite de 16 mois de Google. |       |                                                |
+| `get_index_coverage`                         | Donne les réponses d'index Google déjà enregistrées, sans interroger Google.                                                              |       |                                                |
+| `inspect_urls`                               | Demande à Google l'état des pages, 10 adresses par appel.                                                                                 | Oui   | 2 000 par jour, par propriété                  |
+| `get_sitemaps`                               | Affiche l'état des plans du site dans Search Console.                                                                                     |       |                                                |
+| `run_site_audit`                             | Lance l'audit du site.                                                                                                                    | Oui   | PageSpeed, si la mesure de vitesse est activée |
+| `get_audit_status`                           | Dit à quelle étape en est l'audit, peut marquer comme échoué un audit bloqué.                                                             |       |                                                |
+| `get_audit_issues`                           | Donne les problèmes trouvés avec les étapes de correction.                                                                                |       |                                                |
+| `get_audit_pages`                            | Liste les pages explorées.                                                                                                                |       |                                                |
+| `get_google_analytics_organic_overview`      | Donne le résumé des visites venues de la recherche et la période précédente.                                                              |       |                                                |
+| `get_google_analytics_organic_landing_pages` | Liste les pages où arrivent d'abord les visiteurs venus de la recherche.                                                                  |       |                                                |
+| `get_google_analytics_page_performance`      | Donne les vues et l'engagement des pages.                                                                                                 |       |                                                |
+| `get_google_analytics_traffic_acquisition`   | Donne la répartition des visiteurs par canal, source et campagne.                                                                         |       |                                                |
+| `get_google_analytics_key_events`            | Donne les événements marqués comme clés dans Analytics.                                                                                   |       |                                                |
+| `get_google_analytics_ecommerce_performance` | Donne les ventes de produits.                                                                                                             |       |                                                |
+| `get_google_analytics_site_search`           | Donne les termes que les visiteurs tapent dans la zone de recherche de votre site.                                                        |       |                                                |
+| `get_google_analytics_audience_breakdown`    | Répartit les visiteurs par appareil, pays, nouveaux et récurrents.                                                                        |       |                                                |
+| `get_google_analytics_measurement_health`    | Contrôle la configuration de la mesure, ne consomme pas le quota de rapports.                                                             |       |                                                |
+| `list_saved_keywords`                        | Liste les mots que vous avez enregistrés.                                                                                                 |       |                                                |
+| `save_keywords`                              | Enregistre des mots.                                                                                                                      | Oui   |                                                |
+| `list_reports`                               | Liste vos rapports.                                                                                                                       |       |                                                |
+| `get_report`                                 | Lit un rapport, et donne aussi sa version HTML si on le demande.                                                                          |       |                                                |
+| `save_report`                                | Enregistre un rapport ou met à jour un rapport existant.                                                                                  | Oui   |                                                |
+| `list_report_templates`                      | Lit les modèles de rapport.                                                                                                               |       |                                                |
+| `save_report_template`                       | Enregistre un modèle de rapport.                                                                                                          | Oui   |                                                |
 
 Les outils Analytics puisent dans le quota de rapports Analytics de Google (200 000 unités par jour sur une propriété standard). Vous suivez ce quota dans l'application, dans la section Limites de l'écran **Ayarlar** (Paramètres).
 
@@ -134,7 +134,7 @@ Les outils Analytics puisent dans le quota de rapports Analytics de Google (200 
 
 **Cela fonctionne-t-il sans mot de passe ?** Avec Docker, oui, avec `MCP_TOKEN=off`. Avec le paquet Windows, le mot de passe est toujours actif. Avec une connexion sans mot de passe, n'importe quel programme du même ordinateur peut appeler les 33 outils.
 
-**L'assistant peut-il épuiser mon quota Google ?** `inspect_urls` et `run_site_audit` en consomment. Les modèles interrogent au plus 20 adresses par tâche. Ils ne lancent l'audit que si vous le demandez. Donnez la même limite à votre assistant.
+**L'assistant peut-il épuiser mon quota Google ?** `inspect_urls` et `run_site_audit` en consomment. Les modèles interrogent au plus 20 adresses par tâche. Ils ne lancent l'audit que si vous le demandez. Imposez la même limite à votre assistant.
 
 **Quel assistant est le meilleur ?** Peu importe, les outils sont les mêmes. Le texte d'installation est prêt pour Claude Code, Codex et Cursor. Les autres assistants fonctionnent avec la même adresse et le même mot de passe s'ils prennent en charge MCP.
 
