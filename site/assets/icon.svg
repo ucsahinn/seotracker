@@ -1,32 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-label="seowatcher">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#1b2030"/>
-      <stop offset="1" stop-color="#0b0e16"/>
+      <stop offset="0" stop-color="#1b1816"/>
+      <stop offset="1" stop-color="#0c0b0a"/>
     </linearGradient>
     <linearGradient id="rim" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/>
-      <stop offset="1" stop-color="#ffffff" stop-opacity="0.04"/>
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.14"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0.02"/>
     </linearGradient>
-    <radialGradient id="iris" cx="0.38" cy="0.32" r="0.8">
-      <stop offset="0" stop-color="#bfe0ff"/>
-      <stop offset="0.45" stop-color="#5fa8ff"/>
-      <stop offset="1" stop-color="#2a6fe0"/>
-    </radialGradient>
-    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
-      <stop offset="0" stop-color="#5fa8ff" stop-opacity="0.55"/>
-      <stop offset="1" stop-color="#5fa8ff" stop-opacity="0"/>
-    </radialGradient>
-    <linearGradient id="lid" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#f6f7fb"/>
-      <stop offset="1" stop-color="#dfe6f5"/>
+    <linearGradient id="ember" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#f26b0f"/>
+      <stop offset="1" stop-color="#ff8a2a"/>
     </linearGradient>
   </defs>
-  <rect width="256" height="256" rx="58" fill="url(#bg)"/>
-  <rect x="1.5" y="1.5" width="253" height="253" rx="56.5" fill="none" stroke="url(#rim)" stroke-width="3"/>
-  <circle cx="128" cy="128" r="92" fill="url(#glow)"/>
-  <path d="M38 128 A114 114 0 0 1 218 128 A114 114 0 0 1 38 128 Z" fill="none" stroke="url(#lid)" stroke-width="15" stroke-linejoin="round"/>
-  <circle cx="128" cy="128" r="40" fill="url(#iris)"/>
-  <circle cx="128" cy="128" r="17" fill="#0b0e16"/>
-  <circle cx="116" cy="114" r="7.5" fill="#ffffff" fill-opacity="0.9"/>
+  <rect width="256" height="256" rx="48" fill="url(#bg)"/>
+  <rect x="1.5" y="1.5" width="253" height="253" rx="46.5" fill="none" stroke="url(#rim)" stroke-width="3"/>
+  <!-- The dial: a ring open at the top right, and the needle that leaves through the opening. -->
+  <circle cx="128" cy="128" r="74" fill="none" stroke="url(#ember)" stroke-width="20" stroke-linecap="round" pathLength="360" stroke-dasharray="252 108" transform="rotate(-16 128 128)"/>
+  <path d="M128 128 L192 64" fill="none" stroke="url(#ember)" stroke-width="20" stroke-linecap="round"/>
+  <circle cx="128" cy="128" r="14" fill="#ffb36b"/>
 </svg>

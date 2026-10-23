@@ -66,7 +66,13 @@ edit("site/index.html", (s) =>
       new RegExp(`${esc(prev)}, \\d+ [A-Za-zÇĞİÖŞÜçğıöşü]+ \\d{4}`, "g"),
       `${next}, ${trDate}`,
     )
-    .replaceAll(`seowatcher-setup-${prev}.exe`, `seowatcher-setup-${next}.exe`)
+    .replace(
+      new RegExp(
+        `releases/download/v\\d+\\.\\d+\\.\\d+/seowatcher-setup-${esc(prev)}\\.exe`,
+        "g",
+      ),
+      `releases/download/v${next}/seowatcher-setup-${next}.exe`,
+    )
     .replace(`site.js?v=${prev}`, `site.js?v=${next}`),
 );
 const changelog = path.join(root, "CHANGELOG.md");
