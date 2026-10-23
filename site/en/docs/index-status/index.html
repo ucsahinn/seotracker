@@ -40,20 +40,25 @@
     <meta property="og:site_name" content="seowatcher" />
     <meta property="og:title" content="Index status screen | seowatcher guide" />
     <meta property="og:description" content="Google's answer for each of your pages: is it in search, if not why, and when it last visited. You can ask at most 2,000 queries a day." />
-    <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
+    <meta property="og:image" content="https://seowatcher.io/assets/og-en.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="seowatcher" />
+    <meta property="og:image:alt" content="seowatcher guide: setup, screens and troubleshooting" />
     <meta property="article:modified_time" content="2026-10-23" />
     <meta property="og:url" content="https://seowatcher.io/en/docs/index-status/" />
     <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="tr_TR" />
+    <meta property="og:locale:alternate" content="de_DE" />
+    <meta property="og:locale:alternate" content="fr_FR" />
+    <meta property="og:locale:alternate" content="it_IT" />
+    <meta property="og:locale:alternate" content="pt_BR" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Index status screen | seowatcher guide" />
     <meta name="twitter:description" content="Google's answer for each of your pages: is it in search, if not why, and when it last visited. You can ask at most 2,000 queries a day." />
-    <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
+    <meta name="twitter:image" content="https://seowatcher.io/assets/og-en.png" />
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en","de","fr","it","pt"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/en/docs/index-status/#article","headline":"Index status","description":"Google's answer for each of your pages: is it in search, if not why, and when it last visited. You can ask at most 2,000 queries a day.","url":"https://seowatcher.io/en/docs/index-status/","inLanguage":"en","dateModified":"2026-10-23","articleSection":"Screens","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/en/docs/index-status/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/en/docs/index-status/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/en/"},{"@type":"ListItem","position":2,"name":"Guide","item":"https://seowatcher.io/en/docs/"},{"@type":"ListItem","position":3,"name":"Index status","item":"https://seowatcher.io/en/docs/index-status/"}]}]}</script>
-    <script src="/assets/docs.js?v=2.4.0" defer></script>
+    <script src="/assets/docs.js?v=2.4.1" defer></script>
     <meta name="theme-color" content="#272c3b" />
     <style>
       @font-face {
@@ -765,6 +770,47 @@
       }
 
       /* Guide pass: callouts, pager, copy buttons, mobile sidebar, tables. */
+      /* Release notes: the summary as cards, the lead of every item in amber. */
+      article[data-page="surum-notlari"] li > strong:first-child {
+        color: var(--accent-2);
+      }
+      article[data-page="surum-notlari"] h2 {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      article[data-page="surum-notlari"] h2::before {
+        content: "";
+        width: 4px;
+        height: 0.9em;
+        border-radius: 999px;
+        background: var(--accent);
+        flex: none;
+      }
+      article[data-page="surum-notlari"] h2:first-of-type + ul {
+        list-style: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 12px;
+      }
+      article[data-page="surum-notlari"] h2:first-of-type + ul li {
+        margin: 0;
+        padding: 16px 18px;
+        border: 1px solid var(--hairline);
+        border-radius: 14px;
+        background: linear-gradient(var(--glass), var(--glass)), var(--bg);
+        line-height: 1.5;
+      }
+      article[data-page="surum-notlari"]
+        h2:first-of-type
+        + ul
+        li
+        > strong:first-child {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 1.05em;
+      }
       .callout {
         position: relative;
         padding: 12px 16px 12px 18px;
@@ -1070,10 +1116,10 @@
       <aside class="side" aria-label="Guide">
         <details class="side-dd" open>
           <summary>Guide</summary>
-          <p class="nav-group">Getting started</p><ul><li><a href="/en/docs/install-windows/">Install on Windows</a></li><li><a href="/en/docs/install-docker/">Installing with Docker</a></li><li><a href="/en/docs/google-connection/">Connecting to Google</a></li><li><a href="/en/docs/pagespeed-key/">PageSpeed key</a></li></ul><p class="nav-group">Screens</p><ul><li><a href="/en/docs/projects/">Projects</a></li><li><a href="/en/docs/dashboard/">Dashboard</a></li><li><a href="/en/docs/search-performance/">Search performance</a></li><li><a href="/en/docs/rank-tracking/">Ranking tracking</a></li><li><a href="/en/docs/opportunities/">Opportunities</a></li><li><a href="/en/docs/saved-keywords/">Saved keywords</a></li><li><a href="/en/docs/analytics/">Analytics</a></li><li><a href="/en/docs/site-audit/">Site audit</a></li><li class="current" aria-current="page"><a href="/en/docs/index-status/">Index status</a></li><li><a href="/en/docs/reports/">Reports and templates</a></li><li><a href="/en/docs/project-context/">Project info</a></li><li><a href="/en/docs/settings/">Settings</a></li></ul><p class="nav-group">Reference</p><ul><li><a href="/en/docs/help/">Help</a></li><li><a href="/en/docs/audit-rules/">Audit rules</a></li><li><a href="/en/docs/agent-setup/">Agent setup</a></li><li><a href="/en/docs/troubleshooting/">Troubleshooting</a></li></ul>
+          <p class="nav-group">Getting started</p><ul><li><a href="/en/docs/install-windows/">Install on Windows</a></li><li><a href="/en/docs/install-docker/">Installing with Docker</a></li><li><a href="/en/docs/google-connection/">Connecting to Google</a></li><li><a href="/en/docs/pagespeed-key/">PageSpeed key</a></li></ul><p class="nav-group">Screens</p><ul><li><a href="/en/docs/projects/">Projects</a></li><li><a href="/en/docs/dashboard/">Dashboard</a></li><li><a href="/en/docs/search-performance/">Search performance</a></li><li><a href="/en/docs/rank-tracking/">Ranking tracking</a></li><li><a href="/en/docs/opportunities/">Opportunities</a></li><li><a href="/en/docs/saved-keywords/">Saved keywords</a></li><li><a href="/en/docs/analytics/">Analytics</a></li><li><a href="/en/docs/site-audit/">Site audit</a></li><li class="current" aria-current="page"><a href="/en/docs/index-status/">Index status</a></li><li><a href="/en/docs/reports/">Reports and templates</a></li><li><a href="/en/docs/project-context/">Project info</a></li><li><a href="/en/docs/settings/">Settings</a></li></ul><p class="nav-group">Reference</p><ul><li><a href="/en/docs/help/">Help</a></li><li><a href="/en/docs/audit-rules/">Audit rules</a></li><li><a href="/en/docs/agent-setup/">Agent setup</a></li><li><a href="/en/docs/troubleshooting/">Troubleshooting</a></li><li><a href="/en/docs/release-notes/">Release notes</a></li></ul>
         </details>
       </aside>
-      <article id="icerik">
+      <article id="icerik" data-page="dizin-durumu">
         <h1>Index status</h1><p class="lede">Google's answer for each of your pages: is it in search, if not why, and when it last visited. You can ask at most 2,000 queries a day.</p><p>On this page you see how to find out which of your pages Google has put into search.</p>
 <p>The site audit tells you a page can be opened. It cannot tell you whether Google has really added it to its index (Google's list of pages). The <strong>Dizin durumu</strong> (Index status) tab asks Google this and saves the answer. The answers are stored on this computer. The same question is not asked again and again. Only answers that have gone stale are asked again. This matters because Google gives 2,000 questions a day for each property (your site's record in Search Console). The app and your assistant share this allowance.</p>
 <h2 id="what-is-on-the-screen">What is on the screen</h2>
@@ -1113,10 +1159,7 @@
         <span
           ><a href="/en/">Home</a> &nbsp;
           <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
-          <a
-            href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"
-            >Release notes</a
-          ></span
+          <a href="/en/docs/release-notes/">Release notes</a></span
         >
       </div>
     </footer>

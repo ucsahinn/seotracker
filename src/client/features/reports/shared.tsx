@@ -22,7 +22,7 @@ export const reportQueryKey = (projectId: string, reportId: string) =>
  */
 export function formatCreatedBy(report: ReportListItem): string {
   const client = isAppCreator(report.createdBy)
-    ? "seotracker"
+    ? "seowatcher"
     : report.createdBy;
   return report.createdByName ? `${report.createdByName} · ${client}` : client;
 }

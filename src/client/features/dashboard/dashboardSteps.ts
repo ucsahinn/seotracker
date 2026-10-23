@@ -26,7 +26,7 @@ export const setupSteps: {
     id: "mcp",
     label: "Yapay zeka ajanınızı bağlayın",
     detail:
-      "seotracker'ı Claude ya da tercih ettiğiniz ajanın içinden kullanın.",
+      "seowatcher'ı Claude ya da tercih ettiğiniz ajanın içinden kullanın.",
     icon: Bot,
   },
   {

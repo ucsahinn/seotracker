@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>seowatcher: un pannello SEO gratuito per Search Console e GA4</title>
+    <title>seowatcher: strumento SEO gratuito per Search Console e GA4</title>
     <meta
       name="description"
-      content="Search Console, Analytics 4 e controllo del sito in un'unica app. Gratuito e open source; si installa su Windows e i dati restano sul computer."
+      content="Search Console, Analytics 4 e controllo del sito in un'unica app. Gratuita e open source; per Windows, i dati restano sul computer."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link rel="canonical" href="https://seowatcher.io/it/" />
@@ -43,13 +43,16 @@
     <meta property="og:site_name" content="seowatcher" />
     <meta
       property="og:title"
-      content="seowatcher: un pannello SEO gratuito per Search Console e GA4"
+      content="seowatcher: strumento SEO gratuito per Search Console e GA4"
     />
     <meta
       property="og:description"
       content="Search Console, Analytics 4 e controllo del sito in un'unica app. Nessun abbonamento, nessun account, i dati restano sul computer."
     />
-    <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
+    <meta
+      property="og:image"
+      content="https://seowatcher.io/assets/og-it.png"
+    />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -63,20 +66,23 @@
     <meta property="og:locale:alternate" content="en_US" />
     <meta property="og:locale:alternate" content="de_DE" />
     <meta property="og:locale:alternate" content="fr_FR" />
-    <meta property="og:locale:alternate" content="pt_PT" />
+    <meta property="og:locale:alternate" content="pt_BR" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
-      content="seowatcher: un pannello SEO gratuito per Search Console e GA4"
+      content="seowatcher: strumento SEO gratuito per Search Console e GA4"
     />
     <meta
       name="twitter:description"
       content="Search Console, Analytics 4 e controllo del sito in un'unica app. Nessun abbonamento, nessun account, i dati restano sul computer."
     />
-    <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
+    <meta
+      name="twitter:image"
+      content="https://seowatcher.io/assets/og-it.png"
+    />
     <meta name="color-scheme" content="dark" />
     <meta name="theme-color" content="#131110" />
-    <script src="/assets/site.js?v=2.4.0" defer></script>
+    <script src="/assets/site.js?v=2.4.1" defer></script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -87,24 +93,24 @@
             "url": "https://seowatcher.io/",
             "name": "seowatcher",
             "alternateName": ["seotracker"],
-            "inLanguage": "it",
+            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"],
             "publisher": { "@id": "https://seowatcher.io/#author" }
           },
           {
             "@type": "WebPage",
             "@id": "https://seowatcher.io/it/#webpage",
             "url": "https://seowatcher.io/it/",
-            "name": "seowatcher: un pannello SEO gratuito per Search Console e GA4",
+            "name": "seowatcher: strumento SEO gratuito per Search Console e GA4",
             "inLanguage": "it",
             "isPartOf": { "@id": "https://seowatcher.io/#website" },
             "about": { "@id": "https://seowatcher.io/#app" },
             "primaryImageOfPage": {
               "@type": "ImageObject",
-              "url": "https://seowatcher.io/assets/og.png",
+              "url": "https://seowatcher.io/assets/og-it.png",
               "width": 1200,
               "height": 630
             },
-            "dateModified": "2026-10-22"
+            "dateModified": "2026-10-23"
           },
           {
             "@type": "Organization",
@@ -123,11 +129,11 @@
             "description": "App SEO desktop gratuita e open source (MIT) che riunisce in un solo pannello i dati di Google Search Console, Google Analytics 4, del crawler del sito integrato e di PageSpeed Insights. Si installa su Windows 10/11; su Mac e Linux funziona con Docker. Per un solo utente, raggiungibile soltanto dal proprio computer.",
             "applicationCategory": "BusinessApplication",
             "operatingSystem": "Windows 10, Windows 11 (64-bit)",
-            "softwareVersion": "2.4.0",
-            "datePublished": "2026-10-22",
+            "softwareVersion": "2.4.1",
+            "datePublished": "2026-10-23",
             "fileSize": "81 MB",
             "inLanguage": "it",
-            "downloadUrl": "https://github.com/ucsahinn/seotracker/releases/download/v2.4.0/seowatcher-setup-2.4.0.exe",
+            "downloadUrl": "https://github.com/ucsahinn/seotracker/releases/download/v2.4.1/seowatcher-setup-2.4.1.exe",
             "installUrl": "https://github.com/ucsahinn/seotracker#kurulum",
             "releaseNotes": "https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md",
             "license": "https://spdx.org/licenses/MIT.html",
@@ -135,7 +141,7 @@
             "offers": {
               "@type": "Offer",
               "price": "0",
-              "priceCurrency": "EUR",
+              "priceCurrency": "USD",
               "availability": "https://schema.org/InStock",
               "url": "https://seowatcher.io/it/#kurulum"
             },
@@ -1738,6 +1744,10 @@
         display: grid;
         gap: 22px;
       }
+      .facts .definition {
+        margin: 0 0 clamp(24px, 3vw, 36px);
+        max-width: 70ch;
+      }
       .facts dl {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1756,6 +1766,10 @@
         color: var(--subtle);
       }
       @media (max-width: 760px) {
+        .facts .definition {
+          margin: 0 0 clamp(24px, 3vw, 36px);
+          max-width: 70ch;
+        }
         .facts dl {
           grid-template-columns: 1fr;
         }
@@ -2076,7 +2090,7 @@
         </nav>
         <a
           class="btn primary small cta"
-          href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.0/seowatcher-setup-2.4.0.exe"
+          href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.1/seowatcher-setup-2.4.1.exe"
           >Scarica per Windows</a
         >
         <button
@@ -2176,7 +2190,7 @@
         </nav>
         <a
           class="btn primary"
-          href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.0/seowatcher-setup-2.4.0.exe"
+          href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.1/seowatcher-setup-2.4.1.exe"
           >Scarica per Windows</a
         >
       </nav>
@@ -2199,7 +2213,7 @@
               <a
                 class="btn primary"
                 data-magnet
-                href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.0/seowatcher-setup-2.4.0.exe"
+                href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.1/seowatcher-setup-2.4.1.exe"
                 >Scarica per Windows
                 <span class="arrow" aria-hidden="true">↓</span></a
               >
@@ -2934,7 +2948,7 @@
               <p class="big">File di installazione per Windows</p>
               <dl>
                 <dt>Versione</dt>
-                <dd>2.4.0, 23 ottobre 2026</dd>
+                <dd>2.4.1, 23 ottobre 2026</dd>
                 <dt>Dimensione</dt>
                 <dd>81 MB</dd>
                 <dt>Requisiti</dt>
@@ -2956,14 +2970,14 @@
               <a
                 class="btn primary"
                 data-magnet
-                href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.0/seowatcher-setup-2.4.0.exe"
+                href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.1/seowatcher-setup-2.4.1.exe"
                 >Scarica per Windows
                 <span class="arrow" aria-hidden="true">↓</span></a
               >
               <div class="alt">
                 <p>
-                  La stessa app ha due nomi: seotracker dentro l'app e su
-                  GitHub, seowatcher su questo sito e nel file di installazione.
+                  Il repository GitHub si chiama seotracker; l'app, questo sito
+                  e il programma di installazione si chiamano seowatcher.
                 </p>
                 <p>
                   Su Mac e Linux si installa con Docker.
@@ -2980,10 +2994,17 @@
       <section class="facts" aria-labelledby="h-kisaca">
         <div class="wrap">
           <h2 id="h-kisaca" class="reveal">In breve</h2>
+          <p class="lede definition reveal" style="--d: 60">
+            seowatcher è un'app SEO gratuita con licenza MIT che riunisce Google
+            Search Console, Google Analytics 4, un proprio crawler del sito e
+            PageSpeed Insights in un unico pannello. Si installa su Windows 10 e
+            11 con un solo file e funziona con Docker su Mac e Linux; i dati
+            restano sul computer. Il suo repository GitHub si chiama seotracker.
+          </p>
           <dl class="reveal" style="--d: 100">
             <div class="row">
               <dt>Nome</dt>
-              <dd>seowatcher (su GitHub e dentro l'app: seotracker)</dd>
+              <dd>seowatcher (repository GitHub: seotracker)</dd>
             </div>
             <div class="row">
               <dt>Prezzo e licenza</dt>
@@ -3019,7 +3040,7 @@
             </div>
             <div class="row">
               <dt>Versione</dt>
-              <dd>2.4.0, 23 ottobre 2026</dd>
+              <dd>2.4.1, 23 ottobre 2026</dd>
             </div>
             <div class="row">
               <dt>Dimensione</dt>
@@ -3041,10 +3062,9 @@
             <div class="row">
               <dt>Che cosa non fa</dt>
               <dd>
-                Stima del volume di ricerca, conteggio dei backlink, posizioni
-                dei concorrenti; non gira nel cloud (in arrivo: domanda
-                approssimativa ricavata dalle impressioni e accesso dalla rete
-                di casa)
+                Nessuna stima dei volumi di ricerca, nessun conteggio dei
+                backlink, nessuna classifica dei concorrenti; non funziona nel
+                cloud
               </dd>
             </div>
             <div class="row">
@@ -3160,7 +3180,7 @@
             <a
               class="btn primary"
               data-magnet
-              href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.0/seowatcher-setup-2.4.0.exe"
+              href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.1/seowatcher-setup-2.4.1.exe"
               >Scarica per Windows
               <span class="arrow" aria-hidden="true">↓</span></a
             >
@@ -3205,10 +3225,7 @@
               >Risoluzione dei problemi</a
             ><a href="https://github.com/ucsahinn/seotracker/issues"
               >Segnala un problema</a
-            ><a
-              href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"
-              >Note di versione</a
-            >
+            ><a href="/it/docs/note-di-rilascio/">Note di versione</a>
             <nav class="langrow" aria-label="Lingua">
               <a href="/" lang="tr" hreflang="tr"
                 ><span class="flag"

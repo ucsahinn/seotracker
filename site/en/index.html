@@ -49,7 +49,10 @@
       property="og:description"
       content="Search Console, Analytics 4 and a site audit in one app. No subscription, no account, your data stays on your computer."
     />
-    <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
+    <meta
+      property="og:image"
+      content="https://seowatcher.io/assets/og-en.png"
+    />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -63,7 +66,7 @@
     <meta property="og:locale:alternate" content="de_DE" />
     <meta property="og:locale:alternate" content="fr_FR" />
     <meta property="og:locale:alternate" content="it_IT" />
-    <meta property="og:locale:alternate" content="pt_PT" />
+    <meta property="og:locale:alternate" content="pt_BR" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
@@ -73,10 +76,13 @@
       name="twitter:description"
       content="Search Console, Analytics 4 and a site audit in one app. No subscription, no account, your data stays on your computer."
     />
-    <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
+    <meta
+      name="twitter:image"
+      content="https://seowatcher.io/assets/og-en.png"
+    />
     <meta name="color-scheme" content="dark" />
     <meta name="theme-color" content="#131110" />
-    <script src="/assets/site.js?v=2.4.0" defer></script>
+    <script src="/assets/site.js?v=2.4.1" defer></script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -87,7 +93,7 @@
             "url": "https://seowatcher.io/",
             "name": "seowatcher",
             "alternateName": ["seotracker"],
-            "inLanguage": "en",
+            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"],
             "publisher": { "@id": "https://seowatcher.io/#author" }
           },
           {
@@ -100,11 +106,11 @@
             "about": { "@id": "https://seowatcher.io/#app" },
             "primaryImageOfPage": {
               "@type": "ImageObject",
-              "url": "https://seowatcher.io/assets/og.png",
+              "url": "https://seowatcher.io/assets/og-en.png",
               "width": 1200,
               "height": 630
             },
-            "dateModified": "2026-10-22"
+            "dateModified": "2026-10-23"
           },
           {
             "@type": "Organization",
@@ -123,11 +129,11 @@
             "description": "A free, open-source (MIT) desktop SEO app that brings Google Search Console, Google Analytics 4, its own site crawler and PageSpeed Insights data into one dashboard. Installs on Windows 10/11; runs with Docker on Mac and Linux. Single-user, reachable only from your own computer.",
             "applicationCategory": "BusinessApplication",
             "operatingSystem": "Windows 10, Windows 11 (64-bit)",
-            "softwareVersion": "2.4.0",
-            "datePublished": "2026-10-22",
+            "softwareVersion": "2.4.1",
+            "datePublished": "2026-10-23",
             "fileSize": "81 MB",
             "inLanguage": "en",
-            "downloadUrl": "https://github.com/ucsahinn/seotracker/releases/download/v2.4.0/seowatcher-setup-2.4.0.exe",
+            "downloadUrl": "https://github.com/ucsahinn/seotracker/releases/download/v2.4.1/seowatcher-setup-2.4.1.exe",
             "installUrl": "https://github.com/ucsahinn/seotracker#kurulum",
             "releaseNotes": "https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md",
             "license": "https://spdx.org/licenses/MIT.html",
@@ -1738,6 +1744,10 @@
         display: grid;
         gap: 22px;
       }
+      .facts .definition {
+        margin: 0 0 clamp(24px, 3vw, 36px);
+        max-width: 70ch;
+      }
       .facts dl {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1756,6 +1766,10 @@
         color: var(--subtle);
       }
       @media (max-width: 760px) {
+        .facts .definition {
+          margin: 0 0 clamp(24px, 3vw, 36px);
+          max-width: 70ch;
+        }
         .facts dl {
           grid-template-columns: 1fr;
         }
@@ -2085,7 +2099,7 @@
         </nav>
         <a
           class="btn primary small cta"
-          href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.0/seowatcher-setup-2.4.0.exe"
+          href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.1/seowatcher-setup-2.4.1.exe"
           >Download for Windows</a
         >
         <button
@@ -2185,7 +2199,7 @@
         </nav>
         <a
           class="btn primary"
-          href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.0/seowatcher-setup-2.4.0.exe"
+          href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.1/seowatcher-setup-2.4.1.exe"
           >Download for Windows</a
         >
       </nav>
@@ -2207,7 +2221,7 @@
               <a
                 class="btn primary"
                 data-magnet
-                href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.0/seowatcher-setup-2.4.0.exe"
+                href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.1/seowatcher-setup-2.4.1.exe"
                 >Download for Windows
                 <span class="arrow" aria-hidden="true">↓</span></a
               >
@@ -2938,7 +2952,7 @@
               <p class="big">Windows installer</p>
               <dl>
                 <dt>Version</dt>
-                <dd>2.4.0, October 23, 2026</dd>
+                <dd>2.4.1, October 23, 2026</dd>
                 <dt>Size</dt>
                 <dd>81 MB</dd>
                 <dt>Requirements</dt>
@@ -2959,14 +2973,14 @@
               <a
                 class="btn primary"
                 data-magnet
-                href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.0/seowatcher-setup-2.4.0.exe"
+                href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.1/seowatcher-setup-2.4.1.exe"
                 >Download for Windows
                 <span class="arrow" aria-hidden="true">↓</span></a
               >
               <div class="alt">
                 <p>
-                  The same app goes by two names: seotracker inside the app and
-                  on GitHub, seowatcher on this site and in the installer.
+                  The GitHub repository is called seotracker; the app, this site
+                  and the installer are called seowatcher.
                 </p>
                 <p>
                   On Mac and Linux it installs with Docker.
@@ -2983,10 +2997,17 @@
       <section class="facts" aria-labelledby="h-kisaca">
         <div class="wrap">
           <h2 id="h-kisaca" class="reveal">At a glance</h2>
+          <p class="lede definition reveal" style="--d: 60">
+            seowatcher is a free, MIT-licensed SEO app that shows Google Search
+            Console, Google Analytics 4, its own site crawler and PageSpeed
+            Insights in one panel. It installs on Windows 10 and 11 from a
+            single file and runs with Docker on Mac and Linux; your data stays
+            on your computer. Its GitHub repository is called seotracker.
+          </p>
           <dl class="reveal" style="--d: 100">
             <div class="row">
               <dt>Name</dt>
-              <dd>seowatcher (on GitHub and inside the app: seotracker)</dd>
+              <dd>seowatcher (GitHub repository: seotracker)</dd>
             </div>
             <div class="row">
               <dt>Price and license</dt>
@@ -3020,7 +3041,7 @@
             </div>
             <div class="row">
               <dt>Version</dt>
-              <dd>2.4.0, October 23, 2026</dd>
+              <dd>2.4.1, October 23, 2026</dd>
             </div>
             <div class="row">
               <dt>Size</dt>
@@ -3040,8 +3061,7 @@
               <dt>What it doesn't do</dt>
               <dd>
                 Search volume estimates, backlink counts, competitor rankings;
-                does not run in the cloud (coming soon: approximate demand from
-                impressions, and access from your home network)
+                does not run in the cloud
               </dd>
             </div>
             <div class="row">
@@ -3156,7 +3176,7 @@
             <a
               class="btn primary"
               data-magnet
-              href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.0/seowatcher-setup-2.4.0.exe"
+              href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.1/seowatcher-setup-2.4.1.exe"
               >Download for Windows
               <span class="arrow" aria-hidden="true">↓</span></a
             >
@@ -3198,10 +3218,7 @@
             ><a href="/en/docs/troubleshooting/">Troubleshooting</a
             ><a href="https://github.com/ucsahinn/seotracker/issues"
               >Report a problem</a
-            ><a
-              href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"
-              >Release notes</a
-            >
+            ><a href="/en/docs/release-notes/">Release notes</a>
             <nav class="langrow" aria-label="Language">
               <a href="/" lang="tr" hreflang="tr"
                 ><span class="flag"

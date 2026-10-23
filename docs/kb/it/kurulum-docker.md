@@ -77,14 +77,14 @@ Per ripristinare, nello stesso comando usare `tar xzf` al posto di `tar czf`. Il
 
 Nessuna impostazione è obbligatoria. Per cambiarne una, mettere un file `.env` nella cartella del progetto. Poi scrivere `docker compose up -d --force-recreate seotracker`.
 
-| Nome dell'impostazione                 | A cosa serve                                                                                                              |
-| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| PORT                                   | Numero di porta, predefinito 3001. Se cambia, cambiano anche gli indirizzi di reindirizzamento di Google                  |
-| ALLOWED_HOST                           | Nome visibile dall'esterno, se l'app sta dietro a un altro server. Se è vuoto, solo localhost                             |
-| AUTH_MODE                              | `local_noauth` (predefinito) oppure `cloudflare_access`                                                                   |
-| BETTER_AUTH_SECRET                     | Chiave di cifratura. Lasciarla vuota: l'app la genera. Se la si indica a mano, almeno 32 caratteri, e poi non cambiarla   |
-| GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET | Alternativa all'inserimento nella schermata Ayarlar (Impostazioni). Il valore inserito nella schermata ha la precedenza   |
-| PAGESPEED_API_KEY                      | Alternativa all'inserimento nella schermata Ayarlar                                                                       |
+| Nome dell'impostazione                 | A cosa serve                                                                                                             |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| PORT                                   | Numero di porta, predefinito 3001. Se cambia, cambiano anche gli indirizzi di reindirizzamento di Google                 |
+| ALLOWED_HOST                           | Nome visibile dall'esterno, se l'app sta dietro a un altro server. Se è vuoto, solo localhost                            |
+| AUTH_MODE                              | `local_noauth` (predefinito) oppure `cloudflare_access`                                                                  |
+| BETTER_AUTH_SECRET                     | Chiave di cifratura. Lasciarla vuota: l'app la genera. Se la si indica a mano, almeno 32 caratteri, e poi non cambiarla  |
+| GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET | Alternativa all'inserimento nella schermata Ayarlar (Impostazioni). Il valore inserito nella schermata ha la precedenza  |
+| PAGESPEED_API_KEY                      | Alternativa all'inserimento nella schermata Ayarlar                                                                      |
 | MCP_TOKEN                              | Se è vuoto, viene generato al primo avvio. Con `off` non viene chiesta la password. Qualsiasi altro valore è usato com'è |
 
 ## Verifica

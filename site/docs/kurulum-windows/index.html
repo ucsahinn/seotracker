@@ -43,17 +43,22 @@
     <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="seowatcher" />
+    <meta property="og:image:alt" content="seowatcher kılavuzu: kurulum, ekranlar ve sorun giderme" />
     <meta property="article:modified_time" content="2026-10-23" />
     <meta property="og:url" content="https://seowatcher.io/docs/kurulum-windows/" />
     <meta property="og:locale" content="tr_TR" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:locale:alternate" content="de_DE" />
+    <meta property="og:locale:alternate" content="fr_FR" />
+    <meta property="og:locale:alternate" content="it_IT" />
+    <meta property="og:locale:alternate" content="pt_BR" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Windows'a kurulum | seowatcher kılavuzu" />
     <meta name="twitter:description" content="Windows'a tek dosyayla kurarsınız, Docker ya da terminal gerekmez. Güncelleme, kaldırma, yedek alma ve adres numarasını değiştirme de aynı sayfada." />
     <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en","de","fr","it","pt"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/docs/kurulum-windows/#article","headline":"Windows'a kurulum","description":"Windows'a tek dosyayla kurarsınız, Docker ya da terminal gerekmez. Güncelleme, kaldırma, yedek alma ve adres numarasını değiştirme de aynı sayfada.","url":"https://seowatcher.io/docs/kurulum-windows/","inLanguage":"tr","dateModified":"2026-10-23","articleSection":"Başlangıç","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/docs/kurulum-windows/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/docs/kurulum-windows/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/"},{"@type":"ListItem","position":2,"name":"Kılavuz","item":"https://seowatcher.io/docs/"},{"@type":"ListItem","position":3,"name":"Windows'a kurulum","item":"https://seowatcher.io/docs/kurulum-windows/"}]}]}</script>
-    <script src="/assets/docs.js?v=2.4.0" defer></script>
+    <script src="/assets/docs.js?v=2.4.1" defer></script>
     <meta name="theme-color" content="#272c3b" />
     <style>
       @font-face {
@@ -765,6 +770,47 @@
       }
 
       /* Guide pass: callouts, pager, copy buttons, mobile sidebar, tables. */
+      /* Release notes: the summary as cards, the lead of every item in amber. */
+      article[data-page="surum-notlari"] li > strong:first-child {
+        color: var(--accent-2);
+      }
+      article[data-page="surum-notlari"] h2 {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      article[data-page="surum-notlari"] h2::before {
+        content: "";
+        width: 4px;
+        height: 0.9em;
+        border-radius: 999px;
+        background: var(--accent);
+        flex: none;
+      }
+      article[data-page="surum-notlari"] h2:first-of-type + ul {
+        list-style: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 12px;
+      }
+      article[data-page="surum-notlari"] h2:first-of-type + ul li {
+        margin: 0;
+        padding: 16px 18px;
+        border: 1px solid var(--hairline);
+        border-radius: 14px;
+        background: linear-gradient(var(--glass), var(--glass)), var(--bg);
+        line-height: 1.5;
+      }
+      article[data-page="surum-notlari"]
+        h2:first-of-type
+        + ul
+        li
+        > strong:first-child {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 1.05em;
+      }
       .callout {
         position: relative;
         padding: 12px 16px 12px 18px;
@@ -1070,15 +1116,15 @@
       <aside class="side" aria-label="Kılavuz">
         <details class="side-dd" open>
           <summary>Kılavuz</summary>
-          <p class="nav-group">Başlangıç</p><ul><li class="current" aria-current="page"><a href="/docs/kurulum-windows/">Windows'a kurulum</a></li><li><a href="/docs/kurulum-docker/">Docker ile kurulum</a></li><li><a href="/docs/google-baglantisi/">Google'a bağlanma</a></li><li><a href="/docs/pagespeed-anahtari/">PageSpeed anahtarı</a></li></ul><p class="nav-group">Ekranlar</p><ul><li><a href="/docs/projeler/">Projeler</a></li><li><a href="/docs/panel/">Panel</a></li><li><a href="/docs/arama-performansi/">Arama performansı</a></li><li><a href="/docs/siralama-takibi/">Sıralama takibi</a></li><li><a href="/docs/firsatlar/">Fırsatlar</a></li><li><a href="/docs/kayitli-kelimeler/">Kayıtlı kelimeler</a></li><li><a href="/docs/analytics/">Analytics</a></li><li><a href="/docs/site-denetimi/">Site denetimi</a></li><li><a href="/docs/dizin-durumu/">Dizin durumu</a></li><li><a href="/docs/raporlar/">Raporlar ve şablonlar</a></li><li><a href="/docs/proje-bilgisi/">Proje bilgisi</a></li><li><a href="/docs/ayarlar/">Ayarlar</a></li></ul><p class="nav-group">Başvuru</p><ul><li><a href="/docs/yardim/">Yardım</a></li><li><a href="/docs/denetim-kurallari/">Denetim kuralları</a></li><li><a href="/docs/ajan-kurulumu/">Ajan kurulumu</a></li><li><a href="/docs/sorun-giderme/">Sorun giderme</a></li></ul>
+          <p class="nav-group">Başlangıç</p><ul><li class="current" aria-current="page"><a href="/docs/kurulum-windows/">Windows'a kurulum</a></li><li><a href="/docs/kurulum-docker/">Docker ile kurulum</a></li><li><a href="/docs/google-baglantisi/">Google'a bağlanma</a></li><li><a href="/docs/pagespeed-anahtari/">PageSpeed anahtarı</a></li></ul><p class="nav-group">Ekranlar</p><ul><li><a href="/docs/projeler/">Projeler</a></li><li><a href="/docs/panel/">Panel</a></li><li><a href="/docs/arama-performansi/">Arama performansı</a></li><li><a href="/docs/siralama-takibi/">Sıralama takibi</a></li><li><a href="/docs/firsatlar/">Fırsatlar</a></li><li><a href="/docs/kayitli-kelimeler/">Kayıtlı kelimeler</a></li><li><a href="/docs/analytics/">Analytics</a></li><li><a href="/docs/site-denetimi/">Site denetimi</a></li><li><a href="/docs/dizin-durumu/">Dizin durumu</a></li><li><a href="/docs/raporlar/">Raporlar ve şablonlar</a></li><li><a href="/docs/proje-bilgisi/">Proje bilgisi</a></li><li><a href="/docs/ayarlar/">Ayarlar</a></li></ul><p class="nav-group">Başvuru</p><ul><li><a href="/docs/yardim/">Yardım</a></li><li><a href="/docs/denetim-kurallari/">Denetim kuralları</a></li><li><a href="/docs/ajan-kurulumu/">Ajan kurulumu</a></li><li><a href="/docs/sorun-giderme/">Sorun giderme</a></li><li><a href="/docs/surum-notlari/">Sürüm notları</a></li></ul>
         </details>
       </aside>
-      <article id="icerik">
+      <article id="icerik" data-page="kurulum-windows">
         <h1>Windows'a kurulum</h1><p class="lede">Windows'a tek dosyayla kurarsınız, Docker ya da terminal gerekmez. Güncelleme, kaldırma, yedek alma ve adres numarasını değiştirme de aynı sayfada.</p><p>Sonunda uygulama bilgisayarınızda kurulu ve tarayıcıda açık olacak. Kurulum iki dakika sürer. Yalnızca sizin kullanıcı hesabınıza kurulur, yönetici izni gerekmez. Visual C++ bileşeni eksikse bir kez izin sorulur.</p>
 <h2 id="gerekenler">Gerekenler</h2>
 <ul><li>Windows 10 ya da 11 (64 bit).</li><li>Yaklaşık 350 MB boş yer. Kurulum dosyası 81 MB, kurulu hali 290 MB.</li><li>Edge, Chrome ya da Firefox gibi bir tarayıcı.</li><li>Docker, Node ya da terminal (komut penceresi) gerekmez. Yönetici hakkı da gerekmez, yalnızca Visual C++ bileşeni eksikse bir kez sorulur.</li><li>Uygulamanın motoru Microsoft'un Visual C++ paketini ister. Bilgisayarda yoksa kurulum onu kendisi kurar ve bir kez yönetici izni sorar. Uygulama <code>%LOCALAPPDATA%\Programs\seowatcher</code> klasörüne kurulur.</li></ul>
 <h2 id="adimlar">Adımlar</h2>
-<h3 id="i-lk-kurulum">İlk kurulum</h3>
+<h3 id="ilk-kurulum">İlk kurulum</h3>
 <ol><li>GitHub sürüm sayfasından <strong>seowatcher-setup.exe</strong> dosyasını indirin. Sabit adres: <code>github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe</code></li><li>Dosyaya çift tıklayın.</li><li>Windows &quot;Windows bilgisayarınızı korudu&quot; derse <strong>Daha fazla bilgi</strong>, sonra <strong>Yine de çalıştır</strong> deyin. Dosya henüz imzalı değil, Windows yayıncıyı tanımıyor. Bu uyarı normaldir.</li><li>İsterseniz dosyanın SHA-256 özetini (dosyanın parmak izi) sürüm sayfasındaki <code>SHA256SUMS.txt</code> ile karşılaştırın.</li><li>Hoş geldiniz sayfasında <strong>Sonraki</strong> deyin.</li><li>&quot;Kim için kurulsun&quot; sorusunda <strong>Yalnızca ben</strong> seçeneğini seçin. Önerilen budur, kurulum yalnızca sizin hesabınıza yapılır. <strong>Tüm kullanıcılar</strong> seçeneği yönetici izni ister.</li><li>İki seçeneğe bakın: <strong>Windows açılınca seowatcher'ı başlat</strong> ve <strong>Masaüstüne kısayol ekle</strong>. İlki işaretli gelir. Arka planda başlamasını istemiyorsanız işareti kaldırın. Sonra <strong>Sonraki</strong> deyin.</li><li><strong>Kur</strong> deyin.</li><li>Son sayfada <strong>seowatcher'ı şimdi başlat</strong> kutusu var. İşaretli bırakın ve <strong>Bitti</strong> deyin. Uygulama açılır.</li><li>Bekleyin. İlk açılış 20-30 saniye sürer. Görev çubuğundaki simgenin yazısı sırayla &quot;Anahtarlar hazırlanıyor&quot;, &quot;Veritabanı güncelleniyor&quot;, &quot;Sunucu başlatılıyor&quot; olur. Simge görünmüyorsa görev çubuğundaki ^ okuna tıklayın. Hazır olunca tarayıcınız kendiliğinden açılır. Windows açılışında otomatik başladığında ise tarayıcı açılmaz, &quot;seowatcher hazır&quot; baloncuğu çıkar.</li><li>Tarayıcıda <code>http://127.0.0.1:3001</code> kendiliğinden açılır. Adresteki 127.0.0.1 bilgisayarınızın kendisidir, 3001 ise adres numarasıdır (port).</li></ol>
 <p>Sıradaki adım Google bağlantısı kılavuzu.</p>
 <h3 id="gorev-cubugu-menusu">Görev çubuğu menüsü</h3>
@@ -1139,10 +1185,7 @@
         <span
           ><a href="/">Ana sayfa</a> &nbsp;
           <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
-          <a
-            href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"
-            >Sürüm notları</a
-          ></span
+          <a href="/docs/surum-notlari/">Sürüm notları</a></span
         >
       </div>
     </footer>

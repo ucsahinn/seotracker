@@ -168,7 +168,7 @@ async function setProperty(input: {
     if (!grants.some((grant) => grant.accountId === input.accountId)) {
       throw new AppError(
         "NOT_FOUND",
-        "Bu Google hesabı seotracker hesabınıza bağlı değil.",
+        "Bu Google hesabı seowatcher hesabınıza bağlı değil.",
       );
     }
   }

@@ -2,51 +2,52 @@
 
 Her sürümün notu burada, en yenisi en üstte.
 
-## [2.4.0] — 2026-10-23
+## [2.4.1] — 2026-10-23
 
-Windows paketi olgunlaştı, site iki dilli oldu, uygulama ekranları baştan sona
-elden geçti. Bu sürüm 2.3.0'dan sonra arka arkaya çıkan on beş küçük düzeltme
-sürümünü tek sürümde toplar; o ara sürümler yayından kaldırıldı. Docker
-kurulumu değişmedi, güncellerken veriniz korunur.
+Windows'ta tek dosyayla kurulan, kendini güncelleyen ve takıldığında kendini
+onaran bir uygulama. Ekranlar sadeleşti, site altı dile çıktı. 2.3.0'dan
+sonraki on beş küçük sürüm burada tek sürümde toplandı. Docker kurulumu aynı,
+güncellerken veriniz korunur.
 
-### Windows paketi
+### Öne çıkanlar
 
-- **Temiz bilgisayarda açılış.** Uygulamanın motoru (workerd) Microsoft Visual C++ çalışma zamanını ister; olmayan bilgisayarda "Workers runtime failed to start" hatasıyla kapanıyordu. Kurulum dosyası paketi taşır ve eksikse bir kez yönetici izni isteyip kurar; motorun yanında DLL'lerin kendi kopyası da durur, sistemdeki paket eski ya da bozuk olsa bile açılır.
-- **Kendiliğinden güncelleme.** Görev çubuğu uygulaması açılıştan iki dakika sonra ve günde bir kez GitHub'a bakar; yeni sürümü indirir, SHA-256 ile doğrular ve sessizce kurar. Menüde her zaman duran tek **Güncelle** maddesi tıklayınca hemen kontrol eder, yeni sürüm varsa kurar, yoksa "Güncel" der, bağlantı yoksa bunu söyler. **Güncellemeleri kendiliğinden kur** menüden kapatılabilir.
-- **Kurulumu onar ve sorunu bildir.** Menüdeki **Kurulumu onar** geçici dosyaları siler, paketi kontrol eder ve uygulamayı yeniden açar. **Sorunu bildir (GitHub)** hazır bir Türkçe sorun kaydı açar; **Tanı bilgisini kopyala** sistem bilgisini ve günlüklerin son satırlarını panoya alır. İkisinde de kullanıcı adı, site adları, e-postalar, Search Console ve Analytics mülk kimlikleri ve anahtar görünümlü değerler maskelenir.
-- **Çökme tanısı.** Açılışta motor küçük bir worker ile denenir; çökerse simge sebebi söyler. Windows olay günlüğündeki hatalı modül, CPU özellikleri, çalışma zamanı DLL sürümleri ve PATH üzerindeki eski kopyalar tanı bilgisine eklenir.
-- **Kurulum sihirbazı.** Logolu karşılama ve bitiş sayfaları, her sayfada kurulan sürüm, yönetici izninin ne zaman sorulduğu ve kaldırmanın veriyi silmediği notu. Kurulum dosyasının adı ve Özellikler → Ayrıntılar sekmesi sürümü taşır (`seowatcher-setup-2.4.0.exe`); sabit adlı kopya sürüm sayfasında durur.
-- **Uyarılar yol gösterir, yol sızdırmaz.** Başlatıcının hata durumları klasör yolu yerine bir sonraki adımı söyler; güncelleme başarısız olunca ne yapılacağı yazar, doğrulanamayan dosya kurulmaz. Tepsi menüsü "Windows açılınca başlat" der, parola her yerde aynı adla anılır.
-- **winget.** Windows Paket Yöneticisi bildirimleri hazır (`packaging/winget`); gönderim ayrı bir adımdır.
+- **Her bilgisayarda açılır.** Eksik Windows bileşeni kurulumla birlikte gelir; temiz bir bilgisayarda da ilk seferde çalışır.
+- **Kendini günceller.** Yeni sürümü indirir, doğrular ve sessizce kurar. Görev çubuğundaki **Güncelle** her zaman bir tık uzakta.
+- **Daha sade ekranlar.** Her ekranın boş hali tek bir sonraki adımı gösterir; menü ve metinler doğal Türkçe.
+- **Yeni yüz.** Siyah zemin, turuncu vurgu ve göz logosu; uygulama ve site aynı görünür, site altı dilde.
+
+### Windows
+
+- **Temiz bilgisayarda açılış.** Uygulamanın motoru Microsoft Visual C++ çalışma zamanını ister. Kurulum dosyası bunu taşır, eksikse bir kez izin isteyip kurar; motorun yanında kendi kopyası da durur.
+- **Güncelle.** Görev çubuğu menüsünde her zaman durur. Tıklayınca hemen bakar; yeni sürüm varsa kurar, yoksa "Güncel" der. Otomatik kurulum menüden kapatılabilir.
+- **Kurulumu onar.** Geçici dosyaları siler, paketi kontrol eder ve uygulamayı yeniden açar.
+- **Sorunu bildir.** Hazır bir sorun kaydı açar. Tanı bilgisinde kullanıcı adı, site adları, e-postalar ve kimlikler maskelenir.
+- **Kurulum dosyası sürümünü taşır.** Dosya adı `seowatcher-setup-2.4.0.exe`; sihirbazın her sayfası kurulan sürümü yazar ve kaldırmanın verinizi silmediğini söyler.
 
 ### Uygulama
 
-- **Daha sade ekranlar.** Yan menüdeki sahte hesap satırı gitti; Yardım ve Ayarlar menünün altında. Menü grupları "Arama ve site" ve "Ajan". Panel her işi bir kez ister; her ekranın boş hali tek bir sonraki adımı söyler (Search Console'u bağla, Analytics'i bağla, denetimi başlat).
-- **Ajan kurulumu tek kart.** Claude Code / Codex / Diğer seçimi ve tek "Kurulum komutunu kopyala" düğmesi; sıfırdan kurulum ve beceri güncelleme ikincil. Kopyalama düğmeleri bağlantı durumu okunana kadar kapalı.
-- **Ayarlar.** Google bağlantısı üç adımlı liste; alanlar ve devre dışı Kaydet okunur; sürüm notları liste olarak. Hakkında, Windows'ta güncellemenin görev çubuğu uygulamasında yapıldığını söyler.
-- **Doğal Türkçe.** İki yüzden fazla ekran metni mekanik ifadelerden arındırıldı; terimler tek: Google erişim anahtarı, parola (token), adres numarası (port), filtre, ortanca, Analytics mülkü. "Entegrasyonlar" sekmesi "Bağlantılar" oldu.
-- **Her yönerge iki kurulumu da tanır.** Uygulama kurulum türünü (`windows` ya da `docker`) `/api/health` üzerinden bildirir; Yardım, Ajan kurulumu ve ajan istemleri Windows'ta görev çubuğu menüsünü ve `%LOCALAPPDATA%\seowatcher` klasörünü, Docker'da `docker compose` komutlarını anlatır. Tür bilinene kadar nötr metin gösterilir.
-- **Siteye bağlantı.** Yardım'daki hızlı işlemlerde ve Ayarlar → Hakkında'da **seowatcher.io** düğmesi; "Kılavuzu aç" ve sık sorunlardaki bağlantılar sitedeki resimli kılavuza gider.
+- **Siteyle aynı görünüm.** Koyu tema varsayılan; açık tema sıcak gri ve yanık turuncu. Uygulamanın adı seowatcher, logosu göz.
+- **Yan menü.** Sahte hesap satırı kaldırıldı; gruplar "Arama ve site" ve "Ajan", Yardım ve Ayarlar altta.
+- **Ajan kurulumu.** Claude Code, Codex ya da diğerleri için tek kart ve tek "Kurulum komutunu kopyala" düğmesi.
+- **Ayarlar.** Google bağlantısı üç adımda anlatılır; Hakkında'dan siteye ve kılavuza tek tıkla gidilir.
+- **Doğal Türkçe.** İki yüzden fazla ekran metni yeniden yazıldı. Terimler tek: Google erişim anahtarı, parola, adres numarası (port).
+- **İki kurulumu da tanır.** Yardım ve ajan yönergeleri Windows'ta görev çubuğunu, Docker'da `docker compose` komutlarını anlatır.
 
 ### Site ve kılavuz
 
-- **İki dilli site.** `seowatcher.io/en/` ana sayfası ve `/en/docs/` altında 20 kılavuz sayfası; her sayfa diğer dile `hreflang` ve dil düğmesiyle bağlı, sitemap iki dili birlikte listeler, `llms.txt` iki dilde. Ana sayfanın İngilizcesi tek bir çeviri tablosundan (`scripts/site-home.en.json`) üretilir; karşılığı olmayan Türkçe cümle derlemeyi durdurur. 404 sayfası iki dilli.
-- **Sade Türkçe kılavuz.** 20 sayfa son kullanıcı için yeniden yazıldı: kısa cümleler, her teknik terim ilk geçtiği yerde açıklanır, sihirbazın gerçek düğme adları (**Yalnızca ben**, **Bitti**), hizmet hesabı yolu adım adım, "Belirti / Sebep / Çözüm" kutuları. Yeni sayfalar: "Projeler ve proje ayarları", "Yardım ekranı".
-- **Kılavuz ekranı.** Gruplu sol menü, seçili sayfada vurgu çizgisi, telefonda katlanan menü, kaydırdıkça izleyen içindekiler, kod bloklarında kopyala düğmesi, önceki/sonraki bağlantıları.
-- **Yeni görünüm ve logo.** Siyah zemin, tek turuncu vurgu; logo turuncu kapaklı bir göz: yuvarlak iris, dikey yarık gözbebeği ve parlama noktası (her şeyi gören göz), site, sekme simgesi, Windows simgesi, kurulum sihirbazı ve paylaşım görseli aynı işareti kullanır.
-- **Ana sayfa.** Canlı indirme sayısı, logo bandının altında "Verinizi Google'dan okur, kimseye göndermez" akışı, hareketi durduran düğme. Kılavuz sayfalarında TechArticle ve BreadcrumbList yapısal verisi, sosyal paylaşım etiketleri.
+- **Altı dil.** 20 sayfalık kılavuz ve ana sayfa her dilde; bayraklı dil menüsü, her dil için ayrı arama motoru işaretleri.
+- **Sade anlatım.** Kısa cümleler, her teknik terim ilk geçtiği yerde açıklanır; sorun giderme "Belirti, Sebep, Çözüm" kutularıyla.
+- **Okuma ekranı.** Gruplu sol menü, kaydırdıkça izleyen içindekiler, kod bloklarında kopyala düğmesi.
 
-### Yayın hattı
+### Güvenlik ve yayın
 
-- Derleme işi yalnızca okur; yayın işi ayrı ve yazma yetkili. Eylemler commit kimliğine sabitlendi. Etiket `x.y.z` biçimi ve package.json ile eşleşme açısından denetlenir; yayın önce taslak oluşturulup dosyalar yüklendikten sonra yayımlanır. Smoke test parolasız `/mcp` çağrısının 401 aldığını ve parolanın günlüklerde geçmediğini doğrular.
-- Kod imzalama adımı hazır (SignPath); gizli anahtarlar eklenince devreye girer. `node scripts/bump-version.mjs x.y.z` sürümü paket, README, ana sayfa ve sürüm notu taslağında tek seferde taşır.
+- **Gizli değer sızmaz.** Yayın hattı parolasız bağlantının reddedildiğini ve parolanın hiçbir günlükte geçmediğini her sürümde doğrular.
+- **Kod imzalama hazır.** SignPath adımı eklendi; anahtarlar tanımlanınca kurulum dosyası imzalı çıkar ve Windows uyarısı kalkar.
 
 ### Düzeltmeler
 
-- Sitedeki indirme bağlantıları eski bir sürüm etiketinin altında yeni dosyayı arıyordu; bağlantı artık etiketle birlikte güncellenir.
-- Codex kurulum istemindeki satır sonu kaçışı bozuktu; Git Bash yolunda parola sonundaki satır sonu silinmiyordu.
-- Sayaç sonundaki sayı ve İngilizce "months" eki doğru biçimlenir; kılavuzda kısa sayfalarda son başlık yanlışlıkla işaretlenmez.
-- Site başlıklarındaki yinelenen önbellek kuralları kaldırıldı; README rozeti sürümle birlikte güncellenir.
+- Sitedeki indirme bağlantısı yanlış sürüm etiketini gösteriyordu.
+- Codex kurulum komutu Git Bash'te parolanın sonundaki satır sonunu silmiyordu.
 - Site denetimindeki "Sorunlar ne kadar ciddi?" kartında sayılar kartın dışına taşıyordu.
 
 ## [2.3.0] — 2026-10-22

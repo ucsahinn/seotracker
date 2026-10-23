@@ -39,6 +39,7 @@ export const enSlugs = {
   "denetim-kurallari": "audit-rules",
   "ajan-kurulumu": "agent-setup",
   "sorun-giderme": "troubleshooting",
+  "surum-notlari": "release-notes",
 };
 
 /** Navigation groups of the guide, in reading order, with their titles per language. */
@@ -74,7 +75,13 @@ export const groups = [
   {
     key: "Başvuru",
     title: { tr: "Başvuru", en: "Reference" },
-    slugs: ["yardim", "denetim-kurallari", "ajan-kurulumu", "sorun-giderme"],
+    slugs: [
+      "yardim",
+      "denetim-kurallari",
+      "ajan-kurulumu",
+      "sorun-giderme",
+      "surum-notlari",
+    ],
   },
 ];
 

@@ -61,16 +61,23 @@ function parseFrontmatter(text) {
 }
 
 function slugify(s) {
-  return s
-    .toLowerCase()
-    .replace(/ı/g, "i")
-    .replace(/ğ/g, "g")
-    .replace(/ü/g, "u")
-    .replace(/ş/g, "s")
-    .replace(/ö/g, "o")
-    .replace(/ç/g, "c")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
+  return (
+    s
+      .toLowerCase()
+      // é -> e, ä -> a: strip combining marks so French, German, Italian and
+      // Portuguese headings keep whole words in their anchors.
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/ß/g, "ss")
+      .replace(/ı/g, "i")
+      .replace(/ğ/g, "g")
+      .replace(/ü/g, "u")
+      .replace(/ş/g, "s")
+      .replace(/ö/g, "o")
+      .replace(/ç/g, "c")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "")
+  );
 }
 
 function inline(s) {
@@ -420,6 +427,21 @@ function page(
     "{{lang}}": locale.lang,
     "{{version}}": pkg.version,
     "{{ogLocale}}": locale.ogLocale,
+    "{{ogAlternates}}": editionsOnDisk
+      .filter((l) => l.lang !== locale.lang)
+      .map(
+        (l) =>
+          `<meta property="og:locale:alternate" content="${l.ogLocale}" />`,
+      )
+      .join("\n    "),
+    "{{ogImage}}":
+      locale.lang === "tr"
+        ? `${siteUrl}/assets/og.png`
+        : `${siteUrl}/assets/og-${locale.lang}.png`,
+    "{{ogImageAlt}}": escapeHtml(locale.t.guideTitle),
+    "{{ogType}}": slug ? "article" : "website",
+    "{{pageSlug}}": slug || "index",
+    "{{releaseNotes}}": docUrl(locale, "surum-notlari"),
     "{{seotitle}}": escapeHtml(seoTitle(locale, { title, slug, screen })),
     "{{title}}": escapeHtml(title),
     "{{description}}": escapeHtml(description),
@@ -636,7 +658,12 @@ function main() {
     { lang: "x-default", href: `${siteUrl}/` },
   ];
   const entries = homes.map((l) =>
-    entry(`${siteUrl}${l.base}/`, homeDate, homeAlternates),
+    entry(
+      `${siteUrl}${l.base}/`,
+      gitDate(path.join("site", l.lang === "tr" ? "" : l.lang, "index.html")) ||
+        homeDate,
+      homeAlternates,
+    ),
   );
   for (const u of urls) {
     const langs = Object.keys(u.lastmod);
@@ -679,6 +706,23 @@ function main() {
       })
       .filter(Boolean)
       .join("\n\n");
+  // One sentence per edition, taken from that edition's own meta description.
+  const homeSummary = (l) => {
+    const key =
+      "Search Console, Analytics 4 ve site denetimi tek uygulamada. Ücretsiz ve açık kaynak; Windows'a kurulur, verileriniz bilgisayarınızda kalır.";
+    if (l.lang === "tr") return key;
+    try {
+      const table = JSON.parse(
+        fs.readFileSync(
+          path.join(root, "scripts", `site-home.${l.lang}.json`),
+          "utf8",
+        ),
+      );
+      return table[key] || key;
+    } catch {
+      return key;
+    }
+  };
   const llms = `# seowatcher
 
 > seowatcher (GitHub ve uygulama içi adı: seotracker), Google Search Console, Google Analytics 4, kendi site tarayıcısı ve PageSpeed Insights verisini tek panelde toplayan ücretsiz, açık kaynaklı (MIT) bir SEO uygulamasıdır. Windows 10/11 (64 bit) için tek kurulum dosyası vardır; Mac ve Linux'ta Docker ile çalışır. Tek kullanıcılıdır, yalnızca kullanıcının kendi bilgisayarından erişilir, veri o bilgisayarda kalır. Abonelik ve hesap yoktur.
@@ -687,11 +731,13 @@ function main() {
 Hızlı bilgiler: sürüm ${pkg.version}, 95 denetim kuralı, yapay zekâ asistanları için 33 MCP aracı ve 6 hazır görev, fiyat 0, lisans MIT. Arama hacmi tahmini, backlink sayımı ve rakip sıralaması yoktur. Kurulum dosyası 81 MB, kurulu hali 290 MB; Visual C++ çalışma zamanı pakete dahildir.
 Quick facts: version ${pkg.version}, 95 audit rules, 33 MCP tools and 6 ready-made tasks for AI assistants, price 0, MIT license. No search-volume estimates, backlink counts or competitor rankings. Installer 81 MB, installed 290 MB; the Visual C++ runtime is bundled.
 
-## Ana bağlantılar
-- [Ana sayfa (Türkçe)](${siteUrl}/): ürün tanıtımı, ekran görüntüleri, kurulum, sık sorulanlar
-- [Home page (English)](${siteUrl}/en/): product overview, screenshots, installation, FAQ
-- [Kılavuz (Türkçe)](${siteUrl}/docs/): kurulumdan ilk rapora kadar her adım ve her ekran
-- [Guide (English)](${siteUrl}/en/docs/): every step and every screen, from installation to the first report
+## Ana bağlantılar / Main links
+${homes
+  .map(
+    (l) =>
+      `- [seowatcher (${l.name})](${siteUrl}${l.base}/): ${homeSummary(l)}\n- [${l.t.guide} (${l.name})](${absolute(docUrl(l, ""))}): ${l.t.guideDescription}`,
+  )
+  .join("\n")}
 - [Windows kurulum dosyası / Windows installer](https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe): SHA-256 özeti sürüm sayfasında
 - [Sürüm sayfası / Releases](https://github.com/ucsahinn/seotracker/releases/latest)
 

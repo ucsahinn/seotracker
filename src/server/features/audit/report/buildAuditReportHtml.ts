@@ -195,7 +195,7 @@ function page(
 <main>
   ${main}
   <footer>
-    <p>seotracker ile üretildi. Bu dosya kendi kendine yeter: açmak için
+    <p>seowatcher ile üretildi. Bu dosya kendi kendine yeter: açmak için
     internet bağlantısı gerekmez. PDF için tarayıcıdan Yazdır seçeneğini kullanın.</p>
   </footer>
 </main>

@@ -43,17 +43,22 @@
     <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="seowatcher" />
+    <meta property="og:image:alt" content="seowatcher kılavuzu: kurulum, ekranlar ve sorun giderme" />
     <meta property="article:modified_time" content="2026-10-23" />
     <meta property="og:url" content="https://seowatcher.io/docs/sorun-giderme/" />
     <meta property="og:locale" content="tr_TR" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:locale:alternate" content="de_DE" />
+    <meta property="og:locale:alternate" content="fr_FR" />
+    <meta property="og:locale:alternate" content="it_IT" />
+    <meta property="og:locale:alternate" content="pt_BR" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Sorun giderme | seowatcher kılavuzu" />
     <meta name="twitter:description" content="En sık görülen sorunları belirti, sebep ve çözümle anlatır. Dolu adres numarası, Windows uyarısı, Google hataları, kota, takılan denetim, boş grafik ve asistan 401 burada." />
     <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en","de","fr","it","pt"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/docs/sorun-giderme/#article","headline":"Sorun giderme","description":"En sık görülen sorunları belirti, sebep ve çözümle anlatır. Dolu adres numarası, Windows uyarısı, Google hataları, kota, takılan denetim, boş grafik ve asistan 401 burada.","url":"https://seowatcher.io/docs/sorun-giderme/","inLanguage":"tr","dateModified":"2026-10-23","articleSection":"Başvuru","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/docs/sorun-giderme/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/docs/sorun-giderme/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/"},{"@type":"ListItem","position":2,"name":"Kılavuz","item":"https://seowatcher.io/docs/"},{"@type":"ListItem","position":3,"name":"Sorun giderme","item":"https://seowatcher.io/docs/sorun-giderme/"}]}]}</script>
-    <script src="/assets/docs.js?v=2.4.0" defer></script>
+    <script src="/assets/docs.js?v=2.4.1" defer></script>
     <meta name="theme-color" content="#272c3b" />
     <style>
       @font-face {
@@ -765,6 +770,47 @@
       }
 
       /* Guide pass: callouts, pager, copy buttons, mobile sidebar, tables. */
+      /* Release notes: the summary as cards, the lead of every item in amber. */
+      article[data-page="surum-notlari"] li > strong:first-child {
+        color: var(--accent-2);
+      }
+      article[data-page="surum-notlari"] h2 {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      article[data-page="surum-notlari"] h2::before {
+        content: "";
+        width: 4px;
+        height: 0.9em;
+        border-radius: 999px;
+        background: var(--accent);
+        flex: none;
+      }
+      article[data-page="surum-notlari"] h2:first-of-type + ul {
+        list-style: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 12px;
+      }
+      article[data-page="surum-notlari"] h2:first-of-type + ul li {
+        margin: 0;
+        padding: 16px 18px;
+        border: 1px solid var(--hairline);
+        border-radius: 14px;
+        background: linear-gradient(var(--glass), var(--glass)), var(--bg);
+        line-height: 1.5;
+      }
+      article[data-page="surum-notlari"]
+        h2:first-of-type
+        + ul
+        li
+        > strong:first-child {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 1.05em;
+      }
       .callout {
         position: relative;
         padding: 12px 16px 12px 18px;
@@ -1070,10 +1116,10 @@
       <aside class="side" aria-label="Kılavuz">
         <details class="side-dd" open>
           <summary>Kılavuz</summary>
-          <p class="nav-group">Başlangıç</p><ul><li><a href="/docs/kurulum-windows/">Windows'a kurulum</a></li><li><a href="/docs/kurulum-docker/">Docker ile kurulum</a></li><li><a href="/docs/google-baglantisi/">Google'a bağlanma</a></li><li><a href="/docs/pagespeed-anahtari/">PageSpeed anahtarı</a></li></ul><p class="nav-group">Ekranlar</p><ul><li><a href="/docs/projeler/">Projeler</a></li><li><a href="/docs/panel/">Panel</a></li><li><a href="/docs/arama-performansi/">Arama performansı</a></li><li><a href="/docs/siralama-takibi/">Sıralama takibi</a></li><li><a href="/docs/firsatlar/">Fırsatlar</a></li><li><a href="/docs/kayitli-kelimeler/">Kayıtlı kelimeler</a></li><li><a href="/docs/analytics/">Analytics</a></li><li><a href="/docs/site-denetimi/">Site denetimi</a></li><li><a href="/docs/dizin-durumu/">Dizin durumu</a></li><li><a href="/docs/raporlar/">Raporlar ve şablonlar</a></li><li><a href="/docs/proje-bilgisi/">Proje bilgisi</a></li><li><a href="/docs/ayarlar/">Ayarlar</a></li></ul><p class="nav-group">Başvuru</p><ul><li><a href="/docs/yardim/">Yardım</a></li><li><a href="/docs/denetim-kurallari/">Denetim kuralları</a></li><li><a href="/docs/ajan-kurulumu/">Ajan kurulumu</a></li><li class="current" aria-current="page"><a href="/docs/sorun-giderme/">Sorun giderme</a></li></ul>
+          <p class="nav-group">Başlangıç</p><ul><li><a href="/docs/kurulum-windows/">Windows'a kurulum</a></li><li><a href="/docs/kurulum-docker/">Docker ile kurulum</a></li><li><a href="/docs/google-baglantisi/">Google'a bağlanma</a></li><li><a href="/docs/pagespeed-anahtari/">PageSpeed anahtarı</a></li></ul><p class="nav-group">Ekranlar</p><ul><li><a href="/docs/projeler/">Projeler</a></li><li><a href="/docs/panel/">Panel</a></li><li><a href="/docs/arama-performansi/">Arama performansı</a></li><li><a href="/docs/siralama-takibi/">Sıralama takibi</a></li><li><a href="/docs/firsatlar/">Fırsatlar</a></li><li><a href="/docs/kayitli-kelimeler/">Kayıtlı kelimeler</a></li><li><a href="/docs/analytics/">Analytics</a></li><li><a href="/docs/site-denetimi/">Site denetimi</a></li><li><a href="/docs/dizin-durumu/">Dizin durumu</a></li><li><a href="/docs/raporlar/">Raporlar ve şablonlar</a></li><li><a href="/docs/proje-bilgisi/">Proje bilgisi</a></li><li><a href="/docs/ayarlar/">Ayarlar</a></li></ul><p class="nav-group">Başvuru</p><ul><li><a href="/docs/yardim/">Yardım</a></li><li><a href="/docs/denetim-kurallari/">Denetim kuralları</a></li><li><a href="/docs/ajan-kurulumu/">Ajan kurulumu</a></li><li class="current" aria-current="page"><a href="/docs/sorun-giderme/">Sorun giderme</a></li><li><a href="/docs/surum-notlari/">Sürüm notları</a></li></ul>
         </details>
       </aside>
-      <article id="icerik">
+      <article id="icerik" data-page="sorun-giderme">
         <h1>Sorun giderme</h1><p class="lede">En sık görülen sorunları belirti, sebep ve çözümle anlatır. Dolu adres numarası, Windows uyarısı, Google hataları, kota, takılan denetim, boş grafik ve asistan 401 burada.</p><p>Bir şey çalışmıyorsa önce uygulamada <strong>Yardım</strong> ekranındaki &quot;Kurulumunuzun durumu&quot; kartına bakın. Kart giriş ve erişimi, Google girişini, PageSpeed anahtarını ve veritabanını kontrol eder. &quot;N şey dikkat istiyor&quot; diyorsa yanındaki düğme sizi doğru ayara götürür. Aşağıdaki sorunlar en sık görülenden en nadire doğru sıralı.</p>
 <h2 id="sayfa-acilmiyor">Sayfa açılmıyor</h2>
 <p class="callout callout-belirti"><strong>Belirti:</strong> Tarayıcı &quot;bağlantı reddedildi&quot; diyor.</p>
@@ -1157,7 +1203,7 @@
 <p>Sorun bildirirken <strong>Yardım</strong> ekranındaki <strong>Tanılama paketi indir</strong> düğmesine basın. Dosyada sürüm, kurulum kontrolleri ve son 25 denetim var, hiçbir sır yok. Dosyayı GitHub'daki sorun kaydına ekleyin.</p>
 <h2 id="baslatici-uyarilari">Başlatıcı uyarıları</h2>
 <p>Görev çubuğu simgesinde çıkan uyarılar ve ne yapacağınız:</p>
-<ul><li><strong>&quot;Sunucu 120 saniyede yanıt vermedi&quot;.</strong> Menüden <strong>Yeniden başlat</strong> deyin. Olmazsa <strong>Günlükleri aç</strong> deyip <code>server.log</code> dosyasının son satırlarına bakın.</li><li><strong>&quot;Kurulum eksik&quot;.</strong> Kurulum dosyasını yeniden çalıştırın.</li><li><strong>&quot;Güncelleme yapılamadı&quot;.</strong> İnternet bağlantınızı kontrol edin ve menüden <strong>Güncelle</strong> ile tekrar deneyin. Kurulu sürüm çalışmaya devam eder.</li><li><strong>&quot;Windows bileşeni kurulamadı&quot;.</strong> Menüden <strong>Eksik Windows bileşenini kur</strong> deyin.</li></ul> <nav class="pager" aria-label="Önceki ve sonraki sayfa"><a class="pager-prev" rel="prev" href="/docs/ajan-kurulumu/"><span>Önceki</span><strong>Ajan kurulumu</strong></a><span class="pager-next empty"></span></nav>
+<ul><li><strong>&quot;Sunucu 120 saniyede yanıt vermedi&quot;.</strong> Menüden <strong>Yeniden başlat</strong> deyin. Olmazsa <strong>Günlükleri aç</strong> deyip <code>server.log</code> dosyasının son satırlarına bakın.</li><li><strong>&quot;Kurulum eksik&quot;.</strong> Kurulum dosyasını yeniden çalıştırın.</li><li><strong>&quot;Güncelleme yapılamadı&quot;.</strong> İnternet bağlantınızı kontrol edin ve menüden <strong>Güncelle</strong> ile tekrar deneyin. Kurulu sürüm çalışmaya devam eder.</li><li><strong>&quot;Windows bileşeni kurulamadı&quot;.</strong> Menüden <strong>Eksik Windows bileşenini kur</strong> deyin.</li></ul> <nav class="pager" aria-label="Önceki ve sonraki sayfa"><a class="pager-prev" rel="prev" href="/docs/ajan-kurulumu/"><span>Önceki</span><strong>Ajan kurulumu</strong></a><a class="pager-next" rel="next" href="/docs/surum-notlari/"><span>Sonraki</span><strong>Sürüm notları</strong></a></nav>
         <p class="meta">
           Son güncelleme: 23 Ekim 2026. Bir hata görürseniz
           <a href="https://github.com/ucsahinn/seotracker/issues"
@@ -1173,10 +1219,7 @@
         <span
           ><a href="/">Ana sayfa</a> &nbsp;
           <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
-          <a
-            href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"
-            >Sürüm notları</a
-          ></span
+          <a href="/docs/surum-notlari/">Sürüm notları</a></span
         >
       </div>
     </footer>

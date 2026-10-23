@@ -5,6 +5,7 @@ import { CopyButton } from "@/client/components/CopyButton";
 import {
   CHANGELOG_ENTRIES,
   type ChangelogEntry,
+  type ChangelogItem,
 } from "@/client/features/settings/changelog";
 
 /*
@@ -119,45 +120,85 @@ function ReleaseNotes({
       {open ? (
         <div className="space-y-4 px-4 pb-4 pl-11">
           {entry.intro ? (
-            <p className="max-w-prose text-sm leading-relaxed">
+            <p className="max-w-prose text-[15px] leading-relaxed text-base-content">
               <InlineText text={entry.intro} />
             </p>
           ) : null}
-          {entry.sections.map((section) => (
-            <div key={section.heading} className="space-y-1.5">
-              <h3 className="text-sm font-medium text-muted">
-                {section.heading}
-              </h3>
-              <ul className="list-disc space-y-2 pl-5 marker:text-subtle">
-                {section.items.map((item, index) =>
-                  item.code ? (
-                    <li key={index} className="max-w-prose list-none">
-                      <div className="flex items-start justify-between gap-2 rounded-field border border-[var(--hairline)] bg-base-200 px-3 py-2">
-                        <pre className="min-w-0 overflow-x-auto whitespace-pre-wrap break-all text-xs">
-                          <code>{item.text}</code>
-                        </pre>
-                        <CopyButton
-                          iconOnly
-                          value={item.text}
-                          label="Komutu kopyala"
-                          successMessage="Komut kopyalandı"
-                        />
-                      </div>
-                    </li>
-                  ) : (
-                    <li
-                      key={index}
-                      className="max-w-prose text-sm leading-relaxed"
-                    >
-                      <InlineText text={item.text} />
-                    </li>
-                  ),
-                )}
-              </ul>
-            </div>
-          ))}
+          {entry.sections.map((section) =>
+            section.heading === HIGHLIGHTS ? (
+              <Highlights key={section.heading} items={section.items} />
+            ) : (
+              <div key={section.heading} className="space-y-2">
+                <h3 className="flex items-center gap-2 text-sm font-semibold">
+                  <span
+                    className="h-3.5 w-1 rounded-full bg-accent"
+                    aria-hidden
+                  />
+                  {section.heading}
+                </h3>
+                <ul className="list-disc space-y-2 pl-5 text-muted marker:text-subtle">
+                  {section.items.map((item, index) =>
+                    item.code ? (
+                      <li key={index} className="max-w-prose list-none">
+                        <div className="flex items-start justify-between gap-2 rounded-field border border-[var(--hairline)] bg-base-200 px-3 py-2">
+                          <pre className="min-w-0 overflow-x-auto whitespace-pre-wrap break-all text-xs">
+                            <code>{item.text}</code>
+                          </pre>
+                          <CopyButton
+                            iconOnly
+                            value={item.text}
+                            label="Komutu kopyala"
+                            successMessage="Komut kopyalandı"
+                          />
+                        </div>
+                      </li>
+                    ) : (
+                      <li
+                        key={index}
+                        className="max-w-prose text-sm leading-relaxed"
+                      >
+                        <InlineText text={item.text} />
+                      </li>
+                    ),
+                  )}
+                </ul>
+              </div>
+            ),
+          )}
         </div>
       ) : null}
     </div>
+  );
+}
+
+/** The heading the newest note uses for its short summary. */
+const HIGHLIGHTS = "Öne çıkanlar";
+
+/**
+ * The summary of a release as a row of small cards: the bold lead of each
+ * bullet is the card's title, the sentence after it the card's text.
+ */
+function Highlights({ items }: { items: ChangelogItem[] }) {
+  return (
+    <ul className="grid gap-2 sm:grid-cols-2">
+      {items.map((item, index) => {
+        const lead = /^\*\*([^*]+)\*\*\s*(.*)$/.exec(item.text);
+        return (
+          <li
+            key={index}
+            className="rounded-field border border-[var(--hairline)] bg-base-200 px-3.5 py-3"
+          >
+            <p className="text-sm font-semibold text-base-content">
+              {lead ? lead[1] : <InlineText text={item.text} />}
+            </p>
+            {lead && lead[2] ? (
+              <p className="mt-1 text-sm leading-relaxed text-muted">
+                <InlineText text={lead[2]} />
+              </p>
+            ) : null}
+          </li>
+        );
+      })}
+    </ul>
   );
 }

@@ -73,54 +73,54 @@ La scheda **Beceriler** (Skill) elenca i sei modelli di attività pronti. Dire a
 
 In totale ci sono 33 strumenti. La colonna "Scrive" indica quelli che modificano i dati dell'app, la colonna "Quota" quelli che consumano il limite giornaliero di Google. Gli strumenti che scrivono non dovrebbero essere richiamati senza l'approvazione dell'utente. I modelli ben configurati lo chiedono, ma l'app no.
 
-| Strumento | Che cosa fa | Scrive | Quota |
-| --- | --- | --- | --- |
-| `whoami` | Dice di quale installazione e di quale utente si tratta. | | |
-| `get_diagnostics` | Fornisce la versione, i controlli dell'installazione, il numero di righe delle tabelle, gli ultimi 25 controlli e i contatori delle quote. | | |
-| `list_projects` | Elenca i progetti. Ogni strumento richiede un numero di progetto. | | |
-| `create_project` | Crea un nuovo progetto. | Sì | |
-| `get_project_context` | Legge la schermata Informazioni sul progetto. | | |
-| `update_project_context` | Modifica le informazioni sul progetto e lascia una nota nel registro delle ricerche. | Sì | |
-| `get_search_console_performance` | Fornisce clic, impressioni, percentuale e posizione per query, pagina, paese, dispositivo o data. | | |
-| `get_search_opportunities` | Ricava l'elenco delle opportunità da Search Console e Analytics. | | |
-| `get_cannibalization` | Mostra le pagine che competono tra loro per la stessa ricerca. | | |
-| `get_ranking_history` | Fornisce l'archivio delle posizioni sul computer, non conserva oltre i 16 mesi. | | |
-| `get_index_coverage` | Fornisce le risposte di Google sull'indice già registrate, senza chiedere a Google. | | |
-| `inspect_urls` | Chiede a Google lo stato delle pagine, 10 indirizzi per chiamata. | Sì | 2.000 al giorno, per proprietà |
-| `get_sitemaps` | Mostra lo stato della mappa del sito in Search Console. | | |
-| `run_site_audit` | Avvia il controllo del sito. | Sì | PageSpeed, se la misurazione della velocità è attiva |
-| `get_audit_status` | Dice a che punto è il controllo; può segnalare come fallito un controllo bloccato. | | |
-| `get_audit_issues` | Fornisce i problemi trovati con i passaggi di correzione. | | |
-| `get_audit_pages` | Elenca le pagine scansionate. | | |
-| `get_google_analytics_organic_overview` | Fornisce il riepilogo delle visite dalla ricerca e il periodo precedente. | | |
-| `get_google_analytics_organic_landing_pages` | Elenca le pagine in cui entra per prima chi arriva dalla ricerca. | | |
-| `get_google_analytics_page_performance` | Fornisce visualizzazioni e coinvolgimento delle pagine. | | |
-| `get_google_analytics_traffic_acquisition` | Fornisce la distribuzione dei visitatori per canale, sorgente e campagna. | | |
-| `get_google_analytics_key_events` | Fornisce gli eventi contrassegnati come chiave in Analytics. | | |
-| `get_google_analytics_ecommerce_performance` | Fornisce le vendite dei prodotti. | | |
-| `get_google_analytics_site_search` | Fornisce i termini che i visitatori scrivono nella casella di ricerca del sito. | | |
-| `get_google_analytics_audience_breakdown` | Divide i visitatori per dispositivo, paese, nuovi e di ritorno. | | |
-| `get_google_analytics_measurement_health` | Controlla la configurazione della misurazione, non consuma la quota dei rapporti. | | |
-| `list_saved_keywords` | Elenca le parole chiave salvate. | | |
-| `save_keywords` | Salva parole chiave. | Sì | |
-| `list_reports` | Elenca i report. | | |
-| `get_report` | Legge un report e, su richiesta, ne fornisce anche la versione HTML. | | |
-| `save_report` | Salva un report o aggiorna uno esistente. | Sì | |
-| `list_report_templates` | Legge i modelli di report. | | |
-| `save_report_template` | Salva un modello di report. | Sì | |
+| Strumento                                    | Che cosa fa                                                                                                                                | Scrive | Quota                                                |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ------ | ---------------------------------------------------- |
+| `whoami`                                     | Dice di quale installazione e di quale utente si tratta.                                                                                   |        |                                                      |
+| `get_diagnostics`                            | Fornisce la versione, i controlli dell'installazione, il numero di righe delle tabelle, gli ultimi 25 controlli e i contatori delle quote. |        |                                                      |
+| `list_projects`                              | Elenca i progetti. Ogni strumento richiede un numero di progetto.                                                                          |        |                                                      |
+| `create_project`                             | Crea un nuovo progetto.                                                                                                                    | Sì     |                                                      |
+| `get_project_context`                        | Legge la schermata Informazioni sul progetto.                                                                                              |        |                                                      |
+| `update_project_context`                     | Modifica le informazioni sul progetto e lascia una nota nel registro delle ricerche.                                                       | Sì     |                                                      |
+| `get_search_console_performance`             | Fornisce clic, impressioni, percentuale e posizione per query, pagina, paese, dispositivo o data.                                          |        |                                                      |
+| `get_search_opportunities`                   | Ricava l'elenco delle opportunità da Search Console e Analytics.                                                                           |        |                                                      |
+| `get_cannibalization`                        | Mostra le pagine che competono tra loro per la stessa ricerca.                                                                             |        |                                                      |
+| `get_ranking_history`                        | Fornisce l'archivio delle posizioni sul computer, non conserva oltre i 16 mesi.                                                            |        |                                                      |
+| `get_index_coverage`                         | Fornisce le risposte di Google sull'indice già registrate, senza chiedere a Google.                                                        |        |                                                      |
+| `inspect_urls`                               | Chiede a Google lo stato delle pagine, 10 indirizzi per chiamata.                                                                          | Sì     | 2.000 al giorno, per proprietà                       |
+| `get_sitemaps`                               | Mostra lo stato della mappa del sito in Search Console.                                                                                    |        |                                                      |
+| `run_site_audit`                             | Avvia il controllo del sito.                                                                                                               | Sì     | PageSpeed, se la misurazione della velocità è attiva |
+| `get_audit_status`                           | Dice a che punto è il controllo; può segnalare come fallito un controllo bloccato.                                                         |        |                                                      |
+| `get_audit_issues`                           | Fornisce i problemi trovati con i passaggi di correzione.                                                                                  |        |                                                      |
+| `get_audit_pages`                            | Elenca le pagine scansionate.                                                                                                              |        |                                                      |
+| `get_google_analytics_organic_overview`      | Fornisce il riepilogo delle visite dalla ricerca e il periodo precedente.                                                                  |        |                                                      |
+| `get_google_analytics_organic_landing_pages` | Elenca le pagine in cui entra per prima chi arriva dalla ricerca.                                                                          |        |                                                      |
+| `get_google_analytics_page_performance`      | Fornisce visualizzazioni e coinvolgimento delle pagine.                                                                                    |        |                                                      |
+| `get_google_analytics_traffic_acquisition`   | Fornisce la distribuzione dei visitatori per canale, sorgente e campagna.                                                                  |        |                                                      |
+| `get_google_analytics_key_events`            | Fornisce gli eventi contrassegnati come chiave in Analytics.                                                                               |        |                                                      |
+| `get_google_analytics_ecommerce_performance` | Fornisce le vendite dei prodotti.                                                                                                          |        |                                                      |
+| `get_google_analytics_site_search`           | Fornisce i termini che i visitatori scrivono nella casella di ricerca del sito.                                                            |        |                                                      |
+| `get_google_analytics_audience_breakdown`    | Divide i visitatori per dispositivo, paese, nuovi e di ritorno.                                                                            |        |                                                      |
+| `get_google_analytics_measurement_health`    | Controlla la configurazione della misurazione, non consuma la quota dei rapporti.                                                          |        |                                                      |
+| `list_saved_keywords`                        | Elenca le parole chiave salvate.                                                                                                           |        |                                                      |
+| `save_keywords`                              | Salva parole chiave.                                                                                                                       | Sì     |                                                      |
+| `list_reports`                               | Elenca i report.                                                                                                                           |        |                                                      |
+| `get_report`                                 | Legge un report e, su richiesta, ne fornisce anche la versione HTML.                                                                       |        |                                                      |
+| `save_report`                                | Salva un report o aggiorna uno esistente.                                                                                                  | Sì     |                                                      |
+| `list_report_templates`                      | Legge i modelli di report.                                                                                                                 |        |                                                      |
+| `save_report_template`                       | Salva un modello di report.                                                                                                                | Sì     |                                                      |
 
 Gli strumenti di Analytics consumano la quota dei rapporti di Google Analytics (in una proprietà standard 200.000 unità al giorno). Questa quota si segue nell'app, nella sezione Limiti della schermata **Ayarlar** (Impostazioni).
 
 ## Modelli di attività pronti (skill)
 
-| Modello | Quando si usa | Che cosa produce |
-| --- | --- | --- |
-| `seo-coach` | Quando si chiede "che cosa devo fare". Spiega il percorso e suggerisce il passo successivo. | Conversazione, se serve una nota di coaching |
+| Modello             | Quando si usa                                                                                                                                          | Che cosa produce                                           |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------- |
+| `seo-coach`         | Quando si chiede "che cosa devo fare". Spiega il percorso e suggerisce il passo successivo.                                                            | Conversazione, se serve una nota di coaching               |
 | `seo-project-setup` | In un progetto nuovo. Chiede dell'attività, dell'obiettivo, dei concorrenti, delle pagine importanti e compila la schermata Informazioni sul progetto. | Informazioni sul progetto compilate, parole chiave salvate |
-| `seo-audit` | Quando si dice "controlla il sito". Esegue il controllo, lo unisce a Search Console e sceglie "l'unica cosa da fare questa settimana". | Report di controllo di una pagina |
-| `seo-triage` | Quando le visite calano. Verifica se il calo è reale, dove e quando è avvenuto. | Report sull'indagine del calo |
-| `seo-check-in` | Una volta al mese. Confronta questo periodo con il precedente. | Report di controllo mensile; ogni mese se ne accumula uno |
-| `seo-report` | Dopo gli altri modelli. Scrive e salva un report HTML in un solo file. | Un report nella schermata **Raporlar** |
+| `seo-audit`         | Quando si dice "controlla il sito". Esegue il controllo, lo unisce a Search Console e sceglie "l'unica cosa da fare questa settimana".                 | Report di controllo di una pagina                          |
+| `seo-triage`        | Quando le visite calano. Verifica se il calo è reale, dove e quando è avvenuto.                                                                        | Report sull'indagine del calo                              |
+| `seo-check-in`      | Una volta al mese. Confronta questo periodo con il precedente.                                                                                         | Report di controllo mensile; ogni mese se ne accumula uno  |
+| `seo-report`        | Dopo gli altri modelli. Scrive e salva un report HTML in un solo file.                                                                                 | Un report nella schermata **Raporlar**                     |
 
 ## Verifica
 

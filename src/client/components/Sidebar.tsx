@@ -75,7 +75,7 @@ export function Sidebar({ projectId, onNavigate, onClose }: SidebarProps) {
             height={22}
             className="rounded-md"
           />
-          seotracker
+          seowatcher
         </Link>
         {onClose ? (
           <button

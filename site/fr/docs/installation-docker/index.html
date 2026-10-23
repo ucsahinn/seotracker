@@ -80,16 +80,27 @@
       property="og:description"
       content="Installez l'application avec Docker sur Mac, Linux et Windows. Une seule commande suffit, aucun fichier .env n'est nécessaire. Vos données restent dans le volume de données de Docker."
     />
-    <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
+    <meta
+      property="og:image"
+      content="https://seowatcher.io/assets/og-fr.png"
+    />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="seowatcher" />
+    <meta
+      property="og:image:alt"
+      content="Guide seowatcher : installation, écrans et dépannage"
+    />
     <meta property="article:modified_time" content="2026-10-23" />
     <meta
       property="og:url"
       content="https://seowatcher.io/fr/docs/installation-docker/"
     />
     <meta property="og:locale" content="fr_FR" />
+    <meta property="og:locale:alternate" content="tr_TR" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:locale:alternate" content="de_DE" />
+    <meta property="og:locale:alternate" content="it_IT" />
+    <meta property="og:locale:alternate" content="pt_BR" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
@@ -99,7 +110,10 @@
       name="twitter:description"
       content="Installez l'application avec Docker sur Mac, Linux et Windows. Une seule commande suffit, aucun fichier .env n'est nécessaire. Vos données restent dans le volume de données de Docker."
     />
-    <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
+    <meta
+      name="twitter:image"
+      content="https://seowatcher.io/assets/og-fr.png"
+    />
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">
       {
@@ -169,7 +183,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=2.4.0" defer></script>
+    <script src="/assets/docs.js?v=2.4.1" defer></script>
     <meta name="theme-color" content="#272c3b" />
     <style>
       @font-face {
@@ -881,6 +895,47 @@
       }
 
       /* Guide pass: callouts, pager, copy buttons, mobile sidebar, tables. */
+      /* Release notes: the summary as cards, the lead of every item in amber. */
+      article[data-page="surum-notlari"] li > strong:first-child {
+        color: var(--accent-2);
+      }
+      article[data-page="surum-notlari"] h2 {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      article[data-page="surum-notlari"] h2::before {
+        content: "";
+        width: 4px;
+        height: 0.9em;
+        border-radius: 999px;
+        background: var(--accent);
+        flex: none;
+      }
+      article[data-page="surum-notlari"] h2:first-of-type + ul {
+        list-style: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 12px;
+      }
+      article[data-page="surum-notlari"] h2:first-of-type + ul li {
+        margin: 0;
+        padding: 16px 18px;
+        border: 1px solid var(--hairline);
+        border-radius: 14px;
+        background: linear-gradient(var(--glass), var(--glass)), var(--bg);
+        line-height: 1.5;
+      }
+      article[data-page="surum-notlari"]
+        h2:first-of-type
+        + ul
+        li
+        > strong:first-child {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 1.05em;
+      }
       .callout {
         position: relative;
         padding: 12px 16px 12px 18px;
@@ -1359,10 +1414,11 @@
               >
             </li>
             <li><a href="/fr/docs/depannage/">Dépannage</a></li>
+            <li><a href="/fr/docs/notes-de-version/">Notes de version</a></li>
           </ul>
         </details>
       </aside>
-      <article id="icerik">
+      <article id="icerik" data-page="kurulum-docker">
         <h1>Installation avec Docker</h1>
         <p class="lede">
           Installez l'application avec Docker sur Mac, Linux et Windows. Une
@@ -1396,7 +1452,7 @@
             la première compilation.
           </li>
         </ul>
-        <h2 id="tapes">Étapes</h2>
+        <h2 id="etapes">Étapes</h2>
         <ol>
           <li>
             Téléchargez le dépôt (les fichiers du projet) et placez-vous dans
@@ -1442,7 +1498,7 @@ cd seotracker</code></pre>
           <li><code>http://localhost:3001/api/gsc/oauth/callback</code></li>
           <li><code>http://localhost:3001/api/ga4/oauth/callback</code></li>
         </ul>
-        <h3 id="mise-jour">Mise à jour</h3>
+        <h3 id="mise-a-jour">Mise à jour</h3>
         <p>Tapez ces deux commandes :</p>
         <div class="code">
           <pre><code>git pull
@@ -1454,7 +1510,7 @@ docker compose up -d --build</code></pre>
           dans le volume nommé <code>seotracker_data</code>, donc la mise à jour
           ne les supprime pas.
         </p>
-        <h3 id="arr-t-et-suppression">Arrêt et suppression</h3>
+        <h3 id="arret-et-suppression">Arrêt et suppression</h3>
         <ul>
           <li>Arrêter : <code>docker compose stop</code></li>
           <li>Redémarrer : <code>docker compose up -d</code></li>
@@ -1486,7 +1542,7 @@ docker compose up -d</code></pre>
           connexions à Google. Si ce fichier manque dans la sauvegarde,
           l'application s'ouvre mais les connexions à Google ne reviennent pas.
         </p>
-        <h3 id="r-glages-facultatifs">Réglages (facultatifs)</h3>
+        <h3 id="reglages-facultatifs">Réglages (facultatifs)</h3>
         <p>
           Aucun réglage n'est obligatoire. Si vous voulez en changer, placez un
           fichier <code>.env</code> dans le dossier du projet. Tapez ensuite
@@ -1552,7 +1608,7 @@ docker compose up -d</code></pre>
             </tbody>
           </table>
         </div>
-        <h2 id="v-rification">Vérification</h2>
+        <h2 id="verification">Vérification</h2>
         <ul>
           <li>
             Dans la sortie de <code>docker compose ps</code>, l'état doit être
@@ -1574,7 +1630,7 @@ docker compose up -d</code></pre>
             l'attention. C'est normal.
           </li>
         </ul>
-        <h2 id="questions-fr-quentes">Questions fréquentes</h2>
+        <h2 id="questions-frequentes">Questions fréquentes</h2>
         <p>
           <strong>Pourquoi le premier démarrage est-il long ?</strong>
           L'application est compilée à l'intérieur de la boîte. Aux démarrages
@@ -1603,7 +1659,7 @@ docker compose up -d</code></pre>
           >. Si vous utilisez Git Bash, ajoutez
           <code>MSYS_NO_PATHCONV=1</code> au début.
         </p>
-        <h2 id="en-cas-de-probl-me">En cas de problème</h2>
+        <h2 id="en-cas-de-probleme">En cas de problème</h2>
         <ul>
           <li>
             <strong>« Bind for 127.0.0.1:3001 failed » s'affiche.</strong> Le
@@ -1656,10 +1712,10 @@ docker compose up -d</code></pre>
         <p class="toc-label">Sur cette page</p>
         <ol>
           <li><a href="#ce-qu-il-vous-faut">Ce qu'il vous faut</a></li>
-          <li><a href="#tapes">Étapes</a></li>
-          <li><a href="#v-rification">Vérification</a></li>
-          <li><a href="#questions-fr-quentes">Questions fréquentes</a></li>
-          <li><a href="#en-cas-de-probl-me">En cas de problème</a></li>
+          <li><a href="#etapes">Étapes</a></li>
+          <li><a href="#verification">Vérification</a></li>
+          <li><a href="#questions-frequentes">Questions fréquentes</a></li>
+          <li><a href="#en-cas-de-probleme">En cas de problème</a></li>
         </ol>
       </nav>
     </main>
@@ -1669,10 +1725,7 @@ docker compose up -d</code></pre>
         <span
           ><a href="/fr/">Accueil</a> &nbsp;
           <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
-          <a
-            href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"
-            >Notes de version</a
-          ></span
+          <a href="/fr/docs/notes-de-version/">Notes de version</a></span
         >
       </div>
     </footer>

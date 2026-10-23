@@ -1,7 +1,7 @@
 {
   "lang": "pt",
   "name": "Português",
-  "ogLocale": "pt_PT",
+  "ogLocale": "pt_BR",
   "months": [
     "janeiro",
     "fevereiro",
@@ -47,7 +47,8 @@
     "yardim": "ajuda",
     "denetim-kurallari": "regras-de-auditoria",
     "ajan-kurulumu": "configurar-agente",
-    "sorun-giderme": "solucao-de-problemas"
+    "sorun-giderme": "solucao-de-problemas",
+    "surum-notlari": "notas-da-versao"
   },
   "t": {
     "guide": "Guia",

@@ -49,9 +49,11 @@ them at once. Change them there before you change a component.
   Depth comes from `var(--shadow-raise)`, tinted toward the surface.
 - **One radius scale**: `rounded-box` for panels, `rounded-field` for controls,
   `rounded-full` for pills. Mixing them on one screen is a bug.
-- **One accent**, reserved for links, focus rings and active state. The primary
-  button is near-black, because a blue one competes with the amber and red
-  severity chips beside it.
+- **One accent, the site's ember orange** (hue 42-52), for links, focus rings,
+  active state and the primary button, which is the same orange pill as on
+  seowatcher.io. Warning chips sit at yellow (hue 88) so they never read as
+  the accent. Dark is the default theme and matches the site's palette; the
+  light theme is warm gray with a burnt orange that keeps white text at 4.5:1.
 - **Two page widths**, chosen by what the screen holds, not by which file it
   is in: wide for tables, charts and dashboards; reading width for forms and
   prose. Every page goes through `PageShell`

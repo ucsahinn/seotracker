@@ -74,23 +74,37 @@
       property="og:description"
       content="Pour mesurer la vitesse des pages, vous obtenez une clé Google PageSpeed gratuite et vous la saisissez dans l'application. Sans clé, la mesure reste limitée à 50 pages."
     />
-    <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
+    <meta
+      property="og:image"
+      content="https://seowatcher.io/assets/og-fr.png"
+    />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="seowatcher" />
+    <meta
+      property="og:image:alt"
+      content="Guide seowatcher : installation, écrans et dépannage"
+    />
     <meta property="article:modified_time" content="2026-10-23" />
     <meta
       property="og:url"
       content="https://seowatcher.io/fr/docs/cle-pagespeed/"
     />
     <meta property="og:locale" content="fr_FR" />
+    <meta property="og:locale:alternate" content="tr_TR" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:locale:alternate" content="de_DE" />
+    <meta property="og:locale:alternate" content="it_IT" />
+    <meta property="og:locale:alternate" content="pt_BR" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Clé PageSpeed | Guide seowatcher" />
     <meta
       name="twitter:description"
       content="Pour mesurer la vitesse des pages, vous obtenez une clé Google PageSpeed gratuite et vous la saisissez dans l'application. Sans clé, la mesure reste limitée à 50 pages."
     />
-    <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
+    <meta
+      name="twitter:image"
+      content="https://seowatcher.io/assets/og-fr.png"
+    />
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">
       {
@@ -160,7 +174,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=2.4.0" defer></script>
+    <script src="/assets/docs.js?v=2.4.1" defer></script>
     <meta name="theme-color" content="#272c3b" />
     <style>
       @font-face {
@@ -872,6 +886,47 @@
       }
 
       /* Guide pass: callouts, pager, copy buttons, mobile sidebar, tables. */
+      /* Release notes: the summary as cards, the lead of every item in amber. */
+      article[data-page="surum-notlari"] li > strong:first-child {
+        color: var(--accent-2);
+      }
+      article[data-page="surum-notlari"] h2 {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      article[data-page="surum-notlari"] h2::before {
+        content: "";
+        width: 4px;
+        height: 0.9em;
+        border-radius: 999px;
+        background: var(--accent);
+        flex: none;
+      }
+      article[data-page="surum-notlari"] h2:first-of-type + ul {
+        list-style: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 12px;
+      }
+      article[data-page="surum-notlari"] h2:first-of-type + ul li {
+        margin: 0;
+        padding: 16px 18px;
+        border: 1px solid var(--hairline);
+        border-radius: 14px;
+        background: linear-gradient(var(--glass), var(--glass)), var(--bg);
+        line-height: 1.5;
+      }
+      article[data-page="surum-notlari"]
+        h2:first-of-type
+        + ul
+        li
+        > strong:first-child {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 1.05em;
+      }
       .callout {
         position: relative;
         padding: 12px 16px 12px 18px;
@@ -1352,10 +1407,11 @@
               >
             </li>
             <li><a href="/fr/docs/depannage/">Dépannage</a></li>
+            <li><a href="/fr/docs/notes-de-version/">Notes de version</a></li>
           </ul>
         </details>
       </aside>
-      <article id="icerik">
+      <article id="icerik" data-page="pagespeed-anahtari">
         <h1>Clé PageSpeed</h1>
         <p class="lede">
           Pour mesurer la vitesse des pages, vous obtenez une clé Google
@@ -1386,7 +1442,7 @@
             PageSpeed Insights (la porte d'accès au service) est gratuite.
           </li>
         </ul>
-        <h2 id="tapes">Étapes</h2>
+        <h2 id="etapes">Étapes</h2>
         <ol>
           <li>
             Sur <code>console.cloud.google.com</code>, choisissez votre projet.
@@ -1440,7 +1496,7 @@
           L'écran Ayarlar est plus simple, et la valeur qu'on y saisit est
           prioritaire.
         </p>
-        <h2 id="v-rification">Vérification</h2>
+        <h2 id="verification">Vérification</h2>
         <ul>
           <li>
             Le badge de <strong>Ayarlar → Hız ölçümü</strong> doit indiquer
@@ -1457,7 +1513,7 @@
             indiquer « Anahtar tanımlı » (Clé définie).
           </li>
         </ul>
-        <h2 id="questions-fr-quentes">Questions fréquentes</h2>
+        <h2 id="questions-frequentes">Questions fréquentes</h2>
         <p>
           <strong>Quel est le quota ?</strong> Google ne donne pas de chiffre
           officiel et le modifie avec le temps. Vous voyez la valeur réelle dans
@@ -1491,7 +1547,7 @@
           peut suffire pour un petit site. Pour un site de plus de 50 pages, la
           clé est nécessaire.
         </p>
-        <h2 id="en-cas-de-probl-me">En cas de problème</h2>
+        <h2 id="en-cas-de-probleme">En cas de problème</h2>
         <ul>
           <li>
             <strong>Le test indique « restricted » ou 403.</strong> L'étape 2 a
@@ -1542,10 +1598,10 @@
         <p class="toc-label">Sur cette page</p>
         <ol>
           <li><a href="#ce-qu-il-vous-faut">Ce qu'il vous faut</a></li>
-          <li><a href="#tapes">Étapes</a></li>
-          <li><a href="#v-rification">Vérification</a></li>
-          <li><a href="#questions-fr-quentes">Questions fréquentes</a></li>
-          <li><a href="#en-cas-de-probl-me">En cas de problème</a></li>
+          <li><a href="#etapes">Étapes</a></li>
+          <li><a href="#verification">Vérification</a></li>
+          <li><a href="#questions-frequentes">Questions fréquentes</a></li>
+          <li><a href="#en-cas-de-probleme">En cas de problème</a></li>
         </ol>
       </nav>
     </main>
@@ -1555,10 +1611,7 @@
         <span
           ><a href="/fr/">Accueil</a> &nbsp;
           <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
-          <a
-            href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"
-            >Notes de version</a
-          ></span
+          <a href="/fr/docs/notes-de-version/">Notes de version</a></span
         >
       </div>
     </footer>

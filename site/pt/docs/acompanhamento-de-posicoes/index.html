@@ -80,16 +80,27 @@
       property="og:description"
       content="Veja a posição média das suas buscas no Google dia a dia. Os dados ficam guardados neste computador, então você pode olhar mais longe do que o limite de 16 meses do Google."
     />
-    <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
+    <meta
+      property="og:image"
+      content="https://seowatcher.io/assets/og-pt.png"
+    />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="seowatcher" />
+    <meta
+      property="og:image:alt"
+      content="Guia do seowatcher: instalação, telas e solução de problemas"
+    />
     <meta property="article:modified_time" content="2026-10-23" />
     <meta
       property="og:url"
       content="https://seowatcher.io/pt/docs/acompanhamento-de-posicoes/"
     />
-    <meta property="og:locale" content="pt_PT" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:locale:alternate" content="tr_TR" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:locale:alternate" content="de_DE" />
+    <meta property="og:locale:alternate" content="fr_FR" />
+    <meta property="og:locale:alternate" content="it_IT" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
@@ -99,7 +110,10 @@
       name="twitter:description"
       content="Veja a posição média das suas buscas no Google dia a dia. Os dados ficam guardados neste computador, então você pode olhar mais longe do que o limite de 16 meses do Google."
     />
-    <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
+    <meta
+      name="twitter:image"
+      content="https://seowatcher.io/assets/og-pt.png"
+    />
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">
       {
@@ -169,7 +183,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=2.4.0" defer></script>
+    <script src="/assets/docs.js?v=2.4.1" defer></script>
     <meta name="theme-color" content="#272c3b" />
     <style>
       @font-face {
@@ -881,6 +895,47 @@
       }
 
       /* Guide pass: callouts, pager, copy buttons, mobile sidebar, tables. */
+      /* Release notes: the summary as cards, the lead of every item in amber. */
+      article[data-page="surum-notlari"] li > strong:first-child {
+        color: var(--accent-2);
+      }
+      article[data-page="surum-notlari"] h2 {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      article[data-page="surum-notlari"] h2::before {
+        content: "";
+        width: 4px;
+        height: 0.9em;
+        border-radius: 999px;
+        background: var(--accent);
+        flex: none;
+      }
+      article[data-page="surum-notlari"] h2:first-of-type + ul {
+        list-style: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 12px;
+      }
+      article[data-page="surum-notlari"] h2:first-of-type + ul li {
+        margin: 0;
+        padding: 16px 18px;
+        border: 1px solid var(--hairline);
+        border-radius: 14px;
+        background: linear-gradient(var(--glass), var(--glass)), var(--bg);
+        line-height: 1.5;
+      }
+      article[data-page="surum-notlari"]
+        h2:first-of-type
+        + ul
+        li
+        > strong:first-child {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 1.05em;
+      }
       .callout {
         position: relative;
         padding: 12px 16px 12px 18px;
@@ -1360,10 +1415,11 @@
             <li>
               <a href="/pt/docs/solucao-de-problemas/">Solução de problemas</a>
             </li>
+            <li><a href="/pt/docs/notas-da-versao/">Notas da versão</a></li>
           </ul>
         </details>
       </aside>
-      <article id="icerik">
+      <article id="icerik" data-page="siralama-takibi">
         <h1>Acompanhamento de posições</h1>
         <p class="lede">
           Veja a posição média das suas buscas no Google dia a dia. Os dados
@@ -1380,7 +1436,7 @@
           O arquivo cresce cada vez que você abre a tela. Com o tempo, você
           volta mais longe do que o Google mostra.
         </p>
-        <h2 id="o-que-h-na-tela">O que há na tela</h2>
+        <h2 id="o-que-ha-na-tela">O que há na tela</h2>
         <p>
           <strong>Período.</strong> 30 gün, 90 gün (padrão), 6 ay, 16 ay e
           Arşivin tamamı (30 dias, 90 dias, 6 meses, 16 meses e o arquivo
@@ -1475,7 +1531,7 @@
             &quot;En çok düşenler&quot;. Isso basta para o quadro geral.
           </li>
         </ol>
-        <h2 id="como-os-n-meros-s-o-calculados">
+        <h2 id="como-os-numeros-sao-calculados">
           Como os números são calculados
         </h2>
         <p>
@@ -1554,10 +1610,10 @@
       <nav class="toc" aria-label="Nesta página">
         <p class="toc-label">Nesta página</p>
         <ol>
-          <li><a href="#o-que-h-na-tela">O que há na tela</a></li>
+          <li><a href="#o-que-ha-na-tela">O que há na tela</a></li>
           <li><a href="#como-usar">Como usar</a></li>
           <li>
-            <a href="#como-os-n-meros-s-o-calculados"
+            <a href="#como-os-numeros-sao-calculados"
               >Como os números são calculados</a
             >
           </li>
@@ -1572,10 +1628,7 @@
         <span
           ><a href="/pt/">Início</a> &nbsp;
           <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
-          <a
-            href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"
-            >Notas de versão</a
-          ></span
+          <a href="/pt/docs/notas-da-versao/">Notas de versão</a></span
         >
       </div>
     </footer>

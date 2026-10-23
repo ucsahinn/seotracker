@@ -45,7 +45,7 @@
       type="font/woff2"
       crossorigin
     />
-    <meta property="og:type" content="article" />
+    <meta property="og:type" content="website" />
     <meta property="og:site_name" content="seowatcher" />
     <meta
       property="og:title"
@@ -55,13 +55,24 @@
       property="og:description"
       content="seowatcher-Anleitungen: Installation, was jeder Bildschirm zeigt, die Google-Verbindung, Audit-Regeln, Einrichtung des Assistenten und Fehlerbehebung."
     />
-    <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
+    <meta
+      property="og:image"
+      content="https://seowatcher.io/assets/og-de.png"
+    />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="seowatcher" />
+    <meta
+      property="og:image:alt"
+      content="seowatcher-Anleitung: Installation, Bildschirme und Fehlerbehebung"
+    />
     <meta property="article:modified_time" content="2026-10-23" />
     <meta property="og:url" content="https://seowatcher.io/de/docs/" />
     <meta property="og:locale" content="de_DE" />
+    <meta property="og:locale:alternate" content="tr_TR" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:locale:alternate" content="fr_FR" />
+    <meta property="og:locale:alternate" content="it_IT" />
+    <meta property="og:locale:alternate" content="pt_BR" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
@@ -71,7 +82,10 @@
       name="twitter:description"
       content="seowatcher-Anleitungen: Installation, was jeder Bildschirm zeigt, die Google-Verbindung, Audit-Regeln, Einrichtung des Assistenten und Fehlerbehebung."
     />
-    <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
+    <meta
+      name="twitter:image"
+      content="https://seowatcher.io/assets/og-de.png"
+    />
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">
       {
@@ -131,7 +145,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=2.4.0" defer></script>
+    <script src="/assets/docs.js?v=2.4.1" defer></script>
     <meta name="theme-color" content="#272c3b" />
     <style>
       @font-face {
@@ -843,6 +857,47 @@
       }
 
       /* Guide pass: callouts, pager, copy buttons, mobile sidebar, tables. */
+      /* Release notes: the summary as cards, the lead of every item in amber. */
+      article[data-page="surum-notlari"] li > strong:first-child {
+        color: var(--accent-2);
+      }
+      article[data-page="surum-notlari"] h2 {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      article[data-page="surum-notlari"] h2::before {
+        content: "";
+        width: 4px;
+        height: 0.9em;
+        border-radius: 999px;
+        background: var(--accent);
+        flex: none;
+      }
+      article[data-page="surum-notlari"] h2:first-of-type + ul {
+        list-style: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 12px;
+      }
+      article[data-page="surum-notlari"] h2:first-of-type + ul li {
+        margin: 0;
+        padding: 16px 18px;
+        border: 1px solid var(--hairline);
+        border-radius: 14px;
+        background: linear-gradient(var(--glass), var(--glass)), var(--bg);
+        line-height: 1.5;
+      }
+      article[data-page="surum-notlari"]
+        h2:first-of-type
+        + ul
+        li
+        > strong:first-child {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 1.05em;
+      }
       .callout {
         position: relative;
         padding: 12px 16px 12px 18px;
@@ -1315,10 +1370,11 @@
               <a href="/de/docs/assistent-einrichten/">Assistent einrichten</a>
             </li>
             <li><a href="/de/docs/fehlerbehebung/">Fehlerbehebung</a></li>
+            <li><a href="/de/docs/versionshinweise/">Versionshinweise</a></li>
           </ul>
         </details>
       </aside>
-      <article id="icerik">
+      <article id="icerik" data-page="index">
         <h1>Anleitung</h1>
         <p class="lede">
           Jeder Schritt und jeder Bildschirm, von der Installation bis zum
@@ -1504,6 +1560,14 @@
               Audit, leere Diagramme und Assistent 401 stehen hier.</span
             >
           </li>
+          <li>
+            <a href="/de/docs/versionshinweise/">Versionshinweise</a
+            ><span
+              >Was sich in seowatcher 2.4.1 geändert hat. Installation mit einer
+              Datei unter Windows, eine App, die sich selbst aktualisiert,
+              schlichtere Bildschirme und eine Website in sechs Sprachen.</span
+            >
+          </li>
         </ul>
         <p class="meta">
           Zuletzt aktualisiert: 23 Oktober 2026. Fehler entdeckt?
@@ -1519,10 +1583,7 @@
         <span
           ><a href="/de/">Startseite</a> &nbsp;
           <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
-          <a
-            href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"
-            >Versionshinweise</a
-          ></span
+          <a href="/de/docs/versionshinweise/">Versionshinweise</a></span
         >
       </div>
     </footer>

@@ -34,7 +34,7 @@ export function DiagnosticsBundleButton() {
 
       downloadBlob(
         archive,
-        `seotracker-tanilama-${server.generatedAt.slice(0, 10)}.zip`,
+        `seowatcher-tanilama-${server.generatedAt.slice(0, 10)}.zip`,
       );
     },
     onSuccess: () => toast.success("Tanılama paketi indirildi"),
@@ -69,7 +69,7 @@ function pretty(value: unknown): string {
  * can send and one they have to audit first.
  */
 function readme(generatedAt: string): string {
-  return `seotracker tanılama paketi
+  return `seowatcher tanılama paketi
 Oluşturulma: ${generatedAt}
 
 İçindekiler
@@ -109,7 +109,7 @@ export function buildDiagnosticsSummary(
     )
     .join("\n");
 
-  return `seotracker ${server.version} · ${server.authMode}
+  return `seowatcher ${server.version} · ${server.authMode}
 Oluşturulma: ${server.generatedAt}
 
 Kurulum kontrolleri

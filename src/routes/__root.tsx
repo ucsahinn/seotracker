@@ -35,7 +35,7 @@ export const Route = createRootRoute({
   head: () => ({
     meta: [
       {
-        title: "seotracker",
+        title: "seowatcher",
       },
       {
         charSet: "utf-8",

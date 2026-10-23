@@ -80,16 +80,27 @@
       property="og:description"
       content="A lista das 95 regras que a auditoria do site confere. Para cada regra, você encontra o que ela significa e como corrigir."
     />
-    <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
+    <meta
+      property="og:image"
+      content="https://seowatcher.io/assets/og-pt.png"
+    />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="seowatcher" />
+    <meta
+      property="og:image:alt"
+      content="Guia do seowatcher: instalação, telas e solução de problemas"
+    />
     <meta property="article:modified_time" content="2026-10-23" />
     <meta
       property="og:url"
       content="https://seowatcher.io/pt/docs/regras-de-auditoria/"
     />
-    <meta property="og:locale" content="pt_PT" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:locale:alternate" content="tr_TR" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:locale:alternate" content="de_DE" />
+    <meta property="og:locale:alternate" content="fr_FR" />
+    <meta property="og:locale:alternate" content="it_IT" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
@@ -99,7 +110,10 @@
       name="twitter:description"
       content="A lista das 95 regras que a auditoria do site confere. Para cada regra, você encontra o que ela significa e como corrigir."
     />
-    <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
+    <meta
+      name="twitter:image"
+      content="https://seowatcher.io/assets/og-pt.png"
+    />
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">
       {
@@ -169,7 +183,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=2.4.0" defer></script>
+    <script src="/assets/docs.js?v=2.4.1" defer></script>
     <meta name="theme-color" content="#272c3b" />
     <style>
       @font-face {
@@ -881,6 +895,47 @@
       }
 
       /* Guide pass: callouts, pager, copy buttons, mobile sidebar, tables. */
+      /* Release notes: the summary as cards, the lead of every item in amber. */
+      article[data-page="surum-notlari"] li > strong:first-child {
+        color: var(--accent-2);
+      }
+      article[data-page="surum-notlari"] h2 {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      article[data-page="surum-notlari"] h2::before {
+        content: "";
+        width: 4px;
+        height: 0.9em;
+        border-radius: 999px;
+        background: var(--accent);
+        flex: none;
+      }
+      article[data-page="surum-notlari"] h2:first-of-type + ul {
+        list-style: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 12px;
+      }
+      article[data-page="surum-notlari"] h2:first-of-type + ul li {
+        margin: 0;
+        padding: 16px 18px;
+        border: 1px solid var(--hairline);
+        border-radius: 14px;
+        background: linear-gradient(var(--glass), var(--glass)), var(--bg);
+        line-height: 1.5;
+      }
+      article[data-page="surum-notlari"]
+        h2:first-of-type
+        + ul
+        li
+        > strong:first-child {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 1.05em;
+      }
       .callout {
         position: relative;
         padding: 12px 16px 12px 18px;
@@ -1357,10 +1412,11 @@
             <li>
               <a href="/pt/docs/solucao-de-problemas/">Solução de problemas</a>
             </li>
+            <li><a href="/pt/docs/notas-da-versao/">Notas da versão</a></li>
           </ul>
         </details>
       </aside>
-      <article id="icerik">
+      <article id="icerik" data-page="denetim-kurallari">
         <h1>Regras de auditoria</h1>
         <p class="lede">
           A lista das 95 regras que a auditoria do site confere. Para cada
@@ -1448,7 +1504,7 @@
             seu site https (um endereço seguro).
           </li>
         </ul>
-        <h2 id="cr-tico">Crítico</h2>
+        <h2 id="critico">Crítico</h2>
         <div class="tw">
           <table>
             <thead>
@@ -2088,7 +2144,7 @@
             </tbody>
           </table>
         </div>
-        <h2 id="informac-o">Informação</h2>
+        <h2 id="informacao">Informação</h2>
         <div class="tw">
           <table>
             <thead>
@@ -2459,9 +2515,9 @@
         <p class="toc-label">Nesta página</p>
         <ol>
           <li><a href="#termos-comuns">Termos comuns</a></li>
-          <li><a href="#cr-tico">Crítico</a></li>
+          <li><a href="#critico">Crítico</a></li>
           <li><a href="#aviso">Aviso</a></li>
-          <li><a href="#informac-o">Informação</a></li>
+          <li><a href="#informacao">Informação</a></li>
           <li>
             <a href="#como-as-regras-funcionam">Como as regras funcionam?</a>
           </li>
@@ -2474,10 +2530,7 @@
         <span
           ><a href="/pt/">Início</a> &nbsp;
           <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
-          <a
-            href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"
-            >Notas de versão</a
-          ></span
+          <a href="/pt/docs/notas-da-versao/">Notas de versão</a></span
         >
       </div>
     </footer>

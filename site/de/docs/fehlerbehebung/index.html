@@ -77,16 +77,27 @@
       property="og:description"
       content="Die häufigsten Probleme mit Symptom, Ursache und Lösung. Belegte Portnummer, Windows-Warnung, Google-Fehler, Kontingent, hängendes Audit, leere Diagramme und Assistent 401 stehen hier."
     />
-    <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
+    <meta
+      property="og:image"
+      content="https://seowatcher.io/assets/og-de.png"
+    />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="seowatcher" />
+    <meta
+      property="og:image:alt"
+      content="seowatcher-Anleitung: Installation, Bildschirme und Fehlerbehebung"
+    />
     <meta property="article:modified_time" content="2026-10-23" />
     <meta
       property="og:url"
       content="https://seowatcher.io/de/docs/fehlerbehebung/"
     />
     <meta property="og:locale" content="de_DE" />
+    <meta property="og:locale:alternate" content="tr_TR" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:locale:alternate" content="fr_FR" />
+    <meta property="og:locale:alternate" content="it_IT" />
+    <meta property="og:locale:alternate" content="pt_BR" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
@@ -96,7 +107,10 @@
       name="twitter:description"
       content="Die häufigsten Probleme mit Symptom, Ursache und Lösung. Belegte Portnummer, Windows-Warnung, Google-Fehler, Kontingent, hängendes Audit, leere Diagramme und Assistent 401 stehen hier."
     />
-    <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
+    <meta
+      name="twitter:image"
+      content="https://seowatcher.io/assets/og-de.png"
+    />
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">
       {
@@ -166,7 +180,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=2.4.0" defer></script>
+    <script src="/assets/docs.js?v=2.4.1" defer></script>
     <meta name="theme-color" content="#272c3b" />
     <style>
       @font-face {
@@ -878,6 +892,47 @@
       }
 
       /* Guide pass: callouts, pager, copy buttons, mobile sidebar, tables. */
+      /* Release notes: the summary as cards, the lead of every item in amber. */
+      article[data-page="surum-notlari"] li > strong:first-child {
+        color: var(--accent-2);
+      }
+      article[data-page="surum-notlari"] h2 {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      article[data-page="surum-notlari"] h2::before {
+        content: "";
+        width: 4px;
+        height: 0.9em;
+        border-radius: 999px;
+        background: var(--accent);
+        flex: none;
+      }
+      article[data-page="surum-notlari"] h2:first-of-type + ul {
+        list-style: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 12px;
+      }
+      article[data-page="surum-notlari"] h2:first-of-type + ul li {
+        margin: 0;
+        padding: 16px 18px;
+        border: 1px solid var(--hairline);
+        border-radius: 14px;
+        background: linear-gradient(var(--glass), var(--glass)), var(--bg);
+        line-height: 1.5;
+      }
+      article[data-page="surum-notlari"]
+        h2:first-of-type
+        + ul
+        li
+        > strong:first-child {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 1.05em;
+      }
       .callout {
         position: relative;
         padding: 12px 16px 12px 18px;
@@ -1356,10 +1411,11 @@
             <li class="current" aria-current="page">
               <a href="/de/docs/fehlerbehebung/">Fehlerbehebung</a>
             </li>
+            <li><a href="/de/docs/versionshinweise/">Versionshinweise</a></li>
           </ul>
         </details>
       </aside>
-      <article id="icerik">
+      <article id="icerik" data-page="sorun-giderme">
         <h1>Fehlerbehebung</h1>
         <p class="lede">
           Die häufigsten Probleme mit Symptom, Ursache und Lösung. Belegte
@@ -1621,7 +1677,7 @@
           <strong>Lösung:</strong> Lesen Sie die Summe von der Karte ab. Deuten
           Sie die Tabelle Seite für Seite.
         </p>
-        <h2 id="das-audit-h-ngt-bei-suruyor-l-uft">
+        <h2 id="das-audit-hangt-bei-suruyor-lauft">
           Das Audit hängt bei „Sürüyor“ (Läuft)
         </h2>
         <p class="callout callout-belirti">
@@ -1662,7 +1718,7 @@
           Ergebnisse bleiben auf die Seiten beschränkt, die gecrawlt werden
           konnten.
         </p>
-        <h2 id="die-geschwindigkeitsmessung-ist-unvollst-ndig-oder-fehlt-ganz">
+        <h2 id="die-geschwindigkeitsmessung-ist-unvollstandig-oder-fehlt-ganz">
           Die Geschwindigkeitsmessung ist unvollständig oder fehlt ganz
         </h2>
         <p class="callout callout-belirti">
@@ -1829,7 +1885,9 @@
         <nav class="pager" aria-label="Vorherige und nächste Seite">
           <a class="pager-prev" rel="prev" href="/de/docs/assistent-einrichten/"
             ><span>Zurück</span><strong>Assistent einrichten</strong></a
-          ><span class="pager-next empty"></span>
+          ><a class="pager-next" rel="next" href="/de/docs/versionshinweise/"
+            ><span>Weiter</span><strong>Versionshinweise</strong></a
+          >
         </nav>
         <p class="meta">
           Zuletzt aktualisiert: 23 Oktober 2026. Fehler entdeckt?
@@ -1900,7 +1958,7 @@
             >
           </li>
           <li>
-            <a href="#das-audit-h-ngt-bei-suruyor-l-uft"
+            <a href="#das-audit-hangt-bei-suruyor-lauft"
               >Das Audit hängt bei „Sürüyor“ (Läuft)</a
             >
           </li>
@@ -1911,7 +1969,7 @@
           </li>
           <li>
             <a
-              href="#die-geschwindigkeitsmessung-ist-unvollst-ndig-oder-fehlt-ganz"
+              href="#die-geschwindigkeitsmessung-ist-unvollstandig-oder-fehlt-ganz"
               >Die Geschwindigkeitsmessung ist unvollständig oder fehlt ganz</a
             >
           </li>
@@ -1952,10 +2010,7 @@
         <span
           ><a href="/de/">Startseite</a> &nbsp;
           <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
-          <a
-            href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"
-            >Versionshinweise</a
-          ></span
+          <a href="/de/docs/versionshinweise/">Versionshinweise</a></span
         >
       </div>
     </footer>

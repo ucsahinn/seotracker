@@ -18,12 +18,12 @@ Die App ordnet jede Ihrer Seiten aus der Search Console der entsprechenden Seite
 
 **Vier Gruppen.** Jede Seite gehört zu einer von vier Gruppen. Der Name der Gruppe erscheint in der Zeile als Etikett.
 
-| Gruppe                         | Was sie bedeutet                                                                         | Was zu tun ist                                                                                   |
-| ------------------------------ | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| **Az tıklanan** (Selten geklickt)    | In den ersten 20 Positionen. Die Klickrate liegt unter der Hälfte Ihrer Seiten auf derselben Position | Schreiben Sie Titel und Beschreibung neu. Der Text, der in der Suche erscheint, zieht nicht      |
-| **Yükselmeye yakın** (Nah am Aufstieg) | Position 4 bis 20                                                                        | Erweitern Sie den Inhalt, setzen Sie interne Links. Das kann ein bis zwei Positionen bringen     |
-| **İlk sıralarda** (Ganz oben)    | In den ersten 3 Positionen                                                               | Halten Sie die Seite aktuell und stellen Sie sicher, dass nichts kaputtgeht                      |
-| **Derinde kalan** (Tief vergraben)   | Nach Position 20                                                                         | Überlegen Sie, ob die Seite diese Suche wirklich beantwortet. Die richtige Seite kann eine andere sein |
+| Gruppe                                 | Was sie bedeutet                                                                                      | Was zu tun ist                                                                                         |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| **Az tıklanan** (Selten geklickt)      | In den ersten 20 Positionen. Die Klickrate liegt unter der Hälfte Ihrer Seiten auf derselben Position | Schreiben Sie Titel und Beschreibung neu. Der Text, der in der Suche erscheint, zieht nicht            |
+| **Yükselmeye yakın** (Nah am Aufstieg) | Position 4 bis 20                                                                                     | Erweitern Sie den Inhalt, setzen Sie interne Links. Das kann ein bis zwei Positionen bringen           |
+| **İlk sıralarda** (Ganz oben)          | In den ersten 3 Positionen                                                                            | Halten Sie die Seite aktuell und stellen Sie sicher, dass nichts kaputtgeht                            |
+| **Derinde kalan** (Tief vergraben)     | Nach Position 20                                                                                      | Überlegen Sie, ob die Seite diese Suche wirklich beantwortet. Die richtige Seite kann eine andere sein |
 
 Ein interner Link ist ein Link, den Sie auf Ihrer Website von einer Seite zur anderen setzen.
 

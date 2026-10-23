@@ -47,7 +47,8 @@
     "yardim": "aide",
     "denetim-kurallari": "regles-d-audit",
     "ajan-kurulumu": "installation-assistant",
-    "sorun-giderme": "depannage"
+    "sorun-giderme": "depannage",
+    "surum-notlari": "notes-de-version"
   },
   "t": {
     "guide": "Guide",

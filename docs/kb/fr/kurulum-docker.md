@@ -77,14 +77,14 @@ Pour restaurer, utilisez `tar xzf` à la place de `tar czf` dans la même comman
 
 Aucun réglage n'est obligatoire. Si vous voulez en changer, placez un fichier `.env` dans le dossier du projet. Tapez ensuite `docker compose up -d --force-recreate seotracker`.
 
-| Nom du réglage                         | À quoi il sert                                                                                                              |
-| -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| PORT                                   | Le numéro de port, 3001 par défaut. S'il change, les adresses de redirection Google changent aussi                          |
-| ALLOWED_HOST                           | Le nom visible de l'extérieur si vous êtes derrière un autre serveur. Vide, seul localhost est accepté                      |
-| AUTH_MODE                              | `local_noauth` (par défaut) ou `cloudflare_access`                                                                          |
+| Nom du réglage                         | À quoi il sert                                                                                                                       |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| PORT                                   | Le numéro de port, 3001 par défaut. S'il change, les adresses de redirection Google changent aussi                                   |
+| ALLOWED_HOST                           | Le nom visible de l'extérieur si vous êtes derrière un autre serveur. Vide, seul localhost est accepté                               |
+| AUTH_MODE                              | `local_noauth` (par défaut) ou `cloudflare_access`                                                                                   |
 | BETTER_AUTH_SECRET                     | La clé de chiffrement. Laissez vide, l'application la génère. Si vous la fournissez, 32 caractères au moins, puis ne la changez plus |
-| GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET | Une alternative à la saisie dans l'écran Ayarlar. La valeur saisie à l'écran est prioritaire                                |
-| PAGESPEED_API_KEY                      | Une alternative à la saisie dans l'écran Ayarlar                                                                            |
+| GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET | Une alternative à la saisie dans l'écran Ayarlar. La valeur saisie à l'écran est prioritaire                                         |
+| PAGESPEED_API_KEY                      | Une alternative à la saisie dans l'écran Ayarlar                                                                                     |
 | MCP_TOKEN                              | Vide, il est généré au premier démarrage. Avec `off`, aucun mot de passe n'est demandé. Toute autre valeur est utilisée telle quelle |
 
 ## Vérification

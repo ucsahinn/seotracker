@@ -18,12 +18,12 @@ L'application associe chacune de vos pages dans Search Console à son équivalen
 
 **Quatre groupes.** Chaque page entre dans l'un des quatre groupes. Le nom du groupe apparaît en étiquette sur la ligne.
 
-| Groupe                    | Ce que cela veut dire                                                                       | Que faire                                                                                          |
-| ------------------------- | ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| **Az tıklanan** (Peu cliquées)        | Dans les 20 premières positions. Le taux de clic est inférieur à la moitié de celui de vos pages à la même position | Réécrivez le titre et la description. Le texte affiché dans la recherche n'attire pas              |
-| **Yükselmeye yakın** (Proches de monter) | Position entre 4 et 20                                                                      | Développez le contenu, ajoutez des liens internes. Cela peut gagner une ou deux places             |
-| **İlk sıralarda** (Aux premières places) | Dans les 3 premières positions                                                              | Préservez. Gardez la page à jour et assurez-vous qu'elle ne se dégrade pas                         |
-| **Derinde kalan** (Enfouies)       | Après la 20e position                                                                       | Demandez-vous si la page répond vraiment à cette recherche. La bonne page est peut-être une autre  |
+| Groupe                                   | Ce que cela veut dire                                                                                               | Que faire                                                                                         |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| **Az tıklanan** (Peu cliquées)           | Dans les 20 premières positions. Le taux de clic est inférieur à la moitié de celui de vos pages à la même position | Réécrivez le titre et la description. Le texte affiché dans la recherche n'attire pas             |
+| **Yükselmeye yakın** (Proches de monter) | Position entre 4 et 20                                                                                              | Développez le contenu, ajoutez des liens internes. Cela peut gagner une ou deux places            |
+| **İlk sıralarda** (Aux premières places) | Dans les 3 premières positions                                                                                      | Préservez. Gardez la page à jour et assurez-vous qu'elle ne se dégrade pas                        |
+| **Derinde kalan** (Enfouies)             | Après la 20e position                                                                                               | Demandez-vous si la page répond vraiment à cette recherche. La bonne page est peut-être une autre |
 
 Un lien interne est un lien que vous placez, sur votre site, d'une page vers une autre.
 

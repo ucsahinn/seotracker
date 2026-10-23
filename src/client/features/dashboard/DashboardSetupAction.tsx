@@ -61,12 +61,12 @@ export function DashboardSetupAction({
     return (
       <div className="max-w-2xl space-y-4">
         <p className="text-sm leading-relaxed text-muted">
-          Bu istemi ajanınıza yapıştırın; seotracker&apos;ı sizin için
+          Bu istemi ajanınıza yapıştırın; seowatcher&apos;ı sizin için
           kendiliğinden kuracak.
         </p>
         <div className="flex flex-col gap-4 rounded-box border border-base-300 bg-base-200/25 p-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="text-sm font-medium">seotracker eklentisi</p>
+            <p className="text-sm font-medium">seowatcher eklentisi</p>
             <p className="mt-1 text-xs text-muted">
               Ajan bağlantısı (MCP) ve hazır SEO görevleri
             </p>

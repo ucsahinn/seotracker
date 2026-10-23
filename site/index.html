@@ -63,7 +63,7 @@
     <meta property="og:locale:alternate" content="de_DE" />
     <meta property="og:locale:alternate" content="fr_FR" />
     <meta property="og:locale:alternate" content="it_IT" />
-    <meta property="og:locale:alternate" content="pt_PT" />
+    <meta property="og:locale:alternate" content="pt_BR" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
@@ -76,7 +76,7 @@
     <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
     <meta name="color-scheme" content="dark" />
     <meta name="theme-color" content="#131110" />
-    <script src="/assets/site.js?v=2.4.0" defer></script>
+    <script src="/assets/site.js?v=2.4.1" defer></script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -87,7 +87,7 @@
             "url": "https://seowatcher.io/",
             "name": "seowatcher",
             "alternateName": ["seotracker"],
-            "inLanguage": "tr",
+            "inLanguage": ["tr", "en", "de", "fr", "it", "pt"],
             "publisher": { "@id": "https://seowatcher.io/#author" }
           },
           {
@@ -104,7 +104,7 @@
               "width": 1200,
               "height": 630
             },
-            "dateModified": "2026-10-22"
+            "dateModified": "2026-10-23"
           },
           {
             "@type": "Organization",
@@ -123,11 +123,11 @@
             "description": "Google Search Console, Google Analytics 4, kendi site tarama aracı ve PageSpeed Insights verisini tek panelde gösteren ücretsiz, açık kaynaklı (MIT) masaüstü SEO uygulaması. Windows 10/11'e kurulur, Mac ve Linux'ta Docker ile çalışır. Tek kullanıcılıdır, yalnızca kendi bilgisayarınızdan açılır.",
             "applicationCategory": "BusinessApplication",
             "operatingSystem": "Windows 10, Windows 11 (64-bit)",
-            "softwareVersion": "2.4.0",
-            "datePublished": "2026-10-22",
+            "softwareVersion": "2.4.1",
+            "datePublished": "2026-10-23",
             "fileSize": "81 MB",
             "inLanguage": "tr",
-            "downloadUrl": "https://github.com/ucsahinn/seotracker/releases/download/v2.4.0/seowatcher-setup-2.4.0.exe",
+            "downloadUrl": "https://github.com/ucsahinn/seotracker/releases/download/v2.4.1/seowatcher-setup-2.4.1.exe",
             "installUrl": "https://github.com/ucsahinn/seotracker#kurulum",
             "releaseNotes": "https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md",
             "license": "https://spdx.org/licenses/MIT.html",
@@ -135,7 +135,7 @@
             "offers": {
               "@type": "Offer",
               "price": "0",
-              "priceCurrency": "TRY",
+              "priceCurrency": "USD",
               "availability": "https://schema.org/InStock",
               "url": "https://seowatcher.io/#kurulum"
             },
@@ -1738,6 +1738,10 @@
         display: grid;
         gap: 22px;
       }
+      .facts .definition {
+        margin: 0 0 clamp(24px, 3vw, 36px);
+        max-width: 70ch;
+      }
       .facts dl {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1756,6 +1760,10 @@
         color: var(--subtle);
       }
       @media (max-width: 760px) {
+        .facts .definition {
+          margin: 0 0 clamp(24px, 3vw, 36px);
+          max-width: 70ch;
+        }
         .facts dl {
           grid-template-columns: 1fr;
         }
@@ -2014,7 +2022,7 @@
         </nav>
         <a
           class="btn primary small cta"
-          href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.0/seowatcher-setup-2.4.0.exe"
+          href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.1/seowatcher-setup-2.4.1.exe"
           >Windows için indir</a
         >
         <button
@@ -2070,7 +2078,7 @@
         </nav>
         <a
           class="btn primary"
-          href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.0/seowatcher-setup-2.4.0.exe"
+          href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.1/seowatcher-setup-2.4.1.exe"
           >Windows için indir</a
         >
       </nav>
@@ -2092,7 +2100,7 @@
               <a
                 class="btn primary"
                 data-magnet
-                href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.0/seowatcher-setup-2.4.0.exe"
+                href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.1/seowatcher-setup-2.4.1.exe"
                 >Windows için indir
                 <span class="arrow" aria-hidden="true">↓</span></a
               >
@@ -2816,7 +2824,7 @@
               <p class="big">Windows kurulum dosyası</p>
               <dl>
                 <dt>Sürüm</dt>
-                <dd>2.4.0, 23 Ekim 2026</dd>
+                <dd>2.4.1, 23 Ekim 2026</dd>
                 <dt>Boyut</dt>
                 <dd>81 MB</dd>
                 <dt>Gereksinimler</dt>
@@ -2836,14 +2844,14 @@
               <a
                 class="btn primary"
                 data-magnet
-                href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.0/seowatcher-setup-2.4.0.exe"
+                href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.1/seowatcher-setup-2.4.1.exe"
                 >Windows için indir
                 <span class="arrow" aria-hidden="true">↓</span></a
               >
               <div class="alt">
                 <p>
-                  Aynı uygulama iki adla geçer: uygulamanın içinde ve GitHub'da
-                  seotracker, bu sitede ve kurulum dosyasında seowatcher.
+                  GitHub deposunun adı seotracker; uygulama, bu site ve kurulum
+                  dosyası seowatcher adını taşır.
                 </p>
                 <p>
                   Mac ve Linux'ta Docker ile kurulur.
@@ -2860,10 +2868,17 @@
       <section class="facts" aria-labelledby="h-kisaca">
         <div class="wrap">
           <h2 id="h-kisaca" class="reveal">Kısaca</h2>
+          <p class="lede definition reveal" style="--d: 60">
+            seowatcher, Google Search Console, Google Analytics 4, kendi site
+            tarayıcısı ve PageSpeed Insights verisini tek panelde gösteren
+            ücretsiz, MIT lisanslı bir SEO uygulamasıdır. Windows 10 ve 11'e tek
+            dosyayla kurulur, Mac ve Linux'ta Docker ile çalışır; veriniz
+            bilgisayarınızda kalır. GitHub deposunun adı seotracker'dır.
+          </p>
           <dl class="reveal" style="--d: 100">
             <div class="row">
               <dt>Ad</dt>
-              <dd>seowatcher (GitHub'da ve uygulamanın içinde: seotracker)</dd>
+              <dd>seowatcher (GitHub deposu: seotracker)</dd>
             </div>
             <div class="row">
               <dt>Fiyat ve lisans</dt>
@@ -2897,7 +2912,7 @@
             </div>
             <div class="row">
               <dt>Sürüm</dt>
-              <dd>2.4.0, 23 Ekim 2026</dd>
+              <dd>2.4.1, 23 Ekim 2026</dd>
             </div>
             <div class="row">
               <dt>Boyut</dt>
@@ -2917,8 +2932,7 @@
               <dt>Yapmadıkları</dt>
               <dd>
                 Arama hacmi tahmini, backlink sayımı, rakip sıralaması; bulutta
-                çalışmaz (yakında: gösterimlerden yaklaşık talep ve ev ağından
-                erişim)
+                çalışmaz
               </dd>
             </div>
             <div class="row">
@@ -3030,7 +3044,7 @@
             <a
               class="btn primary"
               data-magnet
-              href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.0/seowatcher-setup-2.4.0.exe"
+              href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.1/seowatcher-setup-2.4.1.exe"
               >Windows için indir
               <span class="arrow" aria-hidden="true">↓</span></a
             >
@@ -3073,10 +3087,7 @@
             ><a href="/docs/sorun-giderme/">Sorun giderme</a
             ><a href="https://github.com/ucsahinn/seotracker/issues"
               >Sorun bildir</a
-            ><a
-              href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"
-              >Sürüm notları</a
-            >
+            ><a href="/docs/surum-notlari/">Sürüm notları</a>
             <nav class="langrow" aria-label="Dil">
               <a href="/" lang="tr" hreflang="tr" aria-current="page"
                 ><span class="flag"

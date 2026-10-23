@@ -70,7 +70,7 @@ export function GoogleAccountRemovalDialog({
         </h3>
         <p className="break-all text-sm font-medium">{label}</p>
         <p className="text-sm text-muted">
-          Bu hesabın {name} bağlantısı seotracker&apos;dan kaldırılır.
+          Bu hesabın {name} bağlantısı seowatcher&apos;dan kaldırılır.
           İstediğiniz zaman yeniden bağlayabilirsiniz.
         </p>
         {impact.isPending ? (

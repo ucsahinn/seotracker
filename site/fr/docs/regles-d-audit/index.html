@@ -77,23 +77,37 @@
       property="og:description"
       content="La liste complète des 95 règles que l'audit du site contrôle. Vous lisez ici ce que signifie chaque règle et comment la corriger."
     />
-    <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
+    <meta
+      property="og:image"
+      content="https://seowatcher.io/assets/og-fr.png"
+    />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="seowatcher" />
+    <meta
+      property="og:image:alt"
+      content="Guide seowatcher : installation, écrans et dépannage"
+    />
     <meta property="article:modified_time" content="2026-10-23" />
     <meta
       property="og:url"
       content="https://seowatcher.io/fr/docs/regles-d-audit/"
     />
     <meta property="og:locale" content="fr_FR" />
+    <meta property="og:locale:alternate" content="tr_TR" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:locale:alternate" content="de_DE" />
+    <meta property="og:locale:alternate" content="it_IT" />
+    <meta property="og:locale:alternate" content="pt_BR" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Règles d'audit | Guide seowatcher" />
     <meta
       name="twitter:description"
       content="La liste complète des 95 règles que l'audit du site contrôle. Vous lisez ici ce que signifie chaque règle et comment la corriger."
     />
-    <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
+    <meta
+      name="twitter:image"
+      content="https://seowatcher.io/assets/og-fr.png"
+    />
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">
       {
@@ -163,7 +177,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=2.4.0" defer></script>
+    <script src="/assets/docs.js?v=2.4.1" defer></script>
     <meta name="theme-color" content="#272c3b" />
     <style>
       @font-face {
@@ -875,6 +889,47 @@
       }
 
       /* Guide pass: callouts, pager, copy buttons, mobile sidebar, tables. */
+      /* Release notes: the summary as cards, the lead of every item in amber. */
+      article[data-page="surum-notlari"] li > strong:first-child {
+        color: var(--accent-2);
+      }
+      article[data-page="surum-notlari"] h2 {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      article[data-page="surum-notlari"] h2::before {
+        content: "";
+        width: 4px;
+        height: 0.9em;
+        border-radius: 999px;
+        background: var(--accent);
+        flex: none;
+      }
+      article[data-page="surum-notlari"] h2:first-of-type + ul {
+        list-style: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 12px;
+      }
+      article[data-page="surum-notlari"] h2:first-of-type + ul li {
+        margin: 0;
+        padding: 16px 18px;
+        border: 1px solid var(--hairline);
+        border-radius: 14px;
+        background: linear-gradient(var(--glass), var(--glass)), var(--bg);
+        line-height: 1.5;
+      }
+      article[data-page="surum-notlari"]
+        h2:first-of-type
+        + ul
+        li
+        > strong:first-child {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 1.05em;
+      }
       .callout {
         position: relative;
         padding: 12px 16px 12px 18px;
@@ -1355,10 +1410,11 @@
               >
             </li>
             <li><a href="/fr/docs/depannage/">Dépannage</a></li>
+            <li><a href="/fr/docs/notes-de-version/">Notes de version</a></li>
           </ul>
         </details>
       </aside>
-      <article id="icerik">
+      <article id="icerik" data-page="denetim-kurallari">
         <h1>Règles d'audit</h1>
         <p class="lede">
           La liste complète des 95 règles que l'audit du site contrôle. Vous
@@ -1383,7 +1439,7 @@
           à l'écran. La dernière colonne est l'identifiant de la règle, que vous
           voyez dans le fichier CSV et dans les réponses de l'assistant.
         </p>
-        <h2 id="termes-fr-quents">Termes fréquents</h2>
+        <h2 id="termes-frequents">Termes fréquents</h2>
         <ul>
           <li>
             <strong>canonical</strong> : la façon de dire à Google « voici
@@ -2420,7 +2476,7 @@
             </tbody>
           </table>
         </div>
-        <h2 id="comment-les-r-gles-fonctionnent">
+        <h2 id="comment-les-regles-fonctionnent">
           Comment les règles fonctionnent
         </h2>
         <p>
@@ -2460,12 +2516,12 @@
       <nav class="toc" aria-label="Sur cette page">
         <p class="toc-label">Sur cette page</p>
         <ol>
-          <li><a href="#termes-fr-quents">Termes fréquents</a></li>
+          <li><a href="#termes-frequents">Termes fréquents</a></li>
           <li><a href="#kritik-critique">Kritik (Critique)</a></li>
           <li><a href="#uyari-avertissement">Uyarı (Avertissement)</a></li>
           <li><a href="#bilgi-info">Bilgi (Info)</a></li>
           <li>
-            <a href="#comment-les-r-gles-fonctionnent"
+            <a href="#comment-les-regles-fonctionnent"
               >Comment les règles fonctionnent</a
             >
           </li>
@@ -2478,10 +2534,7 @@
         <span
           ><a href="/fr/">Accueil</a> &nbsp;
           <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
-          <a
-            href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"
-            >Notes de version</a
-          ></span
+          <a href="/fr/docs/notes-de-version/">Notes de version</a></span
         >
       </div>
     </footer>

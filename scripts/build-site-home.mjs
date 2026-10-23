@@ -444,7 +444,9 @@ function build(locale, { strict = true } = {}) {
       const open = /^<script[^>]*>/.exec(tok)[0];
       const data = JSON.parse(tok.slice(open.length, -"</script>".length));
       const translated = mapJson(data, (s, key, parent) => {
-        if (key === "inLanguage") return lang;
+        // The site entity lists every edition; everything else is this one.
+        if (key === "inLanguage")
+          return parent?.["@type"] === "WebSite" ? s : lang;
         // The site, its publisher and the app are one entity in both languages.
         if (
           key === "url" &&
@@ -452,7 +454,6 @@ function build(locale, { strict = true } = {}) {
           /^(WebSite|Organization|SoftwareApplication)$/.test(parent["@type"])
         )
           return s;
-        if (key === "priceCurrency") return lang === "en" ? "USD" : "EUR";
         // Entities that are the same thing in every language keep one id;
         // everything else (the page, its breadcrumb, its FAQ) gets the
         // edition's id.
@@ -518,6 +519,11 @@ function build(locale, { strict = true } = {}) {
     )
     .replace(/content="https:\/\/seowatcher\.io\/"/g, `content="${home}"`);
   page = rewriteLinks(page, locale);
+  // Each edition shares a card with its own words on it.
+  page = page.replaceAll(
+    "https://seowatcher.io/assets/og.png",
+    `https://seowatcher.io/assets/og-${lang}.png`,
+  );
   page = putLangBlocks(page, locale);
   // "0 ₺" means nothing abroad; the tile simply says Free in that language.
   page = page.replace(

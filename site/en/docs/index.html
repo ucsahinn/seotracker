@@ -36,24 +36,29 @@
       type="font/woff2"
       crossorigin
     />
-    <meta property="og:type" content="article" />
+    <meta property="og:type" content="website" />
     <meta property="og:site_name" content="seowatcher" />
     <meta property="og:title" content="seowatcher guide: setup, screens and troubleshooting" />
     <meta property="og:description" content="seowatcher guides: installation, what every screen shows, the Google connection, audit rules, agent setup and troubleshooting." />
-    <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
+    <meta property="og:image" content="https://seowatcher.io/assets/og-en.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="seowatcher" />
+    <meta property="og:image:alt" content="seowatcher guide: setup, screens and troubleshooting" />
     <meta property="article:modified_time" content="2026-10-23" />
     <meta property="og:url" content="https://seowatcher.io/en/docs/" />
     <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="tr_TR" />
+    <meta property="og:locale:alternate" content="de_DE" />
+    <meta property="og:locale:alternate" content="fr_FR" />
+    <meta property="og:locale:alternate" content="it_IT" />
+    <meta property="og:locale:alternate" content="pt_BR" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="seowatcher guide: setup, screens and troubleshooting" />
     <meta name="twitter:description" content="seowatcher guides: installation, what every screen shows, the Google connection, audit rules, agent setup and troubleshooting." />
-    <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
+    <meta name="twitter:image" content="https://seowatcher.io/assets/og-en.png" />
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en","de","fr","it","pt"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"CollectionPage","@id":"https://seowatcher.io/en/docs/#page","name":"Guide","description":"seowatcher guides: installation, what every screen shows, the Google connection, audit rules, agent setup and troubleshooting.","url":"https://seowatcher.io/en/docs/","inLanguage":"en","dateModified":"2026-10-23","about":{"@id":"https://seowatcher.io/#app"},"isPartOf":{"@id":"https://seowatcher.io/#website"}},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/en/docs/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/en/"},{"@type":"ListItem","position":2,"name":"Guide","item":"https://seowatcher.io/en/docs/"}]}]}</script>
-    <script src="/assets/docs.js?v=2.4.0" defer></script>
+    <script src="/assets/docs.js?v=2.4.1" defer></script>
     <meta name="theme-color" content="#272c3b" />
     <style>
       @font-face {
@@ -765,6 +770,47 @@
       }
 
       /* Guide pass: callouts, pager, copy buttons, mobile sidebar, tables. */
+      /* Release notes: the summary as cards, the lead of every item in amber. */
+      article[data-page="surum-notlari"] li > strong:first-child {
+        color: var(--accent-2);
+      }
+      article[data-page="surum-notlari"] h2 {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      article[data-page="surum-notlari"] h2::before {
+        content: "";
+        width: 4px;
+        height: 0.9em;
+        border-radius: 999px;
+        background: var(--accent);
+        flex: none;
+      }
+      article[data-page="surum-notlari"] h2:first-of-type + ul {
+        list-style: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 12px;
+      }
+      article[data-page="surum-notlari"] h2:first-of-type + ul li {
+        margin: 0;
+        padding: 16px 18px;
+        border: 1px solid var(--hairline);
+        border-radius: 14px;
+        background: linear-gradient(var(--glass), var(--glass)), var(--bg);
+        line-height: 1.5;
+      }
+      article[data-page="surum-notlari"]
+        h2:first-of-type
+        + ul
+        li
+        > strong:first-child {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 1.05em;
+      }
       .callout {
         position: relative;
         padding: 12px 16px 12px 18px;
@@ -1070,11 +1116,11 @@
       <aside class="side" aria-label="Guide">
         <details class="side-dd" open>
           <summary>Guide</summary>
-          <p class="nav-group">Getting started</p><ul><li><a href="/en/docs/install-windows/">Install on Windows</a></li><li><a href="/en/docs/install-docker/">Installing with Docker</a></li><li><a href="/en/docs/google-connection/">Connecting to Google</a></li><li><a href="/en/docs/pagespeed-key/">PageSpeed key</a></li></ul><p class="nav-group">Screens</p><ul><li><a href="/en/docs/projects/">Projects</a></li><li><a href="/en/docs/dashboard/">Dashboard</a></li><li><a href="/en/docs/search-performance/">Search performance</a></li><li><a href="/en/docs/rank-tracking/">Ranking tracking</a></li><li><a href="/en/docs/opportunities/">Opportunities</a></li><li><a href="/en/docs/saved-keywords/">Saved keywords</a></li><li><a href="/en/docs/analytics/">Analytics</a></li><li><a href="/en/docs/site-audit/">Site audit</a></li><li><a href="/en/docs/index-status/">Index status</a></li><li><a href="/en/docs/reports/">Reports and templates</a></li><li><a href="/en/docs/project-context/">Project info</a></li><li><a href="/en/docs/settings/">Settings</a></li></ul><p class="nav-group">Reference</p><ul><li><a href="/en/docs/help/">Help</a></li><li><a href="/en/docs/audit-rules/">Audit rules</a></li><li><a href="/en/docs/agent-setup/">Agent setup</a></li><li><a href="/en/docs/troubleshooting/">Troubleshooting</a></li></ul>
+          <p class="nav-group">Getting started</p><ul><li><a href="/en/docs/install-windows/">Install on Windows</a></li><li><a href="/en/docs/install-docker/">Installing with Docker</a></li><li><a href="/en/docs/google-connection/">Connecting to Google</a></li><li><a href="/en/docs/pagespeed-key/">PageSpeed key</a></li></ul><p class="nav-group">Screens</p><ul><li><a href="/en/docs/projects/">Projects</a></li><li><a href="/en/docs/dashboard/">Dashboard</a></li><li><a href="/en/docs/search-performance/">Search performance</a></li><li><a href="/en/docs/rank-tracking/">Ranking tracking</a></li><li><a href="/en/docs/opportunities/">Opportunities</a></li><li><a href="/en/docs/saved-keywords/">Saved keywords</a></li><li><a href="/en/docs/analytics/">Analytics</a></li><li><a href="/en/docs/site-audit/">Site audit</a></li><li><a href="/en/docs/index-status/">Index status</a></li><li><a href="/en/docs/reports/">Reports and templates</a></li><li><a href="/en/docs/project-context/">Project info</a></li><li><a href="/en/docs/settings/">Settings</a></li></ul><p class="nav-group">Reference</p><ul><li><a href="/en/docs/help/">Help</a></li><li><a href="/en/docs/audit-rules/">Audit rules</a></li><li><a href="/en/docs/agent-setup/">Agent setup</a></li><li><a href="/en/docs/troubleshooting/">Troubleshooting</a></li><li><a href="/en/docs/release-notes/">Release notes</a></li></ul>
         </details>
       </aside>
-      <article id="icerik">
-        <h1>Guide</h1><p class="lede">A short, plain walkthrough of every step and every screen, from installation to the first report. The app is called seotracker on GitHub and seowatcher on this site; they are the same thing.</p><h2 id="getting-started">Getting started</h2><ul class="index"><li><a href="/en/docs/install-windows/">Install on Windows</a><span>Install on Windows with a single file. First launch, update, uninstall, backup and changing the port number. No Docker or terminal needed.</span></li><li><a href="/en/docs/install-docker/">Installing with Docker</a><span>Install with Docker on Mac, Linux and Windows. One command is enough, and no .env file is needed. Your data stays in Docker's data volume.</span></li><li><a href="/en/docs/google-connection/">Connecting to Google</a><span>To read Search Console and Analytics 4 data, get a one-time access key from Google, paste it into the app and choose your site. Step by step.</span></li><li><a href="/en/docs/pagespeed-key/">PageSpeed key</a><span>Get a free Google PageSpeed key to measure page speed and enter it in the app. Without a key, measurement stays limited to 50 pages.</span></li></ul><h2 id="screens">Screens</h2><ul class="index"><li><a href="/en/docs/projects/">Projects</a><span>Creating a new project, choosing the site and country, renaming, managing Google connections, and archiving and restoring a project.</span></li><li><a href="/en/docs/dashboard/">Dashboard</a><span>The first screen you see when you open a project. The search numbers for the last 28 days, the latest audit summary and your to-do items in one place.</span></li><li><a href="/en/docs/search-performance/">Search performance</a><span>See which searches you appear in on Google and how many people click. By query, page, country and device, up to 16 months back.</span></li><li><a href="/en/docs/rank-tracking/">Ranking tracking</a><span>See the average Google position of your searches day by day. The data is stored on this computer, so you can look further back than Google's 16-month limit.</span></li><li><a href="/en/docs/opportunities/">Opportunities</a><span>Tells you which of your pages to touch this week. It splits pages into four groups, scores them and writes the job to do for each.</span></li><li><a href="/en/docs/saved-keywords/">Saved keywords</a><span>Tag the searches you have saved here, follow their average position over the last 90 days, and export to CSV or Sheets.</span></li><li><a href="/en/docs/analytics/">Analytics</a><span>See what visitors from search do next. Google Analytics 4 reports, key events and whether your measurement is working properly.</span></li><li><a href="/en/docs/site-audit/">Site audit</a><span>The app walks through your site page by page, checks it against 95 rules and puts the problems in order of importance. Each problem comes with what to do about it.</span></li><li><a href="/en/docs/index-status/">Index status</a><span>Google's answer for each of your pages: is it in search, if not why, and when it last visited. You can ask at most 2,000 queries a day.</span></li><li><a href="/en/docs/reports/">Reports and templates</a><span>The reports you download from an audit or have your assistant write are a single HTML file. It opens on a phone, can be printed and can be shared.</span></li><li><a href="/en/docs/project-context/">Project info</a><span>The place where you write what is not written anywhere else about your site: a summary of the business, the goal, competitors, key pages. Your assistant reads it before starting work.</span></li><li><a href="/en/docs/settings/">Settings</a><span>Theme, Google access key, PageSpeed key, usage limits, version and update check. The one settings screen for the whole installation.</span></li></ul><h2 id="reference">Reference</h2><ul class="index"><li><a href="/en/docs/help/">Help</a><span>The setup status card, quick actions, common problems and the diagnostics package you send when you report a problem.</span></li><li><a href="/en/docs/audit-rules/">Audit rules</a><span>The list of 95 rules the site audit checks. For each rule you find what it means and how to fix it.</span></li><li><a href="/en/docs/agent-setup/">Agent setup</a><span>Connect Claude Code, Codex or Cursor to the app. The address, the password, the 33 tools and 6 ready-made task templates, and which ones use up Google quota.</span></li><li><a href="/en/docs/troubleshooting/">Troubleshooting</a><span>The most common problems: symptom, cause and fix. Port in use, the Windows warning, Google errors, quota, a stuck audit, empty charts, assistant 401.</span></li></ul> 
+      <article id="icerik" data-page="index">
+        <h1>Guide</h1><p class="lede">A short, plain walkthrough of every step and every screen, from installation to the first report. The app is called seotracker on GitHub and seowatcher on this site; they are the same thing.</p><h2 id="getting-started">Getting started</h2><ul class="index"><li><a href="/en/docs/install-windows/">Install on Windows</a><span>Install on Windows with a single file. First launch, update, uninstall, backup and changing the port number. No Docker or terminal needed.</span></li><li><a href="/en/docs/install-docker/">Installing with Docker</a><span>Install with Docker on Mac, Linux and Windows. One command is enough, and no .env file is needed. Your data stays in Docker's data volume.</span></li><li><a href="/en/docs/google-connection/">Connecting to Google</a><span>To read Search Console and Analytics 4 data, get a one-time access key from Google, paste it into the app and choose your site. Step by step.</span></li><li><a href="/en/docs/pagespeed-key/">PageSpeed key</a><span>Get a free Google PageSpeed key to measure page speed and enter it in the app. Without a key, measurement stays limited to 50 pages.</span></li></ul><h2 id="screens">Screens</h2><ul class="index"><li><a href="/en/docs/projects/">Projects</a><span>Creating a new project, choosing the site and country, renaming, managing Google connections, and archiving and restoring a project.</span></li><li><a href="/en/docs/dashboard/">Dashboard</a><span>The first screen you see when you open a project. The search numbers for the last 28 days, the latest audit summary and your to-do items in one place.</span></li><li><a href="/en/docs/search-performance/">Search performance</a><span>See which searches you appear in on Google and how many people click. By query, page, country and device, up to 16 months back.</span></li><li><a href="/en/docs/rank-tracking/">Ranking tracking</a><span>See the average Google position of your searches day by day. The data is stored on this computer, so you can look further back than Google's 16-month limit.</span></li><li><a href="/en/docs/opportunities/">Opportunities</a><span>Tells you which of your pages to touch this week. It splits pages into four groups, scores them and writes the job to do for each.</span></li><li><a href="/en/docs/saved-keywords/">Saved keywords</a><span>Tag the searches you have saved here, follow their average position over the last 90 days, and export to CSV or Sheets.</span></li><li><a href="/en/docs/analytics/">Analytics</a><span>See what visitors from search do next. Google Analytics 4 reports, key events and whether your measurement is working properly.</span></li><li><a href="/en/docs/site-audit/">Site audit</a><span>The app walks through your site page by page, checks it against 95 rules and puts the problems in order of importance. Each problem comes with what to do about it.</span></li><li><a href="/en/docs/index-status/">Index status</a><span>Google's answer for each of your pages: is it in search, if not why, and when it last visited. You can ask at most 2,000 queries a day.</span></li><li><a href="/en/docs/reports/">Reports and templates</a><span>The reports you download from an audit or have your assistant write are a single HTML file. It opens on a phone, can be printed and can be shared.</span></li><li><a href="/en/docs/project-context/">Project info</a><span>The place where you write what is not written anywhere else about your site: a summary of the business, the goal, competitors, key pages. Your assistant reads it before starting work.</span></li><li><a href="/en/docs/settings/">Settings</a><span>Theme, Google access key, PageSpeed key, usage limits, version and update check. The one settings screen for the whole installation.</span></li></ul><h2 id="reference">Reference</h2><ul class="index"><li><a href="/en/docs/help/">Help</a><span>The setup status card, quick actions, common problems and the diagnostics package you send when you report a problem.</span></li><li><a href="/en/docs/audit-rules/">Audit rules</a><span>The list of 95 rules the site audit checks. For each rule you find what it means and how to fix it.</span></li><li><a href="/en/docs/agent-setup/">Agent setup</a><span>Connect Claude Code, Codex or Cursor to the app. The address, the password, the 33 tools and 6 ready-made task templates, and which ones use up Google quota.</span></li><li><a href="/en/docs/troubleshooting/">Troubleshooting</a><span>The most common problems: symptom, cause and fix. Port in use, the Windows warning, Google errors, quota, a stuck audit, empty charts, assistant 401.</span></li><li><a href="/en/docs/release-notes/">Release notes</a><span>What changed in seowatcher 2.4.1. One-file install on Windows, an app that updates itself, simpler screens and a site in six languages.</span></li></ul> 
         <p class="meta">
           Last updated: October 23, 2026. Spotted a mistake?
           <a href="https://github.com/ucsahinn/seotracker/issues"
@@ -1090,10 +1136,7 @@
         <span
           ><a href="/en/">Home</a> &nbsp;
           <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
-          <a
-            href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"
-            >Release notes</a
-          ></span
+          <a href="/en/docs/release-notes/">Release notes</a></span
         >
       </div>
     </footer>

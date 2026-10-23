@@ -147,7 +147,7 @@ function AiPage() {
           internal spacing, not the shell's. */}
       <PageHeader
         title="Ajan kurulumu"
-        description="seotracker'ı yapay zeka ajanınızla kullanabilirsiniz. Bir kez bağlayın, sonra ne istiyorsanız ona sorun."
+        description="seowatcher'ı yapay zeka ajanınızla kullanabilirsiniz. Bir kez bağlayın, sonra ne istiyorsanız ona sorun."
         actions={
           /* `aria-live` is not decoration: the operator tabs away, pastes
                the prompt into their agent, and tabs back — the query refetches
@@ -204,7 +204,7 @@ function AiPage() {
             <section className="rounded-box border border-base-300 bg-base-100 p-5">
               <h2 className="text-base font-semibold">Ajanınızı bağlayın</h2>
               <p className="mt-2 text-sm leading-relaxed text-muted">
-                Komutu ajanınıza yapıştırın. Ajan seotracker&apos;ı bağlar, SEO
+                Komutu ajanınıza yapıştırın. Ajan seowatcher&apos;ı bağlar, SEO
                 becerilerini kurar, elle yapacağınız adımlarda size yol
                 gösterir.
               </p>
@@ -264,7 +264,7 @@ function AiPage() {
                       it rather than next to the badge that reports it. */}
                 {lastCallAt ? null : (
                   <>
-                    Ajanınız seotracker&apos;a ilk kez istek attığında
+                    Ajanınız seowatcher&apos;a ilk kez istek attığında
                     yukarıdaki durum değişir.
                   </>
                 )}

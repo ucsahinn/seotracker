@@ -80,16 +80,27 @@
       property="og:description"
       content="Instale com Docker no Mac, no Linux e no Windows. Um comando basta e não é preciso criar um arquivo .env. Seus dados ficam no volume de dados do Docker."
     />
-    <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
+    <meta
+      property="og:image"
+      content="https://seowatcher.io/assets/og-pt.png"
+    />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="seowatcher" />
+    <meta
+      property="og:image:alt"
+      content="Guia do seowatcher: instalação, telas e solução de problemas"
+    />
     <meta property="article:modified_time" content="2026-10-23" />
     <meta
       property="og:url"
       content="https://seowatcher.io/pt/docs/instalar-docker/"
     />
-    <meta property="og:locale" content="pt_PT" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:locale:alternate" content="tr_TR" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:locale:alternate" content="de_DE" />
+    <meta property="og:locale:alternate" content="fr_FR" />
+    <meta property="og:locale:alternate" content="it_IT" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
@@ -99,7 +110,10 @@
       name="twitter:description"
       content="Instale com Docker no Mac, no Linux e no Windows. Um comando basta e não é preciso criar um arquivo .env. Seus dados ficam no volume de dados do Docker."
     />
-    <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
+    <meta
+      name="twitter:image"
+      content="https://seowatcher.io/assets/og-pt.png"
+    />
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">
       {
@@ -169,7 +183,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=2.4.0" defer></script>
+    <script src="/assets/docs.js?v=2.4.1" defer></script>
     <meta name="theme-color" content="#272c3b" />
     <style>
       @font-face {
@@ -881,6 +895,47 @@
       }
 
       /* Guide pass: callouts, pager, copy buttons, mobile sidebar, tables. */
+      /* Release notes: the summary as cards, the lead of every item in amber. */
+      article[data-page="surum-notlari"] li > strong:first-child {
+        color: var(--accent-2);
+      }
+      article[data-page="surum-notlari"] h2 {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      article[data-page="surum-notlari"] h2::before {
+        content: "";
+        width: 4px;
+        height: 0.9em;
+        border-radius: 999px;
+        background: var(--accent);
+        flex: none;
+      }
+      article[data-page="surum-notlari"] h2:first-of-type + ul {
+        list-style: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 12px;
+      }
+      article[data-page="surum-notlari"] h2:first-of-type + ul li {
+        margin: 0;
+        padding: 16px 18px;
+        border: 1px solid var(--hairline);
+        border-radius: 14px;
+        background: linear-gradient(var(--glass), var(--glass)), var(--bg);
+        line-height: 1.5;
+      }
+      article[data-page="surum-notlari"]
+        h2:first-of-type
+        + ul
+        li
+        > strong:first-child {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 1.05em;
+      }
       .callout {
         position: relative;
         padding: 12px 16px 12px 18px;
@@ -1359,10 +1414,11 @@
             <li>
               <a href="/pt/docs/solucao-de-problemas/">Solução de problemas</a>
             </li>
+            <li><a href="/pt/docs/notas-da-versao/">Notas da versão</a></li>
           </ul>
         </details>
       </aside>
-      <article id="icerik">
+      <article id="icerik" data-page="kurulum-docker">
         <h1>Instalar com Docker</h1>
         <p class="lede">
           Instale com Docker no Mac, no Linux e no Windows. Um comando basta e
@@ -1378,7 +1434,7 @@
           leva alguns minutos, porque o aplicativo é construído dentro da caixa
           (o contêiner). As inicializações seguintes levam segundos.
         </p>
-        <h2 id="o-que-voc-precisa">O que você precisa</h2>
+        <h2 id="o-que-voce-precisa">O que você precisa</h2>
         <ul>
           <li>
             No Windows, o Docker Desktop exige o WSL 2 e a virtualização ativada
@@ -1441,7 +1497,7 @@ cd seotracker</code></pre>
           <li><code>http://localhost:3001/api/gsc/oauth/callback</code></li>
           <li><code>http://localhost:3001/api/ga4/oauth/callback</code></li>
         </ul>
-        <h3 id="atualizac-o">Atualização</h3>
+        <h3 id="atualizacao">Atualização</h3>
         <p>Execute estes dois comandos:</p>
         <div class="code">
           <pre><code>git pull
@@ -1485,7 +1541,7 @@ docker compose up -d</code></pre>
           criptografa as conexões com o Google. Um backup sem ele abre sem as
           conexões com o Google.
         </p>
-        <h3 id="configurac-es-opcional">Configurações (opcional)</h3>
+        <h3 id="configuracoes-opcional">Configurações (opcional)</h3>
         <p>
           Nenhuma configuração é obrigatória. Se quiser mudar algo, coloque um
           arquivo <code>.env</code> na pasta do projeto. Depois execute
@@ -1555,7 +1611,7 @@ docker compose up -d</code></pre>
             </tbody>
           </table>
         </div>
-        <h2 id="verificac-o">Verificação</h2>
+        <h2 id="verificacao">Verificação</h2>
         <ul>
           <li>
             Na saída de <code>docker compose ps</code>, o estado deve ser
@@ -1656,9 +1712,9 @@ docker compose up -d</code></pre>
       <nav class="toc" aria-label="Nesta página">
         <p class="toc-label">Nesta página</p>
         <ol>
-          <li><a href="#o-que-voc-precisa">O que você precisa</a></li>
+          <li><a href="#o-que-voce-precisa">O que você precisa</a></li>
           <li><a href="#passos">Passos</a></li>
-          <li><a href="#verificac-o">Verificação</a></li>
+          <li><a href="#verificacao">Verificação</a></li>
           <li><a href="#perguntas-frequentes">Perguntas frequentes</a></li>
           <li><a href="#se-algo-der-errado">Se algo der errado</a></li>
         </ol>
@@ -1670,10 +1726,7 @@ docker compose up -d</code></pre>
         <span
           ><a href="/pt/">Início</a> &nbsp;
           <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
-          <a
-            href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"
-            >Notas de versão</a
-          ></span
+          <a href="/pt/docs/notas-da-versao/">Notas de versão</a></span
         >
       </div>
     </footer>

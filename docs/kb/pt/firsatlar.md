@@ -18,12 +18,12 @@ O aplicativo pega todas as suas páginas no Search Console. Ele combina cada uma
 
 **Quatro grupos.** Cada página cai em um de quatro grupos. O nome do grupo aparece na linha como um rótulo.
 
-| Grupo                                          | O que significa                                                                             | O que fazer                                                                                                   |
-| ---------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| **Az tıklanan** (Pouco clicadas)               | Entre as 20 primeiras. A taxa de cliques é menos da metade da de suas outras páginas na mesma posição | Reescreva o título e a descrição. O texto exibido na busca não atrai cliques                       |
-| **Yükselmeye yakın** (Perto de subir)          | Posição 4 a 20                                                                              | Amplie o conteúdo e adicione links internos. Pode subir uma ou duas posições                                  |
-| **İlk sıralarda** (No topo)                    | Entre as 3 primeiras                                                                        | Mantenha. Deixe a página atualizada e garanta que ela não quebre                                              |
-| **Derinde kalan** (Presas lá no fundo)         | Depois da posição 20                                                                        | Pense se a página realmente responde a essa busca. A página certa pode ser outra                              |
+| Grupo                                  | O que significa                                                                                       | O que fazer                                                                      |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| **Az tıklanan** (Pouco clicadas)       | Entre as 20 primeiras. A taxa de cliques é menos da metade da de suas outras páginas na mesma posição | Reescreva o título e a descrição. O texto exibido na busca não atrai cliques     |
+| **Yükselmeye yakın** (Perto de subir)  | Posição 4 a 20                                                                                        | Amplie o conteúdo e adicione links internos. Pode subir uma ou duas posições     |
+| **İlk sıralarda** (No topo)            | Entre as 3 primeiras                                                                                  | Mantenha. Deixe a página atualizada e garanta que ela não quebre                 |
+| **Derinde kalan** (Presas lá no fundo) | Depois da posição 20                                                                                  | Pense se a página realmente responde a essa busca. A página certa pode ser outra |
 
 Um link interno é um link que você coloca de uma página do seu site para outra.
 

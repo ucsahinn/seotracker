@@ -78,15 +78,15 @@ Para restaurar, use `tar xzf` no lugar de `tar czf` no mesmo comando. O arquivo 
 
 Nenhuma configuração é obrigatória. Se quiser mudar algo, coloque um arquivo `.env` na pasta do projeto. Depois execute `docker compose up -d --force-recreate seotracker`.
 
-| Nome da configuração                   | O que faz                                                                                                                                         |
-| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| PORT                                   | O número da porta, 3001 por padrão. Quando ele muda, os endereços de redirecionamento do Google também mudam                                      |
-| ALLOWED_HOST                           | O nome visto de fora, se você estiver atrás de outro servidor. Se estiver vazio, só localhost                                                     |
-| AUTH_MODE                              | `local_noauth` (padrão) ou `cloudflare_access`                                                                                                    |
-| BETTER_AUTH_SECRET                     | A chave de criptografia. Deixe vazia e o aplicativo cria uma. Se você a definir à mão, use pelo menos 32 caracteres e depois não a altere         |
-| GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET | Uma alternativa a informá-los na tela **Ayarlar** (Configurações). O valor informado na tela tem prioridade                                       |
-| PAGESPEED_API_KEY                      | Uma alternativa a informá-la na tela **Ayarlar** (Configurações)                                                                                  |
-| MCP_TOKEN                              | Se estiver vazio, é criado na primeira inicialização. Se você escrever `off`, nenhuma senha é pedida. Qualquer outro valor é usado como está      |
+| Nome da configuração                   | O que faz                                                                                                                                    |
+| -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| PORT                                   | O número da porta, 3001 por padrão. Quando ele muda, os endereços de redirecionamento do Google também mudam                                 |
+| ALLOWED_HOST                           | O nome visto de fora, se você estiver atrás de outro servidor. Se estiver vazio, só localhost                                                |
+| AUTH_MODE                              | `local_noauth` (padrão) ou `cloudflare_access`                                                                                               |
+| BETTER_AUTH_SECRET                     | A chave de criptografia. Deixe vazia e o aplicativo cria uma. Se você a definir à mão, use pelo menos 32 caracteres e depois não a altere    |
+| GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET | Uma alternativa a informá-los na tela **Ayarlar** (Configurações). O valor informado na tela tem prioridade                                  |
+| PAGESPEED_API_KEY                      | Uma alternativa a informá-la na tela **Ayarlar** (Configurações)                                                                             |
+| MCP_TOKEN                              | Se estiver vazio, é criado na primeira inicialização. Se você escrever `off`, nenhuma senha é pedida. Qualquer outro valor é usado como está |
 
 ## Verificação
 

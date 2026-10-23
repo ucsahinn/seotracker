@@ -160,8 +160,10 @@ export function AuditHistorySection({
                     align="right"
                   />
                 </th>
-                <th>
-                  {/* lang="en": the header is uppercased, and under lang="tr" "Lighthouse" would print as "LİGHTHOUSE". */}
+                <th className="normal-case">
+                  {/* The sortable headers beside it are not uppercased, so this
+                      one is not either. lang="en" keeps any uppercasing from
+                      turning the I into "İ". */}
                   <span lang="en">Lighthouse</span>
                 </th>
                 <th></th>

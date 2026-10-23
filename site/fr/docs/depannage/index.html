@@ -74,23 +74,37 @@
       property="og:description"
       content="Les problèmes les plus fréquents, expliqués par symptôme, cause et solution. Numéro de port occupé, avertissement de Windows, erreurs Google, quota, audit bloqué, graphiques vides et assistant 401 sont ici."
     />
-    <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
+    <meta
+      property="og:image"
+      content="https://seowatcher.io/assets/og-fr.png"
+    />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="seowatcher" />
+    <meta
+      property="og:image:alt"
+      content="Guide seowatcher : installation, écrans et dépannage"
+    />
     <meta property="article:modified_time" content="2026-10-23" />
     <meta
       property="og:url"
       content="https://seowatcher.io/fr/docs/depannage/"
     />
     <meta property="og:locale" content="fr_FR" />
+    <meta property="og:locale:alternate" content="tr_TR" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:locale:alternate" content="de_DE" />
+    <meta property="og:locale:alternate" content="it_IT" />
+    <meta property="og:locale:alternate" content="pt_BR" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Dépannage | Guide seowatcher" />
     <meta
       name="twitter:description"
       content="Les problèmes les plus fréquents, expliqués par symptôme, cause et solution. Numéro de port occupé, avertissement de Windows, erreurs Google, quota, audit bloqué, graphiques vides et assistant 401 sont ici."
     />
-    <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
+    <meta
+      name="twitter:image"
+      content="https://seowatcher.io/assets/og-fr.png"
+    />
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">
       {
@@ -160,7 +174,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=2.4.0" defer></script>
+    <script src="/assets/docs.js?v=2.4.1" defer></script>
     <meta name="theme-color" content="#272c3b" />
     <style>
       @font-face {
@@ -872,6 +886,47 @@
       }
 
       /* Guide pass: callouts, pager, copy buttons, mobile sidebar, tables. */
+      /* Release notes: the summary as cards, the lead of every item in amber. */
+      article[data-page="surum-notlari"] li > strong:first-child {
+        color: var(--accent-2);
+      }
+      article[data-page="surum-notlari"] h2 {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      article[data-page="surum-notlari"] h2::before {
+        content: "";
+        width: 4px;
+        height: 0.9em;
+        border-radius: 999px;
+        background: var(--accent);
+        flex: none;
+      }
+      article[data-page="surum-notlari"] h2:first-of-type + ul {
+        list-style: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 12px;
+      }
+      article[data-page="surum-notlari"] h2:first-of-type + ul li {
+        margin: 0;
+        padding: 16px 18px;
+        border: 1px solid var(--hairline);
+        border-radius: 14px;
+        background: linear-gradient(var(--glass), var(--glass)), var(--bg);
+        line-height: 1.5;
+      }
+      article[data-page="surum-notlari"]
+        h2:first-of-type
+        + ul
+        li
+        > strong:first-child {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 1.05em;
+      }
       .callout {
         position: relative;
         padding: 12px 16px 12px 18px;
@@ -1352,10 +1407,11 @@
             <li class="current" aria-current="page">
               <a href="/fr/docs/depannage/">Dépannage</a>
             </li>
+            <li><a href="/fr/docs/notes-de-version/">Notes de version</a></li>
           </ul>
         </details>
       </aside>
-      <article id="icerik">
+      <article id="icerik" data-page="sorun-giderme">
         <h1>Dépannage</h1>
         <p class="lede">
           Les problèmes les plus fréquents, expliqués par symptôme, cause et
@@ -1394,7 +1450,7 @@
           Docker, tapez <code>docker compose ps</code>. Si l'état n'est pas
           healthy, tapez <code>docker compose up -d</code>.
         </p>
-        <h2 id="le-num-ro-de-port-est-occup">Le numéro de port est occupé</h2>
+        <h2 id="le-numero-de-port-est-occupe">Le numéro de port est occupé</h2>
         <p class="callout callout-belirti">
           <strong>Symptôme:</strong> Sous Windows, l'icône indique « 3001 ve
           sonraki 9 adres numarası (port) dolu » (le port 3001 et les 9 suivants
@@ -1415,7 +1471,7 @@
           le numéro change, mettez aussi à jour les adresses de redirection
           Google.
         </p>
-        <h2 id="l-ic-ne-indique-windows-bileseni-eksik">
+        <h2 id="l-icone-indique-windows-bileseni-eksik">
           L'icône indique « Windows bileşeni eksik »
         </h2>
         <p class="callout callout-belirti">
@@ -1439,7 +1495,7 @@
           de Microsoft :
           <code>https://aka.ms/vs/17/release/vc_redist.x64.exe</code>
         </p>
-        <h2 id="l-autorisation-d-administrateur-n-a-pas-t-donn-e">
+        <h2 id="l-autorisation-d-administrateur-n-a-pas-ete-donnee">
           L'autorisation d'administrateur n'a pas été donnée
         </h2>
         <p class="callout callout-belirti">
@@ -1459,7 +1515,7 @@
           depuis l'adresse
           <code>https://aka.ms/vs/17/release/vc_redist.x64.exe</code>.
         </p>
-        <h2 id="l-ic-ne-indique-uygulamanin-motoru-coktu">
+        <h2 id="l-icone-indique-uygulamanin-motoru-coktu">
           L'icône indique « Uygulamanın motoru çöktü »
         </h2>
         <p class="callout callout-belirti">
@@ -1488,7 +1544,7 @@
           <code>%LOCALAPPDATA%\seowatcher\logs\dumps</code>. Si vous le
           souhaitez, joignez-les aussi au signalement.
         </p>
-        <h2 id="windows-indique-a-prot-g-votre-ordinateur">
+        <h2 id="windows-indique-a-protege-votre-ordinateur">
           Windows indique « a protégé votre ordinateur »
         </h2>
         <p class="callout callout-belirti">
@@ -1562,7 +1618,7 @@
           consentement OAuth → Utilisateurs de test). Cliquez ensuite de nouveau
           sur <strong>Bağlan</strong>.
         </p>
-        <h2 id="la-connexion-a-expir">La connexion a expiré</h2>
+        <h2 id="la-connexion-a-expire">La connexion a expiré</h2>
         <p class="callout callout-belirti">
           <strong>Symptôme:</strong> La carte Connexions indique « Bağlantının
           süresi doldu » (La connexion a expiré) et aucune donnée n'arrive.
@@ -1580,7 +1636,7 @@
             >Ayarlar → Hizmet hesabı</strong
           >, Paramètres → Compte de service).
         </p>
-        <h2 id="pas-de-donn-es-de-requ-tes-graphiques-vides">
+        <h2 id="pas-de-donnees-de-requetes-graphiques-vides">
           Pas de données de requêtes, graphiques vides
         </h2>
         <p class="callout callout-belirti">
@@ -1602,7 +1658,7 @@
           ne les couvre pas. Sur un site récent, les lignes de requêtes peuvent
           arriver après des semaines. Le tableau des pages se remplit plus tôt.
         </p>
-        <h2 id="le-total-du-tableau-ne-correspond-pas-la-carte">
+        <h2 id="le-total-du-tableau-ne-correspond-pas-a-la-carte">
           Le total du tableau ne correspond pas à la carte
         </h2>
         <p class="callout callout-belirti">
@@ -1619,7 +1675,7 @@
           <strong>Solution:</strong> Lisez le total sur la carte. Interprétez le
           tableau page par page.
         </p>
-        <h2 id="l-audit-est-rest-bloqu-sur-suruyor-en-cours">
+        <h2 id="l-audit-est-reste-bloque-sur-suruyor-en-cours">
           L'audit est resté bloqué sur « Sürüyor » (En cours)
         </h2>
         <p class="callout callout-belirti">
@@ -1638,7 +1694,7 @@
           mêmes réglages). Ne lancez pas deux audits en même temps avec la
           mesure de vitesse : ils se ralentissent mutuellement.
         </p>
-        <h2 id="l-audit-indique-engellendik-nous-avons-t-bloqu-s">
+        <h2 id="l-audit-indique-engellendik-nous-avons-ete-bloques">
           L'audit indique « Engellendik » (Nous avons été bloqués)
         </h2>
         <p class="callout callout-belirti">
@@ -1658,7 +1714,7 @@
           n'est pas le vôtre, il n'y a rien à faire. Les résultats restent
           limités aux pages qui ont pu être explorées.
         </p>
-        <h2 id="la-mesure-de-vitesse-est-rest-e-moiti-ou-n-existe-pas">
+        <h2 id="la-mesure-de-vitesse-est-restee-a-moitie-ou-n-existe-pas">
           La mesure de vitesse est restée à moitié ou n'existe pas
         </h2>
         <p class="callout callout-belirti">
@@ -1696,7 +1752,7 @@
           <strong>Solution:</strong> Continuez demain. L'application ne repose
           que les réponses devenues anciennes, votre quota n'est pas gaspillé.
         </p>
-        <h2 id="le-trafic-localhost-appara-t-dans-analytics">
+        <h2 id="le-trafic-localhost-apparait-dans-analytics">
           Le trafic localhost apparaît dans Analytics
         </h2>
         <p class="callout callout-belirti">
@@ -1738,7 +1794,7 @@
           de saut de ligne. Dans Claude Code, tapez <code>/mcp</code> et
           choisissez <strong>Reconnect</strong>.
         </p>
-        <h2 id="docker-est-tr-s-long-au-premier-d-marrage-ou-unhealthy">
+        <h2 id="docker-est-tres-long-au-premier-demarrage-ou-unhealthy">
           Docker est très long au premier démarrage ou « unhealthy »
         </h2>
         <p class="callout callout-belirti">
@@ -1757,7 +1813,7 @@
           conteneurs dans les paramètres de Docker Desktop. Tapez ensuite
           <code>docker compose up -d --build</code>.
         </p>
-        <h2 id="o-sont-les-donn-es-et-les-journaux">
+        <h2 id="ou-sont-les-donnees-et-les-journaux">
           Où sont les données et les journaux ?
         </h2>
         <p>
@@ -1825,7 +1881,9 @@
             href="/fr/docs/installation-assistant/"
             ><span>Précédent</span
             ><strong>Installation de l'assistant</strong></a
-          ><span class="pager-next empty"></span>
+          ><a class="pager-next" rel="next" href="/fr/docs/notes-de-version/"
+            ><span>Suivant</span><strong>Notes de version</strong></a
+          >
         </nav>
         <p class="meta">
           Dernière mise à jour: 23 octobre 2026. Vous voyez une erreur ?
@@ -1839,27 +1897,27 @@
         <ol>
           <li><a href="#la-page-ne-s-ouvre-pas">La page ne s'ouvre pas</a></li>
           <li>
-            <a href="#le-num-ro-de-port-est-occup"
+            <a href="#le-numero-de-port-est-occupe"
               >Le numéro de port est occupé</a
             >
           </li>
           <li>
-            <a href="#l-ic-ne-indique-windows-bileseni-eksik"
+            <a href="#l-icone-indique-windows-bileseni-eksik"
               >L'icône indique « Windows bileşeni eksik »</a
             >
           </li>
           <li>
-            <a href="#l-autorisation-d-administrateur-n-a-pas-t-donn-e"
+            <a href="#l-autorisation-d-administrateur-n-a-pas-ete-donnee"
               >L'autorisation d'administrateur n'a pas été donnée</a
             >
           </li>
           <li>
-            <a href="#l-ic-ne-indique-uygulamanin-motoru-coktu"
+            <a href="#l-icone-indique-uygulamanin-motoru-coktu"
               >L'icône indique « Uygulamanın motoru çöktü »</a
             >
           </li>
           <li>
-            <a href="#windows-indique-a-prot-g-votre-ordinateur"
+            <a href="#windows-indique-a-protege-votre-ordinateur"
               >Windows indique « a protégé votre ordinateur »</a
             >
           </li>
@@ -1878,29 +1936,29 @@
               >Google indique « access_denied »</a
             >
           </li>
-          <li><a href="#la-connexion-a-expir">La connexion a expiré</a></li>
+          <li><a href="#la-connexion-a-expire">La connexion a expiré</a></li>
           <li>
-            <a href="#pas-de-donn-es-de-requ-tes-graphiques-vides"
+            <a href="#pas-de-donnees-de-requetes-graphiques-vides"
               >Pas de données de requêtes, graphiques vides</a
             >
           </li>
           <li>
-            <a href="#le-total-du-tableau-ne-correspond-pas-la-carte"
+            <a href="#le-total-du-tableau-ne-correspond-pas-a-la-carte"
               >Le total du tableau ne correspond pas à la carte</a
             >
           </li>
           <li>
-            <a href="#l-audit-est-rest-bloqu-sur-suruyor-en-cours"
+            <a href="#l-audit-est-reste-bloque-sur-suruyor-en-cours"
               >L'audit est resté bloqué sur « Sürüyor » (En cours)</a
             >
           </li>
           <li>
-            <a href="#l-audit-indique-engellendik-nous-avons-t-bloqu-s"
+            <a href="#l-audit-indique-engellendik-nous-avons-ete-bloques"
               >L'audit indique « Engellendik » (Nous avons été bloqués)</a
             >
           </li>
           <li>
-            <a href="#la-mesure-de-vitesse-est-rest-e-moiti-ou-n-existe-pas"
+            <a href="#la-mesure-de-vitesse-est-restee-a-moitie-ou-n-existe-pas"
               >La mesure de vitesse est restée à moitié ou n'existe pas</a
             >
           </li>
@@ -1910,7 +1968,7 @@
             >
           </li>
           <li>
-            <a href="#le-trafic-localhost-appara-t-dans-analytics"
+            <a href="#le-trafic-localhost-apparait-dans-analytics"
               >Le trafic localhost apparaît dans Analytics</a
             >
           </li>
@@ -1920,12 +1978,12 @@
             >
           </li>
           <li>
-            <a href="#docker-est-tr-s-long-au-premier-d-marrage-ou-unhealthy"
+            <a href="#docker-est-tres-long-au-premier-demarrage-ou-unhealthy"
               >Docker est très long au premier démarrage ou « unhealthy »</a
             >
           </li>
           <li>
-            <a href="#o-sont-les-donn-es-et-les-journaux"
+            <a href="#ou-sont-les-donnees-et-les-journaux"
               >Où sont les données et les journaux ?</a
             >
           </li>
@@ -1941,10 +1999,7 @@
         <span
           ><a href="/fr/">Accueil</a> &nbsp;
           <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
-          <a
-            href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"
-            >Notes de version</a
-          ></span
+          <a href="/fr/docs/notes-de-version/">Notes de version</a></span
         >
       </div>
     </footer>

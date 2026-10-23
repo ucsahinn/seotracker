@@ -18,12 +18,12 @@ L'app abbina ogni pagina di Search Console alla sua corrispondente in Google Ana
 
 **Quattro gruppi.** Ogni pagina rientra in uno dei quattro gruppi. Il nome del gruppo compare come etichetta nella riga.
 
-| Gruppo                                       | Che cosa significa                                                                                 | Che cosa fare                                                                                           |
-| -------------------------------------------- | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| **Az tıklanan** (Poco cliccate)              | Nelle prime 20 posizioni. La percentuale di clic è meno della metà di quella delle pagine nella stessa posizione | Riscrivere titolo e descrizione. Il testo che compare nella ricerca non attira                  |
-| **Yükselmeye yakın** (Vicine a salire)       | Posizione tra 4 e 20                                                                               | Ampliare il contenuto, aggiungere collegamenti interni. Può salire di una o due posizioni               |
-| **İlk sıralarda** (Nelle prime posizioni)    | Nelle prime 3 posizioni                                                                            | Mantenerla. Tenere la pagina aggiornata e assicurarsi che non si rovini                                 |
-| **Derinde kalan** (Rimaste in fondo)         | Oltre la 20ª posizione                                                                             | Chiedersi se la pagina risponde davvero a quella ricerca. La pagina giusta potrebbe essere un'altra     |
+| Gruppo                                    | Che cosa significa                                                                                               | Che cosa fare                                                                                       |
+| ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| **Az tıklanan** (Poco cliccate)           | Nelle prime 20 posizioni. La percentuale di clic è meno della metà di quella delle pagine nella stessa posizione | Riscrivere titolo e descrizione. Il testo che compare nella ricerca non attira                      |
+| **Yükselmeye yakın** (Vicine a salire)    | Posizione tra 4 e 20                                                                                             | Ampliare il contenuto, aggiungere collegamenti interni. Può salire di una o due posizioni           |
+| **İlk sıralarda** (Nelle prime posizioni) | Nelle prime 3 posizioni                                                                                          | Mantenerla. Tenere la pagina aggiornata e assicurarsi che non si rovini                             |
+| **Derinde kalan** (Rimaste in fondo)      | Oltre la 20ª posizione                                                                                           | Chiedersi se la pagina risponde davvero a quella ricerca. La pagina giusta potrebbe essere un'altra |
 
 Un collegamento interno è un collegamento che si inserisce nel proprio sito da una pagina all'altra.
 

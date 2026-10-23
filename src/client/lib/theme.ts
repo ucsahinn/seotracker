@@ -10,27 +10,25 @@ const THEME_CHANGE_EVENT = "theme-preference-change";
 
 function readThemePreference(): ThemePreference {
   if (typeof window === "undefined") {
-    return "system";
+    return "dark";
   }
 
+  // Dark is the house look (the same as seowatcher.io); "system" and "light"
+  // are kept once chosen.
   try {
     const stored = window.localStorage.getItem(THEME_STORAGE_KEY);
-    if (stored === "light" || stored === "dark") {
+    if (stored === "light" || stored === "dark" || stored === "system") {
       return stored;
     }
-    return "system";
+    return "dark";
   } catch {
-    return "system";
+    return "dark";
   }
 }
 
 function writeThemePreference(themePreference: ThemePreference) {
   try {
-    if (themePreference === "system") {
-      window.localStorage.removeItem(THEME_STORAGE_KEY);
-    } else {
-      window.localStorage.setItem(THEME_STORAGE_KEY, themePreference);
-    }
+    window.localStorage.setItem(THEME_STORAGE_KEY, themePreference);
   } catch {
     // localStorage can be unavailable in private browsing or strict browser modes.
   }
@@ -100,7 +98,7 @@ export function useThemePreference() {
   const themePreference = React.useSyncExternalStore<ThemePreference>(
     subscribeToThemePreference,
     readThemePreference,
-    () => "system",
+    () => "dark",
   );
 
   React.useEffect(() => {

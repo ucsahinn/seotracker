@@ -36,8 +36,8 @@ export function ThemeSection() {
       <div className="space-y-1">
         <h2 className="text-base font-semibold">Görünüm</h2>
         <p className="text-sm text-muted">
-          Sistem, işletim sisteminizin açık ya da koyu tercihini izler. Seçim bu
-          tarayıcıda saklanır, başka bir cihazda ayrı seçilir.
+          Varsayılan koyu tema seowatcher.io ile aynı görünür. Sistem, işletim
+          sisteminizin tercihini izler. Seçim bu tarayıcıda saklanır.
         </p>
       </div>
       <div className="flex items-center justify-between gap-6">

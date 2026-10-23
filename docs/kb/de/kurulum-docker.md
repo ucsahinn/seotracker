@@ -77,15 +77,15 @@ Zum Wiederherstellen verwenden Sie im selben Befehl `tar xzf` statt `tar czf`. D
 
 Keine Einstellung ist Pflicht. Wenn Sie etwas ändern möchten, legen Sie im Projektordner eine `.env`-Datei an. Geben Sie dann `docker compose up -d --force-recreate seotracker` ein.
 
-| Name der Einstellung                   | Wozu sie dient                                                                                                                        |
-| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| PORT                                   | Portnummer, Standard 3001. Ändert sie sich, ändern sich auch die Weiterleitungsadressen bei Google                                    |
-| ALLOWED_HOST                           | Der von außen sichtbare Name, falls die App hinter einem anderen Server steht. Leer bedeutet nur localhost                            |
-| AUTH_MODE                              | `local_noauth` (Standard) oder `cloudflare_access`                                                                                    |
+| Name der Einstellung                   | Wozu sie dient                                                                                                                                                        |
+| -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| PORT                                   | Portnummer, Standard 3001. Ändert sie sich, ändern sich auch die Weiterleitungsadressen bei Google                                                                    |
+| ALLOWED_HOST                           | Der von außen sichtbare Name, falls die App hinter einem anderen Server steht. Leer bedeutet nur localhost                                                            |
+| AUTH_MODE                              | `local_noauth` (Standard) oder `cloudflare_access`                                                                                                                    |
 | BETTER_AUTH_SECRET                     | Verschlüsselungsschlüssel. Lassen Sie ihn leer, die App erzeugt ihn. Geben Sie ihn von Hand an, nehmen Sie mindestens 32 Zeichen und ändern Sie ihn danach nicht mehr |
-| GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET | Alternative zur Eingabe auf dem Bildschirm Ayarlar. Ein auf dem Bildschirm eingegebener Wert hat Vorrang                              |
-| PAGESPEED_API_KEY                      | Alternative zur Eingabe auf dem Bildschirm Ayarlar                                                                                    |
-| MCP_TOKEN                              | Ist er leer, wird er beim ersten Start erzeugt. Mit `off` wird kein Passwort verlangt. Jeder andere Wert wird unverändert verwendet   |
+| GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET | Alternative zur Eingabe auf dem Bildschirm Ayarlar. Ein auf dem Bildschirm eingegebener Wert hat Vorrang                                                              |
+| PAGESPEED_API_KEY                      | Alternative zur Eingabe auf dem Bildschirm Ayarlar                                                                                                                    |
+| MCP_TOKEN                              | Ist er leer, wird er beim ersten Start erzeugt. Mit `off` wird kein Passwort verlangt. Jeder andere Wert wird unverändert verwendet                                   |
 
 ## Kontrolle
 

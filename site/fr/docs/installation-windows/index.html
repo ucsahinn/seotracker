@@ -80,16 +80,27 @@
       property="og:description"
       content="Installez l'application sous Windows avec un seul fichier. Premier lancement, mise à jour, désinstallation, sauvegarde et changement du numéro de port. Ni Docker ni terminal nécessaires."
     />
-    <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
+    <meta
+      property="og:image"
+      content="https://seowatcher.io/assets/og-fr.png"
+    />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="seowatcher" />
+    <meta
+      property="og:image:alt"
+      content="Guide seowatcher : installation, écrans et dépannage"
+    />
     <meta property="article:modified_time" content="2026-10-23" />
     <meta
       property="og:url"
       content="https://seowatcher.io/fr/docs/installation-windows/"
     />
     <meta property="og:locale" content="fr_FR" />
+    <meta property="og:locale:alternate" content="tr_TR" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:locale:alternate" content="de_DE" />
+    <meta property="og:locale:alternate" content="it_IT" />
+    <meta property="og:locale:alternate" content="pt_BR" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
@@ -99,7 +110,10 @@
       name="twitter:description"
       content="Installez l'application sous Windows avec un seul fichier. Premier lancement, mise à jour, désinstallation, sauvegarde et changement du numéro de port. Ni Docker ni terminal nécessaires."
     />
-    <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
+    <meta
+      name="twitter:image"
+      content="https://seowatcher.io/assets/og-fr.png"
+    />
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">
       {
@@ -169,7 +183,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=2.4.0" defer></script>
+    <script src="/assets/docs.js?v=2.4.1" defer></script>
     <meta name="theme-color" content="#272c3b" />
     <style>
       @font-face {
@@ -881,6 +895,47 @@
       }
 
       /* Guide pass: callouts, pager, copy buttons, mobile sidebar, tables. */
+      /* Release notes: the summary as cards, the lead of every item in amber. */
+      article[data-page="surum-notlari"] li > strong:first-child {
+        color: var(--accent-2);
+      }
+      article[data-page="surum-notlari"] h2 {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      article[data-page="surum-notlari"] h2::before {
+        content: "";
+        width: 4px;
+        height: 0.9em;
+        border-radius: 999px;
+        background: var(--accent);
+        flex: none;
+      }
+      article[data-page="surum-notlari"] h2:first-of-type + ul {
+        list-style: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 12px;
+      }
+      article[data-page="surum-notlari"] h2:first-of-type + ul li {
+        margin: 0;
+        padding: 16px 18px;
+        border: 1px solid var(--hairline);
+        border-radius: 14px;
+        background: linear-gradient(var(--glass), var(--glass)), var(--bg);
+        line-height: 1.5;
+      }
+      article[data-page="surum-notlari"]
+        h2:first-of-type
+        + ul
+        li
+        > strong:first-child {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 1.05em;
+      }
       .callout {
         position: relative;
         padding: 12px 16px 12px 18px;
@@ -1362,10 +1417,11 @@
               >
             </li>
             <li><a href="/fr/docs/depannage/">Dépannage</a></li>
+            <li><a href="/fr/docs/notes-de-version/">Notes de version</a></li>
           </ul>
         </details>
       </aside>
-      <article id="icerik">
+      <article id="icerik" data-page="kurulum-windows">
         <h1>Installation sous Windows</h1>
         <p class="lede">
           Installez l'application sous Windows avec un seul fichier. Premier
@@ -1407,8 +1463,8 @@
             <code>%LOCALAPPDATA%\Programs\seowatcher</code>.
           </li>
         </ul>
-        <h2 id="tapes">Étapes</h2>
-        <h3 id="premi-re-installation">Première installation</h3>
+        <h2 id="etapes">Étapes</h2>
+        <h3 id="premiere-installation">Première installation</h3>
         <ol>
           <li>
             Téléchargez le fichier <strong>seowatcher-setup.exe</strong> depuis
@@ -1477,7 +1533,7 @@
           </li>
         </ol>
         <p>L'étape suivante est le guide de la connexion à Google.</p>
-        <h3 id="menu-de-la-barre-des-t-ches">Menu de la barre des tâches</h3>
+        <h3 id="menu-de-la-barre-des-taches">Menu de la barre des tâches</h3>
         <p>
           Faites un clic droit sur l'icône. Si elle n'est pas visible, cliquez
           sur la flèche ^ de la barre des tâches. Le menu contient ceci :
@@ -1557,7 +1613,7 @@
           Si vous lancez l'application une seconde fois, aucune nouvelle copie
           ne s'ouvre. Seule la page s'ouvre dans le navigateur.
         </p>
-        <h3 id="mise-jour">Mise à jour</h3>
+        <h3 id="mise-a-jour">Mise à jour</h3>
         <p>
           L'application se met à jour toute seule. Deux minutes après son
           ouverture, puis une fois par jour, elle consulte GitHub pour connaître
@@ -1589,7 +1645,7 @@
           Vos données, votre connexion à Google et vos paramètres restent tels
           quels.
         </p>
-        <h3 id="d-ploiement-en-entreprise">Déploiement en entreprise</h3>
+        <h3 id="deploiement-en-entreprise">Déploiement en entreprise</h3>
         <p>
           Notes pour les équipes informatiques qui veulent installer
           l'application pour tous les utilisateurs d'un ordinateur, ou
@@ -1636,7 +1692,7 @@
             désinstallée. Une version qui échoue à ce test n'est pas publiée.
           </li>
         </ul>
-        <h3 id="r-paration">Réparation</h3>
+        <h3 id="reparation">Réparation</h3>
         <p>
           Si quelque chose se bloque, faites un clic droit sur l'icône et
           cliquez sur <strong>Kurulumu onar</strong> (Réparer l'installation).
@@ -1646,7 +1702,7 @@
           Si un fichier manque, elle le dit et ouvre la page des versions. Il
           vous suffit alors de relancer le fichier d'installation.
         </p>
-        <h3 id="d-sinstallation">Désinstallation</h3>
+        <h3 id="desinstallation">Désinstallation</h3>
         <ol>
           <li>
             Dans
@@ -1663,7 +1719,7 @@
           données, votre connexion à Google et vos rapports, supprimez vous-même
           le dossier de données.
         </p>
-        <h3 id="o-sont-les-donn-es-et-comment-les-sauvegarder">
+        <h3 id="ou-sont-les-donnees-et-comment-les-sauvegarder">
           Où sont les données et comment les sauvegarder ?
         </h3>
         <p>
@@ -1704,7 +1760,7 @@
           <code>instance-secret</code>, les connexions à Google continuent de
           fonctionner.
         </p>
-        <h3 id="changer-le-num-ro-de-port">Changer le numéro de port</h3>
+        <h3 id="changer-le-numero-de-port">Changer le numéro de port</h3>
         <p>
           L'application utilise le numéro 3001. Si un autre programme l'occupe,
           elle choisit le premier numéro libre entre 3002 et 3010. Elle inscrit
@@ -1732,7 +1788,7 @@
           deux adresses de redirection chez Google. Ces adresses sont expliquées
           dans le guide de la connexion à Google.
         </p>
-        <h2 id="v-rification">Vérification</h2>
+        <h2 id="verification">Vérification</h2>
         <ul>
           <li>
             Quand vous passez la souris sur l'icône de la barre des tâches, elle
@@ -1753,7 +1809,7 @@
             girişi » (Connexion Google) demande de l'attention. C'est normal.
           </li>
         </ul>
-        <h2 id="questions-fr-quentes">Questions fréquentes</h2>
+        <h2 id="questions-frequentes">Questions fréquentes</h2>
         <p>
           <strong
             >Pourquoi l'application s'ouvre-t-elle dans le navigateur ?</strong
@@ -1784,7 +1840,7 @@
           Téléchargez le fichier uniquement depuis la page des versions de
           GitHub et comparez son résumé SHA-256.
         </p>
-        <h2 id="en-cas-de-probl-me">En cas de problème</h2>
+        <h2 id="en-cas-de-probleme">En cas de problème</h2>
         <p>
           Si l'icône n'est pas visible, cliquez sur la flèche ^ de la barre des
           tâches.
@@ -1840,10 +1896,10 @@
         <p class="toc-label">Sur cette page</p>
         <ol>
           <li><a href="#ce-qu-il-vous-faut">Ce qu'il vous faut</a></li>
-          <li><a href="#tapes">Étapes</a></li>
-          <li><a href="#v-rification">Vérification</a></li>
-          <li><a href="#questions-fr-quentes">Questions fréquentes</a></li>
-          <li><a href="#en-cas-de-probl-me">En cas de problème</a></li>
+          <li><a href="#etapes">Étapes</a></li>
+          <li><a href="#verification">Vérification</a></li>
+          <li><a href="#questions-frequentes">Questions fréquentes</a></li>
+          <li><a href="#en-cas-de-probleme">En cas de problème</a></li>
         </ol>
       </nav>
     </main>
@@ -1853,10 +1909,7 @@
         <span
           ><a href="/fr/">Accueil</a> &nbsp;
           <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
-          <a
-            href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"
-            >Notes de version</a
-          ></span
+          <a href="/fr/docs/notes-de-version/">Notes de version</a></span
         >
       </div>
     </footer>

@@ -80,16 +80,27 @@
       property="og:description"
       content="Descrive i problemi più comuni con sintomo, causa e soluzione. Porta occupata, avviso di Windows, errori di Google, quota, controllo bloccato, grafici vuoti e assistente 401 sono qui."
     />
-    <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
+    <meta
+      property="og:image"
+      content="https://seowatcher.io/assets/og-it.png"
+    />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="seowatcher" />
+    <meta
+      property="og:image:alt"
+      content="Guida di seowatcher: installazione, schermate e risoluzione dei problemi"
+    />
     <meta property="article:modified_time" content="2026-10-23" />
     <meta
       property="og:url"
       content="https://seowatcher.io/it/docs/risoluzione-problemi/"
     />
     <meta property="og:locale" content="it_IT" />
+    <meta property="og:locale:alternate" content="tr_TR" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:locale:alternate" content="de_DE" />
+    <meta property="og:locale:alternate" content="fr_FR" />
+    <meta property="og:locale:alternate" content="pt_BR" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
@@ -99,7 +110,10 @@
       name="twitter:description"
       content="Descrive i problemi più comuni con sintomo, causa e soluzione. Porta occupata, avviso di Windows, errori di Google, quota, controllo bloccato, grafici vuoti e assistente 401 sono qui."
     />
-    <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
+    <meta
+      name="twitter:image"
+      content="https://seowatcher.io/assets/og-it.png"
+    />
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">
       {
@@ -169,7 +183,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=2.4.0" defer></script>
+    <script src="/assets/docs.js?v=2.4.1" defer></script>
     <meta name="theme-color" content="#272c3b" />
     <style>
       @font-face {
@@ -881,6 +895,47 @@
       }
 
       /* Guide pass: callouts, pager, copy buttons, mobile sidebar, tables. */
+      /* Release notes: the summary as cards, the lead of every item in amber. */
+      article[data-page="surum-notlari"] li > strong:first-child {
+        color: var(--accent-2);
+      }
+      article[data-page="surum-notlari"] h2 {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      article[data-page="surum-notlari"] h2::before {
+        content: "";
+        width: 4px;
+        height: 0.9em;
+        border-radius: 999px;
+        background: var(--accent);
+        flex: none;
+      }
+      article[data-page="surum-notlari"] h2:first-of-type + ul {
+        list-style: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 12px;
+      }
+      article[data-page="surum-notlari"] h2:first-of-type + ul li {
+        margin: 0;
+        padding: 16px 18px;
+        border: 1px solid var(--hairline);
+        border-radius: 14px;
+        background: linear-gradient(var(--glass), var(--glass)), var(--bg);
+        line-height: 1.5;
+      }
+      article[data-page="surum-notlari"]
+        h2:first-of-type
+        + ul
+        li
+        > strong:first-child {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 1.05em;
+      }
       .callout {
         position: relative;
         padding: 12px 16px 12px 18px;
@@ -1377,10 +1432,11 @@
                 >Risoluzione dei problemi</a
               >
             </li>
+            <li><a href="/it/docs/note-di-rilascio/">Note di rilascio</a></li>
           </ul>
         </details>
       </aside>
-      <article id="icerik">
+      <article id="icerik" data-page="sorun-giderme">
         <h1>Risoluzione dei problemi</h1>
         <p class="lede">
           Descrive i problemi più comuni con sintomo, causa e soluzione. Porta
@@ -1418,7 +1474,9 @@
           Con Docker scrivere <code>docker compose ps</code>. Se lo stato non è
           healthy, scrivere <code>docker compose up -d</code>.
         </p>
-        <h2 id="il-numero-di-porta-occupato">Il numero di porta è occupato</h2>
+        <h2 id="il-numero-di-porta-e-occupato">
+          Il numero di porta è occupato
+        </h2>
         <p class="callout callout-belirti">
           <strong>Sintomo:</strong> In Windows l'icona dice &quot;3001 ve
           sonraki 9 adres numarası (port) dolu&quot; (la porta 3001 e le 9
@@ -1462,7 +1520,7 @@
           sola. Se il pacchetto non c'è, scaricarlo dalla pagina di Microsoft:
           <code>https://aka.ms/vs/17/release/vc_redist.x64.exe</code>
         </p>
-        <h2 id="il-permesso-di-amministratore-non-stato-dato">
+        <h2 id="il-permesso-di-amministratore-non-e-stato-dato">
           Il permesso di amministratore non è stato dato
         </h2>
         <p class="callout callout-belirti">
@@ -1582,7 +1640,7 @@
           consenso OAuth → Utenti di test), aggiungere l'account. Poi scegliere
           di nuovo <strong>Bağlan</strong>.
         </p>
-        <h2 id="il-collegamento-scaduto">Il collegamento è scaduto</h2>
+        <h2 id="il-collegamento-e-scaduto">Il collegamento è scaduto</h2>
         <p class="callout callout-belirti">
           <strong>Sintomo:</strong> Nella scheda dei collegamenti c'è scritto
           &quot;Bağlantının süresi doldu&quot; (Il collegamento è scaduto) e non
@@ -1637,7 +1695,7 @@
           <strong>Soluzione:</strong> Leggere il totale dalla scheda.
           Interpretare la tabella pagina per pagina.
         </p>
-        <h2 id="il-controllo-bloccato-su-suruyor">
+        <h2 id="il-controllo-e-bloccato-su-suruyor">
           Il controllo è bloccato su &quot;Sürüyor&quot;
         </h2>
         <p class="callout callout-belirti">
@@ -1676,7 +1734,7 @@
           non è dell'utente, non c'è nulla da fare. I risultati restano limitati
           alle pagine che si sono potute scansionare.
         </p>
-        <h2 id="la-misurazione-della-velocit-incompleta-o-manca">
+        <h2 id="la-misurazione-della-velocita-e-incompleta-o-manca">
           La misurazione della velocità è incompleta o manca
         </h2>
         <p class="callout callout-belirti">
@@ -1756,7 +1814,7 @@
           scrivere <code>/mcp</code> e scegliere
           <strong>Reconnect</strong> (Ricollega).
         </p>
-        <h2 id="docker-impiega-moltissimo-al-primo-avvio-oppure-unhealthy">
+        <h2 id="docker-impiega-moltissimo-al-primo-avvio-oppure-e-unhealthy">
           Docker impiega moltissimo al primo avvio oppure è
           &quot;unhealthy&quot;
         </h2>
@@ -1846,7 +1904,9 @@
             href="/it/docs/configurazione-assistente/"
             ><span>Precedente</span
             ><strong>Configurazione dell'assistente</strong></a
-          ><span class="pager-next empty"></span>
+          ><a class="pager-next" rel="next" href="/it/docs/note-di-rilascio/"
+            ><span>Successiva</span><strong>Note di rilascio</strong></a
+          >
         </nav>
         <p class="meta">
           Ultimo aggiornamento: 23 ottobre 2026. Se si nota un errore,
@@ -1860,7 +1920,7 @@
         <ol>
           <li><a href="#la-pagina-non-si-apre">La pagina non si apre</a></li>
           <li>
-            <a href="#il-numero-di-porta-occupato"
+            <a href="#il-numero-di-porta-e-occupato"
               >Il numero di porta è occupato</a
             >
           </li>
@@ -1870,7 +1930,7 @@
             >
           </li>
           <li>
-            <a href="#il-permesso-di-amministratore-non-stato-dato"
+            <a href="#il-permesso-di-amministratore-non-e-stato-dato"
               >Il permesso di amministratore non è stato dato</a
             >
           </li>
@@ -1900,7 +1960,7 @@
             >
           </li>
           <li>
-            <a href="#il-collegamento-scaduto">Il collegamento è scaduto</a>
+            <a href="#il-collegamento-e-scaduto">Il collegamento è scaduto</a>
           </li>
           <li>
             <a href="#nessun-dato-sulle-query-grafici-vuoti"
@@ -1913,7 +1973,7 @@
             >
           </li>
           <li>
-            <a href="#il-controllo-bloccato-su-suruyor"
+            <a href="#il-controllo-e-bloccato-su-suruyor"
               >Il controllo è bloccato su &quot;Sürüyor&quot;</a
             >
           </li>
@@ -1923,7 +1983,7 @@
             >
           </li>
           <li>
-            <a href="#la-misurazione-della-velocit-incompleta-o-manca"
+            <a href="#la-misurazione-della-velocita-e-incompleta-o-manca"
               >La misurazione della velocità è incompleta o manca</a
             >
           </li>
@@ -1943,7 +2003,8 @@
             >
           </li>
           <li>
-            <a href="#docker-impiega-moltissimo-al-primo-avvio-oppure-unhealthy"
+            <a
+              href="#docker-impiega-moltissimo-al-primo-avvio-oppure-e-unhealthy"
               >Docker impiega moltissimo al primo avvio oppure è
               &quot;unhealthy&quot;</a
             >
@@ -1963,10 +2024,7 @@
         <span
           ><a href="/it/">Home</a> &nbsp;
           <a href="https://github.com/ucsahinn/seotracker">GitHub</a> &nbsp;
-          <a
-            href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"
-            >Note di versione</a
-          ></span
+          <a href="/it/docs/note-di-rilascio/">Note di versione</a></span
         >
       </div>
     </footer>
