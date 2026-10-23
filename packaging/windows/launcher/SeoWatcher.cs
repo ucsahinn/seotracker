@@ -478,9 +478,13 @@ namespace SeoWatcher
 
         /// <summary>The report goes to the clipboard and into a public GitHub
         /// issue, so it is scrubbed before it leaves the machine.</summary>
+        private static string R(string input, string pattern, string replacement)
+        {
+            return System.Text.RegularExpressions.Regex.Replace(input, pattern, replacement);
+        }
+
         private static string Scrub(string text)
         {
-            var R = System.Text.RegularExpressions.Regex.Replace;
             string profile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             if (!string.IsNullOrEmpty(profile)) text = text.Replace(profile, "%USERPROFILE%");
             text = R(text, @"(?i)(bearer\s+)[A-Za-z0-9_\-]{8,}", "$1<gizli>");
