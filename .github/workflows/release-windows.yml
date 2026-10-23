@@ -24,6 +24,9 @@ jobs:
   package:
     runs-on: windows-latest
     timeout-minutes: 30
+    env:
+      # Empty until the SignPath secrets exist; the signing step checks it.
+      SIGNPATH_API_TOKEN: ${{ secrets.SIGNPATH_API_TOKEN }}
     outputs:
       version: ${{ steps.version.outputs.version }}
 
@@ -63,6 +66,31 @@ jobs:
         env:
           VERSION: ${{ steps.version.outputs.version }}
         run: ./packaging/windows/build.ps1 -Version $env:VERSION
+
+      - name: Upload unsigned installer for signing
+        id: unsigned
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: seowatcher-setup-${{ steps.version.outputs.version }}-unsigned
+          path: packaging/windows/out/seowatcher-setup-*.exe
+          if-no-files-found: error
+
+      # Code signing through SignPath (free for open-source projects). The
+      # step runs only once the three repository secrets exist; until then the
+      # unsigned installer ships as before. Set-up: docs/CODE_SIGNING.md.
+      - name: Sign the installer (SignPath)
+        if: ${{ env.SIGNPATH_API_TOKEN != '' }}
+        uses: signpath/github-action-submit-signing-request@c92b958760219087e01f8d67a1669ed57afe2627 # v2
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ secrets.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: seowatcher
+          signing-policy-slug: release-signing
+          github-artifact-id: ${{ steps.unsigned.outputs.artifact-id }}
+          wait-for-completion: true
+          output-artifact-directory: packaging/windows/out
+          parameters: |
+            version: "${{ steps.version.outputs.version }}"
 
       - name: Upload installer artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

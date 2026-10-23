@@ -273,6 +273,7 @@ Search Console verisi yaklaşık 3 gün gecikmeli yayımlanır. Bu yüzden ekran
 | Belge                                                                                   | Konu                                                                     |
 | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
 | [`kb/kurulum-windows.md`](./docs/kb/kurulum-windows.md)                                 | Windows paketi: kurulum, güncelleme, onarım, günlükler, kurumsal dağıtım |
+| [`CODE_SIGNING.md`](./docs/CODE_SIGNING.md)                                             | Kurulum dosyasını SignPath ile ücretsiz imzalama, SmartScreen, winget    |
 | [`SELF_HOSTING_DOCKER.md`](./docs/SELF_HOSTING_DOCKER.md)                               | Docker ile kurulum, veri alanı, MCP kimlik doğrulaması                   |
 | [`SELF_HOSTING_GOOGLE_SEARCH_CONSOLE.md`](./docs/SELF_HOSTING_GOOGLE_SEARCH_CONSOLE.md) | Google Cloud projesi ve OAuth istemcisi                                  |
 | [`SELF_HOSTING_GOOGLE_ANALYTICS.md`](./docs/SELF_HOSTING_GOOGLE_ANALYTICS.md)           | Analytics 4 bağlantısı                                                   |
