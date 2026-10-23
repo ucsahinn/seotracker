@@ -16,10 +16,17 @@ export const DEMO_PROJECT_NAME = "Örnek site";
 export const DEMO_SITE_URL = `sc-domain:${DEMO_DOMAIN}`;
 export const DEMO_GA4_PROPERTY_ID = "properties/481516234";
 
-/** The newest day Search Console has "finalised" for the demo. */
-export const DEMO_END_DATE = "2026-10-20";
+/**
+ * The newest day of demo data: yesterday, so Analytics (a day behind) has no
+ * empty tail. Search Console asks for three days less on its own.
+ */
+export const DEMO_END_DATE = new Date(Date.now() - 86_400_000)
+  .toISOString()
+  .slice(0, 10);
 /** Sixteen months back, which is all Google ever serves. */
-export const DEMO_START_DATE = "2025-06-20";
+export const DEMO_START_DATE = new Date(Date.now() - 488 * 86_400_000)
+  .toISOString()
+  .slice(0, 10);
 
 type PageKind = "home" | "category" | "product" | "blog" | "info";
 type Season = "neutral" | "winter" | "summer";

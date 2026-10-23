@@ -26,6 +26,9 @@ declare namespace Cloudflare {
     BETTER_AUTH_SECRET?: string;
     BETTER_AUTH_URL?: string;
 
+    // Developer-only: answers Google's APIs from scripts/demo-data.ts.
+    DEMO_GOOGLE?: string;
+
     GOOGLE_CLIENT_ID?: string;
     GOOGLE_CLIENT_SECRET?: string;
 

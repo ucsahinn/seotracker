@@ -2,7 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { AlertTriangle } from "lucide-react";
 import { SafeExternalLink } from "@/client/components/SafeExternalLink";
-import { getGoogleOAuthClientStatus } from "@/serverFunctions/googleOAuthClient";
+import {
+  googleOAuthClientStatusOptions,
+  googleServiceAccountStatusOptions,
+} from "@/client/features/settings/settingsQueries";
 import { GSC_SELF_HOSTED_SETUP_DOCS_URL } from "@/shared/gsc";
 
 /**
@@ -14,12 +17,17 @@ import { GSC_SELF_HOSTED_SETUP_DOCS_URL } from "@/shared/gsc";
  * sentence, once; `useGoogleClientConfigured` lets the page drop the cards
  * that cannot do anything until it is answered.
  */
+/**
+ * Either credential is enough: an OAuth client or a stored service account.
+ * Asking only about the OAuth client told a service-account install that its
+ * key was missing while Search Console was working.
+ */
 export function useGoogleClientConfigured(): boolean | undefined {
-  const query = useQuery({
-    queryKey: ["googleOAuthClientStatus"],
-    queryFn: () => getGoogleOAuthClientStatus(),
-  });
-  return query.data ? query.data.source !== null : undefined;
+  const oauth = useQuery(googleOAuthClientStatusOptions());
+  const serviceAccount = useQuery(googleServiceAccountStatusOptions());
+  if (oauth.data?.source != null) return true;
+  if (serviceAccount.data?.clientEmail != null) return true;
+  return oauth.data && serviceAccount.data ? false : undefined;
 }
 
 export function GoogleSetupBanner() {

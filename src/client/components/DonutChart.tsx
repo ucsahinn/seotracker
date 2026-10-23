@@ -160,7 +160,9 @@ export function DonutChart({
         </Chart>
         {/* `pointer-events-none` so the hole never steals a hover from an arc. */}
         <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-2xl font-semibold tabular-nums">
+          <span
+            className={`${centreSize(formatCount(selected ? selected.value : total))} font-semibold tabular-nums`}
+          >
             {formatCount(selected ? selected.value : total)}
           </span>
           <span className="text-xs text-muted">{totalLabel}</span>
@@ -317,4 +319,14 @@ export function donutSummary(
   return lead
     ? `${formatCount(total)} ${totalLabel}; en büyük pay ${lead.label}, ${formatPercent(lead.value / total)}.`
     : `${formatCount(total)} ${totalLabel}.`;
+}
+
+/**
+ * The hole is about 60% of the ring; "620.840" at the base size touched the
+ * ring on a busy site, so the number steps down as it gets longer.
+ */
+function centreSize(text: string): string {
+  if (text.length > 7) return "text-base";
+  if (text.length > 5) return "text-lg";
+  return "text-2xl";
 }

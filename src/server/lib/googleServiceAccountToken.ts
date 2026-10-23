@@ -10,6 +10,7 @@
  * multi-tenant build: one install, one service account, one operator. It also
  * dies with the isolate, so the worst case is minting again.
  */
+import { DEMO_GOOGLE_TOKEN, isDemoGoogle } from "@/server/dev/demoGoogle";
 import { z } from "zod";
 import { GoogleServiceAccountRepository } from "@/server/features/google/GoogleServiceAccountRepository";
 import { GA4_SERVICE_ACCOUNT_SCOPE } from "@/shared/ga4";
@@ -71,6 +72,7 @@ class GoogleServiceAccountError extends Error {
  * "not configured", so OAuth gets its turn.
  */
 export async function hasServiceAccount(): Promise<boolean> {
+  if (isDemoGoogle()) return true;
   return (await GoogleServiceAccountRepository.get()) !== null;
 }
 
@@ -96,6 +98,7 @@ const ALLOWED_SCOPES = new Set([
 ]);
 
 export async function getServiceAccountToken(scope: string): Promise<string> {
+  if (isDemoGoogle()) return DEMO_GOOGLE_TOKEN;
   if (!ALLOWED_SCOPES.has(scope)) {
     throw new GoogleServiceAccountError(
       `Hizmet hesabı için izin verilmeyen kapsam: ${scope}`,

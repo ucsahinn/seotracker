@@ -7,6 +7,7 @@ import { getAuthMode } from "@/lib/auth-mode";
 import { requestWithPublicOrigin } from "@/server/mcp/public-origin";
 import { MCP_ROUTE } from "@/server/mcp/context";
 import { handleSelfHostedMcpRequest } from "@/server/mcp/transport";
+import { enableDemoGoogle } from "@/server/dev/demoGoogle";
 
 const startHandler = createStartHandler(defaultStreamHandler);
 
@@ -43,6 +44,8 @@ function fetch(
   env: Env,
   ctx: ExecutionContext,
 ): Response | Promise<Response> {
+  // Developer-only: `.dev.vars` sets DEMO_GOOGLE=1 for the demo project.
+  enableDemoGoogle(env.DEMO_GOOGLE === "1");
   const authMode = getAuthMode(env.AUTH_MODE);
   const publicRequest = requestWithPublicOrigin(request);
   const pathname = new URL(publicRequest.url).pathname;

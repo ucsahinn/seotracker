@@ -1,10 +1,12 @@
 <p align="center">
-  <img src="./docs/images/banner.svg" alt="seotracker: kendi sitenizin SEO'su, kendi bilgisayarınızda. Abonelik yok, verileriniz bilgisayarınızda kalır." width="100%">
+  <img src="./docs/images/banner.svg" alt="seowatcher: kendi sitenizin SEO'su, kendi bilgisayarınızda. Abonelik yok, verileriniz bilgisayarınızda kalır." width="100%">
 </p>
 
 <p align="center">
   <b>Sitenizin Google verisini kendi bilgisayarınızda izleyin. Ücretsiz, hesapsız, Türkçe.</b>
 </p>
+
+<p align="center"><sub>Ürünün adı <b>seowatcher</b>; bu GitHub deposunun adı <code>seotracker</code>.</sub></p>
 
 <p align="center">
   <a href="./CHANGELOG.md"><img alt="Sürüm 2.4.1" src="https://img.shields.io/badge/sürüm-2.4.1-1f2937?style=flat-square"></a>
@@ -27,7 +29,7 @@
 
 <a id="neden"></a>
 
-## ✨ Neden seotracker?
+## ✨ Neden seowatcher?
 
 <table>
   <tr>
@@ -36,7 +38,7 @@
       Docker ile kendi bilgisayarınızda çalışır ve yalnızca bu bilgisayardan erişilir. Her şey tek bir SQLite dosyasında durur. Dışarıya yalnızca Google'a yaptığınız bağlantı ve günde bir sürüm kontrolü gider; ikisini de siz yönetirsiniz.
     </td>
     <td width="33%" valign="top">
-      <h3>🆓 seotracker için abonelik yok</h3>
+      <h3>🆓 seowatcher için abonelik yok</h3>
       Google'ın size zaten ücretsiz verdiği veriyi kullanır: Search Console, Analytics 4, PageSpeed Insights. Satın alınan hiçbir veri yok.
     </td>
     <td width="33%" valign="top">
@@ -134,11 +136,11 @@ Karanlık ve aydınlık tema, tek tıkla değişir. Görüntüler gerçek bir ku
 |     | Özellik                        | Size ne verir                                                                                                                                                                                    |
 | --- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | 🔎  | **Search Console performansı** | Tıklama, gösterim, tıklama oranı ve ortalama sıra. **Sıra 5-20 arası sorgular** ayrı listelenir: ikinci sayfanın başında kalmış, küçük bir iyileştirmeyle yükselebilecek sorgular.               |
-| 📈  | **Sıralama takibi**            | Google veriyi 16 ay sonra siliyor; seotracker günlük kayıtları yerelde tutar. Sayfa her açılışta eksik günleri kendiliğinden tamamlar.                                                           |
+| 📈  | **Sıralama takibi**            | Google veriyi 16 ay sonra siliyor; seowatcher günlük kayıtları yerelde tutar. Sayfa her açılışta eksik günleri kendiliğinden tamamlar.                                                           |
 | 🧰  | **Site denetimi**              | Yerleşik tarayıcı sitenizi gezer ve **95 teknik SEO kuralını** (10 kritik, 48 uyarı, 37 bilgi) denetler: kırık bağlantı, eksik başlık, yinelenen içerik, hiçbir sayfadan bağlantı almayan sayfa. |
 | ⚡  | **Hız skorları**               | Denetimde her sayfanın mobil ve masaüstü performans, erişilebilirlik ve SEO puanı (PageSpeed Insights). Yanında gerçek Chrome kullanıcılarından gelen Çekirdek Web Verileri.                     |
 | 🗂️  | **İndeksleme durumu**          | Google bu sayfayı gerçekten dizine aldı mı? URL Inspection API cevaplar. Tarayıcı "girebilir" der, bu "girdi" der.                                                                               |
-| ⚔️  | **Çakışan sorgular**           | Aynı sorgu için kendi sayfalarınızın birbiriyle yarıştığı yerler. Search Console bunu göstermez; seotracker sorgu ve sayfayı birlikte gruplar.                                                   |
+| ⚔️  | **Çakışan sorgular**           | Aynı sorgu için kendi sayfalarınızın birbiriyle yarıştığı yerler. Search Console bunu göstermez; seowatcher sorgu ve sayfayı birlikte gruplar.                                                   |
 | 🎯  | **Fırsatlar**                  | Sayfalarınızı dört gruba ayırır: az tıklanan, yükselmeye yakın, ilk sıralarda, derinde kalan. Analytics bağlıysa hangi sayfanın para kazandırdığını da bilir.                                    |
 | 📊  | **Google Analytics 4**         | Organik trafik, giriş sayfaları, dönüşümler, kitle dağılımı, site içi arama, e-ticaret. Ölçüm durumu, gerçek düşüşü takip kopukluğundan ayırır.                                                  |
 | 🔁  | **Denetim karşılaştırması**    | Bir haftadır tarama yoksa panel hatırlatır; son iki denetimi karşılaştırıp yeni çıkan sorunları ayrı gösterir.                                                                                   |
@@ -148,7 +150,7 @@ Karanlık ve aydınlık tema, tek tıkla değişir. Görüntüler gerçek bir ku
 
 ### 🚫 Ne yapmaz
 
-Rakip analizi, anahtar kelime hacmi, backlink profili ve üçüncü taraf sıralama takibi **yoktur**. Bunların hepsi satın alınan veriye dayanıyordu ve geri gelmeyecek. seotracker, Search Console'un zaten bildiği şeyin üzerine kurulur.
+Rakip analizi, anahtar kelime hacmi, backlink profili ve üçüncü taraf sıralama takibi **yoktur**. Bunların hepsi satın alınan veriye dayanıyordu ve geri gelmeyecek. seowatcher, Search Console'un zaten bildiği şeyin üzerine kurulur.
 
 ### 🔄 Nasıl çalışır
 
@@ -158,7 +160,7 @@ flowchart LR
     GA4["Analytics 4"] --> APP
     PSI["PageSpeed Insights"] --> APP
     CRAWL["Yerleşik tarayıcı"] --> APP
-    APP["seotracker<br/>Docker · SQLite · yalnızca bu bilgisayar"]
+    APP["seowatcher<br/>Docker · SQLite · yalnızca bu bilgisayar"]
     APP --> UI["Türkçe arayüz"]
     APP --> MCP["MCP sunucusu · 33 araç"]
     MCP --> AGENT["Claude Code · Codex · Cursor"]

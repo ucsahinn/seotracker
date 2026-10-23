@@ -18,7 +18,8 @@
  * The screens that read Search Console and Analytics live (performance,
  * opportunities, analytics, the dashboard cards) still call Google; they
  * render only when the two API clients are stood in for by
- * `scripts/demo-data.ts`, which is what the archive rows here are generated
+ * `scripts/demo-data.ts` (served when `.dev.vars` sets DEMO_GOOGLE=1),
+ * which is what the archive rows here are generated
  * from. Everything else (audit, index coverage, reports, context) reads the
  * database alone.
  *
@@ -81,7 +82,7 @@ const REPORT_ID = "demo-report-ekim-2026";
 
 /** D1 allows 100 bound parameters per statement. */
 const D1_MAX_PARAMS = 100;
-const BATCH_STATEMENTS = 10; // small batches: the local proxy drops very large request bodies
+const BATCH_STATEMENTS = 4; // small batches: the local proxy drops large request bodies
 
 type SeedDb = ReturnType<typeof drizzle<typeof schema>>;
 
@@ -162,7 +163,7 @@ async function seedConnections(db: SeedDb) {
     organizationId: LOCAL_ORG_ID,
     siteUrl: DEMO_SITE_URL,
     connectedByUserId: LOCAL_ADMIN_USER_ID,
-    gscAccountId: "demo-gsc-account",
+    gscAccountId: "service-account",
     connectedAccountEmail: null,
     createdAt: "2025-06-18 09:20:31",
     updatedAt: "2025-06-18 09:20:31",
@@ -176,7 +177,7 @@ async function seedConnections(db: SeedDb) {
     propertyTimeZone: "Europe/Istanbul",
     propertyCurrencyCode: "TRY",
     connectedByUserId: LOCAL_ADMIN_USER_ID,
-    ga4AccountId: "demo-ga4-account",
+    ga4AccountId: "service-account",
     connectedAccountEmail: null,
     createdAt: "2025-06-18 09:24:10",
     updatedAt: "2025-06-18 09:24:10",

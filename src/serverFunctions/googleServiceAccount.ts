@@ -1,3 +1,4 @@
+import { isDemoGoogle } from "@/server/dev/demoGoogle";
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { GoogleServiceAccountRepository } from "@/server/features/google/GoogleServiceAccountRepository";
@@ -18,6 +19,13 @@ const saveSchema = z.object({
 export const getGoogleServiceAccountStatus = createServerFn({ method: "POST" })
   .middleware(requireAuthenticatedContext)
   .handler(async () => {
+    if (isDemoGoogle()) {
+      return {
+        clientEmail: "demo@ornek-site.iam.gserviceaccount.com",
+        projectId: "ornek-site",
+        updatedAt: null,
+      };
+    }
     const stored = await GoogleServiceAccountRepository.getStatus();
     return {
       clientEmail: stored?.clientEmail ?? null,
