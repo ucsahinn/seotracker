@@ -45,6 +45,7 @@ Simgeye sağ tıklayın. Simge görünmüyorsa görev çubuğundaki ^ okuna tık
 - **Eksik Windows bileşenini kur**: yalnızca Visual C++ paketi eksikse görünür. Tıklayınca paketi kurar ve uygulamayı yeniden başlatır.
 - **Kurulumu onar**: geçici dosyaları temizler, paketi kontrol eder, uygulamayı yeniden açar.
 - **Güncelle**: yalnızca yeni sürüm varsa görünür. Hazır olduğunda tam yazısı "Güncelle: X.Y.Z sürümü hazır" biçimindedir (sürüm numarası örnektir).
+- **Güncellemeleri kontrol et**: hemen GitHub'a bakar. Yeni sürüm varsa indirip kurar, yoksa "Güncel" der.
 - **Güncellemeleri kendiliğinden kur**: işaretliyse yeni sürüm bulununca kendisi kurar.
 - **Veri klasörünü aç**: veritabanının ve anahtarların klasörünü açar.
 - **Windows açılınca başlat**: işaretliyse uygulama bilgisayar açılınca arka planda başlar.

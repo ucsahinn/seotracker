@@ -2,6 +2,14 @@
 
 Her sürümün notu burada, en yenisi en üstte.
 
+## [2.3.13] — 2026-10-23
+
+Görev çubuğu menüsünde her zaman görünen **Güncellemeleri kontrol et**.
+
+### Yenilikler
+
+- **Güncellemeleri kontrol et.** Menüde her zaman durur; tıklayınca hemen GitHub'a bakar, yeni sürüm varsa indirip kurar, yoksa "Güncel" der, bağlantı yoksa bunu söyler. Günlük otomatik kontrol ve **Güncellemeleri kendiliğinden kur** seçeneği aynı kaldı.
+
 ## [2.3.12] — 2026-10-23
 
 Uygulama siteye bağlanır.

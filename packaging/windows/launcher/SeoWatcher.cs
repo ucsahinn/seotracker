@@ -1226,6 +1226,7 @@ namespace SeoWatcher
         private readonly ToolStripMenuItem autostartItem;
         private readonly ToolStripMenuItem autoUpdateItem;
         private readonly ToolStripMenuItem updateItem;
+        private readonly ToolStripMenuItem checkItem;
         private readonly System.Threading.Timer updateTimer;
         private Version available;
         private bool updating;
@@ -1248,6 +1249,7 @@ namespace SeoWatcher
             autostartItem.Checked = Autostart.IsEnabled();
             autoUpdateItem = new ToolStripMenuItem("Güncellemeleri kendiliğinden kur", null, (s, e) => ToggleAutoUpdate()) { Checked = config.AutoUpdate };
             updateItem = new ToolStripMenuItem("Güncelle", null, (s, e) => StartUpdate()) { Visible = false };
+            checkItem = new ToolStripMenuItem("Güncellemeleri kontrol et", null, (s, e) => CheckForUpdateNow());
 
             menu.Items.Add(openItem);
             menu.Items.Add(statusItem);
@@ -1261,6 +1263,7 @@ namespace SeoWatcher
             menu.Items.Add(fixItem);
             menu.Items.Add(new ToolStripMenuItem("Kurulumu onar", null, (s, e) => RepairInstall()));
             menu.Items.Add(updateItem);
+            menu.Items.Add(checkItem);
             menu.Items.Add(new ToolStripSeparator());
             menu.Items.Add(autostartItem);
             menu.Items.Add(autoUpdateItem);
@@ -1294,14 +1297,51 @@ namespace SeoWatcher
 
         private void CheckForUpdate()
         {
-            var latest = Updater.CheckLatest();
-            if (latest == null || latest <= Updater.Current()) return;
+            CheckForUpdate(false);
+        }
+
+        /// <summary>Menu item: the same check, but it always answers, and a
+        /// found update is installed right away even with auto-update off,
+        /// because the user just asked for it.</summary>
+        private void CheckForUpdateNow()
+        {
+            checkItem.Enabled = false;
+            checkItem.Text = "Kontrol ediliyor…";
+            new Thread(() =>
+            {
+                try { CheckForUpdate(true); }
+                finally
+                {
+                    Invoke(() =>
+                    {
+                        checkItem.Text = "Güncellemeleri kontrol et";
+                        checkItem.Enabled = true;
+                    });
+                }
+            }) { IsBackground = true }.Start();
+        }
+
+        private void CheckForUpdate(bool manual)
+        {
+            Version latest = null;
+            try { latest = Updater.CheckLatest(); }
+            catch (Exception ex) { LauncherLog.Write("update: check failed: " + ex.Message); }
+            if (latest == null)
+            {
+                if (manual) Invoke(() => tray.ShowBalloonTip(6000, "Kontrol edilemedi", "GitHub'a ulaşılamadı. İnternet bağlantınızı kontrol edip tekrar deneyin.", ToolTipIcon.Warning));
+                return;
+            }
+            if (latest <= Updater.Current())
+            {
+                if (manual) Invoke(() => tray.ShowBalloonTip(6000, "Güncel", "seowatcher " + Paths.Version() + " en son sürüm.", ToolTipIcon.Info));
+                return;
+            }
             Invoke(() =>
             {
                 available = latest;
                 updateItem.Text = "Güncelle: " + latest + " sürümü hazır";
                 updateItem.Visible = true;
-                if (config.AutoUpdate) StartUpdate();
+                if (config.AutoUpdate || manual) StartUpdate();
                 else tray.ShowBalloonTip(10000, "Yeni sürüm: seowatcher " + latest, "Kurmak için bu baloncuğa tıklayın ya da menüden Güncelle deyin.", ToolTipIcon.Info);
             });
         }

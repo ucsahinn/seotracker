@@ -48,6 +48,7 @@ Right-click the icon (if it is not visible, click the ^ arrow on the taskbar). T
 - **Eksik Windows bileşenini kur** (Install the missing Windows component): shown only if the Visual C++ package is missing. When you click it, it installs the package and restarts the app.
 - **Kurulumu onar** (Repair installation): clears temporary files, checks the package and reopens the app.
 - **Güncelle** (Update): shown only if there is a new version. When an update is ready it reads "Güncelle: X.Y.Z sürümü hazır" (Update: version 2.3.8 is ready); the version number is the new one.
+- **Güncellemeleri kontrol et** (Check for updates): checks GitHub right away. If there is a new version it downloads and installs it; otherwise it says "Güncel" (up to date).
 - **Güncellemeleri kendiliğinden kur** (Install updates automatically): if ticked, the app installs a new version by itself when it finds one.
 - **Veri klasörünü aç** (Open data folder): opens the folder with the database and the keys.
 - **Windows açılınca başlat** (Start with Windows): if ticked, the app starts in the background when the computer starts.
