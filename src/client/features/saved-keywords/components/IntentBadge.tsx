@@ -66,6 +66,17 @@ export function IntentBadge({ intent }: { intent: KeywordIntent }) {
   const tooltip = useFloatingTooltip<HTMLSpanElement>({ delayMs: 150 });
   const details = DESCRIPTIONS[intent];
 
+  // No free data source supplies intent, so "unknown" is nearly every row,
+  // and a "?" chip on each one read as a fault. An absent value is the house "-"
+  // in `text-subtle`, as in the other tables.
+  if (intent === "unknown") {
+    return (
+      <span className="text-subtle" aria-label="Arama amacı bilinmiyor">
+        -
+      </span>
+    );
+  }
+
   return (
     <span
       ref={tooltip.triggerRef}

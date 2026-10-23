@@ -88,6 +88,13 @@ export const GA4_FIELD_LABELS: Record<string, string> = {
   itemRevenue: "Ürün geliri",
 };
 
+/**
+ * Rendered as money in the property's currency rather than a count. The
+ * dashboard already showed revenue as "₺663.106" and the Analytics tab as a
+ * bare "663.106", which reads as a count of something.
+ */
+export const GA4_MONEY_FIELDS = new Set(["purchaseRevenue", "itemRevenue"]);
+
 /** Rendered as a percentage rather than a count. */
 export const GA4_RATE_FIELDS = new Set([
   "engagementRate",

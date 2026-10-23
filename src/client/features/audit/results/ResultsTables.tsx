@@ -1,3 +1,4 @@
+import { deviceLabel } from "@/client/features/search-performance/deviceShare";
 import {
   formatCount,
   formatDecimal,
@@ -191,7 +192,7 @@ function buildPerformanceColumns({
     performanceColumnHelper.accessor("strategy", {
       header: ({ column }) => <SortableHeader column={column} label="Cihaz" />,
       cell: ({ getValue }) => (
-        <span className="capitalize text-xs">{getValue()}</span>
+        <span className="text-xs">{deviceLabel(getValue())}</span>
       ),
     }),
     performanceColumnHelper.display({

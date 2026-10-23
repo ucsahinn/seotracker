@@ -6,27 +6,43 @@ import {
   compareText,
   type useLocalSort,
 } from "@/client/components/table/useLocalSort";
+import { ga4ValueLabel } from "@/client/features/analytics/ga4ValueLabels";
 import type { ReportRow } from "@/client/features/analytics/reportInsights";
 import type { CsvValue } from "@/client/lib/csv";
-import { formatCount, formatPercent } from "@/client/lib/format";
-import { GA4_FIELD_LABELS, GA4_RATE_FIELDS } from "@/shared/ga4-reports";
+import { formatCount, formatMoney, formatPercent } from "@/client/lib/format";
+import {
+  GA4_FIELD_LABELS,
+  GA4_MONEY_FIELDS,
+  GA4_RATE_FIELDS,
+} from "@/shared/ga4-reports";
 
 export function columnLabel(field: string): string {
   return GA4_FIELD_LABELS[field] ?? field;
 }
 
-/** Rates as percentages, everything else as a count. Strings pass through. */
+/** Money in the property's currency, rates as percentages, the rest as counts. */
+export function formatGa4Metric(
+  field: string,
+  value: number,
+  currencyCode: string | null,
+): string {
+  if (GA4_MONEY_FIELDS.has(field)) return formatMoney(value, currencyCode);
+  if (GA4_RATE_FIELDS.has(field)) return formatPercent(value);
+  return formatCount(value);
+}
+
+/** A metric through `formatGa4Metric`; strings pass through. */
 function cellValue(
   field: string,
   value: string | number | null,
+  currencyCode: string | null,
 ): React.ReactNode {
   // "-" in `text-subtle`, matching `MetricTile` and the opportunity table.
   if (value === null || value === "") {
     return <span className="text-subtle">-</span>;
   }
-  if (typeof value === "string") return value;
-  if (GA4_RATE_FIELDS.has(field)) return formatPercent(value);
-  return formatCount(value);
+  if (typeof value === "string") return ga4ValueLabel(field, value);
+  return formatGa4Metric(field, value, currencyCode);
 }
 
 /** One GA4 cell against another, ascending; `useLocalSort` applies direction. */
@@ -65,10 +81,12 @@ export function ReportTable({
   columns,
   dimensionCount,
   sorting,
+  currencyCode,
 }: {
   rows: ReportRow[];
   columns: string[];
   dimensionCount: number;
+  currencyCode: string | null;
   sorting: ReturnType<typeof useLocalSort<string>>;
 }) {
   return (
@@ -114,7 +132,7 @@ export function ReportTable({
                     {target ? (
                       <UrlCell url={target} label={String(row[field] ?? "")} />
                     ) : (
-                      cellValue(field, row[field] ?? null)
+                      cellValue(field, row[field] ?? null, currencyCode)
                     )}
                   </td>
                 );

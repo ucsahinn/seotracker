@@ -195,7 +195,7 @@ export function SearchPerformancePage({
               <Link
                 to="/p/$projectId/settings/integrations"
                 params={{ projectId }}
-                className="link link-hover shrink-0 text-sm font-medium text-muted transition-colors hover:text-base-content"
+                className="btn btn-sm"
               >
                 Mülkü değiştir
               </Link>
@@ -257,7 +257,11 @@ export function SearchPerformancePage({
             onSelect={(next) => onViewChange({ country: next })}
           />
           <div className="overflow-hidden rounded-box border border-base-300 bg-base-100">
-            <div className="flex flex-col gap-3 border-b border-base-300 px-4 py-3 lg:flex-row lg:items-center lg:justify-between">
+            {/* Side by side only where both fit on one line. Below that the
+                tabs wrapped onto a second row, and how far depended on the
+                live count in the first label, so "Dışa aktar" jumped to its
+                own line on one tab and not the others. */}
+            <div className="flex flex-col gap-3 border-b border-base-300 px-4 py-3 2xl:flex-row 2xl:items-center 2xl:justify-between">
               <Tabs
                 group="search-performance"
                 className="w-fit"

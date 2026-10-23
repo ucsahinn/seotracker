@@ -1,10 +1,10 @@
 ---
 title: Notas da versão
-description: O que mudou no seowatcher 2.4.1: instalação com um só arquivo no Windows, um aplicativo que se atualiza sozinho, telas mais simples e site em seis idiomas.
+description: O que mudou no seowatcher 2.4.2: instalação com um só arquivo no Windows, um aplicativo que se atualiza sozinho, telas mais simples e site em seis idiomas.
 updated: 2026-10-23
 ---
 
-A versão mais recente é a **2.4.1**, de 23 de outubro de 2026. Seus dados são mantidos na atualização; o pacote do Windows instala as novas versões sozinho.
+A versão mais recente é a **2.4.2**, de 23 de outubro de 2026. Seus dados são mantidos na atualização; o pacote do Windows instala as novas versões sozinho.
 
 ## Destaques
 
@@ -38,5 +38,7 @@ A versão mais recente é a **2.4.1**, de 23 de outubro de 2026. Seus dados são
 - O link de download do site apontava para a tag de versão errada.
 - No Git Bash, o comando de configuração do Codex não removia a quebra de linha no fim da senha.
 - Em um cartão da auditoria do site, os números saíam do quadro.
+- Com apenas uma conta de serviço conectada, o painel dizia por engano que faltava a chave de acesso do Google.
+- No celular, a auditoria do site e as Oportunidades rolavam para o lado.
 
 O histórico completo está no [CHANGELOG.md](https://github.com/ucsahinn/seotracker/blob/seotracker-fork/CHANGELOG.md) no GitHub.

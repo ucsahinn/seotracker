@@ -3,8 +3,8 @@
 > seowatcher (GitHub ve uygulama içi adı: seotracker), Google Search Console, Google Analytics 4, kendi site tarayıcısı ve PageSpeed Insights verisini tek panelde toplayan ücretsiz, açık kaynaklı (MIT) bir SEO uygulamasıdır. Windows 10/11 (64 bit) için tek kurulum dosyası vardır; Mac ve Linux'ta Docker ile çalışır. Tek kullanıcılıdır, yalnızca kullanıcının kendi bilgisayarından erişilir, veri o bilgisayarda kalır. Abonelik ve hesap yoktur.
 > English: seowatcher (also named seotracker) is a free, MIT-licensed, self-hosted SEO app that reads Google Search Console, Google Analytics 4, its own crawler and PageSpeed Insights. Windows 10/11 installer; Docker on macOS/Linux. Single user, localhost only, data stays on your machine. Derived from open-seo. The app's interface is Turkish; the website and this guide exist in Türkçe, English, Deutsch, Français, Italiano, Português.
 
-Hızlı bilgiler: sürüm 2.4.1, 95 denetim kuralı, yapay zekâ asistanları için 33 MCP aracı ve 6 hazır görev, fiyat 0, lisans MIT. Arama hacmi tahmini, backlink sayımı ve rakip sıralaması yoktur. Kurulum dosyası 81 MB, kurulu hali 290 MB; Visual C++ çalışma zamanı pakete dahildir.
-Quick facts: version 2.4.1, 95 audit rules, 33 MCP tools and 6 ready-made tasks for AI assistants, price 0, MIT license. No search-volume estimates, backlink counts or competitor rankings. Installer 81 MB, installed 290 MB; the Visual C++ runtime is bundled.
+Hızlı bilgiler: sürüm 2.4.2, 95 denetim kuralı, yapay zekâ asistanları için 33 MCP aracı ve 6 hazır görev, fiyat 0, lisans MIT. Arama hacmi tahmini, backlink sayımı ve rakip sıralaması yoktur. Kurulum dosyası 81 MB, kurulu hali 290 MB; Visual C++ çalışma zamanı pakete dahildir.
+Quick facts: version 2.4.2, 95 audit rules, 33 MCP tools and 6 ready-made tasks for AI assistants, price 0, MIT license. No search-volume estimates, backlink counts or competitor rankings. Installer 81 MB, installed 290 MB; the Visual C++ runtime is bundled.
 
 ## Ana bağlantılar / Main links
 - [seowatcher (Türkçe)](https://seowatcher.io/): Search Console, Analytics 4 ve site denetimi tek uygulamada. Ücretsiz, açık kaynak. Windows'a kurulur, verileriniz bilgisayarınızda kalır.
@@ -47,7 +47,7 @@ Quick facts: version 2.4.1, 95 audit rules, 33 MCP tools and 6 ready-made tasks 
 - [Denetim kuralları](https://seowatcher.io/docs/denetim-kurallari/): Site denetiminin baktığı 95 kuralın tam listesi. Her kuralın ne demek olduğunu ve nasıl düzelteceğinizi buradan okursunuz.
 - [Ajan kurulumu](https://seowatcher.io/docs/ajan-kurulumu/): Claude Code, Codex ya da Cursor'ı uygulamaya bağlarsınız: adres, parola, 33 araç, 6 hazır görev ve hangisinin Google kotasını harcadığı.
 - [Sorun giderme](https://seowatcher.io/docs/sorun-giderme/): Sık görülen sorunlar belirti, sebep ve çözümle: dolu adres numarası, Windows uyarısı, Google hataları, kota, takılan denetim, boş grafik, 401.
-- [Sürüm notları](https://seowatcher.io/docs/surum-notlari/): seowatcher 2.4.1'de neler değişti. Windows'ta tek dosyayla kurulum, kendini güncelleyen uygulama, sade ekranlar ve altı dilde site.
+- [Sürüm notları](https://seowatcher.io/docs/surum-notlari/): seowatcher 2.4.2'de neler değişti. Windows'ta tek dosyayla kurulum, kendini güncelleyen uygulama, sade ekranlar ve altı dilde site.
 
 ## Guide: Getting started
 - [Install on Windows](https://seowatcher.io/en/docs/install-windows/): Install on Windows with a single file. First launch, update, uninstall, backup and changing the port number. No Docker or terminal needed.
@@ -74,7 +74,7 @@ Quick facts: version 2.4.1, 95 audit rules, 33 MCP tools and 6 ready-made tasks 
 - [Audit rules](https://seowatcher.io/en/docs/audit-rules/): The list of 95 rules the site audit checks. For each rule you find what it means and how to fix it.
 - [Agent setup](https://seowatcher.io/en/docs/agent-setup/): Connect Claude Code, Codex or Cursor to the app. The address, the password, the 33 tools and 6 ready-made task templates, and which ones use up Google quota.
 - [Troubleshooting](https://seowatcher.io/en/docs/troubleshooting/): The most common problems: symptom, cause and fix. Port in use, the Windows warning, Google errors, quota, a stuck audit, empty charts, assistant 401.
-- [Release notes](https://seowatcher.io/en/docs/release-notes/): What changed in seowatcher 2.4.1. One-file install on Windows, an app that updates itself, simpler screens and a site in six languages.
+- [Release notes](https://seowatcher.io/en/docs/release-notes/): What changed in seowatcher 2.4.2. One-file install on Windows, an app that updates itself, simpler screens and a site in six languages.
 
 ## Anleitung: Erste Schritte
 - [Installation unter Windows](https://seowatcher.io/de/docs/installation-windows/): seowatcher mit einer einzigen Datei installieren, ohne Docker und ohne Terminal. Dazu Update, Deinstallation, Sicherung und Portnummer.
@@ -101,7 +101,7 @@ Quick facts: version 2.4.1, 95 audit rules, 33 MCP tools and 6 ready-made tasks 
 - [Audit-Regeln](https://seowatcher.io/de/docs/audit-regeln/): Die vollständige Liste der 95 Regeln, die das Website-Audit prüft. Hier lesen Sie zu jeder Regel, was sie bedeutet und wie Sie sie beheben.
 - [Assistent einrichten](https://seowatcher.io/de/docs/assistent-einrichten/): Claude Code, Codex oder Cursor mit der App verbinden: Adresse, Passwort, 33 Werkzeuge, 6 fertige Aufgabenvorlagen und Google-Kontingent.
 - [Fehlerbehebung](https://seowatcher.io/de/docs/fehlerbehebung/): Häufige Probleme mit Symptom, Ursache und Lösung: Port, Windows-Warnung, Google-Fehler, Kontingent, hängendes Audit, leere Diagramme, Assistent 401.
-- [Versionshinweise](https://seowatcher.io/de/docs/versionshinweise/): Neu in seowatcher 2.4.1: Windows-Installation mit einer Datei, Selbstaktualisierung, schlichtere Bildschirme und eine Website in sechs Sprachen.
+- [Versionshinweise](https://seowatcher.io/de/docs/versionshinweise/): Neu in seowatcher 2.4.2: Windows-Installation mit einer Datei, Selbstaktualisierung, schlichtere Bildschirme und eine Website in sechs Sprachen.
 
 ## Guide: Pour démarrer
 - [Installation sous Windows](https://seowatcher.io/fr/docs/installation-windows/): Installez l'application sous Windows avec un seul fichier : premier lancement, mise à jour, désinstallation, sauvegarde et port. Ni Docker ni terminal.
@@ -128,7 +128,7 @@ Quick facts: version 2.4.1, 95 audit rules, 33 MCP tools and 6 ready-made tasks 
 - [Règles d'audit](https://seowatcher.io/fr/docs/regles-d-audit/): La liste complète des 95 règles de l'audit du site. Pour chacune : ce qu'elle signifie et comment la corriger.
 - [Installation de l'assistant](https://seowatcher.io/fr/docs/installation-assistant/): Connectez Claude Code, Codex ou Cursor à l'application : adresse, mot de passe, 33 outils, 6 modèles de tâches et ceux qui consomment le quota Google.
 - [Dépannage](https://seowatcher.io/fr/docs/depannage/): Problèmes fréquents par symptôme, cause et solution : port occupé, alerte Windows, erreurs Google, quota, audit bloqué, graphiques vides, assistant 401.
-- [Notes de version](https://seowatcher.io/fr/docs/notes-de-version/): Les nouveautés de seowatcher 2.4.1 : installation en un seul fichier sous Windows, mise à jour automatique, écrans plus simples et site en six langues.
+- [Notes de version](https://seowatcher.io/fr/docs/notes-de-version/): Les nouveautés de seowatcher 2.4.2 : installation en un seul fichier sous Windows, mise à jour automatique, écrans plus simples et site en six langues.
 
 ## Guida: Per iniziare
 - [Installazione su Windows](https://seowatcher.io/it/docs/installazione-windows/): Si installa su Windows con un solo file, senza Docker né terminale. Nella stessa pagina: aggiornamento, disinstallazione, copia di sicurezza, porta.
@@ -155,7 +155,7 @@ Quick facts: version 2.4.1, 95 audit rules, 33 MCP tools and 6 ready-made tasks 
 - [Regole del controllo](https://seowatcher.io/it/docs/regole-del-controllo/): L'elenco completo delle 95 regole che il controllo del sito verifica. Qui si legge che cosa significa ogni regola e come correggerla.
 - [Configurazione dell'assistente](https://seowatcher.io/it/docs/configurazione-assistente/): Si collega Claude Code, Codex o Cursor all'app: indirizzo, password, 33 strumenti, 6 attività pronte e quali consumano il limite di Google.
 - [Risoluzione dei problemi](https://seowatcher.io/it/docs/risoluzione-problemi/): I problemi più comuni, con sintomo, causa e soluzione: porta occupata, avviso di Windows, errori di Google, quota, controllo bloccato, assistente 401.
-- [Note di versione](https://seowatcher.io/it/docs/note-di-rilascio/): Che cosa cambia in seowatcher 2.4.1: installazione con un solo file su Windows, aggiornamento automatico, schermate più semplici, sito in sei lingue.
+- [Note di versione](https://seowatcher.io/it/docs/note-di-rilascio/): Che cosa cambia in seowatcher 2.4.2: installazione con un solo file su Windows, aggiornamento automatico, schermate più semplici, sito in sei lingue.
 
 ## Guia: Primeiros passos
 - [Instalar no Windows](https://seowatcher.io/pt/docs/instalar-windows/): Instale no Windows com um único arquivo: primeira abertura, atualização, desinstalação, backup e troca da porta. Sem Docker e sem terminal.
@@ -182,7 +182,7 @@ Quick facts: version 2.4.1, 95 audit rules, 33 MCP tools and 6 ready-made tasks 
 - [Regras de auditoria](https://seowatcher.io/pt/docs/regras-de-auditoria/): A lista das 95 regras que a auditoria do site confere. Para cada regra, você encontra o que ela significa e como corrigir.
 - [Configurar o agente](https://seowatcher.io/pt/docs/configurar-agente/): Conecte o Claude Code, o Codex ou o Cursor ao aplicativo: endereço, senha, as 33 ferramentas, os 6 modelos de tarefa e quais deles gastam a cota do Google.
 - [Solução de problemas](https://seowatcher.io/pt/docs/solucao-de-problemas/): Problemas mais comuns, com sintoma, causa e solução: porta em uso, aviso do Windows, erros do Google, cota, auditoria travada, gráficos vazios, erro 401.
-- [Notas da versão](https://seowatcher.io/pt/docs/notas-da-versao/): O que mudou no seowatcher 2.4.1: instalação com um só arquivo no Windows, um aplicativo que se atualiza sozinho, telas mais simples e site em seis idiomas.
+- [Notas da versão](https://seowatcher.io/pt/docs/notas-da-versao/): O que mudou no seowatcher 2.4.2: instalação com um só arquivo no Windows, um aplicativo que se atualiza sozinho, telas mais simples e site em seis idiomas.
 
 ## Kaynak ve notlar
 - [GitHub deposu ve README (Docker kurulumu)](https://github.com/ucsahinn/seotracker)

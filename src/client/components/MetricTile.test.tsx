@@ -88,13 +88,13 @@ describe("MetricTile", () => {
 
 describe("DeltaBadge", () => {
   it("renders nothing when the change rounds to 0% at the displayed precision", () => {
-    const { container } = render(<DeltaBadge value={0.004} />);
+    const { container } = render(<DeltaBadge value={0.0004} />);
     expect(container.innerHTML).toBe("");
   });
 
-  it("shows direction and whole percent otherwise", () => {
+  it("shows direction and a signed one-decimal percent otherwise", () => {
     render(<DeltaBadge value={-0.12} />);
     expect(screen.getByText(/azaldı/)).toBeTruthy();
-    expect(screen.getByText("%12")).toBeTruthy();
+    expect(screen.getByText("-%12,0")).toBeTruthy();
   });
 });

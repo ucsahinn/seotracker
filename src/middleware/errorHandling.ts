@@ -2,7 +2,12 @@ import { createMiddleware } from "@tanstack/react-start";
 import { getRequest } from "@tanstack/react-start/server";
 import { waitUntil } from "cloudflare:workers";
 import { shouldCaptureAppErrorCode } from "@/shared/error-codes";
-import { AppError, asAppError, toClientError } from "@/server/lib/errors";
+import {
+  AppError,
+  asAppError,
+  googleAppError,
+  toClientError,
+} from "@/server/lib/errors";
 import { captureServerError } from "@/server/lib/observability";
 
 // TanStack's serverFn validator throws a plain Error whose message is the
@@ -37,9 +42,13 @@ export const errorHandlingMiddleware = createMiddleware({
       throw new Error("INTERNAL_ERROR", { cause: error });
     }
 
+    const googleError = googleAppError(error);
+    // Google failures are not captured (UPSTREAM_UNAVAILABLE), so keep the
+    // rate visible in the log, as error-codes.ts asks of every throw site.
+    if (googleError) console.warn("server.function google error:", error);
     const appError = isValidatorError(error)
       ? new AppError("VALIDATION_ERROR")
-      : asAppError(error);
+      : (googleError ?? asAppError(error));
 
     if (shouldCaptureAppErrorCode(appError?.code)) {
       const request = getRequest();

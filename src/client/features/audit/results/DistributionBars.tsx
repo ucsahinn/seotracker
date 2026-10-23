@@ -27,11 +27,14 @@ export function DistributionBars({
   rows,
   onSelect,
   summary,
+  format = formatCount,
 }: {
   rows: DistributionRow[];
   onSelect: (key: string) => void;
   /** The finding, for readers who cannot see the bars. */
   summary: string;
+  /** How a bar's value reads; a count unless the bars measure money. */
+  format?: (value: number) => string;
 }) {
   const [grown, setGrown] = useState(false);
   useEffect(() => {
@@ -83,7 +86,7 @@ export function DistributionBars({
                 />
               </span>
               <span className="text-right tabular-nums">
-                {formatCount(row.count)}
+                {format(row.count)}
                 <span className="ml-1.5 text-xs text-muted">
                   {total > 0 ? formatPercent(row.count / total) : ""}
                 </span>

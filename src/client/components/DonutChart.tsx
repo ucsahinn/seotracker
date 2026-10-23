@@ -99,141 +99,150 @@ export function DonutChart({
   const interactive = onSelect !== undefined;
 
   return (
-    <div className="flex flex-col items-center gap-4 sm:flex-row">
-      <div className="relative shrink-0" style={{ width: height }}>
-        <Chart height={height} summary={summary}>
-          <PieChart>
-            <Pie
-              data={shown}
-              dataKey="value"
-              nameKey="label"
-              innerRadius="62%"
-              outerRadius="92%"
-              paddingAngle={2}
-              stroke="none"
-              isAnimationActive={!reduced}
-              animationDuration={700}
-              cursor={interactive ? "pointer" : "default"}
-              onMouseEnter={(_, index: number) => setHovered(index)}
-              onMouseLeave={() => setHovered(null)}
-              onClick={(_, index: number) => {
-                const segment = shown[index];
-                if (segment) toggle(segment.key);
-              }}
-            >
-              {shown.map((segment) => (
-                <Cell
-                  key={segment.key}
-                  fill={colorOf(segment)}
-                  // The ones not chosen fade back while a choice is active.
-                  opacity={
-                    activeKey === null || activeKey === segment.key ? 1 : 0.35
-                  }
-                />
-              ))}
-            </Pie>
-            <Tooltip
-              /*
-               * The hovered segment comes from the arc's own mouse events,
-               * not from recharts' `payload`, which is typed `any` -- so
-               * reading a label off it would put the tooltip's correctness
-               * outside the type checker.
-               */
-              content={({ active }) => {
-                const segment =
-                  active && hovered !== null ? shown[hovered] : null;
-                if (!segment) return null;
-                return (
-                  <ChartTooltip
-                    title={segment.label}
-                    rows={[
-                      {
-                        label: totalLabel,
-                        value: `${formatCount(segment.value)} · ${formatPercent(segment.value / total)}`,
-                      },
-                    ]}
+    /*
+     * Side by side by the width of the card, not the screen: in a
+     * half-width card on a wide screen the legend was left ~120px and its
+     * hints wrapped one word per line.
+     */
+    <div className="@container w-full">
+      <div className="flex flex-col items-center gap-4 @lg:flex-row">
+        <div className="relative shrink-0" style={{ width: height }}>
+          <Chart height={height} summary={summary}>
+            <PieChart>
+              <Pie
+                data={shown}
+                dataKey="value"
+                nameKey="label"
+                innerRadius="62%"
+                outerRadius="92%"
+                paddingAngle={2}
+                stroke="none"
+                isAnimationActive={!reduced}
+                animationDuration={700}
+                cursor={interactive ? "pointer" : "default"}
+                onMouseEnter={(_, index: number) => setHovered(index)}
+                onMouseLeave={() => setHovered(null)}
+                onClick={(_, index: number) => {
+                  const segment = shown[index];
+                  if (segment) toggle(segment.key);
+                }}
+              >
+                {shown.map((segment) => (
+                  <Cell
+                    key={segment.key}
+                    fill={colorOf(segment)}
+                    // The ones not chosen fade back while a choice is active.
+                    opacity={
+                      activeKey === null || activeKey === segment.key ? 1 : 0.35
+                    }
                   />
-                );
-              }}
-            />
-          </PieChart>
-        </Chart>
-        {/* `pointer-events-none` so the hole never steals a hover from an arc. */}
-        <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-          <span
-            className={`${centreSize(formatCount(selected ? selected.value : total))} font-semibold tabular-nums`}
-          >
-            {formatCount(selected ? selected.value : total)}
-          </span>
-          <span className="text-xs text-muted">{totalLabel}</span>
+                ))}
+              </Pie>
+              <Tooltip
+                /*
+                 * The hovered segment comes from the arc's own mouse events,
+                 * not from recharts' `payload`, which is typed `any` -- so
+                 * reading a label off it would put the tooltip's correctness
+                 * outside the type checker.
+                 */
+                content={({ active }) => {
+                  const segment =
+                    active && hovered !== null ? shown[hovered] : null;
+                  if (!segment) return null;
+                  return (
+                    <ChartTooltip
+                      title={segment.label}
+                      rows={[
+                        {
+                          label: totalLabel,
+                          value: `${formatCount(segment.value)} · ${formatPercent(segment.value / total)}`,
+                        },
+                      ]}
+                    />
+                  );
+                }}
+              />
+            </PieChart>
+          </Chart>
+          {/* `pointer-events-none` so the hole never steals a hover from an arc. */}
+          <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
+            <span
+              className={`${centreSize(formatCount(selected ? selected.value : total))} font-semibold tabular-nums`}
+            >
+              {formatCount(selected ? selected.value : total)}
+            </span>
+            <span className="text-xs text-muted">{totalLabel}</span>
+          </div>
         </div>
-      </div>
 
-      {/*
-       * The legend lists every group, including the empty ones. A ring cannot
-       * draw a zero-width arc, but "0 pages waiting for an answer" is itself
-       * a finding, and a group that vanishes when it empties reads as if it
-       * had never existed. An empty group cannot be chosen: there is nothing
-       * to filter down to.
-       */}
-      <ul className="w-full min-w-0 flex-1 space-y-1 sm:max-w-md">
-        {segments.map((segment) => {
-          const isSelected = segment.key === selectedKey;
-          const empty = segment.value <= 0;
-          const row = (
-            <>
-              <span className="flex min-w-0 items-center gap-2">
-                <span
-                  aria-hidden
-                  className="size-2.5 shrink-0 rounded-full"
-                  style={{ backgroundColor: colorOf(segment) }}
-                />
-                <span className="min-w-0">
-                  <span className="block truncate">{segment.label}</span>
-                  {segment.hint ? (
-                    <span className="block truncate text-xs text-muted">
-                      {segment.hint}
-                    </span>
-                  ) : null}
+        {/*
+         * The legend lists every group, including the empty ones. A ring cannot
+         * draw a zero-width arc, but "0 pages waiting for an answer" is itself
+         * a finding, and a group that vanishes when it empties reads as if it
+         * had never existed. An empty group cannot be chosen: there is nothing
+         * to filter down to.
+         */}
+        <ul className="w-full min-w-0 flex-1 space-y-1 @lg:max-w-md">
+          {segments.map((segment) => {
+            const isSelected = segment.key === selectedKey;
+            const empty = segment.value <= 0;
+            const row = (
+              <>
+                <span className="flex min-w-0 items-start gap-2">
+                  <span
+                    aria-hidden
+                    className="mt-1.5 size-2.5 shrink-0 rounded-full"
+                    style={{ backgroundColor: colorOf(segment) }}
+                  />
+                  <span className="min-w-0">
+                    <span className="block truncate">{segment.label}</span>
+                    {segment.hint ? (
+                      // Wraps rather than truncates: the hint is the
+                      // explanation, and "Google si…" explained nothing.
+                      <span className="block text-xs text-muted">
+                        {segment.hint}
+                      </span>
+                    ) : null}
+                  </span>
                 </span>
-              </span>
-              <span className="shrink-0 tabular-nums">
-                {formatCount(segment.value)}
-                <span className="ml-2 text-muted">
-                  {formatPercent(segment.value / total)}
+                <span className="shrink-0 tabular-nums">
+                  {formatCount(segment.value)}
+                  <span className="ml-2 text-muted">
+                    {formatPercent(segment.value / total)}
+                  </span>
                 </span>
-              </span>
-            </>
-          );
-          return (
-            <li key={segment.key}>
-              {interactive ? (
-                <button
-                  type="button"
-                  disabled={segment.disabled || empty}
-                  aria-pressed={
-                    segment.disabled || empty ? undefined : isSelected
-                  }
-                  onClick={() => toggle(segment.key)}
-                  className={`flex w-full items-baseline justify-between gap-3 rounded-field px-2 py-1 text-left text-sm transition-colors enabled:hover:bg-base-200 ${
-                    isSelected ? "bg-base-200" : ""
-                  }`}
-                >
-                  {row}
-                </button>
-              ) : (
-                <div
-                  className={`flex items-baseline justify-between gap-3 px-2 py-1 text-sm ${
-                    empty ? "opacity-60" : ""
-                  }`}
-                >
-                  {row}
-                </div>
-              )}
-            </li>
-          );
-        })}
-      </ul>
+              </>
+            );
+            return (
+              <li key={segment.key}>
+                {interactive ? (
+                  <button
+                    type="button"
+                    disabled={segment.disabled || empty}
+                    aria-pressed={
+                      segment.disabled || empty ? undefined : isSelected
+                    }
+                    onClick={() => toggle(segment.key)}
+                    className={`flex w-full items-baseline justify-between gap-3 rounded-field px-2 py-1 text-left text-sm transition-colors enabled:hover:bg-base-200 ${
+                      isSelected ? "bg-base-200" : ""
+                    }`}
+                  >
+                    {row}
+                  </button>
+                ) : (
+                  <div
+                    className={`flex items-baseline justify-between gap-3 px-2 py-1 text-sm ${
+                      empty ? "opacity-60" : ""
+                    }`}
+                  >
+                    {row}
+                  </div>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     </div>
   );
 }

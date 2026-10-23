@@ -10,6 +10,17 @@ export const DEVICE_LABELS: Record<SearchPerformanceDevice, string> = {
   TABLET: "Tablet",
 };
 
+/**
+ * Any source's device name in Turkish. Search Console says "MOBILE", GA4
+ * "mobile", PageSpeed "mobile"; all three read "Mobil" on screen. Unknown
+ * names pass through.
+ */
+export function deviceLabel(value: string): string {
+  const upper = value.toUpperCase();
+  if (upper === "SMART TV") return "Akıllı TV";
+  return isDevice(upper) ? DEVICE_LABELS[upper] : value;
+}
+
 export function isDevice(value: string): value is SearchPerformanceDevice {
   return GSC_DEVICES.some((option) => option === value);
 }

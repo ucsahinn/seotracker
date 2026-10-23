@@ -1,3 +1,4 @@
+import { DEVICE_LABELS } from "@/client/features/search-performance/deviceShare";
 import { formatNumber } from "@/client/lib/format";
 import { RotateCcw, SlidersHorizontal } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
@@ -130,8 +131,8 @@ export function PerformanceFilterBar({
           onChange={(device) => onChange({ ...filters, device })}
           options={[
             ["all", "Tümü"],
-            ["desktop", "Masaüstü"],
-            ["mobile", "Mobil"],
+            ["desktop", DEVICE_LABELS.DESKTOP],
+            ["mobile", DEVICE_LABELS.MOBILE],
           ]}
         />
         <SelectFilter

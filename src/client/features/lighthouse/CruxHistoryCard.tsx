@@ -18,7 +18,7 @@ type FormFactor = "PHONE" | "DESKTOP";
 
 const FORM_FACTORS: Array<{ id: FormFactor; label: string }> = [
   { id: "PHONE", label: "Telefon" },
-  { id: "DESKTOP", label: "Masaüstü" },
+  { id: "DESKTOP", label: "Bilgisayar" },
 ];
 
 /** The history moves one window a week, so an hour-old answer is current. */

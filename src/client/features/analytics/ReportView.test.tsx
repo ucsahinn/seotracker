@@ -67,7 +67,7 @@ describe("ReportView quick chips", () => {
 
     expect(bodyRows()).toHaveLength(2);
     expect(
-      within(screen.getByRole("table")).queryByText("Organic Search"),
+      within(screen.getByRole("table")).queryByText("Organik arama"),
     ).toBeNull();
   });
 
@@ -77,7 +77,9 @@ describe("ReportView quick chips", () => {
     fireEvent.click(screen.getByRole("button", { name: /Dönüşümü olan/ }));
 
     expect(bodyRows()).toHaveLength(2);
-    expect(within(screen.getByRole("table")).queryByText("Direct")).toBeNull();
+    expect(
+      within(screen.getByRole("table")).queryByText("Doğrudan"),
+    ).toBeNull();
   });
 
   it("offers a revenue chip only where the report has revenue", () => {
@@ -123,8 +125,8 @@ describe("ReportView quick chips", () => {
   it("says so, and offers a way out, when the filters match nothing", () => {
     mount(channels, "traffic_acquisition");
 
-    // Direct converted nothing, so segment + "Dönüşümü olan" is empty.
-    fireEvent.click(screen.getByRole("button", { name: /^Direct/ }));
+    // Direct (Doğrudan) converted nothing, so segment + "Dönüşümü olan" is empty.
+    fireEvent.click(screen.getByRole("button", { name: /^Doğrudan/ }));
     fireEvent.click(screen.getByRole("button", { name: /Dönüşümü olan/ }));
 
     expect(screen.getByText(/filtrelere uyan satır yok/)).toBeDefined();
@@ -136,7 +138,7 @@ describe("ReportView share ring", () => {
     mount(channels, "traffic_acquisition");
     expect(bodyRows()).toHaveLength(3);
 
-    const segment = screen.getByRole("button", { name: /^Direct/ });
+    const segment = screen.getByRole("button", { name: /^Doğrudan/ });
     fireEvent.click(segment);
     expect(bodyRows()).toHaveLength(1);
     expect(segment.getAttribute("aria-pressed")).toBe("true");

@@ -185,13 +185,50 @@ function answer(url: URL, body: DemoRequestBody): Response {
     });
   }
   if (path.endsWith("/keyEvents")) {
+    // `countingMethod` is required by the Admin client's schema; without it
+    // the measurement-health tab failed to parse the demo answer.
     return json({
-      keyEvents: [{ name: "keyEvents/purchase", eventName: "purchase" }],
+      keyEvents: [
+        {
+          name: `${DEMO_GA4_PROPERTY_ID}/keyEvents/1`,
+          eventName: "purchase",
+          countingMethod: "ONCE_PER_EVENT",
+          createTime: "2026-03-02T09:00:00Z",
+          custom: false,
+        },
+        {
+          name: `${DEMO_GA4_PROPERTY_ID}/keyEvents/2`,
+          eventName: "generate_lead",
+          countingMethod: "ONCE_PER_SESSION",
+          createTime: "2026-04-11T09:00:00Z",
+          custom: true,
+        },
+      ],
+    });
+  }
+  if (path.endsWith("/customDimensions")) {
+    return json({
+      customDimensions: [
+        {
+          parameterName: "page_type",
+          displayName: "Sayfa türü",
+          scope: "EVENT",
+        },
+      ],
     });
   }
   if (path.endsWith("/customMetrics")) return json({ customMetrics: [] });
   if (path.endsWith("/enhancedMeasurementSettings")) {
-    return json({ streamEnabled: true, scrollsEnabled: true });
+    // Site search left off on purpose, so the tab shows one issue to act on.
+    return json({
+      streamEnabled: true,
+      scrollsEnabled: true,
+      outboundClicksEnabled: true,
+      videoEngagementEnabled: true,
+      fileDownloadsEnabled: true,
+      pageChangesEnabled: true,
+      formInteractionsEnabled: true,
+    });
   }
   if (path.endsWith("/dataStreams")) {
     return json({
@@ -199,7 +236,12 @@ function answer(url: URL, body: DemoRequestBody): Response {
         {
           name: `${DEMO_GA4_PROPERTY_ID}/dataStreams/1`,
           type: "WEB_DATA_STREAM",
-          webStreamData: { defaultUri: `https://${DEMO_DOMAIN}` },
+          displayName: DEMO_DOMAIN,
+          createTime: "2026-01-15T10:00:00Z",
+          webStreamData: {
+            measurementId: "G-DEMO4815",
+            defaultUri: `https://${DEMO_DOMAIN}`,
+          },
         },
       ],
     });

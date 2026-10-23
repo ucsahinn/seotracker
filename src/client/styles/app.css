@@ -180,11 +180,15 @@ body {
   overflow: hidden;
 }
 
-/* Prevent Safari mobile from zooming on input focus (requires 16px minimum) */
-input,
-textarea,
-select {
-  @apply text-base;
+/* Prevent Safari mobile from zooming on input focus (requires 16px minimum).
+   Touch only: applied everywhere it outranked daisyUI's size classes, so a
+   `select-sm` beside a `btn-sm` was 16px against 12px on every desktop. */
+@media (pointer: coarse) {
+  input,
+  textarea,
+  select {
+    @apply text-base;
+  }
 }
 
 /* Global input focus styling - use primary color instead of default ring */
@@ -457,8 +461,10 @@ h3 {
   box-shadow: var(--shadow-raise);
 }
 
-/* The primary button is the site's button: an ember-orange pill lit from
-   above. Warning chips moved to yellow so the two never read alike. */
+/* The primary button is the site's button: ember orange, lit from above.
+   It keeps the control radius (`--radius-field`) like every other button, so
+   it never sits as the one pill in a row of rounded rectangles. Warning
+   chips moved to yellow so the two never read alike. */
 .btn-primary {
   --btn-color: var(--color-primary);
   --btn-fg: var(--color-primary-content);
@@ -522,10 +528,17 @@ h3 {
   border-bottom-color: transparent;
 }
 
-/* Badges are labels, not buttons. Flatten them. */
+/* Badges are labels, not buttons. Flatten them.
+   daisyUI fixes a badge's height, so a long label that wrapped in a narrow
+   column ("Yinelenen içerik, canonical belirtilmemiş") spilled its second
+   line out of the pill. The height is a floor instead, and the pill grows. */
 .badge {
   @apply font-medium;
   border-color: var(--hairline-strong);
+  height: auto;
+  min-height: var(--size);
+  padding-block: 0.125rem;
+  line-height: 1.25;
 }
 
 /* A skeleton should suggest the shape that is coming, and should not pulse

@@ -1,10 +1,10 @@
 ---
 title: Release notes
-description: What changed in seowatcher 2.4.1. One-file install on Windows, an app that updates itself, simpler screens and a site in six languages.
+description: What changed in seowatcher 2.4.2. One-file install on Windows, an app that updates itself, simpler screens and a site in six languages.
 updated: 2026-10-23
 ---
 
-The latest release is **2.4.1**, October 23, 2026. Your data is kept when you update; the Windows package installs new versions on its own.
+The latest release is **2.4.2**, October 23, 2026. Your data is kept when you update; the Windows package installs new versions on its own.
 
 ## Highlights
 
@@ -38,5 +38,7 @@ The latest release is **2.4.1**, October 23, 2026. Your data is kept when you up
 - The download link on the site pointed at the wrong release tag.
 - On Git Bash, the Codex setup command did not strip the line break at the end of the password.
 - On one card of the site audit, the numbers spilled out of the card.
+- With only a service account connected, the dashboard wrongly said the Google access key was missing.
+- On phones, the site audit and Opportunities screens scrolled sideways.
 
 The full history is in [CHANGELOG.md](https://github.com/ucsahinn/seotracker/blob/seotracker-fork/CHANGELOG.md) on GitHub.

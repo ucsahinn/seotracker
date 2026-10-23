@@ -58,6 +58,7 @@ function ReportsPage() {
             {reportsQuery.data?.reports.length === 0 ? null : (
               <CopyButton
                 primary
+                small
                 value={reportRequestPrompt(projectId)}
                 label="Rapor komutunu kopyala"
                 successMessage="Komut kopyalandı. Ajanınıza yapıştırın"
@@ -66,7 +67,7 @@ function ReportsPage() {
             <Link
               to="/p/$projectId/reports/templates"
               params={{ projectId }}
-              className="btn btn-outline btn-sm"
+              className="btn btn-sm"
             >
               Şablonlar
             </Link>

@@ -125,7 +125,7 @@ export function RefreshButton({
  */
 export function PageActions({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex flex-wrap items-center justify-end gap-2">
+    <div className="flex flex-wrap items-center gap-2 md:justify-end">
       {children}
     </div>
   );

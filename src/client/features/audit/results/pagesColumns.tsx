@@ -132,7 +132,14 @@ export function buildPagesColumns({
         }
         const title = getValue();
         if (title) {
-          return <span className="break-words">{title}</span>;
+          // Two lines at most, full text on hover: in the scrolled table on
+          // a phone the column was squeezed to ~95px and one title stood
+          // four lines tall, so every row was 90px of mostly blank cells.
+          return (
+            <span className="line-clamp-2 break-words" title={title}>
+              {title}
+            </span>
+          );
         }
         // Red only when the engine flagged it — a 200 that isn't an HTML
         // document (robots.txt, security.txt) legitimately has no title.
@@ -143,7 +150,7 @@ export function buildPagesColumns({
         );
       },
       sortingFn: nullableStringSort,
-      meta: { cellClassName: "max-w-[360px]" },
+      meta: { cellClassName: "min-w-56 max-w-[360px]" },
     }),
     pageColumnHelper.accessor("h1Count", {
       header: ({ column }) => <SortableHeader column={column} label="H1" />,

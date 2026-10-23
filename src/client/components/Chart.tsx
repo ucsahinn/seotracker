@@ -89,27 +89,35 @@ export function Chart({
         ) : null}
       </div>
       {table ? (
-        <table className="sr-only">
-          <caption>{table.caption}</caption>
-          <thead>
-            <tr>
-              {table.columns.map((column) => (
-                <th key={column} scope="col">
-                  {column}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {table.rows.map((row) => (
-              <tr key={row.join("|")}>
-                {row.map((value, index) => (
-                  <td key={table.columns[index] ?? index}>{value}</td>
+        /*
+         * `sr-only` on a wrapper, not on the table: a table cannot shrink
+         * below its content, so a 1px sr-only table still laid out at full
+         * width and pushed the page sideways on a phone (452px at 390). The
+         * wrapper's 1px box with overflow hidden actually clips it.
+         */
+        <div className="sr-only">
+          <table>
+            <caption>{table.caption}</caption>
+            <thead>
+              <tr>
+                {table.columns.map((column) => (
+                  <th key={column} scope="col">
+                    {column}
+                  </th>
                 ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {table.rows.map((row) => (
+                <tr key={row.join("|")}>
+                  {row.map((value, index) => (
+                    <td key={table.columns[index] ?? index}>{value}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       ) : null}
     </figure>
   );

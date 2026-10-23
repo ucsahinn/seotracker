@@ -1,3 +1,4 @@
+import { ga4ValueLabel } from "@/client/features/analytics/ga4ValueLabels";
 import { median, sortBy } from "remeda";
 import {
   formatCount,
@@ -264,11 +265,13 @@ export function buildShareSegments(
     totals.set(label, (totals.get(label) ?? 0) + value);
   }
   const all = sortBy(
-    [...totals].map(([label, value]) => ({
-      key: label,
-      label,
+    // The key stays GA4's own value, which the table filters on; only the
+    // label is translated.
+    [...totals].map(([key, value]) => ({
+      key,
+      label: ga4ValueLabel(dimension, key),
       value,
-      members: [label],
+      members: [key],
     })),
     [(segment) => segment.value, "desc"],
   );

@@ -1,3 +1,4 @@
+import { ctrDelta } from "@/client/features/search-performance/TotalsCards";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -143,7 +144,11 @@ export function DashboardMetrics({
         href={searchPerformance}
         value={shown?.ctr ?? null}
         animateTo={count(report?.totals.ctr, (n) => formatPercent(n))}
-        delta={delta((totals) => totals.ctr)}
+        delta={
+          report && shown?.hasImpressions
+            ? ctrDelta(report.totals.ctr, report.prevTotals.ctr)
+            : null
+        }
         hint={hintFor(period)}
       />
       <MetricTile

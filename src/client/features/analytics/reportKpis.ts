@@ -3,7 +3,7 @@ import {
   numeric,
   type ReportRow,
 } from "@/client/features/analytics/reportInsights";
-import { formatCount, formatPercent } from "@/client/lib/format";
+import { formatCount, formatMoney, formatPercent } from "@/client/lib/format";
 import type { Ga4ReportKindName } from "@/shared/ga4-reports";
 
 /* --- KPI strip for the small reports ------------------------------- */
@@ -27,6 +27,7 @@ export function buildKpis(
   kind: Ga4ReportKindName,
   rows: ReportRow[],
   scope: string,
+  currencyCode: string | null,
 ): Kpi[] {
   if (rows.length === 0) return [];
   if (kind === "key_events") {
@@ -54,7 +55,7 @@ export function buildKpis(
     return [
       {
         label: "Ürün geliri",
-        value: formatCount(sumOf(rows, "itemRevenue")),
+        value: formatMoney(sumOf(rows, "itemRevenue"), currencyCode),
         hint: scope,
       },
       {

@@ -9,7 +9,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { EmptyState } from "@/client/components/EmptyState";
-import { formatCount, formatPercent } from "@/client/lib/format";
+import { formatCount, formatSignedPercent } from "@/client/lib/format";
 import { issueDelta, previousAuditIds, type IssueDelta } from "./auditDelta";
 import type { getAuditHistory } from "@/serverFunctions/audit";
 import { RowActions } from "@/client/components/table/RowActions";
@@ -299,9 +299,10 @@ function DeltaText({ delta }: { delta: IssueDelta }) {
   const fewer = delta.diff < 0;
   const Icon = fewer ? ArrowDown : ArrowUp;
   const size = Math.abs(delta.diff);
-  // A change that rounds to "%0" would read as no change under an arrow.
+  // A change that rounds to "%0,0" would read as no change under an arrow,
+  // so it falls back to the issue count.
   const percent =
-    delta.fraction === null ? 0 : Math.round(Math.abs(delta.fraction) * 100);
+    delta.fraction === null ? null : formatSignedPercent(delta.fraction);
 
   return (
     <span
@@ -312,9 +313,7 @@ function DeltaText({ delta }: { delta: IssueDelta }) {
     >
       <Icon className="size-3" aria-hidden />
       <span className="sr-only">{fewer ? "azaldı" : "arttı"} </span>
-      {delta.fraction !== null && percent > 0
-        ? formatPercent(Math.abs(delta.fraction), 0)
-        : formatCount(size)}
+      {percent ?? formatCount(size)}
     </span>
   );
 }

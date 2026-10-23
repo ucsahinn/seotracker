@@ -7,7 +7,8 @@ import {
 import { OTHER_KEY } from "@/client/features/analytics/reportInsights";
 import type { SummaryPlan } from "@/client/features/analytics/reportBuckets";
 import type { Kpi } from "@/client/features/analytics/reportKpis";
-import { formatCount, formatPercent } from "@/client/lib/format";
+import { formatGa4Metric } from "@/client/features/analytics/ReportTable";
+import { formatPercent } from "@/client/lib/format";
 
 /**
  * The tab's own summary: a few figures, then the chart that answers the tab's
@@ -19,11 +20,13 @@ export function ReportSummary({
   kpis,
   selectedKey,
   onSelect,
+  currencyCode,
 }: {
   plan: SummaryPlan | null;
   kpis: Kpi[];
   selectedKey: string | null;
   onSelect: (key: string | null) => void;
+  currencyCode: string | null;
 }) {
   if (!plan && kpis.length === 0) return null;
   return (
@@ -45,6 +48,7 @@ export function ReportSummary({
           plan={plan}
           selectedKey={selectedKey}
           onSelect={onSelect}
+          currencyCode={currencyCode}
         />
       ) : null}
     </div>
@@ -55,14 +59,18 @@ function SummaryChart({
   plan,
   selectedKey,
   onSelect,
+  currencyCode,
 }: {
   plan: SummaryPlan;
   selectedKey: string | null;
   onSelect: (key: string | null) => void;
+  currencyCode: string | null;
 }) {
+  const format = (value: number) =>
+    formatGa4Metric(plan.field, value, currencyCode);
   const total = plan.segments.reduce((sum, segment) => sum + segment.value, 0);
   const lead = plan.segments[0];
-  const summary = `${plan.title}: toplam ${formatCount(total)} ${plan.unit}. ${
+  const summary = `${plan.title}: toplam ${format(total)} ${plan.unit}. ${
     lead
       ? `En büyük pay ${lead.label}, ${formatPercent(lead.value / total)}.`
       : ""
@@ -102,6 +110,7 @@ function SummaryChart({
       <DistributionBars
         rows={rows}
         summary={summary}
+        format={format}
         onSelect={(key) => onSelect(key === selectedKey ? null : key)}
       />
     </section>

@@ -1,10 +1,10 @@
 ---
 title: Sürüm notları
-description: seowatcher 2.4.1'de neler değişti. Windows'ta tek dosyayla kurulum, kendini güncelleyen uygulama, sade ekranlar ve altı dilde site.
+description: seowatcher 2.4.2'de neler değişti. Windows'ta tek dosyayla kurulum, kendini güncelleyen uygulama, sade ekranlar ve altı dilde site.
 updated: 2026-10-23
 ---
 
-Son sürüm **2.4.1**, 23 Ekim 2026. Güncellerken veriniz korunur. Windows paketi yeni sürümü kendisi kurar.
+Son sürüm **2.4.2**, 23 Ekim 2026. Güncellerken veriniz korunur. Windows paketi yeni sürümü kendisi kurar.
 
 ## Öne çıkanlar
 
@@ -38,5 +38,7 @@ Son sürüm **2.4.1**, 23 Ekim 2026. Güncellerken veriniz korunur. Windows pake
 - Sitedeki indirme bağlantısı yanlış sürüm etiketini gösteriyordu.
 - Codex kurulum komutu Git Bash'te parolanın sonundaki satır sonu karakterini silmiyordu.
 - Site denetimindeki bir kartta sayılar kartın dışına taşıyordu.
+- Yalnızca hizmet hesabıyla bağlı kurulumda panel yanlışlıkla "Google erişim anahtarı eksik" diyordu.
+- Telefonda site denetimi ve Fırsatlar ekranları yana taşıyordu.
 
 Tüm geçmiş GitHub'daki [CHANGELOG.md](https://github.com/ucsahinn/seotracker/blob/seotracker-fork/CHANGELOG.md) dosyasında.

@@ -1,4 +1,12 @@
 import { isErrorCode, type ErrorCode } from "@/shared/error-codes";
+import {
+  Ga4AdminApiError,
+  Ga4DataApiError,
+  Ga4MalformedResponseError,
+  Ga4ReportError,
+  Ga4TokenError,
+} from "@/server/lib/ga4Errors";
+import { GscApiError, GscTokenError } from "@/server/lib/gscErrors";
 
 export class AppError extends Error {
   constructor(
@@ -15,6 +23,44 @@ export function asAppError(error: unknown): AppError | null {
   if (error instanceof AppError) return error;
   if (error instanceof Error && isErrorCode(error.message)) {
     return new AppError(error.message, error.message);
+  }
+  return null;
+}
+
+/**
+ * A failure that came from Google, not from this app.
+ *
+ * These used to reach the client as a bare INTERNAL_ERROR, so a Google-side
+ * failure told the operator the app itself was unreachable. They now cross as
+ * UPSTREAM_UNAVAILABLE (or RATE_LIMITED for an exhausted quota), whose copy
+ * points at Google and the connection instead.
+ */
+export function googleAppError(error: unknown): AppError | null {
+  if (error instanceof Ga4ReportError) {
+    if (error.code === "validation_error") return null;
+    return new AppError(
+      error.code === "ga4_quota_exhausted"
+        ? "RATE_LIMITED"
+        : "UPSTREAM_UNAVAILABLE",
+    );
+  }
+  if (
+    (error instanceof Ga4DataApiError ||
+      error instanceof Ga4AdminApiError ||
+      error instanceof GscApiError) &&
+    error.status === 429
+  ) {
+    return new AppError("RATE_LIMITED");
+  }
+  if (
+    error instanceof Ga4DataApiError ||
+    error instanceof Ga4AdminApiError ||
+    error instanceof Ga4MalformedResponseError ||
+    error instanceof Ga4TokenError ||
+    error instanceof GscApiError ||
+    error instanceof GscTokenError
+  ) {
+    return new AppError("UPSTREAM_UNAVAILABLE");
   }
   return null;
 }

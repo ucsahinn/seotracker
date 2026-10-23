@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import * as React from "react";
 import { AnimatedNumber } from "@/client/components/AnimatedNumber";
 import { useFlashOnChange } from "@/client/components/useFlashOnChange";
-import { formatPercent } from "@/client/lib/format";
+import { formatSignedPercent } from "@/client/lib/format";
 
 /**
  * One number, read at a glance.
@@ -133,15 +133,14 @@ export function DeltaBadge({
   const resolved =
     typeof value === "number"
       ? (() => {
-          if (!Number.isFinite(value)) return null;
-          // Round to what is displayed (whole percent): +0.4% must not
-          // render an arrow beside "%0".
-          const rounded = Math.round(value * 100) / 100;
-          if (rounded === 0) return null;
+          // Null when it rounds to zero at the displayed precision, so no
+          // arrow sits beside "%0,0".
+          const text = formatSignedPercent(value);
+          if (text === null) return null;
           return {
-            text: formatPercent(Math.abs(rounded), 0),
-            improved: inverted ? rounded < 0 : rounded > 0,
-            up: rounded > 0,
+            text,
+            improved: inverted ? value < 0 : value > 0,
+            up: value > 0,
           };
         })()
       : { text: value.text, improved: value.improved, up: value.improved };

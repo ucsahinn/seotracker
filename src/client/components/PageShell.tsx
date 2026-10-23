@@ -79,7 +79,12 @@ export function PageHeader({
           ) : null}
         </div>
         {actions ? (
-          <div className="flex shrink-0 items-center gap-2">{actions}</div>
+          // Not `shrink-0`: on a phone the actions take their own line and
+          // must be allowed to wrap inside it, or the last control is cut
+          // off past the screen edge.
+          <div className="flex min-w-0 max-w-full flex-wrap items-center gap-2">
+            {actions}
+          </div>
         ) : null}
       </div>
     </div>

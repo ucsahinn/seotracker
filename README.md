@@ -9,7 +9,7 @@
 <p align="center"><sub>Ürünün adı <b>seowatcher</b>; bu GitHub deposunun adı <code>seotracker</code>.</sub></p>
 
 <p align="center">
-  <a href="./CHANGELOG.md"><img alt="Sürüm 2.4.1" src="https://img.shields.io/badge/sürüm-2.4.1-1f2937?style=flat-square"></a>
+  <a href="./CHANGELOG.md"><img alt="Sürüm 2.4.2" src="https://img.shields.io/badge/sürüm-2.4.2-1f2937?style=flat-square"></a>
   <img alt="Docker ile kurulum" src="https://img.shields.io/badge/kurulum-docker%20compose%20up-0db7ed?style=flat-square&logo=docker&logoColor=white">
   <img alt="Türkçe arayüz" src="https://img.shields.io/badge/arayüz-Türkçe-374151?style=flat-square">
   <a href="./LICENSE"><img alt="MIT lisansı" src="https://img.shields.io/badge/lisans-MIT-374151?style=flat-square"></a>

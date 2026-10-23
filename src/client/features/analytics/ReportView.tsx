@@ -37,6 +37,8 @@ export type ReportResult = {
   sampled: boolean;
   thresholded: boolean;
   emptyReason: string | null;
+  /** The property's currency; revenue columns are money in it. */
+  currencyCode?: string | null;
 };
 
 /**
@@ -75,6 +77,7 @@ export function ReportView({
     result.rowCount < result.totalRowCount
       ? `Listelenen ${formatCount(result.rowCount)} satırdan`
       : "",
+    result.currencyCode ?? null,
   );
 
   // A chip the data no longer offers must neither narrow nor count.
@@ -112,6 +115,7 @@ export function ReportView({
         kpis={kpis}
         selectedKey={segment ? segment.key : null}
         onSelect={setSegmentKey}
+        currencyCode={result.currencyCode ?? null}
       />
 
       <p className="text-xs text-muted">
@@ -247,6 +251,7 @@ export function ReportView({
           columns={columns}
           dimensionCount={result.dimensions.length}
           sorting={sorting}
+          currencyCode={result.currencyCode ?? null}
         />
       )}
     </div>

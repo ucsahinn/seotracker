@@ -112,7 +112,8 @@ export function AuditTrendChart({ history }: { history: HistoryRow[] }) {
         >
           <LineChart
             data={points}
-            margin={{ top: 12, right: 8, bottom: 0, left: 0 }}
+            // Room for the last tick label, which centres on the last point.
+            margin={{ top: 12, right: 28, bottom: 0, left: 0 }}
           >
             <CartesianGrid {...CHART_GRID} />
             <XAxis

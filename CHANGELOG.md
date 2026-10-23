@@ -2,7 +2,7 @@
 
 Her sürümün notu burada, en yenisi en üstte.
 
-## [2.4.1] — 2026-10-23
+## [2.4.2] — 2026-10-23
 
 Windows'ta tek dosyayla kurulan, kendini güncelleyen ve takıldığında kendini
 onaran bir uygulama. Ekranlar sadeleşti, site altı dile çıktı. 2.3.0'dan
@@ -49,6 +49,12 @@ güncellerken veriniz korunur.
 - Sitedeki indirme bağlantısı yanlış sürüm etiketini gösteriyordu.
 - Codex kurulum komutu Git Bash'te parolanın sonundaki satır sonunu silmiyordu.
 - Site denetimindeki "Sorunlar ne kadar ciddi?" kartında sayılar kartın dışına taşıyordu.
+- Yalnızca hizmet hesabıyla bağlı kurulumda panel "Google erişim anahtarı eksik" diyordu.
+- Google'dan gelen hatalar "uygulamaya ulaşılamadı" diye anlatılıyordu; artık Google bağlantısını gösterir.
+- Bilinmeyen bir adres boş sayfa açıyordu; artık panele dönüş bağlantılı bir "Sayfa bulunamadı" ekranı var.
+- Telefonda site denetimi ve Fırsatlar ekranları yana taşıyordu.
+- Analytics'te cihaz, kanal ve ülke adları İngilizce kalıyordu; gelir tutarlarında para birimi eksikti; değişim yüzdeleri ekrandan ekrana farklı biçimdeydi.
+- Site: Türkçe sayfada dil menüsü yalnızca İngilizceyi gösteriyordu; bölüm başlıkları animasyon yüzünden görünmüyordu.
 
 ## [2.3.0] — 2026-10-22
 

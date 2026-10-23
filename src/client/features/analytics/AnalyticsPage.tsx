@@ -196,13 +196,12 @@ export function AnalyticsPage({
 
   return (
     <PageShell>
+      {/* One description for the page. The tab's own question used to sit
+          here, and a long one wrapped to a second line, so the tab strip
+          below jumped 20px on some tabs. It now opens the tab's panel. */}
       <PageHeader
         title="Analytics"
-        description={
-          view === HEALTH
-            ? "Analytics gerçekten ölçüyor mu? Mülkünüzün kurulum ayarlarını okur, rapor kotanızdan harcamaz."
-            : REPORT_QUESTIONS[kind]
-        }
+        description="Ziyaretçiler siteye hangi sayfadan giriyor, orada ne yapıyor."
         actions={
           <PageActions>
             <RefreshButton
@@ -293,6 +292,11 @@ export function AnalyticsPage({
       </div>
 
       <TabPanel group="ga4-report" value={view} className="space-y-4">
+        <p className="max-w-[75ch] text-sm text-muted">
+          {view === HEALTH
+            ? "Analytics gerçekten ölçüyor mu? Mülkünüzün kurulum ayarlarını okur, rapor kotanızdan harcamaz."
+            : REPORT_QUESTIONS[kind]}
+        </p>
         {/* The report query keeps its last result while the health tab is
             open, so without this branch the two panels stacked and the page
             said "Google Analytics bağlı değil" twice. */}

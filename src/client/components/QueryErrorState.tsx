@@ -2,6 +2,21 @@ import { AlertCircle, RotateCw } from "lucide-react";
 import { EmptyState } from "@/client/components/EmptyState";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 
+/*
+ * Only a request that never got an answer means the app is unreachable. A
+ * server function that answered with an error code reached the app, and its
+ * code (a Google failure, a quota, a bug) says what actually went wrong --
+ * telling that operator to check the app is running sent them the wrong way.
+ * Browsers word the fetch failure differently: Chrome "Failed to fetch",
+ * Firefox "NetworkError ...", Safari "Load failed".
+ */
+function isNetworkFailure(error: unknown): boolean {
+  return (
+    error instanceof TypeError &&
+    /failed to fetch|networkerror|load failed/i.test(error.message)
+  );
+}
+
 /**
  * What a screen shows when its data did not load.
  *
@@ -26,10 +41,11 @@ export function QueryErrorState({
     <EmptyState
       icon={AlertCircle}
       title={title}
-      description={getStandardErrorMessage(
-        error,
-        "Uygulamaya ulaşılamadı. Uygulamanın açık olduğunu kontrol edip yeniden deneyin.",
-      )}
+      description={
+        isNetworkFailure(error)
+          ? "Uygulamaya ulaşılamadı. Uygulamanın açık olduğunu kontrol edip yeniden deneyin."
+          : getStandardErrorMessage(error)
+      }
       compact={compact}
       action={
         onRetry ? (

@@ -7,25 +7,24 @@ import {
   formatDate,
   formatDecimal,
   formatPercent,
+  formatSignedPercent,
 } from "@/client/lib/format";
 
 type Delta = { text: string; improved: boolean } | null;
 
 function percentDelta(current: number, previous: number): Delta {
   const change = fractionalChange(current, previous);
-  if (change === null || Math.round(Math.abs(change) * 100) === 0) return null;
-  // The sign is carried in the text, so `formatPercent` gets the magnitude.
-  return {
-    text: `${change >= 0 ? "+" : "-"}${formatPercent(Math.abs(change))}`,
-    improved: change >= 0,
-  };
+  const text = change === null ? null : formatSignedPercent(change);
+  if (change === null || text === null) return null;
+  return { text, improved: change >= 0 };
 }
 
 /**
  * CTR is already a percentage, so its change is a difference in percentage
- * points ("puan"), not a percentage of a percentage.
+ * points ("puan"), not a percentage of a percentage. The dashboard tile uses
+ * this too, so the same CTR change reads the same on both screens.
  */
-function ctrDelta(current: number, previous: number): Delta {
+export function ctrDelta(current: number, previous: number): Delta {
   if (previous <= 0) return null;
   const points = (current - previous) * 100;
   if (formatDecimal(Math.abs(points)) === formatDecimal(0)) return null;

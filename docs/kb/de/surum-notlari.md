@@ -1,10 +1,10 @@
 ---
 title: Versionshinweise
-description: Neu in seowatcher 2.4.1: Windows-Installation mit einer Datei, Selbstaktualisierung, schlichtere Bildschirme und eine Website in sechs Sprachen.
+description: Neu in seowatcher 2.4.2: Windows-Installation mit einer Datei, Selbstaktualisierung, schlichtere Bildschirme und eine Website in sechs Sprachen.
 updated: 2026-10-23
 ---
 
-Die neueste Version ist **2.4.1** vom 23. Oktober 2026. Beim Aktualisieren bleiben Ihre Daten erhalten; das Windows-Paket installiert neue Versionen selbst.
+Die neueste Version ist **2.4.2** vom 23. Oktober 2026. Beim Aktualisieren bleiben Ihre Daten erhalten; das Windows-Paket installiert neue Versionen selbst.
 
 ## Das Wichtigste
 
@@ -38,5 +38,7 @@ Die neueste Version ist **2.4.1** vom 23. Oktober 2026. Beim Aktualisieren bleib
 - Der Download-Link auf der Website zeigte auf das falsche Release-Tag.
 - Unter Git Bash entfernte der Codex-Einrichtungsbefehl den Zeilenumbruch am Ende des Passworts nicht.
 - Auf einer Karte des Website-Audits liefen die Zahlen über den Rand.
+- Wenn nur ein Dienstkonto verbunden war, meldete die Übersicht fälschlich einen fehlenden Google-Zugriffsschlüssel.
+- Auf dem Smartphone ließen sich das Website-Audit und die Chancen seitlich verschieben.
 
 Die vollständige Historie steht in [CHANGELOG.md](https://github.com/ucsahinn/seotracker/blob/seotracker-fork/CHANGELOG.md) auf GitHub.

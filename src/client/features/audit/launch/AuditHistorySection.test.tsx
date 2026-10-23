@@ -64,8 +64,8 @@ describe("AuditHistorySection", () => {
 
   it("shows the absolute change when the percentage would round to zero", () => {
     renderSection([
-      audit("new", "2026-02-01T10:00:00Z", 1001),
-      audit("old", "2026-01-01T10:00:00Z", 1000),
+      audit("new", "2026-02-01T10:00:00Z", 10001),
+      audit("old", "2026-01-01T10:00:00Z", 10000),
     ]);
 
     expect(screen.getByText("arttı").parentElement?.textContent).not.toContain(

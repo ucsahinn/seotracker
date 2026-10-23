@@ -18,7 +18,7 @@ const STANDARD_MESSAGES: Record<ErrorCode, string> = {
   CRAWL_TARGET_BLOCKED: "Güvenlik nedeniyle bu adres taranamaz.",
   RATE_LIMITED: "Çok fazla istek gönderildi. Biraz bekleyip tekrar deneyin.",
   UPSTREAM_UNAVAILABLE:
-    "Veri kaynağı şu an yanıt vermiyor. Birazdan tekrar deneyin.",
+    "Google bu isteği yanıtlamadı. Birazdan tekrar deneyin; sürerse Ayarlar'dan Google bağlantısını kontrol edin.",
   CONFLICT: "Bu, zaten var olan bir kayıtla çakışıyor.",
   INTERNAL_ERROR:
     "Bir şeyler ters gitti. Yardım ekranından tanılama paketini indirip sorunu bildirin.",

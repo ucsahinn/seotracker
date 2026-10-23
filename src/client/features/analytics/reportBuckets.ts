@@ -90,6 +90,8 @@ export type SummaryPlan = {
   title: string;
   /** What the figures count, in the title's own words. */
   unit: string;
+  /** The metric the segments measure, so revenue can be shown as money. */
+  field: string;
   /** The column the table filters on when a segment is chosen. */
   dimension: string;
   segments: ShareSegment[];
@@ -119,6 +121,7 @@ export function buildSummary(
       form,
       title: `${labelOf(dimension)} bazında ${share.title}`,
       unit: share.unit,
+      field: share.field,
       dimension,
       segments: buildShareSegments(
         rows,
@@ -143,6 +146,7 @@ export function buildSummary(
       form: "bars",
       title: measure.title,
       unit: measure.unit,
+      field: measure.field,
       dimension: ranked.dimension,
       segments,
     };

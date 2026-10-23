@@ -93,6 +93,22 @@ export function formatPercent(fraction: number, digits = 1): string {
 }
 
 /**
+ * A relative change, as a delta badge shows it: "+%8,8", "-%0,4".
+ *
+ * One rule for every delta. The dashboard said "%9" and Search performance
+ * "+%8,8" for the same number, because each screen rounded and signed on its
+ * own. One decimal, and an explicit sign so the text carries direction as
+ * well as the arrow and the tint. `null` when the change rounds to zero at
+ * that precision, so no arrow ever sits beside "%0,0".
+ */
+export function formatSignedPercent(fraction: number): string | null {
+  if (!Number.isFinite(fraction)) return null;
+  const magnitude = formatDecimal(Math.abs(fraction) * 100);
+  if (magnitude === formatDecimal(0)) return null;
+  return `${fraction > 0 ? "+" : "-"}%${magnitude}`;
+}
+
+/**
  * SQLite's CURRENT_TIMESTAMP has no timezone marker. Parsed as-is the browser
  * reads it as local time, which shifts a stored UTC timestamp by the offset
  * and can show yesterday's date. Treat that shape as UTC explicitly.
