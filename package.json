@@ -24,7 +24,7 @@
     "test:watch": "vitest",
     "test:ci": "vitest run --reporter=dot",
     "verify:local": "node scripts/verify-local.mjs",
-    "site:build": "node scripts/build-site-docs.mjs && node scripts/build-site-home.mjs build && prettier --write site/docs site/en",
+    "site:build": "node scripts/build-site-home.mjs build && node scripts/build-site-docs.mjs && prettier --write --no-error-on-unmatched-pattern site/docs site/en site/de site/fr site/it site/pt",
     "cleanup:default-projects:d1": "tsx scripts/d1-default-project-cleanup.ts",
     "seed:projects": "tsx scripts/seed-projects.ts",
     "ci:check": "prettier --check . && knip && tsc --noEmit && tsc --noEmit -p badseo/tsconfig.json && oxlint . --type-aware"

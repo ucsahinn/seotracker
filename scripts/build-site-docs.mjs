@@ -24,11 +24,17 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   docUrl,
-  enSlugs,
   groups,
+  hasGuide,
+  hasHome,
+  langMenuHtml,
   locales,
-  rewriteLinksToEnglish,
+  readableDate,
+  rewriteLinks,
 } from "./site-locales.mjs";
+
+// The editions that exist on disk, Turkish first.
+const editionsOnDisk = Object.values(locales).filter(hasGuide);
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const kbRoot = process.env.KB_DIR || path.join(root, "docs", "kb");
@@ -297,7 +303,7 @@ function jsonLd(locale, { title, description, slug, updated, groupTitle }) {
         "@id": `${siteUrl}/#website`,
         url: `${siteUrl}/`,
         name: "seowatcher",
-        inLanguage: ["tr", "en"],
+        inLanguage: editionsOnDisk.map((l) => l.lang),
       },
       {
         "@type": "SoftwareApplication",
@@ -354,16 +360,6 @@ function seoTitle(locale, { title, slug, screen }) {
   return `${screen ? title + locale.t.screenSuffix : title}${locale.t.titleSuffix}`;
 }
 
-// "2026-10-22" as people read it; the ISO form stays in the metadata.
-function readableDate(locale, iso) {
-  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
-  if (!m) return iso;
-  const month = locale.months[Number(m[2]) - 1];
-  return locale.lang === "en"
-    ? `${month} ${Number(m[3])}, ${m[1]}`
-    : `${Number(m[3])} ${month} ${m[1]}`;
-}
-
 // Previous and next page in the navigation order, so a reader can walk the
 // whole guide without going back to the index.
 function pagerHtml(locale, docs, slug) {
@@ -377,11 +373,11 @@ function pagerHtml(locale, docs, slug) {
   return `<nav class="pager" aria-label="${locale.t.prevNext}">${link(order[i - 1], "prev", locale.t.prev)}${link(order[i + 1], "next", locale.t.next)}</nav>`;
 }
 
-// hreflang links of a page: both languages when both editions exist, Turkish
-// as the default for everyone else.
+// hreflang links of a page: every language that has the page, Turkish as the
+// default for everyone else.
 function alternatesHtml(slug, editions) {
   const links = [];
-  for (const locale of Object.values(locales)) {
+  for (const locale of editionsOnDisk) {
     if (slug && !editions[locale.lang]) continue;
     links.push(
       `<link rel="alternate" hreflang="${locale.lang}" href="${absolute(docUrl(locale, slug))}" />`,
@@ -415,9 +411,11 @@ function page(
         .map((x) => `<li><a href="#${x.id}">${escapeHtml(x.text)}</a></li>`)
         .join("")}</ol></nav>`
     : "";
-  const other = locale.lang === "tr" ? locales.en : locales.tr;
-  const switchHref =
-    slug && editions[other.lang] ? docUrl(other, slug) : docUrl(other, "");
+  const langMenu = langMenuHtml(
+    locale,
+    (l) => (slug && editions[l.lang] ? docUrl(l, slug) : docUrl(l, "")),
+    { available: hasGuide },
+  );
   const replacements = {
     "{{lang}}": locale.lang,
     "{{version}}": pkg.version,
@@ -432,8 +430,7 @@ function page(
     "{{home}}": `${locale.base}/`,
     "{{homeScreens}}": `${locale.base}/#ekranlar`,
     "{{docsIndex}}": docUrl(locale, ""),
-    "{{switchHref}}": switchHref,
-    "{{switchLang}}": other.lang,
+    "{{langMenu}}": langMenu,
     "{{jsonld}}": jsonLd(locale, {
       title,
       description,
@@ -499,9 +496,9 @@ function readDocs(locale, warnings) {
       );
       continue;
     }
-    if (locale.lang === "en" && !enSlugs[slug]) {
+    if (locale.slugs && !locale.slugs[slug]) {
       warnings.push(
-        `en/${file} has no English slug in scripts/site-locales.mjs`,
+        `${locale.lang}/${file} has no ${locale.lang} slug in scripts/site-locales.mjs`,
       );
       continue;
     }
@@ -522,29 +519,37 @@ function main() {
   }
   const warnings = [];
   const all = Object.fromEntries(
-    Object.values(locales).map((l) => [l.lang, readDocs(l, warnings)]),
+    editionsOnDisk.map((l) => [l.lang, readDocs(l, warnings)]),
   );
+  const others = editionsOnDisk.filter((l) => l.lang !== "tr");
   const known = new Set(groups.flatMap((g) => g.slugs));
   for (const slug of all.tr.keys()) {
     if (!known.has(slug))
       warnings.push(
         `${slug}.md is not in any group of scripts/site-locales.mjs`,
       );
-    if (!all.en.has(slug))
-      warnings.push(`${slug}.md has no English edition in docs/kb/en/`);
+    for (const l of others)
+      if (!all[l.lang].has(slug))
+        warnings.push(
+          `${slug}.md has no ${l.lang} edition in docs/kb/${l.kbSub}/`,
+        );
   }
-  for (const slug of all.en.keys())
-    if (!all.tr.has(slug)) warnings.push(`en/${slug}.md has no Turkish source`);
+  for (const l of others)
+    for (const slug of all[l.lang].keys())
+      if (!all.tr.has(slug))
+        warnings.push(`${l.lang}/${slug}.md has no Turkish source`);
 
   const urls = []; // { slug, lastmod: {tr, en} }
   const bySlug = new Map();
-  for (const locale of Object.values(locales)) {
+  for (const locale of editionsOnDisk) {
     const docs = all[locale.lang];
     const outDir = path.join(siteDir, locale.kbSub, "docs");
     fs.rmSync(outDir, { recursive: true, force: true });
     fs.mkdirSync(outDir, { recursive: true });
     for (const [slug, d] of docs) {
-      const editions = { tr: all.tr.has(slug), en: all.en.has(slug) };
+      const editions = Object.fromEntries(
+        editionsOnDisk.map((l) => [l.lang, all[l.lang].has(slug)]),
+      );
       const { html, toc } = render(
         d.body,
         (w) => warnings.push(`${locale.lang}/${d.file}: ${w}`),
@@ -555,7 +560,7 @@ function main() {
       const out = page(locale, {
         title: d.meta.title,
         description: d.meta.description,
-        body: locale.lang === "en" ? rewriteLinksToEnglish(body) : body,
+        body: rewriteLinks(body, locale),
         toc,
         slug,
         updated,
@@ -567,7 +572,7 @@ function main() {
         pager: pagerHtml(locale, docs, slug),
         editions,
       });
-      const dirName = locale.lang === "en" ? enSlugs[slug] : slug;
+      const dirName = locale.slugs ? locale.slugs[slug] : slug;
       fs.mkdirSync(path.join(outDir, dirName), { recursive: true });
       fs.writeFileSync(path.join(outDir, dirName, "index.html"), out);
       if (!bySlug.has(slug)) {
@@ -625,15 +630,14 @@ function main() {
           `    <xhtml:link rel="alternate" hreflang="${a.lang}" href="${a.href}" />`,
       )
       .join("\n")}\n  </url>`;
+  const homes = Object.values(locales).filter(hasHome);
   const homeAlternates = [
-    { lang: "tr", href: `${siteUrl}/` },
-    { lang: "en", href: `${siteUrl}/en/` },
+    ...homes.map((l) => ({ lang: l.lang, href: `${siteUrl}${l.base}/` })),
     { lang: "x-default", href: `${siteUrl}/` },
   ];
-  const entries = [
-    entry(`${siteUrl}/`, homeDate, homeAlternates),
-    entry(`${siteUrl}/en/`, homeDate, homeAlternates),
-  ];
+  const entries = homes.map((l) =>
+    entry(`${siteUrl}${l.base}/`, homeDate, homeAlternates),
+  );
   for (const u of urls) {
     const langs = Object.keys(u.lastmod);
     const alternates = langs.map((lang) => ({
@@ -678,7 +682,7 @@ function main() {
   const llms = `# seowatcher
 
 > seowatcher (GitHub ve uygulama içi adı: seotracker), Google Search Console, Google Analytics 4, kendi site tarayıcısı ve PageSpeed Insights verisini tek panelde toplayan ücretsiz, açık kaynaklı (MIT) bir SEO uygulamasıdır. Windows 10/11 (64 bit) için tek kurulum dosyası vardır; Mac ve Linux'ta Docker ile çalışır. Tek kullanıcılıdır, yalnızca kullanıcının kendi bilgisayarından erişilir, veri o bilgisayarda kalır. Abonelik ve hesap yoktur.
-> English: seowatcher (also named seotracker) is a free, MIT-licensed, self-hosted SEO app that reads Google Search Console, Google Analytics 4, its own crawler and PageSpeed Insights. Windows 10/11 installer; Docker on macOS/Linux. Single user, localhost only, data stays on your machine. Derived from open-seo. The app's interface is Turkish; the website and this guide exist in Turkish and English.
+> English: seowatcher (also named seotracker) is a free, MIT-licensed, self-hosted SEO app that reads Google Search Console, Google Analytics 4, its own crawler and PageSpeed Insights. Windows 10/11 installer; Docker on macOS/Linux. Single user, localhost only, data stays on your machine. Derived from open-seo. The app's interface is Turkish; the website and this guide exist in ${editionsOnDisk.map((l) => l.name).join(", ")}.
 
 Hızlı bilgiler: sürüm ${pkg.version}, 95 denetim kuralı, yapay zekâ asistanları için 33 MCP aracı ve 6 hazır görev, fiyat 0, lisans MIT. Arama hacmi tahmini, backlink sayımı ve rakip sıralaması yoktur. Kurulum dosyası 81 MB, kurulu hali 290 MB; Visual C++ çalışma zamanı pakete dahildir.
 Quick facts: version ${pkg.version}, 95 audit rules, 33 MCP tools and 6 ready-made tasks for AI assistants, price 0, MIT license. No search-volume estimates, backlink counts or competitor rankings. Installer 81 MB, installed 290 MB; the Visual C++ runtime is bundled.
@@ -691,9 +695,7 @@ Quick facts: version ${pkg.version}, 95 audit rules, 33 MCP tools and 6 ready-ma
 - [Windows kurulum dosyası / Windows installer](https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe): SHA-256 özeti sürüm sayfasında
 - [Sürüm sayfası / Releases](https://github.com/ucsahinn/seotracker/releases/latest)
 
-${guideList(locales.tr)}
-
-${guideList(locales.en)}
+${editionsOnDisk.map(guideList).join("\n\n")}
 
 ## Kaynak ve notlar
 - [GitHub deposu ve README (Docker kurulumu)](https://github.com/ucsahinn/seotracker)
@@ -702,7 +704,7 @@ ${guideList(locales.en)}
 `;
   fs.writeFileSync(path.join(siteDir, "llms.txt"), llms);
   console.log(
-    `${all.tr.size} Turkish and ${all.en.size} English docs pages written, sitemap has ${entries.length} urls`,
+    `docs pages written: ${editionsOnDisk.map((l) => `${l.lang} ${all[l.lang].size}`).join(", ")}; sitemap has ${entries.length} urls`,
   );
   for (const w of warnings) console.warn("warning:", w);
 }

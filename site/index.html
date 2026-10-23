@@ -12,6 +12,10 @@
     <link rel="canonical" href="https://seowatcher.io/" />
     <link rel="alternate" hreflang="tr" href="https://seowatcher.io/" />
     <link rel="alternate" hreflang="en" href="https://seowatcher.io/en/" />
+    <link rel="alternate" hreflang="de" href="https://seowatcher.io/de/" />
+    <link rel="alternate" hreflang="fr" href="https://seowatcher.io/fr/" />
+    <link rel="alternate" hreflang="it" href="https://seowatcher.io/it/" />
+    <link rel="alternate" hreflang="pt" href="https://seowatcher.io/pt/" />
     <link rel="alternate" hreflang="x-default" href="https://seowatcher.io/" />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
     <link
@@ -56,6 +60,10 @@
     <meta property="og:url" content="https://seowatcher.io/" />
     <meta property="og:locale" content="tr_TR" />
     <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:locale:alternate" content="de_DE" />
+    <meta property="og:locale:alternate" content="fr_FR" />
+    <meta property="og:locale:alternate" content="it_IT" />
+    <meta property="og:locale:alternate" content="pt_PT" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
@@ -446,16 +454,35 @@
         background-clip: text;
         color: transparent;
       }
+      /* Titles wipe in from the left, out of a blur. */
       h2.reveal {
+        clip-path: inset(-10% 100% -10% 0);
         filter: blur(8px);
         transition:
-          opacity 800ms var(--ease),
+          opacity 700ms var(--ease),
           transform 1000ms var(--ease),
-          filter 900ms var(--ease);
+          filter 900ms var(--ease),
+          clip-path 1100ms var(--ease);
         transition-delay: calc(var(--d, 0) * 1ms);
       }
       h2.reveal.in {
+        clip-path: inset(-10% 0 -10% 0);
         filter: blur(0);
+      }
+      /* The headline keeps one continuous gradient across its words: site.js
+         measures each word's offset so every piece shows its own slice. */
+      h1[data-words].split .w {
+        background: linear-gradient(
+          100deg,
+          var(--fg) 0%,
+          oklch(94% 0.03 78) 58%,
+          var(--accent-2) 100%
+        );
+        background-size: var(--hw, 100%) 100%;
+        background-position: calc(var(--ox, 0) * -1px) 0;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
       }
       .lede {
         font-size: clamp(17px, 1.6vw, 20px);
@@ -519,6 +546,7 @@
           opacity: 1;
           transform: none;
           filter: none;
+          clip-path: none;
           transition: none;
           animation: none;
         }
@@ -667,12 +695,98 @@
           color 300ms var(--ease),
           background-color 300ms var(--ease);
       }
-      .links .lang {
+      /* Language menu: the current flag opens a list of editions. */
+      .langs {
+        position: relative;
+      }
+      .langs summary {
+        list-style: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 5px 10px;
+        border: 1px solid var(--hairline);
+        border-radius: 999px;
         font-size: 12.5px;
         font-weight: 600;
         letter-spacing: 0.04em;
-        padding: 5px 10px;
-        border: 1px solid var(--hairline);
+        cursor: pointer;
+        color: var(--muted);
+        transition:
+          color 300ms var(--ease),
+          background-color 300ms var(--ease);
+      }
+      .langs summary::-webkit-details-marker {
+        display: none;
+      }
+      .langs summary:hover,
+      .langs[open] summary {
+        color: var(--fg);
+        background: var(--glass);
+      }
+      .langs ul {
+        position: absolute;
+        right: 0;
+        top: calc(100% + 8px);
+        margin: 0;
+        padding: 6px;
+        list-style: none;
+        min-width: 172px;
+        background: var(--bg-2);
+        border: 1px solid var(--hairline-strong);
+        border-radius: 14px;
+        box-shadow: var(--shadow-raise, 0 24px 48px -20px oklch(0% 0 0 / 0.6));
+        z-index: 40;
+      }
+      .langs li a,
+      .langrow a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 10px;
+        border-radius: 9px;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0;
+        color: var(--muted);
+        text-decoration: none;
+        white-space: nowrap;
+      }
+      .langs li a:hover,
+      .langrow a:hover {
+        color: var(--fg);
+        background: var(--glass);
+      }
+      .langs li a[aria-current],
+      .langrow a[aria-current] {
+        color: var(--fg);
+      }
+      .langs li a[aria-current]::after {
+        content: "";
+        margin-left: auto;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+      }
+      .flag {
+        display: inline-flex;
+        width: 20px;
+        height: 14px;
+        border-radius: 3px;
+        overflow: hidden;
+        box-shadow: 0 0 0 1px oklch(100% 0 0 / 0.12);
+        flex: none;
+      }
+      .flag svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+      .langrow {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2px 6px;
       }
       .links a:hover {
         color: var(--fg);
@@ -1837,15 +1951,64 @@
           <a href="#kurulum">Kurulum</a>
           <a href="/docs/">Kılavuz</a>
           <a href="https://github.com/ucsahinn/seotracker">GitHub</a>
-          <a
-            class="lang"
-            href="/en/"
-            lang="en"
-            hreflang="en"
-            data-lang-switch
-            aria-label="EN, English"
-            >EN</a
-          >
+          <details class="langs">
+            <summary aria-label="Dil: Türkçe">
+              <span class="flag"
+                ><svg viewBox="0 0 20 14" aria-hidden="true">
+                  <rect width="20" height="14" fill="#e30a17" />
+                  <circle cx="7.6" cy="7" r="3.4" fill="#fff" />
+                  <circle cx="8.4" cy="7" r="2.7" fill="#e30a17" />
+                  <polygon
+                    fill="#fff"
+                    points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"
+                  /></svg></span
+              ><span class="code">TR</span>
+            </summary>
+            <ul>
+              <li>
+                <a href="/" lang="tr" hreflang="tr" aria-current="page"
+                  ><span class="flag"
+                    ><svg viewBox="0 0 20 14" aria-hidden="true">
+                      <rect width="20" height="14" fill="#e30a17" />
+                      <circle cx="7.6" cy="7" r="3.4" fill="#fff" />
+                      <circle cx="8.4" cy="7" r="2.7" fill="#e30a17" />
+                      <polygon
+                        fill="#fff"
+                        points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"
+                      /></svg></span
+                  >Türkçe</a
+                >
+              </li>
+              <li>
+                <a href="/en/" lang="en" hreflang="en"
+                  ><span class="flag"
+                    ><svg viewBox="0 0 20 14" aria-hidden="true">
+                      <rect width="20" height="14" fill="#012169" />
+                      <path
+                        d="M0 0L20 14M20 0L0 14"
+                        stroke="#fff"
+                        stroke-width="2.6"
+                      />
+                      <path
+                        d="M0 0L20 14M20 0L0 14"
+                        stroke="#c8102e"
+                        stroke-width="0.9"
+                      />
+                      <path
+                        d="M10 0V14M0 7H20"
+                        stroke="#fff"
+                        stroke-width="3.6"
+                      />
+                      <path
+                        d="M10 0V14M0 7H20"
+                        stroke="#c8102e"
+                        stroke-width="2"
+                      /></svg></span
+                  >English</a
+                >
+              </li>
+            </ul>
+          </details>
         </nav>
         <a
           class="btn primary small cta"
@@ -1868,7 +2031,41 @@
         <a href="#kurulum">Kurulum</a>
         <a href="/docs/">Kılavuz</a>
         <a href="https://github.com/ucsahinn/seotracker">GitHub</a>
-        <a href="/en/" lang="en" hreflang="en" data-lang-switch>English</a>
+        <nav class="langrow" aria-label="Dil">
+          <a href="/" lang="tr" hreflang="tr" aria-current="page"
+            ><span class="flag"
+              ><svg viewBox="0 0 20 14" aria-hidden="true">
+                <rect width="20" height="14" fill="#e30a17" />
+                <circle cx="7.6" cy="7" r="3.4" fill="#fff" />
+                <circle cx="8.4" cy="7" r="2.7" fill="#e30a17" />
+                <polygon
+                  fill="#fff"
+                  points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"
+                /></svg></span
+            >Türkçe</a
+          ><a href="/en/" lang="en" hreflang="en"
+            ><span class="flag"
+              ><svg viewBox="0 0 20 14" aria-hidden="true">
+                <rect width="20" height="14" fill="#012169" />
+                <path
+                  d="M0 0L20 14M20 0L0 14"
+                  stroke="#fff"
+                  stroke-width="2.6"
+                />
+                <path
+                  d="M0 0L20 14M20 0L0 14"
+                  stroke="#c8102e"
+                  stroke-width="0.9"
+                />
+                <path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="3.6" />
+                <path
+                  d="M10 0V14M0 7H20"
+                  stroke="#c8102e"
+                  stroke-width="2"
+                /></svg></span
+            >English</a
+          >
+        </nav>
         <a
           class="btn primary"
           href="https://github.com/ucsahinn/seotracker/releases/download/v2.4.0/seowatcher-setup-2.4.0.exe"
@@ -2877,7 +3074,46 @@
             ><a
               href="https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md"
               >Sürüm notları</a
-            ><a href="/en/" lang="en" hreflang="en" data-lang-switch>English</a>
+            >
+            <nav class="langrow" aria-label="Dil">
+              <a href="/" lang="tr" hreflang="tr" aria-current="page"
+                ><span class="flag"
+                  ><svg viewBox="0 0 20 14" aria-hidden="true">
+                    <rect width="20" height="14" fill="#e30a17" />
+                    <circle cx="7.6" cy="7" r="3.4" fill="#fff" />
+                    <circle cx="8.4" cy="7" r="2.7" fill="#e30a17" />
+                    <polygon
+                      fill="#fff"
+                      points="12.1,5.6 12.5,6.7 13.7,6.7 12.7,7.4 13.1,8.5 12.1,7.8 11.1,8.5 11.5,7.4 10.5,6.7 11.7,6.7"
+                    /></svg></span
+                >Türkçe</a
+              ><a href="/en/" lang="en" hreflang="en"
+                ><span class="flag"
+                  ><svg viewBox="0 0 20 14" aria-hidden="true">
+                    <rect width="20" height="14" fill="#012169" />
+                    <path
+                      d="M0 0L20 14M20 0L0 14"
+                      stroke="#fff"
+                      stroke-width="2.6"
+                    />
+                    <path
+                      d="M0 0L20 14M20 0L0 14"
+                      stroke="#c8102e"
+                      stroke-width="0.9"
+                    />
+                    <path
+                      d="M10 0V14M0 7H20"
+                      stroke="#fff"
+                      stroke-width="3.6"
+                    />
+                    <path
+                      d="M10 0V14M0 7H20"
+                      stroke="#c8102e"
+                      stroke-width="2"
+                    /></svg></span
+                >English</a
+              >
+            </nav>
           </div>
         </div>
         <div class="bottom">

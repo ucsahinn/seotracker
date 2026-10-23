@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-label="seowatcher">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1b1816"/>
+      <stop offset="1" stop-color="#0c0b0a"/>
+    </linearGradient>
+    <linearGradient id="rim" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.14"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0.02"/>
+    </linearGradient>
+    <radialGradient id="heat" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ff7a1a" stop-opacity="0.55"/>
+      <stop offset="0.6" stop-color="#ff7a1a" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#ff7a1a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="iris" cx="0.5" cy="0.5" r="0.55">
+      <stop offset="0" stop-color="#ffd27a"/>
+      <stop offset="0.35" stop-color="#ff9a2e"/>
+      <stop offset="0.75" stop-color="#f2600c"/>
+      <stop offset="1" stop-color="#b83a06"/>
+    </radialGradient>
+    <linearGradient id="lid" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#c84708"/>
+      <stop offset="0.5" stop-color="#ff8a2a"/>
+      <stop offset="1" stop-color="#c84708"/>
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="48" fill="url(#bg)"/>
+  <rect x="1.5" y="1.5" width="253" height="253" rx="46.5" fill="none" stroke="url(#rim)" stroke-width="3"/>
+  <!-- The heat around the eye. -->
+  <ellipse cx="128" cy="128" rx="112" ry="78" fill="url(#heat)"/>
+  <!-- The eye: an almond of two arcs, lit from the centre. -->
+  <path d="M24 128 Q128 36 232 128 Q128 220 24 128 Z" fill="url(#iris)"/>
+  <path d="M24 128 Q128 36 232 128 Q128 220 24 128 Z" fill="none" stroke="url(#lid)" stroke-width="9" stroke-linejoin="round"/>
+  <!-- The slit. -->
+  <path d="M128 58 Q146 128 128 198 Q110 128 128 58 Z" fill="#0c0b0a"/>
+  <path d="M128 76 Q134 128 128 180 Q122 128 128 76 Z" fill="#1c1715"/>
+</svg>

@@ -21,12 +21,23 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { rewriteLinksToEnglish } from "./site-locales.mjs";
+import {
+  hasHome,
+  langMenuHtml,
+  langRowHtml,
+  locales,
+  readableDate,
+  rewriteLinks,
+} from "./site-locales.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const srcFile = path.join(root, "site", "index.html");
-const mapFile = path.join(root, "scripts", "site-home.en.json");
-const outFile = path.join(root, "site", "en", "index.html");
+// Which edition: `node scripts/build-site-home.mjs extract de` writes the
+// German table; `build` without a language builds every table that is filled.
+const langArg = process.argv[3];
+const mapFileOf = (lang) =>
+  path.join(root, "scripts", `site-home.${lang}.json`);
+const outFileOf = (lang) => path.join(root, "site", lang, "index.html");
 const siteUrl = "https://seowatcher.io";
 
 const LEAF = new Set([
@@ -179,11 +190,32 @@ const EN_MONTHS = [
 const RELEASE_LINE = new RegExp(
   `^(\\d+\\.\\d+\\.\\d+), (\\d{1,2}) (${TR_MONTHS.join("|")}) (\\d{4})$`,
 );
-function byRule(key) {
+function byRule(key, locale) {
   const m = RELEASE_LINE.exec(key);
-  return m
-    ? `${m[1]}, ${EN_MONTHS[TR_MONTHS.indexOf(m[3])]} ${m[2]}, ${m[4]}`
-    : null;
+  if (!m) return null;
+  const month = String(TR_MONTHS.indexOf(m[3]) + 1).padStart(2, "0");
+  const day = m[2].padStart(2, "0");
+  return `${m[1]}, ${readableDate(locale, `${m[4]}-${month}-${day}`)}`;
+}
+
+// The flag menu and the flag rows are generated per edition, never
+// translated: they are cut out before the page is read and put back after.
+const LANG_BLOCK =
+  /<details class="langs">[\s\S]*?<\/details>|<nav class="langrow"[\s\S]*?<\/nav>/g;
+function cutLangBlocks(html) {
+  return html.replace(LANG_BLOCK, (m) =>
+    m.startsWith("<details") ? "<!--LANGMENU-->" : "<!--LANGROW-->",
+  );
+}
+function putLangBlocks(html, locale) {
+  const hrefFor = (l) => `${l.base}/`;
+  return html
+    .replaceAll("<!--LANGMENU-->", () =>
+      langMenuHtml(locale, hrefFor, { available: hasHome }),
+    )
+    .replaceAll("<!--LANGROW-->", () =>
+      langRowHtml(locale, hrefFor, { available: hasHome }),
+    );
 }
 
 const hasLetters = (s) => /[A-Za-zÇĞİÖŞÜçğıöşü]/.test(s);
@@ -196,7 +228,9 @@ const bareText = (key) =>
     .replace(/\s+/g, " ")
     .trim();
 const needsTranslation = (key) =>
-  hasLetters(bareText(key)) && !SAME.has(bareText(key)) && !byRule(key);
+  hasLetters(bareText(key)) &&
+  !SAME.has(bareText(key)) &&
+  !RELEASE_LINE.test(key);
 
 function tokenize(html) {
   // Comments, whole script/style elements and single tags are tokens; the
@@ -344,16 +378,17 @@ function mapJson(node, fn, key = "", parent = null) {
   return node;
 }
 
-function readMap() {
+function readMap(lang) {
+  const mapFile = mapFileOf(lang);
   return fs.existsSync(mapFile)
     ? JSON.parse(fs.readFileSync(mapFile, "utf8"))
     : {};
 }
 
-function extract() {
-  const html = fs.readFileSync(srcFile, "utf8");
+function extract(lang) {
+  const html = cutLangBlocks(fs.readFileSync(srcFile, "utf8"));
   const keys = collect(html);
-  const old = readMap();
+  const old = readMap(lang);
   const next = {};
   let missing = 0;
   for (const { key } of keys) {
@@ -361,18 +396,20 @@ function extract() {
     if (!next[key]) missing += 1;
   }
   const stale = Object.keys(old).filter((k) => !(k in next));
-  fs.writeFileSync(mapFile, JSON.stringify(next, null, 2) + "\n");
+  fs.writeFileSync(mapFileOf(lang), JSON.stringify(next, null, 2) + "\n");
   console.log(
-    `${keys.length} strings, ${missing} without English, ${stale.length} stale entries dropped`,
+    `${lang}: ${keys.length} strings, ${missing} without a translation, ${stale.length} stale entries dropped`,
   );
 }
 
-function build() {
-  const html = fs.readFileSync(srcFile, "utf8");
-  const map = readMap();
+function build(locale, { strict = true } = {}) {
+  const lang = locale.lang;
+  const html = cutLangBlocks(fs.readFileSync(srcFile, "utf8"));
+  const map = readMap(lang);
+  const outFile = outFileOf(lang);
   const missing = [];
   const tr = (key) => {
-    if (!needsTranslation(key)) return byRule(key) || key;
+    if (!needsTranslation(key)) return byRule(key, locale) || key;
     const v = map[key];
     if (!v) {
       missing.push(key);
@@ -405,7 +442,7 @@ function build() {
       const open = /^<script[^>]*>/.exec(tok)[0];
       const data = JSON.parse(tok.slice(open.length, -"</script>".length));
       const translated = mapJson(data, (s, key, parent) => {
-        if (key === "inLanguage") return "en";
+        if (key === "inLanguage") return lang;
         // The site, its publisher and the app are one entity in both languages.
         if (
           key === "url" &&
@@ -413,16 +450,17 @@ function build() {
           /^(WebSite|Organization|SoftwareApplication)$/.test(parent["@type"])
         )
           return s;
-        if (key === "priceCurrency") return "USD";
-        // Entities that are the same thing in both languages keep one id;
-        // everything else (the page, its breadcrumb, its FAQ) gets the /en/ id.
+        if (key === "priceCurrency") return lang === "en" ? "USD" : "EUR";
+        // Entities that are the same thing in every language keep one id;
+        // everything else (the page, its breadcrumb, its FAQ) gets the
+        // edition's id.
         if (
           s.startsWith(siteUrl) &&
           !/#(website|app|author|organization|logo)$/.test(s)
         )
           return (
             siteUrl +
-            rewriteLinksToEnglish(`href="${s.slice(siteUrl.length)}"`).slice(
+            rewriteLinks(`href="${s.slice(siteUrl.length)}"`, locale).slice(
               6,
               -1,
             )
@@ -456,73 +494,69 @@ function build() {
     }
   });
   let page = out.join("");
+  const home = `https://seowatcher.io${locale.base}/`;
+  const otherLocales = Object.values(locales)
+    .filter((l) => l.lang !== lang && hasHome(l))
+    .map(
+      (l) => `<meta property="og:locale:alternate" content="${l.ogLocale}" />`,
+    )
+    .join("\n    ");
   page = page
-    .replace(/<html lang="tr">/, '<html lang="en">')
-    .replace(/content="tr_TR"/g, 'content="en_US"')
+    .replace(/<html lang="tr">/, `<html lang="${lang}">`)
+    .replace(/\s*<meta property="og:locale:alternate" content="[^"]*" \/>/g, "")
     .replace(
-      /<meta property="og:locale:alternate" content="en_US" \/>/,
-      '<meta property="og:locale:alternate" content="tr_TR" />',
+      /<meta property="og:locale" content="tr_TR" \/>/,
+      `<meta property="og:locale" content="${locale.ogLocale}" />\n    ${otherLocales}`,
     )
     .replace(/href="https:\/\/seowatcher\.io\/"/g, (m, offset) =>
-      // canonical and og:url point at the English page; hreflang links stay.
+      // canonical and og:url point at this edition; hreflang links stay.
       /hreflang=/.test(page.slice(Math.max(0, offset - 80), offset))
         ? m
-        : 'href="https://seowatcher.io/en/"',
+        : `href="${home}"`,
     )
-    .replace(
-      /content="https:\/\/seowatcher\.io\/"/g,
-      'content="https://seowatcher.io/en/"',
-    );
-  page = rewriteLinksToEnglish(page);
-  // The language switch is the one link that goes the other way. Prettier
-  // may have split the attributes over several lines, hence \s+.
-  page = page
-    .replace(
-      /href="\/en\/"\s+lang="en"\s+hreflang="en"\s+data-lang-switch\s+aria-label="[^"]*"\s*>EN</g,
-      'href="/" lang="tr" hreflang="tr" data-lang-switch aria-label="TR, Türkçe">TR<',
-    )
-    .replace(
-      /href="\/en\/"\s+lang="en"\s+hreflang="en"\s+data-lang-switch\s*>English/g,
-      'href="/" lang="tr" hreflang="tr" data-lang-switch>Türkçe',
-    );
-  // "0 ₺" means nothing to an English reader; the tile simply says Free.
+    .replace(/content="https:\/\/seowatcher\.io\/"/g, `content="${home}"`);
+  page = rewriteLinks(page, locale);
+  page = putLangBlocks(page, locale);
+  // "0 ₺" means nothing abroad; the tile simply says Free in that language.
   page = page.replace(
     /<b\s+data-count="0"\s+data-suffix=" ₺"\s*>0 ₺<\/b>/g,
-    "<b>Free</b>",
+    `<b>${locale.t.free}</b>`,
   );
-  // A silent miss here shipped a self-linking pill once: count the switches.
-  const switches = (page.match(/data-lang-switch/g) || []).length;
-  const backToTurkish = (
-    page.match(/href="\/" lang="tr" hreflang="tr" data-lang-switch/g) || []
-  ).length;
-  if (switches === 0 || backToTurkish !== switches)
-    throw new Error(
-      `language switch: ${backToTurkish} of ${switches} point back to Turkish`,
-    );
-  for (const leftover of [
-    "İçeriğe",
-    'aria-label="Language: English"',
-    'data-suffix="months"',
-    "0 ₺",
-  ])
+  if (!page.includes(`<details class="langs">`))
+    throw new Error("language menu missing from the built page");
+  for (const leftover of ["İçeriğe", 'data-suffix="months"', "0 ₺"])
     if (page.includes(leftover))
-      throw new Error(`Turkish leftover in site/en/index.html: ${leftover}`);
+      throw new Error(
+        `Turkish leftover in site/${lang}/index.html: ${leftover}`,
+      );
   if (missing.length) {
-    console.error(
-      `site/en/index.html not written: ${missing.length} strings have no English entry in scripts/site-home.en.json:`,
-    );
+    const msg = `site/${lang}/index.html not written: ${missing.length} strings have no entry in scripts/site-home.${lang}.json`;
+    if (!strict) {
+      console.warn(`warning: ${msg}`);
+      return false;
+    }
+    console.error(msg + ":");
     for (const k of missing) console.error("  " + k);
     process.exit(1);
   }
   fs.mkdirSync(path.dirname(outFile), { recursive: true });
   fs.writeFileSync(outFile, page);
-  console.log(`site/en/index.html written (${segments.length} segments)`);
+  console.log(`site/${lang}/index.html written (${segments.length} segments)`);
+  return true;
 }
 
 const mode = process.argv[2];
-if (mode === "extract") extract();
-else if (mode === "build") build();
-else {
+if (mode === "extract") extract(langArg || "en");
+else if (mode === "build" && langArg) build(locales[langArg]);
+else if (mode === "build") {
+  // Every table on disk; an unfinished one is skipped with a warning so the
+  // finished editions still build.
+  for (const locale of Object.values(locales)) {
+    if (locale.lang === "tr" || !fs.existsSync(mapFileOf(locale.lang)))
+      continue;
+    build(locale, { strict: false });
+  }
+} else {
   console.error("usage: node scripts/build-site-home.mjs extract|build");
   process.exit(2);
 }

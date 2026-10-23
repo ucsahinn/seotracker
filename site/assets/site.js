@@ -28,6 +28,23 @@
       if (i < words.length - 1) el.appendChild(document.createTextNode(" "));
     });
     el.classList.add("split");
+    // Hand each word its slice of the headline gradient (see the CSS).
+    var slice = function () {
+      var box = el.getBoundingClientRect();
+      el.style.setProperty("--hw", Math.round(box.width) + "px");
+      $$(".w", el).forEach(function (w) {
+        w.style.setProperty(
+          "--ox",
+          Math.round(w.getBoundingClientRect().left - box.left),
+        );
+      });
+    };
+    slice();
+    var t;
+    window.addEventListener("resize", function () {
+      clearTimeout(t);
+      t = setTimeout(slice, 120);
+    });
   });
 
   // 2. Reveal on scroll, once.
@@ -418,4 +435,14 @@
     },
     { passive: true },
   );
+
+  // The language menu closes when the pointer leaves it or Escape is pressed.
+  $$(".langs").forEach(function (d) {
+    document.addEventListener("click", function (e) {
+      if (d.open && !d.contains(e.target)) d.open = false;
+    });
+    d.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") d.open = false;
+    });
+  });
 })();

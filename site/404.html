@@ -64,8 +64,27 @@
         padding-top: 32px;
         border-top: 1px solid var(--hairline);
       }
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 600;
+        color: var(--fg);
+        text-decoration: none;
+        margin-bottom: 36px;
+      }
+      .brand img {
+        width: 28px;
+        height: 28px;
+        border-radius: 7px;
+      }
       h1,
       h2 {
+        width: fit-content;
+        background: linear-gradient(100deg, var(--fg) 0%, var(--accent) 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
         font-size: clamp(28px, 4vw, 40px);
         letter-spacing: -0.025em;
         margin: 0 0 12px;
@@ -84,6 +103,14 @@
   <body>
     <div class="dots" aria-hidden="true"></div>
     <main>
+      <a class="brand" href="/"
+        ><img
+          src="/assets/icon.svg"
+          alt=""
+          width="28"
+          height="28"
+        />seowatcher</a
+      >
       <section>
         <h1>Bu sayfa yok.</h1>
         <p>Adres yanlış yazılmış ya da sayfa taşınmış olabilir.</p>

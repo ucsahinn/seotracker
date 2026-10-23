@@ -193,4 +193,14 @@
       dots.classList.remove("live");
     });
   }
+
+  // The language menu closes when the pointer leaves it or Escape is pressed.
+  $$(".langs").forEach(function (d) {
+    document.addEventListener("click", function (e) {
+      if (d.open && !d.contains(e.target)) d.open = false;
+    });
+    d.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") d.open = false;
+    });
+  });
 })();
