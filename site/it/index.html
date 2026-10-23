@@ -6,7 +6,7 @@
     <title>seowatcher: strumento SEO gratuito per Search Console e GA4</title>
     <meta
       name="description"
-      content="Search Console, Analytics 4 e controllo del sito in un'unica app. Gratuita, open source. Per Windows, i dati restano sul computer."
+      content="Search Console, Analytics 4 e controllo del sito in un'unica app. Gratuita e open source. Si installa su Windows e i dati restano sul computer."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link rel="canonical" href="https://seowatcher.io/it/" />
@@ -133,9 +133,9 @@
             "softwareVersion": "2.4.1",
             "datePublished": "2026-10-23",
             "fileSize": "81 MB",
-            "inLanguage": "it",
+            "inLanguage": "tr",
             "downloadUrl": "https://github.com/ucsahinn/seotracker/releases/download/v2.4.1/seowatcher-setup-2.4.1.exe",
-            "installUrl": "https://github.com/ucsahinn/seotracker#kurulum",
+            "installUrl": "https://github.com/ucsahinn/seotracker/releases/latest",
             "releaseNotes": "https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md",
             "license": "https://spdx.org/licenses/MIT.html",
             "isAccessibleForFree": true,
@@ -461,10 +461,14 @@
         background-clip: text;
         color: transparent;
       }
-      /* Titles wipe in from the left, out of a blur. */
-      h2.reveal {
+      /* Titles wipe in from the left, out of a blur. Every hidden start
+         state below waits for html.js (set by site.js), so without script the
+         page is simply there. */
+      html.js h2.reveal:not(.in) {
         clip-path: inset(-10% 100% -10% 0);
         filter: blur(8px);
+      }
+      h2.reveal {
         transition:
           opacity 700ms var(--ease),
           transform 1000ms var(--ease),
@@ -535,9 +539,11 @@
           filter: blur(0);
         }
       }
-      .reveal {
+      html.js .reveal:not(.in) {
         opacity: 0;
         transform: translateY(22px);
+      }
+      .reveal {
         transition:
           opacity 800ms var(--ease),
           transform 1000ms var(--ease);
@@ -597,6 +603,8 @@
         .reveal,
         h2.reveal,
         h2.reveal.in,
+        html.js .reveal:not(.in),
+        html.js h2.reveal:not(.in),
         [data-words].split .w,
         .hx,
         .hx:not(.in) {
@@ -613,6 +621,7 @@
       }
       /* "Hareketi durdur": every heading is simply there. */
       html[data-still] [data-words].split .w,
+      html[data-still].js h2.reveal:not(.in),
       html[data-still] h2.reveal,
       html[data-still] .hx {
         opacity: 1;
@@ -1510,13 +1519,17 @@
         stroke-width: 2;
         stroke-linecap: round;
         stroke-dasharray: 600;
+      }
+      html.js .tile .spark path {
         stroke-dashoffset: 600;
       }
       .tile .spark .area {
         fill: url(#sparkFill);
         stroke: none;
-        opacity: 0;
         transition: opacity 900ms var(--ease) 600ms;
+      }
+      html.js .reveal:not(.in) .spark .area {
+        opacity: 0;
       }
       .reveal.in .spark path {
         animation: draw 1800ms var(--ease) 200ms forwards;
@@ -1621,7 +1634,7 @@
         }
       }
       @media (prefers-reduced-motion: reduce) {
-        .tile .spark path {
+        html.js .tile .spark path {
           stroke-dashoffset: 0;
           animation: none;
         }
@@ -2013,9 +2026,12 @@
     </style>
     <noscript
       ><style>
-        .reveal {
+        .reveal,
+        h2.reveal {
           opacity: 1;
           transform: none;
+          filter: none;
+          clip-path: none;
         }
         .walk-step {
           opacity: 1;

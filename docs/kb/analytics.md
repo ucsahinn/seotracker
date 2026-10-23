@@ -1,6 +1,6 @@
 ---
 title: Analytics
-description: Aramadan gelenlerin sitede sonra ne yaptığını görürsünüz. Google Analytics 4 raporlarına, anahtar olaylara ve ölçümün sağlam çalışıp çalışmadığına buradan bakarsınız.
+description: Aramadan gelenlerin sitede ne yaptığını görürsünüz: Google Analytics 4 raporları, anahtar olaylar ve ölçümün sağlam çalışıp çalışmadığı.
 screen: Analytics
 route: /p/<proje>/analytics
 updated: 2026-10-22

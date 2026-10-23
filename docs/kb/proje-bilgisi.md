@@ -1,6 +1,6 @@
 ---
 title: Proje bilgisi
-description: Uygulamanın kendi başına bilemeyeceği şeyleri buraya yazarsınız: ne iş yaptığınız, hedefiniz, rakipleriniz, önemli sayfalarınız. Asistanınız işe başlamadan önce burayı okur.
+description: Uygulamanın kendi başına bilemeyeceğini buraya yazarsınız: işiniz, hedefiniz, rakipleriniz, önemli sayfalarınız. Asistanınız önce burayı okur.
 screen: Proje bilgisi
 route: /p/<proje>/context
 updated: 2026-10-22

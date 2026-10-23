@@ -1,6 +1,6 @@
 ---
 title: Status de indexação
-description: A resposta do Google para cada uma das suas páginas: se está indexada, por que não está e quando ele a visitou pela última vez. O limite é de 2.000 consultas por dia.
+description: A resposta do Google para cada página: se está indexada, por que não está e quando foi visitada pela última vez. Até 2.000 consultas por dia.
 screen: Site denetimi, Dizin durumu sekmesi
 route: /p/<proje>/audit?auditId=<denetim>&tab=index
 updated: 2026-10-22

@@ -1,6 +1,6 @@
 ---
 title: Connexion à Google
-description: Vous obtenez une fois une clé d'accès chez Google, vous la collez dans l'application et vous choisissez votre site. C'est ainsi que les données de Search Console et d'Analytics 4 arrivent.
+description: Obtenez une fois une clé d'accès Google, collez-la dans l'application et choisissez votre site : les données de Search Console et d'Analytics 4 arrivent.
 kind: nasil-yapilir
 updated: 2026-10-22
 ---

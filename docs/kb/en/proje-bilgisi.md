@@ -1,6 +1,6 @@
 ---
 title: Project info
-description: The place where you write what is not written anywhere else about your site: a summary of the business, the goal, competitors, key pages. Your assistant reads it before starting work.
+description: Write what the app cannot know about your site: the business, the goal, competitors, key pages. Your assistant reads it before it starts work.
 screen: Proje bilgisi
 route: /p/<proje>/context
 updated: 2026-10-22

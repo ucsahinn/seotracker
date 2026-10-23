@@ -1,6 +1,6 @@
 ---
 title: Notes de version
-description: Ce qui change dans seowatcher 2.4.1. Installation en un seul fichier sous Windows, une application qui se met à jour seule, des écrans plus simples et un site en six langues.
+description: Les nouveautés de seowatcher 2.4.1 : installation en un seul fichier sous Windows, mise à jour automatique, écrans plus simples et site en six langues.
 updated: 2026-10-23
 ---
 

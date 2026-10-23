@@ -1,6 +1,6 @@
 ---
 title: Mots-clés enregistrés
-description: Vous enregistrez ici les recherches qui comptent pour vous, vous les étiquetez et vous suivez leur position moyenne sur les 90 derniers jours. Vous pouvez les exporter en CSV ou vers Sheets.
+description: Enregistrez les recherches qui comptent, étiquetez-les et suivez leur position moyenne sur 90 jours, avec un export en CSV ou vers Google Sheets.
 screen: Kayıtlı kelimeler
 route: /p/<proje>/saved
 updated: 2026-10-22

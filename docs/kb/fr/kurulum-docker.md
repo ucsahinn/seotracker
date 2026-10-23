@@ -1,6 +1,6 @@
 ---
 title: Installation avec Docker
-description: Installez l'application avec Docker sur Mac, Linux et Windows. Une seule commande suffit, aucun fichier .env n'est nécessaire. Vos données restent dans le volume de données de Docker.
+description: Installez l'application avec Docker sur Mac, Linux et Windows. Une seule commande, sans fichier .env. Vos données restent dans le volume Docker.
 kind: nasil-yapilir
 updated: 2026-10-22
 ---

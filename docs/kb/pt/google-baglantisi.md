@@ -1,6 +1,6 @@
 ---
 title: Conectar ao Google
-description: Para ler os dados do Search Console e do Analytics 4, pegue uma chave de acesso do Google uma única vez, cole-a no aplicativo e escolha o seu site. Passo a passo.
+description: Pegue uma chave de acesso do Google uma única vez, cole no aplicativo e escolha o seu site para ler os dados do Search Console e do Analytics 4.
 kind: nasil-yapilir
 updated: 2026-10-22
 ---

@@ -1,6 +1,6 @@
 ---
 title: Clé PageSpeed
-description: Pour mesurer la vitesse des pages, vous obtenez une clé Google PageSpeed gratuite et vous la saisissez dans l'application. Sans clé, la mesure reste limitée à 50 pages.
+description: Obtenez une clé Google PageSpeed gratuite et saisissez-la dans l'application pour mesurer la vitesse des pages. Sans clé, la mesure s'arrête à 50 pages.
 kind: nasil-yapilir
 updated: 2026-10-22
 ---

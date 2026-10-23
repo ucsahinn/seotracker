@@ -1,6 +1,6 @@
 ---
 title: Suivi du classement
-description: Vous voyez la position moyenne de vos recherches sur Google, jour après jour. Les données étant conservées sur cet ordinateur, vous pouvez remonter plus loin que la limite de 16 mois de Google.
+description: La position moyenne de vos recherches sur Google, jour après jour. Les données restent sur cet ordinateur : vous remontez au-delà des 16 mois de Google.
 screen: Sıralama takibi
 route: /p/<proje>/rankings
 updated: 2026-10-22

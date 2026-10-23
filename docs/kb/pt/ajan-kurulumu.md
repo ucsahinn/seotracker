@@ -1,6 +1,6 @@
 ---
 title: Configurar o agente
-description: Conecte o Claude Code, o Codex ou o Cursor ao aplicativo. O endereço, a senha, as 33 ferramentas, os 6 modelos de tarefa prontos e quais deles gastam a cota do Google.
+description: Conecte o Claude Code, o Codex ou o Cursor ao aplicativo: endereço, senha, as 33 ferramentas, os 6 modelos de tarefa e quais deles gastam a cota do Google.
 kind: nasil-yapilir
 updated: 2026-10-22
 ---

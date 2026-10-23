@@ -459,9 +459,13 @@ function build(locale, { strict = true } = {}) {
       const open = /^<script[^>]*>/.exec(tok)[0];
       const data = JSON.parse(tok.slice(open.length, -"</script>".length));
       const translated = mapJson(data, (s, key, parent) => {
-        // The site entity lists every edition; everything else is this one.
+        // The site entity lists every edition and the app speaks Turkish in
+        // every edition (its interface is Turkish); the page and its FAQ are
+        // in this edition's language.
         if (key === "inLanguage")
-          return parent?.["@type"] === "WebSite" ? s : lang;
+          return /^(WebSite|SoftwareApplication)$/.test(parent?.["@type"])
+            ? s
+            : lang;
         // The site, its publisher and the app are one entity in both languages.
         if (
           key === "url" &&

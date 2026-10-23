@@ -7,7 +7,11 @@
   Strict-Transport-Security: max-age=31536000
   Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src https://api.github.com; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; upgrade-insecure-requests
 
-/assets/*
+# Exactly one rule sets Cache-Control on each asset: matching rules are
+# merged and a header set twice is comma-joined, so the files directly under
+# /assets/ use a placeholder (it never matches a slash) and the folders below
+# have their own rules.
+/assets/:file
   Cache-Control: public, max-age=604800
 
 /assets/fonts/*

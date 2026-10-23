@@ -1,6 +1,6 @@
 ---
 title: Performance de recherche
-description: Vous voyez ici dans quelles recherches vous apparaissez sur Google et combien de personnes cliquent. Vous pouvez regarder par requête, page, pays ou appareil, et remonter jusqu'à 16 mois.
+description: Dans quelles recherches Google vous apparaissez et combien de personnes cliquent, par requête, page, pays ou appareil, jusqu'à 16 mois en arrière.
 screen: Arama performansı
 route: /p/<proje>/search-performance
 updated: 2026-10-22

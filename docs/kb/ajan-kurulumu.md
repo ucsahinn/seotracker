@@ -1,6 +1,6 @@
 ---
 title: Ajan kurulumu
-description: Claude Code, Codex ya da Cursor'ı uygulamaya bağlarsınız. Adresi, parolayı, 33 aracı, 6 hazır görev şablonunu ve hangisinin Google hakkı harcadığını burada bulursunuz.
+description: Claude Code, Codex ya da Cursor'ı uygulamaya bağlarsınız: adres, parola, 33 araç, 6 hazır görev ve hangisinin Google kotasını harcadığı.
 kind: nasil-yapilir
 updated: 2026-10-22
 ---

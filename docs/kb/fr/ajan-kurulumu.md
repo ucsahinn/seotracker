@@ -1,6 +1,6 @@
 ---
 title: Installation de l'assistant
-description: Vous connectez Claude Code, Codex ou Cursor à l'application. Vous trouvez ici l'adresse, le mot de passe, les 33 outils, les 6 modèles de tâches prêts à l'emploi et ceux qui consomment le quota Google.
+description: Connectez Claude Code, Codex ou Cursor à l'application : adresse, mot de passe, 33 outils, 6 modèles de tâches et ceux qui consomment le quota Google.
 kind: nasil-yapilir
 updated: 2026-10-22
 ---

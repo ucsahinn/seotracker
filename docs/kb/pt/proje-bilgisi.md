@@ -1,6 +1,6 @@
 ---
 title: Informações do projeto
-description: O lugar onde você escreve o que não está escrito em nenhum outro lugar sobre o seu site: um resumo do negócio, o objetivo, os concorrentes, as páginas-chave. O seu assistente lê isso antes de começar o trabalho.
+description: Escreva aqui o que o aplicativo não tem como saber: o seu negócio, o objetivo, os concorrentes e as páginas-chave. O assistente lê isso antes de começar.
 screen: Proje bilgisi
 route: /p/<proje>/context
 updated: 2026-10-22

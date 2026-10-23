@@ -1,6 +1,6 @@
 ---
 title: Instalar no Windows
-description: Instale no Windows com um único arquivo. Primeira abertura, atualização, desinstalação, backup e troca do número da porta. Não precisa de Docker nem de terminal.
+description: Instale no Windows com um único arquivo: primeira abertura, atualização, desinstalação, backup e troca da porta. Sem Docker e sem terminal.
 kind: nasil-yapilir
 updated: 2026-10-22
 ---

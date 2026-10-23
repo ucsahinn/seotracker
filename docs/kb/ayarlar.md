@@ -1,6 +1,6 @@
 ---
 title: Ayarlar
-description: Temayı, Google erişim anahtarını, PageSpeed anahtarını, kullanım sınırlarını ve güncelleme kontrolünü buradan yönetirsiniz. Bütün kurulum için tek ayar ekranıdır.
+description: Tema, Google erişim anahtarı, PageSpeed anahtarı, kullanım sınırları ve güncelleme kontrolü: bütün kurulum için tek ayar ekranı.
 screen: Ayarlar
 route: /settings
 updated: 2026-10-22

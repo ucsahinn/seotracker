@@ -1,6 +1,6 @@
 ---
 title: Paramètres
-description: Vous gérez ici le thème, la clé d'accès Google, la clé PageSpeed, les limites d'utilisation et la vérification des mises à jour. C'est l'unique écran de réglages pour toute l'installation.
+description: Thème, clé d'accès Google, clé PageSpeed, limites d'utilisation et vérification des mises à jour : l'unique écran de réglages de toute l'installation.
 screen: Ayarlar
 route: /settings
 updated: 2026-10-22

@@ -1,6 +1,6 @@
 ---
 title: Tableau de bord
-description: C'est le premier écran que vous voyez en ouvrant le projet. Les chiffres de recherche des 28 derniers jours, le résumé du dernier audit et vos tâches y sont réunis.
+description: Le premier écran à l'ouverture du projet : les chiffres de recherche des 28 derniers jours, le résumé du dernier audit et vos tâches, au même endroit.
 screen: Panel
 route: /p/<proje>
 updated: 2026-10-22

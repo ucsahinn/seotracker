@@ -4,6 +4,9 @@
 // without IntersectionObserver see the final state immediately.
 (function () {
   "use strict";
+  // The page's hidden start states (blocks that rise, titles that wipe in)
+  // wait for this class, so without script everything is simply visible.
+  document.documentElement.classList.add("js");
   var reduce =
     window.matchMedia &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;

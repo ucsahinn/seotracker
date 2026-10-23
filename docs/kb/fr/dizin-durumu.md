@@ -1,6 +1,6 @@
 ---
 title: État de l'index
-description: Google a-t-il mis chacune de vos pages dans la recherche, sinon pourquoi, et quand les a-t-il explorées pour la dernière fois ? Vous pouvez l'interroger sur 2 000 pages par jour au plus.
+description: Google a-t-il indexé chacune de vos pages, sinon pourquoi, et quand l'a-t-il explorée pour la dernière fois ? Jusqu'à 2 000 pages vérifiées par jour.
 screen: Site denetimi, Dizin durumu sekmesi
 route: /p/<proje>/audit?auditId=<denetim>&tab=index
 updated: 2026-10-22

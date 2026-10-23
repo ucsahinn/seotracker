@@ -1,6 +1,6 @@
 ---
 title: Rapports et modèles
-description: Chaque rapport que vous téléchargez depuis un audit ou que vous faites rédiger par votre assistant est un seul fichier HTML. Vous l'ouvrez sur un téléphone, l'imprimez ou l'envoyez par e-mail.
+description: Chaque rapport, téléchargé depuis un audit ou rédigé par votre assistant, tient dans un seul fichier HTML à ouvrir sur mobile, imprimer ou envoyer.
 screen: Raporlar
 route: /p/<proje>/reports
 updated: 2026-10-22

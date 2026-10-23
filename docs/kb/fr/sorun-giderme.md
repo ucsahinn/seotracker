@@ -1,6 +1,6 @@
 ---
 title: Dépannage
-description: Les problèmes les plus fréquents, expliqués par symptôme, cause et solution. Numéro de port occupé, avertissement de Windows, erreurs Google, quota, audit bloqué, graphiques vides et assistant 401 sont ici.
+description: Problèmes fréquents par symptôme, cause et solution : port occupé, alerte Windows, erreurs Google, quota, audit bloqué, graphiques vides, assistant 401.
 kind: sorun-giderme
 updated: 2026-10-22
 ---

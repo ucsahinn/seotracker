@@ -1,6 +1,6 @@
 ---
 title: Analytics
-description: Vous voyez ce que font ensuite, sur le site, les visiteurs venus de la recherche. Vous consultez ici les rapports Google Analytics 4, les événements clés et le bon fonctionnement de la mesure.
+description: Ce que font sur le site les visiteurs venus de la recherche : rapports Google Analytics 4, événements clés et vérification que la mesure fonctionne.
 screen: Analytics
 route: /p/<proje>/analytics
 updated: 2026-10-22

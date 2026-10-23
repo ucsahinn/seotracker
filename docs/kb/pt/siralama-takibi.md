@@ -1,6 +1,6 @@
 ---
 title: Acompanhamento de posições
-description: Veja a posição média das suas buscas no Google dia a dia. Os dados ficam guardados neste computador, então você pode olhar mais longe do que o limite de 16 meses do Google.
+description: Veja dia a dia a posição média das suas buscas no Google. Os dados ficam neste computador, então dá para ir além do limite de 16 meses do Google.
 screen: Sıralama takibi
 route: /p/<proje>/rankings
 updated: 2026-10-22

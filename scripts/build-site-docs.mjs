@@ -442,7 +442,10 @@ function page(
       locale.lang === "tr"
         ? `${siteUrl}/assets/og.png`
         : `${siteUrl}/assets/og-${locale.lang}.png`,
-    "{{ogImageAlt}}": escapeHtml(locale.t.guideTitle),
+    // The card is shared per edition, but its alt names the page being shared.
+    "{{ogImageAlt}}": escapeHtml(
+      slug ? `${title} | seowatcher` : locale.t.guideTitle,
+    ),
     "{{ogType}}": slug ? "article" : "website",
     "{{pageSlug}}": slug || "index",
     "{{releaseNotes}}": docUrl(locale, "surum-notlari"),
@@ -612,7 +615,9 @@ function main() {
         .map((d) => gitDate(d.source) || d.meta.updated || "2026-10-22")
         .sort()
         .pop() || "2026-10-22";
-    // Index page: every group with its one-line descriptions.
+    // Index page: every group with its one-line descriptions. Its table of
+    // contents lists the groups, like a guide page lists its sections.
+    const indexGroups = groups.filter((g) => g.slugs.some((s) => docs.has(s)));
     const indexBody = `<h1>${locale.t.guide}</h1><p class="lede">${escapeHtml(locale.t.guideLede)}</p>${groups
       .map((g) => {
         const items = g.slugs
@@ -633,7 +638,10 @@ function main() {
         title: locale.t.guide,
         description: locale.t.guideDescription,
         body: indexBody,
-        toc: [],
+        toc: indexGroups.map((g) => ({
+          id: slugify(g.title[locale.lang]),
+          text: g.title[locale.lang],
+        })),
         slug: "",
         updated: indexDate,
         nav: navHtml(locale, docs, ""),
@@ -710,22 +718,29 @@ function main() {
       })
       .filter(Boolean)
       .join("\n\n");
-  // One sentence per edition, taken from that edition's own meta description.
+  // One sentence per edition, read from that edition's built home page, so
+  // the summary is always the meta description the page itself carries.
+  // site:build writes the homes first; a missing one is a build error.
   const homeSummary = (l) => {
-    const key =
-      "Search Console, Analytics 4 ve site denetimi tek uygulamada. Ücretsiz ve açık kaynak; Windows'a kurulur, verileriniz bilgisayarınızda kalır.";
-    if (l.lang === "tr") return key;
-    try {
-      const table = JSON.parse(
-        fs.readFileSync(
-          path.join(root, "scripts", `site-home.${l.lang}.json`),
-          "utf8",
-        ),
+    const file = path.join(
+      siteDir,
+      l.lang === "tr" ? "" : l.lang,
+      "index.html",
+    );
+    const html = fs.existsSync(file) ? fs.readFileSync(file, "utf8") : "";
+    const m = /<meta\s+name="description"\s+content="([^"]+)"/.exec(html);
+    if (!m)
+      throw new Error(
+        `no meta description in ${path.relative(root, file)}: build the homes first`,
       );
-      return table[key] || key;
-    } catch {
-      return key;
-    }
+    return m[1]
+      .replace(/\s+/g, " ")
+      .trim()
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&amp;/g, "&");
   };
   const llms = `# seowatcher
 

@@ -1,6 +1,6 @@
 ---
 title: Notas da versão
-description: O que mudou no seowatcher 2.4.1. Instalação com um único arquivo no Windows, um aplicativo que se atualiza sozinho, telas mais simples e um site em seis idiomas.
+description: O que mudou no seowatcher 2.4.1: instalação com um só arquivo no Windows, um aplicativo que se atualiza sozinho, telas mais simples e site em seis idiomas.
 updated: 2026-10-23
 ---
 

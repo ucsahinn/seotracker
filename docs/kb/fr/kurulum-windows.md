@@ -1,6 +1,6 @@
 ---
 title: Installation sous Windows
-description: Installez l'application sous Windows avec un seul fichier. Premier lancement, mise à jour, désinstallation, sauvegarde et changement du numéro de port. Ni Docker ni terminal nécessaires.
+description: Installez l'application sous Windows avec un seul fichier : premier lancement, mise à jour, désinstallation, sauvegarde et port. Ni Docker ni terminal.
 kind: nasil-yapilir
 updated: 2026-10-22
 ---

@@ -1,6 +1,6 @@
 ---
 title: Site audit
-description: The app walks through your site page by page, checks it against 95 rules and puts the problems in order of importance. Each problem comes with what to do about it.
+description: The app walks your site page by page, checks it against 95 rules and ranks the problems by importance, each with what to do about it.
 screen: Site denetimi
 route: /p/<proje>/audit
 updated: 2026-10-22

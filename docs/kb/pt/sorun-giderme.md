@@ -1,6 +1,6 @@
 ---
 title: Solução de problemas
-description: Os problemas mais comuns: sintoma, causa e solução. Porta em uso, o aviso do Windows, erros do Google, cota, auditoria travada, gráficos vazios, erro 401 do assistente.
+description: Problemas mais comuns, com sintoma, causa e solução: porta em uso, aviso do Windows, erros do Google, cota, auditoria travada, gráficos vazios, erro 401.
 kind: sorun-giderme
 updated: 2026-10-22
 ---

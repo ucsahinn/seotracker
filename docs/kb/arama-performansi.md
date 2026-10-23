@@ -1,6 +1,6 @@
 ---
 title: Arama performansı
-description: Google'da hangi aramalarda çıktığınızı ve kaç kişinin tıkladığını burada görürsünüz. Sorguya, sayfaya, ülkeye ya da cihaza bakabilir, 16 ay geriye gidebilirsiniz.
+description: Google'da hangi aramalarda çıktığınızı ve kaç kişinin tıkladığını görürsünüz. Sorgu, sayfa, ülke ya da cihaza göre, 16 ay geriye kadar.
 screen: Arama performansı
 route: /p/<proje>/search-performance
 updated: 2026-10-22

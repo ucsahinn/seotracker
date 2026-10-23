@@ -1,6 +1,6 @@
 ---
 title: Aide
-description: Si quelque chose ne va pas, regardez d'abord ici. L'écran contrôle votre installation, montre la solution aux problèmes courants et prépare le fichier à joindre quand vous signalez un problème.
+description: En cas de souci, commencez ici : l'écran vérifie l'installation, donne la solution aux problèmes courants et prépare le fichier à joindre au signalement.
 screen: Yardım
 route: /support
 updated: 2026-10-22

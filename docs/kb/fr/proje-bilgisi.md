@@ -1,6 +1,6 @@
 ---
 title: Infos du projet
-description: Vous écrivez ici ce que l'application ne peut pas deviner : votre activité, votre objectif, vos concurrents, vos pages importantes. Votre assistant lit cet écran avant de commencer le travail.
+description: Écrivez ici ce que l'application ne peut pas deviner : activité, objectif, concurrents, pages importantes. Votre assistant le lit avant de commencer.
 screen: Proje bilgisi
 route: /p/<proje>/context
 updated: 2026-10-22
