@@ -5,7 +5,9 @@ kind: nasil-yapilir
 updated: 2026-10-22
 ---
 
-By the end of this page the app will be connected to Google on your behalf and will read your site's data. For this, you get a "Google access key" from Google once. It takes about ten minutes, and you never have to do it again. There is also a shorter way (a service account), at the end of the page.
+The app's interface is in Turkish. This guide gives every button and screen name in Turkish with its English meaning in brackets.
+
+By the end of this page the app will be connected to Google on your behalf and will read your site's data. For this, you get a "Google access key" from Google once. It takes about ten minutes, and you never have to do it again. There is also a shorter way (a service account), at the end of the page. That shorter way is the recommended one for most people.
 
 ## What you need
 
@@ -26,20 +28,23 @@ By the end of this page the app will be connected to Google on your behalf and w
 8. Under **Yetkilendirilmiş yönlendirme URI'leri** (Authorized redirect URIs), add the two addresses from step 1. Do not put a slash at the end. A one-character difference gives a "redirect_uri_mismatch" (address does not match) error in Google.
 9. Choose **Oluştur** (Create). Google shows a client ID and a secret key.
 10. Go back to the app. In **Ayarlar → Google** (Settings → Google), paste the ID that ends with `.apps.googleusercontent.com` into the **İstemci kimliği** (Client ID) field. Paste the key that starts with `GOCSPX-` into the **Gizli anahtar** (Secret key) field.
-11. Choose **Kaydet** (Save). A "Google istemcisi kaydedildi" (Google client saved) notice appears. You do not need to restart. If you paste the ID into the wrong field, the app warns you: "Kimlik .apps.googleusercontent.com ile bitmeli. Gizli anahtarı değil, istemci kimliğini yapıştırın." (The ID must end with .apps.googleusercontent.com. Paste the client ID, not the secret key.)
-12. Go to your project: **Proje ayarları → Bağlantılar** (Project settings → Connections). On the **Google Search Console** card, choose **Bağlan** (Connect).
-13. On Google's permission screen, pick the account you added as a test user and give permission. When you return to the app, a "Search Console bağlandı" (Search Console connected) notice appears.
-14. From the **Mülk seç** (Choose property) list, pick your site and choose **Mülkü kaydet** (Save property). If you pick a domain property, the card says "Alan adı mülkü: tüm alt alan adlarını ve http/https adreslerini kapsar." (Domain property: covers all subdomains and http/https addresses.)
-15. For Analytics, on the same screen, choose **Bağlan** (Connect) on the **Google Analytics** card, give permission and pick the property. The two connections ask for separate permission. One does not cover the other.
+11. Choose **Kaydet** (Save). A "Google erişim anahtarı kaydedildi" (Google access key saved) notice appears. You do not need to restart. If you paste the ID into the wrong field, the app warns you: "Kimlik .apps.googleusercontent.com ile bitmeli. Gizli anahtarı değil, istemci kimliğini yapıştırın." (The ID must end with .apps.googleusercontent.com. Paste the client ID, not the secret key.)
+12. If you have no project yet, create one first with **Yeni proje** (New project). See [Projects](/docs/projeler/).
+13. Go to your project: **Proje ayarları → Bağlantılar** (Project settings → Connections). On the **Google Search Console** card, choose **Bağlan** (Connect).
+14. On Google's permission screen, pick the account you added as a test user and give permission. When you return to the app, a "Search Console bağlandı" (Search Console connected) notice appears.
+15. From the **Mülk seç** (Choose property) list, pick your site and choose **Mülkü kaydet** (Save property). If you pick a domain property, the card says "Alan adı mülkü: tüm alt alan adlarını ve http/https adreslerini kapsar." (Domain property: covers all subdomains and http/https addresses.)
+16. For Analytics, on the same screen, choose **Bağlan** (Connect) on the **Google Analytics** card, give permission and pick the property. The two connections ask for separate permission. One does not cover the other.
 
 ### A shorter way: a service account
 
-A service account is a special account that connects to Google in your place. You do not need the consent screen.
+A service account is a special account that connects to Google in your place. You do not need the consent screen. This path is the recommended one for most people. The OAuth path above is for those who prefer signing in with their own Google account.
 
-1. In Google Cloud, create a service account and download its JSON key file.
-2. Paste the contents of the file into the **Ayarlar → Hizmet hesabı** (Settings → Service account) field in the app and save. The app shows the service account's email address.
-3. Add that address in Search Console with **Ayarlar → Kullanıcılar ve izinler → Kullanıcı ekle** (Settings → Users and permissions → Add user). Permission: Full.
-4. In Analytics, add it with **Yönetici → Erişim yönetimi** (Admin → Access management). Permission: Viewer.
+1. Go to `console.cloud.google.com` and open **IAM & Admin → Service Accounts** (in a Turkish console: **IAM ve Yönetici → Hizmet hesapları**). Make sure the same Cloud project has the APIs from step 3 enabled.
+2. Click **Create service account**. Give it a name, for example "seowatcher". Skip the role steps and click **Done**.
+3. On the new account's row, open **Keys → Add key → Create new key**, choose **JSON** and confirm. A file downloads. Keep it private.
+4. In seowatcher, open **Ayarlar → Hizmet hesabı** (Settings → Service account). Paste the contents of the whole file and save. The screen shows the service account's e-mail address. Copy it.
+5. In Search Console, open **Settings → Users and permissions → Add user**. Enter that e-mail address and choose the permission **Full**.
+6. For Analytics, in Google Analytics open the property's **Admin → Access management**. Add the same e-mail address as **Viewer**.
 
 If a service account is saved, the app prefers it. The "Şu an kullanılan" (Currently in use) line on the **Ayarlar** (Settings) screen tells you which one is active.
 

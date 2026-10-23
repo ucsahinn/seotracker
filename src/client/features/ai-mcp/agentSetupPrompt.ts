@@ -24,7 +24,7 @@ const TOKEN_SENTENCE =
 // The Windows package keeps the token in a plain file next to the data; the
 // commands differ, the rules do not.
 const TOKEN_SENTENCE_WINDOWS =
-  'This install is behind a shared secret, so the MCP server needs the header `Authorization: Bearer <token>`: follow the token rules below now.\nThe token goes ONLY into the MCP client config, read by the shell inside one command. Never ask me to paste it into chat,\nand never print, log or write it anywhere else. This is the Windows package: the token is the file `%LOCALAPPDATA%\\seowatcher\\mcp-token` (PowerShell: `(Get-Content "$env:LOCALAPPDATA\\seowatcher\\mcp-token").Trim()`; Git Bash: `cat "$LOCALAPPDATA/seowatcher/mcp-token" | tr -d \'\\r\\n\'`). Use those instead of any `docker compose exec` command below.';
+  'This install is behind a shared secret, so the MCP server needs the header `Authorization: Bearer <token>`: follow the token rules below now.\nThe token goes ONLY into the MCP client config, read by the shell inside one command. Never ask me to paste it into chat,\nand never print, log or write it anywhere else. This is the Windows package: the token is the file `%LOCALAPPDATA%\\seowatcher\\mcp-token` (PowerShell: `(Get-Content "$env:LOCALAPPDATA\\seowatcher\\mcp-token").Trim()`; Git Bash: `cat "$LOCALAPPDATA/seowatcher/mcp-token" | tr -d \'\\r\\n\'`). Use those instead of any `docker compose exec` command below, and only inside the one command that writes the header: never run the bare read on its own, because its output would be the secret.';
 
 type PromptInstallKind = "windows" | "docker";
 

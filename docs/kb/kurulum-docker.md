@@ -9,7 +9,7 @@ Bu sayfanın sonunda uygulama Docker'da (uygulamaları kapalı kutu içinde çal
 
 ## Gerekenler
 
-- Docker Desktop (Mac, Windows) ya da Docker Engine ile Docker Compose (Linux).
+- Docker Desktop (Mac, Windows) ya da Docker Engine ile Docker Compose (Linux). Windows'ta Docker Desktop için WSL 2 (Windows içinde Linux çalıştıran bileşen) ve sanallaştırmanın (virtualization) açık olması gerekir.
 - Git. Yoksa GitHub sayfasındaki **Code → Download ZIP** de olur.
 - Yaklaşık 2 GB boş disk ve ilk derleme sırasında 2 GB boş bellek.
 
@@ -36,7 +36,7 @@ Hepsi bu kadar. `.env` dosyası gerekmez. Şifreleme anahtarı ve asistan parola
 docker compose logs -f
 ```
 
-4. Bekleyin. Günlükte "Building client + server" satırı ilk derlemedir. "Ready" ya da sağlık kontrolünün geçtiğini gösteren satırı görünce tarayıcıda `http://localhost:3001` adresini açın.
+4. Bekleyin. Günlükte "Building client + server" satırı ilk derlemedir. `docker compose ps` çıktısında durum **healthy** olana kadar bekleyin, sonra tarayıcıda `http://localhost:3001` adresini açın.
 
 Sonraki adım Google bağlantısı kılavuzudur. Docker'da Google'a vereceğiniz iki yönlendirme adresi şunlardır:
 
@@ -90,12 +90,12 @@ Hiçbir ayar zorunlu değildir. Değiştirmek isterseniz proje klasörüne bir `
 ## Kontrol
 
 - `docker compose ps` çıktısında durum **healthy** olmalı. İlk açılışta buna ulaşmak beş dakikaya kadar sürebilir.
-- `curl http://127.0.0.1:3001/api/health` çıktısı "status":"ok" ile başlamalı.
+- `curl.exe http://127.0.0.1:3001/api/health` (Windows'ta; Mac ve Linux'ta `curl`) çıktısı "status":"ok" ile başlamalı. Bu adresi tarayıcıda da açabilirsiniz.
 - Tarayıcıda `http://localhost:3001` açılmalı. **Yardım** ekranındaki durum kartı "Her şey yolunda." demeli. Google bağlanmadan önce "Google girişi" satırı dikkat ister. Bu normaldir.
 
 ## Sık sorulanlar
 
-**İlk açılış neden uzun?** Uygulama kutunun içinde derlenir, yaklaşık 7.400 parça. Sonraki açılışlarda derleme atlanır.
+**İlk açılış neden uzun?** Uygulama kutunun içinde derlenir. Sonraki açılışlarda derleme atlanır.
 
 **`.env.example` dosyası nerede?** Yok. Üst projeden gelen o dosya bu sürümde olmayan şeyleri anlatıyordu. Tam liste yukarıdaki tabloda ve `docs/ENVIRONMENT.md` dosyasında.
 

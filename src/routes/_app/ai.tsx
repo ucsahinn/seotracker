@@ -365,7 +365,8 @@ function AiPage() {
                         &quot;$env:LOCALAPPDATA\seowatcher\mcp-token&quot;).Trim()
                         | Set-Clipboard
                       </code>
-                      . Değeri sohbete ya da ekrana yazmayın.
+                      . Değeri sohbete ya da ekrana yazmayın; yapıştırdıktan
+                      sonra panoyu temizleyin (Win+V, Tümünü temizle).
                     </>
                   ) : (
                     <>

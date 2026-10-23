@@ -11,7 +11,7 @@ Bu sayfanın sonunda yapay zekâ asistanınız uygulamaya bağlı olacak ve ilk 
 
 - Çalışan uygulama ve Search Console bağlı bir proje.
 - Claude Code, Codex, Cursor, VS Code Copilot ya da Gemini CLI'dan biri. Uygulama ilk üçü için hazır kurulum metni verir.
-- Uygulamada **Ajan kurulumu** ekranı. Sol menüde Yapay zekâ bölümünde.
+- Uygulamada **Ajan kurulumu** ekranı. Sol menüde Yapay zeka bölümünde.
 
 ## Adımlar
 

@@ -11,7 +11,7 @@ By the end of this page your AI assistant will be connected to the app and will 
 
 - A running app and a project connected to Search Console.
 - One of Claude Code, Codex, Cursor, VS Code Copilot or Gemini CLI. The app gives ready-made setup text for the first three.
-- The **Ajan kurulumu** (Agent setup) screen in the app. It is in the left menu, under **Yapay zekâ** (AI).
+- The **Ajan kurulumu** (Agent setup) screen in the app. It is in the left menu, under **Yapay zeka** (AI).
 
 ## Steps
 

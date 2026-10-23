@@ -5,7 +5,7 @@ kind: nasil-yapilir
 updated: 2026-10-22
 ---
 
-Bu sayfanın sonunda uygulama Google'a sizin adınıza bağlanacak ve sitenizin verisini okuyacak. Bunun için Google'dan bir kez "Google erişim anahtarı" alırsınız. Bu yaklaşık on dakika sürer, bir daha uğraşmazsınız. Daha kısa bir yol da var (hizmet hesabı), sayfanın sonunda.
+Bu sayfanın sonunda uygulama Google'a sizin adınıza bağlanacak ve sitenizin verisini okuyacak. Bunun için Google'dan bir kez "Google erişim anahtarı" alırsınız. Bu yaklaşık on dakika sürer, bir daha uğraşmazsınız. Çoğu kişi için önerilen, daha kısa bir yol da var (hizmet hesabı), sayfanın sonunda.
 
 ## Gerekenler
 
@@ -26,20 +26,24 @@ Bu sayfanın sonunda uygulama Google'a sizin adınıza bağlanacak ve sitenizin 
 8. **Yetkilendirilmiş yönlendirme URI'leri** bölümüne 1. adımdaki iki adresi ekleyin. Sona eğik çizgi koymayın. Tek karakter farkı Google'da "redirect_uri_mismatch" (adres uyuşmuyor) hatası verir.
 9. **Oluştur** deyin. Google bir istemci kimliği ve bir gizli anahtar gösterir.
 10. Uygulamaya dönün. **Ayarlar → Google** bölümünde **İstemci kimliği** alanına `.apps.googleusercontent.com` ile biten kimliği yapıştırın. **Gizli anahtar** alanına `GOCSPX-` ile başlayan anahtarı yapıştırın.
-11. **Kaydet** deyin. "Google istemcisi kaydedildi" bildirimi çıkar. Yeniden başlatmak gerekmez. Kimliği yanlış alana yapıştırırsanız uygulama uyarır: "Kimlik .apps.googleusercontent.com ile bitmeli. Gizli anahtarı değil, istemci kimliğini yapıştırın."
-12. Projenize gidin: **Proje ayarları → Bağlantılar**. **Google Search Console** kartında **Bağlan** deyin.
-13. Google'ın izin ekranında test kullanıcısı olarak eklediğiniz hesabı seçin ve izin verin. Uygulamaya dönünce "Search Console bağlandı" bildirimi gelir.
-14. **Mülk seç** listesinden sitenizi seçin, **Mülkü kaydet** deyin. Alan adı mülkü seçerseniz kart "Alan adı mülkü: tüm alt alan adlarını ve http/https adreslerini kapsar." yazar.
-15. Analytics için aynı ekranda **Google Analytics** kartında **Bağlan** deyin, izin verin, mülkü seçin. İki bağlantı ayrı izin ister. Biri ötekini kapsamaz.
+11. **Kaydet** deyin. "Google erişim anahtarı kaydedildi" bildirimi çıkar. Yeniden başlatmak gerekmez. Kimliği yanlış alana yapıştırırsanız uygulama uyarır: "Kimlik .apps.googleusercontent.com ile bitmeli. Gizli anahtarı değil, istemci kimliğini yapıştırın."
+12. Henüz projeniz yoksa önce **Yeni proje** ile bir tane oluşturun. Ayrıntı için [Projeler](/docs/projeler/) kılavuzuna bakın.
+13. Projenize gidin: **Proje ayarları → Bağlantılar**. **Google Search Console** kartında **Bağlan** deyin.
+14. Google'ın izin ekranında test kullanıcısı olarak eklediğiniz hesabı seçin ve izin verin. Uygulamaya dönünce "Search Console bağlandı" bildirimi gelir.
+15. **Mülk seç** listesinden sitenizi seçin, **Mülkü kaydet** deyin. Alan adı mülkü seçerseniz kart "Alan adı mülkü: tüm alt alan adlarını ve http/https adreslerini kapsar." yazar.
+16. Analytics için aynı ekranda **Google Analytics** kartında **Bağlan** deyin, izin verin, mülkü seçin. İki bağlantı ayrı izin ister. Biri ötekini kapsamaz.
 
 ### Daha kısa yol: hizmet hesabı
 
-Hizmet hesabı, Google'a sizin yerinize bağlanan özel bir hesaptır. İzin ekranı gerekmez.
+Hizmet hesabı, Google'a sizin yerinize bağlanan özel bir hesaptır. İzin ekranı ve yönlendirme adresi gerekmez. Çoğu kişi için önerilen yol budur. Yukarıdaki yolu, uygulamaya kendi Google hesabınızla giriş yapmayı tercih edenler seçer.
 
-1. Google Cloud'da bir hizmet hesabı oluşturun ve JSON anahtar dosyasını indirin.
-2. Dosyanın içindekini uygulamada **Ayarlar → Hizmet hesabı** alanına yapıştırın ve kaydedin. Uygulama hizmet hesabının e-posta adresini gösterir.
-3. O adresi Search Console'da **Ayarlar → Kullanıcılar ve izinler → Kullanıcı ekle** ile ekleyin. Yetki: Tam.
-4. Analytics'te **Yönetici → Erişim yönetimi** ile ekleyin. Yetki: Görüntüleyen.
+1. `console.cloud.google.com` adresini açın. Aynı Cloud projesinde 3. adımdaki API'lerin açık olduğundan emin olun. **IAM ve Yönetici → Hizmet hesapları** sayfasına gidin.
+2. **Hizmet hesabı oluştur** deyin. Bir ad verin. Rol adımlarını atlayıp hesabı oluşturun.
+3. Hesabın satırında **Anahtarlar** sekmesini açın. **Anahtar ekle → Yeni anahtar oluştur** deyin.
+4. Anahtar türü olarak **JSON** seçin ve **Oluştur** deyin. Bilgisayarınıza bir dosya iner.
+5. Uygulamada **Ayarlar → Hizmet hesabı** bölümünü açın. İndirdiğiniz dosyayı Not Defteri ile açın, içindekinin tamamını alana yapıştırıp kaydedin. Ekran hesabın e-posta adresini gösterir.
+6. Search Console'da **Ayarlar → Kullanıcılar ve izinler → Kullanıcı ekle** deyin. Bu e-posta adresini yazın, izin olarak **Tam** seçin.
+7. Analytics kullanacaksanız Google Analytics'te mülkün **Yönetici → Erişim yönetimi** bölümünü açın. Aynı e-posta adresini **Görüntüleyen** izniyle ekleyin.
 
 Kayıtlı hizmet hesabı varsa uygulama onu tercih eder. **Ayarlar** ekranındaki "Şu an kullanılan" satırı hangisinin devrede olduğunu söyler.
 

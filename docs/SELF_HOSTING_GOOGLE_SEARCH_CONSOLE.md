@@ -125,7 +125,7 @@ Gizli anahtarı ve Google'ın verdiği jetonları şifreleyen anahtarı konteyne
 ## 5) Bağlanın
 
 Bu adım bir **projenin** ayarlarında yapılır. Projenizi açın,
-projenin ayar sayfasındaki **Entegrasyonlar** sekmesine gidin (genel **Ayarlar**
+projenin ayar sayfasındaki **Bağlantılar** sekmesine gidin (genel **Ayarlar**
 ekranı değil) ve **Bağlan** düğmesine tıklayın. Bağlantının süresi dolduysa aynı
 yerde **Yeniden bağlan** düğmesi çıkar. Doğrulanmış mülkün sahibi Google hesabını
 yetkilendirin ve projenize bağlanacak mülkü seçin.

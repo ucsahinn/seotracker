@@ -2,6 +2,23 @@
 
 Her sürümün notu burada, en yenisi en üstte.
 
+## [2.3.8] — 2026-10-23
+
+Güvenlik ve ilk kurulum denetimlerinin bulguları: yayın hattı yetki ayrımıyla
+iki aşamaya bölündü, kılavuzlar sihirbazın gerçek düğme adlarıyla eşleşti.
+
+### Yenilikler
+
+- **Yayın hattı.** Derleme işi yalnızca okur; yayın işi ayrı, yazma yetkili ve bağımlılık kodu çalıştırmaz. Eylemler commit kimliğine sabitlendi. Sürüm etiketi `x.y.z` biçimi ve package.json ile eşleşme açısından denetlenir. Yayın önce taslak oluşturulup dosyalar yüklendikten sonra yayımlanır; eski bir sürüm yeniden etiketlense bile "en son" işaretini almaz. Smoke test artık parolasız `/mcp` çağrısının 401 aldığını ve üretilen parolanın hiçbir günlükte geçmediğini de doğrular.
+- **Başlatıcı.** Güncelleme indirmesi zaman aşımlı; parola dosyasındaki beklenmeyen karakterler temizlenir; "Tanı bilgisini kopyala" ve "Sorunu bildir" çıktısında kullanıcı adı ve gizli değerler maskelenir, baloncuk kaydın herkese açık olduğunu söyler. Güncelleme menü öğesi her zaman **Güncelle** adını taşır.
+- **Kılavuzlar.** Sihirbazın gerçek adımları ve düğmeleri (**Yalnızca ben**, **Bitti**), İngilizce Windows'ta İngilizce düğme adları, kullanıcı kurulum klasörü, gizli ^ simgesi, yönetici izni reddi, başlatıcı uyarıları, hizmet hesabı yolu adım adım, proje oluşturma adımı, Docker için WSL 2 notu ve `curl.exe`. Paneldeki "Kurulum kılavuzunu aç" düğmesi adım adım Google kılavuzuna gider.
+
+### Düzeltmeler
+
+- Eski "Entegrasyonlar" sekme adı ve "Google istemcisi kaydedildi" bildirimi kılavuzlarda düzeltildi.
+- Parola panoya kopyalandıktan sonra temizlenmesi gerektiği yazılır; ajan istemleri parolayı tek başına okuyan komutu yasaklar.
+- Site başlıklarındaki yinelenen önbellek kuralları kaldırıldı.
+
 ## [2.3.7] — 2026-10-23
 
 Kurulum sihirbazının pencere başlığı sürümü yazar; İngilizce site ikinci

@@ -9,6 +9,7 @@ By the end of this page the app will be running in Docker (a program that runs a
 
 ## What you need
 
+- On Windows, Docker Desktop needs WSL 2 and virtualization enabled in the BIOS/UEFI.
 - Docker Desktop (Mac, Windows) or Docker Engine with Docker Compose (Linux).
 - Git. If you do not have it, **Code → Download ZIP** on the GitHub page also works.
 - About 2 GB of free disk space, and 2 GB of free memory during the first build.
@@ -36,7 +37,7 @@ That is all. No `.env` file is needed. The encryption key and the assistant pass
 docker compose logs -f
 ```
 
-4. Wait. In the log, the line "Building client + server" is the first build. When you see "Ready", or the line showing that the health check passed, open `http://localhost:3001` in the browser.
+4. Wait. In the log, the line "Building client + server" is the first build. Wait until `docker compose ps` shows the status **healthy**, then open `http://localhost:3001` in the browser.
 
 The next step is the Google connection guide. On Docker, the two redirect addresses you give to Google are:
 
@@ -90,12 +91,12 @@ No setting is required. If you want to change something, put a `.env` file in th
 ## Check
 
 - In the output of `docker compose ps`, the status should be **healthy**. On the first start, it can take up to five minutes to get there.
-- The output of `curl http://127.0.0.1:3001/api/health` should start with "status":"ok".
+- The output of `curl.exe http://127.0.0.1:3001/api/health` should start with "status":"ok". You can also open `http://127.0.0.1:3001/api/health` in the browser.
 - `http://localhost:3001` should open in the browser. The status card on the **Yardım** (Help) screen should say "Her şey yolunda." (Everything is fine.) Before you connect Google, the "Google girişi" (Google sign-in) row asks for attention. This is normal.
 
 ## Frequently asked questions
 
-**Why is the first start long?** The app is built inside the box, about 7,400 pieces. On later starts, the build is skipped.
+**Why is the first start long?** The app is built inside the box. On later starts, the build is skipped.
 
 **Where is the `.env.example` file?** There is none. That file, inherited from the upstream project, described things that are not in this version. The full list is in the table above and in the `docs/ENVIRONMENT.md` file.
 

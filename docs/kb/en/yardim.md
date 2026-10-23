@@ -6,6 +6,8 @@ route: /support
 updated: 2026-10-22
 ---
 
+The app's interface is in Turkish. This guide gives every button and screen name in Turkish with its English meaning in brackets.
+
 This is the first place to look when something goes wrong. The screen checks your setup, tells you what is missing and takes you to the right setting.
 
 ## What is on the screen

@@ -49,7 +49,7 @@
     <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/en/docs/troubleshooting/#article","headline":"Troubleshooting","description":"The most common problems: symptom, cause and fix. Port in use, the Windows warning, Google errors, quota, a stuck audit, empty charts, assistant 401.","url":"https://seowatcher.io/en/docs/troubleshooting/","inLanguage":"en","dateModified":"2026-10-23","articleSection":"Reference","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/en/docs/troubleshooting/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/en/docs/troubleshooting/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/en/"},{"@type":"ListItem","position":2,"name":"Guide","item":"https://seowatcher.io/en/docs/"},{"@type":"ListItem","position":3,"name":"Troubleshooting","item":"https://seowatcher.io/en/docs/troubleshooting/"}]}]}</script>
-    <script src="/assets/docs.js?v=2.3.7" defer></script>
+    <script src="/assets/docs.js?v=2.3.8" defer></script>
     <meta name="theme-color" content="#272c3b" />
     <style>
       @font-face {
@@ -873,11 +873,12 @@
         </details>
       </aside>
       <article id="icerik">
-        <h1>Troubleshooting</h1><p class="lede">The most common problems: symptom, cause and fix. Port in use, the Windows warning, Google errors, quota, a stuck audit, empty charts, assistant 401.</p><p>This page tells you briefly what to do when something does not work. First, look at the &quot;Kurulumunuzun durumu&quot; (Your installation status) card on the <strong>Yardım</strong> (Help) screen in the app. The card checks four things: sign-in and access, Google sign-in, the PageSpeed key, and the database. If it says &quot;N şey dikkat istiyor&quot; (N things need attention), the button next to it takes you to the right setting. The list below goes from the most common problem to the rarest.</p>
+        <h1>Troubleshooting</h1><p class="lede">The most common problems: symptom, cause and fix. Port in use, the Windows warning, Google errors, quota, a stuck audit, empty charts, assistant 401.</p><p>The app's interface is in Turkish. This guide gives every button and screen name in Turkish with its English meaning in brackets.</p>
+<p>This page tells you briefly what to do when something does not work. First, look at the &quot;Kurulumunuzun durumu&quot; (Your installation status) card on the <strong>Yardım</strong> (Help) screen in the app. The card checks four things: sign-in and access, Google sign-in, the PageSpeed key, and the database. If it says &quot;N şey dikkat istiyor&quot; (N things need attention), the button next to it takes you to the right setting. The list below goes from the most common problem to the rarest.</p>
 <h3 id="the-page-does-not-open">The page does not open</h3>
 <p class="callout callout-belirti"><strong>Symptom:</strong> The browser says &quot;connection refused&quot;.</p>
 <p class="callout callout-sebep"><strong>Cause:</strong> The app is not running.</p>
-<p class="callout callout-cozum"><strong>Fix:</strong> On Windows, look for the icon in the taskbar. If it is not there, open seowatcher from the Start menu. If the icon says &quot;Hata&quot; (Error), right-click it and choose <strong>Yeniden başlat</strong> (Restart). On Docker, run <code>docker compose ps</code>. If the status is not healthy, run <code>docker compose up -d</code>.</p>
+<p class="callout callout-cozum"><strong>Fix:</strong> On Windows, look for the icon in the taskbar. If the icon is not visible, click the ^ arrow on the taskbar. If it is not there, open seowatcher from the Start menu. If the icon says &quot;Hata&quot; (Error), right-click it and choose <strong>Yeniden başlat</strong> (Restart). On Docker, run <code>docker compose ps</code>. If the status is not healthy, run <code>docker compose up -d</code>.</p>
 <h3 id="the-port-number-is-in-use">The port number is in use</h3>
 <p class="callout callout-belirti"><strong>Symptom:</strong> On Windows, the icon says &quot;Port 3001 ve sonraki 9 port dolu&quot; (Port 3001 and the next 9 ports are in use). On Docker, you see &quot;Bind for 127.0.0.1:3001 failed&quot;.</p>
 <p class="callout callout-sebep"><strong>Cause:</strong> Another program is using the same port number.</p>
@@ -885,7 +886,11 @@
 <h3 id="the-icon-says-windows-bileseni-eksik">The icon says &quot;Windows bileşeni eksik&quot;</h3>
 <p class="callout callout-belirti"><strong>Symptom:</strong> The app does not open. The icon says &quot;Windows bileşeni eksik&quot; (Windows component missing), or the log shows &quot;Workers runtime failed to start&quot; and &quot;0xc0000005&quot;.</p>
 <p class="callout callout-sebep"><strong>Cause:</strong> The app's engine needs Microsoft's Visual C++ package (2015-2022, 64-bit). On a clean Windows, this package is missing or out of date.</p>
-<p class="callout callout-cozum"><strong>Fix:</strong> Click the balloon that appears, or right-click the icon and choose <strong>Eksik Windows bileşenini kur</strong> (Install the missing Windows component). Windows asks for administrator permission once. When the installation finishes, the app restarts by itself. If you do not have the package, download it from Microsoft's page: <code>aka.ms/vs/17/release/vc_redist.x64.exe</code></p>
+<p class="callout callout-cozum"><strong>Fix:</strong> Click the balloon that appears, or right-click the icon (if the icon is not visible, click the ^ arrow on the taskbar) and choose <strong>Eksik Windows bileşenini kur</strong> (Install the missing Windows component). Windows asks for administrator permission once. When the installation finishes, the app restarts by itself. If you do not have the package, download it from Microsoft's page: <code>https://aka.ms/vs/17/release/vc_redist.x64.exe</code></p>
+<h3 id="administrator-permission-was-refused">Administrator permission was refused</h3>
+<p class="callout callout-belirti"><strong>Symptom:</strong> The installer asked for permission to install Visual C++, you clicked No, and the app does not start.</p>
+<p class="callout callout-sebep"><strong>Cause:</strong> The Visual C++ component was not installed.</p>
+<p class="callout callout-cozum"><strong>Fix:</strong> In the tray menu, choose <strong>Eksik Windows bileşenini kur</strong> (Install the missing Windows component) and allow it this time. If the icon is not visible, click the ^ arrow on the taskbar. Or install the component yourself from <code>https://aka.ms/vs/17/release/vc_redist.x64.exe</code>.</p>
 <h3 id="the-icon-says-uygulamanin-motoru-coktu">The icon says &quot;Uygulamanın motoru çöktü&quot;</h3>
 <p class="callout callout-belirti"><strong>Symptom:</strong> The app does not open. The log has &quot;Workers runtime failed to start&quot; and &quot;0xc0000005&quot;, but the Visual C++ package is installed.</p>
 <p class="callout callout-sebep"><strong>Cause:</strong> The app's engine (workerd) gets stuck on a system file on this computer. At startup, the app tries the engine on its own. If it says it cannot start on its own either, the problem is on the computer. If it says it works on its own, the problem is in the data folder or the configuration.</p>
@@ -893,7 +898,7 @@
 <h3 id="windows-says-protected-your-pc">Windows says &quot;protected your PC&quot;</h3>
 <p class="callout callout-belirti"><strong>Symptom:</strong> The setup file does not open, and a blue warning screen appears.</p>
 <p class="callout callout-sebep"><strong>Cause:</strong> The file is not signed. Windows shows this screen for publishers it does not know.</p>
-<p class="callout callout-cozum"><strong>Fix:</strong> Click the <strong>Daha fazla bilgi</strong> (More info) text on the screen. The <strong>Yine de çalıştır</strong> (Run anyway) button appears. If you are worried, compare the file's SHA-256 digest (its fingerprint) with <code>SHA256SUMS.txt</code> on the release page.</p>
+<p class="callout callout-cozum"><strong>Fix:</strong> Click the <strong>More info</strong> text on the screen (on a Turkish Windows: &quot;Daha fazla bilgi&quot;). The <strong>Run anyway</strong> button (Turkish: &quot;Yine de çalıştır&quot;) appears. If you are worried, compare the file's SHA-256 digest (its fingerprint) with <code>SHA256SUMS.txt</code> on the release page.</p>
 <h3 id="google-says-redirect-uri-mismatch">Google says &quot;redirect_uri_mismatch&quot;</h3>
 <p class="callout callout-belirti"><strong>Symptom:</strong> When you choose <strong>Bağlan</strong> (Connect), Google shows an error page.</p>
 <p class="callout callout-sebep"><strong>Cause:</strong> The redirect address in Google Cloud Console is not exactly the same as the one in the app.</p>
@@ -941,7 +946,7 @@
 <h3 id="the-assistant-cannot-connect-401">The assistant cannot connect (401)</h3>
 <p class="callout callout-belirti"><strong>Symptom:</strong> Claude Code or Codex says &quot;Unauthorized&quot;.</p>
 <p class="callout callout-sebep"><strong>Cause:</strong> The password is not being sent, or it is wrong.</p>
-<p class="callout callout-cozum"><strong>Fix:</strong> Copy the password again. On Windows, it is in the <code>mcp-token</code> file in the data folder. On Docker, run <code>docker compose exec -T seotracker cat /app/.wrangler/mcp-token</code>. Delete the line-break character at the end of the value. In Claude Code, type <code>/mcp</code> and choose <strong>Reconnect</strong>.</p>
+<p class="callout callout-cozum"><strong>Fix:</strong> Copy the password again. On Windows, it is in the <code>mcp-token</code> file in the data folder. On Docker, run <code>docker compose exec -T seotracker cat /app/.wrangler/mcp-token</code>. Delete the line-break character at the end of the value. Without a terminal: open the file in Notepad, select the whole line and copy it; do not include a line break. In Claude Code, type <code>/mcp</code> and choose <strong>Reconnect</strong>.</p>
 <h3 id="docker-takes-very-long-on-first-start-or-is-unhealthy">Docker takes very long on first start or is &quot;unhealthy&quot;</h3>
 <p class="callout callout-belirti"><strong>Symptom:</strong> <code>docker compose ps</code> still does not say healthy after five minutes.</p>
 <p class="callout callout-sebep"><strong>Cause:</strong> On first start, the app is built inside the box (the container) and needs about 2 GB of memory. If memory is not enough, the build fails.</p>
@@ -949,7 +954,10 @@
 <h3 id="where-are-my-data-and-logs">Where are my data and logs?</h3>
 <p>On Windows, everything is in the <code>%LOCALAPPDATA%\seowatcher</code> folder: <code>data</code> (the database), <code>logs\server.log</code>, <code>logs\migrate.log</code>, <code>instance-secret</code>, <code>mcp-token</code>, <code>config.json</code>. <strong>Günlükleri aç</strong> (Open logs) and <strong>Veri klasörünü aç</strong> (Open data folder) in the taskbar menu take you there.</p>
 <p>On Docker, the data is in the <code>seotracker_data</code> volume (<code>/app/.wrangler</code>). You see the logs with the <code>docker compose logs -f</code> command.</p>
-<p>When you report a problem, press the <strong>Tanılama paketi indir</strong> (Download diagnostics bundle) button on the <strong>Yardım</strong> (Help) screen. The file has the version, the setup checks and the last 25 audits. It has no secrets. Attach the file to the issue on GitHub.</p> <nav class="pager" aria-label="Previous and next page"><a class="pager-prev" rel="prev" href="/en/docs/agent-setup/"><span>Previous</span><strong>Agent setup</strong></a><span class="pager-next empty"></span></nav>
+<p>When you report a problem, press the <strong>Tanılama paketi indir</strong> (Download diagnostics bundle) button on the <strong>Yardım</strong> (Help) screen. The file has the version, the setup checks and the last 25 audits. It has no secrets. Attach the file to the issue on GitHub.</p>
+<h2 id="launcher-messages">Launcher messages</h2>
+<p>These messages appear on the Windows icon or in a dialog. The Windows launcher is the small program that starts the app.</p>
+<ul><li><strong>&quot;Sunucu 120 saniyede yanıt vermedi&quot;</strong> (The server did not answer within 120 seconds): choose <strong>Yeniden başlat</strong> (Restart). If that fails, choose <strong>Günlükleri aç</strong> (Open logs) and read <code>server.log</code>.</li><li><strong>&quot;Kurulum eksik&quot;</strong> (Installation incomplete): run the installer again.</li><li><strong>&quot;Güncelleme yapılamadı&quot;</strong> (Update failed): check your connection and retry from <strong>Güncelle</strong> (Update). The installed version keeps running.</li><li><strong>&quot;Windows bileşeni kurulamadı&quot;</strong> (The Windows component could not be installed): choose <strong>Eksik Windows bileşenini kur</strong> (Install the missing Windows component) from the menu.</li></ul> <nav class="pager" aria-label="Previous and next page"><a class="pager-prev" rel="prev" href="/en/docs/agent-setup/"><span>Previous</span><strong>Agent setup</strong></a><span class="pager-next empty"></span></nav>
         <p class="meta">
           Last updated: October 23, 2026. Spotted a mistake?
           <a href="https://github.com/ucsahinn/seotracker/issues"
@@ -957,7 +965,7 @@
           >.
         </p>
       </article>
-      
+      <nav class="toc" aria-label="On this page"><p class="toc-label">On this page</p><ol><li><a href="#launcher-messages">Launcher messages</a></li></ol></nav>
     </main>
     <footer>
       <div class="wrap">

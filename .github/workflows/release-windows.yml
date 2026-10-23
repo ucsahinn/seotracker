@@ -10,27 +10,34 @@ on:
     tags:
       - "v*"
 
+# The build job only reads. The release job below is the only one that may
+# write, and it never runs dependency code.
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: windows-package-${{ github.ref }}
-  cancel-in-progress: true
+  # A cancelled tag run must not leave a half-published release behind.
+  cancel-in-progress: ${{ github.ref_type != 'tag' }}
 
 jobs:
   package:
     runs-on: windows-latest
     timeout-minutes: 30
+    outputs:
+      version: ${{ steps.version.outputs.version }}
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 22
           cache: pnpm
@@ -45,15 +52,20 @@ jobs:
           REF_NAME: ${{ github.ref_name }}
         run: |
           $ref = $env:REF_NAME
-          $version = if ($ref -like "v*") { $ref.TrimStart("v") } else { (Get-Content package.json -Raw | ConvertFrom-Json).version }
+          $packaged = (Get-Content package.json -Raw | ConvertFrom-Json).version
+          $version = if ($ref -like "v*") { $ref.TrimStart("v") } else { $packaged }
+          if ($version -notmatch '^\d+\.\d+\.\d+$') { throw "version '$version' is not x.y.z" }
+          if ($ref -like "v*" -and $version -ne $packaged) { throw "tag $ref does not match package.json version $packaged" }
           "version=$version" >> $env:GITHUB_OUTPUT
 
       - name: Build package and installer
         shell: pwsh
-        run: ./packaging/windows/build.ps1 -Version "${{ steps.version.outputs.version }}"
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: ./packaging/windows/build.ps1 -Version $env:VERSION
 
       - name: Upload installer artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: seowatcher-setup-${{ steps.version.outputs.version }}
           path: packaging/windows/out/seowatcher-setup-*.exe
@@ -85,6 +97,18 @@ jobs:
             throw "app did not answer /api/health within 6 min"
           }
           Write-Host "health ok"
+          # The MCP endpoint must refuse a call without the bearer token.
+          $mcp = $null
+          try { $mcp = Invoke-WebRequest -Uri "http://127.0.0.1:3001/mcp" -Method Post -ContentType "application/json" -Body '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' -UseBasicParsing -TimeoutSec 5 } catch { $mcp = $_.Exception.Response }
+          $code = if ($mcp) { [int]$mcp.StatusCode } else { 0 }
+          if ($code -ne 401) { throw "POST /mcp without a token answered $code, expected 401" }
+          Write-Host "mcp without token: 401"
+          # The generated token must never appear in any log (count only; never printed).
+          $token = (Get-Content (Join-Path $env:LOCALAPPDATA "seowatcher\mcp-token") -Raw).Trim()
+          $hits = 0
+          foreach ($name in "launcher.log", "migrate.log", "server.log") { $f = Join-Path $logs $name; if (Test-Path $f) { $hits += @(Select-String -Path $f -SimpleMatch $token).Count } }
+          if ($hits -gt 0) { throw "the MCP token appears $hits time(s) in the logs" }
+          Write-Host "token not in logs"
           & $app --quit
           $un = Get-ChildItem (Split-Path $app) -Filter "unins*.exe" | Select-Object -First 1
           $u = Start-Process -FilePath $un.FullName -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART" -PassThru
@@ -93,8 +117,27 @@ jobs:
           if (Test-Path $app) { throw "launcher still present after uninstall" }
           Write-Host "install, start, health, quit, uninstall: all ok"
 
+  release:
+    needs: package
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: windows-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+
+      - name: Download the smoke-tested installer
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: seowatcher-setup-${{ needs.package.outputs.version }}
+          path: packaging/windows/out
+
       - name: Attach to release
-        if: startsWith(github.ref, 'refs/tags/v')
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
@@ -119,10 +162,16 @@ jobs:
           $notes = if ($m.Success) { $m.Groups[1].Value.Trim() } else { "seowatcher $version" }
           $notesFile = Join-Path $file.DirectoryName "notes.md"
           [IO.File]::WriteAllText($notesFile, $notes, (New-Object Text.UTF8Encoding $false))
+          # Draft first, upload, then publish: /releases/latest never points at a
+          # release without its installer. "Latest" only if this is the highest
+          # version, so re-tagging an old line cannot demote the current one.
+          $current = gh release list --exclude-drafts --exclude-pre-releases --limit 1 --json tagName --jq '.[0].tagName'
+          $isLatest = -not $current -or ([version]$version -ge [version]$current.TrimStart("v"))
           gh release view $tag 2>$null
           if ($LASTEXITCODE -ne 0) {
-            gh release create $tag --title "v$version" --notes-file $notesFile --latest
+            gh release create $tag --title "v$version" --notes-file $notesFile --draft
           } else {
-            gh release edit $tag --draft=false --latest --notes-file $notesFile
+            gh release edit $tag --notes-file $notesFile
           }
           gh release upload $tag $file.FullName $stable (Join-Path $file.DirectoryName "SHA256SUMS.txt") --clobber
+          gh release edit $tag --draft=false --latest=$($isLatest.ToString().ToLower())

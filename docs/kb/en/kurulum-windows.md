@@ -5,7 +5,9 @@ kind: nasil-yapilir
 updated: 2026-10-22
 ---
 
-By the end of this page the app is installed on your computer and open in the browser. The install takes two minutes. It installs only for your own user account and does not ask for an administrator password.
+The app's interface is in Turkish. This guide gives every button and screen name in Turkish with its English meaning in brackets.
+
+By the end of this page the app is installed on your computer and open in the browser. The install takes two minutes. It installs only for your own user account and needs no administrator rights (asked once only if the Visual C++ component is missing).
 
 ## What you need
 
@@ -21,18 +23,22 @@ By the end of this page the app is installed on your computer and open in the br
 
 1. Download **seowatcher-setup.exe** from the GitHub releases page. The fixed address is: `github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe`
 2. Double-click the file.
-3. If Windows says "Windows protected your PC", click **Daha fazla bilgi** (More info), then **Yine de çalıştır** (Run anyway). The file is not signed yet, so Windows does not know the publisher. This warning is normal.
+3. If Windows says "Windows protected your PC", click **More info**, then **Run anyway** (on a Turkish Windows: "Daha fazla bilgi", "Yine de çalıştır"). The file is not signed yet, so Windows does not know the publisher. This warning is normal.
 4. If you like, compare the file's SHA-256 hash (the file's fingerprint) with `SHA256SUMS.txt` on the releases page.
-5. Look at the two options in the wizard: **Windows açılınca seowatcher'ı başlat** (Start seowatcher when Windows starts) and **Masaüstüne kısayol ekle** (Add a shortcut to the desktop). The first one is ticked by default. Untick it if you do not want the app to start in the background.
-6. Click **Kur** (Install), then click **Son** (Finish) on the last screen. The app opens.
-7. Wait. The first launch takes 20-30 seconds. The text on the taskbar icon changes in turn to "Anahtarlar hazırlanıyor" (Preparing keys), "Veritabanı güncelleniyor" (Updating database) and "Sunucu başlatılıyor" (Starting server).
-8. `http://127.0.0.1:3001` opens in the browser by itself. This is your computer's own address (127.0.0.1) and the port number (port: 3001).
+5. In the installer wizard, go through the pages in this order:
+   1. The welcome page: click **Next**.
+   2. The "install for" page: choose **Only for me**. This is the recommended per-user install, into `%LOCALAPPDATA%\Programs\seowatcher`. "All users" installs into `C:\Program Files\seowatcher` and asks for administrator permission.
+   3. The options page: **Start seowatcher when Windows starts** (Turkish: "Windows açılınca seowatcher'ı başlat") and **Create a desktop shortcut** (Turkish: "Masaüstüne kısayol ekle"). The first one is ticked by default. Untick it if you do not want the app to start in the background. Click **Next**.
+   4. Click **Install** (on a Turkish Windows: **Kur**).
+   5. The final page has a **Start seowatcher now** checkbox. Leave it ticked and click **Finish** (on a Turkish Windows: **Bitti**). The app opens.
+6. Wait. The first launch takes 20-30 seconds. Look for the seowatcher icon in the notification area (system tray) at the right of the taskbar. If the icon is not visible, click the ^ arrow on the taskbar. The icon's text changes in turn to "Anahtarlar hazırlanıyor" (Preparing keys), "Veritabanı güncelleniyor" (Updating database) and "Sunucu başlatılıyor" (Starting server). On the first start a "seowatcher hazır" (seowatcher is ready) balloon appears.
+7. `http://127.0.0.1:3001` opens in the browser by itself. This is your computer's own address (127.0.0.1) and the port number (port: 3001).
 
 The next step is the Google connection guide.
 
 ### Taskbar menu
 
-Right-click the icon. The menu has these items:
+Right-click the icon (if it is not visible, click the ^ arrow on the taskbar). The menu has these items:
 
 - **seowatcher'ı aç** (Open seowatcher): opens the app in the browser. Double-clicking the icon does the same.
 - **Yeniden başlat** (Restart): closes the app and opens it again. If something gets stuck, try this first.
@@ -41,7 +47,7 @@ Right-click the icon. The menu has these items:
 - **Sorunu bildir (GitHub)** (Report a problem (GitHub)): puts the same information on the clipboard and opens a pre-filled issue on GitHub. Add one sentence about what you did and send it.
 - **Eksik Windows bileşenini kur** (Install the missing Windows component): shown only if the Visual C++ package is missing. When you click it, it installs the package and restarts the app.
 - **Kurulumu onar** (Repair installation): clears temporary files, checks the package and reopens the app.
-- **Güncelle** (Update): shown only if there is a new version.
+- **Güncelle** (Update): shown only if there is a new version. When an update is ready it reads "Güncelle: 2.3.8 sürümü hazır" (Update: version 2.3.8 is ready); the version number is the new one.
 - **Güncellemeleri kendiliğinden kur** (Install updates automatically): if ticked, the app installs a new version by itself when it finds one.
 - **Veri klasörünü aç** (Open data folder): opens the folder with the database and the keys.
 - **Windows ile başlat** (Start with Windows): if ticked, the app starts in the background when the computer starts.
@@ -64,10 +70,10 @@ Your data, your Google connection and your settings stay as they are.
 
 For IT teams that want to install for all users of a computer, or install silently with a deployment tool (Intune, GPO, PDQ):
 
-- **For all users**: run the installer as administrator and choose the "all users" option in the wizard. The app installs under `Program Files\seowatcher`. Each user's data still stays in their own `%LOCALAPPDATA%\seowatcher` folder.
+- **For all users**: run the installer as administrator and choose the "all users" option in the wizard. The app installs under `C:\Program Files\seowatcher` (the per-user install goes to `%LOCALAPPDATA%\Programs\seowatcher`). Each user's data still stays in their own `%LOCALAPPDATA%\seowatcher` folder.
 - **Silent install**: `seowatcher-setup.exe /VERYSILENT /NORESTART` (single user) or `seowatcher-setup.exe /VERYSILENT /ALLUSERS /NORESTART` (administrator, all users). When a silent install finishes, the app opens by itself.
 - **Install log**: every install writes to `%LOCALAPPDATA%\seowatcher\logs\setup.log`. You can give another place with `/LOG="path"`.
-- **Silent uninstall**: `unins000.exe /VERYSILENT` (in the install folder).
+- **Silent uninstall**: `unins000.exe /VERYSILENT` (in the install folder: `%LOCALAPPDATA%\Programs\seowatcher` for a per-user install, `C:\Program Files\seowatcher` for all users).
 - **Verification**: before each version is published, it is installed on a clean Windows machine, opened, waited on until the health address responds, and uninstalled. A version is not published until this test passes.
 
 ### Repair
@@ -119,7 +125,7 @@ When the number changes, also update the two redirect addresses at Google with t
 
 ## Check
 
-- When you hover over the taskbar icon, it should read "seowatcher: Çalışıyor: http://127.0.0.1:3001/" (seowatcher: Running: http://127.0.0.1:3001/).
+- When you hover over the taskbar icon (if it is not visible, click the ^ arrow on the taskbar), it should read "seowatcher 2.3.7: Çalışıyor: http://127.0.0.1:3001/" (seowatcher 2.3.7: Running: http://127.0.0.1:3001/). The version number is the one you installed.
 - In the browser, the address `http://127.0.0.1:3001/api/health` should show a text that starts with "status":"ok".
 - On the **Yardım** (Help) screen, the "Kurulumunuzun durumu" (Your setup status) card should say "Her şey yolunda." (Everything is fine.). Before Google is connected, the "Google girişi" (Google sign-in) row asks for attention. This is normal.
 

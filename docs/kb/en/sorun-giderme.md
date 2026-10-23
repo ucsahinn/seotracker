@@ -5,6 +5,8 @@ kind: sorun-giderme
 updated: 2026-10-22
 ---
 
+The app's interface is in Turkish. This guide gives every button and screen name in Turkish with its English meaning in brackets.
+
 This page tells you briefly what to do when something does not work. First, look at the "Kurulumunuzun durumu" (Your installation status) card on the **Yardım** (Help) screen in the app. The card checks four things: sign-in and access, Google sign-in, the PageSpeed key, and the database. If it says "N şey dikkat istiyor" (N things need attention), the button next to it takes you to the right setting. The list below goes from the most common problem to the rarest.
 
 ### The page does not open
@@ -13,7 +15,7 @@ This page tells you briefly what to do when something does not work. First, look
 
 **Cause:** The app is not running.
 
-**Fix:** On Windows, look for the icon in the taskbar. If it is not there, open seowatcher from the Start menu. If the icon says "Hata" (Error), right-click it and choose **Yeniden başlat** (Restart). On Docker, run `docker compose ps`. If the status is not healthy, run `docker compose up -d`.
+**Fix:** On Windows, look for the icon in the taskbar. If the icon is not visible, click the ^ arrow on the taskbar. If it is not there, open seowatcher from the Start menu. If the icon says "Hata" (Error), right-click it and choose **Yeniden başlat** (Restart). On Docker, run `docker compose ps`. If the status is not healthy, run `docker compose up -d`.
 
 ### The port number is in use
 
@@ -29,7 +31,15 @@ This page tells you briefly what to do when something does not work. First, look
 
 **Cause:** The app's engine needs Microsoft's Visual C++ package (2015-2022, 64-bit). On a clean Windows, this package is missing or out of date.
 
-**Fix:** Click the balloon that appears, or right-click the icon and choose **Eksik Windows bileşenini kur** (Install the missing Windows component). Windows asks for administrator permission once. When the installation finishes, the app restarts by itself. If you do not have the package, download it from Microsoft's page: `aka.ms/vs/17/release/vc_redist.x64.exe`
+**Fix:** Click the balloon that appears, or right-click the icon (if the icon is not visible, click the ^ arrow on the taskbar) and choose **Eksik Windows bileşenini kur** (Install the missing Windows component). Windows asks for administrator permission once. When the installation finishes, the app restarts by itself. If you do not have the package, download it from Microsoft's page: `https://aka.ms/vs/17/release/vc_redist.x64.exe`
+
+### Administrator permission was refused
+
+**Symptom:** The installer asked for permission to install Visual C++, you clicked No, and the app does not start.
+
+**Cause:** The Visual C++ component was not installed.
+
+**Fix:** In the tray menu, choose **Eksik Windows bileşenini kur** (Install the missing Windows component) and allow it this time. If the icon is not visible, click the ^ arrow on the taskbar. Or install the component yourself from `https://aka.ms/vs/17/release/vc_redist.x64.exe`.
 
 ### The icon says "Uygulamanın motoru çöktü"
 
@@ -45,7 +55,7 @@ This page tells you briefly what to do when something does not work. First, look
 
 **Cause:** The file is not signed. Windows shows this screen for publishers it does not know.
 
-**Fix:** Click the **Daha fazla bilgi** (More info) text on the screen. The **Yine de çalıştır** (Run anyway) button appears. If you are worried, compare the file's SHA-256 digest (its fingerprint) with `SHA256SUMS.txt` on the release page.
+**Fix:** Click the **More info** text on the screen (on a Turkish Windows: "Daha fazla bilgi"). The **Run anyway** button (Turkish: "Yine de çalıştır") appears. If you are worried, compare the file's SHA-256 digest (its fingerprint) with `SHA256SUMS.txt` on the release page.
 
 ### Google says "redirect_uri_mismatch"
 
@@ -141,7 +151,7 @@ This page tells you briefly what to do when something does not work. First, look
 
 **Cause:** The password is not being sent, or it is wrong.
 
-**Fix:** Copy the password again. On Windows, it is in the `mcp-token` file in the data folder. On Docker, run `docker compose exec -T seotracker cat /app/.wrangler/mcp-token`. Delete the line-break character at the end of the value. In Claude Code, type `/mcp` and choose **Reconnect**.
+**Fix:** Copy the password again. On Windows, it is in the `mcp-token` file in the data folder. On Docker, run `docker compose exec -T seotracker cat /app/.wrangler/mcp-token`. Delete the line-break character at the end of the value. Without a terminal: open the file in Notepad, select the whole line and copy it; do not include a line break. In Claude Code, type `/mcp` and choose **Reconnect**.
 
 ### Docker takes very long on first start or is "unhealthy"
 
@@ -158,5 +168,14 @@ On Windows, everything is in the `%LOCALAPPDATA%\seowatcher` folder: `data` (the
 On Docker, the data is in the `seotracker_data` volume (`/app/.wrangler`). You see the logs with the `docker compose logs -f` command.
 
 When you report a problem, press the **Tanılama paketi indir** (Download diagnostics bundle) button on the **Yardım** (Help) screen. The file has the version, the setup checks and the last 25 audits. It has no secrets. Attach the file to the issue on GitHub.
+
+## Launcher messages
+
+These messages appear on the Windows icon or in a dialog. The Windows launcher is the small program that starts the app.
+
+- **"Sunucu 120 saniyede yanıt vermedi"** (The server did not answer within 120 seconds): choose **Yeniden başlat** (Restart). If that fails, choose **Günlükleri aç** (Open logs) and read `server.log`.
+- **"Kurulum eksik"** (Installation incomplete): run the installer again.
+- **"Güncelleme yapılamadı"** (Update failed): check your connection and retry from **Güncelle** (Update). The installed version keeps running.
+- **"Windows bileşeni kurulamadı"** (The Windows component could not be installed): choose **Eksik Windows bileşenini kur** (Install the missing Windows component) from the menu.
 
 <!-- Kaynaklar: src/routes/_app/support.tsx; src/client/features/support/CommonProblems.tsx; SetupStatusPanel.tsx; DiagnosticsBundleButton.tsx; src/client/features/integrations/googleAuthErrorCopy.ts; src/server/features/audit/services/auditReconciler.ts; src/server/features/gsc/indexCoverage.ts; src/server/features/ga4/services/Ga4ReportEnhancements.ts; packaging/windows/launcher/SeoWatcher.cs; docs/SELF_HOSTING_DOCKER.md; README.md -->

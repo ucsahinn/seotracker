@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-  <a href="./CHANGELOG.md"><img alt="Sürüm 2.3.7" src="https://img.shields.io/badge/sürüm-2.3.7-1f2937?style=flat-square"></a>
+  <a href="./CHANGELOG.md"><img alt="Sürüm 2.3.8" src="https://img.shields.io/badge/sürüm-2.3.8-1f2937?style=flat-square"></a>
   <img alt="Docker ile kurulum" src="https://img.shields.io/badge/kurulum-docker%20compose%20up-0db7ed?style=flat-square&logo=docker&logoColor=white">
   <img alt="Türkçe arayüz" src="https://img.shields.io/badge/arayüz-Türkçe-374151?style=flat-square">
   <a href="./LICENSE"><img alt="MIT lisansı" src="https://img.shields.io/badge/lisans-MIT-374151?style=flat-square"></a>
@@ -62,7 +62,7 @@ Site: [seowatcher.io](https://seowatcher.io) (Türkçe), [seowatcher.io/en/](htt
 
 ### 🐳 Docker (Mac, Linux, Windows)
 
-**Gerekenler:** Docker Desktop, bir Google hesabı ve depoyu indirmek için Git. Git yoksa GitHub'daki **Code → Download ZIP** de olur.
+**Gerekenler:** Docker Desktop (Windows'ta WSL 2 ve sanallaştırma açık olmalı), bir Google hesabı ve depoyu indirmek için Git. Git yoksa GitHub'daki **Code → Download ZIP** de olur.
 
 ```sh
 git clone https://github.com/ucsahinn/seotracker.git

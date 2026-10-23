@@ -181,7 +181,8 @@ export function CommonProblems({
                 '(Get-Content "$env:LOCALAPPDATA\\seowatcher\\mcp-token").Trim() | Set-Clipboard'
               }
             />{" "}
-            Değeri sohbete yazmayın.
+            Değeri sohbete yazmayın; yapıştırdıktan sonra panoyu temizleyin
+            (Win+V, Tümünü temizle).
           </p>
         ) : (
           <>

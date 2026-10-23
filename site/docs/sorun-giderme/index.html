@@ -49,7 +49,7 @@
     <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
     <meta name="color-scheme" content="dark" />
     <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/docs/sorun-giderme/#article","headline":"Sorun giderme","description":"En sık görülen sorunlar: belirti, sebep ve çözüm. Dolu adres numarası, Windows uyarısı, Google hataları, kota, takılan denetim, boş grafik, asistan 401.","url":"https://seowatcher.io/docs/sorun-giderme/","inLanguage":"tr","dateModified":"2026-10-22","articleSection":"Başvuru","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/docs/sorun-giderme/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/docs/sorun-giderme/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/"},{"@type":"ListItem","position":2,"name":"Kılavuz","item":"https://seowatcher.io/docs/"},{"@type":"ListItem","position":3,"name":"Sorun giderme","item":"https://seowatcher.io/docs/sorun-giderme/"}]}]}</script>
-    <script src="/assets/docs.js?v=2.3.7" defer></script>
+    <script src="/assets/docs.js?v=2.3.8" defer></script>
     <meta name="theme-color" content="#272c3b" />
     <style>
       @font-face {
@@ -877,7 +877,7 @@
 <h3 id="sayfa-acilmiyor">Sayfa açılmıyor</h3>
 <p class="callout callout-belirti"><strong>Belirti:</strong> Tarayıcı &quot;bağlantı reddedildi&quot; diyor.</p>
 <p class="callout callout-sebep"><strong>Sebep:</strong> Uygulama çalışmıyor.</p>
-<p class="callout callout-cozum"><strong>Çözüm:</strong> Windows'ta görev çubuğundaki simgeye bakın. Yoksa Başlat menüsünden seowatcher'ı açın. Simgede &quot;Hata&quot; yazıyorsa sağ tıklayıp <strong>Yeniden başlat</strong> deyin. Docker'da <code>docker compose ps</code> yazın. Durum healthy değilse <code>docker compose up -d</code> yazın.</p>
+<p class="callout callout-cozum"><strong>Çözüm:</strong> Windows'ta görev çubuğundaki simgeye bakın. Simge görünmüyorsa görev çubuğundaki ^ okuna tıklayın. Yoksa Başlat menüsünden seowatcher'ı açın. Simgede &quot;Hata&quot; yazıyorsa sağ tıklayıp <strong>Yeniden başlat</strong> deyin. Docker'da <code>docker compose ps</code> yazın. Durum healthy değilse <code>docker compose up -d</code> yazın.</p>
 <h3 id="adres-numarasi-port-dolu">Adres numarası (port) dolu</h3>
 <p class="callout callout-belirti"><strong>Belirti:</strong> Windows'ta simge &quot;Port 3001 ve sonraki 9 port dolu&quot; diyor. Docker'da &quot;Bind for 127.0.0.1:3001 failed&quot; yazıyor.</p>
 <p class="callout callout-sebep"><strong>Sebep:</strong> Başka bir program aynı adres numarasını kullanıyor.</p>
@@ -885,7 +885,11 @@
 <h3 id="simge-windows-bileseni-eksik-diyor">Simge &quot;Windows bileşeni eksik&quot; diyor</h3>
 <p class="callout callout-belirti"><strong>Belirti:</strong> Uygulama açılmıyor. Simgede &quot;Windows bileşeni eksik&quot; yazıyor ya da kayıtta &quot;Workers runtime failed to start&quot; ve &quot;0xc0000005&quot; geçiyor.</p>
 <p class="callout callout-sebep"><strong>Sebep:</strong> Uygulamanın motoru Microsoft'un Visual C++ paketini (2015-2022, 64 bit) ister. Temiz bir Windows'ta bu paket yoktur ya da eskidir.</p>
-<p class="callout callout-cozum"><strong>Çözüm:</strong> Çıkan baloncuğa tıklayın ya da simgeye sağ tıklayıp <strong>Eksik Windows bileşenini kur</strong> deyin. Windows bir kez yönetici izni sorar. Kurulum bitince uygulama kendiliğinden yeniden başlar. Paket elinizde yoksa Microsoft'un sayfasından indirin: <code>aka.ms/vs/17/release/vc_redist.x64.exe</code></p>
+<p class="callout callout-cozum"><strong>Çözüm:</strong> Çıkan baloncuğa tıklayın ya da simgeye sağ tıklayıp <strong>Eksik Windows bileşenini kur</strong> deyin. Windows bir kez yönetici izni sorar. Kurulum bitince uygulama kendiliğinden yeniden başlar. Paket elinizde yoksa Microsoft'un sayfasından indirin: <code>https://aka.ms/vs/17/release/vc_redist.x64.exe</code></p>
+<h3 id="yonetici-izni-verilmedi">Yönetici izni verilmedi</h3>
+<p class="callout callout-belirti"><strong>Belirti:</strong> Kurulum sırasında Visual C++ için izin istendi, <strong>Hayır</strong> dediniz ve uygulama başlamadı.</p>
+<p class="callout callout-sebep"><strong>Sebep:</strong> Gereken Windows bileşeni kurulamadı.</p>
+<p class="callout callout-cozum"><strong>Çözüm:</strong> Görev çubuğundaki simgeye sağ tıklayın (simge görünmüyorsa ^ okuna tıklayın). <strong>Eksik Windows bileşenini kur</strong> deyin ve bu kez izin verin. Ya da bileşeni <code>https://aka.ms/vs/17/release/vc_redist.x64.exe</code> adresinden indirip kurun.</p>
 <h3 id="simge-uygulamanin-motoru-coktu-diyor">Simge &quot;Uygulamanın motoru çöktü&quot; diyor</h3>
 <p class="callout callout-belirti"><strong>Belirti:</strong> Uygulama açılmıyor. Kayıtta &quot;Workers runtime failed to start&quot; ve &quot;0xc0000005&quot; var ama Visual C++ paketi kurulu.</p>
 <p class="callout callout-sebep"><strong>Sebep:</strong> Uygulamanın motoru (workerd) bu bilgisayarda bir sistem dosyasına takılıyor. Uygulama açılışta motoru tek başına dener; &quot;tek başına da başlayamıyor&quot; diyorsa sorun bilgisayardadır, &quot;tek başına çalışıyor&quot; diyorsa veri klasöründe ya da yapılandırmadadır.</p>
@@ -907,7 +911,7 @@
 <p class="callout callout-sebep"><strong>Sebep:</strong> Giriş yaptığınız Google hesabı, izin ekranındaki test kullanıcıları listesinde yok.</p>
 <p class="callout callout-cozum"><strong>Çözüm:</strong> Cloud Console'da <strong>OAuth izin ekranı → Test kullanıcıları</strong> bölümüne hesabı ekleyin. Sonra yeniden <strong>Bağlan</strong> deyin.</p>
 <h3 id="baglantinin-suresi-doldu">Bağlantının süresi doldu</h3>
-<p class="callout callout-belirti"><strong>Belirti:</strong> Entegrasyon kartında &quot;Bağlantının süresi doldu&quot; yazıyor, veri gelmiyor.</p>
+<p class="callout callout-belirti"><strong>Belirti:</strong> Bağlantılar kartında &quot;Bağlantının süresi doldu&quot; yazıyor, veri gelmiyor.</p>
 <p class="callout callout-sebep"><strong>Sebep:</strong> Google &quot;Test&quot; durumundaki uygulamalarda izni yedi günde düşürebilir. Şifreleme anahtarı değişmiş de olabilir.</p>
 <p class="callout callout-cozum"><strong>Çözüm:</strong> Kartta <strong>Yeniden bağlan</strong> deyin. Sık tekrarlıyorsa izin ekranını üretime alın ya da hizmet hesabına geçin (<strong>Ayarlar → Hizmet hesabı</strong>).</p>
 <h3 id="sorgu-verisi-yok-grafikler-bos">Sorgu verisi yok, grafikler boş</h3>
@@ -941,7 +945,7 @@
 <h3 id="asistan-baglanamiyor-401">Asistan bağlanamıyor (401)</h3>
 <p class="callout callout-belirti"><strong>Belirti:</strong> Claude Code ya da Codex &quot;Unauthorized&quot; diyor.</p>
 <p class="callout callout-sebep"><strong>Sebep:</strong> Parola gönderilmiyor ya da yanlış.</p>
-<p class="callout callout-cozum"><strong>Çözüm:</strong> Parolayı yeniden kopyalayın. Windows'ta veri klasöründeki <code>mcp-token</code> dosyasındadır. Docker'da <code>docker compose exec -T seotracker cat /app/.wrangler/mcp-token</code> yazın. Değerin sonundaki satır sonu karakterini silin. Claude Code'da <code>/mcp</code> yazıp <strong>Reconnect</strong> deyin.</p>
+<p class="callout callout-cozum"><strong>Çözüm:</strong> Parolayı yeniden kopyalayın. Windows'ta veri klasöründeki <code>mcp-token</code> dosyasındadır. Docker'da <code>docker compose exec -T seotracker cat /app/.wrangler/mcp-token</code> yazın. Değerin sonundaki satır sonu karakterini silin. Terminal kullanmak istemezseniz: dosyayı Not Defteri ile açın, satırın tamamını seçip kopyalayın; satır sonu bırakmayın. Claude Code'da <code>/mcp</code> yazıp <strong>Reconnect</strong> deyin.</p>
 <h3 id="docker-ilk-acilista-cok-uzun-suruyor-ya-da-unhealthy">Docker ilk açılışta çok uzun sürüyor ya da &quot;unhealthy&quot;</h3>
 <p class="callout callout-belirti"><strong>Belirti:</strong> <code>docker compose ps</code> beş dakikadan sonra bile healthy demiyor.</p>
 <p class="callout callout-sebep"><strong>Sebep:</strong> İlk açılışta uygulama kutunun (konteynerin) içinde derlenir ve yaklaşık 2 GB bellek ister. Bellek yetmezse derleme düşer.</p>
@@ -949,7 +953,10 @@
 <h3 id="veriler-ve-gunlukler-nerede">Veriler ve günlükler nerede?</h3>
 <p>Windows'ta her şey <code>%LOCALAPPDATA%\seowatcher</code> klasöründedir: <code>data</code> (veritabanı), <code>logs\server.log</code>, <code>logs\migrate.log</code>, <code>instance-secret</code>, <code>mcp-token</code>, <code>config.json</code>. Görev çubuğu menüsündeki <strong>Günlükleri aç</strong> ve <strong>Veri klasörünü aç</strong> oraya götürür.</p>
 <p>Docker'da veri <code>seotracker_data</code> deposunda (<code>/app/.wrangler</code>) durur. Günlükleri <code>docker compose logs -f</code> komutuyla görürsünüz.</p>
-<p>Sorun bildirirken <strong>Yardım</strong> ekranındaki <strong>Tanılama paketi indir</strong> düğmesine basın. Dosyada sürüm, kurulum kontrolleri ve son 25 denetim var, hiçbir sır yok. Dosyayı GitHub'daki sorun kaydına ekleyin.</p> <nav class="pager" aria-label="Önceki ve sonraki sayfa"><a class="pager-prev" rel="prev" href="/docs/ajan-kurulumu/"><span>Önceki</span><strong>Ajan kurulumu</strong></a><span class="pager-next empty"></span></nav>
+<p>Sorun bildirirken <strong>Yardım</strong> ekranındaki <strong>Tanılama paketi indir</strong> düğmesine basın. Dosyada sürüm, kurulum kontrolleri ve son 25 denetim var, hiçbir sır yok. Dosyayı GitHub'daki sorun kaydına ekleyin.</p>
+<h2 id="baslatici-uyarilari">Başlatıcı uyarıları</h2>
+<p>Görev çubuğu simgesinden çıkan uyarılar ve çözümleri:</p>
+<ul><li><strong>&quot;Sunucu 120 saniyede yanıt vermedi&quot;.</strong> Menüden <strong>Yeniden başlat</strong> deyin. Olmazsa <strong>Günlükleri aç</strong> deyip <code>server.log</code> dosyasının son satırlarına bakın.</li><li><strong>&quot;Kurulum eksik&quot;.</strong> Kurulum dosyasını yeniden çalıştırın.</li><li><strong>&quot;Güncelleme yapılamadı&quot;.</strong> İnternet bağlantınızı kontrol edin ve menüden <strong>Güncelle</strong> ile tekrar deneyin. Kurulu sürüm çalışmaya devam eder.</li><li><strong>&quot;Windows bileşeni kurulamadı&quot;.</strong> Menüden <strong>Eksik Windows bileşenini kur</strong> deyin.</li></ul> <nav class="pager" aria-label="Önceki ve sonraki sayfa"><a class="pager-prev" rel="prev" href="/docs/ajan-kurulumu/"><span>Önceki</span><strong>Ajan kurulumu</strong></a><span class="pager-next empty"></span></nav>
         <p class="meta">
           Son güncelleme: 22 Ekim 2026. Bir hata görürseniz
           <a href="https://github.com/ucsahinn/seotracker/issues"
@@ -957,7 +964,7 @@
           >.
         </p>
       </article>
-      
+      <nav class="toc" aria-label="Bu sayfada"><p class="toc-label">Bu sayfada</p><ol><li><a href="#baslatici-uyarilari">Başlatıcı uyarıları</a></li></ol></nav>
     </main>
     <footer>
       <div class="wrap">

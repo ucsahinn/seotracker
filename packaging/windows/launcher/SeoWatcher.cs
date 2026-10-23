@@ -466,7 +466,19 @@ namespace SeoWatcher
                 catch { sb.AppendLine("(okunamadı)"); }
                 sb.AppendLine();
             }
-            return sb.ToString();
+            return Scrub(sb.ToString());
+        }
+
+        /// <summary>The report goes to the clipboard and into a public GitHub
+        /// issue: the user name in paths and anything that looks like a bearer
+        /// token or a secret assignment is masked before it leaves the machine.</summary>
+        private static string Scrub(string text)
+        {
+            string profile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            if (!string.IsNullOrEmpty(profile)) text = text.Replace(profile, "%USERPROFILE%");
+            text = System.Text.RegularExpressions.Regex.Replace(text, @"(?i)(bearer\s+)[A-Za-z0-9_\-]{8,}", "$1<gizli>");
+            text = System.Text.RegularExpressions.Regex.Replace(text, @"(?i)\b(MCP_TOKEN|BETTER_AUTH_SECRET|GOOGLE_CLIENT_SECRET|PAGESPEED_API_KEY)\s*[:=]\s*\S+", "$1=<gizli>");
+            return text;
         }
     }
 
@@ -546,6 +558,18 @@ namespace SeoWatcher
     /// checks it against the published SHA256SUMS.txt and runs it silently. The
     /// installer stops this instance, replaces the files and starts the new
     /// launcher itself (see seowatcher.iss, the skipifnotsilent [Run] entry).</summary>
+    /// <summary>WebClient with a request timeout, so a stalled download cannot
+    /// leave the updater waiting until the next restart.</summary>
+    internal sealed class TimedWebClient : WebClient
+    {
+        protected override WebRequest GetWebRequest(Uri address)
+        {
+            var request = base.GetWebRequest(address);
+            if (request != null) request.Timeout = 120000;
+            return request;
+        }
+    }
+
     internal static class Updater
     {
         public const string Repo = "ucsahinn/seotracker";
@@ -603,7 +627,7 @@ namespace SeoWatcher
             string file = Path.Combine(UpdateDir, name);
             status("Güncelleme indiriliyor: " + v);
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            using (var client = new WebClient())
+            using (var client = new TimedWebClient())
             {
                 client.Headers[HttpRequestHeader.UserAgent] = "seowatcher/" + Paths.Version();
                 client.DownloadFile(baseUrl + name, file);
@@ -702,6 +726,9 @@ namespace SeoWatcher
         {
             Directory.CreateDirectory(Paths.DataRoot);
             string value = File.Exists(Paths.McpToken) ? File.ReadAllText(Paths.McpToken).Trim() : "";
+            // The value lands in server.env as a line: anything that is not a
+            // token character (a pasted newline, a quote) is dropped first.
+            value = System.Text.RegularExpressions.Regex.Replace(value, "[^A-Za-z0-9_-]", "");
             if (value.Length < 16)
             {
                 value = Convert.ToBase64String(RandomBytes(24)).Replace("+", "").Replace("/", "").Replace("=", "");
@@ -1190,7 +1217,7 @@ namespace SeoWatcher
             autostartItem = new ToolStripMenuItem("Windows ile başlat", null, (s, e) => ToggleAutostart());
             autostartItem.Checked = Autostart.IsEnabled();
             autoUpdateItem = new ToolStripMenuItem("Güncellemeleri kendiliğinden kur", null, (s, e) => ToggleAutoUpdate()) { Checked = config.AutoUpdate };
-            updateItem = new ToolStripMenuItem("Güncelleme var", null, (s, e) => StartUpdate()) { Visible = false };
+            updateItem = new ToolStripMenuItem("Güncelle", null, (s, e) => StartUpdate()) { Visible = false };
 
             menu.Items.Add(openItem);
             menu.Items.Add(statusItem);
@@ -1366,7 +1393,7 @@ namespace SeoWatcher
             else if (needsReport)
             {
                 tray.ShowBalloonTip(20000, "seowatcher başlatılamadı",
-                    message + "\nBu baloncuğa tıklayın: tanı bilgisi panoya kopyalanır ve GitHub'da hazır bir sorun kaydı açılır.", ToolTipIcon.Error);
+                    message + "\nBu baloncuğa tıklayın: tanı bilgisi panoya kopyalanır ve GitHub'da herkese açık bir sorun kaydı taslağı açılır; göndermeden önce gözden geçirin.", ToolTipIcon.Error);
             }
             else
             {

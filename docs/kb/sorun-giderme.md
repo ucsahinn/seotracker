@@ -13,7 +13,7 @@ Bu sayfa, bir şey çalışmadığında ne yapacağınızı kısa kısa söyler.
 
 **Sebep:** Uygulama çalışmıyor.
 
-**Çözüm:** Windows'ta görev çubuğundaki simgeye bakın. Yoksa Başlat menüsünden seowatcher'ı açın. Simgede "Hata" yazıyorsa sağ tıklayıp **Yeniden başlat** deyin. Docker'da `docker compose ps` yazın. Durum healthy değilse `docker compose up -d` yazın.
+**Çözüm:** Windows'ta görev çubuğundaki simgeye bakın. Simge görünmüyorsa görev çubuğundaki ^ okuna tıklayın. Yoksa Başlat menüsünden seowatcher'ı açın. Simgede "Hata" yazıyorsa sağ tıklayıp **Yeniden başlat** deyin. Docker'da `docker compose ps` yazın. Durum healthy değilse `docker compose up -d` yazın.
 
 ### Adres numarası (port) dolu
 
@@ -29,7 +29,15 @@ Bu sayfa, bir şey çalışmadığında ne yapacağınızı kısa kısa söyler.
 
 **Sebep:** Uygulamanın motoru Microsoft'un Visual C++ paketini (2015-2022, 64 bit) ister. Temiz bir Windows'ta bu paket yoktur ya da eskidir.
 
-**Çözüm:** Çıkan baloncuğa tıklayın ya da simgeye sağ tıklayıp **Eksik Windows bileşenini kur** deyin. Windows bir kez yönetici izni sorar. Kurulum bitince uygulama kendiliğinden yeniden başlar. Paket elinizde yoksa Microsoft'un sayfasından indirin: `aka.ms/vs/17/release/vc_redist.x64.exe`
+**Çözüm:** Çıkan baloncuğa tıklayın ya da simgeye sağ tıklayıp **Eksik Windows bileşenini kur** deyin. Windows bir kez yönetici izni sorar. Kurulum bitince uygulama kendiliğinden yeniden başlar. Paket elinizde yoksa Microsoft'un sayfasından indirin: `https://aka.ms/vs/17/release/vc_redist.x64.exe`
+
+### Yönetici izni verilmedi
+
+**Belirti:** Kurulum sırasında Visual C++ için izin istendi, **Hayır** dediniz ve uygulama başlamadı.
+
+**Sebep:** Gereken Windows bileşeni kurulamadı.
+
+**Çözüm:** Görev çubuğundaki simgeye sağ tıklayın (simge görünmüyorsa ^ okuna tıklayın). **Eksik Windows bileşenini kur** deyin ve bu kez izin verin. Ya da bileşeni `https://aka.ms/vs/17/release/vc_redist.x64.exe` adresinden indirip kurun.
 
 ### Simge "Uygulamanın motoru çöktü" diyor
 
@@ -73,7 +81,7 @@ Bu sayfa, bir şey çalışmadığında ne yapacağınızı kısa kısa söyler.
 
 ### Bağlantının süresi doldu
 
-**Belirti:** Entegrasyon kartında "Bağlantının süresi doldu" yazıyor, veri gelmiyor.
+**Belirti:** Bağlantılar kartında "Bağlantının süresi doldu" yazıyor, veri gelmiyor.
 
 **Sebep:** Google "Test" durumundaki uygulamalarda izni yedi günde düşürebilir. Şifreleme anahtarı değişmiş de olabilir.
 
@@ -141,7 +149,7 @@ Bu sayfa, bir şey çalışmadığında ne yapacağınızı kısa kısa söyler.
 
 **Sebep:** Parola gönderilmiyor ya da yanlış.
 
-**Çözüm:** Parolayı yeniden kopyalayın. Windows'ta veri klasöründeki `mcp-token` dosyasındadır. Docker'da `docker compose exec -T seotracker cat /app/.wrangler/mcp-token` yazın. Değerin sonundaki satır sonu karakterini silin. Claude Code'da `/mcp` yazıp **Reconnect** deyin.
+**Çözüm:** Parolayı yeniden kopyalayın. Windows'ta veri klasöründeki `mcp-token` dosyasındadır. Docker'da `docker compose exec -T seotracker cat /app/.wrangler/mcp-token` yazın. Değerin sonundaki satır sonu karakterini silin. Terminal kullanmak istemezseniz: dosyayı Not Defteri ile açın, satırın tamamını seçip kopyalayın; satır sonu bırakmayın. Claude Code'da `/mcp` yazıp **Reconnect** deyin.
 
 ### Docker ilk açılışta çok uzun sürüyor ya da "unhealthy"
 
@@ -158,5 +166,14 @@ Windows'ta her şey `%LOCALAPPDATA%\seowatcher` klasöründedir: `data` (veritab
 Docker'da veri `seotracker_data` deposunda (`/app/.wrangler`) durur. Günlükleri `docker compose logs -f` komutuyla görürsünüz.
 
 Sorun bildirirken **Yardım** ekranındaki **Tanılama paketi indir** düğmesine basın. Dosyada sürüm, kurulum kontrolleri ve son 25 denetim var, hiçbir sır yok. Dosyayı GitHub'daki sorun kaydına ekleyin.
+
+## Başlatıcı uyarıları
+
+Görev çubuğu simgesinden çıkan uyarılar ve çözümleri:
+
+- **"Sunucu 120 saniyede yanıt vermedi".** Menüden **Yeniden başlat** deyin. Olmazsa **Günlükleri aç** deyip `server.log` dosyasının son satırlarına bakın.
+- **"Kurulum eksik".** Kurulum dosyasını yeniden çalıştırın.
+- **"Güncelleme yapılamadı".** İnternet bağlantınızı kontrol edin ve menüden **Güncelle** ile tekrar deneyin. Kurulu sürüm çalışmaya devam eder.
+- **"Windows bileşeni kurulamadı".** Menüden **Eksik Windows bileşenini kur** deyin.
 
 <!-- Kaynaklar: src/routes/_app/support.tsx; src/client/features/support/CommonProblems.tsx; SetupStatusPanel.tsx; DiagnosticsBundleButton.tsx; src/client/features/integrations/googleAuthErrorCopy.ts; src/server/features/audit/services/auditReconciler.ts; src/server/features/gsc/indexCoverage.ts; src/server/features/ga4/services/Ga4ReportEnhancements.ts; packaging/windows/launcher/SeoWatcher.cs; docs/SELF_HOSTING_DOCKER.md; README.md -->

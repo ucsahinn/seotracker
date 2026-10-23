@@ -1,4 +1,5 @@
-// seowatcher site motion. No network, no state, no dependencies.
+// seowatcher site motion. No dependencies; the only network call is the
+// GitHub releases API for the download count, cached per tab in sessionStorage.
 // Everything degrades to a static page: reduced-motion users and browsers
 // without IntersectionObserver see the final state immediately.
 (function () {
