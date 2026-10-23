@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>seowatcher: free SEO dashboard (Search Console + GA4)</title>
+    <title>seowatcher: a free SEO panel for Search Console and GA4</title>
     <meta
       name="description"
-      content="A free, open-source SEO dashboard that brings Search Console, Analytics 4 and site audits into one app. Installs on Windows, and your data stays on your computer."
+      content="Search Console, Analytics 4 and a site audit in one app. Free and open source; installs on Windows, and your data stays on your computer."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link rel="canonical" href="https://seowatcher.io/en/" />
@@ -39,11 +39,11 @@
     <meta property="og:site_name" content="seowatcher" />
     <meta
       property="og:title"
-      content="seowatcher: free SEO dashboard (Search Console + GA4)"
+      content="seowatcher: a free SEO panel for Search Console and GA4"
     />
     <meta
       property="og:description"
-      content="Search Console, Analytics 4 and site audits in one app. No subscription, no account, and your data stays on your computer."
+      content="Search Console, Analytics 4 and a site audit in one app. No subscription, no account, your data stays on your computer."
     />
     <meta property="og:image" content="https://seowatcher.io/assets/og.png" />
     <meta property="og:image:type" content="image/png" />
@@ -51,7 +51,7 @@
     <meta property="og:image:height" content="630" />
     <meta
       property="og:image:alt"
-      content="seowatcher: SEO for your own site, on your own computer"
+      content="Your own site's SEO data on your own computer, with seowatcher"
     />
     <meta property="og:url" content="https://seowatcher.io/en/" />
     <meta property="og:locale" content="en_US" />
@@ -59,11 +59,11 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
-      content="seowatcher: free SEO dashboard (Search Console + GA4)"
+      content="seowatcher: a free SEO panel for Search Console and GA4"
     />
     <meta
       name="twitter:description"
-      content="Search Console, Analytics 4 and site audits in one app. No subscription, no account, and your data stays on your computer."
+      content="Search Console, Analytics 4 and a site audit in one app. No subscription, no account, your data stays on your computer."
     />
     <meta name="twitter:image" content="https://seowatcher.io/assets/og.png" />
     <meta name="color-scheme" content="dark" />
@@ -86,7 +86,7 @@
             "@type": "WebPage",
             "@id": "https://seowatcher.io/en/#webpage",
             "url": "https://seowatcher.io/en/",
-            "name": "seowatcher: free SEO dashboard (Search Console + GA4)",
+            "name": "seowatcher: a free SEO panel for Search Console and GA4",
             "inLanguage": "en",
             "isPartOf": { "@id": "https://seowatcher.io/#website" },
             "about": { "@id": "https://seowatcher.io/#app" },
@@ -165,7 +165,7 @@
                 "name": "Is it really free?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Yes. It's open source under the MIT license, and all the code is on GitHub. Google's services also run within their free limits."
+                  "text": "Yes. It is an MIT-licensed open source project, and all of the code is on GitHub. The Google services it uses stay within their free usage limits."
                 }
               },
               {
@@ -173,7 +173,7 @@
                 "name": "Windows says it protected my PC. Is the installer safe?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "The installer isn't code-signed yet. On the SmartScreen screen, choose \"More info\" first, then \"Run anyway\". The file's fingerprint (SHA-256) is listed on each release's page if you want to compare it."
+                  "text": "The installer is not code-signed yet, which is why Windows warns you. On the SmartScreen screen click \"More info\", then \"Run anyway\". The file's fingerprint (SHA-256) is printed on every release page; compare it if you like."
                 }
               },
               {
@@ -186,10 +186,10 @@
               },
               {
                 "@type": "Question",
-                "name": "Why do I have to create a Google access key?",
+                "name": "Why do I have to create an access key at Google?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Because the app isn't a cloud service. Your computer connects to Google directly, and Google wants to know who the connecting app belongs to. You do it once, and the app explains it step by step."
+                  "text": "seowatcher is not a cloud service; it runs on your computer and connects to Google directly. Google wants to know who owns the app that is connecting. You do this once, and the app shows the steps on screen."
                 }
               },
               {
@@ -197,7 +197,7 @@
                 "name": "Are the numbers the same as in Search Console?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "They're read from the same source. Google's data lags by about three days and leaves out rarely searched queries. The app shows the page total and the site total separately. The two may not match, and that isn't an error."
+                  "text": "They come from the same source, but the totals may not match. Google delivers data about three days late and hides rarely searched queries. The app shows the page total and the site total separately; the two differing is not a bug."
                 }
               },
               {
@@ -205,7 +205,7 @@
                 "name": "Do I need to expose anything to the internet?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "No. The app opens only from your own computer and reads Search Console and Analytics data from Google. For the site audit, it only crawls the pages of the site you're auditing."
+                  "text": "Yes, that is how it already works. The app opens only from your own computer and reads Search Console and Analytics data from Google. During an audit it crawls only the pages of the site you are auditing."
                 }
               }
             ]
@@ -297,6 +297,60 @@
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
         mix-blend-mode: overlay;
       }
+      /* Dot field: a quiet grid of points over the whole page, and a soft
+         ember light that follows the pointer. Fixed, never scrolls, never
+         catches the pointer. Two layers: the dim field everyone sees, and the
+         lit field clipped to a circle around the pointer (--mx/--my from
+         site.js, lerped so it trails rather than snaps). Touch devices, the
+         "stop motion" toggle and reduced motion keep only the dim field. */
+      .dots,
+      .dots::before {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        background-image: radial-gradient(
+          oklch(100% 0 0 / 0.16) 1px,
+          transparent 1.5px
+        );
+        background-size: 26px 26px;
+        background-position: 13px 13px;
+      }
+      .dots {
+        opacity: 0.55;
+        mask-image: linear-gradient(
+          180deg,
+          oklch(0% 0 0 / 0.9),
+          oklch(0% 0 0 / 0.35) 40%,
+          oklch(0% 0 0 / 0.55)
+        );
+      }
+      .dots::before {
+        content: "";
+        background-image: radial-gradient(
+          var(--accent) 1.5px,
+          transparent 2.1px
+        );
+        opacity: 0;
+        mask-image: radial-gradient(
+          420px circle at var(--mx, 50%) var(--my, 30%),
+          oklch(0% 0 0) 0%,
+          oklch(0% 0 0 / 0.5) 45%,
+          transparent 72%
+        );
+        transition: opacity 600ms var(--ease);
+      }
+      .dots.live::before {
+        opacity: 1;
+      }
+      @media (hover: none), (prefers-reduced-motion: reduce) {
+        .dots::before {
+          display: none;
+        }
+      }
+      [data-still] .dots::before {
+        display: none;
+      }
       img {
         display: block;
         max-width: 100%;
@@ -378,6 +432,30 @@
         line-height: 1.3;
         letter-spacing: -0.015em;
         font-weight: 600;
+      }
+      /* Section titles carry the ember: warm white into amber at the end of the line. */
+      h2:not(.sr-only) {
+        width: fit-content;
+        background: linear-gradient(
+          100deg,
+          var(--fg) 0%,
+          oklch(94% 0.03 78) 58%,
+          var(--accent-2) 100%
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      h2.reveal {
+        filter: blur(8px);
+        transition:
+          opacity 800ms var(--ease),
+          transform 1000ms var(--ease),
+          filter 900ms var(--ease);
+        transition-delay: calc(var(--d, 0) * 1ms);
+      }
+      h2.reveal.in {
+        filter: blur(0);
       }
       .lede {
         font-size: clamp(17px, 1.6vw, 20px);
@@ -1680,6 +1758,10 @@
         font-size: 13.5px;
         letter-spacing: 0.02em;
       }
+      footer a {
+        display: inline-block;
+        padding-block: 4px;
+      }
       footer a:hover {
         color: var(--fg);
       }
@@ -1736,6 +1818,7 @@
     >
   </head>
   <body>
+    <div class="dots" aria-hidden="true"></div>
     <a class="skip" href="#top">Skip to content</a>
 
     <header class="island">
@@ -1802,8 +1885,8 @@
               Your site's Google data, on your computer.
             </h1>
             <p class="lede">
-              See what Google knows about your site, and what is broken on it,
-              on one screen. Free and open source. Installs on Windows from a
+              The numbers Google keeps for your site and the errors on it, on
+              one screen. Free and open source; installs on Windows from a
               single file. No account, and your data never leaves your computer.
             </p>
             <div class="cta">
@@ -1823,9 +1906,8 @@
               ><span>No subscription</span>
             </p>
             <p class="phone-note">
-              Installs on a computer running Windows 10 or 11. If you're reading
-              on your phone, send this page to yourself and open it on the
-              computer.
+              It installs on a computer running Windows 10 or 11. If you are on
+              your phone, send yourself this page and open it on the computer.
             </p>
           </div>
           <div class="stage" data-tilt="3">
@@ -2113,10 +2195,10 @@
             </svg>
           </div>
           <p class="flow-note reveal" style="--d: 200">
-            The app opens only from your own computer. It talks to two places
-            outside it: Google and the pages of the site you audit. Your data
-            goes nowhere else. Your Google access key is stored encrypted on
-            your computer.
+            The app opens only from your own computer. It connects to just two
+            places outside: Google and the pages of the site you audit. Your
+            data goes nowhere else, and your Google access key is stored
+            encrypted on your computer.
           </p>
         </div>
       </section>
@@ -2129,14 +2211,13 @@
       >
         <div class="wrap">
           <div class="section-head reveal">
-            <h2 id="h-ekranlar">
-              Search Console's numbers, turned into screens that tell you what
-              to do.
+            <h2 id="h-ekranlar" class="reveal">
+              It turns Search Console numbers into screens that tell you what to
+              do.
             </h2>
             <p class="lede">
-              These are the app's own screens. The interface is in Turkish; the
-              English guide names every screen and button. The site and the
-              numbers are examples.
+              These are the app's real screens; only the site and the numbers
+              are examples.
             </p>
           </div>
           <div class="walk-grid">
@@ -2145,9 +2226,13 @@
                 <span class="n">01 Opportunities</span>
                 <h3>Which page should I work on this week?</h3>
                 <p>
-                  Sorts your pages into four groups: rarely clicked, close to
-                  page one, already near the top, and buried. Each page gets a
-                  suggested next step, so you don't have to guess.
+                  It sorts the pages Google shows into four groups: rarely
+                  clicked, close to rising, already at the top, and buried deep.
+                  Where to start is written next to each page, so there is no
+                  guessing.
+                  <a class="textlink" href="/en/docs/opportunities/"
+                    >Opportunities guide</a
+                  >.
                 </p>
                 <picture
                   ><source
@@ -2169,12 +2254,14 @@
               </article>
               <article class="walk-step" data-step="2">
                 <span class="n">02 Site audit</span>
-                <h3>See what's broken on your site without asking Google.</h3>
+                <h3>
+                  See what is broken on your site before Google tells you.
+                </h3>
                 <p>
-                  Crawls the site page by page and checks 95 things: broken
-                  links, missing or overly long titles, slow pages, URLs Google
-                  can't read. Under every finding it says what to do, and no
-                  technical background needed.
+                  It walks your site page by page and checks it against 95
+                  rules: broken links, missing or overlong titles, slow pages,
+                  addresses Google cannot make sense of. Under every finding it
+                  says what to do, no technical help needed.
                   <a class="textlink" href="/en/docs/site-audit/"
                     >Site audit guide</a
                   >.
@@ -2200,12 +2287,12 @@
               <article class="walk-step" data-step="3">
                 <span class="n">03 Search performance</span>
                 <h3>
-                  Clicks, impressions, click-through rate and position; 16
-                  months back.
+                  Sixteen months of clicks, impressions, rate and position.
                 </h3>
                 <p>
-                  You can look by query, page, country and device. A separate
-                  tab shows where two of your pages compete for the same query.
+                  Look at it by query, page, country and device. The places
+                  where two of your pages compete for the same query are
+                  collected on their own tab.
                   <a class="textlink" href="/en/docs/search-performance/"
                     >Search performance guide</a
                   >.
@@ -2233,10 +2320,10 @@
                 <h3>Connect an AI assistant if you want.</h3>
                 <p>
                   Claude Code, Codex or Cursor can read the app's data. There
-                  are ready-made tasks for audits, traffic-drop investigations,
-                  monthly checks and reports. The setup text is ready on screen;
-                  you copy it and paste it into the assistant. The app works
-                  fully without one.
+                  are ready-made tasks for the audit, a drop investigation, the
+                  monthly check-in and the report. The setup text is waiting on
+                  screen; copy it and paste it into your assistant. If you never
+                  connect one, the app loses nothing.
                   <a class="textlink" href="/en/docs/agent-setup/"
                     >Assistant setup guide</a
                   >.
@@ -2333,10 +2420,12 @@
       <section id="neler" aria-labelledby="h-neler">
         <div class="wrap">
           <div class="section-head reveal">
-            <h2 id="h-neler">What it does and what it doesn't.</h2>
-            <p class="lede">
-              It only reads the data Google already gives you. It doesn't sell
-              estimates.
+            <h2 id="h-neler" class="reveal">
+              What it does and what it doesn't.
+            </h2>
+            <p class="lede reveal" style="--d: 120">
+              It reads only the data Google already gives you; it does not
+              produce estimates.
             </p>
           </div>
           <div class="bento">
@@ -2347,8 +2436,8 @@
               <h3>Search history, from Search Console</h3>
               <p>
                 Clicks, impressions, rate and position, by query, page, country
-                and device. The app also keeps its own archive, so over time you
-                can look back further.
+                and device. The app also builds its own archive, so over time
+                you can look further back.
               </p>
               <svg class="spark" viewBox="0 0 520 110" aria-hidden="true">
                 <defs>
@@ -2385,31 +2474,31 @@
             <div class="tile t-third reveal" data-spot style="--d: 160">
               <h3>Index status</h3>
               <p>
-                Google's own answer for each of your pages: is it indexed, why
-                not, and when it was last crawled.
+                Google's record for each of your pages: indexed or not, why not,
+                and when it was last crawled.
               </p>
             </div>
             <div class="tile t-third reveal" data-spot style="--d: 220">
               <h3>Opportunities</h3>
               <p>
-                Your pages in four groups, ordered by how worthwhile they are to
-                work on. It says which page to start with right next to it.
+                Your pages fall into four groups, with the ones most worth your
+                effort at the top.
               </p>
             </div>
             <div class="tile t-third reveal" data-spot style="--d: 280">
               <h3>Reports</h3>
               <p>
-                Single-file reports that open on a phone, print, and can be
-                emailed. Your assistant can write them if you like.
+                A report is a single file. Open it on a phone, print it, send it
+                by e-mail. Your assistant can prepare it if you like.
               </p>
             </div>
             <div class="tile t-wide reveal" data-spot style="--d: 340">
               <span class="big"><b data-count="33">33</b></span>
-              <h3>A tool for your assistant</h3>
+              <h3>tools for your AI assistant</h3>
               <p>
-                If you connect Claude Code, Codex or Cursor, the assistant reads
+                Connect Claude Code, Codex or Cursor and your assistant reads
                 your numbers, runs the audit and writes the report. It comes
-                with 6 ready-made tasks.
+                with six ready-made tasks.
               </p>
               <div class="row">
                 <span
@@ -2452,8 +2541,9 @@
               <h3>What it doesn't do</h3>
               <ul>
                 <li>
-                  It doesn't estimate search volume; impression counts come from
-                  Google.
+                  It does not estimate search volume. Impression counts come
+                  from Google. (Coming soon, free: approximate demand from
+                  impressions.)
                 </li>
                 <li>
                   It doesn't count the sites that link to you (backlinks).
@@ -2462,7 +2552,11 @@
                   It doesn't track competitor rankings; it only reads your own
                   sites.
                 </li>
-                <li>It doesn't run in the cloud; one user, one computer.</li>
+                <li>
+                  It does not run in the cloud; one user, one computer. (Coming
+                  soon, free: opening it from a phone or tablet on your home
+                  network.)
+                </li>
               </ul>
             </div>
             <div
@@ -2490,10 +2584,9 @@
                 <div>
                   <h3>Run the installer</h3>
                   <p>
-                    Open the file and click <strong>Install</strong> (on a
-                    Turkish Windows the button reads <strong>Kur</strong>). The
-                    app sets itself up and opens in your browser. After that you
-                    start and stop it from the icon in the taskbar.
+                    Open the file and press <strong>Install</strong>. The app
+                    sets itself up and opens in your browser. After that you
+                    open and close it from the taskbar icon.
                     <a class="textlink" href="/en/docs/install-windows/"
                       >Installation guide</a
                     >.
@@ -2504,10 +2597,10 @@
                 <div>
                   <h3>Connect to Google</h3>
                   <p>
-                    This is the longest step. You get an access key from Google
-                    once, and the app walks you through it on screen. You paste
-                    the key into <strong>Ayarlar</strong> (Settings) and you
-                    never have to deal with it again.
+                    This is the longest step, but you do it only once. You get
+                    an access key from Google; the app shows every step on
+                    screen. Paste the key into
+                    <strong>Ayarlar</strong> (Settings) and you are done.
                     <a class="textlink" href="/en/docs/google-connection/"
                       >Step-by-step guide</a
                     >.
@@ -2579,9 +2672,7 @@
           <dl class="reveal" style="--d: 100">
             <div class="row">
               <dt>Name</dt>
-              <dd>
-                seowatcher (GitHub repository and in-app name: seotracker)
-              </dd>
+              <dd>seowatcher (on GitHub and inside the app: seotracker)</dd>
             </div>
             <div class="row">
               <dt>Price and license</dt>
@@ -2618,7 +2709,7 @@
               <dd>2.4.0, October 23, 2026</dd>
             </div>
             <div class="row">
-              <dt>Download</dt>
+              <dt>Size</dt>
               <dd>The Windows installer is 81 MB; installed, it is 290 MB</dd>
             </div>
             <div class="row">
@@ -2634,19 +2725,20 @@
             <div class="row">
               <dt>What it doesn't do</dt>
               <dd>
-                Search volume estimates, backlink counts, competitor rankings,
-                cloud
+                Search volume estimates, backlink counts, competitor rankings;
+                does not run in the cloud (coming soon: approximate demand from
+                impressions, and access from your home network)
               </dd>
             </div>
             <div class="row">
-              <dt>Based on</dt>
+              <dt>Built on</dt>
               <dd>open-seo (every-app)</dd>
             </div>
             <div class="row">
               <dt>Guide</dt>
               <dd>
                 <a class="textlink" href="/en/docs/"
-                  >A guide for every screen and task</a
+                  >A guide for every screen and every step</a
                 >
               </dd>
             </div>
@@ -2662,9 +2754,9 @@
               <summary>Is it really free?</summary>
               <div class="qa-body">
                 <p>
-                  Yes. It's open source under the MIT license, and all the code
-                  is on GitHub. Google's services also run within their free
-                  limits.
+                  Yes. It is an MIT-licensed open source project, and all of the
+                  code is on GitHub. The Google services it uses stay within
+                  their free usage limits.
                 </p>
               </div>
             </details>
@@ -2674,10 +2766,10 @@
               </summary>
               <div class="qa-body">
                 <p>
-                  The installer isn't code-signed yet. On the SmartScreen
-                  screen, choose "More info" first, then "Run anyway". The
-                  file's fingerprint (SHA-256) is listed on each release's page
-                  if you want to compare it.
+                  The installer is not code-signed yet, which is why Windows
+                  warns you. On the SmartScreen screen click "More info", then
+                  "Run anyway". The file's fingerprint (SHA-256) is printed on
+                  every release page; compare it if you like.
                   <a class="textlink" href="/en/docs/troubleshooting/"
                     >Troubleshooting</a
                   >.
@@ -2696,13 +2788,15 @@
               </div>
             </details>
             <details class="qa">
-              <summary>Why do I have to create a Google access key?</summary>
+              <summary>
+                Why do I have to create an access key at Google?
+              </summary>
               <div class="qa-body">
                 <p>
-                  Because the app isn't a cloud service. Your computer connects
-                  to Google directly, and Google wants to know who the
-                  connecting app belongs to. You do it once, and the app
-                  explains it step by step.
+                  seowatcher is not a cloud service; it runs on your computer
+                  and connects to Google directly. Google wants to know who owns
+                  the app that is connecting. You do this once, and the app
+                  shows the steps on screen.
                 </p>
               </div>
             </details>
@@ -2710,10 +2804,10 @@
               <summary>Are the numbers the same as in Search Console?</summary>
               <div class="qa-body">
                 <p>
-                  They're read from the same source. Google's data lags by about
-                  three days and leaves out rarely searched queries. The app
-                  shows the page total and the site total separately. The two
-                  may not match, and that isn't an error.
+                  They come from the same source, but the totals may not match.
+                  Google delivers data about three days late and hides rarely
+                  searched queries. The app shows the page total and the site
+                  total separately; the two differing is not a bug.
                 </p>
               </div>
             </details>
@@ -2721,9 +2815,10 @@
               <summary>Do I need to expose anything to the internet?</summary>
               <div class="qa-body">
                 <p>
-                  No. The app opens only from your own computer and reads Search
-                  Console and Analytics data from Google. For the site audit, it
-                  only crawls the pages of the site you're auditing.
+                  Yes, that is how it already works. The app opens only from
+                  your own computer and reads Search Console and Analytics data
+                  from Google. During an audit it crawls only the pages of the
+                  site you are auditing.
                 </p>
               </div>
             </details>
@@ -2735,11 +2830,11 @@
         <div class="halo" aria-hidden="true"></div>
         <div class="wrap">
           <h2 id="h-son" class="reveal">
-            Install it and start with today's data.
+            Install it today, start with today's data.
           </h2>
           <p class="reveal" style="--d: 100">
-            Search Console's 16 months of history load the first time you
-            connect. Connect today and see your data today.
+            Search Console's sixteen months of history load into the app on
+            first launch. Connect today and you can look today.
           </p>
           <div class="cta reveal" style="--d: 200">
             <a
@@ -2768,12 +2863,11 @@
               />seowatcher</a
             >
             <p>
-              Open source and free. All the code is on GitHub; what it does, how
-              it does it and where it writes your data are there for anyone to
-              read. Based on
+              Open source and free. All of the code is on GitHub; anyone can
+              read and check what it does. Built on
               <a class="textlink" href="https://github.com/every-app/open-seo"
                 >open-seo</a
-              >. Logos are the trademarks of their owners.
+              >. Logos belong to their owners.
             </p>
           </div>
           <div class="col">

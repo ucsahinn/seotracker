@@ -153,4 +153,44 @@
       box.appendChild(status);
     });
   }
+
+  // Dot field: the lit circle trails the pointer. Only with a fine pointer,
+  // only while the pointer is over the page, and never under reduced motion
+  // or the "stop motion" toggle (CSS hides the layer for those; this just
+  // avoids the work).
+  var dots = document.querySelector(".dots");
+  if (
+    dots &&
+    !reduce &&
+    window.matchMedia("(hover: hover) and (pointer: fine)").matches
+  ) {
+    var tx = window.innerWidth / 2,
+      ty = window.innerHeight * 0.3,
+      cx = tx,
+      cy = ty,
+      raf = 0;
+    var tick = function () {
+      cx += (tx - cx) * 0.12;
+      cy += (ty - cy) * 0.12;
+      dots.style.setProperty("--mx", cx.toFixed(1) + "px");
+      dots.style.setProperty("--my", cy.toFixed(1) + "px");
+      raf =
+        Math.abs(tx - cx) + Math.abs(ty - cy) > 0.5
+          ? requestAnimationFrame(tick)
+          : 0;
+    };
+    document.addEventListener(
+      "pointermove",
+      function (e) {
+        tx = e.clientX;
+        ty = e.clientY;
+        dots.classList.add("live");
+        if (!raf) raf = requestAnimationFrame(tick);
+      },
+      { passive: true },
+    );
+    document.addEventListener("pointerleave", function () {
+      dots.classList.remove("live");
+    });
+  }
 })();

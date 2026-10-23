@@ -91,7 +91,7 @@ export const locales = {
       guideDescription:
         "seowatcher kılavuzları: kurulum, her ekranın ne gösterdiği, Google bağlantısı, denetim kuralları, ajan kurulumu ve sorun giderme.",
       guideLede:
-        "Kurulumdan ilk rapora kadar her adım ve her ekran için kısa, sade bir anlatım. Uygulamanın adı GitHub'da seotracker, bu sitede seowatcher; ikisi aynı şey.",
+        "Kurulumdan ilk rapora kadar her adım ve her ekran kısa ve sade anlatılır. Uygulama GitHub'da seotracker, bu sitede seowatcher adıyla geçer; ikisi aynı uygulamadır.",
       screenSuffix: " ekranı",
       titleSuffix: " | seowatcher kılavuzu",
       onThisPage: "Bu sayfada",
@@ -104,7 +104,7 @@ export const locales = {
       siteNav: "Site",
       home: "Ana sayfa",
       download: "İndir",
-      skip: "İçeriğe atla",
+      skip: "İçeriğe geç",
       copy: "Kopyala",
       copied: "Kopyalandı",
       copyLabel: "Kodu kopyala",
