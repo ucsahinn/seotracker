@@ -28,7 +28,7 @@ Sonunda uygulama bilgisayarınızda kurulu ve tarayıcıda açık olacak. Kurulu
 7. İki seçeneğe bakın: **Windows açılınca seowatcher'ı başlat** ve **Masaüstüne kısayol ekle**. İlki işaretli gelir. Arka planda başlamasını istemiyorsanız işareti kaldırın. Sonra **Sonraki** deyin.
 8. **Kur** deyin.
 9. Son sayfada **seowatcher'ı şimdi başlat** kutusu var. İşaretli bırakın ve **Bitti** deyin. Uygulama açılır.
-10. Bekleyin. İlk açılış 20-30 saniye sürer. Görev çubuğundaki simgenin yazısı sırayla "Anahtarlar hazırlanıyor", "Veritabanı güncelleniyor", "Sunucu başlatılıyor" olur. Simge görünmüyorsa görev çubuğundaki ^ okuna tıklayın. Hazır olunca bir "seowatcher hazır" baloncuğu çıkar (ilk açılışta görürsünüz).
+10. Bekleyin. İlk açılış 20-30 saniye sürer. Görev çubuğundaki simgenin yazısı sırayla "Anahtarlar hazırlanıyor", "Veritabanı güncelleniyor", "Sunucu başlatılıyor" olur. Simge görünmüyorsa görev çubuğundaki ^ okuna tıklayın. Hazır olunca tarayıcınız kendiliğinden açılır. Windows açılışında otomatik başladığında ise tarayıcı açılmaz, "seowatcher hazır" baloncuğu çıkar.
 11. Tarayıcıda `http://127.0.0.1:3001` kendiliğinden açılır. Adresteki 127.0.0.1 bilgisayarınızın kendisidir, 3001 ise adres numarasıdır (port).
 
 Sıradaki adım Google bağlantısı kılavuzu.
@@ -44,10 +44,10 @@ Simgeye sağ tıklayın. Simge görünmüyorsa görev çubuğundaki ^ okuna tık
 - **Sorunu bildir (GitHub)**: aynı bilgiyi panoya alır ve GitHub'da hazır doldurulmuş bir sorun kaydı açar. Bir cümleyle ne yaptığınızı ekleyip gönderin.
 - **Eksik Windows bileşenini kur**: yalnızca Visual C++ paketi eksikse görünür. Tıklayınca paketi kurar ve uygulamayı yeniden başlatır.
 - **Kurulumu onar**: geçici dosyaları temizler, paketi kontrol eder, uygulamayı yeniden açar.
-- **Güncelle**: yalnızca yeni sürüm varsa görünür. Hazır olduğunda tam yazısı "Güncelle: 2.3.8 sürümü hazır" biçimindedir (sürüm numarası örnektir).
+- **Güncelle**: yalnızca yeni sürüm varsa görünür. Hazır olduğunda tam yazısı "Güncelle: X.Y.Z sürümü hazır" biçimindedir (sürüm numarası örnektir).
 - **Güncellemeleri kendiliğinden kur**: işaretliyse yeni sürüm bulununca kendisi kurar.
 - **Veri klasörünü aç**: veritabanının ve anahtarların klasörünü açar.
-- **Windows ile başlat**: işaretliyse uygulama bilgisayar açılınca arka planda başlar.
+- **Windows açılınca başlat**: işaretliyse uygulama bilgisayar açılınca arka planda başlar.
 - **Çıkış**: uygulamayı tamamen kapatır. Kapalıyken tarayıcıdaki sayfa çalışmaz.
 
 Menüde ayrıca bir durum satırı ("Çalışıyor: http://127.0.0.1:3001/" ya da hata yazısı) ve sürüm numarası görünür.
@@ -122,7 +122,7 @@ Numara değişince Google'daki iki yönlendirme adresini de yeni numarayla günc
 
 ## Kontrol
 
-- Görev çubuğu simgesinin üzerine gelince "seowatcher 2.3.7: Çalışıyor: http://127.0.0.1:3001/" yazmalı. Baştaki sürüm numarası sizin kurduğunuz sürümdür. 2.3.7 örnektir.
+- Görev çubuğu simgesinin üzerine gelince "seowatcher X.Y.Z: Çalışıyor: http://127.0.0.1:3001/" yazmalı. Baştaki sürüm numarası sizin kurduğunuz sürümdür. 2.3.7 örnektir.
 - Tarayıcıda `http://127.0.0.1:3001/api/health` adresi "status":"ok" ile başlayan bir yazı göstermeli.
 - **Yardım** ekranındaki "Kurulumunuzun durumu" kartı "Her şey yolunda." demeli. Google bağlanmadan önce "Google girişi" satırı dikkat ister. Bu normaldir.
 
@@ -142,7 +142,7 @@ Numara değişince Google'daki iki yönlendirme adresini de yeni numarayla günc
 
 Simge görünmüyorsa görev çubuğundaki ^ okuna tıklayın.
 
-- **Simge "Hata: Port 3001 ve sonraki 9 port dolu" diyor.** Başka program bu numaraları tutuyor. `config.json` dosyasına başka bir numara yazın.
+- **Simge "Hata: 3001 ve sonraki 9 adres numarası (port) dolu" diyor.** Başka program bu numaraları tutuyor. `config.json` dosyasına başka bir numara yazın.
 - **Simge "Veritabanı güncellemesi başarısız" diyor.** **Günlükleri aç** deyin, `migrate.log` dosyasının son satırlarına bakın. Çoğu zaman disk doludur ya da klasör salt okunurdur.
 - **Simge "Sunucu beklenmedik şekilde kapandı" diyor.** `server.log` dosyasının son satırları sebebi yazar. **Yeniden başlat** deneyin. Düzelmezse günlüğü GitHub'da bir sorun kaydıyla paylaşın.
 - **Tarayıcı açılmadı.** Simgeye çift tıklayın ya da adresi elle yazın: `http://127.0.0.1:3001`

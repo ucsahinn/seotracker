@@ -17,7 +17,7 @@ Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuz
 
 ### Adres numarası (port) dolu
 
-**Belirti:** Windows'ta simge "Port 3001 ve sonraki 9 port dolu" diyor. Docker'da "Bind for 127.0.0.1:3001 failed" yazıyor.
+**Belirti:** Windows'ta simge "3001 ve sonraki 9 adres numarası (port) dolu" diyor. Docker'da "Bind for 127.0.0.1:3001 failed" yazıyor.
 
 **Sebep:** Başka bir program aynı adres numarasını kullanıyor.
 

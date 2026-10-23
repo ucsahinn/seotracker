@@ -31,7 +31,7 @@ By the end of this page the app is installed on your computer and open in the br
    3. The options page: **Start seowatcher when Windows starts** (Turkish: "Windows açılınca seowatcher'ı başlat") and **Create a desktop shortcut** (Turkish: "Masaüstüne kısayol ekle"). The first one is ticked by default. Untick it if you do not want the app to start in the background. Click **Next**.
    4. Click **Install** (on a Turkish Windows: **Kur**).
    5. The final page has a **Start seowatcher now** checkbox. Leave it ticked and click **Finish** (on a Turkish Windows: **Bitti**). The app opens.
-6. Wait. The first launch takes 20-30 seconds. Look for the seowatcher icon in the notification area (system tray) at the right of the taskbar. If the icon is not visible, click the ^ arrow on the taskbar. The icon's text changes in turn to "Anahtarlar hazırlanıyor" (Preparing keys), "Veritabanı güncelleniyor" (Updating database) and "Sunucu başlatılıyor" (Starting server). On the first start a "seowatcher hazır" (seowatcher is ready) balloon appears.
+6. Wait. The first launch takes 20-30 seconds. Look for the seowatcher icon in the notification area (system tray) at the right of the taskbar. If the icon is not visible, click the ^ arrow on the taskbar. The icon's text changes in turn to "Anahtarlar hazırlanıyor" (Preparing keys), "Veritabanı güncelleniyor" (Updating database) and "Sunucu başlatılıyor" (Starting server). When it is ready, your browser opens by itself. When Windows starts it automatically, the browser does not open; a "seowatcher hazır" (seowatcher is ready) balloon appears instead.
 7. `http://127.0.0.1:3001` opens in the browser by itself. This is your computer's own address (127.0.0.1) and the port number (port: 3001).
 
 The next step is the Google connection guide.
@@ -47,10 +47,10 @@ Right-click the icon (if it is not visible, click the ^ arrow on the taskbar). T
 - **Sorunu bildir (GitHub)** (Report a problem (GitHub)): puts the same information on the clipboard and opens a pre-filled issue on GitHub. Add one sentence about what you did and send it.
 - **Eksik Windows bileşenini kur** (Install the missing Windows component): shown only if the Visual C++ package is missing. When you click it, it installs the package and restarts the app.
 - **Kurulumu onar** (Repair installation): clears temporary files, checks the package and reopens the app.
-- **Güncelle** (Update): shown only if there is a new version. When an update is ready it reads "Güncelle: 2.3.8 sürümü hazır" (Update: version 2.3.8 is ready); the version number is the new one.
+- **Güncelle** (Update): shown only if there is a new version. When an update is ready it reads "Güncelle: X.Y.Z sürümü hazır" (Update: version 2.3.8 is ready); the version number is the new one.
 - **Güncellemeleri kendiliğinden kur** (Install updates automatically): if ticked, the app installs a new version by itself when it finds one.
 - **Veri klasörünü aç** (Open data folder): opens the folder with the database and the keys.
-- **Windows ile başlat** (Start with Windows): if ticked, the app starts in the background when the computer starts.
+- **Windows açılınca başlat** (Start with Windows): if ticked, the app starts in the background when the computer starts.
 - **Çıkış** (Exit): closes the app completely. While it is closed, the page in the browser does not work.
 
 The menu also shows a status line ("Çalışıyor: http://127.0.0.1:3001/" (Running: http://127.0.0.1:3001/) or an error text) and the version number.
@@ -125,7 +125,7 @@ When the number changes, also update the two redirect addresses at Google with t
 
 ## Check
 
-- When you hover over the taskbar icon (if it is not visible, click the ^ arrow on the taskbar), it should read "seowatcher 2.3.7: Çalışıyor: http://127.0.0.1:3001/" (seowatcher 2.3.7: Running: http://127.0.0.1:3001/). The version number is the one you installed.
+- When you hover over the taskbar icon (if it is not visible, click the ^ arrow on the taskbar), it should read "seowatcher X.Y.Z: Çalışıyor: http://127.0.0.1:3001/" (seowatcher 2.3.7: Running: http://127.0.0.1:3001/). The version number is the one you installed.
 - In the browser, the address `http://127.0.0.1:3001/api/health` should show a text that starts with "status":"ok".
 - On the **Yardım** (Help) screen, the "Kurulumunuzun durumu" (Your setup status) card should say "Her şey yolunda." (Everything is fine.). Before Google is connected, the "Google girişi" (Google sign-in) row asks for attention. This is normal.
 
@@ -143,7 +143,7 @@ When the number changes, also update the two redirect addresses at Google with t
 
 ## If something goes wrong
 
-- **The icon says "Hata: Port 3001 ve sonraki 9 port dolu" (Error: Port 3001 and the next 9 ports are in use).** Another program holds these numbers. Write another number in the `config.json` file.
+- **The icon says "Hata: 3001 ve sonraki 9 adres numarası (port) dolu" (Error: 3001 and the next 9 ports are in use).** Another program holds these numbers. Write another number in the `config.json` file.
 - **The icon says "Veritabanı güncellemesi başarısız" (Database update failed).** Click **Günlükleri aç** (Open logs) and look at the last lines of `migrate.log`. Most of the time the disk is full or the folder is read-only.
 - **The icon says "Sunucu beklenmedik şekilde kapandı" (The server closed unexpectedly).** The last lines of `server.log` give the reason. Try **Yeniden başlat** (Restart). If it does not help, share the log in an issue on GitHub.
 - **The browser did not open.** Double-click the icon or type the address by hand: `http://127.0.0.1:3001`

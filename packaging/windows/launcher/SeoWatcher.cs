@@ -478,6 +478,13 @@ namespace SeoWatcher
 
         /// <summary>The report goes to the clipboard and into a public GitHub
         /// issue, so it is scrubbed before it leaves the machine.</summary>
+        /// <summary>Replaces the user's profile folder with %USERPROFILE% in any text shown outside the machine.</summary>
+        public static string MaskProfile(string text)
+        {
+            string profile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            return string.IsNullOrEmpty(profile) || text == null ? text : text.Replace(profile, "%USERPROFILE%");
+        }
+
         private static string R(string input, string pattern, string replacement)
         {
             return System.Text.RegularExpressions.Regex.Replace(input, pattern, replacement);
@@ -737,8 +744,8 @@ namespace SeoWatcher
             if (value.Length < 32 || !System.Text.RegularExpressions.Regex.IsMatch(value, "^[A-Za-z0-9+/=]+$"))
             {
                 throw new InvalidOperationException(
-                    Paths.InstanceSecret + " dosyası geçerli bir şifreleme anahtarı değil. " +
-                    "Yedekten geri yükleyin; Google hiç bağlanmadıysa dosyayı silip yeniden başlatın.");
+                    "Veri klasöründeki instance-secret dosyası geçerli bir şifreleme anahtarı değil. " +
+                    "Yedekten geri yükleyin; Google hiç bağlanmadıysa dosyayı silip Yeniden başlat deyin.");
             }
             return value;
         }
@@ -985,7 +992,7 @@ namespace SeoWatcher
                     Paths.MigrateLog);
                 if (migrateExit != 0)
                 {
-                    throw new InvalidOperationException("Veritabanı güncellemesi başarısız (çıkış kodu " + migrateExit + "). Günlük: " + Paths.MigrateLog);
+                    throw new InvalidOperationException("Veritabanı güncellemesi başarısız (çıkış kodu " + migrateExit + "). Yeniden başlat deyin; olmazsa Günlükleri aç ile migrate.log dosyasına bakın.");
                 }
 
                 runtimeCrashed = false;
@@ -1037,7 +1044,7 @@ namespace SeoWatcher
                                 ? "motor tek başına çalışıyor, sorun veri klasöründe ya da yapılandırmada. Önce Kurulumu onar deyin; düzelmezse Sorunu bildir."
                                 : "motor bu bilgisayarda tek başına da başlayamıyor (" + after + "). Menüden Sorunu bildir deyin."));
                         }
-                        throw new InvalidOperationException("Sunucu beklenmedik şekilde kapandı. Günlük: " + Paths.ServerLog);
+                        throw new InvalidOperationException("Sunucu beklenmedik şekilde kapandı. Yeniden başlat deyin; olmazsa Günlükleri aç ile server.log dosyasına bakın.");
                     }
                     if (Health(url))
                     {
@@ -1047,7 +1054,7 @@ namespace SeoWatcher
                     }
                     Thread.Sleep(1000);
                 }
-                throw new TimeoutException("Sunucu 120 saniyede yanıt vermedi. Günlük: " + Paths.ServerLog);
+                throw new TimeoutException("Sunucu 120 saniyede yanıt vermedi. Yeniden başlat deyin; olmazsa Günlükleri aç ile server.log dosyasına bakın.");
             }
             catch (Exception ex)
             {
@@ -1085,7 +1092,7 @@ namespace SeoWatcher
                     return candidate;
                 }
             }
-            throw new InvalidOperationException("Port " + cfg.Port + " ve sonraki 9 port dolu. config.json içindeki port değerini değiştirin.");
+            throw new InvalidOperationException(cfg.Port + " ve sonraki 9 adres numarası (port) dolu. Veri klasöründeki config.json içindeki \"port\" değerini değiştirin.");
         }
 
         private static bool PortFree(int port)
@@ -1237,7 +1244,7 @@ namespace SeoWatcher
             openItem = new ToolStripMenuItem("seowatcher'ı aç", null, (s, e) => OpenApp());
             openItem.Font = new Font(openItem.Font, FontStyle.Bold);
             statusItem = new ToolStripMenuItem("Başlatılıyor…") { Enabled = false };
-            autostartItem = new ToolStripMenuItem("Windows ile başlat", null, (s, e) => ToggleAutostart());
+            autostartItem = new ToolStripMenuItem("Windows açılınca başlat", null, (s, e) => ToggleAutostart());
             autostartItem.Checked = Autostart.IsEnabled();
             autoUpdateItem = new ToolStripMenuItem("Güncellemeleri kendiliğinden kur", null, (s, e) => ToggleAutoUpdate()) { Checked = config.AutoUpdate };
             updateItem = new ToolStripMenuItem("Güncelle", null, (s, e) => StartUpdate()) { Visible = false };
@@ -1264,7 +1271,7 @@ namespace SeoWatcher
             tray = new NotifyIcon
             {
                 Icon = LoadIcon(),
-                Text = "seowatcher: başlatılıyor",
+                Text = "seowatcher " + Paths.Version() + ": Başlatılıyor…",
                 ContextMenuStrip = menu,
                 Visible = true,
             };
@@ -1321,7 +1328,11 @@ namespace SeoWatcher
                         updating = false;
                         updateItem.Enabled = true;
                         SetStatus(url != null ? "Çalışıyor: " + url : "Hata: güncelleme indirilemedi");
-                        tray.ShowBalloonTip(10000, "Güncelleme yapılamadı", ex.Message + " Daha sonra menüden tekrar deneyin.", ToolTipIcon.Warning);
+                        LauncherLog.Write("update: failed: " + ex.Message);
+                        string why = ex.Message.Contains("SHA-256") || ex.Message.Contains("SHA256SUMS")
+                            ? "İndirilen dosya doğrulanamadı, kurulmadı. Kurulum dosyasını sürüm sayfasından indirin."
+                            : "Güncelleme indirilemedi. İnternet bağlantınızı kontrol edip menüden Güncelle ile tekrar deneyin; kurulu sürüm çalışmaya devam ediyor.";
+                        tray.ShowBalloonTip(10000, "Güncelleme yapılamadı", why, ToolTipIcon.Warning);
                     });
                 }
             }) { IsBackground = true };
@@ -1446,6 +1457,7 @@ namespace SeoWatcher
             {
                 LauncherLog.Write("vcredist: bundled package missing, opening " + Server.VcRedistUrl);
                 Browser.Open(Server.VcRedistUrl);
+                tray.ShowBalloonTip(10000, "Paket bulunamadı", "Microsoft'un indirme sayfası açıldı. Paketi indirip kurduktan sonra menüden Yeniden başlat deyin.", ToolTipIcon.Info);
                 return;
             }
             try
@@ -1481,14 +1493,16 @@ namespace SeoWatcher
         private void ReportIssue()
         {
             string report = Diag.Report();
-            try { Clipboard.SetText(report); } catch { }
+            bool copied = true;
+            try { Clipboard.SetText(report); } catch { copied = false; }
             // The whole report is on the clipboard; the URL carries only the
             // first part, because a long query string makes GitHub answer 404
             // and some browsers refuse it. The "sorun" template adds the
             // questions; a body in the URL replaces the template's own body.
-            string head = report.Length > 2000 ? report.Substring(0, 2000) + "\n(kısaltıldı; tamamı panoda, Ctrl+V ile yapıştırın)" : report;
+            string head = report.Length > 2000 ? report.Substring(0, 2000) + (copied ? "\n(kısaltıldı; tamamı panoda, Ctrl+V ile yapıştırın)" : "\n(kısaltıldı; tamamı için menüden Tanı bilgisini kopyala deyin)") : report;
             string body = "**Ne yapmaya çalışıyordunuz?**\n(bir iki cümle)\n\n**Tanı bilgisi** (menüden kopyalandı; gözden geçirin)\n\n```\n" + head + "\n```\n";
-            string title = "seowatcher " + Paths.Version() + ": " + (statusItem.Text.Length > 80 ? statusItem.Text.Substring(0, 80) : statusItem.Text);
+            string status = Diag.MaskProfile(statusItem.Text);
+            string title = "seowatcher " + Paths.Version() + ": " + (status.Length > 80 ? status.Substring(0, 80) : status);
             Browser.Open("https://github.com/" + Updater.Repo + "/issues/new?template=sorun.md&title=" + Uri.EscapeDataString(title) + "&body=" + Uri.EscapeDataString(body));
         }
 
@@ -1502,6 +1516,7 @@ namespace SeoWatcher
             catch (Exception ex)
             {
                 LauncherLog.Write("diag: " + ex.Message);
+                tray.ShowBalloonTip(5000, "Kopyalanamadı", "Pano şu an başka bir program tarafından kullanılıyor. Birkaç saniye sonra tekrar deneyin.", ToolTipIcon.Warning);
             }
         }
 
@@ -1534,7 +1549,12 @@ namespace SeoWatcher
                 Directory.CreateDirectory(path);
                 Process.Start(new ProcessStartInfo("explorer.exe", "\"" + path + "\"") { UseShellExecute = true });
             }
-            catch { }
+            catch (Exception ex)
+            {
+                LauncherLog.Write("open folder: " + ex.Message);
+                // Static helper, no tray handle here: fall back to the shell's own opener.
+                try { Process.Start(new ProcessStartInfo(path) { UseShellExecute = true }); } catch { }
+            }
         }
 
         private void Quit()

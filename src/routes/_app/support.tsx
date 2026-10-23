@@ -103,7 +103,7 @@ function SupportPage() {
           Üstteki &quot;Tanılama paketi indir&quot; düğmesi tek bir arşiv verir:
           sürüm, kurulum kontrolleri, tablo büyüklükleri, bağlı Google mülkleri,
           son denetimlerin durumu ve bu sekmede yakalanan tarayıcı hataları.
-          İçinde gizli değer yok; jetonlar ve anahtarlar toplanmaz, yalnızca
+          İçinde gizli değer yok; parolalar ve anahtarlar toplanmaz, yalnızca
           ayarlı olup olmadıkları yazılır. Kısa bir not yeterliyse durum
           panelindeki &quot;Özeti kopyala&quot; düğmesi aynı özeti metin olarak
           verir. Arşivdeki <code className="text-xs">README.txt</code> ne

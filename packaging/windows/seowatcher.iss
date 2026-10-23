@@ -82,14 +82,14 @@ tr.SetupWindowTitle=seowatcher {#AppVersion} - Kurulum yardımcısı
 en.SetupWindowTitle=Setup - seowatcher {#AppVersion}
 ; The default Inno texts are generic; these read like the product.
 tr.WelcomeLabel1=seowatcher {#AppVersion} kurulumuna hoş geldiniz
-tr.WelcomeLabel2=Sitenizin Google verisini kendi bilgisayarınızda okuyan ücretsiz SEO uygulaması kurulacak.%n%nKurulum yalnızca sizin kullanıcı hesabınıza yapılır, yönetici şifresi istemez ve iki dakika sürer.
+tr.WelcomeLabel2=Sitenizin Google verisini kendi bilgisayarınızda okuyan ücretsiz SEO uygulaması kurulacak.%n%nKurulum yalnızca sizin kullanıcı hesabınıza yapılır, yönetici şifresi istemez (yalnızca bir Windows bileşeni eksikse bir kez izin sorulur) ve iki dakika sürer.
 tr.FinishedHeadingLabel=Kurulum tamamlandı
-tr.FinishedLabel=seowatcher {#AppVersion} görev çubuğunda çalışacak ve tarayıcınızda açılacak.%n%nİlk açılış 20-30 saniye sürer. Sonra Google'ı bağlarsınız; uygulama adım adım gösterir.
+tr.FinishedLabel=seowatcher {#AppVersion} görev çubuğunda çalışır ve tarayıcınızda açılır. Kaldırırsanız verileriniz bilgisayarınızda kalır.%n%nİlk açılış 20-30 saniye sürer. Sonra Google'ı bağlarsınız; uygulama adım adım gösterir.
 tr.ClickFinish=Bitirmek için Bitti'ye tıklayın.
 en.WelcomeLabel1=Welcome to seowatcher {#AppVersion}
-en.WelcomeLabel2=This installs the free SEO app that reads your site's Google data on your own computer.%n%nIt installs for your user account only, needs no administrator password and takes about two minutes.
+en.WelcomeLabel2=This installs the free SEO app that reads your site's Google data on your own computer.%n%nIt installs for your user account only, needs no administrator password (asked once only if a Windows component is missing) and takes about two minutes.
 en.FinishedHeadingLabel=Setup complete
-en.FinishedLabel=seowatcher {#AppVersion} will run from the taskbar tray and open in your browser.%n%nThe first start takes 20-30 seconds. Then you connect Google; the app walks you through it.
+en.FinishedLabel=seowatcher {#AppVersion} runs from the taskbar tray and opens in your browser. Uninstalling keeps your data on this computer.%n%nThe first start takes 20-30 seconds. Then you connect Google; the app walks you through it.
 
 [Tasks]
 Name: "autostart"; Description: "{cm:Autostart}"

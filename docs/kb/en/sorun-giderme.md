@@ -19,7 +19,7 @@ This page tells you briefly what to do when something does not work. First, look
 
 ### The port number is in use
 
-**Symptom:** On Windows, the icon says "Port 3001 ve sonraki 9 port dolu" (Port 3001 and the next 9 ports are in use). On Docker, you see "Bind for 127.0.0.1:3001 failed".
+**Symptom:** On Windows, the icon says "3001 ve sonraki 9 adres numarası (port) dolu" (3001 and the next 9 ports are in use). On Docker, you see "Bind for 127.0.0.1:3001 failed".
 
 **Cause:** Another program is using the same port number.
 

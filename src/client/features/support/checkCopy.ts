@@ -35,18 +35,13 @@ export function describeCheck(
       : "Ayrıntı için docker compose logs --tail 50 çıktısına bakın.";
   const say = (text: string, status: CheckStatus = check.status) =>
     spoken(text, status);
-  // The Windows package writes its own settings file at every start, so the
-  // only fix a user can apply there is a repair from the tray menu.
-  const repair =
-    installKind === "windows"
-      ? " Windows paketinde görev çubuğu menüsünden Kurulumu onar deyin."
-      : "";
 
   if (key === "gsc") {
     if (/DISABLED/.test(detail)) {
       return say(
-        "Search Console ve Analytics kapalı. Google bağlantılarını şifreleyen gizli kurulum anahtarı (BETTER_AUTH_SECRET) eksik ya da çok kısa. Uygulama bu anahtarı kendisi üretir; elle kısa bir değer girdiyseniz silin." +
-          repair,
+        installKind === "windows"
+          ? "Search Console ve Analytics kapalı. Uygulamanın şifreleme anahtarı (veri klasöründeki instance-secret dosyası) eksik ya da bozuk. Görev çubuğu menüsünden Kurulumu onar deyin."
+          : "Search Console ve Analytics kapalı. Google bağlantılarını şifreleyen gizli kurulum anahtarı (BETTER_AUTH_SECRET) eksik ya da çok kısa. Uygulama bu anahtarı kendisi üretir; elle kısa bir değer girdiyseniz silin.",
         "warn",
       );
     }

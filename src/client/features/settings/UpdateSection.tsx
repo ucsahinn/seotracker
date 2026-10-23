@@ -70,7 +70,7 @@ export function UpdateSection({ version }: { version: string }) {
       >
         <SettingsHeading
           title="Hakkında"
-          help="Uygulama yeni sürümü fark eder ve ne yapacağınızı söyler: Windows paketi güncellemeyi kendisi kurar, Docker'da verilen komutu çalıştırırsınız. Kontrolü kapatırsanız GitHub'a hiç istek gitmez."
+          help="Uygulama yeni sürümü fark eder ve ne yapacağınızı söyler: Windows paketi güncellemeyi kendisi kurar, Docker'da verilen komutu çalıştırırsınız. Docker'da kontrolü kapatırsanız GitHub'a istek gitmez; Windows paketinde görev çubuğu uygulaması günde bir kez GitHub'a bakar, kendiliğinden kurmayı ise menüdeki Güncellemeleri kendiliğinden kur seçeneği belirler."
         />
       </SectionHeaderRow>
 
@@ -100,9 +100,11 @@ export function UpdateSection({ version }: { version: string }) {
             <p className="text-xs text-subtle">
               Windows paketi güncellemeyi kendisi kurar: görev çubuğundaki
               seowatcher simgesi yeni sürümü indirir, doğrular ve sessizce
-              kurar. Hemen kurmak için simgeye sağ tıklayıp{" "}
-              <strong>Güncelle</strong> deyin. Verileriniz ve Google bağlantınız
-              olduğu gibi kalır.
+              kurar. Kendiliğinden kurmayı istemiyorsanız simgeye sağ tıklayıp{" "}
+              <strong>Güncellemeleri kendiliğinden kur</strong> işaretini
+              kaldırın; o zaman yeni sürüm hazır olunca menüde{" "}
+              <strong>Güncelle: sürüm hazır</strong> maddesi çıkar, tıklayınca
+              kurulur. Verileriniz ve Google bağlantınız olduğu gibi kalır.
             </p>
           ) : (
             <>

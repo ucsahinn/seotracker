@@ -80,8 +80,8 @@ Oluşturulma: ${generatedAt}
   browser.json       Tarayıcı ve ekran bilgisi.
 
 İçinde OLMAYAN şeyler
-  Hiçbir gizli değer yok: Google erişim ve yenileme jetonları, istemci
-  gizli anahtarı, PageSpeed API anahtarı, MCP jetonu ve oturum çerezleri
+  Hiçbir gizli değer yok: Google erişim ve yenileme anahtarları, istemci
+  gizli anahtarı, PageSpeed API anahtarı, asistan parolası (MCP token) ve oturum çerezleri
   toplanmıyor. Yalnızca her birinin yapılandırılmış olup olmadığı yazıyor.
   Taranan sayfaların içeriği de yok, yalnızca sayıları var.
 

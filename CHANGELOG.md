@@ -2,6 +2,16 @@
 
 Her sürümün notu burada, en yenisi en üstte.
 
+## [2.3.11] — 2026-10-23
+
+Windows tarafında menü, uyarı ve kılavuz tutarlılığı.
+
+### Yenilikler
+
+- **Uyarılar yol göstermez, yol sızdırmaz.** Başlatıcının hata durumları ("Veritabanı güncellemesi başarısız", "Sunucu yanıt vermedi", "Sunucu kapandı") artık klasör yolu yerine bir sonraki adımı söyler; sorun kaydının başlığı da maskelenir. Güncelleme başarısız olunca ham hata yerine ne yapılacağı yazar; doğrulanamayan dosya kurulmaz. Pano ya da paket bulunamazsa baloncukla söylenir.
+- **Tutarlı adlar.** Tepsi menüsü "Windows açılınca başlat" (sihirbazla aynı), adres numarası (port) uyarısı kılavuzla aynı sözcüklerle, "jeton" yerine her yerde parola. Ayarlar → Hakkında Windows'ta güncelleme kontrolünün görev çubuğu uygulamasında günde bir kez yapıldığını ve kendiliğinden kurmanın menüden kapatıldığını söyler.
+- **Sihirbaz ve kılavuz.** Karşılama metni yönetici izninin ne zaman sorulduğunu söyler; bitiş sayfası kaldırmanın veriyi sildiğini sanmayın diye not düşer. Kılavuzda ilk açılışta tarayıcının kendiliğinden açıldığı yazar; sürüm örnekleri X.Y.Z.
+
 ## [2.3.10] — 2026-10-23
 
 Tanı raporu kişisel veri taşımaz.
