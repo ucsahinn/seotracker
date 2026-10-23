@@ -1,3 +1,4 @@
+import { SafeExternalLink } from "@/client/components/SafeExternalLink";
 import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { PageActions, RefreshButton } from "@/client/components/RefreshButton";
 import { formatRelativeTime } from "@/client/lib/format";
@@ -242,23 +243,17 @@ function AuditDetail({
               Sitenin bot koruması tarayıcımızı engelledi ve şu an aşmanın bir
               yolu yok. Bilgisayarınızda çalışan masaüstü tarayıcılar genelde
               geçer. Şunları deneyin:{" "}
-              <a
-                className="link link-primary"
-                href="https://github.com/PhialsBasement/LibreCrawl"
-                target="_blank"
-                rel="noreferrer"
-              >
-                LibreCrawl
-              </a>{" "}
+              <SafeExternalLink
+                className="link link-primary inline-flex items-center gap-0.5"
+                url="https://github.com/PhialsBasement/LibreCrawl"
+                label="LibreCrawl"
+              />{" "}
               (ücretsiz, açık kaynak) ya da{" "}
-              <a
-                className="link link-primary"
-                href="https://www.screamingfrog.co.uk/seo-spider/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Screaming Frog
-              </a>{" "}
+              <SafeExternalLink
+                className="link link-primary inline-flex items-center gap-0.5"
+                url="https://www.screamingfrog.co.uk/seo-spider/"
+                label="Screaming Frog"
+              />{" "}
               (500 adrese kadar ücretsiz).
             </p>
           </div>

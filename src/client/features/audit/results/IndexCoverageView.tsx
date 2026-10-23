@@ -119,7 +119,13 @@ export function IndexCoverageView({
         `${formatNumber(result.inspected)} sayfa soruldu.${left}${quota}`,
       );
     },
-    onError: (error) => toast.error(getStandardErrorMessage(error)),
+    onError: (error) =>
+      toast.error(
+        getStandardErrorMessage(
+          error,
+          "Google'daki durum sorulamadı. Birazdan tekrar deneyin.",
+        ),
+      ),
     // URL Inspection spends the daily quota whether or not the call succeeds.
     onSettled: () =>
       queryClient.invalidateQueries({ queryKey: ["quotaStatus", projectId] }),

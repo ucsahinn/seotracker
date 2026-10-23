@@ -1,5 +1,6 @@
 import { HelpTip } from "@/client/components/HelpTip";
 import { SITE_URL } from "@/client/features/support/links";
+import { getSafeExternalUrl } from "@/client/components/table/url";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   ArrowUpCircle,
@@ -41,7 +42,9 @@ export function UpdateSection({ version }: { version: string }) {
     onSuccess: (result) => {
       queryClient.setQueryData(STATUS_KEY, result);
       if (result.outcome === "unreachable") {
-        toast.error("GitHub'a ulaşılamadı");
+        toast.error(
+          "GitHub'a ulaşılamadı. İnternet bağlantınızı kontrol edip tekrar deneyin.",
+        );
       } else if (result.outcome === "error") {
         toast.error(
           `GitHub'a ulaşılamadı; son bilinen sürüm ${result.latestVersion}`,
@@ -54,14 +57,30 @@ export function UpdateSection({ version }: { version: string }) {
         toast.success("En güncel sürümü kullanıyorsunuz");
       }
     },
-    onError: (error) => toast.error(getStandardErrorMessage(error)),
+    onError: (error) =>
+      toast.error(
+        getStandardErrorMessage(
+          error,
+          "Güncelleme kontrol edilemedi. Birazdan tekrar deneyin.",
+        ),
+      ),
   });
 
   const toggle = useMutation({
     mutationFn: (enabled: boolean) =>
       setUpdateCheckEnabled({ data: { enabled } }),
-    onSuccess: (result) => queryClient.setQueryData(STATUS_KEY, result),
-    onError: (error) => toast.error(getStandardErrorMessage(error)),
+    onSuccess: (result, enabled) => {
+      queryClient.setQueryData(STATUS_KEY, result);
+      toast.success(
+        enabled
+          ? "Güncelleme kontrolü açıldı"
+          : "Güncelleme kontrolü kapatıldı",
+      );
+    },
+    onError: (error) =>
+      toast.error(
+        getStandardErrorMessage(error, "Ayar kaydedilemedi. Tekrar deneyin."),
+      ),
   });
 
   return (
@@ -105,15 +124,18 @@ export function UpdateSection({ version }: { version: string }) {
             <p className="text-sm">
               <strong>{status.latestVersion}</strong> yayımlandı.
             </p>
-            <a
-              href={status.releaseUrl}
-              target="_blank"
-              rel="noreferrer noopener"
-              className="inline-flex items-center gap-1 text-sm font-medium underline underline-offset-2"
-            >
-              Değişiklikler
-              <ExternalLink className="size-3" />
-            </a>
+            {/* The release URL comes from GitHub's API; only http(s) is linked. */}
+            {getSafeExternalUrl(status.releaseUrl) ? (
+              <a
+                href={getSafeExternalUrl(status.releaseUrl) ?? undefined}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="inline-flex items-center gap-1 text-sm font-medium underline underline-offset-2"
+              >
+                Değişiklikler
+                <ExternalLink className="size-3" />
+              </a>
+            ) : null}
           </div>
           {status.installKind === "windows" ? (
             <p className="text-xs text-subtle">

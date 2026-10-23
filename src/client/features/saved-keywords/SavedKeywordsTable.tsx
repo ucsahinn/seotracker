@@ -54,7 +54,7 @@ export function SavedKeywordsTable({
   hasActiveFilters: boolean;
   onRowSelectionChange: OnChangeFn<RowSelectionState>;
   onSortingChange: OnChangeFn<SortingState>;
-  onRemove: (id: string) => void;
+  onRemove: (row: SavedKeywordRow) => void;
   /** Opens Search Performance filtered to this keyword. */
   onInspect: (keyword: string) => void;
 }) {
@@ -157,7 +157,7 @@ export function SavedKeywordsTable({
                 label: "Kelimeyi sil",
                 icon: Trash2,
                 destructive: true,
-                onSelect: () => onRemove(row.original.id),
+                onSelect: () => onRemove(row.original),
               },
             ]}
           />

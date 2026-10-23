@@ -8,11 +8,19 @@ import { getInstallPrompt } from "./agentSetupPrompt";
  * Copies the from-scratch install prompt.
  *
  * Disabled until the connection query answers: the prompt's token wording is
- * chosen from it, and `undefined` reads as "no token", so an early click
- * would copy the wrong variant onto a protected install. The query key is the
+ * chosen from it, and `undefined` reads as "no token", so an early click --
+ * or one after a failed read -- would copy the wrong variant onto a
+ * protected install. The query key is the
  * Ajan kurulumu page's, so both screens share one request.
  */
-export function InstallPromptButton({ label }: { label: string }) {
+export function InstallPromptButton({
+  label,
+  primary = false,
+}: {
+  label: string;
+  /** The page's lead action when no agent has connected yet. */
+  primary?: boolean;
+}) {
   const connection = useQuery({
     queryKey: ["agentConnection"],
     queryFn: () => getAgentConnection(),
@@ -24,7 +32,8 @@ export function InstallPromptButton({ label }: { label: string }) {
 
   return (
     <CopyButton
-      disabled={connection.isPending}
+      primary={primary}
+      disabled={connection.data === undefined}
       value={getInstallPrompt(origin, {
         tokenConfigured: connection.data?.tokenConfigured,
         installKind: connection.data?.installKind,

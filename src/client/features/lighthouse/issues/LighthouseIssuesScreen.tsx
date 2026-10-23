@@ -2,12 +2,13 @@ import { LighthouseIssueList } from "@/client/features/lighthouse/issues/Lightho
 import { TabPanel } from "@/client/components/Tabs";
 import { PageShell } from "@/client/components/PageShell";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { AlertCircle, TriangleAlert } from "lucide-react";
+import { AlertCircle, RotateCw, TriangleAlert } from "lucide-react";
 import { toast } from "sonner";
 import {
   exportAuditLighthouseIssues,
   getAuditLighthouseIssues,
 } from "@/serverFunctions/lighthouse";
+import { copyText } from "@/client/lib/copyText";
 import { downloadFile } from "@/client/lib/download";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import { exportTableToSheets } from "@/client/lib/exportToSheets";
@@ -89,6 +90,7 @@ export function LighthouseIssuesScreen(props: LighthouseIssuesScreenProps) {
         onBack={onBack}
         scannedAt={issuesQuery.data?.createdAt}
         finalUrl={issuesQuery.data?.finalUrl}
+        loading={issuesQuery.isPending}
         scores={issuesQuery.data?.scores}
         metrics={issuesQuery.data?.metrics}
         fieldData={issuesQuery.data?.fieldData}
@@ -99,9 +101,18 @@ export function LighthouseIssuesScreen(props: LighthouseIssuesScreenProps) {
       <div className="card bg-base-100 border border-base-300">
         <div className="card-body gap-4">
           {issuesQuery.isError ? (
-            <div className="alert alert-error">
+            <div className="alert alert-error" role="alert">
               <AlertCircle className="size-4" />
               <span>{issuesErrorMessage}</span>
+              <button
+                type="button"
+                className="btn btn-sm gap-1.5"
+                disabled={issuesQuery.isFetching}
+                onClick={() => void issuesQuery.refetch()}
+              >
+                <RotateCw className="size-4" aria-hidden />
+                Tekrar dene
+              </button>
             </div>
           ) : null}
 
@@ -189,9 +200,13 @@ function useLighthouseIssuesActions({
       downloadFile(exported.content, exported.filename, "application/json");
       toast.success("İndirme başladı");
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "Veri dışa aktarılamadı";
-      toast.error(message);
+      // The server sends a bare code ("INTERNAL_ERROR"); never toast it raw.
+      toast.error(
+        getStandardErrorMessage(
+          error,
+          "Veri dışa aktarılamadı. Birazdan tekrar deneyin.",
+        ),
+      );
     }
   };
 
@@ -217,15 +232,18 @@ function useLighthouseIssuesActions({
   };
 
   const runCopy = async (data: ExportPayload, toastMessage: string) => {
+    let content: string;
     try {
-      const exported = await exportMutation.mutateAsync(data);
-      await navigator.clipboard.writeText(exported.content);
-      toast.success(toastMessage);
+      content = (await exportMutation.mutateAsync(data)).content;
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "Veri kopyalanamadı";
-      toast.error(message);
+      toast.error(
+        getStandardErrorMessage(error, "Veri kopyalanamadı. Tekrar deneyin."),
+      );
+      return;
     }
+    // copyText guards the clipboard API, which is missing on an http LAN
+    // origin and used to surface as an English TypeError in the toast.
+    await copyText(content, toastMessage);
   };
 
   return {

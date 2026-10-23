@@ -15,6 +15,7 @@ import { SavedKeywordsFilters } from "@/client/features/saved-keywords/SavedKeyw
 import { SavedKeywordsHeader } from "@/client/features/saved-keywords/SavedKeywordsHeader";
 import {
   DeleteSavedKeywordsModal,
+  type RemovalTarget,
   RemoveSavedKeywordsError,
 } from "@/client/features/saved-keywords/SavedKeywordsModals";
 import { TablePagination } from "@/client/components/table/TablePagination";
@@ -62,7 +63,7 @@ function SavedKeywordsPage() {
   const navigate = useNavigate();
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [removeError, setRemoveError] = useState<string | null>(null);
-  const [showConfirm, setShowConfirm] = useState(false);
+  const [removing, setRemoving] = useState<RemovalTarget | null>(null);
   const [showTagModal, setShowTagModal] = useState(false);
 
   const filters = useSavedKeywordsFilters();
@@ -188,7 +189,7 @@ function SavedKeywordsPage() {
     projectId,
     onRemoved: () => {
       setRowSelection({});
-      setShowConfirm(false);
+      setRemoving(null);
       setRemoveError(null);
     },
     onRemoveFailed: setRemoveError,
@@ -333,7 +334,7 @@ function SavedKeywordsPage() {
               hasActiveFilters={hasActiveFilters}
               onRowSelectionChange={setRowSelection}
               onSortingChange={handleSortingChange}
-              onRemove={(id) => removeMutation.mutate([id])}
+              onRemove={setRemoving}
               /*
                * The other end of the one-way trip. Keywords are saved from
                * Search Performance and the empty state says so, but there
@@ -380,16 +381,16 @@ function SavedKeywordsPage() {
         onOpenTags={() => setShowTagModal(true)}
         onExportCsv={() => exporter.exportSelectionCsv(selectedRows)}
         onExportSheets={() => void exporter.exportSelectionSheets(selectedRows)}
-        onDelete={() => setShowConfirm(true)}
+        onDelete={() => setRemoving("selection")}
         onClear={() => setRowSelection({})}
       />
 
-      {showConfirm ? (
+      {removing ? (
         <DeleteSavedKeywordsModal
-          selectedCount={selectedCount}
-          isPending={removeMutation.isPending}
-          onClose={() => setShowConfirm(false)}
-          onConfirm={() => removeMutation.mutate(selectedIds)}
+          target={removing}
+          selectedIds={selectedIds}
+          removal={removeMutation}
+          onClose={() => setRemoving(null)}
         />
       ) : null}
 

@@ -267,6 +267,17 @@ html {
   }
 }
 
+/* A disabled primary button ("Kaydet" with nothing changed yet) must still
+   read as a button with a label. DaisyUI fades it to ~20% ink, which on the
+   light surface is close to invisible; three settings sections patched this
+   per call site. This is the same look, once, for every primary button. */
+.btn-primary:is(:disabled, .btn-disabled) {
+  background-color: var(--color-base-200);
+  border-color: var(--control-border);
+  color: var(--text-muted);
+  opacity: 1;
+}
+
 /* Dark mode: neutral interactive surfaces should lift above the panel, not
    sink below it. DaisyUI derives default buttons and the tabs-box well from
    base-200, which is darker than the base-100 content panel in dark mode,

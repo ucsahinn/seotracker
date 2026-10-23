@@ -64,7 +64,13 @@ export function GoogleOAuthClientSection() {
       await invalidate();
       toast.success("Google erişim anahtarı kaydedildi");
     },
-    onError: (error) => toast.error(getStandardErrorMessage(error)),
+    onError: (error) =>
+      toast.error(
+        getStandardErrorMessage(
+          error,
+          "Google erişim anahtarı kaydedilemedi. Değerleri kontrol edip tekrar deneyin.",
+        ),
+      ),
   });
 
   const clear = useMutation({
@@ -79,7 +85,12 @@ export function GoogleOAuthClientSection() {
     },
     onError: (error) => {
       setConfirmingClear(false);
-      toast.error(getStandardErrorMessage(error));
+      toast.error(
+        getStandardErrorMessage(
+          error,
+          "Google erişim anahtarı silinemedi. Tekrar deneyin.",
+        ),
+      );
     },
   });
 
@@ -305,7 +316,7 @@ export function GoogleOAuthClientSection() {
           <div className="flex gap-2">
             <button
               type="submit"
-              className="btn btn-sm btn-primary disabled:border-[var(--control-border)] disabled:bg-base-200 disabled:text-muted disabled:opacity-100"
+              className="btn btn-sm btn-primary"
               disabled={!canSave || save.isPending}
             >
               Kaydet

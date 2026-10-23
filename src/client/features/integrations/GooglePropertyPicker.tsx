@@ -159,13 +159,18 @@ export function GooglePropertyPicker({
             </label>
             <div className="max-h-72 overflow-y-auto overscroll-contain p-1.5">
               {loading ? (
-                <p
+                <div
                   role="status"
-                  className="flex items-center gap-2 p-3 text-sm text-muted"
+                  aria-label="Mülkler yükleniyor"
+                  className="space-y-1.5 p-1.5"
                 >
-                  <span className="loading loading-spinner loading-xs" />
-                  Mülkler yükleniyor…
-                </p>
+                  {[0, 1, 2].map((row) => (
+                    <div key={row} className="space-y-1.5 px-2 py-1.5">
+                      <div className="skeleton h-4 w-3/5" />
+                      <div className="skeleton h-3 w-2/5" />
+                    </div>
+                  ))}
+                </div>
               ) : error ? (
                 <div role="alert" className="p-3 text-sm">
                   <p className="text-[var(--ink-error)]">

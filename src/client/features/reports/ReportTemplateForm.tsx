@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import { useForm } from "@tanstack/react-form";
 import { useMutation } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
@@ -58,6 +59,9 @@ export function ReportTemplateForm({
         is_update: !result.created,
         source: "app",
       });
+      toast.success(
+        result.created ? "Şablon oluşturuldu" : "Şablon kaydedildi",
+      );
       onSaved();
     },
   });
@@ -139,7 +143,7 @@ export function ReportTemplateForm({
         </form.Field>
 
         {error ? (
-          <div className="alert alert-error">
+          <div className="alert alert-error" role="alert">
             <span className="text-sm">{error}</span>
           </div>
         ) : null}

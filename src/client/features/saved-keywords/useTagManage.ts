@@ -41,7 +41,9 @@ export function useTagManage(projectId: string) {
       });
       await invalidate();
       if (result.success) toast.success("Etiket güncellendi");
-      else toast.error("Etiket güncellenemedi");
+      // `success: false` means the tag was gone (deleted from another tab);
+      // the list has just been refetched, so say that rather than "failed".
+      else toast.error("Etiket artık yok. Liste yenilendi.");
     } catch (error) {
       toast.error(getStandardErrorMessage(error, "Etiket güncellenemedi"));
     } finally {
@@ -57,7 +59,7 @@ export function useTagManage(projectId: string) {
       });
       await invalidate();
       if (!result.success) {
-        toast.error("Etiket silinemedi");
+        toast.error("Etiket zaten silinmiş. Liste yenilendi.");
         return false;
       }
       toast.success("Etiket silindi");

@@ -33,6 +33,7 @@ export function LighthouseIssuesHeader({
   fieldData,
   originFieldData,
   severityCounts,
+  loading = false,
 }: {
   backLabel: string;
   onBack: () => void;
@@ -43,6 +44,8 @@ export function LighthouseIssuesHeader({
   fieldData?: LighthouseFieldData | null;
   originFieldData?: LighthouseFieldData | null;
   severityCounts: { critical: number; warning: number; info: number };
+  /** Only while the read is in flight; a failed read shows no placeholder. */
+  loading?: boolean;
 }) {
   return (
     <>
@@ -51,9 +54,11 @@ export function LighthouseIssuesHeader({
           &larr; {backLabel} sayfasına dön
         </button>
         <span className="text-xs text-muted">
-          {scannedAt
-            ? `${formatDateTime(scannedAt)} tarihinde tarandı`
-            : "Sorunlar okunuyor…"}
+          {scannedAt ? (
+            `${formatDateTime(scannedAt)} tarihinde tarandı`
+          ) : loading ? (
+            <span className="skeleton inline-block h-3 w-36 align-middle" />
+          ) : null}
         </span>
       </div>
 
@@ -63,9 +68,11 @@ export function LighthouseIssuesHeader({
             <h1 className="text-2xl font-semibold">
               Sayfa hızı sorunları (Lighthouse)
             </h1>
-            <p className="text-sm text-muted break-all">
-              {finalUrl ?? "Adres yükleniyor…"}
-            </p>
+            {finalUrl ? (
+              <p className="text-sm text-muted break-all">{finalUrl}</p>
+            ) : loading ? (
+              <div className="skeleton h-4 w-64 max-w-full" />
+            ) : null}
           </div>
           <LighthouseIssuesSummary
             scores={scores}

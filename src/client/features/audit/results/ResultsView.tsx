@@ -1,3 +1,4 @@
+import { SafeExternalLink } from "@/client/components/SafeExternalLink";
 import { ScoreCard } from "@/client/features/audit/results/ScoreCard";
 import type { getAuditIndexCoverage } from "@/serverFunctions/indexCoverage";
 
@@ -155,23 +156,17 @@ export function ResultsView({
           Sitenin bot koruması tarayıcımızı durdurdu, o sayfalar denetlenemedi.
           Henüz bir çözümümüz yok. Masaüstü tarayıcılar sizin bilgisayarınızdan
           çalıştığı için genelde geçer. Şunları deneyin:{" "}
-          <a
-            className="link link-primary"
-            href="https://github.com/PhialsBasement/LibreCrawl"
-            target="_blank"
-            rel="noreferrer"
-          >
-            LibreCrawl
-          </a>{" "}
+          <SafeExternalLink
+            className="link link-primary inline-flex items-center gap-0.5"
+            url="https://github.com/PhialsBasement/LibreCrawl"
+            label="LibreCrawl"
+          />{" "}
           (ücretsiz, açık kaynak) ya da{" "}
-          <a
-            className="link link-primary"
-            href="https://www.screamingfrog.co.uk/seo-spider/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Screaming Frog
-          </a>{" "}
+          <SafeExternalLink
+            className="link link-primary inline-flex items-center gap-0.5"
+            url="https://www.screamingfrog.co.uk/seo-spider/"
+            label="Screaming Frog"
+          />{" "}
           (500 adrese kadar ücretsiz).
         </CrawlWarning>
       )}

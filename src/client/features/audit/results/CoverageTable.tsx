@@ -5,6 +5,7 @@ import { coverageStateLabel } from "@/shared/gsc-coverage-states";
 import { TablePagination } from "@/client/components/table/TablePagination";
 import { formatCount, formatDateTime } from "@/client/lib/format";
 import { UrlCell } from "@/client/components/table/UrlCell";
+import { getSafeExternalUrl } from "@/client/components/table/url";
 import { severityChip } from "@/client/features/audit/shared";
 import { coverageReasons } from "@/client/features/audit/results/coverageReasons";
 import type { getAuditIndexCoverage } from "@/serverFunctions/indexCoverage";
@@ -145,9 +146,14 @@ export function CoverageTable({
                       : "-"}
                   </td>
                   <td>
-                    {row.inspectionLink ? (
+                    {/* Google's own link, but still a value from the wire:
+                        only an http(s) URL becomes an href. */}
+                    {row.inspectionLink &&
+                    getSafeExternalUrl(row.inspectionLink) ? (
                       <a
-                        href={row.inspectionLink}
+                        href={
+                          getSafeExternalUrl(row.inspectionLink) ?? undefined
+                        }
                         target="_blank"
                         rel="noreferrer noopener"
                         /*
@@ -202,8 +208,11 @@ function VerdictBadge({
 }) {
   if (error) {
     return (
-      <span className={`badge badge-sm ${severityChip.error}`} title={error}>
-        Hata
+      <span
+        className={`badge badge-sm ${severityChip.error}`}
+        title={`Google bu adres için yanıt vermedi (${error}). Google'da durumunu kontrol et düğmesiyle yeniden sorabilirsiniz.`}
+      >
+        Sorulamadı
       </span>
     );
   }

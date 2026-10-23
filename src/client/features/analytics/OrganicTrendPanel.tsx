@@ -2,6 +2,7 @@ import { GA4_HELP } from "@/client/features/analytics/metricHelp";
 import { HeaderHelpLabel } from "@/client/features/saved-keywords/components/HeaderHelpLabel";
 import { fractionalChange } from "@/shared/delta";
 import { useQuery } from "@tanstack/react-query";
+import { QueryErrorState } from "@/client/components/QueryErrorState";
 import {
   Area,
   AreaChart,
@@ -51,9 +52,21 @@ export function OrganicTrendPanel({
   });
 
   if (query.isPending) return <div className="skeleton h-40" aria-busy />;
-  // Not connected, or a report that cannot succeed: the tables below say so
-  // in their own words, and a second copy of that message helps nobody.
-  if (query.isError || !query.data?.connected) return null;
+  // A failure is said here too: the tables below read other queries, and can
+  // succeed while this one fails, which left a silent gap above them.
+  if (query.isError)
+    return (
+      <section className="rounded-box border border-base-300 bg-base-100">
+        <QueryErrorState
+          compact
+          title="Organik oturum grafiği yüklenemedi"
+          error={query.error}
+          onRetry={() => void query.refetch()}
+        />
+      </section>
+    );
+  // Not connected: the tables below say so in their own words.
+  if (!query.data?.connected) return null;
 
   const { totals, prevTotals, trend, previousDateRange } = query.data;
   /* The same sentence the search-performance totals use, so a reader who

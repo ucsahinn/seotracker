@@ -45,7 +45,13 @@ export function PageSpeedKeySection() {
       await queryClient.invalidateQueries({ queryKey: STATUS_KEY });
       toast.success("PageSpeed anahtarı kaydedildi");
     },
-    onError: (error) => toast.error(getStandardErrorMessage(error)),
+    onError: (error) =>
+      toast.error(
+        getStandardErrorMessage(
+          error,
+          "PageSpeed anahtarı kaydedilemedi. Anahtarı kontrol edip tekrar deneyin.",
+        ),
+      ),
   });
 
   const clear = useMutation({
@@ -59,7 +65,12 @@ export function PageSpeedKeySection() {
     },
     onError: (error) => {
       setConfirmingClear(false);
-      toast.error(getStandardErrorMessage(error));
+      toast.error(
+        getStandardErrorMessage(
+          error,
+          "PageSpeed anahtarı silinemedi. Tekrar deneyin.",
+        ),
+      );
     },
   });
 
@@ -174,7 +185,7 @@ export function PageSpeedKeySection() {
           <div className="flex gap-2">
             <button
               type="submit"
-              className="btn btn-primary btn-sm disabled:border-[var(--control-border)] disabled:bg-base-200 disabled:text-muted disabled:opacity-100"
+              className="btn btn-primary btn-sm"
               disabled={!canSave}
             >
               Kaydet

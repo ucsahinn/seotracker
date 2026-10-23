@@ -9,13 +9,12 @@ import { useState, type ReactNode } from "react";
 import { ShieldAlert } from "lucide-react";
 import { getAuthMode } from "@/lib/auth-mode";
 import { captureClientEvent } from "@/client/lib/observability";
-import {
-  agentUpdatePrompt,
-  getAgentSetupPrompt,
-  getCodexSetupPrompt,
-} from "@/client/features/ai-mcp/agentSetupPrompt";
+import { agentUpdatePrompt } from "@/client/features/ai-mcp/agentSetupPrompt";
 import { CopyButton } from "@/client/components/CopyButton";
-import { InstallPromptButton } from "@/client/features/ai-mcp/InstallPromptButton";
+import {
+  ConnectAgentCard,
+  InstallCard,
+} from "@/client/features/ai-mcp/SetupCards";
 
 // The public skills shipped under .agents/skills/. Everything that needed a
 // paid data provider went with the features behind it.
@@ -42,26 +41,6 @@ const SKILLS = [
     "Yukarıdakilerden birinin sonucunu Raporlar sayfasına kaydeder.",
   ],
 ];
-// What the segmented control offers, and how each agent invokes a skill.
-// Claude Code and "Diğer" copy the same general prompt; only the hint differs.
-const AGENT_CHOICES = [
-  {
-    id: "claude",
-    label: "Claude Code",
-    hint: "Becerileri /seo-audit diye çağırırsınız.",
-  },
-  {
-    id: "codex",
-    label: "Codex",
-    hint: "Komut, Codex'in kendi bağlama adımlarını kullanır. Becerileri $seo-audit diye çağırırsınız.",
-  },
-  {
-    id: "other",
-    label: "Diğer",
-    hint: "Genel komut. Beceriyi aracınızın kendi yöntemiyle çağırın.",
-  },
-] as const;
-type AgentChoice = (typeof AGENT_CHOICES)[number]["id"];
 const AI_TABS = [
   { id: "setup", label: "Ajanınızı kurun" },
   { id: "skills", label: "Beceriler" },
@@ -78,7 +57,6 @@ function AiPage() {
       : window.location.origin;
   const mcpUrl = `${origin}/mcp`;
   const [tab, setTab] = useState<"setup" | "skills">("setup");
-  const [agent, setAgent] = useState<AgentChoice>("claude");
   /*
    * Two states, and the past tense is deliberate. The integration cards say
    * "Bağlı" because a credential is sitting in a row; MCP here is stateless
@@ -126,17 +104,9 @@ function AiPage() {
    * would send an operator whose agent works fine back through setup.
    */
   const statusUnknown = connection.isError || connection.data === undefined;
-  const prompt = getAgentSetupPrompt(origin, {
-    tokenConfigured: connection.data?.tokenConfigured,
-    installKind: connection.data?.installKind,
-  });
-
-  const codexPrompt = getCodexSetupPrompt(origin, {
-    tokenConfigured: connection.data?.tokenConfigured,
-    installKind: connection.data?.installKind,
-  });
-  const choice = AGENT_CHOICES.find((item) => item.id === agent);
-  const isCodex = agent === "codex";
+  // No agent has called in yet (or the read failed, where the first-time
+  // path is the safer guess): the from-scratch card leads.
+  const leadWithInstall = lastCallAt === null;
 
   return (
     <PageShell width="reading">
@@ -200,114 +170,80 @@ function AiPage() {
 
       {tab === "setup" ? (
         <TabPanel group="ai" value="setup">
-          <div className="enter mt-6 space-y-5">
-            <section className="rounded-box border border-base-300 bg-base-100 p-5">
-              <h2 className="text-base font-semibold">Ajanınızı bağlayın</h2>
-              <p className="mt-2 text-sm leading-relaxed text-muted">
-                Komutu ajanınıza yapıştırın. Ajan seowatcher&apos;ı bağlar, SEO
-                becerilerini kurar, elle yapacağınız adımlarda size yol
-                gösterir.
-              </p>
-              <div
-                className="join mt-4"
-                role="radiogroup"
-                aria-label="Hangi ajanı kullanıyorsunuz?"
-              >
-                {AGENT_CHOICES.map((item) => (
-                  <button
-                    key={item.id}
-                    type="button"
-                    role="radio"
-                    aria-checked={item.id === agent}
-                    className={`btn join-item btn-sm ${
-                      item.id === agent ? "btn-active" : ""
-                    }`}
-                    onClick={() => setAgent(item.id)}
-                  >
-                    {item.label}
-                  </button>
-                ))}
+          {/*
+           * Order follows what the page knows. Until an agent has reached this
+           * install, most visitors are setting it up for the first time, and
+           * the from-scratch card used to sit second, where they scrolled
+           * past it into the shorter "connect" path and stalled at Google.
+           * So it leads, with the page's only primary button; once an agent
+           * has called in, connecting (or reconnecting) is the common errand
+           * and the order flips. While the first read is in flight a
+           * skeleton holds the place, so a connected operator never sees the
+           * cards swap under the cursor.
+           */}
+          {connection.isPending ? (
+            <div
+              className="enter mt-6 space-y-5"
+              role="status"
+              aria-label="Kurulum adımları yükleniyor"
+            >
+              <div className="space-y-3 rounded-box border border-base-300 bg-base-100 p-5">
+                <div className="skeleton h-4 w-40" />
+                <div className="skeleton h-3 w-full" />
+                <div className="skeleton h-3 w-4/5" />
+                <div className="skeleton mt-2 h-11 w-64" />
               </div>
-              <p className="mt-2 text-xs text-muted">
-                {choice?.hint}
-                {isCodex
-                  ? " Ajan bağlantıyı kurar, becerileri kopyalar ve doğrular. Parolayı sohbete yazmaz, bilgisayarınızdan okur."
-                  : ""}
-              </p>
-              <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3 [&>button]:h-11 [&>button]:gap-2 [&>button]:text-sm">
+              <div className="space-y-3 rounded-box border border-base-300 bg-base-100 p-4">
+                <div className="skeleton h-4 w-32" />
+                <div className="skeleton h-3 w-3/4" />
+              </div>
+            </div>
+          ) : (
+            <div className="enter mt-6 space-y-5">
+              {/* DOM order, not CSS `order`: keyboard and screen-reader users
+                meet the cards in the same sequence as everyone else. */}
+              {leadWithInstall ? (
+                <>
+                  <InstallCard lead />
+                  <ConnectAgentCard
+                    lead={false}
+                    connection={connection.data}
+                    connected={false}
+                    origin={origin}
+                  />
+                </>
+              ) : (
+                <>
+                  <ConnectAgentCard
+                    lead
+                    connection={connection.data}
+                    connected={lastCallAt !== null}
+                    origin={origin}
+                  />
+                  <InstallCard lead={false} />
+                </>
+              )}
+
+              <section className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 rounded-box border border-base-300 bg-base-100 p-4">
+                <div className="min-w-0 flex-1 basis-72">
+                  <h2 className="text-sm font-semibold">
+                    Becerileri güncelleyin
+                  </h2>
+                  <p className="mt-1 text-sm leading-relaxed text-muted">
+                    Ajanınızı daha önce kurduysanız güncelleme komutunu
+                    yapıştırın. Beceriler yenilenir, bağlantı ayarlarınız ve
+                    kendi düzenlemeleriniz olduğu gibi kalır.
+                  </p>
+                </div>
                 <CopyButton
-                  primary
-                  /*
-                   * Disabled for the first roundtrip: the prompt's auth
-                   * sentence is chosen from this query, and `undefined`
-                   * reads as "no token", so a click inside that window
-                   * would copy the wrong variant onto a protected install.
-                   */
-                  disabled={connection.data === undefined}
-                  value={isCodex ? codexPrompt : prompt}
-                  label="Kurulum komutunu kopyala"
-                  successMessage="Kurulum komutu kopyalandı"
-                  onCopy={() =>
-                    captureClientEvent(
-                      isCodex
-                        ? "mcp:codex_prompt_copy"
-                        : "mcp:setup_prompt_copy",
-                    )
-                  }
+                  value={agentUpdatePrompt}
+                  label="Güncelleme komutunu kopyala"
+                  successMessage="Güncelleme komutu kopyalandı"
+                  onCopy={() => captureClientEvent("mcp:update_prompt_copy")}
                 />
-              </div>
-              <p className="mt-5 border-t border-base-300 pt-4 text-sm leading-relaxed text-muted">
-                Bağlandıktan sonra ajanınızdan <code>seo-coach</code> becerisini
-                kullanmasını isteyin; sıradaki adımı birlikte seçersiniz.{" "}
-                {/* Turns the grey pill from a verdict into a progress
-                      marker, and says it next to the button that resolves
-                      it rather than next to the badge that reports it. */}
-                {lastCallAt ? null : (
-                  <>
-                    Ajanınız seowatcher&apos;a ilk kez istek attığında
-                    yukarıdaki durum değişir.
-                  </>
-                )}
-              </p>
-              <p className="mt-2 text-xs text-muted">
-                Claude Code, Codex, Cursor, ChatGPT ve MCP destekleyen diğer
-                uygulamalarla çalışır.
-              </p>
-            </section>
-
-            <section className="rounded-box border border-base-300 bg-base-100 p-4">
-              <h2 className="text-sm font-semibold">Sıfırdan kurulum</h2>
-              <p className="mt-2 text-sm leading-relaxed text-muted">
-                Yeni kurduysanız buradan başlayın. Ajanınız kurulumu, Google
-                bağlantısını, PageSpeed anahtarını ve ilk projenizi sırayla
-                kontrol eder. Windows paketini de Docker&apos;ı da tanır. Google
-                Cloud&apos;daki adımları siz yaparsınız. Anahtarlar sohbete
-                değil, yalnızca Ayarlar&apos;a girilir.
-              </p>
-              <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-3">
-                <InstallPromptButton label="Sıfırdan kurulum komutunu kopyala" />
-              </div>
-            </section>
-
-            <section className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 rounded-box border border-base-300 bg-base-100 p-4">
-              <div className="min-w-0 flex-1 basis-72">
-                <h2 className="text-sm font-semibold">
-                  Becerileri güncelleyin
-                </h2>
-                <p className="mt-1 text-sm leading-relaxed text-muted">
-                  Ajanınızı daha önce kurduysanız güncelleme komutunu
-                  yapıştırın. Beceriler yenilenir, bağlantı ayarlarınız ve kendi
-                  düzenlemeleriniz olduğu gibi kalır.
-                </p>
-              </div>
-              <CopyButton
-                value={agentUpdatePrompt}
-                label="Güncelleme komutunu kopyala"
-                successMessage="Güncelleme komutu kopyalandı"
-                onCopy={() => captureClientEvent("mcp:update_prompt_copy")}
-              />
-            </section>
-          </div>
+              </section>
+            </div>
+          )}
 
           {getAuthMode(import.meta.env.AUTH_MODE) === "cloudflare_access" ? (
             <div className="alert alert-warning mt-8 text-sm" role="alert">

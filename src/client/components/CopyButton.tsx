@@ -8,6 +8,7 @@ export function CopyButton({
   label = "Kopyala",
   iconOnly = false,
   primary = false,
+  secondary = false,
   small = false,
   disabled = false,
   onCopy,
@@ -17,6 +18,8 @@ export function CopyButton({
   label?: string;
   iconOnly?: boolean;
   primary?: boolean;
+  /** A full-size neutral button, for the second card when another leads. */
+  secondary?: boolean;
   /** `btn-sm`, for a page header where it sits beside other small actions. */
   small?: boolean;
   /** For a value that is not settled yet -- copying it early would copy the wrong thing. */
@@ -67,9 +70,11 @@ export function CopyButton({
       className={
         primary
           ? `btn btn-primary ${small ? "btn-sm" : ""}`
-          : // `--control-border`, not the panel hairline: this is a control on
-            // base-100, so the border is the only thing saying so.
-            "inline-flex items-center gap-1.5 rounded-field border border-[var(--control-border)] bg-base-100 px-2 py-1 text-xs font-medium text-muted transition-colors hover:bg-base-300/50 hover:text-base-content disabled:opacity-50"
+          : secondary
+            ? `btn ${small ? "btn-sm" : ""}`
+            : // `--control-border`, not the panel hairline: this is a control on
+              // base-100, so the border is the only thing saying so.
+              "inline-flex items-center gap-1.5 rounded-field border border-[var(--control-border)] bg-base-100 px-2 py-1 text-xs font-medium text-muted transition-colors hover:bg-base-300/50 hover:text-base-content disabled:opacity-50"
       }
     >
       {copied ? (

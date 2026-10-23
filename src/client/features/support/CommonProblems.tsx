@@ -140,9 +140,10 @@ export function CommonProblems({
           pendingNote
         ) : windows ? (
           <p>
-            Windows paketi 3001 doluysa 3002 ile 3010 arasında boş bir numara
-            seçer ve simgenin yazısında gösterir. Belirli bir numara
-            istiyorsanız <strong>Veri klasörünü aç</strong> deyip{" "}
+            Windows paketi 3001 doluysa o açılış için 3002 ile 3010 arasında boş
+            bir numara kullanır; bunu bir bildirimle ve simgenin yazısında
+            söyler. Numarayı kalıcı yapmak istiyorsanız{" "}
+            <strong>Veri klasörünü aç</strong> deyip{" "}
             <code className="text-xs">config.json</code> içindeki{" "}
             <code className="text-xs">&quot;port&quot;</code> değerini
             değiştirin, sonra <strong>Yeniden başlat</strong> deyin.

@@ -80,6 +80,8 @@ export function ProjectGeneralSettings({ projectId }: { projectId: string }) {
 function GeneralSection({ project }: { project: ProjectSummary }) {
   const queryClient = useQueryClient();
   const [name, setName] = React.useState(project.name);
+  const [nameError, setNameError] = React.useState<string | null>(null);
+  const nameInput = React.useRef<HTMLInputElement>(null);
   const [domain, setDomain] = React.useState(project.domain ?? "");
   const [market, setMarket] = React.useState({
     locationCode: project.locationCode,
@@ -127,7 +129,10 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
     event.preventDefault();
     if (updateMutation.isPending) return;
     if (!name.trim()) {
-      toast.error("Proje adı gerekli");
+      // Next to the field, like the create modal: a toast in the corner
+      // left the operator hunting for which input it meant.
+      setNameError("Proje adı gerekli");
+      nameInput.current?.focus();
       return;
     }
     updateMutation.mutate();
@@ -149,13 +154,30 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
             </HelpTip>
           </span>
           <input
+            ref={nameInput}
             type="text"
             value={name}
-            onChange={(event) => setName(event.target.value)}
+            onChange={(event) => {
+              setName(event.target.value);
+              setNameError(null);
+            }}
             aria-label="Ad"
             maxLength={120}
-            className="input input-bordered w-full"
+            aria-invalid={nameError ? true : undefined}
+            aria-describedby={
+              nameError ? "project-settings-name-error" : undefined
+            }
+            className={`input input-bordered w-full ${nameError ? "input-error" : ""}`}
           />
+          {nameError ? (
+            <span
+              id="project-settings-name-error"
+              role="alert"
+              className="text-xs text-[var(--ink-error)]"
+            >
+              {nameError}
+            </span>
+          ) : null}
         </label>
 
         <label className="flex flex-col gap-1.5 text-sm">
@@ -187,10 +209,18 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
         <div className="flex justify-end">
           <button
             type="submit"
-            className="btn btn-primary btn-sm"
+            className="btn btn-primary btn-sm gap-1.5"
             disabled={updateMutation.isPending || !isDirty}
           >
-            Değişiklikleri kaydet
+            {updateMutation.isPending ? (
+              <span
+                className="loading loading-spinner loading-xs"
+                aria-hidden
+              />
+            ) : null}
+            {updateMutation.isPending
+              ? "Kaydediliyor…"
+              : "Değişiklikleri kaydet"}
           </button>
         </div>
       </form>

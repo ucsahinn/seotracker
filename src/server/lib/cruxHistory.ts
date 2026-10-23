@@ -90,7 +90,7 @@ async function describeFailure(response: Response): Promise<string> {
     }
     return `Google bu anahtara izin vermedi${reason ? ` (${reason})` : ""}. Anahtarın Google Cloud projesinde "Chrome UX Report API" etkin olmalı ve anahtarın kısıtlamasında yer almalı.`;
   }
-  return `Google yanıt vermedi (${response.status}).`;
+  return `Google yanıt vermedi (HTTP ${response.status}). Birazdan tekrar deneyin.`;
 }
 
 /** Google's error code and reason strings, never the message text (it can echo the project id). */

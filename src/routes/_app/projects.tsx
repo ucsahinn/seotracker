@@ -147,6 +147,23 @@ function ArchivedProjects() {
       toast.error(getStandardErrorMessage(error, "Proje geri alınamadı")),
   });
 
+  // A failed read used to make the section vanish, which reads as "nothing
+  // archived" -- the one answer that sends nobody looking.
+  if (archivedQuery.isError && archived.length === 0) {
+    return (
+      <section className="space-y-3">
+        <h2 className="text-sm font-medium text-muted">Arşivlendi</h2>
+        <div className="rounded-box border border-base-300">
+          <QueryErrorState
+            compact
+            title="Arşivlenen projeler yüklenemedi"
+            error={archivedQuery.error}
+            onRetry={() => void archivedQuery.refetch()}
+          />
+        </div>
+      </section>
+    );
+  }
   if (archived.length === 0) return null;
 
   return (
@@ -172,6 +189,13 @@ function ArchivedProjects() {
               onClick={() => restoreMutation.mutate(project.id)}
               disabled={restoreMutation.isPending}
             >
+              {restoreMutation.isPending &&
+              restoreMutation.variables === project.id ? (
+                <span
+                  className="loading loading-spinner loading-xs"
+                  aria-hidden
+                />
+              ) : null}
               Geri al
             </button>
           </li>

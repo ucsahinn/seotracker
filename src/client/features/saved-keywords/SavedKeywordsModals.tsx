@@ -1,5 +1,8 @@
 import { AlertCircle, Loader2 } from "lucide-react";
+import { useEffect } from "react";
 import { Modal } from "@/client/components/Modal";
+import { getStandardErrorMessage } from "@/client/lib/error-messages";
+import type { SavedKeywordRow } from "@/types/keywords";
 
 export function RemoveSavedKeywordsError({ message }: { message: string }) {
   return (
@@ -10,26 +13,64 @@ export function RemoveSavedKeywordsError({ message }: { message: string }) {
   );
 }
 
+/**
+ * What the delete modal confirms: the bulk selection, or one row's own
+ * "Kelimeyi sil" -- which used to delete on click while the bulk path asked.
+ */
+export type RemovalTarget = "selection" | SavedKeywordRow;
+
 export function DeleteSavedKeywordsModal({
-  selectedCount,
-  isPending,
+  target,
+  selectedIds,
+  removal,
   onClose,
-  onConfirm,
 }: {
-  selectedCount: number;
-  isPending: boolean;
+  target: RemovalTarget;
+  selectedIds: string[];
+  removal: {
+    isPending: boolean;
+    error: Error | null;
+    mutate: (ids: string[]) => void;
+    reset: () => void;
+  };
   onClose: () => void;
-  onConfirm: () => void;
 }) {
+  const { isPending, error, reset } = removal;
+  // A failure is said here, where the operator is looking; the page's banner
+  // sat behind the modal. A reopened modal starts without the old one.
+  useEffect(() => reset(), [reset]);
+  const keyword = target === "selection" ? undefined : target.keyword;
+  const ids = target === "selection" ? selectedIds : [target.id];
+  const selectedCount = ids.length;
   return (
     <Modal onClose={onClose} labelledBy="delete-keywords-title">
       <h3 id="delete-keywords-title" className="text-lg font-semibold">
-        Kelimeler silinsin mi?
+        {keyword ? "Kelime silinsin mi?" : "Kelimeler silinsin mi?"}
       </h3>
       <p className="text-sm text-muted">
-        Kayıtlı {selectedCount} kelime kalıcı olarak silinecek. Bu geri
-        alınamaz.
+        {keyword ? (
+          <>
+            <strong className="break-words font-medium text-base-content">
+              &ldquo;{keyword}&rdquo;
+            </strong>{" "}
+            kalıcı olarak silinir. İsterseniz Arama performansından yeniden
+            kaydedebilirsiniz.
+          </>
+        ) : (
+          <>
+            Kayıtlı {selectedCount} kelime kalıcı olarak silinecek. Bu geri
+            alınamaz.
+          </>
+        )}
       </p>
+      {error ? (
+        <p role="alert" className="text-sm text-[var(--ink-error)]">
+          {getStandardErrorMessage(
+            error,
+            "Kelimeler silinemedi. Tekrar deneyin.",
+          )}
+        </p>
+      ) : null}
       <div className="flex justify-end gap-2">
         <button
           type="button"
@@ -41,11 +82,11 @@ export function DeleteSavedKeywordsModal({
         <button
           type="button"
           className="btn btn-error btn-sm gap-1"
-          onClick={onConfirm}
+          onClick={() => removal.mutate(ids)}
           disabled={isPending}
         >
           {isPending ? <Loader2 className="size-3 animate-spin" /> : null}
-          {selectedCount} kelimeyi sil
+          {keyword ? "Kelimeyi sil" : `${selectedCount} kelimeyi sil`}
         </button>
       </div>
     </Modal>

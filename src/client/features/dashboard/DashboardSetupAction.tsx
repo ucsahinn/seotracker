@@ -51,9 +51,19 @@ export function DashboardSetupAction({
     return project ? (
       <WebsiteForm project={project} onComplete={onComplete} />
     ) : projects.isError ? (
-      <p role="alert" className="text-sm text-[var(--ink-error)]">
-        {getStandardErrorMessage(projects.error)}
-      </p>
+      <div role="alert" className="space-y-2 text-sm">
+        <p className="text-[var(--ink-error)]">
+          {getStandardErrorMessage(projects.error)}
+        </p>
+        <button
+          type="button"
+          className="btn btn-sm"
+          disabled={projects.isFetching}
+          onClick={() => void projects.refetch()}
+        >
+          Tekrar dene
+        </button>
+      </div>
     ) : (
       <div className="skeleton h-36" aria-busy />
     );

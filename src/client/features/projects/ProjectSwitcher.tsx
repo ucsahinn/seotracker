@@ -236,12 +236,10 @@ export function ProjectSwitcher({
           className="flex min-w-0 flex-1 items-center justify-between gap-2 rounded-l-[var(--radius-box)] px-3 py-1.5 text-left transition-colors hover:bg-base-200"
         >
           <span className="flex min-w-0 flex-col">
-            <span
-              className="truncate text-sm font-medium text-base-content"
-              title={activeProject?.name ?? "Proje seçin"}
-            >
-              {activeProject?.name ?? "Proje seçin"}
-            </span>
+            <TriggerName
+              loading={projectsQuery.isPending && Boolean(activeProjectId)}
+              name={activeProject?.name}
+            />
             {activeProject?.domain ? (
               <span
                 className="truncate text-xs font-normal text-muted"
@@ -298,6 +296,8 @@ export function ProjectSwitcher({
               </label>
             </div>
           ) : null}
+
+          <ProjectListStatus query={projectsQuery} empty={!projects.length} />
 
           {projects.length > 0 ? (
             // Long project lists scroll inside the dropdown; without the cap the
@@ -404,5 +404,53 @@ export function ProjectSwitcher({
         />
       ) : null}
     </div>
+  );
+}
+
+/* While the list loads, and when it fails: the menu used to open empty with
+   no word on why. */
+function ProjectListStatus({
+  query,
+  empty,
+}: {
+  query: {
+    isError: boolean;
+    isPending: boolean;
+    isFetching: boolean;
+    refetch: () => Promise<unknown>;
+  };
+  empty: boolean;
+}) {
+  return query.isError && empty ? (
+    <div role="alert" className="space-y-2 p-3 text-sm">
+      <p className="text-muted">Projeler yüklenemedi.</p>
+      <button
+        type="button"
+        className="btn btn-sm"
+        disabled={query.isFetching}
+        onClick={() => void query.refetch()}
+      >
+        Tekrar dene
+      </button>
+    </div>
+  ) : query.isPending ? (
+    <div className="space-y-2 p-3" aria-label="Projeler yükleniyor">
+      <div className="skeleton h-4 w-3/4" />
+      <div className="skeleton h-4 w-1/2" />
+    </div>
+  ) : null;
+}
+
+// "Proje seçin" while the list was still loading read as "no project is
+// selected"; a skeleton says "one moment".
+function TriggerName({ loading, name }: { loading: boolean; name?: string }) {
+  if (loading) return <span className="skeleton my-0.5 h-4 w-28" aria-hidden />;
+  return (
+    <span
+      className="truncate text-sm font-medium text-base-content"
+      title={name ?? "Proje seçin"}
+    >
+      {name ?? "Proje seçin"}
+    </span>
   );
 }

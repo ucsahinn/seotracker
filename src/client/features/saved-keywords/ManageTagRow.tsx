@@ -42,6 +42,14 @@ export function ManageTagRow({
   const nameChanged = name.trim() !== tag.name && name.trim().length > 0;
   const colorChanged = color !== currentColor;
   const canSave = (nameChanged || colorChanged) && !isBusy;
+  // Deleting a tag strips it from every keyword that carries it, with no undo,
+  // so the first click only asks.
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
+  const save = () =>
+    onSave({
+      name: nameChanged ? name.trim() : undefined,
+      color: colorChanged ? color : undefined,
+    });
 
   return (
     <div className="space-y-2 border-y border-base-300 bg-base-200/40 px-3 py-2.5">
@@ -55,6 +63,15 @@ export function ManageTagRow({
             id={nameId}
             value={name}
             onChange={(event) => setName(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                event.preventDefault();
+                if (canSave) save();
+              } else if (event.key === "Escape") {
+                event.preventDefault();
+                onCancel();
+              }
+            }}
             className="min-w-0 flex-1 rounded-field border border-base-300 bg-base-100 px-2 py-1 text-sm outline-none focus:border-primary"
           />
         </div>
@@ -86,35 +103,57 @@ export function ManageTagRow({
         </div>
       </div>
 
-      <div className="flex items-center justify-between pt-1">
-        <button
-          type="button"
-          className="inline-flex items-center gap-1 text-xs text-[var(--ink-error)] hover:underline disabled:opacity-50"
-          onClick={onDelete}
-          disabled={isBusy}
-        >
-          <Trash2 className="size-3" />
-          Sil
-        </button>
-        <div className="flex items-center gap-1.5">
-          <button type="button" className="btn btn-xs" onClick={onCancel}>
-            Vazgeç
-          </button>
+      {confirmingDelete ? (
+        <div role="alert" className="space-y-2 pt-1">
+          <p className="text-xs text-muted">
+            Etiket kalıcı olarak silinir. Kelimelere dokunulmaz.
+          </p>
+          <div className="flex items-center justify-end gap-1.5">
+            <button
+              type="button"
+              className="btn btn-xs"
+              onClick={() => setConfirmingDelete(false)}
+              disabled={isBusy}
+              autoFocus
+            >
+              Vazgeç
+            </button>
+            <button
+              type="button"
+              className="btn btn-error btn-xs"
+              onClick={onDelete}
+              disabled={isBusy}
+            >
+              Etiketi sil
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="flex items-center justify-between pt-1">
           <button
             type="button"
-            className="btn btn-primary btn-xs"
-            disabled={!canSave}
-            onClick={() =>
-              onSave({
-                name: nameChanged ? name.trim() : undefined,
-                color: colorChanged ? color : undefined,
-              })
-            }
+            className="inline-flex items-center gap-1 text-xs text-[var(--ink-error)] hover:underline disabled:opacity-50"
+            onClick={() => setConfirmingDelete(true)}
+            disabled={isBusy}
           >
-            Kaydet
+            <Trash2 className="size-3" />
+            Sil
           </button>
+          <div className="flex items-center gap-1.5">
+            <button type="button" className="btn btn-xs" onClick={onCancel}>
+              Vazgeç
+            </button>
+            <button
+              type="button"
+              className="btn btn-primary btn-xs"
+              disabled={!canSave}
+              onClick={save}
+            >
+              Kaydet
+            </button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

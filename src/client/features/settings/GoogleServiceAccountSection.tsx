@@ -40,6 +40,7 @@ export function GoogleServiceAccountSection() {
   const [keyJson, setKeyJson] = React.useState("");
   const [editing, setEditing] = React.useState(false);
   const [confirmingClear, setConfirmingClear] = React.useState(false);
+  const [keyError, setKeyError] = React.useState<string | null>(null);
 
   const statusQuery = useQuery(googleServiceAccountStatusOptions());
   const status = statusQuery.data;
@@ -57,8 +58,10 @@ export function GoogleServiceAccountSection() {
     mutationFn: () => saveGoogleServiceAccount({ data: { keyJson } }),
     onSuccess: async (result) => {
       // A malformed key comes back as a value so the reason survives the trip.
+      // Shown under the textarea, not toasted: the reason names what is
+      // wrong with the pasted file, and it should stay beside it.
       if (!result.ok) {
-        toast.error(result.reason);
+        setKeyError(result.reason);
         return;
       }
       setKeyJson("");
@@ -66,7 +69,13 @@ export function GoogleServiceAccountSection() {
       await invalidate();
       toast.success("Hizmet hesabı kaydedildi");
     },
-    onError: (error) => toast.error(getStandardErrorMessage(error)),
+    onError: (error) =>
+      toast.error(
+        getStandardErrorMessage(
+          error,
+          "Hizmet hesabı kaydedilemedi. Tekrar deneyin.",
+        ),
+      ),
   });
 
   const clear = useMutation({
@@ -91,7 +100,12 @@ export function GoogleServiceAccountSection() {
     },
     onError: (error) => {
       setConfirmingClear(false);
-      toast.error(getStandardErrorMessage(error));
+      toast.error(
+        getStandardErrorMessage(
+          error,
+          "Hizmet hesabı silinemedi. Tekrar deneyin.",
+        ),
+      );
     },
   });
 
@@ -218,15 +232,31 @@ export function GoogleServiceAccountSection() {
             id="service-account-key"
             autoComplete="off"
             spellCheck={false}
-            className="textarea textarea-bordered h-32 w-full font-mono text-xs"
+            className={`textarea textarea-bordered h-32 w-full font-mono text-xs ${keyError ? "textarea-error" : ""}`}
             placeholder='{ "type": "service_account", "project_id": "...", ... }'
             value={keyJson}
-            onChange={(event) => setKeyJson(event.target.value)}
+            onChange={(event) => {
+              setKeyJson(event.target.value);
+              setKeyError(null);
+            }}
+            aria-invalid={keyError ? true : undefined}
+            aria-describedby={
+              keyError ? "service-account-key-error" : undefined
+            }
           />
+          {keyError ? (
+            <p
+              id="service-account-key-error"
+              role="alert"
+              className="text-xs text-[var(--ink-error)]"
+            >
+              {keyError}
+            </p>
+          ) : null}
           <div className="flex gap-2 pt-3.5">
             <button
               type="button"
-              className="btn btn-primary btn-sm disabled:border-[var(--control-border)] disabled:bg-base-200 disabled:text-muted disabled:opacity-100"
+              className="btn btn-primary btn-sm"
               disabled={keyJson.trim() === "" || save.isPending}
               onClick={() => save.mutate()}
             >
@@ -239,6 +269,7 @@ export function GoogleServiceAccountSection() {
                 onClick={() => {
                   setKeyJson("");
                   setEditing(false);
+                  setKeyError(null);
                 }}
               >
                 Vazgeç

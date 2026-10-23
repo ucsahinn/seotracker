@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import { useEffect, useId, useRef } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { PROPERTY_DEPENDENT_QUERY_KEYS } from "@/client/features/gsc/invalidatePropertyDependents";
@@ -45,6 +46,7 @@ export function GoogleAccountRemovalDialog({
       await Promise.all(
         keys.map((key) => queryClient.invalidateQueries({ queryKey: [key] })),
       );
+      toast.success("Google hesabı kaldırıldı");
       onRemoved();
     },
   });
@@ -74,9 +76,14 @@ export function GoogleAccountRemovalDialog({
           İstediğiniz zaman yeniden bağlayabilirsiniz.
         </p>
         {impact.isPending ? (
-          <p role="status" className="text-sm text-muted">
-            Bağlı projeler kontrol ediliyor…
-          </p>
+          <div
+            role="status"
+            aria-label="Bağlı projeler kontrol ediliyor"
+            className="space-y-1.5"
+          >
+            <div className="skeleton h-4 w-4/5" />
+            <div className="skeleton h-4 w-1/2" />
+          </div>
         ) : impact.isError ? (
           <div role="alert" className="text-sm">
             <p className="text-[var(--ink-error)]">
@@ -100,7 +107,10 @@ export function GoogleAccountRemovalDialog({
         )}
         {removal.isError ? (
           <p role="alert" className="text-sm text-[var(--ink-error)]">
-            {getStandardErrorMessage(removal.error)}
+            {getStandardErrorMessage(
+              removal.error,
+              "Hesap kaldırılamadı. Tekrar deneyin.",
+            )}
           </p>
         ) : null}
         <div className="flex flex-wrap justify-end gap-2">

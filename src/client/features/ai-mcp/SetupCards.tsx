@@ -1,0 +1,186 @@
+import { useState } from "react";
+import { CopyButton } from "@/client/components/CopyButton";
+import { captureClientEvent } from "@/client/lib/observability";
+import {
+  getAgentSetupPrompt,
+  getCodexSetupPrompt,
+} from "@/client/features/ai-mcp/agentSetupPrompt";
+import { InstallPromptButton } from "@/client/features/ai-mcp/InstallPromptButton";
+
+// What the segmented control offers, and how each agent invokes a skill.
+// Claude Code and "Diğer" copy the same general prompt; only the hint differs.
+const AGENT_CHOICES = [
+  {
+    id: "claude",
+    label: "Claude Code",
+    hint: "Becerileri /seo-audit diye çağırırsınız.",
+  },
+  {
+    id: "codex",
+    label: "Codex",
+    hint: "Komut, Codex'in kendi bağlama adımlarını kullanır. Becerileri $seo-audit diye çağırırsınız.",
+  },
+  {
+    id: "other",
+    label: "Diğer",
+    hint: "Genel komut. Beceriyi aracınızın kendi yöntemiyle çağırın.",
+  },
+] as const;
+type AgentChoice = (typeof AGENT_CHOICES)[number]["id"];
+
+type ConnectionFacts = {
+  tokenConfigured: boolean;
+  installKind: "windows" | "docker";
+};
+
+/*
+ * The two setup cards of the Ajan kurulumu page. Which one leads is the
+ * page's decision (it knows whether an agent has ever called in); each card
+ * only renders the lead or the second-place version of itself, so the page
+ * keeps exactly one primary button.
+ */
+export function ConnectAgentCard({
+  lead,
+  connection,
+  connected,
+  origin,
+}: {
+  lead: boolean;
+  /** Undefined until the first read answers; the copy button waits for it. */
+  connection: ConnectionFacts | undefined;
+  connected: boolean;
+  origin: string;
+}) {
+  const [agent, setAgent] = useState<AgentChoice>("claude");
+  const facts = {
+    tokenConfigured: connection?.tokenConfigured,
+    installKind: connection?.installKind,
+  };
+  const prompt = getAgentSetupPrompt(origin, facts);
+  const codexPrompt = getCodexSetupPrompt(origin, facts);
+  const choice = AGENT_CHOICES.find((item) => item.id === agent);
+  const isCodex = agent === "codex";
+
+  return (
+    <section
+      className={`rounded-box border border-base-300 bg-base-100 ${
+        lead ? "p-5" : "p-4"
+      }`}
+    >
+      <h2
+        className={!lead ? "text-sm font-semibold" : "text-base font-semibold"}
+      >
+        Ajanınızı bağlayın
+      </h2>
+      <p className="mt-2 text-sm leading-relaxed text-muted">
+        {!lead
+          ? "Uygulama kurulu, Google ve PageSpeed hazırsa yalnızca bu adım yeter. "
+          : ""}
+        Komutu ajanınıza yapıştırın. Ajan seowatcher&apos;ı bağlar, SEO
+        becerilerini kurar, elle yapacağınız adımlarda size yol gösterir.
+      </p>
+      <div
+        className="join mt-4"
+        role="radiogroup"
+        aria-label="Hangi ajanı kullanıyorsunuz?"
+      >
+        {AGENT_CHOICES.map((item) => (
+          <button
+            key={item.id}
+            type="button"
+            role="radio"
+            aria-checked={item.id === agent}
+            className={`btn join-item btn-sm ${
+              item.id === agent ? "btn-active" : ""
+            }`}
+            onClick={() => setAgent(item.id)}
+          >
+            {item.label}
+          </button>
+        ))}
+      </div>
+      <p className="mt-2 text-xs text-muted">
+        {choice?.hint}
+        {isCodex
+          ? " Ajan bağlantıyı kurar, becerileri kopyalar ve doğrular. Parolayı sohbete yazmaz, bilgisayarınızdan okur."
+          : ""}
+      </p>
+      <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3 [&>button]:h-11 [&>button]:gap-2 [&>button]:text-sm">
+        <CopyButton
+          primary={!!lead}
+          secondary={!lead}
+          /*
+           * Disabled for the first roundtrip: the prompt's auth
+           * sentence is chosen from this query, and `undefined`
+           * reads as "no token", so a click inside that window
+           * would copy the wrong variant onto a protected install.
+           */
+          disabled={connection === undefined}
+          value={isCodex ? codexPrompt : prompt}
+          label="Kurulum komutunu kopyala"
+          successMessage="Kurulum komutu kopyalandı"
+          onCopy={() =>
+            captureClientEvent(
+              isCodex ? "mcp:codex_prompt_copy" : "mcp:setup_prompt_copy",
+            )
+          }
+        />
+      </div>
+      <p className="mt-5 border-t border-base-300 pt-4 text-sm leading-relaxed text-muted">
+        Bağlandıktan sonra ajanınızdan <code>seo-coach</code> becerisini
+        kullanmasını isteyin; sıradaki adımı birlikte seçersiniz.{" "}
+        {/* Turns the grey pill from a verdict into a progress
+                        marker, and says it next to the button that resolves
+                        it rather than next to the badge that reports it. */}
+        {connected ? null : (
+          <>
+            Ajanınız seowatcher&apos;a ilk kez istek attığında yukarıdaki durum
+            değişir.
+          </>
+        )}
+      </p>
+      <p className="mt-2 text-xs text-muted">
+        Claude Code, Codex, Cursor, ChatGPT ve MCP destekleyen diğer
+        uygulamalarla çalışır.
+      </p>
+    </section>
+  );
+}
+
+export function InstallCard({ lead }: { lead: boolean }) {
+  return (
+    <section
+      className={`rounded-box border border-base-300 bg-base-100 ${
+        lead ? "p-5 shadow-[var(--shadow-raise)]" : "p-4"
+      }`}
+    >
+      {lead ? (
+        <p className="text-xs font-semibold text-muted">
+          İlk kez mi kuruyorsunuz? Buradan başlayın.
+        </p>
+      ) : null}
+      <h2
+        className={
+          lead ? "mt-1 text-base font-semibold" : "text-sm font-semibold"
+        }
+      >
+        Sıfırdan kurulum
+      </h2>
+      <p className="mt-2 text-sm leading-relaxed text-muted">
+        {lead
+          ? "Uygulamayı yeni kurduysanız ilk adım bu. "
+          : "Yeni bir kurulum ya da baştan kontrol için. "}
+        Ajanınız kurulumu, Google bağlantısını, PageSpeed anahtarını ve ilk
+        projenizi sırayla kontrol eder, sonra kendini bağlar. Windows paketini
+        de Docker&apos;ı da tanır. Google Cloud&apos;daki adımları siz
+        yaparsınız. Anahtarlar sohbete değil, yalnızca Ayarlar&apos;a girilir.
+      </p>
+      <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-3 [&>button]:gap-2">
+        <InstallPromptButton
+          primary={lead}
+          label="Sıfırdan kurulum komutunu kopyala"
+        />
+      </div>
+    </section>
+  );
+}
