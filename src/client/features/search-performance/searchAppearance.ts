@@ -1,7 +1,9 @@
+import { t } from "@/shared/i18n";
 import { sort } from "remeda";
 
-/** Appearance types Google documents, in plain Turkish. Anything else is
- *  shown under the code Google sent, which is still better than hiding it. */
+/** Appearance types Google documents, in plain Turkish (translated by t()
+ *  where they are read). Anything else is shown under the code Google sent,
+ *  which is still better than hiding it. */
 const APPEARANCE_LABELS: Record<string, string> = {
   AMP_BLUE_LINK: "AMP sayfası",
   AMP_TOP_STORIES: "AMP haber kutusu",
@@ -33,7 +35,8 @@ const APPEARANCE_LABELS: Record<string, string> = {
 };
 
 export function appearanceLabel(key: string): string {
-  return APPEARANCE_LABELS[key] ?? key;
+  const label = APPEARANCE_LABELS[key];
+  return label ? t(label) : key;
 }
 
 type AppearanceRow = { key: string; clicks: number; impressions: number };
@@ -72,7 +75,7 @@ export function appearanceSegments(rows: AppearanceRow[]): {
           ...head,
           {
             key: OTHER_APPEARANCE_KEY,
-            label: "Diğer görünümler",
+            label: t("Diğer görünümler"),
             value: rest,
             disabled: true,
           },

@@ -14,6 +14,7 @@ import {
   type HealthState,
 } from "./contextHealth";
 import type { ProjectContextData } from "./shared";
+import { t } from "@/shared/i18n";
 
 function stateOf(
   query: { isPending: boolean; isError: boolean },
@@ -71,17 +72,18 @@ export function ContextHealthCard({
       className="rounded-box border border-base-300 bg-base-100 p-4"
     >
       <h2 id="context-health-title" className="text-sm font-semibold">
-        Kurulum durumu
+        {t("Kurulum durumu")}
       </h2>
       <p className="mt-0.5 text-xs text-muted">
-        Ajanların ve uygulamanın düzgün çalışması için gerekenler. Eksik satırın
-        yanındaki düğme sizi düzeltebileceğiniz yere götürür.
+        {t(
+          "Ajanların ve uygulamanın düzgün çalışması için gerekenler. Eksik satırın yanındaki düğme sizi düzeltebileceğiniz yere götürür.",
+        )}
       </p>
       <div className="mt-3">
         {/* The one progress indicator on the page. No state word: "Uyarı" next
             to a count of what is left to do is not a warning about anything. */}
         <ProgressBar
-          label={`${done} / ${total} tamam`}
+          label={t("{done} / {total} tamam", { done, total })}
           value={done}
           max={total}
           state={done === total ? "done" : "warning"}
@@ -121,6 +123,7 @@ function StateIcon({ state }: { state: HealthState }) {
   return <Circle className="size-4 text-subtle" />;
 }
 
+// Turkish source text, translated where it renders.
 const STATE_WORD: Record<HealthState, string> = {
   done: "Tamam",
   todo: "Eksik",
@@ -139,9 +142,9 @@ function HealthRow({
 }) {
   const detail =
     item.state === "loading"
-      ? "Durum okunuyor…"
+      ? t("Durum okunuyor…")
       : item.state === "error"
-        ? "Durum okunamadı. Yeniden deneyin."
+        ? t("Durum okunamadı. Yeniden deneyin.")
         : item.detail;
 
   return (
@@ -152,7 +155,7 @@ function HealthRow({
       <div className="min-w-0 flex-1">
         <p className="text-sm font-medium">
           {item.label}
-          <span className="sr-only">, {STATE_WORD[item.state]}</span>
+          <span className="sr-only">, {t(STATE_WORD[item.state])}</span>
         </p>
         <p className="text-xs text-muted">{detail}</p>
       </div>
@@ -162,7 +165,7 @@ function HealthRow({
           className="btn btn-ghost btn-xs"
           onClick={onRetry}
         >
-          Yeniden dene
+          {t("Yeniden dene")}
         </button>
       ) : item.state === "loading" ? null : (
         <HealthAction item={item} projectId={projectId} />
@@ -195,7 +198,7 @@ function HealthAction({
       </button>
     );
   }
-  const label = item.state === "done" ? "Ayarlar" : item.actionLabel;
+  const label = item.state === "done" ? t("Ayarlar") : item.actionLabel;
   if (target.kind === "integrations") {
     return (
       <Link

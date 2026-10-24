@@ -106,3 +106,4 @@ clear.
 - npx.cmd wrangler fails under Git Bash with "'C:\Program' is not recognized" (path with spaces); `pnpm exec wrangler` works.
 
 - 2026-10-23: Bash tool heredocs collapse one level of backslashes, which silently corrupted a scripted C# edit (packaging/windows). Write edit scripts with the Write tool instead.
+- 2026-10-23: Python on this Windows machine reads stdin as cp1252, so Turkish text piped through a Bash heredoc gets mangled. Use `PYTHONUTF8=1` or write the script to a file first.

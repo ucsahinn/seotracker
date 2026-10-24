@@ -22,6 +22,7 @@ import {
   setGa4Property,
 } from "@/serverFunctions/ga4";
 import { GA4_SELF_HOSTED_SETUP_DOCS_URL } from "@/shared/ga4";
+import { t } from "@/shared/i18n";
 
 export function GoogleAnalyticsConnectionCard({
   projectId,
@@ -90,7 +91,7 @@ export function GoogleAnalyticsConnectionCard({
         current ? { ...current, ...saved } : current,
       );
       captureClientEvent("ga4:property_select");
-      toast.success("Google Analytics bağlandı");
+      toast.success(t("Google Analytics bağlandı"));
       queryClient.removeQueries({ queryKey: ["ga4Properties", projectId] });
       void queryClient.invalidateQueries({ queryKey: connectionKey });
       setPicking(false);
@@ -100,7 +101,7 @@ export function GoogleAnalyticsConnectionCard({
   const disconnectMutation = useMutation({
     mutationFn: () => disconnectGa4({ data: { projectId } }),
     onSuccess: () => {
-      toast.success("Google Analytics bağlantısı kesildi");
+      toast.success(t("Google Analytics bağlantısı kesildi"));
       queryClient.setQueryData(connectionKey, (current: typeof connection) =>
         current ? { ...current, connected: false } : current,
       );
@@ -136,7 +137,7 @@ export function GoogleAnalyticsConnectionCard({
         {connectionQuery.isPending ? (
           <div
             role="status"
-            aria-label="Bağlantı yükleniyor"
+            aria-label={t("Bağlantı yükleniyor")}
             className="space-y-3 animate-pulse"
           >
             <div className="h-4 w-2/3 rounded-field bg-base-200" />
@@ -145,14 +146,14 @@ export function GoogleAnalyticsConnectionCard({
         ) : connectionUnavailable ? (
           <div role="alert" className="space-y-3 text-sm">
             <p className="text-[var(--ink-error)]">
-              Bu projenin bağlantısı kontrol edilemedi.
+              {t("Bu projenin bağlantısı kontrol edilemedi.")}
             </p>
             <button
               type="button"
               className="btn btn-ghost btn-sm"
               onClick={() => void connectionQuery.refetch()}
             >
-              Tekrar dene
+              {t("Tekrar dene")}
             </button>
           </div>
         ) : selfHostedNeedsSetup ? (
@@ -196,7 +197,7 @@ export function GoogleAnalyticsConnectionCard({
               onSave={() => selection && setPropertyMutation.mutate(selection)}
               saving={setPropertyMutation.isPending}
               secondaryAction={{
-                label: "Vazgeç",
+                label: t("Vazgeç"),
                 disabled: setPropertyMutation.isPending,
                 onClick: () => {
                   setPicking(false);
@@ -237,8 +238,9 @@ export function GoogleAnalyticsConnectionCard({
         ) : null}
         {connectionQuery.isSuccess && !selfHostedNeedsSetup && !canManage ? (
           <p className="mt-3 text-sm text-muted">
-            Bağlantıyı değiştirmek için Ayarlar&apos;daki Google kurulumunu
-            kontrol edin.
+            {t(
+              "Bağlantıyı değiştirmek için Ayarlar'daki Google kurulumunu kontrol edin.",
+            )}
           </p>
         ) : null}
       </IntegrationConnectionCard>
@@ -261,7 +263,7 @@ function DismissButton({
       onClick={onClick}
       disabled={disabled}
     >
-      Gizle
+      {t("Gizle")}
     </button>
   );
 }

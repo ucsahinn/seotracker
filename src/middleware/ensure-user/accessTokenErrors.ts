@@ -1,5 +1,6 @@
 import { errors as joseErrors } from "jose";
 import { AppError } from "@/server/lib/errors";
+import { t } from "@/shared/i18n";
 
 // Maps a jwtVerify failure to the right AppError. Config mistakes (wrong
 // POLICY_AUD, TEAM_DOMAIN pointing at the wrong team, unreachable JWKS) must
@@ -16,13 +17,17 @@ export function classifyAccessVerificationError(error: unknown): AppError {
     if (error.claim === "aud") {
       return new AppError(
         "AUTH_CONFIG_MISSING",
-        "Cloudflare Access belirteci reddedildi: hedef kitle uyuşmuyor. POLICY_AUD, Access uygulamanızın AUD etiketiyle aynı değil — Zero Trust -> Access controls -> Applications -> Configure -> Additional settings yolundan kopyalayın.",
+        t(
+          "Cloudflare Access belirteci reddedildi: hedef kitle uyuşmuyor. POLICY_AUD, Access uygulamanızın AUD etiketiyle aynı değil — Zero Trust -> Access controls -> Applications -> Configure -> Additional settings yolundan kopyalayın.",
+        ),
       );
     }
     if (error.claim === "iss") {
       return new AppError(
         "AUTH_CONFIG_MISSING",
-        "Cloudflare Access belirteci reddedildi: veren taraf uyuşmuyor. TEAM_DOMAIN, belirteci veren Cloudflare ekibiyle aynı değil — Zero Trust ayarlarındaki ekip alan adınızla karşılaştırın.",
+        t(
+          "Cloudflare Access belirteci reddedildi: veren taraf uyuşmuyor. TEAM_DOMAIN, belirteci veren Cloudflare ekibiyle aynı değil — Zero Trust ayarlarındaki ekip alan adınızla karşılaştırın.",
+        ),
       );
     }
     return new AppError("UNAUTHENTICATED");
@@ -39,7 +44,9 @@ export function classifyAccessVerificationError(error: unknown): AppError {
   ) {
     return new AppError(
       "AUTH_CONFIG_MISSING",
-      "Cloudflare Access belirteci TEAM_DOMAIN'in imza anahtarlarıyla doğrulanamadı. TEAM_DOMAIN'in ekibinizin https://<team>.cloudflareaccess.com adresi olduğundan emin olun.",
+      t(
+        "Cloudflare Access belirteci TEAM_DOMAIN'in imza anahtarlarıyla doğrulanamadı. TEAM_DOMAIN'in ekibinizin https://<team>.cloudflareaccess.com adresi olduğundan emin olun.",
+      ),
     );
   }
 

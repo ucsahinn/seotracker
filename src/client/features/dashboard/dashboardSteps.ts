@@ -4,6 +4,7 @@ import type {
   DashboardSetupStep,
 } from "@/types/schemas/dashboard";
 
+/* Labels and details are Turkish source strings, translated where they render. */
 export const setupSteps: {
   id: DashboardSetupStep;
   label: string;

@@ -1,6 +1,7 @@
 import { sort } from "remeda";
 import { formatCount, formatDate } from "@/shared/format";
 import { coverageStateLabel } from "@/shared/gsc-coverage-states";
+import { t } from "@/shared/i18n";
 import {
   barChart,
   chartSummary,
@@ -12,7 +13,9 @@ import {
   capList,
   escapeHtml,
   moreLine,
+  pagesText,
   percent,
+  percentText,
   truncate,
   truncateUrl,
 } from "./reportFormat";
@@ -24,26 +27,30 @@ const INDEX_TABLE_CAP = 50;
 const SITEMAP_LIST_CAP = 25;
 
 function verdictText(verdict: string | null): string {
-  if (verdict === "PASS") return "Dizinde";
-  if (verdict === "FAIL") return "Dizinde değil";
-  if (verdict === "PARTIAL") return "Kısmen";
-  if (verdict === "NEUTRAL") return "Nötr";
-  return "Yanıt yok";
+  if (verdict === "PASS") return t("Dizinde");
+  if (verdict === "FAIL") return t("Dizinde değil");
+  if (verdict === "PARTIAL") return t("Kısmen");
+  if (verdict === "NEUTRAL") return t("Nötr");
+  return t("Yanıt yok");
 }
 
 export function indexSection(input: AuditReportInput): string {
   const cov = input.indexCoverage;
   if (!cov || cov.asked === 0) {
     return `<section id="dizin">
-      <h2>4. Google dizin durumu</h2>
-      <p class="empty">Bu denetimin sayfaları için Search Console URL Denetleme Aracı sonucu kayıtlı değil, bu yüzden Google'ın hangi sayfaları dizine aldığı rapora girmiyor. Dizin Kapsamı ekranından inceleme çalıştırıldıktan sonra rapor yeniden oluşturulursa bu bölüm dolar.</p>
+      <h2>${t("4. Google dizin durumu")}</h2>
+      <p class="empty">${escapeHtml(t("Bu denetimin sayfaları için Search Console URL Denetleme Aracı sonucu kayıtlı değil, bu yüzden Google'ın hangi sayfaları dizine aldığı rapora girmiyor. Dizin Kapsamı ekranından inceleme çalıştırıldıktan sonra rapor yeniden oluşturulursa bu bölüm dolar."))}</p>
     </section>`;
   }
 
   const data = [
-    { label: "Dizinde", value: cov.indexed, color: COLORS.good },
-    { label: "Dizinde değil", value: cov.notIndexed, color: COLORS.critical },
-    { label: "Henüz sorulmadı", value: cov.pending, color: COLORS.muted },
+    { label: t("Dizinde"), value: cov.indexed, color: COLORS.good },
+    {
+      label: t("Dizinde değil"),
+      value: cov.notIndexed,
+      color: COLORS.critical,
+    },
+    { label: t("Henüz sorulmadı"), value: cov.pending, color: COLORS.muted },
   ];
 
   const states = new Map<string, number>();
@@ -61,31 +68,48 @@ export function indexSection(input: AuditReportInput): string {
   );
   const { shown, hidden } = capList(problems, INDEX_TABLE_CAP);
 
+  const source = cov.lastCheckedAt
+    ? t(
+        "Kaynak: Search Console URL Denetleme Aracı. Sonuçlar kayıtlıdır, bu rapor Google'a yeni istek atmaz; son inceleme {date}.",
+        { date: formatDate(cov.lastCheckedAt) },
+      )
+    : t(
+        "Kaynak: Search Console URL Denetleme Aracı. Sonuçlar kayıtlıdır, bu rapor Google'a yeni istek atmaz.",
+      );
+  const answered = t(
+    "Dizine girebilen {count} sayfadan {checked} tanesi için Google yanıt verdi ({percent}).",
+    {
+      count: cov.rows.length,
+      checked: formatCount(cov.checked),
+      percent: percentText(percent(cov.checked, cov.rows.length)),
+    },
+  );
+
   return `<section id="dizin">
-    <h2>4. Google dizin durumu</h2>
-    <p class="note">Kaynak: Search Console URL Denetleme Aracı. Sonuçlar kayıtlıdır, bu rapor Google'a yeni istek atmaz${cov.lastCheckedAt ? `; son inceleme ${escapeHtml(formatDate(cov.lastCheckedAt))}` : ""}. Dizine girebilen ${formatCount(cov.rows.length)} sayfadan ${formatCount(cov.checked)} tanesi için Google yanıt verdi (%${formatCount(percent(cov.checked, cov.rows.length))}).</p>
+    <h2>${t("4. Google dizin durumu")}</h2>
+    <p class="note">${escapeHtml(source)} ${escapeHtml(answered)}</p>
     <div>
-      ${figure("Dizin durumu", donutChart(data, formatCount(cov.rows.length), "sayfa"), chartSummary(data), "Google dizin durumu dağılımı")}
-      ${stateData.length > 0 ? figure("Google'ın verdiği durumlar", barChart(stateData, 34), chartSummary(stateData, " sayfa"), "Kapsam durumu dağılımı") : ""}
+      ${figure(t("Dizin durumu"), donutChart(data, formatCount(cov.rows.length), t("sayfa")), chartSummary(data), t("Google dizin durumu dağılımı"))}
+      ${stateData.length > 0 ? figure(t("Google'ın verdiği durumlar"), barChart(stateData, 34), chartSummary(stateData, pagesText), t("Kapsam durumu dağılımı")) : ""}
     </div>
     ${
       problems.length > 0
-        ? `<h3>Dikkat isteyen sayfalar</h3>
+        ? `<h3>${t("Dikkat isteyen sayfalar")}</h3>
     <table class="rows">
-      <thead><tr><th>Adres</th><th>Sonuç</th><th>Durum</th><th>Google'ın seçtiği asıl adres</th></tr></thead>
+      <thead><tr><th>${t("Adres")}</th><th>${t("Sonuç")}</th><th>${t("Durum")}</th><th>${escapeHtml(t("Google'ın seçtiği asıl adres"))}</th></tr></thead>
       <tbody>${shown
         .map(
           (row) => `<tr>
         <td class="url">${escapeHtml(truncateUrl(row.url, 110))}</td>
         <td>${escapeHtml(verdictText(row.verdict))}</td>
-        <td>${escapeHtml(row.error ? `Hata: ${truncate(row.error, 80)}` : (coverageStateLabel(row.coverageState) ?? "--"))}</td>
-        <td class="url">${escapeHtml(row.canonicalMismatch ? truncateUrl(row.googleCanonical ?? "--", 110) : "Aynı")}</td>
+        <td>${escapeHtml(row.error ? t("Hata: {error}", { error: truncate(row.error, 80) }) : (coverageStateLabel(row.coverageState) ?? "--"))}</td>
+        <td class="url">${escapeHtml(row.canonicalMismatch ? truncateUrl(row.googleCanonical ?? "--", 110) : t("Aynı"))}</td>
       </tr>`,
         )
         .join("")}</tbody>
     </table>
-    ${moreLine(hidden, "sayfa")}`
-        : `<p class="note">Dizinde değil olarak işaretlenen ya da asıl adresi farklı seçilen sayfa yok.</p>`
+    ${moreLine(hidden, "page")}`
+        : `<p class="note">${t("Dizinde değil olarak işaretlenen ya da asıl adresi farklı seçilen sayfa yok.")}</p>`
     }
   </section>`;
 }
@@ -102,23 +126,30 @@ export function sitemapSection(
   const { shown, hidden } = capList(missing, SITEMAP_LIST_CAP);
 
   return `<section id="sitemap">
-    <h2>5. Site haritası</h2>
-    <p class="note">Taranan ${formatCount(crawled)} sayfanın ${formatCount(inMap)} tanesi (%${formatCount(percent(inMap, crawled))}) site haritasında. Haritanın kendisi (toplam adres sayısı, dosya boyutu) rapora girmez; yalnızca taranan sayfaların harita durumu ve haritayla ilgili bulunan sorunlar gösterilir.</p>
+    <h2>${t("5. Site haritası")}</h2>
+    <p class="note">${t(
+      "Taranan {count} sayfanın {inMap} tanesi ({percent}) site haritasında. Haritanın kendisi (toplam adres sayısı, dosya boyutu) rapora girmez; yalnızca taranan sayfaların harita durumu ve haritayla ilgili bulunan sorunlar gösterilir.",
+      {
+        count: crawled,
+        inMap: formatCount(inMap),
+        percent: percentText(percent(inMap, crawled)),
+      },
+    )}</p>
     ${
       mapIssues.length > 0
-        ? `<table class="rows"><thead><tr><th>Haritayla ilgili sorun</th><th>Önem</th><th class="num">Sayfa</th></tr></thead><tbody>${mapIssues
+        ? `<table class="rows"><thead><tr><th>${t("Haritayla ilgili sorun")}</th><th>${t("Önem")}</th><th class="num">${t("Sayfa")}</th></tr></thead><tbody>${mapIssues
             .map(
               (g) =>
-                `<tr><td><a href="#${issueAnchor(g.issueType)}">${escapeHtml(g.title)}</a></td><td>${SEVERITY_LABEL[g.severity]}</td><td class="num">${formatCount(g.pageCount)}</td></tr>`,
+                `<tr><td><a href="#${issueAnchor(g.issueType)}">${escapeHtml(g.title)}</a></td><td>${t(SEVERITY_LABEL[g.severity])}</td><td class="num">${formatCount(g.pageCount)}</td></tr>`,
             )
             .join("")}</tbody></table>`
-        : `<p class="note">Haritayla ilgili kayıtlı sorun yok.</p>`
+        : `<p class="note">${t("Haritayla ilgili kayıtlı sorun yok.")}</p>`
     }
     ${
       missing.length > 0
-        ? `<h3>Dizine girebilen ama haritada olmayan sayfalar (${formatCount(missing.length)})</h3>
+        ? `<h3>${t("Dizine girebilen ama haritada olmayan sayfalar ({count})", { count: missing.length })}</h3>
     <ul class="ap-list">${shown.map((p) => `<li>${escapeHtml(truncateUrl(p.url, 110))}</li>`).join("")}</ul>
-    ${moreLine(hidden, "sayfa")}`
+    ${moreLine(hidden, "page")}`
         : ""
     }
   </section>`;

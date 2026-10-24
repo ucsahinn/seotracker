@@ -5,14 +5,14 @@ kind: nasil-yapilir
 updated: 2026-10-23
 ---
 
-A interface do aplicativo está em turco. Este guia mostra cada botão e cada nome de tela em turco, com o significado em português entre parênteses.
+A interface do aplicativo está disponível em turco e inglês. O idioma é escolhido em Ayarlar → Görünüm → Dil. Este guia mostra cada botão e cada nome de tela em turco, com o significado em português entre parênteses.
 
 Ao fim desta página, o aplicativo estará instalado no seu computador e aberto no navegador. A instalação leva dois minutos. Ela é feita só para a sua conta de usuário e não exige direitos de administrador (a permissão é pedida uma única vez, se faltar o componente Visual C++).
 
 ## O que você precisa
 
 - Windows 10 ou 11 (64 bits).
-- Cerca de 350 MB de espaço livre. O instalador tem 81 MB e o aplicativo instalado ocupa 290 MB.
+- Cerca de 400 MB de espaço livre. O instalador tem 86 MB e o aplicativo instalado ocupa 313 MB.
 - Um navegador, como Edge, Chrome ou Firefox.
 - Você não precisa de Docker, Node, terminal (janela de comandos) nem direitos de administrador.
 - O motor do aplicativo precisa do pacote Visual C++ da Microsoft. Se o seu computador não o tiver, o instalador o instala para você e pede permissão de administrador uma vez.
@@ -132,7 +132,7 @@ Quando o número muda, atualize também no Google os dois endereços de redireci
 
 ## Verificação
 
-- Ao passar o mouse sobre o ícone da barra de tarefas (se ele não aparecer, clique na seta ^), deve aparecer "seowatcher X.Y.Z: Çalışıyor: http://127.0.0.1:3001/" (seowatcher 2.3.7: Em execução: http://127.0.0.1:3001/). O número da versão é o da que você instalou.
+- Ao passar o mouse sobre o ícone da barra de tarefas (se ele não aparecer, clique na seta ^), deve aparecer "seowatcher X.Y.Z: Çalışıyor: http://127.0.0.1:3001/" (seowatcher 0.5.0 Alpha: Em execução: http://127.0.0.1:3001/). O número da versão é o da que você instalou.
 - No navegador, o endereço `http://127.0.0.1:3001/api/health` deve mostrar um texto que começa com "status":"ok".
 - Na tela **Yardım** (Ajuda), o cartão "Kurulumunuzun durumu" (Estado da sua instalação) deve dizer "Her şey yolunda." (Está tudo certo.). Antes de conectar o Google, a linha "Google girişi" (Login do Google) pede atenção. Isso é normal.
 

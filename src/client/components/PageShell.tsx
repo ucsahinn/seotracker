@@ -1,4 +1,7 @@
 import * as React from "react";
+import { CircleHelp } from "lucide-react";
+import { pageGuideUrl } from "@/client/features/support/pageGuide";
+import { t } from "@/shared/i18n";
 
 /**
  * The frame every screen sits in.
@@ -64,13 +67,27 @@ export function PageHeader({
   actions?: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col gap-3">
+    <header className="flex flex-col gap-3">
       {eyebrow}
       <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-3">
         <div className="min-w-0 space-y-1">
-          <h1 className="text-2xl font-semibold text-base-content [overflow-wrap:anywhere]">
-            {title}
-          </h1>
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl font-semibold text-base-content [overflow-wrap:anywhere]">
+              {title}
+            </h1>
+            <a
+              href={pageGuideUrl(
+                typeof window === "undefined" ? "/" : window.location.pathname,
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-ghost btn-circle btn-sm shrink-0"
+              aria-label={t("Bu ekranın kılavuzunu aç")}
+              title={t("Bu ekranın kılavuzunu aç")}
+            >
+              <CircleHelp className="size-4 text-muted" aria-hidden />
+            </a>
+          </div>
           {description ? (
             // A description that runs the full 1,300px of a wide page is read
             // as one line that never ends; ~75 characters is where the eye
@@ -87,6 +104,6 @@ export function PageHeader({
           </div>
         ) : null}
       </div>
-    </div>
+    </header>
   );
 }

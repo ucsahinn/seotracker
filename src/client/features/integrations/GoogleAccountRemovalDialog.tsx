@@ -7,6 +7,7 @@ import {
   getGoogleAccountRemovalImpact,
   removeGoogleAccount,
 } from "@/serverFunctions/googleAccounts";
+import { t } from "@/shared/i18n";
 
 export function GoogleAccountRemovalDialog({
   provider,
@@ -46,7 +47,7 @@ export function GoogleAccountRemovalDialog({
       await Promise.all(
         keys.map((key) => queryClient.invalidateQueries({ queryKey: [key] })),
       );
-      toast.success("Google hesabı kaldırıldı");
+      toast.success(t("Google hesabı kaldırıldı"));
       onRemoved();
     },
   });
@@ -68,17 +69,19 @@ export function GoogleAccountRemovalDialog({
     >
       <div className="modal-box max-w-md space-y-4">
         <h3 id={titleId} className="text-lg font-semibold">
-          Google hesabı kaldırılsın mı?
+          {t("Google hesabı kaldırılsın mı?")}
         </h3>
         <p className="break-all text-sm font-medium">{label}</p>
         <p className="text-sm text-muted">
-          Bu hesabın {name} bağlantısı seowatcher&apos;dan kaldırılır.
-          İstediğiniz zaman yeniden bağlayabilirsiniz.
+          {t(
+            "Bu hesabın {name} bağlantısı seowatcher'dan kaldırılır. İstediğiniz zaman yeniden bağlayabilirsiniz.",
+            { name },
+          )}
         </p>
         {impact.isPending ? (
           <div
             role="status"
-            aria-label="Bağlı projeler kontrol ediliyor"
+            aria-label={t("Bağlı projeler kontrol ediliyor")}
             className="space-y-1.5"
           >
             <div className="skeleton h-4 w-4/5" />
@@ -87,29 +90,33 @@ export function GoogleAccountRemovalDialog({
         ) : impact.isError ? (
           <div role="alert" className="text-sm">
             <p className="text-[var(--ink-error)]">
-              Bağlı projeler kontrol edilemedi.
+              {t("Bağlı projeler kontrol edilemedi.")}
             </p>
             <button
               type="button"
               className="btn btn-ghost btn-sm"
               onClick={() => void impact.refetch()}
             >
-              Tekrar dene
+              {t("Tekrar dene")}
             </button>
           </div>
         ) : impact.data.projectCount > 0 ? (
           <p className="text-sm font-medium">
-            Bu işlem {name} bağlantısını {impact.data.projectCount} projeden de
-            kaldırır.
+            {t("Bu işlem {name} bağlantısını {count} projeden de kaldırır.", {
+              name,
+              count: impact.data.projectCount,
+            })}
           </p>
         ) : (
-          <p className="text-sm text-muted">Hiçbir proje etkilenmeyecek.</p>
+          <p className="text-sm text-muted">
+            {t("Hiçbir proje etkilenmeyecek.")}
+          </p>
         )}
         {removal.isError ? (
           <p role="alert" className="text-sm text-[var(--ink-error)]">
             {getStandardErrorMessage(
               removal.error,
-              "Hesap kaldırılamadı. Tekrar deneyin.",
+              t("Hesap kaldırılamadı. Tekrar deneyin."),
             )}
           </p>
         ) : null}
@@ -120,7 +127,7 @@ export function GoogleAccountRemovalDialog({
             disabled={removal.isPending}
             onClick={onClose}
           >
-            Vazgeç
+            {t("Vazgeç")}
           </button>
           <button
             type="button"
@@ -130,7 +137,7 @@ export function GoogleAccountRemovalDialog({
             }
             onClick={() => removal.mutate()}
           >
-            {removal.isPending ? "Kaldırılıyor…" : "Hesabı kaldır"}
+            {removal.isPending ? t("Kaldırılıyor…") : t("Hesabı kaldır")}
           </button>
         </div>
       </div>

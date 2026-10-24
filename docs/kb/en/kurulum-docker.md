@@ -84,15 +84,15 @@ No setting is required. To change something, put a `.env` file in the project fo
 | ALLOWED_HOST                           | The public host name, if the app runs behind another server. If empty, only localhost                                                        |
 | AUTH_MODE                              | `local_noauth` (default) or `cloudflare_access`                                                                                              |
 | BETTER_AUTH_SECRET                     | The encryption key. Leave it empty and the app creates one. If you set it by hand, use at least 32 characters and never change it afterwards |
-| GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET | An alternative to entering them on the **Ayarlar** (Settings) screen. A value entered on the screen takes priority                           |
-| PAGESPEED_API_KEY                      | An alternative to entering it on the **Ayarlar** (Settings) screen                                                                           |
+| GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET | An alternative to entering them on the **Settings** screen. A value entered on the screen takes priority                                     |
+| PAGESPEED_API_KEY                      | An alternative to entering it on the **Settings** screen                                                                                     |
 | MCP_TOKEN                              | If empty, it is created on first start. If you write `off`, no password is asked. Any other value is used as it is                           |
 
 ## Check
 
 - In the output of `docker compose ps`, the status should be **healthy**. On the first start, it can take up to five minutes to get there.
 - The output of `curl.exe http://127.0.0.1:3001/api/health` should start with "status":"ok". You can also open `http://127.0.0.1:3001/api/health` in the browser.
-- `http://localhost:3001` should open in the browser. The status card on the **Yardım** (Help) screen should say "Her şey yolunda." (Everything is fine.) Before you connect Google, the "Google girişi" (Google sign-in) row asks for attention. This is normal.
+- `http://localhost:3001` should open in the browser. The status card on the **Help** screen should say "Everything looks good." Before you connect Google, the "Google sign-in" row asks for attention. This is normal.
 
 ## Frequently asked questions
 
@@ -102,13 +102,13 @@ No setting is required. To change something, put a `.env` file in the project fo
 
 **Can I open it to the internet?** The app does not ask who you are, so do not open it to the internet without your own authentication in front of it. If you set `ALLOWED_HOST`, the app warns you in the health check.
 
-**Where do I get my assistant's password?** The **Ajan kurulumu** (Agent setup) screen in the app shows the command: `docker compose exec -T seotracker cat /app/.wrangler/mcp-token`. If you use Git Bash, put `MSYS_NO_PATHCONV=1` in front of the command.
+**Where do I get my assistant's password?** The **Agent setup** screen in the app shows the command: `docker compose exec -T seotracker cat /app/.wrangler/mcp-token`. If you use Git Bash, put `MSYS_NO_PATHCONV=1` in front of the command.
 
 ## If something goes wrong
 
 - **It says "Bind for 127.0.0.1:3001 failed".** The port number is in use. Put a `.env` file with the line `PORT=3002` in the project folder and recreate the container. On Windows, Notepad may save the file as `.env.txt`; in PowerShell, `Set-Content -Encoding ascii .env 'PORT=3002'` avoids that.
 - **The status is "unhealthy".** `docker compose logs --tail 50` shows the last lines. If memory ran out during the build, give Docker Desktop more memory.
 - **The Google connection says "yapılandırılmamış" (not configured).** If `BETTER_AUTH_SECRET` is shorter than 32 characters, Google stays off. If you set it by hand, make it longer. If you did not, the `instance-secret` file in the data volume may be damaged.
-- **The Google connection dropped after an update.** `BETTER_AUTH_SECRET` changed, or the data volume was recreated. Choose **Yeniden bağlan** (Reconnect) in the project settings.
+- **The Google connection dropped after an update.** `BETTER_AUTH_SECRET` changed, or the data volume was recreated. Choose **Reconnect** in the project settings.
 
 <!-- Kaynaklar: docs/SELF_HOSTING_DOCKER.md; docs/ENVIRONMENT.md; compose.yaml; docker-entrypoint.sh; src/lib/selfhost-preflight.ts; src/routes/_app/ai.tsx -->

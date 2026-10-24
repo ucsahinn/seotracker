@@ -9,26 +9,32 @@ import { getFieldError } from "@/client/lib/forms";
 import { captureClientEvent } from "@/client/lib/observability";
 import { saveReportTemplate } from "@/serverFunctions/reportTemplates";
 import type { ReportTemplate } from "@/types/schemas/report-templates";
+import { t } from "@/shared/i18n";
 
 // One form for create and edit. Shape only, as at every other boundary: the
 // caps come back from the service with their copy and show in the alert.
-const formSchema = z.object({
-  name: z.string().trim().min(1, "Şablona bir ad verin."),
-  description: z
-    .string()
-    .trim()
-    .min(1, "Bu şablonun ne zaman kullanılacağını tek cümleyle yazın."),
-  instructions: z
-    .string()
-    .trim()
-    .min(1, "Raporun kime yazıldığını ve hangi bölümlerden oluştuğunu yazın."),
-});
+// Built per render: the messages are in the UI language, unknown at import.
+function makeFormSchema() {
+  return z.object({
+    name: z.string().trim().min(1, t("Şablona bir ad verin.")),
+    description: z
+      .string()
+      .trim()
+      .min(1, t("Bu şablonun ne zaman kullanılacağını tek cümleyle yazın.")),
+    instructions: z
+      .string()
+      .trim()
+      .min(
+        1,
+        t("Raporun kime yazıldığını ve hangi bölümlerden oluştuğunu yazın."),
+      ),
+  });
+}
 
-const INSTRUCTIONS_PLACEHOLDER = `Kitle: müşterinin pazarlama sorumlusu, teknik biri değil.
-Bölümler, sırayla: Neredeyiz / Bu ay ne yaptık / Ne değişti / Sırada ne var.
-Üslup: sade ve kendinden emin. Her SEO terimini açıkla. Ünlem kullanma.
-İmza: Acme SEO
-Vurgu rengi: #1C4ED8`;
+type FormValues = z.infer<ReturnType<typeof makeFormSchema>>;
+
+const INSTRUCTIONS_PLACEHOLDER =
+  "Kitle: müşterinin pazarlama sorumlusu, teknik biri değil.\nBölümler, sırayla: Neredeyiz / Bu ay ne yaptık / Ne değişti / Sırada ne var.\nÜslup: sade ve kendinden emin. Her SEO terimini açıkla. Ünlem kullanma.\nİmza: Acme SEO\nVurgu rengi: #1C4ED8";
 
 export function ReportTemplateForm({
   projectId,
@@ -46,7 +52,7 @@ export function ReportTemplateForm({
     // A refusal (duplicate name, the cap) comes back as `{ ok: false }` rather
     // than an error, because thrown errors reach the client stripped to their
     // code. Rethrowing it here gives the form one error branch.
-    mutationFn: async (values: z.infer<typeof formSchema>) => {
+    mutationFn: async (values: FormValues) => {
       const result = await saveReportTemplate({
         data: { projectId, templateId: template?.id, ...values },
       });
@@ -60,14 +66,14 @@ export function ReportTemplateForm({
         source: "app",
       });
       toast.success(
-        result.created ? "Şablon oluşturuldu" : "Şablon kaydedildi",
+        result.created ? t("Şablon oluşturuldu") : t("Şablon kaydedildi"),
       );
       onSaved();
     },
   });
 
   const error = saveMutation.error
-    ? getStandardErrorMessage(saveMutation.error, "Şablon kaydedilemedi")
+    ? getStandardErrorMessage(saveMutation.error, t("Şablon kaydedilemedi"))
     : null;
 
   const form = useForm({
@@ -76,14 +82,14 @@ export function ReportTemplateForm({
       description: template?.description ?? "",
       instructions: template?.instructions ?? "",
     },
-    validators: { onSubmit: formSchema },
+    validators: { onSubmit: makeFormSchema() },
     onSubmit: ({ value }) => saveMutation.mutate(value),
   });
 
   return (
     <Modal maxWidth="max-w-2xl" onClose={onClose} labelledBy="template-title">
       <h3 id="template-title" className="text-lg font-semibold">
-        {template ? "Şablonu düzenle" : "Yeni şablon"}
+        {template ? t("Şablonu düzenle") : t("Yeni şablon")}
       </h3>
 
       <form
@@ -95,11 +101,14 @@ export function ReportTemplateForm({
       >
         <form.Field name="name">
           {(field) => (
-            <Labelled label="Ad" error={getFieldError(field.state.meta.errors)}>
+            <Labelled
+              label={t("Ad")}
+              error={getFieldError(field.state.meta.errors)}
+            >
               <input
                 type="text"
                 className="input input-bordered w-full"
-                placeholder="Aylık müşteri değerlendirmesi"
+                placeholder={t("Aylık müşteri değerlendirmesi")}
                 value={field.state.value}
                 onChange={(event) => field.handleChange(event.target.value)}
               />
@@ -110,14 +119,18 @@ export function ReportTemplateForm({
         <form.Field name="description">
           {(field) => (
             <Labelled
-              label="Açıklama"
-              hint="Ne zaman kullanılacağını anlatan tek cümle. Bir ajan kararını buna bakarak verir."
+              label={t("Açıklama")}
+              hint={t(
+                "Ne zaman kullanılacağını anlatan tek cümle. Bir ajan kararını buna bakarak verir.",
+              )}
               error={getFieldError(field.state.meta.errors)}
             >
               <input
                 type="text"
                 className="input input-bordered w-full"
-                placeholder="Sürekli çalıştığımız müşterilere gönderdiğimiz aylık güncelleme."
+                placeholder={t(
+                  "Sürekli çalıştığımız müşterilere gönderdiğimiz aylık güncelleme.",
+                )}
                 value={field.state.value}
                 onChange={(event) => field.handleChange(event.target.value)}
               />
@@ -128,13 +141,15 @@ export function ReportTemplateForm({
         <form.Field name="instructions">
           {(field) => (
             <Labelled
-              label="Yönerge"
-              hint="Projenin geneline ait marka dili Proje bilgisi › Yazım tercihleri altında tutulur."
+              label={t("Yönerge")}
+              hint={t(
+                "Projenin geneline ait marka dili Proje bilgisi › Yazım tercihleri altında tutulur.",
+              )}
               error={getFieldError(field.state.meta.errors)}
             >
               <textarea
                 className="textarea textarea-bordered h-56 w-full font-mono text-xs leading-relaxed"
-                placeholder={INSTRUCTIONS_PLACEHOLDER}
+                placeholder={t(INSTRUCTIONS_PLACEHOLDER)}
                 value={field.state.value}
                 onChange={(event) => field.handleChange(event.target.value)}
               />
@@ -154,7 +169,7 @@ export function ReportTemplateForm({
             className="btn btn-ghost btn-sm"
             onClick={onClose}
           >
-            Vazgeç
+            {t("Vazgeç")}
           </button>
           <button
             type="submit"
@@ -164,7 +179,7 @@ export function ReportTemplateForm({
             {saveMutation.isPending ? (
               <Loader2 className="size-3 animate-spin" />
             ) : null}
-            {template ? "Değişiklikleri kaydet" : "Şablon oluştur"}
+            {template ? t("Değişiklikleri kaydet") : t("Şablon oluştur")}
           </button>
         </div>
       </form>

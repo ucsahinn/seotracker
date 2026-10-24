@@ -172,6 +172,7 @@ function answer(url: URL, body: DemoRequestBody): Response {
       accountSummaries: [
         {
           account: "accounts/1000001",
+          // i18n-ignore: demo data standing in for a Google API response
           displayName: "Örnek site",
           propertySummaries: [
             {
@@ -211,6 +212,7 @@ function answer(url: URL, body: DemoRequestBody): Response {
       customDimensions: [
         {
           parameterName: "page_type",
+          // i18n-ignore: demo data standing in for a Google API response
           displayName: "Sayfa türü",
           scope: "EVENT",
         },

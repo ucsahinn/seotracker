@@ -2,6 +2,7 @@ import { Gauge } from "lucide-react";
 import { HelpTip } from "@/client/components/HelpTip";
 import { EmptyState } from "@/client/components/EmptyState";
 import { StatusPill } from "@/client/components/StatusPill";
+import { t } from "@/shared/i18n";
 import { QuotaCard } from "./QuotaCard";
 import { STATE_META, worstQuotaState } from "./quotaPresentation";
 import { useActiveProjectId } from "./useActiveProjectId";
@@ -19,12 +20,11 @@ export function SystemLimitsSection({ id }: { id?: string }) {
     <section id={id} className="scroll-mt-16 space-y-3">
       <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
         <h2 className="flex items-center gap-1.5 text-base font-semibold">
-          Google ve sistem sınırları
-          <HelpTip label="Google ve sistem sınırları">
-            Search Console, GA4 ve PageSpeed&apos;in günlük sınırları, bir de
-            denetim ve rapor üst sınırları. Rakamlar uygulamanın kendi kaydından
-            gelir, Google&apos;a ek istek gitmez. Sınırlar proje başına
-            gösterilir.
+          {t("Google ve sistem sınırları")}
+          <HelpTip label={t("Google ve sistem sınırları")}>
+            {t(
+              "Search Console, GA4 ve PageSpeed'in günlük sınırları, bir de denetim ve rapor üst sınırları. Rakamlar uygulamanın kendi kaydından gelir, Google'a ek istek gitmez. Sınırlar proje başına gösterilir.",
+            )}
           </HelpTip>
         </h2>
         {projectId ? <WorstStateBadge projectId={projectId} /> : null}
@@ -33,11 +33,15 @@ export function SystemLimitsSection({ id }: { id?: string }) {
       {!isPending && !projectId ? (
         <EmptyState
           icon={Gauge}
-          title={isError ? "Projeler okunamadı" : "Henüz bir proje yok"}
+          title={isError ? t("Projeler okunamadı") : t("Henüz bir proje yok")}
           description={
             isError
-              ? "Sınırlar proje başına gösterilir. Proje listesi yüklenince burada görünür."
-              : "Sınırlar proje başına gösterilir. Bir proje oluşturunca burada görünür."
+              ? t(
+                  "Sınırlar proje başına gösterilir. Proje listesi yüklenince burada görünür.",
+                )
+              : t(
+                  "Sınırlar proje başına gösterilir. Bir proje oluşturunca burada görünür.",
+                )
           }
           compact
         />
@@ -45,10 +49,14 @@ export function SystemLimitsSection({ id }: { id?: string }) {
       {projectId ? (
         <details>
           <summary className="link cursor-pointer text-sm">
-            Sınırları göster
+            {t("Sınırları göster")}
           </summary>
           <div className="mt-3">
-            <QuotaCard projectId={projectId} kinds="all" title="Güncel durum" />
+            <QuotaCard
+              projectId={projectId}
+              kinds="all"
+              title={t("Güncel durum")}
+            />
           </div>
         </details>
       ) : null}
@@ -65,7 +73,7 @@ function WorstStateBadge({ projectId }: { projectId: string }) {
       tone={
         state === "ok" ? "success" : state === "unknown" ? "neutral" : "warning"
       }
-      label={STATE_META[state].label}
+      label={t(STATE_META[state].label)}
     />
   );
 }

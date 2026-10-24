@@ -34,13 +34,16 @@ function parseChangelog(source: string): ChangelogEntry[] {
   let paragraphOpen = false;
 
   for (const line of source.split("\n")) {
-    const release = /^## \[([^\]]+)\](?:\s*[—-]\s*(.+))?$/.exec(line.trim());
+    const release = /^## \[([^\]]+)\](?: Alpha)?(?:\s*[—-]\s*(.+))?$/.exec(
+      line.trim(),
+    );
     if (release) {
       // "Yayınlanmamış" holds what is committed but not released, so it
       // describes a build nobody is running. Link definitions at the foot of
       // the file match the same shape and carry no content.
       const [, version, date] = release;
       entry =
+        // i18n-ignore: the heading in CHANGELOG.md, matched, never shown
         version === "Yayınlanmamış"
           ? null
           : { version, date: date?.trim() ?? null, intro: "", sections: [] };

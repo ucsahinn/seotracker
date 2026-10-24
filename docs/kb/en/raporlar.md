@@ -8,7 +8,7 @@ updated: 2026-10-22
 
 This guide covers getting reports, sharing them and repeating them with a template.
 
-The **Raporlar** (Reports) screen keeps every report made for this project in one list. A report comes from one of two sources. The **Raporu indir** (Download report) button on the **Site denetimi** (Site audit) screen makes the app's own report. Your AI assistant can research a topic and save its findings as a report. Each report is a single HTML file with no scripts (code that runs on the page), external resources or embedded fonts, so it opens on a phone, can be printed as a PDF and can be sent by email. The app has no editor for writing a report by hand: the app or the assistant writes it.
+The **Reports** screen keeps every report made for this project in one list. A report comes from one of two sources. The **Download report** button on the **Site audit** screen makes the app's own report. Your AI assistant can research a topic and save its findings as a report. Each report is a single HTML file with no scripts (code that runs on the page), external resources or embedded fonts, so it opens on a phone, can be printed as a PDF and can be sent by email. The app has no editor for writing a report by hand: the app or the assistant writes it.
 
 ## What is on the screen
 
@@ -18,13 +18,13 @@ The **Raporlar** (Reports) screen keeps every report made for this project in on
 
 **Table.** It has the **Rapor** (Report), **Tür** (Type), **Oluşturulma** (Created) and **Boyut** (Size) columns. **Tür** tells you where the report came from. For example, "Site denetimi raporu" (Site audit report) is made by the app itself. For reports written with a template, the template's name appears.
 
-**Report page.** The report opens in its own isolated frame. Buttons: **HTML olarak indir** (Download as HTML), copy link and print. The link works only on this installation, with no access from outside.
+**Report page.** The report opens in its own isolated frame. Buttons: **Download as HTML**, copy link and print. The link works only on this installation, with no access from outside.
 
 **Report templates.** You reach them from the menu or from the Raporlar screen. A template is a saved recipe that tells your assistant how to write the report: who will read it, which sections it will have, which language it will be written in. Fields:
 
-- **Ad** (Name): at most 80 characters, unique in the project.
-- **Açıklama** (Description): at most 200 characters. One sentence that says when to use it.
-- **Yönerge** (Instruction): at most 3,000 characters.
+- **Name**: at most 80 characters, unique in the project.
+- **Description**: at most 200 characters. One sentence that says when to use it.
+- **Instructions**: at most 3,000 characters.
 
 A project can have at most 10 templates. Deleting a template does not delete the reports made from it.
 

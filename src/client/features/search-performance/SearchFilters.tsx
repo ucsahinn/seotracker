@@ -1,3 +1,4 @@
+import { t } from "@/shared/i18n";
 import {
   DEVICE_LABELS,
   isDevice,
@@ -12,6 +13,7 @@ import {
   type SearchPerformanceType,
 } from "@/types/schemas/search-performance";
 
+// Labels stay Turkish here and go through t() where they render.
 const RANGE_LABELS: Record<SearchPerformanceDateRange, string> = {
   last_7_days: "Son 7 gün",
   last_28_days: "Son 28 gün",
@@ -84,11 +86,11 @@ export function SearchFilters({
             });
           }
         }}
-        aria-label="Arama türü"
+        aria-label={t("Arama türü")}
       >
         {TYPE_OPTIONS.map((option) => (
           <option key={option.value} value={option.value}>
-            {option.label}
+            {t(option.label)}
           </option>
         ))}
       </select>
@@ -102,12 +104,12 @@ export function SearchFilters({
               : undefined,
           })
         }
-        aria-label="Cihaz filtresi"
+        aria-label={t("Cihaz filtresi")}
       >
-        <option value={ALL}>Tüm cihazlar</option>
+        <option value={ALL}>{t("Tüm cihazlar")}</option>
         {DEVICE_OPTIONS.map((option) => (
           <option key={option.value} value={option.value}>
-            {option.label}
+            {t(option.label)}
           </option>
         ))}
       </select>
@@ -120,9 +122,9 @@ export function SearchFilters({
               event.target.value === ALL ? undefined : event.target.value,
           })
         }
-        aria-label="Ülke filtresi"
+        aria-label={t("Ülke filtresi")}
       >
-        <option value={ALL}>Tüm ülkeler</option>
+        <option value={ALL}>{t("Tüm ülkeler")}</option>
         {countries.map((row) => (
           <option key={row.key} value={row.key}>
             {formatCountry(row.key)}
@@ -137,11 +139,11 @@ export function SearchFilters({
             onViewChange({ range: event.target.value });
           }
         }}
-        aria-label="Tarih aralığı"
+        aria-label={t("Tarih aralığı")}
       >
         {RANGE_OPTIONS.map((option) => (
           <option key={option.value} value={option.value}>
-            {option.label}
+            {t(option.label)}
           </option>
         ))}
       </select>

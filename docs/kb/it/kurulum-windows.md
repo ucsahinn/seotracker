@@ -5,14 +5,14 @@ kind: nasil-yapilir
 updated: 2026-10-23
 ---
 
-L'interfaccia dell'app è in turco. In questa guida ogni nome di pulsante e di schermata è riportato in turco, con il significato italiano tra parentesi.
+L'interfaccia dell'app è disponibile in turco e in inglese. La lingua si sceglie in Ayarlar → Görünüm → Dil. In questa guida ogni nome di pulsante e di schermata è riportato in turco, con il significato italiano tra parentesi.
 
 Al termine l'app sarà installata sul computer e aperta nel browser. L'installazione richiede due minuti. Viene installata solo per il proprio account utente e non servono i permessi di amministratore. Se manca il componente Visual C++, il permesso viene chiesto una sola volta.
 
 ## Cosa serve
 
 - Windows 10 o 11 (64 bit).
-- Circa 350 MB di spazio libero. Il file di installazione pesa 81 MB, l'app installata 290 MB.
+- Circa 400 MB di spazio libero. Il file di installazione pesa 86 MB, l'app installata 313 MB.
 - Un browser come Edge, Chrome o Firefox.
 - Non servono Docker, Node né il terminale (la finestra dei comandi). Non servono nemmeno i diritti di amministratore: vengono chiesti una sola volta, e solo se manca il componente Visual C++.
 - Il motore dell'app richiede il pacchetto Visual C++ di Microsoft. Se il computer non lo ha, l'installazione lo aggiunge da sé e chiede una volta il permesso di amministratore. L'app viene installata nella cartella `%LOCALAPPDATA%\Programs\seowatcher`.
@@ -131,7 +131,7 @@ Quando il numero cambia, aggiornare con il nuovo numero anche i due indirizzi di
 
 ## Verifica
 
-- Passando il mouse sull'icona nella barra delle applicazioni deve comparire "seowatcher X.Y.Z: Çalışıyor: http://127.0.0.1:3001/". Il numero iniziale è la versione installata. 2.3.7 è un esempio.
+- Passando il mouse sull'icona nella barra delle applicazioni deve comparire "seowatcher X.Y.Z: Çalışıyor: http://127.0.0.1:3001/". Il numero iniziale è la versione installata. 0.5.0 Alpha è un esempio.
 - Nel browser l'indirizzo `http://127.0.0.1:3001/api/health` deve mostrare un testo che inizia con "status":"ok".
 - Nella schermata **Yardım** (Aiuto) la scheda "Kurulumunuzun durumu" (Stato dell'installazione) deve dire "Her şey yolunda." (Tutto a posto.). Finché Google non è collegato, la riga "Google girişi" (Accesso a Google) segnala un problema. È normale.
 

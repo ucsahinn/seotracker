@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { AlertCircle, Check, Loader2 } from "lucide-react";
+import { AlertCircle, Check } from "lucide-react";
 import { SearchConsoleConnectionCard } from "@/client/features/gsc/SearchConsoleConnectionCard";
 import { AUDIT_ISSUE_TYPES } from "@/shared/audit-issues";
 import {
@@ -10,16 +10,21 @@ import {
 } from "@/client/features/dashboard/cardParts";
 import { SeverityBar } from "@/client/features/dashboard/SeverityBar";
 import { useFlashOnChange } from "@/client/components/useFlashOnChange";
-import { formatCount } from "@/client/lib/format";
 import { extractPathname } from "@/client/features/audit/shared";
 import { SEVERITY_LABEL } from "@/client/features/audit/results/IssuesView";
 import type { DashboardAuditSummary } from "@/types/schemas/dashboard";
+import { t } from "@/shared/i18n";
 
 // Plain string-keyed view of the registry: issue types from the DB are not
-// statically guaranteed to be registry keys.
-const issueTitles: Record<string, string | undefined> = Object.fromEntries(
-  Object.entries(AUDIT_ISSUE_TYPES).map(([key, value]) => [key, value.title]),
-);
+// statically guaranteed to be registry keys. Read at render time and passed
+// through t(), since the registry's titles are Turkish source strings.
+const issueTypes: Record<string, { title: string } | undefined> =
+  AUDIT_ISSUE_TYPES;
+
+function issueTitle(issueType: string): string {
+  const title = issueTypes[issueType]?.title;
+  return title ? t(title) : issueType;
+}
 
 /**
  * The Search Console pitch, for a project that has not connected it.
@@ -47,16 +52,18 @@ export function AuditHealthCard({
 }) {
   if (!audit) {
     return (
-      <CardShell title="Site denetimi">
+      <CardShell title={t("Site denetimi")}>
         <EmptyCardBody
-          message="Kırık bağlantılar, eksik etiketler ve dizine girme sorunları için sitenizi tarayın."
+          message={t(
+            "Kırık bağlantılar, eksik etiketler ve dizine girme sorunları için sitenizi tarayın.",
+          )}
           cta={
             <Link
               to="/p/$projectId/audit"
               params={{ projectId }}
               className="btn btn-primary btn-sm"
             >
-              Denetimi başlat
+              {t("Denetimi başlat")}
             </Link>
           }
         />
@@ -86,16 +93,19 @@ function RunningAuditCard({
   );
   return (
     <CardShell
-      title="Site denetimi"
+      title={t("Site denetimi")}
       // Not prefixed with "Site denetimi": CardShell renders that as the
       // title directly above, so the one metadata line was spending its
       // first third repeating it.
       stamp={
         audit.status === "completed"
-          ? `${formatCount(audit.pagesCrawled)} sayfa tarandı · ${formatDay(audit.startedAt)}`
+          ? t("{count} sayfa tarandı · {date}", {
+              count: audit.pagesCrawled,
+              date: formatDay(audit.startedAt),
+            })
           : audit.status === "running"
-            ? "denetim sürüyor"
-            : "son denetim başarısız"
+            ? t("denetim sürüyor")
+            : t("son denetim başarısız")
       }
       action={
         <Link
@@ -107,7 +117,7 @@ function RunningAuditCard({
           search={{ auditId: audit.auditId, tab: "issues" as const }}
           className={moreDetailsClass}
         >
-          Ayrıntılar
+          {t("Ayrıntılar")}
         </Link>
       }
     >
@@ -118,8 +128,10 @@ function RunningAuditCard({
           the second of them directly under a stamp reading "başarısız". */}
         {audit.status === "running" ? (
           <div className="flex items-center gap-2 text-sm text-muted">
-            <Loader2 className="size-4 animate-spin" />
-            Denetim sürüyor, sonuçlar bittiğinde görünecek.
+            {/* The live dot the audit screen uses for a running crawl, not a
+                spinner: nothing is loading here, a job is running. */}
+            <span className="dot-live text-primary" aria-hidden />
+            {t("Denetim sürüyor, sonuçlar bittiğinde görünecek.")}
           </div>
         ) : audit.status !== "completed" ? (
           <div className="flex items-center gap-2 text-sm text-muted">
@@ -130,12 +142,12 @@ function RunningAuditCard({
              * token is 8.49:1 and costs nothing.
              */}
             <AlertCircle className="size-4 text-[var(--ink-warning)]" />
-            Son denetim tamamlanamadı, bu yüzden sonuç yok.
+            {t("Son denetim tamamlanamadı, bu yüzden sonuç yok.")}
           </div>
         ) : audit.topIssues.length === 0 ? (
           <div className="flex items-center gap-2 text-sm text-muted">
             <Check className="size-4 text-success" />
-            Sorun bulunamadı, siteniz sağlıklı görünüyor.
+            {t("Sorun bulunamadı, siteniz sağlıklı görünüyor.")}
           </div>
         ) : (
           <ul className="space-y-2">
@@ -162,14 +174,14 @@ function RunningAuditCard({
                       name. The house rule says direction is never colour
                       alone, and rank is no different. */}
                     <span className="sr-only">
-                      {SEVERITY_LABEL[issue.severity]}:{" "}
+                      {t(SEVERITY_LABEL[issue.severity])}:{" "}
                     </span>
                     <span className="truncate">
-                      {issueTitles[issue.issueType] ?? issue.issueType}
+                      {issueTitle(issue.issueType)}
                     </span>
                   </span>
                   <span className="shrink-0 tabular-nums text-muted">
-                    {formatCount(issue.count)} sayfa
+                    {t("{count} sayfa", { count: issue.count })}
                   </span>
                 </Link>
               </li>
@@ -184,9 +196,9 @@ function RunningAuditCard({
                   search={{ auditId: audit.auditId, tab: "issues" as const }}
                   className="text-xs text-muted underline decoration-base-content/25 underline-offset-4 hover:text-base-content"
                 >
-                  +{" "}
-                  {formatCount(audit.totalIssueTypes - audit.topIssues.length)}{" "}
-                  sorun daha
+                  {t("+ {count} sorun daha", {
+                    count: audit.totalIssueTypes - audit.topIssues.length,
+                  })}
                 </Link>
               </li>
             ) : null}
@@ -205,7 +217,7 @@ function RunningAuditCard({
             {/* The card named issue types and never pages, yet opening a page
               is always the next move. Worst severity first, then count. */}
             <h3 className="text-xs font-medium text-muted">
-              En çok sorunu olan sayfalar
+              {t("En çok sorunu olan sayfalar")}
             </h3>
             <ul className="space-y-1">
               {audit.topPages.map((page) => (
@@ -221,7 +233,7 @@ function RunningAuditCard({
                       {extractPathname(page.pageUrl)}
                     </span>
                     <span className="shrink-0 tabular-nums text-muted">
-                      {formatCount(page.issueCount)} sorun
+                      {t("{count} sorun", { count: page.issueCount })}
                     </span>
                   </Link>
                 </li>

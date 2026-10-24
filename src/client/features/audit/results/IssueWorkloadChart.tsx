@@ -12,6 +12,7 @@ import { sort } from "remeda";
 import { useReducedMotion } from "@/client/lib/useReducedMotion";
 import { formatCount } from "@/client/lib/format";
 import type { IssueSeverity } from "@/shared/audit-issues";
+import { t } from "@/shared/i18n";
 
 /** How many bars before the chart stops being readable and starts being a list. */
 const MAX_BARS = 8;
@@ -30,6 +31,7 @@ const SEVERITY_FILL: Record<IssueSeverity, string> = {
   info: "var(--color-info)",
 };
 
+// Turkish source labels; t() runs where they render.
 const SEVERITY_LABEL: Record<IssueSeverity, string> = {
   critical: "Kritik",
   warning: "Uyarı",
@@ -83,22 +85,33 @@ export function IssueWorkloadChart({
   return (
     <div className="rounded-box border border-base-300 bg-base-100 px-2 py-3">
       <p className="px-2 text-sm font-medium">
-        En çok sayfayı hangi sorun etkiliyor?
+        {t("En çok sayfayı hangi sorun etkiliyor?")}
       </p>
       <p className="mb-1 px-2 text-xs text-muted">
-        En çok sayfayı etkileyen {rows.length} tür
-        {hidden > 0 ? `, kalan ${formatCount(hidden)} tür aşağıda` : ""}.
-        {onSelect ? " Bir çubuğa tıklayıp listeyi daraltın." : ""}
+        {hidden > 0
+          ? t(
+              "En çok sayfayı etkileyen {count} tür, kalan {hidden} tür aşağıda.",
+              { count: rows.length, hidden: formatCount(hidden) },
+            )
+          : t("En çok sayfayı etkileyen {count} tür.", { count: rows.length })}
+        {onSelect ? ` ${t("Bir çubuğa tıklayıp listeyi daraltın.")}` : ""}
       </p>
       <Chart
         height={Math.max(140, rows.length * 40)}
-        summary={`En çok sayfayı etkileyen sorun: ${top.title}, ${formatCount(top.pageCount)} sayfa. Grafikte ${rows.length} tür var.`}
+        summary={t(
+          "En çok sayfayı etkileyen sorun: {title}, {pages} sayfa. Grafikte {count} tür var.",
+          {
+            title: top.title,
+            pages: formatCount(top.pageCount),
+            count: rows.length,
+          },
+        )}
         table={{
-          caption: "Sorun türüne göre etkilenen sayfa sayısı",
-          columns: ["Sorun", "Önem", "Etkilenen sayfa"],
+          caption: t("Sorun türüne göre etkilenen sayfa sayısı"),
+          columns: [t("Sorun"), t("Önem"), t("Etkilenen sayfa")],
           rows: rows.map((row) => [
             row.title,
-            SEVERITY_LABEL[row.severity],
+            t(SEVERITY_LABEL[row.severity]),
             formatCount(row.pageCount),
           ]),
         }}
@@ -128,8 +141,8 @@ export function IssueWorkloadChart({
                   title={row.title}
                   rows={[
                     {
-                      label: SEVERITY_LABEL[row.severity],
-                      value: `${formatCount(row.pageCount)} sayfa`,
+                      label: t(SEVERITY_LABEL[row.severity]),
+                      value: t("{count} sayfa", { count: row.pageCount }),
                       color: SEVERITY_FILL[row.severity],
                     },
                   ]}
@@ -184,7 +197,7 @@ export function IssueWorkloadChart({
        */}
       {onSelect ? (
         <ul
-          aria-label="Sorun türüne göre filtre"
+          aria-label={t("Sorun türüne göre filtre")}
           className="sr-only focus-within:not-sr-only focus-within:mt-2 focus-within:flex focus-within:flex-wrap focus-within:gap-1 focus-within:px-2"
         >
           {rows.map((row) => (

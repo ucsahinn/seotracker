@@ -1,4 +1,5 @@
 import type { AuditTab } from "@/types/schemas/audit";
+import { t } from "@/shared/i18n";
 
 /**
  * One sentence under each tab that says which question it answers, so the
@@ -16,5 +17,5 @@ const INTRO: Record<AuditTab, string> = {
 };
 
 export function TabIntro({ tab }: { tab: AuditTab }) {
-  return <p className="max-w-prose text-sm text-muted">{INTRO[tab]}</p>;
+  return <p className="max-w-prose text-sm text-muted">{t(INTRO[tab])}</p>;
 }

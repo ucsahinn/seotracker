@@ -3,6 +3,7 @@ import { EmptyState } from "@/client/components/EmptyState";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { RefreshButton } from "@/client/components/RefreshButton";
 import type { QuotaKind } from "@/server/features/quotas/quotaTypes";
+import { t } from "@/shared/i18n";
 import { QuotaMeter } from "./QuotaMeter";
 import { useQuotaStatus } from "./useQuotaStatus";
 
@@ -20,10 +21,11 @@ import { useQuotaStatus } from "./useQuotaStatus";
 export function QuotaCard({
   projectId,
   kinds = "all",
-  title = "Kota ve sınırlar",
+  title,
 }: {
   projectId: string;
   kinds?: readonly QuotaKind[] | "all";
+  /** Already translated by the caller; defaults to "Kota ve sınırlar". */
   title?: string;
 }) {
   const query = useQuotaStatus(projectId, kinds);
@@ -31,7 +33,9 @@ export function QuotaCard({
   return (
     <section className="rounded-box border border-[var(--hairline)] bg-base-100 p-4 shadow-[var(--shadow-raise)]">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h2 className="text-sm font-semibold">{title}</h2>
+        <h2 className="text-sm font-semibold">
+          {title ?? t("Kota ve sınırlar")}
+        </h2>
         <RefreshButton
           onRefresh={() => void query.refetch()}
           isFetching={query.isFetching}
@@ -59,7 +63,7 @@ function QuotaBody({ query }: { query: ReturnType<typeof useQuotaStatus> }) {
       <QueryErrorState
         error={query.error}
         onRetry={() => void query.refetch()}
-        title="Kota bilgisi yüklenemedi"
+        title={t("Kota bilgisi yüklenemedi")}
         compact
       />
     );
@@ -68,8 +72,8 @@ function QuotaBody({ query }: { query: ReturnType<typeof useQuotaStatus> }) {
     return (
       <EmptyState
         icon={Gauge}
-        title="Gösterilecek sınır yok"
-        description="Bu bölümde izlenen bir kota yok."
+        title={t("Gösterilecek sınır yok")}
+        description={t("Bu bölümde izlenen bir kota yok.")}
         compact
       />
     );

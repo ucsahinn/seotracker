@@ -5,6 +5,7 @@ import {
   type RefObject,
 } from "react";
 import { Sidebar } from "@/client/components/Sidebar";
+import { t } from "@/shared/i18n";
 
 export const MOBILE_DRAWER_ID = "mobile-sidebar-drawer";
 
@@ -68,7 +69,7 @@ export function MobileSidebarDrawer({
       <button
         type="button"
         tabIndex={-1}
-        aria-label="Kenar çubuğunu kapat"
+        aria-label={t("Kenar çubuğunu kapat")}
         className="absolute inset-0 bg-black/45"
         onClick={onClose}
       />
@@ -77,7 +78,7 @@ export function MobileSidebarDrawer({
         id={MOBILE_DRAWER_ID}
         role="dialog"
         aria-modal="true"
-        aria-label="Ana menü"
+        aria-label={t("Ana menü")}
         tabIndex={-1}
         onKeyDown={keepTabInside}
         className="absolute left-0 top-0 h-full shadow-xl focus:outline-none"

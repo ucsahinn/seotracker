@@ -5,7 +5,7 @@ kind: sorun-giderme
 updated: 2026-10-23
 ---
 
-Die Oberfläche der App ist auf Türkisch. Diese Anleitung nennt jede Schaltfläche und jeden Bildschirmnamen auf Türkisch, mit der deutschen Bedeutung in Klammern.
+Die Oberfläche der App ist auf Türkisch und Englisch verfügbar. Die Sprache lässt sich unter Ayarlar → Görünüm → Dil ändern. Diese Anleitung nennt jede Schaltfläche und jeden Bildschirmnamen auf Türkisch, mit der deutschen Bedeutung in Klammern.
 
 Wenn etwas nicht funktioniert, sehen Sie zuerst in der App auf dem Bildschirm **Yardım** (Hilfe) auf die Karte „Kurulumunuzun durumu“ (Zustand Ihrer Installation). Die Karte prüft Anmeldung und Zugriff, die Google-Anmeldung, den PageSpeed-Schlüssel und die Datenbank. Sagt sie „N şey dikkat istiyor“ (N Dinge brauchen Aufmerksamkeit), führt Sie die Schaltfläche daneben zur richtigen Einstellung. Die folgenden Probleme sind vom häufigsten zum seltensten geordnet.
 

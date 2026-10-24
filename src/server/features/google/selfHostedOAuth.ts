@@ -23,6 +23,7 @@ import {
   getGoogleOAuthClientConfig,
   hasSelfHostedGoogleOAuthConfig,
 } from "./oauth-config";
+import { t } from "@/shared/i18n";
 
 const GOOGLE_AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth";
 const GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token";
@@ -110,7 +111,7 @@ function getGoogleAccountId(tokens: GoogleTokenResponse) {
   if (!tokens.id_token) {
     throw new AppError(
       "VALIDATION_ERROR",
-      "Google kimlik bilgisini döndürmedi. Bağlantıyı yeniden deneyin.",
+      t("Google kimlik bilgisini döndürmedi. Bağlantıyı yeniden deneyin."),
     );
   }
   return googleIdTokenSchema.parse(decodeJwt(tokens.id_token)).sub;
@@ -194,7 +195,12 @@ async function exchangeCode(input: {
   if (!response.ok) {
     throw new AppError(
       "VALIDATION_ERROR",
-      `Google, ${input.integration.displayName} yetkilendirme kodunu reddetti. Bağlantıyı yeniden deneyin.`,
+      t(
+        "Google, {name} yetkilendirme kodunu reddetti. Bağlantıyı yeniden deneyin.",
+        {
+          name: input.integration.displayName,
+        },
+      ),
     );
   }
   return googleTokenResponseSchema.parse(await response.json());
@@ -210,7 +216,10 @@ export async function createSelfHostedGoogleAuthorizationUrl(input: {
   if (!config || !(await hasSelfHostedGoogleOAuthConfig(config))) {
     throw new AppError(
       "AUTH_CONFIG_MISSING",
-      `${input.integration.displayName} yapılandırılmamış. GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET ve BETTER_AUTH_SECRET değerlerini ayarlayın.`,
+      t(
+        "{name} yapılandırılmamış. GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET ve BETTER_AUTH_SECRET değerlerini ayarlayın.",
+        { name: input.integration.displayName },
+      ),
     );
   }
   const redirectUri = getRedirectUri(input.publicOrigin, input.integration);

@@ -12,6 +12,7 @@
  * harness reaches this directory by relative path and its tsconfig declares
  * no `@/` alias.
  */
+import { t } from "./i18n";
 
 /**
  * Search Console finalises a day about two to three days late, and keeps
@@ -36,7 +37,14 @@ export function describeWindow(
   endDate: string,
   formatDate: (value: string) => string,
 ): string {
-  return `${formatDate(startDate)} – ${formatDate(endDate)}. Search Console verisi ${GSC_DATA_LAG_DAYS} gün geriden gelir, bu yüzden son gün bugün olmaz.`;
+  return t(
+    "{start} – {end}. Search Console verisi {count} gün geriden gelir, bu yüzden son gün bugün olmaz.",
+    {
+      start: formatDate(startDate),
+      end: formatDate(endDate),
+      count: GSC_DATA_LAG_DAYS,
+    },
+  );
 }
 
 /**

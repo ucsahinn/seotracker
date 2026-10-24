@@ -11,6 +11,7 @@ import {
   Ga4ConnectionRepository,
   type Ga4Connection,
 } from "@/server/features/ga4/repositories/Ga4ConnectionRepository";
+import { t } from "@/shared/i18n";
 
 async function getConnection(projectId: string): Promise<Ga4Connection | null> {
   return Ga4ConnectionRepository.getByProjectId(projectId);
@@ -80,8 +81,13 @@ async function listPropertiesForUserWithGrantStatus(userId: string) {
               requiresReconnect: false,
               propertiesUnavailable: true,
               unavailableReason: email
-                ? `Google Analytics bu hizmet hesabına izin vermedi. İki şey gerekiyor: Google Cloud projenizde Google Analytics Admin API etkin olmalı, ve GA4 mülkünüzde Yönetici → Erişim yönetimi altında ${email} adresi Görüntüleyen olarak ekli olmalı.`
-                : "Google Analytics bu hizmet hesabına izin vermedi. Google Analytics Admin API'yi etkinleştirin ve hesabın adresini GA4 mülkünüze Görüntüleyen olarak ekleyin.",
+                ? t(
+                    "Google Analytics bu hizmet hesabına izin vermedi. İki şey gerekiyor: Google Cloud projenizde Google Analytics Admin API etkin olmalı, ve GA4 mülkünüzde Yönetici → Erişim yönetimi altında {email} adresi Görüntüleyen olarak ekli olmalı.",
+                    { email },
+                  )
+                : t(
+                    "Google Analytics bu hizmet hesabına izin vermedi. Google Analytics Admin API'yi etkinleştirin ve hesabın adresini GA4 mülkünüze Görüntüleyen olarak ekleyin.",
+                  ),
               properties: [],
             },
           ],
@@ -168,7 +174,7 @@ async function setProperty(input: {
     if (!grants.some((grant) => grant.accountId === input.accountId)) {
       throw new AppError(
         "NOT_FOUND",
-        "Bu Google hesabı seowatcher hesabınıza bağlı değil.",
+        t("Bu Google hesabı seowatcher hesabınıza bağlı değil."),
       );
     }
   }
@@ -183,7 +189,7 @@ async function setProperty(input: {
   ) {
     throw new AppError(
       "NOT_FOUND",
-      "Bu Google Analytics mülkü bağlı Google hesabınızda bulunmuyor.",
+      t("Bu Google Analytics mülkü bağlı Google hesabınızda bulunmuyor."),
     );
   }
 

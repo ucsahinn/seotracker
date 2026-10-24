@@ -9,6 +9,7 @@ import { useLocalSort } from "@/client/components/table/useLocalSort";
 import { LighthouseIssueRow } from "./LighthouseIssueRow";
 import { compareIssues, type LighthouseSortKey } from "./lighthouseIssueSort";
 import type { LighthouseIssue } from "./types";
+import { t } from "@/shared/i18n";
 
 export function LighthouseIssueList({
   issues,
@@ -45,7 +46,7 @@ export function LighthouseIssueList({
   if (!issues.length) {
     return (
       <p className="text-sm text-muted">
-        {emptyMessage ?? "Bu kategoride işlem gerektiren sorun yok."}
+        {emptyMessage ?? t("Bu kategoride işlem gerektiren sorun yok.")}
       </p>
     );
   }
@@ -65,23 +66,23 @@ export function LighthouseIssueList({
           <th className="font-medium" aria-sort={sorting.ariaSort("severity")}>
             <SortableHeader
               column={sorting.column("severity", false)}
-              label="Önem"
+              label={t("Önem")}
             />
           </th>
           <th className="font-medium" aria-sort={sorting.ariaSort("title")}>
             <SortableHeader
               column={sorting.column("title", false)}
-              label="Sorun"
+              label={t("Sorun")}
             />
           </th>
-          <th className="font-medium hidden sm:table-cell">Kategori</th>
+          <th className="font-medium hidden sm:table-cell">{t("Kategori")}</th>
           <th
             className="font-medium hidden md:table-cell text-right"
             aria-sort={sorting.ariaSort("impact")}
           >
             <SortableHeader
               column={sorting.column("impact")}
-              label="Etki"
+              label={t("Etki")}
               align="right"
             />
           </th>
@@ -91,7 +92,7 @@ export function LighthouseIssueList({
           >
             <SortableHeader
               column={sorting.column("score", false)}
-              label="Puan"
+              label={t("Puan")}
               align="right"
             />
           </th>

@@ -1,4 +1,5 @@
 import { AppError } from "@/server/lib/errors";
+import { t } from "@/shared/i18n";
 
 const BLOCKED_HOSTS = new Set([
   "localhost",
@@ -238,7 +239,9 @@ async function hostnameResolvesToBlockedAddress(
   } catch (error) {
     throw new AppError(
       "CRAWL_TARGET_BLOCKED",
-      "Adresin nereye çözümlendiği doğrulanamadı, bu yüzden tarama başlatılmadı. Uygulamanın cloudflare-dns.com adresine erişebildiğinden emin olun.",
+      t(
+        "Adresin nereye çözümlendiği doğrulanamadı, bu yüzden tarama başlatılmadı. Uygulamanın cloudflare-dns.com adresine erişebildiğinden emin olun.",
+      ),
       { reason: error instanceof Error ? error.message : "dns_lookup_failed" },
     );
   }
@@ -254,7 +257,9 @@ async function hostnameResolvesToBlockedAddress(
   if (addresses.length === 0) {
     throw new AppError(
       "CRAWL_TARGET_BLOCKED",
-      "Adres herkese açık DNS'te çözümlenmiyor, bu yüzden tarama başlatılmadı.",
+      t(
+        "Adres herkese açık DNS'te çözümlenmiyor, bu yüzden tarama başlatılmadı.",
+      ),
       { reason: "dns_no_public_records" },
     );
   }
@@ -343,7 +348,7 @@ export async function normalizeAndValidateStartUrl(
   if (parsed.username || parsed.password) {
     throw new AppError(
       "VALIDATION_ERROR",
-      "Kullanıcı adı veya parola içeren adresler taranamaz.",
+      t("Kullanıcı adı veya parola içeren adresler taranamaz."),
     );
   }
 

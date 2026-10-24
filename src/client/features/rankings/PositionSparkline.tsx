@@ -1,3 +1,4 @@
+import { t } from "@/shared/i18n";
 import * as React from "react";
 import { formatCount, formatDate, formatDecimal } from "@/client/lib/format";
 
@@ -68,7 +69,10 @@ export function PositionSparkline({ rows }: { rows: Day[] }) {
         className="h-28 w-full touch-pan-y"
         role="slider"
         tabIndex={0}
-        aria-label={`Sıra geçmişi: ${formatDecimal(best)} ile ${formatDecimal(worst)} arasında`}
+        aria-label={t("Sıra geçmişi: {best} ile {worst} arasında", {
+          best: formatDecimal(best),
+          worst: formatDecimal(worst),
+        })}
         aria-valuemin={0}
         aria-valuemax={lastIndex}
         aria-valuenow={hovered ?? lastIndex}
@@ -101,20 +105,25 @@ export function PositionSparkline({ rows }: { rows: Day[] }) {
         })}
       </svg>
       <div className="flex justify-between text-xs text-muted">
-        <span>En iyi {formatDecimal(best)}</span>
-        <span>En kötü {formatDecimal(worst)}</span>
+        <span>{t("En iyi {value}", { value: formatDecimal(best) })}</span>
+        <span>{t("En kötü {value}", { value: formatDecimal(worst) })}</span>
       </div>
       <p className="mt-1 min-h-4 text-xs tabular-nums" aria-live="polite">
         {day ? (
-          <>
-            {formatDate(day.date)} · Sıra {formatDecimal(day.position)} ·{" "}
-            {formatCount(day.clicks)} tıklama · {formatCount(day.impressions)}{" "}
-            gösterim
-          </>
+          t(
+            "{date} · Sıra {position} · {clicks} tıklama · {impressions} gösterim",
+            {
+              date: formatDate(day.date),
+              position: formatDecimal(day.position),
+              clicks: formatCount(day.clicks),
+              impressions: formatCount(day.impressions),
+            },
+          )
         ) : (
           <span className="text-subtle">
-            Günlük değeri görmek için grafiğin üzerine gelin ya da grafiğe
-            odaklanıp sol ve sağ ok tuşlarını kullanın.
+            {t(
+              "Günlük değeri görmek için grafiğin üzerine gelin ya da grafiğe odaklanıp sol ve sağ ok tuşlarını kullanın.",
+            )}
           </span>
         )}
       </p>

@@ -1,13 +1,14 @@
 import { Link } from "@tanstack/react-router";
 import type { LinkOptions } from "@tanstack/react-router";
 import { type ComponentType } from "react";
-import { CircleHelp, Settings, X } from "lucide-react";
+import { CircleHelp, ScrollText, Settings, X } from "lucide-react";
 import {
   connectNavGroup,
   getProjectNavGroups,
 } from "@/client/navigation/items";
 import { ProjectSwitcher } from "@/client/features/projects/ProjectSwitcher";
 import { t } from "@/shared/i18n";
+import { NotificationBell } from "@/client/features/notifications/NotificationBell";
 
 interface SidebarProps {
   projectId: string | null;
@@ -128,6 +129,13 @@ export function Sidebar({ projectId, onNavigate, onClose }: SidebarProps) {
 function SidebarFooter({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <div className="shrink-0 border-t border-base-300 px-2 py-2 pb-safe">
+      <SidebarNavLink
+        icon={ScrollText}
+        label={t("Sürüm notları")}
+        onNavigate={onNavigate}
+        linkProps={{ to: "/release-notes" }}
+      />
+      <NotificationBell onNavigate={onNavigate} />
       <SidebarNavLink
         icon={CircleHelp}
         label={t("Yardım")}

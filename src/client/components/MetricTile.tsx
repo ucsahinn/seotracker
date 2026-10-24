@@ -2,8 +2,10 @@ import { ArrowDownRight, ArrowUpRight } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import * as React from "react";
 import { AnimatedNumber } from "@/client/components/AnimatedNumber";
+import { Sparkline } from "@/client/components/Sparkline";
 import { useFlashOnChange } from "@/client/components/useFlashOnChange";
 import { formatSignedPercent } from "@/client/lib/format";
+import { t } from "@/shared/i18n";
 
 /**
  * One number, read at a glance.
@@ -51,6 +53,7 @@ export function MetricTile({
   href,
   flashKey,
   animateTo,
+  trend,
   /** Lower is better, as with an average search position. */
   inverted = false,
 }: {
@@ -64,6 +67,7 @@ export function MetricTile({
   inverted?: boolean;
   /** Opt in to a count-up: the raw number and its formatter. `value` stays the fallback and the null check. Off by default. */
   animateTo?: { value: number; format: (n: number) => string };
+  trend?: readonly (number | null)[];
 } & TileTarget) {
   const flash = useFlashOnChange(flashKey === undefined ? value : flashKey);
   const body = (
@@ -94,6 +98,9 @@ export function MetricTile({
       {/* Not truncated: a hint is usually the one link that makes the tile
           useful, and half a link is worse than a second line. */}
       {hint ? <p className="text-xs text-subtle">{hint}</p> : null}
+      {value !== null && trend && (
+        <Sparkline values={trend} inverted={inverted} />
+      )}
     </>
   );
   const frame = "flex min-w-0 flex-col gap-1.5 px-5 py-4";
@@ -161,7 +168,7 @@ export function DeltaBadge({
       {/* The arrow carries direction for a sighted reader and is
           aria-hidden, so without this the announced value is a bare
           number: no up or down, and good-or-bad only in colour. */}
-      <span className="sr-only">{resolved.up ? "arttı" : "azaldı"} </span>
+      <span className="sr-only">{resolved.up ? t("arttı") : t("azaldı")} </span>
       {resolved.text}
     </span>
   );

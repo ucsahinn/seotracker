@@ -16,6 +16,7 @@ import {
   formatDecimal,
 } from "@/client/lib/format";
 import { useReducedMotion } from "@/client/lib/useReducedMotion";
+import { t } from "@/shared/i18n";
 
 /**
  * Whether the site is getting better, which the table under it cannot say.
@@ -83,30 +84,40 @@ export function AuditTrendChart({ history }: { history: HistoryRow[] }) {
   return (
     <section className="rounded-box border border-base-300 bg-base-200/25 px-2 py-3">
       <div className="px-2">
-        <h3 className="text-sm font-medium">Denetimler arası değişim</h3>
+        <h3 className="text-sm font-medium">{t("Denetimler arası değişim")}</h3>
         <p className="mt-0.5 text-xs text-muted">
-          Yüz sayfa başına sorun sayısı. Farklı büyüklükteki taramalar bu
-          ölçüyle karşılaştırılabilir.
+          {t(
+            "Yüz sayfa başına sorun sayısı. Farklı büyüklükteki taramalar bu ölçüyle karşılaştırılabilir.",
+          )}
         </p>
       </div>
       {!anyFindings ? (
         <p className="px-2 pt-3 text-sm text-muted">
-          Bu {formatCount(points.length)} denetimin hiçbirinde kritik sorun ya
-          da uyarı çıkmadı, grafik boş. Bilgi düzeyindeki bulgular denetimlerin
-          kendi sayfalarında.
+          {t(
+            "Bu {count} denetimin hiçbirinde kritik sorun ya da uyarı çıkmadı, grafik boş. Bilgi düzeyindeki bulgular denetimlerin kendi sayfalarında.",
+            { count: points.length },
+          )}
         </p>
       ) : (
         <Chart
           height={180}
           summary={summarise(first, last, points.length)}
           table={{
-            caption: "Denetim başına sayfa yoğunluğu: yüz sayfa başına sorun",
-            columns: ["Tarih", "Sayfa", "Kritik", "Uyarı"],
+            caption: t(
+              "Denetim başına sayfa yoğunluğu: yüz sayfa başına sorun",
+            ),
+            columns: [t("Tarih"), t("Sayfa"), t("Kritik"), t("Uyarı")],
             rows: points.map((point) => [
               formatDateTime(point.date),
               formatCount(point.pages),
-              `${formatDecimal(point.critical)} (${formatCount(point.criticalTotal)} toplam)`,
-              `${formatDecimal(point.warning)} (${formatCount(point.warningTotal)} toplam)`,
+              t("{density} ({total} toplam)", {
+                density: formatDecimal(point.critical),
+                total: formatCount(point.criticalTotal),
+              }),
+              t("{density} ({total} toplam)", {
+                density: formatDecimal(point.warning),
+                total: formatCount(point.warningTotal),
+              }),
             ]),
           }}
         >
@@ -138,16 +149,25 @@ export function AuditTrendChart({ history }: { history: HistoryRow[] }) {
                 if (!point) return null;
                 return (
                   <ChartTooltip
-                    title={`${formatDateTime(point.date)} · ${formatCount(point.pages)} sayfa`}
+                    title={t("{date} · {count} sayfa", {
+                      date: formatDateTime(point.date),
+                      count: point.pages,
+                    })}
                     rows={[
                       {
-                        label: "Kritik",
-                        value: `${formatDecimal(point.critical)} / 100 sayfa (${formatCount(point.criticalTotal)} toplam)`,
+                        label: t("Kritik"),
+                        value: t("{density} / 100 sayfa ({total} toplam)", {
+                          density: formatDecimal(point.critical),
+                          total: formatCount(point.criticalTotal),
+                        }),
                         color: SEVERITY.critical,
                       },
                       {
-                        label: "Uyarı",
-                        value: `${formatDecimal(point.warning)} / 100 sayfa (${formatCount(point.warningTotal)} toplam)`,
+                        label: t("Uyarı"),
+                        value: t("{density} / 100 sayfa ({total} toplam)", {
+                          density: formatDecimal(point.warning),
+                          total: formatCount(point.warningTotal),
+                        }),
                         color: SEVERITY.warning,
                       },
                     ]}
@@ -158,7 +178,7 @@ export function AuditTrendChart({ history }: { history: HistoryRow[] }) {
             <Line
               type="monotone"
               dataKey="critical"
-              name="Kritik"
+              name={t("Kritik")}
               stroke={SEVERITY.critical}
               strokeWidth={2}
               dot={{ r: 3 }}
@@ -167,7 +187,7 @@ export function AuditTrendChart({ history }: { history: HistoryRow[] }) {
             <Line
               type="monotone"
               dataKey="warning"
-              name="Uyarı"
+              name={t("Uyarı")}
               stroke={SEVERITY.warning}
               strokeWidth={2}
               /*
@@ -197,12 +217,24 @@ function summarise(first: Point, last: Point, total: number) {
   const movedOnCritical = first.critical !== last.critical;
   const series =
     movedOnCritical || first.warning === last.warning
-      ? { label: "kritik sorun", from: first.critical, to: last.critical }
-      : { label: "uyarı", from: first.warning, to: last.warning };
+      ? { label: t("kritik sorun"), from: first.critical, to: last.critical }
+      : { label: t("uyarı"), from: first.warning, to: last.warning };
 
   const delta = series.to - series.from;
-  const direction = delta === 0 ? "değişmedi" : delta < 0 ? "azaldı" : "arttı";
-  return `${formatCount(total)} denetim. Yüz sayfa başına ${series.label}, ${formatDate(first.date)} tarihinde ${formatDecimal(series.from)} idi, ${formatDate(last.date)} tarihinde ${formatDecimal(series.to)} oldu (${direction}).`;
+  const direction =
+    delta === 0 ? t("değişmedi") : delta < 0 ? t("azaldı") : t("arttı");
+  return t(
+    "{count} denetim. Yüz sayfa başına {series}, {fromDate} tarihinde {from} idi, {toDate} tarihinde {to} oldu ({direction}).",
+    {
+      count: total,
+      series: series.label,
+      fromDate: formatDate(first.date),
+      from: formatDecimal(series.from),
+      toDate: formatDate(last.date),
+      to: formatDecimal(series.to),
+      direction,
+    },
+  );
 }
 
 function roundTenth(value: number): number {

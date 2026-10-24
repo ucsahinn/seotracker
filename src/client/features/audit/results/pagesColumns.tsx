@@ -12,6 +12,7 @@ import {
   nullableStringSort,
   type PageRow,
 } from "@/client/features/audit/results/AuditResultsTableFilterLogic";
+import { t } from "@/shared/i18n";
 
 const pageColumnHelper = createColumnHelper<PageRow>();
 
@@ -91,7 +92,9 @@ export function buildPagesColumns({
       meta: { cellClassName: "max-w-[240px]" },
     }),
     pageColumnHelper.accessor("statusCode", {
-      header: ({ column }) => <SortableHeader column={column} label="Durum" />,
+      header: ({ column }) => (
+        <SortableHeader column={column} label={t("Durum")} />
+      ),
       cell: ({ getValue }) => <HttpStatusBadge code={getValue()} />,
       sortingFn: nullableNumberSort,
     }),
@@ -103,14 +106,14 @@ export function buildPagesColumns({
      */
     pageColumnHelper.display({
       id: "issues",
-      header: "Sorun",
+      header: () => t("Sorun"),
       cell: ({ row }) => {
         const count = issueCountByPageId.get(row.original.id) ?? 0;
         if (count === 0) return <EmptyCell />;
         return (
           <button
             type="button"
-            aria-label={`${formatCount(count)} sorunu göster`}
+            aria-label={t("{count} sorunu göster", { count })}
             onClick={() => onShowIssues(row.original.url)}
             className="link link-hover text-xs text-[var(--ink-warning)]"
           >
@@ -120,13 +123,15 @@ export function buildPagesColumns({
       },
     }),
     pageColumnHelper.accessor("title", {
-      header: ({ column }) => <SortableHeader column={column} label="Başlık" />,
+      header: ({ column }) => (
+        <SortableHeader column={column} label={t("Başlık")} />
+      ),
       cell: ({ getValue, row }) => {
         if (isRedirect(row.original)) {
           const target = row.original.redirectUrl;
           return (
             <span className="text-xs text-muted">
-              → {target ? displayPath(target, canonicalHost) : "yönlendirme"}
+              → {target ? displayPath(target, canonicalHost) : t("yönlendirme")}
             </span>
           );
         }
@@ -144,7 +149,7 @@ export function buildPagesColumns({
         // Red only when the engine flagged it — a 200 that isn't an HTML
         // document (robots.txt, security.txt) legitimately has no title.
         return missingTitlePageIds.has(row.original.id) ? (
-          <span className="text-xs text-[var(--ink-error)]">eksik</span>
+          <span className="text-xs text-[var(--ink-error)]">{t("eksik")}</span>
         ) : (
           <EmptyCell />
         );
@@ -161,8 +166,8 @@ export function buildPagesColumns({
       header: ({ column }) => (
         <SortableHeader
           column={column}
-          label="Kelime"
-          helpText="Sayfadaki kelime sayısı"
+          label={t("Kelime sayısı")}
+          helpText={t("Sayfadaki kelime sayısı")}
         />
       ),
       // Through the formatter, like every other count in this table: a
@@ -179,8 +184,10 @@ export function buildPagesColumns({
       header: ({ column }) => (
         <SortableHeader
           column={column}
-          label="Görsel"
-          helpText="Sayfadaki görsel sayısı. Renkli sayı, alt metni (açıklaması) eksik görsellerin sayısıdır."
+          label={t("Görsel")}
+          helpText={t(
+            "Sayfadaki görsel sayısı. Renkli sayı, alt metni (açıklaması) eksik görsellerin sayısıdır.",
+          )}
         />
       ),
       cell: ({ row }) => {
@@ -209,8 +216,10 @@ export function buildPagesColumns({
       header: ({ column }) => (
         <SortableHeader
           column={column}
-          label="Bağlantı"
-          helpText="Bu sayfadan çıkan bağlantılar. Önce site içi, sonra dışarı giden sayısı yazar. Site içi bağlantısı olmayan sayfa, sitenin geri kalanına yönlendirmiyor demektir."
+          label={t("Bağlantı")}
+          helpText={t(
+            "Bu sayfadan çıkan bağlantılar. Önce site içi, sonra dışarı giden sayısı yazar. Site içi bağlantısı olmayan sayfa, sitenin geri kalanına yönlendirmiyor demektir.",
+          )}
         />
       ),
       cell: ({ row }) => {
@@ -229,7 +238,9 @@ export function buildPagesColumns({
         left.original.internalLinkCount - right.original.internalLinkCount,
     }),
     pageColumnHelper.accessor("responseTimeMs", {
-      header: ({ column }) => <SortableHeader column={column} label="Hız" />,
+      header: ({ column }) => (
+        <SortableHeader column={column} label={t("Hız")} />
+      ),
       cell: ({ getValue }) => {
         const value = getValue();
         return value ? (
@@ -249,10 +260,12 @@ export function buildPagesColumns({
      * there means nothing linked to the page -- not depth zero.
      */
     pageColumnHelper.accessor("isIndexable", {
-      header: ({ column }) => <SortableHeader column={column} label="Dizin" />,
+      header: ({ column }) => (
+        <SortableHeader column={column} label={t("Dizin")} />
+      ),
       cell: ({ getValue }) =>
         getValue() ? (
-          <span className="text-xs text-muted">Evet</span>
+          <span className="text-xs text-muted">{t("Evet")}</span>
         ) : (
           <span className="text-xs text-[var(--ink-warning)]">noindex</span>
         ),
@@ -261,8 +274,8 @@ export function buildPagesColumns({
       header: ({ column }) => (
         <SortableHeader
           column={column}
-          label="Derinlik"
-          helpText="Ana sayfadan kaç tıkla ulaşılıyor"
+          label={t("Derinlik")}
+          helpText={t("Ana sayfadan kaç tıkla ulaşılıyor")}
         />
       ),
       cell: ({ getValue }) => {
@@ -279,15 +292,15 @@ export function buildPagesColumns({
       header: ({ column }) => (
         <SortableHeader
           column={column}
-          label="Harita"
-          helpText="Site haritasında var mı"
+          label={t("Harita")}
+          helpText={t("Site haritasında var mı")}
         />
       ),
       cell: ({ getValue }) =>
         getValue() ? (
-          <span className="text-xs text-muted">Var</span>
+          <span className="text-xs text-muted">{t("Var")}</span>
         ) : (
-          <span className="text-xs text-subtle">Yok</span>
+          <span className="text-xs text-subtle">{t("Yok")}</span>
         ),
     }),
   ];

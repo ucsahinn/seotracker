@@ -1,5 +1,6 @@
 import { lighthouseBand } from "@/shared/lighthouse";
 import { formatDecimal, formatDuration } from "@/client/lib/format";
+import { t } from "@/shared/i18n";
 import { LabFieldComparison } from "./LabFieldComparison";
 import type {
   LighthouseFieldData,
@@ -44,10 +45,13 @@ export function LighthouseIssuesSummary({
     <>
       {scores ? (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <ScoreGauge label="Performans" score={scores.performance} />
-          <ScoreGauge label="Erişilebilirlik" score={scores.accessibility} />
+          <ScoreGauge label={t("Performans")} score={scores.performance} />
           <ScoreGauge
-            label="En iyi uygulamalar"
+            label={t("Erişilebilirlik")}
+            score={scores.accessibility}
+          />
+          <ScoreGauge
+            label={t("En iyi uygulamalar")}
             score={scores["best-practices"]}
           />
           <ScoreGauge label="SEO" score={scores.seo} />
@@ -77,8 +81,8 @@ export function LighthouseIssuesSummary({
           <div className="flex items-baseline justify-between gap-2">
             <span className="text-xs uppercase tracking-wide text-muted">
               {usingOrigin
-                ? "Gerçek kullanıcı verisi · site geneli · son 28 gün"
-                : "Gerçek kullanıcı verisi · bu sayfa · son 28 gün"}
+                ? t("Gerçek kullanıcı verisi · site geneli · son 28 gün")
+                : t("Gerçek kullanıcı verisi · bu sayfa · son 28 gün")}
             </span>
             {shownFieldData?.overall ? (
               <span
@@ -89,10 +93,11 @@ export function LighthouseIssuesSummary({
             ) : null}
           </div>
           <p className="mt-1 text-xs leading-relaxed text-muted">
-            Yukarıdaki puanlar Google&apos;ın test makinesinde ölçüldü. Bunlar
-            sitenizi gerçekten ziyaret eden Chrome kullanıcılarından geliyor.
+            {t(
+              "Yukarıdaki puanlar Google'ın test makinesinde ölçüldü. Bunlar sitenizi gerçekten ziyaret eden Chrome kullanıcılarından geliyor.",
+            )}
             {usingOrigin
-              ? " Bu sayfanın kendi ziyaretçi sayısı Google'ın eşiğinin altında kaldığı için sitenizin tamamının ortalaması gösteriliyor."
+              ? ` ${t("Bu sayfanın kendi ziyaretçi sayısı Google'ın eşiğinin altında kaldığı için sitenizin tamamının ortalaması gösteriliyor.")}`
               : ""}
           </p>
           <div className="mt-3 grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-4">
@@ -136,9 +141,9 @@ function fieldCategoryClass(category: string) {
 }
 
 function fieldCategoryLabel(category: string) {
-  if (category === "FAST") return "Hızlı";
-  if (category === "AVERAGE") return "Orta";
-  if (category === "SLOW") return "Yavaş";
+  if (category === "FAST") return t("Hızlı");
+  if (category === "AVERAGE") return t("Orta");
+  if (category === "SLOW") return t("Yavaş");
   return category;
 }
 

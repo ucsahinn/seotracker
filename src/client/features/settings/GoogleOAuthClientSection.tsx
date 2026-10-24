@@ -1,3 +1,4 @@
+import { Skeleton } from "@/client/components/Skeleton";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CheckCircle2, ExternalLink } from "lucide-react";
 import * as React from "react";
@@ -9,12 +10,14 @@ import {
   clearGoogleOAuthClient,
   saveGoogleOAuthClient,
 } from "@/serverFunctions/googleOAuthClient";
+import { getLocale, t } from "@/shared/i18n";
+import { fillParts } from "./fillParts";
 import { SectionHeaderRow } from "./SectionBadge";
 import {
   activeCredentialNote,
   activeGoogleCredential,
   oauthClientBadge,
-  UNREADABLE,
+  unreadableBadge,
 } from "./sectionStatus";
 import {
   googleOAuthClientStatusOptions,
@@ -62,13 +65,15 @@ export function GoogleOAuthClientSection() {
       setClientSecret("");
       setEditing(false);
       await invalidate();
-      toast.success("Google erişim anahtarı kaydedildi");
+      toast.success(t("Google erişim anahtarı kaydedildi"));
     },
     onError: (error) =>
       toast.error(
         getStandardErrorMessage(
           error,
-          "Google erişim anahtarı kaydedilemedi. Değerleri kontrol edip tekrar deneyin.",
+          t(
+            "Google erişim anahtarı kaydedilemedi. Değerleri kontrol edip tekrar deneyin.",
+          ),
         ),
       ),
   });
@@ -81,14 +86,14 @@ export function GoogleOAuthClientSection() {
       setEditing(false);
       setConfirmingClear(false);
       await invalidate();
-      toast.success("Google erişim anahtarı silindi");
+      toast.success(t("Google erişim anahtarı silindi"));
     },
     onError: (error) => {
       setConfirmingClear(false);
       toast.error(
         getStandardErrorMessage(
           error,
-          "Google erişim anahtarı silinemedi. Tekrar deneyin.",
+          t("Google erişim anahtarı silinemedi. Tekrar deneyin."),
         ),
       );
     },
@@ -136,44 +141,66 @@ export function GoogleOAuthClientSection() {
   return (
     <section id="google" className="scroll-mt-16 space-y-3">
       <SectionHeaderRow
-        badge={statusQuery.isError ? UNREADABLE : oauthClientBadge(status)}
+        badge={
+          statusQuery.isError ? unreadableBadge() : oauthClientBadge(status)
+        }
       >
-        <h2 className="text-base font-semibold">Google bağlantısı</h2>
+        <h2 className="text-base font-semibold">{t("Google bağlantısı")}</h2>
       </SectionHeaderRow>
       {credentialNote ? (
         <p className="text-xs font-medium text-muted">{credentialNote}</p>
       ) : null}
 
       <p className="text-sm text-muted">
-        Uygulama Google&apos;a sizin adınıza bağlanır. Bunun için
-        Google&apos;dan aldığınız erişim anahtarını (OAuth client ID) buraya
-        girin. Gizli kısmı şifrelenir ve bir daha tarayıcıya gönderilmez. Search
-        Console ve Analytics aynı anahtarı kullanır.
+        {t(
+          "Uygulama Google'a sizin adınıza bağlanır. Bunun için Google'dan aldığınız erişim anahtarını (OAuth client ID) buraya girin. Gizli kısmı şifrelenir ve bir daha tarayıcıya gönderilmez. Search Console ve Analytics aynı anahtarı kullanır.",
+        )}
       </p>
 
       <ol className="list-decimal space-y-4 pl-5 text-sm marker:text-subtle">
         <li className="pl-1">
-          <a
-            href={CONSOLE_URL}
-            target="_blank"
-            rel="noreferrer noopener"
-            className="inline-flex items-center gap-1 font-medium underline underline-offset-2"
-          >
-            <span lang="en">Google Cloud Console</span>
-            <ExternalLink className="size-3" />
-          </a>
-          &apos;da bir OAuth client oluşturun (tür:{" "}
-          <span lang="en">Web application</span>).
+          {fillParts(
+            t("{console}'da bir OAuth client oluşturun (tür: {type})."),
+            {
+              console: (
+                <a
+                  href={CONSOLE_URL}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="inline-flex items-center gap-1 font-medium underline underline-offset-2"
+                >
+                  <span lang="en">Google Cloud Console</span>
+                  <ExternalLink className="size-3" />
+                </a>
+              ),
+              type: <span lang="en">Web application</span>,
+            },
+          )}
         </li>
         <li className="space-y-2 pl-1">
           <p>
-            Şu iki adresi <strong>Yetkili yönlendirme adresleri</strong> (
-            <span lang="en">Authorized redirect URIs</span>) alanına ekleyin.
+            {fillParts(t("Şu iki adresi {field} alanına ekleyin."), {
+              // Turkish adds Google's English name, which is what the
+              // console shows; in English that name is the field itself.
+              field:
+                getLocale() === "en" ? (
+                  <strong lang="en">Authorized redirect URIs</strong>
+                ) : (
+                  <>
+                    {/* i18n-ignore: the Turkish branch of a locale switch */}
+                    <strong>Yetkili yönlendirme adresleri</strong> (
+                    <span lang="en">Authorized redirect URIs</span>)
+                  </>
+                ),
+            })}
           </p>
           <p className="text-xs text-muted">
-            Adresler harfi harfine aynı olmalı, aksi halde Google{" "}
-            <code>redirect_uri_mismatch</code> hatası verir. İkisini de ekleyin:
-            biri Search Console, biri Analytics için.
+            {fillParts(
+              t(
+                "Adresler harfi harfine aynı olmalı, aksi halde Google {code} hatası verir. İkisini de ekleyin: biri Search Console, biri Analytics için.",
+              ),
+              { code: <code>redirect_uri_mismatch</code> },
+            )}
           </p>
           <div className="space-y-2 rounded-box border border-base-300 bg-base-200/40 p-3">
             {redirectUris.map((uri) => (
@@ -186,26 +213,30 @@ export function GoogleOAuthClientSection() {
                 </code>
                 <CopyButton
                   value={uri.value}
-                  successMessage={`${uri.label} yönlendirme adresi kopyalandı`}
+                  successMessage={t("{service} yönlendirme adresi kopyalandı", {
+                    service: uri.label,
+                  })}
                 />
               </div>
             ))}
           </div>
         </li>
-        <li className="pl-1">Kimliği ve gizli anahtarı aşağıya yazın.</li>
+        <li className="pl-1">
+          {t("Kimliği ve gizli anahtarı aşağıya yazın.")}
+        </li>
       </ol>
 
-      {statusQuery.isPending ? <div className="skeleton h-10 w-full" /> : null}
+      {statusQuery.isPending ? <Skeleton variant="form" rows={2} /> : null}
 
       {statusQuery.isError ? (
         <p role="alert" className="text-sm text-[var(--ink-error)]">
-          Google erişim anahtarının durumu okunamadı.{" "}
+          {t("Google erişim anahtarının durumu okunamadı.")}{" "}
           <button
             type="button"
             className="link"
             onClick={() => void statusQuery.refetch()}
           >
-            Tekrar dene
+            {t("Tekrar dene")}
           </button>
         </p>
       ) : null}
@@ -213,10 +244,17 @@ export function GoogleOAuthClientSection() {
       {fromEnvironment ? (
         <div className="alert alert-info items-start text-sm">
           <div className="space-y-1">
-            <p className="font-medium">Ortam değişkenlerinden geliyor</p>
+            <p className="font-medium">{t("Ortam değişkenlerinden geliyor")}</p>
             <p className="text-muted">
-              <code>GOOGLE_CLIENT_ID</code> ve <code>GOOGLE_CLIENT_SECRET</code>{" "}
-              ayarlanmış. Buraya bir değer kaydederseniz o kullanılır.
+              {fillParts(
+                t(
+                  "{id} ve {secret} ayarlanmış. Buraya bir değer kaydederseniz o kullanılır.",
+                ),
+                {
+                  id: <code>GOOGLE_CLIENT_ID</code>,
+                  secret: <code>GOOGLE_CLIENT_SECRET</code>,
+                },
+              )}
             </p>
           </div>
         </div>
@@ -242,7 +280,7 @@ export function GoogleOAuthClientSection() {
                 setEditing(true);
               }}
             >
-              Değiştir
+              {t("Değiştir")}
             </button>
             <button
               type="button"
@@ -250,7 +288,7 @@ export function GoogleOAuthClientSection() {
               disabled={clear.isPending}
               onClick={() => setConfirmingClear(true)}
             >
-              Sil
+              {t("Sil")}
             </button>
           </div>
         </div>
@@ -265,9 +303,14 @@ export function GoogleOAuthClientSection() {
           }}
         >
           <label className="block w-full space-y-1.5">
-            <span className="block text-sm font-medium">İstemci kimliği</span>
+            <span className="block text-sm font-medium">
+              {t("İstemci kimliği")}
+            </span>
             <span className="block text-xs text-muted">
-              {`Google Cloud Console'da APIs & Services → Credentials listesinde, OAuth 2.0 Client IDs altında görünür. ${CLIENT_ID_SUFFIX} ile biter, gizli değildir.`}
+              {t(
+                "Google Cloud Console'da APIs & Services → Credentials listesinde, OAuth 2.0 Client IDs altında görünür. {suffix} ile biter, gizli değildir.",
+                { suffix: CLIENT_ID_SUFFIX },
+              )}
             </span>
             <input
               type="text"
@@ -295,12 +338,13 @@ export function GoogleOAuthClientSection() {
           </label>
 
           <label className="block w-full space-y-1.5">
-            <span className="block text-sm font-medium">Gizli anahtar</span>
+            <span className="block text-sm font-medium">
+              {t("Gizli anahtar")}
+            </span>
             <span className="block text-xs text-muted">
-              Aynı OAuth client&apos;ı açınca sağdaki panelde. Google bunu
-              yalnızca oluşturduğunuz anda tam gösterir. Kaçırdıysanız yeni bir
-              gizli anahtar üretin. Burada sunucuda şifrelenir, bir daha
-              tarayıcıya gönderilmez.
+              {t(
+                "Aynı OAuth client'ı açınca sağdaki panelde. Google bunu yalnızca oluşturduğunuz anda tam gösterir. Kaçırdıysanız yeni bir gizli anahtar üretin. Burada sunucuda şifrelenir, bir daha tarayıcıya gönderilmez.",
+              )}
             </span>
             <input
               type="password"
@@ -319,7 +363,7 @@ export function GoogleOAuthClientSection() {
               className="btn btn-sm btn-primary"
               disabled={!canSave || save.isPending}
             >
-              Kaydet
+              {t("Kaydet")}
             </button>
             {editing ? (
               <button
@@ -330,7 +374,7 @@ export function GoogleOAuthClientSection() {
                   setClientSecret("");
                 }}
               >
-                Vazgeç
+                {t("Vazgeç")}
               </button>
             ) : null}
           </div>
@@ -339,9 +383,11 @@ export function GoogleOAuthClientSection() {
 
       {confirmingClear ? (
         <ConfirmDeleteModal
-          title="Google erişim anahtarı silinsin mi?"
-          detail="Kimlik ve gizli anahtar bu kurulumdan silinir. Mevcut Search Console ve Analytics bağlantıları yerinde kalır ama anahtar yeniden girilene kadar çalışmaz."
-          confirmLabel="Anahtarı sil"
+          title={t("Google erişim anahtarı silinsin mi?")}
+          detail={t(
+            "Kimlik ve gizli anahtar bu kurulumdan silinir. Mevcut Search Console ve Analytics bağlantıları yerinde kalır ama anahtar yeniden girilene kadar çalışmaz.",
+          )}
+          confirmLabel={t("Anahtarı sil")}
           isPending={clear.isPending}
           onClose={() => setConfirmingClear(false)}
           onConfirm={() => clear.mutate()}

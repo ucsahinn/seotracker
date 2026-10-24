@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { CopyButton } from "@/client/components/CopyButton";
 import { captureClientEvent } from "@/client/lib/observability";
 import { getAgentConnection } from "@/serverFunctions/agentConnection";
+import { t } from "@/shared/i18n";
 import { getInstallPrompt } from "./agentSetupPrompt";
 
 /**
@@ -39,7 +40,7 @@ export function InstallPromptButton({
         installKind: connection.data?.installKind,
       })}
       label={label}
-      successMessage="Kurulum komutu kopyalandı"
+      successMessage={t("Kurulum komutu kopyalandı")}
       onCopy={() => captureClientEvent("mcp:install_prompt_copy")}
     />
   );

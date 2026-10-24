@@ -32,6 +32,22 @@ klasörünü aç); sürüm ve Çıkış. Etiketler uygulamanın kendi metinlerin
 (`src/client/features/support`, `UpdateSection.tsx`) birebir geçer; birini
 değiştirirseniz orayı da değiştirin.
 
+Ayarlar → Windows ekranındaki başlangıç ve otomatik güncelleme anahtarları
+tepsiyle aynı kalıcı tercihleri değiştirir. Yönetici tarafından etkinleştirilen
+başlangıç kaydı ve tüm kullanıcılar için güncelleme kısıtlaması ekranda açıklanır.
+Eski başlatıcılarda seçenekler devre dışıdır ve paket güncelleme yönergesi görünür.
+Docker ve geliştirici kurulumu Windows tercihi kaydetmez.
+
+Worker, `WindowsSettingsBridge.cs` üzerinden yalnızca IPv4 loopback'e bağlanır.
+Rastgele port ve her başlatmada üretilen yetki değeri `server.env` içinde sunucuya
+aktarılır; tarayıcıya dönmez. Köprü browser origin'lerini ve tanımlanmamış
+işlemleri reddeder. Başlatıcı kapandığında köprü de kapanır.
+
+Bu bağlantıyı kullanıcı ayarlarına veya kayıt defterine dokunmadan doğrulamak için
+`powershell -NoProfile -ExecutionPolicy Bypass -File scripts/test-windows-settings.ps1`
+çalıştırın. Test, geçici bir native bileşende bellek içi tercihler kullanır;
+TypeScript tüketicisinin okuma ve aç/kapat işlemlerini de kontrol eder.
+
 Davranış özeti:
 
 - Sunucu ve alt süreçleri bir Windows job object içinde çalışır (migrasyon

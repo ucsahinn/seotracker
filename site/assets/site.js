@@ -1,5 +1,5 @@
 // seowatcher site motion. No dependencies; the only network call is the
-// GitHub releases API for the download count, cached per tab in sessionStorage.
+// GitHub releases API for the download count, refreshed every two minutes.
 // Everything degrades to a static page: reduced-motion users and browsers
 // without IntersectionObserver see the final state immediately.
 (function () {
@@ -16,10 +16,14 @@
   var $$ = function (s, root) {
     return Array.prototype.slice.call((root || document).querySelectorAll(s));
   };
+  function motionStopped() {
+    return reduce || document.documentElement.hasAttribute("data-still");
+  }
 
-  // 1. Headlines enter word by word.
+  // 1. Desktop headlines enter word by word. Touch screens keep the static
+  // gradient, avoiding word-by-word layout reads and blur layers at startup.
   $$("[data-words]").forEach(function (el) {
-    if (reduce) return;
+    if (reduce || !finePointer) return;
     var words = el.textContent.trim().split(/\s+/);
     el.textContent = "";
     words.forEach(function (w, i) {
@@ -31,23 +35,6 @@
       if (i < words.length - 1) el.appendChild(document.createTextNode(" "));
     });
     el.classList.add("split");
-    // Hand each word its slice of the headline gradient (see the CSS).
-    var slice = function () {
-      var box = el.getBoundingClientRect();
-      el.style.setProperty("--hw", Math.round(box.width) + "px");
-      $$(".w", el).forEach(function (w) {
-        w.style.setProperty(
-          "--ox",
-          Math.round(w.getBoundingClientRect().left - box.left),
-        );
-      });
-    };
-    slice();
-    var t;
-    window.addEventListener("resize", function () {
-      clearTimeout(t);
-      t = setTimeout(slice, 120);
-    });
   });
 
   // 2. Reveal on scroll, once.
@@ -85,12 +72,6 @@
       (watched.__reveal = watched.__reveal || []).push(el);
       io.observe(watched);
     });
-    requestAnimationFrame(function () {
-      revealables.forEach(function (el) {
-        var r = el.getBoundingClientRect();
-        if (r.top < window.innerHeight && r.bottom > 0) show(el);
-      });
-    });
   }
 
   // 3. Numbers count up from zero to data-count (Turkish formatting kept as written).
@@ -112,7 +93,15 @@
     function fmt(v) {
       return nf.format(v);
     }
+    if (reduce) {
+      el.textContent = fmt(num) + suffix;
+      return;
+    }
     function step(t) {
+      if (motionStopped()) {
+        el.textContent = fmt(num) + suffix;
+        return;
+      }
       if (start === null) start = t;
       var p = Math.min(1, (t - start) / dur);
       var e = 1 - Math.pow(1 - p, 3);
@@ -153,68 +142,97 @@
     });
   }
 
-  // 3b. Live download count: every download of every asset of every release,
-  //     summed over all pages of the releases API. Cached for an hour per
-  //     tab; the card stays hidden until there is a number above zero.
+  // Installer download events across every public release, including Alpha.
+  // Never animate or cache the number per tab: only publish a complete total.
   var live = document.querySelector("[data-live=downloads]");
   if (live && window.fetch) {
     var card = live.closest(".stat");
-    var key = "seowatcher-downloads";
-    var showDownloads = function (n) {
-      if (!(n > 0)) return;
-      live.setAttribute("data-count", String(n));
-      live.removeAttribute("data-counted");
-      card.hidden = false;
-      if (reduce || card.classList.contains("in")) {
+    var busy = false;
+    var lastAttempt = 0;
+    var retryAt = 0;
+    var refreshDownloads = async function () {
+      if (
+        busy ||
+        document.hidden ||
+        Date.now() < retryAt ||
+        Date.now() - lastAttempt < 120000
+      )
+        return;
+      busy = true;
+      lastAttempt = Date.now();
+      var controller = new window.AbortController();
+      var timeout = window.setTimeout(function () {
+        controller.abort();
+      }, 15000);
+      try {
+        var total = 0;
+        var seen = new Set();
+        for (var page = 1; ; page++) {
+          if (page > 100) throw new Error("Release pagination limit");
+          var response = await window.fetch(
+            "https://api.github.com/repos/ucsahinn/seotracker/releases?per_page=100&page=" +
+              page,
+            {
+              cache: "no-store",
+              signal: controller.signal,
+              headers: { Accept: "application/vnd.github+json" },
+            },
+          );
+          if (!response.ok) {
+            if (response.status === 403 || response.status === 429) {
+              var retrySeconds =
+                Number(response.headers.get("retry-after")) || 120;
+              var reset =
+                Number(response.headers.get("x-ratelimit-reset")) * 1000;
+              retryAt = Math.max(Date.now() + retrySeconds * 1000, reset || 0);
+            }
+            throw new Error("Release API unavailable");
+          }
+          var releases = await response.json();
+          if (!Array.isArray(releases)) throw new Error("Invalid release data");
+          releases.forEach(function (release) {
+            if (release.draft) return;
+            if (!Array.isArray(release.assets))
+              throw new Error("Missing assets");
+            release.assets.forEach(function (asset) {
+              if (
+                !/^seowatcher-setup(?:-\d+\.\d+\.\d+(?:-[\w.-]+)?)?\.exe$/i.test(
+                  asset.name,
+                )
+              )
+                return;
+              if (
+                !Number.isSafeInteger(asset.id) ||
+                !Number.isSafeInteger(asset.download_count) ||
+                asset.download_count < 0
+              )
+                throw new Error("Invalid download count");
+              if (seen.has(asset.id)) return;
+              seen.add(asset.id);
+              total += asset.download_count;
+              if (!Number.isSafeInteger(total))
+                throw new Error("Invalid total");
+            });
+          });
+          if (releases.length < 100) break;
+        }
+        live.textContent = new Intl.NumberFormat(
+          document.documentElement.lang || "tr",
+        ).format(total);
+        live.removeAttribute("data-count");
+        card.hidden = false;
         card.classList.add("in");
-        count(live);
+      } catch (_) {
+        // A failed page must never leave a partial or stale total on screen.
+        card.hidden = true;
+      } finally {
+        window.clearTimeout(timeout);
+        busy = false;
       }
     };
-    var cached = null;
-    try {
-      var c = JSON.parse(sessionStorage.getItem(key));
-      if (c && Date.now() - c.t < 3600000) cached = c.n;
-    } catch (e) {}
-    if (cached !== null) showDownloads(cached);
-    else {
-      var perPage = 100;
-      // Resolves to the running total, or null when any page fails (a partial
-      // sum would undercount, so nothing is shown and nothing is cached).
-      var sumFrom = function (page, total) {
-        return fetch(
-          "https://api.github.com/repos/ucsahinn/seotracker/releases?per_page=" +
-            perPage +
-            "&page=" +
-            page,
-          { headers: { Accept: "application/vnd.github+json" } },
-        )
-          .then(function (r) {
-            return r.ok ? r.json() : null;
-          })
-          .then(function (releases) {
-            if (!Array.isArray(releases)) return null;
-            releases.forEach(function (rel) {
-              (rel.assets || []).forEach(function (a) {
-                total += a.download_count || 0;
-              });
-            });
-            // A short page is the last one.
-            return releases.length < perPage ? total : sumFrom(page + 1, total);
-          });
-      };
-      sumFrom(1, 0)
-        .then(function (n) {
-          if (n === null) return;
-          try {
-            sessionStorage.setItem(
-              key,
-              JSON.stringify({ t: Date.now(), n: n }),
-            );
-          } catch (e) {}
-          showDownloads(n);
-        })
-        .catch(function () {});
-    }
+    refreshDownloads();
+    window.setInterval(refreshDownloads, 120000);
+    document.addEventListener("visibilitychange", refreshDownloads);
   }
 
   // 4. Header hairline once scrolled.
@@ -248,6 +266,10 @@
       cy = ty,
       raf = 0;
     var tick = function () {
+      if (motionStopped()) {
+        raf = 0;
+        return;
+      }
       cx += (tx - cx) * 0.12;
       cy += (ty - cy) * 0.12;
       dots.style.setProperty("--mx", cx.toFixed(1) + "px");
@@ -260,6 +282,7 @@
     document.addEventListener(
       "pointermove",
       function (e) {
+        if (motionStopped()) return;
         tx = e.clientX;
         ty = e.clientY;
         dots.classList.add("live");
@@ -273,31 +296,6 @@
   }
 
   // 5. One control pauses every looping animation (WCAG 2.2.2). Remembered per browser.
-  var still = document.querySelector("[data-still-toggle]");
-  if (still) {
-    var key = "seowatcher-still";
-    var saved = false;
-    try {
-      saved = localStorage.getItem(key) === "1";
-    } catch (e) {}
-    var apply = function (on) {
-      document.documentElement.toggleAttribute("data-still", on);
-      still.setAttribute("aria-pressed", String(on));
-      still.textContent = on
-        ? still.getAttribute("data-still-on") || "Play motion"
-        : still.getAttribute("data-still-off") || "Pause motion";
-    };
-    still.hidden = false;
-    apply(saved);
-    still.addEventListener("click", function () {
-      var on = !document.documentElement.hasAttribute("data-still");
-      apply(on);
-      try {
-        localStorage.setItem(key, on ? "1" : "0");
-      } catch (e) {}
-    });
-  }
-
   // 5b. Island navigation: the toggle opens a full-screen menu on narrow
   //     screens. Escape and any menu link close it; focus goes in and comes back.
   var navToggle = document.querySelector("[data-nav-toggle]");
@@ -324,12 +322,33 @@
       if (e.target.closest("a")) setMenu(false);
     });
     document.addEventListener("keydown", function (e) {
-      if (
-        e.key === "Escape" &&
-        document.documentElement.classList.contains("nav-open")
-      )
+      if (!document.documentElement.classList.contains("nav-open")) return;
+      if (e.key === "Escape") {
+        e.preventDefault();
         setMenu(false);
+      } else if (e.key === "Tab") {
+        var controls = [navToggle].concat($$("a[href]", menu));
+        var index = controls.indexOf(document.activeElement);
+        if (e.shiftKey && index <= 0) {
+          e.preventDefault();
+          controls[controls.length - 1].focus();
+        } else if (
+          !e.shiftKey &&
+          (index === controls.length - 1 || index < 0)
+        ) {
+          e.preventDefault();
+          navToggle.focus();
+        }
+      }
     });
+    window
+      .matchMedia("(min-width: 861px)")
+      .addEventListener("change", function (e) {
+        if (e.matches) {
+          document.documentElement.classList.remove("nav-open");
+          navToggle.setAttribute("aria-expanded", "false");
+        }
+      });
   }
 
   // 5c. Scroll-pinned walkthrough: the step in the middle of the viewport is
@@ -392,8 +411,13 @@
     var easing = "cubic-bezier(0.32, 0.72, 0, 1)";
     var running = null;
     summary.addEventListener("click", function (e) {
-      e.preventDefault();
       if (running) running.cancel();
+      if (motionStopped()) {
+        running = null;
+        body.style.height = "";
+        return;
+      }
+      e.preventDefault();
       if (qa.open) {
         var h = body.offsetHeight;
         running = body.animate(
@@ -425,6 +449,19 @@
     });
   });
 
+  // Keyboard and touch interactions must also work without pointer effects.
+  $$(".langs").forEach(function (d) {
+    document.addEventListener("click", function (e) {
+      if (d.open && !d.contains(e.target)) d.open = false;
+    });
+    d.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") {
+        d.open = false;
+        d.querySelector("summary").focus();
+      }
+    });
+  });
+
   if (reduce || !finePointer) return;
 
   // 6. Pointer-driven depth: the hero window tilts a little toward the cursor,
@@ -437,6 +474,7 @@
   var magnets = $$("[data-magnet]");
   function frame() {
     raf = null;
+    if (motionStopped()) return;
     tilts.forEach(function (el) {
       var r = el.getBoundingClientRect();
       if (r.bottom < 0 || r.top > window.innerHeight) return;
@@ -464,12 +502,12 @@
         d = Math.hypot(dx, dy);
       var reach = 56;
       if (d < r.width / 2 + reach) {
-        var k = 0.22;
+        var k = 0.1;
         el.style.transform =
           "translate(" +
-          (dx * k).toFixed(1) +
+          Math.max(-4, Math.min(4, dx * k)).toFixed(1) +
           "px," +
-          (dy * k).toFixed(1) +
+          Math.max(-4, Math.min(4, dy * k)).toFixed(1) +
           "px)";
       } else if (el.style.transform) {
         el.style.transform = "";
@@ -479,20 +517,11 @@
   window.addEventListener(
     "pointermove",
     function (e) {
+      if (motionStopped()) return;
       px = e.clientX;
       py = e.clientY;
       if (!raf) raf = requestAnimationFrame(frame);
     },
     { passive: true },
   );
-
-  // The language menu closes when the pointer leaves it or Escape is pressed.
-  $$(".langs").forEach(function (d) {
-    document.addEventListener("click", function (e) {
-      if (d.open && !d.contains(e.target)) d.open = false;
-    });
-    d.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") d.open = false;
-    });
-  });
 })();

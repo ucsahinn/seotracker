@@ -4,6 +4,7 @@ import {
   LEGACY_APP_REPORT_CREATOR,
 } from "@/shared/report-creator";
 import type { ReportListItem } from "@/serverFunctions/reports";
+import { t } from "@/shared/i18n";
 
 /** Reports with no template and no skill share this one label. */
 export const OTHER_KIND = "Belirtilmemiş";
@@ -12,6 +13,7 @@ export const OTHER_KIND = "Belirtilmemiş";
 export const AUDIT_EXPORT_KIND = "site-audit-export";
 
 /** The skill names agents write, said the way the rest of the screen speaks. */
+// Turkish source text, translated where it renders (kindLabel).
 const KIND_LABELS: Record<string, string> = {
   [AUDIT_EXPORT_KIND]: "Site denetimi raporu",
   "seo-audit": "SEO denetimi",
@@ -24,7 +26,8 @@ const KIND_LABELS: Record<string, string> = {
 
 /** What a person reads for a kind; an unknown kind keeps its own name. */
 export function kindLabel(kind: string): string {
-  return KIND_LABELS[kind] ?? kind;
+  const label = KIND_LABELS[kind] ?? (kind === OTHER_KIND ? kind : null);
+  return label === null ? kind : t(label);
 }
 
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
@@ -119,7 +122,12 @@ export function kindSegments(
   return rest > 0
     ? [
         ...head,
-        { key: "__other", label: "Diğer türler", value: rest, disabled: true },
+        {
+          key: "__other",
+          label: t("Diğer türler"),
+          value: rest,
+          disabled: true,
+        },
       ]
     : head;
 }

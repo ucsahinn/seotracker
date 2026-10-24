@@ -1,3 +1,4 @@
+import { t } from "@/shared/i18n";
 import { copyText } from "@/client/lib/copyText";
 import { Link } from "@tanstack/react-router";
 import { Check, Copy, ExternalLink, Search, X } from "lucide-react";
@@ -63,7 +64,7 @@ export function OpportunityDetail({
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <span className="badge badge-sm border-base-300 bg-base-200 text-muted">
-            {kind.label}
+            {t(kind.label)}
           </span>
           <h2
             id="opportunity-title"
@@ -77,7 +78,7 @@ export function OpportunityDetail({
           ref={closeRef}
           type="button"
           className="btn btn-ghost btn-sm btn-square"
-          aria-label="Kapat"
+          aria-label={t("Kapat")}
           onClick={onClose}
         >
           <X className="size-4" />
@@ -87,23 +88,26 @@ export function OpportunityDetail({
       <p className="text-sm">{explainRow(row)}</p>
 
       <dl className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-        <Stat label="Sıra" value={formatDecimal(row.position)} />
-        <Stat label="Gösterim" value={formatNumber(row.impressions)} />
-        <Stat label="Tıklama" value={formatNumber(row.clicks)} />
-        <Stat label="Tıklama oranı" value={formatPercent(row.ctr)} />
+        <Stat label={t("Sıra")} value={formatDecimal(row.position)} />
+        <Stat label={t("Gösterim")} value={formatNumber(row.impressions)} />
+        <Stat label={t("Tıklama")} value={formatNumber(row.clicks)} />
+        <Stat label={t("Tıklama oranı")} value={formatPercent(row.ctr)} />
         {row.ga4 ? (
           <Stat
-            label="Analytics oturumu"
+            label={t("Analytics oturumu")}
             value={formatNumber(row.ga4.sessions)}
           />
         ) : null}
       </dl>
 
       {parts ? (
-        <section aria-label="Puanın dökümü" className="space-y-2">
+        <section aria-label={t("Puanın dökümü")} className="space-y-2">
           <h3 className="text-sm font-medium">
-            Puan {row.score === null ? "" : formatNumber(row.score)} nereden
-            geliyor?
+            {row.score === null
+              ? t("Puan nereden geliyor?")
+              : t("Puan {score} nereden geliyor?", {
+                  score: formatNumber(row.score),
+                })}
           </h3>
           <ul className="space-y-2">
             {parts.map((part) => (
@@ -130,8 +134,8 @@ export function OpportunityDetail({
         </section>
       ) : null}
 
-      <section aria-label="Ne yapmalı?" className="space-y-2">
-        <h3 className="text-sm font-medium">Ne yapmalı?</h3>
+      <section aria-label={t("Ne yapmalı?")} className="space-y-2">
+        <h3 className="text-sm font-medium">{t("Ne yapmalı?")}</h3>
         <ul className="space-y-1.5">
           {kind.todo.map((item) => (
             <li key={item} className="flex gap-2 text-sm">
@@ -139,7 +143,7 @@ export function OpportunityDetail({
                 aria-hidden
                 className="mt-0.5 size-4 shrink-0 text-muted"
               />
-              <span>{item}</span>
+              <span>{t(item)}</span>
             </li>
           ))}
         </ul>
@@ -153,13 +157,13 @@ export function OpportunityDetail({
           className="btn btn-primary btn-sm gap-1.5"
         >
           <Search className="size-4" />
-          Arama performansında aç
+          {t("Arama performansında aç")}
         </Link>
         <button
           type="button"
           className="btn btn-sm gap-1.5"
           onClick={() => {
-            void copyText(row.page, "Adres kopyalandı").then((ok) => {
+            void copyText(row.page, t("Adres kopyalandı")).then((ok) => {
               if (!ok) return;
               setCopied(true);
               window.setTimeout(() => setCopied(false), 2000);
@@ -167,7 +171,7 @@ export function OpportunityDetail({
           }}
         >
           <Copy className="size-4" />
-          {copied ? "Kopyalandı" : "Adresi kopyala"}
+          {copied ? t("Kopyalandı") : t("Adresi kopyala")}
         </button>
         {safeUrl ? (
           <a
@@ -177,7 +181,7 @@ export function OpportunityDetail({
             className="btn btn-sm gap-1.5"
           >
             <ExternalLink className="size-4" />
-            Sayfayı aç
+            {t("Sayfayı aç")}
           </a>
         ) : null}
       </div>

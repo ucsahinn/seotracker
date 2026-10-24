@@ -11,6 +11,8 @@ import {
   SEVERITY_LABEL,
   type AuditIssueRow,
 } from "@/client/features/audit/results/issueGroups";
+import { fillParts } from "@/client/features/settings/fillParts";
+import { t } from "@/shared/i18n";
 
 export { SEVERITY_LABEL };
 
@@ -91,11 +93,11 @@ export function IssuesView({
   if (scoped.length === 0 && !focusUrl) {
     return (
       <div className="py-10 text-center text-muted">
-        <p className="font-medium">Bu denetimde kayıtlı sorun yok.</p>
+        <p className="font-medium">{t("Bu denetimde kayıtlı sorun yok.")}</p>
         <p className="mt-1 text-sm">
-          Site gerçekten iyi durumda olabilir ya da bu denetim, sorun
-          kontrolleri eklenmeden önce çalıştırılmış olabilir. Tam raporu görmek
-          için yeni bir denetim başlatın.
+          {t(
+            "Site gerçekten iyi durumda olabilir ya da bu denetim, sorun kontrolleri eklenmeden önce çalıştırılmış olabilir. Tam raporu görmek için yeni bir denetim başlatın.",
+          )}
         </p>
       </div>
     );
@@ -128,23 +130,25 @@ export function IssuesView({
             className="min-w-0 truncate text-sm text-muted"
             title={focusUrl}
           >
-            Yalnızca <span className="font-medium">{focusUrl}</span>
+            {fillParts(t("Yalnızca {url}"), {
+              url: <span className="font-medium">{focusUrl}</span>,
+            })}
           </span>
           <button
             type="button"
             className="btn btn-ghost btn-xs shrink-0"
             onClick={onClearFocus}
           >
-            Tüm sayfaları göster
+            {t("Tüm sayfaları göster")}
           </button>
         </div>
       ) : null}
       {hasNarrowing ? (
         <div className="flex flex-wrap items-center gap-2 text-xs">
-          <span className="text-muted">Gösterilen:</span>
+          <span className="text-muted">{t("Gösterilen:")}</span>
           {severity ? (
             <FilterChip
-              label={SEVERITY_LABEL[severity]}
+              label={t(SEVERITY_LABEL[severity])}
               onRemove={() => setSeverity(null)}
             />
           ) : null}
@@ -160,8 +164,8 @@ export function IssuesView({
         <div className="rounded-box border border-base-300 py-10 text-center text-muted">
           <p className="font-medium">
             {hasNarrowing
-              ? "Seçtiğiniz kombinasyonda sorun yok."
-              : "Bu sayfada kayıtlı sorun yok."}
+              ? t("Seçtiğiniz kombinasyonda sorun yok.")
+              : t("Bu sayfada kayıtlı sorun yok.")}
           </p>
           {hasNarrowing ? (
             <button
@@ -172,7 +176,7 @@ export function IssuesView({
                 setIssueType(null);
               }}
             >
-              Filtreleri temizle
+              {t("Filtreleri temizle")}
             </button>
           ) : null}
         </div>
@@ -188,7 +192,7 @@ export function IssuesView({
                   className={`size-1.5 rounded-full ${SEVERITY_DOT[section.severity]}`}
                 />
                 <span className="text-xs font-semibold text-muted">
-                  {SEVERITY_LABEL[section.severity]}
+                  {t(SEVERITY_LABEL[section.severity])}
                 </span>
               </div>
               <div className="divide-y divide-base-300/60">
@@ -221,7 +225,7 @@ function FilterChip({
     <button
       type="button"
       onClick={onRemove}
-      aria-label={`${label} seçimini kaldır`}
+      aria-label={t("{label} seçimini kaldır", { label })}
       className="inline-flex items-center gap-1 rounded-full border border-primary bg-primary/10 px-2.5 py-1 text-primary transition-colors hover:bg-primary/15"
     >
       {label}

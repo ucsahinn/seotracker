@@ -1,3 +1,4 @@
+import { t } from "@/shared/i18n";
 import { copyText } from "@/client/lib/copyText";
 import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
 import { Copy, ExternalLink } from "lucide-react";
@@ -25,6 +26,7 @@ import {
  * weighted contributions, so the filled part of the bar is literally the
  * score out of 100.
  */
+// Labels stay Turkish here and go through t() where they render.
 const SCORE_PARTS = [
   { key: "demand", label: "Talep", weight: 0.5, opacity: 1 },
   { key: "businessValue", label: "İş değeri", weight: 0.3, opacity: 0.62 },
@@ -82,7 +84,7 @@ function ScoreBadge({
             {parts
               .map(
                 (part) =>
-                  `${part.label}: ${formatDecimal(part.points)} / ${part.weight * 100}`,
+                  `${t(part.label)}: ${formatDecimal(part.points)} / ${part.weight * 100}`,
               )
               .join(", ")}
           </span>
@@ -91,7 +93,7 @@ function ScoreBadge({
             title={parts
               .map(
                 (part) =>
-                  `${part.label}: ${formatDecimal(part.points)} / ${part.weight * 100}`,
+                  `${t(part.label)}: ${formatDecimal(part.points)} / ${part.weight * 100}`,
               )
               .join(" · ")}
             aria-hidden
@@ -122,7 +124,7 @@ export function buildOpportunityColumns(
   return [
     opportunityHelper.accessor("score", {
       header: ({ column }) => (
-        <SortableHeader column={column} label="Puan" align="right" />
+        <SortableHeader column={column} label={t("Puan")} align="right" />
       ),
       cell: ({ getValue, row }) => (
         <ScoreBadge
@@ -133,7 +135,9 @@ export function buildOpportunityColumns(
       meta: right,
     }),
     opportunityHelper.accessor("page", {
-      header: ({ column }) => <SortableHeader column={column} label="Sayfa" />,
+      header: ({ column }) => (
+        <SortableHeader column={column} label={t("Sayfa")} />
+      ),
       cell: ({ getValue, row }) => {
         const url = getValue();
         const safe = getSafeExternalUrl(url);
@@ -152,15 +156,15 @@ export function buildOpportunityColumns(
                 {pathOf(url)}
               </button>
               <span className="text-xs text-muted">
-                {KIND_COPY[row.original.kind].label}
+                {t(KIND_COPY[row.original.kind].label)}
               </span>
             </span>
             <button
               type="button"
               className="shrink-0 text-muted hover:text-base-content"
-              aria-label="Adresi kopyala"
-              title="Adresi kopyala"
-              onClick={() => void copyText(url, "Adres kopyalandı")}
+              aria-label={t("Adresi kopyala")}
+              title={t("Adresi kopyala")}
+              onClick={() => void copyText(url, t("Adres kopyalandı"))}
             >
               <Copy className="size-3.5" />
             </button>
@@ -170,8 +174,8 @@ export function buildOpportunityColumns(
                 target="_blank"
                 rel="noreferrer noopener"
                 className="shrink-0 text-muted hover:text-base-content"
-                aria-label="Sayfayı yeni sekmede aç"
-                title="Sayfayı yeni sekmede aç"
+                aria-label={t("Sayfayı yeni sekmede aç")}
+                title={t("Sayfayı yeni sekmede aç")}
               >
                 <ExternalLink className="size-3.5" />
               </a>
@@ -185,9 +189,11 @@ export function buildOpportunityColumns(
       header: ({ column }) => (
         <SortableHeader
           column={column}
-          label="Sıra"
+          label={t("Sıra")}
           align="right"
-          helpText="Google'da kaçıncı sırada çıktığınız; küçük olan iyidir. 1, sonuçların en üstü demek."
+          helpText={t(
+            "Google'da kaçıncı sırada çıktığınız; küçük olan iyidir. 1, sonuçların en üstü demek.",
+          )}
         />
       ),
       cell: ({ getValue }) => formatDecimal(getValue()),
@@ -197,9 +203,9 @@ export function buildOpportunityColumns(
       header: ({ column }) => (
         <SortableHeader
           column={column}
-          label="Gösterim"
+          label={t("Gösterim")}
           align="right"
-          helpText="Sayfanızın arama sonuçlarında kaç kez göründüğü."
+          helpText={t("Sayfanızın arama sonuçlarında kaç kez göründüğü.")}
         />
       ),
       cell: ({ getValue }) => formatNumber(getValue()),
@@ -209,9 +215,9 @@ export function buildOpportunityColumns(
       header: ({ column }) => (
         <SortableHeader
           column={column}
-          label="Tıklama"
+          label={t("Tıklama")}
           align="right"
-          helpText="Aramalardan sayfanıza kaç kez tıklandığı."
+          helpText={t("Aramalardan sayfanıza kaç kez tıklandığı.")}
         />
       ),
       cell: ({ getValue }) => formatNumber(getValue()),
@@ -221,9 +227,11 @@ export function buildOpportunityColumns(
       header: ({ column }) => (
         <SortableHeader
           column={column}
-          label="Tıklama oranı"
+          label={t("Tıklama oranı")}
           align="right"
-          helpText="Gösterilenlerin yüzde kaçı tıklandı. Altındaki ok, sayfanın sitenizde aynı sıradaki sayfalara göre farkını gösterir."
+          helpText={t(
+            "Gösterilenlerin yüzde kaçı tıklandı. Altındaki ok, sayfanın sitenizde aynı sıradaki sayfalara göre farkını gösterir.",
+          )}
         />
       ),
       /*
@@ -259,9 +267,11 @@ export function buildOpportunityColumns(
       header: ({ column }) => (
         <SortableHeader
           column={column}
-          label="Oturum"
+          label={t("Oturum")}
           align="right"
-          helpText="Analytics'ten, Search Console ile aynı tarih aralığı için alınır; Analytics ekranındaki aralıktan farklı olabilir."
+          helpText={t(
+            "Analytics'ten, Search Console ile aynı tarih aralığı için alınır; Analytics ekranındaki aralıktan farklı olabilir.",
+          )}
         />
       ),
       cell: ({ getValue }) => {

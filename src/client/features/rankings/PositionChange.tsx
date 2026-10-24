@@ -1,3 +1,4 @@
+import { t } from "@/shared/i18n";
 import { ArrowDown, ArrowUp, Minus } from "lucide-react";
 import { formatDecimal } from "@/client/lib/format";
 import { directionOf } from "@/shared/rankingChange";
@@ -11,10 +12,10 @@ export function PositionChange({ delta }: { delta: number | null }) {
     return (
       <span
         className="text-subtle"
-        title="Önceki dönemde bu sorgu için veri yok."
+        title={t("Önceki dönemde bu sorgu için veri yok.")}
       >
         <span aria-hidden>-</span>
-        <span className="sr-only">Önceki dönemde veri yok</span>
+        <span className="sr-only">{t("Önceki dönemde veri yok")}</span>
       </span>
     );
   }
@@ -23,7 +24,7 @@ export function PositionChange({ delta }: { delta: number | null }) {
     return (
       <span className="inline-flex items-center justify-end gap-1 text-muted">
         <Minus className="size-3.5" aria-hidden />
-        Değişmedi
+        {t("Değişmedi")}
       </span>
     );
   }
@@ -36,7 +37,9 @@ export function PositionChange({ delta }: { delta: number | null }) {
       }`}
     >
       <Icon className="size-3.5" aria-hidden />
-      {up ? "Yükseldi" : "Düştü"} {formatDecimal(Math.abs(delta))}
+      {t(up ? "Yükseldi {value}" : "Düştü {value}", {
+        value: formatDecimal(Math.abs(delta)),
+      })}
     </span>
   );
 }

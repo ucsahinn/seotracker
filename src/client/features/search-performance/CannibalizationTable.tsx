@@ -1,3 +1,4 @@
+import { t } from "@/shared/i18n";
 import { CheckCircle2, ChevronRight, SearchX } from "lucide-react";
 import * as React from "react";
 import { EmptyState } from "@/client/components/EmptyState";
@@ -73,7 +74,7 @@ export function CannibalizationTable({
         compact
         error={report.error}
         onRetry={() => void report.refetch()}
-        title="Çakışma raporu yüklenemedi"
+        title={t("Çakışma raporu yüklenemedi")}
       />
     );
   }
@@ -93,19 +94,36 @@ export function CannibalizationTable({
         icon={(data?.queriesAnalyzed ?? 0) === 0 ? SearchX : CheckCircle2}
         title={
           (data?.queriesAnalyzed ?? 0) === 0
-            ? "Çakışma araması yapılamadı"
-            : "Çakışma bulunamadı"
+            ? t("Çakışma araması yapılamadı")
+            : t("Çakışma bulunamadı")
         }
         description={
           (data?.queriesAnalyzed ?? 0) === 0
-            ? "Search Console bu dönem için sorgu vermedi, karşılaştırılacak bir şey yok. Daha geniş bir tarih aralığı deneyin."
+            ? t(
+                "Search Console bu dönem için sorgu vermedi, karşılaştırılacak bir şey yok. Daha geniş bir tarih aralığı deneyin.",
+              )
             : data?.truncated
-              ? `İncelenen ${formatNumber(data.queriesAnalyzed)} sorguda çakışma yok. Ancak Search Console satır sınırına takıldık, yani bakamadığımız sorgular kaldı.`
-              : `İncelenen ${formatNumber(data.queriesAnalyzed)} sorgunun hiçbirinde iki sayfanız birbiriyle yarışmıyor.`
+              ? t(
+                  "İncelenen {count} sorguda çakışma yok. Ancak Search Console satır sınırına takıldık, yani bakamadığımız sorgular kaldı.",
+                  { count: data.queriesAnalyzed },
+                )
+              : t(
+                  "İncelenen {count} sorgunun hiçbirinde iki sayfanız birbiriyle yarışmıyor.",
+                  { count: data?.queriesAnalyzed ?? 0 },
+                )
         }
       />
     );
   }
+
+  /*
+   * One sentence with the impressions set in bold: the template is split at
+   * its {impressions} placeholder so English can put the figure anywhere.
+   */
+  const [introBefore = "", introAfter = ""] = t(
+    "{queries} sorguda birden fazla sayfanız yarışıyor ve bu yüzden {impressions} Google'ın tercih ettiği sayfa dışında kalıyor. Önce hangi sayfayı hedeflediğinize karar verin ve iç bağlantıları ona yöneltin; sayfalar gerçekten aynı soruyu yanıtlıyorsa birleştirin.",
+    { queries: formatNumber(data.rows.length) },
+  ).split("{impressions}");
 
   const needle = search.trim().toLocaleLowerCase("tr");
   const shown = needle
@@ -117,36 +135,41 @@ export function CannibalizationTable({
   return (
     <div className="space-y-3 p-4">
       <p className="text-sm text-muted">
-        {formatNumber(data.rows.length)} sorguda birden fazla sayfanız yarışıyor
-        ve bu yüzden{" "}
+        {introBefore}
         <span className="font-medium text-base-content">
-          {formatNumber(data.splitImpressions)} gösterim
-        </span>{" "}
-        Google&apos;ın tercih ettiği sayfa dışında kalıyor. Önce hangi sayfayı
-        hedeflediğinize karar verin ve iç bağlantıları ona yöneltin; sayfalar
-        gerçekten aynı soruyu yanıtlıyorsa birleştirin.
+          {t("{impressions} gösterim", {
+            impressions: formatNumber(data.splitImpressions),
+          })}
+        </span>
+        {introAfter}
       </p>
 
       {/* The window is printed because it is not always the one the dropdown
           says: a 7-day selection is widened to 28, since the impression floor
           this analysis needs almost never clears in a week. */}
       <p className="text-xs text-muted">
-        {formatDate(data.startDate)} – {formatDate(data.endDate)} ·{" "}
-        {formatNumber(data.queriesAnalyzed)} sorgu incelendi
+        {t("{start} – {end} · {queries} sorgu incelendi", {
+          start: formatDate(data.startDate),
+          end: formatDate(data.endDate),
+          queries: formatNumber(data.queriesAnalyzed),
+        })}
       </p>
 
       {data.truncated ? (
         <p className="text-xs text-muted">
-          Search Console tek seferde sınırlı satır döndürür ve bu sınıra
-          takıldık. Listede olmayan çakışmalar olabilir.
+          {t(
+            "Search Console tek seferde sınırlı satır döndürür ve bu sınıra takıldık. Listede olmayan çakışmalar olabilir.",
+          )}
         </p>
       ) : null}
 
       {needle ? (
         <p className="flex flex-wrap items-center gap-2 text-xs text-muted">
           <span>
-            &quot;{search}&quot; geçen {formatNumber(shown.length)} sorgu
-            gösteriliyor.
+            {t('"{search}" geçen {count} sorgu gösteriliyor.', {
+              search,
+              count: shown.length,
+            })}
           </span>
           {onClearSearch ? (
             <button
@@ -154,7 +177,7 @@ export function CannibalizationTable({
               className="btn btn-ghost btn-xs"
               onClick={onClearSearch}
             >
-              Filtreyi kaldır
+              {t("Filtreyi kaldır")}
             </button>
           ) : null}
         </p>
@@ -197,7 +220,9 @@ function QueryRow({
         >
           {row.query}
         </span>
-        <span className="shrink-0 text-xs text-muted">{competing} sayfa</span>
+        <span className="shrink-0 text-xs text-muted">
+          {t("{count} sayfa", { count: competing })}
+        </span>
         {/*
          * Hidden below `sm`. Five items in one non-wrapping row left about
          * 65px for the query at 390px -- four or five characters before the
@@ -207,25 +232,31 @@ function QueryRow({
          */}
         <span
           className="hidden shrink-0 text-xs text-muted sm:inline"
-          title="Google'ın tercih ettiği sayfa dışında kalan gösterim payı"
+          title={t("Google'ın tercih ettiği sayfa dışında kalan gösterim payı")}
         >
-          {formatPercent(row.splitShare, 0)} pay dışında
+          {t("{share} pay dışında", {
+            share: formatPercent(row.splitShare, 0),
+          })}
         </span>
         <span className="w-20 shrink-0 text-right text-xs text-muted">
-          {formatNumber(row.impressions)} gösterim
+          {t("{impressions} gösterim", {
+            impressions: formatNumber(row.impressions),
+          })}
         </span>
       </button>
 
       {open ? (
         <div className="border-t border-base-300 bg-base-200/25 px-4 py-3">
           <table className="table table-sm">
-            <caption className="sr-only">Aynı sorguya yarışan sayfalar</caption>
+            <caption className="sr-only">
+              {t("Aynı sorguya yarışan sayfalar")}
+            </caption>
             <thead>
               <tr>
-                <th>Sayfa</th>
-                <th className="text-right">Tıklama</th>
-                <th className="text-right">Gösterim</th>
-                <th className="text-right">Sıra</th>
+                <th>{t("Sayfa")}</th>
+                <th className="text-right">{t("Tıklama")}</th>
+                <th className="text-right">{t("Gösterim")}</th>
+                <th className="text-right">{t("Sıra")}</th>
               </tr>
             </thead>
             <tbody>
@@ -261,9 +292,9 @@ function PageRow({
           {primary ? (
             <span
               className="badge badge-sm shrink-0 border-success/30 bg-success/10 text-[var(--ink-success)]"
-              title="Google bu sorguda en çok bu sayfayı gösteriyor"
+              title={t("Google bu sorguda en çok bu sayfayı gösteriyor")}
             >
-              Tercih edilen
+              {t("Tercih edilen")}
             </span>
           ) : null}
         </span>

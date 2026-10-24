@@ -1,3 +1,4 @@
+import { t } from "@/shared/i18n";
 import { Link } from "@tanstack/react-router";
 import { ChevronDown, Target } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -55,7 +56,7 @@ export function Intro({ collapsedByDefault }: { collapsedByDefault: boolean }) {
         onClick={toggle}
         className="flex w-full items-center justify-between gap-2 text-left text-sm font-semibold"
       >
-        Burası ne işe yarar?
+        {t("Burası ne işe yarar?")}
         <ChevronDown
           aria-hidden
           className={`size-4 text-muted transition-transform ${open ? "rotate-180" : ""}`}
@@ -63,10 +64,9 @@ export function Intro({ collapsedByDefault }: { collapsedByDefault: boolean }) {
       </button>
       {open ? (
         <p id="opportunities-intro" className="mt-2 text-sm text-muted">
-          Google&apos;ın sayfanızı gösterdiği ama az tıklandığı ya da birkaç
-          basamak yükselince çok daha fazla ziyaretçi getirecek sayfaları burada
-          topluyoruz. Bir satıra tıklayınca nedenini ve ne yapmanız gerektiğini
-          görürsünüz.
+          {t(
+            "Google'ın sayfanızı gösterdiği ama az tıklandığı ya da birkaç basamak yükselince çok daha fazla ziyaretçi getirecek sayfaları burada topluyoruz. Bir satıra tıklayınca nedenini ve ne yapmanız gerektiğini görürsünüz.",
+          )}
         </p>
       ) : null}
     </section>
@@ -83,15 +83,17 @@ export function NotReady({ projectId }: { projectId: string }) {
     <div className="rounded-box border border-base-300 bg-base-100">
       <EmptyState
         icon={Target}
-        title="Fırsatlar için Search Console ve Analytics gerekir"
-        description="Sıralamalar Search Console'dan, sayfaların kazandırdığı Analytics'ten gelir. İkisini de bağlayınca fırsatlar puanlanır."
+        title={t("Fırsatlar için Search Console ve Analytics gerekir")}
+        description={t(
+          "Sıralamalar Search Console'dan, sayfaların kazandırdığı Analytics'ten gelir. İkisini de bağlayınca fırsatlar puanlanır.",
+        )}
         action={
           <Link
             to="/p/$projectId/settings/integrations"
             params={{ projectId }}
             className="btn btn-primary btn-sm"
           >
-            Bağlantıları ayarla
+            {t("Bağlantıları ayarla")}
           </Link>
         }
       />
@@ -116,14 +118,20 @@ export function NoOpportunities({
   dateRange: { startDate: string; endDate: string };
   pagesConsidered: number;
 }) {
-  const period = `${formatDate(dateRange.startDate)} – ${formatDate(dateRange.endDate)}`;
+  const period = {
+    start: formatDate(dateRange.startDate),
+    end: formatDate(dateRange.endDate),
+  };
 
   if (pagesConsidered === 0) {
     return (
       <EmptyState
         icon={Target}
-        title="Search Console bu dönem için veri vermedi"
-        description={`${period} aralığında hiçbir sayfanız arama sonuçlarında görünmedi. Mülkü yeni bağladıysanız Google'ın veriyi doldurması birkaç gün sürer.`}
+        title={t("Search Console bu dönem için veri vermedi")}
+        description={t(
+          "{start} – {end} aralığında hiçbir sayfanız arama sonuçlarında görünmedi. Mülkü yeni bağladıysanız Google'ın veriyi doldurması birkaç gün sürer.",
+          period,
+        )}
       />
     );
   }
@@ -131,8 +139,11 @@ export function NoOpportunities({
   return (
     <EmptyState
       icon={Target}
-      title="Bu dönemde fırsat çıkmadı"
-      description={`${period} aralığında puanlanacak bir sayfa çıkmadı. Dönemi genişletmeyi deneyin.`}
+      title={t("Bu dönemde fırsat çıkmadı")}
+      description={t(
+        "{start} – {end} aralığında puanlanacak bir sayfa çıkmadı. Dönemi genişletmeyi deneyin.",
+        period,
+      )}
     />
   );
 }

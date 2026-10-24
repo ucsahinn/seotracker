@@ -5,7 +5,7 @@ kind: nasil-yapilir
 updated: 2026-10-22
 ---
 
-A interface do aplicativo está em turco. Este guia mostra cada botão e cada nome de tela em turco, com o significado em português entre parênteses.
+A interface do aplicativo está disponível em turco e inglês. O idioma é escolhido em Ayarlar → Görünüm → Dil. Este guia mostra cada botão e cada nome de tela em turco, com o significado em português entre parênteses.
 
 Ao fim desta página, o aplicativo estará conectado ao Google em seu nome e lerá os dados do seu site. Para isso, você pega uma "chave de acesso do Google" uma única vez. Leva cerca de dez minutos e você nunca precisa repetir. Há também um caminho mais curto, com uma conta de serviço, no fim da página.
 

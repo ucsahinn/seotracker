@@ -26,9 +26,9 @@ competitor-ranking data and none is coming back.
 ## Invariants that are easy to break
 
 - Backend shape: TanStack server function -> service -> repository. SQLite through D1 only.
-- The UI is Turkish; MCP tool descriptions and code comments are English.
+- The UI supports Turkish and English through `src/shared/i18n.ts`; MCP tool descriptions and code comments are English.
 - Every page goes through `PageShell`; styling lives in `src/client/styles/app.css` (daisyUI tokens first, components second). Muted text is `text-muted` / `text-subtle`.
-- Every visible number or date goes through `src/shared/format.ts` (`tr-TR`); never call `toLocaleString` at a call site.
+- Every visible number or date goes through `src/shared/format.ts` (`tr-TR` or `en-US`, matching the active UI language); never call `toLocaleString` at a call site.
 - Tests: one per real invariant, statically imported module under test, no mocked ORM chains.
 - Log repository friction in `.agents/PAPERCUTS.md` (see the `papercuts` skill).
 

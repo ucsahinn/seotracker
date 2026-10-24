@@ -5,6 +5,7 @@ import { isAppCreator } from "@/client/features/reports/reportStats";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import { captureClientEvent } from "@/client/lib/observability";
 import { deleteReport, type ReportListItem } from "@/serverFunctions/reports";
+import { t } from "@/shared/i18n";
 
 // Query keys for both reports pages. staleTime is 0 wherever these are used:
 // the pages exist to inspect what an agent just wrote, so the app-wide
@@ -41,7 +42,7 @@ export function useDeleteReport(projectId: string, onDeleted?: () => void) {
         project_id: projectId,
         report_id: reportId,
       });
-      toast.success("Rapor silindi");
+      toast.success(t("Rapor silindi"));
       void queryClient.invalidateQueries({
         queryKey: reportsQueryKey(projectId),
       });
@@ -53,7 +54,7 @@ export function useDeleteReport(projectId: string, onDeleted?: () => void) {
       onDeleted?.();
     },
     onError: (error: Error) => {
-      toast.error(getStandardErrorMessage(error, "Rapor silinemedi"));
+      toast.error(getStandardErrorMessage(error, t("Rapor silinemedi")));
     },
   });
 }
@@ -72,9 +73,9 @@ export function DeleteReportModal({
 }) {
   return (
     <ConfirmDeleteModal
-      title={`\u201c${title}\u201d silinsin mi?`}
-      detail="Bu geri al\u0131namaz."
-      confirmLabel="Raporu sil"
+      title={t("“{title}” silinsin mi?", { title })}
+      detail={t("Bu geri alınamaz.")}
+      confirmLabel={t("Raporu sil")}
       isPending={isPending}
       onClose={onClose}
       onConfirm={onConfirm}

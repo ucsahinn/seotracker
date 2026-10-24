@@ -3,6 +3,7 @@ import { PageHeader } from "@/client/components/PageShell";
 import { TableExportMenu } from "@/client/components/table/TableBulkActionBar";
 import type { refreshState } from "@/client/lib/refreshState";
 import { Download, FileDown, Loader2, Sheet } from "lucide-react";
+import { t } from "@/shared/i18n";
 
 export function SavedKeywordsHeader({
   refresh,
@@ -21,8 +22,10 @@ export function SavedKeywordsHeader({
 
   return (
     <PageHeader
-      title="Kayıtlı kelimeler"
-      description="Etiketleyin, Search Console'daki ortalama sıralarına bakın, CSV ya da E-Tablolar olarak dışa aktarın."
+      title={t("Kayıtlı kelimeler")}
+      description={t(
+        "Etiketleyin, Search Console'daki ortalama sıralarına bakın, CSV ya da E-Tablolar olarak dışa aktarın.",
+      )}
       actions={
         <PageActions>
           <RefreshButton
@@ -51,13 +54,13 @@ export function SavedKeywordsHeader({
               }
               actions={[
                 {
-                  label: "E-Tablolar'a aktar",
+                  label: t("E-Tablolar'a aktar"),
                   icon: <Sheet className="size-4" />,
                   onClick: onExportSheets,
                   disabled,
                 },
                 {
-                  label: "CSV indir",
+                  label: t("CSV indir"),
                   icon: <FileDown className="size-4" />,
                   onClick: onExportCsv,
                   disabled,

@@ -10,6 +10,8 @@ import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { readClientLog } from "@/client/lib/clientLog";
 import { formatDateTime } from "@/client/lib/format";
 import type { getDiagnostics } from "@/serverFunctions/diagnostics";
+import { t } from "@/shared/i18n";
+import { fillParts } from "@/client/features/settings/fillParts";
 import { describeCheck, type CheckStatus } from "./checkCopy";
 import { buildDiagnosticsSummary } from "./DiagnosticsBundleButton";
 import { useSetupSnapshot } from "./useSetupSnapshot";
@@ -17,7 +19,10 @@ import { useSetupSnapshot } from "./useSetupSnapshot";
 type Diagnostics = Awaited<ReturnType<typeof getDiagnostics>>;
 type Update = ReturnType<typeof useSetupSnapshot>["update"];
 
-/** Plain names for the checks the server reports, and where each is fixed. */
+/**
+ * Plain names for the checks the server reports, and where each is fixed.
+ * Labels stay Turkish here and go through t() where they render.
+ */
 const CHECK_INFO: Record<
   string,
   {
@@ -39,7 +44,8 @@ const CHECK_INFO: Record<
 };
 
 function checkLabel(key: string): string {
-  return CHECK_INFO[key]?.label ?? key;
+  const label = CHECK_INFO[key]?.label;
+  return label ? t(label) : key;
 }
 
 function CheckIcon({ status }: { status: CheckStatus }) {
@@ -90,7 +96,7 @@ export function SetupStatusPanel() {
           compact
           error={diagnostics.error}
           onRetry={() => void diagnostics.refetch()}
-          title="Kurulum durumu okunamadı"
+          title={t("Kurulum durumu okunamadı")}
         />
       </div>
     );
@@ -106,17 +112,20 @@ export function SetupStatusPanel() {
 }
 
 function VersionLine({ version, update }: { version: string; update: Update }) {
+  version = `${version} Alpha`;
   if (update?.updateAvailable) {
     return (
       <>
-        Sürümünüz v{version}.{" "}
+        {t("Sürümünüz v{version}.", { version })}{" "}
         <Link
           to="/settings"
           hash="guncelleme"
           className="link link-primary inline-flex items-center gap-1"
         >
           <ArrowUpCircle className="size-3.5" aria-hidden />
-          Yeni sürüm {update.latestVersion} çıktı
+          {t("Yeni sürüm {version} çıktı", {
+            version: update.latestVersion ?? "",
+          })}
         </Link>
       </>
     );
@@ -124,18 +133,22 @@ function VersionLine({ version, update }: { version: string; update: Update }) {
   if (update?.enabled && update.outcome === "error") {
     return (
       <>
-        Sürümünüz v{version}. Güncelleme kontrolü başarısız oldu; son bilinen
-        sürüm {update.latestVersion}.
+        {t(
+          "Sürümünüz v{version}. Güncelleme kontrolü başarısız oldu; son bilinen sürüm {latest}.",
+          { version, latest: update.latestVersion ?? "" },
+        )}
       </>
     );
   }
   if (update?.enabled && update.outcome === "ok") {
-    return <>Sürümünüz v{version}, güncel.</>;
+    return <>{t("Sürümünüz v{version}, güncel.", { version })}</>;
   }
   if (update && !update.enabled) {
-    return <>Sürümünüz v{version}. Güncelleme kontrolü kapalı.</>;
+    return (
+      <>{t("Sürümünüz v{version}. Güncelleme kontrolü kapalı.", { version })}</>
+    );
   }
-  return <>Sürümünüz v{version}.</>;
+  return <>{t("Sürümünüz v{version}.", { version })}</>;
 }
 
 function StatusBody({
@@ -179,27 +192,27 @@ function StatusBody({
           </span>
           <div>
             <h2 id="setup-status-title" className="text-sm font-medium">
-              Kurulumunuzun durumu
+              {t("Kurulumunuzun durumu")}
             </h2>
             <p className="mt-0.5 text-sm" aria-live="polite">
               {problems === 0
-                ? "Her şey yolunda."
-                : problems === 1
-                  ? "1 şey dikkat istiyor."
-                  : `${problems} şey dikkat istiyor.`}
+                ? t("Her şey yolunda.")
+                : t("{count} şey dikkat istiyor.", { count: problems })}
             </p>
             <p className="mt-1 text-sm">
               <VersionLine version={data.version} update={update} />
             </p>
             <p className="mt-0.5 text-xs text-muted">
-              Son kontrol: {formatDateTime(data.generatedAt)}
+              {t("Son kontrol: {date}", {
+                date: formatDateTime(data.generatedAt),
+              })}
             </p>
           </div>
         </div>
         <CopyButton
           value={buildDiagnosticsSummary(data, readClientLog().length)}
-          label="Özeti kopyala"
-          successMessage="Özet kopyalandı. İçinde gizli değer yok."
+          label={t("Özeti kopyala")}
+          successMessage={t("Özet kopyalandı. İçinde gizli değer yok.")}
         />
       </div>
 
@@ -216,7 +229,7 @@ function StatusBody({
                   {checkLabel(key)}
                   <span className="sr-only">
                     {" "}
-                    — {STATUS_WORD[described.status]}
+                    — {t(STATUS_WORD[described.status])}
                   </span>
                 </p>
                 {described.text ? (
@@ -234,7 +247,7 @@ function StatusBody({
                   hash={fix.hash}
                   className="btn btn-xs shrink-0"
                 >
-                  {fix.label}
+                  {t(fix.label)}
                 </Link>
               ) : null}
             </li>
@@ -243,14 +256,16 @@ function StatusBody({
       </ul>
 
       <div className="space-y-2 border-t border-base-300 pt-3">
-        <h3 className="text-xs font-medium text-muted">Projeler</h3>
+        <h3 className="text-xs font-medium text-muted">{t("Projeler")}</h3>
         {projects.length === 0 ? (
           <p className="text-sm text-muted">
-            Henüz proje yok.{" "}
-            <Link to="/projects" className="link link-primary">
-              Proje ekleyin
-            </Link>
-            .
+            {fillParts(t("Henüz proje yok. {link}."), {
+              link: (
+                <Link to="/projects" className="link link-primary">
+                  {t("Proje ekleyin")}
+                </Link>
+              ),
+            })}
           </p>
         ) : (
           <ul className="space-y-1.5">
@@ -264,8 +279,10 @@ function StatusBody({
                   <span className="flex min-w-0 flex-wrap items-baseline gap-x-3 gap-y-0.5">
                     <span className="font-medium">{project.name}</span>
                     <span className="text-xs text-muted">
-                      Search Console {state.gsc ? "bağlı" : "bağlı değil"} ·
-                      Analytics {state.ga4 ? "bağlı" : "bağlı değil"}
+                      {t("Search Console {gsc} · Analytics {ga4}", {
+                        gsc: state.gsc ? t("bağlı") : t("bağlı değil"),
+                        ga4: state.ga4 ? t("bağlı") : t("bağlı değil"),
+                      })}
                     </span>
                   </span>
                   <Link
@@ -273,7 +290,7 @@ function StatusBody({
                     params={{ projectId: project.id }}
                     className="btn btn-ghost btn-xs"
                   >
-                    Bağlantıları aç
+                    {t("Bağlantıları aç")}
                   </Link>
                 </li>
               );

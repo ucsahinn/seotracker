@@ -41,6 +41,8 @@ import {
   ExportDropdown,
   PerformanceTable,
 } from "@/client/features/audit/results/ResultsTables";
+import { fillParts } from "@/client/features/settings/fillParts";
+import { t } from "@/shared/i18n";
 
 export function ResultsView({
   projectId,
@@ -151,23 +153,29 @@ export function ResultsView({
     <>
       {blockedCount > 0 && (
         <CrawlWarning
-          headline={`${formatCount(blockedCount)} sayfada engellendik.`}
+          headline={t("{count} sayfada engellendik.", { count: blockedCount })}
         >
-          Sitenin bot koruması tarayıcımızı durdurdu, o sayfalar denetlenemedi.
-          Henüz bir çözümümüz yok. Masaüstü tarayıcılar sizin bilgisayarınızdan
-          çalıştığı için genelde geçer. Şunları deneyin:{" "}
-          <SafeExternalLink
-            className="link link-primary inline-flex items-center gap-0.5"
-            url="https://github.com/PhialsBasement/LibreCrawl"
-            label="LibreCrawl"
-          />{" "}
-          (ücretsiz, açık kaynak) ya da{" "}
-          <SafeExternalLink
-            className="link link-primary inline-flex items-center gap-0.5"
-            url="https://www.screamingfrog.co.uk/seo-spider/"
-            label="Screaming Frog"
-          />{" "}
-          (500 adrese kadar ücretsiz).
+          {fillParts(
+            t(
+              "Sitenin bot koruması tarayıcımızı durdurdu, o sayfalar denetlenemedi. Henüz bir çözümümüz yok. Masaüstü tarayıcılar sizin bilgisayarınızdan çalıştığı için genelde geçer. Şunları deneyin: {librecrawl} (ücretsiz, açık kaynak) ya da {screamingfrog} (500 adrese kadar ücretsiz).",
+            ),
+            {
+              librecrawl: (
+                <SafeExternalLink
+                  className="link link-primary inline-flex items-center gap-0.5"
+                  url="https://github.com/PhialsBasement/LibreCrawl"
+                  label="LibreCrawl"
+                />
+              ),
+              screamingfrog: (
+                <SafeExternalLink
+                  className="link link-primary inline-flex items-center gap-0.5"
+                  url="https://www.screamingfrog.co.uk/seo-spider/"
+                  label="Screaming Frog"
+                />
+              ),
+            },
+          )}
         </CrawlWarning>
       )}
 
@@ -175,16 +183,22 @@ export function ResultsView({
         <CrawlWarning
           headline={
             crawlStopped
-              ? "Tarama, sitenin istek sınırı yüzünden erken durdu."
-              : `Site ${formatCount(rateLimitedCount)} sayfada istek sınırı uyguladı.`
+              ? t("Tarama, sitenin istek sınırı yüzünden erken durdu.")
+              : t("Site {count} sayfada istek sınırı uyguladı.", {
+                  count: rateLimitedCount,
+                })
           }
         >
           {crawlStopped
-            ? "İstenen bekleme süresi denetim süresini aştı, bazı adresler ziyaret edilmedi. Bu rapor eksik. "
-            : 'Sunucunun "çok fazla istek" (429) yanıtı verdiği sayfalar denetlenemedi. '}
-          İstek sınırı sıfırlandıktan sonra denetimi yeniden başlatın, ya da
-          site sahibinden "seotracker-audit" tarayıcısına izin vermesini
-          isteyin.
+            ? t(
+                "İstenen bekleme süresi denetim süresini aştı, bazı adresler ziyaret edilmedi. Bu rapor eksik.",
+              )
+            : t(
+                'Sunucunun "çok fazla istek" (429) yanıtı verdiği sayfalar denetlenemedi.',
+              )}{" "}
+          {t(
+            'İstek sınırı sıfırlandıktan sonra denetimi yeniden başlatın, ya da site sahibinden "seotracker-audit" tarayıcısına izin vermesini isteyin.',
+          )}
         </CrawlWarning>
       )}
 
@@ -242,7 +256,9 @@ export function ResultsView({
                     <ForeignPropertyNotice
                       projectId={projectId}
                       auditedHost={property.auditedHost}
-                      propertyHost={property.propertyHost ?? "başka bir mülk"}
+                      propertyHost={
+                        property.propertyHost ?? t("başka bir mülk")
+                      }
                     />
                   )}
                   <SitemapStatusPanel projectId={projectId} />
@@ -253,7 +269,14 @@ export function ResultsView({
                     askDisabledReason={
                       property.covered
                         ? undefined
-                        : `Bu denetim ${property.auditedHost} sitesine ait, bağlı mülk ise ${property.propertyHost ?? "başka bir mülk"}. Sorarsak kota boşa giderdi.`
+                        : t(
+                            "Bu denetim {auditedHost} sitesine ait, bağlı mülk ise {propertyHost}. Sorarsak kota boşa giderdi.",
+                            {
+                              auditedHost: property.auditedHost,
+                              propertyHost:
+                                property.propertyHost ?? t("başka bir mülk"),
+                            },
+                          )
                     }
                   />
                 </div>
@@ -366,20 +389,28 @@ function ResultsHeader({
   onExport: (format: "csv" | "json" | "sheets") => void;
 }) {
   const tabs: Array<{ tab: ResultsTab; label: string }> = [
-    { tab: "issues", label: `Sorunlu sayfalar (${formatCount(issueCount)})` },
-    { tab: "pages", label: `Sayfalar (${formatCount(pageCount)})` },
+    {
+      tab: "issues",
+      label: t("Sorunlu sayfalar ({count})", {
+        count: formatCount(issueCount),
+      }),
+    },
+    {
+      tab: "pages",
+      label: t("Sayfalar ({count})", { count: formatCount(pageCount) }),
+    },
     {
       tab: "index",
       label:
         coverageCount === null
-          ? "Dizin durumu"
-          : `Dizin durumu (${formatCount(coverageCount)})`,
+          ? t("Dizin durumu")
+          : t("Dizin durumu ({count})", { count: formatCount(coverageCount) }),
     },
     ...(hasPerformanceTab
       ? [
           {
             tab: "performance" as const,
-            label: `Hız (${formatCount(lighthouseCount)})`,
+            label: t("Hız ({count})", { count: formatCount(lighthouseCount) }),
           },
         ]
       : []),

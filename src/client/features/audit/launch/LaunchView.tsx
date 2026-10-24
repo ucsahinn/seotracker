@@ -6,7 +6,8 @@ import { QuotaCard } from "@/client/features/quotas/QuotaCard";
 import { AuditHistorySection } from "@/client/features/audit/launch/AuditHistorySection";
 import { LaunchFormCard } from "@/client/features/audit/launch/LaunchFormCard";
 import { useLaunchController } from "@/client/features/audit/launch/useLaunchController";
-import { formatCount, formatDateTime } from "@/client/lib/format";
+import { formatDateTime } from "@/client/lib/format";
+import { t } from "@/shared/i18n";
 
 type LaunchViewProps = {
   projectId: string;
@@ -30,8 +31,10 @@ export function LaunchView({ projectId, onAuditStarted }: LaunchViewProps) {
   return (
     <PageShell>
       <PageHeader
-        title="Site denetimi"
-        description="Sitenizi tarar, bulduğu sorunları önem sırasına göre sıralar."
+        title={t("Site denetimi")}
+        description={t(
+          "Sitenizi tarar, bulduğu sorunları önem sırasına göre sıralar.",
+        )}
         actions={
           <PageActions>
             <RefreshButton
@@ -53,12 +56,14 @@ export function LaunchView({ projectId, onAuditStarted }: LaunchViewProps) {
       {/* Quotas are reference, not the task: closed, so the history starts
           right under the form. */}
       <details className="-mt-2">
-        <summary className="link cursor-pointer text-sm">Kotalar</summary>
+        <summary className="link cursor-pointer text-sm">
+          {t("Kotalar")}
+        </summary>
         <div className="mt-3">
           <QuotaCard
             projectId={projectId}
             kinds={["pagespeed", "url_inspection"]}
-            title="Güncel durum"
+            title={t("Güncel durum")}
           />
         </div>
       </details>
@@ -78,9 +83,17 @@ export function LaunchView({ projectId, onAuditStarted }: LaunchViewProps) {
 
       {pendingDelete ? (
         <ConfirmDeleteModal
-          title={`"${pendingDelete.startUrl}" denetimi silinsin mi?`}
-          detail={`${formatDateTime(pendingDelete.startedAt)} · ${formatCount(pendingDelete.pagesCrawled)} sayfa. Denetimin sayfaları, sorunları ve hız ölçümleri de silinir. Bu geri alınamaz.`}
-          confirmLabel="Denetimi sil"
+          title={t('"{url}" denetimi silinsin mi?', {
+            url: pendingDelete.startUrl,
+          })}
+          detail={t(
+            "{date} · {count} sayfa. Denetimin sayfaları, sorunları ve hız ölçümleri de silinir. Bu geri alınamaz.",
+            {
+              date: formatDateTime(pendingDelete.startedAt),
+              count: pendingDelete.pagesCrawled,
+            },
+          )}
+          confirmLabel={t("Denetimi sil")}
           isPending={controller.isDeleting}
           onClose={() => setPendingDelete(null)}
           onConfirm={() => {

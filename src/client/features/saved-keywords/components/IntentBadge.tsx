@@ -4,6 +4,7 @@ import {
   FloatingTooltip,
   useFloatingTooltip,
 } from "@/client/components/FloatingTooltip";
+import { t } from "@/shared/i18n";
 
 // The fill colour as text on a wash of itself lands near 2.5:1, which is why
 // the ink tokens exist; these were the last chips still doing it.
@@ -15,6 +16,7 @@ const COLORS: Record<KeywordIntent, string> = {
   unknown: "border-base-300 bg-base-200 text-muted",
 };
 
+// The labels and descriptions are Turkish source text, translated where they render.
 const SHORT_LABELS: Record<KeywordIntent, string> = {
   informational: "Bilgi",
   commercial: "Ticari",
@@ -71,7 +73,7 @@ export function IntentBadge({ intent }: { intent: KeywordIntent }) {
   // in `text-subtle`, as in the other tables.
   if (intent === "unknown") {
     return (
-      <span className="text-subtle" aria-label="Arama amacı bilinmiyor">
+      <span className="text-subtle" aria-label={t("Arama amacı bilinmiyor")}>
         -
       </span>
     );
@@ -82,7 +84,7 @@ export function IntentBadge({ intent }: { intent: KeywordIntent }) {
       ref={tooltip.triggerRef}
       className={`inline-flex h-6 min-w-11 cursor-help items-center justify-center rounded-full border px-2 text-xs font-semibold leading-none ${COLORS[intent]}`}
       tabIndex={0}
-      aria-label={`${details.label} arama amacı`}
+      aria-label={t("{intent} arama amacı", { intent: t(details.label) })}
       aria-describedby={tooltip.isOpen ? tooltip.tooltipId : undefined}
       onMouseEnter={tooltip.open}
       onMouseLeave={tooltip.scheduleClose}
@@ -92,7 +94,7 @@ export function IntentBadge({ intent }: { intent: KeywordIntent }) {
         if (e.key === "Escape") tooltip.close();
       }}
     >
-      {SHORT_LABELS[intent]}
+      {t(SHORT_LABELS[intent])}
       {tooltip.isOpen && typeof document !== "undefined"
         ? createPortal(
             <FloatingTooltip
@@ -100,8 +102,8 @@ export function IntentBadge({ intent }: { intent: KeywordIntent }) {
               position={tooltip.position}
               {...tooltip.hoverBridge}
             >
-              <span className="block font-semibold">{details.label}</span>
-              <span className="mt-1 block">{details.description}</span>
+              <span className="block font-semibold">{t(details.label)}</span>
+              <span className="mt-1 block">{t(details.description)}</span>
             </FloatingTooltip>,
             document.body,
           )

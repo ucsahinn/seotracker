@@ -5,14 +5,14 @@ kind: nasil-yapilir
 updated: 2026-10-23
 ---
 
-Die Oberfläche der App ist auf Türkisch. Diese Anleitung nennt jede Schaltfläche und jeden Bildschirmnamen auf Türkisch, mit der deutschen Bedeutung in Klammern.
+Die Oberfläche der App ist auf Türkisch und Englisch verfügbar. Die Sprache lässt sich unter Ayarlar → Görünüm → Dil ändern. Diese Anleitung nennt jede Schaltfläche und jeden Bildschirmnamen auf Türkisch, mit der deutschen Bedeutung in Klammern.
 
 Am Ende ist die App auf Ihrem Computer installiert und im Browser geöffnet. Die Installation dauert zwei Minuten und gilt nur für Ihr eigenes Benutzerkonto. Administratorrechte sind nicht nötig.
 
 ## Voraussetzungen
 
 - Windows 10 oder 11 (64 Bit).
-- Etwa 350 MB freier Speicherplatz. Die Installationsdatei ist 81 MB groß, installiert belegt die App 290 MB.
+- Etwa 400 MB freier Speicherplatz. Die Installationsdatei ist 86 MB groß, installiert belegt die App 313 MB.
 - Ein Browser wie Edge, Chrome oder Firefox.
 - Docker, Node oder ein Terminal (Eingabeaufforderung) brauchen Sie nicht.
 - Die App benötigt das Visual-C++-Paket von Microsoft. Fehlt es auf dem Computer, installiert das Setup es selbst und fragt dafür einmal nach der Administratorerlaubnis. Die App wird in den Ordner `%LOCALAPPDATA%\Programs\seowatcher` installiert.
@@ -131,7 +131,7 @@ Wenn Sie eine bestimmte Nummer möchten:
 
 ## Kontrolle
 
-- Fahren Sie mit der Maus über das Symbol in der Taskleiste. Es sollte „seowatcher X.Y.Z: Çalışıyor: http://127.0.0.1:3001/“ (seowatcher X.Y.Z: Läuft: http://127.0.0.1:3001/) erscheinen. Die Zahl am Anfang ist Ihre installierte Version; 2.3.7 ist nur ein Beispiel.
+- Fahren Sie mit der Maus über das Symbol in der Taskleiste. Es sollte „seowatcher X.Y.Z: Çalışıyor: http://127.0.0.1:3001/“ (seowatcher X.Y.Z: Läuft: http://127.0.0.1:3001/) erscheinen. Die Zahl am Anfang ist Ihre installierte Version; 0.5.0 Alpha ist nur ein Beispiel.
 - Im Browser sollte die Adresse `http://127.0.0.1:3001/api/health` einen Text anzeigen, der mit "status":"ok" beginnt.
 - Auf dem Bildschirm **Yardım** (Hilfe) sollte die Karte „Kurulumunuzun durumu“ (Zustand Ihrer Installation) „Her şey yolunda.“ (Alles in Ordnung.) anzeigen. Solange Google nicht verbunden ist, ist die Zeile „Google girişi“ (Google-Anmeldung) als „braucht Aufmerksamkeit“ markiert. Das ist normal.
 

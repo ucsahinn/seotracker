@@ -5,7 +5,7 @@ kind: nasil-yapilir
 updated: 2026-10-22
 ---
 
-L'interface de l'application est en turc. Ce guide donne chaque nom de bouton et d'écran en turc, suivi de sa traduction française entre parenthèses.
+L'interface de l'application est disponible en turc et en anglais. La langue se choisit dans Ayarlar → Görünüm → Dil. Ce guide donne chaque nom de bouton et d'écran en turc, suivi de sa traduction française entre parenthèses.
 
 À la fin, l'application sera connectée à Google en votre nom et lira les données de votre site. Pour cela, vous obtenez une fois une « clé d'accès Google » chez Google. Cela prend environ dix minutes et vous n'aurez plus à y revenir. Une voie plus courte, le compte de service, est décrite à la fin de la page ; elle convient à la plupart des gens.
 

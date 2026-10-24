@@ -360,5 +360,5 @@ export function langMenuHtml(current, hrefFor, { available } = {}) {
       return `<li><a href="${hrefFor(loc)}" lang="${l}" hreflang="${l}"${cur}><span class="flag">${flags[l]}</span>${loc.name}</a></li>`;
     })
     .join("");
-  return `<details class="langs"><summary aria-label="${current.t.language}: ${current.name}"><span class="flag">${flags[current.lang]}</span><span class="code">${current.lang.toUpperCase()}</span></summary><ul>${items}</ul></details>`;
+  return `<details class="langs"><summary aria-label="${current.lang.toUpperCase()} — ${current.t.language}: ${current.name}"><span class="flag">${flags[current.lang]}</span><span class="code">${current.lang.toUpperCase()}</span></summary><ul>${items}</ul></details>`;
 }

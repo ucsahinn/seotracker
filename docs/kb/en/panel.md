@@ -8,34 +8,34 @@ updated: 2026-10-22
 
 This is the first screen of a project. It shows the current state of your site and what to do next.
 
-The search numbers come from Google Search Console. The visitor numbers come from Google Analytics. The audit summary comes from the app's own site crawler. The **Yenile** (Refresh) button at the top refreshes all of them. **Denetimi başlat** (Start audit) takes you to the audit screen.
+The search numbers come from Google Search Console. The visitor numbers come from Google Analytics. The audit summary comes from the app's own site crawler. The **Refresh** button at the top refreshes all of them. **Start audit** takes you to the audit screen.
 
 ## What is on the screen
 
-**Four number cards.** **Tıklama** (Clicks), **Gösterim** (Impressions), **Tıklama oranı** (Click rate) and **Ortalama sıra** (Average position). All four cover the last 28 days, and each card has an arrow comparing it with the previous 28 days. For average position a lower number is better, and 1 is the top position, so a falling number is good news and the arrow color reflects that. If Search Console is not connected, the card says "Search Console'u bağlayın" (Connect Search Console).
+**Four number cards.** **Clicks**, **Impressions**, **CTR** and **Average position**. All four cover the last 28 days, and each card has an arrow comparing it with the previous 28 days. For average position a lower number is better, and 1 is the top position, so a falling number is good news and the arrow color reflects that. If Search Console is not connected, the card says "Connect Search Console".
 
-**Sıradaki adımlar** (Next steps). Up to three tasks the app suggests, in this order of priority:
+**Next steps**. Up to three tasks the app suggests, in this order of priority:
 
-- Search Console is not connected: **Search Console'u bağla** (Connect Search Console).
+- Search Console is not connected: **Connect Search Console**.
 - There is no audit, or the latest one is older than seven days: **Denetimi başlat**.
 - There is a serious problem: **Kritik sorunları gör** (See critical issues).
 - After that: **Fırsatları aç** (Open opportunities) and **Uyarıları gör** (See warnings).
 
 When a task is done, it leaves the list.
 
-**New in the latest audit and Düzelenler (Fixed).** This compares the last two audits and shows which issues appeared, on how many pages, and which were fixed. If nothing was fixed, it says "Düzelen sorun yok." (No issues fixed).
+**New in the latest audit and Düzelenler (Fixed).** This compares the last two audits and shows which issues appeared, on how many pages, and which were fixed. If nothing was fixed, it says "No fixed issues.".
 
-**Tıklama eğilimi** (Click trend). A line chart of daily clicks for the last 28 days. With fewer than four days of data, no line is drawn. The **Sorguları aç** (Open queries) link opens the **Arama performansı** (Search performance) screen.
+**Click trend**. A line chart of daily clicks for the last 28 days. With fewer than four days of data, no line is drawn. The **Open queries** link opens the **Search performance** screen.
 
-**Sıra 5-20 arası sorgular** (Queries ranking 5-20). The top four searches that appear between positions 5 and 20 on Google. With a little work, these can reach the first page or the top positions. **Tümünü gör** (See all) opens the full list.
+**Queries in positions 5-20**. The top four searches that appear between positions 5 and 20 on Google. With a little work, these can reach the first page or the top positions. **View all** opens the full list.
 
-**Site denetimi** (Site audit) card. It shows how many pages were crawled, the three most common issues and the five pages with the most issues. While an audit is running, the card refreshes every five seconds. The question mark icon explains the three severity levels:
+**Site audit** card. It shows how many pages were crawled, the three most common issues and the five pages with the most issues. While an audit is running, the card refreshes every five seconds. The question mark icon explains the three severity levels:
 
 - Critical: directly harms your visibility in search.
 - Warning: wears down rankings over time but is not urgent.
 - Info: small opportunities to improve.
 
-**Organik trafik** (Organic traffic) card. It appears when Google Analytics is connected. For visitors who came from search, it shows **Oturum** (Sessions), **Aktif kullanıcı** (Active users), **Etkileşim oranı** (Engagement rate) and **Anahtar olay** (Key events). If the site measures sales, **Organik gelir** (Organic revenue) and **Sipariş** (Orders) are added too.
+**Organic traffic** card. It appears when Google Analytics is connected. For visitors who came from search, it shows **Sessions**, **Active users**, **Engagement rate** and **Key events**. If the site measures sales, **Organic revenue** and **Transactions** are added too.
 
 ## How to use it
 
@@ -56,7 +56,7 @@ Average position gives more weight to searches with many impressions. These four
 
 **Average position went up. Is that good?** No. Going from 3 to 7 is a drop, which is why the arrow turns red.
 
-**Does the audit card show what Google sees?** No. It shows what the app's own crawl found. Which pages Google has indexed is on the **Dizin durumu** (Index status) tab on the audit screen.
+**Does the audit card show what Google sees?** No. It shows what the app's own crawl found. Which pages Google has indexed is on the **Index status** tab on the audit screen.
 
 **There is no Organik trafik card.** Google Analytics is not connected in the project settings. Connecting it is optional.
 

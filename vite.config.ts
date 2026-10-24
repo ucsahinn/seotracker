@@ -54,7 +54,9 @@ export default defineConfig(({ mode }) => {
         auxiliaryWorkers: [{ configPath: "./wrangler.audit.jsonc" }],
       }),
       tsConfigPaths(),
-      tanstackStart(),
+      tanstackStart({
+        router: { routeFileIgnorePattern: "\\.test\\.[tj]sx?$" },
+      }),
       viteReact(),
       tailwindcss(),
     ],

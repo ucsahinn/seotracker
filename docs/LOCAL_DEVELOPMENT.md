@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- Node.js 20+
+- Node.js 22.12+ (the Cloudflare runtime tooling requires Node.js 22 or newer)
 - [Corepack](https://nodejs.org/api/corepack.html) (bundled through Node.js 24; install it separately on Node.js 25+)
 
 ## Local Development Workflow

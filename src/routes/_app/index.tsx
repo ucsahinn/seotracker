@@ -11,6 +11,7 @@ import {
   getStandardErrorMessage,
 } from "@/client/lib/error-messages";
 import { UnauthenticatedErrorCard } from "@/client/components/UnauthenticatedErrorCard";
+import { t } from "@/shared/i18n";
 
 export const Route = createFileRoute("/_app/")({
   component: IndexRedirect,
@@ -53,7 +54,7 @@ function IndexRedirect() {
       return (
         <div className="flex items-center justify-center h-full p-4">
           <UnauthenticatedErrorCard
-            message="Bu çalışma alanına girişiniz doğrulanamadı."
+            message={t("Bu çalışma alanına girişiniz doğrulanamadı.")}
             onRetry={() => {
               void refetch();
             }}
@@ -68,7 +69,7 @@ function IndexRedirect() {
           <p className="text-error text-center">
             {getStandardErrorMessage(
               error,
-              "Bir şeyler ters gitti. Yardım ekranındaki günlüklere bakın.",
+              t("Bir şeyler ters gitti. Yardım ekranındaki günlüklere bakın."),
             )}
           </p>
         </div>

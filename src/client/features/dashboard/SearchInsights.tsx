@@ -17,6 +17,7 @@ import { DeltaBadge } from "@/client/components/MetricTile";
 import { useReducedMotion } from "@/client/lib/useReducedMotion";
 import { DEFAULT_WINDOW_DAYS } from "@/shared/dataFreshness";
 import { formatCount, formatDay, formatDecimal } from "@/client/lib/format";
+import { t } from "@/shared/i18n";
 
 const TOP_QUERIES = 4;
 
@@ -70,7 +71,7 @@ export function SearchInsights({
       {trend ? (
         <div style={{ animationDelay: "0ms" }}>
           <CardShell
-            title="Tıklama eğilimi"
+            title={t("Tıklama eğilimi")}
             action={
               <Link
                 to="/p/$projectId/search-performance"
@@ -78,7 +79,7 @@ export function SearchInsights({
                 search={{ tab: "queries" }}
                 className={moreDetailsClass}
               >
-                Sorguları aç
+                {t("Sorguları aç")}
               </Link>
             }
           >
@@ -87,22 +88,37 @@ export function SearchInsights({
                 {formatCount(trend.total)}
               </p>
               <p className="text-sm text-muted">
-                tıklama, son {DEFAULT_WINDOW_DAYS} gün
+                {t("tıklama, son {days} gün", { days: DEFAULT_WINDOW_DAYS })}
               </p>
               {change !== null ? (
                 <span className="inline-flex items-center gap-1 text-sm tabular-nums">
                   <DeltaBadge value={change} />
-                  <span className="text-muted"> önceki döneme göre</span>
+                  <span className="text-muted"> {t("önceki döneme göre")}</span>
                 </span>
               ) : null}
             </div>
             <Chart
               height={120}
-              summary={`Son ${formatCount(report.daily.length)} günde ${formatCount(trend.total)} tıklama. ${
+              summary={[
+                t("Son {days} günde {total} tıklama.", {
+                  days: formatCount(report.daily.length),
+                  total: formatCount(trend.total),
+                }),
                 change === null
-                  ? ""
-                  : `Önceki döneme göre yüzde ${formatDecimal(Math.abs(change) * 100, 0)} ${change >= 0 ? "yüksek" : "düşük"}. `
-              }En yüksek gün ${formatDay(trend.peakDay)}, ${formatCount(trend.peakClicks)} tıklama.`}
+                  ? null
+                  : t(
+                      change >= 0
+                        ? "Önceki döneme göre yüzde {percent} yüksek."
+                        : "Önceki döneme göre yüzde {percent} düşük.",
+                      { percent: formatDecimal(Math.abs(change) * 100, 0) },
+                    ),
+                t("En yüksek gün {day}, {clicks} tıklama.", {
+                  day: formatDay(trend.peakDay),
+                  clicks: formatCount(trend.peakClicks),
+                }),
+              ]
+                .filter(Boolean)
+                .join(" ")}
             >
               <AreaChart
                 data={report.daily}
@@ -125,7 +141,7 @@ export function SearchInsights({
                         title={formatDay(day)}
                         rows={[
                           {
-                            label: "tıklama",
+                            label: t("tıklama"),
                             value: formatCount(row.clicks),
                             color: CHART_SERIES.primary,
                           },
@@ -151,7 +167,7 @@ export function SearchInsights({
 
       <div style={{ animationDelay: "60ms" }}>
         <CardShell
-          title="Sıra 5-20 arası sorgular"
+          title={t("Sıra 5-20 arası sorgular")}
           action={
             <Link
               to="/p/$projectId/search-performance"
@@ -159,14 +175,15 @@ export function SearchInsights({
               search={{ tab: "striking" }}
               className={moreDetailsClass}
             >
-              Tümünü gör
+              {t("Tümünü gör")}
             </Link>
           }
         >
           {striking.length === 0 ? (
             <p className="text-sm text-muted">
-              Şu an 5. ile 20. sıra arasında sorgu yok. Sorgular bu aralığa
-              girdikçe burada listelenir.
+              {t(
+                "Şu an 5. ile 20. sıra arasında sorgu yok. Sorgular bu aralığa girdikçe burada listelenir.",
+              )}
             </p>
           ) : (
             <ul className="space-y-1">
@@ -180,8 +197,10 @@ export function SearchInsights({
                   >
                     <span className="min-w-0 truncate">{row.query}</span>
                     <span className="shrink-0 tabular-nums text-muted">
-                      {formatCount(row.impressions)} gösterim · sıra{" "}
-                      {formatDecimal(row.position)}
+                      {t("{impressions} gösterim · sıra {position}", {
+                        impressions: formatCount(row.impressions),
+                        position: formatDecimal(row.position),
+                      })}
                     </span>
                   </Link>
                 </li>

@@ -5,6 +5,7 @@ import {
   type CruxRating,
   type CruxSeries,
 } from "@/shared/cruxHistory";
+import { t } from "@/shared/i18n";
 
 export const CRUX_METRIC_LABEL: Record<CruxMetric, string> = {
   lcp: "LCP",
@@ -12,6 +13,7 @@ export const CRUX_METRIC_LABEL: Record<CruxMetric, string> = {
   inp: "INP",
 };
 
+/** Turkish source labels; t() runs where they render. */
 export const CRUX_RATING_LABEL: Record<CruxRating, string> = {
   good: "iyi",
   "needs-improvement": "geliştirilmeli",
@@ -69,5 +71,15 @@ export function describeCruxSeries(summary: CruxSeriesSummary): string {
   const label = CRUX_METRIC_LABEL[summary.metric];
   const now = formatCruxValue(summary.metric, summary.latest);
   const start = formatCruxValue(summary.metric, summary.first);
-  return `${label} son ${summary.weeks} haftada ${start} değerinden ${now} değerine geldi, ${TREND_TEXT[summary.trend]}; şu an ${CRUX_RATING_LABEL[summary.rating]}.`;
+  return t(
+    "{metric} son {count} haftada {start} değerinden {now} değerine geldi, {trend}; şu an {rating}.",
+    {
+      metric: label,
+      count: summary.weeks,
+      start,
+      now,
+      trend: t(TREND_TEXT[summary.trend]),
+      rating: t(CRUX_RATING_LABEL[summary.rating]),
+    },
+  );
 }

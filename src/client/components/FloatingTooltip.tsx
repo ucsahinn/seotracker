@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 
 type Position = { top: number; left: number; below?: boolean };
 
@@ -20,11 +20,33 @@ export function FloatingTooltip({
   onPointerEnter?: () => void;
   onPointerLeave?: () => void;
 }) {
+  const panel = useRef<HTMLSpanElement>(null);
+  useLayoutEffect(() => {
+    const element = panel.current;
+    if (!element) return;
+    element.style.left = `${position.left}px`;
+    element.style.top = `${position.top}px`;
+    const rect = element.getBoundingClientRect();
+    const edge = 8;
+    const dx =
+      rect.left < edge
+        ? edge - rect.left
+        : Math.min(0, window.innerWidth - edge - rect.right);
+    const dy =
+      rect.top < edge
+        ? edge - rect.top
+        : Math.min(0, window.innerHeight - edge - rect.bottom);
+    // The anchor's estimate cannot know a translated or multiline panel's height.
+    // Correct the measured box before paint, including short laptop windows.
+    if (dx) element.style.left = `${position.left + dx}px`;
+    if (dy) element.style.top = `${position.top + dy}px`;
+  }, [position.left, position.top, position.below, children]);
   return (
     <span
+      ref={panel}
       id={id}
       role="tooltip"
-      className={`fixed z-[1000] w-max max-w-64 -translate-x-1/2 rounded-field border border-base-300 bg-base-100 px-2.5 py-2 text-xs font-normal normal-case leading-snug text-base-content shadow-md ${
+      className={`fixed z-[1000] w-max max-w-[min(16rem,calc(100vw-1rem))] max-h-[calc(100dvh-1rem)] overflow-y-auto [overflow-wrap:anywhere] -translate-x-1/2 rounded-field border border-base-300 bg-base-100 px-2.5 py-2 text-xs font-normal normal-case leading-snug text-base-content shadow-md ${
         position.below ? "" : "-translate-y-full"
       }`}
       style={{ left: position.left, top: position.top }}

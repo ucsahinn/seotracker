@@ -2,6 +2,8 @@
 <html lang="fr">
   <head>
     <meta charset="utf-8" />
+    <link rel="stylesheet" href="/assets/consent.css?v=1" />
+    <script src="/assets/consent.js?v=2" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Paramètres | Guide seowatcher</title>
     <meta
@@ -54,6 +56,13 @@
       sizes="48x48"
     />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link
+      rel="alternate"
+      type="application/atom+xml"
+      title="seowatcher"
+      href="/fr/feed.xml"
+    />
     <link
       rel="preload"
       href="/assets/fonts/geist-latin-wght-normal.woff2"
@@ -83,7 +92,7 @@
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Paramètres | seowatcher" />
-    <meta property="article:modified_time" content="2026-10-23" />
+    <meta property="article:modified_time" content="2026-10-24" />
     <meta
       property="og:url"
       content="https://seowatcher.io/fr/docs/parametres/"
@@ -139,7 +148,7 @@
             "description": "Thème, clé d'accès Google, clé PageSpeed, limites d'utilisation et vérification des mises à jour : l'unique écran de réglages de toute l'installation.",
             "url": "https://seowatcher.io/fr/docs/parametres/",
             "inLanguage": "fr",
-            "dateModified": "2026-10-23",
+            "dateModified": "2026-10-24",
             "articleSection": "Les écrans",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -174,7 +183,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=2.4.3" defer></script>
+    <script src="/assets/docs.js?v=0.5.0" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1306,7 +1315,7 @@
             >GitHub</a
           >
           <details class="langs">
-            <summary aria-label="Langue: Français">
+            <summary aria-label="FR — Langue: Français">
               <span class="flag"
                 ><svg viewBox="0 0 20 14" aria-hidden="true">
                   <rect width="20" height="14" fill="#fff" />
@@ -1529,8 +1538,8 @@
           <strong>Hizmet hesabı</strong> (Compte de service),
           <strong>Hız ölçümü</strong> (Mesure de la vitesse),
           <strong>Sınırlar</strong> (Limites), <strong>Hakkında</strong> (À
-          propos) et <strong>Sürüm notları</strong> (Notes de version). Le titre
-          de chaque section porte un badge qui indique son état.
+          propos) et <strong>Windows</strong>. Le titre de chaque section porte
+          un badge qui indique son état.
         </p>
         <h2 id="ce-que-l-ecran-affiche">Ce que l'écran affiche</h2>
         <p>
@@ -1538,6 +1547,29 @@
           les choix Sistem (Système), Açık (Clair) et Koyu (Sombre). Le choix
           est conservé dans ce navigateur. Dans un autre navigateur ou sur un
           autre ordinateur, vous le choisissez séparément.
+        </p>
+        <p>
+          <strong>Langue.</strong> L’application propose une interface en turc
+          et en anglais. Dans <strong>Ayarlar → Görünüm → Dil</strong>,
+          choisissez Türkçe ou English. La page se recharge ; les nombres et
+          dates suivent la langue choisie. Le choix est conservé dans ce
+          navigateur.
+        </p>
+        <p>
+          <strong>Notifications (Bildirimler).</strong> La cloche affiche les 50
+          derniers événements et le nombre de messages non lus.
+          <strong>Tümünü okundu işaretle</strong> marque tout comme lu sans
+          effacer l’historique. Dans <strong>Bildirimler</strong>, vous pouvez
+          écouter le son et activer les notifications de bureau en arrière-plan.
+          L’autorisation du navigateur n’est demandée qu’à l’activation.
+        </p>
+        <p>
+          <strong>Windows.</strong> Activez ou désactivez le démarrage avec
+          Windows et l’installation automatique des mises à jour. Ces
+          préférences sont partagées avec le menu de l’icône de notification.
+          Les restrictions administrateur sont expliquées. Les commandes sont
+          désactivées dans Docker et les installations de développement ; les
+          anciens lanceurs Windows demandent une mise à jour du paquet.
         </p>
         <p>
           <strong>Google.</strong> Le badge a l'une de ces trois valeurs :
@@ -1621,7 +1653,7 @@
         </p>
         <p>
           <strong>Hakkında.</strong> La ligne <strong>Sürüm</strong> (Version)
-          affiche la version (comme v2.3.0). L'interrupteur
+          affiche la version (comme 0.5.0 Alpha). L'interrupteur
           <strong>Güncellemeleri kontrol et</strong> (Vérifier les mises à jour)
           est activé par défaut. Quand il est activé, l'application demande à
           GitHub la dernière version au plus une fois par jour. Dans ce cas, le
@@ -1636,8 +1668,10 @@
           s'installe toute seule.
         </p>
         <p>
-          <strong>Sürüm notları.</strong> Cette section liste ce qui a changé
-          dans chaque version.
+          <strong>Sürüm notları.</strong> Les notes de version ont une page
+          séparée au-dessus des notifications dans le menu latéral. Les
+          étiquettes colorées indiquent nouveautés, corrections et changements
+          de sécurité.
         </p>
         <h2 id="comment-l-utiliser">Comment l'utiliser</h2>
         <ol>
@@ -1719,7 +1753,7 @@
           >
         </nav>
         <p class="meta">
-          Dernière mise à jour: 23 octobre 2026. Vous voyez une erreur ?
+          Dernière mise à jour: 24 octobre 2026. Vous voyez une erreur ?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"

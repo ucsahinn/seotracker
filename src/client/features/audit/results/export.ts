@@ -12,6 +12,15 @@ import {
 import { buildCsv, type CsvValue, downloadCsv } from "@/client/lib/csv";
 import { downloadFile } from "@/client/lib/download";
 import { exportTableToSheets } from "@/client/lib/exportToSheets";
+import { t } from "@/shared/i18n";
+
+/*
+ * Column headers and cell labels are a person's reading, so they follow the
+ * UI language; the lists keep the Turkish source and translate per export.
+ * The JSON files keep codes, not labels: machines read those.
+ */
+const inLocale = (headers: readonly string[]) =>
+  headers.map((header) => t(header));
 
 const ISSUES_HEADERS = [
   "Önem",
@@ -25,11 +34,11 @@ function issuesRows(issues: AuditResultsData["issues"]): CsvValue[][] {
   return issues.map((issue) => {
     const descriptor = getIssueDescriptor(issue.issueType);
     return [
-      SEVERITY_LABEL[resolveIssueSeverity(issue)],
-      descriptor?.title ?? issue.issueType,
+      t(SEVERITY_LABEL[resolveIssueSeverity(issue)]),
+      descriptor ? t(descriptor.title) : issue.issueType,
       issue.pageUrl,
       issue.detailsJson ?? "",
-      descriptor?.howToFix ?? "",
+      descriptor ? t(descriptor.howToFix) : "",
     ];
   });
 }
@@ -46,12 +55,12 @@ export function exportIssues(
         // Same rule as the CSV beside it, which is the point.
         severity: resolveIssueSeverity(issue),
         issueType: issue.issueType,
-        issue: descriptor?.title ?? issue.issueType,
+        issue: descriptor ? t(descriptor.title) : issue.issueType,
         url: issue.pageUrl,
         details: issue.detailsJson
           ? (JSON.parse(issue.detailsJson) as unknown)
           : null,
-        howToFix: descriptor?.howToFix ?? null,
+        howToFix: descriptor ? t(descriptor.howToFix) : null,
       };
     });
     downloadFile(
@@ -64,14 +73,17 @@ export function exportIssues(
 
   if (format === "sheets") {
     void exportTableToSheets({
-      headers: ISSUES_HEADERS,
+      headers: inLocale(ISSUES_HEADERS),
       rows: issuesRows(issues),
       feature: "audit_issues",
     });
     return;
   }
 
-  downloadCsv("audit-issues.csv", buildCsv(ISSUES_HEADERS, issuesRows(issues)));
+  downloadCsv(
+    "audit-issues.csv",
+    buildCsv(inLocale(ISSUES_HEADERS), issuesRows(issues)),
+  );
 }
 
 const PAGES_HEADERS = [
@@ -79,7 +91,7 @@ const PAGES_HEADERS = [
   "Durum",
   "Başlık",
   "H1",
-  "Kelime",
+  "Kelime sayısı",
   "Görsel",
   "Alt metni eksik",
   "Yanıt süresi (ms)",
@@ -155,14 +167,17 @@ export function exportPages(
 
   if (format === "sheets") {
     void exportTableToSheets({
-      headers: PAGES_HEADERS,
+      headers: inLocale(PAGES_HEADERS),
       rows: pagesRows(pages),
       feature: "audit_pages",
     });
     return;
   }
 
-  downloadCsv("audit-pages.csv", buildCsv(PAGES_HEADERS, pagesRows(pages)));
+  downloadCsv(
+    "audit-pages.csv",
+    buildCsv(inLocale(PAGES_HEADERS), pagesRows(pages)),
+  );
 }
 
 export function exportPerformance(
@@ -197,14 +212,17 @@ export function exportPerformance(
 
   if (format === "sheets") {
     void exportTableToSheets({
-      headers: PERFORMANCE_HEADERS,
+      headers: inLocale(PERFORMANCE_HEADERS),
       rows,
       feature: "audit_performance",
     });
     return;
   }
 
-  downloadCsv("audit-performance.csv", buildCsv(PERFORMANCE_HEADERS, rows));
+  downloadCsv(
+    "audit-performance.csv",
+    buildCsv(inLocale(PERFORMANCE_HEADERS), rows),
+  );
 }
 
 const COVERAGE_HEADERS = [
@@ -246,7 +264,7 @@ export function exportIndexCoverage(
     row.coverageState,
     row.googleCanonical,
     row.userCanonical,
-    row.canonicalMismatch ? "evet" : "hayır",
+    row.canonicalMismatch ? t("evet") : t("hayır"),
     row.lastCrawlTime,
     row.checkedAt,
     row.error,
@@ -254,12 +272,15 @@ export function exportIndexCoverage(
 
   if (format === "sheets") {
     void exportTableToSheets({
-      headers: [...COVERAGE_HEADERS],
+      headers: inLocale(COVERAGE_HEADERS),
       rows: csvRows,
       feature: "audit_index_coverage",
     });
     return;
   }
 
-  downloadCsv("index-coverage.csv", buildCsv([...COVERAGE_HEADERS], csvRows));
+  downloadCsv(
+    "index-coverage.csv",
+    buildCsv(inLocale(COVERAGE_HEADERS), csvRows),
+  );
 }

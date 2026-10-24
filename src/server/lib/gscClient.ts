@@ -6,6 +6,7 @@ import {
 } from "@/server/lib/googleServiceAccountToken";
 import { GSC_OAUTH_PROVIDER_ID, GSC_SERVICE_ACCOUNT_SCOPE } from "@/shared/gsc";
 import { GscApiError, GscTokenError } from "./gscErrors";
+import { t } from "@/shared/i18n";
 
 export { GscApiError, GscTokenError } from "./gscErrors";
 
@@ -172,7 +173,9 @@ export function createGscClient(opts: {
         return await getServiceAccountToken(GSC_SERVICE_ACCOUNT_SCOPE);
       } catch (error) {
         throw new GscTokenError(
-          "Hizmet hesabı Search Console'a bağlanamadı. Anahtar dosyasını yeniden yükleyin.",
+          t(
+            "Hizmet hesabı Search Console'a bağlanamadı. Anahtar dosyasını yeniden yükleyin.",
+          ),
           error,
         );
       }
@@ -195,13 +198,17 @@ export function createGscClient(opts: {
       });
     } catch (error) {
       throw new GscTokenError(
-        "Search Console erişim anahtarı alınamadı (yetki iptal edilmiş ya da süresi dolmuş olabilir).",
+        t(
+          "Search Console erişim anahtarı alınamadı (yetki iptal edilmiş ya da süresi dolmuş olabilir).",
+        ),
         error,
       );
     }
     if (!result?.accessToken) {
       throw new GscTokenError(
-        "Search Console erişim anahtarı döndürmedi (yetki iptal edilmiş ya da süresi dolmuş olabilir).",
+        t(
+          "Search Console erişim anahtarı döndürmedi (yetki iptal edilmiş ya da süresi dolmuş olabilir).",
+        ),
       );
     }
     return result.accessToken;

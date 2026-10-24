@@ -1,7 +1,10 @@
 import { searchFold } from "@/client/lib/searchFold";
+import { Skeleton } from "@/client/components/Skeleton";
+import { Spinner } from "@/client/components/Spinner";
 import { GoogleAccountRemovalDialog } from "@/client/features/integrations/GoogleAccountRemovalDialog";
 import { useId, useRef, useState, type KeyboardEvent } from "react";
 import { Check, ChevronDown, Plus, Search } from "lucide-react";
+import { t } from "@/shared/i18n";
 
 type Selection = { accountId: string; propertyId: string };
 type Property = {
@@ -25,7 +28,10 @@ type SecondaryAction = {
 };
 
 function accountLabel(account: Account) {
-  return account.email ?? `Google hesabı · ${account.accountId.slice(-6)}`;
+  return (
+    account.email ??
+    t("Google hesabı · {id}", { id: account.accountId.slice(-6) })
+  );
 }
 
 export function GooglePropertyPicker({
@@ -111,7 +117,7 @@ export function GooglePropertyPicker({
       ) : null}
       <div>
         <p className="mb-2 text-sm font-medium">
-          {readOnly ? "Google hesaplarını yönet" : "Mülk seç"}
+          {readOnly ? t("Google hesaplarını yönet") : t("Mülk seç")}
         </p>
         <button
           ref={trigger}
@@ -127,7 +133,7 @@ export function GooglePropertyPicker({
         >
           <span className="min-w-0">
             <span className="block truncate">
-              {selected?.name ?? "Bir mülk seçin…"}
+              {selected?.name ?? t("Bir mülk seçin…")}
             </span>
             {selectedAccount ? (
               <span className="mt-0.5 block truncate text-xs text-muted">
@@ -141,7 +147,7 @@ export function GooglePropertyPicker({
           <div
             id={panelId}
             role="region"
-            aria-label="Google mülkleri"
+            aria-label={t("Google mülkleri")}
             className="mt-2 overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-sm"
             onKeyDown={(event) => handlePropertyKeyDown(event, close)}
           >
@@ -150,8 +156,8 @@ export function GooglePropertyPicker({
               <input
                 autoFocus
                 type="search"
-                aria-label="Mülk veya hesap ara"
-                placeholder="Mülk veya hesap ara…"
+                aria-label={t("Mülk veya hesap ara")}
+                placeholder={t("Mülk veya hesap ara…")}
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
                 className="min-w-0 w-full bg-transparent text-sm outline-none"
@@ -159,29 +165,18 @@ export function GooglePropertyPicker({
             </label>
             <div className="max-h-72 overflow-y-auto overscroll-contain p-1.5">
               {loading ? (
-                <div
-                  role="status"
-                  aria-label="Mülkler yükleniyor"
-                  className="space-y-1.5 p-1.5"
-                >
-                  {[0, 1, 2].map((row) => (
-                    <div key={row} className="space-y-1.5 px-2 py-1.5">
-                      <div className="skeleton h-4 w-3/5" />
-                      <div className="skeleton h-3 w-2/5" />
-                    </div>
-                  ))}
-                </div>
+                <Skeleton variant="list" rows={3} className="p-1.5" />
               ) : error ? (
                 <div role="alert" className="p-3 text-sm">
                   <p className="text-[var(--ink-error)]">
-                    Mülkler yüklenemedi.
+                    {t("Mülkler yüklenemedi.")}
                   </p>
                   <button
                     type="button"
                     className="btn btn-ghost btn-sm mt-1"
                     onClick={onRetry}
                   >
-                    Tekrar dene
+                    {t("Tekrar dene")}
                   </button>
                 </div>
               ) : (
@@ -202,25 +197,31 @@ export function GooglePropertyPicker({
                           className="btn btn-ghost btn-xs shrink-0 text-[var(--ink-error)]"
                           disabled={saving}
                           onClick={() => setRemoving(account)}
-                          aria-label={`${accountLabel(account)} hesabını kaldır`}
+                          aria-label={t("{account} hesabını kaldır", {
+                            account: accountLabel(account),
+                          })}
                         >
-                          Hesabı kaldır
+                          {t("Hesabı kaldır")}
                         </button>
                       </div>
                       {account.requiresReconnect ? (
                         <div className="flex flex-wrap items-center justify-between gap-2 px-2 pb-2 text-sm">
                           <span className="text-muted">
-                            Bağlantının süresi doldu
+                            {t("Bağlantının süresi doldu")}
                           </span>
                           <button
                             type="button"
                             className="btn btn-ghost btn-xs"
                             onClick={onReconnect}
-                            aria-label={`${accountLabel(account)} hesabını yeniden bağla`}
+                            aria-label={t("{account} hesabını yeniden bağla", {
+                              account: accountLabel(account),
+                            })}
                             disabled={linking}
                             aria-busy={linking}
                           >
-                            {linking ? "Google açılıyor…" : "Yeniden bağlan"}
+                            {linking
+                              ? t("Google açılıyor…")
+                              : t("Yeniden bağlan")}
                           </button>
                         </div>
                       ) : account.unavailable ? (
@@ -230,14 +231,14 @@ export function GooglePropertyPicker({
                               for something retrying will never fix. */}
                           <p className="text-muted">
                             {account.unavailableReason ??
-                              "Mülkler yüklenemedi."}
+                              t("Mülkler yüklenemedi.")}
                           </p>
                           <button
                             type="button"
                             className="btn btn-ghost btn-xs"
                             onClick={onRetry}
                           >
-                            Tekrar dene
+                            {t("Tekrar dene")}
                           </button>
                         </div>
                       ) : account.properties.length === 0 ? (
@@ -248,8 +249,12 @@ export function GooglePropertyPicker({
                            is not there. */
                         <p className="px-2 pb-3 text-sm text-muted">
                           {provider === "ga4"
-                            ? "Bu hesabın görebildiği bir GA4 mülkü yok. Henüz mülk oluşturmadıysanız analytics.google.com'dan oluşturun, sonra bu hesabı ona Görüntüleyen olarak ekleyin."
-                            : "Bu hesabın görebildiği bir Search Console mülkü yok. Mülkü doğruladıysanız bu hesabı search.google.com/search-console adresinden kullanıcı olarak ekleyin."}
+                            ? t(
+                                "Bu hesabın görebildiği bir GA4 mülkü yok. Henüz mülk oluşturmadıysanız analytics.google.com'dan oluşturun, sonra bu hesabı ona Görüntüleyen olarak ekleyin.",
+                              )
+                            : t(
+                                "Bu hesabın görebildiği bir Search Console mülkü yok. Mülkü doğruladıysanız bu hesabı search.google.com/search-console adresinden kullanıcı olarak ekleyin.",
+                              )}
                         </p>
                       ) : (
                         account.properties.map((property) => {
@@ -285,7 +290,7 @@ export function GooglePropertyPicker({
                                 ) : null}
                                 {!property.selectable ? (
                                   <span className="block text-xs">
-                                    Doğrulanmış erişim yok
+                                    {t("Doğrulanmış erişim yok")}
                                   </span>
                                 ) : null}
                               </span>
@@ -301,8 +306,8 @@ export function GooglePropertyPicker({
                   {filtered.length === 0 ? (
                     <p className="p-3 text-sm text-muted">
                       {query
-                        ? "Eşleşen mülk veya hesap yok"
-                        : "Mülkleri bulmak için bir Google hesabı ekleyin."}
+                        ? t("Eşleşen mülk veya hesap yok")
+                        : t("Mülkleri bulmak için bir Google hesabı ekleyin.")}
                     </p>
                   ) : null}
                 </>
@@ -317,11 +322,11 @@ export function GooglePropertyPicker({
                 aria-busy={linking}
               >
                 {linking ? (
-                  <span className="loading loading-spinner loading-xs" />
+                  <Spinner delay={false} />
                 ) : (
                   <Plus className="size-4" />
                 )}
-                {linking ? "Google açılıyor…" : "Google hesabı ekle"}
+                {linking ? t("Google açılıyor…") : t("Google hesabı ekle")}
               </button>
             </div>
           </div>
@@ -335,7 +340,7 @@ export function GooglePropertyPicker({
           onClick={onSave}
           disabled={!canSave || saving}
         >
-          {saving ? "Kaydediliyor…" : "Mülkü kaydet"}
+          {saving ? t("Kaydediliyor…") : t("Mülkü kaydet")}
         </button>
         {secondaryAction ? (
           <button

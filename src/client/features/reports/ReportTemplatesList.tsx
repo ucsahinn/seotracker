@@ -6,15 +6,12 @@ import {
   useLocalSort,
 } from "@/client/components/table/useLocalSort";
 import { latestUpdate } from "@/client/features/reports/reportStats";
-import {
-  formatCount,
-  formatDateTime,
-  formatRelativeTime,
-} from "@/client/lib/format";
+import { formatDateTime, formatRelativeTime } from "@/client/lib/format";
 import type { ReportTemplate } from "@/types/schemas/report-templates";
 import { FileText } from "lucide-react";
 import { useState } from "react";
 import { EmptyState } from "@/client/components/EmptyState";
+import { t } from "@/shared/i18n";
 
 export function ReportTemplatesList({
   templates,
@@ -35,8 +32,10 @@ export function ReportTemplatesList({
     return (
       <EmptyState
         icon={FileText}
-        title="Henüz şablon yok"
-        description="Şablon olmadan da rapor alabilirsiniz. Her seferinde aynı biçimde rapor istiyorsanız (örneğin yöneticiye aylık özet) sağ üstteki düğmeyle ilk şablonunuzu oluşturun."
+        title={t("Henüz şablon yok")}
+        description={t(
+          "Şablon olmadan da rapor alabilirsiniz. Her seferinde aynı biçimde rapor istiyorsanız (örneğin yöneticiye aylık özet) sağ üstteki düğmeyle ilk şablonunuzu oluşturun.",
+        )}
       />
     );
   }
@@ -64,13 +63,12 @@ export function ReportTemplatesList({
     <div className="space-y-3">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm text-muted">
-          <span className="font-medium text-base-content tabular-nums">
-            {formatCount(templates.length)}
-          </span>{" "}
-          şablon
+          <span className="font-medium text-base-content">
+            {t("{count} şablon", { count: templates.length })}
+          </span>
           {latest ? (
             <>
-              {" · son güncelleme "}
+              {` · ${t("son güncelleme")} `}
               <time dateTime={latest} title={formatDateTime(latest)}>
                 {formatRelativeTime(latest)}
               </time>
@@ -81,8 +79,8 @@ export function ReportTemplatesList({
           <input
             type="search"
             className="input input-bordered input-sm w-full sm:w-64"
-            placeholder="Şablonlarda ara"
-            aria-label="Şablonlarda ara"
+            placeholder={t("Şablonlarda ara")}
+            aria-label={t("Şablonlarda ara")}
             value={query}
             onChange={(event) => setQuery(event.target.value)}
           />
@@ -95,18 +93,18 @@ export function ReportTemplatesList({
               <th aria-sort={sorting.ariaSort("name")}>
                 <SortableHeader
                   column={sorting.column("name", false)}
-                  label="Ad"
+                  label={t("Ad")}
                 />
               </th>
-              <th>Açıklama</th>
+              <th>{t("Açıklama")}</th>
               <th aria-sort={sorting.ariaSort("updatedAt")}>
                 <SortableHeader
                   column={sorting.column("updatedAt")}
-                  label="Güncellendi"
+                  label={t("Güncellendi")}
                 />
               </th>
               <th>
-                <span className="sr-only">İşlemler</span>
+                <span className="sr-only">{t("İşlemler")}</span>
               </th>
             </tr>
           </thead>
@@ -133,18 +131,22 @@ export function ReportTemplatesList({
                     <button
                       type="button"
                       className="btn btn-sm min-h-10 gap-1.5 sm:min-h-8"
-                      aria-label={`${template.name} şablonunu düzenle`}
+                      aria-label={t("{name} şablonunu düzenle", {
+                        name: template.name,
+                      })}
                       onClick={() => onEdit(template)}
                     >
                       <Pencil aria-hidden className="size-4" />
-                      Düzenle
+                      {t("Düzenle")}
                     </button>
                     <RowActions
                       triggerClassName="btn btn-ghost btn-sm btn-square"
-                      label={`${template.name} için işlemler`}
+                      label={t("{title} için işlemler", {
+                        title: template.name,
+                      })}
                       actions={[
                         {
-                          label: "Sil",
+                          label: t("Sil"),
                           icon: Trash2,
                           destructive: true,
                           onSelect: () => onDelete(template),
@@ -161,8 +163,8 @@ export function ReportTemplatesList({
           <EmptyState
             compact
             icon={FileText}
-            title="Aramanıza uyan şablon yok"
-            description="Başka bir sözcükle deneyin."
+            title={t("Aramanıza uyan şablon yok")}
+            description={t("Başka bir sözcükle deneyin.")}
           />
         ) : null}
       </div>

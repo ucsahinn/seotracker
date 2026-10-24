@@ -4,6 +4,7 @@ import {
 } from "@/lib/org-permissions";
 import type { EnsuredUserContext } from "@/middleware/ensure-user/types";
 import { AppError } from "@/server/lib/errors";
+import { t } from "@/shared/i18n";
 
 // Server-side org-role gate for app resources (project/integration).
 // Zero-I/O: the role was already resolved from the member row by ensure-user.
@@ -12,6 +13,6 @@ export function requireOrgPermission(
   permissions: OrgPermissionRequest,
 ) {
   if (!hasOrgPermission(context.role, permissions)) {
-    throw new AppError("FORBIDDEN", "Bu işlem için yetkiniz yok.");
+    throw new AppError("FORBIDDEN", t("Bu işlem için yetkiniz yok."));
   }
 }

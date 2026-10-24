@@ -1,3 +1,4 @@
+import { t } from "@/shared/i18n";
 import * as React from "react";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { Link } from "@tanstack/react-router";
@@ -79,7 +80,7 @@ export function QueryHistoryCard({
           compact
           error={error}
           onRetry={onRetry}
-          title="Sorgu geçmişi yüklenemedi"
+          title={t("Sorgu geçmişi yüklenemedi")}
         />
       </div>
     );
@@ -92,7 +93,7 @@ export function QueryHistoryCard({
         tabIndex={-1}
         className="rounded-box border border-base-300 bg-base-100 p-4 text-sm text-muted"
       >
-        Bu sorgu için kayıtlı gün yok.
+        {t("Bu sorgu için kayıtlı gün yok.")}
       </div>
     );
   }
@@ -139,12 +140,17 @@ export function QueryHistoryCard({
       <PositionSparkline rows={rows} />
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 text-xs text-muted">
         <p>
-          {formatDate(first.date)} – {formatDate(last.date)} · {rows.length} gün
-          kayıtlı
+          {t("{start} – {end} · {count} gün kayıtlı", {
+            start: formatDate(first.date),
+            end: formatDate(last.date),
+            count: rows.length,
+          })}
         </p>
         <p>
-          Toplam tıklama / gösterim: {formatCount(totalClicks)} /{" "}
-          {formatCount(totalImpressions)}
+          {t("Toplam tıklama / gösterim: {clicks} / {impressions}", {
+            clicks: formatCount(totalClicks),
+            impressions: formatCount(totalImpressions),
+          })}
         </p>
       </div>
       <Link
@@ -153,7 +159,7 @@ export function QueryHistoryCard({
         search={{ tab: "queries" as const, q: query }}
         className="link link-primary text-xs"
       >
-        Arama performansında aç
+        {t("Arama performansında aç")}
       </Link>
     </div>
   );

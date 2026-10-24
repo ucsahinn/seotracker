@@ -1,5 +1,6 @@
 import { DonutCard, donutSummary } from "@/client/components/DonutChart";
 import type { IssueSeverity } from "@/shared/audit-issues";
+import { t } from "@/shared/i18n";
 
 /**
  * How one audit's findings divide by severity, and a way into each part.
@@ -46,14 +47,22 @@ export function SeverityDonut({
   selected: IssueSeverity | null;
   onSelect: (severity: IssueSeverity | null) => void;
 }) {
-  const segments = SEVERITY.map((row) => ({ ...row, value: counts[row.key] }));
+  // The labels stay Turkish in SEVERITY and are translated here, at render.
+  const segments = SEVERITY.map((row) => ({
+    ...row,
+    label: t(row.label),
+    hint: t(row.hint),
+    value: counts[row.key],
+  }));
   return (
     <DonutCard
-      title="Sorunlar ne kadar ciddi?"
-      description="Bir gruba tıklayın, liste yalnızca o sorunları göstersin."
-      totalLabel="bulgu"
+      title={t("Sorunlar ne kadar ciddi?")}
+      description={t(
+        "Bir gruba tıklayın, liste yalnızca o sorunları göstersin.",
+      )}
+      totalLabel={t("bulgu")}
       segments={segments}
-      summary={donutSummary(segments, "bulgu")}
+      summary={donutSummary(segments, t("bulgu"))}
       selectedKey={selected}
       onSelect={(key) =>
         onSelect(SEVERITY.find((row) => row.key === key)?.key ?? null)

@@ -6,7 +6,7 @@ route: /support
 updated: 2026-10-22
 ---
 
-L'interfaccia dell'app è in turco. In questa guida ogni nome di pulsante e di schermata è riportato in turco, con il significato italiano tra parentesi.
+L'interfaccia dell'app è disponibile in turco e in inglese. La lingua si sceglie in Ayarlar → Görünüm → Dil. In questa guida ogni nome di pulsante e di schermata è riportato in turco, con il significato italiano tra parentesi.
 
 Se qualcosa va storto, guardare prima qui. La schermata controlla l'installazione, dice che cosa manca e porta all'impostazione giusta.
 

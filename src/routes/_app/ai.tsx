@@ -11,13 +11,16 @@ import { getAuthMode } from "@/lib/auth-mode";
 import { captureClientEvent } from "@/client/lib/observability";
 import { agentUpdatePrompt } from "@/client/features/ai-mcp/agentSetupPrompt";
 import { CopyButton } from "@/client/components/CopyButton";
+import { fillParts } from "@/client/features/settings/fillParts";
 import {
   ConnectAgentCard,
   InstallCard,
 } from "@/client/features/ai-mcp/SetupCards";
+import { t } from "@/shared/i18n";
 
 // The public skills shipped under .agents/skills/. Everything that needed a
 // paid data provider went with the features behind it.
+// Blurbs and tab labels are Turkish source text, translated where they render.
 const SKILLS = [
   ["seo-coach", "Nerede durduğunuzu anlatır ve sıradaki adımı seçer."],
   [
@@ -116,8 +119,10 @@ function AiPage() {
           `mt-*` further down are inside the tab panels and stay; those are
           internal spacing, not the shell's. */}
       <PageHeader
-        title="Ajan kurulumu"
-        description="seowatcher'ı yapay zeka ajanınızla kullanabilirsiniz. Bir kez bağlayın, sonra ne istiyorsanız ona sorun."
+        title={t("Ajan kurulumu")}
+        description={t(
+          "seowatcher'ı yapay zeka ajanınızla kullanabilirsiniz. Bir kez bağlayın, sonra ne istiyorsanız ona sorun.",
+        )}
         actions={
           /* `aria-live` is not decoration: the operator tabs away, pastes
                the prompt into their agent, and tabs back — the query refetches
@@ -132,21 +137,25 @@ function AiPage() {
             {connection.isPending ? (
               <div className="skeleton h-6 w-28" />
             ) : statusUnknown ? (
-              <StatusPill tone="warning" label="Durum okunamadı" />
+              <StatusPill tone="warning" label={t("Durum okunamadı")} />
             ) : lastCallAt ? (
               <>
                 <StatusPill
                   tone={isRecent ? "success" : "warning"}
-                  label="Bağlandı"
+                  label={t("Bağlandı")}
                 />
                 <span className="break-words text-xs text-muted">
-                  {connection.data?.clientLabel ?? "Bir ajan"} · son çağrı{" "}
-                  <time
-                    dateTime={lastCallAt}
-                    title={formatDateTime(lastCallAt)}
-                  >
-                    {formatRelativeTime(lastCallAt)}
-                  </time>
+                  {fillParts(t("{client} · son çağrı {time}"), {
+                    client: connection.data?.clientLabel ?? t("Bir ajan"),
+                    time: (
+                      <time
+                        dateTime={lastCallAt}
+                        title={formatDateTime(lastCallAt)}
+                      >
+                        {formatRelativeTime(lastCallAt)}
+                      </time>
+                    ),
+                  })}
                 </span>
               </>
             ) : (
@@ -154,7 +163,7 @@ function AiPage() {
                    attempt — on a page the operator has not used yet. "Henüz"
                    keeps the honest past tense and makes it a progress marker
                    instead of a verdict. */
-              <StatusPill tone="neutral" label="Henüz bağlanmadı" />
+              <StatusPill tone="neutral" label={t("Henüz bağlanmadı")} />
             )}
           </div>
         }
@@ -165,7 +174,7 @@ function AiPage() {
         className="w-fit"
         value={tab}
         onChange={setTab}
-        items={AI_TABS}
+        items={AI_TABS.map((item) => ({ ...item, label: t(item.label) }))}
       />
 
       {tab === "setup" ? (
@@ -185,7 +194,7 @@ function AiPage() {
             <div
               className="enter mt-6 space-y-5"
               role="status"
-              aria-label="Kurulum adımları yükleniyor"
+              aria-label={t("Kurulum adımları yükleniyor")}
             >
               <div className="space-y-3 rounded-box border border-base-300 bg-base-100 p-5">
                 <div className="skeleton h-4 w-40" />
@@ -227,18 +236,18 @@ function AiPage() {
               <section className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 rounded-box border border-base-300 bg-base-100 p-4">
                 <div className="min-w-0 flex-1 basis-72">
                   <h2 className="text-sm font-semibold">
-                    Becerileri güncelleyin
+                    {t("Becerileri güncelleyin")}
                   </h2>
                   <p className="mt-1 text-sm leading-relaxed text-muted">
-                    Ajanınızı daha önce kurduysanız güncelleme komutunu
-                    yapıştırın. Beceriler yenilenir, bağlantı ayarlarınız ve
-                    kendi düzenlemeleriniz olduğu gibi kalır.
+                    {t(
+                      "Ajanınızı daha önce kurduysanız güncelleme komutunu yapıştırın. Beceriler yenilenir, bağlantı ayarlarınız ve kendi düzenlemeleriniz olduğu gibi kalır.",
+                    )}
                   </p>
                 </div>
                 <CopyButton
                   value={agentUpdatePrompt}
-                  label="Güncelleme komutunu kopyala"
-                  successMessage="Güncelleme komutu kopyalandı"
+                  label={t("Güncelleme komutunu kopyala")}
+                  successMessage={t("Güncelleme komutu kopyalandı")}
                   onCopy={() => captureClientEvent("mcp:update_prompt_copy")}
                 />
               </section>
@@ -249,24 +258,25 @@ function AiPage() {
             <div className="alert alert-warning mt-8 text-sm" role="alert">
               <ShieldAlert className="size-4 shrink-0" />
               <span>
-                Bu kurulum Cloudflare Access arkasında. Ajanın bağlanabilmesi
-                için Access uygulamanızda Managed OAuth&apos;u açın.
+                {t(
+                  "Bu kurulum Cloudflare Access arkasında. Ajanın bağlanabilmesi için Access uygulamanızda Managed OAuth'u açın.",
+                )}
               </span>
             </div>
           ) : null}
 
           <details className="mt-8 rounded-box border border-base-300 bg-base-100 text-sm">
             <summary className="cursor-pointer select-none px-4 py-3 font-medium">
-              Elle bağlamak istiyorsanız
+              {t("Elle bağlamak istiyorsanız")}
             </summary>
             <div className="space-y-4 border-t border-base-300 px-4 py-4 text-muted">
               <div className="space-y-1.5">
-                <p>Bu kurulumun MCP adresi:</p>
+                <p>{t("Bu kurulumun MCP adresi:")}</p>
                 <div className="flex items-center gap-2">
                   <CodeLine>{mcpUrl}</CodeLine>
                   <CopyButton
                     value={mcpUrl}
-                    successMessage="MCP adresi kopyalandı"
+                    successMessage={t("MCP adresi kopyalandı")}
                     onCopy={() => captureClientEvent("mcp:setup_url_copy")}
                   />
                 </div>
@@ -275,20 +285,29 @@ function AiPage() {
                   .tokenConfigured ? (
                 <div className="space-y-3">
                   <p>
-                    Bu adres <code>MCP_TOKEN</code> ile, yani bir parola (token)
-                    ile korunuyor. Aracınıza şu başlığı ekletin:
+                    {fillParts(
+                      t(
+                        "Bu adres {token} ile, yani bir parola (token) ile korunuyor. Aracınıza şu başlığı ekletin:",
+                      ),
+                      { token: <code>MCP_TOKEN</code> },
+                    )}
                   </p>
                   <CodeLine>Authorization: Bearer &lt;token&gt;</CodeLine>
                   {connection.data.installKind === "windows" ? (
                     <>
                       <p>
-                        Windows paketinde parola bir dosyadır (görev çubuğu
-                        menüsünde <strong>Veri klasörünü aç</strong>):
+                        {fillParts(
+                          t(
+                            "Windows paketinde parola bir dosyadır (görev çubuğu menüsünde {menu}):",
+                          ),
+                          { menu: <strong>{t("Veri klasörünü aç")}</strong> },
+                        )}
                       </p>
                       <CodeLine>%LOCALAPPDATA%\seowatcher\mcp-token</CodeLine>
                       <p>
-                        Panoya kopyalamak için PowerShell (değer ekrana
-                        yazılmaz):
+                        {t(
+                          "Panoya kopyalamak için PowerShell (değer ekrana yazılmaz):",
+                        )}
                       </p>
                       <CodeLine>
                         (Get-Content
@@ -296,8 +315,9 @@ function AiPage() {
                         | Set-Clipboard
                       </CodeLine>
                       <p>
-                        Değeri sohbete ya da ekrana yazmayın. Yapıştırdıktan
-                        sonra panoyu temizleyin (Win+V, Tümünü temizle).
+                        {t(
+                          "Değeri sohbete ya da ekrana yazmayın. Yapıştırdıktan sonra panoyu temizleyin (Win+V, Tümünü temizle).",
+                        )}
                       </p>
                     </>
                   ) : (
@@ -306,17 +326,21 @@ function AiPage() {
                         tarayıcı geçmişine, ekran görüntülerine ve bu sayfayı
                         okuyan bir ajanın dökümüne düşürür. */}
                       <p>
-                        Kendiniz belirlemediyseniz uygulama ilk açılışta bir
-                        parola üretir. Okumak için (PowerShell ve cmd):
+                        {t(
+                          "Kendiniz belirlemediyseniz uygulama ilk açılışta bir parola üretir. Okumak için (PowerShell ve cmd):",
+                        )}
                       </p>
                       <CodeLine>
                         docker compose exec -T seotracker cat
                         /app/.wrangler/mcp-token
                       </CodeLine>
                       <p>
-                        Windows&apos;ta Git Bash için komutun başına{" "}
-                        <code>MSYS_NO_PATHCONV=1</code> ekleyin, yoksa parola
-                        boş çıkar (PowerShell&apos;de bu önek hata verir).
+                        {fillParts(
+                          t(
+                            "Windows'ta Git Bash için komutun başına {prefix} ekleyin, yoksa parola boş çıkar (PowerShell'de bu önek hata verir).",
+                          ),
+                          { prefix: <code>MSYS_NO_PATHCONV=1</code> },
+                        )}
                       </p>
                     </>
                   )}
@@ -324,10 +348,12 @@ function AiPage() {
               ) : (
                 <div className="space-y-3">
                   <p>
-                    Bu adres parola istemez. Bilgisayarınızdaki başka bir
-                    programın araçları çalıştırmasını önlemek için{" "}
-                    <code>MCP_TOKEN</code> adıyla bir parola ayarlayın ve
-                    aracınıza şu başlığı ekletin:
+                    {fillParts(
+                      t(
+                        "Bu adres parola istemez. Bilgisayarınızdaki başka bir programın araçları çalıştırmasını önlemek için {token} adıyla bir parola ayarlayın ve aracınıza şu başlığı ekletin:",
+                      ),
+                      { token: <code>MCP_TOKEN</code> },
+                    )}
                   </p>
                   <CodeLine>Authorization: Bearer …</CodeLine>
                 </div>
@@ -338,8 +364,9 @@ function AiPage() {
       ) : (
         <TabPanel group="ai" value="skills" className="mt-6">
           <p className="text-sm text-muted">
-            Kurulum komutu bunları kurar. Kısa cevap yerine tam bir çıktı
-            istiyorsanız beceriyi adıyla çağırın.
+            {t(
+              "Kurulum komutu bunları kurar. Kısa cevap yerine tam bir çıktı istiyorsanız beceriyi adıyla çağırın.",
+            )}
           </p>
           <ul className="mt-5 space-y-3 text-sm sm:space-y-2">
             {SKILLS.map(([name, blurb]) => (
@@ -354,11 +381,11 @@ function AiPage() {
                   <CopyButton
                     iconOnly
                     value={name}
-                    label={`${name} adını kopyala`}
-                    successMessage="Beceri adı kopyalandı"
+                    label={t("{name} adını kopyala", { name })}
+                    successMessage={t("Beceri adı kopyalandı")}
                   />
                 </span>
-                <span className="text-muted">{blurb}</span>
+                <span className="text-muted">{t(blurb)}</span>
               </li>
             ))}
           </ul>

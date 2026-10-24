@@ -11,6 +11,7 @@
  */
 import { z } from "zod";
 import { AppError } from "@/server/lib/errors";
+import { t } from "@/shared/i18n";
 
 /** Long enough to create a Google Cloud project in the other tab. */
 const STATE_LIFETIME_MS = 10 * 60 * 1_000;
@@ -114,7 +115,9 @@ export async function verifyOAuthState(input: {
   const invalid = () =>
     new AppError(
       "VALIDATION_ERROR",
-      `${input.displayName} bağlantı isteği geçersiz. Bağlantıyı yeniden başlatın.`,
+      t("{name} bağlantı isteği geçersiz. Bağlantıyı yeniden başlatın.", {
+        name: input.displayName,
+      }),
     );
 
   const [payload, signature] = input.state.split(".");
@@ -134,7 +137,12 @@ export async function verifyOAuthState(input: {
   if (parsed.exp < Date.now()) {
     throw new AppError(
       "VALIDATION_ERROR",
-      `${input.displayName} bağlantı isteğinin süresi doldu. Bağlantıyı yeniden başlatın.`,
+      t(
+        "{name} bağlantı isteğinin süresi doldu. Bağlantıyı yeniden başlatın.",
+        {
+          name: input.displayName,
+        },
+      ),
     );
   }
   return parsed;

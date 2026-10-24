@@ -5,6 +5,7 @@ import {
   formatDuration,
   formatPercent,
 } from "@/client/lib/format";
+import { t } from "@/shared/i18n";
 
 export type ReportRow = Record<string, string | number | null>;
 
@@ -31,6 +32,7 @@ type ChipRule = {
 const NO_KEY_EVENT_REASON =
   "Dönüşüm (anahtar olay) tanımlı olmadığı için bu filtre kullanılamıyor";
 
+/* Labels and fixed hints are Turkish source strings, translated when built. */
 type ChipDef = {
   id: ChipId;
   label: string;
@@ -63,7 +65,7 @@ function fieldChip(
     build: (metrics) =>
       metrics.includes(field)
         ? {
-            hint,
+            hint: t(hint),
             test: (row) => {
               const value = numeric(row, field);
               return value !== null && test(value);
@@ -129,7 +131,13 @@ const CHIP_DEFS: ChipDef[] = [
       if (mid === null) return null;
       const bar = mid / 2;
       return {
-        hint: `Kullanıcı başına etkileşim süresi ${formatDuration(bar * 1000)} altında kalan sayfalar (listenin ortancası ${formatDuration(mid * 1000)}, yarısı ${formatDuration(bar * 1000)}).`,
+        hint: t(
+          "Kullanıcı başına etkileşim süresi {bar} altında kalan sayfalar (listenin ortancası {median}, yarısı {bar}).",
+          {
+            bar: formatDuration(bar * 1000),
+            median: formatDuration(mid * 1000),
+          },
+        ),
         test: (row) => {
           const dwell = dwellPerUser(row);
           return dwell !== null && dwell < bar;
@@ -163,13 +171,16 @@ const CHIP_DEFS: ChipDef[] = [
       );
       if (!anyKeyEvent) {
         return {
-          hint: NO_KEY_EVENT_REASON,
-          disabledReason: NO_KEY_EVENT_REASON,
+          hint: t(NO_KEY_EVENT_REASON),
+          disabledReason: t(NO_KEY_EVENT_REASON),
           test: () => false,
         };
       }
       return {
-        hint: `Oturumu ortancanın (${formatCount(midSessions)}) üstünde ama oturum başına anahtar olay oranı ortancanın (${formatPercent(midRate)}) altında kalan sayfalar, bir de hiç olay getirmeyenler.`,
+        hint: t(
+          "Oturumu ortancanın ({sessions}) üstünde ama oturum başına anahtar olay oranı ortancanın ({rate}) altında kalan sayfalar, bir de hiç olay getirmeyenler.",
+          { sessions: formatCount(midSessions), rate: formatPercent(midRate) },
+        ),
         test: (row) => {
           const sessions = numeric(row, "sessions");
           const rate = numeric(row, "sessionKeyEventRate");
@@ -207,7 +218,7 @@ export function availableChips(
       ? [
           {
             id: def.id,
-            label: def.label,
+            label: t(def.label),
             hint: rule.hint,
             disabledReason: rule.disabledReason ?? null,
             test: rule.test,
@@ -282,7 +293,7 @@ export function buildShareSegments(
     ...head,
     {
       key: OTHER_KEY,
-      label: "Diğer",
+      label: t("Diğer"),
       value: tail.reduce((sum, segment) => sum + segment.value, 0),
       members: tail.map((segment) => segment.key),
     },

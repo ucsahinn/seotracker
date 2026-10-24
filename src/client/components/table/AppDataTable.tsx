@@ -21,6 +21,7 @@ import {
   applyShiftRangeSelection,
   type SelectionAnchor,
 } from "./tableSelection";
+import { t } from "@/shared/i18n";
 
 type AppColumnMeta<TData> = {
   headerClassName?: string;
@@ -67,7 +68,7 @@ export function useSelectionAnchor(): MutableRefObject<SelectionAnchor | null> {
  */
 export function selectRowLabel(name?: string): string {
   const trimmed = name?.trim();
-  return trimmed ? `Satırı seç: ${trimmed}` : "Satırı seç";
+  return trimmed ? t("Satırı seç: {name}", { name: trimmed }) : t("Satırı seç");
 }
 
 export function makeSelectionColumn<TData>(
@@ -85,7 +86,7 @@ export function makeSelectionColumn<TData>(
         className="checkbox checkbox-xs [--radius-selector:0.25rem]"
         checked={table.getIsAllRowsSelected()}
         onChange={table.getToggleAllRowsSelectedHandler()}
-        aria-label="Tüm satırları seç"
+        aria-label={t("Tüm satırları seç")}
       />
     ),
     cell: ({ row, table }) => (

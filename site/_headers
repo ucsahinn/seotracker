@@ -5,7 +5,7 @@
   Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
   Cross-Origin-Opener-Policy: same-origin
   Strict-Transport-Security: max-age=31536000
-  Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src https://api.github.com; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'none'; script-src 'self' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; font-src 'self'; connect-src https://api.github.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; manifest-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; upgrade-insecure-requests
 
 # Exactly one rule sets Cache-Control on each asset: matching rules are
 # merged and a header set twice is comma-joined, so the files directly under
@@ -28,6 +28,28 @@
 
 /sitemap.xml
   Content-Type: application/xml; charset=utf-8
+  Cache-Control: public, max-age=3600
+
+# The release feeds, one per edition. Readers poll them, so an hour is enough.
+/feed.xml
+  Content-Type: application/atom+xml; charset=utf-8
+  Cache-Control: public, max-age=3600
+
+/:lang/feed.xml
+  Content-Type: application/atom+xml; charset=utf-8
+  Cache-Control: public, max-age=3600
+
+/site.webmanifest
+  Content-Type: application/manifest+json; charset=utf-8
+  Cache-Control: public, max-age=86400
+
+/.well-known/security.txt
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=86400
+
+# IndexNow key file: search engines fetch it to check a submission.
+/7fe8ca017428a1da776989562353dd6c.txt
+  Content-Type: text/plain; charset=utf-8
 
 https://:project.pages.dev/*
   X-Robots-Tag: noindex

@@ -4,6 +4,7 @@ import * as React from "react";
 import { formatDate } from "@/client/lib/format";
 import { getCruxHistory } from "@/serverFunctions/cruxHistory";
 import type { CruxSeries } from "@/shared/cruxHistory";
+import { t } from "@/shared/i18n";
 import { CruxSparkline } from "./CruxSparkline";
 import {
   CRUX_METRIC_LABEL,
@@ -16,6 +17,7 @@ import {
 
 type FormFactor = "PHONE" | "DESKTOP";
 
+// Turkish source labels; t() runs where they render.
 const FORM_FACTORS: Array<{ id: FormFactor; label: string }> = [
   { id: "PHONE", label: "Telefon" },
   { id: "DESKTOP", label: "Bilgisayar" },
@@ -51,10 +53,10 @@ export function CruxHistoryCard({ url }: { url: string }) {
     <section className="rounded-box border border-base-300 bg-base-200/25 px-4 py-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <h3 className="text-xs uppercase tracking-wide text-muted">
-          Gerçek kullanıcı hızı, son haftalar
+          {t("Gerçek kullanıcı hızı, son haftalar")}
         </h3>
         <fieldset className="join">
-          <legend className="sr-only">Cihaz türü</legend>
+          <legend className="sr-only">{t("Cihaz türü")}</legend>
           {FORM_FACTORS.map((option) => (
             <label
               key={option.id}
@@ -67,7 +69,7 @@ export function CruxHistoryCard({ url }: { url: string }) {
                 checked={formFactor === option.id}
                 onChange={() => setFormFactor(option.id)}
               />
-              {option.label}
+              {t(option.label)}
             </label>
           ))}
         </fieldset>
@@ -82,7 +84,7 @@ export function CruxHistoryCard({ url }: { url: string }) {
       ) : query.isError || data?.status === "error" ? (
         <Message
           text={
-            data?.status === "error" ? data.message : "Google'a ulaşılamadı."
+            data?.status === "error" ? data.message : t("Google'a ulaşılamadı.")
           }
           action={
             <button
@@ -90,21 +92,25 @@ export function CruxHistoryCard({ url }: { url: string }) {
               className="btn btn-xs"
               onClick={() => void query.refetch()}
             >
-              Tekrar dene
+              {t("Tekrar dene")}
             </button>
           }
         />
       ) : data?.status === "no_key" ? (
         <Message
-          text="Bu geçmiş için PageSpeed anahtarı gerekiyor."
+          text={t("Bu geçmiş için PageSpeed anahtarı gerekiyor.")}
           action={
             <Link to="/settings" className="btn btn-xs">
-              Ayarlar&apos;a git
+              {t("Ayarlar'a git")}
             </Link>
           }
         />
       ) : data?.status === "no_data" ? (
-        <Message text="Google bu site için yeterli ziyaretçi verisine sahip değil. Siteye Chrome ile gelen ziyaretçi arttıkça burada görünür." />
+        <Message
+          text={t(
+            "Google bu site için yeterli ziyaretçi verisine sahip değil. Siteye Chrome ile gelen ziyaretçi arttıkça burada görünür.",
+          )}
+        />
       ) : data?.status === "ok" ? (
         <Trends series={data.series} />
       ) : null}
@@ -128,7 +134,9 @@ function Trends({ series }: { series: CruxSeries[] }) {
   });
   if (items.length === 0) {
     return (
-      <Message text="Google bu site için yeterli ziyaretçi verisine sahip değil." />
+      <Message
+        text={t("Google bu site için yeterli ziyaretçi verisine sahip değil.")}
+      />
     );
   }
 
@@ -138,9 +146,9 @@ function Trends({ series }: { series: CruxSeries[] }) {
   return (
     <>
       <p className="mt-1 text-xs leading-relaxed text-muted">
-        Her nokta, o haftada biten 28 günde ziyaretçilerin yüzde 75&apos;inin
-        gördüğü değerdir (p75). Kesikli çizgiler iyi ile zayıf arasındaki
-        sınırlardır.
+        {t(
+          "Her nokta, o haftada biten 28 günde ziyaretçilerin yüzde 75'inin gördüğü değerdir (p75). Kesikli çizgiler iyi ile zayıf arasındaki sınırlardır.",
+        )}
       </p>
       <ul className="mt-3 grid gap-3 sm:grid-cols-3">
         {items.map(({ entry, summary }) => (
@@ -156,7 +164,9 @@ function Trends({ series }: { series: CruxSeries[] }) {
       </ul>
       {lastDate ? (
         <p className="mt-2 text-xs text-subtle">
-          Son pencere {formatDate(lastDate)} tarihinde bitiyor.
+          {t("Son pencere {date} tarihinde bitiyor.", {
+            date: formatDate(lastDate),
+          })}
         </p>
       ) : null}
     </>
@@ -179,7 +189,7 @@ function MetricTile({
         <span className="text-xs font-medium tabular-nums">
           {formatCruxValue(series.metric, summary.latest)}
           <span className={`ml-1.5 ${RATING_CLASS[summary.rating]}`}>
-            {CRUX_RATING_LABEL[summary.rating]}
+            {t(CRUX_RATING_LABEL[summary.rating])}
           </span>
         </span>
       </div>

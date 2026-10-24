@@ -1,4 +1,7 @@
 import { QuotaCard } from "@/client/features/quotas/QuotaCard";
+import { t } from "@/shared/i18n";
+import { ProgressBar } from "@/client/components/ProgressBar";
+import { notify } from "@/client/features/notifications/notify";
 type CoverageRow = Awaited<
   ReturnType<typeof getAuditIndexCoverage>
 >["rows"][number];
@@ -84,7 +87,9 @@ export function IndexCoverageView({
     onSuccess: async (result) => {
       if (result.status === "needs_gsc") {
         toast.error(
-          "Search Console bağlı değil. Sayfaların Google'daki durumunu görmek için önce bağlayın.",
+          t(
+            "Search Console bağlı değil. Sayfaların Google'daki durumunu görmek için önce bağlayın.",
+          ),
         );
         return;
       }
@@ -98,32 +103,44 @@ export function IndexCoverageView({
          */
         if (result.quotaRemaining === 0) {
           toast.error(
-            `Google'ın günlük 2.000 adres sınırı doldu. ${formatNumber(result.remaining)} sayfa sırada, sınır birkaç saat içinde yenilenir.`,
+            t(
+              "Google'ın günlük {limit} adres sınırı doldu. {count} sayfa sırada, sınır birkaç saat içinde yenilenir.",
+              { limit: formatNumber(2000), count: result.remaining },
+            ),
           );
         } else {
-          toast.success("Tüm sayfalar güncel, sorulacak bir şey yok.");
+          toast.success(t("Tüm sayfalar güncel, sorulacak bir şey yok."));
         }
         return;
       }
-      const left =
-        result.remaining > 0
-          ? ` ${formatNumber(result.remaining)} sayfa kaldı.`
-          : "";
+      // Separate sentences, each translated whole.
+      const sentences = [
+        t("{count} sayfa soruldu.", { count: result.inspected }),
+      ];
+      if (result.remaining > 0) {
+        sentences.push(t("{count} sayfa kaldı.", { count: result.remaining }));
+      }
       // The daily cap is worth naming only when it is close enough to stop
       // the next run; otherwise it is a number nobody needs.
-      const quota =
-        result.quotaRemaining < 100
-          ? ` Bugünkü kotadan ${formatNumber(result.quotaRemaining)} sorgu kaldı.`
-          : "";
-      toast.success(
-        `${formatNumber(result.inspected)} sayfa soruldu.${left}${quota}`,
-      );
+      if (result.quotaRemaining < 100) {
+        sentences.push(
+          t("Bugünkü kotadan {count} sorgu kaldı.", {
+            count: result.quotaRemaining,
+          }),
+        );
+      }
+      notify({
+        kind: "inspection",
+        title: sentences.join(" "),
+        importance: "low",
+        projectId,
+      });
     },
     onError: (error) =>
       toast.error(
         getStandardErrorMessage(
           error,
-          "Google'daki durum sorulamadı. Birazdan tekrar deneyin.",
+          t("Google'daki durum sorulamadı. Birazdan tekrar deneyin."),
         ),
       ),
     // URL Inspection spends the daily quota whether or not the call succeeds.
@@ -158,7 +175,7 @@ export function IndexCoverageView({
           compact
           error={coverage.error}
           onRetry={() => void coverage.refetch()}
-          title="Dizin durumu yüklenemedi"
+          title={t("Dizin durumu yüklenemedi")}
         />
       </div>
     );
@@ -168,8 +185,10 @@ export function IndexCoverageView({
     return (
       <EmptyState
         icon={SearchCheck}
-        title="Sorulacak sayfa yok"
-        description="Bu denetimde Google'ın dizine alabileceği bir sayfa yok."
+        title={t("Sorulacak sayfa yok")}
+        description={t(
+          "Bu denetimde Google'ın dizine alabileceği bir sayfa yok.",
+        )}
       />
     );
   }
@@ -189,32 +208,39 @@ export function IndexCoverageView({
       )}
       <MetricRow>
         <MetricTile
-          label="Google'ın farklı adresi seçtiği sayfalar"
+          label={t("Google'ın farklı adresi seçtiği sayfalar")}
           value={neverChecked ? null : formatNumber(data.canonicalMismatches)}
           animateTo={{ value: data.canonicalMismatches, format: formatNumber }}
           hint={
             data.canonicalMismatches > 0
-              ? "Üstteki grafikte seçtiğiniz gruptan bağımsız, kontrol edilen tüm sayfalar. Google, sizin seçtiğiniz adres yerine başka bir sayfayı asıl sayfa saydı."
-              : "Üstteki grafikte seçtiğiniz gruptan bağımsız, kontrol edilen tüm sayfalar."
+              ? t(
+                  "Üstteki grafikte seçtiğiniz gruptan bağımsız, kontrol edilen tüm sayfalar. Google, sizin seçtiğiniz adres yerine başka bir sayfayı asıl sayfa saydı.",
+                )
+              : t(
+                  "Üstteki grafikte seçtiğiniz gruptan bağımsız, kontrol edilen tüm sayfalar.",
+                )
           }
         />
         <MetricTile
-          label="Bu denetimde henüz sorulmamış"
+          label={t("Bu denetimde henüz sorulmamış")}
           value={formatNumber(data.due)}
           animateTo={{ value: data.due, format: formatNumber }}
           hint={
             data.lastCheckedAt
-              ? `Google'a hiç sorulmamış sayfalar. Son kontrol ${formatDateTime(data.lastCheckedAt)}`
-              : "Google'a hiç sorulmamış sayfalar. Henüz kontrol yapılmadı."
+              ? t("Google'a hiç sorulmamış sayfalar. Son kontrol {date}", {
+                  date: formatDateTime(data.lastCheckedAt),
+                })
+              : t("Google'a hiç sorulmamış sayfalar. Henüz kontrol yapılmadı.")
           }
         />
       </MetricRow>
 
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm text-muted">
-          Google günde en çok 2.000 adres sormanıza izin verir. Her seferde 25
-          sayfa kontrol edilir. Önce hiç sorulmamış olanlara, sonra
-          Google&apos;ın dizine almadıklarına bakılır.
+          {t(
+            "Google günde en çok {limit} adres sormanıza izin verir. Her seferde {batch} sayfa kontrol edilir. Önce hiç sorulmamış olanlara, sonra Google'ın dizine almadıklarına bakılır.",
+            { limit: formatNumber(2000), batch: formatNumber(25) },
+          )}
         </p>
         <button
           type="button"
@@ -232,20 +258,32 @@ export function IndexCoverageView({
           ) : (
             <RefreshCw className="size-4" />
           )}
-          Google'da durumunu kontrol et
+          {refresh.isPending
+            ? t("Google'dan yanıt bekleniyor…")
+            : t("Google'da durumunu kontrol et")}
         </button>
         {askDisabledReason ? (
           <p className="basis-full text-xs text-muted">{askDisabledReason}</p>
         ) : null}
       </div>
 
+      {refresh.isPending && (
+        <ProgressBar
+          label={t("Dizin durumu kontrol ediliyor")}
+          indeterminate
+          showPercent={false}
+        />
+      )}
+
       <QuotaCard projectId={projectId} kinds={["url_inspection"]} />
 
       {neverChecked ? (
         <EmptyState
           icon={SearchCheck}
-          title="Google'da henüz kontrol edilmedi"
-          description="Taradığınız sayfaların gerçekten dizine girip girmediğini görmek için yukarıdaki düğmeyi kullanın."
+          title={t("Google'da henüz kontrol edilmedi")}
+          description={t(
+            "Taradığınız sayfaların gerçekten dizine girip girmediğini görmek için yukarıdaki düğmeyi kullanın.",
+          )}
         />
       ) : (
         <CoverageTable

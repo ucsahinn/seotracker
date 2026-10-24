@@ -18,6 +18,16 @@ function setup(onClose = vi.fn()) {
 }
 
 describe("Modal", () => {
+  it("keeps Escape inside the foreground dialog", () => {
+    const { outside, onClose } = setup();
+    const parentEscape = vi.fn();
+    document.addEventListener("keydown", parentEscape);
+    fireEvent.keyDown(screen.getByText("İlk"), { key: "Escape" });
+    document.removeEventListener("keydown", parentEscape);
+    expect(onClose).toHaveBeenCalledOnce();
+    expect(parentEscape).not.toHaveBeenCalled();
+    outside.remove();
+  });
   it("moves focus in, makes the page inert, and restores both on close", () => {
     const { outside, view } = setup();
 

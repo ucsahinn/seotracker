@@ -6,8 +6,10 @@ import { SystemLimitsSection } from "@/client/features/quotas/SystemLimitsSectio
 import { CommonProblems } from "@/client/features/support/CommonProblems";
 import { QuickActions } from "@/client/features/support/QuickActions";
 import { SetupStatusPanel } from "@/client/features/support/SetupStatusPanel";
-import { REPO_URL, SITE_URL } from "@/client/features/support/links";
+import { REPO_URL, siteUrl } from "@/client/features/support/links";
+import { fillParts } from "@/client/features/settings/fillParts";
 import { useSetupSnapshot } from "@/client/features/support/useSetupSnapshot";
+import { t } from "@/shared/i18n";
 
 export const Route = createFileRoute("/_app/support")({
   component: SupportPage,
@@ -24,8 +26,10 @@ function SupportPage() {
   return (
     <PageShell width="reading">
       <PageHeader
-        title="Yardım"
-        description="Bir şey ters giderse önce aşağıdaki duruma bakın. Çözüm çoğu zaman satırın yanındaki düğmededir."
+        title={t("Yardım")}
+        description={t(
+          "Bir şey ters giderse önce aşağıdaki duruma bakın. Çözüm çoğu zaman satırın yanındaki düğmededir.",
+        )}
       />
 
       <QuickActions />
@@ -39,55 +43,68 @@ function SupportPage() {
       <ul className="space-y-3 text-sm text-muted">
         <li>
           <span className="font-medium text-base-content">
-            {pending || windows ? "Günlükler" : "Konteyner günlüğü"}
+            {pending || windows ? t("Günlükler") : t("Konteyner günlüğü")}
           </span>{" "}
           {pending ? (
-            <>
-              Kurulum türü anlaşılıyor. Günlüklerin yeri birazdan burada
-              görünür.
-            </>
+            t(
+              "Kurulum türü anlaşılıyor. Günlüklerin yeri birazdan burada görünür.",
+            )
           ) : windows ? (
-            <>
-              Görev çubuğundaki seowatcher simgesine sağ tıklayıp{" "}
-              <strong>Günlükleri aç</strong> deyin. Açılış kontrolleri{" "}
-              <code className="text-xs">launcher.log</code>, sunucu satırları{" "}
-              <code className="text-xs">server.log</code> dosyasındadır.
-            </>
+            fillParts(
+              t(
+                "Görev çubuğundaki seowatcher simgesine sağ tıklayıp {menu} deyin. Açılış kontrolleri {launcherLog}, sunucu satırları {serverLog} dosyasındadır.",
+              ),
+              {
+                menu: <strong>{t("Günlükleri aç")}</strong>,
+                launcherLog: <code className="text-xs">launcher.log</code>,
+                serverLog: <code className="text-xs">server.log</code>,
+              },
+            )
           ) : (
             <>
-              Açılış kontrolleri uygulama başlamadan önce yazılır. Komut:{" "}
+              {t("Açılış kontrolleri uygulama başlamadan önce yazılır. Komut:")}{" "}
               <span className="inline-flex items-center gap-1 whitespace-nowrap align-middle">
                 <code className="text-xs">docker compose logs -f</code>
                 <CopyButton
                   iconOnly
                   value="docker compose logs -f"
-                  label="Komutu kopyala"
-                  successMessage="Komut kopyalandı"
+                  label={t("Komutu kopyala")}
+                  successMessage={t("Komut kopyalandı")}
                 />
               </span>
             </>
           )}
         </li>
         <li>
-          <span className="font-medium text-base-content">Sağlık adresi:</span>{" "}
-          <a
-            href="/api/health"
-            target="_blank"
-            rel="noreferrer"
-            className="link link-primary"
-          >
-            /api/health
-          </a>{" "}
-          hangi bağlantıların ayarlı olduğunu ve veritabanının yanıt verip
-          vermediğini gösterir.
+          <span className="font-medium text-base-content">
+            {t("Sağlık adresi:")}
+          </span>{" "}
+          {fillParts(
+            t(
+              "{link} hangi bağlantıların ayarlı olduğunu ve veritabanının yanıt verip vermediğini gösterir.",
+            ),
+            {
+              link: (
+                <a
+                  href="/api/health"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="link link-primary"
+                >
+                  /api/health
+                </a>
+              ),
+            },
+          )}
         </li>
         <li>
           <span className="font-medium text-base-content">
-            Kurulum belgeleri
+            {t("Kurulum belgeleri")}
           </span>{" "}
-          Windows paketi, Docker, Search Console, Analytics ve PageSpeed
-          kurulumu kılavuzda anlatılıyor. Üstteki &quot;Kılavuzu aç&quot;
-          düğmesi sizi oraya götürür.
+          {t(
+            "Windows paketi, Docker, Search Console, Analytics ve PageSpeed kurulumu kılavuzda anlatılıyor. Üstteki “{button}” düğmesi sizi oraya götürür.",
+            { button: t("Kılavuzu aç") },
+          )}
         </li>
       </ul>
 
@@ -95,17 +112,18 @@ function SupportPage() {
         id="tanilama"
         className="space-y-2 rounded-box border border-base-300 bg-base-100 p-4"
       >
-        <h2 className="text-sm font-semibold">Sorun bildirmek için</h2>
+        <h2 className="text-sm font-semibold">{t("Sorun bildirmek için")}</h2>
         <p className="max-w-prose text-sm text-muted">
-          Üstteki &quot;Tanılama paketi indir&quot; düğmesi tek bir arşiv
-          indirir. İçinde sürüm, kurulum kontrolleri, tablo büyüklükleri, bağlı
-          Google mülkleri, son denetimlerin durumu ve bu sekmede yakalanan
-          tarayıcı hataları var. Gizli değer yok. Parolalar ve anahtarlar
-          toplanmaz, yalnızca ayarlı olup olmadıkları yazılır. Kısa bir not
-          yeterliyse durum panelindeki &quot;Özeti kopyala&quot; düğmesi aynı
-          özeti metin olarak verir. Arşivdeki{" "}
-          <code className="text-xs">README.txt</code> içindekileri ve sizi
-          tanımlayan şeyleri satır satır anlatır.
+          {fillParts(
+            t(
+              "Üstteki “{download}” düğmesi tek bir arşiv indirir. İçinde sürüm, kurulum kontrolleri, tablo büyüklükleri, bağlı Google mülkleri, son denetimlerin durumu ve bu sekmede yakalanan tarayıcı hataları var. Gizli değer yok. Parolalar ve anahtarlar toplanmaz, yalnızca ayarlı olup olmadıkları yazılır. Kısa bir not yeterliyse durum panelindeki “{summary}” düğmesi aynı özeti metin olarak verir. Arşivdeki {readme} içindekileri ve sizi tanımlayan şeyleri satır satır anlatır.",
+            ),
+            {
+              download: t("Tanılama paketi indir"),
+              summary: t("Özeti kopyala"),
+              readme: <code className="text-xs">README.txt</code>,
+            },
+          )}
         </p>
       </section>
 
@@ -116,11 +134,11 @@ function SupportPage() {
           rel="noreferrer"
           className="link link-primary inline-flex items-center gap-1.5 text-sm"
         >
-          Proje GitHub&apos;da
+          {t("Proje GitHub'da")}
           <ExternalLink className="size-3.5" />
         </a>
         <a
-          href={SITE_URL}
+          href={siteUrl()}
           target="_blank"
           rel="noreferrer"
           className="link link-primary ml-5 inline-flex items-center gap-1.5 text-sm"

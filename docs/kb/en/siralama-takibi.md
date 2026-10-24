@@ -14,21 +14,21 @@ The app pulls this data day by day and stores it on this computer. The archive g
 
 **Time range.** 30 gün, 90 gün (default), 6 ay, 16 ay and Arşivin tamamı (30 days, 90 days, 6 months, 16 months and the whole archive). The range ends three days before today.
 
-**Archive status line.** It shows how many days and rows the archive holds. Each time you open the screen, it fills the missing days from Google. "Bu açılışta N gün eklendi." (N days were added this time) means new days have arrived. "Kalan günler sonraki açılışta tamamlanacak." (The remaining days will be completed the next time you open it) means the fill continues on your next visit.
+**Archive status line.** It shows how many days and rows the archive holds. Each time you open the screen, it fills the missing days from Google. "Bu açılışta N gün eklendi." (N days were added this time) means new days have arrived. "The remaining days will be filled in the next time you open this page." means the fill continues on your next visit.
 
-The **Sorgu içinde ara** (Search within queries) box narrows the list.
+The **Search queries** box narrows the list.
 
-**Change filters.** **Yükselenler** (Risers) and **Düşenler** (Fallers) show queries that moved at least half a position. There are also **Şu an ilk 10'da** (In the top 10 now) and **İlk 10'dan çıkanlar** (Dropped out of the top 10). Quick filters: **Gösterimi yüksek** (High impressions) (at least 100 impressions) and **Hiç tıklanmayan** (Never clicked).
+**Change filters.** **Risers** and **Fallers** show queries that moved at least half a position. There are also **Now in the top 10** and **Dropped out of the top 10**. Quick filters: **High impressions** (at least 100 impressions) and **No clicks**.
 
 **Position distribution.** Bars show how many of your searches fall in the 1-3, 4-10, 11-20 and 21+ bands.
 
-**Risers and fallers.** Two short lists: "En çok yükselenler" (Biggest risers) and "En çok düşenler" (Biggest fallers).
+**Risers and fallers.** Two short lists: "Biggest risers" and "Biggest fallers".
 
 **Table.** Columns: **Sorgu** (Query), **Ort. sıra** (Avg. position), **Değişim** (Change), **Gösterim** (Impressions), **Tıklama** (Clicks), **Gün** (Days). The **Gün** column shows on how many days the search appeared in the selected range. A search that appears on only 3 of 90 days is rarely searched. The change cell says "Yükseldi 2.4" (Rose 2.4) or "Düştü 1.1" (Fell 1.1). Row menu: **Kelimeyi kopyala** (Copy keyword), **Kayıtlı kelimelere ekle** (Add to saved keywords), **Arama performansında ara** (Search in Search performance).
 
-**Query history.** When you click a row, the day-by-day position line of that search opens. The **Arama performansında aç** (Open in Search performance) link opens the same search on the other screen.
+**Query history.** When you click a row, the day-by-day position line of that search opens. The **Open in Search performance** link opens the same search on the other screen.
 
-**Empty states.** If the archive is empty, it says "Henüz hangi kelimeyle arandığınız bilinmiyor" (It is not yet known which searches find you) and the **Arama performansını aç** (Open Search performance) button appears. The list is limited to the 100 most shown searches. If there are more, a note under the list says so.
+**Empty states.** If the archive is empty, it says "Henüz hangi kelimeyle arandığınız bilinmiyor" (It is not yet known which searches find you) and the **Open Search performance** button appears. The list is limited to the 100 most shown searches. If there are more, a note under the list says so.
 
 ## How to use it
 

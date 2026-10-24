@@ -3,16 +3,22 @@ title: Ayarlar
 description: Tema, Google erişim anahtarı, PageSpeed anahtarı, kullanım sınırları ve güncelleme kontrolü: bütün kurulum için tek ayar ekranı.
 screen: Ayarlar
 route: /settings
-updated: 2026-10-22
+updated: 2026-10-24
 ---
 
 Google bağlantısını, hız anahtarını ve güncellemeyi nereden yöneteceğinizi burada görürsünüz.
 
-**Ayarlar** ekranında bütün kurulumu ilgilendiren şeyleri ayarlarsınız. Projeye özel ayarlar (ad, alan adı, Search Console ve Analytics mülkü) her projenin **Proje ayarları** sayfasında durur. Burada Google'a bağlanmak için gereken erişim anahtarını, PageSpeed anahtarını, temayı ve güncelleme kontrolünü yönetirsiniz. Solda **Görünüm**, **Google**, **Hizmet hesabı**, **Hız ölçümü**, **Sınırlar**, **Hakkında** ve **Sürüm notları** bölümleri var. Her bölümün başlığında durumunu gösteren bir rozet bulunur.
+**Ayarlar** bütün kurulumu ilgilendirir. Projeye özel ayarlar (ad, alan adı, Search Console ve Analytics mülkü) her projenin **Proje ayarları** sayfasındadır. Bu ekranda **Görünüm**, **Bildirimler**, **Google**, **Hizmet hesabı**, **Hız ölçümü**, **Sınırlar**, **Hakkında** ve **Windows** bölümleri bulunur.
 
 ## Ekranda neler var
 
 **Görünüm.** **Tema** için Sistem, Açık ve Koyu seçeneği var. Seçim bu tarayıcıda saklanır. Başka bir tarayıcıda ya da bilgisayarda ayrıca seçersiniz.
+
+**Dil.** **Ayarlar → Görünüm → Dil** bölümünden Türkçe veya English seçin. Sayfa seçilen dilde yeniden açılır; sayı ve tarihler de bu dili izler. Seçim bu tarayıcıda saklanır. Seçim yapılmazsa tarayıcının dili kullanılır, dil bilgisi yoksa Türkçe açılır.
+
+**Bildirimler.** Sol menüdeki zil son 50 olayı ve okunmamış sayısını gösterir. **Tümünü okundu işaretle** geçmişi korur. Denetim sonucu, yeni sürüm, Google bağlantı sorunu, rapor ve dizin sorgusu sonuçları burada bulunur. **Bildirim sesi** önemli olaylarda kısa bir ses çalar; **Sesi dinle** ile deneyebilirsiniz. **Arka plandayken masaüstü bildirimi** seçeneği tarayıcıdan izin ister. İzin engellenmişse tarayıcının site izinlerinden açılır. Görsel animasyonlar sistemin hareketi azaltma tercihine uyar; ses ayrı ayarlanır.
+
+**Windows.** Windows açılınca başlat ve Otomatik güncelleme kurulumu seçeneklerini buradan açıp kapatabilirsiniz. Bunlar tepsi menüsüyle aynı kalıcı ayarlardır. Yönetici kısıtlaması varsa nedeni görünür. Docker ve geliştirici kurulumunda seçenekler kapalıdır; eski Windows başlatıcısında paketi güncellemeniz istenir.
 
 **Google.** Rozet üç değerden biridir: **Kayıtlı**, **Ortamdan geliyor** (Docker kurulumunda `.env` dosyasıyla verilmiş) ya da **Eksik**. Bölüm, Google Cloud Console'a (Google'ın geliştirici paneli) ekleyeceğiniz iki yönlendirme adresini gösterir. Yanlarında kopyalama düğmeleri vardır. İkisini de eklemeniz gerekir. Analytics adresini eklemezseniz yalnızca Search Console bağlanır.
 
@@ -38,9 +44,9 @@ Rozet **Kayıtlı** ya da **Kullanılmıyor** yazar. Kayıtlı bir hizmet hesab�
 
 Her kartın durumu **Yeterli**, **Azalıyor** (yüzde 70'ten sonra), **Neredeyse doldu** (yüzde 90'dan sonra) ya da **Bilinmiyor** olur.
 
-**Hakkında.** **Sürüm** satırı sürümü gösterir (v2.3.0 gibi). **Güncellemeleri kontrol et** anahtarı varsayılan olarak açıktır. Açıksa uygulama günde en çok bir kez GitHub'daki son sürümü sorar. Bu durumda **Şimdi kontrol et** düğmesi de görünür. Yeni sürüm varsa **Değişiklikler** bağlantısı çıkar. Docker kurulumları için kopyalayacağınız komut da çıkar: `git pull && docker compose up -d --build`. Windows paketinde ekran sizi görev çubuğu simgesindeki **Güncelle** maddesine yönlendirir. Otomatik güncelleme açıksa yeni sürüm kendiliğinden kurulur.
+**Hakkında.** **Sürüm** satırı sürümü gösterir (0.5.0 Alpha gibi). **Güncellemeleri kontrol et** anahtarı varsayılan olarak açıktır. Açıksa uygulama günde en çok bir kez GitHub'daki son sürümü sorar. Bu durumda **Şimdi kontrol et** düğmesi de görünür. Yeni sürüm varsa **Değişiklikler** bağlantısı çıkar. Docker kurulumları için kopyalayacağınız komut da çıkar: `git pull && docker compose up -d --build`. Windows paketinde ekran sizi görev çubuğu simgesindeki **Güncelle** maddesine yönlendirir. Otomatik güncelleme açıksa yeni sürüm kendiliğinden kurulur.
 
-**Sürüm notları.** Her sürümde neyin değiştiğini listeler.
+**Sürüm notları.** Sol menüde Bildirimler’in üstündeki ayrı sayfada bulunur. Renkli etiketler sürümün yenilik, düzeltme ve güvenlik içeriğini gösterir.
 
 ## Nasıl kullanılır
 

@@ -1,3 +1,5 @@
+import { t } from "@/shared/i18n";
+
 /**
  * The one-word state each settings section wears next to its heading.
  *
@@ -16,16 +18,16 @@ export function oauthClientBadge(
 ): SectionBadge | null {
   if (!status) return null;
   if (status.source === "settings") {
-    return { tone: "success", label: "Kayıtlı", live: true };
+    return { tone: "success", label: t("Kayıtlı"), live: true };
   }
   if (status.source === "environment") {
     return {
       tone: "success",
-      label: "Kurulum dosyasından geliyor",
+      label: t("Kurulum dosyasından geliyor"),
       live: true,
     };
   }
-  return { tone: "warning", label: "Eksik" };
+  return { tone: "warning", label: t("Eksik") };
 }
 
 /** Optional alternative to the OAuth client, so absence is not a warning. */
@@ -34,8 +36,8 @@ export function serviceAccountBadge(
 ): SectionBadge | null {
   if (!status) return null;
   return status.clientEmail
-    ? { tone: "success", label: "Kayıtlı", live: true }
-    : { tone: "neutral", label: "Kullanılmıyor" };
+    ? { tone: "success", label: t("Kayıtlı"), live: true }
+    : { tone: "neutral", label: t("Kullanılmıyor") };
 }
 
 /**
@@ -56,12 +58,17 @@ export function activeCredentialNote(
   active: "service_account" | "oauth" | null,
 ): string | null {
   if (active === null) return null;
-  const names = {
-    service_account: "hizmet hesabı",
-    oauth: "Google erişim anahtarı",
-  };
-  if (active === self) return `Şu an kullanılan: ${names[self]}`;
-  return `Şu an kullanılmıyor (${names[active]} öncelikli): ${names[self]}`;
+  // Whole sentences, so each language words every case its own way.
+  if (active === self) {
+    return self === "service_account"
+      ? t("Şu an kullanılan: hizmet hesabı")
+      : t("Şu an kullanılan: Google erişim anahtarı");
+  }
+  return self === "oauth"
+    ? t("Şu an kullanılmıyor (hizmet hesabı öncelikli): Google erişim anahtarı")
+    : t(
+        "Şu an kullanılmıyor (Google erişim anahtarı öncelikli): hizmet hesabı",
+      );
 }
 
 export function pageSpeedBadge(
@@ -69,16 +76,16 @@ export function pageSpeedBadge(
 ): SectionBadge | null {
   if (!status) return null;
   if (status.source === "settings") {
-    return { tone: "success", label: "Anahtar kayıtlı", live: true };
+    return { tone: "success", label: t("Anahtar kayıtlı"), live: true };
   }
   if (status.source === "environment") {
     return {
       tone: "success",
-      label: "Kurulum dosyasından geliyor",
+      label: t("Kurulum dosyasından geliyor"),
       live: true,
     };
   }
-  return { tone: "warning", label: "Anahtar eksik" };
+  return { tone: "warning", label: t("Anahtar eksik") };
 }
 
 export function updateBadge(
@@ -93,18 +100,25 @@ export function updateBadge(
 ): SectionBadge | null {
   if (!status) return null;
   if (status.updateAvailable) {
-    return { tone: "warning", label: `Yeni sürüm ${status.latestVersion}` };
+    return {
+      tone: "warning",
+      label: t("Yeni sürüm {version}", {
+        version: status.latestVersion ?? "",
+      }),
+    };
   }
-  if (!status.enabled) return { tone: "neutral", label: "Kontrol kapalı" };
-  if (status.outcome === "ok") return { tone: "success", label: "Güncel" };
+  if (!status.enabled) return { tone: "neutral", label: t("Kontrol kapalı") };
+  if (status.outcome === "ok") return { tone: "success", label: t("Güncel") };
   if (status.outcome === "unreachable" || status.outcome === "error") {
-    return { tone: "neutral", label: "Ulaşılamadı" };
+    return { tone: "neutral", label: t("Ulaşılamadı") };
   }
-  return { tone: "neutral", label: "Denetlenmedi" };
+  return { tone: "neutral", label: t("Denetlenmedi") };
 }
 
-/** When the status read itself failed: say so rather than shimmer forever. */
-export const UNREADABLE: SectionBadge = {
-  tone: "neutral",
-  label: "Okunamadı",
-};
+/**
+ * When the status read itself failed: say so rather than shimmer forever.
+ * A function, not a constant: the label is translated when it renders.
+ */
+export function unreadableBadge(): SectionBadge {
+  return { tone: "neutral", label: t("Okunamadı") };
+}

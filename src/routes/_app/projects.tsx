@@ -1,4 +1,6 @@
 import { PageHeader, PageShell } from "@/client/components/PageShell";
+import { Skeleton } from "@/client/components/Skeleton";
+import { Spinner } from "@/client/components/Spinner";
 import * as React from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -16,6 +18,7 @@ import {
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import { getLastProjectId } from "@/client/lib/active-project";
 import { CreateProjectModal } from "@/client/features/projects/CreateProjectModal";
+import { t } from "@/shared/i18n";
 
 export const Route = createFileRoute("/_app/projects")({
   component: ProjectsPage,
@@ -39,8 +42,10 @@ function ProjectsPage() {
   return (
     <PageShell width="reading">
       <PageHeader
-        title="Projeler"
-        description="Her projenin kendi Search Console bağlantısı, arama verisi ve site denetimleri vardır."
+        title={t("Projeler")}
+        description={t(
+          "Her projenin kendi Search Console bağlantısı, arama verisi ve site denetimleri vardır.",
+        )}
         actions={
           <PageActions>
             <RefreshButton
@@ -54,31 +59,27 @@ function ProjectsPage() {
               onClick={() => setCreating(true)}
             >
               <Plus className="size-4" />
-              Yeni proje
+              {t("Yeni proje")}
             </button>
           </PageActions>
         }
       />
 
       {projectsQuery.isLoading ? (
-        <div className="space-y-2" aria-busy>
-          {Array.from({ length: 4 }, (_, index) => (
-            <div key={index} className="skeleton h-14" />
-          ))}
-        </div>
+        <Skeleton variant="list" rows={4} />
       ) : projectsQuery.isError ? (
         <QueryErrorState
           error={projectsQuery.error}
           onRetry={() => void projectsQuery.refetch()}
-          title="Projeler yüklenemedi"
+          title={t("Projeler yüklenemedi")}
         />
       ) : projects.length === 0 ? (
         // Reachable only through a failure upstream, since the loader
         // guarantees one project - but a bare 1px box said nothing at all.
         <EmptyState
           icon={FolderPlus}
-          title="Henüz proje yok"
-          description="Bir proje oluşturun, sonra sitesini ekleyin."
+          title={t("Henüz proje yok")}
+          description={t("Bir proje oluşturun, sonra sitesini ekleyin.")}
         />
       ) : (
         <ul className="divide-y divide-base-300 overflow-hidden rounded-box border border-base-300">
@@ -99,11 +100,11 @@ function ProjectsPage() {
                   <span className="truncate font-medium">{project.name}</span>
                   {/* With one project "active" is not information. */}
                   {projects.length > 1 && project.id === currentProjectId ? (
-                    <StatusPill tone="neutral" label="Etkin" />
+                    <StatusPill tone="neutral" label={t("Etkin")} />
                   ) : null}
                 </span>
                 <span className="truncate text-xs text-muted">
-                  {project.domain ?? "Site eklenmedi"}
+                  {project.domain ?? t("Site eklenmedi")}
                 </span>
               </Link>
               <Link
@@ -111,7 +112,7 @@ function ProjectsPage() {
                 params={{ projectId: project.id }}
                 className="btn btn-ghost btn-sm mr-2 shrink-0"
               >
-                {project.domain ? "Ayarlar" : "Site ekle"}
+                {project.domain ? t("Ayarlar") : t("Site ekle")}
               </Link>
             </li>
           ))}
@@ -141,10 +142,10 @@ function ArchivedProjects() {
     onSuccess: async () => {
       // Prefix match invalidates both the active and archived lists.
       await queryClient.invalidateQueries({ queryKey: ["projects"] });
-      toast.success("Proje geri alındı");
+      toast.success(t("Proje geri alındı"));
     },
     onError: (error) =>
-      toast.error(getStandardErrorMessage(error, "Proje geri alınamadı")),
+      toast.error(getStandardErrorMessage(error, t("Proje geri alınamadı"))),
   });
 
   // A failed read used to make the section vanish, which reads as "nothing
@@ -152,11 +153,11 @@ function ArchivedProjects() {
   if (archivedQuery.isError && archived.length === 0) {
     return (
       <section className="space-y-3">
-        <h2 className="text-sm font-medium text-muted">Arşivlendi</h2>
+        <h2 className="text-sm font-medium text-muted">{t("Arşivlendi")}</h2>
         <div className="rounded-box border border-base-300">
           <QueryErrorState
             compact
-            title="Arşivlenen projeler yüklenemedi"
+            title={t("Arşivlenen projeler yüklenemedi")}
             error={archivedQuery.error}
             onRetry={() => void archivedQuery.refetch()}
           />
@@ -168,7 +169,7 @@ function ArchivedProjects() {
 
   return (
     <section className="space-y-3">
-      <h2 className="text-sm font-medium text-muted">Arşivlendi</h2>
+      <h2 className="text-sm font-medium text-muted">{t("Arşivlendi")}</h2>
       <ul className="divide-y divide-base-300 overflow-hidden rounded-box border border-base-300">
         {archived.map((project) => (
           <li
@@ -180,7 +181,7 @@ function ArchivedProjects() {
                 {project.name}
               </span>
               <span className="truncate text-xs text-muted">
-                {project.domain ?? "Site eklenmedi"}
+                {project.domain ?? t("Site eklenmedi")}
               </span>
             </span>
             <button
@@ -191,12 +192,9 @@ function ArchivedProjects() {
             >
               {restoreMutation.isPending &&
               restoreMutation.variables === project.id ? (
-                <span
-                  className="loading loading-spinner loading-xs"
-                  aria-hidden
-                />
+                <Spinner delay={false} />
               ) : null}
-              Geri al
+              {t("Geri al")}
             </button>
           </li>
         ))}

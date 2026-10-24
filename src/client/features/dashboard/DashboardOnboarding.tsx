@@ -12,6 +12,7 @@ import type {
 } from "@/types/schemas/dashboard";
 import { getStepStatus, setupSteps } from "./dashboardSteps";
 import { DashboardSetupAction } from "./DashboardSetupAction";
+import { t } from "@/shared/i18n";
 
 export function DashboardOnboarding({
   projectId,
@@ -54,7 +55,7 @@ export function DashboardOnboarding({
       toast.error(
         getStandardErrorMessage(
           error,
-          "Tercihiniz kaydedilemedi. Tekrar deneyin.",
+          t("Tercihiniz kaydedilemedi. Tekrar deneyin."),
         ),
       ),
   });
@@ -73,7 +74,7 @@ export function DashboardOnboarding({
 
   return (
     <details
-      aria-label="Kurulum listesi"
+      aria-label={t("Kurulum listesi")}
       open={open}
       onToggle={(event) => setOpen(event.currentTarget.open)}
       className="group/setup overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-[var(--shadow-raise)]"
@@ -81,16 +82,16 @@ export function DashboardOnboarding({
       <summary className="flex cursor-pointer list-none items-center gap-3 px-5 py-3.5 [&::-webkit-details-marker]:hidden">
         <span className="min-w-0 flex-1">
           <h2 className="text-sm font-semibold leading-tight">
-            Çalışma alanınızı kurun
+            {t("Çalışma alanınızı kurun")}
           </h2>
           {/* Describes what is left, not a fixed script: the old copy named
             two steps that were already done and one ("ilk denetimi
             çalıştırın") that is not in `setupSteps` at all. */}
           <span className="mt-0.5 block text-xs text-muted">
             {remaining.length === 1
-              ? "Bir adım kaldı."
-              : `${remaining.length} adım kaldı.`}{" "}
-            Hepsi isteğe bağlı, istediğiniz zaman dönebilirsiniz.
+              ? t("Bir adım kaldı.")
+              : t("{count} adım kaldı.", { count: remaining.length })}{" "}
+            {t("Hepsi isteğe bağlı, istediğiniz zaman dönebilirsiniz.")}
           </span>
         </span>
         <ChevronRight className="size-4 shrink-0 text-muted transition-transform group-open/setup:rotate-90" />
@@ -117,9 +118,11 @@ export function DashboardOnboarding({
                 <Icon className="size-4" />
               </span>
               <span className="min-w-0 flex-1">
-                <span className="block text-sm font-medium">{item.label}</span>
+                <span className="block text-sm font-medium">
+                  {t(item.label)}
+                </span>
                 <span className="mt-0.5 hidden text-xs text-muted sm:block">
-                  {item.detail}
+                  {t(item.detail)}
                 </span>
               </span>
               <ChevronRight
@@ -144,8 +147,8 @@ export function DashboardOnboarding({
                       }
                     >
                       {item.id === "project"
-                        ? "Tek proje bana yeter"
-                        : "Şimdilik geç"}
+                        ? t("Tek proje bana yeter")
+                        : t("Şimdilik geç")}
                     </button>
                   </div>
                 </div>
@@ -158,7 +161,7 @@ export function DashboardOnboarding({
         <details className="group border-t border-base-300">
           <summary className="flex cursor-pointer list-none items-center gap-2 px-5 py-3.5 text-sm text-muted [&::-webkit-details-marker]:hidden">
             <ChevronRight className="size-4 transition-transform group-open:rotate-90" />
-            {deferred.length} adım sonraya bırakıldı
+            {t("{count} adım sonraya bırakıldı", { count: deferred.length })}
           </summary>
           <ul className="space-y-1 px-5 pb-4">
             {deferred.map((item) => (
@@ -166,17 +169,19 @@ export function DashboardOnboarding({
                 key={item.id}
                 className="flex items-center justify-between gap-3 rounded-field bg-base-200/40 px-3 py-2"
               >
-                <span className="text-sm">{item.label}</span>
+                <span className="text-sm">{t(item.label)}</span>
                 <button
                   type="button"
-                  aria-label={`${item.label} adımını geri al`}
+                  aria-label={t("{step} adımını geri al", {
+                    step: t(item.label),
+                  })}
                   className="btn btn-ghost btn-sm shrink-0"
                   disabled={dismiss.isPending}
                   onClick={() =>
                     dismiss.mutate({ step: item.id, dismissed: false })
                   }
                 >
-                  <RotateCcw className="size-3.5" /> Geri al
+                  <RotateCcw className="size-3.5" /> {t("Geri al")}
                 </button>
               </li>
             ))}
@@ -187,7 +192,7 @@ export function DashboardOnboarding({
         <details className="group border-t border-base-300">
           <summary className="flex cursor-pointer list-none items-center gap-2 px-5 py-3.5 text-sm [&::-webkit-details-marker]:hidden">
             <Check className="size-4 text-success" />
-            {completed.length} tamamlandı
+            {t("{count} tamamlandı", { count: completed.length })}
             <ChevronRight className="ml-auto size-4 text-muted transition-transform group-open:rotate-90" />
           </summary>
           <ul className="space-y-3 px-5 pb-5">
@@ -197,7 +202,7 @@ export function DashboardOnboarding({
                 className="flex items-center gap-3 text-sm text-muted"
               >
                 <Check className="size-4 shrink-0 text-success" />
-                {item.label}
+                {t(item.label)}
               </li>
             ))}
           </ul>

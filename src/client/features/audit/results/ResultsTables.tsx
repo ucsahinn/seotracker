@@ -1,9 +1,5 @@
 import { deviceLabel } from "@/client/features/search-performance/deviceShare";
-import {
-  formatCount,
-  formatDecimal,
-  formatDuration,
-} from "@/client/lib/format";
+import { formatDecimal, formatDuration } from "@/client/lib/format";
 import { useEffect, useMemo, useState } from "react";
 import {
   createColumnHelper,
@@ -39,6 +35,7 @@ import {
   type PerformanceFilters,
   type PerformanceRowData,
 } from "@/client/features/audit/results/AuditResultsTableFilterLogic";
+import { t } from "@/shared/i18n";
 
 const PERFORMANCE_PAGE_SIZES = [50, 100, 250] as const;
 
@@ -144,12 +141,12 @@ export function PerformanceTable({
       <div className="overflow-hidden rounded-box border border-base-300">
         <AppDataTable
           table={table}
-          caption="Sayfa hızı ölçümleri"
+          caption={t("Sayfa hızı ölçümleri")}
           className="table table-sm"
           empty={
             <EmptyTableMessage
-              label="Bu denetimde Lighthouse sonucu yok."
-              filteredLabel="Bu filtrelerle eşleşen performans sonucu yok."
+              label={t("Bu denetimde Lighthouse sonucu yok.")}
+              filteredLabel={t("Bu filtrelerle eşleşen performans sonucu yok.")}
               hasActiveFilter={activeFilterCount > 0}
             />
           }
@@ -190,27 +187,33 @@ function buildPerformanceColumns({
       meta: { cellClassName: "max-w-[180px] truncate" },
     }),
     performanceColumnHelper.accessor("strategy", {
-      header: ({ column }) => <SortableHeader column={column} label="Cihaz" />,
+      header: ({ column }) => (
+        <SortableHeader column={column} label={t("Cihaz")} />
+      ),
       cell: ({ getValue }) => (
         <span className="text-xs">{deviceLabel(getValue())}</span>
       ),
     }),
     performanceColumnHelper.display({
       id: "status",
-      header: ({ column }) => <SortableHeader column={column} label="Durum" />,
+      header: ({ column }) => (
+        <SortableHeader column={column} label={t("Durum")} />
+      ),
       cell: ({ row }) => {
         const isFailed = isLighthouseFailure(row.original);
         const failureMessage =
-          row.original.errorMessage ?? "Hız ölçümü hiç puan vermedi";
+          row.original.errorMessage ?? t("Hız ölçümü hiç puan vermedi");
         return isFailed ? (
           <span
             className={`badge text-xs ${severityChip.error}`}
             title={failureMessage}
           >
-            başarısız
+            {t("başarısız")}
           </span>
         ) : (
-          <span className={`badge text-xs ${severityChip.success}`}>tamam</span>
+          <span className={`badge text-xs ${severityChip.success}`}>
+            {t("tamam")}
+          </span>
         );
       },
       enableSorting: true,
@@ -223,7 +226,7 @@ function buildPerformanceColumns({
         <SortableHeader
           column={column}
           label="Perf"
-          helpText="Hız puanı (0-100)"
+          helpText={t("Hız puanı (0-100)")}
         />
       ),
       cell: ({ getValue }) => <LighthouseScoreBadge score={getValue()} />,
@@ -234,7 +237,7 @@ function buildPerformanceColumns({
         <SortableHeader
           column={column}
           label="A11y"
-          helpText="Erişilebilirlik puanı (0-100)"
+          helpText={t("Erişilebilirlik puanı (0-100)")}
         />
       ),
       cell: ({ getValue }) => <LighthouseScoreBadge score={getValue()} />,
@@ -245,7 +248,7 @@ function buildPerformanceColumns({
         <SortableHeader
           column={column}
           label="SEO"
-          helpText="Arama motoru uyumu puanı (0-100)"
+          helpText={t("Arama motoru uyumu puanı (0-100)")}
         />
       ),
       cell: ({ getValue }) => <LighthouseScoreBadge score={getValue()} />,
@@ -256,7 +259,7 @@ function buildPerformanceColumns({
         <SortableHeader
           column={column}
           label="LCP"
-          helpText="Ana içeriğin görünme süresi"
+          helpText={t("Ana içeriğin görünme süresi")}
         />
       ),
       cell: ({ getValue }) => {
@@ -274,7 +277,7 @@ function buildPerformanceColumns({
         <SortableHeader
           column={column}
           label="CLS"
-          helpText="Sayfanın ne kadar kaydığı"
+          helpText={t("Sayfanın ne kadar kaydığı")}
         />
       ),
       cell: ({ getValue }) => {
@@ -292,7 +295,7 @@ function buildPerformanceColumns({
         <SortableHeader
           column={column}
           label="INP"
-          helpText="Tıklamaya yanıt süresi"
+          helpText={t("Tıklamaya yanıt süresi")}
         />
       ),
       cell: ({ getValue }) => {
@@ -310,7 +313,7 @@ function buildPerformanceColumns({
         <SortableHeader
           column={column}
           label="TTFB"
-          helpText="Sunucunun ilk yanıt süresi"
+          helpText={t("Sunucunun ilk yanıt süresi")}
         />
       ),
       cell: ({ getValue }) => {
@@ -325,7 +328,7 @@ function buildPerformanceColumns({
     }),
     performanceColumnHelper.display({
       id: "issues",
-      header: () => "Sorunlar",
+      header: () => t("Sorunlar"),
       cell: ({ row }) =>
         row.original.r2Key && !isLighthouseFailure(row.original) ? (
           <Link
@@ -334,7 +337,7 @@ function buildPerformanceColumns({
             params={{ projectId, resultId: row.original.id }}
             search={{ auditId, category: "performance" }}
           >
-            Sorunları gör
+            {t("Sorunları gör")}
           </Link>
         ) : (
           <span className="text-xs text-muted">-</span>
@@ -357,18 +360,24 @@ export function ExportDropdown({
    */
   rowCount: number;
 }) {
-  const suffix = `(${formatCount(rowCount)} satır)`;
+  const rows = { count: rowCount };
   return (
     <TableExportMenu
       buttonClassName="btn btn-sm btn-ghost gap-1"
       menuClassName="dropdown-content z-10 menu p-2 shadow-lg bg-base-100 border border-base-300 rounded-box w-56"
       actions={[
         {
-          label: `E-Tablolar'a aktar ${suffix}`,
+          label: t("E-Tablolar'a aktar ({count} satır)", rows),
           onClick: () => onExport("sheets"),
         },
-        { label: `CSV ${suffix}`, onClick: () => onExport("csv") },
-        { label: `JSON ${suffix}`, onClick: () => onExport("json") },
+        {
+          label: t("CSV ({count} satır)", rows),
+          onClick: () => onExport("csv"),
+        },
+        {
+          label: t("JSON ({count} satır)", rows),
+          onClick: () => onExport("json"),
+        },
       ]}
     />
   );

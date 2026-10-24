@@ -2,12 +2,13 @@ import { useEffect } from "react";
 import { useLocation } from "@tanstack/react-router";
 import { Check, ExternalLink, X } from "lucide-react";
 import { Modal } from "@/client/components/Modal";
-import { formatCount } from "@/client/lib/format";
+
 import {
   closeExportToSheetsModal,
   openGoogleSheetsTab,
   useExportToSheetsModalState,
 } from "@/client/lib/exportToSheets";
+import { t } from "@/shared/i18n";
 
 export function ExportToSheetsModal() {
   const state = useExportToSheetsModalState();
@@ -46,21 +47,21 @@ export function ExportToSheetsModal() {
             <Check className="size-4" />
           </span>
           <h3 id="export-to-sheets-title" className="text-base font-semibold">
-            {formatCount(rowCount)} satır panoya kopyalandı
+            {t("{count} satır panoya kopyalandı", { count: rowCount })}
           </h3>
         </div>
         <button
           type="button"
           className="btn btn-ghost btn-xs btn-square"
           onClick={closeExportToSheetsModal}
-          aria-label="Kapat"
+          aria-label={t("Kapat")}
         >
           <X className="size-4" />
         </button>
       </div>
 
       <p className="text-sm text-muted">
-        Google E-Tablolar&apos;da yeni bir dosya açıp yapıştırın.
+        {t("Google E-Tablolar'da yeni bir dosya açıp yapıştırın.")}
       </p>
 
       <div className="flex justify-end">
@@ -69,7 +70,7 @@ export function ExportToSheetsModal() {
           className="btn btn-primary btn-sm gap-1.5"
           onClick={handleOpenSheet}
         >
-          Google E-Tablolar&apos;da yeni dosya aç
+          {t("Google E-Tablolar'da yeni dosya aç")}
           <ExternalLink className="size-3.5" />
         </button>
       </div>

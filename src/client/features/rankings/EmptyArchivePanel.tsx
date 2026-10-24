@@ -1,3 +1,4 @@
+import { t } from "@/shared/i18n";
 import { Link } from "@tanstack/react-router";
 import { TrendingUp } from "lucide-react";
 import { EmptyState } from "@/client/components/EmptyState";
@@ -13,15 +14,17 @@ export function EmptyArchivePanel({ projectId }: { projectId: string }) {
     <section className="rounded-box border border-base-300 bg-base-100">
       <EmptyState
         icon={TrendingUp}
-        title="Hangi kelimelerle arandığınız henüz görünmüyor"
-        description="Sitenizin hangi aramalarda kaçıncı sırada çıktığını burada izlersiniz. Search Console kelime bazında veri verdikçe birikir. Az ziyaretçisi olan sitelerde birkaç hafta sürebilir. O zamana kadar toplam tıklama ve gösterime Arama performansı'ndan bakın."
+        title={t("Hangi kelimelerle arandığınız henüz görünmüyor")}
+        description={t(
+          "Sitenizin hangi aramalarda kaçıncı sırada çıktığını burada izlersiniz. Search Console kelime bazında veri verdikçe birikir. Az ziyaretçisi olan sitelerde birkaç hafta sürebilir. O zamana kadar toplam tıklama ve gösterime Arama performansı'ndan bakın.",
+        )}
         action={
           <Link
             to="/p/$projectId/search-performance"
             params={{ projectId }}
             className="btn btn-sm btn-outline"
           >
-            Arama performansını aç
+            {t("Arama performansını aç")}
           </Link>
         }
       />
@@ -38,15 +41,17 @@ export function NotConnectedPanel({ projectId }: { projectId: string }) {
     <section className="rounded-box border border-base-300 bg-base-100">
       <EmptyState
         icon={TrendingUp}
-        title="Henüz sıralama verisi yok"
-        description="Search Console'u bağlayınca geçmiş günler kendiliğinden birikir."
+        title={t("Henüz sıralama verisi yok")}
+        description={t(
+          "Search Console'u bağlayınca geçmiş günler kendiliğinden birikir.",
+        )}
         action={
           <Link
             to="/p/$projectId/settings/integrations"
             params={{ projectId }}
             className="btn btn-sm btn-primary"
           >
-            Search Console&apos;u bağla
+            {t("Search Console'u bağla")}
           </Link>
         }
       />

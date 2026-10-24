@@ -4,6 +4,7 @@ import { ArrowDown, ArrowUp, CalendarClock } from "lucide-react";
 import { getAuditFreshnessForProject } from "@/serverFunctions/audit";
 import { getIssueDescriptor } from "@/shared/audit-issues";
 import { formatCount } from "@/client/lib/format";
+import { t } from "@/shared/i18n";
 
 /**
  * Two things the dashboard can say about the audit that a single crawl cannot:
@@ -22,13 +23,13 @@ export function AuditFreshnessCard({ projectId }: { projectId: string }) {
   if (freshness.isError) {
     return (
       <p className="text-sm text-muted">
-        Son denetimin ne kadar eski olduğu okunamadı.{" "}
+        {t("Son denetimin ne kadar eski olduğu okunamadı.")}{" "}
         <button
           type="button"
           className="link link-hover text-primary"
           onClick={() => void freshness.refetch()}
         >
-          Tekrar dene
+          {t("Tekrar dene")}
         </button>
       </p>
     );
@@ -48,9 +49,10 @@ export function AuditFreshnessCard({ projectId }: { projectId: string }) {
           <div className="flex items-center gap-2 text-sm">
             <CalendarClock className="size-4 shrink-0 text-warning" />
             <span>
-              Son denetimin üzerinden {formatCount(data.daysSince ?? 0)} gün
-              geçti. Sitede değişiklik yaptıysanız yeni bir denetim başlatmak
-              iyi olur.
+              {t(
+                "Son denetimin üzerinden {count} gün geçti. Sitede değişiklik yaptıysanız yeni bir denetim başlatmak iyi olur.",
+                { count: data.daysSince ?? 0 },
+              )}
             </span>
           </div>
           <Link
@@ -59,7 +61,7 @@ export function AuditFreshnessCard({ projectId }: { projectId: string }) {
             search={{}}
             className="btn btn-primary btn-sm"
           >
-            Denetimi başlat
+            {t("Denetimi başlat")}
           </Link>
         </div>
       ) : null}
@@ -69,16 +71,16 @@ export function AuditFreshnessCard({ projectId }: { projectId: string }) {
           <IssueDeltaList
             projectId={projectId}
             auditId={data.auditId}
-            title="Son denetimde yeni çıkanlar"
-            emptyLabel="Yeni sorun yok."
+            title={t("Son denetimde yeni çıkanlar")}
+            emptyLabel={t("Yeni sorun yok.")}
             tone="new"
             items={data.newIssues}
           />
           <IssueDeltaList
             projectId={projectId}
             auditId={data.auditId}
-            title="Düzelenler"
-            emptyLabel="Düzelen sorun yok."
+            title={t("Düzelenler")}
+            emptyLabel={t("Düzelen sorun yok.")}
             tone="resolved"
             items={data.resolvedIssues}
           />
@@ -140,7 +142,7 @@ function IssueDeltaList({
                     <ArrowDown className="size-3.5" />
                   )}
                   {item.previousCount === null
-                    ? `${formatCount(item.count)} sayfa`
+                    ? t("{count} sayfa", { count: item.count })
                     : `${formatCount(item.previousCount)} → ${formatCount(item.count)}`}
                 </span>
               </>

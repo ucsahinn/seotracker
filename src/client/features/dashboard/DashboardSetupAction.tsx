@@ -15,6 +15,8 @@ import { getAgentConnection } from "@/serverFunctions/agentConnection";
 import { getProjects, setProjectWebsite } from "@/serverFunctions/projects";
 import type { DashboardSetupStep } from "@/types/schemas/dashboard";
 import { normalizeDomainCandidate } from "@/client/lib/domain-input";
+import { fillParts } from "@/client/features/settings/fillParts";
+import { t } from "@/shared/i18n";
 
 const projectPrompt = `Use seotracker to set up a separate project for each website below. List my existing projects first and reuse matches so you don’t create duplicates. Set the country and language for each site, and ask me about anything missing.
 
@@ -61,7 +63,7 @@ export function DashboardSetupAction({
           disabled={projects.isFetching}
           onClick={() => void projects.refetch()}
         >
-          Tekrar dene
+          {t("Tekrar dene")}
         </button>
       </div>
     ) : (
@@ -71,14 +73,15 @@ export function DashboardSetupAction({
     return (
       <div className="max-w-2xl space-y-4">
         <p className="text-sm leading-relaxed text-muted">
-          Bu istemi ajanınıza yapıştırın; seowatcher&apos;ı sizin için
-          kendiliğinden kuracak.
+          {t(
+            "Bu istemi ajanınıza yapıştırın; seowatcher'ı sizin için kendiliğinden kuracak.",
+          )}
         </p>
         <div className="flex flex-col gap-4 rounded-box border border-base-300 bg-base-200/25 p-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="text-sm font-medium">seowatcher eklentisi</p>
+            <p className="text-sm font-medium">{t("seowatcher eklentisi")}</p>
             <p className="mt-1 text-xs text-muted">
-              Ajan bağlantısı (MCP) ve hazır SEO görevleri
+              {t("Ajan bağlantısı (MCP) ve hazır SEO görevleri")}
             </p>
           </div>
           <div className="shrink-0 [&>button]:h-10 [&>button]:w-full [&>button]:gap-2 [&>button]:text-sm">
@@ -97,8 +100,8 @@ export function DashboardSetupAction({
                   installKind: connection.data?.installKind,
                 },
               )}
-              label="Kurulum istemini kopyala"
-              successMessage="Kurulum istemi kopyalandı"
+              label={t("Kurulum istemini kopyala")}
+              successMessage={t("Kurulum istemi kopyalandı")}
               onCopy={() =>
                 captureClientEvent("onboarding:setup_prompt_copy", {
                   source: "dashboard",
@@ -115,7 +118,7 @@ export function DashboardSetupAction({
           to="/ai"
           className="inline-block text-xs text-muted underline decoration-base-content/25 underline-offset-4 hover:text-base-content"
         >
-          Kurulumu elle yapın
+          {t("Kurulumu elle yapın")}
         </Link>
       </div>
     );
@@ -123,9 +126,9 @@ export function DashboardSetupAction({
     return (
       <div className="max-w-2xl space-y-4">
         <p className="text-sm leading-relaxed text-muted">
-          Ne sattığınız, kimi hedeflediğiniz ve hangi sayfaların para
-          kazandırdığı burada duruyor. Rapor şablonları ve bağladığınız ajan bu
-          bilgiyi okuyor; boşken ikisi de siteyi tanımadan yorum yapıyor.
+          {t(
+            "Ne sattığınız, kimi hedeflediğiniz ve hangi sayfaların para kazandırdığı burada duruyor. Rapor şablonları ve bağladığınız ajan bu bilgiyi okuyor; boşken ikisi de siteyi tanımadan yorum yapıyor.",
+          )}
         </p>
         <Link
           to="/p/$projectId/context"
@@ -133,7 +136,7 @@ export function DashboardSetupAction({
           className="btn btn-primary btn-sm"
           onClick={onComplete}
         >
-          Proje bilgisini doldurun
+          {t("Proje bilgisini doldurun")}
         </Link>
       </div>
     );
@@ -152,35 +155,44 @@ export function DashboardSetupAction({
     return (
       <div className="space-y-4">
         <p className="text-sm leading-relaxed text-muted">
-          Her sitenin araştırmasını, sıralamalarını ve bağlantılarını kendi
-          projesinde tutun. Yan menüdeki proje değiştiriciden "Yeni proje"
-          diyerek istediğiniz zaman ekleyebilirsiniz.
+          {t(
+            'Her sitenin araştırmasını, sıralamalarını ve bağlantılarını kendi projesinde tutun. Yan menüdeki proje değiştiriciden "Yeni proje" diyerek istediğiniz zaman ekleyebilirsiniz.',
+          )}
         </p>
         <button
           type="button"
           className="btn btn-primary btn-sm"
           onClick={() => setShowModal(true)}
         >
-          Başka bir proje oluştur
+          {t("Başka bir proje oluştur")}
         </button>
         <details className="rounded-box border border-base-300 p-4">
           <summary className="cursor-pointer text-sm font-medium">
-            Bir site listeniz mi var? Ajanınız hepsini kursun.
+            {t("Bir site listeniz mi var? Ajanınız hepsini kursun.")}
           </summary>
           <div className="mt-3 space-y-3">
             <p className="text-sm text-muted">
-              <Link to="/ai" className="link">
-                Ajanınızı bağlayın
-              </Link>
-              , sonra site listenizle birlikte bu istemi yapıştırın.
+              {/* One sentence with the link inside, so English can move it. */}
+              {fillParts(
+                t(
+                  "{link}, sonra site listenizle birlikte bu istemi yapıştırın.",
+                ),
+                {
+                  link: (
+                    <Link to="/ai" className="link">
+                      {t("Ajanınızı bağlayın")}
+                    </Link>
+                  ),
+                },
+              )}
             </p>
             <pre className="whitespace-pre-wrap break-words font-sans text-sm leading-relaxed text-muted">
               {projectPrompt}
             </pre>
             <CopyButton
               value={projectPrompt}
-              label="Proje istemini kopyala"
-              successMessage="Proje istemi kopyalandı"
+              label={t("Proje istemini kopyala")}
+              successMessage={t("Proje istemi kopyalandı")}
             />
           </div>
         </details>
@@ -219,14 +231,14 @@ function WebsiteForm({
           queryKey: ["projectAccess", project.id],
         }),
       ]);
-      toast.success("Site kaydedildi");
+      toast.success(t("Site kaydedildi"));
       onComplete();
     },
     onError: (error) =>
       toast.error(
         getStandardErrorMessage(
           error,
-          "Siteniz kaydedilemedi. Tekrar deneyin.",
+          t("Siteniz kaydedilemedi. Tekrar deneyin."),
         ),
       ),
   });
@@ -251,9 +263,9 @@ function WebsiteForm({
       }}
     >
       <p className="text-sm leading-relaxed text-muted">
-        Bu projenin sitesini ekleyin ve müşterilerinizin arama yaptığı ülkeyi
-        seçin. İkisini de proje ayarlarından istediğiniz zaman
-        değiştirebilirsiniz.
+        {t(
+          "Bu projenin sitesini ekleyin ve müşterilerinizin arama yaptığı ülkeyi seçin. İkisini de proje ayarlarından istediğiniz zaman değiştirebilirsiniz.",
+        )}
       </p>
       <form.Field
         name="domain"
@@ -266,7 +278,7 @@ function WebsiteForm({
       >
         {(field) => (
           <label className="flex flex-col gap-1.5 text-sm">
-            <span className="font-medium">Site adresi</span>
+            <span className="font-medium">{t("Site adresi")}</span>
             <input
               type="text"
               required
@@ -311,7 +323,7 @@ function WebsiteForm({
             className="btn btn-primary btn-sm"
             disabled={!canSubmit || isSubmitting || save.isPending}
           >
-            {save.isPending ? "Kaydediliyor…" : "Siteyi kaydet"}
+            {save.isPending ? t("Kaydediliyor…") : t("Siteyi kaydet")}
           </button>
         )}
       </form.Subscribe>

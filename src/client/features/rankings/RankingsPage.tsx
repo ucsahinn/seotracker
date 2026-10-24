@@ -1,3 +1,4 @@
+import { t } from "@/shared/i18n";
 import { QueryHistoryCard } from "@/client/features/rankings/QueryHistoryCard";
 import { TablePagination } from "@/client/components/table/TablePagination";
 import { formatDate, formatNumber } from "@/client/lib/format";
@@ -56,6 +57,7 @@ const PAGE_SIZES = [25, 50, 100] as const;
  * already dropped, was unreachable from the screen while an agent could read
  * them through `get_ranking_history`. 1825 matches that tool's cap.
  */
+// Labels stay Turkish here and go through t() where they render.
 export const RANKING_WINDOWS = [
   { days: 30, label: "30 gün" },
   { days: 90, label: "90 gün" },
@@ -175,15 +177,15 @@ export function RankingsPage({
   const hasData = !notConnected && !archiveEmpty;
   const searching = search.trim() !== "";
   const emptyTitle = searching
-    ? "Aramanıza uyan sorgu yok"
+    ? t("Aramanıza uyan sorgu yok")
     : narrowed
-      ? "Bu filtreye uyan sorgu yok"
-      : "Bu aralıkta kayıtlı sorgu yok";
+      ? t("Bu filtreye uyan sorgu yok")
+      : t("Bu aralıkta kayıtlı sorgu yok");
   const emptyDescription = searching
-    ? "Arama kutusunu temizleyin ya da başka bir sorgu deneyin."
+    ? t("Arama kutusunu temizleyin ya da başka bir sorgu deneyin.")
     : narrowed
-      ? "Sıra dağılımındaki çubuğu ya da hızlı filtreyi kaldırın."
-      : "Daha geniş bir dönem seçmeyi deneyin.";
+      ? t("Sıra dağılımındaki çubuğu ya da hızlı filtreyi kaldırın.")
+      : t("Daha geniş bir dönem seçmeyi deneyin.");
   /*
    * Paginated in the browser over the whole fetched set. The screen used to
    * ask Google's archive for 25 rows and render them with no pagination and
@@ -200,8 +202,10 @@ export function RankingsPage({
   return (
     <PageShell>
       <PageHeader
-        title="Sıralama takibi"
-        description="Sorgularınızın Google'daki ortalama sırası. Arşiv bu bilgisayarda tutulduğu için Google'ın 16 aylık sınırından daha eskiye de bakabilirsiniz."
+        title={t("Sıralama takibi")}
+        description={t(
+          "Sorgularınızın Google'daki ortalama sırası. Arşiv bu bilgisayarda tutulduğu için Google'ın 16 aylık sınırından daha eskiye de bakabilirsiniz.",
+        )}
         /* A pick-one filter, not tabs: it re-queries the one table below
            rather than swapping between panels, so there is no panel for
            `aria-controls` to point at. */
@@ -226,7 +230,7 @@ export function RankingsPage({
               />
               <div
                 role="radiogroup"
-                aria-label="Zaman aralığı"
+                aria-label={t("Zaman aralığı")}
                 className="tabs tabs-border"
               >
                 {RANKING_WINDOWS.map((option) => (
@@ -238,7 +242,7 @@ export function RankingsPage({
                     className={`tab ${days === option.days ? "tab-active" : ""}`}
                     onClick={() => onDaysChange(option.days)}
                   >
-                    {option.label}
+                    {t(option.label)}
                   </button>
                 ))}
               </div>
@@ -264,12 +268,13 @@ export function RankingsPage({
           <MoversCard rows={fetched} onPick={setSelected} />
         ) : (
           <p className="rounded-box border border-base-300 bg-base-100 px-4 py-3 text-sm text-muted">
-            Değişim gösterilemiyor. Arşivde önceki dönem (
-            {formatDate(tracked.data.previousRange.startDate)} –{" "}
-            {formatDate(tracked.data.previousRange.endDate)}) için bu sorgulara
-            ait kayıt yok. Karşılaştırma, iki dönemde de verisi olan sorgular
-            için yapılır. Daha kısa bir aralık seçin ya da arşivin dolmasını
-            bekleyin.
+            {t(
+              "Değişim gösterilemiyor. Arşivde önceki dönem ({start} – {end}) için bu sorgulara ait kayıt yok. Karşılaştırma, iki dönemde de verisi olan sorgular için yapılır. Daha kısa bir aralık seçin ya da arşivin dolmasını bekleyin.",
+              {
+                start: formatDate(tracked.data.previousRange.startDate),
+                end: formatDate(tracked.data.previousRange.endDate),
+              },
+            )}
           </p>
         )
       ) : null}
@@ -294,8 +299,8 @@ export function RankingsPage({
               <input
                 type="search"
                 className="input input-bordered input-sm w-full sm:max-w-xs"
-                placeholder="Sorgu içinde ara"
-                aria-label="Sorgu içinde ara"
+                placeholder={t("Sorgu içinde ara")}
+                aria-label={t("Sorgu içinde ara")}
                 value={search}
                 onChange={(event) => {
                   setSearch(event.target.value);
@@ -305,7 +310,7 @@ export function RankingsPage({
               {fetched.length > 0 ? (
                 <div className="flex flex-col gap-2">
                   <FilterChips<MoveId>
-                    label="Değişim filtreleri"
+                    label={t("Değişim filtreleri")}
                     active={move}
                     onChange={(next) => {
                       setMove(next);
@@ -314,36 +319,44 @@ export function RankingsPage({
                     chips={[
                       {
                         id: "risers",
-                        label: "Yükselenler",
+                        label: t("Yükselenler"),
                         icon: ArrowUp,
                         count: moveCounts.risers,
-                        hint: "Önceki döneme göre en az yarım sıra yükselen sorgular.",
+                        hint: t(
+                          "Önceki döneme göre en az yarım sıra yükselen sorgular.",
+                        ),
                       },
                       {
                         id: "fallers",
-                        label: "Düşenler",
+                        label: t("Düşenler"),
                         icon: ArrowDown,
                         count: moveCounts.fallers,
-                        hint: "Önceki döneme göre en az yarım sıra düşen sorgular.",
+                        hint: t(
+                          "Önceki döneme göre en az yarım sıra düşen sorgular.",
+                        ),
                       },
                       {
                         id: "top10",
-                        label: "Şu an ilk 10'da",
+                        label: t("Şu an ilk 10'da"),
                         icon: Trophy,
                         count: moveCounts.top10,
-                        hint: "Şimdi ortalama sırası 10 ya da daha iyi olan sorgular, ilk 10'a yeni girenler dahil. Önceki dönemde de verisi olanlar sayılır. Üstteki çubuk ise şu anki tüm sorguları sayar.",
+                        hint: t(
+                          "Şimdi ortalama sırası 10 ya da daha iyi olan sorgular, ilk 10'a yeni girenler dahil. Önceki dönemde de verisi olanlar sayılır. Üstteki çubuk ise şu anki tüm sorguları sayar.",
+                        ),
                       },
                       {
                         id: "lost",
-                        label: "İlk 10'dan çıkanlar",
+                        label: t("İlk 10'dan çıkanlar"),
                         icon: LogOut,
                         count: moveCounts.lost,
-                        hint: "Önceki dönemde ilk 10'da olup şimdi ilk 10'un dışına çıkan sorgular.",
+                        hint: t(
+                          "Önceki dönemde ilk 10'da olup şimdi ilk 10'un dışına çıkan sorgular.",
+                        ),
                       },
                     ]}
                   />
                   <FilterChips<ChipId>
-                    label="Hızlı filtreler"
+                    label={t("Hızlı filtreler")}
                     active={chip}
                     onChange={(next) => {
                       setChip(next);
@@ -352,17 +365,20 @@ export function RankingsPage({
                     chips={[
                       {
                         id: "highImpressions",
-                        label: "Gösterimi yüksek",
+                        label: t("Gösterimi yüksek"),
                         icon: Eye,
                         count: chipCounts.highImpressions,
-                        hint: `${formatNumber(HIGH_IMPRESSIONS)} veya daha fazla gösterim alan sorgular.`,
+                        hint: t(
+                          "{impressions} veya daha fazla gösterim alan sorgular.",
+                          { impressions: formatNumber(HIGH_IMPRESSIONS) },
+                        ),
                       },
                       {
                         id: "noClicks",
-                        label: "Hiç tıklanmayan",
+                        label: t("Hiç tıklanmayan"),
                         icon: CircleSlash,
                         count: chipCounts.noClicks,
-                        hint: "Gösterilmiş ama hiç tıklanmamış sorgular.",
+                        hint: t("Gösterilmiş ama hiç tıklanmamış sorgular."),
                       },
                     ]}
                   />
@@ -396,9 +412,10 @@ export function RankingsPage({
             ) : null}
             {tracked.data?.truncated ? (
               <p className="border-t border-base-300 px-4 py-2 text-xs text-muted">
-                Arşivde daha fazla sorgu var. Bu liste en çok gösterim alan{" "}
-                {formatNumber(fetched.length)} tanesiyle sınırlı. Aralığı
-                daraltarak farklı sorguları görebilirsiniz.
+                {t(
+                  "Arşivde daha fazla sorgu var. Bu liste en çok gösterim alan {count} tanesiyle sınırlı. Aralığı daraltarak farklı sorguları görebilirsiniz.",
+                  { count: fetched.length },
+                )}
               </p>
             ) : null}
           </div>

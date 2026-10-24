@@ -74,16 +74,18 @@ them at once. Change them there before you change a component.
 - **Numbers are tabular** everywhere (set on `body`), so columns do not wobble
   as values change.
 - Every visible number, date and time goes through `src/shared/format.ts`
-  (re-exported by `src/client/lib/format.ts`), which is pinned to `tr-TR`. Do not call `toLocaleString` at a call site and
+  (re-exported by `src/client/lib/format.ts`), which follows the active UI language (`tr-TR` or `en-US`). Do not call `toLocaleString` at a call site and
   do not add a second formatting module.
 - Empty, loading and error states are part of the screen, not an afterthought.
   Reach for `EmptyState` and for skeletons shaped like the content that is
   coming, not a spinner.
 
-The UI is Turkish. MCP tool descriptions and code comments stay English: agents
-read the former, and the latter are for whoever edits the file. `<html lang="tr">`
-is load-bearing - CSS `text-transform: uppercase` follows it, and without it
-"Bilgi" uppercases to "BILGI".
+The UI supports Turkish and English through `src/shared/i18n.ts`. Turkish strings
+are the source keys; English translations live in `src/shared/i18n/en/`. Translate
+labels at render time, since the locale is not known when a module loads. MCP
+tool descriptions and code comments stay English. `<html lang>` follows the active
+locale: CSS `text-transform: uppercase` depends on it, and without `lang="tr"`
+"Bilgi" uppercases to "BILGI". Server locale state stays scoped to each request.
 
 ## Testing
 

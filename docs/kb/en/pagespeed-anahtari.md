@@ -5,7 +5,7 @@ kind: nasil-yapilir
 updated: 2026-10-22
 ---
 
-This guide gets you a free PageSpeed key, enters it in the app and tests it. It takes five minutes. The "Sayfa hızını da ölç" (Also measure page speed) option in the site audit measures each page on a phone and on a computer using Google's PageSpeed Insights service. Google offers the service without a key too, but the allowance is tiny: after a few pages it returns "429, too many requests". Without a key, the app measures at most 50 pages per audit. A free key removes that limit.
+This guide gets you a free PageSpeed key, enters it in the app and tests it. It takes five minutes. The "Also measure page speed" option in the site audit measures each page on a phone and on a computer using Google's PageSpeed Insights service. Google offers the service without a key too, but the allowance is tiny: after a few pages it returns "429, too many requests". Without a key, the app measures at most 50 pages per audit. A free key removes that limit.
 
 ## What you need
 
@@ -18,14 +18,14 @@ This guide gets you a free PageSpeed key, enters it in the app and tests it. It 
 2. Open the **API'ler ve Hizmetler → Kitaplık** (APIs & Services → Library) page. Search for **PageSpeed Insights API** and choose **Etkinleştir** (Enable). If you skip this step, the key exists but every request is rejected with 403.
 3. Choose **API'ler ve Hizmetler → Kimlik bilgileri → Kimlik bilgisi oluştur → API anahtarı** (APIs & Services → Credentials → Create credentials → API key). A key that starts with "AIza" appears. Copy it.
 4. Optional but recommended: choose **Anahtarı kısıtla** (Restrict key). Under API restrictions, select only **PageSpeed Insights API**. If your AI assistant will also look at the history of real user data (CrUX), add the **Chrome UX Report API** too.
-5. In the app, open **Ayarlar → Hız ölçümü** (Settings → Speed measurement). Paste the key into the **API anahtarı** (API key) field. Choose **Kaydet** (Save). The notice "PageSpeed anahtarı kaydedildi" (PageSpeed key saved) appears. You do not need to restart.
-6. In the same section, press the **Anahtarı test et** (Test the key) button. The app makes one real measurement for example.com (it uses 1 measurement). The expected answer is "Anahtar çalışıyor: Google PageSpeed Insights ölçümü kabul etti." (The key works: Google PageSpeed Insights accepted the measurement.)
+5. In the app, open **Ayarlar → Hız ölçümü** (Settings → Speed measurement). Paste the key into the **API key** field. Choose **Save**. The notice "PageSpeed key saved" appears. You do not need to restart.
+6. In the same section, press the **Test key** button. The app makes one real measurement for example.com (it uses 1 measurement). The expected answer is "The key works: Google PageSpeed Insights accepted the measurement."
 
-If you use Docker, you can also give the key in the `.env` file as `PAGESPEED_API_KEY`. The **Ayarlar** (Settings) screen is easier, and a value entered there takes priority.
+If you use Docker, you can also give the key in the `.env` file as `PAGESPEED_API_KEY`. The **Settings** screen is easier, and a value entered there takes priority.
 
 ## Check
 
-- The **Ayarlar → Hız ölçümü** badge should say **Anahtar kayıtlı** (Key saved).
+- The **Ayarlar → Hız ölçümü** badge should say **Key saved**.
 - On the site audit start card, with "Sayfa hızını da ölç" on, the time estimate should no longer mention the "en çok 50 sayfa" (at most 50 pages) limit.
 - The "PageSpeed Insights" card in **Ayarlar → Sınırlar** (Settings → Limits) should say "Anahtar tanımlı" (Key defined).
 

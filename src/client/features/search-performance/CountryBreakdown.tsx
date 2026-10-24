@@ -1,3 +1,4 @@
+import { t } from "@/shared/i18n";
 import { sort } from "remeda";
 import { X } from "lucide-react";
 import { DonutChart } from "@/client/components/DonutChart";
@@ -58,7 +59,7 @@ export function CountryBreakdown({
     <section className="overflow-hidden rounded-box border border-base-300 bg-base-100">
       <div className="border-b border-base-300 px-4 py-3">
         <div className="flex items-center justify-between gap-3">
-          <h2 className="text-sm font-medium">Ülkeler</h2>
+          <h2 className="text-sm font-medium">{t("Ülkeler")}</h2>
           {selected ? (
             <button
               type="button"
@@ -66,22 +67,27 @@ export function CountryBreakdown({
               onClick={() => onSelect(undefined)}
             >
               <X className="size-3" aria-hidden />
-              {formatCountry(selected)} filtresini kaldır
+              {t("{country} filtresini kaldır", {
+                country: formatCountry(selected),
+              })}
             </button>
           ) : null}
         </div>
         <p className="mt-0.5 text-xs text-muted">
-          Tıklamaların hangi ülkelerden geldiği. Halkadan ya da tablodan bir
-          ülkeye tıklayarak tüm sayfayı o ülkeye göre daraltabilirsiniz.
+          {t(
+            "Tıklamaların hangi ülkelerden geldiği. Halkadan ya da tablodan bir ülkeye tıklayarak tüm sayfayı o ülkeye göre daraltabilirsiniz.",
+          )}
         </p>
       </div>
       <div className="border-b border-base-300 px-4 py-4">
         <DonutChart
           height={144}
-          totalLabel="tıklama"
+          totalLabel={t("tıklama")}
           segments={countrySegments(countries).map((segment) => ({
             key: segment.key ?? OTHER_COUNTRIES,
-            label: segment.key ? formatCountry(segment.key) : "Diğer ülkeler",
+            label: segment.key
+              ? formatCountry(segment.key)
+              : t("Diğer ülkeler"),
             value: segment.clicks,
             // The pooled remainder is a neutral grey, so it reads as "the
             // rest" rather than as a fourth market.
@@ -98,29 +104,29 @@ export function CountryBreakdown({
       <table className="table table-sm">
         <thead>
           <tr>
-            <th scope="col">Ülke</th>
+            <th scope="col">{t("Ülke")}</th>
             <th scope="col">
               {/* Named, even though the bar restates the count beside it: an
                   empty <th> leaves the column unannounced in the header row. */}
-              <span className="sr-only">Dağılım</span>
+              <span className="sr-only">{t("Dağılım")}</span>
             </th>
             <th scope="col" className="text-right">
-              Tıklama
+              {t("Tıklama")}
             </th>
             {/* Fetched on every load and dropped: a market with plenty of
                 impressions and no clicks is a snippet problem, not a
                 ranking problem, and the panel held the numbers to say so. */}
             <th scope="col" className="text-right">
-              Gösterim
+              {t("Gösterim")}
             </th>
             <th scope="col" className="text-right">
-              Tıklama oranı
+              {t("Tıklama oranı")}
             </th>
             <th scope="col" className="text-right">
-              Pay
+              {t("Pay")}
             </th>
             <th scope="col" className="text-right">
-              Ort. sıra
+              {t("Ort. sıra")}
             </th>
           </tr>
         </thead>
@@ -174,7 +180,7 @@ export function CountryBreakdown({
           ))}
           {rest.length > 0 ? (
             <tr className="text-muted">
-              <td>{formatCount(rest.length)} ülke daha</td>
+              <td>{t("{count} ülke daha", { count: rest.length })}</td>
               <td />
               <td className="text-right tabular-nums">
                 {formatCount(restClicks)}
@@ -201,6 +207,10 @@ function countrySummary(countries: { key: string; clicks: number }[]): string {
   const total = segments.reduce((sum, segment) => sum + segment.clicks, 0);
   const lead = segments.find((segment) => segment.key !== null);
   return lead?.key
-    ? `Toplam ${formatCount(total)} tıklamanın ${formatPercent(lead.clicks / total)} kadarı ${formatCountry(lead.key)} kaynaklı.`
-    : `Toplam ${formatCount(total)} tıklama.`;
+    ? t("Toplam {total} tıklamanın {share} kadarı {country} kaynaklı.", {
+        total: formatCount(total),
+        share: formatPercent(lead.clicks / total),
+        country: formatCountry(lead.key),
+      })
+    : t("Toplam {count} tıklama.", { count: total });
 }

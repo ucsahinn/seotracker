@@ -116,6 +116,7 @@ export async function fetchLighthouseResult(
         url,
         pageId,
         strategy,
+        // i18n-ignore: stored audit data written by the background workflow; the UI words it by marker
         `${LIGHTHOUSE_QUOTA_MARKER}: Google'ın günlük PageSpeed ölçüm sınırı doldu.`,
       );
       return { ...quota, quotaExhausted: true };

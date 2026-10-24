@@ -9,44 +9,45 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ProjectRouteRouteImport } from './routes/_project/route'
 import { Route as AppRouteRouteImport } from './routes/_app/route'
+import { Route as ProjectRouteRouteImport } from './routes/_project/route'
 import { Route as AppIndexRouteImport } from './routes/_app/index'
-import { Route as RReportIdRouteImport } from './routes/r/$reportId'
-import { Route as ApiHealthRouteImport } from './routes/api/health'
-import { Route as AppSupportRouteImport } from './routes/_app/support'
-import { Route as AppSettingsRouteImport } from './routes/_app/settings'
-import { Route as AppProjectsRouteImport } from './routes/_app/projects'
 import { Route as AppAiRouteImport } from './routes/_app/ai'
+import { Route as AppProjectsRouteImport } from './routes/_app/projects'
+import { Route as AppReleaseNotesRouteImport } from './routes/_app/release-notes'
+import { Route as AppSettingsRouteImport } from './routes/_app/settings'
+import { Route as AppSupportRouteImport } from './routes/_app/support'
+import { Route as ApiHealthRouteImport } from './routes/api/health'
+import { Route as RReportIdRouteImport } from './routes/r/$reportId'
 import { Route as AppSettingsIndexRouteImport } from './routes/_app/settings/index'
 import { Route as ProjectPProjectIdRouteRouteImport } from './routes/_project/p/$projectId/route'
 import { Route as ProjectPProjectIdIndexRouteImport } from './routes/_project/p/$projectId/index'
-import { Route as ApiGscOauthCallbackRouteImport } from './routes/api/gsc/oauth/callback'
-import { Route as ApiGa4OauthCallbackRouteImport } from './routes/api/ga4/oauth/callback'
-import { Route as ProjectPProjectIdSettingsRouteImport } from './routes/_project/p/$projectId/settings'
-import { Route as ProjectPProjectIdSearchPerformanceRouteImport } from './routes/_project/p/$projectId/search-performance'
-import { Route as ProjectPProjectIdSavedRouteImport } from './routes/_project/p/$projectId/saved'
-import { Route as ProjectPProjectIdRankingsRouteImport } from './routes/_project/p/$projectId/rankings'
-import { Route as ProjectPProjectIdOpportunitiesRouteImport } from './routes/_project/p/$projectId/opportunities'
-import { Route as ProjectPProjectIdContextRouteImport } from './routes/_project/p/$projectId/context'
-import { Route as ProjectPProjectIdAuditRouteImport } from './routes/_project/p/$projectId/audit'
-import { Route as ProjectPProjectIdAnalyticsRouteImport } from './routes/_project/p/$projectId/analytics'
 import { Route as ProjectPProjectIdSplatRouteImport } from './routes/_project/p/$projectId/$'
-import { Route as ProjectPProjectIdSettingsIndexRouteImport } from './routes/_project/p/$projectId/settings/index'
-import { Route as ProjectPProjectIdReportsIndexRouteImport } from './routes/_project/p/$projectId/reports/index'
+import { Route as ProjectPProjectIdAnalyticsRouteImport } from './routes/_project/p/$projectId/analytics'
+import { Route as ProjectPProjectIdAuditRouteImport } from './routes/_project/p/$projectId/audit'
+import { Route as ProjectPProjectIdContextRouteImport } from './routes/_project/p/$projectId/context'
+import { Route as ProjectPProjectIdOpportunitiesRouteImport } from './routes/_project/p/$projectId/opportunities'
+import { Route as ProjectPProjectIdRankingsRouteImport } from './routes/_project/p/$projectId/rankings'
+import { Route as ProjectPProjectIdSavedRouteImport } from './routes/_project/p/$projectId/saved'
+import { Route as ProjectPProjectIdSearchPerformanceRouteImport } from './routes/_project/p/$projectId/search-performance'
+import { Route as ProjectPProjectIdSettingsRouteImport } from './routes/_project/p/$projectId/settings'
+import { Route as ApiGa4OauthCallbackRouteImport } from './routes/api/ga4/oauth/callback'
+import { Route as ApiGscOauthCallbackRouteImport } from './routes/api/gsc/oauth/callback'
 import { Route as ProjectPProjectIdAuditIndexRouteImport } from './routes/_project/p/$projectId/audit/index'
-import { Route as ProjectPProjectIdSettingsIntegrationsRouteImport } from './routes/_project/p/$projectId/settings/integrations'
-import { Route as ProjectPProjectIdSettingsContextRouteImport } from './routes/_project/p/$projectId/settings/context'
-import { Route as ProjectPProjectIdReportsTemplatesRouteImport } from './routes/_project/p/$projectId/reports/templates'
+import { Route as ProjectPProjectIdReportsIndexRouteImport } from './routes/_project/p/$projectId/reports/index'
 import { Route as ProjectPProjectIdReportsReportIdRouteImport } from './routes/_project/p/$projectId/reports/$reportId'
+import { Route as ProjectPProjectIdReportsTemplatesRouteImport } from './routes/_project/p/$projectId/reports/templates'
+import { Route as ProjectPProjectIdSettingsIndexRouteImport } from './routes/_project/p/$projectId/settings/index'
+import { Route as ProjectPProjectIdSettingsContextRouteImport } from './routes/_project/p/$projectId/settings/context'
+import { Route as ProjectPProjectIdSettingsIntegrationsRouteImport } from './routes/_project/p/$projectId/settings/integrations'
 import { Route as ProjectPProjectIdAuditIssuesResultIdRouteImport } from './routes/_project/p/$projectId/audit/issues/$resultId'
 
-const ProjectRouteRoute = ProjectRouteRouteImport.update({
-  id: '/_project',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AppRouteRoute = AppRouteRouteImport.update({
   id: '/_app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectRouteRoute = ProjectRouteRouteImport.update({
+  id: '/_project',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppIndexRoute = AppIndexRouteImport.update({
@@ -54,24 +55,9 @@ const AppIndexRoute = AppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppRouteRoute,
 } as any)
-const RReportIdRoute = RReportIdRouteImport.update({
-  id: '/r/$reportId',
-  path: '/r/$reportId',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiHealthRoute = ApiHealthRouteImport.update({
-  id: '/api/health',
-  path: '/api/health',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AppSupportRoute = AppSupportRouteImport.update({
-  id: '/support',
-  path: '/support',
-  getParentRoute: () => AppRouteRoute,
-} as any)
-const AppSettingsRoute = AppSettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
+const AppAiRoute = AppAiRouteImport.update({
+  id: '/ai',
+  path: '/ai',
   getParentRoute: () => AppRouteRoute,
 } as any)
 const AppProjectsRoute = AppProjectsRouteImport.update({
@@ -79,10 +65,30 @@ const AppProjectsRoute = AppProjectsRouteImport.update({
   path: '/projects',
   getParentRoute: () => AppRouteRoute,
 } as any)
-const AppAiRoute = AppAiRouteImport.update({
-  id: '/ai',
-  path: '/ai',
+const AppReleaseNotesRoute = AppReleaseNotesRouteImport.update({
+  id: '/release-notes',
+  path: '/release-notes',
   getParentRoute: () => AppRouteRoute,
+} as any)
+const AppSettingsRoute = AppSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppSupportRoute = AppSupportRouteImport.update({
+  id: '/support',
+  path: '/support',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const ApiHealthRoute = ApiHealthRouteImport.update({
+  id: '/api/health',
+  path: '/api/health',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RReportIdRoute = RReportIdRouteImport.update({
+  id: '/r/$reportId',
+  path: '/r/$reportId',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AppSettingsIndexRoute = AppSettingsIndexRouteImport.update({
   id: '/',
@@ -99,54 +105,9 @@ const ProjectPProjectIdIndexRoute = ProjectPProjectIdIndexRouteImport.update({
   path: '/',
   getParentRoute: () => ProjectPProjectIdRouteRoute,
 } as any)
-const ApiGscOauthCallbackRoute = ApiGscOauthCallbackRouteImport.update({
-  id: '/api/gsc/oauth/callback',
-  path: '/api/gsc/oauth/callback',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiGa4OauthCallbackRoute = ApiGa4OauthCallbackRouteImport.update({
-  id: '/api/ga4/oauth/callback',
-  path: '/api/ga4/oauth/callback',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProjectPProjectIdSettingsRoute =
-  ProjectPProjectIdSettingsRouteImport.update({
-    id: '/settings',
-    path: '/settings',
-    getParentRoute: () => ProjectPProjectIdRouteRoute,
-  } as any)
-const ProjectPProjectIdSearchPerformanceRoute =
-  ProjectPProjectIdSearchPerformanceRouteImport.update({
-    id: '/search-performance',
-    path: '/search-performance',
-    getParentRoute: () => ProjectPProjectIdRouteRoute,
-  } as any)
-const ProjectPProjectIdSavedRoute = ProjectPProjectIdSavedRouteImport.update({
-  id: '/saved',
-  path: '/saved',
-  getParentRoute: () => ProjectPProjectIdRouteRoute,
-} as any)
-const ProjectPProjectIdRankingsRoute =
-  ProjectPProjectIdRankingsRouteImport.update({
-    id: '/rankings',
-    path: '/rankings',
-    getParentRoute: () => ProjectPProjectIdRouteRoute,
-  } as any)
-const ProjectPProjectIdOpportunitiesRoute =
-  ProjectPProjectIdOpportunitiesRouteImport.update({
-    id: '/opportunities',
-    path: '/opportunities',
-    getParentRoute: () => ProjectPProjectIdRouteRoute,
-  } as any)
-const ProjectPProjectIdContextRoute =
-  ProjectPProjectIdContextRouteImport.update({
-    id: '/context',
-    path: '/context',
-    getParentRoute: () => ProjectPProjectIdRouteRoute,
-  } as any)
-const ProjectPProjectIdAuditRoute = ProjectPProjectIdAuditRouteImport.update({
-  id: '/audit',
-  path: '/audit',
+const ProjectPProjectIdSplatRoute = ProjectPProjectIdSplatRouteImport.update({
+  id: '/$',
+  path: '/$',
   getParentRoute: () => ProjectPProjectIdRouteRoute,
 } as any)
 const ProjectPProjectIdAnalyticsRoute =
@@ -155,16 +116,61 @@ const ProjectPProjectIdAnalyticsRoute =
     path: '/analytics',
     getParentRoute: () => ProjectPProjectIdRouteRoute,
   } as any)
-const ProjectPProjectIdSplatRoute = ProjectPProjectIdSplatRouteImport.update({
-  id: '/$',
-  path: '/$',
+const ProjectPProjectIdAuditRoute = ProjectPProjectIdAuditRouteImport.update({
+  id: '/audit',
+  path: '/audit',
   getParentRoute: () => ProjectPProjectIdRouteRoute,
 } as any)
-const ProjectPProjectIdSettingsIndexRoute =
-  ProjectPProjectIdSettingsIndexRouteImport.update({
+const ProjectPProjectIdContextRoute =
+  ProjectPProjectIdContextRouteImport.update({
+    id: '/context',
+    path: '/context',
+    getParentRoute: () => ProjectPProjectIdRouteRoute,
+  } as any)
+const ProjectPProjectIdOpportunitiesRoute =
+  ProjectPProjectIdOpportunitiesRouteImport.update({
+    id: '/opportunities',
+    path: '/opportunities',
+    getParentRoute: () => ProjectPProjectIdRouteRoute,
+  } as any)
+const ProjectPProjectIdRankingsRoute =
+  ProjectPProjectIdRankingsRouteImport.update({
+    id: '/rankings',
+    path: '/rankings',
+    getParentRoute: () => ProjectPProjectIdRouteRoute,
+  } as any)
+const ProjectPProjectIdSavedRoute = ProjectPProjectIdSavedRouteImport.update({
+  id: '/saved',
+  path: '/saved',
+  getParentRoute: () => ProjectPProjectIdRouteRoute,
+} as any)
+const ProjectPProjectIdSearchPerformanceRoute =
+  ProjectPProjectIdSearchPerformanceRouteImport.update({
+    id: '/search-performance',
+    path: '/search-performance',
+    getParentRoute: () => ProjectPProjectIdRouteRoute,
+  } as any)
+const ProjectPProjectIdSettingsRoute =
+  ProjectPProjectIdSettingsRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => ProjectPProjectIdRouteRoute,
+  } as any)
+const ApiGa4OauthCallbackRoute = ApiGa4OauthCallbackRouteImport.update({
+  id: '/api/ga4/oauth/callback',
+  path: '/api/ga4/oauth/callback',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiGscOauthCallbackRoute = ApiGscOauthCallbackRouteImport.update({
+  id: '/api/gsc/oauth/callback',
+  path: '/api/gsc/oauth/callback',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectPProjectIdAuditIndexRoute =
+  ProjectPProjectIdAuditIndexRouteImport.update({
     id: '/',
     path: '/',
-    getParentRoute: () => ProjectPProjectIdSettingsRoute,
+    getParentRoute: () => ProjectPProjectIdAuditRoute,
   } as any)
 const ProjectPProjectIdReportsIndexRoute =
   ProjectPProjectIdReportsIndexRouteImport.update({
@@ -172,16 +178,22 @@ const ProjectPProjectIdReportsIndexRoute =
     path: '/reports/',
     getParentRoute: () => ProjectPProjectIdRouteRoute,
   } as any)
-const ProjectPProjectIdAuditIndexRoute =
-  ProjectPProjectIdAuditIndexRouteImport.update({
+const ProjectPProjectIdReportsReportIdRoute =
+  ProjectPProjectIdReportsReportIdRouteImport.update({
+    id: '/reports/$reportId',
+    path: '/reports/$reportId',
+    getParentRoute: () => ProjectPProjectIdRouteRoute,
+  } as any)
+const ProjectPProjectIdReportsTemplatesRoute =
+  ProjectPProjectIdReportsTemplatesRouteImport.update({
+    id: '/reports/templates',
+    path: '/reports/templates',
+    getParentRoute: () => ProjectPProjectIdRouteRoute,
+  } as any)
+const ProjectPProjectIdSettingsIndexRoute =
+  ProjectPProjectIdSettingsIndexRouteImport.update({
     id: '/',
     path: '/',
-    getParentRoute: () => ProjectPProjectIdAuditRoute,
-  } as any)
-const ProjectPProjectIdSettingsIntegrationsRoute =
-  ProjectPProjectIdSettingsIntegrationsRouteImport.update({
-    id: '/integrations',
-    path: '/integrations',
     getParentRoute: () => ProjectPProjectIdSettingsRoute,
   } as any)
 const ProjectPProjectIdSettingsContextRoute =
@@ -190,17 +202,11 @@ const ProjectPProjectIdSettingsContextRoute =
     path: '/context',
     getParentRoute: () => ProjectPProjectIdSettingsRoute,
   } as any)
-const ProjectPProjectIdReportsTemplatesRoute =
-  ProjectPProjectIdReportsTemplatesRouteImport.update({
-    id: '/reports/templates',
-    path: '/reports/templates',
-    getParentRoute: () => ProjectPProjectIdRouteRoute,
-  } as any)
-const ProjectPProjectIdReportsReportIdRoute =
-  ProjectPProjectIdReportsReportIdRouteImport.update({
-    id: '/reports/$reportId',
-    path: '/reports/$reportId',
-    getParentRoute: () => ProjectPProjectIdRouteRoute,
+const ProjectPProjectIdSettingsIntegrationsRoute =
+  ProjectPProjectIdSettingsIntegrationsRouteImport.update({
+    id: '/integrations',
+    path: '/integrations',
+    getParentRoute: () => ProjectPProjectIdSettingsRoute,
   } as any)
 const ProjectPProjectIdAuditIssuesResultIdRoute =
   ProjectPProjectIdAuditIssuesResultIdRouteImport.update({
@@ -213,6 +219,7 @@ export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
   '/ai': typeof AppAiRoute
   '/projects': typeof AppProjectsRoute
+  '/release-notes': typeof AppReleaseNotesRoute
   '/settings': typeof AppSettingsRouteWithChildren
   '/support': typeof AppSupportRoute
   '/api/health': typeof ApiHealthRoute
@@ -244,6 +251,7 @@ export interface FileRoutesByTo {
   '/': typeof AppIndexRoute
   '/ai': typeof AppAiRoute
   '/projects': typeof AppProjectsRoute
+  '/release-notes': typeof AppReleaseNotesRoute
   '/support': typeof AppSupportRoute
   '/api/health': typeof ApiHealthRoute
   '/r/$reportId': typeof RReportIdRoute
@@ -273,6 +281,7 @@ export interface FileRoutesById {
   '/_project': typeof ProjectRouteRouteWithChildren
   '/_app/ai': typeof AppAiRoute
   '/_app/projects': typeof AppProjectsRoute
+  '/_app/release-notes': typeof AppReleaseNotesRoute
   '/_app/settings': typeof AppSettingsRouteWithChildren
   '/_app/support': typeof AppSupportRoute
   '/api/health': typeof ApiHealthRoute
@@ -307,6 +316,7 @@ export interface FileRouteTypes {
     | '/'
     | '/ai'
     | '/projects'
+    | '/release-notes'
     | '/settings'
     | '/support'
     | '/api/health'
@@ -338,6 +348,7 @@ export interface FileRouteTypes {
     | '/'
     | '/ai'
     | '/projects'
+    | '/release-notes'
     | '/support'
     | '/api/health'
     | '/r/$reportId'
@@ -366,6 +377,7 @@ export interface FileRouteTypes {
     | '/_project'
     | '/_app/ai'
     | '/_app/projects'
+    | '/_app/release-notes'
     | '/_app/settings'
     | '/_app/support'
     | '/api/health'
@@ -406,18 +418,18 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/_project': {
-      id: '/_project'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof ProjectRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_app': {
       id: '/_app'
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof AppRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_project': {
+      id: '/_project'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof ProjectRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_app/': {
@@ -427,32 +439,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRouteRoute
     }
-    '/r/$reportId': {
-      id: '/r/$reportId'
-      path: '/r/$reportId'
-      fullPath: '/r/$reportId'
-      preLoaderRoute: typeof RReportIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/health': {
-      id: '/api/health'
-      path: '/api/health'
-      fullPath: '/api/health'
-      preLoaderRoute: typeof ApiHealthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_app/support': {
-      id: '/_app/support'
-      path: '/support'
-      fullPath: '/support'
-      preLoaderRoute: typeof AppSupportRouteImport
-      parentRoute: typeof AppRouteRoute
-    }
-    '/_app/settings': {
-      id: '/_app/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof AppSettingsRouteImport
+    '/_app/ai': {
+      id: '/_app/ai'
+      path: '/ai'
+      fullPath: '/ai'
+      preLoaderRoute: typeof AppAiRouteImport
       parentRoute: typeof AppRouteRoute
     }
     '/_app/projects': {
@@ -462,12 +453,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppProjectsRouteImport
       parentRoute: typeof AppRouteRoute
     }
-    '/_app/ai': {
-      id: '/_app/ai'
-      path: '/ai'
-      fullPath: '/ai'
-      preLoaderRoute: typeof AppAiRouteImport
+    '/_app/release-notes': {
+      id: '/_app/release-notes'
+      path: '/release-notes'
+      fullPath: '/release-notes'
+      preLoaderRoute: typeof AppReleaseNotesRouteImport
       parentRoute: typeof AppRouteRoute
+    }
+    '/_app/settings': {
+      id: '/_app/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AppSettingsRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/support': {
+      id: '/_app/support'
+      path: '/support'
+      fullPath: '/support'
+      preLoaderRoute: typeof AppSupportRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/api/health': {
+      id: '/api/health'
+      path: '/api/health'
+      fullPath: '/api/health'
+      preLoaderRoute: typeof ApiHealthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/r/$reportId': {
+      id: '/r/$reportId'
+      path: '/r/$reportId'
+      fullPath: '/r/$reportId'
+      preLoaderRoute: typeof RReportIdRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_app/settings/': {
       id: '/_app/settings/'
@@ -490,67 +509,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectPProjectIdIndexRouteImport
       parentRoute: typeof ProjectPProjectIdRouteRoute
     }
-    '/api/gsc/oauth/callback': {
-      id: '/api/gsc/oauth/callback'
-      path: '/api/gsc/oauth/callback'
-      fullPath: '/api/gsc/oauth/callback'
-      preLoaderRoute: typeof ApiGscOauthCallbackRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/ga4/oauth/callback': {
-      id: '/api/ga4/oauth/callback'
-      path: '/api/ga4/oauth/callback'
-      fullPath: '/api/ga4/oauth/callback'
-      preLoaderRoute: typeof ApiGa4OauthCallbackRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_project/p/$projectId/settings': {
-      id: '/_project/p/$projectId/settings'
-      path: '/settings'
-      fullPath: '/p/$projectId/settings'
-      preLoaderRoute: typeof ProjectPProjectIdSettingsRouteImport
-      parentRoute: typeof ProjectPProjectIdRouteRoute
-    }
-    '/_project/p/$projectId/search-performance': {
-      id: '/_project/p/$projectId/search-performance'
-      path: '/search-performance'
-      fullPath: '/p/$projectId/search-performance'
-      preLoaderRoute: typeof ProjectPProjectIdSearchPerformanceRouteImport
-      parentRoute: typeof ProjectPProjectIdRouteRoute
-    }
-    '/_project/p/$projectId/saved': {
-      id: '/_project/p/$projectId/saved'
-      path: '/saved'
-      fullPath: '/p/$projectId/saved'
-      preLoaderRoute: typeof ProjectPProjectIdSavedRouteImport
-      parentRoute: typeof ProjectPProjectIdRouteRoute
-    }
-    '/_project/p/$projectId/rankings': {
-      id: '/_project/p/$projectId/rankings'
-      path: '/rankings'
-      fullPath: '/p/$projectId/rankings'
-      preLoaderRoute: typeof ProjectPProjectIdRankingsRouteImport
-      parentRoute: typeof ProjectPProjectIdRouteRoute
-    }
-    '/_project/p/$projectId/opportunities': {
-      id: '/_project/p/$projectId/opportunities'
-      path: '/opportunities'
-      fullPath: '/p/$projectId/opportunities'
-      preLoaderRoute: typeof ProjectPProjectIdOpportunitiesRouteImport
-      parentRoute: typeof ProjectPProjectIdRouteRoute
-    }
-    '/_project/p/$projectId/context': {
-      id: '/_project/p/$projectId/context'
-      path: '/context'
-      fullPath: '/p/$projectId/context'
-      preLoaderRoute: typeof ProjectPProjectIdContextRouteImport
-      parentRoute: typeof ProjectPProjectIdRouteRoute
-    }
-    '/_project/p/$projectId/audit': {
-      id: '/_project/p/$projectId/audit'
-      path: '/audit'
-      fullPath: '/p/$projectId/audit'
-      preLoaderRoute: typeof ProjectPProjectIdAuditRouteImport
+    '/_project/p/$projectId/$': {
+      id: '/_project/p/$projectId/$'
+      path: '/$'
+      fullPath: '/p/$projectId/$'
+      preLoaderRoute: typeof ProjectPProjectIdSplatRouteImport
       parentRoute: typeof ProjectPProjectIdRouteRoute
     }
     '/_project/p/$projectId/analytics': {
@@ -560,11 +523,95 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectPProjectIdAnalyticsRouteImport
       parentRoute: typeof ProjectPProjectIdRouteRoute
     }
-    '/_project/p/$projectId/$': {
-      id: '/_project/p/$projectId/$'
-      path: '/$'
-      fullPath: '/p/$projectId/$'
-      preLoaderRoute: typeof ProjectPProjectIdSplatRouteImport
+    '/_project/p/$projectId/audit': {
+      id: '/_project/p/$projectId/audit'
+      path: '/audit'
+      fullPath: '/p/$projectId/audit'
+      preLoaderRoute: typeof ProjectPProjectIdAuditRouteImport
+      parentRoute: typeof ProjectPProjectIdRouteRoute
+    }
+    '/_project/p/$projectId/context': {
+      id: '/_project/p/$projectId/context'
+      path: '/context'
+      fullPath: '/p/$projectId/context'
+      preLoaderRoute: typeof ProjectPProjectIdContextRouteImport
+      parentRoute: typeof ProjectPProjectIdRouteRoute
+    }
+    '/_project/p/$projectId/opportunities': {
+      id: '/_project/p/$projectId/opportunities'
+      path: '/opportunities'
+      fullPath: '/p/$projectId/opportunities'
+      preLoaderRoute: typeof ProjectPProjectIdOpportunitiesRouteImport
+      parentRoute: typeof ProjectPProjectIdRouteRoute
+    }
+    '/_project/p/$projectId/rankings': {
+      id: '/_project/p/$projectId/rankings'
+      path: '/rankings'
+      fullPath: '/p/$projectId/rankings'
+      preLoaderRoute: typeof ProjectPProjectIdRankingsRouteImport
+      parentRoute: typeof ProjectPProjectIdRouteRoute
+    }
+    '/_project/p/$projectId/saved': {
+      id: '/_project/p/$projectId/saved'
+      path: '/saved'
+      fullPath: '/p/$projectId/saved'
+      preLoaderRoute: typeof ProjectPProjectIdSavedRouteImport
+      parentRoute: typeof ProjectPProjectIdRouteRoute
+    }
+    '/_project/p/$projectId/search-performance': {
+      id: '/_project/p/$projectId/search-performance'
+      path: '/search-performance'
+      fullPath: '/p/$projectId/search-performance'
+      preLoaderRoute: typeof ProjectPProjectIdSearchPerformanceRouteImport
+      parentRoute: typeof ProjectPProjectIdRouteRoute
+    }
+    '/_project/p/$projectId/settings': {
+      id: '/_project/p/$projectId/settings'
+      path: '/settings'
+      fullPath: '/p/$projectId/settings'
+      preLoaderRoute: typeof ProjectPProjectIdSettingsRouteImport
+      parentRoute: typeof ProjectPProjectIdRouteRoute
+    }
+    '/api/ga4/oauth/callback': {
+      id: '/api/ga4/oauth/callback'
+      path: '/api/ga4/oauth/callback'
+      fullPath: '/api/ga4/oauth/callback'
+      preLoaderRoute: typeof ApiGa4OauthCallbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/gsc/oauth/callback': {
+      id: '/api/gsc/oauth/callback'
+      path: '/api/gsc/oauth/callback'
+      fullPath: '/api/gsc/oauth/callback'
+      preLoaderRoute: typeof ApiGscOauthCallbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_project/p/$projectId/audit/': {
+      id: '/_project/p/$projectId/audit/'
+      path: '/'
+      fullPath: '/p/$projectId/audit/'
+      preLoaderRoute: typeof ProjectPProjectIdAuditIndexRouteImport
+      parentRoute: typeof ProjectPProjectIdAuditRoute
+    }
+    '/_project/p/$projectId/reports/': {
+      id: '/_project/p/$projectId/reports/'
+      path: '/reports'
+      fullPath: '/p/$projectId/reports/'
+      preLoaderRoute: typeof ProjectPProjectIdReportsIndexRouteImport
+      parentRoute: typeof ProjectPProjectIdRouteRoute
+    }
+    '/_project/p/$projectId/reports/$reportId': {
+      id: '/_project/p/$projectId/reports/$reportId'
+      path: '/reports/$reportId'
+      fullPath: '/p/$projectId/reports/$reportId'
+      preLoaderRoute: typeof ProjectPProjectIdReportsReportIdRouteImport
+      parentRoute: typeof ProjectPProjectIdRouteRoute
+    }
+    '/_project/p/$projectId/reports/templates': {
+      id: '/_project/p/$projectId/reports/templates'
+      path: '/reports/templates'
+      fullPath: '/p/$projectId/reports/templates'
+      preLoaderRoute: typeof ProjectPProjectIdReportsTemplatesRouteImport
       parentRoute: typeof ProjectPProjectIdRouteRoute
     }
     '/_project/p/$projectId/settings/': {
@@ -574,27 +621,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectPProjectIdSettingsIndexRouteImport
       parentRoute: typeof ProjectPProjectIdSettingsRoute
     }
-    '/_project/p/$projectId/reports/': {
-      id: '/_project/p/$projectId/reports/'
-      path: '/reports'
-      fullPath: '/p/$projectId/reports/'
-      preLoaderRoute: typeof ProjectPProjectIdReportsIndexRouteImport
-      parentRoute: typeof ProjectPProjectIdRouteRoute
-    }
-    '/_project/p/$projectId/audit/': {
-      id: '/_project/p/$projectId/audit/'
-      path: '/'
-      fullPath: '/p/$projectId/audit/'
-      preLoaderRoute: typeof ProjectPProjectIdAuditIndexRouteImport
-      parentRoute: typeof ProjectPProjectIdAuditRoute
-    }
-    '/_project/p/$projectId/settings/integrations': {
-      id: '/_project/p/$projectId/settings/integrations'
-      path: '/integrations'
-      fullPath: '/p/$projectId/settings/integrations'
-      preLoaderRoute: typeof ProjectPProjectIdSettingsIntegrationsRouteImport
-      parentRoute: typeof ProjectPProjectIdSettingsRoute
-    }
     '/_project/p/$projectId/settings/context': {
       id: '/_project/p/$projectId/settings/context'
       path: '/context'
@@ -602,19 +628,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectPProjectIdSettingsContextRouteImport
       parentRoute: typeof ProjectPProjectIdSettingsRoute
     }
-    '/_project/p/$projectId/reports/templates': {
-      id: '/_project/p/$projectId/reports/templates'
-      path: '/reports/templates'
-      fullPath: '/p/$projectId/reports/templates'
-      preLoaderRoute: typeof ProjectPProjectIdReportsTemplatesRouteImport
-      parentRoute: typeof ProjectPProjectIdRouteRoute
-    }
-    '/_project/p/$projectId/reports/$reportId': {
-      id: '/_project/p/$projectId/reports/$reportId'
-      path: '/reports/$reportId'
-      fullPath: '/p/$projectId/reports/$reportId'
-      preLoaderRoute: typeof ProjectPProjectIdReportsReportIdRouteImport
-      parentRoute: typeof ProjectPProjectIdRouteRoute
+    '/_project/p/$projectId/settings/integrations': {
+      id: '/_project/p/$projectId/settings/integrations'
+      path: '/integrations'
+      fullPath: '/p/$projectId/settings/integrations'
+      preLoaderRoute: typeof ProjectPProjectIdSettingsIntegrationsRouteImport
+      parentRoute: typeof ProjectPProjectIdSettingsRoute
     }
     '/_project/p/$projectId/audit/issues/$resultId': {
       id: '/_project/p/$projectId/audit/issues/$resultId'
@@ -641,6 +660,7 @@ const AppSettingsRouteWithChildren = AppSettingsRoute._addFileChildren(
 interface AppRouteRouteChildren {
   AppAiRoute: typeof AppAiRoute
   AppProjectsRoute: typeof AppProjectsRoute
+  AppReleaseNotesRoute: typeof AppReleaseNotesRoute
   AppSettingsRoute: typeof AppSettingsRouteWithChildren
   AppSupportRoute: typeof AppSupportRoute
   AppIndexRoute: typeof AppIndexRoute
@@ -649,6 +669,7 @@ interface AppRouteRouteChildren {
 const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppAiRoute: AppAiRoute,
   AppProjectsRoute: AppProjectsRoute,
+  AppReleaseNotesRoute: AppReleaseNotesRoute,
   AppSettingsRoute: AppSettingsRouteWithChildren,
   AppSupportRoute: AppSupportRoute,
   AppIndexRoute: AppIndexRoute,

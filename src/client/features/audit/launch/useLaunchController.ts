@@ -20,6 +20,7 @@ import {
 } from "@/client/lib/forms";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import { formatNumber } from "@/client/lib/format";
+import { t } from "@/shared/i18n";
 
 function getLaunchValidationErrors(
   value: LaunchFormValues,
@@ -35,7 +36,7 @@ function getLaunchValidationErrors(
 
   return createFormValidationErrors({
     fields: {
-      url: "Taranacak site adresini girin.",
+      url: t("Taranacak site adresini girin."),
     },
   });
 }
@@ -92,7 +93,9 @@ export function useLaunchController({
 
       if (effectiveMaxPages > 500) {
         const confirmed = window.confirm(
-          `${formatNumber(effectiveMaxPages)} sayfa taranacak. Biraz zaman alabilir. Devam edelim mi?`,
+          t("{pages} sayfa taranacak. Biraz zaman alabilir. Devam edelim mi?", {
+            pages: formatNumber(effectiveMaxPages),
+          }),
         );
         if (!confirmed) {
           return;
@@ -107,12 +110,12 @@ export function useLaunchController({
           lighthouseStrategy: value.runLighthouse ? "auto" : "none",
         });
         startedRef.current = true;
-        toast.success("Denetim başlatıldı");
+        toast.success(t("Denetim başlatıldı"));
         onAuditStarted(result.auditId);
       } catch (error) {
         formApi.setErrorMap({
           onSubmit: createFormValidationErrors({
-            form: getStandardErrorMessage(error, "Denetim başlatılamadı"),
+            form: getStandardErrorMessage(error, t("Denetim başlatılamadı")),
           }),
         });
       }
@@ -246,12 +249,12 @@ function useLaunchMutations({
       ]) {
         queryClient.removeQueries({ queryKey: [key, projectId, auditId] });
       }
-      toast.success("Denetim silindi");
+      toast.success(t("Denetim silindi"));
     },
     // The confirm modal has already closed; the row stays in the list, so the
     // toast is the only signal that the delete did not happen.
     onError: (error) =>
-      toast.error(getStandardErrorMessage(error, "Denetim silinemedi")),
+      toast.error(getStandardErrorMessage(error, t("Denetim silinemedi"))),
   });
 
   return { startMutation, deleteMutation };

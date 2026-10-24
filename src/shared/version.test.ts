@@ -21,6 +21,11 @@ describe("compareVersions", () => {
 });
 
 describe("isNewerVersion", () => {
+  it("does not offer the retired 2.x numbering to an alpha installation", () => {
+    expect(isNewerVersion("0.5.0", "v2.4.3")).toBe(false);
+    expect(isNewerVersion("0.5.0", "v0.5.1")).toBe(true);
+    expect(isNewerVersion("0.5.0", "v1.0.0")).toBe(true);
+  });
   it("is false when the operator is ahead of the published tag", () => {
     // Routine while developing against the repo; nagging here would train
     // the operator to ignore the notice.

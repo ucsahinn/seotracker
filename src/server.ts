@@ -8,7 +8,8 @@ import { requestWithPublicOrigin } from "@/server/mcp/public-origin";
 import { MCP_ROUTE } from "@/server/mcp/context";
 import { handleSelfHostedMcpRequest } from "@/server/mcp/transport";
 import { enableDemoGoogle } from "@/server/dev/demoGoogle";
-import { resolveLocale, setLocale } from "@/shared/i18n";
+import { resolveLocale } from "@/shared/i18n";
+import { runWithLocale } from "@/server/localeScope";
 
 const startHandler = createStartHandler(defaultStreamHandler);
 
@@ -52,23 +53,20 @@ function fetch(
   const pathname = new URL(publicRequest.url).pathname;
 
   /*
-   * The UI language for this request, set before anything renders. It is one
-   * module-level value rather than per-request state: sound only because this
-   * is a single-user local app (see src/shared/i18n.ts). Agents always get
-   * Turkish, as they did before the app spoke English.
+   * The UI language for this request, scoped to it (src/server/localeScope.ts)
+   * so concurrent requests never share one. Agents always get Turkish, as
+   * they did before the app spoke English.
    */
   if (pathname === MCP_ROUTE) {
-    setLocale("tr");
-    return handleSelfHostedMcpRequest(publicRequest, authMode, env, ctx);
+    return runWithLocale("tr", () =>
+      handleSelfHostedMcpRequest(publicRequest, authMode, env, ctx),
+    );
   }
-  setLocale(
-    resolveLocale(
-      request.headers.get("cookie"),
-      request.headers.get("accept-language"),
-    ),
+  const locale = resolveLocale(
+    request.headers.get("cookie"),
+    request.headers.get("accept-language"),
   );
-
-  return appFetch(request);
+  return runWithLocale(locale, () => appFetch(request));
 }
 
 export default {
@@ -79,7 +77,8 @@ export default {
     _ctx: ExecutionContext,
   ) {
     // Watchdog: reconcile audits stuck in "running" whose workflow died without
-    // reaching mark-failed (OOM/CPU kills, expired instances).
+    // reaching mark-failed (OOM/CPU kills, expired instances). No request
+    // scope here, so any text it writes is Turkish, the i18n fallback.
     await reconcileStaleAudits();
   },
 };

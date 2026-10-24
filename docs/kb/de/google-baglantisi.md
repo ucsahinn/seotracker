@@ -5,7 +5,7 @@ kind: nasil-yapilir
 updated: 2026-10-22
 ---
 
-Die Oberfläche der App ist auf Türkisch. Diese Anleitung nennt jede Schaltfläche und jeden Bildschirmnamen auf Türkisch, mit der deutschen Bedeutung in Klammern.
+Die Oberfläche der App ist auf Türkisch und Englisch verfügbar. Die Sprache lässt sich unter Ayarlar → Görünüm → Dil ändern. Diese Anleitung nennt jede Schaltfläche und jeden Bildschirmnamen auf Türkisch, mit der deutschen Bedeutung in Klammern.
 
 Am Ende verbindet sich die App in Ihrem Namen mit Google und liest die Daten Ihrer Website. Dafür holen Sie einmalig einen „Google-Zugangsschlüssel“ bei Google. Das dauert etwa zehn Minuten und muss nur einmal geschehen. Am Ende der Seite steht ein kürzerer Weg, das Dienstkonto, den wir den meisten empfehlen.
 

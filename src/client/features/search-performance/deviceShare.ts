@@ -1,3 +1,4 @@
+import { t } from "@/shared/i18n";
 import { sort } from "remeda";
 import {
   GSC_DEVICES,
@@ -11,14 +12,14 @@ export const DEVICE_LABELS: Record<SearchPerformanceDevice, string> = {
 };
 
 /**
- * Any source's device name in Turkish. Search Console says "MOBILE", GA4
+ * Any source's device name in the UI language. Search Console says "MOBILE", GA4
  * "mobile", PageSpeed "mobile"; all three read "Mobil" on screen. Unknown
  * names pass through.
  */
 export function deviceLabel(value: string): string {
   const upper = value.toUpperCase();
-  if (upper === "SMART TV") return "Akıllı TV";
-  return isDevice(upper) ? DEVICE_LABELS[upper] : value;
+  if (upper === "SMART TV") return t("Akıllı TV");
+  return isDevice(upper) ? t(DEVICE_LABELS[upper]) : value;
 }
 
 export function isDevice(value: string): value is SearchPerformanceDevice {
@@ -44,7 +45,7 @@ export function deviceSegments(
     if (isDevice(row.key) && row.clicks > 0) {
       segments.push({
         key: row.key,
-        label: DEVICE_LABELS[row.key],
+        label: t(DEVICE_LABELS[row.key]),
         value: row.clicks,
       });
     }

@@ -1,5 +1,6 @@
 import { ArrowDown, ArrowUp, Minus } from "lucide-react";
 import { formatDecimal, formatDuration } from "@/client/lib/format";
+import { t } from "@/shared/i18n";
 import type { LighthouseFieldData, LighthouseMetrics } from "./types";
 
 /**
@@ -51,22 +52,28 @@ export function LabFieldComparison({
   return (
     <section className="rounded-box border border-base-300 bg-base-200/25 px-4 py-3">
       <h3 className="text-xs uppercase tracking-wide text-muted">
-        Laboratuvar ↔ gerçek kullanıcı
+        {t("Laboratuvar ↔ gerçek kullanıcı")}
       </h3>
       <p className="mt-1 text-xs leading-relaxed text-muted">
         {optimistic > 0
-          ? "Test ortamında sitenizin hızı ziyaretçilerinkinden iyi çıkıyor. Google sıralamada sağdaki sütunu kullanır."
+          ? t(
+              "Test ortamında sitenizin hızı ziyaretçilerinkinden iyi çıkıyor. Google sıralamada sağdaki sütunu kullanır.",
+            )
           : pessimistic > 0
-            ? "Gerçek ziyaretçiler sitenizi test ortamından daha hızlı görüyor. Google sıralamada sağdaki sütunu kullanır."
-            : "İki ölçüm birbirini tutuyor. Laboratuvar puanı ziyaretçilerin gördüğüne yakın."}
+            ? t(
+                "Gerçek ziyaretçiler sitenizi test ortamından daha hızlı görüyor. Google sıralamada sağdaki sütunu kullanır.",
+              )
+            : t(
+                "İki ölçüm birbirini tutuyor. Laboratuvar puanı ziyaretçilerin gördüğüne yakın.",
+              )}
       </p>
       <table className="mt-3 table table-sm">
         <thead>
           <tr>
-            <th>Ölçüm</th>
-            <th className="text-right">Laboratuvar</th>
-            <th className="text-right">Gerçek kullanıcı</th>
-            <th className="text-right">Fark</th>
+            <th>{t("Ölçüm")}</th>
+            <th className="text-right">{t("Laboratuvar")}</th>
+            <th className="text-right">{t("Gerçek kullanıcı")}</th>
+            <th className="text-right">{t("Fark")}</th>
           </tr>
         </thead>
         <tbody>
@@ -86,7 +93,9 @@ function ComparisonRow({ row }: { row: Row }) {
     <tr>
       <td>
         <span className="font-medium uppercase">{row.label}</span>
-        <span className="ml-2 text-xs text-muted normal-case">{row.title}</span>
+        <span className="ml-2 text-xs text-muted normal-case">
+          {t(row.title)}
+        </span>
       </td>
       <td className="text-right tabular-nums text-muted">
         {row.format(row.lab)}
@@ -116,7 +125,7 @@ function GapLabel({
     return (
       <span className="inline-flex items-center gap-1 text-xs text-muted">
         <Minus aria-hidden className="size-3" />
-        Tutuyor
+        {t("Tutuyor")}
       </span>
     );
   }
@@ -127,7 +136,7 @@ function GapLabel({
     return (
       <span className="inline-flex items-center gap-1 text-xs font-medium text-[var(--ink-error)]">
         <ArrowUp aria-hidden className="size-3" />
-        {gap} daha yavaş
+        {t("{gap} daha yavaş", { gap })}
       </span>
     );
   }
@@ -135,7 +144,7 @@ function GapLabel({
   return (
     <span className="inline-flex items-center gap-1 text-xs font-medium text-[var(--ink-success)]">
       <ArrowDown aria-hidden className="size-3" />
-      {gap} daha hızlı
+      {t("{gap} daha hızlı", { gap })}
     </span>
   );
 }
@@ -163,8 +172,10 @@ function getRows(
       field: number | null;
     }
   > = [
+    // Titles are Turkish source strings; t() runs where they render.
     {
       label: "LCP",
+
       title: "en büyük içerik",
       lab: metrics.largestContentfulPaint.numericValue,
       field: fieldData.largestContentfulPaint?.percentile ?? null,

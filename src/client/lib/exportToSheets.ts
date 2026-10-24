@@ -7,6 +7,7 @@ import {
 import type { CsvValue } from "@/client/lib/csv";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import { captureClientEvent } from "@/client/lib/observability";
+import { t } from "@/shared/i18n";
 
 type ModalState = { isOpen: false } | { isOpen: true; rowCount: number };
 
@@ -53,7 +54,7 @@ export async function exportTableToSheets(args: {
 }) {
   const { headers, rows, feature } = args;
   if (rows.length === 0) {
-    toast.error("Dışa aktarılacak veri yok");
+    toast.error(t("Dışa aktarılacak veri yok"));
     return;
   }
   try {
@@ -64,6 +65,6 @@ export async function exportTableToSheets(args: {
     });
     setState({ isOpen: true, rowCount: rows.length });
   } catch (error) {
-    toast.error(getStandardErrorMessage(error, "Panoya kopyalanamadı"));
+    toast.error(getStandardErrorMessage(error, t("Panoya kopyalanamadı")));
   }
 }

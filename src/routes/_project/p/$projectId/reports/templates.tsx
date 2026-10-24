@@ -17,6 +17,7 @@ import {
 import type { ReportTemplate } from "@/types/schemas/report-templates";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { backLinkClass, BackLinkLabel } from "@/client/components/BackLink";
+import { t } from "@/shared/i18n";
 
 export const Route = createFileRoute(
   "/_project/p/$projectId/reports/templates",
@@ -59,12 +60,12 @@ function ReportTemplatesPage() {
         project_id: projectId,
         template_id: templateId,
       });
-      toast.success("Şablon silindi");
+      toast.success(t("Şablon silindi"));
       setPendingDelete(null);
       invalidate();
     },
     onError: (error: Error) => {
-      toast.error(getStandardErrorMessage(error, "Şablon silinemedi"));
+      toast.error(getStandardErrorMessage(error, t("Şablon silinemedi")));
     },
   });
 
@@ -75,12 +76,14 @@ function ReportTemplatesPage() {
         params={{ projectId }}
         className={backLinkClass}
       >
-        <BackLinkLabel>Raporlar</BackLinkLabel>
+        <BackLinkLabel>{t("Raporlar")}</BackLinkLabel>
       </Link>
 
       <PageHeader
-        title="Rapor şablonları"
-        description="Şablon, ajanınıza raporu nasıl yazacağını söyler. Kim okuyacak, hangi bölümler olacak, hangi dilde yazılacak, hepsi burada durur. Ajan rapor yazarken uygun olanı seçer."
+        title={t("Rapor şablonları")}
+        description={t(
+          "Şablon, ajanınıza raporu nasıl yazacağını söyler. Kim okuyacak, hangi bölümler olacak, hangi dilde yazılacak, hepsi burada durur. Ajan rapor yazarken uygun olanı seçer.",
+        )}
         actions={
           <button
             type="button"
@@ -88,7 +91,7 @@ function ReportTemplatesPage() {
             onClick={() => setForm({})}
           >
             <Plus className="size-4" />
-            Yeni şablon
+            {t("Yeni şablon")}
           </button>
         }
       />
@@ -104,7 +107,7 @@ function ReportTemplatesPage() {
           <QueryErrorState
             error={templatesQuery.error}
             onRetry={() => void templatesQuery.refetch()}
-            title="Şablonlar yüklenemedi"
+            title={t("Şablonlar yüklenemedi")}
           />
         </div>
       ) : (
@@ -129,9 +132,9 @@ function ReportTemplatesPage() {
 
       {pendingDelete ? (
         <ConfirmDeleteModal
-          title={`\u201c${pendingDelete.name}\u201d silinsin mi?`}
-          detail="Bu şablondan üretilmiş raporlar etkilenmez."
-          confirmLabel="Şablonu sil"
+          title={t("“{title}” silinsin mi?", { title: pendingDelete.name })}
+          detail={t("Bu şablondan üretilmiş raporlar etkilenmez.")}
+          confirmLabel={t("Şablonu sil")}
           isPending={deleteMutation.isPending}
           onClose={() => setPendingDelete(null)}
           onConfirm={() => deleteMutation.mutate(pendingDelete.id)}

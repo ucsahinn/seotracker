@@ -6,7 +6,7 @@ route: /support
 updated: 2026-10-22
 ---
 
-L'interface de l'application est en turc. Ce guide donne chaque nom de bouton et d'écran en turc, suivi de sa traduction française entre parenthèses.
+L'interface de l'application est disponible en turc et en anglais. La langue se choisit dans Ayarlar → Görünüm → Dil. Ce guide donne chaque nom de bouton et d'écran en turc, suivi de sa traduction française entre parenthèses.
 
 Si quelque chose ne va pas, regardez d'abord ici. Cet écran contrôle votre installation, dit ce qui manque et vous conduit au bon réglage.
 

@@ -98,8 +98,12 @@ privacy policy, and support pages come back clean.
 pnpm --dir badseo run audit http://localhost:8787
 ```
 
-It prints a per-page pass/fail matrix and an issue-type coverage line, and exits
-non-zero on any mismatch — so it works as a CI gate for the audit engine.
+The command runs a dedicated Vitest integration test and exits non-zero on any
+mismatch. It uses the real crawler and issue detectors, with a test-only URL
+policy override for the configured loopback fixture server. Production still
+rejects private hosts; the runner rejects non-loopback fixture addresses.
+This test is separate from `pnpm test` because it requires the running fixture
+server. It may take several minutes while slow-response fixtures complete.
 
 ## Add a fixture
 

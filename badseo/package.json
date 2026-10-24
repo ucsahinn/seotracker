@@ -9,8 +9,8 @@
     "typecheck": "tsc --noEmit",
     "build": "vite build && tsc --noEmit",
     "deploy": "npm run build && wrangler deploy",
-    "audit": "cd .. && tsx badseo/scripts/run-audit.ts",
-    "test:e2e": "cd .. && tsx badseo/scripts/run-audit.ts"
+    "audit": "node scripts/audit-cli.mjs",
+    "test:e2e": "node scripts/audit-cli.mjs"
   },
   "dependencies": {
     "@tanstack/react-router": "^1.170.16",

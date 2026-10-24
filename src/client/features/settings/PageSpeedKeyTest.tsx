@@ -3,6 +3,7 @@ import { CheckCircle2, Loader2, XCircle } from "lucide-react";
 import * as React from "react";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import { testPageSpeedKey } from "@/serverFunctions/pagespeedKey";
+import { t } from "@/shared/i18n";
 
 /** The button stays off this long after a click, whatever the answer was. */
 const COOLDOWN_MS = 10_000;
@@ -55,9 +56,9 @@ export function PageSpeedKeyTest() {
           {test.isPending ? (
             <Loader2 className="size-4 animate-spin" aria-hidden />
           ) : null}
-          Anahtarı test et
+          {t("Anahtarı test et")}
         </button>
-        <span className="text-xs text-subtle">1 ölçüm harcar</span>
+        <span className="text-xs text-subtle">{t("1 ölçüm harcar")}</span>
       </div>
       <div aria-live="polite">
         {result ? (

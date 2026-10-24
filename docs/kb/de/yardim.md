@@ -6,7 +6,7 @@ route: /support
 updated: 2026-10-22
 ---
 
-Die Oberfläche der App ist auf Türkisch. Diese Anleitung nennt jede Schaltfläche und jeden Bildschirmnamen auf Türkisch, mit der deutschen Bedeutung in Klammern.
+Die Oberfläche der App ist auf Türkisch und Englisch verfügbar. Die Sprache lässt sich unter Ayarlar → Görünüm → Dil ändern. Diese Anleitung nennt jede Schaltfläche und jeden Bildschirmnamen auf Türkisch, mit der deutschen Bedeutung in Klammern.
 
 Wenn etwas schiefgeht, sehen Sie zuerst hier nach. Dieser Bildschirm prüft Ihre Installation, sagt, was fehlt, und führt Sie zur richtigen Einstellung.
 

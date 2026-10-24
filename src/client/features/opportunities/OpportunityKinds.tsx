@@ -1,9 +1,9 @@
+import { t } from "@/shared/i18n";
 import {
   KIND_COPY,
   KIND_ORDER,
   type KindId,
 } from "@/client/features/opportunities/opportunityLogic";
-import { formatCount } from "@/client/lib/format";
 
 /**
  * The three kinds of opportunity, as a filter and a legend: the ring above
@@ -41,7 +41,7 @@ export function OpportunityKinds({
 
   return (
     <section
-      aria-label="Fırsat türleri"
+      aria-label={t("Fırsat türleri")}
       className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4"
     >
       {KIND_ORDER.map((id) => {
@@ -66,15 +66,17 @@ export function OpportunityKinds({
             }`}
           >
             <span className="text-xs text-muted">
-              {kind.label}
               {entry.pages === 0
-                ? null
-                : ` · ${formatCount(entry.pages)} sayfa`}
+                ? t(kind.label)
+                : t("{kind} · {count} sayfa", {
+                    kind: t(kind.label),
+                    count: entry.pages,
+                  })}
             </span>
             <span className="mt-1 block text-xs text-muted">
               {entry.pages === 0
-                ? `Şu an bu türde sayfa yok. ${kind.hint}`
-                : kind.hint}
+                ? t("Şu an bu türde sayfa yok. {hint}", { hint: t(kind.hint) })
+                : t(kind.hint)}
             </span>
           </button>
         );

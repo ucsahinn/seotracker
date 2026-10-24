@@ -21,12 +21,12 @@ import {
   MAX_AUDIT_PAGES,
   UNKEYED_LIGHTHOUSE_PAGE_CAP,
 } from "@/shared/audit-limits";
-import { formatNumber } from "@/shared/format";
 import {
   REPORT_MAX_HTML_BYTES,
   REPORT_MAX_PER_PROJECT,
 } from "@/types/schemas/reports";
 import { REPORT_TEMPLATE_MAX_PER_PROJECT } from "@/types/schemas/report-templates";
+import { t } from "@/shared/i18n";
 
 const DAY_MS = 86_400_000;
 
@@ -34,13 +34,16 @@ function urlInspectionItem(spent: number, now: Date): QuotaItem {
   return {
     id: "url_inspection",
     kind: "url_inspection",
-    label: "URL Denetimi (Search Console)",
+    label: t("URL Denetimi (Search Console)"),
     used: spent,
     limit: DAILY_QUOTA,
-    unit: "sorgu",
+    unit: "sorgu", // i18n-ignore: QuotaUnit code, worded by the client
     state: stateFromUsage(spent, DAILY_QUOTA),
-    detail: `Mülk başına günlük ${formatNumber(DAILY_QUOTA)} sorgu; son 24 saatte bu uygulamanın kaydettiği sorgular sayılır. Google'ın sıfırlanma saati doğrulanmadı.`,
-    source: "Uygulamanın kendi kaydı",
+    detail: t(
+      "Mülk başına günlük {count} sorgu; son 24 saatte bu uygulamanın kaydettiği sorgular sayılır. Google'ın sıfırlanma saati doğrulanmadı.",
+      { count: DAILY_QUOTA },
+    ),
+    source: t("Uygulamanın kendi kaydı"),
     updatedAt: now.toISOString(),
   };
 }
@@ -56,25 +59,37 @@ function pageSpeedDetail(
   keySource: string | null,
 ): string {
   const key = keySource
-    ? "Anahtar tanımlı."
-    : `PageSpeed anahtarı yok: denetimde en fazla ${formatNumber(UNKEYED_LIGHTHOUSE_PAGE_CAP)} sayfanın hızı ölçülür. Anahtarı Ayarlar > Hız ölçümü bölümünden girebilirsiniz.`;
+    ? t("Anahtar tanımlı.")
+    : t(
+        "PageSpeed anahtarı yok: denetimde en fazla {count} sayfanın hızı ölçülür. Anahtarı Ayarlar > Hız ölçümü bölümünden girebilirsiniz.",
+        { count: UNKEYED_LIGHTHOUSE_PAGE_CAP },
+      );
   const events: string[] = [];
   if (usage.quotaEvents > 0) {
     events.push(
-      `${formatNumber(usage.quotaEvents)} ölçüm günlük sınır nedeniyle yapılamadı`,
+      t("{count} ölçüm günlük sınır nedeniyle yapılamadı", {
+        count: usage.quotaEvents,
+      }),
     );
   }
   if (usage.rateLimitEvents > 0) {
     events.push(
-      `${formatNumber(usage.rateLimitEvents)} ölçüm dakikalık sınıra takıldı`,
+      t("{count} ölçüm dakikalık sınıra takıldı", {
+        count: usage.rateLimitEvents,
+      }),
     );
   }
   const lastEvent = events.length
-    ? `Son 24 saatte başlayan denetimlerde ${events.join(", ")}.`
-    : "Son 24 saatte başlayan denetimlerde sınır olayı yok.";
+    ? t("Son 24 saatte başlayan denetimlerde {events}.", {
+        events: events.join(", "),
+      })
+    : t("Son 24 saatte başlayan denetimlerde sınır olayı yok.");
   // Results carry no timestamp of their own, so the window is the audit's
   // start time: a long audit's later checks still count for the day it began.
-  return `${key} Sayılar, son 24 saatte başlayan denetimlere aittir (tek tek ölçüm saati kaydedilmez). ${lastEvent} Google'ın günlük toplamı doğrulanmadı; gerçek kota Google Cloud Console > PageSpeed Insights API > Quotas bölümünde.`;
+  return t(
+    "{key} Sayılar, son 24 saatte başlayan denetimlere aittir (tek tek ölçüm saati kaydedilmez). {lastEvent} Google'ın günlük toplamı doğrulanmadı; gerçek kota Google Cloud Console > PageSpeed Insights API > Quotas bölümünde.",
+    { key, lastEvent },
+  );
 }
 
 function pageSpeedItem(
@@ -88,10 +103,10 @@ function pageSpeedItem(
     label: "PageSpeed Insights",
     used: usage.measured,
     limit: null,
-    unit: "ölçüm",
+    unit: "ölçüm", // i18n-ignore: QuotaUnit code, worded by the client
     state: pageSpeedState(usage),
     detail: pageSpeedDetail(usage, keySource),
-    source: "Uygulamanın kendi kaydı",
+    source: t("Uygulamanın kendi kaydı"),
     updatedAt: now.toISOString(),
   };
 }
@@ -104,6 +119,7 @@ const GA4_STANDARD_CEILING = { daily: 200_000, hourly: 40_000 } as const;
 function ga4Item(input: {
   id: string;
   label: string;
+  /** A t() template taking the ceiling as {count}. */
   windowLabel: string;
   ceiling: number;
   pair: { consumed: number; remaining: number } | null;
@@ -113,9 +129,9 @@ function ga4Item(input: {
   const base = {
     id,
     kind: "ga4" as const,
-    label,
-    unit: "puan" as const,
-    source: "Google yanıtındaki son kota bilgisi",
+    label: t(label),
+    unit: "puan" as const, // i18n-ignore: QuotaUnit code, worded by the client
+    source: t("Google yanıtındaki son kota bilgisi"),
     updatedAt: seenAt,
   };
   if (!pair) {
@@ -124,11 +140,13 @@ function ga4Item(input: {
       used: null,
       limit: null,
       state: "unknown",
-      detail:
+      detail: t(
         "Uygulama yeniden başladığından ya da GA4 bağlantısı değiştiğinden beri bu bağlantıyla GA4 raporu çalışmadı; sayaç bir rapor çalışınca dolar.",
+      ),
     };
   }
-  const lastCost = `Son istek: ${formatNumber(pair.consumed)} puan.`;
+  const lastCost = t("Son istek: {count} puan.", { count: pair.consumed });
+  const limit = t(windowLabel, { count: ceiling });
   // Above the assumed ceiling this is not a standard property: show what is
   // left and draw no bar, since a bar needs a real denominator.
   if (pair.remaining > ceiling) {
@@ -138,7 +156,10 @@ function ga4Item(input: {
       limit: null,
       remaining: pair.remaining,
       state: "unknown",
-      detail: `Kalan değer standart mülk sınırını (${windowLabel} ${formatNumber(ceiling)}) aşıyor; mülk büyük olasılıkla Analytics 360, sınır 10 kat. Gerçek sınır Google'dan gelmez, bu yüzden çubuk gösterilmez. ${lastCost}`,
+      detail: t(
+        "Kalan değer standart mülk sınırını ({limit}) aşıyor; mülk büyük olasılıkla Analytics 360, sınır 10 kat. Gerçek sınır Google'dan gelmez, bu yüzden çubuk gösterilmez. {lastCost}",
+        { limit, lastCost },
+      ),
     };
   }
   const used = ceiling - pair.remaining;
@@ -147,7 +168,10 @@ function ga4Item(input: {
     used,
     limit: ceiling,
     state: stateFromUsage(used, ceiling),
-    detail: `Google yalnızca kalanı bildirir. Sınır varsayımdır: standart mülk için ${windowLabel} ${formatNumber(ceiling)}; 360 mülklerde 10 kat. Kullanılan = varsayılan sınır − kalan. ${lastCost} Sıfırlanma saati doğrulanmadı.`,
+    detail: t(
+      "Google yalnızca kalanı bildirir. Sınır varsayımdır: standart mülk için {limit}; 360 mülklerde 10 kat. Kullanılan = varsayılan sınır − kalan. {lastCost} Sıfırlanma saati doğrulanmadı.",
+      { limit, lastCost },
+    ),
   };
 }
 
@@ -156,7 +180,7 @@ function ga4Items(snapshot: Ga4QuotaSnapshot | null): QuotaItem[] {
     ga4Item({
       id: "ga4_daily",
       label: "Analytics (GA4) günlük kota puanı",
-      windowLabel: "günlük",
+      windowLabel: "günlük {count}",
       ceiling: GA4_STANDARD_CEILING.daily,
       pair: snapshot?.tokensPerDay ?? null,
       seenAt: snapshot?.seenAt ?? null,
@@ -164,7 +188,7 @@ function ga4Items(snapshot: Ga4QuotaSnapshot | null): QuotaItem[] {
     ga4Item({
       id: "ga4_hourly",
       label: "Analytics (GA4) saatlik kota puanı",
-      windowLabel: "saatlik",
+      windowLabel: "saatlik {count}",
       ceiling: GA4_STANDARD_CEILING.hourly,
       pair: snapshot?.tokensPerHour ?? null,
       seenAt: snapshot?.seenAt ?? null,
@@ -178,13 +202,16 @@ function auditItem(
   return {
     id: "audit_pages",
     kind: "audit",
-    label: "Denetim sayfa sınırı",
+    label: t("Denetim sayfa sınırı"),
     used: latest?.pages ?? null,
     limit: MAX_AUDIT_PAGES,
-    unit: "sayfa",
+    unit: "sayfa", // i18n-ignore: QuotaUnit code, worded by the client
     state: stateFromUsage(latest?.pages ?? null, MAX_AUDIT_PAGES),
-    detail: `Bir denetim en çok ${formatNumber(MAX_AUDIT_PAGES)} sayfa tarar; gösterilen sayı son denetimin taranan sayfa sayısıdır.`,
-    source: "Son denetim kaydı",
+    detail: t(
+      "Bir denetim en çok {count} sayfa tarar; gösterilen sayı son denetimin taranan sayfa sayısıdır.",
+      { count: MAX_AUDIT_PAGES },
+    ),
+    source: t("Son denetim kaydı"),
     updatedAt: latest?.startedAt ?? null,
   };
 }
@@ -194,46 +221,48 @@ function reportItems(
   now: Date,
 ): QuotaItem[] {
   const updatedAt = now.toISOString();
-  const source = "Uygulamanın veritabanı";
+  const source = t("Uygulamanın veritabanı");
   return [
     {
       id: "reports_count",
       kind: "reports",
-      label: "Proje başına rapor",
+      label: t("Proje başına rapor"),
       used: figures.reportCount,
       limit: REPORT_MAX_PER_PROJECT,
-      unit: "rapor",
+      unit: "rapor", // i18n-ignore: QuotaUnit code, worded by the client
       state: stateFromUsage(figures.reportCount, REPORT_MAX_PER_PROJECT),
-      detail:
+      detail: t(
         "Takılan bir döngüye karşı koruma; gerçek bir iş akışı buna yaklaşmaz.",
+      ),
       source,
       updatedAt,
     },
     {
       id: "report_templates",
       kind: "reports",
-      label: "Proje başına rapor şablonu",
+      label: t("Proje başına rapor şablonu"),
       used: figures.templateCount,
       limit: REPORT_TEMPLATE_MAX_PER_PROJECT,
-      unit: "şablon",
+      unit: "şablon", // i18n-ignore: QuotaUnit code, worded by the client
       state: stateFromUsage(
         figures.templateCount,
         REPORT_TEMPLATE_MAX_PER_PROJECT,
       ),
-      detail: "Doluysa yeni şablon için birini silmek gerekir.",
+      detail: t("Doluysa yeni şablon için birini silmek gerekir."),
       source,
       updatedAt,
     },
     {
       id: "report_size",
       kind: "reports",
-      label: "En büyük raporun boyutu",
+      label: t("En büyük raporun boyutu"),
       used: figures.largestReportBytes,
       limit: REPORT_MAX_HTML_BYTES,
-      unit: "bayt",
+      unit: "bayt", // i18n-ignore: QuotaUnit code, worded by the client
       state: stateFromUsage(figures.largestReportBytes, REPORT_MAX_HTML_BYTES),
-      detail:
+      detail: t(
         "Tek bir rapor bu boyutu aşarsa kaydedilmez; genelde gömülü görseller yüzünden olur.",
+      ),
       source,
       updatedAt,
     },

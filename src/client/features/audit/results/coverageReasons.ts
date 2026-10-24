@@ -16,6 +16,9 @@
  * adds enum members, and a blank cell is worse than an unfamiliar word.
  */
 
+import { t } from "@/shared/i18n";
+
+// Turkish source labels; t() runs in coverageReasons, at render time.
 const ROBOTS_TXT: Record<string, string> = {
   ALLOWED: "robots.txt izin veriyor",
   DISALLOWED: "robots.txt engelliyor",
@@ -69,7 +72,8 @@ export function coverageReasons(row: {
   const reasons: string[] = [];
   const add = (value: string | null, table: Record<string, string>) => {
     if (!value || value.endsWith("_UNSPECIFIED")) return;
-    reasons.push(table[value] ?? value);
+    const label = table[value];
+    reasons.push(label ? t(label) : value);
   };
 
   add(row.robotsTxtState, ROBOTS_TXT);

@@ -1,5 +1,6 @@
 import { Loader2 } from "lucide-react";
 import { Modal } from "@/client/components/Modal";
+import { t } from "@/shared/i18n";
 
 /** Confirm-by-name modal for a delete with no undo. */
 export function ConfirmDeleteModal({
@@ -29,7 +30,7 @@ export function ConfirmDeleteModal({
           className="btn btn-ghost btn-sm"
           onClick={onClose}
         >
-          Vazgeç
+          {t("Vazgeç")}
         </button>
         <button
           type="button"

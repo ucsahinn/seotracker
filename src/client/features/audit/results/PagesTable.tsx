@@ -27,6 +27,7 @@ import {
   predominantHost,
 } from "@/client/features/audit/results/pagesColumns";
 import { PagesSummary } from "@/client/features/audit/results/PagesSummary";
+import { t } from "@/shared/i18n";
 
 export function PagesTable({
   pages,
@@ -113,14 +114,14 @@ export function PagesTable({
       />
       {scopeLabel ? (
         <div className="flex flex-wrap items-center gap-2 text-xs">
-          <span className="text-muted">Gösterilen:</span>
+          <span className="text-muted">{t("Gösterilen:")}</span>
           <button
             type="button"
             onClick={onClearScope}
-            aria-label={`${scopeLabel} seçimini kaldır`}
+            aria-label={t("{label} seçimini kaldır", { label: scopeLabel })}
             className="inline-flex items-center gap-1 rounded-full border border-primary bg-primary/10 px-2.5 py-1 text-primary transition-colors hover:bg-primary/15"
           >
-            {scopeLabel} sorunu olan sayfalar
+            {t("{issue} sorunu olan sayfalar", { issue: scopeLabel })}
             <X aria-hidden className="size-3" />
           </button>
         </div>
@@ -154,14 +155,14 @@ export function PagesTable({
       <div className="overflow-hidden rounded-box border border-base-300">
         <AppDataTable
           table={table}
-          caption="Taranan sayfalar"
+          caption={t("Taranan sayfalar")}
           stickyHeader
           wrapperClassName="max-h-[70vh] overflow-auto"
           className="table table-sm"
           empty={
             <EmptyTableMessage
-              label="Bu denetim hiçbir sayfa taramadı."
-              filteredLabel="Bu filtrelerle eşleşen sayfa yok."
+              label={t("Bu denetim hiçbir sayfa taramadı.")}
+              filteredLabel={t("Bu filtrelerle eşleşen sayfa yok.")}
               hasActiveFilter={activeFilterCount > 0}
             />
           }

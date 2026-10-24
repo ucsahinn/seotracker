@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { AlertTriangle } from "lucide-react";
 import { SafeExternalLink } from "@/client/components/SafeExternalLink";
+import { t } from "@/shared/i18n";
 
 export function GoogleOAuthSetupWarning({
   integrationName,
@@ -13,10 +14,12 @@ export function GoogleOAuthSetupWarning({
     <div className="alert alert-warning items-start text-sm">
       <AlertTriangle className="mt-0.5 size-4 shrink-0" />
       <div className="space-y-1">
-        <p className="font-medium">Google erişim anahtarı eksik</p>
+        <p className="font-medium">{t("Google erişim anahtarı eksik")}</p>
         <p className="text-muted">
-          {integrationName} için önce Ayarlar'a Google erişim anahtarınızı
-          girin.
+          {t(
+            "{integration} için önce Ayarlar'a Google erişim anahtarınızı girin.",
+            { integration: integrationName },
+          )}
         </p>
         <div className="flex flex-wrap items-center gap-3">
           <Link
@@ -24,11 +27,11 @@ export function GoogleOAuthSetupWarning({
             hash="google"
             className="font-medium underline underline-offset-2"
           >
-            Ayarlar'ı aç
+            {t("Ayarlar'ı aç")}
           </Link>
           <SafeExternalLink
             url={docsUrl}
-            label="Kurulum kılavuzunu aç"
+            label={t("Kurulum kılavuzunu aç")}
             className="inline-flex items-center gap-1 font-medium underline underline-offset-2"
           />
         </div>

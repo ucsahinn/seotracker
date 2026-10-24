@@ -2,11 +2,13 @@
 <html lang="de">
   <head>
     <meta charset="utf-8" />
+    <link rel="stylesheet" href="/assets/consent.css?v=1" />
+    <script src="/assets/consent.js?v=2" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Versionshinweise | seowatcher-Anleitung</title>
     <meta
       name="description"
-      content="Neu in seowatcher 2.4.3: Windows-Installation mit einer Datei, Selbstaktualisierung, schlichtere Bildschirme und eine Website in sechs Sprachen."
+      content="seowatcher 0.5.0 Alpha — Türkische und englische Oberfläche, Benachrichtigungen, Töne und klarer Fortschritt."
     />
     <meta name="robots" content="max-image-preview:large" />
     <link
@@ -57,6 +59,13 @@
       sizes="48x48"
     />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link
+      rel="alternate"
+      type="application/atom+xml"
+      title="seowatcher"
+      href="/de/feed.xml"
+    />
     <link
       rel="preload"
       href="/assets/fonts/geist-latin-wght-normal.woff2"
@@ -79,7 +88,7 @@
     />
     <meta
       property="og:description"
-      content="Neu in seowatcher 2.4.3: Windows-Installation mit einer Datei, Selbstaktualisierung, schlichtere Bildschirme und eine Website in sechs Sprachen."
+      content="seowatcher 0.5.0 Alpha — Türkische und englische Oberfläche, Benachrichtigungen, Töne und klarer Fortschritt."
     />
     <meta
       property="og:image"
@@ -89,7 +98,7 @@
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Versionshinweise | seowatcher" />
-    <meta property="article:modified_time" content="2026-10-23" />
+    <meta property="article:modified_time" content="2026-10-24" />
     <meta
       property="og:url"
       content="https://seowatcher.io/de/docs/versionshinweise/"
@@ -107,7 +116,7 @@
     />
     <meta
       name="twitter:description"
-      content="Neu in seowatcher 2.4.3: Windows-Installation mit einer Datei, Selbstaktualisierung, schlichtere Bildschirme und eine Website in sechs Sprachen."
+      content="seowatcher 0.5.0 Alpha — Türkische und englische Oberfläche, Benachrichtigungen, Töne und klarer Fortschritt."
     />
     <meta
       name="twitter:image"
@@ -145,10 +154,10 @@
             "@type": "TechArticle",
             "@id": "https://seowatcher.io/de/docs/versionshinweise/#article",
             "headline": "Versionshinweise",
-            "description": "Neu in seowatcher 2.4.3: Windows-Installation mit einer Datei, Selbstaktualisierung, schlichtere Bildschirme und eine Website in sechs Sprachen.",
+            "description": "seowatcher 0.5.0 Alpha — Türkische und englische Oberfläche, Benachrichtigungen, Töne und klarer Fortschritt.",
             "url": "https://seowatcher.io/de/docs/versionshinweise/",
             "inLanguage": "de",
-            "dateModified": "2026-10-23",
+            "dateModified": "2026-10-24",
             "articleSection": "Hilfe und Nachschlagen",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -183,7 +192,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=2.4.3" defer></script>
+    <script src="/assets/docs.js?v=0.5.0" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1315,7 +1324,7 @@
             >GitHub</a
           >
           <details class="langs">
-            <summary aria-label="Sprache: Deutsch">
+            <summary aria-label="DE — Sprache: Deutsch">
               <span class="flag"
                 ><svg viewBox="0 0 20 14" aria-hidden="true">
                   <rect width="20" height="14" fill="#000" />
@@ -1516,15 +1525,54 @@
       <article id="icerik" data-page="surum-notlari">
         <h1>Versionshinweise</h1>
         <p class="lede">
-          Neu in seowatcher 2.4.3: Windows-Installation mit einer Datei,
-          Selbstaktualisierung, schlichtere Bildschirme und eine Website in
-          sechs Sprachen.
+          seowatcher 0.5.0 Alpha — Türkische und englische Oberfläche,
+          Benachrichtigungen, Töne und klarer Fortschritt.
         </p>
         <p>
-          Die neueste Version ist <strong>2.4.3</strong> vom 23. Oktober 2026.
-          Beim Aktualisieren bleiben Ihre Daten erhalten; das Windows-Paket
-          installiert neue Versionen selbst.
+          Die neueste Version ist <strong>0.5.0 Alpha</strong> vom 23. Oktober
+          2026. Ihre Daten bleiben beim Aktualisieren erhalten.
         </p>
+        <p>
+          Für den ersten Wechsel von 2.x zu 0.x.x Alpha das neue
+          Installationsprogramm manuell starten; der alte Updater erkennt die
+          kleinere Nummer nicht als neuer.
+        </p>
+        <h2 id="0-5-0-alpha">0.5.0 Alpha</h2>
+        <ul>
+          <li>
+            Die Oberfläche lässt sich auf Türkisch oder Englisch nutzen. Zahlen
+            und Datumsangaben folgen der gewählten Sprache.
+          </li>
+          <li>
+            Die Benachrichtigungszentrale zeigt Audits, Updates,
+            Google-Verbindungen und Berichte. Töne und Desktop-Hinweise lassen
+            sich getrennt einstellen.
+          </li>
+          <li>
+            Versionshinweise stehen jetzt als eigener Menüpunkt über den
+            Benachrichtigungen. Farbige Etiketten zeigen Neuerungen und
+            Korrekturen jeder Version.
+          </li>
+          <li>
+            Unter Ayarlar → Windows können der Start mit Windows und die
+            automatische Update-Installation ein- oder ausgeschaltet werden.
+          </li>
+          <li>
+            Audits zeigen die verstrichene Zeit und eine Abschlussübersicht.
+            Neben jedem Seitentitel führt ein Link zur passenden Anleitung.
+          </li>
+          <li>
+            Die Länderliste im mobilen Projektformular und Hilfetexte in kleinen
+            Fenstern werden nicht mehr abgeschnitten. Escape schließt zuerst die
+            Länderliste; das Formular bleibt geöffnet.
+          </li>
+          <li>
+            Gleichzeitige Indexprüfungen berücksichtigen das Tageskontingent
+            genauer. Erfolgreiche Ergebnisse bleiben erhalten, wenn eine andere
+            Prüfung fehlschlägt.
+          </li>
+        </ul>
+        <h2 id="0-4-3-alpha-2026-10-22">0.4.3 Alpha — 2026-10-22</h2>
         <h2 id="das-wichtigste">Das Wichtigste</h2>
         <ul>
           <li>
@@ -1653,7 +1701,7 @@
           ><span class="pager-next empty"></span>
         </nav>
         <p class="meta">
-          Zuletzt aktualisiert: 23 Oktober 2026. Fehler entdeckt?
+          Zuletzt aktualisiert: 24 Oktober 2026. Fehler entdeckt?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -1665,6 +1713,10 @@
       <nav class="toc" aria-label="Auf dieser Seite">
         <p class="toc-label">Auf dieser Seite</p>
         <ol>
+          <li><a href="#0-5-0-alpha">0.5.0 Alpha</a></li>
+          <li>
+            <a href="#0-4-3-alpha-2026-10-22">0.4.3 Alpha — 2026-10-22</a>
+          </li>
           <li><a href="#das-wichtigste">Das Wichtigste</a></li>
           <li><a href="#windows">Windows</a></li>
           <li><a href="#die-app">Die App</a></li>

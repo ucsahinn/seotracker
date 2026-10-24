@@ -1,10 +1,24 @@
 ---
 title: Sürüm notları
-description: seowatcher 2.4.3'de neler değişti. Windows'ta tek dosyayla kurulum, kendini güncelleyen uygulama, sade ekranlar ve altı dilde site.
-updated: 2026-10-23
+description: seowatcher 0.5.0 Alpha — Türkçe ve İngilizce arayüz, bildirim merkezi, sesler ve daha açık işlem durumları.
+updated: 2026-10-24
 ---
 
-Son sürüm **2.4.3**, 23 Ekim 2026. Güncellerken veriniz korunur. Windows paketi yeni sürümü kendisi kurar.
+Son sürüm **0.5.0 Alpha**, 23 Ekim 2026. Güncellerken veriniz korunur.
+
+2.x serisinden 0.x.x Alpha serisine ilk geçiş için yeni kurulum dosyasını elle çalıştırın; eski otomatik güncelleyici küçük numarayı yeni sürüm olarak tanımaz.
+
+## 0.5.0 Alpha
+
+- Arayüzü Türkçe veya İngilizce kullanabilirsiniz; sayı ve tarihler seçtiğiniz dile uyar.
+- Bildirim merkezi denetimleri, güncellemeleri, Google bağlantısını ve raporları takip eder. Ses ve masaüstü bildirimleri ayrı ayarlanır.
+- Sürüm notları sol menüde, Bildirimler’in üstünde yer alır. Renkli etiketler her sürümün yeniliklerini ve düzeltmelerini gösterir.
+- Windows açılışında çalışma ve otomatik güncelleme kurulumu Ayarlar → Windows bölümünden açılıp kapatılabilir.
+- Denetim sırasında geçen süreyi ve bitiş özetini görebilir, her ekranın başlığından ilgili kılavuza ulaşabilirsiniz.
+- Mobil proje formundaki ülke listesi ve küçük pencerelerdeki yardım açıklamaları artık kesilmez. Escape önce ülke listesini kapatır, form açık kalır.
+- Aynı anda yapılan dizin kontrollerinde günlük hak daha doğru kullanılır; bir sorgu başarısız olsa da başarılı sonuçlar korunur.
+
+## 0.4.3 Alpha — 2026-10-22
 
 ## Öne çıkanlar
 

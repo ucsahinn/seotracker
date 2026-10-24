@@ -1,3 +1,4 @@
+import { t } from "@/shared/i18n";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { SearchTrendPanel } from "@/client/features/search-performance/SearchTrendChart";
@@ -12,7 +13,9 @@ import { useWarmQueriesTab } from "@/client/features/search-performance/useWarmQ
 import { TabPanel, Tabs } from "@/client/components/Tabs";
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { Download, Loader2, Sheet } from "lucide-react";
+import { Download, Sheet } from "lucide-react";
+import { Skeleton } from "@/client/components/Skeleton";
+import { Spinner } from "@/client/components/Spinner";
 import { toast } from "sonner";
 import { TableExportMenu } from "@/client/components/table/TableBulkActionBar";
 import { SearchConsoleConnectionCard } from "@/client/features/gsc/SearchConsoleConnectionCard";
@@ -179,15 +182,17 @@ export function SearchPerformancePage({
       });
       exportDimensionRows(dimension, data.rows, report.range, target);
     } catch (error) {
-      toast.error(getStandardErrorMessage(error, "Dışa aktarılamadı"));
+      toast.error(getStandardErrorMessage(error, t("Dışa aktarılamadı")));
     }
   };
 
   return (
     <PageShell width={report?.connected ? "wide" : "reading"}>
       <PageHeader
-        title="Arama performansı"
-        description="Google Search Console'dan gelen tıklama, gösterim, tıklama oranı ve ortalama sıra."
+        title={t("Arama performansı")}
+        description={t(
+          "Google Search Console'dan gelen tıklama, gösterim, tıklama oranı ve ortalama sıra.",
+        )}
         actions={
           report?.connected ? (
             <PageActions>
@@ -197,7 +202,7 @@ export function SearchPerformancePage({
                 params={{ projectId }}
                 className="btn btn-sm"
               >
-                Mülkü değiştir
+                {t("Mülkü değiştir")}
               </Link>
             </PageActions>
           ) : null
@@ -211,7 +216,7 @@ export function SearchPerformancePage({
           <QueryErrorState
             error={reportQuery.error}
             onRetry={() => void reportQuery.refetch()}
-            title="Arama performansı yüklenemedi"
+            title={t("Arama performansı yüklenemedi")}
           />
         </div>
       ) : !report?.connected ? (
@@ -241,10 +246,10 @@ export function SearchPerformancePage({
             )}
             {searchType === "web"
               ? null
-              : ` · Arama türü: ${TYPE_LABELS[searchType]}`}
+              : ` · ${t("Arama türü: {type}", { type: t(TYPE_LABELS[searchType]) })}`}
           </p>
           <TotalsCards report={report} />
-          <SearchTrendPanel daily={report.daily} />
+          <SearchTrendPanel daily={report.daily} projectId={projectId} />
           <DeviceBreakdown
             devices={report.devices}
             selected={device}
@@ -270,16 +275,18 @@ export function SearchPerformancePage({
                 items={[
                   {
                     id: "striking",
-                    label: `Sıra 5-20 (${report.strikingDistance.length})`,
+                    label: t("Sıra 5-20 ({count})", {
+                      count: report.strikingDistance.length,
+                    }),
                   },
-                  { id: "queries", label: "Sorgular" },
-                  { id: "pages", label: "Sayfalar" },
-                  { id: "cannibalization", label: "Sayfa çakışmaları" },
+                  { id: "queries", label: t("Sorgular") },
+                  { id: "pages", label: t("Sayfalar") },
+                  { id: "cannibalization", label: t("Sayfa çakışmaları") },
                 ]}
               />
               <div className="flex flex-wrap items-center gap-2">
                 {reportQuery.isFetching && !reportQuery.isPending ? (
-                  <Loader2 className="size-4 animate-spin text-muted" />
+                  <Spinner size="md" className="text-muted" />
                 ) : null}
                 <SearchFilters
                   range={range}
@@ -298,12 +305,12 @@ export function SearchPerformancePage({
                     buttonClassName="btn btn-ghost btn-sm gap-1"
                     actions={[
                       {
-                        label: "E-Tablolar'a aktar",
+                        label: t("E-Tablolar'a aktar"),
                         icon: <Sheet className="size-4" />,
                         onClick: () => void handleExport("sheets"),
                       },
                       {
-                        label: "CSV indir",
+                        label: t("CSV indir"),
                         icon: <Download className="size-4" />,
                         onClick: () => void handleExport("csv"),
                       },
@@ -314,9 +321,9 @@ export function SearchPerformancePage({
             </div>
 
             <p className="border-b border-base-300 px-4 py-2.5 text-sm text-muted">
-              {TAB_HINTS[tab]}
+              {t(TAB_HINTS[tab])}
               {tab === "cannibalization" && range === "last_7_days"
-                ? " Bu analiz için 7 günlük seçim 28 güne çıkarılır. Gerçek tarih aralığı aşağıda yazar."
+                ? ` ${t("Bu analiz için 7 günlük seçim 28 güne çıkarılır. Gerçek tarih aralığı aşağıda yazar.")}`
                 : null}
             </p>
 
@@ -363,11 +370,7 @@ export function SearchPerformancePage({
                    what is about to appear or how tall it will be. */
                 <>
                   <TabSummarySkeleton />
-                  <div className="space-y-2 p-4" aria-busy>
-                    {Array.from({ length: 8 }, (_, index) => (
-                      <div key={index} className="skeleton h-10" />
-                    ))}
-                  </div>
+                  <Skeleton variant="table" rows={8} className="p-4" />
                 </>
               ) : tableQuery.isError ? (
                 <div className="p-4">
@@ -375,7 +378,7 @@ export function SearchPerformancePage({
                     compact
                     error={tableQuery.error}
                     onRetry={() => void tableQuery.refetch()}
-                    title="Tablo yüklenemedi"
+                    title={t("Tablo yüklenemedi")}
                   />
                 </div>
               ) : (
@@ -396,7 +399,7 @@ export function SearchPerformancePage({
                   <div className="p-4">
                     <DimensionTable
                       rows={tableRows}
-                      keyLabel={tab === "queries" ? "Sorgu" : "Sayfa"}
+                      keyLabel={tab === "queries" ? t("Sorgu") : t("Sayfa")}
                       onSaveKeyword={
                         tab === "queries"
                           ? (keyword) => saveOne.mutate(keyword)

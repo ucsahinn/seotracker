@@ -2,6 +2,8 @@
 <html lang="{{lang}}">
   <head>
     <meta charset="utf-8" />
+    <link rel="stylesheet" href="/assets/consent.css?v=1" />
+    <script src="/assets/consent.js?v=2" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{{seotitle}}</title>
     <meta name="description" content="{{description}}" />
@@ -17,6 +19,13 @@
       sizes="48x48"
     />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link
+      rel="alternate"
+      type="application/atom+xml"
+      title="seowatcher"
+      href="{{feed}}"
+    />
     <link
       rel="preload"
       href="/assets/fonts/geist-latin-wght-normal.woff2"

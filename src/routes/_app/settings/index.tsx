@@ -4,9 +4,10 @@ import { GoogleOAuthClientSection } from "@/client/features/settings/GoogleOAuth
 import { GoogleServiceAccountSection } from "@/client/features/settings/GoogleServiceAccountSection";
 import { PageSpeedKeySection } from "@/client/features/settings/PageSpeedKeySection";
 import { SettingsIndex } from "@/client/features/settings/SettingsIndex";
+import { NotificationSettings } from "@/client/features/notifications/NotificationSettings";
 import { ThemeSection } from "@/client/features/settings/ThemeSection";
 import { UpdateSection } from "@/client/features/settings/UpdateSection";
-import { WhatsNewSection } from "@/client/features/settings/WhatsNewSection";
+import { WindowsSection } from "@/client/features/settings/WindowsSection";
 import { version } from "../../../../package.json";
 
 export const Route = createFileRoute("/_app/settings/")({
@@ -22,6 +23,8 @@ function PersonalSettings() {
           headings were the only thing saying where one ended. */}
       <div className="enter divide-y divide-[var(--hairline)] [&>*]:py-8 [&>*:first-child]:pt-0 [&>*:last-child]:pb-0">
         <ThemeSection />
+        <NotificationSettings />
+        <WindowsSection />
 
         <GoogleOAuthClientSection />
 
@@ -32,8 +35,6 @@ function PersonalSettings() {
         <SystemLimitsSection id="sinirlar" />
 
         <UpdateSection version={version} />
-
-        <WhatsNewSection version={version} />
       </div>
     </>
   );

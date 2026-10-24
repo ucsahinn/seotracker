@@ -153,8 +153,8 @@ describe("OpportunitiesPage", () => {
 
     await screen.findByLabelText("Dönem");
     const heading = screen.getByRole("heading", { name: "Fırsatlar" });
-    // title block and actions share one row, two levels up from the h1.
-    const headerRow = heading.parentElement?.parentElement;
+    // The controls belong to the page header, regardless of title adornments.
+    const headerRow = heading.closest("header");
     if (!headerRow) throw new Error("header row missing");
     expect(within(headerRow).getByLabelText("Dönem")).toBeDefined();
     expect(within(headerRow).getByLabelText("Satır sayısı")).toBeDefined();

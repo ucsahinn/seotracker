@@ -5,7 +5,7 @@ kind: sorun-giderme
 updated: 2026-10-23
 ---
 
-L'interface de l'application est en turc. Ce guide donne chaque nom de bouton et d'écran en turc, suivi de sa traduction française entre parenthèses.
+L'interface de l'application est disponible en turc et en anglais. La langue se choisit dans Ayarlar → Görünüm → Dil. Ce guide donne chaque nom de bouton et d'écran en turc, suivi de sa traduction française entre parenthèses.
 
 Si quelque chose ne fonctionne pas, regardez d'abord la carte « Kurulumunuzun durumu » (L'état de votre installation) de l'écran **Yardım** (Aide) dans l'application. La carte contrôle la connexion et l'accès, la connexion Google, la clé PageSpeed et la base de données. Si elle dit « N şey dikkat istiyor » (N choses demandent de l'attention), le bouton à côté vous mène au bon réglage. Les problèmes ci-dessous sont classés du plus fréquent au plus rare.
 

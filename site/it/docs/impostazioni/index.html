@@ -2,6 +2,8 @@
 <html lang="it">
   <head>
     <meta charset="utf-8" />
+    <link rel="stylesheet" href="/assets/consent.css?v=1" />
+    <script src="/assets/consent.js?v=2" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Impostazioni | guida di seowatcher</title>
     <meta
@@ -54,6 +56,13 @@
       sizes="48x48"
     />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link
+      rel="alternate"
+      type="application/atom+xml"
+      title="seowatcher"
+      href="/it/feed.xml"
+    />
     <link
       rel="preload"
       href="/assets/fonts/geist-latin-wght-normal.woff2"
@@ -83,7 +92,7 @@
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Impostazioni | seowatcher" />
-    <meta property="article:modified_time" content="2026-10-23" />
+    <meta property="article:modified_time" content="2026-10-24" />
     <meta
       property="og:url"
       content="https://seowatcher.io/it/docs/impostazioni/"
@@ -139,7 +148,7 @@
             "description": "Tema, chiave di accesso a Google, chiave PageSpeed, limiti d'uso e aggiornamenti. È l'unica schermata di impostazioni dell'intera installazione.",
             "url": "https://seowatcher.io/it/docs/impostazioni/",
             "inLanguage": "it",
-            "dateModified": "2026-10-23",
+            "dateModified": "2026-10-24",
             "articleSection": "Schermate",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -174,7 +183,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=2.4.3" defer></script>
+    <script src="/assets/docs.js?v=0.5.0" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1306,7 +1315,7 @@
             >GitHub</a
           >
           <details class="langs">
-            <summary aria-label="Lingua: Italiano">
+            <summary aria-label="IT — Lingua: Italiano">
               <span class="flag"
                 ><svg viewBox="0 0 20 14" aria-hidden="true">
                   <rect width="20" height="14" fill="#fff" />
@@ -1547,9 +1556,8 @@
           <strong>Hizmet hesabı</strong> (Account di servizio),
           <strong>Hız ölçümü</strong> (Misurazione della velocità),
           <strong>Sınırlar</strong> (Limiti),
-          <strong>Hakkında</strong> (Informazioni) e
-          <strong>Sürüm notları</strong> (Note di versione). Nel titolo di ogni
-          sezione c'è un badge che ne mostra lo stato.
+          <strong>Hakkında</strong> (Informazioni) e <strong>Windows</strong>.
+          Nel titolo di ogni sezione c'è un badge che ne mostra lo stato.
         </p>
         <h2 id="cosa-c-e-nella-schermata">Cosa c'è nella schermata</h2>
         <p>
@@ -1557,6 +1565,28 @@
           le opzioni Sistem (Sistema), Açık (Chiaro) e Koyu (Scuro). La scelta è
           conservata in questo browser. In un altro browser o su un altro
           computer la si sceglie di nuovo.
+        </p>
+        <p>
+          <strong>Lingua.</strong> L’interfaccia dell’app è disponibile in turco
+          e inglese. In <strong>Ayarlar → Görünüm → Dil</strong>, scegliere
+          Türkçe o English. La pagina si ricarica; numeri e date seguono la
+          lingua selezionata. La scelta viene salvata nel browser.
+        </p>
+        <p>
+          <strong>Notifiche (Bildirimler).</strong> La campanella mostra gli
+          ultimi 50 eventi e il numero di messaggi non letti.
+          <strong>Tümünü okundu işaretle</strong> segna tutto come letto senza
+          eliminare la cronologia. In <strong>Bildirimler</strong> è possibile
+          ascoltare il suono e attivare le notifiche desktop in background. Il
+          permesso del browser viene richiesto solo all’attivazione.
+        </p>
+        <p>
+          <strong>Windows.</strong> Attiva o disattiva l’avvio con Windows e
+          l’installazione automatica degli aggiornamenti. Sono le stesse
+          preferenze salvate nel menu dell’icona di notifica. Le restrizioni
+          dell’amministratore sono spiegate accanto al comando. I comandi sono
+          disabilitati nelle installazioni Docker e di sviluppo; i vecchi
+          launcher Windows richiedono l’aggiornamento del pacchetto.
         </p>
         <p>
           <strong>Google.</strong> Il badge ha uno di tre valori:
@@ -1641,7 +1671,7 @@
         </p>
         <p>
           <strong>Hakkında.</strong> La riga <strong>Sürüm</strong> (Versione)
-          mostra la versione (per esempio v2.3.0). L'interruttore
+          mostra la versione (per esempio 0.5.0 Alpha). L'interruttore
           <strong>Güncellemeleri kontrol et</strong> (Controlla gli
           aggiornamenti) è attivo per impostazione predefinita. Se è attivo,
           l'app chiede a GitHub l'ultima versione al massimo una volta al
@@ -1657,8 +1687,9 @@
           versione si installa da sola.
         </p>
         <p>
-          <strong>Sürüm notları.</strong> Elenca che cosa è cambiato in ogni
-          versione.
+          <strong>Sürüm notları.</strong> Le note di versione hanno una pagina
+          separata sopra le notifiche nel menu laterale. Le etichette colorate
+          indicano novità, correzioni e modifiche di sicurezza.
         </p>
         <h2 id="come-si-usa">Come si usa</h2>
         <ol>
@@ -1740,7 +1771,7 @@
           >
         </nav>
         <p class="meta">
-          Ultimo aggiornamento: 23 ottobre 2026. Se si nota un errore,
+          Ultimo aggiornamento: 24 ottobre 2026. Se si nota un errore,
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"

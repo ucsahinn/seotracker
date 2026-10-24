@@ -1,3 +1,4 @@
+import { t } from "@/shared/i18n";
 import { DonutCard, donutSummary } from "@/client/components/DonutChart";
 import {
   deviceSegments,
@@ -23,12 +24,14 @@ export function DeviceBreakdown({
 
   return (
     <DonutCard
-      title="Cihazlar"
-      description="Tıklamaların hangi cihazlardan geldiği. Bir cihaza tıklayarak tüm sayfayı o cihaza göre daraltabilirsiniz."
-      totalLabel="tıklama"
+      title={t("Cihazlar")}
+      description={t(
+        "Tıklamaların hangi cihazlardan geldiği. Bir cihaza tıklayarak tüm sayfayı o cihaza göre daraltabilirsiniz.",
+      )}
+      totalLabel={t("tıklama")}
       height={144}
       segments={segments}
-      summary={donutSummary(segments, "tıklama")}
+      summary={donutSummary(segments, t("tıklama"))}
       selectedKey={selected ?? null}
       onSelect={(key) =>
         onSelect(key !== null && isDevice(key) ? key : undefined)

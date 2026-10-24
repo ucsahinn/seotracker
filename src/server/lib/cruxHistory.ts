@@ -4,6 +4,7 @@ import {
   parseCruxHistory,
   type CruxSeries,
 } from "@/shared/cruxHistory";
+import { t } from "@/shared/i18n";
 
 const ENDPOINT =
   "https://chromeuxreport.googleapis.com/v1/records:queryHistoryRecord";
@@ -59,14 +60,14 @@ export async function fetchCruxHistory(input: {
     if (!series) {
       return {
         status: "error",
-        message: "Google beklenmedik bir yanıt verdi.",
+        message: t("Google beklenmedik bir yanıt verdi."),
       };
     }
     return series.length === 0
       ? { status: "no_data" }
       : { status: "ok", series };
   } catch {
-    return { status: "error", message: "Google'a ulaşılamadı." };
+    return { status: "error", message: t("Google'a ulaşılamadı.") };
   } finally {
     clearTimeout(timeout);
   }
@@ -79,18 +80,27 @@ export async function fetchCruxHistory(input: {
  * restriction leaves it out. Read the reason instead of guessing.
  */
 async function describeFailure(response: Response): Promise<string> {
-  if (response.status === 429) return "Google'ın istek sınırı doldu.";
+  if (response.status === 429) return t("Google'ın istek sınırı doldu.");
   if (response.status === 403 || response.status === 401) {
     const reason = await googleReason(response);
     if (/API_KEY_SERVICE_BLOCKED|blocked|restriction/i.test(reason)) {
-      return `Anahtarın API kısıtlaması "Chrome UX Report API"yi dışarıda bırakıyor. Google Cloud Console'da anahtarın kısıtlamasına ekleyip tekrar deneyin.`;
+      return t(
+        'Anahtarın API kısıtlaması "Chrome UX Report API"yi dışarıda bırakıyor. Google Cloud Console\'da anahtarın kısıtlamasına ekleyip tekrar deneyin.',
+      );
     }
     if (/SERVICE_DISABLED|has not been used|is disabled/i.test(reason)) {
-      return `Anahtarın Google Cloud projesinde "Chrome UX Report API" etkin değil. Google Cloud Console'da API bölümünden etkinleştirip tekrar deneyin.`;
+      return t(
+        'Anahtarın Google Cloud projesinde "Chrome UX Report API" etkin değil. Google Cloud Console\'da API bölümünden etkinleştirip tekrar deneyin.',
+      );
     }
-    return `Google bu anahtara izin vermedi${reason ? ` (${reason})` : ""}. Anahtarın Google Cloud projesinde "Chrome UX Report API" etkin olmalı ve anahtarın kısıtlamasında yer almalı.`;
+    return t(
+      'Google bu anahtara izin vermedi{reason}. Anahtarın Google Cloud projesinde "Chrome UX Report API" etkin olmalı ve anahtarın kısıtlamasında yer almalı.',
+      { reason: reason ? ` (${reason})` : "" },
+    );
   }
-  return `Google yanıt vermedi (HTTP ${response.status}). Birazdan tekrar deneyin.`;
+  return t("Google yanıt vermedi (HTTP {status}). Birazdan tekrar deneyin.", {
+    status: response.status,
+  });
 }
 
 /** Google's error code and reason strings, never the message text (it can echo the project id). */

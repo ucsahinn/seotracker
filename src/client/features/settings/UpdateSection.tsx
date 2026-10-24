@@ -1,5 +1,5 @@
 import { HelpTip } from "@/client/components/HelpTip";
-import { SITE_URL } from "@/client/features/support/links";
+import { siteUrl } from "@/client/features/support/links";
 import { getSafeExternalUrl } from "@/client/components/table/url";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -16,9 +16,12 @@ import {
   checkForUpdateNow,
   setUpdateCheckEnabled,
 } from "@/serverFunctions/updateCheck";
+import { t } from "@/shared/i18n";
+import { fillParts } from "./fillParts";
 import { SectionHeaderRow } from "./SectionBadge";
-import { UNREADABLE, updateBadge } from "./sectionStatus";
+import { unreadableBadge, updateBadge } from "./sectionStatus";
 import { updateStatusOptions } from "./settingsQueries";
+import { notifyUpdateAvailable } from "@/client/features/notifications/useBackgroundNotifications";
 
 const STATUS_KEY = updateStatusOptions().queryKey;
 const UPDATE_COMMAND = "git pull && docker compose up -d --build";
@@ -43,25 +46,29 @@ export function UpdateSection({ version }: { version: string }) {
       queryClient.setQueryData(STATUS_KEY, result);
       if (result.outcome === "unreachable") {
         toast.error(
-          "GitHub'a ulaşılamadı. İnternet bağlantınızı kontrol edip tekrar deneyin.",
+          t(
+            "GitHub'a ulaşılamadı. İnternet bağlantınızı kontrol edip tekrar deneyin.",
+          ),
         );
       } else if (result.outcome === "error") {
         toast.error(
-          `GitHub'a ulaşılamadı; son bilinen sürüm ${result.latestVersion}`,
+          t("GitHub'a ulaşılamadı; son bilinen sürüm {version}", {
+            version: result.latestVersion ?? "",
+          }),
         );
       } else if (result.outcome === "no_releases") {
-        toast.success("Henüz yayımlanmış bir sürüm yok");
+        toast.success(t("Henüz yayımlanmış bir sürüm yok"));
       } else if (result.updateAvailable) {
-        toast.success(`Yeni sürüm: ${result.latestVersion}`);
+        if (result.latestVersion) notifyUpdateAvailable(result.latestVersion);
       } else {
-        toast.success("En güncel sürümü kullanıyorsunuz");
+        toast.success(t("En güncel sürümü kullanıyorsunuz"));
       }
     },
     onError: (error) =>
       toast.error(
         getStandardErrorMessage(
           error,
-          "Güncelleme kontrol edilemedi. Birazdan tekrar deneyin.",
+          t("Güncelleme kontrol edilemedi. Birazdan tekrar deneyin."),
         ),
       ),
   });
@@ -73,41 +80,44 @@ export function UpdateSection({ version }: { version: string }) {
       queryClient.setQueryData(STATUS_KEY, result);
       toast.success(
         enabled
-          ? "Güncelleme kontrolü açıldı"
-          : "Güncelleme kontrolü kapatıldı",
+          ? t("Güncelleme kontrolü açıldı")
+          : t("Güncelleme kontrolü kapatıldı"),
       );
     },
     onError: (error) =>
       toast.error(
-        getStandardErrorMessage(error, "Ayar kaydedilemedi. Tekrar deneyin."),
+        getStandardErrorMessage(
+          error,
+          t("Ayar kaydedilemedi. Tekrar deneyin."),
+        ),
       ),
   });
 
   return (
     <section id="guncelleme" className="scroll-mt-16 space-y-3">
       <SectionHeaderRow
-        badge={statusQuery.isError ? UNREADABLE : updateBadge(status)}
+        badge={statusQuery.isError ? unreadableBadge() : updateBadge(status)}
       >
-        <h2 className="text-base font-semibold">Hakkında</h2>
+        <h2 className="text-base font-semibold">{t("Hakkında")}</h2>
       </SectionHeaderRow>
 
       <p className="text-sm text-muted">
-        Uygulama yeni sürümü fark eder ve ne yapacağınızı söyler. Windows paketi
-        güncellemeyi kendisi kurar, Docker&apos;da verilen komutu siz
-        çalıştırırsınız. Docker&apos;da kontrolü kapatırsanız GitHub&apos;a
-        istek gitmez. Windows paketinde görev çubuğu uygulaması günde bir kez
-        GitHub&apos;a bakar. Kendiliğinden kurup kurmayacağını menüdeki{" "}
-        <strong>Güncellemeleri kendiliğinden kur</strong> seçeneği belirler.
+        {fillParts(
+          t(
+            "Uygulama yeni sürümü fark eder ve ne yapacağınızı söyler. Windows paketi güncellemeyi kendisi kurar, Docker'da verilen komutu siz çalıştırırsınız. Docker'da kontrolü kapatırsanız GitHub'a istek gitmez. Windows paketinde görev çubuğu uygulaması günde bir kez GitHub'a bakar. Kendiliğinden kurup kurmayacağını menüdeki {option} seçeneği belirler.",
+          ),
+          { option: <strong>{t("Güncellemeleri kendiliğinden kur")}</strong> },
+        )}
       </p>
 
       <div className="flex items-center justify-between gap-6">
-        <span className="text-sm">Sürüm</span>
-        <span className="font-mono text-sm text-muted">v{version}</span>
+        <span className="text-sm">{t("Sürüm")}</span>
+        <span className="font-mono text-sm text-muted">v{version} Alpha</span>
       </div>
       <div className="flex items-center justify-between gap-6">
-        <span className="text-sm">Site ve kılavuz</span>
+        <span className="text-sm">{t("Site ve kılavuz")}</span>
         <a
-          href={SITE_URL}
+          href={siteUrl()}
           target="_blank"
           rel="noreferrer noopener"
           className="inline-flex items-center gap-1 text-sm font-medium underline underline-offset-2"
@@ -122,7 +132,9 @@ export function UpdateSection({ version }: { version: string }) {
           <div className="flex flex-wrap items-center gap-2">
             <ArrowUpCircle className="size-4 shrink-0 text-primary" />
             <p className="text-sm">
-              <strong>{status.latestVersion}</strong> yayımlandı.
+              {fillParts(t("{version} yayımlandı."), {
+                version: <strong>{status.latestVersion}</strong>,
+              })}
             </p>
             {/* The release URL comes from GitHub's API; only http(s) is linked. */}
             {getSafeExternalUrl(status.releaseUrl) ? (
@@ -132,20 +144,24 @@ export function UpdateSection({ version }: { version: string }) {
                 rel="noreferrer noopener"
                 className="inline-flex items-center gap-1 text-sm font-medium underline underline-offset-2"
               >
-                Değişiklikler
+                {t("Değişiklikler")}
                 <ExternalLink className="size-3" />
               </a>
             ) : null}
           </div>
           {status.installKind === "windows" ? (
             <p className="text-xs text-subtle">
-              Windows paketi güncellemeyi kendisi kurar: görev çubuğundaki
-              seowatcher simgesi yeni sürümü indirir, doğrular ve sessizce
-              kurar. Kendiliğinden kurmayı istemiyorsanız simgeye sağ tıklayıp{" "}
-              <strong>Güncellemeleri kendiliğinden kur</strong> işaretini
-              kaldırın; o zaman yeni sürüm hazır olunca menüde{" "}
-              <strong>Güncelle: sürüm hazır</strong> maddesi çıkar, tıklayınca
-              kurulur. Verileriniz ve Google bağlantınız olduğu gibi kalır.
+              {fillParts(
+                t(
+                  "Windows paketi güncellemeyi kendisi kurar: görev çubuğundaki seowatcher simgesi yeni sürümü indirir, doğrular ve sessizce kurar. Kendiliğinden kurmayı istemiyorsanız simgeye sağ tıklayıp {option} işaretini kaldırın; o zaman yeni sürüm hazır olunca menüde {item} maddesi çıkar, tıklayınca kurulur. Verileriniz ve Google bağlantınız olduğu gibi kalır.",
+                ),
+                {
+                  option: (
+                    <strong>{t("Güncellemeleri kendiliğinden kur")}</strong>
+                  ),
+                  item: <strong>{t("Güncelle: sürüm hazır")}</strong>,
+                },
+              )}
             </p>
           ) : (
             <>
@@ -156,12 +172,16 @@ export function UpdateSection({ version }: { version: string }) {
                 </code>
                 <CopyButton
                   value={UPDATE_COMMAND}
-                  successMessage="Güncelleme komutu kopyalandı"
+                  successMessage={t("Güncelleme komutu kopyalandı")}
                 />
               </div>
               <p className="text-xs text-subtle">
-                Proje klasöründe çalıştırın. Verileriniz Docker biriminde (
-                <code>seotracker_data</code>) kalır, güncelleme onu silmez.
+                {fillParts(
+                  t(
+                    "Proje klasöründe çalıştırın. Verileriniz Docker biriminde ({volume}) kalır, güncelleme onu silmez.",
+                  ),
+                  { volume: <code>seotracker_data</code> },
+                )}
               </p>
             </>
           )}
@@ -171,37 +191,44 @@ export function UpdateSection({ version }: { version: string }) {
       {status && !status.updateAvailable && status.outcome === "ok" ? (
         <p className="flex items-center gap-1.5 text-sm text-muted">
           <CheckCircle2 className="size-4 shrink-0 text-success" />
-          En güncel sürümü kullanıyorsunuz.
+          {t("En güncel sürümü kullanıyorsunuz.")}
         </p>
       ) : null}
 
       {status?.outcome === "no_releases" ? (
         <p className="text-sm text-muted">
-          Depoda henüz yayımlanmış bir sürüm yok.
+          {t("Depoda henüz yayımlanmış bir sürüm yok.")}
         </p>
       ) : null}
 
       {status && !status.enabled ? (
         <p className="text-sm text-muted">
-          Güncelleme kontrolü kapalı; GitHub&apos;a istek gitmiyor. Yeni
-          sürümleri depodaki yayınlardan kendiniz takip edebilirsiniz.
+          {t(
+            "Güncelleme kontrolü kapalı; GitHub'a istek gitmiyor. Yeni sürümleri depodaki yayınlardan kendiniz takip edebilirsiniz.",
+          )}
         </p>
       ) : null}
 
       {status?.outcome === "error" ? (
         <p role="alert" className="text-sm text-[var(--ink-warning)]">
-          Son kontrol başarısız oldu: GitHub&apos;a ulaşılamadı. Son bilinen
-          sürüm {status.latestVersion}
           {status.lastSuccessAt
-            ? ` (son başarılı kontrol: ${formatDateTime(status.lastSuccessAt)})`
-            : ""}
-          ; güncel olup olmadığı doğrulanamadı.
+            ? t(
+                "Son kontrol başarısız oldu: GitHub'a ulaşılamadı. Son bilinen sürüm {version} (son başarılı kontrol: {date}); güncel olup olmadığı doğrulanamadı.",
+                {
+                  version: status.latestVersion ?? "",
+                  date: formatDateTime(status.lastSuccessAt),
+                },
+              )
+            : t(
+                "Son kontrol başarısız oldu: GitHub'a ulaşılamadı. Son bilinen sürüm {version}; güncel olup olmadığı doğrulanamadı.",
+                { version: status.latestVersion ?? "" },
+              )}
         </p>
       ) : null}
 
       {status?.outcome === "unreachable" ? (
         <p className="text-sm text-muted">
-          Son kontrolde GitHub&apos;a ulaşılamadı.
+          {t("Son kontrolde GitHub'a ulaşılamadı.")}
         </p>
       ) : null}
 
@@ -215,11 +242,11 @@ export function UpdateSection({ version }: { version: string }) {
             onChange={(event) => toggle.mutate(event.target.checked)}
           />
           <span className="flex items-center gap-1.5">
-            Güncellemeleri kontrol et
-            <HelpTip label="Güncellemeleri kontrol et">
-              Açıkken günde bir kez GitHub&apos;daki sürüm listesine bakar,
-              başka hiçbir şey göndermez. Kapatırsanız dışarıya hiç istek gitmez
-              ve sürümü kendiniz takip edersiniz.
+            {t("Güncellemeleri kontrol et")}
+            <HelpTip label={t("Güncellemeleri kontrol et")}>
+              {t(
+                "Açıkken günde bir kez GitHub'daki sürüm listesine bakar, başka hiçbir şey göndermez. Kapatırsanız dışarıya hiç istek gitmez ve sürümü kendiniz takip edersiniz.",
+              )}
             </HelpTip>
           </span>
         </label>
@@ -233,7 +260,9 @@ export function UpdateSection({ version }: { version: string }) {
             <RotateCw
               className={`size-4 ${checkNow.isPending ? "animate-spin" : ""}`}
             />
-            Şimdi kontrol et
+            {checkNow.isPending
+              ? t("Kontrol ediliyor…")
+              : t("Şimdi kontrol et")}
           </button>
         ) : null}
       </div>
@@ -241,12 +270,11 @@ export function UpdateSection({ version }: { version: string }) {
       {/* Said plainly, because it is an outbound request the operator did not
           ask for individually and can switch off. */}
       <p className="text-xs text-subtle">
-        Kontrol açıkken uygulama günde bir kez GitHub&apos;a bağlanıp en son
-        sürümü sorar. GitHub bu istekte yalnızca genel IP adresinizi, uygulama
-        adını ve sürümü görür; siteleriniz, Google hesabınız ya da
-        denetimleriniz gönderilmez.
+        {t(
+          "Kontrol açıkken uygulama günde bir kez GitHub'a bağlanıp en son sürümü sorar. GitHub bu istekte yalnızca genel IP adresinizi, uygulama adını ve sürümü görür; siteleriniz, Google hesabınız ya da denetimleriniz gönderilmez.",
+        )}
         {status?.checkedAt
-          ? ` Son kontrol: ${formatDateTime(status.checkedAt)}.`
+          ? ` ${t("Son kontrol: {date}.", { date: formatDateTime(status.checkedAt) })}`
           : ""}
       </p>
     </section>

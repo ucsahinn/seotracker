@@ -1,6 +1,8 @@
 import { buildCsv, type CsvValue } from "@/client/lib/csv";
+import { t } from "@/shared/i18n";
 import type { CategoryTab, LighthouseIssue } from "./types";
 
+// Turkish source headers; translated per export, in the UI language.
 const ISSUE_HEADERS = [
   "Kategori",
   "Önem",
@@ -27,8 +29,10 @@ function issuesToRows(issues: LighthouseIssue[]): CsvValue[][] {
   ]);
 }
 
+const issueHeaders = () => ISSUE_HEADERS.map((header) => t(header));
+
 export function issuesToTable(issues: LighthouseIssue[]) {
-  return { headers: ISSUE_HEADERS, rows: issuesToRows(issues) };
+  return { headers: issueHeaders(), rows: issuesToRows(issues) };
 }
 
 const CATEGORY_LABELS: Record<CategoryTab, string> = {
@@ -40,7 +44,7 @@ const CATEGORY_LABELS: Record<CategoryTab, string> = {
 };
 
 export function categoryLabel(category: CategoryTab) {
-  return CATEGORY_LABELS[category];
+  return t(CATEGORY_LABELS[category]);
 }
 
 /**
@@ -70,9 +74,10 @@ const CATEGORY_ISSUE_PHRASES: Record<
 };
 
 export function categoryIssuePhrase(category: CategoryTab) {
-  return CATEGORY_ISSUE_PHRASES[category];
+  const phrase = CATEGORY_ISSUE_PHRASES[category];
+  return { subject: t(phrase.subject), object: t(phrase.object) };
 }
 
 export function issuesToCsv(issues: LighthouseIssue[]) {
-  return buildCsv(ISSUE_HEADERS, issuesToRows(issues));
+  return buildCsv(issueHeaders(), issuesToRows(issues));
 }

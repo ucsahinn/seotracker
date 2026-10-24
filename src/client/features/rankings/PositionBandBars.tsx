@@ -1,3 +1,4 @@
+import { t } from "@/shared/i18n";
 import { useEffect, useState } from "react";
 import { HelpTip } from "@/client/components/HelpTip";
 import {
@@ -49,17 +50,24 @@ export function PositionBandBars({
   return (
     <section className="rounded-box border border-base-300 bg-base-100 px-4 py-4">
       <div className="flex items-center gap-1.5">
-        <h2 className="text-sm font-medium">Sıra dağılımı</h2>
-        <HelpTip label="Sıra dağılımı">
-          Takip edilen sorgular ortalama sırasına göre gruplanır. Bir çubuğa
-          tıklayınca tablo o gruba daralır.
+        <h2 className="text-sm font-medium">{t("Sıra dağılımı")}</h2>
+        <HelpTip label={t("Sıra dağılımı")}>
+          {t(
+            "Takip edilen sorgular ortalama sırasına göre gruplanır. Bir çubuğa tıklayınca tablo o gruba daralır.",
+          )}
         </HelpTip>
       </div>
       <p className="mt-0.5 text-xs text-muted">
-        {formatCount(total)} sorgunun ortalama sırası. Bir çubuğa tıklayınca
-        tablo o gruba göre daralır.
+        {t(
+          "{count} sorgunun ortalama sırası. Bir çubuğa tıklayınca tablo o gruba göre daralır.",
+          { count: total },
+        )}
       </p>
-      <div role="group" aria-label="Sıra grupları" className="mt-3 space-y-1.5">
+      <div
+        role="group"
+        aria-label={t("Sıra grupları")}
+        className="mt-3 space-y-1.5"
+      >
         {BAND_IDS.map((id) => {
           const count = counts[id];
           const pressed = active === id;
@@ -69,11 +77,16 @@ export function PositionBandBars({
               type="button"
               aria-pressed={pressed}
               disabled={count === 0 && !pressed}
-              aria-label={`Sıra ${BAND_LABELS[id]}: ${formatCount(count)} sorgu`}
+              aria-label={t("Sıra {band}: {count} sorgu", {
+                band: BAND_LABELS[id],
+                count,
+              })}
               title={
                 pressed
-                  ? "Filtreyi kaldır"
-                  : `Sırası ${BAND_LABELS[id]} olan sorguları göster`
+                  ? t("Filtreyi kaldır")
+                  : t("Sırası {band} olan sorguları göster", {
+                      band: BAND_LABELS[id],
+                    })
               }
               onClick={() => onChange(pressed ? undefined : id)}
               className={`group flex w-full items-center gap-3 rounded-field px-2 py-1.5 text-left text-sm transition-colors enabled:hover:bg-base-200/60 disabled:cursor-not-allowed disabled:opacity-60 ${pressed ? "bg-base-200" : ""}`}

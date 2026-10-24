@@ -9,6 +9,7 @@ import { AppError } from "@/server/lib/errors";
 import { APP_REPORT_CREATOR } from "@/shared/report-creator";
 import { requireProjectContext } from "@/serverFunctions/middleware";
 import { REPORT_MAX_HTML_BYTES } from "@/types/schemas/reports";
+import { t } from "@/shared/i18n";
 
 const schema = z.object({
   projectId: z.string().min(1),
@@ -36,7 +37,7 @@ export const createAuditReport = createServerFn({ method: "POST" })
     if (results.audit.status === "running") {
       throw new AppError(
         "VALIDATION_ERROR",
-        "Denetim hâlâ çalışıyor. Rapor, denetim bitince oluşturulabilir.",
+        t("Denetim hâlâ çalışıyor. Rapor, denetim bitince oluşturulabilir."),
       );
     }
 
@@ -76,7 +77,9 @@ export const createAuditReport = createServerFn({ method: "POST" })
     ) {
       throw new AppError(
         "VALIDATION_ERROR",
-        "Bu denetim raporu, sorun listeleri en aza indirilse bile saklama sınırını aşıyor. Raporu oluşturmak için denetimi daha az sayfa veya daha kısa adreslerle yeniden çalıştırın.",
+        t(
+          "Bu denetim raporu, sorun listeleri en aza indirilse bile saklama sınırını aşıyor. Raporu oluşturmak için denetimi daha az sayfa veya daha kısa adreslerle yeniden çalıştırın.",
+        ),
       );
     }
 

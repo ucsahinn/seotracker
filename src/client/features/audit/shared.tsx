@@ -1,5 +1,6 @@
 import { AlertCircle, CheckCircle } from "lucide-react";
 import { lighthouseBand } from "@/shared/lighthouse";
+import { t } from "@/shared/i18n";
 
 export function extractPathname(url: string): string {
   try {
@@ -26,7 +27,7 @@ export function StatusBadge({ status }: { status: string }) {
   if (status === "running") {
     return (
       <span className="badge badge-info badge-sm gap-1">
-        <span className="dot-live" aria-hidden /> Sürüyor
+        <span className="dot-live" aria-hidden /> {t("Sürüyor")}
       </span>
     );
   }
@@ -34,14 +35,14 @@ export function StatusBadge({ status }: { status: string }) {
   if (status === "completed") {
     return (
       <span className={`badge badge-sm gap-1 ${severityChip.success}`}>
-        <CheckCircle className="size-3" /> Bitti
+        <CheckCircle className="size-3" /> {t("Bitti")}
       </span>
     );
   }
 
   return (
     <span className={`badge badge-sm gap-1 ${severityChip.error}`}>
-      <AlertCircle className="size-3" /> Başarısız
+      <AlertCircle className="size-3" /> {t("Başarısız")}
     </span>
   );
 }

@@ -1,0 +1,8 @@
+# Security contact for seowatcher (seotracker). Please report vulnerabilities
+# privately through GitHub's security advisory form; non-sensitive bugs go to
+# the issue tracker.
+Contact: https://github.com/ucsahinn/seotracker/security/advisories/new
+Contact: https://github.com/ucsahinn/seotracker/issues
+Expires: 2027-10-23T00:00:00.000Z
+Preferred-Languages: tr, en
+Canonical: https://seowatcher.io/.well-known/security.txt

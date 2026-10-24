@@ -2,10 +2,31 @@ import { Link } from "@tanstack/react-router";
 import { ChevronRight, ExternalLink } from "lucide-react";
 import type { ReactNode } from "react";
 import { CopyButton } from "@/client/components/CopyButton";
+import { fillParts } from "@/client/features/settings/fillParts";
 import { useOrigin } from "@/client/features/settings/useOrigin";
+import { t } from "@/shared/i18n";
 import { DOCS, docsUrl } from "./links";
 
 const linkClass = "link link-primary";
+
+/*
+ * The Windows tray menu is Turkish only, so its items are named as the menu
+ * shows them in every language; the English sentences around them add the
+ * meaning in parentheses.
+ */
+const TRAY = {
+  restart: "Yeniden başlat", // i18n-ignore: tray menu item
+  repair: "Kurulumu onar",
+  logs: "Günlükleri aç", // i18n-ignore: tray menu item
+  report: "Sorunu bildir (GitHub)",
+  dataFolder: "Veri klasörünü aç", // i18n-ignore: tray menu item
+  running: '"Çalışıyor: http://127.0.0.1:3001/"', // i18n-ignore: tray tooltip
+  error: '"Hata"',
+} as const;
+
+function TrayItem({ name }: { name: keyof typeof TRAY }) {
+  return <strong lang="tr">{TRAY[name]}</strong>;
+}
 
 function Command({ value }: { value: string }) {
   return (
@@ -15,8 +36,8 @@ function Command({ value }: { value: string }) {
       <CopyButton
         iconOnly
         value={value}
-        label="Komutu kopyala"
-        successMessage="Komut kopyalandı"
+        label={t("Komutu kopyala")}
+        successMessage={t("Komut kopyalandı")}
       />
     </span>
   );
@@ -59,6 +80,8 @@ function Problem({ title, children }: { title: string; children: ReactNode }) {
   );
 }
 
+const code = (value: string) => <code className="text-xs">{value}</code>;
+
 /**
  * The failures that actually happen on a self-hosted install, with the answer
  * that is already in `docs/` and the screen that fixes it. Short on purpose:
@@ -75,7 +98,9 @@ export function CommonProblems({
   const origin = useOrigin();
   const windows = installKind === "windows";
   const pending = installKind === null;
-  const pendingNote = <p className="text-muted">Kurulum türü belirleniyor…</p>;
+  const pendingNote = (
+    <p className="text-muted">{t("Kurulum türü belirleniyor…")}</p>
+  );
 
   return (
     <section
@@ -86,45 +111,68 @@ export function CommonProblems({
         id="common-problems-title"
         className="pt-4 pb-1 text-sm font-semibold"
       >
-        Sık sorunlar
+        {t("Sık sorunlar")}
       </h2>
 
       {pending ? (
         pendingNote
       ) : windows ? (
-        <Problem title="Sayfa açılmıyor ya da uygulama kapalı">
+        <Problem title={t("Sayfa açılmıyor ya da uygulama kapalı")}>
           <p>
-            Görev çubuğundaki seowatcher simgesine bakın; üzerine gelince
-            &quot;Çalışıyor: http://127.0.0.1:3001/&quot; yazmalı. Simge yoksa
-            Başlat menüsünden seowatcher&apos;ı açın. Simgede &quot;Hata&quot;
-            yazıyorsa sağ tıklayıp <strong>Yeniden başlat</strong>, olmazsa{" "}
-            <strong>Kurulumu onar</strong> deyin.
+            {fillParts(
+              t(
+                "Görev çubuğundaki seowatcher simgesine bakın; üzerine gelince {running} yazmalı. Simge yoksa Başlat menüsünden seowatcher'ı açın. Simgede {error} yazıyorsa sağ tıklayıp {restart}, olmazsa {repair} deyin.",
+              ),
+              {
+                running: TRAY.running,
+                error: TRAY.error,
+                restart: <TrayItem name="restart" />,
+                repair: <TrayItem name="repair" />,
+              },
+            )}
           </p>
           <p>
-            Hâlâ açılmıyorsa <strong>Günlükleri aç</strong> ile{" "}
-            <code className="text-xs">launcher.log</code> ve{" "}
-            <code className="text-xs">server.log</code> dosyalarının son
-            satırlarına bakın; <strong>Sorunu bildir (GitHub)</strong> bunları
-            hazır bir kayda koyar.
+            {fillParts(
+              t(
+                "Hâlâ açılmıyorsa {logs} ile {launcher} ve {server} dosyalarının son satırlarına bakın; {report} bunları hazır bir kayda koyar.",
+              ),
+              {
+                logs: <TrayItem name="logs" />,
+                launcher: code("launcher.log"),
+                server: code("server.log"),
+                report: <TrayItem name="report" />,
+              },
+            )}
           </p>
           <p>
-            <DocLink file={DOCS.windows}>Windows kurulum kılavuzu</DocLink>
+            <DocLink file={DOCS.windows}>
+              {t("Windows kurulum kılavuzu")}
+            </DocLink>
           </p>
         </Problem>
       ) : (
-        <Problem title="Sayfa açılmıyor ya da Docker kapalı">
+        <Problem title={t("Sayfa açılmıyor ya da Docker kapalı")}>
           <p>
-            Önce Docker Desktop&apos;ın çalıştığına bakın; Windows&apos;ta
-            tepsideki simge &quot;running&quot; demeli. Sonra durumu görün:{" "}
-            <Command value="docker compose ps" /> Durum <strong>healthy</strong>{" "}
-            olana kadar bekleyin; ilk açılış birkaç dakika sürebilir.
+            {fillParts(
+              t(
+                "Önce Docker Desktop'ın çalıştığına bakın; Windows'ta tepsideki simge \"running\" demeli. Sonra durumu görün: {command} Durum {healthy} olana kadar bekleyin; ilk açılış birkaç dakika sürebilir.",
+              ),
+              {
+                command: <Command value="docker compose ps" />,
+                healthy: <strong>healthy</strong>,
+              },
+            )}
           </p>
           <p>
-            Hâlâ açılmıyorsa son günlük satırları nedeni yazar:{" "}
-            <Command value="docker compose logs --tail 50" />
+            {fillParts(
+              t(
+                "Hâlâ açılmıyorsa son günlük satırları nedeni yazar: {command}",
+              ),
+              { command: <Command value="docker compose logs --tail 50" /> },
+            )}
           </p>
           <p>
-            <DocLink file={DOCS.docker}>Docker kurulum belgesi</DocLink>
+            <DocLink file={DOCS.docker}>{t("Docker kurulum belgesi")}</DocLink>
           </p>
         </Problem>
       )}
@@ -132,137 +180,193 @@ export function CommonProblems({
       <Problem
         title={
           windows
-            ? "Adres numarası (port) dolu"
-            : "Adres numarası (port) dolu (Bind for 127.0.0.1:3001 failed)"
+            ? t("Adres numarası (port) dolu")
+            : t("Adres numarası (port) dolu (Bind for 127.0.0.1:3001 failed)")
         }
       >
         {pending ? (
           pendingNote
         ) : windows ? (
           <p>
-            Windows paketi 3001 doluysa o açılış için 3002 ile 3010 arasında boş
-            bir numara kullanır; bunu bir bildirimle ve simgenin yazısında
-            söyler. Numarayı kalıcı yapmak istiyorsanız{" "}
-            <strong>Veri klasörünü aç</strong> deyip{" "}
-            <code className="text-xs">config.json</code> içindeki{" "}
-            <code className="text-xs">&quot;port&quot;</code> değerini
-            değiştirin, sonra <strong>Yeniden başlat</strong> deyin.
+            {fillParts(
+              t(
+                "Windows paketi 3001 doluysa o açılış için 3002 ile 3010 arasında boş bir numara kullanır; bunu bir bildirimle ve simgenin yazısında söyler. Numarayı kalıcı yapmak istiyorsanız {dataFolder} deyip {config} içindeki {port} değerini değiştirin, sonra {restart} deyin.",
+              ),
+              {
+                dataFolder: <TrayItem name="dataFolder" />,
+                config: code("config.json"),
+                port: code('"port"'),
+                restart: <TrayItem name="restart" />,
+              },
+            )}
           </p>
         ) : (
           <p>
-            3001 numaralı adresi (port) başka bir program kullanıyor. Proje
-            klasöründe <code className="text-xs">PORT=3002</code> satırı olan
-            bir <code className="text-xs">.env</code> dosyası oluşturup
-            konteyneri yeniden oluşturun:{" "}
-            <Command value="docker compose up -d --force-recreate seotracker" />
+            {fillParts(
+              t(
+                "3001 numaralı adresi (port) başka bir program kullanıyor. Proje klasöründe {line} satırı olan bir {env} dosyası oluşturup konteyneri yeniden oluşturun: {command}",
+              ),
+              {
+                line: code("PORT=3002"),
+                env: code(".env"),
+                command: (
+                  <Command value="docker compose up -d --force-recreate seotracker" />
+                ),
+              },
+            )}
           </p>
         )}
         <p>
-          Adres numarası (port) değişince Google&apos;a verdiğiniz yönlendirme
-          adresleri de değişir. Yenilerini{" "}
-          <Link to="/settings" hash="google" className={linkClass}>
-            Ayarlar&apos;daki Google bölümünden
-          </Link>{" "}
-          kopyalayıp Google Cloud Console&apos;da güncelleyin.
+          {fillParts(
+            t(
+              "Adres numarası (port) değişince Google'a verdiğiniz yönlendirme adresleri de değişir. Yenilerini {link} kopyalayıp Google Cloud Console'da güncelleyin.",
+            ),
+            {
+              link: (
+                <Link to="/settings" hash="google" className={linkClass}>
+                  {t("Ayarlar'daki Google bölümünden")}
+                </Link>
+              ),
+            },
+          )}
         </p>
       </Problem>
 
-      <Problem title="Ajanım bağlanamıyor (401)">
+      <Problem title={t("Ajanım bağlanamıyor (401)")}>
         {pending ? (
           pendingNote
         ) : windows ? (
           <p>
-            Ajan bağlantısı bir parola (token) ister. Windows paketinde bu
-            parola{" "}
-            <code className="text-xs">%LOCALAPPDATA%\seowatcher\mcp-token</code>{" "}
-            dosyasındadır (<strong>Veri klasörünü aç</strong>). Panoya
-            kopyalamak için PowerShell (değer ekrana yazılmaz):{" "}
-            <Command
-              value={
-                '(Get-Content "$env:LOCALAPPDATA\\seowatcher\\mcp-token").Trim() | Set-Clipboard'
-              }
-            />{" "}
-            Değeri sohbete yazmayın; yapıştırdıktan sonra panoyu temizleyin
-            (Win+V, Tümünü temizle).
+            {fillParts(
+              t(
+                "Ajan bağlantısı bir parola (token) ister. Windows paketinde bu parola {path} dosyasındadır ({dataFolder}). Panoya kopyalamak için PowerShell (değer ekrana yazılmaz): {command} Değeri sohbete yazmayın; yapıştırdıktan sonra panoyu temizleyin (Win+V, Tümünü temizle).",
+              ),
+              {
+                path: code("%LOCALAPPDATA%\\seowatcher\\mcp-token"),
+                dataFolder: <TrayItem name="dataFolder" />,
+                command: (
+                  <Command
+                    value={
+                      '(Get-Content "$env:LOCALAPPDATA\\seowatcher\\mcp-token").Trim() | Set-Clipboard'
+                    }
+                  />
+                ),
+              },
+            )}
           </p>
         ) : (
           <>
             <p>
-              Ajan bağlantısı varsayılan olarak bir parola ister. Parola ilk
-              açılışta üretilir ve veri biriminde durur; okumak için (PowerShell
-              ve cmd):{" "}
-              <Command value="docker compose exec -T seotracker cat /app/.wrangler/mcp-token" />
+              {fillParts(
+                t(
+                  "Ajan bağlantısı varsayılan olarak bir parola ister. Parola ilk açılışta üretilir ve veri biriminde durur; okumak için (PowerShell ve cmd): {command}",
+                ),
+                {
+                  command: (
+                    <Command value="docker compose exec -T seotracker cat /app/.wrangler/mcp-token" />
+                  ),
+                },
+              )}
             </p>
             <p>
-              Git Bash (Windows):{" "}
-              <Command value="MSYS_NO_PATHCONV=1 docker compose exec -T seotracker cat /app/.wrangler/mcp-token" />{" "}
-              Önek olmadan Git Bash yolu bozar ve parola boş çıkar;
-              PowerShell&apos;de önek hata verir.
+              {fillParts(
+                t(
+                  "Git Bash (Windows): {command} Önek olmadan Git Bash yolu bozar ve parola boş çıkar; PowerShell'de önek hata verir.",
+                ),
+                {
+                  command: (
+                    <Command value="MSYS_NO_PATHCONV=1 docker compose exec -T seotracker cat /app/.wrangler/mcp-token" />
+                  ),
+                },
+              )}
             </p>
           </>
         )}
         <p>
-          Adres: <Command value={`${origin}/mcp`} /> Aracınız{" "}
-          <code className="text-xs">Authorization: Bearer &lt;token&gt;</code>{" "}
-          başlığını göndermezse bağlantı 401 döner.
+          {fillParts(
+            t(
+              "Adres: {command} Aracınız {header} başlığını göndermezse bağlantı 401 döner.",
+            ),
+            {
+              command: <Command value={`${origin}/mcp`} />,
+              header: code("Authorization: Bearer <token>"),
+            },
+          )}
         </p>
         <p>
-          <Link to="/ai" className={linkClass}>
-            Ajan kurulumu sayfası
-          </Link>{" "}
-          aracınız için hazır komutu verir.{" "}
-          <DocLink file={windows ? DOCS.troubleshooting : DOCS.docker}>
-            Ayrıntılar
+          {fillParts(t("{link} aracınız için hazır komutu verir. {details}"), {
+            link: (
+              <Link to="/ai" className={linkClass}>
+                {t("Ajan kurulumu sayfası")}
+              </Link>
+            ),
+            details: (
+              <DocLink file={windows ? DOCS.troubleshooting : DOCS.docker}>
+                {t("Ayrıntılar")}
+              </DocLink>
+            ),
+          })}
+        </p>
+      </Problem>
+
+      <Problem title={t("Hız ölçümü yarım kalıyor (429)")}>
+        <p>
+          {fillParts(
+            t(
+              "{code} genellikle anahtar girilmediğini gösterir: Google'ın anahtarsız kotası birkaç sayfada dolar. Ücretsiz bir anahtar girin: {link}.",
+            ),
+            {
+              code: <strong>{t('429 / "çok fazla istek"')}</strong>,
+              link: (
+                <Link to="/settings" hash="hiz-olcumu" className={linkClass}>
+                  {t("Ayarlar, Hız ölçümü")}
+                </Link>
+              ),
+            },
+          )}
+        </p>
+        <p>
+          {fillParts(
+            t(
+              "Anahtar varken de olabilir: dakikalık sınır aşılırsa denetim bekleyip yeniden dener. {daily} dolarsa ölçülenler korunur ve ölçüm durur; ertesi gün yeniden denetleyin. Kendi kotanızı Google Cloud Console'da APIs & Services, PageSpeed Insights API, Quotas altında görebilirsiniz.",
+            ),
+            { daily: <strong>{t("Günlük sınır")}</strong> },
+          )}
+        </p>
+        <p>
+          <DocLink file={DOCS.pageSpeed}>
+            {t("PageSpeed anahtarı belgesi")}
           </DocLink>
         </p>
       </Problem>
 
-      <Problem title="Hız ölçümü yarım kalıyor (429)">
+      <Problem title={t("Sorgu verisi yok, grafikler boş")}>
         <p>
-          <strong>429 / &quot;çok fazla istek&quot;</strong> genellikle anahtar
-          girilmediğini gösterir: Google&apos;ın anahtarsız kotası birkaç
-          sayfada dolar. Ücretsiz bir anahtar girin:{" "}
-          <Link to="/settings" hash="hiz-olcumu" className={linkClass}>
-            Ayarlar, Hız ölçümü
-          </Link>
-          .
+          {t(
+            "Önce projede Search Console'un bağlı olduğunu ve bir mülk seçildiğini doğrulayın. Hizmet hesabı kullanıyorsanız hesabın e-postasını Search Console'da mülke kullanıcı olarak eklemiş olmanız gerekir; eklemeden veri gelmez.",
+          )}
         </p>
         <p>
-          Anahtar varken de olabilir: dakikalık sınır aşılırsa denetim bekleyip
-          yeniden dener. <strong>Günlük sınır</strong> dolarsa ölçülenler
-          korunur ve ölçüm durur; ertesi gün yeniden denetleyin. Kendi kotanızı
-          Google Cloud Console&apos;da APIs &amp; Services, PageSpeed Insights
-          API, Quotas altında görebilirsiniz.
-        </p>
-        <p>
-          <DocLink file={DOCS.pageSpeed}>PageSpeed anahtarı belgesi</DocLink>
-        </p>
-      </Problem>
-
-      <Problem title="Sorgu verisi yok, grafikler boş">
-        <p>
-          Önce projede Search Console&apos;un bağlı olduğunu ve bir mülk
-          seçildiğini doğrulayın. Hizmet hesabı kullanıyorsanız hesabın
-          e-postasını Search Console&apos;da mülke kullanıcı olarak eklemiş
-          olmanız gerekir; eklemeden veri gelmez.
-        </p>
-        <p>
-          Mülk yeni doğrulandıysa Google&apos;ın veri vermesi birkaç gün
-          sürebilir.{" "}
+          {t(
+            "Mülk yeni doğrulandıysa Google'ın veri vermesi birkaç gün sürebilir.",
+          )}{" "}
           {projectId ? (
             <Link
               to="/p/$projectId/settings/integrations"
               params={{ projectId }}
               className={linkClass}
             >
-              Projenin bağlantılarını aç
+              {t("Projenin bağlantılarını aç")}
             </Link>
           ) : (
             <Link to="/projects" className={linkClass}>
-              Projelere git
+              {t("Projelere git")}
             </Link>
           )}{" "}
-          · <DocLink file={DOCS.searchConsole}>Search Console belgesi</DocLink>
+          ·{" "}
+          <DocLink file={DOCS.searchConsole}>
+            {t("Search Console belgesi")}
+          </DocLink>
         </p>
       </Problem>
     </section>

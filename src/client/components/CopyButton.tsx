@@ -1,11 +1,12 @@
 import { Check, Copy } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { t } from "@/shared/i18n";
 
 export function CopyButton({
   value,
   successMessage,
-  label = "Kopyala",
+  label = t("Kopyala"),
   iconOnly = false,
   primary = false,
   secondary = false,
@@ -30,7 +31,7 @@ export function CopyButton({
 
   const handleCopy = async () => {
     if (typeof navigator === "undefined" || !navigator.clipboard?.writeText) {
-      toast.error("Pano kullanılamıyor");
+      toast.error(t("Pano kullanılamıyor"));
       return;
     }
     try {
@@ -40,7 +41,7 @@ export function CopyButton({
       setTimeout(() => setCopied(false), 2000);
       onCopy?.();
     } catch {
-      toast.error("Panoya kopyalanamadı");
+      toast.error(t("Panoya kopyalanamadı"));
     }
   };
 
@@ -82,7 +83,7 @@ export function CopyButton({
       ) : (
         <Copy className="size-3" />
       )}
-      {copied ? "Kopyalandı" : label}
+      {copied ? t("Kopyalandı") : label}
     </button>
   );
 }

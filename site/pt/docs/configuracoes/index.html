@@ -2,6 +2,8 @@
 <html lang="pt">
   <head>
     <meta charset="utf-8" />
+    <link rel="stylesheet" href="/assets/consent.css?v=1" />
+    <script src="/assets/consent.js?v=2" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Configurações | Guia do seowatcher</title>
     <meta
@@ -54,6 +56,13 @@
       sizes="48x48"
     />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link
+      rel="alternate"
+      type="application/atom+xml"
+      title="seowatcher"
+      href="/pt/feed.xml"
+    />
     <link
       rel="preload"
       href="/assets/fonts/geist-latin-wght-normal.woff2"
@@ -83,7 +92,7 @@
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Configurações | seowatcher" />
-    <meta property="article:modified_time" content="2026-10-23" />
+    <meta property="article:modified_time" content="2026-10-24" />
     <meta
       property="og:url"
       content="https://seowatcher.io/pt/docs/configuracoes/"
@@ -139,7 +148,7 @@
             "description": "Tema, chave de acesso do Google, chave do PageSpeed, limites de uso, versão e verificação de atualização. As configurações que valem para toda a instalação.",
             "url": "https://seowatcher.io/pt/docs/configuracoes/",
             "inLanguage": "pt",
-            "dateModified": "2026-10-23",
+            "dateModified": "2026-10-24",
             "articleSection": "Telas",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -174,7 +183,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=2.4.3" defer></script>
+    <script src="/assets/docs.js?v=0.5.0" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1306,7 +1315,7 @@
             >GitHub</a
           >
           <details class="langs">
-            <summary aria-label="Idioma: Português">
+            <summary aria-label="PT — Idioma: Português">
               <span class="flag"
                 ><svg viewBox="0 0 20 14" aria-hidden="true">
                   <rect width="20" height="14" fill="#ff0000" />
@@ -1527,8 +1536,8 @@
           <strong>Hizmet hesabı</strong> (Conta de serviço),
           <strong>Hız ölçümü</strong> (Medição de velocidade),
           <strong>Sınırlar</strong> (Limites), <strong>Hakkında</strong> (Sobre)
-          e <strong>Sürüm notları</strong> (Notas de versão). O título de cada
-          seção tem um selo que indica o estado dela.
+          e <strong>Windows</strong>. O título de cada seção tem um selo que
+          indica o estado dela.
         </p>
         <h2 id="o-que-ha-na-tela">O que há na tela</h2>
         <p>
@@ -1536,6 +1545,28 @@
           <strong>Tema</strong> (Tema) há as opções Sistem (Sistema), Açık
           (Claro) e Koyu (Escuro). Sua escolha fica guardada neste navegador. Em
           outro navegador ou em outro computador, você escolhe de novo.
+        </p>
+        <p>
+          <strong>Idioma.</strong> A interface está disponível em turco e
+          inglês. Em <strong>Ayarlar → Görünüm → Dil</strong>, escolha Türkçe ou
+          English. A página recarrega; os números e as datas seguem o idioma
+          escolhido. A preferência fica guardada neste navegador.
+        </p>
+        <p>
+          <strong>Notificações (Bildirimler).</strong> O sino mostra os últimos
+          50 eventos e a contagem de mensagens não lidas.
+          <strong>Tümünü okundu işaretle</strong> marca todas como lidas sem
+          apagar o histórico. Em <strong>Bildirimler</strong>, pode ouvir o som
+          e ativar notificações no ambiente de trabalho em segundo plano. A
+          permissão do navegador só é pedida ao ativar a opção.
+        </p>
+        <p>
+          <strong>Windows.</strong> Ative ou desative o arranque com o Windows e
+          a instalação automática de atualizações. São as mesmas preferências
+          guardadas no menu da área de notificação. As restrições do
+          administrador são explicadas. Os controlos ficam desativados nas
+          instalações Docker e de desenvolvimento; os iniciadores Windows
+          antigos pedem uma atualização do pacote.
         </p>
         <p>
           <strong>Google.</strong> O selo tem um de três valores:
@@ -1617,12 +1648,12 @@
         </p>
         <p>
           <strong>Hakkında</strong> (Sobre). A linha
-          <strong>Sürüm</strong> (Versão) mostra a versão (como v2.3.0). A opção
-          <strong>Güncellemeleri kontrol et</strong> (Verificar atualizações)
-          vem ligada por padrão. Quando está ligada, o aplicativo pergunta ao
-          GitHub a versão mais recente no máximo uma vez por dia. Nesse caso, o
-          botão <strong>Şimdi kontrol et</strong> (Verificar agora) também
-          aparece. Se houver uma versão nova, aparece um link
+          <strong>Sürüm</strong> (Versão) mostra a versão (como 0.5.0 Alpha). A
+          opção <strong>Güncellemeleri kontrol et</strong> (Verificar
+          atualizações) vem ligada por padrão. Quando está ligada, o aplicativo
+          pergunta ao GitHub a versão mais recente no máximo uma vez por dia.
+          Nesse caso, o botão <strong>Şimdi kontrol et</strong> (Verificar
+          agora) também aparece. Se houver uma versão nova, aparece um link
           <strong>Değişiklikler</strong> (Alterações) e, para instalações
           Docker, um comando para copiar:
           <code>git pull &amp;&amp; docker compose up -d --build</code>. Para o
@@ -1631,8 +1662,9 @@
           ligada, a versão nova se instala sozinha.
         </p>
         <p>
-          <strong>Sürüm notları</strong> (Notas de versão). Lista o que mudou em
-          cada versão.
+          <strong>Sürüm notları</strong> (Notas de versão). A página fica acima
+          das notificações no menu lateral. As etiquetas coloridas indicam
+          novidades, correções e alterações de segurança.
         </p>
         <h2 id="como-usar">Como usar</h2>
         <ol>
@@ -1713,7 +1745,7 @@
           >
         </nav>
         <p class="meta">
-          Última atualização: 23 de outubro de 2026. Viu algum erro?
+          Última atualização: 24 de outubro de 2026. Viu algum erro?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"

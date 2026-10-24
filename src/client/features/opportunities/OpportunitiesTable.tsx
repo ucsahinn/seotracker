@@ -1,3 +1,4 @@
+import { t } from "@/shared/i18n";
 import { useMemo, useState, type MouseEvent } from "react";
 import { Target } from "lucide-react";
 import { EmptyState } from "@/client/components/EmptyState";
@@ -13,6 +14,7 @@ import { buildCsv, downloadCsv, type CsvValue } from "@/client/lib/csv";
 import { exportTableToSheets } from "@/client/lib/exportToSheets";
 import { formatNumber } from "@/client/lib/format";
 
+// Turkish, translated with t() when an export is built.
 const OPPORTUNITY_HEADERS = [
   "Puan",
   "Sayfa",
@@ -63,6 +65,7 @@ export function OpportunitiesTable({
 
   const opened = rows.find((row) => row.page === openPage) ?? null;
 
+  const headers = OPPORTUNITY_HEADERS.map((header) => t(header));
   const csvRows = rows.map((row): CsvValue[] => [
     row.score,
     row.page,
@@ -77,34 +80,35 @@ export function OpportunitiesTable({
     <div className="overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-[var(--shadow-raise)]">
       <div className="flex items-center justify-between gap-3 border-b border-base-300 px-3 py-2">
         <p className="text-xs text-muted">
-          Ayrıntı ve öneriler için bir satıra tıklayın.
+          {t("Ayrıntı ve öneriler için bir satıra tıklayın.")}
         </p>
         <TableExportMenu
           buttonClassName="btn btn-ghost btn-sm gap-1"
           actions={[
             {
-              label: `E-Tablolar'a aktar (${formatNumber(rows.length)} satır)`,
+              label: t("E-Tablolar'a aktar ({rows} satır)", {
+                rows: formatNumber(rows.length),
+              }),
               onClick: () =>
                 void exportTableToSheets({
-                  headers: [...OPPORTUNITY_HEADERS],
+                  headers,
                   rows: csvRows,
                   feature: "search_opportunities",
                 }),
             },
             {
-              label: `CSV (${formatNumber(rows.length)} satır)`,
+              label: t("CSV ({rows} satır)", {
+                rows: formatNumber(rows.length),
+              }),
               onClick: () =>
-                downloadCsv(
-                  "firsatlar.csv",
-                  buildCsv([...OPPORTUNITY_HEADERS], csvRows),
-                ),
+                downloadCsv("firsatlar.csv", buildCsv(headers, csvRows)),
             },
           ]}
         />
       </div>
       <AppDataTable
         table={table}
-        caption="Fırsatlar"
+        caption={t("Fırsatlar")}
         className="table table-sm"
         wrapperClassName="overflow-x-auto"
         getRowProps={(row) => ({
@@ -123,12 +127,14 @@ export function OpportunitiesTable({
           <EmptyState
             compact
             icon={Target}
-            title="Bu filtreye uyan sayfa yok"
-            description="Seçtiğiniz tür ya da hızlı filtre bu dönemde hiçbir sayfayla eşleşmedi. Filtreleri kaldırın ya da dönemi genişletin."
+            title={t("Bu filtreye uyan sayfa yok")}
+            description={t(
+              "Seçtiğiniz tür ya da hızlı filtre bu dönemde hiçbir sayfayla eşleşmedi. Filtreleri kaldırın ya da dönemi genişletin.",
+            )}
             action={
               onReset ? (
                 <button type="button" className="btn btn-sm" onClick={onReset}>
-                  Filtreleri kaldır
+                  {t("Filtreleri kaldır")}
                 </button>
               ) : undefined
             }

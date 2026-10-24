@@ -26,6 +26,7 @@ import {
   reconcileRunningAudit,
   reconcileStaleAudits,
 } from "@/server/features/audit/services/auditReconciler";
+import { t } from "@/shared/i18n";
 
 async function startAudit(input: {
   actorUserId: string;
@@ -114,7 +115,10 @@ async function startAudit(input: {
 async function getStatus(auditId: string, projectId: string) {
   let audit = await AuditRepository.getAuditForProject(auditId, projectId);
   if (!audit)
-    throw new AppError("NOT_FOUND", "Bu projede böyle bir denetim bulunamadı.");
+    throw new AppError(
+      "NOT_FOUND",
+      t("Bu projede böyle bir denetim bulunamadı."),
+    );
 
   // Self-heal audits whose workflow died without reaching the mark-failed
   // step (instance terminated/errored, instance expired from retention, ...).
@@ -151,7 +155,7 @@ async function getResults(auditId: string, projectId: string) {
 
   const parsedConfig = parseAuditConfig(audit.config);
   if (!parsedConfig) {
-    throw new AppError("INTERNAL_ERROR", "Denetim ayarları geçersiz.");
+    throw new AppError("INTERNAL_ERROR", t("Denetim ayarları geçersiz."));
   }
 
   return {
@@ -238,7 +242,9 @@ async function stopWorkflow(auditId: string, workflowInstanceId: string) {
     console.error(`Could not verify audit workflow ${auditId} stopped:`, error);
     return new AppError(
       "CONFLICT",
-      "Çalışan denetimin durumu doğrulanamadı; silme iptal edildi. Lütfen tekrar deneyin.",
+      t(
+        "Çalışan denetimin durumu doğrulanamadı; silme iptal edildi. Lütfen tekrar deneyin.",
+      ),
     );
   };
 
@@ -266,7 +272,7 @@ async function stopWorkflow(auditId: string, workflowInstanceId: string) {
         `Failed to terminate audit workflow ${auditId}:`,
         terminateError,
       );
-      throw new AppError("CONFLICT", "Çalışan denetim durdurulamadı.");
+      throw new AppError("CONFLICT", t("Çalışan denetim durdurulamadı."));
     } catch (statusError) {
       if (statusError instanceof AppError) throw statusError;
       if (isWorkflowNotFound(statusError)) return;
@@ -285,7 +291,7 @@ async function remove(auditId: string, projectId: string) {
     if (!audit.workflowInstanceId) {
       throw new AppError(
         "CONFLICT",
-        "Bu denetim şu an silinemiyor. Bitmesini bekleyip yeniden deneyin.",
+        t("Bu denetim şu an silinemiyor. Bitmesini bekleyip yeniden deneyin."),
       );
     }
 
@@ -302,7 +308,9 @@ async function remove(auditId: string, projectId: string) {
     console.error(`Failed to delete Lighthouse payloads of ${auditId}:`, error);
     throw new AppError(
       "INTERNAL_ERROR",
-      "Denetimin Lighthouse çıktıları silinemedi; denetim silinmedi. Lütfen tekrar deneyin.",
+      t(
+        "Denetimin Lighthouse çıktıları silinemedi; denetim silinmedi. Lütfen tekrar deneyin.",
+      ),
     );
   }
   await AuditRepository.deleteAuditForProject(auditId, projectId);

@@ -25,6 +25,7 @@ import {
   getDashboardActivation,
   getDashboardOverview,
 } from "@/serverFunctions/dashboard";
+import { t } from "@/shared/i18n";
 
 export function DashboardPage({ projectId }: { projectId: string }) {
   const activationQuery = useQuery({
@@ -55,7 +56,7 @@ export function DashboardPage({ projectId }: { projectId: string }) {
         <QueryErrorState
           error={activationQuery.error}
           onRetry={() => void activationQuery.refetch()}
-          title="Panel yüklenemedi"
+          title={t("Panel yüklenemedi")}
         />
       </PageShell>
     );
@@ -105,7 +106,7 @@ export function DashboardPage({ projectId }: { projectId: string }) {
                 <QueryErrorState
                   error={overviewQuery.error}
                   onRetry={() => void overviewQuery.refetch()}
-                  title="Denetim özeti yüklenemedi"
+                  title={t("Denetim özeti yüklenemedi")}
                 />
               </div>
             ) : (
@@ -145,7 +146,7 @@ export function DashboardPage({ projectId }: { projectId: string }) {
   return (
     <PageShell>
       <PageHeader
-        title="Panel"
+        title={t("Panel")}
         description={activation.domain ?? undefined}
         actions={
           <PageActions>
@@ -164,7 +165,7 @@ export function DashboardPage({ projectId }: { projectId: string }) {
                 params={{ projectId }}
                 className="btn btn-primary btn-sm"
               >
-                Denetimi başlat
+                {t("Denetimi başlat")}
               </Link>
             ) : null}
           </PageActions>

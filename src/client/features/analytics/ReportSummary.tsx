@@ -9,6 +9,7 @@ import type { SummaryPlan } from "@/client/features/analytics/reportBuckets";
 import type { Kpi } from "@/client/features/analytics/reportKpis";
 import { formatGa4Metric } from "@/client/features/analytics/ReportTable";
 import { formatPercent } from "@/client/lib/format";
+import { t } from "@/shared/i18n";
 
 /**
  * The tab's own summary: a few figures, then the chart that answers the tab's
@@ -70,12 +71,20 @@ function SummaryChart({
     formatGa4Metric(plan.field, value, currencyCode);
   const total = plan.segments.reduce((sum, segment) => sum + segment.value, 0);
   const lead = plan.segments[0];
-  const summary = `${plan.title}: toplam ${format(total)} ${plan.unit}. ${
-    lead
-      ? `En büyük pay ${lead.label}, ${formatPercent(lead.value / total)}.`
-      : ""
-  }`;
-  const description = "Birine tıklayın, aşağıdaki tablo o satırlara daralsın.";
+  const totals = t("{title}: toplam {total} {unit}.", {
+    title: plan.title,
+    total: format(total),
+    unit: plan.unit,
+  });
+  const summary = lead
+    ? `${totals} ${t("En büyük pay {label}, {share}.", {
+        label: lead.label,
+        share: formatPercent(lead.value / total),
+      })}`
+    : totals;
+  const description = t(
+    "Birine tıklayın, aşağıdaki tablo o satırlara daralsın.",
+  );
 
   if (plan.form === "ring") {
     return (

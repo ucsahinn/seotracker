@@ -1,6 +1,7 @@
 import { ExternalLink } from "lucide-react";
 import { CopyButton } from "@/client/components/CopyButton";
 import { getSafeExternalUrl } from "@/client/components/table/url";
+import { t } from "@/shared/i18n";
 
 /**
  * A URL in a table cell: shortened to read, openable, and copyable whole.
@@ -58,8 +59,8 @@ export function UrlCell({
         <CopyButton
           iconOnly
           value={url}
-          label="Adresi kopyala"
-          successMessage="Adres kopyalandı"
+          label={t("Adresi kopyala")}
+          successMessage={t("Adres kopyalandı")}
         />
       </span>
     </span>

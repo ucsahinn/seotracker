@@ -1,6 +1,7 @@
 import * as React from "react";
 import { formatDateTime } from "@/client/lib/format";
 import type { QuotaItem } from "@/server/features/quotas/quotaTypes";
+import { t } from "@/shared/i18n";
 import {
   meterValueText,
   percentUsed,
@@ -10,11 +11,14 @@ import {
 } from "./quotaPresentation";
 
 function freshnessText(item: QuotaItem): string {
-  if (item.updatedAt)
-    return `Son güncelleme: ${formatDateTime(item.updatedAt)}`;
+  if (item.updatedAt) {
+    return t("Son güncelleme: {date}", {
+      date: formatDateTime(item.updatedAt),
+    });
+  }
   return item.used === null && item.limit === null
-    ? "Henüz veri yok"
-    : "Sabit sınır";
+    ? t("Henüz veri yok")
+    : t("Sabit sınır");
 }
 
 /**
@@ -52,7 +56,7 @@ export function QuotaMeter({
           className={`inline-flex shrink-0 items-center gap-1 text-xs font-medium ${meta.inkClass}`}
         >
           <StateIcon className="size-3.5" aria-hidden />
-          {meta.label}
+          {t(meta.label)}
         </span>
       </div>
       {percent !== null && item.used !== null && item.limit !== null ? (
@@ -77,7 +81,10 @@ export function QuotaMeter({
       </p>
       {showDetail ? <p className="text-xs text-muted">{item.detail}</p> : null}
       <p className="text-xs text-subtle">
-        Kaynak: {item.source}. {freshnessText(item)}
+        {t("Kaynak: {source}. {freshness}", {
+          source: item.source,
+          freshness: freshnessText(item),
+        })}
       </p>
     </div>
   );

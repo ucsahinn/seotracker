@@ -1,3 +1,4 @@
+import { t } from "@/shared/i18n";
 import { useQuery } from "@tanstack/react-query";
 import { useRef, useState, type ReactNode } from "react";
 import {
@@ -56,6 +57,7 @@ const LIMITS = [25, 50, 100] as const;
  * fırsat yok" was a verdict on a period the operator never chose and could
  * not widen.
  */
+// Labels stay Turkish here and go through t() where they render.
 const WINDOWS = [
   { days: 7, label: "Son 7 gün" },
   { days: 28, label: "Son 28 gün" },
@@ -64,12 +66,19 @@ const WINDOWS = [
 
 type WindowDays = (typeof WINDOWS)[number]["days"];
 
-/** "Analytics" is a Latin brand word; under lang="tr" the tile's uppercase would print it as "ANALYTİCS". */
-function AnalyticsLabel({ suffix }: { suffix: string }) {
+/**
+ * "Analytics" is a Latin brand word; under lang="tr" the tile's uppercase
+ * would print it as "ANALYTİCS". `text` is a translated template with an
+ * {analytics} placeholder, split there so the word sits where each language
+ * puts it.
+ */
+function AnalyticsLabel({ text }: { text: string }) {
+  const [before = "", after = ""] = text.split("{analytics}");
   return (
     <>
+      {before}
       <span lang="en">Analytics</span>
-      {suffix}
+      {after}
     </>
   );
 }
@@ -104,8 +113,10 @@ export function OpportunitiesPage({
   return (
     <PageShell>
       <PageHeader
-        title="Fırsatlar"
-        description="Google'da görünen sayfalarınız, üzerinde çalışmaya en değer olandan başlayarak."
+        title={t("Fırsatlar")}
+        description={t(
+          "Google'da görünen sayfalarınız, üzerinde çalışmaya en değer olandan başlayarak.",
+        )}
         /* Beside the title because they re-query everything below, the same
            place Rankings puts its window. Shown whenever the data came back
            ok, so the empty state keeps its way to widen the period. */
@@ -144,7 +155,7 @@ export function OpportunitiesPage({
           <QueryErrorState
             error={query.error}
             onRetry={() => void query.refetch()}
-            title="Fırsatlar yüklenemedi"
+            title={t("Fırsatlar yüklenemedi")}
           />
         </div>
       ) : query.data.status === "ok" ? (
@@ -169,7 +180,7 @@ function WindowPicker({
 }) {
   return (
     <div className="flex items-center gap-2 text-xs text-muted">
-      <label htmlFor="opportunity-window">Dönem</label>
+      <label htmlFor="opportunity-window">{t("Dönem")}</label>
       <select
         id="opportunity-window"
         className="select select-bordered select-sm w-32"
@@ -183,7 +194,7 @@ function WindowPicker({
       >
         {WINDOWS.map((option) => (
           <option key={option.days} value={option.days}>
-            {option.label}
+            {t(option.label)}
           </option>
         ))}
       </select>
@@ -202,7 +213,7 @@ function LimitPicker({
 }) {
   return (
     <div className="flex items-center gap-2 text-xs text-muted">
-      <label htmlFor="opportunity-limit">Satır sayısı</label>
+      <label htmlFor="opportunity-limit">{t("Satır sayısı")}</label>
       <select
         id="opportunity-limit"
         className="select select-bordered select-sm w-24"
@@ -294,15 +305,17 @@ function Report({
       <div className="space-y-1">
         {data.truncated.gsc ? (
           <p className="text-xs text-muted">
-            Search Console tek seferde sınırlı sayıda satır verir ve bu sınıra
-            ulaşıldı; gerçekte daha fazla aday sayfa olabilir.
+            {t(
+              "Search Console tek seferde sınırlı sayıda satır verir ve bu sınıra ulaşıldı; gerçekte daha fazla aday sayfa olabilir.",
+            )}
           </p>
         ) : null}
 
         {data.warnings.includes("source_time_zones_differ") ? (
           <p className="text-xs text-muted">
-            Search Console ve Analytics farklı saat dilimlerinde raporluyor;
-            günlük eşleşmeler bir gün kayabilir.
+            {t(
+              "Search Console ve Analytics farklı saat dilimlerinde raporluyor; günlük eşleşmeler bir gün kayabilir.",
+            )}
           </p>
         ) : null}
 
@@ -335,14 +348,20 @@ function Report({
          * from the filtered array.
          */}
         <MetricTile
-          label="Listelenen"
+          label={t("Listelenen")}
           value={formatNumber(shown.length)}
           hint={
             filtered
-              ? `Filtreye uyan · ${formatNumber(data.rowCount)} satır içinde`
+              ? t("Filtreye uyan · {rows} satır içinde", {
+                  rows: formatNumber(data.rowCount),
+                })
               : data.truncated.candidates
-                ? `${formatNumber(data.totalCandidateRows)} aday sayfanın en iyileri`
-                : `Tüm aday sayfalar (${formatNumber(data.totalCandidateRows)})`
+                ? t("{candidates} aday sayfanın en iyileri", {
+                    candidates: formatNumber(data.totalCandidateRows),
+                  })
+                : t("Tüm aday sayfalar ({candidates})", {
+                    candidates: formatNumber(data.totalCandidateRows),
+                  })
           }
         />
         {/* Was "Puanlanan", counted over the returned page, and every row
@@ -350,9 +369,11 @@ function Report({
             so it always equalled the row count while its hint described the
             Analytics match. This is the number the hint meant. */}
         <MetricTile
-          label={<AnalyticsLabel suffix="'te karşılığı var" />}
+          label={<AnalyticsLabel text={t("{analytics}'te karşılığı var")} />}
           value={formatNumber(data.coverage.matchedRows)}
-          hint={`${formatNumber(data.totalCandidateRows)} aday içinde`}
+          hint={t("{candidates} aday içinde", {
+            candidates: formatNumber(data.totalCandidateRows),
+          })}
         />
         {/* A count with no way to see those pages is a complaint, not a
             tool, so it applies the same filter the chip below does. The tile
@@ -365,12 +386,15 @@ function Report({
           }}
         >
           <MetricTile
-            label={<AnalyticsLabel suffix="'te karşılığı yok" />}
+            label={<AnalyticsLabel text={t("{analytics}'te karşılığı yok")} />}
             value={formatNumber(data.coverage.unmatchedGscRows)}
             hint={
               counts.no_analytics === 0
-                ? "Listedeki her sayfanın Analytics karşılığı var"
-                : `Listelenen ${formatNumber(data.rowCount)} sayfanın ${formatNumber(counts.no_analytics)} tanesi · listele`
+                ? t("Listedeki her sayfanın Analytics karşılığı var")
+                : t("Listelenen {rows} sayfanın {count} tanesi · listele", {
+                    rows: formatNumber(data.rowCount),
+                    count: formatNumber(counts.no_analytics),
+                  })
             }
           />
         </TileButton>
@@ -386,9 +410,13 @@ function Report({
           }}
         >
           <MetricTile
-            label="En yüksek puan"
+            label={t("En yüksek puan")}
             value={top?.score == null ? null : formatNumber(top.score)}
-            hint={top === null ? undefined : `${pathOf(top.page)} · ayrıntı`}
+            hint={
+              top === null
+                ? undefined
+                : t("{page} · ayrıntı", { page: pathOf(top.page) })
+            }
           />
         </TileButton>
       </MetricRow>
@@ -428,23 +456,27 @@ function Report({
       <div className="space-y-1 text-xs text-muted">
         <p>
           <span className="font-medium text-base-content">
-            Puan nasıl hesaplanır?
+            {t("Puan nasıl hesaplanır?")}
           </span>{" "}
-          Talep (%50) + iş değeri (%30) + yükselme kolaylığı (%20). İş değeri{" "}
           {data.scoring.businessValueMetric === "engagementRate"
             ? data.scoring.engagementFallback
-              ? "dönüşüm tanımlı olmadığı için etkileşim oranına"
-              : "etkileşim oranına"
-            : "dönüşümlere"}{" "}
-          göre hesaplanır.
+              ? t(
+                  "Talep (%50) + iş değeri (%30) + yükselme kolaylığı (%20). İş değeri dönüşüm tanımlı olmadığı için etkileşim oranına göre hesaplanır.",
+                )
+              : t(
+                  "Talep (%50) + iş değeri (%30) + yükselme kolaylığı (%20). İş değeri etkileşim oranına göre hesaplanır.",
+                )
+            : t(
+                "Talep (%50) + iş değeri (%30) + yükselme kolaylığı (%20). İş değeri dönüşümlere göre hesaplanır.",
+              )}
         </p>
         <p>
           <span className="font-medium text-base-content">
-            Analytics&apos;te karşılığı yok ne demek?
+            {t("Analytics'te karşılığı yok ne demek?")}
           </span>{" "}
-          Analytics o sayfaya hiç ziyaret görmemiş ya da adresi farklı yazılmış
-          olabilir. Bu sayfalar da puanlanır. İş değerinde haksız yere sıfır
-          almasınlar diye ortada bir değer verilir.
+          {t(
+            "Analytics o sayfaya hiç ziyaret görmemiş ya da adresi farklı yazılmış olabilir. Bu sayfalar da puanlanır. İş değerinde haksız yere sıfır almasınlar diye ortada bir değer verilir.",
+          )}
         </p>
       </div>
     </div>

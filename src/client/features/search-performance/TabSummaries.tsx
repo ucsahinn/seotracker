@@ -1,3 +1,4 @@
+import { t } from "@/shared/i18n";
 import type { ReactNode } from "react";
 import { AlertTriangle } from "lucide-react";
 import {
@@ -157,12 +158,14 @@ export function QueriesSummary({
   rows,
   ...selection
 }: { rows: Row[] } & Selection) {
-  const title = "Sorgular kaç sırada?";
+  const title = t("Sorgular kaç sırada?");
   if (rows.length === 0) {
     return (
       <Card
         title={title}
-        description="Bu filtrelerle Search Console sorgu vermedi, bu yüzden dağılım çizilemiyor."
+        description={t(
+          "Bu filtrelerle Search Console sorgu vermedi, bu yüzden dağılım çizilemiyor.",
+        )}
       />
     );
   }
@@ -171,12 +174,21 @@ export function QueriesSummary({
   return (
     <Card
       title={title}
-      description={`${formatCount(rows.length)} sorgunun ${formatCount(firstPage)} tanesi ilk sayfada (sıra 1-10). Bir çubuğa tıklayarak tabloyu daraltın.`}
+      description={t(
+        "{total} sorgunun {firstPage} tanesi ilk sayfada (sıra 1-10). Bir çubuğa tıklayarak tabloyu daraltın.",
+        { total: formatCount(rows.length), firstPage: formatCount(firstPage) },
+      )}
     >
       <Bars
         buckets={buckets}
         selection={selection}
-        summary={`${formatCount(rows.length)} sorgunun ortalama sıraya göre dağılımı; ${formatCount(firstPage)} tanesi ilk sayfada.`}
+        summary={t(
+          "{total} sorgunun ortalama sıraya göre dağılımı; {firstPage} tanesi ilk sayfada.",
+          {
+            total: formatCount(rows.length),
+            firstPage: formatCount(firstPage),
+          },
+        )}
       />
       <Chips rows={rows} ids={QUERY_CHIPS} selection={selection} />
     </Card>
@@ -187,12 +199,14 @@ export function PagesSummary({
   rows,
   ...selection
 }: { rows: Row[] } & Selection) {
-  const title = "Tıklamalar sayfalara nasıl dağılıyor?";
+  const title = t("Tıklamalar sayfalara nasıl dağılıyor?");
   if (rows.length === 0) {
     return (
       <Card
         title={title}
-        description="Bu filtrelerle Search Console sayfa vermedi, bu yüzden dağılım çizilemiyor."
+        description={t(
+          "Bu filtrelerle Search Console sayfa vermedi, bu yüzden dağılım çizilemiyor.",
+        )}
       />
     );
   }
@@ -201,17 +215,27 @@ export function PagesSummary({
   const clicked = rows.filter((row) => row.clicks > 0).length;
   const lead =
     share === null
-      ? `${formatCount(rows.length)} sayfanın ${formatCount(clicked)} tanesi tıklama aldı.`
-      : `En çok tıklanan 5 sayfanın tıklamalardaki payı: ${formatPercent(share, 0)}.`;
+      ? t("{total} sayfanın {clicked} tanesi tıklama aldı.", {
+          total: formatCount(rows.length),
+          clicked: formatCount(clicked),
+        })
+      : t("En çok tıklanan 5 sayfanın tıklamalardaki payı: {share}.", {
+          share: formatPercent(share, 0),
+        });
   return (
     <Card
       title={title}
-      description={`${lead} Bir çubuğa tıklayarak tabloyu daraltın.`}
+      description={t("{lead} Bir çubuğa tıklayarak tabloyu daraltın.", {
+        lead,
+      })}
     >
       <Bars
         buckets={buckets}
         selection={selection}
-        summary={`${formatCount(rows.length)} sayfanın aldığı tıklamaya göre dağılımı. ${lead}`}
+        summary={t("{total} sayfanın aldığı tıklamaya göre dağılımı. {lead}", {
+          total: formatCount(rows.length),
+          lead,
+        })}
       />
       <Chips rows={rows} ids={PAGE_CHIPS} selection={selection} />
     </Card>
@@ -222,12 +246,14 @@ export function StrikingSummary({
   rows,
   ...selection
 }: { rows: Row[] } & Selection) {
-  const title = "Sıra 5-20 fırsatı";
+  const title = t("Sıra 5-20 fırsatı");
   if (rows.length === 0) {
     return (
       <Card
         title={title}
-        description="Sıralaması 5 ile 20 arasında kalan sorgu olmadığı için pay hesaplanamıyor."
+        description={t(
+          "Sıralaması 5 ile 20 arasında kalan sorgu olmadığı için pay hesaplanamıyor.",
+        )}
       />
     );
   }
@@ -236,12 +262,24 @@ export function StrikingSummary({
   return (
     <Card
       title={title}
-      description={`${formatCount(rows.length)} sorgu toplam ${formatCount(impressions)} gösterim alıyor ama ilk üçün dışında kalıyor. Çubuklar gösterim payını gösterir; birine tıklayarak tabloyu daraltın.`}
+      description={t(
+        "{queries} sorgu toplam {impressions} gösterim alıyor ama ilk üçün dışında kalıyor. Çubuklar gösterim payını gösterir; birine tıklayarak tabloyu daraltın.",
+        {
+          queries: formatCount(rows.length),
+          impressions: formatCount(impressions),
+        },
+      )}
     >
       <Bars
         buckets={buckets}
         selection={selection}
-        summary={`Sıra 5-20 arasındaki ${formatCount(rows.length)} sorgunun ${formatCount(impressions)} gösterimi, sıra 5-10 ve 11-20 olarak bölünmüş.`}
+        summary={t(
+          "Sıra 5-20 arasındaki {queries} sorgunun {impressions} gösterimi, sıra 5-10 ve 11-20 olarak bölünmüş.",
+          {
+            queries: formatCount(rows.length),
+            impressions: formatCount(impressions),
+          },
+        )}
       />
       <Chips rows={rows} ids={STRIKING_CHIPS} selection={selection} />
     </Card>
@@ -280,7 +318,7 @@ export function CannibalizationSummary({
     country,
     searchType,
   });
-  const title = "Çakışma özeti";
+  const title = t("Çakışma özeti");
   if (report.isPending) return <TabSummarySkeleton />;
   // The table below carries the error and its retry.
   const data = report.data;
@@ -291,8 +329,12 @@ export function CannibalizationSummary({
         title={title}
         description={
           data.queriesAnalyzed === 0
-            ? "Search Console bu dönem için sorgu vermedi, bu yüzden karşılaştırılacak bir şey yok."
-            : "Hiçbir sorguda iki sayfanız birbiriyle yarışmıyor, bu yüzden özetlenecek bir şey yok."
+            ? t(
+                "Search Console bu dönem için sorgu vermedi, bu yüzden karşılaştırılacak bir şey yok.",
+              )
+            : t(
+                "Hiçbir sorguda iki sayfanız birbiriyle yarışmıyor, bu yüzden özetlenecek bir şey yok.",
+              )
         }
       />
     );
@@ -301,25 +343,38 @@ export function CannibalizationSummary({
   return (
     <Card
       title={title}
-      description={`${formatNumber(data.queriesAnalyzed)} sorgu incelendi.`}
+      description={t("{count} sorgu incelendi.", {
+        count: data.queriesAnalyzed,
+      })}
     >
       <dl
         className="grid gap-3 sm:grid-cols-3"
-        aria-label={`${formatNumber(data.rows.length)} sorguda birden fazla sayfanız yarışıyor; ${formatNumber(data.splitImpressions)} gösterim risk altında.`}
+        aria-label={t(
+          "{queries} sorguda birden fazla sayfanız yarışıyor; {impressions} gösterim risk altında.",
+          {
+            queries: formatNumber(data.rows.length),
+            impressions: formatNumber(data.splitImpressions),
+          },
+        )}
       >
-        <Stat label="Çakışan sorgu" value={formatNumber(data.rows.length)} />
         <Stat
-          label="Risk altındaki gösterim"
+          label={t("Çakışan sorgu")}
+          value={formatNumber(data.rows.length)}
+        />
+        <Stat
+          label={t("Risk altındaki gösterim")}
           value={formatNumber(data.splitImpressions)}
         />
         {worst ? (
           <div className="min-w-0">
-            <dt className="text-xs text-muted">En çok kaybettiren sorgu</dt>
+            <dt className="text-xs text-muted">
+              {t("En çok kaybettiren sorgu")}
+            </dt>
             <dd className="mt-0.5">
               <button
                 type="button"
                 className="link link-hover flex max-w-full items-center gap-1.5 text-left text-sm font-medium"
-                title="Listeyi bu sorguya daraltır"
+                title={t("Listeyi bu sorguya daraltır")}
                 onClick={() => onPickQuery(worst.query)}
               >
                 <AlertTriangle
@@ -331,8 +386,10 @@ export function CannibalizationSummary({
                 </span>
               </button>
               <span className="text-xs text-muted tabular-nums">
-                {formatNumber(splitImpressionsOf(worst))} gösterim bölünüyor ·{" "}
-                {formatNumber(worst.competitors.length + 1)} sayfa
+                {t("{impressions} gösterim bölünüyor · {pages} sayfa", {
+                  impressions: formatNumber(splitImpressionsOf(worst)),
+                  pages: formatNumber(worst.competitors.length + 1),
+                })}
               </span>
             </dd>
           </div>

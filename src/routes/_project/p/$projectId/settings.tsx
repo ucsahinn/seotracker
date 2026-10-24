@@ -3,11 +3,13 @@ import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { getProjects } from "@/serverFunctions/projects";
 import { backLinkClass, BackLinkLabel } from "@/client/components/BackLink";
+import { t } from "@/shared/i18n";
 
 export const Route = createFileRoute("/_project/p/$projectId/settings")({
   component: ProjectSettingsLayout,
 });
 
+// Labels are Turkish source text, translated where they render.
 const tabs = [
   { to: "/p/$projectId/settings" as const, label: "Genel", exact: true },
   {
@@ -28,17 +30,20 @@ function ProjectSettingsLayout() {
     <PageShell width="reading">
       <div className="space-y-4">
         <Link to="/projects" className={backLinkClass}>
-          <BackLinkLabel>Projeler</BackLinkLabel>
+          <BackLinkLabel>{t("Projeler")}</BackLinkLabel>
         </Link>
         {/* The non-breaking space is a placeholder: the project name
             arrives a beat after the heading, and without it the tab
             strip below jumped up a line and back. */}
-        <PageHeader title="Proje ayarları" description={project?.name ?? " "} />
+        <PageHeader
+          title={t("Proje ayarları")}
+          description={project?.name ?? " "}
+        />
         {/* Navigation, not tabs: each one changes the URL and swaps the
             <Outlet/>. `role="tab"` here announced "tab" instead of "link" and
             promised an `aria-controls` panel that never existed. The daisyUI
             `tabs` classes stay -- they are the look, not the semantics. */}
-        <nav aria-label="Ayar bölümleri" className="tabs tabs-border">
+        <nav aria-label={t("Ayar bölümleri")} className="tabs tabs-border">
           {tabs.map((tab) => (
             <Link
               key={tab.to}
@@ -51,7 +56,7 @@ function ProjectSettingsLayout() {
                 "aria-current": "page",
               }}
             >
-              {tab.label}
+              {t(tab.label)}
             </Link>
           ))}
         </nav>

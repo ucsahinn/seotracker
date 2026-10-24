@@ -11,6 +11,7 @@ import {
 } from "@/shared/keyword-locations";
 import { ProjectMarketFields } from "@/client/features/projects/ProjectMarketFields";
 import { createProject } from "@/serverFunctions/projects";
+import { t } from "@/shared/i18n";
 
 export function CreateProjectModal({ onClose }: { onClose: () => void }) {
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ export function CreateProjectModal({ onClose }: { onClose: () => void }) {
         queryKey: ["dashboardActivation"],
       });
       onClose();
-      toast.success("Proje oluşturuldu");
+      toast.success(t("Proje oluşturuldu"));
       // Continue setup through the new project’s dashboard.
       void navigate({
         to: "/p/$projectId",
@@ -48,7 +49,7 @@ export function CreateProjectModal({ onClose }: { onClose: () => void }) {
       });
     },
     onError: (error) =>
-      toast.error(getStandardErrorMessage(error, "Proje oluşturulamadı")),
+      toast.error(getStandardErrorMessage(error, t("Proje oluşturulamadı"))),
   });
 
   const isPending = createMutation.isPending;
@@ -57,7 +58,7 @@ export function CreateProjectModal({ onClose }: { onClose: () => void }) {
     event.preventDefault();
     if (isPending) return;
     if (!name.trim()) {
-      setNameError("Proje adı gerekli");
+      setNameError(t("Proje adı gerekli"));
       nameInput.current?.focus();
       return;
     }
@@ -72,11 +73,11 @@ export function CreateProjectModal({ onClose }: { onClose: () => void }) {
     >
       <form onSubmit={handleSubmit} className="space-y-4">
         <h2 id="create-project-title" className="text-lg font-semibold">
-          Yeni proje
+          {t("Yeni proje")}
         </h2>
 
         <label className="flex flex-col gap-1.5 text-sm">
-          <span className="font-medium">Ad</span>
+          <span className="font-medium">{t("Ad")}</span>
           <input
             ref={nameInput}
             type="text"
@@ -107,7 +108,8 @@ export function CreateProjectModal({ onClose }: { onClose: () => void }) {
 
         <label className="flex flex-col gap-1.5 text-sm">
           <span className="font-medium">
-            Alan adı <span className="text-muted">(isteğe bağlı)</span>
+            {t("Alan adı")}{" "}
+            <span className="text-muted">{t("(isteğe bağlı)")}</span>
           </span>
           <input
             type="text"
@@ -118,16 +120,18 @@ export function CreateProjectModal({ onClose }: { onClose: () => void }) {
             className="input input-bordered w-full"
           />
           <span className="text-xs text-muted">
-            Projeyi oluşturduktan sonra Search Console&apos;u bağlayın; arama ve
-            sıralama verileri oradan gelir.
+            {t(
+              "Projeyi oluşturduktan sonra Search Console'u bağlayın; arama ve sıralama verileri oradan gelir.",
+            )}
           </span>
         </label>
 
         <div className="flex flex-col gap-1.5">
           <ProjectMarketFields value={market} onChange={setMarket} />
           <span className="text-xs text-muted">
-            Kaydettiğiniz anahtar kelimeler bu ülke ve dile göre saklanır.
-            Sonradan proje ayarlarından değiştirebilirsiniz.
+            {t(
+              "Kaydettiğiniz anahtar kelimeler bu ülke ve dile göre saklanır. Sonradan proje ayarlarından değiştirebilirsiniz.",
+            )}
           </span>
         </div>
 
@@ -138,14 +142,14 @@ export function CreateProjectModal({ onClose }: { onClose: () => void }) {
             onClick={onClose}
             disabled={isPending}
           >
-            Vazgeç
+            {t("Vazgeç")}
           </button>
           <button
             type="submit"
             className="btn btn-primary btn-sm"
             disabled={isPending}
           >
-            Proje oluştur
+            {t("Proje oluştur")}
           </button>
         </div>
       </form>

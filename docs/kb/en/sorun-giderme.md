@@ -5,7 +5,7 @@ kind: sorun-giderme
 updated: 2026-10-23
 ---
 
-The app's interface is in Turkish. This guide gives every button and screen name in Turkish, with its English meaning in brackets.
+The app's interface comes in English and Turkish. This guide uses the English names; to switch, go to **Settings → Appearance → Language**.
 
 This guide covers what to do when something does not work. First, check the "Kurulumunuzun durumu" (Your installation status) card on the **Yardım** (Help) screen in the app. The card checks four things: sign-in and access, Google sign-in, the PageSpeed key, and the database. If it says "N şey dikkat istiyor" (N things need attention), the button next to it takes you to the right setting. The sections below run from the most common problem to the rarest.
 
@@ -15,7 +15,7 @@ This guide covers what to do when something does not work. First, check the "Kur
 
 **Cause:** The app is not running.
 
-**Fix:** On Windows, check the taskbar for the icon. If the icon is not visible, click the ^ arrow on the taskbar. If it is not there, open seowatcher from the Start menu. If the icon says "Hata" (Error), right-click it and choose **Yeniden başlat** (Restart). On Docker, run `docker compose ps`. If the status is not healthy, run `docker compose up -d`.
+**Fix:** On Windows, check the taskbar for the icon. If the icon is not visible, click the ^ arrow on the taskbar. If it is not there, open seowatcher from the Start menu. If the icon says "Error", right-click it and choose **Yeniden başlat** (Restart). On Docker, run `docker compose ps`. If the status is not healthy, run `docker compose up -d`.
 
 ## The port number is in use
 
@@ -59,7 +59,7 @@ This guide covers what to do when something does not work. First, check the "Kur
 
 ## Google says "redirect_uri_mismatch"
 
-**Symptom:** When you choose **Bağlan** (Connect), Google shows an error page.
+**Symptom:** When you choose **Connect**, Google shows an error page.
 
 **Cause:** The redirect address in Google Cloud Console is not exactly the same as the one in the app.
 
@@ -67,7 +67,7 @@ This guide covers what to do when something does not work. First, check the "Kur
 
 ## "Google erişim anahtarı eksik"
 
-**Symptom:** In the project settings, the **Bağlantılar** (Connections) tab shows a yellow warning saying "Google erişim anahtarı eksik" (Google access key missing).
+**Symptom:** In the project settings, the **Connections** tab shows a yellow warning saying "Google access key missing".
 
 **Cause:** The client ID and the secret key have not been entered in **Ayarlar → Google**. Or, on Docker, the encryption key is shorter than 32 characters.
 
@@ -79,23 +79,23 @@ This guide covers what to do when something does not work. First, check the "Kur
 
 **Cause:** The Google account you signed in with is not in the test users list on the consent screen.
 
-**Fix:** In Cloud Console, add the account under **OAuth izin ekranı → Test kullanıcıları** (OAuth consent screen → Test users). Then choose **Bağlan** (Connect) again.
+**Fix:** In Cloud Console, add the account under **OAuth izin ekranı → Test kullanıcıları** (OAuth consent screen → Test users). Then choose **Connect** again.
 
 ## The connection has expired
 
-**Symptom:** The integration card says "Bağlantının süresi doldu" (The connection has expired) and no data comes in.
+**Symptom:** The integration card says "The connection has expired" and no data comes in.
 
 **Cause:** For apps in "Test" status, Google can expire the permission after seven days. The encryption key may also have changed.
 
-**Fix:** On the card, choose **Yeniden bağlan** (Reconnect). If it keeps happening, move the consent screen to production, or switch to a service account (**Ayarlar → Hizmet hesabı**, Settings → Service account).
+**Fix:** On the card, choose **Reconnect**. If it keeps happening, move the consent screen to production, or switch to a service account (**Ayarlar → Hizmet hesabı**, Settings → Service account).
 
 ## There is no query data and the charts are empty
 
-**Symptom:** The Panel (Dashboard) cards are zero. Arama performansı (Search performance) says "Bu dönem için henüz veri yok" (There is no data for this period yet).
+**Symptom:** The Panel (Dashboard) cards are zero. Arama performansı (Search performance) says "No data for this period yet".
 
 **Cause:** There are three possible causes: the site is new and Google has not shown it yet; Search Console is three days behind and the selected period is too short; or the wrong property is selected.
 
-**Fix:** Set the period to **Son 3 ay** (Last 3 months). In the project settings, check that the property is the right site. A domain property covers all subdomains, but a URL-prefix property does not. On a new site, query rows can take weeks to arrive. The page table fills earlier.
+**Fix:** Set the period to **Last 3 months**. In the project settings, check that the property is the right site. A domain property covers all subdomains, but a URL-prefix property does not. On a new site, query rows can take weeks to arrive. The page table fills earlier.
 
 ## The table total does not match the card
 
@@ -111,11 +111,11 @@ This guide covers what to do when something does not work. First, check the "Kur
 
 **Cause:** The app may have restarted, or the job may have dropped.
 
-**Fix:** Wait. The app checks any audit that has shown "sürüyor" (in progress) for more than 15 minutes. If there are no signs of life, it closes the audit as "Başarısız" (Failed) and records the reason. Then choose **Aynı ayarlarla yeniden başlat** (Restart with the same settings). Do not start two audits with speed testing at the same time. They slow each other down.
+**Fix:** Wait. The app checks any audit that has shown "sürüyor" (in progress) for more than 15 minutes. If there are no signs of life, it closes the audit as "Failed" and records the reason. Then choose **Run again with the same settings**. Do not start two audits with speed testing at the same time. They slow each other down.
 
 ## The audit says "Engellendik"
 
-**Symptom:** A yellow warning appears: "Denetim bu siteyi tamamen tarayamadı." (The audit could not crawl this site fully.) or "N sayfada engellendik." (We were blocked on N pages.)
+**Symptom:** A yellow warning appears: "The audit could not fully crawl this site." or "N sayfada engellendik." (We were blocked on N pages.)
 
 **Cause:** The site's bot protection (Cloudflare or a firewall) stopped the app's site crawler.
 
@@ -123,7 +123,7 @@ This guide covers what to do when something does not work. First, check the "Kur
 
 ## Speed testing is incomplete or missing
 
-**Symptom:** The Hız (Speed) tab is empty or has very few rows. The quota card says "Kota doldu" (Quota used up), "Dakikalık sınır" (Per-minute limit) or "Anahtar yok" (No key).
+**Symptom:** The Hız (Speed) tab is empty or has very few rows. The quota card says "Quota used up", "Dakikalık sınır" (Per-minute limit) or "Anahtar yok" (No key).
 
 **Cause:** There is no PageSpeed key (at most 50 pages are measured). Or Google's daily allowance has run out.
 
@@ -143,7 +143,7 @@ This guide covers what to do when something does not work. First, check the "Kur
 
 **Cause:** A test copy of your site loads the same Analytics tag.
 
-**Fix:** Set the tag to load only on the real domain. Most tools have a "domain check" option. The app does not filter these rows out, so until you fix the tag, read the table with the **Alan adı** (Domain) column in view.
+**Fix:** Set the tag to load only on the real domain. Most tools have a "domain check" option. The app does not filter these rows out, so until you fix the tag, read the table with the **Domain** column in view.
 
 ## The assistant cannot connect (401)
 
@@ -163,17 +163,17 @@ This guide covers what to do when something does not work. First, check the "Kur
 
 ## Where are my data and logs?
 
-On Windows, everything is in the `%LOCALAPPDATA%\seowatcher` folder: `data` (the database), `logs\launcher.log`, `logs\server.log`, `logs\migrate.log`, `instance-secret`, `mcp-token`, `config.json`. When a log file grows too large (`server.log` 5 MB, the others 1 MB), the old one stays beside it under a name like `server.old.log` and a new one starts from the beginning. The `logs\wrangler` folder holds the engine's own detailed logs; files older than 30 days are deleted automatically. **Günlükleri aç** (Open logs) and **Veri klasörünü aç** (Open data folder) in the taskbar menu take you there.
+On Windows, everything is in the `%LOCALAPPDATA%\seowatcher` folder: `data` (the database), `logs\launcher.log`, `logs\server.log`, `logs\migrate.log`, `instance-secret`, `mcp-token`, `config.json`. When a log file grows too large (`server.log` 5 MB, the others 1 MB), the old one stays beside it under a name like `server.old.log` and a new one starts from the beginning. The `logs\wrangler` folder holds the engine's own detailed logs; files older than 30 days are deleted automatically. **Open logs** and **Open data folder** in the taskbar menu take you there.
 
 On Docker, the data is in the `seotracker_data` volume (`/app/.wrangler`). You see the logs with the `docker compose logs -f` command.
 
-When you report a problem, press the **Tanılama paketi indir** (Download diagnostics bundle) button on the **Yardım** (Help) screen. The file has the version, the setup checks and the last 25 audits. It has no secrets. Attach the file to the issue on GitHub.
+When you report a problem, press the **Download diagnostics bundle** button on the **Help** screen. The file has the version, the setup checks and the last 25 audits. It has no secrets. Attach the file to the issue on GitHub.
 
 ## Launcher messages
 
 These messages appear on the Windows icon or in a dialog. The Windows launcher is the small program that starts the app.
 
-- **"Sunucu 120 saniyede yanıt vermedi"** (The server did not answer within 120 seconds): choose **Yeniden başlat** (Restart). If that fails, choose **Günlükleri aç** (Open logs) and read `server.log`.
+- **"Sunucu 120 saniyede yanıt vermedi"** (The server did not answer within 120 seconds): choose **Yeniden başlat** (Restart). If that fails, choose **Open logs** and read `server.log`.
 - **"seowatcher yeniden başlatılıyor"** (seowatcher is restarting): the server closed by itself and the app is reopening it. Refresh the open page after a few seconds.
 - **"Sunucu 10 dakikada üç kez kapandı"** (The server closed three times in 10 minutes): the app has stopped reopening it. Choose **Kurulumu onar**, and if that does not help, **Sorunu bildir (GitHub)**.
 - **"Kurulum eksik"** (Installation incomplete): **Kurulumu onar** puts the missing files back by downloading the installer. If there is no internet, the releases page opens; download the installer and run it.

@@ -2,6 +2,8 @@
 <html lang="pt">
   <head>
     <meta charset="utf-8" />
+    <link rel="stylesheet" href="/assets/consent.css?v=1" />
+    <script src="/assets/consent.js?v=2" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Instalar no Windows | Guia do seowatcher</title>
     <meta
@@ -57,6 +59,13 @@
       sizes="48x48"
     />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link
+      rel="alternate"
+      type="application/atom+xml"
+      title="seowatcher"
+      href="/pt/feed.xml"
+    />
     <link
       rel="preload"
       href="/assets/fonts/geist-latin-wght-normal.woff2"
@@ -89,7 +98,7 @@
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Instalar no Windows | seowatcher" />
-    <meta property="article:modified_time" content="2026-10-23" />
+    <meta property="article:modified_time" content="2026-10-24" />
     <meta
       property="og:url"
       content="https://seowatcher.io/pt/docs/instalar-windows/"
@@ -148,7 +157,7 @@
             "description": "Instale no Windows com um único arquivo: primeira abertura, atualização, desinstalação, backup e troca da porta. Sem Docker e sem terminal.",
             "url": "https://seowatcher.io/pt/docs/instalar-windows/",
             "inLanguage": "pt",
-            "dateModified": "2026-10-23",
+            "dateModified": "2026-10-24",
             "articleSection": "Primeiros passos",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -183,7 +192,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=2.4.3" defer></script>
+    <script src="/assets/docs.js?v=0.5.0" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1315,7 +1324,7 @@
             >GitHub</a
           >
           <details class="langs">
-            <summary aria-label="Idioma: Português">
+            <summary aria-label="PT — Idioma: Português">
               <span class="flag"
                 ><svg viewBox="0 0 20 14" aria-hidden="true">
                   <rect width="20" height="14" fill="#ff0000" />
@@ -1522,7 +1531,8 @@
           terminal.
         </p>
         <p>
-          A interface do aplicativo está em turco. Este guia mostra cada botão e
+          A interface do aplicativo está disponível em turco e inglês. O idioma
+          é escolhido em Ayarlar → Görünüm → Dil. Este guia mostra cada botão e
           cada nome de tela em turco, com o significado em português entre
           parênteses.
         </p>
@@ -1536,8 +1546,8 @@
         <ul>
           <li>Windows 10 ou 11 (64 bits).</li>
           <li>
-            Cerca de 350 MB de espaço livre. O instalador tem 81 MB e o
-            aplicativo instalado ocupa 290 MB.
+            Cerca de 400 MB de espaço livre. O instalador tem 86 MB e o
+            aplicativo instalado ocupa 313 MB.
           </li>
           <li>Um navegador, como Edge, Chrome ou Firefox.</li>
           <li>
@@ -1946,7 +1956,7 @@
           <li>
             Ao passar o mouse sobre o ícone da barra de tarefas (se ele não
             aparecer, clique na seta ^), deve aparecer &quot;seowatcher X.Y.Z:
-            Çalışıyor: http://127.0.0.1:3001/&quot; (seowatcher 2.3.7: Em
+            Çalışıyor: http://127.0.0.1:3001/&quot; (seowatcher 0.5.0 Alpha: Em
             execução: http://127.0.0.1:3001/). O número da versão é o da que
             você instalou.
           </li>
@@ -2048,7 +2058,7 @@
           >
         </nav>
         <p class="meta">
-          Última atualização: 23 de outubro de 2026. Viu algum erro?
+          Última atualização: 24 de outubro de 2026. Viu algum erro?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"

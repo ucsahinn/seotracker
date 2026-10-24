@@ -2,6 +2,8 @@
 <html lang="de">
   <head>
     <meta charset="utf-8" />
+    <link rel="stylesheet" href="/assets/consent.css?v=1" />
+    <script src="/assets/consent.js?v=2" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Einstellungen | seowatcher-Anleitung</title>
     <meta
@@ -54,6 +56,13 @@
       sizes="48x48"
     />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link
+      rel="alternate"
+      type="application/atom+xml"
+      title="seowatcher"
+      href="/de/feed.xml"
+    />
     <link
       rel="preload"
       href="/assets/fonts/geist-latin-wght-normal.woff2"
@@ -83,7 +92,7 @@
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Einstellungen | seowatcher" />
-    <meta property="article:modified_time" content="2026-10-23" />
+    <meta property="article:modified_time" content="2026-10-24" />
     <meta
       property="og:url"
       content="https://seowatcher.io/de/docs/einstellungen/"
@@ -139,7 +148,7 @@
             "description": "Design, Google-Zugangsschlüssel, PageSpeed-Schlüssel, Nutzungsgrenzen und Update-Prüfung, gültig für die gesamte Installation.",
             "url": "https://seowatcher.io/de/docs/einstellungen/",
             "inLanguage": "de",
-            "dateModified": "2026-10-23",
+            "dateModified": "2026-10-24",
             "articleSection": "Bildschirme",
             "about": { "@id": "https://seowatcher.io/#app" },
             "author": { "@id": "https://seowatcher.io/#author" },
@@ -174,7 +183,7 @@
         ]
       }
     </script>
-    <script src="/assets/docs.js?v=2.4.3" defer></script>
+    <script src="/assets/docs.js?v=0.5.0" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1306,7 +1315,7 @@
             >GitHub</a
           >
           <details class="langs">
-            <summary aria-label="Sprache: Deutsch">
+            <summary aria-label="DE — Sprache: Deutsch">
               <span class="flag"
                 ><svg viewBox="0 0 20 14" aria-hidden="true">
                   <rect width="20" height="14" fill="#000" />
@@ -1522,9 +1531,8 @@
           <strong>Google</strong>, <strong>Hizmet hesabı</strong> (Dienstkonto),
           <strong>Hız ölçümü</strong> (Geschwindigkeitsmessung),
           <strong>Sınırlar</strong> (Grenzen), <strong>Hakkında</strong> (Über)
-          und <strong>Sürüm notları</strong> (Versionshinweise). In der
-          Überschrift jedes Bereichs steht ein Kennzeichen, das seinen Zustand
-          zeigt.
+          und <strong>Windows</strong>. In der Überschrift jedes Bereichs steht
+          ein Kennzeichen, das seinen Zustand zeigt.
         </p>
         <h2 id="was-auf-dem-bildschirm-zu-sehen-ist">
           Was auf dem Bildschirm zu sehen ist
@@ -1534,6 +1542,29 @@
           es System, Hell (Açık) und Dunkel (Koyu). Die Wahl wird in diesem
           Browser gespeichert. In einem anderen Browser oder auf einem anderen
           Computer wählen Sie sie gesondert.
+        </p>
+        <p>
+          <strong>Sprache.</strong> Die App bietet Türkisch und Englisch. Unter
+          <strong>Ayarlar → Görünüm → Dil</strong> wählen Sie Türkçe oder
+          English. Die Seite wird neu geladen; Zahlen und Datumsangaben folgen
+          der gewählten Sprache. Die Wahl wird in diesem Browser gespeichert.
+        </p>
+        <p>
+          <strong>Benachrichtigungen (Bildirimler).</strong> Die Glocke zeigt
+          die letzten 50 Ereignisse und die Zahl ungelesener Meldungen.
+          <strong>Tümünü okundu işaretle</strong> markiert alle als gelesen,
+          ohne den Verlauf zu löschen. Unter <strong>Bildirimler</strong> können
+          Sie einen Ton vorhören und Desktop-Mitteilungen für den Hintergrund
+          erlauben. Die Browser-Berechtigung wird erst beim Aktivieren
+          angefragt.
+        </p>
+        <p>
+          <strong>Windows.</strong> Hier können Sie den Start mit Windows und
+          die automatische Update-Installation ein- oder ausschalten. Die
+          Einstellungen entsprechen dem Infobereichsmenü. Einschränkungen durch
+          Administratoren werden erklärt. Bei Docker- und
+          Entwicklerinstallationen sind die Schalter deaktiviert; ältere
+          Windows-Startprogramme zeigen einen Hinweis zur Paketaktualisierung.
         </p>
         <p>
           <strong>Google.</strong> Das Kennzeichen hat einen von drei Werten:
@@ -1617,7 +1648,7 @@
         </p>
         <p>
           <strong>Hakkında.</strong> Die Zeile <strong>Sürüm</strong> (Version)
-          zeigt die Version (zum Beispiel v2.3.0). Der Schalter
+          zeigt die Version (zum Beispiel 0.5.0 Alpha). Der Schalter
           <strong>Güncellemeleri kontrol et</strong> (Updates prüfen) ist
           standardmäßig eingeschaltet. Ist er an, fragt die App höchstens einmal
           am Tag auf GitHub nach der neuesten Version. Dann erscheint auch die
@@ -1632,8 +1663,9 @@
           selbst installiert.
         </p>
         <p>
-          <strong>Sürüm notları.</strong> Der Bereich listet auf, was sich in
-          jeder Version geändert hat.
+          <strong>Sürüm notları.</strong> Die Versionshinweise stehen als eigene
+          Seite über den Benachrichtigungen im Seitenmenü. Farbige Etiketten
+          zeigen Neuerungen, Korrekturen und Sicherheitsänderungen.
         </p>
         <h2 id="so-gehen-sie-vor">So gehen Sie vor</h2>
         <ol>
@@ -1716,7 +1748,7 @@
           >
         </nav>
         <p class="meta">
-          Zuletzt aktualisiert: 23 Oktober 2026. Fehler entdeckt?
+          Zuletzt aktualisiert: 24 Oktober 2026. Fehler entdeckt?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"

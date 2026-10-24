@@ -450,7 +450,7 @@ namespace SeoWatcher
         public static string Summary()
         {
             var v = VcRuntime();
-            return "seowatcher " + Paths.Version() + "\r\n"
+            return "seowatcher " + Paths.Version() + " Alpha" + "\r\n"
                 + "Windows: " + OsDescription() + (Environment.Is64BitOperatingSystem ? " x64" : " x86") + "\r\n"
                 + "CPU: " + CpuName() + "\r\n"
                 + "Sürüm türü: " + Edition() + ", DEP: " + DepPolicy() + ", .NET: " + Environment.Version + "\r\n"
@@ -525,7 +525,7 @@ namespace SeoWatcher
             string profile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             if (!string.IsNullOrEmpty(profile)) text = text.Replace(profile, "%USERPROFILE%");
             text = R(text, @"(?i)(bearer\s+)[A-Za-z0-9_\-]{8,}", "$1<gizli>");
-            text = R(text, @"(?i)\b(MCP_TOKEN|BETTER_AUTH_SECRET|GOOGLE_CLIENT_SECRET|GOOGLE_CLIENT_ID|PAGESPEED_API_KEY|CLIENT_SECRET|API_KEY|TOKEN)\s*[:=]\s*\S+", "$1=<gizli>");
+            text = R(text, @"(?i)\b(MCP_TOKEN|WINDOWS_SETTINGS_TOKEN|BETTER_AUTH_SECRET|GOOGLE_CLIENT_SECRET|GOOGLE_CLIENT_ID|PAGESPEED_API_KEY|CLIENT_SECRET|API_KEY|TOKEN)\s*[:=]\s*\S+", "$1=<gizli>");
             text = R(text, @"[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}", "<e-posta>");
             text = R(text, @"properties/\d+", "properties/<mülk>");
             text = R(text, @"sc-domain:[^\s""',;]+", "sc-domain:<site>");
@@ -1130,6 +1130,7 @@ namespace SeoWatcher
     /// second server or report a stale failure.</summary>
     internal sealed class Server
     {
+        public WindowsSettingsBridge NativeSettings { get; set; }
         public event Action<string> Status;
         public event Action<string> Ready;
         public event Action<string> Failed;
@@ -1374,6 +1375,11 @@ namespace SeoWatcher
             // Lets the app tell the Windows package from Docker: Ayarlar > Hakkında
             // then describes the tray updater instead of a docker compose command.
             sb.Append("INSTALL_KIND=windows\n");
+            if (NativeSettings != null)
+            {
+                sb.Append("WINDOWS_SETTINGS_PORT=").Append(NativeSettings.Port).Append('\n');
+                sb.Append("WINDOWS_SETTINGS_TOKEN=").Append(NativeSettings.Token).Append('\n');
+            }
             File.WriteAllText(Paths.ServerEnv, sb.ToString(), new UTF8Encoding(false));
         }
 
@@ -1562,6 +1568,7 @@ namespace SeoWatcher
         private readonly ToolStripMenuItem autoUpdateItem;
         private readonly System.Threading.Timer updateTimer;
         private readonly Server server = new Server();
+        private readonly WindowsSettingsBridge nativeSettings;
         private readonly EventWaitHandle quitEvent;
         private readonly EventWaitHandle openEvent;
         private readonly bool silent;
@@ -1634,7 +1641,7 @@ namespace SeoWatcher
             menu.Items.Add(new ToolStripMenuItem("Günlükleri aç", null, (s, e) => OpenFolder(Paths.LogDir)));
             menu.Items.Add(new ToolStripMenuItem("Veri klasörünü aç", null, (s, e) => OpenFolder(Paths.DataRoot)));
             menu.Items.Add(new ToolStripSeparator());
-            menu.Items.Add(new ToolStripMenuItem("seowatcher " + Paths.Version()) { Enabled = false });
+            menu.Items.Add(new ToolStripMenuItem("seowatcher " + Paths.Version() + " Alpha") { Enabled = false });
             menu.Items.Add(new ToolStripMenuItem("Çıkış", null, (s, e) => Quit()));
             // Settings can change outside the menu (the installer, regedit,
             // config.json): read them again every time the menu opens.
@@ -1643,7 +1650,7 @@ namespace SeoWatcher
             tray = new NotifyIcon
             {
                 Icon = LoadIcon(),
-                Text = "seowatcher " + Paths.Version() + ": " + serverStatus,
+                Text = "seowatcher " + Paths.Version() + " Alpha" + ": " + serverStatus,
                 ContextMenuStrip = menu,
                 Visible = true,
             };
@@ -1671,6 +1678,14 @@ namespace SeoWatcher
             }), null, -1, false);
 
             Autostart.Repair();
+            try
+            {
+                nativeSettings = new WindowsSettingsBridge(
+                    () => (string)ui.Invoke(new Func<string>(ReadNativeSettings)),
+                    (setting, enabled) => ui.Invoke(new Action(() => WriteNativeSetting(setting, enabled))));
+                server.NativeSettings = nativeSettings;
+            }
+            catch (Exception) { LauncherLog.Write("Windows settings bridge unavailable"); }
             RefreshSettings();
             RefreshUpdateItem();
             server.Start(config);
@@ -1706,7 +1721,7 @@ namespace SeoWatcher
             string text = updatePhase != null && url != null ? updatePhase : serverStatus;
             statusItem.Text = Truncate(text, 70);
             statusItem.ToolTipText = text.Length > 70 ? text : null;
-            tray.Text = Truncate("seowatcher " + Paths.Version() + ": " + text, 63);
+            tray.Text = Truncate("seowatcher " + Paths.Version() + " Alpha" + ": " + text, 63);
         }
 
         private void RefreshServerItems()
@@ -1739,7 +1754,7 @@ namespace SeoWatcher
                 if (updatedFrom != null)
                 {
                     var v = Updater.Current();
-                    Balloon("seowatcher " + Paths.Version() + " sürümüne güncellendi", "Verileriniz ve ayarlarınız olduğu gibi duruyor. Yenilikleri görmek için bu baloncuğa tıklayın.", ToolTipIcon.Info, 8000,
+                    Balloon("seowatcher " + Paths.Version() + " Alpha" + " sürümüne güncellendi", "Verileriniz ve ayarlarınız olduğu gibi duruyor. Yenilikleri görmek için bu baloncuğa tıklayın.", ToolTipIcon.Info, 8000,
                         () => Browser.Open(Updater.ReleasePage(v)));
                 }
                 else if (!portMoved)
@@ -1933,14 +1948,16 @@ namespace SeoWatcher
             }
             lastCheck = DateTime.UtcNow;
             var current = Updater.Current();
-            if (latest.Version <= current)
+            // The 2.x tags predate the alpha renumbering; never reinstall them.
+            bool retiredRelease = current.Major == 0 && System.Text.RegularExpressions.Regex.IsMatch(latest.Version.ToString(), @"^2\.(0\.0|1\.0|2\.[01]|3\.0|4\.3|5\.0)$");
+            if (retiredRelease || latest.Version <= current)
             {
                 available = null;
                 RefreshUpdateItem();
                 if (manual)
                 {
                     Balloon("Güncel", latest.Version == current
-                        ? "seowatcher " + Paths.Version() + " en son sürüm."
+                        ? "seowatcher " + Paths.Version() + " Alpha" + " en son sürüm."
                         : "Kurulu sürüm (" + Paths.Version() + ") yayımlanan son sürümden (" + latest.Version + ") yeni.", ToolTipIcon.Info, 6000, null);
                 }
                 return;
@@ -2069,6 +2086,34 @@ namespace SeoWatcher
         }
 
         // ---- Settings -------------------------------------------------------------
+
+        private string ReadNativeSettings()
+        {
+            bool managed = Autostart.IsEnabledForAllUsers();
+            return "{\"autostart\":" + JsonBool(managed || Autostart.IsEnabled()) +
+                ",\"autostartManaged\":" + JsonBool(managed) +
+                ",\"autoUpdate\":" + JsonBool(Config.Load().AutoUpdate) +
+                ",\"autoUpdateManaged\":" + JsonBool(!Updater.IsPerUserInstall()) + "}";
+        }
+
+        private static string JsonBool(bool value) { return value ? "true" : "false"; }
+
+        private void WriteNativeSetting(string setting, bool enabled)
+        {
+            if (setting == "autostart")
+            {
+                if (Autostart.IsEnabledForAllUsers()) throw new InvalidOperationException("Managed startup");
+                Autostart.Set(enabled);
+                if (Autostart.IsEnabled() != enabled) throw new IOException("Startup preference was not saved");
+            }
+            else
+            {
+                if (!Updater.IsPerUserInstall()) throw new InvalidOperationException("Managed updates");
+                Config.Update(c => c.AutoUpdate = enabled);
+                if (Config.Load().AutoUpdate != enabled) throw new IOException("Update preference was not saved");
+            }
+            RefreshSettings();
+        }
 
         private void RefreshSettings()
         {
@@ -2205,7 +2250,7 @@ namespace SeoWatcher
             // questions; a body in the URL replaces the template's own body.
             string head = report.Length > 2000 ? report.Substring(0, 2000) + (copied ? "\n(kısaltıldı; tamamı panoda, Ctrl+V ile yapıştırın)" : "\n(kısaltıldı; tamamı için menüden Tanı bilgisini kopyala deyin)") : report;
             string body = "**Ne yapmaya çalışıyordunuz?**\n(bir iki cümle)\n\n**Tanı bilgisi** (menüden kopyalandı; gözden geçirin)\n\n```\n" + head + "\n```\n";
-            string title = "seowatcher " + Paths.Version() + ": " + (status.Length > 80 ? status.Substring(0, 80) : status);
+            string title = "seowatcher " + Paths.Version() + " Alpha" + ": " + (status.Length > 80 ? status.Substring(0, 80) : status);
             Browser.Open("https://github.com/" + Updater.Repo + "/issues/new?template=sorun.md&title=" + Uri.EscapeDataString(title) + "&body=" + Uri.EscapeDataString(body));
         }
 
@@ -2286,6 +2331,7 @@ namespace SeoWatcher
         {
             if (quitting) return;
             quitting = true;
+            if (nativeSettings != null) nativeSettings.Dispose();
             LauncherLog.Write("quit");
             try { if (updateTimer != null) updateTimer.Dispose(); } catch { }
             tray.Visible = false;
@@ -2302,6 +2348,7 @@ namespace SeoWatcher
         {
             if (disposing)
             {
+                if (nativeSettings != null) nativeSettings.Dispose();
                 server.Stop();
                 tray.Dispose();
                 quitEvent.Dispose();

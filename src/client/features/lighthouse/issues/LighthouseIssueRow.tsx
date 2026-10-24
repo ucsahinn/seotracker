@@ -9,7 +9,9 @@ import {
 } from "lucide-react";
 import type { LighthouseIssue } from "./types";
 import { categoryLabel } from "./utils";
+import { t } from "@/shared/i18n";
 
+// Turkish source labels; t() runs where they render.
 const SEVERITY_LABELS: Record<"critical" | "warning" | "info", string> = {
   critical: "Kritik",
   warning: "Uyarı",
@@ -38,7 +40,9 @@ export function LighthouseIssueRow({ issue }: { issue: LighthouseIssue }) {
                */
               className="-m-1 flex min-h-6 min-w-6 items-center justify-center rounded-box p-1 text-muted hover:text-base-content"
               aria-expanded={open}
-              aria-label={open ? "Ayrıntıları gizle" : "Ayrıntıları göster"}
+              aria-label={
+                open ? t("Ayrıntıları gizle") : t("Ayrıntıları göster")
+              }
               onClick={() => setOpen(!open)}
             >
               <ChevronRight
@@ -52,7 +56,7 @@ export function LighthouseIssueRow({ issue }: { issue: LighthouseIssue }) {
             className={`badge badge-sm border ${severityBadgeClass(issue.severity)} gap-1`}
           >
             {severityIcon(issue.severity)}
-            {SEVERITY_LABELS[issue.severity]}
+            {t(SEVERITY_LABELS[issue.severity])}
           </span>
         </td>
         <td className="py-3 pr-3">
@@ -105,7 +109,9 @@ export function LighthouseIssueRow({ issue }: { issue: LighthouseIssue }) {
               {issue.items.length > 0 ? (
                 <details className="text-sm">
                   <summary className="cursor-pointer font-medium text-muted text-xs">
-                    Etkilenen öğeler ({issue.items.length})
+                    {t("Etkilenen öğeler ({count})", {
+                      count: issue.items.length,
+                    })}
                   </summary>
                   <div className="mt-2 space-y-1.5">
                     {issue.items.map((item, itemIndex) => (

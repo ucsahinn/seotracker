@@ -13,6 +13,7 @@ import {
   SAVED_KEYWORD_EXPORT_HEADERS,
   savedKeywordExportRow,
 } from "./savedKeywordsUtils";
+import { t } from "@/shared/i18n";
 
 export function useSavedKeywordsExport(params: {
   projectId: string;
@@ -62,7 +63,7 @@ export function useSavedKeywordsExport(params: {
     try {
       const rows = await loadFilteredRows();
       if (rows.length === 0) {
-        toast.error("Dışa aktarılacak kelime yok");
+        toast.error(t("Dışa aktarılacak kelime yok"));
         return;
       }
       downloadKeywordCsv(rows);
@@ -71,7 +72,7 @@ export function useSavedKeywordsExport(params: {
         result_count: rows.length,
       });
     } catch (error) {
-      toast.error(getStandardErrorMessage(error, "CSV dışa aktarılamadı"));
+      toast.error(getStandardErrorMessage(error, t("CSV dışa aktarılamadı")));
     } finally {
       setExporting(null);
     }
@@ -82,12 +83,14 @@ export function useSavedKeywordsExport(params: {
     try {
       const rows = await loadFilteredRows();
       await exportTableToSheets({
-        headers: SAVED_KEYWORD_EXPORT_HEADERS,
+        headers: SAVED_KEYWORD_EXPORT_HEADERS.map((header) => t(header)),
         rows: rows.map(savedKeywordExportRow),
         feature: "saved_keywords",
       });
     } catch (error) {
-      toast.error(getStandardErrorMessage(error, "E-Tablolar'a aktarılamadı"));
+      toast.error(
+        getStandardErrorMessage(error, t("E-Tablolar'a aktarılamadı")),
+      );
     } finally {
       setExporting(null);
     }
@@ -113,12 +116,14 @@ export function useSavedKeywordsExport(params: {
     setExportingSelection("sheets");
     try {
       await exportTableToSheets({
-        headers: SAVED_KEYWORD_EXPORT_HEADERS,
+        headers: SAVED_KEYWORD_EXPORT_HEADERS.map((header) => t(header)),
         rows: selectedRows.map(savedKeywordExportRow),
         feature: "saved_keywords",
       });
     } catch (error) {
-      toast.error(getStandardErrorMessage(error, "E-Tablolar'a aktarılamadı"));
+      toast.error(
+        getStandardErrorMessage(error, t("E-Tablolar'a aktarılamadı")),
+      );
     } finally {
       setExportingSelection(null);
     }
@@ -138,6 +143,9 @@ function downloadKeywordCsv(rows: SavedKeywordRow[]) {
   const csvRows = rows.map(savedKeywordExportRow);
   downloadCsv(
     "saved-keywords.csv",
-    buildCsv(SAVED_KEYWORD_EXPORT_HEADERS, csvRows),
+    buildCsv(
+      SAVED_KEYWORD_EXPORT_HEADERS.map((header) => t(header)),
+      csvRows,
+    ),
   );
 }

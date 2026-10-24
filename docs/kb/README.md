@@ -11,9 +11,9 @@ onları `site/en/docs/<ingilizce-slug>/` olarak üretir (slug eşlemesi
 de güncelleyin; betik eşi olmayan sayfayı uyarı olarak yazar. Ana sayfanın
 İngilizcesi `scripts/site-home.en.json` çeviri tablosundan
 `node scripts/build-site-home.mjs build` ile üretilir (`pnpm run site:build`
-üçünü birden çalıştırır). İngilizce metinde uygulamanın ekran adları Türkçe
-kalır ve ilk geçtiği yerde parantez içinde İngilizcesi verilir, çünkü
-uygulamanın arayüzü Türkçedir.
+üçünü birden çalıştırır). Uygulamanın arayüzü Türkçe ve İngilizcedir. İngilizce kılavuz, İngilizce ekran
+adlarını kullanır. Windows tepsi menüsü Türkçe kaldığı için menü adlarının
+yanında İngilizce karşılığı verilir.
 
 Her dosya YAML ön bilgisiyle başlar (`title`, `description`, ekran sayfalarında
 `screen` ve `route`, kılavuzlarda `kind`, hepsinde `updated`). Sonunda, sayfaya

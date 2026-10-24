@@ -1,9 +1,11 @@
 import { Check, Loader2, Plus, Search, X } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
 import { Modal } from "@/client/components/Modal";
+import { fillParts } from "@/client/features/settings/fillParts";
 import { resolveTagColor, tagDotClass } from "@/shared/tag-colors";
 import type { SavedKeywordTag, SavedKeywordTagSummary } from "@/types/keywords";
 import { TagChip } from "./TagChip";
+import { t } from "@/shared/i18n";
 
 type Mode = "add" | "remove";
 
@@ -99,11 +101,13 @@ export function SavedKeywordsBulkTagsModal({
       <div className="space-y-4">
         <div>
           <h3 id="bulk-tags-title" className="text-lg font-semibold">
-            Etiketleri güncelle
+            {t("Etiketleri güncelle")}
           </h3>
           <p className="text-sm text-muted">
-            Seçili {selectedCount} kelimeye etiket ekleyin ya da bunlardan
-            etiket kaldırın.
+            {t(
+              "Seçili {count} kelimeye etiket ekleyin ya da bunlardan etiket kaldırın.",
+              { count: selectedCount },
+            )}
           </p>
         </div>
 
@@ -111,13 +115,13 @@ export function SavedKeywordsBulkTagsModal({
           <SegmentButton
             active={mode === "add"}
             onClick={() => setMode("add")}
-            label="Etiket ekle"
+            label={t("Etiket ekle")}
             count={addNames.length}
           />
           <SegmentButton
             active={mode === "remove"}
             onClick={() => setMode("remove")}
-            label="Etiket kaldır"
+            label={t("Etiket kaldır")}
             count={removeIds.length}
             disabled={selectedRowTags.length === 0}
           />
@@ -150,7 +154,7 @@ export function SavedKeywordsBulkTagsModal({
                         )
                       }
                       trailing={<X className="size-3 opacity-70" />}
-                      title="Seçimden çıkar"
+                      title={t("Seçimden çıkar")}
                     />
                   );
                 })}
@@ -161,7 +165,7 @@ export function SavedKeywordsBulkTagsModal({
               <Search className="size-3.5 opacity-50" />
               <input
                 ref={inputRef}
-                aria-label="Etiket ara"
+                aria-label={t("Etiket ara")}
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
                 onKeyDown={(event) => {
@@ -170,7 +174,7 @@ export function SavedKeywordsBulkTagsModal({
                     handleCreate();
                   }
                 }}
-                placeholder="Ara ya da oluştur…"
+                placeholder={t("Ara ya da oluştur…")}
                 className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted"
               />
             </label>
@@ -183,9 +187,14 @@ export function SavedKeywordsBulkTagsModal({
                   className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-base-200"
                 >
                   <Plus className="size-3.5 text-primary" />
-                  <span className="text-muted">Oluştur</span>
-                  <span className="font-medium">
-                    &ldquo;{trimmedQuery}&rdquo;
+                  <span>
+                    {fillParts(t("Oluştur {name}"), {
+                      name: (
+                        <span className="font-medium">
+                          &ldquo;{trimmedQuery}&rdquo;
+                        </span>
+                      ),
+                    })}
                   </span>
                 </button>
               ) : null}
@@ -193,8 +202,8 @@ export function SavedKeywordsBulkTagsModal({
               {filteredAvailable.length === 0 && !showCreate ? (
                 <div className="px-3 py-6 text-center text-xs text-muted">
                   {availableTags.length === 0
-                    ? "Henüz etiket yok. Yukarıya bir ad yazıp oluşturun."
-                    : "Bu aramaya uyan etiket yok."}
+                    ? t("Henüz etiket yok. Yukarıya bir ad yazıp oluşturun.")
+                    : t("Bu aramaya uyan etiket yok.")}
                 </div>
               ) : null}
 
@@ -233,7 +242,7 @@ export function SavedKeywordsBulkTagsModal({
           <div className="space-y-2">
             {selectedRowTags.length === 0 ? (
               <div className="rounded-box border border-base-300 bg-base-200/40 px-3 py-6 text-center text-xs text-muted">
-                Seçili kelimelerde kaldırılacak etiket yok.
+                {t("Seçili kelimelerde kaldırılacak etiket yok.")}
               </div>
             ) : (
               <div className="flex flex-wrap gap-1.5 rounded-box border border-base-300 p-3">
@@ -248,7 +257,9 @@ export function SavedKeywordsBulkTagsModal({
                       selected={checked}
                       trailing={checked ? <Check className="size-3" /> : null}
                       title={
-                        checked ? "Kaldırılacak" : "Kaldırmak için tıklayın"
+                        checked
+                          ? t("Kaldırılacak")
+                          : t("Kaldırmak için tıklayın")
                       }
                     />
                   );
@@ -257,7 +268,9 @@ export function SavedKeywordsBulkTagsModal({
             )}
             {removeIds.length > 0 ? (
               <p className="text-xs text-muted">
-                Seçili kelimelerden {removeIds.length} etiket kaldırılacak.
+                {t("Seçili kelimelerden {count} etiket kaldırılacak.", {
+                  count: removeIds.length,
+                })}
               </p>
             ) : null}
           </div>
@@ -265,7 +278,7 @@ export function SavedKeywordsBulkTagsModal({
 
         <div className="flex items-center justify-end gap-2 pt-2">
           <button type="button" className="btn btn-sm" onClick={onClose}>
-            Vazgeç
+            {t("Vazgeç")}
           </button>
           <button
             type="button"
@@ -279,7 +292,7 @@ export function SavedKeywordsBulkTagsModal({
             }
           >
             {isPending ? <Loader2 className="size-3.5 animate-spin" /> : null}
-            Uygula
+            {t("Uygula")}
           </button>
         </div>
       </div>

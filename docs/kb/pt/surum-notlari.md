@@ -1,10 +1,24 @@
 ---
 title: Notas da versão
-description: O que mudou no seowatcher 2.4.3: instalação com um só arquivo no Windows, um aplicativo que se atualiza sozinho, telas mais simples e site em seis idiomas.
-updated: 2026-10-23
+description: seowatcher 0.5.0 Alpha — Interface em turco e inglês, notificações, sons e progresso mais claro.
+updated: 2026-10-24
 ---
 
-A versão mais recente é a **2.4.3**, de 23 de outubro de 2026. Seus dados são mantidos na atualização; o pacote do Windows instala as novas versões sozinho.
+A versão mais recente é a **0.5.0 Alpha**, de 23 de outubro de 2026. Os dados são mantidos na atualização.
+
+Para passar de 2.x para 0.x.x Alpha, execute o novo instalador manualmente; o atualizador antigo não reconhece o número menor como mais recente.
+
+## 0.5.0 Alpha
+
+- Use a interface em turco ou inglês. Os números e as datas seguem o idioma escolhido.
+- O centro de notificações reúne auditorias, atualizações, ligações Google e relatórios. Os sons e as notificações do ambiente de trabalho têm definições separadas.
+- As notas de versão têm uma entrada própria acima das notificações no menu lateral. As etiquetas coloridas mostram novidades e correções de cada versão.
+- Em Ayarlar → Windows, pode ativar ou desativar o arranque com o Windows e a instalação automática de atualizações.
+- As auditorias mostram o tempo decorrido e um resumo final. Junto de cada título de página encontra a ligação para o guia correspondente.
+- A lista de países no formulário móvel e as explicações em janelas pequenas já não ficam cortadas. Escape fecha primeiro a lista de países e mantém o formulário aberto.
+- As verificações simultâneas de indexação respeitam melhor o limite diário. Os resultados bem-sucedidos são guardados mesmo que outra verificação falhe.
+
+## 0.4.3 Alpha — 2026-10-22
 
 ## Destaques
 

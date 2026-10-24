@@ -31,6 +31,9 @@ const LIGHTHOUSE_PAGES_PER_WAVE = 5;
 /**
  * Start of the stored error for a check that was not run because Google's
  * daily quota ran out. The results screen recognises it by this prefix.
+ *
+ * The three markers are stored data matched by prefix (SQL `like` included),
+ * not display text, so they stay Turkish in every locale.
  */
 export const LIGHTHOUSE_QUOTA_MARKER = "Kota doldu";
 
@@ -39,6 +42,7 @@ export const LIGHTHOUSE_QUOTA_MARKER = "Kota doldu";
  * limit even after the pauses and re-passes. The results screen recognises it
  * by this prefix.
  */
+// i18n-ignore: stored prefix matched in SQL, not display text
 export const LIGHTHOUSE_RATE_LIMIT_MARKER = "Dakikalık sınır";
 /**
  * Start of the stored error for a check that hit Google's shared keyless

@@ -7,6 +7,7 @@ import {
   updateSavedKeywordTag,
 } from "@/serverFunctions/savedKeywords";
 import type { TagColorKey } from "@/shared/tag-colors";
+import { t } from "@/shared/i18n";
 
 export function useTagManage(projectId: string) {
   const queryClient = useQueryClient();
@@ -40,12 +41,12 @@ export function useTagManage(projectId: string) {
         },
       });
       await invalidate();
-      if (result.success) toast.success("Etiket güncellendi");
+      if (result.success) toast.success(t("Etiket güncellendi"));
       // `success: false` means the tag was gone (deleted from another tab);
       // the list has just been refetched, so say that rather than "failed".
-      else toast.error("Etiket artık yok. Liste yenilendi.");
+      else toast.error(t("Etiket artık yok. Liste yenilendi."));
     } catch (error) {
-      toast.error(getStandardErrorMessage(error, "Etiket güncellenemedi"));
+      toast.error(getStandardErrorMessage(error, t("Etiket güncellenemedi")));
     } finally {
       markBusy(input.tagId, false);
     }
@@ -59,13 +60,13 @@ export function useTagManage(projectId: string) {
       });
       await invalidate();
       if (!result.success) {
-        toast.error("Etiket zaten silinmiş. Liste yenilendi.");
+        toast.error(t("Etiket zaten silinmiş. Liste yenilendi."));
         return false;
       }
-      toast.success("Etiket silindi");
+      toast.success(t("Etiket silindi"));
       return true;
     } catch (error) {
-      toast.error(getStandardErrorMessage(error, "Etiket silinemedi"));
+      toast.error(getStandardErrorMessage(error, t("Etiket silinemedi")));
       return false;
     } finally {
       markBusy(tagId, false);

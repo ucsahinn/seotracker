@@ -1,3 +1,4 @@
+import { t } from "@/shared/i18n";
 /**
  * What the local archive holds and whether it is still filling.
  *
@@ -51,7 +52,7 @@ export function ArchiveStatus({
         compact
         error={sync.error}
         onRetry={() => void sync.refetch()}
-        title="Arşiv durumu okunamadı"
+        title={t("Arşiv durumu okunamadı")}
       />
     );
   }
@@ -64,8 +65,9 @@ export function ArchiveStatus({
   if (data.notConnected) {
     return (
       <p className="text-sm text-muted">
-        Sıralama arşivi Search Console verisinden doldurulur. Bağladığınızda
-        geçmiş günler kendiliğinden birikmeye başlar.
+        {t(
+          "Sıralama arşivi Search Console verisinden doldurulur. Bağladığınızda geçmiş günler kendiliğinden birikmeye başlar.",
+        )}
       </p>
     );
   }
@@ -74,7 +76,7 @@ export function ArchiveStatus({
     return (
       <div className="alert alert-warning text-sm">
         <AlertCircle className="size-4 shrink-0" />
-        <span>Arşiv güncellenemedi: {data.error}</span>
+        <span>{t("Arşiv güncellenemedi: {error}", { error: data.error })}</span>
       </div>
     );
   }
@@ -90,9 +92,14 @@ export function ArchiveStatus({
     return (
       <p className="text-xs text-muted">
         {data.scannedThrough
-          ? `${formatDate(data.scannedThrough)} tarihine kadar kontrol edildi, kelime verisi bulunamadı.`
-          : "Veri yükleme henüz başlamadı."}
-        {data.hasMore ? " Kalan günler sonraki açılışlarda yüklenecek." : ""}
+          ? t(
+              "{date} tarihine kadar kontrol edildi, kelime verisi bulunamadı.",
+              { date: formatDate(data.scannedThrough) },
+            )
+          : t("Veri yükleme henüz başlamadı.")}
+        {data.hasMore
+          ? ` ${t("Kalan günler sonraki açılışlarda yüklenecek.")}`
+          : ""}
       </p>
     );
   }
@@ -100,22 +107,30 @@ export function ArchiveStatus({
   // Both ends are nullable. Interpolated raw they rendered as nothing, so a
   // half-populated archive read "Arşiv  –  arasını kapsıyor"; the range is
   // either there or the sentence does without it.
-  const span =
+  const rows = formatNumber(data.rowCount);
+  const summary =
     data.earliestDate && data.lastDate
-      ? `${formatDate(data.earliestDate)} – ${formatDate(data.lastDate)} arasını kapsıyor, `
-      : "";
+      ? t("Arşiv {start} – {end} arasını kapsıyor, {rows} satır.", {
+          start: formatDate(data.earliestDate),
+          end: formatDate(data.lastDate),
+          rows,
+        })
+      : t("Arşiv {rows} satır.", { rows });
 
   return (
     <p className="text-xs text-muted">
-      Arşiv {span}
-      {formatNumber(data.rowCount)} satır.
+      {summary}
       {/* `newDays`, not the days written. A caught-up archive re-reads the
           three days Search Console is still revising on every open, and
           reporting that as days added claimed growth that never happened. */}
-      {data.newDays > 0 ? ` Bu açılışta ${data.newDays} gün eklendi.` : ""}
+      {data.newDays > 0
+        ? ` ${t("Bu açılışta {count} gün eklendi.", { count: data.newDays })}`
+        : ""}
       {/* The backfill walks oldest to newest, so what is left is the recent
           end, not the old one. */}
-      {data.hasMore ? " Kalan günler sonraki açılışta tamamlanacak." : ""}
+      {data.hasMore
+        ? ` ${t("Kalan günler sonraki açılışta tamamlanacak.")}`
+        : ""}
     </p>
   );
 }

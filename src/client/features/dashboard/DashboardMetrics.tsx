@@ -16,9 +16,11 @@ import {
   formatDecimal,
   formatPercent,
 } from "@/client/lib/format";
+import { t } from "@/shared/i18n";
 
 /* The window itself lives in dashboardGscReport.ts; this is only its label. */
-const DASHBOARD_RANGE_LABEL = `Son ${DEFAULT_WINDOW_DAYS} gün`;
+const dashboardRangeLabel = () =>
+  t("Son {days} gün", { days: DEFAULT_WINDOW_DAYS });
 
 /**
  * The four numbers the dashboard exists to show, across the top of the page.
@@ -65,7 +67,7 @@ export function DashboardMetrics({
         compact
         error={reportQuery.error}
         onRetry={() => void reportQuery.refetch()}
-        title="Search Console verisi alınamadı"
+        title={t("Search Console verisi alınamadı")}
       />
     );
   }
@@ -111,10 +113,10 @@ export function DashboardMetrics({
    */
   const hintFor = (fallback: string | undefined) =>
     !connected
-      ? "Bağlanınca görünür"
+      ? t("Bağlanınca görünür")
       : noImpressions
-        ? "Bu dönemde gösterim yok"
-        : (fallback ?? DASHBOARD_RANGE_LABEL);
+        ? t("Bu dönemde gösterim yok")
+        : (fallback ?? dashboardRangeLabel());
 
   const searchPerformance: MetricTileHref = {
     to: "/p/$projectId/search-performance",
@@ -124,7 +126,8 @@ export function DashboardMetrics({
   return (
     <MetricRow>
       <MetricTile
-        label="Tıklama"
+        label={t("Tıklama")}
+        trend={report?.daily.map((row) => row.clicks)}
         href={searchPerformance}
         value={shown?.clicks ?? null}
         animateTo={count(report?.totals.clicks, formatCount)}
@@ -132,7 +135,8 @@ export function DashboardMetrics({
         hint={hintFor(period)}
       />
       <MetricTile
-        label="Gösterim"
+        label={t("Gösterim")}
+        trend={report?.daily.map((row) => row.impressions)}
         href={searchPerformance}
         value={shown?.impressions ?? null}
         animateTo={count(report?.totals.impressions, formatCount)}
@@ -140,7 +144,10 @@ export function DashboardMetrics({
         hint={hintFor(period)}
       />
       <MetricTile
-        label="Tıklama oranı"
+        label={t("Tıklama oranı")}
+        trend={report?.daily.map((row) =>
+          row.impressions > 0 ? row.ctr : null,
+        )}
         href={searchPerformance}
         value={shown?.ctr ?? null}
         animateTo={count(report?.totals.ctr, (n) => formatPercent(n))}
@@ -152,7 +159,10 @@ export function DashboardMetrics({
         hint={hintFor(period)}
       />
       <MetricTile
-        label="Ortalama sıra"
+        label={t("Ortalama sıra")}
+        trend={report?.daily.map((row) =>
+          row.impressions > 0 ? row.position : null,
+        )}
         href={{ to: "/p/$projectId/rankings", projectId }}
         value={shown?.position ?? null}
         animateTo={count(report?.totals.position, (n) => formatDecimal(n))}
@@ -161,7 +171,9 @@ export function DashboardMetrics({
         inverted
         hint={
           connected && !noImpressions
-            ? `${period ?? DASHBOARD_RANGE_LABEL} · düşük sayı daha iyi: 1, listenin en üstü demek`
+            ? t("{period} · düşük sayı daha iyi: 1, listenin en üstü demek", {
+                period: period ?? dashboardRangeLabel(),
+              })
             : hintFor(undefined)
         }
       />

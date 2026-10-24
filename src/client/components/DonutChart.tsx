@@ -4,6 +4,7 @@ import { Cell, Pie, PieChart, Tooltip } from "recharts";
 import { Chart, ChartTooltip } from "@/client/components/Chart";
 import { formatCount, formatPercent } from "@/client/lib/format";
 import { useReducedMotion } from "@/client/lib/useReducedMotion";
+import { t } from "@/shared/i18n";
 
 /**
  * A share of a whole, as a ring — and, when the caller passes `onSelect`, as
@@ -296,7 +297,7 @@ export function DonutCard({
             }}
           >
             <X aria-hidden className="size-3.5" />
-            Seçimi kaldır
+            {t("Seçimi kaldır")}
           </button>
         ) : null}
       </div>
@@ -326,8 +327,13 @@ export function donutSummary(
     null,
   );
   return lead
-    ? `${formatCount(total)} ${totalLabel}; en büyük pay ${lead.label}, ${formatPercent(lead.value / total)}.`
-    : `${formatCount(total)} ${totalLabel}.`;
+    ? t("{total} {totalLabel}; en büyük pay {lead}, {share}.", {
+        total: formatCount(total),
+        totalLabel,
+        lead: lead.label,
+        share: formatPercent(lead.value / total),
+      })
+    : t("{total} {totalLabel}.", { total: formatCount(total), totalLabel });
 }
 
 /**

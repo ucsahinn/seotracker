@@ -10,6 +10,7 @@ import { normalizeDomainInput } from "@/server/lib/domainUtils";
 import { AppError, isUniqueConstraintError } from "@/server/lib/errors";
 import { assertLanguageForLocation } from "@/server/lib/market";
 import { getLanguageCode } from "@/shared/keyword-locations";
+import { t } from "@/shared/i18n";
 
 function mapProject(project: {
   id: string;
@@ -94,7 +95,7 @@ function normalizeProjectDomain(domain: string | undefined) {
   } catch {
     throw new AppError(
       "VALIDATION_ERROR",
-      "Geçerli bir alan adı girin, örneğin acme.com.",
+      t("Geçerli bir alan adı girin, örneğin acme.com."),
     );
   }
 }
@@ -113,7 +114,7 @@ export async function createProject(
     return mapProject(row);
   } catch (error) {
     if (isReservedDefaultConflict(error, input)) {
-      throw new AppError("CONFLICT", RESERVED_DEFAULT_MESSAGE);
+      throw new AppError("CONFLICT", t(RESERVED_DEFAULT_MESSAGE));
     }
     throw error;
   }
@@ -136,7 +137,7 @@ export async function updateProject(
     return mapProject(row);
   } catch (error) {
     if (isReservedDefaultConflict(error, input)) {
-      throw new AppError("CONFLICT", RESERVED_DEFAULT_MESSAGE);
+      throw new AppError("CONFLICT", t(RESERVED_DEFAULT_MESSAGE));
     }
     throw error;
   }
@@ -172,7 +173,9 @@ export async function restoreProject(
     if (isUniqueConstraintError(error)) {
       throw new AppError(
         "CONFLICT",
-        'Alan adı olmayan, "Default" adında etkin bir proje zaten var. Önce onu yeniden adlandırın, sonra bunu geri yükleyin.',
+        t(
+          'Alan adı olmayan, "Default" adında etkin bir proje zaten var. Önce onu yeniden adlandırın, sonra bunu geri yükleyin.',
+        ),
       );
     }
     throw error;
@@ -219,7 +222,7 @@ export async function setProjectWebsite(
 ) {
   const domain = normalizeProjectDomain(input.domain);
   if (!domain)
-    throw new AppError("VALIDATION_ERROR", "Geçerli bir alan adı girin.");
+    throw new AppError("VALIDATION_ERROR", t("Geçerli bir alan adı girin."));
   assertLanguageForLocation(input.locationCode, input.languageCode);
   const row = await ProjectRepository.updateProjectWebsite(
     input.projectId,

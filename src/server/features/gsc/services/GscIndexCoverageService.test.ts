@@ -10,13 +10,32 @@ import {
 const testDb = await vi.hoisted(async () =>
   (await import("@/server/test-support/sqlite-test-db")).createTestDb(),
 );
-const inspectUrls = vi.hoisted(() => vi.fn());
+const inspectUrls = vi.hoisted(() =>
+  vi.fn<
+    (input: {
+      urls: string[];
+      reserve: (site: string) => Promise<boolean>;
+    }) => Promise<ReturnType<typeof answer> & { reservationError?: Error }>
+  >(),
+);
 
 vi.mock("cloudflare:workers", () => ({ env: {} }));
 vi.mock("@/db", () => ({ db: testDb.db }));
 vi.mock("@/db/runBatch", () => testDb.runBatchModule);
 vi.mock("@/server/features/gsc/services/GscService", () => ({
-  GscService: { inspectUrls },
+  GscService: {
+    inspectUrls: async (input: {
+      urls: string[];
+      reserve: (site: string) => Promise<boolean>;
+    }) => {
+      const urls: string[] = [];
+      for (const url of input.urls)
+        if (await input.reserve("sc-domain:example.com")) urls.push(url);
+      if (!urls.length)
+        return { siteUrl: "sc-domain:example.com", results: [] };
+      return inspectUrls({ ...input, urls });
+    },
+  },
 }));
 
 const SITE = "sc-domain:example.com";
@@ -57,6 +76,24 @@ beforeEach(() => {
 });
 
 describe("inspectAndRecord", () => {
+  it("persists successful answers before reporting a sibling reservation failure", async () => {
+    const failure = new Error("D1 unavailable");
+    inspectUrls.mockResolvedValueOnce({
+      ...answer(URL_A, "PASS"),
+      reservationError: failure,
+    });
+    await expect(
+      inspectAndRecord({
+        projectId: "p1",
+        urls: [URL_A],
+        now: new Date("2026-10-24T10:00:00Z"),
+      }),
+    ).rejects.toThrow(failure);
+    expect(inspection()).toMatchObject({
+      verdict: "PASS",
+      checked_at: "2026-10-24T10:00:00.000Z",
+    });
+  });
   it("keeps a stored verdict, and the time it was given, when a later inspection fails", async () => {
     inspectUrls.mockResolvedValueOnce(answer(URL_A, "PASS"));
     await inspectAndRecord({

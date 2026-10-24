@@ -17,6 +17,9 @@ export default defineConfig({
   test: {
     restoreMocks: true,
     clearMocks: true,
+    // Vitest 4 no longer resets vi.fn implementations through restoreMocks.
+    // Keep per-test mock isolation before beforeEach supplies its defaults.
+    mockReset: true,
     projects: [
       {
         plugins: [tsConfigPaths()],
@@ -26,6 +29,7 @@ export default defineConfig({
           include: ["src/**/*.test.ts", "scripts/**/*.test.ts"],
           restoreMocks: true,
           clearMocks: true,
+          mockReset: true,
           server: {
             deps: {
               // Processed by vitest (instead of loaded natively by node) so
@@ -58,6 +62,7 @@ export default defineConfig({
           setupFiles: ["src/client/test-setup.ts"],
           restoreMocks: true,
           clearMocks: true,
+          mockReset: true,
         },
       },
     ],

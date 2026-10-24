@@ -25,6 +25,7 @@ import { buildCsv, downloadCsv } from "@/client/lib/csv";
 import { exportTableToSheets } from "@/client/lib/exportToSheets";
 import { formatCount, formatDate } from "@/client/lib/format";
 import type { Ga4ReportKindName } from "@/shared/ga4-reports";
+import { t } from "@/shared/i18n";
 
 export type ReportResult = {
   propertyDisplayName: string | null;
@@ -75,7 +76,7 @@ export function ReportView({
     kind,
     result.rows,
     result.rowCount < result.totalRowCount
-      ? `Listelenen ${formatCount(result.rowCount)} satırdan`
+      ? t("Listelenen {count} satırdan", { count: result.rowCount })
       : "",
     result.currencyCode ?? null,
   );
@@ -119,14 +120,17 @@ export function ReportView({
       />
 
       <p className="text-xs text-muted">
-        {result.propertyDisplayName ?? "Analytics mülkü"} ·{" "}
+        {result.propertyDisplayName ?? t("Analytics mülkü")} ·{" "}
         {formatDate(result.dateRange.startDate)} –{" "}
         {formatDate(result.dateRange.endDate)} ·{" "}
         {result.rowCount < result.totalRowCount
-          ? `${formatCount(result.rowCount)} / ${formatCount(result.totalRowCount)} satır`
-          : `${formatCount(result.totalRowCount)} satır`}
-        {result.sampled ? " · örneklenmiş" : ""}
-        {result.thresholded ? " · eşik altı satırlar gizlendi" : ""}
+          ? t("{shown} / {count} satır", {
+              shown: formatCount(result.rowCount),
+              count: result.totalRowCount,
+            })
+          : t("{count} satır", { count: result.totalRowCount })}
+        {result.sampled ? ` · ${t("örneklenmiş")}` : ""}
+        {result.thresholded ? ` · ${t("eşik altı satırlar gizlendi")}` : ""}
       </p>
 
       <div className="flex flex-wrap items-center justify-between gap-2">
@@ -135,16 +139,18 @@ export function ReportView({
           tabIndex={-1}
           className="flex flex-wrap items-center gap-2"
           role="group"
-          aria-label="Hızlı filtreler"
+          aria-label={t("Hızlı filtreler")}
         >
           <button
             type="button"
             aria-pressed={organicOnly}
-            title="Yalnızca Google organik aramadan gelen ziyaretleri gösterir."
+            title={t(
+              "Yalnızca Google organik aramadan gelen ziyaretleri gösterir.",
+            )}
             className={`btn btn-xs rounded-full ${organicOnly ? "btn-neutral" : "btn-ghost border-base-300"}`}
             onClick={() => onOrganicOnlyChange(!organicOnly)}
           >
-            Sadece organik
+            {t("Sadece organik")}
           </button>
           {chips.map((chip) => {
             const on = activeChips.includes(chip.id);
@@ -172,9 +178,10 @@ export function ReportView({
             );
           })}
           {chips.length > 0 ? (
-            <HelpTip label="Hızlı filtreler">
-              Sayılar, listelenen tüm satırlara göre hesaplanır. Birden fazla
-              filtre seçerseniz satırın hepsine uyması gerekir.
+            <HelpTip label={t("Hızlı filtreler")}>
+              {t(
+                "Sayılar, listelenen tüm satırlara göre hesaplanır. Birden fazla filtre seçerseniz satırın hepsine uyması gerekir.",
+              )}
             </HelpTip>
           ) : null}
           {isFiltered ? (
@@ -184,7 +191,7 @@ export function ReportView({
               onClick={clearFilters}
             >
               <FilterX aria-hidden className="size-3.5" />
-              Filtreleri temizle
+              {t("Filtreleri temizle")}
             </button>
           ) : null}
         </div>
@@ -194,7 +201,9 @@ export function ReportView({
             buttonClassName="btn btn-ghost btn-sm gap-1"
             actions={[
               {
-                label: `E-Tablolar'a aktar (${formatCount(rows.length)} satır)`,
+                label: t("E-Tablolar'a aktar ({count} satır)", {
+                  count: rows.length,
+                }),
                 onClick: () =>
                   void exportTableToSheets({
                     headers: columns.map(columnLabel),
@@ -203,7 +212,7 @@ export function ReportView({
                   }),
               },
               {
-                label: `CSV (${formatCount(rows.length)} satır)`,
+                label: t("CSV ({count} satır)", { count: rows.length }),
                 onClick: () =>
                   downloadCsv(
                     "analytics.csv",
@@ -232,15 +241,15 @@ export function ReportView({
         <div className="rounded-box border border-base-300 bg-base-100">
           <EmptyState
             icon={FilterX}
-            title="Bu filtrelere uyan satır yok"
-            description="Seçtiğiniz filtrelerle hiçbir satır eşleşmiyor."
+            title={t("Bu filtrelere uyan satır yok")}
+            description={t("Seçtiğiniz filtrelerle hiçbir satır eşleşmiyor.")}
             action={
               <button
                 type="button"
                 className="btn btn-sm"
                 onClick={clearFilters}
               >
-                Filtreleri temizle
+                {t("Filtreleri temizle")}
               </button>
             }
           />

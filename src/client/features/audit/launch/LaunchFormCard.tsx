@@ -12,6 +12,8 @@ import type { useLaunchController } from "@/client/features/audit/launch/useLaun
 import { formatNumber } from "@/client/lib/format";
 import { getFieldError, getFormError } from "@/client/lib/forms";
 import { HelpTip } from "@/client/components/HelpTip";
+import { fillParts } from "@/client/features/settings/fillParts";
+import { t } from "@/shared/i18n";
 
 type Props = {
   launchForm: ReturnType<typeof useLaunchController>["launchForm"];
@@ -36,7 +38,7 @@ export function LaunchFormCard({
         }}
       >
         <div className="space-y-3 p-4">
-          <h2 className="text-sm font-semibold">Yeni denetim başlat</h2>
+          <h2 className="text-sm font-semibold">{t("Yeni denetim başlat")}</h2>
 
           <div className="grid grid-cols-1 gap-3 lg:grid-cols-12 lg:items-center">
             <launchForm.Field name="url">
@@ -50,7 +52,7 @@ export function LaunchFormCard({
                     <input
                       // A placeholder is not a label: it disappears on the
                       // first keystroke and is never announced as a name.
-                      aria-label="Taranacak site adresi"
+                      aria-label={t("Taranacak site adresi")}
                       /*
                        * The error lives outside the form element, so without
                        * these a screen-reader user submitted, focus stayed on
@@ -84,10 +86,11 @@ export function LaunchFormCard({
                 >
                   {isSubmitting ? (
                     <>
-                      <Loader2 className="size-4 animate-spin" /> Başlatılıyor…
+                      <Loader2 className="size-4 animate-spin" />{" "}
+                      {t("Başlatılıyor…")}
                     </>
                   ) : (
-                    "Denetimi başlat"
+                    t("Denetimi başlat")
                   )}
                 </button>
               )}
@@ -117,17 +120,21 @@ function LaunchOptions({
   commitMaxPagesInput,
   maxPagesLimit,
 }: Props) {
+  // One sentence around the input, so English can order its own words.
+  const [beforeInput, afterInput] = t("En fazla {input} sayfa tara").split(
+    "{input}",
+  );
   return (
     <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
       <div className="flex items-center gap-2">
         <span className="text-sm" aria-hidden>
-          En fazla
+          {beforeInput}
         </span>
         <launchForm.Field name="maxPagesInput">
           {(field) => (
             <input
               type="number"
-              aria-label="En çok taranacak sayfa sayısı"
+              aria-label={t("En çok taranacak sayfa sayısı")}
               min={MIN_PAGES}
               max={maxPagesLimit}
               className="input input-bordered input-sm w-28"
@@ -145,11 +152,14 @@ function LaunchOptions({
           )}
         </launchForm.Field>
         <span className="text-sm" aria-hidden>
-          sayfa tara
+          {afterInput}
         </span>
       </div>
       <p className="text-xs text-muted">
-        {MIN_PAGES} ile {formatNumber(maxPagesLimit)} arasında bir sayı girin.
+        {t("{min} ile {max} arasında bir sayı girin.", {
+          min: formatNumber(MIN_PAGES),
+          max: formatNumber(maxPagesLimit),
+        })}
       </p>
     </div>
   );
@@ -175,16 +185,39 @@ function LighthouseEstimate({ maxPages }: { maxPages: number }) {
     <div className="space-y-1">
       <p className="text-xs text-muted">
         {hasKey
-          ? `Taranan her sayfanın hızı telefonda ve bilgisayarda ölçülür. En çok ${formatNumber(pages)} sayfa, yani ${formatNumber(checks)} ölçüm. Hız aşaması en az yaklaşık ${formatNumber(minutes)} dakika sürer, Google sınırına takılırsa daha uzun.`
-          : `PageSpeed anahtarınız yok. Google'ın ücretsiz kotası küçük olduğu için en çok ${formatNumber(UNKEYED_LIGHTHOUSE_PAGE_CAP)} sayfa (${formatNumber(UNKEYED_LIGHTHOUSE_PAGE_CAP * LIGHTHOUSE_CHECKS_PER_PAGE)} ölçüm) ölçülür. Hız aşaması en az yaklaşık ${formatNumber(minutes)} dakika sürer, Google sınırına takılırsa daha uzun sürer.`}
+          ? t(
+              "Taranan her sayfanın hızı telefonda ve bilgisayarda ölçülür. En çok {pages} sayfa, yani {checks} ölçüm. Hız aşaması en az yaklaşık {minutes} dakika sürer, Google sınırına takılırsa daha uzun.",
+              {
+                pages: formatNumber(pages),
+                checks: formatNumber(checks),
+                minutes: formatNumber(minutes),
+              },
+            )
+          : t(
+              "PageSpeed anahtarınız yok. Google'ın ücretsiz kotası küçük olduğu için en çok {pages} sayfa ({checks} ölçüm) ölçülür. Hız aşaması en az yaklaşık {minutes} dakika sürer, Google sınırına takılırsa daha uzun sürer.",
+              {
+                pages: formatNumber(UNKEYED_LIGHTHOUSE_PAGE_CAP),
+                checks: formatNumber(
+                  UNKEYED_LIGHTHOUSE_PAGE_CAP * LIGHTHOUSE_CHECKS_PER_PAGE,
+                ),
+                minutes: formatNumber(minutes),
+              },
+            )}
       </p>
       {hasKey ? null : (
         <p className="text-xs text-muted">
-          Tüm sayfaları ölçmek için{" "}
-          <Link to="/settings" className="link">
-            Ayarlar
-          </Link>
-          'dan ücretsiz bir PageSpeed anahtarı ekleyin.
+          {fillParts(
+            t(
+              "Tüm sayfaları ölçmek için {settings}'dan ücretsiz bir PageSpeed anahtarı ekleyin.",
+            ),
+            {
+              settings: (
+                <Link to="/settings" className="link">
+                  {t("Ayarlar")}
+                </Link>
+              ),
+            },
+          )}
         </p>
       )}
     </div>
@@ -209,13 +242,14 @@ function LighthouseOptions({ launchForm }: Pick<Props, "launchForm">) {
             element is mouse-hover only, so a keyboard user never saw the
             explanation. */}
         <span className="text-sm">
-          Sayfa hızını da ölç{" "}
-          <HelpTip label="Hız ölçümü">
-            Google Lighthouse ile taranan her sayfanın telefonda ve bilgisayarda
-            ne kadar hızlı açıldığını ölçer, yavaşlatan sorunları listeler.
+          {t("Sayfa hızını da ölç")}{" "}
+          <HelpTip label={t("Hız ölçümü")}>
+            {t(
+              "Google Lighthouse ile taranan her sayfanın telefonda ve bilgisayarda ne kadar hızlı açıldığını ölçer, yavaşlatan sorunları listeler.",
+            )}
           </HelpTip>
         </span>
-        <span className="text-xs text-muted">Daha uzun sürer.</span>
+        <span className="text-xs text-muted">{t("Daha uzun sürer.")}</span>
       </label>
 
       <launchForm.Subscribe

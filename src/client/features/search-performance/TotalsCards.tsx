@@ -1,3 +1,4 @@
+import { t } from "@/shared/i18n";
 import { fractionalChange } from "@/shared/delta";
 import { MetricRow, MetricTile } from "@/client/components/MetricTile";
 import type { Report } from "@/client/features/search-performance/SearchPerformanceColumns";
@@ -29,7 +30,9 @@ export function ctrDelta(current: number, previous: number): Delta {
   const points = (current - previous) * 100;
   if (formatDecimal(Math.abs(points)) === formatDecimal(0)) return null;
   return {
-    text: `${points >= 0 ? "+" : "-"}${formatDecimal(Math.abs(points))} puan`,
+    text: t("{value} puan", {
+      value: `${points >= 0 ? "+" : "-"}${formatDecimal(Math.abs(points))}`,
+    }),
     improved: points >= 0,
   };
 }
@@ -46,7 +49,10 @@ function positionDelta(current: number, previous: number): number | null {
 
 export function TotalsCards({ report }: { report: Report }) {
   const { totals, prevTotals, range } = report;
-  const deltaTitle = `${formatDate(range.prevStartDate)} - ${formatDate(range.prevEndDate)} dönemine göre`;
+  const deltaTitle = t("{start} - {end} dönemine göre", {
+    start: formatDate(range.prevStartDate),
+    end: formatDate(range.prevEndDate),
+  });
   const shown = describeTotals(totals);
   // Nothing to compare against when the period itself is empty, and a delta
   // beside a dash is noise.
@@ -55,22 +61,27 @@ export function TotalsCards({ report }: { report: Report }) {
   return (
     <MetricRow>
       <MetricTile
-        label="Tıklama"
+        label={t("Tıklama")}
+        trend={report.daily.map((row) => row.clicks)}
         value={shown.clicks}
         animateTo={{ value: totals.clicks, format: formatCount }}
         delta={delta(totals.clicks, prevTotals.clicks)}
         deltaTitle={deltaTitle}
       />
       <MetricTile
-        label="Gösterim"
+        label={t("Gösterim")}
+        trend={report.daily.map((row) => row.impressions)}
         value={shown.impressions}
         animateTo={{ value: totals.impressions, format: formatCount }}
         delta={delta(totals.impressions, prevTotals.impressions)}
         deltaTitle={deltaTitle}
       />
       <MetricTile
-        label="Tıklama oranı"
-        hint="Gösterimlerin yüzde kaçı tıklamaya döndü."
+        label={t("Tıklama oranı")}
+        trend={report.daily.map((row) =>
+          row.impressions > 0 ? row.ctr : null,
+        )}
+        hint={t("Gösterimlerin yüzde kaçı tıklamaya döndü.")}
         value={shown.ctr}
         animateTo={{ value: totals.ctr, format: (n) => formatPercent(n) }}
         delta={
@@ -79,8 +90,11 @@ export function TotalsCards({ report }: { report: Report }) {
         deltaTitle={deltaTitle}
       />
       <MetricTile
-        label="Ortalama sıra"
-        hint="Düşük sayı daha iyi: 1, listenin en üstü demek."
+        label={t("Ortalama sıra")}
+        trend={report.daily.map((row) =>
+          row.impressions > 0 ? row.position : null,
+        )}
+        hint={t("Düşük sayı daha iyi: 1, listenin en üstü demek.")}
         value={shown.position}
         animateTo={{ value: totals.position, format: (n) => formatDecimal(n) }}
         delta={

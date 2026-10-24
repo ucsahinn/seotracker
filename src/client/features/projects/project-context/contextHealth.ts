@@ -3,6 +3,7 @@ import {
   PROJECT_CONTEXT_SECTION_LABELS,
   type ProjectContextSectionKey,
 } from "@/types/schemas/projectContext";
+import { t } from "@/shared/i18n";
 
 /** What a piece of the setup is doing right now. */
 export type HealthState = "done" | "todo" | "loading" | "error";
@@ -46,39 +47,45 @@ export function buildContextHealth(input: HealthInput): HealthItem[] {
   return [
     {
       id: "sections",
-      label: "Proje tanımı",
+      label: t("Proje tanımı"),
       state: firstMissing === undefined ? "done" : "todo",
       detail:
         firstMissing === undefined
-          ? `${total} bölümün hepsi dolu.`
-          : `${total} bölümün ${filled} tanesi dolu. Boş olan: ${PROJECT_CONTEXT_SECTION_LABELS[firstMissing]}.`,
+          ? t("{count} bölümün hepsi dolu.", { count: total })
+          : t("{total} bölümün {filled} tanesi dolu. Boş olan: {missing}.", {
+              total,
+              filled,
+              missing: t(PROJECT_CONTEXT_SECTION_LABELS[firstMissing]),
+            }),
       target: {
         kind: "anchor",
         id: `context-${firstMissing ?? PROJECT_CONTEXT_SECTION_KEYS[0]}`,
       },
-      actionLabel: firstMissing === undefined ? "Gözden geçir" : "Doldur",
+      actionLabel: firstMissing === undefined ? t("Gözden geçir") : t("Doldur"),
     },
     {
       id: "competitors",
-      label: "Rakipler",
+      label: t("Rakipler"),
       state: input.competitorCount > 0 ? "done" : "todo",
       detail:
         input.competitorCount > 0
-          ? `${input.competitorCount} rakip kayıtlı.`
-          : "Rakip yok. Ajan, kimle yarıştığınızı bilmeden öneri yapar.",
+          ? t("{count} rakip kayıtlı.", { count: input.competitorCount })
+          : t("Rakip yok. Ajan, kimle yarıştığınızı bilmeden öneri yapar."),
       target: { kind: "anchor", id: "context-competitors" },
-      actionLabel: "Rakip ekle",
+      actionLabel: t("Rakip ekle"),
     },
     {
       id: "keyPages",
-      label: "Önemli sayfalar",
+      label: t("Önemli sayfalar"),
       state: input.keyPageCount > 0 ? "done" : "todo",
       detail:
         input.keyPageCount > 0
-          ? `${input.keyPageCount} önemli sayfa kayıtlı.`
-          : "Önemli sayfa işaretlenmemiş. Hangi sayfaların kazanç getirdiği belli değil.",
+          ? t("{count} önemli sayfa kayıtlı.", { count: input.keyPageCount })
+          : t(
+              "Önemli sayfa işaretlenmemiş. Hangi sayfaların kazanç getirdiği belli değil.",
+            ),
       target: { kind: "anchor", id: "context-key-pages" },
-      actionLabel: "Sayfa ekle",
+      actionLabel: t("Sayfa ekle"),
     },
     {
       id: "searchConsole",
@@ -86,10 +93,12 @@ export function buildContextHealth(input: HealthInput): HealthItem[] {
       state: input.searchConsole,
       detail:
         input.searchConsole === "done"
-          ? "Bağlı. Tıklama, gösterim ve sıra verisi okunuyor."
-          : "Bağlı değil. Sıralama, arama performansı ve fırsatlar bu bağlantıya dayanır.",
+          ? t("Bağlı. Tıklama, gösterim ve sıra verisi okunuyor.")
+          : t(
+              "Bağlı değil. Sıralama, arama performansı ve fırsatlar bu bağlantıya dayanır.",
+            ),
       target: { kind: "integrations", hash: "search-console" },
-      actionLabel: "Bağla",
+      actionLabel: t("Bağla"),
     },
     {
       id: "analytics",
@@ -97,21 +106,25 @@ export function buildContextHealth(input: HealthInput): HealthItem[] {
       state: input.analytics,
       detail:
         input.analytics === "done"
-          ? "Bağlı. Organik oturumlar okunuyor."
-          : "Bağlı değil. Ziyaret ve dönüşüm verisi olmadan trafik düşüşleri yorumlanamaz.",
+          ? t("Bağlı. Organik oturumlar okunuyor.")
+          : t(
+              "Bağlı değil. Ziyaret ve dönüşüm verisi olmadan trafik düşüşleri yorumlanamaz.",
+            ),
       target: { kind: "integrations", hash: "google-analytics" },
-      actionLabel: "Bağla",
+      actionLabel: t("Bağla"),
     },
     {
       id: "pageSpeed",
-      label: "PageSpeed anahtarı",
+      label: t("PageSpeed anahtarı"),
       state: input.pageSpeed,
       detail:
         input.pageSpeed === "done"
-          ? "Anahtar tanımlı. Hız ölçümleri kota sorunu olmadan çalışır."
-          : "Anahtar yok. Hız ölçümü Google'ın ortak kotasına takılıyor ve çoğu zaman yarıda kalır.",
+          ? t("Anahtar tanımlı. Hız ölçümleri kota sorunu olmadan çalışır.")
+          : t(
+              "Anahtar yok. Hız ölçümü Google'ın ortak kotasına takılıyor ve çoğu zaman yarıda kalır.",
+            ),
       target: { kind: "settings" },
-      actionLabel: "Anahtar gir",
+      actionLabel: t("Anahtar gir"),
     },
   ];
 }

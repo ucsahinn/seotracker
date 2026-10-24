@@ -12,6 +12,7 @@ import {
   useContextUpdate,
   type ContextCompetitor,
 } from "./shared";
+import { t } from "@/shared/i18n";
 
 export function CompetitorsSection({
   projectId,
@@ -58,8 +59,8 @@ export function CompetitorsSection({
       className="scroll-mt-6 space-y-3 outline-none"
     >
       <SectionHeader
-        title="Rakipler"
-        hint="Kendinizi kıyasladığınız siteler."
+        title={t("Rakipler")}
+        hint={t("Kendinizi kıyasladığınız siteler.")}
         action={
           <button
             type="button"
@@ -67,7 +68,7 @@ export function CompetitorsSection({
             onClick={() => setAdding(true)}
           >
             <Plus className="size-3.5" />
-            Rakip ekle
+            {t("Rakip ekle")}
           </button>
         }
       />
@@ -85,8 +86,9 @@ export function CompetitorsSection({
       {competitors.length === 0 ? (
         adding ? null : (
           <EmptyListNote>
-            Henüz rakip yok. Rekabet ettiğiniz siteleri ekleyin, ya da
-            bağladığınız ajandan bunları bulup buraya kaydetmesini isteyin.
+            {t(
+              "Henüz rakip yok. Rekabet ettiğiniz siteleri ekleyin, ya da bağladığınız ajandan bunları bulup buraya kaydetmesini isteyin.",
+            )}
           </EmptyListNote>
         )
       ) : (
@@ -135,13 +137,17 @@ export function CompetitorsSection({
                   <button
                     type="button"
                     className="btn btn-ghost btn-xs"
-                    aria-label={`${competitor.domain} rakibini düzenle`}
+                    aria-label={t("{domain} rakibini düzenle", {
+                      domain: competitor.domain,
+                    })}
                     onClick={() => setEditingId(competitor.id)}
                   >
                     <Pencil className="size-3.5" />
                   </button>
                   <ConfirmDeleteButton
-                    label={`${competitor.domain} rakibini kaldır`}
+                    label={t("{domain} rakibini kaldır", {
+                      domain: competitor.domain,
+                    })}
                     pending={update.isPending}
                     onConfirm={() =>
                       update.mutate([
@@ -198,26 +204,28 @@ function CompetitorForm({
           placeholder="competitor.com"
           maxLength={255}
           className="input input-bordered input-sm w-full"
-          aria-label="Rakip alan adı"
+          aria-label={t("Rakip alan adı")}
         />
         <input
           type="text"
           value={draft.name}
           onChange={(event) => setDraft({ ...draft, name: event.target.value })}
-          placeholder="Ad (isteğe bağlı)"
+          placeholder={t("Ad (isteğe bağlı)")}
           maxLength={120}
           className="input input-bordered input-sm w-full"
-          aria-label="Rakip adı"
+          aria-label={t("Rakip adı")}
         />
       </div>
       <input
         type="text"
         value={draft.notes}
         onChange={(event) => setDraft({ ...draft, notes: event.target.value })}
-        placeholder="Neden önemliler? Örn. her karşılaştırma aramasında önde (isteğe bağlı)"
+        placeholder={t(
+          "Neden önemliler? Örn. her karşılaştırma aramasında önde (isteğe bağlı)",
+        )}
         maxLength={500}
         className="input input-bordered input-sm w-full"
-        aria-label="Rakip notları"
+        aria-label={t("Rakip notları")}
       />
       <FormActions
         pending={pending}

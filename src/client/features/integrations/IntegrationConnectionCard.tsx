@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { StatusPill } from "@/client/components/StatusPill";
+import { t } from "@/shared/i18n";
 
 type IntegrationConnectionStatus =
   | "connected"
@@ -42,10 +43,10 @@ function ConnectionStatusPill({
   status: IntegrationConnectionStatus;
 }) {
   if (status === "connected") {
-    return <StatusPill tone="success" label="Bağlı" />;
+    return <StatusPill tone="success" label={t("Bağlı")} />;
   }
   // "setup_required" says nothing the setup banner beside it does not, so it
   // gets no pill of its own.
   if (status === "setup_required") return null;
-  return <StatusPill tone="neutral" label="Bağlı değil" />;
+  return <StatusPill tone="neutral" label={t("Bağlı değil")} />;
 }

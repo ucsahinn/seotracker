@@ -4,12 +4,20 @@ import {
   getLanguageOptions,
 } from "@/shared/keyword-locations";
 import type { ProjectMarket } from "@/client/features/projects/types";
+import { getLocale, t } from "@/shared/i18n";
 
-const languageNames = new Intl.DisplayNames(["tr"], { type: "language" });
+// One per UI language: the locale is set per request, not at import time.
+const languageNamesByLocale = new Map<string, Intl.DisplayNames>();
 
 /** "Turkish" in the data, "Türkçe" on a Turkish screen. */
 function languageLabel(code: string, fallback: string): string {
   try {
+    const locale = getLocale();
+    let languageNames = languageNamesByLocale.get(locale);
+    if (!languageNames) {
+      languageNames = new Intl.DisplayNames([locale], { type: "language" });
+      languageNamesByLocale.set(locale, languageNames);
+    }
     return languageNames.of(code) ?? fallback;
   } catch {
     return fallback;
@@ -36,7 +44,7 @@ export function ProjectMarketFields({
   return (
     <div className="grid gap-4 sm:grid-cols-2">
       <label className="flex flex-col gap-1.5 text-sm">
-        <span className="font-medium">Ülke</span>
+        <span className="font-medium">{t("Ülke")}</span>
         <LocationSelect
           value={value.locationCode}
           onChange={(locationCode) =>
@@ -50,7 +58,7 @@ export function ProjectMarketFields({
       <label
         className={`${hideLanguageOnMobile ? "hidden sm:flex" : "flex"} flex-col gap-1.5 text-sm`}
       >
-        <span className="font-medium">Dil</span>
+        <span className="font-medium">{t("Dil")}</span>
         <select
           value={value.languageCode}
           onChange={(event) =>

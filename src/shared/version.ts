@@ -46,5 +46,13 @@ export function compareVersions(a: string, b: string): VersionOrder {
  * repo, and nagging then would train them to ignore the notice.
  */
 export function isNewerVersion(current: string, latest: string): boolean {
+  // These tags belong to the retired numbering scheme, not to the alpha line.
+  // Existing 2.x installers need a one-time manual install to enter that line.
+  if (
+    /^v?0\./.test(current) &&
+    /^v?2\.(?:0\.0|1\.0|2\.[01]|3\.0|4\.3|5\.0)$/.test(latest)
+  ) {
+    return false;
+  }
   return compareVersions(current, latest) === -1;
 }

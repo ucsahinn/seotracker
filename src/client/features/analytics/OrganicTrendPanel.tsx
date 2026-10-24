@@ -28,6 +28,7 @@ import {
 } from "@/client/lib/format";
 import { useReducedMotion } from "@/client/lib/useReducedMotion";
 import { getGa4DashboardReport } from "@/serverFunctions/ga4";
+import { t } from "@/shared/i18n";
 
 type TrendRow = { date: string; sessions: number };
 
@@ -59,7 +60,7 @@ export function OrganicTrendPanel({
       <section className="rounded-box border border-base-300 bg-base-100">
         <QueryErrorState
           compact
-          title="Organik oturum grafiği yüklenemedi"
+          title={t("Organik oturum grafiği yüklenemedi")}
           error={query.error}
           onRetry={() => void query.refetch()}
         />
@@ -71,7 +72,10 @@ export function OrganicTrendPanel({
   const { totals, prevTotals, trend, previousDateRange } = query.data;
   /* The same sentence the search-performance totals use, so a reader who
      has seen one knows what the other means. */
-  const deltaTitle = `${formatDate(previousDateRange.startDate)} – ${formatDate(previousDateRange.endDate)} dönemine göre`;
+  const deltaTitle = t("{start} – {end} dönemine göre", {
+    start: formatDate(previousDateRange.startDate),
+    end: formatDate(previousDateRange.endDate),
+  });
   const rows: TrendRow[] = trend;
   const hasSessions = rows.some((row) => row.sessions > 0);
 
@@ -79,22 +83,22 @@ export function OrganicTrendPanel({
     <section className="overflow-hidden rounded-box border border-base-300 bg-base-100">
       <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-b border-base-300 px-4 py-3">
         <div>
-          <h2 className="text-sm font-medium">Organik oturumlar</h2>
+          <h2 className="text-sm font-medium">{t("Organik oturumlar")}</h2>
           <p className="mt-0.5 text-xs text-muted">
-            Seçtiğiniz aralık, gün gün.
+            {t("Seçtiğiniz aralık, gün gün.")}
           </p>
         </div>
         <div className="flex items-center gap-4">
           <Total
-            label="Oturum"
+            label={t("Oturum")}
             value={totals.sessions}
             previous={prevTotals.sessions}
             deltaTitle={deltaTitle}
             format={formatCount}
           />
           <Total
-            label="Etkileşim oranı"
-            help={GA4_HELP.engagementRate}
+            label={t("Etkileşim oranı")}
+            help={t(GA4_HELP.engagementRate)}
             value={totals.engagementRate}
             previous={prevTotals.engagementRate}
             deltaTitle={deltaTitle}
@@ -107,7 +111,7 @@ export function OrganicTrendPanel({
           {(totals.purchaseRevenue ?? 0) > 0 ||
           (prevTotals.purchaseRevenue ?? 0) > 0 ? (
             <Total
-              label="Organik gelir"
+              label={t("Organik gelir")}
               value={totals.purchaseRevenue}
               previous={prevTotals.purchaseRevenue}
               deltaTitle={deltaTitle}
@@ -126,7 +130,7 @@ export function OrganicTrendPanel({
       ) : (
         /* A flat line along zero is a shape that looks like an answer. */
         <p className="px-4 py-6 text-sm text-muted">
-          Bu aralıkta organik oturum yok, grafik boş.
+          {t("Bu aralıkta organik oturum yok, grafik boş.")}
         </p>
       )}
     </section>
@@ -178,7 +182,15 @@ function TrendChart({ rows }: { rows: TrendRow[] }) {
   return (
     <Chart
       height={180}
-      summary={`${rows.length} günde toplam ${formatCount(total)} organik oturum. En yüksek gün ${formatDay(peak.date)}, ${formatCount(peak.sessions)} oturum.`}
+      summary={t(
+        "{days} günde toplam {total} organik oturum. En yüksek gün {day}, {peak} oturum.",
+        {
+          days: formatCount(rows.length),
+          total: formatCount(total),
+          day: formatDay(peak.date),
+          peak: formatCount(peak.sessions),
+        },
+      )}
     >
       <AreaChart data={rows} margin={{ top: 8, right: 8, bottom: 0, left: 0 }}>
         <CartesianGrid {...CHART_GRID} />
@@ -205,7 +217,7 @@ function TrendChart({ rows }: { rows: TrendRow[] }) {
                 title={formatDay(label)}
                 rows={[
                   {
-                    label: "oturum",
+                    label: t("oturum"),
                     value: formatCount(row.sessions),
                     color: CHART_SERIES.primary,
                   },

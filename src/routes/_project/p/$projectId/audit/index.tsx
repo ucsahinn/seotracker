@@ -1,7 +1,11 @@
 import { SafeExternalLink } from "@/client/components/SafeExternalLink";
 import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { PageActions, RefreshButton } from "@/client/components/RefreshButton";
-import { formatRelativeTime } from "@/client/lib/format";
+import {
+  formatCount,
+  formatDateTime,
+  formatRelativeTime,
+} from "@/client/lib/format";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { getErrorCode } from "@/client/lib/error-messages";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
@@ -20,6 +24,8 @@ import {
   formatStartedAt,
   StatusBadge,
 } from "@/client/features/audit/shared";
+import { fillParts } from "@/client/features/settings/fillParts";
+import { t } from "@/shared/i18n";
 
 export const Route = createFileRoute<"/_project/p/$projectId/audit/">(
   "/_project/p/$projectId/audit/",
@@ -153,19 +159,19 @@ function AuditDetail({
         {notFound ? (
           <div className="alert alert-error">
             <AlertCircle className="size-5" />
-            <span>Bu denetim bulunamadı. Silinmiş olabilir.</span>
+            <span>{t("Bu denetim bulunamadı. Silinmiş olabilir.")}</span>
           </div>
         ) : (
           <div className="rounded-box border border-base-300 bg-base-100">
             <QueryErrorState
               error={statusQuery.error}
               onRetry={() => void statusQuery.refetch()}
-              title="Denetime bağlanılamadı"
+              title={t("Denetime bağlanılamadı")}
             />
           </div>
         )}
         <button className="btn btn-ghost btn-sm" onClick={onBack}>
-          &larr; Tüm denetimler
+          &larr; {t("Tüm denetimler")}
         </button>
       </PageShell>
     );
@@ -188,10 +194,10 @@ function AuditDetail({
           markup and its own idea of the gap below it, which is how the app
           ended up with several. The back button is what `eyebrow` is for. */}
       <PageHeader
-        eyebrow={<BackLink onClick={onBack}>Tüm denetimler</BackLink>}
+        eyebrow={<BackLink onClick={onBack}>{t("Tüm denetimler")}</BackLink>}
         title={
           <span className="flex flex-wrap items-center gap-x-3 gap-y-1">
-            {status ? extractHostname(status.startUrl) : "Site Denetimi"}
+            {status ? extractHostname(status.startUrl) : t("Site denetimi")}
             {status && status.status !== "running" ? (
               <StatusBadge status={status.status} />
             ) : null}
@@ -218,13 +224,16 @@ function AuditDetail({
               {/* Relative, with the exact time in the tooltip. "26 Eyl 10:36"
                   makes the reader do date arithmetic to answer the only
                   question they have: is this crawl current? */}
-              Site denetimi ·{" "}
-              <time
-                dateTime={status.startedAt}
-                title={formatStartedAt(status.startedAt)}
-              >
-                {formatRelativeTime(status.startedAt)}
-              </time>
+              {fillParts(t("Site denetimi · {time}"), {
+                time: (
+                  <time
+                    dateTime={status.startedAt}
+                    title={formatStartedAt(status.startedAt)}
+                  >
+                    {formatRelativeTime(status.startedAt)}
+                  </time>
+                ),
+              })}
             </>
           ) : undefined
         }
@@ -233,28 +242,56 @@ function AuditDetail({
       {isRunning && status && (
         <ProgressCard projectId={projectId} auditId={auditId} status={status} />
       )}
+      {isComplete && status && resultsQuery.data && (
+        <div
+          role="status"
+          className="rounded-box border border-success/25 bg-success/5 px-4 py-3 text-sm"
+        >
+          <p className="font-medium">
+            {t("Denetim bitti: {pages} sayfa, {issues} bulgu", {
+              pages: formatCount(status.pagesCrawled),
+              issues: formatCount(resultsQuery.data.issues.length),
+            })}
+          </p>
+          {status.completedAt && (
+            <p className="mt-1 text-xs text-muted">
+              {t("Tamamlanma: {date}", {
+                date: formatDateTime(status.completedAt),
+              })}
+            </p>
+          )}
+        </div>
+      )}
 
       {showSupportCta && (
         <div className={isFailed ? "alert alert-error" : "alert alert-warning"}>
           <AlertCircle className="size-5" />
           <div className="space-y-1">
-            <p className="font-medium">Denetim bu siteyi tamamen tarayamadı.</p>
+            <p className="font-medium">
+              {t("Denetim bu siteyi tamamen tarayamadı.")}
+            </p>
             <p>
-              Sitenin bot koruması tarayıcımızı engelledi ve şu an aşmanın bir
-              yolu yok. Bilgisayarınızda çalışan masaüstü tarayıcılar genelde
-              geçer. Şunları deneyin:{" "}
-              <SafeExternalLink
-                className="link link-primary inline-flex items-center gap-0.5"
-                url="https://github.com/PhialsBasement/LibreCrawl"
-                label="LibreCrawl"
-              />{" "}
-              (ücretsiz, açık kaynak) ya da{" "}
-              <SafeExternalLink
-                className="link link-primary inline-flex items-center gap-0.5"
-                url="https://www.screamingfrog.co.uk/seo-spider/"
-                label="Screaming Frog"
-              />{" "}
-              (500 adrese kadar ücretsiz).
+              {fillParts(
+                t(
+                  "Sitenin bot koruması tarayıcımızı engelledi ve şu an aşmanın bir yolu yok. Bilgisayarınızda çalışan masaüstü tarayıcılar genelde geçer. Şunları deneyin: {libreCrawl} (ücretsiz, açık kaynak) ya da {screamingFrog} (500 adrese kadar ücretsiz).",
+                ),
+                {
+                  libreCrawl: (
+                    <SafeExternalLink
+                      className="link link-primary inline-flex items-center gap-0.5"
+                      url="https://github.com/PhialsBasement/LibreCrawl"
+                      label="LibreCrawl"
+                    />
+                  ),
+                  screamingFrog: (
+                    <SafeExternalLink
+                      className="link link-primary inline-flex items-center gap-0.5"
+                      url="https://www.screamingfrog.co.uk/seo-spider/"
+                      label="Screaming Frog"
+                    />
+                  ),
+                },
+              )}
             </p>
           </div>
         </div>
@@ -265,12 +302,14 @@ function AuditDetail({
           <AlertCircle className="size-5" />
           <div className="space-y-1">
             <p className="font-medium">
-              Denetim {partialPageCount} sayfadan sonra erken durdu.
+              {t("Denetim {count} sayfadan sonra erken durdu.", {
+                count: partialPageCount,
+              })}
             </p>
             <p>
-              Aşağıdaki sonuçlar, tarama durmadan önce bakılan her şeyi içerir.
-              Yeniden denemek için yeni bir denetim başlatın. Yine olursa
-              Yardım&apos;dan tanılama paketini indirip sorunu bildirin.
+              {t(
+                "Aşağıdaki sonuçlar, tarama durmadan önce bakılan her şeyi içerir. Yeniden denemek için yeni bir denetim başlatın. Yine olursa Yardım'dan tanılama paketini indirip sorunu bildirin.",
+              )}
             </p>
           </div>
         </div>
@@ -291,7 +330,7 @@ function AuditDetail({
           <QueryErrorState
             error={resultsQuery.error}
             onRetry={() => void resultsQuery.refetch()}
-            title="Denetim sonuçları yüklenemedi"
+            title={t("Denetim sonuçları yüklenemedi")}
           />
         </div>
       ) : null}

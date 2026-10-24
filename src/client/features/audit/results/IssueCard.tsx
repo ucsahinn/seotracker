@@ -19,6 +19,7 @@ import {
   issueCsvFilename,
 } from "@/client/features/audit/results/issueAffected";
 import type { IssueGroup } from "@/client/features/audit/results/issueGroups";
+import { t } from "@/shared/i18n";
 
 const ACTION_BUTTON =
   "btn btn-xs btn-ghost gap-1.5 border border-[var(--control-border)]";
@@ -70,7 +71,10 @@ export function IssueCard({
         className="flex w-full items-center gap-3 px-4 py-2.5 text-left transition-colors hover:bg-base-200/40"
         onClick={() => setOpen((value) => !value)}
         aria-expanded={open}
-        aria-label={`${group.title}, ${countLabel}`}
+        aria-label={t("{title}, {count}", {
+          title: group.title,
+          count: countLabel,
+        })}
       >
         <span
           className={`size-2 shrink-0 rounded-full ${SEVERITY_DOT[group.severity]}`}
@@ -105,14 +109,14 @@ export function IssueCard({
                 className="mt-0.5 size-4 shrink-0 text-[var(--ink-warning)]"
               />
               <p>
-                <span className="font-medium">Nasıl düzeltilir? </span>
+                <span className="font-medium">{t("Nasıl düzeltilir?")} </span>
                 <span className="text-muted">{group.howToFix}</span>
               </p>
             </div>
           )}
           {siteWide ? (
             <p className="text-sm text-muted">
-              Bu sorun tek bir sayfayla değil, sitenin tamamıyla ilgili.
+              {t("Bu sorun tek bir sayfayla değil, sitenin tamamıyla ilgili.")}
             </p>
           ) : null}
           <div className="flex flex-wrap items-center gap-2">
@@ -122,7 +126,9 @@ export function IssueCard({
               onClick={() => copyUrls(group.pageUrls)}
             >
               <Copy aria-hidden className="size-3.5" />
-              URL&apos;leri kopyala ({formatCount(group.pageUrls.length)})
+              {t("URL'leri kopyala ({count})", {
+                count: formatCount(group.pageUrls.length),
+              })}
             </button>
             <button
               type="button"
@@ -132,7 +138,7 @@ export function IssueCard({
               }
             >
               <Download aria-hidden className="size-3.5" />
-              CSV indir
+              {t("CSV indir")}
             </button>
             {siteWide ? null : (
               <button
@@ -141,7 +147,7 @@ export function IssueCard({
                 onClick={() => onShowPages(group.pageUrls, group.title)}
               >
                 <ListFilter aria-hidden className="size-3.5" />
-                Sayfalar sekmesinde göster
+                {t("Sayfalar sekmesinde göster")}
               </button>
             )}
           </div>
@@ -158,11 +164,11 @@ export function IssueCard({
 
 function copyUrls(urls: string[]) {
   if (typeof navigator === "undefined" || !navigator.clipboard) {
-    toast.error("Pano kullanılamıyor");
+    toast.error(t("Pano kullanılamıyor"));
     return;
   }
   navigator.clipboard.writeText(buildCopyText(urls)).then(
-    () => toast.success(`${formatCount(urls.length)} adres kopyalandı`),
-    () => toast.error("Panoya kopyalanamadı"),
+    () => toast.success(t("{count} adres kopyalandı", { count: urls.length })),
+    () => toast.error(t("Panoya kopyalanamadı")),
   );
 }

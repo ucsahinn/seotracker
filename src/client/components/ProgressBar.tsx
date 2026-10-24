@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { useReducedMotion } from "@/client/lib/useReducedMotion";
 import { formatCount, formatPercent } from "@/shared/format";
+import { t } from "@/shared/i18n";
 
 /**
  * Determinate / indeterminate progress with a state that is never colour only.
@@ -34,6 +35,7 @@ import { formatCount, formatPercent } from "@/shared/format";
  */
 type ProgressState = "running" | "done" | "warning" | "error";
 
+// Turkish source text; translated with t() where it renders.
 const STATE_TEXT: Record<ProgressState, string> = {
   running: "Sürüyor",
   done: "Tamamlandı",
@@ -95,7 +97,12 @@ export function ProgressBar({
   const count = `${formatCount(value)} / ${formatCount(max)}`;
   const text =
     valueText ??
-    [STATE_TEXT[state], unknown ? null : count, unknown ? null : percent, eta]
+    [
+      t(STATE_TEXT[state]),
+      unknown ? null : count,
+      unknown ? null : percent,
+      eta,
+    ]
       .filter((part) => part !== null && part !== undefined)
       .join(", ");
 
@@ -109,7 +116,7 @@ export function ProgressBar({
           {showState ? (
             <>
               <StateIcon state={state} />
-              <span>{STATE_TEXT[state]}</span>
+              <span>{t(STATE_TEXT[state])}</span>
             </>
           ) : null}
           {unknown ? null : (
@@ -172,10 +179,10 @@ export function StepProgress({
             <span className={isCurrent ? "font-medium" : ""}>{step}</span>
             <span className="sr-only">
               {done
-                ? ` (${STATE_TEXT.done})`
+                ? ` (${t(STATE_TEXT.done)})`
                 : isCurrent
-                  ? ` (${STATE_TEXT[state]})`
-                  : " (bekliyor)"}
+                  ? ` (${t(STATE_TEXT[state])})`
+                  : ` (${t("bekliyor")})`}
             </span>
           </li>
         );

@@ -61,6 +61,10 @@ jobs:
           if ($ref -like "v*" -and $version -ne $packaged) { throw "tag $ref does not match package.json version $packaged" }
           "version=$version" >> $env:GITHUB_OUTPUT
 
+      - name: Verify Windows settings integration
+        shell: pwsh
+        run: ./scripts/test-windows-settings.ps1
+
       - name: Build package and installer
         shell: pwsh
         env:
@@ -190,16 +194,23 @@ jobs:
           $notes = if ($m.Success) { $m.Groups[1].Value.Trim() } else { "seowatcher $version" }
           $notesFile = Join-Path $file.DirectoryName "notes.md"
           [IO.File]::WriteAllText($notesFile, $notes, (New-Object Text.UTF8Encoding $false))
+          $heading = [regex]::Match($changelog, "(?m)^## \[" + [regex]::Escape($version) + "\](?<alpha> Alpha)?")
+          $releaseTitle = "v$version" + $heading.Groups["alpha"].Value
           # Draft first, upload, then publish: /releases/latest never points at a
-          # release without its installer. "Latest" only if this is the highest
-          # version, so re-tagging an old line cannot demote the current one.
-          $current = gh release list --exclude-drafts --exclude-pre-releases --limit 1 --json tagName --jq '.[0].tagName'
-          $isLatest = -not $current -or ([version]$version -ge [version]$current.TrimStart("v"))
+          # release without its installer. The documented Alpha reset can
+          # replace known retired tags; rerunning a retired tag cannot undo it.
+          # Keep Alpha in the display title while publishing as latest (not a
+          # prerelease), so the app updater and stable download link find it.
+          $current = gh api repos/ucsahinn/seotracker/releases/latest --jq '.tag_name'
+          if ($LASTEXITCODE -ne 0) { throw "Could not read the current latest release" }
+          $latestResult = node scripts/release-latest-policy.mjs $version $current
+          if ($LASTEXITCODE -ne 0) { throw "Release latest policy failed" }
+          $isLatest = [bool]::Parse($latestResult.Trim())
           gh release view $tag 2>$null
           if ($LASTEXITCODE -ne 0) {
-            gh release create $tag --title "v$version" --notes-file $notesFile --draft
+            gh release create $tag --title $releaseTitle --notes-file $notesFile --draft
           } else {
-            gh release edit $tag --notes-file $notesFile
+            gh release edit $tag --title $releaseTitle --notes-file $notesFile
           }
           gh release upload $tag $file.FullName $stable (Join-Path $file.DirectoryName "SHA256SUMS.txt") --clobber
           gh release edit $tag --draft=false --latest=$($isLatest.ToString().ToLower())

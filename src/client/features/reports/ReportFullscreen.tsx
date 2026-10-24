@@ -4,6 +4,7 @@ import type { KeyboardEvent as ReactKeyboardEvent } from "react";
 import { ReportDownloadButton } from "@/client/features/reports/ReportDownloadButton";
 import { ReportViewer } from "@/client/features/reports/ReportViewer";
 import { formatDateTime, formatRelativeTime } from "@/client/lib/format";
+import { t } from "@/shared/i18n";
 
 /**
  * The expanded report: a modal dialog over the whole app.
@@ -89,7 +90,7 @@ export function ReportFullscreen({
           <ReportDownloadButton
             reportId={report.id}
             title={report.title}
-            label="HTML olarak indir"
+            label={t("HTML olarak indir")}
           />
           <button
             type="button"
@@ -98,7 +99,7 @@ export function ReportFullscreen({
             onClick={onExit}
           >
             <Minimize2 aria-hidden className="size-4" />
-            Tam ekrandan çık
+            {t("Tam ekrandan çık")}
           </button>
         </div>
       </div>

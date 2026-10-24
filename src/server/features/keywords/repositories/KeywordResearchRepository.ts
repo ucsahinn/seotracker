@@ -22,6 +22,7 @@ import {
   SavedKeywordTagsRepository,
   type SavedKeywordTagRecord,
 } from "./SavedKeywordTagsRepository";
+import { t } from "@/shared/i18n";
 
 type SavedKeywordRecord = typeof savedKeywords.$inferSelect;
 type KeywordMetricRecord = typeof keywordMetrics.$inferSelect;
@@ -156,6 +157,7 @@ function escapeLike(value: string) {
  * dotless ı read as i. Rows from before migration 0055 have key == keyword.
  */
 const keywordKeyExpr = sql`coalesce(${savedKeywords.keywordKey}, ${savedKeywords.keyword})`;
+// i18n-ignore: SQL folding the Turkish dotless i, not text
 const matchableKey = sql`replace(replace(${keywordKeyExpr}, char(775), ''), 'ı', 'i')`;
 
 function foldForMatch(term: string) {
@@ -273,7 +275,9 @@ async function listSavedKeywordsByProject(
   if (tagIds.length > MAX_TAG_FILTER) {
     throw new AppError(
       "VALIDATION_ERROR",
-      `En fazla ${MAX_TAG_FILTER} etikete göre filtreleyebilirsiniz.`,
+      t("En fazla {count} etikete göre filtreleyebilirsiniz.", {
+        count: MAX_TAG_FILTER,
+      }),
     );
   }
 

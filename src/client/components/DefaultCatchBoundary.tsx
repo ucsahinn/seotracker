@@ -8,6 +8,7 @@ import {
 } from "@/client/lib/error-messages";
 import { captureClientError } from "@/client/lib/observability";
 import { UnauthenticatedErrorCard } from "@/client/components/UnauthenticatedErrorCard";
+import { t } from "@/shared/i18n";
 
 export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
   const router = useRouter();
@@ -19,7 +20,7 @@ export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
 
   const message = getStandardErrorMessage(
     error,
-    "Bir şeyler ters gitti. Lütfen yeniden deneyin.",
+    t("Bir şeyler ters gitti. Lütfen yeniden deneyin."),
   );
   const errorCode = getErrorCode(error);
 
@@ -60,11 +61,11 @@ export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
           }}
           className="btn btn-primary btn-sm"
         >
-          Yeniden dene
+          {t("Yeniden dene")}
         </button>
         {isRoot ? (
           <Link to="/" className="btn btn-sm">
-            Ana sayfa
+            {t("Ana sayfa")}
           </Link>
         ) : (
           <Link
@@ -75,7 +76,7 @@ export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
               window.history.back();
             }}
           >
-            Geri dön
+            {t("Geri dön")}
           </Link>
         )}
       </div>

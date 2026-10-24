@@ -3,12 +3,13 @@ import { ExternalLink } from "lucide-react";
 import { useMemo, useState } from "react";
 import { coverageStateLabel } from "@/shared/gsc-coverage-states";
 import { TablePagination } from "@/client/components/table/TablePagination";
-import { formatCount, formatDateTime } from "@/client/lib/format";
+import { formatDateTime } from "@/client/lib/format";
 import { UrlCell } from "@/client/components/table/UrlCell";
 import { getSafeExternalUrl } from "@/client/components/table/url";
 import { severityChip } from "@/client/features/audit/shared";
 import { coverageReasons } from "@/client/features/audit/results/coverageReasons";
 import type { getAuditIndexCoverage } from "@/serverFunctions/indexCoverage";
+import { t } from "@/shared/i18n";
 
 const COVERAGE_PAGE_SIZES = [25, 50, 100] as const;
 
@@ -50,14 +51,14 @@ export function CoverageTable({
       {filtered ? (
         <div className="flex items-center justify-between gap-2 rounded-box border border-base-300 bg-base-200/40 px-3 py-2 text-sm">
           <span className="text-muted">
-            {formatCount(rows.length)} sayfa gösteriliyor
+            {t("{count} sayfa gösteriliyor", { count: rows.length })}
           </span>
           <button
             type="button"
             className="btn btn-ghost btn-xs"
             onClick={onClearFilter}
           >
-            Tümünü göster
+            {t("Tümünü göster")}
           </button>
         </div>
       ) : null}
@@ -68,11 +69,11 @@ export function CoverageTable({
         <table className="table table-sm">
           <thead>
             <tr>
-              <th>Sayfa</th>
-              <th>Durum</th>
-              <th>Sebep</th>
-              <th>Google&apos;ın seçtiği adres</th>
-              <th>Google&apos;ın son ziyareti</th>
+              <th>{t("Sayfa")}</th>
+              <th>{t("Durum")}</th>
+              <th>{t("Sebep")}</th>
+              <th>{t("Google'ın seçtiği adres")}</th>
+              <th>{t("Google'ın son ziyareti")}</th>
               <th />
             </tr>
           </thead>
@@ -132,7 +133,9 @@ export function CoverageTable({
                             className="truncate text-xs text-muted"
                             title={row.userCanonical}
                           >
-                            Sizin seçtiğiniz: {pathOf(row.userCanonical)}
+                            {t("Sizin seçtiğiniz: {url}", {
+                              url: pathOf(row.userCanonical),
+                            })}
                           </p>
                         ) : null}
                       </div>
@@ -163,8 +166,10 @@ export function CoverageTable({
                          * 14px icon up to a 24px target.
                          */
                         className="link link-hover inline-flex size-6 items-center justify-center text-xs"
-                        aria-label={`${row.url} adresini Search Console'da aç`}
-                        title="Search Console'da aç"
+                        aria-label={t("{url} adresini Search Console'da aç", {
+                          url: row.url,
+                        })}
+                        title={t("Search Console'da aç")}
                       >
                         <ExternalLink aria-hidden className="size-3.5" />
                       </a>
@@ -210,19 +215,22 @@ function VerdictBadge({
     return (
       <span
         className={`badge badge-sm ${severityChip.error}`}
-        title={`Google bu adres için yanıt vermedi (${error}). Google'da durumunu kontrol et düğmesiyle yeniden sorabilirsiniz.`}
+        title={t(
+          "Google bu adres için yanıt vermedi ({error}). Google'da durumunu kontrol et düğmesiyle yeniden sorabilirsiniz.",
+          { error },
+        )}
       >
-        Sorulamadı
+        {t("Sorulamadı")}
       </span>
     );
   }
   if (!checkedAt) {
-    return <span className="text-xs text-muted">Kontrol edilmedi</span>;
+    return <span className="text-xs text-muted">{t("Kontrol edilmedi")}</span>;
   }
   if (verdict === "PASS") {
     return (
       <span className="badge badge-sm border-success/30 bg-success/10 text-[var(--ink-success)]">
-        Google&apos;da
+        {t("Google'da")}
       </span>
     );
   }
@@ -236,7 +244,7 @@ function VerdictBadge({
   if (!verdict || verdict === "VERDICT_UNSPECIFIED") {
     return (
       <span className="text-xs text-muted" title={coverageState ?? undefined}>
-        Yanıt alınamadı
+        {t("Yanıt alınamadı")}
       </span>
     );
   }
@@ -249,7 +257,7 @@ function VerdictBadge({
       // still searchable when someone goes looking in Search Console.
       title={coverageState ?? undefined}
     >
-      {coverageStateLabel(coverageState) ?? "Dizinde değil"}
+      {coverageStateLabel(coverageState) ?? t("Dizinde değil")}
     </span>
   );
 }

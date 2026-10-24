@@ -1,3 +1,4 @@
+import { t } from "@/shared/i18n";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
@@ -13,10 +14,10 @@ export function useSaveTrackedKeyword(projectId: string) {
       void queryClient.invalidateQueries({
         queryKey: ["savedKeywords", projectId],
       });
-      toast.success("Kelime kayıtlı");
+      toast.success(t("Kelime kayıtlı"));
     },
     onError: (error) => {
-      toast.error(getStandardErrorMessage(error, "Kelime kaydedilemedi"));
+      toast.error(getStandardErrorMessage(error, t("Kelime kaydedilemedi")));
     },
   });
 }

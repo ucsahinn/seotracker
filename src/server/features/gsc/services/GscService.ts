@@ -28,6 +28,7 @@ import type {
   GscSearchAnalyticsRequest,
   GscSearchAnalyticsRow,
 } from "@/server/lib/gscClient";
+import { t } from "@/shared/i18n";
 
 const SITE_UNVERIFIED_PERMISSION = "siteUnverifiedUser";
 
@@ -201,7 +202,7 @@ async function setSite(input: {
     if (!grants.some((grant) => grant.accountId === input.accountId)) {
       throw new AppError(
         "NOT_FOUND",
-        "Bu Google hesabı seowatcher hesabınıza bağlı değil.",
+        t("Bu Google hesabı seowatcher hesabınıza bağlı değil."),
       );
     }
   }
@@ -215,13 +216,13 @@ async function setSite(input: {
   if (!match) {
     throw new AppError(
       "NOT_FOUND",
-      "Bu Search Console mülkü bağlı Google hesabınızda bulunmuyor.",
+      t("Bu Search Console mülkü bağlı Google hesabınızda bulunmuyor."),
     );
   }
   if (match.permissionLevel === SITE_UNVERIFIED_PERMISSION) {
     throw new AppError(
       "FORBIDDEN",
-      "Bu Search Console mülkü için doğrulanmış erişiminiz yok.",
+      t("Bu Search Console mülkü için doğrulanmış erişiminiz yok."),
     );
   }
   let connectedAccountEmail: string | null = null;
@@ -288,6 +289,7 @@ type GscInspectUrlsResult = {
    * same chunk; the caller persists those and then rethrows this.
    */
   tokenError?: GscTokenError;
+  reservationError?: Error;
 };
 
 /** Inspect 1–N URLs against a project's connected property. Resolves the
@@ -310,6 +312,7 @@ async function inspectUrls(input: {
   projectId: string;
   urls: string[];
   languageCode?: string;
+  reserve: (siteUrl: string) => Promise<boolean>;
 }): Promise<GscInspectUrlsResult> {
   const connection = await GscConnectionRepository.getByProjectId(
     input.projectId,
@@ -324,16 +327,30 @@ async function inspectUrls(input: {
   const results: GscUrlInspection[] = [];
   for (let i = 0; i < input.urls.length; i += INSPECT_CONCURRENCY) {
     const chunk = input.urls.slice(i, i + INSPECT_CONCURRENCY);
+    let reservationError: Error | undefined;
     const settled = await Promise.all(
-      chunk.map((url) =>
-        client.inspectUrl(connection.siteUrl, url, input.languageCode).then(
-          (result) => ({ url, result, failure: null }),
-          (failure: unknown) => ({ url, result: null, failure }),
-        ),
-      ),
+      chunk.map(async (url) => {
+        try {
+          if (!(await input.reserve(connection.siteUrl))) return null;
+        } catch (error) {
+          reservationError ??=
+            error instanceof Error
+              ? error
+              : new Error("Quota reservation failed");
+          return null;
+        }
+        return client
+          .inspectUrl(connection.siteUrl, url, input.languageCode)
+          .then(
+            (result) => ({ url, result, failure: null }),
+            (failure: unknown) => ({ url, result: null, failure }),
+          );
+      }),
     );
     let tokenError: GscTokenError | undefined;
-    for (const { url, result, failure } of settled) {
+    for (const entry of settled) {
+      if (!entry) continue;
+      const { url, result, failure } = entry;
       if (failure === null) {
         results.push({ url, result });
       } else if (failure instanceof GscTokenError) {
@@ -347,12 +364,13 @@ async function inspectUrls(input: {
         });
       }
     }
-    if (tokenError) {
+    if (tokenError || reservationError) {
       return {
         siteUrl: connection.siteUrl,
         connectedBy: connection.connectedAccountEmail,
         results,
         tokenError,
+        reservationError,
       };
     }
   }

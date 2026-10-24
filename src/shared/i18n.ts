@@ -21,24 +21,36 @@ export type Catalog = Record<string, CatalogValue>;
 export const LOCALE_COOKIE = "seowatcher-lang";
 
 /*
- * One current locale for the whole module, not one per request.
+ * The current locale.
  *
- * On the server `src/server.ts` sets it at the start of each request from the
- * cookie or Accept-Language (and to "tr" for /mcp). That is only sound because
- * this is a single-user local app: two concurrent requests in different
- * languages would share it. In the browser it starts from the `<html lang>`
- * the server rendered, before anything hydrates, so the first client render
- * says exactly what the server said.
+ * On the server each request runs inside a request-scoped store
+ * (`src/server/localeScope.ts`, AsyncLocalStorage) that `src/server.ts` fills
+ * from the cookie or Accept-Language, and with "tr" for /mcp. The store is
+ * reached through a global symbol so this module, which the browser also
+ * loads, never imports `node:async_hooks`. Outside a request (scheduled
+ * handler, workflows, the audit worker) there is no store and the module
+ * value below applies, which on the server stays "tr".
+ *
+ * In the browser there is no store: the module value starts from the
+ * `<html lang>` the server rendered, before anything hydrates, so the first
+ * client render says exactly what the server said.
  */
 let current: Locale =
   typeof document !== "undefined" && document.documentElement.lang === "en"
     ? "en"
     : "tr";
 
+const LOCALE_SCOPE = Symbol.for("seowatcher.i18n.localeScope");
+type LocaleScope = { getStore(): Locale | undefined };
+
 export function getLocale(): Locale {
-  return current;
+  const scope = (globalThis as Record<symbol, LocaleScope | undefined>)[
+    LOCALE_SCOPE
+  ];
+  return scope?.getStore() ?? current;
 }
 
+/** Sets the fallback used where no request scope is active (the browser, tests). */
 export function setLocale(locale: Locale): void {
   current = locale;
 }
@@ -62,8 +74,9 @@ const countFormatters: Partial<Record<Locale, Intl.NumberFormat>> = {};
  */
 function display(name: string, value: string | number): string {
   if (name !== "count" || typeof value !== "number") return String(value);
-  const formatter = (countFormatters[current] ??= new Intl.NumberFormat(
-    current === "en" ? "en-US" : "tr-TR",
+  const locale = getLocale();
+  const formatter = (countFormatters[locale] ??= new Intl.NumberFormat(
+    locale === "en" ? "en-US" : "tr-TR",
   ));
   return formatter.format(value);
 }
@@ -80,7 +93,7 @@ export function t(
   vars?: Record<string, string | number>,
 ): string {
   let text = source;
-  if (current === "en") {
+  if (getLocale() === "en") {
     const entry = en[source];
     if (typeof entry === "string") {
       text = entry;

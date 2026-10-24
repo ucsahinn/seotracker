@@ -5,18 +5,18 @@ kind: nasil-yapilir
 updated: 2026-10-22
 ---
 
-This guide connects your AI assistant to the app and runs its first command. Once connected, you can say "audit the site and write a report". The assistant reads Search Console data, runs the audit and saves the report in the **Raporlar** (Reports) screen. This connection is called an assistant connection (MCP); it lets the assistant call the app's tools (for example list_projects). Connecting is optional, and the app is complete without it.
+This guide connects your AI assistant to the app and runs its first command. Once connected, you can say "audit the site and write a report". The assistant reads Search Console data, runs the audit and saves the report in the **Reports** screen. This connection is called an assistant connection (MCP); it lets the assistant call the app's tools (for example list_projects). Connecting is optional, and the app is complete without it.
 
 ## What you need
 
 - A running app and a project connected to Search Console.
 - One of Claude Code, Codex, Cursor, VS Code Copilot or Gemini CLI. The app gives ready-made setup text for the first three.
-- The **Ajan kurulumu** (Agent setup) screen in the app. It is in the left menu, under **Ajan** (Agent).
+- The **Agent setup** screen in the app. It is in the left menu, under **Agent**.
 
 ## Steps
 
-1. Open the **Ajan kurulumu** (Agent setup) screen. The badge at the top says **Henüz bağlanmadı** (Not connected yet) or **Bağlandı** (Connected). If connected, it also shows text like "Claude Code, last call 2 min ago". Below it you see the connection address and a copy button: `http://127.0.0.1:3001/mcp` (`localhost` on Docker).
-2. Find the password. The app protects the connection against unauthorized calls with a password, which is not shown on screen. In the Windows package, the password is in the `mcp-token` file in the data folder. From the taskbar menu, choose **Veri klasörünü aç** (Open data folder). On Docker, run this command: `docker compose exec -T seotracker cat /app/.wrangler/mcp-token` (in Git Bash, put `MSYS_NO_PATHCONV=1` in front).
+1. Open the **Agent setup** screen. The badge at the top says **Not connected yet** or **Connected**. If connected, it also shows text like "Claude Code, last call 2 min ago". Below it you see the connection address and a copy button: `http://127.0.0.1:3001/mcp` (`localhost` on Docker).
+2. Find the password. The app protects the connection against unauthorized calls with a password, which is not shown on screen. In the Windows package, the password is in the `mcp-token` file in the data folder. From the taskbar menu, choose **Open data folder**. On Docker, run this command: `docker compose exec -T seotracker cat /app/.wrangler/mcp-token` (in Git Bash, put `MSYS_NO_PATHCONV=1` in front).
 3. Follow the section for your assistant.
 
 ### Claude Code
@@ -63,11 +63,11 @@ This is the easier route. First, copy the text:
 1. Press the **Ajan kurulum istemini kopyala** (Copy agent setup prompt) button on the screen. There is a separate button for Codex.
 2. Paste the text into your assistant. The assistant sets up the connection, tests it with "whoami" and "list_projects", and installs the templates.
 
-The **Kurulum istemi (sıfırdan kurulum)** (Setup prompt, full setup) has the assistant do the whole setup for you, from getting the app running to the Google connection. It knows both the Windows package and the Docker setup.
+The setup prompt (the full setup) has the assistant do the whole setup for you, from getting the app running to the Google connection. It knows both the Windows package and the Docker setup.
 
 ### Installing the ready-made task templates
 
-The **Beceriler** (Skills) tab describes the six ready-made task templates. Tell the assistant "install the seotracker skills". The setup text knows where to copy them. To update, press the **Güncelleme istemini kopyala** (Copy update prompt) button.
+The **Skills** tab describes the six ready-made task templates. Tell the assistant "install the seotracker skills". The setup text knows where to copy them. To update, press the **Güncelleme istemini kopyala** (Copy update prompt) button.
 
 ## Tools
 
@@ -109,7 +109,7 @@ There are 33 tools in total. The "Writes" column shows the tools that change dat
 | `list_report_templates`                      | Reads the report templates.                                                                        |        |                                   |
 | `save_report_template`                       | Saves a report template.                                                                           | Yes    |                                   |
 
-The Analytics tools use Google's Analytics report allowance (200,000 units a day on a standard property). You can follow this allowance in the app, in the Sınırlar (Limits) section of the **Ayarlar** (Settings) screen.
+The Analytics tools use Google's Analytics report allowance (200,000 units a day on a standard property). You can follow this allowance in the app, in the **Limits** section of the **Settings** screen.
 
 ## Ready-made task templates (skills)
 
@@ -120,12 +120,12 @@ The Analytics tools use Google's Analytics report allowance (200,000 units a day
 | `seo-audit`         | When you say "audit the site". It runs the audit, combines it with Search Console and picks "the one thing to do this week".          | A one-page audit report                             |
 | `seo-triage`        | When visits drop. It checks whether the drop is real, and where and when it happened.                                                 | A drop review report                                |
 | `seo-check-in`      | Once a month. It compares this period with the previous one.                                                                          | A monthly check-in report; one builds up each month |
-| `seo-report`        | After the other templates finish. It writes and saves a single-file HTML report.                                                      | A report in the **Raporlar** (Reports) screen       |
+| `seo-report`        | After the other templates finish. It writes and saves a single-file HTML report.                                                      | A report in the **Reports** screen                  |
 
 ## Check
 
 - Tell the assistant "call the whoami tool". It should tell you the installation ID.
-- The badge on the **Ajan kurulumu** (Agent setup) screen should say **Bağlandı** (Connected), and the time of the last call should show.
+- The badge on the **Agent setup** screen should say **Connected**, and the time of the last call should show.
 - "list_projects" should list your projects.
 
 ## Frequently asked questions

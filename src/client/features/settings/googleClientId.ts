@@ -1,3 +1,5 @@
+import { t } from "@/shared/i18n";
+
 export const CLIENT_ID_SUFFIX = ".apps.googleusercontent.com";
 
 /**
@@ -10,9 +12,12 @@ export const CLIENT_ID_SUFFIX = ".apps.googleusercontent.com";
 export function clientIdProblem(value: string): string | null {
   const id = value.trim();
   if (id === "") return null;
-  if (/\s/.test(id)) return "Kimlikte boşluk olamaz.";
+  if (/\s/.test(id)) return t("Kimlikte boşluk olamaz.");
   if (!id.endsWith(CLIENT_ID_SUFFIX)) {
-    return `Kimlik ${CLIENT_ID_SUFFIX} ile bitmeli. Gizli anahtarı değil, OAuth client ID'yi yapıştırın.`;
+    return t(
+      "Kimlik {suffix} ile bitmeli. Gizli anahtarı değil, OAuth client ID'yi yapıştırın.",
+      { suffix: CLIENT_ID_SUFFIX },
+    );
   }
   return null;
 }

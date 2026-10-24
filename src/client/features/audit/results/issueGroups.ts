@@ -6,9 +6,11 @@ import {
 } from "@/shared/audit-issues";
 import { sort } from "remeda";
 import type { AuditResultsData } from "@/client/features/audit/results/types";
+import { t } from "@/shared/i18n";
 
 export type AuditIssueRow = AuditResultsData["issues"][number];
 
+/** Turkish source labels; call t() where they render. */
 export const SEVERITY_LABEL: Record<IssueSeverity, string> = {
   critical: "Kritik",
   warning: "Uyarı",
@@ -45,9 +47,9 @@ export function groupIssues(issues: AuditIssueRow[]): IssueGroup[] {
       group = {
         issueType: issue.issueType,
         severity: resolveIssueSeverity(issue),
-        title: descriptor?.title ?? issue.issueType,
-        explanation: descriptor?.explanation ?? "",
-        howToFix: descriptor?.howToFix ?? "",
+        title: descriptor ? t(descriptor.title) : issue.issueType,
+        explanation: descriptor ? t(descriptor.explanation) : "",
+        howToFix: descriptor ? t(descriptor.howToFix) : "",
         issues: [],
         pageCount: 0,
         pageUrls: [],

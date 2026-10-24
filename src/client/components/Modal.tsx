@@ -66,6 +66,12 @@ export function Modal({
   }, []);
 
   const trapTab = (event: ReactKeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Escape" && onClose) {
+      event.preventDefault();
+      event.stopPropagation();
+      onClose();
+      return;
+    }
     if (event.key !== "Tab") return;
     const items = [
       ...event.currentTarget.querySelectorAll<HTMLElement>(FOCUSABLE),

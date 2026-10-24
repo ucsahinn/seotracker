@@ -3,6 +3,7 @@ import {
   MIN_BETTER_AUTH_SECRET_LENGTH,
   validateTeamDomain,
 } from "@/shared/selfhost-checks";
+import { t } from "@/shared/i18n";
 
 // Startup preflight for self-host containers: validate the environment BEFORE
 // the multi-minute build/boot so misconfiguration fails in seconds with the
@@ -51,8 +52,9 @@ function checkAuthMode(env: EnvRecord, items: PreflightItem[]): void {
       key: "auth",
       name: "AUTH_MODE",
       level: "ok",
-      message:
+      message: t(
         "Giriş yok: uygulama yalnızca bu bilgisayarda kullanılır. İnternete açacaksanız önüne kendi girişinizi koyun.",
+      ),
     });
     return;
   }

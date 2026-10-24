@@ -10,7 +10,7 @@ Bu sayfayı bitirince uygulama bilgisayarınızda kurulu ve tarayıcıda açık 
 ## Gerekenler
 
 - Windows 10 ya da 11 (64 bit).
-- Yaklaşık 350 MB boş yer. Kurulum dosyası 81 MB, kurulu hali 290 MB.
+- Yaklaşık 400 MB boş yer. Kurulum dosyası 86 MB, kurulu hali 313 MB.
 - Edge, Chrome ya da Firefox gibi bir tarayıcı.
 - Docker, Node ya da terminal (komut penceresi) gerekmez.
 - Microsoft'un Visual C++ paketi. Bilgisayarda yoksa kurulum onu kendisi kurar ve bir kez yönetici izni sorar. Uygulama `%LOCALAPPDATA%\Programs\seowatcher` klasörüne kurulur.
@@ -129,7 +129,7 @@ Numara değişince Google'daki iki yönlendirme adresini de yeni numarayla günc
 
 ## Kontrol
 
-- Fareyi görev çubuğu simgesinin üzerine getirince "seowatcher X.Y.Z: Çalışıyor: http://127.0.0.1:3001/" yazmalı. Baştaki sürüm numarası kurduğunuz sürümdür. 2.3.7 örnektir.
+- Fareyi görev çubuğu simgesinin üzerine getirince "seowatcher X.Y.Z: Çalışıyor: http://127.0.0.1:3001/" yazmalı. Baştaki sürüm numarası kurduğunuz sürümdür. 0.5.0 Alpha örnektir.
 - Tarayıcıda `http://127.0.0.1:3001/api/health` adresi "status":"ok" ile başlayan bir yazı göstermeli.
 - **Yardım** ekranındaki "Kurulumunuzun durumu" kartı "Her şey yolunda." demeli. Google'a bağlanmadan önce "Google girişi" satırı uyarı gösterir. Bu normaldir.
 

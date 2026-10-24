@@ -1,4 +1,5 @@
 import { normalizeExportValue, type CsvValue, type ExportValue } from "./csv";
+import { t } from "@/shared/i18n";
 
 export const GOOGLE_SHEETS_NEW_URL = "https://sheets.new";
 
@@ -9,7 +10,7 @@ export async function copyTableToClipboard(
   if (typeof navigator === "undefined" || !navigator.clipboard?.write) {
     // Surfaced to the operator verbatim: getStandardErrorMessage returns
     // error.message, so this string is UI copy, not a developer note.
-    throw new Error("Bu tarayıcıda pano erişimi yok.");
+    throw new Error(t("Bu tarayıcıda pano erişimi yok."));
   }
 
   const safeRows = rows.map((row) =>

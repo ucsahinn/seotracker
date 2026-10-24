@@ -120,7 +120,9 @@ export function classifyFailure(
   }
   if (status === 429 && !hasApiKey) {
     return new PageSpeedError(
+      // i18n-ignore: stored audit data written by the background workflow; the UI words it by marker
       `${LIGHTHOUSE_NO_KEY_MARKER}: PageSpeed anahtarı girilmediği için ` +
+        // i18n-ignore: as above
         `Google'ın ortak ücretsiz kotası aşıldı (${message}). Ücretsiz bir ` +
         `anahtar Ayarlar'dan girilir; bkz. docs/PAGESPEED_API_KEY.md.`,
       { status, retryable: true, rateLimited: true },

@@ -1,3 +1,4 @@
+import { t } from "@/shared/i18n";
 import { copyText } from "@/client/lib/copyText";
 import { useNavigate } from "@tanstack/react-router";
 import type { UseQueryResult } from "@tanstack/react-query";
@@ -55,21 +56,23 @@ export function TrackedQueriesTable({
           <th aria-sort={sorting.ariaSort("query")}>
             <SortableHeader
               column={sorting.column("query", false)}
-              label="Sorgu"
+              label={t("Sorgu")}
             />
           </th>
           <th className="text-right" aria-sort={sorting.ariaSort("position")}>
             <SortableHeader
               column={sorting.column("position", false)}
-              label="Ortalama sıra"
+              label={t("Ortalama sıra")}
               align="right"
             />
           </th>
           <th className="text-right" aria-sort={sorting.ariaSort("delta")}>
             <SortableHeader
               column={sorting.column("delta")}
-              label="Değişim"
-              helpText="Bir önceki, aynı uzunluktaki dönemle karşılaştırılır. Sıra numarası küçüldüyse (12'den 8'e gibi) kelime yükselmiştir ve yeşil “Yükseldi” yazar. Büyüdüyse kırmızı “Düştü” yazar."
+              label={t("Değişim")}
+              helpText={t(
+                "Bir önceki, aynı uzunluktaki dönemle karşılaştırılır. Sıra numarası küçüldüyse (12'den 8'e gibi) kelime yükselmiştir ve yeşil “Yükseldi” yazar. Büyüdüyse kırmızı “Düştü” yazar.",
+              )}
               align="right"
             />
           </th>
@@ -79,21 +82,21 @@ export function TrackedQueriesTable({
           >
             <SortableHeader
               column={sorting.column("impressions")}
-              label="Gösterim"
+              label={t("Gösterim")}
               align="right"
             />
           </th>
           <th className="text-right" aria-sort={sorting.ariaSort("clicks")}>
             <SortableHeader
               column={sorting.column("clicks")}
-              label="Tıklama"
+              label={t("Tıklama")}
               align="right"
             />
           </th>
           <th className="text-right" aria-sort={sorting.ariaSort("days")}>
             <SortableHeader
               column={sorting.column("days")}
-              label="Gün"
+              label={t("Gün")}
               align="right"
             />
           </th>
@@ -145,7 +148,7 @@ export function TrackedQueriesTable({
                 compact
                 error={tracked.error}
                 onRetry={() => void tracked.refetch()}
-                title="Sorgular yüklenemedi"
+                title={t("Sorgular yüklenemedi")}
               />
             </td>
           </tr>
@@ -196,21 +199,21 @@ export function TrackedQueriesTable({
              */}
             <td className="w-10 text-right">
               <RowActions
-                label={`${row.query} için işlemler`}
+                label={t("{value} için işlemler", { value: row.query })}
                 actions={[
                   {
-                    label: "Kelimeyi kopyala",
+                    label: t("Kelimeyi kopyala"),
                     icon: Copy,
                     onSelect: () =>
-                      void copyText(row.query, "Kelime kopyalandı"),
+                      void copyText(row.query, t("Kelime kopyalandı")),
                   },
                   {
-                    label: "Kayıtlı kelimelere ekle",
+                    label: t("Kayıtlı kelimelere ekle"),
                     icon: Bookmark,
                     onSelect: () => saveKeyword.mutate(row.query),
                   },
                   {
-                    label: "Arama performansında ara",
+                    label: t("Arama performansında ara"),
                     icon: Search,
                     onSelect: () =>
                       void navigate({

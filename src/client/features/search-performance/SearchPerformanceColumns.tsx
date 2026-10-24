@@ -1,3 +1,4 @@
+import { t } from "@/shared/i18n";
 import { copyText } from "@/client/lib/copyText";
 import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
 import type { MutableRefObject } from "react";
@@ -63,28 +64,32 @@ export function buildDimensionColumns(
     }),
     dimensionHelper.accessor("clicks", {
       header: ({ column }) => (
-        <SortableHeader column={column} label="Tıklama" align="right" />
+        <SortableHeader column={column} label={t("Tıklama")} align="right" />
       ),
       cell: ({ getValue }) => formatCount(getValue()),
       meta: rightAligned,
     }),
     dimensionHelper.accessor("impressions", {
       header: ({ column }) => (
-        <SortableHeader column={column} label="Gösterim" align="right" />
+        <SortableHeader column={column} label={t("Gösterim")} align="right" />
       ),
       cell: ({ getValue }) => formatCount(getValue()),
       meta: rightAligned,
     }),
     dimensionHelper.accessor("ctr", {
       header: ({ column }) => (
-        <SortableHeader column={column} label="Tıklama oranı" align="right" />
+        <SortableHeader
+          column={column}
+          label={t("Tıklama oranı")}
+          align="right"
+        />
       ),
       cell: ({ getValue }) => formatPercent(getValue()),
       meta: rightAligned,
     }),
     dimensionHelper.accessor("position", {
       header: ({ column }) => (
-        <SortableHeader column={column} label="Sıra" align="right" />
+        <SortableHeader column={column} label={t("Sıra")} align="right" />
       ),
       cell: ({ getValue }) => formatDecimal(getValue()),
       meta: rightAligned,
@@ -104,12 +109,12 @@ export function buildDimensionColumns(
         const isUrl = /^https?:\/\//.test(value);
         return (
           <RowActions
-            label={`${value} için işlemler`}
+            label={t("{value} için işlemler", { value })}
             actions={[
               ...(isUrl
                 ? [
                     {
-                      label: "Sayfayı yeni sekmede aç",
+                      label: t("Sayfayı yeni sekmede aç"),
                       icon: ExternalLink,
                       onSelect: () => {
                         const safe = getSafeExternalUrl(value);
@@ -119,18 +124,18 @@ export function buildDimensionColumns(
                   ]
                 : []),
               {
-                label: isUrl ? "Adresi kopyala" : "Kelimeyi kopyala",
+                label: isUrl ? t("Adresi kopyala") : t("Kelimeyi kopyala"),
                 icon: Copy,
                 onSelect: () =>
                   void copyText(
                     value,
-                    isUrl ? "Adres kopyalandı" : "Kelime kopyalandı",
+                    isUrl ? t("Adres kopyalandı") : t("Kelime kopyalandı"),
                   ),
               },
               ...(!isUrl && onSaveKeyword
                 ? [
                     {
-                      label: "Kelime olarak kaydet",
+                      label: t("Kelime olarak kaydet"),
                       icon: BookmarkPlus,
                       onSelect: () => onSaveKeyword(value),
                     },
@@ -154,7 +159,7 @@ export function buildStrikingColumns(
     makeSelectionColumn<StrikingRow>(anchorRef, (row) => row.original.query),
     strikingHelper.accessor("query", {
       enableSorting: false,
-      header: () => "Sorgu",
+      header: () => t("Sorgu"),
       cell: ({ getValue }) => (
         <span className="block max-w-xs truncate" title={getValue()}>
           {getValue()}
@@ -163,7 +168,7 @@ export function buildStrikingColumns(
     }),
     strikingHelper.accessor("page", {
       enableSorting: false,
-      header: () => "Sayfa",
+      header: () => t("Sayfa"),
       // GSC page keys are canonical http(s) URLs of the verified property;
       // the scheme check is defense-in-depth before rendering an href.
       cell: ({ getValue }) =>
@@ -185,21 +190,21 @@ export function buildStrikingColumns(
     }),
     strikingHelper.accessor("impressions", {
       header: ({ column }) => (
-        <SortableHeader column={column} label="Gösterim" align="right" />
+        <SortableHeader column={column} label={t("Gösterim")} align="right" />
       ),
       cell: ({ getValue }) => formatCount(getValue()),
       meta: rightAligned,
     }),
     strikingHelper.accessor("clicks", {
       header: ({ column }) => (
-        <SortableHeader column={column} label="Tıklama" align="right" />
+        <SortableHeader column={column} label={t("Tıklama")} align="right" />
       ),
       cell: ({ getValue }) => formatCount(getValue()),
       meta: rightAligned,
     }),
     strikingHelper.accessor("position", {
       header: ({ column }) => (
-        <SortableHeader column={column} label="Sıra" align="right" />
+        <SortableHeader column={column} label={t("Sıra")} align="right" />
       ),
       cell: ({ getValue }) => formatDecimal(getValue()),
       meta: rightAligned,

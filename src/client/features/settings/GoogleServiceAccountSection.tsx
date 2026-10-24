@@ -1,3 +1,4 @@
+import { Skeleton } from "@/client/components/Skeleton";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CheckCircle2, ExternalLink } from "lucide-react";
 import * as React from "react";
@@ -9,12 +10,14 @@ import {
   clearGoogleServiceAccount,
   saveGoogleServiceAccount,
 } from "@/serverFunctions/googleServiceAccount";
+import { t } from "@/shared/i18n";
+import { fillParts } from "./fillParts";
 import { SectionHeaderRow } from "./SectionBadge";
 import {
   activeCredentialNote,
   activeGoogleCredential,
   serviceAccountBadge,
-  UNREADABLE,
+  unreadableBadge,
 } from "./sectionStatus";
 import {
   googleOAuthClientStatusOptions,
@@ -67,13 +70,13 @@ export function GoogleServiceAccountSection() {
       setKeyJson("");
       setEditing(false);
       await invalidate();
-      toast.success("Hizmet hesabı kaydedildi");
+      toast.success(t("Hizmet hesabı kaydedildi"));
     },
     onError: (error) =>
       toast.error(
         getStandardErrorMessage(
           error,
-          "Hizmet hesabı kaydedilemedi. Tekrar deneyin.",
+          t("Hizmet hesabı kaydedilemedi. Tekrar deneyin."),
         ),
       ),
   });
@@ -95,7 +98,9 @@ export function GoogleServiceAccountSection() {
        * otherwise.
        */
       toast.success(
-        "Hizmet hesabı bu kurulumdan silindi. Anahtarı gerçekten iptal etmek için Google Cloud'dan da silin.",
+        t(
+          "Hizmet hesabı bu kurulumdan silindi. Anahtarı gerçekten iptal etmek için Google Cloud'dan da silin.",
+        ),
       );
     },
     onError: (error) => {
@@ -103,7 +108,7 @@ export function GoogleServiceAccountSection() {
       toast.error(
         getStandardErrorMessage(
           error,
-          "Hizmet hesabı silinemedi. Tekrar deneyin.",
+          t("Hizmet hesabı silinemedi. Tekrar deneyin."),
         ),
       );
     },
@@ -116,10 +121,12 @@ export function GoogleServiceAccountSection() {
   return (
     <section id="hizmet-hesabi" className="scroll-mt-16 space-y-3">
       <SectionHeaderRow
-        badge={statusQuery.isError ? UNREADABLE : serviceAccountBadge(status)}
+        badge={
+          statusQuery.isError ? unreadableBadge() : serviceAccountBadge(status)
+        }
       >
         <h2 className="text-base font-semibold">
-          Hizmet hesabı (daha kısa yol)
+          {t("Hizmet hesabı (daha kısa yol)")}
         </h2>
       </SectionHeaderRow>
       {stored ? (
@@ -132,33 +139,31 @@ export function GoogleServiceAccountSection() {
       ) : null}
 
       <p className="text-sm text-muted">
-        Yukarıdaki Google erişim anahtarı yerine bunu kullanabilirsiniz. Hizmet
-        hesabında izin ekranı, test kullanıcısı ve yönlendirme adresi adımları
-        yok. Google Cloud&apos;da hesabı açıp JSON dosyasını indirin ve buraya
-        yapıştırın, sonra hesabın e-posta adresini Search Console&apos;da
-        mülkünüze, bir meslektaşınızı eklermiş gibi kullanıcı olarak ekleyin.{" "}
+        {t(
+          "Yukarıdaki Google erişim anahtarı yerine bunu kullanabilirsiniz. Hizmet hesabında izin ekranı, test kullanıcısı ve yönlendirme adresi adımları yok. Google Cloud'da hesabı açıp JSON dosyasını indirin ve buraya yapıştırın, sonra hesabın e-posta adresini Search Console'da mülkünüze, bir meslektaşınızı eklermiş gibi kullanıcı olarak ekleyin.",
+        )}{" "}
         <a
           href={SERVICE_ACCOUNT_URL}
           target="_blank"
           rel="noreferrer noopener"
           className="inline-flex items-center gap-1 font-medium underline underline-offset-2"
         >
-          Hizmet hesapları
+          {t("Hizmet hesapları")}
           <ExternalLink className="size-3" />
         </a>
       </p>
 
-      {statusQuery.isPending ? <div className="skeleton h-10 w-full" /> : null}
+      {statusQuery.isPending ? <Skeleton variant="form" rows={1} /> : null}
 
       {statusQuery.isError ? (
         <p role="alert" className="text-sm text-[var(--ink-error)]">
-          Hizmet hesabı durumu okunamadı.{" "}
+          {t("Hizmet hesabı durumu okunamadı.")}{" "}
           <button
             type="button"
             className="link"
             onClick={() => void statusQuery.refetch()}
           >
-            Tekrar dene
+            {t("Tekrar dene")}
           </button>
         </p>
       ) : null}
@@ -181,7 +186,7 @@ export function GoogleServiceAccountSection() {
                 className="btn btn-sm"
                 onClick={() => setEditing(true)}
               >
-                Değiştir
+                {t("Değiştir")}
               </button>
               <button
                 type="button"
@@ -189,7 +194,7 @@ export function GoogleServiceAccountSection() {
                 disabled={clear.isPending}
                 onClick={() => setConfirmingClear(true)}
               >
-                Sil
+                {t("Sil")}
               </button>
             </div>
           </div>
@@ -198,14 +203,20 @@ export function GoogleServiceAccountSection() {
               the account is a user on the property. */}
           <div className="rounded-box border border-base-300 bg-base-200/40 p-3">
             <p className="text-sm text-muted">
-              Bu adresi Search Console&apos;da{" "}
-              <strong>
-                Ayarlar → Kullanıcılar ve izinler → Kullanıcı ekle
-              </strong>{" "}
-              ile mülkünüze ekleyin (yetki: <strong>Tam</strong>). Eklemeden
-              veri gelmez. Analytics için de GA4 mülkünde{" "}
-              <strong>Yönetici → Erişim yönetimi</strong>&apos;ne aynı adresi
-              Görüntüleyen olarak ekleyin.
+              {fillParts(
+                t(
+                  "Bu adresi Search Console'da {path} ile mülkünüze ekleyin (yetki: {level}). Eklemeden veri gelmez. Analytics için de GA4 mülkünde {gaPath}'ne aynı adresi Görüntüleyen olarak ekleyin.",
+                ),
+                {
+                  path: (
+                    <strong>
+                      {t("Ayarlar → Kullanıcılar ve izinler → Kullanıcı ekle")}
+                    </strong>
+                  ),
+                  level: <strong>{t("Tam")}</strong>,
+                  gaPath: <strong>{t("Yönetici → Erişim yönetimi")}</strong>,
+                },
+              )}
             </p>
             <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
               <code className="min-w-0 truncate font-mono text-sm text-muted">
@@ -213,7 +224,7 @@ export function GoogleServiceAccountSection() {
               </code>
               <CopyButton
                 value={status?.clientEmail ?? ""}
-                successMessage="Hizmet hesabı adresi kopyalandı"
+                successMessage={t("Hizmet hesabı adresi kopyalandı")}
               />
             </div>
           </div>
@@ -226,7 +237,7 @@ export function GoogleServiceAccountSection() {
             className="block text-sm font-medium"
             htmlFor="service-account-key"
           >
-            Hizmet hesabı dosyası (JSON)
+            {t("Hizmet hesabı dosyası (JSON)")}
           </label>
           <textarea
             id="service-account-key"
@@ -260,7 +271,7 @@ export function GoogleServiceAccountSection() {
               disabled={keyJson.trim() === "" || save.isPending}
               onClick={() => save.mutate()}
             >
-              Kaydet
+              {t("Kaydet")}
             </button>
             {stored ? (
               <button
@@ -272,20 +283,24 @@ export function GoogleServiceAccountSection() {
                   setKeyError(null);
                 }}
               >
-                Vazgeç
+                {t("Vazgeç")}
               </button>
             ) : null}
           </div>
           <p className="text-xs text-subtle">
-            Anahtar sunucuda şifrelenir ve bir daha tarayıcıya gönderilmez.
+            {t(
+              "Anahtar sunucuda şifrelenir ve bir daha tarayıcıya gönderilmez.",
+            )}
           </p>
         </div>
       ) : null}
       {confirmingClear ? (
         <ConfirmDeleteModal
-          title="Hizmet hesabı silinsin mi?"
-          detail="JSON anahtarı bu kurulumdan silinir ve Search Console ile Analytics bu hesapla veri çekemez. Anahtarı Google tarafında da iptal etmek için Google Cloud'dan silmeniz gerekir."
-          confirmLabel="Hesabı sil"
+          title={t("Hizmet hesabı silinsin mi?")}
+          detail={t(
+            "JSON anahtarı bu kurulumdan silinir ve Search Console ile Analytics bu hesapla veri çekemez. Anahtarı Google tarafında da iptal etmek için Google Cloud'dan silmeniz gerekir.",
+          )}
+          confirmLabel={t("Hesabı sil")}
           isPending={clear.isPending}
           onClose={() => setConfirmingClear(false)}
           onConfirm={() => clear.mutate()}

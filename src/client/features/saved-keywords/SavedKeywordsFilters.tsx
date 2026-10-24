@@ -4,6 +4,7 @@ import { SavedKeywordsTagFilter } from "./SavedKeywordsTagFilter";
 import type { TagColorKey } from "@/shared/tag-colors";
 import type { SavedKeywordTagSummary } from "@/types/keywords";
 import type { SavedKeywordsFilterForm } from "./useSavedKeywordsFilters";
+import { t } from "@/shared/i18n";
 
 export function SavedKeywordsFilters({
   filtersForm,
@@ -43,10 +44,10 @@ export function SavedKeywordsFilters({
           type="button"
           className={`btn btn-ghost btn-sm gap-1.5 ${showFilters ? "btn-active" : ""}`}
           onClick={onToggleFilters}
-          title="Tablo filtrelerini aç/kapat"
+          title={t("Tablo filtrelerini aç/kapat")}
         >
           <SlidersHorizontal className="size-3.5" />
-          Filtreler
+          {t("Filtreler")}
           {activeFilterCount > 0 ? (
             <span className="badge badge-xs badge-primary border-0 text-primary-content">
               {activeFilterCount}

@@ -1,5 +1,6 @@
 import { sort } from "remeda";
 import { formatCount, formatDecimal } from "@/shared/format";
+import { t } from "@/shared/i18n";
 import {
   barChart,
   chartSummary,
@@ -12,7 +13,9 @@ import {
   capList,
   escapeHtml,
   moreLine,
+  pagesText,
   percent,
+  percentText,
   truncate,
   truncateUrl,
 } from "./reportFormat";
@@ -21,7 +24,9 @@ import { lighthouseBand } from "@/shared/lighthouse";
 import { describeLighthouse } from "./reportModel";
 import type { AuditReportInput, ReportLighthouse } from "./reportTypes";
 
+/* Turkish source text, shown through t(). */
 const BAND_LABEL = { good: "İyi", fair: "Orta", poor: "Zayıf" };
+const BAND_WORD = { good: "iyi", fair: "orta", poor: "zayıf" };
 const BAND_COLOR = {
   good: COLORS.good,
   fair: COLORS.warning,
@@ -43,12 +48,15 @@ const THRESHOLDS: Record<Metric, { good: number; poor: number }> = {
 
 function formatMetric(metric: Metric, value: number | null | undefined) {
   if (value === null || value === undefined) return "--";
-  const band =
-    value <= THRESHOLDS[metric].good
-      ? "iyi"
-      : value <= THRESHOLDS[metric].poor
-        ? "orta"
-        : "zayıf";
+  const band = t(
+    BAND_WORD[
+      value <= THRESHOLDS[metric].good
+        ? "good"
+        : value <= THRESHOLDS[metric].poor
+          ? "fair"
+          : "poor"
+    ],
+  );
   const text =
     metric === "cls" ? formatDecimal(value, 2) : `${formatCount(value)} ms`;
   return `${text} (${band})`;
@@ -56,7 +64,7 @@ function formatMetric(metric: Metric, value: number | null | undefined) {
 
 function scoreCell(score: number | null | undefined): string {
   if (score === null || score === undefined) return "--";
-  return `${formatCount(score)} (${BAND_LABEL[lighthouseBand(score)]})`;
+  return `${formatCount(score)} (${t(BAND_LABEL[lighthouseBand(score)])})`;
 }
 
 function average(values: Array<number | null | undefined>): number | null {
@@ -75,9 +83,9 @@ function worstList(
     (a, b) => (b[metric] ?? 0) - (a[metric] ?? 0),
   ).slice(0, 5);
   if (worst.length === 0) {
-    return `<div><h4>${label}</h4><p class="note">Bu metrik ölçülmedi.</p></div>`;
+    return `<div><h4>${label}</h4><p class="note">${t("Bu metrik ölçülmedi.")}</p></div>`;
   }
-  return `<div><h4>${label}: en kötü 5</h4><table class="rows"><tbody>${worst
+  return `<div><h4>${t("{metric}: en kötü 5", { metric: label })}</h4><table class="rows"><tbody>${worst
     .map(
       (r) =>
         `<tr><td class="url">${escapeHtml(truncateUrl(r.url, 70))}</td><td class="num">${escapeHtml(formatMetric(metric, r[metric]))}</td></tr>`,
@@ -85,6 +93,7 @@ function worstList(
     .join("")}</tbody></table></div>`;
 }
 
+/* Turkish source text, shown through t(). */
 const VITAL_INFO: Array<{ metric: Metric; name: string; plain: string }> = [
   {
     metric: "lcpMs",
@@ -114,25 +123,27 @@ function vitalsChart(rows: Array<ReportLighthouse>): string {
       return typeof v === "number" ? [v] : [];
     });
     if (values.length === 0) return [];
-    const t = THRESHOLDS[metric];
+    const limit = THRESHOLDS[metric];
     return [
       {
+        // The abbreviation before the gloss: "LCP (en büyük içerik)" -> "LCP".
         label: name.split(" ")[0],
         parts: [
           {
-            value: values.filter((v) => v <= t.good).length,
+            value: values.filter((v) => v <= limit.good).length,
             color: COLORS.good,
-            tag: "İ",
+            tag: t("İ"),
           },
           {
-            value: values.filter((v) => v > t.good && v <= t.poor).length,
+            value: values.filter((v) => v > limit.good && v <= limit.poor)
+              .length,
             color: COLORS.warning,
-            tag: "O",
+            tag: t("O"),
           },
           {
-            value: values.filter((v) => v > t.poor).length,
+            value: values.filter((v) => v > limit.poor).length,
             color: COLORS.critical,
-            tag: "Z",
+            tag: t("Z"),
           },
         ],
       },
@@ -142,16 +153,16 @@ function vitalsChart(rows: Array<ReportLighthouse>): string {
   const caption = `${bars
     .map(
       (b) =>
-        `${b.label}: ${b.parts.map((p, i) => `${formatCount(p.value)} ${["iyi", "orta", "zayıf"][i]}`).join(", ")}`,
+        `${b.label}: ${b.parts.map((p, i) => `${formatCount(p.value)} ${t([BAND_WORD.good, BAND_WORD.fair, BAND_WORD.poor][i])}`).join(", ")}`,
     )
     .join(
       "; ",
-    )}. İ iyi, O orta, Z zayıf; her sayfa yalnızca ölçülen metrikte sayılır.`;
+    )}. ${t("İ iyi, O orta, Z zayıf; her sayfa yalnızca ölçülen metrikte sayılır.")}`;
   return figure(
-    "Temel Web Verileri: sayfaların dağılımı (mobil)",
+    t("Temel Web Verileri: sayfaların dağılımı (mobil)"),
     stackedBars(bars),
     caption,
-    "Her metrik için iyi, orta ve zayıf sayfa sayısı",
+    t("Her metrik için iyi, orta ve zayıf sayfa sayısı"),
   );
 }
 
@@ -162,8 +173,8 @@ export function speedSection(
   const summary = describeLighthouse(input.lighthouse);
   if (!summary) {
     return `<section id="hiz">
-      <h2>3. Hız ölçümü</h2>
-      <p class="empty">${input.lighthouseMode === "none" ? "Bu denetimde hız ölçümü kapalıydı, bu yüzden sayfa hızı hakkında bir şey söylenmiyor." : "Bu denetimde kayıtlı Lighthouse sonucu yok: hız ölçümü kapalıydı ya da ölçümler tamamlanamadı (ör. ölçüm servisi istek sınırına takıldı). Hız ölçülmediği için bu rapor hız hakkında bir şey söylemez."}</p>
+      <h2>${t("3. Hız ölçümü")}</h2>
+      <p class="empty">${input.lighthouseMode === "none" ? t("Bu denetimde hız ölçümü kapalıydı, bu yüzden sayfa hızı hakkında bir şey söylenmiyor.") : t("Bu denetimde kayıtlı Lighthouse sonucu yok: hız ölçümü kapalıydı ya da ölçümler tamamlanamadı (ör. ölçüm servisi istek sınırına takıldı). Hız ölçülmediği için bu rapor hız hakkında bir şey söylemez.")}</p>
     </section>`;
   }
 
@@ -172,7 +183,7 @@ export function speedSection(
   );
   const withUrl = input.lighthouse.map((row) => ({
     ...row,
-    url: (row.pageId && urlById.get(row.pageId)) || "(adres bulunamadı)",
+    url: (row.pageId && urlById.get(row.pageId)) || t("(adres bulunamadı)"),
   }));
   const mobile = withUrl.filter((r) => r.strategy === "mobile");
   const desktopByPage = new Map(
@@ -188,24 +199,30 @@ export function speedSection(
   const partial = plannedPages > summary.measured;
 
   const bands = [
-    { label: "İyi (90-100)", value: summary.good, color: BAND_COLOR.good },
-    { label: "Orta (50-89)", value: summary.fair, color: BAND_COLOR.fair },
-    { label: "Zayıf (0-49)", value: summary.poor, color: BAND_COLOR.poor },
+    { label: t("İyi (90-100)"), value: summary.good, color: BAND_COLOR.good },
+    { label: t("Orta (50-89)"), value: summary.fair, color: BAND_COLOR.fair },
+    { label: t("Zayıf (0-49)"), value: summary.poor, color: BAND_COLOR.poor },
   ];
 
   const categories: Array<
     [string, (r: ReportLighthouse) => number | null | undefined]
   > = [
-    ["Performans", (r) => r.performanceScore],
-    ["Erişilebilirlik", (r) => r.accessibilityScore],
-    ["En iyi uygulamalar", (r) => r.bestPracticesScore],
+    [t("Performans"), (r) => r.performanceScore],
+    [t("Erişilebilirlik"), (r) => r.accessibilityScore],
+    [t("En iyi uygulamalar"), (r) => r.bestPracticesScore],
     ["SEO", (r) => r.seoScore],
   ];
   const catData = categories.flatMap(([label, pick]) => {
     const value = average(mobile.map(pick));
     return value === null
       ? []
-      : [{ label: `${label} (mobil ort.)`, value, color: COLORS.accent }];
+      : [
+          {
+            label: t("{category} (mobil ort.)", { category: label }),
+            value,
+            color: COLORS.accent,
+          },
+        ];
   });
 
   const ordered = sort(
@@ -214,12 +231,12 @@ export function speedSection(
   );
   const { shown, hidden } = capList(ordered, tableCap);
   const table = `<table class="rows">
-    <thead><tr><th>Adres</th><th>Mobil puan</th><th>Masaüstü puan</th><th>LCP</th><th>CLS</th><th>INP</th></tr></thead>
+    <thead><tr><th>${t("Adres")}</th><th>${t("Mobil puan")}</th><th>${t("Masaüstü puan")}</th><th>LCP</th><th>CLS</th><th>INP</th></tr></thead>
     <tbody>${shown
       .map((r) => {
         const desktop = desktopByPage.get(r.pageId ?? r.url);
         return `<tr>
-        <td class="url">${escapeHtml(truncateUrl(r.url, 80))}${r.errorMessage ? `<br><span class="detail">Ölçüm hatası: ${escapeHtml(truncate(r.errorMessage, 120))}</span>` : ""}</td>
+        <td class="url">${escapeHtml(truncateUrl(r.url, 80))}${r.errorMessage ? `<br><span class="detail">${escapeHtml(t("Ölçüm hatası: {error}", { error: truncate(r.errorMessage, 120) }))}</span>` : ""}</td>
         <td class="num">${escapeHtml(scoreCell(r.performanceScore))}</td>
         <td class="num">${escapeHtml(scoreCell(desktop?.performanceScore))}</td>
         <td class="num">${escapeHtml(formatMetric("lcpMs", r.lcpMs))}</td>
@@ -230,29 +247,59 @@ export function speedSection(
       .join("")}</tbody>
   </table>`;
 
+  const measured = t("{count} sayfa mobilde ölçüldü", {
+    count: summary.measured,
+  });
+  const share =
+    input.pagesCrawled > 0
+      ? t(" (taranan {count} sayfanın {percent}'i)", {
+          count: input.pagesCrawled,
+          percent: percentText(percent(summary.measured, input.pagesCrawled)),
+        })
+      : "";
+  const failedText =
+    failed > 0 ? t("; {count} ölçüm hata verdi", { count: failed }) : "";
+  const measuredLine = t(
+    '<strong>{measured}</strong>{share}{failed}. Ortalama tek bir sayı "her sayfa orta" ile "yarısı mükemmel yarısı felaket"i aynı gösterdiği için dağılım veriliyor.',
+    { measured, share, failed: failedText },
+  );
+  const partialLine = t(
+    "{planned} sayfanın ölçülmesi planlandı, {measured} tanesi puan verdi{failed}. Aşağıdaki dağılım yalnızca ölçülen sayfaları yansıtır; ölçülmeyenler iyi ya da kötü sayılmadı.",
+    {
+      planned: formatCount(plannedPages),
+      measured: formatCount(summary.measured),
+      failed:
+        failed > 0
+          ? t(
+              "; kalanlar hata verdi ya da ölçüm servisinin istek sınırına takılmış olabilir",
+            )
+          : "",
+    },
+  );
+
   return `<section id="hiz">
-    <h2>3. Hız ölçümü</h2>
-    <p class="note"><strong>${formatCount(summary.measured)} sayfa mobilde ölçüldü</strong>${input.pagesCrawled > 0 ? ` (taranan ${formatCount(input.pagesCrawled)} sayfanın %${formatCount(percent(summary.measured, input.pagesCrawled))}'i)` : ""}${failed > 0 ? `; ${formatCount(failed)} ölçüm hata verdi` : ""}. Ortalama tek bir sayı "her sayfa orta" ile "yarısı mükemmel yarısı felaket"i aynı gösterdiği için dağılım veriliyor.</p>
-    ${partial ? `<div class="callout callout--warn"><p><strong>Ölçüm kısmi.</strong> ${formatCount(plannedPages)} sayfanın ölçülmesi planlandı, ${formatCount(summary.measured)} tanesi puan verdi${failed > 0 ? "; kalanlar hata verdi ya da ölçüm servisinin istek sınırına takılmış olabilir" : ""}. Aşağıdaki dağılım yalnızca ölçülen sayfaları yansıtır; ölçülmeyenler iyi ya da kötü sayılmadı.</p></div>` : ""}
+    <h2>${t("3. Hız ölçümü")}</h2>
+    <p class="note">${measuredLine}</p>
+    ${partial ? `<div class="callout callout--warn"><p><strong>${t("Ölçüm kısmi.")}</strong> ${partialLine}</p></div>` : ""}
     <div>
-      ${figure("Mobil performans puanı dağılımı", columnChart(summary.histogram), chartSummary(summary.histogram, " sayfa"), "Lighthouse performans puanı histogramı")}
-      ${figure("Puan bandı", barChart(bands), chartSummary(bands, " sayfa"), "İyi, orta, zayıf sayfa sayısı")}
+      ${figure(t("Mobil performans puanı dağılımı"), columnChart(summary.histogram), chartSummary(summary.histogram, pagesText), t("Lighthouse performans puanı histogramı"))}
+      ${figure(t("Puan bandı"), barChart(bands), chartSummary(bands, pagesText), t("İyi, orta, zayıf sayfa sayısı"))}
     </div>
     ${vitalsChart(mobile)}
-    <dl class="vitals">${VITAL_INFO.map((v) => `<div><dt>${escapeHtml(v.name)}</dt><dd>${escapeHtml(v.plain)}</dd></div>`).join("")}</dl>
-    ${catData.length > 0 ? figure("Lighthouse kategorileri", barChart(catData), chartSummary(catData), "Kategori başına mobil ortalama puan") : ""}
-    <h3>Sayfa sayfa sonuçlar</h3>
-    <p class="note">Mobil performans puanı en düşük sayfalar üstte. Metrikler mobil ölçümden.</p>
+    <dl class="vitals">${VITAL_INFO.map((v) => `<div><dt>${escapeHtml(t(v.name))}</dt><dd>${escapeHtml(t(v.plain))}</dd></div>`).join("")}</dl>
+    ${catData.length > 0 ? figure(t("Lighthouse kategorileri"), barChart(catData), chartSummary(catData), t("Kategori başına mobil ortalama puan")) : ""}
+    <h3>${t("Sayfa sayfa sonuçlar")}</h3>
+    <p class="note">${t("Mobil performans puanı en düşük sayfalar üstte. Metrikler mobil ölçümden.")}</p>
     ${table}
-    ${moreLine(hidden, "sayfa")}
+    ${moreLine(hidden, "page")}
     <div class="grid3">
       ${worstList(mobile, "lcpMs", "LCP")}
       ${worstList(mobile, "cls", "CLS")}
       ${worstList(mobile, "inpMs", "INP")}
     </div>
     <div class="callout">
-      <p><strong>Laboratuvar ve gerçek kullanıcı verisi.</strong> Buradaki rakamlar Lighthouse'un laboratuvar ölçümüdür: tek bir sanal cihazda, kontrollü ağ ve işlemci koşulunda yapılır. Gerçek ziyaretçilerden toplanan alan verisi (Chrome Kullanıcı Deneyimi Raporu, CrUX) bu denetimde saklanmadığı için rapora girmiyor. İkisi farklı çıkabilir. Google, sıralama sistemlerinde alan verisini (CrUX) kullanır; ama iyi bir değer tek başına sıralama garantisi vermez, içeriğin ilgili olması öncelik taşır.</p>
-      <p>Eşikler Google'ın yayımladığı değerlerdir: LCP 2,5 sn altı iyi, 4 sn üstü zayıf; CLS 0,1 altı iyi, 0,25 üstü zayıf; INP 200 ms altı iyi, 500 ms üstü zayıf. INP laboratuvarda çoğu zaman ölçülemez ("--" görünür).</p>
+      <p>${t("<strong>Laboratuvar ve gerçek kullanıcı verisi.</strong> Buradaki rakamlar Lighthouse'un laboratuvar ölçümüdür: tek bir sanal cihazda, kontrollü ağ ve işlemci koşulunda yapılır. Gerçek ziyaretçilerden toplanan alan verisi (Chrome Kullanıcı Deneyimi Raporu, CrUX) bu denetimde saklanmadığı için rapora girmiyor. İkisi farklı çıkabilir. Google, sıralama sistemlerinde alan verisini (CrUX) kullanır; ama iyi bir değer tek başına sıralama garantisi vermez, içeriğin ilgili olması öncelik taşır.")}</p>
+      <p>${t('Eşikler Google\'ın yayımladığı değerlerdir: LCP 2,5 sn altı iyi, 4 sn üstü zayıf; CLS 0,1 altı iyi, 0,25 üstü zayıf; INP 200 ms altı iyi, 500 ms üstü zayıf. INP laboratuvarda çoğu zaman ölçülemez ("--" görünür).')}</p>
     </div>
   </section>`;
 }

@@ -1,3 +1,4 @@
+import { Skeleton } from "@/client/components/Skeleton";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CheckCircle2, ExternalLink } from "lucide-react";
 import * as React from "react";
@@ -8,9 +9,11 @@ import {
   clearPageSpeedKey,
   savePageSpeedKey,
 } from "@/serverFunctions/pagespeedKey";
+import { t } from "@/shared/i18n";
+import { fillParts } from "./fillParts";
 import { PageSpeedKeyTest } from "./PageSpeedKeyTest";
 import { SectionHeaderRow } from "./SectionBadge";
-import { pageSpeedBadge, UNREADABLE } from "./sectionStatus";
+import { pageSpeedBadge, unreadableBadge } from "./sectionStatus";
 import { pageSpeedKeyStatusOptions } from "./settingsQueries";
 
 const KEY_URL =
@@ -43,13 +46,15 @@ export function PageSpeedKeySection() {
       setKey("");
       setEditing(false);
       await queryClient.invalidateQueries({ queryKey: STATUS_KEY });
-      toast.success("PageSpeed anahtarı kaydedildi");
+      toast.success(t("PageSpeed anahtarı kaydedildi"));
     },
     onError: (error) =>
       toast.error(
         getStandardErrorMessage(
           error,
-          "PageSpeed anahtarı kaydedilemedi. Anahtarı kontrol edip tekrar deneyin.",
+          t(
+            "PageSpeed anahtarı kaydedilemedi. Anahtarı kontrol edip tekrar deneyin.",
+          ),
         ),
       ),
   });
@@ -61,14 +66,14 @@ export function PageSpeedKeySection() {
       setEditing(false);
       setConfirmingClear(false);
       await queryClient.invalidateQueries({ queryKey: STATUS_KEY });
-      toast.success("PageSpeed anahtarı silindi");
+      toast.success(t("PageSpeed anahtarı silindi"));
     },
     onError: (error) => {
       setConfirmingClear(false);
       toast.error(
         getStandardErrorMessage(
           error,
-          "PageSpeed anahtarı silinemedi. Tekrar deneyin.",
+          t("PageSpeed anahtarı silinemedi. Tekrar deneyin."),
         ),
       );
     },
@@ -79,16 +84,15 @@ export function PageSpeedKeySection() {
   return (
     <section id="hiz-olcumu" className="scroll-mt-16 space-y-3">
       <SectionHeaderRow
-        badge={statusQuery.isError ? UNREADABLE : pageSpeedBadge(status)}
+        badge={statusQuery.isError ? unreadableBadge() : pageSpeedBadge(status)}
       >
-        <h2 className="text-base font-semibold">Hız ölçümü</h2>
+        <h2 className="text-base font-semibold">{t("Hız ölçümü")}</h2>
       </SectionHeaderRow>
 
       <p className="text-sm text-muted">
-        Denetimin Lighthouse aşaması Google PageSpeed Insights&apos;ı kullanır.
-        Anahtarsız da çalışır, ama Google&apos;ın anahtarsız kotası birkaç
-        sayfadan sonra &quot;çok fazla istek&quot; (429) hatası verir. Gerçek
-        bir sitede hız ölçümünün büyük kısmı boş kalır. Anahtar ücretsiz.{" "}
+        {t(
+          "Denetimin Lighthouse aşaması Google PageSpeed Insights'ı kullanır. Anahtarsız da çalışır, ama Google'ın anahtarsız kotası birkaç sayfadan sonra \"çok fazla istek\" (429) hatası verir. Gerçek bir sitede hız ölçümünün büyük kısmı boş kalır. Anahtar ücretsiz.",
+        )}{" "}
         <a
           href={KEY_URL}
           target="_blank"
@@ -100,17 +104,17 @@ export function PageSpeedKeySection() {
         </a>
       </p>
 
-      {statusQuery.isPending ? <div className="skeleton h-10 w-full" /> : null}
+      {statusQuery.isPending ? <Skeleton variant="form" rows={1} /> : null}
 
       {statusQuery.isError ? (
         <p role="alert" className="text-sm text-[var(--ink-error)]">
-          Anahtar durumu okunamadı.{" "}
+          {t("Anahtar durumu okunamadı.")}{" "}
           <button
             type="button"
             className="link"
             onClick={() => void statusQuery.refetch()}
           >
-            Tekrar dene
+            {t("Tekrar dene")}
           </button>
         </p>
       ) : null}
@@ -118,10 +122,14 @@ export function PageSpeedKeySection() {
       {fromEnvironment ? (
         <div className="alert alert-info items-start text-sm">
           <div className="space-y-1">
-            <p className="font-medium">Ortam değişkeninden geliyor</p>
+            <p className="font-medium">{t("Ortam değişkeninden geliyor")}</p>
             <p className="text-muted">
-              <code>PAGESPEED_API_KEY</code> ayarlanmış. Buraya bir değer
-              kaydederseniz o kullanılır.
+              {fillParts(
+                t(
+                  "{name} ayarlanmış. Buraya bir değer kaydederseniz o kullanılır.",
+                ),
+                { name: <code>PAGESPEED_API_KEY</code> },
+              )}
             </p>
           </div>
         </div>
@@ -135,7 +143,7 @@ export function PageSpeedKeySection() {
             <CheckCircle2 className="size-4 shrink-0 text-success" />
             {/* The key itself never leaves the server, so there is nothing to
                 show here but the fact that one is stored. */}
-            <span className="truncate text-sm">Anahtar kayıtlı</span>
+            <span className="truncate text-sm">{t("Anahtar kayıtlı")}</span>
           </div>
           <div className="flex gap-2">
             <button
@@ -143,7 +151,7 @@ export function PageSpeedKeySection() {
               className="btn btn-sm"
               onClick={() => setEditing(true)}
             >
-              Değiştir
+              {t("Değiştir")}
             </button>
             <button
               type="button"
@@ -151,7 +159,7 @@ export function PageSpeedKeySection() {
               disabled={clear.isPending}
               onClick={() => setConfirmingClear(true)}
             >
-              Sil
+              {t("Sil")}
             </button>
           </div>
         </div>
@@ -166,11 +174,13 @@ export function PageSpeedKeySection() {
           }}
         >
           <label className="block w-full space-y-1.5">
-            <span className="block text-sm font-medium">API anahtarı</span>
+            <span className="block text-sm font-medium">
+              {t("API anahtarı")}
+            </span>
             <span className="block text-xs text-muted">
-              Google Cloud Console → Credentials → Create credentials → API key.
-              Önce aynı projede PageSpeed Insights API&apos;sini etkinleştirin,
-              yoksa anahtar 403 hatası verir.
+              {t(
+                "Google Cloud Console → Credentials → Create credentials → API key. Önce aynı projede PageSpeed Insights API'sini etkinleştirin, yoksa anahtar 403 hatası verir.",
+              )}
             </span>
             <input
               type="password"
@@ -188,7 +198,7 @@ export function PageSpeedKeySection() {
               className="btn btn-primary btn-sm"
               disabled={!canSave}
             >
-              Kaydet
+              {t("Kaydet")}
             </button>
             {editing ? (
               <button
@@ -199,7 +209,7 @@ export function PageSpeedKeySection() {
                   setEditing(false);
                 }}
               >
-                Vazgeç
+                {t("Vazgeç")}
               </button>
             ) : null}
           </div>
@@ -207,9 +217,11 @@ export function PageSpeedKeySection() {
       ) : null}
       {confirmingClear ? (
         <ConfirmDeleteModal
-          title="PageSpeed anahtarı silinsin mi?"
-          detail="Anahtar bu kurulumdan silinir; hız ölçümü anahtarsız sınıra döner ve gerçek bir sitede çoğu zaman yarım kalır (429, çok fazla istek). İstediğiniz zaman yeniden girebilirsiniz."
-          confirmLabel="Anahtarı sil"
+          title={t("PageSpeed anahtarı silinsin mi?")}
+          detail={t(
+            "Anahtar bu kurulumdan silinir; hız ölçümü anahtarsız sınıra döner ve gerçek bir sitede çoğu zaman yarım kalır (429, çok fazla istek). İstediğiniz zaman yeniden girebilirsiniz.",
+          )}
+          confirmLabel={t("Anahtarı sil")}
           isPending={clear.isPending}
           onClose={() => setConfirmingClear(false)}
           onConfirm={() => clear.mutate()}

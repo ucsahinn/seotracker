@@ -9,6 +9,7 @@ import {
   useContextUpdate,
   type ProjectContextData,
 } from "./shared";
+import { t } from "@/shared/i18n";
 
 export function ResearchLog({
   projectId,
@@ -22,14 +23,17 @@ export function ResearchLog({
   return (
     <section className="space-y-3">
       <SectionHeader
-        title="Araştırma günlüğü"
-        hint="Neye bakıldığının kaydı. Aynı araştırma iki kez yapılmasın diye tutulur."
+        title={t("Araştırma günlüğü")}
+        hint={t(
+          "Neye bakıldığının kaydı. Aynı araştırma iki kez yapılmasın diye tutulur.",
+        )}
       />
 
       {researchLog.length === 0 ? (
         <EmptyListNote>
-          Henüz kayıt yok. Bağladığınız ajan bir araştırma yaptıkça buraya
-          yazar.
+          {t(
+            "Henüz kayıt yok. Bağladığınız ajan bir araştırma yaptıkça buraya yazar.",
+          )}
         </EmptyListNote>
       ) : (
         <ul className={listClass}>
@@ -47,7 +51,9 @@ export function ResearchLog({
               </div>
               <RowActions>
                 <ConfirmDeleteButton
-                  label={`${formatDate(entry.entryDate)} tarihli kaydı sil`}
+                  label={t("{date} tarihli kaydı sil", {
+                    date: formatDate(entry.entryDate),
+                  })}
                   pending={update.isPending}
                   onConfirm={() =>
                     update.mutate([{ removeResearchLog: [entry.id] }])

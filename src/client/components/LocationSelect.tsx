@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Check, Search } from "lucide-react";
 import { formatRegionName } from "@/shared/format";
 import { LOCATION_OPTIONS } from "@/shared/keyword-locations";
+import { t } from "@/shared/i18n";
 
 type LocationOption = (typeof LOCATION_OPTIONS)[number];
 
@@ -112,6 +113,7 @@ export function LocationSelect({
       }
       case "Escape":
         event.preventDefault();
+        event.stopPropagation();
         close();
         break;
     }
@@ -122,27 +124,29 @@ export function LocationSelect({
       <button
         ref={triggerRef}
         type="button"
-        aria-label={`Ülke: ${selected ? countryName(selected) : "seçilmedi"}`}
+        aria-label={t("Ülke: {country}", {
+          country: selected ? countryName(selected) : t("seçilmedi"),
+        })}
         className="select select-bordered flex w-full items-center justify-between gap-2 text-left font-normal"
         aria-haspopup="listbox"
         aria-expanded={open}
         onClick={() => setOpen((prev) => !prev)}
       >
         <span className="truncate">
-          {selected ? countryName(selected) : "Ülke seçin"}
+          {selected ? countryName(selected) : t("Ülke seçin")}
         </span>
       </button>
 
       {open ? (
-        <div className="absolute left-0 top-full z-30 mt-2 w-full min-w-48 max-w-56 rounded-box border border-base-300 bg-base-100 p-2 shadow-lg">
+        <div className="relative mt-2 w-full rounded-box border border-base-300 bg-base-100 p-2 shadow-lg">
           <label className="flex items-center gap-2 rounded-field border border-[var(--control-border)] px-3 py-2 focus-within:border-primary">
             <Search className="size-4 shrink-0 text-muted" />
             <input
               ref={inputRef}
               type="text"
               className="grow min-w-0 bg-transparent text-sm outline-none placeholder:text-muted"
-              placeholder="Ülke ara"
-              aria-label="Ülke ara"
+              placeholder={t("Ülke ara")}
+              aria-label={t("Ülke ara")}
               value={query}
               onChange={(event) => {
                 setQuery(event.target.value);
@@ -159,7 +163,7 @@ export function LocationSelect({
           >
             {filtered.length === 0 ? (
               <li className="w-full break-all px-3 py-2 text-sm text-muted">
-                “{query.trim()}” ile eşleşen ülke yok
+                {t("“{query}” ile eşleşen ülke yok", { query: query.trim() })}
               </li>
             ) : (
               filtered.map((option, index) => {

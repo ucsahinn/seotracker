@@ -6,6 +6,7 @@ import {
   removeSavedKeywords,
   updateSavedKeywordTags,
 } from "@/serverFunctions/savedKeywords";
+import { t } from "@/shared/i18n";
 
 /** Bulk remove and bulk tag, with the screen's own reset steps passed in. */
 export function useSavedKeywordMutations({
@@ -32,10 +33,14 @@ export function useSavedKeywordMutations({
       captureClientEvent("saved_keywords:bulk_remove", {
         count: result.deletedCount,
       });
-      toast.success(`${result.deletedCount} kelime kaldırıldı`);
+      toast.success(
+        t("{count} kelime kaldırıldı", { count: result.deletedCount }),
+      );
     },
     onError: (error) => {
-      onRemoveFailed(getStandardErrorMessage(error, "Kelimeler kaldırılamadı"));
+      onRemoveFailed(
+        getStandardErrorMessage(error, t("Kelimeler kaldırılamadı")),
+      );
     },
   });
 
@@ -56,10 +61,16 @@ export function useSavedKeywordMutations({
     onSuccess: (result) => {
       onTagged();
       void invalidateSavedKeywords();
-      toast.success(`${result.taggedCount} kelimenin etiketleri güncellendi`);
+      toast.success(
+        t("{count} kelimenin etiketleri güncellendi", {
+          count: result.taggedCount,
+        }),
+      );
     },
     onError: (error) => {
-      toast.error(getStandardErrorMessage(error, "Etiketler güncellenemedi"));
+      toast.error(
+        getStandardErrorMessage(error, t("Etiketler güncellenemedi")),
+      );
     },
   });
 

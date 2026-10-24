@@ -12,36 +12,36 @@ Seven tabs show reports from your Google Analytics 4 account, filtered by defaul
 
 ## What is on the screen
 
-**Tabs.** **Giriş sayfaları** (Landing pages), **Sayfa performansı** (Page performance), **Trafik kaynakları** (Traffic sources), **Anahtar olaylar** (Key events), **E-ticaret** (E-commerce), **Site içi arama** (Site search), **Kitle dağılımı** (Audience breakdown) and **Ölçüm durumu** (Measurement status). Each tab has a one-line question under it. A landing page is the first page a visitor enters on your site. A key event is an action you count as important.
+**Tabs.** **Landing pages**, **Pages and screens**, **Traffic acquisition**, **Key events**, **Ecommerce**, **Site search**, **Audience** and **Measurement health**. Each tab has a one-line question under it. A landing page is the first page a visitor enters on your site. A key event is an action you count as important.
 
-**Controls.** **Dönem** (Period): Son 7 gün, Son 28 gün, Son 3 ay (last 7 days, last 28 days, last 3 months). **Kanal** (Channel): Organik arama (Organic search) (default) or Tüm trafik (All traffic). **Satır** (Rows): 50, 100, 200. In the audience tab you choose **Cihaz** (Device), **Ülke** (Country), **Yeni / geri dönen** (New / returning). In the traffic tab you choose **Kanal grubu** (Channel group), **Kaynak / ortam** (Source / medium), **Kampanya** (Campaign). Your choices are kept in the page address.
+**Controls.** **Period**: Last 7 days, Last 28 days, Last 3 months. **Channel**: Organic Search (default) or All traffic. **Rows**: 50, 100, 200. In the audience tab you choose **Device**, **Country**, **New / returning**. In the traffic tab you choose **Channel group**, **Source / medium**, **Campaign**. Your choices are kept in the page address.
 
-**Organic sessions panel.** It sits above the table in the landing pages tab. A session is one complete visit. The panel has a line chart of daily sessions and the **Oturum** (Sessions) and **Etkileşim oranı** (Engagement rate) cards. If revenue is measured, **Organik gelir** (Organic revenue) appears too. Each card shows the change from the previous period.
+**Organic sessions panel.** It sits above the table in the landing pages tab. A session is one complete visit. The panel has a line chart of daily sessions and the **Sessions** and **Engagement rate** cards. If revenue is measured, **Organic revenue** appears too. Each card shows the change from the previous period.
 
-**Table.** Columns change with the report. Examples: **Alan adı** (Domain name), **Giriş sayfası** (Landing page), **Sayfa** (Page), **Olay** (Event), **Kanal** (Channel), **Cihaz** (Device), **Ülke** (Country), **Ürün** (Product), **Arama terimi** (Search term). Measures: **Oturum** (Sessions), **Aktif kullanıcı** (Active users), **Etkileşim oranı** (Engagement rate), **Anahtar olay** (Key event), **Gelir** (Revenue), **Görüntülenme** (Views). If no key event is defined, this column always shows 0.
+**Table.** Columns change with the report. Examples: **Domain**, **Landing page**, **Page**, **Event name**, **Channel**, **Device**, **Country**, **Item**, **Search term**. Measures: **Sessions**, **Active users**, **Engagement rate**, **Key events**, **Revenue**, **Views**. If no key event is defined, this column always shows 0.
 
-**Line under the table.** It tells you how many rows are shown. If Google sampled the data, "örneklenmiş" (sampled) is added. If it hid rows for privacy, "eşik altı satırlar gizlendi" (rows below the threshold were hidden) is added.
+**Line under the table.** It tells you how many rows are shown. If Google sampled the data, "sampled" is added. If it hid rows for privacy, "rows below thresholds hidden" is added.
 
-**Quick filters.** **Sadece organik** (Organic only), **Etkileşimi düşük** (Low engagement) (below 50%), **Dönüşümü olan** (With conversions), **Geliri olan** (With revenue), **Etkileşim süresi düşük** (Low engagement time), **Trafiği yüksek, dönüşümü düşük** (High traffic, low conversions).
+**Quick filters.** **Organic only**, **Low engagement** (below 50%), **Converting**, **Earning revenue**, **Low engagement time**, **High traffic, low conversion**.
 
 **Summary cards.** The key events, e-commerce and site search tabs have their own summary cards.
 
-**Measurement status tab.** Four cards: **Web veri akışı** (Web data stream), **Anahtar olay** (Key event), **Özel boyut** (Custom dimension), **Bulgu** (Finding). The findings can be: "Web veri akışı yok" (No web data stream), "Gelişmiş ölçüm kapalı" (Enhanced measurement is off), "Site içi arama ölçülmüyor" (Site search is not measured), "Anahtar olay tanımlı değil" (No key event is defined), "Envanter eksik olabilir" (The inventory may be incomplete). Each of the seven enhanced measurement options is listed: Kaydırma (Scrolls), Dış bağlantı (Outbound clicks), Site içi arama (Site search), Video, Dosya indirme (File downloads), Form, Sayfa geçişleri (Page changes). If there is no problem, it says "Ölçüm kurulumunda eksik bulunamadı." (No gaps were found in the measurement setup.)
+**Measurement status tab.** Four cards: **Web data streams**, **Key events**, **Custom dimensions**, **Findings**. The findings can be: "No web data stream", "Enhanced measurement off", "Site search is not measured", "No key events set up", "The inventory may be incomplete". Each of the seven enhanced measurement options is listed: Scrolls, Outbound clicks, Site search, Video, File downloads, Form, Page changes. If there is no problem, it says that no gaps were found in the measurement setup.
 
-**Empty states.** The screen says "Bu dönemde veri yok" (No data in this period) with two shortcuts: **Tüm trafiğe bak** (Look at all traffic), **Ölçüm durumunu kontrol et** (Check measurement status). If Analytics is not connected, it says "Google Analytics bağlı değil" (Google Analytics is not connected).
+**Empty states.** The screen says "No data in this period" with two shortcuts: **View all traffic**, **Check measurement health**. If Analytics is not connected, it says "Google Analytics is not connected".
 
 ## How to use it
 
-1. Look at the **Ölçüm durumu** tab first. If it says "Anahtar olay tanımlı değil", the conversion columns stay at zero until you define a key event in Analytics.
-2. In the **Giriş sayfaları** tab, look at the **Alan adı** column. If you see localhost or 127.0.0.1, a test site on your own computer is sending data. Those rows are not real visits, and the app does not filter them out.
-3. If traffic has dropped, open the **Trafik kaynakları** tab with **Kanal grubu**. If only search dropped, the cause is in search. If every channel dropped, look for a problem with the measurement or the site.
-4. The **Trafiği yüksek, dönüşümü düşük** button lists pages where Google sends visitors but the page does not keep them. The to-do list for these pages is on the **Fırsatlar** (Opportunities) screen.
+1. Look at the **Measurement health** tab first. If it says "No key events set up", the conversion columns stay at zero until you define a key event in Analytics.
+2. In the **Landing pages** tab, look at the **Domain** column. If you see localhost or 127.0.0.1, a test site on your own computer is sending data. Those rows are not real visits, and the app does not filter them out.
+3. If traffic has dropped, open the **Traffic acquisition** tab with **Channel group**. If only search dropped, the cause is in search. If every channel dropped, look for a problem with the measurement or the site.
+4. The **High traffic, low conversion** button lists pages where Google sends visitors but the page does not keep them. The to-do list for these pages is on the **Opportunities** screen.
 
 ## How the numbers are calculated
 
 The range ends yesterday in the account's time zone. Analytics data arrives one day late. If "Organik arama" is chosen, only visits from Google or another search engine are counted.
 
-Each report requests at most 200 rows. Measurement status reads the Analytics settings and does not spend from the report quota. If the report quota runs out, you see the error "Google Analytics reporting quota is exhausted." (the Analytics report allowance is used up). Quotas are tracked in the limits section in **Ayarlar** (Settings).
+Each report requests at most 200 rows. Measurement status reads the Analytics settings and does not spend from the report quota. If the report quota runs out, you see the error "Google Analytics reporting quota is exhausted." (the Analytics report allowance is used up). Quotas are tracked in the limits section in **Settings**.
 
 ## Frequently asked questions
 
@@ -49,7 +49,7 @@ Each report requests at most 200 rows. Measurement status reads the Analytics se
 
 **Why does the row count stop at 200?** Each request asks for at most 200 rows. Shorten the period or change the breakdown.
 
-**Why did the quota run out?** A standard account gets 200,000 tokens (quota units) a day and 40,000 an hour. Each report spends a few tokens. Pressing **Yenile** (Refresh) repeatedly uses up the quota.
+**Why did the quota run out?** A standard account gets 200,000 tokens (quota units) a day and 40,000 an hour. Each report spends a few tokens. Pressing **Refresh** repeatedly uses up the quota.
 
 ## Limits
 

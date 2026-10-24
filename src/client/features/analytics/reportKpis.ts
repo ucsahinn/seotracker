@@ -5,6 +5,7 @@ import {
 } from "@/client/features/analytics/reportInsights";
 import { formatCount, formatMoney, formatPercent } from "@/client/lib/format";
 import type { Ga4ReportKindName } from "@/shared/ga4-reports";
+import { t } from "@/shared/i18n";
 
 /* --- KPI strip for the small reports ------------------------------- */
 
@@ -34,40 +35,43 @@ export function buildKpis(
     const total = sumOf(rows, "keyEvents");
     const top = leader(rows, "eventName", "keyEvents");
     return [
-      { label: "Anahtar olay", value: formatCount(total), hint: scope },
-      { label: "Olay türü", value: formatCount(rows.length) },
+      { label: t("Anahtar olay"), value: formatCount(total), hint: scope },
+      { label: t("Olay türü"), value: formatCount(rows.length) },
       {
-        label: "En çok tetiklenen",
+        label: t("En çok tetiklenen"),
         value: top?.label ?? "-",
         hint:
           top && total > 0
-            ? `${formatCount(top.value)} kez, ${formatPercent(top.value / total)} pay`
+            ? t("{count} kez, {share} pay", {
+                count: top.value,
+                share: formatPercent(top.value / total),
+              })
             : undefined,
       },
       {
-        label: "Tetikleyen kullanıcı",
+        label: t("Tetikleyen kullanıcı"),
         value: formatCount(top ? (numeric(top.row, "totalUsers") ?? 0) : 0),
-        hint: "En çok tetiklenen olayda",
+        hint: t("En çok tetiklenen olayda"),
       },
     ];
   }
   if (kind === "ecommerce_performance") {
     return [
       {
-        label: "Ürün geliri",
+        label: t("Ürün geliri"),
         value: formatMoney(sumOf(rows, "itemRevenue"), currencyCode),
         hint: scope,
       },
       {
-        label: "Satılan ürün",
+        label: t("Satılan ürün"),
         value: formatCount(sumOf(rows, "itemsPurchased")),
       },
       {
-        label: "Sepete eklenen",
+        label: t("Sepete eklenen"),
         value: formatCount(sumOf(rows, "itemsAddedToCart")),
       },
       {
-        label: "Görüntülenen ürün",
+        label: t("Görüntülenen ürün"),
         value: formatCount(sumOf(rows, "itemsViewed")),
       },
     ];
@@ -77,17 +81,17 @@ export function buildKpis(
     const top = leader(rows, "searchTerm", "eventCount");
     const once = rows.filter((row) => numeric(row, "eventCount") === 1).length;
     return [
-      { label: "Arama", value: formatCount(total), hint: scope },
-      { label: "Farklı terim", value: formatCount(rows.length) },
+      { label: t("Arama"), value: formatCount(total), hint: scope },
+      { label: t("Farklı terim"), value: formatCount(rows.length) },
       {
-        label: "En çok aranan",
+        label: t("En çok aranan"),
         value: top?.label ?? "-",
-        hint: top ? `${formatCount(top.value)} kez` : undefined,
+        hint: top ? t("{count} kez", { count: top.value }) : undefined,
       },
       {
-        label: "Yalnızca bir kez aranan",
+        label: t("Yalnızca bir kez aranan"),
         value: formatCount(once),
-        hint: `Pay: ${formatPercent(once / rows.length)}`,
+        hint: t("Pay: {share}", { share: formatPercent(once / rows.length) }),
       },
     ];
   }

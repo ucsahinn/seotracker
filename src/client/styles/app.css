@@ -73,6 +73,15 @@
   --ink-error: oklch(44% 0.16 25);
   --ink-info: oklch(42% 0.11 240);
   --ink-primary: oklch(45% 0.14 42);
+
+  /* Motion. One curve and three durations, so a press, a panel and a
+     progress fill all move with the same hand. Fast is for state the pointer
+     caused (hover, press), base for content arriving, slow for something the
+     eye should follow (a ring drawing, a bar settling). */
+  --ease-out: cubic-bezier(0.32, 0.72, 0, 1);
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --dur-slow: 500ms;
 }
 
 html[data-theme="seotracker-dark"] {
@@ -491,9 +500,9 @@ h3 {
 /* Physical press. Cheap, and the only motion most of these screens need. */
 .btn {
   transition:
-    background-color 140ms cubic-bezier(0.32, 0.72, 0, 1),
-    border-color 140ms cubic-bezier(0.32, 0.72, 0, 1),
-    transform 90ms cubic-bezier(0.32, 0.72, 0, 1);
+    background-color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    transform 90ms var(--ease-out);
 }
 .btn:active:not(:disabled) {
   transform: scale(0.985);
@@ -522,8 +531,8 @@ h3 {
 .textarea {
   border-color: var(--hairline-strong);
   transition:
-    border-color 140ms cubic-bezier(0.32, 0.72, 0, 1),
-    background-color 140ms cubic-bezier(0.32, 0.72, 0, 1);
+    border-color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
 }
 
 /* Table headers: small, quiet, and separated by a line rather than a fill. */
@@ -562,7 +571,7 @@ h3 {
 /* Rows settle into their hover state instead of snapping. daisyUI gives the
    colour and no transition, so a pointer dragged down a table strobed. */
 .table :where(tbody tr) {
-  transition: background-color 120ms cubic-bezier(0.32, 0.72, 0, 1);
+  transition: background-color var(--dur-fast) var(--ease-out);
 }
 
 /* Content that has just arrived.
@@ -578,7 +587,7 @@ h3 {
   }
 }
 .enter {
-  animation: enter 180ms cubic-bezier(0.32, 0.72, 0, 1) both;
+  animation: enter var(--dur-base) var(--ease-out) both;
 }
 
 /* Cards arriving one after another rather than all at once.
@@ -589,7 +598,7 @@ h3 {
  * per child as an inline `animation-delay` by the component, so it is data
  * rather than a growing pile of nth-child rules. */
 .stagger > * {
-  animation: enter 240ms cubic-bezier(0.32, 0.72, 0, 1) both;
+  animation: enter var(--dur-base) var(--ease-out) both;
 }
 
 /* A number that just changed.
@@ -631,11 +640,88 @@ h3 {
   animation: attention 2200ms ease-in-out 2;
 }
 
+/* A spinner that waits before it shows. Most requests on a local install
+   answer in tens of milliseconds, and a spinner that appears for one frame
+   reads as a flicker rather than as work. The wrapper holds the delay; the
+   icon inside keeps its own spin. */
+@keyframes spinner-show {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.spinner-delay {
+  animation: spinner-show var(--dur-fast) linear 200ms both;
+}
+
+/* A press on something that is not a `.btn`: a row, a chip, a tile link.
+   The same small give as the buttons, so everything clickable answers the
+   pointer the same way. */
+.press {
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.press:active {
+  transform: scale(0.985);
+}
+
+/* Open and close by height without measuring it. The child sits in a grid
+   row that goes from 0fr to 1fr, which the browser can interpolate where it
+   cannot interpolate `height: auto`. The child needs `min-height: 0` and
+   `overflow: hidden`, which the second rule gives it. */
+.reveal-height {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--dur-base) var(--ease-out);
+}
+.reveal-height > * {
+  min-height: 0;
+  overflow: hidden;
+}
+.reveal-height[data-open="true"] {
+  grid-template-rows: 1fr;
+}
+
+/* A tab's panel arriving. Shorter and flatter than `.enter`: switching tabs
+   is something a reader does many times in a row, and a fade they have to
+   wait for every time becomes a delay. */
+@keyframes tab-enter {
+  from {
+    opacity: 0.4;
+  }
+}
+.tab-enter {
+  animation: tab-enter var(--dur-fast) var(--ease-out) both;
+}
+
+/* A score ring drawing itself once, from empty, on arrival. The component
+   sets the final offset in `--ring-to`; the keyframe starts from the full
+   circumference in `--ring-from`. */
+@keyframes ring-draw {
+  from {
+    stroke-dashoffset: var(--ring-from);
+  }
+}
+.ring-draw {
+  animation: ring-draw 900ms var(--ease-out) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .stagger > *,
   .flash,
-  .attention {
+  .attention,
+  .spinner-delay,
+  .tab-enter,
+  .ring-draw {
     animation: none;
+  }
+  .press,
+  .reveal-height {
+    transition: none;
+  }
+  .press:active {
+    transform: none;
   }
   .skeleton {
     animation: none;
@@ -771,6 +857,22 @@ html[data-theme="seotracker"]
   }
 }
 
+@keyframes crawl-arrival {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .crawl-arrival {
+    animation: crawl-arrival 200ms var(--ease-out);
+  }
+}
+
 /* A live indicator: the dot itself is static, a ring expands from it. */
 .dot-live {
   position: relative;
@@ -783,7 +885,7 @@ html[data-theme="seotracker"]
 
 @media (prefers-reduced-motion: no-preference) {
   .progress-fill {
-    transition: transform 500ms cubic-bezier(0.32, 0.72, 0, 1);
+    transition: transform var(--dur-slow) var(--ease-out);
   }
   .progress-active {
     background-image: linear-gradient(
@@ -829,9 +931,9 @@ html[data-theme="seotracker"]
   .select,
   .textarea {
     transition:
-      border-color 150ms ease,
-      background-color 150ms ease,
-      box-shadow 150ms ease;
+      border-color var(--dur-fast) var(--ease-out),
+      background-color var(--dur-fast) var(--ease-out),
+      box-shadow var(--dur-fast) var(--ease-out);
   }
   .input:focus-visible,
   .select:focus-visible,
@@ -851,12 +953,36 @@ html[data-theme="seotracker"]
   }
 }
 
+/* Release categories share the existing accessible semantic ink tokens. */
+.release-tag {
+  display: inline-flex;
+  border: 1px solid color-mix(in oklab, currentColor 25%, transparent);
+  border-radius: 999px;
+  padding: 0.125rem 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  background: color-mix(in oklab, currentColor 8%, transparent);
+}
+
+.release-tag-feature {
+  color: var(--ink-success);
+}
+.release-tag-fix {
+  color: var(--ink-info);
+}
+.release-tag-security {
+  color: var(--ink-warning);
+}
+.release-tag-hotfix {
+  color: var(--ink-error);
+}
+
 /* Opt-in lift for clickable cards. Only where a pointer can hover. */
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
   .card-lift {
     transition:
-      transform 180ms cubic-bezier(0.32, 0.72, 0, 1),
-      box-shadow 180ms cubic-bezier(0.32, 0.72, 0, 1);
+      transform var(--dur-base) var(--ease-out),
+      box-shadow var(--dur-base) var(--ease-out);
   }
   .card-lift:hover {
     transform: translateY(-2px);

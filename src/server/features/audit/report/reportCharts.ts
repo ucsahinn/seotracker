@@ -1,6 +1,7 @@
 import { formatCount } from "@/shared/format";
 import { auditScoreBand } from "@/shared/auditScore";
-import { escapeHtml, percent, truncate } from "./reportFormat";
+import { escapeHtml, percent, percentText, truncate } from "./reportFormat";
+import { t } from "@/shared/i18n";
 
 /*
  * Inline-SVG chart builders. No script, no library, no external reference:
@@ -35,9 +36,13 @@ function fmt(value: number): string {
 }
 
 /** What a chart says in words: "2xx: 40; 3xx: 2". Also its figcaption. */
-export function chartSummary(data: ChartDatum[], unit = ""): string {
+/** `unit` words a value with its unit ("12 sayfa"); without it the bare number. */
+export function chartSummary(
+  data: ChartDatum[],
+  unit?: (value: number) => string,
+): string {
   return data
-    .map((d) => `${d.label}: ${formatCount(d.value)}${unit}`)
+    .map((d) => `${d.label}: ${unit ? unit(d.value) : formatCount(d.value)}`)
     .join("; ");
 }
 
@@ -88,7 +93,7 @@ export function donutChart(
       <td><span class="swatch" style="background:${d.color ?? COLORS.muted}"></span></td>
       <th scope="row">${escapeHtml(d.label)}</th>
       <td class="num">${formatCount(d.value)}</td>
-      <td class="num">%${formatCount(percent(d.value, total))}</td>
+      <td class="num">${percentText(percent(d.value, total))}</td>
     </tr>`,
     )
     .join("");
@@ -179,7 +184,7 @@ export function gauge(score: number | null): string {
   const color =
     score === null ? COLORS.muted : GAUGE_COLOR[auditScoreBand(score)];
   const c = 2 * Math.PI * 52;
-  return `<svg viewBox="0 0 120 120" class="gauge" role="img" aria-label="${score === null ? "Puan yok" : `Site puanı 100 üzerinden ${score}`}">
+  return `<svg viewBox="0 0 120 120" class="gauge" role="img" aria-label="${score === null ? t("Puan yok") : t("Site puanı 100 üzerinden {score}", { score })}">
     <circle cx="60" cy="60" r="52" fill="none" stroke="#eef0f3" stroke-width="10"/>
     <circle cx="60" cy="60" r="52" fill="none" stroke="${color}" stroke-width="10" stroke-linecap="round" stroke-dasharray="${fmt(c)}" stroke-dashoffset="${fmt(c * (1 - value / 100))}" transform="rotate(-90 60 60)"/>
     <text x="60" y="64" text-anchor="middle" class="gauge-num">${score === null ? "--" : formatCount(score)}</text>

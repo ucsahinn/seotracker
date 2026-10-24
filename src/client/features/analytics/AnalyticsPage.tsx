@@ -16,7 +16,12 @@ import {
   GA4_REPORT_LABELS,
   type Ga4ReportKindName,
 } from "@/shared/ga4-reports";
+import { t } from "@/shared/i18n";
 
+/*
+ * Option labels and tab questions are Turkish source strings, translated by
+ * t() where they render: the locale is not known at import time.
+ */
 type Channel = "organic_search" | "all";
 /** Matches the windows Search Performance offers, so the two read alike. */
 type WindowDays = 7 | 28 | 90;
@@ -187,7 +192,9 @@ export function AnalyticsPage({
       <PageShell>
         <PageHeader
           title="Analytics"
-          description="Ziyaretçiler siteye hangi sayfadan giriyor, orada ne yapıyor."
+          description={t(
+            "Ziyaretçiler siteye hangi sayfadan giriyor, orada ne yapıyor.",
+          )}
         />
         <AnalyticsNotConnected projectId={projectId} />
       </PageShell>
@@ -201,7 +208,9 @@ export function AnalyticsPage({
           below jumped 20px on some tabs. It now opens the tab's panel. */}
       <PageHeader
         title="Analytics"
-        description="Ziyaretçiler siteye hangi sayfadan giriyor, orada ne yapıyor."
+        description={t(
+          "Ziyaretçiler siteye hangi sayfadan giriyor, orada ne yapıyor.",
+        )}
         actions={
           <PageActions>
             <RefreshButton
@@ -224,7 +233,7 @@ export function AnalyticsPage({
               id: value as View,
               label: GA4_REPORT_LABELS[value].label,
             })),
-            { id: HEALTH as View, label: "Ölçüm durumu" },
+            { id: HEALTH as View, label: t("Ölçüm durumu") },
           ]}
         />
 
@@ -236,7 +245,7 @@ export function AnalyticsPage({
         {view === HEALTH ? null : (
           <div className="flex flex-wrap items-center gap-2">
             <label className="flex items-center gap-2 text-xs text-muted">
-              <span className="whitespace-nowrap">Satır sayısı</span>
+              <span className="whitespace-nowrap">{t("Satır sayısı")}</span>
               <select
                 className="select select-bordered select-sm w-20"
                 value={rowLimit}
@@ -263,15 +272,15 @@ export function AnalyticsPage({
                 );
                 if (next) onWindowChange(next.value);
               }}
-              aria-label="Tarih aralığı"
+              aria-label={t("Tarih aralığı")}
             >
               {WINDOWS.map((option) => (
                 <option key={option.value} value={option.value}>
-                  {option.label}
+                  {t(option.label)}
                 </option>
               ))}
             </select>
-            <div className="join" role="radiogroup" aria-label="Kanal">
+            <div className="join" role="radiogroup" aria-label={t("Kanal")}>
               {CHANNELS.map((option) => (
                 <button
                   key={option.value}
@@ -283,7 +292,7 @@ export function AnalyticsPage({
                   }`}
                   onClick={() => setChannel(option.value)}
                 >
-                  {option.label}
+                  {t(option.label)}
                 </button>
               ))}
             </div>
@@ -294,8 +303,10 @@ export function AnalyticsPage({
       <TabPanel group="ga4-report" value={view} className="space-y-4">
         <p className="max-w-[75ch] text-sm text-muted">
           {view === HEALTH
-            ? "Analytics gerçekten ölçüyor mu? Mülkünüzün kurulum ayarlarını okur, rapor kotanızdan harcamaz."
-            : REPORT_QUESTIONS[kind]}
+            ? t(
+                "Analytics gerçekten ölçüyor mu? Mülkünüzün kurulum ayarlarını okur, rapor kotanızdan harcamaz.",
+              )
+            : t(REPORT_QUESTIONS[kind])}
         </p>
         {/* The report query keeps its last result while the health tab is
             open, so without this branch the two panels stacked and the page
@@ -325,7 +336,7 @@ export function AnalyticsPage({
             {kind === "audience_breakdown" ? (
               <div
                 role="radiogroup"
-                aria-label="Kitleyi neye göre böl"
+                aria-label={t("Kitleyi neye göre böl")}
                 className="join"
               >
                 {BREAKDOWNS.map((option) => (
@@ -339,7 +350,7 @@ export function AnalyticsPage({
                       option.value === breakdown ? "btn-active" : "btn-ghost"
                     }`}
                   >
-                    {option.label}
+                    {t(option.label)}
                   </button>
                 ))}
               </div>
@@ -348,7 +359,7 @@ export function AnalyticsPage({
             {kind === "traffic_acquisition" ? (
               <div
                 role="radiogroup"
-                aria-label="Trafiği neye göre böl"
+                aria-label={t("Trafiği neye göre böl")}
                 className="join"
               >
                 {ACQUISITION_BREAKDOWNS.map((option) => (
@@ -362,7 +373,7 @@ export function AnalyticsPage({
                       option.value === acquisition ? "btn-active" : "btn-ghost"
                     }`}
                   >
-                    {option.label}
+                    {t(option.label)}
                   </button>
                 ))}
               </div>
@@ -372,7 +383,7 @@ export function AnalyticsPage({
               <QueryErrorState
                 error={reportQuery.error}
                 onRetry={() => void reportQuery.refetch()}
-                title="Rapor alınamadı"
+                title={t("Rapor alınamadı")}
               />
             ) : null}
 

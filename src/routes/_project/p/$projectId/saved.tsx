@@ -39,6 +39,7 @@ import { useSavedKeywordsFilters } from "@/client/features/saved-keywords/useSav
 import { useSavedKeywordMutations } from "@/client/features/saved-keywords/useSavedKeywordMutations";
 import { useTagManage } from "@/client/features/saved-keywords/useTagManage";
 import { getSavedKeywords } from "@/serverFunctions/savedKeywords";
+import { t } from "@/shared/i18n";
 
 export const Route = createFileRoute("/_project/p/$projectId/saved")({
   component: SavedKeywordsPage,
@@ -321,7 +322,7 @@ function SavedKeywordsPage() {
               compact
               error={listError.error}
               onRetry={() => void listError.refetch()}
-              title="Kayıtlı kelimeler yüklenemedi"
+              title={t("Kayıtlı kelimeler yüklenemedi")}
             />
           ) : (
             <SavedKeywordsTable
@@ -375,7 +376,7 @@ function SavedKeywordsPage() {
         onCopy={() =>
           void copyText(
             selectedRows.map((row) => row.keyword).join("\n"),
-            `${selectedCount} kelime kopyalandı`,
+            t("{count} kelime kopyalandı", { count: selectedCount }),
           )
         }
         onOpenTags={() => setShowTagModal(true)}

@@ -1,3 +1,4 @@
+import { getLocale, t } from "@/shared/i18n";
 import { useState } from "react";
 import { DonutChart } from "@/client/components/DonutChart";
 import {
@@ -9,6 +10,7 @@ import {
 } from "@/client/features/opportunities/opportunityLogic";
 import { formatCount, formatPercent } from "@/client/lib/format";
 
+// Turkish, translated with t() where it renders.
 const METRICS = [
   { id: "impressions", label: "Gösterim", unit: "gösterim" },
   { id: "clicks", label: "Tıklama", unit: "tıklama" },
@@ -33,21 +35,23 @@ export function OpportunitySummary({
   const segments = kindTotals(rows, metric);
   const shown = segments.filter((segment) => segment.value > 0);
   const total = shown.reduce((sum, segment) => sum + segment.value, 0);
-  const unit = METRICS.find((m) => m.id === metric)?.unit ?? "";
+  const unit = t(METRICS.find((m) => m.id === metric)?.unit ?? "");
   if (total === 0) return null;
 
   const leader = shown.reduce((a, b) => (b.value > a.value ? b : a));
 
   return (
     <section
-      aria-label="Fırsatların dağılımı"
+      aria-label={t("Fırsatların dağılımı")}
       className="rounded-box border border-base-300 bg-base-100 p-4 shadow-[var(--shadow-raise)] transition-opacity duration-700 starting:opacity-0"
     >
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-        <h2 className="text-sm font-semibold">Fırsat nerede toplanıyor?</h2>
+        <h2 className="text-sm font-semibold">
+          {t("Fırsat nerede toplanıyor?")}
+        </h2>
         <div className="flex items-center gap-2">
           <span id="opportunity-metric-label" className="text-xs text-muted">
-            Kutular neye göre hesaplansın?
+            {t("Kutular neye göre hesaplansın?")}
           </span>
           <div
             role="group"
@@ -62,7 +66,7 @@ export function OpportunitySummary({
                 onClick={() => setMetric(option.id)}
                 className={`btn btn-xs join-item ${metric === option.id ? "btn-neutral" : ""}`}
               >
-                {option.label}
+                {t(option.label)}
               </button>
             ))}
           </div>
@@ -70,7 +74,7 @@ export function OpportunitySummary({
       </div>
       <DonutChart
         segments={segments}
-        totalLabel={`toplam ${unit}`}
+        totalLabel={t("toplam {unit}", { unit })}
         height={170}
         selectedKey={selectedKind}
         // `KIND_ORDER.find` narrows the ring's string key back to a `KindId`
@@ -78,7 +82,16 @@ export function OpportunitySummary({
         onSelect={(key) =>
           onSelectKind(KIND_ORDER.find((id) => id === key) ?? null)
         }
-        summary={`Toplam ${formatCount(total)} ${unit} içinde en büyük pay ${leader.label.toLocaleLowerCase("tr")} kümesinde (${formatPercent(leader.value / total)}).`}
+        summary={t(
+          "Toplam {total} {unit} içinde en büyük pay {kind} kümesinde ({share}).",
+          {
+            total: formatCount(total),
+            unit,
+            // Already translated by kindTotals; lowercased for mid-sentence.
+            kind: leader.label.toLocaleLowerCase(getLocale()),
+            share: formatPercent(leader.value / total),
+          },
+        )}
       />
     </section>
   );

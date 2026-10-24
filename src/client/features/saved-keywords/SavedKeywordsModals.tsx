@@ -1,8 +1,10 @@
 import { AlertCircle, Loader2 } from "lucide-react";
 import { useEffect } from "react";
 import { Modal } from "@/client/components/Modal";
+import { fillParts } from "@/client/features/settings/fillParts";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import type { SavedKeywordRow } from "@/types/keywords";
+import { t } from "@/shared/i18n";
 
 export function RemoveSavedKeywordsError({ message }: { message: string }) {
   return (
@@ -45,29 +47,32 @@ export function DeleteSavedKeywordsModal({
   return (
     <Modal onClose={onClose} labelledBy="delete-keywords-title">
       <h3 id="delete-keywords-title" className="text-lg font-semibold">
-        {keyword ? "Kelime silinsin mi?" : "Kelimeler silinsin mi?"}
+        {keyword ? t("Kelime silinsin mi?") : t("Kelimeler silinsin mi?")}
       </h3>
       <p className="text-sm text-muted">
-        {keyword ? (
-          <>
-            <strong className="break-words font-medium text-base-content">
-              &ldquo;{keyword}&rdquo;
-            </strong>{" "}
-            kalıcı olarak silinir. İsterseniz Arama performansından yeniden
-            kaydedebilirsiniz.
-          </>
-        ) : (
-          <>
-            Kayıtlı {selectedCount} kelime kalıcı olarak silinecek. Bu geri
-            alınamaz.
-          </>
-        )}
+        {keyword
+          ? fillParts(
+              t(
+                "{keyword} kalıcı olarak silinir. İsterseniz Arama performansından yeniden kaydedebilirsiniz.",
+              ),
+              {
+                keyword: (
+                  <strong className="break-words font-medium text-base-content">
+                    &ldquo;{keyword}&rdquo;
+                  </strong>
+                ),
+              },
+            )
+          : t(
+              "Kayıtlı {count} kelime kalıcı olarak silinecek. Bu geri alınamaz.",
+              { count: selectedCount },
+            )}
       </p>
       {error ? (
         <p role="alert" className="text-sm text-[var(--ink-error)]">
           {getStandardErrorMessage(
             error,
-            "Kelimeler silinemedi. Tekrar deneyin.",
+            t("Kelimeler silinemedi. Tekrar deneyin."),
           )}
         </p>
       ) : null}
@@ -77,7 +82,7 @@ export function DeleteSavedKeywordsModal({
           className="btn btn-ghost btn-sm"
           onClick={onClose}
         >
-          Vazgeç
+          {t("Vazgeç")}
         </button>
         <button
           type="button"
@@ -86,7 +91,9 @@ export function DeleteSavedKeywordsModal({
           disabled={isPending}
         >
           {isPending ? <Loader2 className="size-3 animate-spin" /> : null}
-          {keyword ? "Kelimeyi sil" : `${selectedCount} kelimeyi sil`}
+          {keyword
+            ? t("Kelimeyi sil")
+            : t("{count} kelimeyi sil", { count: selectedCount })}
         </button>
       </div>
     </Modal>

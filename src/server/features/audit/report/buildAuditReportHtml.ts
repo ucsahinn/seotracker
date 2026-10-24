@@ -1,5 +1,6 @@
 import { isDeepEqual } from "remeda";
 import { formatCount, formatDate, formatDateTime } from "@/shared/format";
+import { getLocale, t } from "@/shared/i18n";
 import { escapeHtml, hostOf } from "./reportFormat";
 import { appendixSection, issuesSection } from "./reportIssueSections";
 import { indexSection, sitemapSection } from "./reportIndexSections";
@@ -37,8 +38,8 @@ import {
  * not a library. Print it to PDF from the browser: the stylesheet lays it out
  * for A4, one section per page, with a running header.
  *
- * Dates go through `@/shared/format`, the app's one formatting module
- * (tr-TR; it also reads SQLite's timezone-less stamps as UTC, which a local
+ * Text is in the request's language (`t`), and dates go through
+ * `@/shared/format`, the app's one formatting module (it also reads SQLite's timezone-less stamps as UTC, which a local
  * `new Date(...)` here did not).
  */
 
@@ -54,6 +55,7 @@ const MIN_CAPS = { issuePages: 5, appendix: 0, pages: 10, speed: 10 };
 const MIN_URL_CHARS = 40;
 const MIN_DETAIL_CHARS = 20;
 
+/* Turkish source labels, shown through t() in the table of contents. */
 const TOC_ITEMS = [
   { href: "genel", label: "1. Genel görünüm" },
   { href: "sorunlar", label: "2. Sorunlar" },
@@ -147,17 +149,31 @@ export function buildAuditReportHtml(
    * title is too long, never the suffix.
    */
   const suffix = ` - ${formatDate(stamp)}${input.auditId ? ` · ${input.auditId}` : ""}`;
-  const title = `${`${host} site denetimi`.slice(0, 120 - suffix.length)}${suffix}`;
+  const title = `${t("{host} site denetimi", { host }).slice(0, 120 - suffix.length)}${suffix}`;
   const summary = [
-    `${host} için ${formatCount(input.pagesCrawled)} sayfa tarandı.`,
-    score === null ? "" : `Site puanı ${formatCount(score)}/100.`,
+    t("{host} için {count} sayfa tarandı.", {
+      host,
+      count: input.pagesCrawled,
+    }),
+    score === null ? "" : t("Site puanı {count}/100.", { count: score }),
     counts.total === 0
       ? reliable
-        ? "Kayıtlı sorun yok."
-        : "Denetim tamamlanmadığı için sorun listesi eksik olabilir."
-      : `${formatCount(counts.total)} sorun türü bulundu: ${formatCount(counts.critical)} kritik, ${formatCount(counts.warning)} uyarı, ${formatCount(counts.info)} bilgi.`,
+        ? t("Kayıtlı sorun yok.")
+        : t("Denetim tamamlanmadığı için sorun listesi eksik olabilir.")
+      : t(
+          "{count} sorun türü bulundu: {critical} kritik, {warning} uyarı, {info} bilgi.",
+          {
+            count: counts.total,
+            critical: formatCount(counts.critical),
+            warning: formatCount(counts.warning),
+            info: formatCount(counts.info),
+          },
+        ),
     groups.length > 0
-      ? `En çok sayfayı etkileyen: ${groups[0].title} (${formatCount(groups[0].pageCount)} sayfa).`
+      ? t("En çok sayfayı etkileyen: {title} ({count} sayfa).", {
+          title: groups[0].title,
+          count: groups[0].pageCount,
+        })
       : "",
   ]
     .filter(Boolean)
@@ -183,7 +199,7 @@ function page(
   main: string,
 ): string {
   return `<!doctype html>
-<html lang="tr">
+<html lang="${getLocale()}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -191,12 +207,13 @@ function page(
 <style>${STYLES}</style>
 </head>
 <body>
-<div class="running">${escapeHtml(host)} · Site denetim raporu · ${escapeHtml(formatDateTime(stamp))}</div>
+<div class="running">${escapeHtml(host)} · ${t("Site denetim raporu")} · ${escapeHtml(formatDateTime(stamp))}</div>
 <main>
   ${main}
   <footer>
-    <p>seowatcher ile üretildi. Bu dosya kendi kendine yeter: açmak için
-    internet bağlantısı gerekmez. PDF için tarayıcıdan Yazdır seçeneğini kullanın.</p>
+    <p>${t(
+      "seowatcher ile üretildi. Bu dosya kendi kendine yeter: açmak için internet bağlantısı gerekmez. PDF için tarayıcıdan Yazdır seçeneğini kullanın.",
+    )}</p>
   </footer>
 </main>
 </body>

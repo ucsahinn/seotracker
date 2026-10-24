@@ -6,7 +6,7 @@ route: /support
 updated: 2026-10-22
 ---
 
-A interface do aplicativo está em turco. Este guia mostra cada botão e cada nome de tela em turco, com o significado em português entre parênteses.
+A interface do aplicativo está disponível em turco e inglês. O idioma é escolhido em Ayarlar → Görünüm → Dil. Este guia mostra cada botão e cada nome de tela em turco, com o significado em português entre parênteses.
 
 Este é o primeiro lugar a olhar quando algo dá errado. A tela confere a sua instalação, diz o que está faltando e leva você à configuração certa.
 

@@ -3,16 +3,22 @@ title: Impostazioni
 description: Tema, chiave di accesso a Google, chiave PageSpeed, limiti d'uso e aggiornamenti. È l'unica schermata di impostazioni dell'intera installazione.
 screen: Ayarlar
 route: /settings
-updated: 2026-10-22
+updated: 2026-10-24
 ---
 
 Qui si gestiscono il collegamento con Google, la chiave per la misurazione della velocità e gli aggiornamenti.
 
-Nella schermata **Ayarlar** (Impostazioni) si regola ciò che riguarda l'intera installazione. Le impostazioni specifiche del progetto (nome, dominio, proprietà di Search Console e di Analytics) stanno nella pagina **Proje ayarları** (Impostazioni del progetto) di ciascun progetto. Qui si gestiscono la chiave di accesso necessaria per collegarsi a Google, la chiave PageSpeed, il tema e il controllo degli aggiornamenti. A sinistra ci sono le sezioni **Görünüm** (Aspetto), **Google**, **Hizmet hesabı** (Account di servizio), **Hız ölçümü** (Misurazione della velocità), **Sınırlar** (Limiti), **Hakkında** (Informazioni) e **Sürüm notları** (Note di versione). Nel titolo di ogni sezione c'è un badge che ne mostra lo stato.
+Nella schermata **Ayarlar** (Impostazioni) si regola ciò che riguarda l'intera installazione. Le impostazioni specifiche del progetto (nome, dominio, proprietà di Search Console e di Analytics) stanno nella pagina **Proje ayarları** (Impostazioni del progetto) di ciascun progetto. Qui si gestiscono la chiave di accesso necessaria per collegarsi a Google, la chiave PageSpeed, il tema e il controllo degli aggiornamenti. A sinistra ci sono le sezioni **Görünüm** (Aspetto), **Google**, **Hizmet hesabı** (Account di servizio), **Hız ölçümü** (Misurazione della velocità), **Sınırlar** (Limiti), **Hakkında** (Informazioni) e **Windows**. Nel titolo di ogni sezione c'è un badge che ne mostra lo stato.
 
 ## Cosa c'è nella schermata
 
 **Görünüm.** Per il **Tema** (Tema) ci sono le opzioni Sistem (Sistema), Açık (Chiaro) e Koyu (Scuro). La scelta è conservata in questo browser. In un altro browser o su un altro computer la si sceglie di nuovo.
+
+**Lingua.** L’interfaccia dell’app è disponibile in turco e inglese. In **Ayarlar → Görünüm → Dil**, scegliere Türkçe o English. La pagina si ricarica; numeri e date seguono la lingua selezionata. La scelta viene salvata nel browser.
+
+**Notifiche (Bildirimler).** La campanella mostra gli ultimi 50 eventi e il numero di messaggi non letti. **Tümünü okundu işaretle** segna tutto come letto senza eliminare la cronologia. In **Bildirimler** è possibile ascoltare il suono e attivare le notifiche desktop in background. Il permesso del browser viene richiesto solo all’attivazione.
+
+**Windows.** Attiva o disattiva l’avvio con Windows e l’installazione automatica degli aggiornamenti. Sono le stesse preferenze salvate nel menu dell’icona di notifica. Le restrizioni dell’amministratore sono spiegate accanto al comando. I comandi sono disabilitati nelle installazioni Docker e di sviluppo; i vecchi launcher Windows richiedono l’aggiornamento del pacchetto.
 
 **Google.** Il badge ha uno di tre valori: **Kayıtlı** (Registrata), **Ortamdan geliyor** (Arriva dall'ambiente; in un'installazione Docker è stata data con il file `.env`) oppure **Eksik** (Mancante). La sezione mostra i due indirizzi di reindirizzamento da aggiungere in Google Cloud Console (il pannello per sviluppatori di Google). Accanto ci sono i pulsanti di copia. Vanno aggiunti entrambi. Se non si aggiunge l'indirizzo di Analytics, si collega solo Search Console.
 
@@ -38,9 +44,9 @@ Il badge dice **Kayıtlı** (Registrato) oppure **Kullanılmıyor** (Non in uso)
 
 Lo stato di ogni scheda è **Yeterli** (Sufficiente), **Azalıyor** (In esaurimento, oltre il 70 per cento usato), **Neredeyse doldu** (Quasi esaurito, oltre il 90 per cento usato) oppure **Bilinmiyor** (Sconosciuto).
 
-**Hakkında.** La riga **Sürüm** (Versione) mostra la versione (per esempio v2.3.0). L'interruttore **Güncellemeleri kontrol et** (Controlla gli aggiornamenti) è attivo per impostazione predefinita. Se è attivo, l'app chiede a GitHub l'ultima versione al massimo una volta al giorno. In tal caso compare anche il pulsante **Şimdi kontrol et** (Controlla ora). Se c'è una versione nuova, compare il collegamento **Değişiklikler** (Modifiche). Per le installazioni Docker compare anche il comando da copiare: `git pull && docker compose up -d --build`. Nel pacchetto Windows la schermata rimanda a **Güncelle** (Aggiorna) nell'icona della barra delle applicazioni. Se l'aggiornamento automatico è attivo, la nuova versione si installa da sola.
+**Hakkında.** La riga **Sürüm** (Versione) mostra la versione (per esempio 0.5.0 Alpha). L'interruttore **Güncellemeleri kontrol et** (Controlla gli aggiornamenti) è attivo per impostazione predefinita. Se è attivo, l'app chiede a GitHub l'ultima versione al massimo una volta al giorno. In tal caso compare anche il pulsante **Şimdi kontrol et** (Controlla ora). Se c'è una versione nuova, compare il collegamento **Değişiklikler** (Modifiche). Per le installazioni Docker compare anche il comando da copiare: `git pull && docker compose up -d --build`. Nel pacchetto Windows la schermata rimanda a **Güncelle** (Aggiorna) nell'icona della barra delle applicazioni. Se l'aggiornamento automatico è attivo, la nuova versione si installa da sola.
 
-**Sürüm notları.** Elenca che cosa è cambiato in ogni versione.
+**Sürüm notları.** Le note di versione hanno una pagina separata sopra le notifiche nel menu laterale. Le etichette colorate indicano novità, correzioni e modifiche di sicurezza.
 
 ## Come si usa
 

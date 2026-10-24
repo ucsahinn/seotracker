@@ -1,31 +1,38 @@
 import { Link } from "@tanstack/react-router";
 import * as React from "react";
 import { HelpTip } from "@/client/components/HelpTip";
-import { formatCount, formatPercent } from "@/client/lib/format";
+import { formatPercent } from "@/client/lib/format";
+import { t } from "@/shared/i18n";
 
 type Severity = "critical" | "warning" | "info";
 
+/* Turkish source strings, translated by t() where they render. */
 const SEGMENTS: {
   key: Severity;
   label: string;
+  /** The legend entry, a count and the severity in one sentence. */
+  legend: string;
   fill: string;
   hint: string;
 }[] = [
   {
     key: "critical",
     label: "Kritik",
+    legend: "{count} kritik",
     fill: "bg-error",
     hint: "Aramada görünürlüğü doğrudan bozan sorunlar; önce bunlar.",
   },
   {
     key: "warning",
     label: "Uyarı",
+    legend: "{count} uyarı",
     fill: "bg-warning",
     hint: "Sıralamayı zamanla aşındıran, ama acil olmayan sorunlar.",
   },
   {
     key: "info",
     label: "Bilgi",
+    legend: "{count} bilgi",
     fill: "bg-base-content/30",
     hint: "Küçük iyileştirme fırsatları.",
   },
@@ -73,7 +80,11 @@ export function SeverityBar({
             search={{ auditId, tab: "issues" as const, severity: segment.key }}
             className={`${segment.fill} min-w-1 transition-opacity hover:opacity-70`}
             style={{ flexGrow: totals[segment.key] }}
-            title={`${segment.label}: ${formatCount(totals[segment.key])} bulgu. ${segment.hint}`}
+            title={t("{severity}: {count} bulgu. {hint}", {
+              severity: t(segment.label),
+              count: totals[segment.key],
+              hint: t(segment.hint),
+            })}
             // The legend below carries the same links with a readable hit
             // area, so the thin bar is a pointer shortcut only.
             aria-hidden
@@ -93,15 +104,14 @@ export function SeverityBar({
                 severity: segment.key,
               }}
               className="flex items-center gap-1.5 rounded-field py-0.5 transition-colors hover:text-base-content"
-              title={segment.hint}
+              title={t(segment.hint)}
             >
               <span
                 className={`size-1.5 rounded-full ${segment.fill}`}
                 aria-hidden
               />
               <span className="tabular-nums">
-                {formatCount(totals[segment.key])}{" "}
-                {segment.label.toLocaleLowerCase("tr-TR")}
+                {t(segment.legend, { count: totals[segment.key] })}
               </span>
               <span className="text-subtle tabular-nums">
                 {formatPercent(totals[segment.key] / total, 0)}
@@ -110,11 +120,10 @@ export function SeverityBar({
           </li>
         ))}
         <li>
-          <HelpTip label="Önem düzeyi">
-            Kritik sorunlar sayfanın aramada görünmesini engelleyebilir,
-            uyarılar sıralamayı zamanla aşındırır, bilgi notları ise küçük
-            iyileştirmelerdir. Çubuğa ya da altındaki etiketlerden birine
-            tıklarsanız sorun listesine geçersiniz.
+          <HelpTip label={t("Önem düzeyi")}>
+            {t(
+              "Kritik sorunlar sayfanın aramada görünmesini engelleyebilir, uyarılar sıralamayı zamanla aşındırır, bilgi notları ise küçük iyileştirmelerdir. Çubuğa ya da altındaki etiketlerden birine tıklarsanız sorun listesine geçersiniz.",
+            )}
           </HelpTip>
         </li>
       </ul>

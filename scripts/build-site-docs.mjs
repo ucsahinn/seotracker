@@ -7,8 +7,9 @@
  * `docs/kb/en/*.md` (its English edition, same file names), renders each one
  * to `site/docs/<slug>/index.html` or `site/en/docs/<english-slug>/index.html`
  * with the site's own look, writes the two guide indexes, the entries of both
- * languages into `site/sitemap.xml` (with hreflang alternates) and
- * `site/llms.txt`. The output is committed: Cloudflare Pages serves the folder
+ * languages into `site/sitemap.xml` (with hreflang alternates and the home
+ * pages' screenshots), `site/llms.txt` and one Atom release feed per edition
+ * (`site/feed.xml`, `site/<lang>/feed.xml`). The output is committed: Cloudflare Pages serves the folder
  * as is, with no build step. Rerun after editing a KB file.
  *
  * The Markdown subset is deliberate: headings, paragraphs, ordered and
@@ -448,6 +449,7 @@ function page(
     ),
     "{{ogType}}": slug ? "article" : "website",
     "{{pageSlug}}": slug || "index",
+    "{{feed}}": `${locale.base}/feed.xml`,
     "{{releaseNotes}}": docUrl(locale, "surum-notlari"),
     "{{seotitle}}": escapeHtml(seoTitle(locale, { title, slug, screen })),
     "{{title}}": escapeHtml(title),
@@ -485,6 +487,7 @@ function page(
   );
   if (left)
     throw new Error(`site-docs-shell.html: unknown placeholder ${left[0]}`);
+  if (!pager) out = out.replace(/[ \t]+\{\{pager\}\}/g, "{{pager}}");
   for (const k of content) out = out.replaceAll(k, () => replacements[k]);
   return out;
 }
@@ -657,13 +660,39 @@ function main() {
 
   const homeDate =
     gitDate(path.join("site", "index.html")) || bySlug.get("").lastmod.tr;
-  const entry = (loc, lastmod, alternates) =>
-    `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n${alternates
-      .map(
+  const entry = (loc, lastmod, alternates, images = []) =>
+    `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n${[
+      ...alternates.map(
         (a) =>
           `    <xhtml:link rel="alternate" hreflang="${a.lang}" href="${a.href}" />`,
-      )
-      .join("\n")}\n  </url>`;
+      ),
+      ...images.map(
+        (src) =>
+          `    <image:image>\n      <image:loc>${src}</image:loc>\n    </image:image>`,
+      ),
+    ].join("\n")}\n  </url>`;
+  // The screenshots a home page shows (an <img> with alt text, so not the
+  // logos or the decorative copies), each at the largest size on disk:
+  // walk-x-dark-m.webp is listed as walk-x-dark.png when that file exists.
+  const homeImages = (l) => {
+    const file = path.join(
+      siteDir,
+      l.lang === "tr" ? "" : l.lang,
+      "index.html",
+    );
+    const html = fs.readFileSync(file, "utf8");
+    const srcs = new Set();
+    for (const [tag] of html.matchAll(/<img\b[^>]*>/g)) {
+      const src = /\ssrc="(\/assets\/[^"]+)"/.exec(tag)?.[1];
+      const alt = /\salt="([^"]*)"/.exec(tag)?.[1];
+      if (!src || !alt?.trim() || src.endsWith(".svg")) continue;
+      const png = src.replace(/(-1x|-m1?)?\.(webp|png)$/, ".png");
+      srcs.add(fs.existsSync(path.join(siteDir, png)) ? png : src);
+    }
+    if (!srcs.size)
+      throw new Error(`no screenshots in ${path.relative(root, file)}`);
+    return [...srcs].map(absolute);
+  };
   const homes = Object.values(locales).filter(hasHome);
   const homeAlternates = [
     ...homes.map((l) => ({ lang: l.lang, href: `${siteUrl}${l.base}/` })),
@@ -675,6 +704,7 @@ function main() {
       gitDate(path.join("site", l.lang === "tr" ? "" : l.lang, "index.html")) ||
         homeDate,
       homeAlternates,
+      homeImages(l),
     ),
   );
   for (const u of urls) {
@@ -696,7 +726,7 @@ function main() {
         ),
       );
   }
-  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${entries.join("\n")}\n</urlset>\n`;
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${entries.join("\n")}\n</urlset>\n`;
   fs.writeFileSync(path.join(siteDir, "sitemap.xml"), sitemap);
 
   // llms.txt: the same facts the site states, in the plain-text shape AI
@@ -744,11 +774,11 @@ function main() {
   };
   const llms = `# seowatcher
 
-> seowatcher (GitHub ve uygulama içi adı: seotracker), Google Search Console, Google Analytics 4, kendi site tarayıcısı ve PageSpeed Insights verisini tek panelde toplayan ücretsiz, açık kaynaklı (MIT) bir SEO uygulamasıdır. Windows 10/11 (64 bit) için tek kurulum dosyası vardır; Mac ve Linux'ta Docker ile çalışır. Tek kullanıcılıdır, yalnızca kullanıcının kendi bilgisayarından erişilir, veri o bilgisayarda kalır. Abonelik ve hesap yoktur.
-> English: seowatcher (also named seotracker) is a free, MIT-licensed, self-hosted SEO app that reads Google Search Console, Google Analytics 4, its own crawler and PageSpeed Insights. Windows 10/11 installer; Docker on macOS/Linux. Single user, localhost only, data stays on your machine. Derived from open-seo. The app's interface is Turkish; the website and this guide exist in ${editionsOnDisk.map((l) => l.name).join(", ")}.
+> seowatcher (GitHub ve uygulama içi adı: seotracker), Google Search Console, Google Analytics 4, kendi site tarayıcısı ve PageSpeed Insights verisini tek panelde toplayan ücretsiz, açık kaynaklı (MIT) bir SEO uygulamasıdır. Windows 10/11 (64 bit) için tek kurulum dosyası vardır; Mac ve Linux'ta Docker ile çalışır. Tek kullanıcılıdır, yalnızca kullanıcının kendi bilgisayarından erişilir, veri o bilgisayarda saklanır. Google, denetlenen siteler ve GitHub ile bağlantı kurar; isteğe bağlı yapay zekâ bağlantısı seçilen sağlayıcıya veri gönderebilir. Abonelik ve hesap yoktur.
+> English: seowatcher (also named seotracker) is a free, MIT-licensed, self-hosted SEO app that reads Google Search Console, Google Analytics 4, its own crawler and PageSpeed Insights. Windows 10/11 installer; Docker on macOS/Linux. Single user, localhost only, data is stored on your machine. It connects to Google, audited sites and GitHub; optional AI integrations may send data to the selected provider. Derived from open-seo. The app's interface is available in Turkish and English; the website and this guide exist in ${editionsOnDisk.map((l) => l.name).join(", ")}.
 
-Hızlı bilgiler: sürüm ${pkg.version}, 95 denetim kuralı, yapay zekâ asistanları için 33 MCP aracı ve 6 hazır görev, fiyat 0, lisans MIT. Arama hacmi tahmini, backlink sayımı ve rakip sıralaması yoktur. Kurulum dosyası 81 MB, kurulu hali 290 MB; Visual C++ çalışma zamanı pakete dahildir.
-Quick facts: version ${pkg.version}, 95 audit rules, 33 MCP tools and 6 ready-made tasks for AI assistants, price 0, MIT license. No search-volume estimates, backlink counts or competitor rankings. Installer 81 MB, installed 290 MB; the Visual C++ runtime is bundled.
+Hızlı bilgiler: sürüm ${pkg.version} Alpha, 95 denetim kuralı, yapay zekâ asistanları için 33 MCP aracı ve 6 hazır görev, fiyat 0, lisans MIT. Arama hacmi tahmini, backlink sayımı ve rakip sıralaması yoktur. Kurulum dosyası 86 MB, kurulu hali 313 MB; Visual C++ çalışma zamanı pakete dahildir.
+Quick facts: version ${pkg.version} Alpha, 95 audit rules, 33 MCP tools and 6 ready-made tasks for AI assistants, price 0, MIT license. No search-volume estimates, backlink counts or competitor rankings. Installer 86 MB, installed 313 MB; the Visual C++ runtime is bundled.
 
 ## Ana bağlantılar / Main links
 ${homes
@@ -768,6 +798,42 @@ ${editionsOnDisk.map(guideList).join("\n\n")}
 - [open-seo, temel alınan proje](https://github.com/every-app/open-seo)
 `;
   fs.writeFileSync(path.join(siteDir, "llms.txt"), llms);
+
+  // One Atom feed per edition (/feed.xml, /en/feed.xml ...) whose single
+  // entry is the current release-notes page, so feed readers and answer
+  // engines see a new release when the page changes. The entry id carries
+  // the version: a new release is a new entry, an edit of the notes is not.
+  for (const locale of editionsOnDisk) {
+    const notes = all[locale.lang].get("surum-notlari");
+    if (!notes) continue;
+    const pageUrl = absolute(docUrl(locale, "surum-notlari"));
+    const feedUrl = `${siteUrl}${locale.base}/feed.xml`;
+    const updated = `${bySlug.get("surum-notlari").lastmod[locale.lang]}T00:00:00Z`;
+    const feed = `<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="${locale.lang}">
+  <id>${feedUrl}</id>
+  <title>seowatcher: ${escapeHtml(notes.meta.title)}</title>
+  <updated>${updated}</updated>
+  <link rel="self" type="application/atom+xml" href="${feedUrl}" />
+  <link rel="alternate" type="text/html" href="${siteUrl}${locale.base}/" />
+  <author>
+    <name>seowatcher</name>
+    <uri>https://github.com/ucsahinn/seotracker</uri>
+  </author>
+  <icon>${siteUrl}/assets/icon-256.png</icon>
+  <entry>
+    <id>${pageUrl}#${pkg.version}</id>
+    <title>${escapeHtml(notes.meta.title)}: seowatcher ${pkg.version}</title>
+    <updated>${updated}</updated>
+    <link rel="alternate" type="text/html" href="${pageUrl}" />
+    <summary>${escapeHtml(notes.meta.description)}</summary>
+  </entry>
+</feed>
+`;
+    const dir = path.join(siteDir, locale.lang === "tr" ? "" : locale.lang);
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(path.join(dir, "feed.xml"), feed);
+  }
   console.log(
     `docs pages written: ${editionsOnDisk.map((l) => `${l.lang} ${all[l.lang].size}`).join(", ")}; sitemap has ${entries.length} urls`,
   );

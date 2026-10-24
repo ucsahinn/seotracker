@@ -1,6 +1,7 @@
 import { Minus, Plus, RotateCcw, X } from "lucide-react";
 import { useState, type KeyboardEvent } from "react";
 import type { SavedKeywordsFilterForm } from "./useSavedKeywordsFilters";
+import { t } from "@/shared/i18n";
 
 export function SavedKeywordsFilterPanel({
   form,
@@ -15,10 +16,10 @@ export function SavedKeywordsFilterPanel({
     <div className="space-y-3 border-b border-base-300 bg-base-200/30 px-4 py-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2">
-          <p className="text-sm font-semibold">Sonuçları filtrele</p>
+          <p className="text-sm font-semibold">{t("Sonuçları filtrele")}</p>
           {activeFilterCount > 0 ? (
             <span className="badge badge-xs badge-primary border-0 text-primary-content">
-              {activeFilterCount} etkin
+              {t("{count} etkin", { count: activeFilterCount })}
             </span>
           ) : null}
         </div>
@@ -29,7 +30,7 @@ export function SavedKeywordsFilterPanel({
           disabled={activeFilterCount === 0}
         >
           <RotateCcw className="size-3" />
-          Tümünü temizle
+          {t("Tümünü temizle")}
         </button>
       </div>
 
@@ -37,16 +38,16 @@ export function SavedKeywordsFilterPanel({
         <TermsTokenInput
           form={form}
           name="include"
-          label="İçeren"
+          label={t("İçeren")}
           variant="include"
-          placeholder="örn. denetim"
+          placeholder={t("örn. denetim")}
         />
         <TermsTokenInput
           form={form}
           name="exclude"
-          label="İçermeyen"
+          label={t("İçermeyen")}
           variant="exclude"
-          placeholder="örn. iş ilanı"
+          placeholder={t("örn. iş ilanı")}
         />
       </div>
 
@@ -157,7 +158,7 @@ function TermsTokenInput({
                      * its height.
                      */
                     className="-m-1 inline-flex min-h-6 min-w-6 items-center justify-center p-1 opacity-70 hover:opacity-100"
-                    aria-label={`${term} terimini kaldır`}
+                    aria-label={t("{term} terimini kaldır", { term })}
                     onClick={() =>
                       commit(terms.filter((existing) => existing !== term))
                     }

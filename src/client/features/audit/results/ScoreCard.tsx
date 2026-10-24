@@ -1,6 +1,7 @@
 import { AnimatedNumber } from "@/client/components/AnimatedNumber";
 import { ArrowRight } from "lucide-react";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useReducedMotion } from "@/client/lib/useReducedMotion";
 import {
   auditScoreBand,
   auditScoreTier,
@@ -12,6 +13,7 @@ import {
 } from "@/shared/audit-issues";
 import { formatDecimal } from "@/client/lib/format";
 import type { AuditResultsData } from "@/client/features/audit/results/types";
+import { t } from "@/shared/i18n";
 
 /**
  * The site's health as one number, and what to do to raise it.
@@ -35,16 +37,16 @@ function ringColor(score: number): string {
 }
 
 function verdict(score: number): string {
-  if (score === 100) return "Eksiksiz. Düzeltilecek bir şey kalmadı.";
+  if (score === 100) return t("Eksiksiz. Düzeltilecek bir şey kalmadı.");
   switch (auditScoreTier(score)) {
     case "excellent":
-      return "Çok iyi. Birkaç küçük iş kaldı.";
+      return t("Çok iyi. Birkaç küçük iş kaldı.");
     case "good":
-      return "İyi. Birkaç düzeltme puanı yükseltir.";
+      return t("İyi. Birkaç düzeltme puanı yükseltir.");
     case "fair":
-      return "Orta. Önce kritik sorunlara bakın.";
+      return t("Orta. Önce kritik sorunlara bakın.");
     case "poor":
-      return "Zayıf. Google'ın sitenizi anlamasını engelleyen sorunlar var.";
+      return t("Zayıf. Google'ın sitenizi anlamasını engelleyen sorunlar var.");
   }
 }
 
@@ -57,6 +59,12 @@ export function ScoreCard({
   pagesCrawled: number;
   onOpenIssues: () => void;
 }) {
+  const reduced = useReducedMotion();
+  const [arrived, setArrived] = useState(false);
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => setArrived(true));
+    return () => cancelAnimationFrame(frame);
+  }, []);
   const { score, gains } = useMemo(() => {
     // Distinct pages per finding type. A finding with no page (robots.txt,
     // the sitemap) describes the whole site, so it counts as every page.
@@ -114,15 +122,18 @@ export function ScoreCard({
             strokeLinecap="round"
             stroke={ringColor(score)}
             strokeDasharray={circumference}
-            strokeDashoffset={circumference * (1 - score / 100)}
+            strokeDashoffset={
+              circumference * (1 - (arrived || reduced ? score : 0) / 100)
+            }
             /*
              * The ring draws itself once, on arrival. `transition` rather
              * than a keyframe so a re-render with a new score glides to it
              * instead of restarting.
              */
             style={{
-              transition:
-                "stroke-dashoffset 900ms cubic-bezier(0.32, 0.72, 0, 1)",
+              transition: reduced
+                ? "none"
+                : "stroke-dashoffset 900ms cubic-bezier(0.32, 0.72, 0, 1)",
             }}
           />
         </svg>
@@ -135,38 +146,40 @@ export function ScoreCard({
       </div>
 
       <div className="min-w-0 flex-1">
-        <h2 className="text-sm font-medium">Site puanı</h2>
+        <h2 className="text-sm font-medium">{t("Site puanı")}</h2>
         <p className="mt-0.5 text-sm text-muted">{verdict(score)}</p>
 
         {gains.length > 0 ? (
           <ul className="mt-3 space-y-1.5">
-            {gains.slice(0, SHOWN).map((gain) => (
-              <li key={gain.issueType}>
-                <button
-                  type="button"
-                  onClick={onOpenIssues}
-                  className="group flex w-full items-center gap-3 rounded-field px-2 py-1.5 text-left transition-colors hover:bg-base-200/50"
-                >
-                  <span
-                    className="min-w-0 flex-1 truncate text-sm"
-                    title={
-                      getIssueDescriptor(gain.issueType)?.title ??
-                      gain.issueType
-                    }
+            {gains.slice(0, SHOWN).map((gain) => {
+              const descriptor = getIssueDescriptor(gain.issueType);
+              const title = descriptor ? t(descriptor.title) : gain.issueType;
+              return (
+                <li key={gain.issueType}>
+                  <button
+                    type="button"
+                    onClick={onOpenIssues}
+                    className="group flex w-full items-center gap-3 rounded-field px-2 py-1.5 text-left transition-colors hover:bg-base-200/50"
                   >
-                    {getIssueDescriptor(gain.issueType)?.title ??
-                      gain.issueType}
-                  </span>
-                  <span className="shrink-0 text-xs font-medium tabular-nums text-[var(--ink-success)]">
-                    +{formatDecimal(gain.points)} puan
-                  </span>
-                  <ArrowRight
-                    aria-hidden
-                    className="size-3.5 shrink-0 text-muted transition-transform group-hover:translate-x-0.5"
-                  />
-                </button>
-              </li>
-            ))}
+                    <span
+                      className="min-w-0 flex-1 truncate text-sm"
+                      title={title}
+                    >
+                      {title}
+                    </span>
+                    <span className="shrink-0 text-xs font-medium tabular-nums text-[var(--ink-success)]">
+                      {t("+{points} puan", {
+                        points: formatDecimal(gain.points),
+                      })}
+                    </span>
+                    <ArrowRight
+                      aria-hidden
+                      className="size-3.5 shrink-0 text-muted transition-transform group-hover:translate-x-0.5"
+                    />
+                  </button>
+                </li>
+              );
+            })}
           </ul>
         ) : null}
       </div>

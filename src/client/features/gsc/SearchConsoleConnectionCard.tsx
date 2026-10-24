@@ -17,6 +17,7 @@ import {
 } from "@/client/features/gsc/SitePicker";
 import { invalidatePropertyDependents } from "@/client/features/gsc/invalidatePropertyDependents";
 import { disconnectGsc, listGscSites, setGscSite } from "@/serverFunctions/gsc";
+import { t } from "@/shared/i18n";
 
 const GRANT_STATUS_KEY = ["gscGrantStatus"];
 
@@ -92,7 +93,7 @@ export function SearchConsoleConnectionCard({
         current ? { ...current, ...saved } : current,
       );
       captureClientEvent("gsc:property_select");
-      toast.success("Search Console bağlandı");
+      toast.success(t("Search Console bağlandı"));
       queryClient.removeQueries({ queryKey: ["gscSites", projectId] });
       void queryClient.invalidateQueries({ queryKey: connectionKey });
       setPicking(false);
@@ -106,7 +107,7 @@ export function SearchConsoleConnectionCard({
   const disconnectMutation = useMutation({
     mutationFn: () => disconnectGsc({ data: { projectId } }),
     onSuccess: () => {
-      toast.success("Search Console bağlantısı kesildi");
+      toast.success(t("Search Console bağlantısı kesildi"));
       queryClient.setQueryData(connectionKey, (current: typeof connection) =>
         current ? { ...current, connected: false } : current,
       );
@@ -142,7 +143,7 @@ export function SearchConsoleConnectionCard({
       {connectionQuery.isPending ? (
         <div
           role="status"
-          aria-label="Bağlantı yükleniyor"
+          aria-label={t("Bağlantı yükleniyor")}
           className="space-y-3 animate-pulse"
         >
           <div className="h-4 w-2/3 rounded-field bg-base-200" />
@@ -151,14 +152,14 @@ export function SearchConsoleConnectionCard({
       ) : connectionQuery.isError && !connection ? (
         <div role="alert" className="space-y-3 text-sm">
           <p className="text-[var(--ink-error)]">
-            Bu projenin bağlantısı kontrol edilemedi.
+            {t("Bu projenin bağlantısı kontrol edilemedi.")}
           </p>
           <button
             type="button"
             className="btn btn-ghost btn-sm"
             onClick={() => void connectionQuery.refetch()}
           >
-            Tekrar dene
+            {t("Tekrar dene")}
           </button>
         </div>
       ) : selfHostedNeedsSetup ? (
@@ -195,7 +196,7 @@ export function SearchConsoleConnectionCard({
             onSave={() => selection && setSiteMutation.mutate(selection)}
             saving={setSiteMutation.isPending}
             secondaryAction={{
-              label: "Vazgeç",
+              label: t("Vazgeç"),
               disabled: setSiteMutation.isPending,
               onClick: () => {
                 setPicking(false);
@@ -231,8 +232,9 @@ export function SearchConsoleConnectionCard({
       ) : null}
       {connectionQuery.isSuccess && !selfHostedNeedsSetup && !canManage ? (
         <p className="mt-3 text-sm text-muted">
-          Bağlantıyı değiştirmek için Ayarlar&apos;daki Google kurulumunu
-          kontrol edin.
+          {t(
+            "Bağlantıyı değiştirmek için Ayarlar'daki Google kurulumunu kontrol edin.",
+          )}
         </p>
       ) : null}
     </IntegrationConnectionCard>

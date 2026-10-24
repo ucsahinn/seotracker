@@ -1,6 +1,7 @@
 import { AlertCircle, RotateCw } from "lucide-react";
 import { EmptyState } from "@/client/components/EmptyState";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
+import { t } from "@/shared/i18n";
 
 /*
  * Only a request that never got an answer means the app is unreachable. A
@@ -29,7 +30,7 @@ function isNetworkFailure(error: unknown): boolean {
 export function QueryErrorState({
   error,
   onRetry,
-  title = "Bu bölüm yüklenemedi",
+  title = t("Bu bölüm yüklenemedi"),
   compact = false,
 }: {
   error: unknown;
@@ -43,7 +44,9 @@ export function QueryErrorState({
       title={title}
       description={
         isNetworkFailure(error)
-          ? "Uygulamaya ulaşılamadı. Uygulamanın açık olduğunu kontrol edip yeniden deneyin."
+          ? t(
+              "Uygulamaya ulaşılamadı. Uygulamanın açık olduğunu kontrol edip yeniden deneyin.",
+            )
           : getStandardErrorMessage(error)
       }
       compact={compact}
@@ -55,7 +58,7 @@ export function QueryErrorState({
             onClick={onRetry}
           >
             <RotateCw className="size-4" />
-            Tekrar dene
+            {t("Tekrar dene")}
           </button>
         ) : null
       }

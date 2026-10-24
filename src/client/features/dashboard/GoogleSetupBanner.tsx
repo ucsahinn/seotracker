@@ -7,6 +7,7 @@ import {
   googleServiceAccountStatusOptions,
 } from "@/client/features/settings/settingsQueries";
 import { GSC_SELF_HOSTED_SETUP_DOCS_URL } from "@/shared/gsc";
+import { t } from "@/shared/i18n";
 
 /**
  * Said once, at the top, instead of twice in the middle.
@@ -36,11 +37,12 @@ export function GoogleSetupBanner() {
       <AlertTriangle className="mt-0.5 size-4 shrink-0" aria-hidden />
       <div className="space-y-1">
         <p className="font-medium text-base-content">
-          Google erişim anahtarı eksik
+          {t("Google erişim anahtarı eksik")}
         </p>
         <p>
-          Search Console ve Analytics aynı erişim anahtarını kullanır. Önce onu
-          Ayarlar'a girin.
+          {t(
+            "Search Console ve Analytics aynı erişim anahtarını kullanır. Önce onu Ayarlar'a girin.",
+          )}
         </p>
         <div className="flex flex-wrap items-center gap-4 pt-1">
           <Link
@@ -48,11 +50,11 @@ export function GoogleSetupBanner() {
             hash="google"
             className="font-medium text-base-content underline underline-offset-2"
           >
-            Google erişim anahtarını Ayarlar'a girin
+            {t("Google erişim anahtarını Ayarlar'a girin")}
           </Link>
           <SafeExternalLink
             url={GSC_SELF_HOSTED_SETUP_DOCS_URL}
-            label="Kurulum kılavuzunu aç"
+            label={t("Kurulum kılavuzunu aç")}
             className="inline-flex items-center gap-1 underline underline-offset-2"
           />
         </div>

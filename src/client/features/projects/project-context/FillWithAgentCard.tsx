@@ -2,6 +2,7 @@ import { Sparkles } from "lucide-react";
 import { CopyButton } from "@/client/components/CopyButton";
 import { buildFillContextPrompt } from "./fillContextPrompt";
 import type { ProjectContextSectionKey } from "@/types/schemas/projectContext";
+import { t } from "@/shared/i18n";
 
 /**
  * Hands the page's own work to an agent.
@@ -45,20 +46,24 @@ export function FillWithAgentCard({
           <div className="min-w-0 space-y-1">
             <h2 className="text-sm font-medium text-base-content">
               {isEmpty
-                ? "Ajanınıza doldurtabilirsiniz"
-                : "Ajanınıza gözden geçirtin"}
+                ? t("Ajanınıza doldurtabilirsiniz")
+                : t("Ajanınıza gözden geçirtin")}
             </h2>
             <p className="max-w-prose text-sm text-muted">
               {isEmpty
-                ? "İstemi kopyalayıp Claude Code ya da Codex'e yapıştırın. Ajan sitenizi ve ölçümleri okuyup taslak hazırlar; siz onaylamadan hiçbir şey kaydetmez ve sitedeki metinleri talimat saymaz."
-                : "İstemi kopyalayıp ajana yapıştırın. Yazılı olanı sitenin bugünkü haliyle karşılaştırır, yalnızca yanlış olanı düzeltir ve kaydetmeden önce size sorar; sitedeki metinleri talimat saymaz."}
+                ? t(
+                    "İstemi kopyalayıp Claude Code ya da Codex'e yapıştırın. Ajan sitenizi ve ölçümleri okuyup taslak hazırlar; siz onaylamadan hiçbir şey kaydetmez ve sitedeki metinleri talimat saymaz.",
+                  )
+                : t(
+                    "İstemi kopyalayıp ajana yapıştırın. Yazılı olanı sitenin bugünkü haliyle karşılaştırır, yalnızca yanlış olanı düzeltir ve kaydetmeden önce size sorar; sitedeki metinleri talimat saymaz.",
+                  )}
             </p>
           </div>
         </div>
         <CopyButton
           value={prompt}
-          label="İstemi kopyala"
-          successMessage="İstem kopyalandı"
+          label={t("İstemi kopyala")}
+          successMessage={t("İstem kopyalandı")}
         />
       </div>
     </section>

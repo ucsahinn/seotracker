@@ -1,3 +1,4 @@
+import { t } from "@/shared/i18n";
 import { ArrowDown, ArrowUp } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { formatDecimal } from "@/client/lib/format";
@@ -67,25 +68,25 @@ export function MoversCard({
   const { risers, fallers } = topMovers(rows);
   return (
     <section
-      aria-label="Yükselenler ve düşenler"
+      aria-label={t("Yükselenler ve düşenler")}
       className="rounded-box border border-base-300 bg-base-100 px-4 py-4"
     >
-      <h2 className="text-sm font-semibold">Yükselenler ve düşenler</h2>
+      <h2 className="text-sm font-semibold">{t("Yükselenler ve düşenler")}</h2>
       <div className="mt-3 flex flex-col gap-6 md:flex-row">
         <MoverList
-          title="En çok yükselenler"
+          title={t("En çok yükselenler")}
           icon={ArrowUp}
           ink="text-[var(--ink-success)]"
           rows={risers}
-          empty="Bu dönemde belirgin yükselen sorgu yok."
+          empty={t("Bu dönemde belirgin yükselen sorgu yok.")}
           onPick={onPick}
         />
         <MoverList
-          title="En çok düşenler"
+          title={t("En çok düşenler")}
           icon={ArrowDown}
           ink="text-[var(--ink-error)]"
           rows={fallers}
-          empty="Bu dönemde belirgin düşen sorgu yok."
+          empty={t("Bu dönemde belirgin düşen sorgu yok.")}
           onPick={onPick}
         />
       </div>

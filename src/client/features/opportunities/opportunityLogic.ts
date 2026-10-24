@@ -1,3 +1,4 @@
+import { t } from "@/shared/i18n";
 import { filter, firstBy, sort } from "remeda";
 import type { OpportunityReport } from "@/client/features/opportunities/report";
 import {
@@ -10,7 +11,10 @@ export type OpportunityRow = OpportunityReport["rows"][number];
 export type KindId = OpportunityRow["kind"];
 export type QuickId = "analytics" | "no_analytics" | "top_impressions";
 
-/** The four kinds, cheapest work first. Copy lives here so the tiles, the ring and the panel agree. */
+/**
+ * The four kinds, cheapest work first. Copy lives here so the tiles, the ring
+ * and the panel agree. It stays Turkish and goes through t() where it renders.
+ */
 export const KIND_COPY = {
   ctr_gap: {
     label: "Az tıklanan",
@@ -64,6 +68,7 @@ export const KIND_ORDER: readonly KindId[] = [
   "deep",
 ];
 
+// Turkish, translated with t() where the chips render.
 export const QUICK_COPY = {
   analytics: "Analytics'te karşılığı olanlar",
   no_analytics: "Analytics'te karşılığı yok",
@@ -86,28 +91,57 @@ export function explainRow(row: OpportunityRow): string {
   const ga4 =
     row.ga4 === null
       ? ""
-      : ` Analytics'te aynı dönemde ${formatNumber(row.ga4.sessions)} oturum getirmiş.`;
+      : ` ${t("Analytics'te aynı dönemde {sessions} oturum getirmiş.", {
+          sessions: formatNumber(row.ga4.sessions),
+        })}`;
 
   if (row.kind === "ctr_gap") {
-    const gap =
+    const ctr = formatPercent(row.ctr);
+    const sentence =
       row.ctrGap === null
-        ? ""
-        : `, sitenizde bu sıradaki sayfaların ortancasından ${formatDecimal(Math.abs(row.ctrGap) * 100)} yüzde puan daha düşük`;
-    return `Ortalama ${position}. sırada ${impressions} kez gösterildi ama yalnızca ${clicks} tıklama aldı (tıklama oranı ${formatPercent(row.ctr)}${gap}).${ga4}`;
+        ? t(
+            "Ortalama {position}. sırada {impressions} kez gösterildi ama yalnızca {clicks} tıklama aldı (tıklama oranı {ctr}).",
+            { position, impressions, clicks, ctr },
+          )
+        : t(
+            "Ortalama {position}. sırada {impressions} kez gösterildi ama yalnızca {clicks} tıklama aldı (tıklama oranı {ctr}, sitenizde bu sıradaki sayfaların ortancasından {gap} yüzde puan daha düşük).",
+            {
+              position,
+              impressions,
+              clicks,
+              ctr,
+              gap: formatDecimal(Math.abs(row.ctrGap) * 100),
+            },
+          );
+    return `${sentence}${ga4}`;
   }
   if (row.kind === "top") {
     // Without a baseline (small site) the click-through cannot be judged, so
     // do not call it normal; say what is known and what to check.
     const judged =
       row.ctrGap === null
-        ? `Tıklama oranını (${formatPercent(row.ctr)}) kıyaslayacak kadar veri yok; düşük görünüyorsa başlığı ve açıklamayı gözden geçirin.`
-        : "Tıklama oranı sitenizdeki benzer sıradaki sayfalarla uyumlu; içeriği ve başlığı güçlü tutmak yeterli.";
-    return `Ortalama ${position}. sırada, yani zaten ilk sıralarda. ${impressions} gösterimden ${clicks} tıklama aldı. ${judged}${ga4}`;
+        ? t(
+            "Tıklama oranını ({ctr}) kıyaslayacak kadar veri yok; düşük görünüyorsa başlığı ve açıklamayı gözden geçirin.",
+            { ctr: formatPercent(row.ctr) },
+          )
+        : t(
+            "Tıklama oranı sitenizdeki benzer sıradaki sayfalarla uyumlu; içeriği ve başlığı güçlü tutmak yeterli.",
+          );
+    return `${t(
+      "Ortalama {position}. sırada, yani zaten ilk sıralarda. {impressions} gösterimden {clicks} tıklama aldı.",
+      { position, impressions, clicks },
+    )} ${judged}${ga4}`;
   }
   if (row.kind === "near_miss") {
-    return `Ortalama ${position}. sırada; ilk sayfaya çok yakın. ${impressions} gösterimden ${clicks} tıklama aldı, birkaç basamak yükselmek bunu belirgin şekilde artırabilir.${ga4}`;
+    return `${t(
+      "Ortalama {position}. sırada; ilk sayfaya çok yakın. {impressions} gösterimden {clicks} tıklama aldı, birkaç basamak yükselmek bunu belirgin şekilde artırabilir.",
+      { position, impressions, clicks },
+    )}${ga4}`;
   }
-  return `Ortalama ${position}. sırada, yani çoğu kullanıcının görmediği yerde; yine de ${impressions} gösterim aldı. Bu sayfaya bir talep var.${ga4}`;
+  return `${t(
+    "Ortalama {position}. sırada, yani çoğu kullanıcının görmediği yerde; yine de {impressions} gösterim aldı. Bu sayfaya bir talep var.",
+    { position, impressions },
+  )}${ga4}`;
 }
 
 const PARTS = [
@@ -116,27 +150,27 @@ const PARTS = [
   { key: "reachability", label: "Yükselme kolaylığı", weight: 20 },
 ] as const;
 
-function level(fraction: number): "yüksek" | "orta" | "düşük" {
-  if (fraction >= 0.66) return "yüksek";
-  if (fraction >= 0.33) return "orta";
-  return "düşük";
+function level(fraction: number): "high" | "medium" | "low" {
+  if (fraction >= 0.66) return "high";
+  if (fraction >= 0.33) return "medium";
+  return "low";
 }
 
 const PART_SENTENCE = {
   demand: {
-    yüksek: "Bu sayfa için arama talebi yüksek.",
-    orta: "Arama talebi orta.",
-    düşük: "Arama talebi düşük.",
+    high: "Bu sayfa için arama talebi yüksek.",
+    medium: "Arama talebi orta.",
+    low: "Arama talebi düşük.",
   },
   businessValue: {
-    yüksek: "Sitenize gelen ziyaretçiler bu sayfada değerli işlemler yapıyor.",
-    orta: "İş değeri orta.",
-    düşük: "Ziyaretçilerin bu sayfada yaptığı işlem az.",
+    high: "Sitenize gelen ziyaretçiler bu sayfada değerli işlemler yapıyor.",
+    medium: "İş değeri orta.",
+    low: "Ziyaretçilerin bu sayfada yaptığı işlem az.",
   },
   reachability: {
-    yüksek: "İlk sıralara çok yakın; emek çabuk karşılık verir.",
-    orta: "İlk sıralara makul uzaklıkta.",
-    düşük: "İlk sıralardan uzak; sonuç almak zaman alır.",
+    high: "İlk sıralara çok yakın; emek çabuk karşılık verir.",
+    medium: "İlk sıralara makul uzaklıkta.",
+    low: "İlk sıralardan uzak; sonuç almak zaman alır.",
   },
 } as const;
 
@@ -147,10 +181,10 @@ export function scoreWords(components: OpportunityRow["scoreComponents"]) {
     const fraction = components[part.key];
     return {
       key: part.key,
-      label: part.label,
+      label: t(part.label),
       max: part.weight,
       points: fraction * part.weight,
-      sentence: PART_SENTENCE[part.key][level(fraction)],
+      sentence: t(PART_SENTENCE[part.key][level(fraction)]),
     };
   });
 }
@@ -207,7 +241,7 @@ export type Metric = "impressions" | "clicks";
 export function kindTotals(rows: OpportunityRow[], metric: Metric) {
   return KIND_ORDER.map((id) => ({
     key: id,
-    label: KIND_COPY[id].label,
+    label: t(KIND_COPY[id].label),
     color: KIND_COPY[id].color,
     value: rows
       .filter((row) => row.kind === id)

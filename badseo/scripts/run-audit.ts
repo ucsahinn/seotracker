@@ -39,7 +39,10 @@ import { allFixtures, fixturePaths } from "../src/fixtures/registry";
 import { TRAILING_SLASH_CANONICAL } from "../src/fixtures/redirects";
 import type { Fixture, IssueId } from "../src/fixtures/types";
 
-const BASE = (process.argv[2] ?? "http://localhost:8787").replace(/\/$/, "");
+const BASE = (process.env.BADSEO_URL ?? "http://127.0.0.1:8787").replace(
+  /\/$/,
+  "",
+);
 const MAX_PAGES = 200;
 /*
  * A ceiling, not a target: the loop ends when the frontier empties, so a
@@ -402,7 +405,7 @@ const INFO_ISSUES = new Set<IssueId>(
   ),
 );
 
-async function main() {
+export async function runAudit() {
   console.log(c.bold(`\n🧪 badseo.dev audit harness → ${BASE}\n`));
 
   await warmup();
@@ -678,10 +681,5 @@ async function main() {
     ),
   );
 
-  process.exit(failures === 0 ? 0 : 1);
+  return failures;
 }
-
-main().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});

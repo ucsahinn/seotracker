@@ -1,3 +1,5 @@
+import { strikingExportTable } from "./strikingExport";
+import { t } from "@/shared/i18n";
 import { copyText } from "@/client/lib/copyText";
 import { useMemo, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -47,21 +49,6 @@ export type ExportTarget = "csv" | "sheets";
 
 type ExportTable = { filename: string; headers: string[]; rows: CsvValue[][] };
 
-function strikingExportTable(report: Report): ExportTable {
-  const stamp = `${report.range.startDate}-to-${report.range.endDate}`;
-  return {
-    filename: `search-performance-striking-distance-${stamp}.csv`,
-    headers: ["Sorgu", "Sayfa", "Gösterim", "Tıklama", "Sıra"],
-    rows: report.strikingDistance.map((row) => [
-      row.query,
-      row.page,
-      row.impressions,
-      row.clicks,
-      row.position,
-    ]),
-  };
-}
-
 function dimensionExportTable(
   dimension: SearchPerformanceTableDimension,
   rows: SearchPerformanceTableRow[],
@@ -71,11 +58,11 @@ function dimensionExportTable(
   return {
     filename: `search-performance-${isPage ? "pages" : "queries"}-${stamp}.csv`,
     headers: [
-      isPage ? "Sayfa" : "Sorgu",
-      "Tıklama",
-      "Gösterim",
-      "Tıklama oranı",
-      "Sıra",
+      isPage ? t("Sayfa") : t("Sorgu"),
+      t("Tıklama"),
+      t("Gösterim"),
+      t("Tıklama oranı"),
+      t("Sıra"),
     ],
     rows: rows.map((row) => [
       row.key,
@@ -193,7 +180,7 @@ export function DimensionTable({
         className="btn btn-ghost btn-xs"
         onClick={onClearQuickFilter}
       >
-        Filtreyi kaldır
+        {t("Filtreyi kaldır")}
       </button>
     ) : null;
 
@@ -214,8 +201,8 @@ export function DimensionTable({
             type="search"
             value={draft}
             onChange={(event) => setDraft(event.target.value)}
-            placeholder={`${keyLabel} içinde ara`}
-            aria-label={`${keyLabel} içinde ara`}
+            placeholder={t("{column} içinde ara", { column: keyLabel })}
+            aria-label={t("{column} içinde ara", { column: keyLabel })}
             className="input input-bordered input-sm w-full max-w-xs"
           />
           {needle || quickFilter ? (
@@ -228,7 +215,7 @@ export function DimensionTable({
       ) : null}
       <AppDataTable
         table={table}
-        caption={`Arama performansı: ${keyLabel}`}
+        caption={t("Arama performansı: {column}", { column: keyLabel })}
         className="table table-zebra table-sm"
         wrapperClassName="overflow-x-auto"
         empty={
@@ -240,21 +227,28 @@ export function DimensionTable({
             icon={Search}
             title={
               needle
-                ? "Aramanıza uyan satır yok"
+                ? t("Aramanıza uyan satır yok")
                 : quickFilter
-                  ? "Bu hızlı filtreye uyan satır yok"
+                  ? t("Bu hızlı filtreye uyan satır yok")
                   : hasActiveFilter
-                    ? "Bu filtrelerle eşleşen satır yok"
-                    : "Bu dönem için henüz veri yok"
+                    ? t("Bu filtrelerle eşleşen satır yok")
+                    : t("Bu dönem için henüz veri yok")
             }
             description={
               needle
-                ? `"${draft}" hiçbir satırda geçmiyor. Aramayı temizleyin ya da başka bir terim deneyin.`
+                ? t(
+                    '"{search}" hiçbir satırda geçmiyor. Aramayı temizleyin ya da başka bir terim deneyin.',
+                    { search: draft },
+                  )
                 : quickFilter
-                  ? "Hızlı filtreyi kaldırarak tüm satırlara dönün."
+                  ? t("Hızlı filtreyi kaldırarak tüm satırlara dönün.")
                   : hasActiveFilter
-                    ? "Arama türü, cihaz ya da ülke filtresini genişletmeyi deneyin."
-                    : "Search Console verisi birkaç gün gecikmeli gelir. Mülkü yeni bağladıysanız biraz daha beklemeniz gerekebilir."
+                    ? t(
+                        "Arama türü, cihaz ya da ülke filtresini genişletmeyi deneyin.",
+                      )
+                    : t(
+                        "Search Console verisi birkaç gün gecikmeli gelir. Mülkü yeni bağladıysanız biraz daha beklemeniz gerekebilir.",
+                      )
             }
             action={clearButton ?? undefined}
           />
@@ -274,8 +268,9 @@ export function DimensionTable({
           />
           {truncated ? (
             <p className="border-t border-base-300 px-4 py-2 text-xs text-muted">
-              Google tek seferde en fazla bu kadar satır verir ve sınıra
-              ulaşıldı, liste tam değil. Daraltmak için filtreleri kullanın.
+              {t(
+                "Google tek seferde en fazla bu kadar satır verir ve sınıra ulaşıldı, liste tam değil. Daraltmak için filtreleri kullanın.",
+              )}
             </p>
           ) : null}
         </>
@@ -334,7 +329,7 @@ export function StrikingDistanceTable({
   const copyKeywords = () =>
     copyText(
       selectedQueries.join("\n"),
-      `${selectedQueries.length} kelime kopyalandı`,
+      t("{count} kelime kopyalandı", { count: selectedQueries.length }),
     );
 
   const save = useMutation({
@@ -368,12 +363,12 @@ export function StrikingDistanceTable({
        * is both true and the number the operator can go and look at.
        */
       toast.success(
-        `${formatCount(result.savedKeywordIds.length)} kelime kayıtlı`,
+        t("{count} kelime kayıtlı", { count: result.savedKeywordIds.length }),
       );
       setRowSelection({});
     },
     onError: (error) => {
-      toast.error(getStandardErrorMessage(error, "Kelimeler kaydedilemedi"));
+      toast.error(getStandardErrorMessage(error, t("Kelimeler kaydedilemedi")));
     },
   });
 
@@ -392,7 +387,7 @@ export function StrikingDistanceTable({
               className="btn btn-sm"
               onClick={onClearFilter}
             >
-              Filtreyi kaldır
+              {t("Filtreyi kaldır")}
             </button>
           ) : undefined
         }
@@ -405,7 +400,7 @@ export function StrikingDistanceTable({
       <div className="p-4">
         <AppDataTable
           table={table}
-          caption="Sıra 5-20 arası sorgular"
+          caption={t("Sıra 5-20 arası sorgular")}
           className="table table-zebra table-sm"
           wrapperClassName="overflow-x-auto"
         />
@@ -422,7 +417,7 @@ export function StrikingDistanceTable({
       />
       <TableBulkActionBar
         selectedCount={selectedQueries.length}
-        selectedLabel="kelime"
+        selectedLabel={t("kelime")}
         onClear={() => setRowSelection({})}
         actions={
           <div className="flex items-center gap-1 px-1.5">
@@ -430,7 +425,7 @@ export function StrikingDistanceTable({
               icon={<Copy className="size-3.5" />}
               onClick={() => void copyKeywords()}
             >
-              Kelimeleri kopyala
+              {t("Kelimeleri kopyala")}
             </TableBulkActionButton>
             <TableBulkActionButton
               icon={
@@ -443,7 +438,7 @@ export function StrikingDistanceTable({
               onClick={() => save.mutate(selectedQueries)}
               disabled={save.isPending}
             >
-              Kelime olarak kaydet
+              {t("Kelime olarak kaydet")}
             </TableBulkActionButton>
           </div>
         }

@@ -2,20 +2,21 @@ import { ChevronRight } from "lucide-react";
 import * as React from "react";
 import { formatDate } from "@/client/lib/format";
 import { CopyButton } from "@/client/components/CopyButton";
+import { SafeExternalLink } from "@/client/components/SafeExternalLink";
+import { getLocale, t } from "@/shared/i18n";
+import {
+  getReleaseCategories,
+  type ReleaseCategory,
+} from "./releaseCategories";
 import {
   CHANGELOG_ENTRIES,
   type ChangelogEntry,
   type ChangelogItem,
 } from "@/client/features/settings/changelog";
 
-/*
- * One release, because there is one release.
- *
- * `CHANGELOG.md` now keeps only the version that is published; the older
- * notes live in `git log`. A list that offers "previous N releases" for a
- * repository with a single tag promises history the operator cannot
- * actually be running, so the expander is gone with it.
- */
+/** The English notes for the same releases, on the website. */
+const ENGLISH_RELEASE_NOTES_URL =
+  "https://seowatcher.io/en/docs/release-notes/";
 
 /**
  * What changed, in the app rather than only on GitHub.
@@ -31,12 +32,22 @@ export function WhatsNewSection({ version }: { version: string }) {
   return (
     <section id="surum-notlari" className="scroll-mt-16 space-y-3">
       <div className="space-y-1">
-        <h2 className="text-base font-semibold">Sürüm notları</h2>
         <p className="text-sm text-muted">
-          Bu sürümde neyin değiştiği. Metin depodaki{" "}
-          <code className="text-xs">CHANGELOG.md</code> dosyasından okunur, yani
-          yayımlananla aynıdır.
+          {t(
+            "Her sürümde nelerin eklendiğini ve düzeltildiğini burada bulabilirsiniz.",
+          )}
         </p>
+        {/* CHANGELOG.md is written in Turkish; the website keeps an English copy. */}
+        {getLocale() === "en" ? (
+          <p className="text-sm text-muted">
+            {t("Sürüm notları Türkçe yazılır.")}{" "}
+            <SafeExternalLink
+              url={ENGLISH_RELEASE_NOTES_URL}
+              label={t("İngilizcesini seowatcher.io'da okuyun")}
+              className="inline-flex items-center gap-1 font-medium underline underline-offset-2"
+            />
+          </p>
+        ) : null}
       </div>
 
       <div className="divide-y divide-base-300 overflow-hidden rounded-box border border-base-300">
@@ -99,26 +110,38 @@ function ReleaseNotes({
       <button
         type="button"
         aria-expanded={open}
+        aria-controls={`release-${entry.version}`}
         onClick={() => setOpen((value) => !value)}
-        className="flex w-full items-center gap-2.5 px-4 py-3 text-left transition-colors hover:bg-base-200/50"
+        className="flex w-full flex-wrap items-center gap-2.5 px-4 py-3 text-left transition-colors hover:bg-base-200/50"
       >
         <ChevronRight
           className={`size-4 shrink-0 text-muted transition-transform ${open ? "rotate-90" : ""}`}
           aria-hidden
         />
-        <span className="font-medium tabular-nums">v{entry.version}</span>
+        <span className="font-medium tabular-nums">v{entry.version} Alpha</span>
+        {getReleaseCategories(entry).map((category) => (
+          <span
+            key={category}
+            className={`release-tag release-tag-${category}`}
+          >
+            {t(CATEGORY_LABELS[category])}
+          </span>
+        ))}
         {entry.date ? (
           <span className="text-xs text-muted">{formatDate(entry.date)}</span>
         ) : null}
         {isRunning ? (
           <span className="rounded-full border border-base-300 px-2 py-0.5 text-[11px] text-muted">
-            Kurulu sürüm
+            {t("Kurulu sürüm")}
           </span>
         ) : null}
       </button>
 
       {open ? (
-        <div className="space-y-4 px-4 pb-4 pl-11">
+        <div
+          id={`release-${entry.version}`}
+          className="space-y-4 px-4 pb-4 pl-11"
+        >
           {entry.intro ? (
             <p className="max-w-prose text-[15px] leading-relaxed text-base-content">
               <InlineText text={entry.intro} />
@@ -147,8 +170,8 @@ function ReleaseNotes({
                           <CopyButton
                             iconOnly
                             value={item.text}
-                            label="Komutu kopyala"
-                            successMessage="Komut kopyalandı"
+                            label={t("Komutu kopyala")}
+                            successMessage={t("Komut kopyalandı")}
                           />
                         </div>
                       </li>
@@ -172,7 +195,15 @@ function ReleaseNotes({
 }
 
 /** The heading the newest note uses for its short summary. */
+// i18n-ignore: matched against the heading in the Turkish CHANGELOG.md
 const HIGHLIGHTS = "Öne çıkanlar";
+
+const CATEGORY_LABELS: Record<ReleaseCategory, string> = {
+  feature: "Yenilik",
+  fix: "Düzeltme",
+  security: "Güvenlik",
+  hotfix: "Acil düzeltme",
+};
 
 /**
  * The summary of a release as a row of small cards: the bold lead of each

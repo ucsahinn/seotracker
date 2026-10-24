@@ -15,6 +15,7 @@ import {
 import type { SavedKeywordTagSummary } from "@/types/keywords";
 import { ManageTagRow } from "./ManageTagRow";
 import { TagChip } from "./TagChip";
+import { t } from "@/shared/i18n";
 
 export function SavedKeywordsTagFilter({
   availableTags,
@@ -93,7 +94,7 @@ export function SavedKeywordsTagFilter({
         onClick={() => setOpen((v) => !v)}
       >
         <TagIcon className="size-3.5 opacity-70" />
-        <span className="font-medium">Etiketler</span>
+        <span className="font-medium">{t("Etiketler")}</span>
         {hasSelection ? (
           <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-[11px] font-semibold text-primary-content">
             {selectedTags.length}
@@ -112,7 +113,7 @@ export function SavedKeywordsTagFilter({
               selected
               onClick={() => onToggleTagFilter(tag.id)}
               trailing={<X className="size-3 opacity-70" />}
-              title="Filtreyi kaldır"
+              title={t("Filtreyi kaldır")}
             />
           ))}
           <button
@@ -120,7 +121,7 @@ export function SavedKeywordsTagFilter({
             className="text-xs text-muted underline-offset-2 hover:text-base-content hover:underline"
             onClick={onClearSelection}
           >
-            Temizle
+            {t("Temizle")}
           </button>
         </div>
       ) : null}
@@ -188,17 +189,17 @@ function TagFilterPopover({
           <Search className="size-3.5 opacity-50" />
           <input
             autoFocus
-            aria-label="Etiket ara"
+            aria-label={t("Etiket ara")}
             value={query}
             onChange={(event) => onQueryChange(event.target.value)}
-            placeholder="Etiket ara…"
+            placeholder={t("Etiket ara…")}
             className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted"
           />
           {query ? (
             <button
               type="button"
               className="text-muted hover:text-base-content"
-              aria-label="Aramayı temizle"
+              aria-label={t("Aramayı temizle")}
               onClick={() => onQueryChange("")}
             >
               <X className="size-3.5" aria-hidden />
@@ -211,8 +212,8 @@ function TagFilterPopover({
         {filteredTags.length === 0 ? (
           <div className="px-3 py-6 text-center text-xs text-muted">
             {availableTags.length === 0
-              ? "Henüz etiket yok. Kelimeleri seçip etiket ekleyin."
-              : "Bu aramaya uyan etiket yok."}
+              ? t("Henüz etiket yok. Kelimeleri seçip etiket ekleyin.")
+              : t("Bu aramaya uyan etiket yok.")}
           </div>
         ) : null}
 
@@ -233,13 +234,15 @@ function TagFilterPopover({
 
       {selectedTagIds.length > 0 ? (
         <div className="flex items-center justify-between border-t border-base-300 px-2 py-1.5 text-xs">
-          <span className="text-muted">{selectedTagIds.length} seçili</span>
+          <span className="text-muted">
+            {t("{count} seçili", { count: selectedTagIds.length })}
+          </span>
           <button
             type="button"
             className="rounded-field px-2 py-1 text-muted hover:bg-base-200"
             onClick={onClearSelection}
           >
-            Tümünü temizle
+            {t("Tümünü temizle")}
           </button>
         </div>
       ) : null}
@@ -298,7 +301,7 @@ function TagFilterRow({
             isManaging ? "bg-base-300 text-base-content" : ""
           }`}
           onClick={() => onStartManaging(isManaging ? null : tag.id)}
-          aria-label={`${tag.name} etiketini yönet`}
+          aria-label={t("{name} etiketini yönet", { name: tag.name })}
         >
           <MoreHorizontal className="size-3.5" />
         </button>

@@ -1,5 +1,7 @@
 import { formatNumber } from "@/client/lib/format";
+import { Spinner } from "@/client/components/Spinner";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { t } from "@/shared/i18n";
 
 /*
  * Generic over the page-size union so a caller that offers `[50, 100, 250]`
@@ -54,9 +56,7 @@ export function TablePagination<Size extends number>({
         <span className="whitespace-nowrap">
           {formatRange(page, pageSize, totalCount)}
         </span>
-        {isLoading ? (
-          <span className="loading loading-spinner loading-xs" />
-        ) : null}
+        {isLoading ? <Spinner size="xs" label={t("Yükleniyor")} /> : null}
       </div>
 
       {/*
@@ -67,7 +67,7 @@ export function TablePagination<Size extends number>({
        */}
       <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
         <label className="flex items-center gap-2 text-sm text-muted">
-          <span className="whitespace-nowrap">Sayfa başına satır</span>
+          <span className="whitespace-nowrap">{t("Sayfa başına satır")}</span>
           <select
             className="select select-bordered select-sm w-20"
             value={pageSize}
@@ -95,13 +95,17 @@ export function TablePagination<Size extends number>({
 
         <div className="flex items-center gap-2">
           <span className="whitespace-nowrap text-sm tabular-nums text-muted">
-            Sayfa {formatNumber(page)}
-            {totalPages != null ? ` / ${formatNumber(totalPages)}` : ""}
+            {totalPages != null
+              ? t("Sayfa {page} / {total}", {
+                  page: formatNumber(page),
+                  total: formatNumber(totalPages),
+                })
+              : t("Sayfa {page}", { page: formatNumber(page) })}
           </span>
           <div className="flex items-center gap-1">
             <button
               type="button"
-              aria-label="Önceki sayfa"
+              aria-label={t("Önceki sayfa")}
               className="btn btn-ghost btn-sm btn-square"
               disabled={!canGoPrev || isLoading}
               onClick={() => onPageChange(page - 1)}
@@ -110,7 +114,7 @@ export function TablePagination<Size extends number>({
             </button>
             <button
               type="button"
-              aria-label="Sonraki sayfa"
+              aria-label={t("Sonraki sayfa")}
               className="btn btn-ghost btn-sm btn-square"
               disabled={!canGoNext || isLoading}
               onClick={() => onPageChange(page + 1)}

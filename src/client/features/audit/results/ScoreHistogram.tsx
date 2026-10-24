@@ -8,6 +8,7 @@ import type {
 } from "@/client/features/audit/results/AuditResultsTableFilterLogic";
 import { speedBands } from "@/client/features/audit/results/performanceBands";
 import { formatCount } from "@/client/lib/format";
+import { getLocale, t } from "@/shared/i18n";
 
 /**
  * How the speed scores are spread, beside the average that hides it.
@@ -40,16 +41,21 @@ export function ScoreHistogram({
     active: band.matches(filters),
   }));
   const parts = bands
-    .map(
-      (band) =>
-        `${formatCount(band.count)} ${band.label.toLocaleLowerCase("tr")}`,
+    .map((band) =>
+      t("{count} {band}", {
+        count: band.count,
+        band: band.label.toLocaleLowerCase(getLocale()),
+      }),
     )
     .join(", ");
 
   return (
     <DistributionBars
       rows={distribution}
-      summary={`Mobilde ölçülen ${formatCount(measured)} sayfadan ${parts}.`}
+      summary={t("Mobilde ölçülen {measured} sayfadan {parts}.", {
+        measured: formatCount(measured),
+        parts,
+      })}
       onSelect={(key) => {
         const band = bands.find((entry) => entry.key === key);
         if (!band) return;

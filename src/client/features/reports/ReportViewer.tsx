@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { REPORT_IFRAME_SANDBOX } from "@/shared/report-sandbox";
+import { t } from "@/shared/i18n";
 
 /**
  * The only place the app renders model-written HTML, in the app and on the
@@ -57,7 +58,7 @@ function ViewerFrame({
         src={src}
         sandbox={REPORT_IFRAME_SANDBOX}
         referrerPolicy="no-referrer"
-        title={`Rapor önizlemesi: ${title}`}
+        title={t("Rapor önizlemesi: {title}", { title })}
         onLoad={() => setLoaded(true)}
         className={className}
       />

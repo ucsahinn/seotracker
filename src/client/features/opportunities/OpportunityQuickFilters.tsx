@@ -1,3 +1,4 @@
+import { t } from "@/shared/i18n";
 import type { Ref } from "react";
 import { BarChart3, SearchX, TrendingUp, type LucideIcon } from "lucide-react";
 import {
@@ -6,6 +7,7 @@ import {
 } from "@/client/features/opportunities/opportunityLogic";
 import { formatNumber } from "@/client/lib/format";
 
+// Turkish, translated with t() where it renders.
 const CHIPS: ReadonlyArray<{
   id: QuickId;
   icon: LucideIcon;
@@ -54,7 +56,7 @@ export function OpportunityQuickFilters({
       ref={ref}
       tabIndex={-1}
       role="group"
-      aria-label="Hızlı filtreler"
+      aria-label={t("Hızlı filtreler")}
       className="flex flex-wrap items-center gap-2"
     >
       {CHIPS.map(({ id, icon: Icon, emptyReason }) => {
@@ -73,13 +75,13 @@ export function OpportunityQuickFilters({
               }`}
             >
               <Icon aria-hidden className="size-3.5" />
-              {QUICK_COPY[id]}
+              {t(QUICK_COPY[id])}
               <span className="tabular-nums text-muted">
                 {formatNumber(counts[id])}
               </span>
             </button>
             {counts[id] === 0 ? (
-              <span className="text-xs text-muted">{emptyReason}</span>
+              <span className="text-xs text-muted">{t(emptyReason)}</span>
             ) : null}
           </span>
         );

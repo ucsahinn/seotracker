@@ -1,4 +1,5 @@
 import { formatCount } from "@/shared/format";
+import { t } from "@/shared/i18n";
 
 /*
  * Every interpolated value goes through this. Page titles, meta descriptions
@@ -73,11 +74,30 @@ export function formatMs(value: number | null | undefined): string {
     : `${formatCount(value)} ms`;
 }
 
+/* One whole sentence per kind of item, so each language words its own plural. */
+const MORE_LINE = {
+  address: "ve {count} adres daha (boyutu makul tutmak için burada kesildi).",
+  page: "ve {count} sayfa daha (boyutu makul tutmak için burada kesildi).",
+  record: "ve {count} kayıt daha (boyutu makul tutmak için burada kesildi).",
+  issueType:
+    "ve {count} sorun türü daha (boyutu makul tutmak için burada kesildi).",
+};
+
 /** "ve 12 adres daha" line used under every capped list. */
-export function moreLine(hidden: number, unit: string): string {
+export function moreLine(hidden: number, unit: keyof typeof MORE_LINE): string {
   return hidden > 0
-    ? `<p class="note">ve ${formatCount(hidden)} ${escapeHtml(unit)} daha (boyutu makul tutmak için burada kesildi).</p>`
+    ? `<p class="note">${escapeHtml(t(MORE_LINE[unit], { count: hidden }))}</p>`
     : "";
+}
+
+/** "%12" in Turkish, "12%" in English. */
+export function percentText(value: number): string {
+  return t("%{value}", { value: formatCount(value) });
+}
+
+/** "12 sayfa", for chart captions. */
+export function pagesText(count: number): string {
+  return t("{count} sayfa", { count });
 }
 
 /**

@@ -5,7 +5,7 @@ kind: sorun-giderme
 updated: 2026-10-23
 ---
 
-L'interfaccia dell'app è in turco. In questa guida ogni nome di pulsante e di schermata è riportato in turco, con il significato italiano tra parentesi.
+L'interfaccia dell'app è disponibile in turco e in inglese. La lingua si sceglie in Ayarlar → Görünüm → Dil. In questa guida ogni nome di pulsante e di schermata è riportato in turco, con il significato italiano tra parentesi.
 
 Se qualcosa non funziona, guardare prima nell'app la scheda "Kurulumunuzun durumu" (Stato dell'installazione) della schermata **Yardım** (Aiuto). La scheda controlla accesso, collegamento con Google, chiave PageSpeed e database. Se dice "N şey dikkat istiyor" (N cose richiedono attenzione), il pulsante accanto porta all'impostazione giusta. I problemi qui sotto sono ordinati dal più frequente al più raro.
 

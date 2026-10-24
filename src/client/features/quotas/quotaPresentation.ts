@@ -10,9 +10,14 @@ import {
   usedFraction,
   type QuotaItem,
   type QuotaState,
+  type QuotaUnit,
 } from "@/server/features/quotas/quotaTypes";
+import { t } from "@/shared/i18n";
 
-/** State is always icon + word + colour, never colour alone. */
+/**
+ * State is always icon + word + colour, never colour alone. Labels stay
+ * Turkish here and go through t() where they render.
+ */
 export const STATE_META: Record<
   QuotaState,
   { label: string; icon: LucideIcon; inkClass: string; fillClass: string }
@@ -47,31 +52,52 @@ function amount(item: QuotaItem, value: number): string {
   return item.unit === "bayt" ? formatBytes(value) : formatNumber(value);
 }
 
+/*
+ * The server sends the unit as a code; it is worded here, with the count, so
+ * English can pluralise it ("1 page", "2 pages"). Bytes carry their own unit.
+ */
+const UNIT_COUNT: Record<Exclude<QuotaUnit, "bayt">, string> = {
+  sorgu: "{count} sorgu",
+  ölçüm: "{count} ölçüm", // i18n-ignore: a catalog key, translated below
+  puan: "{count} puan",
+  sayfa: "{count} sayfa",
+  rapor: "{count} rapor",
+  şablon: "{count} şablon", // i18n-ignore: a catalog key, translated below
+};
+
+/** A figure with its unit: "12 ölçüm", "1,2 MB". */
+function withUnit(item: QuotaItem, value: number): string {
+  return item.unit === "bayt"
+    ? formatBytes(value)
+    : t(UNIT_COUNT[item.unit], { count: value });
+}
+
 /** "1.250 / 2.000 sorgu"; just "12 ölçüm" when there is no ceiling. */
 export function usageText(item: QuotaItem): string {
   if (item.used === null && item.remaining !== undefined) {
-    return `Kalan: ${amount(item, item.remaining)} ${item.unit}`;
+    return t("Kalan: {amount}", { amount: withUnit(item, item.remaining) });
   }
   if (item.used === null) {
     return item.limit === null
-      ? "Veri yok"
-      : `Sınır: ${amount(item, item.limit)}`;
+      ? t("Veri yok")
+      : t("Sınır: {amount}", { amount: amount(item, item.limit) });
   }
-  const unit = item.unit === "bayt" ? "" : ` ${item.unit}`;
-  if (item.limit === null) return `${amount(item, item.used)}${unit}`;
-  return `${amount(item, item.used)} / ${amount(item, item.limit)}${unit}`;
+  if (item.limit === null) return withUnit(item, item.used);
+  return `${amount(item, item.used)} / ${withUnit(item, item.limit)}`;
 }
 
 export function remainingText(item: QuotaItem): string | null {
   if (item.used === null || item.limit === null) return null;
-  return `${amount(item, Math.max(item.limit - item.used, 0))} kaldı`;
+  return t("{amount} kaldı", {
+    amount: amount(item, Math.max(item.limit - item.used, 0)),
+  });
 }
 
 /** aria-valuetext for the meter, in words a screen reader reads well. */
 export function meterValueText(item: QuotaItem): string {
   const remaining = remainingText(item);
-  const state = STATE_META[item.state].label;
-  return [usageText(item), remaining, `Durum: ${state}`]
+  const state = t(STATE_META[item.state].label);
+  return [usageText(item), remaining, t("Durum: {state}", { state })]
     .filter(Boolean)
     .join(", ");
 }

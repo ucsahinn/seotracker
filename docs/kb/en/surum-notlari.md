@@ -1,10 +1,24 @@
 ---
 title: Release notes
-description: What changed in seowatcher 2.4.3. One-file install on Windows, an app that updates itself, simpler screens and a site in six languages.
-updated: 2026-10-23
+description: seowatcher 0.5.0 Alpha — Turkish and English UI, a notification center, sounds and clearer task progress.
+updated: 2026-10-24
 ---
 
-The latest release is **2.4.3**, October 23, 2026. Your data is kept when you update; the Windows package installs new versions on its own.
+The latest release is **0.5.0 Alpha**, October 23, 2026. Your data is kept when you update.
+
+For the first move from 2.x to 0.x.x Alpha, run the new installer manually; the old updater does not recognize the lower number as newer.
+
+## 0.5.0 Alpha
+
+- Use the interface in Turkish or English. Numbers and dates follow your language choice.
+- The notification center keeps track of audits, updates, Google connections and reports. Sound and desktop notifications have separate settings.
+- Release notes now have their own entry above Notifications in the sidebar. Colored labels show the features and fixes in each release.
+- In Settings → Windows, turn startup with Windows and automatic update installation on or off.
+- See elapsed audit time and a completion summary, and open the relevant guide beside each page title.
+- The country list in the mobile project form and help text in small windows no longer get clipped. Escape closes the country list before closing the form.
+- Simultaneous index checks use the daily allowance more accurately. Successful results are kept even if another check fails.
+
+## 0.4.3 Alpha — 2026-10-22
 
 ## Highlights
 
@@ -12,20 +26,20 @@ The latest release is **2.4.3**, October 23, 2026. Your data is kept when you up
 - **Updates itself.** It downloads the new version, verifies it and installs it quietly. **Güncelle** (Update) in the taskbar menu is always one click away.
 - **Simpler screens.** Every empty screen shows one next step, and the menus and texts read naturally.
 - **A new face.** Black surfaces, an orange accent and the eye logo; the app and the site now look the same.
-- In Agent setup, "Sıfırdan kurulum" (Fresh install) now comes first for first-time users.
+- In Agent setup, "Fresh install" now comes first for first-time users.
 - The Update item shows the check, the download percentage and the install step.
 
 ## Windows
 
 - **Starts on a clean computer.** The installer carries the Microsoft Visual C++ runtime and installs it once, with permission, if it is missing.
-- **Update.** Always in the taskbar menu. It installs a new version if there is one and says "Güncel" (Up to date) if not.
+- **Update.** Always in the taskbar menu. It installs a new version if there is one and says "Up to date" if not.
 - **Repair installation.** Clears temporary files, checks the package and opens the app again.
 - **Report a problem.** Opens a pre-filled issue. User names, site names and email addresses are masked.
 - **Versioned installer.** The file name and the setup wizard show the version being installed.
 
 ## The app
 
-- **Side menu.** The groups are "Arama ve site" (Search and site) and "Ajan" (Agent); Help and Settings sit at the bottom.
+- **Side menu.** The groups are "Search and site" and "Agent"; Help and Settings sit at the bottom.
 - **Agent setup.** One card and one copy button for Claude Code, Codex or any other assistant.
 - **Settings.** The Google connection is explained in three steps; the theme is dark by default.
 - **Both installs covered.** Help and the agent instructions describe the taskbar on Windows and the `docker compose` commands on Docker.

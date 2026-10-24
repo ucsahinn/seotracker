@@ -1,4 +1,6 @@
 import { HelpTip, SettingsHeading } from "@/client/components/HelpTip";
+import { Skeleton } from "@/client/components/Skeleton";
+import { Spinner } from "@/client/components/Spinner";
 import * as React from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -17,7 +19,9 @@ import {
   getProjects,
   updateProject,
 } from "@/serverFunctions/projects";
+import { fillParts } from "@/client/features/settings/fillParts";
 import type { ProjectSummary } from "./types";
+import { t } from "@/shared/i18n";
 
 export function ProjectGeneralSettings({ projectId }: { projectId: string }) {
   const projectsQuery = useQuery({
@@ -39,7 +43,7 @@ export function ProjectGeneralSettings({ projectId }: { projectId: string }) {
       <QueryErrorState
         error={projectsQuery.error}
         onRetry={() => void projectsQuery.refetch()}
-        title="Proje yüklenemedi"
+        title={t("Proje yüklenemedi")}
       />
     );
   }
@@ -47,14 +51,7 @@ export function ProjectGeneralSettings({ projectId }: { projectId: string }) {
   if (projectsQuery.isPending) {
     return (
       // Shaped like the form that is coming, so the page does not jump.
-      <div className="space-y-6" aria-busy>
-        {Array.from({ length: 3 }, (_, index) => (
-          <div key={index} className="space-y-2">
-            <div className="skeleton h-3 w-24" />
-            <div className="skeleton h-10" />
-          </div>
-        ))}
-      </div>
+      <Skeleton variant="form" rows={3} />
     );
   }
 
@@ -62,8 +59,8 @@ export function ProjectGeneralSettings({ projectId }: { projectId: string }) {
     return (
       <EmptyState
         icon={FolderX}
-        title="Proje bulunamadı"
-        description="Bu proje silinmiş ya da arşivlenmiş olabilir."
+        title={t("Proje bulunamadı")}
+        description={t("Bu proje silinmiş ya da arşivlenmiş olabilir.")}
       />
     );
   }
@@ -113,10 +110,10 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
           queryKey: ["dashboardOverview", project.id],
         }),
       ]);
-      toast.success("Proje güncellendi");
+      toast.success(t("Proje güncellendi"));
     },
     onError: (error) =>
-      toast.error(getStandardErrorMessage(error, "Proje güncellenemedi")),
+      toast.error(getStandardErrorMessage(error, t("Proje güncellenemedi"))),
   });
 
   const isDirty =
@@ -131,7 +128,7 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
     if (!name.trim()) {
       // Next to the field, like the create modal: a toast in the corner
       // left the operator hunting for which input it meant.
-      setNameError("Proje adı gerekli");
+      setNameError(t("Proje adı gerekli"));
       nameInput.current?.focus();
       return;
     }
@@ -141,16 +138,19 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
   return (
     <section className="space-y-3">
       <SettingsHeading
-        title="Temel bilgiler"
-        help="Site adresi, denetimin nereden başlayacağını belirler. Ülke ve dil, Search Console verisinin hangi pazar için okunacağını belirler. Yanlış seçerseniz sayılar doğru olur ama sizinle ilgisiz kalır."
+        title={t("Temel bilgiler")}
+        help={t(
+          "Site adresi, denetimin nereden başlayacağını belirler. Ülke ve dil, Search Console verisinin hangi pazar için okunacağını belirler. Yanlış seçerseniz sayılar doğru olur ama sizinle ilgisiz kalır.",
+        )}
       />
       <form onSubmit={handleSubmit} className="space-y-4">
         <label className="flex flex-col gap-1.5 text-sm">
           <span className="flex items-center gap-1.5 font-medium">
-            Ad
-            <HelpTip label="Ad">
-              Yalnızca sizin içindir. Proje değiştiricide ve raporların
-              başlığında görünür, Google&apos;a gitmez.
+            {t("Ad")}
+            <HelpTip label={t("Ad")}>
+              {t(
+                "Yalnızca sizin içindir. Proje değiştiricide ve raporların başlığında görünür, Google'a gitmez.",
+              )}
             </HelpTip>
           </span>
           <input
@@ -161,7 +161,7 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
               setName(event.target.value);
               setNameError(null);
             }}
-            aria-label="Ad"
+            aria-label={t("Ad")}
             maxLength={120}
             aria-invalid={nameError ? true : undefined}
             aria-describedby={
@@ -182,10 +182,12 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
 
         <label className="flex flex-col gap-1.5 text-sm">
           <span className="flex items-center gap-1.5 font-medium">
-            Alan adı <span className="text-muted">(isteğe bağlı)</span>
-            <HelpTip label="Alan adı">
-              Denetim bu adresten başlar, Search Console mülkü de bununla
-              eşleştirilir. https:// olmadan yazın, örneğin example.com.
+            {t("Alan adı")}{" "}
+            <span className="text-muted">{t("(isteğe bağlı)")}</span>
+            <HelpTip label={t("Alan adı")}>
+              {t(
+                "Denetim bu adresten başlar, Search Console mülkü de bununla eşleştirilir. https:// olmadan yazın, örneğin example.com.",
+              )}
             </HelpTip>
           </span>
           <input
@@ -193,7 +195,7 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
             value={domain}
             onChange={(event) => setDomain(event.target.value)}
             placeholder="example.com"
-            aria-label="Alan adı"
+            aria-label={t("Alan adı")}
             maxLength={255}
             className="input input-bordered w-full"
           />
@@ -202,7 +204,9 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
         <div className="flex flex-col gap-1.5">
           <ProjectMarketFields value={market} onChange={setMarket} />
           <span className="text-xs text-muted">
-            Kaydettiğiniz anahtar kelimeler bu ülke ve dile göre saklanır.
+            {t(
+              "Kaydettiğiniz anahtar kelimeler bu ülke ve dile göre saklanır.",
+            )}
           </span>
         </div>
 
@@ -212,15 +216,10 @@ function GeneralSection({ project }: { project: ProjectSummary }) {
             className="btn btn-primary btn-sm gap-1.5"
             disabled={updateMutation.isPending || !isDirty}
           >
-            {updateMutation.isPending ? (
-              <span
-                className="loading loading-spinner loading-xs"
-                aria-hidden
-              />
-            ) : null}
+            {updateMutation.isPending ? <Spinner delay={false} /> : null}
             {updateMutation.isPending
-              ? "Kaydediliyor…"
-              : "Değişiklikleri kaydet"}
+              ? t("Kaydediliyor…")
+              : t("Değişiklikleri kaydet")}
           </button>
         </div>
       </form>
@@ -244,29 +243,38 @@ function DangerSection({
     onSuccess: async () => {
       if (getLastProjectId() === project.id) clearLastProjectId();
       await queryClient.invalidateQueries({ queryKey: ["projects"] });
-      toast.success("Proje arşivlendi");
+      toast.success(t("Proje arşivlendi"));
       // Re-resolve to a remaining project via the landing redirect.
       void navigate({ to: "/" });
     },
     onError: (error) =>
-      toast.error(getStandardErrorMessage(error, "Proje arşivlenemedi")),
+      toast.error(getStandardErrorMessage(error, t("Proje arşivlenemedi"))),
   });
 
   return (
     <section className="space-y-3 border-t border-base-300 pt-8">
       <SettingsHeading
-        title="Projeyi arşivle"
-        help="Arşivlenen proje kenar çubuğundan kalkar ama hiçbir verisi silinmez. Denetimler, kelimeler ve raporlar durur, geri alınca aynen döner."
+        title={t("Projeyi arşivle")}
+        help={t(
+          "Arşivlenen proje kenar çubuğundan kalkar ama hiçbir verisi silinmez. Denetimler, kelimeler ve raporlar durur, geri alınca aynen döner.",
+        )}
       />
 
       {confirming ? (
         <div className="space-y-3">
           <p className="text-sm text-muted">
-            <span className="font-medium text-base-content">
-              {project.name}
-            </span>{" "}
-            projesini arşivlerseniz çalışma alanınızdan kaldırılır. Daha sonra
-            Projeler sayfasından geri alabilirsiniz.
+            {fillParts(
+              t(
+                "{name} projesini arşivlerseniz çalışma alanınızdan kaldırılır. Daha sonra Projeler sayfasından geri alabilirsiniz.",
+              ),
+              {
+                name: (
+                  <span className="font-medium text-base-content">
+                    {project.name}
+                  </span>
+                ),
+              },
+            )}
           </p>
           <div className="flex gap-2">
             <button
@@ -275,7 +283,7 @@ function DangerSection({
               onClick={() => archiveMutation.mutate()}
               disabled={archiveMutation.isPending}
             >
-              Evet, projeyi arşivle
+              {t("Evet, projeyi arşivle")}
             </button>
             <button
               type="button"
@@ -283,7 +291,7 @@ function DangerSection({
               onClick={() => setConfirming(false)}
               disabled={archiveMutation.isPending}
             >
-              Vazgeç
+              {t("Vazgeç")}
             </button>
           </div>
         </div>
@@ -291,8 +299,10 @@ function DangerSection({
         <div className="flex items-center justify-between gap-4">
           <p className="text-sm text-muted">
             {canArchive
-              ? "Bu projeyi arşivleyerek çalışma alanınızdan kaldırabilirsiniz."
-              : "Tek projenizi arşivleyemezsiniz."}
+              ? t(
+                  "Bu projeyi arşivleyerek çalışma alanınızdan kaldırabilirsiniz.",
+                )
+              : t("Tek projenizi arşivleyemezsiniz.")}
           </p>
           <button
             type="button"
@@ -300,7 +310,7 @@ function DangerSection({
             onClick={() => setConfirming(true)}
             disabled={!canArchive}
           >
-            Projeyi arşivle
+            {t("Projeyi arşivle")}
           </button>
         </div>
       )}

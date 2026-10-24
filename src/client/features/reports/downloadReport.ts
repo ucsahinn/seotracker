@@ -1,4 +1,5 @@
 import { downloadBlob } from "@/client/lib/download";
+import { t } from "@/shared/i18n";
 
 /**
  * What `/r/<id>` sends as a header, less the directives a meta tag cannot carry
@@ -44,7 +45,7 @@ export async function downloadReport(
   if (!response.ok) {
     // Surfaced verbatim: getStandardErrorMessage returns error.message, so
     // this string is UI copy rather than a developer note.
-    throw new Error("Rapor indirilemedi.");
+    throw new Error(t("Rapor indirilemedi."));
   }
 
   const html = withDownloadCsp(await response.text());

@@ -19,6 +19,7 @@ import {
   LighthouseIssuesToolbar,
 } from "./LighthouseIssuesParts";
 import { categoryTabs } from "./types";
+import { t } from "@/shared/i18n";
 
 type LighthouseIssuesScreenProps = {
   projectId: string;
@@ -75,12 +76,14 @@ export function LighthouseIssuesScreen(props: LighthouseIssuesScreenProps) {
 
   const issuesErrorMessage = getStandardErrorMessage(
     issuesQuery.error,
-    "Lighthouse sorunları yüklenemedi.",
+    t("Lighthouse sorunları yüklenemedi."),
   );
   const showsLegacyPayloadNotice =
     issuesQuery.data != null && !issuesQuery.data.hasIssueDetails;
   const emptyMessage = showsLegacyPayloadNotice
-    ? "Bu denetim, Lighthouse sorun ayrıntıları olmadan kaydedilmiş. Bu ekranı doldurmak için denetimi yeniden başlatın."
+    ? t(
+        "Bu denetim, Lighthouse sorun ayrıntıları olmadan kaydedilmiş. Bu ekranı doldurmak için denetimi yeniden başlatın.",
+      )
     : undefined;
 
   return (
@@ -111,7 +114,7 @@ export function LighthouseIssuesScreen(props: LighthouseIssuesScreenProps) {
                 onClick={() => void issuesQuery.refetch()}
               >
                 <RotateCw className="size-4" aria-hidden />
-                Tekrar dene
+                {t("Tekrar dene")}
               </button>
             </div>
           ) : null}
@@ -120,9 +123,9 @@ export function LighthouseIssuesScreen(props: LighthouseIssuesScreenProps) {
             <div className="alert alert-warning">
               <TriangleAlert className="size-4" />
               <span>
-                Bu Lighthouse çalışması, sorun ayrıntıları saklanmaya başlamadan
-                önce kaydedilmiş. Kategori sayılarını ve sorun kartlarını görmek
-                için denetimi yeniden başlatın.
+                {t(
+                  "Bu Lighthouse çalışması, sorun ayrıntıları saklanmaya başlamadan önce kaydedilmiş. Kategori sayılarını ve sorun kartlarını görmek için denetimi yeniden başlatın.",
+                )}
               </span>
             </div>
           ) : null}
@@ -198,13 +201,13 @@ function useLighthouseIssuesActions({
     try {
       const exported = await exportMutation.mutateAsync(data);
       downloadFile(exported.content, exported.filename, "application/json");
-      toast.success("İndirme başladı");
+      toast.success(t("İndirme başladı"));
     } catch (error) {
       // The server sends a bare code ("INTERNAL_ERROR"); never toast it raw.
       toast.error(
         getStandardErrorMessage(
           error,
-          "Veri dışa aktarılamadı. Birazdan tekrar deneyin.",
+          t("Veri dışa aktarılamadı. Birazdan tekrar deneyin."),
         ),
       );
     }
@@ -216,7 +219,7 @@ function useLighthouseIssuesActions({
   ) => {
     const filename = `lighthouse-${variant}-${category}-issues.csv`;
     downloadFile(issuesToCsv(rows), filename, "text/csv");
-    toast.success("CSV indirmesi başladı");
+    toast.success(t("CSV indirmesi başladı"));
   };
 
   const runExportSheets = (
@@ -237,7 +240,10 @@ function useLighthouseIssuesActions({
       content = (await exportMutation.mutateAsync(data)).content;
     } catch (error) {
       toast.error(
-        getStandardErrorMessage(error, "Veri kopyalanamadı. Tekrar deneyin."),
+        getStandardErrorMessage(
+          error,
+          t("Veri kopyalanamadı. Tekrar deneyin."),
+        ),
       );
       return;
     }

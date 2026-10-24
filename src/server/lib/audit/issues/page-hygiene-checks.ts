@@ -39,11 +39,11 @@ const PLACEHOLDER_TITLES = new Set([
   "your title here",
   "title",
   "index",
-  "başlıksız",
-  "başlıksız belge",
-  "başlıksız sayfa",
+  "başlıksız", // i18n-ignore: Turkish words the check looks for
+  "başlıksız belge", // i18n-ignore: Turkish words the check looks for
+  "başlıksız sayfa", // i18n-ignore: Turkish words the check looks for
   "yeni sayfa",
-  "sayfa başlığı",
+  "sayfa başlığı", // i18n-ignore: Turkish words the check looks for
 ]);
 
 /** Link texts that describe nothing about where the link goes. */
@@ -58,19 +58,19 @@ const GENERIC_ANCHORS = new Set([
   "details",
   "link",
   "this link",
-  "buraya tıklayın",
-  "buraya tıklayınız",
-  "buraya tıkla",
-  "tıklayın",
-  "tıkla",
+  "buraya tıklayın", // i18n-ignore: Turkish words the check looks for
+  "buraya tıklayınız", // i18n-ignore: Turkish words the check looks for
+  "buraya tıkla", // i18n-ignore: Turkish words the check looks for
+  "tıklayın", // i18n-ignore: Turkish words the check looks for
+  "tıkla", // i18n-ignore: Turkish words the check looks for
   "burada",
-  "devamı",
-  "devamını oku",
-  "devamını göster",
+  "devamı", // i18n-ignore: Turkish words the check looks for
+  "devamını oku", // i18n-ignore: Turkish words the check looks for
+  "devamını göster", // i18n-ignore: Turkish words the check looks for
   "daha fazla",
   "daha fazla bilgi",
   "detaylar",
-  "ayrıntılar",
+  "ayrıntılar", // i18n-ignore: Turkish words the check looks for
   "incele",
 ]);
 

@@ -2,7 +2,7 @@
   "name": "seotracker",
   "private": true,
   "sideEffects": false,
-  "version": "2.4.3",
+  "version": "0.5.0",
   "type": "module",
   "packageManager": "pnpm@10.30.1",
   "scripts": {
@@ -25,23 +25,25 @@
     "test:ci": "vitest run --reporter=dot",
     "verify:local": "node scripts/verify-local.mjs",
     "i18n:check": "node scripts/i18n-check.mjs",
-    "site:build": "node scripts/build-site-home.mjs build && node scripts/build-site-docs.mjs && prettier --write --no-error-on-unmatched-pattern site/docs site/en site/de site/fr site/it site/pt",
+    "site:build": "node scripts/build-site-home.mjs build && node scripts/build-site-docs.mjs && node scripts/build-site-privacy.mjs && prettier --write --no-error-on-unmatched-pattern site/docs site/en site/de site/fr site/it site/pt site/privacy",
     "cleanup:default-projects:d1": "tsx scripts/d1-default-project-cleanup.ts",
     "seed:projects": "tsx scripts/seed-projects.ts",
     "seed:demo": "tsx scripts/seed-demo.ts",
-    "ci:check": "prettier --check . && knip && tsc --noEmit && tsc --noEmit -p badseo/tsconfig.json && oxlint . --type-aware"
+    "ci:check": "prettier --check . && node scripts/i18n-check.mjs && knip && tsc --noEmit && tsc --noEmit -p badseo/tsconfig.json && oxlint . --type-aware"
   },
   "dependencies": {
     "@every-app/sdk": "^0.1.14",
     "@fontsource-variable/geist": "5.3.0",
     "@fontsource-variable/geist-mono": "5.3.0",
-    "@modelcontextprotocol/server": "2.0.0",
+    "@modelcontextprotocol/client": "2.3.0",
+    "@modelcontextprotocol/sdk": "1.32.0",
+    "@modelcontextprotocol/server": "2.3.0",
     "@tanstack/query-core": "^5.101.2",
     "@tanstack/react-form": "^1.33.0",
     "@tanstack/react-query": "^5.101.2",
-    "@tanstack/react-router": "^1.170.16",
+    "@tanstack/react-router": "1.170.41",
     "@tanstack/react-router-devtools": "^1.167.0",
-    "@tanstack/react-start": "^1.168.26",
+    "@tanstack/react-start": "1.168.60",
     "@tanstack/react-table": "^8.21.3",
     "agents": "0.22.0",
     "better-auth": "^1.6.22",
@@ -61,11 +63,11 @@
     "tailwindcss": "^4.1.16",
     "tldts": "^7.0.25",
     "yaml": "^2.9.0",
-    "zod": "^4.1.12"
+    "zod": "^4.6.7"
   },
   "devDependencies": {
-    "@cloudflare/vite-plugin": "^1.42.3",
-    "@cloudflare/workers-types": "^4.20260702.1",
+    "@cloudflare/vite-plugin": "^1.65.0",
+    "@cloudflare/workers-types": "^5.20261019.1",
     "@libsql/client": "^0.15.15",
     "@tailwindcss/vite": "^4.1.11",
     "@tanstack/devtools-vite": "^0.6.1",
@@ -78,7 +80,7 @@
     "@vitejs/plugin-react": "^4.6.0",
     "cheerio": "^1.2.0",
     "drizzle-kit": "^0.31.10",
-    "happy-dom": "^20.14.5",
+    "happy-dom": "^21.0.4",
     "knip": "^5.88.1",
     "oxlint": "^1.50.0",
     "oxlint-tsgolint": "^0.15.0",
@@ -86,9 +88,9 @@
     "prettier": "^3.6.2",
     "tsx": "^4.22.4",
     "typescript": "^5.9.3",
-    "vite": "^7.3.6",
+    "vite": "^7.3.7",
     "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^3.2.6",
-    "wrangler": "^4.105.0"
+    "vitest": "^4.1.12",
+    "wrangler": "^4.152.0"
   }
 }

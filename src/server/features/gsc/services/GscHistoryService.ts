@@ -5,6 +5,7 @@ import { GscNotConnectedError } from "@/server/lib/gscErrors";
 import { GscService } from "@/server/features/gsc/services/GscService";
 import { isExpectedGrantFailure } from "@/server/features/gsc/services/GscService";
 import { GSC_DATA_LAG_DAYS } from "@/shared/dataFreshness";
+import { t } from "@/shared/i18n";
 
 /**
  * Local archive of Search Console's daily query data.
@@ -272,8 +273,8 @@ function describeFailure(error: unknown): {
   return {
     notConnected: false,
     error: isExpectedGrantFailure(error)
-      ? "Search Console bağlantısının yenilenmesi gerekiyor."
-      : "Search Console isteği başarısız oldu.",
+      ? t("Search Console bağlantısının yenilenmesi gerekiyor.")
+      : t("Search Console isteği başarısız oldu."),
   };
 }
 

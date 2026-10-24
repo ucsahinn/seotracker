@@ -5,7 +5,7 @@ kind: nasil-yapilir
 updated: 2026-10-22
 ---
 
-L'interfaccia dell'app è in turco. In questa guida ogni nome di pulsante e di schermata è riportato in turco, con il significato italiano tra parentesi.
+L'interfaccia dell'app è disponibile in turco e in inglese. La lingua si sceglie in Ayarlar → Görünüm → Dil. In questa guida ogni nome di pulsante e di schermata è riportato in turco, con il significato italiano tra parentesi.
 
 Al termine l'app sarà collegata a Google a nome dell'utente e leggerà i dati del sito. Per questo si ottiene una sola volta da Google una "chiave di accesso a Google". Servono circa dieci minuti e non si deve più rifare. Esiste anche una strada più breve (l'account di servizio), alla fine della pagina. Per la maggior parte delle persone è quella consigliata.
 

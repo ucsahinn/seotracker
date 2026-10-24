@@ -15,6 +15,7 @@ import { getProjects } from "@/serverFunctions/projects";
 import { setLastProjectId } from "@/client/lib/active-project";
 import { CreateProjectModal } from "@/client/features/projects/CreateProjectModal";
 import type { ProjectSummary } from "./types";
+import { t } from "@/shared/i18n";
 
 // Below this many projects the plain list is faster to scan than a search box.
 const SEARCH_THRESHOLD = 8;
@@ -228,7 +229,7 @@ export function ProjectSwitcher({
         <button
           ref={triggerRef}
           type="button"
-          aria-label="Proje değiştir"
+          aria-label={t("Proje değiştir")}
           aria-expanded={open}
           aria-haspopup="listbox"
           onClick={() => (open ? closePanel() : openPanel())}
@@ -255,8 +256,8 @@ export function ProjectSwitcher({
           <Link
             to="/p/$projectId/settings"
             params={{ projectId: activeProject.id }}
-            aria-label="Proje ayarları"
-            title="Proje ayarları"
+            aria-label={t("Proje ayarları")}
+            title={t("Proje ayarları")}
             onClick={() => {
               closePanel();
               onCloseDrawer?.();
@@ -278,8 +279,8 @@ export function ProjectSwitcher({
                   ref={searchInputRef}
                   type="text"
                   value={query}
-                  placeholder="Proje ara…"
-                  aria-label="Projeleri filtrele"
+                  placeholder={t("Proje ara…")}
+                  aria-label={t("Projeleri filtrele")}
                   aria-controls="project-switcher-listbox"
                   aria-activedescendant={
                     filteredProjects[highlightIndex]
@@ -307,7 +308,7 @@ export function ProjectSwitcher({
               ref={listRef}
               id="project-switcher-listbox"
               role="listbox"
-              aria-label="Projeler"
+              aria-label={t("Projeler")}
               className="menu max-h-[min(60vh,21rem)] w-full flex-nowrap overflow-y-auto p-2"
             >
               {filteredProjects.map((project, index) => {
@@ -349,13 +350,7 @@ export function ProjectSwitcher({
                   </li>
                 );
               })}
-              {filteredProjects.length === 0 ? (
-                <li className="menu-disabled">
-                  <span className="text-muted">
-                    “{query.trim()}” ile eşleşen proje yok
-                  </span>
-                </li>
-              ) : null}
+              {filteredProjects.length === 0 ? <NoMatch query={query} /> : null}
             </ul>
           ) : null}
 
@@ -376,7 +371,7 @@ export function ProjectSwitcher({
                 }}
               >
                 <Plus className="size-4" />
-                Yeni proje
+                {t("Yeni proje")}
               </button>
             </li>
             <li>
@@ -388,7 +383,7 @@ export function ProjectSwitcher({
                 }}
               >
                 <FolderCog className="size-4" />
-                Projeleri yönet
+                {t("Projeleri yönet")}
               </Link>
             </li>
           </ul>
@@ -423,18 +418,18 @@ function ProjectListStatus({
 }) {
   return query.isError && empty ? (
     <div role="alert" className="space-y-2 p-3 text-sm">
-      <p className="text-muted">Projeler yüklenemedi.</p>
+      <p className="text-muted">{t("Projeler yüklenemedi.")}</p>
       <button
         type="button"
         className="btn btn-sm"
         disabled={query.isFetching}
         onClick={() => void query.refetch()}
       >
-        Tekrar dene
+        {t("Tekrar dene")}
       </button>
     </div>
   ) : query.isPending ? (
-    <div className="space-y-2 p-3" aria-label="Projeler yükleniyor">
+    <div className="space-y-2 p-3" aria-label={t("Projeler yükleniyor")}>
       <div className="skeleton h-4 w-3/4" />
       <div className="skeleton h-4 w-1/2" />
     </div>
@@ -443,14 +438,24 @@ function ProjectListStatus({
 
 // "Proje seçin" while the list was still loading read as "no project is
 // selected"; a skeleton says "one moment".
+function NoMatch({ query }: { query: string }) {
+  return (
+    <li className="menu-disabled">
+      <span className="text-muted">
+        {t("“{query}” ile eşleşen proje yok", { query: query.trim() })}
+      </span>
+    </li>
+  );
+}
+
 function TriggerName({ loading, name }: { loading: boolean; name?: string }) {
   if (loading) return <span className="skeleton my-0.5 h-4 w-28" aria-hidden />;
   return (
     <span
       className="truncate text-sm font-medium text-base-content"
-      title={name ?? "Proje seçin"}
+      title={name ?? t("Proje seçin")}
     >
-      {name ?? "Proje seçin"}
+      {name ?? t("Proje seçin")}
     </span>
   );
 }

@@ -6,6 +6,7 @@ import { readClientLog } from "@/client/lib/clientLog";
 import { buildZip } from "@/client/lib/zip";
 import { downloadBlob } from "@/client/lib/download";
 import { getDiagnostics } from "@/serverFunctions/diagnostics";
+import { t } from "@/shared/i18n";
 
 /**
  * One button, one archive, everything needed to diagnose this install.
@@ -34,12 +35,14 @@ export function DiagnosticsBundleButton() {
 
       downloadBlob(
         archive,
-        `seowatcher-tanilama-${server.generatedAt.slice(0, 10)}.zip`,
+        t("seowatcher-tanilama-{date}.zip", {
+          date: server.generatedAt.slice(0, 10),
+        }),
       );
     },
-    onSuccess: () => toast.success("Tanılama paketi indirildi"),
+    onSuccess: () => toast.success(t("Tanılama paketi indirildi")),
     onError: (error) =>
-      toast.error(getStandardErrorMessage(error, "Paket oluşturulamadı")),
+      toast.error(getStandardErrorMessage(error, t("Paket oluşturulamadı"))),
   });
 
   return (
@@ -54,7 +57,7 @@ export function DiagnosticsBundleButton() {
       ) : (
         <FileArchive className="size-4" />
       )}
-      Tanılama paketi indir
+      {t("Tanılama paketi indir")}
     </button>
   );
 }
@@ -69,27 +72,10 @@ function pretty(value: unknown): string {
  * can send and one they have to audit first.
  */
 function readme(generatedAt: string): string {
-  return `seowatcher tanılama paketi
-Oluşturulma: ${generatedAt}
-
-İçindekiler
-  summary.txt        Tek sayfalık özet.
-  diagnostics.json   Sürüm, kurulum kontrolleri, tablo satır sayıları,
-                     projeler, bağlı Google mülkleri ve son 25 denetim.
-  client-log.json    Bu sekmede yakalanan tarayıcı hataları.
-  browser.json       Tarayıcı ve ekran bilgisi.
-
-İçinde OLMAYAN şeyler
-  Gizli değer yok: Google erişim ve yenileme anahtarları, Google erişim
-  anahtarının gizli kısmı, PageSpeed API anahtarı, ajan parolası (MCP token)
-  ve oturum çerezleri toplanmaz. Yalnızca her birinin ayarlı olup olmadığı yazar.
-  Taranan sayfaların içeriği de yok, yalnızca sayıları var.
-
-İçinde OLAN, sizi tanımlayan şeyler
-  Proje adlarınız, alan adlarınız, bağlı Search Console mülkünüz ve GA4
-  mülk kimliğiniz. Bunlar olmadan bir sorun teşhis edilemez. Göndermeden
-  önce dosyaları açıp okuyun; karar sizin.
-`;
+  return t(
+    "seowatcher tanılama paketi\nOluşturulma: {generatedAt}\n\nİçindekiler\n  summary.txt        Tek sayfalık özet.\n  diagnostics.json   Sürüm, kurulum kontrolleri, tablo satır sayıları,\n                     projeler, bağlı Google mülkleri ve son 25 denetim.\n  client-log.json    Bu sekmede yakalanan tarayıcı hataları.\n  browser.json       Tarayıcı ve ekran bilgisi.\n\nİçinde OLMAYAN şeyler\n  Gizli değer yok: Google erişim ve yenileme anahtarları, Google erişim\n  anahtarının gizli kısmı, PageSpeed API anahtarı, ajan parolası (MCP token)\n  ve oturum çerezleri toplanmaz. Yalnızca her birinin ayarlı olup olmadığı yazar.\n  Taranan sayfaların içeriği de yok, yalnızca sayıları var.\n\nİçinde OLAN, sizi tanımlayan şeyler\n  Proje adlarınız, alan adlarınız, bağlı Search Console mülkünüz ve GA4\n  mülk kimliğiniz. Bunlar olmadan bir sorun teşhis edilemez. Göndermeden\n  önce dosyaları açıp okuyun; karar sizin.\n",
+    { generatedAt },
+  );
 }
 
 export function buildDiagnosticsSummary(
@@ -105,29 +91,31 @@ export function buildDiagnosticsSummary(
     .slice(0, 5)
     .map(
       (audit) =>
-        `  ${audit.startedAt}  ${audit.status.padEnd(9)} ${String(audit.pagesCrawled).padStart(5)} sayfa  ${audit.issueCount} bulgu  ${audit.errorCode ?? ""}`,
+        `  ${audit.startedAt}  ${audit.status.padEnd(9)} ${t("{pages} sayfa  {issues} bulgu", { pages: String(audit.pagesCrawled).padStart(5), issues: audit.issueCount })}  ${audit.errorCode ?? ""}`,
     )
     .join("\n");
 
-  return `seowatcher ${server.version} · ${server.authMode}
-Oluşturulma: ${server.generatedAt}
+  const tables = Object.entries(server.tables)
+    .map(([name, value]) => `  ${name.padEnd(26)} ${value}`)
+    .join("\n");
 
-Kurulum kontrolleri
-${failing || "  hepsi ok"}
+  return `seowatcher ${server.version} Alpha · ${server.authMode}
+${t("Oluşturulma: {date}", { date: server.generatedAt })}
 
-Tablolar
-${Object.entries(server.tables)
-  .map(([name, value]) => `  ${name.padEnd(26)} ${value}`)
-  .join("\n")}
+${t("Kurulum kontrolleri")}
+${failing || `  ${t("hepsi ok")}`}
 
-Projeler: ${server.projects.length}
-Search Console bağlantısı: ${server.connections.searchConsole.length}
-Analytics bağlantısı: ${server.connections.analytics.length}
+${t("Tablolar")}
+${tables}
 
-Son denetimler
-${audits || "  yok"}
+${t("Projeler: {n}", { n: server.projects.length })}
+${t("Search Console bağlantısı: {n}", { n: server.connections.searchConsole.length })}
+${t("Analytics bağlantısı: {n}", { n: server.connections.analytics.length })}
 
-Tarayıcıda yakalanan hata: ${clientLogCount}
+${t("Son denetimler")}
+${audits || `  ${t("yok")}`}
+
+${t("Tarayıcıda yakalanan hata: {n}", { n: clientLogCount })}
 `;
 }
 

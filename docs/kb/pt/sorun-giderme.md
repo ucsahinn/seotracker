@@ -5,7 +5,7 @@ kind: sorun-giderme
 updated: 2026-10-23
 ---
 
-A interface do aplicativo está em turco. Este guia mostra cada botão e cada nome de tela em turco, com o significado em português entre parênteses.
+A interface do aplicativo está disponível em turco e inglês. O idioma é escolhido em Ayarlar → Görünüm → Dil. Este guia mostra cada botão e cada nome de tela em turco, com o significado em português entre parênteses.
 
 Esta página diz, em poucas palavras, o que fazer quando algo não funciona. Primeiro, olhe o cartão "Kurulumunuzun durumu" (Estado da sua instalação) na tela **Yardım** (Ajuda) do aplicativo. O cartão confere quatro coisas: login e acesso, login do Google, a chave do PageSpeed e o banco de dados. Se ele disser "N şey dikkat istiyor" (N coisas pedem atenção), o botão ao lado leva à configuração certa. A lista abaixo vai do problema mais comum ao mais raro.
 

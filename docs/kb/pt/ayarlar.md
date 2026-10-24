@@ -3,16 +3,22 @@ title: Configurações
 description: Tema, chave de acesso do Google, chave do PageSpeed, limites de uso, versão e verificação de atualização. As configurações que valem para toda a instalação.
 screen: Ayarlar
 route: /settings
-updated: 2026-10-22
+updated: 2026-10-24
 ---
 
 Esta página mostra onde gerenciar a conexão com o Google, a chave de velocidade e as atualizações.
 
-**Ayarlar** (Configurações) é a tela do que vale para a instalação inteira. As configurações de cada projeto (nome, domínio, propriedade do Search Console e do Analytics) ficam na página **Proje ayarları** (Configurações do projeto) de cada projeto. Aqui você gerencia a chave de acesso necessária para se conectar ao Google, a chave do PageSpeed, o tema e a verificação de atualização. À esquerda há as seções **Görünüm** (Aparência), **Google**, **Hizmet hesabı** (Conta de serviço), **Hız ölçümü** (Medição de velocidade), **Sınırlar** (Limites), **Hakkında** (Sobre) e **Sürüm notları** (Notas de versão). O título de cada seção tem um selo que indica o estado dela.
+**Ayarlar** (Configurações) é a tela do que vale para a instalação inteira. As configurações de cada projeto (nome, domínio, propriedade do Search Console e do Analytics) ficam na página **Proje ayarları** (Configurações do projeto) de cada projeto. Aqui você gerencia a chave de acesso necessária para se conectar ao Google, a chave do PageSpeed, o tema e a verificação de atualização. À esquerda há as seções **Görünüm** (Aparência), **Google**, **Hizmet hesabı** (Conta de serviço), **Hız ölçümü** (Medição de velocidade), **Sınırlar** (Limites), **Hakkında** (Sobre) e **Windows**. O título de cada seção tem um selo que indica o estado dela.
 
 ## O que há na tela
 
 **Görünüm** (Aparência). Para **Tema** (Tema) há as opções Sistem (Sistema), Açık (Claro) e Koyu (Escuro). Sua escolha fica guardada neste navegador. Em outro navegador ou em outro computador, você escolhe de novo.
+
+**Idioma.** A interface está disponível em turco e inglês. Em **Ayarlar → Görünüm → Dil**, escolha Türkçe ou English. A página recarrega; os números e as datas seguem o idioma escolhido. A preferência fica guardada neste navegador.
+
+**Notificações (Bildirimler).** O sino mostra os últimos 50 eventos e a contagem de mensagens não lidas. **Tümünü okundu işaretle** marca todas como lidas sem apagar o histórico. Em **Bildirimler**, pode ouvir o som e ativar notificações no ambiente de trabalho em segundo plano. A permissão do navegador só é pedida ao ativar a opção.
+
+**Windows.** Ative ou desative o arranque com o Windows e a instalação automática de atualizações. São as mesmas preferências guardadas no menu da área de notificação. As restrições do administrador são explicadas. Os controlos ficam desativados nas instalações Docker e de desenvolvimento; os iniciadores Windows antigos pedem uma atualização do pacote.
 
 **Google.** O selo tem um de três valores: **Kayıtlı** (Salvo), **Ortamdan geliyor** (Vem do ambiente; em uma instalação Docker, foi informado pelo arquivo `.env`) ou **Eksik** (Ausente). A seção mostra os dois endereços de redirecionamento que você vai adicionar no Google Cloud Console (o painel de desenvolvedores do Google). Há botões de copiar ao lado deles. Você precisa adicionar os dois. Se não adicionar o endereço do Analytics, só o Search Console se conecta.
 
@@ -38,9 +44,9 @@ O selo diz **Kayıtlı** (Salvo) ou **Kullanılmıyor** (Não utilizada). Uma co
 
 O estado de cada cartão é **Yeterli** (Suficiente), **Azalıyor** (Acabando, a partir de 70%), **Neredeyse doldu** (Quase cheio, a partir de 90%) ou **Bilinmiyor** (Desconhecido).
 
-**Hakkında** (Sobre). A linha **Sürüm** (Versão) mostra a versão (como v2.3.0). A opção **Güncellemeleri kontrol et** (Verificar atualizações) vem ligada por padrão. Quando está ligada, o aplicativo pergunta ao GitHub a versão mais recente no máximo uma vez por dia. Nesse caso, o botão **Şimdi kontrol et** (Verificar agora) também aparece. Se houver uma versão nova, aparece um link **Değişiklikler** (Alterações) e, para instalações Docker, um comando para copiar: `git pull && docker compose up -d --build`. Para o pacote Windows, ele aponta para **Güncelle** (Atualizar) no ícone da barra de tarefas. Se a atualização automática estiver ligada, a versão nova se instala sozinha.
+**Hakkında** (Sobre). A linha **Sürüm** (Versão) mostra a versão (como 0.5.0 Alpha). A opção **Güncellemeleri kontrol et** (Verificar atualizações) vem ligada por padrão. Quando está ligada, o aplicativo pergunta ao GitHub a versão mais recente no máximo uma vez por dia. Nesse caso, o botão **Şimdi kontrol et** (Verificar agora) também aparece. Se houver uma versão nova, aparece um link **Değişiklikler** (Alterações) e, para instalações Docker, um comando para copiar: `git pull && docker compose up -d --build`. Para o pacote Windows, ele aponta para **Güncelle** (Atualizar) no ícone da barra de tarefas. Se a atualização automática estiver ligada, a versão nova se instala sozinha.
 
-**Sürüm notları** (Notas de versão). Lista o que mudou em cada versão.
+**Sürüm notları** (Notas de versão). A página fica acima das notificações no menu lateral. As etiquetas coloridas indicam novidades, correções e alterações de segurança.
 
 ## Como usar
 

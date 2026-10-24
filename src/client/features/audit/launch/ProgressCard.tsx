@@ -11,7 +11,11 @@ import {
   formatDuration,
 } from "@/client/lib/format";
 import { getCrawlProgress } from "@/serverFunctions/audit";
+import { t } from "@/shared/i18n";
+import { useEffect, useState } from "react";
+import { formatElapsed, parseTimestamp } from "@/shared/format";
 
+// Turkish source labels; t() runs where they render.
 const PHASE_LABEL: Record<string, string> = {
   discovery: "Sayfa bulma",
   crawling: "Taranıyor",
@@ -22,10 +26,10 @@ const PHASE_LABEL: Record<string, string> = {
 /** Step list for the phases this audit will actually go through. */
 function phaseSteps(withLighthouse: boolean) {
   return [
-    { key: "discovery", label: "Sayfa bulma" },
-    { key: "crawling", label: "Tarama" },
-    ...(withLighthouse ? [{ key: "lighthouse", label: "Hız ölçümü" }] : []),
-    { key: "finalizing", label: "Tamamlanıyor" },
+    { key: "discovery", label: t("Sayfa bulma") },
+    { key: "crawling", label: t("Tarama") },
+    ...(withLighthouse ? [{ key: "lighthouse", label: t("Hız ölçümü") }] : []),
+    { key: "finalizing", label: t("Tamamlanıyor") },
   ];
 }
 
@@ -46,6 +50,12 @@ export function ProgressCard({
     startedAt: string;
   };
 }) {
+  const [now, setNow] = useState(Date.now);
+  useEffect(() => {
+    const timer = window.setInterval(() => setNow(Date.now()), 1000);
+    return () => window.clearInterval(timer);
+  }, []);
+  const elapsed = now - parseTimestamp(status.startedAt);
   const crawlProgress =
     status.pagesTotal > 0 ? status.pagesCrawled / status.pagesTotal : 0;
   const lighthouseDone = status.lighthouseCompleted + status.lighthouseFailed;
@@ -54,8 +64,8 @@ export function ProgressCard({
   const isLighthousePhase = status.currentPhase === "lighthouse";
   const isFinalizing = status.currentPhase === "finalizing";
   const phaseLabel = status.currentPhase
-    ? (PHASE_LABEL[status.currentPhase] ?? status.currentPhase)
-    : "Çalışıyor";
+    ? t(PHASE_LABEL[status.currentPhase] ?? status.currentPhase)
+    : t("Çalışıyor");
   const progress = isLighthousePhase ? lighthouseProgress : crawlProgress;
   /** Discovery has not produced a denominator yet. */
   const hasTotal = isLighthousePhase
@@ -73,9 +83,12 @@ export function ProgressCard({
     startedAt: status.startedAt,
     progress,
     hasTotal,
+    now,
   });
   const eta =
-    remainingMs !== null ? `~${formatDuration(remainingMs)} kaldı` : undefined;
+    remainingMs !== null
+      ? t("~{duration} kaldı", { duration: formatDuration(remainingMs) })
+      : undefined;
 
   const showSpeedBar =
     status.lighthouseTotal > 0 &&
@@ -104,11 +117,18 @@ export function ProgressCard({
             <h2 className="font-medium flex items-center gap-2">
               <span className="dot-live text-primary" aria-hidden />
               {isLighthousePhase
-                ? "Lighthouse kontrolleri çalışıyor"
-                : "Sayfalar taranıyor"}
+                ? t("Lighthouse kontrolleri çalışıyor")
+                : t("Sayfalar taranıyor")}
             </h2>
             <span className="badge badge-ghost badge-sm">{phaseLabel}</span>
           </div>
+          {Number.isFinite(elapsed) && (
+            <p className="text-xs text-muted">
+              {t("Geçen süre: {duration}", {
+                duration: formatElapsed(elapsed),
+              })}
+            </p>
+          )}
 
           <div className="grid items-start gap-4 md:grid-cols-[minmax(0,1fr)_11rem]">
             <div className="space-y-3">
@@ -117,7 +137,7 @@ export function ProgressCard({
                   sat at zero for exactly the phase where the operator is
                   least sure anything is happening. */}
               <ProgressBar
-                label="Tarama"
+                label={t("Tarama")}
                 value={status.pagesCrawled}
                 max={Math.max(status.pagesTotal, 1)}
                 showCount
@@ -127,7 +147,7 @@ export function ProgressCard({
               />
               {showSpeedBar ? (
                 <ProgressBar
-                  label="Hız ölçümü"
+                  label={t("Hız ölçümü")}
                   value={lighthouseDone}
                   max={status.lighthouseTotal}
                   showCount
@@ -143,8 +163,9 @@ export function ProgressCard({
               ) : null}
               {status.lighthouseFailed > 0 ? (
                 <p className="text-xs text-muted">
-                  {formatCount(status.lighthouseFailed)} ölçüm başarısız oldu;
-                  kalanlar sürüyor.
+                  {t("{count} ölçüm başarısız oldu; kalanlar sürüyor.", {
+                    count: status.lighthouseFailed,
+                  })}
                 </p>
               ) : null}
             </div>
@@ -160,14 +181,22 @@ export function ProgressCard({
               nothing at all for a crawl that takes minutes. */}
           <p className="sr-only" role="status" aria-live="polite">
             {!hasTotal
-              ? "Adresler bulunuyor…"
+              ? t("Adresler bulunuyor…")
               : isLighthousePhase
-                ? `${formatCount(lighthouseDone)} / ${formatCount(status.lighthouseTotal)} kontrol${
-                    status.lighthouseFailed > 0
-                      ? ` (${formatCount(status.lighthouseFailed)} başarısız)`
-                      : ""
-                  }`
-                : `${formatCount(status.pagesCrawled)} / ${formatCount(status.pagesTotal)} sayfa`}
+                ? status.lighthouseFailed > 0
+                  ? t("{done} / {total} kontrol ({failed} başarısız)", {
+                      done: formatCount(lighthouseDone),
+                      total: formatCount(status.lighthouseTotal),
+                      failed: formatCount(status.lighthouseFailed),
+                    })
+                  : t("{done} / {total} kontrol", {
+                      done: formatCount(lighthouseDone),
+                      total: formatCount(status.lighthouseTotal),
+                    })
+                : t("{done} / {total} sayfa", {
+                    done: formatCount(status.pagesCrawled),
+                    total: formatCount(status.pagesTotal),
+                  })}
             {eta ? `, ${eta}` : ""}
           </p>
         </div>
@@ -177,11 +206,16 @@ export function ProgressCard({
         <div className="card bg-base-100 border border-base-300">
           <div className="card-body gap-2 p-4">
             <h3 className="text-sm font-medium text-muted">
-              Taranan sayfalar ({formatCount(crawledUrls.length)})
+              {t("Taranan sayfalar ({count})", {
+                count: formatCount(crawledUrls.length),
+              })}
             </h3>
             <p className="text-xs text-muted">
-              Güncellendi{" "}
-              {formatDateTime(new Date(crawledUrls[0].crawledAt).toISOString())}
+              {t("Güncellendi {date}", {
+                date: formatDateTime(
+                  new Date(crawledUrls[0].crawledAt).toISOString(),
+                ),
+              })}
             </p>
             <div className="max-h-[400px] overflow-y-auto -mx-1">
               {crawledUrls.map((entry, i) => (
@@ -216,9 +250,7 @@ function ProgressRow({
   return (
     <div
       className={`flex items-center justify-between gap-3 px-2 py-1.5 rounded-field text-sm ${
-        index === 0
-          ? "bg-primary/5 animate-in fade-in slide-in-from-top-1 duration-300"
-          : ""
+        index === 0 ? "bg-primary/5 crawl-arrival" : ""
       }`}
     >
       <div className="flex items-center gap-2 min-w-0 flex-1">

@@ -8,11 +8,11 @@ updated: 2026-10-22
 
 This screen lets you tell your assistant about your site once, so you never repeat it.
 
-The **Proje bilgisi** (Project info) screen is where you write what Google does not know: what you sell, your current goal, who your competitors are, which pages earn money and how you want things written. You or your AI assistant (the screen says "ajan", agent) can fill it in. The assistant reads it before it starts work and records what it learns here. If something is wrong, fix it yourself. It is useful even without an assistant: six months from now, the answer to "why did we focus on this page" is here.
+The **Project context** screen is where you write what Google does not know: what you sell, your current goal, who your competitors are, which pages earn money and how you want things written. You or your AI assistant (the screen says "ajan", agent) can fill it in. The assistant reads it before it starts work and records what it learns here. If something is wrong, fix it yourself. It is useful even without an assistant: six months from now, the answer to "why did we focus on this page" is here.
 
 ## What is on the screen
 
-**Four main sections.** **İşin özeti** (Summary of the business), **Şu anki hedef** (Current goal), **Konumlandırma** (Positioning) (how you describe yourself in the market) and **Yazım tercihleri** (Writing preferences). Each is free text of at most 4,000 characters. Under each section you see who last updated it and when.
+**Four main sections.** **Business overview**, **Current goal**, **Positioning** (how you describe yourself in the market) and **Writing preferences**. Each is free text of at most 4,000 characters. Under each section you see who last updated it and when.
 
 **Custom sections.** For topics that do not fit the four sections, add your own heading. There can be at most 20 custom sections, and a heading is at most 120 characters.
 
@@ -20,22 +20,22 @@ The **Proje bilgisi** (Project info) screen is where you write what Google does 
 
 **Key pages.** For each page you enter the address, role, topic and note. The roles are:
 
-- **Merkez sayfa** (Hub page): the entry page of a topic.
-- **Destek sayfası** (Support page): a page that supports the hub page.
-- **Dönüşüm sayfası** (Conversion page): a page that earns money or has a form.
-- **Diğer** (Other).
+- **Hub page**: the entry page of a topic.
+- **Supporting page**: a page that supports the hub page.
+- **Conversion page**: a page that earns money or has a form.
+- **Other**.
 
 You can add at most 100 pages. Addresses are changed to start with https.
 
 **Research log.** Dated notes the assistant leaves about what it researched and what it found. Only the assistant writes them, each note is at most 1,000 characters, and you can delete them. Notes are removed automatically after 90 days. The screen shows the newest 20.
 
-**Agent card.** It offers two ready-made texts: "Ajanınıza doldurtun" (Have your agent fill it in) and "Ajanınıza gözden geçirtin" (Have your agent review it). Copy it with **İstemi kopyala** (Copy the prompt) and paste it into your assistant. In an empty project, the first text has the assistant ask you a few questions and fill in the sections.
+**Agent card.** It offers two ready-made texts: "Ajanınıza doldurtun" (Have your agent fill it in) and "Have your agent review it". Copy it with **Copy prompt** and paste it into your assistant. In an empty project, the first text has the assistant ask you a few questions and fill in the sections.
 
 ## How to use it
 
 1. Right after opening the project, write three to five sentences in **İşin özeti**: what you sell, who you sell it to, the languages of your site and your conversion page. Every report from the assistant builds on this paragraph.
 2. State **Şu anki hedef** in concrete terms. Not "traffic" but "product pages getting into the index (Google's list of pages)" or "five requests a month from the demo form". The assistant prioritizes its suggestions accordingly.
-3. In **Önemli sayfalar** (Key pages), add the conversion pages first, then the hub pages. This tells the assistant which work to put first.
+3. In **Key pages**, add the conversion pages first, then the hub pages. This tells the assistant which work to put first.
 4. In **Yazım tercihleri**, write the words not to use and the tone. Examples: "do not say industry leader", "use the 'you' form", "give the version number". The assistant's reports follow these rules.
 5. If you use an assistant, copy the **Ajanınıza doldurtun** text into your assistant on the first day. The assistant fills in the sections by talking with you. Once a month, read the research log and fix what is wrong.
 

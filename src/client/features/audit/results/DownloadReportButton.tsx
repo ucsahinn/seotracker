@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { FileDown, Loader2 } from "lucide-react";
+import { CheckCircle2, FileDown, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import { createAuditReport } from "@/serverFunctions/auditReport";
@@ -8,6 +8,8 @@ import {
   downloadReport,
   reportFilename,
 } from "@/client/features/reports/downloadReport";
+import { t } from "@/shared/i18n";
+import { notify } from "@/client/features/notifications/notify";
 
 /**
  * Saves the audit as a report, then hands the file over.
@@ -34,11 +36,27 @@ export function DownloadReportButton({
       await queryClient.invalidateQueries({
         queryKey: reportsQueryKey(projectId),
       });
-      await downloadReport(reportId, reportFilename(title));
-      toast.success("Rapor indirildi ve Raporlar sekmesine kaydedildi.");
+      notify({
+        kind: "report",
+        title: t("Rapor hazır"),
+        body: title,
+        href: `/p/${projectId}/reports/${reportId}`,
+        projectId,
+        importance: "low",
+        dedupeKey: `report:${reportId}`,
+      });
+      try {
+        await downloadReport(reportId, reportFilename(title));
+      } catch {
+        toast.error(
+          t(
+            "Rapor kaydedildi ancak indirilemedi. Raporlar ekranından tekrar deneyin.",
+          ),
+        );
+      }
     },
     onError: (error) =>
-      toast.error(getStandardErrorMessage(error, "Rapor oluşturulamadı")),
+      toast.error(getStandardErrorMessage(error, t("Rapor oluşturulamadı"))),
   });
 
   return (
@@ -50,10 +68,16 @@ export function DownloadReportButton({
     >
       {create.isPending ? (
         <Loader2 className="size-4 animate-spin" />
+      ) : create.isSuccess ? (
+        <CheckCircle2 className="size-4 text-success" />
       ) : (
         <FileDown className="size-4" />
       )}
-      Raporu indir
+      {create.isPending
+        ? t("Rapor hazırlanıyor…")
+        : create.isSuccess
+          ? t("Rapor hazır")
+          : t("Raporu indir")}
     </button>
   );
 }

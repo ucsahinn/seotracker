@@ -436,6 +436,43 @@ describe("GscService.disconnect", () => {
 });
 
 describe("GscService.inspectUrls", () => {
+  it("keeps successful answers when a sibling quota reservation fails", async () => {
+    mocks.getByProjectId.mockResolvedValue({
+      siteUrl: "sc-domain:x.test",
+      connectedByUserId: "u1",
+    });
+    mocks.inspectUrl.mockResolvedValue({
+      indexStatusResult: { verdict: "PASS" },
+    });
+    const reserve = vi
+      .fn()
+      .mockRejectedValueOnce(new Error("D1 unavailable"))
+      .mockResolvedValue(true);
+    const result = await GscService.inspectUrls({
+      projectId: "p1",
+      urls: ["https://x.test/a", "https://x.test/b"],
+      reserve,
+    });
+    expect(result.results.map((entry) => entry.url)).toEqual([
+      "https://x.test/b",
+    ]);
+    expect(result.reservationError).toBeInstanceOf(Error);
+    expect(mocks.inspectUrl).toHaveBeenCalledTimes(1);
+  });
+  it("does not contact Google without a property quota reservation", async () => {
+    mocks.getByProjectId.mockResolvedValue({
+      siteUrl: "sc-domain:x.test",
+      connectedByUserId: "u1",
+      connectedAccountEmail: "a@x.test",
+    });
+    const result = await GscService.inspectUrls({
+      projectId: "p1",
+      urls: ["https://x.test/a"],
+      reserve: async () => false,
+    });
+    expect(mocks.inspectUrl).not.toHaveBeenCalled();
+    expect(result.results).toEqual([]);
+  });
   /*
    * A dead grant used to throw straight out of the loop, so the inspections
    * Google had already served -- and charged against the 2000/day property
@@ -455,6 +492,7 @@ describe("GscService.inspectUrls", () => {
       .mockRejectedValueOnce(new GscTokenError("grant revoked"));
 
     const result = await GscService.inspectUrls({
+      reserve: async () => true,
       projectId: "p1",
       urls: ["https://x.test/a", "https://x.test/b"],
     });
@@ -490,7 +528,11 @@ describe("GscService.inspectUrls", () => {
       (path) => "https://x.test/" + path,
     );
 
-    const result = await GscService.inspectUrls({ projectId: "p1", urls });
+    const result = await GscService.inspectUrls({
+      reserve: async () => true,
+      projectId: "p1",
+      urls,
+    });
 
     expect(peak).toBe(5);
     expect(result.results.map((entry) => entry.url)).toEqual(urls);
@@ -510,7 +552,11 @@ describe("GscService.inspectUrls", () => {
       (path) => "https://x.test/" + path,
     );
 
-    const result = await GscService.inspectUrls({ projectId: "p1", urls });
+    const result = await GscService.inspectUrls({
+      reserve: async () => true,
+      projectId: "p1",
+      urls,
+    });
 
     expect(mocks.inspectUrl).toHaveBeenCalledTimes(5);
     expect(result.tokenError).toBeInstanceOf(GscTokenError);

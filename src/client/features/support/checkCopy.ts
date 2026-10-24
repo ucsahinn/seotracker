@@ -1,8 +1,10 @@
+import { t } from "@/shared/i18n";
+
 export type CheckStatus = "ok" | "warn" | "error";
 
 type DescribedCheck = {
   status: CheckStatus;
-  /** Plain Turkish. Null when there is nothing worth saying. */
+  /** Plain words in the interface language. Null when there is nothing worth saying. */
   text: string | null;
   /** True when `text` is the server's own English sentence, shown as-is. */
   foreign: boolean;
@@ -14,7 +16,8 @@ function spoken(text: string, status: CheckStatus): DescribedCheck {
 
 /**
  * The server's check sentences are English because they double as the Docker
- * boot log; this screen is Turkish. Mapped here by check and outcome, so the
+ * boot log; this screen speaks the interface language. Mapped here by check
+ * and outcome, so the
  * operator reads what to do rather than a translated log line.
  *
  * `googleReady` is what the server cannot see in its own verdict: whether an
@@ -31,8 +34,10 @@ export function describeCheck(
   const detail = check.detail ?? "";
   const logs =
     installKind === "windows"
-      ? "Görev çubuğu menüsünden Günlükleri aç deyip server.log dosyasına bakın; düzelmezse Kurulumu onar."
-      : "Ayrıntı için docker compose logs --tail 50 çıktısına bakın.";
+      ? t(
+          "Görev çubuğu menüsünden Günlükleri aç deyip server.log dosyasına bakın; düzelmezse Kurulumu onar.",
+        )
+      : t("Ayrıntı için docker compose logs --tail 50 çıktısına bakın.");
   const say = (text: string, status: CheckStatus = check.status) =>
     spoken(text, status);
 
@@ -40,80 +45,97 @@ export function describeCheck(
     if (/DISABLED/.test(detail)) {
       return say(
         installKind === "windows"
-          ? "Search Console ve Analytics kapalı. Uygulamanın şifreleme anahtarı (veri klasöründeki instance-secret dosyası) eksik ya da bozuk. Görev çubuğu menüsünden Kurulumu onar deyin."
-          : "Search Console ve Analytics kapalı. Google bağlantılarını şifreleyen gizli kurulum anahtarı (BETTER_AUTH_SECRET) eksik ya da çok kısa. Uygulama bu anahtarı kendisi üretir; elle kısa bir değer girdiyseniz silin.",
+          ? t(
+              "Search Console ve Analytics kapalı. Uygulamanın şifreleme anahtarı (veri klasöründeki instance-secret dosyası) eksik ya da bozuk. Görev çubuğu menüsünden Kurulumu onar deyin.",
+            )
+          : t(
+              "Search Console ve Analytics kapalı. Google bağlantılarını şifreleyen gizli kurulum anahtarı (BETTER_AUTH_SECRET) eksik ya da çok kısa. Uygulama bu anahtarı kendisi üretir; elle kısa bir değer girdiyseniz silin.",
+            ),
         "warn",
       );
     }
     if (/Only one of/.test(detail)) {
       return say(
-        "GOOGLE_CLIENT_ID ve GOOGLE_CLIENT_SECRET'ten yalnızca biri tanımlı. İkisi de gerekir. Ya da ikisini de boş bırakıp Google erişim anahtarını Ayarlar'dan girin.",
+        t(
+          "GOOGLE_CLIENT_ID ve GOOGLE_CLIENT_SECRET'ten yalnızca biri tanımlı. İkisi de gerekir. Ya da ikisini de boş bırakıp Google erişim anahtarını Ayarlar'dan girin.",
+        ),
         "warn",
       );
     }
     if (check.status === "ok" && googleReady === false) {
       return say(
-        "Google erişim anahtarı ya da hizmet hesabı henüz girilmedi. Girmeden Search Console ve Analytics bağlanamaz.",
+        t(
+          "Google erişim anahtarı ya da hizmet hesabı henüz girilmedi. Girmeden Search Console ve Analytics bağlanamaz.",
+        ),
         "warn",
       );
     }
     if (check.status === "ok") {
       return say(
         /ortam|environment/i.test(detail)
-          ? "Google erişim anahtarı ortam değişkenlerinden geliyor."
+          ? t("Google erişim anahtarı ortam değişkenlerinden geliyor.")
           : googleReady === null
-            ? "Google bağlantı ayarı okunuyor."
+            ? t("Google bağlantı ayarı okunuyor.")
             : googleReady
-              ? "Google erişimi hazır."
-              : "Google erişim anahtarı Ayarlar'da kayıtlı.",
+              ? t("Google erişimi hazır.")
+              : t("Google erişim anahtarı Ayarlar'da kayıtlı."),
       );
     }
   }
 
   if (key === "pagespeed") {
     if (check.status === "error") {
-      return say("PageSpeed anahtarı kontrol edilemedi. " + logs);
+      return say(t("PageSpeed anahtarı kontrol edilemedi. {logs}", { logs }));
     }
     if (check.status === "warn") {
       return say(
-        "Anahtar yok. Hız ölçümü Google'ın anahtarsız kotasıyla çalışır ve çoğu zaman 429 ile yarım kalır. Tarama ve diğer SEO kontrolleri etkilenmez.",
+        t(
+          "Anahtar yok. Hız ölçümü Google'ın anahtarsız kotasıyla çalışır ve çoğu zaman 429 ile yarım kalır. Tarama ve diğer SEO kontrolleri etkilenmez.",
+        ),
       );
     }
     return say(
       /environment|PAGESPEED_API_KEY/.test(detail)
-        ? "PageSpeed anahtarı ortam değişkeninden geliyor."
-        : "PageSpeed anahtarı Ayarlar'da kayıtlı.",
+        ? t("PageSpeed anahtarı ortam değişkeninden geliyor.")
+        : t("PageSpeed anahtarı Ayarlar'da kayıtlı."),
     );
   }
 
   if (key === "auth") {
     if (check.status === "ok") {
+      // i18n-ignore: matches the server's own Turkish sentence, which it shows
       return detail.startsWith("Giriş yok")
         ? say(detail)
-        : say("Giriş koruması ayarlı.");
+        : say(t("Giriş koruması ayarlı."));
     }
     if (/Reachable off localhost/.test(detail)) {
       return say(
-        "Bu kurulum parolasız ama dışarıdan erişime açık görünüyor; açan herkes yönetici olur. Önüne kendi giriş korumanızı koyun ya da uygulamayı yalnızca bu bilgisayara (127.0.0.1) açık tutun.",
+        t(
+          "Bu kurulum parolasız ama dışarıdan erişime açık görünüyor; açan herkes yönetici olur. Önüne kendi giriş korumanızı koyun ya da uygulamayı yalnızca bu bilgisayara (127.0.0.1) açık tutun.",
+        ),
       );
     }
     return say(
       installKind === "windows"
-        ? "Giriş ayarı eksik ya da geçersiz. Görev çubuğu menüsünden Kurulumu onar deyin; düzelmezse Sorunu bildir."
-        : "Giriş ayarı eksik ya da geçersiz. AUTH_MODE, TEAM_DOMAIN ve POLICY_AUD değerlerini docs/ENVIRONMENT.md'ye göre kontrol edin.",
+        ? t(
+            "Giriş ayarı eksik ya da geçersiz. Görev çubuğu menüsünden Kurulumu onar deyin; düzelmezse Sorunu bildir.",
+          )
+        : t(
+            "Giriş ayarı eksik ya da geçersiz. AUTH_MODE, TEAM_DOMAIN ve POLICY_AUD değerlerini docs/ENVIRONMENT.md'ye göre kontrol edin.",
+          ),
     );
   }
 
   if (key === "database") {
     return check.status === "ok"
-      ? say("Yerel veritabanı yanıt veriyor.")
-      : say("Veritabanı yanıt vermiyor. " + logs);
+      ? say(t("Yerel veritabanı yanıt veriyor."))
+      : say(t("Veritabanı yanıt vermiyor. {logs}", { logs }));
   }
 
   if (key === "runtime") {
     return check.status === "ok"
-      ? say("Çalışma ortamı hazır.")
-      : say("Çalışma ortamında bir sorun var. " + logs);
+      ? say(t("Çalışma ortamı hazır."))
+      : say(t("Çalışma ortamında bir sorun var. {logs}", { logs }));
   }
 
   // A check this screen has no sentence for: the server's own words beat

@@ -1,6 +1,5 @@
 import { KeywordResearchRepository } from "@/server/features/keywords/repositories/KeywordResearchRepository";
 import { AppError, isUniqueConstraintError } from "@/server/lib/errors";
-import { formatNumber } from "@/shared/format";
 import { jsonCodec } from "@/shared/json";
 import type {
   DeleteSavedKeywordTagInput,
@@ -18,6 +17,7 @@ import type {
 } from "@/types/keywords";
 import { normalizeKeyword } from "./helpers";
 import { z } from "zod";
+import { t } from "@/shared/i18n";
 
 const monthlySearchSchema = z.object({
   year: z.number().int().positive(),
@@ -280,7 +280,7 @@ export async function updateSavedKeywordTag(input: UpdateSavedKeywordTagInput) {
     if (isUniqueConstraintError(error)) {
       throw new AppError(
         "CONFLICT",
-        "Bu adda bir etiket zaten var. Farklı bir ad seçin.",
+        t("Bu adda bir etiket zaten var. Farklı bir ad seçin."),
       );
     }
     throw error;
@@ -305,7 +305,10 @@ export async function deleteSavedKeywordTag(input: DeleteSavedKeywordTagInput) {
   if (result.status === "in_use") {
     throw new AppError(
       "CONFLICT",
-      `Etiket ${formatNumber(result.assignmentCount)} kelimeye bağlı. Önce bu kelimelerden kaldırıp tekrar deneyin.`,
+      t(
+        "Etiket {count} kelimeye bağlı. Önce bu kelimelerden kaldırıp tekrar deneyin.",
+        { count: result.assignmentCount },
+      ),
     );
   }
   return { success: result.status === "deleted" };

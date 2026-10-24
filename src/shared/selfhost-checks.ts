@@ -1,6 +1,7 @@
 // Pure validators for self-host configuration values. Shared by the runtime
 // (auth middleware, /api/health) and the Docker preflight script, so every
 // surface applies the exact same rules and wording.
+import { t } from "./i18n";
 
 export const MIN_BETTER_AUTH_SECRET_LENGTH = 32;
 
@@ -20,15 +21,17 @@ export function validateTeamDomain(value: string): TeamDomainResult {
 
     return { ok: true, origin: parsed.origin };
   } catch {
-    return {
-      ok: false,
-      message:
-        // Reaches the operator through AUTH_CONFIG_MISSING, so it is UI copy.
-        // The throw above it is caught internally and stays English.
-        "TEAM_DOMAIN, https://ekibiniz.cloudflareaccess.com gibi tam bir https adresi olmalı" +
-        (normalized && !normalized.includes("://")
-          ? ` — "${normalized}" değerinin başına https:// ekleyin`
-          : ""),
-    };
+    // Reaches the operator through AUTH_CONFIG_MISSING, so it is UI copy.
+    // The throw above it is caught internally and stays English.
+    const message =
+      normalized && !normalized.includes("://")
+        ? t(
+            'TEAM_DOMAIN, https://ekibiniz.cloudflareaccess.com gibi tam bir https adresi olmalı — "{value}" değerinin başına https:// ekleyin',
+            { value: normalized },
+          )
+        : t(
+            "TEAM_DOMAIN, https://ekibiniz.cloudflareaccess.com gibi tam bir https adresi olmalı",
+          );
+    return { ok: false, message };
   }
 }

@@ -8,6 +8,7 @@ import { runSelfhostChecks } from "@/lib/selfhost-preflight";
 import { getGoogleOAuthClientSource } from "@/server/features/google/oauth-config";
 import { getPageSpeedKeySource } from "@/server/features/lighthouse/pagespeed-config";
 import { getOptionalEnvValue } from "@/server/lib/runtime-env";
+import { t } from "@/shared/i18n";
 
 // "error" blocks core functionality; "warn" degrades a feature.
 type SetupCheck = {
@@ -85,7 +86,7 @@ export async function getSelfHostSetupStatus(options?: {
     if ((await getGoogleOAuthClientSource()) === "settings") {
       checks.gsc = {
         status: "ok",
-        detail: "Google OAuth istemcisi Ayarlar'da tanımlı.",
+        detail: t("Google OAuth istemcisi Ayarlar'da tanımlı."),
       };
     }
 
@@ -99,7 +100,7 @@ export async function getSelfHostSetupStatus(options?: {
     const pageSpeedSource = await getPageSpeedKeySource();
     checks.pagespeed =
       pageSpeedSource === "settings"
-        ? { status: "ok", detail: "PageSpeed anahtarı Ayarlar'da kayıtlı." }
+        ? { status: "ok", detail: t("PageSpeed anahtarı Ayarlar'da kayıtlı.") }
         : pageSpeedSource === "environment"
           ? {
               status: "ok",

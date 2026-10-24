@@ -22,6 +22,7 @@ import type {
 import { LighthouseIssuesSummary } from "./LighthouseIssuesSummary";
 import { categoryLabel } from "./utils";
 import { categoryTabs } from "./types";
+import { t } from "@/shared/i18n";
 
 export function LighthouseIssuesHeader({
   backLabel,
@@ -51,11 +52,11 @@ export function LighthouseIssuesHeader({
     <>
       <div className="flex items-center justify-between gap-3">
         <button className="btn btn-ghost btn-sm px-2" onClick={onBack}>
-          &larr; {backLabel} sayfasına dön
+          &larr; {t("{label} sayfasına dön", { label: backLabel })}
         </button>
         <span className="text-xs text-muted">
           {scannedAt ? (
-            `${formatDateTime(scannedAt)} tarihinde tarandı`
+            t("{date} tarihinde tarandı", { date: formatDateTime(scannedAt) })
           ) : loading ? (
             <span className="skeleton inline-block h-3 w-36 align-middle" />
           ) : null}
@@ -66,7 +67,7 @@ export function LighthouseIssuesHeader({
         <div className="card-body py-5 gap-4">
           <div className="space-y-1">
             <h1 className="text-2xl font-semibold">
-              Sayfa hızı sorunları (Lighthouse)
+              {t("Sayfa hızı sorunları (Lighthouse)")}
             </h1>
             {finalUrl ? (
               <p className="text-sm text-muted break-all">{finalUrl}</p>
@@ -83,15 +84,15 @@ export function LighthouseIssuesHeader({
           <div className="flex flex-wrap gap-2 text-xs">
             <span className="badge border border-error/30 bg-error/10 text-[var(--ink-error)] gap-1">
               <FileWarning className="size-3" />
-              Kritik {severityCounts.critical}
+              {t("Kritik")} {severityCounts.critical}
             </span>
             <span className="badge border border-warning/30 bg-warning/10 text-[var(--ink-warning)] gap-1">
               <TriangleAlert className="size-3" />
-              Uyarı {severityCounts.warning}
+              {t("Uyarı")} {severityCounts.warning}
             </span>
             <span className="badge border border-info/30 bg-info/10 text-[var(--ink-info)] gap-1">
               <Info className="size-3" />
-              Bilgi {severityCounts.info}
+              {t("Bilgi")} {severityCounts.info}
             </span>
           </div>
         </div>
@@ -179,7 +180,10 @@ function CategoryTabs({
       onChange={onCategoryChange}
       items={categoryTabs.map((tab) => ({
         id: tab,
-        label: `${categoryLabel(tab)} (${formatCount(categoryCounts[tab])})`,
+        label: t("{category} ({count})", {
+          category: categoryLabel(tab),
+          count: formatCount(categoryCounts[tab]),
+        }),
       }))}
     />
   );
@@ -211,12 +215,12 @@ function ExportMenu({
 }) {
   return (
     <PortalMenu
-      ariaLabel="Lighthouse sorunlarını dışa aktar"
+      ariaLabel={t("Lighthouse sorunlarını dışa aktar")}
       triggerClassName="btn btn-sm gap-1"
       triggerContent={
         <>
           <Download className="size-4" />
-          Dışa aktar
+          {t("Dışa aktar")}
           <ChevronDown className="size-3 opacity-60" />
         </>
       }
@@ -225,7 +229,7 @@ function ExportMenu({
       {(close) => (
         <>
           <li className="menu-title">
-            <span>E-Tablolar&apos;a aktar</span>
+            <span>{t("E-Tablolar'a aktar")}</span>
           </li>
           <li>
             <button
@@ -236,7 +240,9 @@ function ExportMenu({
               }}
             >
               <Sheet className="size-4" />
-              {categoryPhrase.subject} E-Tablolar&apos;da aç
+              {t("{issues} E-Tablolar'da aç", {
+                issues: categoryPhrase.subject,
+              })}
             </button>
           </li>
           <li>
@@ -248,11 +254,11 @@ function ExportMenu({
               }}
             >
               <Sheet className="size-4" />
-              İşlem gerektiren tüm sorunları E-Tablolar&apos;da aç
+              {t("İşlem gerektiren tüm sorunları E-Tablolar'da aç")}
             </button>
           </li>
           <li className="menu-title">
-            <span>Kopyala</span>
+            <span>{t("Kopyala")}</span>
           </li>
           <li>
             <button
@@ -261,12 +267,12 @@ function ExportMenu({
                 close();
                 onCopy(
                   exportCurrentCategory,
-                  `${categoryPhrase.subject} kopyalandı`,
+                  t("{issues} kopyalandı", { issues: categoryPhrase.subject }),
                 );
               }}
             >
               <Copy className="size-4" />
-              {categoryPhrase.object} kopyala
+              {t("{issues} kopyala", { issues: categoryPhrase.object })}
             </button>
           </li>
           <li>
@@ -276,12 +282,12 @@ function ExportMenu({
                 close();
                 onCopy(
                   { mode: "issues" },
-                  "İşlem gerektiren tüm sorunlar kopyalandı",
+                  t("İşlem gerektiren tüm sorunlar kopyalandı"),
                 );
               }}
             >
               <Copy className="size-4" />
-              İşlem gerektiren tüm sorunları kopyala
+              {t("İşlem gerektiren tüm sorunları kopyala")}
             </button>
           </li>
           <li>
@@ -291,16 +297,16 @@ function ExportMenu({
                 close();
                 onCopy(
                   { mode: "full" },
-                  "Kayıtlı Lighthouse verisi kopyalandı",
+                  t("Kayıtlı Lighthouse verisi kopyalandı"),
                 );
               }}
             >
               <Copy className="size-4" />
-              Kayıtlı Lighthouse verisini kopyala
+              {t("Kayıtlı Lighthouse verisini kopyala")}
             </button>
           </li>
           <li className="menu-title">
-            <span>JSON indir</span>
+            <span>{t("JSON indir")}</span>
           </li>
           <li>
             <button
@@ -310,7 +316,7 @@ function ExportMenu({
                 onExport(exportCurrentCategory);
               }}
             >
-              {categoryPhrase.object} indir
+              {t("{issues} indir", { issues: categoryPhrase.object })}
             </button>
           </li>
           <li>
@@ -321,7 +327,7 @@ function ExportMenu({
                 onExport({ mode: "issues" });
               }}
             >
-              İşlem gerektiren tüm sorunları indir
+              {t("İşlem gerektiren tüm sorunları indir")}
             </button>
           </li>
           <li>
@@ -332,11 +338,11 @@ function ExportMenu({
                 onExport({ mode: "full" });
               }}
             >
-              Kayıtlı Lighthouse verisini indir
+              {t("Kayıtlı Lighthouse verisini indir")}
             </button>
           </li>
           <li className="menu-title">
-            <span>CSV indir</span>
+            <span>{t("CSV indir")}</span>
           </li>
           <li>
             <button
@@ -346,7 +352,7 @@ function ExportMenu({
                 onExportCsv(visibleIssues, "current");
               }}
             >
-              {categoryPhrase.object} indir
+              {t("{issues} indir", { issues: categoryPhrase.object })}
             </button>
           </li>
           <li>
@@ -357,7 +363,7 @@ function ExportMenu({
                 onExportCsv(allIssues, "all");
               }}
             >
-              İşlem gerektiren tüm sorunları indir
+              {t("İşlem gerektiren tüm sorunları indir")}
             </button>
           </li>
         </>

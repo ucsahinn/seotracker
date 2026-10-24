@@ -1,4 +1,4 @@
-import { Download, Loader2 } from "lucide-react";
+import { CheckCircle2, Download, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import {
@@ -6,6 +6,7 @@ import {
   reportFilename,
 } from "@/client/features/reports/downloadReport";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
+import { t } from "@/shared/i18n";
 
 /**
  * The always-visible "İndir" button, in the list row and in the viewer
@@ -19,7 +20,7 @@ export function ReportDownloadButton({
   reportId,
   title,
   primary = false,
-  label = "İndir",
+  label = t("İndir"),
 }: {
   reportId: string;
   title: string;
@@ -27,18 +28,23 @@ export function ReportDownloadButton({
   /** The visible text; the accessible name always starts with it. */
   label?: string;
 }) {
+  const [done, setDone] = useState(false);
   const [pending, setPending] = useState(false);
 
   const download = () => {
     if (pending) return;
     setPending(true);
+    setDone(false);
     downloadReport(reportId, reportFilename(title))
-      .then(() => toast.success("Rapor indirildi"))
+      .then(() => {
+        setDone(true);
+        toast.success(t("Rapor indirildi"));
+      })
       .catch((error: unknown) =>
         toast.error(
           error instanceof TypeError
-            ? "Rapor indirilemedi."
-            : getStandardErrorMessage(error, "Rapor indirilemedi."),
+            ? t("Rapor indirilemedi.")
+            : getStandardErrorMessage(error, t("Rapor indirilemedi.")),
         ),
       )
       .finally(() => setPending(false));
@@ -51,11 +57,13 @@ export function ReportDownloadButton({
       aria-disabled={pending}
       aria-busy={pending}
       aria-label={`${label}: ${title}`}
-      title="HTML olarak indir"
+      title={t("HTML olarak indir")}
       onClick={download}
     >
       {pending ? (
         <Loader2 aria-hidden className="size-4 animate-spin" />
+      ) : done ? (
+        <CheckCircle2 aria-hidden className="size-4 text-success" />
       ) : (
         <Download aria-hidden className="size-4" />
       )}

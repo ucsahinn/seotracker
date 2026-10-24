@@ -19,6 +19,7 @@ import {
   type IndexCoverage,
 } from "@/server/features/gsc/indexCoverage";
 import { GscService } from "@/server/features/gsc/services/GscService";
+import { reserveInspection } from "@/server/features/gsc/repositories/GscInspectionQuotaRepository";
 
 /**
  * Whether Google actually indexed the pages your crawler found.
@@ -303,24 +304,26 @@ export async function inspectAndRecord(input: {
     };
   }
 
-  const { siteUrl, results, tokenError } = await GscService.inspectUrls({
-    projectId: input.projectId,
-    urls: batch,
-    languageCode: input.languageCode,
-  });
+  let reserved = 0;
+  const { siteUrl, results, tokenError, reservationError } =
+    await GscService.inspectUrls({
+      projectId: input.projectId,
+      urls: batch,
+      languageCode: input.languageCode,
+      reserve: async (propertyUrl) => {
+        const accepted = await reserveInspection(propertyUrl, now);
+        if (accepted) reserved++;
+        return accepted;
+      },
+    });
   const checkedAt = now.toISOString();
 
   /*
-   * The ledger first, and for the property that was actually asked: Google
-   * has spent these inspections whatever happens to the cache below, and the
-   * project may have been pointed at another property while they ran.
+   * Reservations were recorded before each Google call against the property
+   * actually queried. Keep uncertain failures counted conservatively for the
+   * rolling window, and prune only rows that can no longer affect its budget.
    */
   if (siteUrl && results.length > 0) {
-    await executeInBatches(results, (tx) =>
-      tx
-        .insert(gscInspectionAttempts)
-        .values({ siteUrl, attemptedAt: checkedAt }),
-    );
     await db
       .delete(gscInspectionAttempts)
       .where(
@@ -358,14 +361,18 @@ export async function inspectAndRecord(input: {
    * batch does not buy them again.
    */
   if (tokenError) throw tokenError;
+  if (reservationError) throw reservationError;
 
   return {
     siteUrl,
     results,
-    requested: batch.length,
-    skipped: due.length - batch.length,
+    requested: reserved,
+    skipped: due.length - reserved,
     fresh,
-    quotaRemaining: Math.max(budget - batch.length, 0),
+    quotaRemaining: Math.max(
+      DAILY_QUOTA - (await inspectionsInLastDay(input.projectId, now)),
+      0,
+    ),
   };
 }
 

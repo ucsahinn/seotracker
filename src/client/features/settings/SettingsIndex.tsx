@@ -1,13 +1,16 @@
 import * as React from "react";
+import { t } from "@/shared/i18n";
 
+// Labels stay Turkish here and go through t() where they render.
 const SETTINGS_SECTIONS = [
   { id: "gorunum", label: "Görünüm" },
+  { id: "bildirimler", label: "Bildirimler" },
+  { id: "windows", label: "Windows" },
   { id: "google", label: "Google" },
   { id: "hizmet-hesabi", label: "Hizmet hesabı" },
   { id: "hiz-olcumu", label: "Hız ölçümü" },
   { id: "sinirlar", label: "Sınırlar" },
   { id: "guncelleme", label: "Hakkında" },
-  { id: "surum-notlari", label: "Sürüm notları" },
 ] as const;
 
 /**
@@ -34,12 +37,13 @@ export function SettingsIndex() {
           if (entry.isIntersecting) visible.add(entry.target.id);
           else visible.delete(entry.target.id);
         }
-        // The first section on screen in page order, not the last one to
-        // have scrolled in.
+        // Keep an explicitly selected section while it is visible. A few
+        // pixels of the preceding section must not override a hash jump.
         const first = SETTINGS_SECTIONS.find((section) =>
           visible.has(section.id),
         );
-        if (first) setActive(first.id);
+        if (first)
+          setActive((current) => (visible.has(current) ? current : first.id));
       },
       { rootMargin: "-64px 0px -55% 0px" },
     );
@@ -48,14 +52,17 @@ export function SettingsIndex() {
     // A full page load on /settings#hiz-olcumu runs before these sections
     // exist, so the browser's own jump finds nothing.
     const hash = window.location.hash.slice(1);
-    if (hash) document.getElementById(hash)?.scrollIntoView();
+    if (SETTINGS_SECTIONS.some((section) => section.id === hash)) {
+      setActive(hash);
+      document.getElementById(hash)?.scrollIntoView();
+    }
 
     return () => observer.disconnect();
   }, []);
 
   return (
     <nav
-      aria-label="Ayar bölümleri"
+      aria-label={t("Ayar bölümleri")}
       className="sticky top-0 z-10 -mx-1 mb-6 overflow-x-auto bg-base-100/95 px-1 py-2 backdrop-blur-sm [scrollbar-width:none]"
     >
       <ul className="flex w-max gap-1 text-sm">
@@ -71,7 +78,7 @@ export function SettingsIndex() {
                   : "text-muted hover:text-base-content"
               }`}
             >
-              {section.label}
+              {t(section.label)}
             </a>
           </li>
         ))}

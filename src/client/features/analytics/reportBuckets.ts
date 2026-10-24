@@ -6,19 +6,24 @@ import {
   type ShareSegment,
 } from "@/client/features/analytics/reportInsights";
 import type { Ga4ReportKindName } from "@/shared/ga4-reports";
+import { t } from "@/shared/i18n";
 
+/*
+ * Titles and units are Turkish source strings, translated by t() in
+ * buildSummary: the locale is not known at import time.
+ */
 type Measure = { field: string; title: string; unit: string };
 
 /** Reports where "how is one total divided" is the question: ring or bars. */
 const SHARE_REPORTS: Partial<Record<Ga4ReportKindName, Measure>> = {
   traffic_acquisition: {
     field: "sessions",
-    title: "oturum payı",
+    title: "{dimension} bazında oturum payı",
     unit: "oturum",
   },
   audience_breakdown: {
     field: "activeUsers",
-    title: "kullanıcı payı",
+    title: "{dimension} bazında kullanıcı payı",
     unit: "kullanıcı",
   },
 };
@@ -119,8 +124,8 @@ export function buildSummary(
     const form = whole.length <= MAX_RING_SEGMENTS ? "ring" : "bars";
     return {
       form,
-      title: `${labelOf(dimension)} bazında ${share.title}`,
-      unit: share.unit,
+      title: t(share.title, { dimension: labelOf(dimension) }),
+      unit: t(share.unit),
       field: share.field,
       dimension,
       segments: buildShareSegments(
@@ -144,8 +149,8 @@ export function buildSummary(
     if (segments.length < 2) continue;
     return {
       form: "bars",
-      title: measure.title,
-      unit: measure.unit,
+      title: t(measure.title),
+      unit: t(measure.unit),
       field: measure.field,
       dimension: ranked.dimension,
       segments,

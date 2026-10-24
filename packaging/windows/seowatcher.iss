@@ -19,7 +19,7 @@
 AppId={{{#AppGuid}}
 AppName=seowatcher
 AppVersion={#AppVersion}
-AppVerName=seowatcher {#AppVersion}
+AppVerName=seowatcher {#AppVersion} Alpha
 AppPublisher=seowatcher
 AppPublisherURL=https://seowatcher.io
 AppSupportURL=https://github.com/ucsahinn/seotracker
@@ -42,7 +42,7 @@ OutputBaseFilename=seowatcher-setup-{#AppVersion}
 VersionInfoVersion={#AppVersion}.0
 VersionInfoProductVersion={#AppVersion}
 VersionInfoProductName=seowatcher
-VersionInfoDescription=seowatcher {#AppVersion} kurulumu
+VersionInfoDescription=seowatcher {#AppVersion} Alpha kurulumu
 VersionInfoCompany=seowatcher
 VersionInfoCopyright=MIT License
 SetupIconFile=icon\seowatcher.ico
@@ -88,23 +88,23 @@ en.VcRedistSkipped=The Microsoft Visual C++ runtime could not be installed (admi
 
 [Messages]
 ; Every wizard page carries the version in its bottom-left corner.
-tr.BeveledLabel=seowatcher {#AppVersion}
-en.BeveledLabel=seowatcher {#AppVersion}
+tr.BeveledLabel=seowatcher {#AppVersion} Alpha
+en.BeveledLabel=seowatcher {#AppVersion} Alpha
 ; The window title is the very top line of every page: it names the version too.
-tr.SetupWindowTitle=seowatcher {#AppVersion} - Kurulum yardımcısı
-en.SetupWindowTitle=Setup - seowatcher {#AppVersion}
+tr.SetupWindowTitle=seowatcher {#AppVersion} Alpha - Kurulum yardımcısı
+en.SetupWindowTitle=Setup - seowatcher {#AppVersion} Alpha
 ; The default Inno texts are generic; these read like the product.
-tr.WelcomeLabel1=seowatcher {#AppVersion} kurulumuna hoş geldiniz
+tr.WelcomeLabel1=seowatcher {#AppVersion} Alpha kurulumuna hoş geldiniz
 tr.WelcomeLabel2=Sitenizin Google verisini kendi bilgisayarınızda okuyan ücretsiz SEO uygulaması kurulacak.%n%nKurulum yalnızca sizin kullanıcı hesabınıza yapılır, yönetici şifresi istemez (yalnızca bir Windows bileşeni eksikse bir kez izin sorulur) ve iki dakika sürer.
 tr.FinishedHeadingLabel=Kurulum tamamlandı
-tr.FinishedLabel=seowatcher {#AppVersion} görev çubuğunda çalışır ve tarayıcınızda açılır. Kaldırırsanız verileriniz bilgisayarınızda kalır.%n%nİlk açılış 20-30 saniye sürer. Sonra Google'ı bağlarsınız; uygulama adım adım gösterir.
+tr.FinishedLabel=seowatcher {#AppVersion} Alpha görev çubuğunda çalışır ve tarayıcınızda açılır. Kaldırırsanız verileriniz bilgisayarınızda kalır.%n%nİlk açılış 20-30 saniye sürer. Sonra Google'ı bağlarsınız; uygulama adım adım gösterir.
 tr.ClickFinish=Bitirmek için Bitti'ye tıklayın.
 tr.ConfirmUninstall=seowatcher kaldırılsın mı?%n%nVerileriniz (veritabanı, Google bağlantısı, raporlar) %%LOCALAPPDATA%%\seowatcher klasöründe kalır; yeniden kurarsanız kaldığınız yerden devam edersiniz.
 tr.UninstalledAll=seowatcher kaldırıldı.%n%nVerileriniz %%LOCALAPPDATA%%\seowatcher klasöründe duruyor. Onları da silmek isterseniz bu klasörü kendiniz silin.
-en.WelcomeLabel1=Welcome to seowatcher {#AppVersion}
+en.WelcomeLabel1=Welcome to seowatcher {#AppVersion} Alpha
 en.WelcomeLabel2=This installs the free SEO app that reads your site's Google data on your own computer.%n%nIt installs for your user account only, needs no administrator password (asked once only if a Windows component is missing) and takes about two minutes.
 en.FinishedHeadingLabel=Setup complete
-en.FinishedLabel=seowatcher {#AppVersion} runs from the taskbar tray and opens in your browser. Uninstalling keeps your data on this computer.%n%nThe first start takes 20-30 seconds. Then you connect Google; the app walks you through it.
+en.FinishedLabel=seowatcher {#AppVersion} Alpha runs from the taskbar tray and opens in your browser. Uninstalling keeps your data on this computer.%n%nThe first start takes 20-30 seconds. Then you connect Google; the app walks you through it.
 en.ConfirmUninstall=Remove seowatcher?%n%nYour data (database, Google connection, reports) stays in the %%LOCALAPPDATA%%\seowatcher folder; reinstall and you pick up where you left off.
 en.UninstalledAll=seowatcher was removed.%n%nYour data is still in the %%LOCALAPPDATA%%\seowatcher folder. Delete that folder yourself if you want it gone too.
 

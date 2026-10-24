@@ -6,6 +6,7 @@ import type {
   PagesFilters,
   PerformanceFilters,
 } from "@/client/features/audit/results/AuditResultsTableFilterLogic";
+import { t } from "@/shared/i18n";
 
 const SEARCH_DEBOUNCE_MS = 200;
 
@@ -83,7 +84,7 @@ export function PagesFilterBar({
           onMaxChange={(maxDepth) => onChange({ ...filters, maxDepth })}
         />
         <RangeFilter
-          label="Kelime"
+          label="Kelime sayısı"
           min={filters.minWords}
           max={filters.maxWords}
           onMinChange={(minWords) => onChange({ ...filters, minWords })}
@@ -218,11 +219,11 @@ export function TableFilterToggle({
       <button
         className={`btn btn-ghost btn-sm gap-1.5 ${showFilters ? "btn-active" : ""}`}
         onClick={onToggle}
-        title="Filtreleri aç/kapat"
+        title={t("Filtreleri aç/kapat")}
         type="button"
       >
         <SlidersHorizontal className="size-3.5" />
-        Filtreler
+        {t("Filtreler")}
         {activeFilterCount > 0 ? (
           <span className="badge badge-xs badge-primary border-0 text-primary-content">
             {activeFilterCount}
@@ -259,10 +260,10 @@ function FilterPanel({
     <div className="space-y-3 border-b border-base-300 bg-base-200/25 px-4 py-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2">
-          <p className="text-sm font-semibold">Sonuçları filtrele</p>
+          <p className="text-sm font-semibold">{t("Sonuçları filtrele")}</p>
           {activeFilterCount > 0 ? (
             <span className="badge badge-xs badge-primary border-0 text-primary-content">
-              {activeFilterCount} etkin
+              {t("{count} etkin", { count: activeFilterCount })}
             </span>
           ) : null}
         </div>
@@ -273,7 +274,7 @@ function FilterPanel({
           disabled={activeFilterCount === 0}
         >
           <RotateCcw className="size-3" />
-          Tümünü temizle
+          {t("Tümünü temizle")}
         </button>
       </div>
       {children}
@@ -321,14 +322,15 @@ function TextFilter({
     return () => clearTimeout(timer);
   }, [draft, delay]);
 
+  // Labels and placeholders arrive as Turkish source strings.
   return (
     <label className="form-control gap-1.5">
-      <span className="text-xs font-semibold text-muted">{label}</span>
+      <span className="text-xs font-semibold text-muted">{t(label)}</span>
       <input
         className="input input-bordered input-sm w-full bg-base-100"
         type={type}
         value={draft}
-        placeholder={placeholder}
+        placeholder={t(placeholder)}
         onChange={(event) => setDraft(event.target.value)}
       />
     </label>
@@ -350,7 +352,7 @@ function RangeFilter({
 }) {
   return (
     <div className="space-y-2 rounded-box border border-base-300 bg-base-100 p-2.5">
-      <p className="text-xs font-semibold text-muted">{label}</p>
+      <p className="text-xs font-semibold text-muted">{t(label)}</p>
       {/*
        * Named individually. The heading above is a <p> that labels nothing,
        * and the placeholders are the only other text -- so with five of
@@ -362,16 +364,16 @@ function RangeFilter({
           className="input input-bordered input-xs bg-base-100"
           type="number"
           value={min}
-          placeholder="En az"
-          aria-label={`${label} en az`}
+          placeholder={t("En az")}
+          aria-label={t("{label} en az", { label: t(label) })}
           onChange={(event) => onMinChange(event.target.value)}
         />
         <input
           className="input input-bordered input-xs bg-base-100"
           type="number"
           value={max}
-          placeholder="En fazla"
-          aria-label={`${label} en fazla`}
+          placeholder={t("En fazla")}
+          aria-label={t("{label} en fazla", { label: t(label) })}
           onChange={(event) => onMaxChange(event.target.value)}
         />
       </div>
@@ -392,7 +394,7 @@ function SelectFilter<T extends string>({
 }) {
   return (
     <label className="form-control gap-1.5">
-      <span className="text-xs font-semibold text-muted">{label}</span>
+      <span className="text-xs font-semibold text-muted">{t(label)}</span>
       <select
         className="select select-bordered select-sm w-full bg-base-100"
         value={value}
@@ -405,7 +407,7 @@ function SelectFilter<T extends string>({
       >
         {options.map(([optionValue, optionLabel]) => (
           <option key={optionValue} value={optionValue}>
-            {optionLabel}
+            {t(optionLabel)}
           </option>
         ))}
       </select>

@@ -1,5 +1,6 @@
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
+import { t } from "@/shared/i18n";
 
 export function GoogleConnectedState({
   property,
@@ -42,8 +43,9 @@ export function GoogleConnectedState({
         </p>
         {domainProperty ? (
           <p className="mt-1 text-xs text-muted">
-            Alan adı mülkü: tüm alt alan adlarını ve http/https adreslerini
-            kapsar.
+            {t(
+              "Alan adı mülkü: tüm alt alan adlarını ve http/https adreslerini kapsar.",
+            )}
           </p>
         ) : null}
         {detail ? (
@@ -66,8 +68,8 @@ export function GoogleConnectedState({
             onClick={onChange}
           >
             {canManage
-              ? "Mülkü veya hesabı değiştir"
-              : "Google hesaplarını yönet"}
+              ? t("Mülkü veya hesabı değiştir")
+              : t("Google hesaplarını yönet")}
           </button>
           {canManage && !confirming ? (
             <button
@@ -75,7 +77,7 @@ export function GoogleConnectedState({
               className="btn btn-ghost btn-sm text-[var(--ink-error)] hover:bg-error/10"
               onClick={() => setConfirming(true)}
             >
-              Bağlantıyı kes
+              {t("Bağlantıyı kes")}
             </button>
           ) : null}
         </fieldset>
@@ -86,8 +88,9 @@ export function GoogleConnectedState({
           className="space-y-3 rounded-field border border-base-300 p-3 text-sm"
         >
           <p className="text-muted">
-            Bağlantı kesilirse bu projenin bu kaynağa bağlı ekranları boş kalır.
-            Veriler silinmez; mülkü yeniden seçerek geri bağlayabilirsiniz.
+            {t(
+              "Bağlantı kesilirse bu projenin bu kaynağa bağlı ekranları boş kalır. Veriler silinmez; mülkü yeniden seçerek geri bağlayabilirsiniz.",
+            )}
           </p>
           <div className="flex flex-wrap gap-2">
             <button
@@ -99,7 +102,7 @@ export function GoogleConnectedState({
               {disconnecting ? (
                 <Loader2 className="size-3 animate-spin" aria-hidden />
               ) : null}
-              {disconnecting ? "Bağlantı kesiliyor…" : "Bağlantıyı kes"}
+              {disconnecting ? t("Bağlantı kesiliyor…") : t("Bağlantıyı kes")}
             </button>
             <button
               type="button"
@@ -110,7 +113,7 @@ export function GoogleConnectedState({
               autoFocus
               onClick={() => setConfirming(false)}
             >
-              Vazgeç
+              {t("Vazgeç")}
             </button>
           </div>
         </div>

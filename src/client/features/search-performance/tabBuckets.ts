@@ -1,3 +1,4 @@
+import { t } from "@/shared/i18n";
 import { sort, sumBy } from "remeda";
 import {
   matchesQuickFilter,
@@ -35,7 +36,13 @@ function build<R extends Row>(
 ): TabBucket[] {
   return defs.map((def) => {
     const inside = rows.filter((row) => matchesQuickFilter(def.id, row));
-    return { ...def, count: inside.length, size: sumBy(inside, weight) };
+    return {
+      ...def,
+      label: t(def.label),
+      hint: def.hint && t(def.hint),
+      count: inside.length,
+      size: sumBy(inside, weight),
+    };
   });
 }
 

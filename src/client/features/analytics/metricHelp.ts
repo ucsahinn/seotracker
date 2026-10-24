@@ -1,4 +1,9 @@
-/** Plain-language meanings for the Google Analytics figures shown to beginners. */
+import { t } from "@/shared/i18n";
+
+/**
+ * Plain-language meanings for the Google Analytics figures shown to beginners.
+ * Turkish source strings: callers pass them through t() where they render.
+ */
 export const GA4_HELP = {
   keyEvents:
     "Sizin 'önemli' saydığınız hareket, örneğin form gönderme ya da satın alma. Tanımlı değilse hep 0 görünür.",
@@ -14,13 +19,13 @@ export const GA4_HELP = {
 export function ga4ColumnHelp(field: string): string | undefined {
   switch (field) {
     case "keyEvents":
-      return GA4_HELP.keyEvents;
+      return t(GA4_HELP.keyEvents);
     case "sessionKeyEventRate":
-      return GA4_HELP.keyEventRate;
+      return t(GA4_HELP.keyEventRate);
     case "engagementRate":
-      return GA4_HELP.engagementRate;
+      return t(GA4_HELP.engagementRate);
     case "activeUsers":
-      return GA4_HELP.activeUsers;
+      return t(GA4_HELP.activeUsers);
     default:
       return undefined;
   }

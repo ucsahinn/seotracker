@@ -1,4 +1,5 @@
 import { toast } from "sonner";
+import { t } from "@/shared/i18n";
 
 /**
  * Copy plain text and toast the real outcome. `navigator.clipboard` is
@@ -11,7 +12,7 @@ export async function copyText(
   successMessage: string,
 ): Promise<boolean> {
   if (typeof navigator === "undefined" || !navigator.clipboard?.writeText) {
-    toast.error("Pano kullanılamıyor");
+    toast.error(t("Pano kullanılamıyor"));
     return false;
   }
   try {
@@ -19,7 +20,7 @@ export async function copyText(
     toast.success(successMessage);
     return true;
   } catch {
-    toast.error("Panoya kopyalanamadı");
+    toast.error(t("Panoya kopyalanamadı"));
     return false;
   }
 }

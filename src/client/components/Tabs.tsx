@@ -128,13 +128,15 @@ export function TabPanel({
        * Keyed on the value so switching tabs remounts the panel and the
        * entrance animation runs again. Without the key React reuses the
        * node, the class is already applied, and the swap is a hard cut.
+       * `tab-enter`, not `enter`: a reader flips tabs many times in a row,
+       * so the panel settles faster and without moving.
        */
       key={value}
       id={panelId(group, value)}
       role="tabpanel"
       aria-labelledby={tabId(group, value)}
       tabIndex={0}
-      className={["enter", className].filter(Boolean).join(" ")}
+      className={["tab-enter", className].filter(Boolean).join(" ")}
     >
       {children}
     </div>

@@ -17,6 +17,7 @@ import type {
   ReportLighthouse,
   ReportPage,
 } from "./reportTypes";
+import { t } from "@/shared/i18n";
 
 /* Pure numbers and groupings. No HTML in here: the sections draw from these. */
 
@@ -35,6 +36,7 @@ export const CATEGORY_ORDER: IssueCategory[] = [
   "other",
 ];
 
+/** Turkish source text; shown through t(). */
 export const CATEGORY_LABEL: Record<IssueCategory, string> = {
   crawl: "Tarama",
   content: "İçerik",
@@ -43,6 +45,7 @@ export const CATEGORY_LABEL: Record<IssueCategory, string> = {
   other: "Diğer",
 };
 
+/** Turkish source text; shown through t(). */
 export const SEVERITY_LABEL: Record<IssueSeverity, string> = {
   critical: "Kritik",
   warning: "Uyarı",
@@ -86,7 +89,7 @@ export function groupIssues(input: AuditReportInput): IssueGroup[] {
       entry = {
         group: {
           issueType: issue.issueType,
-          title: descriptor?.title ?? issue.issueType,
+          title: descriptor ? t(descriptor.title) : issue.issueType,
           // An unset severity falls back to the descriptor's, which is what
           // `resolveIssueSeverity` does with a value it does not recognise.
           severity: resolveIssueSeverity({
@@ -96,8 +99,8 @@ export function groupIssues(input: AuditReportInput): IssueGroup[] {
           category: categoryOf(issue.issueType),
           pageCount: 0,
           siteLevel: false,
-          explanation: descriptor?.explanation ?? "",
-          howToFix: descriptor?.howToFix ?? "",
+          explanation: descriptor ? t(descriptor.explanation) : "",
+          howToFix: descriptor ? t(descriptor.howToFix) : "",
           rows: [],
           points: 0,
         },
@@ -193,18 +196,26 @@ export const UNRELIABLE_NOTE =
   'Denetim tamamlanmadığı ya da hiç sayfa taranamadığı için sorun listesi eksik olabilir; bu yüzden "sorun yok" denmiyor.';
 
 export function scoreVerdict(score: number | null, reliable = true): string {
-  if (!reliable) return "Denetim tamamlanmadığı için puan hesaplanmadı.";
-  if (score === null) return "Taranan sayfa olmadığı için puan hesaplanamadı.";
-  if (score === 100) return "Kayıtlı hiçbir sorun yok. Site temiz görünüyor.";
+  if (!reliable) return t("Denetim tamamlanmadığı için puan hesaplanmadı.");
+  if (score === null) {
+    return t("Taranan sayfa olmadığı için puan hesaplanamadı.");
+  }
+  if (score === 100) {
+    return t("Kayıtlı hiçbir sorun yok. Site temiz görünüyor.");
+  }
   switch (auditScoreTier(score)) {
     case "excellent":
-      return "Site sağlıklı. Kalan birkaç düzeltme puanı yukarı çeker.";
+      return t("Site sağlıklı. Kalan birkaç düzeltme puanı yukarı çeker.");
     case "good":
-      return "Temel sağlam, ama düzeltilmesi gereken belirgin sorunlar var.";
+      return t("Temel sağlam, ama düzeltilmesi gereken belirgin sorunlar var.");
     case "fair":
-      return "Orta düzeyde. Kritik ve uyarı sorunları aramadaki performansı gölgeliyor.";
+      return t(
+        "Orta düzeyde. Kritik ve uyarı sorunları aramadaki performansı gölgeliyor.",
+      );
     case "poor":
-      return "Zayıf. Önce kritik sorunlar düzeltilmeli; bunlar sayfaların aramada görünmesini engelleyebilir.";
+      return t(
+        "Zayıf. Önce kritik sorunlar düzeltilmeli; bunlar sayfaların aramada görünmesini engelleyebilir.",
+      );
   }
 }
 
@@ -224,7 +235,7 @@ function tally(
 }
 
 export function statusBuckets(pages: ReportPage[]): Bucket[] {
-  const labels = ["2xx", "3xx", "4xx", "5xx", "Yanıt yok"];
+  const labels = ["2xx", "3xx", "4xx", "5xx", t("Yanıt yok")];
   const counts = [0, 0, 0, 0, 0];
   for (const page of pages) {
     const code = page.statusCode;
@@ -240,12 +251,12 @@ export function depthBuckets(pages: ReportPage[]): Bucket[] {
   const buckets = tally(labels, known, (d) => Math.min(5, Math.max(0, d)));
   const unknown = known.filter((d) => d === null).length;
   return unknown > 0
-    ? [...buckets, { label: "Bilinmiyor", value: unknown }]
+    ? [...buckets, { label: t("Bilinmiyor"), value: unknown }]
     : buckets;
 }
 
 export function titleLengthBuckets(pages: ReportPage[]): Bucket[] {
-  const labels = ["Yok", "1-29", "30-60", "61+"];
+  const labels = [t("Yok"), "1-29", "30-60", "61+"];
   const counts = [0, 0, 0, 0];
   for (const page of pages) {
     const length = page.title?.trim().length ?? 0;

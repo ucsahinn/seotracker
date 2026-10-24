@@ -40,7 +40,7 @@ export type QuotaItem = {
   remaining?: number;
   unit: QuotaUnit;
   state: QuotaState;
-  /** One Turkish sentence: the window, and what the figure does not say. */
+  /** One sentence in the request's language: the window, and what the figure does not say. */
   detail: string;
   /** Where the number comes from, shown beside it. */
   source: string;

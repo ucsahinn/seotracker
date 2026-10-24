@@ -3,6 +3,7 @@ import {
   fetchPageSpeedReport,
   PageSpeedError,
 } from "@/server/lib/audit/pagespeed";
+import { t } from "@/shared/i18n";
 
 /** A fixed, tiny, public page: the test never measures anything of the user's. */
 const TEST_URL = "https://example.com/";
@@ -20,7 +21,7 @@ type PageSpeedKeyTestState =
 type PageSpeedKeyTestResult = {
   ok: boolean;
   state: PageSpeedKeyTestState;
-  /** Turkish, fixed text: never built from Google's reply, so it cannot carry the key. */
+  /** Fixed text in the request's language: never built from Google's reply, so it cannot carry the key. */
   message: string;
 };
 
@@ -43,7 +44,7 @@ const MESSAGES: Record<PageSpeedKeyTestState, string> = {
 };
 
 function result(state: PageSpeedKeyTestState): PageSpeedKeyTestResult {
-  return { ok: state === "ok", state, message: MESSAGES[state] };
+  return { ok: state === "ok", state, message: t(MESSAGES[state]) };
 }
 
 function classify(error: unknown): PageSpeedKeyTestState {

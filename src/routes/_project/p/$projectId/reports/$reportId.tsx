@@ -35,6 +35,7 @@ import { captureClientEvent } from "@/client/lib/observability";
 import { booleanSearchParamSchema } from "@/types/schemas/search-params";
 import { getReport } from "@/serverFunctions/reports";
 import { backLinkClass, BackLinkLabel } from "@/client/components/BackLink";
+import { t } from "@/shared/i18n";
 
 // Expand lives in the URL, not in state, so a refresh (or a link someone
 // pasted) comes back expanded.
@@ -135,15 +136,16 @@ function ReportDetailPage() {
           params={{ projectId }}
           className={backLinkClass}
         >
-          <BackLinkLabel>Raporlar</BackLinkLabel>
+          <BackLinkLabel>{t("Raporlar")}</BackLinkLabel>
         </Link>
         {notFound ? (
           // A deleted report and another project's report are the same
           // answer on purpose, so ids cannot be probed.
           <div className="alert alert-error">
             <span className="text-sm">
-              Bu rapor bulunamadı. Silinmiş olabilir ya da başka bir projeye ait
-              olabilir.
+              {t(
+                "Bu rapor bulunamadı. Silinmiş olabilir ya da başka bir projeye ait olabilir.",
+              )}
             </span>
           </div>
         ) : (
@@ -151,7 +153,7 @@ function ReportDetailPage() {
             <QueryErrorState
               error={reportQuery.error}
               onRetry={() => void reportQuery.refetch()}
-              title="Rapor yüklenemedi"
+              title={t("Rapor yüklenemedi")}
             />
           </div>
         )}
@@ -191,7 +193,7 @@ function ReportDetailPage() {
             params={{ projectId }}
             className={backLinkClass}
           >
-            <BackLinkLabel>Raporlar</BackLinkLabel>
+            <BackLinkLabel>{t("Raporlar")}</BackLinkLabel>
           </Link>
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div className="min-w-0">
@@ -204,11 +206,11 @@ function ReportDetailPage() {
               </h1>
               <dl className="mt-1.5 flex flex-wrap items-baseline gap-x-6 gap-y-1 text-sm">
                 <div className="flex items-baseline gap-1.5">
-                  <dt className="text-muted">Oluşturan</dt>
+                  <dt className="text-muted">{t("Oluşturan")}</dt>
                   <dd>{formatCreatedBy(report)}</dd>
                 </div>
                 <div className="flex items-baseline gap-1.5">
-                  <dt className="text-muted">Tür</dt>
+                  <dt className="text-muted">{t("Tür")}</dt>
                   {/* As in the list's Type column: the template name when the
                     report followed one, else the skill, else an em dash. */}
                   <dd>
@@ -219,17 +221,17 @@ function ReportDetailPage() {
                   </dd>
                 </div>
                 <div className="flex items-baseline gap-1.5">
-                  <dt className="text-muted">Oluşturuldu</dt>
+                  <dt className="text-muted">{t("Oluşturuldu")}</dt>
                   <dd title={formatRelativeTime(report.createdAt)}>
                     {formatDateTime(report.createdAt)}
                   </dd>
                 </div>
                 <div className="flex items-baseline gap-1.5">
-                  <dt className="text-muted">Boyut</dt>
+                  <dt className="text-muted">{t("Boyut")}</dt>
                   <dd>{formatBytes(report.sizeBytes)}</dd>
                 </div>
                 <div className="flex items-baseline gap-1.5">
-                  <dt className="text-muted">Güncellendi</dt>
+                  <dt className="text-muted">{t("Güncellendi")}</dt>
                   <dd title={formatDateTime(report.updatedAt)}>
                     {formatRelativeTime(report.updatedAt)}
                   </dd>
@@ -240,7 +242,7 @@ function ReportDetailPage() {
               <ReportDownloadButton
                 reportId={report.id}
                 title={report.title}
-                label="HTML olarak indir"
+                label={t("HTML olarak indir")}
                 primary
               />
               <button
@@ -249,7 +251,7 @@ function ReportDetailPage() {
                 onClick={exportPdf}
               >
                 <Printer aria-hidden className="size-4" />
-                PDF olarak kaydet (yazdır)
+                {t("PDF olarak kaydet (yazdır)")}
               </button>
               <a
                 href={`/r/${report.id}`}
@@ -258,7 +260,7 @@ function ReportDetailPage() {
                 className="btn btn-sm hidden gap-1.5 md:inline-flex"
               >
                 <ExternalLink aria-hidden className="size-4" />
-                Yeni sekmede aç
+                {t("Yeni sekmede aç")}
               </a>
               <button
                 type="button"
@@ -266,10 +268,10 @@ function ReportDetailPage() {
                 onClick={() => setShowDelete(true)}
               >
                 <Trash2 aria-hidden className="size-4" />
-                Sil
+                {t("Sil")}
               </button>
               <PortalMenu
-                ariaLabel="Diğer işlemler"
+                ariaLabel={t("Diğer işlemler")}
                 triggerClassName="btn btn-ghost btn-sm btn-square"
                 triggerContent={<MoreHorizontal className="size-4" />}
                 menuClassName="w-56"
@@ -284,7 +286,7 @@ function ReportDetailPage() {
                         }}
                       >
                         <Printer className="size-4" />
-                        PDF olarak kaydet (yazdır)
+                        {t("PDF olarak kaydet (yazdır)")}
                       </button>
                     </li>
                     <li className="md:hidden">
@@ -295,7 +297,7 @@ function ReportDetailPage() {
                         onClick={() => close()}
                       >
                         <ExternalLink className="size-4" />
-                        Yeni sekmede aç
+                        {t("Yeni sekmede aç")}
                       </a>
                     </li>
                     <li>
@@ -306,7 +308,7 @@ function ReportDetailPage() {
                         }}
                       >
                         <Maximize2 className="size-4" />
-                        Tam ekran
+                        {t("Tam ekran")}
                       </button>
                     </li>
                     <li>
@@ -316,17 +318,19 @@ function ReportDetailPage() {
                           // Undefined on a non-secure origin (http://LAN-IP),
                           // where calling it would throw before any .catch.
                           if (!navigator.clipboard?.writeText) {
-                            toast.error("Bağlantı kopyalanamadı");
+                            toast.error(t("Bağlantı kopyalanamadı"));
                             return;
                           }
                           void navigator.clipboard
                             .writeText(window.location.href)
-                            .then(() => toast.success("Bağlantı kopyalandı"))
-                            .catch(() => toast.error("Bağlantı kopyalanamadı"));
+                            .then(() => toast.success(t("Bağlantı kopyalandı")))
+                            .catch(() =>
+                              toast.error(t("Bağlantı kopyalanamadı")),
+                            );
                         }}
                       >
                         <Link2 className="size-4" />
-                        Bağlantıyı kopyala
+                        {t("Bağlantıyı kopyala")}
                       </button>
                     </li>
                   </>

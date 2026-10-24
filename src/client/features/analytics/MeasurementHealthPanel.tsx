@@ -7,6 +7,7 @@ import { HelpTip } from "@/client/components/HelpTip";
 import { StatusPill } from "@/client/components/StatusPill";
 import { formatCount } from "@/client/lib/format";
 import { getGa4MeasurementHealth } from "@/serverFunctions/ga4MeasurementHealth";
+import { t } from "@/shared/i18n";
 
 /**
  * Whether Analytics is measuring anything, before you read what it measured.
@@ -21,6 +22,8 @@ import { getGa4MeasurementHealth } from "@/serverFunctions/ga4MeasurementHealth"
 /*
  * Google's own issue codes, turned into a sentence an operator can act on.
  * The code is the contract with the MCP tool; these are for the screen.
+ * All the copy maps below hold Turkish source strings, translated by t()
+ * where they render.
  */
 const ISSUE_COPY: Record<string, { title: string; fix: string }> = {
   no_web_stream: {
@@ -91,7 +94,7 @@ export function MeasurementHealthPanel({ projectId }: { projectId: string }) {
       <QueryErrorState
         error={query.error}
         onRetry={() => void query.refetch()}
-        title="Ölçüm durumu okunamadı"
+        title={t("Ölçüm durumu okunamadı")}
       />
     );
   }
@@ -106,7 +109,7 @@ export function MeasurementHealthPanel({ projectId }: { projectId: string }) {
     <div className="space-y-4">
       <MetricRow>
         <MetricTile
-          label="Web veri akışı"
+          label={t("Web veri akışı")}
           value={formatCount(health.summary.webStreamCount)}
           animateTo={{
             value: health.summary.webStreamCount,
@@ -114,38 +117,44 @@ export function MeasurementHealthPanel({ projectId }: { projectId: string }) {
           }}
           hint={
             health.summary.dataStreamCount > health.summary.webStreamCount
-              ? `${formatCount(health.summary.dataStreamCount)} akıştan web olanlar`
+              ? t("{count} akıştan web olanlar", {
+                  count: health.summary.dataStreamCount,
+                })
               : health.summary.webStreamCount === 0
-                ? "Web akışı yok"
-                : "Tüm akışlar web"
+                ? t("Web akışı yok")
+                : t("Tüm akışlar web")
           }
         />
         <MetricTile
-          label="Anahtar olay"
+          label={t("Anahtar olay")}
           value={formatCount(health.summary.keyEventCount)}
           animateTo={{
             value: health.summary.keyEventCount,
             format: formatCount,
           }}
-          hint="Önemli saydığınız hareket, örneğin form gönderme ya da satın alma. Tanımlı değilse rapor hep 0 gösterir."
+          hint={t(
+            "Önemli saydığınız hareket, örneğin form gönderme ya da satın alma. Tanımlı değilse rapor hep 0 gösterir.",
+          )}
         />
         <MetricTile
-          label="Özel boyut"
+          label={t("Özel boyut")}
           value={formatCount(health.summary.customDimensionCount)}
           animateTo={{
             value: health.summary.customDimensionCount,
             format: formatCount,
           }}
-          hint={`${formatCount(health.summary.customMetricCount)} özel metrik`}
+          hint={t("{count} özel metrik", {
+            count: health.summary.customMetricCount,
+          })}
         />
         <MetricTile
-          label="Bulgu"
+          label={t("Bulgu")}
           value={formatCount(health.summary.issueCount)}
           animateTo={{ value: health.summary.issueCount, format: formatCount }}
           hint={
             health.summary.issueCount === 0
-              ? "Kurulum eksiksiz"
-              : "Aşağıda açıklanıyor"
+              ? t("Kurulum eksiksiz")
+              : t("Aşağıda açıklanıyor")
           }
         />
       </MetricRow>
@@ -155,7 +164,7 @@ export function MeasurementHealthPanel({ projectId }: { projectId: string }) {
       {health.issues.length === 0 ? (
         <div className="flex items-center gap-2 rounded-box border border-base-300 bg-base-100 p-4 text-sm text-muted">
           <Check className="size-4 text-success" />
-          Ölçüm kurulumunda eksik yok.
+          {t("Ölçüm kurulumunda eksik yok.")}
         </div>
       ) : (
         <ul className="space-y-2">
@@ -166,9 +175,11 @@ export function MeasurementHealthPanel({ projectId }: { projectId: string }) {
                 key={issue}
                 className="rounded-box border border-base-300 bg-base-100 p-4"
               >
-                <p className="text-sm font-medium">{copy?.title ?? issue}</p>
+                <p className="text-sm font-medium">
+                  {copy ? t(copy.title) : issue}
+                </p>
                 {copy ? (
-                  <p className="mt-1 text-sm text-muted">{copy.fix}</p>
+                  <p className="mt-1 text-sm text-muted">{t(copy.fix)}</p>
                 ) : null}
               </li>
             );
@@ -187,7 +198,7 @@ export function MeasurementHealthPanel({ projectId }: { projectId: string }) {
                 {stream.displayName}
               </h3>
               <p className="truncate text-xs text-muted">
-                {stream.defaultUri ?? "adres yok"}
+                {stream.defaultUri ?? t("adres yok")}
                 {stream.measurementId ? ` · ${stream.measurementId}` : ""}
               </p>
             </div>
@@ -197,23 +208,25 @@ export function MeasurementHealthPanel({ projectId }: { projectId: string }) {
               }
               label={
                 stream.enhancedMeasurement.streamEnabled
-                  ? "Gelişmiş ölçüm açık"
-                  : "Gelişmiş ölçüm kapalı"
+                  ? t("Gelişmiş ölçüm açık")
+                  : t("Gelişmiş ölçüm kapalı")
               }
             />
           </div>
 
           <p className="mt-3 text-xs text-muted">
-            {formatCount(
-              MEASUREMENT_TOGGLES.filter(
-                ([key]) => stream.enhancedMeasurement[key],
-              ).length,
-            )}{" "}
-            / {formatCount(MEASUREMENT_TOGGLES.length)} otomatik olay açık
-            <HelpTip label="Gelişmiş ölçüm">
-              Gelişmiş ölçüm; kaydırma, dış bağlantı tıklaması ve dosya indirme
-              gibi olayları koda dokunmadan toplar. Kapalı olanlar raporlarda
-              hiç görünmez.
+            {t("{on} / {count} otomatik olay açık", {
+              on: formatCount(
+                MEASUREMENT_TOGGLES.filter(
+                  ([key]) => stream.enhancedMeasurement[key],
+                ).length,
+              ),
+              count: MEASUREMENT_TOGGLES.length,
+            })}
+            <HelpTip label={t("Gelişmiş ölçüm")}>
+              {t(
+                "Gelişmiş ölçüm; kaydırma, dış bağlantı tıklaması ve dosya indirme gibi olayları koda dokunmadan toplar. Kapalı olanlar raporlarda hiç görünmez.",
+              )}
             </HelpTip>
           </p>
           <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1.5">
@@ -240,8 +253,10 @@ export function MeasurementHealthPanel({ projectId }: { projectId: string }) {
                    * no states at all -- the panel read as a list rather than
                    * as three on and three off.
                    */}
-                  <span className="sr-only">{on ? "açık: " : "kapalı: "}</span>
-                  {label}
+                  <span className="sr-only">
+                    {on ? t("açık:") : t("kapalı:")}{" "}
+                  </span>
+                  {t(label)}
                 </li>
               );
             })}
@@ -251,10 +266,11 @@ export function MeasurementHealthPanel({ projectId }: { projectId: string }) {
 
       {health.otherStreams.length > 0 ? (
         <section className="rounded-box border border-base-300 bg-base-100 p-4">
-          <h3 className="text-sm font-medium">Uygulama veri akışları</h3>
+          <h3 className="text-sm font-medium">{t("Uygulama veri akışları")}</h3>
           <p className="mt-0.5 text-xs text-muted">
-            Bu mülke bağlı, web dışındaki akışlar. Buradaki raporlar yalnızca
-            web trafiğini kapsamaz; uygulama verisi de toplamlara karışır.
+            {t(
+              "Bu mülke bağlı, web dışındaki akışlar. Buradaki raporlar yalnızca web trafiğini kapsamaz; uygulama verisi de toplamlara karışır.",
+            )}
           </p>
           <ul className="mt-2 space-y-1">
             {health.otherStreams.map((stream) => (
@@ -264,7 +280,9 @@ export function MeasurementHealthPanel({ projectId }: { projectId: string }) {
               >
                 <span className="truncate">{stream.displayName}</span>
                 <span className="shrink-0 text-xs text-muted">
-                  {STREAM_TYPE_COPY[stream.type] ?? stream.type}
+                  {STREAM_TYPE_COPY[stream.type]
+                    ? t(STREAM_TYPE_COPY[stream.type])
+                    : stream.type}
                 </span>
               </li>
             ))}
@@ -275,11 +293,11 @@ export function MeasurementHealthPanel({ projectId }: { projectId: string }) {
       {health.keyEvents.length > 0 ? (
         <section className="rounded-box border border-base-300 bg-base-100 p-4">
           <h3 className="flex items-center gap-1.5 text-sm font-medium">
-            Anahtar olaylar
-            <HelpTip label="Sayım yöntemi">
-              Sayım yöntemi, aynı oturumda tekrarlanan bir olayın kaç kez
-              sayılacağını belirler. Dönüşüm rakamlarını karşılaştırırken bu
-              ayara bakın.
+            {t("Anahtar olaylar")}
+            <HelpTip label={t("Sayım yöntemi")}>
+              {t(
+                "Sayım yöntemi, aynı oturumda tekrarlanan bir olayın kaç kez sayılacağını belirler. Dönüşüm rakamlarını karşılaştırırken bu ayara bakın.",
+              )}
             </HelpTip>
           </h3>
           <ul className="mt-2 divide-y divide-base-300">
@@ -290,8 +308,9 @@ export function MeasurementHealthPanel({ projectId }: { projectId: string }) {
               >
                 <span className="font-mono text-xs">{event.eventName}</span>
                 <span className="text-xs text-muted">
-                  {COUNTING_METHOD_COPY[event.countingMethod] ??
-                    event.countingMethod}
+                  {COUNTING_METHOD_COPY[event.countingMethod]
+                    ? t(COUNTING_METHOD_COPY[event.countingMethod])
+                    : event.countingMethod}
                 </span>
               </li>
             ))}

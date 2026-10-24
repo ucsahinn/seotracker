@@ -20,6 +20,7 @@ import {
   GOOGLE_TOKEN_URI,
   signAssertion,
 } from "@/server/lib/googleServiceAccountKey";
+import { t } from "@/shared/i18n";
 
 /** Re-mint this long before expiry, so a call never races the deadline. */
 const EXPIRY_MARGIN_MS = 60_000;
@@ -101,14 +102,14 @@ export async function getServiceAccountToken(scope: string): Promise<string> {
   if (isDemoGoogle()) return DEMO_GOOGLE_TOKEN;
   if (!ALLOWED_SCOPES.has(scope)) {
     throw new GoogleServiceAccountError(
-      `Hizmet hesabı için izin verilmeyen kapsam: ${scope}`,
+      t("Hizmet hesabı için izin verilmeyen kapsam: {scope}", { scope }),
     );
   }
 
   // The status read is a cheap, non-decrypting lookup of the revision, so a
   // replaced credential is noticed even by an isolate that never saw it change.
   const status = await GoogleServiceAccountRepository.getStatus();
-  if (!status) throw new GoogleServiceAccountError(NOT_CONFIGURED);
+  if (!status) throw new GoogleServiceAccountError(t(NOT_CONFIGURED));
 
   const key = cacheKey(status.updatedAt, scope);
   const cached = cache.get(key);
@@ -127,7 +128,7 @@ export async function getServiceAccountToken(scope: string): Promise<string> {
 
 async function mintToken(scope: string, startedIn: number): Promise<string> {
   const account = await GoogleServiceAccountRepository.get();
-  if (!account) throw new GoogleServiceAccountError(NOT_CONFIGURED);
+  if (!account) throw new GoogleServiceAccountError(t(NOT_CONFIGURED));
 
   const assertion = await signAssertion(
     buildAssertionPayload({
@@ -139,7 +140,7 @@ async function mintToken(scope: string, startedIn: number): Promise<string> {
     account.privateKey,
   ).catch((error: unknown) => {
     throw new GoogleServiceAccountError(
-      "Hizmet hesabı anahtarı imzalanamadı; dosya bozuk olabilir.",
+      t("Hizmet hesabı anahtarı imzalanamadı; dosya bozuk olabilir."),
       { cause: error },
     );
   });
@@ -162,7 +163,10 @@ async function mintToken(scope: string, startedIn: number): Promise<string> {
      */
     const detail = (await response.text().catch(() => "")).slice(0, 200);
     throw new GoogleServiceAccountError(
-      `Google hizmet hesabı için erişim anahtarı vermedi (${response.status}). ${detail}`,
+      t(
+        "Google hizmet hesabı için erişim anahtarı vermedi ({status}). {detail}",
+        { status: response.status, detail },
+      ),
     );
   }
 
@@ -171,7 +175,7 @@ async function mintToken(scope: string, startedIn: number): Promise<string> {
   const body = tokenResponseSchema.safeParse(await response.json());
   if (!body.success) {
     throw new GoogleServiceAccountError(
-      "Google beklenmeyen bir erişim anahtarı yanıtı döndürdü.",
+      t("Google beklenmeyen bir erişim anahtarı yanıtı döndürdü."),
     );
   }
 

@@ -16,7 +16,9 @@ import {
   useContextUpdate,
   type ContextKeyPage,
 } from "./shared";
+import { t } from "@/shared/i18n";
 
+// Turkish source text, translated where it renders.
 const ROLE_LABELS: Record<KeyPageRole, string> = {
   hub: "Merkez sayfa",
   spoke: "Destek sayfası",
@@ -70,8 +72,8 @@ export function KeyPagesSection({
       className="scroll-mt-6 space-y-3 outline-none"
     >
       <SectionHeader
-        title="Önemli sayfalar"
-        hint="Sitenin en önemli sayfaları. Tam liste olması gerekmez."
+        title={t("Önemli sayfalar")}
+        hint={t("Sitenin en önemli sayfaları. Tam liste olması gerekmez.")}
         action={
           <button
             type="button"
@@ -79,7 +81,7 @@ export function KeyPagesSection({
             onClick={() => setAdding(true)}
           >
             <Plus className="size-3.5" />
-            Sayfa ekle
+            {t("Sayfa ekle")}
           </button>
         }
       />
@@ -97,8 +99,9 @@ export function KeyPagesSection({
       {keyPages.length === 0 ? (
         adding ? null : (
           <EmptyListNote>
-            Henüz önemli sayfa yok. Sıralamada olması gereken birkaç sayfayı
-            ekleyin, ya da bir ajan son site denetiminizden bunları önersin.
+            {t(
+              "Henüz önemli sayfa yok. Sıralamada olması gereken birkaç sayfayı ekleyin, ya da bir ajan son site denetiminizden bunları önersin.",
+            )}
           </EmptyListNote>
         )
       ) : (
@@ -127,11 +130,13 @@ export function KeyPagesSection({
                       {page.url}
                     </span>
                     <span className="badge badge-ghost badge-sm shrink-0">
-                      {ROLE_LABELS[page.role]}
+                      {t(ROLE_LABELS[page.role])}
                     </span>
                   </div>
                   {page.topic ? (
-                    <p className="text-sm text-muted">Hedef: {page.topic}</p>
+                    <p className="text-sm text-muted">
+                      {t("Hedef: {topic}", { topic: page.topic })}
+                    </p>
                   ) : null}
                   {page.notes ? (
                     <p className="text-sm text-muted">{page.notes}</p>
@@ -142,13 +147,13 @@ export function KeyPagesSection({
                   <button
                     type="button"
                     className="btn btn-ghost btn-xs"
-                    aria-label={`${page.url} sayfasını düzenle`}
+                    aria-label={t("{url} sayfasını düzenle", { url: page.url })}
                     onClick={() => setEditingId(page.id)}
                   >
                     <Pencil className="size-3.5" />
                   </button>
                   <ConfirmDeleteButton
-                    label={`${page.url} sayfasını kaldır`}
+                    label={t("{url} sayfasını kaldır", { url: page.url })}
                     pending={update.isPending}
                     onConfirm={() =>
                       update.mutate([{ removeKeyPages: [page.url] }])
@@ -206,7 +211,7 @@ function KeyPageForm({
         placeholder="example.com/pricing"
         maxLength={2048}
         className="input input-bordered input-sm w-full"
-        aria-label="Sayfa adresi"
+        aria-label={t("Sayfa adresi")}
       />
       <div className="grid gap-2 sm:grid-cols-2">
         <select
@@ -220,11 +225,11 @@ function KeyPageForm({
             })
           }
           className="select select-bordered select-sm w-full"
-          aria-label="Sayfa rolü"
+          aria-label={t("Sayfa rolü")}
         >
           {KEY_PAGE_ROLES.map((role) => (
             <option key={role} value={role}>
-              {ROLE_LABELS[role]}
+              {t(ROLE_LABELS[role])}
             </option>
           ))}
         </select>
@@ -234,20 +239,20 @@ function KeyPageForm({
           onChange={(event) =>
             setDraft({ ...draft, topic: event.target.value })
           }
-          placeholder="Hedef konu (isteğe bağlı)"
+          placeholder={t("Hedef konu (isteğe bağlı)")}
           maxLength={200}
           className="input input-bordered input-sm w-full"
-          aria-label="Hedef konu"
+          aria-label={t("Hedef konu")}
         />
       </div>
       <input
         type="text"
         value={draft.notes}
         onChange={(event) => setDraft({ ...draft, notes: event.target.value })}
-        placeholder="Notlar (isteğe bağlı)"
+        placeholder={t("Notlar (isteğe bağlı)")}
         maxLength={500}
         className="input input-bordered input-sm w-full"
-        aria-label="Sayfa notları"
+        aria-label={t("Sayfa notları")}
       />
       <FormActions
         pending={pending}

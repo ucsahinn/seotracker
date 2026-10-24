@@ -20,6 +20,7 @@ import {
 import { useReducedMotion } from "@/client/lib/useReducedMotion";
 import { getGa4DashboardReport } from "@/serverFunctions/ga4";
 import { formatDate } from "@/client/lib/format";
+import { t } from "@/shared/i18n";
 
 function formatTrendDay(date: string): string {
   // `formatDay` handles the calendar-day shape and is pinned to tr-TR; this
@@ -57,7 +58,7 @@ function SessionsTooltip({
     <div className="rounded-box border border-base-300 bg-base-100 px-3 py-2 shadow-sm">
       <p className="text-xs text-muted">{label ? formatTrendDay(label) : ""}</p>
       <p className="text-sm font-medium tabular-nums">
-        {formatCount(payload[0].value)} oturum
+        {t("{count} oturum", { count: payload[0].value })}
       </p>
     </div>
   );
@@ -105,7 +106,7 @@ export function Ga4Card({
 
   return (
     <CardShell
-      title="Organik trafik"
+      title={t("Organik trafik")}
       stamp={
         covered
           ? `Google Analytics · ${formatDate(covered.startDate)} – ${formatDate(covered.endDate)}`
@@ -119,7 +120,7 @@ export function Ga4Card({
               params={{ projectId }}
               className={moreDetailsClass}
             >
-              Raporlar
+              {t("Raporlar")}
             </Link>
           ) : null}
           <Link
@@ -128,7 +129,7 @@ export function Ga4Card({
             hash="google-analytics"
             className={moreDetailsClass}
           >
-            Yönet
+            {t("Yönet")}
           </Link>
         </div>
       }
@@ -144,13 +145,15 @@ export function Ga4Card({
         </div>
       ) : reportQuery.isError ? (
         <div className="space-y-2 text-sm">
-          <p className="text-muted">Google Analytics verileri yüklenemedi.</p>
+          <p className="text-muted">
+            {t("Google Analytics verileri yüklenemedi.")}
+          </p>
           <button
             type="button"
             className="btn btn-ghost btn-xs"
             onClick={() => void reportQuery.refetch()}
           >
-            Tekrar dene
+            {t("Tekrar dene")}
           </button>
         </div>
       ) : report?.connected ? (
@@ -158,13 +161,13 @@ export function Ga4Card({
         // otherwise render an all-zero flatline chart in an empty box.
         !report.totals.sessions ? (
           <p className="text-sm text-muted">
-            Bu aralıkta organik arama trafiği kaydedilmemiş.
+            {t("Bu aralıkta organik arama trafiği kaydedilmemiş.")}
           </p>
         ) : (
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-3">
               <Stat
-                label="Oturum"
+                label={t("Oturum")}
                 value={statValue(report.totals.sessions, formatCount)}
                 sub={statDelta(
                   report.totals.sessions,
@@ -172,8 +175,8 @@ export function Ga4Card({
                 )}
               />
               <Stat
-                label="Aktif kullanıcı"
-                help={GA4_HELP.activeUsers}
+                label={t("Aktif kullanıcı")}
+                help={t(GA4_HELP.activeUsers)}
                 value={statValue(report.totals.activeUsers, formatCount)}
                 sub={statDelta(
                   report.totals.activeUsers,
@@ -181,13 +184,13 @@ export function Ga4Card({
                 )}
               />
               <Stat
-                label="Etkileşim oranı"
-                help={GA4_HELP.engagementRate}
+                label={t("Etkileşim oranı")}
+                help={t(GA4_HELP.engagementRate)}
                 value={statValue(report.totals.engagementRate, formatPercent)}
               />
               <Stat
-                label="Anahtar olay"
-                help={GA4_HELP.keyEvents}
+                label={t("Anahtar olay")}
+                help={t(GA4_HELP.keyEvents)}
                 value={statValue(report.totals.keyEvents, formatCount)}
                 sub={statDelta(
                   report.totals.keyEvents,
@@ -207,7 +210,7 @@ export function Ga4Card({
                */}
               {hasEcommerce ? (
                 <Stat
-                  label="Organik gelir"
+                  label={t("Organik gelir")}
                   value={statValue(report.totals.purchaseRevenue, (value) =>
                     formatMoney(value, report.currencyCode),
                   )}
@@ -219,7 +222,7 @@ export function Ga4Card({
               ) : null}
               {hasEcommerce ? (
                 <Stat
-                  label="Sipariş"
+                  label={t("Sipariş")}
                   value={statValue(report.totals.transactions, formatCount)}
                   sub={statDelta(
                     report.totals.transactions,
@@ -274,10 +277,18 @@ export function Ga4Card({
 function trendSummary(
   trend: Array<{ date: string; sessions: number }>,
 ): string {
-  if (trend.length === 0) return "Gösterilecek oturum verisi yok.";
+  if (trend.length === 0) return t("Gösterilecek oturum verisi yok.");
   const total = trend.reduce((sum, row) => sum + row.sessions, 0);
   const peak = trend.reduce((best, row) =>
     row.sessions > best.sessions ? row : best,
   );
-  return `${trend.length} günde toplam ${formatCount(total)} oturum. En yüksek gün ${formatTrendDay(peak.date)}, ${formatCount(peak.sessions)} oturum.`;
+  return t(
+    "{days} günde toplam {total} oturum. En yüksek gün {day}, {peak} oturum.",
+    {
+      days: formatCount(trend.length),
+      total: formatCount(total),
+      day: formatTrendDay(peak.date),
+      peak: formatCount(peak.sessions),
+    },
+  );
 }

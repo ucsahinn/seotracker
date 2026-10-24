@@ -28,6 +28,7 @@ import { formatSavedKeywordDate } from "./savedKeywordsUtils";
 import { positionOf } from "./savedKeywordPositions";
 import { Copy, Search as SearchIcon, Trash2 } from "lucide-react";
 import { RowActions } from "@/client/components/table/RowActions";
+import { t } from "@/shared/i18n";
 
 const columnHelper = createColumnHelper<SavedKeywordRow>();
 
@@ -67,13 +68,13 @@ export function SavedKeywordsTable({
       ),
       columnHelper.accessor("keyword", {
         header: ({ column }) => (
-          <SortableHeader column={column} label="Kelime" />
+          <SortableHeader column={column} label={t("Kelime")} />
         ),
         cell: ({ getValue }) => (
           <button
             type="button"
             className="link link-hover text-left font-medium"
-            title="Arama performansında göster"
+            title={t("Arama performansında göster")}
             onClick={() => onInspect(getValue())}
           >
             {getValue()}
@@ -86,13 +87,13 @@ export function SavedKeywordsTable({
       // useful ones off the side of the table.
       columnHelper.display({
         id: "position",
-        header: () => "Ortalama sıra",
+        header: () => t("Ortalama sıra"),
         cell: ({ row }) => {
           const position = positionOf(row.original.keyword, positions);
           return position === null ? (
             <span
               className="text-subtle"
-              title="Search Console bu kelime için sıra kaydetmemiş"
+              title={t("Search Console bu kelime için sıra kaydetmemiş")}
             >
               -
             </span>
@@ -105,7 +106,7 @@ export function SavedKeywordsTable({
         enableSorting: false,
       }),
       columnHelper.accessor("intent", {
-        header: () => "Amaç",
+        header: () => t("Amaç"),
         cell: ({ getValue }) => (
           <IntentBadge intent={normalizeIntent(getValue())} />
         ),
@@ -113,7 +114,7 @@ export function SavedKeywordsTable({
       }),
       columnHelper.display({
         id: "tags",
-        header: () => "Etiketler",
+        header: () => t("Etiketler"),
         cell: ({ row }) => <TagList tags={row.original.tags} />,
         enableSorting: false,
         meta: { cellClassName: "min-w-40 max-w-64" },
@@ -122,7 +123,7 @@ export function SavedKeywordsTable({
       // nothing writes any more, so that column was blank on every row.
       columnHelper.accessor("createdAt", {
         header: ({ column }) => (
-          <SortableHeader column={column} label="Eklenme" />
+          <SortableHeader column={column} label={t("Eklenme")} />
         ),
         cell: ({ getValue }) => (
           <span className="text-xs text-muted">
@@ -140,21 +141,21 @@ export function SavedKeywordsTable({
         header: () => null,
         cell: ({ row }) => (
           <RowActions
-            label={`${row.original.keyword} için işlemler`}
+            label={t("{title} için işlemler", { title: row.original.keyword })}
             actions={[
               {
-                label: "Kelimeyi kopyala",
+                label: t("Kelimeyi kopyala"),
                 icon: Copy,
                 onSelect: () =>
-                  void copyText(row.original.keyword, "Kelime kopyalandı"),
+                  void copyText(row.original.keyword, t("Kelime kopyalandı")),
               },
               {
-                label: "Arama performansında ara",
+                label: t("Arama performansında ara"),
                 icon: SearchIcon,
                 onSelect: () => onInspect(row.original.keyword),
               },
               {
-                label: "Kelimeyi sil",
+                label: t("Kelimeyi sil"),
                 icon: Trash2,
                 destructive: true,
                 onSelect: () => onRemove(row.original),
@@ -181,7 +182,7 @@ export function SavedKeywordsTable({
   return (
     <AppDataTable
       table={table}
-      caption="Kayıtlı kelimeler"
+      caption={t("Kayıtlı kelimeler")}
       className="table table-sm"
       isLoading={isLoading}
       loading={<SavedKeywordsSkeleton />}
@@ -256,8 +257,8 @@ function SavedKeywordsEmptyState({
     return (
       <EmptyState
         icon={Bookmark}
-        title="Bu filtrelere uyan kelime yok"
-        description="Filtreleri gevşetin ya da temizleyin."
+        title={t("Bu filtrelere uyan kelime yok")}
+        description={t("Filtreleri gevşetin ya da temizleyin.")}
       />
     );
   }
@@ -265,8 +266,10 @@ function SavedKeywordsEmptyState({
   return (
     <EmptyState
       icon={Bookmark}
-      title="Henüz kayıtlı kelime yok"
-      description="Arama performansı ekranında bir ya da birkaç sorguyu seçip “Kelime olarak kaydet” deyin. Kaydettikleriniz burada etiketlenir, sıralamayla birlikte listelenir ve dışa aktarılır."
+      title={t("Henüz kayıtlı kelime yok")}
+      description={t(
+        "Arama performansı ekranında bir ya da birkaç sorguyu seçip “Kelime olarak kaydet” deyin. Kaydettikleriniz burada etiketlenir, sıralamayla birlikte listelenir ve dışa aktarılır.",
+      )}
       action={
         connection.isPending ? undefined : notConnected ? (
           <Link
@@ -274,7 +277,7 @@ function SavedKeywordsEmptyState({
             params={{ projectId }}
             className="btn btn-primary btn-sm"
           >
-            Search Console&apos;u bağla
+            {t("Search Console'u bağla")}
           </Link>
         ) : (
           <Link
@@ -284,7 +287,7 @@ function SavedKeywordsEmptyState({
             className="btn btn-primary btn-sm gap-1.5"
           >
             <SearchIcon className="size-4" aria-hidden />
-            Sorgulara göz at
+            {t("Sorgulara göz at")}
           </Link>
         )
       }

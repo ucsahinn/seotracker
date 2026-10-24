@@ -1,5 +1,6 @@
 import { sort } from "remeda";
 import { formatCount, formatDate, formatDateTime } from "@/shared/format";
+import { t } from "@/shared/i18n";
 import { gauge } from "./reportCharts";
 import { escapeHtml, formatMs, hostOf, truncateUrl } from "./reportFormat";
 import { scoreVerdict, UNRELIABLE_NOTE, type IssueGroup } from "./reportModel";
@@ -18,18 +19,22 @@ function card(label: string, value: string, tone?: "critical" | "warning") {
 }
 
 function scopeText(group: IssueGroup): string {
-  return group.siteLevel ? "tüm site" : `${formatCount(group.pageCount)} sayfa`;
+  return group.siteLevel
+    ? t("tüm site")
+    : t("{count} sayfa", { count: group.pageCount });
 }
 
 function pointsText(group: IssueGroup): string {
   return group.points < 1
-    ? "+1 puandan az"
-    : `+${formatCount(group.points)} puan`;
+    ? t("+1 puandan az")
+    : t("+{count} puan", { count: group.points });
 }
 
 /** The addresses that show the reader where to start, and how many more there are. */
 function samplePages(group: IssueGroup): string {
-  if (group.siteLevel) return `<p class="todo-pages">Etkilenen: tüm site</p>`;
+  if (group.siteLevel) {
+    return `<p class="todo-pages">${t("Etkilenen: tüm site")}</p>`;
+  }
   const urls = [...new Set(group.rows.filter((r) => r.url).map((r) => r.url))];
   const shown = urls.slice(0, SAMPLE_URLS);
   const rest = group.pageCount - shown.length;
@@ -37,7 +42,7 @@ function samplePages(group: IssueGroup): string {
     .map((u) => `<li>${escapeHtml(truncateUrl(u, 90))}</li>`)
     .join(
       "",
-    )}${rest > 0 ? `<li class="more">ve ${formatCount(rest)} sayfa daha (ayrıntı sorun bölümünde)</li>` : ""}</ul>`;
+    )}${rest > 0 ? `<li class="more">${t("ve {count} sayfa daha (ayrıntı sorun bölümünde)", { count: rest })}</li>` : ""}</ul>`;
 }
 
 function todoItem(group: IssueGroup): string {
@@ -47,8 +52,8 @@ function todoItem(group: IssueGroup): string {
       ${chip(group.severity)}
       <span class="fix-meta">${scopeText(group)} · ${pointsText(group)}</span>
     </div>
-    ${group.howToFix ? `<p><strong>Ne yapılmalı:</strong> ${escapeHtml(group.howToFix)}</p>` : ""}
-    ${group.explanation ? `<p class="why"><strong>Neden:</strong> ${escapeHtml(group.explanation)}</p>` : ""}
+    ${group.howToFix ? `<p><strong>${t("Ne yapılmalı:")}</strong> ${escapeHtml(group.howToFix)}</p>` : ""}
+    ${group.explanation ? `<p class="why"><strong>${t("Neden:")}</strong> ${escapeHtml(group.explanation)}</p>` : ""}
     ${samplePages(group)}
   </li>`;
 }
@@ -59,16 +64,16 @@ function actionPlan(groups: IssueGroup[], reliable: boolean): string {
     (a, b) => b.points - a.points,
   );
   if (ranked.length === 0) {
-    return `<h2>Bu hafta yapılacaklar</h2><p class="empty">${reliable ? "Düzeltilecek kayıtlı sorun yok." : "Düzeltilecek sorun listesi eksik olabilir."}</p>`;
+    return `<h2>${t("Bu hafta yapılacaklar")}</h2><p class="empty">${reliable ? t("Düzeltilecek kayıtlı sorun yok.") : t("Düzeltilecek sorun listesi eksik olabilir.")}</p>`;
   }
   const first = ranked.slice(0, TODO_COUNT);
   const later = ranked.slice(TODO_COUNT, TODO_COUNT + LATER_COUNT);
-  return `<h2>Bu hafta yapılacak ${formatCount(first.length)} şey</h2>
-    <p class="note">Sıralama, düzeltildiğinde site puanına en çok puan kazandıranlara göre.</p>
+  return `<h2>${t("Bu hafta yapılacak {count} şey", { count: first.length })}</h2>
+    <p class="note">${t("Sıralama, düzeltildiğinde site puanına en çok puan kazandıranlara göre.")}</p>
     <ol class="todos">${first.map(todoItem).join("")}</ol>
     ${
       later.length > 0
-        ? `<h3>Sonrasında</h3><ul class="fixlist">${later
+        ? `<h3>${t("Sonrasında")}</h3><ul class="fixlist">${later
             .map(
               (g) =>
                 `<li><a href="#${issueAnchor(g.issueType)}">${escapeHtml(g.title)}</a> ${chip(g.severity)} <span class="fix-meta">${scopeText(g)} · ${pointsText(g)}</span></li>`,
@@ -76,45 +81,76 @@ function actionPlan(groups: IssueGroup[], reliable: boolean): string {
             .join("")}</ul>`
         : ""
     }
-    <p class="note">Puanlar, o sorun tamamen düzeltilirse site puanına eklenecek yaklaşık değeri gösterir.</p>`;
+    <p class="note">${t("Puanlar, o sorun tamamen düzeltilirse site puanına eklenecek yaklaşık değeri gösterir.")}</p>`;
+}
+
+function statusNote(status: string | null | undefined): string {
+  if (status === "failed") return t("Denetim hata verip durdu.");
+  if (status === "running") return t("Denetim hâlâ çalışıyor.");
+  return t("Hiç sayfa taranamadı.");
 }
 
 export function coverSection(ctx: ReportContext): string {
   const { input, counts, score, stats, groups, reliable } = ctx;
   const when = input.completedAt ?? input.startedAt;
   const scope = [
-    `${formatCount(input.pagesCrawled)} sayfa tarandı${typeof input.maxPages === "number" ? ` (üst sınır ${formatCount(input.maxPages)})` : ""}`,
+    typeof input.maxPages === "number"
+      ? t("{count} sayfa tarandı (üst sınır {max})", {
+          count: input.pagesCrawled,
+          max: formatCount(input.maxPages),
+        })
+      : t("{count} sayfa tarandı", { count: input.pagesCrawled }),
     input.lighthouseMode === "none"
-      ? "hız ölçümü kapalı"
+      ? t("hız ölçümü kapalı")
       : input.lighthouse.length > 0
-        ? "hız ölçümü var"
-        : "hız ölçümü yok",
+        ? t("hız ölçümü var")
+        : t("hız ölçümü yok"),
     input.indexCoverage && input.indexCoverage.asked > 0
-      ? "Google dizin verisi var"
-      : "Google dizin verisi yok",
+      ? t("Google dizin verisi var")
+      : t("Google dizin verisi yok"),
   ].join(" · ");
 
   return `<section class="cover" id="ozet">
-    <p class="eyebrow">Site denetim raporu</p>
+    <p class="eyebrow">${t("Site denetim raporu")}</p>
     <h1>${escapeHtml(hostOf(input.siteUrl))}</h1>
     <p class="sub sub--url">${escapeHtml(input.siteUrl)}</p>
-    <p class="sub">Denetim tarihi: ${escapeHtml(formatDate(when))} (${escapeHtml(formatDateTime(when))}) · Kapsam: ${escapeHtml(scope)}</p>
-    ${reliable ? "" : `<div class="callout callout--warn"><p><strong>Rapor eksik olabilir.</strong> ${escapeHtml(input.status === "failed" ? "Denetim hata verip durdu." : input.status === "running" ? "Denetim hâlâ çalışıyor." : "Hiç sayfa taranamadı.")} ${escapeHtml(UNRELIABLE_NOTE)}</p></div>`}
+    <p class="sub">${escapeHtml(
+      t("Denetim tarihi: {date} ({dateTime}) · Kapsam: {scope}", {
+        date: formatDate(when),
+        dateTime: formatDateTime(when),
+        scope,
+      }),
+    )}</p>
+    ${reliable ? "" : `<div class="callout callout--warn"><p><strong>${t("Rapor eksik olabilir.")}</strong> ${escapeHtml(statusNote(input.status))} ${escapeHtml(t(UNRELIABLE_NOTE))}</p></div>`}
     <div class="scorebox">
       ${gauge(score)}
       <div>
-        <p class="score-label">Site puanı</p>
+        <p class="score-label">${t("Site puanı")}</p>
         <p class="verdict">${escapeHtml(scoreVerdict(score, reliable))}</p>
-        <p class="sub">${counts.total === 0 ? (reliable ? "Kayıtlı sorun yok." : "Sorun sayısı bilinmiyor.") : `${formatCount(counts.total)} sorun türü: ${formatCount(counts.critical)} kritik, ${formatCount(counts.warning)} uyarı, ${formatCount(counts.info)} bilgi.`}</p>
+        <p class="sub">${
+          counts.total === 0
+            ? reliable
+              ? t("Kayıtlı sorun yok.")
+              : t("Sorun sayısı bilinmiyor.")
+            : t(
+                "{count} sorun türü: {critical} kritik, {warning} uyarı, {info} bilgi.",
+                {
+                  count: counts.total,
+                  critical: formatCount(counts.critical),
+                  warning: formatCount(counts.warning),
+                  info: formatCount(counts.info),
+                },
+              )
+        }</p>
       </div>
     </div>
     <div class="cards">
-      ${card("Taranan sayfa", formatCount(input.pagesCrawled))}
-      ${card("Kritik sorun türü", formatCount(counts.critical), counts.critical > 0 ? "critical" : undefined)}
-      ${card("Uyarı türü", formatCount(counts.warning), counts.warning > 0 ? "warning" : undefined)}
-      ${card("Bilgi türü", formatCount(counts.info))}
-      ${card("Dizine girebilir", `${formatCount(stats.indexable)} / ${formatCount(input.pagesCrawled)}`)}
-      ${card("Ortalama yanıt", formatMs(stats.avgResponseMs))}
+      ${card(t("Taranan sayfa"), formatCount(input.pagesCrawled))}
+      ${card(t("Kritik sorun türü"), formatCount(counts.critical), counts.critical > 0 ? "critical" : undefined)}
+      ${card(t("Uyarı türü"), formatCount(counts.warning), counts.warning > 0 ? "warning" : undefined)}
+      ${card(t("Bilgi türü"), formatCount(counts.info))}
+      ${card(t("Dizine girebilir"), `${formatCount(stats.indexable)} / ${formatCount(input.pagesCrawled)}`)}
+      ${card(t("Ortalama yanıt"), formatMs(stats.avgResponseMs))}
     </div>
     ${actionPlan(groups, reliable)}
   </section>`;

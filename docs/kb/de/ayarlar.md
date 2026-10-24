@@ -3,14 +3,20 @@ title: Einstellungen
 description: Design, Google-Zugangsschlüssel, PageSpeed-Schlüssel, Nutzungsgrenzen und Update-Prüfung, gültig für die gesamte Installation.
 screen: Ayarlar
 route: /settings
-updated: 2026-10-22
+updated: 2026-10-24
 ---
 
-Auf dem Bildschirm **Ayarlar** (Einstellungen) stellen Sie alles ein, was die gesamte Installation betrifft. Einstellungen, die nur ein Projekt betreffen (Name, Domain, Property in der Search Console und in Analytics), stehen auf der Seite **Proje ayarları** (Projekteinstellungen) jedes Projekts. Hier verwalten Sie den Zugangsschlüssel für die Verbindung mit Google, den PageSpeed-Schlüssel, das Design und die Update-Prüfung. Links gibt es die Bereiche **Görünüm** (Darstellung), **Google**, **Hizmet hesabı** (Dienstkonto), **Hız ölçümü** (Geschwindigkeitsmessung), **Sınırlar** (Grenzen), **Hakkında** (Über) und **Sürüm notları** (Versionshinweise). In der Überschrift jedes Bereichs steht ein Kennzeichen, das seinen Zustand zeigt.
+Auf dem Bildschirm **Ayarlar** (Einstellungen) stellen Sie alles ein, was die gesamte Installation betrifft. Einstellungen, die nur ein Projekt betreffen (Name, Domain, Property in der Search Console und in Analytics), stehen auf der Seite **Proje ayarları** (Projekteinstellungen) jedes Projekts. Hier verwalten Sie den Zugangsschlüssel für die Verbindung mit Google, den PageSpeed-Schlüssel, das Design und die Update-Prüfung. Links gibt es die Bereiche **Görünüm** (Darstellung), **Google**, **Hizmet hesabı** (Dienstkonto), **Hız ölçümü** (Geschwindigkeitsmessung), **Sınırlar** (Grenzen), **Hakkında** (Über) und **Windows**. In der Überschrift jedes Bereichs steht ein Kennzeichen, das seinen Zustand zeigt.
 
 ## Was auf dem Bildschirm zu sehen ist
 
 **Görünüm.** Für das **Tema** (Design) gibt es System, Hell (Açık) und Dunkel (Koyu). Die Wahl wird in diesem Browser gespeichert. In einem anderen Browser oder auf einem anderen Computer wählen Sie sie gesondert.
+
+**Sprache.** Die App bietet Türkisch und Englisch. Unter **Ayarlar → Görünüm → Dil** wählen Sie Türkçe oder English. Die Seite wird neu geladen; Zahlen und Datumsangaben folgen der gewählten Sprache. Die Wahl wird in diesem Browser gespeichert.
+
+**Benachrichtigungen (Bildirimler).** Die Glocke zeigt die letzten 50 Ereignisse und die Zahl ungelesener Meldungen. **Tümünü okundu işaretle** markiert alle als gelesen, ohne den Verlauf zu löschen. Unter **Bildirimler** können Sie einen Ton vorhören und Desktop-Mitteilungen für den Hintergrund erlauben. Die Browser-Berechtigung wird erst beim Aktivieren angefragt.
+
+**Windows.** Hier können Sie den Start mit Windows und die automatische Update-Installation ein- oder ausschalten. Die Einstellungen entsprechen dem Infobereichsmenü. Einschränkungen durch Administratoren werden erklärt. Bei Docker- und Entwicklerinstallationen sind die Schalter deaktiviert; ältere Windows-Startprogramme zeigen einen Hinweis zur Paketaktualisierung.
 
 **Google.** Das Kennzeichen hat einen von drei Werten: **Kayıtlı** (Gespeichert), **Ortamdan geliyor** (Kommt aus der Umgebung; bei Docker über die Datei `.env` angegeben) oder **Eksik** (Fehlt). Der Bereich zeigt die beiden Weiterleitungsadressen, die Sie in der Google Cloud Console (Googles Entwicklerbereich) eintragen. Daneben stehen Schaltflächen zum Kopieren. Sie müssen beide eintragen. Tragen Sie die Analytics-Adresse nicht ein, wird nur die Search Console verbunden.
 
@@ -36,9 +42,9 @@ Das Kennzeichen lautet **Kayıtlı** oder **Kullanılmıyor** (Wird nicht verwen
 
 Der Zustand jeder Karte ist **Yeterli** (Ausreichend), **Azalıyor** (Wird knapp; ab 70 Prozent), **Neredeyse doldu** (Fast voll; ab 90 Prozent) oder **Bilinmiyor** (Unbekannt).
 
-**Hakkında.** Die Zeile **Sürüm** (Version) zeigt die Version (zum Beispiel v2.3.0). Der Schalter **Güncellemeleri kontrol et** (Updates prüfen) ist standardmäßig eingeschaltet. Ist er an, fragt die App höchstens einmal am Tag auf GitHub nach der neuesten Version. Dann erscheint auch die Schaltfläche **Şimdi kontrol et** (Jetzt prüfen). Gibt es eine neue Version, erscheint der Link **Değişiklikler** (Änderungen). Bei Docker-Installationen erscheint außerdem der Befehl zum Kopieren: `git pull && docker compose up -d --build`. Beim Windows-Paket verweist der Bildschirm Sie auf **Güncelle** (Aktualisieren) am Symbol in der Taskleiste. Ist die automatische Aktualisierung an, wird die neue Version von selbst installiert.
+**Hakkında.** Die Zeile **Sürüm** (Version) zeigt die Version (zum Beispiel 0.5.0 Alpha). Der Schalter **Güncellemeleri kontrol et** (Updates prüfen) ist standardmäßig eingeschaltet. Ist er an, fragt die App höchstens einmal am Tag auf GitHub nach der neuesten Version. Dann erscheint auch die Schaltfläche **Şimdi kontrol et** (Jetzt prüfen). Gibt es eine neue Version, erscheint der Link **Değişiklikler** (Änderungen). Bei Docker-Installationen erscheint außerdem der Befehl zum Kopieren: `git pull && docker compose up -d --build`. Beim Windows-Paket verweist der Bildschirm Sie auf **Güncelle** (Aktualisieren) am Symbol in der Taskleiste. Ist die automatische Aktualisierung an, wird die neue Version von selbst installiert.
 
-**Sürüm notları.** Der Bereich listet auf, was sich in jeder Version geändert hat.
+**Sürüm notları.** Die Versionshinweise stehen als eigene Seite über den Benachrichtigungen im Seitenmenü. Farbige Etiketten zeigen Neuerungen, Korrekturen und Sicherheitsänderungen.
 
 ## So gehen Sie vor
 

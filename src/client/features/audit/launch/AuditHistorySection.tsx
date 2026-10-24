@@ -21,6 +21,7 @@ import {
   compareText,
   useLocalSort,
 } from "@/client/components/table/useLocalSort";
+import { t } from "@/shared/i18n";
 
 type HistoryRow = Awaited<ReturnType<typeof getAuditHistory>>[number];
 
@@ -62,7 +63,7 @@ export function AuditHistorySection({
       <QueryErrorState
         error={error}
         onRetry={onRetry}
-        title="Denetim geçmişi yüklenemedi"
+        title={t("Denetim geçmişi yüklenemedi")}
       />
     );
   }
@@ -72,8 +73,10 @@ export function AuditHistorySection({
       <section className="rounded-box border border-base-300 bg-base-100 p-4">
         <EmptyState
           icon={ScanSearch}
-          title="Henüz denetim yok"
-          description="Henüz denetim yapılmadı. Yukarıya site adresinizi yazıp başlatın; geçmiş burada listelenir."
+          title={t("Henüz denetim yok")}
+          description={t(
+            "Henüz denetim yapılmadı. Yukarıya site adresinizi yazıp başlatın; geçmiş burada listelenir.",
+          )}
         />
       </section>
     );
@@ -108,7 +111,7 @@ export function AuditHistorySection({
   return (
     <section className="space-y-3 rounded-box border border-base-300 bg-base-100 p-4">
       <div className="space-y-3">
-        <h2 className="text-sm font-semibold">Önceki denetimler</h2>
+        <h2 className="text-sm font-semibold">{t("Önceki denetimler")}</h2>
         <AuditTrendChart history={history} />
         <div className="overflow-x-auto">
           <table className="table table-sm">
@@ -117,7 +120,7 @@ export function AuditHistorySection({
                 <th aria-sort={sorting.ariaSort("startedAt")}>
                   <SortableHeader
                     column={sorting.column("startedAt")}
-                    label="Tarih"
+                    label={t("Tarih")}
                   />
                 </th>
                 <th aria-sort={sorting.ariaSort("startUrl")}>
@@ -129,13 +132,13 @@ export function AuditHistorySection({
                 <th aria-sort={sorting.ariaSort("status")}>
                   <SortableHeader
                     column={sorting.column("status", false)}
-                    label="Durum"
+                    label={t("Durum")}
                   />
                 </th>
                 <th aria-sort={sorting.ariaSort("pages")}>
                   <SortableHeader
                     column={sorting.column("pages")}
-                    label="Sayfa"
+                    label={t("Sayfa")}
                   />
                 </th>
                 <th
@@ -144,8 +147,8 @@ export function AuditHistorySection({
                 >
                   <SortableHeader
                     column={sorting.column("critical")}
-                    label="Kritik"
-                    helpText="Yüz sayfa başına (toplam ayrıca parantezde)"
+                    label={t("Kritik")}
+                    helpText={t("Yüz sayfa başına (toplam ayrıca parantezde)")}
                     align="right"
                   />
                 </th>
@@ -155,8 +158,8 @@ export function AuditHistorySection({
                 >
                   <SortableHeader
                     column={sorting.column("warning")}
-                    label="Uyarı"
-                    helpText="Yüz sayfa başına (toplam ayrıca parantezde)"
+                    label={t("Uyarı")}
+                    helpText={t("Yüz sayfa başına (toplam ayrıca parantezde)")}
                     align="right"
                   />
                 </th>
@@ -198,8 +201,8 @@ export function AuditHistorySection({
                       <CopyButton
                         iconOnly
                         value={audit.startUrl}
-                        label="Adresi kopyala"
-                        successMessage="Adres kopyalandı"
+                        label={t("Adresi kopyala")}
+                        successMessage={t("Adres kopyalandı")}
                       />
                     </div>
                   </td>
@@ -223,7 +226,9 @@ export function AuditHistorySection({
                   </td>
                   <td>
                     {audit.ranLighthouse ? (
-                      <span className="badge badge-ghost badge-xs">Evet</span>
+                      <span className="badge badge-ghost badge-xs">
+                        {t("Evet")}
+                      </span>
                     ) : null}
                   </td>
                   <td>
@@ -236,10 +241,12 @@ export function AuditHistorySection({
                         params={{ projectId }}
                         search={{ auditId: audit.id, tab: "pages" }}
                         className="btn btn-ghost btn-xs gap-1"
-                        aria-label={`${formatDateTime(audit.startedAt)} denetimini görüntüle`}
+                        aria-label={t("{date} denetimini görüntüle", {
+                          date: formatDateTime(audit.startedAt),
+                        })}
                       >
                         <Eye className="size-3.5" aria-hidden />
-                        Görüntüle
+                        {t("Görüntüle")}
                       </Link>
                       <HistoryActions
                         audit={audit}
@@ -309,10 +316,10 @@ function DeltaText({ delta }: { delta: IssueDelta }) {
       className={`inline-flex items-center gap-0.5 text-xs ${
         fewer ? "text-[var(--ink-success)]" : "text-[var(--ink-error)]"
       }`}
-      title="Aynı siteye ait bir önceki denetime göre"
+      title={t("Aynı siteye ait bir önceki denetime göre")}
     >
       <Icon className="size-3" aria-hidden />
-      <span className="sr-only">{fewer ? "azaldı" : "arttı"} </span>
+      <span className="sr-only">{fewer ? t("azaldı") : t("arttı")} </span>
       {percent ?? formatCount(size)}
     </span>
   );
@@ -332,18 +339,19 @@ function HistoryActions({
   return (
     <div className="flex items-center justify-end gap-2 transition-opacity can-hover:opacity-0 can-hover:group-hover:opacity-100 can-hover:group-focus-within:opacity-100">
       <RowActions
-        label={`${audit.startUrl} denetimi için işlemler`}
+        label={t("{url} denetimi için işlemler", { url: audit.startUrl })}
         actions={[
           {
-            label: "Aynı ayarlarla yeniden başlat",
+            label: t("Aynı ayarlarla yeniden başlat"),
             icon: RotateCw,
             onSelect: () => onRerun(audit),
             disabledReason: isRerunPending
-              ? "Bir denetim zaten başlatılıyor"
+              ? t("Bir denetim zaten başlatılıyor")
               : undefined,
           },
           {
-            label: "Denetimi sil",
+            label: t("Denetimi sil"),
+
             icon: Trash2,
             destructive: true,
             onSelect: () => onDelete(audit.id),

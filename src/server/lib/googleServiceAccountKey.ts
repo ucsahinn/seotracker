@@ -12,6 +12,7 @@
  * key, and add its email to the Search Console property like any other user.
  */
 import { z } from "zod";
+import { t } from "@/shared/i18n";
 
 /** Google's token endpoint, as named in the key file's own `token_uri`. */
 export const GOOGLE_TOKEN_URI = "https://oauth2.googleapis.com/token";
@@ -52,8 +53,9 @@ export function parseServiceAccountKey(
   } catch {
     return {
       ok: false,
-      reason:
+      reason: t(
         "Geçerli bir JSON değil. Google'dan indirdiğiniz dosyanın tamamını yapıştırın.",
+      ),
     };
   }
 
@@ -61,7 +63,10 @@ export function parseServiceAccountKey(
   if (!parsed.success) {
     return {
       ok: false,
-      reason: parsed.error.issues[0]?.message ?? "Anahtar dosyası okunamadı.",
+      // The schema messages above are catalog keys, translated here.
+      reason: t(
+        parsed.error.issues[0]?.message ?? "Anahtar dosyası okunamadı.",
+      ),
     };
   }
   return { ok: true, key: parsed.data };

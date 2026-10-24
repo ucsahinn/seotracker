@@ -69,6 +69,12 @@
       "rules": {
         "eslint/no-restricted-imports": "off"
       }
+    },
+    {
+      "files": ["src/shared/i18n/en/**"],
+      "rules": {
+        "eslint/max-lines": "off"
+      }
     }
   ]
 }

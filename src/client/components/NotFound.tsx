@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { LifeBuoy, SearchX } from "lucide-react";
 import { EmptyState } from "@/client/components/EmptyState";
 import { PageHeader, PageShell } from "@/client/components/PageShell";
+import { t } from "@/shared/i18n";
 
 /**
  * The page behind a link that leads nowhere.
@@ -14,20 +15,22 @@ import { PageHeader, PageShell } from "@/client/components/PageShell";
 export function NotFound() {
   return (
     <PageShell width="reading">
-      <PageHeader title="Sayfa bulunamadı" />
+      <PageHeader title={t("Sayfa bulunamadı")} />
       <div className="rounded-box border border-base-300 bg-base-100">
         <EmptyState
           icon={SearchX}
-          title="Bu adreste bir sayfa yok"
-          description="Adres yanlış yazılmış ya da sayfa kaldırılmış olabilir. Panelden devam edebilir ya da Yardım'a bakabilirsiniz."
+          title={t("Bu adreste bir sayfa yok")}
+          description={t(
+            "Adres yanlış yazılmış ya da sayfa kaldırılmış olabilir. Panelden devam edebilir ya da Yardım'a bakabilirsiniz.",
+          )}
           action={
             <div className="flex flex-wrap items-center justify-center gap-2">
               <Link to="/" className="btn btn-primary btn-sm">
-                Panele dön
+                {t("Panele dön")}
               </Link>
               <Link to="/support" className="btn btn-sm gap-1.5">
                 <LifeBuoy className="size-4" aria-hidden />
-                Yardım
+                {t("Yardım")}
               </Link>
             </div>
           }

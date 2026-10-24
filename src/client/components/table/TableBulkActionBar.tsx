@@ -1,11 +1,12 @@
 import { ChevronDown, Download, Loader2, X } from "lucide-react";
 import type { ReactNode } from "react";
 import { PortalMenu } from "@/client/components/PortalMenu";
+import { t } from "@/shared/i18n";
 
 export function TableBulkActionBar({
   selectedCount,
   // The UI is Turkish; this default rendered "12 selected" in it.
-  selectedLabel = "seçili",
+  selectedLabel = t("seçili"),
   actions,
   onClear,
   placement = "fixed",
@@ -34,14 +35,14 @@ export function TableBulkActionBar({
           actions with nothing saying they had appeared. */}
       <div
         role="toolbar"
-        aria-label="Toplu işlemler"
+        aria-label={t("Toplu işlemler")}
         aria-live="polite"
         className={toolbarClass}
       >
         <div className="flex items-center gap-2 border-r border-base-content/10 px-3 py-2 text-sm">
           <button
             type="button"
-            aria-label="Seçimi kaldır"
+            aria-label={t("Seçimi kaldır")}
             className="-ml-1 rounded-field p-1 text-muted hover:bg-base-content/10 hover:text-base-content"
             onClick={onClear}
           >
@@ -103,7 +104,7 @@ export function TableBulkExportMenu({
   // no Escape, and lived inside a clipping ancestor.
   return (
     <PortalMenu
-      ariaLabel="Seçili satırları dışa aktar"
+      ariaLabel={t("Seçili satırları dışa aktar")}
       triggerClassName="inline-flex items-center gap-1.5 rounded-field px-2.5 py-1.5 text-sm text-muted hover:bg-base-content/10 disabled:opacity-50"
       triggerContent={
         <>
@@ -112,7 +113,7 @@ export function TableBulkExportMenu({
           ) : (
             <Download className="size-3.5" />
           )}
-          Dışa aktar
+          {t("Dışa aktar")}
           <ChevronDown className="size-3 opacity-60" />
         </>
       }
@@ -170,12 +171,12 @@ export function TableExportMenu({
    */
   return (
     <PortalMenu
-      ariaLabel="Dışa aktarma seçenekleri"
+      ariaLabel={t("Dışa aktarma seçenekleri")}
       triggerClassName={buttonClassName}
       triggerContent={
         <>
           {triggerIcon ?? <Download className="size-4" />}
-          Dışa aktar
+          {t("Dışa aktar")}
           <ChevronDown className="size-3 opacity-60" />
         </>
       }

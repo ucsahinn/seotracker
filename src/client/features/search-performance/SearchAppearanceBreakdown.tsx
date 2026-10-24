@@ -1,3 +1,4 @@
+import { t } from "@/shared/i18n";
 import { DonutCard, donutSummary } from "@/client/components/DonutChart";
 import { appearanceSegments } from "@/client/features/search-performance/searchAppearance";
 
@@ -17,12 +18,20 @@ export function SearchAppearanceBreakdown({
 }) {
   const { metric, segments } = appearanceSegments(rows);
   if (segments.length === 0) return null;
-  const unit = metric === "clicks" ? "tıklama" : "gösterim";
+  const unit = metric === "clicks" ? t("tıklama") : t("gösterim");
 
   return (
     <DonutCard
-      title="Arama görünümü"
-      description={`Sonuçlarınızın Google'da hangi özel biçimlerle göründüğü (${unit} sayısına göre). Google bu dökümü başka bir ölçüyle birleştirmez.`}
+      title={t("Arama görünümü")}
+      description={
+        metric === "clicks"
+          ? t(
+              "Sonuçlarınızın Google'da hangi özel biçimlerle göründüğü (tıklama sayısına göre). Google bu dökümü başka bir ölçüyle birleştirmez.",
+            )
+          : t(
+              "Sonuçlarınızın Google'da hangi özel biçimlerle göründüğü (gösterim sayısına göre). Google bu dökümü başka bir ölçüyle birleştirmez.",
+            )
+      }
       totalLabel={unit}
       height={144}
       segments={segments}

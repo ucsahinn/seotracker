@@ -6,7 +6,9 @@ import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { StatusPill } from "@/client/components/StatusPill";
 import { formatCount, formatDate } from "@/client/lib/format";
 import { getSitemapReport } from "@/serverFunctions/sitemaps";
+import { t } from "@/shared/i18n";
 
+/* Turkish source strings, translated by t() where they are used. */
 const CONTENT_LABELS: Record<string, string> = {
   web: "web",
   image: "görsel",
@@ -26,13 +28,13 @@ function describeSubmitted(sitemap: {
   const parts = sitemap.contents
     .filter((entry) => entry.submitted > 0)
     .map((entry) => {
-      const label = entry.type
-        ? (CONTENT_LABELS[entry.type] ?? entry.type)
-        : "";
+      const known = entry.type ? CONTENT_LABELS[entry.type] : undefined;
+      const label = known ? t(known) : (entry.type ?? "");
       return `${formatCount(entry.submitted)} ${label}`.trim();
     });
-  if (parts.length === 0) return `${formatCount(sitemap.submitted)} adres`;
-  return `${parts.join(", ")} gönderilmiş`;
+  if (parts.length === 0)
+    return t("{count} adres", { count: sitemap.submitted });
+  return t("{list} gönderilmiş", { list: parts.join(", ") });
 }
 
 /**
@@ -61,7 +63,7 @@ export function SitemapStatusPanel({ projectId }: { projectId: string }) {
           compact
           error={query.error}
           onRetry={() => void query.refetch()}
-          title="Site haritaları okunamadı"
+          title={t("Site haritaları okunamadı")}
         />
       </div>
     );
@@ -73,15 +75,17 @@ export function SitemapStatusPanel({ projectId }: { projectId: string }) {
         <EmptyState
           compact
           icon={FileText}
-          title="Search Console bağlı değil"
-          description="Site haritalarınızı Google'ın gözünden görmek için Search Console bağlantısı gerekir."
+          title={t("Search Console bağlı değil")}
+          description={t(
+            "Site haritalarınızı Google'ın gözünden görmek için Search Console bağlantısı gerekir.",
+          )}
           action={
             <Link
               to="/p/$projectId/settings/integrations"
               params={{ projectId }}
               className="btn btn-sm"
             >
-              Bağlantılar
+              {t("Bağlantılar")}
             </Link>
           }
         />
@@ -92,9 +96,9 @@ export function SitemapStatusPanel({ projectId }: { projectId: string }) {
   if (query.data.status === "forbidden") {
     return (
       <div className="rounded-box border border-base-300 bg-base-100 p-4 text-sm text-muted">
-        Google bu mülkün site haritalarını vermedi. Hesabınızın Search
-        Console&apos;da site haritası gönderme yetkisi yoksa, mülke erişseniz
-        bile bu listeyi göremezsiniz.
+        {t(
+          "Google bu mülkün site haritalarını vermedi. Hesabınızın Search Console'da site haritası gönderme yetkisi yoksa, mülke erişseniz bile bu listeyi göremezsiniz.",
+        )}
       </div>
     );
   }
@@ -109,8 +113,10 @@ export function SitemapStatusPanel({ projectId }: { projectId: string }) {
         <EmptyState
           compact
           icon={FileText}
-          title="Gönderilmiş site haritası yok"
-          description="Google site haritası olmadan da sayfa bulur. Ama site haritası, hangi sayfaları önemsediğinizi ona doğrudan söylemenin yoludur."
+          title={t("Gönderilmiş site haritası yok")}
+          description={t(
+            "Google site haritası olmadan da sayfa bulur. Ama site haritası, hangi sayfaları önemsediğinizi ona doğrudan söylemenin yoludur.",
+          )}
         />
       </div>
     );
@@ -119,9 +125,9 @@ export function SitemapStatusPanel({ projectId }: { projectId: string }) {
   return (
     <div className="overflow-hidden rounded-box border border-base-300 bg-base-100">
       <div className="border-b border-base-300 px-4 py-3">
-        <h3 className="text-sm font-medium">Site haritaları</h3>
+        <h3 className="text-sm font-medium">{t("Site haritaları")}</h3>
         <p className="mt-0.5 text-xs text-muted">
-          Google&apos;a gönderdikleriniz ve Google&apos;ın onlarla ne yaptığı.
+          {t("Google'a gönderdikleriniz ve Google'ın onlarla ne yaptığı.")}
         </p>
       </div>
       <ul>
@@ -136,23 +142,25 @@ export function SitemapStatusPanel({ projectId }: { projectId: string }) {
               </p>
               <p className="mt-0.5 text-xs text-muted">
                 {describeSubmitted(sitemap)}
-                {sitemap.isSitemapsIndex ? " · dizin dosyası" : ""}
+                {sitemap.isSitemapsIndex ? ` · ${t("dizin dosyası")}` : ""}
                 {" · "}
                 {sitemap.lastDownloaded
-                  ? `son indirme ${formatDate(sitemap.lastDownloaded)}`
-                  : "Google hiç indirmedi"}
+                  ? t("son indirme {date}", {
+                      date: formatDate(sitemap.lastDownloaded),
+                    })
+                  : t("Google hiç indirmedi")}
               </p>
             </div>
             <div className="flex shrink-0 flex-wrap items-center gap-2">
               {sitemap.errors > 0 ? (
                 <span className="inline-flex items-center gap-1 text-xs text-[var(--ink-error)]">
                   <AlertCircle className="size-3.5" />
-                  {formatCount(sitemap.errors)} hata
+                  {t("{count} hata", { count: sitemap.errors })}
                 </span>
               ) : null}
               {sitemap.warnings > 0 ? (
                 <span className="text-xs text-[var(--ink-warning)]">
-                  {formatCount(sitemap.warnings)} uyarı
+                  {t("{count} uyarı", { count: sitemap.warnings })}
                 </span>
               ) : null}
               {/* Never downloaded is the finding that matters most here and
@@ -168,12 +176,12 @@ export function SitemapStatusPanel({ projectId }: { projectId: string }) {
                 }
                 label={
                   sitemap.errors > 0
-                    ? "Hatalı"
+                    ? t("Hatalı")
                     : sitemap.isPending
-                      ? "İşlenmedi"
+                      ? t("İşlenmedi")
                       : sitemap.lastDownloaded
-                        ? "Okundu"
-                        : "İndirilmedi"
+                        ? t("Okundu")
+                        : t("İndirilmedi")
                 }
               />
             </div>

@@ -10,6 +10,7 @@ import type {
   ContextAuthor,
   ProjectContextUpdate,
 } from "@/types/schemas/projectContext";
+import { t } from "@/shared/i18n";
 
 export type ProjectContextData = Awaited<ReturnType<typeof getProjectContext>>;
 export type ContextCompetitor = ProjectContextData["competitors"][number];
@@ -36,11 +37,11 @@ export function useContextUpdate(projectId: string) {
     onMutate: () => queryClient.cancelQueries({ queryKey }),
     onSuccess: (context) => {
       queryClient.setQueryData(queryKey, context);
-      toast.success("Proje bilgisi güncellendi");
+      toast.success(t("Proje bilgisi güncellendi"));
     },
     onError: (error) =>
       toast.error(
-        getStandardErrorMessage(error, "Değişiklikleriniz kaydedilemedi"),
+        getStandardErrorMessage(error, t("Değişiklikleriniz kaydedilemedi")),
       ),
     // The page instantiates this mutation per section, so two concurrent
     // patches can settle out of order and the slower (earlier-snapshotted)
@@ -50,6 +51,7 @@ export function useContextUpdate(projectId: string) {
   });
 }
 
+// Turkish source text, translated where it renders.
 const AUTHOR_LABELS: Record<ContextAuthor, string> = {
   user: "siz",
   // A legacy value: the in-app agent is gone, but old rows still carry it.
@@ -61,8 +63,11 @@ export function Provenance({ by, at }: { by: ContextAuthor; at?: string }) {
   return (
     <span className="text-xs text-muted">
       {at
-        ? `${AUTHOR_LABELS[by]} güncelledi · ${formatRelativeTime(at)}`
-        : `${AUTHOR_LABELS[by]} ekledi`}
+        ? t("{author} güncelledi · {time}", {
+            author: t(AUTHOR_LABELS[by]),
+            time: formatRelativeTime(at),
+          })
+        : t("{author} ekledi", { author: t(AUTHOR_LABELS[by]) })}
     </span>
   );
 }
@@ -140,14 +145,14 @@ export function ConfirmDeleteButton({
             onConfirm();
           }}
         >
-          Kaldır
+          {t("Kaldır")}
         </button>
         <button
           type="button"
           className="btn btn-ghost btn-xs"
           onClick={() => setConfirming(false)}
         >
-          Vazgeç
+          {t("Vazgeç")}
         </button>
       </>
     );
@@ -183,14 +188,14 @@ export function FormActions({
         onClick={onCancel}
         disabled={pending}
       >
-        Vazgeç
+        {t("Vazgeç")}
       </button>
       <button
         type="submit"
         className="btn btn-primary btn-xs"
         disabled={disabled || pending}
       >
-        Kaydet
+        {t("Kaydet")}
       </button>
     </div>
   );

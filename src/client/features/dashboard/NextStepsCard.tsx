@@ -7,11 +7,8 @@ import {
   Search,
   TriangleAlert,
 } from "lucide-react";
-import {
-  formatCount,
-  formatRelativeTime,
-  parseTimestamp,
-} from "@/client/lib/format";
+import { formatRelativeTime, parseTimestamp } from "@/client/lib/format";
+import { t } from "@/shared/i18n";
 
 /**
  * What to do next, in order, on the one screen an operator opens first.
@@ -78,10 +75,10 @@ export function NextStepsCard({
     <section className="overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-[var(--shadow-raise)]">
       <div className="border-b border-base-300 px-5 py-3.5">
         <h2 className="text-sm font-semibold leading-tight">
-          Sıradaki adımlar
+          {t("Sıradaki adımlar")}
         </h2>
         <p className="mt-0.5 text-xs text-muted">
-          En hızlı kazandıracak işten başlayın.
+          {t("En hızlı kazandıracak işten başlayın.")}
         </p>
       </div>
 
@@ -91,7 +88,7 @@ export function NextStepsCard({
             aria-hidden
             className="size-4 text-[var(--ink-success)]"
           />
-          Acil bir iş görünmüyor. Denetim güncel ve kritik sorun yok.
+          {t("Acil bir iş görünmüyor. Denetim güncel ve kritik sorun yok.")}
         </p>
       ) : (
         <ul className="stagger divide-y divide-base-300">
@@ -175,12 +172,13 @@ function buildSteps({
     steps.push({
       key: "gsc",
       icon: Link2,
-      title: "Search Console'u bağlayın",
-      detail:
+      title: t("Search Console'u bağlayın"),
+      detail: t(
         "Hangi kelimede kaçıncı sırada olduğunuzu yalnızca Google bilir. Bağlantı ücretsiz.",
+      ),
       to: "/p/$projectId/settings/integrations",
       params,
-      cta: "Bağla",
+      cta: t("Bağla"),
     });
   }
 
@@ -188,11 +186,13 @@ function buildSteps({
     steps.push({
       key: "first-audit",
       icon: Radar,
-      title: "İlk denetimi başlatın",
-      detail: "Sitenizi tarar, teknik sorunları önem sırasına göre listeler.",
+      title: t("İlk denetimi başlatın"),
+      detail: t(
+        "Sitenizi tarar, teknik sorunları önem sırasına göre listeler.",
+      ),
       to: "/p/$projectId/audit",
       params,
-      cta: "Başlat",
+      cta: t("Başlat"),
     });
     return steps;
   }
@@ -201,13 +201,16 @@ function buildSteps({
     steps.push({
       key: "critical",
       icon: TriangleAlert,
-      title: `${formatCount(audit.severityTotals.critical)} kritik sorun var`,
-      detail:
+      title: t("{count} kritik sorun var", {
+        count: audit.severityTotals.critical,
+      }),
+      detail: t(
         "Kritik sorunlar Google'ın sayfayı taramasını ya da dizine almasını engelleyebilir.",
+      ),
       to: "/p/$projectId/audit",
       params,
       search: { auditId: audit.auditId, tab: "issues" },
-      cta: "Gör",
+      cta: t("Gör"),
     });
   }
 
@@ -215,12 +218,13 @@ function buildSteps({
     steps.push({
       key: "opportunities",
       icon: Search,
-      title: "Fırsatlara bakın",
-      detail:
+      title: t("Fırsatlara bakın"),
+      detail: t(
         "Sayfalarınız, sıralarına göre değil, üzerinde çalışmaya ne kadar değdiğine göre sıralı.",
+      ),
       to: "/p/$projectId/opportunities",
       params,
-      cta: "Aç",
+      cta: t("Aç"),
     });
   }
 
@@ -233,11 +237,14 @@ function buildSteps({
     steps.push({
       key: "rescan",
       icon: Radar,
-      title: "Denetimi tazeleyin",
-      detail: `Son denetim ${formatRelativeTime(audit.startedAt)}. Bu ekrandaki sayılar o denetimden geliyor.`,
+      title: t("Denetimi tazeleyin"),
+      detail: t(
+        "Son denetim {when}. Bu ekrandaki sayılar o denetimden geliyor.",
+        { when: formatRelativeTime(audit.startedAt) },
+      ),
       to: "/p/$projectId/audit",
       params,
-      cta: "Başlat",
+      cta: t("Başlat"),
     });
   }
 
@@ -245,12 +252,12 @@ function buildSteps({
     steps.push({
       key: "warnings",
       icon: TriangleAlert,
-      title: `${formatCount(audit.severityTotals.warning)} uyarı var`,
-      detail: "Kritik değil ama Google'ın sayfayı anlamasını zorlaştırıyor.",
+      title: t("{count} uyarı var", { count: audit.severityTotals.warning }),
+      detail: t("Kritik değil ama Google'ın sayfayı anlamasını zorlaştırıyor."),
       to: "/p/$projectId/audit",
       params,
       search: { auditId: audit.auditId, tab: "issues" },
-      cta: "Gör",
+      cta: t("Gör"),
     });
   }
 

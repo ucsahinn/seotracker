@@ -5,14 +5,14 @@ kind: nasil-yapilir
 updated: 2026-10-23
 ---
 
-L'interface de l'application est en turc. Ce guide donne chaque nom de bouton et d'écran en turc, suivi de sa traduction française entre parenthèses.
+L'interface de l'application est disponible en turc et en anglais. La langue se choisit dans Ayarlar → Görünüm → Dil. Ce guide donne chaque nom de bouton et d'écran en turc, suivi de sa traduction française entre parenthèses.
 
 À la fin de cette page, l'application sera installée et ouverte dans votre navigateur. Comptez deux minutes. Elle s'installe pour votre seul compte utilisateur, sans droits d'administrateur. Une autorisation n'est demandée qu'une fois, si le composant Visual C++ est absent.
 
 ## Ce qu'il vous faut
 
 - Windows 10 ou 11 (64 bits).
-- Environ 350 Mo d'espace libre. Le fichier d'installation fait 81 Mo et l'application installée 290 Mo.
+- Environ 400 Mo d'espace libre. Le fichier d'installation fait 86 Mo et l'application installée 313 Mo.
 - Un navigateur tel qu'Edge, Chrome ou Firefox.
 - Ni Docker, ni Node, ni terminal (fenêtre de commandes) ne sont nécessaires.
 - Le moteur de l'application a besoin du paquet Visual C++ de Microsoft. S'il manque, l'installation l'ajoute et demande une fois l'autorisation d'un administrateur. Le dossier d'installation est `%LOCALAPPDATA%\Programs\seowatcher`.
@@ -131,7 +131,7 @@ Quand le numéro change, mettez aussi à jour, avec le nouveau numéro, les deux
 
 ## Vérification
 
-- Quand vous passez la souris sur l'icône de la barre des tâches, elle doit afficher « seowatcher X.Y.Z: Çalışıyor: http://127.0.0.1:3001/ » (seowatcher X.Y.Z : en fonctionnement : http://127.0.0.1:3001/). Le numéro au début est celui de la version que vous avez installée ; 2.3.7 n'est qu'un exemple.
+- Quand vous passez la souris sur l'icône de la barre des tâches, elle doit afficher « seowatcher X.Y.Z: Çalışıyor: http://127.0.0.1:3001/ » (seowatcher X.Y.Z : en fonctionnement : http://127.0.0.1:3001/). Le numéro au début est celui de la version que vous avez installée ; 0.5.0 Alpha n'est qu'un exemple.
 - Dans le navigateur, l'adresse `http://127.0.0.1:3001/api/health` doit afficher un texte qui commence par "status":"ok".
 - Sur l'écran **Yardım** (Aide), la carte « Kurulumunuzun durumu » (L'état de votre installation) doit dire « Her şey yolunda. » (Tout va bien.). Avant la connexion à Google, la ligne « Google girişi » (Connexion Google) demande de l'attention. C'est normal.
 

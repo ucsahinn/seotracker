@@ -1,5 +1,8 @@
 import { Loader2, RefreshCw } from "lucide-react";
 import * as React from "react";
+import { useFlashOnChange } from "@/client/components/useFlashOnChange";
+import { formatTime } from "@/client/lib/format";
+import { t } from "@/shared/i18n";
 
 /**
  * Quick "Yenile" action for a screen header, driven by a TanStack Query.
@@ -25,10 +28,6 @@ import * as React from "react";
  *     />
  *   </PageActions>
  */
-const TIME = new Intl.DateTimeFormat("tr-TR", {
-  hour: "2-digit",
-  minute: "2-digit",
-});
 
 function isTypingTarget(target: EventTarget | null): boolean {
   if (!(target instanceof HTMLElement)) return false;
@@ -41,7 +40,7 @@ export function RefreshButton({
   isFetching = false,
   dataUpdatedAt,
   disabled = false,
-  label = "Yenile",
+  label = t("Yenile"),
   shortcut = false,
 }: {
   onRefresh: () => void;
@@ -78,20 +77,27 @@ export function RefreshButton({
       setAnnounce("");
     } else if (wasFetching.current) {
       wasFetching.current = false;
-      setAnnounce("Güncellendi");
+      setAnnounce(t("Güncellendi"));
     }
   }, [isFetching]);
 
   const updated =
     dataUpdatedAt !== undefined && dataUpdatedAt > 0
-      ? TIME.format(new Date(dataUpdatedAt))
+      ? formatTime(dataUpdatedAt)
       : null;
+
+  const flash = useFlashOnChange(updated ? (dataUpdatedAt ?? null) : null);
 
   return (
     <div className="flex items-center gap-2">
       {updated ? (
-        <span className="hidden text-xs text-subtle tabular-nums sm:inline">
-          Güncellendi: {updated}
+        // Remounted by the key when the time changes, so the tint marks a
+        // refresh that landed and never plays on first paint.
+        <span
+          key={flash.key}
+          className={`hidden px-1 text-xs text-subtle tabular-nums sm:inline ${flash.className}`}
+        >
+          {t("Güncellendi: {time}", { time: updated })}
         </span>
       ) : null}
       <button
@@ -111,7 +117,7 @@ export function RefreshButton({
         <span>{label}</span>
       </button>
       <span className="sr-only" role="status" aria-live="polite">
-        {isFetching ? "Güncelleniyor" : announce}
+        {isFetching ? t("Güncelleniyor") : announce}
       </span>
     </div>
   );

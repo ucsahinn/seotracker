@@ -1,5 +1,6 @@
 import { EyeOff, ImageOff, Link2Off, Timer, X } from "lucide-react";
 import type { PagesFilters } from "@/client/features/audit/results/AuditResultsTableFilterLogic";
+import { t } from "@/shared/i18n";
 
 /**
  * The four questions an operator arrives with, as one click each. A fifth,
@@ -34,6 +35,7 @@ type Preset = {
   matches: (filters: PagesFilters) => boolean;
 };
 
+// Turkish source labels; t() runs where they render.
 const PRESETS: Preset[] = [
   {
     key: "noindex",
@@ -109,7 +111,7 @@ export function QuickFilters({
             <button
               key={preset.key}
               type="button"
-              title={preset.title}
+              title={t(preset.title)}
               aria-pressed={active}
               // A preset with nothing behind it is a filter to an empty table.
               // Kept visible, because "no slow pages" is itself an answer.
@@ -126,7 +128,7 @@ export function QuickFilters({
               }`}
             >
               <preset.icon aria-hidden className="size-3.5" />
-              {preset.label}
+              {t(preset.label)}
               <span className="tabular-nums opacity-70">{count}</span>
             </button>
           );
@@ -135,8 +137,9 @@ export function QuickFilters({
 
       {sitemapFound ? null : (
         <span className="text-xs text-muted">
-          "Site haritasında yok" kullanılamıyor: bu denetimde site haritası
-          bulunamadı.
+          {t(
+            '"Site haritasında yok" kullanılamıyor: bu denetimde site haritası bulunamadı.',
+          )}
         </span>
       )}
 
@@ -147,7 +150,7 @@ export function QuickFilters({
           className="inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs text-muted transition-colors hover:text-base-content"
         >
           <X aria-hidden className="size-3" />
-          Temizle
+          {t("Temizle")}
         </button>
       ) : null}
     </div>

@@ -7,6 +7,7 @@ import {
   reportGoogleLinkErrorOnce,
   type GoogleLinkProvider,
 } from "./googleLinkError";
+import { t } from "@/shared/i18n";
 
 const PROVIDER_LABELS: Record<GoogleLinkProvider, string> = {
   gsc: "Search Console",
@@ -49,7 +50,7 @@ export function GoogleLinkErrorAlert({
       </div>
       <button
         type="button"
-        aria-label="Kapat"
+        aria-label={t("Kapat")}
         className="btn btn-ghost btn-xs shrink-0 px-1.5"
         onClick={() => {
           setDismissed(true);

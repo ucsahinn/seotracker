@@ -6,9 +6,12 @@ import {
   getCodexSetupPrompt,
 } from "@/client/features/ai-mcp/agentSetupPrompt";
 import { InstallPromptButton } from "@/client/features/ai-mcp/InstallPromptButton";
+import { fillParts } from "@/client/features/settings/fillParts";
+import { t } from "@/shared/i18n";
 
 // What the segmented control offers, and how each agent invokes a skill.
 // Claude Code and "Diğer" copy the same general prompt; only the hint differs.
+// Labels and hints stay Turkish here and go through t() where they render.
 const AGENT_CHOICES = [
   {
     id: "claude",
@@ -70,19 +73,20 @@ export function ConnectAgentCard({
       <h2
         className={!lead ? "text-sm font-semibold" : "text-base font-semibold"}
       >
-        Ajanınızı bağlayın
+        {t("Ajanınızı bağlayın")}
       </h2>
       <p className="mt-2 text-sm leading-relaxed text-muted">
         {!lead
-          ? "Uygulama kurulu, Google ve PageSpeed hazırsa yalnızca bu adım yeter. "
+          ? `${t("Uygulama kurulu, Google ve PageSpeed hazırsa yalnızca bu adım yeter.")} `
           : ""}
-        Komutu ajanınıza yapıştırın. Ajan seowatcher&apos;ı bağlar, SEO
-        becerilerini kurar, elle yapacağınız adımlarda size yol gösterir.
+        {t(
+          "Komutu ajanınıza yapıştırın. Ajan seowatcher'ı bağlar, SEO becerilerini kurar, elle yapacağınız adımlarda size yol gösterir.",
+        )}
       </p>
       <div
         className="join mt-4"
         role="radiogroup"
-        aria-label="Hangi ajanı kullanıyorsunuz?"
+        aria-label={t("Hangi ajanı kullanıyorsunuz?")}
       >
         {AGENT_CHOICES.map((item) => (
           <button
@@ -95,14 +99,14 @@ export function ConnectAgentCard({
             }`}
             onClick={() => setAgent(item.id)}
           >
-            {item.label}
+            {t(item.label)}
           </button>
         ))}
       </div>
       <p className="mt-2 text-xs text-muted">
-        {choice?.hint}
+        {choice ? t(choice.hint) : null}
         {isCodex
-          ? " Ajan bağlantıyı kurar, becerileri kopyalar ve doğrular. Parolayı sohbete yazmaz, bilgisayarınızdan okur."
+          ? ` ${t("Ajan bağlantıyı kurar, becerileri kopyalar ve doğrular. Parolayı sohbete yazmaz, bilgisayarınızdan okur.")}`
           : ""}
       </p>
       <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3 [&>button]:h-11 [&>button]:gap-2 [&>button]:text-sm">
@@ -117,8 +121,8 @@ export function ConnectAgentCard({
            */
           disabled={connection === undefined}
           value={isCodex ? codexPrompt : prompt}
-          label="Kurulum komutunu kopyala"
-          successMessage="Kurulum komutu kopyalandı"
+          label={t("Kurulum komutunu kopyala")}
+          successMessage={t("Kurulum komutu kopyalandı")}
           onCopy={() =>
             captureClientEvent(
               isCodex ? "mcp:codex_prompt_copy" : "mcp:setup_prompt_copy",
@@ -127,21 +131,27 @@ export function ConnectAgentCard({
         />
       </div>
       <p className="mt-5 border-t border-base-300 pt-4 text-sm leading-relaxed text-muted">
-        Bağlandıktan sonra ajanınızdan <code>seo-coach</code> becerisini
-        kullanmasını isteyin; sıradaki adımı birlikte seçersiniz.{" "}
+        {fillParts(
+          t(
+            "Bağlandıktan sonra ajanınızdan {skill} becerisini kullanmasını isteyin; sıradaki adımı birlikte seçersiniz.",
+          ),
+          { skill: <code>seo-coach</code> },
+        )}{" "}
         {/* Turns the grey pill from a verdict into a progress
                         marker, and says it next to the button that resolves
                         it rather than next to the badge that reports it. */}
         {connected ? null : (
           <>
-            Ajanınız seowatcher&apos;a ilk kez istek attığında yukarıdaki durum
-            değişir.
+            {t(
+              "Ajanınız seowatcher'a ilk kez istek attığında yukarıdaki durum değişir.",
+            )}
           </>
         )}
       </p>
       <p className="mt-2 text-xs text-muted">
-        Claude Code, Codex, Cursor, ChatGPT ve MCP destekleyen diğer
-        uygulamalarla çalışır.
+        {t(
+          "Claude Code, Codex, Cursor, ChatGPT ve MCP destekleyen diğer uygulamalarla çalışır.",
+        )}
       </p>
     </section>
   );
@@ -156,7 +166,7 @@ export function InstallCard({ lead }: { lead: boolean }) {
     >
       {lead ? (
         <p className="text-xs font-semibold text-muted">
-          İlk kez mi kuruyorsunuz? Buradan başlayın.
+          {t("İlk kez mi kuruyorsunuz? Buradan başlayın.")}
         </p>
       ) : null}
       <h2
@@ -164,21 +174,20 @@ export function InstallCard({ lead }: { lead: boolean }) {
           lead ? "mt-1 text-base font-semibold" : "text-sm font-semibold"
         }
       >
-        Sıfırdan kurulum
+        {t("Sıfırdan kurulum")}
       </h2>
       <p className="mt-2 text-sm leading-relaxed text-muted">
         {lead
-          ? "Uygulamayı yeni kurduysanız ilk adım bu. "
-          : "Yeni bir kurulum ya da baştan kontrol için. "}
-        Ajanınız kurulumu, Google bağlantısını, PageSpeed anahtarını ve ilk
-        projenizi sırayla kontrol eder, sonra kendini bağlar. Windows paketini
-        de Docker&apos;ı da tanır. Google Cloud&apos;daki adımları siz
-        yaparsınız. Anahtarlar sohbete değil, yalnızca Ayarlar&apos;a girilir.
+          ? `${t("Uygulamayı yeni kurduysanız ilk adım bu.")} `
+          : `${t("Yeni bir kurulum ya da baştan kontrol için.")} `}
+        {t(
+          "Ajanınız kurulumu, Google bağlantısını, PageSpeed anahtarını ve ilk projenizi sırayla kontrol eder, sonra kendini bağlar. Windows paketini de Docker'ı da tanır. Google Cloud'daki adımları siz yaparsınız. Anahtarlar sohbete değil, yalnızca Ayarlar'a girilir.",
+        )}
       </p>
       <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-3 [&>button]:gap-2">
         <InstallPromptButton
           primary={lead}
-          label="Sıfırdan kurulum komutunu kopyala"
+          label={t("Sıfırdan kurulum komutunu kopyala")}
         />
       </div>
     </section>

@@ -17,6 +17,7 @@ import {
 import { listReports, type ReportListItem } from "@/serverFunctions/reports";
 import { REPORT_APP_LIST_LIMIT } from "@/types/schemas/reports";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
+import { t } from "@/shared/i18n";
 
 export const Route = createFileRoute("/_project/p/$projectId/reports/")({
   component: ReportsPage,
@@ -44,8 +45,10 @@ function ReportsPage() {
   return (
     <PageShell>
       <PageHeader
-        title="Raporlar"
-        description="Hazırlanan raporlar. Her raporu açabilir, indirebilir ya da silebilirsiniz."
+        title={t("Raporlar")}
+        description={t(
+          "Hazırlanan raporlar. Her raporu açabilir, indirebilir ya da silebilirsiniz.",
+        )}
         actions={
           <PageActions>
             <RefreshButton
@@ -60,8 +63,8 @@ function ReportsPage() {
                 primary
                 small
                 value={reportRequestPrompt(projectId)}
-                label="Rapor komutunu kopyala"
-                successMessage="Komut kopyalandı. Ajanınıza yapıştırın"
+                label={t("Rapor komutunu kopyala")}
+                successMessage={t("Komut kopyalandı. Ajanınıza yapıştırın")}
               />
             )}
             <Link
@@ -69,7 +72,7 @@ function ReportsPage() {
               params={{ projectId }}
               className="btn btn-sm"
             >
-              Şablonlar
+              {t("Şablonlar")}
             </Link>
           </PageActions>
         }
@@ -89,7 +92,7 @@ function ReportsPage() {
           <QueryErrorState
             error={reportsQuery.error}
             onRetry={() => void reportsQuery.refetch()}
-            title="Raporlar yüklenemedi"
+            title={t("Raporlar yüklenemedi")}
           />
         </div>
       ) : (

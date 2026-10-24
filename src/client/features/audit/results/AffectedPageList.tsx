@@ -11,6 +11,7 @@ import {
   type AffectedPage,
 } from "@/client/features/audit/results/issueAffected";
 import type { AuditIssueRow } from "@/client/features/audit/results/issueGroups";
+import { t } from "@/shared/i18n";
 
 /**
  * The addresses behind one issue's count, ten at a time.
@@ -35,24 +36,32 @@ export function AffectedPageList({
     [pages, query],
   );
   const shown = matches.slice(0, visible);
-  const noun = siteWide ? "adres" : "sayfa";
+  const showing = {
+    total: formatCount(matches.length),
+    shown: formatCount(shown.length),
+  };
 
   if (pages.length === 0) {
     return (
-      <p className="text-sm text-muted">Bu sorun için kayıtlı adres yok.</p>
+      <p className="text-sm text-muted">
+        {t("Bu sorun için kayıtlı adres yok.")}
+      </p>
     );
   }
 
   return (
-    <section aria-label={`${title}: etkilenen adresler`} className="space-y-2">
+    <section
+      aria-label={t("{title}: etkilenen adresler", { title })}
+      className="space-y-2"
+    >
       {pages.length > SEARCH_THRESHOLD ? (
         <label className="input input-sm flex items-center gap-2">
           <Search aria-hidden className="size-3.5 text-muted" />
           <input
             type="search"
             value={query}
-            placeholder="Adres ara"
-            aria-label={`${title}: adreslerde ara`}
+            placeholder={t("Adres ara")}
+            aria-label={t("{title}: adreslerde ara", { title })}
             onChange={(event) => {
               setQuery(event.target.value);
               setVisible(PAGE_STEP);
@@ -62,8 +71,10 @@ export function AffectedPageList({
       ) : null}
       <p role="status" className="text-xs text-muted">
         {matches.length === 0
-          ? "Aramayla eşleşen adres yok."
-          : `${formatCount(matches.length)} ${noun} içinden ${formatCount(shown.length)} tanesi gösteriliyor.`}
+          ? t("Aramayla eşleşen adres yok.")
+          : siteWide
+            ? t("{total} adres içinden {shown} tanesi gösteriliyor.", showing)
+            : t("{total} sayfa içinden {shown} tanesi gösteriliyor.", showing)}
       </p>
       {matches.length > 0 ? (
         <ul className="rounded-box border border-base-300/60 bg-base-100">
@@ -80,7 +91,9 @@ export function AffectedPageList({
             setVisible((value) => nextVisibleCount(value, matches.length))
           }
         >
-          Daha fazla göster ({formatCount(matches.length - shown.length)} kaldı)
+          {t("Daha fazla göster ({left} kaldı)", {
+            left: formatCount(matches.length - shown.length),
+          })}
         </button>
       ) : null}
     </section>
@@ -94,7 +107,7 @@ function PageRow({ page }: { page: AffectedPage }) {
       <UrlCell url={page.url} />
       {page.records.length > 1 ? (
         <span className="text-xs text-muted">
-          Bu sayfada {formatCount(page.records.length)} kayıt var
+          {t("Bu sayfada {count} kayıt var", { count: page.records.length })}
         </span>
       ) : null}
       {detailed.map((lines, index) => (

@@ -81,6 +81,26 @@ export function formatDuration(ms: number): string {
   return `${formatDecimal(ms / 1000)} ${getLocale() === "en" ? "s" : "sn"}`;
 }
 
+/**
+ * A running clock, from milliseconds: "4:07", or "1:04:07" past an hour.
+ * For time that ticks on screen (an audit in progress), where "4,1 dk"
+ * would jump a decimal every few seconds and read as noise.
+ */
+export function formatElapsed(ms: number): string {
+  const total = Math.max(0, Math.floor(ms / 1000));
+  const hours = Math.floor(total / 3600);
+  const minutes = Math.floor((total % 3600) / 60);
+  const seconds = String(total % 60).padStart(2, "0");
+  return hours > 0
+    ? `${hours}:${String(minutes).padStart(2, "0")}:${seconds}`
+    : `${minutes}:${seconds}`;
+}
+
+/** "16:07" - hour and minute of an epoch-ms instant, in the UI language. */
+export function formatTime(ms: number): string {
+  return dateFormat({ hour: "2-digit", minute: "2-digit" }).format(ms);
+}
+
 /** A byte size a person reads. Binary units, because that is what the tools report. */
 /**
  * Money, in the property's own currency.
@@ -366,6 +386,7 @@ export function formatRelativeTime(value: string): string {
   for (const [unit, ms] of RELATIVE_UNITS) {
     if (absolute >= ms) return formatter.format(Math.round(diff / ms), unit);
   }
+  // i18n-ignore: already split by locale on this line
   return getLocale() === "en" ? "just now" : "az önce";
 }
 

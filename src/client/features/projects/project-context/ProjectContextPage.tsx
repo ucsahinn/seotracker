@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Pencil } from "lucide-react";
-import { formatCount } from "@/client/lib/format";
+
 import { getProjectContext } from "@/serverFunctions/projectContext";
 import {
   PROJECT_CONTEXT_SECTION_KEYS,
@@ -29,6 +29,7 @@ import { PageHeader } from "@/client/components/PageShell";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { PageActions, RefreshButton } from "@/client/components/RefreshButton";
 import { SECTION_HINTS, SECTION_PLACEHOLDERS } from "./sectionCopy";
+import { t } from "@/shared/i18n";
 
 export function ProjectContextPage({
   projectId,
@@ -52,8 +53,10 @@ export function ProjectContextPage({
   // here: the switcher above the menu already shows it.
   const header = (
     <PageHeader
-      title="Proje bilgisi"
-      description="Ajanınızın bu proje hakkında bildikleri. Ajan işe başlamadan önce burayı okur, öğrendiklerini buraya yazar. Yanlış bir şey görürseniz düzeltin."
+      title={t("Proje bilgisi")}
+      description={t(
+        "Ajanınızın bu proje hakkında bildikleri. Ajan işe başlamadan önce burayı okur, öğrendiklerini buraya yazar. Yanlış bir şey görürseniz düzeltin.",
+      )}
       actions={
         contextQuery.data ? (
           <PageActions>
@@ -96,7 +99,7 @@ export function ProjectContextPage({
           <QueryErrorState
             error={contextQuery.error}
             onRetry={() => void contextQuery.refetch()}
-            title="Proje bilgisi yüklenemedi"
+            title={t("Proje bilgisi yüklenemedi")}
           />
         </div>
       </>
@@ -199,8 +202,9 @@ function ProseSections({
     <form onSubmit={handleSubmit} className="space-y-5">
       {missingSections.length === PROJECT_CONTEXT_SECTION_KEYS.length ? (
         <EmptyListNote>
-          Henüz boş. Kendiniz doldurabilir ya da ajanınıza sitenizden taslak
-          çıkarttırıp onaylayabilirsiniz.
+          {t(
+            "Henüz boş. Kendiniz doldurabilir ya da ajanınıza sitenizden taslak çıkarttırıp onaylayabilirsiniz.",
+          )}
         </EmptyListNote>
       ) : null}
 
@@ -213,17 +217,17 @@ function ProseSections({
                 htmlFor={`context-${key}`}
                 className="text-sm font-medium text-base-content"
               >
-                {PROJECT_CONTEXT_SECTION_LABELS[key]}
+                {t(PROJECT_CONTEXT_SECTION_LABELS[key])}
               </label>
               {section ? (
                 <Provenance by={section.updatedBy} at={section.updatedAt} />
               ) : (
                 <span className="badge badge-sm border-warning/30 bg-warning/10 text-[var(--ink-warning)]">
-                  Boş
+                  {t("Boş")}
                 </span>
               )}
             </div>
-            <p className="text-xs text-muted">{SECTION_HINTS[key]}</p>
+            <p className="text-xs text-muted">{t(SECTION_HINTS[key])}</p>
             <textarea
               id={`context-${key}`}
               value={draftOf(key)}
@@ -242,7 +246,7 @@ function ProseSections({
               }}
               rows={4}
               maxLength={PROSE_MAX_CHARS}
-              placeholder={SECTION_PLACEHOLDERS[key]}
+              placeholder={t(SECTION_PLACEHOLDERS[key])}
               className="textarea textarea-bordered w-full text-sm"
             />
           </div>
@@ -252,7 +256,7 @@ function ProseSections({
       <div className="flex items-center justify-end gap-3">
         {changed.length > 0 ? (
           <p className="text-xs text-muted" role="status">
-            {formatCount(changed.length)} bölüm kaydedilmedi
+            {t("{count} bölüm kaydedilmedi", { count: changed.length })}
           </p>
         ) : null}
         <button
@@ -260,7 +264,7 @@ function ProseSections({
           className="btn btn-primary btn-sm"
           disabled={update.isPending || changed.length === 0}
         >
-          Değişiklikleri kaydet
+          {t("Değişiklikleri kaydet")}
         </button>
       </div>
     </form>
@@ -280,14 +284,17 @@ function CustomSections({
   return (
     <section className="space-y-3">
       <SectionHeader
-        title="Özel bölümler"
-        hint="Bir ajanın not aldığı, yukarıdaki bölümlere sığmayan her şey."
+        title={t("Özel bölümler")}
+        hint={t(
+          "Bir ajanın not aldığı, yukarıdaki bölümlere sığmayan her şey.",
+        )}
       />
 
       {customSections.length === 0 ? (
         <EmptyListNote>
-          Burada henüz bir şey yok. Ajanlar başka yere sığmayan önemli bir şey
-          öğrendiklerinde buraya bir bölüm ekler.
+          {t(
+            "Burada henüz bir şey yok. Ajanlar başka yere sığmayan önemli bir şey öğrendiklerinde buraya bir bölüm ekler.",
+          )}
         </EmptyListNote>
       ) : (
         <div className="space-y-3">
@@ -321,13 +328,17 @@ function CustomSections({
                     <button
                       type="button"
                       className="btn btn-ghost btn-xs"
-                      aria-label={`${custom.title ?? custom.slug} bölümünü düzenle`}
+                      aria-label={t("{title} bölümünü düzenle", {
+                        title: custom.title ?? custom.slug,
+                      })}
                       onClick={() => setEditingSlug(custom.slug)}
                     >
                       <Pencil className="size-3.5" />
                     </button>
                     <ConfirmDeleteButton
-                      label={`${custom.title ?? custom.slug} bölümünü sil`}
+                      label={t("{title} bölümünü sil", {
+                        title: custom.title ?? custom.slug,
+                      })}
                       pending={update.isPending}
                       onConfirm={() =>
                         update.mutate([{ deleteCustomSection: custom.slug }])
@@ -377,7 +388,7 @@ function CustomSectionForm({
         placeholder={custom.slug}
         maxLength={120}
         className="input input-bordered input-sm w-full"
-        aria-label="Bölüm başlığı"
+        aria-label={t("Bölüm başlığı")}
       />
       <textarea
         value={content}
@@ -385,7 +396,7 @@ function CustomSectionForm({
         rows={5}
         maxLength={PROSE_MAX_CHARS}
         className="textarea textarea-bordered w-full text-sm"
-        aria-label="Bölüm içeriği"
+        aria-label={t("Bölüm içeriği")}
       />
       <FormActions
         pending={pending}

@@ -36,11 +36,13 @@ import { formatCreatedBy } from "@/client/features/reports/shared";
 import { formatBytes, formatDateTime } from "@/client/lib/format";
 import type { ReportListItem } from "@/serverFunctions/reports";
 import { REPORT_APP_LIST_LIMIT } from "@/types/schemas/reports";
+import { t } from "@/shared/i18n";
 
 const PAGE_SIZES = [25, 50, 100] as const;
 
 type SortKey = "title" | "kind" | "createdAt" | "sizeBytes";
 
+// Labels are Turkish source text, translated where they render.
 const FILTERS: { key: ReportFilter; label: string; icon: LucideIcon }[] = [
   { key: "all", label: "Tümü", icon: List },
   { key: "recent", label: "Son 7 gün", icon: Clock },
@@ -87,18 +89,20 @@ export function ReportsList({
     return (
       <EmptyState
         icon={FileText}
-        title="Henüz rapor yok"
-        description="Rapor iki yoldan alınır: ajanınıza yazdırın ya da Site denetimi ekranından indirin."
+        title={t("Henüz rapor yok")}
+        description={t(
+          "Rapor iki yoldan alınır: ajanınıza yazdırın ya da Site denetimi ekranından indirin.",
+        )}
         action={
           <div className="flex flex-wrap items-center justify-center gap-4">
             <CopyButton
               primary
               value={reportRequestPrompt(projectId)}
-              label="Rapor komutunu kopyala"
-              successMessage="Komut kopyalandı. Ajanınıza yapıştırın"
+              label={t("Rapor komutunu kopyala")}
+              successMessage={t("Komut kopyalandı. Ajanınıza yapıştırın")}
             />
             <Link to="/ai" className="link text-sm">
-              Ajan kurulumunu aç
+              {t("Ajan kurulumunu aç")}
             </Link>
           </div>
         }
@@ -162,7 +166,7 @@ export function ReportsList({
           tabIndex={-1}
           className="flex flex-wrap gap-2"
           role="group"
-          aria-label="Filtre"
+          aria-label={t("Filtre")}
         >
           {FILTERS.map(({ key, label, icon: Icon }) => (
             <button
@@ -181,7 +185,7 @@ export function ReportsList({
               }}
             >
               <Icon aria-hidden className="size-4" />
-              {label}
+              {t(label)}
               <span className="tabular-nums opacity-70">{counts[key]}</span>
             </button>
           ))}
@@ -194,8 +198,8 @@ export function ReportsList({
           <input
             type="search"
             className="input input-bordered input-sm w-full pl-8"
-            placeholder="Raporlarda ara"
-            aria-label="Raporlarda ara"
+            placeholder={t("Raporlarda ara")}
+            aria-label={t("Raporlarda ara")}
             value={query}
             onChange={(event) => {
               setQuery(event.target.value);
@@ -210,15 +214,17 @@ export function ReportsList({
           <EmptyState
             compact
             icon={FileText}
-            title="Aramanıza uyan rapor yok"
-            description="Aramayı, filtreyi ya da seçili türü kaldırarak tüm raporları görün."
+            title={t("Aramanıza uyan rapor yok")}
+            description={t(
+              "Aramayı, filtreyi ya da seçili türü kaldırarak tüm raporları görün.",
+            )}
             action={
               <button
                 type="button"
                 className="btn btn-ghost btn-sm"
                 onClick={clearAll}
               >
-                Filtreleri temizle
+                {t("Filtreleri temizle")}
               </button>
             }
           />
@@ -227,12 +233,16 @@ export function ReportsList({
             <table className="table">
               <thead>
                 <tr>
-                  {header("title", "Rapor")}
-                  {header("kind", "Tür", "hidden md:table-cell")}
-                  {header("createdAt", "Oluşturuldu", "hidden md:table-cell")}
-                  {header("sizeBytes", "Boyut", "hidden lg:table-cell")}
+                  {header("title", t("Rapor"))}
+                  {header("kind", t("Tür"), "hidden md:table-cell")}
+                  {header(
+                    "createdAt",
+                    t("Oluşturuldu"),
+                    "hidden md:table-cell",
+                  )}
+                  {header("sizeBytes", t("Boyut"), "hidden lg:table-cell")}
                   <th>
-                    <span className="sr-only">İşlemler</span>
+                    <span className="sr-only">{t("İşlemler")}</span>
                   </th>
                 </tr>
               </thead>
@@ -287,10 +297,12 @@ export function ReportsList({
                           />
                           <RowActions
                             triggerClassName="btn btn-ghost btn-sm btn-square"
-                            label={`${report.title} için işlemler`}
+                            label={t("{title} için işlemler", {
+                              title: report.title,
+                            })}
                             actions={[
                               {
-                                label: "Sil",
+                                label: t("Sil"),
                                 icon: Trash2,
                                 destructive: true,
                                 onSelect: () => onDelete(report),
@@ -324,7 +336,9 @@ export function ReportsList({
       </div>
       {reports.length === REPORT_APP_LIST_LIMIT ? (
         <p className="text-xs text-muted">
-          En son {REPORT_APP_LIST_LIMIT} rapor gösteriliyor.
+          {t("En son {count} rapor gösteriliyor.", {
+            count: REPORT_APP_LIST_LIMIT,
+          })}
         </p>
       ) : null}
 

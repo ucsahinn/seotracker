@@ -9,6 +9,8 @@ import {
 import { Sidebar } from "@/client/components/Sidebar";
 import { getProjects } from "@/serverFunctions/projects";
 import { getLastProjectId } from "@/client/lib/active-project";
+import { t } from "@/shared/i18n";
+import { useBackgroundNotifications } from "@/client/features/notifications/useBackgroundNotifications";
 
 export function AuthenticatedAppLayout({
   children,
@@ -20,6 +22,7 @@ export function AuthenticatedAppLayout({
   banner?: React.ReactNode;
 }) {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
+  useBackgroundNotifications();
   const drawerOpener = React.useRef<HTMLButtonElement | null>(null);
   // On non-project pages (e.g. /settings) there's no projectId in the URL, so
   // derive one for the nav/switcher: prefer the last-visited project, else the
@@ -54,7 +57,7 @@ export function AuthenticatedAppLayout({
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:left-2 focus:top-2 focus:z-[1100] focus:rounded-field focus:bg-base-100 focus:px-3 focus:py-2 focus:text-sm focus:font-medium focus:text-base-content focus:shadow-lg"
       >
-        Ana içeriğe geç
+        {t("Ana içeriğe geç")}
       </a>
       <div className="hidden shrink-0 md:block">
         <Sidebar projectId={sidebarProjectId} />
@@ -109,7 +112,7 @@ function MobileTopBar({
         ref={openerRef}
         type="button"
         className="btn btn-square btn-ghost btn-sm"
-        aria-label="Kenar çubuğunu aç"
+        aria-label={t("Kenar çubuğunu aç")}
         aria-controls={MOBILE_DRAWER_ID}
         aria-expanded={drawerOpen}
         onClick={onOpenDrawer}

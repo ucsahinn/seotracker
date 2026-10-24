@@ -17,3 +17,16 @@ describe("useFlashOnChange", () => {
     expect(result.current).toEqual({ key: 1, className: "flash" });
   });
 });
+
+describe("useFlashOnChange on first arrival", () => {
+  it("does not flash when a value replaces null", () => {
+    const { result, rerender } = renderHook(
+      ({ value }: { value: string | null }) => useFlashOnChange(value),
+      { initialProps: { value: null as string | null } },
+    );
+    rerender({ value: "a" });
+    expect(result.current.className).toBe("");
+    rerender({ value: "b" });
+    expect(result.current.className).toBe("flash");
+  });
+});

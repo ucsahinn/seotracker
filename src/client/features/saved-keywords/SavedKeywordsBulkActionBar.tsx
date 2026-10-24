@@ -4,6 +4,7 @@ import {
   TableBulkActionButton,
   TableBulkExportMenu,
 } from "@/client/components/table/TableBulkActionBar";
+import { t } from "@/shared/i18n";
 
 export function SavedKeywordsBulkActionBar({
   selectedCount,
@@ -38,24 +39,24 @@ export function SavedKeywordsBulkActionBar({
               icon={<Tags className="size-3.5" />}
               onClick={onOpenTags}
             >
-              Etiketle
+              {t("Etiketle")}
             </TableBulkActionButton>
 
             <TableBulkExportMenu
               busy={exportBusy}
               actions={[
                 {
-                  label: "Kelimeleri kopyala",
+                  label: t("Kelimeleri kopyala"),
                   icon: <Copy className="size-4" />,
                   onClick: onCopy,
                 },
                 {
-                  label: "E-Tablolar'a aktar",
+                  label: t("E-Tablolar'a aktar"),
                   icon: <Sheet className="size-4" />,
                   onClick: onExportSheets,
                 },
                 {
-                  label: "CSV indir",
+                  label: t("CSV indir"),
                   icon: <FileDown className="size-4" />,
                   onClick: onExportCsv,
                 },
@@ -69,7 +70,7 @@ export function SavedKeywordsBulkActionBar({
               onClick={onDelete}
               variant="danger"
             >
-              Sil
+              {t("Sil")}
             </TableBulkActionButton>
           </div>
         </>

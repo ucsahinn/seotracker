@@ -12,6 +12,7 @@ import {
   hasServiceAccount,
 } from "@/server/lib/googleServiceAccountToken";
 import { GA4_OAUTH_PROVIDER_ID, GA4_SERVICE_ACCOUNT_SCOPE } from "@/shared/ga4";
+import { t } from "@/shared/i18n";
 
 const GA4_ADMIN_API_BASE = "https://analyticsadmin.googleapis.com/v1beta";
 const GA4_ADMIN_ALPHA_API_BASE =
@@ -142,7 +143,7 @@ async function getGa4AccessToken(opts: {
       return await getServiceAccountToken(GA4_SERVICE_ACCOUNT_SCOPE);
     } catch (error) {
       throw new Ga4TokenError(
-        "Hizmet hesabı Google Analytics için erişim anahtarı alamadı.",
+        t("Hizmet hesabı Google Analytics için erişim anahtarı alamadı."),
         error,
       );
     }
@@ -161,13 +162,17 @@ async function getGa4AccessToken(opts: {
     });
   } catch (error) {
     throw new Ga4TokenError(
-      "Google Analytics erişim anahtarı alınamadı (yetki iptal edilmiş ya da süresi dolmuş olabilir).",
+      t(
+        "Google Analytics erişim anahtarı alınamadı (yetki iptal edilmiş ya da süresi dolmuş olabilir).",
+      ),
       error,
     );
   }
   if (!result?.accessToken) {
     throw new Ga4TokenError(
-      "Google Analytics erişim anahtarı döndürmedi (yetki iptal edilmiş ya da süresi dolmuş olabilir).",
+      t(
+        "Google Analytics erişim anahtarı döndürmedi (yetki iptal edilmiş ya da süresi dolmuş olabilir).",
+      ),
     );
   }
   return result.accessToken;

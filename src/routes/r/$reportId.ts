@@ -4,6 +4,7 @@ import { ProjectRepository } from "@/server/features/projects/repositories/Proje
 import { ReportRepository } from "@/server/features/reports/repositories/ReportRepository";
 import { asAppError } from "@/server/lib/errors";
 import { reportDocumentResponse, textResponse } from "@/shared/report-sandbox";
+import { t } from "@/shared/i18n";
 
 // The report viewer: the stored document, served byte for byte from the app's
 // own origin and locked down by REPORT_CSP. A raw-Response route, so no React
@@ -15,7 +16,9 @@ import { reportDocumentResponse, textResponse } from "@/shared/report-sandbox";
 // it leaks nothing and "does not exist" would send them hunting.
 const NOT_FOUND_BODY = "Bu rapor yok ya da erişiminiz bulunmuyor.";
 
-const reportNotFound = () => textResponse(NOT_FOUND_BODY, 404);
+// The server sets the request's locale before this runs, so t() answers in
+// the reader's language; tests run in Turkish and compare against the source.
+const reportNotFound = () => textResponse(t(NOT_FOUND_BODY), 404);
 
 async function handleReportRequest(
   reportId: string,
@@ -29,7 +32,7 @@ async function handleReportRequest(
     // config or session-store failure must not masquerade as "you are logged
     // out", and the self-hosted modes have no sign-in page to complete.
     if (asAppError(error)?.code !== "UNAUTHENTICATED") throw error;
-    return textResponse("Bu raporu okumak için oturum açın.", 401);
+    return textResponse(t("Bu raporu okumak için oturum açın."), 401);
   }
 
   // Reads go through the repository rather than ReportService: the service's
@@ -54,7 +57,10 @@ async function handleReportRequest(
     );
     if (!archived) return reportNotFound();
     return textResponse(
-      `Bu proje arşivde, bu yüzden raporları gizli. Okumak için ${archived.name} projesini geri alın.`,
+      t(
+        "Bu proje arşivde, bu yüzden raporları gizli. Okumak için {name} projesini geri alın.",
+        { name: archived.name },
+      ),
       404,
     );
   }

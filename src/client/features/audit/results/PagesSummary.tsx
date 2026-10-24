@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { formatCount, formatDuration } from "@/client/lib/format";
+import { formatDuration } from "@/client/lib/format";
 import {
   DistributionBars,
   type DistributionRow,
@@ -15,6 +15,7 @@ import {
   unlinkedCount,
   type PagesBucket,
 } from "@/client/features/audit/results/pagesBuckets";
+import { t } from "@/shared/i18n";
 
 const STATUS_COLOR: Record<string, string> = {
   ok: "var(--color-success)",
@@ -58,8 +59,8 @@ export function PagesSummary({
     buckets.map(
       (bucket): DistributionRow => ({
         key: bucket.key,
-        label: bucket.label,
-        hint: bucket.hint || undefined,
+        label: t(bucket.label),
+        hint: bucket.hint ? t(bucket.hint) : undefined,
         count: bucket.count,
         color: colorOf(bucket.key),
         active: bucket.matches(filters),
@@ -75,12 +76,15 @@ export function PagesSummary({
     <div className="grid gap-3 lg:grid-cols-2">
       <section className="rounded-box border border-base-300 bg-base-100 px-3 py-3">
         <h3 className="px-2 text-sm font-medium">
-          Sayfalar nasıl yanıt verdi?
+          {t("Sayfalar nasıl yanıt verdi?")}
         </h3>
         <p className="mb-2 px-2 text-xs text-muted">
           {averageMs === null
-            ? "Bir çubuğa tıklayarak tabloyu daraltın."
-            : `Ortalama yanıt süresi ${formatDuration(averageMs)}. Bir çubuğa tıklayarak tabloyu daraltın.`}
+            ? t("Bir çubuğa tıklayarak tabloyu daraltın.")
+            : t(
+                "Ortalama yanıt süresi {duration}. Bir çubuğa tıklayarak tabloyu daraltın.",
+                { duration: formatDuration(averageMs) },
+              )}
         </p>
         <DistributionBars
           rows={toRows(
@@ -88,25 +92,32 @@ export function PagesSummary({
             (key) => STATUS_COLOR[key] ?? "var(--color-base-300)",
           )}
           onSelect={select(status)}
-          summary={`${formatCount(pages.length)} sayfanın yanıt durumuna göre dağılımı.`}
+          summary={t("{count} sayfanın yanıt durumuna göre dağılımı.", {
+            count: pages.length,
+          })}
         />
       </section>
       <section className="rounded-box border border-base-300 bg-base-100 px-3 py-3">
         <h3 className="px-2 text-sm font-medium">
-          Ana sayfadan kaç tık uzakta?
+          {t("Ana sayfadan kaç tık uzakta?")}
         </h3>
         <p className="mb-2 px-2 text-xs text-muted">
           {unlinked > 0
-            ? `${formatCount(unlinked)} sayfaya hiçbir bağlantı verilmemiş, bu yüzden çubuklarda yok.`
-            : "Derindeki sayfaları Google geç bulur ve daha az değer verir."}
+            ? t(
+                "{count} sayfaya hiçbir bağlantı verilmemiş, bu yüzden çubuklarda yok.",
+                { count: unlinked },
+              )
+            : t("Derindeki sayfaları Google geç bulur ve daha az değer verir.")}
         </p>
         <DistributionBars
           rows={toRows(depth, () => "var(--color-primary)")}
           onSelect={select(depth)}
           summary={
             deepest
-              ? `En derin sayfalar ${deepest.label} uzaklığında.`
-              : "Derinlik bilgisi yok."
+              ? t("En derin sayfalar {depth} uzaklığında.", {
+                  depth: t(deepest.label),
+                })
+              : t("Derinlik bilgisi yok.")
           }
         />
       </section>

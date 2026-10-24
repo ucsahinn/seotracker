@@ -13,6 +13,7 @@ import {
   formatRelativeTime,
 } from "@/client/lib/format";
 import type { ReportListItem } from "@/serverFunctions/reports";
+import { t } from "@/shared/i18n";
 
 /** Placeholder shaped like the summary while the list loads. */
 export function ReportsSummarySkeleton() {
@@ -53,18 +54,18 @@ export function ReportsSummary({
     <Reveal className="space-y-4">
       <MetricRow>
         <MetricTile
-          label="Rapor"
+          label={t("Rapor")}
           value={formatCount(counts.all)}
           animateTo={{ value: counts.all, format: formatCount }}
         />
         <MetricTile
-          label="Son 7 gün"
+          label={t("Son 7 gün")}
           value={formatCount(counts.recent)}
           animateTo={{ value: counts.recent, format: formatCount }}
-          hint="Bu sürede güncellenen"
+          hint={t("Bu sürede güncellenen")}
         />
         <MetricTile
-          label="Son güncelleme"
+          label={t("Son güncelleme")}
           value={latest ? formatRelativeTime(latest.updatedAt) : null}
           flashKey={latest?.updatedAt ?? null}
           hint={
@@ -74,18 +75,22 @@ export function ReportsSummary({
                 params={{ projectId, reportId: latest.id }}
                 className="link link-hover"
               >
-                {formatDateTime(latest.updatedAt)} · raporu aç
+                {t("{date} · raporu aç", {
+                  date: formatDateTime(latest.updatedAt),
+                })}
               </Link>
             ) : undefined
           }
         />
       </MetricRow>
       <DonutCard
-        title="Türe göre raporlar"
-        description="Bir türe tıklayarak listeyi o türdeki raporlarla sınırlayın."
+        title={t("Türe göre raporlar")}
+        description={t(
+          "Bir türe tıklayarak listeyi o türdeki raporlarla sınırlayın.",
+        )}
         segments={segments}
-        totalLabel="rapor"
-        summary={donutSummary(segments, "rapor")}
+        totalLabel={t("rapor")}
+        summary={donutSummary(segments, t("rapor"))}
         selectedKey={selectedKind}
         onSelect={onSelectKind}
       />

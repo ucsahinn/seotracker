@@ -5,14 +5,14 @@ kind: nasil-yapilir
 updated: 2026-10-23
 ---
 
-The app's interface is in Turkish. This guide gives every button and screen name in Turkish, with its English meaning in brackets.
+The app's interface comes in English and Turkish. This guide uses the English names; to switch, go to **Settings → Appearance → Language**. The Windows tray menu is Turkish only, so there the guide gives the Turkish name with its English meaning in brackets.
 
 This guide installs the app on your computer and opens it in the browser. The install takes two minutes. It installs only for your own user account and needs no administrator rights, except once if the Visual C++ component is missing.
 
 ## What you need
 
 - Windows 10 or 11 (64-bit).
-- About 350 MB of free space. The installer file is 81 MB and the installed app is 290 MB.
+- About 400 MB of free space. The installer file is 86 MB and the installed app is 313 MB.
 - A browser such as Edge, Chrome or Firefox.
 - You do not need Docker, Node, a terminal (command window) or administrator rights.
 - The app's engine needs Microsoft's Visual C++ package. If your computer does not have it, the installer installs it for you and asks for administrator permission once.
@@ -132,7 +132,7 @@ When the number changes, also update the two redirect addresses at Google with t
 
 ## Check
 
-- When you hover over the taskbar icon (if it is not visible, click the ^ arrow on the taskbar), it should read "seowatcher X.Y.Z: Çalışıyor: http://127.0.0.1:3001/" (seowatcher 2.3.7: Running: http://127.0.0.1:3001/). The version number is the one you installed.
+- When you hover over the taskbar icon (if it is not visible, click the ^ arrow on the taskbar), it should read "seowatcher X.Y.Z: Çalışıyor: http://127.0.0.1:3001/" (seowatcher 0.5.0 Alpha: Running: http://127.0.0.1:3001/). The version number is the one you installed.
 - In the browser, the address `http://127.0.0.1:3001/api/health` should show a text that starts with "status":"ok".
 - On the **Yardım** (Help) screen, the "Kurulumunuzun durumu" (Your setup status) card should say "Her şey yolunda." (Everything is fine.). Before Google is connected, the "Google girişi" (Google sign-in) row asks for attention. This is normal.
 

@@ -1,5 +1,6 @@
 import { ArrowDown, ArrowUp } from "lucide-react";
 import { HeaderHelpLabel } from "@/client/features/saved-keywords/components";
+import { t } from "@/shared/i18n";
 
 type SortableColumn = {
   getIsSorted: () => false | "asc" | "desc";
@@ -33,10 +34,10 @@ export function SortableHeader({
       /* Direction lives in `aria-sort` on the cell; this names the action. */
       aria-label={
         sorted === "asc"
-          ? `${label} sütununa göre sırala (şu an artan)`
+          ? t("{label} sütununa göre sırala (şu an artan)", { label })
           : sorted === "desc"
-            ? `${label} sütununa göre sırala (şu an azalan)`
-            : `${label} sütununa göre sırala`
+            ? t("{label} sütununa göre sırala (şu an azalan)", { label })
+            : t("{label} sütununa göre sırala", { label })
       }
     >
       {helpText ? <HeaderHelpLabel label={label} helpText={helpText} /> : label}

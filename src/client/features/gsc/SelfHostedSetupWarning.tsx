@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { SafeExternalLink } from "@/client/components/SafeExternalLink";
 import { GSC_SELF_HOSTED_SETUP_DOCS_URL } from "@/shared/gsc";
+import { t } from "@/shared/i18n";
 
 /**
  * Shown in self-hosted deployments that haven't set GOOGLE_CLIENT_ID/SECRET yet
@@ -12,19 +13,20 @@ export function SelfHostedSetupWarning() {
   return (
     <div className="space-y-4 text-sm">
       <div className="space-y-1">
-        <p className="font-medium">Google erişim anahtarı eksik</p>
+        <p className="font-medium">{t("Google erişim anahtarı eksik")}</p>
         <p className="text-muted">
-          Search Console&apos;u bağlamak için önce Ayarlar&apos;a Google erişim
-          anahtarınızı girin.
+          {t(
+            "Search Console'u bağlamak için önce Ayarlar'a Google erişim anahtarınızı girin.",
+          )}
         </p>
       </div>
       <div className="flex flex-wrap items-center gap-4">
         <Link to="/settings" hash="google" className="btn btn-primary btn-sm">
-          Ayarlar&apos;ı aç
+          {t("Ayarlar'ı aç")}
         </Link>
         <SafeExternalLink
           url={GSC_SELF_HOSTED_SETUP_DOCS_URL}
-          label="Kurulum kılavuzunu aç"
+          label={t("Kurulum kılavuzunu aç")}
           className="inline-flex items-center gap-1 font-medium underline underline-offset-2"
         />
       </div>

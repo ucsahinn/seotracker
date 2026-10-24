@@ -9,7 +9,9 @@ import type { LucideIcon } from "lucide-react";
 import { EmptyState } from "@/client/components/EmptyState";
 import { SafeExternalLink } from "@/client/components/SafeExternalLink";
 import type { Ga4ReportKindName } from "@/shared/ga4-reports";
+import { t } from "@/shared/i18n";
 
+/* Turkish source strings, translated by t() where they render. */
 type Copy = {
   icon: LucideIcon;
   title: string;
@@ -83,11 +85,13 @@ export function ReportEmptyState({
     return (
       <EmptyState
         icon={BarChart3}
-        title="Bu dönemde veri yok"
+        title={t("Bu dönemde veri yok")}
         description={
           emptyReason
-            ? `Google hiç satır vermedi (${emptyReason}).`
-            : "Google bu aralık için satır vermedi. Mülkü yeni bağladıysanız veri birkaç gün sonra görünür."
+            ? t("Google hiç satır vermedi ({reason}).", { reason: emptyReason })
+            : t(
+                "Google bu aralık için satır vermedi. Mülkü yeni bağladıysanız veri birkaç gün sonra görünür.",
+              )
         }
       />
     );
@@ -96,16 +100,20 @@ export function ReportEmptyState({
   return (
     <EmptyState
       icon={copy.icon}
-      title={copy.title}
-      description={
-        <>
-          {narrowedByChannel
-            ? "Şu an yalnızca Google organik aramadan gelen ziyaretler sayılıyor; tüm trafiğe bakmak sonucu değiştirebilir. "
-            : null}
-          {copy.because}
-          {emptyReason ? ` Google'ın verdiği not: ${emptyReason}.` : ""}
-        </>
-      }
+      title={t(copy.title)}
+      description={[
+        narrowedByChannel
+          ? t(
+              "Şu an yalnızca Google organik aramadan gelen ziyaretler sayılıyor; tüm trafiğe bakmak sonucu değiştirebilir.",
+            )
+          : null,
+        t(copy.because),
+        emptyReason
+          ? t("Google'ın verdiği not: {reason}.", { reason: emptyReason })
+          : null,
+      ]
+        .filter(Boolean)
+        .join(" ")}
       action={
         <div className="flex flex-wrap items-center justify-center gap-2">
           {narrowedByChannel ? (
@@ -114,7 +122,7 @@ export function ReportEmptyState({
               className="btn btn-sm"
               onClick={onShowAllTraffic}
             >
-              Tüm trafiğe bak
+              {t("Tüm trafiğe bak")}
             </button>
           ) : null}
           {onOpenHealth ? (
@@ -124,12 +132,12 @@ export function ReportEmptyState({
               onClick={onOpenHealth}
             >
               <Activity aria-hidden className="size-3.5" />
-              Ölçüm durumunu kontrol et
+              {t("Ölçüm durumunu kontrol et")}
             </button>
           ) : null}
           <SafeExternalLink
             url={copy.help.url}
-            label={copy.help.label}
+            label={t(copy.help.label)}
             className="link inline-flex items-center gap-1 text-sm"
           />
         </div>

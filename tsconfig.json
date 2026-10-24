@@ -1,6 +1,12 @@
 {
   "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["badseo/**/*"],
+  "exclude": [
+    "badseo/**/*",
+    "node_modules",
+    "dist",
+    "packaging/windows/out",
+    ".playwright-mcp"
+  ],
   "compilerOptions": {
     "strict": true,
     "esModuleInterop": true,

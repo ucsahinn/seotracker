@@ -1,3 +1,4 @@
+import { t } from "@/shared/i18n";
 import {
   CircleSlash,
   MousePointerClick,
@@ -22,7 +23,8 @@ type Row = {
 
 type ChipDef = { label: string; icon: LucideIcon; hint: string };
 
-/** Only the ids a tab offers need an entry; the rest are bar-only filters. */
+/** Only the ids a tab offers need an entry; the rest are bar-only filters.
+ *  Label and hint stay Turkish here and go through t() at render. */
 const CHIPS: Partial<Record<QuickFilterId, ChipDef>> = {
   top10: {
     label: "İlk 10'da",
@@ -37,7 +39,7 @@ const CHIPS: Partial<Record<QuickFilterId, ChipDef>> = {
   lowCtr: {
     label: "Tıklama oranı düşük",
     icon: MousePointerClick,
-    hint: `İlk sayfada olup ${formatCount(LOW_CTR_MIN_IMPRESSIONS)} veya daha fazla gösterim alan ve tıklama oranı ${formatPercent(LOW_CTR_THRESHOLD, 0)} altında kalan satırlar. Başlığı ve açıklamayı iyileştirmeye değer.`,
+    hint: "İlk sayfada olup {impressions} veya daha fazla gösterim alan ve tıklama oranı {ctr} altında kalan satırlar. Başlığı ve açıklamayı iyileştirmeye değer.",
   },
   hasClicks: {
     label: "Tıklanan",
@@ -74,11 +76,23 @@ export function QuickFilterBar({
 }) {
   const chips = ids.flatMap((id) => {
     const def = CHIPS[id];
-    return def ? [{ id, ...def, count: countQuickFilter(rows, id) }] : [];
+    if (!def) return [];
+    return [
+      {
+        id,
+        icon: def.icon,
+        label: t(def.label),
+        hint: t(def.hint, {
+          impressions: formatCount(LOW_CTR_MIN_IMPRESSIONS),
+          ctr: formatPercent(LOW_CTR_THRESHOLD, 0),
+        }),
+        count: countQuickFilter(rows, id),
+      },
+    ];
   });
   return (
     <FilterChips<QuickFilterId>
-      label="Hızlı filtreler"
+      label={t("Hızlı filtreler")}
       active={active}
       onChange={onChange}
       chips={chips}

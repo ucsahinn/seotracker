@@ -4,7 +4,7 @@
  *   node scripts/build-site-home.mjs extract   # list every translatable string
  *   node scripts/build-site-home.mjs build     # write site/en/index.html
  *
- * `site/index.html` is the only hand-written home page. Its markup, CSS and
+ * `scripts/site-home.tr.html` is the hand-written home template. Its markup, CSS and
  * scripts are shared by both languages; only the words differ. `extract`
  * collects every text segment and attribute of the Turkish page into
  * `scripts/site-home.en.json` (keeping translations already there), and
@@ -19,6 +19,8 @@
  * ⟦svgN⟧ tokens only matter if that ever changes.
  */
 import fs from "node:fs";
+import { compactSiteHtml } from "./site-html.mjs";
+import { createHash } from "node:crypto";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
@@ -31,7 +33,70 @@ import {
 } from "./site-locales.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const srcFile = path.join(root, "site", "index.html");
+const srcFile = path.join(root, "scripts", "site-home.tr.html");
+
+let assetUrls = {};
+
+async function buildAssets() {
+  const { transformWithEsbuild } = await import("vite");
+  const directory = path.join(root, "site/assets/generated");
+  fs.mkdirSync(directory, { recursive: true });
+  for (const [name, loader] of [
+    ["home", "css"],
+    ["site", "js"],
+    ["consent", "js"],
+  ]) {
+    const source = fs.readFileSync(
+      path.join(root, `site/assets/${name}.${loader}`),
+      "utf8",
+    );
+    const { code } = await transformWithEsbuild(source, `${name}.${loader}`, {
+      loader,
+      minify: true,
+      target: "es2020",
+      legalComments: "none",
+    });
+    const filename = `${name}.min.${loader}`;
+    fs.writeFileSync(path.join(directory, filename), code);
+    assetUrls[name] =
+      `/assets/generated/${filename}?v=${createHash("sha256").update(code).digest("hex").slice(0, 12)}`;
+  }
+}
+
+// Consent is visible on first paint; inline its small shared stylesheet to
+// avoid a render-blocking request. The CSS file remains the canonical source.
+function homeSource() {
+  const html = fs.readFileSync(srcFile, "utf8");
+  const css = fs.readFileSync(
+    path.join(root, "site/assets/consent.css"),
+    "utf8",
+  );
+  let page = html;
+  for (const [name, url] of Object.entries(assetUrls)) {
+    page = page.replace(
+      new RegExp(
+        `(src|href)="/assets/(?:generated/)?${name}(?:\\.min)?\\.(?:css|js)(?:\\?[^"\\s]*)?"`,
+        "g",
+      ),
+      (_, attribute) => `${attribute}="${url}"`,
+    );
+  }
+  if (assetUrls.home) {
+    const css = fs.readFileSync(
+      path.join(root, "site/assets/generated/home.min.css"),
+      "utf8",
+    );
+    page = page.replace(
+      /(?:<!-- prettier-ignore -->\s*)?(?:<link\s+rel="stylesheet"\s+href="\/assets\/generated\/home\.min\.css[^"]*"\s*\/>|<style data-home-css>[\s\S]*?<\/style>)/,
+      `<!-- prettier-ignore -->\n<style data-home-css>${css.trim()}</style>`,
+    );
+  }
+  return page.replace(
+    /<link rel="stylesheet" href="\/assets\/consent\.css[^"\n]*"\s*\/>|<style data-consent-css>[\s\S]*?<\/style>/,
+    `<style data-consent-css>${css}</style>`,
+  );
+}
+
 // Which edition: `node scripts/build-site-home.mjs extract de` writes the
 // German table; `build` without a language builds every table that is filled.
 const langArg = process.argv[3];
@@ -188,7 +253,7 @@ const EN_MONTHS = [
   "December",
 ];
 const RELEASE_LINE = new RegExp(
-  `^(\\d+\\.\\d+\\.\\d+), (\\d{1,2}) (${TR_MONTHS.join("|")}) (\\d{4})$`,
+  `^(\\d+\\.\\d+\\.\\d+ Alpha), (\\d{1,2}) (${TR_MONTHS.join("|")}) (\\d{4})$`,
 );
 function byRule(key, locale) {
   const m = RELEASE_LINE.exec(key);
@@ -403,7 +468,7 @@ function readMap(lang) {
 }
 
 function extract(lang) {
-  const html = dropNewTab(cutLangBlocks(fs.readFileSync(srcFile, "utf8")));
+  const html = dropNewTab(cutLangBlocks(homeSource()));
   const keys = collect(html);
   const old = readMap(lang);
   const next = {};
@@ -421,7 +486,7 @@ function extract(lang) {
 
 function build(locale, { strict = true } = {}) {
   const lang = locale.lang;
-  const html = dropNewTab(cutLangBlocks(fs.readFileSync(srcFile, "utf8")));
+  const html = dropNewTab(cutLangBlocks(homeSource()));
   const map = readMap(lang);
   const outFile = outFileOf(lang);
   const missing = [];
@@ -459,9 +524,9 @@ function build(locale, { strict = true } = {}) {
       const open = /^<script[^>]*>/.exec(tok)[0];
       const data = JSON.parse(tok.slice(open.length, -"</script>".length));
       const translated = mapJson(data, (s, key, parent) => {
-        // The site entity lists every edition and the app speaks Turkish in
-        // every edition (its interface is Turkish); the page and its FAQ are
-        // in this edition's language.
+        // The site lists every edition and the app keeps its supported UI
+        // languages (Turkish and English); the page and its FAQ use this
+        // edition's language.
         if (key === "inLanguage")
           return /^(WebSite|SoftwareApplication)$/.test(parent?.["@type"])
             ? s
@@ -538,6 +603,8 @@ function build(locale, { strict = true } = {}) {
     )
     .replace(/content="https:\/\/seowatcher\.io\/"/g, `content="${home}"`);
   page = rewriteLinks(page, locale);
+  // Each edition has its own release feed (build-site-docs.mjs writes it).
+  page = page.replace('href="/feed.xml"', `href="${locale.base}/feed.xml"`);
   // Each edition shares a card with its own words on it.
   page = page.replaceAll(
     "https://seowatcher.io/assets/og.png",
@@ -564,7 +631,7 @@ function build(locale, { strict = true } = {}) {
         `Turkish leftover in site/${lang}/index.html: ${leftover}`,
       );
   fs.mkdirSync(path.dirname(outFile), { recursive: true });
-  fs.writeFileSync(outFile, page);
+  fs.writeFileSync(outFile, compactSiteHtml(page));
   console.log(`site/${lang}/index.html written (${segments.length} segments)`);
   return true;
 }
@@ -588,12 +655,16 @@ async function refreshTurkishLangBlocks() {
     addNewTab(putLangBlocks(dropNewTab(cutLangBlocks(src)), locales.tr)),
     { ...options, filepath: srcFile },
   );
-  if (next === src) return;
-  fs.writeFileSync(srcFile, next);
+  if (next !== src) fs.writeFileSync(srcFile, next);
+  fs.writeFileSync(
+    path.join(root, "site/index.html"),
+    compactSiteHtml(homeSource()),
+  );
   console.log("site/index.html language menu refreshed");
 }
 
 const mode = process.argv[2];
+if (mode === "build") await buildAssets();
 if (mode === "extract") extract(langArg || "en");
 else if (mode === "build" && langArg) {
   build(locales[langArg]);

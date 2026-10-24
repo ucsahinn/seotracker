@@ -3,7 +3,9 @@ import {
   COVERAGE_BUCKETS,
   type CoverageBucket,
 } from "@/client/features/audit/results/coverageBuckets";
+import { t } from "@/shared/i18n";
 
+// Turkish source labels; t() runs where they render.
 const BUCKET: Record<
   CoverageBucket,
   { label: string; hint: string; color: string }
@@ -38,15 +40,19 @@ export function CoverageVerdictDonut({
   const segments = COVERAGE_BUCKETS.map((key) => ({
     key,
     value: counts[key],
-    ...BUCKET[key],
+    color: BUCKET[key].color,
+    label: t(BUCKET[key].label),
+    hint: t(BUCKET[key].hint),
   }));
   return (
     <DonutCard
-      title="Google bu sayfalarla ne yapmış?"
-      description="Bir gruba tıklayın, aşağıdaki liste yalnızca o sayfaları göstersin."
-      totalLabel="sayfa"
+      title={t("Google bu sayfalarla ne yapmış?")}
+      description={t(
+        "Bir gruba tıklayın, aşağıdaki liste yalnızca o sayfaları göstersin.",
+      )}
+      totalLabel={t("sayfa")}
       segments={segments}
-      summary={donutSummary(segments, "sayfa")}
+      summary={donutSummary(segments, t("sayfa"))}
       selectedKey={selected}
       onSelect={(key) =>
         onSelect(COVERAGE_BUCKETS.find((bucket) => bucket === key) ?? null)

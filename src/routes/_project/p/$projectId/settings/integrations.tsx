@@ -7,6 +7,7 @@ import {
 import { createFileRoute } from "@tanstack/react-router";
 import { SearchConsoleConnectionCard } from "@/client/features/gsc/SearchConsoleConnectionCard";
 import { GoogleAnalyticsConnectionCard } from "@/client/features/ga4/GoogleAnalyticsConnectionCard";
+import { t } from "@/shared/i18n";
 
 export const Route = createFileRoute(
   "/_project/p/$projectId/settings/integrations",
@@ -29,7 +30,9 @@ function ProjectIntegrationsRoute() {
       <section id="search-console" className="scroll-mt-6 space-y-3">
         <SettingsHeading
           title="Search Console"
-          help="Önce Ayarlar'da Google erişim anahtarını ya da hizmet hesabını girin. Sonra izleyeceğiniz siteyi seçin. Google buna mülk der. Siteyi yeni doğruladıysanız Google'ın veri vermesi birkaç gün sürebilir."
+          help={t(
+            "Önce Ayarlar'da Google erişim anahtarını ya da hizmet hesabını girin. Sonra izleyeceğiniz siteyi seçin. Google buna mülk der. Siteyi yeni doğruladıysanız Google'ın veri vermesi birkaç gün sürebilir.",
+          )}
         />
         <SearchConsoleConnectionCard projectId={projectId} />
       </section>
@@ -40,7 +43,9 @@ function ProjectIntegrationsRoute() {
           heading={
             <SettingsHeading
               title="Analytics"
-              help="Search Console'daki Google erişim anahtarını kullanır, ayrı kurulum istemez. Bağlandıktan sonra Analytics'teki sitenizi (Analytics mülkü) seçin. Organik ziyaretler Panel'de ve Analytics ekranında görünür."
+              help={t(
+                "Search Console'daki Google erişim anahtarını kullanır, ayrı kurulum istemez. Bağlandıktan sonra Analytics'teki sitenizi (Analytics mülkü) seçin. Organik ziyaretler Panel'de ve Analytics ekranında görünür.",
+              )}
             />
           }
         />

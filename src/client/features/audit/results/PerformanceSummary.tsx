@@ -10,6 +10,7 @@ import {
 } from "@/client/features/audit/results/performanceBands";
 import type { PerformanceFilters } from "@/client/features/audit/results/AuditResultsTableFilterLogic";
 import type { AuditResultsData } from "@/client/features/audit/results/types";
+import { t } from "@/shared/i18n";
 
 function scoreClass(score: number | null) {
   if (score === null) return "text-subtle";
@@ -34,7 +35,9 @@ function failureReason(
   if (marked) return marked;
   const quota = rows.some((row) => /429|quota/i.test(row.errorMessage ?? ""));
   if (!quota) return null;
-  return "Google'ın ücretsiz ölçüm kotası dolmuş; sayfalarınızda bir sorun yok. Ayarlar'dan PageSpeed anahtarı ekleyin ya da kota yenilenince denetimi yeniden başlatın.";
+  return t(
+    "Google'ın ücretsiz ölçüm kotası dolmuş; sayfalarınızda bir sorun yok. Ayarlar'dan PageSpeed anahtarı ekleyin ya da kota yenilenince denetimi yeniden başlatın.",
+  );
 }
 
 /**
@@ -60,15 +63,15 @@ export function PerformanceSummary({
   const failedActive = filters.status === "failed";
   const reason = failureReason(lighthouse, plannedChecks);
   const averages: Array<[string, number | null]> = [
-    ["Hız", stats.avgPerformance],
+    [t("Hız"), stats.avgPerformance],
     ["SEO", stats.avgSeo],
-    ["Erişilebilirlik", stats.avgAccessibility],
+    [t("Erişilebilirlik"), stats.avgAccessibility],
   ];
 
   return (
     <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
       <section className="rounded-box border border-base-300 bg-base-100 px-4 py-3">
-        <h3 className="text-sm font-medium">Ortalama puanlar</h3>
+        <h3 className="text-sm font-medium">{t("Ortalama puanlar")}</h3>
         <dl className="mt-2 grid grid-cols-3 gap-3">
           {averages.map(([label, score]) => (
             <div key={label}>
@@ -95,23 +98,26 @@ export function PerformanceSummary({
             }`}
           >
             <AlertTriangle aria-hidden className="size-3.5" />
-            Ölçülemeyen {formatCount(stats.failed)} sayfa
+            {t("Ölçülemeyen {count} sayfa", { count: stats.failed })}
           </button>
         ) : null}
         {reason ? (
           <p className="mt-2 text-xs text-muted">
             {reason}{" "}
             <Link to="/settings" className="link">
-              Ayarlar&apos;ı aç
+              {t("Ayarlar'ı aç")}
             </Link>
           </p>
         ) : null}
       </section>
       <section className="rounded-box border border-base-300 bg-base-100 px-3 py-3">
-        <h3 className="px-2 text-sm font-medium">Mobilde hız dağılımı</h3>
+        <h3 className="px-2 text-sm font-medium">
+          {t("Mobilde hız dağılımı")}
+        </h3>
         <p className="mb-2 px-2 text-xs text-muted">
-          Ortalama tek başına yanıltır. Bir gruba tıklayıp o sayfaları
-          listeleyin.
+          {t(
+            "Ortalama tek başına yanıltır. Bir gruba tıklayıp o sayfaları listeleyin.",
+          )}
         </p>
         <ScoreHistogram
           rows={lighthouse}

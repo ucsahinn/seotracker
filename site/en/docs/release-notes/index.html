@@ -2,9 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <link rel="stylesheet" href="/assets/consent.css?v=1" />
+    <script src="/assets/consent.js?v=2" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Release notes | seowatcher guide</title>
-    <meta name="description" content="What changed in seowatcher 2.4.3. One-file install on Windows, an app that updates itself, simpler screens and a site in six languages." />
+    <meta name="description" content="seowatcher 0.5.0 Alpha — Turkish and English UI, a notification center, sounds and clearer task progress." />
     <meta name="robots" content="max-image-preview:large" />
     <link rel="canonical" href="https://seowatcher.io/en/docs/release-notes/" />
     <link rel="alternate" hreflang="tr" href="https://seowatcher.io/docs/surum-notlari/" />
@@ -23,6 +25,13 @@
       sizes="48x48"
     />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link
+      rel="alternate"
+      type="application/atom+xml"
+      title="seowatcher"
+      href="/en/feed.xml"
+    />
     <link
       rel="preload"
       href="/assets/fonts/geist-latin-wght-normal.woff2"
@@ -40,13 +49,13 @@
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="seowatcher" />
     <meta property="og:title" content="Release notes | seowatcher guide" />
-    <meta property="og:description" content="What changed in seowatcher 2.4.3. One-file install on Windows, an app that updates itself, simpler screens and a site in six languages." />
+    <meta property="og:description" content="seowatcher 0.5.0 Alpha — Turkish and English UI, a notification center, sounds and clearer task progress." />
     <meta property="og:image" content="https://seowatcher.io/assets/og-en.png" />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Release notes | seowatcher" />
-    <meta property="article:modified_time" content="2026-10-23" />
+    <meta property="article:modified_time" content="2026-10-24" />
     <meta property="og:url" content="https://seowatcher.io/en/docs/release-notes/" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:locale:alternate" content="tr_TR" />
@@ -56,12 +65,12 @@
     <meta property="og:locale:alternate" content="pt_BR" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Release notes | seowatcher guide" />
-    <meta name="twitter:description" content="What changed in seowatcher 2.4.3. One-file install on Windows, an app that updates itself, simpler screens and a site in six languages." />
+    <meta name="twitter:description" content="seowatcher 0.5.0 Alpha — Turkish and English UI, a notification center, sounds and clearer task progress." />
     <meta name="twitter:image" content="https://seowatcher.io/assets/og-en.png" />
     <meta name="twitter:image:alt" content="Release notes | seowatcher" />
     <meta name="color-scheme" content="dark" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en","de","fr","it","pt"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/en/docs/release-notes/#article","headline":"Release notes","description":"What changed in seowatcher 2.4.3. One-file install on Windows, an app that updates itself, simpler screens and a site in six languages.","url":"https://seowatcher.io/en/docs/release-notes/","inLanguage":"en","dateModified":"2026-10-23","articleSection":"Help and reference","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/en/docs/release-notes/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/en/docs/release-notes/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/en/"},{"@type":"ListItem","position":2,"name":"Guide","item":"https://seowatcher.io/en/docs/"},{"@type":"ListItem","position":3,"name":"Release notes","item":"https://seowatcher.io/en/docs/release-notes/"}]}]}</script>
-    <script src="/assets/docs.js?v=2.4.3" defer></script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en","de","fr","it","pt"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/en/docs/release-notes/#article","headline":"Release notes","description":"seowatcher 0.5.0 Alpha — Turkish and English UI, a notification center, sounds and clearer task progress.","url":"https://seowatcher.io/en/docs/release-notes/","inLanguage":"en","dateModified":"2026-10-24","articleSection":"Help and reference","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/en/docs/release-notes/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/en/docs/release-notes/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/en/"},{"@type":"ListItem","position":2,"name":"Guide","item":"https://seowatcher.io/en/docs/"},{"@type":"ListItem","position":3,"name":"Release notes","item":"https://seowatcher.io/en/docs/release-notes/"}]}]}</script>
+    <script src="/assets/docs.js?v=0.5.0" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
       @font-face {
@@ -1192,7 +1201,7 @@
             rel="noopener noreferrer"
             >GitHub</a
           >
-          <details class="langs"><summary aria-label="Language: English"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2.6"/></svg></span><span class="code">EN</span></summary><ul><li><a href="/docs/surum-notlari/" lang="tr" hreflang="tr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"/></svg></span>Türkçe</a></li><li><a href="/en/docs/release-notes/" lang="en" hreflang="en" aria-current="page"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2.6"/></svg></span>English</a></li><li><a href="/de/docs/versionshinweise/" lang="de" hreflang="de"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg></span>Deutsch</a></li><li><a href="/fr/docs/notes-de-version/" lang="fr" hreflang="fr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg></span>Français</a></li><li><a href="/it/docs/note-di-rilascio/" lang="it" hreflang="it"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg></span>Italiano</a></li><li><a href="/pt/docs/notas-da-versao/" lang="pt" hreflang="pt"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#ff0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.6" fill="#ffcc00"/><circle cx="8" cy="7" r="1.5" fill="#ff0000"/></svg></span>Português</a></li></ul></details>
+          <details class="langs"><summary aria-label="EN — Language: English"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2.6"/></svg></span><span class="code">EN</span></summary><ul><li><a href="/docs/surum-notlari/" lang="tr" hreflang="tr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#e30a17"/><circle cx="7.6" cy="7" r="3.4" fill="#fff"/><circle cx="8.4" cy="7" r="2.7" fill="#e30a17"/><polygon fill="#fff" points="12.9,5.3 13.28,6.47 14.52,6.47 13.52,7.2 13.9,8.38 12.9,7.65 11.9,8.38 12.28,7.2 11.28,6.47 12.52,6.47"/></svg></span>Türkçe</a></li><li><a href="/en/docs/release-notes/" lang="en" hreflang="en" aria-current="page"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.6"/><path d="M0 0L20 14M20 0L0 14" stroke="#c8102e" stroke-width="0.9"/><path d="M10 0V14M0 7H20" stroke="#fff" stroke-width="4.2"/><path d="M10 0V14M0 7H20" stroke="#c8102e" stroke-width="2.6"/></svg></span>English</a></li><li><a href="/de/docs/versionshinweise/" lang="de" hreflang="de"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#dd0000"/><rect y="9.33" width="20" height="4.67" fill="#ffce00"/></svg></span>Deutsch</a></li><li><a href="/fr/docs/notes-de-version/" lang="fr" hreflang="fr"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#0055a4"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg></span>Français</a></li><li><a href="/it/docs/note-di-rilascio/" lang="it" hreflang="it"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#fff"/><rect width="6.67" height="14" fill="#009246"/><rect x="13.33" width="6.67" height="14" fill="#ce2b37"/></svg></span>Italiano</a></li><li><a href="/pt/docs/notas-da-versao/" lang="pt" hreflang="pt"><span class="flag"><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#ff0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.6" fill="#ffcc00"/><circle cx="8" cy="7" r="1.5" fill="#ff0000"/></svg></span>Português</a></li></ul></details>
           <a
             class="btn"
             href="https://github.com/ucsahinn/seotracker/releases/latest/download/seowatcher-setup.exe"
@@ -1218,20 +1227,24 @@
         </details>
       </aside>
       <article id="icerik" data-page="surum-notlari">
-        <h1>Release notes</h1><p class="lede">What changed in seowatcher 2.4.3. One-file install on Windows, an app that updates itself, simpler screens and a site in six languages.</p><p>The latest release is <strong>2.4.3</strong>, October 23, 2026. Your data is kept when you update; the Windows package installs new versions on its own.</p>
+        <h1>Release notes</h1><p class="lede">seowatcher 0.5.0 Alpha — Turkish and English UI, a notification center, sounds and clearer task progress.</p><p>The latest release is <strong>0.5.0 Alpha</strong>, October 23, 2026. Your data is kept when you update.</p>
+<p>For the first move from 2.x to 0.x.x Alpha, run the new installer manually; the old updater does not recognize the lower number as newer.</p>
+<h2 id="0-5-0-alpha">0.5.0 Alpha</h2>
+<ul><li>Use the interface in Turkish or English. Numbers and dates follow your language choice.</li><li>The notification center keeps track of audits, updates, Google connections and reports. Sound and desktop notifications have separate settings.</li><li>Release notes now have their own entry above Notifications in the sidebar. Colored labels show the features and fixes in each release.</li><li>In Settings → Windows, turn startup with Windows and automatic update installation on or off.</li><li>See elapsed audit time and a completion summary, and open the relevant guide beside each page title.</li><li>The country list in the mobile project form and help text in small windows no longer get clipped. Escape closes the country list before closing the form.</li><li>Simultaneous index checks use the daily allowance more accurately. Successful results are kept even if another check fails.</li></ul>
+<h2 id="0-4-3-alpha-2026-10-22">0.4.3 Alpha — 2026-10-22</h2>
 <h2 id="highlights">Highlights</h2>
-<ul><li><strong>Opens on any computer.</strong> The missing Windows component ships with the installer, so it starts the first time even on a clean machine.</li><li><strong>Updates itself.</strong> It downloads the new version, verifies it and installs it quietly. <strong>Güncelle</strong> (Update) in the taskbar menu is always one click away.</li><li><strong>Simpler screens.</strong> Every empty screen shows one next step, and the menus and texts read naturally.</li><li><strong>A new face.</strong> Black surfaces, an orange accent and the eye logo; the app and the site now look the same.</li><li>In Agent setup, &quot;Sıfırdan kurulum&quot; (Fresh install) now comes first for first-time users.</li><li>The Update item shows the check, the download percentage and the install step.</li></ul>
+<ul><li><strong>Opens on any computer.</strong> The missing Windows component ships with the installer, so it starts the first time even on a clean machine.</li><li><strong>Updates itself.</strong> It downloads the new version, verifies it and installs it quietly. <strong>Güncelle</strong> (Update) in the taskbar menu is always one click away.</li><li><strong>Simpler screens.</strong> Every empty screen shows one next step, and the menus and texts read naturally.</li><li><strong>A new face.</strong> Black surfaces, an orange accent and the eye logo; the app and the site now look the same.</li><li>In Agent setup, &quot;Fresh install&quot; now comes first for first-time users.</li><li>The Update item shows the check, the download percentage and the install step.</li></ul>
 <h2 id="windows">Windows</h2>
-<ul><li><strong>Starts on a clean computer.</strong> The installer carries the Microsoft Visual C++ runtime and installs it once, with permission, if it is missing.</li><li><strong>Update.</strong> Always in the taskbar menu. It installs a new version if there is one and says &quot;Güncel&quot; (Up to date) if not.</li><li><strong>Repair installation.</strong> Clears temporary files, checks the package and opens the app again.</li><li><strong>Report a problem.</strong> Opens a pre-filled issue. User names, site names and email addresses are masked.</li><li><strong>Versioned installer.</strong> The file name and the setup wizard show the version being installed.</li></ul>
+<ul><li><strong>Starts on a clean computer.</strong> The installer carries the Microsoft Visual C++ runtime and installs it once, with permission, if it is missing.</li><li><strong>Update.</strong> Always in the taskbar menu. It installs a new version if there is one and says &quot;Up to date&quot; if not.</li><li><strong>Repair installation.</strong> Clears temporary files, checks the package and opens the app again.</li><li><strong>Report a problem.</strong> Opens a pre-filled issue. User names, site names and email addresses are masked.</li><li><strong>Versioned installer.</strong> The file name and the setup wizard show the version being installed.</li></ul>
 <h2 id="the-app">The app</h2>
-<ul><li><strong>Side menu.</strong> The groups are &quot;Arama ve site&quot; (Search and site) and &quot;Ajan&quot; (Agent); Help and Settings sit at the bottom.</li><li><strong>Agent setup.</strong> One card and one copy button for Claude Code, Codex or any other assistant.</li><li><strong>Settings.</strong> The Google connection is explained in three steps; the theme is dark by default.</li><li><strong>Both installs covered.</strong> Help and the agent instructions describe the taskbar on Windows and the <code>docker compose</code> commands on Docker.</li></ul>
+<ul><li><strong>Side menu.</strong> The groups are &quot;Search and site&quot; and &quot;Agent&quot;; Help and Settings sit at the bottom.</li><li><strong>Agent setup.</strong> One card and one copy button for Claude Code, Codex or any other assistant.</li><li><strong>Settings.</strong> The Google connection is explained in three steps; the theme is dark by default.</li><li><strong>Both installs covered.</strong> Help and the agent instructions describe the taskbar on Windows and the <code>docker compose</code> commands on Docker.</li></ul>
 <h2 id="site-and-guide">Site and guide</h2>
 <ul><li><strong>Six languages.</strong> Turkish, English, German, French, Italian and Portuguese, with a flag menu.</li><li><strong>Plain writing.</strong> Short sentences, and every technical term is explained the first time it appears.</li></ul>
 <h2 id="fixes">Fixes</h2>
 <ul><li>The download link on the site pointed at the wrong release tag.</li><li>On Git Bash, the Codex setup command did not strip the line break at the end of the password.</li><li>On one card of the site audit, the numbers spilled out of the card.</li><li>With only a service account connected, the dashboard wrongly said the Google access key was missing.</li><li>On phones, the site audit and Opportunities screens scrolled sideways.</li></ul>
 <p>The full history is in <a href="https://github.com/ucsahinn/seotracker/blob/seotracker-fork/CHANGELOG.md" target="_blank" rel="noopener noreferrer">CHANGELOG.md</a> on GitHub.</p> <nav class="pager" aria-label="Previous and next page"><a class="pager-prev" rel="prev" href="/en/docs/troubleshooting/"><span>Previous</span><strong>Troubleshooting</strong></a><span class="pager-next empty"></span></nav>
         <p class="meta">
-          Last updated: October 23, 2026. Spotted a mistake?
+          Last updated: October 24, 2026. Spotted a mistake?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"
@@ -1240,7 +1253,7 @@
           >.
         </p>
       </article>
-      <nav class="toc" aria-label="On this page"><p class="toc-label">On this page</p><ol><li><a href="#highlights">Highlights</a></li><li><a href="#windows">Windows</a></li><li><a href="#the-app">The app</a></li><li><a href="#site-and-guide">Site and guide</a></li><li><a href="#fixes">Fixes</a></li></ol></nav>
+      <nav class="toc" aria-label="On this page"><p class="toc-label">On this page</p><ol><li><a href="#0-5-0-alpha">0.5.0 Alpha</a></li><li><a href="#0-4-3-alpha-2026-10-22">0.4.3 Alpha — 2026-10-22</a></li><li><a href="#highlights">Highlights</a></li><li><a href="#windows">Windows</a></li><li><a href="#the-app">The app</a></li><li><a href="#site-and-guide">Site and guide</a></li><li><a href="#fixes">Fixes</a></li></ol></nav>
     </main>
     <footer>
       <div class="wrap">

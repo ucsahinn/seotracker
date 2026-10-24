@@ -5,6 +5,7 @@ import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { FilterChips } from "@/client/features/search-performance/FilterChips";
 import { BAND_LABELS } from "@/client/features/rankings/positionBands";
 import { formatCount } from "@/client/lib/format";
+import { fillParts } from "@/client/features/settings/fillParts";
 import {
   countPositionGroups,
   toPositionFilter,
@@ -14,6 +15,7 @@ import {
   POSITION_WINDOW_DAYS,
   TRACKED_LIMIT,
 } from "./useSavedKeywordPositions";
+import { t } from "@/shared/i18n";
 
 type Positions = {
   loading: boolean;
@@ -61,7 +63,7 @@ export function SavedKeywordsSummary({
         compact
         error={positions.error}
         onRetry={positions.onRetry}
-        title="Sıra bilgisi yüklenemedi"
+        title={t("Sıra bilgisi yüklenemedi")}
       />
     );
   }
@@ -71,17 +73,23 @@ export function SavedKeywordsSummary({
   // The archive read stops at TRACKED_LIMIT rows, so a keyword missing from it
   // may still rank; "no record" would be a claim the data cannot back.
   const truncated = positions.archiveRows >= TRACKED_LIMIT;
-  const noneLabel = truncated ? "Bilinmiyor (arşiv kesildi)" : "Verisi yok";
+  const noneLabel = truncated
+    ? t("Bilinmiyor (arşiv kesildi)")
+    : t("Verisi yok");
   const noneHint = truncated
-    ? "Okunan arşiv kesildiği için bu kelimelerin sırası bilinmiyor; Search Console'da sırası olabilir."
-    : "Search Console arşivinde bu kelimeyle eşleşen sorgu olmayanlar.";
+    ? t(
+        "Okunan arşiv kesildiği için bu kelimelerin sırası bilinmiyor; Search Console'da sırası olabilir.",
+      )
+    : t("Search Console arşivinde bu kelimeyle eşleşen sorgu olmayanlar.");
+  const band = (id: keyof typeof BAND_LABELS) =>
+    t("Sıra {band}", { band: BAND_LABELS[id] });
   const segments = [
-    { key: "top3", label: `Sıra ${BAND_LABELS.top3}`, value: counts.top3 },
-    { key: "top10", label: `Sıra ${BAND_LABELS.top10}`, value: counts.top10 },
-    { key: "top20", label: `Sıra ${BAND_LABELS.top20}`, value: counts.top20 },
+    { key: "top3", label: band("top3"), value: counts.top3 },
+    { key: "top10", label: band("top10"), value: counts.top10 },
+    { key: "top20", label: band("top20"), value: counts.top20 },
     {
       key: "beyond",
-      label: `Sıra ${BAND_LABELS.beyond}`,
+      label: band("beyond"),
       value: counts.beyond,
     },
     {
@@ -96,61 +104,79 @@ export function SavedKeywordsSummary({
   return (
     <div className="space-y-3">
       <p className="px-1 text-sm text-muted">
-        {formatCount(keywords.length)} kelimenin {formatCount(ranked)} tanesi
-        Search Console arşivinde var; sıralar son {POSITION_WINDOW_DAYS} günün
-        ortalaması.
+        {t(
+          "{total} kelimenin {ranked} tanesi Search Console arşivinde var; sıralar son {days} günün ortalaması.",
+          {
+            total: formatCount(keywords.length),
+            ranked: formatCount(ranked),
+            days: POSITION_WINDOW_DAYS,
+          },
+        )}
         {positions.archiveRows >= TRACKED_LIMIT
-          ? ` Arşivden en çok ${formatCount(TRACKED_LIMIT)} sorgu okunuyor; bu yüzden bazı kelimelerin sırası eksik görünebilir.`
+          ? ` ${t(
+              "Arşivden en çok {limit} sorgu okunuyor; bu yüzden bazı kelimelerin sırası eksik görünebilir.",
+              { limit: formatCount(TRACKED_LIMIT) },
+            )}`
           : null}
       </p>
 
       {positions.archiveRows === 0 ? (
         <div className="rounded-box border border-base-300 bg-base-200/40 px-4 py-3 text-sm text-muted">
           <p className="font-medium text-base-content">
-            Kelimelerinizin sırası henüz yok
+            {t("Kelimelerinizin sırası henüz yok")}
           </p>
           <p className="mt-1">
-            Sıralar, Search Console'un hangi kelimeyle arandığınızı paylaşmasına
-            bağlı. Az ziyaretçisi olan sitelerde bu normaldir; veri gelince
-            sıralar kendiliğinden dolar. Toplam rakamlara{" "}
-            <Link
-              to="/p/$projectId/search-performance"
-              params={{ projectId }}
-              className="link link-primary"
-            >
-              Arama performansı
-            </Link>
-            'ndan, bağlantı durumuna{" "}
-            <Link
-              to="/p/$projectId/settings/integrations"
-              params={{ projectId }}
-              className="link link-primary"
-            >
-              Bağlantılar sekmesinden
-            </Link>{" "}
-            bakabilirsiniz.
+            {fillParts(
+              t(
+                "Sıralar, Search Console'un hangi kelimeyle arandığınızı paylaşmasına bağlı. Az ziyaretçisi olan sitelerde bu normaldir; veri gelince sıralar kendiliğinden dolar. Toplam rakamlara {searchPerformance}'ndan, bağlantı durumuna {integrations} bakabilirsiniz.",
+              ),
+              {
+                searchPerformance: (
+                  <Link
+                    to="/p/$projectId/search-performance"
+                    params={{ projectId }}
+                    className="link link-primary"
+                  >
+                    {t("Arama performansı")}
+                  </Link>
+                ),
+                integrations: (
+                  <Link
+                    to="/p/$projectId/settings/integrations"
+                    params={{ projectId }}
+                    className="link link-primary"
+                  >
+                    {t("Bağlantılar sekmesinden")}
+                  </Link>
+                ),
+              },
+            )}
           </p>
         </div>
       ) : null}
 
       <FilterChips<PositionFilter>
-        label="Sıraya göre hızlı filtreler"
+        label={t("Sıraya göre hızlı filtreler")}
         active={filter ?? undefined}
         onChange={(next) => onFilter(next ?? null)}
         chips={[
           {
             id: "firstPage",
-            label: "İlk 10",
+            label: t("İlk 10"),
             icon: Trophy,
             count: counts.firstPage,
-            hint: "Ortalama sırası 10 veya daha iyi olan kelimeler; yani Google'ın ilk sayfası.",
+            hint: t(
+              "Ortalama sırası 10 veya daha iyi olan kelimeler; yani Google'ın ilk sayfası.",
+            ),
           },
           {
             id: "top20",
-            label: `Sıra ${BAND_LABELS.top20}`,
+            label: band("top20"),
             icon: Target,
             count: counts.top20,
-            hint: "Ortalama sırası 11 ile 20 arasında olanlar, yani ikinci sayfadakiler. Küçük bir iyileştirme ilk sayfaya taşıyabilir.",
+            hint: t(
+              "Ortalama sırası 11 ile 20 arasında olanlar, yani ikinci sayfadakiler. Küçük bir iyileştirme ilk sayfaya taşıyabilir.",
+            ),
           },
           {
             id: "none",
@@ -163,11 +189,13 @@ export function SavedKeywordsSummary({
       />
 
       <DonutCard
-        title="Sıra dağılımı"
-        description="Bir gruba tıklayınca tablo yalnızca o gruptaki kelimeleri gösterir."
+        title={t("Sıra dağılımı")}
+        description={t(
+          "Bir gruba tıklayınca tablo yalnızca o gruptaki kelimeleri gösterir.",
+        )}
         segments={segments}
-        totalLabel="kelime"
-        summary={donutSummary(segments, "kelime")}
+        totalLabel={t("kelime")}
+        summary={donutSummary(segments, t("kelime"))}
         selectedKey={selectedKey}
         onSelect={(key) =>
           onFilter(key === null ? null : toPositionFilter(key))

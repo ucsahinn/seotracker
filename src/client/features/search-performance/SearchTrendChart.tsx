@@ -1,3 +1,5 @@
+import { sortBy } from "remeda";
+import { t } from "@/shared/i18n";
 import * as React from "react";
 import {
   Area,
@@ -6,7 +8,11 @@ import {
   Tooltip,
   XAxis,
   YAxis,
+  ReferenceLine,
 } from "recharts";
+import { useQuery } from "@tanstack/react-query";
+import { getAuditHistory } from "@/serverFunctions/audit";
+import { parseTimestamp } from "@/shared/format";
 import {
   Chart,
   ChartTooltip,
@@ -50,15 +56,17 @@ type MetricId = (typeof METRICS)[number]["id"];
 function SearchTrendChart({
   daily,
   metric,
+  auditDates,
 }: {
   daily: DailyRow[];
   metric: MetricId;
+  auditDates: string[];
 }) {
   const reduced = useReducedMotion();
   if (daily.length < 2) return null;
 
   const config = METRICS.find((entry) => entry.id === metric) ?? METRICS[0];
-  const label = config.label.toLocaleLowerCase("tr");
+  const label = t(config.inline);
   /*
    * A day with no impressions has no position -- `toDailyRows` fills it with
    * zero, and zero would draw as a better rank than 1. Rate and rank are
@@ -93,18 +101,52 @@ function SearchTrendChart({
     <Chart
       height={180}
       table={{
-        caption: `Günlük ${label}`,
-        columns: ["Gün", config.label],
+        caption: t("Günlük {metric}", { metric: label }),
+        columns: [t("Gün"), t(config.label)],
         rows: shown.map((row) => [formatDay(row.key), format(row[metric])]),
       }}
       summary={
         config.kind === "count"
-          ? `${formatCount(shown.length)} günde toplam ${format(total)} ${label}. En yüksek gün ${formatDay(peak.key)}, ${format(peak[metric])}.`
-          : `${formatCount(shown.length)} günde ortalama ${format(total / shown.length)} ${label}. En iyi gün ${formatDay(peak.key)}, ${format(peak[metric])}.`
+          ? t(
+              "{days} günde toplam {total} {metric}. En yüksek gün {day}, {peak}.",
+              {
+                days: formatCount(shown.length),
+                total: format(total),
+                metric: label,
+                day: formatDay(peak.key),
+                peak: format(peak[metric]),
+              },
+            )
+          : t(
+              "{days} günde ortalama {average} {metric}. En iyi gün {day}, {peak}.",
+              {
+                days: formatCount(shown.length),
+                average: format(total / shown.length),
+                metric: label,
+                day: formatDay(peak.key),
+                peak: format(peak[metric]),
+              },
+            )
       }
     >
       <AreaChart data={shown} margin={{ top: 8, right: 8, bottom: 0, left: 0 }}>
         <CartesianGrid {...CHART_GRID} />
+        {auditDates
+          .filter((date) => shown.some((row) => row.key === date))
+          .map((date) => (
+            <ReferenceLine
+              key={date}
+              x={date}
+              stroke="var(--color-primary)"
+              strokeDasharray="3 4"
+              label={{
+                value: t("Denetim"),
+                position: "insideTopRight",
+                fill: "var(--color-base-content)",
+                fontSize: 10,
+              }}
+            />
+          ))}
         <XAxis
           dataKey="key"
           {...CHART_AXIS}
@@ -177,11 +219,26 @@ function SearchTrendChart({
  * client -- the switch simply did not offer half of them. Average position
  * over time is *the* ranking trend line, and it cost no extra Google call.
  */
+/*
+ * `inline` is the name inside a sentence ("toplam 120 tıklama"); English
+ * keeps "CTR" in capitals there, so it is its own string, not a lowercased
+ * label. Both go through t() where they render.
+ */
 const METRICS = [
-  { id: "clicks", label: "Tıklama", kind: "count" },
-  { id: "impressions", label: "Gösterim", kind: "count" },
-  { id: "ctr", label: "Tıklama oranı", kind: "percent" },
-  { id: "position", label: "Ortalama sıra", kind: "position" },
+  { id: "clicks", label: "Tıklama", inline: "tıklama", kind: "count" },
+  { id: "impressions", label: "Gösterim", inline: "gösterim", kind: "count" },
+  {
+    id: "ctr",
+    label: "Tıklama oranı",
+    inline: "tıklama oranı",
+    kind: "percent",
+  },
+  {
+    id: "position",
+    label: "Ortalama sıra",
+    inline: "ortalama sıra",
+    kind: "position",
+  },
 ] as const;
 
 /**
@@ -191,7 +248,31 @@ const METRICS = [
  * orders of magnitude higher, so plotted together the clicks line lies flat
  * on the floor and says nothing. One at a time, full height each.
  */
-export function SearchTrendPanel({ daily }: { daily: DailyRow[] }) {
+export function SearchTrendPanel({
+  daily,
+  projectId,
+}: {
+  daily: DailyRow[];
+  projectId: string;
+}) {
+  const audits = useQuery({
+    queryKey: ["audit-history", projectId],
+    queryFn: () => getAuditHistory({ data: { projectId } }),
+    staleTime: 60_000,
+  });
+  // Mark real completed runs only, with at most three dates to keep the plot readable.
+  const auditDates = sortBy(
+    [
+      ...new Set(
+        (audits.data ?? [])
+          .filter((audit) => audit.status === "completed")
+          .map((audit) => parseTimestamp(audit.completedAt ?? audit.startedAt))
+          .filter(Number.isFinite)
+          .map((stamp) => new Date(stamp).toISOString().slice(0, 10)),
+      ),
+    ].filter((date) => daily.some((row) => row.key === date)),
+    (date) => date,
+  ).slice(-3);
   const [metric, setMetric] =
     React.useState<(typeof METRICS)[number]["id"]>("clicks");
 
@@ -212,12 +293,12 @@ export function SearchTrendPanel({ daily }: { daily: DailyRow[] }) {
     <section className="overflow-hidden rounded-box border border-base-300 bg-base-100">
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-base-300 px-4 py-3">
         <div>
-          <h2 className="text-sm font-medium">Günlük değişim</h2>
+          <h2 className="text-sm font-medium">{t("Günlük değişim")}</h2>
           <p className="mt-0.5 text-xs text-muted">
-            Yukarıdaki toplamların günlere dağılımı.
+            {t("Yukarıdaki toplamların günlere dağılımı.")}
           </p>
         </div>
-        <div role="group" aria-label="Grafik ölçüsü" className="join">
+        <div role="group" aria-label={t("Grafik ölçüsü")} className="join">
           {METRICS.map((option) => (
             <button
               key={option.id}
@@ -228,20 +309,24 @@ export function SearchTrendPanel({ daily }: { daily: DailyRow[] }) {
                 metric === option.id ? "btn-active" : "btn-ghost"
               }`}
             >
-              {option.label}
+              {t(option.label)}
             </button>
           ))}
         </div>
       </div>
       {hasAnything ? (
         <div className="px-2 py-3">
-          <SearchTrendChart daily={daily} metric={metric} />
+          <SearchTrendChart
+            daily={daily}
+            metric={metric}
+            auditDates={auditDates}
+          />
         </div>
       ) : (
         <p className="px-4 py-6 text-sm text-muted">
-          Bu dönemde hiç gösterim yok, grafik boş. Search Console sayfalarınızı
-          arama sonuçlarında göstermeye başlayınca günlük dağılım burada
-          görünür.
+          {t(
+            "Bu dönemde hiç gösterim yok, grafik boş. Search Console sayfalarınızı arama sonuçlarında göstermeye başlayınca günlük dağılım burada görünür.",
+          )}
         </p>
       )}
     </section>

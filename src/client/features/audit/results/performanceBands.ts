@@ -13,6 +13,8 @@ import {
   type PerformanceFilters,
   type PerformanceRowData,
 } from "@/client/features/audit/results/AuditResultsTableFilterLogic";
+import { formatCount } from "@/shared/format";
+import { t } from "@/shared/i18n";
 
 /*
  * Lighthouse's own bands. Not thresholds this app invented: the report
@@ -81,8 +83,8 @@ export function speedBands(rows: ScoreRow[]): SpeedBand[] {
   return [
     defineBand({
       key: "good",
-      label: "Hızlı",
-      hint: `${GOOD_FROM} ve üzeri`,
+      label: t("Hızlı"),
+      hint: t("{score} ve üzeri", { score: GOOD_FROM }),
       color: "var(--color-success)",
       count: good,
       minPerf: String(GOOD_FROM),
@@ -90,7 +92,7 @@ export function speedBands(rows: ScoreRow[]): SpeedBand[] {
     }),
     defineBand({
       key: "fair",
-      label: "Orta",
+      label: t("Orta"),
       hint: `${FAIR_FROM} – ${GOOD_FROM - 1}`,
       color: "var(--color-warning)",
       count: fair,
@@ -99,7 +101,7 @@ export function speedBands(rows: ScoreRow[]): SpeedBand[] {
     }),
     defineBand({
       key: "poor",
-      label: "Yavaş",
+      label: t("Yavaş"),
       hint: `0 – ${FAIR_FROM - 1}`,
       color: "var(--color-error)",
       count: measured.length - good - fair,
@@ -178,19 +180,32 @@ export function describeQuotaStop(
         : new Set(rows.map((row) => row.pageId)).size;
     const left = Math.max(0, planned - measured);
     notes.push(
-      `${LIGHTHOUSE_QUOTA_MARKER}; ${measured} sayfa ölçüldü, ${left} sayfa ölçülemedi. Google'ın ücretsiz günlük ölçüm sınırı bitti, sayfalarınızda bir sorun yok. Ayarlar'dan bir PageSpeed anahtarı ekleyin ya da kota yenilenince denetimi yeniden başlatın.`,
+      t(
+        "{marker}; {measured} sayfa ölçüldü, {left} sayfa ölçülemedi. Google'ın ücretsiz günlük ölçüm sınırı bitti, sayfalarınızda bir sorun yok. Ayarlar'dan bir PageSpeed anahtarı ekleyin ya da kota yenilenince denetimi yeniden başlatın.",
+        {
+          marker: t(LIGHTHOUSE_QUOTA_MARKER),
+          measured: formatCount(measured),
+          left: formatCount(left),
+        },
+      ),
     );
   }
   const noKey = countMarked(rows, LIGHTHOUSE_NO_KEY_MARKER);
   if (noKey > 0) {
     notes.push(
-      `PageSpeed anahtarı girilmediği için ${noKey} ölçüm yapılamadı: Google'ın ortak ücretsiz kotası doldu, sayfalarınızda bir sorun yok. Ayarlar'dan ücretsiz bir anahtar ekleyip denetimi yeniden başlatın.`,
+      t(
+        "PageSpeed anahtarı girilmediği için {count} ölçüm yapılamadı: Google'ın ortak ücretsiz kotası doldu, sayfalarınızda bir sorun yok. Ayarlar'dan ücretsiz bir anahtar ekleyip denetimi yeniden başlatın.",
+        { count: noKey },
+      ),
     );
   }
   const perMinute = countMarked(rows, LIGHTHOUSE_RATE_LIMIT_MARKER);
   if (perMinute > 0) {
     notes.push(
-      `Google'ın dakikalık sınırı yüzünden ${perMinute} ölçüm yapılamadı; denetimi daha sonra yeniden başlatın veya Ayarlar'dan anahtarınızın kotasını kontrol edin.`,
+      t(
+        "Google'ın dakikalık sınırı yüzünden {count} ölçüm yapılamadı; denetimi daha sonra yeniden başlatın veya Ayarlar'dan anahtarınızın kotasını kontrol edin.",
+        { count: perMinute },
+      ),
     );
   }
   return notes.length > 0 ? notes.join(" ") : null;

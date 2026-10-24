@@ -2,7 +2,8 @@ import { Link } from "@tanstack/react-router";
 import { BookOpen, Bot, Globe, ScrollText } from "lucide-react";
 import { RefreshButton } from "@/client/components/RefreshButton";
 import { DiagnosticsBundleButton } from "./DiagnosticsBundleButton";
-import { DOCS_INDEX_URL, SITE_URL } from "./links";
+import { t } from "@/shared/i18n";
+import { docsIndexUrl, siteUrl } from "./links";
 import { useSetupSnapshot } from "./useSetupSnapshot";
 
 /**
@@ -18,43 +19,43 @@ export function QuickActions() {
   return (
     <div
       role="toolbar"
-      aria-label="Hızlı işlemler"
+      aria-label={t("Hızlı işlemler")}
       className="flex flex-wrap items-center gap-2"
     >
       <RefreshButton
-        label="Durumu yeniden kontrol et"
+        label={t("Durumu yeniden kontrol et")}
         onRefresh={refresh}
         isFetching={isFetching}
         dataUpdatedAt={diagnostics.dataUpdatedAt}
       />
       <DiagnosticsBundleButton />
       <a
-        href={DOCS_INDEX_URL}
+        href={docsIndexUrl()}
         target="_blank"
         rel="noreferrer noopener"
         className="btn btn-sm gap-1.5"
       >
         <BookOpen className="size-4" aria-hidden />
-        Kılavuzu aç
-        <span className="sr-only"> (yeni sekmede açılır)</span>
+        {t("Kılavuzu aç")}
+        <span className="sr-only"> {t("(yeni sekmede açılır)")}</span>
       </a>
       <a
-        href={SITE_URL}
+        href={siteUrl()}
         target="_blank"
         rel="noreferrer noopener"
         className="btn btn-sm gap-1.5"
       >
         <Globe className="size-4" aria-hidden />
         seowatcher.io
-        <span className="sr-only"> (yeni sekmede açılır)</span>
+        <span className="sr-only"> {t("(yeni sekmede açılır)")}</span>
       </a>
-      <Link to="/settings" hash="surum-notlari" className="btn btn-sm gap-1.5">
+      <Link to="/release-notes" className="btn btn-sm gap-1.5">
         <ScrollText className="size-4" aria-hidden />
-        Sürüm notları
+        {t("Sürüm notları")}
       </Link>
       <Link to="/ai" className="btn btn-sm gap-1.5">
         <Bot className="size-4" aria-hidden />
-        Ajan kurulumu
+        {t("Ajan kurulumu")}
       </Link>
     </div>
   );

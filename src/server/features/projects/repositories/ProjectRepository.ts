@@ -2,6 +2,7 @@ import { and, count, desc, eq, isNotNull, isNull, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { projects } from "@/db/schema";
 import { AppError } from "@/server/lib/errors";
+import { t } from "@/shared/i18n";
 
 async function listProjects(organizationId: string) {
   return db.query.projects.findMany({
@@ -214,7 +215,7 @@ async function archiveProject(projectId: string, organizationId: string) {
   if (!(await getProjectForOrganization(projectId, organizationId))) {
     throw new AppError("NOT_FOUND");
   }
-  throw new AppError("CONFLICT", "Tek projenizi arşivleyemezsiniz.");
+  throw new AppError("CONFLICT", t("Tek projenizi arşivleyemezsiniz."));
 }
 
 export const ProjectRepository = {

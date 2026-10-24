@@ -4,6 +4,7 @@ import { captureClientEvent } from "@/client/lib/observability";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import { toast } from "sonner";
 import { dismissDashboardGa4Card } from "@/serverFunctions/dashboard";
+import { t } from "@/shared/i18n";
 
 export function Ga4ConnectCard({
   projectId,
@@ -22,7 +23,7 @@ export function Ga4ConnectCard({
     // The card simply stays put on failure, which read as an ignored click.
     onError: (error) =>
       toast.error(
-        getStandardErrorMessage(error, "Kart gizlenemedi. Tekrar deneyin."),
+        getStandardErrorMessage(error, t("Kart gizlenemedi. Tekrar deneyin.")),
       ),
   });
 

@@ -11,6 +11,7 @@ import {
   type AuditIssueRow,
   type IssueGroup,
 } from "@/client/features/audit/results/issueGroups";
+import { t } from "@/shared/i18n";
 
 export const PAGE_STEP = 10;
 /** Past this many pages a search box earns its place. */
@@ -27,6 +28,7 @@ export interface AffectedPage {
   records: DetailLine[][];
 }
 
+// Turkish source labels; t() runs in describeDetails, at render time.
 const LABELS: Record<string, string> = {
   statusCode: "Durum kodu",
   length: "Uzunluk (karakter)",
@@ -77,7 +79,7 @@ function formatScalar(key: string, value: unknown): string | null {
       ? formatDuration(value)
       : formatNumber(value);
   }
-  if (typeof value === "boolean") return value ? "Evet" : "Hayır";
+  if (typeof value === "boolean") return value ? t("Evet") : t("Hayır");
   if (typeof value === "string") {
     if (value === "") return null;
     return key === "lastCrawlTime" || key === "checkedAt"
@@ -94,7 +96,9 @@ function formatValue(key: string, value: unknown): string | null {
     if (key === "hops") return items.map(String).join(" → ");
     const shown = items.slice(0, MAX_LIST_ITEMS).map(String).join(", ");
     const rest = items.length - MAX_LIST_ITEMS;
-    return rest > 0 ? `${shown} ve ${formatCount(rest)} tane daha` : shown;
+    return rest > 0
+      ? t("{shown} ve {rest} tane daha", { shown, rest: formatCount(rest) })
+      : shown;
   }
   const scalar = formatScalar(key, value);
   if (scalar !== null) return scalar;
@@ -117,7 +121,8 @@ export function describeDetails(detailsJson: string | null): DetailLine[] {
   const lines: DetailLine[] = [];
   for (const [key, raw] of Object.entries(parsed)) {
     const value = formatValue(key, raw);
-    if (value !== null) lines.push({ label: LABELS[key] ?? key, value });
+    const label = LABELS[key];
+    if (value !== null) lines.push({ label: label ? t(label) : key, value });
   }
   return lines;
 }
@@ -175,16 +180,18 @@ export function buildCopyText(urls: string[]): string {
  * ring above counts records, so when the two differ both are named.
  */
 export function buildCountLabel(group: IssueGroup, siteWide: boolean): string {
-  if (siteWide) return "Tüm site";
-  const pages = `${formatCount(group.pageCount)} sayfa`;
+  if (siteWide) return t("Tüm site");
   return group.issues.length === group.pageCount
-    ? pages
-    : `${pages} · ${formatCount(group.issues.length)} bulgu`;
+    ? t("{count} sayfa", { count: group.pageCount })
+    : t("{count} sayfa · {findings} bulgu", {
+        count: group.pageCount,
+        findings: formatCount(group.issues.length),
+      });
 }
 
 export function buildIssueCsv(group: IssueGroup): string {
   const rows = group.issues.map((issue) => [
-    SEVERITY_LABEL[group.severity],
+    t(SEVERITY_LABEL[group.severity]),
     group.title,
     issue.pageUrl,
     describeDetails(issue.detailsJson)
@@ -193,7 +200,7 @@ export function buildIssueCsv(group: IssueGroup): string {
     group.howToFix,
   ]);
   return buildCsv(
-    ["Önem", "Sorun", "Adres", "Ayrıntı", "Nasıl düzeltilir"],
+    [t("Önem"), t("Sorun"), t("Adres"), t("Ayrıntı"), t("Nasıl düzeltilir")],
     rows,
   );
 }

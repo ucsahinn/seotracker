@@ -7,9 +7,10 @@ import {
   type TagColorKey,
 } from "@/shared/tag-colors";
 import type { SavedKeywordTagSummary } from "@/types/keywords";
+import { t } from "@/shared/i18n";
 
 // The palette keys are English identifiers; screen readers should hear the
-// colour, not the token.
+// colour, not the token. Turkish source text, translated where it renders.
 const COLOR_LABELS: Record<TagColorKey, string> = {
   slate: "Gri",
   rose: "Pembe",
@@ -55,7 +56,7 @@ export function ManageTagRow({
     <div className="space-y-2 border-y border-base-300 bg-base-200/40 px-3 py-2.5">
       <div className="space-y-1">
         <label htmlFor={nameId} className="text-xs font-semibold text-muted">
-          Yeniden adlandır
+          {t("Yeniden adlandır")}
         </label>
         <div className="flex items-center gap-1.5">
           <Pencil className="size-3 opacity-50" aria-hidden />
@@ -79,7 +80,7 @@ export function ManageTagRow({
 
       <div className="space-y-1">
         <span id={colorLabelId} className="text-xs font-semibold text-muted">
-          Renk
+          {t("Renk")}
         </span>
         <div
           role="group"
@@ -90,7 +91,7 @@ export function ManageTagRow({
             <button
               key={key}
               type="button"
-              aria-label={COLOR_LABELS[key]}
+              aria-label={t(COLOR_LABELS[key])}
               aria-pressed={color === key}
               className={`size-6 rounded-full transition ${tagSwatchClass(key)} ${
                 color === key
@@ -106,7 +107,7 @@ export function ManageTagRow({
       {confirmingDelete ? (
         <div role="alert" className="space-y-2 pt-1">
           <p className="text-xs text-muted">
-            Etiket kalıcı olarak silinir. Kelimelere dokunulmaz.
+            {t("Etiket kalıcı olarak silinir. Kelimelere dokunulmaz.")}
           </p>
           <div className="flex items-center justify-end gap-1.5">
             <button
@@ -116,7 +117,7 @@ export function ManageTagRow({
               disabled={isBusy}
               autoFocus
             >
-              Vazgeç
+              {t("Vazgeç")}
             </button>
             <button
               type="button"
@@ -124,7 +125,7 @@ export function ManageTagRow({
               onClick={onDelete}
               disabled={isBusy}
             >
-              Etiketi sil
+              {t("Etiketi sil")}
             </button>
           </div>
         </div>
@@ -137,11 +138,11 @@ export function ManageTagRow({
             disabled={isBusy}
           >
             <Trash2 className="size-3" />
-            Sil
+            {t("Sil")}
           </button>
           <div className="flex items-center gap-1.5">
             <button type="button" className="btn btn-xs" onClick={onCancel}>
-              Vazgeç
+              {t("Vazgeç")}
             </button>
             <button
               type="button"
@@ -149,7 +150,7 @@ export function ManageTagRow({
               disabled={!canSave}
               onClick={save}
             >
-              Kaydet
+              {t("Kaydet")}
             </button>
           </div>
         </div>

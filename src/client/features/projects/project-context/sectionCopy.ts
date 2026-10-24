@@ -1,5 +1,6 @@
 import type { ProjectContextSectionKey } from "@/types/schemas/projectContext";
 
+// Turkish source text, translated where it renders.
 export const SECTION_HINTS: Record<ProjectContextSectionKey, string> = {
   business_overview: "Ne satıyorsunuz, kim alıyor, nerede.",
   current_goal: "Şu anda neyin peşindesiniz ve ne zamana kadar.",

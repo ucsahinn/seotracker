@@ -1,3 +1,5 @@
+import { t } from "./i18n";
+
 /**
  * Google's `coverageState` sentences, in Turkish.
  *
@@ -6,6 +8,9 @@
  * operator actually needs to read in the wrong language. The list is Google's
  * documented set; anything unrecognised falls through unchanged, so a new
  * state Google invents still shows rather than disappearing.
+ *
+ * The values are Turkish source strings passed through t() where the label is
+ * read; their English (Google's own sentence) is in src/shared/i18n/en/shared.ts.
  */
 const COVERAGE_STATE_TR: Record<string, string> = {
   "Submitted and indexed": "Site haritasında var, dizine alındı",
@@ -53,8 +58,10 @@ const COVERAGE_STATE_TR: Record<string, string> = {
  * wrong thing.
  */
 const COVERAGE_STATE_ALIASES: Record<string, string> = {
+  // i18n-ignore: Google's stored Turkish sentences, input data, not display text
   "Keşfedildi - şu anda dizine eklenmiş değil":
     "Discovered - currently not indexed",
+  // i18n-ignore: Google's stored Turkish sentence, input data
   "URL Google tarafından bilinmiyor": "URL is unknown to Google",
 };
 
@@ -69,7 +76,8 @@ export function coverageStateLabel(state: string | null): string | null {
   if (!canonical) return null;
   // Falls back to the sentence as stored, so a state Google invents still
   // shows rather than disappearing.
-  return COVERAGE_STATE_TR[canonical] ?? canonical;
+  const label = COVERAGE_STATE_TR[canonical];
+  return label ? t(label) : canonical;
 }
 
 /**
