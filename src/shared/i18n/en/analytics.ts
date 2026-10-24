@@ -5,6 +5,18 @@ import type { Catalog } from "@/shared/i18n";
  * Keys are the Turkish source strings exactly as passed to t().
  */
 export const enAnalytics: Catalog = {
+  "Hazırlık puanı": "Readiness score",
+  "{completed} / {total} hazır": "{completed} / {total} ready",
+  "Puan; Google bağlantıları, güncel denetim, proje bilgisi ve ajan kurulumunun hazır olup olmadığını gösterir. Arama sırası ya da SEO başarısı değildir.":
+    "This score reflects whether Google connections, a recent audit, project context and your agent are ready. It is not a ranking or SEO performance score.",
+  "Denetimi yeniden başlatın": "Run the audit again",
+  "Önceki denetim tamamlanamadı. Yeniden deneyin.":
+    "The previous audit did not finish. Try again.",
+  "Yeniden denetle": "Run again",
+  "Denetim sürüyor": "Audit in progress",
+  "İlerlemeyi ve bitiş özetini denetim ekranında izleyin.":
+    "Follow its progress and completion summary on the audit screen.",
+  "İlerlemeyi gör": "View progress",
   "Sizin 'önemli' saydığınız hareket, örneğin form gönderme ya da satın alma. Tanımlı değilse hep 0 görünür.":
     "An action you count as important, such as a form submission or a purchase. Shows 0 until one is set up.",
   "Oturumların yüzde kaçında önemli saydığınız bir hareket (anahtar olay) gerçekleşti. Anahtar olay tanımlı değilse hep %0 görünür.":

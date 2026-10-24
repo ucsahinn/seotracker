@@ -217,6 +217,7 @@ const SKIP_JSON_KEYS = new Set([
   "priceCurrency",
   "applicationCategory",
   "operatingSystem",
+  "softwareVersion",
   "encodingFormat",
   "fileFormat",
   "name_",

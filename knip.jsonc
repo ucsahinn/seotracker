@@ -2,6 +2,8 @@
   "entry": [
     // Site-audit aux worker entry (wrangler.audit.jsonc)
     "src/audit-worker.ts",
+    // Live announcement service entry (announcement-service/wrangler.jsonc)
+    "announcement-service/src/index.ts",
     "src/start.ts",
     "src/router.tsx",
     "src/routes/**/*.ts",

@@ -1,14 +1,18 @@
-# seowatcher.io yayına alma listesi
+# seowatcher.io yayın sonrası kontrol listesi
 
 Bu liste, sitenin (`site/` klasörü) seowatcher.io adresinde yayına girmesi için
-**sizin hesaplarınızla** yapılması gereken adımlardır. Hesap gerektirmeyen
-teknik işler (robots.txt, site haritası, görseller, beslemeler, security.txt,
-IndexNow anahtarı, manifest, başlıklar) depoda hazırdır.
+**sizin hesaplarınızla** yapılması gereken adımları ve yayın sonrası kontrolleri
+kapsar. Hesap gerektirmeyen teknik işler (robots.txt, site haritası, görseller,
+beslemeler, security.txt, IndexNow anahtarı, manifest, başlıklar) depoda
+hazırdır.
 
-Bu kurulumda alan adı Hostinger'da, hedef barındırma nginx kullanılan VPS'tir.
-Aşağıdaki Cloudflare adımları alternatif barındırma yoludur; mevcut Hostinger
-nameserver'larını bu kurulum için değiştirmeyin. Yayın en son yapılacak;
-site haritası, indeksleme ve canlı ölçüm adımları geçerli HTTPS yayını bekler.
+Kullanıcının belirttiği etkin yayın hedefi Hetzner VPS ve nginx'tir. Bu nedenle
+aşağıdaki Cloudflare Pages adımları yalnızca barındırma sağlayıcısı ayrıca
+değiştirilecekse geçerlidir; mevcut DNS veya nameserver ayarlarını değiştirmeyin.
+Site yayında. 4–13. adımlar geçerli HTTPS yayını üzerinde yapılacak kontrolleri
+ve Google/Bing araçlarındaki işlemleri içerir. `site/` güncellenirse önce
+[SITE_DEPLOY.md](./SITE_DEPLOY.md) içindeki sürümlü aktarımı tamamlayın, sonra
+bu listedeki canlı kontrolleri tekrarlayın.
 
 Sırayla gidin. Her adımın sonunda "Kontrol" satırı, adımın işe yarayıp
 yaramadığını nasıl anlayacağınızı söyler.
@@ -253,8 +257,10 @@ https://github.com/ucsahinn/seotracker/security/advisories/new açılır.
 - **security.txt'in süresi 2027-10-23'te dolar.** O tarihten önce
   `site/.well-known/security.txt` içindeki `Expires` satırını bir yıl ileri
   alın.
-- Her sürümden sonra: `pnpm run site:build`, gönderin, Cloudflare dağıtımı
-  bitince adım 11'deki IndexNow komutunu çalıştırın.
+- Her site güncellemesinden sonra: `pnpm run site:build` çalıştırın, paketi
+  [SITE_DEPLOY.md](./SITE_DEPLOY.md) içindeki Hetzner/nginx adımlarıyla aktarın;
+  HTTPS doğrulandıktan sonra B ve D bölümlerini tekrarlayın. Bing için istenirse
+  IndexNow komutunu yayın sonrasında bir kez çalıştırın.
 
 ## Ne beklememelisiniz
 

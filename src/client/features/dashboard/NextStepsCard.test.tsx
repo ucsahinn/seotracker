@@ -33,6 +33,26 @@ function audit(
 }
 
 describe("NextStepsCard", () => {
+  it("shows a transparent readiness score that reflects setup completion", () => {
+    render(
+      <NextStepsCard
+        projectId="p1"
+        gscConnected={true}
+        ga4Connected={true}
+        hasProjectContext={true}
+        agentConnected={true}
+        audit={audit()}
+      />,
+    );
+
+    expect(
+      screen
+        .getByRole("progressbar", { name: "Hazırlık puanı" })
+        .getAttribute("aria-valuenow"),
+    ).toBe("100");
+    expect(screen.getByText("100 / 100")).toBeDefined();
+  });
+
   /*
    * Without Search Console half the app has nothing to show -- rankings,
    * opportunities and the whole search side are empty -- so it outranks
@@ -55,6 +75,18 @@ describe("NextStepsCard", () => {
     render(<NextStepsCard projectId="p1" gscConnected={true} audit={null} />);
 
     expect(screen.getByText(/İlk denetimi başlatın/)).toBeDefined();
+  });
+
+  it("offers a retry when the last audit failed", () => {
+    render(
+      <NextStepsCard
+        projectId="p1"
+        gscConnected={true}
+        audit={audit({ status: "failed" })}
+      />,
+    );
+
+    expect(screen.getByText(/Denetimi yeniden başlatın/)).toBeDefined();
   });
 
   /*

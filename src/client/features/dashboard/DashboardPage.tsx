@@ -185,6 +185,9 @@ export function DashboardPage({ projectId }: { projectId: string }) {
       <NextStepsCard
         projectId={projectId}
         gscConnected={gscConnected}
+        ga4Connected={ga4Connected}
+        hasProjectContext={activation.hasProjectContext}
+        agentConnected={activation.mcp.firstToolCallAt !== null}
         googleMissing={googleMissing}
         audit={overview?.audit ?? null}
       />

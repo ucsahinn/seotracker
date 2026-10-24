@@ -1,0 +1,17 @@
+{
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  "name": "seowatcher-announcements",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-24",
+  "workers_dev": true,
+  "preview_urls": false,
+  "observability": { "enabled": true },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "seowatcher-announcements",
+      "database_id": "001cd334-b05f-43bf-9a13-45256be009e8",
+      "migrations_dir": "migrations",
+    },
+  ],
+}

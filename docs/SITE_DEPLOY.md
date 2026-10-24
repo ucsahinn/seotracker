@@ -121,7 +121,9 @@ Tarayıcı, GitHub’ın tüm herkese açık sürümlerindeki Windows kurulum do
 
 [nginx-site-server.conf](./nginx-site-server.conf) HTTP → HTTPS ve www → ana alan adı yönlendirmelerini, gerçek 404 yanıtını ve önbellek sürelerini içerir. Dizin ve sertifika yolları örnektir; sunucudaki gerçek yollarla eşleştirin. Sertifika hem `seowatcher.io` hem `www.seowatcher.io` adını kapsamalıdır. Başlık dosyasını örnekteki snippet yoluna yerleştirin; etkinleştirmeden önce sunucuda `nginx -t` çalıştırın. Yerel makinede nginx olmadığı için bu yapılandırma burada çalıştırılmadı.
 
-24 Ekim 2026 kontrolünde GitHub'daki son sürüm `v2.4.3`, toplam Windows indirmesi 6; `v0.5.0` henüz yoktu. Bu bir sayaç sabiti değildir. Ana sayfa 0.5.0 Alpha'yı anlattığı için yayından önce `v0.5.0/seowatcher-setup-0.5.0.exe` ve SHA-256 dosyasının gerçekten erişilebilir olması gerekir.
+24 Ekim 2026 kontrolünde GitHub `v0.5.0 Alpha` sürümünü en son yayımlanan sürüm olarak gösteriyor; sürüm numaralı kurulum dosyası, sabit indirme adı ve `SHA256SUMS.txt` varlıkları listeleniyor. Altı dildeki ana sayfalar sürüm numaralı `v0.5.0/seowatcher-setup-0.5.0.exe` dosyasına bağlanıyor. Bu kontrol, indirme sayacı için sabit değer değildir.
+
+23 Ekim tarihli Hetzner arşivini tekrar kullanmayın: sonraki site değişikliklerini içermiyor. Her yayın öncesi `site/` çıktısını güncel kaynaklardan yeniden üretin ve yeni arşivin SHA-256 özetini doğrulayın. Bu depodaki örnek nginx dosyalarının ve önceki kurulum betiğinin bulunması, VPS'e uygulanmış oldukları anlamına gelmez.
 
 Yayın sonrası Google Search Console ve Bing Webmaster Tools'ta `https://seowatcher.io/sitemap.xml` gönderilmeli; ana sayfa, altı dilin canonical/hreflang ilişkileri ve bir olmayan URL'nin 404 durumu kontrol edilmelidir. robots.txt ve llms.txt arama/yanıt motorlarına erişim sağlar; dizine alınma veya yapay zekâ yanıtında yer alma garantisi vermez.
 

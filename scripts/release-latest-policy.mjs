@@ -1,7 +1,15 @@
 import { pathToFileURL } from "node:url";
 
 // Only published releases from the retired numbering scheme allow a reset.
-const RETIRED = new Set(["2.0.0", "2.1.0", "2.2.0", "2.2.1", "2.3.0", "2.4.3"]);
+const RETIRED = new Set([
+  "2.0.0",
+  "2.1.0",
+  "2.2.0",
+  "2.2.1",
+  "2.3.0",
+  "2.4.3",
+  "2.5.0",
+]);
 const normalize = (value) => value.replace(/^v/, "");
 
 export function shouldMarkLatest(candidate, current = "") {

@@ -1,12 +1,19 @@
 ---
 title: Release notes
-description: seowatcher 0.5.0 Alpha — Turkish and English UI, a notification center, sounds and clearer task progress.
-updated: 2026-10-24
+description: seowatcher 0.6.0 Alpha — live announcements, guided next steps and broader agent reports.
+updated: 2026-10-25
 ---
 
-The latest release is **0.5.0 Alpha**, October 23, 2026. Your data is kept when you update.
+The latest release is **0.6.0 Alpha**, October 25, 2026. Your data is kept when you update.
 
 For the first move from 2.x to 0.x.x Alpha, run the new installer manually; the old updater does not recognize the lower number as newer.
+
+## 0.6.0 Alpha
+
+- Live Turkish and English announcements appear in the app. Prepare and publish them from the admin page.
+- Dashboard Next steps shows guided tasks and a readiness score based on Google connections, a current audit, project context and agent setup. The score does not measure SEO performance.
+- Agent reports review audit, Search Console, opportunities, ranking history, saved keywords, Analytics, index coverage and sitemap data to suggest improvements.
+- The seowatcher logo in the app menu opens seowatcher.io.
 
 ## 0.5.0 Alpha
 

@@ -11,8 +11,19 @@ $testExe = Join-Path $testDir 'bridge-tests.exe'
 if ($LASTEXITCODE -ne 0) { throw 'Native bridge test compilation failed.' }
 & $testExe
 if ($LASTEXITCODE -ne 0) { throw 'Native bridge tests failed.' }
-# Compile the actual launcher integration too, without building or packaging the app.
 $launcherSource = Join-Path $repoRoot 'packaging\windows\launcher\SeoWatcher.cs'
+$updatePolicyTests = Join-Path $repoRoot 'packaging\windows\launcher\UpdateVersionPolicy.Tests.cs'
+$updatePolicyExe = Join-Path $testDir 'update-version-policy-tests.exe'
+$updatePolicyArgs = @(
+  '/nologo', '/target:exe', '/main:SeoWatcher.UpdateVersionPolicyTests',
+  '/r:System.Windows.Forms.dll', '/r:System.Drawing.dll', "/out:$updatePolicyExe",
+  $launcherSource, $bridgeSource, $updatePolicyTests
+)
+& $compiler.FullName @updatePolicyArgs
+if ($LASTEXITCODE -ne 0) { throw 'Update version policy test compilation failed.' }
+& $updatePolicyExe
+if ($LASTEXITCODE -ne 0) { throw 'Update version policy tests failed.' }
+# Compile the actual launcher integration too, without building or packaging the app.
 $testLibrary = Join-Path $testDir 'launcher-validation.dll'
 & $compiler.FullName /nologo /target:library /r:System.Windows.Forms.dll /r:System.Drawing.dll "/out:$testLibrary" $launcherSource $bridgeSource
 if ($LASTEXITCODE -ne 0) { throw 'Launcher integration compilation failed.' }
@@ -20,4 +31,4 @@ Write-Host 'Launcher integration compilation passed.'
 $pnpmCommand = (Get-Command pnpm.cmd -ErrorAction Stop).Source
 & $pnpmCommand exec tsx (Join-Path $PSScriptRoot 'probe-windows-settings.ts') $testExe
 if ($LASTEXITCODE -ne 0) { throw 'TypeScript/native bridge consumer probe failed.' }
-Remove-Item -LiteralPath $testExe, $testLibrary
+Remove-Item -LiteralPath $testExe, $testLibrary, $updatePolicyExe

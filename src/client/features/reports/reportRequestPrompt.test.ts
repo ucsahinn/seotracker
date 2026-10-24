@@ -1,5 +1,8 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it } from "vitest";
+import { setLocale } from "@/shared/i18n";
 import { reportRequestPrompt } from "./reportRequestPrompt";
+
+afterEach(() => setLocale("tr"));
 
 describe("reportRequestPrompt", () => {
   const prompt = reportRequestPrompt("project_123");
@@ -24,6 +27,28 @@ describe("reportRequestPrompt", () => {
     for (const name of mentioned) {
       expect(registered, name).toContain(`name: "${name}"`);
     }
+  });
+
+  it("covers every major data surface that appears in the app", async () => {
+    setLocale("en");
+    const englishPrompt = reportRequestPrompt("project_123");
+    for (const name of [
+      "get_ranking_history",
+      "get_cannibalization",
+      "list_saved_keywords",
+      "get_sitemaps",
+      "get_google_analytics_organic_landing_pages",
+      "get_google_analytics_page_performance",
+      "get_google_analytics_key_events",
+      "get_google_analytics_traffic_acquisition",
+      "get_google_analytics_ecommerce_performance",
+      "get_google_analytics_site_search",
+      "get_google_analytics_audience_breakdown",
+      "get_google_analytics_measurement_health",
+    ]) {
+      expect(englishPrompt).toContain(`\`${name}\``);
+    }
+    setLocale("tr");
   });
 
   // The save_report description refuses these; saying so up front saves a

@@ -6,6 +6,22 @@ import type { Catalog } from "@/shared/i18n";
  * Keys are the Turkish source strings exactly as passed to t().
  */
 export const enApp: Catalog = {
+  "seowatcher.io sitesini yeni sekmede aç":
+    "Open the seowatcher.io website in a new tab",
+  Duyurular: "Announcements",
+  "seowatcher ekibinden ürün, bakım ve güvenlik güncellemeleri.":
+    "Product, maintenance and security updates from the seowatcher team.",
+  "Duyurular şu anda alınamıyor": "Announcements are unavailable right now",
+  "Duyurular alınamadı ({status})": "Could not load announcements ({status})",
+  "Bağlantınızı kontrol edip yeniden deneyin.":
+    "Check your connection and try again.",
+  "Şimdilik yeni duyuru yok": "No new announcements yet",
+  "Yeni bir duyuru yayımlandığında burada görünecek.":
+    "New announcements will appear here when they are published.",
+  "Ürün yeniliği": "Product update",
+  Bakım: "Maintenance",
+  Güvenlik: "Security",
+  Yeni: "New",
   // navigation/items.ts (translated where Sidebar renders them)
   Panel: "Dashboard",
   "Sıralama takibi": "Rank tracking",

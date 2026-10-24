@@ -12,14 +12,16 @@ export function getReleaseCategories(
   const categories: ReleaseCategory[] = [];
   if (
     headings.some((heading) =>
-      /yenilik|eklendi|uygulama|neler sunuyor/.test(heading),
+      /yenilik|eklendi|uygulama|neler sunuyor|what the app offers|features?/.test(
+        heading,
+      ),
     )
   )
     categories.push("feature");
   if (
     headings.some(
       (heading) =>
-        /düzelt|hata ayıklama|veri doğruluğu/.test(heading) &&
+        /düzelt|hata ayıklama|veri doğruluğu|fixes?/.test(heading) &&
         !/acil düzelt/.test(heading),
     )
   )

@@ -1,4 +1,5 @@
-import raw from "../../../../CHANGELOG.md?raw";
+import raw from "./changelog.tr.md?raw";
+import englishRaw from "./changelog.en.md?raw";
 
 /** A line of prose, or a fenced command the reader will want to copy. */
 export type ChangelogItem = { text: string; code: boolean };
@@ -13,12 +14,11 @@ export type ChangelogEntry = {
 };
 
 /**
- * The release notes, read out of the file the repository already keeps.
+ * Customer-facing release notes, kept separate from the fuller repository log.
  *
  * A self-hosted install has no changelog service to call and no network to
- * depend on, and a second copy of this text maintained inside the app would
- * drift from the one in the repo within a release. `?raw` bundles the file,
- * so what the screen shows and what `git log` shows cannot disagree.
+ * depend on. `?raw` bundles both localized copies so the release screen stays
+ * available offline and can leave developer-only setup notes in the full log.
  *
  * Deliberately a small parser rather than a markdown renderer: these notes
  * are headings, bullets and short paragraphs, and pulling in a renderer to
@@ -129,6 +129,10 @@ function parseChangelog(source: string): ChangelogEntry[] {
 }
 
 export const CHANGELOG_ENTRIES: ChangelogEntry[] = parseChangelog(raw);
+
+/** English copy kept in lockstep with the canonical Turkish release list. */
+export const CHANGELOG_ENTRIES_EN: ChangelogEntry[] =
+  parseChangelog(englishRaw);
 
 /** Strips the inline markdown these notes use, leaving the words. */
 export function plainText(markdown: string): string {

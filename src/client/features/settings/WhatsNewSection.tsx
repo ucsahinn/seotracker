@@ -2,7 +2,6 @@ import { ChevronRight } from "lucide-react";
 import * as React from "react";
 import { formatDate } from "@/client/lib/format";
 import { CopyButton } from "@/client/components/CopyButton";
-import { SafeExternalLink } from "@/client/components/SafeExternalLink";
 import { getLocale, t } from "@/shared/i18n";
 import {
   getReleaseCategories,
@@ -10,13 +9,10 @@ import {
 } from "./releaseCategories";
 import {
   CHANGELOG_ENTRIES,
+  CHANGELOG_ENTRIES_EN,
   type ChangelogEntry,
   type ChangelogItem,
 } from "@/client/features/settings/changelog";
-
-/** The English notes for the same releases, on the website. */
-const ENGLISH_RELEASE_NOTES_URL =
-  "https://seowatcher.io/en/docs/release-notes/";
 
 /**
  * What changed, in the app rather than only on GitHub.
@@ -27,7 +23,9 @@ const ENGLISH_RELEASE_NOTES_URL =
  * `CHANGELOG.md`, so it cannot fall behind what was actually shipped.
  */
 export function WhatsNewSection({ version }: { version: string }) {
-  if (CHANGELOG_ENTRIES.length === 0) return null;
+  const entries =
+    getLocale() === "en" ? CHANGELOG_ENTRIES_EN : CHANGELOG_ENTRIES;
+  if (entries.length === 0) return null;
 
   return (
     <section id="surum-notlari" className="scroll-mt-16 space-y-3">
@@ -37,21 +35,10 @@ export function WhatsNewSection({ version }: { version: string }) {
             "Her sürümde nelerin eklendiğini ve düzeltildiğini burada bulabilirsiniz.",
           )}
         </p>
-        {/* CHANGELOG.md is written in Turkish; the website keeps an English copy. */}
-        {getLocale() === "en" ? (
-          <p className="text-sm text-muted">
-            {t("Sürüm notları Türkçe yazılır.")}{" "}
-            <SafeExternalLink
-              url={ENGLISH_RELEASE_NOTES_URL}
-              label={t("İngilizcesini seowatcher.io'da okuyun")}
-              className="inline-flex items-center gap-1 font-medium underline underline-offset-2"
-            />
-          </p>
-        ) : null}
       </div>
 
       <div className="divide-y divide-base-300 overflow-hidden rounded-box border border-base-300">
-        {CHANGELOG_ENTRIES.map((entry) => (
+        {entries.map((entry) => (
           <ReleaseNotes
             key={entry.version}
             entry={entry}

@@ -5,6 +5,7 @@ import {
   getNotifications,
   markAllNotificationsRead,
   markNotificationRead,
+  markNotificationsReadByDedupeKeys,
 } from "./store";
 
 // Node has no localStorage, so this exercises the in-memory fallback the
@@ -34,4 +35,17 @@ it("caps the list, counts unread, marks read and drops duplicates", () => {
   } as const;
   expect(addNotification(input)).not.toBeNull();
   expect(addNotification(input)).toBeNull();
+
+  addNotification({
+    kind: "announcement",
+    title: "Maintenance",
+    importance: "low",
+    dedupeKey: "announcement:notice-1",
+  });
+  markNotificationsReadByDedupeKeys(["announcement:notice-1"]);
+  expect(
+    getNotifications().find(
+      (item) => item.dedupeKey === "announcement:notice-1",
+    )?.read,
+  ).toBe(true);
 });

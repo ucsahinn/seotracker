@@ -40,6 +40,7 @@ declare namespace Cloudflare {
 
 interface ImportMetaEnv {
   readonly AUTH_MODE?: "cloudflare_access" | "local_noauth";
+  readonly VITE_ANNOUNCEMENTS_FEED_URL?: string;
 }
 
 interface ImportMeta {

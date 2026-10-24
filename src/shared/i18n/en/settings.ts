@@ -180,8 +180,7 @@ export const enSettings: Catalog = {
   "Uygulama yeni sürümü fark eder ve ne yapacağınızı söyler. Windows paketi güncellemeyi kendisi kurar, Docker'da verilen komutu siz çalıştırırsınız. Docker'da kontrolü kapatırsanız GitHub'a istek gitmez. Windows paketinde görev çubuğu uygulaması günde bir kez GitHub'a bakar. Kendiliğinden kurup kurmayacağını menüdeki {option} seçeneği belirler.":
     "The app notices a new version and tells you what to do. The Windows package installs the update itself; on Docker you run the command shown. On Docker, turning checks off means no request goes to GitHub. In the Windows package the taskbar app checks GitHub once a day, and the {option} option in its menu decides whether it installs on its own.",
   // The tray menu is Turkish only, so its items keep their Turkish name.
-  "Güncellemeleri kendiliğinden kur":
-    "Güncellemeleri kendiliğinden kur (Install updates automatically)",
+  "Güncellemeleri kendiliğinden kur": "Install updates automatically",
   Sürüm: "Version",
   "Site ve kılavuz": "Website and guide",
   "{version} yayımlandı.": "{version} is out.",
@@ -211,9 +210,6 @@ export const enSettings: Catalog = {
     "With checks on, the app asks GitHub for the latest version once a day. GitHub sees only your public IP address, the app name and its version; your sites, Google account and audits are never sent.",
   "Son kontrol: {date}.": "Last checked: {date}.",
   // settings/WhatsNewSection.tsx
-  "Sürüm notları Türkçe yazılır.": "The release notes are written in Turkish.",
-  "İngilizcesini seowatcher.io'da okuyun":
-    "Read them in English on seowatcher.io",
   "Kurulu sürüm": "Installed version",
   "Komutu kopyala": "Copy command",
   "Komut kopyalandı": "Command copied",

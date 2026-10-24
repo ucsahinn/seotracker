@@ -21,10 +21,18 @@ describe("compareVersions", () => {
 });
 
 describe("isNewerVersion", () => {
+  it("offers the Alpha line as an update to a retired 2.x installation", () => {
+    expect(isNewerVersion("2.4.3", "v0.5.0")).toBe(true);
+    expect(isNewerVersion("2.4.3", "v0.6.0")).toBe(true);
+  });
+
   it("does not offer the retired 2.x numbering to an alpha installation", () => {
     expect(isNewerVersion("0.5.0", "v2.4.3")).toBe(false);
+    expect(isNewerVersion("0.5.0", "v2.5.0")).toBe(false);
     expect(isNewerVersion("0.5.0", "v0.5.1")).toBe(true);
     expect(isNewerVersion("0.5.0", "v1.0.0")).toBe(true);
+    expect(isNewerVersion("0.6.0", "v2.4.3")).toBe(false);
+    expect(isNewerVersion("0.6.0", "v0.6.1")).toBe(true);
   });
   it("is false when the operator is ahead of the published tag", () => {
     // Routine while developing against the repo; nagging here would train

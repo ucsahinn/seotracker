@@ -6,6 +6,7 @@ const GUIDES: Record<string, [string, string]> = {
   settings: ["ayarlar", "settings"],
   "release-notes": ["surum-notlari", "release-notes"],
   support: ["yardim", "help"],
+  announcements: ["yardim", "help"],
   ai: ["ajan-kurulumu", "agent-setup"],
   audit: ["site-denetimi", "site-audit"],
   "search-performance": ["arama-performansi", "search-performance"],
@@ -25,7 +26,9 @@ export function pageGuideUrl(pathname: string): string {
     project && screen === "settings"
       ? segments[3] === "integrations"
         ? ["google-baglantisi", "google-connection"]
-        : ["projeler", "projects"]
+        : segments[3] === "context"
+          ? ["proje-bilgisi", "project-context"]
+          : ["projeler", "projects"]
       : (GUIDES[screen ?? ""] ?? ["panel", "dashboard"]);
   const english = getLocale() === "en";
   return `${SITE_URL}${english ? "/en" : ""}/docs/${guide[english ? 1 : 0]}/`;

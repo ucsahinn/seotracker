@@ -11,10 +11,10 @@
   </author>
   <icon>https://seowatcher.io/assets/icon-256.png</icon>
   <entry>
-    <id>https://seowatcher.io/en/docs/release-notes/#0.5.0</id>
-    <title>Release notes: seowatcher 0.5.0</title>
+    <id>https://seowatcher.io/en/docs/release-notes/#0.6.0</id>
+    <title>Release notes: seowatcher 0.6.0</title>
     <updated>2026-10-24T00:00:00Z</updated>
     <link rel="alternate" type="text/html" href="https://seowatcher.io/en/docs/release-notes/" />
-    <summary>seowatcher 0.5.0 Alpha — Turkish and English UI, a notification center, sounds and clearer task progress.</summary>
+    <summary>seowatcher 0.6.0 Alpha — live announcements, guided next steps and broader agent reports.</summary>
   </entry>
 </feed>

@@ -1,14 +1,25 @@
 import { Link } from "@tanstack/react-router";
 import type { LinkOptions } from "@tanstack/react-router";
 import { type ComponentType } from "react";
-import { CircleHelp, ScrollText, Settings, X } from "lucide-react";
+import {
+  CircleHelp,
+  ExternalLink,
+  Megaphone,
+  ScrollText,
+  Settings,
+  X,
+} from "lucide-react";
 import {
   connectNavGroup,
   getProjectNavGroups,
 } from "@/client/navigation/items";
 import { ProjectSwitcher } from "@/client/features/projects/ProjectSwitcher";
-import { t } from "@/shared/i18n";
 import { NotificationBell } from "@/client/features/notifications/NotificationBell";
+import { useLiveAnnouncements } from "@/client/features/announcements/useLiveAnnouncements";
+import { useReadAnnouncementIds } from "@/client/features/announcements/readState";
+import { formatCount } from "@/shared/format";
+import { t } from "@/shared/i18n";
+import { siteUrl } from "@/client/features/support/links";
 
 interface SidebarProps {
   projectId: string | null;
@@ -65,14 +76,21 @@ export function Sidebar({ projectId, onNavigate, onClose }: SidebarProps) {
   return (
     <div className="flex h-full w-60 flex-col bg-base-200">
       <div className="flex items-center justify-between px-4 pb-2 pt-3">
-        <Link
-          to="/"
+        <a
+          href={siteUrl()}
+          target="_blank"
+          rel="noopener noreferrer"
           onClick={onNavigate}
-          className="flex items-center gap-2 text-base font-semibold text-base-content"
+          aria-label={t("seowatcher.io sitesini yeni sekmede aç")}
+          className="group flex min-w-0 items-center gap-2 text-base font-semibold text-base-content"
         >
           <img src="/icon.svg" alt="" width={22} height={22} />
-          seowatcher
-        </Link>
+          <span className="truncate">seowatcher</span>
+          <ExternalLink
+            className="size-3 shrink-0 text-subtle opacity-70 transition-opacity group-hover:opacity-100"
+            aria-hidden
+          />
+        </a>
         {onClose ? (
           <button
             type="button"
@@ -127,8 +145,26 @@ export function Sidebar({ projectId, onNavigate, onClose }: SidebarProps) {
 }
 
 function SidebarFooter({ onNavigate }: { onNavigate?: () => void }) {
+  const { data = [] } = useLiveAnnouncements();
+  const readIds = useReadAnnouncementIds();
+  const unread = data.filter((item) => !readIds.includes(item.id)).length;
   return (
     <div className="shrink-0 border-t border-base-300 px-2 py-2 pb-safe">
+      <Link
+        to="/announcements"
+        onClick={onNavigate}
+        activeOptions={{ exact: false, includeSearch: false }}
+        className={navItemClass}
+        activeProps={navItemActiveProps}
+      >
+        <Megaphone className="h-4 w-4 shrink-0" aria-hidden />
+        <span className="truncate">{t("Duyurular")}</span>
+        {unread > 0 ? (
+          <span className="badge badge-primary badge-sm ml-auto">
+            {formatCount(unread)}
+          </span>
+        ) : null}
+      </Link>
       <SidebarNavLink
         icon={ScrollText}
         label={t("Sürüm notları")}

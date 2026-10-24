@@ -2,6 +2,24 @@
 
 Her sürümde eklenen özellikler ve düzeltilen sorunlar, en yeni sürümden başlayarak listelenir.
 
+## [0.6.0] Alpha — 2026-10-25
+
+### Yenilikler
+
+- Canlı duyurular uygulamanın Duyurular ekranında görünür. Türkçe ve İngilizce metinleri parola korumalı yönetim ekranından hazırlayıp yayımlayabilirsiniz.
+- Panodaki Sıradaki adımlar bölümü Google bağlantıları, güncel denetim, proje bilgisi ve ajan kurulumuna göre hazırlık puanı ile yönlendirici görevler sunar. Puan SEO başarısı veya arama sırası değildir.
+- Ajan raporları denetim ve PageSpeed, Search Console, fırsatlar, sıralama geçmişi, kayıtlı kelimeler, Analytics, dizin ve site haritası verilerini kapsayan bir kontrol listesiyle iyileştirme adımları hazırlar.
+- Uygulamadaki marka bağlantısı masaüstü ve mobil menüden seowatcher.io sitesini açar.
+
+### Düzeltmeler
+
+- Rapor yönergeleri tüm ilgili veri kaynaklarının durumunu ve eksik veriyi raporda açıkça belirtir.
+- Küçük ekranlarda menüdeki marka alanı taşmadan kullanılabilir.
+
+### Güvenlik
+
+- Yönetim API'sinde çapraz kaynak erişimi kapatıldı; herkese açık feed yalnızca duyuru okumaya izin verir.
+
 ## [0.5.0] Alpha — 2026-10-23
 
 ### Yenilikler

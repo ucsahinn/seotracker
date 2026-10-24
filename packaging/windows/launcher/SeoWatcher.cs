@@ -692,11 +692,23 @@ namespace SeoWatcher
         public const string Repo = "ucsahinn/seotracker";
         public static readonly string UpdateDir = Path.Combine(Paths.DataRoot, "updates");
         private const long MaxInstallerBytes = 500L * 1024 * 1024;
+        private static readonly HashSet<string> RetiredVersions = new HashSet<string>(StringComparer.Ordinal)
+        {
+            "2.0.0", "2.1.0", "2.2.0", "2.2.1", "2.3.0", "2.4.3", "2.5.0"
+        };
 
         public static Version Current()
         {
             Version v;
             return Version.TryParse(Paths.Version(), out v) ? v : new Version(0, 0, 0);
+        }
+
+        public static bool ShouldOfferUpdate(Version current, Version latest)
+        {
+            if (current == null || latest == null) return false;
+            if (current.Major == 0 && RetiredVersions.Contains(latest.ToString())) return false;
+            if (current.Major >= 1 && RetiredVersions.Contains(current.ToString()) && latest.Major == 0) return true;
+            return latest > current;
         }
 
         public static string InstallerName(Version v)
@@ -1948,9 +1960,7 @@ namespace SeoWatcher
             }
             lastCheck = DateTime.UtcNow;
             var current = Updater.Current();
-            // The 2.x tags predate the alpha renumbering; never reinstall them.
-            bool retiredRelease = current.Major == 0 && System.Text.RegularExpressions.Regex.IsMatch(latest.Version.ToString(), @"^2\.(0\.0|1\.0|2\.[01]|3\.0|4\.3|5\.0)$");
-            if (retiredRelease || latest.Version <= current)
+            if (!Updater.ShouldOfferUpdate(current, latest.Version))
             {
                 available = null;
                 RefreshUpdateItem();

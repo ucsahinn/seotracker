@@ -1,12 +1,19 @@
 ---
 title: Sürüm notları
-description: seowatcher 0.5.0 Alpha — Türkçe ve İngilizce arayüz, bildirim merkezi, sesler ve daha açık işlem durumları.
-updated: 2026-10-24
+description: seowatcher 0.6.0 Alpha — canlı duyurular, puanlı sonraki adımlar ve daha kapsamlı ajan raporları.
+updated: 2026-10-25
 ---
 
-Son sürüm **0.5.0 Alpha**, 23 Ekim 2026. Güncellerken veriniz korunur.
+Son sürüm **0.6.0 Alpha**, 25 Ekim 2026. Güncellerken veriniz korunur.
 
 2.x serisinden 0.x.x Alpha serisine ilk geçiş için yeni kurulum dosyasını elle çalıştırın; eski otomatik güncelleyici küçük numarayı yeni sürüm olarak tanımaz.
+
+## 0.6.0 Alpha
+
+- Canlı Türkçe ve İngilizce duyurular uygulamadaki Duyurular ekranında görünür. Yönetim ekranından hazırlayıp yayımlayabilirsiniz.
+- Panodaki Sıradaki adımlar, Google bağlantıları, güncel denetim, proje bilgisi ve ajan kurulumuna göre görevleri ve hazırlık puanını gösterir. Bu puan SEO başarısını ölçmez.
+- Ajan raporları denetim, Search Console, fırsatlar, sıralama geçmişi, kayıtlı kelimeler, Analytics, dizin ve site haritası verilerine bakarak iyileştirme adımları sunar.
+- Uygulama menüsündeki seowatcher logosu seowatcher.io sitesini açar.
 
 ## 0.5.0 Alpha
 

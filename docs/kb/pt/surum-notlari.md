@@ -1,12 +1,19 @@
 ---
 title: Notas da versão
-description: seowatcher 0.5.0 Alpha — Interface em turco e inglês, notificações, sons e progresso mais claro.
-updated: 2026-10-24
+description: seowatcher 0.6.0 Alpha — avisos ao vivo, próximos passos guiados e relatórios de agentes mais completos.
+updated: 2026-10-25
 ---
 
-A versão mais recente é a **0.5.0 Alpha**, de 23 de outubro de 2026. Os dados são mantidos na atualização.
+A versão mais recente é a **0.6.0 Alpha**, de 25 de outubro de 2026. Os dados são mantidos na atualização.
 
 Para passar de 2.x para 0.x.x Alpha, execute o novo instalador manualmente; o atualizador antigo não reconhece o número menor como mais recente.
+
+## 0.6.0 Alpha
+
+- Avisos em turco e inglês aparecem na aplicação. Prepare e publique os avisos na página de administração.
+- A secção Próximos passos do painel apresenta tarefas e uma pontuação de preparação com base nas ligações Google, numa auditoria recente, no contexto do projeto e na configuração do agente. A pontuação não mede o desempenho de SEO.
+- Os relatórios dos agentes analisam a auditoria, Search Console, oportunidades, histórico de posições, palavras-chave guardadas, Analytics, cobertura do índice e sitemaps para sugerir melhorias.
+- O logótipo seowatcher no menu da aplicação abre seowatcher.io.
 
 ## 0.5.0 Alpha
 

@@ -35,4 +35,21 @@ describe("release categories", () => {
       }),
     ).toEqual([]);
   });
+
+  it("keeps colored release labels when section headings are in English", () => {
+    expect(
+      getReleaseCategories({
+        sections: [
+          { heading: "Features", items: [] },
+          { heading: "Fixes", items: [] },
+          { heading: "Security", items: [] },
+        ],
+      }),
+    ).toEqual(["feature", "fix", "security"]);
+    expect(
+      getReleaseCategories({
+        sections: [{ heading: "What the app offers", items: [] }],
+      }),
+    ).toEqual(["feature"]);
+  });
 });

@@ -20,10 +20,10 @@
     return reduce || document.documentElement.hasAttribute("data-still");
   }
 
-  // 1. Desktop headlines enter word by word. Touch screens keep the static
-  // gradient, avoiding word-by-word layout reads and blur layers at startup.
+  // 1. Headlines enter word by word on every device. The animation uses only
+  // opacity and transform; it does not measure or rewrite layout on resize.
   $$("[data-words]").forEach(function (el) {
-    if (reduce || !finePointer) return;
+    if (reduce) return;
     var words = el.textContent.trim().split(/\s+/);
     el.textContent = "";
     words.forEach(function (w, i) {
@@ -233,6 +233,25 @@
     refreshDownloads();
     window.setInterval(refreshDownloads, 120000);
     document.addEventListener("visibilitychange", refreshDownloads);
+  }
+
+  // Run the diagram's signal paths only while the diagram is on screen. The
+  // CSS reduced-motion rule leaves them static for users who request less motion.
+  var flow = document.querySelector(".flow");
+  if (flow && !reduce) {
+    if ("IntersectionObserver" in window) {
+      var flowObserver = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            flow.classList.toggle("in-view", entry.isIntersecting);
+          });
+        },
+        { rootMargin: "-12% 0px -12% 0px", threshold: 0.01 },
+      );
+      flowObserver.observe(flow);
+    } else {
+      flow.classList.add("in-view");
+    }
   }
 
   // 4. Header hairline once scrolled.

@@ -1,10 +1,14 @@
 import { describe, expect, it } from "vitest";
-import { CHANGELOG_ENTRIES, plainText } from "./changelog";
+import {
+  CHANGELOG_ENTRIES,
+  CHANGELOG_ENTRIES_EN,
+  plainText,
+} from "./changelog";
 
 /*
- * These notes are read out of the real CHANGELOG.md at build time, so the
- * parser's input is a file that changes every release. The tests assert the
- * shape it must keep producing, not any particular release's wording.
+ * These are the customer-facing notes shipped with the app, separate from
+ * the fuller repository changelog. The tests protect their structure and
+ * keep local setup instructions out of the release screen.
  */
 describe("changelog", () => {
   it("reads the releases out of the real file", () => {
@@ -14,15 +18,35 @@ describe("changelog", () => {
     }
   });
 
-  /*
-   * "Yayınlanmamış" is what is committed but not released, so it describes a
-   * build nobody is running. Showing it under a version heading in the app
-   * would promise the operator changes their container does not have.
-   */
+  it("keeps a complete English translation aligned with every Turkish release", () => {
+    expect(CHANGELOG_ENTRIES_EN).toHaveLength(CHANGELOG_ENTRIES.length);
+    for (const [index, entry] of CHANGELOG_ENTRIES.entries()) {
+      const english = CHANGELOG_ENTRIES_EN[index];
+      expect(english?.version).toBe(entry.version);
+      expect(english?.sections.map((section) => section.items.length)).toEqual(
+        entry.sections.map((section) => section.items.length),
+      );
+    }
+    expect(CHANGELOG_ENTRIES_EN[0]?.sections[0]?.heading).toBe("Features");
+  });
+
   it("leaves the unreleased section out", () => {
     expect(
       CHANGELOG_ENTRIES.some((entry) => entry.version === "Yayınlanmamış"),
     ).toBe(false);
+  });
+
+  it("omits retired setup instructions from customer-facing history", () => {
+    const text = CHANGELOG_ENTRIES.flatMap((entry) =>
+      entry.sections.flatMap((section) =>
+        section.items.map((item) => item.text),
+      ),
+    ).join("\n");
+    expect(text).not.toContain("docker compose exec");
+    expect(text).not.toContain(".wrangler/mcp-token");
+    expect(CHANGELOG_ENTRIES.some((entry) => entry.version === "0.0.0")).toBe(
+      false,
+    );
   });
 
   it("keeps releases newest first", () => {
@@ -67,23 +91,6 @@ describe("changelog", () => {
       (section) => !section.heading.includes("Ekle"),
     );
     expect(prose.every((section) => section.items.length > 0)).toBe(true);
-  });
-
-  /*
-   * The command in a fenced block is the point of a "what to do first"
-   * section, and the sentence around it only says to run it -- so it is kept
-   * as a code item of its own, without the fence markers.
-   */
-  it("keeps fenced code as a code item without the fences", () => {
-    const items = CHANGELOG_ENTRIES.flatMap((entry) =>
-      entry.sections.flatMap((section) => section.items),
-    );
-    expect(items.some((item) => item.text.includes("```"))).toBe(false);
-    expect(
-      items.some(
-        (item) => item.code && item.text.startsWith("docker compose exec"),
-      ),
-    ).toBe(true);
   });
 
   it("strips the inline markdown rather than printing it", () => {

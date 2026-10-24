@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { Menu } from "lucide-react";
 import {
@@ -9,8 +8,10 @@ import {
 import { Sidebar } from "@/client/components/Sidebar";
 import { getProjects } from "@/serverFunctions/projects";
 import { getLastProjectId } from "@/client/lib/active-project";
+import { siteUrl } from "@/client/features/support/links";
 import { t } from "@/shared/i18n";
 import { useBackgroundNotifications } from "@/client/features/notifications/useBackgroundNotifications";
+import { AnnouncementNotifications } from "@/client/features/announcements/AnnouncementNotifications";
 
 export function AuthenticatedAppLayout({
   children,
@@ -23,6 +24,34 @@ export function AuthenticatedAppLayout({
 }) {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   useBackgroundNotifications();
+  return (
+    <>
+      <AnnouncementNotifications />
+      <AppFrame
+        projectId={projectId}
+        banner={banner}
+        drawerOpen={drawerOpen}
+        setDrawerOpen={setDrawerOpen}
+      >
+        {children}
+      </AppFrame>
+    </>
+  );
+}
+
+function AppFrame({
+  children,
+  projectId,
+  banner,
+  drawerOpen,
+  setDrawerOpen,
+}: {
+  children: React.ReactNode;
+  projectId?: string;
+  banner?: React.ReactNode;
+  drawerOpen: boolean;
+  setDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
   const drawerOpener = React.useRef<HTMLButtonElement | null>(null);
   // On non-project pages (e.g. /settings) there's no projectId in the URL, so
   // derive one for the nav/switcher: prefer the last-visited project, else the
@@ -119,9 +148,15 @@ function MobileTopBar({
       >
         <Menu className="h-5 w-5" />
       </button>
-      <Link to="/" className="ml-1 font-semibold text-base-content">
+      <a
+        href={siteUrl()}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={t("seowatcher.io sitesini yeni sekmede aç")}
+        className="ml-1 font-semibold text-base-content"
+      >
         seowatcher
-      </Link>
+      </a>
     </div>
   );
 }

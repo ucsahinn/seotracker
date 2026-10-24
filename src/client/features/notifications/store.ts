@@ -11,6 +11,7 @@ const notificationSchema = z.object({
     "report",
     "inspection",
     "diagnostics",
+    "announcement",
     "error",
   ]),
   title: z.string(),
@@ -110,6 +111,24 @@ export function markNotificationRead(id: string): void {
 
 export function markAllNotificationsRead(): void {
   commit(load().map((n) => (n.read ? n : { ...n, read: true })));
+}
+
+export function markNotificationsReadByDedupeKeys(keys: string[]): void {
+  const selected = new Set(keys);
+  const list = load();
+  if (
+    !list.some(
+      (item) => !item.read && item.dedupeKey && selected.has(item.dedupeKey),
+    )
+  )
+    return;
+  commit(
+    list.map((item) =>
+      item.dedupeKey && selected.has(item.dedupeKey) && !item.read
+        ? { ...item, read: true }
+        : item,
+    ),
+  );
 }
 
 export function clearNotifications(): void {

@@ -12,6 +12,15 @@
  * operator is out of date.
  */
 const VERSION = /^v?(\d+)\.(\d+)\.(\d+)$/;
+const RETIRED_VERSIONS = new Set([
+  "2.0.0",
+  "2.1.0",
+  "2.2.0",
+  "2.2.1",
+  "2.3.0",
+  "2.4.3",
+  "2.5.0",
+]);
 
 type VersionOrder = -1 | 0 | 1 | null;
 
@@ -46,13 +55,20 @@ export function compareVersions(a: string, b: string): VersionOrder {
  * repo, and nagging then would train them to ignore the notice.
  */
 export function isNewerVersion(current: string, latest: string): boolean {
-  // These tags belong to the retired numbering scheme, not to the alpha line.
-  // Existing 2.x installers need a one-time manual install to enter that line.
-  if (
-    /^v?0\./.test(current) &&
-    /^v?2\.(?:0\.0|1\.0|2\.[01]|3\.0|4\.3|5\.0)$/.test(latest)
-  ) {
+  const order = compareVersions(current, latest);
+  if (order === null) return false;
+
+  const currentRelease = current.trim().replace(/^v/, "");
+  const latestRelease = latest.trim().replace(/^v/, "");
+
+  // The 0.x line intentionally resets numbering. Offer its releases to known
+  // 2.x installs even though ordinary numeric ordering calls them lower.
+  if (RETIRED_VERSIONS.has(currentRelease) && latestRelease.startsWith("0."))
+    return true;
+
+  // Never offer a retired 2.x tag as an update to an Alpha installation.
+  if (currentRelease.startsWith("0.") && RETIRED_VERSIONS.has(latestRelease))
     return false;
-  }
-  return compareVersions(current, latest) === -1;
+
+  return order === -1;
 }

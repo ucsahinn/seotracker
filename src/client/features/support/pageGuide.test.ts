@@ -12,6 +12,7 @@ it("opens each screen's guide in the interface language at a published path", ()
       "/settings",
       "/release-notes",
       "/support",
+      "/announcements",
       "/ai",
       "/projects",
       "/p/id",
@@ -24,6 +25,7 @@ it("opens each screen's guide in the interface language at a published path", ()
       "/p/id/reports/one",
       "/p/id/context",
       "/p/id/settings/integrations",
+      "/p/id/settings/context",
     ]) {
       const url = new URL(pageGuideUrl(path));
       expect(
@@ -37,5 +39,8 @@ it("opens each screen's guide in the interface language at a published path", ()
   setLocale("en");
   expect(pageGuideUrl("/p/id/audit")).toBe(
     "https://seowatcher.io/en/docs/site-audit/",
+  );
+  expect(pageGuideUrl("/p/id/settings/context")).toBe(
+    "https://seowatcher.io/en/docs/project-context/",
   );
 });
