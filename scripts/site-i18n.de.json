@@ -17,6 +17,7 @@
     "Dezember"
   ],
   "dateOrder": "dmy",
+  "privacySlug": "datenschutz",
   "callouts": {
     "Symptom": "belirti",
     "Ursache": "sebep",

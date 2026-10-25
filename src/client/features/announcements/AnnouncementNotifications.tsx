@@ -6,12 +6,19 @@ import { useLocale } from "@/shared/i18n";
 import { getAnnouncementText } from "@/shared/announcement";
 
 export function AnnouncementNotifications() {
-  const { data = [] } = useLiveAnnouncements();
+  const { data = [], isSuccess } = useLiveAnnouncements();
+  const previouslyVisible = React.useRef<Set<string> | null>(null);
   const readIds = useReadAnnouncementIds();
   const locale = useLocale();
 
   React.useEffect(() => {
+    if (!isSuccess) return;
+    if (previouslyVisible.current === null) {
+      previouslyVisible.current = new Set(data.map((item) => item.id));
+      return;
+    }
     for (const item of data) {
+      if (previouslyVisible.current.has(item.id)) continue;
       if (readIds.includes(item.id)) continue;
       const content = getAnnouncementText(item, locale);
       notify({
@@ -23,7 +30,8 @@ export function AnnouncementNotifications() {
         dedupeKey: `announcement:${item.id}`,
       });
     }
-  }, [data, locale, readIds]);
+    previouslyVisible.current = new Set(data.map((item) => item.id));
+  }, [data, isSuccess, locale, readIds]);
 
   return null;
 }

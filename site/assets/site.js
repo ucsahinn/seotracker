@@ -254,6 +254,24 @@
     }
   }
 
+  // Draw the roadmap rail only when its section enters view.
+  var roadmap = document.querySelector("[data-roadmap]");
+  if (roadmap && !reduce) {
+    if ("IntersectionObserver" in window) {
+      var roadmapObserver = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            roadmap.classList.toggle("in-view", entry.isIntersecting);
+          });
+        },
+        { rootMargin: "-12% 0px -12% 0px", threshold: 0.01 },
+      );
+      roadmapObserver.observe(roadmap);
+    } else {
+      roadmap.classList.add("in-view");
+    }
+  }
+
   // 4. Header hairline once scrolled.
   var header = document.querySelector("header");
   if (header && "IntersectionObserver" in window) {

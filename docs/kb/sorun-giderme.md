@@ -165,7 +165,7 @@ Windows'ta her şey `%LOCALAPPDATA%\seowatcher` klasöründedir: `data` (veritab
 
 Docker'da veri `seotracker_data` deposunda (`/app/.wrangler`) durur. Günlükleri `docker compose logs -f` komutuyla görürsünüz.
 
-Sorun bildirirken **Yardım** ekranındaki **Tanılama paketi indir** düğmesine basın. Dosyada sürüm, kurulum kontrolleri ve son 25 denetim var, hiçbir gizli değer yok. Dosyayı GitHub'daki sorun kaydına ekleyin.
+Sorun bildirirken **Yardım** ekranındaki **Tanılama paketi indir** düğmesine basın. Paket son 25 denetimin aşama ve hata özetlerini de içerir; PageSpeed hata metinlerinden sayfa URL'leri çıkarılır. Proje adı ve alan adı gibi tanıtıcı bilgiler bulunabilir; dosyayı göndermeden önce inceleyin.
 
 ## Başlatıcı uyarıları
 

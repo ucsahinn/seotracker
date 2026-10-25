@@ -1,4 +1,4 @@
-import { count, desc, inArray } from "drizzle-orm";
+import { and, count, desc, inArray, isNotNull } from "drizzle-orm";
 import { version } from "../../../../package.json";
 import { db } from "@/db";
 import {
@@ -17,6 +17,7 @@ import {
 import { getAuthMode } from "@/lib/auth-mode";
 import { getSelfHostSetupStatus } from "@/server/lib/setup-status";
 import { gscPropertyHost } from "@/shared/gscProperty";
+import { sanitizeAuditErrorDetail } from "./sanitizeAuditError";
 
 /**
  * Everything needed to diagnose someone else's install, and nothing that
@@ -37,6 +38,7 @@ import { gscPropertyHost } from "@/shared/gscProperty";
  */
 /** Recent audits are the most useful signal and the biggest table; cap them. */
 const AUDIT_SAMPLE = 25;
+const LIGHTHOUSE_ERROR_SAMPLE = 5;
 
 export async function collectDiagnostics(now = new Date()) {
   const [setup, tables, projectRows, auditRows, connections] =
@@ -157,7 +159,9 @@ export async function listRecentAudits() {
       projectId: audits.projectId,
       status: audits.status,
       currentPhase: audits.currentPhase,
+      failedPhase: audits.failedPhase,
       errorCode: audits.errorCode,
+      errorDetail: audits.errorDetail,
       pagesCrawled: audits.pagesCrawled,
       pagesTotal: audits.pagesTotal,
       lighthouseTotal: audits.lighthouseTotal,
@@ -191,11 +195,55 @@ export async function listRecentAudits() {
           .groupBy(auditIssues.auditId);
   const issueCounts = new Map(counts.map((row) => [row.auditId, row.total]));
 
+  const lighthouseErrorRows =
+    rows.length === 0
+      ? []
+      : await db
+          .select({
+            auditId: auditLighthouseResults.auditId,
+            errorMessage: auditLighthouseResults.errorMessage,
+          })
+          .from(auditLighthouseResults)
+          .where(
+            and(
+              inArray(
+                auditLighthouseResults.auditId,
+                rows.map((row) => row.id),
+              ),
+              isNotNull(auditLighthouseResults.errorMessage),
+            ),
+          );
+  const lighthouseErrorsByAudit = new Map<string, Map<string, number>>();
+  for (const row of lighthouseErrorRows) {
+    if (!row.errorMessage) continue;
+    const errorMessage = sanitizeAuditErrorDetail(row.errorMessage);
+    if (!errorMessage) continue;
+    const errors =
+      lighthouseErrorsByAudit.get(row.auditId) ?? new Map<string, number>();
+    errors.set(errorMessage, (errors.get(errorMessage) ?? 0) + 1);
+    lighthouseErrorsByAudit.set(row.auditId, errors);
+  }
+
   // The start URL is the site, and the site is already named by the project
   // row; repeating it per audit adds nothing and widens the surface.
   return rows.map((row) => ({
     ...row,
+    errorDetail: sanitizeAuditErrorDetail(row.errorDetail),
     issueCount: issueCounts.get(row.id) ?? 0,
+    lighthouseErrors: [
+      ...(lighthouseErrorsByAudit.get(row.id) ?? new Map<string, number>()),
+    ]
+      .map(([errorMessage, total]) => ({ count: total, errorMessage }))
+      .reduce<{ count: number; errorMessage: string }[]>((top, error) => {
+        const index = top.findIndex((item) => item.count < error.count);
+        if (index === -1) {
+          if (top.length < LIGHTHOUSE_ERROR_SAMPLE) top.push(error);
+        } else {
+          top.splice(index, 0, error);
+        }
+        if (top.length > LIGHTHOUSE_ERROR_SAMPLE) top.pop();
+        return top;
+      }, []),
   }));
 }
 

@@ -14,14 +14,20 @@ export const publicAnnouncementSchema = z.object({
   body_tr: z.string(),
   title_en: z.string(),
   body_en: z.string(),
-  title_de: z.string(),
-  body_de: z.string(),
-  title_fr: z.string(),
-  body_fr: z.string(),
-  title_it: z.string(),
-  body_it: z.string(),
-  title_pt: z.string(),
-  body_pt: z.string(),
+  interaction_type: z.enum(["none", "poll", "question"]).default("none"),
+  prompt_tr: z.string().default(""),
+  prompt_en: z.string().default(""),
+  options: z
+    .array(
+      z.object({
+        id: z.string().uuid(),
+        label_tr: z.string(),
+        label_en: z.string(),
+        count: z.number().int().nonnegative(),
+      }),
+    )
+    .default([]),
+  response_count: z.number().int().nonnegative().default(0),
   category: announcementCategorySchema,
   publish_at: z.string().datetime({ offset: true }),
   expires_at: z.string().datetime({ offset: true }).nullable(),
@@ -37,14 +43,10 @@ export function getAnnouncementText(
   announcement: PublicAnnouncement,
   locale: Locale,
 ): { title: string; body: string } {
-  const copy = {
-    tr: [announcement.title_tr, announcement.body_tr],
-    en: [announcement.title_en, announcement.body_en],
-    de: [announcement.title_de, announcement.body_de],
-    fr: [announcement.title_fr, announcement.body_fr],
-    it: [announcement.title_it, announcement.body_it],
-    pt: [announcement.title_pt, announcement.body_pt],
-  }[locale];
+  const copy =
+    locale === "tr"
+      ? [announcement.title_tr, announcement.body_tr]
+      : [announcement.title_en, announcement.body_en];
   const [rawTitle, rawBody] = copy;
   const title = rawTitle.trim();
   const body = rawBody.trim();

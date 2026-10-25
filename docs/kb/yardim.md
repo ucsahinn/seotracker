@@ -43,7 +43,7 @@ Bir şey ters giderse ilk buraya bakın. Bu ekran kurulumunuzu kontrol eder, eks
 
 **"Giriş ve erişim" satırında "parolasız tek kullanıcı" yazıyor.** Bu normaldir. Uygulama yalnızca kendi bilgisayarınızdan açılır. Dışarıya açmak isterseniz önüne kendi şifreli girişinizi koymanız gerekir.
 
-**Tanılama paketinde ne var?** Sürüm, kurulum kontrolleri, tablo sayıları ve son denetimlerin özeti. Google anahtarları, şifreler ve kişisel veriler yoktur.
+**Tanılama paketinde ne var?** Sürüm, kurulum kontrolleri, tablo sayıları, son 25 denetimin aşama ve hata özetleri bulunur. PageSpeed hataları URL'ler çıkarılarak özetlenir. Gizli anahtarlar ve parolalar eklenmez; proje adları, alan adları ve Google mülk kimlikleri yer alabilir. Göndermeden önce dosyaları inceleyin.
 
 ## Sınırlar
 

@@ -167,7 +167,7 @@ Unter Windows liegt alles im Ordner `%LOCALAPPDATA%\seowatcher`: `data` (Datenba
 
 Bei Docker liegen die Daten im Datenspeicher `seotracker_data` (`/app/.wrangler`). Die Protokolle sehen Sie mit dem Befehl `docker compose logs -f`.
 
-Bei einer Problemmeldung klicken Sie auf dem Bildschirm **Yardım** auf **Tanılama paketi indir** (Diagnosepaket herunterladen). Die Datei enthält die Version, die Installationsprüfungen und die letzten 25 Audits, aber keine Geheimnisse. Hängen Sie die Datei an den Fehlerbericht auf GitHub an.
+Klicken Sie bei einer Problemmeldung im Bildschirm **Yardım** auf **Tanılama paketi indir** (Diagnosepaket herunterladen). Das Paket enthält Phasen- und Fehlerzusammenfassungen der letzten 25 Audits; Seiten-URLs werden aus PageSpeed-Fehlertexten entfernt. Projektnamen und Domains können enthalten sein. Prüfen Sie die Datei vor dem Anhängen an einen GitHub-Fehlerbericht.
 
 ## Warnungen des Starters
 

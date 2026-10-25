@@ -5,6 +5,13 @@
   "compatibility_date": "2026-10-24",
   "workers_dev": true,
   "preview_urls": false,
+  "ratelimits": [
+    {
+      "name": "RESPONSE_LIMITER",
+      "namespace_id": "2026102500317",
+      "simple": { "limit": 20, "period": 60 },
+    },
+  ],
   "observability": { "enabled": true },
   "d1_databases": [
     {

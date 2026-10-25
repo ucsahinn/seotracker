@@ -1,53 +1,12 @@
 import { describe, expect, it, vi } from "vitest";
 import { createAnnouncementHandler } from "./handler";
-import type { AnnouncementRepository } from "./repository";
-import type { Announcement } from "./types";
-
-const TOKEN = "x".repeat(48);
-const NOW = "2026-10-25T10:00:00.000Z";
-
-function makeAnnouncement(overrides: Partial<Announcement> = {}): Announcement {
-  return {
-    id: "f167ffc9-c83d-449d-bb81-9e7b69940a0d",
-    title_tr: "Bakım çalışması",
-    body_tr: "Kısa bir kesinti olabilir.",
-    title_en: "Scheduled maintenance",
-    body_en: "A short interruption is possible.",
-    title_de: "Geplante Wartung",
-    body_de: "Eine kurze Unterbrechung ist möglich.",
-    title_fr: "Maintenance programmée",
-    body_fr: "Une courte interruption est possible.",
-    title_it: "Manutenzione programmata",
-    body_it: "È possibile una breve interruzione.",
-    title_pt: "Manutenção programada",
-    body_pt: "Pode ocorrer uma breve interrupção.",
-    category: "maintenance",
-    status: "published",
-    publish_at: "2026-10-25T09:00:00.000Z",
-    expires_at: null,
-    created_at: NOW,
-    updated_at: NOW,
-    ...overrides,
-  };
-}
-
-function repository(
-  overrides: Partial<AnnouncementRepository> = {},
-): AnnouncementRepository {
-  return {
-    listPublished: vi.fn(async () => [makeAnnouncement()]),
-    listAll: vi.fn(async () => [makeAnnouncement()]),
-    create: vi.fn(async () => undefined),
-    update: vi.fn(async () => undefined),
-    get: vi.fn(async () => makeAnnouncement()),
-    setStatus: vi.fn(async () => undefined),
-    ...overrides,
-  };
-}
-
-function request(path: string, init: RequestInit = {}) {
-  return new Request(`https://announcements.test${path}`, init);
-}
+import {
+  makeAnnouncement,
+  NOW,
+  repository,
+  request,
+  TOKEN,
+} from "./handler.test-support";
 
 describe("announcement service", () => {
   it("serves only the public feed and supports conditional revalidation", async () => {
@@ -67,14 +26,19 @@ describe("announcement service", () => {
           body_tr: makeAnnouncement().body_tr,
           title_en: makeAnnouncement().title_en,
           body_en: makeAnnouncement().body_en,
-          title_de: makeAnnouncement().title_de,
-          body_de: makeAnnouncement().body_de,
-          title_fr: makeAnnouncement().title_fr,
-          body_fr: makeAnnouncement().body_fr,
-          title_it: makeAnnouncement().title_it,
-          body_it: makeAnnouncement().body_it,
-          title_pt: makeAnnouncement().title_pt,
-          body_pt: makeAnnouncement().body_pt,
+          title_de: makeAnnouncement().title_en,
+          body_de: makeAnnouncement().body_en,
+          title_fr: makeAnnouncement().title_en,
+          body_fr: makeAnnouncement().body_en,
+          title_it: makeAnnouncement().title_en,
+          body_it: makeAnnouncement().body_en,
+          title_pt: makeAnnouncement().title_en,
+          body_pt: makeAnnouncement().body_en,
+          interaction_type: "none",
+          prompt_tr: "",
+          prompt_en: "",
+          options: [],
+          response_count: 0,
           category: makeAnnouncement().category,
           publish_at: makeAnnouncement().publish_at,
           expires_at: null,
@@ -178,110 +142,5 @@ describe("announcement service", () => {
     );
     expect(response.status).toBe(400);
     expect(create).not.toHaveBeenCalled();
-  });
-
-  it("stores valid new announcements and allows status changes", async () => {
-    const saved: Announcement[] = [];
-    const setStatus = vi.fn(async () => undefined);
-    const update = vi.fn(async (item: Announcement) => {
-      saved[0] = item;
-    });
-    const repo = repository({
-      create: async (item) => {
-        saved.push(item);
-      },
-      get: async () => saved[0] ?? null,
-      setStatus,
-      update,
-    });
-    const handler = createAnnouncementHandler(repo, {
-      adminToken: TOKEN,
-      now: () => new Date(NOW),
-    });
-    const response = await handler(
-      request("/api/admin/announcements", {
-        method: "POST",
-        headers: {
-          authorization: `Bearer ${TOKEN}`,
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({
-          title_tr: "Ürün yeniliği",
-          body_tr: "Yeni raporlar hazır.",
-          title_en: "Product update",
-          body_en: "New reports are ready.",
-          title_de: "Produktneuigkeit",
-          body_de: "Neue Berichte sind verfügbar.",
-          title_fr: "Nouveauté produit",
-          body_fr: "Les nouveaux rapports sont prêts.",
-          title_it: "Novità del prodotto",
-          body_it: "I nuovi report sono pronti.",
-          title_pt: "Novidade do produto",
-          body_pt: "Os novos relatórios estão prontos.",
-          category: "product",
-          status: "published",
-          publish_at: NOW,
-          expires_at: null,
-        }),
-      }),
-    );
-    expect(response.status).toBe(201);
-    expect(response.headers.get("access-control-allow-origin")).toBeNull();
-    expect(saved).toHaveLength(1);
-    expect(saved[0]).toMatchObject({
-      status: "published",
-      title_en: "Product update",
-    });
-
-    const updated = await handler(
-      request(`/api/admin/announcements/${saved[0].id}`, {
-        method: "PATCH",
-        headers: {
-          authorization: `Bearer ${TOKEN}`,
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({ status: "archived" }),
-      }),
-    );
-    expect(updated.status).toBe(200);
-    expect(updated.headers.get("access-control-allow-origin")).toBeNull();
-    expect(setStatus).toHaveBeenCalledWith(saved[0].id, "archived", NOW);
-
-    const edited = await handler(
-      request(`/api/admin/announcements/${saved[0].id}`, {
-        method: "PATCH",
-        headers: {
-          authorization: `Bearer ${TOKEN}`,
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({
-          title_tr: "Yenilenen başlık",
-          body_tr: "Güncel metin",
-          title_en: "Updated title",
-          body_en: "Updated message",
-          title_de: "Aktualisierter Titel",
-          body_de: "Aktualisierte Nachricht",
-          title_fr: "Titre mis à jour",
-          body_fr: "Message mis à jour",
-          title_it: "Titolo aggiornato",
-          body_it: "Messaggio aggiornato",
-          title_pt: "Título atualizado",
-          body_pt: "Mensagem atualizada",
-          category: "product",
-          status: "published",
-          publish_at: NOW,
-          expires_at: null,
-        }),
-      }),
-    );
-    expect(edited.status).toBe(200);
-    expect(update).toHaveBeenCalledWith(
-      expect.objectContaining({
-        id: saved[0].id,
-        title_tr: "Yenilenen başlık",
-        status: "published",
-        created_at: NOW,
-      }),
-    );
   });
 });

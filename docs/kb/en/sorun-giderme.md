@@ -167,7 +167,7 @@ On Windows, everything is in the `%LOCALAPPDATA%\seowatcher` folder: `data` (the
 
 On Docker, the data is in the `seotracker_data` volume (`/app/.wrangler`). You see the logs with the `docker compose logs -f` command.
 
-When you report a problem, press the **Download diagnostics bundle** button on the **Help** screen. The file has the version, the setup checks and the last 25 audits. It has no secrets. Attach the file to the issue on GitHub.
+When you report a problem, press **Download diagnostics bundle** on the **Help** screen. The package includes phase and error summaries for the last 25 audits; page URLs are removed from PageSpeed error text. It may contain identifying details such as project names and domains, so review it before attaching it to a GitHub issue.
 
 ## Launcher messages
 

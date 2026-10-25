@@ -1,6 +1,10 @@
 import { readFileSync } from "node:fs";
 import { expect, test } from "vitest";
 
+const packageVersion = JSON.parse(
+  readFileSync(new URL("../package.json", import.meta.url), "utf8"),
+).version as string;
+
 const homepages = [
   ["Turkish source", "./site-home.tr.html"],
   ["Turkish", "../site/index.html"],
@@ -30,7 +34,7 @@ test.each(homepages)(
     const app = applications[0];
     expect(app).toMatchObject({
       name: "seowatcher",
-      softwareVersion: "0.6.0 Alpha",
+      softwareVersion: `${packageVersion} Alpha`,
       applicationCategory: expect.any(String),
       operatingSystem:
         "Windows 10, Windows 11 (64-bit), macOS and Linux (Docker)",

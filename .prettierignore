@@ -1,5 +1,7 @@
 **/build
 **/public
+**/.tmp/
+**/.tmp/**
 pnpm-lock.yaml
 # no parser for dotenv files; explicit `prettier <file>` aborts without this
 .env*

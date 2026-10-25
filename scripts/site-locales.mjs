@@ -101,6 +101,7 @@ export const locales = {
     kbSub: "",
     base: "",
     docsBase: "/docs/",
+    privacySlug: "gizlilik",
     dateOrder: "dmy",
     months: [
       "Ocak",
@@ -158,6 +159,7 @@ export const locales = {
     kbSub: "en",
     base: "/en",
     docsBase: "/en/docs/",
+    privacySlug: "privacy",
     dateOrder: "mdy",
     months: [
       "January",
@@ -241,6 +243,10 @@ for (const file of fs.readdirSync(path.join(root, "scripts"))) {
   for (const g of groups)
     if (!data.groups?.[g.key])
       throw new Error(`${file}: no group title for ${g.key}`);
+  if (!/^[a-z0-9-]+$/.test(data.privacySlug || ""))
+    throw new Error(`${file}: no valid localized privacy slug`);
+  if (new Set(Object.values(slugs)).size !== Object.keys(slugs).length)
+    throw new Error(`${file}: guide slugs must be unique`);
   const t = { ...locales.en.t, ...data.t };
   for (const k of ["switchLabel", "switchTo", "switchHref", "switchShort"])
     delete t[k];
@@ -253,6 +259,7 @@ for (const file of fs.readdirSync(path.join(root, "scripts"))) {
     kbSub: lang,
     base: `/${lang}`,
     docsBase: `/${lang}/docs/`,
+    privacySlug: data.privacySlug,
     dateOrder: data.dateOrder in dateFormats ? data.dateOrder : "dmy",
     months: data.months,
     callouts: data.callouts || locales.en.callouts,
@@ -293,14 +300,23 @@ export function docUrl(locale, slug) {
   return `${locale.docsBase}${locale.slugs ? locale.slugs[slug] : slug}/`;
 }
 
+/** URL of the privacy notice in the current edition. */
+export function privacyUrl(locale) {
+  return `${locale.base}/${locale.privacySlug}/`;
+}
+
 /**
  * Rewrites the site-internal links of a Turkish page for another edition:
  * "/" and "/#x" become "/<lang>/" and "/<lang>/#x", "/docs/<tr-slug>/"
  * becomes "/<lang>/docs/<slug>/". Asset and external links are left alone.
  */
 export function rewriteLinks(html, locale) {
-  if (locale.lang === "tr") return html;
-  return html
+  const localizedPrivacy = html.replace(
+    /href="\/privacy\/(#[^"]*)?"/g,
+    (m, hash) => `href="${privacyUrl(locale)}${hash || ""}"`,
+  );
+  if (locale.lang === "tr") return localizedPrivacy;
+  return localizedPrivacy
     .replace(/href="\/docs\/([a-z0-9-]+)\/(#[^"]*)?"/g, (m, slug, hash) =>
       locale.slugs[slug]
         ? `href="${locale.docsBase}${locale.slugs[slug]}/${hash || ""}"`

@@ -4133,4 +4133,8 @@ export const deCatalog = {
   "Ürün görüntüleme": "Angesehene Artikel",
   "Sepete eklenen ürün": "In den Warenkorb gelegte Artikel",
   "Arama sayısı": "Suchanfragen",
+  "Başarısız denetimler, hangi aşamada durduğunu ve URL/kimlik bilgileri ayıklanmış hata açıklamasını içerir. PageSpeed ölçüm hataları URL'ler çıkarılarak özetlenir.":
+    "Fehlgeschlagene Audits zeigen die Phase und eine bereinigte Fehlermeldung. PageSpeed-Messfehler werden ohne Seiten-URLs zusammengefasst.",
+  "PageSpeed ölçüm hatası ({count}): {message}":
+    "PageSpeed-Messfehler ({count}): {message}",
 } as const;

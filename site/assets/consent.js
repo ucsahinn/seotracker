@@ -12,6 +12,7 @@
       reject: "Reddet",
       settings: "Ayarlar",
       privacy: "Gizlilik",
+      privacySlug: "gizlilik",
       optional: "İsteğe bağlı kullanım ölçümü (Google Analytics)",
       required:
         "Tercihiniz bu tarayıcıda 6 ay saklanır. Reklam çerezleri kullanılmaz.",
@@ -25,6 +26,7 @@
       reject: "Reject",
       settings: "Settings",
       privacy: "Privacy",
+      privacySlug: "privacy",
       optional: "Optional usage measurement (Google Analytics)",
       required:
         "Your choice is stored in this browser for 6 months. No advertising cookies are used.",
@@ -38,6 +40,7 @@
       reject: "Ablehnen",
       settings: "Einstellungen",
       privacy: "Datenschutz",
+      privacySlug: "datenschutz",
       optional: "Optionale Nutzungsmessung (Google Analytics)",
       required:
         "Ihre Auswahl wird 6 Monate in diesem Browser gespeichert. Wir verwenden keine Werbe-Cookies.",
@@ -51,6 +54,7 @@
       reject: "Refuser",
       settings: "Paramètres",
       privacy: "Confidentialité",
+      privacySlug: "confidentialite",
       optional: "Mesure facultative des visites (Google Analytics)",
       required:
         "Votre choix est conservé dans ce navigateur pendant 6 mois. Aucun cookie publicitaire n’est utilisé.",
@@ -64,6 +68,7 @@
       reject: "Rifiuta",
       settings: "Impostazioni",
       privacy: "Privacy",
+      privacySlug: "privacy",
       optional: "Misurazione facoltativa delle visite (Google Analytics)",
       required:
         "La scelta viene conservata in questo browser per 6 mesi. Non usiamo cookie pubblicitari.",
@@ -77,6 +82,7 @@
       reject: "Recusar",
       settings: "Definições",
       privacy: "Privacidade",
+      privacySlug: "privacidade",
       optional: "Medição opcional de utilização (Google Analytics)",
       required:
         "A sua escolha é guardada neste navegador durante 6 meses. Não usamos cookies de publicidade.",
@@ -185,7 +191,7 @@
   banner.className = "cookie-banner";
   banner.dataset.consentBanner = "";
   banner.setAttribute("aria-labelledby", "cookie-title");
-  banner.innerHTML = `<div class="cookie-copy"><h2 id="cookie-title" tabindex="-1">${text.title}</h2><p>${text.text} <a data-consent-privacy href="${prefix}/privacy/">${text.privacy}</a></p><div data-consent-options hidden><label><input type="checkbox" data-consent-analytics> ${text.optional}</label><p>${text.required}</p><button type="button" data-consent-save>${text.save}</button></div></div><div class="cookie-actions"><button type="button" data-consent-accept>${text.accept}</button><button type="button" data-consent-reject>${text.reject}</button><button type="button" data-consent-expand aria-expanded="false">${text.settings}</button></div>`;
+  banner.innerHTML = `<div class="cookie-copy"><h2 id="cookie-title" tabindex="-1">${text.title}</h2><p>${text.text} <a data-consent-privacy href="${prefix}/${text.privacySlug}/">${text.privacy}</a></p><div data-consent-options hidden><label><input type="checkbox" data-consent-analytics> ${text.optional}</label><p>${text.required}</p><button type="button" data-consent-save>${text.save}</button></div></div><div class="cookie-actions"><button type="button" data-consent-accept>${text.accept}</button><button type="button" data-consent-reject>${text.reject}</button><button type="button" data-consent-expand aria-expanded="false">${text.settings}</button></div>`;
   document.body.append(banner);
   const bannerSpace = document.createElement("div");
   bannerSpace.setAttribute("aria-hidden", "true");
@@ -226,7 +232,7 @@
     document.body;
   const links = document.createElement("div");
   links.className = "cookie-footer";
-  links.innerHTML = `<a href="${prefix}/privacy/">${text.privacy}</a><button type="button" data-consent-settings>${text.reopen}</button>`;
+  links.innerHTML = `<a href="${prefix}/${text.privacySlug}/">${text.privacy}</a><button type="button" data-consent-settings>${text.reopen}</button>`;
   footer.append(links);
   links.querySelector("button").addEventListener("click", (event) => {
     lastFocus = event.currentTarget;

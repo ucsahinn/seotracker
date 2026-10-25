@@ -167,7 +167,7 @@ Sous Windows, tout est dans le dossier `%LOCALAPPDATA%\seowatcher` : `data` (la 
 
 Avec Docker, les données sont dans le volume `seotracker_data` (`/app/.wrangler`). Vous voyez les journaux avec la commande `docker compose logs -f`.
 
-Quand vous signalez un problème, cliquez sur le bouton **Tanılama paketi indir** (Télécharger le paquet de diagnostic) de l'écran **Yardım**. Le fichier contient la version, les contrôles d'installation et les 25 derniers audits, aucun secret. Joignez le fichier au signalement sur GitHub.
+Pour signaler un problème, cliquez sur **Tanılama paketi indir** (Télécharger le paquet de diagnostic) dans l'écran **Yardım**. Le paquet résume l'étape et les erreurs des 25 derniers audits ; les URL des pages sont retirées des erreurs PageSpeed. Il peut contenir des noms de projets et des domaines. Vérifiez le fichier avant de le joindre à un signalement GitHub.
 
 ## Avertissements du lanceur
 

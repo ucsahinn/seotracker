@@ -134,11 +134,22 @@ describe.each(["consent.js", "generated/consent.min.js"])("%s", (filename) => {
     "%s exposes a local privacy link and keyboard-operable settings",
     (lang) => {
       const window = openSite(undefined, lang);
-      const expected = lang === "tr" ? "/privacy/" : `/${lang}/privacy/`;
+      const slugs: Record<string, string> = {
+        tr: "gizlilik",
+        en: "privacy",
+        de: "datenschutz",
+        fr: "confidentialite",
+        it: "privacy",
+        pt: "privacidade",
+      };
+      const expected = `${lang === "tr" ? "" : `/${lang}`}/${slugs[lang]}/`;
       expect(
         window.document
           .querySelector<HTMLAnchorElement>("[data-consent-privacy]")
           ?.getAttribute("href"),
+      ).toBe(expected);
+      expect(
+        window.document.querySelector(".cookie-footer a")?.getAttribute("href"),
       ).toBe(expected);
       expect(
         window.document.querySelector("button[data-consent-settings]"),

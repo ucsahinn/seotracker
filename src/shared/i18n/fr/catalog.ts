@@ -4122,4 +4122,8 @@ export const frCatalog = {
   "Ürün görüntüleme": "Articles consultés",
   "Sepete eklenen ürün": "Articles ajoutés au panier",
   "Arama sayısı": "Recherches",
+  "Başarısız denetimler, hangi aşamada durduğunu ve URL/kimlik bilgileri ayıklanmış hata açıklamasını içerir. PageSpeed ölçüm hataları URL'ler çıkarılarak özetlenir.":
+    "Les audits échoués indiquent l’étape et un résumé expurgé de l’erreur. Les erreurs PageSpeed sont regroupées sans URL de page.",
+  "PageSpeed ölçüm hatası ({count}): {message}":
+    "Erreur de mesure PageSpeed ({count}) : {message}",
 } as const;

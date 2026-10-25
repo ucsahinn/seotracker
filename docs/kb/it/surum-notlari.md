@@ -1,12 +1,23 @@
 ---
 title: Note di versione
-description: seowatcher 0.6.0 Alpha — annunci in diretta, prossimi passi guidati e report degli agenti più completi.
-updated: 2026-10-25
+description: seowatcher 0.7.1 Alpha — annunci compatibili e diagnostica più chiara.
+updated: 2026-10-26
 ---
 
-L’ultima versione è la **0.6.0 Alpha**, del 25 ottobre 2026. I dati restano intatti durante l’aggiornamento.
+L’ultima versione è la **0.7.1 Alpha**, del 26 ottobre 2026. I dati restano intatti durante l’aggiornamento.
 
 Per passare da 2.x a 0.x.x Alpha, avviare manualmente il nuovo programma di installazione; il vecchio aggiornamento non riconosce il numero inferiore come più recente.
+
+## 0.7.1 Alpha
+
+- **Annunci:** il testo inglese di riserva completa i campi lingua richiesti dall’app 0.7.0.
+- **Aiuto · Diagnostica:** le verifiche non riuscite mostrano la fase d’interruzione, un messaggio ripulito e gli errori PageSpeed più frequenti. Gli URL delle pagine vengono rimossi dai riepiloghi esportati.
+
+## 0.7.0 Alpha
+
+- **Avvio di Windows:** sono visibili la preparazione del server e l’avanzamento del download degli aggiornamenti.
+- **Notifiche di Windows:** aggiornamenti e annunci compaiono nel centro notifiche se l’opzione è attiva.
+- **Annunci:** i contenuti si preparano in turco e inglese; nelle altre lingue dell’interfaccia viene mostrato l’inglese.
 
 ## 0.6.0 Alpha
 

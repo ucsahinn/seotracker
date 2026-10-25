@@ -45,7 +45,7 @@ This is the first place to look when something goes wrong. The screen checks you
 
 **The "Giriş ve erişim" row says "parolasız tek kullanıcı" (single user, no password).** This is expected. The app opens only from your own computer. To open it to the outside, put your own password-protected sign-in in front of it.
 
-**What is in the diagnostics package?** The version, the setup checks, table counts and a summary of the latest audits. It has no Google keys, passwords or personal data.
+**What is in the diagnostics package?** The version, setup checks, table counts and phase and error summaries for the latest 25 audits. PageSpeed errors are summarized without page URLs. Secrets and passwords are excluded; project names, domains and Google property IDs may be included. Review the files before sending them.
 
 ## Limits
 

@@ -480,4 +480,8 @@ export const enSettings: Catalog = {
   "Rapor kaydedildi ancak indirilemedi. Raporlar ekranından tekrar deneyin.":
     "The report was saved but could not be downloaded. Try again from Reports.",
   Denetim: "Audit",
+  "Başarısız denetimler, hangi aşamada durduğunu ve URL/kimlik bilgileri ayıklanmış hata açıklamasını içerir. PageSpeed ölçüm hataları URL'ler çıkarılarak özetlenir.":
+    "Failed audits include the phase where they stopped and a redacted error summary. PageSpeed measurement errors are summarized without page URLs.",
+  "PageSpeed ölçüm hatası ({count}): {message}":
+    "PageSpeed measurement error ({count}): {message}",
 };

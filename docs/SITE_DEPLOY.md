@@ -97,7 +97,11 @@ Canlı indirme sayacı tarayıcıdan `api.github.com` adresine gider; CSP'de
 - Kabul ve ret aynı görünürlükte sunulur. Tercih 6 ay saklanır; her sayfanın
   altındaki çerez ayarlarından değiştirilebilir. İzin geri çekilince ölçüm
   durdurulur, erişilebilir GA çerezleri silinir ve sayfa yeniden yüklenir.
-- Gizlilik sayfası `/privacy/`, diğer dillerde `/<dil>/privacy/` adresindedir.
+- Gizlilik sayfası dile özgü adrestedir: `/gizlilik/`, `/en/privacy/`,
+  `/de/datenschutz/`, `/fr/confidentialite/`, `/it/privacy/` ve
+  `/pt/privacidade/`. Eski Türkçe, Almanca, Fransızca ve Portekizce adresler
+  uyumluluk için noindex HTML yönlendirmesi sunar; Hetzner'de HTTP 301 için
+  paket içindeki `privacy-redirects.conf` yönergeleri nginx'e elle eklenmelidir.
   `pnpm run site:build` bu altı sayfayı ve site haritasını üretir. Toplam 144
   içerik ve gizlilik URL'si beklenir; 404 sayfası site haritasına girmez.
 - `_headers` yalnızca destekleyen hosting platformlarında uygulanır. nginx
@@ -117,13 +121,13 @@ Resmi uygulama kaynakları:
 
 Tarayıcı, GitHub’ın tüm herkese açık sürümlerindeki Windows kurulum dosyalarının `download_count` değerlerini toplar. Alpha sürümler dahildir; taslaklar, checksum ve arşiv dosyaları dahil değildir. Bu sayı tekil kullanıcı veya kurulum sayısı değildir. Sekme önbelleği ve sıfırdan yükselen sayaç animasyonu kullanılmaz. Görünür sayfa iki dakikada bir yenilenir; arka plandaki sekme istek göndermez. API hatasında, kota dolduğunda veya 15 saniyelik zaman aşımında kart gizlenir; kısmi ya da eski toplam canlı diye sunulmaz. GitHub verisinin güncellenme gecikmesi bizim kontrolümüzde değildir.
 
-## Hetzner yapılandırma örneği ve son yayın kapısı
+## Hetzner yapılandırma örneği ve güncelleme paketi
 
 [nginx-site-server.conf](./nginx-site-server.conf) HTTP → HTTPS ve www → ana alan adı yönlendirmelerini, gerçek 404 yanıtını ve önbellek sürelerini içerir. Dizin ve sertifika yolları örnektir; sunucudaki gerçek yollarla eşleştirin. Sertifika hem `seowatcher.io` hem `www.seowatcher.io` adını kapsamalıdır. Başlık dosyasını örnekteki snippet yoluna yerleştirin; etkinleştirmeden önce sunucuda `nginx -t` çalıştırın. Yerel makinede nginx olmadığı için bu yapılandırma burada çalıştırılmadı.
 
-24 Ekim 2026 kontrolünde GitHub `v0.5.0 Alpha` sürümünü en son yayımlanan sürüm olarak gösteriyor; sürüm numaralı kurulum dosyası, sabit indirme adı ve `SHA256SUMS.txt` varlıkları listeleniyor. Altı dildeki ana sayfalar sürüm numaralı `v0.5.0/seowatcher-setup-0.5.0.exe` dosyasına bağlanıyor. Bu kontrol, indirme sayacı için sabit değer değildir.
+24 Ekim 2026 kontrolünde GitHub `v0.5.0 Alpha` sürümünü en son yayımlanan sürüm olarak gösteriyordu; sürüm numaralı kurulum dosyası, sabit indirme adı ve `SHA256SUMS.txt` varlıkları listeleniyordu. Altı dildeki ana sayfaların sürüm numaralı indirme bağlantısı bu kontroldeki duruma göre üretildi. Bu kontrol, indirme sayacı için sabit değer değildir.
 
-23 Ekim tarihli Hetzner arşivini tekrar kullanmayın: sonraki site değişikliklerini içermiyor. Her yayın öncesi `site/` çıktısını güncel kaynaklardan yeniden üretin ve yeni arşivin SHA-256 özetini doğrulayın. Bu depodaki örnek nginx dosyalarının ve önceki kurulum betiğinin bulunması, VPS'e uygulanmış oldukları anlamına gelmez.
+26 Ekim 2026 tarihli 0.7.1 Alpha site güncelleme paketi `dist/seowatcher-hetzner-site-0.7.1-alpha-20261026.tar.gz` dosyasıdır. Bu arşiv yalnızca mevcut statik siteyi yeni sürüm dizinine alıp `current` symlink'ini değiştirmek içindir; ilk kurulum betiğini tekrar çalıştırmayın. Paket açıklaması ve doğrulama komutları `dist/hetzner-site-update-0.7.1-alpha-20261026/README-UPDATE.md` içindedir. Arşivdeki doğrulayıcı 149 HTML dosyasını ve 144 sitemap adresini denetler. Bu yerel hazırlık, VPS'e uygulanmış olduğu anlamına gelmez.
 
 Yayın sonrası Google Search Console ve Bing Webmaster Tools'ta `https://seowatcher.io/sitemap.xml` gönderilmeli; ana sayfa, altı dilin canonical/hreflang ilişkileri ve bir olmayan URL'nin 404 durumu kontrol edilmelidir. robots.txt ve llms.txt arama/yanıt motorlarına erişim sağlar; dizine alınma veya yapay zekâ yanıtında yer alma garantisi vermez.
 

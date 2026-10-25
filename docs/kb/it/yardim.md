@@ -45,7 +45,7 @@ Se qualcosa va storto, guardare prima qui. La schermata controlla l'installazion
 
 **Nella riga "Giriş ve erişim" c'è scritto "parolasız tek kullanıcı" (utente singolo, senza password).** È normale. L'app si apre solo dal proprio computer. Per aprirla all'esterno bisogna metterle davanti un proprio accesso protetto da password.
 
-**Che cosa c'è nel pacchetto diagnostico?** La versione, i controlli dell'installazione, il numero di righe delle tabelle e un riepilogo degli ultimi controlli. Non ci sono chiavi di Google, password né dati personali.
+**Che cosa c'è nel pacchetto diagnostico?** La versione, i controlli dell'installazione, il numero di righe delle tabelle e i riepiloghi di fase ed errore degli ultimi 25 controlli. Gli errori PageSpeed sono riepilogati senza gli URL delle pagine. Chiavi segrete e password sono escluse; possono comparire nomi dei progetti, domini e ID delle proprietà Google. Controllare i file prima di inviarli.
 
 ## Limiti
 

@@ -1,12 +1,23 @@
 ---
 title: Sürüm notları
-description: seowatcher 0.6.0 Alpha — canlı duyurular, puanlı sonraki adımlar ve daha kapsamlı ajan raporları.
-updated: 2026-10-25
+description: seowatcher 0.7.1 Alpha — duyuru uyumluluğu ve daha açıklayıcı tanılama paketleri.
+updated: 2026-10-26
 ---
 
-Son sürüm **0.6.0 Alpha**, 25 Ekim 2026. Güncellerken veriniz korunur.
+Son sürüm **0.7.1 Alpha**, 26 Ekim 2026. Güncellerken veriniz korunur.
 
 2.x serisinden 0.x.x Alpha serisine ilk geçiş için yeni kurulum dosyasını elle çalıştırın; eski otomatik güncelleyici küçük numarayı yeni sürüm olarak tanımaz.
+
+## 0.7.1 Alpha
+
+- **Duyurular:** Duyuru akışı, 0.7.0 uygulamasının beklediği ek dil alanlarını İngilizce yedek metinlerle tamamlar.
+- **Yardım · Tanılama:** Başarısız denetim kaydı durduğu aşamayı, ayıklanmış hata ayrıntısını ve en sık PageSpeed ölçüm hatalarını gösterir. Sayfa URL'leri dışa aktarılan özetlerden çıkarılır.
+
+## 0.7.0 Alpha
+
+- **Windows başlangıcı:** Sunucu hazırlığı ve güncelleme indirme ilerlemesi görünür.
+- **Windows bildirimleri:** İzin verildiğinde uygulama güncellemeleri ve duyurular Windows bildirim merkezine gelir.
+- **Duyurular:** İçerik Türkçe ve İngilizce hazırlanır; diğer arayüz dillerinde İngilizce gösterilir.
 
 ## 0.6.0 Alpha
 

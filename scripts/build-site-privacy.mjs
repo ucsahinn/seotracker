@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { locales, privacyUrl } from "./site-locales.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const site = path.join(root, "site");
@@ -12,14 +13,15 @@ const escape = (text) =>
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll('"', "&quot;");
-const url = (lang) =>
-  `https://seowatcher.io${lang === "tr" ? "" : `/${lang}`}/privacy/`;
+const url = (lang) => `https://seowatcher.io${privacyUrl(locales[lang])}`;
 const alternates = [
   ...Object.keys(copy).map((lang) => [lang, url(lang)]),
   ["x-default", url("tr")],
 ];
 for (const [lang, text] of Object.entries(copy)) {
-  const dir = path.join(site, lang === "tr" ? "" : lang, "privacy");
+  const locale = locales[lang];
+  const localeDir = lang === "tr" ? "" : lang;
+  const dir = path.join(site, localeDir, locale.privacySlug);
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(
     path.join(dir, "index.html"),
@@ -35,19 +37,30 @@ ${text.sections.map(([title, paragraph]) => `<section><h2>${escape(title)}</h2><
 <nav aria-label="Language">${Object.keys(copy)
       .map(
         (code) =>
-          `<a href="${code === "tr" ? "" : `/${code}`}/privacy/" lang="${code}" hreflang="${code}"${lang === code ? ' aria-current="page"' : ""}>${code.toUpperCase()}</a>`,
+          `<a href="${privacyUrl(locales[code])}" lang="${code}" hreflang="${code}"${lang === code ? ' aria-current="page"' : ""}>${code.toUpperCase()}</a>`,
       )
       .join(" ")}</nav></main><footer></footer></body></html>\n`,
   );
+  if (locale.privacySlug !== "privacy") {
+    const legacyDir = path.join(site, localeDir, "privacy");
+    fs.mkdirSync(legacyDir, { recursive: true });
+    const target = privacyUrl(locale);
+    fs.writeFileSync(
+      path.join(legacyDir, "index.html"),
+      `<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><meta name="robots" content="noindex"><link rel="canonical" href="${url(lang)}"><meta http-equiv="refresh" content="0;url=${target}"><title>${escape(text.title)} | seowatcher</title></head><body><a href="${target}">${escape(text.title)}</a></body></html>\n`,
+    );
+  }
 }
 // The docs builder writes the content sitemap first; append policy pages once.
 const sitemapFile = path.join(site, "sitemap.xml");
 let sitemap = fs
   .readFileSync(sitemapFile, "utf8")
-  .replace(
-    /\s*<url>\s*<loc>https:\/\/seowatcher\.io\/(?:[a-z]{2}\/)?privacy\/<\/loc>[\s\S]*?<\/url>/g,
-    "",
-  );
+  .replace(/  <url>[\s\S]*?<\/url>/g, (entry) => {
+    const loc = /<loc>([^<]+)<\/loc>/.exec(entry)?.[1];
+    return Object.values(locales).some((locale) => url(locale.lang) === loc)
+      ? ""
+      : entry;
+  });
 const entries = Object.keys(copy)
   .map(
     (lang) =>

@@ -2,13 +2,20 @@
 
 Her sürümde eklenen özellikler ve düzeltilen sorunlar, en yeni sürümden başlayarak listelenir.
 
+## [0.7.1] Alpha — 2026-10-26
+
+### Düzeltmeler
+
+- **Duyurular:** Akış, 0.7.0 uygulamasının beklediği ek dil alanlarını İngilizce yedek metinle tamamlar.
+- **Yardım · Tanılama paketi:** Başarısız denetimin aşaması, ayıklanmış hata ayrıntısı ve en sık PageSpeed ölçüm hataları eklenir. Sayfa URL'leri dışa aktarılan özetlerden çıkarılır.
+
 ## [0.7.0] Alpha — 2026-10-25
 
 ### Yenilikler
 
-- Windows uygulaması açılırken sunucu hazırlığı görünür ilerleme penceresinde gösterilir; güncelleme indirilirken gerçek yüzde görünür.
-- Uygulama güncellemeleri ve canlı duyurular, izin verildiğinde Windows bildirim merkezinde gösterilir. Ayarlar → Bildirimler bölümünden açılıp kapatılır.
-- Canlı duyurular Türkçe, İngilizce, Almanca, Fransızca, İtalyanca ve Portekizce hazırlanıp seçili arayüz dilinde gösterilebilir.
+- **Açılış:** Sunucu hazırlığı ve güncelleme indirme yüzdesi görünür ilerleme penceresinde gösterilir.
+- **Windows bildirimleri:** Uygulama güncellemeleri ve canlı duyurular izin verildiğinde Windows bildirim merkezinde görünür. Ayarlar → Bildirimler bölümünden yönetilir.
+- **Duyurular:** İçerikler Türkçe ve İngilizce hazırlanır; diğer arayüz dillerinde İngilizce metin gösterilir.
 
 ## [0.6.0] Alpha — 2026-10-24
 

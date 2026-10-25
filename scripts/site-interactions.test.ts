@@ -98,6 +98,34 @@ describe.each(["site.js", "generated/site.min.js"])("%s", (filename) => {
     expect(doc.activeElement).toBe(toggle);
   });
 
+  test("roadmap rail activates when its section enters view", () => {
+    const window = openSite(false, (window) => {
+      window.document.body.insertAdjacentHTML(
+        "beforeend",
+        '<section data-roadmap><ol class="roadmap-track"></ol></section>',
+      );
+      class VisibleIntersectionObserver {
+        callback: IntersectionObserverCallback;
+        constructor(callback: IntersectionObserverCallback) {
+          this.callback = callback;
+        }
+        observe(target: Element) {
+          this.callback(
+            [{ target, isIntersecting: true } as IntersectionObserverEntry],
+            this as unknown as IntersectionObserver,
+          );
+        }
+        unobserve() {}
+      }
+      Object.defineProperty(window, "IntersectionObserver", {
+        value: VisibleIntersectionObserver,
+      });
+    });
+    expect(
+      window.document.querySelector("[data-roadmap]")!.classList,
+    ).toContain("in-view");
+  });
+
   test("language menu closes with Escape even when motion is reduced", () => {
     const window = openSite();
     const details = window.document.querySelector("details")!;

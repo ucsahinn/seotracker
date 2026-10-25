@@ -1455,6 +1455,188 @@ html.js .reveal:not(.in) .spark .area {
   text-wrap: pretty;
 }
 
+/* A quiet product roadmap: one illuminated rail, four stops, and no promised dates. */
+.roadmap-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 28px;
+  margin-bottom: clamp(36px, 5vw, 60px);
+}
+.roadmap-kicker {
+  margin-bottom: 12px;
+  color: var(--accent-2);
+  font-size: 13px;
+  font-weight: 650;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.roadmap-head h2 {
+  margin-bottom: 16px;
+}
+.roadmap-note,
+.roadmap-status {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  border: 1px solid var(--hairline-strong);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 560;
+  line-height: 1.3;
+}
+.roadmap-note {
+  flex-shrink: 0;
+  padding: 10px 15px;
+  margin-bottom: 5px;
+  background: var(--glass);
+}
+.roadmap-track {
+  position: relative;
+  display: grid;
+  gap: 18px;
+  max-width: 980px;
+  padding: 0 0 0 50px;
+  margin: 0 auto;
+  list-style: none;
+}
+.roadmap-track::before,
+.roadmap-track::after {
+  position: absolute;
+  top: 34px;
+  bottom: 34px;
+  left: 15px;
+  width: 2px;
+  content: "";
+  transform-origin: top;
+}
+.roadmap-track::before {
+  background: linear-gradient(var(--accent) 0%, var(--hairline-strong) 100%);
+  opacity: 0.32;
+}
+.roadmap-track::after {
+  background: linear-gradient(var(--accent-2), var(--accent));
+  box-shadow: 0 0 14px var(--glow);
+  transform: scaleY(0);
+  transition: transform 1.4s var(--ease);
+}
+.roadmap.in-view .roadmap-track::after {
+  transform: scaleY(1);
+}
+.roadmap-stop {
+  position: relative;
+  min-width: 0;
+  transition-delay: calc(var(--d, 0) * 1ms);
+}
+.roadmap-node {
+  position: absolute;
+  z-index: 1;
+  top: 24px;
+  left: -50px;
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border: 1px solid color-mix(in oklch, var(--accent) 60%, var(--hairline));
+  border-radius: 50%;
+  background: var(--bg-2);
+  color: var(--accent-2);
+  font-size: 11px;
+  font-weight: 700;
+  box-shadow: 0 0 0 6px var(--bg);
+}
+.roadmap-card {
+  padding: clamp(20px, 3vw, 30px);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  background:
+    radial-gradient(ellipse at 0 0, var(--glow-soft), transparent 52%),
+    linear-gradient(130deg, var(--bg-2), var(--bg));
+  box-shadow: var(--shadow-raise);
+  transition:
+    border-color 260ms var(--ease),
+    transform 360ms var(--ease),
+    box-shadow 360ms var(--ease);
+}
+.roadmap-card:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in oklch, var(--accent) 35%, var(--hairline));
+  box-shadow: 0 22px 54px -30px var(--glow);
+}
+.roadmap-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 13px;
+  color: var(--subtle);
+  font-size: 13px;
+}
+.roadmap-status {
+  padding: 5px 10px;
+  border-color: color-mix(in oklch, var(--accent) 35%, var(--hairline));
+  background: var(--glow-soft);
+  color: var(--accent-2);
+}
+.roadmap-card h3 {
+  margin-bottom: 10px;
+  font-size: clamp(19px, 2.2vw, 23px);
+}
+.roadmap-card p,
+.roadmap-foot {
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.65;
+  max-width: 68ch;
+}
+.roadmap-foot {
+  max-width: 980px;
+  padding-left: 50px;
+  margin: 22px auto 0;
+  color: var(--subtle);
+  font-size: 13px;
+}
+@media (max-width: 640px) {
+  .roadmap-head {
+    align-items: start;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .roadmap-note {
+    margin: 0;
+  }
+  .roadmap-track {
+    gap: 14px;
+    padding-left: 40px;
+  }
+  .roadmap-track::before,
+  .roadmap-track::after {
+    left: 12px;
+  }
+  .roadmap-node {
+    left: -40px;
+    width: 27px;
+    height: 27px;
+    top: 20px;
+  }
+  .roadmap-card {
+    padding: 19px;
+  }
+  .roadmap-foot {
+    padding-left: 40px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .roadmap-track::after {
+    transform: scaleY(1);
+    transition: none;
+  }
+  .roadmap-card {
+    transition: none;
+  }
+}
+
 /* Install: steps and a double-bezel download card with a slow conic sweep. */
 .install .wrap {
   display: grid;

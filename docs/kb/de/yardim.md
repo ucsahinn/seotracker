@@ -45,7 +45,7 @@ Wenn etwas schiefgeht, sehen Sie zuerst hier nach. Dieser Bildschirm prüft Ihre
 
 **In der Zeile „Giriş ve erişim“ steht „parolasız tek kullanıcı“ (ein Benutzer ohne Passwort).** Das ist normal. Die App öffnet sich nur von Ihrem eigenen Computer aus. Wollen Sie sie im Netz erreichbar machen, müssen Sie selbst eine gesicherte Anmeldung davorschalten.
 
-**Was steht im Diagnosepaket?** Die Version, die Installationsprüfungen, Tabellenzahlen und eine Zusammenfassung der letzten Audits. Google-Schlüssel, Passwörter und persönliche Daten sind nicht enthalten.
+**Was steht im Diagnosepaket?** Version, Installationsprüfungen, Tabellenzahlen sowie Phasen- und Fehlerzusammenfassungen der letzten 25 Audits. PageSpeed-Fehler werden ohne Seiten-URLs zusammengefasst. Geheimnisse und Passwörter fehlen; Projektnamen, Domains und Google-Property-IDs können enthalten sein. Prüfen Sie die Dateien vor dem Senden.
 
 ## Grenzen
 

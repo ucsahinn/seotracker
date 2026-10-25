@@ -3,16 +3,25 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, expect, it, vi } from "vitest";
 import { setLocale } from "@/shared/i18n";
 import { AnnouncementsPage } from "./AnnouncementsPage";
-import { ANNOUNCEMENTS_QUERY_KEY, getLiveAnnouncements } from "./feed";
+import {
+  ANNOUNCEMENTS_QUERY_KEY,
+  getLiveAnnouncements,
+  submitAnnouncementResponse,
+} from "./feed";
 import type * as FeedModule from "./feed";
 import type { PublicAnnouncement } from "@/shared/announcement";
 
 vi.mock("./feed", async (importOriginal) => {
   const actual = await importOriginal<typeof FeedModule>();
-  return { ...actual, getLiveAnnouncements: vi.fn() };
+  return {
+    ...actual,
+    getLiveAnnouncements: vi.fn(),
+    submitAnnouncementResponse: vi.fn(),
+  };
 });
 
 const fetchAnnouncements = vi.mocked(getLiveAnnouncements);
+const submitResponse = vi.mocked(submitAnnouncementResponse);
 
 function renderPage(initialData?: PublicAnnouncement[]) {
   const client = new QueryClient({
@@ -30,6 +39,123 @@ function renderPage(initialData?: PublicAnnouncement[]) {
 beforeEach(() => {
   setLocale("tr");
   fetchAnnouncements.mockReset();
+  submitResponse.mockReset();
+});
+
+it("lets an active user submit a poll response and updates the live results", async () => {
+  const announcement: PublicAnnouncement = {
+    id: "69b74d29-13c5-4099-9d99-3d83dc0d12b4",
+    title_tr: "Ürün anketi",
+    body_tr: "Önceliği seç.",
+    title_en: "Product poll",
+    body_en: "Choose a priority.",
+    category: "product",
+    publish_at: "2026-10-25T09:00:00.000Z",
+    expires_at: null,
+    interaction_type: "poll",
+    prompt_tr: "Ne önce gelsin?",
+    prompt_en: "What should come first?",
+    options: [
+      {
+        id: "e5e46f40-0cd5-44dd-84ba-73f8a6264078",
+        label_tr: "Mobil",
+        label_en: "Mobile",
+        count: 0,
+      },
+      {
+        id: "58d6baaa-f9b2-4f8b-b2ec-f60c93041b4a",
+        label_tr: "Rapor",
+        label_en: "Reports",
+        count: 0,
+      },
+    ],
+    response_count: 0,
+  };
+  submitResponse.mockResolvedValue(undefined);
+  fetchAnnouncements.mockResolvedValue([announcement]);
+  renderPage([announcement]);
+
+  fireEvent.click(screen.getByRole("button", { name: "Mobil" }));
+
+  await waitFor(() =>
+    expect(submitResponse).toHaveBeenCalledWith({
+      announcementId: announcement.id,
+      optionId: announcement.options[0].id,
+    }),
+  );
+  expect(await screen.findByText("Yanıtınız alındı")).toBeTruthy();
+});
+
+it("labels poll result bars with their option for assistive technology", () => {
+  const announcement: PublicAnnouncement = {
+    id: "69b74d29-13c5-4099-9d99-3d83dc0d12b4",
+    title_tr: "Ürün anketi",
+    body_tr: "Önceliği seç.",
+    title_en: "Product poll",
+    body_en: "Choose a priority.",
+    category: "product",
+    publish_at: "2026-10-25T09:00:00.000Z",
+    expires_at: null,
+    interaction_type: "poll",
+    prompt_tr: "Ne önce gelsin?",
+    prompt_en: "What should come first?",
+    options: [
+      {
+        id: "e5e46f40-0cd5-44dd-84ba-73f8a6264078",
+        label_tr: "Mobil",
+        label_en: "Mobile",
+        count: 1,
+      },
+      {
+        id: "58d6baaa-f9b2-4f8b-b2ec-f60c93041b4a",
+        label_tr: "Rapor",
+        label_en: "Reports",
+        count: 0,
+      },
+    ],
+    response_count: 1,
+  };
+  fetchAnnouncements.mockResolvedValue([announcement]);
+  renderPage([announcement]);
+
+  expect(screen.getByRole("progressbar", { name: "Mobil: 100%" })).toBeTruthy();
+});
+
+it("submits a written answer and explains the saved browser key", async () => {
+  const announcement: PublicAnnouncement = {
+    id: "f167ffc9-c83d-449d-bb81-9e7b69940a0d",
+    title_tr: "Geri bildiriminiz",
+    body_tr: "Bize yazın.",
+    title_en: "Your feedback",
+    body_en: "Tell us what you think.",
+    category: "product",
+    publish_at: "2026-10-25T09:00:00.000Z",
+    expires_at: null,
+    interaction_type: "question",
+    prompt_tr: "Ne geliştirelim?",
+    prompt_en: "What should we improve?",
+    options: [],
+    response_count: 0,
+  };
+  fetchAnnouncements.mockResolvedValue([announcement]);
+  submitResponse.mockResolvedValue(undefined);
+  renderPage([announcement]);
+
+  fireEvent.change(screen.getByLabelText("Ne geliştirelim?"), {
+    target: { value: "CSV dışa aktarma" },
+  });
+  fireEvent.click(screen.getByRole("button", { name: "Yanıtla" }));
+
+  await waitFor(() =>
+    expect(submitResponse).toHaveBeenCalledWith({
+      announcementId: announcement.id,
+      answer: "CSV dışa aktarma",
+    }),
+  );
+  expect(
+    screen.getByText(/bu, kişi başına tek yanıt garantisi değildir/i),
+  ).toBeTruthy();
+  expect(await screen.findByText("Yanıtınız alındı")).toBeTruthy();
 });
 
 it("shows a retry state instead of presenting a feed failure as empty", async () => {
@@ -48,14 +174,11 @@ it("renders a bilingual post in the selected language and can refresh", async ()
     body_tr: "Kısa bakım.",
     title_en: "Scheduled maintenance",
     body_en: "A short service window is planned.",
-    title_de: "Geplante Wartung",
-    body_de: "Ein kurzes Wartungsfenster ist geplant.",
-    title_fr: "Maintenance planifiée",
-    body_fr: "Une courte interruption est prévue.",
-    title_it: "Manutenzione programmata",
-    body_it: "È prevista una breve interruzione del servizio.",
-    title_pt: "Manutenção programada",
-    body_pt: "Está prevista uma breve interrupção do serviço.",
+    interaction_type: "none",
+    prompt_tr: "",
+    prompt_en: "",
+    options: [],
+    response_count: 0,
     category: "maintenance",
     publish_at: "2026-10-25T09:00:00.000Z",
     expires_at: null,

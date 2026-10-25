@@ -26,6 +26,7 @@
     "!badseo/**",
     // Local scratch workspaces may contain complete copies of other repos.
     "!.tmp/**",
+    "!**/.tmp/**",
     // Windows package and website: not part of the app module graph.
     "!packaging/**",
     "!site/**",

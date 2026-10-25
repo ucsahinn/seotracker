@@ -1,5 +1,9 @@
 import { afterEach, expect, it, vi } from "vitest";
-import { getLiveAnnouncements, parseAnnouncementsFeed } from "./feed";
+import {
+  getLiveAnnouncements,
+  parseAnnouncementsFeed,
+  submitAnnouncementResponse,
+} from "./feed";
 
 afterEach(() => {
   vi.unstubAllGlobals();
@@ -56,4 +60,45 @@ it("rejects unexpected shapes at the public feed boundary", () => {
   expect(() =>
     parseAnnouncementsFeed({ announcements: [{ title_tr: "Hi" }] }),
   ).toThrow();
+});
+
+it("submits an anonymous response to the matching announcement endpoint", async () => {
+  const fetchMock = vi
+    .fn<typeof fetch>()
+    .mockResolvedValue(new Response("{}", { status: 201 }));
+  vi.stubGlobal("fetch", fetchMock);
+
+  await submitAnnouncementResponse({
+    announcementId: "f167ffc9-c83d-449d-bb81-9e7b69940a0d",
+    optionId: "58d6baaa-f9b2-4f8b-b2ec-f60c93041b4a",
+  });
+
+  const [url, init] = fetchMock.mock.calls[0] ?? [];
+  expect(url).toBe(
+    "https://seowatcher-announcements.vitalikai07.workers.dev/api/announcements/f167ffc9-c83d-449d-bb81-9e7b69940a0d/responses",
+  );
+  expect(init?.method).toBe("POST");
+  expect(new Headers(init?.headers).get("content-type")).toBe(
+    "application/json",
+  );
+  const body = init?.body;
+  expect(typeof body).toBe("string");
+  if (typeof body !== "string") throw new Error("Request body must be text");
+  expect(JSON.parse(body)).toMatchObject({
+    option_id: "58d6baaa-f9b2-4f8b-b2ec-f60c93041b4a",
+  });
+});
+
+it("falls back to the HTTP status when the error response is not an object", async () => {
+  vi.stubGlobal(
+    "fetch",
+    vi.fn().mockResolvedValue(new Response("null", { status: 500 })),
+  );
+
+  await expect(
+    submitAnnouncementResponse({
+      announcementId: "f167ffc9-c83d-449d-bb81-9e7b69940a0d",
+      optionId: "58d6baaa-f9b2-4f8b-b2ec-f60c93041b4a",
+    }),
+  ).rejects.toThrow(/500/);
 });

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Megaphone, RefreshCw } from "lucide-react";
 import { EmptyState } from "@/client/components/EmptyState";
 import { PageHeader, PageShell } from "@/client/components/PageShell";
@@ -11,6 +11,8 @@ import {
 } from "@/shared/announcement";
 import { useLiveAnnouncements } from "./useLiveAnnouncements";
 import { markAnnouncementsRead, useReadAnnouncementIds } from "./readState";
+import { hasResponded, markResponded } from "./participation";
+import { submitAnnouncementResponse } from "./feed";
 
 const CATEGORY_LABELS = {
   product: "Ürün yeniliği",
@@ -108,6 +110,7 @@ export function AnnouncementsPage() {
               announcement={item}
               locale={locale}
               unread={unreadIds.includes(item.id)}
+              refresh={() => void query.refetch()}
             />
           ))}
         </ul>
@@ -120,12 +123,44 @@ function AnnouncementCard({
   announcement,
   locale,
   unread,
+  refresh,
 }: {
   announcement: PublicAnnouncement;
   locale: Locale;
   unread: boolean;
+  refresh: () => void;
 }) {
+  const [answered, setAnswered] = useState(() => hasResponded(announcement.id));
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState("");
+  const [answer, setAnswer] = useState("");
   const { title, body } = getAnnouncementText(announcement, locale);
+  const prompt =
+    locale === "tr" ? announcement.prompt_tr : announcement.prompt_en;
+  async function respond(input: { optionId?: string; answer?: string }) {
+    setPending(true);
+    setError("");
+    try {
+      await submitAnnouncementResponse({
+        announcementId: announcement.id,
+        ...input,
+      });
+      markResponded(announcement.id);
+      setAnswered(true);
+      setAnswer("");
+      refresh();
+    } catch (cause) {
+      const message =
+        cause instanceof Error ? cause.message : t("Yanıt gönderilemedi");
+      if (cause instanceof Error && cause.name === "AlreadyRespondedError") {
+        markResponded(announcement.id);
+        setAnswered(true);
+      }
+      setError(message);
+    } finally {
+      setPending(false);
+    }
+  }
   return (
     <li
       className={`rounded-box border bg-base-200 p-4 sm:p-5 ${unread ? "border-primary/50" : "border-[var(--hairline)]"}`}
@@ -152,6 +187,104 @@ function AnnouncementCard({
       <p className="mt-1 whitespace-pre-wrap break-words text-sm leading-relaxed text-muted">
         {body}
       </p>
+      {announcement.interaction_type === "poll" ? (
+        <fieldset className="mt-5 space-y-3" disabled={pending || answered}>
+          <legend className="mb-3 font-medium text-base-content">
+            {prompt}
+          </legend>
+          {announcement.options.map((option) => {
+            const count = announcement.response_count;
+            const percent = count
+              ? Math.round((option.count / count) * 100)
+              : 0;
+            return (
+              <div key={option.id}>
+                <button
+                  type="button"
+                  className="btn btn-outline btn-sm w-full justify-between"
+                  onClick={() => void respond({ optionId: option.id })}
+                  disabled={answered || pending}
+                >
+                  <span>
+                    {locale === "tr" ? option.label_tr : option.label_en}
+                  </span>
+                  {count > 0 ? (
+                    <span>
+                      {percent}% · {option.count}
+                    </span>
+                  ) : null}
+                </button>
+                {count > 0 ? (
+                  <progress
+                    className="progress progress-primary mt-1 h-1.5 w-full"
+                    value={percent}
+                    max={100}
+                    aria-label={`${locale === "tr" ? option.label_tr : option.label_en}: ${percent}%`}
+                  />
+                ) : null}
+              </div>
+            );
+          })}
+          <p className="text-xs text-muted">
+            {t("{count} yanıt", { count: announcement.response_count })}
+          </p>
+          {answered ? (
+            <p role="status" className="text-sm text-success">
+              {t("Yanıtınız alındı")}
+            </p>
+          ) : null}
+        </fieldset>
+      ) : announcement.interaction_type === "question" ? (
+        <form
+          className="mt-5 space-y-3"
+          onSubmit={(event) => {
+            event.preventDefault();
+            void respond({ answer: answer.trim() });
+          }}
+        >
+          <label
+            className="block font-medium text-base-content"
+            htmlFor={`answer-${announcement.id}`}
+          >
+            {prompt}
+          </label>
+          <textarea
+            id={`answer-${announcement.id}`}
+            className="textarea textarea-bordered w-full"
+            maxLength={1000}
+            rows={3}
+            value={answer}
+            onChange={(event) => setAnswer(event.target.value)}
+            disabled={pending || answered}
+            placeholder={t("Kişisel bilgi paylaşmayın")}
+          />
+          <div className="flex items-center justify-between gap-3">
+            <span className="text-xs text-muted">
+              {t(
+                "Adınız veya hesabınız alınmaz. Aynı tarayıcıda saklanan katılımcı anahtarıyla bir kez yanıt verilebilir; bu, kişi başına tek yanıt garantisi değildir. Yanıtınız yöneticiler tarafından görülebilir. Kişisel bilgi yazmayın.",
+              )}
+            </span>
+            {answered ? (
+              <span role="status" className="text-sm text-success">
+                {t("Yanıtınız alındı")}
+              </span>
+            ) : (
+              <button
+                className="btn btn-primary btn-sm"
+                type="submit"
+                disabled={pending || !answer.trim()}
+              >
+                {pending ? t("Gönderiliyor…") : t("Yanıtla")}
+              </button>
+            )}
+          </div>
+        </form>
+      ) : null}
+      {error ? (
+        <p role="alert" className="mt-2 text-sm text-error">
+          {error}
+        </p>
+      ) : null}
     </li>
   );
 }

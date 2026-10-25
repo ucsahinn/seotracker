@@ -17,6 +17,7 @@
     "décembre"
   ],
   "dateOrder": "dmy",
+  "privacySlug": "confidentialite",
   "callouts": {
     "Symptôme ": "belirti",
     "Cause ": "sebep",

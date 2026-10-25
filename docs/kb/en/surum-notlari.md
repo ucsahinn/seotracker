@@ -1,12 +1,23 @@
 ---
 title: Release notes
-description: seowatcher 0.6.0 Alpha — live announcements, guided next steps and broader agent reports.
-updated: 2026-10-25
+description: seowatcher 0.7.1 Alpha — announcement compatibility and clearer diagnostic reports.
+updated: 2026-10-26
 ---
 
-The latest release is **0.6.0 Alpha**, October 25, 2026. Your data is kept when you update.
+The latest release is **0.7.1 Alpha**, October 26, 2026. Your data is kept when you update.
 
 For the first move from 2.x to 0.x.x Alpha, run the new installer manually; the old updater does not recognize the lower number as newer.
+
+## 0.7.1 Alpha
+
+- **Announcements:** English fallback text fills the locale fields expected by the 0.7.0 app.
+- **Help · Diagnostics:** Failed audits show their stopping phase, a redacted error detail and the most common PageSpeed measurement errors. Page URLs are removed from exported summaries.
+
+## 0.7.0 Alpha
+
+- **Windows startup:** Server preparation and update-download progress are visible.
+- **Windows notifications:** App updates and announcements appear in Windows notifications when enabled.
+- **Announcements:** Write notices in Turkish and English; other interface languages show the English copy.
 
 ## 0.6.0 Alpha
 

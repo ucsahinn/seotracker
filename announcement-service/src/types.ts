@@ -22,6 +22,11 @@ export type Announcement = {
   body_it: string;
   title_pt: string;
   body_pt: string;
+  interaction_type?: "none" | "poll" | "question";
+  prompt_tr?: string;
+  prompt_en?: string;
+  options?: AnnouncementOption[];
+  response_count?: number;
   category: AnnouncementCategory;
   status: AnnouncementStatus;
   publish_at: string;
@@ -30,22 +35,26 @@ export type Announcement = {
   updated_at: string;
 };
 
+export type AnnouncementOption = {
+  id: string;
+  label_tr: string;
+  label_en: string;
+  count: number;
+};
+
 export type AnnouncementInput = Pick<
   Announcement,
   | "title_tr"
   | "body_tr"
   | "title_en"
   | "body_en"
-  | "title_de"
-  | "body_de"
-  | "title_fr"
-  | "body_fr"
-  | "title_it"
-  | "body_it"
-  | "title_pt"
-  | "body_pt"
   | "category"
   | "status"
   | "publish_at"
   | "expires_at"
->;
+> & {
+  interaction_type: "none" | "poll" | "question";
+  prompt_tr: string;
+  prompt_en: string;
+  options: Array<Pick<AnnouncementOption, "label_tr" | "label_en">>;
+};

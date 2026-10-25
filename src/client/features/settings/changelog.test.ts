@@ -28,7 +28,10 @@ describe("changelog", () => {
         entry.sections.map((section) => section.items.length),
       );
     }
-    expect(CHANGELOG_ENTRIES_EN[0]?.sections[0]?.heading).toBe("Features");
+    expect(
+      CHANGELOG_ENTRIES_EN.find((entry) => entry.version === "0.7.0")
+        ?.sections[0]?.heading,
+    ).toBe("Features");
   });
 
   it("keeps every release translated and aligned across all six locales", () => {
@@ -51,6 +54,10 @@ describe("changelog", () => {
   it("uses the published date and the planned date for the upcoming release", () => {
     for (const locale of ["tr", "en", "de", "fr", "it", "pt"] as const) {
       const entries = CHANGELOG_ENTRIES_BY_LOCALE[locale];
+      expect(
+        entries.find((entry) => entry.version === "0.7.1")?.date,
+        `${locale} v0.7.1`,
+      ).toBe("2026-10-26");
       expect(
         entries.find((entry) => entry.version === "0.6.0")?.date,
         `${locale} v0.6.0`,
@@ -111,6 +118,23 @@ describe("changelog", () => {
         .flatMap((section) => section.items)
         .every((item) => item.text.startsWith("- ")),
     ).toBe(false);
+  });
+
+  it("labels the affected screen for the two most recent releases in every locale", () => {
+    for (const locale of ["tr", "en", "de", "fr", "it", "pt"] as const) {
+      for (const version of ["0.7.1", "0.7.0"]) {
+        const release = CHANGELOG_ENTRIES_BY_LOCALE[locale].find(
+          (entry) => entry.version === version,
+        );
+        expect(release, `${locale} v${version}`).toBeDefined();
+        expect(
+          release?.sections
+            .flatMap((section) => section.items)
+            .every((item) => item.text.startsWith("**")),
+          `${locale} v${version} labels`,
+        ).toBe(true);
+      }
+    }
   });
 
   /*

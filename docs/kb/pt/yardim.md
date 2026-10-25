@@ -45,7 +45,7 @@ Este é o primeiro lugar a olhar quando algo dá errado. A tela confere a sua in
 
 **A linha "Giriş ve erişim" diz "parolasız tek kullanıcı" (um só usuário, sem senha).** Isso é normal. O aplicativo abre apenas a partir do seu próprio computador. Se você quiser abri-lo para fora, precisa colocar na frente o seu próprio login protegido por senha.
 
-**O que há no pacote de diagnóstico?** A versão, as verificações da instalação, as contagens das tabelas e um resumo das últimas auditorias. Não tem chaves do Google, senhas nem dados pessoais.
+**O que há no pacote de diagnóstico?** A versão, as verificações da instalação, as contagens das tabelas e os resumos de etapa e erro das últimas 25 auditorias. Os erros do PageSpeed são resumidos sem os URLs das páginas. Segredos e senhas são excluídos; nomes de projetos, domínios e IDs de propriedades Google podem aparecer. Revise os arquivos antes de enviá-los.
 
 ## Limites
 

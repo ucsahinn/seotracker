@@ -167,7 +167,7 @@ No Windows, tudo fica na pasta `%LOCALAPPDATA%\seowatcher`: `data` (o banco de d
 
 No Docker, os dados estão no volume `seotracker_data` (`/app/.wrangler`). Você vê os registros com o comando `docker compose logs -f`.
 
-Ao relatar um problema, clique no botão **Tanılama paketi indir** (Baixar o pacote de diagnóstico) na tela **Yardım** (Ajuda). O arquivo tem a versão, as verificações da instalação e as últimas 25 auditorias. Não tem segredos. Anexe o arquivo ao relato no GitHub.
+Ao relatar um problema, clique em **Tanılama paketi indir** (Baixar o pacote de diagnóstico) na tela **Yardım**. O pacote resume as etapas e os erros das últimas 25 auditorias; os URLs das páginas são removidos das mensagens do PageSpeed. Nomes de projetos e domínios podem aparecer. Revise o arquivo antes de anexá-lo a um relato no GitHub.
 
 ## Mensagens do iniciador
 

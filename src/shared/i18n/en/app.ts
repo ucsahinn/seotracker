@@ -13,6 +13,19 @@ export const enApp: Catalog = {
     "Product, maintenance and security updates from the seowatcher team.",
   "Duyurular şu anda alınamıyor": "Announcements are unavailable right now",
   "Duyurular alınamadı ({status})": "Could not load announcements ({status})",
+  "Yanıt gönderilemedi ({status})": "Could not submit your response ({status})",
+  "Yanıt gönderilemedi": "Could not submit your response",
+  "Bu kurulumdan daha önce yanıt verildi.":
+    "This installation has already responded.",
+  "Çok hızlı yanıt gönderildi. Biraz sonra yeniden deneyin.":
+    "Too many responses. Try again shortly.",
+  "Kişisel bilgi paylaşmayın": "Do not include personal information",
+  "Adınız veya hesabınız alınmaz. Aynı tarayıcıda saklanan katılımcı anahtarıyla bir kez yanıt verilebilir; bu, kişi başına tek yanıt garantisi değildir. Yanıtınız yöneticiler tarafından görülebilir. Kişisel bilgi yazmayın.":
+    "We do not collect your name or account. One response is allowed per saved browser key; this does not guarantee one response per person. Administrators can view your response. Do not include personal information.",
+  "Yanıtınız alındı": "Your response has been recorded",
+  Yanıtla: "Submit response",
+  "Gönderiliyor…": "Sending…",
+  "{count} yanıt": { one: "{count} response", other: "{count} responses" },
   "Bağlantınızı kontrol edip yeniden deneyin.":
     "Check your connection and try again.",
   "Şimdilik yeni duyuru yok": "No new announcements yet",

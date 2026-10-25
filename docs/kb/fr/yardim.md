@@ -45,7 +45,7 @@ Si quelque chose ne va pas, regardez d'abord ici. Cet écran contrôle votre ins
 
 **La ligne « Giriş ve erişim » indique « parolasız tek kullanıcı » (utilisateur unique sans mot de passe).** C'est normal. L'application ne s'ouvre que depuis votre propre ordinateur. Pour l'ouvrir depuis l'extérieur, vous devez placer devant elle votre propre accès protégé par mot de passe.
 
-**Que contient le paquet de diagnostic ?** La version, les contrôles d'installation, le nombre de lignes des tables et le résumé des derniers audits. Il n'y a ni clé Google, ni mot de passe, ni donnée personnelle.
+**Que contient le paquet de diagnostic ?** La version, les contrôles d'installation, le nombre de lignes des tables et les étapes et erreurs des 25 derniers audits. Les erreurs PageSpeed sont résumées sans URL de page. Les secrets et mots de passe sont exclus ; les noms de projets, domaines et identifiants de propriétés Google peuvent apparaître. Vérifiez les fichiers avant de les envoyer.
 
 ## Limites
 
