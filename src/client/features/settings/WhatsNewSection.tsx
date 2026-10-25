@@ -8,8 +8,7 @@ import {
   type ReleaseCategory,
 } from "./releaseCategories";
 import {
-  CHANGELOG_ENTRIES,
-  CHANGELOG_ENTRIES_EN,
+  CHANGELOG_ENTRIES_BY_LOCALE,
   type ChangelogEntry,
   type ChangelogItem,
 } from "@/client/features/settings/changelog";
@@ -23,8 +22,8 @@ import {
  * `CHANGELOG.md`, so it cannot fall behind what was actually shipped.
  */
 export function WhatsNewSection({ version }: { version: string }) {
-  const entries =
-    getLocale() === "en" ? CHANGELOG_ENTRIES_EN : CHANGELOG_ENTRIES;
+  const locale = getLocale();
+  const entries = CHANGELOG_ENTRIES_BY_LOCALE[locale];
   if (entries.length === 0) return null;
 
   return (
@@ -135,7 +134,7 @@ function ReleaseNotes({
             </p>
           ) : null}
           {entry.sections.map((section) =>
-            section.heading === HIGHLIGHTS ? (
+            section.heading === HIGHLIGHTS[getLocale()] ? (
               <Highlights key={section.heading} items={section.items} />
             ) : (
               <div key={section.heading} className="space-y-2">
@@ -183,7 +182,14 @@ function ReleaseNotes({
 
 /** The heading the newest note uses for its short summary. */
 // i18n-ignore: matched against the heading in the Turkish CHANGELOG.md
-const HIGHLIGHTS = "Öne çıkanlar";
+const HIGHLIGHTS: Record<ReturnType<typeof getLocale>, string> = {
+  tr: "Öne çıkanlar", // i18n-ignore
+  en: "Highlights", // i18n-ignore
+  de: "Höhepunkte", // i18n-ignore
+  fr: "À retenir", // i18n-ignore
+  it: "In evidenza", // i18n-ignore
+  pt: "Destaques", // i18n-ignore
+};
 
 const CATEGORY_LABELS: Record<ReleaseCategory, string> = {
   feature: "Yenilik",

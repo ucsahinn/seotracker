@@ -265,6 +265,7 @@ $cscArgs = @(
   "/win32manifest:$launcherManifest",
   "/r:System.Windows.Forms.dll", "/r:System.Drawing.dll",
   $launcherSource,
+  (Join-Path $here "launcher\StartupProgress.cs"),
   (Join-Path $here "launcher\WindowsSettingsBridge.cs"),
   $assemblyInfo
 )

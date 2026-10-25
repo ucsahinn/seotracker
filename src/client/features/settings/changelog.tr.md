@@ -2,7 +2,15 @@
 
 Kullanıcıların fark edeceği yenilikler ve düzeltmeler, en yeni sürümden başlayarak listelenir.
 
-## [0.6.0] Alpha — 2026-10-25
+## [0.7.0] Alpha — 2026-10-25
+
+### Yenilikler
+
+- Windows uygulaması açılırken sunucu hazırlığı görünür ilerleme penceresinde gösterilir; güncelleme indirilirken gerçek yüzde görünür.
+- Uygulama güncellemeleri ve canlı duyurular, izin verildiğinde Windows bildirim merkezinde gösterilir. Ayarlar → Bildirimler bölümünden açılıp kapatılır.
+- Canlı duyurular altı dilde hazırlanıp seçili arayüz dilinde gösterilebilir.
+
+## [0.6.0] Alpha — 2026-10-24
 
 ### Yenilikler
 

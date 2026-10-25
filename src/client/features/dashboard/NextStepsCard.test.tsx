@@ -53,6 +53,34 @@ describe("NextStepsCard", () => {
     expect(screen.getByText("100 / 100")).toBeDefined();
   });
 
+  it("keeps the recommendations panel visible when Google setup is the only remaining action", () => {
+    render(
+      <NextStepsCard
+        projectId="p1"
+        gscConnected={false}
+        googleMissing={true}
+        audit={audit()}
+      />,
+    );
+
+    expect(
+      screen.getByRole("heading", { name: "Sıradaki adımlar" }),
+    ).toBeDefined();
+    expect(
+      screen.getByRole("progressbar", { name: "Hazırlık puanı" }),
+    ).toBeDefined();
+    expect(
+      screen.getByRole("link", {
+        name: "Google erişim anahtarını Ayarlar'a girin",
+      }),
+    ).toBeDefined();
+    expect(
+      screen.queryByText(
+        "Acil bir iş görünmüyor. Denetim güncel ve kritik sorun yok.",
+      ),
+    ).toBeNull();
+  });
+
   /*
    * Without Search Console half the app has nothing to show -- rankings,
    * opportunities and the whole search side are empty -- so it outranks

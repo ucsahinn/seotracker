@@ -455,12 +455,13 @@ export const enSettings: Catalog = {
   "Henüz bildirim yok. İşlemler tamamlandığında burada görünür.":
     "No notifications yet. Completed tasks will appear here.",
   Okunmamış: "Unread",
-  "Denetimler ve güncellemeler için bildirimler zil simgesinde saklanır. Bu tercihler bu tarayıcıda saklanır.":
-    "Audit and update notifications are saved under the bell. These preferences are saved in this browser.",
+  "Bildirim geçmişi zil simgesinde tutulur. Ses ve Windows sistem bildirimlerini buradan açıp kapatabilirsiniz.":
+    "Notification history stays under the bell. Turn notification sounds and Windows system notifications on or off here.",
   "Bildirim sesi": "Notification sound",
   "Sesi dinle": "Preview sound",
-  "Arka plandayken masaüstü bildirimi":
-    "Desktop notifications while in the background",
+  "Windows ve sistem bildirimleri": "Windows and system notifications",
+  "Güncellemeler ve yeni duyurular dahil bildirimler Windows bildirim merkezinde gösterilir.":
+    "Notifications, including updates and new announcements, appear in the Windows notification center.",
   "Bildirim izni engellendi. Açmak için tarayıcının site izinlerini kullanın.":
     "Notification permission is blocked. Enable it in your browser’s site permissions.",
   "Bu tarayıcı masaüstü bildirimlerini desteklemiyor.":

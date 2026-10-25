@@ -12,7 +12,7 @@ export function getReleaseCategories(
   const categories: ReleaseCategory[] = [];
   if (
     headings.some((heading) =>
-      /yenilik|eklendi|uygulama|neler sunuyor|what the app offers|features?/.test(
+      /yenilik|eklendi|uygulama|neler sunuyor|what the app offers|features?|funktionen|fonctionnalités|funzionalità|funcionalidades/.test(
         heading,
       ),
     )
@@ -21,14 +21,28 @@ export function getReleaseCategories(
   if (
     headings.some(
       (heading) =>
-        /düzelt|hata ayıklama|veri doğruluğu|fixes?/.test(heading) &&
-        !/acil düzelt/.test(heading),
+        /düzelt|hata ayıklama|veri doğruluğu|fixes?|fehlerbehebung|corrections?|correzioni|correções/.test(
+          heading,
+        ) &&
+        !/acil düzelt|sofortige fehlerbehebung|correctif urgent|correzione urgente|correção urgente/.test(
+          heading,
+        ),
     )
   )
     categories.push("fix");
-  if (headings.some((heading) => /güvenlik|security/.test(heading)))
+  if (
+    headings.some((heading) =>
+      /güvenlik|security|sicherheit|sécurité|sicurezza|segurança/.test(heading),
+    )
+  )
     categories.push("security");
-  if (headings.some((heading) => /acil düzelt|hotfix/.test(heading)))
+  if (
+    headings.some((heading) =>
+      /acil düzelt|hotfix|sofortige fehlerbehebung|correctif urgent|correzione urgente|correção urgente/.test(
+        heading,
+      ),
+    )
+  )
     categories.push("hotfix");
   return categories;
 }

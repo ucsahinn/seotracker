@@ -4,8 +4,11 @@ import { EmptyState } from "@/client/components/EmptyState";
 import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { markNotificationsReadByDedupeKeys } from "@/client/features/notifications/store";
 import { formatDateTime } from "@/shared/format";
-import { t, useLocale } from "@/shared/i18n";
-import type { PublicAnnouncement } from "@/shared/announcement";
+import { t, useLocale, type Locale } from "@/shared/i18n";
+import {
+  getAnnouncementText,
+  type PublicAnnouncement,
+} from "@/shared/announcement";
 import { useLiveAnnouncements } from "./useLiveAnnouncements";
 import { markAnnouncementsRead, useReadAnnouncementIds } from "./readState";
 
@@ -119,11 +122,10 @@ function AnnouncementCard({
   unread,
 }: {
   announcement: PublicAnnouncement;
-  locale: "tr" | "en";
+  locale: Locale;
   unread: boolean;
 }) {
-  const title = locale === "en" ? announcement.title_en : announcement.title_tr;
-  const body = locale === "en" ? announcement.body_en : announcement.body_tr;
+  const { title, body } = getAnnouncementText(announcement, locale);
   return (
     <li
       className={`rounded-box border bg-base-200 p-4 sm:p-5 ${unread ? "border-primary/50" : "border-[var(--hairline)]"}`}

@@ -3,6 +3,7 @@ import { useLiveAnnouncements } from "./useLiveAnnouncements";
 import { useReadAnnouncementIds } from "./readState";
 import { notify } from "@/client/features/notifications/notify";
 import { useLocale } from "@/shared/i18n";
+import { getAnnouncementText } from "@/shared/announcement";
 
 export function AnnouncementNotifications() {
   const { data = [] } = useLiveAnnouncements();
@@ -12,10 +13,11 @@ export function AnnouncementNotifications() {
   React.useEffect(() => {
     for (const item of data) {
       if (readIds.includes(item.id)) continue;
+      const content = getAnnouncementText(item, locale);
       notify({
         kind: "announcement",
-        title: locale === "en" ? item.title_en : item.title_tr,
-        body: locale === "en" ? item.body_en : item.body_tr,
+        title: content.title,
+        body: content.body,
         href: "/announcements",
         importance: "low",
         dedupeKey: `announcement:${item.id}`,

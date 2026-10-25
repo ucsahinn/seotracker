@@ -1580,6 +1580,7 @@ namespace SeoWatcher
         private readonly ToolStripMenuItem autoUpdateItem;
         private readonly System.Threading.Timer updateTimer;
         private readonly Server server = new Server();
+        private StartupProgressWindow startupProgress;
         private readonly WindowsSettingsBridge nativeSettings;
         private readonly EventWaitHandle quitEvent;
         private readonly EventWaitHandle openEvent;
@@ -1674,7 +1675,11 @@ namespace SeoWatcher
                 if (action != null) action(); else OpenApp();
             };
 
-            server.Status += s => Invoke(() => SetServerStatus(s));
+            server.Status += s => Invoke(() =>
+            {
+                SetServerStatus(s);
+                SetStartupProgressStatus(s);
+            });
             server.Ready += u => Invoke(() => OnReady(u));
             server.Failed += m => Invoke(() => OnFailed(m));
             server.Crashed += m => Invoke(() => OnCrashed(m));
@@ -1700,6 +1705,7 @@ namespace SeoWatcher
             catch (Exception) { LauncherLog.Write("Windows settings bridge unavailable"); }
             RefreshSettings();
             RefreshUpdateItem();
+            if (!silent || updatedFrom != null) ShowStartupProgress(serverStatus);
             server.Start(config);
             // First check two minutes after start (the server comes first), then
             // once a day. The timer ticks hourly and compares wall-clock time, so
@@ -1736,6 +1742,36 @@ namespace SeoWatcher
             tray.Text = Truncate("seowatcher " + Paths.Version() + " Alpha" + ": " + text, 63);
         }
 
+        private void ShowStartupProgress(string status)
+        {
+            if (startupProgress == null || startupProgress.IsDisposed)
+            {
+                startupProgress = new StartupProgressWindow(status);
+                startupProgress.FormClosed += (sender, args) => startupProgress = null;
+                startupProgress.Show();
+            }
+            else
+            {
+                startupProgress.SetStatus(status);
+                if (!startupProgress.Visible) startupProgress.Show();
+                startupProgress.BringToFront();
+            }
+        }
+
+        private void SetStartupProgressStatus(string status)
+        {
+            if (startupProgress != null && !startupProgress.IsDisposed)
+                startupProgress.SetStatus(status);
+        }
+
+        private void CloseStartupProgress()
+        {
+            if (startupProgress == null) return;
+            var window = startupProgress;
+            startupProgress = null;
+            if (!window.IsDisposed) window.Close();
+        }
+
         private void RefreshServerItems()
         {
             repairItem.Enabled = !repairing;
@@ -1753,6 +1789,7 @@ namespace SeoWatcher
             repairing = false;
             RefreshServerItems();
             SetServerStatus("Çalışıyor: " + readyUrl);
+            CloseStartupProgress();
             bool portMoved = server.Port != server.ConfiguredPort;
             if (openWhenReady || (!openedOnce && !silent))
             {
@@ -1790,6 +1827,7 @@ namespace SeoWatcher
             openWhenReady = false;
             RefreshServerItems();
             SetServerStatus("Hata: " + message);
+            SetStartupProgressStatus("Hata: " + message);
             bool needsVcRedist = message.StartsWith(Server.RuntimeCrashMessage, StringComparison.Ordinal);
             bool needsReport = message.StartsWith(Server.EngineCrashMessage, StringComparison.Ordinal);
             fixItem.Visible = needsVcRedist;
@@ -1836,6 +1874,7 @@ namespace SeoWatcher
             failure = null;
             fixItem.Visible = false;
             SetServerStatus(status);
+            ShowStartupProgress(status);
             server.Stop();
             server.Start(Config.Load());
         }
@@ -2016,6 +2055,7 @@ namespace SeoWatcher
             var v = available;
             updatePhase = "Güncelleme indiriliyor: " + v;
             RefreshUpdateItem();
+            ShowStartupProgress(updatePhase);
             var worker = new Thread(() =>
             {
                 try
@@ -2025,8 +2065,14 @@ namespace SeoWatcher
                         if (updatePhase == null) return;
                         updatePhase = "Güncelleme indiriliyor: " + v + " (%" + p + ")";
                         RefreshUpdateItem();
+                        SetStartupProgressStatus(updatePhase);
                     }));
-                    Invoke(() => { updatePhase = "Güncelleme kuruluyor: " + v; RefreshUpdateItem(); });
+                    Invoke(() =>
+                    {
+                        updatePhase = "Güncelleme kuruluyor: " + v;
+                        RefreshUpdateItem();
+                        SetStartupProgressStatus(updatePhase);
+                    });
                     var setup = Updater.Install(file);
                     WatchInstaller(setup, v);
                 }
@@ -2040,6 +2086,7 @@ namespace SeoWatcher
                     {
                         updatePhase = null;
                         RefreshUpdateItem();
+                        if (url != null) CloseStartupProgress();
                         // An automatic attempt retries in an hour; it says so once.
                         if (manual || !Equals(notifiedVersion, v))
                         {
@@ -2075,6 +2122,7 @@ namespace SeoWatcher
                     RefreshServerItems();
                     server.Start(Config.Load());
                 }
+                CloseStartupProgress();
                 Balloon("Güncelleme kurulmadı", "Kurulum yarıda kaldı ya da iptal edildi (kod " + code + "). Menüden Güncelle ile tekrar deneyebilirsiniz; kurulu sürüm çalışmaya devam ediyor.", ToolTipIcon.Warning, 10000, null);
             });
         }
@@ -2360,6 +2408,7 @@ namespace SeoWatcher
             {
                 if (nativeSettings != null) nativeSettings.Dispose();
                 server.Stop();
+                CloseStartupProgress();
                 tray.Dispose();
                 quitEvent.Dispose();
                 openEvent.Dispose();

@@ -1,8 +1,10 @@
 /**
- * Checks the English catalogs against the code that calls t().
+ * Checks the English catalogs against the code that calls t(), and checks
+ * the other locale catalogs for key coverage and placeholder integrity.
  *
  *   node scripts/i18n-check.mjs              # whole app
  *   node scripts/i18n-check.mjs --area app   # one catalog file's folders
+ *   node scripts/i18n-check.mjs --require-complete-locales
  *
  * Errors (exit 1):
  *   - missing:     t("…") with a literal Turkish key that has no English entry,
@@ -33,7 +35,8 @@ import { fileURLToPath } from "node:url";
 import ts from "typescript";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const CATALOG_DIR = "src/shared/i18n/en";
+const CATALOG_ROOT = "src/shared/i18n";
+const SECONDARY_LOCALES = ["de", "fr", "it", "pt"];
 
 /*
  * Which folders each catalog file owns. A file belongs to the area with the
@@ -94,7 +97,8 @@ const PLACEHOLDER = /\{(\w+)\}/g;
 
 function parseArgs(argv) {
   const index = argv.indexOf("--area");
-  if (index === -1) return { area: null };
+  const requireCompleteLocales = argv.includes("--require-complete-locales");
+  if (index === -1) return { area: null, requireCompleteLocales };
   const raw = (argv[index + 1] ?? "").replace(/\.ts$/, "");
   if (!(raw in AREAS)) {
     console.error(
@@ -102,7 +106,7 @@ function parseArgs(argv) {
     );
     process.exit(2);
   }
-  return { area: raw };
+  return { area: raw, requireCompleteLocales };
 }
 
 const rel = (file) => path.relative(ROOT, file).split(path.sep).join("/");
@@ -146,10 +150,18 @@ function listSourceFiles(dir) {
   return out;
 }
 
-async function loadCatalogs() {
+async function loadCatalogs(locale = "en") {
   const catalogs = {};
-  for (const area of Object.keys(AREAS)) {
-    const file = path.join(ROOT, CATALOG_DIR, `${area}.ts`);
+  const dir = path.join(ROOT, CATALOG_ROOT, locale);
+  const names =
+    locale === "en"
+      ? Object.keys(AREAS)
+      : fs
+          .readdirSync(dir, { withFileTypes: true })
+          .filter((entry) => entry.isFile() && entry.name.endsWith(".ts"))
+          .map((entry) => entry.name.slice(0, -3));
+  for (const area of names) {
+    const file = path.join(dir, `${area}.ts`);
     const { outputText } = ts.transpileModule(fs.readFileSync(file, "utf8"), {
       compilerOptions: {
         module: ts.ModuleKind.ESNext,
@@ -162,10 +174,30 @@ async function loadCatalogs() {
       (value) => value && typeof value === "object",
     );
     if (!catalog)
-      throw new Error(`${CATALOG_DIR}/${area}.ts exports no catalog`);
+      throw new Error(
+        `${CATALOG_ROOT}/${locale}/${area}.ts exports no catalog`,
+      );
     catalogs[area] = catalog;
   }
   return catalogs;
+}
+
+function mergeCatalogs(catalogs) {
+  const merged = new Map();
+  const conflicts = [];
+  for (const [owner, catalog] of Object.entries(catalogs)) {
+    for (const [key, value] of Object.entries(catalog)) {
+      const previous = merged.get(key);
+      if (
+        previous &&
+        JSON.stringify(previous.value) !== JSON.stringify(value)
+      ) {
+        conflicts.push(`${key}  (${previous.owner}.ts vs ${owner}.ts)`);
+      }
+      merged.set(key, { value, owner });
+    }
+  }
+  return { merged, conflicts };
 }
 
 function isIgnored(source, node) {
@@ -276,23 +308,12 @@ const sameSet = (a, b) =>
 const short = (text) => (text.length > 90 ? `${text.slice(0, 87)}...` : text);
 
 async function main() {
-  const { area } = parseArgs(process.argv.slice(2));
+  const { area, requireCompleteLocales } = parseArgs(process.argv.slice(2));
   const catalogs = await loadCatalogs();
-
-  const merged = new Map();
-  const conflicts = [];
-  for (const [owner, catalog] of Object.entries(catalogs)) {
-    for (const [key, value] of Object.entries(catalog)) {
-      const previous = merged.get(key);
-      if (
-        previous &&
-        JSON.stringify(previous.value) !== JSON.stringify(value) &&
-        (!area || area === owner || area === previous.owner)
-      ) {
-        conflicts.push(`${key}  (${previous.owner}.ts vs ${owner}.ts)`);
-      }
-      merged.set(key, { value, owner });
-    }
+  const { merged, conflicts } = mergeCatalogs(catalogs);
+  const localeCatalogs = {};
+  for (const locale of SECONDARY_LOCALES) {
+    localeCatalogs[locale] = mergeCatalogs(await loadCatalogs(locale));
   }
 
   const files = listSourceFiles(path.join(ROOT, "src"))
@@ -344,6 +365,48 @@ async function main() {
     if (!used.has(key)) unused.push(`${owner}.ts  ${short(key)}`);
   }
 
+  const localeMismatches = [];
+  const obsoleteLocaleEntries = [];
+  const coverage = [];
+  for (const [
+    locale,
+    { merged: catalog, conflicts: localeConflicts },
+  ] of Object.entries(localeCatalogs)) {
+    conflicts.push(
+      ...localeConflicts.map((conflict) => `${locale}: ${conflict}`),
+    );
+    let translated = 0;
+    for (const [key, { value }] of catalog) {
+      const source = merged.get(key)?.value;
+      if (source === undefined) {
+        obsoleteLocaleEntries.push(`${locale}: ${short(key)}`);
+        continue;
+      }
+      translated += 1;
+      const expected = placeholders(key);
+      const sourceForms =
+        typeof source === "string" ? [source] : [source.one, source.other];
+      const forms =
+        typeof value === "string" ? [value] : [value.one, value.other];
+      if (
+        sourceForms.some((form) => !sameSet(placeholders(form), expected)) ||
+        forms.some((form) => !sameSet(placeholders(form), expected)) ||
+        (typeof value !== "string" && !expected.includes("count"))
+      ) {
+        localeMismatches.push(`${locale}: ${short(key)}`);
+      }
+    }
+    const total = merged.size;
+    coverage.push(
+      `${locale} ${translated}/${total} (${((translated / total) * 100).toFixed(1)}%)`,
+    );
+    if (requireCompleteLocales && translated !== total) {
+      localeMismatches.push(
+        `${locale}: ${total - translated} entries have no translation`,
+      );
+    }
+  }
+
   const section = (title, items) => {
     if (items.length === 0) return;
     console.log(`\n${title} (${items.length})`);
@@ -355,10 +418,19 @@ async function main() {
   section("Missing English (error)", missing);
   section("Placeholder mismatch (error)", mismatches);
   section("Conflicting English for one key (error)", conflicts);
+  section("Locale key or placeholder mismatch (error)", localeMismatches);
+  section("Obsolete locale entries (warning)", obsoleteLocaleEntries);
+  console.log(`Locale coverage: ${coverage.join(" · ")}`);
   console.log(
     `\nmissing ${missing.length}, placeholder ${mismatches.length}, conflict ${conflicts.length}, unused ${unused.length}, untranslated ${untranslated.length}`,
   );
-  if (missing.length + mismatches.length + conflicts.length > 0) {
+  if (
+    missing.length +
+      mismatches.length +
+      conflicts.length +
+      localeMismatches.length >
+    0
+  ) {
     process.exitCode = 1;
   }
 }

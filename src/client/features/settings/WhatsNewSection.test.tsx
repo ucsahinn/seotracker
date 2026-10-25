@@ -16,4 +16,12 @@ describe("WhatsNewSection", () => {
     ).toBeDefined();
     expect(screen.queryByText(/Arayüzü Türkçe veya İngilizce/)).toBeNull();
   });
+
+  it("shows the selected locale's release notes", () => {
+    setLocale("de");
+    render(<WhatsNewSection version="0.6.0" />);
+
+    expect(screen.getByRole("heading", { name: "Funktionen" })).toBeDefined();
+    expect(screen.queryByText(/Arayüzü Türkçe veya İngilizce/)).toBeNull();
+  });
 });

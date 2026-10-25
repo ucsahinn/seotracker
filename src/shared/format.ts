@@ -7,13 +7,20 @@
  * makes the whole app agree, and makes a wrong format a one-line fix.
  *
  * The locale follows the UI language (`getLocale()` from `@/shared/i18n`):
- * tr-TR for Turkish, en-US for English. Formatters are built on first use and
+ * a locale-specific number/date locale. Formatters are built on first use and
  * cached per locale, because the locale is set per request on the server and
  * is not known when this module loads.
  */
 import { getLocale, type Locale } from "@/shared/i18n";
 
-const INTL_LOCALE: Record<Locale, string> = { tr: "tr-TR", en: "en-US" };
+const INTL_LOCALE: Record<Locale, string> = {
+  tr: "tr-TR",
+  en: "en-US",
+  de: "de-DE",
+  fr: "fr-FR",
+  it: "it-IT",
+  pt: "pt-PT",
+};
 
 const numberFormats = new Map<string, Intl.NumberFormat>();
 const dateFormats = new Map<string, Intl.DateTimeFormat>();

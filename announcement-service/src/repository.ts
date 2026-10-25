@@ -50,8 +50,9 @@ export function createD1Repository(db: D1DatabaseLike): AnnouncementRepository {
       await db
         .prepare(
           `INSERT INTO announcements
-           (id, title_tr, body_tr, title_en, body_en, category, status, publish_at, expires_at, created_at, updated_at)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+           (id, title_tr, body_tr, title_en, body_en, title_de, body_de, title_fr, body_fr, title_it, body_it, title_pt, body_pt,
+            category, status, publish_at, expires_at, created_at, updated_at)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         )
         .bind(
           item.id,
@@ -59,6 +60,14 @@ export function createD1Repository(db: D1DatabaseLike): AnnouncementRepository {
           item.body_tr,
           item.title_en,
           item.body_en,
+          item.title_de,
+          item.body_de,
+          item.title_fr,
+          item.body_fr,
+          item.title_it,
+          item.body_it,
+          item.title_pt,
+          item.body_pt,
           item.category,
           item.status,
           item.publish_at,
@@ -73,6 +82,8 @@ export function createD1Repository(db: D1DatabaseLike): AnnouncementRepository {
         .prepare(
           `UPDATE announcements SET
            title_tr = ?, body_tr = ?, title_en = ?, body_en = ?,
+           title_de = ?, body_de = ?, title_fr = ?, body_fr = ?,
+           title_it = ?, body_it = ?, title_pt = ?, body_pt = ?,
            category = ?, status = ?, publish_at = ?, expires_at = ?, updated_at = ?
            WHERE id = ?`,
         )
@@ -81,6 +92,14 @@ export function createD1Repository(db: D1DatabaseLike): AnnouncementRepository {
           item.body_tr,
           item.title_en,
           item.body_en,
+          item.title_de,
+          item.body_de,
+          item.title_fr,
+          item.body_fr,
+          item.title_it,
+          item.body_it,
+          item.title_pt,
+          item.body_pt,
           item.category,
           item.status,
           item.publish_at,

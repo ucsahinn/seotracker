@@ -24,6 +24,8 @@
     "**/*.{js,mjs,ts,tsx}",
     "!src/routeTree.gen.ts",
     "!badseo/**",
+    // Local scratch workspaces may contain complete copies of other repos.
+    "!.tmp/**",
     // Windows package and website: not part of the app module graph.
     "!packaging/**",
     "!site/**",

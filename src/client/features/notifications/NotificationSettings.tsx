@@ -33,7 +33,7 @@ export function NotificationSettings() {
       <h2 className="text-base font-semibold">{t("Bildirimler")}</h2>
       <p className="text-sm text-muted">
         {t(
-          "Denetimler ve güncellemeler için bildirimler zil simgesinde saklanır. Bu tercihler bu tarayıcıda saklanır.",
+          "Bildirim geçmişi zil simgesinde tutulur. Ses ve Windows sistem bildirimlerini buradan açıp kapatabilirsiniz.",
         )}
       </p>
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -68,8 +68,15 @@ export function NotificationSettings() {
           }
           onChange={(event) => void enableDesktop(event.target.checked)}
         />
-        {t("Arka plandayken masaüstü bildirimi")}
+        {t("Windows ve sistem bildirimleri")}
       </label>
+      {prefs.desktop && permission === "granted" ? (
+        <p className="text-sm text-muted">
+          {t(
+            "Güncellemeler ve yeni duyurular dahil bildirimler Windows bildirim merkezinde gösterilir.",
+          )}
+        </p>
+      ) : null}
       {permission === "denied" && (
         <p role="status" className="text-sm text-muted">
           {t(

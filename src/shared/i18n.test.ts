@@ -31,6 +31,12 @@ describe("t", () => {
   it("uses the Turkish source in Turkish, plural entry or not", () => {
     expect(t("{count} sayfa", { count: 1234 })).toBe("1.234 sayfa");
   });
+
+  it("uses a translated catalog entry and falls back to English per key", () => {
+    setLocale("de");
+    expect(t("Bildirimler")).toBe("Benachrichtigungen");
+    expect(t("Henüz çevrilmedi {x}", { x: 3 })).toBe("Henüz çevrilmedi 3");
+  });
 });
 
 describe("resolveLocale", () => {
@@ -38,9 +44,9 @@ describe("resolveLocale", () => {
     expect(resolveLocale("a=1; seowatcher-lang=tr", "en-US,en")).toBe("tr");
   });
 
-  it("reads Accept-Language by preference: tr* is Turkish, anything else English", () => {
+  it("reads Accept-Language by preference and uses supported languages", () => {
     expect(resolveLocale(null, "tr-TR,tr;q=0.9,en;q=0.8")).toBe("tr");
-    expect(resolveLocale(null, "tr;q=0.5,de-DE")).toBe("en");
+    expect(resolveLocale(null, "tr;q=0.5,de-DE")).toBe("de");
   });
 
   it("stays Turkish with no usable header", () => {

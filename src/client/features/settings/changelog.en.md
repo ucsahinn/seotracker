@@ -2,7 +2,15 @@
 
 Features, fixes and other changes, newest release first.
 
-## [0.6.0] Alpha — 2026-10-25
+## [0.7.0] Alpha — 2026-10-25
+
+### Features
+
+- Windows startup now shows server preparation in a visible progress window, including the real percentage while an update downloads.
+- App updates and live announcements appear in the Windows notification center when enabled. Toggle them under Settings → Notifications.
+- Live announcements can be authored in six languages and shown in the selected interface language.
+
+## [0.6.0] Alpha — 2026-10-24
 
 ### Features
 

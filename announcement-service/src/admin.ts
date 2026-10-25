@@ -44,6 +44,14 @@ export const adminPage = String.raw`<!doctype html>
           <label>Title · English<input name="titleEn" maxlength="120" required></label>
           <label>Mesaj · Türkçe<textarea name="bodyTr" maxlength="4000" required></textarea></label>
           <label>Message · English<textarea name="bodyEn" maxlength="4000" required></textarea></label>
+          <label>Titel · Deutsch<input name="titleDe" maxlength="120" required></label>
+          <label>Titel · Français<input name="titleFr" maxlength="120" required></label>
+          <label>Titolo · Italiano<input name="titleIt" maxlength="120" required></label>
+          <label>Título · Português<input name="titlePt" maxlength="120" required></label>
+          <label class="wide">Nachricht · Deutsch<textarea name="bodyDe" maxlength="4000" required></textarea></label>
+          <label class="wide">Message · Français<textarea name="bodyFr" maxlength="4000" required></textarea></label>
+          <label class="wide">Messaggio · Italiano<textarea name="bodyIt" maxlength="4000" required></textarea></label>
+          <label class="wide">Mensagem · Português<textarea name="bodyPt" maxlength="4000" required></textarea></label>
         </div>
         <div class="row">
           <label>Kategori<select name="category"><option value="product">Ürün yeniliği</option><option value="maintenance">Bakım</option><option value="security">Güvenlik</option><option value="release">Sürüm</option></select></label>
@@ -109,8 +117,16 @@ export const adminPage = String.raw`<!doctype html>
       editing = item;
       createForm.elements.titleTr.value = item.title_tr;
       createForm.elements.titleEn.value = item.title_en;
+      createForm.elements.titleDe.value = item.title_de;
+      createForm.elements.titleFr.value = item.title_fr;
+      createForm.elements.titleIt.value = item.title_it;
+      createForm.elements.titlePt.value = item.title_pt;
       createForm.elements.bodyTr.value = item.body_tr;
       createForm.elements.bodyEn.value = item.body_en;
+      createForm.elements.bodyDe.value = item.body_de;
+      createForm.elements.bodyFr.value = item.body_fr;
+      createForm.elements.bodyIt.value = item.body_it;
+      createForm.elements.bodyPt.value = item.body_pt;
       createForm.elements.category.value = item.category;
       createForm.elements.publishAt.value = localDateValue(item.publish_at);
       createForm.elements.expiresAt.value = localDateValue(item.expires_at);
@@ -189,8 +205,16 @@ export const adminPage = String.raw`<!doctype html>
       const data = {
         title_tr: String(form.get('titleTr')).trim(),
         title_en: String(form.get('titleEn')).trim(),
+        title_de: String(form.get('titleDe')).trim(),
+        title_fr: String(form.get('titleFr')).trim(),
+        title_it: String(form.get('titleIt')).trim(),
+        title_pt: String(form.get('titlePt')).trim(),
         body_tr: String(form.get('bodyTr')).trim(),
         body_en: String(form.get('bodyEn')).trim(),
+        body_de: String(form.get('bodyDe')).trim(),
+        body_fr: String(form.get('bodyFr')).trim(),
+        body_it: String(form.get('bodyIt')).trim(),
+        body_pt: String(form.get('bodyPt')).trim(),
         category: form.get('category'),
         status: publish ? 'published' : editing?.status ?? 'draft',
         publish_at: dateValue(String(form.get('publishAt'))) || new Date().toISOString(),

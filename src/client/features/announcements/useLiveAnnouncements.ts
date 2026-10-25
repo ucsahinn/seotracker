@@ -12,7 +12,9 @@ export function useLiveAnnouncements() {
     staleTime: 60_000,
     gcTime: 30 * 60_000,
     refetchInterval: ANNOUNCEMENTS_REFRESH_MS,
-    refetchIntervalInBackground: false,
+    // Announcements should still reach the Windows notification center while
+    // the operator has this app in a background browser tab.
+    refetchIntervalInBackground: true,
     retry: false,
   });
 }

@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   CHANGELOG_ENTRIES,
   CHANGELOG_ENTRIES_EN,
+  CHANGELOG_ENTRIES_BY_LOCALE,
   plainText,
 } from "./changelog";
 
@@ -28,6 +29,37 @@ describe("changelog", () => {
       );
     }
     expect(CHANGELOG_ENTRIES_EN[0]?.sections[0]?.heading).toBe("Features");
+  });
+
+  it("keeps every release translated and aligned across all six locales", () => {
+    for (const locale of ["en", "de", "fr", "it", "pt"] as const) {
+      const entries = CHANGELOG_ENTRIES_BY_LOCALE[locale];
+      expect(entries).toHaveLength(CHANGELOG_ENTRIES.length);
+      for (const [index, entry] of CHANGELOG_ENTRIES.entries()) {
+        const translated = entries[index];
+        expect(translated?.version, `${locale} ${entry.version}`).toBe(
+          entry.version,
+        );
+        expect(
+          translated?.sections.map((section) => section.items.length),
+          `${locale} ${entry.version}`,
+        ).toEqual(entry.sections.map((section) => section.items.length));
+      }
+    }
+  });
+
+  it("uses the published date and the planned date for the upcoming release", () => {
+    for (const locale of ["tr", "en", "de", "fr", "it", "pt"] as const) {
+      const entries = CHANGELOG_ENTRIES_BY_LOCALE[locale];
+      expect(
+        entries.find((entry) => entry.version === "0.6.0")?.date,
+        `${locale} v0.6.0`,
+      ).toBe("2026-10-24");
+      expect(
+        entries.find((entry) => entry.version === "0.7.0")?.date,
+        `${locale} v0.7.0`,
+      ).toBe("2026-10-25");
+    }
   });
 
   it("leaves the unreleased section out", () => {
@@ -65,6 +97,20 @@ describe("changelog", () => {
     const newest = CHANGELOG_ENTRIES[0];
     expect(newest.sections.length).toBeGreaterThan(0);
     expect(newest.sections.every((s) => s.items.length > 0)).toBe(true);
+  });
+
+  it("keeps each published change in its own readable list item", () => {
+    const release = CHANGELOG_ENTRIES.find(
+      (entry) => entry.version === "0.6.0",
+    );
+    expect(release?.sections.map((section) => section.items.length)).toEqual([
+      4, 2, 1,
+    ]);
+    expect(
+      release?.sections
+        .flatMap((section) => section.items)
+        .every((item) => item.text.startsWith("- ")),
+    ).toBe(false);
   });
 
   /*

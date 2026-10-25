@@ -1,5 +1,10 @@
 import raw from "./changelog.tr.md?raw";
 import englishRaw from "./changelog.en.md?raw";
+import germanRaw from "./changelog.de.md?raw";
+import frenchRaw from "./changelog.fr.md?raw";
+import italianRaw from "./changelog.it.md?raw";
+import portugueseRaw from "./changelog.pt.md?raw";
+import type { Locale } from "@/shared/i18n";
 
 /** A line of prose, or a fenced command the reader will want to copy. */
 export type ChangelogItem = { text: string; code: boolean };
@@ -133,6 +138,16 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = parseChangelog(raw);
 /** English copy kept in lockstep with the canonical Turkish release list. */
 export const CHANGELOG_ENTRIES_EN: ChangelogEntry[] =
   parseChangelog(englishRaw);
+
+/** Release notes in each supported interface language. */
+export const CHANGELOG_ENTRIES_BY_LOCALE: Record<Locale, ChangelogEntry[]> = {
+  tr: CHANGELOG_ENTRIES,
+  en: CHANGELOG_ENTRIES_EN,
+  de: parseChangelog(germanRaw),
+  fr: parseChangelog(frenchRaw),
+  it: parseChangelog(italianRaw),
+  pt: parseChangelog(portugueseRaw),
+};
 
 /** Strips the inline markdown these notes use, leaving the words. */
 export function plainText(markdown: string): string {

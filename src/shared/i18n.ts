@@ -1,5 +1,6 @@
 /**
- * The app's two UI languages: Turkish (the source) and English.
+ * The app's UI languages. Turkish is the source; every other locale falls
+ * back to English until its catalog includes a translated value.
  *
  * The Turkish string is the key, so code keeps reading in Turkish:
  * `t("Kaydet")`, `t("{count} sayfa", { count })`. English lives in
@@ -12,10 +13,69 @@
  */
 import * as React from "react";
 import { en } from "@/shared/i18n/en";
+import { deSettings } from "@/shared/i18n/de/settings";
+import { deSettingsContinued } from "@/shared/i18n/de/settings-continued";
+import { deShared } from "@/shared/i18n/de/shared";
+import { deNotifications } from "@/shared/i18n/de/notifications";
+import { deCatalog } from "@/shared/i18n/de/catalog";
+import { frNotifications } from "@/shared/i18n/fr/notifications";
+import { frShared } from "@/shared/i18n/fr/shared";
+import { frCatalog } from "@/shared/i18n/fr/catalog";
+import { itApp } from "@/shared/i18n/it/app";
+import { itAppContinued } from "@/shared/i18n/it/app-continued";
+import { itNotifications } from "@/shared/i18n/it/notifications";
+import { itShared } from "@/shared/i18n/it/shared";
+import { itCatalog } from "@/shared/i18n/it/catalog";
+import { ptNotifications } from "@/shared/i18n/pt/notifications";
+import { ptShared } from "@/shared/i18n/pt/shared";
+import { ptApp } from "@/shared/i18n/pt/app";
+import { ptAppContinued } from "@/shared/i18n/pt/app-continued";
+import { ptCatalog } from "@/shared/i18n/pt/catalog";
 
-export type Locale = "tr" | "en";
+export const LOCALES = ["tr", "en", "de", "fr", "it", "pt"] as const;
+export type Locale = (typeof LOCALES)[number];
 export type CatalogValue = string | { one: string; other: string };
 export type Catalog = Record<string, CatalogValue>;
+
+const localeValues: ReadonlySet<string> = new Set(LOCALES);
+function isLocale(value: string): value is Locale {
+  return localeValues.has(value);
+}
+
+const catalogs: Partial<Record<Locale, Catalog>> = {
+  en,
+  de: {
+    ...deShared,
+    ...deSettings,
+    ...deSettingsContinued,
+    ...deNotifications,
+    ...deCatalog,
+  },
+  fr: { ...frShared, ...frNotifications, ...frCatalog },
+  it: {
+    ...itShared,
+    ...itApp,
+    ...itAppContinued,
+    ...itNotifications,
+    ...itCatalog,
+  },
+  pt: {
+    ...ptShared,
+    ...ptNotifications,
+    ...ptApp,
+    ...ptAppContinued,
+    ...ptCatalog,
+  },
+};
+
+const INTL_LOCALE: Record<Locale, string> = {
+  tr: "tr-TR",
+  en: "en-US",
+  de: "de-DE",
+  fr: "fr-FR",
+  it: "it-IT",
+  pt: "pt-PT",
+};
 
 /** Written by Settings -> Görünüm -> Dil, read by the server on every request. */
 export const LOCALE_COOKIE = "seowatcher-lang";
@@ -35,10 +95,9 @@ export const LOCALE_COOKIE = "seowatcher-lang";
  * `<html lang>` the server rendered, before anything hydrates, so the first
  * client render says exactly what the server said.
  */
-let current: Locale =
-  typeof document !== "undefined" && document.documentElement.lang === "en"
-    ? "en"
-    : "tr";
+const documentLocale =
+  typeof document !== "undefined" ? document.documentElement.lang : "";
+let current: Locale = isLocale(documentLocale) ? documentLocale : "tr";
 
 const LOCALE_SCOPE = Symbol.for("seowatcher.i18n.localeScope");
 type LocaleScope = { getStore(): Locale | undefined };
@@ -63,7 +122,7 @@ export function useLocale(): Locale {
   return React.useSyncExternalStore(subscribeNever, getLocale, getLocale);
 }
 
-const englishPlural = new Intl.PluralRules("en-US");
+const pluralRules: Partial<Record<Locale, Intl.PluralRules>> = {};
 const countFormatters: Partial<Record<Locale, Intl.NumberFormat>> = {};
 
 /*
@@ -76,7 +135,7 @@ function display(name: string, value: string | number): string {
   if (name !== "count" || typeof value !== "number") return String(value);
   const locale = getLocale();
   const formatter = (countFormatters[locale] ??= new Intl.NumberFormat(
-    locale === "en" ? "en-US" : "tr-TR",
+    INTL_LOCALE[locale],
   ));
   return formatter.format(value);
 }
@@ -93,14 +152,18 @@ export function t(
   vars?: Record<string, string | number>,
 ): string {
   let text = source;
-  if (getLocale() === "en") {
-    const entry = en[source];
+  if (getLocale() !== "tr") {
+    const locale = getLocale();
+    const entry = catalogs[locale]?.[source] ?? en[source];
     if (typeof entry === "string") {
       text = entry;
     } else if (entry) {
       const count = vars?.count;
+      const rules = (pluralRules[locale] ??= new Intl.PluralRules(
+        INTL_LOCALE[locale],
+      ));
       text =
-        typeof count === "number" && englishPlural.select(count) === "one"
+        typeof count === "number" && rules.select(count) === "one"
           ? entry.one
           : entry.other;
     }
@@ -113,9 +176,9 @@ export function t(
 }
 
 /**
- * The locale for a request: the cookie if it names one, else the first
- * language the browser prefers (`tr*` is Turkish, anything else English).
- * No usable header at all (curl, a health check) stays Turkish, the source.
+ * The locale for a request: the cookie if it names one, else the highest
+ * quality supported browser language. With no usable preference, stay with
+ * Turkish, the source; unsupported preferences fall back to English.
  */
 export function resolveLocale(
   cookieHeader: string | null,
@@ -123,26 +186,36 @@ export function resolveLocale(
 ): Locale {
   for (const part of cookieHeader?.split(";") ?? []) {
     const [name, value] = part.trim().split("=");
-    if (name === LOCALE_COOKIE && (value === "tr" || value === "en")) {
+    if (name === LOCALE_COOKIE && value && isLocale(value)) {
       return value;
     }
   }
   const preferred = (acceptLanguage ?? "")
     .split(",")
-    .map((entry) => {
+    .map((entry, index) => {
       const [tag = "", ...params] = entry.trim().split(";");
       const q = params.find((p) => p.trim().startsWith("q="));
       return {
         tag: tag.trim().toLowerCase(),
         q: q ? Number(q.split("=")[1]) : 1,
+        index,
       };
     })
-    .filter((entry) => entry.tag && entry.tag !== "*" && entry.q > 0)
-    // Highest q wins; on a tie the earlier entry, as the browser listed it.
-    .reduce<{ tag: string; q: number } | null>(
-      (best, entry) => (best && best.q >= entry.q ? best : entry),
-      null,
+    .filter(
+      (entry) =>
+        entry.tag &&
+        entry.tag !== "*" &&
+        Number.isFinite(entry.q) &&
+        entry.q > 0 &&
+        entry.q <= 1,
     );
-  if (!preferred) return "tr";
-  return preferred.tag.startsWith("tr") ? "tr" : "en";
+  if (preferred.length === 0) return "tr";
+  let best: { language: Locale; q: number } | null = null;
+  for (const entry of preferred) {
+    const language = entry.tag.split("-")[0];
+    if (language && isLocale(language) && (!best || entry.q > best.q)) {
+      best = { language, q: entry.q };
+    }
+  }
+  return best?.language ?? "en";
 }

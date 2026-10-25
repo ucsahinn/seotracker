@@ -11,6 +11,7 @@ import { formatCount } from "@/shared/format";
 import { formatRelativeTime, parseTimestamp } from "@/client/lib/format";
 import { t } from "@/shared/i18n";
 import { getReadinessScore } from "./readinessScore";
+import { GoogleSetupBanner } from "./GoogleSetupBanner";
 
 /**
  * What to do next, in order, on the one screen an operator opens first.
@@ -57,9 +58,8 @@ export function NextStepsCard({
   hasProjectContext?: boolean;
   agentConnected?: boolean;
   /**
-   * The Google access key is not entered yet. The banner above already asks
-   * for it, and Search Console cannot be connected before it, so the step
-   * would be a second copy of the same ask.
+   * The Google access key is not entered yet. The setup action inside this
+   * panel handles it, and Search Console cannot be connected before it.
    */
   googleMissing?: boolean;
   audit: {
@@ -90,9 +90,6 @@ export function NextStepsCard({
     hasProjectContext,
     agentConnected,
   });
-
-  // Nothing left but the thing the banner already says: no card of its own.
-  if (googleMissing && steps.length === 0) return null;
 
   return (
     <section className="overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-[var(--shadow-raise)]">
@@ -166,14 +163,22 @@ export function NextStepsCard({
         </p>
       </div>
 
+      {googleMissing ? (
+        <div className="border-b border-base-300 p-4">
+          <GoogleSetupBanner />
+        </div>
+      ) : null}
+
       {steps.length === 0 ? (
-        <p className="flex items-center gap-2 px-5 py-6 text-sm text-muted">
-          <CheckCircle2
-            aria-hidden
-            className="size-4 text-[var(--ink-success)]"
-          />
-          {t("Acil bir iş görünmüyor. Denetim güncel ve kritik sorun yok.")}
-        </p>
+        googleMissing ? null : (
+          <p className="flex items-center gap-2 px-5 py-6 text-sm text-muted">
+            <CheckCircle2
+              aria-hidden
+              className="size-4 text-[var(--ink-success)]"
+            />
+            {t("Acil bir iş görünmüyor. Denetim güncel ve kritik sorun yok.")}
+          </p>
+        )
       ) : (
         <ul className="stagger divide-y divide-base-300">
           {steps.map((step, index) => (

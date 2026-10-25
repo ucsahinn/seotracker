@@ -13,10 +13,7 @@ import {
   GscCard,
 } from "@/client/features/dashboard/DashboardCards";
 import { DashboardMetrics } from "@/client/features/dashboard/DashboardMetrics";
-import {
-  GoogleSetupBanner,
-  useGoogleClientConfigured,
-} from "@/client/features/dashboard/GoogleSetupBanner";
+import { useGoogleClientConfigured } from "@/client/features/dashboard/GoogleSetupBanner";
 import { Ga4Card } from "@/client/features/dashboard/Ga4Card";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { SearchInsights } from "@/client/features/dashboard/SearchInsights";
@@ -120,9 +117,8 @@ export function DashboardPage({ projectId }: { projectId: string }) {
       : []),
     // Connected, the Search Console numbers are already in the metric row, so
     // the card would only repeat them. Disconnected, it is the thing that runs
-    // the whole OAuth flow, so it has to be on the page - unless there is no
-    // OAuth client yet, in which case the banner above already says so and a
-    // card that cannot connect is just a second copy of the same warning.
+    // the whole OAuth flow, so it has to be on the page - unless Google setup
+    // is incomplete, in which case the recommendation panel handles that step.
     ...(gscConnected || googleMissing
       ? []
       : [
@@ -171,8 +167,6 @@ export function DashboardPage({ projectId }: { projectId: string }) {
           </PageActions>
         }
       />
-
-      {googleMissing ? <GoogleSetupBanner /> : null}
 
       <DashboardMetrics projectId={projectId} connected={gscConnected} />
 

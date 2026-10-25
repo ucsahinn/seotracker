@@ -21,6 +21,10 @@ const THEME_OPTIONS: {
 const LANGUAGE_OPTIONS: { value: Locale; label: string }[] = [
   { value: "tr", label: "Türkçe" }, // i18n-ignore
   { value: "en", label: "English" },
+  { value: "de", label: "Deutsch" },
+  { value: "fr", label: "Français" }, // i18n-ignore
+  { value: "it", label: "Italiano" },
+  { value: "pt", label: "Português" }, // i18n-ignore
 ];
 
 const ONE_YEAR_SECONDS = 365 * 24 * 60 * 60;

@@ -3,16 +3,16 @@
 </p>
 
 <p align="center">
-  <b>Sitenizin Google verisini kendi bilgisayarınızda izleyin. Ücretsiz, hesapsız, Türkçe ve İngilizce.</b>
+  <b>Sitenizin Google verisini kendi bilgisayarınızda izleyin. Ücretsiz, hesapsız, altı dilde.</b>
 </p>
 
 <p align="center"><sub>Ürünün adı <b>seowatcher</b>; bu GitHub deposunun adı <code>seotracker</code>.</sub></p>
 
 <p align="center">
   <a href="https://seowatcher.io"><img alt="Web sitesi: seowatcher.io" src="https://img.shields.io/badge/site-seowatcher.io-e87722?style=flat-square"></a>
-  <a href="./CHANGELOG.md"><img alt="Sürüm 0.6.0 Alpha" src="https://img.shields.io/badge/sürüm-0.6.0_Alpha-1f2937?style=flat-square"></a>
+  <a href="./CHANGELOG.md"><img alt="Sürüm 0.7.0 Alpha" src="https://img.shields.io/badge/sürüm-0.7.0_Alpha-1f2937?style=flat-square"></a>
   <img alt="Docker ile kurulum" src="https://img.shields.io/badge/kurulum-docker%20compose%20up-0db7ed?style=flat-square&logo=docker&logoColor=white">
-  <img alt="Türkçe ve İngilizce arayüz" src="https://img.shields.io/badge/arayüz-Türkçe%20%2F%20English-374151?style=flat-square">
+  <img alt="Altı dilde arayüz" src="https://img.shields.io/badge/arayüz-6%20dil-374151?style=flat-square">
   <a href="./LICENSE"><img alt="MIT lisansı" src="https://img.shields.io/badge/lisans-MIT-374151?style=flat-square"></a>
 </p>
 

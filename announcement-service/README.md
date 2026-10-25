@@ -7,7 +7,8 @@ does not receive or store the administrator token.
 ## Endpoints
 
 - `GET /health`: service health.
-- `GET /api/announcements`: public Turkish and English announcements. Drafts,
+- `GET /api/announcements`: public Turkish, English, German, French, Italian
+  and Portuguese announcements. Drafts,
   scheduled notices and expired notices are omitted. The endpoint uses ETags
   and permits public cross-origin reads.
 - `GET /admin`: the private writing and publishing screen. The page asks for

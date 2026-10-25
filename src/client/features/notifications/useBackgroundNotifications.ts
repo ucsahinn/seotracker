@@ -158,6 +158,7 @@ export function useBackgroundNotifications(): void {
   const updateQuery = useQuery({
     ...updateStatusOptions(),
     refetchInterval: UPDATE_POLL_MS,
+    refetchIntervalInBackground: true,
   });
   const latest = updateQuery.data?.updateAvailable
     ? updateQuery.data.latestVersion

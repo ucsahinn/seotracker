@@ -52,4 +52,21 @@ describe("release categories", () => {
       }),
     ).toEqual(["feature"]);
   });
+
+  it.each([
+    ["Funktionen", "Fehlerbehebungen", "Sicherheit"],
+    ["Fonctionnalités", "Corrections", "Sécurité"],
+    ["Funzionalità", "Correzioni", "Sicurezza"],
+    ["Funcionalidades", "Correções", "Segurança"],
+  ])("classifies translated release headings", (feature, fix, security) => {
+    expect(
+      getReleaseCategories({
+        sections: [
+          { heading: feature, items: [] },
+          { heading: fix, items: [] },
+          { heading: security, items: [] },
+        ],
+      }),
+    ).toEqual(["feature", "fix", "security"]);
+  });
 });
