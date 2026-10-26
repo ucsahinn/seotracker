@@ -8,20 +8,20 @@ afterEach(() => setLocale("tr"));
 describe("WhatsNewSection", () => {
   it("shows release notes in the selected English interface language", () => {
     setLocale("en");
-    render(<WhatsNewSection version="0.7.1" />);
+    render(<WhatsNewSection version="0.8.0" />);
 
-    expect(screen.getByRole("heading", { name: "Features" })).toBeDefined();
-    expect(
-      screen.getByText(/Live announcements appear on the app/),
-    ).toBeDefined();
-    expect(screen.queryByText(/Canlı duyurular uygulamanın/)).toBeNull();
+    expect(screen.getByRole("heading", { name: /Site audit/ })).toBeDefined();
+    expect(screen.getByText(/Your site's security settings/)).toBeDefined();
+    expect(screen.queryByText(/Sitenizin güvenlik ayarları/)).toBeNull();
   });
 
   it("shows the selected locale's release notes", () => {
     setLocale("de");
-    render(<WhatsNewSection version="0.7.1" />);
+    render(<WhatsNewSection version="0.8.0" />);
 
-    expect(screen.getByRole("heading", { name: "Funktionen" })).toBeDefined();
-    expect(screen.queryByText(/Canlı duyurular uygulamanın/)).toBeNull();
+    expect(
+      screen.getByRole("heading", { name: /Website-Audit/ }),
+    ).toBeDefined();
+    expect(screen.queryByText(/Sitenizin güvenlik ayarları/)).toBeNull();
   });
 });

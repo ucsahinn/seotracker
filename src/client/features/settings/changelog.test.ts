@@ -17,7 +17,7 @@ describe("changelog", () => {
   // bullet must still be its own item there.
   it("parses CRLF files the same as LF files", () => {
     const lf =
-      "# Notes\n\n## [1.0.0] — 2026-01-01\n\n### Fixes\n\n- **A:** one\n- **B:** two\n";
+      "# Notes\n\n## [1.0.0] — 2026-01-01\n\n### 🛠️ Fixes\n\n- **A:** one\n- **B:** two\n";
     expect(parseChangelog(lf.replace(/\n/g, "\r\n"))).toEqual(
       parseChangelog(lf),
     );
@@ -41,9 +41,9 @@ describe("changelog", () => {
       );
     }
     expect(
-      CHANGELOG_ENTRIES_EN.find((entry) => entry.version === "0.7.1")
+      CHANGELOG_ENTRIES_EN.find((entry) => entry.version === "0.8.0")
         ?.sections[0]?.heading,
-    ).toBe("Features");
+    ).toBe("✨ Highlights");
   });
 
   it("keeps every release translated and aligned across all six locales", () => {
@@ -65,10 +65,9 @@ describe("changelog", () => {
 
   // Merged releases carry the highest published number of their group and its
   // date, so each entry maps to a real tag.
-  it("keeps exactly four releases, each dated by its highest published version", () => {
+  it("keeps exactly three releases, each dated by its highest published version", () => {
     const dates = {
       "0.8.0": "2026-10-26",
-      "0.7.1": "2026-10-26",
       "0.4.3": "2026-10-23",
       "0.2.1": "2026-10-04",
     };
@@ -125,10 +124,10 @@ describe("changelog", () => {
 
   it("keeps each published change in its own readable list item", () => {
     const release = CHANGELOG_ENTRIES.find(
-      (entry) => entry.version === "0.7.1",
+      (entry) => entry.version === "0.8.0",
     );
     expect(release?.sections.map((section) => section.items.length)).toEqual([
-      8, 2, 1,
+      5, 6, 3, 4, 3, 3, 4, 1,
     ]);
     expect(
       release?.sections
@@ -137,9 +136,9 @@ describe("changelog", () => {
     ).toBe(false);
   });
 
-  it("labels the affected screen for the two most recent releases in every locale", () => {
+  it("starts every bullet with a bold label in every release and locale", () => {
     for (const locale of ["tr", "en", "de", "fr", "it", "pt"] as const) {
-      for (const version of ["0.8.0", "0.7.1"]) {
+      for (const version of ["0.8.0", "0.4.3", "0.2.1"]) {
         const release = CHANGELOG_ENTRIES_BY_LOCALE[locale].find(
           (entry) => entry.version === version,
         );
@@ -150,6 +149,29 @@ describe("changelog", () => {
             .every((item) => item.text.startsWith("**")),
           `${locale} v${version} labels`,
         ).toBe(true);
+      }
+    }
+  });
+
+  // Each section heading opens with an emoji, the same one in every language,
+  // and each release opens with an introduction.
+  it("opens every section heading with an emoji shared across locales", () => {
+    const emojiOf = (heading: string) => heading.split(" ")[0];
+    for (const locale of ["tr", "en", "de", "fr", "it", "pt"] as const) {
+      for (const [index, entry] of CHANGELOG_ENTRIES.entries()) {
+        const translated = CHANGELOG_ENTRIES_BY_LOCALE[locale][index];
+        expect(translated?.intro, `${locale} ${entry.version} intro`).not.toBe(
+          "",
+        );
+        for (const section of translated?.sections ?? []) {
+          expect(section.heading, `${locale} ${entry.version}`).toMatch(
+            /^\p{Extended_Pictographic}/u,
+          );
+        }
+        expect(
+          translated?.sections.map((section) => emojiOf(section.heading)),
+          `${locale} ${entry.version} emoji`,
+        ).toEqual(entry.sections.map((section) => emojiOf(section.heading)));
       }
     }
   });

@@ -1,104 +1,141 @@
 # Note di rilascio
 
-Funzionalità, correzioni e altre modifiche, dalla versione più recente.
+Novità e correzioni, dalla versione più recente.
 
 ## [0.8.0] Alpha — 2026-10-26
 
-### In evidenza
+Questa versione riunisce tutto ciò che è arrivato dalla 0.5.0 alla 0.8.0: una verifica del sito più intelligente, una nuova dashboard, notifiche e sei lingue.
 
-- **Verifica del sito riscritta:** 201 regole esaminano le pagine e il sito nel suo insieme, tra cui intestazioni di sicurezza, record di e-mail e dominio, scadenza di SSL e dominio, accesso dei crawler IA e risultati di Lighthouse.
-- **Risultati onesti:** un controllo non misurabile non conta più come «superato» e un sondaggio che non ha potuto girare non produce segnalazioni. Se mancano i dati, la schermata lo dice chiaramente.
-- **Ordine delle attività:** le correzioni sono ordinate in base al tuo traffico di Search Console e il punteggio è ponderato per categoria.
-- **Nuova schermata e nuovo report:** schede Controlli e Dati immediati, anteprime di ricerca e condivisione, cronologia del punteggio e report scaricabile ridisegnato.
-- **Interfaccia in sei lingue:** sono arrivati tedesco, francese, italiano e portoghese (Brasile). Insieme a turco e inglese, tutta l’app è disponibile in sei lingue.
+### ✨ In evidenza
 
-### Verifica del sito
+- **Nuova verifica del sito:** Esamina il tuo sito pagina per pagina e nel suo insieme, con 202 regole.
+- **Risultati onesti:** Ciò che non riesce a misurare non conta come «superato»; se mancano i dati, lo schermo lo dice chiaramente.
+- **Attività in ordine:** Per prime vengono i problemi delle pagine che portano più visitatori da Google.
+- **Sei lingue:** Usa l'app in turco, inglese, tedesco, francese, italiano o portoghese.
+- **Novità:** Annunci e notifiche ti tengono aggiornato sulle nuove versioni e sulle notizie importanti.
 
-- **Controlli sull’intero sito:** intestazioni di sicurezza (come HSTS), reindirizzamenti, la risposta a una pagina inesistente, robots.txt, record SPF e DMARC e le date di scadenza del certificato SSL e del dominio vengono interrogati una sola volta all’inizio della verifica. Ognuno produce una sola segnalazione.
-- **Crawler IA:** la verifica controlla se il tuo robots.txt blocca crawler IA come GPTBot, ClaudeBot e PerplexityBot e se hai un file llms.txt.
-- **Risultati di Lighthouse:** con la misurazione della velocità attiva, i controlli di Lighthouse compaiono come problemi, ciascuno con il risparmio stimato.
-- **Link esterni e immagini:** su richiesta, la verifica controlla se i link esterni si aprono e se le immagini sono più pesanti del necessario.
-- **Più regole:** 201 regole in totale, con segnali di pagina e più di 20 nuove segnalazioni. Cosa significa ogni regola e come correggerla è spiegato nella guida Regole di verifica.
-- **Da fare:** le cose da correggere sono ordinate in base al traffico di Search Console. Se Search Console non è collegato, l’ordine tiene conto solo dell’effetto sul punteggio.
-- **Controlli e Dati immediati:** la scheda Controlli elenca anche i controlli superati e quelli non misurabili. La scheda Dati immediati mostra le informazioni del sito misurate durante la verifica e, se disponibili, i Core Web Vitals.
-- **Anteprime:** anteprima del risultato di ricerca Google, della scheda di condivisione (Open Graph) e della visualizzazione mobile.
-- **Cronologia e report:** la cronologia del punteggio mostra come cambia tra una verifica e l’altra. Il report scaricabile è stato ridisegnato.
+### 🔎 Verifica del sito
 
-### Altre funzionalità
+- **Controlli di sicurezza:** Vengono controllate le impostazioni di sicurezza del sito e le scadenze del certificato SSL e del dominio.
+- **Record e-mail:** Si controllano i record che impediscono ad altri di inviare e-mail a tuo nome.
+- **Bot di IA:** Vedi se il tuo sito è aperto ai bot di IA come ChatGPT e Claude.
+- **Risultati di velocità:** Con la misurazione della velocità attiva, i problemi che rallentano il sito sono elencati con il guadagno stimato.
+- **Anteprime:** Vedi in anticipo come apparirà una pagina su Google, nelle condivisioni e su un telefono.
+- **Storico del punteggio:** Segui ciò che è migliorato tra una verifica e l'altra e scarica il report rinnovato.
 
-- **Lingua dell’interfaccia:** scegli una delle sei lingue in Impostazioni → Aspetto → Lingua; numeri e date seguono la tua scelta.
-- **Guida all’installazione:** le differenze tra il pacchetto Windows e Docker, per esempio dove si trovano le impostazioni e quali valgono, sono spiegate con chiarezza nella guida e nell’Aiuto.
-- **Strumenti per gli agenti:** il nuovo strumento `get_audit_summary` restituisce in una sola chiamata il punteggio del sito, i punteggi per categoria, l’elenco ordinato delle attività e i dati immediati del sito.
-- **Guida:** la pagina Regole di verifica descrive una per una tutte le 201 regole; la guida e le note di rilascio sono disponibili in sei lingue.
-- **seowatcher.io · privacy:** sul sito web Google Analytics 4 funziona solo se è impostato un ID di misurazione e scegli Accetta; prima del tuo consenso non viene inviato nulla a Google. La pagina sulla privacy è disponibile in sei lingue.
+### 📊 Dashboard e report
 
-### Correzioni
+- **Prossimi passi:** La dashboard offre un breve elenco di attività e un punteggio di preparazione per completare la configurazione. Il punteggio non è un risultato SEO.
+- **Report pronti:** Il tuo assistente IA prepara un report di miglioramento dai dati di verifica, ricerca e Analytics.
+- **Avanzamento della verifica:** Durante una verifica vedi il tempo trascorso e l'avanzamento, e alla fine un breve riepilogo.
 
-- **Affidabilità della verifica:** sono state corrette nove cause di risultati errati dopo aver confrontato le verifiche con misurazioni su siti reali.
-- **Verifica · telefono:** la schermata di verifica e il report scaricato non escono più dai margini sul telefono.
+### 🔔 Notifiche e annunci
 
-## [0.7.1] Alpha — 2026-10-26
+- **Centro notifiche:** Risultati delle verifiche, nuove versioni e problemi di connessione Google sono raccolti in un unico posto.
+- **Suono e desktop:** Attiva o disattiva separatamente il suono e le notifiche desktop.
+- **Notifiche di Windows:** Aggiornamenti e annunci compaiono anche nell'area notifiche di Windows.
+- **Annunci:** Le novità compaiono nella schermata Annunci dell'app.
 
-### Funzionalità
+### 🪟 Windows
 
-- **Annunci:** gli annunci in tempo reale compaiono nella schermata Annunci dell’app. Sono redatti in turco e inglese; le altre lingue dell’interfaccia mostrano la versione inglese. Prepara e pubblica i testi dalla pagina di amministrazione protetta da password.
-- **Dashboard:** La sezione Prossimi passi del pannello propone attività guidate e un punteggio di preparazione basato sulle connessioni Google, su una verifica recente, sul contesto del progetto e sulla configurazione dell’agente. Misura la preparazione della configurazione, non il rendimento SEO o le posizioni.
-- **Report degli agenti:** I report degli agenti ora usano una lista di controllo della copertura per verifiche e PageSpeed, Search Console, opportunità, cronologia delle posizioni, parole chiave salvate, Analytics, copertura dell’indice e sitemap, così da proporre miglioramenti prioritari.
-- **Notifiche:** Il centro notifiche riunisce risultati delle verifiche, nuove versioni, problemi di connessione Google e aggiornamenti dei report. I suoni e gli avvisi desktop hanno controlli separati.
-- **Notifiche di Windows:** Gli aggiornamenti dell’app e gli annunci in tempo reale appaiono nel centro notifiche di Windows quando l’opzione è attiva. Si può gestire in Impostazioni → Notifiche.
-- **Avvio di Windows:** All’avvio di Windows, una finestra di avanzamento mostra la preparazione del server; durante il download di un aggiornamento viene mostrata la percentuale effettiva.
-- **Impostazioni Windows:** In Impostazioni → Windows, scegli se avviare l’app con Windows e se installare automaticamente gli aggiornamenti. L’app spiega quando un amministratore limita un’opzione.
-- **Verifica del sito:** Segui il tempo trascorso e l’avanzamento durante una verifica, poi consulta il riepilogo finale. L’app mostra l’avanzamento anche mentre prepara un report o controlla gli aggiornamenti.
+- **Impostazioni:** Nelle Impostazioni scegli se l'app si avvia con Windows e si aggiorna da sola.
+- **Avanzamento all'avvio:** Una finestra mostra la percentuale mentre l'app si prepara e mentre scarica un aggiornamento.
+- **Istruzioni chiare:** La guida e l'Aiuto spiegano le differenze tra il pacchetto Windows e Docker.
 
-### Correzioni
+### 🌍 Lingue
 
-- **Nuovo progetto:** Sui telefoni, l’elenco dei paesi nel modulo di un nuovo progetto non viene più tagliato. Esc chiude prima l’elenco e lascia aperto il modulo.
-- **Aiuto · Diagnostica:** le verifiche non riuscite mostrano la fase d’interruzione, un messaggio ripulito e gli errori PageSpeed più frequenti. Gli URL delle pagine vengono rimossi dai riepiloghi esportati.
+- **Scelta della lingua:** Scegli la lingua in Impostazioni → Aspetto → Lingua; numeri e date la seguono.
+- **Guida:** La guida d'uso, le regole di verifica e le note di rilascio sono disponibili in sei lingue.
+- **Privacy:** Su seowatcher.io la misurazione parte solo se la accetti.
 
-### Sicurezza
+### 🛠️ Correzioni
 
-- **Aggiornamenti di sicurezza:** Sono state applicate correzioni di sicurezza alle dipendenze dell’applicazione.
+- **Verifica più accurata:** Sono stati corretti gli errori trovati su siti reali; i risultati sono più affidabili.
+- **Bene sul telefono:** La schermata di verifica e il report scaricato non vanno più fuori schermo sul telefono.
+- **Nuovo progetto:** L'elenco dei paesi non viene più tagliato sul telefono; Esc chiude l'elenco e conserva ciò che hai scritto.
+- **Segnalazione problemi:** Il pacchetto diagnostico nell'Aiuto descrive meglio il problema e non include gli indirizzi delle tue pagine.
+
+### 🔒 Sicurezza
+
+- **Componenti aggiornati:** Sono state chiuse falle di sicurezza nei componenti usati dall'app.
 
 ## [0.4.3] Alpha — 2026-10-23
 
-### Funzionalità
+Su Windows è arrivata l'installazione con un clic, ed è online il sito seowatcher.io con la guida d'uso.
 
-- **Installazione Windows:** installa l’app su Windows con un solo programma di installazione, senza Docker né terminale. Porta con sé i componenti mancanti: l’app si apre al primo avvio anche su un computer pulito, crea le chiavi necessarie, prepara il proprio database e apre il browser. Si gestisce dall’icona nella barra delle applicazioni; la disinstallazione non elimina i tuoi dati.
-- **Aggiornamenti Windows:** la voce Aggiornamento nel menu della barra delle applicazioni c’è sempre. Scarica, verifica e installa la nuova versione e mostra il controllo, la percentuale di download e il passaggio di installazione. Puoi lasciare che gli aggiornamenti si installino da soli.
-- **Windows · Si ripara da sola:** se il server si ferma in modo imprevisto, l’app lo riavvia. I file di log non continuano più a crescere.
-- **Aiuto · Diagnostica:** la riparazione dell’installazione può risolvere problemi di avvio. Segnala un problema apre una segnalazione già compilata; nome utente, nomi dei siti ed e-mail vengono oscurati nel report diagnostico.
-- **Prima configurazione:** in Configurazione dell’agente, Configura da zero è in cima, con una sola scheda e un solo pulsante di copia per Claude Code, Codex e altri assistenti. Le impostazioni spiegano il collegamento a Google in tre passaggi.
-- **Riscontro:** salvare, eliminare e collegare dicono cosa succede durante l’attesa, alla fine e in caso di errore. Eliminare e scollegare chiedono prima una conferma.
-- **Aspetto dell’app:** menu, impostazioni e schermate iniziali sono state semplificate e più di duecento testi sono stati riscritti in un turco naturale. Il tema scuro è quello predefinito; i temi chiaro e scuro sono coerenti con il sito.
-- **Guida per l’utente e sito:** seowatcher.io e la guida per l’utente di 20 pagine sono disponibili in sei lingue. Le pagine di risoluzione dei problemi usano riquadri Sintomo, Causa e Soluzione.
+### ✨ In evidenza
 
-### Correzioni
+- **Installazione con un clic:** Installa su Windows con un solo file, senza Docker e senza terminale.
+- **Si aggiorna da sola:** L'app scarica, controlla e installa la nuova versione.
+- **Sito e guida:** seowatcher.io e la guida d'uso sono online in sei lingue.
 
-- **Connessione Google:** corretta l’avvertenza errata «chiave di accesso Google mancante» mostrata quando è collegato solo un account di servizio. Gli errori che arrivano da Google ora indicano il collegamento a Google.
-- **Analytics:** i nomi di dispositivi, canali e paesi compaiono in turco, gli importi dei ricavi mostrano la valuta e le percentuali di variazione hanno lo stesso formato in ogni schermata.
-- **Verifica del sito · Opportunità:** corretta la fuoriuscita laterale sul telefono in Verifica del sito e Opportunità.
+### 🪟 Windows
+
+- **Installazione facile:** Avvia il file: prepara tutto il necessario e apre il browser. Disinstallando non perdi i tuoi dati.
+- **Barra delle applicazioni:** Gestisci l'app dalla sua icona nella barra delle applicazioni.
+- **Aggiornamento:** L'opzione Aggiorna mostra l'avanzamento; se vuoi, gli aggiornamenti si installano da soli.
+- **Si riprende da sola:** Se l'app si chiude all'improvviso, si riavvia, e i file di log non crescono più.
+- **Ripara e segnala:** Ripara l'installazione, nell'Aiuto, risolve i problemi di avvio; Segnala un problema apre una scheda pronta, con i tuoi dati personali nascosti.
+
+### 🧭 Prima configurazione
+
+- **Partire da zero:** Nella configurazione dell'assistente, Configurazione da zero è in cima; basta un solo pulsante di copia.
+- **Connessione Google:** Spiegata in tre brevi passaggi nelle Impostazioni.
+- **Riscontri chiari:** Salvare, eliminare e collegare ti dicono cosa è successo; prima di eliminare viene chiesta conferma.
+
+### 🌐 Sito e guida
+
+- **seowatcher.io:** Il sito dell'app è online in sei lingue.
+- **Guida d'uso:** Una guida di 20 pagine da leggere in sei lingue.
+- **Risoluzione dei problemi:** Le pagine sono scritte con riquadri Sintomo, Causa e Soluzione.
+
+### 🎨 Aspetto
+
+- **Schermate più semplici:** Menu, impostazioni e prima configurazione sono stati semplificati.
+- **Parole naturali:** Più di duecento testi delle schermate sono stati riscritti.
+- **Tema scuro:** Il tema scuro è quello predefinito; chiaro e scuro sono coerenti con il sito.
+
+### 🛠️ Correzioni
+
+- **Connessione Google:** Un falso avviso «chiave di accesso mancante», che compariva solo con un account di servizio, è sparito.
+- **Analytics:** I nomi di dispositivi, canali e paesi appaiono nella tua lingua; i ricavi mostrano la valuta; le percentuali di variazione hanno lo stesso aspetto ovunque.
+- **Overflow sul telefono:** Le schermate Verifica del sito e Opportunità non vanno più fuori schermo sul telefono.
 
 ## [0.2.1] Alpha — 2026-10-04
 
-### In evidenza
+La prima versione di seowatcher: riunisce i tuoi dati Google, la verifica del sito e la misurazione della velocità in un'unica app sul tuo computer.
 
-- **Tutti i dati in un’unica app:** i dati di Search Console, Analytics, della verifica del sito e di PageSpeed sono riuniti in un’unica app sul tuo computer. Puoi esaminare i problemi del sito, le pagine interessate, i risultati di velocità e la cronologia delle verifiche.
-- **Monitoraggio e report:** monitora le prestazioni di ricerca e la posizione delle parole chiave salvate e individua le opportunità di miglioramento. Scarica e stampa i report delle verifiche e tienili nello stesso elenco dei report dei tuoi agenti. Sono inclusi tema chiaro e scuro, uso da tastiera e supporto per i lettori di schermo.
+### ✨ In evidenza
 
-### Funzionalità
+- **Dati in un solo posto:** Search Console, Analytics, verifica del sito e misurazione della velocità si incontrano in un'unica app.
+- **Verifica del sito:** Vedi i problemi del tuo sito, le pagine coinvolte e lo storico delle verifiche.
+- **Report:** Scarichi e stampi il report della verifica.
 
-- **Configurazione dell’agente:** se hai appena scaricato il repository, incolla nel tuo agente il prompt di configurazione della schermata Configurazione dell’agente; controlla in ordine Docker, il collegamento a Google, la chiave PageSpeed, il progetto e il collegamento dell’agente. Non ti chiede mai di incollare segreti nella chat. Lo stesso prompt è anche nelle azioni rapide dell’Aiuto.
-- **Supporto a Codex:** Configurazione dell’agente ha istruzioni separate per Codex; si collega con un solo comando, installa le competenze SEO e le verifica con una chiamata reale.
-- **Limiti di Google e del sistema:** la tua quota giornaliera di ispezioni URL, la quota di Analytics, il numero di misurazioni di velocità di oggi e i limiti dei report compaiono nelle schermate pertinenti. Sono mostrati solo i numeri davvero noti, ciascuno con fonte e ora.
-- **Vista in tempo reale:** l’avanzamento della verifica mostra scansione e misurazione della velocità con barre separate e una stima del tempo rimasto. Con la riduzione del movimento attiva, nessuna animazione parte.
+### 📈 Prestazioni di ricerca
 
-### Correzioni
+- **Monitoraggio della ricerca:** Segui le prestazioni su Google e la posizione delle parole chiave salvate.
+- **Opportunità:** Vengono elencati i miglioramenti che possono far salire le tue posizioni.
+- **Limiti chiari:** La tua quota giornaliera di Google e le misurazioni di velocità rimaste sono visibili a schermo.
 
-- **Verifica del sito:** le verifiche interrotte non bloccano più per sempre le nuove e quelle concluse non riempiono più la capacità. Un agente che legge una verifica in corso vede «verifica in corso» invece di «nessun problema».
-- **Verifica · calcoli:** profondità delle pagine, copertura della sitemap e rilevamento delle pagine orfane sono calcolati con più precisione. Indirizzi simili ma diversi (http e https, www, barra finale) ora contano come diversi nel confronto dell’indirizzo canonico, e questo può far emergere discrepanze reali prima nascoste.
-- **Progetti · Google:** i dati di un vecchio progetto non si mescolano più quando cambi account o proprietà Google. Rimuovere un account elimina solo i dati dei progetti di quell’account.
-- **Impostazioni · Google:** il client Google inserito in Impostazioni viene usato anche per rinnovare l’accesso; il problema che chiedeva di ricollegarsi dopo circa un’ora è risolto. Le impostazioni spiegano quale collegamento a Google è in uso.
+### 🤖 Assistente IA
 
-### Sicurezza
+- **Configurazione facile:** Incolla l'istruzione di configurazione al tuo assistente IA; il resto lo controlla lui.
+- **Nessun segreto richiesto:** Non ti chiede mai di incollare password nella chat.
+- **Supporto a Codex:** Per Codex c'è una guida a parte, con un solo comando.
 
-- **Report:** un report scaricato si apre sempre con le proprie regole di protezione, così una pagina scritta con cattive intenzioni non può girare prima della protezione.
+### 🎨 Aspetto e accessibilità
+
+- **Tema chiaro e scuro:** Scegli il tema più adatto ai tuoi occhi.
+- **Accessibilità:** Si usa comodamente con la tastiera e con uno screen reader.
+- **Avanzamento dal vivo:** L'avanzamento della verifica mostra una stima del tempo rimasto; nessuna animazione se la riduzione del movimento è attiva.
+
+### 🛠️ Correzioni
+
+- **Verifiche bloccate:** Una verifica interrotta a metà non ti impedisce più di avviarne una nuova.
+- **Risultati più accurati:** Profondità delle pagine, copertura della sitemap e pagine orfane sono calcolate meglio; le differenze tra http, https e www ora si vedono.
+- **Account Google:** Quando cambia l'account o la proprietà, i dati di un vecchio progetto non si mescolano più.
+- **Durata della connessione:** Il problema della richiesta di riconnessione dopo circa un'ora è risolto.
+
+### 🔒 Sicurezza
+
+- **Report sicuri:** Un report scaricato è protetto da pagine costruite con cattive intenzioni.

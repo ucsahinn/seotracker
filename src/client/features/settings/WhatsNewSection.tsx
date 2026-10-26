@@ -5,6 +5,7 @@ import { CopyButton } from "@/client/components/CopyButton";
 import { getLocale, t } from "@/shared/i18n";
 import {
   getReleaseCategories,
+  stripLeadingEmoji,
   type ReleaseCategory,
 } from "./releaseCategories";
 import {
@@ -134,7 +135,7 @@ function ReleaseNotes({
             </p>
           ) : null}
           {entry.sections.map((section) =>
-            section.heading === HIGHLIGHTS[getLocale()] ? (
+            stripLeadingEmoji(section.heading) === HIGHLIGHTS[getLocale()] ? (
               <Highlights key={section.heading} items={section.items} />
             ) : (
               <div key={section.heading} className="space-y-2">
@@ -186,7 +187,7 @@ const HIGHLIGHTS: Record<ReturnType<typeof getLocale>, string> = {
   tr: "Öne çıkanlar", // i18n-ignore
   en: "Highlights", // i18n-ignore
   de: "Höhepunkte", // i18n-ignore
-  fr: "À retenir", // i18n-ignore
+  fr: "Points forts", // i18n-ignore
   it: "In evidenza", // i18n-ignore
   pt: "Destaques", // i18n-ignore
 };

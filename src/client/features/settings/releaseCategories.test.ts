@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { getReleaseCategories } from "./releaseCategories";
+import { CHANGELOG_ENTRIES_BY_LOCALE } from "./changelog";
+import { getReleaseCategories, stripLeadingEmoji } from "./releaseCategories";
 
 describe("release categories", () => {
   it("classifies section headings without mistaking security prose for a security release", () => {
@@ -68,5 +69,35 @@ describe("release categories", () => {
         ],
       }),
     ).toEqual(["feature", "fix", "security"]);
+  });
+
+  it("ignores the emoji that opens each curated heading", () => {
+    expect(stripLeadingEmoji("🛠️ Düzeltmeler")).toBe("Düzeltmeler");
+    expect(stripLeadingEmoji("✨ Highlights")).toBe("Highlights");
+    expect(stripLeadingEmoji("Fixes")).toBe("Fixes");
+    expect(
+      getReleaseCategories({
+        sections: [
+          { heading: "✨ Öne çıkanlar", items: [] },
+          { heading: "🛠️ Düzeltmeler", items: [] },
+          { heading: "🔒 Güvenlik", items: [] },
+        ],
+      }),
+    ).toEqual(["feature", "fix", "security"]);
+  });
+
+  it("labels the real releases in every language", () => {
+    for (const [locale, entries] of Object.entries(
+      CHANGELOG_ENTRIES_BY_LOCALE,
+    )) {
+      expect(
+        entries.map((entry) => getReleaseCategories(entry)),
+        locale,
+      ).toEqual([
+        ["feature", "fix", "security"],
+        ["feature", "fix"],
+        ["feature", "fix", "security"],
+      ]);
+    }
   });
 });

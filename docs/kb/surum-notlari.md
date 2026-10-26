@@ -1,6 +1,6 @@
 ---
 title: Sürüm notları
-description: seowatcher 0.8.0 Alpha — 201 kurallı yeni site denetimi, dürüst sonuçlar, trafiğe göre yapılacaklar ve altı dilde arayüz.
+description: seowatcher 0.8.0 Alpha — yeni site denetimi, pano ve bildirimler, altı dilde arayüz; ayrıca Windows'a tek tıkla kurulum ve ilk sürümün notları.
 updated: 2026-10-26
 ---
 
@@ -10,81 +10,144 @@ Son sürüm **0.8.0 Alpha**, 26 Ekim 2026. Güncellerken veriniz korunur.
 
 ## 0.8.0 Alpha — 2026-10-26
 
-- **Site denetimi yeniden yazıldı:** 201 kural sayfalara ve sitenin bütününe bakar; güvenlik başlıkları, e-posta ve alan adı kayıtları, SSL ve alan adı süreleri, yapay zekâ botlarının erişimi ve Lighthouse bulguları da içindedir.
-- **Dürüst sonuç:** Ölçülemeyen bir kontrol artık "geçti" sayılmaz ve ölçemeyen bir yoklama bulgu üretmez. Veri yoksa ekran bunu açıkça söyler.
-- **Yapılacaklar sırası:** Düzeltmeler Search Console trafiğinize göre sıralanır; puan kategorilere göre ağırlıklandırılır.
-- **Yeni ekran ve rapor:** Kontroller ve Anlık veri sekmeleri, arama ve paylaşım önizlemeleri, puan geçmişi ve baştan tasarlanan indirilebilir rapor.
-- **Altı dilde arayüz:** Almanca, Fransızca, İtalyanca ve Portekizce (Brezilya) eklendi; tüm uygulama Türkçe ve İngilizceyle birlikte altı dilde.
+Bu sürüm 0.5.0'dan 0.8.0'a kadar gelen her yeniliği bir araya getirir: daha akıllı site denetimi, yeni pano, bildirimler ve altı dil.
 
-### Site denetimi
+### ✨ Öne çıkanlar
 
-- **Site düzeyi kontroller:** Güvenlik başlıkları (HSTS gibi), yönlendirmeler, var olmayan adrese verilen yanıt, robots.txt, SPF ve DMARC kayıtları, SSL sertifikasının ve alan adının bitiş tarihi denetimin başında bir kez yoklanır; her biri tek bir bulgu üretir.
-- **Yapay zekâ botları:** robots.txt dosyanızın GPTBot, ClaudeBot ve PerplexityBot gibi yapay zekâ tarayıcılarını engelleyip engellemediği ve llms.txt dosyanızın olup olmadığı kontrol edilir.
-- **Lighthouse bulguları:** Hız ölçümü açıkken Lighthouse'un denetimleri sorun olarak listelenir; her birinin tahmini kazancı yazılır.
-- **Dış bağlantılar ve görseller:** İsteğe bağlı olarak dış bağlantıların açılıp açılmadığına ve görsellerin gereğinden büyük olup olmadığına bakılır.
-- **Daha fazla kural:** Sayfa sinyalleri ve 20'den fazla yeni bulguyla toplam 201 kural. Her kuralın ne demek olduğu ve nasıl düzeltileceği Denetim kuralları kılavuzunda anlatılır.
-- **Yapılacaklar:** Düzeltilecek işler Search Console trafiğine göre sıralanır. Search Console bağlı değilse yalnızca puana etkisine göre sıralanır.
-- **Kontroller ve Anlık veri:** Kontroller sekmesi geçen ve ölçülemeyen kontrolleri de listeler. Anlık veri sekmesi denetim sırasında ölçülen site bilgilerini ve varsa Temel Web Verilerini gösterir.
-- **Önizlemeler:** Google arama sonucu, paylaşım kartı (Open Graph) ve mobil görünüm önizlemesi.
-- **Geçmiş ve rapor:** Puan geçmişi, denetimler arasındaki değişimi gösterir. İndirilebilir rapor baştan tasarlandı.
+- **Yeni site denetimi:** 202 kuralla sitenizi sayfa sayfa ve bütün olarak inceler.
+- **Dürüst sonuçlar:** Ölçemediği bir şeyi "geçti" saymaz; veri yoksa bunu açıkça söyler.
+- **Sıralı yapılacaklar:** Google'dan en çok ziyaretçi getiren sayfaların sorunları öne çıkar.
+- **Altı dil:** Uygulamayı Türkçe, İngilizce, Almanca, Fransızca, İtalyanca ve Portekizce kullanabilirsiniz.
+- **Haberler:** Duyurular ve bildirimlerle yeni sürümleri ve önemli gelişmeleri kaçırmazsınız.
 
-### Diğer yenilikler
+### 🔎 Site denetimi
 
-- **Arayüz dili:** Ayarlar → Görünüm → Dil bölümünden altı dilden birini seçebilirsiniz; sayı ve tarihler de seçtiğiniz dile uyar.
-- **Kurulum yönergeleri:** Windows paketi ile Docker arasındaki farklar, yani ayarların nerede durduğu ve hangilerinin geçerli olduğu, kılavuzda ve Yardım'da açık anlatılır.
-- **Ajan araçları:** Yeni `get_audit_summary` aracı site puanını, kategori puanlarını, sıralı yapılacaklar listesini ve sitenin anlık verisini tek çağrıda verir.
-- **Kılavuz:** Denetim kuralları sayfası 201 kuralı tek tek anlatır; kılavuz ve sürüm notları altı dilde sunulur.
-- **seowatcher.io · gizlilik:** Sitede Google Analytics 4 yalnızca ölçüm kimliği tanımlıysa ve Kabul et derseniz çalışır; kabul etmeden Google'a hiçbir veri gitmez. Gizlilik sayfası altı dilde sunulur.
+- **Güvenlik kontrolleri:** Sitenizin güvenlik ayarları ile SSL sertifikasının ve alan adının bitiş tarihi kontrol edilir.
+- **E-posta kayıtları:** E-postalarınızın başkaları tarafından sizin adınıza gönderilmesini engelleyen kayıtlar denetlenir.
+- **Yapay zekâ botları:** Sitenizin ChatGPT ve Claude gibi yapay zekâ botlarına açık olup olmadığını görürsünüz.
+- **Hız bulguları:** Hız ölçümü açıksa sitenizi yavaşlatan sorunlar, tahmini kazançlarıyla listelenir.
+- **Önizlemeler:** Sayfanızın Google'da, paylaşımlarda ve telefonda nasıl görüneceğini önceden görürsünüz.
+- **Puan geçmişi:** Denetimler arasında nelerin düzeldiğini izler, yenilenen raporu indirirsiniz.
 
-### Düzeltmeler
+### 📊 Pano ve raporlar
 
-- **Denetim doğruluğu:** Gerçek siteler üzerinde yapılan ölçümlerle karşılaştırma turunda bulunan dokuz hata nedeni düzeltildi.
-- **Denetim · telefon:** Denetim ekranı ve indirilen rapor telefonda taşmaz.
+- **Sıradaki adımlar:** Panoda kurulumu tamamlamanız için kısa bir görev listesi ve hazırlık puanı bulunur. Bu puan SEO başarısı değildir.
+- **Hazır raporlar:** Yapay zekâ asistanınız denetim, arama ve Analytics verilerinizden iyileştirme raporu hazırlar.
+- **Denetim ilerlemesi:** Denetim sürerken geçen süreyi ve ilerlemeyi, bitince kısa bir özeti görürsünüz.
 
-## 0.7.1 Alpha — 2026-10-26
+### 🔔 Bildirimler ve duyurular
 
-- **Duyurular:** Canlı duyurular uygulamanın Duyurular ekranında görünür. Türkçe ve İngilizce hazırlanır; diğer arayüz dillerinde İngilizce sürüm gösterilir. Metinleri parola korumalı yönetim ekranından hazırlayıp yayımlayabilirsiniz.
-- **Pano:** Panodaki Sıradaki adımlar bölümü Google bağlantıları, güncel denetim, proje bilgisi ve ajan kurulumuna göre hazırlık puanı ile yönlendirici görevler sunar. Puan SEO başarısı veya arama sırası değildir.
-- **Ajan raporları:** Raporlar; denetim ve PageSpeed, Search Console, fırsatlar, sıralama geçmişi, kayıtlı kelimeler, Analytics, dizin ve site haritası verilerini kapsayan bir kontrol listesiyle iyileştirme adımları hazırlar.
-- **Bildirimler:** Bildirim merkezi denetim sonuçlarını, yeni sürümleri, Google bağlantı sorunlarını ve rapor bildirimlerini bir arada tutar. Bildirim sesi ve masaüstü bildirimleri ayrı ayrı açılıp kapatılabilir.
-- **Windows bildirimleri:** Uygulama güncellemeleri ve canlı duyurular, izin verildiğinde Windows bildirim merkezinde gösterilir. Ayarlar → Bildirimler bölümünden açılıp kapatılır.
-- **Açılış:** Sunucu hazırlığı ve güncelleme indirme yüzdesi görünür ilerleme penceresinde gösterilir.
-- **Windows ayarları:** Windows'ta başlangıçta çalışma ve otomatik güncelleme kurulumu Ayarlar → Windows bölümünden açılıp kapatılabilir. Yönetici tarafından sınırlandırılan seçeneklerin nedeni ekranda açıklanır.
-- **Denetim:** Denetim sırasında geçen süreyi, ilerlemeyi ve bitiş özetini görebilirsiniz. Rapor hazırlanırken ve güncelleme kontrol edilirken işlemin durumu gösterilir.
-- **Yeni proje:** Telefonda yeni proje oluştururken ülke listesi artık pencerenin altında kesilmez. Escape tuşu önce ülke listesini kapatır; yazdığınız form açık kalır.
-- **Yardım · Tanılama:** Başarısız denetim kaydı durduğu aşamayı, ayıklanmış hata ayrıntısını ve en sık PageSpeed ölçüm hatalarını gösterir. Sayfa URL'leri dışa aktarılan özetlerden çıkarılır.
-- **Güvenlik güncellemeleri:** Uygulamanın kullandığı bileşenlerdeki güvenlik düzeltmeleri eklendi.
+- **Bildirim merkezi:** Denetim sonuçları, yeni sürümler ve Google bağlantı sorunları tek yerde toplanır.
+- **Ses ve masaüstü:** Bildirim sesini ve masaüstü bildirimlerini ayrı ayrı açıp kapatabilirsiniz.
+- **Windows bildirimleri:** Güncellemeler ve duyurular Windows'un bildirim alanında da görünür.
+- **Duyurular:** Yeni haberler uygulamadaki Duyurular ekranında yayımlanır.
+
+### 🪟 Windows
+
+- **Ayarlar:** Windows ile birlikte açılmayı ve otomatik güncellemeyi Ayarlar'dan değiştirirsiniz.
+- **Açılış ilerlemesi:** Uygulama hazırlanırken ve güncelleme inerken bir pencere yüzdeyi gösterir.
+- **Net yönergeler:** Windows paketi ile Docker arasındaki farklar kılavuzda ve Yardım'da anlatılır.
+
+### 🌍 Diller
+
+- **Dil seçimi:** Ayarlar → Görünüm → Dil bölümünden dilinizi seçersiniz; sayı ve tarihler de ona uyar.
+- **Kılavuz:** Kullanım kılavuzu, denetim kuralları ve sürüm notları altı dilde okunur.
+- **Gizlilik:** seowatcher.io'da ölçüm yalnızca siz kabul ederseniz çalışır.
+
+### 🛠️ Düzeltmeler
+
+- **Daha doğru denetim:** Gerçek sitelerde bulunan hatalar giderildi; sonuçlar daha güvenilir.
+- **Telefonda düzgün:** Denetim ekranı ve indirilen rapor telefonda artık taşmaz.
+- **Yeni proje:** Telefonda ülke listesi kesilmez; Esc tuşu listeyi kapatır, yazdıklarınız silinmez.
+- **Sorun bildirme:** Yardım'daki tanılama paketi sorunu daha iyi anlatır ve sayfa adreslerinizi içermez.
+
+### 🔒 Güvenlik
+
+- **Güncel bileşenler:** Uygulamanın kullandığı bileşenlerdeki güvenlik açıkları kapatıldı.
 
 ## 0.4.3 Alpha — 2026-10-23
 
-- **Windows kurulumu:** Windows'a Docker veya terminal kullanmadan tek kurulum dosyasıyla kurabilirsiniz. Dosya eksik bileşenleri beraberinde getirir; uygulama temiz bir bilgisayarda da ilk seferde açılır, gerekli anahtarları üretir, veritabanını hazırlar ve tarayıcıyı açar. Görev çubuğu simgesinden yönetilir; kaldırma verinizi silmez.
-- **Windows güncellemesi:** Görev çubuğundaki Güncelle seçeneği her zaman durur. Yeni sürümü indirir, doğrular ve kurar; kontrol, indirme yüzdesi ve kurulum aşamasını gösterir. İsterseniz güncellemeleri otomatik kurabilirsiniz.
-- **Windows · Kendini toparlar:** Sunucu beklenmedik biçimde kapanırsa uygulama kendini yeniden başlatır. Günlük dosyaları büyümez.
-- **Yardım · Tanılama:** Kurulumu onar seçeneği açılış sorunlarını gidermeye yardımcı olur. Sorunu bildir hazır bir kayıt açar; kullanıcı adı, site adları ve e-postalar tanı raporunda maskelenir.
-- **İlk kurulum:** Ajan kurulumunda Sıfırdan kurulum en üsttedir; Claude Code, Codex ve diğer asistanlar için tek kart ve tek kopyalama düğmesi vardır. Ayarlar'da Google bağlantısı üç adımda anlatılır.
-- **Geri bildirim:** Kaydetme, silme ve bağlantı işlemleri beklerken, bitince ve hata olunca ne olduğunu söyler. Silme ve bağlantıyı kesme önce onay ister.
-- **Uygulama görünümü:** Menü, ayarlar ve ilk kurulum ekranları sadeleştirildi; iki yüzden fazla ekran metni doğal Türkçeyle yeniden yazıldı. Koyu tema varsayılandır; açık ve koyu tema siteyle tutarlıdır.
-- **Kullanım kılavuzu ve site:** seowatcher.io ve 20 sayfalık kullanım kılavuzu altı dilde sunulur. Sorun giderme sayfaları Belirti, Sebep ve Çözüm kutularıyla yazılmıştır.
-- **Google bağlantısı:** Yalnızca hizmet hesabıyla bağlı kurulumda gösterilen yanlış "Google erişim anahtarı eksik" uyarısı düzeltildi. Google'dan gelen hatalar artık Google bağlantısını gösterir.
-- **Analytics:** Cihaz, kanal ve ülke adları Türkçe görünür; gelir tutarlarında para birimi gösterilir; değişim yüzdeleri her ekranda aynı biçimdedir.
-- **Denetim · Fırsatlar:** Telefonda site denetimi ve Fırsatlar ekranlarındaki yatay taşma giderildi.
+Windows'a tek tıkla kurulum geldi; seowatcher.io sitesi ve kullanım kılavuzu da yayında.
+
+### ✨ Öne çıkanlar
+
+- **Tek tıkla kurulum:** Docker veya terminal olmadan Windows'a tek dosyayla kurarsınız.
+- **Kendiliğinden güncelleme:** Uygulama yeni sürümü indirir, doğrular ve kurar.
+- **Site ve kılavuz:** seowatcher.io ve kullanım kılavuzu altı dilde yayında.
+
+### 🪟 Windows
+
+- **Kolay kurulum:** Dosyayı çalıştırın; gerekli her şeyi hazırlar ve tarayıcıyı açar. Kaldırırsanız verileriniz silinmez.
+- **Görev çubuğu:** Uygulamayı görev çubuğundaki simgesinden yönetirsiniz.
+- **Güncelleme:** Güncelle seçeneği ilerlemeyi gösterir; isterseniz güncellemeler kendiliğinden kurulur.
+- **Kendini toparlar:** Beklenmedik bir kapanmada uygulama yeniden başlar, günlük dosyaları şişmez.
+- **Onar ve bildir:** Yardım'daki Kurulumu onar açılış sorunlarını giderir; Sorunu bildir, kişisel bilgilerinizi gizleyerek hazır bir kayıt açar.
+
+### 🧭 İlk kurulum
+
+- **Sıfırdan başlayın:** Asistan kurulumunda Sıfırdan kurulum en üsttedir; tek kopyalama düğmesi yeter.
+- **Google bağlantısı:** Ayarlar'da üç kısa adımda anlatılır.
+- **Net geri bildirim:** Kaydetme, silme ve bağlantı işlemleri ne olduğunu söyler; silmeden önce sorar.
+
+### 🌐 Site ve kılavuz
+
+- **seowatcher.io:** Uygulamanın tanıtım sitesi altı dilde yayında.
+- **Kullanım kılavuzu:** 20 sayfalık kılavuz altı dilde okunur.
+- **Sorun giderme:** Sayfalar Belirti, Sebep ve Çözüm kutularıyla yazıldı.
+
+### 🎨 Görünüm
+
+- **Sade ekranlar:** Menü, ayarlar ve ilk kurulum ekranları sadeleştirildi.
+- **Doğal Türkçe:** İki yüzden fazla ekran metni yeniden yazıldı.
+- **Koyu tema:** Koyu tema varsayılandır; açık ve koyu tema siteyle uyumludur.
+
+### 🛠️ Düzeltmeler
+
+- **Google bağlantısı:** Yalnızca hizmet hesabıyla bağlı kurulumda çıkan yanlış "erişim anahtarı eksik" uyarısı kalktı.
+- **Analytics:** Cihaz, kanal ve ülke adları Türkçe görünür; gelirde para birimi yazar; değişim yüzdeleri her yerde aynıdır.
+- **Telefonda taşma:** Site denetimi ve Fırsatlar ekranları telefonda taşmaz.
 
 ## 0.2.1 Alpha — 2026-10-04
 
-- **Tek uygulamada veri:** Search Console, Analytics, site denetimi ve PageSpeed verileri kendi bilgisayarınızda tek uygulamada toplanır. Site sorunlarını, etkilenen sayfaları, hız sonuçlarını ve denetim geçmişini inceleyebilirsiniz.
-- **İzleme ve raporlar:** Arama performansını ve kayıtlı kelimelerin sıralamasını izler, iyileştirme fırsatlarını görürsünüz. Denetim raporlarını indirebilir, yazdırabilir ve ajanlarınızın raporlarıyla aynı listede saklayabilirsiniz. Açık ve koyu tema, klavye kullanımı ve ekran okuyucu desteği vardır.
-- **Ajan kurulumu:** Depoyu yeni indirdiyseniz Ajan kurulumu ekranındaki kurulum istemini ajanınıza yapıştırın; Docker'ı, Google bağlantısını, PageSpeed anahtarını, projeyi ve ajan bağlantısını sırayla kontrol eder. Gizli bilgileri sohbete yapıştırmanızı istemez. Aynı istem Yardım ekranındaki hızlı eylemlerde de bulunur.
-- **Codex desteği:** Ajan kurulumu ekranında Codex için ayrı bir yönerge vardır; tek komutla bağlanır, SEO becerilerini kurar ve gerçek bir çağrıyla doğrular.
-- **Google ve sistem sınırları:** Günlük URL denetimi hakkınız, Analytics kotanız, bugünkü hız ölçümü sayınız ve rapor sınırlarınız ilgili ekranlarda görünür. Yalnızca gerçekten bilinen sayılar gösterilir; her sayının kaynağı ve zamanı yazar.
-- **Canlı görünüm:** Denetim ilerlemesi taramayı ve hız ölçümünü ayrı çubuklarla, kalan süre tahminiyle gösterir. Hareketi azaltma ayarı açıksa hiçbir animasyon oynamaz.
-- **Denetim:** Yarıda kalan denetimler yeni denetim başlatmayı kalıcı olarak engellemez; tamamlanmış denetimler kapasiteyi doldurmaz. Çalışan bir denetimi okuyan ajan "sorun yok" yerine "denetim sürüyor" görür.
-- **Denetim · hesaplar:** Sayfa derinliği, site haritası kapsamı ve bağlantısız sayfa tespiti daha doğru hesaplanır. Aynı görünen ama farklı adresler (http ve https, www, sondaki eğik çizgi) asıl adres karşılaştırmasında artık farklı sayılır; bu, daha önce gizlenen gerçek uyuşmazlıkları gösterebilir.
-- **Projeler · Google:** Google hesabı veya mülkü değiştirildiğinde eski projeye ait verilerin karışması önlendi. Hesabı kaldırmak yalnızca o hesabın projelerinin verisini siler.
-- **Ayarlar · Google:** Ayarlar'dan girilen Google istemcisi yenilemede de kullanılır; yaklaşık bir saat sonra yeniden bağlantı isteme sorunu giderildi. Ayarlar ekranı hangi Google bağlantısının kullanıldığını açıklar.
-- **Raporlar:** İndirilen rapor her zaman kendi koruma kuralıyla açılır; kötü niyetli yazılmış bir sayfa korumadan önce çalışamaz.
+seowatcher'ın ilk sürümü: Google verilerinizi, site denetiminizi ve hız ölçümünüzü kendi bilgisayarınızda tek uygulamada toplar.
+
+### ✨ Öne çıkanlar
+
+- **Tek yerde veri:** Search Console, Analytics, site denetimi ve hız ölçümü tek uygulamada buluşur.
+- **Site denetimi:** Sitenizdeki sorunları, etkilenen sayfaları ve denetim geçmişini görürsünüz.
+- **Raporlar:** Denetim raporunu indirir ve yazdırırsınız.
+
+### 📈 Arama performansı
+
+- **Arama izleme:** Google'daki performansınızı ve kayıtlı kelimelerinizin sıralamasını izlersiniz.
+- **Fırsatlar:** Sıralamanızı yükseltebilecek iyileştirme fırsatları listelenir.
+- **Açık sınırlar:** Günlük Google hakkınız ve kalan hız ölçümü sayınız ekranda görünür.
+
+### 🤖 Yapay zekâ asistanı
+
+- **Kolay kurulum:** Kurulum istemini yapay zekâ asistanınıza yapıştırırsınız; gerisini o kontrol eder.
+- **Gizli bilgi istemez:** Şifrelerinizi sohbete yapıştırmanızı istemez.
+- **Codex desteği:** Codex için ayrı, tek komutluk bir yönerge vardır.
+
+### 🎨 Görünüm ve erişim
+
+- **Açık ve koyu tema:** Gözünüze uyan temayı seçersiniz.
+- **Erişilebilirlik:** Klavye ve ekran okuyucuyla rahatça kullanılır.
+- **Canlı ilerleme:** Denetim ilerlemesi kalan süre tahminiyle görünür; hareketi azaltma açıksa animasyon oynamaz.
+
+### 🛠️ Düzeltmeler
+
+- **Takılan denetimler:** Yarım kalan bir denetim artık yenisini başlatmanızı engellemez.
+- **Daha doğru sonuçlar:** Sayfa derinliği, site haritası ve bağlantısız sayfalar daha doğru hesaplanır; http, https ve www farkları artık görünür.
+- **Google hesabı:** Hesap veya mülk değişince eski projenin verileri karışmaz.
+- **Bağlantı süresi:** Yaklaşık bir saat sonra yeniden bağlanma istenmesi sorunu giderildi.
+
+### 🔒 Güvenlik
+
+- **Güvenli raporlar:** İndirilen rapor, kötü niyetle hazırlanmış sayfalara karşı korunur.
 
 ## Sürüm numaraları
 
-seowatcher 1.0'a kadar 0.x Alpha numaralarıyla ilerler. Kullanıcının fark ettiği yeni özellik ikinci numarayı (0.7.1 → 0.8.0), yalnızca düzeltme üçüncü numarayı (0.7.0 → 0.7.1) artırır. 0.0.0 ile 0.4.3 arasındaki sürümler ilk yayımlandığında v2.x etiketleriyle çıktı; karşılıkları [CHANGELOG.md](https://github.com/ucsahinn/seotracker/blob/seotracker-fork/CHANGELOG.md) başındaki tabloda.
+seowatcher 1.0'a kadar 0.x Alpha numaralarıyla ilerler. Kullanıcının fark ettiği yeni özellik ikinci numarayı (0.7.1 → 0.8.0), yalnızca düzeltme üçüncü numarayı (0.8.0 → 0.8.1) artırır. Yeni giriş yalnızca kullanıcıların fark edeceği dönüm noktaları için açılır; küçük düzeltmeler mevcut girişe eklenir ve giriş en yeni numarayı alır. 0.0.0 ile 0.4.3 arasındaki sürümler ilk yayımlandığında v2.x etiketleriyle çıktı; karşılıkları [CHANGELOG.md](https://github.com/ucsahinn/seotracker/blob/seotracker-fork/CHANGELOG.md) başındaki tabloda.
 
 Tüm geçmiş GitHub'daki [CHANGELOG.md](https://github.com/ucsahinn/seotracker/blob/seotracker-fork/CHANGELOG.md) dosyasında.

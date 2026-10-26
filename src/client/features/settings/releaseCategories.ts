@@ -2,12 +2,20 @@ import type { ChangelogEntry } from "./changelog";
 
 export type ReleaseCategory = "feature" | "fix" | "security" | "hotfix";
 
+/**
+ * Section headings start with an emoji ("🛠️ Düzeltmeler"). Matching works on
+ * the words, so the emoji and its spacing are dropped first.
+ */
+export function stripLeadingEmoji(heading: string): string {
+  return heading.replace(/^[\p{Extended_Pictographic}️‍\s]+/u, "");
+}
+
 /** Classify curated headings, never keywords in individual release bullets. */
 export function getReleaseCategories(
   entry: Pick<ChangelogEntry, "sections">,
 ): ReleaseCategory[] {
   const headings = entry.sections.map((section) =>
-    section.heading.toLowerCase(),
+    stripLeadingEmoji(section.heading).toLowerCase(),
   );
   const categories: ReleaseCategory[] = [];
   if (
