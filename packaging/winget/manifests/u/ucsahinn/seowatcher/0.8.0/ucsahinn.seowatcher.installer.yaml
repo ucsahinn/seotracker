@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://aka.ms/winget-manifest.installer.1.6.0.schema.json
 PackageIdentifier: ucsahinn.seowatcher
-PackageVersion: 2.4.3
+PackageVersion: 0.8.0
 InstallerType: inno
 Scope: user
 InstallModes:
@@ -15,7 +15,7 @@ ProductCode: "{7D7A2C7E-5B1E-4C8B-9B2E-3F6E2A9C1D41}_is1"
 ReleaseDate: 2026-10-23
 Installers:
   - Architecture: x64
-    InstallerUrl: https://github.com/ucsahinn/seotracker/releases/download/v2.4.3/seowatcher-setup-2.4.3.exe
-    InstallerSha256: 032BA9B53F9027BAC1464448EA44DA0D6E0C16ED6632DD2C2AD2C98BE04F36F3
+    InstallerUrl: https://github.com/ucsahinn/seotracker/releases/download/v0.8.0/seowatcher-setup-0.8.0.exe
+    InstallerSha256: 537B1A535C6266A8C4E4417C3CF7EF0C5FAA2FBC4647DE2B09B1D76117C0E36A
 ManifestType: installer
 ManifestVersion: 1.6.0
