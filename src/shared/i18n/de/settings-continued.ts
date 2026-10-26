@@ -216,7 +216,6 @@ export const deSettingsContinued: Catalog = {
     "Audit abgeschlossen: {pages} Seiten, {issues} Befunde",
   "Denetim tamamlanamadı": "Audit fehlgeschlagen",
   "Kontrol ediliyor…": "Wird geprüft …",
-  "Tamamlanma: {date}": "Abgeschlossen: {date}",
   "Rapor kaydedildi ancak indirilemedi. Raporlar ekranından tekrar deneyin.":
     "Der Bericht wurde gespeichert, konnte aber nicht heruntergeladen werden. Versuchen Sie es erneut auf der Berichte-Seite.",
   Denetim: "Audit",

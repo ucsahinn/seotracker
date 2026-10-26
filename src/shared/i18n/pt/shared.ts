@@ -9,9 +9,9 @@ export const ptShared: Catalog = {
         "{start} – {end}. Os dados do Search Console têm um atraso de {count} dias, por isso o último dia nunca é hoje.",
     },
   "TEAM_DOMAIN, https://ekibiniz.cloudflareaccess.com gibi tam bir https adresi olmalı":
-    "TEAM_DOMAIN tem de ser um endereço https completo, como https://your-team.cloudflareaccess.com",
+    "TEAM_DOMAIN precisa ser um endereço https completo, como https://your-team.cloudflareaccess.com",
   'TEAM_DOMAIN, https://ekibiniz.cloudflareaccess.com gibi tam bir https adresi olmalı — "{value}" değerinin başına https:// ekleyin':
-    'TEAM_DOMAIN tem de ser um endereço https completo, como https://your-team.cloudflareaccess.com — adicione https:// no início de "{value}"',
+    'TEAM_DOMAIN precisa ser um endereço https completo, como https://your-team.cloudflareaccess.com — adicione https:// no início de "{value}"',
   "Site haritasında var, dizine alındı": "Enviado no sitemap e indexado",
   "Dizine alındı, site haritasında yok": "Indexado, não enviado no sitemap",
   "Dizine alındı, site haritasına eklemeyi düşünün":
@@ -19,7 +19,7 @@ export const ptShared: Catalog = {
   "Tarandı, şu an dizine alınmadı": "Rastreado, atualmente não indexado",
   "Keşfedildi, henüz taranmadı": "Descoberto, atualmente não rastreado",
   "Yinelenen içerik, canonical belirtilmemiş":
-    "Duplicado sem canonical selecionado pelo utilizador",
+    "Duplicado sem canonical selecionado pelo usuário",
   "Yinelenen içerik, Google başka bir canonical seçti":
     "Duplicado: o Google escolheu outro canonical",
   "Yinelenen içerik, gönderilen adres canonical seçilmedi":
@@ -39,7 +39,7 @@ export const ptShared: Catalog = {
   "Giriş sayfaları": "Páginas de destino",
   "Ziyaretin başladığı sayfalar: oturum, etkileşim, dönüşüm.":
     "Páginas onde as visitas começam: sessões, envolvimento e conversões.",
-  "Sayfa performansı": "Páginas e ecrãs",
+  "Sayfa performansı": "Páginas e telas",
   "Görüntülenme ve sayfada geçirilen süre.":
     "Visualizações e tempo passado na página.",
   "Trafik kaynakları": "Aquisição de tráfego",
@@ -73,8 +73,8 @@ export const ptShared: Catalog = {
   "Arama terimi": "Termo de pesquisa",
   Tarih: "Data",
   Oturum: "Sessões",
-  "Aktif kullanıcı": "Utilizadores ativos",
-  Kullanıcı: "Utilizadores",
+  "Aktif kullanıcı": "Usuários ativos",
+  Kullanıcı: "Usuários",
   "Etkileşimli oturum": "Sessões com envolvimento",
   "Etkileşim oranı": "Taxa de envolvimento",
   "Anahtar olay": "Evento principal",

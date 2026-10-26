@@ -219,8 +219,6 @@ export const deSettings: Catalog = {
   "Google bağlantı ayarı okunuyor.":
     "Google-Verbindungseinstellung wird gelesen.",
   "Google erişimi hazır.": "Google-Zugriff ist bereit.",
-  "Google erişim anahtarı Ayarlar'da kayıtlı.":
-    "Der Google-Zugriffsschlüssel ist in den Einstellungen gespeichert.",
   "PageSpeed anahtarı kontrol edilemedi. {logs}":
     "PageSpeed-Schlüssel konnte nicht geprüft werden. {logs}",
   "Anahtar yok. Hız ölçümü Google'ın anahtarsız kotasıyla çalışır ve çoğu zaman 429 ile yarım kalır. Tarama ve diğer SEO kontrolleri etkilenmez.":

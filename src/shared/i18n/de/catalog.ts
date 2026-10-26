@@ -1404,7 +1404,6 @@ export const deCatalog = {
   Tarama: "Crawling",
   Tamamlanıyor: "Beendet",
   Çalışıyor: "Arbeitet",
-  "~{duration} kaldı": "~{duration} übrig",
   "Lighthouse kontrolleri çalışıyor": "Lighthouse wird ausgeführt prüft",
   "Sayfalar taranıyor": "Crawling-Seiten",
   "{count} ölçüm başarısız oldu; kalanlar sürüyor.": {
@@ -1462,10 +1461,6 @@ export const deCatalog = {
     "Erneut mit den gleichen Einstellungen ausführen",
   "Bir denetim zaten başlatılıyor":
     "Es findet bereits eine Prüfung statt beginnt",
-  "Bu denetim {auditedHost} sitesine ait, ama Search Console bağlantınız {propertyHost} mülküne bağlı.":
-    "Diese Prüfung ist von {auditedHost}, aber Ihre Search Console-Verbindung verweist auf die Eigenschaft {propertyHost}.",
-  "Aşağıdaki site haritaları {propertyHost} mülküne ait, bu denetimin sayfalarıyla ilgisi yok. Google'a sorma da kapalı, çünkü bu sayfalar o mülkte değil ve sorulan her adres günlük kotadan boşuna giderdi. {auditedHost} için Google verisi görmek istiyorsanız siteyi ayrı bir proje olarak ekleyip kendi Search Console mülküne bağlayın.":
-    "Die folgenden Sitemaps gehören zu {propertyHost} und haben nichts mit den Seiten dieser Prüfung zu tun. Auch die Abfrage von Google ist deaktiviert: Diese Seiten befinden sich nicht in dieser Eigenschaft, daher würde jede überprüfte Adresse ein Tageskontingent verschwenden. Um Google-Daten für {auditedHost} anzuzeigen, fügen Sie die Website als separates Projekt hinzu und verbinden Sie sie mit ihrer eigenen Search Console-Eigenschaft.",
   "Google'da": "Auf Google",
   "Aramada çıkabilir": "Kann in der Suche angezeigt werden",
   "Dizinde değil": "Nicht indiziert",
@@ -1482,8 +1477,6 @@ export const deCatalog = {
   "Sıralamayı ve tıklamayı düşürür": "Kosten, Rankings und Klicks",
   "Küçük iyileştirme fırsatları": "Geringe Verbesserungschancen",
   "Sorunlar ne kadar ciddi?": "Wie ernst sind die Probleme?",
-  "Bir gruba tıklayın, liste yalnızca o sorunları göstersin.":
-    "Klicken Sie auf eine Gruppe, um nur diese Probleme in der anzuzeigen Liste.",
   bulgu: "Ergebnisse",
   "Bu sorun için kayıtlı adres yok.":
     "Keine Adressen für dieses Problem aufgezeichnet.",
@@ -1574,15 +1567,6 @@ export const deCatalog = {
   "Nasıl düzeltilir": "So beheben Sie",
   "En çok sayfayı hangi sorun etkiliyor?":
     "Welches Problem ist am stärksten betroffen? Seiten?",
-  "En çok sayfayı etkileyen {count} tür, kalan {hidden} tür aşağıda.": {
-    one: "Der Typ {count}, der die meisten Seiten betrifft; die anderen {hidden} sind unten.",
-    other:
-      "Die {count}-Typen, die die meisten Seiten betreffen; die anderen {hidden} sind unten aufgeführt.",
-  },
-  "En çok sayfayı etkileyen {count} tür.": {
-    one: "Der {count}-Typ betrifft die meisten Seiten.",
-    other: "Die {count}-Typen betreffen die meisten Seiten.",
-  },
   "Bir çubuğa tıklayıp listeyi daraltın.":
     "Klicken Sie auf eine Leiste, um die Liste einzugrenzen.",
   "En çok sayfayı etkileyen sorun: {title}, {pages} sayfa. Grafikte {count} tür var.":
@@ -1634,15 +1618,10 @@ export const deCatalog = {
   "Zayıf. Google'ın sitenizi anlamasını engelleyen sorunlar var.":
     "Schlecht. Einige Probleme verhindern, dass Google Ihre Website versteht.",
   "Site puanı": "Site-Score",
-  "+{points} puan": "+{points} Punkte",
   "Google'ın ücretsiz ölçüm kotası dolmuş; sayfalarınızda bir sorun yok. Ayarlar'dan PageSpeed anahtarı ekleyin ya da kota yenilenince denetimi yeniden başlatın.":
     "Das kostenlose Messkontingent von Google ist erschöpft; Mit Ihren Seiten stimmt nichts. Fügen Sie in den Einstellungen einen PageSpeed-Schlüssel hinzu oder führen Sie die Prüfung erneut aus, sobald das Kontingent zurückgesetzt wird.",
   Hız: "Geschwindigkeit",
   "Ortalama puanlar": "Durchschnittswerte",
-  "Ölçülemeyen {count} sayfa": {
-    one: "{count} Seiten konnten nicht gemessen werden",
-    other: "{count} Seiten konnten nicht gemessen werden",
-  },
   "Mobilde hız dağılımı": "Geschwindigkeitsverteilung aktiviert mobile",
   "Ortalama tek başına yanıltır. Bir gruba tıklayıp o sayfaları listeleyin.":
     "Ein Durchschnitt allein ist irreführend. Klicken Sie auf eine Gruppe, um diese Seiten aufzulisten.",
@@ -1722,8 +1701,6 @@ export const deCatalog = {
   'İstek sınırı sıfırlandıktan sonra denetimi yeniden başlatın, ya da site sahibinden "seotracker-audit" tarayıcısına izin vermesini isteyin.':
     "Führen Sie die Prüfung erneut aus, sobald das Ratenlimit zurückgesetzt wird, oder bitten Sie den Websitebesitzer, den Crawler „seotracker-audit“ zuzulassen.",
   "başka bir mülk": "another Eigenschaft",
-  "Bu denetim {auditedHost} sitesine ait, bağlı mülk ise {propertyHost}. Sorarsak kota boşa giderdi.":
-    "Diese Prüfung bezieht sich auf {auditedHost}, aber die verbundene Eigenschaft ist {propertyHost}. Eine Anfrage würde das Kontingent verschwenden.",
   "Sorunlu sayfalar ({count})": "Seiten mit Problemen ({count})",
   "Sayfalar ({count})": "Seiten ({count})",
   "Dizin durumu": "Indexstatus",
@@ -1740,10 +1717,6 @@ export const deCatalog = {
     "Diese Prüfung hat keine Lighthouse-Ergebnisse.",
   "Bu filtrelerle eşleşen performans sonucu yok.":
     "Keine Leistungsergebnisse stimmen mit diesen Filtern überein.",
-  "Hız ölçümü hiç puan vermedi":
-    "Die Geschwindigkeitsmessung hat Nr. zurückgegeben Bewertung",
-  başarısız: "fehlgeschlagen",
-  tamam: "ok",
   "Hız puanı (0-100)": "Leistungsbewertung (0–100)",
   "Erişilebilirlik puanı (0-100)": "Barrierefreiheitsbewertung (0–100)",
   "Arama motoru uyumu puanı (0-100)":
@@ -1788,7 +1761,6 @@ export const deCatalog = {
   "Site haritası": "Sitemap",
   Haritada: "In Sitemap",
   "Haritada yok": "Nicht in Sitemap",
-  Başarılı: "Erfolgreich",
   "En çok LCP (sn)": "Max. LCP (s)",
   "Filtreleri aç/kapat": "Filter anzeigen oder ausblenden",
   "En az": "Minimum",
@@ -1829,15 +1801,9 @@ export const deCatalog = {
     "Zählt jede überprüfte Seite, unabhängig von der Gruppe, die Sie ausgewählt haben in der Tabelle oben. Google hat eine andere Seite als kanonisch behandelt als die, die Sie deklariert haben.",
   "Üstteki grafikte seçtiğiniz gruptan bağımsız, kontrol edilen tüm sayfalar.":
     "Zählt jede überprüfte Seite, unabhängig von der Gruppe, die Sie in der Tabelle oben ausgewählt haben.",
-  "Bu denetimde henüz sorulmamış": "Noch nicht in dieser Prüfung überprüft",
-  "Google'a hiç sorulmamış sayfalar. Son kontrol {date}":
-    "Seiten wurden nie bei Google überprüft. Letzte Überprüfung am {date}",
-  "Google'a hiç sorulmamış sayfalar. Henüz kontrol yapılmadı.":
-    "Die Seiten wurden nie von Google überprüft. Noch keine Prüfungen.",
   "Google günde en çok {limit} adres sormanıza izin verir. Her seferde {batch} sayfa kontrol edilir. Önce hiç sorulmamış olanlara, sonra Google'ın dizine almadıklarına bakılır.":
     "Mit Google können Sie bis zu {limit} URLs pro Tag prüfen. Bei jedem Durchlauf werden {batch}-Seiten überprüft: zuerst diejenigen, die nie überprüft wurden, dann diejenigen, die Google nicht indexiert hat.",
   "Google'da durumunu kontrol et": "Status bei Google prüfen",
-  "Google'da henüz kontrol edilmedi": "Noch nicht bei Google überprüft",
   "Taradığınız sayfaların gerçekten dizine girip girmediğini görmek için yukarıdaki düğmeyi kullanın.":
     "Über die Schaltfläche oben können Sie sehen, ob Ihre gecrawlten Seiten tatsächlich indexiert sind.",
   "{count} sayfa gösteriliyor": {
@@ -3172,8 +3138,6 @@ export const deCatalog = {
     "Es konnte kein Search Console-Zugriffstoken abgerufen werden (der Zugriff wurde möglicherweise widerrufen oder ist abgelaufen).",
   "Search Console erişim anahtarı döndürmedi (yetki iptal edilmiş ya da süresi dolmuş olabilir).":
     "Die Search Console hat kein Zugriffstoken zurückgegeben (der Zugriff wurde möglicherweise widerrufen oder ist abgelaufen).",
-  "Google OAuth istemcisi Ayarlar'da tanımlı.":
-    "Der Google OAuth-Client ist in eingerichtet Einstellungen.",
   "PageSpeed anahtarı Ayarlar'da kayıtlı.":
     "Der PageSpeed-Schlüssel ist in den Einstellungen gespeichert.",
   "Denetim hâlâ çalışıyor. Rapor, denetim bitince oluşturulabilir.":
@@ -3357,7 +3321,6 @@ export const deCatalog = {
   "Her grafiğin altında aynı veriler yazıyla da verilir.":
     "Die Daten jedes Diagramms werden auch in Worten darunter angezeigt.",
   "tüm site": "gesamte Site",
-  "+1 puandan az": "unter +1 Punkt",
   "Etkilenen: tüm site": "Betroffen: die gesamte Website",
   "ve {count} sayfa daha (ayrıntı sorun bölümünde)": {
     one: "und {count} weitere Seite (Details im Abschnitt „Probleme“)",
@@ -3377,26 +3340,13 @@ export const deCatalog = {
   "Sıralama, düzeltildiğinde site puanına en çok puan kazandıranlara göre.":
     "Geordnet nach der Anzahl der Punkte, die jeder Fix zum Site-Score hinzufügt.",
   Sonrasında: "Danach",
-  "Puanlar, o sorun tamamen düzeltilirse site puanına eklenecek yaklaşık değeri gösterir.":
-    "Punkte zeigen ungefähr, wie viel der Site-Score steigt, wenn das Problem vollständig behoben ist.",
   "Denetim hata verip durdu.": "Die Prüfung wurde gestoppt mit einem Fehler.",
   "Denetim hâlâ çalışıyor.": "Die Prüfung läuft noch.",
   "Hiç sayfa taranamadı.": "Es konnten keine Seiten gecrawlt werden.",
-  "{count} sayfa tarandı (üst sınır {max})": {
-    one: "{count} gecrawlte Seite (Limit {max})",
-    other: "{count} gecrawlte Seiten (Limit {max})",
-  },
   "{count} sayfa tarandı": {
     one: "{count} gecrawlte Seite",
     other: "{count} gecrawlte Seiten",
   },
-  "hız ölçümü kapalı": "Geschwindigkeitsmessung aus",
-  "hız ölçümü var": "Geschwindigkeit gemessen",
-  "hız ölçümü yok": "keine Geschwindigkeitsmessung",
-  "Google dizin verisi var": "Google-Indexdaten enthalten",
-  "Google dizin verisi yok": "keine Google-Indexdaten",
-  "Denetim tarihi: {date} ({dateTime}) · Kapsam: {scope}":
-    "Prüfdatum: {date} ({dateTime}) · Geltungsbereich: {scope}",
   "Rapor eksik olabilir.": "Der Bericht ist möglicherweise unvollständig.",
   "{count} sorun türü: {critical} kritik, {warning} uyarı, {info} bilgi.": {
     one: "{count} Problemtyp: {critical} kritisch, {warning} Warnung, {info} info.",
@@ -3404,14 +3354,10 @@ export const deCatalog = {
       "{count} Problemtypen: {critical} kritisch, {warning} Warnungen, {info} info.",
   },
   "Taranan sayfa": "Gecrawlte Seiten",
-  "Kritik sorun türü": "Kritische Problemtypen",
-  "Uyarı türü": "Warnungstypen",
-  "Bilgi türü": "Infotypen",
   "Ortalama yanıt": "Durchschnitt Antwort",
   Dizinde: "Indiziert",
   Kısmen: "Teilweise",
   Nötr: "Neutral",
-  "Henüz sorulmadı": "Noch nicht überprüft",
   "Bu denetimin sayfaları için Search Console URL Denetleme Aracı sonucu kayıtlı değil, bu yüzden Google'ın hangi sayfaları dizine aldığı rapora girmiyor. Dizin Kapsamı ekranından inceleme çalıştırıldıktan sonra rapor yeniden oluşturulursa bu bölüm dolar.":
     "Für die Seiten dieser Prüfung werden keine Ergebnisse der Search Console-URL-Prüfung gespeichert, daher kann der Bericht nicht sagen, welche Seiten Google indexiert hat. Führen Sie eine Inspektion über den Indexstatusbildschirm aus und erstellen Sie den Bericht erneut, um diesen Abschnitt auszufüllen.",
   "Kaynak: Search Console URL Denetleme Aracı. Sonuçlar kayıtlıdır, bu rapor Google'a yeni istek atmaz; son inceleme {date}.":
@@ -3812,8 +3758,6 @@ export const deCatalog = {
   "Google bağlantı ayarı okunuyor.":
     "Google-Verbindungseinstellung wird gelesen.",
   "Google erişimi hazır.": "Google-Zugriff ist bereit.",
-  "Google erişim anahtarı Ayarlar'da kayıtlı.":
-    "Der Google-Zugriffsschlüssel ist in den Einstellungen gespeichert.",
   "PageSpeed anahtarı kontrol edilemedi. {logs}":
     "PageSpeed-Schlüssel konnte nicht geprüft werden. {logs}",
   "Anahtar yok. Hız ölçümü Google'ın anahtarsız kotasıyla çalışır ve çoğu zaman 429 ile yarım kalır. Tarama ve diğer SEO kontrolleri etkilenmez.":
@@ -4035,7 +3979,6 @@ export const deCatalog = {
     "Audit abgeschlossen: {pages} Seiten, {issues} Befunde",
   "Denetim tamamlanamadı": "Audit fehlgeschlagen",
   "Kontrol ediliyor…": "Wird geprüft …",
-  "Tamamlanma: {date}": "Abgeschlossen: {date}",
   "Rapor kaydedildi ancak indirilemedi. Raporlar ekranından tekrar deneyin.":
     "Der Bericht wurde gespeichert, konnte aber nicht heruntergeladen werden. Versuchen Sie es erneut auf der Berichte-Seite.",
   Denetim: "Audit",

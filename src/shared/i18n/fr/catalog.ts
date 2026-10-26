@@ -1396,7 +1396,6 @@ export const frCatalog = {
   Tarama: "Exploration",
   Tamamlanıyor: "Finition",
   Çalışıyor: "En cours",
-  "~{duration} kaldı": "Encore ~{duration}",
   "Lighthouse kontrolleri çalışıyor":
     "Phare en cours d'exécution les vérifications",
   "Sayfalar taranıyor": "pages d'exploration",
@@ -1453,10 +1452,6 @@ export const frCatalog = {
   "{url} denetimi için işlemler": "Actions pour l'audit de {url}",
   "Aynı ayarlarla yeniden başlat": "Réexécuter avec les mêmes paramètres",
   "Bir denetim zaten başlatılıyor": "Un audit est déjà Starting",
-  "Bu denetim {auditedHost} sitesine ait, ama Search Console bağlantınız {propertyHost} mülküne bağlı.":
-    "Cet audit concerne {auditedHost}, mais votre connexion à la Search Console pointe vers la propriété {propertyHost}.",
-  "Aşağıdaki site haritaları {propertyHost} mülküne ait, bu denetimin sayfalarıyla ilgisi yok. Google'a sorma da kapalı, çünkü bu sayfalar o mülkte değil ve sorulan her adres günlük kotadan boşuna giderdi. {auditedHost} için Google verisi görmek istiyorsanız siteyi ayrı bir proje olarak ekleyip kendi Search Console mülküne bağlayın.":
-    "Les plans de site ci-dessous appartiennent à {propertyHost} et n'ont rien à voir avec les pages de cet audit. Demander à Google est également désactivé : ces pages ne sont pas dans cette propriété, donc chaque adresse vérifiée gaspillerait le quota quotidien. Pour afficher les données Google pour {auditedHost}, ajoutez le site en tant que projet distinct et connectez-le à sa propre propriété Search Console.",
   "Google'da": "Sur Google",
   "Aramada çıkabilir": "Peut apparaître dans la recherche",
   "Dizinde değil": "Non indexé",
@@ -1472,8 +1467,6 @@ export const frCatalog = {
   "Sıralamayı ve tıklamayı düşürür": "Classement des coûts et clics",
   "Küçük iyileştirme fırsatları": "Petites chances d'amélioration",
   "Sorunlar ne kadar ciddi?": "Quelle est la gravité des problèmes ?",
-  "Bir gruba tıklayın, liste yalnızca o sorunları göstersin.":
-    "Cliquez sur un groupe pour afficher uniquement ces problèmes dans la liste.",
   bulgu: "résultats",
   "Bu sorun için kayıtlı adres yok.":
     "Aucune adresse enregistrée pour cela problème.",
@@ -1562,15 +1555,6 @@ export const frCatalog = {
   "Nasıl düzeltilir": "Comment résoudre",
   "En çok sayfayı hangi sorun etkiliyor?":
     "Quel problème affecte le plus pages ?",
-  "En çok sayfayı etkileyen {count} tür, kalan {hidden} tür aşağıda.": {
-    one: "The {count} types affecting the most pages; the other {hidden} are below.",
-    other:
-      "The {count} types affecting the most pages; the other {hidden} are below.",
-  },
-  "En çok sayfayı etkileyen {count} tür.": {
-    one: "Le type {count} affectant le plus de pages.",
-    other: "Les types {count} affectant le plus de pages.",
-  },
   "Bir çubuğa tıklayıp listeyi daraltın.":
     "Cliquez sur une barre pour affiner la liste.",
   "En çok sayfayı etkileyen sorun: {title}, {pages} sayfa. Grafikte {count} tür var.":
@@ -1621,15 +1605,10 @@ export const frCatalog = {
   "Zayıf. Google'ın sitenizi anlamasını engelleyen sorunlar var.":
     "Faible. Certains problèmes empêchent Google de comprendre votre site.",
   "Site puanı": "Score du site",
-  "+{points} puan": "+{points} points",
   "Google'ın ücretsiz ölçüm kotası dolmuş; sayfalarınızda bir sorun yok. Ayarlar'dan PageSpeed anahtarı ekleyin ya da kota yenilenince denetimi yeniden başlatın.":
     "Le quota de mesures gratuites de Google est épuisé ; rien ne va pas avec vos pages. Ajoutez une clé PageSpeed ​​dans Paramètres ou réexécutez l'audit une fois le quota réinitialisé.",
   Hız: "Vitesse",
   "Ortalama puanlar": "Scores moyens",
-  "Ölçülemeyen {count} sayfa": {
-    one: "{count} pages n'ont pas pu être mesurées",
-    other: "{count} pages n'ont pas pu être mesurées",
-  },
   "Mobilde hız dağılımı": "Distribution de vitesse sur mobile",
   "Ortalama tek başına yanıltır. Bir gruba tıklayıp o sayfaları listeleyin.":
     "Une moyenne seule est trompeuse. Cliquez sur un groupe pour répertorier ces pages.",
@@ -1711,8 +1690,6 @@ export const frCatalog = {
   'İstek sınırı sıfırlandıktan sonra denetimi yeniden başlatın, ya da site sahibinden "seotracker-audit" tarayıcısına izin vermesini isteyin.':
     "Réexécutez l'audit une fois la limite de débit réinitialisée, ou demandez au propriétaire du site d'autoriser le robot d'exploration \"seotracker-audit\".",
   "başka bir mülk": "une autre propriété",
-  "Bu denetim {auditedHost} sitesine ait, bağlı mülk ise {propertyHost}. Sorarsak kota boşa giderdi.":
-    "Cet audit concerne {auditedHost}, mais la propriété connectée est {propertyHost}. Demander gaspillerait le quota.",
   "Sorunlu sayfalar ({count})": "Pages présentant des problèmes ({count})",
   "Sayfalar ({count})": "Pages ({count})",
   "Dizin durumu": "État de l'index",
@@ -1728,9 +1705,6 @@ export const frCatalog = {
     "Cet audit n'a donné aucun résultat Lighthouse.",
   "Bu filtrelerle eşleşen performans sonucu yok.":
     "Aucun résultat de performance ne correspond à ces filtres.",
-  "Hız ölçümü hiç puan vermedi": "La mesure de vitesse n'a renvoyé aucun score",
-  başarısız: "échec",
-  tamam: "ok",
   "Hız puanı (0-100)": "Score de performance (0-100)",
   "Erişilebilirlik puanı (0-100)": "Score d'accessibilité (0-100)",
   "Arama motoru uyumu puanı (0-100)":
@@ -1776,7 +1750,6 @@ export const frCatalog = {
   "Site haritası": "Plan du site",
   Haritada: "Dans le plan du site",
   "Haritada yok": "Pas dans plan du site",
-  Başarılı: "Réussite",
   "En çok LCP (sn)": "LCP max. (s)",
   "Filtreleri aç/kapat": "Afficher ou masquer les filtres",
   "En az": "Min.",
@@ -1817,15 +1790,9 @@ export const frCatalog = {
     "Compte chaque page vérifiée, quel que soit le groupe que vous avez choisi dans le graphique ci-dessus. Google a traité une page différente comme canonique au lieu de celle que vous avez déclarée.",
   "Üstteki grafikte seçtiğiniz gruptan bağımsız, kontrol edilen tüm sayfalar.":
     "Compte chaque page vérifiée, quel que soit le groupe que vous avez sélectionné dans le graphique ci-dessus.",
-  "Bu denetimde henüz sorulmamış": "Pas encore vérifié dans cet audit",
-  "Google'a hiç sorulmamış sayfalar. Son kontrol {date}":
-    "Pages jamais vérifiées auprès de Google. Dernière vérification {date}",
-  "Google'a hiç sorulmamış sayfalar. Henüz kontrol yapılmadı.":
-    "Pages jamais vérifiées auprès de Google. Aucune vérification pour l'instant.",
   "Google günde en çok {limit} adres sormanıza izin verir. Her seferde {batch} sayfa kontrol edilir. Önce hiç sorulmamış olanlara, sonra Google'ın dizine almadıklarına bakılır.":
     "Google vous permet de vérifier jusqu'à {limit} URL par jour. Chaque exécution vérifie les pages {batch} : d'abord celles qui n'ont jamais été vérifiées, puis celles que Google n'a pas indexées.",
   "Google'da durumunu kontrol et": "Vérifier l'état sur Google",
-  "Google'da henüz kontrol edilmedi": "Pas encore vérifié sur Google",
   "Taradığınız sayfaların gerçekten dizine girip girmediğini görmek için yukarıdaki düğmeyi kullanın.":
     "Utilisez le bouton ci-dessus pour voir si vos pages explorées sont réellement indexées.",
   "{count} sayfa gösteriliyor": {
@@ -3160,8 +3127,6 @@ export const frCatalog = {
     "Impossible d'obtenir un jeton d'accès à la Search Console (l'accès a peut-être été révoqué ou expiré).",
   "Search Console erişim anahtarı döndürmedi (yetki iptal edilmiş ya da süresi dolmuş olabilir).":
     "La Search Console n'a pas renvoyé de jeton d'accès (l'accès a peut-être été révoqué ou expiré).",
-  "Google OAuth istemcisi Ayarlar'da tanımlı.":
-    "Le client Google OAuth est configuré dans Paramètres.",
   "PageSpeed anahtarı Ayarlar'da kayıtlı.":
     "La clé PageSpeed est enregistrée dans Paramètres.",
   "Denetim hâlâ çalışıyor. Rapor, denetim bitince oluşturulabilir.":
@@ -3346,7 +3311,6 @@ export const frCatalog = {
   "Her grafiğin altında aynı veriler yazıyla da verilir.":
     "Les données de chaque graphique sont également indiquées en mots en dessous.",
   "tüm site": "site entier",
-  "+1 puandan az": "sous +1 point",
   "Etkilenen: tüm site": "Concerné : l'ensemble du site",
   "ve {count} sayfa daha (ayrıntı sorun bölümünde)": {
     one: "et {count} pages supplémentaires (détails dans la section des problèmes)",
@@ -3366,26 +3330,13 @@ export const frCatalog = {
   "Sıralama, düzeltildiğinde site puanına en çok puan kazandıranlara göre.":
     "Classés en fonction du nombre de points que chaque correctif ajoute au score du site.",
   Sonrasında: "Après cela",
-  "Puanlar, o sorun tamamen düzeltilirse site puanına eklenecek yaklaşık değeri gösterir.":
-    "Les points indiquent approximativement combien le score du site gagne si ce problème est complètement résolu.",
   "Denetim hata verip durdu.": "L'audit s'est arrêté avec un erreur.",
   "Denetim hâlâ çalışıyor.": "L'audit est toujours en cours.",
   "Hiç sayfa taranamadı.": "Aucune page n'a pu être explorée.",
-  "{count} sayfa tarandı (üst sınır {max})": {
-    one: "{count} pages explorées (limite {max})",
-    other: "{count} pages explorées (limite {max})",
-  },
   "{count} sayfa tarandı": {
     one: "{count} pages explorées",
     other: "{count} pages explorées",
   },
-  "hız ölçümü kapalı": "mesure de vitesse désactivée",
-  "hız ölçümü var": "vitesse mesurée",
-  "hız ölçümü yok": "aucune mesure de vitesse",
-  "Google dizin verisi var": "Données d'index Google incluses",
-  "Google dizin verisi yok": "aucune donnée d'index Google",
-  "Denetim tarihi: {date} ({dateTime}) · Kapsam: {scope}":
-    "Date d'audit : {date} ({dateTime}) · Portée : {scope}",
   "Rapor eksik olabilir.": "Le rapport est peut-être incomplet.",
   "{count} sorun türü: {critical} kritik, {warning} uyarı, {info} bilgi.": {
     one: "{count} type de problème : {critical} critique, {warning} avertissement, {info} informations.",
@@ -3393,14 +3344,10 @@ export const frCatalog = {
       "{count} types de problèmes : {critical} critique, {warning} avertissements, {info} info.",
   },
   "Taranan sayfa": "Pages analysées",
-  "Kritik sorun türü": "Types de problèmes critiques",
-  "Uyarı türü": "Types d'avertissement",
-  "Bilgi türü": "Types d'informations",
   "Ortalama yanıt": "Moyenne réponse",
   Dizinde: "Indexé",
   Kısmen: "Partiel",
   Nötr: "Neutre",
-  "Henüz sorulmadı": "Pas encore vérifié",
   "Bu denetimin sayfaları için Search Console URL Denetleme Aracı sonucu kayıtlı değil, bu yüzden Google'ın hangi sayfaları dizine aldığı rapora girmiyor. Dizin Kapsamı ekranından inceleme çalıştırıldıktan sonra rapor yeniden oluşturulursa bu bölüm dolar.":
     "Aucun résultat d'inspection d'URL de la console de recherche n'est stocké pour les pages de cet audit. Le rapport ne peut donc pas indiquer quelles pages Google a indexées. Exécutez une inspection à partir de l'écran d'état de l'index et créez à nouveau le rapport pour remplir cette section.",
   "Kaynak: Search Console URL Denetleme Aracı. Sonuçlar kayıtlıdır, bu rapor Google'a yeni istek atmaz; son inceleme {date}.":
@@ -3801,8 +3748,6 @@ export const frCatalog = {
   "Google bağlantı ayarı okunuyor.":
     "Lecture du paramètre de connexion Google.",
   "Google erişimi hazır.": "L'accès Google est prêt.",
-  "Google erişim anahtarı Ayarlar'da kayıtlı.":
-    "La clé d'accès Google est enregistrée dans les paramètres.",
   "PageSpeed anahtarı kontrol edilemedi. {logs}":
     "Vérification impossible la touche PageSpeed. {logs}",
   "Anahtar yok. Hız ölçümü Google'ın anahtarsız kotasıyla çalışır ve çoğu zaman 429 ile yarım kalır. Tarama ve diğer SEO kontrolleri etkilenmez.":
@@ -4028,7 +3973,6 @@ export const frCatalog = {
     "Audit terminé : {pages} pages, {issues} problèmes",
   "Denetim tamamlanamadı": "Échec de l'audit",
   "Kontrol ediliyor…": "Vérification…",
-  "Tamamlanma: {date}": "Terminé : {date}",
   "Rapor kaydedildi ancak indirilemedi. Raporlar ekranından tekrar deneyin.":
     "Le rapport a été enregistré mais n'a pas pu être téléchargé. Réessayez à partir des rapports.",
   Denetim: "Audit",

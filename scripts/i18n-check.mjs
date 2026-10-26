@@ -5,6 +5,7 @@
  *   node scripts/i18n-check.mjs              # whole app
  *   node scripts/i18n-check.mjs --area app   # one catalog file's folders
  *   node scripts/i18n-check.mjs --require-complete-locales
+ *   node scripts/i18n-check.mjs --missing de   # JSON: keys de lacks, with English
  *
  * Errors (exit 1):
  *   - missing:     t("…") with a literal Turkish key that has no English entry,
@@ -307,7 +308,27 @@ const sameSet = (a, b) =>
 
 const short = (text) => (text.length > 90 ? `${text.slice(0, 87)}...` : text);
 
+/** Prints, as JSON, the English entries a secondary locale has no key for. */
+async function listMissing(locale) {
+  if (!SECONDARY_LOCALES.includes(locale)) {
+    console.error(`Unknown locale "${locale}". One of: ${SECONDARY_LOCALES}`);
+    process.exit(2);
+  }
+  const { merged } = mergeCatalogs(await loadCatalogs());
+  const { merged: catalog } = mergeCatalogs(await loadCatalogs(locale));
+  const missing = {};
+  for (const [key, { value }] of merged) {
+    if (!catalog.has(key)) missing[key] = value;
+  }
+  console.log(JSON.stringify(missing, null, 2));
+}
+
 async function main() {
+  const missingIndex = process.argv.indexOf("--missing");
+  if (missingIndex !== -1) {
+    await listMissing(process.argv[missingIndex + 1] ?? "");
+    return;
+  }
   const { area, requireCompleteLocales } = parseArgs(process.argv.slice(2));
   const catalogs = await loadCatalogs();
   const { merged, conflicts } = mergeCatalogs(catalogs);

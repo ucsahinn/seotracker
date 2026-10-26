@@ -18,19 +18,25 @@ import { deSettingsContinued } from "@/shared/i18n/de/settings-continued";
 import { deShared } from "@/shared/i18n/de/shared";
 import { deNotifications } from "@/shared/i18n/de/notifications";
 import { deCatalog } from "@/shared/i18n/de/catalog";
+import { deAudit } from "@/shared/i18n/de/audit";
+import { deApp } from "@/shared/i18n/de/app";
 import { frNotifications } from "@/shared/i18n/fr/notifications";
 import { frShared } from "@/shared/i18n/fr/shared";
 import { frCatalog } from "@/shared/i18n/fr/catalog";
+import { frAudit } from "@/shared/i18n/fr/audit";
+import { frApp } from "@/shared/i18n/fr/app";
 import { itApp } from "@/shared/i18n/it/app";
 import { itAppContinued } from "@/shared/i18n/it/app-continued";
 import { itNotifications } from "@/shared/i18n/it/notifications";
 import { itShared } from "@/shared/i18n/it/shared";
 import { itCatalog } from "@/shared/i18n/it/catalog";
+import { itCatalogContinued } from "@/shared/i18n/it/catalog-continued";
 import { ptNotifications } from "@/shared/i18n/pt/notifications";
 import { ptShared } from "@/shared/i18n/pt/shared";
 import { ptApp } from "@/shared/i18n/pt/app";
 import { ptAppContinued } from "@/shared/i18n/pt/app-continued";
 import { ptCatalog } from "@/shared/i18n/pt/catalog";
+import { ptCatalogContinued } from "@/shared/i18n/pt/catalog-continued";
 
 export const LOCALES = ["tr", "en", "de", "fr", "it", "pt"] as const;
 export type Locale = (typeof LOCALES)[number];
@@ -50,14 +56,23 @@ const catalogs: Partial<Record<Locale, Catalog>> = {
     ...deSettingsContinued,
     ...deNotifications,
     ...deCatalog,
+    ...deAudit,
+    ...deApp,
   },
-  fr: { ...frShared, ...frNotifications, ...frCatalog },
+  fr: {
+    ...frShared,
+    ...frNotifications,
+    ...frCatalog,
+    ...frAudit,
+    ...frApp,
+  },
   it: {
     ...itShared,
     ...itApp,
     ...itAppContinued,
     ...itNotifications,
     ...itCatalog,
+    ...itCatalogContinued,
   },
   pt: {
     ...ptShared,
@@ -65,6 +80,7 @@ const catalogs: Partial<Record<Locale, Catalog>> = {
     ...ptApp,
     ...ptAppContinued,
     ...ptCatalog,
+    ...ptCatalogContinued,
   },
 };
 
