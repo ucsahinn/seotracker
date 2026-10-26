@@ -489,4 +489,14 @@ export const enSettings: Catalog = {
     "Failed audits include the phase where they stopped and a redacted error summary. PageSpeed measurement errors are summarized without page URLs.",
   "PageSpeed ölçüm hatası ({count}): {message}":
     "PageSpeed measurement error ({count}): {message}",
+  // Notification settings strings used by the 0.7.x settings screen.
+  "Bildirim geçmişi zil simgesinde tutulur. Ses ve Windows sistem bildirimlerini buradan açıp kapatabilirsiniz.":
+    "Notification history stays under the bell. Turn notification sounds and Windows system notifications on or off here.",
+  "Windows ve sistem bildirimleri": "Windows and system notifications",
+  "Güncellemeler ve yeni duyurular dahil bildirimler Windows bildirim merkezinde gösterilir.":
+    "Notifications, including updates and new announcements, appear in the Windows notification center.",
+  "Bildirim izni engellendi. Açmak için tarayıcının site izinlerini kullanın.":
+    "Notification permission is blocked. Enable it in your browser’s site permissions.",
+  "Bu tarayıcı masaüstü bildirimlerini desteklemiyor.":
+    "This browser does not support desktop notifications.",
 };

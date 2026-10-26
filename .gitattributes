@@ -4,3 +4,6 @@
 * text=auto
 *.sh text eol=lf
 Dockerfile* text eol=lf
+# Markdown is bundled as raw text (release notes, agent prompts); keep LF so
+# a Windows checkout ships the same bytes as Linux.
+*.md text eol=lf

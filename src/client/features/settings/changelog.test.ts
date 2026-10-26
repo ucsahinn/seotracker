@@ -3,6 +3,7 @@ import {
   CHANGELOG_ENTRIES,
   CHANGELOG_ENTRIES_EN,
   CHANGELOG_ENTRIES_BY_LOCALE,
+  parseChangelog,
   plainText,
 } from "./changelog";
 
@@ -12,6 +13,17 @@ import {
  * keep local setup instructions out of the release screen.
  */
 describe("changelog", () => {
+  // The Windows release runner checks the repo out with CRLF endings; every
+  // bullet must still be its own item there.
+  it("parses CRLF files the same as LF files", () => {
+    const lf =
+      "# Notes\n\n## [1.0.0] — 2026-01-01\n\n### Fixes\n\n- **A:** one\n- **B:** two\n";
+    expect(parseChangelog(lf.replace(/\n/g, "\r\n"))).toEqual(
+      parseChangelog(lf),
+    );
+    expect(parseChangelog(lf)[0]?.sections[0]?.items).toHaveLength(2);
+  });
+
   it("reads the releases out of the real file", () => {
     expect(CHANGELOG_ENTRIES.length).toBeGreaterThan(0);
     for (const entry of CHANGELOG_ENTRIES) {

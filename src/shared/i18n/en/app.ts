@@ -778,4 +778,6 @@ export const enApp: Catalog = {
     "The audit stopped because of an error in the app.",
   "Sorun sitenizde değil. Denetimi yeniden başlatın. Tekrarlarsa Yardım ekranından tanı paketini indirip sorun kaydına ekleyin. Hata kodu: {code}":
     "Your site is not the problem. Start the audit again. If it happens again, download the diagnostics bundle from Help and attach it to an issue. Error code: {code}",
+  "Yanıtınız alındı": "Your response has been recorded",
+  "{count} yanıt": { one: "{count} response", other: "{count} responses" },
 };

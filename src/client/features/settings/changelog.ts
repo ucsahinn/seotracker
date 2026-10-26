@@ -30,7 +30,7 @@ export type ChangelogEntry = {
  * display them would be a dependency and an XSS surface for content that is
  * already ours.
  */
-function parseChangelog(source: string): ChangelogEntry[] {
+export function parseChangelog(source: string): ChangelogEntry[] {
   const entries: ChangelogEntry[] = [];
   let entry: ChangelogEntry | null = null;
   let section: { heading: string; items: ChangelogItem[] } | null = null;
@@ -38,7 +38,10 @@ function parseChangelog(source: string): ChangelogEntry[] {
   let inFence = false;
   let paragraphOpen = false;
 
-  for (const line of source.split("\n")) {
+  // A Windows checkout (core.autocrlf, as on the release runner) hands the
+  // bundler CRLF files; split on either ending so every bullet stays its own
+  // item.
+  for (const line of source.split(/\r?\n/)) {
     const release = /^## \[([^\]]+)\](?: Alpha)?(?:\s*[—-]\s*(.+))?$/.exec(
       line.trim(),
     );
