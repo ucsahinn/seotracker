@@ -291,9 +291,6 @@
           display: none;
         }
       }
-      [data-still] .dots::before {
-        display: none;
-      }
       * {
         box-sizing: border-box;
       }
@@ -865,15 +862,6 @@
           transition: none;
         }
       }
-      html[data-still] article .hx,
-      html[data-still] article h2.hx::before {
-        opacity: 1;
-        transform: none;
-        clip-path: none;
-        filter: none;
-        transition: none;
-      }
-
       /* Premium pass: the same motion language as the landing page, restrained. */
       @media (prefers-reduced-motion: no-preference) {
         html {
@@ -1538,199 +1526,536 @@
           manualmente; o atualizador antigo não reconhece o número menor como
           mais recente.
         </p>
-        <h2 id="0-7-1-alpha">0.7.1 Alpha</h2>
+        <p>
+          As mudanças ainda não lançadas ficam em uma seção separada, no topo.
+        </p>
+        <h2 id="nao-lancado-0-8-0-alpha">Não lançado — 0.8.0 Alpha</h2>
+        <ul>
+          <li>
+            <strong>Auditoria do site reconstruída:</strong> 201 regras examinam
+            as páginas e o site como um todo, incluindo cabeçalhos de segurança,
+            registros de e-mail e de domínio, vencimento do SSL e do domínio,
+            acesso de rastreadores de IA e resultados do Lighthouse.
+          </li>
+          <li>
+            <strong>Resultados honestos:</strong> uma verificação impossível de
+            medir deixa de contar como &quot;aprovada&quot;, e uma consulta que
+            não pôde ser feita não gera achado. Quando faltam dados, a tela diz
+            isso com clareza.
+          </li>
+          <li>
+            <strong>Ordem das tarefas:</strong> as correções são ordenadas pelo
+            seu tráfego no Search Console, e a pontuação é ponderada por
+            categoria.
+          </li>
+          <li>
+            <strong>Nova tela e novo relatório:</strong> abas Verificações e
+            Dados instantâneos, prévias de busca e de compartilhamento,
+            histórico da pontuação e relatório para download redesenhado.
+          </li>
+          <li>
+            <strong>Interface em seis idiomas:</strong> alemão, francês,
+            italiano e português (Brasil) foram adicionados. Com o turco e o
+            inglês, o aplicativo inteiro está disponível em seis idiomas.
+          </li>
+        </ul>
+        <h3 id="auditoria-do-site">Auditoria do site</h3>
+        <ul>
+          <li>
+            <strong>Verificações do site inteiro:</strong> cabeçalhos de
+            segurança (como HSTS), redirecionamentos, a resposta a uma página
+            que não existe, o robots.txt, os registros SPF e DMARC e as datas de
+            vencimento do certificado SSL e do domínio são consultados uma vez
+            no início da auditoria. Cada consulta gera um único achado.
+          </li>
+          <li>
+            <strong>Rastreadores de IA:</strong> a auditoria verifica se o seu
+            robots.txt bloqueia rastreadores de IA como GPTBot, ClaudeBot e
+            PerplexityBot e se você tem um arquivo llms.txt.
+          </li>
+          <li>
+            <strong>Achados do Lighthouse:</strong> com a medição de velocidade
+            ativada, as auditorias do Lighthouse aparecem como problemas, cada
+            uma com a economia estimada.
+          </li>
+          <li>
+            <strong>Links externos e imagens:</strong> opcionalmente, a
+            auditoria verifica se os links externos abrem e se as imagens são
+            maiores do que o necessário.
+          </li>
+          <li>
+            <strong>Mais regras:</strong> 201 regras no total, com sinais de
+            página e mais de 20 novos achados. O que cada regra significa e como
+            corrigi-la está explicado no guia Regras de auditoria.
+          </li>
+          <li>
+            <strong>Pontuação:</strong> a pontuação é calculada com pesos por
+            categoria.
+          </li>
+          <li>
+            <strong>A fazer:</strong> o que deve ser corrigido é ordenado pelo
+            tráfego do Search Console. Se o Search Console não estiver
+            conectado, a ordem considera apenas o impacto na pontuação.
+          </li>
+          <li>
+            <strong>Verificações e Dados instantâneos:</strong> a aba
+            Verificações lista também as verificações aprovadas e as que não
+            puderam ser medidas. A aba Dados instantâneos mostra as informações
+            do site medidas durante a auditoria e, quando houver, as Core Web
+            Vitals.
+          </li>
+          <li>
+            <strong>Prévias:</strong> prévia do resultado na Pesquisa Google, do
+            cartão de compartilhamento (Open Graph) e da exibição no celular.
+          </li>
+          <li>
+            <strong>Histórico e relatório:</strong> o histórico da pontuação
+            mostra como ela mudou entre as auditorias. O relatório para download
+            foi redesenhado.
+          </li>
+        </ul>
+        <h3 id="outras-funcionalidades">Outras funcionalidades</h3>
+        <ul>
+          <li>
+            <strong>Idioma da interface:</strong> escolha um dos seis idiomas em
+            Configurações → Aparência → Idioma; números e datas seguem a sua
+            escolha.
+          </li>
+          <li>
+            <strong>Orientações de instalação:</strong> as diferenças entre o
+            pacote do Windows e o Docker, como onde ficam as configurações e
+            quais valem, são explicadas com clareza no guia e na Ajuda.
+          </li>
+          <li>
+            <strong>Ferramentas para agentes:</strong> a nova ferramenta
+            <code>get_audit_summary</code> devolve, em uma única chamada, a
+            pontuação do site, as pontuações por categoria, a lista ordenada de
+            tarefas e os dados instantâneos do site.
+          </li>
+          <li>
+            <strong>Guia:</strong> a página Regras de auditoria explica as 201
+            regras uma a uma; o guia e as notas de versão estão disponíveis em
+            seis idiomas.
+          </li>
+          <li>
+            <strong>seowatcher.io · privacidade:</strong> no site, o Google
+            Analytics 4 só funciona se houver um ID de medição definido e você
+            escolher Aceitar; nada é enviado ao Google antes do seu
+            consentimento. A página de privacidade está disponível em seis
+            idiomas.
+          </li>
+        </ul>
+        <h3 id="correcoes">Correções</h3>
+        <ul>
+          <li>
+            <strong>Precisão da auditoria:</strong> nove causas de resultados
+            errados foram corrigidas depois de comparar auditorias com medições
+            em sites reais.
+          </li>
+          <li>
+            <strong>Auditoria · celular:</strong> a tela de auditoria e o
+            relatório baixado não transbordam mais no celular.
+          </li>
+        </ul>
+        <h2 id="0-7-1-alpha-2026-10-26">0.7.1 Alpha — 2026-10-26</h2>
         <ul>
           <li>
             <strong>Avisos:</strong> o texto alternativo em inglês preenche os
-            campos de idioma esperados pela aplicação 0.7.0.
+            campos de idioma esperados pelo aplicativo 0.7.0.
           </li>
           <li>
-            <strong>Ajuda · Diagnóstico:</strong> as auditorias falhadas indicam
-            a etapa, uma mensagem sem dados sensíveis e os erros PageSpeed mais
-            comuns. Os URLs das páginas são removidos dos resumos exportados.
-          </li>
-        </ul>
-        <h2 id="0-7-0-alpha">0.7.0 Alpha</h2>
-        <ul>
-          <li>
-            <strong>Arranque do Windows:</strong> ficam visíveis a preparação do
-            servidor e o progresso da transferência de atualizações.
-          </li>
-          <li>
-            <strong>Notificações do Windows:</strong> atualizações e avisos
-            aparecem na central de notificações se a opção estiver ativa.
-          </li>
-          <li>
-            <strong>Avisos:</strong> os conteúdos são escritos em turco e
-            inglês; os restantes idiomas da interface mostram o texto inglês.
+            <strong>Ajuda · Diagnóstico:</strong> as auditorias com falha
+            indicam a etapa, uma mensagem sem dados sensíveis e os erros do
+            PageSpeed mais comuns. Os URLs das páginas são removidos dos resumos
+            exportados.
           </li>
         </ul>
-        <h2 id="0-6-0-alpha">0.6.0 Alpha</h2>
+        <h2 id="0-7-0-alpha-2026-10-25">0.7.0 Alpha — 2026-10-25</h2>
         <ul>
           <li>
-            Avisos em turco e inglês aparecem na aplicação. Prepare e publique
-            os avisos na página de administração.
+            <strong>Inicialização do Windows:</strong> Ao iniciar o Windows, uma
+            janela de progresso mostra a preparação do servidor; durante o
+            download de uma atualização, exibe a porcentagem real.
           </li>
           <li>
-            A secção Próximos passos do painel apresenta tarefas e uma pontuação
-            de preparação com base nas ligações Google, numa auditoria recente,
-            no contexto do projeto e na configuração do agente. A pontuação não
-            mede o desempenho de SEO.
+            <strong>Notificações do Windows:</strong> As atualizações do
+            aplicativo e os avisos ao vivo aparecem na central de notificações
+            do Windows quando a opção está ativada. A configuração fica em
+            Configurações → Notificações.
           </li>
           <li>
-            Os relatórios dos agentes analisam a auditoria, Search Console,
-            oportunidades, histórico de posições, palavras-chave guardadas,
-            Analytics, cobertura do índice e sitemaps para sugerir melhorias.
-          </li>
-          <li>
-            O logótipo seowatcher no menu da aplicação abre seowatcher.io.
+            <strong>Avisos:</strong> Os avisos são redigidos em turco e inglês.
+            Nos outros idiomas da interface, é exibida a versão em inglês.
           </li>
         </ul>
-        <h2 id="0-5-0-alpha">0.5.0 Alpha</h2>
+        <h2 id="0-6-0-alpha-2026-10-24">0.6.0 Alpha — 2026-10-24</h2>
         <ul>
           <li>
-            Use a interface em turco ou inglês. Os números e as datas seguem o
-            idioma escolhido.
+            <strong>Avisos:</strong> Os avisos ao vivo aparecem no aplicativo.
+            Prepare e publique comunicados bilíngues na página de administração
+            protegida por senha.
           </li>
           <li>
-            O centro de notificações reúne auditorias, atualizações, ligações
-            Google e relatórios. Os sons e as notificações do ambiente de
-            trabalho têm definições separadas.
+            <strong>Painel:</strong> A seção Próximas etapas do painel oferece
+            tarefas guiadas e uma pontuação de preparação baseada nas conexões
+            com o Google, em uma auditoria recente, no contexto do projeto e na
+            configuração do agente. Ela mede a preparação da configuração, não o
+            desempenho de SEO nem as posições.
           </li>
           <li>
-            As notas de versão têm uma entrada própria acima das notificações no
-            menu lateral. As etiquetas coloridas mostram novidades e correções
-            de cada versão.
+            <strong>Relatórios do agente:</strong> Os relatórios dos agentes
+            agora usam uma lista de verificação de cobertura para auditorias e
+            PageSpeed, Search Console, oportunidades, histórico de posições,
+            palavras-chave salvas, Analytics, cobertura do índice e sitemaps,
+            para gerar melhorias prioritárias.
           </li>
           <li>
-            Em Ayarlar → Windows, pode ativar ou desativar o arranque com o
-            Windows e a instalação automática de atualizações.
+            <strong>Navegação:</strong> O link da marca na navegação para
+            computador e celular abre o seowatcher.io.
           </li>
           <li>
-            As auditorias mostram o tempo decorrido e um resumo final. Junto de
-            cada título de página encontra a ligação para o guia correspondente.
+            <strong>Relatórios do agente:</strong> As instruções dos relatórios
+            pedem que os agentes indiquem quais fontes de dados estão
+            disponíveis e apontem as que faltam.
           </li>
           <li>
-            A lista de países no formulário móvel e as explicações em janelas
-            pequenas já não ficam cortadas. Escape fecha primeiro a lista de
-            países e mantém o formulário aberto.
+            <strong>Navegação:</strong> A área da marca na navegação compacta
+            agora cabe sem transbordar.
           </li>
           <li>
-            As verificações simultâneas de indexação respeitam melhor o limite
-            diário. Os resultados bem-sucedidos são guardados mesmo que outra
-            verificação falhe.
+            <strong>Avisos:</strong> O acesso entre origens está desativado para
+            a API de administração; o feed público permite apenas a leitura dos
+            avisos.
+          </li>
+        </ul>
+        <h2 id="0-5-0-alpha-2026-10-23">0.5.0 Alpha — 2026-10-23</h2>
+        <ul>
+          <li>
+            <strong>Idioma:</strong> Use a interface em turco ou inglês. O
+            idioma escolhido em Configurações → Aparência → Idioma também altera
+            a exibição de números e datas.
+          </li>
+          <li>
+            <strong>Notificações:</strong> A central de notificações reúne
+            resultados de auditorias, novas versões, problemas de conexão com o
+            Google e atualizações de relatórios. Os sons e os alertas no
+            computador têm controles separados.
+          </li>
+          <li>
+            <strong>Notas de versão:</strong> As notas de versão têm uma entrada
+            própria na barra lateral, acima de Notificações. Etiquetas coloridas
+            mostram funcionalidades, correções e mudanças de segurança de cada
+            versão.
+          </li>
+          <li>
+            <strong>Configurações do Windows:</strong> Em Configurações →
+            Windows, escolha se o aplicativo inicia com o Windows e se as
+            atualizações são instaladas automaticamente. O aplicativo explica
+            quando um administrador limita uma opção.
+          </li>
+          <li>
+            <strong>Auditoria do site:</strong> Acompanhe o tempo decorrido e o
+            progresso durante uma auditoria e, depois, veja o resumo da
+            conclusão. O aplicativo também mostra o progresso ao preparar um
+            relatório ou procurar atualizações.
+          </li>
+          <li>
+            <strong>Ajuda:</strong> Abra o guia correspondente a partir do
+            título de qualquer tela.
+          </li>
+          <li>
+            <strong>Novo projeto:</strong> No celular, a lista de países do
+            formulário de novo projeto não fica mais cortada. A tecla Esc fecha
+            primeiro a lista e mantém o formulário aberto.
+          </li>
+          <li>
+            <strong>Ajuda:</strong> As mensagens de ajuda longas cabem em
+            janelas pequenas e compactas.
+          </li>
+          <li>
+            <strong>Configurações:</strong> As Configurações agora destacam
+            corretamente a seção selecionada. Os controles do Windows têm áreas
+            de toque maiores.
+          </li>
+          <li>
+            <strong>Status de indexação:</strong> As verificações simultâneas do
+            índice usam a cota diária com mais precisão. Os resultados
+            bem-sucedidos são preservados se outra verificação do grupo falhar.
+          </li>
+          <li>
+            <strong>Atualizações de segurança:</strong> Foram aplicadas
+            correções de segurança às dependências do aplicativo.
           </li>
         </ul>
         <h2 id="0-4-3-alpha-2026-10-22">0.4.3 Alpha — 2026-10-22</h2>
-        <h2 id="destaques">Destaques</h2>
+        <p>
+          Todas as versões intermediárias desde a 0.3.0 estão reunidas nesta
+          versão.
+        </p>
         <ul>
           <li>
-            <strong>Abre em qualquer computador.</strong> O componente do
-            Windows que faltava vem junto com o instalador, então o aplicativo
-            abre de primeira mesmo em um computador recém-formatado.
+            <strong>Instalação do Windows:</strong> o instalador traz os
+            componentes que faltam, então o aplicativo abre já na primeira vez,
+            mesmo em um computador limpo. O nome do arquivo e o assistente
+            mostram a versão instalada; desinstalar não apaga os seus dados.
           </li>
           <li>
-            <strong>Atualiza-se sozinho.</strong> Baixa a nova versão, verifica
-            e instala em segundo plano. <strong>Güncelle</strong> (Atualizar) no
-            menu da barra de tarefas está sempre a um clique.
+            <strong>Atualizações do Windows:</strong> o item Atualizar do menu
+            da barra de tarefas está sempre lá. Ele baixa, verifica e instala a
+            nova versão e mostra a verificação, a porcentagem do download e a
+            etapa da instalação. Você pode deixar as atualizações serem
+            instaladas automaticamente.
           </li>
           <li>
-            <strong>Telas mais simples.</strong> Cada tela vazia mostra um único
-            próximo passo; menus e textos foram reescritos para ficar mais
-            claros.
+            <strong>Windows · Recupera-se sozinho:</strong> se o servidor parar
+            de forma inesperada, o aplicativo o reinicia. Os arquivos de log
+            deixam de crescer sem parar.
           </li>
           <li>
-            <strong>Um novo visual.</strong> Fundo preto, destaque laranja e o
-            logo de olho; o aplicativo e o site agora têm a mesma aparência.
+            <strong>Ajuda · Diagnóstico:</strong> Reparar instalação ajuda a
+            resolver problemas de inicialização. Relatar um problema abre um
+            registro já preenchido; nome de usuário, nomes de sites e e-mails
+            são ocultados no relatório de diagnóstico.
           </li>
           <li>
-            Na configuração do agente, &quot;Sıfırdan kurulum&quot; (Instalação
-            do zero) agora vem primeiro para quem instala pela primeira vez.
+            <strong>Primeira configuração:</strong> em Configuração do agente,
+            Instalar do zero fica no topo, com um único cartão e um único botão
+            de copiar para Claude Code, Codex e outros assistentes. As
+            Configurações explicam a conexão com o Google em três passos.
           </li>
           <li>
-            O item Güncelle mostra a verificação, a porcentagem do download e a
-            instalação.
+            <strong>Retorno ao usuário:</strong> salvar, excluir e conectar
+            dizem o que está acontecendo durante a espera, ao terminar e em caso
+            de erro. Excluir e desconectar pedem confirmação antes.
+          </li>
+          <li>
+            <strong>Aparência do aplicativo:</strong> menu, configurações e
+            telas de primeira configuração foram simplificados, e mais de
+            duzentos textos de tela foram reescritos em turco natural. O tema
+            escuro é o padrão, e os temas claro e escuro combinam com o site.
+          </li>
+          <li>
+            <strong>Windows e Docker:</strong> a Ajuda e as instruções para
+            agentes reconhecem as duas instalações. Elas falam da barra de
+            tarefas no Windows e dos comandos <code>docker compose</code> no
+            Docker.
+          </li>
+          <li>
+            <strong>Guia do usuário e site:</strong> o seowatcher.io e o guia do
+            usuário de 20 páginas estão disponíveis em seis idiomas. As páginas
+            de solução de problemas usam caixas de Sintoma, Causa e Solução.
+          </li>
+          <li>
+            <strong>Auditoria · Oportunidades:</strong> o transbordo lateral no
+            celular nas telas de auditoria do site e de Oportunidades foi
+            corrigido.
+          </li>
+          <li>
+            <strong>Conexão com o Google:</strong> o aviso errado de &quot;chave
+            de acesso do Google ausente&quot;, exibido quando só uma conta de
+            serviço está conectada, foi corrigido. Os erros vindos do Google
+            agora apontam para a conexão com o Google.
+          </li>
+          <li>
+            <strong>Analytics:</strong> os nomes de dispositivos, canais e
+            países aparecem em turco, os valores de receita mostram a moeda e as
+            porcentagens de variação têm o mesmo formato em todas as telas.
+          </li>
+          <li>
+            <strong>Site · downloads:</strong> o link de download aponta para a
+            versão certa. Um endereço desconhecido abre uma tela Página não
+            encontrada com um link de volta ao painel, em vez de uma página em
+            branco.
           </li>
         </ul>
-        <h2 id="windows">Windows</h2>
+        <h2 id="0-3-0-alpha-2026-10-21">0.3.0 Alpha — 2026-10-21</h2>
         <ul>
           <li>
-            <strong>Abre em um computador novo.</strong> O instalador traz o
-            runtime do Microsoft Visual C++ e o instala uma vez, com sua
-            permissão, se ele estiver faltando.
+            <strong>Instalação do Windows:</strong> instale no Windows com um
+            único instalador, sem Docker nem terminal. Na primeira abertura, o
+            aplicativo cria as chaves necessárias, prepara o banco de dados e
+            abre o navegador; você o gerencia pelo ícone da barra de tarefas.
+            Desinstalar não apaga os seus dados.
           </li>
           <li>
-            <strong>Atualizar.</strong> Sempre no menu da barra de tarefas.
-            Instala a nova versão se houver uma; se não, mostra
-            &quot;Güncel&quot; (Atualizado).
+            <strong>Site:</strong> no seowatcher.io você encontra os links de
+            download, as informações do produto e o guia do usuário.
           </li>
           <li>
-            <strong>Reparar instalação.</strong> Apaga arquivos temporários,
-            verifica o pacote e abre o aplicativo de novo.
+            <strong>Guia do usuário:</strong> instalação, funcionalidades,
+            habilidades prontas e ferramentas para agentes foram reescritas do
+            zero, com capturas de tela do aplicativo.
           </li>
           <li>
-            <strong>Relatar um problema.</strong> Abre um relato já preenchido.
-            Nomes de usuário, nomes de sites e e-mails são mascarados.
-          </li>
-          <li>
-            <strong>Instalador com versão.</strong> O nome do arquivo e o
-            assistente de instalação mostram a versão instalada.
+            <strong>Auditoria:</strong> os números que saíam do cartão de resumo
+            de problemas na auditoria do site foram corrigidos.
           </li>
         </ul>
-        <h2 id="o-aplicativo">O aplicativo</h2>
+        <h2 id="0-2-1-alpha-2026-10-04">0.2.1 Alpha — 2026-10-04</h2>
+        <p>
+          A 0.2.0 foi incorporada a esta versão. O foco é a limpeza de erros;
+          seus dados são mantidos na atualização.
+        </p>
         <ul>
           <li>
-            <strong>Menu lateral.</strong> Os grupos são &quot;Arama ve
-            site&quot; (Busca e site) e &quot;Ajan&quot; (Assistente); Ajuda e
-            Configurações ficam embaixo.
+            <strong>Configuração do agente:</strong> se você acabou de baixar o
+            repositório, cole no seu agente o prompt de configuração da tela
+            Configuração do agente; ele verifica, em ordem, o Docker, a conexão
+            com o Google, a chave do PageSpeed, o projeto e a conexão do agente.
+            Ele nunca pede que você cole segredos no chat. O mesmo prompt também
+            está nas ações rápidas da Ajuda.
           </li>
           <li>
-            <strong>Configurar assistente.</strong> Um único cartão e um único
-            botão de copiar para Claude Code, Codex ou qualquer outro
-            assistente.
+            <strong>Configurações · Google:</strong> o cliente do Google
+            informado nas Configurações também é usado ao renovar o acesso; o
+            problema que pedia para reconectar depois de cerca de uma hora foi
+            corrigido. As Configurações explicam qual conexão com o Google está
+            em uso.
           </li>
           <li>
-            <strong>Configurações.</strong> A conexão com o Google é explicada
-            em três passos; o tema é escuro por padrão.
+            <strong>Auditoria:</strong> os resultados bem-sucedidos anteriores,
+            inclusive as medições de velocidade, são mantidos quando uma
+            auditoria é interrompida ou repetida.
           </li>
           <li>
-            <strong>Reconhece as duas instalações.</strong> A ajuda e as
-            instruções do assistente descrevem a barra de tarefas no Windows e
-            os comandos <code>docker compose</code> no Docker.
+            <strong>Auditoria · cálculos:</strong> profundidade das páginas,
+            cobertura do sitemap e detecção de páginas órfãs são calculadas com
+            mais precisão. Endereços parecidos mas diferentes (http e https,
+            www, barra final) agora contam como diferentes na comparação do
+            endereço canônico, o que pode revelar divergências reais antes
+            escondidas.
+          </li>
+          <li>
+            <strong>Projetos · Google:</strong> os dados de um projeto antigo
+            não se misturam mais quando a conta ou a propriedade do Google muda.
+            Remover uma conta apaga apenas os dados dos projetos dessa conta.
+          </li>
+          <li>
+            <strong>Analytics:</strong> o cartão de cota mostra o uso correto
+            (&quot;231 / 200.000&quot;). Os tamanhos de relatório usam a mesma
+            unidade em todo lugar. As colunas do histórico de auditorias
+            informam que são &quot;a cada cem páginas&quot;.
+          </li>
+          <li>
+            <strong>Palavras-chave salvas · CSV:</strong> a ordem das
+            palavras-chave salvas e a abertura no Excel de arquivos CSV com
+            caracteres turcos foram corrigidas. É possível salvar mais de 500
+            consultas de uma vez.
+          </li>
+          <li>
+            <strong>Formulários · erros:</strong> se uma atualização em segundo
+            plano falhar, o que você digitou em um formulário aberto é mantido.
+            As mensagens de erro dizem o que aconteceu e o que fazer em seguida.
+          </li>
+          <li>
+            <strong>Configuração do agente:</strong> as instruções de conexão
+            para Windows e Git Bash e o comando do Codex foram corrigidos. As
+            descrições das ferramentas agora dizem com clareza que salvar
+            palavras-chave e gravar informações do projeto acontece sem pedir
+            confirmação.
+          </li>
+          <li>
+            <strong>Relatórios:</strong> um relatório baixado sempre abre com as
+            suas próprias regras de proteção, de modo que uma página escrita com
+            más intenções não consegue rodar antes da proteção.
+          </li>
+          <li>
+            <strong>Endereços analisados:</strong> o domínio com e sem www é
+            verificado separadamente antes da varredura. Nome de usuário e senha
+            escritos em um endereço são recusados e ocultados na tela.
+          </li>
+          <li>
+            <strong>Docker:</strong> a chave de criptografia e a senha do MCP
+            são gravadas com segurança; uma chave existente nunca é sobrescrita.
           </li>
         </ul>
-        <h2 id="site-e-guia">Site e guia</h2>
+        <h2 id="0-1-0-alpha-2026-10-02">0.1.0 Alpha — 2026-10-02</h2>
         <ul>
           <li>
-            <strong>Seis idiomas.</strong> Turco, inglês, alemão, francês,
-            italiano e português, com um menu de bandeiras.
+            <strong>Suporte ao Codex:</strong> a Configuração do agente tem
+            instruções separadas para o Codex; ele se conecta com um único
+            comando, instala as habilidades de SEO e as confere com uma chamada
+            real.
           </li>
           <li>
-            <strong>Texto claro.</strong> Frases curtas, e cada termo técnico é
-            explicado na primeira vez em que aparece.
+            <strong>Limites do Google e do sistema:</strong> sua cota diária de
+            inspeções de URL, a cota do Analytics, o número de medições de
+            velocidade de hoje e os limites de relatórios aparecem nas telas
+            correspondentes. Só são exibidos números realmente conhecidos, cada
+            um com sua fonte e horário.
+          </li>
+          <li>
+            <strong>Ações rápidas:</strong> as telas principais têm um botão
+            Atualizar, o horário da última atualização e o atalho r.
+          </li>
+          <li>
+            <strong>Visão ao vivo:</strong> o progresso da auditoria mostra a
+            varredura e a medição de velocidade em barras separadas, com uma
+            estimativa do tempo restante. Com a redução de movimento ativada,
+            nenhuma animação é exibida.
+          </li>
+          <li>
+            <strong>Ajuda:</strong> nova verificação de status, pacote de
+            diagnóstico, documentação e notas de versão agora ficam em uma única
+            barra. Os problemas comuns cobrem Docker, porta ocupada, senha do
+            MCP, limite do PageSpeed e falta de dados de consultas.
+          </li>
+          <li>
+            <strong>Configurações:</strong> salto rápido entre as seções, um
+            selo de status em cada seção e um botão Testar chave para a chave do
+            PageSpeed.
+          </li>
+          <li>
+            <strong>Auditoria:</strong> auditorias interrompidas não bloqueiam
+            mais novas auditorias para sempre, e as concluídas não ocupam mais a
+            capacidade. Um agente que lê uma auditoria em andamento vê
+            &quot;auditoria em andamento&quot; em vez de &quot;sem
+            problemas&quot;.
+          </li>
+          <li>
+            <strong>Projetos · Google:</strong> filtros e resultados do projeto
+            anterior não ficam mais na tela ao trocar de projeto. Trocar a
+            propriedade do Search Console ou desconectar não mistura mais o
+            histórico de duas propriedades. Oportunidades, Acompanhamento de
+            posições e Analytics não guardam mais dados antigos quando a conexão
+            com o Google muda.
+          </li>
+          <li>
+            <strong>Palavras-chave salvas:</strong> a busca com caracteres
+            turcos (&quot;çay&quot;, &quot;istanbul&quot;), a exportação e a
+            estimativa do tempo restante foram corrigidas.
+          </li>
+          <li>
+            <strong>Configurações:</strong> o formulário não fica mais oculto
+            quando o cliente do Google vem de uma variável de ambiente, e o
+            formato do ID do cliente do Google é verificado. Uma verificação de
+            atualização com falha não diz mais &quot;atualizado&quot;.
+          </li>
+          <li>
+            <strong>Exclusão · desconexão:</strong> excluir e remover a conexão
+            com o Google, inclusive excluir credenciais, pedem confirmação.
+          </li>
+          <li>
+            <strong>Campo de busca · área de transferência:</strong> o campo de
+            busca não adiciona mais uma entrada de histórico a cada tecla nem
+            perde letras. Copiar para a área de transferência também funciona em
+            endereços não seguros.
           </li>
         </ul>
-        <h2 id="correcoes">Correções</h2>
-        <ul>
-          <li>
-            O link de download do site apontava para a tag de versão errada.
-          </li>
-          <li>
-            No Git Bash, o comando de configuração do Codex não removia a quebra
-            de linha no fim da senha.
-          </li>
-          <li>
-            Em um cartão da auditoria do site, os números saíam do quadro.
-          </li>
-          <li>
-            Com apenas uma conta de serviço conectada, o painel dizia por engano
-            que faltava a chave de acesso do Google.
-          </li>
-          <li>
-            No celular, a auditoria do site e as Oportunidades rolavam para o
-            lado.
-          </li>
-        </ul>
+        <h2 id="numeracao-das-versoes">Numeração das versões</h2>
+        <p>
+          O seowatcher usa números 0.x Alpha até a 1.0. Um novo recurso
+          perceptível aumenta o número do meio (0.7.1 → 0.8.0); uma versão só
+          com correções aumenta o último (0.7.0 → 0.7.1). As versões de 0.0.0 a
+          0.4.3 foram publicadas primeiro com tags v2.x; a correspondência está
+          na tabela no início do
+          <a
+            href="https://github.com/ucsahinn/seotracker/blob/seotracker-fork/CHANGELOG.md"
+            target="_blank"
+            rel="noopener noreferrer"
+            >CHANGELOG.md</a
+          >.
+        </p>
         <p>
           O histórico completo está no
           <a
@@ -1759,18 +2084,34 @@
       <nav class="toc" aria-label="Nesta página">
         <p class="toc-label">Nesta página</p>
         <ol>
-          <li><a href="#0-7-1-alpha">0.7.1 Alpha</a></li>
-          <li><a href="#0-7-0-alpha">0.7.0 Alpha</a></li>
-          <li><a href="#0-6-0-alpha">0.6.0 Alpha</a></li>
-          <li><a href="#0-5-0-alpha">0.5.0 Alpha</a></li>
+          <li>
+            <a href="#nao-lancado-0-8-0-alpha">Não lançado — 0.8.0 Alpha</a>
+          </li>
+          <li>
+            <a href="#0-7-1-alpha-2026-10-26">0.7.1 Alpha — 2026-10-26</a>
+          </li>
+          <li>
+            <a href="#0-7-0-alpha-2026-10-25">0.7.0 Alpha — 2026-10-25</a>
+          </li>
+          <li>
+            <a href="#0-6-0-alpha-2026-10-24">0.6.0 Alpha — 2026-10-24</a>
+          </li>
+          <li>
+            <a href="#0-5-0-alpha-2026-10-23">0.5.0 Alpha — 2026-10-23</a>
+          </li>
           <li>
             <a href="#0-4-3-alpha-2026-10-22">0.4.3 Alpha — 2026-10-22</a>
           </li>
-          <li><a href="#destaques">Destaques</a></li>
-          <li><a href="#windows">Windows</a></li>
-          <li><a href="#o-aplicativo">O aplicativo</a></li>
-          <li><a href="#site-e-guia">Site e guia</a></li>
-          <li><a href="#correcoes">Correções</a></li>
+          <li>
+            <a href="#0-3-0-alpha-2026-10-21">0.3.0 Alpha — 2026-10-21</a>
+          </li>
+          <li>
+            <a href="#0-2-1-alpha-2026-10-04">0.2.1 Alpha — 2026-10-04</a>
+          </li>
+          <li>
+            <a href="#0-1-0-alpha-2026-10-02">0.1.0 Alpha — 2026-10-02</a>
+          </li>
+          <li><a href="#numeracao-das-versoes">Numeração das versões</a></li>
         </ol>
       </nav>
     </main>

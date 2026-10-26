@@ -70,9 +70,14 @@ describe("changelog", () => {
   });
 
   it("leaves the unreleased section out", () => {
-    expect(
-      CHANGELOG_ENTRIES.some((entry) => entry.version === "Yayınlanmamış"),
-    ).toBe(false);
+    for (const locale of ["tr", "en", "de", "fr", "it", "pt"] as const) {
+      expect(
+        CHANGELOG_ENTRIES_BY_LOCALE[locale].some(
+          (entry) => entry.version === "Yayınlanmamış",
+        ),
+        locale,
+      ).toBe(false);
+    }
   });
 
   it("omits retired setup instructions from customer-facing history", () => {

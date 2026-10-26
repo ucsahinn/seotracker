@@ -12,7 +12,7 @@ export function getReleaseCategories(
   const categories: ReleaseCategory[] = [];
   if (
     headings.some((heading) =>
-      /yenilik|eklendi|uygulama|neler sunuyor|what the app offers|features?|funktionen|fonctionnalités|funzionalità|funcionalidades/.test(
+      /yenilik|eklendi|uygulama|öne çıkan|site denetimi|highlights|site audit|höhepunkte|website-audit|points forts|audit du site|in evidenza|controllo del sito|destaques|auditoria do site|neler sunuyor|what the app offers|features?|funktionen|fonctionnalités|funzionalità|funcionalidades/.test(
         heading,
       ),
     )
