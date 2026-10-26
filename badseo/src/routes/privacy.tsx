@@ -1,8 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout } from "../components/site-layout";
+import { getSiteOrigin } from "../site-origin";
 
 export const Route = createFileRoute("/privacy")({
-  head: () => ({
+  loader: () => getSiteOrigin(),
+  head: ({ loaderData }) => ({
     meta: [
       { title: "Privacy policy | badseo.dev" },
       {
@@ -11,7 +13,7 @@ export const Route = createFileRoute("/privacy")({
           "BadSEO is a static test site for the seotracker audit crawler. It runs no analytics, sets no cookies, and collects nothing from visitors.",
       },
     ],
-    links: [{ rel: "canonical", href: "/privacy" }],
+    links: [{ rel: "canonical", href: `${loaderData ?? ""}/privacy` }],
   }),
   component: PrivacyPage,
 });

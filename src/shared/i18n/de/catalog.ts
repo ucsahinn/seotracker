@@ -2279,22 +2279,22 @@ export const deCatalog = {
     'Drei oder mehr Links auf der Seite, die zu Ihrer eigenen Website führen, tragen rel="nofollow". nofollow sagt Google: „Vertraue diesem Link nicht“ und interne Links benötigen dies nur selten. Google folgt diesen Links möglicherweise nicht. Wenn die Zielseite also nicht auf anderem Weg erreicht werden kann, wird sie verspätet oder gar nicht indexiert.',
   'Kendi sayfalarınıza verdiğiniz bağlantılardan rel="nofollow" özelliğini kaldırın. Sayfanın dizine girmesini istemiyorsanız bağlantıyı değil sayfayı noindex ile işaretleyin.':
     'Entfernen Sie rel="nofollow" aus Links zu Ihren eigenen Seiten. Wenn Sie nicht möchten, dass eine Seite indiziert wird, markieren Sie die Seite selbst mit noindex, nicht den Link.',
-  "Yinelenen başlık": "Doppelter Titel",
+  "Tekrarlanan başlık": "Doppelter Titel",
   "Birden çok sayfa aynı başlığı (<title>) kullanıyor. Aynı başlıkla arama sonucunda sayfalar birbirine benzer görünür ve ziyaretçi hangisine tıklayacağını seçemez.":
     "Mehrere Seiten verwenden denselben Titel (<Titel>). Mit demselben Titel sehen die Seiten in den Suchergebnissen gleich aus und Besucher können nicht sagen, auf welche Seite sie klicken sollen.",
   "Her sayfaya kendi içeriğini anlatan farklı bir başlık yazın. Şablondan üretilen sayfalarda ayırt edici bilgiyi (ürün adı, kategori, şehir) başlık şablonuna ekleyin.":
     "Geben Sie für jede Seite einen anderen Titel, der ihren eigenen Inhalt beschreibt. Fügen Sie für aus einer Vorlage generierte Seiten die Unterscheidungsdetails (Produktname, Kategorie, Stadt) zur Titelvorlage hinzu.",
-  "Yinelenen ana başlık (H1)": "Doppelte Hauptüberschrift (H1)",
+  "Tekrarlanan ana başlık (H1)": "Doppelte Hauptüberschrift (H1)",
   "Birden çok sayfa aynı ana başlığı (H1) kullanıyor. Başlık, ziyaretçiye ve Google'a sayfanın ne hakkında olduğunu söyler; aynı başlık farklı sayfaları ayırt etmeyi zorlaştırır. Sitenin her sayfasında logo ya da site adı H1 olarak yazılmışsa bu uyarı genelde ondan gelir.":
     "Mehrere Seiten verwenden dieselbe Hauptüberschrift (H1). Die Überschrift sagt Besuchern und Google, worum es auf der Seite geht; Die gleiche Überschrift macht es schwierig, verschiedene Seiten voneinander zu unterscheiden. Wenn das Logo oder der Site-Name das H1 auf jeder Seite ist, kommt normalerweise diese Warnung daher.",
   "Her sayfanın H1'ini o sayfanın konusunu anlatan kendi cümlesiyle yazın. Logo ya da site adı H1 ise onu H1 olmayan bir etikete çevirin ve sayfa başlığını H1 yapın.":
     "Geben Sie jeder Seite ein eigenes H1, das das Thema dieser Seite angibt. Wenn das Logo oder der Site-Name H1 ist, ändern Sie es in ein Nicht-H1-Tag und machen Sie den Seitentitel zu H1.",
-  "Yinelenen meta açıklama": "Doppelte Meta-Beschreibung",
+  "Tekrarlanan meta açıklama": "Doppelte Meta-Beschreibung",
   "Birden çok sayfa aynı meta açıklamayı (arama sonucunda başlığın altındaki özet) kullanıyor. Aramada hepsi aynı özetle çıkar ve ziyaretçi sayfaları ayırt edemez.":
     "Mehrere Seiten verwenden dieselbe Meta-Beschreibung (die Zusammenfassung unter dem Titel in den Suchergebnissen). Sie erscheinen alle mit dem gleichen Snippet in der Suche und Besucher können die Seiten nicht voneinander unterscheiden.",
   "Her sayfaya kendi açıklamasını yazın ya da yinelenen açıklamayı tamamen silin. Açıklama yoksa Google sayfa metninden bir özet seçer; bu, yanlış bir kopyadan iyidir.":
     "Verfassen Sie eine Beschreibung für jede Seite oder löschen Sie die duplizierte Beschreibung vollständig. Ohne einen wählt Google einen Ausschnitt aus dem Seitentext aus, was besser ist als eine falsche Kopie.",
-  "Yinelenen sayfa içeriği": "Doppelter Seiteninhalt",
+  "Tekrarlanan sayfa içeriği": "Doppelter Seiteninhalt",
   "İki ya da daha fazla adres birebir aynı metni gösteriyor. Google bunlardan birini seçip dizine alır ve seçtiği sizin istediğiniz olmayabilir. Ceza değildir, ama sıralama gücü adresler arasında bölünür.":
     "Zwei oder mehr URLs zeigen genau denselben Text. Google wählt eine davon zum Indexieren aus, und die Auswahl ist möglicherweise nicht die gewünschte. Es handelt sich nicht um eine Strafe, aber die Rankingstärke wird zwischen den URLs aufgeteilt.",
   "Asıl adresi (aramada görünmesini istediğiniz tek adres) seçin. Kopya adres kullanıcıya gerekmiyorsa 301 ile asıl adrese yönlendirin; kopya adres açık kalacaksa (parametreli sayfa gibi) canonical (asıl adres) etiketiyle asıl adresi gösterin. Sık nedenler: sonda eğik çizgi farkı, adrese eklenen parametreler, http/https ya da www farkı.":
@@ -2418,7 +2418,7 @@ export const deCatalog = {
     "Mindestens ein strukturierter Datenblock (ld+json) auf der Seite kann nicht gelesen werden oder hat keinen Typ (@type). Google ignoriert einen defekten Block, sodass die zusätzlichen Details, die Sie von diesem Markup erwarten (Produkt, Artikel, Breadcrumb), nicht in der Suche angezeigt werden.",
   'Bloğu bir JSON denetleyicisine yapıştırın; genelde fazladan virgül ya da kapanmamış tırnak çıkar. Sonra bloğa en az bir tür ekleyin, örneğin "@type": "Article". Eklentiyle üretiliyorsa eklentiyi güncelleyin.':
     "Fügen Sie den Block in einen JSON-Validator ein; Normalerweise handelt es sich dabei um ein zusätzliches Komma oder ein nicht geschlossenes Anführungszeichen. Geben Sie dem Block dann mindestens einen Typ, zum Beispiel „@type“: „Article“. Wenn ein Plugin es generiert, aktualisieren Sie das Plugin.",
-  "Google'ın bazı sayfalar hakkındaki yanıtı eskimiş":
+  "Bazı sayfalar için Google'ın yanıtı eski":
     "Die Antworten von Google für einige Seiten sind veraltet",
   "Bu sayfalar için saklanan Google yanıtları eskidi. Yanıt, sorulduğu andaki durumu anlatır; sayfa o zamandan beri düzelmiş ya da bozulmuş olabilir. Eski yanıtı güncelmiş gibi göstermemek için bu sayfaların Google yanıtları bu denetimde bulgu sayılmadı.":
     "Die für diese Seiten gespeicherten Google-Antworten sind veraltet. Eine Antwort beschreibt den Zustand zum Zeitpunkt der Beantwortung; Möglicherweise wurde die Seite seitdem repariert oder ist defekt. Um eine alte Antwort nicht als aktuell darzustellen, wurden die Google-Antworten dieser Seiten bei dieser Prüfung nicht als Ergebnisse gezählt.",
@@ -3304,12 +3304,12 @@ export const deCatalog = {
   "Site denetim raporu": "Site-Audit-Bericht",
   "seowatcher ile üretildi. Bu dosya kendi kendine yeter: açmak için internet bağlantısı gerekmez. PDF için tarayıcıdan Yazdır seçeneğini kullanın.":
     "Erstellt mit seowatcher. Diese Datei ist eigenständig: Sie wird ohne Internetverbindung geöffnet. Für ein PDF verwenden Sie „Drucken“ in Ihrem Browser.",
-  "1. Genel görünüm": "1. Übersicht",
-  "2. Sorunlar": "2. Probleme",
-  "3. Hız ölçümü": "3. Geschwindigkeitstests",
-  "4. Google dizin durumu": "4. Google-Indexstatus",
-  "5. Site haritası": "5. Sitemap",
-  "6. Yöntem ve sınırlar": "6. Methode und Grenzen",
+  "3. Genel görünüm": "3. Übersicht",
+  "4. Sorunlar": "4. Probleme",
+  "5. Hız ölçümü": "5. Geschwindigkeitstests",
+  "6. Google dizin durumu": "6. Google-Indexstatus",
+  "7. Site haritası": "7. Sitemap",
+  "8. Yöntem ve sınırlar": "8. Methode und Grenzen",
   "Ek A. Kalan etkilenen adresler":
     "Anhang A. Verbleibende betroffene Adressen",
   "Ek B. Taranan sayfalar": "Anhang B. Gecrawlte Seiten",
@@ -3358,10 +3358,6 @@ export const deCatalog = {
     "Die Daten jedes Diagramms werden auch in Worten darunter angezeigt.",
   "tüm site": "gesamte Site",
   "+1 puandan az": "unter +1 Punkt",
-  "+{count} puan": {
-    one: "+{count} point",
-    other: "+{count} Punkte",
-  },
   "Etkilenen: tüm site": "Betroffen: die gesamte Website",
   "ve {count} sayfa daha (ayrıntı sorun bölümünde)": {
     one: "und {count} weitere Seite (Details im Abschnitt „Probleme“)",
@@ -3610,8 +3606,6 @@ export const deCatalog = {
   "Sayfa sayfa sonuçlar": "Ergebnisse nach Seite",
   "Mobil performans puanı en düşük sayfalar üstte. Metrikler mobil ölçümden.":
     "Seiten mit der niedrigsten mobilen Leistungsbewertung zuerst. Die Messwerte stammen aus der mobilen Messung.",
-  "<strong>Laboratuvar ve gerçek kullanıcı verisi.</strong> Buradaki rakamlar Lighthouse'un laboratuvar ölçümüdür: tek bir sanal cihazda, kontrollü ağ ve işlemci koşulunda yapılır. Gerçek ziyaretçilerden toplanan alan verisi (Chrome Kullanıcı Deneyimi Raporu, CrUX) bu denetimde saklanmadığı için rapora girmiyor. İkisi farklı çıkabilir. Google, sıralama sistemlerinde alan verisini (CrUX) kullanır; ama iyi bir değer tek başına sıralama garantisi vermez, içeriğin ilgili olması öncelik taşır.":
-    "<strong>Labordaten und reale Benutzerdaten.</strong> Bei diesen Zahlen handelt es sich um Lighthouse-Labormessungen, die auf einem einzelnen simulierten Gerät unter kontrollierten Netzwerk- und CPU-Bedingungen durchgeführt wurden. Von echten Besuchern erfasste Felddaten (Chrome User Experience Report, CrUX) werden für diese Prüfung nicht gespeichert und sind daher nicht im Bericht enthalten. Die beiden können unterschiedlich sein. Die Ranking-Systeme von Google verwenden Felddaten (CrUX), aber ein guter Wert allein garantiert kein Ranking; Relevanter Inhalt steht an erster Stelle.",
   'Eşikler Google\'ın yayımladığı değerlerdir: LCP 2,5 sn altı iyi, 4 sn üstü zayıf; CLS 0,1 altı iyi, 0,25 üstü zayıf; INP 200 ms altı iyi, 500 ms üstü zayıf. INP laboratuvarda çoğu zaman ölçülemez ("--" görünür).':
     "Die Schwellenwerte sind die von Google veröffentlichten Werte: LCP unter 2,5 s ist gut und über 4 s schlecht; CLS unter 0,1 ist gut und über 0,25 schlecht; INP unter 200 ms ist gut und über 500 ms schlecht. INP kann im Labor oft nicht gemessen werden (es zeigt „--“).",
   "Her sürümde nelerin eklendiğini ve düzeltildiğini burada bulabilirsiniz.":
@@ -4022,26 +4016,15 @@ export const deCatalog = {
   Yükleniyor: "Wird geladen",
   "Geçen süre: {duration}": "Verstrichen: {duration}",
   "Rapor hazır": "Bericht ist fertig",
-  "Rapor hazırlanıyor…": "Bericht wird erstellt …",
   "Google'dan yanıt bekleniyor…": "Warten auf Antwort von Google …",
-  "Dizin durumu kontrol ediliyor": "Indexierungsstatus wird geprüft",
   "Bildirimler ({count} okunmamış)": "Benachrichtigungen ({count} ungelesen)",
   Bildirimler: "Benachrichtigungen",
   "Tümünü okundu işaretle": "Alle als gelesen markieren",
   "Henüz bildirim yok. İşlemler tamamlandığında burada görünür.":
     "Noch keine Benachrichtigungen. Abgeschlossene Vorgänge erscheinen hier.",
   Okunmamış: "Ungelesen",
-  "Bildirim geçmişi zil simgesinde tutulur. Ses ve Windows sistem bildirimlerini buradan açıp kapatabilirsiniz.":
-    "Der Benachrichtigungsverlauf bleibt im Glockensymbol. Hier können Sie Ton- und Windows-Systembenachrichtigungen ein- oder ausschalten.",
   "Bildirim sesi": "Benachrichtigungston",
   "Sesi dinle": "Ton anhören",
-  "Windows ve sistem bildirimleri": "Windows- und Systembenachrichtigungen",
-  "Güncellemeler ve yeni duyurular dahil bildirimler Windows bildirim merkezinde gösterilir.":
-    "Benachrichtigungen zu Updates und neuen Ankündigungen erscheinen in der Windows-Benachrichtigungszentrale.",
-  "Bildirim izni engellendi. Açmak için tarayıcının site izinlerini kullanın.":
-    "Die Benachrichtigungsberechtigung wurde verweigert. Aktivieren Sie sie in den Website-Einstellungen Ihres Browsers.",
-  "Bu tarayıcı masaüstü bildirimlerini desteklemiyor.":
-    "Dieser Browser unterstützt keine Desktopbenachrichtigungen.",
   "Yeni sürüm yayımlandı: {version}": "Neue Version veröffentlicht: {version}",
   "Ayarlar'daki Hakkında bölümü nasıl güncelleyeceğinizi söyler.":
     "Unter Einstellungen → Info erfahren Sie, wie Sie das Update installieren.",
@@ -4137,4 +4120,8 @@ export const deCatalog = {
     "Fehlgeschlagene Audits zeigen die Phase und eine bereinigte Fehlermeldung. PageSpeed-Messfehler werden ohne Seiten-URLs zusammengefasst.",
   "PageSpeed ölçüm hatası ({count}): {message}":
     "PageSpeed-Messfehler ({count}): {message}",
+  İndirildi: "Heruntergeladen",
+  "{count} sayfa soruluyor": "Google wird zu {count} Seiten befragt",
+  "{pages} sayfa tarandı, {issues} bulgu":
+    "{pages} Seiten gecrawlt, {issues} Befunde",
 } as const;

@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { AuditService } from "@/server/features/audit/services/AuditService";
 import { buildAuditReportHtml } from "@/server/features/audit/report/buildAuditReportHtml";
+import { getAuditInsights } from "@/server/features/audit/services/auditInsights";
 import { getIndexCoverage } from "@/server/features/gsc/services/GscIndexCoverageService";
 import { ReportRepository } from "@/server/features/reports/repositories/ReportRepository";
 import { ReportService } from "@/server/features/reports/services/ReportService";
@@ -51,6 +52,13 @@ export const createAuditReport = createServerFn({ method: "POST" })
       auditId: data.auditId,
     }).catch(() => null);
 
+    // Score history, Search Console traffic and field data; each part fails
+    // soft inside, and the whole of it drops out rather than the report.
+    const insights = await getAuditInsights({
+      projectId: context.projectId,
+      auditId: data.auditId,
+    }).catch(() => null);
+
     const document = buildAuditReportHtml({
       siteUrl: results.audit.startUrl,
       startedAt: results.audit.startedAt,
@@ -65,6 +73,9 @@ export const createAuditReport = createServerFn({ method: "POST" })
       lighthouseTotal: results.audit.lighthouseTotal,
       status: results.audit.status,
       auditId: results.audit.id,
+      siteFacts: results.siteFacts,
+      analyticsCompared: results.audit.analyticsCompared,
+      insights,
     });
 
     /*

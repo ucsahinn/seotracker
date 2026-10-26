@@ -19,7 +19,7 @@ import { t } from "@/shared/i18n";
 
 const STATUS_COLOR: Record<string, string> = {
   ok: "var(--color-success)",
-  redirect: "var(--color-warning)",
+  redirect: "var(--mark-warning)",
   error: "var(--color-error)",
   missing: "var(--color-base-300)",
 };

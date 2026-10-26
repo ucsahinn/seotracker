@@ -30,6 +30,9 @@ export function useSavedKeywordsExport(params: {
   positionRows?: SavedKeywordRow[] | null;
 }) {
   const [exporting, setExporting] = useState<"csv" | "sheets" | null>(null);
+  // Whether the last filtered CSV export reached the browser, for the
+  // button's brief "İndirildi"; an empty list or an error must not claim it.
+  const [csvDownloaded, setCsvDownloaded] = useState(false);
   const [exportingSelection, setExportingSelection] = useState<
     "csv" | "sheets" | null
   >(null);
@@ -60,6 +63,7 @@ export function useSavedKeywordsExport(params: {
 
   const exportFilteredCsv = async () => {
     setExporting("csv");
+    setCsvDownloaded(false);
     try {
       const rows = await loadFilteredRows();
       if (rows.length === 0) {
@@ -67,6 +71,7 @@ export function useSavedKeywordsExport(params: {
         return;
       }
       downloadKeywordCsv(rows);
+      setCsvDownloaded(true);
       captureClientEvent("data:export", {
         source_feature: "saved_keywords",
         result_count: rows.length,
@@ -131,6 +136,7 @@ export function useSavedKeywordsExport(params: {
 
   return {
     exporting,
+    csvDownloaded,
     exportingSelection,
     exportFilteredCsv,
     exportFilteredSheets,

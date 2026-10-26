@@ -1,11 +1,7 @@
 import { SafeExternalLink } from "@/client/components/SafeExternalLink";
 import { PageHeader, PageShell } from "@/client/components/PageShell";
 import { PageActions, RefreshButton } from "@/client/components/RefreshButton";
-import {
-  formatCount,
-  formatDateTime,
-  formatRelativeTime,
-} from "@/client/lib/format";
+import { formatRelativeTime } from "@/client/lib/format";
 import { QueryErrorState } from "@/client/components/QueryErrorState";
 import { getErrorCode } from "@/client/lib/error-messages";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
@@ -16,8 +12,10 @@ import { getAuditResults, getAuditStatus } from "@/serverFunctions/audit";
 import type { IssueSeverity } from "@/shared/audit-issues";
 import { auditSearchSchema, type AuditTab } from "@/types/schemas/audit";
 import { ProgressCard } from "@/client/features/audit/launch/ProgressCard";
+import { useCompletionHold } from "@/client/features/audit/launch/useCompletionHold";
 import { LaunchView } from "@/client/features/audit/launch/LaunchView";
 import { ResultsView } from "@/client/features/audit/results/ResultsView";
+import { DownloadReportButton } from "@/client/features/audit/results/DownloadReportButton";
 import { BackLink } from "@/client/components/BackLink";
 import {
   extractHostname,
@@ -119,9 +117,8 @@ function AuditDetail({
     },
   });
 
-  const isComplete = statusQuery.data?.status === "completed";
-  const isFailed = statusQuery.data?.status === "failed";
-  const isRunning = statusQuery.data?.status === "running";
+  const { finished, holding, justCompleted, isComplete, isRunning, isFailed } =
+    useCompletionHold(statusQuery.data?.status);
 
   // Failed audits keep whatever pages were crawled before the failure
   // (persistence is per-batch), so fetch results for them too and show the
@@ -129,7 +126,7 @@ function AuditDetail({
   const resultsQuery = useQuery({
     queryKey: ["audit-results", projectId, auditId],
     queryFn: () => getAuditResults({ data: { projectId, auditId } }),
-    enabled: isComplete || isFailed,
+    enabled: finished || isFailed,
     // Only queried once the audit is completed or failed, and a finished
     // audit never changes (a re-run is a new audit id), so never refetch.
     staleTime: Infinity,
@@ -182,12 +179,6 @@ function AuditDetail({
     ? (resultsQuery.data?.pages.length ?? 0)
     : 0;
   const failedWithResults = isFailed && partialPageCount > 0;
-  // Wait for the results fetch before choosing between the "partial results"
-  // banner and the zero-page support CTA, so the CTA doesn't flash first.
-  const showSupportCta =
-    (isFailed && resultsQuery.isSuccess && !failedWithResults) ||
-    (isComplete && status && status.pagesCrawled <= 1);
-
   return (
     <PageShell>
       {/* `PageHeader`, not a hand-rolled h1: this screen had its own heading
@@ -205,6 +196,11 @@ function AuditDetail({
         }
         actions={
           <PageActions>
+            {/* Beside Yenile rather than above the score: it acts on the
+                whole audit, like the header's other action. */}
+            {(isComplete || failedWithResults) && resultsQuery.data ? (
+              <DownloadReportButton projectId={projectId} auditId={auditId} />
+            ) : null}
             <RefreshButton
               onRefresh={() => {
                 void statusQuery.refetch();
@@ -240,62 +236,21 @@ function AuditDetail({
       />
 
       {isRunning && status && (
-        <ProgressCard projectId={projectId} auditId={auditId} status={status} />
+        <ProgressCard
+          projectId={projectId}
+          auditId={auditId}
+          status={status}
+          completed={holding}
+          issueCount={resultsQuery.data?.issues.length}
+        />
       )}
-      {isComplete && status && resultsQuery.data && (
-        <div
-          role="status"
-          className="rounded-box border border-success/25 bg-success/5 px-4 py-3 text-sm"
-        >
-          <p className="font-medium">
-            {t("Denetim bitti: {pages} sayfa, {issues} bulgu", {
-              pages: formatCount(status.pagesCrawled),
-              issues: formatCount(resultsQuery.data.issues.length),
-            })}
-          </p>
-          {status.completedAt && (
-            <p className="mt-1 text-xs text-muted">
-              {t("Tamamlanma: {date}", {
-                date: formatDateTime(status.completedAt),
-              })}
-            </p>
-          )}
-        </div>
-      )}
-
-      {showSupportCta && (
-        <div className={isFailed ? "alert alert-error" : "alert alert-warning"}>
-          <AlertCircle className="size-5" />
-          <div className="space-y-1">
-            <p className="font-medium">
-              {t("Denetim bu siteyi tamamen tarayamadı.")}
-            </p>
-            <p>
-              {fillParts(
-                t(
-                  "Sitenin bot koruması tarayıcımızı engelledi ve şu an aşmanın bir yolu yok. Bilgisayarınızda çalışan masaüstü tarayıcılar genelde geçer. Şunları deneyin: {libreCrawl} (ücretsiz, açık kaynak) ya da {screamingFrog} (500 adrese kadar ücretsiz).",
-                ),
-                {
-                  libreCrawl: (
-                    <SafeExternalLink
-                      className="link link-primary inline-flex items-center gap-0.5"
-                      url="https://github.com/PhialsBasement/LibreCrawl"
-                      label="LibreCrawl"
-                    />
-                  ),
-                  screamingFrog: (
-                    <SafeExternalLink
-                      className="link link-primary inline-flex items-center gap-0.5"
-                      url="https://www.screamingfrog.co.uk/seo-spider/"
-                      label="Screaming Frog"
-                    />
-                  ),
-                },
-              )}
-            </p>
-          </div>
-        </div>
-      )}
+      <FailureBanners
+        status={status}
+        isFailed={isFailed}
+        isComplete={isComplete}
+        failedWithResults={failedWithResults}
+        resultsReady={resultsQuery.isSuccess}
+      />
 
       {failedWithResults && (
         <div className="alert alert-warning">
@@ -341,10 +296,92 @@ function AuditDetail({
           data={resultsQuery.data}
           tab={tab}
           severity={severity}
+          justCompleted={justCompleted}
           onTabChange={onTabChange}
           onSeverityChange={onSeverityChange}
+          onNewAudit={onBack}
         />
       )}
     </PageShell>
+  );
+}
+
+/**
+ * The banner for an audit that found (almost) nothing. A failure we
+ * classified (database, timeout, memory...) is ours, not the site's bot
+ * protection, so it gets its own banner with the code. The results fetch is
+ * awaited before choosing between the "partial results" banner and the
+ * zero-page support CTA, so the CTA doesn't flash first.
+ */
+function FailureBanners({
+  status,
+  isFailed,
+  isComplete,
+  failedWithResults,
+  resultsReady,
+}: {
+  status: { errorCode?: string | null; pagesCrawled: number } | undefined;
+  isFailed: boolean;
+  isComplete: boolean;
+  failedWithResults: boolean;
+  resultsReady: boolean;
+}) {
+  const internalFailure = isFailed && Boolean(status?.errorCode);
+  const showSupportCta =
+    (isFailed && !internalFailure && resultsReady && !failedWithResults) ||
+    (isComplete && status !== undefined && status.pagesCrawled <= 1);
+  return (
+    <>
+      {internalFailure && !failedWithResults && (
+        <div role="alert" className="alert alert-error">
+          <AlertCircle className="size-5" />
+          <div className="space-y-1">
+            <p className="font-medium">
+              {t("Denetim uygulamadaki bir hata yüzünden durdu.")}
+            </p>
+            <p>
+              {t(
+                "Sorun sitenizde değil. Denetimi yeniden başlatın. Tekrarlarsa Yardım ekranından tanı paketini indirip sorun kaydına ekleyin. Hata kodu: {code}",
+                { code: status?.errorCode ?? "" },
+              )}
+            </p>
+          </div>
+        </div>
+      )}
+
+      {showSupportCta && (
+        <div className={isFailed ? "alert alert-error" : "alert alert-warning"}>
+          <AlertCircle className="size-5" />
+          <div className="space-y-1">
+            <p className="font-medium">
+              {t("Denetim bu siteyi tamamen tarayamadı.")}
+            </p>
+            <p>
+              {fillParts(
+                t(
+                  "Sitenin bot koruması tarayıcımızı engelledi ve şu an aşmanın bir yolu yok. Bilgisayarınızda çalışan masaüstü tarayıcılar genelde geçer. Şunları deneyin: {libreCrawl} (ücretsiz, açık kaynak) ya da {screamingFrog} (500 adrese kadar ücretsiz).",
+                ),
+                {
+                  libreCrawl: (
+                    <SafeExternalLink
+                      className="link link-primary inline-flex items-center gap-0.5"
+                      url="https://github.com/PhialsBasement/LibreCrawl"
+                      label="LibreCrawl"
+                    />
+                  ),
+                  screamingFrog: (
+                    <SafeExternalLink
+                      className="link link-primary inline-flex items-center gap-0.5"
+                      url="https://www.screamingfrog.co.uk/seo-spider/"
+                      label="Screaming Frog"
+                    />
+                  ),
+                },
+              )}
+            </p>
+          </div>
+        </div>
+      )}
+    </>
   );
 }

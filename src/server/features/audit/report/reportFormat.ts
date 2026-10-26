@@ -1,3 +1,4 @@
+import { detailLineText, type DetailLine } from "@/shared/audit-issues/details";
 import { formatCount } from "@/shared/format";
 import { t } from "@/shared/i18n";
 
@@ -101,34 +102,43 @@ export function pagesText(count: number): string {
 }
 
 /**
- * One line of the issue's stored details, in the same "anahtar: değer" shape
- * the app's issue card uses. Only scalars and short lists: a details blob is
- * crawled data too, so it is escaped by the caller like everything else.
+ * An issue row's details as report HTML: sentences and "etiket: değer" pairs
+ * as text, address and markup lists as code, the same lines the app's issue
+ * card shows (`describeIssueDetails`). Crawled data, so every piece is
+ * escaped here; the whole cell stops at `maxChars` of text so a pathological
+ * details blob cannot blow the report's size budget.
  */
-export function describeDetails(
-  detailsJson: string | null | undefined,
-): string {
-  if (!detailsJson) return "";
-  try {
-    const parsed: unknown = JSON.parse(detailsJson);
-    if (
-      typeof parsed !== "object" ||
-      parsed === null ||
-      Array.isArray(parsed)
-    ) {
-      return "";
+export function detailsHtml(lines: DetailLine[], maxChars: number): string {
+  let budget = maxChars;
+  const take = (value: string): string | null => {
+    if (budget <= 0) return null;
+    const cut = truncate(value, Math.max(budget, 2));
+    budget -= cut.length;
+    return escapeHtml(cut);
+  };
+  const parts: string[] = [];
+  for (const line of lines) {
+    if (line.items) {
+      const label = take(`${line.label ?? ""}:`);
+      if (label === null) break;
+      const items = line.items.flatMap((item) => {
+        const value = take(item);
+        return value === null ? [] : [`<li><code>${value}</code></li>`];
+      });
+      // Items the budget left out are counted with the ones the line did.
+      const left = (line.more ?? 0) + line.items.length - items.length;
+      const more =
+        left > 0
+          ? `<li>${escapeHtml(t("ve {count} tane daha", { count: left }))}</li>`
+          : "";
+      parts.push(
+        `<span class="dl">${label}</span><ul class="codes">${items.join("")}${more}</ul>`,
+      );
+      continue;
     }
-    const parts: string[] = [];
-    for (const [key, value] of Object.entries(parsed)) {
-      if (value === null || value === undefined) continue;
-      if (Array.isArray(value)) {
-        parts.push(`${key}: ${value.slice(0, 6).map(String).join(" → ")}`);
-      } else if (typeof value !== "object") {
-        parts.push(`${key}: ${String(value)}`);
-      }
-    }
-    return truncate(parts.join(" · "), 200);
-  } catch {
-    return "";
+    const value = take(detailLineText(line));
+    if (value === null) break;
+    parts.push(`<span class="dl">${value}</span>`);
   }
+  return parts.join("");
 }

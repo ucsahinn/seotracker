@@ -2,23 +2,28 @@ import { PageActions, RefreshButton } from "@/client/components/RefreshButton";
 import { PageHeader } from "@/client/components/PageShell";
 import { TableExportMenu } from "@/client/components/table/TableBulkActionBar";
 import type { refreshState } from "@/client/lib/refreshState";
-import { Download, FileDown, Loader2, Sheet } from "lucide-react";
+import { useDoneFlash } from "@/client/lib/useDoneFlash";
+import { CheckCircle2, Download, FileDown, Loader2, Sheet } from "lucide-react";
 import { t } from "@/shared/i18n";
 
 export function SavedKeywordsHeader({
   refresh,
   totalCount,
   exporting,
+  csvDownloaded,
   onExportCsv,
   onExportSheets,
 }: {
   refresh: ReturnType<typeof refreshState>;
   totalCount: number;
   exporting: "csv" | "sheets" | null;
+  csvDownloaded: boolean;
   onExportCsv: () => void;
   onExportSheets: () => void;
 }) {
   const disabled = exporting != null;
+  // Only the CSV lands in Downloads; a Sheets export opens its own tab.
+  const flash = useDoneFlash(exporting === "csv", csvDownloaded);
 
   return (
     <PageHeader
@@ -48,10 +53,13 @@ export function SavedKeywordsHeader({
               triggerIcon={
                 exporting != null ? (
                   <Loader2 className="size-4 animate-spin" />
+                ) : flash === "done" ? (
+                  <CheckCircle2 className="enter size-4 text-success" />
                 ) : (
                   <Download className="size-4" />
                 )
               }
+              triggerLabel={flash === "done" ? t("İndirildi") : undefined}
               actions={[
                 {
                   label: t("E-Tablolar'a aktar"),

@@ -23,6 +23,8 @@ import type { CrawlThrottleState } from "@/server/lib/audit/crawl-throttle";
 import {
   BROKEN_LINKS_SQL,
   computeShortestDepths,
+  EXTERNAL_SOURCES_SQL,
+  EXTERNAL_TARGETS_SQL,
   HAS_TRUNCATED_LINKS_SQL,
   REDIRECT_LINKS_SQL,
   ORPHAN_PAGES_SQL,
@@ -78,11 +80,24 @@ export interface ScratchpadPageLinksRow {
   truncated: boolean;
 }
 
+/** What the opt-in external checks ask about, per page and kind. */
+export interface ScratchpadExternalRefsRow {
+  pageId: string;
+  url: string;
+  /** 'link': links to other sites; 'image': the site's own image files. */
+  kind: ExternalRefKind;
+  targets: string[];
+}
+
+export type ExternalRefKind = "link" | "image";
+
 interface RecordBatchInput {
   /** URLs whose crawl attempt finished (successfully or not). */
   crawledUrls: string[];
   pages: ScratchpadPageRow[];
   links: ScratchpadPageLinksRow[];
+  /** Absent when the audit runs without the external checks. */
+  externalRefs?: ScratchpadExternalRefsRow[];
   /** Newly discovered same-origin URLs to enqueue (already policy-filtered). */
   discovered: Array<{ url: string; depth: number | null }>;
 }
@@ -244,6 +259,17 @@ export class AuditScratchpad extends DurableObject {
         }
       }
     }
+    if (this.ctx.storage.sql.databaseSize < LINK_STORAGE_BUDGET_BYTES) {
+      for (const refs of input.externalRefs ?? []) {
+        this.ctx.storage.sql.exec(
+          `INSERT OR REPLACE INTO page_external_refs (page_id, kind, url, targets_json) VALUES (?, ?, ?, ?)`,
+          refs.pageId,
+          refs.kind,
+          refs.url,
+          JSON.stringify(refs.targets),
+        );
+      }
+    }
     for (const found of input.discovered) {
       // Already-seen URLs keep their row — this is the global dedup — but
       // depth is still filled in or lowered. Sitemap seeding inserts every
@@ -367,6 +393,36 @@ export class AuditScratchpad extends DurableObject {
     }));
 
     return { brokenLinks, redirectLinks, orphanPages, repairedDepths };
+  }
+
+  /** The opt-in checks' targets of one kind, most-referenced first. */
+  async listExternalTargets(
+    kind: ExternalRefKind,
+    limit: number,
+  ): Promise<string[]> {
+    return this.ctx.storage.sql
+      .exec<{ target: string }>(EXTERNAL_TARGETS_SQL, kind, limit)
+      .toArray()
+      .map((row) => row.target);
+  }
+
+  /** The pages referencing each target, capped per target. */
+  async externalSources(
+    kind: ExternalRefKind,
+    targets: string[],
+    perTarget: number,
+  ): Promise<Array<{ target: string; pageId: string; url: string }>> {
+    return targets.flatMap((target) =>
+      this.ctx.storage.sql
+        .exec<{ page_id: string; url: string }>(
+          EXTERNAL_SOURCES_SQL,
+          kind,
+          target,
+          perTarget,
+        )
+        .toArray()
+        .map((row) => ({ target, pageId: row.page_id, url: row.url })),
+    );
   }
 
   /** Wipe all state (success path, or explicit audit deletion). */

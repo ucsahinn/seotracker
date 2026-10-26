@@ -10,14 +10,14 @@ This guide covers creating a project, changing its settings and, if needed, arch
 
 ## What is on the screen
 
-**Proje seçici** (Project picker). Click the project name at the top left to list your projects. At the bottom are **New project** and **Manage projects**. The gear icon next to it opens **Project settings**. When you have eight or more projects, a search box appears in the list.
+**Project switcher**. Click the project name at the top left to list your projects. At the bottom are **New project** and **Manage projects**. The gear icon next to it opens **Project settings**. When you have eight or more projects, a search box appears in the list.
 
-**Projects** page. Each row shows the project's name and its site. A project with no site says "Site belirlenmemiş" (No site set). The open project carries the **Active** label. Click a row and that project's settings open. Archived projects sit at the bottom in the **Archived** section. **Restore** brings them back.
+**Projects** page. Each row shows the project's name and its site. A project with no site says "No site added". The open project carries the **Active** label. Click a row and that project's settings open. Archived projects sit at the bottom in the **Archived** section. **Restore** brings them back.
 
 **New project window.** It has four fields:
 
 - **Name**: required. Only you see it. It appears in report titles and in the project picker, and it is never sent to Google.
-- **Alan adı (isteğe bağlı)** (Domain (optional)): your site's address, like `example.com`. The `https://` and `www.` at the start are removed automatically. Subdomains belong to the main domain: `blog.example.com` and `example.com` are the same project.
+- **Domain (optional)**: your site's address, like `example.com`. The `https://` and `www.` at the start are removed automatically. Subdomains belong to the main domain: `blog.example.com` and `example.com` are the same project.
 - **Country** and **Language**: they set the market for which the keywords you save are tracked. Changing the country resets the language to that country's language. You can change them later.
 
 **Project settings.** There are two tabs. The **General** tab has the name, domain, country and language, plus the **Archive project** section. The **Connections** tab has the Search Console and Analytics cards.
@@ -26,17 +26,17 @@ This guide covers creating a project, changing its settings and, if needed, arch
 
 1. In the project picker, click **Yeni proje**.
 2. Type a name, enter your site's address, choose the country and language, and click **Create project**. The project opens on the **Dashboard**. No data has been fetched yet.
-3. Go to **Proje ayarları → Bağlantılar** (Project settings → Connections) and connect Search Console. The steps are in the Google connection guide. Once it is connected, Panel, Arama performansı (Search performance), Fırsatlar (Opportunities) and Dizin durumu (Index status) start to fill in.
+3. Go to **Project settings → Connections** and connect Search Console. The steps are in the Google connection guide. Once it is connected, Dashboard, Search performance, Opportunities and Index status start to fill in.
 4. If you also want to connect Analytics, do it from the **Analytics** card on the same tab. You do not need a separate Google key.
 5. To change the name or the site, correct the field on the **Genel** tab and click **Save changes**. The button is enabled only when something has changed.
 
 ### Changing the Google connection
 
-On the card in the **Bağlantılar** tab, **Change property or account** lets you choose another site (what Google calls a "property") or another Google account. **Disconnect** removes only this project's connection. Your Google account stays saved, and no confirmation is asked. To remove a Google account completely, use **Remove account** in the selection window. The window tells you which projects will be affected.
+On the card in the **Connections** tab, **Change property or account** lets you choose another site (what Google calls a "property") or another Google account. **Disconnect** removes only this project's connection. Your Google account stays saved, and no confirmation is asked. To remove a Google account completely, use **Remove account** in the selection window. The window tells you which projects will be affected.
 
 ### Archiving a project
 
-Projects are archived, not deleted. The **Projeyi arşivle** button at the bottom of the **Genel** tab removes the project from the active list. Audits, keywords and reports stay as they are. **Geri al** on the Projeler page brings it back exactly as it was. If you have only one project, you cannot archive it.
+Projects are archived, not deleted. The **Archive project** button at the bottom of the **General** tab removes the project from the active list. Audits, keywords and reports stay as they are. **Restore** on the Projects page brings it back exactly as it was. If you have only one project, you cannot archive it.
 
 ## How the numbers are calculated
 

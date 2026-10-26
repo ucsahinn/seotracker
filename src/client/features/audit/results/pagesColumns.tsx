@@ -71,15 +71,21 @@ export function buildPagesColumns({
   missingTitlePageIds,
   issueCountByPageId,
   onShowIssues,
+  sitemapFound,
 }: {
   canonicalHost: string;
+  /**
+   * False when the audit read no sitemap: a column of "Yok" on every row
+   * then says nothing about the pages, only about the missing file.
+   */
+  sitemapFound: boolean;
   missingTitlePageIds: Set<string>;
   /** Findings per page, so a row can say how much is wrong with it. */
   issueCountByPageId: Map<string, number>;
   /** Opens the issues tab filtered to this page. */
   onShowIssues: (url: string) => void;
 }): ColumnDef<PageRow>[] {
-  return [
+  const columns: ColumnDef<PageRow>[] = [
     pageColumnHelper.accessor("url", {
       header: ({ column }) => <SortableHeader column={column} label="URL" />,
       cell: ({ getValue }) => (
@@ -288,6 +294,10 @@ export function buildPagesColumns({
       },
       sortingFn: nullableNumberSort,
     }),
+  ];
+  if (!sitemapFound) return columns;
+  return [
+    ...columns,
     pageColumnHelper.accessor("inSitemap", {
       header: ({ column }) => (
         <SortableHeader

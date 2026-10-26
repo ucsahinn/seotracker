@@ -252,6 +252,27 @@ function LighthouseOptions({ launchForm }: Pick<Props, "launchForm">) {
         <span className="text-xs text-muted">{t("Daha uzun sürer.")}</span>
       </label>
 
+      <label className="label cursor-pointer justify-start gap-2 p-0">
+        <launchForm.Field name="checkExternal">
+          {(field) => (
+            <input
+              type="checkbox"
+              className="toggle toggle-sm toggle-primary"
+              checked={Boolean(field.state.value)}
+              onChange={(event) => field.handleChange(event.target.checked)}
+            />
+          )}
+        </launchForm.Field>
+        <span className="text-sm">
+          {t("Dış bağlantıları ve görsel boyutlarını da kontrol et")}{" "}
+          <HelpTip label={t("Dış kontroller")}>
+            {t(
+              "Tarama bittikten sonra başka sitelere verilen bağlantıların açılıp açılmadığına ve sitenizdeki görsel dosyalarının boyutuna bakar. En çok 300 adres sorulur; sosyal ağlar gibi botları engelleyen siteler atlanır.",
+            )}
+          </HelpTip>
+        </span>
+      </label>
+
       <launchForm.Subscribe
         selector={(snapshot) => ({
           runLighthouse: snapshot.values.runLighthouse,

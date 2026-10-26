@@ -107,7 +107,6 @@ export const enAudit: Catalog = {
   Tarama: "Crawling",
   Tamamlanıyor: "Finishing",
   Çalışıyor: "Working",
-  "~{duration} kaldı": "~{duration} left",
   "Lighthouse kontrolleri çalışıyor": "Running Lighthouse checks",
   "Sayfalar taranıyor": "Crawling pages",
   "{count} ölçüm başarısız oldu; kalanlar sürüyor.": {
@@ -173,10 +172,6 @@ export const enAudit: Catalog = {
   "Bir denetim zaten başlatılıyor": "An audit is already starting",
 
   // audit/results/ForeignPropertyNotice.tsx
-  "Bu denetim {auditedHost} sitesine ait, ama Search Console bağlantınız {propertyHost} mülküne bağlı.":
-    "This audit is of {auditedHost}, but your Search Console connection points to the {propertyHost} property.",
-  "Aşağıdaki site haritaları {propertyHost} mülküne ait, bu denetimin sayfalarıyla ilgisi yok. Google'a sorma da kapalı, çünkü bu sayfalar o mülkte değil ve sorulan her adres günlük kotadan boşuna giderdi. {auditedHost} için Google verisi görmek istiyorsanız siteyi ayrı bir proje olarak ekleyip kendi Search Console mülküne bağlayın.":
-    "The sitemaps below belong to {propertyHost} and have nothing to do with this audit's pages. Asking Google is turned off as well: these pages aren't in that property, so every address checked would waste daily quota. To see Google data for {auditedHost}, add the site as a separate project and connect it to its own Search Console property.",
   Bağlantılar: "Connections",
 
   // audit/results/CoverageVerdictDonut.tsx
@@ -197,8 +192,6 @@ export const enAudit: Catalog = {
   "Sıralamayı ve tıklamayı düşürür": "Costs rankings and clicks",
   "Küçük iyileştirme fırsatları": "Small chances to improve",
   "Sorunlar ne kadar ciddi?": "How serious are the issues?",
-  "Bir gruba tıklayın, liste yalnızca o sorunları göstersin.":
-    "Click a group to show only those issues in the list.",
   bulgu: "findings",
 
   // audit/results/AffectedPageList.tsx
@@ -285,6 +278,85 @@ export const enAudit: Catalog = {
   "Adres sayısı": "Number of URLs",
   Hayır: "No",
   "{shown} ve {rest} tane daha": "{shown} and {rest} more",
+
+  // shared/audit-issues/details.ts (evidence of the Lighthouse, HTML and external checks)
+  "Sayfadaki canonical adresi": "Canonical URL in the page",
+  "robots etiketleri": "robots tags",
+  "googlebot etiketleri": "googlebot tags",
+  "Sayfa başlığı": "Page title",
+  "Başlıktaki anlamlı kelime": "Meaningful words in the title",
+  "Lighthouse denetimi": "Lighthouse audit",
+  "Etkilenen öğe": "Affected elements",
+  "Karşılanmayan koşul": "Condition not met",
+  "Tahmini kazanç": "Estimated savings",
+  "Üçüncü taraf kodların ana iş parçacığı süresi":
+    "Main-thread time of third-party code",
+  "Toplam indirme boyutu": "Total download size",
+  "Kırık dış bağlantı": "Broken external link",
+  Görseller: "Images",
+  "Gömülü betik ve stil": "Inline script and style",
+  "Sayfaya yönlendirme olmadan ulaşılmıyor":
+    "The page is not reached without a redirect",
+  "Sunucu ilk yanıtı hızlı vermiyor": "The server's first response is slow",
+  "Belge sıkıştırılmadan gönderiliyor": "The document is sent uncompressed",
+  'Ana görselde loading="lazy" var': 'The main image has loading="lazy"',
+  "Ana görsel sayfanın ilk HTML'inde yok":
+    "The main image is not in the page's initial HTML",
+  'Ana görselde fetchpriority="high" yok':
+    'The main image has no fetchpriority="high"',
+  "{count} güvensiz (http) görsel, video ya da çerçeve": {
+    one: "{count} insecure (http) image, video or frame",
+    other: "{count} insecure (http) images, videos or frames",
+  },
+  "{count} form bilgileri http adresine gönderiyor": {
+    one: "{count} form submits to an http address",
+    other: "{count} forms submit to an http address",
+  },
+  "{count} e-posta adresi açıkta": {
+    one: "{count} email address in plain view",
+    other: "{count} email addresses in plain view",
+  },
+  "{count} iç bağlantı http:// ile veriliyor": {
+    one: "{count} internal link uses http://",
+    other: "{count} internal links use http://",
+  },
+  "{count} görsel {limit}'tan büyük": {
+    one: "{count} image larger than {limit}",
+    other: "{count} images larger than {limit}",
+  },
+  "{value} (iyi: en çok {good}, kötü: {poor} üstü)":
+    "{value} (good: up to {good}, poor: above {poor})",
+  "{value} (kötü sınırı: {limit})": "{value} (poor above {limit})",
+  "saha verisi (gerçek Chrome kullanıcıları)": "field data (real Chrome users)",
+  "laboratuvar ölçümü (PageSpeed Insights)":
+    "lab measurement (PageSpeed Insights)",
+  "alan adı bulunamadı": "domain not found",
+  hata: "error",
+  "en az {size}": "at least {size}",
+  'Sayfa "{text}" diyor, ama sunucu {status} döndürüyor':
+    'The page says "{text}", but the server returns {status}',
+  "{size} (sınır {limit})": "{size} (limit {limit})",
+  "Yazı olarak işaretlenmiş {count} sayfa": {
+    one: "{count} page marked up as an article",
+    other: "{count} pages marked up as articles",
+  },
+  "ve {count} tane daha": {
+    one: "and {count} more",
+    other: "and {count} more",
+  },
+  "Tahmini kazanç: {value}": "Estimated savings: {value}",
+  "{count} adres, bu sitede {onHost}": {
+    one: "{count} URL, {onHost} on this site",
+    other: "{count} URLs, {onHost} on this site",
+  },
+  "Lighthouse'un tahmini; en çok kazandıran sayfa için.":
+    "Lighthouse's estimate, for the page that gains most.",
+  "Lighthouse bu denetimde bu ölçümleri raporlamadı, ya da denetim bu kontroller eklenmeden önce yapıldı.":
+    "Lighthouse did not report these measurements in this audit, or the audit ran before these checks were added.",
+  "Dış bağlantı ve görsel boyutu kontrolü bu denetimde açık değildi ya da ölçülemedi.":
+    "The external link and image size check was off for this audit or could not be measured.",
+  "Bu kontroller denetimden sonra eklendi; yeni bir denetim onları da ölçer.":
+    "These checks were added after this audit ran; a new audit measures them too.",
   "Tüm site": "Whole site",
   "{count} sayfa": {
     one: "{count} page",
@@ -304,15 +376,6 @@ export const enAudit: Catalog = {
   // audit/results/IssueWorkloadChart.tsx
   "En çok sayfayı hangi sorun etkiliyor?":
     "Which issue affects the most pages?",
-  "En çok sayfayı etkileyen {count} tür, kalan {hidden} tür aşağıda.": {
-    one: "The {count} type affecting the most pages; the other {hidden} are below.",
-    other:
-      "The {count} types affecting the most pages; the other {hidden} are below.",
-  },
-  "En çok sayfayı etkileyen {count} tür.": {
-    one: "The {count} type affecting the most pages.",
-    other: "The {count} types affecting the most pages.",
-  },
   "Bir çubuğa tıklayıp listeyi daraltın.": "Click a bar to narrow the list.",
   "En çok sayfayı etkileyen sorun: {title}, {pages} sayfa. Grafikte {count} tür var.":
     {
@@ -364,20 +427,19 @@ export const enAudit: Catalog = {
   "İyi. Birkaç düzeltme puanı yükseltir.":
     "Good. A few fixes will raise the score.",
   "Orta. Önce kritik sorunlara bakın.": "Fair. Start with the critical issues.",
+  "Orta. Kritik sorun yok; en çok puan getiren uyarılardan başlayın.":
+    "Fair. No critical issues; start with the warnings worth the most points.",
+  "Zayıf. Kritik sorun yok, ama birikmiş uyarılar puanı aşağı çekiyor.":
+    "Poor. No critical issues, but accumulated warnings are pulling the score down.",
   "Zayıf. Google'ın sitenizi anlamasını engelleyen sorunlar var.":
     "Poor. Some issues are keeping Google from understanding your site.",
   "Site puanı": "Site score",
-  "+{points} puan": "+{points} points",
 
   // audit/results/PerformanceSummary.tsx
   "Google'ın ücretsiz ölçüm kotası dolmuş; sayfalarınızda bir sorun yok. Ayarlar'dan PageSpeed anahtarı ekleyin ya da kota yenilenince denetimi yeniden başlatın.":
     "Google's free measurement quota ran out; nothing is wrong with your pages. Add a PageSpeed key in Settings, or run the audit again once the quota resets.",
   Hız: "Speed",
   "Ortalama puanlar": "Average scores",
-  "Ölçülemeyen {count} sayfa": {
-    one: "{count} page couldn't be measured",
-    other: "{count} pages couldn't be measured",
-  },
   "Ayarlar'ı aç": "Open Settings",
   "Mobilde hız dağılımı": "Speed distribution on mobile",
   "Ortalama tek başına yanıltır. Bir gruba tıklayıp o sayfaları listeleyin.":
@@ -464,8 +526,6 @@ export const enAudit: Catalog = {
   'İstek sınırı sıfırlandıktan sonra denetimi yeniden başlatın, ya da site sahibinden "seotracker-audit" tarayıcısına izin vermesini isteyin.':
     'Run the audit again once the rate limit resets, or ask the site owner to allow the "seotracker-audit" crawler.',
   "başka bir mülk": "another property",
-  "Bu denetim {auditedHost} sitesine ait, bağlı mülk ise {propertyHost}. Sorarsak kota boşa giderdi.":
-    "This audit is of {auditedHost}, but the connected property is {propertyHost}. Asking would waste quota.",
   "Sorunlu sayfalar ({count})": "Pages with issues ({count})",
   "Sayfalar ({count})": "Pages ({count})",
   "Dizin durumu": "Index status",
@@ -484,9 +544,6 @@ export const enAudit: Catalog = {
     "This audit has no Lighthouse results.",
   "Bu filtrelerle eşleşen performans sonucu yok.":
     "No performance results match these filters.",
-  "Hız ölçümü hiç puan vermedi": "The speed measurement returned no score",
-  başarısız: "failed",
-  tamam: "ok",
   "Hız puanı (0-100)": "Performance score (0-100)",
   "Erişilebilirlik puanı (0-100)": "Accessibility score (0-100)",
   "Arama motoru uyumu puanı (0-100)": "Search engine readiness score (0-100)",
@@ -542,7 +599,6 @@ export const enAudit: Catalog = {
   "Site haritası": "Sitemap",
   Haritada: "In sitemap",
   "Haritada yok": "Not in sitemap",
-  Başarılı: "Succeeded",
   "En çok LCP (sn)": "Max LCP (s)",
   Filtreler: "Filters",
   "Filtreleri aç/kapat": "Show or hide filters",
@@ -589,15 +645,9 @@ export const enAudit: Catalog = {
     "Counts every checked page, whatever group you picked in the chart above. Google treated a different page as canonical instead of the one you declared.",
   "Üstteki grafikte seçtiğiniz gruptan bağımsız, kontrol edilen tüm sayfalar.":
     "Counts every checked page, whatever group you picked in the chart above.",
-  "Bu denetimde henüz sorulmamış": "Not yet checked in this audit",
-  "Google'a hiç sorulmamış sayfalar. Son kontrol {date}":
-    "Pages never checked with Google. Last check {date}",
-  "Google'a hiç sorulmamış sayfalar. Henüz kontrol yapılmadı.":
-    "Pages never checked with Google. No checks yet.",
   "Google günde en çok {limit} adres sormanıza izin verir. Her seferde {batch} sayfa kontrol edilir. Önce hiç sorulmamış olanlara, sonra Google'ın dizine almadıklarına bakılır.":
     "Google lets you check up to {limit} URLs a day. Each run checks {batch} pages: first those never checked, then those Google didn't index.",
   "Google'da durumunu kontrol et": "Check status on Google",
-  "Google'da henüz kontrol edilmedi": "Not checked on Google yet",
   "Taradığınız sayfaların gerçekten dizine girip girmediğini görmek için yukarıdaki düğmeyi kullanın.":
     "Use the button above to see whether your crawled pages are actually indexed.",
 
@@ -865,6 +915,18 @@ export const enAudit: Catalog = {
     "Google allows at most 50,000 URLs in one sitemap file. This file exceeds the limit; Google may reject it or ignore part of it.",
   "Dosyayı her biri 50.000 adresin altında kalan parçalara bölün ve hepsini bir site haritası dizini (sitemapindex) dosyasında listeleyin. Search Console'a parçaları tek tek değil, yalnızca dizin dosyasını gönderin.":
     "Split the file into parts of fewer than 50,000 URLs each, and list them all in a sitemap index (sitemapindex) file. Submit only the index file to Search Console, not each part.",
+  "Site haritasında başka bir siteye ait adresler var":
+    "The sitemap lists addresses on another site",
+  "Site haritanız bu sitenin değil, başka bir alan adının adreslerini listeliyor. Google bir site haritasındaki adresleri yalnızca haritayla aynı sitedeyse kabul eder; diğer sitenin robots.txt dosyası bu haritayı göstermiyorsa ya da o site Search Console'da sizin adınıza doğrulanmamışsa bu adresleri yok sayar.":
+    "Your sitemap lists addresses on another domain, not on this site. Google accepts sitemap entries only when they are on the same site as the sitemap; unless the other site's robots.txt points at this sitemap or that site is verified for you in Search Console, Google ignores these addresses.",
+  "Site haritasını, adreslerin ait olduğu sitede yayınlayın ya da haritayı üreten ayarda sitenin adresini düzeltin (çoğu zaman eski bir alan adı ya da önizleme adresi kalmıştır). Bilerek başka siteye ait adresleri listeliyorsanız o sitenin robots.txt dosyasına bu haritayı gösteren bir Sitemap satırı ekleyin.":
+    "Publish the sitemap on the site the addresses belong to, or fix the site address in the setting that generates it (often an old domain or a preview address is left behind). If you list another site's addresses on purpose, add a Sitemap line pointing at this sitemap to that site's robots.txt.",
+  "robots.txt bazı yolları yalnızca Googlebot'a açıyor":
+    "robots.txt opens some paths only to Googlebot",
+  "robots.txt dosyanız bazı yolları tüm botlara (User-agent: *) kapatıyor ama Googlebot'a ayrıca izin veriyor. Bu araç Googlebot değil, o yüzden bu yollardaki sayfaları taramadı; denetimde görünmemeleri sorun olmadıkları anlamına gelmez. Google bu sayfaları tarayabilir.":
+    "Your robots.txt closes some paths to all bots (User-agent: *) but separately allows Googlebot. This tool is not Googlebot, so it did not crawl the pages under those paths; their absence from this audit does not mean they are fine. Google can crawl them.",
+  "Bir şey yapmanız gerekmiyor. Bu sayfaları da denetlemek istiyorsanız ayrıntıdaki kuralları gözden geçirin; yalnızca Googlebot'a açık bırakmanın bir nedeni yoksa kuralı tüm botlar için aynı yapın.":
+    "Nothing needs to change. If you want these pages audited too, review the rules in the details; if there is no reason to open them only to Googlebot, make the rule the same for all bots.",
   "Site haritasında hiç lastmod tarihi yok": "Sitemap has no lastmod dates",
   "Site haritasındaki adreslerin hiçbirinde <lastmod> (son değişiklik tarihi) yok. Google bu alan doğru olduğu sürece hangi sayfayı ne zaman yeniden tarayacağını buna göre seçer. Yoksa yeniden tarama Google'ın kendi takvimine kalır; güncellediğiniz sayfanın fark edilmesi günler sürebilir.":
     "None of the URLs in the sitemap has a <lastmod> (last modified date). As long as this field is accurate, Google uses it to decide which pages to recrawl and when. Without it, recrawling follows Google's own schedule, and it can take days for an updated page to be noticed.",
@@ -1049,22 +1111,22 @@ export const enAudit: Catalog = {
   'Kendi sayfalarınıza verdiğiniz bağlantılardan rel="nofollow" özelliğini kaldırın. Sayfanın dizine girmesini istemiyorsanız bağlantıyı değil sayfayı noindex ile işaretleyin.':
     'Remove rel="nofollow" from links to your own pages. If you don\'t want a page indexed, mark the page itself with noindex, not the link.',
   // audit-issues/indexing.ts
-  "Yinelenen başlık": "Duplicate title",
+  "Tekrarlanan başlık": "Duplicate title",
   "Birden çok sayfa aynı başlığı (<title>) kullanıyor. Aynı başlıkla arama sonucunda sayfalar birbirine benzer görünür ve ziyaretçi hangisine tıklayacağını seçemez.":
     "Several pages use the same title (<title>). With the same title, the pages look alike in search results and visitors can't tell which one to click.",
   "Her sayfaya kendi içeriğini anlatan farklı bir başlık yazın. Şablondan üretilen sayfalarda ayırt edici bilgiyi (ürün adı, kategori, şehir) başlık şablonuna ekleyin.":
     "Write a different title for each page that describes its own content. For pages generated from a template, add the distinguishing detail (product name, category, city) to the title template.",
-  "Yinelenen ana başlık (H1)": "Duplicate main heading (H1)",
+  "Tekrarlanan ana başlık (H1)": "Duplicate main heading (H1)",
   "Birden çok sayfa aynı ana başlığı (H1) kullanıyor. Başlık, ziyaretçiye ve Google'a sayfanın ne hakkında olduğunu söyler; aynı başlık farklı sayfaları ayırt etmeyi zorlaştırır. Sitenin her sayfasında logo ya da site adı H1 olarak yazılmışsa bu uyarı genelde ondan gelir.":
     "Several pages use the same main heading (H1). The heading tells visitors and Google what the page is about; the same heading makes different pages hard to tell apart. If the logo or site name is the H1 on every page, that's usually where this warning comes from.",
   "Her sayfanın H1'ini o sayfanın konusunu anlatan kendi cümlesiyle yazın. Logo ya da site adı H1 ise onu H1 olmayan bir etikete çevirin ve sayfa başlığını H1 yapın.":
     "Give each page its own H1 that states that page's topic. If the logo or site name is the H1, change it to a non-H1 tag and make the page title the H1.",
-  "Yinelenen meta açıklama": "Duplicate meta description",
+  "Tekrarlanan meta açıklama": "Duplicate meta description",
   "Birden çok sayfa aynı meta açıklamayı (arama sonucunda başlığın altındaki özet) kullanıyor. Aramada hepsi aynı özetle çıkar ve ziyaretçi sayfaları ayırt edemez.":
     "Several pages use the same meta description (the summary under the title in search results). They all appear with the same snippet in search, and visitors can't tell the pages apart.",
   "Her sayfaya kendi açıklamasını yazın ya da yinelenen açıklamayı tamamen silin. Açıklama yoksa Google sayfa metninden bir özet seçer; bu, yanlış bir kopyadan iyidir.":
     "Write a description for each page, or delete the duplicated description entirely. Without one, Google picks a snippet from the page text, which is better than a wrong copy.",
-  "Yinelenen sayfa içeriği": "Duplicate page content",
+  "Tekrarlanan sayfa içeriği": "Duplicate page content",
   "İki ya da daha fazla adres birebir aynı metni gösteriyor. Google bunlardan birini seçip dizine alır ve seçtiği sizin istediğiniz olmayabilir. Ceza değildir, ama sıralama gücü adresler arasında bölünür.":
     "Two or more URLs show exactly the same text. Google picks one of them to index, and its choice may not be the one you want. It isn't a penalty, but ranking strength is split between the URLs.",
   "Asıl adresi (aramada görünmesini istediğiniz tek adres) seçin. Kopya adres kullanıcıya gerekmiyorsa 301 ile asıl adrese yönlendirin; kopya adres açık kalacaksa (parametreli sayfa gibi) canonical (asıl adres) etiketiyle asıl adresi gösterin. Sık nedenler: sonda eğik çizgi farkı, adrese eklenen parametreler, http/https ya da www farkı.":
@@ -1187,7 +1249,7 @@ export const enAudit: Catalog = {
     "At least one structured data block (ld+json) on the page can't be read or has no type (@type). Google ignores a broken block, so the extra details you expect from that markup (product, article, breadcrumb) don't appear in search.",
   'Bloğu bir JSON denetleyicisine yapıştırın; genelde fazladan virgül ya da kapanmamış tırnak çıkar. Sonra bloğa en az bir tür ekleyin, örneğin "@type": "Article". Eklentiyle üretiliyorsa eklentiyi güncelleyin.':
     'Paste the block into a JSON validator; it\'s usually an extra comma or an unclosed quote. Then give the block at least one type, for example "@type": "Article". If a plugin generates it, update the plugin.',
-  "Google'ın bazı sayfalar hakkındaki yanıtı eskimiş":
+  "Bazı sayfalar için Google'ın yanıtı eski":
     "Google's answers for some pages are out of date",
   "Bu sayfalar için saklanan Google yanıtları eskidi. Yanıt, sorulduğu andaki durumu anlatır; sayfa o zamandan beri düzelmiş ya da bozulmuş olabilir. Eski yanıtı güncelmiş gibi göstermemek için bu sayfaların Google yanıtları bu denetimde bulgu sayılmadı.":
     "The Google answers stored for these pages are out of date. An answer describes the state at the moment it was asked; the page may have been fixed or broken since. So as not to present an old answer as current, these pages' Google answers weren't counted as findings in this audit.",
@@ -1268,4 +1330,897 @@ export const enAudit: Catalog = {
     "PageSpeed Insights' SEO audit gave this page a score below 90. The audit looks at basic checks such as the title, meta description, link text, crawlability (robots, HTTP status code), a valid canonical and hreflang. The score itself doesn't affect rankings; it shows which checks failed.",
   "Sayfayı PageSpeed Insights'ta açın ve SEO bölümünde başarısız görünen kontrollere bakın. Her biri neyin eksik olduğunu adıyla söyler; başarısız kontroller düzelince puan yükselir.":
     "Open the page in PageSpeed Insights and look at the failed checks in the SEO section. Each one names what's missing; the score rises once the failed checks are fixed.",
+  "{count} sayfa soruluyor": "Asking Google about {count} pages",
+  "{pages} sayfa tarandı, {issues} bulgu":
+    "{pages} pages crawled, {issues} findings",
+
+  // audit-issues/lighthouse-audits.ts, html-checks.ts, external-checks.ts
+  "Sayfanın ilk görünümünü engelleyen dosyalar var":
+    "Files are blocking the page's first render",
+  "Tarayıcı bazı CSS ve JavaScript dosyalarını indirip işlemeden sayfada hiçbir şey göstermiyor. Lighthouse, bunlar ertelenirse ilk içeriğin daha erken görüneceğini hesapladı; tahmini kazanç bulgunun ayrıntısındadır. Bu bulgu, PageSpeed Insights'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.":
+    "The browser shows nothing on the page until it has downloaded and processed some CSS and JavaScript files. Lighthouse calculated that deferring them would make the first content appear sooner; the estimated gain is in the finding's details. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.",
+  "Sayfanın ilk ekranı için gerekmeyen betiklere defer ya da async ekleyin, ilk ekran için gereken küçük CSS'i sayfaya gömün, kalan CSS'i sonradan yükleyin. WordPress'te bir önbellek eklentisinin \"JavaScript'i ertele\" ve \"kritik CSS\" ayarları bu işi yapar.":
+    'Add defer or async to scripts the first screen doesn\'t need, inline the small CSS the first screen needs, and load the rest of the CSS later. On WordPress, a caching plugin\'s "defer JavaScript" and "critical CSS" settings do this.',
+  "Sayfada kullanılmayan JavaScript yükleniyor":
+    "The page loads JavaScript it doesn't use",
+  "Sayfa, açılışta hiç çalışmayan JavaScript kodunu da indiriyor. Telefonda bu hem veri hem işlemci harcar ve sayfayı yavaşlatır. Lighthouse'un tahmin ettiği tasarruf bulgunun ayrıntısındadır. Bu bulgu, PageSpeed Insights'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.":
+    "The page also downloads JavaScript that never runs while it opens. On a phone this costs both data and processor time and slows the page down. Lighthouse's estimated saving is in the finding's details. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.",
+  "Kullanılmayan eklentileri ve etiketleri kaldırın, büyük betik paketlerini sayfaya göre bölün ve yalnızca gereken sayfada yükleyin. Hangi dosyanın ne kadar boşa indiğini PageSpeed Insights raporunda görürsünüz.":
+    "Remove unused plugins and tags, split large script bundles by page and load them only where they're needed. PageSpeed Insights shows how much of each file is wasted.",
+  "Sayfada kullanılmayan CSS yükleniyor": "The page loads CSS it doesn't use",
+  "Sayfa, bu sayfada hiçbir öğeye uygulanmayan stil kurallarını da indiriyor. Genelde tüm siteye tek bir büyük tema dosyası yüklendiğinde olur. Bu bulgu, PageSpeed Insights'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.":
+    "The page also downloads style rules that apply to nothing on this page. This usually happens when one large theme file is loaded on the whole site. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.",
+  "Tema ya da eklentilerin kullanılmayan stil dosyalarını kapatın; bir derleme aracı kullanıyorsanız kullanılmayan CSS'i temizleyen adımı açın.":
+    "Turn off unused stylesheets from the theme or plugins; if you use a build tool, enable its step that removes unused CSS.",
+  "JavaScript dosyaları sıkıştırılmamış (küçültülmemiş)":
+    "JavaScript files aren't minified",
+  "Bazı JavaScript dosyaları boşluklar ve açıklamalarla birlikte, küçültülmeden sunuluyor. Küçültme dosyayı anlamını değiştirmeden küçültür. Bu bulgu, PageSpeed Insights'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.":
+    "Some JavaScript files are served with their whitespace and comments, without minification. Minifying makes a file smaller without changing what it does. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.",
+  "Derleme aracınızda küçültmeyi (minify) açın ya da önbellek/CDN ayarlarından JavaScript küçültmeyi etkinleştirin.":
+    "Turn on minification in your build tool, or enable JavaScript minification in your cache or CDN settings.",
+  "CSS dosyaları sıkıştırılmamış (küçültülmemiş)": "CSS files aren't minified",
+  "Bazı CSS dosyaları boşluklar ve açıklamalarla birlikte, küçültülmeden sunuluyor. Bu bulgu, PageSpeed Insights'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.":
+    "Some CSS files are served with their whitespace and comments, without minification. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.",
+  "Derleme aracınızda CSS küçültmeyi açın ya da önbellek/CDN ayarlarından CSS küçültmeyi etkinleştirin.":
+    "Turn on CSS minification in your build tool, or enable it in your cache or CDN settings.",
+  "Görseller gereğinden büyük indiriliyor":
+    "Images are downloaded larger than they need to be",
+  "Lighthouse sayfadaki bazı görsellerin daha küçük indirilebileceğini hesapladı: eski bir biçimde (JPEG, PNG) sunuluyorlar, sıkıştırılmamışlar ya da ekranda gösterildiklerinden çok daha büyük boyutta indiriliyorlar. Tahmini tasarruf bulgunun ayrıntısındadır. Bu bulgu, PageSpeed Insights'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.":
+    "Lighthouse calculated that some images on the page could be downloaded smaller: they're served in an old format (JPEG, PNG), aren't compressed, or are downloaded much larger than they're displayed. The estimated saving is in the finding's details. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.",
+  "Görselleri WebP ya da AVIF'e çevirin, sıkıştırın ve ekrandaki boyutlarına göre küçültün; farklı ekranlar için srcset ile birden çok boyut sunun. Çoğu CMS'te bir görsel optimizasyon eklentisi bunu otomatik yapar.":
+    "Convert images to WebP or AVIF, compress them and resize them to their on-screen size; serve several sizes with srcset for different screens. In most CMSs an image optimization plugin does this automatically.",
+  "Dosyalar tarayıcıda yeterince uzun saklanmıyor":
+    "Files aren't kept in the browser long enough",
+  "Görsel, betik ve stil dosyaları kısa bir önbellek süresiyle ya da hiç önbellek bilgisi olmadan sunuluyor. Ziyaretçi siteye dönünce aynı dosyaları yeniden indirir. Lighthouse'un tahmin ettiği tekrar ziyaret tasarrufu bulgunun ayrıntısındadır. Bu bulgu, PageSpeed Insights'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.":
+    "Image, script and style files are served with a short cache lifetime or no cache information at all. When a visitor comes back, they download the same files again. Lighthouse's estimated repeat-visit saving is in the finding's details. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.",
+  'Değişmeyen dosyalara uzun bir Cache-Control süresi verin (örneğin max-age=31536000) ve dosya değiştiğinde adını değiştirin. Barındırma panelinde ya da CDN\'de "tarayıcı önbelleği" ayarı genelde bunu yapar.':
+    "Give files that don't change a long Cache-Control lifetime (for example max-age=31536000) and change a file's name when its content changes. A \"browser cache\" setting in your hosting panel or CDN usually does this.",
+  "Sayfanın toplam indirme boyutu çok büyük":
+    "The page's total download size is very large",
+  "Sayfayı açmak için indirilen her şeyin toplamı 2,5 MB'ı geçiyor. Mobil bağlantıda bu uzun bir yükleme ve ziyaretçinin veri paketinden harcama demektir. Bu bulgu, PageSpeed Insights'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.":
+    "Everything downloaded to open the page adds up to more than 2.5 MB. On a mobile connection that means a long load and data taken from the visitor's plan. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.",
+  "PageSpeed Insights raporunda en büyük dosyalara bakın. Genelde görseller, videolar ve büyük betik paketleridir: görselleri küçültün, videoyu tıklanınca yükleyin, gereksiz betikleri kaldırın.":
+    "Look at the largest files in the PageSpeed Insights report. They're usually images, videos and large script bundles: shrink images, load videos on click, remove unneeded scripts.",
+  "Tarayıcıda oluşan sayfa yapısı çok büyük":
+    "The page structure built in the browser is very large",
+  "Lighthouse, sayfa tarayıcıda çalıştıktan sonra oluşan HTML yapısının çok büyük olduğunu buldu. Bu, sayfanın kaynak kodunu sayan kontrolden farklıdır: JavaScript'in sonradan eklediği öğeleri de içerir. Büyük bir yapı stil hesaplamayı ve tıklamalara yanıtı yavaşlatır. Bu bulgu, PageSpeed Insights'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.":
+    "Lighthouse found that the HTML structure the page builds after running in the browser is very large. This differs from the check that counts the page's source: it includes elements JavaScript adds later. A large structure slows style calculation and responses to taps. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.",
+  "Görünmeyen içeriği (kapalı menüler, sekmeler, uzun listeler) gerektiğinde oluşturun ve sayfa oluşturucunun gereksiz sarmalayıcı katmanlarını azaltın.":
+    "Build hidden content (closed menus, tabs, long lists) only when needed, and reduce the page builder's unnecessary wrapper layers.",
+  "Sayfa açılmadan önce yönlendirme yapılıyor":
+    "The page redirects before it opens",
+  "Lighthouse sayfanın ana belgesine ulaşmadan önce bir ya da daha fazla yönlendirmeden geçti. Her yönlendirme, içerik görünmeden önce fazladan bir istek demektir. Bu bulgu, PageSpeed Insights'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.":
+    "Lighthouse went through one or more redirects before reaching the page's main document. Each redirect is an extra request before any content appears. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.",
+  "Bu sayfaya giden bağlantıları ve site haritasını doğrudan son adrese çevirin; yönlendirme gerekiyorsa tek adımda bitsin.":
+    "Point links and the sitemap at the final address directly; if a redirect is needed, make it a single step.",
+  "Sunucu ilk yanıtı geç veriyor (Lighthouse)":
+    "The server is slow to answer (Lighthouse)",
+  "Lighthouse'un ölçümünde sunucunun sayfanın ilk baytını göndermesi 600 milisaniyeden uzun sürdü. Sunucu yanıt vermeden tarayıcı hiçbir şey yapamaz; bu süre sayfanın tüm açılışına eklenir. Tarayıcımızın kendi ölçtüğü yanıt süresinden ayrı, Google'ın sunucularından yapılan bir ölçümdür. Bu bulgu, PageSpeed Insights'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.":
+    "In Lighthouse's measurement, the server took longer than 600 milliseconds to send the page's first byte. The browser can do nothing until the server answers, so this time adds to the whole page load. It's a measurement from Google's servers, separate from the response time our crawler measured. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.",
+  "Sayfa önbelleğini (tam sayfa önbellek) açın, yavaş veritabanı sorgularını ve eklentileri bulun, gerekirse daha güçlü bir sunucuya ya da bir CDN'e geçin.":
+    "Turn on page caching (full-page cache), find slow database queries and plugins, and if needed move to a stronger server or a CDN.",
+  "Sayfa sıkıştırılmadan gönderiliyor": "The page is sent uncompressed",
+  "Lighthouse, sayfanın HTML belgesinin gzip ya da Brotli ile sıkıştırılmadan gönderildiğini gördü. Sıkıştırma metin dosyalarını genelde üçte bire indirir. Bu bulgu, PageSpeed Insights'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.":
+    "Lighthouse saw that the page's HTML document is sent without gzip or Brotli compression. Compression usually shrinks text files to a third of their size. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.",
+  "Sunucunuzda ya da CDN'de gzip veya Brotli sıkıştırmayı açın. Çoğu barındırma panelinde tek bir ayardır.":
+    "Turn on gzip or Brotli compression on your server or CDN. In most hosting panels it's a single setting.",
+  "Yazı tipleri yüklenirken metin görünmüyor":
+    "Text is invisible while fonts load",
+  "Özel yazı tipleri yüklenene kadar metin görünmez kalıyor. Lighthouse, metnin yedek yazı tipiyle hemen gösterilmesinin ilk görünümü hızlandıracağını hesapladı. Bu bulgu, PageSpeed Insights'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.":
+    "Text stays invisible until custom fonts load. Lighthouse calculated that showing the text right away in a fallback font would speed up the first render. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.",
+  "@font-face kurallarına font-display: swap ekleyin. Google Fonts kullanıyorsanız adresin sonuna &display=swap ekleyin.":
+    "Add font-display: swap to your @font-face rules. If you use Google Fonts, add &display=swap to the end of the URL.",
+  "Sayfanın ana görseli geç yüklenecek şekilde işaretlenmiş":
+    "The page's main image is marked to load late",
+  'Sayfanın en büyük öğesi (LCP) olan görselde loading="lazy" var. Tarayıcı bu görseli sayfa yerleşimi bitene kadar istemez, bu yüzden ana içerik geç görünür. Bu bulgu, PageSpeed Insights\'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.':
+    "The image that is the page's largest element (LCP) has loading=\"lazy\". The browser doesn't request it until layout is done, so the main content appears late. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.",
+  'Sayfanın ilk ekranındaki ana görselden loading="lazy" özniteliğini kaldırın. Geç yükleme yalnızca ilk ekranın altındaki görsellere uygulanmalı.':
+    'Remove loading="lazy" from the main image on the first screen. Lazy loading belongs only on images below the first screen.',
+  "Sayfanın ana görseli öncelikli istenmiyor":
+    "The page's main image isn't requested with priority",
+  "Sayfanın en büyük öğesi (LCP) olan görsel ya sayfanın ilk HTML'inde yer almıyor (tarayıcı onu geç keşfediyor) ya da fetchpriority=\"high\" ile öncelikli istenmiyor. Ayrıntıda hangisinin eksik olduğu yazar. Bu bulgu, PageSpeed Insights'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.":
+    "The image that is the page's largest element (LCP) is either not in the page's initial HTML (the browser discovers it late) or isn't requested with fetchpriority=\"high\". The details say which is missing. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.",
+  'Ana görseli sayfanın HTML\'inde doğrudan bir <img> olarak verin (yalnızca JavaScript ya da CSS arka planı ile değil) ve ona fetchpriority="high" ekleyin. Gerekirse <link rel="preload"> ile önceden yükleyin.':
+    'Put the main image directly in the page\'s HTML as an <img> (not only through JavaScript or a CSS background) and add fetchpriority="high". If needed, preload it with <link rel="preload">.',
+  "Dosyalar eski HTTP/1.1 ile sunuluyor": "Files are served over old HTTP/1.1",
+  "Sayfanın dosyalarının bir kısmı HTTP/2 ya da HTTP/3 yerine HTTP/1.1 ile geliyor. Eski protokolde tarayıcı aynı anda az sayıda dosya indirebilir. Bu bulgu, PageSpeed Insights'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.":
+    "Some of the page's files arrive over HTTP/1.1 instead of HTTP/2 or HTTP/3. With the old protocol the browser can download only a few files at a time. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.",
+  "Sunucunuzda ya da CDN'de HTTP/2'yi (tercihen HTTP/3'ü) açın. Çoğu modern barındırma ve CDN bunu varsayılan olarak destekler.":
+    "Turn on HTTP/2 (preferably HTTP/3) on your server or CDN. Most modern hosting and CDNs support it by default.",
+  "Eski tarayıcılar için gereksiz JavaScript gönderiliyor":
+    "Unneeded JavaScript is sent for old browsers",
+  "Sayfadaki betikler, güncel tarayıcıların zaten bildiği özellikler için eski tarayıcılara yönelik ek kod (polyfill, dönüştürme) içeriyor. Bu bulgu, PageSpeed Insights'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.":
+    "The page's scripts include extra code for old browsers (polyfills, transpiled code) for features current browsers already have. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.",
+  "Derleme aracınızın hedef tarayıcı ayarını (browserslist) güncel tarayıcılara çekin ve artık gerekmeyen polyfill'leri kaldırın.":
+    "Move your build tool's target browsers (browserslist) to current browsers and remove polyfills you no longer need.",
+  "Üçüncü taraf kodlar tarayıcıyı uzun süre meşgul ediyor":
+    "Third-party code keeps the browser busy for a long time",
+  "Reklam, sohbet, analiz ya da sosyal medya gibi başka sitelerden gelen betikler telefonda tarayıcının ana iş parçacığını toplam yarım saniyeden uzun meşgul etti. Bu sürede sayfa tıklamalara geç yanıt verir. Hangi hizmetin ne kadar sürdüğü bulgunun ayrıntısındadır. Bu bulgu, PageSpeed Insights'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.":
+    "Scripts from other sites, such as ads, chat, analytics or social media, kept the browser's main thread busy for more than half a second in total on a phone. During that time the page responds late to taps. Which service took how long is in the finding's details. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.",
+  "Kullanmadığınız etiketleri kaldırın, kalanları sayfa açıldıktan sonra yükleyin; sohbet ya da video gibi ağır gömülü öğeleri tıklanınca yüklenen bir önizlemeyle değiştirin.":
+    "Remove tags you don't use, load the rest after the page opens, and replace heavy embeds such as chat or video with a preview that loads on click.",
+  "Ana içeriğin yüklenmesi iyileştirilebilir (LCP)":
+    "Main content loading could be faster (LCP)",
+  "Sayfanın en büyük öğesi 2,5 ile 4 saniye arasında göründü. Google bu aralığı 'iyileştirilmeli' sayar; 2,5 saniye ve altı 'iyi'dir. Değer, Chrome kullanıcılarının gerçek (alan) verisi varsa ondan, yoksa PageSpeed Insights'ın laboratuvar ölçümünden gelir; hangisi olduğu ayrıntıda yazar.":
+    "The page's largest element appeared between 2.5 and 4 seconds. Google rates this range 'needs improvement'; 2.5 seconds or less is 'good'. The value comes from real Chrome user (field) data when there is some, otherwise from PageSpeed Insights' lab measurement; the details say which.",
+  "En büyük öğe genelde kapak görseli ya da ana başlıktır: görseli küçültüp WebP gibi hafif bir biçime çevirin, geç yüklenmesini kapatın ve onu engelleyen betik ve yazı tiplerini erteleyin.":
+    "The largest element is usually the cover image or the main heading: shrink the image and convert it to a light format such as WebP, turn off its lazy loading, and defer the scripts and fonts blocking it.",
+  "Yüklenirken içerik biraz kayıyor (CLS)":
+    "Content shifts a little while loading (CLS)",
+  "Sayfa yüklenirken içerik 0,1 ile 0,25 arasında kaydı. Google bu aralığı 'iyileştirilmeli' sayar; 0,1 ve altı 'iyi'dir. Değer, Chrome kullanıcılarının gerçek (alan) verisi varsa ondan, yoksa laboratuvar ölçümünden gelir; hangisi olduğu ayrıntıda yazar.":
+    "Content shifted between 0.1 and 0.25 while the page loaded. Google rates this range 'needs improvement'; 0.1 or less is 'good'. The value comes from real Chrome user (field) data when there is some, otherwise from the lab measurement; the details say which.",
+  "Görsellere ve gömülü çerçevelere genişlik ile yükseklik verin, sonradan yüklenen afiş ve reklamlar için yer ayırın, özel yazı tipi için yerleşimi bozmayan bir yedek tanımlayın.":
+    "Give images and embedded frames a width and height, reserve space for banners and ads that load later, and set a fallback for custom fonts that doesn't break the layout.",
+  "Tıklamalara yanıt iyileştirilebilir (INP)":
+    "Responses to taps could be faster (INP)",
+  "Sayfa tıklama ve dokunuşlara 200 ile 500 milisaniye arasında yanıt verdi. Google bu aralığı 'iyileştirilmeli' sayar; 200 milisaniye ve altı 'iyi'dir. Laboratuvar testi etkileşimi taklit edemediği için bu değer Chrome kullanıcılarının gerçek (alan) verisidir.":
+    "The page responded to clicks and taps in 200 to 500 milliseconds. Google rates this range 'needs improvement'; 200 milliseconds or less is 'good'. Because a lab test can't simulate interaction, this value is real Chrome user (field) data.",
+  "Tıklamada çalışan uzun betikleri bölün, üçüncü taraf etiketleri sayfa açıldıktan sonra yükleyin ve gereksiz olanları kaldırın.":
+    "Split long scripts that run on a click, load third-party tags after the page opens, and remove the ones you don't need.",
+  "Bazı metinlerin renk karşıtlığı yetersiz":
+    "Some text has too little color contrast",
+  "Bazı metinler arka planlarıyla yeterince ayrışmıyor; az gören ziyaretçiler ve güneş altında telefon kullananlar onları zor okur. Kaç öğenin etkilendiği ayrıntıda yazar. Bu bulgu, PageSpeed Insights'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.":
+    "Some text doesn't stand out enough from its background; visitors with low vision and people using a phone in sunlight struggle to read it. The details say how many elements are affected. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.",
+  "Normal metin için en az 4,5:1, büyük metin için 3:1 karşıtlık oranı sağlayın. Hangi öğelerin yetersiz kaldığını PageSpeed Insights'ın Erişilebilirlik bölümünde görürsünüz.":
+    "Ensure a contrast ratio of at least 4.5:1 for normal text and 3:1 for large text. PageSpeed Insights' Accessibility section shows which elements fall short.",
+  "Görsellerde alternatif metin eksik (Lighthouse)":
+    "Images are missing alternative text (Lighthouse)",
+  "Lighthouse, sayfa tarayıcıda çalıştıktan sonra alternatif metni (alt) olmayan görseller buldu. Bu, JavaScript'in sonradan eklediği görselleri de kapsar. Ekran okuyucular bu görselleri anlatamaz, Google da ne gösterdiklerini metinden öğrenemez. Bu bulgu, PageSpeed Insights'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.":
+    "Lighthouse found images without alternative text (alt) after the page ran in the browser. This includes images JavaScript adds later. Screen readers can't describe these images, and Google can't learn from text what they show. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.",
+  'Her anlamlı görsele ne gösterdiğini anlatan kısa bir alt metni ekleyin; süs amaçlı görsellere boş alt="" verin.':
+    'Give every meaningful image a short alt text describing what it shows; give decorative images an empty alt="".',
+  "Form alanlarının etiketi yok (Lighthouse)":
+    "Form fields have no label (Lighthouse)",
+  "Bazı form alanlarına bağlı bir etiket yok. Ekran okuyucu kullanan ziyaretçi alana ne yazması gerektiğini duyamaz. Bu bulgu, PageSpeed Insights'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.":
+    "Some form fields have no label attached. A visitor using a screen reader can't hear what to type into the field. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.",
+  "Her alana for özniteliğiyle bağlı bir <label> ekleyin; görünür etiket istenmiyorsa aria-label kullanın.":
+    "Add a <label> linked to each field with the for attribute; if you don't want a visible label, use aria-label.",
+  "Bazı bağlantıların okunabilir adı yok": "Some links have no readable name",
+  'Bazı bağlantılarda ne metin ne de erişilebilir bir ad var (örneğin yalnızca bir simge). Ekran okuyucu bunları yalnızca "bağlantı" diye okur; Google da bağlantının neye gittiğini metinden anlayamaz. Bu bulgu, PageSpeed Insights\'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.':
+    'Some links have neither text nor an accessible name (for example only an icon). A screen reader reads them only as "link", and Google can\'t tell from the text where they go. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.',
+  "Bağlantıya görünür bir metin ekleyin; yalnızca simgeyse aria-label ile ne yaptığını yazın.":
+    "Add visible text to the link; if it's only an icon, say what it does with aria-label.",
+  "Bazı düğmelerin okunabilir adı yok": "Some buttons have no readable name",
+  'Bazı düğmelerde ne metin ne de erişilebilir bir ad var. Ekran okuyucu bunları yalnızca "düğme" diye okur. Bu bulgu, PageSpeed Insights\'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.':
+    'Some buttons have neither text nor an accessible name. A screen reader reads them only as "button". This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.',
+  "Düğmeye görünür bir metin ekleyin; yalnızca simgeyse aria-label ile ne yaptığını yazın.":
+    "Add visible text to the button; if it's only an icon, say what it does with aria-label.",
+  "Sayfanın tarayıcıda başlığı yok (Lighthouse)":
+    "The page has no title in the browser (Lighthouse)",
+  "Lighthouse, sayfa tarayıcıda çalıştıktan sonra bir <title> bulamadı. Sekmede ve arama sonucunda başlık olarak gösterilecek bir şey yok. Bu bulgu, PageSpeed Insights'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.":
+    "Lighthouse couldn't find a <title> after the page ran in the browser. There's nothing to show as the title in the tab or in search results. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.",
+  "Sayfanın <head> bölümüne sayfayı anlatan benzersiz bir <title> ekleyin; başlığı JavaScript ile sonradan yazıyorsanız sunucunun gönderdiği HTML'e taşıyın.":
+    "Add a unique <title> describing the page to its <head>; if JavaScript writes the title later, move it into the HTML the server sends.",
+  "Sayfanın dili tarayıcıda belirtilmemiş (Lighthouse)":
+    "The page's language isn't declared in the browser (Lighthouse)",
+  "Lighthouse, <html> öğesinde lang özniteliği bulamadı. Ekran okuyucular metni yanlış dilin kurallarıyla okuyabilir. Bu bulgu, PageSpeed Insights'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.":
+    "Lighthouse found no lang attribute on the <html> element. Screen readers may read the text with the wrong language's rules. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.",
+  'Sayfanın <html> etiketine dilini ekleyin, örneğin <html lang="tr">.':
+    'Add the page\'s language to its <html> tag, for example <html lang="en">.',
+  "Telefonda yakınlaştırma engellenmiş (Lighthouse)":
+    "Zooming is blocked on phones (Lighthouse)",
+  "Sayfanın viewport ayarı ziyaretçinin metni büyütmesini engelliyor (user-scalable=no ya da düşük bir maximum-scale). Az gören ziyaretçiler sayfayı okuyamaz. Bu bulgu, PageSpeed Insights'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.":
+    "The page's viewport setting stops visitors from enlarging the text (user-scalable=no or a low maximum-scale). Visitors with low vision can't read the page. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.",
+  'Viewport etiketinden user-scalable=no ve maximum-scale değerini kaldırın; content="width=device-width, initial-scale=1" yeterlidir.':
+    'Remove user-scalable=no and the maximum-scale value from the viewport tag; content="width=device-width, initial-scale=1" is enough.',
+  "Dokunma hedefleri çok küçük ya da çok sık":
+    "Tap targets are too small or too close together",
+  "Bazı düğme ve bağlantılar telefonda parmakla rahat dokunulamayacak kadar küçük ya da birbirine çok yakın. Ziyaretçi yanlış yere dokunur. Bu bulgu, PageSpeed Insights'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.":
+    "Some buttons and links are too small or too close to each other to tap comfortably with a finger on a phone. Visitors tap the wrong thing. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.",
+  "Dokunulan öğelere en az 24×24 piksel alan verin ve aralarında boşluk bırakın; menü ve altbilgi bağlantıları genelde bunun için büyütülmelidir.":
+    "Give tappable elements at least 24×24 pixels and leave space between them; menu and footer links usually need to be made larger.",
+  "Başlık sırası tarayıcıda atlıyor (Lighthouse)":
+    "Heading order skips levels in the browser (Lighthouse)",
+  "Lighthouse, sayfa tarayıcıda çalıştıktan sonra başlık düzeylerinin sırayla gitmediğini gördü (örneğin H2'den H4'e atlama). Ekran okuyucu kullananlar sayfada başlıklarla gezinir ve atlanan düzey yapıyı bozar. Bu bulgu, PageSpeed Insights'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.":
+    "Lighthouse saw that heading levels don't go in order after the page ran in the browser (for example jumping from H2 to H4). Screen reader users navigate by headings, and a skipped level breaks the structure. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.",
+  "Başlıkları sırayla kullanın (H1, H2, H3); bir başlığı yalnızca küçük görünsün diye alt düzeyden seçmeyin, boyutu CSS ile ayarlayın.":
+    "Use headings in order (H1, H2, H3); don't pick a lower level just so a heading looks small, set its size with CSS.",
+  "Sayfa güvensiz (http) istekler yapıyor":
+    "The page makes insecure (http) requests",
+  'Lighthouse, sayfanın kendisinin ya da yüklediği bazı dosyaların şifresiz http ile geldiğini gördü. Tarayıcı bu istekleri engelleyebilir ya da "Güvenli değil" uyarısı gösterebilir. Hangi adreslerin güvensiz olduğu ayrıntıda yazar. Bu bulgu, PageSpeed Insights\'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.':
+    'Lighthouse saw that the page itself or some of the files it loads arrive unencrypted over http. The browser may block these requests or show a "Not secure" warning. The details say which addresses are insecure. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.',
+  "Sayfayı ve yüklediği tüm dosyaları https adresinden sunun; sayfadaki http:// ile başlayan dosya adreslerini https:// yapın.":
+    "Serve the page and every file it loads from https; change file addresses on the page that start with http:// to https://.",
+  "Sayfa açılırken tarayıcı hata kaydediyor":
+    "The browser logs errors while the page opens",
+  "Sayfa açılırken tarayıcının konsoluna hata düştü: yüklenemeyen bir dosya, çalışırken çöken bir betik ya da engellenen bir istek. Bazıları ziyaretçiye görünmez, bazıları bir özelliğin çalışmadığını gösterir. Bu bulgu, PageSpeed Insights'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.":
+    "Errors appeared in the browser console while the page opened: a file that failed to load, a script that crashed while running, or a blocked request. Some are invisible to visitors, some mean a feature doesn't work. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.",
+  "Sayfayı Chrome'da açıp geliştirici araçlarının Konsol sekmesine bakın; ayrıntıdaki adreslerden başlayarak hataları giderin.":
+    "Open the page in Chrome and look at the Console tab in developer tools; start fixing from the addresses in the details.",
+  "Sayfa tarayıcıların kaldıracağı özellikler kullanıyor":
+    "The page uses features browsers are removing",
+  "Sayfa, Chrome'un kullanımdan kaldırdığı ya da kaldıracağı özellikleri kullanıyor. Şimdi çalışıyor olabilir ama bir tarayıcı güncellemesinden sonra bozulabilir. Bu bulgu, PageSpeed Insights'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.":
+    "The page uses features Chrome has deprecated or will remove. It may work now but can break after a browser update. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.",
+  "PageSpeed Insights raporundaki listeye bakın; genelde eski bir eklenti ya da kütüphanedir ve güncellemek yeterlidir.":
+    "Look at the list in the PageSpeed Insights report; it's usually an old plugin or library and updating it is enough.",
+  "Tarayıcı sayfada sorunlar bildiriyor":
+    "The browser reports problems on the page",
+  "Chrome'un geliştirici araçlarındaki \"Sorunlar\" bölümü bu sayfa için kayıt tuttu: örneğin engellenen çerezler, güvenlik başlığı sorunları ya da hatalı kaynak istekleri. Bu bulgu, PageSpeed Insights'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.":
+    'Chrome\'s developer tools "Issues" panel logged entries for this page: for example blocked cookies, security header problems or faulty resource requests. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.',
+  'Sayfayı Chrome\'da açıp geliştirici araçlarının "Issues" (Sorunlar) sekmesine bakın ve listelenen sorunları giderin.':
+    'Open the page in Chrome, look at the "Issues" tab in developer tools and fix the problems listed.',
+  "Bazı görseller yanlış oranla gösteriliyor":
+    "Some images are shown at the wrong ratio",
+  "Bazı görseller, kendi en-boy oranlarından farklı bir oranda gösterildiği için basık ya da uzamış görünüyor. Bu bulgu, PageSpeed Insights'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.":
+    "Some images look squashed or stretched because they're displayed at a different ratio from their own aspect ratio. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.",
+  "Görselin width ve height değerlerini kendi oranına uygun verin ya da CSS'te object-fit kullanın.":
+    "Give the image width and height values that match its own ratio, or use object-fit in CSS.",
+  "Bazı görseller ekran için düşük çözünürlüklü":
+    "Some images are low resolution for the screen",
+  "Bazı görseller, telefonun ekran yoğunluğuna göre gereğinden küçük çözünürlükte sunuluyor ve bulanık görünüyor. Bu bulgu, PageSpeed Insights'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.":
+    "Some images are served at a lower resolution than the phone's screen density needs and look blurry. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.",
+  "Görsellerin daha büyük sürümlerini srcset ile sunun, böylece tarayıcı ekrana uygun olanı seçer.":
+    "Serve larger versions of the images with srcset so the browser picks the one that fits the screen.",
+  "Bazı bağlantılar taranamıyor (Lighthouse)":
+    "Some links can't be crawled (Lighthouse)",
+  "Lighthouse, sayfa tarayıcıda çalıştıktan sonra Google'ın izleyemeyeceği bağlantılar buldu: geçerli bir href'i olmayan ya da yalnızca JavaScript ile çalışan bağlantılar. Google yalnızca href'i gerçek bir adres olan <a> bağlantılarını izler. Bu bulgu, PageSpeed Insights'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.":
+    "After the page ran in the browser, Lighthouse found links Google can't follow: links without a valid href or that only work with JavaScript. Google follows only <a> links whose href is a real address. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.",
+  "Her bağlantıyı href özniteliği gerçek bir adres olan bir <a> etiketi yapın; javascript: ya da yalnızca onclick ile çalışan bağlantıları değiştirin.":
+    "Make every link an <a> tag whose href is a real address; replace links that work only with javascript: or onclick.",
+  "Bağlantı metinleri açıklayıcı değil (Lighthouse)":
+    "Link texts aren't descriptive (Lighthouse)",
+  'Bazı bağlantıların metni "buraya tıklayın" ya da "devamı" gibi gittiği yeri anlatmayan sözlerden oluşuyor. Google bağlantı metninden hedef sayfanın konusunu öğrenir. Bu bulgu, PageSpeed Insights\'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.':
+    'Some links\' text is made of words like "click here" or "read more" that don\'t say where they go. Google learns the target page\'s topic from link text. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.',
+  'Bağlantı metnini gittiği sayfanın konusunu anlatacak şekilde yazın, örneğin "devamı" yerine "kargo ücretleri".':
+    'Write link text that describes the target page\'s topic, for example "shipping costs" instead of "read more".',
+  "Google sayfayı dizine alamıyor (Lighthouse)":
+    "Google can't index the page (Lighthouse)",
+  "Tarayıcımız bu sayfayı dizine alınabilir gördü, ama Lighthouse'un ölçümünde Google'ın sayfayı dizine almasını engelleyen bir kural vardı (robots.txt, noindex etiketi ya da X-Robots-Tag başlığı). Kural yalnızca Google'a ya da yalnızca bazı ziyaretçilere gösteriliyor olabilir. Bu bulgu, PageSpeed Insights'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.":
+    "Our crawler found this page indexable, but in Lighthouse's measurement there was a rule stopping Google from indexing it (robots.txt, a noindex tag or an X-Robots-Tag header). The rule may be shown only to Google or only to some visitors. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.",
+  "Sayfanın aramada görünmesi gerekiyorsa robots.txt'teki ilgili Disallow satırını ve sayfadaki noindex kuralını kaldırın; sunucunun Googlebot'a farklı bir yanıt vermediğini kontrol edin.":
+    "If the page should appear in search, remove the matching Disallow line from robots.txt and the noindex rule on the page; check that the server doesn't answer Googlebot differently.",
+  "robots.txt dosyasında geçersiz satırlar var": "robots.txt has invalid lines",
+  "Lighthouse sitenin robots.txt dosyasında kurallara uymayan satırlar buldu. Google geçersiz satırları yok sayar, yani yazdığınız bir kural uygulanmıyor olabilir. Bu bulgu, PageSpeed Insights'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.":
+    "Lighthouse found lines in the site's robots.txt that don't follow the rules. Google ignores invalid lines, so a rule you wrote may not be applied. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.",
+  'robots.txt\'i açın ve PageSpeed Insights raporunda gösterilen satırları düzeltin; her satır "Alan: değer" biçiminde olmalı (User-agent, Disallow, Allow, Sitemap).':
+    'Open robots.txt and fix the lines shown in the PageSpeed Insights report; each line should be in "Field: value" form (User-agent, Disallow, Allow, Sitemap).',
+  "hreflang etiketleri geçersiz (Lighthouse)":
+    "hreflang tags are invalid (Lighthouse)",
+  "Lighthouse, sayfadaki dil sürümü (hreflang) etiketlerinde geçersiz bir dil kodu ya da göreli bir adres buldu. Google geçersiz hreflang etiketlerini yok sayar. Bu bulgu, PageSpeed Insights'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.":
+    "Lighthouse found an invalid language code or a relative address in the page's language version (hreflang) tags. Google ignores invalid hreflang tags. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.",
+  "Her hreflang değerinin geçerli bir dil kodu (tr, en-GB gibi) ve adresin tam adres (https:// ile başlayan) olduğundan emin olun.":
+    "Make sure each hreflang value is a valid language code (en, en-GB and so on) and the address is a full address (starting with https://).",
+  "canonical etiketi geçersiz (Lighthouse)":
+    "The canonical tag is invalid (Lighthouse)",
+  "Lighthouse sayfanın canonical etiketini geçersiz buldu: birbiriyle çelişen birden çok adres, geçersiz bir adres, başka bir alan adına ya da sitenin ana sayfasına işaret eden bir adres olabilir. Google böyle bir canonical'ı yok sayabilir. Bu bulgu, PageSpeed Insights'ın sayfanın mobil sürümünü ölçtüğü Lighthouse raporundan gelir.":
+    "Lighthouse found the page's canonical tag invalid: it may be several conflicting addresses, an invalid address, or an address on another domain or the site's home page. Google may ignore such a canonical. This finding comes from the Lighthouse report PageSpeed Insights produced when it measured the mobile version of the page.",
+  "Sayfada tek bir canonical etiketi bırakın ve onu sayfanın kendi tam adresine (ya da gerçekten asıl olan sayfaya) yönlendirin.":
+    "Keep a single canonical tag on the page and point it at the page's own full address (or at the page that really is the original).",
+  "Güvenli sayfada güvensiz görsel, video ya da çerçeve":
+    "Insecure image, video or frame on a secure page",
+  'Güvenli (https) sayfa bir görseli, videoyu, sesi ya da gömülü çerçeveyi (iframe) şifresiz http adresinden yüklüyor. Tarayıcılar böyle görsel ve medyayı https\'e çevirmeyi dener, olmazsa göstermez; http çerçeveleri ise doğrudan engeller. Ziyaretçi boş bir alan ya da "Güvenli değil" uyarısı görebilir.':
+    'The secure (https) page loads an image, video, audio or embedded frame (iframe) from an unencrypted http address. Browsers try to upgrade such images and media to https and don\'t show them if that fails; http frames are blocked outright. The visitor may see an empty space or a "Not secure" warning.',
+  "Ayrıntıdaki adresleri https:// ile başlayacak şekilde değiştirin. Dosya kendi sitenizdeyse adresi göreli (/resimler/...) yazmak da yeter.":
+    "Change the addresses in the details to start with https://. If the file is on your own site, writing the address as relative (/images/...) also works.",
+  "Form bilgileri şifresiz gönderiliyor": "Form data is sent unencrypted",
+  "Güvenli (https) sayfadaki bir form, doldurulan bilgileri şifresiz bir http adresine gönderiyor. Tarayıcılar gönderimden önce ziyaretçiyi uyarır ve bilgiler yolda okunabilir.":
+    "A form on the secure (https) page sends what's filled in to an unencrypted http address. Browsers warn the visitor before submitting, and the data can be read in transit.",
+  "Formun action adresini https:// ile başlayacak şekilde değiştirin ya da formu aynı sitedeki göreli bir adrese gönderin.":
+    "Change the form's action address to start with https://, or send the form to a relative address on the same site.",
+  "Sayfa meta refresh ile yönlendiriyor":
+    "The page redirects with meta refresh",
+  'Sayfa, sunucu yönlendirmesi yerine HTML içindeki <meta http-equiv="refresh"> etiketiyle başka bir adrese gönderiyor. Google bunu anlar, ama sunucu tarafında bir 301 yönlendirmesini tercih eder; ziyaretçi de yönlendirmeden önce boş bir sayfa görebilir.':
+    'The page sends visitors to another address with a <meta http-equiv="refresh"> tag in the HTML instead of a server redirect. Google understands it but prefers a server-side 301 redirect; the visitor may also see a blank page before the redirect.',
+  "Mümkünse yönlendirmeyi sunucuda (301 ya da 308) yapın ve meta refresh etiketini kaldırın.":
+    "If possible, redirect on the server (301 or 308) and remove the meta refresh tag.",
+  "canonical adresi göreli yazılmış":
+    "The canonical address is written as relative",
+  "Sayfanın canonical etiketi tam adres yerine göreli bir yol (örneğin /urun) gösteriyor. Google göreli adresi çözebilir, ama tam adres kullanılmasını önerir; göreli yol, sayfa farklı bir adresten açıldığında yanlış yere işaret edebilir.":
+    "The page's canonical tag shows a relative path (for example /product) instead of a full address. Google can resolve relative addresses but recommends full ones; a relative path can point to the wrong place when the page is opened from a different address.",
+  "canonical adresini https:// ile başlayan tam adres olarak yazın.":
+    "Write the canonical address as a full address starting with https://.",
+  "canonical adresinde # parçası var": "The canonical address has a # fragment",
+  "Sayfanın canonical adresi # ile başlayan bir parça içeriyor. Google adresin # sonrasını dikkate almaz, bu yüzden bu parça bir işe yaramaz ve genelde bir şablon hatasının işaretidir.":
+    "The page's canonical address contains a fragment starting with #. Google ignores everything after the #, so the fragment does nothing and is usually a sign of a template mistake.",
+  "canonical adresinden # ve sonrasını kaldırın.":
+    "Remove the # and everything after it from the canonical address.",
+  "canonical etiketi sayfanın gövdesinde":
+    "The canonical tag is in the page body",
+  "Sayfanın tek canonical etiketi <head> bölümünde değil, <body> içinde. Google canonical etiketini yalnızca <head> içinde okur; gövdedeki etiket yok sayılır, yani sayfanın aslında canonical'ı yok.":
+    "The page's only canonical tag is inside <body>, not in the <head> section. Google reads the canonical tag only in <head>; the one in the body is ignored, so the page effectively has no canonical.",
+  "canonical etiketini sayfanın <head> bölümüne taşıyın. Genelde bir eklentinin ya da şablonun etiketi yanlış yere yazmasından olur.":
+    "Move the canonical tag into the page's <head> section. It usually happens when a plugin or template writes the tag in the wrong place.",
+  "robots etiketleri birbiriyle çelişiyor": "Robots tags contradict each other",
+  "Sayfada birden fazla robots etiketi var ve biri izin verirken diğeri yasaklıyor (örneğin biri index, diğeri noindex). Google böyle bir çelişkide daha kısıtlayıcı olan kuralı uygular; yani sayfa büyük olasılıkla istediğinizden farklı işlenir.":
+    "The page has more than one robots tag and one allows what another forbids (for example one says index, another noindex). In such a conflict Google applies the more restrictive rule, so the page is probably handled differently from what you want.",
+  "Sayfada tek bir robots etiketi bırakın. Genelde bir SEO eklentisi ile temanın aynı etiketi ayrı ayrı yazmasından olur.":
+    "Keep a single robots tag on the page. It usually happens when an SEO plugin and the theme each write the same tag.",
+  "Aramada sayfanın özeti gösterilmiyor":
+    "Search doesn't show the page's snippet",
+  "Sayfa dizine alınabilir, ama nosnippet ya da max-snippet:0 kuralı Google'ın arama sonucunda sayfanın metninden özet göstermesini engelliyor. Özetsiz bir sonuç daha az tıklanır. Bilerek yapılmış olabilir.":
+    "The page can be indexed, but a nosnippet or max-snippet:0 rule stops Google from showing a snippet of the page's text in search results. A result without a snippet gets fewer clicks. It may be intentional.",
+  "Bilerek değilse robots etiketinden ya da X-Robots-Tag başlığından nosnippet ve max-snippet:0 kuralını kaldırın.":
+    "If it's not intentional, remove nosnippet and max-snippet:0 from the robots tag or the X-Robots-Tag header.",
+  'Sayfa "bulunamadı" diyor ama başarılı yanıt veriyor':
+    'The page says "not found" but answers successfully',
+  'Sayfanın başlığı ya da ana başlığı "404" ya da "sayfa bulunamadı" diyor, ama sunucu 200 (başarılı) kodu döndürüyor. Google böyle sayfaları "soft 404" sayar ve dizine almaz; ama taramaya zaman harcar ve gerçek bir hata sayfası olduğunu anlamakta gecikebilir.':
+    'The page\'s title or main heading says "404" or "page not found", but the server returns a 200 (success) code. Google treats such pages as "soft 404s" and doesn\'t index them, but it spends crawl time on them and can be slow to realize it\'s an error page.',
+  "Sayfa gerçekten yoksa sunucunun 404 ya da 410 kodu döndürmesini sağlayın. Varsa başlığını ve içeriğini düzeltin.":
+    "If the page really doesn't exist, make the server return a 404 or 410 code. If it does, fix its title and content.",
+  "Sayfada yer tutucu metin (lorem ipsum) kalmış":
+    "Placeholder text (lorem ipsum) was left on the page",
+  'Sayfanın görünen metninde "lorem ipsum" yer tutucu metni var. Tasarım aşamasından kalmış ve yayına unutulmuş içerik, ziyaretçiye ve Google\'a sayfanın bitmediğini söyler.':
+    "The page's visible text contains the \"lorem ipsum\" placeholder. Content left over from the design stage and published by mistake tells visitors and Google the page isn't finished.",
+  "Yer tutucu metni gerçek içerikle değiştirin ya da o bölümü kaldırın.":
+    "Replace the placeholder text with real content or remove that section.",
+  "E-posta adresi düz metin olarak açıkta":
+    "An e-mail address is exposed as plain text",
+  "Sayfada düz metin ya da mailto bağlantısı olarak bir e-posta adresi var. Spam gönderenlerin botları sayfaları bu adresler için tarar. Ziyaretçinin size ulaşması için gerekliyse sorun değildir.":
+    "The page has an e-mail address as plain text or as a mailto link. Spammers' bots crawl pages for these addresses. It's not a problem if visitors need it to reach you.",
+  "İletişim için bir form kullanmayı düşünün ya da adresi spam filtresi güçlü bir kutuya yönlendirin.":
+    "Consider using a contact form, or route the address to a mailbox with strong spam filtering.",
+  "Başlıktaki kelimeler sayfa içeriğinde geçmiyor":
+    "The title's words don't appear in the page content",
+  "Sayfa başlığındaki (title) anlamlı kelimelerin hiçbiri ana başlıkta ya da sayfa metninde geçmiyor. Google başlığın sayfayı anlatıp anlatmadığına bakar; içerikle ilgisi olmayan bir başlığı arama sonucunda başka bir metinle değiştirebilir. Bu bir tahmindir: eş anlamlı kelimeler sayılmaz.":
+    "None of the meaningful words in the page title appear in the main heading or the page text. Google checks whether a title describes the page and may replace a title unrelated to the content with other text in search results. This is a heuristic: synonyms aren't counted.",
+  "Başlığı sayfanın gerçekten anlattığı konuya göre yazın ya da başlıktaki ana kelimeyi ana başlıkta ve ilk paragrafta kullanın.":
+    "Write the title around what the page is really about, or use the title's main word in the main heading and the first paragraph.",
+  "Kuruluş yapısal verisinde sosyal profiller yok":
+    "Organization structured data lists no social profiles",
+  "Sayfadaki Organization yapısal verisinde sameAs özelliği yok. sameAs, kuruluşunuzun resmi sosyal medya ve kayıt profillerini (LinkedIn, Wikipedia gibi) gösterir; Google kuruluşu tanırken bu bağlantıları kullanır. Google bunu önerir, zorunlu tutmaz.":
+    "The Organization structured data on the page has no sameAs property. sameAs lists your organization's official social media and registry profiles (LinkedIn, Wikipedia and so on); Google uses these links to recognize the organization. Google recommends it but doesn't require it.",
+  'Organization yapısal verisine sameAs ekleyin ve içine resmi profil adreslerinizi liste olarak yazın, örneğin "sameAs": ["https://www.linkedin.com/company/..."].':
+    'Add sameAs to the Organization structured data with your official profile addresses as a list, for example "sameAs": ["https://www.linkedin.com/company/..."].',
+  "Derindeki sayfada içerik yolu (breadcrumb) yok":
+    "A deep page has no breadcrumb trail",
+  "Ana sayfadan en az üç tıklama uzaktaki bu sayfada ne bir içerik yolu (breadcrumb) gezinmesi ne de BreadcrumbList yapısal verisi var. İçerik yolu ziyaretçiye nerede olduğunu gösterir; Google da arama sonucunda adres yerine bu yolu gösterebilir.":
+    "This page, at least three clicks from the home page, has neither breadcrumb navigation nor BreadcrumbList structured data. A breadcrumb shows visitors where they are, and Google can show the trail instead of the address in search results.",
+  "Sayfanın üstüne Ana sayfa > Kategori > Sayfa biçiminde bir içerik yolu ekleyin ve BreadcrumbList yapısal verisiyle işaretleyin. Çoğu SEO eklentisi ikisini birlikte ekler.":
+    "Add a breadcrumb trail like Home > Category > Page at the top of the page and mark it up with BreadcrumbList structured data. Most SEO plugins add both together.",
+  "Sayfalamanın devam sayfası aramadan gizlenmiş":
+    "A follow-on page of a paginated list is hidden from search",
+  "Bir listenin 2. ya da sonraki sayfası noindex ile aramadan gizlenmiş. Google'ın sayfalama rehberi her sayfanın kendi adresiyle dizine girebilmesini önerir. Uzun süre noindex kalan bir sayfadaki bağlantıları Google zamanla izlemeyi bırakabilir; o zaman yalnızca bu sayfalardan bağlantı alan ürün ya da yazılar bulunmaz olur.":
+    "Page 2 or later of a list is hidden from search with noindex. Google's pagination guidance recommends that every page can be indexed at its own address. Google may eventually stop following links on a page that stays noindexed for a long time; then products or posts linked only from these pages can't be found.",
+  "Sayfalama sayfalarından noindex'i kaldırın ve her birine kendi adresini canonical olarak verin.":
+    "Remove noindex from the paginated pages and give each one its own address as canonical.",
+  "Güvenli sitede iç bağlantılar http adresine gidiyor":
+    "On a secure site, internal links go to http addresses",
+  "Site https ile çalışıyor, ama bu sayfadaki bazı bağlantılar sitenin kendi sayfalarına http:// ile veriliyor. Her tıklama önce bir yönlendirmeden geçer ya da ziyaretçi güvensiz sürüme düşer; Google da aynı sayfanın iki adresini görür.":
+    "The site runs on https, but some links on this page point to the site's own pages with http://. Every click first goes through a redirect or drops the visitor to the insecure version, and Google sees two addresses for the same page.",
+  "Şablondaki ve içerikteki iç bağlantıları https:// ile ya da göreli (/sayfa) olarak yazın. Veritabanında eski http adreslerini toplu değiştirmek genelde en hızlı yoldur.":
+    "Write internal links in templates and content with https:// or as relative (/page). Replacing old http addresses in the database in bulk is usually the fastest way.",
+  "Sayfanın içine gömülü kod çok büyük":
+    "The code embedded in the page is very large",
+  "Sayfanın HTML'ine doğrudan gömülmüş betik ve stil kodu 100 KB'ı geçiyor. Gömülü kod tarayıcı önbelleğinde saklanmaz ve her sayfa açılışında yeniden indirilir; sayfa da ilk içeriği göstermeden önce bu kodu okumak zorunda kalır.":
+    "Script and style code embedded directly in the page's HTML exceeds 100 KB. Embedded code isn't kept in the browser cache and is downloaded again on every page view; the page also has to read it before showing the first content.",
+  "Büyük gömülü betik ve stilleri ayrı dosyalara taşıyın; yalnızca ilk ekran için gereken küçük CSS'i gömülü bırakın.":
+    "Move large embedded scripts and styles into separate files; keep embedded only the small CSS the first screen needs.",
+  "Blog var ama RSS/Atom akışı bildirilmemiş":
+    "There's a blog but no RSS/Atom feed is declared",
+  "Sitede yazı (Article, BlogPosting) olarak işaretlenmiş sayfalar var, ama taranan hiçbir sayfa bir RSS ya da Atom akışı bildirmiyor. Akış, okuyucuların ve haber toplayıcıların yeni yazılarınızı izlemesini sağlar; Google da yeni içeriği daha çabuk keşfedebilir.":
+    "The site has pages marked as posts (Article, BlogPosting), but no crawled page declares an RSS or Atom feed. A feed lets readers and news aggregators follow your new posts, and Google can discover new content sooner.",
+  'Bir RSS ya da Atom akışı yayınlayın ve sayfaların <head> bölümüne <link rel="alternate" type="application/rss+xml" href="/feed"> ile bildirin. Çoğu blog altyapısında akış hazırdır, yalnızca etiketin eklenmesi gerekir.':
+    'Publish an RSS or Atom feed and declare it in the pages\' <head> with <link rel="alternate" type="application/rss+xml" href="/feed">. Most blog platforms have a feed ready; only the tag needs adding.',
+  "Başka bir siteye verilen bağlantı kırık": "A link to another site is broken",
+  "Bu sayfadaki bir bağlantı başka bir sitede açılmayan bir adrese gidiyor: adres 404 ya da başka bir hata veriyor, ya da alan adı artık yok. Ziyaretçi bir hata sayfasına düşer ve sayfanız bakımsız görünür. Botlara kapalı siteler (sosyal ağlar gibi) ve yanıt vermeyen adresler kırık sayılmaz, kontrol edilmemiş sayılır.":
+    "A link on this page goes to an address on another site that doesn't open: the address returns 404 or another error, or the domain no longer exists. The visitor lands on an error page and your page looks neglected. Sites closed to bots (such as social networks) and addresses that don't answer aren't counted as broken; they count as not checked.",
+  "Bağlantıyı hedefin yeni adresine güncelleyin ya da kaldırın. Ayrıntıda hangi adresin hangi yanıtı verdiği yazar.":
+    "Update the link to the target's new address or remove it. The details say which address gave which answer.",
+  "Görsel dosyası çok büyük": "Image file is too large",
+  "Sayfadaki bir ya da daha fazla görsel dosyası 200 KB'tan büyük (ayrıntıda 500 KB'ı geçenler ayrıca sayılır). Boyut, dosyanın kendisine istek gönderilerek ölçüldü. Büyük görseller özellikle mobil bağlantıda sayfayı yavaşlatır.":
+    "One or more image files on the page are larger than 200 KB (those over 500 KB are counted separately in the details). The size was measured by requesting the file itself. Large images slow the page down, especially on mobile connections.",
+  "Görseli gösterildiği boyuta küçültün, sıkıştırın ve WebP ya da AVIF biçimine çevirin. Çoğu fotoğraf bu işlemden sonra 100 KB'ın altına iner.":
+    "Resize the image to the size it's shown at, compress it and convert it to WebP or AVIF. Most photos drop below 100 KB after this.",
+
+  // audit/launch/LaunchFormCard.tsx (external checks)
+  "Dış bağlantıları ve görsel boyutlarını da kontrol et":
+    "Also check outgoing links and image sizes",
+  "Dış kontroller": "External checks",
+  "Tarama bittikten sonra başka sitelere verilen bağlantıların açılıp açılmadığına ve sitenizdeki görsel dosyalarının boyutuna bakar. En çok 300 adres sorulur; sosyal ağlar gibi botları engelleyen siteler atlanır.":
+    "After the crawl, checks whether links to other sites still open and measures your site's image files. At most 300 addresses are requested; sites that block bots, such as social networks, are skipped.",
+
+  // ---- W1: site-level probes (audit-issues/crawl.ts site facts, audit-issues/security.ts) ----
+  "Site hem www ile hem www'siz açılıyor":
+    "Site opens both with and without www",
+  "Sitenizin www'li ve www'siz adresi ikisi de sayfayı açıyor; biri ötekine yönlendirmiyor. Google bunları aynı içeriğin iki kopyası olarak görür, hangisini göstereceğini kendisi seçer ve bağlantıların değeri iki adres arasında bölünebilir.":
+    "Both the www and the non-www address of your site serve the page; neither redirects to the other. Google sees them as two copies of the same content, picks which one to show by itself, and the value of links can be split between the two addresses.",
+  'Bir adresi asıl seçin (genelde zaten kullandığınız) ve ötekinden ona kalıcı (301) yönlendirme verin. Barındırma panellerinde bu genelde "www\'ye yönlendir" ya da "www\'siz adrese yönlendir" ayarıdır.':
+    'Pick one address as the main one (usually the one you already use) and give the other a permanent (301) redirect to it. In hosting panels this is usually a "redirect to www" or "redirect to non-www" setting.',
+  "Var olmayan sayfa 404 yerine 200 dönüyor":
+    "Missing page returns 200 instead of 404",
+  'Sitede olmayan rastgele bir adres istedik, sunucu "bulunamadı" (404) yerine "tamam" (200) yanıtı verdi. Google bunu yumuşak 404 sayar: silinen ya da yanlış yazılan adresler gerçek sayfa gibi görünür, tarama boşa gider ve boş sayfalar dizine girebilir.':
+    'We requested a random address that doesn\'t exist on the site and the server answered "OK" (200) instead of "not found" (404). Google counts this as a soft 404: deleted or mistyped addresses look like real pages, crawling is wasted, and empty pages can get indexed.',
+  'Sitenizin hata sayfası ayarını kontrol edin: olmayan adresler için 404 durum kodu dönmeli. İçerik yönetim sisteminizde "özel 404 sayfası" varsa sayfanın içeriği aynı kalabilir, yalnızca durum kodu 404 olmalı.':
+    "Check your site's error page setting: addresses that don't exist must return the 404 status code. If your CMS has a \"custom 404 page\", its content can stay the same; only the status code needs to be 404.",
+  "Var olmayan sayfalar ana sayfaya yönlendiriliyor":
+    "Missing pages redirect to the home page",
+  "Sitede olmayan rastgele bir adres istedik, sunucu bizi ana sayfaya yönlendirdi. Google bunu genelde yumuşak 404 sayar ve yönlendirmeyi yok sayar; ziyaretçi de aradığını bulamadığını anlamadan ana sayfaya düşer.":
+    "We requested a random address that doesn't exist on the site and the server redirected us to the home page. Google usually counts this as a soft 404 and ignores the redirect; visitors land on the home page without realising what they were looking for isn't there.",
+  "Olmayan adreslerde 404 dönen, arama kutusu ya da önemli bağlantılar içeren bir hata sayfası gösterin. Yalnızca taşınan sayfaları yeni adreslerine yönlendirin.":
+    "Show an error page that returns 404 and offers a search box or key links for addresses that don't exist. Only redirect pages that actually moved to their new addresses.",
+  "Site simgesi (favicon) bulunamadı": "Site icon (favicon) not found",
+  "Sayfada bir site simgesi tanımlanmamış ve /favicon.ico adresi de bir simge döndürmüyor (ya da tanımlanan simge açılmıyor). Google mobil arama sonuçlarında sitenizin adının yanında bu simgeyi gösterir; yoksa genel bir simge çıkar ve sonuç daha az fark edilir.":
+    "The page declares no site icon and /favicon.ico doesn't return one either (or the declared icon doesn't load). Google shows this icon next to your site's name in mobile search results; without it a generic icon appears and the result stands out less.",
+  'En az 48x48 piksellik kare bir simge hazırlayın, sitenize yükleyin ve sayfaların <head> bölümüne `<link rel="icon" href="/favicon.ico">` ekleyin. Site oluşturucularda bu genelde "site simgesi" ayarıdır.':
+    'Make a square icon of at least 48x48 pixels, upload it to your site and add `<link rel="icon" href="/favicon.ico">` to the <head> of your pages. In site builders this is usually the "site icon" setting.',
+  "robots.txt tüm siteyi Google'a kapatıyor":
+    "robots.txt closes the whole site to Google",
+  "robots.txt dosyanız Googlebot'un ana sayfayı taramasını yasaklıyor (genelde `Disallow: /` satırı). Google sitenizi taramaz; sayfalar arama sonuçlarından zamanla düşer ya da açıklamasız görünür. Çoğu zaman geliştirme sırasında konup unutulmuş bir kuraldır.":
+    "Your robots.txt forbids Googlebot from crawling the home page (usually a `Disallow: /` line). Google won't crawl your site; pages drop out of search over time or appear without a description. It's often a rule added during development and forgotten.",
+  "robots.txt'teki `Disallow: /` satırını kaldırın ya da yalnızca gizli kalması gereken klasörlerle sınırlayın. Sonra Search Console'daki robots.txt raporundan Google'ın yeni dosyayı okuduğunu kontrol edin.":
+    "Remove the `Disallow: /` line from robots.txt or limit it to the folders that must stay hidden. Then check in Search Console's robots.txt report that Google has read the new file.",
+  "robots.txt site haritasını göstermiyor":
+    "robots.txt doesn't point to the sitemap",
+  "robots.txt dosyanızda `Sitemap:` satırı yok. Arama motorları site haritasını bu satırdan da bulur; Search Console'a gönderdiyseniz Google için sorun değildir, ama Bing ve diğer tarayıcılar için en kolay yoldur.":
+    "Your robots.txt has no `Sitemap:` line. Search engines also find the sitemap through this line; if you submitted it in Search Console it's not a problem for Google, but it's the easiest route for Bing and other crawlers.",
+  "robots.txt'in sonuna site haritanızın tam adresiyle bir satır ekleyin, örneğin `Sitemap: https://alanadiniz.com/sitemap.xml`.":
+    "Add a line with your sitemap's full address at the end of robots.txt, for example `Sitemap: https://yourdomain.com/sitemap.xml`.",
+  "Bazı yapay zekâ tarayıcıları robots.txt ile engellenmiş":
+    "Some AI crawlers are blocked by robots.txt",
+  "robots.txt dosyanız bazı yapay zekâ tarayıcılarının (örneğin GPTBot, ClaudeBot, PerplexityBot) sitenizi taramasını yasaklıyor. Bu bir tercih: içeriğinizin yapay zekâ eğitiminde kullanılmasını istemiyorsanız doğrudur. Ama bu asistanların arama ve yanıt özelliklerinde sitenizin görünmesini de azaltabilir. Google araması etkilenmez.":
+    "Your robots.txt forbids some AI crawlers (GPTBot, ClaudeBot, PerplexityBot, for example) from crawling your site. This is a choice: it's right if you don't want your content used for AI training. But it can also reduce how often your site appears in these assistants' search and answer features. Google Search isn't affected.",
+  "Bilerek engellediyseniz bir şey yapmanıza gerek yok. Yapay zekâ yanıtlarında görünmek istiyorsanız arama amaçlı tarayıcılara (OAI-SearchBot, Claude-SearchBot, PerplexityBot gibi) izin verip yalnızca eğitim tarayıcılarını (GPTBot, ClaudeBot, Google-Extended gibi) engelleyebilirsiniz.":
+    "If you blocked them on purpose, there's nothing to do. If you want to appear in AI answers, you can allow the search crawlers (such as OAI-SearchBot, Claude-SearchBot, PerplexityBot) and block only the training crawlers (such as GPTBot, ClaudeBot, Google-Extended).",
+  "llms.txt dosyası yok (isteğe bağlı)": "No llms.txt file (optional)",
+  "Sitenizin kökünde llms.txt dosyası yok. Bu dosya yapay zekâ asistanlarına sitenin önemli sayfalarını kısa bir listeyle anlatmak için önerilen yeni bir biçimdir. Henüz bir standart değildir ve Google bunu kullanmaz; yoksa bir sorun yoktur.":
+    "There's no llms.txt file at your site's root. This file is a newly proposed format for describing a site's important pages to AI assistants in a short list. It isn't a standard yet and Google doesn't use it; not having one is not a problem.",
+  "İsterseniz sitenizin kökünde /llms.txt adresine, sitenin ne olduğunu bir paragrafta anlatan ve önemli sayfalarınızı bağlantılarıyla listeleyen düz metin (Markdown) bir dosya koyun.":
+    "If you like, put a plain-text (Markdown) file at /llms.txt on your site's root that describes the site in one paragraph and lists your important pages with links.",
+  "Başlangıç sayfasının HTML'i 2 MB'tan büyük":
+    "Start page HTML is larger than 2 MB",
+  "Başlangıç sayfasının HTML'i 2 MB'ı aşıyor. Google bir HTML dosyasının yalnızca ilk 2 MB'ını işler; sonrasındaki içerik ve bağlantılar Google için yok sayılır. Büyük HTML ayrıca yavaş mobil bağlantılarda sayfayı geciktirir.":
+    "The start page's HTML exceeds 2 MB. Google only processes the first 2 MB of an HTML file; content and links after that are ignored by Google. Large HTML also slows the page down on slow mobile connections.",
+  "HTML'in içine gömülü büyük verileri (satır içi görseller, büyük JSON, tekrar eden menüler) ayrı dosyalara taşıyın. Uzun listeleri sayfalara bölün.":
+    "Move large data embedded in the HTML (inline images, large JSON, repeated menus) into separate files. Split long lists into pages.",
+  "Başlangıç sayfası sıkıştırılmadan geldi": "Start page arrived uncompressed",
+  "Denetim başlangıç sayfasını gzip ve brotli kabul ettiğini söyleyerek istedi, ama yanıtta Content-Encoding başlığı yoktu: sayfa sıkıştırılmadan geldi. Sıkıştırma HTML'i genelde 4-5 kat küçültür ve sayfayı hızlandırır. Bazı ara sunucular ve CDN'ler sıkıştırmayı yalnızca tarayıcılara uyguladığı için tarayıcıda da doğrulayın.":
+    "The audit asked for the start page saying it accepts gzip and brotli, but the response had no Content-Encoding header: the page arrived uncompressed. Compression usually shrinks HTML 4-5 times and speeds up the page. Some proxies and CDNs only compress for browsers, so confirm it in a browser too.",
+  "Sunucunuzda ya da CDN'de gzip veya brotli sıkıştırmayı açın. Sonucu tarayıcının geliştirici araçlarında, yanıt başlıklarında `content-encoding` satırına bakarak doğrulayın.":
+    "Turn on gzip or brotli compression on your server or CDN. Verify the result in the browser's developer tools by looking for the `content-encoding` line in the response headers.",
+  "Sunucu ilk yanıtı geç veriyor (TTFB)":
+    "Server is slow to send its first response (TTFB)",
+  "Başlangıç sayfasının ilk baytı 800 milisaniyeden geç geldi; web.dev bu sınırın altını önerir. Sunucu yanıtı geç başlarsa sayfadaki her şey o kadar geç başlar. Süre, denetimi çalıştıran bilgisayardan iki ayrı istekle ölçülür ve hızlı olanı esas alınır; yine de ağa göre değişebilir.":
+    "The start page's first byte arrived after more than 800 milliseconds; web.dev recommends staying below that. If the server response starts late, everything on the page starts that much later. The time is measured with two separate requests from the computer running the audit and the faster one counts; it can still vary with the network.",
+  "Sayfa önbelleğini açın, yavaş veritabanı sorgularını ve eklentileri bulun, ziyaretçilerinize yakın bir CDN kullanın. Sorun sürerse barındırma paketinizi gözden geçirin.":
+    "Turn on page caching, find slow database queries and plugins, and use a CDN close to your visitors. If the problem persists, review your hosting plan.",
+  "http adresi https'e yönlendirilmiyor":
+    "http address doesn't redirect to https",
+  'Sitenizin http:// ile başlayan adresi şifreli https sürümüne yönlendirmiyor, sayfayı düz http ile açıyor. Ziyaretçi adresi elle yazdığında ya da eski bir bağlantıdan geldiğinde güvenli olmayan sürümde kalır ve tarayıcı "Güvenli değil" uyarısı gösterir. Google da aynı içeriğin iki sürümünü görür.':
+    "Your site's http:// address doesn't redirect to the encrypted https version; it opens the page over plain http. When visitors type the address by hand or come from an old link, they stay on the insecure version and the browser shows a \"Not secure\" warning. Google also sees two versions of the same content.",
+  'Sunucunuzda ya da barındırma panelinizde "HTTPS\'e zorla" ayarını açın; yoksa tüm http isteklerini aynı adresin https karşılığına kalıcı (301) yönlendiren bir kural ekleyin.':
+    'Turn on the "Force HTTPS" setting on your server or hosting panel; otherwise add a rule that permanently (301) redirects every http request to the https equivalent of the same address.',
+  "HSTS başlığı yok": "No HSTS header",
+  'Sayfa https ile açılıyor ama Strict-Transport-Security (HSTS) başlığı göndermiyor. Bu başlık tarayıcıya "bu siteye bundan sonra hep https ile gel" der. Olmadığında ilk istek http ile gidebilir ve araya giren biri ziyaretçiyi güvensiz sürüme düşürebilir.':
+    'The page opens over https but doesn\'t send a Strict-Transport-Security (HSTS) header. This header tells the browser "always come to this site over https from now on". Without it, the first request can go over http and someone in between can downgrade the visitor to the insecure version.',
+  "Sunucu yanıtına `Strict-Transport-Security: max-age=31536000; includeSubDomains` başlığını ekleyin. Önce tüm alt alan adlarınızın https ile çalıştığından emin olun; tarayıcı bu süre boyunca http'yi denemez.":
+    "Add the `Strict-Transport-Security: max-age=31536000; includeSubDomains` header to the server response. First make sure all your subdomains work over https; browsers won't try http for that period.",
+  "X-Content-Type-Options başlığı yok": "No X-Content-Type-Options header",
+  "Sunucu `X-Content-Type-Options: nosniff` başlığını göndermiyor. Bu başlık tarayıcının dosya türünü tahmin etmesini engeller; yoksa yüklenen bir dosya betik gibi çalıştırılabilir. Sıralamayı etkilemez, sitenin güvenlik düzenini gösterir.":
+    "The server doesn't send the `X-Content-Type-Options: nosniff` header. This header stops the browser from guessing a file's type; without it an uploaded file could be run as a script. It doesn't affect rankings; it shows the site's security setup.",
+  "Sunucu yanıtlarına `X-Content-Type-Options: nosniff` başlığını ekleyin. Çoğu barındırma panelinde ya da CDN'de güvenlik başlıkları ayarından tek tıkla açılır.":
+    "Add the `X-Content-Type-Options: nosniff` header to server responses. In most hosting panels or CDNs it's a one-click option in the security headers settings.",
+  "Sayfa başka sitelerin çerçevesine gömülebiliyor":
+    "Page can be embedded in other sites' frames",
+  "Ne X-Frame-Options başlığı ne de Content-Security-Policy içinde frame-ancestors kuralı var. Başka bir site sayfanızı görünmez bir çerçeveye koyup ziyaretçiyi istemediği bir yere tıklatabilir (clickjacking). Sıralamayı etkilemez.":
+    "There's neither an X-Frame-Options header nor a frame-ancestors rule in a Content-Security-Policy. Another site could put your page in an invisible frame and trick visitors into clicking somewhere they didn't intend (clickjacking). It doesn't affect rankings.",
+  "Sayfanın başka sitelerde gösterilmesi gerekmiyorsa `Content-Security-Policy: frame-ancestors 'self'` ya da `X-Frame-Options: SAMEORIGIN` başlığını ekleyin.":
+    "If the page doesn't need to be shown on other sites, add the `Content-Security-Policy: frame-ancestors 'self'` or `X-Frame-Options: SAMEORIGIN` header.",
+  "Referrer-Policy başlığı yok": "No Referrer-Policy header",
+  "Sunucu Referrer-Policy başlığı göndermiyor. Güncel tarayıcılar bu durumda güvenli bir varsayılan kullanır, yani acil bir sorun değil; ama başlık, ziyaretçi başka siteye geçtiğinde adresinizin ne kadarının paylaşılacağını sizin belirlemenizi sağlar.":
+    "The server doesn't send a Referrer-Policy header. Current browsers use a safe default in that case, so it's not urgent; but the header lets you decide how much of your address is shared when a visitor moves to another site.",
+  "Sunucu yanıtlarına `Referrer-Policy: strict-origin-when-cross-origin` başlığını ekleyin.":
+    "Add the `Referrer-Policy: strict-origin-when-cross-origin` header to server responses.",
+  "SSL sertifikasının süresi 30 günden az":
+    "SSL certificate expires in less than 30 days",
+  "Herkese açık sertifika kayıtlarına (Certificate Transparency) göre bu alan adı için kayıtlardaki en yeni sertifikanın bitmesine 30 günden az kaldı. Süre dolarsa tarayıcılar siteyi tam sayfa güvenlik uyarısıyla açar ve ziyaretçilerin çoğu geri döner. Sunucu, kayıtlara henüz düşmemiş daha yeni bir sertifika kullanıyor olabilir; tarayıcıda adres çubuğundaki kilitten bitiş tarihine bakarak doğrulayın.":
+    "According to public certificate logs (Certificate Transparency), the newest certificate on record for this domain expires in less than 30 days. If it expires, browsers open the site with a full-page security warning and most visitors turn back. The server may already use a newer certificate that has not reached the logs yet; confirm the expiry date from the padlock in the browser's address bar.",
+  "Sertifikanın otomatik yenilendiğini barındırma panelinizden kontrol edin. Let's Encrypt gibi otomatik sertifikalar genelde bitmeden 30 gün önce yenilenir; yenilenmediyse yenilemeyi elle başlatın.":
+    "Check in your hosting panel that the certificate renews automatically. Automatic certificates such as Let's Encrypt usually renew 30 days before they expire; if it hasn't renewed, start the renewal manually.",
+  "SSL sertifikasının süresi dolmak üzere":
+    "SSL certificate is about to expire",
+  "Herkese açık sertifika kayıtlarına (Certificate Transparency) göre bu alan adı için kayıtlardaki en yeni sertifikanın bitmesine 14 günden az kaldı. Süre dolunca tarayıcılar siteyi tam sayfa güvenlik uyarısıyla açar; ziyaretçilerin çoğu siteye hiç giremez. Sunucu, kayıtlara henüz düşmemiş daha yeni bir sertifika kullanıyor olabilir; tarayıcıda adres çubuğundaki kilitten bitiş tarihine bakarak doğrulayın.":
+    "According to public certificate logs (Certificate Transparency), the newest certificate on record for this domain expires in less than 14 days. Once it expires, browsers open the site with a full-page security warning; most visitors can't get in at all. The server may already use a newer certificate that has not reached the logs yet; confirm the expiry date from the padlock in the browser's address bar.",
+  "Sertifikayı hemen yenileyin ve sunucuya yükleyin. Otomatik yenileme varsa neden çalışmadığına bakın (DNS kaydı değişmiş, doğrulama dosyasına erişilemiyor gibi).":
+    "Renew the certificate right away and install it on the server. If automatic renewal is set up, find out why it didn't work (a changed DNS record or an unreachable validation file, for example).",
+  "Alan adının süresi 30 günden az": "Domain expires in less than 30 days",
+  "Alan adı kayıt bilgisine (RDAP) göre alan adınızın süresinin bitmesine 30 günden az kaldı. Yenilenmezse site ve e-postalar tamamen durur, alan adı başkasının eline geçebilir.":
+    "According to the domain's registration data (RDAP), your domain expires in less than 30 days. If it isn't renewed, the site and email stop completely and the domain can end up in someone else's hands.",
+  "Alan adını aldığınız firmadan süreyi uzatın ve otomatik yenilemeyi açın. Kayıttaki e-posta adresinin güncel olduğundan emin olun; hatırlatmalar oraya gider.":
+    "Extend the registration with the company you bought the domain from and turn on auto-renewal. Make sure the email address on the registration is current; reminders go there.",
+  "Alan adında SPF kaydı yok": "No SPF record on the domain",
+  "Alan adınızın DNS'inde SPF kaydı (v=spf1 ile başlayan TXT kaydı) yok. SPF, alan adınız adına hangi sunucuların e-posta gönderebileceğini söyler. Yoksa başkaları sizin adınıza sahte e-posta gönderebilir ve sizin gerçek e-postalarınız spam klasörüne düşebilir. SEO'yu doğrudan etkilemez.":
+    "Your domain's DNS has no SPF record (a TXT record starting with v=spf1). SPF says which servers may send email on behalf of your domain. Without it, others can send fake email in your name and your real email can land in spam. It doesn't affect SEO directly.",
+  "E-postanızı gönderen hizmetin (Google Workspace, Microsoft 365, barındırma firması) önerdiği SPF kaydını DNS'e TXT olarak ekleyin. Alan adından hiç e-posta gönderilmiyorsa `v=spf1 -all` yeterlidir.":
+    "Add the SPF record recommended by the service that sends your email (Google Workspace, Microsoft 365, your hosting company) to DNS as a TXT record. If no email is sent from the domain at all, `v=spf1 -all` is enough.",
+  "Alan adında DMARC kaydı yok": "No DMARC record on the domain",
+  "Alan adınızda DMARC kaydı (_dmarc alt adında v=DMARC1 ile başlayan TXT kaydı) yok. DMARC, SPF ve DKIM kontrolünden geçemeyen e-postalara ne yapılacağını söyler. Gmail ve Yahoo toplu gönderim yapan alan adlarından bu kaydı istiyor. SEO'yu doğrudan etkilemez.":
+    "Your domain has no DMARC record (a TXT record starting with v=DMARC1 on the _dmarc subdomain). DMARC says what to do with email that fails SPF and DKIM checks. Gmail and Yahoo require it from domains that send bulk email. It doesn't affect SEO directly.",
+  "DNS'e `_dmarc` adıyla `v=DMARC1; p=none; rua=mailto:dmarc@alanadiniz.com` gibi bir TXT kaydı ekleyin. Raporları birkaç hafta izledikten sonra politikayı `quarantine` ya da `reject` yapın.":
+    "Add a TXT record named `_dmarc` to DNS, such as `v=DMARC1; p=none; rua=mailto:dmarc@yourdomain.com`. After watching the reports for a few weeks, change the policy to `quarantine` or `reject`.",
+  // audit-issues: per-page signal checks (site audit overhaul, W2)
+  "Open Graph etiketleri eksik": "Open Graph tags incomplete",
+  "Sayfada Open Graph etiketleri var ama başlık, açıklama ve görselden biri ya da birkaçı eksik. Bu etiketler sayfa Facebook, LinkedIn, WhatsApp gibi yerlerde paylaşıldığında görünen kartı belirler. Eksik olanı paylaşılan platform kendisi tahmin eder; çoğu zaman yanlış görsel ya da kesik bir metin çıkar. Google sıralamasını etkilemez.":
+    "The page has Open Graph tags, but the title, description or image is missing. These tags decide the card shown when the page is shared on Facebook, LinkedIn, WhatsApp and similar places. The platform guesses whatever is missing, which often means the wrong image or a cut-off text. They don't affect Google rankings.",
+  "Eksik etiketi ekleyin: og:title, og:description ve og:image üçü birlikte olmalı. Görsel en az 1200x630 piksel olsun. SEO eklentiniz varsa sosyal paylaşım bölümünü doldurmanız yeter.":
+    "Add the missing tag: og:title, og:description and og:image belong together. Make the image at least 1200x630 pixels. If you use an SEO plugin, filling in its social sharing section is enough.",
+  "X (Twitter) kart etiketi yok": "No X (Twitter) card tag",
+  "Sayfada Open Graph etiketleri var ama twitter:card etiketi yok. X başlık, açıklama ve görseli Open Graph'tan alabilir, ama kart türünü söyleyen bu etiket olmadan bağlantı kartsız, düz bir adres olarak görünebilir. Google sıralamasını etkilemez.":
+    "The page has Open Graph tags but no twitter:card tag. X can take the title, description and image from Open Graph, but without this tag, which names the card type, the link may show as a plain address with no card. It doesn't affect Google rankings.",
+  'Sayfanın head bölümüne <meta name="twitter:card" content="summary_large_image"> ekleyin. Diğer twitter: etiketlerine gerek yok; X eksikleri Open Graph etiketlerinden tamamlar.':
+    'Add <meta name="twitter:card" content="summary_large_image"> to the page\'s head. The other twitter: tags aren\'t needed; X fills them in from the Open Graph tags.',
+  "Başlık etiketi ile H1 aynı": "Title tag and H1 are identical",
+  "Sayfanın başlık etiketi (<title>) ile H1 başlığı birebir aynı. Bu bir hata değil ve Google bunu cezalandırmaz. Ama iki farklı yer, iki farklı fırsat demek: başlık arama sonucunda tıklatmak için, H1 sayfaya gelen ziyaretçiye konuyu söylemek için yazılır. Aynı metin ikisinden birini boşa harcar.":
+    "The page's title tag (<title>) and its H1 are exactly the same. This isn't an error and Google doesn't penalise it. But two places mean two chances: the title is written to earn the click in search results, the H1 to tell the visitor on the page what it's about. The same text wastes one of them.",
+  "Başlığı arama sonucu için yazın (ana kelime başta, marka sonda), H1'i sayfadaki okur için yazın. Konu aynı kalsın, ifade farklı olsun.":
+    "Write the title for the search result (main keyword first, brand last) and the H1 for the reader on the page. Keep the topic, vary the wording.",
+  "Başlık arama sonucunda kesilebilir":
+    "Title may be cut off in search results",
+  "Başlık 60 karakterin altında ama geniş harfler yüzünden yaklaşık 580 pikseli aşıyor. Google başlığı karakter sayısına göre değil, genişliğe göre keser; geniş büyük harfler (W, M) ve sayılar başlığı daha erken taşırır. Ölçüm, Google'ın masaüstünde kullandığı 20 piksellik Arial yazı tipine göre yapılan bir tahmindir.":
+    "The title is under 60 characters but wide letters push it past about 580 pixels. Google cuts titles by width, not by character count; wide capitals (W, M) and digits fill the line sooner. The measurement is an estimate based on the 20-pixel Arial font Google uses on desktop.",
+  "Başlığı kısaltın ya da büyük harfle yazılmış sözcükleri normal yazıma çevirin. En önemli kelimeleri başa alın; kesilme olursa sondaki marka adı gitsin.":
+    "Shorten the title or change words written in capitals to normal case. Put the most important words first, so that if anything is cut, it's the brand name at the end.",
+  "Gereksiz meta keywords etiketi": "Unnecessary meta keywords tag",
+  "Sayfada meta keywords etiketi var. Google bu etiketi yıllardır hiç kullanmıyor; sıralamaya ne katkısı ne zararı var. Tek etkisi, hedeflediğiniz kelimeleri rakiplerin kaynak koduna bakarak görebilmesi.":
+    "The page has a meta keywords tag. Google hasn't used this tag for years; it neither helps nor hurts rankings. Its only effect is that competitors can see the keywords you target by looking at the source code.",
+  "Etiketi şablondan ya da SEO eklentisinin ayarlarından kaldırın. Acil değil; zamanınız olduğunda temizleyin.":
+    "Remove the tag from the template or in your SEO plugin's settings. It isn't urgent; clean it up when you have time.",
+  "Sayfa yakınlaştırmayı engelliyor": "Page blocks zooming",
+  "Sayfanın viewport etiketi kullanıcının yakınlaştırmasını kapatıyor (user-scalable=no ya da 2'den küçük maximum-scale). Az gören ziyaretçiler telefonda metni büyütemez. Erişilebilirlik standardı (WCAG) metnin %200'e kadar büyütülebilmesini ister; Lighthouse da bunu hata sayar.":
+    "The page's viewport tag turns off zooming (user-scalable=no or a maximum-scale under 2). Visitors with low vision can't enlarge the text on their phone. The accessibility standard (WCAG) requires text to be resizable up to 200%, and Lighthouse counts this as a failure.",
+  'Viewport etiketinden user-scalable=no ve maximum-scale değerlerini kaldırın: <meta name="viewport" content="width=device-width, initial-scale=1"> yeterlidir.':
+    'Remove user-scalable=no and maximum-scale from the viewport tag: <meta name="viewport" content="width=device-width, initial-scale=1"> is enough.',
+  "En iyi uygulama: yeni sekmede açılan dış bağlantılarda noopener yok":
+    "Best practice: external links open in a new tab without noopener",
+  'Sayfada target="_blank" ile yeni sekmede açılan ama rel="noopener" ya da rel="noreferrer" taşımayan dış bağlantılar var. Güncel tarayıcılar (Chrome 88, Firefox 79 ve Safari 12.1\'den beri) target="_blank" bağlantılara noopener\'ı kendiliğinden uygular; yani bu bir güvenlik açığı değil, eski tarayıcılar için bir en iyi uygulama notudur. Sıralamayı etkilemez.':
+    'The page has external links that open in a new tab with target="_blank" but carry neither rel="noopener" nor rel="noreferrer". Current browsers (since Chrome 88, Firefox 79 and Safari 12.1) apply noopener to target="_blank" links on their own, so this is not a security hole, only a best-practice note for older browsers. It doesn\'t affect rankings.',
+  'Bu bağlantılara rel="noopener" ekleyin. Çoğu zaman tek bir şablon ya da editör ayarıdır.':
+    'Add rel="noopener" to these links. It\'s usually a single template or editor setting.',
+  'Adresi "javascript:" olan bağlantılar':
+    'Links whose address is "javascript:"',
+  'Sayfada href değeri "javascript:" ile başlayan bağlantılar var. Google yalnızca gerçek bir adrese giden <a href> bağlantılarını izler; bunları izleyemez, yani gittikleri sayfaları bu yoldan bulamaz. Klavye ve ekran okuyucu kullananlar için de bunlar çoğu zaman çalışmaz.':
+    "The page has links whose href starts with \"javascript:\". Google follows only <a href> links that lead to a real address; it can't follow these, so it can't find the pages they lead to this way. They often don't work for keyboard and screen reader users either.",
+  "Bir sayfaya gidiyorsa href'e o sayfanın adresini yazın. Bir işlem yapıyorsa (menü açmak gibi) <a> yerine <button> kullanın.":
+    "If the link goes to a page, put that page's address in href. If it performs an action (such as opening a menu), use a <button> instead of an <a>.",
+  "Aşağıdaki görseller hemen yükleniyor":
+    "Images further down load immediately",
+  'Sayfada ilk ekranın altında kalan altıdan fazla görsel loading="lazy" olmadan, sayfa açılır açılmaz yükleniyor. Ziyaretçi o kısma inmeden bant genişliği harcanır ve sayfa yavaşlar. Tahmin, ilk üç içerik görselinin ilk ekranda olduğunu varsayar ve yalnızca ana içerikteki (<main>, <article>) ya da büyük boyutlu görselleri sayar; logolar ve simgeler sayılmaz. Gerçek ekran düzeni farklı olabilir.':
+    'More than six images below the first screen load as soon as the page opens, without loading="lazy". Bandwidth is spent before the visitor scrolls there, and the page slows down. The estimate assumes the first three content images are in the first screen and counts only images in the main content (<main>, <article>) or sized large; logos and icons are not counted. The real layout may differ.',
+  'İlk ekranın altındaki görsellere loading="lazy" ekleyin. İlk ekrandaki ana görsele eklemeyin; o görsel hemen yüklenmeli.':
+    'Add loading="lazy" to the images below the first screen. Don\'t add it to the main image in the first screen; that one should load right away.',
+  "Görseller eski biçimde": "Images in older formats",
+  "Sayfadaki üç ya da daha fazla görsel JPEG, PNG ya da GIF biçiminde ve WebP ya da AVIF alternatifi yok (logolar, simgeler ve SVG'ler sayılmaz). Yeni biçimler aynı kalitede genelde %25-50 daha küçüktür; sayfa daha hızlı açılır. Tüm güncel tarayıcılar bu biçimleri destekler.":
+    "Three or more images on the page are JPEG, PNG or GIF with no WebP or AVIF alternative (logos, icons and SVGs are not counted). The newer formats are usually 25-50% smaller at the same quality, so the page opens faster. All current browsers support them.",
+  "Görselleri WebP ya da AVIF'e çevirin, ya da <picture> içinde bu biçimlerde bir <source> ekleyin. Çoğu CMS ve görsel eklentisi bunu otomatik yapabilir.":
+    "Convert the images to WebP or AVIF, or add a <source> in those formats inside a <picture>. Most CMSs and image plugins can do this automatically.",
+  "Etiketi olmayan form alanları": "Form fields without labels",
+  'Sayfadaki bazı form alanlarının (metin kutusu, seçim listesi) etiketi yok: ne <label>, ne aria-label, ne title, ne de yer tutucu metin. Ekran okuyucu kullanan ziyaretçi alana gelince yalnızca "düzenleme alanı" duyar, ne yazacağını bilemez. Lighthouse\'un erişilebilirlik denetimi de bunu hata sayar.':
+    "Some form fields on the page (text boxes, select lists) have no label: no <label>, no aria-label, no title and no placeholder. A visitor using a screen reader hears only \"edit text\" when they reach the field and can't tell what to type. Lighthouse's accessibility audit counts this as a failure too.",
+  'Her alana görünür bir <label for="alan-id"> ekleyin. Tasarım görünür etikete izin vermiyorsa aria-label="E-posta adresi" gibi bir etiket verin.':
+    'Give each field a visible <label for="field-id">. If the design doesn\'t allow a visible label, add one such as aria-label="Email address".',
+  "Aynı id birden çok öğede": "Same id on several elements",
+  "Sayfada aynı id değerini taşıyan birden fazla öğe var. id sayfada tek olmalı; tekrar ettiğinde form etiketleri, sayfa içi bağlantılar ve erişilebilirlik bağlantıları yanlış öğeye gider. Sıralamayı etkilemez, ama genelde bir bileşenin aynı sayfada iki kez kullanılmasından kaynaklanan bir şablon hatasıdır.":
+    "Several elements on the page share the same id value. An id must be unique on a page; when it repeats, form labels, in-page links and accessibility references point at the wrong element. It doesn't affect rankings, but it's usually a template bug where a component is used twice on one page.",
+  "Tekrar eden id'leri bulun (tarayıcının geliştirici araçlarında document.querySelectorAll('[id]') ile) ve her birini benzersiz yapın; yalnızca stil için kullanılıyorsa class'a çevirin.":
+    "Find the repeated ids (with document.querySelectorAll('[id]') in the browser's developer tools) and make each one unique; if one is only used for styling, turn it into a class.",
+  "Sayfanın HTML yapısı çok büyük": "Page's HTML structure is too large",
+  "Sayfada 1.500'den fazla HTML öğesi var. Lighthouse bu sınırdan sonra uyarı verir: büyük bir sayfa yapısı daha çok bellek harcar, stil hesaplamayı ve etkileşimi yavaşlatır, özellikle telefonda. Genelde her sayfada tekrarlanan dev menülerden, gizli ama yüklenen içerikten ya da iç içe geçmiş sayfa oluşturucu katmanlarından olur.":
+    "The page has more than 1,500 HTML elements. Lighthouse warns from this point: a large page structure uses more memory and slows down style calculation and interaction, especially on phones. It usually comes from huge menus repeated on every page, hidden content that still loads, or nested page builder layers.",
+  "Görünmeyen içeriği (kapalı menüler, sekmeler) gerektiğinde yükleyin, uzun listeleri sayfalara bölün, sayfa oluşturucunun gereksiz sarmalayıcı katmanlarını azaltın.":
+    "Load content that isn't visible (closed menus, tabs) when it's needed, split long lists into pages, and cut down the page builder's unnecessary wrapper layers.",
+  "HTML öğeleri çok iç içe": "HTML elements nested too deeply",
+  "Sayfada 32 kattan derin iç içe geçmiş HTML öğeleri var. Çok derin yapı stil hesaplamayı yavaşlatır ve genelde sayfa oluşturucuların her bölümü birkaç gereksiz kutuya sarmasından kaynaklanır.":
+    "The page has HTML elements nested more than 32 levels deep. A very deep structure slows down style calculation and usually comes from page builders wrapping each section in several unnecessary boxes.",
+  "Şablonda gereksiz sarmalayıcı <div> katmanlarını kaldırın; sayfa oluşturucu kullanıyorsanız iç içe bölüm ve sütunları azaltın.":
+    "Remove unnecessary wrapper <div> layers from the template; if you use a page builder, reduce nested sections and columns.",
+  "Görünür metin, koda göre çok az":
+    "Very little visible text compared with code",
+  "Sayfanın görünür metni, HTML'nin onda birinden az. Bu tek başına bir sıralama sorunu değil; Google böyle bir oran ölçmez. Ama çoğu zaman sayfanın satır içi betik ve stil kodlarıyla şiştiğini ya da içeriğin ilk gelen HTML'de olmadığını gösterir.":
+    "The page's visible text is less than a tenth of its HTML. On its own this isn't a ranking problem; Google doesn't measure such a ratio. But it often shows that the page is bloated with inline scripts and styles, or that the content isn't in the HTML that arrives first.",
+  "Satır içi büyük betik ve stilleri ayrı dosyalara taşıyın, kullanılmayan kodu kaldırın. İçerik JavaScript ile yükleniyorsa sayfa kaynağında da göründüğünden emin olun.":
+    "Move large inline scripts and styles into separate files and remove unused code. If the content is loaded with JavaScript, make sure it also appears in the page source.",
+  "Neredeyse aynı içerik": "Near-duplicate content",
+  "Bu sayfaların ana içeriği neredeyse aynı; yalnızca birkaç kelime (şehir adı, renk, fiyat gibi) farklı. Menü, üst ve alt bilgi gibi her sayfada tekrar eden kısımlar karşılaştırmaya katılmaz. Google bu sayfalardan birini seçip diğerlerini arama sonucunda göstermeyebilir ve hangisini seçeceğine o karar verir. Genelde aynı şablonla çoğaltılmış konum, ürün çeşidi ya da etiket sayfalarında olur.":
+    "The main content of these pages is almost the same; only a few words (a city name, a colour, a price) differ. Parts repeated on every page, such as the menu, header and footer, are left out of the comparison. Google may pick one of them and leave the others out of search results, and it decides which. It usually happens with location, product variant or tag pages copied from the same template.",
+  "Her sayfaya kendine özgü, işe yarar içerik ekleyin. Gerçekten aynı şeyi anlatıyorlarsa tek sayfada birleştirin ya da diğerlerine asıl sayfayı gösteren bir canonical ekleyin.":
+    "Give each page its own useful content. If they really say the same thing, merge them into one page or add a canonical on the others pointing to the main page.",
+  "Yapılandırılmış veride zorunlu özellikler eksik":
+    "Required properties missing in structured data",
+  "Sayfadaki yapılandırılmış veri (JSON-LD) bir türü bildiriyor ama Google'ın o tür için zorunlu saydığı özelliklerden bazıları yok. Bu, Product, FAQPage, BreadcrumbList ve LocalBusiness türleri içindir; eksik olunca arama sonucunda zengin görünüm (yıldız, fiyat, içerik haritası) çıkmaz.":
+    "The page's structured data (JSON-LD) declares a type but lacks some of the properties Google calls required for it. This applies to Product, FAQPage, BreadcrumbList and LocalBusiness; without them no rich result (stars, price, breadcrumb) appears in search.",
+  "Ayrıntıdaki eksik özellikleri işaretlemeye ekleyin ve sonucu Google'ın Zengin Sonuç Testi ile kontrol edin. İşaretleme sayfada gerçekten görünen bilgiyi anlatmalı; sayfada olmayan bir fiyatı ya da yorumu işaretlemek Google kurallarına aykırıdır.":
+    "Add the missing properties listed in the details to the markup and check the result with Google's Rich Results Test. The markup must describe information actually visible on the page; marking up a price or review that isn't on the page is against Google's guidelines.",
+  "Yapılandırılmış veride önerilen özellikler eksik":
+    "Recommended properties missing in structured data",
+  "Sayfadaki Article ya da Organization işaretlemesinde Google'ın önerdiği özelliklerden (başlık, görsel, tarih, yazar; ya da ad, web adresi, logo) bazıları yok. Google bu türler için zorunlu özellik saymaz, bu yüzden işaretleme geçerlidir ve zengin görünümü engellemez; önerilen özellikler yalnızca Google'ın sayfayı daha eksiksiz göstermesine yardım eder.":
+    "The page's Article or Organization markup lacks some of the properties Google recommends (headline, image, date, author; or name, URL, logo). Google lists no required properties for these types, so the markup is valid and does not block a rich result; the recommended properties only help Google show the page more completely.",
+  "Ayrıntıdaki özellikleri, sayfada gerçekten görünen bilgiyle işaretlemeye ekleyin ve sonucu Google'ın Zengin Sonuç Testi ile kontrol edin. Acil değildir; zorunlu özellik eksiklerinden sonra gelir.":
+    "Add the properties listed in the details to the markup, using information actually visible on the page, and check the result with Google's Rich Results Test. It is not urgent; it comes after missing required properties.",
+  "Sayfalarda Google Analytics etiketi bulunamadı":
+    "No Google Analytics tag found on the pages",
+  "Taranan sayfaların HTML'sinde Google Analytics 4 (G-), Google Etiket Yöneticisi (GTM-) ya da Universal Analytics (UA-) kimliği bulunamadı. Ölçüm yoksa hangi sayfanın ziyaretçi ve dönüşüm getirdiğini göremezsiniz. Etiket bir çerez onay aracı ya da başka bir betik tarafından sonradan yükleniyorsa burada görünmez; o durumda bu bulguyu yok sayabilirsiniz.":
+    "No Google Analytics 4 (G-), Google Tag Manager (GTM-) or Universal Analytics (UA-) id was found in the HTML of the crawled pages. Without measurement you can't see which pages bring visitors and conversions. If the tag is loaded later by a cookie consent tool or another script, it won't show up here; in that case you can ignore this finding.",
+  "Google Analytics 4'te bir web veri akışı oluşturun ve verdiği etiketi tüm sayfaların head bölümüne ekleyin; ya da Etiket Yöneticisi kullanıyorsanız kapsayıcı kodunu ekleyin. Sonra Analytics'teki gerçek zamanlı raporda ziyaretinizin göründüğünü kontrol edin.":
+    "Create a web data stream in Google Analytics 4 and add the tag it gives you to the head of every page, or add the container code if you use Tag Manager. Then check that your own visit appears in Analytics' realtime report.",
+  "Sayfalardaki Analytics kimliği bağlı mülkle eşleşmiyor":
+    "Analytics id on the pages doesn't match the connected property",
+  "Sayfalarda bulunan Google Analytics 4 ölçüm kimliği (G-), bu projeye bağlı Analytics mülkünün web veri akışlarındaki kimliklerden hiçbiriyle eşleşmiyor. Yani ziyaretçi verisi büyük olasılıkla başka bir mülke gidiyor ve buradaki Analytics raporları siteyi göstermiyor. Eski bir mülkün kodu ya da kopyalanmış bir şablon genelde nedendir.":
+    "The Google Analytics 4 measurement id (G-) found on the pages matches none of the ids in the web data streams of the Analytics property connected to this project. So visitor data is most likely going to another property, and the Analytics reports here don't show this site. An old property's code or a copied template is the usual cause.",
+  "Ayrıntıdaki iki kimlik listesini karşılaştırın. Doğru mülk bağlıysa sayfalardaki etiketi o mülkün ölçüm kimliğiyle değiştirin; sayfalardaki doğruysa Ayarlar'dan projeye o mülkü bağlayın.":
+    "Compare the two id lists in the details. If the right property is connected, replace the tag on the pages with that property's measurement id; if the one on the pages is right, connect that property to the project in Settings.",
+
+  // ── Site audit overview: score breakdown, checks, to-do, instant data, report ──
+  "{count} kontrol aşamasından geçti": "Passed {count} checks",
+  Ölçülmedi: "Not measured",
+  "Geçen {count} kontrol": "{count} passed checks",
+  Geçti: "Passed",
+  "{count} sayfada": "On {count} pages",
+  "Başlangıç sayfası okunamadığı için önizleme yok.":
+    "No preview, because the start page couldn't be read.",
+  "Hız ölçülmedi": "Speed not measured",
+  "Hız ölçülemedi": "Speed could not be measured",
+  "Başlangıç sayfası ölçülemedi; gösterilen, ölçülen en üst sayfa: {url}":
+    "The start page could not be measured; showing the shallowest measured page: {url}",
+  "Bu denetimde başlangıç sayfası için PageSpeed ölçümü yok. Denetimi hız ölçümü açık başlatırsanız gerçek kullanıcı verisi (CrUX) ve laboratuvar sonuçları burada görünür.":
+    "This audit has no PageSpeed measurement for the start page. Run the audit with speed tests on and real-user data (CrUX) and lab results appear here.",
+  "Temel Web Verileri": "Core Web Vitals",
+  "Gerçek kullanıcı verisi Chrome Kullanıcı Deneyimi Raporu'ndan (CrUX, son 28 gün, mobil); laboratuvar sütunu PageSpeed Insights'ın tek ölçümü.":
+    "Real-user data comes from the Chrome User Experience Report (CrUX, last 28 days, mobile); the lab column is a single PageSpeed Insights run.",
+  Metrik: "Metric",
+  "Bu sayfa, gerçek": "This page, real users",
+  "Tüm site, gerçek": "Whole site, real users",
+  "Anlık veri": "Instant data",
+  "Site puanı {score}/100, {word}": "Site score {score}/100, {word}",
+  "Uyarı ve bilgi": "Warnings and notices",
+  "Kategori puanları": "Category scores",
+  "Tüm kontroller": "All checks",
+  "{passed}/{total} geçti": "{passed}/{total} passed",
+  "Puan geçmişi": "Score history",
+  "Son {count} denetimin puanı": "Score of the last {count} audits",
+  "Öncekiyle aynı": "Same as last time",
+  "{value} puan, öncekine göre": "{value} points since the last audit",
+  "Tarayıcı erişimi (robots.txt)": "Crawler access (robots.txt)",
+  "Arama motorları ve yapay zekâ tarayıcıları sitenin ana sayfasını okuyabiliyor mu?":
+    "Can search engines and AI crawlers read the site's home page?",
+  "Arama motoru": "Search engine",
+  "Yapay zekâ": "AI",
+  Engelli: "Blocked",
+  İzinli: "Allowed",
+  "DNS kayıtları": "DNS records",
+  "Bazı sorgular yanıt vermedi; liste eksik olabilir.":
+    "Some lookups didn't answer; the list may be incomplete.",
+  "Ölçüm etiketleri": "Measurement tags",
+  "Sayfaların HTML'sinde bulunan Google Analytics ve Etiket Yöneticisi kimlikleri.":
+    "Google Analytics and Tag Manager ids found in the pages' HTML.",
+  "Hiçbir sayfada etiket bulunamadı.": "No tag found on any page.",
+  "Yapılandırılmış veri türleri": "Structured data types",
+  "Sayfaların JSON-LD ile bildirdiği schema.org türleri.":
+    "schema.org types the pages declare in JSON-LD.",
+  "Hiçbir sayfada yapılandırılmış veri bulunamadı.":
+    "No structured data found on any page.",
+  "{date} (süresi doldu)": "{date} (expired)",
+  "{date} ({count} gün kaldı)": "{date} ({count} days left)",
+  "Sunucu ve yanıt": "Server and response",
+  "{count} adım": "{count} hops",
+  "İlk bayt (TTFB)": "First byte (TTFB)",
+  "Toplam yanıt": "Total response",
+  "HTML boyutu": "HTML size",
+  Sıkıştırma: "Compression",
+  Önbellek: "Caching",
+  Sunucu: "Server",
+  "Teknoloji ipucu": "Technology hint",
+  "Güvenlik başlıkları": "Security headers",
+  "http'den https'e yönlendirme": "http to https redirect",
+  "Çerçeveye gömme koruması": "Framing protection",
+  "Alan adı ve sertifika": "Domain and certificate",
+  "Sertifika bilgisi herkese açık Certificate Transparency kayıtlarından; alan adı bilgisi RDAP'tan.":
+    "Certificate details come from public Certificate Transparency logs; domain details from RDAP.",
+  "Sertifikayı veren": "Certificate issuer",
+  "Sertifika bitişi": "Certificate expires",
+  "Kayıt firması": "Registrar",
+  "Kayıt tarihi": "Registered",
+  "Alan adı bitişi": "Domain expires",
+  "Diğer adres": "Other host",
+  "Asıl adrese yönleniyor": "Redirects to the main host",
+  "Ayrı açılıyor": "Opens separately",
+  "Ana sayfaya yönleniyor": "Redirects to the home page",
+  "Doğru: {status}": "Correct: {status}",
+  "Hatalı: {status} dönüyor": "Wrong: returns {status}",
+  "Dosyalar ve hata sayfası": "Files and error page",
+  "robots.txt içinde Sitemap satırı": "Sitemap line in robots.txt",
+  "Olmayan bir sayfa": "A page that doesn't exist",
+  "Bu denetim site bilgisi toplanmadan önce yapılmış. Sunucu, güvenlik başlıkları, DNS ve sertifika bilgisini görmek için denetimi yeniden çalıştırın.":
+    "This audit ran before site details were collected. Run the audit again to see the server, security headers, DNS and certificate details.",
+  "Google arama sonucu önizlemesi": "Google search result preview",
+  "(başlık yok)": "(no title)",
+  "(meta açıklama yok; Google sayfadan bir parça seçer)":
+    "(no meta description; Google picks a passage from the page)",
+  "Başlık {px} piksel; yaklaşık {max} pikselden sonrası kesiliyor.":
+    "The title is {px} pixels; anything past about {max} pixels is cut off.",
+  "Başlık {px} piksel, sığıyor.": "The title is {px} pixels and fits.",
+  "Sayfanın başlığı yok.": "The page has no title.",
+  "Açıklama iki satıra sığmıyor; sonu kesilerek gösterilir.":
+    "The description doesn't fit on two lines; its end is cut off.",
+  "Paylaşım kartı önizlemesi (Open Graph)": "Share card preview (Open Graph)",
+  "Görsel açılamadı": "Image couldn't be loaded",
+  "og:image yok": "No og:image",
+  "Open Graph başlığı, açıklaması ve görseli tanımlı.":
+    "Open Graph title, description and image are set.",
+  "Eksik: {tags}. Paylaşım siteleri yerine sayfadan tahmin eder.":
+    "Missing: {tags}. Sharing sites guess them from the page instead.",
+  "Twitter kartı: {card}": "Twitter card: {card}",
+  "Twitter kartı tanımlı değil.": "No Twitter card set.",
+  "{url}: {critical} kritik, {warning} uyarı, {info} bilgi":
+    "{url}: {critical} critical, {warning} warnings, {info} notices",
+  "{count} tıklama": "{count} clicks",
+  "Son denetimden bu yana": "Since the last audit",
+  "{date} tarihli denetimle karşılaştırıldı.":
+    "Compared with the audit of {date}.",
+  "Düzeltilenler ({count})": "Fixed ({count})",
+  "Önceki denetimdeki sorunların hiçbiri tamamen gitmedi.":
+    "None of the earlier audit's issues is fully gone.",
+  "Yeni çıkanlar ({count})": "New ({count})",
+  "Yeni bir sorun türü çıkmadı.": "No new kind of issue appeared.",
+  "Search Console trafiği yükleniyor; sıralama birazdan güncellenebilir.":
+    "Loading Search Console traffic; the order may update in a moment.",
+  "Sıralama: puan etkisi, etkilenen sayfaların Search Console tıklamalarıyla ağırlıklandırıldı ({start} – {end}).":
+    "Order: score impact, weighted by the affected pages' Search Console clicks ({start} – {end}).",
+  "Search Console bağlı değil ya da yanıt vermedi; sıralama yalnızca puan etkisine göre.":
+    "Search Console isn't connected or didn't answer; the order is by score impact only.",
+  "İlk {count} işi göster": "Show the first {count} tasks",
+  "Tüm {count} işi göster": "Show all {count} tasks",
+  "{clicks} tıklama, {impressions} gösterim":
+    "{clicks} clicks, {impressions} impressions",
+  "ve {count} sayfa daha": "and {count} more pages",
+  "Sıralama: puan etkisi, etkilenen sayfaların Search Console tıklamalarıyla ağırlıklandırıldı.":
+    "Order: score impact, weighted by the affected pages' Search Console clicks.",
+  Tarayıcılar: "Crawlers",
+  "Başlık arama sonucunda kesiliyor.":
+    "The title is cut off in search results.",
+  "Bu denetimde başlangıç sayfası için PageSpeed ölçümü yok; gerçek kullanıcı verisi (CrUX) ölçülmedi.":
+    "This audit has no PageSpeed measurement for the start page; real-user data (CrUX) was not measured.",
+  "2. Anlık veri": "2. Instant data",
+  "Siteniz hakkında denetim anında toplanan bilgiler: sunucu, güvenlik başlıkları, DNS, sertifika, robots.txt ve gerçek kullanıcı hızı.":
+    "What the audit collected about your site at the time: server, security headers, DNS, certificate, robots.txt and real-user speed.",
+  "Kategori başına 100 üzerinden puan": "Score out of 100 per category",
+  Sorunlu: "Failing",
+  "Puan etkisi": "Score impact",
+  "Puan etkisi, o kategorideki sorunların site puanından düşürdüğü puandır; hepsi düzelirse site puanına geri eklenir.":
+    "Score impact is the points that category's issues take off the site score; fix them all and they're added back.",
+  "Denetim tarihine göre site puanı": "Site score by audit date",
+  "1. Puan dağılımı ve kontroller": "1. Score breakdown and checks",
+  "Denetim, her sorun türünü bir kontrol olarak çalıştırır. Bulgusu olan kontrol sorunlu, ölçülüp temiz çıkan geçti sayılır; verisi toplanamayan kontrol ölçülmedi olarak kalır, ne geçti ne kaldı sayılır.":
+    "The audit runs every kind of issue as a check. A check with findings is failing, one that was measured and came out clean has passed, and one whose data couldn't be collected stays not measured: it counts as neither passed nor failed.",
+  "Ölçülmedi ({count})": "Not measured ({count})",
+  "Ek C. Geçen ve ölçülemeyen kontroller":
+    "Appendix C. Passed and unmeasured checks",
+  "Sorun çıkmayan kontroller ve verisi toplanamadığı için sonuç verilmeyen kontroller.":
+    "Checks that found nothing, and checks with no result because their data couldn't be collected.",
+  "Ana içeriğin görünmesi": "Main content appears",
+  "Tıklamaya tepki": "Response to a tap",
+  "Görsel kayma": "Layout shift",
+  "İlk içerik": "First content",
+  "Sunucunun ilk yanıtı": "Server's first response",
+  İyileştirilmeli: "Needs work",
+  Mükemmel: "Excellent",
+  "Yapılacak her iş tek listede, en çok kazandıranı üstte. Search Console bağlıysa trafik getiren sayfalardaki işler öne çıkar.":
+    "Every task in one list, the most valuable first. With Search Console connected, work on pages that bring traffic moves up.",
+  "Denetimin yaptığı her kontrol, kategorisine göre: geçenler, kalanlar ve ölçülemeyenler.":
+    "Every check the audit ran, by category: passed, failing and not measured.",
+  "Küçük iş": "Small task",
+  "Orta iş": "Medium task",
+  "Büyük iş": "Large task",
+  "{url} adresinin telefondaki görünümü": "{url} as it looks on a phone",
+  "Mobil hız ölçümünün son ekran görüntüsü":
+    "Last screenshot from the mobile speed test",
+
+  // audit screens UX pass (2026-10-26)
+  "yaklaşık {duration} kaldı": "about {duration} left",
+  "Hız ölçümü: {pages} sayfa × {devices} cihaz, Google PageSpeed ile. Google dakikada sınırlı ölçüme izin verdiği için bu adım en uzunu.":
+    "Speed tests: {pages} pages × {devices} devices, with Google PageSpeed. Google allows only so many tests a minute, so this is the longest step.",
+  "{done} / {total} ölçüm": "{done} / {total} tests",
+  "Site haritası ve ana sayfanın bağlantılarından adresler toplanıyor.":
+    "Collecting addresses from the sitemap and the home page's links.",
+  "Her sayfa indirilip başlık, içerik, bağlantı ve teknik kontrollerden geçiriliyor.":
+    "Downloading each page and running the title, content, link and technical checks.",
+  "Bulgular puanlanıyor ve sonuçlar hazırlanıyor.":
+    "Scoring the findings and preparing the results.",
+  "{shown} / {total} satır": "{shown} of {total} rows",
+  "{count} geçti": "{count} passed",
+  "{count} sorunlu": "{count} with issues",
+  "{count} ölçülmedi": "{count} not measured",
+  "{total} kontrol: {summary}": "{total} checks: {summary}",
+  "Kısmi veri": "Partial data",
+  "{count} kontrol ölçülmedi: neden?": {
+    one: "{count} check not measured: why?",
+    other: "{count} checks not measured: why?",
+  },
+  "Düzeltilirse site puanına yaklaşık bu kadar eklenir; değerler toplanmaz.":
+    "Roughly what fixing it adds to the site score; the values don't add up.",
+  "{points} puan kayıp": "{points} points lost",
+  "Hız ölçümü (PageSpeed) bu denetimde sonuç vermedi; nedeni Hız sekmesinde.":
+    "The speed test (PageSpeed) returned no results in this audit; the Speed tab says why.",
+  "Sayfalar Google'da henüz kontrol edilmedi; Dizin durumu sekmesinden sorabilirsiniz.":
+    "The pages haven't been checked with Google yet; you can ask from the Index status tab.",
+  "Karşılaştırma için bağlı bir Google Analytics mülkü ve sayfalarda bir G- etiketi gerekir.":
+    "This comparison needs a connected Google Analytics property and a G- tag on the pages.",
+  "Site hakkındaki bilginin bir kısmı (sertifika, alan adı kaydı, DNS) bu denetimde okunamadı.":
+    "Some site information (certificate, domain registration, DNS) couldn't be read in this audit.",
+  "PageSpeed ölçümü bu denetimde sonuç vermedi: {error} Ölçüm çalışınca gerçek kullanıcı verisi (CrUX) ve laboratuvar sonuçları burada görünür.":
+    "The PageSpeed test returned no results in this audit: {error} Once it runs, real-user data (CrUX) and lab results appear here.",
+  "Bu proje {auditedHost} için Google verisi okuyamıyor":
+    "This project can't read Google data for {auditedHost}",
+  "Projenin Search Console bağlantısı {propertyHost} mülküne ait. Google'a {auditedHost} sayfalarını sormak günlük kotayı boşa harcardı, bu yüzden dizin durumu, site haritaları ve kota bu denetimde gösterilmiyor. {auditedHost} için ayrı bir proje açıp kendi mülküne bağlayın.":
+    "The project's Search Console connection belongs to the {propertyHost} property. Asking Google about {auditedHost} pages would waste the daily quota, so index status, sitemaps and quota aren't shown for this audit. Create a separate project for {auditedHost} and connect it to its own property.",
+  "Siteyi ayrı proje olarak ekle": "Add the site as its own project",
+  "Henüz kontrol edilmedi": "Not checked yet",
+  "Bu denetimin Google'a sorulmamış sayfaları. Son kontrol {date}":
+    "Pages from this audit not yet checked with Google. Last check {date}",
+  "Bu denetimin Google'a sorulmamış sayfaları.":
+    "Pages from this audit not yet checked with Google.",
+  "En çok sayfayı etkileyen {count} sorun türü; kalan {hidden} tür aşağıdaki listede.":
+    "The {count} issue types affecting the most pages; the other {hidden} are in the list below.",
+  "En çok sayfayı etkileyen {count} sorun türü.":
+    "The {count} issue types affecting the most pages.",
+  "Renklerin anlamı": "What the colors mean",
+  "Kısmi veri: {measured} / {total} ölçüm sonuç verdi. Ortalamalar yalnızca ölçülenlerden.":
+    "Partial data: {measured} of {total} tests returned a result. Averages use only those.",
+  "Ayarlar'dan ücretsiz bir PageSpeed anahtarı ekleyip denetimi yeniden başlatın.":
+    "Add a free PageSpeed key in Settings and run the audit again.",
+  "PageSpeed anahtarı ekle": "Add a PageSpeed key",
+  "{count} ölçüm yapılamadı": {
+    one: "{count} test couldn't run",
+    other: "{count} tests couldn't run",
+  },
+  "Sayfa başına telefon ve bilgisayar ayrı ölçülür.":
+    "Each page is tested separately on phone and computer.",
+  Ölçülemedi: "Not measured",
+  "Google'ın ücretsiz günlük ölçüm kotası doldu. Bu sitenizden kaynaklanmıyor: sayfalar yavaş sayılmadı, yalnızca ölçülemedi.":
+    "Google's free daily testing quota ran out. This isn't caused by your site: the pages weren't judged slow, they just couldn't be measured.",
+  "PageSpeed anahtarı olmadan Google'ın herkesle paylaşılan ücretsiz kotası kullanılıyor ve bu kota doldu. Bu sitenizden kaynaklanmıyor.":
+    "Without a PageSpeed key, Google's free quota shared by everyone is used, and it ran out. This isn't caused by your site.",
+  "Google'ın dakikalık ölçüm sınırına takıldı. Bu sitenizden kaynaklanmıyor; bir süre sonra yeniden deneyin.":
+    "The tests hit Google's per-minute limit. This isn't caused by your site; try again a little later.",
+  "Google'ın ölçüm aracı bu sayfalar için sonuç döndürmedi. Ayrıntı aşağıdaki listede.":
+    "Google's testing tool returned no results for these pages. The list below has the details.",
+  "Yapılacaklar ({count})": "To-do ({count})",
+  "Kontroller ({count})": "Checks ({count})",
+  "Hız ({measured}/{total})": "Speed ({measured}/{total})",
+  "İlk denetim. Puanın seyri bir sonrakinde başlar.":
+    "First audit. The score's trend starts with the next one.",
+  "Kritik sorun": "Critical issues",
+  İyileştirme: "Improvements",
+  "Geçen kontrol": "Checks passed",
+  "Veri toplanamadı": "No data collected",
+  "{measured}/{total} kontrol ölçüldü": "{measured}/{total} checks measured",
+  "Bu denetimde veri toplanamadı": "No data collected in this audit",
+  "{category}: {state}. Kontrolleri aç": "{category}: {state}. Open the checks",
+  "{findings} bulgu, {types} sorun türü. Bulgu, bir sorunun bir sayfada görülmesidir. Bir gruba tıklayın, liste yalnızca onları göstersin.":
+    "{findings} findings, {types} issue types. A finding is one issue seen on one page. Click a group to show only those in the list.",
+  "{allowed}/{total} izinli": "{allowed}/{total} allowed",
+  "{present}/{total} var": "{present}/{total} present",
+  "Sertifikanın süresi doldu": "Certificate expired",
+  "Sertifika {count} gün geçerli": {
+    one: "Certificate valid for {count} day",
+    other: "Certificate valid for {count} days",
+  },
+  "Site ya da kayıt servisi denetim sırasında bu bilgilere yanıt vermedi. Sitenizde bir sorun olduğu anlamına gelmez; denetimi yeniden çalıştırınca tekrar sorulur.":
+    "The site or the registry didn't answer these during the audit. That doesn't mean something is wrong with your site; they're asked again when you rerun the audit.",
+  "Çubuk, sayfadaki sorun türlerinin önem ağırlıklı toplamı: bir kritik sorun 40, bir uyarı 15, bir bilgi 3 sayılır. En uzun çubuk en çok iş çıkaran sayfa.":
+    "The bar is the severity-weighted total of the page's issue types: a critical issue counts 40, a warning 15, an info 3. The longest bar is the page with the most work.",
+  "Önce bunlar:": "Start here:",
+  "ilk {count} iş.": {
+    one: "{count} fix.",
+    other: "the first {count} fixes.",
+  },
+  "ilk {count} iş birlikte site puanını yaklaşık {points} puan yükseltir.": {
+    one: "{count} fix raises the site score by about {points} points.",
+    other:
+      "together, the first {count} fixes raise the site score by about {points} points.",
+  },
+  "ilk {count} iş, site puanını 1 puandan az yükseltir.": {
+    one: "{count} fix raises the site score by less than 1 point.",
+    other: "the first {count} fixes raise the site score by less than 1 point.",
+  },
+  "Bu sorun tek başına düzeltilirse yaklaşık kazanç; değerler toplanmaz.":
+    "Roughly what fixing this issue alone gains; the values don't add up.",
+  "{points} puan": "{points} points",
+
+  // audit screens UX pass (2026-10-26)
+  "Yeni kontroller eklendi; bu karşılaştırma yalnızca iki denetimin de ölçtüğü kontrolleri kapsar.":
+    "New checks were added; this comparison covers only the checks both audits measured.",
+  "Platform alan adı": "Platform domain",
+  "Site bir barındırma platformunun alt alan adında; kaydı ve DNS'i platforma ait olduğu için alan adı ve DNS kontrolleri yapılmadı.":
+    "The site is on a subdomain of a hosting platform; its registration and DNS belong to the platform, so the domain and DNS checks were skipped.",
+  "sayı alınamadı (tarama sınırı)": "count not read (crawl limit)",
+  "Twitter kartı: ölçülmedi.": "Twitter card: not measured.",
 };

@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { IssuesView } from "./IssuesView";
 import { groupIssues, type AuditIssueRow } from "./issueGroups";
@@ -65,8 +65,13 @@ describe("IssuesView", () => {
       />,
     );
 
-    fireEvent.click(screen.getAllByRole("button", { expanded: false })[0]);
-    expect(screen.getByText(/Nasıl düzeltilir\?/)).toBeTruthy();
+    // Closed cards stay mounted (hidden and inert) so they can ease open,
+    // so the fix is looked for inside the card that was opened.
+    const row = screen.getAllByRole("button", { expanded: false })[0];
+    fireEvent.click(row);
+    const card = row.parentElement;
+    if (!card) throw new Error("issue row has no card");
+    expect(within(card).getByText(/Nasıl düzeltilir\?/)).toBeTruthy();
 
     fireEvent.click(
       screen.getByRole("button", { name: /Sayfalar sekmesinde göster/ }),

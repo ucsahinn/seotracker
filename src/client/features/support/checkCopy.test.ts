@@ -36,6 +36,14 @@ describe("describeCheck", () => {
       true,
     );
     expect(result.status).toBe("ok");
+    expect(result.text).not.toContain("OAuth");
+  });
+
+  it("names the credential the server says is in use", () => {
+    const detail = "Google hizmet hesabı kullanılıyor (Ayarlar'da kayıtlı).";
+    expect(describeCheck("gsc", { status: "ok", detail }, true).text).toBe(
+      detail,
+    );
   });
 
   it("passes an unknown check through and flags it as foreign", () => {

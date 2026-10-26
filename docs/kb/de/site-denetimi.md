@@ -1,6 +1,6 @@
 ---
 title: Website-Audit
-description: Die App prüft Ihre Website Seite für Seite anhand von 95 Regeln und sortiert die Probleme nach Wichtigkeit. Zu jedem steht, was zu tun ist.
+description: Die App prüft Ihre Website Seite für Seite anhand von 201 Regeln und sortiert die Probleme nach Wichtigkeit. Zu jedem steht, was zu tun ist.
 screen: Site denetimi
 route: /p/<proje>/audit
 updated: 2026-10-22

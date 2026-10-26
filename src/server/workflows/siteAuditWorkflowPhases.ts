@@ -7,15 +7,20 @@ import {
 } from "@/server/lib/audit/url-utils";
 import { isCrawlableUrl } from "@/server/lib/audit/url-policy";
 import { AuditRepository } from "@/server/features/audit/repositories/AuditRepository";
+import { AuditSiteFactsRepository } from "@/server/features/audit/repositories/AuditSiteFactsRepository";
+import { runSiteProbes } from "@/server/lib/audit/site-probes/run-site-probes";
+import type { SiteFacts } from "@/server/lib/audit/site-probes/types";
 import { getAuditScratchpad } from "@/server/features/audit/AuditScratchpad";
 import { AuditProgressKV } from "@/server/lib/audit/progress-kv";
 import { runMultipageChecks } from "@/server/lib/audit/issues/multipage";
 import {
+  measuredSiteLevelChecks,
   siteLevelIssues,
   type RobotsFindings,
   type SitemapProblems,
 } from "@/server/lib/audit/issues/site-level-checks";
 import type { DetectedIssue } from "@/server/lib/audit/issues/page-reporters";
+import { findMissingBreadcrumbs } from "@/server/lib/audit/issues/site-structure-checks";
 import type { AuditConfig } from "@/server/lib/audit/types";
 import { captureServerEvent } from "@/server/lib/observability";
 import {
@@ -28,6 +33,7 @@ import {
   MULTIPAGE_CHECKS_STEP,
 } from "@/server/workflows/auditStepConfigs";
 import { runLighthousePhase } from "@/server/workflows/siteAuditWorkflowLighthouse";
+import { runExternalChecksPhase } from "@/server/workflows/siteAuditWorkflowExternal";
 
 /** Frontier seeds per scratchpad RPC call. */
 const SEED_RPC_BATCH = 2_000;
@@ -67,6 +73,9 @@ export async function runAuditPhases(
   // robots rules the original run used (a live re-fetch could differ and
   // desync the frontier from already-persisted crawl batches).
   const robots = parseRobotsTxt(origin, discovery.robotsText);
+  const siteFacts = await step.do("site-probes", DISCOVERY_STEP, () =>
+    probeSite(auditId, origin, startUrl, discovery),
+  );
   const crawl = await runCrawlPhase(step, {
     auditId,
     workflowInstanceId,
@@ -74,6 +83,7 @@ export async function runAuditPhases(
     maxPages,
     robots,
     seededCount: discovery.seededCount,
+    collectExternalRefs: config.externalChecks === true,
   });
   await runLighthousePhase(step, {
     auditId,
@@ -83,6 +93,8 @@ export async function runAuditPhases(
     startUrl,
     config,
   });
+  // Before finalize, which destroys the scratchpad holding the targets.
+  await runExternalChecksPhase(step, { auditId, config });
   await finalizeAudit({
     step,
     auditId,
@@ -94,7 +106,53 @@ export async function runAuditPhases(
     crawl,
     robotsFindings: discovery.robots,
     sitemapProblems: discovery.sitemapProblems,
+    siteFacts,
   });
+}
+
+/**
+ * Site-level probes (headers, http/https, www/apex, 404, DNS, RDAP, CT).
+ * They never throw: a failed probe leaves its facts null. The facts are
+ * stored here and also returned, a few kilobytes, for the finalize checks.
+ */
+async function probeSite(
+  auditId: string,
+  origin: string,
+  startUrl: string,
+  discovery: {
+    robotsText: string | null;
+    robots?: { status: number | null };
+    sitemapFacts?: {
+      url: string | null;
+      urlCount: number | null;
+      /** Absent when discovery replays from a run that predates it. */
+      onHostUrlCount?: number | null;
+      listedInRobots: boolean;
+    };
+  },
+): Promise<SiteFacts> {
+  const facts = await runSiteProbes({
+    origin,
+    startUrl,
+    robots: {
+      status: discovery.robots?.status ?? null,
+      text: discovery.robotsText,
+    },
+    // Absent when discovery replays from a run that predates these facts.
+    sitemap: discovery.sitemapFacts
+      ? {
+          ...discovery.sitemapFacts,
+          onHostUrlCount: discovery.sitemapFacts.onHostUrlCount ?? null,
+        }
+      : {
+          url: null,
+          urlCount: null,
+          onHostUrlCount: null,
+          listedInRobots: null,
+        },
+  });
+  await AuditSiteFactsRepository.saveSiteFacts(auditId, facts);
+  return facts;
 }
 
 async function runDiscoveryPhase(
@@ -147,11 +205,13 @@ async function runDiscoveryPhase(
       if (!isCrawlableUrl(normalized)) continue;
       // Two of the site's own systems disagreeing about one URL: the
       // sitemap says crawl it, robots.txt says do not. Counted rather than
-      // dropped in silence.
-      if (!robots.isAllowed(normalized)) {
+      // dropped in silence. The finding speaks about Google, so it reads
+      // the Googlebot group; the crawler itself still keeps to `*`.
+      if (!robots.googlebotAllows(normalized)) {
         disallowedSitemapUrls.push(normalized);
         continue;
       }
+      if (!robots.isAllowed(normalized)) continue;
       seeds.push(normalized);
     }
     for (let i = 0; i < seeds.length; i += SEED_RPC_BATCH) {
@@ -170,6 +230,15 @@ async function runDiscoveryPhase(
       // flag is then "unknown", not proven absent.
       sitemapMembershipComplete: result.membershipComplete,
       sitemapProblems: result.sitemapProblems,
+      sitemapFacts: {
+        url: result.sitemapRoot,
+        // Discovery stops at its URL and document caps; a count read off a
+        // cut-short list is a floor, not the sitemap's size, so it is not
+        // stored as one.
+        urlCount: result.membershipComplete ? result.listedUrlCount : null,
+        onHostUrlCount: result.membershipComplete ? result.urls.length : null,
+        listedInRobots: result.sitemapListedInRobots,
+      },
       robots: {
         status: result.robotsFetch.status,
         truncated: result.robotsFetch.truncated,
@@ -200,6 +269,7 @@ async function finalizeAudit(args: {
   robotsFindings?: RobotsFindings;
   /** Optional for the same replay reason as `robotsFindings`. */
   sitemapProblems?: SitemapProblems;
+  siteFacts?: SiteFacts;
 }) {
   const {
     step,
@@ -212,6 +282,7 @@ async function finalizeAudit(args: {
     crawl,
     robotsFindings,
     sitemapProblems,
+    siteFacts,
   } = args;
 
   await step.do("multipage-checks", MULTIPAGE_CHECKS_STEP, async () => {
@@ -241,7 +312,16 @@ async function finalizeAudit(args: {
       });
     }
     issues.push(
-      ...siteLevelIssues({ startUrl, robotsFindings, sitemapProblems }),
+      ...siteLevelIssues({
+        startUrl,
+        robotsFindings,
+        sitemapProblems,
+        siteFacts,
+      }),
+    );
+    await AuditSiteFactsRepository.recordMeasuredChecks(
+      auditId,
+      measuredSiteLevelChecks({ sitemapProblems, siteFacts }),
     );
     await AuditRepository.insertIssues(auditId, issues);
     return { issueCount: issues.length };
@@ -309,6 +389,22 @@ async function runScratchpadLinkChecks(
    */
   await AuditRepository.backfillCrawlDepths(auditId, repairedDepths);
 
+  /*
+   * Breadcrumbs on deep pages, judged only on exact click depths: a depth
+   * from an incomplete graph is an upper bound, and a page it overstates
+   * would be told it is deep when it is not.
+   */
+  const exactDepths =
+    repairedDepths.length > 0 && repairedDepths.every((entry) => entry.exact);
+  const breadcrumbs = exactDepths
+    ? findMissingBreadcrumbs(await AuditRepository.getBreadcrumbPages(auditId))
+    : { issues: [], measured: false };
+  if (breadcrumbs.measured) {
+    await AuditSiteFactsRepository.recordMeasuredChecks(auditId, [
+      "missing-breadcrumbs",
+    ]);
+  }
+
   return [
     ...brokenLinks.map((row) => ({
       issueType: "broken-internal-link" as const,
@@ -333,5 +429,6 @@ async function runScratchpadLinkChecks(
       pageId: row.pageId,
       pageUrl: row.url,
     })),
+    ...breadcrumbs.issues,
   ];
 }

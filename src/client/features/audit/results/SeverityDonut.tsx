@@ -1,5 +1,6 @@
 import { DonutCard, donutSummary } from "@/client/components/DonutChart";
 import type { IssueSeverity } from "@/shared/audit-issues";
+import { formatCount } from "@/client/lib/format";
 import { t } from "@/shared/i18n";
 
 /**
@@ -22,13 +23,13 @@ const SEVERITY: Array<{
     key: "critical",
     label: "Kritik",
     hint: "Google siteyi anlayamıyor",
-    color: "var(--color-error)",
+    color: "var(--mark-error)",
   },
   {
     key: "warning",
     label: "Uyarı",
     hint: "Sıralamayı ve tıklamayı düşürür",
-    color: "var(--color-warning)",
+    color: "var(--mark-warning)",
   },
   {
     key: "info",
@@ -40,10 +41,13 @@ const SEVERITY: Array<{
 
 export function SeverityDonut({
   counts,
+  typeCount,
   selected,
   onSelect,
 }: {
   counts: Record<IssueSeverity, number>;
+  /** Distinct issue types behind the findings. */
+  typeCount: number;
   selected: IssueSeverity | null;
   onSelect: (severity: IssueSeverity | null) => void;
 }) {
@@ -58,7 +62,11 @@ export function SeverityDonut({
     <DonutCard
       title={t("Sorunlar ne kadar ciddi?")}
       description={t(
-        "Bir gruba tıklayın, liste yalnızca o sorunları göstersin.",
+        "{findings} bulgu, {types} sorun türü. Bulgu, bir sorunun bir sayfada görülmesidir. Bir gruba tıklayın, liste yalnızca onları göstersin.",
+        {
+          findings: formatCount(counts.critical + counts.warning + counts.info),
+          types: formatCount(typeCount),
+        },
       )}
       totalLabel={t("bulgu")}
       segments={segments}

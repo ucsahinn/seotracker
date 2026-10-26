@@ -45,8 +45,16 @@
       href="https://seowatcher.io/gizlilik/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="/assets/consent.css?v=1" />
-    <script src="/assets/consent.js?v=2" defer></script>
+    <link rel="manifest" href="/site.webmanifest" />
+    <link
+      rel="alternate"
+      type="application/atom+xml"
+      title="seowatcher"
+      href="/en/feed.xml"
+    />
+    <link rel="stylesheet" href="/assets/consent.css?v=2" />
+    <meta name="ga4-id" content="G-DFPDX00V4R" />
+    <script src="/assets/consent.js?v=3" defer></script>
   </head>
   <body data-privacy-page>
     <main>
@@ -57,45 +65,72 @@
         installed seowatcher application is stored separately on your own
         computer.
       </p>
+      <p>
+        <small
+          >Last updated:
+          <time datetime="2026-10-26">October 26, 2026</time></small
+        >
+      </p>
       <section>
-        <h2>Optional usage measurement</h2>
+        <h2>Google Analytics 4 (when enabled)</h2>
         <p>
-          Google Analytics 4 loads only if you agree. Google processes page
-          views, scrolls, outbound clicks and file downloads, together with
-          technical browser and device information. We use this to improve the
-          website and installation guides. Advertising personalization and
-          Google signals are not used.
+          Google Analytics 4 runs on this site only when a GA4 measurement ID is
+          configured. Without one, the pages send no request to Google, show no
+          cookie banner and store nothing in your browser. Even then, the Google
+          tag (gtag.js) loads only after you choose Accept. What is measured
+          after acceptance: page views and GA4 enhanced measurement events (such
+          as scrolls, outbound clicks and file downloads), together with the
+          page address, referring address, browser, operating system, device
+          type, screen size, language and an approximate location derived from
+          your IP address. Google states that GA4 does not log or store IP
+          addresses. We use this to improve the website and the installation
+          guides.
         </p>
       </section>
       <section>
-        <h2>Choices and retention</h2>
+        <h2>Consent</h2>
+        <p>
+          We use basic Google Consent Mode v2: every analytics and advertising
+          permission starts as denied, and until you consent nothing is loaded
+          from Google and no data is sent to Google. Choosing Accept grants
+          analytics storage only, loads the Google tag and writes the analytics
+          cookies (_ga and names starting with _ga_). Advertising permissions
+          are never granted; ad personalization and Google signals are off.
+        </p>
+      </section>
+      <section>
+        <h2>Retention</h2>
         <p>
           Your acceptance or refusal is stored in this browser’s local storage
-          as seowatcher-consent-v1 for 6 months. Analytics cookies (_ga and
-          names starting with _ga_) are used only after acceptance, with a
-          maximum lifetime of 13 months. GA4 user and event data retention is 14
-          months. Google’s aggregated reports may follow different retention
-          rules.
+          as seowatcher-consent-v1 for 6 months, after which you are asked
+          again. Analytics cookies last at most 13 months. User and event data
+          retention in the GA4 property is set to 14 months. Google’s aggregated
+          reports may follow different retention rules.
         </p>
       </section>
       <section>
-        <h2>Changing your choice</h2>
+        <h2>Withdrawing consent</h2>
         <p>
-          Consent is optional. Refusing does not prevent using the site or
-          downloading the app. Use Cookie settings at the bottom of any page to
-          change your choice or withdraw consent. Withdrawal disables analytics,
-          deletes accessible analytics cookies and reloads the page.
+          Consent is optional; refusing does not stop you using the site or
+          downloading the app. While analytics is enabled, every page has a
+          Cookie settings button at the bottom: use it to change your choice or
+          withdraw consent at any time. Withdrawing stops measurement, deletes
+          accessible analytics cookies and reloads the page; after that no data
+          is sent to Google. Clearing this site’s data in your browser also
+          resets your choice.
         </p>
       </section>
       <section>
         <h2>Providers and contact</h2>
         <p>
-          The web server processes connection information such as your IP
-          address and requested URL to serve your request. If you consent to
-          analytics, Google processes data on its infrastructure, which may
-          include servers outside your country. For privacy or data requests,
-          use the contact channel on the project’s GitHub profile. The Google
-          links below explain further processing and cookie details.
+          The site is hosted on a server at Hetzner; the web server processes
+          connection information such as your IP address and the requested URL
+          to serve your request. When analytics is enabled, Google processes
+          Analytics data on our behalf as a processor under Google’s data
+          processing terms, which may include servers outside your country. For
+          privacy or data requests, use the contact channel on the project’s
+          GitHub profile. The Google links below explain further processing and
+          cookie details.
         </p>
       </section>
       <p>

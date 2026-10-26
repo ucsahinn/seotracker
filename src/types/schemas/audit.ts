@@ -18,6 +18,7 @@ export const startAuditSchema = z.object({
     .optional()
     .default(DEFAULT_AUDIT_PAGES),
   lighthouseStrategy: z.enum(["auto", "none"]).optional().default("auto"),
+  externalChecks: z.boolean().optional().default(true),
 });
 
 export const getAuditStatusSchema = z.object({
@@ -46,14 +47,22 @@ export const getCrawlProgressSchema = z.object({
 
 // ─── URL search params schema for /p/$projectId/audit ────────────────────────
 
-const auditTabs = ["issues", "pages", "performance", "index"] as const;
+const auditTabs = [
+  "todo",
+  "checks",
+  "facts",
+  "issues",
+  "pages",
+  "performance",
+  "index",
+] as const;
 
 /** The audit result tabs, validated out of the URL and back into the UI. */
 export type AuditTab = (typeof auditTabs)[number];
 
 export const auditSearchSchema = z.object({
   auditId: z.string().optional().catch(undefined),
-  tab: z.enum(auditTabs).catch("issues").default("issues"),
+  tab: z.enum(auditTabs).catch("todo").default("todo"),
   // Opens the issue list already narrowed, e.g. from the dashboard bar.
   severity: z.enum(["critical", "warning", "info"]).optional().catch(undefined),
 });

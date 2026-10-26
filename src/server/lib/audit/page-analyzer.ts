@@ -12,6 +12,7 @@
  */
 import { Parser } from "htmlparser2";
 import { normalizeUrl, isSameOrigin } from "./url-utils";
+import { createSignalCollector } from "./page-signals";
 import type {
   HreflangAlternate,
   PageAnalysis,
@@ -51,6 +52,13 @@ const MEDIA_TAGS = new Set([
  * arrays saturate at the cap on such pathological pages.
  */
 const MAX_EXTRACTED_LINKS = 1_000;
+/**
+ * Distinct link targets are still counted past the extraction cap, so a
+ * page with 2,636 links is not reported as having 1,000 (python.org's
+ * Windows downloads page, 2026-10-26). Only the count is kept; the set is
+ * bounded so a pathological page cannot grow it without limit.
+ */
+const MAX_COUNTED_LINK_TARGETS = 50_000;
 const MAX_EXTRACTED_IMAGES = 1_000;
 /** Same-origin scripts and stylesheets per page; a template rarely has many. */
 const MAX_EXTRACTED_RESOURCES = 100;
@@ -80,17 +88,21 @@ function hasSchemaType(node: unknown): boolean {
   return typeof type === "string" ? type.trim() !== "" : Array.isArray(type);
 }
 
-/**
- * Whether one JSON-LD body is usable: it parses, and at least one node
- * (after flattening `@graph`) names a `@type`.
- */
-function isValidJsonLd(raw: string): boolean {
-  let data: unknown;
+/** The parsed body, or undefined when it is not JSON at all. */
+function parseJson(raw: string): unknown {
   try {
-    data = JSON.parse(raw);
+    return JSON.parse(raw) as unknown;
   } catch {
-    return false;
+    return undefined;
   }
+}
+
+/**
+ * Whether one parsed JSON-LD body is usable: it parsed, and at least one
+ * node (after flattening `@graph`) names a `@type`.
+ */
+function isValidJsonLd(data: unknown): boolean {
+  if (data === undefined) return false;
   const roots = Array.isArray(data) ? data : [data];
   return roots.some((root) => {
     if (hasSchemaType(root)) return true;
@@ -168,10 +180,12 @@ export function analyzeHtml(
   const canonicalTargets = new Set<string>();
   const metaDescriptions = new Set<string>();
   let emptyAnchorCount = 0;
+  const linkTargets = new Set<string>();
   const insecureResources: string[] = [];
   let viewport: string | null = null;
   const resources: string[] = [];
   const hreflangAlternates: HreflangAlternate[] = [];
+  const signals = createSignalCollector(pageUrl);
 
   const h1s: string[] = [];
   const headingOrder: number[] = [];
@@ -315,6 +329,7 @@ export function analyzeHtml(
     if (!anchor && !named && !hidden && isSameOrigin(resolved, pageUrl)) {
       emptyAnchorCount += 1;
     }
+    if (linkTargets.size < MAX_COUNTED_LINK_TARGETS) linkTargets.add(resolved);
     if (linksByTarget.size >= MAX_EXTRACTED_LINKS) return;
     if (linksByTarget.has(resolved)) return;
     linksByTarget.set(resolved, {
@@ -333,6 +348,7 @@ export function analyzeHtml(
         }
         if (name === "noscript") noscriptDepth += 1;
         if (noscriptDepth > 0) return;
+        signals.openTag(name, attribs);
         if (openAnchor && MEDIA_TAGS.has(name)) openAnchor.named = true;
         switch (name) {
           case "title":
@@ -408,6 +424,7 @@ export function analyzeHtml(
         }
       },
       ontext(text) {
+        signals.text(text);
         if (jsonLdParts) {
           jsonLdChars += text.length;
           if (jsonLdChars <= MAX_JSONLD_CHARS) jsonLdParts.push(text);
@@ -421,16 +438,20 @@ export function analyzeHtml(
         if (openAnchor) openAnchor.text.push(text);
         if (bodyDepth > 0) {
           bodyParts.push(text);
+          signals.bodyText(text);
         } else if (headDepth === 0) {
           fallbackParts.push(text);
+          signals.bodyText(text);
         }
       },
       onclosetag(name) {
         if (name === "script" && jsonLdParts) {
           const body = jsonLdParts.join("");
           jsonLdParts = null;
-          if (jsonLdChars <= MAX_JSONLD_CHARS && !isValidJsonLd(body)) {
-            invalidStructuredDataCount += 1;
+          if (jsonLdChars <= MAX_JSONLD_CHARS) {
+            const data = parseJson(body);
+            if (isValidJsonLd(data)) signals.jsonLd(data);
+            else invalidStructuredDataCount += 1;
           }
         }
         if (NON_CONTENT_TAGS.has(name) && suppressDepth > 0) {
@@ -441,6 +462,7 @@ export function analyzeHtml(
           return;
         }
         if (noscriptDepth > 0) return;
+        signals.closeTag(name);
         if (name === "title" && titleDepth > 0) {
           titleDepth -= 1;
           if (titleDepth === 0) titleDone = true;
@@ -487,10 +509,18 @@ export function analyzeHtml(
     titleCount,
     metaDescriptionCount: metaDescriptions.size,
     emptyAnchorCount,
+    linkTargetCount: linkTargets.size,
     viewport,
     resources,
     insecureResources,
     hreflangAlternates,
+    signals: signals.finish({
+      bodyText,
+      htmlLength: html.length,
+      viewport,
+      title: (title ?? "").trim(),
+      h1s,
+    }),
   };
 }
 

@@ -1,10 +1,12 @@
 import { z } from "zod";
 import {
+  buildStoredLighthouseAudits,
   buildStoredLighthouseIssues,
   buildStoredLighthouseMetrics,
   type RawLighthouseAudit,
   type RawLighthouseCategory,
   scoreToPercent,
+  SCREENSHOT_DATA_URI,
   type StoredLighthousePayload,
   storedLighthousePayloadSchema,
 } from "@/server/lib/lighthouseStoredPayload";
@@ -179,6 +181,29 @@ function readFieldData(
   return hasAnyMetric ? fieldData : null;
 }
 
+/**
+ * Above this the screenshot is skipped: it is stored in every mobile payload
+ * and may be inlined into the downloadable report, which has a byte budget.
+ * Google's JPEG is usually 30-80 KB; there is no way to shrink it here.
+ */
+export const SCREENSHOT_MAX_CHARS = 150_000;
+
+const screenshotDetailsSchema = z.object({
+  data: z.string().regex(SCREENSHOT_DATA_URI).max(SCREENSHOT_MAX_CHARS),
+});
+
+/** The mobile run's final screenshot, or null when absent or too large. */
+function readScreenshot(
+  audits: Record<string, RawLighthouseAudit>,
+  strategy: LighthouseStrategy,
+): string | null {
+  if (strategy !== "mobile") return null;
+  const parsed = screenshotDetailsSchema.safeParse(
+    audits["final-screenshot"]?.details,
+  );
+  return parsed.success ? parsed.data.data : null;
+}
+
 export function parsePageSpeedPayload(
   payload: unknown,
   input: { url: string; strategy: LighthouseStrategy },
@@ -263,7 +288,9 @@ export function parsePageSpeedPayload(
     },
     fieldData,
     originFieldData,
+    screenshot: readScreenshot(audits, input.strategy),
     issues: issueReport.issues,
+    audits: buildStoredLighthouseAudits({ audits }),
   };
 
   const allScoresMissing = Object.values(storedPayload.scores).every(

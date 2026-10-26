@@ -18,7 +18,7 @@ const BUCKET: Record<
   notIndexed: {
     label: "Dizinde değil",
     hint: "Google baktı ama almadı",
-    color: "var(--color-warning)",
+    color: "var(--mark-warning)",
   },
   pending: {
     label: "Yanıt bekleyen",

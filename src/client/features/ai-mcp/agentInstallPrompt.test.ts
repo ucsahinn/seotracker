@@ -112,5 +112,7 @@ describe("install prompt", () => {
     expect(windows).toContain("%LOCALAPPDATA%\\seowatcher\\mcp-token");
     expect(windows).not.toContain("docker compose exec -T seotracker cat");
     expect(windows).not.toMatch(/\{\{/);
+    expect(windows).toContain('cat "$LOCALAPPDATA/seowatcher/mcp-token"');
+    expect(windows).toContain("never the fallback");
   });
 });

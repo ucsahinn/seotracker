@@ -6,7 +6,7 @@
     <title>Gizlilik ve çerezler | seowatcher</title>
     <meta
       name="description"
-      content="Bu açıklama seowatcher.io web sitesini kapsar. Bilgisayarınıza kurulan seowatcher uygulamasındaki proje verileri ayrı olarak kendi bilgisayarınızda tutulur."
+      content="Bu açıklama seowatcher.io web sitesini kapsar. Bilgisayarınıza kurulan seowatcher uygulamasının proje verileri ayrıca kendi bilgisayarınızda tutulur."
     />
     <link rel="canonical" href="https://seowatcher.io/gizlilik/" />
     <link
@@ -45,8 +45,16 @@
       href="https://seowatcher.io/gizlilik/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="/assets/consent.css?v=1" />
-    <script src="/assets/consent.js?v=2" defer></script>
+    <link rel="manifest" href="/site.webmanifest" />
+    <link
+      rel="alternate"
+      type="application/atom+xml"
+      title="seowatcher"
+      href="/feed.xml"
+    />
+    <link rel="stylesheet" href="/assets/consent.css?v=2" />
+    <meta name="ga4-id" content="G-DFPDX00V4R" />
+    <script src="/assets/consent.js?v=3" defer></script>
   </head>
   <body data-privacy-page>
     <main>
@@ -54,50 +62,76 @@
       <h1>Gizlilik ve çerezler</h1>
       <p>
         Bu açıklama seowatcher.io web sitesini kapsar. Bilgisayarınıza kurulan
-        seowatcher uygulamasındaki proje verileri ayrı olarak kendi
-        bilgisayarınızda tutulur.
+        seowatcher uygulamasının proje verileri ayrıca kendi bilgisayarınızda
+        tutulur.
+      </p>
+      <p>
+        <small
+          >Son güncelleme:
+          <time datetime="2026-10-26">26 Ekim 2026</time></small
+        >
       </p>
       <section>
-        <h2>İsteğe bağlı kullanım ölçümü</h2>
+        <h2>Google Analytics 4 (etkinleştirildiğinde)</h2>
         <p>
-          Yalnızca onay verirseniz Google Analytics 4 yüklenir. Sayfa
-          görüntülemeleri, kaydırmalar, dış bağlantı tıklamaları ve dosya
-          indirme olayları; tarayıcı ve cihaz bilgileri gibi teknik bilgilerle
-          birlikte Google tarafından işlenir. Amaç siteyi ve kurulum
-          kılavuzlarını iyileştirmektir. Reklam kişiselleştirmesi ve Google
-          sinyalleri kullanılmaz.
+          Bu sitede Google Analytics 4 yalnızca bir GA4 ölçüm kimliği
+          yapılandırıldığında çalışır. Yapılandırılmadığında sayfalar Google'a
+          hiçbir istek göndermez, çerez bandı görünmez ve tarayıcınıza hiçbir
+          şey kaydedilmez. Etkinleştirildiğinde bile Google etiketi (gtag.js)
+          yalnızca Kabul et dediğinizde yüklenir. Kabulden sonra ölçülenler:
+          sayfa görüntülemeleri ve GA4'ün gelişmiş ölçüm olayları (ör. kaydırma,
+          dış bağlantı tıklaması, dosya indirme); bunlarla birlikte sayfa
+          adresi, yönlendiren adres, tarayıcı, işletim sistemi, cihaz türü,
+          ekran boyutu, dil ve IP adresinden çıkarılan yaklaşık konum. Google,
+          GA4'ün IP adreslerini kaydetmediğini ve saklamadığını belirtir. Amaç
+          siteyi ve kurulum kılavuzlarını iyileştirmektir.
         </p>
       </section>
       <section>
-        <h2>Tercih ve saklama süreleri</h2>
+        <h2>Onay</h2>
+        <p>
+          Google İzin Modu v2'nin temel kurulumu kullanılır: analiz ve reklam
+          izinlerinin tümü varsayılan olarak reddedilmiş başlar ve onay verene
+          kadar Google'dan hiçbir şey yüklenmez, Google'a hiçbir veri
+          gönderilmez. Kabul et dediğinizde yalnızca analiz izni açılır, Google
+          etiketi yüklenir ve analiz çerezleri (_ga ve _ga_ ile başlayan adlar)
+          yazılır. Reklam izinleri hiçbir durumda verilmez; reklam
+          kişiselleştirmesi ve Google sinyalleri kapalıdır.
+        </p>
+      </section>
+      <section>
+        <h2>Saklama süreleri</h2>
         <p>
           Kabul veya ret tercihiniz, bu tarayıcının yerel depolama alanında
-          seowatcher-consent-v1 adıyla 6 ay saklanır. Analiz çerezleri (_ga ve
-          _ga_ ile başlayan adlar) yalnızca kabulden sonra kullanılır; süreleri
-          en fazla 13 aydır. GA4 kullanıcı ve etkinlik verilerinin saklama
-          süresi 14 aydır. Google’ın toplu raporları farklı saklama kurallarına
-          tabi olabilir.
+          seowatcher-consent-v1 adıyla 6 ay saklanır; sonra yeniden sorulur.
+          Analiz çerezlerinin ömrü en fazla 13 aydır. GA4 mülkünde kullanıcı ve
+          etkinlik verilerinin saklama süresi 14 ay olarak ayarlanır. Google'ın
+          toplu raporları farklı saklama kurallarına tabi olabilir.
         </p>
       </section>
       <section>
-        <h2>Tercihinizi değiştirme</h2>
+        <h2>İzni geri çekme</h2>
         <p>
-          Kabul etmek zorunda değilsiniz. Reddetmek siteyi kullanmanızı veya
-          uygulamayı indirmenizi engellemez. Her sayfanın altındaki Çerez
-          ayarları düğmesiyle tercihinizi değiştirebilir ve izninizi geri
-          çekebilirsiniz. İzni geri çektiğinizde analiz devre dışı bırakılır,
-          erişilebilir analiz çerezleri silinir ve sayfa yeniden yüklenir.
+          Kabul etmek zorunda değilsiniz; reddetmek siteyi kullanmanızı veya
+          uygulamayı indirmenizi engellemez. Analytics etkinken her sayfanın
+          altında Çerez ayarları düğmesi bulunur: bununla tercihinizi
+          istediğiniz zaman değiştirebilir veya izninizi geri çekebilirsiniz.
+          Geri çektiğinizde ölçüm durdurulur, erişilebilir analiz çerezleri
+          silinir ve sayfa yeniden yüklenir; sonrasında Google'a veri gitmez.
+          Tarayıcınızda bu sitenin verilerini silmek de tercihinizi sıfırlar.
         </p>
       </section>
       <section>
         <h2>Hizmet sağlayıcılar ve iletişim</h2>
         <p>
-          Web sunucusu, isteği sunmak için IP adresi ve istenen adres gibi
-          bağlantı bilgilerini işler. Analiz izni verdiğinizde Google, bu
-          verileri kendi altyapısında işler; buna ülkeniz dışındaki sunucular da
-          dahil olabilir. Gizlilik veya veri talepleriniz için projenin GitHub
-          profilindeki iletişim kanalını kullanabilirsiniz. Aşağıdaki Google
-          bağlantıları veri işleme ve çerezler hakkında ek bilgi sağlar.
+          Site Hetzner'deki bir sunucuda barındırılır; web sunucusu isteği
+          sunmak için IP adresi ve istenen adres gibi bağlantı bilgilerini
+          işler. Analytics etkinleştirildiğinde Google, Analytics verilerini
+          Google'ın veri işleme koşulları kapsamında bizim adımıza veri işleyen
+          olarak işler; bu, ülkeniz dışındaki sunucuları da kapsayabilir.
+          Gizlilik veya veri talepleriniz için projenin GitHub profilindeki
+          iletişim kanalını kullanabilirsiniz. Aşağıdaki Google bağlantıları
+          veri işleme ve çerezler hakkında ek bilgi verir.
         </p>
       </section>
       <p>

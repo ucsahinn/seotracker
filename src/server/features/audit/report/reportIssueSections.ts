@@ -2,9 +2,9 @@ import { formatCount } from "@/shared/format";
 import { t } from "@/shared/i18n";
 import {
   capList,
+  detailsHtml,
   escapeHtml,
   moreLine,
-  truncate,
   truncateUrl,
 } from "./reportFormat";
 import {
@@ -28,13 +28,13 @@ function rowLabel(row: IssueGroup["rows"][number], urlChars: number): string {
 }
 
 function rowsTable(rows: IssueGroup["rows"], caps: ReportCaps): string {
-  const hasDetail = rows.some((row) => row.detail !== "");
+  const hasDetail = rows.some((row) => row.details.length > 0);
   return `<table class="rows">
     <thead><tr><th>${t("Etkilenen adres")}</th>${hasDetail ? `<th>${t("Ayrıntı")}</th>` : ""}</tr></thead>
     <tbody>${rows
       .map(
         (row) =>
-          `<tr><td class="url">${escapeHtml(rowLabel(row, caps.urlChars))}</td>${hasDetail ? `<td class="detail">${escapeHtml(truncate(row.detail, caps.detailChars))}</td>` : ""}</tr>`,
+          `<tr><td class="url">${escapeHtml(rowLabel(row, caps.urlChars))}</td>${hasDetail ? `<td class="detail">${detailsHtml(row.details, caps.detailChars)}</td>` : ""}</tr>`,
       )
       .join("")}</tbody>
   </table>`;
@@ -69,7 +69,7 @@ export function issuesSection(
 ): string {
   if (groups.length === 0) {
     return `<section id="sorunlar">
-      <h2>${t("2. Sorunlar")}</h2>
+      <h2>${t("4. Sorunlar")}</h2>
       <p class="empty">${reliable ? t("Bu denetimde kayıtlı sorun yok.") : t("Sorun listesi eksik olabilir (denetim tamamlanmadı).")}</p>
     </section>`;
   }
@@ -88,7 +88,7 @@ export function issuesSection(
     </div>`;
   }).join("");
   return `<section id="sorunlar">
-    <h2>${t("2. Sorunlar")}</h2>
+    <h2>${t("4. Sorunlar")}</h2>
     <p class="note">${t("Önem derecesine, sonra kategoriye, sonra etkilenen sayfa sayısına göre sıralı. Her sorun için en fazla {count} adres yazılır.", { count: caps.issuePages })}</p>
     ${blocks}
     ${moreLine(omittedTypes, "issueType")}

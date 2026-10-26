@@ -56,6 +56,36 @@ export const SCRATCHPAD_SCHEMA_SQL = `
     url TEXT PRIMARY KEY,
     depth INTEGER NOT NULL
   ) WITHOUT ROWID;
+  CREATE TABLE IF NOT EXISTS page_external_refs (
+    page_id TEXT NOT NULL,
+    kind TEXT NOT NULL,
+    url TEXT NOT NULL,
+    targets_json TEXT NOT NULL,
+    PRIMARY KEY (page_id, kind)
+  ) WITHOUT ROWID;
+`;
+
+/**
+ * Distinct targets of one kind ('link': outgoing links to other sites,
+ * 'image': the site's own image files), most-referenced first, then by URL
+ * so a retried step gets the same list. Params: kind, limit.
+ */
+export const EXTERNAL_TARGETS_SQL = `
+  SELECT j.value AS target, COUNT(*) AS pages
+  FROM page_external_refs p, json_each(p.targets_json) AS j
+  WHERE p.kind = ?
+  GROUP BY j.value
+  ORDER BY pages DESC, target
+  LIMIT ?
+`;
+
+/** The pages referencing one target. Params: kind, target, limit. */
+export const EXTERNAL_SOURCES_SQL = `
+  SELECT p.page_id AS page_id, p.url AS url
+  FROM page_external_refs p, json_each(p.targets_json) AS j
+  WHERE p.kind = ? AND j.value = ?
+  ORDER BY p.url
+  LIMIT ?
 `;
 
 /**

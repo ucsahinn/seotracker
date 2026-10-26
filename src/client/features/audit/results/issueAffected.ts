@@ -1,11 +1,11 @@
 import { searchFold } from "@/client/lib/searchFold";
 import { buildCsv } from "@/client/lib/csv";
+import { formatCount } from "@/client/lib/format";
 import {
-  formatCount,
-  formatDate,
-  formatDuration,
-  formatNumber,
-} from "@/client/lib/format";
+  describeIssueDetails,
+  detailLineText,
+  type DetailLine,
+} from "@/shared/audit-issues/details";
 import {
   SEVERITY_LABEL,
   type AuditIssueRow,
@@ -17,114 +17,10 @@ export const PAGE_STEP = 10;
 /** Past this many pages a search box earns its place. */
 export const SEARCH_THRESHOLD = 20;
 
-export interface DetailLine {
-  label: string;
-  value: string;
-}
-
 /** One page, with what was found on it (one entry per record). */
 export interface AffectedPage {
   url: string;
   records: DetailLine[][];
-}
-
-// Turkish source labels; t() runs in describeDetails, at render time.
-const LABELS: Record<string, string> = {
-  statusCode: "Durum kodu",
-  length: "Uzunluk (karakter)",
-  wordCount: "Kelime sayısı",
-  h1Count: "H1 sayısı",
-  crawlDepth: "Ana sayfadan uzaklık (tık)",
-  responseTimeMs: "Yanıt süresi",
-  canonicalUrl: "Asıl adres",
-  htmlCanonical: "Sayfadaki asıl adres",
-  headerCanonical: "Başlıktaki asıl adres",
-  redirectUrl: "Yönlendirdiği adres",
-  redirectsTo: "Yönlendirdiği adres",
-  finalUrl: "Son adres",
-  hops: "Yönlendirme zinciri",
-  groupSize: "Aynı içerikteki sayfa sayısı",
-  otherUrls: "Aynı içerikteki diğer sayfalar",
-  alternateUrl: "Karşılıklı bağlanmayan alternatif",
-  hreflang: "Dil kodu",
-  hreflangs: "Dil kodları",
-  reason: "Neden",
-  fetchClass: "Erişim sonucu",
-  robotsMeta: "Robots meta etiketi",
-  googlebotMeta: "Googlebot meta etiketi",
-  xRobotsTag: "X-Robots-Tag başlığı",
-  count: "Adet",
-  example: "Örnek",
-  limit: "Sınır",
-  imagesMissingAlt: "Alt metni eksik görsel",
-  imagesTotal: "Toplam görsel",
-  blocked: "Engellenen kaynaklar",
-  blockedCount: "Engellenen kaynak sayısı",
-  sample: "Örnekler",
-  declared: "Sizin belirttiğiniz adres",
-  chosen: "Google'ın seçtiği adres",
-  verdict: "Google'ın kararı",
-  lastCrawlTime: "Google'ın son tarama tarihi",
-  checkedAt: "Kontrol tarihi",
-  thresholdDays: "Eşik (gün)",
-  pagesChecked: "Kontrol edilen sayfa",
-  urlCount: "Adres sayısı",
-};
-
-const MAX_LIST_ITEMS = 5;
-
-function formatScalar(key: string, value: unknown): string | null {
-  if (typeof value === "number") {
-    return key === "responseTimeMs"
-      ? formatDuration(value)
-      : formatNumber(value);
-  }
-  if (typeof value === "boolean") return value ? t("Evet") : t("Hayır");
-  if (typeof value === "string") {
-    if (value === "") return null;
-    return key === "lastCrawlTime" || key === "checkedAt"
-      ? formatDate(value)
-      : value;
-  }
-  return null;
-}
-
-function formatValue(key: string, value: unknown): string | null {
-  if (Array.isArray(value)) {
-    const items = value.filter((item) => item !== null && item !== undefined);
-    if (items.length === 0) return null;
-    if (key === "hops") return items.map(String).join(" → ");
-    const shown = items.slice(0, MAX_LIST_ITEMS).map(String).join(", ");
-    const rest = items.length - MAX_LIST_ITEMS;
-    return rest > 0
-      ? t("{shown} ve {rest} tane daha", { shown, rest: formatCount(rest) })
-      : shown;
-  }
-  const scalar = formatScalar(key, value);
-  if (scalar !== null) return scalar;
-  if (typeof value === "object" && value !== null) return JSON.stringify(value);
-  return null;
-}
-
-/** The per-page evidence of one record, in plain Turkish. Empty when it has none. */
-export function describeDetails(detailsJson: string | null): DetailLine[] {
-  if (!detailsJson) return [];
-  let parsed: unknown;
-  try {
-    parsed = JSON.parse(detailsJson);
-  } catch {
-    return [];
-  }
-  if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
-    return [];
-  }
-  const lines: DetailLine[] = [];
-  for (const [key, raw] of Object.entries(parsed)) {
-    const value = formatValue(key, raw);
-    const label = LABELS[key];
-    if (value !== null) lines.push({ label: label ? t(label) : key, value });
-  }
-  return lines;
 }
 
 /**
@@ -145,7 +41,7 @@ export function buildAffectedPages(issues: AuditIssueRow[]): AffectedPage[] {
       page = { url: issue.pageUrl, records: [] };
       pages.set(issue.pageUrl, page);
     }
-    page.records.push(describeDetails(issue.detailsJson));
+    page.records.push(describeIssueDetails(issue.issueType, issue.detailsJson));
   }
   return Array.from(pages.values());
 }
@@ -194,8 +90,8 @@ export function buildIssueCsv(group: IssueGroup): string {
     t(SEVERITY_LABEL[group.severity]),
     group.title,
     issue.pageUrl,
-    describeDetails(issue.detailsJson)
-      .map((line) => `${line.label}: ${line.value}`)
+    describeIssueDetails(issue.issueType, issue.detailsJson)
+      .map(detailLineText)
       .join(" | "),
     group.howToFix,
   ]);

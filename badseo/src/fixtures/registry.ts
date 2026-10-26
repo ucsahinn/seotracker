@@ -10,6 +10,7 @@ import { structureFixtures } from "./structure";
 import { kitchenSinkFixtures } from "./kitchen-sink";
 import { auditExtraFixtures } from "./audit-extra";
 import { auditHygieneFixtures } from "./audit-hygiene";
+import { markupFixtures } from "./markup";
 
 /** Every fixture on the site, in catalog order. */
 export const allFixtures: Fixture[] = [
@@ -23,6 +24,7 @@ export const allFixtures: Fixture[] = [
   ...structureFixtures,
   ...auditExtraFixtures,
   ...auditHygieneFixtures,
+  ...markupFixtures,
   ...kitchenSinkFixtures,
 ];
 

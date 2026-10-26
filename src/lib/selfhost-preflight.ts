@@ -176,8 +176,59 @@ function checkOptionalFeatures(env: EnvRecord, items: PreflightItem[]): void {
     name: "Search Console",
     level: "info",
     message:
-      "Enter your Google OAuth client in Settings to connect Search Console and Analytics. Setup: docs/SELF_HOSTING_GOOGLE_SEARCH_CONSOLE.md.",
+      "No Google OAuth client in the environment. This check cannot see the database, so a service account or OAuth client saved in Settings is not counted here; if none is saved, enter one in Settings to connect Search Console and Analytics. Setup: docs/SELF_HOSTING_GOOGLE_SEARCH_CONSOLE.md.",
   });
+}
+
+type GoogleCredentialFacts = {
+  /** A service account is stored and its key still decrypts. */
+  serviceAccount: boolean;
+  /** Where the OAuth client comes from, if there is one. */
+  oauthSource: "settings" | "environment" | null;
+};
+
+/**
+ * The Search Console check once the database can be read: which Google
+ * credential the app will actually use. A stored service account wins over
+ * any OAuth client (GscService and Ga4Service ask for it first), so it is
+ * named first. With nothing stored this is a warning, not the `ok` the
+ * env-only preflight has to give, because Search Console and Analytics cannot
+ * connect until one is entered.
+ */
+export function checkGoogleCredential(facts: GoogleCredentialFacts): {
+  status: "ok" | "warn";
+  detail: string;
+} {
+  if (facts.serviceAccount) {
+    return {
+      status: "ok",
+      detail: facts.oauthSource
+        ? t(
+            "Google hizmet hesabı kullanılıyor (Ayarlar'da kayıtlı). Bir OAuth istemcisi de tanımlı; hizmet hesabı önce gelir.",
+          )
+        : t("Google hizmet hesabı kullanılıyor (Ayarlar'da kayıtlı)."),
+    };
+  }
+  if (facts.oauthSource === "settings") {
+    return {
+      status: "ok",
+      detail: t("Google OAuth istemcisi kullanılıyor (Ayarlar'da kayıtlı)."),
+    };
+  }
+  if (facts.oauthSource === "environment") {
+    return {
+      status: "ok",
+      detail: t(
+        "Google OAuth istemcisi kullanılıyor (GOOGLE_CLIENT_ID ve GOOGLE_CLIENT_SECRET ortam değişkenlerinden).",
+      ),
+    };
+  }
+  return {
+    status: "warn",
+    detail: t(
+      "Google erişimi henüz girilmedi: Ayarlar'a bir hizmet hesabı ya da OAuth istemcisi girin. Girmeden Search Console ve Analytics bağlanamaz.",
+    ),
+  };
 }
 
 // Shared per-feature checks: the Docker preflight prints these at boot and

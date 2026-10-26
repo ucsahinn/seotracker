@@ -5,13 +5,18 @@ import {
   resolveIssueSeverity,
   type IssueSeverity,
 } from "@/shared/audit-issues";
-import { CRAWL_ISSUES } from "@/shared/audit-issues/crawl";
-import { CONTENT_ISSUES } from "@/shared/audit-issues/content";
-import { INDEXING_ISSUES } from "@/shared/audit-issues/indexing";
-import { SPEED_ISSUES } from "@/shared/audit-issues/speed";
-import { auditScoreTier, scoreAudit } from "@/shared/auditScore";
+import {
+  AUDIT_CATEGORIES,
+  AUDIT_CATEGORY_LABEL,
+  auditCategoryOf,
+  type AuditCategory,
+} from "@/shared/auditCategory";
+import {
+  describeIssueDetails,
+  type DetailLine,
+} from "@/shared/audit-issues/details";
+import { auditScoreTier } from "@/shared/auditScore";
 import { lighthouseBand } from "@/shared/lighthouse";
-import { describeDetails } from "./reportFormat";
 import type {
   AuditReportInput,
   ReportLighthouse,
@@ -21,29 +26,15 @@ import { t } from "@/shared/i18n";
 
 /* Pure numbers and groupings. No HTML in here: the sections draw from these. */
 
-export type IssueCategory =
-  | "crawl"
-  | "content"
-  | "indexing"
-  | "speed"
-  | "other";
-
-export const CATEGORY_ORDER: IssueCategory[] = [
-  "crawl",
-  "content",
-  "indexing",
-  "speed",
-  "other",
-];
-
-/** Turkish source text; shown through t(). */
-export const CATEGORY_LABEL: Record<IssueCategory, string> = {
-  crawl: "Tarama",
-  content: "İçerik",
-  indexing: "Dizine alma",
-  speed: "Hız",
-  other: "Diğer",
-};
+/*
+ * The seven categories the screen scores by (see `auditBreakdown`), so the
+ * report files a finding where the screen does. Security has its own
+ * heading instead of falling under "Diğer".
+ */
+export type IssueCategory = AuditCategory;
+export const CATEGORY_ORDER: IssueCategory[] = [...AUDIT_CATEGORIES];
+export const CATEGORY_LABEL = AUDIT_CATEGORY_LABEL;
+const categoryOf = auditCategoryOf;
 
 /** Turkish source text; shown through t(). */
 export const SEVERITY_LABEL: Record<IssueSeverity, string> = {
@@ -54,16 +45,7 @@ export const SEVERITY_LABEL: Record<IssueSeverity, string> = {
 
 export const SEVERITIES: IssueSeverity[] = ["critical", "warning", "info"];
 
-/** The registry is split into one file per subject; that split is the category. */
-function categoryOf(issueType: string): IssueCategory {
-  if (issueType in CRAWL_ISSUES) return "crawl";
-  if (issueType in CONTENT_ISSUES) return "content";
-  if (issueType in INDEXING_ISSUES) return "indexing";
-  if (issueType in SPEED_ISSUES) return "speed";
-  return "other";
-}
-
-type IssueRow = { url: string; detail: string; siteLevel: boolean };
+type IssueRow = { url: string; details: DetailLine[]; siteLevel: boolean };
 
 export type IssueGroup = {
   issueType: string;
@@ -76,7 +58,10 @@ export type IssueGroup = {
   explanation: string;
   howToFix: string;
   rows: IssueRow[];
-  /** Points fixing this gives back, from the same formula as the app. */
+  /**
+   * Points fixing this adds to the site score, from the same breakdown as
+   * the app; 0 until `buildAuditReportHtml` fills it in.
+   */
   points: number;
 };
 
@@ -126,7 +111,7 @@ export function groupIssues(input: AuditReportInput): IssueGroup[] {
     else entry.pages.add(issue.pageUrl ?? issue.pageId ?? "");
     entry.group.rows.push({
       url: issue.pageUrl ?? "",
-      detail: describeDetails(issue.detailsJson),
+      details: describeIssueDetails(issue.issueType, issue.detailsJson),
       siteLevel,
     });
   }
@@ -137,36 +122,17 @@ export function groupIssues(input: AuditReportInput): IssueGroup[] {
     pageCount: group.siteLevel ? input.pagesCrawled : Math.max(1, pages.size),
   }));
 
-  const { gains } = scoreGroups(groups, input.pagesCrawled);
-  const points = new Map(gains.map((gain) => [gain.issueType, gain.points]));
-
   /*
    * Severity first, then pages. The reader of a report opens it to answer
    * "what do I fix", and a critical on two pages outranks an info on ninety
    * -- the opposite of the in-app chart, which answers "where is the bulk".
    */
   return sort(
-    groups.map((g) => ({ ...g, points: points.get(g.issueType) ?? 0 })),
+    groups,
     (a, b) =>
       ISSUE_SEVERITY_ORDER[a.severity] - ISSUE_SEVERITY_ORDER[b.severity] ||
       b.pageCount - a.pageCount,
   );
-}
-
-function scoreGroups(groups: IssueGroup[], pagesCrawled: number) {
-  return scoreAudit(
-    groups.map((g) => ({
-      issueType: g.issueType,
-      severity: g.severity,
-      pages: g.pageCount,
-    })),
-    pagesCrawled,
-  );
-}
-
-/** The site score, through the very function the app's score card uses. */
-export function siteScore(groups: IssueGroup[], pagesCrawled: number) {
-  return scoreGroups(groups, pagesCrawled);
 }
 
 export function countSeverities(groups: IssueGroup[]) {
@@ -195,7 +161,15 @@ export function isReliable(input: AuditReportInput): boolean {
 export const UNRELIABLE_NOTE =
   'Denetim tamamlanmadığı ya da hiç sayfa taranamadığı için sorun listesi eksik olabilir; bu yüzden "sorun yok" denmiyor.';
 
-export function scoreVerdict(score: number | null, reliable = true): string {
+/**
+ * `critical` is the number of critical issue types: only a report that has
+ * some tells the reader to start there.
+ */
+export function scoreVerdict(
+  score: number | null,
+  critical: number,
+  reliable = true,
+): string {
   if (!reliable) return t("Denetim tamamlanmadığı için puan hesaplanmadı.");
   if (score === null) {
     return t("Taranan sayfa olmadığı için puan hesaplanamadı.");
@@ -209,13 +183,21 @@ export function scoreVerdict(score: number | null, reliable = true): string {
     case "good":
       return t("Temel sağlam, ama düzeltilmesi gereken belirgin sorunlar var.");
     case "fair":
-      return t(
-        "Orta düzeyde. Kritik ve uyarı sorunları aramadaki performansı gölgeliyor.",
-      );
+      return critical > 0
+        ? t(
+            "Orta düzeyde. Kritik ve uyarı sorunları aramadaki performansı gölgeliyor.",
+          )
+        : t(
+            "Orta düzeyde. Kritik sorun yok; uyarı sorunları aramadaki performansı gölgeliyor.",
+          );
     case "poor":
-      return t(
-        "Zayıf. Önce kritik sorunlar düzeltilmeli; bunlar sayfaların aramada görünmesini engelleyebilir.",
-      );
+      return critical > 0
+        ? t(
+            "Zayıf. Önce kritik sorunlar düzeltilmeli; bunlar sayfaların aramada görünmesini engelleyebilir.",
+          )
+        : t(
+            "Zayıf. Kritik sorun yok, ama birikmiş uyarılar aramadaki performansı aşağı çekiyor; en çok puan getirenlerden başlayın.",
+          );
   }
 }
 

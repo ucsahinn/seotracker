@@ -6,6 +6,7 @@ import {
   reportFilename,
 } from "@/client/features/reports/downloadReport";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
+import { useDoneFlash } from "@/client/lib/useDoneFlash";
 import { t } from "@/shared/i18n";
 
 /**
@@ -28,16 +29,18 @@ export function ReportDownloadButton({
   /** The visible text; the accessible name always starts with it. */
   label?: string;
 }) {
-  const [done, setDone] = useState(false);
+  const [ok, setOk] = useState(false);
   const [pending, setPending] = useState(false);
+  const flash = useDoneFlash(pending, ok);
+  const visible = flash === "done" ? t("İndirildi") : label;
 
   const download = () => {
     if (pending) return;
     setPending(true);
-    setDone(false);
+    setOk(false);
     downloadReport(reportId, reportFilename(title))
       .then(() => {
-        setDone(true);
+        setOk(true);
         toast.success(t("Rapor indirildi"));
       })
       .catch((error: unknown) =>
@@ -56,18 +59,18 @@ export function ReportDownloadButton({
       className={`btn btn-sm min-h-10 gap-1.5 sm:min-h-8 ${primary ? "btn-primary" : ""} ${pending ? "opacity-70" : ""}`}
       aria-disabled={pending}
       aria-busy={pending}
-      aria-label={`${label}: ${title}`}
+      aria-label={`${visible}: ${title}`}
       title={t("HTML olarak indir")}
       onClick={download}
     >
       {pending ? (
         <Loader2 aria-hidden className="size-4 animate-spin" />
-      ) : done ? (
-        <CheckCircle2 aria-hidden className="size-4 text-success" />
+      ) : flash === "done" ? (
+        <CheckCircle2 aria-hidden className="enter size-4 text-success" />
       ) : (
         <Download aria-hidden className="size-4" />
       )}
-      {label}
+      {visible}
     </button>
   );
 }

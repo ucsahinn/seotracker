@@ -1,4 +1,5 @@
 import { env } from "cloudflare:workers";
+import { AuditSiteFactsRepository } from "@/server/features/audit/repositories/AuditSiteFactsRepository";
 import { AuditRepository } from "@/server/features/audit/repositories/AuditRepository";
 import {
   AUDIT_LIMITS,
@@ -35,6 +36,7 @@ async function startAudit(input: {
   startUrl: string;
   maxPages?: number;
   lighthouseStrategy?: LighthouseMode;
+  externalChecks?: boolean;
 }) {
   const limits = AUDIT_LIMITS;
   const maxPages = clampAuditMaxPages(input.maxPages);
@@ -50,7 +52,11 @@ async function startAudit(input: {
   });
 
   const auditId = crypto.randomUUID();
-  const config: AuditConfig = { maxPages, lighthouseStrategy };
+  const config: AuditConfig = {
+    maxPages,
+    lighthouseStrategy,
+    externalChecks: input.externalChecks ?? true,
+  };
   // Anchor the audit to the site's real origin: a start domain that 301s
   // elsewhere (…net -> …com, apex -> www) would otherwise dead-end after
   // one page at the same-origin crawl boundary.
@@ -152,6 +158,8 @@ async function getResults(auditId: string, projectId: string) {
     await AuditRepository.getAuditResultsForProject(auditId, projectId);
 
   if (!audit) throw new AppError("NOT_FOUND");
+  // Null for an audit that predates the site probes, or one still running.
+  const siteFacts = await AuditSiteFactsRepository.getSiteFacts(audit.id);
 
   const parsedConfig = parseAuditConfig(audit.config);
   if (!parsedConfig) {
@@ -169,10 +177,12 @@ async function getResults(auditId: string, projectId: string) {
       startedAt: audit.startedAt,
       completedAt: audit.completedAt,
       config: parsedConfig,
+      analyticsCompared: audit.analyticsCompared,
     },
     pages,
     lighthouse,
     issues,
+    siteFacts,
   };
 }
 

@@ -4,9 +4,13 @@ import { version } from "../../../package.json";
 import { db } from "@/db";
 import { projects } from "@/db/schema";
 import { getAuthMode } from "@/lib/auth-mode";
-import { runSelfhostChecks } from "@/lib/selfhost-preflight";
+import {
+  checkGoogleCredential,
+  runSelfhostChecks,
+} from "@/lib/selfhost-preflight";
 import { getGoogleOAuthClientSource } from "@/server/features/google/oauth-config";
 import { getPageSpeedKeySource } from "@/server/features/lighthouse/pagespeed-config";
+import { hasServiceAccount } from "@/server/lib/googleServiceAccountToken";
 import { getOptionalEnvValue } from "@/server/lib/runtime-env";
 import { t } from "@/shared/i18n";
 
@@ -81,13 +85,17 @@ export async function getSelfHostSetupStatus(options?: {
     : await checkDatabase();
 
   // Unlike the boot preflight, this runs with a database, so it can see a
-  // client entered on the settings page and correct the env-only verdict.
+  // service account or OAuth client entered on the settings page and correct
+  // the env-only verdict, which otherwise reads "ok" next to a detail asking
+  // for an OAuth client. The preflight's own warnings (instance key missing,
+  // half an env client) stand unless a stored service account makes them moot.
   if (!options?.skipDatabaseCheck) {
-    if ((await getGoogleOAuthClientSource()) === "settings") {
-      checks.gsc = {
-        status: "ok",
-        detail: t("Google OAuth istemcisi Ayarlar'da tanımlı."),
-      };
+    const serviceAccount = await hasServiceAccount();
+    if (checks.gsc?.status !== "warn" || serviceAccount) {
+      checks.gsc = checkGoogleCredential({
+        serviceAccount,
+        oauthSource: await getGoogleOAuthClientSource(),
+      });
     }
 
     /*

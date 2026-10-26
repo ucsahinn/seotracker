@@ -1,6 +1,7 @@
 import { ProgressBar, StepProgress } from "@/client/components/ProgressBar";
 import { estimateRemainingMs } from "@/client/features/audit/launch/progressEstimate";
 import { useQuery } from "@tanstack/react-query";
+import { CheckCircle2 } from "lucide-react";
 import {
   HttpStatusBadge,
   extractPathname,
@@ -8,8 +9,10 @@ import {
 import {
   formatCount,
   formatDateTime,
-  formatDuration,
+  formatPercent,
+  formatRemaining,
 } from "@/client/lib/format";
+import { LIGHTHOUSE_CHECKS_PER_PAGE } from "@/shared/audit-limits";
 import { getCrawlProgress } from "@/serverFunctions/audit";
 import { t } from "@/shared/i18n";
 import { useEffect, useState } from "react";
@@ -21,6 +24,15 @@ const PHASE_LABEL: Record<string, string> = {
   crawling: "Taranıyor",
   lighthouse: "Hız ölçümü",
   finalizing: "Tamamlanıyor",
+};
+
+/** Turkish source text: what the current step is doing, in one line. */
+const PHASE_NOTE: Record<string, string> = {
+  discovery:
+    "Site haritası ve ana sayfanın bağlantılarından adresler toplanıyor.",
+  crawling:
+    "Her sayfa indirilip başlık, içerik, bağlantı ve teknik kontrollerden geçiriliyor.",
+  finalizing: "Bulgular puanlanıyor ve sonuçlar hazırlanıyor.",
 };
 
 /** Step list for the phases this audit will actually go through. */
@@ -37,9 +49,18 @@ export function ProgressCard({
   projectId,
   auditId,
   status,
+  completed = false,
+  issueCount,
 }: {
   projectId: string;
   auditId: string;
+  /**
+   * The moment between the status turning "completed" and the results
+   * replacing this card: the bars sit full and the card says what the run
+   * found. `issueCount` is undefined until the results have arrived.
+   */
+  completed?: boolean;
+  issueCount?: number;
   status: {
     pagesCrawled: number;
     pagesTotal: number;
@@ -61,8 +82,8 @@ export function ProgressCard({
   const lighthouseDone = status.lighthouseCompleted + status.lighthouseFailed;
   const lighthouseProgress =
     status.lighthouseTotal > 0 ? lighthouseDone / status.lighthouseTotal : 0;
-  const isLighthousePhase = status.currentPhase === "lighthouse";
-  const isFinalizing = status.currentPhase === "finalizing";
+  const isLighthousePhase = !completed && status.currentPhase === "lighthouse";
+  const isFinalizing = !completed && status.currentPhase === "finalizing";
   const phaseLabel = status.currentPhase
     ? t(PHASE_LABEL[status.currentPhase] ?? status.currentPhase)
     : t("Çalışıyor");
@@ -87,17 +108,32 @@ export function ProgressCard({
   });
   const eta =
     remainingMs !== null
-      ? t("~{duration} kaldı", { duration: formatDuration(remainingMs) })
+      ? t("yaklaşık {duration} kaldı", {
+          duration: formatRemaining(remainingMs),
+        })
       : undefined;
+  const { phaseNote, countText } = describeStep({
+    completed,
+    isLighthousePhase,
+    phase: status.currentPhase,
+    lighthouseDone,
+    lighthouseTotal: status.lighthouseTotal,
+    pagesCrawled: status.pagesCrawled,
+    pagesTotal: status.pagesTotal,
+  });
 
   const showSpeedBar =
     status.lighthouseTotal > 0 &&
     (isLighthousePhase || isFinalizing || lighthouseDone > 0);
-  const crawlDone = isLighthousePhase || isFinalizing;
+  const crawlDone = completed || isLighthousePhase || isFinalizing;
   const steps = phaseSteps(status.lighthouseTotal > 0 || isLighthousePhase);
-  const currentStep = steps.findIndex(
-    (step) => step.key === status.currentPhase,
-  );
+  const currentStep = completed
+    ? steps.length
+    : steps.findIndex((step) => step.key === status.currentPhase);
+
+  const completionText = completed
+    ? completionLine(status.pagesCrawled, issueCount)
+    : null;
 
   const crawlProgressQuery = useQuery({
     queryKey: ["audit-crawl-progress", projectId, auditId],
@@ -111,19 +147,40 @@ export function ProgressCard({
 
   return (
     <div className="space-y-3">
-      <div className="card bg-base-100 border border-base-300">
-        <div className="card-body gap-3">
+      <div className="rounded-box border border-[var(--hairline)] bg-base-100 shadow-[var(--shadow-raise)]">
+        <div className="flex flex-col gap-3 p-5">
           <div className="flex items-center justify-between">
-            <h2 className="font-medium flex items-center gap-2">
-              <span className="dot-live text-primary" aria-hidden />
-              {isLighthousePhase
-                ? t("Lighthouse kontrolleri çalışıyor")
-                : t("Sayfalar taranıyor")}
-            </h2>
-            <span className="badge badge-ghost badge-sm">{phaseLabel}</span>
+            {completed ? (
+              <h2 className="enter font-medium flex items-center gap-2">
+                <CheckCircle2
+                  className="size-4 text-[var(--ink-success)]"
+                  aria-hidden
+                />
+                {completionText}
+              </h2>
+            ) : (
+              <>
+                <h2 className="font-medium flex items-center gap-2">
+                  <span className="dot-live text-primary" aria-hidden />
+                  {isLighthousePhase
+                    ? t("Lighthouse kontrolleri çalışıyor")
+                    : t("Sayfalar taranıyor")}
+                </h2>
+                <span className="badge badge-ghost badge-sm">{phaseLabel}</span>
+              </>
+            )}
           </div>
+          <ProgressHeadline
+            completed={completed}
+            progress={hasTotal ? Math.min(1, progress) : null}
+            countText={countText}
+            eta={eta}
+          />
+          {phaseNote ? (
+            <p className="max-w-prose text-sm text-muted">{phaseNote}</p>
+          ) : null}
           {Number.isFinite(elapsed) && (
-            <p className="text-xs text-muted">
+            <p className="text-xs text-subtle">
               {t("Geçen süre: {duration}", {
                 duration: formatElapsed(elapsed),
               })}
@@ -139,11 +196,16 @@ export function ProgressCard({
               <ProgressBar
                 label={t("Tarama")}
                 value={status.pagesCrawled}
-                max={Math.max(status.pagesTotal, 1)}
+                // At the end the crawl is whole whatever the discovered total
+                // said, so the bar reads full rather than stopping at 98%.
+                max={
+                  completed
+                    ? Math.max(status.pagesCrawled, 1)
+                    : Math.max(status.pagesTotal, 1)
+                }
                 showCount
                 state={crawlDone ? "done" : "running"}
-                indeterminate={status.pagesTotal === 0}
-                eta={crawlDone ? undefined : eta}
+                indeterminate={!completed && status.pagesTotal === 0}
               />
               {showSpeedBar ? (
                 <ProgressBar
@@ -158,7 +220,6 @@ export function ProgressCard({
                         ? "warning"
                         : "done"
                   }
-                  eta={isLighthousePhase ? eta : undefined}
                 />
               ) : null}
               {status.lighthouseFailed > 0 ? (
@@ -180,24 +241,25 @@ export function ProgressCard({
           {/* One polite region for the whole run: a screen reader got
               nothing at all for a crawl that takes minutes. */}
           <p className="sr-only" role="status" aria-live="polite">
-            {!hasTotal
-              ? t("Adresler bulunuyor…")
-              : isLighthousePhase
-                ? status.lighthouseFailed > 0
-                  ? t("{done} / {total} kontrol ({failed} başarısız)", {
-                      done: formatCount(lighthouseDone),
-                      total: formatCount(status.lighthouseTotal),
-                      failed: formatCount(status.lighthouseFailed),
-                    })
-                  : t("{done} / {total} kontrol", {
-                      done: formatCount(lighthouseDone),
-                      total: formatCount(status.lighthouseTotal),
-                    })
-                : t("{done} / {total} sayfa", {
-                    done: formatCount(status.pagesCrawled),
-                    total: formatCount(status.pagesTotal),
-                  })}
-            {eta ? `, ${eta}` : ""}
+            {completionText ??
+              (!hasTotal
+                ? t("Adresler bulunuyor…")
+                : isLighthousePhase
+                  ? status.lighthouseFailed > 0
+                    ? t("{done} / {total} kontrol ({failed} başarısız)", {
+                        done: formatCount(lighthouseDone),
+                        total: formatCount(status.lighthouseTotal),
+                        failed: formatCount(status.lighthouseFailed),
+                      })
+                    : t("{done} / {total} kontrol", {
+                        done: formatCount(lighthouseDone),
+                        total: formatCount(status.lighthouseTotal),
+                      })
+                  : t("{done} / {total} sayfa", {
+                      done: formatCount(status.pagesCrawled),
+                      total: formatCount(status.pagesTotal),
+                    }))}
+            {eta && !completed ? `, ${eta}` : ""}
           </p>
         </div>
       </div>
@@ -231,6 +293,88 @@ export function ProgressCard({
       )}
     </div>
   );
+}
+
+/** The one number the reader came back to look at, with what it counts. */
+function ProgressHeadline({
+  completed,
+  progress,
+  countText,
+  eta,
+}: {
+  /** The finished card says what was found instead. */
+  completed: boolean;
+  /** Null while discovery has no total yet. */
+  progress: number | null;
+  countText: string;
+  eta: string | undefined;
+}) {
+  if (completed) return null;
+  return (
+    <div className="flex flex-wrap items-end gap-x-5 gap-y-1">
+      <p className="text-4xl font-semibold leading-none tabular-nums">
+        {progress === null ? "…" : formatPercent(progress, 0)}
+      </p>
+      <p className="text-sm tabular-nums text-muted">
+        {progress === null ? t("Adresler bulunuyor…") : countText}
+        {eta ? (
+          <>
+            <br />
+            {eta}
+          </>
+        ) : null}
+      </p>
+    </div>
+  );
+}
+
+/** The step in one line, and the count that goes with it. */
+function describeStep(input: {
+  completed: boolean;
+  isLighthousePhase: boolean;
+  phase: string | null;
+  lighthouseDone: number;
+  lighthouseTotal: number;
+  pagesCrawled: number;
+  pagesTotal: number;
+}) {
+  const speedPages = Math.ceil(
+    input.lighthouseTotal / LIGHTHOUSE_CHECKS_PER_PAGE,
+  );
+  const note = input.phase ? PHASE_NOTE[input.phase] : undefined;
+  const phaseNote = input.completed
+    ? null
+    : input.isLighthousePhase
+      ? t(
+          "Hız ölçümü: {pages} sayfa × {devices} cihaz, Google PageSpeed ile. Google dakikada sınırlı ölçüme izin verdiği için bu adım en uzunu.",
+          {
+            pages: formatCount(speedPages),
+            devices: LIGHTHOUSE_CHECKS_PER_PAGE,
+          },
+        )
+      : note
+        ? t(note)
+        : null;
+  const countText = input.isLighthousePhase
+    ? t("{done} / {total} ölçüm", {
+        done: formatCount(input.lighthouseDone),
+        total: formatCount(input.lighthouseTotal),
+      })
+    : t("{done} / {total} sayfa", {
+        done: formatCount(input.pagesCrawled),
+        total: formatCount(input.pagesTotal),
+      });
+  return { phaseNote, countText };
+}
+
+/** What a finished run found; the issue count is unknown until results load. */
+function completionLine(pages: number, issueCount: number | undefined) {
+  return issueCount === undefined
+    ? t("{count} sayfa tarandı", { count: formatCount(pages) })
+    : t("{pages} sayfa tarandı, {issues} bulgu", {
+        pages: formatCount(pages),
+        issues: formatCount(issueCount),
+      });
 }
 
 function ProgressRow({

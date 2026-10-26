@@ -45,8 +45,16 @@
       href="https://seowatcher.io/gizlilik/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="/assets/consent.css?v=1" />
-    <script src="/assets/consent.js?v=2" defer></script>
+    <link rel="manifest" href="/site.webmanifest" />
+    <link
+      rel="alternate"
+      type="application/atom+xml"
+      title="seowatcher"
+      href="/it/feed.xml"
+    />
+    <link rel="stylesheet" href="/assets/consent.css?v=2" />
+    <meta name="ga4-id" content="G-DFPDX00V4R" />
+    <script src="/assets/consent.js?v=3" defer></script>
   </head>
   <body data-privacy-page>
     <main>
@@ -57,48 +65,78 @@
         nell’applicazione seowatcher installata restano separati sul tuo
         computer.
       </p>
+      <p>
+        <small
+          >Ultimo aggiornamento:
+          <time datetime="2026-10-26">26 ottobre 2026</time></small
+        >
+      </p>
       <section>
-        <h2>Misurazione facoltativa delle visite</h2>
+        <h2>Google Analytics 4 (quando è attivo)</h2>
         <p>
-          Google Analytics 4 viene caricato solo con il tuo consenso. Google
-          elabora visualizzazioni di pagina, scorrimenti, clic esterni e
-          download, insieme a informazioni tecniche sul browser e sul
-          dispositivo. Usiamo questi dati per migliorare il sito e le guide di
-          installazione. Non usiamo personalizzazione pubblicitaria né Google
-          Signals.
+          Google Analytics 4 funziona su questo sito solo se è configurato un ID
+          di misurazione GA4. Senza ID, le pagine non inviano richieste a
+          Google, non mostrano il banner dei cookie e non salvano nulla nel
+          browser. Anche in quel caso il tag Google (gtag.js) viene caricato
+          solo dopo che hai scelto Accetta. Dopo il consenso vengono misurati le
+          visualizzazioni di pagina e gli eventi della misurazione avanzata di
+          GA4 (ad esempio scorrimenti, clic su link esterni e download), insieme
+          all’indirizzo della pagina, all’indirizzo di provenienza, al browser,
+          al sistema operativo, al tipo di dispositivo, alle dimensioni dello
+          schermo, alla lingua e a una posizione approssimativa ricavata
+          dall’indirizzo IP. Secondo Google, GA4 non registra né conserva gli
+          indirizzi IP. Usiamo questi dati per migliorare il sito e le guide di
+          installazione.
         </p>
       </section>
       <section>
-        <h2>Scelte e conservazione</h2>
+        <h2>Consenso</h2>
+        <p>
+          Usiamo la modalità di consenso v2 di Google nella versione di base:
+          tutte le autorizzazioni di analisi e pubblicità partono negate e,
+          finché non dai il consenso, nulla viene caricato da Google e nessun
+          dato gli viene inviato. Accetta concede solo l’archiviazione per
+          l’analisi, carica il tag Google e scrive i cookie di analisi (_ga e
+          nomi che iniziano con _ga_). Le autorizzazioni pubblicitarie non
+          vengono mai concesse; la personalizzazione pubblicitaria e Google
+          Signals sono disattivati.
+        </p>
+      </section>
+      <section>
+        <h2>Conservazione</h2>
         <p>
           Il consenso o il rifiuto viene conservato per 6 mesi nello spazio di
-          archiviazione locale del browser con il nome seowatcher-consent-v1. I
-          cookie di analisi (_ga e nomi che iniziano con _ga_) sono usati solo
-          dopo il consenso e durano al massimo 13 mesi. La conservazione dei
-          dati utente ed evento GA4 è di 14 mesi. I rapporti aggregati di Google
-          possono seguire regole diverse.
+          archiviazione locale del browser con il nome seowatcher-consent-v1;
+          poi la domanda viene riproposta. I cookie di analisi durano al massimo
+          13 mesi. La conservazione dei dati utente ed evento nella proprietà
+          GA4 è impostata su 14 mesi. I rapporti aggregati di Google possono
+          seguire regole diverse.
         </p>
       </section>
       <section>
-        <h2>Modificare la scelta</h2>
+        <h2>Revocare il consenso</h2>
         <p>
-          Il consenso è facoltativo. Il rifiuto non impedisce di usare il sito o
-          scaricare l’applicazione. Usa Impostazioni dei cookie in fondo a ogni
-          pagina per modificare la scelta o revocare il consenso. La revoca
-          disattiva l’analisi, elimina i cookie di analisi accessibili e
-          ricarica la pagina.
+          Il consenso è facoltativo; il rifiuto non impedisce di usare il sito o
+          scaricare l’applicazione. Quando l’analisi è attiva, in fondo a ogni
+          pagina c’è il pulsante Impostazioni dei cookie: con esso puoi
+          modificare la scelta o revocare il consenso in qualsiasi momento. La
+          revoca interrompe la misurazione, elimina i cookie di analisi
+          accessibili e ricarica la pagina; da quel momento nessun dato viene
+          inviato a Google. Anche cancellare i dati di questo sito nel browser
+          azzera la scelta.
         </p>
       </section>
       <section>
         <h2>Fornitori e contatti</h2>
         <p>
-          Il server web elabora informazioni di connessione come l’indirizzo IP
-          e l’URL richiesto per rispondere alla richiesta. Con il consenso
-          all’analisi, Google elabora i dati sulla propria infrastruttura, che
-          può includere server fuori dal tuo paese. Per richieste relative alla
-          privacy o ai dati usa il contatto nel profilo GitHub del progetto. I
-          link Google sotto forniscono ulteriori dettagli su trattamento e
-          cookie.
+          Il sito è ospitato su un server di Hetzner; il server web elabora
+          informazioni di connessione come l’indirizzo IP e l’URL richiesto per
+          rispondere alla richiesta. Quando l’analisi è attiva, Google elabora i
+          dati di Analytics per nostro conto come responsabile del trattamento,
+          secondo i termini di trattamento dei dati di Google, anche su server
+          fuori dal tuo paese. Per richieste relative alla privacy o ai dati usa
+          il contatto nel profilo GitHub del progetto. I link Google sotto
+          forniscono ulteriori dettagli su trattamento e cookie.
         </p>
       </section>
       <p>

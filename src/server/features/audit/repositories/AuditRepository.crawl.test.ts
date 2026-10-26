@@ -1,5 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { makeCrawledPage } from "@/server/test-support/crawled-page";
+import {
+  makeCrawledPage,
+  makePageSignals,
+} from "@/server/test-support/crawled-page";
 import { AuditRepository } from "./AuditRepository";
 
 const testDb = await vi.hoisted(async () =>
@@ -97,5 +100,67 @@ describe("backfillCrawlDepths", () => {
 
     // pg1's depth of 6 is only an upper bound, so it earns no new finding.
     expect(deepPageIds()).toEqual([]);
+  });
+});
+
+describe("insertCrawledBatch page signals", () => {
+  it("stores the signals and replaces a page's schema types and tag ids on retry", async () => {
+    const page = (
+      jsonLdTypes: string[],
+      analyticsIds: string[],
+      domNodeCount: number,
+    ) =>
+      makeCrawledPage({
+        id: "sg1",
+        url: "https://example.com/s",
+        signals: makePageSignals({
+          domNodeCount,
+          contentSimhash: "00ff00ff00ff00ff",
+          jsonLdTypes,
+          analyticsIds,
+        }),
+      });
+
+    await AuditRepository.insertCrawledBatch(
+      "s1",
+      [page(["Product", "BreadcrumbList"], ["G-AAAA1111"], 400)],
+      [],
+    );
+    await AuditRepository.insertCrawledBatch(
+      "s1",
+      [page(["Article"], ["GTM-BBB222"], 900)],
+      [],
+    );
+
+    expect(
+      testDb.database
+        .prepare(
+          "SELECT dom_node_count, content_simhash FROM audit_pages WHERE id = 'sg1'",
+        )
+        .get(),
+    ).toEqual({ dom_node_count: 900, content_simhash: "00ff00ff00ff00ff" });
+    expect(
+      testDb.database
+        .prepare("SELECT schema_type FROM audit_page_schema_types")
+        .all(),
+    ).toEqual([{ schema_type: "Article" }]);
+    expect(
+      testDb.database
+        .prepare("SELECT tag_id FROM audit_page_analytics_ids")
+        .all(),
+    ).toEqual([{ tag_id: "GTM-BBB222" }]);
+  });
+
+  it("leaves the signal columns empty for a page with no analyzed HTML", async () => {
+    await AuditRepository.insertCrawledBatch(
+      "s2",
+      [makeCrawledPage({ id: "sg2", isHtml: false })],
+      [],
+    );
+    expect(
+      testDb.database
+        .prepare("SELECT dom_node_count FROM audit_pages WHERE id = 'sg2'")
+        .get(),
+    ).toEqual({ dom_node_count: null });
   });
 });

@@ -197,9 +197,7 @@ export const deSettingsContinued: Catalog = {
   Yükleniyor: "Wird geladen",
   "Geçen süre: {duration}": "Verstrichen: {duration}",
   "Rapor hazır": "Bericht ist fertig",
-  "Rapor hazırlanıyor…": "Bericht wird erstellt …",
   "Google'dan yanıt bekleniyor…": "Warten auf Antwort von Google …",
-  "Dizin durumu kontrol ediliyor": "Indexierungsstatus wird geprüft",
   "Bildirimler ({count} okunmamış)": "Benachrichtigungen ({count} ungelesen)",
   Bildirimler: "Benachrichtigungen",
   "Tümünü okundu işaretle": "Alle als gelesen markieren",
@@ -208,10 +206,6 @@ export const deSettingsContinued: Catalog = {
   Okunmamış: "Ungelesen",
   "Bildirim sesi": "Benachrichtigungston",
   "Sesi dinle": "Ton anhören",
-  "Bildirim izni engellendi. Açmak için tarayıcının site izinlerini kullanın.":
-    "Die Benachrichtigungsberechtigung wurde verweigert. Aktivieren Sie sie in den Website-Einstellungen Ihres Browsers.",
-  "Bu tarayıcı masaüstü bildirimlerini desteklemiyor.":
-    "Dieser Browser unterstützt keine Desktopbenachrichtigungen.",
   "Yeni sürüm yayımlandı: {version}": "Neue Version veröffentlicht: {version}",
   "Ayarlar'daki Hakkında bölümü nasıl güncelleyeceğinizi söyler.":
     "Unter Einstellungen → Info erfahren Sie, wie Sie das Update installieren.",

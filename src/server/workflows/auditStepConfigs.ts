@@ -54,3 +54,13 @@ export const MULTIPAGE_CHECKS_STEP: WorkflowStepConfig = {
   retries: { limit: 2, delay: "5 seconds", backoff: "exponential" },
   timeout: "5 minutes",
 };
+
+/**
+ * One chunk of the opt-in external checks: 40 URLs, 4 at a time, at most
+ * two 8-second requests each plus DNS. Requests are idempotent reads, so a
+ * single retry is harmless; more would only re-ask hosts that time out.
+ */
+export const EXTERNAL_CHECK_STEP: WorkflowStepConfig = {
+  retries: { limit: 1, delay: "10 seconds", backoff: "constant" },
+  timeout: "5 minutes",
+};

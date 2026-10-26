@@ -98,4 +98,7 @@ export const enShared: Catalog = {
   "Arama sayısı": "Searches",
   "Satılan ürün": "Items purchased",
   "Ürün geliri": "Item revenue",
+
+  // audit screens UX pass (2026-10-26)
+  "Sosyal ve yapılandırılmış veri": "Social and structured data",
 };

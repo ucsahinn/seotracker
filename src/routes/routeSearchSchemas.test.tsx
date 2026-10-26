@@ -30,7 +30,7 @@ function parseSearch(
 
 const routes = [
   ["analytics", analytics, { windowDays: 28 }],
-  ["audit", auditIndex, { tab: "issues" }],
+  ["audit", auditIndex, { tab: "todo" }],
   ["opportunities", opportunities, { windowDays: 28, limit: 50 }],
   ["rankings", rankings, { days: 90 }],
   ["reports detail", report, {}],

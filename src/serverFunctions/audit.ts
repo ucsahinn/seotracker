@@ -3,6 +3,7 @@ import { waitUntil } from "cloudflare:workers";
 import { requireOrgPermission } from "@/server/auth/org-gate";
 import { AuditService } from "@/server/features/audit/services/AuditService";
 import { getAuditFreshness } from "@/server/features/audit/services/auditFreshness";
+import { getAuditInsights as readAuditInsights } from "@/server/features/audit/services/auditInsights";
 import { captureServerEvent } from "@/server/lib/observability";
 import { requireProjectContext } from "@/serverFunctions/middleware";
 import {
@@ -25,6 +26,7 @@ export const startAudit = createServerFn({ method: "POST" })
       startUrl: data.startUrl,
       maxPages: data.maxPages,
       lighthouseStrategy: data.lighthouseStrategy,
+      externalChecks: data.externalChecks,
     });
 
     waitUntil(
@@ -56,6 +58,18 @@ export const getAuditResults = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     return AuditService.getResults(data.auditId, context.projectId);
   });
+
+/**
+ * The overview's slower half: score history, Search Console traffic per
+ * page, the start page's tags and field data. Its own call so the results
+ * render without waiting on Google.
+ */
+export const getAuditInsights = createServerFn({ method: "POST" })
+  .middleware(requireProjectContext)
+  .validator(getAuditResultsSchema)
+  .handler(async ({ data, context }) =>
+    readAuditInsights({ projectId: context.projectId, auditId: data.auditId }),
+  );
 
 export const getAuditHistory = createServerFn({ method: "POST" })
   .middleware(requireProjectContext)

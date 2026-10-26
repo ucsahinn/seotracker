@@ -26,6 +26,9 @@ import {
   type CoverageBucket,
 } from "@/client/features/audit/results/coverageBuckets";
 
+/** Pages one run of the button asks about; MAX_PER_RUN in gsc/indexCoverage.ts. */
+const INSPECT_BATCH = 25;
+
 /**
  * What Google says about the pages the crawler found.
  *
@@ -38,18 +41,11 @@ export function IndexCoverageView({
   projectId,
   auditId,
   onRowsChange,
-  askDisabledReason,
 }: {
   projectId: string;
   auditId: string;
   /** Hands the rows to the export menu a level up; undefined while loading. */
   onRowsChange?: (rows: CoverageRow[] | undefined) => void;
-  /*
-   * Set when asking Google would spend quota on a question it cannot
-   * answer -- an audit of a site the project's property does not cover.
-   * The allowance is 2000 URLs a day and does not replenish early.
-   */
-  askDisabledReason?: string;
 }) {
   const queryClient = useQueryClient();
   const queryKey = ["indexCoverage", projectId, auditId] as const;
@@ -222,15 +218,18 @@ export function IndexCoverageView({
           }
         />
         <MetricTile
-          label={t("Bu denetimde henüz sorulmamış")}
+          label={t("Henüz kontrol edilmedi")}
           value={formatNumber(data.due)}
           animateTo={{ value: data.due, format: formatNumber }}
           hint={
             data.lastCheckedAt
-              ? t("Google'a hiç sorulmamış sayfalar. Son kontrol {date}", {
-                  date: formatDateTime(data.lastCheckedAt),
-                })
-              : t("Google'a hiç sorulmamış sayfalar. Henüz kontrol yapılmadı.")
+              ? t(
+                  "Bu denetimin Google'a sorulmamış sayfaları. Son kontrol {date}",
+                  {
+                    date: formatDateTime(data.lastCheckedAt),
+                  },
+                )
+              : t("Bu denetimin Google'a sorulmamış sayfaları.")
           }
         />
       </MetricRow>
@@ -239,7 +238,7 @@ export function IndexCoverageView({
         <p className="text-sm text-muted">
           {t(
             "Google günde en çok {limit} adres sormanıza izin verir. Her seferde {batch} sayfa kontrol edilir. Önce hiç sorulmamış olanlara, sonra Google'ın dizine almadıklarına bakılır.",
-            { limit: formatNumber(2000), batch: formatNumber(25) },
+            { limit: formatNumber(2000), batch: formatNumber(INSPECT_BATCH) },
           )}
         </p>
         <button
@@ -248,9 +247,7 @@ export function IndexCoverageView({
           /* `due`, not `pending`: a page Google already answered becomes
              worth re-asking once the answer ages out, and keying off
              `pending` left the button disabled while there was work. */
-          disabled={
-            refresh.isPending || data.due === 0 || Boolean(askDisabledReason)
-          }
+          disabled={refresh.isPending || data.due === 0}
           onClick={() => refresh.mutate()}
         >
           {refresh.isPending ? (
@@ -262,25 +259,30 @@ export function IndexCoverageView({
             ? t("Google'dan yanıt bekleniyor…")
             : t("Google'da durumunu kontrol et")}
         </button>
-        {askDisabledReason ? (
-          <p className="basis-full text-xs text-muted">{askDisabledReason}</p>
-        ) : null}
       </div>
 
       {refresh.isPending && (
         <ProgressBar
-          label={t("Dizin durumu kontrol ediliyor")}
+          // One run asks at most a batch; `due` is what was waiting when it
+          // started, so the smaller of the two is how many are in flight.
+          label={t("{count} sayfa soruluyor", {
+            count: formatNumber(Math.min(data.due, INSPECT_BATCH)),
+          })}
           indeterminate
           showPercent={false}
         />
       )}
 
-      <QuotaCard projectId={projectId} kinds={["url_inspection"]} />
+      <QuotaCard
+        projectId={projectId}
+        kinds={["url_inspection"]}
+        refreshable={false}
+      />
 
       {neverChecked ? (
         <EmptyState
           icon={SearchCheck}
-          title={t("Google'da henüz kontrol edilmedi")}
+          title={t("Henüz kontrol edilmedi")}
           description={t(
             "Taradığınız sayfaların gerçekten dizine girip girmediğini görmek için yukarıdaki düğmeyi kullanın.",
           )}

@@ -3,7 +3,7 @@ title: Ayarlar
 description: Tema, Google erişim anahtarı, PageSpeed anahtarı, kullanım sınırları ve güncelleme kontrolü: bütün kurulum için tek ayar ekranı.
 screen: Ayarlar
 route: /settings
-updated: 2026-10-24
+updated: 2026-10-26
 ---
 
 Google bağlantısını, hız anahtarını ve güncellemeyi nereden yöneteceğinizi burada görürsünüz.
@@ -50,7 +50,7 @@ Her kartın durumu **Yeterli**, **Azalıyor** (yüzde 70'ten sonra), **Neredeyse
 
 ## Nasıl kullanılır
 
-1. İlk kurulumda önce **Google** bölümüne istemci kimliğini ve gizli anahtarı girin. Sonra **Hız ölçümü** bölümüne PageSpeed anahtarını girin. İkisi kaydedilince projeye geçip mülkü seçersiniz.
+1. İlk kurulumda önce **Hizmet hesabı** bölümüne JSON anahtarını ya da **Google** bölümüne istemci kimliğini ve gizli anahtarı girin; biri yeter. Sonra **Hız ölçümü** bölümüne PageSpeed anahtarını girin. İkisi kaydedilince projeye geçip mülkü seçersiniz.
 2. Ayda bir **Sınırlar** bölümüne bakın. "Azalıyor" gördüğünüz kota çoğu zaman URL Denetimi sınırıdır.
 3. **Hakkında** bölümünde yeni sürüm varsa güncelleyin. Sürüm notları neyin değiştiğini söyler. Google'ın dışına giden tek bağlantı güncelleme kontrolüdür. İstemezseniz anahtarı kapatın.
 4. Google erişim anahtarını değiştirmeniz gerekirse (yeni Cloud projesi gibi) **Değiştir**'i tıklayın ve yeni değerleri yapıştırın. Mevcut bağlantılar yeni anahtarla çalışmaz. Projelerde **Yeniden bağlan** gerekir.
@@ -64,6 +64,20 @@ Her kartın durumu **Yeterli**, **Azalıyor** (yüzde 70'ten sonra), **Neredeyse
 **Güncelleme kontrolü ne gönderiyor?** Hiçbir veri göndermez. GitHub'ın herkese açık sürüm listesini okur. İstek anonimdir.
 
 **Hizmet hesabı mı, Google erişim anahtarı mı?** Hizmet hesabı sizi izin ekranıyla uğraştırmaz ve süresi dolmaz. Karşılığında Search Console ve Analytics'te o hesaba elle yetki vermeniz gerekir. Tek kişilik kurulumda ikisi de olur. Sık "süresi doldu" görüyorsanız hizmet hesabına geçin.
+
+## Windows paketi ve Docker'da farklı olanlar
+
+Ekrandaki her ayar iki kurulumda aynı çalışır ve veritabanında saklanır. Fark, ekranın dışındaki ayarlardadır:
+
+| Konu                         | Windows paketi                                                                               | Docker                                                                                                                    |
+| ---------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| Google ve PageSpeed anahtarı | Yalnızca bu ekrandan. Rozet hiçbir zaman **Ortamdan geliyor** demez.                         | Bu ekrandan ya da `.env` içindeki `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `PAGESPEED_API_KEY` ile. Ekrandaki kazanır. |
+| Adres numarası (port)        | `%LOCALAPPDATA%\seowatcher\config.json` içindeki `"port"`, sonra menüden **Yeniden başlat**. | `.env` içindeki `PORT`, sonra `docker compose up -d --force-recreate seotracker`.                                         |
+| Ajan parolası (MCP token)    | `%LOCALAPPDATA%\seowatcher\mcp-token`; başlatıcı üretir, kapatılamaz.                        | Konteynerde `/app/.wrangler/mcp-token`; `.env` içindeki `MCP_TOKEN` ile değiştirilir ya da `off` ile kapatılır.           |
+| Güncelleme                   | **Windows** bölümü ya da görev çubuğu menüsü; kendiliğinden kurulabilir.                     | **Hakkında** bölümündeki komut: `git pull && docker compose up -d --build`.                                               |
+| **Windows** bölümü           | Açık.                                                                                        | Seçenekler kapalı.                                                                                                        |
+
+Windows paketinde veri klasöründeki `server.env` dosyasını düzenlemeyin: başlatıcı onu her açılışta yeniden yazar. Docker değişkenlerinin tam listesi `docs/ENVIRONMENT.md` dosyasındadır.
 
 ## Sınırlar
 

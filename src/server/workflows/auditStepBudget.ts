@@ -29,10 +29,10 @@ export const LIGHTHOUSE_RATE_LIMIT_PAUSE = "65 seconds";
 /** Crawl chunk size: pages claimed per `crawl-chunk-N` step at most. */
 const CRAWL_CHUNK_PAGES = 200;
 /**
- * validate-context, discover-urls-v2, select-lighthouse-sample,
+ * validate-context, discover-urls-v2, site-probes, select-lighthouse-sample,
  * multipage-checks, finalize, plus mark-failed on a failed run.
  */
-const FIXED_AUDIT_STEPS = 6;
+const FIXED_AUDIT_STEPS = 7;
 
 /** Steps the speed phase creates for this many measured pages. */
 export function lighthouseStepCount(pages: number, worstCase = false) {

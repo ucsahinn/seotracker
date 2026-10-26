@@ -93,7 +93,7 @@ export function methodSection(
     ],
   ];
   return `<section id="yontem">
-    <h2>${t("6. Yöntem ve sınırlar")}</h2>
+    <h2>${t("8. Yöntem ve sınırlar")}</h2>
     <dl class="method">${rows
       .map(
         ([k, v]) =>

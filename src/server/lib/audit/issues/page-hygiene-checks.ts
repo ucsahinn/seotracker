@@ -141,9 +141,10 @@ export function reportHygiene(page: CrawledPageResult, report: Report): void {
     });
   }
   if (!page.isIndexable) return;
-  if (page.links.length > TOO_MANY_LINKS) {
+  const linkCount = Math.max(page.linkTargetCount, page.links.length);
+  if (linkCount > TOO_MANY_LINKS) {
     report("too-many-links", {
-      count: page.links.length,
+      count: linkCount,
       limit: TOO_MANY_LINKS,
     });
   }

@@ -1,6 +1,6 @@
 # Ortam değişkenleri
 
-> **Windows paketi kullanıyorsanız:** bu dosya Docker kurulumunun `.env` değişkenlerini anlatır. Windows paketinde `.env` yoktur; başlatıcı her açılışta `%LOCALAPPDATA%\seowatcher\server.env` dosyasını kendisi yazar (elle düzenlemeyin). Google anahtarı ve PageSpeed anahtarı uygulamanın **Ayarlar** ekranına girilir; adres numarası `config.json` ile değişir. Ayrıntı: [kb/kurulum-windows.md](./kb/kurulum-windows.md).
+> **Windows paketi kullanıyorsanız:** bu dosyadaki değişkenler yalnızca Docker kurulumu içindir. Windows paketinde `.env` yoktur; karşılıkları aşağıdaki [Windows paketinde](#windows-paketinde) bölümünde.
 
 seotracker hiçbir yapılandırma olmadan çalışır. Aşağıdakilerin hiçbiri zorunlu
 değil; her biri yalnızca bir şeyi açar.
@@ -58,6 +58,31 @@ ve [SELF_HOSTING_GOOGLE_ANALYTICS.md](./SELF_HOSTING_GOOGLE_ANALYTICS.md).
 | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `PAGESPEED_API_KEY` | Denetimin Lighthouse aşaması için. **Ayarlar'dan girmek daha kolay.** Anahtarsız ölçüm ilk 50 sayfayla sınırlıdır ve çoğu zaman kısmen 429 ile başarısız olur; anahtar önerilir. Bkz. [PAGESPEED_API_KEY.md](./PAGESPEED_API_KEY.md).                                                                                                                                                                                                                                                                                                                       |
 | `MCP_TOKEN`         | `/mcp` ucu için paylaşılan sır. Boşsa Docker konteyneri ilk açılışta bir tane üretir (`/app/.wrangler/mcp-token`; okumak için `docker compose exec -T seotracker cat /app/.wrangler/mcp-token`, Windows'ta Git Bash'te başına `MSYS_NO_PATHCONV=1` ekleyin, yoksa token boş çıkar). Kendi değerinizi verebilir ya da `off` yazıp kapatabilirsiniz (yalnızca Docker'da; boş bırakmak kapatmaz). Rastgele değer üretmek için: `openssl rand -hex 32` (Git Bash/Linux/macOS) ya da PowerShell'de `-join ((1..32) \| % { '{0:x2}' -f (Get-Random -Max 256) })`. |
+
+## Windows paketinde
+
+Windows paketi (seowatcher-setup.exe) `.env` okumaz ve yukarıdaki değişkenlerin hiçbirini sizden beklemez. Her şey `%LOCALAPPDATA%\seowatcher` klasöründedir (görev çubuğu menüsünde **Veri klasörünü aç**):
+
+| Dosya             | Kim yazar           | Ne tutar                                                                                                                                                                                                                                         |
+| ----------------- | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `config.json`     | siz ve başlatıcı    | `"port"` (varsayılan `3001`), `"autoUpdate"` ve son çalışan sürüm. Elle düzenlenebilen tek dosya; değiştirdikten sonra menüden **Yeniden başlat**. 3001 doluysa başlatıcı o açılış için 3002-3010 arasından boş birini seçer ama dosyaya yazmaz. |
+| `server.env`      | başlatıcı           | Docker'daki `.env` ya da `.dev.vars` karşılığı: `AUTH_MODE=local_noauth`, `BETTER_AUTH_SECRET`, `MCP_TOKEN`, `INSTALL_KIND=windows` ve Ayarlar'daki Windows bölümünün yerel bağlantısı. Her açılışta baştan yazılır; düzenlemeyin.               |
+| `instance-secret` | başlatıcı (bir kez) | `BETTER_AUTH_SECRET` karşılığı: kayıtlı Google bilgilerini şifreleyen anahtar. Silinirse kayıtlı Google bağlantıları açılamaz.                                                                                                                   |
+| `mcp-token`       | başlatıcı (bir kez) | `MCP_TOKEN` karşılığı: ajan bağlantısının parolası. Windows paketinde kapatılamaz; boş ya da kısa bir dosya yeniden üretilir.                                                                                                                    |
+
+Değişkenlerin Windows karşılığı:
+
+| Değişken                                   | Windows paketinde                                            |
+| ------------------------------------------ | ------------------------------------------------------------ |
+| `PORT`                                     | `config.json` içindeki `"port"`.                             |
+| `ALLOWED_HOST`                             | Yok. Uygulama yalnızca `127.0.0.1` adresinden açılır.        |
+| `AUTH_MODE`, `TEAM_DOMAIN`, `POLICY_AUD`   | Yok. Her zaman `local_noauth`.                               |
+| `BETTER_AUTH_SECRET`                       | `instance-secret` dosyası.                                   |
+| `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | Yok. **Ayarlar → Google** ya da **Ayarlar → Hizmet hesabı**. |
+| `PAGESPEED_API_KEY`                        | Yok. **Ayarlar → Hız ölçümü**.                               |
+| `MCP_TOKEN`                                | `mcp-token` dosyası.                                         |
+
+Uygulama hangi kurulumda çalıştığını `INSTALL_KIND` ile bilir: başlatıcı `windows` yazar, Docker'da tanımsızdır ve `docker` sayılır. `/api/health` yanıtındaki `installKind` alanı bunu gösterir; elle ayarlamayın.
 
 ## Neden `.env.example` yok
 

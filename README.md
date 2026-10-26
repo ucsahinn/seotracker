@@ -199,7 +199,7 @@ Raporları, denetimleri ve düşüş incelemelerini bir yapay zeka ajanına yapt
 | Başlangıç      | `whoami` · `list_projects` · `create_project` · `get_diagnostics` · `get_project_context` · `update_project_context`                                                                                                                                                                                                                                                                          |
 | Search Console | `get_search_console_performance` · `get_search_opportunities` · `get_cannibalization` · `get_ranking_history` · `get_index_coverage` · `inspect_urls` · `get_sitemaps`                                                                                                                                                                                                                        |
 | Analytics 4    | `get_google_analytics_organic_overview` · `get_google_analytics_organic_landing_pages` · `get_google_analytics_traffic_acquisition` · `get_google_analytics_page_performance` · `get_google_analytics_key_events` · `get_google_analytics_audience_breakdown` · `get_google_analytics_site_search` · `get_google_analytics_ecommerce_performance` · `get_google_analytics_measurement_health` |
-| Denetim        | `run_site_audit` · `get_audit_status` · `get_audit_issues` · `get_audit_pages`                                                                                                                                                                                                                                                                                                                |
+| Denetim        | `run_site_audit` · `get_audit_status` · `get_audit_summary` · `get_audit_issues` · `get_audit_pages`                                                                                                                                                                                                                                                                                          |
 | Kayıtlı iş     | `save_keywords` · `list_saved_keywords` · `save_report` · `get_report` · `list_reports` · `save_report_template` · `list_report_templates`                                                                                                                                                                                                                                                    |
 
 Araç açıklamaları İngilizcedir; ajanlar okur. Ajan, sayfa metinlerinin ya da sorguların içine gömülü komutlara uymaz; yalnızca sizin isteklerinizi yapar. Yazan araçlar (kelime kaydetme, bağlam güncelleme, URL denetimi) çağrıldığı anda çalışır; sizden onay istemek ajanın işidir.
@@ -249,7 +249,7 @@ Port değişirse Google OAuth yönlendirme adresini de (`http://localhost:3002/a
 <details>
 <summary><b>İnternete açabilir miyim?</b></summary>
 
-Uygulama kimlik doğrulaması yapmaz (`AUTH_MODE=local_noauth`) ve yalnızca bu bilgisayardan erişilir. İnternete açacaksanız önüne kendi kimlik doğrulamanızı koyun. Tüm ortam değişkenleri: [`docs/ENVIRONMENT.md`](./docs/ENVIRONMENT.md).
+Uygulama kimlik doğrulaması yapmaz (`AUTH_MODE=local_noauth`) ve yalnızca bu bilgisayardan erişilir. İnternete açacaksanız önüne kendi kimlik doğrulamanızı koyun. Tüm ortam değişkenleri: [`docs/ENVIRONMENT.md`](./docs/ENVIRONMENT.md). Bu değişkenler yalnızca Docker içindir: Windows paketinde `.env` yoktur, uygulama yalnızca `127.0.0.1`'den açılır ve ayarlar `%LOCALAPPDATA%\seowatcher` altında durur (`config.json` adres numarasını tutar; `server.env` başlatıcının her açılışta yeniden yazdığı dosyadır, düzenlemeyin). Google ve PageSpeed anahtarları iki kurulumda da **Ayarlar** ekranından girilir.
 
 </details>
 
@@ -281,7 +281,7 @@ Search Console verisi yaklaşık 3 gün gecikmeli yayımlanır. Bu yüzden ekran
 | [`SELF_HOSTING_GOOGLE_SEARCH_CONSOLE.md`](./docs/SELF_HOSTING_GOOGLE_SEARCH_CONSOLE.md) | Google Cloud projesi ve OAuth istemcisi                                  |
 | [`SELF_HOSTING_GOOGLE_ANALYTICS.md`](./docs/SELF_HOSTING_GOOGLE_ANALYTICS.md)           | Analytics 4 bağlantısı                                                   |
 | [`PAGESPEED_API_KEY.md`](./docs/PAGESPEED_API_KEY.md)                                   | Ücretsiz PageSpeed anahtarı                                              |
-| [`ENVIRONMENT.md`](./docs/ENVIRONMENT.md)                                               | İsteğe bağlı ortam değişkenleri                                          |
+| [`ENVIRONMENT.md`](./docs/ENVIRONMENT.md)                                               | Docker ortam değişkenleri ve Windows paketindeki karşılıkları            |
 | [`LOCAL_DEVELOPMENT.md`](./docs/LOCAL_DEVELOPMENT.md)                                   | Geliştirme ortamı                                                        |
 | [`CHANGELOG.md`](./CHANGELOG.md)                                                        | Sürüm notları                                                            |
 | [`specs/`](./specs)                                                                     | Tasarım kayıtları: ne, nasıl, hangi alternatif neden kaybetti            |

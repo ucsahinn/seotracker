@@ -22,11 +22,17 @@ export function QuotaCard({
   projectId,
   kinds = "all",
   title,
+  refreshable = true,
 }: {
   projectId: string;
   kinds?: readonly QuotaKind[] | "all";
   /** Already translated by the caller; defaults to "Kota ve sınırlar". */
   title?: string;
+  /**
+   * False inside a screen that already has a Yenile in its header: two
+   * refresh buttons on one screen leave the reader asking which one counts.
+   */
+  refreshable?: boolean;
 }) {
   const query = useQuotaStatus(projectId, kinds);
 
@@ -36,11 +42,13 @@ export function QuotaCard({
         <h2 className="text-sm font-semibold">
           {title ?? t("Kota ve sınırlar")}
         </h2>
-        <RefreshButton
-          onRefresh={() => void query.refetch()}
-          isFetching={query.isFetching}
-          dataUpdatedAt={query.dataUpdatedAt}
-        />
+        {refreshable ? (
+          <RefreshButton
+            onRefresh={() => void query.refetch()}
+            isFetching={query.isFetching}
+            dataUpdatedAt={query.dataUpdatedAt}
+          />
+        ) : null}
       </div>
       <div className="mt-3">
         <QuotaBody query={query} />

@@ -15,6 +15,8 @@ import { sortBy } from "remeda";
  *   vi.mock("@/db", () => ({ db: testDb.db }));
  *   vi.mock("@/db/runBatch", () => testDb.runBatchModule);
  */
+const D1_MAX_BOUND_PARAMETERS = 100;
+
 export async function createTestDb() {
   const database = new DatabaseSync(":memory:");
   const files = sortBy(
@@ -29,6 +31,12 @@ export async function createTestDb() {
 
   const db = drizzle(
     async (query, params, method) => {
+      // D1 rejects a statement with more than 100 bound values ("too many SQL
+      // variables"); plain SQLite allows far more, so enforce it here.
+      if (params.length > D1_MAX_BOUND_PARAMETERS)
+        throw new Error(
+          `D1 allows ${D1_MAX_BOUND_PARAMETERS} bound parameters, this statement has ${params.length}`,
+        );
       const statement = database.prepare(query);
       const values = params.map((value: unknown): SQLInputValue => {
         if (

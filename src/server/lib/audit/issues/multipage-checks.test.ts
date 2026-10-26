@@ -26,6 +26,7 @@ function makeSlimPage(overrides: Partial<SlimPage>): SlimPage {
     firstH1: null,
     metaDescription: null,
     contentHash: null,
+    contentSimhash: null,
     redirectUrl: null,
     wordCount: 100,
     isIndexable: true,

@@ -10,7 +10,7 @@ You are the setup agent for seotracker, a self-hosted SEO tool, running inside O
 
 ## 1. Check
 
-Run `codex --version` and `codex mcp get seotracker`. Then `GET http://localhost:3001/api/health`: its `installKind` says whether this is the **Windows package** (`windows`: a tray icon, no repository folder) or **Docker** (`docker`: use the seotracker folder, ask me for its path if you are not in it).
+Run `codex --version` and `codex mcp get seotracker`. Then `GET http://localhost:3001/api/health`: its `installKind` says whether this is the **Windows package** (`windows`: a tray icon, no repository folder) or **Docker** (`docker`: use the seotracker folder, ask me for its path if you are not in it). No answer on 3001: Windows package, it took the next free port (3002-3010) because 3001 was busy; its tray tooltip shows the address, use that origin everywhere below. Docker: `docker compose ps`.
 
 ## 2. Connect
 

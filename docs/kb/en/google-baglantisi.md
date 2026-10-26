@@ -39,7 +39,7 @@ This guide connects the app to your Google account so it can read your site's da
 
 A service account is a special account that connects to Google in your place, so you need no consent screen. This route is recommended for most people; the OAuth route above is for those who prefer signing in with their own Google account.
 
-1. Go to `console.cloud.google.com` and open **IAM & Admin → Service Accounts** (in a Turkish console: **IAM ve Yönetici → Hizmet hesapları**). Make sure the same Cloud project has the APIs from step 3 enabled.
+1. Go to `console.cloud.google.com` and open **IAM & Admin → Service Accounts**. Make sure the same Cloud project has the APIs from step 3 enabled.
 2. Click **Create service account**. Give it a name, for example "seowatcher". Skip the role steps and click **Done**.
 3. On the new account's row, open **Keys → Add key → Create new key**, choose **JSON** and confirm. A file downloads. Keep it private.
 4. In seowatcher, open **Settings → Service account**. Paste the contents of the whole file and save. The screen shows the service account's email address. Copy it.

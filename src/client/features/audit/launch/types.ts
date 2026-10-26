@@ -15,10 +15,12 @@ export type LaunchFormValues = {
   url: string;
   maxPagesInput: string;
   runLighthouse: boolean;
+  checkExternal: boolean;
 };
 
 export const DEFAULT_LAUNCH_FORM_VALUES: LaunchFormValues = {
   url: "",
   maxPagesInput: String(DEFAULT_AUDIT_PAGES),
   runLighthouse: false,
+  checkExternal: true,
 };

@@ -12,15 +12,10 @@ import {
   type AuditIssueRow,
 } from "@/client/features/audit/results/issueGroups";
 import { fillParts } from "@/client/features/settings/fillParts";
+import { SeverityIcon } from "@/client/features/audit/results/SeverityChip";
 import { t } from "@/shared/i18n";
 
 export { SEVERITY_LABEL };
-
-const SEVERITY_DOT: Record<IssueSeverity, string> = {
-  critical: "bg-error",
-  warning: "bg-warning",
-  info: "bg-base-content/30",
-};
 
 const SEVERITY_ORDER: IssueSeverity[] = ["critical", "warning", "info"];
 
@@ -111,7 +106,7 @@ export function IssuesView({
           per issue type reads "1, 1, 1" and a severity ring is three slivers
           of one finding each. */}
       {focusUrl ? null : (
-        <div className="grid gap-3 lg:grid-cols-[1fr_minmax(0,24rem)]">
+        <div className="grid items-start gap-3 lg:grid-cols-[1fr_minmax(0,24rem)]">
           <IssueWorkloadChart
             groups={groups}
             selectedType={issueType}
@@ -119,6 +114,7 @@ export function IssuesView({
           />
           <SeverityDonut
             counts={severityCounts}
+            typeCount={groups.length}
             selected={severity}
             onSelect={setSeverity}
           />
@@ -188,9 +184,7 @@ export function IssuesView({
               className="border-t border-base-300 first:border-t-0"
             >
               <div className="flex items-center gap-2 border-b border-base-300/60 bg-base-200/60 px-4 py-1.5">
-                <span
-                  className={`size-1.5 rounded-full ${SEVERITY_DOT[section.severity]}`}
-                />
+                <SeverityIcon severity={section.severity} />
                 <span className="text-xs font-semibold text-muted">
                   {t(SEVERITY_LABEL[section.severity])}
                 </span>

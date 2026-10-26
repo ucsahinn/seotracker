@@ -16,14 +16,16 @@ The search numbers come from Google Search Console. The visitor numbers come fro
 
 **Next steps**. Up to three tasks the app suggests, in this order of priority:
 
-- Search Console is not connected: **Connect Search Console**.
-- There is no audit, or the latest one is older than seven days: **Denetimi başlat**.
-- There is a serious problem: **Kritik sorunları gör** (See critical issues).
-- After that: **Fırsatları aç** (Open opportunities) and **Uyarıları gör** (See warnings).
+- Search Console is not connected: **Connect Search Console** (button **Connect**).
+- There is no audit: **Run your first audit** (button **Start**). If the last audit failed, it reads **Run the audit again**; while one is running, **Audit in progress** (button **View progress**).
+- There are critical issues: "N critical issues" (button **View**).
+- Search Console is connected: **Review opportunities** (button **Open**).
+- The latest audit is older than seven days: **Refresh the audit** (button **Start**).
+- There are warnings: "N warnings" (button **View**).
 
 When a task is done, it leaves the list.
 
-**New in the latest audit and Düzelenler (Fixed).** This compares the last two audits and shows which issues appeared, on how many pages, and which were fixed. If nothing was fixed, it says "No fixed issues.".
+**New in the last audit** and **Fixed**. This compares the last two audits and shows which issues appeared, on how many pages, and which were fixed. If nothing was fixed, it says "No fixed issues.".
 
 **Click trend**. A line chart of daily clicks for the last 28 days. With fewer than four days of data, no line is drawn. The **Open queries** link opens the **Search performance** screen.
 
@@ -40,15 +42,15 @@ When a task is done, it leaves the list.
 ## How to use it
 
 1. Open it once a week and check the arrows on the four cards.
-2. Do the first task in the **Sıradaki adımlar** box. If the box is empty, nothing is urgent.
-3. If the latest audit is older than seven days, click **Denetimi başlat**.
-4. Review the titles and descriptions of the pages on the **Sıra 5-20 arası sorgular** card; the easiest gains are usually here.
+2. Do the first task in the **Next steps** box. If the box is empty, nothing is urgent.
+3. If the latest audit is older than seven days, click **Start audit**.
+4. Review the titles and descriptions of the pages on the **Queries in positions 5-20** card; the easiest gains are usually here.
 
 ## How the numbers are calculated
 
 The four cards come from a single Search Console report. Google delivers data three days late, so the 28-day range ends three days before today. The previous period is the 28 days right before this range. If the previous period is zero, no arrow is shown.
 
-Average position gives more weight to searches with many impressions. These four numbers are the real site totals. Adding up the table rows on the **Arama performansı** screen gives a larger number, because Google counts each page that appears for the same search separately.
+Average position gives more weight to searches with many impressions. These four numbers are the real site totals. Adding up the table rows on the **Search performance** screen gives a larger number, because Google counts each page that appears for the same search separately.
 
 ## Frequently asked questions
 

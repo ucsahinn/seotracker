@@ -22,10 +22,8 @@ export const enApp: Catalog = {
   "Kişisel bilgi paylaşmayın": "Do not include personal information",
   "Adınız veya hesabınız alınmaz. Aynı tarayıcıda saklanan katılımcı anahtarıyla bir kez yanıt verilebilir; bu, kişi başına tek yanıt garantisi değildir. Yanıtınız yöneticiler tarafından görülebilir. Kişisel bilgi yazmayın.":
     "We do not collect your name or account. One response is allowed per saved browser key; this does not guarantee one response per person. Administrators can view your response. Do not include personal information.",
-  "Yanıtınız alındı": "Your response has been recorded",
   Yanıtla: "Submit response",
   "Gönderiliyor…": "Sending…",
-  "{count} yanıt": { one: "{count} response", other: "{count} responses" },
   "Bağlantınızı kontrol edip yeniden deneyin.":
     "Check your connection and try again.",
   "Şimdilik yeni duyuru yok": "No new announcements yet",
@@ -775,4 +773,9 @@ export const enApp: Catalog = {
   Bağlantılar: "Connections",
   "Ayar bölümleri": "Settings sections",
   "Projeler yüklenemedi": "Could not load projects",
+  İndirildi: "Downloaded",
+  "Denetim uygulamadaki bir hata yüzünden durdu.":
+    "The audit stopped because of an error in the app.",
+  "Sorun sitenizde değil. Denetimi yeniden başlatın. Tekrarlarsa Yardım ekranından tanı paketini indirip sorun kaydına ekleyin. Hata kodu: {code}":
+    "Your site is not the problem. Start the audit again. If it happens again, download the diagnostics bundle from Help and attach it to an issue. Error code: {code}",
 };

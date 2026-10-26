@@ -230,8 +230,6 @@ export const enSettings: Catalog = {
     "The Google access key comes from environment variables.",
   "Google bağlantı ayarı okunuyor.": "Reading the Google connection setting.",
   "Google erişimi hazır.": "Google access is ready.",
-  "Google erişim anahtarı Ayarlar'da kayıtlı.":
-    "The Google access key is saved in Settings.",
   "PageSpeed anahtarı kontrol edilemedi. {logs}":
     "Couldn't check the PageSpeed key. {logs}",
   "Anahtar yok. Hız ölçümü Google'ın anahtarsız kotasıyla çalışır ve çoğu zaman 429 ile yarım kalır. Tarama ve diğer SEO kontrolleri etkilenmez.":
@@ -299,6 +297,17 @@ export const enSettings: Catalog = {
   "Hâlâ açılmıyorsa {logs} ile {launcher} ve {server} dosyalarının son satırlarına bakın; {report} bunları hazır bir kayda koyar.":
     "If it still won't open, choose {logs} (Open logs) and check the last lines of {launcher} and {server}; {report} (Report a problem) puts them into a ready-made issue.",
   "Windows kurulum kılavuzu": "Windows installation guide",
+  "Bir ayarı değiştirdim, uygulama görmüyor":
+    "I changed a setting and the app doesn't see it",
+  "Google erişimi, PageSpeed anahtarı ve dil Ayarlar ekranında girilir ve hemen geçerli olur. Windows paketinde .env dosyası ve ortam değişkeni yoktur.":
+    "Google access, the PageSpeed key and the language are entered on the Settings screen and apply immediately. The Windows package has no .env file and no environment variables.",
+  "Elle değiştirilebilen tek dosya {config}: adres numarası (port) ve kendiliğinden güncelleme. {dataFolder} ile açın, değiştirin, sonra {restart} deyin. Yanındaki {serverEnv} dosyasını düzenlemeyin; uygulama her açılışta onu yeniden yazar.":
+    "The only file you edit by hand is {config}: the port and automatic updates. Open it with {dataFolder} (Open data folder), change it, then choose {restart} (Restart). Don't edit the {serverEnv} file next to it; the app rewrites it at every start.",
+  "Ayarlar ekranında girilenler hemen geçerli olur. {env} dosyasındaki değişkenler (örneğin {port}, {host}, {token}) ise yalnızca konteyner yeniden oluşturulunca okunur: {command}":
+    "What you enter on the Settings screen applies immediately. Variables in the {env} file (for example {port}, {host}, {token}) are read only when the container is recreated: {command}",
+  "Yalnızca yeniden başlatmak için: {command} Bu, .env değişikliğini uygulamaz. {docs}":
+    "To restart only: {command} This does not apply a .env change. {docs}",
+  "Ortam değişkenleri": "Environment variables",
   "Sayfa açılmıyor ya da Docker kapalı":
     "The page won't open, or Docker isn't running",
   "Önce Docker Desktop'ın çalıştığına bakın; Windows'ta tepsideki simge \"running\" demeli. Sonra durumu görün: {command} Durum {healthy} olana kadar bekleyin; ilk açılış birkaç dakika sürebilir.":
@@ -447,25 +456,22 @@ export const enSettings: Catalog = {
   "Geçen süre: {duration}": "Elapsed: {duration}",
   "Rapor hazır": "Report ready",
   "Rapor hazırlanıyor…": "Preparing report…",
-  "Google'dan yanıt bekleniyor…": "Waiting for Google…",
   "Dizin durumu kontrol ediliyor": "Checking index status",
+  "Google'dan yanıt bekleniyor…": "Waiting for Google…",
   "Bildirimler ({count} okunmamış)": "Notifications ({count} unread)",
   Bildirimler: "Notifications",
   "Tümünü okundu işaretle": "Mark all as read",
   "Henüz bildirim yok. İşlemler tamamlandığında burada görünür.":
     "No notifications yet. Completed tasks will appear here.",
   Okunmamış: "Unread",
-  "Bildirim geçmişi zil simgesinde tutulur. Ses ve Windows sistem bildirimlerini buradan açıp kapatabilirsiniz.":
-    "Notification history stays under the bell. Turn notification sounds and Windows system notifications on or off here.",
+  "Uygulama açıkken bildirimler kendi popup'ı olarak görünür; sekme arka plandayken zil geçmişinde tutulur. Önemli bildirimlerin sesini buradan açıp kapatabilirsiniz.":
+    "When the app is open, alerts appear in its own popups. In a background tab, they stay in the bell history. Turn sounds for important alerts on or off here.",
   "Bildirim sesi": "Notification sound",
   "Sesi dinle": "Preview sound",
-  "Windows ve sistem bildirimleri": "Windows and system notifications",
-  "Güncellemeler ve yeni duyurular dahil bildirimler Windows bildirim merkezinde gösterilir.":
-    "Notifications, including updates and new announcements, appear in the Windows notification center.",
-  "Bildirim izni engellendi. Açmak için tarayıcının site izinlerini kullanın.":
-    "Notification permission is blocked. Enable it in your browser’s site permissions.",
-  "Bu tarayıcı masaüstü bildirimlerini desteklemiyor.":
-    "This browser does not support desktop notifications.",
+  "Uygulama bildirimini dene": "Test in-app notification",
+  "Uygulama bildirimi testi": "seowatcher in-app notification test",
+  "Bu, uygulama içi bildirim ve ses denemesidir.":
+    "This tests the in-app notification and sound.",
   "Yeni sürüm yayımlandı: {version}": "New version released: {version}",
   "Ayarlar'daki Hakkında bölümü nasıl güncelleyeceğinizi söyler.":
     "See Settings → About for update instructions.",
@@ -476,7 +482,6 @@ export const enSettings: Catalog = {
     "Audit complete: {pages} pages, {issues} findings",
   "Denetim tamamlanamadı": "Audit failed",
   "Kontrol ediliyor…": "Checking…",
-  "Tamamlanma: {date}": "Completed: {date}",
   "Rapor kaydedildi ancak indirilemedi. Raporlar ekranından tekrar deneyin.":
     "The report was saved but could not be downloaded. Try again from Reports.",
   Denetim: "Audit",

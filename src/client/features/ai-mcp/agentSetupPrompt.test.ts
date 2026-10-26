@@ -83,6 +83,8 @@ describe("agent setup prompt", () => {
       expect(prompt).not.toContain("{{");
     }
     expect(prompts.windows).not.toContain(NO_AUTH_SENTENCE);
+    // 3001 may be taken; the tray tooltip names the port actually in use.
+    expect(prompts.codexWindows).toContain("3002-3010");
     expect(prompts.windows).toContain(
       "Use those instead of any `docker compose exec`",
     );

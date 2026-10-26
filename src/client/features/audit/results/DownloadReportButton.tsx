@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CheckCircle2, FileDown, Loader2 } from "lucide-react";
+import { useState } from "react";
 import { toast } from "sonner";
+import { useDoneFlash } from "@/client/lib/useDoneFlash";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import { createAuditReport } from "@/serverFunctions/auditReport";
 import { reportsQueryKey } from "@/client/features/reports/shared";
@@ -27,8 +29,12 @@ export function DownloadReportButton({
   auditId: string;
 }) {
   const queryClient = useQueryClient();
+  // Saving can succeed while the download fails; only a file that reached
+  // the browser earns the "İndirildi" moment.
+  const [downloaded, setDownloaded] = useState(false);
 
   const create = useMutation({
+    onMutate: () => setDownloaded(false),
     mutationFn: () => createAuditReport({ data: { projectId, auditId } }),
     onSuccess: async ({ reportId, title }) => {
       // The report is saved either way, so the list is refreshed first: a
@@ -47,6 +53,7 @@ export function DownloadReportButton({
       });
       try {
         await downloadReport(reportId, reportFilename(title));
+        setDownloaded(true);
       } catch {
         toast.error(
           t(
@@ -59,6 +66,8 @@ export function DownloadReportButton({
       toast.error(getStandardErrorMessage(error, t("Rapor oluşturulamadı"))),
   });
 
+  const flash = useDoneFlash(create.isPending, downloaded);
+
   return (
     <button
       type="button"
@@ -66,18 +75,14 @@ export function DownloadReportButton({
       disabled={create.isPending}
       onClick={() => create.mutate()}
     >
-      {create.isPending ? (
+      {flash === "pending" ? (
         <Loader2 className="size-4 animate-spin" />
-      ) : create.isSuccess ? (
-        <CheckCircle2 className="size-4 text-success" />
+      ) : flash === "done" ? (
+        <CheckCircle2 className="enter size-4 text-success" />
       ) : (
         <FileDown className="size-4" />
       )}
-      {create.isPending
-        ? t("Rapor hazırlanıyor…")
-        : create.isSuccess
-          ? t("Rapor hazır")
-          : t("Raporu indir")}
+      {flash === "done" ? t("İndirildi") : t("Raporu indir")}
     </button>
   );
 }

@@ -80,7 +80,7 @@ ${article({
 // catalog(1) -> deep/1(2) -> deep/2(3) -> deep/3(4) -> deep/4(5) -> treasure(6).
 // Only deep/1 is linked from the catalog; each level links onward in its body,
 // so the chain is the ONLY way down. Pages at depth >= 5 trip deep-page.
-function deepWaypoint(level: number, next: string): Fixture {
+function deepWaypoint(level: number, next: string, aside?: string): Fixture {
   const fx: Fixture = {
     path: `/structure/deep/${level}`,
     category: CAT,
@@ -112,12 +112,22 @@ function deepWaypoint(level: number, next: string): Fixture {
               },
             ],
           })}
-<p class="next"><a href="${escapeHtml(next)}">Go to the next level down</a></p>`,
+<p class="next"><a href="${escapeHtml(next)}">Go to the next level down</a></p>${
+            aside
+              ? `
+<p class="next"><a href="${escapeHtml(aside)}">A side page at this depth</a></p>`
+              : ""
+          }`,
         }),
       ),
   };
   return fx;
 }
+
+// A trail back to the top, so the buried page is about depth alone.
+const treasureBreadcrumbs = `<nav aria-label="Breadcrumb" class="breadcrumbs">
+  <a href="/">Home</a> / <a href="/structure/deep/1">Level 1</a> / <a href="/structure/deep/2">Level 2</a> / <a href="/structure/deep/3">Level 3</a> / <a href="/structure/deep/4">Level 4</a>
+</nav>`;
 
 const treasure: Fixture = {
   path: "/structure/deep/treasure",
@@ -136,17 +146,58 @@ const treasure: Fixture = {
         title: "The deeply buried page",
         metaDescription:
           "This page sits six clicks from the homepage, which is why search engines rarely reach it.",
+        bodyHtml: `${treasureBreadcrumbs}
+${article({
+  h1: "A page buried six clicks deep",
+  lede: "You reached this in six clicks. A crawler would likely have stopped before now.",
+  sections: [
+    {
+      h2: "This far down, ranking is hard",
+      body: "This page sits five or more clicks from the homepage. That is deep enough that crawlers visit it rarely and pass it very little internal strength. If this were a product, an article, or a landing page you cared about, its position this far down would cap how well it can do.",
+    },
+    {
+      h2: "How to fix a buried page",
+      body: "The fix is not to delete the pages in between. It is to add shortcuts. Link to important deep pages straight from hubs, category pages, or the main navigation, so they sit two or three clicks from home instead of six. A flatter structure tells search engines the page matters and gives it a real chance to rank.",
+    },
+  ],
+})}`,
+      }),
+    ),
+};
+
+// A page deep enough to need a trail, and without one ----------------------
+// Linked only from deep/3, so it sits four clicks down: past the breadcrumb
+// threshold (3) and short of deep-page (5), so the missing trail is its
+// only finding.
+const noBreadcrumbs: Fixture = {
+  path: "/structure/deep/no-breadcrumbs",
+  category: CAT,
+  name: "Deep page without breadcrumbs",
+  summary:
+    "Four clicks from the homepage, with no breadcrumb trail back up the site.",
+  lesson:
+    "Google uses breadcrumbs to understand where a page sits in a site, and shows them in results. Deep pages benefit most: a trail is the visitor's way back up.",
+  expectedIssues: ["missing-breadcrumbs"],
+  linkedFromCatalog: false,
+  inSitemap: false,
+  handler: () =>
+    htmlResponse(
+      renderPage({
+        fixture: noBreadcrumbs,
+        title: "A deep page with no trail back",
+        metaDescription:
+          "This page sits four clicks from the homepage and carries no breadcrumb trail, so nothing on it says where it belongs in the site.",
         bodyHtml: article({
-          h1: "A page buried six clicks deep",
-          lede: "You reached this in six clicks. A crawler would likely have stopped before now.",
+          h1: "Four clicks down, and no trail",
+          lede: "Nothing on this page says where it sits in the site or how to get back up.",
           sections: [
             {
-              h2: "This far down, ranking is hard",
-              body: "This page sits five or more clicks from the homepage. That is deep enough that crawlers visit it rarely and pass it very little internal strength. If this were a product, an article, or a landing page you cared about, its position this far down would cap how well it can do.",
+              h2: "What a breadcrumb trail does",
+              body: "A breadcrumb trail is the short row of links above the content that reads Home, then the section, then the page. It tells a visitor where they are and gives them one click back to every level above. Google reads the same trail, from the markup or from BreadcrumbList structured data, to understand how the site is organised.",
             },
             {
-              h2: "How to fix a buried page",
-              body: "The fix is not to delete the pages in between. It is to add shortcuts. Link to important deep pages straight from hubs, category pages, or the main navigation, so they sit two or three clicks from home instead of six. A flatter structure tells search engines the page matters and gives it a real chance to rank.",
+              h2: "Why depth makes it matter",
+              body: "On a page one click from the homepage, the menu already does the job. Several levels down, the visitor arrived from search or from a long chain of links and has no idea what sits above. That is where a trail earns its place, and where its absence is felt.",
             },
           ],
         }),
@@ -156,7 +207,7 @@ const treasure: Fixture = {
 
 const deep1 = deepWaypoint(1, "/structure/deep/2");
 const deep2 = deepWaypoint(2, "/structure/deep/3");
-const deep3 = deepWaypoint(3, "/structure/deep/4");
+const deep3 = deepWaypoint(3, "/structure/deep/4", noBreadcrumbs.path);
 const deep4 = deepWaypoint(4, "/structure/deep/treasure");
 
 export const structureFixtures: Fixture[] = [
@@ -167,4 +218,5 @@ export const structureFixtures: Fixture[] = [
   deep3,
   deep4,
   treasure,
+  noBreadcrumbs,
 ];

@@ -223,8 +223,17 @@ export async function crawlPage(
        would match any future directive that merely contains the word. The
        googlebot-specific tag counts too: Google prefers it over the generic
        one, so a page can be noindexed by that alone. */
+    /* Every robots and googlebot tag, not only the first: Google applies the
+       most restrictive of conflicting rules, so a second tag saying
+       noindex wins over a first one saying index. */
     const robotsDirectives = new Set(
-      [analysis.robotsMeta, analysis.googlebotMeta, xRobotsTag]
+      [
+        analysis.robotsMeta,
+        analysis.googlebotMeta,
+        ...analysis.signals.markup.robotsMeta,
+        ...analysis.signals.markup.googlebotMeta,
+        xRobotsTag,
+      ]
         .filter(Boolean)
         .join(",")
         .toLowerCase()
@@ -251,6 +260,7 @@ export async function crawlPage(
       titleCount: analysis.titleCount,
       metaDescriptionCount: analysis.metaDescriptionCount,
       emptyAnchorCount: analysis.emptyAnchorCount,
+      linkTargetCount: analysis.linkTargetCount,
       charsetDeclared:
         /charset\s*=/i.test(contentType) ||
         /<meta\b[^>]*\bcharset\s*=/i.test(body.slice(0, 1024)),
@@ -303,6 +313,7 @@ export async function crawlPage(
         hreflang: alternate.hreflang,
         href: normalizeUrl(alternate.href, url) ?? alternate.href,
       })),
+      signals: analysis.signals,
       isIndexable,
       responseTimeMs,
       crawlDepth,
@@ -385,6 +396,7 @@ function emptyPageResult(input: {
     titleCount: 0,
     metaDescriptionCount: 0,
     emptyAnchorCount: 0,
+    linkTargetCount: 0,
     charsetDeclared: true,
     canonicalUrl: null,
     robotsMeta: null,
@@ -418,6 +430,7 @@ function emptyPageResult(input: {
     resources: [],
     insecureResources: [],
     hreflangAlternates: [],
+    signals: null,
     isIndexable: false,
     responseTimeMs: input.responseTimeMs,
     crawlDepth: input.crawlDepth,

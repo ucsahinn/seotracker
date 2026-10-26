@@ -32,9 +32,11 @@ import {
   findRedirectChainsAndLoops,
   type SlimPage,
 } from "../../src/server/lib/audit/issues/multipage-checks";
+import { findMissingBreadcrumbs } from "../../src/server/lib/audit/issues/site-structure-checks";
 import type { DetectedIssue } from "../../src/server/lib/audit/issues/page-reporters";
 import type { CrawledPageResult } from "../../src/server/lib/audit/types";
 import { AUDIT_ISSUE_TYPES } from "../../src/shared/audit-issues";
+import { LIGHTHOUSE_AUDIT_ISSUES } from "../../src/shared/audit-issues/lighthouse-audits";
 import { allFixtures, fixturePaths } from "../src/fixtures/registry";
 import { TRAILING_SLASH_CANONICAL } from "../src/fixtures/redirects";
 import type { Fixture, IssueId } from "../src/fixtures/types";
@@ -436,6 +438,27 @@ export async function runAudit() {
   detected.push(...findBrokenInternalLinks(pages, links));
   detected.push(...findInternalLinksToRedirects(pages, links));
   if (completed) detected.push(...findOrphanPages(pages, links, startUrl));
+  /*
+   * Production runs this after the finalize step repairs click depths. The
+   * frontier above is breadth-first, so a link-discovered page's depth is
+   * already its shortest path; sitemap-only pages carry null and are
+   * skipped, as the check skips any page whose depth is unknown.
+   */
+  if (completed) {
+    detected.push(
+      ...findMissingBreadcrumbs(
+        pages.map((page) => ({
+          id: page.id,
+          url: page.url,
+          statusCode: page.statusCode,
+          fetchClass: page.fetchClass,
+          isIndexable: page.isIndexable,
+          crawlDepth: page.crawlDepth,
+          hasBreadcrumbs: page.signals?.markup.hasBreadcrumbs ?? null,
+        })),
+      ).issues,
+    );
+  }
 
   const byUrl = new Map<string, Set<IssueId>>();
   for (const issue of detected) {
@@ -605,6 +628,33 @@ export async function runAudit() {
     // reading the sitemap, which this harness does not run.
     "sitemap-lastmod-missing",
     "sitemap-lastmod-future",
+    // Raised from the site-probes step (headers, redirects, 404 probe,
+    // well-known files, DNS, RDAP, certificate logs) on the start URL,
+    // which this harness does not run.
+    "no-https-redirect",
+    "missing-hsts",
+    "missing-x-content-type-options",
+    "missing-clickjacking-protection",
+    "missing-referrer-policy",
+    "ssl-expiring-soon",
+    "ssl-expiring-very-soon",
+    "domain-expiring-soon",
+    "missing-spf",
+    "missing-dmarc",
+    "www-and-apex-both-serve",
+    "soft-404-on-missing-page",
+    "html-too-large",
+    "slow-ttfb",
+    "robots-disallow-all",
+    "not-found-redirects-home",
+    "missing-favicon",
+    "robots-missing-sitemap-line",
+    "ai-crawlers-blocked",
+    "missing-llms-txt",
+    "no-compression",
+    // The opt-in external requests run as their own workflow phase.
+    "broken-external-link",
+    "image-file-too-large",
   ];
   /*
    * Read from `gsc_url_inspections`: Google's own verdict about a URL,
@@ -635,6 +685,8 @@ export async function runAudit() {
     "cwv-cls-poor",
     "cwv-inp-poor",
     "lighthouse-seo-low",
+    // Every verdict read from the stored Lighthouse report.
+    ...(Object.keys(LIGHTHOUSE_AUDIT_ISSUES) as IssueId[]),
   ];
   /*
    * Statements about the crawl as a whole, carrying `pageId: null` and the
@@ -645,15 +697,28 @@ export async function runAudit() {
   const SITE_LEVEL: IssueId[] = [
     "structured-data-missing-site",
     "open-graph-missing-site",
+    "analytics-tag-missing",
+    // Needs a connected GA4 property to compare measurement ids with.
+    "analytics-id-mismatch",
+    "missing-feed",
   ];
   /*
    * Mixed content is an `http:` subresource on an `https:` page, and the
    * fixture site is served over plain http on localhost -- so no page here
    * can be the secure half of that pair. `not-https` is the mirror image:
    * every page here IS plain http, so it is skipped when results are
-   * grouped above and no page can demonstrate it.
+   * grouped above and no page can demonstrate it. `mixed-content-media`,
+   * `form-action-http` and `internal-http-links` are gated on an https page
+   * URL in the same way, and the integration test only admits an http
+   * fixture origin.
    */
-  const NEEDS_HTTPS: IssueId[] = ["mixed-content-resource", "not-https"];
+  const NEEDS_HTTPS: IssueId[] = [
+    "mixed-content-resource",
+    "not-https",
+    "mixed-content-media",
+    "form-action-http",
+    "internal-http-links",
+  ];
   const OUT_OF_REACH = [
     ...WORKFLOW_ONLY,
     ...NEEDS_SEARCH_CONSOLE,

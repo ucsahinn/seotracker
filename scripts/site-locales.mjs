@@ -122,6 +122,8 @@ export const locales = {
     t: {
       guide: "Kılavuz",
       guideTitle: "seowatcher kılavuzu: kurulum, ekranlar ve sorun giderme",
+      ogImageAlt:
+        "seowatcher tanıtım kartı: Search Console, Analytics 4 ve site denetimi verilerini gösteren uygulama paneli ve Windows için indirme düğmesi",
       guideDescription:
         "seowatcher kılavuzu: kurulum, her ekranın ne gösterdiği, Google'a bağlanma, denetim kuralları, ajan kurulumu ve sorun giderme.",
       guideLede:
@@ -180,6 +182,8 @@ export const locales = {
     t: {
       guide: "Guide",
       guideTitle: "seowatcher guide: setup, screens and troubleshooting",
+      ogImageAlt:
+        "seowatcher card: the app's dashboard with Search Console, Analytics 4 and site audit data, and a download button for Windows",
       guideDescription:
         "seowatcher guides: installation, what every screen shows, the Google connection, audit rules, agent setup and troubleshooting.",
       guideLede:
@@ -377,4 +381,28 @@ export function langMenuHtml(current, hrefFor, { available } = {}) {
     })
     .join("");
   return `<details class="langs"><summary aria-label="${current.lang.toUpperCase()} — ${current.t.language}: ${current.name}"><span class="flag">${flags[current.lang]}</span><span class="code">${current.lang.toUpperCase()}</span></summary><ul>${items}</ul></details>`;
+}
+
+/**
+ * The site's Google Analytics 4 measurement id ("G-..."): the one place it is
+ * set. Every builder renders it into `<meta name="ga4-id">`, which
+ * `site/assets/consent.js` reads. Empty means analytics is off: the script
+ * loads no Google resource, shows no cookie banner and stores nothing.
+ */
+export const ga4MeasurementId = "G-DFPDX00V4R";
+
+if (!/^(G-[A-Z0-9]+)?$/.test(ga4MeasurementId))
+  throw new Error(`ga4MeasurementId is not a G- id: ${ga4MeasurementId}`);
+
+/**
+ * Fills the page's `<meta name="ga4-id">` tag with the id above. Every page
+ * template carries the tag, so a page without it is a template bug.
+ */
+export function withGa4Meta(html) {
+  const tag = /<meta name="ga4-id" content="[^"]*"\s*\/?>/;
+  if (!tag.test(html)) throw new Error("page has no ga4-id meta tag");
+  return html.replace(
+    tag,
+    `<meta name="ga4-id" content="${ga4MeasurementId}" />`,
+  );
 }

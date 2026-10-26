@@ -2,8 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="/assets/consent.css?v=1" />
-    <script src="/assets/consent.js?v=2" defer></script>
+    <link rel="stylesheet" href="/assets/consent.css?v=2" />
+    <meta name="ga4-id" content="G-DFPDX00V4R" />
+    <script src="/assets/consent.js?v=3" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Installing with Docker | seowatcher guide</title>
     <meta name="description" content="Install with Docker on Mac, Linux and Windows. One command is enough, and no .env file is needed. Your data stays in Docker's data volume." />
@@ -54,8 +55,8 @@
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Installing with Docker | seowatcher" />
-    <meta property="article:modified_time" content="2026-10-24" />
+    <meta property="og:image:alt" content="seowatcher card: the app's dashboard with Search Console, Analytics 4 and site audit data, and a download button for Windows" />
+    <meta property="article:modified_time" content="2026-10-26" />
     <meta property="og:url" content="https://seowatcher.io/en/docs/install-docker/" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:locale:alternate" content="tr_TR" />
@@ -67,9 +68,9 @@
     <meta name="twitter:title" content="Installing with Docker | seowatcher guide" />
     <meta name="twitter:description" content="Install with Docker on Mac, Linux and Windows. One command is enough, and no .env file is needed. Your data stays in Docker's data volume." />
     <meta name="twitter:image" content="https://seowatcher.io/assets/og-en.png" />
-    <meta name="twitter:image:alt" content="Installing with Docker | seowatcher" />
+    <meta name="twitter:image:alt" content="seowatcher card: the app's dashboard with Search Console, Analytics 4 and site audit data, and a download button for Windows" />
     <meta name="color-scheme" content="dark" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en","de","fr","it","pt"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/en/docs/install-docker/#article","headline":"Installing with Docker","description":"Install with Docker on Mac, Linux and Windows. One command is enough, and no .env file is needed. Your data stays in Docker's data volume.","url":"https://seowatcher.io/en/docs/install-docker/","inLanguage":"en","dateModified":"2026-10-24","articleSection":"Getting started","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/en/docs/install-docker/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/en/docs/install-docker/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/en/"},{"@type":"ListItem","position":2,"name":"Guide","item":"https://seowatcher.io/en/docs/"},{"@type":"ListItem","position":3,"name":"Installing with Docker","item":"https://seowatcher.io/en/docs/install-docker/"}]}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://seowatcher.io/#website","url":"https://seowatcher.io/","name":"seowatcher","inLanguage":["tr","en","de","fr","it","pt"]},{"@type":"SoftwareApplication","@id":"https://seowatcher.io/#app","name":"seowatcher","alternateName":"seotracker","url":"https://seowatcher.io/"},{"@type":"Organization","@id":"https://seowatcher.io/#author","name":"seowatcher","url":"https://seowatcher.io/","logo":"https://seowatcher.io/assets/icon-256.png","sameAs":["https://github.com/ucsahinn/seotracker"]},{"@type":"TechArticle","@id":"https://seowatcher.io/en/docs/install-docker/#article","headline":"Installing with Docker","description":"Install with Docker on Mac, Linux and Windows. One command is enough, and no .env file is needed. Your data stays in Docker's data volume.","url":"https://seowatcher.io/en/docs/install-docker/","inLanguage":"en","dateModified":"2026-10-26","articleSection":"Getting started","about":{"@id":"https://seowatcher.io/#app"},"author":{"@id":"https://seowatcher.io/#author"},"publisher":{"@id":"https://seowatcher.io/#author"},"isPartOf":{"@id":"https://seowatcher.io/#website"},"mainEntityOfPage":"https://seowatcher.io/en/docs/install-docker/"},{"@type":"BreadcrumbList","@id":"https://seowatcher.io/en/docs/install-docker/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"seowatcher","item":"https://seowatcher.io/en/"},{"@type":"ListItem","position":2,"name":"Guide","item":"https://seowatcher.io/en/docs/"},{"@type":"ListItem","position":3,"name":"Installing with Docker","item":"https://seowatcher.io/en/docs/install-docker/"}]}]}</script>
     <script src="/assets/docs.js?v=0.7.1" defer></script>
     <meta name="theme-color" content="#0c0b0a" />
     <style>
@@ -1246,7 +1247,7 @@ cd seotracker</code></pre></div>
 <p>Run these two commands:</p>
 <div class="code"><pre><code>git pull
 docker compose up -d --build</code></pre></div>
-<p><strong>Ayarlar → Hakkında</strong> (Settings → About) tells you about the new version and shows these two commands. Your data stays in the data volume named <code>seotracker_data</code>, so updating does not delete it.</p>
+<p><strong>Settings → About</strong> tells you about the new version and shows these two commands. Your data stays in the data volume named <code>seotracker_data</code>, so updating does not delete it.</p>
 <h3 id="stopping-and-removing">Stopping and removing</h3>
 <ul><li>To stop: <code>docker compose stop</code></li><li>To start again: <code>docker compose up -d</code></li><li>To remove the container and keep the data: <code>docker compose down</code></li><li>To delete the data too: <code>docker compose down -v</code>. This command permanently deletes the database, the Google connections and the reports.</li></ul>
 <h3 id="backing-up">Backing up</h3>
@@ -1266,9 +1267,9 @@ docker compose up -d</code></pre></div>
 <p><strong>Can I open it to the internet?</strong> The app does not ask who you are, so do not open it to the internet without your own authentication in front of it. If you set <code>ALLOWED_HOST</code>, the app warns you in the health check.</p>
 <p><strong>Where do I get my assistant's password?</strong> The <strong>Agent setup</strong> screen in the app shows the command: <code>docker compose exec -T seotracker cat /app/.wrangler/mcp-token</code>. If you use Git Bash, put <code>MSYS_NO_PATHCONV=1</code> in front of the command.</p>
 <h2 id="if-something-goes-wrong">If something goes wrong</h2>
-<ul><li><strong>It says &quot;Bind for 127.0.0.1:3001 failed&quot;.</strong> The port number is in use. Put a <code>.env</code> file with the line <code>PORT=3002</code> in the project folder and recreate the container. On Windows, Notepad may save the file as <code>.env.txt</code>; in PowerShell, <code>Set-Content -Encoding ascii .env 'PORT=3002'</code> avoids that.</li><li><strong>The status is &quot;unhealthy&quot;.</strong> <code>docker compose logs --tail 50</code> shows the last lines. If memory ran out during the build, give Docker Desktop more memory.</li><li><strong>The Google connection says &quot;yapılandırılmamış&quot; (not configured).</strong> If <code>BETTER_AUTH_SECRET</code> is shorter than 32 characters, Google stays off. If you set it by hand, make it longer. If you did not, the <code>instance-secret</code> file in the data volume may be damaged.</li><li><strong>The Google connection dropped after an update.</strong> <code>BETTER_AUTH_SECRET</code> changed, or the data volume was recreated. Choose <strong>Reconnect</strong> in the project settings.</li></ul> <nav class="pager" aria-label="Previous and next page"><a class="pager-prev" rel="prev" href="/en/docs/install-windows/"><span>Previous</span><strong>Install on Windows</strong></a><a class="pager-next" rel="next" href="/en/docs/google-connection/"><span>Next</span><strong>Connecting to Google</strong></a></nav>
+<ul><li><strong>It says &quot;Bind for 127.0.0.1:3001 failed&quot;.</strong> The port number is in use. Put a <code>.env</code> file with the line <code>PORT=3002</code> in the project folder and recreate the container. On Windows, Notepad may save the file as <code>.env.txt</code>; in PowerShell, <code>Set-Content -Encoding ascii .env 'PORT=3002'</code> avoids that.</li><li><strong>The status is &quot;unhealthy&quot;.</strong> <code>docker compose logs --tail 50</code> shows the last lines. If memory ran out during the build, give Docker Desktop more memory.</li><li><strong>The Google connection says it &quot;isn't configured&quot;.</strong> If <code>BETTER_AUTH_SECRET</code> is shorter than 32 characters, Google stays off. If you set it by hand, make it longer. If you did not, the <code>instance-secret</code> file in the data volume may be damaged.</li><li><strong>The Google connection dropped after an update.</strong> <code>BETTER_AUTH_SECRET</code> changed, or the data volume was recreated. Choose <strong>Reconnect</strong> in the project settings.</li></ul> <nav class="pager" aria-label="Previous and next page"><a class="pager-prev" rel="prev" href="/en/docs/install-windows/"><span>Previous</span><strong>Install on Windows</strong></a><a class="pager-next" rel="next" href="/en/docs/google-connection/"><span>Next</span><strong>Connecting to Google</strong></a></nav>
         <p class="meta">
-          Last updated: October 24, 2026. Spotted a mistake?
+          Last updated: October 26, 2026. Spotted a mistake?
           <a
             href="https://github.com/ucsahinn/seotracker/issues"
             target="_blank"

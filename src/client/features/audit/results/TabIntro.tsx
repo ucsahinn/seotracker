@@ -3,9 +3,14 @@ import { t } from "@/shared/i18n";
 
 /**
  * One sentence under each tab that says which question it answers, so the
- * four tabs read as four different questions instead of four views of one list.
+ * tabs read as different questions instead of views of one list.
  */
 const INTRO: Record<AuditTab, string> = {
+  todo: "Yapılacak her iş tek listede, en çok kazandıranı üstte. Search Console bağlıysa trafik getiren sayfalardaki işler öne çıkar.",
+  checks:
+    "Denetimin yaptığı her kontrol, kategorisine göre: geçenler, kalanlar ve ölçülemeyenler.",
+  facts:
+    "Siteniz hakkında denetim anında toplanan bilgiler: sunucu, güvenlik başlıkları, DNS, sertifika, robots.txt ve gerçek kullanıcı hızı.",
   issues:
     "Sitenizde düzeltmeniz gereken her şey, önem sırasına göre. Bir satıra tıklayın. Neden önemli olduğunu, nasıl düzelteceğinizi ve hangi sayfaların etkilendiğini adresleriyle görürsünüz.",
   pages:

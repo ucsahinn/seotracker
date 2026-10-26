@@ -146,6 +146,7 @@ export function TableExportMenu({
   buttonClassName = "btn btn-sm gap-1",
   menuClassName = "w-56",
   triggerIcon,
+  triggerLabel,
 }: {
   actions: Array<{
     label: ReactNode;
@@ -157,6 +158,8 @@ export function TableExportMenu({
   menuClassName?: string;
   /** Replaces the download glyph — a spinner while an export is running. */
   triggerIcon?: ReactNode;
+  /** Replaces "Dışa aktar" for a moment, such as "İndirildi" after a file. */
+  triggerLabel?: ReactNode;
 }) {
   /*
    * Through `PortalMenu` rather than a daisyUI CSS dropdown.
@@ -176,7 +179,7 @@ export function TableExportMenu({
       triggerContent={
         <>
           {triggerIcon ?? <Download className="size-4" />}
-          {t("Dışa aktar")}
+          {triggerLabel ?? t("Dışa aktar")}
           <ChevronDown className="size-3 opacity-60" />
         </>
       }

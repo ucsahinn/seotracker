@@ -1,6 +1,6 @@
 ---
 title: Controllo del sito
-description: L'app visita il sito pagina per pagina, lo controlla con 95 regole e ordina i problemi per gravità. Accanto a ogni problema è scritto che cosa fare.
+description: L'app visita il sito pagina per pagina, lo controlla con 201 regole e ordina i problemi per gravità. Accanto a ogni problema è scritto che cosa fare.
 screen: Site denetimi
 route: /p/<proje>/audit
 updated: 2026-10-22

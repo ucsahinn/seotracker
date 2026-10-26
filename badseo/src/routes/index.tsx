@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout } from "../components/site-layout";
 import { catalogLinkedFixtures, categories } from "../fixtures/registry";
+import { getSiteOrigin } from "../site-origin";
 
 const PRODUCT_DESCRIPTION =
   "A website with example technical SEO issues for you to learn or test your agents";
@@ -18,13 +19,13 @@ const homepageCategories = [
 ];
 
 export const Route = createFileRoute("/")({
-  head: () => ({
+  loader: () => getSiteOrigin(),
+  head: ({ loaderData }) => ({
     meta: [
       { title: "BadSEO | Technical SEO test site" },
       { name: "description", content: PRODUCT_DESCRIPTION },
     ],
-    // Relative on purpose: the origin differs between localhost and a deploy.
-    links: [{ rel: "canonical", href: "/" }],
+    links: [{ rel: "canonical", href: `${loaderData ?? ""}/` }],
   }),
   component: HomePage,
 });

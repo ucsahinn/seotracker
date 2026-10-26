@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { buildAuditReportHtml } from "./buildAuditReportHtml";
 import { barChart, donutChart } from "./reportCharts";
 import { capList } from "./reportFormat";
-import { depthBuckets, statusBuckets } from "./reportModel";
+import { depthBuckets, scoreVerdict, statusBuckets } from "./reportModel";
 import { ISSUE_PAGE_CAP } from "./reportIssueSections";
 import type { AuditReportInput, ReportPage } from "./reportTypes";
 
@@ -111,6 +111,14 @@ describe("cover", () => {
     // No findings: a clean site is 100, and says so.
     expect(html).toContain("Site puanı 100 üzerinden 100");
     expect(summary).toContain("100/100");
+  });
+
+  // A low score made of warnings must not send the reader hunting for
+  // critical problems the audit did not find.
+  it("tells the reader to start with critical issues only when there are some", () => {
+    expect(scoreVerdict(40, 2)).toContain("kritik sorunlar düzeltilmeli");
+    expect(scoreVerdict(40, 0)).not.toContain("kritik sorunlar düzeltilmeli");
+    expect(scoreVerdict(60, 0)).not.toContain("Kritik ve uyarı");
   });
 });
 

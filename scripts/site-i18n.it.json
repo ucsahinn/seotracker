@@ -54,6 +54,7 @@
   "t": {
     "guide": "Guida",
     "guideTitle": "Guida di seowatcher: installazione, schermate, problemi",
+    "ogImageAlt": "Scheda di seowatcher: la dashboard dell’app con i dati di Search Console, Analytics 4 e dell’audit del sito, e un pulsante per scaricarla su Windows",
     "guideDescription": "Guide di seowatcher: installazione, schermate, collegamento con Google, regole del controllo, assistente e risoluzione dei problemi.",
     "guideLede": "Ogni passaggio e ogni schermata, dall'installazione al primo report, spiegati in modo breve e semplice. L'app si chiama seotracker su GitHub e seowatcher su questo sito; è la stessa app.",
     "screenSuffix": "",

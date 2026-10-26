@@ -1,6 +1,6 @@
 ---
 title: Auditoria do site
-description: O aplicativo percorre o seu site página por página, confere 95 regras e ordena os problemas por importância, cada um com o que fazer a respeito.
+description: O aplicativo percorre o seu site página por página, confere 201 regras e ordena os problemas por importância, cada um com o que fazer a respeito.
 screen: Site denetimi
 route: /p/<proje>/audit
 updated: 2026-10-22

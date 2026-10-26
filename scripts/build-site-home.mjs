@@ -30,6 +30,7 @@ import {
   locales,
   readableDate,
   rewriteLinks,
+  withGa4Meta,
 } from "./site-locales.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -632,7 +633,7 @@ function build(locale, { strict = true } = {}) {
         `Turkish leftover in site/${lang}/index.html: ${leftover}`,
       );
   fs.mkdirSync(path.dirname(outFile), { recursive: true });
-  fs.writeFileSync(outFile, compactSiteHtml(page));
+  fs.writeFileSync(outFile, compactSiteHtml(withGa4Meta(page)));
   console.log(`site/${lang}/index.html written (${segments.length} segments)`);
   return true;
 }
@@ -659,7 +660,7 @@ async function refreshTurkishLangBlocks() {
   if (next !== src) fs.writeFileSync(srcFile, next);
   fs.writeFileSync(
     path.join(root, "site/index.html"),
-    compactSiteHtml(homeSource()),
+    compactSiteHtml(withGa4Meta(homeSource())),
   );
   console.log("site/index.html language menu refreshed");
 }

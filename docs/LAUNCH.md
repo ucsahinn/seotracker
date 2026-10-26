@@ -6,13 +6,12 @@ kapsar. Hesap gerektirmeyen teknik işler (robots.txt, site haritası, görselle
 beslemeler, security.txt, IndexNow anahtarı, manifest, başlıklar) depoda
 hazırdır.
 
-Kullanıcının belirttiği etkin yayın hedefi Hetzner VPS ve nginx'tir. Bu nedenle
-aşağıdaki Cloudflare Pages adımları yalnızca barındırma sağlayıcısı ayrıca
-değiştirilecekse geçerlidir; mevcut DNS veya nameserver ayarlarını değiştirmeyin.
-Site yayında. 4–13. adımlar geçerli HTTPS yayını üzerinde yapılacak kontrolleri
-ve Google/Bing araçlarındaki işlemleri içerir. `site/` güncellenirse önce
-[SITE_DEPLOY.md](./SITE_DEPLOY.md) içindeki sürümlü aktarımı tamamlayın, sonra
-bu listedeki canlı kontrolleri tekrarlayın.
+Yayın yolu Hetzner VPS (IP `94.130.129.213`) ve nginx'tir; DNS kayıtları bu
+IP'yi gösterir. Site henüz sunucuya yüklenmedi: önce A bölümünü
+[SITE_DEPLOY.md](./SITE_DEPLOY.md) ile tamamlayın, sonra bu listedeki canlı
+kontrollere geçin. `site/` her güncellendiğinde aynı yükleme adımlarını
+tekrarlayıp canlı kontrolleri yeniden yapın. Çalışma dalı `seotracker-fork`'tur
+(`main` geride kalmıştır).
 
 Sırayla gidin. Her adımın sonunda "Kontrol" satırı, adımın işe yarayıp
 yaramadığını nasıl anlayacağınızı söyler.
@@ -20,66 +19,38 @@ yaramadığını nasıl anlayacağınızı söyler.
 Not: Bu dosyadaki komutlar Windows PowerShell'de çalışır. `curl` yerine
 `curl.exe` yazın; PowerShell'deki `curl` başka bir komuttur.
 
-## A. Alternatif barındırma: Cloudflare Pages
+## A. Hetzner ve nginx üzerinde yayın
 
-Mevcut Hostinger/nginx kurulumu için bu bölümdeki satın alma ve nameserver
-değiştirme adımlarını uygulamayın. VPS yayın ve geri dönüş sırası
-[SITE_DEPLOY.md](./SITE_DEPLOY.md) dosyasındadır. Aşağıdaki 1–3 adımlar yalnızca
-Cloudflare'a geçiş ayrıca seçilirse geçerlidir; 4. adımdaki HTTP kontrolleri
-her iki barındırma için de yapılır.
+### 1. DNS'i kontrol edin
 
-### 1. seowatcher.io alan adını alın
+```powershell
+nslookup seowatcher.io
+nslookup www.seowatcher.io
+```
 
-1. https://dash.cloudflare.com adresine girin, soldan **Domain Registration →
-   Register Domains** seçin.
-2. Arama kutusuna `seowatcher.io` yazın, **Purchase** deyin, ödemeyi tamamlayın.
-   (Başka bir yerden alırsanız, o firmanın panelinde ad sunucularını
-   Cloudflare'in size verdiği iki ad sunucusuyla değiştirin.)
+Kontrol: İkisi de `94.130.129.213` adresini döner.
 
-Kontrol: Cloudflare ana sayfasında `seowatcher.io` listede ve durumu
-**Active**.
+### 2. Sunucuyu kurun ve siteyi yükleyin
 
-### 2. Cloudflare Pages projesini açın
+[SITE_DEPLOY.md](./SITE_DEPLOY.md) içindeki "İlk kurulum" adımlarını (nginx,
+certbot ile `seowatcher.io` ve `www.seowatcher.io` sertifikası, yapılandırma)
+ve ardından "Siteyi güncelleme" adımlarını uygulayın.
 
-1. Soldan **Workers & Pages → Create → Pages → Connect to Git** seçin.
-2. GitHub'ı bağlayın, depo olarak `ucsahinn/seotracker` seçin.
-3. Ayarlar:
-   - **Production branch:** `seotracker-fork`
-   - **Framework preset:** `None`
-   - **Build command:** boş bırakın
-   - **Build output directory:** `site`
-   - **Environment variables:** `SKIP_DEPENDENCY_INSTALL` = `1` ekleyin
-     (site derlenmiş halde depoda durur; Cloudflare'in bağımlılık kurmasına
-     gerek yoktur).
-4. **Save and Deploy** deyin.
+Kontrol: `sudo nginx -t` "syntax is ok" ve "test is successful" der;
+`sudo certbot renew --dry-run` başarılı biter.
 
-Kontrol: Dağıtım yeşil biter ve `https://<proje-adı>.pages.dev/` açılır.
-`curl.exe -sI https://<proje-adı>.pages.dev/` çıktısında
-`x-robots-tag: noindex` görünür (önizleme adresleri bilerek dizine kapalıdır).
+### 3. Yönlendirmeleri doğrulayın (www → çıplak alan adı, http → https)
 
-### 3. Özel alan adını bağlayın (www → çıplak alan adı)
-
-Asıl adres `https://seowatcher.io` (www'siz). www yalnızca yönlendirir.
-
-1. Pages projesinde **Custom domains → Set up a custom domain** deyin,
-   `seowatcher.io` yazın, **Activate domain** deyin.
-2. Aynı ekranda bir kez daha `www.seowatcher.io` ekleyin.
-3. Cloudflare'de `seowatcher.io` alanına girin, **Rules → Redirect Rules →
-   Create rule → Templates → Redirect from WWW to Root** seçin. Kaynak
-   `https://www.seowatcher.io/*`, hedef `https://seowatcher.io/${1}`, durum
-   kodu **301**, **Preserve query string** açık. **Deploy** deyin.
-4. **SSL/TLS → Overview**: mod **Full (strict)**. **SSL/TLS → Edge
-   Certificates**: **Always Use HTTPS** açık.
-
-Kontrol:
+Asıl adres `https://seowatcher.io` (www'siz). www ve http yalnızca yönlendirir.
 
 ```powershell
 curl.exe -sI https://www.seowatcher.io/en/
 curl.exe -sI http://seowatcher.io/
+curl.exe -sI https://seowatcher.io/olmayan-sayfa/
 ```
 
 İlki `301` ve `location: https://seowatcher.io/en/`, ikincisi `301` ve
-`location: https://seowatcher.io/` döner.
+`location: https://seowatcher.io/`, üçüncüsü `404` döner.
 
 ### 4. Başlıkları doğrulayın
 
@@ -98,16 +69,19 @@ curl.exe -sI https://seowatcher.io/7fe8ca017428a1da776989562353dd6c.txt
 
 Beklenen (hepsi `HTTP/2 200`):
 
-| Adres                          | Görmeniz gereken                                                                                                                  |
-| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- |
-| `/`                            | `content-type: text/html`, `content-security-policy: default-src 'none'; …`, `strict-transport-security`, `x-frame-options: DENY` |
-| `/assets/site.js`              | `cache-control: public, max-age=604800`                                                                                           |
-| font (`.woff2`)                | `content-type: font/woff2`, `cache-control: public, max-age=31536000, immutable`                                                  |
-| `/sitemap.xml`                 | `content-type: application/xml; charset=utf-8`, `cache-control: public, max-age=3600`                                             |
-| `/feed.xml`, `/en/feed.xml`    | `content-type: application/atom+xml; charset=utf-8`, `cache-control: public, max-age=3600`                                        |
-| `/.well-known/security.txt`    | `content-type: text/plain; charset=utf-8`, `cache-control: public, max-age=86400`                                                 |
-| `/site.webmanifest`            | `content-type: application/manifest+json; charset=utf-8`                                                                          |
-| `/robots.txt`, anahtar dosyası | `content-type: text/plain; charset=utf-8`                                                                                         |
+| Adres                          | Görmeniz gereken                                                                                                                                                            |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/`                            | `content-type: text/html; charset=utf-8`, `content-security-policy: default-src 'none'; …`, `strict-transport-security`, `x-frame-options: DENY`, `cache-control: no-cache` |
+| `/assets/site.js`              | `cache-control: max-age=604800`                                                                                                                                             |
+| font (`.woff2`)                | `content-type: font/woff2`, `cache-control: public, max-age=31536000, immutable`                                                                                            |
+| `/sitemap.xml`                 | `content-type: application/xml; charset=utf-8`, `cache-control: max-age=3600`                                                                                               |
+| `/feed.xml`, `/en/feed.xml`    | `content-type: application/atom+xml; charset=utf-8`, `cache-control: max-age=3600`                                                                                          |
+| `/.well-known/security.txt`    | `content-type: text/plain; charset=utf-8`, `cache-control: max-age=86400`                                                                                                   |
+| `/site.webmanifest`            | `content-type: application/manifest+json; charset=utf-8`                                                                                                                    |
+| `/robots.txt`, anahtar dosyası | `content-type: text/plain; charset=utf-8`                                                                                                                                   |
+
+`font/woff2` için sunucunun `mime.types` dosyasında `font/woff2 woff2;` satırı
+olmalıdır (güncel nginx paketlerinde vardır).
 
 Kontrol: Tarayıcıda https://seowatcher.io açın, F12 → **Console**: kırmızı
 CSP hatası yok (özellikle manifest için).
@@ -118,10 +92,9 @@ CSP hatası yok (özellikle manifest için).
 
 1. https://search.google.com/search-console → **Mülk ekle → Alan adı**,
    `seowatcher.io` yazın.
-2. Google bir TXT kaydı verir (`google-site-verification=...`). Google size
-   "Cloudflare ile otomatik doğrula" seçeneği sunarsa onu kullanın; sunmazsa
-   Cloudflare'de **DNS → Records → Add record**: Type `TXT`, Name `@`, Content
-   = Google'ın verdiği metin, **Save**.
+2. Google bir TXT kaydı verir (`google-site-verification=...`). Alan adının
+   DNS kayıtlarını yönettiğiniz panelde yeni bir kayıt ekleyin: Type `TXT`,
+   Name `@`, Content = Google'ın verdiği metin, kaydedin.
 3. Search Console'da **Doğrula** deyin (DNS birkaç dakika sürebilir).
 
 Kontrol: `nslookup -type=TXT seowatcher.io` çıktısında Google metni görünür,
@@ -261,6 +234,12 @@ https://github.com/ucsahinn/seotracker/security/advisories/new açılır.
   [SITE_DEPLOY.md](./SITE_DEPLOY.md) içindeki Hetzner/nginx adımlarıyla aktarın;
   HTTPS doğrulandıktan sonra B ve D bölümlerini tekrarlayın. Bing için istenirse
   IndexNow komutunu yayın sonrasında bir kez çalıştırın.
+- **Google Analytics:** GA4 ölçüm kimliği kaynakta tanımlıdır. Hetzner'e
+  yüklemeden önce [SITE_DEPLOY.md](./SITE_DEPLOY.md) içindeki "Google Analytics
+  ve çerez tercihleri" bölümünde belirtilen GA4 mülk ayarlarını doğrulayın;
+  erişim olmadığı için 14 aylık saklama süresi ve Google Sinyalleri durumu
+  burada teyit edilmemiştir. Yayın sonrası gerçek zamanlı raporu ve izin
+  akışını kontrol edin.
 
 ## Ne beklememelisiniz
 

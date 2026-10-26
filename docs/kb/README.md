@@ -43,7 +43,7 @@ listeler.
 
 ## Başvuru
 
-- [Denetim kuralları](denetim-kurallari.md): 95 kuralın tam listesi
+- [Denetim kuralları](denetim-kurallari.md): 201 kuralın tam listesi
 - [Ajan kurulumu](ajan-kurulumu.md): MCP, 33 araç, 6 beceri
 - [Sorun giderme](sorun-giderme.md): belirti, sebep, çözüm
 

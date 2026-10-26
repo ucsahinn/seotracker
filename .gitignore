@@ -55,3 +55,9 @@ dist-sourcemaps/
 *.pfx
 *.crt
 *-service-account*.json
+
+# Local scratch and runtime caches (dry runs, Node compile cache, tsx cache)
+.tmp/
+**/.tmp/
+node-compile-cache/
+tsx-*/

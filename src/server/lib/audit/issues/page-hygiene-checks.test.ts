@@ -137,6 +137,14 @@ describe("too-many-links", () => {
       "too-many-links",
     );
   });
+
+  it("states the page's real link count, not the extraction cap", () => {
+    const capped = Array.from({ length: 1_000 }, (_, i) => link(`l${i}`));
+    const [issue] = runPageReporters(
+      makePage({ links: capped, linkTargetCount: 2_636 }),
+    ).filter((i) => i.issueType === "too-many-links");
+    expect(issue?.details).toEqual({ count: 2_636, limit: 300 });
+  });
 });
 
 describe("URL checks", () => {

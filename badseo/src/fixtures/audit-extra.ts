@@ -117,7 +117,8 @@ const imagesMissingDimensions: Fixture = {
   summary: "Three images carry alt text but no width or height.",
   lesson:
     "Without width and height the browser cannot reserve space before an image loads, so the text below jumps when it arrives.",
-  expectedIssues: ["images-missing-dimensions"],
+  // Three JPEGs are also the images-legacy-format threshold, and true.
+  expectedIssues: ["images-missing-dimensions", "images-legacy-format"],
   handler: () =>
     htmlResponse(
       renderPage({

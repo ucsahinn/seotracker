@@ -12,6 +12,8 @@ import type { AuditIssueType } from "@/shared/audit-issues";
 import { sameCanonicalTarget } from "@/server/lib/audit/url-utils";
 import type { CrawledPageResult } from "@/server/lib/audit/types";
 import { reportHygiene } from "@/server/lib/audit/issues/page-hygiene-checks";
+import { reportSignals } from "@/server/lib/audit/issues/page-signal-checks";
+import { reportMarkupChecks } from "@/server/lib/audit/issues/page-markup-checks";
 import {
   MIN_IMAGES_MISSING_DIMENSIONS,
   countImagesMissingDimensions,
@@ -55,6 +57,8 @@ const THIN_CONTENT_WORDS = 50;
 /* Matches Lighthouse's own server-response-time audit, which this tool also
    shows. At 1500 a page could pass here and fail there in the same report. */
 const SLOW_RESPONSE_MS = 600;
+/** A meta refresh this quick is a redirect, not a page with a timer. */
+const META_REFRESH_REDIRECT_SECONDS = 5;
 export const DEEP_PAGE_DEPTH = 5;
 
 function hasHeadingLevelSkip(headingOrder: number[]): boolean {
@@ -135,6 +139,23 @@ function withoutPageToken(url: string): string | null {
   return null;
 }
 
+/** The page number of a list's second or later page, or null. */
+function laterPageNumber(url: string): number | null {
+  try {
+    const parsed = new URL(url);
+    const fromPath = /\/page\/(\d+)\/?$/i.exec(parsed.pathname)?.[1];
+    const raw =
+      fromPath ??
+      parsed.searchParams.get("page") ??
+      parsed.searchParams.get("paged");
+    if (!raw || !/^\d+$/.test(raw)) return null;
+    const number = Number(raw);
+    return number >= 2 ? number : null;
+  } catch {
+    return null;
+  }
+}
+
 /** The callback each extracted reporter pushes through. */
 type ReportIssue = (
   issueType: AuditIssueType,
@@ -152,9 +173,17 @@ function reportIndexability(page: CrawledPageResult, report: ReportIssue) {
      discover those linked pages." Tokenised the same way `isIndexable` is,
      because `includes("nofollow")` would also match a future directive that
      merely contains the word -- and because `none` means noindex+nofollow.
-     Only worth saying on a page Google will actually index. */
+     Only worth saying on a page Google will actually index. Every robots
+     and googlebot tag counts, as for `isIndexable`: Google applies the most
+     restrictive of conflicting rules, so a second tag saying nofollow wins. */
   const directives = new Set(
-    [page.robotsMeta, page.googlebotMeta, page.xRobotsTag]
+    [
+      page.robotsMeta,
+      page.googlebotMeta,
+      ...(page.signals?.markup.robotsMeta ?? []),
+      ...(page.signals?.markup.googlebotMeta ?? []),
+      page.xRobotsTag,
+    ]
       .filter(Boolean)
       .join(",")
       .toLowerCase()
@@ -220,6 +249,16 @@ function reportIndexability(page: CrawledPageResult, report: ReportIssue) {
       canonicalUrl: effectiveCanonical,
     });
   }
+  /* Page two and after of a list, hidden from search. Google's pagination
+     guidance gives every page its own indexable URL, and links on a page
+     that stays noindexed are eventually not followed. Only an unambiguous
+     page number of two or more counts: `?p=` is a WordPress post id. */
+  if (!page.isIndexable && laterPageNumber(page.url) !== null) {
+    report("paginated-page-noindex", {
+      robotsMeta: page.robotsMeta,
+      xRobotsTag: page.xRobotsTag,
+    });
+  }
   // The sitemap suggests this URL; the page asks not to be indexed at all.
   if (page.inSitemap && !page.isIndexable) {
     report("sitemap-noindex-page", {
@@ -227,6 +266,17 @@ function reportIndexability(page: CrawledPageResult, report: ReportIssue) {
       xRobotsTag: page.xRobotsTag,
     });
   }
+}
+
+/** Where a meta refresh quick enough to be a redirect sends the page; else null. */
+function metaRefreshRedirectTarget(page: CrawledPageResult): string | null {
+  const markup = page.signals?.markup;
+  if (!markup?.metaRefreshUrl || markup.metaRefreshUrl === page.url) {
+    return null;
+  }
+  return (markup.metaRefreshDelay ?? 0) <= META_REFRESH_REDIRECT_SECONDS
+    ? markup.metaRefreshUrl
+    : null;
 }
 
 /**
@@ -264,9 +314,15 @@ function reportHreflang(page: CrawledPageResult, report: ReportIssue) {
      This used to call `canonicalUrlKey` directly, which folds www and
      deliberately does not fold the slash -- so a page crawled as `/a/`
      whose own alternate writes `/a` was reported as leaving itself out. */
+  /* A page that names another URL as canonical is represented in the set
+     by that URL: Google reads hreflang between canonical pages. Every page
+     of react-bootstrap.github.io canonicalizes to its netlify.app twin and
+     lists that twin in hreflang; calling the set "missing itself" there
+     was wrong (the cross-host canonical has its own finding). */
+  const selves = page.canonicalUrl ? [page.url, page.canonicalUrl] : [page.url];
   if (
     !page.hreflangAlternates.some((alternate) =>
-      sameCanonicalTarget(alternate.href, page.url),
+      selves.some((self) => sameCanonicalTarget(alternate.href, self)),
     )
   ) {
     report("hreflang-missing-self", { hreflangs: codes });
@@ -334,6 +390,18 @@ export function runPageReporters(
     return issues;
   }
 
+  /*
+   * A stub whose meta refresh leaves within a few seconds is a redirect to
+   * Google, not a page: primer.github.io's "Redirecting to primer.style"
+   * was told to add a meta description, an H1 and more words. Like a 3xx,
+   * it gets the redirect finding and nothing about its content.
+   */
+  const refreshTarget = metaRefreshRedirectTarget(page);
+  if (refreshTarget) {
+    report("meta-refresh-redirect", { targetUrl: refreshTarget });
+    return issues;
+  }
+
   if (isPlainHttpPage(page)) report("not-https");
   if (lacksLanguage(page)) report("missing-lang");
   if (lacksCanonical(page)) report("missing-canonical");
@@ -383,17 +451,26 @@ export function runPageReporters(
    * short page needs no sections, and saying otherwise on every small page
    * would bury the pages where it matters.
    */
+  /*
+   * "Nothing below the H1" means nothing at all: sqlite.org's about page
+   * has an H4 and its function reference is split by three H1s, and both
+   * were told they had no heading but the H1. Several H1s already have
+   * their own finding.
+   */
   if (
     page.isIndexable &&
     page.wordCount >= SUBHEADING_EXPECTED_WORDS &&
-    page.h2Count === 0 &&
-    page.h3Count === 0
+    page.h1Count <= 1 &&
+    page.h2Count + page.h3Count + page.h4Count + page.h5Count + page.h6Count ===
+      0
   ) {
     report("no-subheadings", { wordCount: page.wordCount });
   }
 
   reportIndexability(page, report);
   reportHygiene(page, report);
+  reportSignals(page, report);
+  reportMarkupChecks(page, report);
 
   // Internationalization
   reportHreflang(page, report);

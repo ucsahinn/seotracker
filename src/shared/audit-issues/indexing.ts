@@ -4,7 +4,7 @@ import type { AuditIssueDescriptor } from "../audit-issue-types";
 export const INDEXING_ISSUES = {
   "duplicate-title": {
     severity: "warning",
-    title: "Yinelenen başlık",
+    title: "Tekrarlanan başlık",
     explanation:
       "Birden çok sayfa aynı başlığı (<title>) kullanıyor. Aynı başlıkla arama sonucunda sayfalar birbirine benzer görünür ve ziyaretçi hangisine tıklayacağını seçemez.",
     howToFix:
@@ -12,7 +12,7 @@ export const INDEXING_ISSUES = {
   },
   "duplicate-h1": {
     severity: "warning",
-    title: "Yinelenen ana başlık (H1)",
+    title: "Tekrarlanan ana başlık (H1)",
     explanation:
       "Birden çok sayfa aynı ana başlığı (H1) kullanıyor. Başlık, ziyaretçiye ve Google'a sayfanın ne hakkında olduğunu söyler; aynı başlık farklı sayfaları ayırt etmeyi zorlaştırır. Sitenin her sayfasında logo ya da site adı H1 olarak yazılmışsa bu uyarı genelde ondan gelir.",
     howToFix:
@@ -20,7 +20,7 @@ export const INDEXING_ISSUES = {
   },
   "duplicate-meta-description": {
     severity: "warning",
-    title: "Yinelenen meta açıklama",
+    title: "Tekrarlanan meta açıklama",
     explanation:
       "Birden çok sayfa aynı meta açıklamayı (arama sonucunda başlığın altındaki özet) kullanıyor. Aramada hepsi aynı özetle çıkar ve ziyaretçi sayfaları ayırt edemez.",
     howToFix:
@@ -28,7 +28,7 @@ export const INDEXING_ISSUES = {
   },
   "duplicate-content": {
     severity: "warning",
-    title: "Yinelenen sayfa içeriği",
+    title: "Tekrarlanan sayfa içeriği",
     explanation:
       "İki ya da daha fazla adres birebir aynı metni gösteriyor. Google bunlardan birini seçip dizine alır ve seçtiği sizin istediğiniz olmayabilir. Ceza değildir, ama sıralama gücü adresler arasında bölünür.",
     howToFix:
@@ -198,7 +198,7 @@ export const INDEXING_ISSUES = {
   },
   "stale-google-verdicts": {
     severity: "info",
-    title: "Google'ın bazı sayfalar hakkındaki yanıtı eskimiş",
+    title: "Bazı sayfalar için Google'ın yanıtı eski",
     explanation:
       "Bu sayfalar için saklanan Google yanıtları eskidi. Yanıt, sorulduğu andaki durumu anlatır; sayfa o zamandan beri düzelmiş ya da bozulmuş olabilir. Eski yanıtı güncelmiş gibi göstermemek için bu sayfaların Google yanıtları bu denetimde bulgu sayılmadı.",
     howToFix:
@@ -275,5 +275,37 @@ export const INDEXING_ISSUES = {
       "Google bu adresi en son aylar önce ziyaret etmiş. Sayfa dizinde olabilir ama Google'ın gördüğü sürüm o tarihteki sürüm: sonradan yaptığınız değişiklikler aramaya yansımamıştır. Nadiren taranan sayfalar genelde siteden yeterince bağlantı almayan ya da Google'ın önemsiz bulduğu sayfalardır.",
     howToFix:
       "Sayfaya sık taranan sayfalardan bağlantı verin ve site haritasında olduğundan emin olun. İçerik gerçekten güncellendiyse Search Console'dan dizine ekleme isteyebilirsiniz; ama kalıcı çözüm sayfayı siteye daha iyi bağlamaktır.",
+  },
+  "structured-data-required-props-missing": {
+    severity: "warning",
+    title: "Yapılandırılmış veride zorunlu özellikler eksik",
+    explanation:
+      "Sayfadaki yapılandırılmış veri (JSON-LD) bir türü bildiriyor ama Google'ın o tür için zorunlu saydığı özelliklerden bazıları yok. Bu, Product, FAQPage, BreadcrumbList ve LocalBusiness türleri içindir; eksik olunca arama sonucunda zengin görünüm (yıldız, fiyat, içerik haritası) çıkmaz.",
+    howToFix:
+      "Ayrıntıdaki eksik özellikleri işaretlemeye ekleyin ve sonucu Google'ın Zengin Sonuç Testi ile kontrol edin. İşaretleme sayfada gerçekten görünen bilgiyi anlatmalı; sayfada olmayan bir fiyatı ya da yorumu işaretlemek Google kurallarına aykırıdır.",
+  },
+  "structured-data-recommended-props-missing": {
+    severity: "info",
+    title: "Yapılandırılmış veride önerilen özellikler eksik",
+    explanation:
+      "Sayfadaki Article ya da Organization işaretlemesinde Google'ın önerdiği özelliklerden (başlık, görsel, tarih, yazar; ya da ad, web adresi, logo) bazıları yok. Google bu türler için zorunlu özellik saymaz, bu yüzden işaretleme geçerlidir ve zengin görünümü engellemez; önerilen özellikler yalnızca Google'ın sayfayı daha eksiksiz göstermesine yardım eder.",
+    howToFix:
+      "Ayrıntıdaki özellikleri, sayfada gerçekten görünen bilgiyle işaretlemeye ekleyin ve sonucu Google'ın Zengin Sonuç Testi ile kontrol edin. Acil değildir; zorunlu özellik eksiklerinden sonra gelir.",
+  },
+  "analytics-tag-missing": {
+    severity: "info",
+    title: "Sayfalarda Google Analytics etiketi bulunamadı",
+    explanation:
+      "Taranan sayfaların HTML'sinde Google Analytics 4 (G-), Google Etiket Yöneticisi (GTM-) ya da Universal Analytics (UA-) kimliği bulunamadı. Ölçüm yoksa hangi sayfanın ziyaretçi ve dönüşüm getirdiğini göremezsiniz. Etiket bir çerez onay aracı ya da başka bir betik tarafından sonradan yükleniyorsa burada görünmez; o durumda bu bulguyu yok sayabilirsiniz.",
+    howToFix:
+      "Google Analytics 4'te bir web veri akışı oluşturun ve verdiği etiketi tüm sayfaların head bölümüne ekleyin; ya da Etiket Yöneticisi kullanıyorsanız kapsayıcı kodunu ekleyin. Sonra Analytics'teki gerçek zamanlı raporda ziyaretinizin göründüğünü kontrol edin.",
+  },
+  "analytics-id-mismatch": {
+    severity: "warning",
+    title: "Sayfalardaki Analytics kimliği bağlı mülkle eşleşmiyor",
+    explanation:
+      "Sayfalarda bulunan Google Analytics 4 ölçüm kimliği (G-), bu projeye bağlı Analytics mülkünün web veri akışlarındaki kimliklerden hiçbiriyle eşleşmiyor. Yani ziyaretçi verisi büyük olasılıkla başka bir mülke gidiyor ve buradaki Analytics raporları siteyi göstermiyor. Eski bir mülkün kodu ya da kopyalanmış bir şablon genelde nedendir.",
+    howToFix:
+      "Ayrıntıdaki iki kimlik listesini karşılaştırın. Doğru mülk bağlıysa sayfalardaki etiketi o mülkün ölçüm kimliğiyle değiştirin; sayfalardaki doğruysa Ayarlar'dan projeye o mülkü bağlayın.",
   },
 } as const satisfies Record<string, AuditIssueDescriptor>;

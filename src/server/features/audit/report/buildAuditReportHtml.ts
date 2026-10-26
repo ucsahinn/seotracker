@@ -9,7 +9,6 @@ import {
   describePages,
   groupIssues,
   isReliable,
-  siteScore,
 } from "./reportModel";
 import { coverSection } from "./reportCoverSection";
 import { methodSection } from "./reportMethodSection";
@@ -21,6 +20,10 @@ import {
 } from "./reportSections";
 import { speedSection } from "./reportSpeedSection";
 import { STYLES } from "./reportStyles";
+import { buildAuditBreakdown } from "@/shared/auditBreakdown";
+import { pageKey, rankTodos, todoInputs } from "@/shared/auditTodo";
+import { factsSection } from "./reportFactsSection";
+import { passedAppendix, scoreSection } from "./reportScoreSection";
 import {
   DEFAULT_CAPS,
   type AuditReportDocument,
@@ -57,14 +60,17 @@ const MIN_DETAIL_CHARS = 20;
 
 /* Turkish source labels, shown through t() in the table of contents. */
 const TOC_ITEMS = [
-  { href: "genel", label: "1. Genel görünüm" },
-  { href: "sorunlar", label: "2. Sorunlar" },
-  { href: "hiz", label: "3. Hız ölçümü" },
-  { href: "dizin", label: "4. Google dizin durumu" },
-  { href: "sitemap", label: "5. Site haritası" },
-  { href: "yontem", label: "6. Yöntem ve sınırlar" },
+  { href: "puanlar", label: "1. Puan dağılımı ve kontroller" },
+  { href: "anlik-veri", label: "2. Anlık veri" },
+  { href: "genel", label: "3. Genel görünüm" },
+  { href: "sorunlar", label: "4. Sorunlar" },
+  { href: "hiz", label: "5. Hız ölçümü" },
+  { href: "dizin", label: "6. Google dizin durumu" },
+  { href: "sitemap", label: "7. Site haritası" },
+  { href: "yontem", label: "8. Yöntem ve sınırlar" },
   { href: "ek-adresler", label: "Ek A. Kalan etkilenen adresler" },
   { href: "sayfalar", label: "Ek B. Taranan sayfalar" },
+  { href: "gecen-kontroller", label: "Ek C. Geçen ve ölçülemeyen kontroller" },
 ];
 
 function byteLength(value: string): number {
@@ -80,6 +86,8 @@ const half = (n: number) => Math.floor(n / 2);
  * shrink and the lists go to zero, so a pathological audit still fits.
  */
 function shrink(caps: ReportCaps): ReportCaps | null {
+  // The screenshot is tens of kilobytes of one picture: it goes before any list.
+  if (caps.screenshot) return { ...caps, screenshot: false };
   const lean =
     caps.issuePages <= MIN_CAPS.issuePages &&
     caps.pages <= MIN_CAPS.pages &&
@@ -98,6 +106,7 @@ function shrink(caps: ReportCaps): ReportCaps | null {
       ? Math.max(MIN_DETAIL_CHARS, half(caps.detailChars))
       : caps.detailChars,
     issueTypes: lean ? half(caps.issueTypes) : caps.issueTypes,
+    screenshot: false,
   };
   return isDeepEqual(next, caps) ? null : next;
 }
@@ -109,10 +118,16 @@ function renderBody(ctx: ReportContext, caps: ReportCaps): string {
   // of contents entry for a section that is not there would be a dead link.
   const appendix = appendixSection(groups, caps);
   const toc = TOC_ITEMS.filter(
-    (item) => item.href !== "ek-adresler" || appendix,
+    (item) =>
+      (item.href !== "ek-adresler" || appendix) &&
+      // The score sections are left out of an incomplete audit.
+      (ctx.reliable ||
+        (item.href !== "puanlar" && item.href !== "gecen-kontroller")),
   );
   return `${coverSection(ctx)}
   ${tocSection(toc, groups)}
+  ${scoreSection(ctx)}
+  ${factsSection(ctx, caps.screenshot)}
   ${overviewSection(ctx)}
   ${issuesSection(groups, caps, ctx.groups.length - groups.length, ctx.reliable)}
   ${speedSection(input, caps.speed)}
@@ -120,7 +135,8 @@ function renderBody(ctx: ReportContext, caps: ReportCaps): string {
   ${sitemapSection(input, groups)}
   ${methodSection(input, caps)}
   ${appendix}
-  ${pagesSection(input, caps.pages)}`;
+  ${pagesSection(input, caps.pages)}
+  ${passedAppendix(ctx)}`;
 }
 
 export function buildAuditReportHtml(
@@ -128,11 +144,56 @@ export function buildAuditReportHtml(
 ): AuditReportDocument {
   const host = hostOf(input.siteUrl);
   const stamp = input.completedAt ?? input.startedAt;
-  const groups = groupIssues(input);
-  const counts = countSeverities(groups);
+  const grouped = groupIssues(input);
+  const counts = countSeverities(grouped);
   const reliable = isReliable(input);
+  // The same breakdown the app scores with, so the numbers agree.
+  const breakdown = buildAuditBreakdown(
+    grouped.map((g) => ({
+      issueType: g.issueType,
+      severity: g.severity,
+      pages: g.pageCount,
+      siteLevel: g.siteLevel,
+    })),
+    {
+      pagesCrawled: input.pagesCrawled,
+      hasLighthouse: input.lighthouse.some((r) => r.performanceScore !== null),
+      siteFacts: input.siteFacts ?? null,
+      googleInspected: input.insights?.googleInspected ?? null,
+      analyticsCompared: input.analyticsCompared ?? null,
+    },
+  );
+  const gains = new Map(
+    breakdown.gains.map((gain) => [gain.issueType, gain.points]),
+  );
+  const groups = grouped.map((group) => ({
+    ...group,
+    points: gains.get(group.issueType) ?? 0,
+  }));
   // A failed or running audit has no trustworthy score; do not print one.
-  const score = reliable ? siteScore(groups, input.pagesCrawled).score : null;
+  const score = reliable ? breakdown.score : null;
+  const traffic = input.insights?.traffic
+    ? new Map(
+        input.insights.traffic.rows.map((row) => [
+          pageKey(row.url),
+          { clicks: row.clicks, impressions: row.impressions },
+        ]),
+      )
+    : null;
+  const todos = rankTodos(
+    todoInputs(
+      input.issues.map((issue) => ({
+        issueType: issue.issueType,
+        severity: issue.severity ?? "",
+        // Older callers pass no page id: a row with a URL is a page's.
+        pageId: issue.pageId === undefined ? issue.pageUrl : issue.pageId,
+        pageUrl: issue.pageUrl,
+        detailsJson: issue.detailsJson,
+      })),
+      breakdown.gains,
+    ),
+    traffic,
+  );
   const ctx: ReportContext = {
     input,
     groups,
@@ -140,6 +201,8 @@ export function buildAuditReportHtml(
     score,
     reliable,
     stats: describePages(input.pages),
+    breakdown,
+    todos,
   };
 
   /*

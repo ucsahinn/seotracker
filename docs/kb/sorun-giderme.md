@@ -2,7 +2,7 @@
 title: Sorun giderme
 description: Sık görülen sorunlar belirti, sebep ve çözümle: dolu adres numarası, Windows uyarısı, Google hataları, kota, takılan denetim, boş grafik, 401.
 kind: sorun-giderme
-updated: 2026-10-23
+updated: 2026-10-26
 ---
 
 Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuzun durumu" kartına bakın. Kart giriş ve erişimi, Google girişini, PageSpeed anahtarını ve veritabanını kontrol eder. "N şey dikkat istiyor" diyorsa yanındaki düğme sizi doğru ayara götürür. Aşağıdaki sorunlar en sık görülenden en nadire doğru sıralıdır.
@@ -13,7 +13,9 @@ Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuz
 
 **Sebep:** Uygulama çalışmıyor.
 
-**Çözüm:** Windows'ta görev çubuğundaki simgeye bakın. Simge görünmüyorsa görev çubuğundaki ^ okuna tıklayın. Yoksa Başlat menüsünden seowatcher'ı açın. Simgede "Hata" yazıyorsa sağ tıklayıp **Yeniden başlat** deyin. Docker'da `docker compose ps` komutunu çalıştırın. Durum healthy değilse `docker compose up -d` komutunu çalıştırın.
+**Çözüm (Windows paketi):** Görev çubuğundaki simgeye bakın. Simge görünmüyorsa görev çubuğundaki ^ okuna tıklayın. Yoksa Başlat menüsünden seowatcher'ı açın. Simgenin üzerine gelince "Çalışıyor: http://127.0.0.1:3001/" yazmalı; adres numarası farklıysa o adresi açın. "Hata" yazıyorsa sağ tıklayıp **Yeniden başlat** deyin, olmazsa **Kurulumu onar**. Nedeni **Günlükleri aç** ile `launcher.log` ve `server.log` dosyalarının son satırları yazar.
+
+**Çözüm (Docker):** Önce Docker Desktop'ın çalıştığına bakın. Proje klasöründe `docker compose ps` komutunu çalıştırın. Durum healthy değilse `docker compose up -d` komutunu çalıştırın; nedeni `docker compose logs --tail 50` yazar.
 
 ## Adres numarası (port) dolu
 
@@ -67,9 +69,12 @@ Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuz
 
 **Belirti:** Proje ayarlarında Bağlantılar sekmesi sarı uyarı gösteriyor.
 
-**Sebep:** **Ayarlar → Google** bölümüne istemci kimliği ve gizli anahtar girilmemiş. Ya da Docker'da şifreleme anahtarı 32 karakterden kısa.
+**Sebep:** Ne **Ayarlar → Hizmet hesabı** bölümüne bir hizmet hesabı, ne de **Ayarlar → Google** bölümüne istemci kimliği ve gizli anahtar girilmiş. Ya da şifreleme anahtarı bozuk ve kayıtlı Google bilgileri açılamıyor.
 
-**Çözüm:** Google'a bağlanma kılavuzunun 10. ve 11. adımlarını yapın. Docker'da `BETTER_AUTH_SECRET` değerini elle verdiyseniz uzatın. Boş bırakırsanız uygulama kendisi üretir.
+**Çözüm:** Bir hizmet hesabı ya da Google erişim anahtarı girin (Google'a bağlanma kılavuzu). İkisinden biri yeter; ikisi de kayıtlıysa hizmet hesabı kullanılır. **Yardım** ekranındaki "Google girişi" satırı hangisinin kullanıldığını yazar.
+
+- **Windows paketi:** şifreleme anahtarı veri klasöründeki `instance-secret` dosyasıdır ve başlatıcı onu bir kez üretir. Simge bu dosyanın bozuk olduğunu söylüyorsa yedekten geri koyun; Google hiç bağlanmadıysa dosyayı silip **Yeniden başlat** deyin.
+- **Docker:** `BETTER_AUTH_SECRET` değerini elle verdiyseniz en az 32 karakter olmalı. Boş bırakırsanız konteyner kendisi üretir.
 
 ## Google "access_denied" diyor
 
@@ -149,7 +154,22 @@ Bir şey çalışmıyorsa önce uygulamada **Yardım** ekranındaki "Kurulumunuz
 
 **Sebep:** Parola gönderilmiyor ya da yanlış.
 
-**Çözüm:** Parolayı yeniden kopyalayın. Windows'ta veri klasöründeki `mcp-token` dosyasındadır. Docker'da `docker compose exec -T seotracker cat /app/.wrangler/mcp-token` komutunu çalıştırın. Değerin sonundaki satır sonu karakterini silin. Terminal kullanmak istemezseniz dosyayı Not Defteri ile açın, satırın tamamını seçip kopyalayın. Satır sonu bırakmayın. Claude Code'da `/mcp` yazıp **Reconnect** deyin.
+**Çözüm:** En kolayı **Ajan kurulumu** ekranındaki hazır komuttur: kurulum türünü bilir ve parolayı ekrana yazdırmadan aracınızın ayarına koyar. Elle yapacaksanız parolayı yeniden alın; sohbete yapıştırmayın, ekran görüntüsüne düşürmeyin.
+
+- **Windows paketi:** parola `%LOCALAPPDATA%\seowatcher\mcp-token` dosyasındadır (menüde **Veri klasörünü aç**). Başlatıcı onu ilk açılışta üretir ve her açılışta uygulamaya verir. Ekrana yazdırmadan panoya almak için PowerShell: `(Get-Content "$env:LOCALAPPDATA\seowatcher\mcp-token").Trim() | Set-Clipboard`. Yapıştırdıktan sonra panoyu temizleyin (Win+V, Tümünü temizle). Bu kurulumda `docker` komutu yoktur.
+- **Docker:** parola konteynerin içindedir: `docker compose exec -T seotracker cat /app/.wrangler/mcp-token`. Git Bash'te başına `MSYS_NO_PATHCONV=1` ekleyin, yoksa çıktı boş gelir. Değerin sonundaki satır sonunu almayın. Kendi parolanızı `.env` içindeki `MCP_TOKEN` ile verebilirsiniz; değiştirince `docker compose up -d --force-recreate seotracker` gerekir.
+
+Sonra Claude Code'da `/mcp` yazıp **Reconnect** deyin.
+
+## Bir ayarı değiştirdim, uygulama görmüyor
+
+**Belirti:** Yeni adres numarası, `.env` değeri ya da parola uygulamaya yansımadı.
+
+**Sebep:** Ayarlar ekranına girilenler (Google, hizmet hesabı, PageSpeed anahtarı, dil) hemen geçerli olur. Dosyadaki ayarlar ise yalnızca yeniden açılışta okunur ve iki kurulumda farklı dosyalardadır.
+
+**Çözüm (Windows paketi):** `.env` ve ortam değişkeni yoktur. Elle değiştirilen tek dosya veri klasöründeki `config.json`'dır: `"port"` ve `"autoUpdate"`. Değiştirdikten sonra menüden **Yeniden başlat** deyin. Yanındaki `server.env` dosyasını düzenlemeyin; başlatıcı onu her açılışta yeniden yazar.
+
+**Çözüm (Docker):** Değişkenler proje klasöründeki `.env` dosyasındadır (liste: `docs/ENVIRONMENT.md`). Değiştirince konteyneri yeniden oluşturun: `docker compose up -d --force-recreate seotracker`. Düz `docker compose restart seotracker` yalnızca yeniden başlatır, `.env` değişikliğini uygulamaz.
 
 ## Docker ilk açılışta çok uzun sürüyor ya da "unhealthy"
 

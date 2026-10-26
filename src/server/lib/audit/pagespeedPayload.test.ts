@@ -3,6 +3,7 @@ import {
   isLighthouseRuntimeError,
   parsePageSpeedPayload,
   readPageSpeedApiError,
+  SCREENSHOT_MAX_CHARS,
 } from "./pagespeedPayload";
 
 const INPUT = { url: "https://example.com/", strategy: "mobile" as const };
@@ -149,5 +150,106 @@ describe("isLighthouseRuntimeError", () => {
     expect(isLighthouseRuntimeError("PageSpeed Insights 429: Quota")).toBe(
       false,
     );
+  });
+});
+
+describe("final screenshot", () => {
+  const withScreenshot = (data: string) => {
+    const body = response();
+    Object.assign(body.lighthouseResult.audits, {
+      "final-screenshot": { details: { type: "screenshot", data } },
+    });
+    return body;
+  };
+  const jpeg = "data:image/jpeg;base64,/9j/4AAQSkZJRg==";
+
+  it("keeps the mobile screenshot and leaves the desktop one out", () => {
+    expect(parsePageSpeedPayload(withScreenshot(jpeg), INPUT).screenshot).toBe(
+      jpeg,
+    );
+    expect(
+      parsePageSpeedPayload(withScreenshot(jpeg), {
+        ...INPUT,
+        strategy: "desktop",
+      }).screenshot,
+    ).toBeNull();
+  });
+
+  it("skips a screenshot over the size cap or that is not an image data URI", () => {
+    const huge = `data:image/jpeg;base64,${"A".repeat(SCREENSHOT_MAX_CHARS)}`;
+
+    expect(
+      parsePageSpeedPayload(withScreenshot(huge), INPUT).screenshot,
+    ).toBeNull();
+    expect(
+      parsePageSpeedPayload(withScreenshot("javascript:alert(1)"), INPUT)
+        .screenshot,
+    ).toBeNull();
+  });
+});
+
+describe("tracked audit verdicts", () => {
+  /*
+   * The shapes Lighthouse 13 reports: an insight with metric savings and
+   * its bytes under debugData, a checklist inside a list detail, a table of
+   * third parties with main-thread time. Untracked audits are not kept.
+   */
+  it("keeps the verdicts the findings read, and only those", () => {
+    const body = response();
+    Object.assign(body.lighthouseResult.audits, {
+      "image-delivery-insight": {
+        score: 0,
+        scoreDisplayMode: "metricSavings",
+        metricSavings: { FCP: 0, LCP: 450 },
+        details: {
+          type: "table",
+          items: [{ url: "https://example.com/hero.jpg" }],
+          debugData: { type: "debugdata", wastedBytes: 182_000 },
+        },
+      },
+      "lcp-discovery-insight": {
+        score: 0,
+        scoreDisplayMode: "metricSavings",
+        details: {
+          type: "list",
+          items: [
+            {
+              type: "checklist",
+              items: {
+                eagerlyLoaded: { value: false, label: "lazy" },
+                priorityHinted: { value: true, label: "ok" },
+              },
+            },
+          ],
+        },
+      },
+      "third-parties-insight": {
+        score: null,
+        scoreDisplayMode: "informative",
+        details: {
+          type: "table",
+          items: [
+            { entity: "Ads", mainThreadTime: 400.4 },
+            { entity: "Chat", mainThreadTime: 200.2 },
+          ],
+        },
+      },
+      "speed-index": { score: 0.2, scoreDisplayMode: "numeric" },
+    });
+
+    const audits = parsePageSpeedPayload(body, INPUT).audits ?? {};
+
+    expect(audits["image-delivery-insight"]).toMatchObject({
+      score: 0,
+      savingsMs: 450,
+      savingsBytes: 182_000,
+      examples: ["https://example.com/hero.jpg"],
+    });
+    expect(audits["lcp-discovery-insight"]?.checklist).toEqual({
+      eagerlyLoaded: false,
+      priorityHinted: true,
+    });
+    expect(audits["third-parties-insight"]?.mainThreadMs).toBe(601);
+    expect(audits["speed-index"]).toBeUndefined();
   });
 });

@@ -35,7 +35,7 @@ import { t } from "@/shared/i18n";
 
 const SEVERITY = {
   critical: "var(--color-error)",
-  warning: "var(--color-warning)",
+  warning: "var(--mark-warning)",
 } as const;
 
 /** Under this the density is an average over too little to mean anything. */

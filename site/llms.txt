@@ -186,5 +186,5 @@ Quick facts: version 0.7.1 Alpha, 95 audit rules, 33 MCP tools and 6 ready-made 
 
 ## Kaynak ve notlar
 - [GitHub deposu ve README (Docker kurulumu)](https://github.com/ucsahinn/seotracker)
-- [Sürüm notları](https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md)
+- [Sürüm notları](https://github.com/ucsahinn/seotracker/blob/seotracker-fork/CHANGELOG.md)
 - [open-seo, temel alınan proje](https://github.com/every-app/open-seo)

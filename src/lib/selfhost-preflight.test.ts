@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { runSelfhostPreflight } from "./selfhost-preflight";
+import {
+  checkGoogleCredential,
+  runSelfhostPreflight,
+} from "./selfhost-preflight";
 
 function itemFor(
   result: ReturnType<typeof runSelfhostPreflight>,
@@ -111,5 +114,42 @@ describe("runSelfhostPreflight", () => {
 
     expect(itemFor(result, "ALLOWED_HOST")?.level).toBe("info");
     expect(itemFor(result, "ALLOWED_HOST")?.message).toContain("reverse proxy");
+  });
+});
+
+/*
+ * /api/health used to answer "Search Console: ok" with a detail asking for an
+ * OAuth client on an install whose saved service account was already working.
+ */
+describe("checkGoogleCredential", () => {
+  it("counts a saved service account as configured and names it", () => {
+    const check = checkGoogleCredential({
+      serviceAccount: true,
+      oauthSource: null,
+    });
+
+    expect(check.status).toBe("ok");
+    expect(check.detail).toContain("hizmet hesabı");
+    expect(check.detail).not.toContain("OAuth");
+  });
+
+  it("names the OAuth client and where it comes from when it is the credential", () => {
+    expect(
+      checkGoogleCredential({ serviceAccount: false, oauthSource: "settings" })
+        .detail,
+    ).toContain("OAuth istemcisi kullanılıyor (Ayarlar");
+    expect(
+      checkGoogleCredential({
+        serviceAccount: false,
+        oauthSource: "environment",
+      }).detail,
+    ).toContain("GOOGLE_CLIENT_ID");
+  });
+
+  it("warns instead of reporting ok when nothing is saved", () => {
+    expect(
+      checkGoogleCredential({ serviceAccount: false, oauthSource: null })
+        .status,
+    ).toBe("warn");
   });
 });

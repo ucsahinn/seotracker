@@ -17,9 +17,12 @@ Arama sayıları Google'ın Search Console aracından gelir. Ziyaretçi sayılar
 **Sıradaki adımlar.** Uygulama size en fazla üç iş önerir. Öneri sırası şöyledir:
 
 - Search Console bağlı değilse **Search Console'u bağla**.
-- Hiç denetim yoksa ya da son denetim yedi günden eskiyse **Denetimi başlat**.
-- Ciddi sorun varsa **Kritik sorunları gör**.
-- Sonra **Fırsatları aç** ve **Uyarıları gör**.
+- Search Console bağlı değilse **Search Console'u bağlayın** (düğme: **Bağla**).
+- Hiç denetim yoksa **İlk denetimi başlatın** (düğme: **Başlat**). Son denetim tamamlanamadıysa **Denetimi yeniden başlatın**, sürüyorsa **Denetim sürüyor** (düğme: **İlerlemeyi gör**) yazar.
+- Kritik sorun varsa "N kritik sorun var" (düğme: **Gör**).
+- Search Console bağlıysa **Fırsatlara bakın** (düğme: **Aç**).
+- Son denetim yedi günden eskiyse **Denetimi tazeleyin** (düğme: **Başlat**).
+- Uyarı varsa "N uyarı var" (düğme: **Gör**).
 
 Bir işi bitirince madde listeden kalkar.
 

@@ -173,7 +173,7 @@ export function speedSection(
   const summary = describeLighthouse(input.lighthouse);
   if (!summary) {
     return `<section id="hiz">
-      <h2>${t("3. Hız ölçümü")}</h2>
+      <h2>${t("5. Hız ölçümü")}</h2>
       <p class="empty">${input.lighthouseMode === "none" ? t("Bu denetimde hız ölçümü kapalıydı, bu yüzden sayfa hızı hakkında bir şey söylenmiyor.") : t("Bu denetimde kayıtlı Lighthouse sonucu yok: hız ölçümü kapalıydı ya da ölçümler tamamlanamadı (ör. ölçüm servisi istek sınırına takıldı). Hız ölçülmediği için bu rapor hız hakkında bir şey söylemez.")}</p>
     </section>`;
   }
@@ -278,7 +278,7 @@ export function speedSection(
   );
 
   return `<section id="hiz">
-    <h2>${t("3. Hız ölçümü")}</h2>
+    <h2>${t("5. Hız ölçümü")}</h2>
     <p class="note">${measuredLine}</p>
     ${partial ? `<div class="callout callout--warn"><p><strong>${t("Ölçüm kısmi.")}</strong> ${partialLine}</p></div>` : ""}
     <div>
@@ -298,7 +298,7 @@ export function speedSection(
       ${worstList(mobile, "inpMs", "INP")}
     </div>
     <div class="callout">
-      <p>${t("<strong>Laboratuvar ve gerçek kullanıcı verisi.</strong> Buradaki rakamlar Lighthouse'un laboratuvar ölçümüdür: tek bir sanal cihazda, kontrollü ağ ve işlemci koşulunda yapılır. Gerçek ziyaretçilerden toplanan alan verisi (Chrome Kullanıcı Deneyimi Raporu, CrUX) bu denetimde saklanmadığı için rapora girmiyor. İkisi farklı çıkabilir. Google, sıralama sistemlerinde alan verisini (CrUX) kullanır; ama iyi bir değer tek başına sıralama garantisi vermez, içeriğin ilgili olması öncelik taşır.")}</p>
+      <p>${t("<strong>Laboratuvar ve gerçek kullanıcı verisi.</strong> Buradaki rakamlar Lighthouse'un laboratuvar ölçümüdür: tek bir sanal cihazda, kontrollü ağ ve işlemci koşulunda yapılır. Gerçek ziyaretçilerden toplanan alan verisi (Chrome Kullanıcı Deneyimi Raporu, CrUX), PageSpeed ölçümü varsa Anlık veri bölümündeki Temel Web Verileri tablosundadır. İkisi farklı çıkabilir. Google, sıralama sistemlerinde alan verisini (CrUX) kullanır; ama iyi bir değer tek başına sıralama garantisi vermez, içeriğin ilgili olması öncelik taşır.")}</p>
       <p>${t('Eşikler Google\'ın yayımladığı değerlerdir: LCP 2,5 sn altı iyi, 4 sn üstü zayıf; CLS 0,1 altı iyi, 0,25 üstü zayıf; INP 200 ms altı iyi, 500 ms üstü zayıf. INP laboratuvarda çoğu zaman ölçülemez ("--" görünür).')}</p>
     </div>
   </section>`;

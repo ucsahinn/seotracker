@@ -37,7 +37,16 @@ const xmlParser = new XMLParser({
 });
 
 export interface RobotsResult {
+  /** What this crawler may fetch: the `*` group, since it is not Googlebot. */
   isAllowed: (url: string) => boolean;
+  /**
+   * What Googlebot may fetch, for findings that speak about Google. A site
+   * can close `*` and open its own `User-agent: Googlebot` group; npr.org
+   * disallows `/*?*` for everyone else and allows Googlebot everything, and
+   * judging Google by the `*` group reported a critical blocked-resource on
+   * every page Google renders in full.
+   */
+  googlebotAllows: (url: string) => boolean;
   sitemapUrls: string[];
 }
 
@@ -175,12 +184,18 @@ export function parseRobotsTxt(
   text: string | null,
 ): RobotsResult {
   if (text === null) {
-    return { isAllowed: () => true, sitemapUrls: [] };
+    return {
+      isAllowed: () => true,
+      googlebotAllows: () => true,
+      sitemapUrls: [],
+    };
   }
 
   const robots = robotsParser(`${origin}/robots.txt`, text);
   return {
     isAllowed: (url: string) => robots.isAllowed(url) ?? true,
+    googlebotAllows: (url: string) =>
+      robots.isAllowed(url, "Googlebot") ?? true,
     sitemapUrls: robots.getSitemaps(),
   };
 }
@@ -326,13 +341,30 @@ export async function discoverUrls(
    * in the sitemap".
    */
   membershipComplete: boolean;
+  /**
+   * Distinct page addresses the sitemaps list, on any host. `urls` keeps
+   * only this site's own; react-bootstrap.github.io's sitemap lists 52
+   * addresses, all on its netlify.app twin, and its size read "0".
+   */
+  listedUrlCount: number;
   robotsText: string | null;
   robotsFetch: RobotsFetch;
+  /**
+   * The first top-level sitemap that listed anything (robots.txt order, then
+   * /sitemap.xml), and whether robots.txt names any sitemap at all.
+   */
+  sitemapRoot: string | null;
+  sitemapListedInRobots: boolean;
   sitemapProblems: {
     oversized: string[];
     oversizedCount: number;
     overfull: { url: string; urlCount: number }[];
     overfullCount: number;
+    /**
+     * Listed addresses on another host: Google ignores them unless that
+     * host cross-submits the sitemap. Counted out of `listedUrlCount`.
+     */
+    offHost: { count: number; sample: string[] };
     /** Summed across every shard read; see `readLastmodStats`. */
     lastmod: {
       urls: number;
@@ -354,6 +386,9 @@ export async function discoverUrls(
 
   const maxDiscoveredUrls = Math.min(Math.max(maxPages * 20, 500), 50_000);
   const allUrls = new Set<string>();
+  const listedUrls = new Set<string>();
+  const offHostSample: string[] = [];
+  let offHostCount = 0;
 
   const queue: Array<{ url: string; depth: number }> = Array.from(
     sitemapSources,
@@ -362,6 +397,8 @@ export async function discoverUrls(
     .filter((url): url is string => url !== null)
     .filter((url) => isSameOrigin(url, origin))
     .map((url) => ({ url, depth: MAX_SITEMAP_DEPTH }));
+  const rootOrder = queue.map((entry) => entry.url);
+  const rootsWithEntries = new Set<string>();
   const seenSitemapDocs = new Set<string>();
   let fetchedDocs = 0;
   let failedDocs = 0;
@@ -434,8 +471,16 @@ export async function discoverUrls(
           }
           return;
         }
+        if (depth === MAX_SITEMAP_DEPTH) rootsWithEntries.add(normalizedUrl);
 
         for (const pageUrl of result.pageUrls) {
+          if (listedUrls.size < maxDiscoveredUrls && !listedUrls.has(pageUrl)) {
+            listedUrls.add(pageUrl);
+            if (!isSameOrigin(pageUrl, origin)) {
+              offHostCount += 1;
+              if (offHostSample.length < 3) offHostSample.push(pageUrl);
+            }
+          }
           if (!isSameOrigin(pageUrl, origin)) continue;
           if (allUrls.size >= maxDiscoveredUrls) {
             membershipComplete = false;
@@ -477,8 +522,11 @@ export async function discoverUrls(
   return {
     urls: Array.from(allUrls),
     membershipComplete,
+    listedUrlCount: listedUrls.size,
     robotsText,
     robotsFetch,
+    sitemapRoot: rootOrder.find((url) => rootsWithEntries.has(url)) ?? null,
+    sitemapListedInRobots: robots.sitemapUrls.length > 0,
     sitemapProblems: {
       // Capped: this crosses a Workflow step boundary with a ~1MiB limit,
       // and the count is the finding while the samples illustrate it.
@@ -486,6 +534,7 @@ export async function discoverUrls(
       oversizedCount: oversizedSitemaps.length,
       overfull: overfullSitemaps.slice(0, 5),
       overfullCount: overfullSitemaps.length,
+      offHost: { count: offHostCount, sample: offHostSample },
       lastmod,
     },
   };

@@ -1,4 +1,8 @@
-import type { CrawledPageResult } from "@/server/lib/audit/types";
+import type {
+  CrawledPageResult,
+  MarkupSignals,
+  PageSignals,
+} from "@/server/lib/audit/types";
 
 /** A crawled page that is fine in every respect; override what a test varies. */
 export function makeCrawledPage(
@@ -16,6 +20,7 @@ export function makeCrawledPage(
     titleCount: 0,
     metaDescriptionCount: 0,
     emptyAnchorCount: 0,
+    linkTargetCount: 0,
     charsetDeclared: true,
     canonicalUrl: null,
     robotsMeta: null,
@@ -49,10 +54,64 @@ export function makeCrawledPage(
     resources: [],
     insecureResources: [],
     hreflangAlternates: [],
+    signals: null,
     isIndexable: true,
     responseTimeMs: 300,
     crawlDepth: 0,
     inSitemap: false,
+    ...overrides,
+  };
+}
+
+/** Signals of a clean page; override what a test varies. */
+export function makePageSignals(
+  overrides: Partial<PageSignals> = {},
+): PageSignals {
+  return {
+    textRatio: 0.3,
+    domNodeCount: 400,
+    domMaxDepth: 12,
+    twitterCard: null,
+    metaKeywordsPresent: false,
+    viewportZoomDisabled: false,
+    externalBlankWithoutNoopener: 0,
+    javascriptLinks: 0,
+    hashOnlyLinks: 0,
+    imagesLazyCount: 0,
+    imagesModernFormatCount: 0,
+    imagesBelowFoldNotLazy: 0,
+    imagesLegacyFormatCount: 0,
+    formInputsWithoutLabel: 0,
+    duplicateIds: 0,
+    contentSimhash: null,
+    jsonLdTypes: [],
+    structuredDataGaps: [],
+    organizationWithoutSameAs: false,
+    analyticsIds: [],
+    markup: makeMarkupSignals(),
+    ...overrides,
+  };
+}
+
+/** Markup facts of a clean page; override what a test varies. */
+function makeMarkupSignals(
+  overrides: Partial<MarkupSignals> = {},
+): MarkupSignals {
+  return {
+    insecureMedia: { count: 0, examples: [] },
+    insecureFormActions: { count: 0, examples: [] },
+    metaRefreshUrl: null,
+    metaRefreshDelay: null,
+    canonicalHref: null,
+    canonicalOnlyInBody: false,
+    robotsMeta: [],
+    googlebotMeta: [],
+    loremIpsum: false,
+    emailAddresses: [],
+    titleWords: null,
+    hasBreadcrumbs: false,
+    hasFeedLink: false,
+    inlineCodeChars: 0,
     ...overrides,
   };
 }

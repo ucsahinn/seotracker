@@ -1,86 +1,17 @@
 import { Link } from "@tanstack/react-router";
-import { ChevronRight, ExternalLink } from "lucide-react";
-import type { ReactNode } from "react";
-import { CopyButton } from "@/client/components/CopyButton";
 import { fillParts } from "@/client/features/settings/fillParts";
 import { useOrigin } from "@/client/features/settings/useOrigin";
 import { t } from "@/shared/i18n";
-import { DOCS, docsUrl } from "./links";
-
-const linkClass = "link link-primary";
-
-/*
- * The Windows tray menu is Turkish only, so its items are named as the menu
- * shows them in every language; the English sentences around them add the
- * meaning in parentheses.
- */
-const TRAY = {
-  restart: "Yeniden başlat", // i18n-ignore: tray menu item
-  repair: "Kurulumu onar",
-  logs: "Günlükleri aç", // i18n-ignore: tray menu item
-  report: "Sorunu bildir (GitHub)",
-  dataFolder: "Veri klasörünü aç", // i18n-ignore: tray menu item
-  running: '"Çalışıyor: http://127.0.0.1:3001/"', // i18n-ignore: tray tooltip
-  error: '"Hata"',
-} as const;
-
-function TrayItem({ name }: { name: keyof typeof TRAY }) {
-  return <strong lang="tr">{TRAY[name]}</strong>;
-}
-
-function Command({ value }: { value: string }) {
-  return (
-    // One unit, so the copy button never lands on a line of its own.
-    <span className="inline-flex items-center gap-1 whitespace-nowrap align-middle">
-      <code className="text-xs">{value}</code>
-      <CopyButton
-        iconOnly
-        value={value}
-        label={t("Komutu kopyala")}
-        successMessage={t("Komut kopyalandı")}
-      />
-    </span>
-  );
-}
-
-function DocLink({
-  file,
-  children,
-}: {
-  file: (typeof DOCS)[keyof typeof DOCS];
-  children: ReactNode;
-}) {
-  return (
-    <a
-      href={docsUrl(file)}
-      target="_blank"
-      rel="noreferrer noopener"
-      className={`${linkClass} inline-flex items-center gap-1`}
-    >
-      {children}
-      <ExternalLink className="size-3" aria-hidden />
-    </a>
-  );
-}
-
-function Problem({ title, children }: { title: string; children: ReactNode }) {
-  return (
-    <details className="group border-b border-base-300 last:border-b-0">
-      <summary className="flex cursor-pointer list-none items-center gap-2 py-3 text-sm font-medium [&::-webkit-details-marker]:hidden">
-        <ChevronRight
-          className="size-4 shrink-0 text-muted transition-transform group-open:rotate-90"
-          aria-hidden
-        />
-        {title}
-      </summary>
-      <div className="max-w-prose space-y-2 pb-4 pl-6 text-sm text-muted">
-        {children}
-      </div>
-    </details>
-  );
-}
-
-const code = (value: string) => <code className="text-xs">{value}</code>;
+import { DOCS } from "./links";
+import {
+  code,
+  Command,
+  DocLink,
+  linkClass,
+  Problem,
+  TRAY,
+  TrayItem,
+} from "./problemParts";
 
 /**
  * The failures that actually happen on a self-hosted install, with the answer
@@ -232,6 +163,8 @@ export function CommonProblems({
         </p>
       </Problem>
 
+      <SettingChangeProblem windows={windows} pending={pending} />
+
       <Problem title={t("Ajanım bağlanamıyor (401)")}>
         {pending ? (
           pendingNote
@@ -370,5 +303,84 @@ export function CommonProblems({
         </p>
       </Problem>
     </section>
+  );
+}
+
+function PendingNote() {
+  return <p className="text-muted">{t("Kurulum türü belirleniyor…")}</p>;
+}
+
+/*
+ * Settings typed into the app apply at once; settings in files are read at
+ * the next start, and the two installs keep them in different files.
+ */
+function SettingChangeProblem({
+  windows,
+  pending,
+}: {
+  windows: boolean;
+  pending: boolean;
+}) {
+  return (
+    <Problem title={t("Bir ayarı değiştirdim, uygulama görmüyor")}>
+      {pending ? (
+        <PendingNote />
+      ) : windows ? (
+        <>
+          <p>
+            {t(
+              "Google erişimi, PageSpeed anahtarı ve dil Ayarlar ekranında girilir ve hemen geçerli olur. Windows paketinde .env dosyası ve ortam değişkeni yoktur.",
+            )}
+          </p>
+          <p>
+            {fillParts(
+              t(
+                "Elle değiştirilebilen tek dosya {config}: adres numarası (port) ve kendiliğinden güncelleme. {dataFolder} ile açın, değiştirin, sonra {restart} deyin. Yanındaki {serverEnv} dosyasını düzenlemeyin; uygulama her açılışta onu yeniden yazar.",
+              ),
+              {
+                config: code("config.json"),
+                dataFolder: <TrayItem name="dataFolder" />,
+                restart: <TrayItem name="restart" />,
+                serverEnv: code("server.env"),
+              },
+            )}
+          </p>
+        </>
+      ) : (
+        <>
+          <p>
+            {fillParts(
+              t(
+                "Ayarlar ekranında girilenler hemen geçerli olur. {env} dosyasındaki değişkenler (örneğin {port}, {host}, {token}) ise yalnızca konteyner yeniden oluşturulunca okunur: {command}",
+              ),
+              {
+                env: code(".env"),
+                port: code("PORT"),
+                host: code("ALLOWED_HOST"),
+                token: code("MCP_TOKEN"),
+                command: (
+                  <Command value="docker compose up -d --force-recreate seotracker" />
+                ),
+              },
+            )}
+          </p>
+          <p>
+            {fillParts(
+              t(
+                "Yalnızca yeniden başlatmak için: {command} Bu, .env değişikliğini uygulamaz. {docs}",
+              ),
+              {
+                command: <Command value="docker compose restart seotracker" />,
+                docs: (
+                  <DocLink file={DOCS.environment}>
+                    {t("Ortam değişkenleri")}
+                  </DocLink>
+                ),
+              },
+            )}
+          </p>
+        </>
+      )}
+    </Problem>
   );
 }

@@ -20,15 +20,10 @@ import {
 } from "@/client/features/audit/results/issueAffected";
 import type { IssueGroup } from "@/client/features/audit/results/issueGroups";
 import { t } from "@/shared/i18n";
+import { SeverityIcon } from "./SeverityChip";
 
 const ACTION_BUTTON =
   "btn btn-xs btn-ghost gap-1.5 border border-[var(--control-border)]";
-
-const SEVERITY_DOT: Record<IssueSeverity, string> = {
-  critical: "bg-error",
-  warning: "bg-warning",
-  info: "bg-base-content/30",
-};
 
 const SEVERITY_RULE: Record<IssueSeverity, string> = {
   critical: "border-l-error/60",
@@ -68,7 +63,7 @@ export function IssueCard({
     >
       <button
         type="button"
-        className="flex w-full items-center gap-3 px-4 py-2.5 text-left transition-colors hover:bg-base-200/40"
+        className="focus-inset flex w-full items-center gap-3 px-3 py-2.5 text-left transition-colors hover:bg-base-200/40 sm:px-4"
         onClick={() => setOpen((value) => !value)}
         aria-expanded={open}
         aria-label={t("{title}, {count}", {
@@ -76,9 +71,7 @@ export function IssueCard({
           count: countLabel,
         })}
       >
-        <span
-          className={`size-2 shrink-0 rounded-full ${SEVERITY_DOT[group.severity]}`}
-        />
+        <SeverityIcon severity={group.severity} />
         <span
           className="min-w-0 flex-1 truncate text-sm font-medium"
           title={group.title}
@@ -95,69 +88,85 @@ export function IssueCard({
         />
       </button>
 
-      {open && (
-        <div className="space-y-3 pb-4 pl-9 pr-4 pt-0.5">
-          {group.explanation && (
-            <p className="max-w-prose text-sm text-muted">
-              {group.explanation}
-            </p>
-          )}
-          {group.howToFix && (
-            <div className="flex max-w-prose gap-2.5 rounded-box border border-base-300 bg-base-100 px-3 py-2.5 text-sm">
-              <Lightbulb
-                aria-hidden
-                className="mt-0.5 size-4 shrink-0 text-[var(--ink-warning)]"
-              />
-              <p>
-                <span className="font-medium">{t("Nasıl düzeltilir?")} </span>
-                <span className="text-muted">{group.howToFix}</span>
+      {/*
+       * Always mounted so the height can ease open and shut (`.reveal-height`
+       * animates the grid row from 0fr to 1fr); a list mounted on click
+       * appears in one frame. Closed, it is `inert` and hidden from assistive
+       * tech, so its links and buttons are neither tabbable nor announced.
+       * The list itself is cheap: AffectedPageList draws ten rows at a time.
+       */}
+      <div
+        className="reveal-height"
+        data-open={open}
+        inert={!open}
+        aria-hidden={!open}
+      >
+        <div>
+          <div className="space-y-3 pb-4 pl-9 pr-4 pt-0.5">
+            {group.explanation && (
+              <p className="max-w-prose text-sm text-muted">
+                {group.explanation}
               </p>
-            </div>
-          )}
-          {siteWide ? (
-            <p className="text-sm text-muted">
-              {t("Bu sorun tek bir sayfayla değil, sitenin tamamıyla ilgili.")}
-            </p>
-          ) : null}
-          <div className="flex flex-wrap items-center gap-2">
-            <button
-              type="button"
-              className={ACTION_BUTTON}
-              onClick={() => copyUrls(group.pageUrls)}
-            >
-              <Copy aria-hidden className="size-3.5" />
-              {t("URL'leri kopyala ({count})", {
-                count: formatCount(group.pageUrls.length),
-              })}
-            </button>
-            <button
-              type="button"
-              className={ACTION_BUTTON}
-              onClick={() =>
-                downloadCsv(issueCsvFilename(group), buildIssueCsv(group))
-              }
-            >
-              <Download aria-hidden className="size-3.5" />
-              {t("CSV indir")}
-            </button>
-            {siteWide ? null : (
+            )}
+            {group.howToFix && (
+              <div className="flex max-w-prose gap-2.5 rounded-box border border-base-300 bg-base-100 px-3 py-2.5 text-sm">
+                <Lightbulb
+                  aria-hidden
+                  className="mt-0.5 size-4 shrink-0 text-[var(--ink-warning)]"
+                />
+                <p>
+                  <span className="font-medium">{t("Nasıl düzeltilir?")} </span>
+                  <span className="text-muted">{group.howToFix}</span>
+                </p>
+              </div>
+            )}
+            {siteWide ? (
+              <p className="text-sm text-muted">
+                {t(
+                  "Bu sorun tek bir sayfayla değil, sitenin tamamıyla ilgili.",
+                )}
+              </p>
+            ) : null}
+            <div className="flex flex-wrap items-center gap-2">
               <button
                 type="button"
                 className={ACTION_BUTTON}
-                onClick={() => onShowPages(group.pageUrls, group.title)}
+                onClick={() => copyUrls(group.pageUrls)}
               >
-                <ListFilter aria-hidden className="size-3.5" />
-                {t("Sayfalar sekmesinde göster")}
+                <Copy aria-hidden className="size-3.5" />
+                {t("URL'leri kopyala ({count})", {
+                  count: formatCount(group.pageUrls.length),
+                })}
               </button>
-            )}
+              <button
+                type="button"
+                className={ACTION_BUTTON}
+                onClick={() =>
+                  downloadCsv(issueCsvFilename(group), buildIssueCsv(group))
+                }
+              >
+                <Download aria-hidden className="size-3.5" />
+                {t("CSV indir")}
+              </button>
+              {siteWide ? null : (
+                <button
+                  type="button"
+                  className={ACTION_BUTTON}
+                  onClick={() => onShowPages(group.pageUrls, group.title)}
+                >
+                  <ListFilter aria-hidden className="size-3.5" />
+                  {t("Sayfalar sekmesinde göster")}
+                </button>
+              )}
+            </div>
+            <AffectedPageList
+              issues={group.issues}
+              title={group.title}
+              siteWide={siteWide}
+            />
           </div>
-          <AffectedPageList
-            issues={group.issues}
-            title={group.title}
-            siteWide={siteWide}
-          />
         </div>
-      )}
+      </div>
     </div>
   );
 }

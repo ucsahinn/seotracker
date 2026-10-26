@@ -4,7 +4,6 @@ import {
   buildCopyText,
   buildCountLabel,
   buildIssueCsv,
-  describeDetails,
   filterAffectedPages,
   isSiteWide,
   nextVisibleCount,
@@ -29,25 +28,6 @@ function row(
     ...over,
   };
 }
-
-describe("describeDetails", () => {
-  it("turns evidence into plain Turkish lines", () => {
-    const lines = describeDetails(
-      JSON.stringify({ length: 82, statusCode: 404, hops: ["a", "b"] }),
-    );
-    expect(lines).toEqual([
-      { label: "Uzunluk (karakter)", value: "82" },
-      { label: "Durum kodu", value: "404" },
-      { label: "Yönlendirme zinciri", value: "a → b" },
-    ]);
-  });
-
-  it("returns nothing for empty, broken or non-object details", () => {
-    expect(describeDetails(null)).toEqual([]);
-    expect(describeDetails("{oops")).toEqual([]);
-    expect(describeDetails("[1,2]")).toEqual([]);
-  });
-});
 
 describe("site-wide issues", () => {
   it("are the ones with no page id, and say so instead of a page count", () => {

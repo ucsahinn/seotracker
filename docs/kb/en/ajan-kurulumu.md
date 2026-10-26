@@ -67,7 +67,7 @@ The setup prompt (the full setup) has the assistant do the whole setup for you, 
 
 ### Installing the ready-made task templates
 
-The **Skills** tab describes the six ready-made task templates. Tell the assistant "install the seotracker skills". The setup text knows where to copy them. To update, press the **Güncelleme istemini kopyala** (Copy update prompt) button.
+The **Skills** tab describes the six ready-made task templates. Tell the assistant "install the seotracker skills". The setup text knows where to copy them. To update, press the **Copy update command** button.
 
 ## Tools
 
@@ -90,6 +90,7 @@ There are 33 tools in total. The "Writes" column shows the tools that change dat
 | `get_sitemaps`                               | Shows the sitemap status in Search Console.                                                        |        |                                   |
 | `run_site_audit`                             | Starts the site audit.                                                                             | Yes    | PageSpeed, if speed testing is on |
 | `get_audit_status`                           | Says which stage the audit is at. It can mark a stuck audit as failed.                             |        |                                   |
+| `get_audit_summary`                          | Start here: site score, category scores, the ranked to-do list and the site's instant data.        |        |                                   |
 | `get_audit_issues`                           | Gives the problems found, with steps to fix them.                                                  |        |                                   |
 | `get_audit_pages`                            | Lists the pages that were crawled.                                                                 |        |                                   |
 | `get_google_analytics_organic_overview`      | Gives a summary of visits from search and the previous period.                                     |        |                                   |

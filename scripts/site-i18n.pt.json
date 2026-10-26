@@ -54,6 +54,7 @@
   "t": {
     "guide": "Guia",
     "guideTitle": "Guia do seowatcher: instalação, telas e solução de problemas",
+    "ogImageAlt": "Cartão do seowatcher: o painel do aplicativo com dados do Search Console, do Analytics 4 e da auditoria do site, e um botão para baixar para Windows",
     "guideDescription": "Guias do seowatcher: instalação, o que cada tela mostra, a conexão com o Google, as regras de auditoria, a configuração do agente e a solução de problemas.",
     "guideLede": "Um passo a passo curto de cada etapa e de cada tela, da instalação ao primeiro relatório. O aplicativo se chama seotracker no GitHub e seowatcher neste site; é o mesmo programa.",
     "screenSuffix": "",

@@ -3,6 +3,7 @@ import {
   LIGHTHOUSE_CATEGORIES,
   LIGHTHOUSE_GOOD_FROM,
 } from "@/shared/lighthouse";
+import { TRACKED_LIGHTHOUSE_AUDITS } from "@/server/lib/audit/lighthouse-audit-rules";
 
 export type RawLighthouseAudit = {
   title?: string;
@@ -11,11 +12,16 @@ export type RawLighthouseAudit = {
   scoreDisplayMode?: string;
   displayValue?: string;
   numericValue?: number;
+  /** Estimated effect on each metric (FCP, LCP, TBT, CLS, INP), in its unit. */
+  metricSavings?: Record<string, number | undefined>;
   details?: {
+    type?: string;
     overallSavingsMs?: number;
     overallSavingsBytes?: number;
     /** Newer "insight" audits report a single object instead of a list. */
     items?: Array<Record<string, unknown>> | Record<string, unknown>;
+    /** Insight audits put their byte savings here (`wastedBytes`). */
+    debugData?: Record<string, unknown>;
   };
 };
 
@@ -77,6 +83,36 @@ const storedLighthouseIssueSchema = z.object({
   items: z.array(z.string()),
 });
 
+/**
+ * One Lighthouse audit's verdict, reduced to what the audit's findings read
+ * (see `lighthouse-audit-rules.ts`). Every field is null when Lighthouse did
+ * not report it.
+ */
+const storedAuditResultSchema = z.object({
+  /** 0-1 as Lighthouse reports it; null for unscored modes. */
+  score: z.number().nullable(),
+  /** binary, numeric, metricSavings, informative, notApplicable, manual, error. */
+  mode: z.string().nullable(),
+  /** The larger of the LCP/FCP savings or the legacy overallSavingsMs. */
+  savingsMs: z.number().nullable(),
+  savingsBytes: z.number().nullable(),
+  numericValue: z.number().nullable(),
+  /** Rows of a table result: failing elements for an accessibility audit. */
+  itemCount: z.number().nullable(),
+  /** Checklist entries (insight audits), true when that part passes. */
+  checklist: z.record(z.string(), z.boolean()).nullable(),
+  /** Main-thread time summed over the rows, where rows carry one. */
+  mainThreadMs: z.number().nullable(),
+  /** Up to three affected URLs or elements, for the finding's detail. */
+  examples: z.array(z.string()),
+});
+
+export type StoredAuditResult = z.infer<typeof storedAuditResultSchema>;
+
+/** A base64 image data URI and nothing else, so it is safe in an `src`. */
+export const SCREENSHOT_DATA_URI =
+  /^data:image\/(?:jpeg|png|webp);base64,[A-Za-z0-9+/]+=*$/;
+
 export const storedLighthousePayloadSchema = z.object({
   version: z.literal(2),
   // "dataforseo-lighthouse" is legacy: rows written before this install moved to
@@ -107,7 +143,19 @@ export const storedLighthousePayloadSchema = z.object({
    * exactly as it was written.
    */
   originFieldData: storedFieldDataSchema.nullish(),
+  /*
+   * Lighthouse's final screenshot of a mobile run, as the base64 JPEG data
+   * URI Google returns. Absent on desktop runs, on payloads stored before it
+   * was kept, and on screenshots over the size cap.
+   */
+  screenshot: z.string().regex(SCREENSHOT_DATA_URI).nullish(),
   issues: z.array(storedLighthouseIssueSchema),
+  /*
+   * The tracked audits' verdicts, keyed by Lighthouse audit id. Absent on
+   * payloads stored before the audit read them; an absent key is an audit
+   * Lighthouse did not report. Either way: not measured.
+   */
+  audits: z.record(z.string(), storedAuditResultSchema).nullish(),
 });
 
 export type StoredFieldData = z.infer<typeof storedFieldDataSchema>;
@@ -304,4 +352,106 @@ export function buildStoredLighthouseMetrics(input: {
     ),
     serverResponseTime: buildStoredMetric(input.audits["server-response-time"]),
   };
+}
+
+const MAX_EXAMPLES = 3;
+const MAX_EXAMPLE_CHARS = 200;
+
+function finite(value: unknown): number | null {
+  return typeof value === "number" && Number.isFinite(value) ? value : null;
+}
+
+function exampleOf(item: Record<string, unknown>): string | null {
+  const node = isRecord(item["node"]) ? item["node"] : null;
+  const location = isRecord(item["sourceLocation"])
+    ? item["sourceLocation"]
+    : null;
+  const candidates = [
+    item["url"],
+    location?.["url"],
+    node?.["snippet"],
+    node?.["nodeLabel"],
+    item["entity"],
+    item["description"],
+  ];
+  const found = candidates.find(
+    (value): value is string =>
+      typeof value === "string" && value.trim() !== "",
+  );
+  return found ? found.trim().slice(0, MAX_EXAMPLE_CHARS) : null;
+}
+
+/** A checklist detail, directly or as one entry of a list detail. */
+function readChecklist(
+  details: RawLighthouseAudit["details"],
+): Record<string, boolean> | null {
+  const checklists =
+    details?.type === "checklist"
+      ? [details]
+      : details?.type === "list" && Array.isArray(details.items)
+        ? details.items.filter(
+            (entry) => isRecord(entry) && entry["type"] === "checklist",
+          )
+        : [];
+  const items = checklists[0]?.["items"];
+  if (!isRecord(items)) return null;
+  const out: Record<string, boolean> = {};
+  for (const [key, entry] of Object.entries(items)) {
+    if (isRecord(entry) && typeof entry["value"] === "boolean") {
+      out[key] = entry["value"];
+    }
+  }
+  return Object.keys(out).length > 0 ? out : null;
+}
+
+function readAuditResult(audit: RawLighthouseAudit): StoredAuditResult {
+  const details = audit.details;
+  const rows =
+    details?.type === "table" || details?.type === "opportunity"
+      ? Array.isArray(details.items)
+        ? details.items.filter(isRecord)
+        : []
+      : null;
+  const savings = [
+    finite(details?.overallSavingsMs),
+    finite(audit.metricSavings?.["LCP"]),
+    finite(audit.metricSavings?.["FCP"]),
+  ].filter((value): value is number => value !== null);
+  const mainThread = rows
+    ?.map((row) => finite(row["mainThreadTime"]))
+    .filter((value): value is number => value !== null);
+  return {
+    score: finite(audit.score),
+    mode: audit.scoreDisplayMode ?? null,
+    savingsMs: savings.length > 0 ? Math.max(...savings) : null,
+    savingsBytes:
+      finite(details?.overallSavingsBytes) ??
+      finite(details?.debugData?.["wastedBytes"]),
+    numericValue: finite(audit.numericValue),
+    itemCount: rows ? rows.length : null,
+    checklist: readChecklist(details),
+    mainThreadMs:
+      mainThread && mainThread.length > 0
+        ? Math.round(mainThread.reduce((sum, ms) => sum + ms, 0))
+        : null,
+    examples: (rows ?? [])
+      .map(exampleOf)
+      .filter((example): example is string => example !== null)
+      .slice(0, MAX_EXAMPLES),
+  };
+}
+
+/**
+ * The verdicts of the Lighthouse audits the findings read, and nothing
+ * else: a full report is megabytes, this is a few kilobytes.
+ */
+export function buildStoredLighthouseAudits(input: {
+  audits: Record<string, RawLighthouseAudit>;
+}): Record<string, StoredAuditResult> {
+  const out: Record<string, StoredAuditResult> = {};
+  for (const id of TRACKED_LIGHTHOUSE_AUDITS) {
+    const audit = input.audits[id];
+    if (isRecord(audit)) out[id] = readAuditResult(audit);
+  }
+  return out;
 }

@@ -2,23 +2,27 @@
   "tr": {
     "title": "Gizlilik ve çerezler",
     "home": "Ana sayfa",
-    "intro": "Bu açıklama seowatcher.io web sitesini kapsar. Bilgisayarınıza kurulan seowatcher uygulamasındaki proje verileri ayrı olarak kendi bilgisayarınızda tutulur.",
+    "intro": "Bu açıklama seowatcher.io web sitesini kapsar. Bilgisayarınıza kurulan seowatcher uygulamasının proje verileri ayrıca kendi bilgisayarınızda tutulur.",
     "sections": [
       [
-        "İsteğe bağlı kullanım ölçümü",
-        "Yalnızca onay verirseniz Google Analytics 4 yüklenir. Sayfa görüntülemeleri, kaydırmalar, dış bağlantı tıklamaları ve dosya indirme olayları; tarayıcı ve cihaz bilgileri gibi teknik bilgilerle birlikte Google tarafından işlenir. Amaç siteyi ve kurulum kılavuzlarını iyileştirmektir. Reklam kişiselleştirmesi ve Google sinyalleri kullanılmaz."
+        "Google Analytics 4 (etkinleştirildiğinde)",
+        "Bu sitede Google Analytics 4 yalnızca bir GA4 ölçüm kimliği yapılandırıldığında çalışır. Yapılandırılmadığında sayfalar Google'a hiçbir istek göndermez, çerez bandı görünmez ve tarayıcınıza hiçbir şey kaydedilmez. Etkinleştirildiğinde bile Google etiketi (gtag.js) yalnızca Kabul et dediğinizde yüklenir. Kabulden sonra ölçülenler: sayfa görüntülemeleri ve GA4'ün gelişmiş ölçüm olayları (ör. kaydırma, dış bağlantı tıklaması, dosya indirme); bunlarla birlikte sayfa adresi, yönlendiren adres, tarayıcı, işletim sistemi, cihaz türü, ekran boyutu, dil ve IP adresinden çıkarılan yaklaşık konum. Google, GA4'ün IP adreslerini kaydetmediğini ve saklamadığını belirtir. Amaç siteyi ve kurulum kılavuzlarını iyileştirmektir."
       ],
       [
-        "Tercih ve saklama süreleri",
-        "Kabul veya ret tercihiniz, bu tarayıcının yerel depolama alanında seowatcher-consent-v1 adıyla 6 ay saklanır. Analiz çerezleri (_ga ve _ga_ ile başlayan adlar) yalnızca kabulden sonra kullanılır; süreleri en fazla 13 aydır. GA4 kullanıcı ve etkinlik verilerinin saklama süresi 14 aydır. Google’ın toplu raporları farklı saklama kurallarına tabi olabilir."
+        "Onay",
+        "Google İzin Modu v2'nin temel kurulumu kullanılır: analiz ve reklam izinlerinin tümü varsayılan olarak reddedilmiş başlar ve onay verene kadar Google'dan hiçbir şey yüklenmez, Google'a hiçbir veri gönderilmez. Kabul et dediğinizde yalnızca analiz izni açılır, Google etiketi yüklenir ve analiz çerezleri (_ga ve _ga_ ile başlayan adlar) yazılır. Reklam izinleri hiçbir durumda verilmez; reklam kişiselleştirmesi ve Google sinyalleri kapalıdır."
       ],
       [
-        "Tercihinizi değiştirme",
-        "Kabul etmek zorunda değilsiniz. Reddetmek siteyi kullanmanızı veya uygulamayı indirmenizi engellemez. Her sayfanın altındaki Çerez ayarları düğmesiyle tercihinizi değiştirebilir ve izninizi geri çekebilirsiniz. İzni geri çektiğinizde analiz devre dışı bırakılır, erişilebilir analiz çerezleri silinir ve sayfa yeniden yüklenir."
+        "Saklama süreleri",
+        "Kabul veya ret tercihiniz, bu tarayıcının yerel depolama alanında seowatcher-consent-v1 adıyla 6 ay saklanır; sonra yeniden sorulur. Analiz çerezlerinin ömrü en fazla 13 aydır.GA4 mülkündeki kullanıcı ve etkinlik verilerinin saklama süresi, mülk ayarlarına göre belirlenir. Google'ın toplu raporları farklı saklama kurallarına tabi olabilir. Google'ın toplu raporları farklı saklama kurallarına tabi olabilir."
+      ],
+      [
+        "İzni geri çekme",
+        "Kabul etmek zorunda değilsiniz; reddetmek siteyi kullanmanızı veya uygulamayı indirmenizi engellemez. Analytics etkinken her sayfanın altında Çerez ayarları düğmesi bulunur: bununla tercihinizi istediğiniz zaman değiştirebilir veya izninizi geri çekebilirsiniz. Geri çektiğinizde ölçüm durdurulur, erişilebilir analiz çerezleri silinir ve sayfa yeniden yüklenir; sonrasında Google'a veri gitmez. Tarayıcınızda bu sitenin verilerini silmek de tercihinizi sıfırlar."
       ],
       [
         "Hizmet sağlayıcılar ve iletişim",
-        "Web sunucusu, isteği sunmak için IP adresi ve istenen adres gibi bağlantı bilgilerini işler. Analiz izni verdiğinizde Google, bu verileri kendi altyapısında işler; buna ülkeniz dışındaki sunucular da dahil olabilir. Gizlilik veya veri talepleriniz için projenin GitHub profilindeki iletişim kanalını kullanabilirsiniz. Aşağıdaki Google bağlantıları veri işleme ve çerezler hakkında ek bilgi sağlar."
+        "Site Hetzner'deki bir sunucuda barındırılır; web sunucusu isteği sunmak için IP adresi ve istenen adres gibi bağlantı bilgilerini işler. Analytics etkinleştirildiğinde Google, Analytics verilerini Google'ın veri işleme koşulları kapsamında bizim adımıza veri işleyen olarak işler; bu, ülkeniz dışındaki sunucuları da kapsayabilir. Gizlilik veya veri talepleriniz için projenin GitHub profilindeki iletişim kanalını kullanabilirsiniz. Aşağıdaki Google bağlantıları veri işleme ve çerezler hakkında ek bilgi verir."
       ]
     ]
   },
@@ -28,20 +32,24 @@
     "intro": "This notice covers the seowatcher.io website. Project data in the installed seowatcher application is stored separately on your own computer.",
     "sections": [
       [
-        "Optional usage measurement",
-        "Google Analytics 4 loads only if you agree. Google processes page views, scrolls, outbound clicks and file downloads, together with technical browser and device information. We use this to improve the website and installation guides. Advertising personalization and Google signals are not used."
+        "Google Analytics 4 (when enabled)",
+        "Google Analytics 4 runs on this site only when a GA4 measurement ID is configured. Without one, the pages send no request to Google, show no cookie banner and store nothing in your browser. Even then, the Google tag (gtag.js) loads only after you choose Accept. What is measured after acceptance: page views and GA4 enhanced measurement events (such as scrolls, outbound clicks and file downloads), together with the page address, referring address, browser, operating system, device type, screen size, language and an approximate location derived from your IP address. Google states that GA4 does not log or store IP addresses. We use this to improve the website and the installation guides."
       ],
       [
-        "Choices and retention",
-        "Your acceptance or refusal is stored in this browser’s local storage as seowatcher-consent-v1 for 6 months. Analytics cookies (_ga and names starting with _ga_) are used only after acceptance, with a maximum lifetime of 13 months. GA4 user and event data retention is 14 months. Google’s aggregated reports may follow different retention rules."
+        "Consent",
+        "We use basic Google Consent Mode v2: every analytics and advertising permission starts as denied, and until you consent nothing is loaded from Google and no data is sent to Google. Choosing Accept grants analytics storage only, loads the Google tag and writes the analytics cookies (_ga and names starting with _ga_). Advertising permissions are never granted; ad personalization and Google signals are off."
       ],
       [
-        "Changing your choice",
-        "Consent is optional. Refusing does not prevent using the site or downloading the app. Use Cookie settings at the bottom of any page to change your choice or withdraw consent. Withdrawal disables analytics, deletes accessible analytics cookies and reloads the page."
+        "Retention",
+        "Your acceptance or refusal is stored in this browser’s local storage as seowatcher-consent-v1 for 6 months, after which you are asked again. Analytics cookies last at most 13 months.User and event data retention in the GA4 property follows that property's settings. Google's aggregated reports may follow different retention rules. Google’s aggregated reports may follow different retention rules."
+      ],
+      [
+        "Withdrawing consent",
+        "Consent is optional; refusing does not stop you using the site or downloading the app. While analytics is enabled, every page has a Cookie settings button at the bottom: use it to change your choice or withdraw consent at any time. Withdrawing stops measurement, deletes accessible analytics cookies and reloads the page; after that no data is sent to Google. Clearing this site’s data in your browser also resets your choice."
       ],
       [
         "Providers and contact",
-        "The web server processes connection information such as your IP address and requested URL to serve your request. If you consent to analytics, Google processes data on its infrastructure, which may include servers outside your country. For privacy or data requests, use the contact channel on the project’s GitHub profile. The Google links below explain further processing and cookie details."
+        "The site is hosted on a server at Hetzner; the web server processes connection information such as your IP address and the requested URL to serve your request. When analytics is enabled, Google processes Analytics data on our behalf as a processor under Google’s data processing terms, which may include servers outside your country. For privacy or data requests, use the contact channel on the project’s GitHub profile. The Google links below explain further processing and cookie details."
       ]
     ]
   },
@@ -51,20 +59,24 @@
     "intro": "Diese Hinweise gelten für die Website seowatcher.io. Projektdaten der installierten seowatcher-Anwendung bleiben getrennt auf Ihrem eigenen Computer.",
     "sections": [
       [
-        "Optionale Nutzungsmessung",
-        "Google Analytics 4 wird nur mit Ihrer Einwilligung geladen. Google verarbeitet Seitenaufrufe, Scrolls, externe Klicks und Downloads sowie technische Browser- und Geräteinformationen. Damit verbessern wir die Website und die Installationsanleitungen. Personalisierte Werbung und Google-Signale werden nicht verwendet."
+        "Google Analytics 4 (wenn aktiviert)",
+        "Google Analytics 4 läuft auf dieser Website nur, wenn eine GA4-Mess-ID eingerichtet ist. Ohne sie senden die Seiten keine Anfrage an Google, zeigen kein Cookie-Banner und speichern nichts in Ihrem Browser. Auch dann wird das Google-Tag (gtag.js) erst geladen, wenn Sie Akzeptieren wählen. Nach der Zustimmung gemessen werden Seitenaufrufe und die Ereignisse der erweiterten GA4-Messung (etwa Scrollen, Klicks auf externe Links und Downloads), dazu Seitenadresse, verweisende Adresse, Browser, Betriebssystem, Gerätetyp, Bildschirmgröße, Sprache und ein aus der IP-Adresse abgeleiteter ungefährer Standort. Laut Google protokolliert und speichert GA4 keine IP-Adressen. Wir nutzen das, um die Website und die Installationsanleitungen zu verbessern."
       ],
       [
-        "Auswahl und Speicherdauer",
-        "Ihre Zustimmung oder Ablehnung wird für 6 Monate als seowatcher-consent-v1 im lokalen Speicher dieses Browsers gespeichert. Analyse-Cookies (_ga und Namen mit _ga_) werden nur nach Zustimmung verwendet und sind höchstens 13 Monate gültig. Die Aufbewahrung von GA4-Nutzer- und Ereignisdaten beträgt 14 Monate. Für aggregierte Google-Berichte können andere Fristen gelten."
+        "Einwilligung",
+        "Wir verwenden den Google-Einwilligungsmodus v2 in der Basisvariante: Alle Analyse- und Werbeberechtigungen sind zunächst abgelehnt, und bis zu Ihrer Einwilligung wird nichts von Google geladen und nichts an Google gesendet. Mit Akzeptieren wird nur die Analyse-Speicherung erlaubt, das Google-Tag geladen und Analyse-Cookies (_ga und Namen mit _ga_) gesetzt. Werbeberechtigungen werden nie erteilt; personalisierte Werbung und Google-Signale sind deaktiviert."
       ],
       [
-        "Auswahl ändern",
-        "Die Einwilligung ist freiwillig. Eine Ablehnung verhindert weder die Nutzung der Website noch den Download der Anwendung. Über Cookie-Einstellungen am Ende jeder Seite können Sie Ihre Auswahl ändern oder widerrufen. Beim Widerruf wird die Analyse deaktiviert, zugängliche Analyse-Cookies werden gelöscht und die Seite wird neu geladen."
+        "Speicherdauer",
+        "Ihre Zustimmung oder Ablehnung wird 6 Monate als seowatcher-consent-v1 im lokalen Speicher dieses Browsers gespeichert; danach fragen wir erneut. Analyse-Cookies gelten höchstens 13 Monate.Die Aufbewahrung von Nutzer- und Ereignisdaten in der GA4-Property richtet sich nach den dortigen Einstellungen. Für zusammengefasste Google-Berichte können andere Fristen gelten. Für zusammengefasste Google-Berichte können andere Fristen gelten."
+      ],
+      [
+        "Einwilligung widerrufen",
+        "Die Einwilligung ist freiwillig; eine Ablehnung hindert Sie weder an der Nutzung der Website noch am Download der Anwendung. Solange die Analyse aktiviert ist, steht am Ende jeder Seite die Schaltfläche Cookie-Einstellungen: Damit ändern Sie Ihre Auswahl oder widerrufen die Einwilligung jederzeit. Beim Widerruf wird die Messung beendet, zugängliche Analyse-Cookies werden gelöscht und die Seite wird neu geladen; danach werden keine Daten an Google gesendet. Auch das Löschen der Websitedaten in Ihrem Browser setzt Ihre Auswahl zurück."
       ],
       [
         "Dienstleister und Kontakt",
-        "Der Webserver verarbeitet Verbindungsdaten wie IP-Adresse und angeforderte URL, um Ihre Anfrage zu bedienen. Mit Ihrer Analyse-Einwilligung verarbeitet Google Daten auf seiner Infrastruktur, auch auf Servern außerhalb Ihres Landes. Für Datenschutz- oder Datenanfragen nutzen Sie den Kontaktkanal im GitHub-Profil des Projekts. Die Google-Links unten erläutern weitere Verarbeitungs- und Cookie-Details."
+        "Die Website liegt auf einem Server bei Hetzner; der Webserver verarbeitet Verbindungsdaten wie IP-Adresse und angeforderte URL, um Ihre Anfrage zu bedienen. Ist die Analyse aktiviert, verarbeitet Google die Analytics-Daten in unserem Auftrag als Auftragsverarbeiter nach den Datenverarbeitungsbedingungen von Google, auch auf Servern außerhalb Ihres Landes. Für Datenschutz- oder Datenanfragen nutzen Sie den Kontaktkanal im GitHub-Profil des Projekts. Die Google-Links unten erläutern weitere Verarbeitungs- und Cookie-Details."
       ]
     ]
   },
@@ -74,20 +86,24 @@
     "intro": "Cette notice concerne le site seowatcher.io. Les données de projet de l’application seowatcher installée sont conservées séparément sur votre ordinateur.",
     "sections": [
       [
-        "Mesure facultative des visites",
-        "Google Analytics 4 est chargé uniquement avec votre accord. Google traite les pages vues, défilements, clics sortants et téléchargements, ainsi que des informations techniques sur le navigateur et l’appareil. Ces données servent à améliorer le site et les guides d’installation. La personnalisation publicitaire et les signaux Google ne sont pas utilisés."
+        "Google Analytics 4 (lorsqu’il est activé)",
+        "Google Analytics 4 ne fonctionne sur ce site que si un identifiant de mesure GA4 est configuré. Sans cet identifiant, les pages n’envoient aucune requête à Google, n’affichent aucun bandeau de cookies et n’enregistrent rien dans votre navigateur. Même dans ce cas, la balise Google (gtag.js) n’est chargée qu’après avoir choisi Accepter. Sont alors mesurés : les pages vues et les événements de mesure améliorée de GA4 (par exemple défilements, clics sortants et téléchargements), ainsi que l’adresse de la page, l’adresse de provenance, le navigateur, le système d’exploitation, le type d’appareil, la taille d’écran, la langue et une localisation approximative déduite de l’adresse IP. Selon Google, GA4 n’enregistre ni ne conserve les adresses IP. Ces données servent à améliorer le site et les guides d’installation."
       ],
       [
-        "Choix et conservation",
-        "Votre accord ou refus est conservé pendant 6 mois dans le stockage local de ce navigateur sous le nom seowatcher-consent-v1. Les cookies d’analyse (_ga et noms commençant par _ga_) ne sont utilisés qu’après accord, pour une durée maximale de 13 mois. La conservation des données utilisateur et événement GA4 est de 14 mois. Les rapports agrégés de Google peuvent suivre d’autres règles."
+        "Consentement",
+        "Nous utilisons le mode Consentement v2 de Google dans sa version de base : toutes les autorisations d’analyse et de publicité sont refusées par défaut, et tant que vous n’avez pas donné votre accord, rien n’est chargé depuis Google et aucune donnée ne lui est envoyée. Accepter autorise uniquement le stockage d’analyse, charge la balise Google et dépose les cookies d’analyse (_ga et noms commençant par _ga_). Les autorisations publicitaires ne sont jamais accordées ; la personnalisation publicitaire et les signaux Google sont désactivés."
       ],
       [
-        "Modifier votre choix",
-        "Le consentement est facultatif. Refuser n’empêche ni l’utilisation du site ni le téléchargement de l’application. Utilisez Paramètres des cookies en bas de chaque page pour modifier votre choix ou retirer votre accord. Le retrait désactive l’analyse, supprime les cookies d’analyse accessibles et recharge la page."
+        "Conservation",
+        "Votre accord ou refus est conservé pendant 6 mois dans le stockage local de ce navigateur sous le nom seowatcher-consent-v1 ; la question vous est ensuite reposée. Les cookies d’analyse durent au maximum 13 mois.La durée de conservation des données utilisateur et des événements dans la propriété GA4 dépend des paramètres de cette propriété. Les rapports agrégés de Google peuvent suivre d'autres règles. Les rapports agrégés de Google peuvent suivre d’autres règles."
+      ],
+      [
+        "Retirer votre consentement",
+        "Le consentement est facultatif ; refuser ne vous empêche ni d’utiliser le site ni de télécharger l’application. Lorsque la mesure est activée, chaque page comporte en bas un bouton Paramètres des cookies : il permet de modifier votre choix ou de retirer votre consentement à tout moment. Le retrait arrête la mesure, supprime les cookies d’analyse accessibles et recharge la page ; ensuite, aucune donnée n’est envoyée à Google. Effacer les données de ce site dans votre navigateur réinitialise aussi votre choix."
       ],
       [
         "Prestataires et contact",
-        "Le serveur web traite des informations de connexion telles que l’adresse IP et l’URL demandée pour répondre à votre requête. Avec votre accord, Google traite les données sur son infrastructure, éventuellement sur des serveurs hors de votre pays. Pour toute demande relative à la confidentialité ou aux données, utilisez le contact du profil GitHub du projet. Les liens Google ci-dessous donnent des précisions sur le traitement et les cookies."
+        "Le site est hébergé sur un serveur chez Hetzner ; le serveur web traite des informations de connexion telles que l’adresse IP et l’URL demandée pour répondre à votre requête. Lorsque la mesure est activée, Google traite les données Analytics pour notre compte en tant que sous-traitant, selon les conditions de traitement des données de Google, éventuellement sur des serveurs hors de votre pays. Pour toute demande relative à la confidentialité ou aux données, utilisez le contact du profil GitHub du projet. Les liens Google ci-dessous donnent des précisions sur le traitement et les cookies."
       ]
     ]
   },
@@ -97,20 +113,24 @@
     "intro": "Questa informativa riguarda il sito seowatcher.io. I dati dei progetti nell’applicazione seowatcher installata restano separati sul tuo computer.",
     "sections": [
       [
-        "Misurazione facoltativa delle visite",
-        "Google Analytics 4 viene caricato solo con il tuo consenso. Google elabora visualizzazioni di pagina, scorrimenti, clic esterni e download, insieme a informazioni tecniche sul browser e sul dispositivo. Usiamo questi dati per migliorare il sito e le guide di installazione. Non usiamo personalizzazione pubblicitaria né Google Signals."
+        "Google Analytics 4 (quando è attivo)",
+        "Google Analytics 4 funziona su questo sito solo se è configurato un ID di misurazione GA4. Senza ID, le pagine non inviano richieste a Google, non mostrano il banner dei cookie e non salvano nulla nel browser. Anche in quel caso il tag Google (gtag.js) viene caricato solo dopo che hai scelto Accetta. Dopo il consenso vengono misurati le visualizzazioni di pagina e gli eventi della misurazione avanzata di GA4 (ad esempio scorrimenti, clic su link esterni e download), insieme all’indirizzo della pagina, all’indirizzo di provenienza, al browser, al sistema operativo, al tipo di dispositivo, alle dimensioni dello schermo, alla lingua e a una posizione approssimativa ricavata dall’indirizzo IP. Secondo Google, GA4 non registra né conserva gli indirizzi IP. Usiamo questi dati per migliorare il sito e le guide di installazione."
       ],
       [
-        "Scelte e conservazione",
-        "Il consenso o il rifiuto viene conservato per 6 mesi nello spazio di archiviazione locale del browser con il nome seowatcher-consent-v1. I cookie di analisi (_ga e nomi che iniziano con _ga_) sono usati solo dopo il consenso e durano al massimo 13 mesi. La conservazione dei dati utente ed evento GA4 è di 14 mesi. I rapporti aggregati di Google possono seguire regole diverse."
+        "Consenso",
+        "Usiamo la modalità di consenso v2 di Google nella versione di base: tutte le autorizzazioni di analisi e pubblicità partono negate e, finché non dai il consenso, nulla viene caricato da Google e nessun dato gli viene inviato. Accetta concede solo l’archiviazione per l’analisi, carica il tag Google e scrive i cookie di analisi (_ga e nomi che iniziano con _ga_). Le autorizzazioni pubblicitarie non vengono mai concesse; la personalizzazione pubblicitaria e Google Signals sono disattivati."
       ],
       [
-        "Modificare la scelta",
-        "Il consenso è facoltativo. Il rifiuto non impedisce di usare il sito o scaricare l’applicazione. Usa Impostazioni dei cookie in fondo a ogni pagina per modificare la scelta o revocare il consenso. La revoca disattiva l’analisi, elimina i cookie di analisi accessibili e ricarica la pagina."
+        "Conservazione",
+        "Il consenso o il rifiuto viene conservato per 6 mesi nello spazio di archiviazione locale del browser con il nome seowatcher-consent-v1; poi la domanda viene riproposta. I cookie di analisi durano al massimo 13 mesi.La conservazione dei dati utente e degli eventi nella proprietà GA4 segue le impostazioni della proprietà. I rapporti aggregati di Google possono seguire regole diverse. I rapporti aggregati di Google possono seguire regole diverse."
+      ],
+      [
+        "Revocare il consenso",
+        "Il consenso è facoltativo; il rifiuto non impedisce di usare il sito o scaricare l’applicazione. Quando l’analisi è attiva, in fondo a ogni pagina c’è il pulsante Impostazioni dei cookie: con esso puoi modificare la scelta o revocare il consenso in qualsiasi momento. La revoca interrompe la misurazione, elimina i cookie di analisi accessibili e ricarica la pagina; da quel momento nessun dato viene inviato a Google. Anche cancellare i dati di questo sito nel browser azzera la scelta."
       ],
       [
         "Fornitori e contatti",
-        "Il server web elabora informazioni di connessione come l’indirizzo IP e l’URL richiesto per rispondere alla richiesta. Con il consenso all’analisi, Google elabora i dati sulla propria infrastruttura, che può includere server fuori dal tuo paese. Per richieste relative alla privacy o ai dati usa il contatto nel profilo GitHub del progetto. I link Google sotto forniscono ulteriori dettagli su trattamento e cookie."
+        "Il sito è ospitato su un server di Hetzner; il server web elabora informazioni di connessione come l’indirizzo IP e l’URL richiesto per rispondere alla richiesta. Quando l’analisi è attiva, Google elabora i dati di Analytics per nostro conto come responsabile del trattamento, secondo i termini di trattamento dei dati di Google, anche su server fuori dal tuo paese. Per richieste relative alla privacy o ai dati usa il contatto nel profilo GitHub del progetto. I link Google sotto forniscono ulteriori dettagli su trattamento e cookie."
       ]
     ]
   },
@@ -120,20 +140,24 @@
     "intro": "Este aviso abrange o site seowatcher.io. Os dados dos projetos na aplicação seowatcher instalada são guardados separadamente no seu computador.",
     "sections": [
       [
-        "Medição opcional de utilização",
-        "O Google Analytics 4 só é carregado com a sua autorização. A Google trata visualizações de páginas, deslocações, cliques externos e transferências, juntamente com informações técnicas do navegador e dispositivo. Usamos estes dados para melhorar o site e os guias de instalação. Não usamos personalização de publicidade nem sinais Google."
+        "Google Analytics 4 (quando ativado)",
+        "O Google Analytics 4 só funciona neste site quando está configurado um ID de medição GA4. Sem ele, as páginas não enviam nenhum pedido à Google, não mostram o aviso de cookies e não guardam nada no navegador. Mesmo assim, a etiqueta Google (gtag.js) só é carregada depois de escolher Aceitar. Após a aceitação, é medido: visualizações de páginas e os eventos da medição otimizada do GA4 (por exemplo deslocações, cliques em ligações externas e transferências), juntamente com o endereço da página, o endereço de origem, o navegador, o sistema operativo, o tipo de dispositivo, o tamanho do ecrã, o idioma e uma localização aproximada obtida a partir do endereço IP. Segundo a Google, o GA4 não regista nem guarda endereços IP. Usamos estes dados para melhorar o site e os guias de instalação."
       ],
       [
-        "Escolhas e conservação",
-        "A aceitação ou recusa é guardada durante 6 meses no armazenamento local deste navegador como seowatcher-consent-v1. Os cookies de análise (_ga e nomes começados por _ga_) só são usados após aceitação e têm uma duração máxima de 13 meses. A conservação de dados de utilizador e eventos no GA4 é de 14 meses. Os relatórios agregados da Google podem seguir outras regras."
+        "Consentimento",
+        "Usamos o Modo de consentimento v2 da Google na versão básica: todas as autorizações de análise e publicidade começam recusadas e, até dar o seu consentimento, nada é carregado da Google e nenhum dado lhe é enviado. Aceitar autoriza apenas o armazenamento de análise, carrega a etiqueta Google e grava os cookies de análise (_ga e nomes começados por _ga_). As autorizações de publicidade nunca são concedidas; a personalização de anúncios e os sinais Google estão desativados."
       ],
       [
-        "Alterar a escolha",
-        "O consentimento é opcional. Recusar não impede a utilização do site nem a transferência da aplicação. Use Definições de cookies no final de qualquer página para alterar a escolha ou retirar o consentimento. A retirada desativa a análise, apaga os cookies de análise acessíveis e recarrega a página."
+        "Conservação",
+        "A aceitação ou recusa é guardada durante 6 meses no armazenamento local deste navegador como seowatcher-consent-v1; depois disso, voltamos a perguntar. Os cookies de análise duram no máximo 13 meses.A conservação dos dados de utilizador e eventos na propriedade GA4 segue as definições dessa propriedade. Os relatórios agregados da Google podem seguir outras regras. Os relatórios agregados da Google podem seguir outras regras."
+      ],
+      [
+        "Retirar o consentimento",
+        "O consentimento é opcional; recusar não impede a utilização do site nem a transferência da aplicação. Enquanto a análise estiver ativada, cada página tem no final o botão Definições de cookies: com ele pode alterar a escolha ou retirar o consentimento a qualquer momento. A retirada interrompe a medição, apaga os cookies de análise acessíveis e recarrega a página; depois disso, nenhum dado é enviado à Google. Apagar os dados deste site no navegador também repõe a escolha."
       ],
       [
         "Prestadores e contacto",
-        "O servidor web trata dados de ligação como o endereço IP e o URL pedido para responder ao pedido. Com autorização para análise, a Google trata os dados na sua infraestrutura, que pode incluir servidores fora do seu país. Para pedidos de privacidade ou dados, use o contacto no perfil GitHub do projeto. As ligações Google abaixo explicam outros detalhes do tratamento e cookies."
+        "O site está alojado num servidor da Hetzner; o servidor web trata dados de ligação como o endereço IP e o URL pedido para responder ao pedido. Quando a análise está ativada, a Google trata os dados do Analytics em nosso nome, como subcontratante, nos termos de tratamento de dados da Google, o que pode incluir servidores fora do seu país. Para pedidos de privacidade ou dados, use o contacto no perfil GitHub do projeto. As ligações Google abaixo explicam outros detalhes do tratamento e cookies."
       ]
     ]
   }

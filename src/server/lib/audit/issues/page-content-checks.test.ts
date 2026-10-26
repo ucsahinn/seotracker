@@ -38,6 +38,13 @@ describe("no-subheadings", () => {
         makePage({ wordCount: 900, h1Count: 1, h2Count: 0, h3Count: 2 }),
       ),
     ).not.toContain("no-subheadings");
+    // sqlite.org: an H4 under the H1, and a reference split by three H1s.
+    expect(
+      issueTypes(makePage({ wordCount: 900, h1Count: 1, h4Count: 1 })),
+    ).not.toContain("no-subheadings");
+    expect(issueTypes(makePage({ wordCount: 900, h1Count: 3 }))).not.toContain(
+      "no-subheadings",
+    );
   });
 
   /*

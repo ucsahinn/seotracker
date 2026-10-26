@@ -13,6 +13,8 @@
  */
 import type { DetectedIssue } from "@/server/lib/audit/issues/page-reporters";
 import type { AuditIssueType } from "@/shared/audit-issues";
+import { siteFactFindings } from "@/server/lib/audit/site-probes/site-fact-checks";
+import type { SiteFacts } from "@/server/lib/audit/site-probes/types";
 
 export type RobotsFindings = {
   /** null when the request never completed (DNS, timeout, TLS). */
@@ -35,6 +37,8 @@ export type SitemapProblems = {
    * started before this existed replays its discovery step from durable
    * storage and gets the old shape back. Absent means "not recorded".
    */
+  /** Absent on a replayed run that predates it; see above. */
+  offHost?: { count: number; sample: string[] };
   lastmod?: {
     urls: number;
     withLastmod: number;
@@ -53,6 +57,8 @@ export function siteLevelIssues(input: {
    */
   robotsFindings?: RobotsFindings;
   sitemapProblems?: SitemapProblems;
+  /** Absent for a run that predates the site probes. */
+  siteFacts?: SiteFacts | null;
 }): DetectedIssue[] {
   const issues: DetectedIssue[] = [];
   const at = (
@@ -61,7 +67,7 @@ export function siteLevelIssues(input: {
     details?: Record<string, unknown>,
   ) => issues.push({ issueType, pageId: null, pageUrl, details });
 
-  const { startUrl, robotsFindings, sitemapProblems } = input;
+  const { startUrl, robotsFindings, sitemapProblems, siteFacts } = input;
 
   if (robotsFindings) {
     /*
@@ -76,7 +82,9 @@ export function siteLevelIssues(input: {
       at("robots-txt-unreachable", startUrl);
     }
     if (robotsFindings.truncated) at("robots-txt-truncated", startUrl);
-    if (robotsFindings.startBlocked) {
+    // A disallow-all (reported from the site facts) already says the start
+    // page is blocked; two critical findings for one robots line is noise.
+    if (robotsFindings.startBlocked && siteFacts?.robots.disallowAll !== true) {
       at("robots-txt-blocks-start-url", startUrl);
     }
     if (robotsFindings.disallowedSitemapCount > 0) {
@@ -103,7 +111,25 @@ export function siteLevelIssues(input: {
     for (const shard of sitemapProblems.overfull) {
       at("sitemap-too-many-urls", shard.url, { urlCount: shard.urlCount });
     }
+    /*
+     * react-bootstrap.github.io's sitemap lists 52 addresses, every one on
+     * its netlify.app twin. Google drops entries for another host unless
+     * that host's own robots.txt points at this sitemap.
+     */
+    if (sitemapProblems.offHost && sitemapProblems.offHost.count > 0) {
+      at("sitemap-off-host-urls", startUrl, {
+        count: sitemapProblems.offHost.count,
+        sample: sitemapProblems.offHost.sample,
+      });
+    }
     reportLastmod(sitemapProblems.lastmod, startUrl, at);
+  }
+
+  if (siteFacts) {
+    const origin = new URL(startUrl).origin;
+    for (const finding of siteFactFindings(siteFacts, origin)) {
+      at(finding.issueType, startUrl, finding.details);
+    }
   }
 
   return issues;
@@ -140,4 +166,21 @@ function reportLastmod(
       example: lastmod.futureSample,
     });
   }
+}
+
+/**
+ * The checks added after the site facts that this run could measure, for
+ * `audit_measured_checks`: an audit replayed from older step state (no
+ * off-host count, no Googlebot rules) leaves them unknown, not passed.
+ */
+export function measuredSiteLevelChecks(input: {
+  sitemapProblems?: SitemapProblems;
+  siteFacts?: SiteFacts | null;
+}): string[] {
+  const measured: string[] = [];
+  if (input.sitemapProblems?.offHost) measured.push("sitemap-off-host-urls");
+  if (Array.isArray(input.siteFacts?.robots.googlebotOnlyRules)) {
+    measured.push("robots-googlebot-only-paths");
+  }
+  return measured;
 }

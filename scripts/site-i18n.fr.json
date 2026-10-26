@@ -54,6 +54,7 @@
   "t": {
     "guide": "Guide",
     "guideTitle": "Guide seowatcher : installation, écrans et dépannage",
+    "ogImageAlt": "Carte seowatcher : le tableau de bord de l’application avec les données de Search Console, d’Analytics 4 et de l’audit du site, et un bouton de téléchargement pour Windows",
     "guideDescription": "Les guides de seowatcher : l'installation, ce que montre chaque écran, la connexion à Google, les règles d'audit, l'installation de l'assistant et le dépannage.",
     "guideLede": "Chaque étape et chaque écran, de l'installation au premier rapport, expliqués simplement. L'application s'appelle seotracker sur GitHub et seowatcher sur ce site ; c'est la même application. Son interface est en turc : le guide donne les noms turcs avec leur traduction française.",
     "screenSuffix": "",

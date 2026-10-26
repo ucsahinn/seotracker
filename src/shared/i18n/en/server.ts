@@ -136,8 +136,16 @@ export const enServer: Catalog = {
     "Couldn't get a Search Console access token (access may have been revoked or expired).",
   "Search Console erişim anahtarı döndürmedi (yetki iptal edilmiş ya da süresi dolmuş olabilir).":
     "Search Console didn't return an access token (access may have been revoked or expired).",
-  "Google OAuth istemcisi Ayarlar'da tanımlı.":
-    "The Google OAuth client is set up in Settings.",
+  "Google hizmet hesabı kullanılıyor (Ayarlar'da kayıtlı). Bir OAuth istemcisi de tanımlı; hizmet hesabı önce gelir.":
+    "Using the Google service account (saved in Settings). An OAuth client is set up too; the service account takes precedence.",
+  "Google hizmet hesabı kullanılıyor (Ayarlar'da kayıtlı).":
+    "Using the Google service account (saved in Settings).",
+  "Google OAuth istemcisi kullanılıyor (Ayarlar'da kayıtlı).":
+    "Using the Google OAuth client (saved in Settings).",
+  "Google OAuth istemcisi kullanılıyor (GOOGLE_CLIENT_ID ve GOOGLE_CLIENT_SECRET ortam değişkenlerinden).":
+    "Using the Google OAuth client (from the GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET environment variables).",
+  "Google erişimi henüz girilmedi: Ayarlar'a bir hizmet hesabı ya da OAuth istemcisi girin. Girmeden Search Console ve Analytics bağlanamaz.":
+    "No Google access entered yet: add a service account or an OAuth client in Settings. Search Console and Analytics can't connect without one.",
   "PageSpeed anahtarı Ayarlar'da kayıtlı.":
     "The PageSpeed key is saved in Settings.",
   "Denetim hâlâ çalışıyor. Rapor, denetim bitince oluşturulabilir.":
@@ -215,6 +223,10 @@ export const enServer: Catalog = {
     "The foundation is solid, but there are clear issues to fix.",
   "Orta düzeyde. Kritik ve uyarı sorunları aramadaki performansı gölgeliyor.":
     "Fair. Critical issues and warnings are holding back search performance.",
+  "Orta düzeyde. Kritik sorun yok; uyarı sorunları aramadaki performansı gölgeliyor.":
+    "Fair. No critical issues; warnings are holding back search performance.",
+  "Zayıf. Kritik sorun yok, ama birikmiş uyarılar aramadaki performansı aşağı çekiyor; en çok puan getirenlerden başlayın.":
+    "Poor. No critical issues, but accumulated warnings are holding back search performance; start with the ones worth the most points.",
   "Zayıf. Önce kritik sorunlar düzeltilmeli; bunlar sayfaların aramada görünmesini engelleyebilir.":
     "Poor. Fix the critical issues first; they can keep pages from appearing in search.",
   'Denetim tamamlanmadığı ya da hiç sayfa taranamadığı için sorun listesi eksik olabilir; bu yüzden "sorun yok" denmiyor.':
@@ -278,12 +290,12 @@ export const enServer: Catalog = {
   "Site denetim raporu": "Site audit report",
   "seowatcher ile üretildi. Bu dosya kendi kendine yeter: açmak için internet bağlantısı gerekmez. PDF için tarayıcıdan Yazdır seçeneğini kullanın.":
     "Made with seowatcher. This file is self-contained: it opens without an internet connection. For a PDF, use Print in your browser.",
-  "1. Genel görünüm": "1. Overview",
-  "2. Sorunlar": "2. Issues",
-  "3. Hız ölçümü": "3. Speed tests",
-  "4. Google dizin durumu": "4. Google index status",
-  "5. Site haritası": "5. Sitemap",
-  "6. Yöntem ve sınırlar": "6. Method and limits",
+  "3. Genel görünüm": "3. Overview",
+  "4. Sorunlar": "4. Issues",
+  "5. Hız ölçümü": "5. Speed tests",
+  "6. Google dizin durumu": "6. Google index status",
+  "7. Site haritası": "7. Sitemap",
+  "8. Yöntem ve sınırlar": "8. Method and limits",
   "Ek A. Kalan etkilenen adresler": "Appendix A. Remaining affected addresses",
   "Ek B. Taranan sayfalar": "Appendix B. Crawled pages",
   K: "C",
@@ -331,11 +343,6 @@ export const enServer: Catalog = {
   "Her grafiğin altında aynı veriler yazıyla da verilir.":
     "Each chart's data is also given in words below it.",
   "tüm site": "whole site",
-  "+1 puandan az": "under +1 point",
-  "+{count} puan": {
-    one: "+{count} point",
-    other: "+{count} points",
-  },
   "Etkilenen: tüm site": "Affected: the whole site",
   "ve {count} sayfa daha (ayrıntı sorun bölümünde)": {
     one: "and {count} more page (details in the issues section)",
@@ -354,26 +361,15 @@ export const enServer: Catalog = {
   "Sıralama, düzeltildiğinde site puanına en çok puan kazandıranlara göre.":
     "Ordered by how many points each fix adds to the site score.",
   Sonrasında: "After that",
-  "Puanlar, o sorun tamamen düzeltilirse site puanına eklenecek yaklaşık değeri gösterir.":
-    "Points show roughly how much the site score gains if that issue is fixed completely.",
   "Denetim hata verip durdu.": "The audit stopped with an error.",
   "Denetim hâlâ çalışıyor.": "The audit is still running.",
   "Hiç sayfa taranamadı.": "No pages could be crawled.",
-  "{count} sayfa tarandı (üst sınır {max})": {
-    one: "{count} page crawled (limit {max})",
-    other: "{count} pages crawled (limit {max})",
-  },
   "{count} sayfa tarandı": {
     one: "{count} page crawled",
     other: "{count} pages crawled",
   },
-  "hız ölçümü kapalı": "speed measurement off",
-  "hız ölçümü var": "speed measured",
-  "hız ölçümü yok": "no speed measurement",
-  "Google dizin verisi var": "Google index data included",
-  "Google dizin verisi yok": "no Google index data",
-  "Denetim tarihi: {date} ({dateTime}) · Kapsam: {scope}":
-    "Audit date: {date} ({dateTime}) · Scope: {scope}",
+  "PageSpeed ölçümü bu denetimde sonuç vermedi: {error} Gerçek kullanıcı verisi (CrUX) ölçülmedi.":
+    "PageSpeed returned no result in this audit: {error} Real-user data (CrUX) was not measured.",
   "Rapor eksik olabilir.": "The report may be incomplete.",
   "{count} sorun türü: {critical} kritik, {warning} uyarı, {info} bilgi.": {
     one: "{count} issue type: {critical} critical, {warning} warning, {info} info.",
@@ -381,16 +377,12 @@ export const enServer: Catalog = {
       "{count} issue types: {critical} critical, {warning} warnings, {info} info.",
   },
   "Taranan sayfa": "Pages crawled",
-  "Kritik sorun türü": "Critical issue types",
-  "Uyarı türü": "Warning types",
-  "Bilgi türü": "Info types",
   "Ortalama yanıt": "Average response",
   "Site puanı": "Site score",
   Dizinde: "Indexed",
   "Dizinde değil": "Not indexed",
   Kısmen: "Partial",
   Nötr: "Neutral",
-  "Henüz sorulmadı": "Not checked yet",
   "Bu denetimin sayfaları için Search Console URL Denetleme Aracı sonucu kayıtlı değil, bu yüzden Google'ın hangi sayfaları dizine aldığı rapora girmiyor. Dizin Kapsamı ekranından inceleme çalıştırıldıktan sonra rapor yeniden oluşturulursa bu bölüm dolar.":
     "No Search Console URL Inspection results are stored for this audit's pages, so the report can't say which pages Google has indexed. Run an inspection from the Index status screen and create the report again to fill this section.",
   "Kaynak: Search Console URL Denetleme Aracı. Sonuçlar kayıtlıdır, bu rapor Google'a yeni istek atmaz; son inceleme {date}.":
@@ -594,8 +586,39 @@ export const enServer: Catalog = {
   "Sayfa sayfa sonuçlar": "Results by page",
   "Mobil performans puanı en düşük sayfalar üstte. Metrikler mobil ölçümden.":
     "Pages with the lowest mobile performance score first. Metrics are from the mobile measurement.",
-  "<strong>Laboratuvar ve gerçek kullanıcı verisi.</strong> Buradaki rakamlar Lighthouse'un laboratuvar ölçümüdür: tek bir sanal cihazda, kontrollü ağ ve işlemci koşulunda yapılır. Gerçek ziyaretçilerden toplanan alan verisi (Chrome Kullanıcı Deneyimi Raporu, CrUX) bu denetimde saklanmadığı için rapora girmiyor. İkisi farklı çıkabilir. Google, sıralama sistemlerinde alan verisini (CrUX) kullanır; ama iyi bir değer tek başına sıralama garantisi vermez, içeriğin ilgili olması öncelik taşır.":
-    "<strong>Lab data and real-user data.</strong> These figures are Lighthouse lab measurements, taken on a single simulated device under controlled network and CPU conditions. Field data collected from real visitors (the Chrome User Experience Report, CrUX) isn't stored for this audit, so it's not in the report. The two can differ. Google's ranking systems use field data (CrUX), but a good value alone doesn't guarantee rankings; relevant content comes first.",
+  "<strong>Laboratuvar ve gerçek kullanıcı verisi.</strong> Buradaki rakamlar Lighthouse'un laboratuvar ölçümüdür: tek bir sanal cihazda, kontrollü ağ ve işlemci koşulunda yapılır. Gerçek ziyaretçilerden toplanan alan verisi (Chrome Kullanıcı Deneyimi Raporu, CrUX), PageSpeed ölçümü varsa Anlık veri bölümündeki Temel Web Verileri tablosundadır. İkisi farklı çıkabilir. Google, sıralama sistemlerinde alan verisini (CrUX) kullanır; ama iyi bir değer tek başına sıralama garantisi vermez, içeriğin ilgili olması öncelik taşır.":
+    "<strong>Lab data and real-user data.</strong> These figures are Lighthouse lab measurements, taken on a single simulated device under controlled network and CPU conditions. Field data collected from real visitors (Chrome User Experience Report, CrUX) is in the Core Web Vitals table of the Instant data section when PageSpeed was measured. The two can differ. Google's ranking systems use field data (CrUX), but a good value alone doesn't guarantee rankings; relevant content comes first.",
   'Eşikler Google\'ın yayımladığı değerlerdir: LCP 2,5 sn altı iyi, 4 sn üstü zayıf; CLS 0,1 altı iyi, 0,25 üstü zayıf; INP 200 ms altı iyi, 500 ms üstü zayıf. INP laboratuvarda çoğu zaman ölçülemez ("--" görünür).':
     "The thresholds are Google's published values: LCP under 2.5 s is good and over 4 s poor; CLS under 0.1 is good and over 0.25 poor; INP under 200 ms is good and over 500 ms poor. INP often can't be measured in the lab (it shows \"--\").",
+
+  // audit screens UX pass (2026-10-26)
+  "{points} puan": "{points} points",
+  "Puanlar, o sorun tek başına tamamen düzeltilirse site puanına eklenecek yaklaşık değerdir; değerler toplanmaz.":
+    "Points are roughly what fully fixing that issue alone adds to the site score; the values don't add up.",
+  "Kısmi veri": "Partial data",
+  Kapalı: "Off",
+  "{measured} / {total} ölçüm": "{measured} of {total} measurements",
+  "{count} ölçüm": {
+    one: "{count} measurement",
+    other: "{count} measurements",
+  },
+  Ölçülemedi: "Not measured",
+  "Denetim tarihi": "Audit date",
+  "{count} (üst sınır {max})": "{count} (limit {max})",
+  "Google dizin verisi": "Google index data",
+  "Kritik sorun": "Critical issues",
+  "Kritik kontrol": "Critical checks",
+  İyileştirme: "Improvements",
+  "Geçen kontrol": "Checks passed",
+  "Temiz çıkan": "Came back clean",
+  "Veri toplanamadı": "No data collected",
+  "Henüz kontrol edilmedi": "Not checked yet",
+
+  // audit screens UX pass (2026-10-26)
+  "Yeni kontroller eklendi; bu karşılaştırma yalnızca iki denetimin de ölçtüğü kontrolleri kapsar.":
+    "New checks were added; this comparison covers only the checks both audits measured.",
+  "Platform alan adı": "Platform domain",
+  "Site bir barındırma platformunun alt alan adında; kaydı ve DNS'i platforma ait olduğu için alan adı ve DNS kontrolleri yapılmadı.":
+    "The site is on a subdomain of a hosting platform; its registration and DNS belong to the platform, so the domain and DNS checks were skipped.",
+  "sayı alınamadı (tarama sınırı)": "count not read (crawl limit)",
 };

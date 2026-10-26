@@ -77,6 +77,37 @@ export function formatDecimal(value: number, digits = 1): string {
 }
 
 /**
+ * Site-score points a fix gives back: "~+3,2", or "<0,1" below a tenth;
+ * unsigned ("3,2") where the sentence already says it is a loss.
+ *
+ * Approximate on purpose (the tilde): a gain is exact only for that fix on
+ * its own, and two fixes in one category do not simply add up. One rounding
+ * for the screen and the exported report, which used to print the same gain
+ * as "+0,6" and "+1 puandan az".
+ */
+export function formatPoints(points: number, signed = true): string {
+  const tenths = Math.round(points * 10) / 10;
+  if (tenths < 0.1) return `<${formatDecimal(0.1)}`;
+  return signed ? `~+${formatDecimal(tenths)}` : formatDecimal(tenths);
+}
+
+/**
+ * Time left on a running job, whole units: "18 sn", "3 dk", "1 sa 5 dk".
+ * An estimate, so no decimals: "1,4 dk" claimed a precision it never had.
+ */
+export function formatRemaining(ms: number): string {
+  const en = getLocale() === "en";
+  const seconds = Math.max(1, Math.round(ms / 1000));
+  if (seconds < 60) return `${seconds} ${en ? "s" : "sn"}`;
+  const minutes = Math.ceil(seconds / 60);
+  if (minutes < 60) return `${minutes} ${en ? "min" : "dk"}`;
+  const hours = Math.floor(minutes / 60);
+  const rest = minutes % 60;
+  const h = `${hours} ${en ? "h" : "sa"}`;
+  return rest === 0 ? h : `${h} ${rest} ${en ? "min" : "dk"}`;
+}
+
+/**
  * A duration a person reads, from milliseconds.
  *
  * Lighthouse and the crawler both report milliseconds and both were

@@ -45,8 +45,16 @@
       href="https://seowatcher.io/gizlilik/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="/assets/consent.css?v=1" />
-    <script src="/assets/consent.js?v=2" defer></script>
+    <link rel="manifest" href="/site.webmanifest" />
+    <link
+      rel="alternate"
+      type="application/atom+xml"
+      title="seowatcher"
+      href="/de/feed.xml"
+    />
+    <link rel="stylesheet" href="/assets/consent.css?v=2" />
+    <meta name="ga4-id" content="G-DFPDX00V4R" />
+    <script src="/assets/consent.js?v=3" defer></script>
   </head>
   <body data-privacy-page>
     <main>
@@ -57,48 +65,75 @@
         installierten seowatcher-Anwendung bleiben getrennt auf Ihrem eigenen
         Computer.
       </p>
+      <p>
+        <small
+          >Zuletzt aktualisiert:
+          <time datetime="2026-10-26">26 Oktober 2026</time></small
+        >
+      </p>
       <section>
-        <h2>Optionale Nutzungsmessung</h2>
+        <h2>Google Analytics 4 (wenn aktiviert)</h2>
         <p>
-          Google Analytics 4 wird nur mit Ihrer Einwilligung geladen. Google
-          verarbeitet Seitenaufrufe, Scrolls, externe Klicks und Downloads sowie
-          technische Browser- und Geräteinformationen. Damit verbessern wir die
-          Website und die Installationsanleitungen. Personalisierte Werbung und
-          Google-Signale werden nicht verwendet.
+          Google Analytics 4 läuft auf dieser Website nur, wenn eine GA4-Mess-ID
+          eingerichtet ist. Ohne sie senden die Seiten keine Anfrage an Google,
+          zeigen kein Cookie-Banner und speichern nichts in Ihrem Browser. Auch
+          dann wird das Google-Tag (gtag.js) erst geladen, wenn Sie Akzeptieren
+          wählen. Nach der Zustimmung gemessen werden Seitenaufrufe und die
+          Ereignisse der erweiterten GA4-Messung (etwa Scrollen, Klicks auf
+          externe Links und Downloads), dazu Seitenadresse, verweisende Adresse,
+          Browser, Betriebssystem, Gerätetyp, Bildschirmgröße, Sprache und ein
+          aus der IP-Adresse abgeleiteter ungefährer Standort. Laut Google
+          protokolliert und speichert GA4 keine IP-Adressen. Wir nutzen das, um
+          die Website und die Installationsanleitungen zu verbessern.
         </p>
       </section>
       <section>
-        <h2>Auswahl und Speicherdauer</h2>
+        <h2>Einwilligung</h2>
         <p>
-          Ihre Zustimmung oder Ablehnung wird für 6 Monate als
-          seowatcher-consent-v1 im lokalen Speicher dieses Browsers gespeichert.
-          Analyse-Cookies (_ga und Namen mit _ga_) werden nur nach Zustimmung
-          verwendet und sind höchstens 13 Monate gültig. Die Aufbewahrung von
-          GA4-Nutzer- und Ereignisdaten beträgt 14 Monate. Für aggregierte
-          Google-Berichte können andere Fristen gelten.
+          Wir verwenden den Google-Einwilligungsmodus v2 in der Basisvariante:
+          Alle Analyse- und Werbeberechtigungen sind zunächst abgelehnt, und bis
+          zu Ihrer Einwilligung wird nichts von Google geladen und nichts an
+          Google gesendet. Mit Akzeptieren wird nur die Analyse-Speicherung
+          erlaubt, das Google-Tag geladen und Analyse-Cookies (_ga und Namen mit
+          _ga_) gesetzt. Werbeberechtigungen werden nie erteilt; personalisierte
+          Werbung und Google-Signale sind deaktiviert.
         </p>
       </section>
       <section>
-        <h2>Auswahl ändern</h2>
+        <h2>Speicherdauer</h2>
         <p>
-          Die Einwilligung ist freiwillig. Eine Ablehnung verhindert weder die
-          Nutzung der Website noch den Download der Anwendung. Über
-          Cookie-Einstellungen am Ende jeder Seite können Sie Ihre Auswahl
-          ändern oder widerrufen. Beim Widerruf wird die Analyse deaktiviert,
+          Ihre Zustimmung oder Ablehnung wird 6 Monate als seowatcher-consent-v1
+          im lokalen Speicher dieses Browsers gespeichert; danach fragen wir
+          erneut. Analyse-Cookies gelten höchstens 13 Monate. Die Aufbewahrung
+          von Nutzer- und Ereignisdaten in der GA4-Property ist auf 14 Monate
+          eingestellt. Für zusammengefasste Google-Berichte können andere
+          Fristen gelten.
+        </p>
+      </section>
+      <section>
+        <h2>Einwilligung widerrufen</h2>
+        <p>
+          Die Einwilligung ist freiwillig; eine Ablehnung hindert Sie weder an
+          der Nutzung der Website noch am Download der Anwendung. Solange die
+          Analyse aktiviert ist, steht am Ende jeder Seite die Schaltfläche
+          Cookie-Einstellungen: Damit ändern Sie Ihre Auswahl oder widerrufen
+          die Einwilligung jederzeit. Beim Widerruf wird die Messung beendet,
           zugängliche Analyse-Cookies werden gelöscht und die Seite wird neu
-          geladen.
+          geladen; danach werden keine Daten an Google gesendet. Auch das
+          Löschen der Websitedaten in Ihrem Browser setzt Ihre Auswahl zurück.
         </p>
       </section>
       <section>
         <h2>Dienstleister und Kontakt</h2>
         <p>
-          Der Webserver verarbeitet Verbindungsdaten wie IP-Adresse und
-          angeforderte URL, um Ihre Anfrage zu bedienen. Mit Ihrer
-          Analyse-Einwilligung verarbeitet Google Daten auf seiner
-          Infrastruktur, auch auf Servern außerhalb Ihres Landes. Für
-          Datenschutz- oder Datenanfragen nutzen Sie den Kontaktkanal im
-          GitHub-Profil des Projekts. Die Google-Links unten erläutern weitere
-          Verarbeitungs- und Cookie-Details.
+          Die Website liegt auf einem Server bei Hetzner; der Webserver
+          verarbeitet Verbindungsdaten wie IP-Adresse und angeforderte URL, um
+          Ihre Anfrage zu bedienen. Ist die Analyse aktiviert, verarbeitet
+          Google die Analytics-Daten in unserem Auftrag als Auftragsverarbeiter
+          nach den Datenverarbeitungsbedingungen von Google, auch auf Servern
+          außerhalb Ihres Landes. Für Datenschutz- oder Datenanfragen nutzen Sie
+          den Kontaktkanal im GitHub-Profil des Projekts. Die Google-Links unten
+          erläutern weitere Verarbeitungs- und Cookie-Details.
         </p>
       </section>
       <p>

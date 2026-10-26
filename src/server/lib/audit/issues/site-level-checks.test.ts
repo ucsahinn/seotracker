@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { siteLevelIssues } from "./site-level-checks";
+import type { SiteFacts } from "@/server/lib/audit/site-probes/types";
+import { measuredSiteLevelChecks, siteLevelIssues } from "./site-level-checks";
+import { unknownFacts } from "@/server/lib/audit/site-probes/site-facts-fixture";
 
 const START = "https://example.com/";
 
@@ -189,5 +191,138 @@ describe("siteLevelIssues", () => {
 
     expect(issues[0]?.pageId).toBeNull();
     expect(issues[0]?.pageUrl).toBe(START);
+  });
+});
+
+describe("siteLevelIssues from site facts", () => {
+  const factTypes = (facts: SiteFacts) =>
+    types({ startUrl: START, siteFacts: facts });
+
+  it("raises nothing from facts that were not measured", () => {
+    expect(factTypes(unknownFacts())).toEqual([]);
+  });
+
+  it("reads security headers only off a page that answered", () => {
+    const facts = unknownFacts();
+    facts.start.status = 200;
+    facts.start.finalUrl = START;
+    facts.start.cspFrameAncestors = false;
+    facts.start.xContentTypeOptions = "nosniff";
+    facts.start.referrerPolicy = "no-referrer";
+    expect(factTypes(facts)).toEqual([
+      "missing-hsts",
+      "missing-clickjacking-protection",
+    ]);
+  });
+
+  it("does not ask for HSTS under a TLD every browser preloads as https-only", () => {
+    const facts = unknownFacts();
+    facts.start.status = 200;
+    facts.start.finalUrl = "https://hono.dev/";
+    facts.start.xContentTypeOptions = "nosniff";
+    facts.start.referrerPolicy = "no-referrer";
+    facts.start.xFrameOptions = "DENY";
+    expect(factTypes(facts)).toEqual([]);
+  });
+
+  it("tells a missing page sent home from one answering 200 in place", () => {
+    const home = unknownFacts();
+    home.notFound = { ...home.notFound, status: 200, redirectedHome: true };
+    expect(factTypes(home)).toEqual(["not-found-redirects-home"]);
+
+    const soft = unknownFacts();
+    soft.notFound = { ...soft.notFound, status: 200, redirectedHome: false };
+    expect(factTypes(soft)).toEqual(["soft-404-on-missing-page"]);
+  });
+
+  it("lists blocked AI crawlers but folds them into a disallow-all", () => {
+    const facts = unknownFacts();
+    facts.robots = {
+      status: 200,
+      bytes: 40,
+      hasSitemapLine: true,
+      disallowAll: false,
+      access: [
+        { bot: "Googlebot", blocked: false },
+        { bot: "GPTBot", blocked: true },
+      ],
+    };
+    const issues = siteLevelIssues({ startUrl: START, siteFacts: facts });
+    expect(issues.map((issue) => issue.issueType)).toEqual([
+      "ai-crawlers-blocked",
+    ]);
+    expect(issues[0]?.details).toEqual({ bots: ["GPTBot"] });
+
+    facts.robots.disallowAll = true;
+    expect(factTypes(facts)).toEqual(["robots-disallow-all"]);
+  });
+
+  it("checks SPF and DMARC only on a fully resolved lookup", () => {
+    const facts = unknownFacts();
+    facts.dns = {
+      resolved: true,
+      records: [{ type: "SPF", value: "v=spf1 -all" }],
+    };
+    expect(factTypes(facts)).toEqual(["missing-dmarc"]);
+  });
+
+  it("grades certificate expiry by days left from the check time", () => {
+    const at = (notAfter: string) => {
+      const facts = unknownFacts();
+      facts.certificate = { issuer: "R11", notBefore: null, notAfter };
+      return factTypes(facts);
+    };
+    expect(at("2026-11-15T00:00:00.000Z")).toEqual(["ssl-expiring-soon"]);
+    expect(at("2026-11-01T00:00:00.000Z")).toEqual(["ssl-expiring-very-soon"]);
+    expect(at("2027-01-15T00:00:00.000Z")).toEqual([]);
+  });
+});
+
+describe("robots.txt and sitemap checks added after the site facts", () => {
+  const factTypes = (facts: SiteFacts) =>
+    types({ startUrl: START, siteFacts: facts });
+
+  it("warns when the sitemap lists another host's addresses", () => {
+    const issues = siteLevelIssues({
+      startUrl: START,
+      sitemapProblems: {
+        oversized: [],
+        oversizedCount: 0,
+        overfull: [],
+        overfullCount: 0,
+        offHost: { count: 52, sample: ["https://twin.netlify.app/"] },
+      },
+    });
+    expect(issues.map((issue) => issue.issueType)).toEqual([
+      "sitemap-off-host-urls",
+    ]);
+    expect(issues[0]?.details).toEqual({
+      count: 52,
+      sample: ["https://twin.netlify.app/"],
+    });
+  });
+
+  it("says which rules kept this crawler out while letting Googlebot in", () => {
+    const facts = unknownFacts();
+    facts.robots.googlebotOnlyRules = ["/*?*", "/*.js"];
+    expect(factTypes(facts)).toEqual(["robots-googlebot-only-paths"]);
+  });
+
+  it("records the checks as measured only when the run carried their data", () => {
+    const facts = unknownFacts();
+    expect(measuredSiteLevelChecks({ siteFacts: facts })).toEqual([]);
+    facts.robots.googlebotOnlyRules = [];
+    expect(
+      measuredSiteLevelChecks({
+        siteFacts: facts,
+        sitemapProblems: {
+          oversized: [],
+          oversizedCount: 0,
+          overfull: [],
+          overfullCount: 0,
+          offHost: { count: 0, sample: [] },
+        },
+      }),
+    ).toEqual(["sitemap-off-host-urls", "robots-googlebot-only-paths"]);
   });
 });

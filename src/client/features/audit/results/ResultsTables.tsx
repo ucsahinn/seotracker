@@ -19,7 +19,6 @@ import {
   LighthouseScoreBadge,
 } from "@/client/features/audit/shared";
 import type { AuditResultsData } from "@/client/features/audit/results/types";
-import { severityChip } from "@/client/features/audit/shared";
 import {
   countActiveFilters,
   EmptyTableMessage,
@@ -194,38 +193,11 @@ function buildPerformanceColumns({
         <span className="text-xs">{deviceLabel(getValue())}</span>
       ),
     }),
-    performanceColumnHelper.display({
-      id: "status",
-      header: ({ column }) => (
-        <SortableHeader column={column} label={t("Durum")} />
-      ),
-      cell: ({ row }) => {
-        const isFailed = isLighthouseFailure(row.original);
-        const failureMessage =
-          row.original.errorMessage ?? t("Hız ölçümü hiç puan vermedi");
-        return isFailed ? (
-          <span
-            className={`badge text-xs ${severityChip.error}`}
-            title={failureMessage}
-          >
-            {t("başarısız")}
-          </span>
-        ) : (
-          <span className={`badge text-xs ${severityChip.success}`}>
-            {t("tamam")}
-          </span>
-        );
-      },
-      enableSorting: true,
-      sortingFn: (left, right) =>
-        Number(isLighthouseFailure(left.original)) -
-        Number(isLighthouseFailure(right.original)),
-    }),
     performanceColumnHelper.accessor("performanceScore", {
       header: ({ column }) => (
         <SortableHeader
           column={column}
-          label="Perf"
+          label={t("Hız")}
           helpText={t("Hız puanı (0-100)")}
         />
       ),
@@ -236,7 +208,7 @@ function buildPerformanceColumns({
       header: ({ column }) => (
         <SortableHeader
           column={column}
-          label="A11y"
+          label={t("Erişilebilirlik")}
           helpText={t("Erişilebilirlik puanı (0-100)")}
         />
       ),
@@ -363,7 +335,9 @@ export function ExportDropdown({
   const rows = { count: rowCount };
   return (
     <TableExportMenu
-      buttonClassName="btn btn-sm btn-ghost gap-1"
+      // Icon only on a phone, where the tab row needs the width.
+      triggerLabel={<span className="hidden sm:inline">{t("Dışa aktar")}</span>}
+      buttonClassName="btn btn-sm btn-ghost shrink-0 gap-1"
       menuClassName="dropdown-content z-10 menu p-2 shadow-lg bg-base-100 border border-base-300 rounded-box w-56"
       actions={[
         {

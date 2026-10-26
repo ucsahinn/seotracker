@@ -19,22 +19,25 @@ tool.
 ## What's covered
 
 Every fixture-reachable issue type in the seotracker audit engine is exercised
-by at least one page, and the harness fails the run if one is not. Thirteen
-types are deliberately out of reach and listed as such in `run-audit.ts`:
-eight change how the whole crawl behaves (a robots.txt that 5xxs would take
-every other fixture down with it) and five need a live Search Console
-connection. Pages are grouped by category:
+by at least one page, and `run-audit.ts` prints which types no page reaches.
+The rest are deliberately out of reach and listed as such there, each group
+with its reason: some change how the whole crawl behaves (a robots.txt that
+5xxs would take every other fixture down with it), some need a live Search
+Console or PageSpeed measurement, some describe the crawl rather than a page,
+and some only fire on an https page, which the local fixture server is not.
+Pages are grouped by category:
 
-| Category                     | Pages                                                                                                         |
-| ---------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| **Head tags & headings**     | missing title, title too long/short, missing meta, meta too long, missing H1, multiple H1, heading-level skip |
-| **Content quality**          | thin content, images missing alt, duplicate content, duplicate title, duplicate meta description              |
-| **Indexability & canonical** | noindex (meta + `X-Robots-Tag` header), canonicalized to another URL, conflicting canonicals                  |
-| **HTTP status & links**      | 404, 500, 403 (blocked), broken internal link                                                                 |
-| **Redirects**                | redirect chain, redirect loop, trailing-slash canonical (redirect-cycle trap)                                 |
-| **Performance**              | slow server response (TTFB)                                                                                   |
-| **Site structure**           | orphan page, deep click-path                                                                                  |
-| **Kitchen sink**             | one page that breaks six ways at once                                                                         |
+| Category                     | Pages                                                                                                                                                                                                                                                             |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Head tags & headings**     | missing title, title too long/short, missing meta, meta too long, missing H1, multiple H1, heading-level skip                                                                                                                                                     |
+| **Content quality**          | thin content, images missing alt, duplicate content, duplicate title, duplicate meta description                                                                                                                                                                  |
+| **Indexability & canonical** | noindex (meta + `X-Robots-Tag` header), canonicalized to another URL, conflicting canonicals                                                                                                                                                                      |
+| **HTTP status & links**      | 404, 500, 403 (blocked), broken internal link                                                                                                                                                                                                                     |
+| **Redirects**                | redirect chain, redirect loop, trailing-slash canonical (redirect-cycle trap)                                                                                                                                                                                     |
+| **Performance**              | slow server response (TTFB)                                                                                                                                                                                                                                       |
+| **Site structure**           | orphan page, deep click-path, deep page without breadcrumbs                                                                                                                                                                                                       |
+| **Markup & content**         | meta refresh, relative / fragment / in-body canonical, conflicting robots tags, nosnippet, 200 page that says "not found", lorem ipsum, exposed email, title that does not match the content, Organization without sameAs, noindexed page two, huge inline script |
+| **Kitchen sink**             | one page that breaks six ways at once                                                                                                                                                                                                                             |
 
 Browse them all on the homepage at `/#issues`.
 

@@ -2,12 +2,12 @@
 title: Troubleshooting
 description: The most common problems: symptom, cause and fix. Port in use, the Windows warning, Google errors, quota, a stuck audit, empty charts, assistant 401.
 kind: sorun-giderme
-updated: 2026-10-23
+updated: 2026-10-26
 ---
 
 The app's interface comes in English and Turkish. This guide uses the English names; to switch, go to **Settings → Appearance → Language**.
 
-This guide covers what to do when something does not work. First, check the "Kurulumunuzun durumu" (Your installation status) card on the **Yardım** (Help) screen in the app. The card checks four things: sign-in and access, Google sign-in, the PageSpeed key, and the database. If it says "N şey dikkat istiyor" (N things need attention), the button next to it takes you to the right setting. The sections below run from the most common problem to the rarest.
+This guide covers what to do when something does not work. First, check the "Your setup status" card on the **Help** screen in the app. The card checks four things: sign-in and access, Google sign-in, the PageSpeed key, and the database. If it says "N things need attention", the button next to it takes you to the right setting. The sections below run from the most common problem to the rarest.
 
 ## The page does not open
 
@@ -15,7 +15,9 @@ This guide covers what to do when something does not work. First, check the "Kur
 
 **Cause:** The app is not running.
 
-**Fix:** On Windows, check the taskbar for the icon. If the icon is not visible, click the ^ arrow on the taskbar. If it is not there, open seowatcher from the Start menu. If the icon says "Error", right-click it and choose **Yeniden başlat** (Restart). On Docker, run `docker compose ps`. If the status is not healthy, run `docker compose up -d`.
+**Fix (Windows package):** Check the taskbar for the icon. If the icon is not visible, click the ^ arrow on the taskbar. If it is not there, open seowatcher from the Start menu. Hovering over the icon should show "Çalışıyor: http://127.0.0.1:3001/" (Running); if the port number is different, open that address. If it says "Hata" (Error), right-click it and choose **Yeniden başlat** (Restart), or if that does not help, **Kurulumu onar** (Repair installation). **Günlükleri aç** (Open logs) shows the reason in the last lines of `launcher.log` and `server.log`.
+
+**Fix (Docker):** First check that Docker Desktop is running. In the project folder, run `docker compose ps`. If the status is not healthy, run `docker compose up -d`; `docker compose logs --tail 50` shows the reason.
 
 ## The port number is in use
 
@@ -23,7 +25,7 @@ This guide covers what to do when something does not work. First, check the "Kur
 
 **Cause:** Another program is using the same port number.
 
-**Fix:** The Windows package normally picks a free number between 3002 and 3010, tells you in a balloon, and uses it only for that one start. When 3001 is free again, choose **Yeniden başlat** and the app returns to 3001. If they are all in use, write a different number in the `config.json` file in the data folder. On Docker, create a `.env` file with the line `PORT=3002` and run `docker compose up -d --force-recreate seotracker`. When the number changes, update the Google redirect addresses too.
+**Fix:** The Windows package normally picks a free number between 3002 and 3010, tells you in a balloon, and uses it only for that one start. When 3001 is free again, choose **Yeniden başlat** (Restart) and the app returns to 3001. If they are all in use, write a different number in the `config.json` file in the data folder. On Docker, create a `.env` file with the line `PORT=3002` and run `docker compose up -d --force-recreate seotracker`. When the number changes, update the Google redirect addresses too.
 
 ## The icon says "Windows bileşeni eksik"
 
@@ -69,9 +71,12 @@ This guide covers what to do when something does not work. First, check the "Kur
 
 **Symptom:** In the project settings, the **Connections** tab shows a yellow warning saying "Google access key missing".
 
-**Cause:** The client ID and the secret key have not been entered in **Ayarlar → Google**. Or, on Docker, the encryption key is shorter than 32 characters.
+**Cause:** Neither a service account in **Settings → Service account** nor a client ID and secret key in **Settings → Google** has been entered. Or the encryption key is damaged, so the saved Google details cannot be opened.
 
-**Fix:** Do steps 10 and 11 of the Google connection guide. On Docker, if you set `BETTER_AUTH_SECRET` by hand, make it longer. If you leave it empty, the app creates one itself.
+**Fix:** Enter a service account or a Google access key (see the Google connection guide). One of them is enough; if both are saved, the service account is used. The "Google sign-in" row on the **Help** screen says which one is in use.
+
+- **Windows package:** the encryption key is the `instance-secret` file in the data folder, created once by the launcher. If the icon says this file is damaged, restore it from a backup; if Google was never connected, delete the file and choose **Yeniden başlat** (Restart).
+- **Docker:** if you set `BETTER_AUTH_SECRET` by hand, it must be at least 32 characters. If you leave it empty, the container creates one itself.
 
 ## Google says "access_denied"
 
@@ -79,7 +84,7 @@ This guide covers what to do when something does not work. First, check the "Kur
 
 **Cause:** The Google account you signed in with is not in the test users list on the consent screen.
 
-**Fix:** In Cloud Console, add the account under **OAuth izin ekranı → Test kullanıcıları** (OAuth consent screen → Test users). Then choose **Connect** again.
+**Fix:** In Cloud Console, add the account under **OAuth consent screen → Test users**. Then choose **Connect** again.
 
 ## The connection has expired
 
@@ -87,11 +92,11 @@ This guide covers what to do when something does not work. First, check the "Kur
 
 **Cause:** For apps in "Test" status, Google can expire the permission after seven days. The encryption key may also have changed.
 
-**Fix:** On the card, choose **Reconnect**. If it keeps happening, move the consent screen to production, or switch to a service account (**Ayarlar → Hizmet hesabı**, Settings → Service account).
+**Fix:** On the card, choose **Reconnect**. If it keeps happening, move the consent screen to production, or switch to a service account (**Settings → Service account**).
 
 ## There is no query data and the charts are empty
 
-**Symptom:** The Panel (Dashboard) cards are zero. Arama performansı (Search performance) says "No data for this period yet".
+**Symptom:** The Panel (Dashboard) cards are zero. Search performance says "No data for this period yet".
 
 **Cause:** There are three possible causes: the site is new and Google has not shown it yet; Search Console is three days behind and the selected period is too short; or the wrong property is selected.
 
@@ -105,13 +110,13 @@ This guide covers what to do when something does not work. First, check the "Kur
 
 **Fix:** Read the total from the card. Read the table page by page.
 
-## An audit is stuck on "Sürüyor"
+## An audit is stuck on "In progress"
 
 **Symptom:** There has been no progress for half an hour.
 
 **Cause:** The app may have restarted, or the job may have dropped.
 
-**Fix:** Wait. The app checks any audit that has shown "sürüyor" (in progress) for more than 15 minutes. If there are no signs of life, it closes the audit as "Failed" and records the reason. Then choose **Run again with the same settings**. Do not start two audits with speed testing at the same time. They slow each other down.
+**Fix:** Wait. The app checks any audit that has shown "In progress" for more than 15 minutes. If there are no signs of life, it closes the audit as "Failed" and records the reason. Then choose **Run again with the same settings**. Do not start two audits with speed testing at the same time. They slow each other down.
 
 ## The audit says "Engellendik"
 
@@ -123,7 +128,7 @@ This guide covers what to do when something does not work. First, check the "Kur
 
 ## Speed testing is incomplete or missing
 
-**Symptom:** The Hız (Speed) tab is empty or has very few rows. The quota card says "Quota used up", "Dakikalık sınır" (Per-minute limit) or "Anahtar yok" (No key).
+**Symptom:** The Speed tab is empty or has very few rows. The quota card says "Quota used up", a per-minute limit message or "No key".
 
 **Cause:** There is no PageSpeed key (at most 50 pages are measured). Or Google's daily allowance has run out.
 
@@ -131,7 +136,7 @@ This guide covers what to do when something does not work. First, check the "Kur
 
 ## URL Inspection says "daily limit reached"
 
-**Symptom:** In the Dizin durumu (Index status) tab, the button does not work. It says "Google'ın günlük 2.000 adres sınırına ulaşıldı" (Google's daily limit of 2,000 addresses has been reached).
+**Symptom:** In the Index status tab, the button does not work. It says "Google'ın günlük 2.000 adres sınırına ulaşıldı" (Google's daily limit of 2,000 addresses has been reached).
 
 **Cause:** Google allows 2,000 questions per day per property. The app, your assistant and the checks you make by hand in Search Console all use the same pool.
 
@@ -139,7 +144,7 @@ This guide covers what to do when something does not work. First, check the "Kur
 
 ## Localhost traffic shows up in Analytics
 
-**Symptom:** In the landing pages table, the Alan adı (Domain) column shows localhost or 127.0.0.1.
+**Symptom:** In the landing pages table, the Domain column shows localhost or 127.0.0.1.
 
 **Cause:** A test copy of your site loads the same Analytics tag.
 
@@ -151,7 +156,22 @@ This guide covers what to do when something does not work. First, check the "Kur
 
 **Cause:** The password is not being sent, or it is wrong.
 
-**Fix:** Copy the password again. On Windows, it is in the `mcp-token` file in the data folder. On Docker, run `docker compose exec -T seotracker cat /app/.wrangler/mcp-token`. Remove the line break at the end of the value. Without a terminal: open the file in Notepad, select the whole line and copy it; do not include a line break. In Claude Code, type `/mcp` and choose **Reconnect**.
+**Fix:** The easiest way is the ready-made command on the **Agent setup** screen: it knows which install you have and puts the password into your tool's settings without printing it. To do it by hand, read the password again; do not paste it into a chat or let it end up in a screenshot.
+
+- **Windows package:** the password is in the file `%LOCALAPPDATA%\seowatcher\mcp-token` (menu: **Veri klasörünü aç**, Open data folder). The launcher creates it on first start and hands it to the app at every start. To copy it to the clipboard without printing it, in PowerShell: `(Get-Content "$env:LOCALAPPDATA\seowatcher\mcp-token").Trim() | Set-Clipboard`. Clear the clipboard after pasting (Win+V, Clear all). There is no `docker` command on this install.
+- **Docker:** the password is inside the container: `docker compose exec -T seotracker cat /app/.wrangler/mcp-token`. In Git Bash, put `MSYS_NO_PATHCONV=1` in front, or the output comes back empty. Leave out the line break at the end of the value. You can set your own password with `MCP_TOKEN` in `.env`; after changing it, run `docker compose up -d --force-recreate seotracker`.
+
+Then, in Claude Code, type `/mcp` and choose **Reconnect**.
+
+## I changed a setting and the app does not see it
+
+**Symptom:** A new port number, `.env` value or password has not reached the app.
+
+**Cause:** What you enter on the Settings screen (Google, service account, PageSpeed key, language) applies immediately. Settings in files are read only at the next start, and the two installs keep them in different files.
+
+**Fix (Windows package):** There is no `.env` and there are no environment variables. The only file you edit by hand is `config.json` in the data folder: `"port"` and `"autoUpdate"`. After changing it, choose **Yeniden başlat** (Restart) in the menu. Do not edit the `server.env` file next to it; the launcher rewrites it at every start.
+
+**Fix (Docker):** The variables are in the `.env` file in the project folder (list: `docs/ENVIRONMENT.md`). After changing it, recreate the container: `docker compose up -d --force-recreate seotracker`. A plain `docker compose restart seotracker` only restarts it and does not apply a `.env` change.
 
 ## Docker takes very long on first start or is "unhealthy"
 
@@ -173,13 +193,13 @@ When you report a problem, press **Download diagnostics bundle** on the **Help**
 
 These messages appear on the Windows icon or in a dialog. The Windows launcher is the small program that starts the app.
 
-- **"Sunucu 120 saniyede yanıt vermedi"** (The server did not answer within 120 seconds): choose **Yeniden başlat** (Restart). If that fails, choose **Open logs** and read `server.log`.
+- **"Sunucu 120 saniyede yanıt vermedi"** (The server did not answer within 120 seconds): choose **Yeniden başlat** (Restart). If that fails, choose **Günlükleri aç** (Open logs) and read `server.log`.
 - **"seowatcher yeniden başlatılıyor"** (seowatcher is restarting): the server closed by itself and the app is reopening it. Refresh the open page after a few seconds.
-- **"Sunucu 10 dakikada üç kez kapandı"** (The server closed three times in 10 minutes): the app has stopped reopening it. Choose **Kurulumu onar**, and if that does not help, **Sorunu bildir (GitHub)**.
-- **"Kurulum eksik"** (Installation incomplete): **Kurulumu onar** puts the missing files back by downloading the installer. If there is no internet, the releases page opens; download the installer and run it.
-- **"3001 numarası dolu, 3002 kullanılıyor"** (Port 3001 is in use, using 3002): another program holds 3001. If you get an error when connecting to Google, close that program and choose **Yeniden başlat**.
+- **"Sunucu 10 dakikada üç kez kapandı"** (The server closed three times in 10 minutes): the app has stopped reopening it. Choose **Kurulumu onar** (Repair installation), and if that does not help, **Sorunu bildir (GitHub)** (Report a problem (GitHub)).
+- **"Kurulum eksik"** (Installation incomplete): **Kurulumu onar** (Repair installation) puts the missing files back by downloading the installer. If there is no internet, the releases page opens; download the installer and run it.
+- **"3001 numarası dolu, 3002 kullanılıyor"** (Port 3001 is in use, using 3002): another program holds 3001. If you get an error when connecting to Google, close that program and choose **Yeniden başlat** (Restart).
 - **"Güncelleme denetlenemedi"** (The update could not be checked) or **"Güncelleme yapılamadı"** (Update failed): the balloon gives the reason. If it says "GitHub'a ulaşılamadı" (GitHub could not be reached), check your internet connection. If it says "GitHub şu an çok fazla istek alıyor" (GitHub is getting too many requests right now), try again in an hour. If the fingerprint did not match, download the installer from the releases page. In every case the installed version keeps running.
-- **"Güncelleme kurulmadı"** (The update was not installed): the installer window was closed, or administrator permission was not given. Try again from **Güncelle** in the menu.
+- **"Güncelleme kurulmadı"** (The update was not installed): the installer window was closed, or administrator permission was not given. Try again from **Güncelle** (Update) in the menu.
 - **"Windows bileşeni kurulamadı"** (The Windows component could not be installed): choose **Eksik Windows bileşenini kur** (Install the missing Windows component) from the menu.
 
 <!-- Kaynaklar: src/routes/_app/support.tsx; src/client/features/support/CommonProblems.tsx; SetupStatusPanel.tsx; DiagnosticsBundleButton.tsx; src/client/features/integrations/googleAuthErrorCopy.ts; src/server/features/audit/services/auditReconciler.ts; src/server/features/gsc/indexCoverage.ts; src/server/features/ga4/services/Ga4ReportEnhancements.ts; packaging/windows/launcher/SeoWatcher.cs; docs/SELF_HOSTING_DOCKER.md; README.md -->

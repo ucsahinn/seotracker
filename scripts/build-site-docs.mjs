@@ -9,8 +9,9 @@
  * with the site's own look, writes the two guide indexes, the entries of both
  * languages into `site/sitemap.xml` (with hreflang alternates and the home
  * pages' screenshots), `site/llms.txt` and one Atom release feed per edition
- * (`site/feed.xml`, `site/<lang>/feed.xml`). The output is committed: Cloudflare Pages serves the folder
- * as is, with no build step. Rerun after editing a KB file.
+ * (`site/feed.xml`, `site/<lang>/feed.xml`). The output is committed and the
+ * folder is copied to the server as is (docs/SITE_DEPLOY.md), with no build
+ * step there. Rerun after editing a KB file.
  *
  * The Markdown subset is deliberate: headings, paragraphs, ordered and
  * unordered lists (one level of nesting), tables, fenced code, inline code,
@@ -32,6 +33,7 @@ import {
   locales,
   readableDate,
   rewriteLinks,
+  withGa4Meta,
 } from "./site-locales.mjs";
 
 // The editions that exist on disk, Turkish first.
@@ -41,6 +43,9 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const kbRoot = process.env.KB_DIR || path.join(root, "docs", "kb");
 const siteDir = process.env.OUT_DIR || path.join(root, "site");
 const siteUrl = "https://seowatcher.io";
+// Keep this aligned with src/shared/audit-issue-table.ts and the localized
+// audit-rules guides. The guides are checked against that inventory in review.
+const AUDIT_RULE_COUNT = 201;
 
 function escapeHtml(s) {
   return s
@@ -443,10 +448,8 @@ function page(
       locale.lang === "tr"
         ? `${siteUrl}/assets/og.png`
         : `${siteUrl}/assets/og-${locale.lang}.png`,
-    // The card is shared per edition, but its alt names the page being shared.
-    "{{ogImageAlt}}": escapeHtml(
-      slug ? `${title} | seowatcher` : locale.t.guideTitle,
-    ),
+    // One card per edition, so the alt describes that card, not the page.
+    "{{ogImageAlt}}": escapeHtml(t.ogImageAlt),
     "{{ogType}}": slug ? "article" : "website",
     "{{pageSlug}}": slug || "index",
     "{{feed}}": `${locale.base}/feed.xml`,
@@ -479,7 +482,7 @@ function page(
   // code sample must land on the page as is, and a "$&" in a page likewise
   // (hence the function replacements).
   const content = ["{{body}}", "{{nav}}", "{{toc}}", "{{pager}}", "{{jsonld}}"];
-  let out = shell;
+  let out = withGa4Meta(shell);
   for (const [k, v] of Object.entries(replacements))
     if (!content.includes(k)) out = out.replaceAll(k, () => v);
   const left = /\{\{[a-zA-Z.]+\}\}/.exec(
@@ -550,6 +553,13 @@ function main() {
     process.exit(1);
   }
   const warnings = [];
+  // The hand-written 404 page carries the same GA4 meta tag as every other page.
+  const notFoundFile = path.join(siteDir, "404.html");
+  const notFound = fs.existsSync(notFoundFile)
+    ? fs.readFileSync(notFoundFile, "utf8")
+    : "";
+  if (notFound && withGa4Meta(notFound) !== notFound)
+    fs.writeFileSync(notFoundFile, withGa4Meta(notFound));
   const all = Object.fromEntries(
     editionsOnDisk.map((l) => [l.lang, readDocs(l, warnings)]),
   );
@@ -777,8 +787,8 @@ function main() {
 > seowatcher (GitHub ve uygulama içi adı: seotracker), Google Search Console, Google Analytics 4, kendi site tarayıcısı ve PageSpeed Insights verisini tek panelde toplayan ücretsiz, açık kaynaklı (MIT) bir SEO uygulamasıdır. Windows 10/11 (64 bit) için tek kurulum dosyası vardır; Mac ve Linux'ta Docker ile çalışır. Tek kullanıcılıdır, yalnızca kullanıcının kendi bilgisayarından erişilir, veri o bilgisayarda saklanır. Google, denetlenen siteler ve GitHub ile bağlantı kurar; isteğe bağlı yapay zekâ bağlantısı seçilen sağlayıcıya veri gönderebilir. Abonelik ve hesap yoktur.
 > English: seowatcher (also named seotracker) is a free, MIT-licensed, self-hosted SEO app that reads Google Search Console, Google Analytics 4, its own crawler and PageSpeed Insights. Windows 10/11 installer; Docker on macOS/Linux. Single user, localhost only, data is stored on your machine. It connects to Google, audited sites and GitHub; optional AI integrations may send data to the selected provider. Derived from open-seo. The app's interface is available in Turkish and English; the website and this guide exist in ${editionsOnDisk.map((l) => l.name).join(", ")}.
 
-Hızlı bilgiler: sürüm ${pkg.version} Alpha, 95 denetim kuralı, yapay zekâ asistanları için 33 MCP aracı ve 6 hazır görev, fiyat 0, lisans MIT. Arama hacmi tahmini, backlink sayımı ve rakip sıralaması yoktur. Kurulum dosyası 86 MB, kurulu hali 313 MB; Visual C++ çalışma zamanı pakete dahildir.
-Quick facts: version ${pkg.version} Alpha, 95 audit rules, 33 MCP tools and 6 ready-made tasks for AI assistants, price 0, MIT license. No search-volume estimates, backlink counts or competitor rankings. Installer 86 MB, installed 313 MB; the Visual C++ runtime is bundled.
+Hızlı bilgiler: sürüm ${pkg.version} Alpha, ${AUDIT_RULE_COUNT} denetim kuralı, yapay zekâ asistanları için 33 MCP aracı ve 6 hazır görev, fiyat 0, lisans MIT. Arama hacmi tahmini, backlink sayımı ve rakip sıralaması yoktur. Kurulum dosyası 86 MB, kurulu hali 313 MB; Visual C++ çalışma zamanı pakete dahildir.
+Quick facts: version ${pkg.version} Alpha, ${AUDIT_RULE_COUNT} audit rules, 33 MCP tools and 6 ready-made tasks for AI assistants, price 0, MIT license. No search-volume estimates, backlink counts or competitor rankings. Installer 86 MB, installed 313 MB; the Visual C++ runtime is bundled.
 
 ## Ana bağlantılar / Main links
 ${homes
@@ -794,7 +804,7 @@ ${editionsOnDisk.map(guideList).join("\n\n")}
 
 ## Kaynak ve notlar
 - [GitHub deposu ve README (Docker kurulumu)](https://github.com/ucsahinn/seotracker)
-- [Sürüm notları](https://github.com/ucsahinn/seotracker/blob/main/CHANGELOG.md)
+- [Sürüm notları](https://github.com/ucsahinn/seotracker/blob/seotracker-fork/CHANGELOG.md)
 - [open-seo, temel alınan proje](https://github.com/every-app/open-seo)
 `;
   fs.writeFileSync(path.join(siteDir, "llms.txt"), llms);

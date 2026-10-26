@@ -247,6 +247,7 @@ function SavedKeywordsPage() {
           positionData.tracked,
         ])}
         exporting={exporter.exporting}
+        csvDownloaded={exporter.csvDownloaded}
         onExportCsv={() => void exporter.exportFilteredCsv()}
         onExportSheets={() => void exporter.exportFilteredSheets()}
       />

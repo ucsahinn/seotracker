@@ -2,7 +2,7 @@ import type { WorkflowStep } from "cloudflare:workers";
 import { NonRetryableError } from "cloudflare:workflows";
 import type { RobotsResult } from "@/server/lib/audit/discovery";
 import type { CrawledPageResult } from "@/server/lib/audit/types";
-import { isSameOrigin } from "@/server/lib/audit/url-utils";
+import { isSameOrigin, normalizeUrl } from "@/server/lib/audit/url-utils";
 import { isCrawlableUrl } from "@/server/lib/audit/url-policy";
 import { deterministicAuditRowId } from "@/server/lib/audit/ids";
 import { runPageReporters } from "@/server/lib/audit/issues/page-reporters";
@@ -10,7 +10,9 @@ import { AuditRepository } from "@/server/features/audit/repositories/AuditRepos
 import {
   getAuditScratchpad,
   type ClaimedUrl,
+  type ExternalRefKind,
   type FrontierStats,
+  type ScratchpadExternalRefsRow,
   type ScratchpadPageLinksRow,
 } from "@/server/features/audit/AuditScratchpad";
 import { recordAuditHeartbeat } from "@/server/features/audit/auditHeartbeat";
@@ -91,6 +93,8 @@ type CrawlPhaseParams = {
   robots: RobotsResult;
   /** Frontier size after discovery seeding (from the discover-urls step). */
   seededCount: number;
+  /** Record outgoing links and image files for the opt-in external checks. */
+  collectExternalRefs?: boolean;
 };
 
 export type CrawlPhaseResult = {
@@ -179,8 +183,15 @@ async function runCrawlChunk(
   throttleState?: CrawlThrottleState;
   resumeAt?: number;
 }> {
-  const { auditId, workflowInstanceId, origin, maxPages, robots, chunkNo } =
-    input;
+  const {
+    auditId,
+    workflowInstanceId,
+    origin,
+    maxPages,
+    robots,
+    chunkNo,
+    collectExternalRefs,
+  } = input;
   const scratchpad = getAuditScratchpad(auditId);
   let previousThrottle =
     (await scratchpad.getCrawlThrottle()) ?? input.throttleState;
@@ -272,6 +283,7 @@ async function runCrawlChunk(
           pages,
           depthByUrl,
           maxPages,
+          collectExternalRefs: collectExternalRefs ?? false,
         }),
       )
       .finally(() => {
@@ -360,6 +372,40 @@ async function runCrawlChunk(
   };
 }
 
+/** Targets per page and kind kept for the external checks. */
+const MAX_EXTERNAL_REFS_PER_PAGE = 100;
+
+/**
+ * An analyzed page's links to other sites and its own image files, for the
+ * opt-in external checks. Images are same-origin only: a third party's
+ * image weight is not the site's to fix.
+ */
+function externalRefsOf(page: CrawledPageResult): ScratchpadExternalRefsRow[] {
+  if (!page.isHtml) return [];
+  const links = page.links
+    .filter(
+      (link) =>
+        !link.isInternal &&
+        /^https?:\/\//i.test(link.targetUrl) &&
+        // The site's own pages over the other scheme are crawl findings.
+        new URL(link.targetUrl).hostname.replace(/^www\./, "") !==
+          new URL(page.url).hostname.replace(/^www\./, ""),
+    )
+    .map((link) => link.targetUrl.split("#")[0] ?? link.targetUrl);
+  const images = page.images.flatMap((image) => {
+    if (!image.src || /^data:/i.test(image.src)) return [];
+    const resolved = normalizeUrl(image.src, page.url);
+    return resolved && isSameOrigin(resolved, page.url) ? [resolved] : [];
+  });
+  const row = (kind: ExternalRefKind, targets: string[]) => ({
+    pageId: page.id,
+    url: page.url,
+    kind,
+    targets: [...new Set(targets)].slice(0, MAX_EXTERNAL_REFS_PER_PAGE),
+  });
+  return [row("link", links), row("image", images)];
+}
+
 async function persistCrawledPages(input: {
   auditId: string;
   workflowInstanceId: string;
@@ -369,6 +415,7 @@ async function persistCrawledPages(input: {
   pages: CrawledPageResult[];
   depthByUrl: Map<string, number | null>;
   maxPages: number;
+  collectExternalRefs: boolean;
 }): Promise<FrontierStats> {
   const { auditId, origin, robots, scratchpad, pages, depthByUrl } = input;
 
@@ -377,7 +424,7 @@ async function persistCrawledPages(input: {
     page.id = await deterministicAuditRowId(auditId, page.url);
   }
   const issues = pages.flatMap((page) =>
-    runPageReporters(page, robots.isAllowed),
+    runPageReporters(page, robots.googlebotAllows),
   );
   await AuditRepository.insertCrawledBatch(auditId, pages, issues);
 
@@ -428,6 +475,9 @@ async function persistCrawledPages(input: {
       redirectUrl: page.redirectUrl,
     })),
     links,
+    externalRefs: input.collectExternalRefs
+      ? pages.flatMap(externalRefsOf)
+      : undefined,
     discovered: Array.from(discovered, ([url, depth]) => ({ url, depth })),
   });
 

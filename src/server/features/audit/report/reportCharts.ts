@@ -18,7 +18,7 @@ export const COLORS = {
   warning: "#9a6200",
   info: "#5b6472",
   good: "#1c7a4a",
-  accent: "#1d3b6e",
+  accent: "#b4440c",
   // 4.8:1 on white; the lighter slate this was (#94a3b8) is 2.6:1.
   muted: "#64748b",
 } as const;
@@ -119,7 +119,13 @@ export function barChart(
       <text x="${fmt(labelW + w + 6)}" y="${y + 15}" class="val">${escapeHtml(d.display ?? formatCount(d.value))}</text>`;
     })
     .join("");
-  return `<svg viewBox="0 0 ${labelW + barW + 70} ${data.length * rowH}" class="bars-svg" aria-hidden="true" focusable="false">${rows}</svg>`;
+  // Room for the longest value label ("93 · Kısmi veri"), which a fixed
+  // 70 units clipped at the right edge.
+  const valueW = Math.max(
+    70,
+    ...data.map((d) => (d.display ?? formatCount(d.value)).length * 7 + 10),
+  );
+  return `<svg viewBox="0 0 ${labelW + barW + valueW} ${data.length * rowH}" class="bars-svg" aria-hidden="true" focusable="false">${rows}</svg>`;
 }
 
 /** Vertical columns for a distribution; the count sits above each column. */

@@ -22,7 +22,7 @@ This is the first place to look when something goes wrong. The screen checks you
 - **Copy setup prompt**: copies the setup text you paste into your AI assistant (called an "agent" in the app).
 - **Agent setup**: goes to the assistant connection screen.
 
-**Your setup status**. The card checks four things: **Sign-in and access**, **Google sign-in**, **PageSpeed key** and **Database**. At the top it says "Everything looks good." or "N şey dikkat istiyor." (N things need attention.). Below that you see the version line ("Sürüm X, güncel." (Version X, up to date.) or "yeni sürüm Y var" (new version Y available)) and the time of the last check. Next to a row with a problem, a button appears that takes you to the right setting: **Open Settings** or **Enter key**. **Copy summary** puts the card's text on the clipboard.
+**Your setup status**. The card checks four things: **Sign-in and access**, **Google sign-in**, **PageSpeed key** and **Database**. At the top it says "Everything looks good." or "N things need attention.". Below that you see the version line ("You're on vX, the latest." or "Version Y is out") and the time of the last check. Next to a row with a problem, a button appears that takes you to the right setting: **Open Settings** or **Enter key**. **Copy summary** puts the card's text on the clipboard.
 
 **Projects**. The status of each project's Search Console and Analytics connection. The **Open connections** button takes you to the project settings.
 
@@ -36,14 +36,14 @@ This is the first place to look when something goes wrong. The screen checks you
 
 1. If something does not work, open this screen first and read the warning on the card.
 2. Press the button next to the warning. It takes you to the right setting. Make the change, come back and click **Durumu yeniden kontrol et**.
-3. If the card says "Her şey yolunda." but the problem continues, check the **Sık sorunlar** items.
-4. If it is still not solved, click **Tanılama paketi indir** and attach the file to the issue on GitHub. In the Windows package, **Sorunu bildir (GitHub)** (Report a problem (GitHub)) in the taskbar menu does the same in one click.
+3. If the card says "Everything looks good." but the problem continues, check the **Common problems** items.
+4. If it is still not solved, click **Download diagnostics bundle** and attach the file to the issue on GitHub. In the Windows package, **Sorunu bildir (GitHub)** (Report a problem (GitHub)) in the taskbar menu does the same in one click.
 
 ## Frequently asked questions
 
-**Why is the "Google girişi" row yellow?** No Google access key has been entered yet. The row stays yellow until Google is connected. Follow the guide for connecting to Google.
+**Why is the "Google sign-in" row yellow?** No Google access key has been entered yet. The row stays yellow until Google is connected. Follow the guide for connecting to Google.
 
-**The "Giriş ve erişim" row says "parolasız tek kullanıcı" (single user, no password).** This is expected. The app opens only from your own computer. To open it to the outside, put your own password-protected sign-in in front of it.
+**The "Sign-in and access" row says it is a single-user setup without a password.** This is expected. The app opens only from your own computer. To open it to the outside, put your own password-protected sign-in in front of it.
 
 **What is in the diagnostics package?** The version, setup checks, table counts and phase and error summaries for the latest 25 audits. PageSpeed errors are summarized without page URLs. Secrets and passwords are excluded; project names, domains and Google property IDs may be included. Review the files before sending them.
 

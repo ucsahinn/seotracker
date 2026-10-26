@@ -1,6 +1,6 @@
 ---
 title: Audit du site
-description: L'application parcourt votre site page par page, applique 95 règles et classe les problèmes par importance, chacun avec ce qu'il faut faire.
+description: L'application parcourt votre site page par page, applique 201 règles et classe les problèmes par importance, chacun avec ce qu'il faut faire.
 screen: Site denetimi
 route: /p/<proje>/audit
 updated: 2026-10-22

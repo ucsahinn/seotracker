@@ -4,6 +4,7 @@ import {
   integer,
   real,
   index,
+  primaryKey,
 } from "drizzle-orm/sqlite-core";
 import { sql } from "drizzle-orm";
 import { PAGE_FETCH_CLASSES } from "@/shared/audit-fetch-class";
@@ -49,6 +50,10 @@ export const audits = sqliteTable(
       .notNull()
       .default(sql`(current_timestamp)`),
     completedAt: text("completed_at"),
+    // Whether the pages' GA4 measurement ids were compared with the
+    // connected property's. Null on audits from before this was recorded,
+    // false when there was nothing to compare (no property, no G- tag).
+    analyticsCompared: integer("analytics_compared", { mode: "boolean" }),
   },
   (table) => [
     index("audits_project_id_idx").on(table.projectId),
@@ -135,8 +140,88 @@ export const auditPages = sqliteTable(
       .default("ok"),
     // Performance
     responseTimeMs: integer("response_time_ms"),
+    /*
+     * Page signals for the full report. Null on rows written before they
+     * existed and on pages with no analyzed HTML: not measured, never zero.
+     */
+    // HTML characters read, capped at the crawler's 1 MiB limit.
+    htmlBytes: integer("html_bytes"),
+    // Visible text characters over HTML characters, 0..1.
+    textRatio: real("text_ratio"),
+    domNodeCount: integer("dom_node_count"),
+    domMaxDepth: integer("dom_max_depth"),
+    twitterCard: text("twitter_card"),
+    // og:title, og:description and og:image all present.
+    ogComplete: integer("og_complete", { mode: "boolean" }),
+    metaKeywordsPresent: integer("meta_keywords_present", { mode: "boolean" }),
+    viewportZoomDisabled: integer("viewport_zoom_disabled", {
+      mode: "boolean",
+    }),
+    externalBlankWithoutNoopener: integer("external_blank_without_noopener"),
+    javascriptLinks: integer("javascript_links"),
+    hashOnlyLinks: integer("hash_only_links"),
+    imagesLazyCount: integer("images_lazy_count"),
+    imagesModernFormatCount: integer("images_modern_format_count"),
+    formInputsWithoutLabel: integer("form_inputs_without_label"),
+    duplicateIds: integer("duplicate_ids"),
+    // 64-bit SimHash of the visible text as 16 hex characters.
+    contentSimhash: text("content_simhash"),
+    // Breadcrumb navigation: BreadcrumbList structured data, or markup named
+    // as a breadcrumb (aria-label, class, id). Null before migration 0067.
+    hasBreadcrumbs: integer("has_breadcrumbs", { mode: "boolean" }),
+    // <link rel="alternate"> to an RSS or Atom feed in the head.
+    hasFeedLink: integer("has_feed_link", { mode: "boolean" }),
   },
   (table) => [index("audit_pages_audit_url_idx").on(table.auditId, table.url)],
+);
+
+// One row per schema.org type a page declares in JSON-LD.
+export const auditPageSchemaTypes = sqliteTable(
+  "audit_page_schema_types",
+  {
+    auditId: text("audit_id")
+      .notNull()
+      .references(() => audits.id, { onDelete: "cascade" }),
+    pageId: text("page_id")
+      .notNull()
+      .references(() => auditPages.id, { onDelete: "cascade" }),
+    schemaType: text("schema_type").notNull(),
+  },
+  (table) => [
+    primaryKey({ columns: [table.pageId, table.schemaType] }),
+    index("audit_page_schema_types_audit_id_idx").on(table.auditId),
+  ],
+);
+
+// One row per analytics tag id (G-, GTM-, UA-) found in a page's scripts.
+export const auditPageAnalyticsIds = sqliteTable(
+  "audit_page_analytics_ids",
+  {
+    auditId: text("audit_id")
+      .notNull()
+      .references(() => audits.id, { onDelete: "cascade" }),
+    pageId: text("page_id")
+      .notNull()
+      .references(() => auditPages.id, { onDelete: "cascade" }),
+    tagId: text("tag_id").notNull(),
+  },
+  (table) => [
+    primaryKey({ columns: [table.pageId, table.tagId] }),
+    index("audit_page_analytics_ids_audit_id_idx").on(table.auditId),
+  ],
+);
+
+// One row per recorded check (shared/audit-issues/recorded-checks.ts) the
+// audit measured, found or not. A recorded check without a row is unknown.
+export const auditMeasuredChecks = sqliteTable(
+  "audit_measured_checks",
+  {
+    auditId: text("audit_id")
+      .notNull()
+      .references(() => audits.id, { onDelete: "cascade" }),
+    checkId: text("check_id").notNull(),
+  },
+  (table) => [primaryKey({ columns: [table.auditId, table.checkId] })],
 );
 
 // Link edges live in the per-audit AuditScratchpad Durable Object for the

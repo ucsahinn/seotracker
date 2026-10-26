@@ -45,8 +45,16 @@
       href="https://seowatcher.io/gizlilik/"
     />
     <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="/assets/consent.css?v=1" />
-    <script src="/assets/consent.js?v=2" defer></script>
+    <link rel="manifest" href="/site.webmanifest" />
+    <link
+      rel="alternate"
+      type="application/atom+xml"
+      title="seowatcher"
+      href="/pt/feed.xml"
+    />
+    <link rel="stylesheet" href="/assets/consent.css?v=2" />
+    <meta name="ga4-id" content="G-DFPDX00V4R" />
+    <script src="/assets/consent.js?v=3" defer></script>
   </head>
   <body data-privacy-page>
     <main>
@@ -57,47 +65,75 @@
         aplicação seowatcher instalada são guardados separadamente no seu
         computador.
       </p>
+      <p>
+        <small
+          >Última atualização:
+          <time datetime="2026-10-26">26 de outubro de 2026</time></small
+        >
+      </p>
       <section>
-        <h2>Medição opcional de utilização</h2>
+        <h2>Google Analytics 4 (quando ativado)</h2>
         <p>
-          O Google Analytics 4 só é carregado com a sua autorização. A Google
-          trata visualizações de páginas, deslocações, cliques externos e
-          transferências, juntamente com informações técnicas do navegador e
-          dispositivo. Usamos estes dados para melhorar o site e os guias de
-          instalação. Não usamos personalização de publicidade nem sinais
-          Google.
+          O Google Analytics 4 só funciona neste site quando está configurado um
+          ID de medição GA4. Sem ele, as páginas não enviam nenhum pedido à
+          Google, não mostram o aviso de cookies e não guardam nada no
+          navegador. Mesmo assim, a etiqueta Google (gtag.js) só é carregada
+          depois de escolher Aceitar. Após a aceitação, é medido: visualizações
+          de páginas e os eventos da medição otimizada do GA4 (por exemplo
+          deslocações, cliques em ligações externas e transferências),
+          juntamente com o endereço da página, o endereço de origem, o
+          navegador, o sistema operativo, o tipo de dispositivo, o tamanho do
+          ecrã, o idioma e uma localização aproximada obtida a partir do
+          endereço IP. Segundo a Google, o GA4 não regista nem guarda endereços
+          IP. Usamos estes dados para melhorar o site e os guias de instalação.
         </p>
       </section>
       <section>
-        <h2>Escolhas e conservação</h2>
+        <h2>Consentimento</h2>
+        <p>
+          Usamos o Modo de consentimento v2 da Google na versão básica: todas as
+          autorizações de análise e publicidade começam recusadas e, até dar o
+          seu consentimento, nada é carregado da Google e nenhum dado lhe é
+          enviado. Aceitar autoriza apenas o armazenamento de análise, carrega a
+          etiqueta Google e grava os cookies de análise (_ga e nomes começados
+          por _ga_). As autorizações de publicidade nunca são concedidas; a
+          personalização de anúncios e os sinais Google estão desativados.
+        </p>
+      </section>
+      <section>
+        <h2>Conservação</h2>
         <p>
           A aceitação ou recusa é guardada durante 6 meses no armazenamento
-          local deste navegador como seowatcher-consent-v1. Os cookies de
-          análise (_ga e nomes começados por _ga_) só são usados após aceitação
-          e têm uma duração máxima de 13 meses. A conservação de dados de
-          utilizador e eventos no GA4 é de 14 meses. Os relatórios agregados da
-          Google podem seguir outras regras.
+          local deste navegador como seowatcher-consent-v1; depois disso,
+          voltamos a perguntar. Os cookies de análise duram no máximo 13 meses.
+          A conservação de dados de utilizador e eventos na propriedade GA4 está
+          definida para 14 meses. Os relatórios agregados da Google podem seguir
+          outras regras.
         </p>
       </section>
       <section>
-        <h2>Alterar a escolha</h2>
+        <h2>Retirar o consentimento</h2>
         <p>
-          O consentimento é opcional. Recusar não impede a utilização do site
-          nem a transferência da aplicação. Use Definições de cookies no final
-          de qualquer página para alterar a escolha ou retirar o consentimento.
-          A retirada desativa a análise, apaga os cookies de análise acessíveis
-          e recarrega a página.
+          O consentimento é opcional; recusar não impede a utilização do site
+          nem a transferência da aplicação. Enquanto a análise estiver ativada,
+          cada página tem no final o botão Definições de cookies: com ele pode
+          alterar a escolha ou retirar o consentimento a qualquer momento. A
+          retirada interrompe a medição, apaga os cookies de análise acessíveis
+          e recarrega a página; depois disso, nenhum dado é enviado à Google.
+          Apagar os dados deste site no navegador também repõe a escolha.
         </p>
       </section>
       <section>
         <h2>Prestadores e contacto</h2>
         <p>
-          O servidor web trata dados de ligação como o endereço IP e o URL
-          pedido para responder ao pedido. Com autorização para análise, a
-          Google trata os dados na sua infraestrutura, que pode incluir
-          servidores fora do seu país. Para pedidos de privacidade ou dados, use
-          o contacto no perfil GitHub do projeto. As ligações Google abaixo
-          explicam outros detalhes do tratamento e cookies.
+          O site está alojado num servidor da Hetzner; o servidor web trata
+          dados de ligação como o endereço IP e o URL pedido para responder ao
+          pedido. Quando a análise está ativada, a Google trata os dados do
+          Analytics em nosso nome, como subcontratante, nos termos de tratamento
+          de dados da Google, o que pode incluir servidores fora do seu país.
+          Para pedidos de privacidade ou dados, use o contacto no perfil GitHub
+          do projeto. As ligações Google abaixo explicam outros detalhes do
+          tratamento e cookies.
         </p>
       </section>
       <p>

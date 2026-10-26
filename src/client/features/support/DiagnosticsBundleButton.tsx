@@ -1,10 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
-import { FileArchive, Loader2 } from "lucide-react";
+import { CheckCircle2, FileArchive, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { getStandardErrorMessage } from "@/client/lib/error-messages";
 import { readClientLog } from "@/client/lib/clientLog";
 import { buildZip } from "@/client/lib/zip";
 import { downloadBlob } from "@/client/lib/download";
+import { useDoneFlash } from "@/client/lib/useDoneFlash";
 import { getDiagnostics } from "@/serverFunctions/diagnostics";
 import { t } from "@/shared/i18n";
 
@@ -45,6 +46,8 @@ export function DiagnosticsBundleButton() {
       toast.error(getStandardErrorMessage(error, t("Paket oluşturulamadı"))),
   });
 
+  const flash = useDoneFlash(build.isPending, build.isSuccess);
+
   return (
     <button
       type="button"
@@ -52,12 +55,14 @@ export function DiagnosticsBundleButton() {
       disabled={build.isPending}
       onClick={() => build.mutate()}
     >
-      {build.isPending ? (
+      {flash === "pending" ? (
         <Loader2 className="size-4 animate-spin" />
+      ) : flash === "done" ? (
+        <CheckCircle2 className="enter size-4 text-success" />
       ) : (
         <FileArchive className="size-4" />
       )}
-      {t("Tanılama paketi indir")}
+      {flash === "done" ? t("İndirildi") : t("Tanılama paketi indir")}
     </button>
   );
 }

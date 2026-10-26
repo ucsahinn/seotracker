@@ -11,6 +11,7 @@ import {
   type AffectedPage,
 } from "@/client/features/audit/results/issueAffected";
 import type { AuditIssueRow } from "@/client/features/audit/results/issueGroups";
+import type { DetailLine } from "@/shared/audit-issues/details";
 import { t } from "@/shared/i18n";
 
 /**
@@ -111,18 +112,51 @@ function PageRow({ page }: { page: AffectedPage }) {
         </span>
       ) : null}
       {detailed.map((lines, index) => (
-        <dl
+        <div
           key={index}
           className="flex flex-wrap gap-x-4 gap-y-0.5 text-xs text-muted"
         >
-          {lines.map((line) => (
-            <div key={line.label} className="flex min-w-0 gap-1">
-              <dt className="shrink-0">{line.label}:</dt>
-              <dd className="min-w-0 break-all">{line.value}</dd>
-            </div>
+          {lines.map((line, lineIndex) => (
+            <DetailRow key={lineIndex} line={line} />
           ))}
-        </dl>
+        </div>
       ))}
     </li>
+  );
+}
+
+/**
+ * One line of evidence: a sentence, a "label: value" pair, or a list of
+ * addresses and markup set as code, each on its own line so a long URL
+ * wraps instead of running into the next item.
+ */
+function DetailRow({ line }: { line: DetailLine }) {
+  if (line.label === null) {
+    return <p className="basis-full text-base-content">{line.value}</p>;
+  }
+  if (line.items) {
+    return (
+      <dl className="basis-full">
+        <dt>{line.label}:</dt>
+        <dd>
+          <ul className="mt-0.5 space-y-0.5">
+            {line.items.map((item) => (
+              <li key={item} className="break-all font-mono text-[11px]">
+                {item}
+              </li>
+            ))}
+            {line.more ? (
+              <li>{t("ve {count} tane daha", { count: line.more })}</li>
+            ) : null}
+          </ul>
+        </dd>
+      </dl>
+    );
+  }
+  return (
+    <dl className="flex min-w-0 gap-1">
+      <dt className="shrink-0">{line.label}:</dt>
+      <dd className="min-w-0 break-all">{line.value}</dd>
+    </dl>
   );
 }

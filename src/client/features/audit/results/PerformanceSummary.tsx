@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 import { Link } from "@tanstack/react-router";
-import { AlertTriangle } from "lucide-react";
 import { lighthouseBand } from "@/shared/lighthouse";
 import { formatCount } from "@/client/lib/format";
 import { ScoreHistogram } from "@/client/features/audit/results/ScoreHistogram";
@@ -60,7 +59,6 @@ export function PerformanceSummary({
   onChange: (filters: PerformanceFilters) => void;
 }) {
   const stats = useMemo(() => summarizeLighthouse(lighthouse), [lighthouse]);
-  const failedActive = filters.status === "failed";
   const reason = failureReason(lighthouse, plannedChecks);
   const averages: Array<[string, number | null]> = [
     [t("Hız"), stats.avgPerformance],
@@ -69,8 +67,8 @@ export function PerformanceSummary({
   ];
 
   return (
-    <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
-      <section className="rounded-box border border-base-300 bg-base-100 px-4 py-3">
+    <div className="grid items-start gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
+      <section className="rounded-box border border-[var(--hairline)] bg-base-100 px-4 py-3">
         <h3 className="text-sm font-medium">{t("Ortalama puanlar")}</h3>
         <dl className="mt-2 grid grid-cols-3 gap-3">
           {averages.map(([label, score]) => (
@@ -84,33 +82,27 @@ export function PerformanceSummary({
             </div>
           ))}
         </dl>
-        {stats.failed > 0 || failedActive ? (
-          <button
-            type="button"
-            aria-pressed={failedActive}
-            onClick={() =>
-              onChange({ ...filters, status: failedActive ? "all" : "failed" })
-            }
-            className={`mt-3 inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs transition-colors ${
-              failedActive
-                ? "border-primary bg-primary/10 text-primary"
-                : "border-[var(--control-border)] hover:border-primary/50"
-            }`}
-          >
-            <AlertTriangle aria-hidden className="size-3.5" />
-            {t("Ölçülemeyen {count} sayfa", { count: stats.failed })}
-          </button>
+        {stats.failed > 0 ? (
+          <p className="mt-3 text-xs text-muted">
+            {t(
+              "Kısmi veri: {measured} / {total} ölçüm sonuç verdi. Ortalamalar yalnızca ölçülenlerden.",
+              {
+                measured: formatCount(lighthouse.length - stats.failed),
+                total: formatCount(lighthouse.length),
+              },
+            )}
+          </p>
         ) : null}
         {reason ? (
-          <p className="mt-2 text-xs text-muted">
+          <p className="mt-1 text-xs text-muted">
             {reason}{" "}
-            <Link to="/settings" className="link">
+            <Link to="/settings" hash="hiz-olcumu" className="link">
               {t("Ayarlar'ı aç")}
             </Link>
           </p>
         ) : null}
       </section>
-      <section className="rounded-box border border-base-300 bg-base-100 px-3 py-3">
+      <section className="rounded-box border border-[var(--hairline)] bg-base-100 px-3 py-3">
         <h3 className="px-2 text-sm font-medium">
           {t("Mobilde hız dağılımı")}
         </h3>

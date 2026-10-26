@@ -113,7 +113,9 @@ export const auditHygieneFixtures: Fixture[] = [
   build({
     path: "/on-page/h1-too-long",
     name: "A very long h1",
-    summary: "The h1 runs past seventy characters.",
+    // "long" keeps the title's words on the page, so title-content-mismatch
+    // stays quiet.
+    summary: "The h1 is long: it runs past seventy characters.",
     lesson:
       "Google has no limit here; a headline that is a paragraph simply cannot be read at a glance.",
     expected: ["h1-too-long"],

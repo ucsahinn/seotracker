@@ -37,6 +37,12 @@ const runInputSchema = {
     .describe(
       "Run Lighthouse (PageSpeed) on every crawled page, mobile and desktop (default false — it adds minutes of wall-clock time, roughly 8 seconds per page; capped at 50 pages when no PageSpeed key is set, and it stops early if Google's daily quota runs out). Pass true only when the user wants performance/Core Web Vitals detail.",
     ),
+  checkExternal: z
+    .boolean()
+    .optional()
+    .describe(
+      "After the crawl, check up to 200 outgoing links for 404/410/DNS failures and measure up to the remaining budget of the site's own image files (300 URLs in all, 4 at a time, 8-second timeout). Social networks and hosts that block bots are skipped, never reported broken. Default true.",
+    ),
 } as const;
 
 type RunArgs = z.infer<z.ZodObject<typeof runInputSchema>>;
@@ -77,6 +83,7 @@ export const runSiteAuditTool = {
         startUrl: args.url,
         maxPages: args.maxPages,
         lighthouseStrategy,
+        externalChecks: args.checkExternal ?? true,
       }));
     } catch (error) {
       // Expected refusals become readable answers instead of protocol errors:

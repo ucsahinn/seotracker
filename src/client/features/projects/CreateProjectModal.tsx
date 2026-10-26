@@ -13,13 +13,20 @@ import { ProjectMarketFields } from "@/client/features/projects/ProjectMarketFie
 import { createProject } from "@/serverFunctions/projects";
 import { t } from "@/shared/i18n";
 
-export function CreateProjectModal({ onClose }: { onClose: () => void }) {
+export function CreateProjectModal({
+  onClose,
+  initialDomain = "",
+}: {
+  onClose: () => void;
+  /** Prefills the name and domain, e.g. a site audited inside another project. */
+  initialDomain?: string;
+}) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const [name, setName] = React.useState("");
+  const [name, setName] = React.useState(initialDomain);
   const [nameError, setNameError] = React.useState<string | null>(null);
   const nameInput = React.useRef<HTMLInputElement>(null);
-  const [domain, setDomain] = React.useState("");
+  const [domain, setDomain] = React.useState(initialDomain);
   const [market, setMarket] = React.useState({
     locationCode: DEFAULT_LOCATION_CODE,
     languageCode: getLanguageCode(DEFAULT_LOCATION_CODE),

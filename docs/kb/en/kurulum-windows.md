@@ -57,19 +57,19 @@ Right-click the icon (if it is not visible, click the ^ arrow on the taskbar). T
 
 If you start the app a second time (from the Start menu or the desktop shortcut), a second copy does not open. The app that is already open opens the page in the browser; if it is not ready yet, it opens the page when it is.
 
-If the server closes by itself while running, the app reopens it and shows a "seowatcher yeniden başlatılıyor" (seowatcher is restarting) balloon. If it closes three times in ten minutes, the app stops reopening it and the status line reads "Sunucu 10 dakikada üç kez kapandı" (The server closed three times in 10 minutes). Then click **Kurulumu onar**.
+If the server closes by itself while running, the app reopens it and shows a "seowatcher yeniden başlatılıyor" (seowatcher is restarting) balloon. If it closes three times in ten minutes, the app stops reopening it and the status line reads "Sunucu 10 dakikada üç kez kapandı" (The server closed three times in 10 minutes). Then click **Kurulumu onar** (Repair installation).
 
 ### Update
 
-The app updates itself. Two minutes after it opens, and once every day, it checks GitHub for the latest version. If there is a new version, it downloads it, compares the file's fingerprint (SHA-256) with the value on the releases page, then installs it silently and reopens. During this the icon text reads "Güncelleme indiriliyor" (Downloading update) and "Güncelleme kuruluyor" (Installing update), and a small installer window shows briefly. When the app reopens, a "seowatcher X.Y.Z sürümüne güncellendi" (seowatcher was updated to version X.Y.Z) balloon appears; click it to open the list of what is new. The **Ayarlar → Hakkında** (Settings → About) section inside the app also tells you about the new version and points you to **Güncelle** on the icon.
+The app updates itself. Two minutes after it opens, and once every day, it checks GitHub for the latest version. If there is a new version, it downloads it, compares the file's fingerprint (SHA-256) with the value on the releases page, then installs it silently and reopens. During this the icon text reads "Güncelleme indiriliyor" (Downloading update) and "Güncelleme kuruluyor" (Installing update), and a small installer window shows briefly. When the app reopens, a "seowatcher X.Y.Z sürümüne güncellendi" (seowatcher was updated to version X.Y.Z) balloon appears; click it to open the list of what is new. The **Settings → About** section inside the app also tells you about the new version and points you to **Güncelle** (Update) on the icon.
 
-- If you do not want it to install by itself, clear **Güncellemeleri kendiliğinden kur** in the menu. Then, when a new version comes out, you see a balloon once, and the menu item reads "Güncelle: X.Y.Z sürümü hazır" (Update: version X.Y.Z is ready). Click the balloon or the item to install.
+- If you do not want it to install by itself, clear **Güncellemeleri kendiliğinden kur** (Install updates automatically) in the menu. Then, when a new version comes out, you see a balloon once, and the menu item reads "Güncelle: X.Y.Z sürümü hazır" (Update: version X.Y.Z is ready). Click the balloon or the item to install.
 - If there is no internet connection, or GitHub does not answer at that moment, the app tries again an hour later. For automatic attempts, it warns only once per version.
 - If the downloaded file's fingerprint does not match, the update is not installed and the installed version keeps running.
 - An install for all users of the computer needs administrator permission to update, so the app does not install by itself there. When a new version comes out you see a balloon; when you click it, Windows asks for administrator permission.
 - To update by hand, download the new installer from the same address and run it. The wizard closes the running app, replaces the files and starts it again. The **Start seowatcher when Windows starts** (Turkish: "Windows açılınca seowatcher'ı başlat") checkbox in the wizard shows your current setting from the menu.
 
-Your data, your Google connection and your settings stay as they are. An automatic update does not touch the **Windows açılınca başlat** setting.
+Your data, your Google connection and your settings stay as they are. An automatic update does not touch the **Windows açılınca başlat** (Start with Windows) setting.
 
 ### Company deployment
 
@@ -89,8 +89,8 @@ If a file has been deleted from the package (for example, an antivirus program q
 
 ### Uninstall
 
-1. In Windows **Ayarlar → Uygulamalar → Yüklü uygulamalar** (Settings → Apps → Installed apps), find **seowatcher**.
-2. Click **Kaldır** (Uninstall).
+1. In Windows, open **Settings → Apps → Installed apps** and find **seowatcher**.
+2. Click **Uninstall**.
 
 The uninstaller removes the program, the Start menu shortcut the "start with Windows" entry (including one you turned on from the menu) and downloaded update files. It does not touch the data folder, and the uninstall window says so too. If you also want to delete your database, your Google connection and your reports, delete the data folder yourself.
 
@@ -134,7 +134,7 @@ When the number changes, also update the two redirect addresses at Google with t
 
 - When you hover over the taskbar icon (if it is not visible, click the ^ arrow on the taskbar), it should read "seowatcher X.Y.Z: Çalışıyor: http://127.0.0.1:3001/" (seowatcher 0.5.0 Alpha: Running: http://127.0.0.1:3001/). The version number is the one you installed.
 - In the browser, the address `http://127.0.0.1:3001/api/health` should show a text that starts with "status":"ok".
-- On the **Yardım** (Help) screen, the "Kurulumunuzun durumu" (Your setup status) card should say "Her şey yolunda." (Everything is fine.). Before Google is connected, the "Google girişi" (Google sign-in) row asks for attention. This is normal.
+- On the **Help** screen, the "Your setup status" card should say "Everything looks good.". Before Google is connected, the "Google sign-in" row asks for attention. This is normal.
 
 ## Frequently asked questions
 
@@ -153,7 +153,7 @@ When the number changes, also update the two redirect addresses at Google with t
 - **The icon says "Hata: 3001 ve sonraki 9 adres numarası (port) dolu" (Error: 3001 and the next 9 ports are in use).** Another program holds these numbers. Write another number in the `config.json` file.
 - **The icon says "Veritabanı güncellemesi başarısız" (Database update failed).** Click **Günlükleri aç** (Open logs) and check the last lines of `migrate.log`. Usually the disk is full or the folder is read-only.
 - **The icon says "Sunucu beklenmedik şekilde kapandı" (The server closed unexpectedly) or "Sunucu 10 dakikada üç kez kapandı" (The server closed three times in 10 minutes).** The last lines of `server.log` give the reason. Try **Yeniden başlat** (Restart), and if that does not help, **Kurulumu onar** (Repair installation). If it still does not help, click **Sorunu bildir (GitHub)** (Report a problem (GitHub)).
-- **The icon says "Veritabanı güncellemesi 15 dakikada bitmedi" (The database update did not finish in 15 minutes).** Another program may have locked the database file (a backup or sync program). Stop that program and click **Yeniden başlat**.
+- **The icon says "Veritabanı güncellemesi 15 dakikada bitmedi" (The database update did not finish in 15 minutes).** Another program may have locked the database file (a backup or sync program). Stop that program and click **Yeniden başlat** (Restart).
 - **The browser did not open.** Double-click the icon or type the address by hand: `http://127.0.0.1:3001`
 
 <!-- Kaynaklar: packaging/windows/README.md; packaging/windows/launcher/SeoWatcher.cs (menü, port seçimi, dosyalar); packaging/windows/seowatcher.iss (kurulum yeri, görevler, kaldırma); .github/workflows/release-windows.yml (SHA256SUMS) -->

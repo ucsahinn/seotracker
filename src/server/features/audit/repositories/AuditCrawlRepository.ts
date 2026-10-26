@@ -3,10 +3,27 @@
  * finalize-time issue insert, and the click-depth repair. Split from
  * `AuditRepository`, which re-exports these on its own object.
  */
-import { and, eq, gt, gte, inArray, isNull, notInArray, or } from "drizzle-orm";
+import {
+  and,
+  eq,
+  getTableColumns,
+  gt,
+  gte,
+  inArray,
+  isNull,
+  notInArray,
+  or,
+  sql,
+  type SQL,
+} from "drizzle-orm";
 import { chunk, groupBy } from "remeda";
 import { db } from "@/db";
-import { auditIssues, auditPages } from "@/db/schema";
+import {
+  auditIssues,
+  auditPageAnalyticsIds,
+  auditPages,
+  auditPageSchemaTypes,
+} from "@/db/schema";
 import { executeInBatches, runBatch } from "@/db/runBatch";
 import { AUDIT_ISSUE_TYPES } from "@/shared/audit-issues";
 import { deterministicAuditRowId } from "@/server/lib/audit/ids";
@@ -22,6 +39,8 @@ import type { CrawledPageResult } from "@/server/lib/audit/types";
  * batch bounded (a page carries a few dozen issues at most).
  */
 const PAGES_PER_COMMIT = 10;
+/** Child rows per insert statement: three bound values each, under D1's 100. */
+const CHILD_ROWS_PER_INSERT = 30;
 
 async function issueRow(auditId: string, issue: DetectedIssue) {
   return {
@@ -78,6 +97,68 @@ function pageDataColumns(page: CrawledPageResult) {
     crawlDepth: page.crawlDepth,
     inSitemap: page.inSitemap,
     responseTimeMs: page.responseTimeMs,
+    ...signalColumns(page),
+  };
+}
+
+const AUDIT_PAGE_COLUMNS = getTableColumns(auditPages);
+
+/*
+ * The upsert's update half reads back what its insert half already bound
+ * (`excluded.<column>`), so a column costs one bound parameter instead of
+ * two. D1 caps a statement at 100, and a page row has over fifty columns.
+ */
+function fromExcluded(columns: object): Record<string, SQL> {
+  return Object.fromEntries(
+    Object.entries(AUDIT_PAGE_COLUMNS)
+      .filter(([key]) => key in columns)
+      .map(([key, column]) => [key, sql.raw(`excluded."${column.name}"`)]),
+  );
+}
+
+/** Null on pages with no analyzed HTML: not measured is not zero. */
+function signalColumns(page: CrawledPageResult) {
+  const signals = page.isHtml ? page.signals : null;
+  return {
+    htmlBytes: signals ? page.htmlBytes : null,
+    textRatio: signals?.textRatio ?? null,
+    domNodeCount: signals?.domNodeCount ?? null,
+    domMaxDepth: signals?.domMaxDepth ?? null,
+    twitterCard: signals?.twitterCard ?? null,
+    ogComplete: signals
+      ? Boolean(page.ogTitle && page.ogDescription && page.ogImage)
+      : null,
+    metaKeywordsPresent: signals?.metaKeywordsPresent ?? null,
+    viewportZoomDisabled: signals?.viewportZoomDisabled ?? null,
+    externalBlankWithoutNoopener: signals?.externalBlankWithoutNoopener ?? null,
+    javascriptLinks: signals?.javascriptLinks ?? null,
+    hashOnlyLinks: signals?.hashOnlyLinks ?? null,
+    imagesLazyCount: signals?.imagesLazyCount ?? null,
+    imagesModernFormatCount: signals?.imagesModernFormatCount ?? null,
+    formInputsWithoutLabel: signals?.formInputsWithoutLabel ?? null,
+    duplicateIds: signals?.duplicateIds ?? null,
+    contentSimhash: signals?.contentSimhash ?? null,
+    hasBreadcrumbs: signals?.markup.hasBreadcrumbs ?? null,
+    hasFeedLink: signals?.markup.hasFeedLink ?? null,
+  };
+}
+
+function childRows(auditId: string, pages: CrawledPageResult[]) {
+  return {
+    schemaTypes: pages.flatMap((page) =>
+      (page.signals?.jsonLdTypes ?? []).map((schemaType) => ({
+        auditId,
+        pageId: page.id,
+        schemaType,
+      })),
+    ),
+    analyticsIds: pages.flatMap((page) =>
+      (page.signals?.analyticsIds ?? []).map((tagId) => ({
+        auditId,
+        pageId: page.id,
+        tagId,
+      })),
+    ),
   };
 }
 
@@ -106,6 +187,7 @@ async function insertCrawledBatch(
 
   for (const group of chunk(pages, PAGES_PER_COMMIT)) {
     const pageIds = group.map((page) => page.id);
+    const children = childRows(auditId, group);
     await runBatch((tx) => [
       tx
         .delete(auditIssues)
@@ -115,13 +197,28 @@ async function insertCrawledBatch(
             inArray(auditIssues.pageId, pageIds),
           ),
         ),
+      tx
+        .delete(auditPageSchemaTypes)
+        .where(inArray(auditPageSchemaTypes.pageId, pageIds)),
+      tx
+        .delete(auditPageAnalyticsIds)
+        .where(inArray(auditPageAnalyticsIds.pageId, pageIds)),
       ...group.map((page) => {
         const dataColumns = pageDataColumns(page);
         return tx
           .insert(auditPages)
           .values({ id: page.id, auditId, ...dataColumns })
-          .onConflictDoUpdate({ target: auditPages.id, set: dataColumns });
+          .onConflictDoUpdate({
+            target: auditPages.id,
+            set: fromExcluded(dataColumns),
+          });
       }),
+      ...chunk(children.schemaTypes, CHILD_ROWS_PER_INSERT).map((rows) =>
+        tx.insert(auditPageSchemaTypes).values(rows).onConflictDoNothing(),
+      ),
+      ...chunk(children.analyticsIds, CHILD_ROWS_PER_INSERT).map((rows) =>
+        tx.insert(auditPageAnalyticsIds).values(rows).onConflictDoNothing(),
+      ),
       ...pageIds.flatMap((pageId) =>
         (issueRowsByPage[pageId] ?? []).map((row) =>
           tx.insert(auditIssues).values(row).onConflictDoNothing(),
@@ -221,8 +318,25 @@ async function backfillCrawlDepths(
   );
 }
 
+/** The page fields the breadcrumb check reads, after the depth repair. */
+async function getBreadcrumbPages(auditId: string) {
+  return db
+    .select({
+      id: auditPages.id,
+      url: auditPages.url,
+      statusCode: auditPages.statusCode,
+      fetchClass: auditPages.fetchClass,
+      isIndexable: auditPages.isIndexable,
+      crawlDepth: auditPages.crawlDepth,
+      hasBreadcrumbs: auditPages.hasBreadcrumbs,
+    })
+    .from(auditPages)
+    .where(eq(auditPages.auditId, auditId));
+}
+
 export const AuditCrawlRepository = {
   insertCrawledBatch,
   insertIssues,
   backfillCrawlDepths,
+  getBreadcrumbPages,
 } as const;

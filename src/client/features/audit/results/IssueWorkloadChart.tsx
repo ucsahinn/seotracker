@@ -13,6 +13,7 @@ import { useReducedMotion } from "@/client/lib/useReducedMotion";
 import { formatCount } from "@/client/lib/format";
 import type { IssueSeverity } from "@/shared/audit-issues";
 import { t } from "@/shared/i18n";
+import { SeverityIcon } from "./SeverityChip";
 
 /** How many bars before the chart stops being readable and starts being a list. */
 const MAX_BARS = 8;
@@ -26,8 +27,8 @@ const MAX_BARS = 8;
  * disappeared.
  */
 const SEVERITY_FILL: Record<IssueSeverity, string> = {
-  critical: "var(--color-error)",
-  warning: "var(--color-warning)",
+  critical: "var(--mark-error)",
+  warning: "var(--mark-warning)",
   info: "var(--color-info)",
 };
 
@@ -80,6 +81,9 @@ export function IssueWorkloadChart({
     MAX_BARS,
   );
   const hidden = groups.length - rows.length;
+  const legend = (["critical", "warning", "info"] as const).filter((level) =>
+    rows.some((row) => row.severity === level),
+  );
   const top = rows[0];
 
   return (
@@ -90,10 +94,12 @@ export function IssueWorkloadChart({
       <p className="mb-1 px-2 text-xs text-muted">
         {hidden > 0
           ? t(
-              "En çok sayfayı etkileyen {count} tür, kalan {hidden} tür aşağıda.",
+              "En çok sayfayı etkileyen {count} sorun türü; kalan {hidden} tür aşağıdaki listede.",
               { count: rows.length, hidden: formatCount(hidden) },
             )
-          : t("En çok sayfayı etkileyen {count} tür.", { count: rows.length })}
+          : t("En çok sayfayı etkileyen {count} sorun türü.", {
+              count: rows.length,
+            })}
         {onSelect ? ` ${t("Bir çubuğa tıklayıp listeyi daraltın.")}` : ""}
       </p>
       <Chart
@@ -127,6 +133,9 @@ export function IssueWorkloadChart({
             type="category"
             dataKey="title"
             {...CHART_AXIS}
+            // 12px floor for chart text: the shared 11px axis was the
+            // smallest text on the screen, on its longest labels.
+            tick={{ ...CHART_AXIS.tick, fontSize: 12 }}
             width={210}
             interval={0}
           />
@@ -171,7 +180,7 @@ export function IssueWorkloadChart({
             <LabelList
               dataKey="pageCount"
               position="right"
-              className="fill-current text-[11px] tabular-nums"
+              className="fill-current text-xs tabular-nums"
               formatter={(value: unknown) =>
                 typeof value === "number" ? formatCount(value) : ""
               }
@@ -190,6 +199,22 @@ export function IssueWorkloadChart({
           </Bar>
         </BarChart>
       </Chart>
+      <ul
+        aria-label={t("Renklerin anlamı")}
+        className="mt-1 flex flex-wrap gap-x-4 gap-y-1 px-2 text-xs text-muted"
+      >
+        {legend.map((severity) => (
+          <li key={severity} className="inline-flex items-center gap-1.5">
+            <span
+              aria-hidden
+              className="size-2.5 rounded-[2px]"
+              style={{ background: SEVERITY_FILL[severity] }}
+            />
+            <SeverityIcon severity={severity} className="size-3" />
+            {t(SEVERITY_LABEL[severity])}
+          </li>
+        ))}
+      </ul>
       {/*
        * The bars are a pointer shortcut. This is the same choice for the
        * keyboard: invisible until a button is focused, then shown, so focus

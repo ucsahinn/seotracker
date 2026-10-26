@@ -1,11 +1,15 @@
 import { SafeExternalLink } from "@/client/components/SafeExternalLink";
-import { ScoreCard } from "@/client/features/audit/results/ScoreCard";
+import { ScoreOverview } from "@/client/features/audit/results/ScoreOverview";
+import { ChecksView } from "@/client/features/audit/results/ChecksView";
+import { TodoView } from "@/client/features/audit/results/TodoView";
+import { FactsView } from "@/client/features/audit/results/FactsView";
+import { useAuditOverview } from "@/client/features/audit/results/useAuditOverview";
+import type { AuditCategory } from "@/shared/auditCategory";
 import type { getAuditIndexCoverage } from "@/serverFunctions/indexCoverage";
 
 type CoverageRow = Awaited<
   ReturnType<typeof getAuditIndexCoverage>
 >["rows"][number];
-import { formatCount } from "@/client/lib/format";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { ShieldAlert } from "lucide-react";
 import {
@@ -18,16 +22,15 @@ import type { AuditResultsData } from "@/client/features/audit/results/types";
 import type { AuditTab as ResultsTab } from "@/types/schemas/audit";
 import { IndexCoverageView } from "@/client/features/audit/results/IndexCoverageView";
 import { SitemapStatusPanel } from "@/client/features/gsc/SitemapStatusPanel";
-import { DownloadReportButton } from "@/client/features/audit/results/DownloadReportButton";
-import { PerformanceSummary } from "@/client/features/audit/results/PerformanceSummary";
-import { CruxHistoryCard } from "@/client/features/lighthouse/CruxHistoryCard";
 import { TabIntro } from "@/client/features/audit/results/TabIntro";
+import { PerformanceView } from "@/client/features/audit/results/PerformanceView";
 import { ForeignPropertyNotice } from "@/client/features/audit/results/ForeignPropertyNotice";
 import { useAuditPropertyMatch } from "@/client/features/audit/results/useAuditPropertyMatch";
 import {
   EMPTY_PAGES_FILTERS,
   EMPTY_PERFORMANCE_FILTERS,
   filterPages,
+  isLighthouseFailure,
   scopeToUrls,
   type PagesFilters,
   type PerformanceFilters,
@@ -36,11 +39,8 @@ import type { IssueSeverity } from "@/shared/audit-issues";
 import { IssuesView } from "@/client/features/audit/results/IssuesView";
 import { PagesTable } from "@/client/features/audit/results/PagesTable";
 import { Reveal } from "@/client/components/Reveal";
-import { TabPanel, Tabs } from "@/client/components/Tabs";
-import {
-  ExportDropdown,
-  PerformanceTable,
-} from "@/client/features/audit/results/ResultsTables";
+import { TabPanel } from "@/client/components/Tabs";
+import { ResultsHeader } from "@/client/features/audit/results/ResultsHeader";
 import { fillParts } from "@/client/features/settings/fillParts";
 import { t } from "@/shared/i18n";
 
@@ -50,14 +50,20 @@ export function ResultsView({
   onTabChange,
   tab,
   severity,
+  justCompleted = false,
   onSeverityChange,
+  onNewAudit,
 }: {
   projectId: string;
   data: AuditResultsData;
   tab: ResultsTab;
   severity?: IssueSeverity;
+  /** This screen watched the audit finish; the score marks the moment once. */
+  justCompleted?: boolean;
   onTabChange: (tab: ResultsTab, options?: { replace?: boolean }) => void;
   onSeverityChange?: (severity: IssueSeverity | null) => void;
+  /** Back to the launch form, for a re-run. */
+  onNewAudit?: () => void;
 }) {
   const { audit, pages, lighthouse, issues } = data;
   const crawlStopped = issues.some(
@@ -80,6 +86,8 @@ export function ResultsView({
     if (tab !== activeTab) onTabChange(activeTab, { replace: true });
   }, [activeTab, onTabChange, tab]);
   const property = useAuditPropertyMatch(projectId, audit.startUrl);
+  const overview = useAuditOverview(projectId, data);
+  const [checksFocus, setChecksFocus] = useState<AuditCategory | undefined>();
   const blockedCount = useMemo(
     () => pages.filter((page) => page.fetchClass === "blocked").length,
     [pages],
@@ -148,6 +156,13 @@ export function ResultsView({
     () => new Set(issues.map((issue) => issue.pageUrl)).size,
     [issues],
   );
+  const lighthouseMeasured = useMemo(
+    () => lighthouse.filter((row) => !isLighthouseFailure(row)).length,
+    [lighthouse],
+  );
+  // The index tab of a foreign property is one notice; there is nothing in
+  // it to export.
+  const foreignIndex = activeTab === "index" && !property.covered;
 
   return (
     <>
@@ -203,84 +218,107 @@ export function ResultsView({
       )}
 
       <Reveal className="flex flex-col gap-6">
-        <div className="flex justify-end">
-          <DownloadReportButton projectId={projectId} auditId={audit.id} />
-        </div>
+        {overview.score === null ? null : (
+          <ScoreOverview
+            score={overview.score}
+            breakdown={overview.breakdown}
+            history={overview.insights?.history}
+            animate={justCompleted}
+            onOpenChecks={(category) => {
+              setChecksFocus(category);
+              onTabChange("checks");
+            }}
+          />
+        )}
 
-        <ScoreCard
-          issues={issues}
-          pagesCrawled={audit.pagesCrawled}
-          onOpenIssues={() => onTabChange("issues")}
-        />
-
-        <div className="card bg-base-100 border border-base-300">
-          <div className="card-body gap-3">
+        <div className="rounded-box border border-[var(--hairline)] bg-base-100 shadow-[var(--shadow-raise)]">
+          <div className="flex flex-col gap-3 p-3 sm:p-5">
             <ResultsHeader
+              todoCount={overview.todos.length}
+              checkCount={overview.breakdown.checks.length}
               issueCount={issuePageCount}
               issueRowCount={scopedIssues.length}
               coverageCount={coverageRows === null ? null : coverageRows.length}
               pageCount={filteredPages.length}
-              lighthouseCount={filteredLighthouse.length}
+              lighthouseCount={lighthouse.length}
+              lighthouseMeasured={lighthouseMeasured}
+              performanceExportCount={filteredLighthouse.length}
               hasPerformanceTab={hasPerformanceTab}
               activeTab={activeTab}
               onTabChange={onTabChange}
-              onExport={(format) => {
-                if (activeTab === "index") {
-                  exportIndexCoverage(coverageRows ?? [], format);
-                  return;
-                }
-                if (activeTab === "performance") {
-                  exportPerformance(filteredLighthouse, pages, format);
-                  return;
-                }
-                if (activeTab === "issues") {
-                  exportIssues(scopedIssues, format);
-                  return;
-                }
-                exportPages(filteredPages, format);
-              }}
+              onExport={
+                foreignIndex
+                  ? undefined
+                  : (format) => {
+                      if (activeTab === "index") {
+                        exportIndexCoverage(coverageRows ?? [], format);
+                        return;
+                      }
+                      if (activeTab === "performance") {
+                        exportPerformance(filteredLighthouse, pages, format);
+                        return;
+                      }
+                      if (activeTab !== "pages") {
+                        // The overview tabs are views of the issue list.
+                        exportIssues(scopedIssues, format);
+                        return;
+                      }
+                      exportPages(filteredPages, format);
+                    }
+              }
             />
 
             <TabPanel group="audit-results" value={activeTab}>
               <div className="mb-3">
                 <TabIntro tab={activeTab} />
               </div>
-              {activeTab === "index" && (
-                <div className="space-y-4">
-                  {/* Two halves of one question. Above: what the site told
-                    Google to crawl. Below: what Google decided about the
-                    pages this audit found. A sitemap Google has not
-                    downloaded since March explains a coverage table full of
-                    unanswered rows, and the two used to live apart. */}
-                  {property.covered ? null : (
-                    <ForeignPropertyNotice
-                      projectId={projectId}
-                      auditedHost={property.auditedHost}
-                      propertyHost={
-                        property.propertyHost ?? t("başka bir mülk")
-                      }
-                    />
-                  )}
-                  <SitemapStatusPanel projectId={projectId} />
-                  <IndexCoverageView
-                    projectId={projectId}
-                    auditId={audit.id}
-                    onRowsChange={(rows) => setCoverageRows(rows ?? null)}
-                    askDisabledReason={
-                      property.covered
-                        ? undefined
-                        : t(
-                            "Bu denetim {auditedHost} sitesine ait, bağlı mülk ise {propertyHost}. Sorarsak kota boşa giderdi.",
-                            {
-                              auditedHost: property.auditedHost,
-                              propertyHost:
-                                property.propertyHost ?? t("başka bir mülk"),
-                            },
-                          )
-                    }
-                  />
-                </div>
+              {activeTab === "todo" && (
+                <TodoView
+                  todos={overview.todos}
+                  firstGain={overview.firstGain}
+                  traffic={overview.traffic}
+                  insights={overview.insights}
+                  issues={issues}
+                />
               )}
+              {activeTab === "checks" && (
+                <ChecksView
+                  breakdown={overview.breakdown}
+                  focus={checksFocus}
+                  onOpenIssues={() => onTabChange("issues")}
+                />
+              )}
+              {activeTab === "facts" && (
+                <FactsView
+                  facts={data.siteFacts}
+                  insights={overview.insights}
+                />
+              )}
+              {activeTab === "index" &&
+                (property.covered ? (
+                  <div className="space-y-4">
+                    {/* Two halves of one question. Above: what the site told
+                      Google to crawl. Below: what Google decided about the
+                      pages this audit found. A sitemap Google has not
+                      downloaded since March explains a coverage table full
+                      of unanswered rows, and the two used to live apart. */}
+                    <SitemapStatusPanel projectId={projectId} />
+                    <IndexCoverageView
+                      projectId={projectId}
+                      auditId={audit.id}
+                      onRowsChange={(rows) => setCoverageRows(rows ?? null)}
+                    />
+                  </div>
+                ) : (
+                  /* The connected property is another site: its sitemaps,
+                     the quota card and an inspect button would all be about
+                     a site that is not on screen. One card says so. */
+                  <ForeignPropertyNotice
+                    projectId={projectId}
+                    auditedHost={property.auditedHost}
+                    propertyHost={property.propertyHost ?? t("başka bir mülk")}
+                  />
+                ))}
               {activeTab === "issues" && (
                 <IssuesView
                   issues={issues}
@@ -312,29 +350,17 @@ export function ResultsView({
                 />
               )}
               {activeTab === "performance" && (
-                <div className="mb-4">
-                  <CruxHistoryCard url={audit.startUrl} />
-                </div>
-              )}
-              {activeTab === "performance" && lighthouse.length > 0 && (
-                <div className="mb-4">
-                  <PerformanceSummary
-                    lighthouse={lighthouse}
-                    plannedChecks={audit.lighthouseTotal}
-                    filters={performanceFilters}
-                    onChange={setPerformanceFilters}
-                  />
-                </div>
-              )}
-              {activeTab === "performance" && lighthouse.length > 0 && (
-                <PerformanceTable
-                  auditId={audit.id}
+                <PerformanceView
                   projectId={projectId}
+                  auditId={audit.id}
+                  startUrl={audit.startUrl}
                   lighthouse={lighthouse}
                   pages={pages}
+                  plannedChecks={audit.lighthouseTotal}
                   filters={performanceFilters}
                   onFiltersChange={setPerformanceFilters}
                   onFilteredIdsChange={setPerformanceIds}
+                  onNewAudit={onNewAudit}
                 />
               )}
             </TabPanel>
@@ -360,86 +386,6 @@ function CrawlWarning({
         <span className="font-medium">{headline}</span>{" "}
         <span className="text-muted">{children}</span>
       </p>
-    </div>
-  );
-}
-
-function ResultsHeader({
-  issueCount,
-  issueRowCount,
-  coverageCount,
-  pageCount,
-  lighthouseCount,
-  hasPerformanceTab,
-  activeTab,
-  onTabChange,
-  onExport,
-}: {
-  /** Distinct affected pages — what the tab label promises. */
-  issueCount: number;
-  /** Issue records — what an issues export actually writes. */
-  issueRowCount: number;
-  /** Rows Google has answered about, or null before that tab has loaded. */
-  coverageCount: number | null;
-  pageCount: number;
-  lighthouseCount: number;
-  hasPerformanceTab: boolean;
-  activeTab: ResultsTab;
-  onTabChange: (tab: ResultsTab) => void;
-  onExport: (format: "csv" | "json" | "sheets") => void;
-}) {
-  const tabs: Array<{ tab: ResultsTab; label: string }> = [
-    {
-      tab: "issues",
-      label: t("Sorunlu sayfalar ({count})", {
-        count: formatCount(issueCount),
-      }),
-    },
-    {
-      tab: "pages",
-      label: t("Sayfalar ({count})", { count: formatCount(pageCount) }),
-    },
-    {
-      tab: "index",
-      label:
-        coverageCount === null
-          ? t("Dizin durumu")
-          : t("Dizin durumu ({count})", { count: formatCount(coverageCount) }),
-    },
-    ...(hasPerformanceTab
-      ? [
-          {
-            tab: "performance" as const,
-            label: t("Hız ({count})", { count: formatCount(lighthouseCount) }),
-          },
-        ]
-      : []),
-  ];
-
-  return (
-    <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
-      <Tabs
-        group="audit-results"
-        className="w-fit"
-        value={activeTab}
-        onChange={onTabChange}
-        items={tabs.map(({ tab, label }) => ({ id: tab, label }))}
-      />
-
-      {/* No export for index coverage yet, and falling through to the pages
-          export downloaded the wrong file without saying so. */}
-      <ExportDropdown
-        onExport={onExport}
-        rowCount={
-          activeTab === "performance"
-            ? lighthouseCount
-            : activeTab === "issues"
-              ? issueRowCount
-              : activeTab === "index"
-                ? (coverageCount ?? 0)
-                : pageCount
-        }
-      />
     </div>
   );
 }

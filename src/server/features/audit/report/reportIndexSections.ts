@@ -38,7 +38,7 @@ export function indexSection(input: AuditReportInput): string {
   const cov = input.indexCoverage;
   if (!cov || cov.asked === 0) {
     return `<section id="dizin">
-      <h2>${t("4. Google dizin durumu")}</h2>
+      <h2>${t("6. Google dizin durumu")}</h2>
       <p class="empty">${escapeHtml(t("Bu denetimin sayfaları için Search Console URL Denetleme Aracı sonucu kayıtlı değil, bu yüzden Google'ın hangi sayfaları dizine aldığı rapora girmiyor. Dizin Kapsamı ekranından inceleme çalıştırıldıktan sonra rapor yeniden oluşturulursa bu bölüm dolar."))}</p>
     </section>`;
   }
@@ -50,7 +50,11 @@ export function indexSection(input: AuditReportInput): string {
       value: cov.notIndexed,
       color: COLORS.critical,
     },
-    { label: t("Henüz sorulmadı"), value: cov.pending, color: COLORS.muted },
+    {
+      label: t("Henüz kontrol edilmedi"),
+      value: cov.pending,
+      color: COLORS.muted,
+    },
   ];
 
   const states = new Map<string, number>();
@@ -86,7 +90,7 @@ export function indexSection(input: AuditReportInput): string {
   );
 
   return `<section id="dizin">
-    <h2>${t("4. Google dizin durumu")}</h2>
+    <h2>${t("6. Google dizin durumu")}</h2>
     <p class="note">${escapeHtml(source)} ${escapeHtml(answered)}</p>
     <div>
       ${figure(t("Dizin durumu"), donutChart(data, formatCount(cov.rows.length), t("sayfa")), chartSummary(data), t("Google dizin durumu dağılımı"))}
@@ -126,7 +130,7 @@ export function sitemapSection(
   const { shown, hidden } = capList(missing, SITEMAP_LIST_CAP);
 
   return `<section id="sitemap">
-    <h2>${t("5. Site haritası")}</h2>
+    <h2>${t("7. Site haritası")}</h2>
     <p class="note">${t(
       "Taranan {count} sayfanın {inMap} tanesi ({percent}) site haritasında. Haritanın kendisi (toplam adres sayısı, dosya boyutu) rapora girmez; yalnızca taranan sayfaların harita durumu ve haritayla ilgili bulunan sorunlar gösterilir.",
       {

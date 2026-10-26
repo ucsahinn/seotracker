@@ -109,3 +109,8 @@ clear.
 
 - 2026-10-23: Bash tool heredocs collapse one level of backslashes, which silently corrupted a scripted C# edit (packaging/windows). Write edit scripts with the Write tool instead.
 - 2026-10-23: Python on this Windows machine reads stdin as cp1252, so Turkish text piped through a Bash heredoc gets mangled. Use `PYTHONUTF8=1` or write the script to a file first.
+
+- 2026-10-26: `pnpm run site:build` fails with `UNKNOWN: unknown error, open 'site/...'` while `vite dev` is running (its watcher briefly holds the files). Stop the dev server or rerun the failed step; running the steps one by one works.
+- 2026-10-26: The npx-cached Playwright library (`_npx/381cec31605a419a`) expects chromium_headless_shell-1247, which is not installed; `chromium.launch()` fails until you pass `executablePath` to the installed `ms-playwright/chromium_headless_shell-1234` build.
+- 2026-10-26: `createTestDb` (src/server/test-support/sqlite-test-db.ts) answers drizzle's `get` with a list of rows, so any `db.query.*.findFirst` returns a garbled row (`startUrl` undefined -> "Unexpected SQL parameter" later). Tests that pass through `AuditRepository.getAuditForProject` have to mock it; typing a correct `get` branch trips the `{ rows: any[] }` callback type.
+- 2026-10-26: Playwright screenshots of the dev server (3005) taken while source files are being edited can come out blank (Vite HMR full reload mid-capture); rerun the capture once edits have settled.

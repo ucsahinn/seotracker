@@ -10,7 +10,10 @@ import { normalizeUrl, isSameOrigin } from "@/server/lib/audit/url-utils";
 import type { PageAnalysis, PageLink } from "@/server/lib/audit/types";
 
 /** The previous cheerio implementation, verbatim (minus passthrough fields). */
-function analyzeHtmlWithCheerio(html: string, pageUrl: string): PageAnalysis {
+function analyzeHtmlWithCheerio(
+  html: string,
+  pageUrl: string,
+): Omit<PageAnalysis, "signals"> {
   const $ = cheerio.load(html);
 
   const title = $("title").first().text().trim();
@@ -161,6 +164,7 @@ function analyzeHtmlWithCheerio(html: string, pageUrl: string): PageAnalysis {
     bodyText,
     images,
     links: Array.from(linksByTarget.values()),
+    linkTargetCount: linksByTarget.size,
     hasStructuredData,
     invalidStructuredDataCount: 0,
     viewport: viewport === undefined ? null : viewport.trim(),
@@ -173,7 +177,13 @@ function analyzeHtmlWithCheerio(html: string, pageUrl: string): PageAnalysis {
 const PAGE_URL = "https://example.com/blog/post";
 
 function expectParity(html: string) {
-  const streamed = analyzeHtml(html, PAGE_URL, 200, 0);
+  // The signals postdate the DOM implementation; page-signals.test.ts covers them.
+  const { signals: _signals, ...streamed } = analyzeHtml(
+    html,
+    PAGE_URL,
+    200,
+    0,
+  );
   const reference = analyzeHtmlWithCheerio(html, PAGE_URL);
   expect(streamed).toEqual(reference);
 }
@@ -318,6 +328,7 @@ describe("analyzeHtml extraction caps", () => {
       100,
     );
     expect(analysis.links).toHaveLength(1_000);
+    expect(analysis.linkTargetCount).toBe(1_100);
     expect(analysis.images).toHaveLength(1_000);
   });
 });

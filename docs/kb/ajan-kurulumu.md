@@ -73,41 +73,42 @@ Daha kolay yol budur. Metni şöyle alın:
 
 Toplam 33 araç var. "Yazar" sütunu uygulamadaki veriyi değiştirenleri, "Kota" sütunu Google'ın günlük hakkından harcayanları işaretler. Yazan araçlar sizin onayınız olmadan çağrılmamalı. İyi kurulmuş şablonlar sorar, ama uygulama sormaz.
 
-| Araç                                         | Ne yapar                                                                                     | Yazar | Kota                         |
-| -------------------------------------------- | -------------------------------------------------------------------------------------------- | ----- | ---------------------------- |
-| `whoami`                                     | Hangi kurulum ve kullanıcı olduğunuzu söyler.                                                |       |                              |
-| `get_diagnostics`                            | Sürümü, kurulum kontrollerini, tablo sayılarını, son 25 denetimi ve kota sayaçlarını verir.  |       |                              |
-| `list_projects`                              | Projelerinizi sıralar. Her araç bir proje numarası ister.                                    |       |                              |
-| `create_project`                             | Yeni proje açar.                                                                             | Evet  |                              |
-| `get_project_context`                        | Proje bilgisi ekranını okur.                                                                 |       |                              |
-| `update_project_context`                     | Proje bilgisini değiştirir ve araştırma günlüğüne not düşer.                                 | Evet  |                              |
-| `get_search_console_performance`             | Tıklama, gösterim, oran ve sırayı sorgu, sayfa, ülke, cihaz ya da tarihe göre verir.         |       |                              |
-| `get_search_opportunities`                   | Search Console ve Analytics'ten fırsat listesi çıkarır.                                      |       |                              |
-| `get_cannibalization`                        | Aynı aramada birbiriyle yarışan sayfaları gösterir.                                          |       |                              |
-| `get_ranking_history`                        | Bilgisayarınızdaki sıralama arşivini verir; Google'ın 16 aylık sınırından eskisini de tutar. |       |                              |
-| `get_index_coverage`                         | Daha önce kaydedilmiş Google dizin cevaplarını verir, Google'a sormaz.                       |       |                              |
-| `inspect_urls`                               | Google'a sayfaların durumunu sorar, çağrı başına 10 adres.                                   | Evet  | Günde 2.000, mülk başına     |
-| `get_sitemaps`                               | Search Console'daki site haritası durumunu gösterir.                                         |       |                              |
-| `run_site_audit`                             | Site denetimini başlatır.                                                                    | Evet  | PageSpeed, hız ölçümü açıksa |
-| `get_audit_status`                           | Denetimin hangi aşamada olduğunu söyler, takılan denetimi başarısız işaretleyebilir.         |       |                              |
-| `get_audit_issues`                           | Bulunan sorunları düzeltme adımlarıyla verir.                                                |       |                              |
-| `get_audit_pages`                            | Taranan sayfaları sıralar.                                                                   |       |                              |
-| `get_google_analytics_organic_overview`      | Aramadan gelen ziyaretlerin özetini ve önceki dönemi verir.                                  |       |                              |
-| `get_google_analytics_organic_landing_pages` | Aramadan gelenlerin ilk girdiği sayfaları sıralar.                                           |       |                              |
-| `get_google_analytics_page_performance`      | Sayfaların görüntülenme ve etkileşimini verir.                                               |       |                              |
-| `get_google_analytics_traffic_acquisition`   | Ziyaretçilerin kanal, kaynak ve kampanyaya göre dağılımını verir.                            |       |                              |
-| `get_google_analytics_key_events`            | Analytics'te anahtar olarak işaretlenen olayları verir.                                      |       |                              |
-| `get_google_analytics_ecommerce_performance` | Ürün satışlarını verir.                                                                      |       |                              |
-| `get_google_analytics_site_search`           | Ziyaretçilerin sitenizdeki arama kutusuna yazdığı terimleri verir.                           |       |                              |
-| `get_google_analytics_audience_breakdown`    | Ziyaretçileri cihaz, ülke, yeni ve geri dönen diye ayırır.                                   |       |                              |
-| `get_google_analytics_measurement_health`    | Ölçüm kurulumunu kontrol eder, rapor hakkı harcamaz.                                         |       |                              |
-| `list_saved_keywords`                        | Kaydettiğiniz kelimeleri sıralar.                                                            |       |                              |
-| `save_keywords`                              | Kelime kaydeder.                                                                             | Evet  |                              |
-| `list_reports`                               | Raporlarınızı sıralar.                                                                       |       |                              |
-| `get_report`                                 | Bir raporu okur, istenirse HTML halini de verir.                                             |       |                              |
-| `save_report`                                | Rapor kaydeder ya da var olanı günceller.                                                    | Evet  |                              |
-| `list_report_templates`                      | Rapor şablonlarını okur.                                                                     |       |                              |
-| `save_report_template`                       | Rapor şablonu kaydeder.                                                                      | Evet  |                              |
+| Araç                                         | Ne yapar                                                                                               | Yazar | Kota                         |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------ | ----- | ---------------------------- |
+| `whoami`                                     | Hangi kurulum ve kullanıcı olduğunuzu söyler.                                                          |       |                              |
+| `get_diagnostics`                            | Sürümü, kurulum kontrollerini, tablo sayılarını, son 25 denetimi ve kota sayaçlarını verir.            |       |                              |
+| `list_projects`                              | Projelerinizi sıralar. Her araç bir proje numarası ister.                                              |       |                              |
+| `create_project`                             | Yeni proje açar.                                                                                       | Evet  |                              |
+| `get_project_context`                        | Proje bilgisi ekranını okur.                                                                           |       |                              |
+| `update_project_context`                     | Proje bilgisini değiştirir ve araştırma günlüğüne not düşer.                                           | Evet  |                              |
+| `get_search_console_performance`             | Tıklama, gösterim, oran ve sırayı sorgu, sayfa, ülke, cihaz ya da tarihe göre verir.                   |       |                              |
+| `get_search_opportunities`                   | Search Console ve Analytics'ten fırsat listesi çıkarır.                                                |       |                              |
+| `get_cannibalization`                        | Aynı aramada birbiriyle yarışan sayfaları gösterir.                                                    |       |                              |
+| `get_ranking_history`                        | Bilgisayarınızdaki sıralama arşivini verir; Google'ın 16 aylık sınırından eskisini de tutar.           |       |                              |
+| `get_index_coverage`                         | Daha önce kaydedilmiş Google dizin cevaplarını verir, Google'a sormaz.                                 |       |                              |
+| `inspect_urls`                               | Google'a sayfaların durumunu sorar, çağrı başına 10 adres.                                             | Evet  | Günde 2.000, mülk başına     |
+| `get_sitemaps`                               | Search Console'daki site haritası durumunu gösterir.                                                   |       |                              |
+| `run_site_audit`                             | Site denetimini başlatır.                                                                              | Evet  | PageSpeed, hız ölçümü açıksa |
+| `get_audit_status`                           | Denetimin hangi aşamada olduğunu söyler, takılan denetimi başarısız işaretleyebilir.                   |       |                              |
+| `get_audit_summary`                          | Başlangıç noktası: site puanı, kategori puanları, sıralı yapılacaklar listesi ve sitenin anlık verisi. |       |                              |
+| `get_audit_issues`                           | Bulunan sorunları düzeltme adımlarıyla verir.                                                          |       |                              |
+| `get_audit_pages`                            | Taranan sayfaları sıralar.                                                                             |       |                              |
+| `get_google_analytics_organic_overview`      | Aramadan gelen ziyaretlerin özetini ve önceki dönemi verir.                                            |       |                              |
+| `get_google_analytics_organic_landing_pages` | Aramadan gelenlerin ilk girdiği sayfaları sıralar.                                                     |       |                              |
+| `get_google_analytics_page_performance`      | Sayfaların görüntülenme ve etkileşimini verir.                                                         |       |                              |
+| `get_google_analytics_traffic_acquisition`   | Ziyaretçilerin kanal, kaynak ve kampanyaya göre dağılımını verir.                                      |       |                              |
+| `get_google_analytics_key_events`            | Analytics'te anahtar olarak işaretlenen olayları verir.                                                |       |                              |
+| `get_google_analytics_ecommerce_performance` | Ürün satışlarını verir.                                                                                |       |                              |
+| `get_google_analytics_site_search`           | Ziyaretçilerin sitenizdeki arama kutusuna yazdığı terimleri verir.                                     |       |                              |
+| `get_google_analytics_audience_breakdown`    | Ziyaretçileri cihaz, ülke, yeni ve geri dönen diye ayırır.                                             |       |                              |
+| `get_google_analytics_measurement_health`    | Ölçüm kurulumunu kontrol eder, rapor hakkı harcamaz.                                                   |       |                              |
+| `list_saved_keywords`                        | Kaydettiğiniz kelimeleri sıralar.                                                                      |       |                              |
+| `save_keywords`                              | Kelime kaydeder.                                                                                       | Evet  |                              |
+| `list_reports`                               | Raporlarınızı sıralar.                                                                                 |       |                              |
+| `get_report`                                 | Bir raporu okur, istenirse HTML halini de verir.                                                       |       |                              |
+| `save_report`                                | Rapor kaydeder ya da var olanı günceller.                                                              | Evet  |                              |
+| `list_report_templates`                      | Rapor şablonlarını okur.                                                                               |       |                              |
+| `save_report_template`                       | Rapor şablonu kaydeder.                                                                                | Evet  |                              |
 
 Analytics araçları Google'ın Analytics rapor hakkından harcar (standart mülkte günde 200.000 birim). Bu hakkı uygulamada **Ayarlar** ekranındaki Sınırlar bölümünden izlersiniz.
 

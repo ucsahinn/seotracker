@@ -2257,22 +2257,22 @@ export const ptCatalog = {
     'Três ou mais links na página que levam para seu próprio site carregam rel="nofollow". nofollow diz ao Google “não confie neste link” e links internos raramente precisam dele. O Google pode não seguir esses links, portanto, se a página de destino não puder ser acessada de outra forma, ela será indexada tarde ou nem será indexada.',
   'Kendi sayfalarınıza verdiğiniz bağlantılardan rel="nofollow" özelliğini kaldırın. Sayfanın dizine girmesini istemiyorsanız bağlantıyı değil sayfayı noindex ile işaretleyin.':
     'Remova rel="nofollow" dos links para suas próprias páginas. Se você não deseja que uma página seja indexada, marque a própria página com noindex, não com o link.',
-  "Yinelenen başlık": "Título duplicado",
+  "Tekrarlanan başlık": "Título duplicado",
   "Birden çok sayfa aynı başlığı (<title>) kullanıyor. Aynı başlıkla arama sonucunda sayfalar birbirine benzer görünür ve ziyaretçi hangisine tıklayacağını seçemez.":
     "Várias páginas usam o mesmo título (<title>). Com o mesmo título, as páginas ficam parecidas nos resultados de pesquisa e os visitantes não sabem em qual clicar.",
   "Her sayfaya kendi içeriğini anlatan farklı bir başlık yazın. Şablondan üretilen sayfalarda ayırt edici bilgiyi (ürün adı, kategori, şehir) başlık şablonuna ekleyin.":
     "Escreva um título diferente para cada página que descreva seu próprio conteúdo. Para páginas geradas a partir de um modelo, adicione detalhes distintivos (nome do produto, categoria, cidade) ao modelo de título.",
-  "Yinelenen ana başlık (H1)": "Título principal duplicado (H1)",
+  "Tekrarlanan ana başlık (H1)": "Título principal duplicado (H1)",
   "Birden çok sayfa aynı ana başlığı (H1) kullanıyor. Başlık, ziyaretçiye ve Google'a sayfanın ne hakkında olduğunu söyler; aynı başlık farklı sayfaları ayırt etmeyi zorlaştırır. Sitenin her sayfasında logo ya da site adı H1 olarak yazılmışsa bu uyarı genelde ondan gelir.":
     "Várias páginas usam o mesmo título principal (H1). O título informa aos visitantes e ao Google sobre o que trata a página; o mesmo título torna difícil distinguir páginas diferentes. Se o logotipo ou nome do site for H1 em todas as páginas, geralmente é daí que vem esse aviso.",
   "Her sayfanın H1'ini o sayfanın konusunu anlatan kendi cümlesiyle yazın. Logo ya da site adı H1 ise onu H1 olmayan bir etikete çevirin ve sayfa başlığını H1 yapın.":
     "Dê a cada página seu próprio H1 que indica o tópico da página. Se o logotipo ou nome do site for H1, altere-o para uma tag diferente de H1 e torne o título da página H1.",
-  "Yinelenen meta açıklama": "Meta descrição duplicada",
+  "Tekrarlanan meta açıklama": "Meta descrição duplicada",
   "Birden çok sayfa aynı meta açıklamayı (arama sonucunda başlığın altındaki özet) kullanıyor. Aramada hepsi aynı özetle çıkar ve ziyaretçi sayfaları ayırt edemez.":
     "Várias páginas usam a mesma meta descrição (o resumo abaixo do título nos resultados da pesquisa). Todas elas aparecem com o mesmo snippet na pesquisa e os visitantes não conseguem distinguir as páginas.",
   "Her sayfaya kendi açıklamasını yazın ya da yinelenen açıklamayı tamamen silin. Açıklama yoksa Google sayfa metninden bir özet seçer; bu, yanlış bir kopyadan iyidir.":
     "Escreva uma descrição para cada página ou exclua completamente a descrição duplicada. Sem ele, o Google escolhe um snippet do texto da página, o que é melhor do que uma cópia errada.",
-  "Yinelenen sayfa içeriği": "Conteúdo duplicado da página",
+  "Tekrarlanan sayfa içeriği": "Conteúdo duplicado da página",
   "İki ya da daha fazla adres birebir aynı metni gösteriyor. Google bunlardan birini seçip dizine alır ve seçtiği sizin istediğiniz olmayabilir. Ceza değildir, ama sıralama gücü adresler arasında bölünür.":
     "Dois ou mais URLs mostram exatamente o mesmo texto. O Google escolhe um deles para indexar, e a escolha pode não ser a que você deseja. Não é uma penalidade, mas a força da classificação é dividida entre os URLs.",
   "Asıl adresi (aramada görünmesini istediğiniz tek adres) seçin. Kopya adres kullanıcıya gerekmiyorsa 301 ile asıl adrese yönlendirin; kopya adres açık kalacaksa (parametreli sayfa gibi) canonical (asıl adres) etiketiyle asıl adresi gösterin. Sık nedenler: sonda eğik çizgi farkı, adrese eklenen parametreler, http/https ya da www farkı.":
@@ -2395,7 +2395,7 @@ export const ptCatalog = {
     "Pelo menos um bloco de dados estruturados (ld+json) na página não pode ser lido ou não tem tipo (@type). O Google ignora um bloco quebrado, portanto, os detalhes extras que você espera dessa marcação (produto, artigo, localização atual) não aparecem na pesquisa.",
   'Bloğu bir JSON denetleyicisine yapıştırın; genelde fazladan virgül ya da kapanmamış tırnak çıkar. Sonra bloğa en az bir tür ekleyin, örneğin "@type": "Article". Eklentiyle üretiliyorsa eklentiyi güncelleyin.':
     'Cole o bloco em um validador JSON; geralmente é uma vírgula extra ou uma citação não fechada. Em seguida, atribua ao bloco pelo menos um tipo, por exemplo "@type": "Artigo". Se um plug-in o gerar, atualize o plug-in.',
-  "Google'ın bazı sayfalar hakkındaki yanıtı eskimiş":
+  "Bazı sayfalar için Google'ın yanıtı eski":
     "As respostas do Google para algumas páginas estão desatualizadas",
   "Bu sayfalar için saklanan Google yanıtları eskidi. Yanıt, sorulduğu andaki durumu anlatır; sayfa o zamandan beri düzelmiş ya da bozulmuş olabilir. Eski yanıtı güncelmiş gibi göstermemek için bu sayfaların Google yanıtları bu denetimde bulgu sayılmadı.":
     "As respostas do Google armazenadas para essas páginas estão desatualizadas. Uma resposta descreve o estado no momento em que foi perguntada; a página pode ter sido corrigida ou quebrada desde então. Para não apresentar uma resposta antiga como atual, as respostas do Google nessas páginas não foram contabilizadas como constatações nesta auditoria.",
@@ -3279,12 +3279,12 @@ export const ptCatalog = {
   "Site denetim raporu": "Relatório de auditoria do site",
   "seowatcher ile üretildi. Bu dosya kendi kendine yeter: açmak için internet bağlantısı gerekmez. PDF için tarayıcıdan Yazdır seçeneğini kullanın.":
     "Feito com seowatcher. Este arquivo é independente: ele abre sem conexão com a Internet. Para um PDF, use Imprimir no seu navegador.",
-  "1. Genel görünüm": "1. Visão geral",
-  "2. Sorunlar": "2. Problemas",
-  "3. Hız ölçümü": "3. Testes de velocidade",
-  "4. Google dizin durumu": "4. Status do índice do Google",
-  "5. Site haritası": "5. Mapa do site",
-  "6. Yöntem ve sınırlar": "6. Método e limites",
+  "3. Genel görünüm": "3. Visão geral",
+  "4. Sorunlar": "4. Problemas",
+  "5. Hız ölçümü": "5. Testes de velocidade",
+  "6. Google dizin durumu": "6. Status do índice do Google",
+  "7. Site haritası": "7. Mapa do site",
+  "8. Yöntem ve sınırlar": "8. Método e limites",
   "Ek A. Kalan etkilenen adresler": "Apêndice A. Endereços afetados restantes",
   "Ek B. Taranan sayfalar": "Apêndice B. Páginas rastreadas",
   K: "C",
@@ -3333,10 +3333,6 @@ export const ptCatalog = {
     "Os dados de cada gráfico também são fornecidos nas palavras abaixo isso.",
   "tüm site": "site inteiro",
   "+1 puandan az": "menos de +1 ponto",
-  "+{count} puan": {
-    one: "+{count} ponto",
-    other: "+{count} pontos",
-  },
   "Etkilenen: tüm site": "Afetado: todo o site",
   "ve {count} sayfa daha (ayrıntı sorun bölümünde)": {
     one: "e {count} mais página (detalhes na seção de problemas)",
@@ -3582,8 +3578,6 @@ export const ptCatalog = {
   "Sayfa sayfa sonuçlar": "Resultados por página",
   "Mobil performans puanı en düşük sayfalar üstte. Metrikler mobil ölçümden.":
     "Páginas com a menor pontuação de desempenho móvel primeiro. As métricas são provenientes da medição móvel.",
-  "<strong>Laboratuvar ve gerçek kullanıcı verisi.</strong> Buradaki rakamlar Lighthouse'un laboratuvar ölçümüdür: tek bir sanal cihazda, kontrollü ağ ve işlemci koşulunda yapılır. Gerçek ziyaretçilerden toplanan alan verisi (Chrome Kullanıcı Deneyimi Raporu, CrUX) bu denetimde saklanmadığı için rapora girmiyor. İkisi farklı çıkabilir. Google, sıralama sistemlerinde alan verisini (CrUX) kullanır; ama iyi bir değer tek başına sıralama garantisi vermez, içeriğin ilgili olması öncelik taşır.":
-    "<strong>Dados de laboratório e dados de usuários reais.</strong> Esses números são medições de laboratório do Lighthouse, feitas em um único dispositivo simulado sob condições controladas de rede e CPU. Os dados de campo coletados de visitantes reais (Relatório de experiência do usuário do Chrome, CrUX) não são armazenados para esta auditoria e, portanto, não estão no relatório. Os dois podem ser diferentes. Os sistemas de classificação do Google usam dados de campo (CrUX), mas um bom valor por si só não garante classificações; o conteúdo relevante vem em primeiro lugar.",
   'Eşikler Google\'ın yayımladığı değerlerdir: LCP 2,5 sn altı iyi, 4 sn üstü zayıf; CLS 0,1 altı iyi, 0,25 üstü zayıf; INP 200 ms altı iyi, 500 ms üstü zayıf. INP laboratuvarda çoğu zaman ölçülemez ("--" görünür).':
     'Os limites são os valores publicados pelo Google: LCP abaixo de 2,5 s é bom e acima de 4 s é ruim; CLS abaixo de 0,1 é bom e acima de 0,25 é ruim; O INP abaixo de 200 ms é bom e acima de 500 ms é ruim. O INP muitas vezes não pode ser medido no laboratório (mostra "--").',
   "Her sürümde nelerin eklendiğini ve düzeltildiğini burada bulabilirsiniz.":
@@ -3993,26 +3987,15 @@ export const ptCatalog = {
   Yükleniyor: "Carregando",
   "Geçen süre: {duration}": "Tempo decorrido: {duration}",
   "Rapor hazır": "Relatório pronto",
-  "Rapor hazırlanıyor…": "Preparando relatório…",
   "Google'dan yanıt bekleniyor…": "Aguardando Google…",
-  "Dizin durumu kontrol ediliyor": "Verificando o status do índice",
   "Bildirimler ({count} okunmamış)": "Notificações ({count} não lidas)",
   Bildirimler: "Notificações",
   "Tümünü okundu işaretle": "Marcar tudo como lido",
   "Henüz bildirim yok. İşlemler tamamlandığında burada görünür.":
     "Sem notificações ainda. As tarefas concluídas aparecerão aqui.",
   Okunmamış: "Não lidas",
-  "Bildirim geçmişi zil simgesinde tutulur. Ses ve Windows sistem bildirimlerini buradan açıp kapatabilirsiniz.":
-    "O histórico fica disponível no ícone do sino. Ative ou desative aqui os sons e as notificações do sistema Windows.",
   "Bildirim sesi": "Som das notificações",
   "Sesi dinle": "Ouvir som",
-  "Windows ve sistem bildirimleri": "Notificações do Windows e do sistema",
-  "Güncellemeler ve yeni duyurular dahil bildirimler Windows bildirim merkezinde gösterilir.":
-    "Atualizações e novos anúncios aparecem na central de notificações do Windows.",
-  "Bildirim izni engellendi. Açmak için tarayıcının site izinlerini kullanın.":
-    "A permissão de notificação está bloqueada. Ative-o nas permissões do site do seu navegador.",
-  "Bu tarayıcı masaüstü bildirimlerini desteklemiyor.":
-    "Este navegador não suporta notificações na área de trabalho.",
   "Yeni sürüm yayımlandı: {version}": "Nova versão lançada: {version}",
   "Ayarlar'daki Hakkında bölümü nasıl güncelleyeceğinizi söyler.":
     "Consulte Configurações → Sobre para obter instruções de atualização.",
@@ -4105,4 +4088,8 @@ export const ptCatalog = {
     "As auditorias falhadas indicam a etapa e um resumo do erro sem dados sensíveis. Os erros de medição do PageSpeed são resumidos sem os URLs das páginas.",
   "PageSpeed ölçüm hatası ({count}): {message}":
     "Erro de medição do PageSpeed ({count}): {message}",
+  İndirildi: "Transferido",
+  "{count} sayfa soruluyor": "A consultar o Google sobre {count} páginas",
+  "{pages} sayfa tarandı, {issues} bulgu":
+    "{pages} páginas rastreadas, {issues} problemas",
 } as const;

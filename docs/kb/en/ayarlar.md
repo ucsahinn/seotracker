@@ -3,7 +3,7 @@ title: Settings
 description: Theme, Google access key, PageSpeed key, usage limits, version and update check. The one settings screen for the whole installation.
 screen: Ayarlar
 route: /settings
-updated: 2026-10-24
+updated: 2026-10-26
 ---
 
 This screen holds the settings that apply to the whole installation: the Google connection, the PageSpeed key, the theme, the language and updates.
@@ -50,7 +50,7 @@ The status of each card is **Enough left**, **Running low** (after 70 percent), 
 
 ## How to use it
 
-1. On first setup, enter the client ID and the secret key in the **Google** section, then the PageSpeed key in the **Speed tests** section. When both are saved, open the project and pick the property.
+1. On first setup, paste the JSON key in the **Service account** section, or enter the client ID and the secret key in the **Google** section (one is enough); then enter the PageSpeed key in the **Speed tests** section. When both are saved, open the project and pick the property.
 2. Once a month, check the **Limits** section. The quota that shows as "Running low" is most often the URL Inspection limit.
 3. If the **About** section shows a new version, update; the release notes say what changed. The update check is the only connection from your computer to anywhere other than Google. If you do not want it, turn the switch off.
 4. To change the Google access key (for example, after creating a new Cloud project), click **Change** and paste the new values. Existing connections do not work with the new key, so choose **Reconnect** in each project.
@@ -64,6 +64,20 @@ The status of each card is **Enough left**, **Running low** (after 70 percent), 
 **What does the update check send?** It sends no data. It reads GitHub's public list of releases. The request is anonymous.
 
 **Service account or Google access key?** A service account needs no consent screen and does not expire, but you must grant that account access by hand in Search Console and Analytics. For a single-person installation either works. If the connection keeps expiring, switch to a service account.
+
+## What differs between the Windows package and Docker
+
+Every setting on this screen works the same way in both installs and is stored in the database. The difference is in the settings outside the screen:
+
+| Topic                      | Windows package                                                                                     | Docker                                                                                                                   |
+| -------------------------- | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| Google and PageSpeed keys  | Only from this screen. The badge never says **From the setup file**.                                | From this screen, or with `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` and `PAGESPEED_API_KEY` in `.env`. The screen wins. |
+| Port number                | `"port"` in `%LOCALAPPDATA%\seowatcher\config.json`, then **Yeniden başlat** (Restart) in the menu. | `PORT` in `.env`, then `docker compose up -d --force-recreate seotracker`.                                               |
+| Agent password (MCP token) | `%LOCALAPPDATA%\seowatcher\mcp-token`; created by the launcher, cannot be turned off.               | `/app/.wrangler/mcp-token` in the container; change it with `MCP_TOKEN` in `.env`, or turn it off with `off`.            |
+| Updates                    | The **Windows** section or the taskbar menu; can install by itself.                                 | The command in **About**: `git pull && docker compose up -d --build`.                                                    |
+| **Windows** section        | Available.                                                                                          | Controls disabled.                                                                                                       |
+
+On the Windows package, do not edit the `server.env` file in the data folder: the launcher rewrites it at every start. The full list of Docker variables is in `docs/ENVIRONMENT.md`.
 
 ## Limits
 

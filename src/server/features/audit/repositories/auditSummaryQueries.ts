@@ -1,4 +1,12 @@
-import { count, countDistinct, desc, eq, sql } from "drizzle-orm";
+import {
+  and,
+  count,
+  countDistinct,
+  desc,
+  eq,
+  isNotNull,
+  sql,
+} from "drizzle-orm";
 import { db } from "@/db";
 import { auditIssues, audits } from "@/db/schema";
 
@@ -30,6 +38,10 @@ export async function getIssueTypePageCountsForAudit(auditId: string) {
  *
  * `severity` is text, so the ordering is spelled out rather than left to
  * alphabetical, which would put "critical" after "warning" only by luck.
+ *
+ * Site-level findings (no page) are left out: they are stored against the
+ * start URL, and counting them there made the home page the "worst page"
+ * for every missing header and DNS record.
  */
 export async function getTopAffectedPagesForAudit(
   auditId: string,
@@ -47,7 +59,7 @@ export async function getTopAffectedPagesForAudit(
       worstRank,
     })
     .from(auditIssues)
-    .where(eq(auditIssues.auditId, auditId))
+    .where(and(eq(auditIssues.auditId, auditId), isNotNull(auditIssues.pageId)))
     .groupBy(auditIssues.pageUrl)
     .orderBy(worstRank, desc(countDistinct(auditIssues.issueType)))
     .limit(limit);

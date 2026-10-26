@@ -136,16 +136,8 @@ export function PerformanceFilterBar({
             ["mobile", DEVICE_LABELS.MOBILE],
           ]}
         />
-        <SelectFilter
-          label="Durum"
-          value={filters.status}
-          onChange={(status) => onChange({ ...filters, status })}
-          options={[
-            ["all", "Tümü"],
-            ["ok", "Başarılı"],
-            ["failed", "Başarısız"],
-          ]}
-        />
+        {/* No status filter: the table holds only measurements that
+            produced a score, and the failed ones sit in their own list. */}
         <TextFilter
           label="En çok LCP (sn)"
           value={filters.maxLcpSeconds}
@@ -230,9 +222,16 @@ export function TableFilterToggle({
           </span>
         ) : null}
       </button>
-      <span className="text-sm tabular-nums text-muted">
-        {formatNumber(resultCount)} / {formatNumber(totalCount)}
-      </span>
+      {/* Only when it says something: unfiltered, "15 / 15" repeated the
+          tab label and the pagination line under the table. */}
+      {resultCount === totalCount ? null : (
+        <span className="text-sm tabular-nums text-muted">
+          {t("{shown} / {total} satır", {
+            shown: formatNumber(resultCount),
+            total: formatNumber(totalCount),
+          })}
+        </span>
+      )}
     </div>
   );
 }

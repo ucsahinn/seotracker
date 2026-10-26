@@ -30,6 +30,8 @@ import {
   type IssueGroup,
 } from "./reportModel";
 import type { AuditReportInput } from "./reportTypes";
+import type { AuditBreakdown } from "@/shared/auditBreakdown";
+import type { TodoItem } from "@/shared/auditTodo";
 import { getLocale, t } from "@/shared/i18n";
 
 export type ReportContext = {
@@ -40,6 +42,10 @@ export type ReportContext = {
   /** False when the findings are not a complete picture (see `isReliable`). */
   reliable: boolean;
   stats: ReturnType<typeof describePages>;
+  /** Every check with its state and the per-category scores. */
+  breakdown: AuditBreakdown;
+  /** Fixes ranked by score impact and Search Console traffic. */
+  todos: TodoItem[];
 };
 
 const SEVERITY_COLOR = {
@@ -227,7 +233,7 @@ function stateBars(ctx: ReportContext): string {
 
 export function overviewSection(ctx: ReportContext): string {
   return `<section id="genel">
-    <h2>${t("1. Genel görünüm")}</h2>
+    <h2>${t("3. Genel görünüm")}</h2>
     <p class="note">${t("Her grafiğin altında aynı veriler yazıyla da verilir.")}</p>
     <div class="grid2">
       ${severityDonut(ctx)}

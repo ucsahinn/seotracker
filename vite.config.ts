@@ -28,6 +28,10 @@ export default defineConfig(({ mode }) => {
     server: {
       allowedHosts,
       port,
+      // The marketing site and the docs are static output the app never
+      // imports; watching them made every site build full-reload the dev app
+      // and hold its files open on Windows.
+      watch: { ignored: ["**/site/**", "**/docs/**", "**/.tmp/**"] },
     },
     preview: {
       allowedHosts,

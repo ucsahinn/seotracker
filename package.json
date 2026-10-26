@@ -25,7 +25,7 @@
     "test:ci": "vitest run --reporter=dot",
     "verify:local": "node scripts/verify-local.mjs",
     "i18n:check": "node scripts/i18n-check.mjs",
-    "site:build": "node scripts/build-site-home.mjs build && node scripts/build-site-docs.mjs && node scripts/build-site-privacy.mjs && prettier --write --no-error-on-unmatched-pattern site/docs site/en site/de site/fr site/it site/pt site/privacy",
+    "site:build": "node scripts/build-site-home.mjs build && node scripts/build-site-docs.mjs && node scripts/build-site-privacy.mjs && prettier --write --no-error-on-unmatched-pattern site/docs site/en site/de site/fr site/it site/pt site/privacy site/gizlilik",
     "cleanup:default-projects:d1": "tsx scripts/d1-default-project-cleanup.ts",
     "seed:projects": "tsx scripts/seed-projects.ts",
     "seed:demo": "tsx scripts/seed-demo.ts",

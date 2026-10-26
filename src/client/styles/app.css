@@ -74,6 +74,14 @@
   --ink-info: oklch(42% 0.11 240);
   --ink-primary: oklch(45% 0.14 42);
 
+  /* Marks: a bar, a ring, a segment. Graphics need 3:1 against the surface
+     (WCAG 1.4.11). The light theme's warning fill sits near 2:1 on base-100,
+     so its mark is darkened; dark mode's fills already carry. */
+  --mark-success: var(--color-success);
+  --mark-warning: oklch(62% 0.13 85);
+  --mark-error: var(--color-error);
+  --mark-track: oklch(0% 0 0 / 0.09);
+
   /* Motion. One curve and three durations, so a press, a panel and a
      progress fill all move with the same hand. Fast is for state the pointer
      caused (hover, press), base for content arriving, slow for something the
@@ -98,6 +106,8 @@ html[data-theme="seotracker-dark"] {
   --ink-error: oklch(78% 0.15 25);
   --ink-info: oklch(80% 0.11 240);
   --ink-primary: oklch(80% 0.13 58);
+  --mark-warning: var(--color-warning);
+  --mark-track: oklch(100% 0 0 / 0.08);
 }
 
 @plugin "daisyui" {
@@ -524,6 +534,20 @@ h3 {
   outline-offset: 2px;
   border-radius: var(--radius-field);
 }
+/* A full-width row inside a framed list: an outside ring is clipped by the
+   frame, so it is drawn inside. */
+.focus-inset:focus-visible {
+  outline-offset: -2px;
+}
+
+/* Hatched: "not measured", a bar with no value rather than a short one. */
+.mark-hatched {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--mark-track) 0 4px,
+    transparent 4px 8px
+  );
+}
 
 /* Inputs read as fields, not as boxes: hairline at rest, accent on focus. */
 .input,
@@ -535,9 +559,12 @@ h3 {
     background-color var(--dur-fast) var(--ease-out);
 }
 
-/* Table headers: small, quiet, and separated by a line rather than a fill. */
+/* Table headers: small, quiet, and separated by a line rather than a fill.
+   Sentence case like the sortable headers beside them: a plain-text header
+   used to be uppercased and letter-spaced while a sortable one was not, so
+   one row read "URL Durum SORUN Başlık". */
 .table thead th {
-  @apply text-xs font-medium uppercase tracking-wider;
+  @apply text-xs font-medium;
   color: var(--text-subtle);
   border-bottom-color: var(--hairline);
 }

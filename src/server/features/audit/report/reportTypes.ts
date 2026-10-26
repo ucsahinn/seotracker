@@ -1,3 +1,6 @@
+import type { SiteFacts } from "@/server/lib/audit/site-probes/types";
+import type { AuditInsights } from "@/server/features/audit/services/auditInsights";
+
 /*
  * What the report builder reads. Every field beyond the original seven page
  * columns is optional, so a caller (or a test) that has only the basics still
@@ -92,6 +95,12 @@ export type AuditReportInput = {
   status?: "running" | "completed" | "failed" | null;
   /** Audit id, so two audits of one site on one day get distinct titles. */
   auditId?: string | null;
+  /** Whether the pages' GA4 ids were compared with the connected property. */
+  analyticsCompared?: boolean | null;
+  /** What the site probes found; null for an audit that predates them. */
+  siteFacts?: SiteFacts | null;
+  /** Score history, traffic, start page tags and field data (see auditInsights). */
+  insights?: AuditInsights | null;
 };
 
 /*
@@ -109,6 +118,8 @@ export type ReportCaps = {
   detailChars: number;
   /** How many issue types are listed in full (worst first); the rest are counted. */
   issueTypes: number;
+  /** Inline the start page's mobile screenshot; the first thing dropped. */
+  screenshot: boolean;
 };
 
 export const DEFAULT_CAPS: ReportCaps = {
@@ -119,6 +130,7 @@ export const DEFAULT_CAPS: ReportCaps = {
   urlChars: 110,
   detailChars: 200,
   issueTypes: Number.POSITIVE_INFINITY,
+  screenshot: true,
 };
 
 export type AuditReportDocument = {

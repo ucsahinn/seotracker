@@ -30,7 +30,7 @@ Tabloda bunların kısa halleri görünür: Bilgi, Ticari, İşlem, Gezinme ve s
 
 **Toplu işlemler.** Satırları işaretleyince üstte **Kelimeleri kopyala**, **Etiketleri güncelle** ve silme düğmesi çıkar. Silmeden önce "kalıcı olarak silinecek. Bu geri alınamaz." uyarısı gelir.
 
-**Boş durumlar.** Hiç kelime yoksa "Henüz kayıtlı kelime yok" yazar. İki kısayol çıkar: **Sorgulara göz at** ve **Sıralamayı aç**. Filtreye uyan kelime yoksa "Bu filtrelere uyan kelime yok" yazar.
+**Boş durumlar.** Hiç kelime yoksa "Henüz kayıtlı kelime yok" yazar. Bir kısayol çıkar: **Sorgulara göz at**; Search Console henüz bağlı değilse bunun yerine **Search Console'u bağla** çıkar. Filtreye uyan kelime yoksa "Bu filtrelere uyan kelime yok" yazar.
 
 ## Nasıl kullanılır
 

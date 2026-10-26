@@ -14,9 +14,9 @@ The **Reports** screen keeps every report made for this project in one list. A r
 
 **Top bar.** The **Yeni rapor iste** (Request a new report) button copies a ready-made request to the clipboard, which you paste into your assistant.
 
-**Filters.** Tümü (All), Son 7 gün (Last 7 days), Şablonla yazılan (Written with a template), Beceriyle yazılan (Written with a skill). There is also a search box.
+**Filters.** All, Last 7 days, Written with a template, Written with a skill. There is also a search box.
 
-**Table.** It has the **Rapor** (Report), **Tür** (Type), **Oluşturulma** (Created) and **Boyut** (Size) columns. **Tür** tells you where the report came from. For example, "Site denetimi raporu" (Site audit report) is made by the app itself. For reports written with a template, the template's name appears.
+**Table.** It has the **Report**, **Type**, **Created** and **Size** columns. **Type** tells you where the report came from. For example, "Site audit report" is made by the app itself. For reports written with a template, the template's name appears.
 
 **Report page.** The report opens in its own isolated frame. Buttons: **Download as HTML**, copy link and print. The link works only on this installation, with no access from outside.
 
@@ -30,7 +30,7 @@ A project can have at most 10 templates. Deleting a template does not delete the
 
 ## How to use it
 
-1. For your first report, click **Raporu indir** on the Site denetimi screen. The report downloads to your computer and also appears in this list. It starts with the section "Bu hafta yapılacak N şey" (N things to do this week).
+1. For your first report, click **Download report** on the Site audit screen. The report downloads to your computer and also appears in this list. It starts with the section "N things to do this week".
 2. If you work with an assistant, click **Yeni rapor iste**. Paste the copied text into Claude Code, Codex or Cursor. The assistant asks which report you want, reads the data and saves the report here.
 3. If you want the same report every month, write a template. In the instruction, write the reader ("the person who runs the site, does not know SEO"), the sections, the order and the tone. If you ask for the template by name, the assistant applies it.
 4. To share, click **HTML olarak indir** and send the file. The recipient opens the file in a browser. A copied link works only on the same computer.
@@ -38,7 +38,7 @@ A project can have at most 10 templates. Deleting a template does not delete the
 
 ## How the numbers are calculated
 
-The audit report is laid out for A4 print and contains these sections: contents, "Bu hafta yapılacak N şey", problems, speed measurement, Google index status and sitemap. The index status section uses only saved answers and does not ask new questions.
+The audit report is laid out for A4 print and contains these sections: contents, "N things to do this week", problems, speed measurement, Google index status and sitemap. The index status section uses only saved answers and does not ask new questions.
 
 The lists are limited: 50 addresses per problem, 300 pages, 50 speed rows, 3,000 addresses in the appendix. If the file goes over 400 KB, the lists are shortened.
 
@@ -48,7 +48,7 @@ For security, when a report is saved, files that contain a script, an iframe (a 
 
 ## Frequently asked questions
 
-**Who wrote the report?** The **Tür** column tells you. "Site denetimi raporu" comes from the app; all others come from the assistant. The report page also shows who saved it.
+**Who wrote the report?** The **Type** column tells you. "Site audit report" comes from the app; all others come from the assistant. The report page also shows who saved it.
 
 **Can I edit the report?** Not in the app. Tell the assistant "change this section", and the assistant updates the report.
 
@@ -58,6 +58,6 @@ For security, when a report is saved, files that contain a script, an iframe (a 
 
 ## Limits
 
-Reports are never published online; you share them by sending the file. A report is only as accurate as the data its writer read. The "Bu rapor nasıl hazırlandı" (How this report was prepared) section at the end of assistant reports lists which tool supplied which information. Trace a number you doubt from there.
+Reports are never published online; you share them by sending the file. A report is only as accurate as the data its writer read. The "How this report was prepared" section at the end of assistant reports lists which tool supplied which information. Trace a number you doubt from there.
 
 <!-- Kaynaklar: src/routes/_project/p/$projectId/reports/index.tsx; reports/$reportId.tsx; reports/templates.tsx; src/client/features/reports/ReportsList.tsx; reportStats.ts; reportRequestPrompt.ts; src/server/features/reports/services/ReportService.ts; src/types/schemas/reports.ts; src/types/schemas/report-templates.ts; src/routes/r/$reportId.ts; src/shared/report-sandbox.ts; src/server/features/audit/report/buildAuditReportHtml.ts -->

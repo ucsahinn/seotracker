@@ -1,5 +1,8 @@
 import { sort } from "remeda";
 import { fractionalChange } from "@/shared/delta";
+import { siteKey } from "@/shared/auditTodo";
+
+export { siteKey };
 
 type Counts = { critical: number; warning: number };
 
@@ -17,22 +20,6 @@ export type IssueDelta = {
   /** Null when the previous count was zero, so there is no base to scale. */
   fraction: number | null;
 };
-
-/**
- * "https://www.Example.com/blog/" and "http://example.com/blog" are one
- * scope: the address is typed by hand each run. The start path counts, since
- * a crawl of /blog is not comparable with a crawl of the whole host, and a
- * delta between them would be noise.
- */
-export function siteKey(url: string): string {
-  try {
-    const parsed = new URL(url);
-    const host = parsed.hostname.toLowerCase().replace(/^www\./, "");
-    return host + parsed.pathname.replace(/\/+$/, "");
-  } catch {
-    return url.trim().toLowerCase();
-  }
-}
 
 /**
  * For each completed audit, the nearest earlier completed audit of the same

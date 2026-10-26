@@ -108,6 +108,7 @@ export function useLaunchController({
           startUrl: value.url,
           maxPages: effectiveMaxPages,
           lighthouseStrategy: value.runLighthouse ? "auto" : "none",
+          externalChecks: value.checkExternal,
         });
         startedRef.current = true;
         toast.success(t("Denetim başlatıldı"));
@@ -203,6 +204,7 @@ function useLaunchMutations({
       startUrl: string;
       maxPages: number;
       lighthouseStrategy: "auto" | "none";
+      externalChecks: boolean;
     }) => startAudit({ data }),
     /*
      * Starting an audit invalidated nothing, so for the next five minutes

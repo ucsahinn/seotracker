@@ -11,7 +11,7 @@ import {
 import type { HreflangAlternate } from "@/server/lib/audit/types";
 import type { PageFetchClass } from "@/shared/audit-fetch-class";
 
-const DUPLICATE_GROUP_SAMPLE = 3;
+export const DUPLICATE_GROUP_SAMPLE = 3;
 
 export interface SlimPage {
   id: string;
@@ -23,6 +23,8 @@ export interface SlimPage {
   firstH1: string | null;
   metaDescription: string | null;
   contentHash: string | null;
+  /** SimHash of the visible text, for near-duplicate grouping. */
+  contentSimhash: string | null;
   redirectUrl: string | null;
   wordCount: number;
   isIndexable: boolean;
@@ -60,7 +62,7 @@ function isOkHtmlPage(page: SlimPage): boolean {
  * another URL) don't belong in duplicate groups — flagging them tells the
  * user to fix something they already fixed.
  */
-function isDuplicateCandidate(page: SlimPage): boolean {
+export function isDuplicateCandidate(page: SlimPage): boolean {
   if (!isOkHtmlPage(page) || !page.isIndexable) return false;
   const effectiveCanonical = page.canonicalUrl ?? page.headerCanonicalUrl;
   return !effectiveCanonical || effectiveCanonical === page.url;

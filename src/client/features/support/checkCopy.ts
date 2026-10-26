@@ -20,10 +20,10 @@ function spoken(text: string, status: CheckStatus): DescribedCheck {
  * and outcome, so the
  * operator reads what to do rather than a translated log line.
  *
- * `googleReady` is what the server cannot see in its own verdict: whether an
- * OAuth client or a service account is actually stored. The server reports
- * "Search Console: ok" with the sentence "Enter your Google OAuth client in
- * Settings" when nothing is configured, a green tick on a to-do.
+ * `googleReady` is whether an OAuth client or a service account is stored, as
+ * the settings screen reads it. The server names the credential in use and
+ * warns when there is none; `googleReady` keeps the two screens agreeing
+ * while either read is still in flight.
  */
 export function describeCheck(
   key: string,
@@ -62,25 +62,29 @@ export function describeCheck(
         "warn",
       );
     }
-    if (check.status === "ok" && googleReady === false) {
+    if (check.status === "ok" && googleReady !== false) {
+      if (googleReady === null)
+        return say(t("Google bağlantı ayarı okunuyor."));
+      // The server names the credential in use, already in the interface
+      // language. Only the env-only preflight sentences are English: one
+      // means an environment client, the other could not see the database.
+      if (/supplied by the environment/.test(detail)) {
+        return say(t("Google erişim anahtarı ortam değişkenlerinden geliyor."));
+      }
       return say(
-        t(
-          "Google erişim anahtarı ya da hizmet hesabı henüz girilmedi. Girmeden Search Console ve Analytics bağlanamaz.",
-        ),
-        "warn",
+        detail && !/^(Enter your|No Google OAuth client)/.test(detail)
+          ? detail
+          : t("Google erişimi hazır."),
       );
     }
-    if (check.status === "ok") {
-      return say(
-        /ortam|environment/i.test(detail)
-          ? t("Google erişim anahtarı ortam değişkenlerinden geliyor.")
-          : googleReady === null
-            ? t("Google bağlantı ayarı okunuyor.")
-            : googleReady
-              ? t("Google erişimi hazır.")
-              : t("Google erişim anahtarı Ayarlar'da kayıtlı."),
-      );
-    }
+    // Nothing stored. The server says so with a warning; an older server
+    // answered "ok" with a request to enter a client, a green tick on a to-do.
+    return say(
+      t(
+        "Google erişim anahtarı ya da hizmet hesabı henüz girilmedi. Girmeden Search Console ve Analytics bağlanamaz.",
+      ),
+      "warn",
+    );
   }
 
   if (key === "pagespeed") {

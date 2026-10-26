@@ -12,9 +12,9 @@ The app pulls this data day by day and stores it on this computer. The archive g
 
 ## What is on the screen
 
-**Time range.** 30 gün, 90 gün (default), 6 ay, 16 ay and Arşivin tamamı (30 days, 90 days, 6 months, 16 months and the whole archive). The range ends three days before today.
+**Time range.** 30 days, 90 days (default), 6 months, 16 months and Entire archive. The range ends three days before today.
 
-**Archive status line.** It shows how many days and rows the archive holds. Each time you open the screen, it fills the missing days from Google. "Bu açılışta N gün eklendi." (N days were added this time) means new days have arrived. "The remaining days will be filled in the next time you open this page." means the fill continues on your next visit.
+**Archive status line.** It shows how many days and rows the archive holds. Each time you open the screen, it fills the missing days from Google. "N days added on this visit." means new days have arrived. "The remaining days will be filled in the next time you open this page." means the fill continues on your next visit.
 
 The **Search queries** box narrows the list.
 
@@ -24,26 +24,26 @@ The **Search queries** box narrows the list.
 
 **Risers and fallers.** Two short lists: "Biggest risers" and "Biggest fallers".
 
-**Table.** Columns: **Sorgu** (Query), **Ort. sıra** (Avg. position), **Değişim** (Change), **Gösterim** (Impressions), **Tıklama** (Clicks), **Gün** (Days). The **Gün** column shows on how many days the search appeared in the selected range. A search that appears on only 3 of 90 days is rarely searched. The change cell says "Yükseldi 2.4" (Rose 2.4) or "Düştü 1.1" (Fell 1.1). Row menu: **Kelimeyi kopyala** (Copy keyword), **Kayıtlı kelimelere ekle** (Add to saved keywords), **Arama performansında ara** (Search in Search performance).
+**Table.** Columns: **Query**, **Avg. position**, **Change**, **Impressions**, **Clicks**, **Day**. The **Day** column shows on how many days the search appeared in the selected range. A search that appears on only 3 of 90 days is rarely searched. The change cell says "Up 2.4" or "Down 1.1". Row menu: **Copy keyword**, **Add to saved keywords**, **Search in Search performance**.
 
 **Query history.** When you click a row, the day-by-day position line of that search opens. The **Open in Search performance** link opens the same search on the other screen.
 
-**Empty states.** If the archive is empty, it says "Henüz hangi kelimeyle arandığınız bilinmiyor" (It is not yet known which searches find you) and the **Open Search performance** button appears. The list is limited to the 100 most shown searches. If there are more, a note under the list says so.
+**Empty states.** If the archive is empty, it says "Which keywords people search for you with isn't visible yet" and the **Open Search performance** button appears. The list is limited to the 100 most shown searches. If there are more, a note under the list says so.
 
 ## How to use it
 
 1. When you open the screen for the first time, wait for "eklendi" (added) to appear in the archive line.
 2. The first fill goes back up to 480 days and can take a few visits.
-3. If you are looking for a drop, press the **Düşenler** button. Then narrow the list to the important ones with **Gösterimi yüksek**.
+3. If you are looking for a drop, press the **Fallers** button. Then narrow the list to the important ones with **High impressions**.
 4. Click the search at the top. In the history chart, find the day the drop started.
-5. Save the searches you want to follow with **Kayıtlı kelimelere ekle**.
-6. Once a month, read the "En çok yükselenler" and "En çok düşenler" lists. That is enough for the general picture.
+5. Save the searches you want to follow with **Add to saved keywords**.
+6. Once a month, read the "Biggest risers" and "Biggest fallers" lists. That is enough for the general picture.
 
 ## How the numbers are calculated
 
 The archive stores only data that Google has finalized. Each time you open the screen, the last three days are pulled again, because Google can still correct them; the corrected figures replace the old ones.
 
-Clicks and impressions are totals. **Ort. sıra** gives more weight to days with many impressions. **Gün** is the number of days that have data.
+Clicks and impressions are totals. **Avg. position** gives more weight to days with many impressions. **Day** is the number of days that have data.
 
 The change is the previous period's average position minus this period's, so a positive number means a rise. The previous period has the same length and ends right before this one.
 
@@ -53,7 +53,7 @@ The list loads the 100 most shown searches and splits them into pages of 25, 50 
 
 **Why is it different from the figure in Search Console?** The archive keeps only finalized days, so it ends three days before today. If you chose a range that includes today in Search Console, the numbers do not match.
 
-**The search is in the list, but its position history is empty.** That search may have appeared on few days. Check the **Gün** column.
+**The search is in the list, but its position history is empty.** That search may have appeared on few days. Check the **Day** column.
 
 **Why is the archive stuck on the same day?** The app does not pull data in the background. Open the screen and wait for the "eklendi" note.
 

@@ -304,6 +304,19 @@ describe("checks traced to Google's documentation", () => {
       }),
     );
     expect(withoutSelf).toContain("hreflang-missing-self");
+
+    // Canonicalized elsewhere and listing that canonical: the set is whole.
+    const listsItsCanonical = issueTypes(
+      makePage({
+        url: "https://site.github.io/",
+        canonicalUrl: "https://site.netlify.app/",
+        hreflangAlternates: [
+          { hreflang: "en", href: "https://site.netlify.app/" },
+          { hreflang: "x-default", href: "https://site.netlify.app/" },
+        ],
+      }),
+    );
+    expect(listsItsCanonical).not.toContain("hreflang-missing-self");
   });
 
   it("flags nofollow only where Google would otherwise follow the links", () => {

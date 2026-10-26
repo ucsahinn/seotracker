@@ -94,7 +94,7 @@ export function speedBands(rows: ScoreRow[]): SpeedBand[] {
       key: "fair",
       label: t("Orta"),
       hint: `${FAIR_FROM} – ${GOOD_FROM - 1}`,
-      color: "var(--color-warning)",
+      color: "var(--mark-warning)",
       count: fair,
       minPerf: String(FAIR_FROM),
       maxPerf: String(GOOD_FROM - 1),
@@ -210,3 +210,36 @@ export function describeQuotaStop(
   }
   return notes.length > 0 ? notes.join(" ") : null;
 }
+
+type SpeedFailureCause = "quota" | "noKey" | "rateLimit" | "other";
+
+/**
+ * Why speed measurements failed, as one cause: the daily quota, a missing
+ * key, Google's per-minute limit, or something else. A run where every row
+ * failed the same way is one problem with one fix, not ten broken pages.
+ */
+export function speedFailureCause(
+  rows: Array<Pick<PerformanceRowData, "errorMessage">>,
+): SpeedFailureCause {
+  if (countMarked(rows, LIGHTHOUSE_NO_KEY_MARKER) > 0) return "noKey";
+  if (
+    countMarked(rows, LIGHTHOUSE_QUOTA_MARKER) > 0 ||
+    rows.some((row) => /429|quota/i.test(row.errorMessage ?? ""))
+  ) {
+    return "quota";
+  }
+  if (countMarked(rows, LIGHTHOUSE_RATE_LIMIT_MARKER) > 0) return "rateLimit";
+  return "other";
+}
+
+/** Turkish source text; shown through t(). */
+export const SPEED_FAILURE_TEXT: Record<SpeedFailureCause, string> = {
+  quota:
+    "Google'ın ücretsiz günlük ölçüm kotası doldu. Bu sitenizden kaynaklanmıyor: sayfalar yavaş sayılmadı, yalnızca ölçülemedi.",
+  noKey:
+    "PageSpeed anahtarı olmadan Google'ın herkesle paylaşılan ücretsiz kotası kullanılıyor ve bu kota doldu. Bu sitenizden kaynaklanmıyor.",
+  rateLimit:
+    "Google'ın dakikalık ölçüm sınırına takıldı. Bu sitenizden kaynaklanmıyor; bir süre sonra yeniden deneyin.",
+  other:
+    "Google'ın ölçüm aracı bu sayfalar için sonuç döndürmedi. Ayrıntı aşağıdaki listede.",
+};

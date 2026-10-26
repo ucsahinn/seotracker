@@ -1,6 +1,6 @@
 ---
 title: Site denetimi
-description: Uygulama sitenizi sayfa sayfa gezer, 95 kurala göre kontrol eder ve sorunları önem sırasına dizer. Her sorunun yanında ne yapmanız gerektiği yazar.
+description: Uygulama sitenizi sayfa sayfa gezer, 201 kurala göre kontrol eder ve sorunları önem sırasına dizer. Her sorunun yanında ne yapmanız gerektiği yazar.
 screen: Site denetimi
 route: /p/<proje>/audit
 updated: 2026-10-22

@@ -53,7 +53,7 @@ git pull
 docker compose up -d --build
 ```
 
-**Ayarlar → Hakkında** (Settings → About) tells you about the new version and shows these two commands. Your data stays in the data volume named `seotracker_data`, so updating does not delete it.
+**Settings → About** tells you about the new version and shows these two commands. Your data stays in the data volume named `seotracker_data`, so updating does not delete it.
 
 ### Stopping and removing
 
@@ -108,7 +108,7 @@ No setting is required. To change something, put a `.env` file in the project fo
 
 - **It says "Bind for 127.0.0.1:3001 failed".** The port number is in use. Put a `.env` file with the line `PORT=3002` in the project folder and recreate the container. On Windows, Notepad may save the file as `.env.txt`; in PowerShell, `Set-Content -Encoding ascii .env 'PORT=3002'` avoids that.
 - **The status is "unhealthy".** `docker compose logs --tail 50` shows the last lines. If memory ran out during the build, give Docker Desktop more memory.
-- **The Google connection says "yapılandırılmamış" (not configured).** If `BETTER_AUTH_SECRET` is shorter than 32 characters, Google stays off. If you set it by hand, make it longer. If you did not, the `instance-secret` file in the data volume may be damaged.
+- **The Google connection says it "isn't configured".** If `BETTER_AUTH_SECRET` is shorter than 32 characters, Google stays off. If you set it by hand, make it longer. If you did not, the `instance-secret` file in the data volume may be damaged.
 - **The Google connection dropped after an update.** `BETTER_AUTH_SECRET` changed, or the data volume was recreated. Choose **Reconnect** in the project settings.
 
 <!-- Kaynaklar: docs/SELF_HOSTING_DOCKER.md; docs/ENVIRONMENT.md; compose.yaml; docker-entrypoint.sh; src/lib/selfhost-preflight.ts; src/routes/_app/ai.tsx -->

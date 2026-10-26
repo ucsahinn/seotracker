@@ -1,7 +1,13 @@
+import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { locales, privacyUrl } from "./site-locales.mjs";
+import {
+  locales,
+  privacyUrl,
+  readableDate,
+  withGa4Meta,
+} from "./site-locales.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const site = path.join(root, "site");
@@ -13,6 +19,22 @@ const escape = (text) =>
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll('"', "&quot;");
+// The policy changes when its text does: the last commit of the copy, or
+// today while the copy has uncommitted edits (the coming commit's date).
+function policyDate() {
+  const file = "scripts/site-privacy.json";
+  const today = new Date().toISOString().slice(0, 10);
+  try {
+    const git = (args) =>
+      execFileSync("git", args, { cwd: root, encoding: "utf8" }).trim();
+    if (git(["status", "--porcelain", "--", file])) return today;
+    const date = git(["log", "-1", "--format=%cs", "--", file]);
+    return /^\d{4}-\d{2}-\d{2}$/.test(date) ? date : today;
+  } catch {
+    return today;
+  }
+}
+const updated = policyDate();
 const url = (lang) => `https://seowatcher.io${privacyUrl(locales[lang])}`;
 const alternates = [
   ...Object.keys(copy).map((lang) => [lang, url(lang)]),
@@ -25,13 +47,15 @@ for (const [lang, text] of Object.entries(copy)) {
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(
     path.join(dir, "index.html"),
-    `<!doctype html>
+    withGa4Meta(`<!doctype html>
 <html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${escape(text.title)} | seowatcher</title><meta name="description" content="${escape(text.intro)}">
 <link rel="canonical" href="${url(lang)}">
 ${alternates.map(([code, href]) => `<link rel="alternate" hreflang="${code}" href="${href}">`).join("\n")}
-<link rel="icon" href="/assets/icon.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/consent.css?v=1"><script src="/assets/consent.js?v=2" defer></script>
-</head><body data-privacy-page><main><a href="${lang === "tr" ? "/" : `/${lang}/`}">seowatcher · ${escape(text.home)}</a><h1>${escape(text.title)}</h1><p>${escape(text.intro)}</p>
+<link rel="icon" href="/assets/icon.svg" type="image/svg+xml"><link rel="manifest" href="/site.webmanifest" />
+<link rel="alternate" type="application/atom+xml" title="seowatcher" href="${locale.base}/feed.xml">
+<link rel="stylesheet" href="/assets/consent.css?v=2"><meta name="ga4-id" content="" /><script src="/assets/consent.js?v=3" defer></script>
+</head><body data-privacy-page><main><a href="${lang === "tr" ? "/" : `/${lang}/`}">seowatcher · ${escape(text.home)}</a><h1>${escape(text.title)}</h1><p>${escape(text.intro)}</p><p><small>${locale.t.updated}: <time datetime="${updated}">${readableDate(locale, updated)}</time></small></p>
 ${text.sections.map(([title, paragraph]) => `<section><h2>${escape(title)}</h2><p>${escape(paragraph)}</p></section>`).join("\n")}
 <p><a href="https://policies.google.com/privacy" rel="noopener noreferrer" target="_blank">Google Privacy</a> · <a href="https://policies.google.com/technologies/cookies" rel="noopener noreferrer" target="_blank">Google Cookies</a> · <a href="https://github.com/ucsahinn" rel="noopener noreferrer" target="_blank">GitHub / ucsahinn</a></p>
 <nav aria-label="Language">${Object.keys(copy)
@@ -39,7 +63,7 @@ ${text.sections.map(([title, paragraph]) => `<section><h2>${escape(title)}</h2><
         (code) =>
           `<a href="${privacyUrl(locales[code])}" lang="${code}" hreflang="${code}"${lang === code ? ' aria-current="page"' : ""}>${code.toUpperCase()}</a>`,
       )
-      .join(" ")}</nav></main><footer></footer></body></html>\n`,
+      .join(" ")}</nav></main><footer></footer></body></html>\n`),
   );
   if (locale.privacySlug !== "privacy") {
     const legacyDir = path.join(site, localeDir, "privacy");
@@ -47,7 +71,7 @@ ${text.sections.map(([title, paragraph]) => `<section><h2>${escape(title)}</h2><
     const target = privacyUrl(locale);
     fs.writeFileSync(
       path.join(legacyDir, "index.html"),
-      `<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><meta name="robots" content="noindex"><link rel="canonical" href="${url(lang)}"><meta http-equiv="refresh" content="0;url=${target}"><title>${escape(text.title)} | seowatcher</title></head><body><a href="${target}">${escape(text.title)}</a></body></html>\n`,
+      `<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><meta name="robots" content="noindex"><meta name="description" content="${escape(text.intro)}"><link rel="canonical" href="${url(lang)}"><meta http-equiv="refresh" content="0;url=${target}"><title>${escape(text.title)} | seowatcher</title></head><body><a href="${target}">${escape(text.title)}</a></body></html>\n`,
     );
   }
 }
@@ -64,7 +88,7 @@ let sitemap = fs
 const entries = Object.keys(copy)
   .map(
     (lang) =>
-      `  <url><loc>${url(lang)}</loc>${alternates.map(([code, href]) => `<xhtml:link rel="alternate" hreflang="${code}" href="${href}" />`).join("")}</url>`,
+      `  <url><loc>${url(lang)}</loc><lastmod>${updated}</lastmod>${alternates.map(([code, href]) => `<xhtml:link rel="alternate" hreflang="${code}" href="${href}" />`).join("")}</url>`,
   )
   .join("\n");
 sitemap = sitemap.replace("</urlset>", `${entries}\n</urlset>`);

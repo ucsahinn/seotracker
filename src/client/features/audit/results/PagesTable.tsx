@@ -69,6 +69,10 @@ export function PagesTable({
   // Counted over the whole crawl, not the filtered view: a chip that only
   // counted what is already on screen would read zero the moment you used it.
   const presetCounts = useMemo(() => quickFilterCounts(pages), [pages]);
+  const sitemapFound = useMemo(
+    () => pages.some((page) => page.inSitemap),
+    [pages],
+  );
   const { issueCountByPageId, missingTitlePageIds } = useMemo(() => {
     const counts = new Map<string, number>();
     const missingTitle = new Set<string>();
@@ -86,8 +90,16 @@ export function PagesTable({
         missingTitlePageIds,
         issueCountByPageId,
         onShowIssues,
+        sitemapFound,
       }),
-    [issueCountByPageId, missingTitlePageIds, onShowIssues, pages, startUrl],
+    [
+      issueCountByPageId,
+      missingTitlePageIds,
+      onShowIssues,
+      pages,
+      startUrl,
+      sitemapFound,
+    ],
   );
   const table = useAppTable({
     data: filteredPages,
@@ -135,7 +147,7 @@ export function PagesTable({
         filters={filters}
         onChange={onFiltersChange}
         counts={presetCounts}
-        sitemapFound={pages.some((page) => page.inSitemap)}
+        sitemapFound={sitemapFound}
       />
       <TableFilterToggle
         showFilters={showFilters}

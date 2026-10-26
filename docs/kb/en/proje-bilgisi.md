@@ -29,15 +29,15 @@ You can add at most 100 pages. Addresses are changed to start with https.
 
 **Research log.** Dated notes the assistant leaves about what it researched and what it found. Only the assistant writes them, each note is at most 1,000 characters, and you can delete them. Notes are removed automatically after 90 days. The screen shows the newest 20.
 
-**Agent card.** It offers two ready-made texts: "Ajanınıza doldurtun" (Have your agent fill it in) and "Have your agent review it". Copy it with **Copy prompt** and paste it into your assistant. In an empty project, the first text has the assistant ask you a few questions and fill in the sections.
+**Agent card.** It offers two ready-made texts: "Let your agent fill it in" and "Have your agent review it". Copy it with **Copy prompt** and paste it into your assistant. In an empty project, the first text has the assistant ask you a few questions and fill in the sections.
 
 ## How to use it
 
-1. Right after opening the project, write three to five sentences in **İşin özeti**: what you sell, who you sell it to, the languages of your site and your conversion page. Every report from the assistant builds on this paragraph.
-2. State **Şu anki hedef** in concrete terms. Not "traffic" but "product pages getting into the index (Google's list of pages)" or "five requests a month from the demo form". The assistant prioritizes its suggestions accordingly.
+1. Right after opening the project, write three to five sentences in **Business overview**: what you sell, who you sell it to, the languages of your site and your conversion page. Every report from the assistant builds on this paragraph.
+2. State **Current goal** in concrete terms. Not "traffic" but "product pages getting into the index (Google's list of pages)" or "five requests a month from the demo form". The assistant prioritizes its suggestions accordingly.
 3. In **Key pages**, add the conversion pages first, then the hub pages. This tells the assistant which work to put first.
-4. In **Yazım tercihleri**, write the words not to use and the tone. Examples: "do not say industry leader", "use the 'you' form", "give the version number". The assistant's reports follow these rules.
-5. If you use an assistant, copy the **Ajanınıza doldurtun** text into your assistant on the first day. The assistant fills in the sections by talking with you. Once a month, read the research log and fix what is wrong.
+4. In **Writing preferences**, write the words not to use and the tone. Examples: "do not say industry leader", "use the 'you' form", "give the version number". The assistant's reports follow these rules.
+5. If you use an assistant, copy the **Let your agent fill it in** text into your assistant on the first day. The assistant fills in the sections by talking with you. Once a month, read the research log and fix what is wrong.
 
 ## How the numbers are calculated
 
