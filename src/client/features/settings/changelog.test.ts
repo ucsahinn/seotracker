@@ -41,7 +41,7 @@ describe("changelog", () => {
       );
     }
     expect(
-      CHANGELOG_ENTRIES_EN.find((entry) => entry.version === "0.7.0")
+      CHANGELOG_ENTRIES_EN.find((entry) => entry.version === "0.7.1")
         ?.sections[0]?.heading,
     ).toBe("Features");
   });
@@ -63,21 +63,21 @@ describe("changelog", () => {
     }
   });
 
-  it("uses the published date and the planned date for the upcoming release", () => {
+  // Merged releases carry the highest published number of their group and its
+  // date, so each entry maps to a real tag.
+  it("keeps exactly four releases, each dated by its highest published version", () => {
+    const dates = {
+      "0.8.0": "2026-10-26",
+      "0.7.1": "2026-10-26",
+      "0.4.3": "2026-10-23",
+      "0.2.1": "2026-10-04",
+    };
     for (const locale of ["tr", "en", "de", "fr", "it", "pt"] as const) {
       const entries = CHANGELOG_ENTRIES_BY_LOCALE[locale];
       expect(
-        entries.find((entry) => entry.version === "0.7.1")?.date,
-        `${locale} v0.7.1`,
-      ).toBe("2026-10-26");
-      expect(
-        entries.find((entry) => entry.version === "0.6.0")?.date,
-        `${locale} v0.6.0`,
-      ).toBe("2026-10-24");
-      expect(
-        entries.find((entry) => entry.version === "0.7.0")?.date,
-        `${locale} v0.7.0`,
-      ).toBe("2026-10-25");
+        entries.map((entry) => [entry.version, entry.date]),
+        locale,
+      ).toEqual(Object.entries(dates));
     }
   });
 
@@ -125,10 +125,10 @@ describe("changelog", () => {
 
   it("keeps each published change in its own readable list item", () => {
     const release = CHANGELOG_ENTRIES.find(
-      (entry) => entry.version === "0.6.0",
+      (entry) => entry.version === "0.7.1",
     );
     expect(release?.sections.map((section) => section.items.length)).toEqual([
-      4, 2, 1,
+      8, 2, 1,
     ]);
     expect(
       release?.sections
@@ -139,7 +139,7 @@ describe("changelog", () => {
 
   it("labels the affected screen for the two most recent releases in every locale", () => {
     for (const locale of ["tr", "en", "de", "fr", "it", "pt"] as const) {
-      for (const version of ["0.7.1", "0.7.0"]) {
+      for (const version of ["0.8.0", "0.7.1"]) {
         const release = CHANGELOG_ENTRIES_BY_LOCALE[locale].find(
           (entry) => entry.version === version,
         );

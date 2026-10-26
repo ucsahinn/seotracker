@@ -28,17 +28,23 @@ sürümü yayımlamak) hesap ve onay gerektirir; bu dosya onları kendiliğinden
 ## Eski etiket → Sürüm
 
 0.0.0 ile 0.4.3 arasındaki sürümler ilk yayımlandığında 2.x numarasıyla
-etiketlendi; numaralar sonradan 0.x olarak yeniden verildi. Aşağıdaki tablo bir
-kez burada ve CHANGELOG başında tutulur; yeni satır eklenmez.
+etiketlendi; numaralar sonradan 0.x olarak yeniden verildi. Her eski etiket, notları
+dört ana girişten birinde okunur. Tablo bir kez burada ve CHANGELOG başında tutulur;
+yeni bir ana giriş ya da birleştirme olduğunda ikisi birlikte güncellenir.
 
-| Eski etiket | Sürüm                                              |
-| ----------- | -------------------------------------------------- |
-| v2.0.0      | 0.0.0                                              |
-| v2.1.0      | 0.1.0                                              |
-| v2.2.0      | 0.2.1 (0.2.0 bu sürümle birleştirildi)             |
-| v2.2.1      | 0.2.1                                              |
-| v2.3.0      | 0.3.0                                              |
-| v2.4.3      | 0.4.3 (0.3.0'dan sonraki tüm ara yayınları içerir) |
+| Eski etiket | Sürüm                                  |
+| ----------- | -------------------------------------- |
+| v2.0.0      | 0.2.1 (0.0.0 bu girişte birleştirildi) |
+| v2.1.0      | 0.2.1 (0.1.0 bu girişte birleştirildi) |
+| v2.2.0      | 0.2.1 (0.2.0 bu girişte birleştirildi) |
+| v2.2.1      | 0.2.1                                  |
+| v2.3.0      | 0.4.3 (0.3.0 bu girişte birleştirildi) |
+| v2.4.3      | 0.4.3                                  |
+| v0.5.0      | 0.7.1 (0.5.0 bu girişte birleştirildi) |
+| v0.6.0      | 0.7.1 (0.6.0 bu girişte birleştirildi) |
+| v0.7.0      | 0.7.1 (0.7.0 bu girişte birleştirildi) |
+| v0.7.1      | 0.7.1                                  |
+| v0.8.0      | 0.8.0                                  |
 
 Dikkat edilecekler:
 
